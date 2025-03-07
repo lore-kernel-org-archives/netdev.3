@@ -1,92 +1,100 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A158224242;
-	Fri,  7 Mar 2025 19:34:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1156A1A3035;
+	Fri,  7 Mar 2025 19:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741376071; cv=none; b=MccOWbqccPzzqJt3Fb5Qrwz7PNmN9g5LoVVL6zE0cUXN1kkB+PVjHjJj1x9P26Ekc0HWD4Z9j44iDK1U+ZwP7SjkXJ1mTeQ5Sh/igCuwIQNmwrMGHt3TT64f8/VHUE5Uc6+1tKB09znWsR8MWurLUz1K1R2CLt6rRp1pu4x6PTI=
+	t=1741376127; cv=none; b=obq296Ah9D6RfLyAFbVlfvpsebjM47OoA82IYHVAXuHvSVWRw6C0fK/PG6u1tRXE3nholygBgh5uG8jxmZkaXlB7dIHMxkeqvtxw37gAsnrUACd32RFGe/4SMZ1rrWB8gD4cLzo4LMOF42VdpxcKyq2O0l7RFB2gIEG8fWYiFe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741376071; c=relaxed/simple;
-	bh=50NLhdDhI8V8GO7o5jfDm1HRHcKPZ5EFPUWRP6MJAIA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=VOqoQDSeSxkydviSEd5JTFwJ3/B1aJabn/xJokO4FivqkN4OWalSx7m+cU8Q/QeQYA4CYpmgv5bVxDAXrEB1NR+TXrDuTpsxSyw0ouumocYe5ccM/TE/H/Y/50NEYHBdM2Jo9+A6XLFi0TXT4sNVx56QyHe+varQSOoSGEXHuGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=i8S6m7b8; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1741376127; c=relaxed/simple;
+	bh=b3YKDd4f5VM0/bYXYdj1H2B9mEQNOdGupx/drXrREsA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nMPex/MeDgidOeGT4IUbTIRYO1Lm5bkR0770oiwV9v+VM9Ke0Lv02HZgPStknXC7vxxETDYv+z/d/Csuw39Ii69gAkupSmz/1Ff/FsIgbUF6i0kN/wG1sdIdz5Ns2s9l3rCeHGDv+oOPw/BJxxmnckDItOGF+96arcdc6rv2+cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=McuRxN67; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="i8S6m7b8"
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 527JUdCN395426
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Fri, 7 Mar 2025 11:30:39 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 527JUdCN395426
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025021701; t=1741375842;
-	bh=50NLhdDhI8V8GO7o5jfDm1HRHcKPZ5EFPUWRP6MJAIA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=i8S6m7b8Y1bYbI/KAMAEMHyLmm3Y3FEbOP1TAp45PLhWp0+UZa3jzXqYD/PAma8k8
-	 b/Oan43NQx+G8Psx4knFdBaIeGVMBY9RXM4Ckdpi6bnHPizobhJTlwJ9C/oeCEh78k
-	 Stf+80k1tjWDPUZPs2+t5W4E7bcn5x1ArDfWYB9dAaAevi8RglcCPIr1tB2PeYVj29
-	 O7H/KNA8J4/SredKAKB+hHce7/GwWHh4ARCY3vBRtJzld1LsziwXJjEV7Ueot213Z/
-	 QRKE/cCgjphvTYe81eN7CwuSerqHAkatZ00EB031zjlPdsrSQAYtuWc+oXJ6lMl8EH
-	 7JnS1tGvALMKw==
-Date: Fri, 07 Mar 2025 11:30:35 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Andrew Cooper <andrew.cooper3@citrix.com>
-CC: Laurent.pinchart@ideasonboard.com, airlied@gmail.com,
-        akpm@linux-foundation.org, alistair@popple.id.au,
-        andrew+netdev@lunn.ch, andrzej.hajda@intel.com,
-        arend.vanspriel@broadcom.com, awalls@md.metrocast.net, bp@alien8.de,
-        bpf@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211@lists.linux.dev, dave.hansen@linux.intel.com,
-        davem@davemloft.net, dmitry.torokhov@gmail.com,
-        dri-devel@lists.freedesktop.org, eajames@linux.ibm.com,
-        edumazet@google.com, eleanor15x@gmail.com, gregkh@linuxfoundation.org,
-        hverkuil@xs4all.nl, jernej.skrabec@gmail.com, jirislaby@kernel.org,
-        jk@ozlabs.org, joel@jms.id.au, johannes@sipsolutions.net,
-        jonas@kwiboo.se, jserv@ccns.ncku.edu.tw, kuba@kernel.org,
-        linux-fsi@lists.ozlabs.org, linux-input@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-serial@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux@rasmusvillemoes.dk,
-        louis.peens@corigine.com, maarten.lankhorst@linux.intel.com,
-        mchehab@kernel.org, mingo@redhat.com, miquel.raynal@bootlin.com,
-        mripard@kernel.org, neil.armstrong@linaro.org, netdev@vger.kernel.org,
-        oss-drivers@corigine.com, pabeni@redhat.com,
-        parthiban.veerasooran@microchip.com, rfoss@kernel.org, richard@nod.at,
-        simona@ffwll.ch, tglx@linutronix.de, tzimmermann@suse.de,
-        vigneshr@ti.com, visitorckw@gmail.com, x86@kernel.org,
-        yury.norov@gmail.com
-Subject: Re: [PATCH v3 00/16] Introduce and use generic parity16/32/64 helper
-User-Agent: K-9 Mail for Android
-In-Reply-To: <efc2ee9d-5382-457f-b471-f3c44b81a190@citrix.com>
-References: <4732F6F6-1D41-4E3F-BE24-E54489BC699C@zytor.com> <efc2ee9d-5382-457f-b471-f3c44b81a190@citrix.com>
-Message-ID: <5A790652-1B22-4D13-AAC5-5D9931E90903@zytor.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="McuRxN67"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-223fb0f619dso47624385ad.1;
+        Fri, 07 Mar 2025 11:35:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741376125; x=1741980925; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=w8BWp7SYMVhayY4CKxIe7LlJTrQSlVuOhnW/1p2aS4w=;
+        b=McuRxN67rqeNwb8r41mYaMJYW31m1uJUEMQlwzxPp+8FMdLkpLK+i0D2DR4ufQLY/1
+         mXdhXZsPKXt0ta9HiYo18nUWzT2cAbquzN+0gksm9GGGYwHgbQNwh+rxs7LEWCEBVFFY
+         A2hVW4r6pql8gwrc4YWl39kZK2KH7vnE2CMKvnHDoi02gtlcv/XdCGmWFisVlz2Eaftc
+         QBdlksR0DPnMqYf/h0//JKip6CgGfeqSnsKcSC6XWHcR+9WcbJSjfigvgNDWDjatqj39
+         ql4GZSmVolDZiFJEyLzUg8tCLHVMsVbtsyacxGJQofd0sTBZprocgaSKUz/QvNPhY4P6
+         kMQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741376125; x=1741980925;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w8BWp7SYMVhayY4CKxIe7LlJTrQSlVuOhnW/1p2aS4w=;
+        b=Wu/ogzMxoTOhmuQ/SWwDEngF9HsVxFlGG/NgEtXaCPMOjfpBfSKDf4eAQ5zBeHuIi3
+         GCx8iT+iK9Q1Mh+7ljrQpVcd7AJBG3z5FDBOUrPAY1S7Opi22bDOi9jPfFsupGJzoF+y
+         QKg1nv+BAW/fnffFCW3wtDWayfDX+0lJX6it+di7Luk9NhRxYhV9wYlqeiZqMNV5x5df
+         WBbtnXxsEyqa0c7Hs5FlQ5V/Uaz2eoxtnvRSf4Y6WPbfU0WdO3p85i1TD6ekwWDe/WHG
+         6Jmhue3KuMkUcLsretacOftq0a6023qJ9g4iPCPbcq/yV07pTuJgecDNYYzhBncISNOX
+         OSuA==
+X-Forwarded-Encrypted: i=1; AJvYcCVZl6GOeE03Ooz+QrNTOsR6eQN8W5bQXAUzKIVLoeEbBM1u13j8+4Znqb3ivFPrgdHnw8XKlFcx@vger.kernel.org, AJvYcCXojccpn4Ov7vqpuS2cxsjzTMDnYNUZEJzpq5Hp0/rqvqWM8TaF5tlPTZnH9FCO730KzGPqQoIqt4a+usU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEaJMs5+a4+IjJM7tv482ztnoIJFOmm0XOb6lZasrqdnDoCBVg
+	uMu9aEHFsJSuGjrpVwkWXKUxDFpgAVOn2TQpkom1xuVcWPvEHeY=
+X-Gm-Gg: ASbGncvMBHGIkkz3wAfSHWRRtmRrxvEYV22Phwky2kWxO0vwXUH6ubk11PrTwcsJLWE
+	JvCsQATS36ARf2gl8FMfozL26syRIf8yfcluitGG1ms2BDFHiI7Y3tmdRWMGbavCOW099KKmUXy
+	Inof44NB6c9ZHcurA0kfPzStRVda+U/B5dSi4WVK/E4ymwMfT7Q6htaXo9PVbsNssQ3rUj+CWC6
+	J4T7+ixTwYqCnWOpT80EOiXmitwcWQMkrXd5+Naz8zVY+JLnW24UbTlHkN5MLc/WUfw/Vc4GszG
+	BIenU86UUTn0EolsQrYT3dUlfmC+tcuG37LW1PyeP8eB
+X-Google-Smtp-Source: AGHT+IEE0ql92Xapw9wLKAOKUtGO9j+8KA94RO/jKP8EfxcqJZ3AEbydlBJnrddqp7jCteCnMnGH7w==
+X-Received: by 2002:a17:902:d4c5:b0:224:76f:9e4a with SMTP id d9443c01a7336-2242889249amr79831735ad.14.1741376125143;
+        Fri, 07 Mar 2025 11:35:25 -0800 (PST)
+Received: from localhost ([2601:646:9e00:f56e:2844:3d8f:bf3e:12cc])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7369820697esm3634589b3a.8.2025.03.07.11.35.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Mar 2025 11:35:24 -0800 (PST)
+Date: Fri, 7 Mar 2025 11:35:23 -0800
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	linux-kernel@vger.kernel.org, horms@kernel.org,
+	donald.hunter@gmail.com, michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com, andrew+netdev@lunn.ch,
+	jdamato@fastly.com, xuanzhuo@linux.alibaba.com,
+	almasrymina@google.com, asml.silence@gmail.com, dw@davidwei.uk
+Subject: Re: [PATCH net-next v1 3/4] net: add granular lock for the netdev
+ netlink socket
+Message-ID: <Z8tKe5O7ICE3xK80@mini-arch>
+References: <20250307155725.219009-1-sdf@fomichev.me>
+ <20250307155725.219009-4-sdf@fomichev.me>
+ <20250307095049.39cba053@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250307095049.39cba053@kernel.org>
 
-On March 7, 2025 10:49:56 AM PST, Andrew Cooper <andrew=2Ecooper3@citrix=2E=
-com> wrote:
->> (int)true most definitely is guaranteed to be 1=2E
->
->That's not technically correct any more=2E
->
->GCC has introduced hardened bools that intentionally have bit patterns
->other than 0 and 1=2E
->
->https://gcc=2Egnu=2Eorg/gcc-14/changes=2Ehtml
->
->~Andrew
+On 03/07, Jakub Kicinski wrote:
+> On Fri,  7 Mar 2025 07:57:24 -0800 Stanislav Fomichev wrote:
+> > As we move away from rtnl_lock for queue ops, introduce
+> > per-netdev_nl_sock lock.
+> 
+> What is it protecting?
 
-Bit patterns in memory maybe (not that I can see the Linux kernel using th=
-em) but for compiler-generated conversations that's still a given, or the m=
-anager isn't C or anything even remotely like it=2E
+The 'bindings' field of the netlink socket:
+
+struct netdev_nl_sock {
+       struct mutex lock;
+       struct list_head bindings; <<<
+};
+
+I'm assuming it's totally valid to have several bindings per socket?
+(attached to different rx queues)
