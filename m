@@ -1,146 +1,122 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7988120C00C;
-	Fri,  7 Mar 2025 11:56:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44DD221859F;
+	Fri,  7 Mar 2025 11:57:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741348580; cv=none; b=dlGQ90NuvZyNIxm/E+K7EhwIvS9lEDqKe5FpYq3OYPrwyUfUFns8yZLGncp7OgE2qZZRwbPpPlzxM2F2DeW/rd361pG5AzFULuFC0pD7Tnh7441teuIKsQouOM+3YAYrBCh32tn7LWrVoHG1Pupbhzi5FIoLaXJPGtdFa751Os8=
+	t=1741348651; cv=none; b=YWAAWvn2GKDo/IXocRL1qEkLkQvIDJ+FhQvgivEHHmLncVfMvSB12pZEwzsDjcuXeHkTmJvzxJFDRewcR+zJUL0xqUAw8jFP1bLMmL0Wh824OSNKwK4CYeVSv2NpaaUPJQASUT7JKI/OkUZcOR/EtqDtAEHzkB3fPx0L2efkkPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741348580; c=relaxed/simple;
-	bh=AEoHVhCtPqrNOpazoS/0UO4HDhnndTUwM9XyvDjaMPI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QIA0zhAlSA/4o85r0y9hrnwix8eTMqKho2xqATq34pz6vHh0dz3cvywb7b91UtbDHCvQNFDxonlNhiRKKxFQZ73+lr1IamVH8IPLLA0aWERmCfoVgUUhLfVWN0encR2aK0HfcRLhu6W2H1+eRFHPtohsv6/LRPPVqQAGSqaiLVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=LI8JjkJD; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1741348651; c=relaxed/simple;
+	bh=W6VQ+V1nmHstDdIlqfgtyjfcPs3sY566gSTVH5r0RV4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NLVmH7V8mpCDQZJM/dSAycd5p7mZta98tR9wLXEhjS0ca/WynWWCdYU6h9n4ytUl/y1he8Kc3MwYVKSIiFUP4gIMtY0A4LguANYf3pGhCU/K71cLsd9/ryJ0sdEXnJSWUlOjqBLK80efJJ1trJS0DpkS/tEXXeKOtx6ZCOUOisU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=waGdBjMN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=N/zfUSI9; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="LI8JjkJD"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6F4CE40E01A0;
-	Fri,  7 Mar 2025 11:56:12 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id qiag8fHRWfvs; Fri,  7 Mar 2025 11:56:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1741348567; bh=skVMfj6F4q0eJCWKQfe1/WbSrZcERS0jUiqPGjIPHBY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LI8JjkJDVMf9Fqun0m6u9iIPesZtZGd6w+kl6L7HGZ0+tqKzX1OjJe0TKdJcp28XX
-	 uKpa0wqQQhjoFeNp3Bw95WUsOWjMS3jCqp2nCEO9dpb5dXBAX6tMpEeuwjaSGHtNdI
-	 Ad9zmvwJ6e7IRylQ3CWIXzopPSh1BTntpfv9vlkrAEMaBPpa+2MmUvnK5sTgu2wXiB
-	 MvK9pWGtV9y2AMOdXd7w99+XQb4MlMtp544PfXsqIZb4ovkxTiTiWT5bAC2aP7czmD
-	 0jkksBpg/S8I5ay4P+l9uD7qqFqHmkv1hZVpRcTVuCA7/1ZXOFQECeG6eaY5TSoj7d
-	 b69zJQ0vwFhLre3V11HPqmMzbyMIc8Kv74HROwNxK8e60mM0w/bSrsx23r0tV41EAD
-	 N2KLPNndkUFTwMv54cha8GTqt/i4Nlv9xIaVgMactqp7ffpBi5xb1zRTsIubUqaMq6
-	 GfZg72FHnnyKX4l+XNWwNUwM7Re67WZhGd2LEUlDSW+4TibkTikAS8L+LGoja+VVZ2
-	 BhTayYOo2m9wKTReY1UN9YeAQUqY35CeSgk9tunjR8hlbEOeX6C3tCckIhMn9VB9KP
-	 PxwP4GnSZ2zVI/n3FwjJzc07ej7qMhV/m71FnRfpedBNLVeYG3nTkyCZHJlbqcINNp
-	 8iFns/3oSoQ8MHJQnRrxwt8I=
-Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0787140E0214;
-	Fri,  7 Mar 2025 11:55:55 +0000 (UTC)
-Date: Fri, 7 Mar 2025 12:55:50 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Ryo Takakura <ryotkkr98@gmail.com>, Boqun Feng <boqun.feng@gmail.com>
-Cc: Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="waGdBjMN";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="N/zfUSI9"
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1741348648;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NOG038PWXRpibdztyql3sjzUMzeQfzjYIj73kOiBeMY=;
+	b=waGdBjMN3L0P7GIYmRWc/w0ckswrLeqSCbCh5UAqWqQgmg1dU6NMQPu1rhDjH174kS6yZY
+	MeK/kQMdg6sT9MjB3oRrU2PaoZU08tEXZdZAcWbA9kg6FLkvSpLsOSyP3rpbx9Ncs5XTcx
+	OIC+1ngOros5sbngC3Iah9AaVSnf3JNHI4HZ+wbVhObSn1vwXON9m8wS6Tc7eCti4dtTEo
+	QiH83R5vwg4AlCbcNvnHpFrLO3MWpXedZ4RwRAnXKlSKZNHfqbqxQ8mpqCPJUxdQE3iDSY
+	8gZvWGSBCiuQKyNXawYFNfFdKW7ZgyFOEZG+33IjZw3fsaM9nRKghrY+S9hKAg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1741348648;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NOG038PWXRpibdztyql3sjzUMzeQfzjYIj73kOiBeMY=;
+	b=N/zfUSI9sT6hiVTKZKg/gpOvl6mCFm6wxR8DWzaQgONOFEMqMPUavBHQJ3CgSK2m0qY9oT
+	FQ8+ZnMucrdjQoCw==
+To: linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Joe Damato <jdamato@fastly.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>, linux-kernel@vger.kernel.org,
-	x86-ml <x86@kernel.org>
-Subject: Re: request_irq() with local bh disabled
-Message-ID: <20250307115550.GAZ8rexkba5ryV3zk0@fat_crate.local>
-References: <20250306122413.GBZ8mT7Z61Tmgnh5Y9@fat_crate.local>
- <CANn89iJeHhGQaeRp01HP-KqA65aML+P5ppHjYT_oHSdXbcuzoQ@mail.gmail.com>
- <20250306161912.GFZ8nLAAVKdlx0s4xv@fat_crate.local>
+	Tariq Toukan <tariqt@nvidia.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Yunsheng Lin <linyunsheng@huawei.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH net-next v2 1/5] page_pool: Provide an empty page_pool_stats for disabled stats.
+Date: Fri,  7 Mar 2025 12:57:18 +0100
+Message-ID: <20250307115722.705311-2-bigeasy@linutronix.de>
+In-Reply-To: <20250307115722.705311-1-bigeasy@linutronix.de>
+References: <20250307115722.705311-1-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250306161912.GFZ8nLAAVKdlx0s4xv@fat_crate.local>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 06, 2025 at 05:19:12PM +0100, Borislav Petkov wrote:
-> On Thu, Mar 06, 2025 at 02:45:16PM +0100, Eric Dumazet wrote:
-> > Hmmm.. not sure why local_bh is considered held..
-> 
-> Yeah, it looks like it is some crap in tip as current mainline is fine.
-> 
-> Lemme see what I can find there.
-> 
-> Thx and sorry for the noise.
+An empty struct page_pool_stats allows to always add it to structs and
+pass it to functions like page_pool_ethtool_stats_get() without the need
+for an ifdef.
 
-As already mentioned by Mr. Z on the tip-bot message thread, below commit
-breaks lockdep.
+Provide an empty struct page_pool_stats and page_pool_get_stats() for
+!CONFIG_PAGE_POOL_STATS builds.
 
-Reverting it fixes the issue, ofc.
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ include/net/page_pool/helpers.h | 6 ++++++
+ include/net/page_pool/types.h   | 4 ++++
+ 2 files changed, 10 insertions(+)
 
-$ git bisect start
-# status: waiting for both good and bad commits
-# good: [848e076317446f9c663771ddec142d7c2eb4cb43] Merge tag 'hid-for-linus-2025030501' of git://git.kernel.org/pub/scm/linux/kernel/git/hid/hid
-git bisect good 848e076317446f9c663771ddec142d7c2eb4cb43
-# status: waiting for bad commit, 1 good commit known
-# bad: [f4444d22a90c3fb0c825195b4154455d42986f21] Merge remote-tracking branch 'tip/master' into rc5+
-git bisect bad f4444d22a90c3fb0c825195b4154455d42986f21
-# bad: [6714630acf3cae8974e62a810389dcb191ac49af] Merge branch into tip/master: 'sched/core'
-git bisect bad 6714630acf3cae8974e62a810389dcb191ac49af
-# good: [156a8975430b127b5000b9018cb220fddf633164] Merge branch into tip/master: 'irq/core'
-git bisect good 156a8975430b127b5000b9018cb220fddf633164
-# bad: [468fad69db143874eaaeb472816f424e261df570] Merge branch into tip/master: 'locking/core'
-git bisect bad 468fad69db143874eaaeb472816f424e261df570
-# good: [f5de95438834a3bc3ad747f67c9da93cd08e5008] irqchip/renesas-rzv2h: Simplify rzv2h_icu_init()
-git bisect good f5de95438834a3bc3ad747f67c9da93cd08e5008
-# bad: [5fc1506d33db23894e74caf048ba5591f4986767] rust: lockdep: Remove support for dynamically allocated LockClassKeys
-git bisect bad 5fc1506d33db23894e74caf048ba5591f4986767
-# bad: [9b4070d36399ffcadc92c918bd80da036a16faed] locking/lock_events: Add locking events for rtmutex slow paths
-git bisect bad 9b4070d36399ffcadc92c918bd80da036a16faed
-# good: [337369f8ce9e20226402cf139c4f0d3ada7d1705] locking/mutex: Add MUTEX_WARN_ON() into fast path
-git bisect good 337369f8ce9e20226402cf139c4f0d3ada7d1705
-# bad: [8a9d677a395703ef9075c91dd04066be8a553405] lockdep: Fix wait context check on softirq for PREEMPT_RT
-git bisect bad 8a9d677a395703ef9075c91dd04066be8a553405
-# good: [5ddd09863c676935c18c8a13f5afb6d9992cbdeb] locking/rtmutex: Use struct keyword in kernel-doc comment
-git bisect good 5ddd09863c676935c18c8a13f5afb6d9992cbdeb
-# first bad commit: [8a9d677a395703ef9075c91dd04066be8a553405] lockdep: Fix wait context check on softirq for PREEMPT_RT
+diff --git a/include/net/page_pool/helpers.h b/include/net/page_pool/helper=
+s.h
+index 582a3d00cbe23..4622db90f88f2 100644
+--- a/include/net/page_pool/helpers.h
++++ b/include/net/page_pool/helpers.h
+@@ -81,6 +81,12 @@ static inline u64 *page_pool_ethtool_stats_get(u64 *data=
+, const void *stats)
+ {
+ 	return data;
+ }
++
++static inline bool page_pool_get_stats(const struct page_pool *pool,
++				       struct page_pool_stats *stats)
++{
++	return false;
++}
+ #endif
+=20
+ /**
+diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
+index 7f405672b089d..6d55e6cf5d0db 100644
+--- a/include/net/page_pool/types.h
++++ b/include/net/page_pool/types.h
+@@ -140,6 +140,10 @@ struct page_pool_stats {
+ 	struct page_pool_alloc_stats alloc_stats;
+ 	struct page_pool_recycle_stats recycle_stats;
+ };
++
++#else /* !CONFIG_PAGE_POOL_STATS */
++
++struct page_pool_stats { };
+ #endif
+=20
+ /* The whole frag API block must stay within one cacheline. On 32-bit syst=
+ems,
+--=20
+2.47.2
 
-Author: Ryo Takakura <ryotkkr98@gmail.com>
-Date:   Sat Jan 18 14:49:00 2025 +0900
-
-    lockdep: Fix wait context check on softirq for PREEMPT_RT
-    
-    Since commit 0c1d7a2c2d32 ("lockdep: Remove softirq accounting on
-    PREEMPT_RT."), the wait context test for mutex usage within
-    "in softirq context" fails as it references @softirq_context.
-    
-    [    0.184549]   | wait context tests |
-    [    0.184549]   --------------------------------------------------------------------------
-    [    0.184549]                                  | rcu  | raw  | spin |mutex |
-    [    0.184549]   --------------------------------------------------------------------------
-    [    0.184550]                in hardirq context:  ok  |  ok  |  ok  |  ok  |
-    [    0.185083] in hardirq context (not threaded):  ok  |  ok  |  ok  |  ok  |
-    [    0.185606]                in softirq context:  ok  |  ok  |  ok  |FAILED|
-    
-    As a fix, add lockdep map for BH disabled section. This fixes the
-    issue by letting us catch cases when local_bh_disable() gets called
-    with preemption disabled where local_lock doesn't get acquired.
-    In the case of "in softirq context" selftest, local_bh_disable() was
-    being called with preemption disable as it's early in the boot.
-    
-    Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-    Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-    Link: https://lore.kernel.org/r/20250118054900.18639-1-ryotkkr98@gmail.com
-
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
