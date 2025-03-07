@@ -1,131 +1,111 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DF820DD71
-	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 10:28:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C3F20FAAC
+	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 10:28:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741343296; cv=none; b=pS02f1EZ1vueHNTrNAkgl5cr5UD3GcXHzrJG6/JZskRV+idedCQWr77+G/MJ13QgMaHx31uqzPw+ZmT7lJwY1XAtAj06vk5091YpZ85WrMl7BtcshAyMpnhEnLUTOOZ5C9I8SsdMvfsR8SEHjimx0RHxGqg3CbUKFAGh/GvXrpo=
+	t=1741343330; cv=none; b=VwFSFLlCrgOkhltVJqnm4cAo6QVxowtAV7DJmBAUykiXcdFTovDv5z24TjZH8EQIdHdV/yibRLgrhWsK2j9eWJxbsr1LqABjH42750GbNWcR1DSfPGFUtl+b2ZY8XEvite253geFav64jeQElw9DS6SLRS/vyHE11BXyB6ErxoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741343296; c=relaxed/simple;
-	bh=jrQxx963u0UIh0LMWTyR85DyjzQHKWDA6KlOFHvOOg8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LzlSS7f9n6e3HzeFuTVSfDU8KecLe2QvZtVaQQSRNEIPOkVI6Xmsmn3jo6Jr9EMo11JtNUswSSCZtdeiYjDeLgI9IlHpl2g8F5Q02N5KC5rK03sZktdwaAfFGzdV77TGib2PTxVRu7HYbhUKhzBEsP2NoNvUkvhQ3J61POw1O3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=KsoaRTbC; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1741343330; c=relaxed/simple;
+	bh=lpz8W+/JwmlAFUO/QFcs0PO4HoUi4STm2Upsn1W5Eas=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uwPH9trk1m+iSGeeAVYiTERwXRFCSjJs7RcIPhq8PdAjimTY4m988Eoixz/qFfCYo0ti9BYHRYSkDMI5by25mRouwjhSoXTB9Wl0omrLLvX8YpgKW8DL5jOoN6QnufGy3wE+SlGC39zWZFYCKavjpfJ9mOUk3QdqCf3+SLuywGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ANWlpoQe; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="KsoaRTbC"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1tqTzx-0031mN-Jd; Fri, 07 Mar 2025 10:28:05 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Subject:Date:From;
-	bh=7ur2YaFrKmvtBuyp9fEmTVu7+f1jUmCVVpaxPwcaTXY=; b=KsoaRTbCTxrSkkLRLeI5VAYAMf
-	aLXznNbisLgYo+D+hZlu7iXGi8y/SYM0Z+sSW6ROWi2UdoG1xPGfmzzRA0eeUw8YW5x0aCgrm39pY
-	9pt6KTWhNoa2+e4r0BT4o946/VjyWcFlCbStfLi7wwTDj1fx9ZxnsU3CzRNtwnN7c3JbFSihH+mWe
-	e2hgbgDN4Jrozcool9HtDT4NOpCJMNe4nL0KOSJd9WHH7Nr5xu9aDp3yt4phNxPH4bQsuYd0egkld
-	86YPgycwJBM6FXW8fnkckUOJLjj1toRXpa4l8TNpHO4mzh31d7HWB+QGVJp/vJg7lNG1AmxLjvVaQ
-	IY36IjPA==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1tqTzw-000212-Pq; Fri, 07 Mar 2025 10:28:04 +0100
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1tqTzs-00636i-Hb; Fri, 07 Mar 2025 10:28:00 +0100
-From: Michal Luczaj <mhal@rbox.co>
-Date: Fri, 07 Mar 2025 10:27:50 +0100
-Subject: [PATCH net] vsock/bpf: Handle EINTR connect() racing against
- sockmap update
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ANWlpoQe"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-474fba180cfso14132341cf.3
+        for <netdev@vger.kernel.org>; Fri, 07 Mar 2025 02:28:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1741343327; x=1741948127; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T1cIrBe7Ura9LTOFC9H3HdVhePICrfHd60ZZ0KZtTWU=;
+        b=ANWlpoQeYcLYjAANB+qzRZSqOd+Pbch5Ex/EIukKQPpkdIYw2POxrInaazQin4h75c
+         fwVi716z/mKZa56D9+N1hz/MKY73MziJxDO+WdfNrFHLnjfFoOAplTaXLvu28xz/kHuQ
+         lnT/HN7BLOKGVae607ttdDUVDjUCwvghtCLd5QKA8JOmC0uv6fDNuWcCwDEyRYMc/8EE
+         jo9eXRldLR4TVaT/oH2W6BfKkeQWyQPCm+NG1YhOvsufJYePeFD+X4uiPzwjRJ90Xo5v
+         CiSGSsqdg73aRgrwFWijieuyAlvuSqxZGQMTvJS+JZIBKbI0Zb+SP76ZqtE2dfE59hTU
+         cdDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741343327; x=1741948127;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=T1cIrBe7Ura9LTOFC9H3HdVhePICrfHd60ZZ0KZtTWU=;
+        b=Tl0hud7Y1Xgkd7Dgu21eCx6XiZktUKEtWFnz7RZ3SAhNqyGEbflNeLHzXmowJPCLDb
+         ZPyQQeCROuL21vb52ddy9bBIWbfZWpdK6g0JkStqOXTDRtu2VLIS28w+65bfq74PhmHW
+         MIvEh4makJp0jz//NMATVtmWieHqSj5K1H5tADtsuBy4WAxBo+5VPl67ZNDt13Dy4Sdj
+         zGNblj/zGsb52lZJCPB6PQM6seqZ5b8SkteAUM5QvibgqKNMyIhAej9de5Q4Ew2sc9HI
+         3d11qZCTe7wcLp6xORsNypMCCCY9ZzZT4KnNwhr+7fdz3BA7L3ggFFzCfzkz01z11B1g
+         EQ3w==
+X-Forwarded-Encrypted: i=1; AJvYcCW8HYk5YFz+5M6hN7X8rkrdsTXWUbbe678r3XQx9GvPJmpPrRFbX7s1eO8XHRI/dJ9aMI0L1+E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzh9/6VV7lBp1SmYKZUTSX7DiYngEJjSojRV+/YrbNIhZ3qjmIq
+	czqjUUiJykMAZOZiraUhUmsJR7x95H4zgWS5BOBmXd2cSPzpOEDXDxJG7Ci/YDkuSUBfQ9CbUPn
+	9drR9dWy+qCaOYgPEndtk+AuwfV05lMEjgdcJ
+X-Gm-Gg: ASbGncvbl2i0dguT67moRgij09HYDEM28wtGpwYc9QuDdnhUYYBC+i484ONoO1Uk1ex
+	h4HzxYknvqGG/Rfcy2MoQ1jtdJN515k0q2mG7Wg9545e/QEc3Y9fDTBn06pVNYo8aVkIVA0pHSK
+	5me6O6HiwewFqTNz4j5wsx6TeL7bU=
+X-Google-Smtp-Source: AGHT+IE8nkI+68Qgy6NjKoLj8c3bNZ3NiejGqaGqUFj0R2IzQEXjAp1CYnixCzSBxrmxoIGwPlxGnmpYBlgSoMnz/mk=
+X-Received: by 2002:ac8:5f96:0:b0:474:f1a6:c917 with SMTP id
+ d75a77b69052e-47610976675mr39528601cf.4.1741343327418; Fri, 07 Mar 2025
+ 02:28:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250307-vsock-trans-signal-race-v1-1-3aca3f771fbd@rbox.co>
-X-B4-Tracking: v=1; b=H4sIABW8ymcC/x3MwQqDMAyA4VeRnBeoFafuVYaH0qZdmMSRiAjiu
- 1t2/A7/f4KRMhm8mhOUdjZepaJ9NBA/QQohp2rwzveucz3utsYvbhrE0LhIWFBDJExPn4ehHZO
- bJqj1Tynz8T+/QWiD+bpuojxgE24AAAA=
-X-Change-ID: 20250305-vsock-trans-signal-race-d62f7718d099
-To: Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Bobby Eshleman <bobby.eshleman@bytedance.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, 
- Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.14.2
+References: <20250305162132.1106080-1-aleksander.lobakin@intel.com> <20250305162132.1106080-8-aleksander.lobakin@intel.com>
+In-Reply-To: <20250305162132.1106080-8-aleksander.lobakin@intel.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 7 Mar 2025 11:28:36 +0100
+X-Gm-Features: AQ5f1Joxdy5jdJHG0g5b6zsYWVs36X3IvHqKfWtxWUE390Z99JJhbzv1OtAO1TI
+Message-ID: <CANn89iKyyayTrepHuPbnkhVpu3trkRohdKxeT8RVefP95wognA@mail.gmail.com>
+Subject: Re: [PATCH net-next 07/16] idpf: link NAPIs to queues
+To: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, Michal Kubiak <michal.kubiak@intel.com>, 
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	Simon Horman <horms@kernel.org>, bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signal delivered during connect() may result in a disconnect of an already
-TCP_ESTABLISHED socket. Problem is that such established socket might have
-been placed in a sockmap before the connection was closed. We end up with a
-SS_UNCONNECTED vsock in a sockmap. And this, combined with the ability to
-reassign (unconnected) vsock's transport to NULL, breaks the sockmap
-contract. As manifested by WARN_ON_ONCE.
+On Wed, Mar 5, 2025 at 5:22=E2=80=AFPM Alexander Lobakin
+<aleksander.lobakin@intel.com> wrote:
+>
+> Add the missing linking of NAPIs to netdev queues when enabling
+> interrupt vectors in order to support NAPI configuration and
+> interfaces requiring get_rx_queue()->napi to be set (like XSk
+> busy polling).
+>
+> Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+> ---
+>  drivers/net/ethernet/intel/idpf/idpf_txrx.c | 30 +++++++++++++++++++++
+>  1 file changed, 30 insertions(+)
+>
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/et=
+hernet/intel/idpf/idpf_txrx.c
+> index 2f221c0abad8..a3f6e8cff7a0 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+> @@ -3560,8 +3560,11 @@ void idpf_vport_intr_rel(struct idpf_vport *vport)
+>  static void idpf_vport_intr_rel_irq(struct idpf_vport *vport)
+>  {
+>         struct idpf_adapter *adapter =3D vport->adapter;
+> +       bool unlock;
+>         int vector;
+>
+> +       unlock =3D rtnl_trylock();
 
-Ensure the socket does not stay in sockmap.
+This is probably not what you want here ?
 
-WARNING: CPU: 10 PID: 1310 at net/vmw_vsock/vsock_bpf.c:90 vsock_bpf_recvmsg+0xb4b/0xdf0
-CPU: 10 UID: 0 PID: 1310 Comm: a.out Tainted: G        W          6.14.0-rc4+
- sock_recvmsg+0x1b2/0x220
- __sys_recvfrom+0x190/0x270
- __x64_sys_recvfrom+0xdc/0x1b0
- do_syscall_64+0x93/0x1b0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: 634f1a7110b4 ("vsock: support sockmap")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
- net/vmw_vsock/af_vsock.c  | 10 +++++++++-
- net/vmw_vsock/vsock_bpf.c |  1 +
- 2 files changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 7742a9ae0131310bba197830a241541b2cde6123..e5a6d1d413634f414370595c02bcd77664780d8e 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1581,7 +1581,15 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
- 
- 		if (signal_pending(current)) {
- 			err = sock_intr_errno(timeout);
--			sk->sk_state = sk->sk_state == TCP_ESTABLISHED ? TCP_CLOSING : TCP_CLOSE;
-+			if (sk->sk_state == TCP_ESTABLISHED) {
-+				/* Might have raced with a sockmap update. */
-+				if (sk->sk_prot->unhash)
-+					sk->sk_prot->unhash(sk);
-+
-+				sk->sk_state = TCP_CLOSING;
-+			} else {
-+				sk->sk_state = TCP_CLOSE;
-+			}
- 			sock->state = SS_UNCONNECTED;
- 			vsock_transport_cancel_pkt(vsk);
- 			vsock_remove_connected(vsk);
-diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
-index 07b96d56f3a577af71021b1b8132743554996c4f..c68fdaf09046b68254dac3ea70ffbe73dfa45cef 100644
---- a/net/vmw_vsock/vsock_bpf.c
-+++ b/net/vmw_vsock/vsock_bpf.c
-@@ -127,6 +127,7 @@ static void vsock_bpf_rebuild_protos(struct proto *prot, const struct proto *bas
- {
- 	*prot        = *base;
- 	prot->close  = sock_map_close;
-+	prot->unhash = sock_map_unhash;
- 	prot->recvmsg = vsock_bpf_recvmsg;
- 	prot->sock_is_readable = sk_msg_is_readable;
- }
-
----
-base-commit: b1455a45afcf789f98032ec93c16fea0facdec93
-change-id: 20250305-vsock-trans-signal-race-d62f7718d099
-
-Best regards,
--- 
-Michal Luczaj <mhal@rbox.co>
-
+If another thread is holding RTNL, then rtnl_ttrylock() will not add
+any protection.
