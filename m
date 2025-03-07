@@ -1,246 +1,92 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7F421CC40
-	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 14:39:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB1A1922EF
+	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 14:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741358345; cv=none; b=LUEfFy4H2P6+hqjORsDY1EXdhtywmu4djOgtnTlKsG5ir8QH1za1fA1DyUPRY4kIcX5zTb98SczvkMvFYCgYiKkZjGJT3/1RbnG8ByOlnyKnnPhebJ74jLUHu6d7QM1nUddVenSD1GhB2cXMpWBwKQr0q54KOtyvDjI+SnlEtws=
+	t=1741358418; cv=none; b=UojROwpd79pHMclnqDDw1641whX+U/2SRN9bPBPbPbB7jwS0c9W+uwyHFoSh0cEYWF1VAOFXXp8IWrw73DhoXKfXrMZMpL1A750d1oyxfRMweECfzQSXJvVQAxgUqurCge5Qzh81oQfab+sx+s5ifZuLz+8xdQH+R26FcS5SE8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741358345; c=relaxed/simple;
-	bh=qkFt8g5DsR01cKknO0ulQ5mIOJgvpZQPFnZmGkrAkzs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IQaaKVTZr3xtxReygWKQ5mpqtWOnxAD/UMeR295fzu+h03qMkQnrvvhA/laojT/DTc38eatCn6fo8CAQLD53kjbpuzZR1pCPk4ub79i7ALztcj2kaq2MLP6BsOTobaEyxMgKeF3hD/vaVn2s2VloD3tFZUbIvWKaAsOSjmaRqPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PTRDBEfW; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1741358418; c=relaxed/simple;
+	bh=L3buUM6TQI3XhDeJt6OgiTlycBcinvg8tyhfn0nA/dg=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=U3d/Lqxds21MLgYMxKrTdhlsaPztLw5OSAFBZ12yiQGzozLpnGMCTZt94FNvn4SDVrUEF1cDy6zMJmMRp7Y7GAEBnDAVzG3AUJ7Bc4Jz7fhbtGSuFuAf71LEhXo0MMK0qpzZa0Loy0BcIO3GV/6S5jMsUZKWZXqEpJ6eVfn7qkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KN8mUzNQ; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PTRDBEfW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741358344; x=1772894344;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=qkFt8g5DsR01cKknO0ulQ5mIOJgvpZQPFnZmGkrAkzs=;
-  b=PTRDBEfWPUV+6xkRatpxKkEkcsAyyhR8E0g8i0uKzGqgSPlL1PhiSMGQ
-   miJsh/Zpcql7veJ5WAniZ9pzQxHLqIPAXQsR7d44xCyE3jOC0pD7ImIGb
-   6qRsrqeBSF6gqIE1kh9XSg+/NVsI9tFZIOkxFE9cLBqRcfX4GM35Y9ilM
-   CAYF0mhzRmaIBYMxtO+qJ7cXETACBR9BYajNJmkG+9vKJAR7u5KW63RDP
-   oSRMbLrKiCjcD4nDiOcmgN9wG0KBnRucqeTtRd9EGQ1OPzFIIJU4vr5qI
-   SaFejCVRuPEgwHQ3FihTOICbKMRUL5VseY3W4xJJ7lhIaCjxySA5MsSEW
-   Q==;
-X-CSE-ConnectionGUID: G/q7gXAKTimSnz5po0pcYg==
-X-CSE-MsgGUID: QE0uy6gqQB2tY0JJZFHuVw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="42263398"
-X-IronPort-AV: E=Sophos;i="6.14,229,1736841600"; 
-   d="scan'208";a="42263398"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 06:39:04 -0800
-X-CSE-ConnectionGUID: /SQcE9B6Rs6RSWaans+aTQ==
-X-CSE-MsgGUID: 2b4lyHU1SpiIQ/sy0QPZRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,229,1736841600"; 
-   d="scan'208";a="142570891"
-Received: from os-delivery.igk.intel.com ([10.102.18.218])
-  by fmviesa002.fm.intel.com with ESMTP; 07 Mar 2025 06:39:01 -0800
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org,
-	horms@kernel.org,
-	jiri@nvidia.com,
-	Andrii Staikov <andrii.staikov@intel.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Subject: [PATCH iwl-next v6 15/15] ixgbe: add support for FW rollback mode
-Date: Fri,  7 Mar 2025 15:24:19 +0100
-Message-Id: <20250307142419.314402-16-jedrzej.jagielski@intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20250307142419.314402-1-jedrzej.jagielski@intel.com>
-References: <20250307142419.314402-1-jedrzej.jagielski@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KN8mUzNQ"
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7c3b63dfee1so214461085a.0
+        for <netdev@vger.kernel.org>; Fri, 07 Mar 2025 06:40:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741358416; x=1741963216; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6CWFKwr2Lfb5XOvjvzAhJugAjU4+k8gQzhYzvDn0wDA=;
+        b=KN8mUzNQO3Eh+ghZEVxoOU0a3fBpm00N03DAVp3e4reHL28dh7nyE+306urXot1+lk
+         Xrs3LShwSjJQ0w8JlHro2lDg6OO1WL1yOD5UOZccDn03irKuTMjkk7atFmL8Seod4vHW
+         vL+wh/pERjfchRUitI914dmL6xkqMfrqRq27B43SWwia0ou218W63ZrBgBK407017g/g
+         WAv0wh2wkwAyotpyW4yBje+JT9qb86SL8RHobJif7G4iLmNCgqoouVFfadH+xOK+P3pu
+         Fn/fmKE6SNKdZiESkWy1myIGO2yJA7INO9jkoWiDIqPnivB2B2h/0XvJC8RR4M8l0OQA
+         SN7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741358416; x=1741963216;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6CWFKwr2Lfb5XOvjvzAhJugAjU4+k8gQzhYzvDn0wDA=;
+        b=C3ELYLQn7JoRVr2/VbJvhGkVA+IwOhp8E5AUu6k8xv4ZlHVJBYD4/+tLpZrkinAGew
+         83csnwU1hPPShyahb6NvD2WhPjU2W7BUc9iGnE756N4LM35BC6gcEEbmACPxCQoT/9Jd
+         dsn9/2NfwWU4gKMICcs8TUnRpIkIP3GjL/6jAGuFiEN4HzjiAuLc9Jss3r3oBxuZj7qO
+         L7BFV2KM0KaEeqi37PZi9wkkhyKIzN0yL78c2a+EzDZuEb3bfGckb5DC1TWtaDt4j7r+
+         2Qb4Q99kBjNT6hpf92xByEujH83DeXpcVANoDMS0ZbVExmMcfG9LbwiVoWfnFpTgx8kd
+         bhMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXeaThcBgtB84Xcg5s1c2WOnG0WqIGXcvLrVQtKzafYs9Kb0nl1n41THNWaCWTOndi0O0MjXkI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1I2o91qeeRGm/Ml00hsFGpfz0TnhPBl/c06T7r8hx7mFMf4Dw
+	cUjO/bP/z+Av83he/x8yMaAf84ILSB13O56pDJqZ51zqlTojfXTV
+X-Gm-Gg: ASbGnct2bCD9Csd0bcxGwJGJm0k3cu3fFqRzxK9rsxgcrlNRNAmCgCQDgjsNFsXIRlQ
+	WtgYwXxOIOB6qu/sjLb9hA5542wMiuiLE816Su9jOsa3a7MEEZTox6eygCsTJ4ThBWeCtj6roJ5
+	5Im6bLppJqt+6yudnCu8+5PD8S9xUVtqd9e7+n1BOFRTPrkNe55l9c4DKJt6AgF2gB+XDARcgjC
+	MEkY2MlKhJbJubLYoQ/YOJv2NDiARIs3W2WnLr/1vLPlOhNQCQd0XF2Ph2ioAZz5NiQPAAkTPxa
+	DNOHXAv8GKVF1MfWEZGkwriNkBoh3TfqBe3wEhEpIyh581HDESSciZHaYleFLE/voHbBLk3dviU
+	P1ooslqfX6EwlPsxNBO8wFg==
+X-Google-Smtp-Source: AGHT+IFQVtgoBboB7qLgGqSUmGH8YTQsMUsQW4rodHGoVlawLdkC52t0VqwuvM4TKiXWgZAGjlSGeA==
+X-Received: by 2002:a05:620a:2603:b0:7c3:c87c:6755 with SMTP id af79cd13be357-7c4e5ffc200mr579504885a.18.1741358416173;
+        Fri, 07 Mar 2025 06:40:16 -0800 (PST)
+Received: from localhost (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c53b8a5afcsm2991285a.97.2025.03.07.06.40.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Mar 2025 06:40:15 -0800 (PST)
+Date: Fri, 07 Mar 2025 09:40:15 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Eric Dumazet <edumazet@google.com>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, 
+ Willem de Bruijn <willemb@google.com>, 
+ netdev@vger.kernel.org, 
+ eric.dumazet@gmail.com, 
+ Eric Dumazet <edumazet@google.com>
+Message-ID: <67cb054f2ed11_a6a3c2942e@willemb.c.googlers.com.notmuch>
+In-Reply-To: <20250307102002.2095238-1-edumazet@google.com>
+References: <20250307102002.2095238-1-edumazet@google.com>
+Subject: Re: [PATCH v2 net-next] udp: expand SKB_DROP_REASON_UDP_CSUM use
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-From: Andrii Staikov <andrii.staikov@intel.com>
+Eric Dumazet wrote:
+> SKB_DROP_REASON_UDP_CSUM can be used in four locations
+> when dropping a packet because of a wrong UDP checksum.
+> 
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-The driver should detect whether the device entered FW rollback
-mode and then notify user with the dedicated message including
-FW and NVM versions.
-
-Even if the driver detected rollback mode, this should not result
-in an probe error and the normal flow proceeds.
-
-FW tries to rollback to “old” operational FW located in the
-inactive NVM bank in cases when newly loaded FW exhibits faulty
-behavior. If something goes wrong during boot the FW may switch
-into rollback mode in an attempt to avoid recovery mode and stay
-operational. After rollback is successful, the banks are swapped,
-and the “rollback” bank becomes the active bank for the next reset.
-
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Signed-off-by: Andrii Staikov <andrii.staikov@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
----
- .../ethernet/intel/ixgbe/devlink/devlink.c    |  3 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe.h      |  1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 33 +++++++++++++++++++
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 26 +++++++++++++++
- drivers/net/ethernet/intel/ixgbe/ixgbe_type.h |  2 ++
- .../ethernet/intel/ixgbe/ixgbe_type_e610.h    |  1 +
- 6 files changed, 65 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-index dce09f5bd8df..6efa094e6a29 100644
---- a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-+++ b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-@@ -496,7 +496,8 @@ static int ixgbe_devlink_reload_empr_finish(struct devlink *devlink,
- 
- 	*actions_performed = BIT(DEVLINK_RELOAD_ACTION_FW_ACTIVATE);
- 
--	adapter->flags2 &= ~IXGBE_FLAG2_API_MISMATCH;
-+	adapter->flags2 &= ~(IXGBE_FLAG2_API_MISMATCH |
-+			     IXGBE_FLAG2_FW_ROLLBACK);
- 
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-index 2246997bc9fb..23c2e2c2649c 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-@@ -672,6 +672,7 @@ struct ixgbe_adapter {
- #define IXGBE_FLAG2_NO_MEDIA			BIT(21)
- #define IXGBE_FLAG2_MOD_POWER_UNSUPPORTED	BIT(22)
- #define IXGBE_FLAG2_API_MISMATCH		BIT(23)
-+#define IXGBE_FLAG2_FW_ROLLBACK			BIT(24)
- 
- 	/* Tx fast path data */
- 	int num_tx_queues;
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index d4a3943faa21..5154ce861f2a 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -1831,6 +1831,22 @@ static bool ixgbe_fw_recovery_mode_e610(struct ixgbe_hw *hw)
- 	return !!(fwsm & IXGBE_GL_MNG_FWSM_RECOVERY_M);
- }
- 
-+/**
-+ * ixgbe_fw_rollback_mode_e610 - Check FW NVM rollback mode
-+ * @hw: pointer to hardware structure
-+ *
-+ * Check FW NVM rollback mode by reading the value of
-+ * the dedicated register.
-+ *
-+ * Return: true if FW is in rollback mode, otherwise false.
-+ */
-+static bool ixgbe_fw_rollback_mode_e610(struct ixgbe_hw *hw)
-+{
-+	u32 fwsm = IXGBE_READ_REG(hw, IXGBE_GL_MNG_FWSM);
-+
-+	return !!(fwsm & IXGBE_GL_MNG_FWSM_ROLLBACK_M);
-+}
-+
- /**
-  * ixgbe_init_phy_ops_e610 - PHY specific init
-  * @hw: pointer to hardware structure
-@@ -3163,6 +3179,21 @@ int ixgbe_get_inactive_nvm_ver(struct ixgbe_hw *hw, struct ixgbe_nvm_info *nvm)
- 	return ixgbe_get_nvm_ver_info(hw, IXGBE_INACTIVE_FLASH_BANK, nvm);
- }
- 
-+/**
-+ * ixgbe_get_active_nvm_ver - Read Option ROM version from the active bank
-+ * @hw: pointer to the HW structure
-+ * @nvm: storage for Option ROM version information
-+ *
-+ * Reads the NVM EETRACK ID, Map version, and security revision of the
-+ * active NVM bank.
-+ *
-+ * Return: the exit code of the operation.
-+ */
-+static int ixgbe_get_active_nvm_ver(struct ixgbe_hw *hw, struct ixgbe_nvm_info *nvm)
-+{
-+	return ixgbe_get_nvm_ver_info(hw, IXGBE_ACTIVE_FLASH_BANK, nvm);
-+}
-+
- /**
-  * ixgbe_get_netlist_info - Read the netlist version information
-  * @hw: pointer to the HW struct
-@@ -3897,6 +3928,8 @@ static const struct ixgbe_mac_operations mac_ops_e610 = {
- 	.get_media_type			= ixgbe_get_media_type_e610,
- 	.setup_link			= ixgbe_setup_link_e610,
- 	.fw_recovery_mode		= ixgbe_fw_recovery_mode_e610,
-+	.fw_rollback_mode		= ixgbe_fw_rollback_mode_e610,
-+	.get_nvm_ver			= ixgbe_get_active_nvm_ver,
- 	.get_link_capabilities		= ixgbe_get_link_capabilities_e610,
- 	.get_bus_info			= ixgbe_get_bus_info_generic,
- 	.acquire_swfw_sync		= ixgbe_acquire_swfw_sync_X540,
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index 0667e4e85f10..3013ca7ae7e3 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -8420,6 +8420,32 @@ static bool ixgbe_check_fw_error(struct ixgbe_adapter *adapter)
- 			return true;
- 	}
- 
-+	/* return here if FW rollback mode has been already detected */
-+	if (adapter->flags2 & IXGBE_FLAG2_FW_ROLLBACK)
-+		return false;
-+
-+	if (hw->mac.ops.fw_rollback_mode && hw->mac.ops.fw_rollback_mode(hw)) {
-+		struct ixgbe_nvm_info *nvm_info = &adapter->hw.flash.nvm;
-+		char ver_buff[64] = "";
-+
-+		if (hw->mac.ops.get_fw_ver && hw->mac.ops.get_fw_ver(hw))
-+			goto no_version;
-+
-+		if (hw->mac.ops.get_nvm_ver &&
-+		    hw->mac.ops.get_nvm_ver(hw, nvm_info))
-+			goto no_version;
-+
-+		snprintf(ver_buff, sizeof(ver_buff),
-+			 "Current version is NVM:%x.%x.%x, FW:%d.%d. ",
-+			 nvm_info->major, nvm_info->minor, nvm_info->eetrack,
-+			 hw->fw_maj_ver, hw->fw_maj_ver);
-+no_version:
-+		e_dev_warn("Firmware rollback mode detected. %sDevice may exhibit limited functionality. Refer to the Intel(R) Ethernet Adapters and Devices User Guide for details on firmware rollback mode.",
-+			   ver_buff);
-+
-+		adapter->flags2 |= IXGBE_FLAG2_FW_ROLLBACK;
-+	}
-+
- 	return false;
- }
- 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
-index 6bf6ba7dcdcc..892fa6c1f879 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
-@@ -3525,6 +3525,8 @@ struct ixgbe_mac_operations {
- 	int (*get_thermal_sensor_data)(struct ixgbe_hw *);
- 	int (*init_thermal_sensor_thresh)(struct ixgbe_hw *hw);
- 	bool (*fw_recovery_mode)(struct ixgbe_hw *hw);
-+	bool (*fw_rollback_mode)(struct ixgbe_hw *hw);
-+	int (*get_nvm_ver)(struct ixgbe_hw *hw, struct ixgbe_nvm_info *nvm);
- 	void (*disable_rx)(struct ixgbe_hw *hw);
- 	void (*enable_rx)(struct ixgbe_hw *hw);
- 	void (*set_source_address_pruning)(struct ixgbe_hw *, bool,
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-index 1df5ac2e1fc5..c5cf153a19e9 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-@@ -90,6 +90,7 @@
- 
- #define IXGBE_GL_MNG_FWSM		0x000B6134 /* Reset Source: POR */
- #define IXGBE_GL_MNG_FWSM_RECOVERY_M	BIT(1)
-+#define IXGBE_GL_MNG_FWSM_ROLLBACK_M    BIT(2)
- 
- /* Flash Access Register */
- #define IXGBE_GLNVM_FLA			0x000B6108 /* Reset Source: POR */
--- 
-2.31.1
-
+Reviewed-by: Willem de Bruijn <willemb@google.com>
