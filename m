@@ -1,60 +1,74 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2048B1624F8
-	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 06:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEB61A0731;
+	Fri,  7 Mar 2025 06:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741327335; cv=none; b=gIgZB3jWbnQWOrhZ8mqVfxON2DyFsZ4SbIqZ81OJOT9M8x4pxzrrCMg6cV6r7ulmqnE+g82RKdgaK1bVL0D/3uNltuhTzjzYX/3j7DzjLdnCFO2cdrIdLZe78Nm4jqQxPuAXdxUpZiDff83YTXzlLymgNgHGx5jQPor2oa6bgaU=
+	t=1741328727; cv=none; b=DWrjMgz0p6E9TqJYJhEicdzm6s6tsHPMToyI+wdGSjjL6znbScacDKaBedKVMPEp56zD5lsIVmTqOpLfT3MKtLvKLG61tezOv7CURhwLUAeay8av6CXfOIVNz+j4JM51CrfXHGosGdJrVKvbaNB/RPWGD1OIx+z6rS4BQKvB/kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741327335; c=relaxed/simple;
-	bh=ssS2yLuyvtoLCM/MENPJQ5W4+oovXZms8MTFYP3JgBI=;
+	s=arc-20240116; t=1741328727; c=relaxed/simple;
+	bh=IaXFjppS/IoB+IJ+M/BVXjFLMyZOrjULwzmXC5Zs3oQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V9olYZxr5CQPhwoJ8vfvSHn2JCWW4DQSgwnt5cxln9sD5lBarVXLQJt0fHxyZ1b6PlhHcLGRY1rmBoWKI5vYc4QLSKO5d0Wj/8aOtgy9E18JW06V2hQU8xoQqWIHiax52DR3PJqzxkGzvvwXaXoeDA5FrgR5nWq4ETVlzYVzogw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hz9wN5iY; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sjqq3W2KNyG+nw/1ok3nIXc08vvqlnA56TlB/fb2Q4v37a4q8Rd1kCMdLPA0WK0q0+JZhu8Y37k4TcjbOZXp7ZSjIpigSl8QeHhnxpiqYsddY/xIR78RglkL2wkSTc4sivVUBMXxMaMGcFb/zNo23Pxtox/4aZ5vJN6fpd+2K7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P4vQ7two; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hz9wN5iY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741327333; x=1772863333;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ssS2yLuyvtoLCM/MENPJQ5W4+oovXZms8MTFYP3JgBI=;
-  b=hz9wN5iYTTtDCnyzDaOxm+IO6xpF/7Nox884t7z3BIYe/oMyLNXpzpYy
-   3bdRpBklFJtanVhmPrDsOnedqJZH3/RQzBvxnTi0A4jt4OGeAS5h1oOQb
-   unVebAo6Eda+WQIKVqwnMlvyAHzl06Z9F7ozAwBWR0TPFGo5RqFW7j85D
-   fWLiwfeo/6nTmzsLRgyXsOUNDxwu94RlL932LwRvvLsICvnVPQX6CfC/m
-   /mMTskRHkN0KP//ymPHPDmgi2SUoVtzjxwdRGb0Ia41gRFJjx+XpIJXi0
-   7jSTk6wDI/23cyPfYiJhqUoK1ebR/VVMtpAs915e4fExYo2z7MZevgTw0
-   A==;
-X-CSE-ConnectionGUID: G83hnTAKSh6VR8U1oXO63A==
-X-CSE-MsgGUID: t2Lb8ndqSl6YuYKePVQh+Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="59773283"
-X-IronPort-AV: E=Sophos;i="6.14,228,1736841600"; 
-   d="scan'208";a="59773283"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 22:02:12 -0800
-X-CSE-ConnectionGUID: +Qv+ViwPSiqObnDp32HgIg==
-X-CSE-MsgGUID: Kdz37tCaRWaUHQp3t9pPYw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="150181763"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 22:02:09 -0800
-Date: Fri, 7 Mar 2025 06:58:21 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Emil Tantilov <emil.s.tantilov@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	decot@google.com, willemb@google.com, anthony.l.nguyen@intel.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, madhu.chittim@intel.com,
-	Aleksandr.Loktionov@intel.com, yuma@redhat.com, mschmidt@redhat.com
-Subject: Re: [PATCH iwl-net] idpf: fix adapter NULL pointer dereference on
- reboot
-Message-ID: <Z8qK/Z/8lYtdR2UM@mev-dev.igk.intel.com>
-References: <20250307003956.22018-1-emil.s.tantilov@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P4vQ7two"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7c3d1664ed5so181489585a.2;
+        Thu, 06 Mar 2025 22:25:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741328724; x=1741933524; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DE4RgttB+ObeTGoRY2FNPNi0ZuWCnd0LsJTM8WKCSPE=;
+        b=P4vQ7twoUHQPmt+m/8VaumAE86PX0xxhzx51Yy3GLM5vqYn1D0mUjNWqiaZZ/sFBXC
+         r73r+JInHMoo1MCgSqyhTehGgAgdQagPkeGhJfPeBNn+mklWXLIOgj4Gpigi5bVZgf6S
+         W1NJbcxT3WWZ3bSb/+q/bQm0CBmUrbFtQIT6rF4R41/l4a83J1EgCiw3zFdQRYQfxtM2
+         gjcgd9vO/KBEkEsRehhyiXgv3pSBdylzFYjYgIOlo3H11gl9krdQV88mUB219G0YwatL
+         rNmSQ+c/HYkbnsL7PcG6zQHrvD/MGFIEMkafAkKql9nN6JNVWlGfaUUsTWbYWn6o78gC
+         r6VQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741328724; x=1741933524;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DE4RgttB+ObeTGoRY2FNPNi0ZuWCnd0LsJTM8WKCSPE=;
+        b=lh+FsdFbGvNU2GGMqEnL2ER4ZEq2aEDbLnQKBobuO8d7MGC8Isf5pJfAcxHZHnKGEQ
+         v7L1Xw16LZXKqk4gzBWLlPsHyFyZsbszbRinDC3OhqgZjICspg/mkt+BqN+hxmeNUXoD
+         XB3Uj+I93aFSTHI5JKYr7udjsDeDsGVRwSJhl80esugeptuMT8SkgThsQIT9t0ZxH1cs
+         YDNbUORV+jmlHEIklKdM3IaG7hs9qVHbV7XTQOUV3ptYTpYnmhmnXLVHdNv34OUmZ9T7
+         3L9oJPjU2CQMKYt4MTE8VuNJmcTTSgTzgq1bSZ53iey1uxOHRsTWqjZbw93iQd6DgntP
+         73kA==
+X-Forwarded-Encrypted: i=1; AJvYcCUnLXNowdW4ulG4TIBS5Y5xqsam+l/2ghqrGy9lVH6BZCwwtPNViEDMTXtEyOthchC0P/q+1ayE@vger.kernel.org, AJvYcCVLU76/PVR+Gl9OouQ4ARF3P4NZjH+7DgtnXXE4hZQJ03Yb0RH4qv4LoNpwRjbmsr7Rzq9lNXM+Y2Q3PMJD@vger.kernel.org, AJvYcCVfgfRMqFuYN/Hs+nxerAjsbYWgj8QsRvq2kk7xjV+dECmvJAh/pPH4joZYGwbbTVNQ0mU5m59bJ8vH@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmNydzGMxm7JHhuzjHeUXooysgKS9HVlEU5+4RHlJu+ZelXHpO
+	PW6paWcrCRJ0GHG02fDMiPx5QfqVxEdd6ADPBd7/LtkmXo9cGD9t
+X-Gm-Gg: ASbGncsPgmqGiQLev/GSzOVaxO3SCCkIaoHv+2hG6TNwQ9Pn2k9FIg9vzHj9ALCTRzq
+	DYQnPmI/V279u5kLDzcJnbiroAqTksVAheSsoetPDKrcFSyNrMaIuUw7+GCG4ThlP4NRVeKl1st
+	JoDGh/SHsRSLEXFUEAKVUTv7PNs1FZmHuVP0EICHrRcE1qYt145omM5UzQPvRWBLMtCcGvjODZn
+	zG6U1xM+HSGEtrL0Abts/e9liG++mux9z0vBJ2/xRMRZaUd9bT3sMexNylCiId3GKq5T/g5+BbC
+	+mFRGZuaMsAerCA6BBF7
+X-Google-Smtp-Source: AGHT+IEvDoykmlC42OAIJsi/QLfT+x2fU7js07z1lL9fYKp71NWDuSXyrrw0QsqRokKnLcIZ4rtbYA==
+X-Received: by 2002:a05:620a:2787:b0:7c3:c199:c3b0 with SMTP id af79cd13be357-7c4e610578fmr376275485a.32.1741328724151;
+        Thu, 06 Mar 2025 22:25:24 -0800 (PST)
+Received: from localhost ([2001:da8:7001:11::cb])
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7c3e533a0e8sm200339585a.9.2025.03.06.22.25.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Mar 2025 22:25:23 -0800 (PST)
+Date: Fri, 7 Mar 2025 14:25:19 +0800
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>, 
+	Richard Cochran <richardcochran@gmail.com>
+Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+	sophgo@lists.linux.dev, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	Yixun Lan <dlan@gentoo.org>, Longbin Li <looong.bin@gmail.com>
+Subject: Re: [PATCH v3 0/2] clk: sophgo: add SG2044 clock controller support
+Message-ID: <gyww3drj2eez2bl3y5ikxy7mqpqpif7cktd3espqs4ve5srjpk@u6h5nzmtkmrb>
+References: <20250226232320.93791-1-inochiama@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,68 +77,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250307003956.22018-1-emil.s.tantilov@intel.com>
+In-Reply-To: <20250226232320.93791-1-inochiama@gmail.com>
 
-On Thu, Mar 06, 2025 at 04:39:56PM -0800, Emil Tantilov wrote:
-> Driver calls idpf_remove() from idpf_shutdown(), which can end up
-> calling idpf_remove() again when disabling SRIOV.
+On Thu, Feb 27, 2025 at 07:23:17AM +0800, Inochi Amaoto wrote:
+> The clock controller of SG2044 provides multiple clocks for various
+> IPs on the SoC, including PLL, mux, div and gates. As the PLL and
+> div have obvious changed and do not fit the framework of SG2042,
+> a new implement is provided to handle these.
+> 
+> Changed from v2:
+> 1. Applied Chen Wang' tag
+> 2. patch 2: fix author mail infomation
+> 
+> Changed from v1:
+> 1. patch 1: Applied Krzysztof's tag
+> 2. patch 2: Fix the build warning from bot.
+> 
+> Inochi Amaoto (2):
+>   dt-bindings: clock: sophgo: add clock controller for SG2044
+>   clk: sophgo: Add clock controller support for SG2044 SoC
+> 
+>  .../bindings/clock/sophgo,sg2044-clk.yaml     |   40 +
+>  drivers/clk/sophgo/Kconfig                    |   11 +
+>  drivers/clk/sophgo/Makefile                   |    1 +
+>  drivers/clk/sophgo/clk-sg2044.c               | 2271 +++++++++++++++++
+>  drivers/clk/sophgo/clk-sg2044.h               |   62 +
+>  include/dt-bindings/clock/sophgo,sg2044-clk.h |  170 ++
+>  6 files changed, 2555 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/sophgo,sg2044-clk.yaml
+>  create mode 100644 drivers/clk/sophgo/clk-sg2044.c
+>  create mode 100644 drivers/clk/sophgo/clk-sg2044.h
+>  create mode 100644 include/dt-bindings/clock/sophgo,sg2044-clk.h
+> 
+> --
+> 2.48.1
 > 
 
-The same is done in other drivers (ice, iavf). Why here it is a problem?
-I am asking because heaving one function to remove is pretty handy.
-Maybe the problem can be fixed by some changes in idpf_remove() instead?
+If there is no comments anymore, I will collect these patch and send
+a PR to Stephen at rc6 to see whether he will accept it.
 
-> echo 1 > /sys/class/net/<netif>/device/sriov_numvfs
-> reboot
-> 
-> BUG: kernel NULL pointer dereference, address: 0000000000000020
-> ...
-> RIP: 0010:idpf_remove+0x22/0x1f0 [idpf]
-> ...
-> ? idpf_remove+0x22/0x1f0 [idpf]
-> ? idpf_remove+0x1e4/0x1f0 [idpf]
-> pci_device_remove+0x3f/0xb0
-> device_release_driver_internal+0x19f/0x200
-> pci_stop_bus_device+0x6d/0x90
-> pci_stop_and_remove_bus_device+0x12/0x20
-> pci_iov_remove_virtfn+0xbe/0x120
-> sriov_disable+0x34/0xe0
-> idpf_sriov_configure+0x58/0x140 [idpf]
-> idpf_remove+0x1b9/0x1f0 [idpf]
-> idpf_shutdown+0x12/0x30 [idpf]
-> pci_device_shutdown+0x35/0x60
-> device_shutdown+0x156/0x200
-> ...
-> 
-> Replace the direct idpf_remove() call in idpf_shutdown() with
-> idpf_vc_core_deinit() and idpf_deinit_dflt_mbx(), which perform
-> the bulk of the cleanup, such as stopping the init task, freeing IRQs,
-> destroying the vports and freeing the mailbox.
-> 
-> Reported-by: Yuying Ma <yuma@redhat.com>
-> Fixes: e850efed5e15 ("idpf: add module register and probe functionality")
-> Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-> Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-> ---
->  drivers/net/ethernet/intel/idpf/idpf_main.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-> index b6c515d14cbf..bec4a02c5373 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-> @@ -87,7 +87,11 @@ static void idpf_remove(struct pci_dev *pdev)
->   */
->  static void idpf_shutdown(struct pci_dev *pdev)
->  {
-> -	idpf_remove(pdev);
-> +	struct idpf_adapter *adapter = pci_get_drvdata(pdev);
-> +
-> +	cancel_delayed_work_sync(&adapter->vc_event_task);
-> +	idpf_vc_core_deinit(adapter);
-> +	idpf_deinit_dflt_mbx(adapter);
->  
->  	if (system_state == SYSTEM_POWER_OFF)
->  		pci_set_power_state(pdev, PCI_D3hot);
-> -- 
-> 2.17.2
+Regards,
+Inochi
