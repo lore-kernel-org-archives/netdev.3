@@ -1,157 +1,166 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A590C20E70B;
-	Fri,  7 Mar 2025 10:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1240C20E020;
+	Fri,  7 Mar 2025 10:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741343373; cv=none; b=sxWyV3lULyCTUr851kTTENWXNC4kQ92D1HXozK6yAa49yyTn6GWNPbQCg/pHFMwGdQfwDQK3n0EBQlJbmPIYd/NKkIfETOP89IyBhgskmncbzKiX+jEXeqJaGMlDhjv84pXxeqfDwsrilhFrXHEIYxYH3CXhIzC4mP1WvTG+k3k=
+	t=1741343406; cv=none; b=lgxDvE0D4aNO1JF+SxpfoPyCTqfAgapXt5hj/Eq2IUtBgHWSETSltl5+s2n97tGRZe3517c1pP1AXJg/J6p5wyZzKYxdztvR8EnVVKzU2Z3jw52z3uFxDMsYQW/gYrxoenFjHO9GKkFULtLpZsNKPe9Zyk/KTAxvP+Hue7kZTCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741343373; c=relaxed/simple;
-	bh=tYxJZJX1pI5K8wuGH/dKzuf43ukR/Ftn3/DZih3kce0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FWUGVECo5P3aBFMN0R5PaqMKby22nEOZ085g37IjvvV8lCjh0mQIdFzF4yGZvsyp5eLf6eKsWKMRJYN+Ue2OGqGjsVjIjAJifKomYicxLgQiYheDm2Z/kkIhUdfdRePakVHNhxcA4mp2dUw9ntJGW7RjMl7I61o+QwlGLKlxX/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=B9wZSuE2; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1741343406; c=relaxed/simple;
+	bh=UnVbaZ0z+i1Prd0RQ1QzaMpKe/HDNcGioNg7U9KGbjs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=GQKQZRcOjUhdcqSQvFdcseSbrFCUi/w+qtEPZmExxaWlhvO1AqzxZ/uPa7v2b/sFEYZFPDG6a2D975nKCw0xUMFJZ7b3dESpVgf+ZV7YthxESoY5lqi4EdiMK6KLTN4VfOz7kEPr4tDX9pVoqj8Ozh+hd4QkxMX8/YTLv9GR7NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XpojHBoz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="B9wZSuE2"
-Received: by linux.microsoft.com (Postfix, from userid 1134)
-	id F38862038F2B; Fri,  7 Mar 2025 02:29:29 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com F38862038F2B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1741343370;
-	bh=ZLRe45/BtNn0ARC6EnETrMfwdNw8kA9gyMB/wm3koXM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B9wZSuE2kzmUxireaWKyvy5UKChwThSlRZubsF9gBfpmi53lZEe37WpfRI+SoXT65
-	 WPQ9BJpyQg4GNw46xfuqWdUVYdiElM4jiSt0b8UmTRcH8Z3Owpsi83CKdnFtWn9c8H
-	 cHefJlMZgampk2OjFnv61yfu4AI9gh8CJitpl4KM=
-Date: Fri, 7 Mar 2025 02:29:29 -0800
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-To: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	decui@microsoft.com, stephen@networkplumber.org, kys@microsoft.com,
-	paulros@microsoft.com, olaf@aepfle.de, vkuznets@redhat.com,
-	davem@davemloft.net, wei.liu@kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
-	longli@microsoft.com, ssengar@linux.microsoft.com,
-	linux-rdma@vger.kernel.org, daniel@iogearbox.net,
-	john.fastabend@gmail.com, bpf@vger.kernel.org, ast@kernel.org,
-	hawk@kernel.org, tglx@linutronix.de, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: mana: Support holes in device list reply msg
-Message-ID: <20250307102929.GA21981@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <1741211181-6990-1-git-send-email-haiyangz@microsoft.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XpojHBoz"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B2031C4CEEB;
+	Fri,  7 Mar 2025 10:30:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741343405;
+	bh=UnVbaZ0z+i1Prd0RQ1QzaMpKe/HDNcGioNg7U9KGbjs=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=XpojHBoz0o0bWbWAaQz7JuCFx9m4i68OdPiB2SqakhKoBxOYbf525veXDofiz/ixY
+	 0euQc5z5J8+KS9vUF+wFyA6iJ4Tg+gdKIqXn9CoCdUss4P0AWFXb52PAHc2PccxM/i
+	 6wgYVPXOMY/448hbT/0wmAmr0MzQen5ZYJsAWmNx/Ezx5eeuwxlU3XRTOFx4qew1Rw
+	 /X65d5sGFmvv5o/DIS9Y6wgSJGoqngpscg9grRWJnO+nYG8QAayYBQX4G5Lq+hOgjz
+	 AO2GwiAzloyTSK9IwPeYhzwPJ+FD2rn1q1uggyzwGLHZaGJyNFOpn2yx5FiB5du+tm
+	 iaxMcHEdKURGA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A56B5C19F32;
+	Fri,  7 Mar 2025 10:30:05 +0000 (UTC)
+From: Dimitri Fedrau via B4 Relay <devnull+dimitri.fedrau.liebherr.com@kernel.org>
+Date: Fri, 07 Mar 2025 11:30:03 +0100
+Subject: [PATCH net-next 3/3] net: phy: dp83822: Add support for changing
+ the MAC series termination
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1741211181-6990-1-git-send-email-haiyangz@microsoft.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250307-dp83822-mac-impedance-v1-3-bdd85a759b45@liebherr.com>
+References: <20250307-dp83822-mac-impedance-v1-0-bdd85a759b45@liebherr.com>
+In-Reply-To: <20250307-dp83822-mac-impedance-v1-0-bdd85a759b45@liebherr.com>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Dimitri Fedrau <dimitri.fedrau@liebherr.com>, 
+ Dimitri Fedrau <dima.fedrau@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1741343404; l=3131;
+ i=dimitri.fedrau@liebherr.com; s=20241202; h=from:subject:message-id;
+ bh=HGx3jZ3iRbaor8YQ4l/v589zbjDXDV4BuTqPK5lXQCQ=;
+ b=6xTTwI4vff9S3WRwowD+chdnuG01Uw6ZeqVP8ZOee20QLpuRK7P8h1jklsmWGlm5Kl1GKGjkZ
+ v1SNGmwcxQqCDVBOUb/DCtQ2SjlZx+kZ+aWVKyuZf/u5H7mi875X5AB
+X-Developer-Key: i=dimitri.fedrau@liebherr.com; a=ed25519;
+ pk=rT653x09JSQvotxIqQl4/XiI4AOiBZrdOGvxDUbb5m8=
+X-Endpoint-Received: by B4 Relay for dimitri.fedrau@liebherr.com/20241202
+ with auth_id=290
+X-Original-From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Reply-To: dimitri.fedrau@liebherr.com
 
-On Wed, Mar 05, 2025 at 01:46:21PM -0800, Haiyang Zhang wrote:
-> According to GDMA protocol, holes (zeros) are allowed at the beginning
-> or middle of the gdma_list_devices_resp message. The existing code
-> cannot properly handle this, and may miss some devices in the list.
-> 
-> To fix, scan the entire list until the num_of_devs are found, or until
-> the end of the list.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-> 
-> ---
->  drivers/net/ethernet/microsoft/mana/gdma_main.c | 16 ++++++++++++----
->  include/net/mana/gdma.h                         | 11 +++++++----
->  2 files changed, 19 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> index c15a5ef4674e..df3ab31974b1 100644
-> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> @@ -134,9 +134,10 @@ static int mana_gd_detect_devices(struct pci_dev *pdev)
->  	struct gdma_list_devices_resp resp = {};
->  	struct gdma_general_req req = {};
->  	struct gdma_dev_id dev;
-> -	u32 i, max_num_devs;
-> +	int found_dev = 0;
->  	u16 dev_type;
->  	int err;
-> +	u32 i;
->  
->  	mana_gd_init_req_hdr(&req.hdr, GDMA_LIST_DEVICES, sizeof(req),
->  			     sizeof(resp));
-> @@ -148,12 +149,19 @@ static int mana_gd_detect_devices(struct pci_dev *pdev)
->  		return err ? err : -EPROTO;
->  	}
->  
-> -	max_num_devs = min_t(u32, MAX_NUM_GDMA_DEVICES, resp.num_of_devs);
-> -
-> -	for (i = 0; i < max_num_devs; i++) {
-> +	for (i = 0; i < GDMA_DEV_LIST_SIZE &&
-> +		found_dev < resp.num_of_devs; i++) {
->  		dev = resp.devs[i];
->  		dev_type = dev.type;
->  
-> +		/* Skip empty devices */
-> +		if (dev.as_uint32 == 0)
-> +			continue;
-> +
-> +		found_dev++;
-> +		dev_info(gc->dev, "Got devidx:%u, type:%u, instance:%u\n", i,
-> +			 dev.type, dev.instance);
-> +
->  		/* HWC is already detected in mana_hwc_create_channel(). */
->  		if (dev_type == GDMA_DEVICE_HWC)
->  			continue;
-> diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
-> index 90f56656b572..62e9d7673862 100644
-> --- a/include/net/mana/gdma.h
-> +++ b/include/net/mana/gdma.h
-> @@ -408,8 +408,6 @@ struct gdma_context {
->  	struct gdma_dev		mana_ib;
->  };
->  
-> -#define MAX_NUM_GDMA_DEVICES	4
-> -
->  static inline bool mana_gd_is_mana(struct gdma_dev *gd)
->  {
->  	return gd->dev_id.type == GDMA_DEVICE_MANA;
-> @@ -556,11 +554,15 @@ enum {
->  #define GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECONFIG BIT(3)
->  #define GDMA_DRV_CAP_FLAG_1_VARIABLE_INDIRECTION_TABLE_SUPPORT BIT(5)
->  
-> +/* Driver can handle holes (zeros) in the device list */
-> +#define GDMA_DRV_CAP_FLAG_1_DEV_LIST_HOLES_SUP BIT(11)
-> +
->  #define GDMA_DRV_CAP_FLAGS1 \
->  	(GDMA_DRV_CAP_FLAG_1_EQ_SHARING_MULTI_VPORT | \
->  	 GDMA_DRV_CAP_FLAG_1_NAPI_WKDONE_FIX | \
->  	 GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECONFIG | \
-> -	 GDMA_DRV_CAP_FLAG_1_VARIABLE_INDIRECTION_TABLE_SUPPORT)
-> +	 GDMA_DRV_CAP_FLAG_1_VARIABLE_INDIRECTION_TABLE_SUPPORT | \
-> +	 GDMA_DRV_CAP_FLAG_1_DEV_LIST_HOLES_SUP)
->  
->  #define GDMA_DRV_CAP_FLAGS2 0
->  
-> @@ -621,11 +623,12 @@ struct gdma_query_max_resources_resp {
->  }; /* HW DATA */
->  
->  /* GDMA_LIST_DEVICES */
-> +#define GDMA_DEV_LIST_SIZE 64
->  struct gdma_list_devices_resp {
->  	struct gdma_resp_hdr hdr;
->  	u32 num_of_devs;
->  	u32 reserved;
-> -	struct gdma_dev_id devs[64];
-> +	struct gdma_dev_id devs[GDMA_DEV_LIST_SIZE];
->  }; /* HW DATA */
->  
->  /* GDMA_REGISTER_DEVICE */
+From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 
-Reviewed-by: Shradha Gupta <shradhagupta@microsoft.com>
-> -- 
-> 2.34.1
+The dp83822 provides the possibility to set the resistance value of the
+the MAC series termination. Modifying the resistance to an appropriate
+value can reduce signal reflections and therefore improve signal quality.
+
+Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+---
+ drivers/net/phy/dp83822.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+
+diff --git a/drivers/net/phy/dp83822.c b/drivers/net/phy/dp83822.c
+index 3662f3905d5ade8ad933608fcaeabb714a588418..bd8082cdc00e4abe165ee7c515b252eb32149d45 100644
+--- a/drivers/net/phy/dp83822.c
++++ b/drivers/net/phy/dp83822.c
+@@ -33,6 +33,7 @@
+ #define MII_DP83822_MLEDCR	0x25
+ #define MII_DP83822_LDCTRL	0x403
+ #define MII_DP83822_LEDCFG1	0x460
++#define MII_DP83822_IOCTRL	0x461
+ #define MII_DP83822_IOCTRL1	0x462
+ #define MII_DP83822_IOCTRL2	0x463
+ #define MII_DP83822_GENCFG	0x465
+@@ -118,6 +119,9 @@
+ #define DP83822_LEDCFG1_LED1_CTRL	GENMASK(11, 8)
+ #define DP83822_LEDCFG1_LED3_CTRL	GENMASK(7, 4)
+ 
++/* IOCTRL bits */
++#define DP83822_IOCTRL_MAC_IMPEDANCE_CTRL	GENMASK(4, 1)
++
+ /* IOCTRL1 bits */
+ #define DP83822_IOCTRL1_GPIO3_CTRL		GENMASK(10, 8)
+ #define DP83822_IOCTRL1_GPIO3_CTRL_LED3		BIT(0)
+@@ -202,6 +206,8 @@ struct dp83822_private {
+ 	u32 gpio2_clk_out;
+ 	bool led_pin_enable[DP83822_MAX_LED_PINS];
+ 	int tx_amplitude_100base_tx_index;
++	bool mac_series_termination_modify;
++	int mac_series_termination_index;
+ };
+ 
+ static int dp83822_config_wol(struct phy_device *phydev,
+@@ -533,6 +539,12 @@ static int dp83822_config_init(struct phy_device *phydev)
+ 			       FIELD_PREP(DP83822_100BASE_TX_LINE_DRIVER_SWING,
+ 					  dp83822->tx_amplitude_100base_tx_index));
+ 
++	if (dp83822->mac_series_termination_modify)
++		phy_modify_mmd(phydev, MDIO_MMD_VEND2, MII_DP83822_IOCTRL,
++			       DP83822_IOCTRL_MAC_IMPEDANCE_CTRL,
++			       FIELD_PREP(DP83822_IOCTRL_MAC_IMPEDANCE_CTRL,
++					  dp83822->mac_series_termination_index));
++
+ 	err = dp83822_config_init_leds(phydev);
+ 	if (err)
+ 		return err;
+@@ -736,6 +748,10 @@ static const u32 tx_amplitude_100base_tx_gain[] = {
+ 	93, 95, 97, 98, 100, 102, 103, 105,
+ };
+ 
++static const u32 mac_series_termination[] = {
++	99, 91, 84, 78, 73, 69, 65, 61, 58, 55, 53, 50, 48, 46, 44, 43,
++};
++
+ static int dp83822_of_init_leds(struct phy_device *phydev)
+ {
+ 	struct device_node *node = phydev->mdio.dev.of_node;
+@@ -853,6 +869,26 @@ static int dp83822_of_init(struct phy_device *phydev)
+ 		}
+ 	}
+ 
++	dp83822->mac_series_termination_index = -1;
++	ret = phy_get_mac_series_termination(phydev, dev, &val);
++	if (!ret) {
++		for (i = 0; i < ARRAY_SIZE(mac_series_termination); i++) {
++			if (mac_series_termination[i] == val) {
++				dp83822->mac_series_termination_index = i;
++				break;
++			}
++		}
++
++		if (dp83822->mac_series_termination_index < 0) {
++			phydev_err(phydev,
++				   "Invalid value for mac-series-termination-ohms property (%u)\n",
++				   val);
++			return -EINVAL;
++		}
++
++		dp83822->mac_series_termination_modify = true;
++	}
++
+ 	return dp83822_of_init_leds(phydev);
+ }
+ 
+
+-- 
+2.39.5
+
+
