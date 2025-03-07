@@ -1,110 +1,85 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339B1156F5D
-	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 13:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4B520E00D;
+	Fri,  7 Mar 2025 13:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741353961; cv=none; b=jCCVLc8nYUgi69VZjWzFxDSckcuzHl4sCIszBQaYwuhHjr2OD6I5Xu9vxhWAiChLJlWRuMjuXm4yAO2cdDg+qbB86S1iVkr6pj1K2l1tYsreAzch56y/MIdSn3iOKznmefgOrt66xS3ok1ap0YEin05kZSuVNHz2N1tzfzNjM4M=
+	t=1741353976; cv=none; b=OCMQbFCtdDwDNurTi7uehEVBN8PvgD2V8nu5yN9rV18597YsNA1kyTbYxLgwMsSXQNjBa8nIA2FlrC9W14JPEBl8b8DZ3jUDdtoRjYzRjeOpxn/3hip0lB7CpjqGsq14T3pZ5CToH4ILGBSOQHmGxkuP3w2g0LfZQnHWMmzbFNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741353961; c=relaxed/simple;
-	bh=QjFtvFBCOpKFhZFNQHlsjywHYpBnf+5fShh9rKHlSSM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=HW9CDpVXJdzvLgCViivmU3qwpWhHgZdIp+ORC3xvE808ew6bMNTRzQY1drMh1hQxVfO0fDJgGO+sd32HPn2sQToLMLfvXJZQ3ChlGiNVYA7BG2DvfTrnm0raKJ3MJNup4yRrGk3cM9WviX9NaCJq/SxAWFqzSW5bHXKvcuBlXWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vp97v42k; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1741353976; c=relaxed/simple;
+	bh=I1DgXJAugaRvo5oHawhY6fpJ1+WEdBWElcFLSX6rCKQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EjqtwteRoH824yDY8ZahDkPAALQIHfAnm9svTbPpDT6qgPt5ujJnowfKgPL8OFOvpZXW586dkMdGRyPSHVd8TRr4K/Ku7mJ9PP3u9nkuMrsWcDq08vUdXTTdPKHeEht7o7ZFCHbi98H04n22p2WmAU+TftrkfJ1DIah4P82wa48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=JGPn4/aV; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vp97v42k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741353958;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0XrKagdOJGjtdIULAsDlR0i/bowAYipZ2lwgi9ghdXg=;
-	b=Vp97v42kBblwrwSHcL00vwusvpwSxpWqxlxfwsztjwfnaoUEKaVs91Kt1qDrJU662axtDB
-	5KEPUFh3gM8PP5R9Y+F2uzvMq7RnfYJ8AC8lKy7bDh28Q/K2MaNaiEMes+mbyzh9qeI3N3
-	W7wPNgc0gZmF9829LqTdu4U+UYeL/P4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-290-QehtcVAxMqi6BFI5QwNntw-1; Fri,
- 07 Mar 2025 08:25:55 -0500
-X-MC-Unique: QehtcVAxMqi6BFI5QwNntw-1
-X-Mimecast-MFC-AGG-ID: QehtcVAxMqi6BFI5QwNntw_1741353953
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6C36419560BB;
-	Fri,  7 Mar 2025 13:25:53 +0000 (UTC)
-Received: from RHTRH0061144 (unknown [10.22.81.152])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8C6B91801747;
-	Fri,  7 Mar 2025 13:25:50 +0000 (UTC)
-From: Aaron Conole <aconole@redhat.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Matthieu Baerts <matttbe@kernel.org>,  davem@davemloft.net,
-  netdev@vger.kernel.org,  edumazet@google.com,  pabeni@redhat.com,
-  andrew+netdev@lunn.ch,  horms@kernel.org,  linux-doc@vger.kernel.org
-Subject: Re: [PATCH net-next] docs: netdev: add a note on selftest posting
-In-Reply-To: <20250306112522.0a2b38b6@kernel.org> (Jakub Kicinski's message of
-	"Thu, 6 Mar 2025 11:25:22 -0800")
-References: <20250306180533.1864075-1-kuba@kernel.org>
-	<ba1afa07-ea24-4ae5-8f65-fc2fc24f1a22@kernel.org>
-	<20250306112522.0a2b38b6@kernel.org>
-Date: Fri, 07 Mar 2025 08:25:48 -0500
-Message-ID: <f7tr0392crn.fsf@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="JGPn4/aV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=1yXC3Xb/MwcJsrS6HKxPIosX6qAp8S61W2EzWPVkdLs=; b=JGPn4/aVIXPXE7o/ElfV+U26Co
+	UETfL8Rcs2Wq+/+AgkMbywLJM/iE9EIiTTj34gqwImUs3UE1zT/XZeEMzktenZwlNEvt1J4v4hOUT
+	AzI2q/m+ksf9wvg9aGH026Z0T1LP+nR46y9kMHn7QV3nq3rygJ2JVVOOkIZ3WG7w9Lv8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tqXiA-0039Aa-GR; Fri, 07 Mar 2025 14:25:58 +0100
+Date: Fri, 7 Mar 2025 14:25:58 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jonas Karlman <jonas@kwiboo.se>
+Cc: Heiko Stuebner <heiko@sntech.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Yao Zi <ziyao@disroot.org>,
+	linux-rockchip@lists.infradead.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/4] arm64: dts: rockchip: Enable Ethernet controller on
+ Radxa E20C
+Message-ID: <c7fe0371-76bc-4cb4-ade8-e22112c1475d@lunn.ch>
+References: <20250306221402.1704196-1-jonas@kwiboo.se>
+ <20250306221402.1704196-5-jonas@kwiboo.se>
+ <e0e8fa5e-07a2-4f4f-80b9-ddb2332c27ea@lunn.ch>
+ <cbd6d3ee-8ad1-443f-9506-e28240ffb09e@kwiboo.se>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cbd6d3ee-8ad1-443f-9506-e28240ffb09e@kwiboo.se>
 
-Jakub Kicinski <kuba@kernel.org> writes:
+On Fri, Mar 07, 2025 at 10:16:08AM +0100, Jonas Karlman wrote:
+> Hi Andrew,
+> 
+> On 2025-03-06 23:49, Andrew Lunn wrote:
+> >> +&mdio1 {
+> >> +	rgmii_phy: ethernet-phy@1 {
+> >> +		compatible = "ethernet-phy-ieee802.3-c22";
+> > 
+> > The compatible is not needed. That is the default.
+> 
+> Interesting, however I rather be explicit to not cause any issue for
+> U-Boot or any other user of the device trees beside Linux kernel.
 
-> On Thu, 6 Mar 2025 19:22:49 +0100 Matthieu Baerts wrote:
->> > +Co-posting selftests
->> > +--------------------
->> > +
->> > +Selftests should be part of the same series as the code changes.
->> > +Specifically for fixes both code change and related test should go into
->> > +the same tree (the tests may lack a Fixes tag, which is expected).  
->> 
->> Regarding the Fixes tag in the tests, could we eventually suggest using
->> the same one as for the code change?
->> 
->> Sometimes, I do that to get the corresponding test backported as well,
->> if there are no conflicts. That's good to have an easy way to check if
->> something has been correctly fixed on stable versions as well.
->
-> Hm, that's probably up to the stable team to decide. My intuition
-> is to reserve Fixes tags for fixes, and add another tag if necessary.
+O.K.  But any system using Linux .dts files should be happy with no
+compatible, since that is how the majority are. Because PHYs have ID
+registers, generally there is no need for a compatible. The only time
+you do need a compatible is:
 
-+1
+* The ID registers are wrong
+* The ID registers cannot be read, chicken/egg problems the driver needs to solve
+* The Clause 22 address space is not implemented and you need to indicate C45
+  should be used to get the ID registers.
 
-You could consider something like "Tests: xxx", but the problem is that
-not every fix will perfectly map to a test, and as noted below, it is
-possible that the fixes don't merge cleanly.  I don't know if there
-would be a good tag that makes sense, really.
+None of this is specific to Linux.
 
-> The mention of the Fixes tag was primarily because of NIPA checks...
-> A bit of a wink and a nod since we try not to speak about NIPA checks.
->
->> The only thing is with the selftests written in Python or Bash: it is
->> easy to get a situation where there are no conflicts, but the
->> modification doesn't work, e.g. some functions or variables are not
->> available, etc. The stable team will then not notice that during their
->> build tests. Not sure if my suggestion is safe to recommend then.
-
-I also would note that I like the approach where the test cases detect
-if the condition is even possible and [SKIP] if it isn't.  The reason is
-that we can then run the latest and greatest copies of the selftest
-suite against even older kernels.  Reality, it is not always possible to
-do that either - so it probably needs to be case-by-case basis anyway.
-
-> Good point..
-
+	Andrew
