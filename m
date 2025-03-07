@@ -1,125 +1,98 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925EA4A21
-	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 00:42:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC4D748D;
+	Fri,  7 Mar 2025 00:43:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741308149; cv=none; b=fwfhaljM9ob+GInH+FSkOS9QRN/Egsw+qc2p7vxZcn2cii/6o7LqpXb4HaLgICr3icwuqZrNdFQUYoLRoVfsxzvcE4cnNIcgHV3LSJ6gyNQ+RKf1mXM1qzEjdPcdKJOUmmD1yPmz9OfQvJiPiMo/Fch9h2lfjR8pa5GPZgssaTE=
+	t=1741308189; cv=none; b=IID1f84WwTHX4QEKfkDEMMZ5FWt0ruHa+3wy60g8Ioke7b5xDnztqOLNTorfxa2juRM83uJ8/zUnUbymRGpkTuuHK/qscKyO4o6nVgm9VeEdSir3GBm4UgIcIsCaumSZcrWSLCepIf9wHsQy446jZ6T/KoP7S+/olFEQgzE/cf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741308149; c=relaxed/simple;
-	bh=caDuKs0AuG92X3nJAsyNu2lZqkO2rfULuHB5rDkSwD4=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=tc0VmpdLyVAY7EcSPzAIQ410+p8gVc0zP2ujflU68MnmEGawnQFuHa9i50GgUEhlLW5OlhSOKCoWUubcjWUAYhcg/MoE0masPgAzHPeEO6qCRzoMu0lk0IvJUy0hSa9k9CfoLr6W/IZ/3sm06n1elSFLAFvrlNFdwyZPl5e1+oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GdmCqcXf; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1741308189; c=relaxed/simple;
+	bh=YnM9xW+vVhuf9Yqt0rbNuyAYC11CGxiWbH8jc51gCVU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=i/6ck8/FMSdIEL9C0tg4hSqALF3oILLGXHJ527CDJ0GSPqDyK9MzfjY2de106xfJaIsarbqrKrRr1L3PaCVTnwbvOgFFJmLgMiMW3xKoh1z7+bOQz0pExg6ET8XQF/f2UC86lKxlUUCyzxNpJU4+2aRmOK3QIyj/gb+GP3v5kyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=vxXh7ZkI; arc=none smtp.client-ip=99.78.197.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GdmCqcXf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741308148; x=1772844148;
-  h=from:to:cc:subject:date:message-id;
-  bh=caDuKs0AuG92X3nJAsyNu2lZqkO2rfULuHB5rDkSwD4=;
-  b=GdmCqcXfIDQO/H9QtvkSEQ+N7V16mMYe5JI6JSwwiEgGTL3uI2OEth63
-   mVEktLAc1lnn+ZJ8Xt36r7N/uh7lQbAss/bipTM2ScZ/vDD3ksa5Xzy2F
-   oU1zRq4yBFWVBk61fDF71YPj1YVYueAlBhTK5hb/pLVrZPKFerqJ5O90Q
-   vKG0RuCSbnuCynCrQINoESb2eV/RmVxV+ugMxsPTAB3ac4GDK8o0MBRfw
-   Nl/A1L6EMncBryRyILb5nZ6N8LF2vjHWXy46KXWDm6xpAhBzDB5MC6/xz
-   5jA/3n2rK+Hw2wxC2dXGMO4JQn4SYmVW7853u/UhG8UL1TQy9OyAAZpM3
-   g==;
-X-CSE-ConnectionGUID: FX8LIWCKSIqCPsga9sJfHA==
-X-CSE-MsgGUID: aezeNPg1RxCca0vV+qoFXQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="53738396"
-X-IronPort-AV: E=Sophos;i="6.14,227,1736841600"; 
-   d="scan'208";a="53738396"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 16:42:27 -0800
-X-CSE-ConnectionGUID: 6SfQAwSfQseC6Y457pir9w==
-X-CSE-MsgGUID: Ox9RJNcLQHOnu5XjBxUFTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="119094386"
-Received: from estantil-desk.jf.intel.com ([10.166.241.24])
-  by orviesa010.jf.intel.com with ESMTP; 06 Mar 2025 16:42:27 -0800
-From: Emil Tantilov <emil.s.tantilov@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	decot@google.com,
-	willemb@google.com,
-	anthony.l.nguyen@intel.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	madhu.chittim@intel.com,
-	Aleksandr.Loktionov@intel.com,
-	yuma@redhat.com,
-	mschmidt@redhat.com
-Subject: [PATCH iwl-net] idpf: fix adapter NULL pointer dereference on reboot
-Date: Thu,  6 Mar 2025 16:39:56 -0800
-Message-Id: <20250307003956.22018-1-emil.s.tantilov@intel.com>
-X-Mailer: git-send-email 2.17.2
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="vxXh7ZkI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1741308187; x=1772844187;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ht85O26+YIFgXcgvETTRankb0ZIrczTlRdtMn2Kdoy8=;
+  b=vxXh7ZkIixcODnfUD4eMX9dgcqCGJmtZOJOvP/RJphgyt7ahGH2Jq6KG
+   Dbc48QRJs/M3+IO7k4NqCnyE0kgrN2oFoOTjqaSYvcHXGqL4ZFISYH2an
+   Ec+F13shtAI2WwoR6X5ejrPYT7wKWKxF7qihiOytfWxBraJRx0hl916CU
+   I=;
+X-IronPort-AV: E=Sophos;i="6.14,227,1736812800"; 
+   d="scan'208";a="179250745"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 00:43:06 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:37676]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.58.39:2525] with esmtp (Farcaster)
+ id 940c6036-4fc4-42e2-bcdc-6793e212f550; Fri, 7 Mar 2025 00:43:05 +0000 (UTC)
+X-Farcaster-Flow-ID: 940c6036-4fc4-42e2-bcdc-6793e212f550
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Fri, 7 Mar 2025 00:43:02 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.106.101.42) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Fri, 7 Mar 2025 00:42:59 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <kuba@kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<horms@kernel.org>, <linux-doc@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<pabeni@redhat.com>
+Subject: Re: [PATCH net-next] docs: netdev: add a note on selftest posting
+Date: Thu, 6 Mar 2025 16:41:41 -0800
+Message-ID: <20250307004251.55786-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250306180533.1864075-1-kuba@kernel.org>
+References: <20250306180533.1864075-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D044UWA002.ant.amazon.com (10.13.139.11) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-Driver calls idpf_remove() from idpf_shutdown(), which can end up
-calling idpf_remove() again when disabling SRIOV.
+From: Jakub Kicinski <kuba@kernel.org>
+Date: Thu,  6 Mar 2025 10:05:33 -0800
+> We haven't had much discussion on the list about this, but
+> a handful of people have been confused about rules on
+> posting selftests for fixes, lately. I tend to post fixes
+> with their respective selftests in the same series.
+> There are tradeoffs around size of the net tree and conflicts
+> but so far it hasn't been a major issue.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  Documentation/process/maintainer-netdev.rst | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/Documentation/process/maintainer-netdev.rst b/Documentation/process/maintainer-netdev.rst
+> index e497729525d5..1ac62dc3a66f 100644
+> --- a/Documentation/process/maintainer-netdev.rst
+> +++ b/Documentation/process/maintainer-netdev.rst
+> @@ -311,6 +311,14 @@ user space patches should form separate series (threads) when posted
+>  Posting as one thread is discouraged because it confuses patchwork
+>  (as of patchwork 2.2.2).
+>  
+> +Co-posting selftests
+> +--------------------
+> +
+> +Selftests should be part of the same series as the code changes.
+> +Specifically for fixes both code change and related test should go into
+> +the same tree (the tests may lack a Fixes tag, which is expected).
+> +Mixing code changes and test changes in a single commit is discouraged.
 
-echo 1 > /sys/class/net/<netif>/device/sriov_numvfs
-reboot
-
-BUG: kernel NULL pointer dereference, address: 0000000000000020
-...
-RIP: 0010:idpf_remove+0x22/0x1f0 [idpf]
-...
-? idpf_remove+0x22/0x1f0 [idpf]
-? idpf_remove+0x1e4/0x1f0 [idpf]
-pci_device_remove+0x3f/0xb0
-device_release_driver_internal+0x19f/0x200
-pci_stop_bus_device+0x6d/0x90
-pci_stop_and_remove_bus_device+0x12/0x20
-pci_iov_remove_virtfn+0xbe/0x120
-sriov_disable+0x34/0xe0
-idpf_sriov_configure+0x58/0x140 [idpf]
-idpf_remove+0x1b9/0x1f0 [idpf]
-idpf_shutdown+0x12/0x30 [idpf]
-pci_device_shutdown+0x35/0x60
-device_shutdown+0x156/0x200
-...
-
-Replace the direct idpf_remove() call in idpf_shutdown() with
-idpf_vc_core_deinit() and idpf_deinit_dflt_mbx(), which perform
-the bulk of the cleanup, such as stopping the init task, freeing IRQs,
-destroying the vports and freeing the mailbox.
-
-Reported-by: Yuying Ma <yuma@redhat.com>
-Fixes: e850efed5e15 ("idpf: add module register and probe functionality")
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
----
- drivers/net/ethernet/intel/idpf/idpf_main.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-index b6c515d14cbf..bec4a02c5373 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-@@ -87,7 +87,11 @@ static void idpf_remove(struct pci_dev *pdev)
-  */
- static void idpf_shutdown(struct pci_dev *pdev)
- {
--	idpf_remove(pdev);
-+	struct idpf_adapter *adapter = pci_get_drvdata(pdev);
-+
-+	cancel_delayed_work_sync(&adapter->vc_event_task);
-+	idpf_vc_core_deinit(adapter);
-+	idpf_deinit_dflt_mbx(adapter);
- 
- 	if (system_state == SYSTEM_POWER_OFF)
- 		pci_set_power_state(pdev, PCI_D3hot);
--- 
-2.17.2
-
+I guess an exception for the mixing is when a code change breaks a
+selftest, or is it fine for NIPA ?  (still other CI may complain though)
