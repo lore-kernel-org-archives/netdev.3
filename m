@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FB220968E
-	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 13:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0CD21A436;
+	Fri,  7 Mar 2025 13:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741352677; cv=none; b=a9ouPmC9h1933abjNeitNRgvoIGpjtvEWLwLee1lu3REEqMt2tkggWKN5xKR/8VTgUYDOl6JTuLTeyAeGPg33a5F/CRfRShG8YVyb/JJO0MKsP4IbGrzj9rNu/wTsmjmhfqQwSyNg76HEz8LVMH4AAc13reLbk6KH7JQQLvNng4=
+	t=1741353208; cv=none; b=Mwr4ygpw8G29xJJ9oZL2F1kwANpBL/PaZW3JUjt3Zx9SbufVIwLM32FlSb9ze5jVQkgfUWU1i7lr/gUG3tQfe+bW6+kZOLYK5mK4yOWHxntX6Ka+j16vaIemr5kAMUjFspb+PdwSn1qpzqw9Ve4H9r9h3mx9Yr38Nl7SagGOdJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741352677; c=relaxed/simple;
-	bh=zwdH5kjc0pp6WgGw7ooJgwfJ9cZrFa4Qa7IBZJ+FcWA=;
+	s=arc-20240116; t=1741353208; c=relaxed/simple;
+	bh=yse6HLeSO1NJH+GpzkEtzrWTo+s5HQhw1DSwCupPSwo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jBR1dwQLTHzppmOfyyQ2ByJzVrUUL/ysZo79/hWMXj1FhD8J5V/DNL164+n2M5aEckcc3xg90P37rLJzEUsTpPZimjpeCsvclqKFw7H/cp3b9yp99WS6VeWBO2LQbqSEHbNpWKmkuzgMJNMKBm8RqysKKMAfZsgrougJoXtAP5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HjLGnbC/; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=a2CgiMCg6CqX7mWV5+cwGrjVjDsasIClYUD7MIuAEMzvwQLlbuedaetSAI1PfF/O9XptjmnjQwD3CLTNmF/GWqVLMsYkgmhRdzPQI23aaBVKpaGYibWYjXfDSB0QXQFvubtu55nD/5PyCadMh/+BpWExGAkr3bP4MN2ySRFIBKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=timUFPbV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HjLGnbC/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3DBC4CED1;
-	Fri,  7 Mar 2025 13:04:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="timUFPbV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60496C4CEE5;
+	Fri,  7 Mar 2025 13:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741352677;
-	bh=zwdH5kjc0pp6WgGw7ooJgwfJ9cZrFa4Qa7IBZJ+FcWA=;
+	s=k20201202; t=1741353207;
+	bh=yse6HLeSO1NJH+GpzkEtzrWTo+s5HQhw1DSwCupPSwo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HjLGnbC/8F8MuJbDB9cMtyneOj8/xFDB5Lw4mKlw90yvx+CMgX06/HqaLQwYt+zVl
-	 tdfXKKw/g6LElRLiphrDjk6jlxqvhQLS9R5av4tZaI+/Csv/JtpIkIMmAVlyvlIG9W
-	 KPac9xnJuXcmFWHUaHG52h2AjeeN8qY3iFW2MXOSXJB+RNdK6vyrKwmjdXI2/60tMD
-	 /a7ip0nG5Pq+GzpfucyihJroBWuifVSDw/Q4EWjgQna2/0/EHqxlUdJo1JmQB4xkKu
-	 6LQrX1KzJXGyQIymX4292SVyifXZdxS6BA8ZdTuOH6HG0FKSpRxpStnpVttDWopWyg
-	 89hJnvxEGL8/w==
-Date: Fri, 7 Mar 2025 13:04:32 +0000
+	b=timUFPbVHfjS8X4Ql2wgr2962zbQix+9K3vOeOmF74aR5/u5/LqXa+qgSDhkfP2GE
+	 5eLvGr6GaQMJ/xxelR8nzvn8xjtQQ2SSwen/Ba0bDCiQDpUo0SkMOogEfnt4SQ/Qev
+	 +Ii6wx2Io6fSoRSf3NHEYthlH1auXyrXSpBxIWw076N4Me001dKKQJEezCqjpWVfCy
+	 AlnMfSbJeHiPPkMW+pBV/uI9NMdYwWtcojJLR7QPZIvY14GGGAxhDZLMVZug2i15Nk
+	 H9LBcq+TqAjx6s2D50eO7KVGuFRpda8kQtF9HcrMF2zEfhOrvAt9axqRs1ewCLRAuv
+	 rWScXl+b6qw0w==
+Date: Fri, 7 Mar 2025 13:13:22 +0000
 From: Simon Horman <horms@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+To: Breno Leitao <leitao@debian.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Dan Carpenter <dan.carpenter@linaro.org>
-Subject: Re: [PATCH net-next] net: airoha: Fix dev->dsa_ptr check in
- airoha_get_dsa_tag()
-Message-ID: <20250307130432.GF3666230@kernel.org>
-References: <20250306-airoha-flowtable-fixes-v1-1-68d3c1296cdd@kernel.org>
+	Amerigo Wang <amwang@redhat.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH net v2] netpoll: hold rcu read lock in
+ __netpoll_send_skb()
+Message-ID: <20250307131322.GG3666230@kernel.org>
+References: <20250306-netpoll_rcu_v2-v2-1-bc4f5c51742a@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,21 +46,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250306-airoha-flowtable-fixes-v1-1-68d3c1296cdd@kernel.org>
+In-Reply-To: <20250306-netpoll_rcu_v2-v2-1-bc4f5c51742a@debian.org>
 
-On Thu, Mar 06, 2025 at 11:52:20AM +0100, Lorenzo Bianconi wrote:
-> Fix the following warning reported by Smatch static checker in
-> airoha_get_dsa_tag routine:
+On Thu, Mar 06, 2025 at 05:16:18AM -0800, Breno Leitao wrote:
+> The function __netpoll_send_skb() is being invoked without holding the
+> RCU read lock. This oversight triggers a warning message when
+> CONFIG_PROVE_RCU_LIST is enabled:
 > 
-> drivers/net/ethernet/airoha/airoha_eth.c:1722 airoha_get_dsa_tag()
-> warn: 'dp' isn't an ERR_PTR
+> 	net/core/netpoll.c:330 suspicious rcu_dereference_check() usage!
 > 
-> dev->dsa_ptr can't be set to an error pointer, it can just be NULL.
-> Remove this check since it is already performed in netdev_uses_dsa().
+> 	 netpoll_send_skb
+> 	 netpoll_send_udp
+> 	 write_ext_msg
+> 	 console_flush_all
+> 	 console_unlock
+> 	 vprintk_emit
 > 
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/netdev/Z8l3E0lGOcrel07C@lore-desk/T/#m54adc113fcdd8c5e6c5f65ffd60d8e8b1d483d90
-> Fixes: af3cf757d5c9 ("net: airoha: Move DSA tag in DMA descriptor")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> To prevent npinfo from disappearing unexpectedly, ensure that
+> __netpoll_send_skb() is protected with the RCU read lock.
+> 
+> Fixes: 2899656b494dcd1 ("netpoll: take rcu_read_lock_bh() in netpoll_send_skb_on_dev()")
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+> Changes in v2:
+> - Use rcu_read_lock() instead of guard() as normal people do (Jakub).
+> - Link to v1: https://lore.kernel.org/r/20250303-netpoll_rcu_v2-v1-1-6b34d8a01fa2@debian.org
+
+Nice that we can be normal :)
 
 Reviewed-by: Simon Horman <horms@kernel.org>
+
+> ---
+>  net/core/netpoll.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+> index 62b4041aae1ae..0ab722d95a2df 100644
+> --- a/net/core/netpoll.c
+> +++ b/net/core/netpoll.c
+> @@ -319,6 +319,7 @@ static int netpoll_owner_active(struct net_device *dev)
+>  static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+>  {
+>  	netdev_tx_t status = NETDEV_TX_BUSY;
+> +	netdev_tx_t ret = NET_XMIT_DROP;
+>  	struct net_device *dev;
+>  	unsigned long tries;
+>  	/* It is up to the caller to keep npinfo alive. */
+> @@ -327,11 +328,12 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+>  	lockdep_assert_irqs_disabled();
+>  
+>  	dev = np->dev;
+> +	rcu_read_lock();
+>  	npinfo = rcu_dereference_bh(dev->npinfo);
+>  
+>  	if (!npinfo || !netif_running(dev) || !netif_device_present(dev)) {
+>  		dev_kfree_skb_irq(skb);
+> -		return NET_XMIT_DROP;
+
+nit: I would have set ret here rather than as part of it's declaration,
+     to avoid it being set twice in the non-error case.
+
+     But as this function is doing quite a lot, and moreover the compiler
+     probably has it's own ideas, I don' think this is a big deal.
+
+> +		goto out;
+>  	}
+>  
+>  	/* don't get messages out of order, and no recursion */
+> @@ -370,7 +372,10 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+>  		skb_queue_tail(&npinfo->txq, skb);
+>  		schedule_delayed_work(&npinfo->tx_work,0);
+>  	}
+> -	return NETDEV_TX_OK;
+> +	ret = NETDEV_TX_OK;
+> +out:
+> +	rcu_read_unlock();
+> +	return ret;
+>  }
+>  
+>  netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+> 
+> ---
+> base-commit: 848e076317446f9c663771ddec142d7c2eb4cb43
+> change-id: 20250303-netpoll_rcu_v2-fed72eb0cb83
+> 
+> Best regards,
+> -- 
+> Breno Leitao <leitao@debian.org>
+> 
