@@ -1,58 +1,60 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27135145FE8
-	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 01:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BFE1519B4
+	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 01:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741309942; cv=none; b=Us1FTuxJECpakVm9+73iBFmn3yrIocavJ8bWmB7RPBvfcAa7yte5/CZo6MfJtJFlrT02ceRBjx4s8SEC2AsOITdnYVrtXc/sKogRXVJdqfJ9C/VvENbAiC3TBZpjydbdtMsu37aQtnYKXMSrfakTf7Yoh1xc3zD2Cba1ck8uyk0=
+	t=1741309944; cv=none; b=rS240Zew49yHRBtZoQc0yb+aSfqTBGE+6UpBdgK7PPwlsBNGz1W/7M8pCxe3NoKM0jMviv7F380cq4oRxIsSF3Th1RlL9W6dI1BhgAJjIaCN7nXkbY6uf3q26xuxGhOO0OXdbr9Yxfk/C8Nc8XWTQ3+auN6N29t7l0+VtUzwNT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741309942; c=relaxed/simple;
-	bh=noxXsObqGLx6uTUSZLiZR0FGe//Cjvt6Ch7d2Kqusko=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ISkDss552rZGb4+FRTdp2lWCNTSDi0HNjw0YlqUe+tfLYOdi9MW19C+FwiyCmkR5CGJmLQXRv0anUL4c2tzQ1QPlNrhm71TAbyW8wrJMRF5/GXvKX92Drwa3tF7O7vRS0Q2N6ni0b7TydYMsg398bR1es7FKrbBruoo/SQ9looc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=QRVKbRZk; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1741309944; c=relaxed/simple;
+	bh=oZEKZBNyzTFUQoyDm8VLIwp8l+Uss/+aDmlef+L4zKU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YLAUgl6ao8A4wn/eFx772TUuoQ9iOfIVV3CvaFRdvM2fgg9H/akyIL8SZTjEFsgxUTn7cxVuIyV9nTMQTPhkwR1CpUiqst0r18trx+tv699233d7wlJ3cd76CcIwbbMUIyTAhLuGwinb6FcifhgnvBUCfFlEaYVPd3hA670BjnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=WTNNMaIF; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="QRVKbRZk"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22349dc31bcso24124485ad.3
-        for <netdev@vger.kernel.org>; Thu, 06 Mar 2025 17:12:20 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="WTNNMaIF"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-22409077c06so28799925ad.1
+        for <netdev@vger.kernel.org>; Thu, 06 Mar 2025 17:12:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1741309940; x=1741914740; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UIXlNf3Ao0dX27Zd+tqTBKwgBqBES5LVT2ggjMpbFJ0=;
-        b=QRVKbRZkY0bnpo2dfVC8SNaQrobQ9KTQYhfPEQNSTv55QzV/nh+uaGY6AHGVB+TBB1
-         /e0Mm1tDmiXiIFAkQQrfx+5tarTTI2Oi7sHYgYQ0jvK4eSch1z8a3y/ZgIcHoLAKpwdF
-         YcZesMYxHNYvSEkyT5VJXbeiw4P/Lb9yhUHvo=
+        d=fastly.com; s=google; t=1741309942; x=1741914742; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/tghgwiJFbKnAoocPVNdoGW6mlhutsLEBZ7NkypKcYI=;
+        b=WTNNMaIFE5GC+RUz4X1R9wv8lNDLuFLbWsKgUiexVTUDNp5nKW5IdIZNElrh0VkxcU
+         FhKRJC0Z4HlHkG6WAUiqT8Vq3mc3hpXZGWLd9qlef2F+3gr+A3vViaJ/VbaGcxaxGV12
+         VU2PXGy/IdcVhQsaf8pBA95yYojUsZypg30jg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741309940; x=1741914740;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UIXlNf3Ao0dX27Zd+tqTBKwgBqBES5LVT2ggjMpbFJ0=;
-        b=G3dI8SCatE/KoAD/AomwlzX3okbDeFPXb2Ar0UB9Srnswm5Kh6CqKCIEJawshqA+Yg
-         DHXUvTVTYRbwGfbj0iKIsQkzS2VJEN89rcRWQsLcKPB9k6mSfb6tcJG47uWR5m12Ow7d
-         PId5C8CODeI4+RjIN3YsMb8+pFU2wXi4TFyt2KjWdqxb1qwY27RhC8Gehso1wOUMCYuK
-         cFTQZIQXbWY1cMEmqSBLDN9klnOt4M/klbbzW43taNMPr2WmiJ1he9AnGOh4NmN+S6qw
-         aAjD4mmHmSwjB3y/M+mYMv3MzumHVg5wsJ73S6Vz4wLxqJRq5TVi59w0esDXWc6YxjOS
-         RtBg==
-X-Gm-Message-State: AOJu0YwtGnTNkbzqn0dUKKbhFUhYxhsbGEqELoGc8hoAnwFa98ZXfKN/
-	PHXs+jLsdRGUOLSKp9uD748X7ezIp1gtULScjg3IJ05lqB7zShyN/354/7EXfHIgoYrxIUBxGMI
-	MgCQsaUlUAaLzNfLAwtOAg0qM+ip8VAshGstgS5gyu3h5dHR0L+2fmyRTKAph1optc3Zma9sspu
-	UBztbQOfimtyve5UHGKo+PuD7fYXWy+wQN3fO+Qg==
-X-Gm-Gg: ASbGnctA32UfTKAPMXUN/0C1pLf0NWYoARL8UXNi4/k1KPNYMUJIeifc2jVjoVePEi9
-	viFnchOkmG87TqyDVaJPj9sd1OdLlB3937yPVZthVD/qisH9iV+SRQ/UR7bsHSUpN+EpWNuCyE+
-	sg9Lg2E9ku/r/+/PhuK5hbfYckVomL7AEcObcd3swNrNV4vO9tBxVSxmOsBUdAQd2EQVEpe1qCf
-	7izv9Knt5tvP5E3Kk+kgL65s02BRRfokYNZgGWc1TtO3WUafjbKuorBkteu9NysR7m5LLCCXEUr
-	4bb2E3Ud3yYlcyDUSNdxOLuGSZvkVwHCoEEkLw3lJ5oT7xiNN0Vp
-X-Google-Smtp-Source: AGHT+IEkIz0d5WvMyob5VRa9MUqsKd4YXiS8Ojf2pCtLAEyE/o6Tcrsfiy2u8rS8941jEO1VbdZEHw==
-X-Received: by 2002:a17:903:234f:b0:224:1eaa:5de1 with SMTP id d9443c01a7336-22428886900mr18124205ad.18.1741309939895;
-        Thu, 06 Mar 2025 17:12:19 -0800 (PST)
+        d=1e100.net; s=20230601; t=1741309942; x=1741914742;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/tghgwiJFbKnAoocPVNdoGW6mlhutsLEBZ7NkypKcYI=;
+        b=h6WrxpH2tix2p6Ar8xwcobcaK/6guLNpSWbXjmDxQTv2iu4XCQyF9BJhMJFdwexmRt
+         pfP90vF3gLCx+jqqemtdBzb0jbEML6Q8r5qPbsA07yyKRm1z902wCyu6ouqfL9yQqDHW
+         RstgRKX+lEuhTfw1cFsaG7dmNCmU+GwQ270C7nFkTwpyg0EYqwBrRsdEfYyFGrGICkrT
+         9RvJr6EGFN7tEVc0+f8gMOVK99K2Fq1kA+vuU6IEgpYpHnkPDefUoGDEbOMh3Tgu7879
+         prF0O8XdRUiLLfHBF0AktVj7nNWrOt1f6XlFwJOwMH8IxIZ8vXuZiceSSRdOP6+cgNVA
+         pCfQ==
+X-Gm-Message-State: AOJu0YwSZL20lQSEIX3P4SjvNT7DjGBgJKLGe20eD4virWj58imiO9oO
+	k4lzQ48FPWjoUAFb5oAcB6xFPhafvL7FvUrm/kEucNuusuz3ZQ2FLfxeYYFTKg5CTdYTx52o6oW
+	GdIWog0jMadNL/9OF5F3wZ1zgO0y49RHCpjXsVqWRBqnXVyxYWUzGx2MqFXim6qNEdalyNwjmHr
+	gfPb1UILSmB0y4HDUO0a+MfH7nfApsnl9zRblOgQ==
+X-Gm-Gg: ASbGncvcjEGI/zNZY0uDv2TKiole5Kab43bWCSnfk5QA0I/esqF8rdfqvS1nS3Ovcei
+	cRQmgiF3ZVKfHnJ4xQxJAQ4cM5386TykzrnMfqfd0pE/amRpVfnH5Y98zKmM86IH4HxEhRF88bW
+	sqh1agz04Z0yOtF6YQibO/Cxz0ZFb4irNCQ+JDK7loWWX2kSjgcaAZdUJlA1fAX3oK9qOcSEi4Q
+	MB879e+n2dlfctSq0cTRigY2/jIJenYxvKocsceE+xangOk2MpTi/qWt5FkUTMqmSLRFS87/vEg
+	oHAreAJBIGqIpJI2TG8x8KunIMcixk/za7+NpdgSfzilnfwHtHXc
+X-Google-Smtp-Source: AGHT+IGKhqwe2JpllICnS8YtflWUc4MgBo06dsvavfBwoHtdqy1vxCbTRe3YRbrAw0m3enhzIMPo2g==
+X-Received: by 2002:a17:902:ce0a:b0:224:584:6f05 with SMTP id d9443c01a7336-22428bdecdemr26052505ad.41.1741309941695;
+        Thu, 06 Mar 2025 17:12:21 -0800 (PST)
 Received: from localhost.localdomain ([2620:11a:c019:0:65e:3115:2f58:c5fd])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22410abc816sm18749685ad.258.2025.03.06.17.12.17
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22410abc816sm18749685ad.258.2025.03.06.17.12.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Mar 2025 17:12:18 -0800 (PST)
+        Thu, 06 Mar 2025 17:12:21 -0800 (PST)
 From: Joe Damato <jdamato@fastly.com>
 To: netdev@vger.kernel.org
 Cc: mkarsten@uwaterloo.ca,
@@ -63,22 +65,19 @@ Cc: mkarsten@uwaterloo.ca,
 	mst@redhat.com,
 	leiyang@redhat.com,
 	Joe Damato <jdamato@fastly.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	bpf@vger.kernel.org (open list:XDP (eXpress Data Path):Keyword:(?:\b|_)xdp(?:\b|_)),
-	Daniel Borkmann <daniel@iogearbox.net>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	linux-kernel@vger.kernel.org (open list),
 	Paolo Abeni <pabeni@redhat.com>,
-	virtualization@lists.linux.dev (open list:VIRTIO CORE AND NET DRIVERS)
-Subject: [PATCH net-next v6 0/4] virtio-net: Link queues to NAPIs
-Date: Fri,  7 Mar 2025 01:12:08 +0000
-Message-ID: <20250307011215.266806-1-jdamato@fastly.com>
+	virtualization@lists.linux.dev (open list:VIRTIO CORE AND NET DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net-next v6 1/4] virtio-net: Refactor napi_enable paths
+Date: Fri,  7 Mar 2025 01:12:09 +0000
+Message-ID: <20250307011215.266806-2-jdamato@fastly.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250307011215.266806-1-jdamato@fastly.com>
+References: <20250307011215.266806-1-jdamato@fastly.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,109 +86,123 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Greetings:
+Refactor virtnet_napi_enable and virtnet_napi_tx_enable to take a struct
+receive_queue. Create a helper, virtnet_napi_do_enable, which contains
+the logic to enable a NAPI.
 
-Welcome to v6. Only patch updated is patch 3. See changelog below. 
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+---
+ drivers/net/virtio_net.c | 37 +++++++++++++++++++++----------------
+ 1 file changed, 21 insertions(+), 16 deletions(-)
 
-Jakub recently commented [1] that I should not hold this series on
-virtio-net linking queues to NAPIs behind other important work that is
-on-going and suggested I re-spin, so here we are :)
-
-As per the discussion on the v3 [2], now both RX and TX NAPIs use the
-API to link queues to NAPIs. Since TX-only NAPIs don't have a NAPI ID,
-commit 6597e8d35851 ("netdev-genl: Elide napi_id when not present") now
-correctly elides the TX-only NAPIs (instead of printing zero) when the
-queues and NAPIs are linked.
-
-As per the discussion on the v4 [3], patch 3 has been refactored to hold
-RTNL only in the specific locations which need it as Jason requested.
-
-As per the discussion on the v5 [4], patch 3 now leaves refill_work
-as-is and does not use the API to unlink and relink queues and NAPIs. A
-comment has been left as suggested by Jakub [5] for future work.
-
-See the commit message of patch 3 for an example of how to get the NAPI
-to queue mapping information.
-
-See the commit message of patch 4 for an example of how NAPI IDs are
-persistent despite queue count changes.
-
-Thanks,
-Joe
-
-[1]: https://lore.kernel.org/netdev/20250221142650.3c74dcac@kernel.org/
-[2]: https://lore.kernel.org/netdev/20250127142400.24eca319@kernel.org/
-[3]: https://lore.kernel.org/netdev/CACGkMEv=ejJnOWDnAu7eULLvrqXjkMkTL4cbi-uCTUhCpKN_GA@mail.gmail.com/
-[4]: https://lore.kernel.org/lkml/Z8X15hxz8t-vXpPU@LQ3V64L9R2/
-[5]: https://lore.kernel.org/lkml/20250303160355.5f8d82d8@kernel.org/
-
-v6:
-  - Patch 3 has been updated to avoid using the queue linking API from
-    refill_work and a comment has been added to instruct future
-    work on the code.
-
-v5: https://lore.kernel.org/lkml/20250227185017.206785-1-jdamato@fastly.com/
-  - Patch 1 added Acked-by's from Michael and Jason. Added Tested-by
-    from Lei. No functional changes.
-  - Patch 2 added Acked-by's from Michael and Jason. Added Tested-by
-    from Lei. No functional changes.
-  - Patch 3:
-    - Refactored as Jason requested, eliminating the
-      virtnet_queue_set_napi helper entirely, and explicitly holding
-      RTNL in the 3 locations where needed (refill_work, freeze, and
-      restore).
-    - Commit message updated to outline the known paths at the time the
-      commit was written.
-  - Patch 4 added Acked-by from Michael. Added Tested-by from Lei. No
-    functional changes.
-
-v4: https://lore.kernel.org/lkml/20250225020455.212895-1-jdamato@fastly.com/
-  - Dropped Jakub's patch (previously patch 1).
-  - Significant refactor from v3 affecting patches 1-3.
-  - Patch 4 added tags from Jason and Gerhard.
-
-rfcv3: https://lore.kernel.org/netdev/20250121191047.269844-1-jdamato@fastly.com/
-  - patch 3:
-    - Removed the xdp checks completely, as Gerhard Engleder pointed
-      out, they are likely not necessary.
-
-  - patch 4:
-    - Added Xuan Zhuo's Reviewed-by.
-
-v2: https://lore.kernel.org/netdev/20250116055302.14308-1-jdamato@fastly.com/
-  - patch 1:
-    - New in the v2 from Jakub.
-
-  - patch 2:
-    - Previously patch 1, unchanged from v1.
-    - Added Gerhard Engleder's Reviewed-by.
-    - Added Lei Yang's Tested-by.
-
-  - patch 3:
-    - Introduced virtnet_napi_disable to eliminate duplicated code
-      in virtnet_xdp_set, virtnet_rx_pause, virtnet_disable_queue_pair,
-      refill_work as suggested by Jason Wang.
-    - As a result of the above refactor, dropped Reviewed-by and
-      Tested-by from patch 3.
-
-  - patch 4:
-    - New in v2. Adds persistent NAPI configuration. See commit message
-      for more details.
-
-v1: https://lore.kernel.org/netdev/20250110202605.429475-1-jdamato@fastly.com/
-
-
-Joe Damato (4):
-  virtio-net: Refactor napi_enable paths
-  virtio-net: Refactor napi_disable paths
-  virtio-net: Map NAPIs to queues
-  virtio_net: Use persistent NAPI config
-
- drivers/net/virtio_net.c | 101 ++++++++++++++++++++++++++++-----------
- 1 file changed, 74 insertions(+), 27 deletions(-)
-
-
-base-commit: 8e0e8bef484160ac01ea7bcc3122cc1f0405c982
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index ac26a6201c44..133b004c7a9a 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -2807,7 +2807,8 @@ static void skb_recv_done(struct virtqueue *rvq)
+ 	virtqueue_napi_schedule(&rq->napi, rvq);
+ }
+ 
+-static void virtnet_napi_enable(struct virtqueue *vq, struct napi_struct *napi)
++static void virtnet_napi_do_enable(struct virtqueue *vq,
++				   struct napi_struct *napi)
+ {
+ 	napi_enable(napi);
+ 
+@@ -2820,10 +2821,16 @@ static void virtnet_napi_enable(struct virtqueue *vq, struct napi_struct *napi)
+ 	local_bh_enable();
+ }
+ 
+-static void virtnet_napi_tx_enable(struct virtnet_info *vi,
+-				   struct virtqueue *vq,
+-				   struct napi_struct *napi)
++static void virtnet_napi_enable(struct receive_queue *rq)
+ {
++	virtnet_napi_do_enable(rq->vq, &rq->napi);
++}
++
++static void virtnet_napi_tx_enable(struct send_queue *sq)
++{
++	struct virtnet_info *vi = sq->vq->vdev->priv;
++	struct napi_struct *napi = &sq->napi;
++
+ 	if (!napi->weight)
+ 		return;
+ 
+@@ -2835,7 +2842,7 @@ static void virtnet_napi_tx_enable(struct virtnet_info *vi,
+ 		return;
+ 	}
+ 
+-	return virtnet_napi_enable(vq, napi);
++	virtnet_napi_do_enable(sq->vq, napi);
+ }
+ 
+ static void virtnet_napi_tx_disable(struct napi_struct *napi)
+@@ -2856,7 +2863,7 @@ static void refill_work(struct work_struct *work)
+ 
+ 		napi_disable(&rq->napi);
+ 		still_empty = !try_fill_recv(vi, rq, GFP_KERNEL);
+-		virtnet_napi_enable(rq->vq, &rq->napi);
++		virtnet_napi_enable(rq);
+ 
+ 		/* In theory, this can happen: if we don't get any buffers in
+ 		 * we will *never* try to fill again.
+@@ -3073,8 +3080,8 @@ static int virtnet_enable_queue_pair(struct virtnet_info *vi, int qp_index)
+ 	if (err < 0)
+ 		goto err_xdp_reg_mem_model;
+ 
+-	virtnet_napi_enable(vi->rq[qp_index].vq, &vi->rq[qp_index].napi);
+-	virtnet_napi_tx_enable(vi, vi->sq[qp_index].vq, &vi->sq[qp_index].napi);
++	virtnet_napi_enable(&vi->rq[qp_index]);
++	virtnet_napi_tx_enable(&vi->sq[qp_index]);
+ 
+ 	return 0;
+ 
+@@ -3339,7 +3346,7 @@ static void virtnet_rx_resume(struct virtnet_info *vi, struct receive_queue *rq)
+ 		schedule_delayed_work(&vi->refill, 0);
+ 
+ 	if (running)
+-		virtnet_napi_enable(rq->vq, &rq->napi);
++		virtnet_napi_enable(rq);
+ }
+ 
+ static int virtnet_rx_resize(struct virtnet_info *vi,
+@@ -3402,7 +3409,7 @@ static void virtnet_tx_resume(struct virtnet_info *vi, struct send_queue *sq)
+ 	__netif_tx_unlock_bh(txq);
+ 
+ 	if (running)
+-		virtnet_napi_tx_enable(vi, sq->vq, &sq->napi);
++		virtnet_napi_tx_enable(sq);
+ }
+ 
+ static int virtnet_tx_resize(struct virtnet_info *vi, struct send_queue *sq,
+@@ -5983,9 +5990,8 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
+ 		if (old_prog)
+ 			bpf_prog_put(old_prog);
+ 		if (netif_running(dev)) {
+-			virtnet_napi_enable(vi->rq[i].vq, &vi->rq[i].napi);
+-			virtnet_napi_tx_enable(vi, vi->sq[i].vq,
+-					       &vi->sq[i].napi);
++			virtnet_napi_enable(&vi->rq[i]);
++			virtnet_napi_tx_enable(&vi->sq[i]);
+ 		}
+ 	}
+ 
+@@ -6000,9 +6006,8 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
+ 
+ 	if (netif_running(dev)) {
+ 		for (i = 0; i < vi->max_queue_pairs; i++) {
+-			virtnet_napi_enable(vi->rq[i].vq, &vi->rq[i].napi);
+-			virtnet_napi_tx_enable(vi, vi->sq[i].vq,
+-					       &vi->sq[i].napi);
++			virtnet_napi_enable(&vi->rq[i]);
++			virtnet_napi_tx_enable(&vi->sq[i]);
+ 		}
+ 	}
+ 	if (prog)
 -- 
 2.45.2
 
