@@ -1,78 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03571190679
-	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 01:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6425213D89D;
+	Fri,  7 Mar 2025 01:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741309202; cv=none; b=jreBVEhrF7jP3ZFmoIzR1KVDMzbn05mU7OWTBjYTqpoXjRi/ntZLVttNJ+43UBMp07EzsfX/PGq94p1Xnl3VEBl6R15BnA+LiPaIcsbbOgIGE93THaGDXd76rPSFojYJuRoViBDckgzlJB7ZAv2OjXIkR5liTbxEHZRO8ia14fg=
+	t=1741309931; cv=none; b=Nv5MSQs1oKW433uzyZi+jwcbxK8b29U85LbflSJjT+E/Dki/MqCjhinCZzWNWT2m+1nDjyue2MmGGd1TNUZv3A8PRWKP17XmWN/4pOZmBbmHoOP4jF6GBBJ+aI+jjqiAueYm2GCBWPk4NYt9cucq5xYKm7I2HzNsjwqo1VP4aMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741309202; c=relaxed/simple;
-	bh=C7n1sQ9spG0GmsQ8Yj5JaIBoVUh7s4FCjKwZJlcABvc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pBRe1z0mP8CZxCmP9HGqizlLwnJ8qLei7ZbUT/nMPN0Zt4CGJ4/0jsn/b+adYEpoN/tijNhvC162j7fGHCsNG8ebVyWkxuYbfvTKvVYyfIYP4KsotgWCX0Fap1sr29kog1ch3xJHj6r/ZRZDFre1QPhoZi9gIUbMUyJVe4F4O4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oG5KRHUP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741309931; c=relaxed/simple;
+	bh=iAkkgLRwGib7vQ+FD30A942Pd09V5NCtDsEeMhpAUqM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SvQe3JOIPxxJ+AWIHFfwMObQzuCCK1FVRO1icHmXpRsTPpxue2PdCKGjdYGwhswiTwmr8M2KEdLAxeC+5inW7/IJkUfgujKiWV2/JgcVChBcs1NPLajwH3t3OqnF7AiWqES2NUdSe8xJwhVD1apUdGRBhrmaBqooJpHcpafPdD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M45pXKE9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oG5KRHUP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1675C4CEE0;
-	Fri,  7 Mar 2025 01:00:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M45pXKE9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 030B9C4CEE0;
+	Fri,  7 Mar 2025 01:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741309201;
-	bh=C7n1sQ9spG0GmsQ8Yj5JaIBoVUh7s4FCjKwZJlcABvc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=oG5KRHUPv45YHsBqGvHYW/tVRtPNgYRr7KMZkD9m4WzlZpbTShBKBRV834D4UV7m4
-	 +Q+GwakRRN2aaCuYVaCT1YjlusQUNp27+LtLVnxDBRiZHBbG49Jlggb6ceSZUhA/Ru
-	 x0M5E/njVRhDQ5kuy2SHjiOXtMKTt/7hK/nUYJWYtRwJgk9Lhcf/wG97Xc//xIwefM
-	 PATlIdcu+VjSu2WceBLnlofN4Rr3WghUKgZbRrk6VD/GjuFgmfU4qamRsBBuWA0yT9
-	 tFhHgc0/QKIp4dNz2A99c0KIoLdILmy7vnM7fID7ZKcUjuIQ4voWT8ajwEn456YcS8
-	 93oaxjzx69K8w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70C9C380CFF6;
-	Fri,  7 Mar 2025 01:00:36 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1741309929;
+	bh=iAkkgLRwGib7vQ+FD30A942Pd09V5NCtDsEeMhpAUqM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=M45pXKE9zkU9gssiyoTXRtcCF8zxbGnEPxAzZgZxm2OqPKSreW0X3H5MGGZLMMfHK
+	 OStf429IO4RVa+Qkqg54dpGCfKVeYYobcgRrckZsKfbuASUxX0OTzSOfL9jEDJ4djg
+	 ndQWb8LBx9QltWQZlFB6VM83sQmBC163rVLR7DIGuhcHqf2LE4F8IIU3C/DCIUWOhT
+	 KqMzL1REFctMOmR7oJ/4JyRqaH0bjzCgFsDFm4YrIhhTL2G9TYZtz9utBUorEfddfw
+	 O9D16dCJHua+bv9bvT0tWtvLVHJ/FqnHTwip6ANCaUK47B8nTiiqEI4OFUTddfWPYb
+	 tlIA+06s+XYMg==
+Date: Thu, 6 Mar 2025 17:12:08 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, Michal Kubiak
+ <michal.kubiak@intel.com>, Maciej Fijalkowski
+ <maciej.fijalkowski@intel.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
+ <john.fastabend@gmail.com>, Simon Horman <horms@kernel.org>,
+ bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 11/16] idpf: prepare structures to support XDP
+Message-ID: <20250306171208.3162eb97@kernel.org>
+In-Reply-To: <20250305162132.1106080-12-aleksander.lobakin@intel.com>
+References: <20250305162132.1106080-1-aleksander.lobakin@intel.com>
+	<20250305162132.1106080-12-aleksander.lobakin@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: airoha: Fix lan4 support in
- airoha_qdma_get_gdm_port()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174130923525.1838424.11881654670329234218.git-patchwork-notify@kernel.org>
-Date: Fri, 07 Mar 2025 01:00:35 +0000
-References: <20250304-airoha-eth-fix-lan4-v1-1-832417da4bb5@kernel.org>
-In-Reply-To: <20250304-airoha-eth-fix-lan4-v1-1-832417da4bb5@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Wed,  5 Mar 2025 17:21:27 +0100 Alexander Lobakin wrote:
+> +/**
+> + * idpf_xdp_is_prog_ena - check if there is an XDP program on adapter
+> + * @vport: vport to check
+> + */
+> +static inline bool idpf_xdp_is_prog_ena(const struct idpf_vport *vport)
+> +{
+> +	return vport->adapter && vport->xdp_prog;
+> +}
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+drivers/net/ethernet/intel/idpf/idpf.h:624: warning: No description found for return value of 'idpf_xdp_is_prog_ena'
 
-On Tue, 04 Mar 2025 15:38:05 +0100 you wrote:
-> EN7581 SoC supports lan{1,4} ports on MT7530 DSA switch. Fix lan4
-> reported value in airoha_qdma_get_gdm_port routine.
-> 
-> Fixes: 23020f0493270 ("net: airoha: Introduce ethernet support for EN7581 SoC")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  drivers/net/ethernet/airoha/airoha_eth.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next] net: airoha: Fix lan4 support in airoha_qdma_get_gdm_port()
-    https://git.kernel.org/netdev/net-next/c/35ea4f06fd33
-
-You are awesome, thank you!
+The documentation doesn't add much info, just remove it ?
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
