@@ -1,267 +1,157 @@
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFD41FDE2E
-	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 09:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35D91E1E10;
+	Fri,  7 Mar 2025 09:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741339334; cv=none; b=lbaXdy+MLXbshc2OI/41GKfVjxDBVvh57Ci+n/i/JXi/Xr82Xz3sDE1+u0nBAkeFgzHVKrjXd1A+RpSTxCq0bAW324Uy4BaVg7KkVzZhCBKoNK7a79p1yQiNfsgiIrkA7wyGFyEDNgQErrY+bQkPH/j/CCF4XvxD59i9znaskcs=
+	t=1741339342; cv=none; b=CqsHdORhFK+i6UmY4XRMfompmSU7xqjymnTlNJYqX6SHafW4UIqKkLPDxC9DE6elbAj+V7sdPmsuZ2VRmfLM4XFWHAK8xoiyX6zx62h9sfzC53/jgpgN9jxLPTqMy2qwWxkPVyxjLF9ok+xSJ6EfBxNEaUAX9zwKtkgCjZHu/FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741339334; c=relaxed/simple;
-	bh=yNxOhXYIvNFmAhFJZ/JNNjx0UtL+SQYo7g+8bzyz/7M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:Content-Type:
-	 References; b=phMoMwMlbq7HruMW6DiEv5oU2LQqvDzxjTrHnuVNyzFXc+QDfS6CrSHRFWq0JSxIrztHxmeWe2YfVKtGQZR0jLaIaOq33VBp5WVyQvZ/DoSDW6pJ1MLRSzsSDvaaOdCIhkQsnk+9nu0SGYkLhmsY8OswrvC2PZy3Sjryl3Fy4c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=SVXi5s96; arc=none smtp.client-ip=203.254.224.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1741339342; c=relaxed/simple;
+	bh=puks5gz+Z0SWJNwNTjIqnOHXEonpz+7vxTX5Qf8VLug=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qKUsGqO9KOkjTIvncv2uYFMlF5WViR49imQbejTw01tK6CyOF6dJZFXdS4NdR8jhVs9HJZOTP4FO7H9feoAeNVG+TgsuYw5TDrd969Ek7vpUoG/XuTwb9VeAHd+gJV5ON/TSGz40J6dYywytrX4vdofQy/nQL4hJry/q3cGtkbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HdtNYCoE; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="SVXi5s96"
-Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20250307092210epoutp0174d806b1276de08ac53d161057a4abbb~qeuU282Zq0333003330epoutp01b
-	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 09:22:10 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20250307092210epoutp0174d806b1276de08ac53d161057a4abbb~qeuU282Zq0333003330epoutp01b
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1741339330;
-	bh=oc7YHSjsxtVonlvoGk2xIqyBO7/KdbIfRxzx7Tv596M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SVXi5s96pzun31fhXZuRUZlpWrvhPhyP1XSFcG3ypgD2IKjCzN5Zog+SZ9JFDOJSD
-	 vX0+Ax5J/R9IewH+a6driVCzNPboBzzExVAVVvbC22lFG87Flb6sFkkxxC2ir5ACQP
-	 2C2iO6IwXklvHeu6QbKU4o2FBtn3gKfRVlsR2wiM=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTP id
-	20250307092209epcas5p4b17984afa515636d2f1cab81c4c66706~qeuUBnDJk0294602946epcas5p4x;
-	Fri,  7 Mar 2025 09:22:09 +0000 (GMT)
-Received: from epsmges5p2new.samsung.com (unknown [182.195.38.176]) by
-	epsnrtp1.localdomain (Postfix) with ESMTP id 4Z8LQm0f4pz4x9Q8; Fri,  7 Mar
-	2025 09:22:08 +0000 (GMT)
-Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
-	epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	23.B0.19933.FBABAC76; Fri,  7 Mar 2025 18:22:07 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-	20250307045524epcas5p3f4ef3398f70f8286ddd9903a4e1d68f4~qbFZ4U9cz2885928859epcas5p3s;
-	Fri,  7 Mar 2025 04:55:24 +0000 (GMT)
-Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
-	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20250307045524epsmtrp271a8640a0655ee2f0981cdd6e9fe965e~qbFZ3Lrii1515815158epsmtrp2t;
-	Fri,  7 Mar 2025 04:55:24 +0000 (GMT)
-X-AuditID: b6c32a4a-c1fda70000004ddd-ec-67cababfc24e
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-	epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	69.9C.23488.C3C7AC76; Fri,  7 Mar 2025 13:55:24 +0900 (KST)
-Received: from cheetah.samsungds.net (unknown [107.109.115.53]) by
-	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250307045522epsmtip124914e600f7411a4d5d0d92eca178c8c~qbFXpYlwQ1085010850epsmtip1C;
-	Fri,  7 Mar 2025 04:55:22 +0000 (GMT)
-From: Swathi K S <swathi.ks@samsung.com>
-To: krzk+dt@kernel.org, linux-fsd@tesla.com, robh@kernel.org,
-	conor+dt@kernel.org, richardcochran@gmail.com, alim.akhtar@samsung.com
-Cc: jayati.sahu@samsung.com, swathi.ks@samsung.com,
-	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, pankaj.dubey@samsung.com, ravi.patel@samsung.com,
-	gost.dev@samsung.com
-Subject: [PATCH v8 2/2] arm64: dts: fsd: Add Ethernet support for PERIC
- Block of FSD SoC
-Date: Fri,  7 Mar 2025 10:19:04 +0530
-Message-Id: <20250307044904.59077-3-swathi.ks@samsung.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250307044904.59077-1-swathi.ks@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnk+LIzCtJLcpLzFFi42LZdlhTXffArlPpBn+FLR7M28ZmsWbvOSaL
-	+UfOsVrcPLCTyeLIqSVMFi9n3WOz2PT4GqvFw1fhFpd3zWGzmHF+H5PFsQViFou2fmG3ePhh
-	D7vFkTMvmC3+79nBbvFl4012BwGPnbPusntsWtXJ5rF5Sb1H35ZVjB7/muaye3zeJBfAFpVt
-	k5GamJJapJCal5yfkpmXbqvkHRzvHG9qZmCoa2hpYa6kkJeYm2qr5OIToOuWmQN0tJJCWWJO
-	KVAoILG4WEnfzqYov7QkVSEjv7jEVim1ICWnwKRArzgxt7g0L10vL7XEytDAwMgUqDAhO2Nt
-	+wH2grnqFad/bmNqYDyq0MXIySEhYCJxd8tN9i5GLg4hgd2MEpMnnGGGcD4xSrxaMIERwvnG
-	KHFt4n82mJZTn84zgdhCAnsZJc6ti4co+sIo0bHjNjNIgk1AQ+L6iu1gc0UE2hgljj1tBHOY
-	BeYySaw6uA1slLBAlMT1/idgNouAqsSWVWvBbF4BK4ll+/ayQqyTl1i94QDYVE4Ba4lz++6C
-	DZIQ6OWQ+PSqnQWiyEWieVsbI4QtLPHq+BZ2CFtK4vO7vVB3x0us7rsKVZ8hcffXRKi4vcSB
-	K3OA4hxA12lKrN+lDxGWlZh6ah3Ym8wCfBK9v58wQcR5JXbMg7GVJf6+vgY1UlJi29L37CBj
-	JAQ8JO4ezISESh+jxNSOVawTGOVmIWxYwMi4ilEytaA4Nz212LTAKC+1HB5tyfm5mxjBKVPL
-	awfjwwcf9A4xMnEwHmKU4GBWEuFV234qXYg3JbGyKrUoP76oNCe1+BCjKTD8JjJLiSbnA5N2
-	Xkm8oYmlgYmZmZmJpbGZoZI4b/POlnQhgfTEktTs1NSC1CKYPiYOTqkGpo3tNRm+MsUHlpfo
-	nW2Kztnnv68+XzOpXK1W5pcmz+tlS3+8FOsRyVlq0JUfVBEWvnmy8gdd3vCP98MNA9ycfz+P
-	l3CM2eul57U65GBASl/Dt6ltH0Xku4z2rzcyu1T7Y+Wr7Uc+JHxdlzgrcPb6LSU8+nJc9yQE
-	LYs/rU12Ep5/LfVr9v/7z2e69TdwLgv229fvcXNnsUWkVWt4wcx/bj/b5q/k2+MpL3D7Zfze
-	a1vfKm34Ga0kP7en7GfTxVTPhqfBc5gLz1V8sBLSWem+gE15y9efriytOwqn5ud1v7t9ekV7
-	5sJqX//NTZPUw64t1P2RUnteTmlHRv3nOsGbjjoHPP1/tS1X72WL/+SoxFKckWioxVxUnAgA
-	AgCv4iIEAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrGLMWRmVeSWpSXmKPExsWy7bCSnK5Nzal0g7nnxS0ezNvGZrFm7zkm
-	i/lHzrFa3Dywk8niyKklTBYvZ91js9j0+BqrxcNX4RaXd81hs5hxfh+TxbEFYhaLtn5ht3j4
-	YQ+7xZEzL5gt/u/ZwW7xZeNNdgcBj52z7rJ7bFrVyeaxeUm9R9+WVYwe/5rmsnt83iQXwBbF
-	ZZOSmpNZllqkb5fAlbG2/QB7wVz1itM/tzE1MB5V6GLk5JAQMJE49ek8E4gtJLCbUeLodgGI
-	uKTEp+aprBC2sMTKf8/ZIWo+MUpM2qYMYrMJaEhcX7EdKM7FISLQxyixYXsrC4jDLLCcSWLB
-	gQZGkCphgQiJc2f6mUFsFgFViS2r1rKB2LwCVhLL9u2F2iAvsXrDAbAaTgFriXP77kJts5KY
-	PX0u+wRGvgWMDKsYJVMLinPTc5MNCwzzUsv1ihNzi0vz0vWS83M3MYKDWktjB+O7b036hxiZ
-	OBgPMUpwMCuJ8ApuPpkuxJuSWFmVWpQfX1Sak1p8iFGag0VJnHelYUS6kEB6YklqdmpqQWoR
-	TJaJg1OqgUn6442lcyqvp1U5iy+9GdWzPGx/evPuPSsXf6jSmKp7MP/iidePp31T2sAUuydS
-	5FrPtx+/452Vr9ddc/xXHHe9/nqXqOBk7dz8pPfHQqNCpHT7f7r9DhSZzfb/xsQ1bV949GRD
-	lGX+q82tl/1W9eLlrNs95ziELGZ+bFGymePIq2ytUco232PiM5+2vfMavAs7ngrqJR2svftQ
-	agpH+6TjLft9db7Lp3RkSk7P0fw6wyRUcKLvNJ/m1SvdHs+aMyk08YNaQv+H5ohdsbZOe/7X
-	Z9z8caD6GcfTT6v/7H4/YclHFu/1wfpTgrkqJph18q25OLNiae3mS0GdHo6mp3Z2352u1Tm5
-	cB0nw70dvm+UWIozEg21mIuKEwEy5iyx2QIAAA==
-X-CMS-MailID: 20250307045524epcas5p3f4ef3398f70f8286ddd9903a4e1d68f4
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250307045524epcas5p3f4ef3398f70f8286ddd9903a4e1d68f4
-References: <20250307044904.59077-1-swathi.ks@samsung.com>
-	<CGME20250307045524epcas5p3f4ef3398f70f8286ddd9903a4e1d68f4@epcas5p3.samsung.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HdtNYCoE"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2fee4d9c2efso2929231a91.3;
+        Fri, 07 Mar 2025 01:22:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741339339; x=1741944139; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XztObitingC3692I+pBVpdt55S8NywKGMFDoLFkCI1M=;
+        b=HdtNYCoEs1o43u72KKglQ6tmh0SIWEMcIshaywK+7/IAJoELDg+nZ9AGm9kvDFxlS3
+         Ll1siGCp5THynSIOu69bZW7ckkG2S3PN1H/Y5xX0CIYInF/M2FIEr9s67B+JgfYfruRw
+         jkRjhKUCs4PWAmQsxeAPMzXVpgGSpf+JGy58QNXP3zp5I6sh7K/pKg4b5Lv4SFDK2/Cw
+         IUIxezUzCeajk4AwA87XLDF9ZH+dSdOQHizQJr8IV55lPK4xLpP/qNiJZdV8/K9sIMz4
+         RJLU5ijmugjD9c94ip5ooM72Qyz7pcaHkc77NUevlDxgjnqVRncCEVifP6eI1X1nGOkj
+         3rDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741339339; x=1741944139;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XztObitingC3692I+pBVpdt55S8NywKGMFDoLFkCI1M=;
+        b=UTud2MfSOvPnRig6xoN7qMZ3EX0vBw9IkeI7XR+JM+H0jvvJUBN0kHmMtvp/gKelQi
+         Zv1xR/r80b4LNHIfDZe0D6IHbnWnMYiRxTqmNryCjQmko3EucjRWo3HucQdpNOrZcF4w
+         Qu54kLd+3IbTFv0bVYJiZV4iMc1uxcUKZP4Ci/8fs7VYmJ7DRVB7a1cZR4kDKH7Z9ioL
+         P4BCuQJl7vi1socHaCpFLCjKbgxer54p3nNOeRWwMAtD0/uGa8ME+Q424B2I5TLAVo4r
+         ke6kyRG32rooEHFS73UTj5ZgEu4pMaI1LQvQhrgh0W0FsU/Zkc5WZtEkil+Dzl1KOqyA
+         8Wuw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJp/+WXaS2sCJS+GthxvCMie74YOBB9Z1dcY/jWYuLSyzXtbBHAaUDlCulpVHEPE6SkIs3pdh2AY74nNxV@vger.kernel.org, AJvYcCUtR1fXRsiRKZ4uFDIJdYrXzmSO3o9G6s4Z/1X9tXPF2O7CEOjWC7HcRtAiIhfOScHZ3Sua0e04j4JEjsjQ63U=@vger.kernel.org, AJvYcCVdu91V3aFh6QNaQOhW7cUzj6Nq+RsA3OVH6RMFGiEJHnk+KZYkdtglqEVuj64kuOE5rdkfVah9@vger.kernel.org, AJvYcCXSaa6FOb2mj/9HhnGRLHFADHBhqAl81qTfz9dOdeKFzEFwA7u0umjrJ7YxP0z+kBm+IvqpozgkfEV8SxBG@vger.kernel.org, AJvYcCXXqQy/yG1JzBB6S2bBvYejWq6pGj57raKkxWW4xhDZ584gWBwMDeFqNwkXbqGLcwMJ83HmHQAE/PcZLG0=@vger.kernel.org, AJvYcCXaS+fSFMwBDKhqaBbZsv/Pz20x4NfVqaM4RJim4lO88UmsRHutS9Q2Y+VRnWjUIH/WRCI=@vger.kernel.org, AJvYcCXlseOC/5/OPOH19PCwGM0L3P8dcCV7XQBEgN9nsdS6SVtruRv8YUNek9hXrJhY9YHPa81DYYcKyjbYoq4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyT7kcXu8Ivn0NbKq6o0ZnqEQx7PQnJvU9SOZbFU7FPEJgkA5sx
+	+3gsAVkIzKAPBNHbsSVbcalgQiUBg/Z0wbpCCoqXzl+WqU/kdPvq
+X-Gm-Gg: ASbGncs8GvBQKvntRHW6ezDn2j3x+dACIjv47a+2lyv1Mfii/LUCHcZr+TTPPSalYNn
+	sciwoFOdoEZK7RI89JPynnGZrzDpPJNztHUsi61SxbR6jcCpKZZdOXi5asqp0CjzJmbA/jFDFxx
+	exIbilYcqKTts3098POy26YHJy1IVnSBie3zb6/wanjBM/saUG8d0CGTOIFAxaIUQaPILiy2J2S
+	WsSIGRalpvkcODZxJsRbhThemcBQGpfJ1e9aaB3f/WhVPd5AAtFuQ0t6P+JW8dw3UFp3q/3nHI8
+	zqqzGLXvvugHXrqbHbL4WFEvbqXqDUvB4A62d8t8DQmq8IvmGbjhwy2qOlfwnAkeRmaMNS/s
+X-Google-Smtp-Source: AGHT+IGO3Fg5mznURfAXFZCPAiOd6NJZ8MzxOEXeMR65d6OVc42NCiVYA5M/yoTVlsiOwEwCHpbcoQ==
+X-Received: by 2002:a17:90b:3911:b0:2fa:1a23:c01d with SMTP id 98e67ed59e1d1-2ff7ce8b5ffmr4029616a91.21.1741339339019;
+        Fri, 07 Mar 2025 01:22:19 -0800 (PST)
+Received: from visitorckw-System-Product-Name ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ff693e7fb5sm2876725a91.37.2025.03.07.01.22.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Mar 2025 01:22:18 -0800 (PST)
+Date: Fri, 7 Mar 2025 17:22:08 +0800
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, jk@ozlabs.org,
+	joel@jms.id.au, eajames@linux.ibm.com, andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org, rfoss@kernel.org,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+	dmitry.torokhov@gmail.com, mchehab@kernel.org,
+	awalls@md.metrocast.net, hverkuil@xs4all.nl,
+	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+	louis.peens@corigine.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
+	johannes@sipsolutions.net, gregkh@linuxfoundation.org,
+	yury.norov@gmail.com, akpm@linux-foundation.org, hpa@zytor.com,
+	alistair@popple.id.au, linux@rasmusvillemoes.dk,
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+	jernej.skrabec@gmail.com, kuba@kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
+	dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
+	oss-drivers@corigine.com, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
+	bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
+	Yu-Chun Lin <eleanor15x@gmail.com>
+Subject: Re: [PATCH v3 00/16] Introduce and use generic parity16/32/64 helper
+Message-ID: <Z8q6wPWXImCeGI8P@visitorckw-System-Product-Name>
+References: <20250306162541.2633025-1-visitorckw@gmail.com>
+ <3dfc81eb-caa1-42fe-8fd6-61101de0ef13@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3dfc81eb-caa1-42fe-8fd6-61101de0ef13@kernel.org>
 
-The FSD SoC contains two instances of Synopsys DWC QoS Ethernet IP, one in
-FSYS0 block and other in PERIC block.
-The ethernet interface is connected to a switch which is not managed by
-Linux.
+Hi Jiri,
 
-Adds device tree node for Ethernet in PERIC Block and enables the same for
-FSD platform.
+On Fri, Mar 07, 2025 at 07:57:48AM +0100, Jiri Slaby wrote:
+> On 06. 03. 25, 17:25, Kuan-Wei Chiu wrote:
+> > Several parts of the kernel contain redundant implementations of parity
+> > calculations for 16/32/64-bit values. Introduces generic
+> > parity16/32/64() helpers in bitops.h, providing a standardized
+> > and optimized implementation.
+> > 
+> > Subsequent patches refactor various kernel components to replace
+> > open-coded parity calculations with the new helpers, reducing code
+> > duplication and improving maintainability.
+> > 
+> > Co-developed-by: Yu-Chun Lin <eleanor15x@gmail.com>
+> > Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+> > Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+> > ---
+> > In v3, I use parityXX() instead of the parity() macro since the
+> > parity() macro may generate suboptimal code and requires special hacks
+> > to make GCC happy. If anyone still prefers a single parity() macro,
+> > please let me know.
+> 
+> What is suboptimal and where exactly it matters? Have you actually measured
+> it?
+> 
+In the previous thread, David and Yury had different opinions regarding
+the implementation details of the parity() macro. I am trying to find a
+solution that satisfies most people while keeping it as simple as
+possible.
 
-Signed-off-by: Pankaj Dubey <pankaj.dubey@samsung.com>
-Signed-off-by: Jayati Sahu <jayati.sahu@samsung.com>
-Signed-off-by: Swathi K S <swathi.ks@samsung.com>
----
- arch/arm64/boot/dts/tesla/fsd-evb.dts      | 10 ++++
- arch/arm64/boot/dts/tesla/fsd-pinctrl.dtsi | 56 ++++++++++++++++++++++
- arch/arm64/boot/dts/tesla/fsd.dtsi         | 30 ++++++++++++
- 3 files changed, 96 insertions(+)
+I cannot point to any specific users who are particularly concerned
+about efficiency, so personally, I am not really concerned about the
+generated code either. However, I am not a fan of the #if gcc #else
+approach, and Yury also mentioned that he does not like the >> 16 >> 16
+hack. At the same time, David pointed out that GCC might generate
+double-register math. Given these concerns, I leaned toward reverting
+to the parityXX() approach.
 
-diff --git a/arch/arm64/boot/dts/tesla/fsd-evb.dts b/arch/arm64/boot/dts/tesla/fsd-evb.dts
-index 321270a07651..9ff22e1c8723 100644
---- a/arch/arm64/boot/dts/tesla/fsd-evb.dts
-+++ b/arch/arm64/boot/dts/tesla/fsd-evb.dts
-@@ -74,6 +74,16 @@
- 	};
- };
- 
-+&ethernet1 {
-+	status = "okay";
-+
-+	phy-mode = "rgmii-id";
-+	fixed-link {
-+		speed = <1000>;
-+		full-duplex;
-+	};
-+};
-+
- &fin_pll {
- 	clock-frequency = <24000000>;
- };
-diff --git a/arch/arm64/boot/dts/tesla/fsd-pinctrl.dtsi b/arch/arm64/boot/dts/tesla/fsd-pinctrl.dtsi
-index cb437483ff6e..6f4658f57453 100644
---- a/arch/arm64/boot/dts/tesla/fsd-pinctrl.dtsi
-+++ b/arch/arm64/boot/dts/tesla/fsd-pinctrl.dtsi
-@@ -437,6 +437,62 @@
- 		samsung,pin-pud = <FSD_PIN_PULL_DOWN>;
- 		samsung,pin-drv = <FSD_PIN_DRV_LV4>;
- 	};
-+
-+	eth1_tx_clk: eth1-tx-clk-pins {
-+		samsung,pins = "gpf2-0";
-+		samsung,pin-function = <FSD_PIN_FUNC_2>;
-+		samsung,pin-pud = <FSD_PIN_PULL_DOWN>;
-+		samsung,pin-drv = <FSD_PIN_DRV_LV6>;
-+	};
-+
-+	eth1_tx_data: eth1-tx-data-pins {
-+		samsung,pins = "gpf2-1", "gpf2-2", "gpf2-3", "gpf2-4";
-+		samsung,pin-function = <FSD_PIN_FUNC_2>;
-+		samsung,pin-pud = <FSD_PIN_PULL_UP>;
-+		samsung,pin-drv = <FSD_PIN_DRV_LV6>;
-+	};
-+
-+	eth1_tx_ctrl: eth1-tx-ctrl-pins {
-+		samsung,pins = "gpf2-5";
-+		samsung,pin-function = <FSD_PIN_FUNC_2>;
-+		samsung,pin-pud = <FSD_PIN_PULL_UP>;
-+		samsung,pin-drv = <FSD_PIN_DRV_LV6>;
-+	};
-+
-+	eth1_phy_intr: eth1-phy-intr-pins {
-+		samsung,pins = "gpf2-6";
-+		samsung,pin-function = <FSD_PIN_FUNC_2>;
-+		samsung,pin-pud = <FSD_PIN_PULL_UP>;
-+		samsung,pin-drv = <FSD_PIN_DRV_LV4>;
-+	};
-+
-+	eth1_rx_clk: eth1-rx-clk-pins {
-+		samsung,pins = "gpf3-0";
-+		samsung,pin-function = <FSD_PIN_FUNC_2>;
-+		samsung,pin-pud = <FSD_PIN_PULL_UP>;
-+		samsung,pin-drv = <FSD_PIN_DRV_LV6>;
-+	};
-+
-+	eth1_rx_data: eth1-rx-data-pins {
-+		samsung,pins = "gpf3-1", "gpf3-2", "gpf3-3", "gpf3-4";
-+		samsung,pin-function = <FSD_PIN_FUNC_2>;
-+		samsung,pin-pud = <FSD_PIN_PULL_UP>;
-+		samsung,pin-drv = <FSD_PIN_DRV_LV6>;
-+	};
-+
-+	eth1_rx_ctrl: eth1-rx-ctrl-pins {
-+		samsung,pins = "gpf3-5";
-+		samsung,pin-function = <FSD_PIN_FUNC_2>;
-+		samsung,pin-pud = <FSD_PIN_PULL_UP>;
-+		samsung,pin-drv = <FSD_PIN_DRV_LV6>;
-+	};
-+
-+	eth1_mdio: eth1-mdio-pins {
-+		samsung,pins = "gpf3-6", "gpf3-7";
-+		samsung,pin-function = <FSD_PIN_FUNC_2>;
-+		samsung,pin-pud = <FSD_PIN_PULL_UP>;
-+		samsung,pin-drv = <FSD_PIN_DRV_LV4>;
-+	};
- };
- 
- &pinctrl_pmu {
-diff --git a/arch/arm64/boot/dts/tesla/fsd.dtsi b/arch/arm64/boot/dts/tesla/fsd.dtsi
-index 01850fbf761f..0fb1b508be52 100644
---- a/arch/arm64/boot/dts/tesla/fsd.dtsi
-+++ b/arch/arm64/boot/dts/tesla/fsd.dtsi
-@@ -979,6 +979,36 @@
- 			memory-region = <&mfc_left>;
- 		};
- 
-+		ethernet1: ethernet@14300000 {
-+			compatible = "tesla,fsd-ethqos";
-+			reg = <0x0 0x14300000 0x0 0x10000>;
-+			interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "macirq";
-+			clocks = <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_CLK_PTP_REF_I>,
-+				 <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_ACLK_I>,
-+				 <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_HCLK_I>,
-+				 <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_RGMII_CLK_I>,
-+				 <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_CLK_RX_I>,
-+				 <&clock_peric PERIC_BUS_D_PERIC_IPCLKPORT_EQOSCLK>,
-+				 <&clock_peric PERIC_BUS_P_PERIC_IPCLKPORT_EQOSCLK>,
-+				 <&clock_peric PERIC_EQOS_PHYRXCLK_MUX>,
-+				 <&clock_peric PERIC_EQOS_PHYRXCLK>,
-+				 <&clock_peric PERIC_DOUT_RGMII_CLK>;
-+			clock-names = "ptp_ref", "master_bus", "slave_bus", "tx", "rx",
-+				      "master2_bus", "slave2_bus", "eqos_rxclk_mux",
-+				      "eqos_phyrxclk", "dout_peric_rgmii_clk";
-+			assigned-clocks = <&clock_peric PERIC_EQOS_PHYRXCLK_MUX>,
-+					  <&clock_peric PERIC_EQOS_PHYRXCLK>;
-+			assigned-clock-parents = <&clock_peric PERIC_EQOS_PHYRXCLK>;
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&eth1_tx_clk>, <&eth1_tx_data>, <&eth1_tx_ctrl>,
-+				    <&eth1_phy_intr>, <&eth1_rx_clk>, <&eth1_rx_data>,
-+				    <&eth1_rx_ctrl>, <&eth1_mdio>;
-+			local-mac-address = [00 00 00 00 00 00];
-+			iommus = <&smmu_peric 0x0 0x1>;
-+			status = "disabled";
-+		};
-+
- 		ufs: ufs@15120000 {
- 			compatible = "tesla,fsd-ufs";
- 			reg = <0x0 0x15120000 0x0 0x200>,  /* 0: HCI standard */
--- 
-2.17.1
+If you still prefer using the parity() macro, we can revisit and
+discuss its implementation details further.
+
+> > Additionally, I changed parityXX() << y users to !!parityXX() << y
+> > because, unlike C++, C does not guarantee that true casts to int as 1.
+> 
+> How comes? ANSI C99 exactly states:
+> ===
+> true
+> which expands to the integer constant 1,
+> ===
+> 
+I gave a more detailed response in my reply to Peter. If we can confirm
+that casting bool to int will only result in 1 or 0, I will remove the
+!! hack in the next version.
+
+Regards,
+Kuan-Wei
 
