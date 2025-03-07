@@ -1,226 +1,205 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF311E1DEE;
-	Fri,  7 Mar 2025 09:49:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4672C20C494
+	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 09:50:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741341000; cv=none; b=ogsvcBQpRKv7Y0V1rhEUbyrAh9qb5voYUVd/FdEvVadXhmIUE+g7Ktwddc6Py970a1dlE3TuwpuWunkUAnFcIseTQvGCg24JvAJLLIaFV+CYFNTyvey+8hhvU49DGwcpcJn9F5UuiiRPSd3yK6k2jKgdQEQ1cFld2JjqlzR31I8=
+	t=1741341004; cv=none; b=V1/M/XOlDXzzesp5z+oSw1wPnJFrccT57aJygs7PvGIwk51b3A/cgHuUy6dfG/lNCnyH5fBnytPwrQPwQ7W87nYuX7Bj+v23Jdu8Q1lxMeHNTY20wnerHDDoS7unJiNCgA3sZ8WNgt49qajawNiA2X9zWHqNlYEHbi5OorNg9z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741341000; c=relaxed/simple;
-	bh=ChCpk2prk2Z6MDm9CmuUwucH7ojnVNF4Xb7Hq1r7Rvo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=b6njnKSKETkLPQm3URg4bgiW1HCxsD8TEt0RDOyfGQVFIO9Sjt5c47LEDXA9SSUU2P2Q2Lgk7G4mdOg0v2T301C3qHj48X/qykO2Qm2NBBf5qPSqg7KdLPkFO5UyGyFgzXjVU+Sw7t4+IPHc4yEY77ZPbMuv640bm8q1InoyOIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Z8LY91mghzvWqv;
-	Fri,  7 Mar 2025 17:27:41 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9849B140157;
-	Fri,  7 Mar 2025 17:31:29 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 7 Mar 2025 17:31:29 +0800
-From: Yunsheng Lin <linyunsheng@huawei.com>
-To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC: <zhangkun09@huawei.com>, <liuyonglong@huawei.com>,
-	<fanghaiqing@huawei.com>, Yunsheng Lin <linyunsheng@huawei.com>, Alexander
- Lobakin <aleksander.lobakin@intel.com>, Robin Murphy <robin.murphy@arm.com>,
-	Alexander Duyck <alexander.duyck@gmail.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Gaurav Batra <gbatra@linux.ibm.com>, Matthew
- Rosato <mjrosato@linux.ibm.com>, IOMMU <iommu@lists.linux.dev>, MM
-	<linux-mm@kvack.org>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
-	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>, Matthias Brugger
-	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, <netdev@vger.kernel.org>,
-	<intel-wired-lan@lists.osuosl.org>, <bpf@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>
-Subject: [PATCH net-next v11 0/4] fix the DMA API misuse problem for page_pool
-Date: Fri, 7 Mar 2025 17:23:51 +0800
-Message-ID: <20250307092356.638242-1-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.30.0
+	s=arc-20240116; t=1741341004; c=relaxed/simple;
+	bh=M4wqjklMqzfihUfML6VrwR7iZe9eYYBerx1SZwPE/7M=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=h2mInp49FrLqercqfj5gTIwzUt3ALYVho2BBDDs9i6L5T3A8qk1fHMvq8Eq6Q5tydY6/ONOMQ44xXVdcZe4XQTPVpRLL4eM9RoCYpio4tSRTCGYkQrX14ls8ntKJ+mDCsGH24TyYXLz4rkt9r7SYptbx7Nmw2KrljVdbUyD//Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=fu7Sr2P9; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="fu7Sr2P9"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1tqUL8-0034MY-RP; Fri, 07 Mar 2025 10:49:58 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
+	bh=huDG7ZbIt8GugscEWq8ZXv1zuJ0zeGUze6o1l8zpPq8=; b=fu7Sr2P9jOwvFwnJnIKIRmQbPt
+	c5VCqmhqTHDisuo4oInr7WKWCktyvjw6M5tDuOFmu5tkFJI33DpoHS8GxjzNAUta2pZyxlOaPtFWu
+	snFP7ngD9BqYVmgQ6+nfuP14qIwJ6D6MmTKltppsp2lNsfgC6mtrwV3XOGx6gPovO1tfSP7EkDSGf
+	Qk0DCdHsYnz/wpnrYEmO7svsp6JnMWCmA2fIZ4fJnTOQhCqzqAzl6/cKETAsR95lMhFPFTND4HDiH
+	SPTOk8N93tedcb8ynJcnwXhs8OlEc8VfKEP3Q8eEkl+oEBRRyjourRAEoZB9vxZSfAM1XxHu6mnSW
+	qeGw/tug==;
+Received: from [10.9.9.74] (helo=submission03.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1tqUL7-0003jk-TV; Fri, 07 Mar 2025 10:49:58 +0100
+Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1tqUL3-006fcY-La; Fri, 07 Mar 2025 10:49:53 +0100
+Message-ID: <df2d51fd-03e7-477f-8aea-938446f47864@rbox.co>
+Date: Fri, 7 Mar 2025 10:49:52 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+User-Agent: Mozilla Thunderbird
+From: Michal Luczaj <mhal@rbox.co>
+Subject: Re: [PATCH net 2/2] vsock/test: Add test for SO_LINGER null ptr deref
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org
+References: <20250204-vsock-linger-nullderef-v1-0-6eb1760fa93e@rbox.co>
+ <20250204-vsock-linger-nullderef-v1-2-6eb1760fa93e@rbox.co>
+ <n3azri2tr3mzyo2ahwtrddkcwfsgyzdyuowekl34kkehk4zgf7@glvhh6bg4rsi>
+ <5c19a921-8d4d-44a3-8d82-849e95732726@rbox.co>
+ <vsghmgwurw3rxzw32najvwddolmrbroyryquzsoqt5jr3trzif@4rjr7kwlaowa>
+Content-Language: pl-PL, en-GB
+In-Reply-To: <vsghmgwurw3rxzw32najvwddolmrbroyryquzsoqt5jr3trzif@4rjr7kwlaowa>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This patchset fix the dma API misuse problem as below:
-Networking driver with page_pool support may hand over page
-still with dma mapping to network stack and try to reuse that
-page after network stack is done with it and passes it back
-to page_pool to avoid the penalty of dma mapping/unmapping.
-With all the caching in the network stack, some pages may be
-held in the network stack without returning to the page_pool
-soon enough, and with VF disable causing the driver unbound,
-the page_pool does not stop the driver from doing it's
-unbounding work, instead page_pool uses workqueue to check
-if there is some pages coming back from the network stack
-periodically, if there is any, it will do the dma unmmapping
-related cleanup work.
+On 2/10/25 11:18, Stefano Garzarella wrote:
+> On Wed, Feb 05, 2025 at 12:20:56PM +0100, Michal Luczaj wrote:
+>> On 2/4/25 11:48, Stefano Garzarella wrote:
+>>> On Tue, Feb 04, 2025 at 01:29:53AM +0100, Michal Luczaj wrote:
+>>>> ...
+>>>> +static void test_stream_linger_client(const struct test_opts *opts)
+>>>> +{
+>>>> +	struct linger optval = {
+>>>> +		.l_onoff = 1,
+>>>> +		.l_linger = 1
+>>>> +	};
+>>>> +	int fd;
+>>>> +
+>>>> +	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
+>>>> +	if (fd < 0) {
+>>>> +		perror("connect");
+>>>> +		exit(EXIT_FAILURE);
+>>>> +	}
+>>>> +
+>>>> +	if (setsockopt(fd, SOL_SOCKET, SO_LINGER, &optval, sizeof(optval))) {
+>>>> +		perror("setsockopt(SO_LINGER)");
+>>>> +		exit(EXIT_FAILURE);
+>>>> +	}
+>>>
+>>> Since we are testing SO_LINGER, will also be nice to check if it's
+>>> working properly, since one of the fixes proposed could break it.
+>>>
+>>> To test, we may set a small SO_VM_SOCKETS_BUFFER_SIZE on the receive
+>>> side and try to send more than that value, obviously without reading
+>>> anything into the receiver, and check that close() here, returns after
+>>> the timeout we set in .l_linger.
+>>
+>> I may be doing something wrong, but (at least for loopback transport) ...
+> 
+> Also with VMs is the same, I think virtio_transport_wait_close() can be 
+> improved to check if everything is sent, avoiding to wait.
 
-As mentioned in [1], attempting DMA unmaps after the driver
-has already unbound may leak resources or at worst corrupt
-memory. Fundamentally, the page pool code cannot allow DMA
-mappings to outlive the driver they belong to.
+What kind of improvement do you have in mind?
 
-By using the 'struct page_pool_item' referenced by page->pp_item,
-page_pool is not only able to keep track of the inflight page to
-do dma unmmaping if some pages are still handled in networking
-stack when page_pool_destroy() is called, and networking stack is
-also able to find the page_pool owning the page when returning
-pages back into page_pool:
-1. When a page is added to the page_pool, an item is deleted from
-   pool->hold_items and set the 'pp_netmem' pointing to that page
-   and set item->state and item->pp_netmem accordingly in order to
-   keep track of that page, refill from pool->release_items when
-   pool->hold_items is empty or use the item from pool->slow_items
-   when fast items run out.
-2. When a page is released from the page_pool, it is able to tell
-   which page_pool this page belongs to by masking off the lower
-   bits of the pointer to page_pool_item *item, as the 'struct
-   page_pool_item_block' is stored in the top of a struct page.
-   And after clearing the pp_item->state', the item for the
-   released page is added back to pool->release_items so that it
-   can be reused for new pages or just free it when it is from the
-   pool->slow_items.
-3. When page_pool_destroy() is called, item->state is used to tell
-   if a specific item is being used/dma mapped or not by scanning
-   all the item blocks in pool->item_blocks, then item->netmem can
-   be used to do the dma unmmaping if the corresponding inflight
-   page is dma mapped.
+I've tried modifying the loop to make close()/shutdown() linger until
+unsent_bytes() == 0. No idea if this is acceptable:
 
-From the below performance data, the overhead is not so obvious
-due to performance variations in arm64 server and less than 1
-ns in x86 server for time_bench_page_pool01_fast_path() and
-time_bench_page_pool02_ptr_ring, and there is about 10~20ns
-overhead for time_bench_page_pool03_slow(), see more detail in
-[2].
+diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+index 9e85424c8343..bd8b88d70423 100644
+--- a/include/net/af_vsock.h
++++ b/include/net/af_vsock.h
+@@ -221,6 +221,7 @@ void vsock_for_each_connected_socket(struct vsock_transport *transport,
+ 				     void (*fn)(struct sock *sk));
+ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk);
+ bool vsock_find_cid(unsigned int cid);
++void vsock_linger(struct sock *sk, long timeout);
+ 
+ /**** TAP ****/
+ 
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 7e3db87ae433..2cf7571e94da 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1013,6 +1013,25 @@ static int vsock_getname(struct socket *sock,
+ 	return err;
+ }
+ 
++void vsock_linger(struct sock *sk, long timeout)
++{
++	if (timeout) {
++		DEFINE_WAIT_FUNC(wait, woken_wake_function);
++		ssize_t (*unsent)(struct vsock_sock *vsk);
++		struct vsock_sock *vsk = vsock_sk(sk);
++
++		add_wait_queue(sk_sleep(sk), &wait);
++		unsent = vsk->transport->unsent_bytes;
++
++		do {
++			if (sk_wait_event(sk, &timeout, unsent(vsk) == 0, &wait))
++				break;
++		} while (!signal_pending(current) && timeout);
++
++		remove_wait_queue(sk_sleep(sk), &wait);
++	}
++}
++
+ static int vsock_shutdown(struct socket *sock, int mode)
+ {
+ 	int err;
+@@ -1056,6 +1075,8 @@ static int vsock_shutdown(struct socket *sock, int mode)
+ 		if (sock_type_connectible(sk->sk_type)) {
+ 			sock_reset_flag(sk, SOCK_DONE);
+ 			vsock_send_shutdown(sk, mode);
++			if (sock_flag(sk, SOCK_LINGER))
++				vsock_linger(sk, sk->sk_lingertime);
+ 		}
+ 	}
+ 
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 7f7de6d88096..9230b8358ef2 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1192,23 +1192,6 @@ static void virtio_transport_remove_sock(struct vsock_sock *vsk)
+ 	vsock_remove_sock(vsk);
+ }
+ 
+-static void virtio_transport_wait_close(struct sock *sk, long timeout)
+-{
+-	if (timeout) {
+-		DEFINE_WAIT_FUNC(wait, woken_wake_function);
+-
+-		add_wait_queue(sk_sleep(sk), &wait);
+-
+-		do {
+-			if (sk_wait_event(sk, &timeout,
+-					  sock_flag(sk, SOCK_DONE), &wait))
+-				break;
+-		} while (!signal_pending(current) && timeout);
+-
+-		remove_wait_queue(sk_sleep(sk), &wait);
+-	}
+-}
+-
+ static void virtio_transport_cancel_close_work(struct vsock_sock *vsk,
+ 					       bool cancel_timeout)
+ {
+@@ -1279,7 +1262,7 @@ static bool virtio_transport_close(struct vsock_sock *vsk)
+ 		(void)virtio_transport_shutdown(vsk, SHUTDOWN_MASK);
+ 
+ 	if (sock_flag(sk, SOCK_LINGER) && !(current->flags & PF_EXITING))
+-		virtio_transport_wait_close(sk, sk->sk_lingertime);
++		vsock_linger(sk, sk->sk_lingertime);
+ 
+ 	if (sock_flag(sk, SOCK_DONE)) {
+ 		return true;
 
-arm64 server:
-Before this patchset:
-              fast_path              ptr_ring            slow
-1.         31.171 ns               60.980 ns          164.917 ns
-2.         28.824 ns               60.891 ns          170.241 ns
-3.         14.236 ns               60.583 ns          164.355 ns
 
-With patchset:
-6.         26.163 ns               53.781 ns          189.450 ns
-7.         26.189 ns               53.798 ns          189.466 ns
+This works, but I find it difficult to test without artificially slowing
+the kernel down. It's a race against workers as they quite eagerly do
+virtio_transport_consume_skb_sent(), which decrements vvs->bytes_unsent.
+I've tried reducing SO_VM_SOCKETS_BUFFER_SIZE as you've suggested, but
+send() would just block until peer had available space.
 
-X86 server:
-| Test name  |Cycles |   1-5 |    | Nanosec |    1-5 |        |      % |
-| (tasklet_*)|Before | After |diff|  Before |  After |   diff | change |
-|------------+-------+-------+----+---------+--------+--------+--------|
-| fast_path  |    19 |    19 |   0|   5.399 |  5.492 |  0.093 |    1.7 |
-| ptr_ring   |    54 |    57 |   3|  15.090 | 15.849 |  0.759 |    5.0 |
-| slow       |   238 |   284 |  46|  66.134 | 78.909 | 12.775 |   19.3 |
-
-And about 16 bytes of memory is also needed for each page_pool owned
-page to fix the dma API misuse problem
-
-1. https://lore.kernel.org/lkml/8067f204-1380-4d37-8ffd-007fc6f26738@kernel.org/T/
-2. https://lore.kernel.org/all/f558df7a-d983-4fc5-8358-faf251994d23@kernel.org/
-
-CC: Alexander Lobakin <aleksander.lobakin@intel.com>
-CC: Robin Murphy <robin.murphy@arm.com>
-CC: Alexander Duyck <alexander.duyck@gmail.com>
-CC: Andrew Morton <akpm@linux-foundation.org>
-CC: Gaurav Batra <gbatra@linux.ibm.com>
-CC: Matthew Rosato <mjrosato@linux.ibm.com>
-CC: IOMMU <iommu@lists.linux.dev>
-CC: MM <linux-mm@kvack.org>
-
-Change log:
-V11:
-  1. Rebase on the latest net-next.
-  2. Fix two compiler errors reported by Jakub and Simon.
-  3. Change to use __acquire() and __release() to avoid 'context
-     imbalance' warning.
-
-V10:
-  1. Add nl API to dump item memory usage.
-  2. Use __acquires() and __releases() to avoid 'context imbalance'
-     warning.
-
-V9.
-  1. Drop the fix of a possible time window problem for NPAI recycling.
-  2. Add design description for the fix in patch 2.
-
-V8:
-  1. Drop last 3 patch as it causes observable performance degradation
-     for x86 system.
-  2. Remove rcu read lock in page_pool_napi_local().
-  3. Renaming item function more consistently.
-
-V7:
-  1. Fix a used-after-free bug reported by KASAN as mentioned by Jakub.
-  2. Fix the 'netmem' variable not setting up correctly bug as mentioned
-     by Simon.
-
-V6:
-  1. Repost based on latest net-next.
-  2. Rename page_pool_to_pp() to page_pool_get_pp().
-
-V5:
-  1. Support unlimit inflight pages.
-  2. Add some optimization to avoid the overhead of fixing bug.
-
-V4:
-  1. use scanning to do the unmapping
-  2. spilt dma sync skipping into separate patch
-
-V3:
-  1. Target net-next tree instead of net tree.
-  2. Narrow the rcu lock as the discussion in v2.
-  3. Check the ummapping cnt against the inflight cnt.
-
-V2:
-  1. Add a item_full stat.
-  2. Use container_of() for page_pool_to_pp().
-
-Yunsheng Lin (4):
-  page_pool: introduce page_pool_get_pp() API
-  page_pool: fix IOMMU crash when driver has already unbound
-  page_pool: support unlimited number of inflight pages
-  page_pool: skip dma sync operation for inflight pages
-
- Documentation/netlink/specs/netdev.yaml       |  16 +
- drivers/net/ethernet/freescale/fec_main.c     |   8 +-
- .../ethernet/google/gve/gve_buffer_mgmt_dqo.c |   2 +-
- drivers/net/ethernet/intel/iavf/iavf_txrx.c   |   6 +-
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  14 +-
- drivers/net/ethernet/intel/libeth/rx.c        |   2 +-
- .../marvell/octeontx2/nic/otx2_txrx.c         |   2 +-
- .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |   3 +-
- drivers/net/netdevsim/netdev.c                |   6 +-
- drivers/net/wireless/mediatek/mt76/mt76.h     |   2 +-
- include/linux/mm_types.h                      |   2 +-
- include/linux/skbuff.h                        |   1 +
- include/net/libeth/rx.h                       |   3 +-
- include/net/netmem.h                          |  31 +-
- include/net/page_pool/helpers.h               |  15 +
- include/net/page_pool/memory_provider.h       |   2 +-
- include/net/page_pool/types.h                 |  46 +-
- include/uapi/linux/netdev.h                   |   2 +
- net/core/devmem.c                             |   6 +-
- net/core/netmem_priv.h                        |   5 +-
- net/core/page_pool.c                          | 426 ++++++++++++++++--
- net/core/page_pool_priv.h                     |  12 +-
- net/core/page_pool_user.c                     |  39 +-
- tools/include/uapi/linux/netdev.h             |   2 +
- tools/net/ynl/samples/page-pool.c             |  11 +
- 25 files changed, 576 insertions(+), 88 deletions(-)
-
--- 
-2.33.0
-
+Thanks,
+Michal
