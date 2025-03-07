@@ -1,115 +1,107 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2639F7FD;
-	Fri,  7 Mar 2025 05:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233441922C6
+	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 05:53:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741326167; cv=none; b=ax0CYAoh64Ytb0gBbnZTB6lzc2BLcr6yGm8y3KgqcFYyrNAtM0xmXIsqQF8C/mGYTQ00t3z/c7URDZm9tbzYXBkTM53J9bKYHBrHBrowfh6RbEY/KH4z4mZcNZgvJ/ctsHuByWfj2v8Cap+2JqQYGhRbs6r+K/1IS8FpRMiC/NE=
+	t=1741326837; cv=none; b=IoElteMw+CqnBw89Z5/1EXP9yEsNcMSl37+7gggSQ1xEKho3menl2rDX91U/bxkWcVcKVgpoJkSUrXLJSydNUJRlCX94D0rn2y4uetJpYq6d1NMrDpAavs7gRsIA2X0TNmwC9V3RxENJLL9V1ov0/ME65nKQyNuGI6fUQ3WRhpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741326167; c=relaxed/simple;
-	bh=2VDFGRlYKXRUljBblvdtFlwOOzj13mn547LMTaJP2gE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bzFzCPXKxwmFzDUniqoJsp8UfHffh0aYbLoQAGexJX2mtVqz+74TyR/BpQtXAqbnG8IKYtDcC0A3tOaQdrg/R4fWIjPhZN4Xz+EYSq7mtXyWE39Upgs288GIDy+hU0nFHerVFDIhsX1bPjpHhyzD4yEh2jUJhPmTcK+Bx1X9P20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NfrvOjfx; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741326837; c=relaxed/simple;
+	bh=aQfYG8FZfpWlzffLnVm2Nnolyf9dIHwOFtO9wBCaqVg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kapEDZZhbHRmqKzKqYbJ1drC0HHGN0POmeu63mLhcHMXZ95iNlqVXTGPWk+D4L80IzU8fCSbMouexAEc8TXk8Bd2+mJzOY+QBObE6Hajwta0SlKE3GzVyIIGR19xbh2ynojPhtm/Urm3fF6Bl0PmjftTMvV4/CmFuVSt3vhjF0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QnL6+z1i; arc=none smtp.client-ip=95.215.58.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NfrvOjfx"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5e4d3f92250so2057813a12.1;
-        Thu, 06 Mar 2025 21:42:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741326164; x=1741930964; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XCCuSIdseDmohQkR/a0WVoB8hKN3v/q9qa5r2iXYOqo=;
-        b=NfrvOjfxEYG/YE8BX4gCmBYij08fYvo1Pa2Tob3y6Ne7hUA9IWwT5fp7rw5DTrZVE6
-         AyxgBC905Vvd/X8F6tP7O80KUItKevWyAays194tUGT8I03OV6ohI0g1vq6/9+u8MSXI
-         XQ4a2huJ9WR1pT7LOm6I/zlmAo2p/STvt/q/oidO04T4nox4fm+sJuNlir0jFnhd2MA0
-         AnPgfisLQdhkpam9PWx8uPJhSlKTuuWIkavMITSEZ5iFinnZLlXk6dz8BkXdzzdAdt44
-         LXWpZOnHgsQ39pFGCxKRiwcMyee17sCP+b6g2lh1013XVj2bsnK6vyL74TBfde/LCtXM
-         0r+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741326164; x=1741930964;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XCCuSIdseDmohQkR/a0WVoB8hKN3v/q9qa5r2iXYOqo=;
-        b=tHIeEvm/VrqjqK6ksVhnVxFC8yZflMUFKqQBZtN2DaEKHIeHPHCr1LHW2OL1L2ETwr
-         WKhCV69/0V1AKzrhHzEnw8Kmn2d2/woMYJR0hIrkvAjGYhU0EgcrsXQ6g69MHYUXQq3J
-         fzlIgJkM4kCyqC5NtJOB3of6ikNj/SiCXskDZjA5vs2tOGw3bAixDgvBv9HWV+LIKcst
-         CbKubEbyXZI+TV3XXFAO57dnuLm0EbdRxRpRg9i5yLA3QxiRIyyQ7nX0AgitK//Y/CwZ
-         1SZc1mkS/jFC447UmRJVbvu7ZlCGZHM78Qv7WgK7deOJzRRZj7VH9oxhGQ/MhEXTa1ff
-         XOew==
-X-Forwarded-Encrypted: i=1; AJvYcCUzav3jyNQgEUmwcrD521/dzHvLjo9xlJljYJmw5uhPkZ6DS2T52W26KMu//WW9uPinolzg2RcS@vger.kernel.org, AJvYcCXpx8DBOazZr6kat3/MzKCM5Z9vsNzYbdsnYYNhYfhs/OtY7Ib+xuDKz35ARhP2VvkXkGkW7GEoOV6q0OEfUlw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywxf63KmjiZGnmm/7Wpks1zp+GaTvgAsFMAqqnYRGrOvrKmpBwu
-	TrxGkVBK0jeZyFR5CqJJ5xC55mhQAGcomrhp10GL49fd+vwuslbMprXQ2H1aJzvKjnKp5B/YrUE
-	WndgkQHIU+ZRGuot12yjerIMv13w=
-X-Gm-Gg: ASbGnctZ7SX8vU/sZdGB6kErx6+I1r3coTQrvXwpH+Uzs7CNxXgI5zrxeXPf5MZ4t1T
-	EmEIdp5oinx0HYpZNkWMdRICyfMLptg0TcPdzWHNRHJDnWUcujWg8ld9/NpDzOmBlFLu7Cbrz6M
-	G97XUxohnsu7LTZf6Y+TY5cmga8KU=
-X-Google-Smtp-Source: AGHT+IGZ1N/0BVEIwoeC7pN0a4dU5zNpzeIOnjPo6+wNNho224DKHGoP+JyHqv+hhiNvvcswdXE4FXYOgm6J4PZJDFQ=
-X-Received: by 2002:a05:6402:2808:b0:5e5:71e:8c63 with SMTP id
- 4fb4d7f45d1cf-5e5e22e5476mr2166342a12.15.1741326164093; Thu, 06 Mar 2025
- 21:42:44 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QnL6+z1i"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1741326824;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=V9+iyQSEK0VITh9i3aNT5fQhLH5irNd+SUG9IphFoss=;
+	b=QnL6+z1ilyWcymF6bNFt3iTsdtgNFESdli83oAiHgPZIo634y2NZGnMo90nM5Ry0dBGMEh
+	xivkNI0Rw2c6tD7L/A2KT7hqbw+7Xw/lIYM5W7OpE1qNcjtEMBP8oObEOuSDfQ9pCg55Gu
+	FFGxSMUCadsz7LqECHlWSRL7r54Pd/g=
+From: Martin KaFai Lau <martin.lau@linux.dev>
+To: David Miller <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: pull-request: bpf-next 2025-03-06
+Date: Thu,  6 Mar 2025 21:53:35 -0800
+Message-ID: <20250307055335.441298-1-martin.lau@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250306072422.3303386-1-ap420073@gmail.com> <20250306072422.3303386-2-ap420073@gmail.com>
- <20250306173523.20b136ea@kernel.org>
-In-Reply-To: <20250306173523.20b136ea@kernel.org>
-From: Taehee Yoo <ap420073@gmail.com>
-Date: Fri, 7 Mar 2025 14:42:32 +0900
-X-Gm-Features: AQ5f1Jr7Gp5qqttUDWMqc-W6lQJFcMf1qiuEp95WhQpeUcsi3pljEnW7glUWB6E
-Message-ID: <CAMArcTWmZv+rUi8ci4tbzVz6dW==hDT6njehcd8Lkn44v50gPQ@mail.gmail.com>
-Subject: Re: [PATCH v2 net 1/6] eth: bnxt: fix truesize for mb-xdp-pass case
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com, 
-	andrew+netdev@lunn.ch, michael.chan@broadcom.com, pavan.chebbi@broadcom.com, 
-	horms@kernel.org, shuah@kernel.org, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, almasrymina@google.com, 
-	asml.silence@gmail.com, willemb@google.com, kaiyuanz@google.com, 
-	skhawaja@google.com, sdf@fomichev.me, gospo@broadcom.com, 
-	somnath.kotur@broadcom.com, dw@davidwei.uk
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, Mar 7, 2025 at 10:35=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
+Hi David, hi Jakub, hi Paolo, hi Eric,
 
-Hi Jakub,
-Thanks a lot for the review!
+The following pull-request contains BPF updates for your *net-next* tree.
 
-> On Thu,  6 Mar 2025 07:24:17 +0000 Taehee Yoo wrote:
-> > +     struct skb_shared_info sinfo =3D {0};
->
-> > +             memcpy(&sinfo, xdp_get_shared_info_from_buff(&xdp),
-> > +                    sizeof(struct skb_shared_info));
->
-> This may be a little expensive, struct skb_shared_info
-> is 320B and we only really need it in a rare occasion
-> of having multi-buf XDP.
+We've added 6 non-merge commits during the last 13 day(s) which contain
+a total of 6 files changed, 230 insertions(+), 56 deletions(-).
 
-You're right, it's pretty heavy. I didn't think about the total size of
-the shared_info.
+The main changes are:
 
->
-> Can we update agg_bufs =3D sinfo->nr_frags after calling
-> bnxt_rx_xdp(), and otherwise go back to something like you v1?
+1) Add XDP metadata support for tun driver, from Marcus Wichelmann.
 
-Okay, I will update agg_bufs with stored sinfo->nr_frags.
+Please consider pulling these changes from:
 
-> Sorry if I mislead you.
-
-It was my intention, no problem :)
+  git://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git tags/for-netdev
 
 Thanks a lot!
-Taehee Yoo
 
-> --
-> pw-bot: cr
+Also thanks to reporters, reviewers and testers of commits in this pull-request:
+
+Jason Wang, Willem de Bruijn
+
+----------------------------------------------------------------
+
+The following changes since commit b66e19dcf684b21b6d3a1844807bd1df97ad197a:
+
+  Merge branch 'mctp-add-mctp-over-usb-hardware-transport-binding' (2025-02-21 16:45:26 -0800)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git tags/for-netdev
+
+for you to fetch changes up to 72aad21de5f65bea60c3064ad463b3793fb4b1c6:
+
+  Merge branch 'xdp-metadata-support-for-tun-driver' (2025-03-06 12:31:09 -0800)
+
+----------------------------------------------------------------
+bpf-next-for-netdev
+
+----------------------------------------------------------------
+Marcus Wichelmann (6):
+      net: tun: Enable XDP metadata support
+      net: tun: Enable transfer of XDP metadata to skb
+      selftests/bpf: Move open_tuntap to network helpers
+      selftests/bpf: Refactor xdp_context_functional test and bpf program
+      selftests/bpf: Add test for XDP metadata support in tun driver
+      selftests/bpf: Fix file descriptor assertion in open_tuntap helper
+
+Martin KaFai Lau (1):
+      Merge branch 'xdp-metadata-support-for-tun-driver'
+
+ drivers/net/tun.c                                  |  28 +++-
+ tools/testing/selftests/bpf/network_helpers.c      |  28 ++++
+ tools/testing/selftests/bpf/network_helpers.h      |   3 +
+ .../testing/selftests/bpf/prog_tests/lwt_helpers.h |  29 -----
+ .../bpf/prog_tests/xdp_context_test_run.c          | 145 ++++++++++++++++++++-
+ tools/testing/selftests/bpf/progs/test_xdp_meta.c  |  53 +++++---
+ 6 files changed, 230 insertions(+), 56 deletions(-)
