@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CC6186E2D
-	for <netdev@vger.kernel.org>; Sat,  8 Mar 2025 03:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D267188006;
+	Sat,  8 Mar 2025 03:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741405217; cv=none; b=AQ4VNBu+yrQReGQHPz78k27Pz5sw8OD01d2LY70eUjgZlemYwk38eMP9xTbxcezNo3PuId90NenYBBz7MHcAlpVyC3dnm9loyt3Q9VvsMTQRdYqLkzGUjOtbnGdo0JY68odGQRlSoib1ovEmOutNrfaW35btJqALx1RMRYpco4A=
+	t=1741405217; cv=none; b=O+WAuVkbjVeu5Yt/MJHDOcAVOW/vdgnWEdexFO6ANH9MnGQMsPIYo/gIGE7FcaDPLZRaDKgeyoYAi0gqGHP0AILpRTZS+hoOP9/r+l1Gqy/oJmC2WxSnWwRDx/9KqnEKZmwH6EnnAMSNJI2lH5CUPr2bvOiZLdYAKfZCzzqRqZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741405217; c=relaxed/simple;
-	bh=/1551EvwFLFRJgDZVyhrnnVaVXrnUUlMvSTMNOwJ2lU=;
+	bh=U/LYTdUiiTEHa6ZIs90C3mimTrjgdeBkNgGCyj30R+U=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=YLjlKPex4bgljmiXFGugYxvm8HxKz9D6Un6US1cASCxZVOael1aaDsw+7NfqXsiisvqQWXIPZ7dtj4MyVPNGMiWkJ+MmvOEhnIfMXlRAYdO2pxaXQLCq+tGEq10Qezh7DMnjkfScytJBMOaLbUzzQ1Wn7QZOmBZIhRVUIxBbM3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fN9oY017; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ktbYs1yP/+y9jFhxnT86S5inr5Oog+W1x8BGybR1s6dgmZSjGP76BMX88P/sBsWIsuSb6885XjRkUB9zRDMnLBQi26CawqOZI0whtFJKMRByQw5XmSYSPMR10+tVXHXHIKyoMwHVx+2BK7OVGU7wu9UHa8A/omto1QADxabVrK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UeAntDnO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fN9oY017"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61973C4CED1;
-	Sat,  8 Mar 2025 03:40:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UeAntDnO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6C2C4CEE8;
+	Sat,  8 Mar 2025 03:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741405214;
-	bh=/1551EvwFLFRJgDZVyhrnnVaVXrnUUlMvSTMNOwJ2lU=;
+	s=k20201202; t=1741405217;
+	bh=U/LYTdUiiTEHa6ZIs90C3mimTrjgdeBkNgGCyj30R+U=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=fN9oY017Ls8+PnLtnXlkLqnk6xJ8SIsGVkNRV7njjgGQunqPJ1J3CZshucoLnX7fq
-	 34gDS4FJM05Udfnjt83J+sk/d+WcNTHZEa4eEUDcVLpHLRBMb06QIdNB4+ImB3zjDX
-	 DulC7OrPKKo7TYefkXHYNY1laYXghgaRJmjQBF5SDfvhL2AOBzXtvj2iwnAGeeSF0l
-	 2egyiTsIls2QcjHWcqtVyO5zu/rnP68+jCaioXLrQJmP9W8EibmxD0RVk2diDCOhAj
-	 mcHuzyjHAggi1DmnxNe4S4bN0eGw84zo7d5MPm5V7ZtvGhzAGgpbYO+xZDMJfKkb4v
-	 TFvhu6ilXUfnQ==
+	b=UeAntDnOWF92hVrFNFyCxfdC+y6/3ozsLCxIRrz0tlmShpjd/wT3E8Yqrq3H+k8Pq
+	 oHC0hfg77YRtaWSVZ3vG0RiLsAkv/R9kdRFoRm3Hn9VsIkONx7tnfjcaKOWcjyJtfM
+	 kP6BdIJMG5SfC4mY47NR+YtW3pJWugWlyfhNdJsDp04aGOTrjfE9b6JqtJiTZ2t08W
+	 LgShFHrjyVWCQ/ffvbdETo8wnZ8htHj3V4w30Fw5W7UxtcH2+kkQxo8ADesX5jhUSh
+	 LL0EYOYu6PkQ07w42c43L+1L8adkjtUSrGI6xNWOZJ+ccY90Ue9Zovi1nfi8w2WP50
+	 7GEMXtVGkSPvg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33D93380CFFB;
-	Sat,  8 Mar 2025 03:40:49 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33B86380CFFB;
+	Sat,  8 Mar 2025 03:40:52 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: stmmac: remove write-only priv->speed
+Subject: Re: pull-request: bpf-next 2025-03-06
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174140524774.2565853.6497124340077503983.git-patchwork-notify@kernel.org>
-Date: Sat, 08 Mar 2025 03:40:47 +0000
-References: <E1tqLJJ-005aQm-Mv@rmk-PC.armlinux.org.uk>
-In-Reply-To: <E1tqLJJ-005aQm-Mv@rmk-PC.armlinux.org.uk>
-To: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, alexandre.torgue@foss.st.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, mcoquelin.stm32@gmail.com,
- netdev@vger.kernel.org, pabeni@redhat.com
+ <174140525073.2565853.8563625669606759758.git-patchwork-notify@kernel.org>
+Date: Sat, 08 Mar 2025 03:40:50 +0000
+References: <20250307055335.441298-1-martin.lau@linux.dev>
+In-Reply-To: <20250307055335.441298-1-martin.lau@linux.dev>
+To: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+ pabeni@redhat.com, ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net,
+ martin.lau@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This pull request was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 07 Mar 2025 00:11:29 +0000 you wrote:
-> priv->speed is only ever written to in two locations, but never
-> read. Therefore, it serves no useful purpose. Remove this unnecessary
-> struct member.
+On Thu,  6 Mar 2025 21:53:35 -0800 you wrote:
+> Hi David, hi Jakub, hi Paolo, hi Eric,
 > 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> ---
->  drivers/net/ethernet/stmicro/stmmac/stmmac.h      | 1 -
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 ---
->  2 files changed, 4 deletions(-)
+> The following pull-request contains BPF updates for your *net-next* tree.
+> 
+> We've added 6 non-merge commits during the last 13 day(s) which contain
+> a total of 6 files changed, 230 insertions(+), 56 deletions(-).
+> 
+> [...]
 
 Here is the summary with links:
-  - [net-next] net: stmmac: remove write-only priv->speed
-    https://git.kernel.org/netdev/net-next/c/64fdb808660d
+  - pull-request: bpf-next 2025-03-06
+    https://git.kernel.org/netdev/net-next/c/93b1e055174b
 
 You are awesome, thank you!
 -- 
