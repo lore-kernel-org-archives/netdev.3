@@ -1,177 +1,114 @@
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E71F1E835A;
-	Sat,  8 Mar 2025 15:54:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D6D1DF97C;
+	Sat,  8 Mar 2025 16:35:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741449299; cv=none; b=AtXttyrpcSubcO6AfarlT+EYe85wXtTJQH9btS7H4hcbLTAhx9vIJtPfLFdITmG1v0GowuEOGP5oQu4azrB+Qh0xIqNrgHwRZPmh6++KXkIFcI7tDA6WCb6ZBJnF3DFnb8SBzknecTszz5YfxRl2xatI9R6etqrlx4u/7HFSbg8=
+	t=1741451736; cv=none; b=qx6oZ29ykkmQ9xHokmb4HLzDebXrpgvvAXHuISJ0E/poVmyrOsawaGVPiYuUPU0U8E+wHu7qffkqgDBedm2YzE7OzkGju5G1ulPZK8KBWg2tX6yO5gqGQ0qFRKAdI7roVod7eQUZNgW4DQOLqM9Ke3cxRDL2IX76NI0jIAvO7Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741449299; c=relaxed/simple;
-	bh=5YI0kyNkOiLZP/Q3ING0P5lghDvzq81OA8M4j4gIaic=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CNjCZo9/AQj//tFHn/vRmxM+eHaOtl6pgo6kVsRxsjZ2spxDZiBnd+XE4vrZpquU00ps2mk0NT/kug7uN1aTBL9qbnTN9SnIL0fvodIN21iw9CRy+7phsqc4gmathS5u/ao4EUS4B0iaBZjuIuhBoLDCV9SuXNEDcaK2/nxEIP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FFPGi6uZ; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1741451736; c=relaxed/simple;
+	bh=RIwW7eO1EJwvrd3VVoMhJVapyB6IvOmF9aB7VdpAhZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PZqEazYaaiZe0k2QtyGl/Sr4J2Izi0l3yg2MSs+HL2MXNPPqmQm8V8pkWDG5db2iZ6Hvh2/U48O0TPqWtcwN853pUOpy8UeWj+GZowPf1bCu7iHWmTqI3GfjZ0jcE6JbcmQmVJ/4Am0Mk5TaSV9E+4ZweSod17XEge6iRrstPKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F70o9oYp; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FFPGi6uZ"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id ED68C204CF;
-	Sat,  8 Mar 2025 15:54:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1741449290;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vmy9NxM0ktvekYXuuKXI27bEO2tP0yU3U+/hUv66has=;
-	b=FFPGi6uZLLxb9/W0w/LZ8BQjCxyxBMST6edtHqALz44Ux5cykiGOOGStK6TGiP4UaIdR3V
-	RXqEpeg0mSnQTBcXJCsnfd3ZNNbeA2hULpshad4tAi+LpP2mLwv0y5GjomVi+FwCbLlwJH
-	Qo6/MIskcz1SkNlxmJ5WkGRKt0ak1DWO/vzY0q7iKEv12dOhpHecvRR4qvPlY7oC8uSucR
-	O3/VijVYousSUDqbUQEH89cIjJoQqbJhoPgFNtb4ZHHRkhGIf4cI+ml8Ydxg4nRdlSbnbD
-	bBXSjsBlxhUwxdZ/EOBg82yojsbCzyYGO0LjW0ZG2iraZqmBdyy++k0XX47NWg==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: davem@davemloft.net,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com,
-	linux-arm-kernel@lists.infradead.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Simon Horman <horms@kernel.org>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Piergiorgio Beruto <piergiorgio.beruto@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>
-Subject: [PATCH net-next v2 4/7] net: ethtool: netlink: Introduce per-phy DUMP helpers
-Date: Sat,  8 Mar 2025 16:54:36 +0100
-Message-ID: <20250308155440.267782-5-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250308155440.267782-1-maxime.chevallier@bootlin.com>
-References: <20250308155440.267782-1-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F70o9oYp"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ff80290e44so3469094a91.0;
+        Sat, 08 Mar 2025 08:35:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741451734; x=1742056534; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=E2ixVN08UWIJynEo5bLIccBxGvDmgvF24wCvxvnHlHU=;
+        b=F70o9oYpSWJ5QmWtw+8J2aOuRdrD5j1yLqxVS/BuKz16ZHgh6lN2Clwp94oNI+KsCJ
+         WtdvPDieucUk+jOdir4fI+R9wenkEDMAREfZn2JU+Qn16nPd7IQZAZaWqog0uZWdICeA
+         klzlVQjzKHZXsnHI3I3ex5emY05ZJcqz63RFoeadfjMuDJmPdIP5o/SKsFfFWFpMux8A
+         FeB0HjBKbaAyAOWfI1yOYws0aKCo8M8xxtDyvQOOYOXLreaDaaK6eSazY4sG4gpedlja
+         KvEYAYm15tYzlr1eB0xOTpSGSEqCB9iA/q7v37+TPJaQnnpuXf8oxz7GWzmjyhdiOUj+
+         IGIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741451734; x=1742056534;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E2ixVN08UWIJynEo5bLIccBxGvDmgvF24wCvxvnHlHU=;
+        b=XimYeHZSgF0DciO+3Pi9oWDNMphdgYMQ3e8vrjXjSco7bMm7ibWYDIyBCaJYMyKnLL
+         CeJTI72OQRbGQ9xxOYIDc8JAq9dtsyvcPiiYJvvAIxO20D8U+R96w9122gJ+bk1knQNh
+         BPu131iaRT1iWcTCRGGLHYEl9VHqWBLQcL7oDtoOtDQ57vuPjJ32+vTaRSyIEpfZCkcS
+         2lS4/wCmXTvZ+OJk4IBhbAkj88E7MlpZ2tI5hANR2dyFQvBdWKTxV5JW+mC7NFbaRnRO
+         r1UnqJxYzUOfy+rGqCJmPbayxY3ozV5NOXX7xOXSh7L1tTbsZHEeIxPF8aSGng1fM5ha
+         msZw==
+X-Forwarded-Encrypted: i=1; AJvYcCVwhRno8YNxNXsvqSjGhTDtM9qrX5Xk4K2AuY3wuhGxnkgR1dxzB/luxWRh9zsSFhkDTQj3dCVW37DfXuQ=@vger.kernel.org, AJvYcCWVrRgeUk2p9ecGXY+hLwjWRsQSZVfzsMHo/Pl/4nTKV5CxMvicvbpKhQ6ewsgAWzbOxyrlq45d@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSrIwb/3snvoV8t1bwp1WspfkzZIozG3qpHt1Af8lxZqZzmeUn
+	9NYHuV3d5FyMfwK2lgxgQFYNKYu8L0MyaICiKtCj1Gr7CHLwbIy6
+X-Gm-Gg: ASbGncuIhfTskX0BuX2YYTgQBXduBCWX/ux43R+Pw+mkDwlcbSguxScUUsz5ImzexVu
+	yQkpAbjVYSo47KLGePXzhBM8naQ1sHKROfpkDf9PXljvoGiSmpwG6/AgJZUzsrICK6Osemx04MA
+	YEebcINxgTN32ej61hm5jNcGxp7q3GLHHSprYjRmMUaryYFyNwPLlxPKfetExNCFCYM1gWvyLFw
+	lu/5i4Xek0/2pYUKR6seWZXmNMwmcuXH+2qY9v1190+5uBX7d/yepdTgC/viTKnRTScnX2n1+l7
+	rFhJpcpn21yXKYIOkVk78aB/6S7Owq4avJOiXBI3/Z4EBxs=
+X-Google-Smtp-Source: AGHT+IEllU0GwXPBCLuRcx/4+jszmSTr/axljfzv0oTkjgVskpmReKjT67EUiTsOqkWQmkdwuEEi0w==
+X-Received: by 2002:a17:90b:1f88:b0:2fe:b174:31fe with SMTP id 98e67ed59e1d1-2ff7ce7b3c1mr12704804a91.2.1741451734474;
+        Sat, 08 Mar 2025 08:35:34 -0800 (PST)
+Received: from eleanor-wkdl ([140.116.96.203])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-224109ddbdcsm48671545ad.51.2025.03.08.08.35.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Mar 2025 08:35:33 -0800 (PST)
+Date: Sun, 9 Mar 2025 00:35:29 +0800
+From: Yu-Chun Lin <eleanor15x@gmail.com>
+To: Simon Horman <horms@kernel.org>
+Cc: shshaikh@marvell.com, manishc@marvell.com, GR-Linux-NIC-Dev@marvell.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, jserv@ccns.ncku.edu.tw,
+	visitorckw@gmail.com
+Subject: Re: [PATCH net-next] qlcnic: Optimize performance by replacing
+ rw_lock with spinlock
+Message-ID: <Z8xx0aN4vA7d-73i@eleanor-wkdl>
+References: <20250306163124.127473-1-eleanor15x@gmail.com>
+ <20250307132929.GI3666230@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduudefleeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveegtdffleffleevueellefgjeefvedvjefhheegfefgffdvfeetgeevudetffdtnecukfhppedvrgdtudemtggsudelmeekugegtgemlehftddtmegstgdvudemkeekleelmeehgedttgemvgehlegvnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugegtmeelfhdttdemsggtvddumeekkeelleemheegtdgtmegvheelvgdphhgvlhhopehfvgguohhrrgdrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddvpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvgguuhhmr
- giivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtohepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-GND-Sasl: maxime.chevallier@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250307132929.GI3666230@kernel.org>
 
-As there are multiple ethnl commands that report messages based on
-phy_device information, let's introduce a set of ethnl generic dump
-helpers to allow DUMP support for each PHY on a given netdev.
+On Fri, Mar 07, 2025 at 01:29:29PM +0000, Simon Horman wrote:
+> On Fri, Mar 07, 2025 at 12:31:24AM +0800, Yu-Chun Lin wrote:
+> > The 'crb_lock', an rwlock, is only used by writers, making it functionally
+> > equivalent to a spinlock.
+> > 
+> > According to Documentation/locking/spinlocks.rst:
+> > 
+> > "Reader-writer locks require more atomic memory operations than simple
+> > spinlocks. Unless the reader critical section is long, you are better
+> > off just using spinlocks."
+> > 
+> > Since read_lock() is never called, switching to a spinlock reduces
+> > overhead and improves efficiency.
+> > 
+> > Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+> 
+> Hi Yu-Chun Lin,
+> 
+> Thanks for your patch.
+> 
+> My main question is if you have hardware to test this?
+> And if so, was a benefit observed?
+> 
+> If not, my feeling is that although your change looks
+> correct, we'd be better off taking the lower risk option
+> of leaving things be.
 
-This logic iterates over the phy_link_topology of each netdev (or a
-single netdev for filtered DUMP), and call ethnl_default_dump_one() with
-the req_info populated with ifindex + phyindex.
+Hi Simon
 
-This allows re-using all the existing infra for phy-targetting commands
-that already use ethnl generic helpers.
+I perform a compile test to ensure correctness. But I don't have the
+hardware to run a full test.
 
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
-V2: Rebase
-
- net/ethtool/netlink.c | 53 +++++++++++++++++++++++++++++++++++++++++++
- net/ethtool/netlink.h |  6 +++++
- 2 files changed, 59 insertions(+)
-
-diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
-index ae06b72239a8..a09bcd67b38f 100644
---- a/net/ethtool/netlink.c
-+++ b/net/ethtool/netlink.c
-@@ -559,6 +559,59 @@ static int ethnl_default_dump_one(struct sk_buff *skb,
- 	return ret;
- }
- 
-+/* Specific context for phy-targeting command DUMP operatins. We keep in context
-+ * the latest phy_index we dumped, in case of an interrupted DUMP.
-+ */
-+struct ethnl_dump_ctx_perphy {
-+	unsigned long phy_index;
-+};
-+
-+int ethnl_dump_start_perphy(struct ethnl_dump_ctx *ctx)
-+{
-+	struct ethnl_dump_ctx_perphy *dump_ctx;
-+
-+	dump_ctx = kzalloc(sizeof(*dump_ctx), GFP_KERNEL);
-+	if (!dump_ctx)
-+		return -ENOMEM;
-+
-+	ctx->cmd_ctx = dump_ctx;
-+
-+	return 0;
-+}
-+
-+void ethnl_dump_done_perphy(struct ethnl_dump_ctx *ctx)
-+{
-+	kfree(ctx->cmd_ctx);
-+}
-+
-+int ethnl_dump_one_dev_perphy(struct sk_buff *skb,
-+			      struct ethnl_dump_ctx *ctx,
-+			      const struct genl_info *info)
-+{
-+	struct ethnl_dump_ctx_perphy *dump_ctx = ctx->cmd_ctx;
-+	struct net_device *dev = ctx->reply_data->dev;
-+	struct phy_device_node *pdn;
-+	int ret = 0;
-+
-+	if (!dev->link_topo)
-+		return 0;
-+
-+	xa_for_each_start(&dev->link_topo->phys, dump_ctx->phy_index,
-+			  pdn, dump_ctx->phy_index) {
-+		ctx->req_info->phy_index = dump_ctx->phy_index;
-+
-+		/* We can re-use the original dump_one as ->prepare_data in
-+		 * commands use ethnl_req_get_phydev(), which gets the PHY from
-+		 * what's in req_info
-+		 */
-+		ret = ethnl_default_dump_one(skb, ctx, info);
-+		if (ret)
-+			break;
-+	}
-+
-+	return ret;
-+}
-+
- static int ethnl_default_dump_one_dev(struct sk_buff *skb, struct net_device *dev,
- 				      struct ethnl_dump_ctx *ctx,
- 				      const struct genl_info *info)
-diff --git a/net/ethtool/netlink.h b/net/ethtool/netlink.h
-index 79fe98190c64..530a9b5c8b39 100644
---- a/net/ethtool/netlink.h
-+++ b/net/ethtool/netlink.h
-@@ -327,6 +327,12 @@ struct ethnl_dump_ctx {
- 	void				*cmd_ctx;
- };
- 
-+/* Generic callbacks to be used by PHY targeting commands */
-+int ethnl_dump_start_perphy(struct ethnl_dump_ctx *ctx);
-+int ethnl_dump_one_dev_perphy(struct sk_buff *skb, struct ethnl_dump_ctx *ctx,
-+			      const struct genl_info *info);
-+void ethnl_dump_done_perphy(struct ethnl_dump_ctx *ctx);
-+
- int ethnl_ops_begin(struct net_device *dev);
- void ethnl_ops_complete(struct net_device *dev);
- 
--- 
-2.48.1
-
+Yu-Chun Lin
