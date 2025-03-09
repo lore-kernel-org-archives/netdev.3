@@ -1,44 +1,44 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329681DEFD6
-	for <netdev@vger.kernel.org>; Sun,  9 Mar 2025 14:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729711DED44
+	for <netdev@vger.kernel.org>; Sun,  9 Mar 2025 14:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741531636; cv=none; b=QZ24sA/XQqdTt1SEIAfiUtQjguEBi6pkV5PtAaQUNVlTIr4Evt3uRa+XXHdYbjB3F8TadTr9sSxGo4wsnJiVbIYSyM7ebYMLKCdt5dxn1mEzKBBmMewfc54oc6x1RJpPjDOgqAfhTFBPJhmYiE6SYOPW2uYoT7wPIndf4Qm7NfM=
+	t=1741531637; cv=none; b=lVHDVO6VEjbIUg4WVsXp7kowCqiHRdS/PIS0AwxAQL/VNOH4ZU+TRbH3dSYZ6cSqFLPSSUkvtpYpDg8DnNmuDRH4eFYt6ym5gWKz9kEFk0sfR/MDdBfYZp0axwgNi+jzuLpU8dhCybYZIavVvOUr7p/9VDWjA+y/g041vUInKnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741531636; c=relaxed/simple;
-	bh=2tMuzYRpDp9lSJ8XtB4kqkyti7XnDfiQ7KZ7k6ycPfs=;
+	s=arc-20240116; t=1741531637; c=relaxed/simple;
+	bh=Bb8IvzyLfLIg1I4cBm71rQi2Ce85AhNcKqxsPd02EJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VFR92zaQCpPoGYtEC8svnYjyUlqbgXwIxp5L6VBbYInODRYwmgO/10YYsZ0siKm68l2Cnei/zmDG/uotMCYpEJzxcOT9mUFYlUDeZk2KIP5J8Uac9ipICUzA2+aOrW3gdS/HzsewYt7zAcysSzRX6qsPc0DlrdHjOHDCri6Dp/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sEcL0wgF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=G7PAERsG; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version; b=P/u/wXhYT6zDiS/nM38BLfILNK4ysBE3nvNsFaV/t1wgK9Ygy7E/tAE552B+FHE5EVVhQlyr0Q+h2gccvVzcP4oAlOSXPHdJoKFqKdohm8vlDmBZX3l66y5Ii9+6Wuk7HGkjGc8zJ9AtOXoNiiyXpHvhyeCyqqBIbZ+Mk8XAehs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gmLhcoCk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NvJFCFGl; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sEcL0wgF";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="G7PAERsG"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gmLhcoCk";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NvJFCFGl"
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741531629;
+	s=2020; t=1741531632;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Tyj386+KB4t51GKz+vPbzNL5+YMXCrE2N1UPhtwbbZ0=;
-	b=sEcL0wgFcU2gClyYj6HIhSMzvudY3vcXEHDz9vDA9+KDCwMLuHR09cXZK+wV1+Gb6PRisp
-	kGxAgnmDBWmwAGSad7ssMlOZlID6Bhims/olf3z0J/8kbS81ZbY47ULv1NQbNlhPoTE2P5
-	O5xfbVdfLqktBSt40pGExjEacVh7MvAFytHuTDs7CPnhmIejwKYfTBFkudrlGy1lkAtXcI
-	0hpB82c+ahP+Flz0+GRKuxa20hKYV6jpEl61Efn1Szy6tx21FCvwL6YVqEcGRIQzeD5xM5
-	cPgCNk30XANHxK3Di9fv4NkLNyfmJl/v1pyBC3vsQyQldqyrdCgseKAVT4OhRQ==
+	bh=xVMF3UgOhS4U6RN9l5v430qS/smjyIcn6+mTv7rds4c=;
+	b=gmLhcoCkZZjCFqceZdjRITs7C9jUk16kVHFROAXq73CA7OVMZNb82SPO0E2l2zlbMVqDnU
+	Te4Jazq5SyIre8ZTn/wSMUn+1HQ+p91+Fu8MSkrAvN+2vsV2FmwTgEzXAajmxCe6R/WCPY
+	RiwvPEu6/X4mj2adXYpxGrKECOEWZm2mRoHH32cBjaqILMTdEphhw24Gvq+xewSLZVYdmr
+	g3Y2D9qESzpn4zOFGF8B9V/pqJwLzz/kjTO5M7jUCL+AVzcAQmxVTrzuwKs+y37TSoIT2T
+	KgQoKG7qjjkTBf2oeDcIi3h4funSDvDaX9oPBd1wUcbuSGq0m7qFDPAl/vcqwg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741531629;
+	s=2020e; t=1741531632;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Tyj386+KB4t51GKz+vPbzNL5+YMXCrE2N1UPhtwbbZ0=;
-	b=G7PAERsG6CuytzzBW2vahc+cCxY9+tFngjxsPl5N0eSPfC5wgZj/evv2DkVzerYOee/3j/
-	Sr3/Cn+bmG5/nIBQ==
+	bh=xVMF3UgOhS4U6RN9l5v430qS/smjyIcn6+mTv7rds4c=;
+	b=NvJFCFGlSkZdM0zda6kq2HtxpWVPZIr8TiWeIvW7rbXl/RMQn/kHGkzlgiOC4nK9WBDPG9
+	XQEJnYsKDoIlBODg==
 To: netdev@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -48,11 +48,13 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Simon Horman <horms@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH net-next 09/18] xfrm: Use nested-BH locking for nat_keepalive_sk_ipv[46].
-Date: Sun,  9 Mar 2025 15:46:44 +0100
-Message-ID: <20250309144653.825351-10-bigeasy@linutronix.de>
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	mptcp@lists.linux.dev
+Subject: [PATCH net-next 15/18] mptcp: Use nested-BH locking for hmac_storage.
+Date: Sun,  9 Mar 2025 15:46:50 +0100
+Message-ID: <20250309144653.825351-16-bigeasy@linutronix.de>
 In-Reply-To: <20250309144653.825351-1-bigeasy@linutronix.de>
 References: <20250309144653.825351-1-bigeasy@linutronix.de>
 Precedence: bulk
@@ -63,114 +65,87 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 
-nat_keepalive_sk_ipv[46] is a per-CPU variable and relies on disabled BH
-for its locking. Without per-CPU locking in local_bh_disable() on
-PREEMPT_RT this data structure requires explicit locking.
+mptcp_delegated_actions is a per-CPU variable and relies on disabled BH for=
+ its
+locking. Without per-CPU locking in local_bh_disable() on PREEMPT_RT this d=
+ata
+structure requires explicit locking.
 
-Use sock_bh_locked which has a sock pointer and a local_lock_t. Use
-local_lock_nested_bh() for locking. This change adds only lockdep
-coverage and does not alter the functional behaviour for !PREEMPT_RT.
+Add a local_lock_t to the data structure and use local_lock_nested_bh() for
+locking. This change adds only lockdep coverage and does not alter the
+functional behaviour for !PREEMPT_RT.
 
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>
+Cc: Geliang Tang <geliang@kernel.org>
+Cc: mptcp@lists.linux.dev
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- net/xfrm/xfrm_nat_keepalive.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ net/mptcp/protocol.c | 4 +++-
+ net/mptcp/protocol.h | 9 ++++++++-
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/net/xfrm/xfrm_nat_keepalive.c b/net/xfrm/xfrm_nat_keepalive.c
-index 82f0a301683f0..ebf95d48e86c1 100644
---- a/net/xfrm/xfrm_nat_keepalive.c
-+++ b/net/xfrm/xfrm_nat_keepalive.c
-@@ -9,9 +9,13 @@
- #include <net/ip6_checksum.h>
- #include <net/xfrm.h>
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 6bd8190474706..922b5baf3372a 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -46,7 +46,9 @@ static struct percpu_counter mptcp_sockets_allocated ____=
+cacheline_aligned_in_sm
+ static void __mptcp_destroy_sock(struct sock *sk);
+ static void mptcp_check_send_data_fin(struct sock *sk);
 =20
--static DEFINE_PER_CPU(struct sock *, nat_keepalive_sk_ipv4);
-+static DEFINE_PER_CPU(struct sock_bh_locked, nat_keepalive_sk_ipv4) =3D {
+-DEFINE_PER_CPU(struct mptcp_delegated_action, mptcp_delegated_actions);
++DEFINE_PER_CPU(struct mptcp_delegated_action, mptcp_delegated_actions) =3D=
+ {
 +	.bh_lock =3D INIT_LOCAL_LOCK(bh_lock),
 +};
- #if IS_ENABLED(CONFIG_IPV6)
--static DEFINE_PER_CPU(struct sock *, nat_keepalive_sk_ipv6);
-+static DEFINE_PER_CPU(struct sock_bh_locked, nat_keepalive_sk_ipv6) =3D {
-+	.bh_lock =3D INIT_LOCAL_LOCK(bh_lock),
-+};
- #endif
+ static struct net_device *mptcp_napi_dev;
 =20
- struct nat_keepalive {
-@@ -56,10 +60,12 @@ static int nat_keepalive_send_ipv4(struct sk_buff *skb,
+ /* Returns end sequence number of the receiver's advertised window */
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index ad21925af0612..8705d699e9870 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -480,6 +480,7 @@ mptcp_subflow_rsk(const struct request_sock *rsk)
 =20
- 	skb_dst_set(skb, &rt->dst);
+ struct mptcp_delegated_action {
+ 	struct napi_struct napi;
++	local_lock_t bh_lock;
+ 	struct list_head head;
+ };
 =20
--	sk =3D *this_cpu_ptr(&nat_keepalive_sk_ipv4);
-+	local_lock_nested_bh(&nat_keepalive_sk_ipv4.bh_lock);
-+	sk =3D this_cpu_read(nat_keepalive_sk_ipv4.sock);
- 	sock_net_set(sk, net);
- 	err =3D ip_build_and_send_pkt(skb, sk, fl4.saddr, fl4.daddr, NULL, tos);
- 	sock_net_set(sk, &init_net);
-+	local_unlock_nested_bh(&nat_keepalive_sk_ipv4.bh_lock);
- 	return err;
- }
+@@ -671,9 +672,11 @@ static inline void mptcp_subflow_delegate(struct mptcp=
+_subflow_context *subflow,
+ 		if (WARN_ON_ONCE(!list_empty(&subflow->delegated_node)))
+ 			return;
 =20
-@@ -89,15 +95,19 @@ static int nat_keepalive_send_ipv6(struct sk_buff *skb,
- 	fl6.fl6_sport =3D ka->encap_sport;
- 	fl6.fl6_dport =3D ka->encap_dport;
++		local_lock_nested_bh(&mptcp_delegated_actions.bh_lock);
+ 		delegated =3D this_cpu_ptr(&mptcp_delegated_actions);
+ 		schedule =3D list_empty(&delegated->head);
+ 		list_add_tail(&subflow->delegated_node, &delegated->head);
++		local_unlock_nested_bh(&mptcp_delegated_actions.bh_lock);
+ 		sock_hold(mptcp_subflow_tcp_sock(subflow));
+ 		if (schedule)
+ 			napi_schedule(&delegated->napi);
+@@ -685,11 +688,15 @@ mptcp_subflow_delegated_next(struct mptcp_delegated_a=
+ction *delegated)
+ {
+ 	struct mptcp_subflow_context *ret;
 =20
--	sk =3D *this_cpu_ptr(&nat_keepalive_sk_ipv6);
-+	local_lock_nested_bh(&nat_keepalive_sk_ipv6.bh_lock);
-+	sk =3D this_cpu_read(nat_keepalive_sk_ipv6.sock);
- 	sock_net_set(sk, net);
- 	dst =3D ipv6_stub->ipv6_dst_lookup_flow(net, sk, &fl6, NULL);
--	if (IS_ERR(dst))
-+	if (IS_ERR(dst)) {
-+		local_unlock_nested_bh(&nat_keepalive_sk_ipv6.bh_lock);
- 		return PTR_ERR(dst);
+-	if (list_empty(&delegated->head))
++	local_lock_nested_bh(&mptcp_delegated_actions.bh_lock);
++	if (list_empty(&delegated->head)) {
++		local_unlock_nested_bh(&mptcp_delegated_actions.bh_lock);
+ 		return NULL;
 +	}
 =20
- 	skb_dst_set(skb, dst);
- 	err =3D ipv6_stub->ip6_xmit(sk, skb, &fl6, skb->mark, NULL, 0, 0);
- 	sock_net_set(sk, &init_net);
-+	local_unlock_nested_bh(&nat_keepalive_sk_ipv6.bh_lock);
- 	return err;
- }
- #endif
-@@ -202,7 +212,7 @@ static void nat_keepalive_work(struct work_struct *work)
- 				      (ctx.next_run - ctx.now) * HZ);
+ 	ret =3D list_first_entry(&delegated->head, struct mptcp_subflow_context, =
+delegated_node);
+ 	list_del_init(&ret->delegated_node);
++	local_unlock_nested_bh(&mptcp_delegated_actions.bh_lock);
+ 	return ret;
  }
 =20
--static int nat_keepalive_sk_init(struct sock * __percpu *socks,
-+static int nat_keepalive_sk_init(struct sock_bh_locked __percpu *socks,
- 				 unsigned short family)
- {
- 	struct sock *sk;
-@@ -214,22 +224,22 @@ static int nat_keepalive_sk_init(struct sock * __perc=
-pu *socks,
- 		if (err < 0)
- 			goto err;
-=20
--		*per_cpu_ptr(socks, i) =3D sk;
-+		per_cpu_ptr(socks, i)->sock =3D sk;
- 	}
-=20
- 	return 0;
- err:
- 	for_each_possible_cpu(i)
--		inet_ctl_sock_destroy(*per_cpu_ptr(socks, i));
-+		inet_ctl_sock_destroy(per_cpu_ptr(socks, i)->sock);
- 	return err;
- }
-=20
--static void nat_keepalive_sk_fini(struct sock * __percpu *socks)
-+static void nat_keepalive_sk_fini(struct sock_bh_locked __percpu *socks)
- {
- 	int i;
-=20
- 	for_each_possible_cpu(i)
--		inet_ctl_sock_destroy(*per_cpu_ptr(socks, i));
-+		inet_ctl_sock_destroy(per_cpu_ptr(socks, i)->sock);
- }
-=20
- void xfrm_nat_keepalive_state_updated(struct xfrm_state *x)
 --=20
 2.47.2
 
