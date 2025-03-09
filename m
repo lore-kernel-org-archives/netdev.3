@@ -1,95 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50BD1C2DC8;
-	Sun,  9 Mar 2025 14:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F421392
+	for <netdev@vger.kernel.org>; Sun,  9 Mar 2025 14:47:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741531005; cv=none; b=pk3ncBXmjm2ABdo3MCl6QbLxnLai8pBkNhFi9OuUXkpRLAl7AkEvaad7TzmGveHRwKE3yDYSDlGRFUkWEPl7A9Yx0XDVjeAaIOQwwS8gTn2S9FU9ysK22KpjY8ClY8Q1XS8rCt0lLvcDCoW3n+CD4Fdj3hEuiEKvM3adEO/huks=
+	t=1741531630; cv=none; b=u0o4ImZjTC7p/ibxxMep1Jhy9QVEngB80KESaG+r+Og8U+yPEsIRqYIx0iYTN4zelO7xVI2jdd4DZOOXuKPPg0OkYh0y/ykDJHGUvyL6kFEiF5+bwb8icDjfc7N/hweBmqHieFpoBWLIk1rGXOPNNuDMsdWjotLTeNYiZCintaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741531005; c=relaxed/simple;
-	bh=DYe8HUJy8kkP+7yQkU7dXVRL2fEX/sK2cxo3m1sVBZ0=;
-	h=Date:From:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hEtWkx1JEamnYWJBHN9RuJDIln4LoTJwmhrMG4xvFHXfJG37itnDpxfsrgze4vFiZKEmYFg7Z1bWc42b8OQDBeOLQ4pNCRNv/Iektyir5XYK0bWRkaVPvlHxShlbSWndmXIEdlBxp7/0AzPR9AJ0Mp5a8prdw2/76N1krXqrvY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YlOLQg3P; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741531630; c=relaxed/simple;
+	bh=aG+c2reD8sdY8z/puXdPKUl0pVr8sNcRx8J8OZfd5wQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=H3pRuMAjthw2bbSj9oDdbKowxYt7p8mGnxLVHu51kwHY1WZyBr5UEzf1AkqWW/WgiEho4x97FjJvZKFrnElshB1k2uV3H+o4+G9s/mIUexsRgV+b+lTGGycbxuPLggkCyXRE/0x89aN7qkqRK+8VXR522oigVR3FMpzFbQE3XUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qVPXvQsB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Qmlc4QlZ; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YlOLQg3P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7F1C4CEE3;
-	Sun,  9 Mar 2025 14:36:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741531003;
-	bh=DYe8HUJy8kkP+7yQkU7dXVRL2fEX/sK2cxo3m1sVBZ0=;
-	h=Date:From:Cc:Subject:References:In-Reply-To:From;
-	b=YlOLQg3Pfr5rPOiqsOgcXPYxWoi6EOfz0ffZPeOgQeSIPZSyl04RGttxrXIgpxD8Y
-	 dtF3lqztalSnxpkp7ZUqfT7WuCZCwJe40agWk8hE1naPT24GHuY7gw8HDSZV2B65OJ
-	 HpyrobADB5/Y0G6mMiylDM3GQ6EhQIbLJi2gqhKLv0nZlGV4R0nhkUYoChTKEOjNNv
-	 ABYTituRn62KGX3B6YYEMyF5HNmrvmLhq8nIn+yWXqTKzOl35WD5cuWTBOX4itFFZT
-	 40VAKVlLDLMPHPLdfsvAsCeLrAoSaomd4Y6t+fEzMf1mtzkEbtwCwYbpQ5d5OfHTxm
-	 aEYzYxGQDGe4Q==
-Date: Sun, 9 Mar 2025 04:36:42 -1000
-From: Tejun Heo <tj@kernel.org>
-Cc: kuniyu@amazon.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	cgroups@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qVPXvQsB";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Qmlc4QlZ"
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1741531626;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KMns56qvdsQqeNL12yWaFOWFInHuKZiBqGjNYelkvdg=;
+	b=qVPXvQsBYhVbCPfw43+YqThrA7gpQbh1oB2OsJlFL6wpoVveJbMuaV6pPW761jv9sv5Fn7
+	SaGpS4ZlYearuP1bYv1z3SejpV6cpTxCmpAxeKxm0PBlF0f4mvP3byH9valf9NoBvN3zI+
+	qDNOOHwbBw4M0Vwq9ClcWXCKUjaXLMECFHhb016fNpOKXereWm6uJcKflHLSX93A0C4JrV
+	kzxVA2A0Y4B0ZvQMs8t4h4rz4HLsKsyG7Uupp1ZItkO5ReIbPrahfrPSOSprTDIAao8TN7
+	isnCAQATE41llr74795t/yAraG7zJqb169tyHp0es+Vzel4RcSgIHMMq+Bqn7Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1741531626;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KMns56qvdsQqeNL12yWaFOWFInHuKZiBqGjNYelkvdg=;
+	b=Qmlc4QlZfz21SCxxylHOIBThaobCQf5I5e56SCF5fN/drz+XzDIfUZn6kNMKamwDAtj0t3
+	SkmA35Hni0OBGEAQ==
+To: netdev@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Leon Romanovsky <leon@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Christian Brauner <brauner@kernel.org>,
-	Lennart Poettering <mzxreary@0pointer.de>,
-	Luca Boccassi <bluca@debian.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Shuah Khan <shuah@kernel.org>
-Subject: Re: [PATCH net-next 0/4] Add getsockopt(SO_PEERCGROUPID) and fdinfo
- API to retreive socket's peer cgroup id
-Message-ID: <Z82neltmT_hbEpYy@slm.duckdns.org>
-References: <20250309132821.103046-1-aleksandr.mikhalitsyn@canonical.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Subject: [PATCH net-next 01/18] net: page_pool: Don't recycle into cache on PREEMPT_RT.
+Date: Sun,  9 Mar 2025 15:46:36 +0100
+Message-ID: <20250309144653.825351-2-bigeasy@linutronix.de>
+In-Reply-To: <20250309144653.825351-1-bigeasy@linutronix.de>
+References: <20250309144653.825351-1-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250309132821.103046-1-aleksandr.mikhalitsyn@canonical.com>
-84;0;0cTo: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 09, 2025 at 02:28:11PM +0100, Alexander Mikhalitsyn wrote:
-> 1. Add socket cgroup id and socket's peer cgroup id in socket's fdinfo
-> 2. Add SO_PEERCGROUPID which allows to retrieve socket's peer cgroup id
-> 3. Add SO_PEERCGROUPID kselftest
-> 
-> Generally speaking, this API allows race-free resolution of socket's peer cgroup id.
-> Currently, to do that SCM_CREDENTIALS/SCM_PIDFD -> pid -> /proc/<pid>/cgroup sequence
-> is used which is racy.
-> 
-> As we don't add any new state to the socket itself there is no potential locking issues
-> or performance problems. We use already existing sk->sk_cgrp_data.
-> 
-> We already have analogical interfaces to retrieve this
-> information:
-> - inet_diag: INET_DIAG_CGROUP_ID
-> - eBPF: bpf_sk_cgroup_id
-> 
-> Having getsockopt() interface makes sense for many applications, because using eBPF is
-> not always an option, while inet_diag has obvious complexety and performance drawbacks
-> if we only want to get this specific info for one specific socket.
-> 
-> Idea comes from UAPI kernel group:
-> https://uapi-group.org/kernel-features/
-> 
-> Huge thanks to Christian Brauner, Lennart Poettering and Luca Boccassi for proposing
-> and exchanging ideas about this.
-> 
-> Git tree:
-> https://github.com/mihalicyn/linux/tree/so_peercgroupid
+With preemptible softirq and no per-CPU locking in local_bh_disable() on
+PREEMPT_RT the consumer can be preempted while a skb is returned.
 
-From cgroup POV:
+Avoid the race by disabling the recycle into the cache on PREEMPT_RT.
 
-Acked-by: Tejun Heo <tj@kernel.org>
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ net/core/page_pool.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Thanks.
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index f5e908c9e7ad8..1d669d4382729 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -800,6 +800,10 @@ static bool page_pool_napi_local(const struct page_poo=
+l *pool)
+ 	const struct napi_struct *napi;
+ 	u32 cpuid;
+=20
++	/* On PREEMPT_RT the softirq can be preempted by the consumer */
++	if (IS_ENABLED(CONFIG_PREEMPT_RT))
++		return false;
++
+ 	if (unlikely(!in_softirq()))
+ 		return false;
+=20
+--=20
+2.47.2
 
--- 
-tejun
