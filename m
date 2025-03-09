@@ -1,154 +1,80 @@
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761B217C77;
-	Sun,  9 Mar 2025 07:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F5617BB3F
+	for <netdev@vger.kernel.org>; Sun,  9 Mar 2025 07:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741506455; cv=none; b=pTzahQLnug0fBcgRZTk549Z28MjMYw//o+YPhZvt3eLsu+a+Z1HbWmAfUhgPQvfkh+Whg7ZoShTZ96cl/Jph1rv+JkWmjejyBiZkn0k35GcUPeAAEumnuAzrlm3BCc2vGmdry8blz+WzKIcpJlGRUlcMwafgsR8nxvLuk1gRWDY=
+	t=1741506636; cv=none; b=Af0LoPk74a7CZb+Z1P+WV6eRy3Ddj/NpbanzNMlU2F0R55Qs0y268by1sSXybEgTnK5rS9oDS2SCNqGd39WjND6rWrAyls0G9K+8dJ1NZWwwmeGSxcdYJNp9yNFKpb6KVMP3Rzr4YzujfqpiyaFTmhKcRa8NCLEru36z6/77Z9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741506455; c=relaxed/simple;
-	bh=qtXCXe+nNyfcyRAulZDFi2Udoq+tbMD7n9+7CwQJoXc=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=To7D+9BbLrppEyB5HVeAXrdhEZt2BwC2pjG6wqkCbzUcihaEzQ0sPUIRA4ab1oxcieTa+ykd24lGGE3b5mrbYms8OzGZNG2YlBKu4zMpdUvFBkrXrVzpqF+FEMpOymMKa0JCLs/MzYFnaLWLCGiONv/L7rhLlwV1yE9Tp7HPtos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=kHtuooKT; arc=none smtp.client-ip=162.62.57.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1741506636; c=relaxed/simple;
+	bh=6Ijr4KIpQkuwkZSerp6ws7MjW4fMTkdgprv5Qg8nqiA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h744izbWfGA6/4Luky//knnVE82ADl1M1NXhE8ivI3BuDzodc/0RKfwpSyKpMCEioFDlsXDein2dF6Rv1toxM75GBi7TpRKx+d16N3cdjsR9AM5+7+/3jNqZFydjSWJe566NupUuk0bQy2FplVsDDW7zBerovBDIqoDeuHp7jlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q86/6Lfx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="kHtuooKT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1741506439; bh=UuctHCw54Sbs+GMXZiA+9NBNhsVaLpJkYq7/z98yanc=;
-	h=From:To:Cc:Subject:Date;
-	b=kHtuooKT48tsok0BZV5wfYaQo4lrCy2wxYYfyBLLZMdE25Oo64UsKKI9M/J/sbOEu
-	 ceEmh14M0VjEUWUK7J/5KLgHX8gdhvyhDSqH7BdJCus1esA/z2BYetd3Xe2l5lQOL3
-	 P5cRaZ0gUsJaonoTy5QnPRI+Vmz3Yp9+ahCW0zw0=
-Received: from localhost.localdomain ([59.66.26.122])
-	by newxmesmtplogicsvrszc13-0.qq.com (NewEsmtp) with SMTP
-	id BD13AEE0; Sun, 09 Mar 2025 15:47:17 +0800
-X-QQ-mid: xmsmtpt1741506437ty97nhdku
-Message-ID: <tencent_0A154BBE38E000228C01BE742CB73681FE09@qq.com>
-X-QQ-XMAILINFO: NouDQD3dZCwaaL7UEsvYJy45KdtSWtllmld6g/xFR5bnFZB3OHNNpL+AnFsFCn
-	 5eL0r4MmUInGwGPq3ytPdImyqTee9RnvxXs9dFvi25efOaLjpFRkGY52nhV4jPLTTYhFH0Fg/CFX
-	 JpWCn6Ozzz6XcHh4pJikoOry/g0jBv0idm2Kr/9cUx19Dmf42iQqRBeRv6f1XUkRha3a8Jcv+Hc6
-	 JLWq0x/PKiqcyH8bJVLvAhuN/Bh4+eloxqYwDcgl8UE8Xs+HnaDQ7UM8/tBuid/mIapt9Ux7bkSF
-	 eIp7n52PPc2e2c7XdlxkdRIm2PAVOee51QumLlTPBkJOmEIIaQdAd4oQIZPIo/l0uDOf0WgpBsEf
-	 NjqDNGQV/YhJGBeNiPXL66hO79e9NeuNVmQ2XUB7ewrGMJFwFsqP+kwllDnH2o7hTxs2FEEw7Smy
-	 Nux/fG9SwgsjM973B7j6ENwr4AdfcG2VaTuVLTpHsg3uRCpTWv7LAJJJEE3gggwy1gKY1V3d9+nF
-	 FoEHheeE/KDYhz8FTjOB4AN5yQcEtMhmeZpc5ao3sxa009cnU17P9WhiF2OgWMKcFqK/pqUBnUTV
-	 XgMKMXt3AOUpwam9GweJu1yY9IV/E85fJFWSUZ+B4M2EGAAHbrurK0RDQWif0qmsCDY7B78Lc9FX
-	 mm4AI/YhvFMgo0aVPa97YKKTwDWIFl5Uwi4cBBdi3fp08tn7nECpeLOw6dnRDN0XIMAuB00qbuDB
-	 CY92jN+Sli58OQqwLWA2IYebsTbz3TYYZEjAQsIf+Nt/DtHvJ3o89+6xI7Sx9M58U738SHF5OOEi
-	 EZrmc+CuYiOzvZAxha4LLRNgeAZk6lNUqD8lLSA50gk5wv5+QfT8RTN5ZmHcNtexEjVFaTzmFiYc
-	 fGZS1a3cQNG48fpUAE3AwDKfSUDKO5alV40jy9vugy3dhJ9rk/bt0DVOGeJ1U6CM7wH/peGI3rja
-	 BxkRe8qtPthhmIM2X6rSqi618vJhPtemStqChy5pgt4OQr+SF9xeUN28tvjtUO5ys9hXF+e/c=
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
-From: Hanyuan Zhao <hanyuan-z@qq.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hanyuan Zhao <hanyuan-z@qq.com>
-Subject: [PATCH 1/2] net: enc28j60: support getting irq number from gpio phandle in the device tree
-Date: Sun,  9 Mar 2025 15:47:08 +0800
-X-OQ-MSGID: <20250309074709.127504-1-hanyuan-z@qq.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q86/6Lfx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6B1C4CEE5;
+	Sun,  9 Mar 2025 07:50:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741506635;
+	bh=6Ijr4KIpQkuwkZSerp6ws7MjW4fMTkdgprv5Qg8nqiA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q86/6Lfx4Yyd/QIuIYAjN5jmPEvTtWddCXWqLft3LmTfrrXsFbHKbIVWPJ2RsZehK
+	 a7qDo0Z+cFDylotxSULQsJiPZI31wCgiAFgueHrHgThCgkxFiv0bs9q7px1ildrRHJ
+	 r9noef0avkuvXyXt/GC7caSbq6f6JH5GbEIOS8ru2rP4duMCWOJZgzm0bzzd1GCNig
+	 cGTkuJ5VDfXMM54aZna/mKDU4afcmsRYIOih94R000IzZ0zcHCqsGL1y+dJEyXDP8s
+	 auhbbhf4hYPivhH9NCdl0SfnAWyzRCrAOqvUCDx32tfHTH3rRKUiX7BoieySGXkULD
+	 YM0LNZd94vuSw==
+Date: Sun, 9 Mar 2025 09:50:29 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Tariq Toukan <ttoukan.linux@gmail.com>, netdev@vger.kernel.org,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	saeedm@nvidia.com, tariqt@nvidia.com, andrew+netdev@lunn.ch,
+	Gal Pressman <gal@nvidia.com>
+Subject: Re: [PATCH net] net/mlx5: Fill out devlink dev info only for PFs
+Message-ID: <20250309075029.GA10087@unreal>
+References: <20250303133200.1505-1-jiri@resnulli.us>
+ <53c284be-f435-4945-a8eb-58278bf499ad@gmail.com>
+ <20250305183016.413bda40@kernel.org>
+ <7bb21136-83e8-4eff-b8f7-dc4af70c2199@gmail.com>
+ <20250306114355.6f1c6c51@kernel.org>
+ <ahh3ctzo2gs5zwwhzq33oudr4hmplznewczbfil74zddfabx4n@t7lwrx6eh4ym>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <ahh3ctzo2gs5zwwhzq33oudr4hmplznewczbfil74zddfabx4n@t7lwrx6eh4ym>
 
-This patch allows the kernel to automatically requests the pin, configures
-it as an input, and converts it to an IRQ number, according to a GPIO
-phandle specified in device tree. This simplifies the process by
-eliminating the need to manually define pinctrl and interrupt nodes.
-Additionally, it is necessary for platforms that do not support pin
-configuration and properties via the device tree.
+On Fri, Mar 07, 2025 at 01:35:28PM +0100, Jiri Pirko wrote:
+> Thu, Mar 06, 2025 at 08:43:55PM +0100, kuba@kernel.org wrote:
+>=20
+> [...]
+>=20
+>=20
+> >nvidia's employees patches should go via your tree, in the first place.
+>=20
+> Why? I've been in Mellanox/Nvidia for almost 10 years and this is
+> actually the first time I hit this. I'm used to send patches directly,
+> I've been doing that for almost 15+ years and this was never issue.
+> Where this rule is written down? What changed?
 
-Signed-off-by: Hanyuan Zhao <hanyuan-z@qq.com>
----
- drivers/net/ethernet/microchip/enc28j60.c | 25 ++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+Maintainer?
 
-diff --git a/drivers/net/ethernet/microchip/enc28j60.c b/drivers/net/ethernet/microchip/enc28j60.c
-index d6c9491537e4..b3613e45c900 100644
---- a/drivers/net/ethernet/microchip/enc28j60.c
-+++ b/drivers/net/ethernet/microchip/enc28j60.c
-@@ -24,6 +24,7 @@
- #include <linux/skbuff.h>
- #include <linux/delay.h>
- #include <linux/spi/spi.h>
-+#include <linux/of_gpio.h>
- 
- #include "enc28j60_hw.h"
- 
-@@ -1526,6 +1527,7 @@ static int enc28j60_probe(struct spi_device *spi)
- 	struct net_device *dev;
- 	struct enc28j60_net *priv;
- 	int ret = 0;
-+	unsigned long irq_flags = IRQF_ONESHOT;
- 
- 	if (netif_msg_drv(&debug))
- 		dev_info(&spi->dev, "Ethernet driver %s loaded\n", DRV_VERSION);
-@@ -1558,20 +1560,33 @@ static int enc28j60_probe(struct spi_device *spi)
- 		eth_hw_addr_random(dev);
- 	enc28j60_set_hw_macaddr(dev);
- 
-+	if (spi->irq > 0) {
-+		dev->irq = spi->irq;
-+	} else {
-+		/* Try loading device tree property irq-gpios */
-+		struct gpio_desc *irq_gpio_desc = devm_fwnode_gpiod_get_index(&spi->dev,
-+				of_fwnode_handle(spi->dev.of_node), "irq", 0, GPIOD_IN, NULL);
-+		if (IS_ERR(irq_gpio_desc)) {
-+			dev_err(&spi->dev, "unable to get a valid irq gpio\n");
-+			goto error_irq;
-+		}
-+		dev->irq = gpiod_to_irq(irq_gpio_desc);
-+		irq_flags |= IRQF_TRIGGER_FALLING;
-+	}
-+
- 	/* Board setup must set the relevant edge trigger type;
- 	 * level triggers won't currently work.
- 	 */
--	ret = request_threaded_irq(spi->irq, NULL, enc28j60_irq, IRQF_ONESHOT,
-+	ret = request_threaded_irq(dev->irq, NULL, enc28j60_irq, irq_flags,
- 				   DRV_NAME, priv);
- 	if (ret < 0) {
- 		if (netif_msg_probe(priv))
- 			dev_err(&spi->dev, "request irq %d failed (ret = %d)\n",
--				spi->irq, ret);
-+				dev->irq, ret);
- 		goto error_irq;
- 	}
- 
- 	dev->if_port = IF_PORT_10BASET;
--	dev->irq = spi->irq;
- 	dev->netdev_ops = &enc28j60_netdev_ops;
- 	dev->watchdog_timeo = TX_TIMEOUT;
- 	dev->ethtool_ops = &enc28j60_ethtool_ops;
-@@ -1589,7 +1604,7 @@ static int enc28j60_probe(struct spi_device *spi)
- 	return 0;
- 
- error_register:
--	free_irq(spi->irq, priv);
-+	free_irq(dev->irq, priv);
- error_irq:
- 	free_netdev(dev);
- error_alloc:
-@@ -1601,7 +1616,7 @@ static void enc28j60_remove(struct spi_device *spi)
- 	struct enc28j60_net *priv = spi_get_drvdata(spi);
- 
- 	unregister_netdev(priv->netdev);
--	free_irq(spi->irq, priv);
-+	free_irq(priv->netdev->irq, priv);
- 	free_netdev(priv->netdev);
- }
- 
--- 
-2.43.0
+I'm second to your feelings.
 
+Long standing contributors sent patches mostly directly. It was definitely
+encouraged to send long series through Saeed, but simple, one line fixes we=
+re
+accepted without extra hop.
+
+It was easy and convenient for everyone.
+
+Thanks
