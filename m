@@ -1,63 +1,60 @@
-Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
+Received: from out203-205-221-155.mail.qq.com (out203-205-221-155.mail.qq.com [203.205.221.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0B014A4E7;
-	Sun,  9 Mar 2025 08:08:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175924C70;
+	Sun,  9 Mar 2025 08:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741507739; cv=none; b=UZzs9xzbCQWe/Rd6Y0gMJ33xAJrdvIz9O2R4+PwIOPbNHiG12FWRdCQfi03ubpqK15dk7xIlwkEBHm2luKJjya4Bu72VMoaAp69Mmq01u3sFOm2xilaWTHb5DmV0Qxi52ajgpvfxQkyzd3Zx77cbwkp2dolbqUIGEumz2u8ctWU=
+	t=1741508410; cv=none; b=tPGYEeJT5BeqNtIqBq+N9a8gqSzlSlwugdRDeaFEAQufFkwBfKY39tovILq4J6qArwwORPFb17eJQsmnBJFygpN98YaB2rkaaScaOav/yAIBL9ZAKd2XesHqqmhivAkJvT3fViDIG9LJ5Em1J3/+DxkeOGt82u94eCyxuwOXzag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741507739; c=relaxed/simple;
-	bh=mVGo6cZizCxBMHTz6A8TFTXzta23bxReakaQRj6g5n4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hlYbIEc/TJyaQW5KKMP/Okz8hKUnXCnc7cU/s4vnvNzbY2yWUSizWmAHtAKMbd7Ce++4fOFkybo9gl4Z9Z6ig26XgXf9pnfkrmefhzW8LeyQSO9MZSWGndxyVRbiT0xrQfQazc2Krl3y55UqT7owBTga5QRkYRXrBgAjJFSbS/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=AL/PJjho; arc=none smtp.client-ip=99.78.197.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1741508410; c=relaxed/simple;
+	bh=YJd7K01Y9oAxYGKugOPKABLM5bgZH6skQOHXLa+naD0=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=SNn4o1j0xqyDfe7kx2hCT/fWvqY8DN99f5WOzDMvNb9xlvoVjLdQsJs8Zt5tdEsiXjFCL16C/9cY94/3Isl1XroFZa0CXKpsLODyEBvIKmNSSobauzwWxs4Z4CZXPMaF5QsLJSo3Rt0CyxqA+405OC9VjUSr2RjvnJ3+qrrQz9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=lVK7/nlj; arc=none smtp.client-ip=203.205.221.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="AL/PJjho"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1741507737; x=1773043737;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=DycMLRtBjeeykWMU7bu/+eHYSnqYqv4lVfemfVZdWgo=;
-  b=AL/PJjhoJ76vNz7OV/d+Sjy3yDBDvUNjJ2Yak0mRGGTZmslyXmkCgwsX
-   zLCDCZU7GkKBCfchQSR9ECy1KP2TsCuXsHTLRn7W7mydxXqiGU5rN6/2K
-   D3nXoWRwvgn+gOovYfWCI/T6TDnJdpSEb8kmCMCMqKXOq2cvo16TOt3qT
-   4=;
-X-IronPort-AV: E=Sophos;i="6.14,233,1736812800"; 
-   d="scan'208";a="30072758"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2025 08:08:56 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.7.35:36675]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.62.245:2525] with esmtp (Farcaster)
- id fac3bf64-0b79-435d-a327-294bd6fc7f01; Sun, 9 Mar 2025 08:08:55 +0000 (UTC)
-X-Farcaster-Flow-ID: fac3bf64-0b79-435d-a327-294bd6fc7f01
-Received: from EX19D003ANC003.ant.amazon.com (10.37.240.197) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Sun, 9 Mar 2025 08:08:55 +0000
-Received: from b0be8375a521.amazon.com (10.118.253.182) by
- EX19D003ANC003.ant.amazon.com (10.37.240.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Sun, 9 Mar 2025 08:08:48 +0000
-From: Kohei Enju <enjuk@amazon.com>
-To: <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<bpf@vger.kernel.org>
-CC: <syzbot+83fed965338b573115f7@syzkaller.appspotmail.com>, Pablo Neira Ayuso
-	<pablo@netfilter.org>, Jozsef Kadlecsik <kadlec@netfilter.org>, "David S .
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
-	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, "John
- Fastabend" <john.fastabend@gmail.com>, Yi-Hung Wei <yihung.wei@gmail.com>,
-	Florian Westphal <fw@strlen.de>, <kohei.enju@gmail.com>, Kohei Enju
-	<enjuk@amazon.com>
-Subject: [PATCH net v1] netfilter: nf_conncount: Fully initialize struct nf_conncount_tuple in insert_tree()
-Date: Sun, 9 Mar 2025 17:07:38 +0900
-Message-ID: <20250309080816.87224-2-enjuk@amazon.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="lVK7/nlj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1741508397; bh=4QtA+Ouj6OoRKOCD+7cWv7slbqgJtrFMVALehC4qc0U=;
+	h=From:To:Cc:Subject:Date;
+	b=lVK7/nljBjPbarDAcbzMMtJbDFS11KDsPdCszCjqVdQqxVTxGODLmsFJHE2NIz8Hc
+	 dV83rFxmyyC5J16tfqQtcjU8hwZVnQuQiztwY1FJsJf2n3ji9y9Lq206wzMs/jsIxe
+	 RgYWUTB5/isKAH6AaN87KKkRBMjPuLIaivbb496s=
+Received: from localhost.localdomain ([59.66.26.122])
+	by newxmesmtplogicsvrszc16-0.qq.com (NewEsmtp) with SMTP
+	id C36296A9; Sun, 09 Mar 2025 15:48:54 +0800
+X-QQ-mid: xmsmtpt1741506534t5qburu87
+Message-ID: <tencent_8031D017AFE5E266C43F62C916C709009E06@qq.com>
+X-QQ-XMAILINFO: M1rD3f8svNznEc2CaSvmAf4Ta9dC0ocsEd5uActWCQeQAhzP/KMe3RJHaaYeW3
+	 yDZE3VQKEcoEB5K5rnqLVlXRGT3m0sfkN7nRHxj1cUiVqB83PftxbfHlioAZzEyRXESJtVaCuVMK
+	 CCQOyJX7tfbP29TXafJh2e0ct6OPDCiNZp3il7sBRPC57Uq+CIgbD1ZVs1xHPdK7p7umipefS9ul
+	 DugW5NTlBob7n4I3I3+7xzoSsl+bBFcAkIIDHoVCua1nf+GzLZgmqcoTX4vVHtZuDNlLFIX1+NRV
+	 m1E6JA0zCzT/nGF71Xo0/m43JznAiTJWv7xytCqTbYofAUzPTsg5CLgO90Gu1f6kgDYjsXhhzWsW
+	 aLz7t61Ug3Ho1WjAczlYwQ4fwD4DLy7iGc1JJaoPyy6bhRmtxheqUFv637O/rXqc6Vz3M5Ldgwpw
+	 6hbJLyaVqBWhZ4jHoXcFYAJ6awOaQcmXbEkvQVnEBs2rwEAiup3QITUgCk/kDywBIkCY1yaQgpOJ
+	 d8vM0Q1BjLhaj2jKydm2j1haAO9aWCBs+hP3lljgJwM/uPUe4Z23fr5vK9lEUWLAPnq6EujjSdch
+	 uXG5ChCAe1uX1u1JHFm9RKDXHUZW80a742RHW6cEkcJsMq6ldNX/3jjyJzeFN7PE/8UePF0ocSXt
+	 YdkkoYMdmBlzb99nQKozcz5h/NTOisMQ6v6CANl1Dmvkq5Uz5FkEy9J+CHHQWhbZNencRH2c0zIn
+	 AnY8PSb05Czt5dDXVpl4Kqp9jE0RD0mYF5xUtBEs4kSYNV3aWpBtP+qfu577t+h0O6KNGKXR3dHV
+	 D8DbMiVM/+Mld5OuNC995Xy96mmsuzDZgLfE8IwOHIob8vAcy6uPKlhiSahsSo6Ab/zRs50N2awb
+	 XSL+hsLnPKYVS6XMD94CGURh7Lt5oMtqfoJNULkXmYMKuWn+4f0b682dZsap9Mhj98Pb5bCbyR4O
+	 JRh2Pf1N6Sc7GDeb4DcI7AP7flODfIbtOr+T1HGLvwkNO9CxOhWrFElTbANZ31cL5W3c1VvgHy06
+	 l25E2kATZzV+WQXbLI7350ab0Lklc=
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+From: Hanyuan Zhao <hanyuan-z@qq.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Hanyuan Zhao <hanyuan-z@qq.com>
+Subject: [PATCH 2/2] dt-bindings: net: add enc28j60's irq-gpios node description and binding example
+Date: Sun,  9 Mar 2025 15:48:38 +0800
+X-OQ-MSGID: <20250309074838.128110-1-hanyuan-z@qq.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,123 +62,65 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D032UWA001.ant.amazon.com (10.13.139.62) To
- EX19D003ANC003.ant.amazon.com (10.37.240.197)
 
-Since commit b36e4523d4d5 ("netfilter: nf_conncount: fix garbage
-collection confirm race"), `cpu` and `jiffies32` were introduced to
-the struct nf_conncount_tuple.
+This patch allows the kernel to automatically requests the pin, configures
+it as an input, and converts it to an IRQ number, according to a GPIO
+phandle specified in device tree. This simplifies the process by
+eliminating the need to manually define pinctrl and interrupt nodes.
+Additionally, it is necessary for platforms that do not support pin
+configuration and properties via the device tree.
 
-The commit made nf_conncount_add() initialize `conn->cpu` and
-`conn->jiffies32` when allocating the struct.
-In contrast, count_tree() was not changed to initialize them.
-
-By commit 34848d5c896e ("netfilter: nf_conncount: Split insert and
-traversal"), count_tree() was split and the relevant allocation
-code now resides in insert_tree().
-Initialize `conn->cpu` and `conn->jiffies32` in insert_tree().
-
-BUG: KMSAN: uninit-value in find_or_evict net/netfilter/nf_conncount.c:117 [inline]
-BUG: KMSAN: uninit-value in __nf_conncount_add+0xd9c/0x2850 net/netfilter/nf_conncount.c:143
- find_or_evict net/netfilter/nf_conncount.c:117 [inline]
- __nf_conncount_add+0xd9c/0x2850 net/netfilter/nf_conncount.c:143
- count_tree net/netfilter/nf_conncount.c:438 [inline]
- nf_conncount_count+0x82f/0x1e80 net/netfilter/nf_conncount.c:521
- connlimit_mt+0x7f6/0xbd0 net/netfilter/xt_connlimit.c:72
- __nft_match_eval net/netfilter/nft_compat.c:403 [inline]
- nft_match_eval+0x1a5/0x300 net/netfilter/nft_compat.c:433
- expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
- nft_do_chain+0x426/0x2290 net/netfilter/nf_tables_core.c:288
- nft_do_chain_ipv4+0x1a5/0x230 net/netfilter/nft_chain_filter.c:23
- nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
- nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
- nf_hook_slow_list+0x24d/0x860 net/netfilter/core.c:663
- NF_HOOK_LIST include/linux/netfilter.h:350 [inline]
- ip_sublist_rcv+0x17b7/0x17f0 net/ipv4/ip_input.c:633
- ip_list_rcv+0x9ef/0xa40 net/ipv4/ip_input.c:669
- __netif_receive_skb_list_ptype net/core/dev.c:5936 [inline]
- __netif_receive_skb_list_core+0x15c5/0x1670 net/core/dev.c:5983
- __netif_receive_skb_list net/core/dev.c:6035 [inline]
- netif_receive_skb_list_internal+0x1085/0x1700 net/core/dev.c:6126
- netif_receive_skb_list+0x5a/0x460 net/core/dev.c:6178
- xdp_recv_frames net/bpf/test_run.c:280 [inline]
- xdp_test_run_batch net/bpf/test_run.c:361 [inline]
- bpf_test_run_xdp_live+0x2e86/0x3480 net/bpf/test_run.c:390
- bpf_prog_test_run_xdp+0xf1d/0x1ae0 net/bpf/test_run.c:1316
- bpf_prog_test_run+0x5e5/0xa30 kernel/bpf/syscall.c:4407
- __sys_bpf+0x6aa/0xd90 kernel/bpf/syscall.c:5813
- __do_sys_bpf kernel/bpf/syscall.c:5902 [inline]
- __se_sys_bpf kernel/bpf/syscall.c:5900 [inline]
- __ia32_sys_bpf+0xa0/0xe0 kernel/bpf/syscall.c:5900
- ia32_sys_call+0x394d/0x4180 arch/x86/include/generated/asm/syscalls_32.h:358
- do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
- __do_fast_syscall_32+0xb0/0x110 arch/x86/entry/common.c:387
- do_fast_syscall_32+0x38/0x80 arch/x86/entry/common.c:412
- do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:450
- entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:4121 [inline]
- slab_alloc_node mm/slub.c:4164 [inline]
- kmem_cache_alloc_noprof+0x915/0xe10 mm/slub.c:4171
- insert_tree net/netfilter/nf_conncount.c:372 [inline]
- count_tree net/netfilter/nf_conncount.c:450 [inline]
- nf_conncount_count+0x1415/0x1e80 net/netfilter/nf_conncount.c:521
- connlimit_mt+0x7f6/0xbd0 net/netfilter/xt_connlimit.c:72
- __nft_match_eval net/netfilter/nft_compat.c:403 [inline]
- nft_match_eval+0x1a5/0x300 net/netfilter/nft_compat.c:433
- expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
- nft_do_chain+0x426/0x2290 net/netfilter/nf_tables_core.c:288
- nft_do_chain_ipv4+0x1a5/0x230 net/netfilter/nft_chain_filter.c:23
- nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
- nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
- nf_hook_slow_list+0x24d/0x860 net/netfilter/core.c:663
- NF_HOOK_LIST include/linux/netfilter.h:350 [inline]
- ip_sublist_rcv+0x17b7/0x17f0 net/ipv4/ip_input.c:633
- ip_list_rcv+0x9ef/0xa40 net/ipv4/ip_input.c:669
- __netif_receive_skb_list_ptype net/core/dev.c:5936 [inline]
- __netif_receive_skb_list_core+0x15c5/0x1670 net/core/dev.c:5983
- __netif_receive_skb_list net/core/dev.c:6035 [inline]
- netif_receive_skb_list_internal+0x1085/0x1700 net/core/dev.c:6126
- netif_receive_skb_list+0x5a/0x460 net/core/dev.c:6178
- xdp_recv_frames net/bpf/test_run.c:280 [inline]
- xdp_test_run_batch net/bpf/test_run.c:361 [inline]
- bpf_test_run_xdp_live+0x2e86/0x3480 net/bpf/test_run.c:390
- bpf_prog_test_run_xdp+0xf1d/0x1ae0 net/bpf/test_run.c:1316
- bpf_prog_test_run+0x5e5/0xa30 kernel/bpf/syscall.c:4407
- __sys_bpf+0x6aa/0xd90 kernel/bpf/syscall.c:5813
- __do_sys_bpf kernel/bpf/syscall.c:5902 [inline]
- __se_sys_bpf kernel/bpf/syscall.c:5900 [inline]
- __ia32_sys_bpf+0xa0/0xe0 kernel/bpf/syscall.c:5900
- ia32_sys_call+0x394d/0x4180 arch/x86/include/generated/asm/syscalls_32.h:358
- do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
- __do_fast_syscall_32+0xb0/0x110 arch/x86/entry/common.c:387
- do_fast_syscall_32+0x38/0x80 arch/x86/entry/common.c:412
- do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:450
- entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-
-Reported-by: syzbot+83fed965338b573115f7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=83fed965338b573115f7
-Fixes: b36e4523d4d5 ("netfilter: nf_conncount: fix garbage collection confirm race")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Signed-off-by: Hanyuan Zhao <hanyuan-z@qq.com>
 ---
- net/netfilter/nf_conncount.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../bindings/net/microchip,enc28j60.txt       | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
-index 4890af4dc263..4d7cc94cb151 100644
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -377,6 +377,8 @@ insert_tree(struct net *net,
+diff --git a/Documentation/devicetree/bindings/net/microchip,enc28j60.txt b/Documentation/devicetree/bindings/net/microchip,enc28j60.txt
+index a8275921a896..e6423635e55b 100644
+--- a/Documentation/devicetree/bindings/net/microchip,enc28j60.txt
++++ b/Documentation/devicetree/bindings/net/microchip,enc28j60.txt
+@@ -8,6 +8,8 @@ the SPI master node.
+ Required properties:
+ - compatible: Should be "microchip,enc28j60"
+ - reg: Specify the SPI chip select the ENC28J60 is wired to
++
++Required interrupt properties with pin control subsystem:
+ - interrupts: Specify the interrupt index within the interrupt controller (referred
+               to above in interrupt-parent) and interrupt type. The ENC28J60 natively
+               generates falling edge interrupts, however, additional board logic
+@@ -17,6 +19,14 @@ Required properties:
+              see also generic and your platform specific pinctrl binding
+              documentation.
  
- 	conn->tuple = *tuple;
- 	conn->zone = *zone;
-+	conn->cpu = raw_smp_processor_id();
-+	conn->jiffies32 = (u32)jiffies;
- 	memcpy(rbconn->key, key, sizeof(u32) * data->keylen);
- 
- 	nf_conncount_list_init(&rbconn->list);
++Required interrupt properties with a single GPIO phandle:
++- irq-gpios: Specify the GPIO pin used as the interrupt line. When this property is
++             set, the kernel automatically requests the pin, configures it as an input,
++             and converts it to an IRQ number. This simplifies the process by
++             eliminating the need to manually define pinctrl and interrupt nodes.
++             Additionally, it is necessary for platforms that do not support pin
++             configuration and properties via the device tree.
++
+ Optional properties:
+ - spi-max-frequency: Maximum frequency of the SPI bus when accessing the ENC28J60.
+   According to the ENC28J80 datasheet, the chip allows a maximum of 20 MHz, however,
+@@ -54,3 +64,17 @@ Example (for NXP i.MX28 with pin control stuff for GPIO irq):
+                         fsl,pull-up = <MXS_PULL_DISABLE>;
+                 };
+         };
++
++Example (if can not configure pin properties via the device tree):
++
++        &spi2 {
++                status = "okay";
++                cs-gpios = <&porta 23 GPIO_ACTIVE_LOW>;
++
++                enc28j60: ethernet@1 {
++                        compatible = "microchip,enc28j60";
++                        reg = <0>;
++                        spi-max-frequency = <12000000>;
++                        irq-gpios = <&porta 24 GPIO_ACTIVE_HIGH>;
++                };
++        };
 -- 
-2.48.1
+2.43.0
 
