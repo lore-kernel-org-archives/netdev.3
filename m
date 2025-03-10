@@ -1,98 +1,138 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B3D22171A
-	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 12:31:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E732248BA
+	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 12:35:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741609920; cv=none; b=MkyLlxCQt8UFX14a677zoezdvMjnqqZLnJsVR/E7fC/B8ZV6i2MkOgdEKUOXT/yThJneKINSQJGf8LcCSEmK+wSznI/KAVD4LxrT9fat3lfzxacA7aFppZIDydF5+zmnSLDSH0ujbHmEKGSHnNpEeUrv0OnLwiE7Rkh/LOjlJZQ=
+	t=1741610136; cv=none; b=ip0eCl0RHJkULXcnQiT8A+u3TUOpb6Epks7T/bYSSxgO2tJMUwkYD0RNkb025j4oNyWRNLYHyXNB0lcuUzAOCq7U7aN5lz3V+ko524Iezsq7xCoD+tOKVUVy+TqrwYZreMvfyFXXNXQQnolgcQ5VkEzQFq7xjs4vQSE6Dd4r/Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741609920; c=relaxed/simple;
-	bh=/PBlYoYoPiVBkIVh1GooR9no0jFcOokQ0sr6aAVm1FE=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=rwr15SCKQK8yWhmOUKXXU145TQ+XIZG/7EIcyTY8IqCP9qRWryRhC1cJ25Md6Rs/5OQgo8U5eZ7nHaSLKw4ctehDjsPh7nNAeaJRL1xfzWwjoXy/eLuOSKpuOcFJohG2HOIZ0gK3K/90cuaTBkNR+4v4tiQ1lw086q+lT2G/aBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=sd0N0ZqJ; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="sd0N0ZqJ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=TgHfgZdfHwr3VmPVenW/lrNRZErmyNxPVMe0JcfQ1QY=; b=sd0N0ZqJhCRyvdz2F7y6JUxNga
-	YYjzwJUZ9cqkq0SbGlyNFiafge7+hDBemsZhscFCmXF1xwYYvEfPWRXV/BDQhs09pjLdCD+RSPx6K
-	AlNomXJ1j43jZ7MZzM74owHqa8ljAJeMR4wrcGjBe8GS8p1daI8lJ4YWX3yTU3mmwpR1oZ6s7Txbi
-	NfEPy6XyZ8sJk4Y7Zcp72l5nEE3vCcgY7tMYGX312OnhReoFu4hzVObVgR1DcPMamiuS+bojmci8U
-	gu5V3KeLNGazv8OFNPzt3wQMswQy/O0z55r/Uf4PbVtc8AKdiKtqVnXd24kRcw0K1G+WPVJYqLwoc
-	zEtum9tA==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:51248 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1trcIQ-0002e9-2Y;
-	Mon, 10 Mar 2025 12:31:50 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1trcI6-005rn8-GV; Mon, 10 Mar 2025 12:31:30 +0000
-In-Reply-To: <Z87bpDd7QYYVU0ML@shell.armlinux.org.uk>
-References: <Z87bpDd7QYYVU0ML@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 2/2] net: stmmac: remove unnecessary stmmac_mac_set()
- in stmmac_release()
+	s=arc-20240116; t=1741610136; c=relaxed/simple;
+	bh=UkkzVh5I/8aUoMUHeAe49dD5z8jvVpTrDLcH2ks0tTs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=mke4keCDw42CuBrZ3obCfdu/uGjAkZowYvt2Mjc5LciPaRmO0aQYmrJAooBbY+npJo95W3s7IgCbkI03xn1Fl91i72nUTn84w6eQomck1GrTZ6l0qDNJA4IbFyLDZT/xQMHTQX6/mWrFap6UmFZmkZ21p3ZSwxYYq+QEthOago0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4ZBGXp4VB2zqVYD;
+	Mon, 10 Mar 2025 20:34:02 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 423121400CA;
+	Mon, 10 Mar 2025 20:35:32 +0800 (CST)
+Received: from [10.67.120.129] (10.67.120.129) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 10 Mar 2025 20:35:31 +0800
+Message-ID: <2c363f6a-f9e4-4dd2-941d-db446c501885@huawei.com>
+Date: Mon, 10 Mar 2025 20:35:31 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH net-next] page_pool: Track DMA-mapped pages and unmap
+ them when destroying the pool
+To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>, Yunsheng
+ Lin <yunshenglin0825@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas
+	<ilias.apalodimas@linaro.org>, "David S. Miller" <davem@davemloft.net>
+CC: Yonglong Liu <liuyonglong@huawei.com>, Mina Almasry
+	<almasrymina@google.com>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, <linux-mm@kvack.org>, <netdev@vger.kernel.org>
+References: <20250308145500.14046-1-toke@redhat.com>
+ <d84e19c9-be0c-4d23-908b-f5e5ab6f3f3f@gmail.com> <87cyepxn7n.fsf@toke.dk>
+Content-Language: en-US
+From: Yunsheng Lin <linyunsheng@huawei.com>
+In-Reply-To: <87cyepxn7n.fsf@toke.dk>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1trcI6-005rn8-GV@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Mon, 10 Mar 2025 12:31:30 +0000
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
-stmmac_release() calls phylink_stop() and then goes on to call
-stmmac_mac_set(, false). However, phylink_stop() will call
-stmmac_mac_link_down() before returning, which will do this work.
-Remove this unnecessary call.
+On 2025/3/10 17:13, Toke Høiland-Jørgensen wrote:
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Tested-by: Furong Xu <0x1207@gmail.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 ---
- 1 file changed, 3 deletions(-)
+...
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index c2ee6c0af3fd..839ecebf5f5f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4129,9 +4129,6 @@ static int stmmac_release(struct net_device *dev)
- 	/* Release and free the Rx/Tx resources */
- 	free_dma_desc_resources(priv, &priv->dma_conf);
- 
--	/* Disable the MAC Rx/Tx */
--	stmmac_mac_set(priv, priv->ioaddr, false);
--
- 	/* Powerdown Serdes if there is */
- 	if (priv->plat->serdes_powerdown)
- 		priv->plat->serdes_powerdown(dev, priv->plat->bsp_priv);
--- 
-2.30.2
+> 
+>> Also, we might need a similar locking or synchronisation for the dma
+>> sync API in order to skip the dma sync API when page_pool_destroy() is
+>> called too.
+> 
+> Good point, but that seems a separate issue? And simpler to solve (just
 
+If I understand the comment from DMA experts correctly, the dma_sync API
+should not be allowed to be called after the dma_unmap API.
+
+> set pool->dma_sync to false when destroying?).
+
+Without locking or synchronisation, there is some small window between
+pool->dma_sync checking and dma sync API calling, during which the driver
+might have already unbound.
+
+> 
+>>> To avoid having to walk the entire xarray on unmap to find the page
+>>> reference, we stash the ID assigned by xa_alloc() into the page
+>>> structure itself, in the field previously called '_pp_mapping_pad' in
+>>> the page_pool struct inside struct page. This field overlaps with the
+>>> page->mapping pointer, which may turn out to be problematic, so an
+>>> alternative is probably needed. Sticking the ID into some of the upper
+>>> bits of page->pp_magic may work as an alternative, but that requires
+>>> further investigation. Using the 'mapping' field works well enough as
+>>> a demonstration for this RFC, though.
+>> page->pp_magic seems to only have 16 bits space available at most when
+>> trying to reuse some unused bits in page->pp_magic, as BPF_PTR_POISON
+>> and STACK_DEPOT_POISON seems to already use 16 bits, so:
+>> 1. For 32 bits system, it seems there is only 16 bits left even if the
+>>     ILLEGAL_POINTER_VALUE is defined as 0x0.
+>> 2. For 64 bits system, it seems there is only 12 bits left for powerpc
+>>     as ILLEGAL_POINTER_VALUE is defined as 0x5deadbeef0000000, see
+>>     arch/powerpc/Kconfig.
+>>
+>> So it seems we might need to limit the dma mapping count to 4096 or
+>> 65536?
+>>
+>> And to be honest, I am not sure if those 'unused' 12/16 bits can really 
+>> be reused or not, I guess we might need suggestion from mm and arch
+>> experts here.
+> 
+> Why do we need to care about BPF_PTR_POISON and STACK_DEPOT_POISON?
+> AFAICT, we only need to make sure we preserve the PP_SIGNATURE value.
+> See v2 of the RFC patch, the bit arithmetic there gives me:
+> 
+> - 24 bits on 32-bit architectures
+> - 21 bits on PPC64 (because of the definition of ILLEGAL_POINTER_VALUE)
+> - 32 bits on other 64-bit architectures
+> 
+> Which seems to be plenty?
+
+I am really doubtful it is that simple, but we always can hear from the
+experts if it isn't:)
+
+> 
+>>> Since all the tracking is performed on DMA map/unmap, no additional code
+>>> is needed in the fast path, meaning the performance overhead of this
+>>> tracking is negligible. The extra memory needed to track the pages is
+>>> neatly encapsulated inside xarray, which uses the 'struct xa_node'
+>>> structure to track items. This structure is 576 bytes long, with slots
+>>> for 64 items, meaning that a full node occurs only 9 bytes of overhead
+>>> per slot it tracks (in practice, it probably won't be this efficient,
+>>> but in any case it should be an acceptable overhead).
+>>
+>> Even if items is stored sequentially in xa_node at first, is it possible
+>> that there may be fragmentation in those xa_node when pages are released
+>> and allocated many times during packet processing? If yes, is there any
+>> fragmentation info about those xa_node?
+> 
+> Some (that's what I mean with "not as efficient"). AFAICT, xa_array does
+> do some rebalancing of the underlying radix tree, freeing nodes when
+> they are no longer used. However, I am not too familiar with the xarray
+> code, so I don't know exactly how efficient this is in practice.
+
+I guess that is one of the disadvantages that an advanced struct like
+Xarray is used:(
+
+> 
