@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB491C3F34
-	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 17:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D65F233D9D
+	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 17:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628711; cv=none; b=BSv4Y3mXFbUZylIzhlz3qPIt/NhUq3Ehu6pOxgTqo89dHX/HtPuUvqhgYDDddUXMSliFSk4bNKak6Ybp4WP/Vd1rGGpnPzh3vvqFUfuaF7kuLTESs1iZOKbmeKHTtOkc9R/tt7ifI/7uxeyk+xQku77zdqHaLNRZRRyytXoLVnc=
+	t=1741628712; cv=none; b=S9MmLxk5wAIj0b0MzibRsY9e+th27mtzLGSp0qbJYvW7E/HTK+DEpf0bkKhYu2kRMI6MdEbmnfsCMx4D5sq+76wsvQzX+QwZVeW5ITeHdx4aiC7ecInBtkQCD0rXuLDez5rqbHoGQD/ID4xjC0AnaKKpUAuI5cfJQpT5psMmE8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628711; c=relaxed/simple;
-	bh=Msldvrr9og9qUYf4D4qPsHsgHv/gFIsUpr0ZFR/mGio=;
+	s=arc-20240116; t=1741628712; c=relaxed/simple;
+	bh=wfZfWdFe8R/2a4rvfWKXB71yglMS89Qef/gmNTvGj+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o4Vr+7wptUrxNqhEv53tJmfz1ePLJGDdZeU46c1//MtrVqyLjbL3rBDU6pAcbi97wS987ymUJOzoPOHXvnym3BOcUza9E0JyeuZVSa54AnTbtGQZiDWZIY3ylbqI3++ahPz3tdn+RPqXKh2uzK3sOmppQbJD3Agmllm5zgBgF9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LWbqh7eV; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=rGe7p90XKtaEupowGo4/ujsROevGztclIYuHvetbPATj3b9FgZalM2gdsZbUyc9fM1jdsY5+FemcF3LL/DHlVTdexIthHc0BbFtPGjlntRrWPtfH4g/H0IQL7TVpaXRb0Y4g02+TOF+wgew0NafggfdWQNEMhnf4fe59XpNp+6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A+S5s0aJ; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LWbqh7eV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A+S5s0aJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741628710; x=1773164710;
+  t=1741628711; x=1773164711;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Msldvrr9og9qUYf4D4qPsHsgHv/gFIsUpr0ZFR/mGio=;
-  b=LWbqh7eV1HH3/Z53uEKZ/sADJy6a2/eo2HUzGjmdt8t3PMKaDGBEH+oj
-   ly2pfg5cZJKwlRbLxalPt9KlPTXwK4OigdW0T48MgPScLF4hPPXXrfYX+
-   HrWdTN92ISUDV1vvNzR/2guw+yejyltUf7gWKGGzd+QU0dOPYpq+h7+Ej
-   gtlvry3NT6s1mHvOYK/oOaEUvGzQt5HslA++gSNul0VNCp1GidE7LYojz
-   pQJt6KNqdphPsfcUOXFNz6wbmmMhhKUwGYNydi64BFU4kgYqGtErGj1Iu
-   JZsCaByOLWiJ3pNP13y+kFlnZgkNjarYrqmRdKcTHS++SimkgCa2Ykyyx
-   g==;
-X-CSE-ConnectionGUID: zPYH9oDSSmmNfHNr/c18Mg==
-X-CSE-MsgGUID: EzGf7m5RQfy/QwvQTpvZpw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="46548999"
+  bh=wfZfWdFe8R/2a4rvfWKXB71yglMS89Qef/gmNTvGj+o=;
+  b=A+S5s0aJUSs4ugkeWXgag8H1bGm4fVXzm2Wo+8vAL7jh3ck8COxT/i/m
+   fV4SAkpYSsOOrK4Oc2ANfogfUgSCfpYFwKV7okGINqU64BXhrShNEKTpr
+   6ZbjhhYdDkSJi8heiFUIc4l0MlPPqYC+Jog+S1sXgJbyi4/gRF49QuE44
+   w1QeYLH8JheIB5gxL43TXBvj5keA/NHVxg3jZ2rTKeX+HX9NtQnW18YEU
+   K45kf9T/dkUDgBX4mN5pDHeWNB5E9ee5CTHB6iFi8/hfqwKMAZrNgv9iQ
+   /MenBchv5X2yNPPlK0XwA3qSlwW+YmV7r/45JiD3ZeSoz1e8Qz7f/AoAv
+   Q==;
+X-CSE-ConnectionGUID: 06MOvH3TStyTQ54F7BwPSQ==
+X-CSE-MsgGUID: ZYdqRRimTfG+Ib35Veu9VA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="46549024"
 X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
-   d="scan'208";a="46548999"
+   d="scan'208";a="46549024"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 10:45:07 -0700
-X-CSE-ConnectionGUID: M6bqwY1FTdyxkFQRxhUXKg==
-X-CSE-MsgGUID: yv1tTpY0Q62hP43kfNHmDQ==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 10:45:08 -0700
+X-CSE-ConnectionGUID: kLphP5JqR9C4sQJA+7ZaYw==
+X-CSE-MsgGUID: 1HLY68ASRLCGSv2XRBxPYQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
-   d="scan'208";a="120950806"
+   d="scan'208";a="120950835"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa008.jf.intel.com with ESMTP; 10 Mar 2025 10:45:06 -0700
+  by orviesa008.jf.intel.com with ESMTP; 10 Mar 2025 10:45:07 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,16 +50,15 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Karol Kolacinski <karol.kolacinski@intel.com>,
+Cc: Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
 	anthony.l.nguyen@intel.com,
-	richardcochran@gmail.com,
-	Simon Horman <horms@kernel.org>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net-next 4/6] ice: E825C PHY register cleanup
-Date: Mon, 10 Mar 2025 10:44:57 -0700
-Message-ID: <20250310174502.3708121-5-anthony.l.nguyen@intel.com>
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jeremiah Lokan <jeremiahx.j.lokan@intel.com>
+Subject: [PATCH net-next 6/6] ixgbe: add support for thermal sensor event reception
+Date: Mon, 10 Mar 2025 10:44:59 -0700
+Message-ID: <20250310174502.3708121-7-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250310174502.3708121-1-anthony.l.nguyen@intel.com>
 References: <20250310174502.3708121-1-anthony.l.nguyen@intel.com>
@@ -71,87 +70,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Karol Kolacinski <karol.kolacinski@intel.com>
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-Minor PTP register refactor, including logical grouping E825C 1-step
-timestamping registers. Remove unused register definitions
-(PHY_REG_GPCS_BITSLIP, PHY_REG_REVISION).
-Also, apply preferred GENMASK macro (instead of ICE_M) for register
-fields definition affected by this patch.
+E610 NICs unlike the previous devices utilising ixgbe driver
+are notified in the case of overheating by the FW ACI event.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+In event of overheat when threshold is exceeded, FW suspends all
+traffic and sends overtemp event to the driver. Then driver
+logs appropriate message and disables the adapter instance.
+The card remains in that state until the platform is rebooted.
+
+This approach is a solution to the fact current version of the
+E610 FW doesn't support reading thermal sensor data by the
+SW. So give to user at least any info that overtemp event
+has occurred, without interface disappearing from the OS
+without any note.
+
 Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Tested-by: Jeremiah Lokan <jeremiahx.j.lokan@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp_hw.h | 31 ++++++++++-----------
- 1 file changed, 14 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c      | 4 ++++
+ drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h | 3 +++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-index cca81391b6ad..e5925ccc2613 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-@@ -780,36 +780,19 @@ static inline bool ice_is_dual(struct ice_hw *hw)
- #define PHY_MAC_XIF_TS_SFD_ENA_M	ICE_M(0x1, 20)
- #define PHY_MAC_XIF_GMII_TS_SEL_M	ICE_M(0x1, 21)
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index 467f81239e12..481f917f7ed2 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -3185,6 +3185,10 @@ static void ixgbe_handle_fw_event(struct ixgbe_adapter *adapter)
+ 		case ixgbe_aci_opc_get_link_status:
+ 			ixgbe_handle_link_status_event(adapter, &event);
+ 			break;
++		case ixgbe_aci_opc_temp_tca_event:
++			e_crit(drv, "%s\n", ixgbe_overheat_msg);
++			ixgbe_down(adapter);
++			break;
+ 		default:
+ 			e_warn(hw, "unknown FW async event captured\n");
+ 			break;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
+index 8d06ade3c7cd..617e07878e4f 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
+@@ -171,6 +171,9 @@ enum ixgbe_aci_opc {
+ 	ixgbe_aci_opc_done_alt_write			= 0x0904,
+ 	ixgbe_aci_opc_clear_port_alt_write		= 0x0906,
  
--/* GPCS config register */
--#define PHY_GPCS_CONFIG_REG0		0x268
--#define PHY_GPCS_CONFIG_REG0_TX_THR_M	ICE_M(0xF, 24)
--#define PHY_GPCS_BITSLIP		0x5C
--
- #define PHY_TS_INT_CONFIG_THRESHOLD_M	ICE_M(0x3F, 0)
- #define PHY_TS_INT_CONFIG_ENA_M		BIT(6)
- 
--/* 1-step PTP config */
--#define PHY_PTP_1STEP_CONFIG		0x270
--#define PHY_PTP_1STEP_T1S_UP64_M	ICE_M(0xF, 4)
--#define PHY_PTP_1STEP_T1S_DELTA_M	ICE_M(0xF, 8)
--#define PHY_PTP_1STEP_PEER_DELAY(_port)	(0x274 + 4 * (_port))
--#define PHY_PTP_1STEP_PD_ADD_PD_M	ICE_M(0x1, 0)
--#define PHY_PTP_1STEP_PD_DELAY_M	ICE_M(0x3fffffff, 1)
--#define PHY_PTP_1STEP_PD_DLY_V_M	ICE_M(0x1, 31)
--
- /* Macros to derive offsets for TimeStampLow and TimeStampHigh */
- #define PHY_TSTAMP_L(x) (((x) * 8) + 0)
- #define PHY_TSTAMP_U(x) (((x) * 8) + 4)
- 
--#define PHY_REG_REVISION		0x85000
--
- #define PHY_REG_DESKEW_0		0x94
- #define PHY_REG_DESKEW_0_RLEVEL		GENMASK(6, 0)
- #define PHY_REG_DESKEW_0_RLEVEL_FRAC	GENMASK(9, 7)
- #define PHY_REG_DESKEW_0_RLEVEL_FRAC_W	3
- #define PHY_REG_DESKEW_0_VALID		GENMASK(10, 10)
- 
--#define PHY_REG_GPCS_BITSLIP		0x5C
- #define PHY_REG_SD_BIT_SLIP(_port_offset)	(0x29C + 4 * (_port_offset))
- #define PHY_REVISION_ETH56G		0x10200
- #define PHY_VENDOR_TXLANE_THRESH	0x2000C
-@@ -829,7 +812,21 @@ static inline bool ice_is_dual(struct ice_hw *hw)
- #define PHY_MAC_BLOCKTIME		0x50
- #define PHY_MAC_MARKERTIME		0x54
- #define PHY_MAC_TX_OFFSET		0x58
-+#define PHY_GPCS_BITSLIP		0x5C
- 
- #define PHY_PTP_INT_STATUS		0x7FD140
- 
-+/* ETH56G registers shared per quad */
-+/* GPCS config register */
-+#define PHY_GPCS_CONFIG_REG0		0x268
-+#define PHY_GPCS_CONFIG_REG0_TX_THR_M	GENMASK(27, 24)
-+/* 1-step PTP config */
-+#define PHY_PTP_1STEP_CONFIG		0x270
-+#define PHY_PTP_1STEP_T1S_UP64_M	GENMASK(7, 4)
-+#define PHY_PTP_1STEP_T1S_DELTA_M	GENMASK(11, 8)
-+#define PHY_PTP_1STEP_PEER_DELAY(_quad_lane)	(0x274 + 4 * (_quad_lane))
-+#define PHY_PTP_1STEP_PD_ADD_PD_M	BIT(0)
-+#define PHY_PTP_1STEP_PD_DELAY_M	GENMASK(30, 1)
-+#define PHY_PTP_1STEP_PD_DLY_V_M	BIT(31)
++	/* TCA Events */
++	ixgbe_aci_opc_temp_tca_event                    = 0x0C94,
 +
- #endif /* _ICE_PTP_HW_H_ */
+ 	/* debug commands */
+ 	ixgbe_aci_opc_debug_dump_internals		= 0xFF08,
+ 
 -- 
 2.47.1
 
