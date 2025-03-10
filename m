@@ -1,166 +1,187 @@
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7894B3EA76;
-	Mon, 10 Mar 2025 14:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1D21386C9
+	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 14:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741616007; cv=none; b=exYyfiSXipYizusHRooofiH4Az/pPPvMjoarAqN5rc7hWLxjghTPJmcGWe4nM9rXhMaKRMGsqMxGiPIGDHAHIVoWH43BIUGHIMFhMoCfN/sD+sBILRINMenGMsoFR3NxmpRD5gVJt5kLlJijpVBvlsPlNLNTilrez8tYp5VcTt4=
+	t=1741616115; cv=none; b=bFC1g5GtwgzJkrJdRmwcDjuMSRRNrNRAKE2Wdcif3RRcwTefJbrxckn46laDaUoMsEgyMquArylx9fhwp0q/RYQKAzIElWbh2qw9Q57TdXnNLgd/2GewMA0SD6KQxSJZceuevzmhI/jyWbADzP7pfUs0K2jxxjpfjqoz8yn4Q5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741616007; c=relaxed/simple;
-	bh=DmtnAJrjBv1ZpYTymNL6mSXrRlM01YbV56c2e4VO4G0=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=lgrQoge3bRb5k5o9H+e9+xftAddgZSKpJ+HK+64iVd2ZCRyHeVFMfo9cUIc5fNc4AVz3L2S7mFUxGr9dpC8CxGyE+ESxtb8YGzvC86f/avfoQ5EaaHDMUuKGs+FPZNTfHCZvuRk4ozoErDEEepcxSmBSSqfnOmAEOn8OklQ2J04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=GiBQ17U/; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1741616115; c=relaxed/simple;
+	bh=jEa1MxsrpS1cHMT2RYO8VBbSWB07INDb5JSIrlBAMRw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QdzdDQpK2ZwlljIyTcwiV1VYEbis7Hh81Lqyh4RlM+7F61eFbvUr6cuPUWOryHU5gPheFri737ZvDbZrjP+1YHJOO5W820xj2kFLM1MTwVqZLpcTWdoPLb5ALVg/9sPYiSp0/+lyTPqOGQXVbydYE2kjpjDCWEb5ttmhtXj+41M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Pvqy9ro0; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="GiBQ17U/"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Pvqy9ro0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741616113;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eMdCg2efbd0Qh20QNdOF7eXxFbnyvCBURzGryJnLYK4=;
+	b=Pvqy9ro0SVzG5zXxSi6sYMDWApwuW42+xZeDpeFOpDFX2DJ4Q5bIu8e0HHLCaXt2SS3+jH
+	Rqs7KZmqJLTQkbU0f4yIRYGJKPCnP5XOstwKil7q4fRKQpbOZl9nIllqBEijR6eBKGDkDM
+	l1z28aRIvkdyRo293Vqq4BqZDHmmcm0=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-194-EWewh_qBMS68bOgFGy5O9w-1; Mon, 10 Mar 2025 10:15:11 -0400
+X-MC-Unique: EWewh_qBMS68bOgFGy5O9w-1
+X-Mimecast-MFC-AGG-ID: EWewh_qBMS68bOgFGy5O9w_1741616111
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-6f2c7746509so67799487b3.1
+        for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 07:15:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741616111; x=1742220911;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eMdCg2efbd0Qh20QNdOF7eXxFbnyvCBURzGryJnLYK4=;
+        b=ax8VV+lSNP5Kx+0DZYv/UxGb74NzmkPIW3H6dznjOPLcmEOmSNBvlc3WjAWJeDKW08
+         vpxWrI4N2VOImW/pb2I7DZTOsE46VCynBzoAbAUOD1Bwj1wOtPdmW1tvc7rdNSA09YbX
+         tj9hUP1qpuTT+VdmoGB3NaK/nx8d3yulK1uEGwHXPItRhlHF3zq08t1dcm+2CtovHo82
+         097lPvT3JPKPV9ptMu2ZE2hVbn3/tgouvtH8m3SxlPJ85ckiMu4fDBxfDwWznrIUmsGr
+         sWTyVuUGWdex0fGqiERCrVAGj7tDjCGuUFS68PnrrtV1EakBXO+WTkw/QmMHVknqgy3v
+         pJ0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUBsMGTI7NnH1CzzqNcchALiVuWUJrNZXXiIAoYJDUXUj+/u6hAWfzHVjvSubHeuWG99nypKGs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCmXaS20Wx1zeVjov0m0/m6w1ii+MOxc/TjJxg/IwdiUThpavH
+	OJ5p4IZ2kLSL8iX67fNPjoDVmCNfB/h9Mw/x51MGb+0TBRYCBNfy0UwOEgeL20JHHZCy7d1yUTi
+	riEjdt+x8e4/zU17On3ewPEuPmq/dppEAdF6c5EyCdwyoVmGopt2N/urP9cXyxOar2FfHCQgX6+
+	3EZkZjtzRmV0X3K01L74hsBZwvnD9i
+X-Gm-Gg: ASbGncu2NCDWcYPxLEjkdIWkhhiCe+3uTu5hsUp/TSSdKmywlNtxmGussJOA1+ypj4i
+	E7xIpxCZjs5ydEefGrD49ORhe/7gxSt7As/BK4hJSc8gssXS4Vty/emd7A9aNjqTU1vcdwwE=
+X-Received: by 2002:a05:6902:2805:b0:e60:9d12:c1e5 with SMTP id 3f1490d57ef6-e635c1d8d02mr14992221276.36.1741616111102;
+        Mon, 10 Mar 2025 07:15:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGUqWrvAukg1iFDpO6ExBXHje3cw437GoWuPupbevVNTptRCcjP/uO3Bp+OM9ocpYHlDfKvsiQX6/BEdrkJbTU=
+X-Received: by 2002:a05:6902:2805:b0:e60:9d12:c1e5 with SMTP id
+ 3f1490d57ef6-e635c1d8d02mr14992171276.36.1741616110694; Mon, 10 Mar 2025
+ 07:15:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1741615993;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nWSoLiRTEl1DjXdOcd+TwPvgMZDQndPcdIRX20wh1e0=;
-	b=GiBQ17U/f6AC0XSjR0DITgXAMHz4ntd+PlDK0JYqhVUprheNASdM9fPwfaBunJw68x4LNx
-	kjqu0Qae29dGXRRPEuHzSMmVv5gSrYWcE8HmXVkP3KimqVviZaMo4ETZ3ASM9/IEdsFtjI
-	bUKeTfpqPBiaGjukSrSpI8RCC/5JCI4=
-Date: Mon, 10 Mar 2025 14:13:02 +0000
-Content-Type: text/plain; charset="utf-8"
+References: <20200116172428.311437-1-sgarzare@redhat.com> <20200427142518.uwssa6dtasrp3bfc@steredhat>
+ <224cdc10-1532-7ddc-f113-676d43d8f322@redhat.com> <20200428160052.o3ihui4262xogyg4@steredhat>
+ <Z8edJjqAqAaV3Vkt@devvm6277.cco0.facebook.com> <20250305022248-mutt-send-email-mst@kernel.org>
+ <v5c32aounjit7gxtwl4yxo2q2q6yikpb5yv3huxrxgfprxs2gk@b6r3jljvm6mt> <CACGkMEvms=i5z9gVRpnrXXpBnt3KGwM4bfRc46EztzDi4pqOsw@mail.gmail.com>
+In-Reply-To: <CACGkMEvms=i5z9gVRpnrXXpBnt3KGwM4bfRc46EztzDi4pqOsw@mail.gmail.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Mon, 10 Mar 2025 15:14:59 +0100
+X-Gm-Features: AQ5f1JosWWXY88zUmFjBrkclv9qmpGDLsUUZ5bj0pBV0c8sMAT4CMg2t-YayKWI
+Message-ID: <CAGxU2F7SWG0m0KwODbKsbQipz6WzrRSuE1cUe6mYxZskqkbneQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 0/3] vsock: support network namespace
+To: Jason Wang <jasowang@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Bobby Eshleman <bobbyeshleman@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net, 
+	Stefan Hajnoczi <stefanha@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux-foundation.org, linux-hyperv@vger.kernel.org, 
+	Dexuan Cui <decui@microsoft.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <fe664471a8933c894ac98029bd704ccfb010eae3@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH bpf-next v2 1/3] bpf, sockmap: avoid using sk_socket
- after free
-To: "Michal Luczaj" <mhal@rbox.co>, xiyou.wangcong@gmail.com,
- john.fastabend@gmail.com, jakub@cloudflare.com, martin.lau@linux.dev
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, andrii@kernel.org,
- eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org, daniel@iogearbox.net,
- song@kernel.org, yonghong.song@linux.dev, kpsingh@kernel.org,
- sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, shuah@kernel.org,
- sgarzare@redhat.com, netdev@vger.kernel.org, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- mrpre@163.com, cong.wang@bytedance.com,
- syzbot+dd90a702f518e0eac072@syzkaller.appspotmail.com
-In-Reply-To: <d2d3eff9-23df-4098-87cc-d0ad5fde6e1e@rbox.co>
-References: <20250228055106.58071-1-jiayuan.chen@linux.dev>
- <20250228055106.58071-2-jiayuan.chen@linux.dev>
- <baeca627-e6f1-4d0a-aea5-fa31689edc4d@rbox.co>
- <78ee737400721758fa67b4f285e8ba61dc6b893b@linux.dev>
- <d2d3eff9-23df-4098-87cc-d0ad5fde6e1e@rbox.co>
-X-Migadu-Flow: FLOW_OUT
 
-March 10, 2025 at 9:08 PM, "Michal Luczaj" <mhal@rbox.co> wrote:
-
-
-
->=20
->=20On 3/10/25 12:36, Jiayuan Chen wrote:
->=20
->=20>=20
->=20> March 7, 2025 at 5:45 PM, "Michal Luczaj" <mhal@rbox.co> wrote:
-> >=20
->=20>  ...
-> >=20
->=20> >=20
->=20> > BTW, lockdep (CONFIG_LOCKDEP=3Dy) complains about calling AF_UNIX=
-'s
-> > >=20
->=20> >  read_skb() under RCU read lock.
-> > >=20
->=20>=20
->=20>  My environment also has LOCKDEP enabled, but I didn't see similar
-> >=20
->=20>  warnings.
-> >=20
->=20>  Moreover, RCU assertions are typically written as:
-> >=20
->=20>=20=20
->=20>=20
->=20>  WARN_ON_ONCE(!rcu_read_lock_held())
-> >=20
->=20>=20=20
->=20>=20
->=20>  And when LOCKDEP is not enabled, rcu_read_lock_held() defaults to
-> >=20
->=20>  returning 1. So, it's unlikely to trigger a warning due to an RCU =
-lock
-> >=20
->=20>  being held.
-> >=20
->=20>=20=20
->=20>=20
->=20>  Could you provide more of the call stack?
-> >=20
->=20
-> Sure, bpf-next with this series applied, test_progs -t sockmap_basic:
->=20
->=20=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
->=20
->=20[ BUG: Invalid wait context ]
->=20
->=206.14.0-rc3+ #111 Tainted: G OE
->=20
->=20-----------------------------
->=20
->=20test_progs/37755 is trying to lock:
->=20
->=20ffff88810d9bc3c0 (&u->iolock){+.+.}-{4:4}, at: unix_stream_read_skb+0=
-x30/0x120
->=20
->=20other info that might help us debug this:
->=20
->=20context-{5:5}
->=20
->=201 lock held by test_progs/37755:
->=20
->=20 #0: ffffffff833700e0 (rcu_read_lock){....}-{1:3}, at: sk_psock_verdi=
-ct_data_ready+0x3e/0x2a0
->=20
->=20stack backtrace:
->=20
->=20CPU: 13 UID: 0 PID: 37755 Comm: test_progs Tainted: G OE 6.14.0-rc3+ =
-#111
->=20
->=20Tainted: [O]=3DOOT_MODULE, [E]=3DUNSIGNED_MODULE
->=20
->=20Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linu=
-x 1.16.3-1-1 04/01/2014
->=20
->=20Call Trace:
->=20
->=20 dump_stack_lvl+0x68/0x90
->=20
->=20 lock_acquire+0xcf/0x2e0
->=20
->=20 __mutex_lock+0x9c/0xcc0
->=20
->=20 unix_stream_read_skb+0x30/0x120
->=20
->=20 sk_psock_verdict_data_ready+0x8d/0x2a0
->=20
->=20 unix_stream_sendmsg+0x232/0x640
->=20
->=20 __sys_sendto+0x1cd/0x1e0
->=20
->=20 __x64_sys_sendto+0x20/0x30
->=20
->=20 do_syscall_64+0x93/0x180
->=20
->=20 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+On Thu, 6 Mar 2025 at 01:17, Jason Wang <jasowang@redhat.com> wrote:
 >
-Thanks, I got this stack too after enabling CONFIG_PROVE_LOCKING.
-It seems that we can't call sleepable lock such as mutex_lock under rcu-l=
-ocked context.
-I'm working on it.
+> On Wed, Mar 5, 2025 at 5:30=E2=80=AFPM Stefano Garzarella <sgarzare@redha=
+t.com> wrote:
+> >
+> > On Wed, Mar 05, 2025 at 02:27:12AM -0500, Michael S. Tsirkin wrote:
+> > >On Tue, Mar 04, 2025 at 04:39:02PM -0800, Bobby Eshleman wrote:
+> > >> I think it might be a lot of complexity to bring into the picture fr=
+om
+> > >> netdev, and I'm not sure there is a big win since the vsock device c=
+ould
+> > >> also have a vsock->net itself? I think the complexity will come from=
+ the
+> > >> address translation, which I don't think netdev buys us because ther=
+e
+> > >> would still be all of the work work to support vsock in netfilter?
+> > >
+> > >Ugh.
+> > >
+> > >Guys, let's remember what vsock is.
+> > >
+> > >It's a replacement for the serial device with an interface
+> > >that's easier for userspace to consume, as you get
+> > >the demultiplexing by the port number.
+>
+> Interesting, but at least VSOCKETS said:
+>
+> """
+> config VSOCKETS
+>         tristate "Virtual Socket protocol"
+>         help
+>          Virtual Socket Protocol is a socket protocol similar to TCP/IP
+>           allowing communication between Virtual Machines and hypervisor
+>           or host.
+>
+>           You should also select one or more hypervisor-specific transpor=
+ts
+>           below.
+>
+>           To compile this driver as a module, choose M here: the module
+>           will be called vsock. If unsure, say N.
+> """
+>
+> This sounds exactly like networking stuff and spec also said something si=
+milar
+>
+> """
+> The virtio socket device is a zero-configuration socket communications
+> device. It facilitates data transfer between the guest and device
+> without using the Ethernet or IP protocols.
+> """
+>
+> > >
+> > >The whole point of vsock is that people do not want
+> > >any firewalling, filtering, or management on it.
+>
+> We won't get this, these are for ethernet and TCP/IP mostly.
+>
+> > >
+> > >It needs to work with no configuration even if networking is
+> > >misconfigured or blocked.
+>
+> I don't see any blockers that prevent us from zero configuration, or I
+> miss something?
+>
+> >
+> > I agree with Michael here.
+> >
+> > It's been 5 years and my memory is bad, but using netdev seemed like a
+> > mess, especially because in vsock we don't have anything related to
+> > IP/Ethernet/ARP, etc.
+>
+> We don't need to bother with that, kernel support protocols other than TC=
+P/IP.
+
+Do we have an example of any other non-Ethernet device that uses
+netdev? Just to see what we should do.
+
+I'm not completely against the idea, but from what I remember when I
+looked at it five years ago, it wasn't that easy and straightforward
+to use.
+
+>
+> >
+> > I see vsock more as AF_UNIX than netdev.
+>
+> But you have a device in guest that differs from the AF_UNIX.
+
+Yes, but the device is simply for carrying messages.
+Another thing that makes me think of AF_UNIX is the hybrid-vsock
+developed by Firecracker [1] that we also reused in vhost-user-vsock
+[2], where the mapping between AF_VSOCK and AF_UNIX is really
+implemented.
+
+Thanks,
+Stefano
+
+[1] https://github.com/firecracker-microvm/firecracker/blob/main/docs/vsock=
+.md#firecracker-virtio-vsock-design
+[2] https://github.com/rust-vmm/vhost-device/tree/main/vhost-device-vsock
+
