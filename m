@@ -1,222 +1,106 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3E42206A4
-	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 09:13:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C632206A4
+	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 09:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741598028; cv=none; b=qptLEBVTg2jmWfJmtNQXldNSO2VnO7/i+3F9Jcv4FlkPJ/QFRy4+rzRQ7hxuoTzI2kQqMPOBTwVwqM+DxSyCeGLqrrMiMci/agKUkVqPQsTNbPdGYxrtvbVxK7kmGEi8Q5bMpgq+f3P/Q0esV1k2n2Pi1Xan5ixixqgZGzCEe34=
+	t=1741598196; cv=none; b=SY65lueuUaYJxLbOzgDr4wt0Z9xG5jsJHQmEA2bUouaTDg84fJYobCypH3TVzAdrI20MIOUESf62GascuaTkCRWVDWhn0+PugQBDdFgL5k79/RMIpKiL0DQUhXVbfHFxIT4crXzmLkMJNk20tchKENxSwY/ijQ4NLIHYLb6PXgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741598028; c=relaxed/simple;
-	bh=rWJckccBD6lVD+9Qgzrx8S7a8AXZ47zlKM8HkFIMvaA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Vu4A8aRZK7fnKwHFyUTSA2H46vu1OzmwkGOi08zSVbNvfNp+F3xqo2zOC5msECBosq0tFRxgyQWr1lVXtRH7HgFoyQutv8cwBu5pHb30PLEyKTMQe0bDTih95tI/Yrv+3gxqadgQLrTaRVws7ZmREwrFWyFDt1IEgc64CdNX5iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TEVaPcqu; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1741598196; c=relaxed/simple;
+	bh=ninamqb7vD4VLgKD3iyknjBi9WOPfVs4v5jK2EupO0s=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=o+AVERAa02KiUspyfdbTqS6l0VZoeH3shmicVXcUs2/sHwG2/54qMqL/hgiXqiorbFjuOs12ysaL+tiIMy0wFDq63aUDjIohf0iUM1rs0gMdksIaQtTrAI3Y59DiK8MI2eIW+3SvZ0PMNDJoxsUF2HoJOKwrTNh2Q7zwgTbUa6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chiachangwang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E5Z1TdZ6; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chiachangwang.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TEVaPcqu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741598024;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=exPnN+rMcdOduLx0XQej6ZvVDtMm0qKkMiLUs5zJZKM=;
-	b=TEVaPcqugM/plBzIv7N3u0MXyYr0HZ44TjcvWIBeYHgsBmxO8Tm3zBCv0auRe8z+W50rgL
-	P7I77nbKgy5T+OWnUF/jdypdYgdlK3vgMDJCSL+WjjsTKCWdWxu1bg5ZN+ZRiDpH+MwaUU
-	OplXCXQ9NDsljWGKw2FVA8mua5LeV4M=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-377--fgXmT9bPkmE_Kr69vu_ZQ-1; Mon, 10 Mar 2025 05:13:43 -0400
-X-MC-Unique: -fgXmT9bPkmE_Kr69vu_ZQ-1
-X-Mimecast-MFC-AGG-ID: -fgXmT9bPkmE_Kr69vu_ZQ_1741598022
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-ac29f1e54baso72903966b.3
-        for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 02:13:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E5Z1TdZ6"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ff8119b436so4699839a91.0
+        for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 02:16:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1741598194; x=1742202994; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Kg/NOvqEFnXlKsdlRnZXMu1Bj2kZq/dP4ivk4ONGq2c=;
+        b=E5Z1TdZ6sj8zMpbxrfYIjdkjZNeY6ju0f1xBeSZz7sLDr0TQ+oMNaLf/ivS+fp+Zx0
+         GZQqG5Wrd9eo0InZUJxu4rQlbIlq+35/vkfLd4vo+c4n9yFbS6a0iedL7Boi5Q/4yuGh
+         34SQMPy0MI4AcOnkvSUluW0nX4Nl2pm9UsWbBAJHBUzGtC0P8VDyv7JLko/WbxPO725o
+         HOa/aN+65h7NR1if5py+j04n9yL1X4tap02ytf8rDdaVwjN3JaIsySfIy0wC4c+sQCJN
+         3ZIaj8coucIlePmJtSfVDP6pJPPhKscGYflopLHyxMsYla5apNCWLVDeiNlp0drIRAa9
+         Lp8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741598022; x=1742202822;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=exPnN+rMcdOduLx0XQej6ZvVDtMm0qKkMiLUs5zJZKM=;
-        b=HVlUzyd8L8rTG38Oxbc+2kUPNQMyMu9eoH1JnoCQeUJo0RtrJxSz0iQQ9K5kOa3sAK
-         s0XsWmile51/4aZxF82/VoQz7QfL0JEij7wkdMn1CsnPD9KdYIuiJiB+VSmC57HZeVl4
-         A7/sBcJUjlTSHqcgZSFYx0162m2MdcvVidEb3D85qJJh7V0GJEs8f/TrTrNEsoCk8D9M
-         l0b9fkFJOyLOLvzSLxHJwyw6oaP8heQ/67BuN93D9N7oaNQPi+3kbNjkp8dr5HcHg8wV
-         EiT219FNwFfXpasOwMTU8bZviqW+NRVjA6JGzZe46H4BPsdjEImrF55qTxzJMA71y4Kp
-         W2eQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWEjvOvqkK+SfwxfN+lk2s4ZKHWw9GvwSwi8AM9ijbXlOhLFIYAIWgtkzH/b9sB+xU2eOcwuQY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTIi+MiGN+lLLAL6jtNmOIgbsj2ktAjF+Zx3FNiZGj7+mwohQi
-	6nAgf54N5MZQ6iicB3qJ3DpxMimFIV5t9P8Iwn7AZtDNcCq/XdjbDGUqyEfkUhY28FnrfmdN5VI
-	3K5PRNSv0+FuAecPCBV6wNWff7aGIwH/5LfYqHT3CJ/sdelqzBHeqbw==
-X-Gm-Gg: ASbGncvj8dYi24PQ6HnjGHlGrkig3HLk9lB7D0PIueBm8DpYgvdsB5dnSvkLwuVo7in
-	X9RAM4sNbXoxKABcLZP9RQQA1g5/ttQinxP3UVAQwFfEQetJG9FTBP1d2lNukgnVhhLkmnwerkQ
-	HohhAOgIyhDfzb9Tbn4g5/RnVSC5OymZCiklnZw/7KLtKQtNp55NjA9NTQP6itzJ0OEz5A3ar+F
-	0qyhv7LaC7IelPqJYqgwnc+G7njVZHEf8D7CshJHQ8DrCcsJ8zmjKS6vlukGFpli6KpsRFnzlDq
-	fbzHk6TH35MQ
-X-Received: by 2002:a17:907:3e0d:b0:ac1:fb27:d3b0 with SMTP id a640c23a62f3a-ac252aae4damr1037265766b.22.1741598022326;
-        Mon, 10 Mar 2025 02:13:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE5HVXXzF6q5e64KAfxQdx97a/6tiE9jIfl6inGdhc0FTOo2vMUvbKHaP2p5uLqZ0eOIX09iQ==
-X-Received: by 2002:a17:907:3e0d:b0:ac1:fb27:d3b0 with SMTP id a640c23a62f3a-ac252aae4damr1037261866b.22.1741598021800;
-        Mon, 10 Mar 2025 02:13:41 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac282c69e89sm322864766b.167.2025.03.10.02.13.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 02:13:40 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id A9C2818FA218; Mon, 10 Mar 2025 10:13:32 +0100 (CET)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Yunsheng Lin <yunshenglin0825@gmail.com>, Andrew Morton
- <akpm@linux-foundation.org>, Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, "David S. Miller"
- <davem@davemloft.net>
-Cc: Yunsheng Lin <linyunsheng@huawei.com>, Yonglong Liu
- <liuyonglong@huawei.com>, Mina Almasry <almasrymina@google.com>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- linux-mm@kvack.org, netdev@vger.kernel.org
-Subject: Re: [RFC PATCH net-next] page_pool: Track DMA-mapped pages and
- unmap them when destroying the pool
-In-Reply-To: <d84e19c9-be0c-4d23-908b-f5e5ab6f3f3f@gmail.com>
-References: <20250308145500.14046-1-toke@redhat.com>
- <d84e19c9-be0c-4d23-908b-f5e5ab6f3f3f@gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Mon, 10 Mar 2025 10:13:32 +0100
-Message-ID: <87cyepxn7n.fsf@toke.dk>
+        d=1e100.net; s=20230601; t=1741598194; x=1742202994;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Kg/NOvqEFnXlKsdlRnZXMu1Bj2kZq/dP4ivk4ONGq2c=;
+        b=uOSVhDwm/YI1bkbK5R2XWcJRLFRTNCAs36HeNuQd5gbUe9vzr5Bc4bwteCAkm44erR
+         FdPckj6/s4/Cty50N2gJ5pFDB0iUw4QsWR2K32I//1ffZ0L2p+usLqze+fkeAuSIIP/U
+         v9cgJeuIAWcPEcLjlFrZBh6aqz3381kw0H8Vn8oA69uNazJ/2jLOdYQqsV0Nx36bNTtK
+         fFWubRFpk9ptaVLZXYmd2QMQOdm02tVgMm8ln5zLdSSUNUENHO8IzXccDN341cxMdNyT
+         c1FZRS6yxxUx8c91p+J6stfkViQBZRxOI5biCW0Qrmxv83pFLY3YeR2dyITSYroUi61c
+         HhlA==
+X-Gm-Message-State: AOJu0YyhYb5dwykF1pLfaKw6wIg7dZA1ETDja5LAEtVE/lUbZ/Eu4TrE
+	Y2pnNzWXKDjOuxzuDXhxPnzXJHkaopHRc4IeQVHfql6ZYyvBD1nlUdul3uJ8RrFjHoNjmVJXu7G
+	DISrA6E6pk9k0ZGR+3THbU3XFy1grySTllJ6nA7KEpPYYAhhBsYNJ/y3rLtbzyiEhvKIeAeBzba
+	bps4kJDpKOVc1iosj3EwX14MlMhxQuE6mM1l6g5hEn8qfk/aj8p/2eKTFrkMN7FwKNt9z4rw==
+X-Google-Smtp-Source: AGHT+IFynjuWjT34oBjLpxFawgfP/+OMIVN2vHHsSKc7ONoGMM7Bp5t3Af4eORy6oTIG2By83lPohw1zalkbv/6c3c1z
+X-Received: from pjbst16.prod.google.com ([2002:a17:90b:1fd0:b0:2fa:26f0:c221])
+ (user=chiachangwang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:17c3:b0:2ff:4bac:6fba with SMTP id 98e67ed59e1d1-2ff7cf0b067mr20299684a91.24.1741598194026;
+ Mon, 10 Mar 2025 02:16:34 -0700 (PDT)
+Date: Mon, 10 Mar 2025 09:16:18 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.49.0.rc0.332.g42c0ae87b1-goog
+Message-ID: <20250310091620.2706700-1-chiachangwang@google.com>
+Subject: [PATCH ipsec-next v4 0/2] Update offload configuration with SA
+From: Chiachang Wang <chiachangwang@google.com>
+To: netdev@vger.kernel.org, steffen.klassert@secunet.com, leonro@nvidia.com
+Cc: chiachangwang@google.com, stanleyjhu@google.com, yumike@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-Yunsheng Lin <yunshenglin0825@gmail.com> writes:
+The current Security Association (SA) offload setting
+cannot be modified without removing and re-adding the
+SA with the new configuration. Although existing netlink
+messages allow SA migration, the offload setting will
+be removed after migration.
 
-> On 3/8/2025 10:54 PM, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> When enabling DMA mapping in page_pool, pages are kept DMA mapped until
->> they are released from the pool, to avoid the overhead of re-mapping the
->> pages every time they are used. This causes problems when a device is
->> torn down, because the page pool can't unmap the pages until they are
->> returned to the pool. This causes resource leaks and/or crashes when
->> there are pages still outstanding while the device is torn down, because
->> page_pool will attempt an unmap of a non-existent DMA device on the
->> subsequent page return.
->>=20
->> To fix this, implement a simple tracking of outstanding dma-mapped pages
->> in page pool using an xarray. This was first suggested by Mina[0], and
->> turns out to be fairly straight forward: We simply store pointers to
->> pages directly in the xarray with xa_alloc() when they are first DMA
->> mapped, and remove them from the array on unmap. Then, when a page pool
->> is torn down, it can simply walk the xarray and unmap all pages still
->> present there before returning, which also allows us to get rid of the
->> get/put_device() calls in page_pool. Using xa_cmpxchg(), no additional
->> synchronisation is needed, as a page will only ever be unmapped once.
->
-> The implementation of xa_cmpxchg() seems to take the xa_lock, which
-> seems to be a per-Xarray spin_lock.
-> Yes, if if we were to take a per-Xarray lock unconditionaly, additional
-> synchronisation like rcu doesn't seems to be needed. But it seems an
-> excessive overhead for normal packet processing when page_pool_destroy()
-> is not called yet?
+This patchset enhances SA migration to include updating
+the offload setting. This is beneficial for devices that
+support IPsec session management.
 
-I dunno, maybe? It's only done on DMA map/unmap, so it may be
-acceptable? We should get some benchmark results to assess :)
+Chiachang Wang (2):
+  xfrm: Migrate offload configuration
+  xfrm: Refactor migration setup during the cloning process
 
-> Also, we might need a similar locking or synchronisation for the dma
-> sync API in order to skip the dma sync API when page_pool_destroy() is
-> called too.
+ include/net/xfrm.h     |  8 ++++++--
+ net/key/af_key.c       |  2 +-
+ net/xfrm/xfrm_policy.c |  4 ++--
+ net/xfrm/xfrm_state.c  | 25 +++++++++++++++++--------
+ net/xfrm/xfrm_user.c   | 15 ++++++++++++---
+ 5 files changed, 38 insertions(+), 16 deletions(-)
 
-Good point, but that seems a separate issue? And simpler to solve (just
-set pool->dma_sync to false when destroying?).
-
->> To avoid having to walk the entire xarray on unmap to find the page
->> reference, we stash the ID assigned by xa_alloc() into the page
->> structure itself, in the field previously called '_pp_mapping_pad' in
->> the page_pool struct inside struct page. This field overlaps with the
->> page->mapping pointer, which may turn out to be problematic, so an
->> alternative is probably needed. Sticking the ID into some of the upper
->> bits of page->pp_magic may work as an alternative, but that requires
->> further investigation. Using the 'mapping' field works well enough as
->> a demonstration for this RFC, though.
-> page->pp_magic seems to only have 16 bits space available at most when
-> trying to reuse some unused bits in page->pp_magic, as BPF_PTR_POISON
-> and STACK_DEPOT_POISON seems to already use 16 bits, so:
-> 1. For 32 bits system, it seems there is only 16 bits left even if the
->     ILLEGAL_POINTER_VALUE is defined as 0x0.
-> 2. For 64 bits system, it seems there is only 12 bits left for powerpc
->     as ILLEGAL_POINTER_VALUE is defined as 0x5deadbeef0000000, see
->     arch/powerpc/Kconfig.
->
-> So it seems we might need to limit the dma mapping count to 4096 or
-> 65536?
->
-> And to be honest, I am not sure if those 'unused' 12/16 bits can really=20
-> be reused or not, I guess we might need suggestion from mm and arch
-> experts here.
-
-Why do we need to care about BPF_PTR_POISON and STACK_DEPOT_POISON?
-AFAICT, we only need to make sure we preserve the PP_SIGNATURE value.
-See v2 of the RFC patch, the bit arithmetic there gives me:
-
-- 24 bits on 32-bit architectures
-- 21 bits on PPC64 (because of the definition of ILLEGAL_POINTER_VALUE)
-- 32 bits on other 64-bit architectures
-
-Which seems to be plenty?
-
->> Since all the tracking is performed on DMA map/unmap, no additional code
->> is needed in the fast path, meaning the performance overhead of this
->> tracking is negligible. The extra memory needed to track the pages is
->> neatly encapsulated inside xarray, which uses the 'struct xa_node'
->> structure to track items. This structure is 576 bytes long, with slots
->> for 64 items, meaning that a full node occurs only 9 bytes of overhead
->> per slot it tracks (in practice, it probably won't be this efficient,
->> but in any case it should be an acceptable overhead).
->
-> Even if items is stored sequentially in xa_node at first, is it possible
-> that there may be fragmentation in those xa_node when pages are released
-> and allocated many times during packet processing? If yes, is there any
-> fragmentation info about those xa_node?
-
-Some (that's what I mean with "not as efficient"). AFAICT, xa_array does
-do some rebalancing of the underlying radix tree, freeing nodes when
-they are no longer used. However, I am not too familiar with the xarray
-code, so I don't know exactly how efficient this is in practice.
-
->> [0] https://lore.kernel.org/all/CAHS8izPg7B5DwKfSuzz-iOop_YRbk3Sd6Y4rX7K=
-BG9DcVJcyWg@mail.gmail.com/
->>=20
->> Fixes: ff7d6b27f894 ("page_pool: refurbish version of page_pool code")
->> Reported-by: Yonglong Liu <liuyonglong@huawei.com>
->> Suggested-by: Mina Almasry <almasrymina@google.com>
->> Reviewed-by: Jesper Dangaard Brouer <hawk@kernel.org>
->> Tested-by: Jesper Dangaard Brouer <hawk@kernel.org>
->> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
->> ---
->> This is an alternative to Yunsheng's series. Yunsheng requested I send
->> this as an RFC to better be able to discuss the different approaches; see
->> some initial discussion in[1], also regarding where to store the ID as
->> alluded to above.
->
-> As mentioned before, I am not really convinced there is still any
-> space left in 'struct page' yet, otherwise we might already use that
-> space to fix the DMA address > 32 bits problem in 32 bits system, see
-> page_pool_set_dma_addr_netmem().
-
-See above.
-
-> Also, Using the more space in 'struct page' for the page_pool seems to
-> make page_pool more coupled to the mm subsystem, which seems to not
-> align with the folios work that is trying to decouple non-mm subsystem
-> from the mm subsystem by avoid other subsystem using more of the 'struct
-> page' as metadata from the long term point of view.
-
-This seems a bit theoretical; any future changes of struct page would
-have to shuffle things around so we still have the ID available,
-obviously :)
-
--Toke
+---
+v3 -> v4:
+ - Change the target tree to ipsec-next
+ - Rebase commit to adopt updated xfrm_init_state()
+ - Remove redundant variable to rely on validiaty of pointer
+ - Refactor xfrm_migrate copy into xfrm_state_clone and rename the
+   method
+v2 -> v3:
+ - Update af_key.c to address kbuild error
+v1 -> v2:
+ - Revert "xfrm: Update offload configuration during SA update"
+   change as the patch can be protentially handled in the
+   hardware without the change.
+ - Address review feedback to correct the logic in the
+   xfrm_state_migrate in the migration offload configuration
+   change.
+ - Revise the commit message for "xfrm: Migrate offload configuration"
+--
+2.49.0.rc0.332.g42c0ae87b1-goog
 
