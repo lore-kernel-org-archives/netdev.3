@@ -1,93 +1,96 @@
-Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C357225413;
-	Mon, 10 Mar 2025 12:27:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.252
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AF9227E96
+	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 12:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741609636; cv=none; b=AZh4lkDKHu4CKfodoXqy+QMDlemRkXGpdse3NTAcwD55v4xjKe9EWgAs0jIrZKkAvrJsEf/mn1nKfnz0qUuZSmbJ36sosXih/mlNyYeCXUvYmlSZcmIEYmnLmekHD5GKcpDPABIBYv9M0z5L7/BAZbvFaQrqh+cs6VFShd0EX7U=
+	t=1741609713; cv=none; b=P0c+D+TPjzwWhD58DRsL4MzffjS6r2zJaZCO5xLYfEqpki5+aTCDkWqebcqtGljyIYHWFN8y105zRjXqBxPZ10jfehb1XzeNj2Sex/O1WqxEFK3coz7/37rSnhhjMaC2fdOlSWO22EgBwSBO4/qW8nFuFUbcYInQ3jJVHvqnfNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741609636; c=relaxed/simple;
-	bh=vK/TgnIZyvdL0hDlShnuvalPvRRxRIKI1qEKWTLREVA=;
-	h=Message-ID:Content-Type:Mime-Version:Subject:From:In-Reply-To:
-	 Date:Cc:References:To; b=oTUh91oFocaGHAy9mBconoWLtg/S3eoKZDA9PKFUl6/+1TNkaFKt9XCo0BIQAPEb1RU4Zr03/wXcwpcQZjQANJ06GTRJdkUQ8/vCMPfNNdxGniDqJlGH05dxGTjehiBt8E0Zg6wsk0nJvvkr90HAz/WoyW9GD7G2xVlOdxylGOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=g+sNguYq; arc=none smtp.client-ip=162.62.57.252
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1741609713; c=relaxed/simple;
+	bh=5GH96/frAS9nSuB3pPuT1iTt5BPHU3MLmaqmyJLzUQk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sj4ODJa818Z34hzCid90qy5oEIJ4EfFQ7fvf2AW74eAS1/Qvao1rVxW2Ip4Jm9RxC0ZZD50OsmlwvZ4I3LxwWL4ND947tpFq4aluQWCOMnypEy9H0PnU3UaNkSd0j/l3fnWBSJP4r+Awxs+lXiBqEZJG6Y5/xBBrCnE1Tkeq6lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nm9OIdmc; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="g+sNguYq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1741609620; bh=WkCx060iOy43w4Yye4pXYXhvwRUF2PXnYXTMpaw7xas=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To;
-	b=g+sNguYqcku0ZeaZ/ngWqYceajbkSvb1W+O12eT2gUfvZ97o/BXmQnj6v1MoXz9VR
-	 QvqMD7O9Zz8ZYxm5znMf61sA0K03DkKY8kzlvSr2jjj71pFbUJtGTlTNQicPKkUEV4
-	 xZwdiFPragetD/EvtjJzoCxA6PnosDvi3YnnH+Dw=
-Received: from smtpclient.apple ([59.66.139.231])
-	by newxmesmtplogicsvrszb20-0.qq.com (NewEsmtp) with SMTP
-	id 66F0309E; Mon, 10 Mar 2025 20:25:47 +0800
-X-QQ-mid: xmsmtpt1741609547tqvjfmzyd
-Message-ID: <tencent_7C72D4006818B37C695B066E0AFD5F94380A@qq.com>
-X-QQ-XMAILINFO: MF096ickW6xYEl/mYlfV9grOILopNqOQoEmD1Cp6RVGcFTcAXEHvfJdU6yPp55
-	 hTsB3CfZdbJ0eHBlqOOmgnzuhNthp5TQcdIaezX72nDWS6SqsfqaBAiDJ6MujraDxyN02KnIBlRi
-	 qIDVOSBHrU9MI92SPRjcM96ec/aFYCtISH5Ub9Wxi3Wkek/JGznunt5mRnm/ggJ8qJrpIuwBUSpI
-	 dvFFVOoZPNl5LwrpLDjxKTXb1U+nXQB4iNx42bUDqnYJHdU3ZzNh0mTYZg1nHiqgIxOyWXGqMJq+
-	 43ZvZuzSeezokMN6H+7iZqARRyZ48I7kTo68AgTypkkzmMe/eChagCxr+9yXntoorpWpM6WgUHed
-	 Q1ZzayxdHpwfNPTJwkr7ysarD9pL5CYoInif4iCqUBnVxWTM899/ex/hV4Z9KNMB+BFlPMwosg8l
-	 6U/HfBGZoTKlpipRtwRGmyGBLY11Hiau/oaXHOHyvldog/p5jBLjOPZuuEadoCMzPjZzKoArEijk
-	 Xdyh7MW+hNU9FjLmYuDqILxVQhTKN0oHf8fYC00C83VT0w0WL1W43EmbtdWddyUKLngQtfBPqrBw
-	 xV/8gHNZQ9dVlx+7B6yMeJBKYrtQQgT5qvHZN96w5EYbx6rpAHhORMN6aUdnmzqBUNs5U0VJBPMo
-	 1CJ2InWR+Ux0gLACPJKAjoyfmYGupHwJValAQLPlx7nvgxz1CJidKFiPsuebC653NGbGG5GF4tt5
-	 l8h8GehvKik7A0q30q1Lb864S8r9YASO18KDgjEnaYGNocCQ7VzX4XLSJuBWb+y0SVSSInKXD/Wq
-	 n0XcBIdHaesJxaYgsDOFTaZNGF4oSoziYgk1yj6kb8HngzIhoON+O1A9lFTfW3c+hkOOFKAI7imm
-	 L2NXFb5HPhEKtGrKudi4MxmzZd2cZzDnpSxlfj3IwCrTjGdPKd1G2eHeEKBZAXxHQ/kK5wXLuWdk
-	 X1k3T0SoppLfVHzm/6XAxzh0qKX/6dsk8iyvkx9XkBQf5Lx3YtWCJP/4p9zwz6XvMRa78DyQY=
-X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nm9OIdmc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741609711; x=1773145711;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=5GH96/frAS9nSuB3pPuT1iTt5BPHU3MLmaqmyJLzUQk=;
+  b=Nm9OIdmcXLekdWsXDKPjOE6fUJM5CaKkTAxf4/0bD4PMuNCioSdKQnSe
+   vafJ2xYd9JG8KKnZgvRFlLNf09ZBBn28MhBpP2XTUSDCwDlUi1SQWZNTt
+   PlbxN2c54VSuu1opkJNzQGPd2c0RgJKIxofSrXgevq+sPSzOEWL1R/1zb
+   V0Fd/2af6gcZ/lTEjaAsz99Degy5Ln2+AXQwiZEfk8NfZ2gNCjrL+yLbi
+   BXuhYV2iBpk7A4L5cpdVCbunHcu18D0B5gy9/TzECI0xtbGQFpKctODNs
+   A4Khiah6ttgTa2U/j3/L7wfieCZ1qDr7l/8A30nRqhhWk8hgsWz54Ban9
+   w==;
+X-CSE-ConnectionGUID: BHbqH+z+TZ+gtoyRPNYbVg==
+X-CSE-MsgGUID: EE4xosYqSYqTlul3sNhxYg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="53981084"
+X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
+   d="scan'208";a="53981084"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 05:28:29 -0700
+X-CSE-ConnectionGUID: 1BNFu7ApStCZ81TK0l3thw==
+X-CSE-MsgGUID: C3m5+/IpQfS4zwmopqke6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
+   d="scan'208";a="119698177"
+Received: from gklab-003-001.igk.intel.com ([10.211.3.1])
+  by orviesa009.jf.intel.com with ESMTP; 10 Mar 2025 05:28:29 -0700
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>
+Subject: [PATCH iwl-next v2 0/3] E825C timesync dual NAC support
+Date: Mon, 10 Mar 2025 13:24:36 +0100
+Message-Id: <20250310122439.3327908-1-grzegorz.nitka@intel.com>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
-Subject: Re: [PATCH 1/2] net: enc28j60: support getting irq number from gpio
- phandle in the device tree
-From: hanyuan <hanyuan-z@qq.com>
-In-Reply-To: <c8553dc9-2d8f-4d4b-a381-f87660c2ee99@lunn.ch>
-Date: Mon, 10 Mar 2025 20:25:36 +0800
-Cc: netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-X-OQ-MSGID: <D289843D-4962-4A6A-897C-0CF4A53A7EAF@qq.com>
-References: <tencent_83CBDD726353E21FBD648E831600C078F205@qq.com>
- <c8553dc9-2d8f-4d4b-a381-f87660c2ee99@lunn.ch>
-To: Andrew Lunn <andrew@lunn.ch>
-X-Mailer: Apple Mail (2.3826.400.131.1.6)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+
+This patch series adds full support for timesync operations for E8225C
+devices which are configured in so called 2xNAC mode (Network
+Acceleration Complex). 2xNAC mode is the mode in which IO die
+is housing two complexes and each of them has its own PHY connected
+to it. The complex which controls time transmitter is referred as
+primary complex.
+
+The series solves known configuration issues in dual config mode:
+- side-band queue (SBQ) addressing when configuring the ports on the PHY
+  on secondary NAC
+- access to timesync config from the second NAC as only one PF in
+  primary NAC controls time transmitter clock
+
+v1->v2:
+- fixed ice_pf_src_tmr_owned function doc
+- fixed type for lane_num field in ice_hw struct 
+
+Karol Kolacinski (3):
+  ice: remove SW side band access workaround for E825
+  ice: refactor ice_sbq_msg_dev enum
+  ice: enable timesync operation on 2xNAC E825 devices
+
+ drivers/net/ethernet/intel/ice/ice.h         | 60 +++++++++++++-
+ drivers/net/ethernet/intel/ice/ice_common.c  |  8 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.c     | 49 +++++++++---
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c  | 82 ++++++++++----------
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.h  |  5 --
+ drivers/net/ethernet/intel/ice/ice_sbq_cmd.h | 11 +--
+ drivers/net/ethernet/intel/ice/ice_type.h    |  1 +
+ 7 files changed, 149 insertions(+), 67 deletions(-)
 
 
-> 2025=E5=B9=B43=E6=9C=8810=E6=97=A5 20:18=EF=BC=8CAndrew Lunn =
-<andrew@lunn.ch> =E5=86=99=E9=81=93=EF=BC=9A
->=20
->> My embedded platform has limited support, it only provides a
->> hard-coded pin control driver and does not support configuring
->> pinctrl properties in the device tree. So, there is no generic
->> way to request the pin and set its direction via device tree =
-bindings.
->=20
-> So it sounds like that is your real problem. Please write a proper
-> pinctrl driver for the SoC you are using. They are not very complex
-> drivers.
->=20
->    Andrew
->=20
-> ---
-> pw-bot: cr
-
-Hi
-
-Sorry for my previous low level mistake on the email format and
-thanks again for your patience. I agree with you and please ignore
-my patches.
-
-Hanyuan
+base-commit: daa2036c311e81ee32f8cccc8257e3dfd4985f79
+-- 
+2.39.3
 
