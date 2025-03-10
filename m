@@ -1,184 +1,158 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435D2233D99
-	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 17:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E753622DFF3
+	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 18:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628714; cv=none; b=meUPNRP80wdLWvURS6k0UNjA4ajjeZzxCzFIggjNC6kXjPKiPv1UZ2ID7KUSXxwtZaPe5dCQJEcqlFJqzvUVyGsxJfUa3f938ysKwCHpllptGC57WWYKRs2QXuUjRDf7q7Coc8b9P5LMTs5ZEq8t616AtAYVeVd2X3HkTK2X+a8=
+	t=1741629996; cv=none; b=IXd0vMLdB4L7Yf+Uql6xW9OhhaGaPZi+XiT4J+5B9b3HkP7GWdHqwUobOiUF88DyUVs74+5Q6mmxlzQsziP2dB0eQ+dEtF6aUVonm7UvGOXKZzmAKDQwUbaEJV9NeMmrh4F0Hre9QaXaJ7T/KJSVLwKmQYcKhVOdj4W5f5T1nbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628714; c=relaxed/simple;
-	bh=L/+W0J1dfdqEu5GoFe8jiLmS1whnnfKjwrYC+E3AwsU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e9w0aL+IlE4f8NpEkhu/YlIZZH1xgV/Yo3NeFbJzql4HbgaY+E9sxTF45IoPNHiekuqw5LYaOsqnEyU3Z3kyY74CkHjQjP8zlLKulvsomL4bxlaLgwNDXcowqQjNqCZdsHc7CEEtsDAxlAJmBqIOQdjiOXyQsQH6VJIbVyt6LB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DEEbijma; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1741629996; c=relaxed/simple;
+	bh=79NoslWFokmPF3M7/bKxqWenIFPB3+bRkcmISSkX+ao=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nBislVlo1WmyKom9uZBXeAMoB9HblSTrwoS6j8rplDOWDoLBeFVcDklmnMd5DapP/SI9FWk25Qh0sTFK3IbJyP/Jyektj7JN3ap5XpPWbGwF9TkcKPomA9E7VzUr6Aeoa1SE2yH6eUFySxE5kb7Ypr5dEKGFODw0d7DR6clR/QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=seh49vo2; arc=none smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DEEbijma"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741628711; x=1773164711;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=L/+W0J1dfdqEu5GoFe8jiLmS1whnnfKjwrYC+E3AwsU=;
-  b=DEEbijmaN+m+uw78WY27OVP3PZL5nfk+HaCcVVc3wRdkOTDV+bsQ7hBm
-   lQhQRi+tygqrAzkEpZEA2fYH21lk7ivgafbspTDsr5yqRursgzn8+I7nP
-   EnB5msO40oKsJ5N+snY/FULh/as2FKMb/4T3CoCtKrMsPR2xGpi2Ykxvc
-   0jZaSzhcs4elEUDQaZexsuj6S5De4OBx703Y35No7UgfZmePxbitt+zrM
-   g4GfZZQU99BNJkd6eOVufZxX7jzgxXbj5VAqYZHznenar9hZBja3k2BLt
-   gEF1PpVj12w0RfC/ZNpni57DFaN9N2C9jaIv8De1fI4cyRfP2bTfKR4rA
-   Q==;
-X-CSE-ConnectionGUID: lSkotbqTQH+r9pczgCeLSA==
-X-CSE-MsgGUID: QYwdoE6PQwavFalHQSTZGw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="46549012"
-X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
-   d="scan'208";a="46549012"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 10:45:07 -0700
-X-CSE-ConnectionGUID: zfnkH/iwS6SyBTTWXKuyYQ==
-X-CSE-MsgGUID: GlF7DJbOTtiXXMF9Y8ws5A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
-   d="scan'208";a="120950830"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa008.jf.intel.com with ESMTP; 10 Mar 2025 10:45:06 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
-	anthony.l.nguyen@intel.com,
-	richardcochran@gmail.com,
-	Milena Olech <milena.olech@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Bharath R <bharath.r@intel.com>
-Subject: [PATCH net-next 5/6] ixgbe: add PTP support for E610 device
-Date: Mon, 10 Mar 2025 10:44:58 -0700
-Message-ID: <20250310174502.3708121-6-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250310174502.3708121-1-anthony.l.nguyen@intel.com>
-References: <20250310174502.3708121-1-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="seh49vo2"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7c54a9d3fcaso180788785a.2
+        for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 11:06:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1741629993; x=1742234793; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XCbplbGo+wXAErff6OKF5gDHtfLPjvXhdrCE0hTtOQY=;
+        b=seh49vo2icOw7VzqrPiotl5ZTi9vDAfyUOdsDz/mdeHfmvCxLlGiWj4gj+qVFGxjYZ
+         fe+jvgC+u9Bd4vvsTejtyEyrIwlFji5dP8StviOmbjR2PB7mmNqF0PNqIL4B87AUb6JS
+         I0o0EgOYV8o8gQiLWjjaNwVas+KuWtMeSbeyJAnSZLsxNVZSajwp0DtE0EeyFyPOXA6H
+         EdhuQTZcG6AaeauaLvtVoE2gH4ZolAlJfsB0KEyDYtK8gf69VWkU6vkiL9zje/EOsxRd
+         ZXKcl194pWd9Jg3YxXklQYTWOxcSVoBgH6DH4FvzWaMgxYmP8/vdBXGpgSrnlLRwPyz8
+         RB+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741629993; x=1742234793;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XCbplbGo+wXAErff6OKF5gDHtfLPjvXhdrCE0hTtOQY=;
+        b=IJAOjMhvj5yA75X8bepAMKHV4NiCzPMiYnYca0T4w1EqsacgWuu4oCcjZpKyu7iYbq
+         OagBWEZW595ZFDvg+mITBmnpbHhEfhspHzDuqZkPTj9WdOh2Cx6nLw0xCYBXSaQd0Z1I
+         zq2OG94vDLQlWc9/vHRWeJhUQtPcqpfVw5OJQya1cxQsgcax+mnThPGbxrZYSTY1m/S9
+         3P8SgwG6lQkH//FnoHH0Kxo+a9/sgN8Ujb8x6Z40rtFewGglfwlVFeaMfXOfxj3JbU1N
+         kpXEZY6S2/PQHLYUmHT/xuCyGgF9XVNRPaN36uT4+ikS1SzKjKgEbu3KW5OKelnvt29T
+         zUyA==
+X-Gm-Message-State: AOJu0YyPyk0WAEaNVRxU8keMmapvhZMQGel30xH5GbakttBwgMhz8iuf
+	kWxTyykkLv2CqKsYLv34xWExoWafvljTRgtsBFF3FPCqlXuDADIMcrW8ImEJRg==
+X-Gm-Gg: ASbGncszVmL7g6NegZos70NvA4x2eRlIvAf8hShBeTB2TMFLmFBNkan486HjDa5vM6g
+	vemAImYAnw1HeohLDSyUgOdt6kuOcgQAuLj2X6083egHbj02qzv6Fs81AioS2aq4fZrFF5dIBJO
+	r6N7klPQgsWizxSPuusGu1g5YKwzhIRXA9S1VaaT++sjWKlsl8vODLEJNBypeyys+HN+dx5b7e3
+	Idu3QTYxeQelEn7x0Js8n/Ov4zaow/4pQAqbKjO5Udv3zAgE35ab+716R3UNf+sv1riR6CoejoO
+	PQ5bymniXxQodMRy1e6SoW1esKqIkw1ogS5G3Uza0u75DkrcW412r0cYWZHstfO6Cjw+KKisdfz
+	CuE4AS17qlo2MBiyulDA3hQzau2dz/kEQI00ctQ==
+X-Google-Smtp-Source: AGHT+IGBXTLd9FGucbRKIujIIutoo5xIGlcogc24jO38Y8DB5mhjUv+LLAgNLG3yRzzvwDJkN5rqHg==
+X-Received: by 2002:a05:620a:84c4:b0:7c5:5a51:d2c0 with SMTP id af79cd13be357-7c55a51d82emr378482285a.52.1741629992671;
+        Mon, 10 Mar 2025 11:06:32 -0700 (PDT)
+Received: from rowland.harvard.edu (nat-65-112-8-24.harvard-secure.wrls.harvard.edu. [65.112.8.24])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c3e54ffa55sm703579985a.81.2025.03.10.11.06.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Mar 2025 11:06:32 -0700 (PDT)
+Date: Mon, 10 Mar 2025 14:06:29 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Fiona Klute <fiona.klute@gmx.de>
+Cc: netdev@vger.kernel.org,
+	Thangaraj Samynathan <Thangaraj.S@microchip.com>,
+	Rengarajan Sundararajan <Rengarajan.S@microchip.com>,
+	UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-list@raspberrypi.com, stable@vger.kernel.org
+Subject: Re: [PATCH] net: usb: lan78xx: Enforce a minimum interrupt polling
+ period
+Message-ID: <d52e460d-2c73-4117-95b9-bed3892ac41d@rowland.harvard.edu>
+References: <20250310165932.1201702-1-fiona.klute@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250310165932.1201702-1-fiona.klute@gmx.de>
 
-From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+On Mon, Mar 10, 2025 at 05:59:31PM +0100, Fiona Klute wrote:
+> If a new reset event appears before the previous one has been
+> processed, the device can get stuck into a reset loop. This happens
+> rarely, but blocks the device when it does, and floods the log with
+> messages like the following:
+> 
+>   lan78xx 2-3:1.0 enp1s0u3: kevent 4 may have been dropped
+> 
+> The only bit that the driver pays attention to in the interrupt data
+> is "link was reset". If there's a flapping status bit in that endpoint
+> data (such as if PHY negotiation needs a few tries to get a stable
+> link), polling at a slower rate allows the state to settle.
+> 
+> This is a simplified version of a patch that's been in the Raspberry
+> Pi downstream kernel since their 4.14 branch, see also:
+> https://github.com/raspberrypi/linux/issues/2447
+> 
+> Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
+> Cc: kernel-list@raspberrypi.com
+> Cc: stable@vger.kernel.org
+> ---
+> For the stable crew: I've *tested* the patch with 6.12.7 and 6.13.5 on
+> a Revolution Pi Connect 4 (Raspberry Pi CM4 based device with built-in
+> LAN7800 as second ethernet port), according to the linked issue for
+> the RPi downstream kernel the problem should be present in all
+> maintained longterm kernel versions, too (based on how long they've
+> carried a patch).
+> 
+>  drivers/net/usb/lan78xx.c | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+> index a91bf9c7e31d..7bf01a31a932 100644
+> --- a/drivers/net/usb/lan78xx.c
+> +++ b/drivers/net/usb/lan78xx.c
+> @@ -173,6 +173,12 @@
+>  #define INT_EP_GPIO_1			(1)
+>  #define INT_EP_GPIO_0			(0)
+>  
+> +/* highspeed device, so polling interval is in microframes (eight per
+> + * millisecond)
+> + */
+> +#define INT_URB_MICROFRAMES_PER_MS	8
+> +#define MIN_INT_URB_INTERVAL_MS		8
+> +
+>  static const char lan78xx_gstrings[][ETH_GSTRING_LEN] = {
+>  	"RX FCS Errors",
+>  	"RX Alignment Errors",
+> @@ -4527,7 +4533,11 @@ static int lan78xx_probe(struct usb_interface *intf,
+>  	if (ret < 0)
+>  		goto out4;
+>  
+> -	period = ep_intr->desc.bInterval;
+> +	period = max(ep_intr->desc.bInterval,
+> +		     MIN_INT_URB_INTERVAL_MS * INT_URB_MICROFRAMES_PER_MS);
 
-Add PTP support for E610 adapter. The E610 is based on X550 and adds
-firmware managed link, enhanced security capabilities and support for
-updated server manageability. It does not introduce any new PTP features
-compared to X550.
+This calculation is completely wrong.  For high-speed interrupt 
+endpoints, the bInterval value is encoded using a logarithmic scheme.  
+The actual interval in microframes is given by 2^(bInterval - 1) (see 
+Table 9-13 in the USB 2.0 spec).  Furthermore, when the value is passed 
+to usb_fill_int_urb(), the interval argument must be encoded in the same 
+way (see the kerneldoc for usb_fill_int_urb() in include/linux/usb.h).
 
-Reviewed-by: Milena Olech <milena.olech@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Tested-by: Bharath R <bharath.r@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c |  1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c     | 13 +++++++++++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+The encoded value corresponding to 8 ms is 7, not 64, since 8 ms = 64 
+uframes and 64 = 2^(7-1).
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-index da91c582d439..f03925c1f521 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-@@ -3185,6 +3185,7 @@ static int ixgbe_get_ts_info(struct net_device *dev,
- 	case ixgbe_mac_X550:
- 	case ixgbe_mac_X550EM_x:
- 	case ixgbe_mac_x550em_a:
-+	case ixgbe_mac_e610:
- 		info->rx_filters |= BIT(HWTSTAMP_FILTER_ALL);
- 		break;
- 	case ixgbe_mac_X540:
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c
-index 9339edbd9082..eef25e11d938 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c
-@@ -140,6 +140,7 @@
-  * proper mult and shift to convert the cycles into nanoseconds of time.
-  */
- #define IXGBE_X550_BASE_PERIOD 0xC80000000ULL
-+#define IXGBE_E610_BASE_PERIOD 0x333333333ULL
- #define INCVALUE_MASK	0x7FFFFFFF
- #define ISGN		0x80000000
- 
-@@ -415,6 +416,7 @@ static void ixgbe_ptp_convert_to_hwtstamp(struct ixgbe_adapter *adapter,
- 	case ixgbe_mac_X550:
- 	case ixgbe_mac_X550EM_x:
- 	case ixgbe_mac_x550em_a:
-+	case ixgbe_mac_e610:
- 		/* Upper 32 bits represent billions of cycles, lower 32 bits
- 		 * represent cycles. However, we use timespec64_to_ns for the
- 		 * correct math even though the units haven't been corrected
-@@ -492,11 +494,13 @@ static int ixgbe_ptp_adjfine_X550(struct ptp_clock_info *ptp, long scaled_ppm)
- 	struct ixgbe_adapter *adapter =
- 			container_of(ptp, struct ixgbe_adapter, ptp_caps);
- 	struct ixgbe_hw *hw = &adapter->hw;
-+	u64 rate, base;
- 	bool neg_adj;
--	u64 rate;
- 	u32 inca;
- 
--	neg_adj = diff_by_scaled_ppm(IXGBE_X550_BASE_PERIOD, scaled_ppm, &rate);
-+	base = hw->mac.type == ixgbe_mac_e610 ? IXGBE_E610_BASE_PERIOD :
-+						IXGBE_X550_BASE_PERIOD;
-+	neg_adj = diff_by_scaled_ppm(base, scaled_ppm, &rate);
- 
- 	/* warn if rate is too large */
- 	if (rate >= INCVALUE_MASK)
-@@ -559,6 +563,7 @@ static int ixgbe_ptp_gettimex(struct ptp_clock_info *ptp,
- 	case ixgbe_mac_X550:
- 	case ixgbe_mac_X550EM_x:
- 	case ixgbe_mac_x550em_a:
-+	case ixgbe_mac_e610:
- 		/* Upper 32 bits represent billions of cycles, lower 32 bits
- 		 * represent cycles. However, we use timespec64_to_ns for the
- 		 * correct math even though the units haven't been corrected
-@@ -1067,6 +1072,7 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
- 	case ixgbe_mac_X550:
- 	case ixgbe_mac_X550EM_x:
- 	case ixgbe_mac_x550em_a:
-+	case ixgbe_mac_e610:
- 		/* enable timestamping all packets only if at least some
- 		 * packets were requested. Otherwise, play nice and disable
- 		 * timestamping
-@@ -1233,6 +1239,7 @@ void ixgbe_ptp_start_cyclecounter(struct ixgbe_adapter *adapter)
- 		fallthrough;
- 	case ixgbe_mac_x550em_a:
- 	case ixgbe_mac_X550:
-+	case ixgbe_mac_e610:
- 		cc.read = ixgbe_ptp_read_X550;
- 		break;
- 	case ixgbe_mac_X540:
-@@ -1280,6 +1287,7 @@ static void ixgbe_ptp_init_systime(struct ixgbe_adapter *adapter)
- 	case ixgbe_mac_X550EM_x:
- 	case ixgbe_mac_x550em_a:
- 	case ixgbe_mac_X550:
-+	case ixgbe_mac_e610:
- 		tsauxc = IXGBE_READ_REG(hw, IXGBE_TSAUXC);
- 
- 		/* Reset SYSTIME registers to 0 */
-@@ -1407,6 +1415,7 @@ static long ixgbe_ptp_create_clock(struct ixgbe_adapter *adapter)
- 	case ixgbe_mac_X550:
- 	case ixgbe_mac_X550EM_x:
- 	case ixgbe_mac_x550em_a:
-+	case ixgbe_mac_e610:
- 		snprintf(adapter->ptp_caps.name, 16, "%s", netdev->name);
- 		adapter->ptp_caps.owner = THIS_MODULE;
- 		adapter->ptp_caps.max_adj = 30000000;
--- 
-2.47.1
+> +	dev_info(&intf->dev,
+> +		 "interrupt urb period set to %d, bInterval is %d\n",
+> +		 period, ep_intr->desc.bInterval);
 
+I doubt that this dev_info() will be very helpful to anyone (in addition 
+to being wrong since the value in "period" is not the actual period).
+
+Alan Stern
