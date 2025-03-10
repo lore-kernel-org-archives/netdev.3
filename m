@@ -1,16 +1,15 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428F322540B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426F7221733
 	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 11:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741607872; cv=none; b=D1nn0t10KK8WYCefSv4n2VRM3WmCHwFckfiLzgdZQriNVjI2+Ch+7+nbIGd0Afw+LeeMA3K3p2PiJePruxGDzVp1TbpO86lg1tHn5ErIxKz1Nvx8K+UwWDLz67WdhgyQrGZjwazjaO8oCsBLgbdzJxsZaHvJrYU002/nZlSlhfE=
+	t=1741607872; cv=none; b=fuuP7dFkUavFN1CLjCzLKC8jebj/vq9AxQdYXOhy3N47g3XFp8rs5V3sVnNG/SDvqjt0siDrsBOdqFR1PA/J82ZTJaCsCL2Kf5+3nPL1sUdKyREYO1SpPObxwRySYAVJq6ODBROWt3oVYjAGuNZ3SqFAjB8YrZlmSNnzbFuVAHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741607872; c=relaxed/simple;
-	bh=R0D1y60vC+uBdp+6wIBczzW2cfEHCDuM5HyP0V9xITU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GujpqsgK/wIevs0DnuJSmdI+/mtj3qSdwS2lQFE2vD1XEZmiRenrZ2Er7lZMydVts9AHe3Z/CW8pDOOgU4I1JgOtnWhISJcJqTJRIO4dva0hw6COcGr6uplW4ShMZJd/ZC63Auwvv8/5XzzgITevpmuYNJHgeGhmPekdMsQtZFM=
+	bh=aV37oTRU8VRfUqEf+ExcZrqvLFCCYjE0cXRZe0IG3ks=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ASF49SKvSKHqoLmNwUXqzEhrRMBUmAnDml/UVcSiRvrf1KQHiE2MmLPIDIOfbokH+v5+4h+cSXFtjvqjSCkn1/OqukXKQi859Y66nUbbhIxpGseyPDgJBOKABbyCB8EPceV9xO1osyIIEoz5ezPAIROaetOaBue52fwX5seWBJQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,17 +17,17 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1trblL-0000S7-Co; Mon, 10 Mar 2025 12:57:39 +0100
+	id 1trblL-0000S3-Cn; Mon, 10 Mar 2025 12:57:39 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1trblK-004za2-0R;
+	id 1trblK-004zZy-09;
 	Mon, 10 Mar 2025 12:57:38 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1trblK-003I1v-0A;
-	Mon, 10 Mar 2025 12:57:38 +0100
+	id 1trblJ-003I1A-37;
+	Mon, 10 Mar 2025 12:57:37 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -45,12 +44,10 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com,
 	Phil Elwell <phil@raspberrypi.org>
-Subject: [PATCH net-next v3 4/7] net: usb: lan78xx: Use ethtool_op_get_link to reflect current link status
-Date: Mon, 10 Mar 2025 12:57:34 +0100
-Message-Id: <20250310115737.784047-5-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v3 0/7] Convert LAN78xx to PHYLINK
+Date: Mon, 10 Mar 2025 12:57:30 +0100
+Message-Id: <20250310115737.784047-1-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250310115737.784047-1-o.rempel@pengutronix.de>
-References: <20250310115737.784047-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,47 +60,23 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Replace the custom lan78xx_get_link implementation with the standard
-ethtool_op_get_link helper, which uses netif_carrier_ok to reflect
-the current link status accurately.
+This patch series refactors the LAN78xx USB Ethernet driver to use the
+PHYLINK API.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/net/usb/lan78xx.c | 14 +-------------
- 1 file changed, 1 insertion(+), 13 deletions(-)
+Oleksij Rempel (7):
+  net: usb: lan78xx: Convert to PHYlink for improved PHY and MAC
+    management
+  net: usb: lan78xx: improve error reporting on PHY attach failure
+  net: usb: lan78xx: Improve error handling for PHY init path
+  net: usb: lan78xx: Use ethtool_op_get_link to reflect current link
+    status
+  net: usb: lan78xx: port link settings to phylink API
+  net: usb: lan78xx: Transition get/set_pause to phylink
+  net: usb: lan78xx: Integrate EEE support with phylink LPI API
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 465762c3efcf..73f62c3e5c58 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -1835,18 +1835,6 @@ static int lan78xx_set_eee(struct net_device *net, struct ethtool_keee *edata)
- 	return ret;
- }
- 
--static u32 lan78xx_get_link(struct net_device *net)
--{
--	u32 link;
--
--	mutex_lock(&net->phydev->lock);
--	phy_read_status(net->phydev);
--	link = net->phydev->link;
--	mutex_unlock(&net->phydev->lock);
--
--	return link;
--}
--
- static void lan78xx_get_drvinfo(struct net_device *net,
- 				struct ethtool_drvinfo *info)
- {
-@@ -2013,7 +2001,7 @@ lan78xx_get_regs(struct net_device *netdev, struct ethtool_regs *regs,
- }
- 
- static const struct ethtool_ops lan78xx_ethtool_ops = {
--	.get_link	= lan78xx_get_link,
-+	.get_link	= ethtool_op_get_link,
- 	.nway_reset	= phy_ethtool_nway_reset,
- 	.get_drvinfo	= lan78xx_get_drvinfo,
- 	.get_msglevel	= lan78xx_get_msglevel,
--- 
+ drivers/net/usb/lan78xx.c | 816 +++++++++++++++++++-------------------
+ 1 file changed, 400 insertions(+), 416 deletions(-)
+
+--
 2.39.5
 
