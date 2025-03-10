@@ -1,158 +1,128 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.94])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24C2226529;
-	Mon, 10 Mar 2025 10:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E324722689D
+	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 10:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741602229; cv=none; b=b7qdJZ4GDSH9P794hgv5qfTwJNBmaJ4qCtflKRVPEMaWH/5/iUVtbNVlgDEK+yw2O4a8KYx859q1DRuLI82F6YI1nqMo7MSfE5Rl2AmCTJxcrR1je40l/1FAI3uDfPCkV89ZTFW4BnjzOVGvkgaFQpCa6oAl5mYVvX0bNxfqlJc=
+	t=1741602328; cv=none; b=UcD+hr22OR7IRL82wuDU/81RSw5lmzYNE1zQHrB6F31evIwfWe9mmLwvq9ZnMOfhdFY2I0GGnZ4x821Cg17vg1QZuFsCCiy1WrMRdAYM7DsVu2CDeM2wQQEG4UvYXTInUtu3uyY7ojZAOLoti28mGHQU/+rKV98fvGZzIMZL4P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741602229; c=relaxed/simple;
-	bh=fWUenZNEUS4s/igS+j2N6X5It+o6P6j0gtBDEBVlD2Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BjNMmJOFXeqA8OxObUqq/x26ujGpzN6mnBj8xFgqKGdaY61KU6S23iZojxhXgKC6alfnw8CgzZJfXYXnYXGZ3QPT3LKHiZw5E5DyIreUOScJDOP9qwlUtf9/+gCBrAZ4n7raSPf4fmSEgs42Xs0/VqWUyMxKgSaNi+sEsv9DMjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=YjnKU/Y5; arc=none smtp.client-ip=212.42.244.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
+	s=arc-20240116; t=1741602328; c=relaxed/simple;
+	bh=xIE+UTqb+jLSoTXVrKvvWDu1nRgFSGR/ps2L4wLEKN4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bCfuFV1JG6JiBfVKwdaqsgRv9qAhFnxuWj4fxpi/sHuNI2pqC9bFjU76yhvj2Z0AeXrNYMtCWgipJVlpmWwUd8ihYYzFODLqXrhbVot2Wqs2xjggKxP0QZEeVmmwuyi37ZkZ8ricoPZD3YA4lc9yEJRLaOYe5vDP4CaGC9eA2rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ghrPLKQU; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="YjnKU/Y5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1741601887; bh=fWUenZNEUS4s/igS+j2N6X5It+o6P6j0gtBDEBVlD2Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YjnKU/Y5wu9UZurybEO8c7226Q7fjlL3GXrt8LIEpSLeFbznQk12O32mg8eg795Qw
-	 A0e3Sn58H6iBD4UOy4pFjwdjCDEEduH2VJE007D6Ev+jMR5Tyqmg0xGh1E4COjs+8+
-	 s6SAmO0lI/3I2G1u6cXKPbWPMpemK88FfE4qDmNw=
-Received: from [212.42.244.71] (helo=mail.avm.de)
-	by mail.avm.de with ESMTP (eXpurgate 4.52.1)
-	(envelope-from <phahn-oss@avm.de>)
-	id 67cebc5f-94fe-7f0000032729-7f00000194d4-1
-	for <multiple-recipients>; Mon, 10 Mar 2025 11:18:07 +0100
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
-	by mail.avm.de (Postfix) with ESMTPS;
-	Mon, 10 Mar 2025 11:18:07 +0100 (CET)
-From: Philipp Hahn <phahn-oss@avm.de>
-To: netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Cc: Philipp Hahn <phahn-oss@avm.de>,
-	Leon Schuermann <leon@is.currently.online>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Oliver Neukum <oliver@neukum.org>
-Subject: [PATCH] cdc_ether|r8152: ThinkPad Hybrid USB-C/A Dock quirk
-Date: Mon, 10 Mar 2025 11:17:35 +0100
-Message-Id: <484336aad52d14ccf061b535bc19ef6396ef5120.1741601523.git.p.hahn@avm.de>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ghrPLKQU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741602326; x=1773138326;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xIE+UTqb+jLSoTXVrKvvWDu1nRgFSGR/ps2L4wLEKN4=;
+  b=ghrPLKQUtHBLWczAHjEr8ASliq06B9Ajj5n2LEvBZC39sAkEIyZw/rM5
+   W53znxUvgF40bZA2M8zKhtm4NKHhd93997EN2WWnuxQy8v0IHSAFToCZI
+   pwt367s6y2exWXCjl8hU1Py8VJTwKAsMkLVe2kVv9H+Kp2pTBp8F5tWew
+   BYvfaozwOYCoAoTF2/xdDXLuPkurX+ZpQfGvoOi5jPxYBwdbfjHnxnfAJ
+   84a/vShoDa7yON6CqMq2exM7+qJgaOoJEVm4tcSIj3t+eSE+FnsRgQJ2t
+   9wRnHUQrCyGbv8COf6cVpakebTA8idCOCydu9Sv/MJoiZZj2Ne5Egys59
+   w==;
+X-CSE-ConnectionGUID: 9FMN4B8rS5auso2+o+nVwg==
+X-CSE-MsgGUID: StpzyboKTl6aNAgMlCcsgQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11368"; a="65042735"
+X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; 
+   d="scan'208";a="65042735"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 03:25:25 -0700
+X-CSE-ConnectionGUID: eM0+FtaMRhaL38aq7HZauA==
+X-CSE-MsgGUID: KOSUOua0SaOqdGY33wG4+g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; 
+   d="scan'208";a="143161859"
+Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
+  by fmviesa002.fm.intel.com with ESMTP; 10 Mar 2025 03:25:23 -0700
+Received: from kbuild by a4747d147074 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1traK0-00045q-1u;
+	Mon, 10 Mar 2025 10:25:20 +0000
+Date: Mon, 10 Mar 2025 18:24:29 +0800
+From: kernel test robot <lkp@intel.com>
+To: Eric Dumazet <edumazet@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Simon Horman <horms@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>,
+	syzbot+377b71db585c9c705f8e@syzkaller.appspotmail.com
+Subject: Re: [PATCH net] net: lapbether: use netdev_lockdep_set_classes()
+ helper
+Message-ID: <202503101824.VtjtbcKN-lkp@intel.com>
+References: <20250309093930.1359048-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: AVM GmbH, Berlin, Germany
-Content-Transfer-Encoding: 8bit
-X-purgate-ID: 149429::1741601887-6B5F5945-5472ED96/0/0
-X-purgate-type: clean
-X-purgate-size: 4277
-X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
-X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
-X-purgate: clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250309093930.1359048-1-edumazet@google.com>
 
-Lenovo ThinkPad Hybrid USB-C with USB-A Dock (17ef:a359) is affected by
-the same problem as the Lenovo Powered USB-C Travel Hub (17ef:721e):
-Both are based on the Realtek RTL8153B chip used to use the cdc_ether
-driver. However, using this driver, with the system suspended the device
-constantly sends pause-frames as soon as the receive buffer fills up.
-This causes issues with other devices, where some Ethernet switches stop
-forwarding packets altogether.
+Hi Eric,
 
-Using the Realtek driver (r8152) fixes this issue. Pause frames are no
-longer sent while the host system is suspended.
+kernel test robot noticed the following build errors:
 
-Cc: Leon Schuermann <leon@is.currently.online>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Oliver Neukum <oliver@neukum.org> (maintainer:USB CDC ETHERNET DRIVER)
-Cc: netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
-Link: https://git.kernel.org/netdev/net/c/cb82a54904a9
-Link: https://git.kernel.org/netdev/net/c/2284bbd0cf39
-Link: https://www.lenovo.com/de/de/p/accessories-and-software/docking/docking-usb-docks/40af0135eu
-Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
----
- drivers/net/usb/cdc_ether.c | 7 +++++++
- drivers/net/usb/r8152.c     | 6 ++++++
- drivers/net/usb/r8153_ecm.c | 6 ++++++
- 3 files changed, 19 insertions(+)
+[auto build test ERROR on net/main]
 
-diff --git a/drivers/net/usb/cdc_ether.c b/drivers/net/usb/cdc_ether.c
-index a6469235d904..a032c1ded406 100644
---- a/drivers/net/usb/cdc_ether.c
-+++ b/drivers/net/usb/cdc_ether.c
-@@ -783,6 +783,13 @@ static const struct usb_device_id	products[] = {
- 	.driver_info = 0,
- },
- 
-+/* Lenovo ThinkPad Hybrid USB-C with USB-A Dock (40af0135eu, based on Realtek RTL8153) */
-+{
-+	USB_DEVICE_AND_INTERFACE_INFO(LENOVO_VENDOR_ID, 0xa359, USB_CLASS_COMM,
-+			USB_CDC_SUBCLASS_ETHERNET, USB_CDC_PROTO_NONE),
-+	.driver_info = 0,
-+},
-+
- /* Aquantia AQtion USB to 5GbE Controller (based on AQC111U) */
- {
- 	USB_DEVICE_AND_INTERFACE_INFO(AQUANTIA_VENDOR_ID, 0xc101,
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 468c73974046..96fa3857d8e2 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -785,6 +785,7 @@ enum rtl8152_flags {
- #define DEVICE_ID_THINKPAD_USB_C_DONGLE			0x720c
- #define DEVICE_ID_THINKPAD_USB_C_DOCK_GEN2		0xa387
- #define DEVICE_ID_THINKPAD_USB_C_DOCK_GEN3		0x3062
-+#define DEVICE_ID_THINKPAD_HYBRID_USB_C_DOCK		0xa359
- 
- struct tally_counter {
- 	__le64	tx_packets;
-@@ -9787,6 +9788,7 @@ static bool rtl8152_supports_lenovo_macpassthru(struct usb_device *udev)
- 		case DEVICE_ID_THINKPAD_USB_C_DOCK_GEN2:
- 		case DEVICE_ID_THINKPAD_USB_C_DOCK_GEN3:
- 		case DEVICE_ID_THINKPAD_USB_C_DONGLE:
-+		case DEVICE_ID_THINKPAD_HYBRID_USB_C_DOCK:
- 			return 1;
- 		}
- 	} else if (vendor_id == VENDOR_ID_REALTEK && parent_vendor_id == VENDOR_ID_LENOVO) {
-@@ -10064,6 +10066,8 @@ static const struct usb_device_id rtl8152_table[] = {
- 	{ USB_DEVICE(VENDOR_ID_MICROSOFT, 0x0927) },
- 	{ USB_DEVICE(VENDOR_ID_MICROSOFT, 0x0c5e) },
- 	{ USB_DEVICE(VENDOR_ID_SAMSUNG, 0xa101) },
-+
-+	/* Lenovo */
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x304f) },
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3054) },
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3062) },
-@@ -10074,7 +10078,9 @@ static const struct usb_device_id rtl8152_table[] = {
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x720c) },
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x7214) },
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x721e) },
-+	{ USB_DEVICE(VENDOR_ID_LENOVO,  0xa359) },
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0xa387) },
-+
- 	{ USB_DEVICE(VENDOR_ID_LINKSYS, 0x0041) },
- 	{ USB_DEVICE(VENDOR_ID_NVIDIA,  0x09ff) },
- 	{ USB_DEVICE(VENDOR_ID_TPLINK,  0x0601) },
-diff --git a/drivers/net/usb/r8153_ecm.c b/drivers/net/usb/r8153_ecm.c
-index 20b2df8d74ae..8d860dacdf49 100644
---- a/drivers/net/usb/r8153_ecm.c
-+++ b/drivers/net/usb/r8153_ecm.c
-@@ -135,6 +135,12 @@ static const struct usb_device_id products[] = {
- 				      USB_CDC_SUBCLASS_ETHERNET, USB_CDC_PROTO_NONE),
- 	.driver_info = (unsigned long)&r8153_info,
- },
-+/* Lenovo ThinkPad Hybrid USB-C with USB-A Dock (40af0135eu, based on Realtek RTL8153) */
-+{
-+	USB_DEVICE_AND_INTERFACE_INFO(VENDOR_ID_LENOVO, 0xa359, USB_CLASS_COMM,
-+				      USB_CDC_SUBCLASS_ETHERNET, USB_CDC_PROTO_NONE),
-+	.driver_info = (unsigned long)&r8153_info,
-+},
- 
- 	{ },		/* END */
- };
+url:    https://github.com/intel-lab-lkp/linux/commits/Eric-Dumazet/net-lapbether-use-netdev_lockdep_set_classes-helper/20250309-174127
+base:   net/main
+patch link:    https://lore.kernel.org/r/20250309093930.1359048-1-edumazet%40google.com
+patch subject: [PATCH net] net: lapbether: use netdev_lockdep_set_classes() helper
+config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20250310/202503101824.VtjtbcKN-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250310/202503101824.VtjtbcKN-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503101824.VtjtbcKN-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from drivers/net/wan/lapbether.c:27:
+   In file included from include/linux/net.h:24:
+   In file included from include/linux/mm.h:2224:
+   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     505 |                            item];
+         |                            ~~~~
+   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     512 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     525 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/net/wan/lapbether.c:42:10: fatal error: 'net/netdev_lock.h' file not found
+      42 | #include <net/netdev_lock.h>
+         |          ^~~~~~~~~~~~~~~~~~~
+   3 warnings and 1 error generated.
+
+
+vim +42 drivers/net/wan/lapbether.c
+
+    41	
+  > 42	#include <net/netdev_lock.h>
+    43	#include <net/x25device.h>
+    44	
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
