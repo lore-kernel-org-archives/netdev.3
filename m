@@ -1,158 +1,268 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E022C2343C0
-	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 16:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B320F22D4C3;
+	Mon, 10 Mar 2025 17:26:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741625997; cv=none; b=hRA9GpP4WtJ08S6iZC2whX6ho932cSIHZcz5HO+ZNuYynXV20fBSsPlG/kr2CAgCKAkGi+MEq3dZTPRHHS98hgrhh+FwqV+QQGmrQsqzhZ/kEr3CTTV+PXwSDDBvmbcdim0Yp9izEDoaE/jmU6MmbjfyLO7o5gB+pjfIIzq2IEI=
+	t=1741627590; cv=none; b=FquVOOljwy8JwAvKgq3KPU9pZhrtDGK0KtTnk5PQzxS0j8+rNLGtIDehkD7J04iZ+EEuDNbD04gpjCjrI0DckI8k29xCUF6E93vVz7QD9bsqtlhGguJqtaCZfl/803/JLVSi8hDWz89b+X9DhlUqh/H1gwL/uzLf2P7QOpfqFcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741625997; c=relaxed/simple;
-	bh=BtxPDe8zkq/NBpYVlLij2a8ynqMMcpMY3Pfrlpgmqxs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iquHDJfJ+kRtJEV1tzQd/qyusfUK2gH8Xignx6VW0HdQdU5BoWCEgY5IcI/rNuPfsaD4k54t5VpHzoZSySL8TP2FDaNpxhmhKdyfKDI2Jrgq78Gres3SdAIoyjE/WkVpP4M8t2w8eQ9os/dPuOdeymuFb3T37Fh7pTh7ffu7PxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OvKZBtkS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=yuCVoSsu; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OvKZBtkS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=yuCVoSsu; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1741627590; c=relaxed/simple;
+	bh=+VfDGrZXmuH8meQqP1LdVcLROKhZqTPiinE518t0uuY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KyxFvo7lMQn024jJApRchFmMzHIWaK/jx9VIdTC34yrGaGVammFmYv6w52+kZ6f69ODjLJqm+dHOrqQF6heIQOMdZX6ZzVDH5UcfrFkYmGfBBYZFqTzufdxhhHRcUM92ckKW3/pHHdvCPdQnDlpjeXvF7BvplO1wVcqRa2RV510=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BvTMWlw2; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OvKZBtkS";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="yuCVoSsu";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OvKZBtkS";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="yuCVoSsu"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8C2B621162;
-	Mon, 10 Mar 2025 16:59:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1741625986; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/15a4p4/MRhFHiV3UC/tU5arF9LRXK/RyuAoe1B54Zs=;
-	b=OvKZBtkSVIuhal8NQF+trarWxwmgq6Wiw/cbDYY8tMMfjZud9/5ATVMMxueNOwlHZGMuUI
-	M29AcdqxQMrs9/5VIGuPJbYtA2lUavwVe3kcYb96TTYhR2vFbh4AFrCSy8VhIxR4O2mevj
-	n07uNHkaE1+cYHhDSzY6jEsRuSliWxk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1741625986;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/15a4p4/MRhFHiV3UC/tU5arF9LRXK/RyuAoe1B54Zs=;
-	b=yuCVoSsuVODwm2e/wNVO6b67HB9RlLPhbzlO3ATIFQBPElZ0sdOsDYG4LnVoHXS38M8rJP
-	8Fjj6sLzzb6BZBAQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1741625986; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/15a4p4/MRhFHiV3UC/tU5arF9LRXK/RyuAoe1B54Zs=;
-	b=OvKZBtkSVIuhal8NQF+trarWxwmgq6Wiw/cbDYY8tMMfjZud9/5ATVMMxueNOwlHZGMuUI
-	M29AcdqxQMrs9/5VIGuPJbYtA2lUavwVe3kcYb96TTYhR2vFbh4AFrCSy8VhIxR4O2mevj
-	n07uNHkaE1+cYHhDSzY6jEsRuSliWxk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1741625986;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/15a4p4/MRhFHiV3UC/tU5arF9LRXK/RyuAoe1B54Zs=;
-	b=yuCVoSsuVODwm2e/wNVO6b67HB9RlLPhbzlO3ATIFQBPElZ0sdOsDYG4LnVoHXS38M8rJP
-	8Fjj6sLzzb6BZBAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7CDC6139E7;
-	Mon, 10 Mar 2025 16:59:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id o8dHHYIaz2fCaAAAD6G6ig
-	(envelope-from <nstange@suse.de>); Mon, 10 Mar 2025 16:59:46 +0000
-From: Nicolai Stange <nstange@suse.de>
-To: "David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Nicolai Stange <nstange@suse.de>
-Subject: [PATCH v1 4/4] ipv6: sr: continue initialization at ENOENT HMAC instantiation failures
-Date: Mon, 10 Mar 2025 17:58:57 +0100
-Message-ID: <20250310165857.3584612-5-nstange@suse.de>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250310165857.3584612-1-nstange@suse.de>
-References: <20250310165857.3584612-1-nstange@suse.de>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BvTMWlw2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741627588; x=1773163588;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=+VfDGrZXmuH8meQqP1LdVcLROKhZqTPiinE518t0uuY=;
+  b=BvTMWlw2iBeFAyNzhqB92Pzc930LC2o5/+5LE+wQhkb1DBIWy7ey0Iim
+   7jQfortmbkuzgHD8qenzyNOO5OEF3jnHKu83SFMkQIuL4KlqOkcV+5TJo
+   /h7cGTt+Tnw+Z/2kuyviwECoLGyifu7+xbEsRkZHxLU3aTf8YgzP1k+oy
+   VdL666gnrAd/oKkZu10nv8SyYotDhKsPYgzdx0s3AECay1KFQlewWAoGV
+   xp2J7aRu0TP46lf5fg1XSvo4DVyqnJ7u40yx4PEPrkTSUsoFY2ynwLC6J
+   aQzFxM+U/PGaUYL50pp/K0/Zbn94LorQJWENQHVPGDZ/07gdesmFQr7nH
+   Q==;
+X-CSE-ConnectionGUID: pvxQGijuQ6uAraM6AEuclw==
+X-CSE-MsgGUID: BAMkM2J+TPWsCsWezpJwdg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="60184179"
+X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
+   d="scan'208";a="60184179"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 10:26:27 -0700
+X-CSE-ConnectionGUID: 8/Z023WDQ+SJhSmkfC2AsA==
+X-CSE-MsgGUID: lwrt/YwASnm3E+vXWQYYtg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
+   d="scan'208";a="157268983"
+Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.111.63]) ([10.125.111.63])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 10:26:26 -0700
+Message-ID: <68c66882-3a91-4843-b08e-2f9d5d2d0290@intel.com>
+Date: Mon, 10 Mar 2025 10:26:25 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
-X-Spam-Flag: NO
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/6] pds_core: specify auxiliary_device to be created
+To: Shannon Nelson <shannon.nelson@amd.com>, jgg@nvidia.com,
+ andrew.gospodarek@broadcom.com, aron.silverton@oracle.com,
+ dan.j.williams@intel.com, daniel.vetter@ffwll.ch, dsahern@kernel.org,
+ gregkh@linuxfoundation.org, hch@infradead.org, itayavr@nvidia.com,
+ jiri@nvidia.com, Jonathan.Cameron@huawei.com, kuba@kernel.org,
+ lbloch@nvidia.com, leonro@nvidia.com, linux-cxl@vger.kernel.org,
+ linux-rdma@vger.kernel.org, netdev@vger.kernel.org, saeedm@nvidia.com
+Cc: brett.creeley@amd.com
+References: <20250307185329.35034-1-shannon.nelson@amd.com>
+ <20250307185329.35034-3-shannon.nelson@amd.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20250307185329.35034-3-shannon.nelson@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-As it currently stands, the IPv6 SR HMAC __init, and thus the IPv6
-subsystem's __init, would fail to come up if any of the HMAC algo
-instantiations failed.
 
-This used to be fine, as they usually don't. However, that situation will
-change, because NIST announced to sunset SHA1 by 2030, and then at latest
-instantiations thereof through the cryptomgr will have to made to fail with
--ENOENT when booted in FIPS mode. Note that the sunset date has
-implications on certificates' lifetimes for those issued today already, so
-distributions might be eager to disable SHA1 in FIPS mode downstream
-starting now.
 
-Make seg6_hmac_init_algos() to ignore ENOENT HMAC algo instantiation
-errors. Note that in this case, a failed algo will have its ->tfms == NULL,
-and __hmac_get_algo() would filter such ones already.
+On 3/7/25 11:53 AM, Shannon Nelson wrote:
+> In preparation for adding a new auxiliary_device for the
+> PF, make the vif type an argument to pdsc_auxbus_dev_add().
 
-Signed-off-by: Nicolai Stange <nstange@suse.de>
----
- net/ipv6/seg6_hmac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> We also now pass in the address to where we'll keep the new
+> padev pointer so that the caller can specify where to save it
+> but we can still change it under the mutex and keep the mutex
+> usage within the function.
 
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index 85e90d8d8050..4a63ee4dbf7e 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -433,7 +433,7 @@ static int seg6_hmac_init_algos(void)
- 	alg_count = ARRAY_SIZE(hmac_algos);
- 	for (i = 0; i < alg_count; i++) {
- 		ret = seg6_hmac_init_algo(&hmac_algos[i]);
--		if (ret)
-+		if (ret && ret != -ENOENT)
- 			goto error_out;
- 	}
- 
--- 
-2.47.1
+Please consider changing the commit log to use imperative language and avoid using pronouns such as "we". 
+
+https://www.kernel.org/doc/html/v4.17/process/submitting-patches.html#describe-your-changes
+https://kernelnewbies.org/PatchPhilosophy#:~:text=Please%20read%20that%20whole%20section,it%20into%20the%20git%20history.
+
+Maybe something like:
+Pass in the address of the padev pointer so the caller can specify where to save it. ...
+
+> 
+> Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+
+> ---
+>  drivers/net/ethernet/amd/pds_core/auxbus.c  | 37 ++++++++++-----------
+>  drivers/net/ethernet/amd/pds_core/core.h    |  7 ++--
+>  drivers/net/ethernet/amd/pds_core/devlink.c |  5 +--
+>  drivers/net/ethernet/amd/pds_core/main.c    | 11 +++---
+>  4 files changed, 33 insertions(+), 27 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/amd/pds_core/auxbus.c b/drivers/net/ethernet/amd/pds_core/auxbus.c
+> index 78fba368e797..563de9e7ce0a 100644
+> --- a/drivers/net/ethernet/amd/pds_core/auxbus.c
+> +++ b/drivers/net/ethernet/amd/pds_core/auxbus.c
+> @@ -175,29 +175,32 @@ static struct pds_auxiliary_dev *pdsc_auxbus_dev_register(struct pdsc *cf,
+>  	return padev;
+>  }
+>  
+> -void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf)
+> +void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf,
+> +			 struct pds_auxiliary_dev **pd_ptr)
+>  {
+>  	struct pds_auxiliary_dev *padev;
+>  
+> +	if (!*pd_ptr)
+> +		return;
+> +
+>  	mutex_lock(&pf->config_lock);
+>  
+> -	padev = pf->vfs[cf->vf_id].padev;
+> -	if (padev) {
+> -		pds_client_unregister(pf, padev->client_id);
+> -		auxiliary_device_delete(&padev->aux_dev);
+> -		auxiliary_device_uninit(&padev->aux_dev);
+> -		padev->client_id = 0;
+> -	}
+> -	pf->vfs[cf->vf_id].padev = NULL;
+> +	padev = *pd_ptr;
+> +	pds_client_unregister(pf, padev->client_id);
+> +	auxiliary_device_delete(&padev->aux_dev);
+> +	auxiliary_device_uninit(&padev->aux_dev);
+> +	padev->client_id = 0;
+> +	*pd_ptr = NULL;
+>  
+>  	mutex_unlock(&pf->config_lock);
+>  }
+>  
+> -int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf)
+> +int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf,
+> +			enum pds_core_vif_types vt,
+> +			struct pds_auxiliary_dev **pd_ptr)
+>  {
+>  	struct pds_auxiliary_dev *padev;
+>  	char devname[PDS_DEVNAME_LEN];
+> -	enum pds_core_vif_types vt;
+>  	unsigned long mask;
+>  	u16 vt_support;
+>  	int client_id;
+> @@ -206,6 +209,9 @@ int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf)
+>  	if (!cf)
+>  		return -ENODEV;
+>  
+> +	if (vt >= PDS_DEV_TYPE_MAX)
+> +		return -EINVAL;
+> +
+>  	mutex_lock(&pf->config_lock);
+>  
+>  	mask = BIT_ULL(PDSC_S_FW_DEAD) |
+> @@ -217,17 +223,10 @@ int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf)
+>  		goto out_unlock;
+>  	}
+>  
+> -	/* We only support vDPA so far, so it is the only one to
+> -	 * be verified that it is available in the Core device and
+> -	 * enabled in the devlink param.  In the future this might
+> -	 * become a loop for several VIF types.
+> -	 */
+> -
+>  	/* Verify that the type is supported and enabled.  It is not
+>  	 * an error if there is no auxbus device support for this
+>  	 * VF, it just means something else needs to happen with it.
+>  	 */
+> -	vt = PDS_DEV_TYPE_VDPA;
+>  	vt_support = !!le16_to_cpu(pf->dev_ident.vif_types[vt]);
+>  	if (!(vt_support &&
+>  	      pf->viftype_status[vt].supported &&
+> @@ -253,7 +252,7 @@ int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf)
+>  		err = PTR_ERR(padev);
+>  		goto out_unlock;
+>  	}
+> -	pf->vfs[cf->vf_id].padev = padev;
+> +	*pd_ptr = padev;
+>  
+>  out_unlock:
+>  	mutex_unlock(&pf->config_lock);
+> diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
+> index 631a59cfdd7e..f075e68c64db 100644
+> --- a/drivers/net/ethernet/amd/pds_core/core.h
+> +++ b/drivers/net/ethernet/amd/pds_core/core.h
+> @@ -303,8 +303,11 @@ void pdsc_health_thread(struct work_struct *work);
+>  int pdsc_register_notify(struct notifier_block *nb);
+>  void pdsc_unregister_notify(struct notifier_block *nb);
+>  void pdsc_notify(unsigned long event, void *data);
+> -int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf);
+> -void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf);
+> +int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf,
+> +			enum pds_core_vif_types vt,
+> +			struct pds_auxiliary_dev **pd_ptr);
+> +void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf,
+> +			 struct pds_auxiliary_dev **pd_ptr);
+>  
+>  void pdsc_process_adminq(struct pdsc_qcq *qcq);
+>  void pdsc_work_thread(struct work_struct *work);
+> diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
+> index 4e2b92ddef6f..c5c787df61a4 100644
+> --- a/drivers/net/ethernet/amd/pds_core/devlink.c
+> +++ b/drivers/net/ethernet/amd/pds_core/devlink.c
+> @@ -57,9 +57,10 @@ int pdsc_dl_enable_set(struct devlink *dl, u32 id,
+>  		struct pdsc *vf = pdsc->vfs[vf_id].vf;
+>  
+>  		if (ctx->val.vbool)
+> -			err = pdsc_auxbus_dev_add(vf, pdsc);
+> +			err = pdsc_auxbus_dev_add(vf, pdsc, vt_entry->vif_id,
+> +						  &pdsc->vfs[vf_id].padev);
+>  		else
+> -			pdsc_auxbus_dev_del(vf, pdsc);
+> +			pdsc_auxbus_dev_del(vf, pdsc, &pdsc->vfs[vf_id].padev);
+>  	}
+>  
+>  	return err;
+> diff --git a/drivers/net/ethernet/amd/pds_core/main.c b/drivers/net/ethernet/amd/pds_core/main.c
+> index 660268ff9562..a3a68889137b 100644
+> --- a/drivers/net/ethernet/amd/pds_core/main.c
+> +++ b/drivers/net/ethernet/amd/pds_core/main.c
+> @@ -190,7 +190,8 @@ static int pdsc_init_vf(struct pdsc *vf)
+>  	devl_unlock(dl);
+>  
+>  	pf->vfs[vf->vf_id].vf = vf;
+> -	err = pdsc_auxbus_dev_add(vf, pf);
+> +	err = pdsc_auxbus_dev_add(vf, pf, PDS_DEV_TYPE_VDPA,
+> +				  &pf->vfs[vf->vf_id].padev);
+>  	if (err) {
+>  		devl_lock(dl);
+>  		devl_unregister(dl);
+> @@ -417,7 +418,7 @@ static void pdsc_remove(struct pci_dev *pdev)
+>  
+>  		pf = pdsc_get_pf_struct(pdsc->pdev);
+>  		if (!IS_ERR(pf)) {
+> -			pdsc_auxbus_dev_del(pdsc, pf);
+> +			pdsc_auxbus_dev_del(pdsc, pf, &pf->vfs[pdsc->vf_id].padev);
+>  			pf->vfs[pdsc->vf_id].vf = NULL;
+>  		}
+>  	} else {
+> @@ -482,7 +483,8 @@ static void pdsc_reset_prepare(struct pci_dev *pdev)
+>  
+>  		pf = pdsc_get_pf_struct(pdsc->pdev);
+>  		if (!IS_ERR(pf))
+> -			pdsc_auxbus_dev_del(pdsc, pf);
+> +			pdsc_auxbus_dev_del(pdsc, pf,
+> +					    &pf->vfs[pdsc->vf_id].padev);
+>  	}
+>  
+>  	pdsc_unmap_bars(pdsc);
+> @@ -527,7 +529,8 @@ static void pdsc_reset_done(struct pci_dev *pdev)
+>  
+>  		pf = pdsc_get_pf_struct(pdsc->pdev);
+>  		if (!IS_ERR(pf))
+> -			pdsc_auxbus_dev_add(pdsc, pf);
+> +			pdsc_auxbus_dev_add(pdsc, pf, PDS_DEV_TYPE_VDPA,
+> +					    &pf->vfs[pdsc->vf_id].padev);
+>  	}
+>  }
+>  
 
