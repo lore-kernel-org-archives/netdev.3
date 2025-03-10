@@ -1,136 +1,120 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD78C22A7FF;
-	Mon, 10 Mar 2025 12:11:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3DC22A7E0;
+	Mon, 10 Mar 2025 12:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741608696; cv=none; b=f0QtsuTb0spQKjNW1OD4yvnY9nN9JEE97b12/FqmRs7kfR6Lz5DbkfYMz0tmzlJBisr8tObo5XTuhvo9RkeaYHDOQSYpeace8LJj4X7oEl0GCZJVYYiAWluD4luAd30CXzQrKEEpwQgIm9XDfEYCEtER6BglRRZkwi3w4wMihs8=
+	t=1741608697; cv=none; b=FBMkM1xrxk1cEX3oGM67Hm0i6leNRaPbmm3rymIoNqKYEjJ31Zgpug1FlXqqqFJG2sBlZvEe7SOdPx7lFMHDoq4fHFbZCgFwDRE/oQVIdw3owBoaqW5YcIy+6VdrSOWBDht0EZ0nTNf3ZnGF205HFype8DZLDcU9XthaPy0SaGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741608696; c=relaxed/simple;
-	bh=16t/2PVO4nEY7S+aWnqTfX6323Xu/3ZuNxr+/XAWJ7k=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=aQxN8zjZ5U76q5UjUWm2I4oS+YDeRvnLfHejme4aFpY+5pNvLjt+nm5wlzqLHNhN6Lt0dutIzs9J9V7KQbsIOcLiaIMzXhhSqXVqfG503VPV42kU9TR7QVBsfOGHsz6nCSXq2u3V2Mie9k8CVtzFhnM2DkGMfdLS931bvSZjqVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=hL7aGwgR; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1741608697; c=relaxed/simple;
+	bh=B/Zi8tRRc/t7099IxweCQ9wmr8LBRpEjxc54n0VCEzQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EHt6UeBru2JrCUHnZyT3FNnyt3RobX7MyTLgCnGeqvuzb47VIq6YmqDNJ4S/rFfw2f7Gyg2SENTXCHJDrMGoZ8zxMeIg6BLutB6arQkbYEunhlk45VB3YABLh8+Cppg0PO5Vwe3LZLpVQjGMlGhK5ogtIf5JGBRCvgAKf3bKIeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Uc2kSMaJ; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="hL7aGwgR"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=7WUB85UntcvKc4rtS3U46DOMfeTCvt9STpMBA8SjPKo=; b=hL7aGwgRzwa+oGMgpiItpfadBY
-	KcqcqTiCdXW4+KmLgKheS8tMa0vgjmg6OTul6zhfz63amhPcaSglqdDCpv9hgtSbEJmU901fSpGCC
-	xjZRLVmGE+agKtMu8zVhZMgP9TeBd2+h6cyeLdFzr57v5uUfO4IbNKnGBD6cAX5KG2JoQAigfEHaD
-	PXRatEhEZZwHUly7HRgO+EExJS2IL/KOfh5eGz73s8mpfWaJDt1jye7wVotTcpy1dwNVDfnhqh3yx
-	gQO7w4mY6fbE1V9zKzLFgV2qVhXEX3vP0lPeHG76wDLGiW2xqsKNNVrU3jC6OdSmdSzNnhfNAkty9
-	WIYKF9Qg==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:54294 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1trbyX-0002aA-2J;
-	Mon, 10 Mar 2025 12:11:17 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1trbyA-005qYf-Hb; Mon, 10 Mar 2025 12:10:54 +0000
-In-Reply-To: <Z87WVk0NzMUyaxDj@shell.armlinux.org.uk>
-References: <Z87WVk0NzMUyaxDj@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	linux-amlogic@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH net-next 8/9] net: stmmac: sun8i: remove of_get_phy_mode()
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Uc2kSMaJ"
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id BAD8B2111421; Mon, 10 Mar 2025 05:11:34 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BAD8B2111421
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1741608694;
+	bh=wGlVDMVI7jB0uTeQswp0J7PSuFA8+H1jZy79IJtAwJA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Uc2kSMaJZ2d9mRqMGI9uVePTC1T6zyoq47PuXm1KAkLHEGlSFLadmxyf4t7EhXYgc
+	 qJPXVqjZQYPIo2xrAnGCsPXWyKYE9mxrGdN9iUPi4kEpIJvw3IuVpiQ2eLOYX89j/w
+	 NaqXKPle32JCMKpmqeqjhSGIpPlBxgMUGEnOafQU=
+Date: Mon, 10 Mar 2025 05:11:34 -0700
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: Haiyang Zhang <haiyangz@microsoft.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	"stephen@networkplumber.org" <stephen@networkplumber.org>,
+	KY Srinivasan <kys@microsoft.com>,
+	Paul Rosswurm <paulros@microsoft.com>,
+	"olaf@aepfle.de" <olaf@aepfle.de>,
+	"vkuznets@redhat.com" <vkuznets@redhat.com>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"leon@kernel.org" <leon@kernel.org>, Long Li <longli@microsoft.com>,
+	"ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+	"daniel@iogearbox.net" <daniel@iogearbox.net>,
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"ast@kernel.org" <ast@kernel.org>,
+	"hawk@kernel.org" <hawk@kernel.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [EXTERNAL] Re: [PATCH net] net: mana: Support holes in device
+ list reply msg
+Message-ID: <20250310121134.GA12177@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <1741211181-6990-1-git-send-email-haiyangz@microsoft.com>
+ <20250307195029.1dc74f8e@kernel.org>
+ <MN0PR21MB3437F80F3AD98C82870A9173CAD72@MN0PR21MB3437.namprd21.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1trbyA-005qYf-Hb@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Mon, 10 Mar 2025 12:10:54 +0000
+In-Reply-To: <MN0PR21MB3437F80F3AD98C82870A9173CAD72@MN0PR21MB3437.namprd21.prod.outlook.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-devm_stmmac_probe_config_dt() already gets the PHY mode from firmware,
-which is stored in plat_dat->phy_interface. Therefore, we don't need to
-get it in platform code.
-
-sun8i was using of_get_phy_mode() to set plat_dat->mac_interface, which
-defaults to plat_dat->phy_interface when the mac-mode DT property is
-not present. As nothing in arch/*/boot/dts sets the mac-mode property,
-it is highly likely that these two will be identical, and thus there
-is no need for this glue driver to set plat_dat->mac_interface.
-
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-index 4b7b2582a120..85723a78793a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-@@ -1155,11 +1155,10 @@ static int sun8i_dwmac_probe(struct platform_device *pdev)
- 	struct stmmac_resources stmmac_res;
- 	struct sunxi_priv_data *gmac;
- 	struct device *dev = &pdev->dev;
--	phy_interface_t interface;
--	int ret;
- 	struct stmmac_priv *priv;
- 	struct net_device *ndev;
- 	struct regmap *regmap;
-+	int ret;
- 
- 	ret = stmmac_get_platform_resources(pdev, &stmmac_res);
- 	if (ret)
-@@ -1219,10 +1218,6 @@ static int sun8i_dwmac_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	ret = of_get_phy_mode(dev->of_node, &interface);
--	if (ret)
--		return -EINVAL;
--
- 	plat_dat = devm_stmmac_probe_config_dt(pdev, stmmac_res.mac);
- 	if (IS_ERR(plat_dat))
- 		return PTR_ERR(plat_dat);
-@@ -1230,7 +1225,6 @@ static int sun8i_dwmac_probe(struct platform_device *pdev)
- 	/* platform data specifying hardware features and callbacks.
- 	 * hardware features were copied from Allwinner drivers.
- 	 */
--	plat_dat->mac_interface = interface;
- 	plat_dat->rx_coe = STMMAC_RX_COE_TYPE2;
- 	plat_dat->tx_coe = 1;
- 	plat_dat->flags |= STMMAC_FLAG_HAS_SUN8I;
--- 
-2.30.2
-
+On Sun, Mar 09, 2025 at 10:01:33PM +0000, Haiyang Zhang wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Jakub Kicinski <kuba@kernel.org>
+> > Sent: Friday, March 7, 2025 10:50 PM
+> > To: Haiyang Zhang <haiyangz@microsoft.com>
+> > Cc: linux-hyperv@vger.kernel.org; netdev@vger.kernel.org; Dexuan Cui
+> > <decui@microsoft.com>; stephen@networkplumber.org; KY Srinivasan
+> > <kys@microsoft.com>; Paul Rosswurm <paulros@microsoft.com>;
+> > olaf@aepfle.de; vkuznets@redhat.com; davem@davemloft.net;
+> > wei.liu@kernel.org; edumazet@google.com; pabeni@redhat.com;
+> > leon@kernel.org; Long Li <longli@microsoft.com>;
+> > ssengar@linux.microsoft.com; linux-rdma@vger.kernel.org;
+> > daniel@iogearbox.net; john.fastabend@gmail.com; bpf@vger.kernel.org;
+> > ast@kernel.org; hawk@kernel.org; tglx@linutronix.de;
+> > shradhagupta@linux.microsoft.com; linux-kernel@vger.kernel.org;
+> > stable@vger.kernel.org
+> > Subject: [EXTERNAL] Re: [PATCH net] net: mana: Support holes in device
+> > list reply msg
+> > 
+> > On Wed,  5 Mar 2025 13:46:21 -0800 Haiyang Zhang wrote:
+> > > -	for (i = 0; i < max_num_devs; i++) {
+> > > +	for (i = 0; i < GDMA_DEV_LIST_SIZE &&
+> > > +		found_dev < resp.num_of_devs; i++) {
+> > 
+> > unfortunate mis-indent here, it blend with the code.
+> > checkpatch is right that it should be aligned with opening bracket
+> Will fix it.
+> 
+> > 
+> > >  		dev = resp.devs[i];
+> > >  		dev_type = dev.type;
+> > >
+> > > +		/* Skip empty devices */
+> > > +		if (dev.as_uint32 == 0)
+> > > +			continue;
+> > > +
+> > > +		found_dev++;
+> > > +		dev_info(gc->dev, "Got devidx:%u, type:%u, instance:%u\n", i,
+> > > +			 dev.type, dev.instance);
+> > 
+> > Are you sure you want to print this info message for each device,
+> > each time it's probed? Seems pretty noisy. We generally recommend
+> > printing about _unusual_ things.
+> Ok. I can remove it.
+How about a dev_dbg instead?
+> 
+> Thanks,
+> - Haiyang
