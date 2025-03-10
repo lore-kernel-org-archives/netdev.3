@@ -1,141 +1,96 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820EA22371B
-	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 09:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAC72248A6;
+	Mon, 10 Mar 2025 09:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741598207; cv=none; b=RgzvjiXeZGVQDnU67ZWwgg0bO+wddE3/CF+/dK1rG0o+sfQ1k59HlDlKbpVJ5dBw35or/27/iJEMRRk6qzHsUhgfK1MTSq4T42dZlnp0t8i9NTr+J3IK1v85irTvKOTcZ0BvQTU3aPkrtNKEmTW/TiYK9Z5D/DdGHNuhXHIklZw=
+	t=1741598652; cv=none; b=pqsoGZzjptVbKOAA7ekcTgsyexjQ8UFcVZHaWTw4W0KnuDcf2aCmDjSX2U/dKUeW7OjLtJoSYWdrloxeIvk2/6161vgmhUkoRiHOMYyVB6JfJnjK4Z3WhgFKLBlme4XfaF7ZDpK0BtvpRmcu24GRgGVKi5HpXt8A1Q3yGVuhaxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741598207; c=relaxed/simple;
-	bh=/CoDczrC/PnmqGe073cRpY/sT71Q/uwFa7MgT+GIBno=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RprEjJHWHBk1ZmSf9Ma1J2BUbHlB4JAFyxzk8jkNBv7WQ/Mguq+1JWdQOP1T5flbDdg1WsoX8a2dfKYfNfFdeUrD/PFdAYwYgHzbHZkr6GhrHdsC1FTyx1WM2hPKKGKHilN6iD9Y6t2IxR531GSyOOdUTCX9rjQhvEUTWzN3HPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chiachangwang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JjvqmBpy; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chiachangwang.bounces.google.com
+	s=arc-20240116; t=1741598652; c=relaxed/simple;
+	bh=tGbHNBv9xSwc1TPHZ6xLc61UvhZA63bQ+RMjSx9gQa8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=NNi8BgBGpVT274gyDq+w4lnd650yZR0UyoGvceRHU+30UojOj1tbYsNRHxQ4zkrW8482w3Kz+2PyQ46EpAW/xcnbxnXUi+p487ie3GU5ZVFhotNxtK3k1J80WTZbKUqEc10ZrtTeI7lv+i1m7JUf4whGJCUKBbCNGUrosP1Jjnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=h/5KiRQO; arc=none smtp.client-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JjvqmBpy"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ff5f3be6e6so6897861a91.1
-        for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 02:16:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741598206; x=1742203006; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qxFKpSUTYqg1Rc0MBNSslC0niEyRIRznyg/YVs/pgOQ=;
-        b=JjvqmBpyGyEsk4Pyyd3mevY1a+VyHrJ3+Z6mX06eVCiXcU+QuRGEROcIUpiiA1eavU
-         d6AblO8AFTJG4QbdUH6Uq2ZFA5kY/Do1Eah0SXBn0zo/JD/wUNdkG4Z7MzuYbmXT85PX
-         uIHxADfctlq+c6+YwZdBQmNEyxwmGtTI5rVCgLy4tzViM+grt3zmqblYiJp8Fk+SMjoo
-         6b19uVT0mzYtPhg/fHD5OUJYKHEM9j6VNpVbkhvxU++Osy7xbK64Axr4eJU4WlAeAjya
-         nrA5aR5OPf0eRGgIc56AEUMGA9h2nkB9X2S9PimqKr9U/iwY5s51pzHNasYP5XGCPeND
-         gbjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741598206; x=1742203006;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qxFKpSUTYqg1Rc0MBNSslC0niEyRIRznyg/YVs/pgOQ=;
-        b=PFTMQ0SQTNc8ZL7tixfSXnwDRLjxx/yxb8bNyGWzNSutbp21dPLCzg1WQ5GH2NUujq
-         T5zd2eMnUYDSMZ2bMJ6F8BKizAalj6oKu/QMF8t35e5H4ZEFUlsWK80lqia9K3r5z12b
-         0nJ9PWNpsYwVqyUsuHZERNcE3rVSzlkrfF6AYBfZAWZUDI6tklACaC2VObctQGluYy3B
-         PbCjwtw9ImsRZrhZiCWSS0eo7hWf6/b19jS29+jybqY9jOem6UfTTbzG7ec8JfxMpmMj
-         S6MDn9DFRdeRAEStZ9cwq7QIPWkeiJE9SFvD3cGdOmlTitG7jQdra4Mry+jz3CX/zYz0
-         zk3g==
-X-Gm-Message-State: AOJu0YzkQl32BhB4RwkDGokeyct5VlZXlM1P05GpY7G2mBLovYwM7TNe
-	eWWNOVk/Y35ciTaj3KoU25p9psesSOcTESPBRbeE7v+OiIeNe3QTJYFbMHRBkzcV1zqfdx5ik3Z
-	sYnhSU2rWnjWKJKy2ZCr736+MFdxMwMlF4/C1HrwdcXEHp0wwiyUZtL0Q9tzekz9UmB5kH0dU+m
-	P6j6JoE0KRrJ5vJnKh/Sw1LTvtQGO1gYgH6SSprdDEYwfVnhaXxjER7vN79Z15q4Rbbc/ihQ==
-X-Google-Smtp-Source: AGHT+IFY/g8nxsG5hvg+E43eCTd5iqNagsd6D8DhlLjOjXOWcI+MuPu6ii8JyrQ97rZX2/ghjOPeY7hmRbZu1QEhc6+P
-X-Received: from pjj12.prod.google.com ([2002:a17:90b:554c:b0:2ea:5be5:da6])
- (user=chiachangwang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:1dce:b0:2ff:62f3:5b19 with SMTP id 98e67ed59e1d1-2ff7ce6f0bcmr20385113a91.13.1741598205676;
- Mon, 10 Mar 2025 02:16:45 -0700 (PDT)
-Date: Mon, 10 Mar 2025 09:16:20 +0000
-In-Reply-To: <20250310091620.2706700-1-chiachangwang@google.com>
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="h/5KiRQO"
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+	t=1741598152; bh=tGbHNBv9xSwc1TPHZ6xLc61UvhZA63bQ+RMjSx9gQa8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=h/5KiRQOst0lHeHhL37ekuXCMNA8dTF/aj4+0oNb67H4TUWmSpJe8Or79t3yqK1h3
+	 OYJzTl7RrvdtS4OYy2M/XcuVPPS0m//liVjJKJxgsJ9HvLyAuId6enCRqNFtEEQpLS
+	 4tNCMPJ0VOZVafGWDxpSd50xauLIw6m0igbheMk4o/onW8hlCh/eyjXbzDfvd8ZThw
+	 Z7LpMn7wVfGpWDM7HiNgh0sxw7KQv2Ap0QUXIgV3kGEJTnGxHjKLcpvf8LDC7sMZOO
+	 wRJip8+uN/rtPNAQD/y5AY89h/TWkW2neV5Dxv4mR32k7ffT+NxSbE6wfgojPEV1HG
+	 UiKh7fjhGanwQ==
+To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Ilias Apalodimas
+ <ilias.apalodimas@linaro.org>, Jakub Kicinski <kuba@kernel.org>, Mina
+ Almasry <almasrymina@google.com>
+Subject: Re: [PATCH RFC net-next v1] page_pool: import Jesper's page_pool
+ benchmark
+In-Reply-To: <20250309084118.3080950-1-almasrymina@google.com>
+References: <20250309084118.3080950-1-almasrymina@google.com>
+Date: Mon, 10 Mar 2025 10:15:48 +0100
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87a59txn3v.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250310091620.2706700-1-chiachangwang@google.com>
-X-Mailer: git-send-email 2.49.0.rc0.332.g42c0ae87b1-goog
-Message-ID: <20250310091620.2706700-3-chiachangwang@google.com>
-Subject: [PATCH ipsec-next v4 2/2] xfrm: Refactor migration setup during the
- cloning process
-From: Chiachang Wang <chiachangwang@google.com>
-To: netdev@vger.kernel.org, steffen.klassert@secunet.com, leonro@nvidia.com
-Cc: chiachangwang@google.com, stanleyjhu@google.com, yumike@google.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Previously, migration related setup, such as updating family,
-destination address, and source address, was performed after
-the clone was created in `xfrm_state_migrate`. This change
-moves this setup into the cloning function itself, improving
-code locality and reducing redundancy.
+Mina Almasry <almasrymina@google.com> writes:
 
-The `xfrm_state_clone_and_setup` function now conditionally
-applies the migration parameters from struct xfrm_migrate
-if it is provided. This allows the function to be used both
-for simple cloning and for cloning with migration setup.
+> From: Jesper Dangaard Brouer <hawk@kernel.org>
+>
+> We frequently consult with Jesper's out-of-tree page_pool benchmark to
+> evaluate page_pool changes.
+>
+> Consider importing the benchmark into the upstream linux kernel tree so
+> that (a) we're all running the same version, (b) pave the way for shared
+> improvements, and (c) maybe one day integrate it with nipa, if possible.
+>
+> I imported the bench_page_pool_simple from commit 35b1716d0c30 ("Add
+> page_bench06_walk_all"), from this repository:
+> https://github.com/netoptimizer/prototype-kernel.git
+>
+> I imported the benchmark, largely as-is. I only fixed build or
+> checkpatch issues.
+>
+> Cc: Jesper Dangaard Brouer <hawk@kernel.org>
+> Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Mina Almasry <almasrymina@google.com>
+>
+> ---
+>
+> RFC discussion points:
+> - Desirable to import it?
 
-Test: Tested with kernel test in the Android tree located
-      in https://android.googlesource.com/kernel/tests/
-      The xfrm_tunnel_test.py under the tests folder in
-      particular.
-Signed-off-by: Chiachang Wang <chiachangwang@google.com>
----
- net/xfrm/xfrm_state.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+I think so, yeah.
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 9cd707362767..0365daedea32 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -1958,8 +1958,9 @@ static inline int clone_security(struct xfrm_state *x, struct xfrm_sec_ctx *secu
- 	return 0;
- }
+> - Can the benchmark be imported as-is for an initial version? Or needs
+>   lots of modifications?
 
--static struct xfrm_state *xfrm_state_clone(struct xfrm_state *orig,
--					   struct xfrm_encap_tmpl *encap)
-+static struct xfrm_state *xfrm_state_clone_and_setup(struct xfrm_state *orig,
-+					   struct xfrm_encap_tmpl *encap,
-+					   struct xfrm_migrate *m)
- {
- 	struct net *net = xs_net(orig);
- 	struct xfrm_state *x = xfrm_state_alloc(net);
-@@ -2058,6 +2059,12 @@ static struct xfrm_state *xfrm_state_clone(struct xfrm_state *orig,
- 			goto error;
- 	}
+One thing that I was discussing with Jesper the other day is that the
+current version allocates the page_pool itself in softirq context, which
+leads to some "may sleep" warning. I think we should fix that before
+upstreaming.
 
-+	if (m) {
-+		x->props.family = m->new_family;
-+		memcpy(&x->id.daddr, &m->new_daddr, sizeof(x->id.daddr));
-+		memcpy(&x->props.saddr, &m->new_saddr, sizeof(x->props.saddr));
-+	}
-+
- 	return x;
+> - Code location. I retained the location in Jesper's tree, but a path
+>   like net/core/bench/ may make more sense.
 
-  error:
-@@ -2127,18 +2134,13 @@ struct xfrm_state *xfrm_state_migrate(struct xfrm_state *x,
- {
- 	struct xfrm_state *xc;
+No strong opinion on this...
 
--	xc = xfrm_state_clone(x, encap);
-+	xc = xfrm_state_clone_and_setup(x, encap, m);
- 	if (!xc)
- 		return NULL;
-
--	xc->props.family = m->new_family;
--
- 	if (xfrm_init_state(xc) < 0)
- 		goto error;
-
--	memcpy(&xc->id.daddr, &m->new_daddr, sizeof(xc->id.daddr));
--	memcpy(&xc->props.saddr, &m->new_saddr, sizeof(xc->props.saddr));
--
- 	/* configure the hardware if offload is requested */
- 	if (xuo && xfrm_dev_state_add(net, xc, xuo, extack))
- 		goto error;
---
-2.49.0.rc0.332.g42c0ae87b1-goog
-
+-Toke
