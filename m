@@ -1,95 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2743222257E
-	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 11:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F13522686B
+	for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 11:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741607684; cv=none; b=uIu4CbnmJB/Ey0+2tc/dYaNGlIhnSjp9WfTMXKozx6KWLifiaDU0IaasbMIZX3dhnZ3lcBW4ui2hNEsWGadjmdNGwhn18KlMkQ+ugdyyzAIZKxtZ9ULV3zjxcOiI944CDXx9LXDLck9FGZXhjsE+EKRLC0bCF9KLozJGFbMA4ZY=
+	t=1741607872; cv=none; b=ORIQfoNMd1YK5MAVdrddi4IlN4A4mJicuVjGRQt37nqF05XQOy85LEn4Xt/JqkLZSfCPSL17xjo4MpgDvCeueo/8AxDK0T2nrfjyQZLHz6KV4UoNGcWu9UoQOMCxg2s4Lljskwa9oWkpOjCmJmXACiCtFl7fKFGZOcFYoeJR+vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741607684; c=relaxed/simple;
-	bh=mQXBXAlzuLu+l+ebRrDsY4EkIPxJYQa3tk2eT5AJp/I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CWydEnHkbZGoZ76hB+aBaxlhh0BNUTwc7lwTGcr63vF5WajNDM7GtsCgRz+7r2Scn2tEZcl9QXTxYGa93GshbnI8JhejnDOlpUXC7rozydwQLpAK98y97dCsczFM9FQjV7F0sU0S7Dh3KFiqzfhovpToSBVaxpc2xCQhZln+C3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rOa57sj/; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rOa57sj/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33611C4CEE5;
-	Mon, 10 Mar 2025 11:54:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741607682;
-	bh=mQXBXAlzuLu+l+ebRrDsY4EkIPxJYQa3tk2eT5AJp/I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rOa57sj/Fu5n7BvS8gBDwB7ssaRA9jExNhVl6tV79yocp94BiQnlwPxtoB4y3osyg
-	 2eK0WmCgETxP/B4kEDlADHLXfEbV56gxpLPhGVjl98xeX2JLAvX9Zrh8SpuCvlUt7Y
-	 0Oc+opTuSj5OrLbxyIXUNeNdxmuXzWNSD5jPfjwD4ogrEmLLOhSGKG0uXO03CoV2SJ
-	 Rxei0v4UxleCbQzxCwC2Y3DbPuXn2Y4jw2Z6zYDy2uwACpwl2r6dbnGsHSjZxV0Jz8
-	 04+9U7beO1Bn+rgvA8Zhg7QSBNO0SzKMy8GaBh94MHEXa8zkMOnJimdW3VNMW930Ka
-	 PCMWsTKs2sXHA==
-Date: Mon, 10 Mar 2025 13:54:39 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Chiachang Wang <chiachangwang@google.com>
-Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com,
-	stanleyjhu@google.com, yumike@google.com
-Subject: Re: [PATCH ipsec-next v4 1/2] xfrm: Migrate offload configuration
-Message-ID: <20250310115439.GE7027@unreal>
-References: <20250310091620.2706700-1-chiachangwang@google.com>
- <20250310091620.2706700-2-chiachangwang@google.com>
+	s=arc-20240116; t=1741607872; c=relaxed/simple;
+	bh=mxRUnRtziyp0czycIlCjV5H1LD4H/a1NAVaWdseksaA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=QiW0cGo4d33eyl9VsStlea9oMFB3p1uFX7EyQDNU6EMeF/a1SiItXyFY+mHyy9R0cdiWPiCP5VotK9sGepGENkOGIw1rLBDv6GU5n7uAyhb3EAzqF7qrRDEGF82PfgxQcU+4hCsGFXeMAULFpzRY5zNtjBmCMaccgEvwmS8DOmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1trblL-0000S9-Cm; Mon, 10 Mar 2025 12:57:39 +0100
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1trblK-004za6-0e;
+	Mon, 10 Mar 2025 12:57:38 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1trblK-003I2F-0H;
+	Mon, 10 Mar 2025 12:57:38 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Thangaraj Samynathan <Thangaraj.S@microchip.com>,
+	Rengarajan Sundararajan <Rengarajan.S@microchip.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	UNGLinuxDriver@microchip.com,
+	Phil Elwell <phil@raspberrypi.org>
+Subject: [PATCH net-next v3 6/7] net: usb: lan78xx: Transition get/set_pause to phylink
+Date: Mon, 10 Mar 2025 12:57:36 +0100
+Message-Id: <20250310115737.784047-7-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250310115737.784047-1-o.rempel@pengutronix.de>
+References: <20250310115737.784047-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20250310091620.2706700-2-chiachangwang@google.com>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Mon, Mar 10, 2025 at 09:16:19AM +0000, Chiachang Wang wrote:
-> Add hardware offload configuration to XFRM_MSG_MIGRATE
-> using an option netlink attribute XFRMA_OFFLOAD_DEV.
->=20
-> In the existing xfrm_state_migrate(), the xfrm_init_state()
-> is called assuming no hardware offload by default. Even the
-> original xfrm_state is configured with offload, the setting will
-> be reset. If the device is configured with hardware offload,
-> it's reasonable to allow the device to maintain its hardware
-> offload mode. But the device will end up with offload disabled
-> after receiving a migration event when the device migrates the
-> connection from one netdev to another one.
->=20
-> The devices that support migration may work with different
-> underlying networks, such as mobile devices. The hardware setting
-> should be forwarded to the different netdev based on the
-> migration configuration. This change provides the capability
-> for user space to migrate from one netdev to another.
->=20
-> Test: Tested with kernel test in the Android tree located
->       in https://android.googlesource.com/kernel/tests/
->       The xfrm_tunnel_test.py under the tests folder in
->       particular.
-> Signed-off-by: Chiachang Wang <chiachangwang@google.com>
-> ---
->  v3 -> v4:
->  - Change the target tree to ipsec-next
->  - Rebase commit to adopt updated xfrm_init_state()
->  - Remove redundant variable to rely on validiaty of pointer
->  v2 -> v3:
->  - Modify af_key to fix kbuild error
->  v1 -> v2:
->  - Address review feedback to correct the logic in the
->    xfrm_state_migrate in the migration offload configuration
->    change
->  - Revise the commit message for "xfrm: Migrate offload configuration"
-> ---
->  include/net/xfrm.h     |  8 ++++++--
->  net/key/af_key.c       |  2 +-
->  net/xfrm/xfrm_policy.c |  4 ++--
->  net/xfrm/xfrm_state.c  |  9 ++++++++-
->  net/xfrm/xfrm_user.c   | 15 ++++++++++++---
->  5 files changed, 29 insertions(+), 9 deletions(-)
->=20
+Replace lan78xx_get_pause and lan78xx_set_pause implementations with
+phylink-based functions. This transition aligns pause parameter handling
+with the phylink API, simplifying the code and improving
+maintainability.
 
-Thanks,
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/net/usb/lan78xx.c | 51 ++-------------------------------------
+ 1 file changed, 2 insertions(+), 49 deletions(-)
+
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 7107eaa440e5..3aa916a9ee0b 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1878,63 +1878,16 @@ static void lan78xx_get_pause(struct net_device *net,
+ 			      struct ethtool_pauseparam *pause)
+ {
+ 	struct lan78xx_net *dev = netdev_priv(net);
+-	struct phy_device *phydev = net->phydev;
+-	struct ethtool_link_ksettings ecmd;
+-
+-	phy_ethtool_ksettings_get(phydev, &ecmd);
+-
+-	pause->autoneg = dev->fc_autoneg;
+ 
+-	if (dev->fc_request_control & FLOW_CTRL_TX)
+-		pause->tx_pause = 1;
+-
+-	if (dev->fc_request_control & FLOW_CTRL_RX)
+-		pause->rx_pause = 1;
++	phylink_ethtool_get_pauseparam(dev->phylink, pause);
+ }
+ 
+ static int lan78xx_set_pause(struct net_device *net,
+ 			     struct ethtool_pauseparam *pause)
+ {
+ 	struct lan78xx_net *dev = netdev_priv(net);
+-	struct phy_device *phydev = net->phydev;
+-	struct ethtool_link_ksettings ecmd;
+-	int ret;
+-
+-	phy_ethtool_ksettings_get(phydev, &ecmd);
+-
+-	if (pause->autoneg && !ecmd.base.autoneg) {
+-		ret = -EINVAL;
+-		goto exit;
+-	}
+ 
+-	dev->fc_request_control = 0;
+-	if (pause->rx_pause)
+-		dev->fc_request_control |= FLOW_CTRL_RX;
+-
+-	if (pause->tx_pause)
+-		dev->fc_request_control |= FLOW_CTRL_TX;
+-
+-	if (ecmd.base.autoneg) {
+-		__ETHTOOL_DECLARE_LINK_MODE_MASK(fc) = { 0, };
+-		u32 mii_adv;
+-
+-		linkmode_clear_bit(ETHTOOL_LINK_MODE_Pause_BIT,
+-				   ecmd.link_modes.advertising);
+-		linkmode_clear_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT,
+-				   ecmd.link_modes.advertising);
+-		mii_adv = (u32)mii_advertise_flowctrl(dev->fc_request_control);
+-		mii_adv_to_linkmode_adv_t(fc, mii_adv);
+-		linkmode_or(ecmd.link_modes.advertising, fc,
+-			    ecmd.link_modes.advertising);
+-
+-		phy_ethtool_ksettings_set(phydev, &ecmd);
+-	}
+-
+-	dev->fc_autoneg = pause->autoneg;
+-
+-	ret = 0;
+-exit:
+-	return ret;
++	return phylink_ethtool_set_pauseparam(dev->phylink, pause);
+ }
+ 
+ static int lan78xx_get_regs_len(struct net_device *netdev)
+-- 
+2.39.5
+
