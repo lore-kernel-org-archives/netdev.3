@@ -1,186 +1,91 @@
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A50825E815;
-	Tue, 11 Mar 2025 15:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520D625DCFA
+	for <netdev@vger.kernel.org>; Tue, 11 Mar 2025 15:25:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706336; cv=none; b=lUaUU3jgXiYD3LtceanEvQ6G1o7J2SVvTMyx18JzzvRuWFpexFLW3tbzPB5qxTXLnMDW+3GQ5R0Rw8UA8slisNKDpwo9RgXf38abJVax8Jr/feU98SC4fxpyzDmydcrA+8ndm1eT9QqSyo3p2V01KU7l3AMX+p2Y5WxS8sO2kR8=
+	t=1741706717; cv=none; b=tXWf14PbYgo0BqP+5j3LunNYkImDZn5CMc8jrRxibSpM3vJ8Fl3YKMnA/1kvx1wBv5vMo7Qx/YMBXKzMLMQpWeFwzAsZtsa1mvl6i7ahMAp2B9IMaM2nEBFLhR3lIUb6Qs99fkzMWGhLpTCkNas9rRWRFiTSeBtpEk/CEDmTpV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706336; c=relaxed/simple;
-	bh=2uz5FpXW4xqboxTQTQsq1V0u2v7iTR+GUQfREdOaDRE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qr3HiJNm7LI+F6uxZtCfexCgCOOybKftuO72VLcvvqJ35+curr89w+2FZF+GDC7xyc0rr00o4/LOXzzI7vI/JrRUUovMVvovqMwP2amAjSccJhyPAII4eMwVX+7sUaFM/tpyMpinaeD8uQm7YDjbQjW5qVogbVrljQfIvfN5t04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=KpjTR1Il; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1741706717; c=relaxed/simple;
+	bh=7Bp9L0XUWM9HtD0nXnjpoDsrkJ76vECMAdIWTHbJYpc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Lk3jlSHYab/B2DMX7x/Y41Q3iypWGipYDmDxpTYU9IX0cMJT9QsDcDdANV2cE8Yu9A6JU59VuwR55Etf32N+mzhfrYeULddukaoT2mDmDnkTrvnJptoSJGII5YtSJCJOOM1uE0fp6PdTjfY0usuQYjL7Ua7xEtWgJRLTHBew9k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HUUjsaDV; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="KpjTR1Il"
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52BFIZVO1325000
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Mar 2025 10:18:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1741706315;
-	bh=qFnSX2KTr0k/JpY3eMOlcXYP3G68WqDAGo3AvBQ3g7E=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=KpjTR1Il84Ht/Nz19XHRYNAX0ZPVuAQe/qi7rRJN7Qt0lF3EmKQzT434dTg5XzHsZ
-	 vLpe2ZZ9vx74v+wSoEUMEMonRAoVYcyiorUYjgENBpfuU8irJ8lZAYa5N0/Ly5e9UP
-	 1wB81AnIfHlM5D+N0n/9WCDk5DTTm5VypVIDklw0=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52BFIZgZ073265
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 11 Mar 2025 10:18:35 -0500
-Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 11
- Mar 2025 10:18:34 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 11 Mar 2025 10:18:34 -0500
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.113])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52BFIXYx002158;
-	Tue, 11 Mar 2025 10:18:34 -0500
-Date: Tue, 11 Mar 2025 20:48:33 +0530
-From: "s-vadapalli@ti.com" <s-vadapalli@ti.com>
-To: "Sverdlin, Alexander" <alexander.sverdlin@siemens.com>
-CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-        "s-vadapalli@ti.com"
-	<s-vadapalli@ti.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "dan.carpenter@linaro.org" <dan.carpenter@linaro.org>,
-        "jpanis@baylibre.com"
-	<jpanis@baylibre.com>,
-        "c-vankar@ti.com" <c-vankar@ti.com>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "horms@kernel.org"
-	<horms@kernel.org>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "rogerq@kernel.org" <rogerq@kernel.org>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-        "vigneshr@ti.com" <vigneshr@ti.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "srk@ti.com"
-	<srk@ti.com>
-Subject: Re: [PATCH net v2] net: ethernet: ti: am65-cpsw: Fix NAPI
- registration sequence
-Message-ID: <20250311151833.v3gymfqao4y2zls7@uda0492258>
-References: <20250311130103.68971-1-s-vadapalli@ti.com>
- <02d685e2aa8721a119f528bde2f4ec9533101663.camel@siemens.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HUUjsaDV"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5dbfc122b82so11585a12.0
+        for <netdev@vger.kernel.org>; Tue, 11 Mar 2025 08:25:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1741706714; x=1742311514; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7Bp9L0XUWM9HtD0nXnjpoDsrkJ76vECMAdIWTHbJYpc=;
+        b=HUUjsaDV/h6OJdxgsZ+37hrpAZcw3ec0vlJOy9XUpIzTYASBcuWKHCNLV2QFYV8t1u
+         Syu8FiUiXO5sGDYPwcIwov0CFfAmSg8Qkrs35sqzFNU9N/eTlQpLSGCpNiHwF/2Qi78U
+         dlrZCrIfqTFDj0jrYT6m3yTIi7NnzMI/fW0YsWRf8HgBxU1J8n0wGBBMHJ0ujXLrUgga
+         cHBftxP4VKAuLVDHw19KTQGWm7hDoRK8Qq3oMpgAOQhT+Y5CzAIHSM1BFexjYEaydMpC
+         oAOo6E6JNG9DGU5y4VTmzn8PsVt2NgGL1e9TAIeQBh+c0SLDgMxo9OlN15lUHRz0bnEX
+         +a5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741706714; x=1742311514;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7Bp9L0XUWM9HtD0nXnjpoDsrkJ76vECMAdIWTHbJYpc=;
+        b=gJnufgUmHHo5bu5vTbpAqEAwc/Rct2SBbSOxVSF2+WNP05+/2+lJCnBnYIhrsuQHgq
+         mnDX8t+1K8hGZUaKHbH5Rm5B9ZQ1IZc3TKscDQO1GsdSpGJIS1KIHP++PD+ni7dpsdjD
+         29VA6HV4C5ZhH0/Z2JaCS2tsRZ4NkGLBqQrKlOFt76WFaQ1O+WlhUj8APIktY2XLWdmw
+         KZE/8K5uh5n815gYReAkY65FP+a6GNo1Nq3ciqSjTxfSTbmSS3oHtsIAUrqK/dJQMVM7
+         sa1rxT481nZlQzN+N8mkfoJbuKye6yc9cnhLZYQ4YMejyu5RtP7H3WBIePCEue7OvV1f
+         UPxQ==
+X-Gm-Message-State: AOJu0YzL9Qt+ugu8DA4Obq7J2HJwy9ouUFmGB3RUdlqFCCUVmMFXvPtD
+	8tZxKSW0ZIZTVHKdEsQXMwtBoVDkfKcdCi1C8nB2NKkuS+oXePsBjSWJWGLaGTaaOv1yT2dOmN3
+	2SjObKtaR0oN7vJMgLfqQA8x60hnhoFIk0muV
+X-Gm-Gg: ASbGnculjgR7mvk4L0wm+lFe0oUUzfRCmlyt2rSHve6b8AouIeaPmnQLFYdSzXad6rM
+	HcaLPhqwhLmnnowuPERq4pa0hBjK9esjRPgwsB/PywWKR/wLuFJRVYnuik2XiYH+mAtUinmcnVO
+	adr0yqmzpyNkzj/ZFvxGW+nT8PKL36xV6qP8b1gsg60H8HOkABiQgIXWw4zccwL3YOsAk=
+X-Google-Smtp-Source: AGHT+IFJ+Zeetb2fHKVwImuvwaMBfM6cXpntiP+4Ydtlv8XW+cVvGKQDiMqorgEbo/Wt6gBVZwA8xdRT1ITflpkqSZk=
+X-Received: by 2002:aa7:c918:0:b0:5e5:606e:d5a8 with SMTP id
+ 4fb4d7f45d1cf-5e6173bd40emr307514a12.4.1741706714455; Tue, 11 Mar 2025
+ 08:25:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <02d685e2aa8721a119f528bde2f4ec9533101663.camel@siemens.com>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+References: <20250311144026.4154277-1-sdf@fomichev.me> <20250311144026.4154277-2-sdf@fomichev.me>
+In-Reply-To: <20250311144026.4154277-2-sdf@fomichev.me>
+From: Mina Almasry <almasrymina@google.com>
+Date: Tue, 11 Mar 2025 08:24:56 -0700
+X-Gm-Features: AQ5f1JqB6yJCw8-bZi6XkUvhl4Z9hUm8qqLBipF6hy06bumhLqBL7PWMuXMFE8Q
+Message-ID: <CAHS8izOkrSAZ+omAC4EVZ3NzesOC7dgKyEto0ufK-bRpP82FCw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/3] net: create netdev_nl_sock to wrap
+ bindings list
+To: Stanislav Fomichev <sdf@fomichev.me>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org, 
+	donald.hunter@gmail.com, horms@kernel.org, michael.chan@broadcom.com, 
+	pavan.chebbi@broadcom.com, andrew+netdev@lunn.ch, jdamato@fastly.com, 
+	xuanzhuo@linux.alibaba.com, asml.silence@gmail.com, dw@davidwei.uk
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 11, 2025 at 01:53:10PM +0000, Sverdlin, Alexander wrote:
-> Hi Siddharth!
-> 
-> On Tue, 2025-03-11 at 18:31 +0530, Siddharth Vadapalli wrote:
-> > From: Vignesh Raghavendra <vigneshr@ti.com>
-> > 
-> > Registering the interrupts for TX or RX DMA Channels prior to registering
-> > their respective NAPI callbacks can result in a NULL pointer dereference.
-> > This is seen in practice as a random occurrence since it depends on the
-> > randomness associated with the generation of traffic by Linux and the
-> > reception of traffic from the wire.
-> > 
-> > Fixes: 681eb2beb3ef ("net: ethernet: ti: am65-cpsw: ensure proper channel cleanup in error path")
-> > Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-> > Co-developed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-> > Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-> 
-> ...
-> 
-> > v1 of this patch is at:
-> > https://lore.kernel.org/all/20250311061214.4111634-1-s-vadapalli@ti.com/
-> > Changes since v1:
-> > - Based on the feedback provided by Alexander Sverdlin <alexander.sverdlin@siemens.com>
-> >   the patch has been updated to account for the cleanup path in terms of an imbalance
-> >   between the number of successful netif_napi_add_tx/netif_napi_add calls and the
-> >   number of successful devm_request_irq() calls. In the event of an error, we will
-> >   always have one extra successful netif_napi_add_tx/netif_napi_add that needs to be
-> >   cleaned up before we clean an equal number of netif_napi_add_tx/netif_napi_add and
-> >   devm_request_irq.
-> 
-> ...
-> 
-> > --- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-> > +++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-> > @@ -2569,6 +2570,9 @@ static int am65_cpsw_nuss_init_rx_chns(struct am65_cpsw_common *common)
-> >  			     HRTIMER_MODE_REL_PINNED);
-> >  		flow->rx_hrtimer.function = &am65_cpsw_nuss_rx_timer_callback;
-> >  
-> > +		netif_napi_add(common->dma_ndev, &flow->napi_rx,
-> > +			       am65_cpsw_nuss_rx_poll);
-> > +
-> >  		ret = devm_request_irq(dev, flow->irq,
-> >  				       am65_cpsw_nuss_rx_irq,
-> >  				       IRQF_TRIGGER_HIGH,
-> > @@ -2579,9 +2583,6 @@ static int am65_cpsw_nuss_init_rx_chns(struct am65_cpsw_common *common)
-> >  			flow->irq = -EINVAL;
-> >  			goto err_flow;
-> >  		}
-> > -
-> > -		netif_napi_add(common->dma_ndev, &flow->napi_rx,
-> > -			       am65_cpsw_nuss_rx_poll);
-> >  	}
-> >  
-> >  	/* setup classifier to route priorities to flows */
-> > @@ -2590,10 +2591,11 @@ static int am65_cpsw_nuss_init_rx_chns(struct am65_cpsw_common *common)
-> >  	return 0;
-> >  
-> >  err_flow:
-> > -	for (--i; i >= 0 ; i--) {
-> > +	netif_napi_del(&flow->napi_rx);
-> 
-> There are totally 3 "goto err_flow;" instances, so if k3_udma_glue_rx_flow_init() or
-> k3_udma_glue_rx_get_irq() would fail on the first iteration, we would come here without
-> a single call to netif_napi_add().
+On Tue, Mar 11, 2025 at 7:40=E2=80=AFAM Stanislav Fomichev <sdf@fomichev.me=
+> wrote:
+>
+> No functional changes. Next patches will add more granular locking
+> to netdev_nl_sock.
+>
+> Cc: Mina Almasry <almasrymina@google.com>
+> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 
-The following should address this right?
-------------------------------------------------------------------------------------------------
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index b88edf2dd8f4..bef734c6e5c2 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2581,7 +2581,7 @@ static int am65_cpsw_nuss_init_rx_chns(struct am65_cpsw_common *common)
-                        dev_err(dev, "failure requesting rx %d irq %u, %d\n",
-                                i, flow->irq, ret);
-                        flow->irq = -EINVAL;
--                       goto err_flow;
-+                       goto err_request_irq;
-                }
-        }
+Reviewed-by: Mina Almasry <almasrymina@google.com>
 
-@@ -2590,8 +2590,10 @@ static int am65_cpsw_nuss_init_rx_chns(struct am65_cpsw_common *common)
-
-        return 0;
-
--err_flow:
-+err_request_irq:
-        netif_napi_del(&flow->napi_rx);
-+
-+err_flow:
-        for (--i; i >= 0; i--) {
-                flow = &rx_chn->flows[i];
-                devm_free_irq(dev, flow->irq, flow);
-------------------------------------------------------------------------------------------------
-
-err_request_irq => We have an extra netif_napi_add() which needs to be
-cleaned up.
-err_flow => Equal count of netif_napi_add() and devm_request_irq() that
-should be cleaned up.
-
-Regards,
-Siddharth.
+--=20
+Thanks,
+Mina
