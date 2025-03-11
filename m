@@ -1,146 +1,122 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F1D249F9
-	for <netdev@vger.kernel.org>; Tue, 11 Mar 2025 15:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A502C25EFA5
+	for <netdev@vger.kernel.org>; Tue, 11 Mar 2025 15:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705302; cv=none; b=eC7fJEn81Yz9WnXHA+zH/jzfEoocA21ZCUOqUSNEa4TLc/iFCF/JMCVe5apLBpXiaflyPNiYRnwWd6CQVBB1HOXc1fkKdMRxjCE7mWp4ZUAP3SLGr2sHkPuKZ9E8KM7VkTtPMREj0n+EEtHAIQ4Pu072hXfUMfvww0bLel5juT0=
+	t=1741705575; cv=none; b=LKQncO8e/Qr1fmhirOFQtsD3C0PxLcmdgOJFZdqx0fm1ZvHrQXnu8sT2CIXQdsUxf4LRJR6ZG0UrqfAsJE3EdohNLTiXl9UewhTsBK6QdATzpkxCVbysgUX29GPfxd+ZroD5oMfjBPiHqskZeNHaz47bKTXbCGgBOndtub855zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705302; c=relaxed/simple;
-	bh=7wuGKhp7tPgJHeyYTTAoedpr2I5OZMCzTfJnAMSnFZM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=FhuxT72CiV0Jqodksg2OQQnx1FEWIaaIgd1rQem/7pyXu2fAYH+hk2PST/0+K3oEJNtDn0s2/5wP0q6RIv6jO+q9RaUaCA2FMobxWdb7ZWVqprlWPecSc0lBo+ue9k/mLAOjJQ56W7o1SaerjhWmQOu5Eis/fbav0VmO3zxGWow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CeOmKaeT; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1741705575; c=relaxed/simple;
+	bh=MrSARWYowUlqxQNAfZb8zvNKral/fR5mNXrI8qUG+zg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=URUzaMK8+U611zwdcMwy9xHl/b9XI2VfBvmVq0/YAJT11fo37KUFMqk5USWHoZObo5bxNShTlqWJCdhku7AdJuCpO1TtWt3JiT7HlJYpEIysSIj3jVb/lMSiPOI7XIm0L/sa00b9FhrNwbZRhkH8ObMwbmXYKmdlfZGf6v+sjfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GKzWgS0P; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CeOmKaeT"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3911748893aso3406481f8f.3
-        for <netdev@vger.kernel.org>; Tue, 11 Mar 2025 08:01:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741705299; x=1742310099; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+6N6IHuFiE1oIlwD8C56mu8umqZmcXA8wSz/yC3jK+U=;
-        b=CeOmKaeTQkvFL50eTW3fOpckBFbjq0xfWGPA6nmfIjAPONuAhii54YtBRSVhkCac6Z
-         aqX2FhNSQvflohT+uncx6isnj4PzojfcDmu3tH9bT5C4Th34sXYn+Z4zcUO+hIs6yGAG
-         dQrpUHkvL1sr5+cSovGXjXB4FPCVYfcEKWDs3v5eph+swpA5uNsPrd/zy/gC0vkhrRuU
-         Tq0lRzpJOEXKUxRyE15INv9Pp0hZUOu5Q2aUGD3n13vp6frgo3s0hGevLYDv5tCb567Z
-         RViQ0SmwuDjQLp9oas00fendlJAfMCuuxIWBObe/bPttUEoqxnh94iZ184IbyTa8U2gV
-         eP4Q==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GKzWgS0P"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741705572;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vBOsng8EBCgkOAM3Vciw5jQTda8DWvz8kQYjd7HB9wM=;
+	b=GKzWgS0Pk+yINTPnN1V4FajLHZiPmDSQMSijQMZ2OC825cpEgh5/cfGH0EVL9SCmwh+tV/
+	vGciV3Q4e7KeOTl9/tHcywlqNONd4hcu6io6cS+lqb7IRwyuXceuuNY/FDQ+EwjPNbLXgD
+	19HvM5crw8po66GvSJqOgqZpPH+mUGE=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-39-ucf5DwZuMreRhV7VltPp0A-1; Tue, 11 Mar 2025 11:06:11 -0400
+X-MC-Unique: ucf5DwZuMreRhV7VltPp0A-1
+X-Mimecast-MFC-AGG-ID: ucf5DwZuMreRhV7VltPp0A_1741705570
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3912539665cso3037263f8f.1
+        for <netdev@vger.kernel.org>; Tue, 11 Mar 2025 08:06:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741705299; x=1742310099;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1741705570; x=1742310370;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+6N6IHuFiE1oIlwD8C56mu8umqZmcXA8wSz/yC3jK+U=;
-        b=iRi/+Hae6BIAgS/urWtL06O3UhhDmsKO4UUL1SNTiOn8q0vsG08mDfXzlDUPlIqBZt
-         Eg0b4suieckKcOdnp9M6+71VqVrCDTKu18fp1UhPdjsXrQGEHKI82kMWUjWJbrFY1hzB
-         OLRIMgCuh7hemPY5lnv740l7qPvRnmOcPECcMQ9m40prM97GeTWUxK8egb7yBdw3UWYK
-         b20egXWnIV4AzQlJlyNDpzrzZa4qfwlXvtn39OP/hPwyLkJ3GraXwylSMTo06maikicr
-         X0pYA7zWkjBBI4VAPqcswj2Vy5erzgCl9nqFqjJriozMJDGn5/ZCc3QQJLO/lMrHMQz8
-         XULA==
-X-Gm-Message-State: AOJu0Ywl+AyqaklHvxvxhFNgF1/pjDA0FbcSy4iuvOO5mRWBw7XSMnAV
-	0qLJVG41V2L7HjbMTAsy+Y29YkO+E5KHim2TyyifFHaBxgDrhG/lOI+mP2Qt1rE=
-X-Gm-Gg: ASbGncsAPVcEVLKc1+txVPfrlozysGbRMGAHS5IRa+RG1XnCga8gSpA8bHiujRVQGAY
-	c7HT8mOtEwbY2YNwAUFF83ps+1INfb9jNn66xrU5Ip/Zz1Dw+NFSpkH9OaXgDihLdR9T0/4EkCj
-	ZW05P+HUZhzl7MseVawzrMLWibsFs2sGJuddAuiyzZrPYQYO2bFdDv0qQ/rd+AiYUl8U1sYgBe8
-	0kUT8Rlivhb9Mok5KAygfWGkvpgBO1zkdtJHRWjBeuh5OkU/NbkoFwJBA+qibL7g1e/gafq4ebL
-	mDDXFlKcJQEvkpIU1IVHsepuJ+oN+8lpSQCL+iV08K+BWQ0Scg==
-X-Google-Smtp-Source: AGHT+IG5JHAt5M00RK6so4oCI1Rd9NaZq82laBkVPXtIXJAI94ie1Fae5BdFLqYl+2j2hV4O4XYaeQ==
-X-Received: by 2002:a5d:59a7:0:b0:391:1139:2653 with SMTP id ffacd0b85a97d-39132de145bmr14966138f8f.52.1741705297414;
-        Tue, 11 Mar 2025 08:01:37 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3912c0e4065sm18620738f8f.62.2025.03.11.08.01.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 08:01:36 -0700 (PDT)
-Date: Tue, 11 Mar 2025 18:01:33 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Dimitris Michailidis <d.michailidis@fungible.com>
-Cc: netdev@vger.kernel.org
-Subject: [bug report] net/funeth: probing and netdev ops
-Message-ID: <ec0b7b3e-0d69-4fa7-bfd2-b3b110fe237d@stanley.mountain>
+        bh=vBOsng8EBCgkOAM3Vciw5jQTda8DWvz8kQYjd7HB9wM=;
+        b=D/XXyHJ2U4X6+MnoCcetE5A2loMuDx9yTU/de5a5yJdoWKRIHfDSp2nbfo6rLyj/0l
+         UTd82XAnqvGk6nm8NXaOsPm70IuyDDk0JkoBvWB6s0ji6pon/nECbPmhG0yOQASPTovm
+         9/+RxzMle16USlVCGuabCuZjeEElegnzZZHbSrLs/YYUa/JtzFowkLlx1eG8UHFS3kqK
+         wyY3HZz2YK/w/HMSvNo02M445oRGU25LL4qyaZy9XxDDD/0mTQ5SDjXwwG//YY+5mOcq
+         aoRjgiRFXVa3svOyk1hFvnSayx9VQ63uAEg54L57S+PRIUGL5eH19jNr0aJG/Hj9jkGv
+         d15A==
+X-Forwarded-Encrypted: i=1; AJvYcCU/qwReRMJXg9BmLptRV2x3IE05Oz9LRvA1djWN/Kc3TebTH3dcr5tSykZYLQKKwRb11T2jmKM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzI1vqzEBglDzjvqLp/cbjGIC7pfsm3Ff6CxNdFp6I+48S2frRX
+	/yXlR+DfLXUp9q3mPRJuR1EVRnhEhzqlMwJoaHie3jGhFZxRJPbgfDfwwRdaUJ0qAyMFLDPAZ3Q
+	5rzyGaIPcwBWr5LEirRFfin0NfzyS/uRhxOAMfsujRqrqgdb2PAuJ05ljV0HM8A==
+X-Gm-Gg: ASbGncvkdQt5bv+sWbmJQGhcj/l8NGWpNKBoKQnZdsOKz3UcLQHhgL/hM24fQKSxq4O
+	EhEoiHuZeui2G/9EMl6W2cwu77/XlH0jRXH+6+gOQABBQWEIGk40DtPwtqrnyighqyDsE+dl5KX
+	fdiXWmP3pS1uKqBc8xgj9/9LeQaVw8JC3tKyBxcochQ/V428tPbI/+Xb0vMm4zsxNJV+0QN8Xhl
+	UtPzIArFeqj/QLsyjE8JOpEQj+qExjEHspFK5PtRkAATTVAO4dG001bFwvYB0bjipl8KBy5ENm+
+	ac/+T3gQqsgFF77QEavOF/2yckiVzYleiOfRgq101uiRlw==
+X-Received: by 2002:a05:6000:1fa6:b0:390:ec6e:43ea with SMTP id ffacd0b85a97d-3926c97ae30mr5053825f8f.15.1741705569904;
+        Tue, 11 Mar 2025 08:06:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHE3LPY7V+G9pbEb2Drb4dFlpLdtSRacBovR2XotQNM4FSMIHLrLMAX1EnBRCJLVAUO3sXMQg==
+X-Received: by 2002:a05:6000:1fa6:b0:390:ec6e:43ea with SMTP id ffacd0b85a97d-3926c97ae30mr5053770f8f.15.1741705569493;
+        Tue, 11 Mar 2025 08:06:09 -0700 (PDT)
+Received: from [192.168.88.253] (146-241-12-146.dyn.eolo.it. [146.241.12.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfba83csm18130478f8f.6.2025.03.11.08.06.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Mar 2025 08:06:09 -0700 (PDT)
+Message-ID: <aff86ba3-6a74-4cca-9fda-ce5026948080@redhat.com>
+Date: Tue, 11 Mar 2025 16:06:07 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v8 09/14] xsc: Init net device
+To: Xin Tian <tianx@yunsilicon.com>, netdev@vger.kernel.org
+Cc: leon@kernel.org, andrew+netdev@lunn.ch, kuba@kernel.org,
+ edumazet@google.com, davem@davemloft.net, jeff.johnson@oss.qualcomm.com,
+ przemyslaw.kitszel@intel.com, weihg@yunsilicon.com, wanry@yunsilicon.com,
+ jacky@yunsilicon.com, horms@kernel.org, parthiban.veerasooran@microchip.com,
+ masahiroy@kernel.org, kalesh-anakkur.purayil@broadcom.com,
+ geert+renesas@glider.be
+References: <20250307100824.555320-1-tianx@yunsilicon.com>
+ <20250307100845.555320-10-tianx@yunsilicon.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250307100845.555320-10-tianx@yunsilicon.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello Dimitris Michailidis,
+On 3/7/25 11:08 AM, Xin Tian wrote:
+> +static void xsc_eth_build_nic_netdev(struct xsc_adapter *adapter)
+> +{
+> +	struct net_device *netdev = adapter->netdev;
+> +
+> +	/* Set up network device as normal. */
+> +	netdev->priv_flags |= IFF_UNICAST_FLT | IFF_LIVE_ADDR_CHANGE;
+> +	netdev->netdev_ops = &xsc_netdev_ops;
+> +
+> +	netdev->min_mtu = SW_MIN_MTU;
+> +	netdev->max_mtu = SW_MAX_MTU;
+> +	/*mtu - macheaderlen - ipheaderlen should be aligned in 8B*/
+> +	netdev->mtu = SW_DEFAULT_MTU;
+> +
+> +	netdev->vlan_features |= NETIF_F_SG;
+> +	netdev->vlan_features |= NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM;
+> +	netdev->vlan_features |= NETIF_F_GRO;
+> +	netdev->vlan_features |= NETIF_F_TSO;
+> +	netdev->vlan_features |= NETIF_F_TSO6;
+> +
+> +	netdev->vlan_features |= NETIF_F_RXCSUM;
+> +	netdev->vlan_features |= NETIF_F_RXHASH;
+> +	netdev->vlan_features |= NETIF_F_GSO_PARTIAL;
 
-Commit ee6373ddf3a9 ("net/funeth: probing and netdev ops") from Feb
-24, 2022 (linux-next), leads to the following Smatch static checker
-warning:
+You must additionallys set `gso_partial_features` to some non zero value
+to make the above statement meaningful.
 
-	drivers/net/ethernet/fungible/funeth/funeth_main.c:333 fun_alloc_queue_irqs()
-	warn: 'irq' can also be NULL
+Thanks,
 
-drivers/net/ethernet/fungible/funeth/funeth_main.c
-    319 static int fun_alloc_queue_irqs(struct net_device *dev, unsigned int ntx,
-    320                                 unsigned int nrx)
-    321 {
-    322         struct funeth_priv *fp = netdev_priv(dev);
-    323         int node = dev_to_node(&fp->pdev->dev);
-    324         struct fun_irq *irq;
-    325         unsigned int i;
-    326 
-    327         for (i = fp->num_tx_irqs; i < ntx; i++) {
-    328                 irq = fun_alloc_qirq(fp, i, node, 0);
-                               ^^^^^^^^^^^^^
-The fun_alloc_qirq() function can return NULL.
+Paolo
 
-    329                 if (IS_ERR(irq))
-    330                         return PTR_ERR(irq);
-    331 
-    332                 fp->num_tx_irqs++;
---> 333                 netif_napi_add_tx(dev, &irq->napi, fun_txq_napi_poll);
-    334         }
-    335 
-
-The problem is this:
-
-   249  static struct fun_irq *fun_alloc_qirq(struct funeth_priv *fp, unsigned int idx,
-   250                                        int node, unsigned int xa_idx_offset)
-   251  {
-   252          struct fun_irq *irq;
-   253          int cpu, res;
-   254  
-   255          cpu = cpumask_local_spread(idx, node);
-   256          node = cpu_to_mem(cpu);
-   257  
-   258          irq = kzalloc_node(sizeof(*irq), GFP_KERNEL, node);
-   259          if (!irq)
-   260                  return ERR_PTR(-ENOMEM);
-   261  
-   262          res = fun_reserve_irqs(fp->fdev, 1, &irq->irq_idx);
-   263          if (res != 1)
-   264                  goto free_irq;
-
-The error code is not set on this path.  This is the only caller.  Why not
-modify fun_reserve_irqs() to just return zero on success and negative
-failures?  Are we likely to need the current API in the near future?
-
-   265  
-   266          res = xa_insert(&fp->irqs, idx + xa_idx_offset, irq, GFP_KERNEL);
-   267          if (res)
-   268                  goto release_irq;
-   269  
-   270          irq->irq = pci_irq_vector(fp->pdev, irq->irq_idx);
-   271          cpumask_set_cpu(cpu, &irq->affinity_mask);
-   272          irq->aff_notify.notify = fun_irq_aff_notify;
-   273          irq->aff_notify.release = fun_irq_aff_release;
-   274          irq->state = FUN_IRQ_INIT;
-   275          return irq;
-   276  
-   277  release_irq:
-   278          fun_release_irqs(fp->fdev, 1, &irq->irq_idx);
-   279  free_irq:
-   280          kfree(irq);
-   281          return ERR_PTR(res);
-   282  }
-
-regards,
-dan carpenter
