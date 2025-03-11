@@ -1,119 +1,112 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from shell.v3.sk (mail.v3.sk [167.172.186.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9906F17AE11
-	for <netdev@vger.kernel.org>; Tue, 11 Mar 2025 09:16:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960A91BDCF;
+	Tue, 11 Mar 2025 09:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.172.186.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741684582; cv=none; b=umpjfqXxM+syMp4z6c4XLKDMjhGMQPoiN4md6ssOcNhLm2zKlVoUdAdJtk8RAzV1NpJlouVvxbpOUdOHYRiftyi9dnXXBFsyyxozbYQ+uMtmumArYTDQVSgX0nIHKRKWUU/hWnVaM0ZnQTNwEF4HrRzK2AtkungfsINaQWiTgjA=
+	t=1741684762; cv=none; b=cHCpht1tqNjXfcOrDt1siw6z913jWAnk7QiSreEwnyBOeTGWFD2kEOHnzldLkbcEYOVcaSAKPk7LnrFjUtAi4HYXEQFmCgS5HLB6D3BcCO1y7QME0vUvxhn/Av5swpKTRDdC5DRUP5f2aotPUsTIKzht/KF01YlOosFlWc5mZRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741684582; c=relaxed/simple;
-	bh=2Klz6USrV+JF4Fvg8UFTE+btW8UthvvuzGbaFIb9dBY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Twe1700y/eGKeIjYH16vgE0L1jDoEL+ySJ7qL9r0i2Zvlnxm99jhmaQthQnXLte3gfAmGPL+RjxGcwxESK/WDzRjo8C4JLcbKyARuKAH12A5ZiY2/mT5JPl8ufFG1Tz/Fe3bCGqFvtHW6D9aBagjl7fx6/5r8skCOc5qnXd4zk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X6sCkBC3; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X6sCkBC3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741684579;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DKGgQaKGX89LUHwZkiGUWXhgNXxI+p2/HEwJnREQX9c=;
-	b=X6sCkBC39gJoT0dvQbnH4veBFXzfwBxYHGwP1fzD5z4loHpYNw0tv/pTEu2E4QwXI6sWVz
-	Fw3zeO8112xJBcAyXr/mlVTEbvw07GJrwmqRNhNAC3oniFDOOUvGhrx6os/ZQ5pzmMqArZ
-	MZ0YzE/ONSrZn9neS088IHnzlSzrmC4=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-616-VqkrfjiGNMq3TuT5KKg0OQ-1; Tue, 11 Mar 2025 05:16:17 -0400
-X-MC-Unique: VqkrfjiGNMq3TuT5KKg0OQ-1
-X-Mimecast-MFC-AGG-ID: VqkrfjiGNMq3TuT5KKg0OQ_1741684577
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-ac254e4b515so451926766b.0
-        for <netdev@vger.kernel.org>; Tue, 11 Mar 2025 02:16:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741684577; x=1742289377;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DKGgQaKGX89LUHwZkiGUWXhgNXxI+p2/HEwJnREQX9c=;
-        b=TfK1Q7oxjFi/iGyfTB0OlT+FOWZjAwWetObbzv7GfLE9CY5k/l6MeB8Gm6DrsWGvlz
-         7FxQzYaTsXg/OAvq4IPPmCUW/StI6VaLFIR3zkitBd2+goHWjiGwYWu/OnjRRvfH3ieQ
-         /8nUjTL3PPJzNJqHaq0CqFSYB2U+Is9bfmtD0JYulKq/dlMmMgT8NB42EbrijhqSQ5QS
-         5RcZrtQdbbbqNs1zaGkVSP3591yV77Wwu0NluOh51Jywf0uspPlQNoetKqX85f/OBvKe
-         6y+6/lihJoRtNpn1TmPyB+lB1722pVZbu2mgE9u6KJcyAjk1KqkP4iFyXCggam9GYptz
-         gSig==
-X-Forwarded-Encrypted: i=1; AJvYcCXix9Qo/4TjrUyi25YN1AfnishEUQ6uw9VCF6PzpuisKUMYOSh9rvrI8Aq9wDuexCfUjnv1l/o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMMWlvyuQh1PfMrYraYSbIrrvApvu82wbut5DPPI3i1/N58d7L
-	04CP8kfGFqwFAUqY3/yzCjQ/ECyL1BZ7OK0P7JnCbAGB498WDcWLMomPwUeKSbrjHhCXsuJNmcj
-	Hfp6QVWfVp5hfGO3juy9EtXWkWTr0pzh4rE+HCyrxJpo/Fzzzaz2xrQ==
-X-Gm-Gg: ASbGncvLpFuBo+BBENWo5aX3Xjus6/ibWlwQ2Mn2255zmAhMoDlcpIGAeKuIyCYPn9i
-	oFA65yIoHlKlArn+6B4JccDMEaQ5cAeqgNi5QK6+QyOS0t9cMlTY7CkixxH/pcbSAap4Z2ibRky
-	bnbzXSYaJKp9eymkjv41WNjYWKM54dUC4IZAwGE9B8NLqwoAqYvlwDKKu3vQiaDbccgzOtypq7C
-	trYIsXFbxeXpFIiLDAbnYU2NIsvEtBUzpKwXyatLZ1x9RD3hWsZJm6TNzpwxj0SHU5S4Fe/B/Y7
-	1VwjgCfyboknRXJg0ZX8sQKweTIukm9/4pV8JtM4QEiQsg==
-X-Received: by 2002:a17:906:6a21:b0:ac1:791c:153a with SMTP id a640c23a62f3a-ac2ba53cff7mr222236266b.27.1741684576686;
-        Tue, 11 Mar 2025 02:16:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFnJH8UUUIVi208YGcVRuSkURFnR5lgAhQbJQsu9wvxRcbXehmVwy3UmwTSfGIMq32HzFNZyg==
-X-Received: by 2002:a17:906:6a21:b0:ac1:791c:153a with SMTP id a640c23a62f3a-ac2ba53cff7mr222234266b.27.1741684576292;
-        Tue, 11 Mar 2025 02:16:16 -0700 (PDT)
-Received: from [192.168.88.253] (146-241-12-146.dyn.eolo.it. [146.241.12.146])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac2a89f381fsm242567466b.169.2025.03.11.02.16.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Mar 2025 02:16:15 -0700 (PDT)
-Message-ID: <952d6b81-6ca9-428c-8d43-1eb28dc04d59@redhat.com>
-Date: Tue, 11 Mar 2025 10:16:14 +0100
+	s=arc-20240116; t=1741684762; c=relaxed/simple;
+	bh=aLnNnVYd8qwdahT9fPWWAMzvcIEAF1CIYMOZPUuqAW4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lainTpK3FlOIGF2af4843bQHxLVJnnOFJcvImRe4EszkjwxV1OR/iYSUj5ilA6WXwjjsssYGbMPu7NT7iLMMamOZGaEil8IduSA+wCkoi//PWtYIzaGofC1po/FbpUiYpn/sq8U7DNh0VBMxsZis/JnSbRSZEaW7+kAcP7E6DZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=v3.sk; spf=pass smtp.mailfrom=v3.sk; arc=none smtp.client-ip=167.172.186.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=v3.sk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=v3.sk
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by zimbra.v3.sk (Postfix) with ESMTP id 56EB6DFE32;
+	Tue, 11 Mar 2025 09:04:48 +0000 (UTC)
+Received: from shell.v3.sk ([127.0.0.1])
+	by localhost (zimbra.v3.sk [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id iXLQUw6eGoAh; Tue, 11 Mar 2025 09:04:47 +0000 (UTC)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by zimbra.v3.sk (Postfix) with ESMTP id 048FEDFE33;
+	Tue, 11 Mar 2025 09:04:47 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at zimbra.v3.sk
+Received: from shell.v3.sk ([127.0.0.1])
+	by localhost (zimbra.v3.sk [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id rKAX3WYt8V26; Tue, 11 Mar 2025 09:04:46 +0000 (UTC)
+Received: from demiurge.local (unknown [109.183.109.54])
+	by zimbra.v3.sk (Postfix) with ESMTPSA id D9A81DFE32;
+	Tue, 11 Mar 2025 09:04:45 +0000 (UTC)
+From: Lubomir Rintel <lkundrak@v3.sk>
+To: linux-usb@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Lubomir Rintel <lkundrak@v3.sk>
+Subject: [PATCH] rndis_host: Flag RNDIS modems as WWAN devices
+Date: Tue, 11 Mar 2025 10:10:35 +0100
+Message-ID: <20250311091035.2523903-1-lkundrak@v3.sk>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] tc-tests: Update tc police action tests for tc
- buffer size rounding fixes.
-To: Jonathan Lennox <jonathan.lennox42@gmail.com>,
- Jonathan Lennox <jonathan.lennox@8x8.com>, David Ahern <dsahern@kernel.org>,
- netdev@vger.kernel.org, Stephen Hemminger <stephen@networkplumber.org>,
- Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>,
- Jiri Pirko <jiri@resnulli.us>, Pedro Tammela <pctammela@mojatatu.com>
-References: <2d8adcbe-c379-45c3-9ca9-4f50dbe6a6da@mojatatu.com>
- <20250304193813.3225343-1-jonathan.lennox@8x8.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250304193813.3225343-1-jonathan.lennox@8x8.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-Adding the relevant maintainers and Pedro.
+Set FLAG_WWAN instead of FLAG_ETHERNET for RNDIS interfaces on Mobile
+Broadband Modems, as opposed to regular Ethernet adapters.
 
-On 3/4/25 8:38 PM, Jonathan Lennox wrote:
-> Before tc's recent change to fix rounding errors, several tests which
-> specified a burst size of "1m" would translate back to being 1048574
-> bytes (2b less than 1Mb).  sprint_size prints this as "1024Kb".
-> 
-> With the tc fix, the burst size is instead correctly reported as
-> 1048576 bytes (precisely 1Mb), which sprint_size prints as "1Mb".
-> 
-> This updates the expected output in the tests' matchPattern values
-> accordingly.
-> 
-> Signed-off-by: Jonathan Lennox <jonathan.lennox@8x8.com>
+Otherwise NetworkManager gets confused, misjudges the device type,
+and wouldn't know it should connect a modem to get the device to work.
+What would be the result depends on ModemManager version -- older
+ModemManager would end up disconnecting a device after an unsuccessful
+probe attempt (if it connected without needing to unlock a SIM), while
+a newer one might spawn a separate PPP connection over a tty interface
+instead, resulting in a general confusion and no end of chaos.
 
-This is MIME multipart message, please send plaintext message instead
-(PW surprisingly digest it, but not my tools).
+The only way to get this work reliably is to fix the device type
+and have good enough version ModemManager (or equivalent).
 
-AFAICS this fix will break the tests when running all version of
-iproute2 except the upcoming one. I think this is not good enough; you
-should detect the tc tool version and update expected output accordingly.
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+---
+ drivers/net/usb/rndis_host.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-If that is not possible, I think it would be better to simply revert the
-TC commit.
-
-Thanks,
-
-Paolo
+diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
+index 7b3739b29c8f..bb0bf1415872 100644
+--- a/drivers/net/usb/rndis_host.c
++++ b/drivers/net/usb/rndis_host.c
+@@ -630,6 +630,16 @@ static const struct driver_info	zte_rndis_info =3D {
+ 	.tx_fixup =3D	rndis_tx_fixup,
+ };
+=20
++static const struct driver_info	wwan_rndis_info =3D {
++	.description =3D	"Mobile Broadband RNDIS device",
++	.flags =3D	FLAG_WWAN | FLAG_POINTTOPOINT | FLAG_FRAMING_RN | FLAG_NO_SE=
+TINT,
++	.bind =3D		rndis_bind,
++	.unbind =3D	rndis_unbind,
++	.status =3D	rndis_status,
++	.rx_fixup =3D	rndis_rx_fixup,
++	.tx_fixup =3D	rndis_tx_fixup,
++};
++
+ /*----------------------------------------------------------------------=
+---*/
+=20
+ static const struct usb_device_id	products [] =3D {
+@@ -666,9 +676,11 @@ static const struct usb_device_id	products [] =3D {
+ 	USB_INTERFACE_INFO(USB_CLASS_WIRELESS_CONTROLLER, 1, 3),
+ 	.driver_info =3D (unsigned long) &rndis_info,
+ }, {
+-	/* Novatel Verizon USB730L */
++	/* Mobile Broadband Modem, seen in Novatel Verizon USB730L and
++	 * Telit FN990A (RNDIS)
++	 */
+ 	USB_INTERFACE_INFO(USB_CLASS_MISC, 4, 1),
+-	.driver_info =3D (unsigned long) &rndis_info,
++	.driver_info =3D (unsigned long)&wwan_rndis_info,
+ },
+ 	{ },		// END
+ };
+--=20
+2.48.1
 
