@@ -1,152 +1,117 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412A125D213;
-	Tue, 11 Mar 2025 14:40:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE9D1E3787
+	for <netdev@vger.kernel.org>; Tue, 11 Mar 2025 14:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741704034; cv=none; b=FXM+b8NJgiFtZsnytexPovTErCaarWx2mjVcR7OAgclIHEsT0S+g4NXQ2c57POD9qSmBTbFoqFSK8bgscOgnAfRWHHEXys+prdE9mcpJIQAauqE3flxYVki4bnhb4bsNkTVRbf5lLC7YlLCVRYN4lOCEh7lb4lHeGW0U/tTXNYo=
+	t=1741704927; cv=none; b=LhjnkFq7fhxAYtojpOL4L4Fco6PX0JwomMzU2/T4bYhScKj2AaeIDt/tnRxBEYocoFSyU40dv2u8/8A4pMTE08+qgCHB6v2gjmkGMGMXmSVHzaqoYq5sB93COe/1y7icXXY5LROK2GPioCoicncLZsa50BXjViBWc+owPUQ7c2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741704034; c=relaxed/simple;
-	bh=N1mIZ5aHIAdEIQ9Xu004oo+tEjwnQH70IfbsiDMnVes=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jVv0APY1h2yupxEVNZmQx3Z7gTddZdSEgdo2WfCr9Lms0L27W1EU5N2d/M09mEBqA0sFyrN7iCo0z4ap2tNgU5IfZvhXwRgxNTuJ02My+65xK1vO9CLophksP7cvBodCu1kiWc87OvwhhYegl9ud1H5NgaeeR1Gj58ZeqL+qK6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-223fd89d036so109190855ad.1;
-        Tue, 11 Mar 2025 07:40:32 -0700 (PDT)
+	s=arc-20240116; t=1741704927; c=relaxed/simple;
+	bh=LxjUDv/UM5tflyb5Wwci2kxKo+KfDqi/Ic90JGTEVGE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iwogY+8WbJcn46zCpl+KACHDUoKbGZo7ADE8pjRchQFtGVxrSVy3dwz13kyNQAgGn3TiGT91D/WddhikcEGy9mrSj2QvgbNw13K/qNynPcW2L/R8O9V8CfpNaDZGaoUXJ5RiJkilWvnigwEvtAnXOYwlKXC/esA1lJjBFRFtvQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DcxKHpPm; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DcxKHpPm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741704925;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sPy3t2hyYp12g+bGKcjhtrCXAuWyoMvrseXBSI8ksqM=;
+	b=DcxKHpPmmrV2oKOH3tOkyhQSr/tEsSVUx1HXJ09OQd6bp5N+0a2/DN5crefC6HBDsJRYdb
+	eG5K+exn1XXc4cveeyzrylC6cfZ/SS7yuM8erJZxh11SS3ZnWAIciD94VqgCS660dQsEUp
+	nDJuhyl/jVroxYPBec88uhOWI1+wzt8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-76-_FxgTry3Mi2JKl0kpAtKSQ-1; Tue, 11 Mar 2025 10:55:24 -0400
+X-MC-Unique: _FxgTry3Mi2JKl0kpAtKSQ-1
+X-Mimecast-MFC-AGG-ID: _FxgTry3Mi2JKl0kpAtKSQ_1741704923
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43947a0919aso47653835e9.0
+        for <netdev@vger.kernel.org>; Tue, 11 Mar 2025 07:55:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741704032; x=1742308832;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ANCxA7+p0eA4GCg1Qm9ypPlb2PsgQIC2MSDt7WmnMdg=;
-        b=pDRBoWEoBd0SC9+93lH1o6bB/lNUlO6kIo3scBxHRpptmB0tMhLWfsJRmIvbOM7cLz
-         uqJzNmo1jmUWknZuwR2lebywJBIPGCmfWt7lRTp+XWGtHA6alYUXNwouNE8I8inuNhfh
-         Da0cy3tLDQ7rg1zoDT1iUNWL38YKYhH9nqdGCjn/AdOgqVkZn36dD11bmKL3EuXPnyXt
-         CHjwUxSfsroR3L3uaVByVGY+kLHy7frRXes+E0PLFXGtbCL89grbglTYkMYVDiZk6j7d
-         u8FsqXbLFl5W0KWc+aNFwMpjBN0nj5rQM3NzHzpGYUZDONztQlVGfs6rfzt9dHBY1BXy
-         Fg8g==
-X-Forwarded-Encrypted: i=1; AJvYcCVyT+htCmt4aecIHdgZ81kNLZv+Df4DdGEKkMUub1dIXoljILquTFy0E5eVuMhJe88npe3b5KjbWtj1oZY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxRg744Zc2qST+0MrFYsrgBg5j2fGaj6i2yHrLeTrKu9/QP3qv
-	84DYKC3JpYKcDEhy2lJB8ydN5ME1U5hyMr16Z2BB+RNGfo5ZRVI8BGnin+Bmaw==
-X-Gm-Gg: ASbGncsv7HUhlT+VG+JnMivGUlL+7T+xRTTfJVQcY7A2Qq9RvSmS86cWv6QOWnQaApm
-	UdnvR4pKDIYdSjwuoFLJ5Lvt3EDTMqAQ1g6zo4jvkQdS6O2BWzMyGvTP33OJcm2i7i5RBpPPzdt
-	DeAUUEB4BOVFQxjX+LUPHrYQSZtApiyAQPl0TmXhucK38bwDiSl8L03ZToXVcGtw1b2Hbe+Pk6w
-	UQTLtFlclK9BAxzeBDHdm3U8HSxaf7w82cT5VVdJtitLqbsLH1fqJIC1GIu0XQKbjLoQXBqdKjZ
-	7MqPUJLhfgTNTMh3ppARtwnUrjorKb1Dlnp+vug7e7Wx
-X-Google-Smtp-Source: AGHT+IHoNcyH+Ck8bVIbkVAcxYdZo4TmYd5vae8vnKHE+ufqswy1zQuq39qQts/9s6WJMohsW24FVg==
-X-Received: by 2002:a05:6a21:2d04:b0:1f1:b69:9bdd with SMTP id adf61e73a8af0-1f544c87e20mr30237463637.37.1741704030753;
-        Tue, 11 Mar 2025 07:40:30 -0700 (PDT)
-Received: from localhost ([2601:646:9e00:f56e:2844:3d8f:bf3e:12cc])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-73698246387sm10382649b3a.72.2025.03.11.07.40.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 07:40:30 -0700 (PDT)
-From: Stanislav Fomichev <sdf@fomichev.me>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	donald.hunter@gmail.com,
-	horms@kernel.org,
-	michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com,
-	andrew+netdev@lunn.ch,
-	jdamato@fastly.com,
-	xuanzhuo@linux.alibaba.com,
-	sdf@fomichev.me,
-	almasrymina@google.com,
-	asml.silence@gmail.com,
-	dw@davidwei.uk
-Subject: [PATCH net-next v2 2/3] net: add granular lock for the netdev netlink socket
-Date: Tue, 11 Mar 2025 07:40:25 -0700
-Message-ID: <20250311144026.4154277-3-sdf@fomichev.me>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311144026.4154277-1-sdf@fomichev.me>
-References: <20250311144026.4154277-1-sdf@fomichev.me>
+        d=1e100.net; s=20230601; t=1741704923; x=1742309723;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sPy3t2hyYp12g+bGKcjhtrCXAuWyoMvrseXBSI8ksqM=;
+        b=H5vpc0dQZQzXbh1D0nTDe3uFI8CKzzZ1HuWKxKbSgEg1DsYnctfQmQ+GrIqr52SskZ
+         t17PxYebBbLjo6v17YT1IhCEuSxSqWcsJacdm32bH5vRf5rn784Ijx44FY5JWjxTD5uJ
+         asnoZghLy2E4MZEij77ySUCfKDQKXbBUofNZiNuOHjVKy53JXg/V1fniKmpLaKUWg3zb
+         CfFhoj0IqJFIe4Kb7MVKO6LOYSQWKiZPU4DXpm/EZtVybhURG83qcQfzbKm9T95sFUBz
+         Vvk0DNq6VU5jkfQ3IrAT7b4TAzDPujdd0PEcG0O9izOjxfzXL+Ox6VPaSn7hddwHRat6
+         ga3A==
+X-Forwarded-Encrypted: i=1; AJvYcCVH4Elqrao1MNHqgcEyRzQuRU24quBFjafMpPRQIzJaDg2VeS8So+IXLlxQcp3a1aqt51hns04=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkHOx3v64YZNmYW5DYTsO/mi5fh6v770uaeXLuQsy0cMVPJmR5
+	cO2aeiMFKPGbzzSzFpYfe5boTkRw7OUkHV0pT12ratZyFCW/SwNw1hCqQzV8rtjUsLhwtg6TVyJ
+	zpUCvSx87hAjlmdc6ffQD/K5i4mGAT+Bx0PK7eA7SKWO1BhQ1qLWDtA==
+X-Gm-Gg: ASbGncu0qYK2nFgdJQZa15dLQjQYuTR/q1WL3g103XvgO6UiN3026PHSQIeiiegW9F5
+	lV4rZyEjJSbkAWpHjaZtwHl82AF6JQvAk6yl4WG0gN/tkYwHwC+68xhAqBmiH9j+DFFy+F62QSZ
+	uUReFzfrbjra16cpkzjZMa0h40n8NcGa5R19idpmmZeN1cMqXY0Z7tHHjV9kEgmG+iP2/FqH8zB
+	RceM9m4NQ2TGXqeanz4/CMLsIGyXbLUPXn9FBxLvREy3TJX7aSK9R7ceyH3uvgSNBdapaYSE1iG
+	jvCdn6mUHnn3gmX9YBSgadtv/3Nh7IHoad4p5F2D78M9Pg==
+X-Received: by 2002:a5d:59a8:0:b0:391:2d76:baaa with SMTP id ffacd0b85a97d-39132db1be7mr17487083f8f.46.1741704922804;
+        Tue, 11 Mar 2025 07:55:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFFfQ3FEGmyoS07jVk0z3pCPYaEtuw1AmA8TfNJieHbK/iCm4OuD5njJ7PAsd/RHkO9FkLycQ==
+X-Received: by 2002:a5d:59a8:0:b0:391:2d76:baaa with SMTP id ffacd0b85a97d-39132db1be7mr17487033f8f.46.1741704922456;
+        Tue, 11 Mar 2025 07:55:22 -0700 (PDT)
+Received: from [192.168.88.253] (146-241-12-146.dyn.eolo.it. [146.241.12.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bee262esm18264152f8f.0.2025.03.11.07.55.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Mar 2025 07:55:21 -0700 (PDT)
+Message-ID: <a5366506-2083-4957-b269-71e0a343be10@redhat.com>
+Date: Tue, 11 Mar 2025 15:55:20 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v8 02/14] xsc: Enable command queue
+To: Xin Tian <tianx@yunsilicon.com>, netdev@vger.kernel.org
+Cc: leon@kernel.org, andrew+netdev@lunn.ch, kuba@kernel.org,
+ edumazet@google.com, davem@davemloft.net, jeff.johnson@oss.qualcomm.com,
+ przemyslaw.kitszel@intel.com, weihg@yunsilicon.com, wanry@yunsilicon.com,
+ jacky@yunsilicon.com, horms@kernel.org, parthiban.veerasooran@microchip.com,
+ masahiroy@kernel.org, kalesh-anakkur.purayil@broadcom.com,
+ geert+renesas@glider.be
+References: <20250307100824.555320-1-tianx@yunsilicon.com>
+ <20250307100827.555320-3-tianx@yunsilicon.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250307100827.555320-3-tianx@yunsilicon.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-As we move away from rtnl_lock for queue ops, introduce
-per-netdev_nl_sock lock.
+On 3/7/25 11:08 AM, Xin Tian wrote:
+> +void xsc_cmd_use_events(struct xsc_core_device *xdev)
+> +{
+> +	struct xsc_cmd *cmd = &xdev->cmd;
+> +	int i;
+> +
+> +	for (i = 0; i < cmd->max_reg_cmds; i++)
+> +		down(&cmd->sem);
+> +
+> +	flush_workqueue(cmd->wq);
+> +
+> +	cmd->mode = XSC_CMD_MODE_EVENTS;
+> +
+> +	while (cmd->cmd_pid != cmd->cq_cid)
 
-Cc: Mina Almasry <almasrymina@google.com>
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
----
- include/net/netdev_netlink.h | 1 +
- net/core/netdev-genl.c       | 6 ++++++
- 2 files changed, 7 insertions(+)
+If I read correctly, `cq_cid` can be concurrently and locklessy modfied
+by xsc_cmd_resp_handler() and/or xsc_cmd_cq_polling().
 
-diff --git a/include/net/netdev_netlink.h b/include/net/netdev_netlink.h
-index 1599573d35c9..075962dbe743 100644
---- a/include/net/netdev_netlink.h
-+++ b/include/net/netdev_netlink.h
-@@ -5,6 +5,7 @@
- #include <linux/list.h>
- 
- struct netdev_nl_sock {
-+	struct mutex lock;
- 	struct list_head bindings;
- };
- 
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index a219be90c739..63e10717efc5 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -859,6 +859,7 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
- 		goto err_genlmsg_free;
- 	}
- 
-+	mutex_lock(&priv->lock);
- 	rtnl_lock();
- 
- 	netdev = __dev_get_by_index(genl_info_net(info), ifindex);
-@@ -918,6 +919,7 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
- 		goto err_unbind;
- 
- 	rtnl_unlock();
-+	mutex_unlock(&priv->lock);
- 
- 	return 0;
- 
-@@ -925,6 +927,7 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
- 	net_devmem_unbind_dmabuf(binding);
- err_unlock:
- 	rtnl_unlock();
-+	mutex_unlock(&priv->lock);
- err_genlmsg_free:
- 	nlmsg_free(rsp);
- 	return err;
-@@ -933,6 +936,7 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
- void netdev_nl_sock_priv_init(struct netdev_nl_sock *priv)
- {
- 	INIT_LIST_HEAD(&priv->bindings);
-+	mutex_init(&priv->lock);
- }
- 
- void netdev_nl_sock_priv_destroy(struct netdev_nl_sock *priv)
-@@ -940,11 +944,13 @@ void netdev_nl_sock_priv_destroy(struct netdev_nl_sock *priv)
- 	struct net_devmem_dmabuf_binding *binding;
- 	struct net_devmem_dmabuf_binding *temp;
- 
-+	mutex_lock(&priv->lock);
- 	list_for_each_entry_safe(binding, temp, &priv->bindings, list) {
- 		rtnl_lock();
- 		net_devmem_unbind_dmabuf(binding);
- 		rtnl_unlock();
- 	}
-+	mutex_unlock(&priv->lock);
- }
- 
- static int netdev_genl_netdevice_event(struct notifier_block *nb,
--- 
-2.48.1
+If so you need at least READ/WRITE_ONCE() annotations and possibly some
+explicit mutual exclusion between xsc_cmd_resp_handler and
+xsc_cmd_cq_polling.
+
+Thanks,
+
+Paolo
 
