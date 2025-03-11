@@ -1,112 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E6E25A2A2;
-	Tue, 11 Mar 2025 12:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D88259C89
+	for <netdev@vger.kernel.org>; Tue, 11 Mar 2025 12:19:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741695552; cv=none; b=cSmM4l+C2e9IZvcLmNcoS3byIBU4pOiG6mgNvU7eeg06oRRITODgs63XDjF/6oThNDK/M8jL12qULSxhVoQrhs138x0HwqQZFLplkYDD6Za2uYIJUZ03gNA5w1NcDdQnGAOtqo8CcqpPxn3af+v3IU/4fZfPbiSTzNlkF9WaGI4=
+	t=1741695554; cv=none; b=bzJxLvFRy4zrJe37fPK8d/LKpK48kAbI9/Q66gXNXccD3VLd7WI0o/fPOHuKeE1fdlltB4nuWUJ/DtdbGdHRwy7Sm+ZzEitNX7K0gzBSU+LEB66aUxXsOwiiAIhkSEpZTjUbsDYX7gwI+wUrJ/n/eZYU5jZ3HhLTL0VWpetrjM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741695552; c=relaxed/simple;
-	bh=hM+Tb4R5v8bLINi/KffYzAfj9nxBFX9y1AOJMkEpWCk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SdY+xQvB1Xkq5RkLxkqZTE4CBP4LT0BRhLYTwPa3iWR9OfLly4LiX3JVLKqsRinFIG9iN/k7cmE2bkJIAV3C3RbiXDZeC2KXdhAhcbmfjo9chGyiT5Qvj+NRSzPECt7vA0hYTmmG+1MX6j/FFzAqLr4aGf861Bf/qu7nAIkaOGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mtvS7dUp; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mtvS7dUp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D98C4CEEE;
-	Tue, 11 Mar 2025 12:19:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741695551;
-	bh=hM+Tb4R5v8bLINi/KffYzAfj9nxBFX9y1AOJMkEpWCk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=mtvS7dUpX92xO/aWwKdRelwCLf5IKHFEHhw03H4yOPk+kGjXEOcMTnCxn1TIufoAR
-	 rbgN+CEuyzxrB9DFcjJnx6d/ZQpl7GRZbtQ4DE4L3TdbeNWcK4xMDzkEdGzWi4L8Fh
-	 GhnOsn8oFwdtku8OaN0lCJJhsK12LBxr3IYkrO/nZceHeVqRgKm5dRA+pzfq0amITL
-	 kh3cnGnkwpR2x9J+1p6bid8s0c5as08d1IOWundV5LmNn3pFMssapMIndBtG+8XNKV
-	 h8X+6fxlSOT6lyAjNXzkA93+kujQQUHn6XWPkoJ/NzB8ADekfC34H0+XNA+AYavzW6
-	 uQou4/yOIttSg==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Tue, 11 Mar 2025 13:18:37 +0100
-Subject: [PATCH net-next 5/7] net: ethernet: mediatek: Add metadata support
- for xdp mode
+	s=arc-20240116; t=1741695554; c=relaxed/simple;
+	bh=cUgPGh5p1BGwvpbxV5VbyGnJnRnzWJltzLsTN6o0Go4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=HkEJO39KOWTESCfiuxbIHjVxO8cE8LsrIEan/46shCqZgBDgKYVnhXD7DDo0udfipvzql+/D7BRRYNeJD9HPceMh2j9tdXHhUBQtYH/cnWBTVt5i5fhHmWCanfWTz4je6CG4hS8cE+1041AenYEr+DR/WRN54nhh/5B3ctehPn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4ZBt963VztzyRrq;
+	Tue, 11 Mar 2025 20:19:06 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id E2738180080;
+	Tue, 11 Mar 2025 20:19:09 +0800 (CST)
+Received: from [10.67.120.129] (10.67.120.129) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 11 Mar 2025 20:19:07 +0800
+Message-ID: <136f1d94-2cdd-43f6-a195-b87c55df2110@huawei.com>
+Date: Tue, 11 Mar 2025 20:19:06 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250311-mvneta-xdp-meta-v1-5-36cf1c99790e@kernel.org>
-References: <20250311-mvneta-xdp-meta-v1-0-36cf1c99790e@kernel.org>
-In-Reply-To: <20250311-mvneta-xdp-meta-v1-0-36cf1c99790e@kernel.org>
-To: Marcin Wojtas <marcin.s.wojtas@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
- Masahisa Kojima <kojima.masahisa@socionext.com>, 
- Sunil Goutham <sgoutham@marvell.com>, Geetha sowjanya <gakula@marvell.com>, 
- Subbaraya Sundeep <sbhatta@marvell.com>, hariprasad <hkelam@marvell.com>, 
- Bharat Bhushan <bbhushan2@marvell.com>, Felix Fietkau <nbd@nbd.name>, 
- Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- "K. Y. Srinivasan" <kys@microsoft.com>, 
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
- Dexuan Cui <decui@microsoft.com>, Siddharth Vadapalli <s-vadapalli@ti.com>, 
- Roger Quadros <rogerq@kernel.org>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- linux-hyperv@vger.kernel.org, linux-omap@vger.kernel.org, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-X-Mailer: b4 0.14.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH net-next] page_pool: Track DMA-mapped pages and unmap
+ them when destroying the pool
+To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>, Yunsheng
+ Lin <yunshenglin0825@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas
+	<ilias.apalodimas@linaro.org>, "David S. Miller" <davem@davemloft.net>
+CC: Yonglong Liu <liuyonglong@huawei.com>, Mina Almasry
+	<almasrymina@google.com>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, <linux-mm@kvack.org>, <netdev@vger.kernel.org>
+References: <20250308145500.14046-1-toke@redhat.com>
+ <d84e19c9-be0c-4d23-908b-f5e5ab6f3f3f@gmail.com> <87cyepxn7n.fsf@toke.dk>
+ <2c363f6a-f9e4-4dd2-941d-db446c501885@huawei.com> <875xkgykmi.fsf@toke.dk>
+Content-Language: en-US
+From: Yunsheng Lin <linyunsheng@huawei.com>
+In-Reply-To: <875xkgykmi.fsf@toke.dk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
-Set metadata size building the skb from xdp_buff in mediatek driver
+On 2025/3/10 23:24, Toke Høiland-Jørgensen wrote:
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+>>
+>> I guess that is one of the disadvantages that an advanced struct like
+>> Xarray is used:(
+> 
+> Sure, there will be some overhead from using xarray, but I think the
+> simplicity makes up for it; especially since we can limit this to the
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 922330b3f4d70421276ecd3f4ab175b3ae263f71..43197b28b3e745319e974c6022a6a51b6953f60a 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -2122,7 +2122,7 @@ static int mtk_poll_rx(struct napi_struct *napi, int budget,
- 		if (ring->page_pool) {
- 			struct page *page = virt_to_head_page(data);
- 			struct xdp_buff xdp;
--			u32 ret;
-+			u32 ret, metasize;
- 
- 			new_data = mtk_page_pool_get_buff(ring->page_pool,
- 							  &dma_addr,
-@@ -2138,7 +2138,7 @@ static int mtk_poll_rx(struct napi_struct *napi, int budget,
- 
- 			xdp_init_buff(&xdp, PAGE_SIZE, &ring->xdp_q);
- 			xdp_prepare_buff(&xdp, data, MTK_PP_HEADROOM, pktlen,
--					 false);
-+					 true);
- 			xdp_buff_clear_frags_flag(&xdp);
- 
- 			ret = mtk_xdp_run(eth, ring, &xdp, netdev);
-@@ -2158,6 +2158,9 @@ static int mtk_poll_rx(struct napi_struct *napi, int budget,
- 
- 			skb_reserve(skb, xdp.data - xdp.data_hard_start);
- 			skb_put(skb, xdp.data_end - xdp.data);
-+			metasize = xdp.data - xdp.data_meta;
-+			if (metasize)
-+				skb_metadata_set(skb, metasize);
- 			skb_mark_for_recycle(skb);
- 		} else {
- 			if (ring->frag_size <= PAGE_SIZE)
+As my understanding, it is more complicated, it is just that complexity
+is hidden before xarray now.
 
--- 
-2.48.1
+Even if there is no space in 'struct page' to store the id, the
+'struct page' pointer itself can be used as id if the xarray can
+use pointer as id. But it might mean the memory utilization might
+not be as efficient as it should be, and performance hurts too if
+there is more memory to be allocated and freed.
 
+It seems it is just a matter of choices between using tailor-made
+page_pool specific optimization and using some generic advanced
+struct like xarray.
+
+I chose the tailor-made one because it ensure least overhead as
+much as possibe from performance and memory utilization perspective,
+for example, the 'single producer, multiple consumer' guarantee
+offered by NAPI context can avoid some lock and atomic operation.
+
+> cases where it's absolutely needed.
+
+The above can also be done for using page_pool_item too as the
+lower 2 bits can be used to indicate the pointer in 'struct page'
+is 'page_pool_item' or 'page_pool', I just don't think it is
+necessary yet as it might add more checking in the fast path.
+
+> 
+> -Toke
+> 
+> 
