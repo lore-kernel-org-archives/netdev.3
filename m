@@ -1,172 +1,149 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013028.outbound.protection.outlook.com [40.107.159.28])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23380221D93;
-	Tue, 11 Mar 2025 05:57:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741672630; cv=fail; b=Y+t+h7PNdfpNqnb5XrUmuT7UX5e16v1H9klLolNEOAge3yl5L9KUNrD9dyofWnXbOVXFE9o3TYiw0YmzzQMXGuDlGaon4pQ4ab11Zj5ZLGsUcGQIn5fVXsrazcIzupcojOz0/VCDwqj63Uf+eUCi5x7GLsrZRC9fE7aq0+N8NgA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741672630; c=relaxed/simple;
-	bh=FCIGavlohMJh9Ceuk/ftt3fUJY/22NS00scPpiuIGP8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EWIVLWcfNyWIarnsofKl9JV1K4J0/YdWz6ElaLU92FJRyiQXJbEaH0EZ/hGuzCuXpvbpU2BGPy1HgSsWyxstYBD32Vt76WPk19xyulsJU3MIzG21jgNOsyhka1FJRjNodoYUQFDm0ft7ocUgDo9Rayw6R7RtarsM7Nmo+LB5DoM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Dkczwoca; arc=fail smtp.client-ip=40.107.159.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241BF1DEFE1;
+	Tue, 11 Mar 2025 06:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741673264; cv=none; b=TCqQUPWTsPfiTumX/hN0Dems6Nwd8a6hys+3YqjKidhVQrdJI8anFEvk8Pt+Wo+V1qj5e3523nUR990nl//+fi9aojW9Sdhd5SXDiftVyF4O2Vn3nCruZt4kvlAzdUKYmcOvGtFW2ibN7M2INLvLpDdI1vwFcG42n0sTIouzxA8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741673264; c=relaxed/simple;
+	bh=yRWn1iovWNrsqhtod6iHzgPsTsCfgH/d+xaja/frc2k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OIRHoseFijucNeYXR+aeq3nEw+UtV1AfIQ4WdV+eiKF/U0teBpD7t1oqe++oDMbzvOTmf9WHzENvGnpS50yEUzsWLx6qez1dkjbfw3K0YoiM8CBx4E8lLvtIqpkZGpRMmxX9tumH/4ZlB1Fajuu1pOdCYvQxN6j4WCEPEIsukHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iOEFys4u; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Dkczwoca"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sX4/opGMD35u9h9TwoOVxsoiqEYGcTsmnvXCgCHhSvewlf6zqKEVzyc/hdm8eLECCmVcZQUJGW1zt3Ohm0yXGHsHXr2UI4eZ+LDO4iORc7iUGsLNb0GWgcFXlBRWXTv8VuEe9LTS1mxg1bOGf/aIMtssWobTU2UvUAUSpNeiFPNJNa5Elj8VLiGZDJdQjNGieMHvR7MHiMxjTOgfdf67WuNUrb/SHOmRC3mnW/nWOZLiW/ALRf4Q9GXkgQtFIAIeGMK7odE/6MaijA7DgxDFiqtWtQMVPDNcgK7qMtXMugdB1kCSdoNs/c+eU7KSFo0UO3uGJL1SUliImHr/aROCBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RVom9LDIhX23btcpGNSVRM13wz0Urd0TO/BlD5e6M1c=;
- b=SdHuje4ZT0LNfYhfYBaI9y7tjULoDytgkekxN+MegE4sJVnRSozmbjEX1yZjYqTgPuNpiiTEb/hH76q4gL+XpQOjIv43v4WrU5xkPJocoUbpCC0DK8VlOX/+ytXcnmtke9k2J/2O5+byyLPT9uyLy+MrHOkFAsnu484AmKtCFICkgcg2h7hGVlOhUIig5EBe8zajDl8tFObNsS4BCFSuj0538G3EVbOI3EOoWhsMr2rKVZPrPtC5gIkKBVD1PzRXogere01y2H9xedQV0Ne9OtIfGqYtOPAowddArVLVf15k74SXjvkBfFrg0N4xwXQ7GIHAoGS/aiXp9qQQCMNRgA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RVom9LDIhX23btcpGNSVRM13wz0Urd0TO/BlD5e6M1c=;
- b=DkczwocaVZVy+3okRZ1L32lKqGsqYWMs66FUSTpcr3+lsuhPQvD+21F5psAWTLLzkDTlLu5H3X2FyrwViE/SaWgdJq+0WaU0G9euykDycrwszX3wjuVfi0MiEpayILkx7PQ1Ly+QBKJxJWjbUdw99Tjg+NFDiW1E+yDj3ZcJG9yXE2dr+wqG57q0i0lZ+CAzPiPakGO5JfTERuGS0pyXyAwUACPBIyd1XMYtJ10kWK7PWARv/eHwU3s0np0+GNaLmyo54dwkDCzNXLScqs+ny5R+mwsK6Pfwbw2SxTgOa5vfKw8X3ezakFZAiwMt8jLgD7tky9rk071cP/Uk39utKg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by GVXPR04MB10945.eurprd04.prod.outlook.com (2603:10a6:150:21e::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.27; Tue, 11 Mar
- 2025 05:57:06 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8511.026; Tue, 11 Mar 2025
- 05:57:06 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: christophe.leroy@csgroup.eu,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v4 net-next 14/14] MAINTAINERS: add new file ntmp.h to ENETC driver
-Date: Tue, 11 Mar 2025 13:38:30 +0800
-Message-Id: <20250311053830.1516523-15-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250311053830.1516523-1-wei.fang@nxp.com>
-References: <20250311053830.1516523-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SGBP274CA0011.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::23)
- To PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iOEFys4u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741673263; x=1773209263;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yRWn1iovWNrsqhtod6iHzgPsTsCfgH/d+xaja/frc2k=;
+  b=iOEFys4uqOB9TQDgZMqNXS3CPPAv+wPJpgkqlWRXt0bjXYuF35CiQWIv
+   lCIbA+36lHWbuVBHKB87ABy1Hog4FHYz32CW1gfyz/CKlArXPAOjCJDFb
+   3yvWMwX2zccI3gQfkEcD5518GhN23khwbFZJlkSRk5q2E40awgbSIChpY
+   JtHoqfshrRnjn96SVPfHQaQZ1OP8zotCtvt6m+BHhY0tEpYiYFeL4u4ig
+   RNYgyCFgf/n1mi4M0sZK2j/d9bJZin/FjDhce/Y0vGs6Z2kJ7uOeQAvWw
+   OlHHNwW3hGhbSc5ad+TKCV266crsyRydq4yWFlp8rsJaHL/nRrewVfDaY
+   Q==;
+X-CSE-ConnectionGUID: hlrzdoE0RcO9wH6yMZbSKw==
+X-CSE-MsgGUID: x39jv4sJT2Wox62Y49WGnA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="42911528"
+X-IronPort-AV: E=Sophos;i="6.14,238,1736841600"; 
+   d="scan'208";a="42911528"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 23:07:42 -0700
+X-CSE-ConnectionGUID: EwCur8gjQcyW+W0/DVtgRg==
+X-CSE-MsgGUID: nkwfcOvITySxVkOXKzp2aQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,238,1736841600"; 
+   d="scan'208";a="120919332"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 23:07:37 -0700
+Date: Tue, 11 Mar 2025 07:03:45 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Jacob Keller <jacob.e.keller@intel.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Ruud Bos <kernel.hbk@gmail.com>,
+	Paul Barker <paul.barker.ct@bp.renesas.com>,
+	Niklas =?iso-8859-1?Q?S=F6derlund?= <niklas.soderlund@ragnatech.se>,
+	Bryan Whitehead <bryan.whitehead@microchip.com>,
+	UNGLinuxDriver@microchip.com,
+	Raju Lakkaraju <Raju.Lakkaraju@microchip.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Jonathan Lemon <jonathan.lemon@gmail.com>,
+	Lasse Johnsen <l@ssejohnsen.me>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH net 1/5] igb: reject invalid external timestamp requests
+ for 82580-based HW
+Message-ID: <Z8/SQRskrrvSofW7@mev-dev.igk.intel.com>
+References: <20250310-jk-net-fixes-supported-extts-flags-v1-0-854ffb5f3a96@intel.com>
+ <20250310-jk-net-fixes-supported-extts-flags-v1-1-854ffb5f3a96@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|GVXPR04MB10945:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8f50082b-bd1e-4fc7-d134-08dd60618db3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|7416014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?wIXdpyz+LM24KQGFX9kks6/0ehdpN0OJ6deDSgQZUaqnsqjVjzqf4ce/DWRF?=
- =?us-ascii?Q?/cZOfCm9k0sK8VMm9O23i0SrjQxxUN6lHXhVjxfOrEunn6FUI1nasGw/7a/8?=
- =?us-ascii?Q?wkP9n4ufyUUZUxpUwf/nyE+v7QLpMdI/GI4gVV4ZWeCBJf0GOLyqvBs3aO51?=
- =?us-ascii?Q?LXinHiFZfwj2baMAgsKopLfP7rm9gGiDkUjL54eQ6EHphyCUcGi2XPqJUWZQ?=
- =?us-ascii?Q?MvpIktTO8lK0IRQyFBXq6SpFvLYznthBK3Zh7Ghr75ra71PKivwQtUJrlR4E?=
- =?us-ascii?Q?nUzkz/DtmtZ7qAZPoviFaC8mvE3vuUhNHN3wPt5JPGyCGm7BX8pkSy5dPeay?=
- =?us-ascii?Q?6hFq+HMjDlFhx7P2Ha8SyCinyqrjNO2IZ9XN4XmlEgisjSDSQqo8Y0BCtuRk?=
- =?us-ascii?Q?8YlQFEFqbI3HbQPrCwjuZRn9BeNN+9JZSAXwYPj99jAvdgPjgoB+kH+kZBRm?=
- =?us-ascii?Q?A9ZjUHFEbnQmj0379erI+qSjSHGvFFiEAsmwoPRXAt7Wq6XBA6XUoF7JFhLJ?=
- =?us-ascii?Q?8OOkBNwbtpQPTIFElnnszTHfDBXIqImUMizcBGLFCIX15dpZWk29FVmpWe+4?=
- =?us-ascii?Q?50VMgns3JqOQywJPTYIY2NX5/oK8x3aKLMgOvbUyBih73+8cFXxfBHbGyTC9?=
- =?us-ascii?Q?ZMT0wmPuecZ70advr0n9/BkWShM4NMoy5lTxZ9cIMBy5p3s0EiLemdv1OVgq?=
- =?us-ascii?Q?OEMp1hRXcKw+lSkWr4RpuzB+8Q/wrIWkRNjUIPHZTyMqvZb6GadsUbHmEEEm?=
- =?us-ascii?Q?1SVov7VwBmti9+/DIDep2V6wuzS3THF8U6iP6Op9jD5xG6ZuVHgqI4H+eWij?=
- =?us-ascii?Q?3z2C7wfkV8/svUSI5zMmKczmPVYgsRWxMHxVao17KbOOZvB0qLzH6BU4+EcK?=
- =?us-ascii?Q?uK+CDVwKWPq23oxGcIn+gV2Eb7BRe4uPdXknUrSUNrS8yO5m7JO7Fij8YrZR?=
- =?us-ascii?Q?4MaIyHYYChIznJQYbMZ9/MxEXgF381zXiY7LUTmIdbosJNxHEt45+Fcka4Ov?=
- =?us-ascii?Q?JrS82iJVwF/tQK5ef/xhBaBUZNVpzPIqTCsF9eraGtxHAbI6B0QdntAeQ44M?=
- =?us-ascii?Q?vXDJk0mttMD0MHqPygT1lhuWJ6rYuysyGG/vF161hMzdhfaxAySkPykloIll?=
- =?us-ascii?Q?cx4KL22SxWrlsvnqMA0WkTlyx4+LccIIEJn0oNFdpDS1KIEuMYD6bY7KfBpw?=
- =?us-ascii?Q?t2beWpbgTn8+Ql0TVWfFzY3Z5oVIjGcAYfeHOtztUZ5M7G+v7Ex4hrIVnIKI?=
- =?us-ascii?Q?L60xmSXhdqd1tXYRr/5xE7LVyY/ulmOK14iNsAbhRJakCPzgzVx9dqilF91P?=
- =?us-ascii?Q?MLi1TFI0ZQw6Lgyvpp4ER7EY4dfAs3ZIvlnByiCJYgj08oFUJyx3gX1PcOPy?=
- =?us-ascii?Q?VbPYcVQARrb1Q5YWZNt+UQKgXp0kbW2kr3bqmsgj33E10T+tmD+sQ95yxPd2?=
- =?us-ascii?Q?R1cGjuvbTX3pc3lwnh/9gf5jtq6ZQET5?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?uVjfK9YudxEGsSw4Aw09mBU6jr+P0wEaCtNxnKU/Cqn9eFbKhuv0MJdCB6Ra?=
- =?us-ascii?Q?RpRNZPJlPAU+GsuUyR4idmmOfui1GtALJMSt48X3PCiP3B1iU3ZzwvEWlIKH?=
- =?us-ascii?Q?/NA4SuP5ytZxf4Nt8GwARKqbfmjaN9fvd8TW8M8zjiAyLy+alkpsHzv34RpQ?=
- =?us-ascii?Q?1JQ1ChpRyec+9Ae2mJCxG+Qa4HCCUU5SCc95xjlK6Z/2pZZsZ1uqKl1C1xGy?=
- =?us-ascii?Q?oFkeuzCaBoooHGVkpnve0n96+kuyuPE3A4F2MaKb2Jng61ydzCU8GOapKBqA?=
- =?us-ascii?Q?IdUwfNiFMa+OgU9N5tAaFlU8TQOwxwwCYT6ca4zBl8qewUUcMSSeQpM3r1pg?=
- =?us-ascii?Q?dnAruKJdRijAGoU46IMsyfAzH1Dv30CyOqmMGyJTpf2bIXcAyqptrmUQpUVy?=
- =?us-ascii?Q?S6g2DS8tJBfk9fKeVn+VWHYwTS5exgJCCPt/mEwEMARlrJ8agOb8Pt1IHLRj?=
- =?us-ascii?Q?cLi+EeBlTmfQL91prXwpjEQejcgG3KJmFU8fsPG6s4LQAylti5FoiD/jhppT?=
- =?us-ascii?Q?SXVPszeZBGfCs8W0F30iwN31e46ZDpbR1I92oI/594GJYeA//TRMVFIpWFWa?=
- =?us-ascii?Q?zISmRorYXTCYAPCVVNBqoq6eZvXLuNk6+ifmuhMhi/aVMV3vTEOUjVsottXx?=
- =?us-ascii?Q?7yA+aqB8HEjQZ3uu1pkDuy4/HSd99lXxCsGdq6rKe2X2CcRHa9tVPJF47UuY?=
- =?us-ascii?Q?58dgXyuWPxLgMBjXVRWDOORM3YnaKbCTOT5+zKl8Q5pl2NsKPBGFVopGckgj?=
- =?us-ascii?Q?w6gvAPkk5lFCnGvIt7uAe4FxXIIV94A2m/2vGfPi9LxIYUqNtQPnlXAwlzOQ?=
- =?us-ascii?Q?5fHjln6l1UvoZsfPYBAzK7ccWEHmv8oQ3KIG28pUjcYBzVEFNd8rU+578/zV?=
- =?us-ascii?Q?oPAYqa/ugBCYtTfzgxFM9EG83XS8Dt3lROKNayN6xVsWLD0gk9LHYOTss7lN?=
- =?us-ascii?Q?SADvpHIdHA4Oo47+MCXhFON0Yinv8h4rghEmBpDcWr0dwByljnZLWU1u5O8u?=
- =?us-ascii?Q?rLY1GNNflDoX29Xv20ZT4QlJccVtD5Om3kwlbOTD3syXVER5GdW1FI9mst3H?=
- =?us-ascii?Q?mb1G2eEb6CUOujCQbzGf3UmG40kqKhUtnhmW2BF1hU/ewJoEsdIls/vS1OD0?=
- =?us-ascii?Q?8UHz5YR2cpt+CcD8Klo2WZtpvcjzaB0TkfSfANK8mllm55GbOWR8kaJl4sa7?=
- =?us-ascii?Q?y1UqAsInip8eEaluITTL08+siOtsERwU0COooqS6gdn2FhhKqC712E7AizT3?=
- =?us-ascii?Q?TVKY3r2MyB+N6aOZFUKZCIz+4hrIHNAzU8opElS2NbSYW7cfkDOYbe+LIXmY?=
- =?us-ascii?Q?Ia3IUQ7D6TG6Mv0uahRN6Rg5A4QJk0ZY8JFu2nE04WI8nK6PRbV7e7CZXidk?=
- =?us-ascii?Q?iAUuFL+avSV9qisgFNoMtwGLBvTbiNSuRkuu2pWF2qU8Ifo4S/5yKaySkMaf?=
- =?us-ascii?Q?SQIPg0whKUKJBm1ZFMrCK0DHusy7Ay8U3CsiKtgs0RpXEkZPMvK46IkznWF7?=
- =?us-ascii?Q?MHKtXUkJSCkW8zaetKS+lEwc1zz0tQbdsuAb/eko+BI7FGDx+UBjCmTO1/79?=
- =?us-ascii?Q?k0biJNv7VIrc/9mpV8jPgwsjCXAeNRJbc2Dt+XjY?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8f50082b-bd1e-4fc7-d134-08dd60618db3
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2025 05:57:06.6852
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gSXRkKmOH6F4Op8cnHyiUQoDOUGPYd1YmBFXJqDYCul7Ar5H/4+tPA6WVWKib9pYgeu38rFPkl9lApuv/Sz7Eg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10945
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250310-jk-net-fixes-supported-extts-flags-v1-1-854ffb5f3a96@intel.com>
 
-Add new file ntmp.h. to ENETC driver.
+On Mon, Mar 10, 2025 at 03:16:36PM -0700, Jacob Keller wrote:
+> The igb_ptp_feature_enable_82580 function correctly checks that unknown
+> flags are not passed to the function. However, it does not actually check
+> PTP_RISING_EDGE or PTP_FALLING_EDGE when configuring the external timestamp
+> function.
+> 
+> The data sheet for the 82580 product says:
+> 
+>   Upon a change in the input level of one of the SDP pins that was
+>   configured to detect Time stamp events using the TSSDP register, a time
+>   stamp of the system time is captured into one of the two auxiliary time
+>   stamp registers (AUXSTMPL/H0 or AUXSTMPL/H1).
+> 
+>   For example to define timestamping of events in the AUXSTMPL0 and
+>   AUXSTMPH0 registers, Software should:
+> 
+>   1. Set the TSSDP.AUX0_SDP_SEL field to select the SDP pin that detects
+>      the level change and set the TSSDP.AUX0_TS_SDP_EN bit to 1.
+> 
+>   2. Set the TSAUXC.EN_TS0 bit to 1 to enable timestamping
+> 
+> The same paragraph is in the i350 and i354 data sheets.
+> 
+> The wording implies that the time stamps are captured at any level change.
+> There does not appear to be any way to only timestamp one edge of the
+> signal.
+> 
+> Reject requests which do not set both PTP_RISING_EDGE and PTP_FALLING_EDGE
+> when operating under PTP_STRICT_FLAGS mode via PTP_EXTTS_REQUEST2.
+> 
+> Fixes: 38970eac41db ("igb: support EXTTS on 82580/i354/i350")
+> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+> ---
+>  drivers/net/ethernet/intel/igb/igb_ptp.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c b/drivers/net/ethernet/intel/igb/igb_ptp.c
+> index f9457055612004c10f74379122063e8136fe7d76..b89ef4538a18d7ca11325ddc15944a878f4d807e 100644
+> --- a/drivers/net/ethernet/intel/igb/igb_ptp.c
+> +++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
+> @@ -509,6 +509,11 @@ static int igb_ptp_feature_enable_82580(struct ptp_clock_info *ptp,
+>  					PTP_STRICT_FLAGS))
+>  			return -EOPNOTSUPP;
+>  
+> +		/* Both the rising and falling edge are timstamped */
+> +		if (rq->extts.flags & PTP_STRICT_FLAGS &&
+> +		    (rq->extts.flags & PTP_EXTTS_EDGES) != PTP_EXTTS_EDGES)
+> +			return -EOPNOTSUPP;
+> +
+>  		if (on) {
+>  			pin = ptp_find_pin(igb->ptp_clock, PTP_PF_EXTTS,
+>  					   rq->extts.index);
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+Thanks for fixing
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7078199fcebf..e259b659eadb 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9174,6 +9174,7 @@ F:	Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
- F:	drivers/net/ethernet/freescale/enetc/
- F:	include/linux/fsl/enetc_mdio.h
- F:	include/linux/fsl/netc_global.h
-+F:	include/linux/fsl/ntmp.h
- 
- FREESCALE eTSEC ETHERNET DRIVER (GIANFAR)
- M:	Claudiu Manoil <claudiu.manoil@nxp.com>
--- 
-2.34.1
+In igb_ptp_feature_enable_i210() there is the same check for both edges
+but also PTP_ENABLE_FEATURE is tested. There is no need for it here, or
+it is redundant even in i210?
 
+> 
+> -- 
+> 2.48.1.397.gec9d649cc640
