@@ -1,105 +1,109 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7B5254845
-	for <netdev@vger.kernel.org>; Tue, 11 Mar 2025 11:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90442512C9;
+	Tue, 11 Mar 2025 11:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741691739; cv=none; b=Id3Ga+LE1m7cQQgyDuR9GffsS5mtgGOAhPVwB2DCgy37kcGHZhcxYIIVx8PKKrKP6UYbJcLpVu2nMQ1lgnmoJ073227vRYAakTEGUSfoTvkOYaFVT4siVeymFM2CdcfOj7dD5y182e561NmAHWKIe4nFTY9mYtKCq0uQoo7fvug=
+	t=1741692207; cv=none; b=NWpjXPHoaOE8UnxvACL6mpg25NAu2R3kIvaUhUs+oF7XAf4pH0tNWuKrW3BTlO/Bcihtu0Qo2KWkCb2XNSYz7uZ+1mljMXECjMzohAvw5lSOEq0/Mav6iLoKCWSB3pYGVTjTOJDMvwJb85d2eWIjnXCdmBfCSq+VFhgwCP76Y6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741691739; c=relaxed/simple;
-	bh=1pQbKMvE7/Ym11EKgbPtHh/WuEZ0L/jI200+BewULTc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GAtg8/Buax+PKhmP2U/WcFulb4DL8ZEzDUP2K3Kk9GPvbt0l0jSwLwBNYwvhcOSj6BuHxmG07/SQf52VZWTzQSOfKzXfn1kw69tDMZW4eqoEdAu3F8X8+Rjm2caaduu4rOeawKqRzWFwx/FqAUv0H1s+NWrFDLpNX7KNnpvsDmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=H9I8GJlY; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1741692207; c=relaxed/simple;
+	bh=j3dY8JEj49BUDjlILsGdzU2dMHu1fR7oCnu9tJ5XMew=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b/YO5aK/mx0POctuZB8qVmJm0B70rgMrpdcswlCpdSbERSi/gqgQS/IuO89wQr/CDN3o/jNxag+vmGuR/trzaLG+Idb2V0PmZITN+7JUaeUejlC6wdIIqaT+Pd853cnjQXURJV4icforKNCTku2MUHM9Fo36vCuLWfv7w6KXGKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fegP+FAF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="H9I8GJlY"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2ff80290e44so8466985a91.0
-        for <netdev@vger.kernel.org>; Tue, 11 Mar 2025 04:15:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1741691737; x=1742296537; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e/l28AgEnrLfdAJHbDgSCi5RlMOZnirPzN89AYZrdVE=;
-        b=H9I8GJlY3PNWbieFPZnL0p/kisobD5QwJozTY9qHaLcTa1w7bDOgdYZTCCyiE6QFCa
-         ruwdg0Xt9mq4sKmmOST1ITXPvjcn35A374nAvekv+VcZ9CkHmlxLLQ/+IBBzoAfK3Z3q
-         fqOOeY7xkGRZO6f9RORXYJ3pjsCHuuA4Hyw2BUHgxiEM40bNdy/oxiIcdMbmpgYbnlfi
-         ZWenVT1hbgZliTJTircPSPlwmRrdAzJ4rS9J9/NfDMzwgarE7B2PXmkAY4CgnQii20Ff
-         zHNEhggFjz1dC/TO6KC1RejPV4J7S6Ou1tyOgPB/iBpmbG5jtXSyWYZ5zB78ytHVYPR1
-         3jMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741691737; x=1742296537;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e/l28AgEnrLfdAJHbDgSCi5RlMOZnirPzN89AYZrdVE=;
-        b=MzfcOWRwRINe/dKFOyCiZcgH+U1rW7aE8MdwDApkMldTKrIloxhBm+lQwgiTB2yEvu
-         dFsr+jPF0ZeHrQMkgJRr/hsFFtuHDEeYgwgHSeOj1ayvnSSP/NjNyN+lPXw2l81hLrOs
-         iKRS+26WD3DmrYBftI7l6j+YDhMh10jh7aFcEmi4ZJ8zeXkVOCcSw0MfRoHDBqDynqF4
-         oHVyORzPF4r8gr05ZBXTtji7XE0EyoO4ewRFP/O8fbmawPhLfJZHq64M0LWeiMq+y485
-         zmelamDDGcV7ipdt+Q8mE9lEaXyesyqhoCogN/+FVwP8G5EaLCXkHWI7Ny6ODxpPYXKG
-         ND5g==
-X-Forwarded-Encrypted: i=1; AJvYcCUqoopJevEUecoA/WhwcC87mmV+3HfZOfOMXIFZyHGfx3O+e3xMCI9CLynwOOTVmlgx974O/fM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBCOPuZqgjJT4bRkNLKxKDAVU+bKg7yrzDnKtsd89v6yxYx9zW
-	3rcGaFlRV9kDj9CN3HYY7AgNY2rxSt9Pav7WnqnT++3EHW5sRuLSN+D7fuZGWy9XMGSGFW8sNZQ
-	Hd+k5tihapLuOZ8eRg4zqHDXg9Gm5Wxwh3NK1
-X-Gm-Gg: ASbGncvxinL5WnqlC4ETca/fV82wLOchtVs5DiscGJIrkLmVlqu1cjybqnVX/rvW8bv
-	LwGcKMY2xgmiBRC3+FWcgBHBw4tfKl+jOpUVjULnBUqxrHBLTMcq3MD0eatCtH17Jd08fHk4scF
-	OlvIYvu18PBmn/OJlBTWV4lLFYDw==
-X-Google-Smtp-Source: AGHT+IF9YjmXWCY1KcbiuD2d718ZMx3sZu/PpUpVyjAvhNqDrrmMdy79MLDUjXYMWIpwEi7kUKo2xUYMS+5JAQaQMGY=
-X-Received: by 2002:a17:90a:d2c6:b0:2ff:6608:78e2 with SMTP id
- 98e67ed59e1d1-2ff7cea99b3mr29977736a91.16.1741691737626; Tue, 11 Mar 2025
- 04:15:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fegP+FAF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE689C4CEEB;
+	Tue, 11 Mar 2025 11:23:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741692207;
+	bh=j3dY8JEj49BUDjlILsGdzU2dMHu1fR7oCnu9tJ5XMew=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fegP+FAF9d3QJy/e2qB1EOF1A9Dan7OuagnmCb9ppnF3e328TM/DojAWy0gd8okW2
+	 fJGWzGBWT8AQj/HDE9U6YnSXdexDIeDURqESTnBzxsso45wTYjyxRMVCs3PzloSfnL
+	 GDnUc94IU7SBx3JYqjis+Hc4a2BNTXvlK7lT1Mlrgi7JPx3pHSXhEb3XbMRUZKbwMb
+	 kJfWuAxNSa0XNHF1vGeGI8vj/nzbpDxv7WSU2xkO8KUK1j/Sdnjv2enCyZmiN2VBzi
+	 aCGnvuSFmZCUb/NSAYjwE07KXByUhjRqIHDAHOzNajmMnT4jiajxzhVVv1T4HsfUh1
+	 JkZGI+iCnRaTA==
+Message-ID: <6af1429e-c36a-459c-9b35-6a9f55c3b2ac@kernel.org>
+Date: Tue, 11 Mar 2025 12:23:19 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2d8adcbe-c379-45c3-9ca9-4f50dbe6a6da@mojatatu.com>
- <20250304193813.3225343-1-jonathan.lennox@8x8.com> <952d6b81-6ca9-428c-8d43-1eb28dc04d59@redhat.com>
- <20250311104948.7481a995@kernel.org>
-In-Reply-To: <20250311104948.7481a995@kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Tue, 11 Mar 2025 07:15:26 -0400
-X-Gm-Features: AQ5f1JrrAvf3ZhbbJTKQpTCZn4QFvoKwqsDLT57DwPNUAT_Luq1r7XmdJA5ONa8
-Message-ID: <CAM0EoMnmWXRWWEwanzTOZ_dLBoeCr7UM4DYwFkDmLfS93ijM2g@mail.gmail.com>
-Subject: Re: [PATCH net-next] tc-tests: Update tc police action tests for tc
- buffer size rounding fixes.
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Jonathan Lennox <jonathan.lennox42@gmail.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Jonathan Lennox <jonathan.lennox@8x8.com>, David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org, 
-	Stephen Hemminger <stephen@networkplumber.org>, Cong Wang <xiyou.wangcong@gmail.com>, 
-	Jiri Pirko <jiri@resnulli.us>, Pedro Tammela <pctammela@mojatatu.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/8] Introduce fwctl subystem
+Content-Language: en-US
+To: Jason Gunthorpe <jgg@nvidia.com>, Saeed Mahameed <saeed@kernel.org>
+Cc: Leon Romanovsky <leon@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+ Aron Silverton <aron.silverton@oracle.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Daniel Vetter <daniel.vetter@ffwll.ch>, Dave Jiang <dave.jiang@intel.com>,
+ Christoph Hellwig <hch@infradead.org>, Itay Avraham <itayavr@nvidia.com>,
+ Jiri Pirko <jiri@nvidia.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, Leonid Bloch <lbloch@nvidia.com>,
+ linux-cxl@vger.kernel.org, linux-rdma@vger.kernel.org,
+ netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+ "Nelson, Shannon" <shannon.nelson@amd.com>
+References: <0-v5-642aa0c94070+4447f-fwctl_jgg@nvidia.com>
+ <20250303175358.4e9e0f78@kernel.org> <20250304140036.GK133783@nvidia.com>
+ <20250304164203.38418211@kernel.org> <20250305133254.GV133783@nvidia.com>
+ <mxw4ngjokr3vumdy5fp2wzxpocjkitputelmpaqo7ungxnhnxp@j4yn5tdz3ief>
+ <bcafcf60-47a8-4faf-bea3-19cf0cbc4e08@kernel.org>
+ <20250305182853.GO1955273@unreal> <Z8i2_9G86z14KbpB@x130>
+ <20250305232154.GB354511@nvidia.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20250305232154.GB354511@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 11, 2025 at 5:49=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Tue, 11 Mar 2025 10:16:14 +0100 Paolo Abeni wrote:
-> > AFAICS this fix will break the tests when running all version of
-> > iproute2 except the upcoming one. I think this is not good enough; you
-> > should detect the tc tool version and update expected output accordingl=
-y.
-> >
-> > If that is not possible, I think it would be better to simply revert th=
-e
-> > TC commit.
->
-> Alternatively since it's a regex match, maybe we could accept both?
->
-> -        "matchPattern": "action order [0-9]*:  police 0x1 rate 7Mbit bur=
-st 1024Kb mtu 2Kb action reclassify",
-> +        "matchPattern": "action order [0-9]*:  police 0x1 rate 7Mbit bur=
-st (1Mb|1024Kb) mtu 2Kb action reclassify",
->
-> ? Not sure which option is most "correct" from TDC's perspective..
+On 3/6/25 12:21 AM, Jason Gunthorpe wrote:
+> On Wed, Mar 05, 2025 at 12:41:35PM -0800, Saeed Mahameed wrote:
+> 
+>> How do you imagine this driver/core structure should look like? Who
+>> will be the top dir maintainer?
+> 
+> I would set something like this up more like DRM. Every driver
+> maintainer gets commit rights, some rules about no uAPIs, or at least
+> other acks before merging uAPI. Use the tree for staging shared
+> branches.
 
-It should work. Paolo's suggestion is also reasonable.
+why no uapi? Core driver can have knowledge of h/w resources across all
+use cases. For example, our core driver supports a generid netlink based
+dump (no set operations; get and dump only so maybe that should be the
+restriction?) of all objects regardless of how created -- netdev, ib,
+etc. -- and with much more detail.
 
-cheers,
-jamal
+> 
+> Driver maintainers with the most commits per cycle does the PR or
+> something like that.
+> 
+> There is no subsystem or cross-driver entanglement so there is no real
+> need for gatekeeping.
+> 
+> It would be a good opportunity to help more people engage with the
+> kernel process and learn the full maintainer flow.
+> 
+>> It should be something that is tightly coupled with aux, currently
+>> aux is under drivers/base/auxiliary.c I think it should move to
+>> drivers/aux/auxiliary.c and device drivers should implement their
+>> own aux buses, WH access APIs and probing/init logic under that
+>> directory e.g: drivers/aux/mlx5/..
+> 
+> That makes sense to me. I would expect everything in this collection
+> to be PCI drivers spawing aux devices.
+> 
+> drivers/aux_core/ or something like that, perhaps?
+> 
+
+drivers/aux_core works for me; removes the 'pci' assumption and makes it
+clear the real attribute here is use of the aux bus with subsystem
+specific devices. I am still not clear on how such a branch will work -
+e.g. We will want multi-vendor review, not just merge the PR and go.
+
