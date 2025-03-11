@@ -1,38 +1,64 @@
-Received: from mx18lb.world4you.com (mx18lb.world4you.com [81.19.149.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079DA211C
-	for <netdev@vger.kernel.org>; Tue, 11 Mar 2025 06:39:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9CB1E9B1F
+	for <netdev@vger.kernel.org>; Tue, 11 Mar 2025 06:39:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741675158; cv=none; b=WjtHzwvB82wFJwoA2647OL1ycamsuYq2V2siP/iq4BuKyORBX7i3re1aEQoTtpB+rRWb2sXA4dxpE0opn9M80uTy3eAHXq9UkKFucZrxxEJVM7srmEiD1NHivftB5YQHvf7tT5zYB8ibMy4vHhPIOpRJqATv2vmJej2y4Cp9qFE=
+	t=1741675174; cv=none; b=NFc/OE85PuLmnQvzEHqM7NcOyk7YuGzoJalosa7FdrUGqTKthZ6JDG4/jexcanxcojmDC98kqNY+GFK0MUTVPjRp91GEszZtx8TUZFsV3iXnxyVxRRbo9SN95ywEYffpHVxi3oCICwoQgCOBfdNL2h/EiSBpKSFSVoS821s05LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741675158; c=relaxed/simple;
-	bh=XG1c1cGStfPdiBuwzXojaWrRiC1+oYBctLpWG9xbIyI=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=piFug4CmMacvFdwMTT2ukK4i6rSQes/mHbyEuqLPNB0mYIg+XWcIEUG8v2YRwfNSXSAtt0oaeAKc5PepEmg4/u9AAHh1owEDnHaFXp39ReExQJ02CBg7r0xmQYSOWMfhguC8PnQsmEM5FAyJimQ+49D6/EwQUNws3MjKp72M1MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=d2bDrcIq; arc=none smtp.client-ip=81.19.149.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1741675174; c=relaxed/simple;
+	bh=x84y1YiYxzvQFpxbeSWw8i2AnBhaKu5wQsBUBQdOc9o=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=DktzXxSJ2Gfe7VXKX9lZvG+UWjHxeMFvZ0SphsTF8BDwh21JbVIXn+LOc022zkLHHHdGL1UW0woqdW/a7OuHXGmRSRaUY6rx54YL9vgEITOiT5pElidgGTjMYdrHzGResoLk4N5uLEprOKmjF9HZtgFeiuvcpuPT9oeuXv9Oyhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X321t56B; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="d2bDrcIq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=02DYpvLHJAWv22fy1EHfiqsfExWfji2mzzpVDA64zQQ=; b=d2bDrcIqgMGCxQ/7GxH/oerAd9
-	7mLzeGIxIHCMfE+PQiU6omUO6pumXQzHbIy0Ud0BpwaJR0e+lTgoroZr36ubHgBHeHO0etoCq6w9u
-	s+BDJTBms74mVpoO1fENUPerb6FxvYJ/zjBDMmgxrowcaIQ3s1tGT7/vtDUs0QnLcT9U=;
-Received: from [80.121.79.4] (helo=[10.0.0.160])
-	by mx18lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1trsKk-000000001YN-1bVc;
-	Tue, 11 Mar 2025 06:39:18 +0100
-Message-ID: <0034e97b-db94-48f9-9a89-838f1ea4e479@engleder-embedded.com>
-Date: Tue, 11 Mar 2025 06:39:17 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X321t56B"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-aaee2c5ee6eso694349766b.1
+        for <netdev@vger.kernel.org>; Mon, 10 Mar 2025 23:39:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741675171; x=1742279971; darn=vger.kernel.org;
+        h=content-transfer-encoding:autocrypt:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y+tm/rgNfkmaK4aaHuAz++rkiT9ipjAMgSoCm+0FoPU=;
+        b=X321t56Be8HOZ3f5qJXIHaz7eTGV6EY8xWAUCfst0MwWqd0kAhPK9cB4AdA/o1raOY
+         TiRQM4HpEbv990z/VhkOLYDjj1hmMgJADToDiKD33gP2f86u9l3yCHIt1lePOpMfVT+4
+         SVGFUgM8meOfR7aObU0NJ9PDXFZPKpPZ7rC/oBJvBC4JCrwJPAkiLBO6U27UonrSjGio
+         96hrD+digAMDUpyd4RNlPz4KHcD2wTdrBKpn22QSzLHmb39nIAdktXa9gBZRmhvmRsAZ
+         IEqm3wEETXM4LG6eYxvVT6XvIYz5dsbRBlyf8iwo1SUjkTau+3nN589iduyyJFuO6pcD
+         +q8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741675171; x=1742279971;
+        h=content-transfer-encoding:autocrypt:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y+tm/rgNfkmaK4aaHuAz++rkiT9ipjAMgSoCm+0FoPU=;
+        b=L+VI+WvgPpC6LuP3qRyPJvNiGhD4fvrPKMclx5Wyy3kVMYEVgWGaIuALqxS8G0Qe3N
+         EBJP8NehpDAEWxUjg3n/5y9Yny4TuNLGF6DSoYx2Gl1/yJCHSlXNzK+OXW3Nutr9U/6e
+         FguR3KZKL6zS0xvRpsR5q41FCPBPgducAyG2meFDxSzL/eL1K0ciwCbY+MQADDzF5OEp
+         BAzSKZCvNivTACLvSrdEbZJvtaPItZ8P6yKpZb7ZiQYyKlupGI6JC7i4Tr+ITSXxMBTE
+         txUSn8WBrdtBZuC/o2O/E2gIuHt2svt+cmdSiQrcVvMcZwRkXKx1aCWHFd6CpYat2myH
+         +zQw==
+X-Gm-Message-State: AOJu0YxzSL0+6djRX6DwJomSLew6ueex6YYaap6l7u7JtS/gcRcKWUWc
+	Ol51h4+i6LqjYCXHXm2KMyDjKxJoWhfVli7pkr7K8/y6ehRa1j7mYzBfBQ==
+X-Gm-Gg: ASbGncvtw1dZ4Y7FCVQycHSPBTHHngvdKtcrlJvjVea2MH3uHagvK3z8ogt8gQHFC9u
+	0klDQvVPhJHUNKtcf4R9OCc39CgXffANgaM3iCEbFIuu9r82Lptv6RkTA3/ns6JuTzkB/pEFpk2
+	AmG0xsbjHZvud1DiFOAU+bvuxOBhu5OP2ngd2hERsrJQQozasW6tC4vut86UT20fcL36mtsdF3r
+	w4OMZ7JIzb0uW7Sstso6myR8wJwqAEQpuoSZsk63GYfH09Fs251fzDIR2tOCL43AT0cSFoMGMrA
+	gHLOAd96BtNygu0I6XdGBEIwm7HeMwPTpwj5NgxzHzcyWhsBaFXPNLHL4kKbphT48AtFi6m1FBI
+	vQ3jJvOA88kvTnCWv8X1G3VGHeRWWFxIFUL/7WulW1homNetDZS5RnkKOQm9C+HdnZpKt1Ad6ko
+	KT8P3YWJZHe7gkxpbHNCC8TRaWq88EWWhp7DtJ
+X-Google-Smtp-Source: AGHT+IFWUw58Ix/3G/kolIJ5bxvwbvCPyg6/nJ3YQ/JDVORkm3u81J8C5/p3U7NBrcsuBgxfda7Oiw==
+X-Received: by 2002:a17:907:1b02:b0:abf:75d7:72a2 with SMTP id a640c23a62f3a-ac252f5b3b4mr2160150966b.38.1741675170981;
+        Mon, 10 Mar 2025 23:39:30 -0700 (PDT)
+Received: from ?IPV6:2a02:3100:ad09:4d00:f159:4498:19a5:6163? (dynamic-2a02-3100-ad09-4d00-f159-4498-19a5-6163.310.pool.telefonica.de. [2a02:3100:ad09:4d00:f159:4498:19a5:6163])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-ac23973af6fsm876269966b.100.2025.03.10.23.39.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Mar 2025 23:39:30 -0700 (PDT)
+Message-ID: <1c1a5c49-8c9c-42a7-b087-4a84d3585e0d@gmail.com>
+Date: Tue, 11 Mar 2025 07:39:33 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,74 +66,86 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v9 2/8] net: phy: Support speed selection for PHY
- loopback
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: hkallweit1@gmail.com, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, netdev@vger.kernel.org, ltrager@meta.com,
- linux@armlinux.org.uk, Jakub Kicinski <kuba@kernel.org>,
- Jijie Shao <shaojijie@huawei.com>
-References: <20250227203138.60420-1-gerhard@engleder-embedded.com>
- <20250227203138.60420-3-gerhard@engleder-embedded.com>
- <20250303173500.431b298e@kernel.org>
- <3d98db01-e949-4dd7-8724-3efcc2e319d9@lunn.ch>
- <20250304081502.7f670381@kernel.org>
- <1d56eaf3-4d8c-40da-8a10-a287f09553e6@engleder-embedded.com>
- <53b21122-f077-46f6-8059-d1d87f66a3e7@engleder-embedded.com>
- <4a48d205-5026-4ec9-aa8b-bc1459641d33@lunn.ch>
- <3c9efd22-03b3-4368-b3c2-cdf349032832@engleder-embedded.com>
 Content-Language: en-US
-In-Reply-To: <3c9efd22-03b3-4368-b3c2-cdf349032832@engleder-embedded.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AV-Do-Run: Yes
+To: Florian Fainelli <florian.fainelli@broadcom.com>,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ David Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH net-next] net: dsa: b53: use genphy_c45_eee_is_active
+ directly, instead of phy_init_eee
+Autocrypt: addr=hkallweit1@gmail.com; keydata=
+ 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
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 07.03.25 20:15, Gerhard Engleder wrote:
-> On 07.03.25 17:27, Andrew Lunn wrote:
->> On Thu, Mar 06, 2025 at 06:58:20AM +0100, Gerhard Engleder wrote:
->>> On 04.03.25 21:00, Gerhard Engleder wrote:
->>>> On 04.03.25 17:15, Jakub Kicinski wrote:
->>>>> On Tue, 4 Mar 2025 14:20:02 +0100 Andrew Lunn wrote:
->>>>>> The current IOCTL interface is definitely too limiting for what Lee
->>>>>> will need. So there is a netlink API coming soon. Should Gerhard and
->>>>>> Jijie try to shoehorn what they want into the current IOCTL handler,
->>>>>> or help design the netlink API? How can selftest.c be taken apart and
->>>>>> put back together to make it more useful? And should the high level
->>>>>> API for PRBS be exported through it, making it easier to use for any
->>>>>> netdev?
->>>>>
->>>>> As we think about this let's keep in mind that selftests are generic,
->>>>> not PHY-centric. Even if we can pass all link settings in there are
->>>>> other innumerable params people may want in the future.
->>>>
->>>> My patchset can be divided into two parts:
->>>> 1) Extend phy_loopback() to select a defined speed
->>>> 2) Extend tsnep selftests to get some in-kernel test coverage for the
->>>>      phy_loopback() extension
->>>>
->>>> This discussion is related to the selftest rework of the second part.
->>>> Would it be ok to put the first part into a separate patchset, as this
->>>> changes make sense and work even without the selftests?
->>>
->>> Andrew, is it ok to put phy_loopback() extension to a separate patch
->>> set?
->>
->> Without the selftest part, the phy loopback changes go unused. We
->> don't normally add APIs without a user. So i would say no, it should
->> be all or nothing. I don't think it will cause many problems if these
->> patches need to wait a while, a rebase should be easy, this area of
->> phylib is pretty stable.
-> 
-> Why no user? The tsnep driver is the user to get loopback again working
-> after 6ff3cddc365b ("net: phylib: do not disable autoneg for fixed
-> speeds >= 1G"). The phy_loopback changes are used by
-> tsnep_phy_loopback().
-> 
-> Thanks to your comments it is also an improvement of the loopback
-> behavior, as now loopback signals the new speed like a normal link up.
+Use genphy_c45_eee_is_active directly instead of phy_init_eee,
+this prepares for removing phy_init_eee. With the second
+argument being Null, phy_init_eee doesn't initialize anything.
 
-Is it ok for you the put the phy_loopback() extension with loopback fix
-for the tsnep driver to a separate patch set?
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+---
+ drivers/net/dsa/b53/b53_common.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-Gerhard
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 61d164ffb..17e3ead16 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2212,10 +2212,7 @@ EXPORT_SYMBOL(b53_mirror_del);
+  */
+ int b53_eee_init(struct dsa_switch *ds, int port, struct phy_device *phy)
+ {
+-	int ret;
+-
+-	ret = phy_init_eee(phy, false);
+-	if (ret)
++	if (!phy->drv || genphy_c45_eee_is_active(phy, NULL) <= 0)
+ 		return 0;
+ 
+ 	b53_eee_enable_set(ds, port, true);
+-- 
+2.48.1
+
