@@ -1,282 +1,200 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2048.outbound.protection.outlook.com [40.107.236.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584A61EEA42;
-	Tue, 11 Mar 2025 20:54:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741726487; cv=none; b=QCrpBfYImeK3rGfK0aol1FswIxiHapLk1HNpc/9bISjV8wE3/ZxTKkUaU9XP8lOgMkKIBPnlOcX0QXeuOCrfwHLMzo6mhdUWt+GdkoPMUBAUouazYpzkK9YeV+J9FQatElLi3ttGGj8UIg5Yk2g51Niun/9Kbnr67CX2WigkaFQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741726487; c=relaxed/simple;
-	bh=35N0I1s+kRsmEnv0ZZIWl76RzE7IQN0lPJlMDitUf1E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dj5yjKpDM44iX832YyhXh9HFanoErlTWiLM0cE/ah+vqP4mbIDD/e4Q4jFm5pWDm61I2R8r/wQDhEZimMRdqYLvcvNkk3pK7PhmKnzikHtkI3qpnIAiIDag7zhQepqpJOK9ZVeUME4GmnOyHM18borkzAiIHkL/nkQNLO+iKWdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZU2HAxfA; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082A61C6FFD;
+	Tue, 11 Mar 2025 21:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741727336; cv=fail; b=pbbUu5XMA5quCUSuSRwIwcSC0DCchvl91hWhX2EOHYb6c/Gjf5kdvr/LQ6mMEvHbvUFej9SndvLTx5wPOZkky7hoiyJtFfCH9ZBXUl6kjoNUhczQnXtYc/zs1uLbocFAxnx5F7IC37SDWNNbCC5ouRc/cHndT5X7e9iHCheDctg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741727336; c=relaxed/simple;
+	bh=45TPE7FbZSDn2ATFWnaKy5Lrv/FmyxfQ8rOrFt/gxmA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=jKYRyMiqnV/a2AlEI2vzSEn7d73y5gig1M9WX0jNdmVo+MwcxlxHZwLdIrZkjGwbJDSEGMEbAXTgUbs4ll/GvOZNTTSWjmLRWv1Yx0dI7YtgMC6EKyc6/eC41mM00o/Tk+FdYtAHC1POcpceva2fICshc9T6T6XCbo1JmG4IPgA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eelnSNsV; arc=fail smtp.client-ip=40.107.236.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZU2HAxfA"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2fa8ada6662so12643467a91.1;
-        Tue, 11 Mar 2025 13:54:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741726485; x=1742331285; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J285DLL4Eyer7avSgJIM/ejnfAFqAM8ijHBJjMmzNTg=;
-        b=ZU2HAxfA8b2wtnNtyLWnEGni5IIdL+xz6Cu25MzI1vHHueHB9tFyheK6Sx/JEnspSL
-         KgEO71PN2q8U7c86bIBQZoramJADUCVafRovv4ZEWQzBQpwskvveRcXZPv9lvowOsOYa
-         GQ+R9B11nbiv5FLA3rbyb8NzE4W/lYAm7GOkSn4f8DpIyhVdr0NmzsBRVlkPwN6Cn5NV
-         BC5yJVpjQDGFrteNU65Fko9zAqplzDQ5uvVb0Zp1CvSlicHvbGmTeM6Vgrn/4pAfvItR
-         fkhLa4x+71g62dYoDrjYOMot2V9wMoUT59B/CTzTV/asqlEjUocq1xqxeZdu1Iuok8ma
-         tnlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741726485; x=1742331285;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J285DLL4Eyer7avSgJIM/ejnfAFqAM8ijHBJjMmzNTg=;
-        b=k+fPKYV5sD8oQSocEXiVxAzihzkxDwF5b3AYSWZjfhTdVvNvm5uD7LnQmmxPHt1QC/
-         Ef+FgIxpJcxJkEchUdbEbP+V5oAuGayCW2bww4uUbXJPouIrp+/WjD2vI7RnvdS/Bdvb
-         6yho8Ykbvic0FTeQErAtP+wvHt0+ZIQZjLiUa8GdkVVQLlXAxKxyXQOWjLCsLm4Z+fst
-         An7LTXFJbOcurcCt+a/8pWcjZ0bcwLZzLsXSDSqPK+bWmBgA4teEjQmiBAYamUyJFdQp
-         8y3lAfn9FPHSM8t3jFlUV9lAgsVibwfQIbejGXxy7oh5PtN018iLzcBxgUxn77FYysEH
-         kdcA==
-X-Forwarded-Encrypted: i=1; AJvYcCXjJ2+23IiPd3lW/+vSDDaA2zAQcjQw9f4Te9mjEQpNx1zKYkmaEuNnyJr7CA08p7+VByE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwP2egYYTX3FdenARUggWLhg1xQ5zr10EWjQp1UewJYvS/WJGSP
-	sc3Ht5r/DjH5nKptxpy4GX5txvKntt2mX2sVq1Ak+t7fHjco2T9q
-X-Gm-Gg: ASbGnctRavr30T0TGIeGwjRT4ss39GUHoAQ82UR34l/E1CCcrkUNTtaIkvqrLqp4lN/
-	XZIBgrnzfHPwg3ual6ovIveuZg3LhpxQtWv/ZMPqCO2iC8RfzrVysou/0wllnxmWYuD0mgP7E3Q
-	LLbsLLYoeql5V4Z+0H2PQhFnt+6uoTWiBF9R8rwlRxR4gk958RK8MN4f6aj2ttzW/8FsNKouFrO
-	1rUfx7cG/bKcwB+yl3v8A0UKR+l1wHfe+6kNb704Ex0taHeeBLhXYThr7BJH5K+uGimBHZQhJ/8
-	RTBRTJXkci0IR5VulZQ9RKNAHlyOaoWvQ9DXd7MJRxDd+g==
-X-Google-Smtp-Source: AGHT+IEIcdmeJ7Ek+fSgtqLkvfkE+PsqYl1LuPYpcDUJ0UBOqdVNmdcG1IO8ZIQ7iSRB/3X4iRW2hA==
-X-Received: by 2002:a17:90a:ec87:b0:2ee:d024:e4fc with SMTP id 98e67ed59e1d1-2ff7cf4cf61mr33421160a91.33.1741726485471;
-        Tue, 11 Mar 2025 13:54:45 -0700 (PDT)
-Received: from gmail.com ([98.97.37.243])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30118249577sm39247a91.21.2025.03.11.13.54.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 13:54:44 -0700 (PDT)
-Date: Tue, 11 Mar 2025 13:54:26 -0700
-From: John Fastabend <john.fastabend@gmail.com>
-To: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, jakub@cloudflare.com,
-	zhoufeng.zf@bytedance.com, Zijian Zhang <zijianzhang@bytedance.com>,
-	Amery Hung <amery.hung@bytedance.com>,
-	Cong Wang <cong.wang@bytedance.com>
-Subject: Re: [Patch bpf-next v2 4/4] tcp_bpf: improve ingress redirection
- performance with message corking
-Message-ID: <20250311205426.h3rvfakthoa6usgr@gmail.com>
-References: <20250306220205.53753-1-xiyou.wangcong@gmail.com>
- <20250306220205.53753-5-xiyou.wangcong@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eelnSNsV"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GfEICrQbgu1Ls6WSPoFTuVy6V9ypv83r/riSJqQ3/H8MmcGn2Wdf8MuysU4t2m3PkTYm4z5OCAlg0kpufTMM9QSNNHXkemehriig6M+mZAWzoNAGh8dKTmDOBuB7WGXC9WtuumSMj3uDZzV637O/ZVinigp5ePjmfm3TYvztOpXMHC9raTUvReAZpVx5fdL9GG9R5f6aL8yY132ZhRqijHrAzS0RHmghSlDxUEZmPxGLUIPxh2owUKOPyN3kViaa9xnJGTQq9N+BZj2XgBUkPBZZOv3C8RI0yTBftrNvvA7/3thhKA3TGuMDVXnHZLEzCmoEpIrEfzeULdXI1iJJEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=45TPE7FbZSDn2ATFWnaKy5Lrv/FmyxfQ8rOrFt/gxmA=;
+ b=fIzl8htAJY7cU8xiBAEfx6FxWUf3zc6SgITD4rgx6RzIT0hxRX4htXc/0HongUJDL1I+LPkvylGTWg2NO3mapeBCKdgYE6LFTbAII1ad6BNnj1Bg+GPCfaTrtztmbuFJ1nxKeMET8iY1xBUKuQzicKl5WEE7iQSbwAE/SEeuuEedkjl3oBFBPlv6Do6bs8unjF1ylHM0jeBXayTZySruuPjbs0huv2r/EQE0GLsAOfSioQP+3Mf7JXbqtQypZmlD3jo1W2cvdN/4EJzoW3W/pMF+dCz5a/DeE+c/ZhED+H2Rx9yYR8bI1hhfPWthRC+PDrCBRP4kutar80sqyVMj4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=45TPE7FbZSDn2ATFWnaKy5Lrv/FmyxfQ8rOrFt/gxmA=;
+ b=eelnSNsVYfSRNIOWXs5LB4EytVNsBiavHib2cc0/S3wUxySKiBHk6hYhi3IvHsOnJ3VngR0vB0SjoXzu+N//YJAc3cDuCVPQYD6kEfovsfP748RGqKcLffTozyd4L6CCplJD6LBqD2eLT3SFXCkbGvTHKjxkxNdRqpaCSiG6ilmpl8+DkCs403g6a9CfL6nu0vfSArejdjq7w01LHaJTSTYbGlxWeqptT+fHSo5+LiFBniR+d7LhhswBO+FNMas9pPFMJiswzLRLgTMLdtdvzFLDgLkI9yi5w5/tJlg985Vb4kltE07Bg9dBzkufCvfypdNo9Bm+xZqiGK+sCMOs+g==
+Received: from DS0PR12MB6560.namprd12.prod.outlook.com (2603:10b6:8:d0::22) by
+ MW6PR12MB8661.namprd12.prod.outlook.com (2603:10b6:303:23f::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8511.27; Tue, 11 Mar 2025 21:08:49 +0000
+Received: from DS0PR12MB6560.namprd12.prod.outlook.com
+ ([fe80::4c05:4274:b769:b8af]) by DS0PR12MB6560.namprd12.prod.outlook.com
+ ([fe80::4c05:4274:b769:b8af%2]) with mapi id 15.20.8511.026; Tue, 11 Mar 2025
+ 21:08:49 +0000
+From: Cosmin Ratiu <cratiu@nvidia.com>
+To: "kuba@kernel.org" <kuba@kernel.org>, "razor@blackwall.org"
+	<razor@blackwall.org>, "liuhangbin@gmail.com" <liuhangbin@gmail.com>
+CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "jarod@redhat.com"
+	<jarod@redhat.com>, "davem@davemloft.net" <davem@davemloft.net>, Tariq Toukan
+	<tariqt@nvidia.com>, Petr Machata <petrm@nvidia.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"shuah@kernel.org" <shuah@kernel.org>, "steffen.klassert@secunet.com"
+	<steffen.klassert@secunet.com>, "jv@jvosburgh.net" <jv@jvosburgh.net>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "horms@kernel.org"
+	<horms@kernel.org>, "edumazet@google.com" <edumazet@google.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, Jianbo
+ Liu <jianbol@nvidia.com>
+Subject: Re: [PATCHv5 net 1/3] bonding: fix calling sleeping function in spin
+ lock and some race conditions
+Thread-Topic: [PATCHv5 net 1/3] bonding: fix calling sleeping function in spin
+ lock and some race conditions
+Thread-Index: AQHbjw+8kWzklmtO0UewieqlDDmQObNnSuyAgACcqgCABo3aAA==
+Date: Tue, 11 Mar 2025 21:08:49 +0000
+Message-ID: <f9b85a06113e2c9a7a91f3486efc06edbce4e461.camel@nvidia.com>
+References: <20250307031903.223973-1-liuhangbin@gmail.com>
+	 <20250307031903.223973-2-liuhangbin@gmail.com>
+	 <6dd52efd-3367-4a77-8e7b-7f73096bcb3f@blackwall.org>
+	 <20250307090332.5b556ebb@kernel.org>
+In-Reply-To: <20250307090332.5b556ebb@kernel.org>
+Reply-To: Cosmin Ratiu <cratiu@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DS0PR12MB6560:EE_|MW6PR12MB8661:EE_
+x-ms-office365-filtering-correlation-id: 490775fc-9108-46e9-08f0-08dd60e0eb5d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?U1JnMk1wSWEzNndGU3c1b1ZLSCtoclpWbzkzbnpQNEVBZlhHMEVERDRlemh6?=
+ =?utf-8?B?RDUwTVo3aXYzcVhDYUIvc3d5NlFDYjl0K0hCY29pRnllRWJCNG5jYk13eFpK?=
+ =?utf-8?B?NktVQytoZXpBaW1XT01uMXAyVGx3QTFTVWhaTG1wWTUwN1ZCZGtCMzlKSnp3?=
+ =?utf-8?B?eUU0ZElXbGNodkdjN0NpRThHcGdMMGtWbnZIeDdSUTFER3J1SnNkbHErd2VU?=
+ =?utf-8?B?b1I2UHlhMkh3djlkY3NaUmlhRDNSNGdLd0pzOTFtRkhHUHA4NEo0aTY2aU9j?=
+ =?utf-8?B?RndGbUs4UEk3UlRBVjZnODNVVnkzQXhZY3BnTFRzd29kdmlseFd5VTlrVndT?=
+ =?utf-8?B?dTNQbkZRVDl2ZmZrV2t4WXRnbDBYTUZ1bzZ6SkJHMUpEVlc1OXJtRkk1RmRk?=
+ =?utf-8?B?Ly9MRTM5NWVMWDVBcUp1elRUTHhOTUhkVlR5TzkrT0E3SzcwNi8xc3J3bUZ2?=
+ =?utf-8?B?MGE3TlhZaW1WT01mWWhSZkpsYmdXampTWVZnVzAycWorVGtITlVER1ZWWVBF?=
+ =?utf-8?B?ZUxtRHFYNEdDWFlSQThjTzJKKzJPekZFUkxrSGozNzI1dkZGWjVNWkgrc09s?=
+ =?utf-8?B?d3VicXFseTZheDlIMi9NUEZnOGJVSEVvTm95cFFRcE8xKzRNTjFqRHF5TlRq?=
+ =?utf-8?B?VkhMVllvU2NXWmVsUXNETkZ3TmZVSkJ2UDlPOEVvYS9Pb0tOWnUwNDM1OFE0?=
+ =?utf-8?B?dlg1RXhXYkxhQlBZWUQ3L1Mvc1BEOGtJMWtGczZPSTlIdjl5N3BBWjRtOU1y?=
+ =?utf-8?B?b2s0b2NQd1dVQkZHdTNCWjExS3ZjVGV3MUk2L0FTaE1ML094MVcrVm9oRTRj?=
+ =?utf-8?B?ZFNPRyt6ZGk3NmhNdy94N05KREFXR1ExQVZlY3FEdTFIN0NyVU8rWFFidytQ?=
+ =?utf-8?B?d1VBeEVldFhIUVNTUXRhZndrajMxRWlFR0ZUTVFGR2ZNUU12VFdGVzRSQTNR?=
+ =?utf-8?B?UVgzU1ZBZXpxeGNoZy9sVThFd1JDbFcyczRIRjRoajY0OUVEbEZzNU0zaXU2?=
+ =?utf-8?B?WFJoaTlpSWM4akwzWGVOMHdTKzgrdDlUYXRoYmNGQnQzQmxmbkloYWJDUW00?=
+ =?utf-8?B?VzMwekg0OEIvR3MyK2VIbU1WR2VNaUszQXNBcldTV1k5Z2JVWWh3a3YxWklp?=
+ =?utf-8?B?aE9FZWhMSjE3VFB0a3lGTkJVTHl0VUVvbnVORUdLcmF1dG51WWhGS2J0Z01F?=
+ =?utf-8?B?OWRMZTJaSjA4T0FSYjQ4dXhoY2ZyMHN5UlVGbEYwRFlsWFk5bnM4S1dtV3BC?=
+ =?utf-8?B?ZHhrTmxieFdBY0xLQUpHMkhlekJlM2dnWkxnb1RwZEtsdit3Rm8xVzZlVFZl?=
+ =?utf-8?B?M1diUHBnWGpWVkVtanVJOERFdTQ1VkdUVDZxbWx3WTV0eUJDdjFuWjNvbzl6?=
+ =?utf-8?B?RjR2YnRGMlBzTzE5N2lua3dsYkIwUzBtc2lISmI2VjVpVTMwR0JTdEt1cXNT?=
+ =?utf-8?B?OC9PSUg2dG10c0x5TjJDamMyb2dFMDN5QW1mWmxjSlhiQUNteTVRclQyaGcy?=
+ =?utf-8?B?Z09HUGNaNjVlZy9iUDZaaEtGYXpVTnBNN3Fkek5GVUlzSEpNZkFZV0s5b1gx?=
+ =?utf-8?B?TkozWXIxYTNxRDdZa1h3ZS9scFY5aFdHZnFIVjFCRlUzb2F3ZnhPaDAxRkxp?=
+ =?utf-8?B?U3dFOGVqc21ZZkFPYkgyRmxFQTk2VGFpZldCa0hsaXYvdHBwd2t1Q2NFb3JJ?=
+ =?utf-8?B?eENPeTVEaVlGaGtWcFRjdHBUbktwZFhoQjdxd1ZES25xYkExZ0dObXYybnpP?=
+ =?utf-8?B?UW1IMFVqL2wzV29Ub3lZVmZkZTFHZXZUWlFnL2xWNDZTcW0zU3NZUE1IZ2hr?=
+ =?utf-8?B?bndaQVdlT0VaUGNhY2RPcXlmdmtDY0o0OE9IZnlUUjF1ekx4d0wraC9HTFp6?=
+ =?utf-8?B?WS9wMVkwY3pzbU9xaWpiV1hRVGxwNEd6Vm4vRjVNdlJLTXduUE1rUmU0cWgy?=
+ =?utf-8?Q?ptBVNWkhI1mN7RY9/s1KqpsMmZ/eZYmI?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6560.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?SWNwUjB5TUhVWktNem91dlJ1c24ySks1NWxQb1IvaTMvbUk2eXhmMDd1Y29o?=
+ =?utf-8?B?dkNZY0l1NVpvNjE0MHRwbE9URTJVUWFNWmV5TkZSaFdCVnJCTEVRbXFuQlk0?=
+ =?utf-8?B?U2JYeXJmU0lwSDdwS0NUZ25zWktlcjl4RXFSYlV3Sk5tQTJkb3BMWGhicjlK?=
+ =?utf-8?B?SXV6MG5KN3VFRkFVbnk5cTV6OFpzVlhmb0lXV2F5RjN5TDNveGJ1RUJQemUw?=
+ =?utf-8?B?bmVxeEswRy9pYW5HdFluNTRPNkFjb200VlNKMlRXQzZTVXBoOHRhbEN0L3U1?=
+ =?utf-8?B?SW9hM09vcjZ3dURYaDNPay9ZNTlnRitVMXBMRW9QRjlYY0tlc3Y5R2UvZGkz?=
+ =?utf-8?B?bXRzTThLd1dQUlYzYVpuTnpRTktkQzdpOW4wZ2pqdk1sb3JzTit6cXB1ekFJ?=
+ =?utf-8?B?SmtlenA5MnpRdkdVV3JHNXBvdGVha1FNRm9VdWtOWldPVVJiSnpMOW5qa0Zv?=
+ =?utf-8?B?eXYxVUdEK3RqT1hLejNJMmVWakhxTnd2TWlVeTZXci95NlhsRzV5djJOd0dR?=
+ =?utf-8?B?UkI0ZHpOQ2ZTVlhxVTUvVXFsVnIzR0U1cU9YWWlUcmVlN0hNL2F1ODBWYnF4?=
+ =?utf-8?B?SmV3OXlXL3E0Mkg4U0lDSHI3eTBJSnA4a1BmazJ5SHJCSlhvQ3QvTk8wR1Rt?=
+ =?utf-8?B?dXlKZ2oxZjdqbENlY2R5K0czZVlNM1VjSlFydk1rRTdOcWlsRjI1azlac3Rw?=
+ =?utf-8?B?Z0Q1cWxmTjVMMkoxSlBYY2h1TTB5ZGlIWTVJalp2aWZjQ1Q3aXcwK0hFNm9F?=
+ =?utf-8?B?UXNWUUI3SSt6elRKQW5NNWRhWkJ4T2daQnB5bStSbkRoWGFVcHhrZS9tVlFK?=
+ =?utf-8?B?bXJDTmlZUDVucElDb1phOXBRd1RlMDAyWXk3c2gzUUc5dXR4a0lPN01JcWh3?=
+ =?utf-8?B?a0ZScDc1ZjJSTm84QTJuMjdVSGhmL0l6Rjc4VmYvY2QxRmgyOTY2a1M0OFFx?=
+ =?utf-8?B?clljekRoZS9pd0wwaGc3TE1IVzByQ25VbUw1cUZVWXQvVWtqYkJwaTcrYTdj?=
+ =?utf-8?B?QzljQVEwbzdGc0g2T25jSzdVcnJnY0JtTTJKTHhlVDNyODcvdER2ajQ2TnVm?=
+ =?utf-8?B?UExJQWVKQXNreFNKKzVIc2hWL3ZpeG9QcWFRcjdqOE5QbGV3OGFkVmljdkpV?=
+ =?utf-8?B?TncvWVFpSVozQlNyRE5sWG9HelZxYVc0b3lEaHZXbGMxNlBzMGd0Ylo5b05Q?=
+ =?utf-8?B?aE9IYVNpVTkrQysza0VEbDNzNkdVMytiZG1RZFFvUkt6T1FWS0FJd05tZ05Z?=
+ =?utf-8?B?eTcyQUdiOGpZdFNnamtWMURYZVI5aUJVaWVEcGhTSkZ5bVRMaXpFT3llYy8w?=
+ =?utf-8?B?STRDOVlXMmY1U3UrSE9Eai9qdFE4VGVCM2lXeGdQckwzQ01LVzN6S2t5Ymhv?=
+ =?utf-8?B?RjlZWEw3M0xoY3dWZHdqblpNOVVpT2t3OEtPeGlvUXFpcEVRV0EwMEpIVHRp?=
+ =?utf-8?B?dXprZlVsQUV4emhUMGJ5MjlBNWUyUDJVVEFrTnV4SFM4MHJPTzk5T2lMYUVB?=
+ =?utf-8?B?OHphVmQxc1BTbnRoeWRZRkg1VWR0aDFzUmw1b1d3cEtteTdzWm1yS3hjeWp5?=
+ =?utf-8?B?SW9MUnMyREZINmhwRFFmL0RtZW1yZXVNWXprb3BPaFNESlpubUs5RU9UdXlq?=
+ =?utf-8?B?VWQwSWZKdXRkVmdHaGJvdGRBcFY2ckFBaEs2dzF0ekNEQUFUQXNxV0kzeUw0?=
+ =?utf-8?B?d2djUTB3OE5Fd0FPaTl4TFRpbGdYa0oyUEZYMkxSbGVPU2M4LzZsclNSR3Zx?=
+ =?utf-8?B?ZUpzQmZhcHdrZXRlSDRMWm9lU2Z4eVEvbmdobG5UYTR2dnJlRklnelEydTAy?=
+ =?utf-8?B?S0ZXTlk5NFhJVklPQTlTb1h2N1QyRTFDWVRYTkVCSnptVkFTRXc5Nk5hbGF1?=
+ =?utf-8?B?eFNsOVZxRlpuZUN6bmtrb3F4VlhtTWlZK2VGU1lwQ21MVUtqWXRLcE1URXRq?=
+ =?utf-8?B?Tkg4andSRDM0WUFycWkySVdSbk5mSzBvSkVVOGc2SWRFa3A0YkMvaXVwZ05J?=
+ =?utf-8?B?cHNvUWdDWVRoRjU4cnZKUjlQblVqWklJNFpzN1ZJKzUrSXFNeVJCdXRRNHlL?=
+ =?utf-8?B?NGIrdEhZUDM5ckhuM3ZDWndORy9wTHluZnE1R0xjQjBjRXBFSGpvMWwyZng4?=
+ =?utf-8?Q?+qBXJoO9zQU5100bmblU+2Tj/?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <24151BC78313A9469E0D00223F13FE52@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250306220205.53753-5-xiyou.wangcong@gmail.com>
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6560.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 490775fc-9108-46e9-08f0-08dd60e0eb5d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Mar 2025 21:08:49.3767
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qGMfZdCtQKcjQ4Xv7OXGlRGmUw9eqH3mqZNezR+CdIu1g943NS0OWHd4t9XhEVJgQWkLrvTclmBK4KuXI4Lcfg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8661
 
-On 2025-03-06 14:02:05, Cong Wang wrote:
-> From: Zijian Zhang <zijianzhang@bytedance.com>
-> 
-> The TCP_BPF ingress redirection path currently lacks the message corking
-> mechanism found in standard TCP. This causes the sender to wake up the
-> receiver for every message, even when messages are small, resulting in
-> reduced throughput compared to regular TCP in certain scenarios.
-
-Agreed this is annoying.
-
-> 
-> This change introduces a kernel worker-based intermediate layer to provide
-> automatic message corking for TCP_BPF. While this adds a slight latency
-> overhead, it significantly improves overall throughput by reducing
-> unnecessary wake-ups and reducing the sock lock contention.
-
-Great. Couple questions below.
-
-> 
-> Reviewed-by: Amery Hung <amery.hung@bytedance.com>
-> Co-developed-by: Cong Wang <cong.wang@bytedance.com>
-> Signed-off-by: Cong Wang <cong.wang@bytedance.com>
-> Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-> ---
->  include/linux/skmsg.h |  19 ++++
->  net/core/skmsg.c      | 139 ++++++++++++++++++++++++++++-
->  net/ipv4/tcp_bpf.c    | 197 ++++++++++++++++++++++++++++++++++++++++--
->  3 files changed, 347 insertions(+), 8 deletions(-)
-> 
-> diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
-> index 7620f170c4b1..2531428168ad 100644
-> --- a/include/linux/skmsg.h
-> +++ b/include/linux/skmsg.h
-> @@ -15,6 +15,8 @@
->  
->  #define MAX_MSG_FRAGS			MAX_SKB_FRAGS
->  #define NR_MSG_FRAG_IDS			(MAX_MSG_FRAGS + 1)
-> +/* GSO size for TCP BPF backlog processing */
-> +#define TCP_BPF_GSO_SIZE		65536
->  
->  enum __sk_action {
->  	__SK_DROP = 0,
-> @@ -85,8 +87,10 @@ struct sk_psock {
->  	struct sock			*sk_redir;
->  	u32				apply_bytes;
->  	u32				cork_bytes;
-> +	u32				backlog_since_notify;
->  	u8				eval;
->  	u8 				redir_ingress : 1; /* undefined if sk_redir is null */
-> +	u8				backlog_work_delayed : 1;
->  	struct sk_msg			*cork;
->  	struct sk_psock_progs		progs;
->  #if IS_ENABLED(CONFIG_BPF_STREAM_PARSER)
-> @@ -97,6 +101,9 @@ struct sk_psock {
->  	struct sk_buff_head		ingress_skb;
->  	struct list_head		ingress_msg;
->  	spinlock_t			ingress_lock;
-> +	struct list_head		backlog_msg;
-> +	/* spin_lock for backlog_msg and backlog_since_notify */
-> +	spinlock_t			backlog_msg_lock;
->  	unsigned long			state;
->  	struct list_head		link;
->  	spinlock_t			link_lock;
-> @@ -117,11 +124,13 @@ struct sk_psock {
->  	struct mutex			work_mutex;
->  	struct sk_psock_work_state	work_state;
->  	struct delayed_work		work;
-> +	struct delayed_work		backlog_work;
->  	struct sock			*sk_pair;
->  	struct rcu_work			rwork;
->  };
-
-[...]
-
-> +static int tcp_bpf_ingress_backlog(struct sock *sk, struct sock *sk_redir,
-> +				   struct sk_msg *msg, u32 apply_bytes)
-> +{
-> +	bool ingress_msg_empty = false;
-> +	bool apply = apply_bytes;
-> +	struct sk_psock *psock;
-> +	struct sk_msg *tmp;
-> +	u32 tot_size = 0;
-> +	int ret = 0;
-> +	u8 nonagle;
-> +
-> +	psock = sk_psock_get(sk_redir);
-> +	if (unlikely(!psock))
-> +		return -EPIPE;
-> +
-> +	spin_lock(&psock->backlog_msg_lock);
-> +	/* If possible, coalesce the curr sk_msg to the last sk_msg from the
-> +	 * psock->backlog_msg.
-> +	 */
-> +	if (!list_empty(&psock->backlog_msg)) {
-> +		struct sk_msg *last;
-> +
-> +		last = list_last_entry(&psock->backlog_msg, struct sk_msg, list);
-> +		if (last->sk == sk) {
-> +			int i = tcp_bpf_coalesce_msg(last, msg, &apply_bytes,
-> +						     &tot_size);
-> +
-> +			if (i == msg->sg.end || (apply && !apply_bytes))
-> +				goto out_unlock;
-> +		}
-> +	}
-> +
-> +	/* Otherwise, allocate a new sk_msg and transfer the data from the
-> +	 * passed in msg to it.
-> +	 */
-> +	tmp = sk_msg_alloc(GFP_ATOMIC);
-> +	if (!tmp) {
-> +		ret = -ENOMEM;
-> +		spin_unlock(&psock->backlog_msg_lock);
-> +		goto error;
-> +	}
-> +
-> +	tmp->sk = sk;
-> +	sock_hold(tmp->sk);
-> +	tmp->sg.start = msg->sg.start;
-> +	tcp_bpf_xfer_msg(tmp, msg, &apply_bytes, &tot_size);
-> +
-> +	ingress_msg_empty = list_empty(&psock->ingress_msg);
-> +	list_add_tail(&tmp->list, &psock->backlog_msg);
-> +
-> +out_unlock:
-> +	spin_unlock(&psock->backlog_msg_lock);
-> +	sk_wmem_queued_add(sk, tot_size);
-> +
-> +	/* At this point, the data has been handled well. If one of the
-> +	 * following conditions is met, we can notify the peer socket in
-> +	 * the context of this system call immediately.
-> +	 * 1. If the write buffer has been used up;
-> +	 * 2. Or, the message size is larger than TCP_BPF_GSO_SIZE;
-> +	 * 3. Or, the ingress queue was empty;
-> +	 * 4. Or, the tcp socket is set to no_delay.
-> +	 * Otherwise, kick off the backlog work so that we can have some
-> +	 * time to wait for any incoming messages before sending a
-> +	 * notification to the peer socket.
-> +	 */
-
-I think this could also be used to get the bpf_msg_cork_bytes working
-directly in receive path. This also means we can avoid using
-strparser in the receive path. The strparser case has noticable
-overhead for us that is significant enough we don't use it.
-Not that we need to do it all in one patch set.
-
-> +	nonagle = tcp_sk(sk)->nonagle;
-> +	if (!sk_stream_memory_free(sk) ||
-> +	    tot_size >= TCP_BPF_GSO_SIZE || ingress_msg_empty ||
-> +	    (!(nonagle & TCP_NAGLE_CORK) && (nonagle & TCP_NAGLE_OFF))) {
-> +		release_sock(sk);
-> +		psock->backlog_work_delayed = false;
-> +		sk_psock_backlog_msg(psock);
-> +		lock_sock(sk);
-> +	} else {
-> +		sk_psock_run_backlog_work(psock, false);
-> +	}
-> +
-> +error:
-> +	sk_psock_put(sk_redir, psock);
-> +	return ret;
-> +}
-> +
->  static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
->  				struct sk_msg *msg, int *copied, int flags)
->  {
-> @@ -442,18 +619,24 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
->  			cork = true;
->  			psock->cork = NULL;
->  		}
-> -		release_sock(sk);
->  
-> -		origsize = msg->sg.size;
-> -		ret = tcp_bpf_sendmsg_redir(sk_redir, redir_ingress,
-> -					    msg, tosend, flags);
-
-The only sticky bit here that is blocking folding this entire tcp_bpf_sendmsg_redir
-logic out is tls user right?
-
-> -		sent = origsize - msg->sg.size;
-> +		if (redir_ingress) {
-> +			ret = tcp_bpf_ingress_backlog(sk, sk_redir, msg, tosend);
-> +		} else {
-> +			release_sock(sk);
-> +
-> +			origsize = msg->sg.size;
-> +			ret = tcp_bpf_sendmsg_redir(sk_redir, redir_ingress,
-> +						    msg, tosend, flags);
-
-now sendmsg redir is really only for egress here so we can skip handling
-the ingress here. And the entire existing sk_psock_backlog work queue because
-its handled by tcp_bpf_ingress_backlog?
-
-> +			sent = origsize - msg->sg.size;
-> +
-> +			lock_sock(sk);
-> +			sk_mem_uncharge(sk, sent);
-> +		}
-
-I like the direction but any blockers to just get this out of TLS as
-well? I'm happy to do it if needed I would prefer not to try and
-support both styles at the same time.
+T24gRnJpLCAyMDI1LTAzLTA3IGF0IDA5OjAzIC0wODAwLCBKYWt1YiBLaWNpbnNraSB3cm90ZToN
+Cj4gT24gRnJpLCA3IE1hciAyMDI1IDA5OjQyOjQ5ICswMjAwIE5pa29sYXkgQWxla3NhbmRyb3Yg
+d3JvdGU6DQo+ID4gVEJILCBrZWVwaW5nIGJ1Z2d5IGNvZGUgd2l0aCBhIGNvbW1lbnQgZG9lc24n
+dCBzb3VuZCBnb29kIHRvIG1lLg0KPiA+IEknZCByYXRoZXIgcmVtb3ZlIHRoaXMNCj4gPiBzdXBw
+b3J0IHRoYW4gdGVsbCBwZW9wbGUgImdvb2QgbHVjaywgaXQgbWlnaHQgY3Jhc2giLiBJdCdzIGJl
+dHRlcg0KPiA+IHRvIGJlIHNhZmUgdW50aWwgYQ0KPiA+IGNvcnJlY3QgZGVzaWduIGlzIGluIHBs
+YWNlIHdoaWNoIHRha2VzIGNhcmUgb2YgdGhlc2UgaXNzdWVzLg0KPiANCj4gVGhhdCdzIG15IGZl
+ZWxpbmcgdG9vLCBGV0lXLiBJIHRoaW5rIHdlIGtuZXcgYWJvdXQgdGhpcyBpc3N1ZQ0KPiBmb3Ig
+YSB3aGlsZSBub3csIHRoZSBsb25nZXIgd2Ugd2FpdCB0aGUgbW9yZSB1c2VycyB3ZSBtYXkgZGlz
+cnVwdA0KPiB3aXRoIHRoZSByZXZlcnQuDQoNClRoZXNlIGFyZSBwcmVleGlzdGluZyByYWNlcyBi
+ZXR3ZWVuIHRoZSBib25kIGxpbmsgZmFpbG92ZXIgYW5kIHRoZSB1c2VyDQpyZW1vdmluZyB0aGUg
+eGZybSBzdGF0ZXMuIFVubGVzcyB0aGUgdXNlciB3YW50cyB0byBpbnRlbnRpb25hbGx5DQp0cmln
+Z2VyIHRoZXNlIGJ1Z3MsIGNoYW5jZXMgYXJlIG5vYm9keSBoYXMgZXZlciBlbmNvdW50ZXJlZCB0
+aGVtIGluIHRoZQ0Kd2lsZCBpbiBub3JtYWwgb3BlcmF0aW9uLiBJbiBzdGVhZHkgc3RhdGUsIGJv
+bmQgbGluayBmYWlsb3ZlciB3b3JrcywNCmFuZCBhZGRpbmcvcmVtb3Zpbmcgc3RhdGVzIHdvcmtz
+LiBJdCdzIHRoZSBjb21iaW5hdGlvbiBvZiB0aGUgdHdvDQpjb250cm9sIHBsYW5lIGV2ZW50cyB0
+aGF0IG1heSBoYXZlIGEgY2hhbmNlIHRvIGRvdWJsZSBmcmVlIG9yIGxlYWsNCnN0YXRlcy4NCg0K
+SSB3b3VsZCBub3QgcHVsbCBldmVyeXRoaW5nIG91dCBqdXN0IHlldC4NCg0KVG9kYXksIEkgbWFu
+YWdlZCB0byBmaW5kIGEgc29sdXRpb24gZm9yIHRoZXNlIHJhY2VzIChJIHRoaW5rKSwgYmFzZWQg
+b24NCmEgcGF0Y2ggc2VyaWVzIEkgYW0gcHJlcGFyaW5nIGFnYWluc3QgaXBzZWMtbmV4dCB3aXRo
+IG90aGVyIGNoYW5nZXMNCnJlbGF0ZWQgdG8gcmVhbF9kZXYuDQoNCkhhbmdiaW4sIGRvIHlvdSBt
+aW5kIGlmIEkgdGFrZSBvdmVyIGZpeGluZyB0aGUgbG9ja2luZyBpc3N1ZSBhcyBwYXJ0IG9mDQpt
+eSBzZXJpZXM/IEkgcGxhbiB0byBzZW5kIGl0IHVwc3RyZWFtIHRoZSBmb2xsb3dpbmcgZGF5cy4N
+Cg0KQ29zbWluLg0K
