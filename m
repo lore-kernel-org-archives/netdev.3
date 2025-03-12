@@ -1,45 +1,58 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B3523F376;
-	Wed, 12 Mar 2025 13:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7E624338F
+	for <netdev@vger.kernel.org>; Wed, 12 Mar 2025 13:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741785051; cv=none; b=TVrGADGldOo0Z0iBG++zlvWIdwjQ0fezd1RuCph90Jm7sfA5IhJOqqsRz/0szs+ZeFcZmyZsPh2amO9+Tla66VLcAEwD/FI2M+vYbhmBeIr804pEZYcGuQ/o0AUCElStKcwRp4xkZF00UEjZ0/JnEJ3h129gaRfgaZEVxEz35eA=
+	t=1741785177; cv=none; b=ime6ELd0Zv2VgiAfaeO6m7i8NRVt5jhTU8WRP4syt5tb8A5jpugHXgovO+dI5/6gBu8T2MT5pg5kg5O6itUcllWzlaFLJHZkS52d0ZEfT6Y+Kzd+Z1RvbblGnQIi/hYKb5TvHhiS1R0/4SgsUG56VzYYTr1zFmbsTq3uFLg54Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741785051; c=relaxed/simple;
-	bh=YxQy9RhnsEnCW0He+QcRzfmTEud041311PAgh672cVA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EUN1piLnIX6a7wXwZA8yFsTstQEiPKH15gFWPbNweoGzOvEuIFQtduWVrOvWDTg6gN10jN+uoDJDc6r2FVjlnjcNlNgrY3ZUcBnk29EB5dfq7O/49FrmFACNFvejtkJ/RCPT1wAB98ury9+FbDSriHpGYlk0CXGkgRW2q9dgNo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p4HcCxiF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741785177; c=relaxed/simple;
+	bh=ebtUdL7x+P1BZSl0p+b3iP4EYbjPvBEbMyFX9UN5+Fc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ePddmBg8dMcrsqZkNeuGcTvFe4sT0sUXbrkuWxhC+8ierMpOqv7jkuRgO1nmP0NN0WhKWF6I34LkFI4RDbIRk5HMKvHriQVVrmZ6eJYEhaMqJmf+0xul2IHmjLINDBIVerdjo/kQA5kPNcUJqjUoxUxt5sf2CukwMQ5yQvh6jYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TJwq7tfP; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p4HcCxiF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44BAC4CEE3;
-	Wed, 12 Mar 2025 13:10:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741785050;
-	bh=YxQy9RhnsEnCW0He+QcRzfmTEud041311PAgh672cVA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=p4HcCxiFBWmpauxxm8J+cPbbtoikXoBLGSXUlTT4nSsTCkbhJaStYP1Pj359dDopB
-	 M/llB79dsdIjfh3IU2OznoPlZpKoI/jiRD034op4kzjZytT4wUla6xxn31XWUz0bn/
-	 UGSh9GaHADSMCX1d6wKmZdXR1lbLStXvbagtx9WbR03Xos4zBj2iYmLRwSJuI+7cBh
-	 bv7oGr5qCIDdR2BmfpPMm2wUFYZs2rl+aVmuvHEVuB4agKDDqySL8k8hSajtuZbN2f
-	 CeOTZO3RjN3uwfMfdF5AkvXWfeQwPYgJc7lVNeFWLfX98dL2unIlngujfbO1RrOhFs
-	 eRzbVz8pSyJZQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TJwq7tfP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741785176; x=1773321176;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ebtUdL7x+P1BZSl0p+b3iP4EYbjPvBEbMyFX9UN5+Fc=;
+  b=TJwq7tfPMEexcHlDRonV1SpUTEzjAQDfDDQDvoVG3jgQz0CVuEi6v2pV
+   z+Zfd3mPfmZyZjeHeNruujVp7tSyM6Gaeh+wzYN3ux/QWREKIL3NawXfC
+   bA65pkyfKedn+tENuEO/TAi5GEnn/ymGAr2+bd1GzYIBrZH1jVuRHIABU
+   ckrO21LQYEQGFqMUoR3PFD+TYmpssibnP08OJzuRzyoKceW4zy1yYKSU7
+   T0asMh1mcULc46NWsPTkJlnIbfmzZ3JvVpWwwuNIeUdAI+7sl3B1JxcwZ
+   4vaB65jJ7JqIYS0Is1iE1Pxx4aoFg8Ve/xTseuTVp/X+HxFZPmabHLSlp
+   Q==;
+X-CSE-ConnectionGUID: MVQPr301TwGpaSnSNNe9sQ==
+X-CSE-MsgGUID: gUtxFgPcTQKrGG6wQfZ4sQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="53510657"
+X-IronPort-AV: E=Sophos;i="6.14,241,1736841600"; 
+   d="scan'208";a="53510657"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 06:12:54 -0700
+X-CSE-ConnectionGUID: PQSk0ZcrSSmVLr9EZwWaWw==
+X-CSE-MsgGUID: FFx2ZXN2TtiTLfFc/j1ZCg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,241,1736841600"; 
+   d="scan'208";a="121542042"
+Received: from os-delivery.igk.intel.com ([10.102.18.218])
+  by orviesa008.jf.intel.com with ESMTP; 12 Mar 2025 06:12:52 -0700
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: anthony.l.nguyen@intel.com,
+	netdev@vger.kernel.org,
 	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	shuah@kernel.org,
-	ap420073@gmail.com,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net] selftests: drv-net: use defer in the ping test
-Date: Wed, 12 Mar 2025 14:10:40 +0100
-Message-ID: <20250312131040.660386-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.48.1
+	przemyslaw.kitszel@intel.com,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Subject: [PATCH iwl-next v7 00/15] ixgbe: Add basic devlink support
+Date: Wed, 12 Mar 2025 13:58:28 +0100
+Message-Id: <20250312125843.347191-1-jedrzej.jagielski@intel.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,126 +61,81 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Make sure the test cleans up after itself. The XDP off statements
-at the end of the test may not be reached.
+Create devlink specific directory for more convenient future feature
+development.
 
-Fixes: 75cc19c8ff89 ("selftests: drv-net: add xdp cases for ping.py")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: shuah@kernel.org
-CC: ap420073@gmail.com
-CC: linux-kselftest@vger.kernel.org
----
- tools/testing/selftests/drivers/net/ping.py | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Flashing and reloading are supported only by E610 devices.
 
-diff --git a/tools/testing/selftests/drivers/net/ping.py b/tools/testing/selftests/drivers/net/ping.py
-index 93f4b411b378..fc69bfcc37c4 100755
---- a/tools/testing/selftests/drivers/net/ping.py
-+++ b/tools/testing/selftests/drivers/net/ping.py
-@@ -7,7 +7,7 @@ from lib.py import ksft_run, ksft_exit
- from lib.py import ksft_eq, KsftSkipEx, KsftFailEx
- from lib.py import EthtoolFamily, NetDrvEpEnv
- from lib.py import bkg, cmd, wait_port_listen, rand_port
--from lib.py import ethtool, ip
-+from lib.py import defer, ethtool, ip
- 
- remote_ifname=""
- no_sleep=False
-@@ -60,6 +60,7 @@ no_sleep=False
-     prog = test_dir + "/../../net/lib/xdp_dummy.bpf.o"
-     cmd(f"ip link set dev {remote_ifname} mtu 1500", shell=True, host=cfg.remote)
-     cmd(f"ip link set dev {cfg.ifname} mtu 1500 xdpgeneric obj {prog} sec xdp", shell=True)
-+    defer(cmd, f"ip link set dev {cfg.ifname} xdpgeneric off")
- 
-     if no_sleep != True:
-         time.sleep(10)
-@@ -68,7 +69,9 @@ no_sleep=False
-     test_dir = os.path.dirname(os.path.realpath(__file__))
-     prog = test_dir + "/../../net/lib/xdp_dummy.bpf.o"
-     cmd(f"ip link set dev {remote_ifname} mtu 9000", shell=True, host=cfg.remote)
-+    defer(ip, f"link set dev {remote_ifname} mtu 1500", host=cfg.remote)
-     ip("link set dev %s mtu 9000 xdpgeneric obj %s sec xdp.frags" % (cfg.ifname, prog))
-+    defer(ip, f"link set dev {cfg.ifname} mtu 1500 xdpgeneric off")
- 
-     if no_sleep != True:
-         time.sleep(10)
-@@ -78,6 +81,7 @@ no_sleep=False
-     prog = test_dir + "/../../net/lib/xdp_dummy.bpf.o"
-     cmd(f"ip link set dev {remote_ifname} mtu 1500", shell=True, host=cfg.remote)
-     cmd(f"ip -j link set dev {cfg.ifname} mtu 1500 xdp obj {prog} sec xdp", shell=True)
-+    defer(ip, f"link set dev {cfg.ifname} mtu 1500 xdp off")
-     xdp_info = ip("-d link show %s" % (cfg.ifname), json=True)[0]
-     if xdp_info['xdp']['mode'] != 1:
-         """
-@@ -94,10 +98,11 @@ no_sleep=False
-     test_dir = os.path.dirname(os.path.realpath(__file__))
-     prog = test_dir + "/../../net/lib/xdp_dummy.bpf.o"
-     cmd(f"ip link set dev {remote_ifname} mtu 9000", shell=True, host=cfg.remote)
-+    defer(ip, f"link set dev {remote_ifname} mtu 1500", host=cfg.remote)
-     try:
-         cmd(f"ip link set dev {cfg.ifname} mtu 9000 xdp obj {prog} sec xdp.frags", shell=True)
-+        defer(ip, f"link set dev {cfg.ifname} mtu 1500 xdp off")
-     except Exception as e:
--        cmd(f"ip link set dev {remote_ifname} mtu 1500", shell=True, host=cfg.remote)
-         raise KsftSkipEx('device does not support native-multi-buffer XDP')
- 
-     if no_sleep != True:
-@@ -111,6 +116,7 @@ no_sleep=False
-         cmd(f"ip link set dev {cfg.ifname} xdpoffload obj {prog} sec xdp", shell=True)
-     except Exception as e:
-         raise KsftSkipEx('device does not support offloaded XDP')
-+    defer(ip, f"link set dev {cfg.ifname} xdpoffload off")
-     cmd(f"ip link set dev {remote_ifname} mtu 1500", shell=True, host=cfg.remote)
- 
-     if no_sleep != True:
-@@ -157,7 +163,6 @@ no_sleep=False
-     _test_v4(cfg)
-     _test_v6(cfg)
-     _test_tcp(cfg)
--    ip("link set dev %s xdpgeneric off" % cfg.ifname)
- 
- def test_xdp_generic_mb(cfg, netnl) -> None:
-     _set_xdp_generic_mb_on(cfg)
-@@ -169,7 +174,6 @@ no_sleep=False
-     _test_v4(cfg)
-     _test_v6(cfg)
-     _test_tcp(cfg)
--    ip("link set dev %s xdpgeneric off" % cfg.ifname)
- 
- def test_xdp_native_sb(cfg, netnl) -> None:
-     _set_xdp_native_sb_on(cfg)
-@@ -181,7 +185,6 @@ no_sleep=False
-     _test_v4(cfg)
-     _test_v6(cfg)
-     _test_tcp(cfg)
--    ip("link set dev %s xdp off" % cfg.ifname)
- 
- def test_xdp_native_mb(cfg, netnl) -> None:
-     _set_xdp_native_mb_on(cfg)
-@@ -193,14 +196,12 @@ no_sleep=False
-     _test_v4(cfg)
-     _test_v6(cfg)
-     _test_tcp(cfg)
--    ip("link set dev %s xdp off" % cfg.ifname)
- 
- def test_xdp_offload(cfg, netnl) -> None:
-     _set_xdp_offload_on(cfg)
-     _test_v4(cfg)
-     _test_v6(cfg)
-     _test_tcp(cfg)
--    ip("link set dev %s xdpoffload off" % cfg.ifname)
- 
- def main() -> None:
-     with NetDrvEpEnv(__file__) as cfg:
-@@ -213,7 +214,6 @@ no_sleep=False
-                   test_xdp_native_mb,
-                   test_xdp_offload],
-                  args=(cfg, EthtoolFamily()))
--        set_interface_init(cfg)
-     ksft_exit()
- 
- 
+Introduce basic FW/NVM validation since devlink reload introduces
+possibility of runtime NVM update. Check FW API version, FW recovery mode
+and FW rollback mode. Introduce minimal recovery probe to let user to
+reload the faulty FW when recovery mode is detected.
+
+This series is based on the series introducing initial E610 device
+support:
+https://lore.kernel.org/intel-wired-lan/20241205084450.4651-1-piotr.kwapulinski@intel.com/
+---
+v3: introduce to the series additional patch touching devlink/dev.c
+v4: introduce to the series additional patch changing netdev allocation
+---
+Andrii Staikov (1):
+  ixgbe: add support for FW rollback mode
+
+Jedrzej Jagielski (10):
+  devlink: add value check to devlink_info_version_put()
+  ixgbe: add initial devlink support
+  ixgbe: add handler for devlink .info_get()
+  ixgbe: add .info_get extension specific for E610 devices
+  ixgbe: add E610 functions getting PBA and FW ver info
+  ixgbe: extend .info_get with() stored versions
+  ixgbe: add device flash update via devlink
+  ixgbe: add support for devlink reload
+  ixgbe: add FW API version check
+  ixgbe: add E610 implementation of FW recovery mode
+
+Przemek Kitszel (1):
+  ixgbe: wrap netdev_priv() usage
+
+Slawomir Mrozowicz (3):
+  ixgbe: add E610 functions for acquiring flash data
+  ixgbe: read the OROM version information
+  ixgbe: read the netlist version information
+
+ Documentation/networking/devlink/index.rst    |    1 +
+ Documentation/networking/devlink/ixgbe.rst    |  107 ++
+ drivers/net/ethernet/intel/Kconfig            |    2 +
+ drivers/net/ethernet/intel/ixgbe/Makefile     |    3 +-
+ .../ethernet/intel/ixgbe/devlink/devlink.c    |  585 +++++++
+ .../ethernet/intel/ixgbe/devlink/devlink.h    |   10 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe.h      |   21 +
+ .../net/ethernet/intel/ixgbe/ixgbe_82598.c    |    1 +
+ .../net/ethernet/intel/ixgbe/ixgbe_82599.c    |    1 +
+ .../net/ethernet/intel/ixgbe/ixgbe_common.c   |    1 +
+ .../net/ethernet/intel/ixgbe/ixgbe_dcb_nl.c   |   56 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 1515 +++++++++++++++--
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h |   16 +
+ .../net/ethernet/intel/ixgbe/ixgbe_ethtool.c  |   86 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_fcoe.c |   12 +-
+ .../ethernet/intel/ixgbe/ixgbe_fw_update.c    |  707 ++++++++
+ .../ethernet/intel/ixgbe/ixgbe_fw_update.h    |   12 +
+ .../net/ethernet/intel/ixgbe/ixgbe_ipsec.c    |   10 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c |  269 ++-
+ .../net/ethernet/intel/ixgbe/ixgbe_sriov.c    |   16 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_type.h |    5 +
+ .../ethernet/intel/ixgbe/ixgbe_type_e610.h    |  161 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c |    1 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c |    1 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c  |    2 +-
+ net/devlink/dev.c                             |    2 +-
+ 26 files changed, 3361 insertions(+), 242 deletions(-)
+ create mode 100644 Documentation/networking/devlink/ixgbe.rst
+ create mode 100644 drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
+ create mode 100644 drivers/net/ethernet/intel/ixgbe/devlink/devlink.h
+ create mode 100644 drivers/net/ethernet/intel/ixgbe/ixgbe_fw_update.c
+ create mode 100644 drivers/net/ethernet/intel/ixgbe/ixgbe_fw_update.h
+
+
+base-commit: 0a5f2afff8673e66160725b8ec8310f47c74f8b9
 -- 
-2.48.1
+2.31.1
 
