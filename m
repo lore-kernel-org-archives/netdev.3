@@ -1,321 +1,174 @@
-Received: from va-2-32.ptr.blmpb.com (va-2-32.ptr.blmpb.com [209.127.231.32])
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD5422D7A2
-	for <netdev@vger.kernel.org>; Wed, 12 Mar 2025 09:17:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DBF238D2E
+	for <netdev@vger.kernel.org>; Wed, 12 Mar 2025 09:20:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741771051; cv=none; b=JFMGfuH5f7rHvAymzpNvBtuF0XTso1f1Ib8zJMYF0+WGVsoScHGIhjY6Ob5BDMvR4QCwcEadoLZv0iQ3UMFNRQfL8/bqNnDsutoARoWrNFMKkUYGgcVyVMFgLFTB4d7kWq/kboRs+R7XfJ9AKwd/pPmbJL4oL344nzEkVm54sSc=
+	t=1741771233; cv=none; b=MF4VAHwN5ScDLkqAtn/FIEeLYmQscz+AgWKNGNae7tFtKtslsM+SvrSdwk0z9aTU199PLYTaSYGN4U8PB2Kechj7czWcr654Iqm3+U4W21PKiiFUZrqvKCTwSMmhZtJiAzIVMR++UU1LnW9a9Jgg+QRafNsQjJOu5AJGQ1af3kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741771051; c=relaxed/simple;
-	bh=Lx8I2lrqdHJ8204qCEDLkRrBaxjq5jrg13x3O5KtWWE=;
-	h=From:Date:Mime-Version:Subject:Message-Id:In-Reply-To:To:
-	 References:Cc:Content-Type; b=oTmuOaFws2YIZKgsEcPI788wZcswPaHuZN1EtQPxqOiej93oN4xTx2W8DUbuKCDM2EAqzxYCEaSjAI2IrmG5UfCK6XIxpD3q3DAaR91xs6Y5v9cSFwQDI/lhrlpVygc//QQTyZecC2JOrlTp4qki4+X0tdyO8XVHN9xB0aGFrjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=ABvlYv+0; arc=none smtp.client-ip=209.127.231.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
+	s=arc-20240116; t=1741771233; c=relaxed/simple;
+	bh=UNQEpZ5sfTtfwFATwN/PYbpDuFHkRLdvDD98hKB2V+A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cFo/awZuNzPSO2n8U1EnMCzIJA+6JbhRMWYc7HjcNg26i4CTq2izgRYW2pOZqgOYWI7OanL1vuPeiUsK30wmU6UiWHibhvPyCnMOWNIYJuiUjLrDJRLqdwczpMQo+CfDkcdSnh6nthO5VJyyQfFsC1W/ywCkDWJY6naCPVhjKNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enfabrica.net; spf=pass smtp.mailfrom=enfabrica.net; dkim=pass (2048-bit key) header.d=enfabrica.net header.i=@enfabrica.net header.b=VLTqhP22; arc=none smtp.client-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enfabrica.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enfabrica.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="ABvlYv+0"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1741771034; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=Ix9ue3+RDfvllHiCiUxseW8XraizQ9VkrUGFj3s/6gw=;
- b=ABvlYv+0ZwfxR0qxQjO8HANvHm5BQUytRfJq02N4wrJtmf3q1+WDWwPOLl5607hC2qAM7A
- zSUIoMeMsC+gFD39lasI/0TpeWEJ24T3Fis+loh9z1T/eH80tltZAyaPzhf/U7CHM0ye3d
- wBNz07hhTs0tuD8loHXLSTqpy/KN/kmVOpeVsYHbwQv7spA0hbBXR8Yp+vTayaIxaHFBl5
- rkclWfPjTSFplxGmp/fv+AWQDaS7q6Mt6OqQd8XS5tASNEw3aMsLzX/AIBJoFFGpmM7Wqm
- b9hw+YDDfvXg9jME4CtjZE+jTWVZGLlrO/0djxKLeF9GHlnzpvDysqRkDBykbw==
-From: "Xin Tian" <tianx@yunsilicon.com>
-Date: Wed, 12 Mar 2025 17:17:09 +0800
+	dkim=pass (2048-bit key) header.d=enfabrica.net header.i=@enfabrica.net header.b="VLTqhP22"
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6dd049b5428so64520026d6.2
+        for <netdev@vger.kernel.org>; Wed, 12 Mar 2025 02:20:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=enfabrica.net; s=google; t=1741771230; x=1742376030; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7VpzqpioYCZTPrjL9rfNW08yUfn+3oM/qaVfIP1D1uQ=;
+        b=VLTqhP22gjl9u5N40vMpPE/Y+JT4fIOpCwhazjZQH9I3VAc0RhIYRrqYW3gDf3NsnX
+         uDunBtg7Rk6H8lGi35/GVE5lqD0YnZVzGBMHCz9GkBSVfsUzivzfE+awGf/mJiugkqxh
+         NMGdPyYqVVvkfXOjZH0zARExocPyNTuLxYjTS0PDsBD3aB+DSoUf2/Uw+eu67IlOaRR3
+         dc3AG6MjA+iDSAHdKPr8BEW9P0muqknJzyWxfpjUxyi534u3YWnVOvW4bcH89biLtO5g
+         KSoGsAb4KWPOtnuw87DlT9mS2XnZ1FORDFSFrT9D4y6ISAoWPDMgEW8JUcE+hJn02cdO
+         aVvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741771230; x=1742376030;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7VpzqpioYCZTPrjL9rfNW08yUfn+3oM/qaVfIP1D1uQ=;
+        b=dE/pAvIjven68cGHVsO+O5n2aqN8mnTnIl5BLAdxFhAMJSb3fSyLgGu+eFtcw4wMz2
+         Dt0Anb2nebqQosB9p0jYKRWhZUmMExEwKkRj9NOyYtjHkxsBEkhSgyACHjpS61oVI/bB
+         0Xvqjkz3HSJOUV/bdadkTDuSfxHV3LDVQJzuqmVWa2ypn8o0BxUbg+04YSAaBn45U0z2
+         NX3E0OD5kMXDEFoM+F66OC88wrUVL07J1xwFH29QJs6puW5hVX8FYzjWYFy7uMDaZst6
+         nWS9ENg1tvzmmGH3/ZFEmbNIdZjPBwQCkQcYWFVBFyaFHC4o/6By1NOAlPkrDb0Bp6wk
+         SDzg==
+X-Gm-Message-State: AOJu0YyQ2Zccc8Twy+j6oDn2khvPA45v4pcFT2FN6B8sx+lu2ghxVxSZ
+	Uuw6ARsoV0MzjBMn1Y8lsmCnVrJm1DgFyCE/flFBPQK1HOh0i8yE7pIXUih95f0=
+X-Gm-Gg: ASbGnctcaffN1ha+MB8hegXWzocs/Au50+GZLECSJTcPImE0arTwX1ADF9heJ4XgCfr
+	Q6dhhc/ueHiwW5RZGBpnQzn3r++DuJ2uGVLKpfgymmTlav333qay7Vxm9mohdJcey54OFAiKgEt
+	mMKO9eJ3AzBx7cv9PLbFVCeBHdTemki68nmWA0pPlS0gAjE96uDUytF4UmjgKz0M0EUnOsAfKfl
+	L4jfOlgQu8ImiVRrsgn3128VGADOtYg/wfRen78gTgIQzpvw+nk2uuyRfvzottUZvuFdQ/BHexW
+	FLBqC+43xSpQGcfmDrxL9wEF5GdtV1Ml5hoEPz6dG9GbMbOB4FrA
+X-Google-Smtp-Source: AGHT+IGvPzzDF+G+t4jAqh608nve568kH0JOAxRS+fBQPXr981QPc9PI2lfxrg7M/7BJCTmB5bW2cg==
+X-Received: by 2002:a05:6214:d6d:b0:6e8:9dd7:dfd0 with SMTP id 6a1803df08f44-6e90069c697mr313043876d6.44.1741771230136;
+        Wed, 12 Mar 2025 02:20:30 -0700 (PDT)
+Received: from [172.19.251.166] ([195.29.54.243])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e5c7212ad9sm9516969a12.0.2025.03.12.02.20.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Mar 2025 02:20:29 -0700 (PDT)
+Message-ID: <3840993e-5e20-4657-8d5e-e0e44c613a40@enfabrica.net>
+Date: Wed, 12 Mar 2025 11:20:27 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Original-From: Xin Tian <tianx@yunsilicon.com>
-Subject: Re: [PATCH net-next v8 02/14] xsc: Enable command queue
-Message-Id: <69c322e0-7e38-4ac6-b390-7a9b294261b3@yunsilicon.com>
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-In-Reply-To: <20250310063429.GF4159220@kernel.org>
-To: "Simon Horman" <horms@kernel.org>
-References: <20250307100824.555320-1-tianx@yunsilicon.com> <20250307100827.555320-3-tianx@yunsilicon.com> <20250310063429.GF4159220@kernel.org>
-Received: from [127.0.0.1] ([218.1.186.193]) by smtp.feishu.cn with ESMTPS; Wed, 12 Mar 2025 17:17:11 +0800
-X-Lms-Return-Path: <lba+267d15117+914b0a+vger.kernel.org+tianx@yunsilicon.com>
-Cc: <netdev@vger.kernel.org>, <leon@kernel.org>, <andrew+netdev@lunn.ch>, 
-	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>, 
-	<davem@davemloft.net>, <jeff.johnson@oss.qualcomm.com>, 
-	<przemyslaw.kitszel@intel.com>, <weihg@yunsilicon.com>, 
-	<wanry@yunsilicon.com>, <jacky@yunsilicon.com>, 
-	<parthiban.veerasooran@microchip.com>, <masahiroy@kernel.org>, 
-	<kalesh-anakkur.purayil@broadcom.com>, <geert+renesas@glider.be>
+Subject: Re: [RFC PATCH 00/13] Ultra Ethernet driver introduction
+To: Sean Hefty <shefty@nvidia.com>, Bernard Metzler <BMT@zurich.ibm.com>,
+ Parav Pandit <parav@nvidia.com>, Leon Romanovsky <leon@kernel.org>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "shrijeet@enfabrica.net" <shrijeet@enfabrica.net>,
+ "alex.badea@keysight.com" <alex.badea@keysight.com>,
+ "eric.davis@broadcom.com" <eric.davis@broadcom.com>,
+ "rip.sohan@amd.com" <rip.sohan@amd.com>,
+ "dsahern@kernel.org" <dsahern@kernel.org>,
+ "roland@enfabrica.net" <roland@enfabrica.net>,
+ "winston.liu@keysight.com" <winston.liu@keysight.com>,
+ "dan.mihailescu@keysight.com" <dan.mihailescu@keysight.com>,
+ Kamal Heib <kheib@redhat.com>,
+ "parth.v.parikh@keysight.com" <parth.v.parikh@keysight.com>,
+ Dave Miller <davem@redhat.com>, "ian.ziemba@hpe.com" <ian.ziemba@hpe.com>,
+ "andrew.tauferner@cornelisnetworks.com"
+ <andrew.tauferner@cornelisnetworks.com>, "welch@hpe.com" <welch@hpe.com>,
+ "rakhahari.bhunia@keysight.com" <rakhahari.bhunia@keysight.com>,
+ "kingshuk.mandal@keysight.com" <kingshuk.mandal@keysight.com>,
+ "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+ "kuba@kernel.org" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Jason Gunthorpe <jgg@nvidia.com>
+References: <20250306230203.1550314-1-nikolay@enfabrica.net>
+ <20250308184650.GV1955273@unreal>
+ <CY8PR12MB7195F4D67BE6D9A970044572DCD72@CY8PR12MB7195.namprd12.prod.outlook.com>
+ <BN8PR15MB25136EC9F3DE1FBEF9B2429199D12@BN8PR15MB2513.namprd15.prod.outlook.com>
+ <DM6PR12MB43133BD3605D9C95498A9604BDD12@DM6PR12MB4313.namprd12.prod.outlook.com>
+Content-Language: en-US
+From: Nikolay Aleksandrov <nikolay@enfabrica.net>
+In-Reply-To: <DM6PR12MB43133BD3605D9C95498A9604BDD12@DM6PR12MB4313.namprd12.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 2025/3/10 14:34, Simon Horman wrote:
-> On Fri, Mar 07, 2025 at 06:08:29PM +0800, Xin Tian wrote:
->> The command queue is a hardware channel for sending
->> commands between the driver and the firmware.
->> xsc_cmd.h defines the command protocol structures.
->> The logic for command allocation, sending,
->> completion handling, and error handling is implemented
->> in cmdq.c.
+On 3/11/25 7:11 PM, Sean Hefty wrote:
+>> I am not sure if a new subsystem is what this RFC calls for, but rather a
+>> discussion about the proper integration of a new RDMA transport into the
+>> Linux kernel.
 >>
->> Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
->> Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
->> Co-developed-by: Lei Yan <jacky@yunsilicon.com>
->> Signed-off-by: Lei Yan <jacky@yunsilicon.com>
->> Signed-off-by: Xin Tian <tianx@yunsilicon.com>
-> Hi Xin,
->
-> Some minor feedback from my side.
->
-> ...
->
->> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/cmdq.c b/drivers/net/ethernet/yunsilicon/xsc/pci/cmdq.c
-> ...
->
->> +static int xsc_copy_to_cmd_msg(struct xsc_cmd_msg *to, void *from, int size)
->> +{
->> +	struct xsc_cmd_prot_block *block;
->> +	struct xsc_cmd_mailbox *next;
->> +	int copy;
->> +
->> +	if (!to || !from)
->> +		return -ENOMEM;
->> +
->> +	copy = min_t(int, size, sizeof(to->first.data));
-> nit: I expect that using min() is sufficient here...
-Ack
->
->> +	memcpy(to->first.data, from, copy);
->> +	size -= copy;
->> +	from += copy;
->> +
->> +	next = to->next;
->> +	while (size) {
->> +		if (!next) {
->> +			WARN_ONCE(1, "Mail box not enough\n");
->> +			return -ENOMEM;
->> +		}
->> +
->> +		copy = min_t(int, size, XSC_CMD_DATA_BLOCK_SIZE);
->       ... and I'm pretty sure it is sufficient here().
->
->       Likewise for similar uses of min_t() in this patch.
->
-Ack
->> +		block = next->buf;
->> +		memcpy(block->data, from, copy);
->> +		block->owner_status = 0;
->> +		from += copy;
->> +		size -= copy;
->> +		next = next->next;
->> +	}
->> +
->> +	return 0;
->> +}
-> ...
->
->> +int xsc_cmd_init(struct xsc_core_device *xdev)
->> +{
->> +	int size = sizeof(struct xsc_cmd_prot_block);
->> +	int align = roundup_pow_of_two(size);
->> +	struct xsc_cmd *cmd = &xdev->cmd;
->> +	u32 cmd_h, cmd_l;
->> +	u32 err_stat;
->> +	int err;
->> +	int i;
->> +
->> +	/* now there is 544 cmdq resource, soc using from id 514 */
->> +	cmd->reg.req_pid_addr = HIF_CMDQM_HOST_REQ_PID_MEM_ADDR;
->> +	cmd->reg.req_cid_addr = HIF_CMDQM_HOST_REQ_CID_MEM_ADDR;
->> +	cmd->reg.rsp_pid_addr = HIF_CMDQM_HOST_RSP_PID_MEM_ADDR;
->> +	cmd->reg.rsp_cid_addr = HIF_CMDQM_HOST_RSP_CID_MEM_ADDR;
->> +	cmd->reg.req_buf_h_addr = HIF_CMDQM_HOST_REQ_BUF_BASE_H_ADDR_MEM_ADDR;
->> +	cmd->reg.req_buf_l_addr = HIF_CMDQM_HOST_REQ_BUF_BASE_L_ADDR_MEM_ADDR;
->> +	cmd->reg.rsp_buf_h_addr = HIF_CMDQM_HOST_RSP_BUF_BASE_H_ADDR_MEM_ADDR;
->> +	cmd->reg.rsp_buf_l_addr = HIF_CMDQM_HOST_RSP_BUF_BASE_L_ADDR_MEM_ADDR;
->> +	cmd->reg.msix_vec_addr = HIF_CMDQM_VECTOR_ID_MEM_ADDR;
->> +	cmd->reg.element_sz_addr = HIF_CMDQM_Q_ELEMENT_SZ_REG_ADDR;
->> +	cmd->reg.q_depth_addr = HIF_CMDQM_HOST_Q_DEPTH_REG_ADDR;
->> +	cmd->reg.interrupt_stat_addr = HIF_CMDQM_HOST_VF_ERR_STS_MEM_ADDR;
->> +
->> +	cmd->pool = dma_pool_create("xsc_cmd",
->> +				    &xdev->pdev->dev,
->> +				    size, align, 0);
->> +	if (!cmd->pool)
->> +		return -ENOMEM;
->> +
->> +	cmd->cmd_buf = (void *)__get_free_pages(GFP_ATOMIC, 0);
->> +	if (!cmd->cmd_buf) {
->> +		err = -ENOMEM;
->> +		goto err_free_pool;
->> +	}
->> +	cmd->cq_buf = (void *)__get_free_pages(GFP_ATOMIC, 0);
->> +	if (!cmd->cq_buf) {
->> +		err = -ENOMEM;
->> +		goto err_free_cmd;
->> +	}
->> +
->> +	cmd->dma = dma_map_single(&xdev->pdev->dev, cmd->cmd_buf, PAGE_SIZE,
->> +				  DMA_BIDIRECTIONAL);
->> +	if (dma_mapping_error(&xdev->pdev->dev, cmd->dma)) {
->> +		err = -ENOMEM;
->> +		goto err_free_cq;
->> +	}
->> +
->> +	cmd->cq_dma = dma_map_single(&xdev->pdev->dev, cmd->cq_buf, PAGE_SIZE,
->> +				     DMA_BIDIRECTIONAL);
->> +	if (dma_mapping_error(&xdev->pdev->dev, cmd->cq_dma)) {
->> +		err = -ENOMEM;
->> +		goto err_unmap_cmd;
->> +	}
->> +
->> +	cmd->cmd_pid = readl(XSC_REG_ADDR(xdev, cmd->reg.req_pid_addr));
->> +	cmd->cq_cid = readl(XSC_REG_ADDR(xdev, cmd->reg.rsp_cid_addr));
->> +	cmd->ownerbit_learned = 0;
->> +
->> +	xsc_cmd_handle_rsp_before_reload(cmd, xdev);
->> +
->> +#define ELEMENT_SIZE_LOG	6 /* 64B */
->> +#define Q_DEPTH_LOG		5 /* 32 */
->> +
->> +	cmd->log_sz = Q_DEPTH_LOG;
->> +	cmd->log_stride = readl(XSC_REG_ADDR(xdev, cmd->reg.element_sz_addr));
->> +	writel(1 << cmd->log_sz, XSC_REG_ADDR(xdev, cmd->reg.q_depth_addr));
->> +	if (cmd->log_stride != ELEMENT_SIZE_LOG) {
->> +		dev_err(&xdev->pdev->dev, "firmware failed to init cmdq, log_stride=(%d, %d)\n",
->> +			cmd->log_stride, ELEMENT_SIZE_LOG);
->> +		err = -ENODEV;
->> +		goto err_unmap_cq;
->> +	}
->> +
->> +	if (1 << cmd->log_sz > XSC_MAX_COMMANDS) {
->> +		dev_err(&xdev->pdev->dev, "firmware reports too many outstanding commands %d\n",
->> +			1 << cmd->log_sz);
->> +		err = -EINVAL;
->> +		goto err_unmap_cq;
->> +	}
->> +
->> +	if (cmd->log_sz + cmd->log_stride > PAGE_SHIFT) {
->> +		dev_err(&xdev->pdev->dev, "command queue size overflow\n");
->> +		err = -EINVAL;
->> +		goto err_unmap_cq;
->> +	}
->> +
->> +	cmd->checksum_disabled = 1;
->> +	cmd->max_reg_cmds = (1 << cmd->log_sz) - 1;
->> +	cmd->cmd_entry_mask = (1 << cmd->max_reg_cmds) - 1;
->> +
->> +	spin_lock_init(&cmd->alloc_lock);
->> +	spin_lock_init(&cmd->token_lock);
->> +	spin_lock_init(&cmd->doorbell_lock);
->> +	for (i = 0; i < ARRAY_SIZE(cmd->stats); i++)
->> +		spin_lock_init(&cmd->stats[i].lock);
->> +
->> +	sema_init(&cmd->sem, cmd->max_reg_cmds);
->> +
->> +	cmd_h = (u32)((u64)(cmd->dma) >> 32);
->> +	cmd_l = (u32)(cmd->dma);
->> +	if (cmd_l & 0xfff) {
->> +		dev_err(&xdev->pdev->dev, "invalid command queue address\n");
->> +		err = -ENOMEM;
->> +		goto err_unmap_cq;
->> +	}
->> +
->> +	writel(cmd_h, XSC_REG_ADDR(xdev, cmd->reg.req_buf_h_addr));
->> +	writel(cmd_l, XSC_REG_ADDR(xdev, cmd->reg.req_buf_l_addr));
->> +
->> +	cmd_h = (u32)((u64)(cmd->cq_dma) >> 32);
->> +	cmd_l = (u32)(cmd->cq_dma);
-> nit: I think you can use upper_32_bits() and lower_32_bits() here.
+>> Ultra Ethernet Transport is probably not just another transport up for easy
+>> integration into the current RDMA subsystem.
+>> First of all, its design does not follow the well-known RDMA verbs model
+>> inherited from InfiniBand, which has largely shaped the current structure of
+>> the RDMA subsystem. While having send, receive and completion queues (and
+>> completion counters) to steer message exchange, there is no concept of a
+>> queue pair. Endpoints can span multiple queues, can have multiple peer
+>> addresses.
+>> Communication resources sharing is controlled in a different way than within
+>> protection domains. Connections are ephemeral, created and released by the
+>> provider as needed. There are more differences. In a nutshell, the UET
+>> communication model is trimmed for extreme scalability. Its API semantics
+>> follow libfabrics, not RDMA verbs.
+>>
+>> I think Nik gave us a first still incomplete look at the UET protocol engine to
+>> help us understand some of the specifics.
+>> It's just the lower part (packet delivery). The implementation of the upper part
+>> (resource management, communication semantics, job management) may
+>> largely depend on the environment we all choose.
+>>
+>> IMO, integrating UET with the current RDMA subsystem would ask for its
+>> extension to allow exposing all of UETs intended functionality, probably
+>> starting with a more generic RDMA device model than current ib_device.
+>>
+>> The different API semantics of UET may further call for either extending verbs
+>> to cover it as well, or exposing a new non-verbs API (libfabrics), or both.
+> 
+> Reading through the submissions, what I found lacking is a description of some higher-level plan.  I don't easily see how to relate this series to NICs that may implement UET in HW.
+> 
+> Should the PDS be viewed as a partial implementation of a SW UET 'device', similar to soft RoCE or iWarp?  If so, having a description of a proposed device model seems like a necessary first step.
+> 
 
-yes, that's better
+Hi Sean,
+To quote the cover letter:
+"...As there
+isn't any UET hardware available yet, we introduce a software
+device model which implements the lowest sublayer of the spec - PDS..."
 
-Thanks, Simon, I'll modify all the upper points in next version.
+and
 
->> +	if (cmd_l & 0xfff) {
->> +		dev_err(&xdev->pdev->dev, "invalid command queue address\n");
->> +		err = -ENOMEM;
->> +		goto err_unmap_cq;
->> +	}
->> +	writel(cmd_h, XSC_REG_ADDR(xdev, cmd->reg.rsp_buf_h_addr));
->> +	writel(cmd_l, XSC_REG_ADDR(xdev, cmd->reg.rsp_buf_l_addr));
->> +
->> +	/* Make sure firmware sees the complete address before we proceed */
->> +	wmb();
->> +
->> +	cmd->mode = XSC_CMD_MODE_POLLING;
->> +	cmd->cmd_status = XSC_CMD_STATUS_NORMAL;
->> +
->> +	err = xsc_create_msg_cache(xdev);
->> +	if (err) {
->> +		dev_err(&xdev->pdev->dev, "failed to create command cache\n");
->> +		goto err_unmap_cq;
->> +	}
->> +
->> +	xsc_set_wqname(xdev);
->> +	cmd->wq = create_singlethread_workqueue(cmd->wq_name);
->> +	if (!cmd->wq) {
->> +		dev_err(&xdev->pdev->dev, "failed to create command workqueue\n");
->> +		err = -ENOMEM;
->> +		goto err_destroy_cache;
->> +	}
->> +
->> +	cmd->cq_task = kthread_create(xsc_cmd_cq_polling,
->> +				      (void *)xdev,
->> +				      "xsc_cmd_cq_polling");
->> +	if (!cmd->cq_task) {
->> +		dev_err(&xdev->pdev->dev, "failed to create cq task\n");
->> +		err = -ENOMEM;
->> +		goto err_destroy_wq;
->> +	}
->> +	wake_up_process(cmd->cq_task);
->> +
->> +	err = xsc_request_pid_cid_mismatch_restore(xdev);
->> +	if (err) {
->> +		dev_err(&xdev->pdev->dev, "request pid,cid wrong, restore failed\n");
->> +		goto err_stop_cq_task;
->> +	}
->> +
->> +	/* clear abnormal state to avoid the impact of previous error */
->> +	err_stat = readl(XSC_REG_ADDR(xdev, xdev->cmd.reg.interrupt_stat_addr));
->> +	if (err_stat) {
->> +		pci_err(xdev->pdev, "err_stat 0x%x when init, clear it\n",
->> +			err_stat);
->> +		writel(0xf,
->> +		       XSC_REG_ADDR(xdev, xdev->cmd.reg.interrupt_stat_addr));
->> +	}
->> +
->> +	return 0;
->> +
->> +err_stop_cq_task:
->> +	kthread_stop(cmd->cq_task);
->> +
->> +err_destroy_wq:
->> +	destroy_workqueue(cmd->wq);
->> +
->> +err_destroy_cache:
->> +	xsc_destroy_msg_cache(xdev);
->> +
->> +err_unmap_cq:
->> +	dma_unmap_single(&xdev->pdev->dev, cmd->cq_dma, PAGE_SIZE,
->> +			 DMA_BIDIRECTIONAL);
->> +
->> +err_unmap_cmd:
->> +	dma_unmap_single(&xdev->pdev->dev, cmd->dma, PAGE_SIZE,
->> +			 DMA_BIDIRECTIONAL);
->> +err_free_cq:
->> +	free_pages((unsigned long)cmd->cq_buf, 0);
->> +
->> +err_free_cmd:
->> +	free_pages((unsigned long)cmd->cmd_buf, 0);
->> +
->> +err_free_pool:
->> +	dma_pool_destroy(cmd->pool);
->> +
->> +	return err;
->> +}
-> ...
+"The plan is to have that split into core Ultra Ethernet module
+(ultraeth.ko) which is responsible for managing the UET contexts, jobs
+and all other common/generic UET configuration, and the software UET
+device model (uecon.ko) which implements the UET protocols for
+communication in software (e.g. the PDS will be a part of uecon) and is
+represented by a UDP tunnel network device."
+
+So as I said, it is in very early stage, but we plan to split this into
+core UET code and uecon software device model that implements the UEC
+specs.
+
+> If, instead, the PDS should be viewed more along the lines of a partial RDS-like path, then that changes the uapi.
+> 
+> Or, am I not viewing this series as intended at all?
+> 
+> It is almost guaranteed that there will be NICs which will support both RoCE and UET, and it's not farfetched to think that an app may use both simultaneously.   IMO, a common device model is ideal, assuming exposing a device model is the intent.
+> 
+
+That is the goal and we're working on UET kernel device API as I've
+noted in the cover letter.
+
+> I agree that different transport models should not be forced together unnaturally, but I think that's solvable.  In the end, the application developer is exposed to libfabric naming anyway.  Besides, even a repurposed RDMA name is still better than the naming used within OpenMPI.  :)
+> 
+> - Sean
+
+Cheers,
+ Nik
+
+
