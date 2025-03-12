@@ -1,35 +1,49 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx18lb.world4you.com (mx18lb.world4you.com [81.19.149.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D934E1EF08A;
-	Wed, 12 Mar 2025 20:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24681C5D5E
+	for <netdev@vger.kernel.org>; Wed, 12 Mar 2025 20:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741811397; cv=none; b=JPDfegq8DY8LEnEL+RU1XHIdW6nSITjIuhG7afq+TrRARYTJc+Dd9g8e0IZphgpBBMN2BcJCqXiPtmCgo3agSDEMTLDf6WKcOIHCYxdmRzyJ0wwkdJkQMhVmYIWv6yrxPuyUwD0BA29B2kyJLZ/o6IdOCzWg71VPP6zuzIoVePA=
+	t=1741811425; cv=none; b=XZjBlCobuOds7jwqoglLvitD+VNMmcG0PmdpsBP1ItGU6DVPLA6FhIHOcuLMIJKpLeymFqJJr+09CBQ9l1W1LO8KGPNJ9UnR4pnHzWocuMQjAx4+NLZXAK4m54bpklAT+x/muO88W7xdljcTBwbyic07Ec87EuTRLLkBhAtRnYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741811397; c=relaxed/simple;
-	bh=Lui/Wi9+usBiOXuSFc09k5rv1L/XWBX66Q0Dat36Q2c=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=fOPQ/YqmsR/0vlrjiBum9KGDnzYfBK1iZjyHjeRBHmkPC2YSdJbwbXnWdMJ8leP/HRmbSkC9tbG29af8xxpPjHbVo7LJ6SWZQ5Dz9313iKNrKGwkFiQ9PyiTyk0jeQ7z5z9gtjw2bbP/HR78iQpdg1GcuOkzxrxnqa9TQwhiYDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SN3ahCpb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741811425; c=relaxed/simple;
+	bh=edrEULpRSxmsg3pvLbMojEpdmXIW+OUkASYSglEa2oo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KZ6p+kfPLqSV2u4p8NCUJjw+M/BIJFk5Q0nulZbxgblqyv4pI46BTPTVlwJidvh3YHyHlctF95Duzu6XHLcYUwsmPbfSf/6ocNWeuEW9RsSqxw12yZdbp4GttEe2iCxR8Tp/YH7Ls9q5+UdtyYpR4pyKXySioFRRvuO+cLRaLIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=viM5U8l8; arc=none smtp.client-ip=81.19.149.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SN3ahCpb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EACFC4CEE3;
-	Wed, 12 Mar 2025 20:29:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741811396;
-	bh=Lui/Wi9+usBiOXuSFc09k5rv1L/XWBX66Q0Dat36Q2c=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=SN3ahCpbq8R4pGfSe0YTZbcUQ+DpEDqvZOFhUbbjiFZFJMviDGOHyZxTKoiFS5bBx
-	 5Sp6m9H0cXm6VCCx+SKT0LfJThO/n2246+G3FRza4C2l54+k6XmctCVBb6Zzjhuy3u
-	 IjQLp7in7rvGpONGgqH0nBG2SQSYDERjY5QdFxK91K/Qzgj8sPcoURjxBw8FfJtcd4
-	 FmaMiBd5cqvoo7G2ioDWbcNRCQtkZpInthy7FQSOOYAR9v4ZtQZ7WcfHMXVGh27qql
-	 6wvtI7pgbbcl8gM8V/JbYaCQROUKc3b1+RBSy7IAiChyuGls9EBN5pkR/2wfFrIfqQ
-	 2YxrWPJxwl3+g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB006380DBDF;
-	Wed, 12 Mar 2025 20:30:31 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="viM5U8l8"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=mJ5u7YybwOZq2DYwi+uEf0jin1iulKMcdAWLYXY4S6U=; b=viM5U8l8/SF8RiZKjTUANqPYQB
+	zH13+chOMUbQc/JmNoJ/uM4DxDQgn5Tk2v/GlnHZkrlvuJxhVnWzGr0mNI3m/9uOj/Hv19XP1q5Ux
+	BxiaeofvJxhx6XfD89SCYkeopqkjELUZIDrKC4EM4j05yLgtDCmcgU3H3nyMTwq8cLYE=;
+Received: from [80.121.79.4] (helo=hornet.engleder.at)
+	by mx18lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tsSiS-000000006Ue-1jXC;
+	Wed, 12 Mar 2025 21:30:12 +0100
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	Gerhard Engleder <gerhard@engleder-embedded.com>
+Subject: [PATCH net-next v10 0/5] Support loopback mode speed selection
+Date: Wed, 12 Mar 2025 21:30:05 +0100
+Message-Id: <20250312203010.47429-1-gerhard@engleder-embedded.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,41 +51,93 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] selftests: net: bump GRO timeout for gro/setup_veth
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174181143054.921984.17666665132739086259.git-patchwork-notify@kernel.org>
-Date: Wed, 12 Mar 2025 20:30:30 +0000
-References: <20250310110821.385621-1-kuba@kernel.org>
-In-Reply-To: <20250310110821.385621-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- krakauer@google.com, willemb@google.com, shuah@kernel.org,
- linux-kselftest@vger.kernel.org
+X-AV-Do-Run: Yes
+X-ACL-Warn: X-W4Y-Internal
 
-Hello:
+Previously to commit 6ff3cddc365b ("net: phylib: do not disable autoneg
+for fixed speeds >= 1G") it was possible to select the speed of the
+loopback mode by configuring a fixed speed before enabling the loopback
+mode. Now autoneg is always enabled for >= 1G and a fixed speed of >= 1G
+requires successful autoneg. Thus, the speed of the loopback mode depends
+on the link partner for >= 1G. There is no technical reason to depend on
+the link partner for loopback mode. With this behavior the loopback mode
+is less useful for testing.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Allow PHYs to support optional speed selection for the loopback mode.
+This support is implemented for the generic loopback support and for PHY
+drivers, which obviously support speed selection for loopback mode.
+Additionally, loopback support according to the data sheet is added to
+the KSZ9031 PHY.
 
-On Mon, 10 Mar 2025 12:08:21 +0100 you wrote:
-> Commit 51bef03e1a71 ("selftests/net: deflake GRO tests") recently
-> switched to NAPI suspension, and lowered the timeout from 1ms to 100us.
-> This started causing flakes in netdev-run CI. Let's bump it to 200us.
-> In a quick test of a debug kernel I see failures with 100us, with 200us
-> in 5 runs I see 2 completely clean runs and 3 with a single retry
-> (GRO test will retry up to 5 times).
-> 
-> [...]
+Extend phy_loopback() to signal link up and down if speed changes,
+because a new link speed requires link up signalling.
 
-Here is the summary with links:
-  - [net-next] selftests: net: bump GRO timeout for gro/setup_veth
-    https://git.kernel.org/netdev/net-next/c/188107b2c403
+Use this loopback speed selection in the tsnep driver to select the
+loopback mode speed depending the previously active speed. User space
+tests with 100 Mbps and 1 Gbps loopback are possible again.
 
-You are awesome, thank you!
+v10:
+- remove selftests, because Anrew Lunn expects a new netlink API for
+  selftests and the selftest patches should wait for it
+
+v9:
+- move struct net_test member loopback_speed to correct commit
+- fix argument of net_selftest_set_get_count() dummy (kernel test robot)
+- fix argument of net_selftest_set_get_strings() dummy (kernel test robot)
+
+v8:
+- align naming and kdoc of selftest set enum (Jakub Kicinski)
+- add support for all link speeds (Jakub Kicinski)
+
+v7:
+- simplify ksz9031_set_loopback() (Andrew Lunn)
+- try to restore link if loopback enable fails (Andrew Lunn)
+- extend generic selftests to enable reuse (Andrew Lunn)
+
+v6:
+- add return value documentation to phy_loopback() (Jakub Kicinski)
+
+v5:
+- use phy_write() instead of phy_modify() (Russel King)
+- add missing inline for export dummies (kernel test robot)
+
+v4:
+- resend without changed to RFC v3
+
+RFC v3:
+- align set_loopback() of Marvell to Micrel (Andrew Lunn)
+- transmit packets in loopback selftests (Andrew Lunn)
+- don't flush PHY statemachine in phy_loopback()
+- remove setting of carrier on and link mode after phy_loopback() in tsnep
+
+v2:
+- signal link up to keep MAC and PHY in sync about speed (Andrew Lunn)
+
+Gerhard Engleder (5):
+  net: phy: Allow loopback speed selection for PHY drivers
+  net: phy: Support speed selection for PHY loopback
+  net: phy: micrel: Add loopback support
+  net: phy: marvell: Align set_loopback() implementation
+  tsnep: Select speed for loopback
+
+ drivers/net/ethernet/engleder/tsnep_main.c    | 21 +++--
+ .../net/ethernet/hisilicon/hns/hns_ethtool.c  |  4 +-
+ .../hisilicon/hns3/hns3pf/hclge_main.c        |  4 +-
+ .../hisilicon/hns3/hns3pf/hclge_mdio.c        |  2 +-
+ .../stmicro/stmmac/stmmac_selftests.c         |  8 +-
+ drivers/net/phy/adin1100.c                    |  5 +-
+ drivers/net/phy/dp83867.c                     |  5 +-
+ drivers/net/phy/marvell.c                     | 68 +++++++--------
+ drivers/net/phy/micrel.c                      | 24 +++++
+ drivers/net/phy/mxl-gpy.c                     | 11 ++-
+ drivers/net/phy/phy-c45.c                     |  5 +-
+ drivers/net/phy/phy.c                         | 87 +++++++++++++++++++
+ drivers/net/phy/phy_device.c                  | 43 ++-------
+ drivers/net/phy/xilinx_gmii2rgmii.c           |  7 +-
+ include/linux/phy.h                           | 18 ++--
+ net/core/selftests.c                          |  4 +-
+ 16 files changed, 209 insertions(+), 107 deletions(-)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.39.5
 
