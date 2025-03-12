@@ -1,37 +1,60 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5931D86F2;
-	Wed, 12 Mar 2025 06:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E651E3DED
+	for <netdev@vger.kernel.org>; Wed, 12 Mar 2025 06:24:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741760636; cv=none; b=gXdDH4YCYnM8hNy8p2udqI+PNsI+Rb9QzmeszatBOf41ue/PJAu14ErpxPo9KFvINlY9+Kx8dbdygkaShuouKaJs3ok7qpxlOES2l6uU9S35p9FZ+F6dQZANCEzFxYkREyvL5sPQ3jx7c8Wj6BnaD7yLMQtMQxy7PIOO/06DrJQ=
+	t=1741760671; cv=none; b=CFVtsDleUMIBXpKCTUJoGDg3JXrInLZ5lj2WEj3YiSqC+axSJMqzGzOC3++pQc51BxmdCDvpVirsahyXzdPMeLiGhUc4OAU9bdztwe6FAIJkileAzCTGVdmitW+pyf+relb1DdmIyN+KIJ4E2yOYFa6stPB4H6sBnriHeBDHqYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741760636; c=relaxed/simple;
-	bh=mml8n8fGPf3faaPFSXbVSSAyj/LWLLVVRLIZLQHPhjg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LdwO0KH6OTqHqZxi2OvX9eBOAKT2QBBRk1WG/v9WOIKnJ7QOoo71xD0kKDDaYX3z0MyFgchQDa7OjbuYlLDdmAaOSw/vwWMaDcQXRZrWgN0qD1SaGkMwc18rEj0lfJ5m47tBmFbeYgeNjTZQZUzfalVUfJQh18xtauoQRid+wG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4ZCLBt45w7zqVTs;
-	Wed, 12 Mar 2025 14:22:14 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id D7B781402C1;
-	Wed, 12 Mar 2025 14:23:43 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by dggpemf500002.china.huawei.com
- (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 12 Mar
- 2025 14:23:43 +0800
-From: Yue Haibing <yuehaibing@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<yuehaibing@huawei.com>
-Subject: [PATCH net-next] net: skbuff: Remove unused skb_add_data()
-Date: Wed, 12 Mar 2025 14:34:50 +0800
-Message-ID: <20250312063450.183652-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1741760671; c=relaxed/simple;
+	bh=YJkTHWF93HF5H/UtYfuCsyxZwj3cgBwPqIwMndptGa4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bTF7etXKpWyBvka3ivY3kqCyMQzKPjpvuw8FE5DYwfVFqc9EYKB6l5HU1IWl2EBI8SBs7sSDUz8tWZmqSVhTb9GVyQwMkeQImPHXjP9Oi0+HX99OEOrJqC5kqItQ3/xp5cqDmY2nDbRq3tDJ9UqQ1Z05xzjfGB+0DE6m1yDD0Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jWfAKPik; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jWfAKPik"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741760670; x=1773296670;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=YJkTHWF93HF5H/UtYfuCsyxZwj3cgBwPqIwMndptGa4=;
+  b=jWfAKPikYMvet29zasJIlNL5jSzrW/j7PbTBEAWK6T7SD05LqXJnJO+F
+   iN6bbONTYPevZO8ItQjPhCxCmOkjFlRDRmJtY1m5wRggVyeuMY5ypGxTS
+   2II1m430EP2DjsBnR1xWGUDRlVn2tc7NhZgADAt1uRA1EKdo4W/pISFIX
+   fj6CcdWmIAAxoVmFUzUuU9QbmleA3Z7CIO6XlbPxLnbmHTVfk77i845ee
+   QfRTRqcbvU0qias+PkFSlfdjBeCD8/YKE9vSBlG9ZjT02U1EZs9qplI5n
+   078l9kMgHBTQXrg2unu2W5FcCB3L3zKevjfk1X2WDyIlXhX1/0UGs8dYN
+   g==;
+X-CSE-ConnectionGUID: /Cpx8j42R1a9GXA4M6qJnQ==
+X-CSE-MsgGUID: LwdB9re4TPOuOIlTa+Rztg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="43005538"
+X-IronPort-AV: E=Sophos;i="6.14,240,1736841600"; 
+   d="scan'208";a="43005538"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2025 23:24:30 -0700
+X-CSE-ConnectionGUID: royPC8NbTtqI2mbHIzrDbg==
+X-CSE-MsgGUID: 7kJMwHZ9SCSTpg7oRO6fTw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,240,1736841600"; 
+   d="scan'208";a="120569466"
+Received: from gk3153-dr2-r750-36946.igk.intel.com ([10.102.20.192])
+  by fmviesa007.fm.intel.com with ESMTP; 11 Mar 2025 23:24:27 -0700
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	aleksander.lobakin@intel.com,
+	przemyslaw.kitszel@intel.com,
+	piotr.kwapulinski@intel.com,
+	aleksandr.loktionov@intel.com,
+	jedrzej.jagielski@intel.com,
+	larysa.zaremba@intel.com
+Subject: [iwl-next v1 0/8] libie: commonize adminq structure
+Date: Wed, 12 Mar 2025 07:24:18 +0100
+Message-ID: <20250312062426.2544608-1-michal.swiatkowski@linux.intel.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,48 +62,95 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemf500002.china.huawei.com (7.185.36.57)
 
-Since commit a4ea4c477619 ("rxrpc: Don't use a ring buffer for call Tx
-queue") this function is not used anymore.
+Hi,
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
----
- include/linux/skbuff.h | 19 -------------------
- 1 file changed, 19 deletions(-)
+It is a prework to allow reusing some specific Intel code (eq. fwlog).
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 14517e95a46c..bbc3b656c856 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -3865,25 +3865,6 @@ static inline int __must_check skb_put_padto(struct sk_buff *skb, unsigned int l
- bool csum_and_copy_from_iter_full(void *addr, size_t bytes, __wsum *csum, struct iov_iter *i)
- 	__must_check;
- 
--static inline int skb_add_data(struct sk_buff *skb,
--			       struct iov_iter *from, int copy)
--{
--	const int off = skb->len;
--
--	if (skb->ip_summed == CHECKSUM_NONE) {
--		__wsum csum = 0;
--		if (csum_and_copy_from_iter_full(skb_put(skb, copy), copy,
--					         &csum, from)) {
--			skb->csum = csum_block_add(skb->csum, csum, off);
--			return 0;
--		}
--	} else if (copy_from_iter_full(skb_put(skb, copy), copy, from))
--		return 0;
--
--	__skb_trim(skb, off);
--	return -EFAULT;
--}
--
- static inline bool skb_can_coalesce(struct sk_buff *skb, int i,
- 				    const struct page *page, int off)
- {
+Move common *_aq_desc structure to libie header and changing
+it in ice, ixgbe, i40e and iavf.
+
+Only generic adminq commands can be easily moved to common header, as
+rest is slightly different. Format remains the same. It will be better
+to correctly move it when it will be needed to commonize other part of
+the code.
+
+Move *_aq_str() to new libie module (libie_adminq) and use it across
+drivers. The functions are exactly the same in each driver. Some more
+adminq helpers/functions can be moved to libie_adminq when needed.
+
+Michal Swiatkowski (8):
+  ice, libie: move generic adminq descriptors to lib
+  ixgbe: use libie adminq descriptors
+  i40e: use libie adminq descriptors
+  iavf: use libie adminq descriptors
+  libie: add adminq helper for converting err to str
+  ice: use libie_aq_str
+  iavf: use libie_aq_str
+  i40e: use libie_aq_str
+
+ drivers/net/ethernet/intel/Kconfig            |   3 +
+ drivers/net/ethernet/intel/libie/Kconfig      |   6 +
+ drivers/net/ethernet/intel/libie/Makefile     |   4 +
+ drivers/net/ethernet/intel/i40e/i40e_adminq.h |  12 +-
+ .../net/ethernet/intel/i40e/i40e_adminq_cmd.h | 155 +---
+ .../net/ethernet/intel/i40e/i40e_prototype.h  |  15 +-
+ drivers/net/ethernet/intel/i40e/i40e_type.h   |   6 +-
+ drivers/net/ethernet/intel/iavf/iavf_adminq.h |  12 +-
+ .../net/ethernet/intel/iavf/iavf_adminq_cmd.h |  83 +-
+ .../net/ethernet/intel/iavf/iavf_prototype.h  |   3 +-
+ drivers/net/ethernet/intel/iavf/iavf_type.h   |   2 +-
+ drivers/net/ethernet/intel/ice/ice.h          |   1 -
+ .../net/ethernet/intel/ice/ice_adminq_cmd.h   | 267 +------
+ drivers/net/ethernet/intel/ice/ice_common.h   |   6 +-
+ drivers/net/ethernet/intel/ice/ice_controlq.h |   8 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h |  12 +-
+ .../ethernet/intel/ixgbe/ixgbe_type_e610.h    | 226 +-----
+ include/linux/net/intel/libie/adminq.h        | 309 ++++++++
+ drivers/net/ethernet/intel/i40e/i40e_adminq.c |  68 +-
+ drivers/net/ethernet/intel/i40e/i40e_client.c |   7 +-
+ drivers/net/ethernet/intel/i40e/i40e_common.c | 730 ++++++++----------
+ drivers/net/ethernet/intel/i40e/i40e_dcb.c    |  10 +-
+ drivers/net/ethernet/intel/i40e/i40e_dcb_nl.c |   8 +-
+ .../net/ethernet/intel/i40e/i40e_debugfs.c    |  46 +-
+ .../net/ethernet/intel/i40e/i40e_ethtool.c    |  36 +-
+ drivers/net/ethernet/intel/i40e/i40e_main.c   | 240 +++---
+ drivers/net/ethernet/intel/i40e/i40e_nvm.c    |  18 +-
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.c    |  27 +-
+ drivers/net/ethernet/intel/iavf/iavf_adminq.c |  62 +-
+ drivers/net/ethernet/intel/iavf/iavf_common.c | 110 +--
+ drivers/net/ethernet/intel/iavf/iavf_main.c   |   5 +-
+ .../net/ethernet/intel/iavf/iavf_virtchnl.c   |   2 +-
+ .../net/ethernet/intel/ice/devlink/devlink.c  |  10 +-
+ .../net/ethernet/intel/ice/devlink/health.c   |   6 +-
+ drivers/net/ethernet/intel/ice/ice_common.c   | 376 ++++-----
+ drivers/net/ethernet/intel/ice/ice_controlq.c |  53 +-
+ drivers/net/ethernet/intel/ice/ice_dcb.c      |  36 +-
+ drivers/net/ethernet/intel/ice/ice_dcb_lib.c  |   2 +-
+ drivers/net/ethernet/intel/ice/ice_ddp.c      |  47 +-
+ drivers/net/ethernet/intel/ice/ice_dpll.c     |  20 +-
+ drivers/net/ethernet/intel/ice/ice_ethtool.c  |  12 +-
+ .../net/ethernet/intel/ice/ice_fw_update.c    |  38 +-
+ drivers/net/ethernet/intel/ice/ice_fwlog.c    |  16 +-
+ drivers/net/ethernet/intel/ice/ice_lag.c      |   4 +-
+ drivers/net/ethernet/intel/ice/ice_lib.c      |  10 +-
+ drivers/net/ethernet/intel/ice/ice_main.c     |  63 +-
+ drivers/net/ethernet/intel/ice/ice_nvm.c      |  38 +-
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c   |  20 +-
+ drivers/net/ethernet/intel/ice/ice_sched.c    |  18 +-
+ drivers/net/ethernet/intel/ice/ice_sriov.c    |   4 +-
+ drivers/net/ethernet/intel/ice/ice_switch.c   |  55 +-
+ drivers/net/ethernet/intel/ice/ice_vf_mbx.c   |   6 +-
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c |   6 +-
+ .../net/ethernet/intel/ice/ice_vlan_mode.c    |   6 +-
+ .../net/ethernet/intel/ice/ice_vsi_vlan_lib.c |  24 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 272 +++----
+ .../ethernet/intel/ixgbe/ixgbe_fw_update.c    |   4 +-
+ drivers/net/ethernet/intel/libie/adminq.c     |  50 ++
+ 58 files changed, 1567 insertions(+), 2128 deletions(-)
+ create mode 100644 include/linux/net/intel/libie/adminq.h
+ create mode 100644 drivers/net/ethernet/intel/libie/adminq.c
+
 -- 
-2.34.1
+2.42.0
 
