@@ -1,79 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A5D23CF12;
-	Wed, 12 Mar 2025 19:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA951E8353;
+	Wed, 12 Mar 2025 19:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741807797; cv=none; b=qX131rVHooFqbMnu3hctym6I2v0uga2unMnVWuLU+aVvB7bhJlqj34s9zNbMRFszaU2mRa3FTZ8+qrASY6okPAw0ZfaHWaWhvDacm/PSXYtFo2gZ4RzcgxnXjdrmLRwDoNPxmD1Ux2ZpYAZOIgve3zFI7l5cDsatlfd5R8fwDmc=
+	t=1741808243; cv=none; b=EFCpfN5giOymp2R7r0hV5V4fvFsT/Y2VxUzgsH5FaT4lDMy1nwp1IijepwKsIsumu68OaZFehGrKSKKulsEzIHIzp/7+HnfZ5HZIhTITAzwfMzmwzhrJ6E9Km+i/Rds+FBPWxkvoUWMOLye8kg3YhFKrT85q3uKrLfBR7ANTP4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741807797; c=relaxed/simple;
-	bh=w665CGxolMF8oTptBUTJRmpjyGCsr9dHJNKmP6rI5G0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=XpfyaMD/lPZSlgW1Tcjr5UPGp7JgLRL+9V4xr/805Q7jmTmiHEVdtQcwrf5L3Hm3RZy6GL12MY7hmMaLhUsAHZ5OtYo5S16oaOF8cM9vnGBw6ye5Lb6NatJnqYWmrnY2F3a8h/hyRhEoX81OOxpxctgnFzo5gFPbsMe3U4MvYEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5GgQ2Kf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741808243; c=relaxed/simple;
+	bh=ftQ3e44e8+7vyawaED0yk3fGaevmW38KxYSauz7PqDo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oeNI0S5Lt6IF/VgB+knkpE1oMASApV+LgFbwVPh0XzVpLDJ73j0WbaC8UDF4ZLFTKgxb9FeQzI0e1vjbbPB1gVthsWumOTomPWXZRrt0cRTG1STQfDnfWqxwYP/07XZayA6VhiWJEij2XKzOw+2QPjdIxgOkwk0PGBlKMYqZarA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JDXTJiGw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5GgQ2Kf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F8FC4CEDD;
-	Wed, 12 Mar 2025 19:29:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JDXTJiGw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B325DC4CEDD;
+	Wed, 12 Mar 2025 19:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741807797;
-	bh=w665CGxolMF8oTptBUTJRmpjyGCsr9dHJNKmP6rI5G0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=A5GgQ2Kf9ooXPuQEPfnwn6ac8IOtTn28zLhJGU3DEbTJks0iIYvUDgBBf6jTtpomP
-	 bSJLBREI38Zi2QamwoGh6hcHVc4O4CYZgdkw76VX7Dz/vPUuJaVnsx0zcIulnEIQvx
-	 w0OIF6PV7Aigc3Sd4yRi3Qmp4TV9WqsJNCx8JXYViLBYlIyh+iVrdJYYb1lQHISZGQ
-	 xjW+mBy1k/o2P1769odTY2JittnYil9HxAiSFYXN45ZSahtgVyl3914TwHmZnhoWKs
-	 AexV1Jum88NUJ4nuvSe94RrR1rG01rgNVUViqWhAB13Cl2uCJtY0U1LjL/M7UAcZqN
-	 4Wx+6lCN4iF5g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADC83380DBDF;
-	Wed, 12 Mar 2025 19:30:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1741808243;
+	bh=ftQ3e44e8+7vyawaED0yk3fGaevmW38KxYSauz7PqDo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=JDXTJiGwDVKNtJaELzQnrZwv6Ke1nuJjfQ3w1/1rHpqtGscGR3JRRqNcTpMLQPH6p
+	 H/NVapRPNVh4F7wx7HNXc998/+3GbwtQ8XdZQk8OxxNVA0kRJNzdGSGmvbCWPdxzso
+	 cr2S6rcgFXkjBSDgd558uzcvyKS5p8nmVvKD/QpawS4FMDsnxs5Edu6gs+pP5aqqDt
+	 6DKHcxT+JjaF6GjVSevqXwDm2cn90huOY6G3MlXnniRHyoSZ6XoIS/I7LXZ73a6z7R
+	 y3m8nqYy15yudqMIkOe8kd3zb4Fqhlf4AM1MskJiWpT4PTdtQR283A19w+2VC9xL0h
+	 sczxH83we5FUA==
+Date: Wed, 12 Mar 2025 20:37:16 +0100
+From: Jakub Kicinski <kuba@kernel.org>
+To: Simon Horman <horms@kernel.org>
+Cc: Uday Shankar <ushankar@purestorage.com>, Breno Leitao
+ <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, Andrew Morton
+ <akpm@linux-foundation.org>, Johannes Berg <johannes@sipsolutions.net>,
+ Jonathan Corbet <corbet@lwn.net>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next v5 2/2] netconsole: allow selection of egress
+ interface via MAC address
+Message-ID: <20250312203716.110b6677@kernel.org>
+In-Reply-To: <20250311111301.GL4159220@kernel.org>
+References: <20250220-netconsole-v5-0-4aeafa71debf@purestorage.com>
+	<20250220-netconsole-v5-2-4aeafa71debf@purestorage.com>
+	<20250225144035.GY1615191@kernel.org>
+	<Z8tS5t+warQdwFTs@dev-ushankar.dev.purestorage.com>
+	<20250311111301.GL4159220@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] Bluetooth: HCI: Fix value of
- HCI_ERROR_UNSUPPORTED_REMOTE_FEATURE
-From: patchwork-bot+bluetooth@kernel.org
-Message-Id: 
- <174180783150.904159.8994265489515508641.git-patchwork-notify@kernel.org>
-Date: Wed, 12 Mar 2025 19:30:31 +0000
-References: <20250312083847.7364-1-sy2239101@buaa.edu.cn>
-In-Reply-To: <20250312083847.7364-1-sy2239101@buaa.edu.cn>
-To: Si-Jie Bai <sy2239101@buaa.edu.cn>
-Cc: luiz.dentz@gmail.com, marcel@holtmann.org, johan.hedberg@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, cuijianw@buaa.edu.cn, sunyv@buaa.edu.cn,
- baijiaju@buaa.edu.cn
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to bluetooth/bluetooth-next.git (master)
-by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
-
-On Wed, 12 Mar 2025 16:38:47 +0800 you wrote:
-> HCI_ERROR_UNSUPPORTED_REMOTE_FEATURE is actually 0x1a not 0x1e:
+On Tue, 11 Mar 2025 12:13:01 +0100 Simon Horman wrote:
+> On Fri, Mar 07, 2025 at 01:11:18PM -0700, Uday Shankar wrote:
+> > On Tue, Feb 25, 2025 at 02:40:35PM +0000, Simon Horman wrote:  
+> > > Reviewed-by: Simon Horman <horms@kernel.org>  
+> > 
+> > Hey, since this has gotten quiet for a while, just wanted to confirm
+> > that there's no action needed from my end? Is this in the queue for
+> > net-next?  
 > 
-> BLUETOOTH CORE SPECIFICATION Version 5.3 | Vol 1, Part F
-> page 371:
-> 
->   0x1A  Unsupported Remote Feature
-> 
-> [...]
+> It seems that this series has been marked as Changes Requested in
+> patchwork, which may explain the lack of progress. But that designation
+> doesn't seem correct to me. So let's see if this can move this series
+> back into the queue for the maintainers.
 
-Here is the summary with links:
-  - Bluetooth: HCI: Fix value of HCI_ERROR_UNSUPPORTED_REMOTE_FEATURE
-    https://git.kernel.org/bluetooth/bluetooth-next/c/8d35126f69f2
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Unclear why the designation was chosen, indeed, but let's get this
+reposted per normal process. The posting is a month old.
