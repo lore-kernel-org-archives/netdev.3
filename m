@@ -1,90 +1,166 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA0A1DB124
-	for <netdev@vger.kernel.org>; Wed, 12 Mar 2025 12:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6134223F387;
+	Wed, 12 Mar 2025 12:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741781179; cv=none; b=r1zfSQejnx+ugarp5ty1Ub+N8TguFGclypKWso7G41C20lwqryV3Gc159NxQrGNxYtmx6BJHn7Q+0CduZMrL7rfIgueH5uRQcVv+BaiIRfMyDyZCiVxu2Hbi81jcxAbm9jfe7JCC0WPx9B9kVtdAWOQSONOWNX9xLzjVfEsthX8=
+	t=1741782373; cv=none; b=eQ2uekZ6qNrkqOIc2EeVPXRX/Eih4CRHXE4tnJ8ffneBDKkV9rfl4+9V7YrgXU8HeOkC1oXz/w4ooQaE4+VKR2GgNaUEw0/cZacJDu3MG7SxpynKiI3pN7zkhg1PBMVEATg8pO93eb8w3GUzLS11DxV3TPsvXceimqlC3eCA0hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741781179; c=relaxed/simple;
-	bh=AlvIx6+mu9pIdY79c9N5Y/jb3mtbbjdzPtPaR6KqV48=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=inB/p56xJx2gTKZ+Y+DyBZIKmH5bbUmGx+XIaN50iwJFQenO50QVpk+7f+b1byiGH7gtN6t7x2K2OAcoyXSnMcji6MVRljz7v/rzgv5U5MSaxjQ0bwmUniu3f9vkuqrY3Q9FoV9OosuE5qUKYOxSTgdksE/e7mmwU+2eSauSVEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4ZCTjp20x6z2RTLH;
-	Wed, 12 Mar 2025 20:01:02 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id E62F51A016C;
-	Wed, 12 Mar 2025 20:05:23 +0800 (CST)
-Received: from [10.67.120.129] (10.67.120.129) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 12 Mar 2025 20:05:22 +0800
-Message-ID: <8fa8f430-5740-42e8-b720-618811fabb22@huawei.com>
-Date: Wed, 12 Mar 2025 20:05:22 +0800
+	s=arc-20240116; t=1741782373; c=relaxed/simple;
+	bh=Ua0UmxOb+ZROksG8fotyV5KfxdhXw1sq9u9jSAigQHk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b/nODSrnvhzJa+Kic68dxGXY5OfI6Wz/D19ubXzH6+2ygOnfr7Knr9Oek85FMJUBbiAyla20/mSODmOjqvTxkzBlTanWUYHmZEkNtEZJYDuu17wVWxzB9nGzv0cX26ItCFeE85bDJa7++dj61hzh+ikSf+ei1io17HL/p0XCc6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a8d1l4KI; arc=none smtp.client-ip=209.85.166.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a8d1l4KI"
+Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-3cf880d90bdso20647705ab.3;
+        Wed, 12 Mar 2025 05:26:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741782371; x=1742387171; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CiGeVOzvh7Hi2MVVeNQQQNYnGFd+aA2n3AELBo7vFzs=;
+        b=a8d1l4KIqRPoehtSlMqjzGIf+GzCNMQoicvwEcBFIPPaOADKhy1JB/TaBDM8VL4bGe
+         QV5HEEBEqZ/+7VkqIKkv6A3EppCSaSjFrwIgajUm4PLaw7/uyfxu3Pvv26dqmLxj3xD/
+         vBX1yJbsaTumtsmXgHb+uCVK1qpQmMBSLPnEpDKtS2umrV8ghhXnPe0HVf9rdWTtWnJn
+         v9wz7RzeW7OJWR32Ilpr2KN4RT9wUYfHKKxopJ3dngxxvtxgkKIyqPxhTtnaup6RzB7Y
+         LGJ1AbxyBG9MECJaFA80BZQ0eSbrYBOfmsg4gxNwlxiMr4CRw274gBqRM/EiI5l4i6LN
+         xgqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741782371; x=1742387171;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CiGeVOzvh7Hi2MVVeNQQQNYnGFd+aA2n3AELBo7vFzs=;
+        b=mv1jPLUPaQ6+3WkIyQtSZbzl9BYkGPcap/gXi/w46VjehNfZHgztvoawxkuwim/lYT
+         uiE/FKfWaFudxQS7RjeyRtw/kvozmo6mfkoCyUEDUK26f7HK0IxggQVOCNAR5aLqzaWq
+         xd5yS/0ryVawdMQR212QSIbhcl259LputiF8WRBTey1yQemPqK5Xig+yevgG/HvbiLbe
+         zIjURjnCZ9ETod2V+THbpbnM3PW9QCH8ETT1DBRoeldxMr9C1SSwMUV+Wg9ZEDePnHja
+         0iUO+Kb5Xwrs5TngomTuWirlQinbGcebZwmGlHCoJOZhGdZsUF5c3roRKKj8P2ylJy5z
+         UcfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVrXK0l08bYo8sPNEh4CdR3wQiBel74V3f0w4bUyQoYFZ7VD0mhwdx0EPkRBZEcC/FLTp4=@vger.kernel.org, AJvYcCXBe6P4ZJFj4ugShFh31wKt/jHegWA5bRwjbl3QsA481YpFCH5ORYUXyObpNeeNfDKpXIYN47Ci@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpiMT6bt30jkRKhelQZB3tMO2Tw088ZNOk934/Qu2fVl6oke1v
+	yS2WqFCIoxzSFz0C0+ZRPhO/Zgjw6re2SE1oHVcvud3PYYTHdQWLZOyOCHXdiNIBWrzJXL0O2xv
+	4cBvQO6262S8VabN4JuZ69LdgHao=
+X-Gm-Gg: ASbGncsoAAm1HOLc9KIe33R7+HL9l1KgJ3gpT0fTJh2ESyuRsh07UokqwD+KWMf1BES
+	bhras0MDIgt7F3ErBc6eTqNaHjgYShA/nZxPZICTENnCkkKCXt4riHsNFzuuzS91x5t2HQyPmPs
+	wIvhsO157l4qGKqf/IaKW7xWqt
+X-Google-Smtp-Source: AGHT+IH0sYORq9CF7IyIvrTs9g/pykq2xTGAGTnhL7EN34gCGzwPvB/XesSoNyOkErYPGNELZXrFKgySaB6IXGcqPEc=
+X-Received: by 2002:a05:6e02:1c0b:b0:3a7:87f2:b010 with SMTP id
+ e9e14a558f8ab-3d4419712a9mr238183455ab.5.1741782371298; Wed, 12 Mar 2025
+ 05:26:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH net-next] page_pool: Track DMA-mapped pages and unmap
- them when destroying the pool
-To: Matthew Wilcox <willy@infradead.org>
-CC: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>, Yunsheng
- Lin <yunshenglin0825@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas
-	<ilias.apalodimas@linaro.org>, "David S. Miller" <davem@davemloft.net>,
-	Yonglong Liu <liuyonglong@huawei.com>, Mina Almasry <almasrymina@google.com>,
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	<linux-mm@kvack.org>, <netdev@vger.kernel.org>, <conduct@kernel.org>
-References: <20250308145500.14046-1-toke@redhat.com>
- <d84e19c9-be0c-4d23-908b-f5e5ab6f3f3f@gmail.com> <87cyepxn7n.fsf@toke.dk>
- <Z88IYPp_yVLEBFKx@casper.infradead.org>
- <c6ef4594-2d87-4fff-bee2-a09556d33274@huawei.com>
- <Z9BSlzpbNRL2MzPj@casper.infradead.org>
-Content-Language: en-US
-From: Yunsheng Lin <linyunsheng@huawei.com>
-In-Reply-To: <Z9BSlzpbNRL2MzPj@casper.infradead.org>
+References: <20250311085437.14703-1-kerneljasonxing@gmail.com>
+ <80e745a45391cb8bb60b49978c0a9af5f51bec183f01a7b8f300992a4b14aa6f@mail.kernel.org>
+ <CAL+tcoD8TAWT-_mU8wMT3zt-Thh5ZVfmBear5m=G4MbCbBS9XA@mail.gmail.com>
+ <5e9fc094-8baf-4b67-b58e-dae5ff9ce350@linux.dev> <c6aec870-5c13-4d84-bca2-3b77513071b7@linux.dev>
+ <CAL+tcoB7ZaYYyYsvR2QwAh8twEkoKjwn-gFZzsY3xM0VSsNJVQ@mail.gmail.com>
+In-Reply-To: <CAL+tcoB7ZaYYyYsvR2QwAh8twEkoKjwn-gFZzsY3xM0VSsNJVQ@mail.gmail.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Wed, 12 Mar 2025 13:25:34 +0100
+X-Gm-Features: AQ5f1Jodu1ngKFXzJBua5J-EFX8zdfkeSzkGSDbj2PmVMr1vdVZJdWVEV23dFfk
+Message-ID: <CAL+tcoBiLEJCY==xkxTBAvNSZ2P4-16nZpELkgq=sdB-=kM1Yw@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v2 0/6] tcp: add some RTO MIN and DELACK MAX
+ {bpf_}set/getsockopt supports
+To: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: bot+bpf-ci@kernel.org, kernel-ci@meta.com, andrii@kernel.org, 
+	daniel@iogearbox.net, bpf <bpf@vger.kernel.org>, 
+	Network Development <netdev@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+Content-Transfer-Encoding: quoted-printable
 
-On 2025/3/11 23:11, Matthew Wilcox wrote:
-> On Tue, Mar 11, 2025 at 08:25:25PM +0800, Yunsheng Lin wrote:
->>> struct page {
->>> 	unsigned long flags;
->>> 	unsigned long memdesc;
->>
->> It seems there may be memory behind the above 'memdesc' with different size
->> and layout for different subsystem?
-> 
-> Yes.
-> 
->> I am not sure if I understand the case of the same page might be handle in
->> two subsystems concurrently or a page is allocated in one subsystem and
->> then passed to be handled in other subsystem, for examlpe:
->> page_pool owned page is mmap'ed into user space through tcp zero copy,
->> see tcp_zerocopy_vm_insert_batch(), it seems the same page is handled in
->> both networking/page_pool and vm subsystem?
-> 
-> It's not that arbitrary.  I mean, you could read all the documentation
-> I've written about this concept, listen to the talks I've given.  But
-> sure, you're a special fucking snowflake and deserve your own unique
-> explanation.
+On Wed, Mar 12, 2025 at 7:50=E2=80=AFAM Jason Xing <kerneljasonxing@gmail.c=
+om> wrote:
+>
+> On Tue, Mar 11, 2025 at 7:44=E2=80=AFPM Martin KaFai Lau <martin.lau@linu=
+x.dev> wrote:
+> >
+> > On 3/11/25 11:39 AM, Martin KaFai Lau wrote:
+> > > On 3/11/25 4:07 AM, Jason Xing wrote:
+> > >> On Tue, Mar 11, 2025 at 10:26=E2=80=AFAM <bot+bpf-ci@kernel.org> wro=
+te:
+> > >>>
+> > >>> Dear patch submitter,
+> > >>>
+> > >>> CI has tested the following submission:
+> > >>> Status:     FAILURE
+> > >>> Name:       [bpf-next,v2,0/6] tcp: add some RTO MIN and DELACK MAX =
+{bpf_}set/
+> > >>> getsockopt supports
+> > >>> Patchwork:  https://patchwork.kernel.org/project/netdevbpf/list/?
+> > >>> series=3D942617&state=3D*
+> > >>> Matrix:     https://github.com/kernel-patches/bpf/actions/runs/1378=
+4214269
+> > >>>
+> > >>> Failed jobs:
+> > >>> test_progs-aarch64-gcc: https://github.com/kernel-patches/bpf/actio=
+ns/
+> > >>> runs/13784214269/job/38548852334
+> > >>> test_progs_no_alu32-aarch64-gcc: https://github.com/kernel-patches/=
+bpf/
+> > >>> actions/runs/13784214269/job/38548853075
+> > >>> test_progs-s390x-gcc: https://github.com/kernel-patches/bpf/actions=
+/
+> > >>> runs/13784214269/job/38548829871
+> > >>> test_progs_no_alu32-s390x-gcc: https://github.com/kernel-patches/bp=
+f/actions/
+> > >>> runs/13784214269/job/38548830246
+> > >>
+> > >> I see https://netdev.bots.linux.dev/static/nipa/942617/apply/desc th=
+at
+> > >
+> > > It cannot apply, so it applied to bpf-next/net.
+> > >
+> > > I just confirmed by first checking this:
+> > > https://github.com/kernel-patches/bpf/pulls
+> > >
+> > > then find your patches and figure out bpf-net_base:
+> > > https://github.com/kernel-patches/bpf/pull/8649
+> > >
+> > >> says the patch can not be applied. Could it be possible that CI
+> > >> applied it on the wrong branch? I targeted the net branch.
+> > >>
+> > >> I have no clue this series is affecting the following tests
+> > >
+> > > The test is changing the exact same test setget_sockopt and it failed=
+, so it
+> > > should be suspicious enough to look at the details of the bpf CI repo=
+rt.
+> > >
+> > > The report said it failed in aarch64 and s390 but x86 seems to be fin=
+e.
+> > > When the test failed, it pretty much failed on all tests. It looks li=
+ke some of
+> > > the new set/getsockopt checks failed in these two archs. A blind gues=
+s is the
+> > > jiffies part.
+> >
+> > and forgot to mention that you can run bpf CI before posting. This may =
+be easier
+> > to test other archs. Take a look at Documentation/bpf/bpf_devel_QA.rst.=
+ The
+> > section "How do I run BPF CI on my changes before sending them out for =
+review?"
+>
+> Thanks for the pointer.
+>
+> Let me try one patch by one patch. Having checked the series itself, I
+> still have no clue. You said jiffies part. What is that? Could you
+> please point out a file name or configuration so that I can follow you
+> and then do some tests?
 
-If you don't like responding to the above question/comment, I would rather
-you strip out them like the other question/comment or just ignore it:(
+Oh, I realized that. Maybe I need to adjust the test and expected
+value in the selftests to make it compatible with different HZ values
+in those arch configs.
 
-I am not sure how to interpret the comment, but I am sure it is not a kind
-one, so CC 'Code of Conduct Committee' in case there is more coming.
-
-> 
-> 
+Thanks,
+Jason
