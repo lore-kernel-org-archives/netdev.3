@@ -1,64 +1,64 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA0723E229
-	for <netdev@vger.kernel.org>; Wed, 12 Mar 2025 12:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F098923E229
+	for <netdev@vger.kernel.org>; Wed, 12 Mar 2025 12:55:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741783985; cv=none; b=mLmJz1ZaFQ+as9427hLQWlahAy3faeZBtflFy5z8o6VYWIxL9Ns+exdFLyI/efegvulO4jqzEQrJ45LxoCq9s4OVn2DaCID9T54hpT2E2PxrgrfgeOKEFXZowFCsRqiNYGRl7sRtLJilev0gWomzoHXlTzAU5qzsEhG0SIGRfhw=
+	t=1741784110; cv=none; b=eqbxSoxIF8+72xJJlDREhOBZGRK1BJUmvxEIx5MDKuEk1IiakiyUIvMTO5tRRGWE00kkaTwLFgBt99Hwy25v514FIrfjzRkWhrz9PrJDSbTFDgR3nsrbNHy9SBCaRGj8QgCFivQvW/cyBC9wUhAlIJrloEjVQpOCEdNVQHJnI9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741783985; c=relaxed/simple;
-	bh=n7rbJMhxVVA2kRRBtSpfYcYzvB4CF6LIap0myCyDGvw=;
+	s=arc-20240116; t=1741784110; c=relaxed/simple;
+	bh=ogYoO5mj7hS6zBV+JMeyKxyGKUngXB8aWvZ8X+pSaZ0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=om9Fx9laC/AoiF1Edj657qfl031asesmT9qApdCeS7CUCt60QtPZfu9+1bV2ToRDflQGFHGbfkCqplN840YkFIpmHWJ4EFZmnTeIoDHftcRexFK5egqHFOX2bnGK8IxzYA5WVyl1wsGg/jj2PIixTTuD6yYYst72LJV0PWxjLi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TS76Jfei; arc=none smtp.client-ip=209.85.221.50
+	 In-Reply-To:Content-Type; b=JFdIDEa4jj6cQyDrAQhjwP44QIgrDSaKc/D3TPFlVc1yHJmHVUvleLs2d3dSGYeZHj+Tnm+/FKKvdkhmcnqBkPs4Vm2E+ePc5ezGHPbRq/C3hMee/anxkNHVT3GwUG/g5AhxZecV8sdGCLCEYVADViZtLSHMdTWx6HjuLIHYYiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bNjUfhpx; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TS76Jfei"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3914a5def6bso2017769f8f.1
-        for <netdev@vger.kernel.org>; Wed, 12 Mar 2025 05:53:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bNjUfhpx"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3913d129c1aso625521f8f.0
+        for <netdev@vger.kernel.org>; Wed, 12 Mar 2025 05:55:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741783982; x=1742388782; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741784107; x=1742388907; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=AxOFRJ5dV1MqeOPQPfMz3AS99k+2/1/mIifOGYFraVU=;
-        b=TS76JfeiKup7pLjvRfR6EVvoETe0lOaxlXQ7BQMP9IIMr3rkaGjo1JxQba09ocr3HY
-         d0ltPJ5K5ANmngRfVlbsA/K3Z4pcuR05bOFoMKxpGDYJdn8yqAr5myajZ9IUCYDW3brT
-         Tw/Ea6lVdyt9BGCefPuR6JPB3lWm10sZWuExCqfrRHuv3zOSiWSNHfIICqvJeZukTEpm
-         8LESCA7fko81OJRxviaebPl2a0vqEYG/dXMHDi1JqfMSu0BKw63+gR76etfZF1666vvi
-         hCYS8iu/D1iG+epwwmWiF6UwBpgY7DTxFKj7fhtyEU/xPIZ3V7N739mc8u29N3GbZkHH
-         T8Ag==
+        bh=q4gPyi4FZZFwvRtlGe5MzJLQjJpIeYPB9yg885XBwy0=;
+        b=bNjUfhpxvaL4qKPZqSwK86QB57IbJmWbpbg9jCm1zBZeeob2O392F6kz/l1XGGfH5p
+         s/E96zT+NOYIw2md+hHVGLQjPX98WxCaQaom5gKHPiF6ZkxUg2pHPEMsV7qK3PC6SKxP
+         uHWKM7AF2JEQyPXLAyf+LK2W1STk0WKUBtbEFb3XbQV2fKxjSMr3/dDwKTFvCq48mfOJ
+         l7G6+SOf+AcbidQI4AfKdscbJQI25BDxNdHjfQ8QbaehlTI8h5wh8rR5+DQDcFiXMBQn
+         6mY/nkWkbWHnb/0NaoTs7HwcCOmhRDRqgCYoPNnWJx6O5OTU1k7lr56iiAPT4Nmygu2T
+         rG8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741783982; x=1742388782;
+        d=1e100.net; s=20230601; t=1741784107; x=1742388907;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AxOFRJ5dV1MqeOPQPfMz3AS99k+2/1/mIifOGYFraVU=;
-        b=XX+BlldkM5pGV7kGqdetBs7MOkgNaPeaoIOh+Wdjuh7XZoWA/usFAi7ZgEn7lUpobc
-         46lqTGeRrhUVM/A+WbJ+sDVKwLKRpVsbgkyZrdqpr/2tCgJdR3vOw9rtndJNspK/lV3j
-         MeY4KXeZ6stp9MgqnHZb0d/UcjG8arTeIy75jSRVU9aC7o+dQT45VCaAtWU9md0YQ/hb
-         U+HYuOGu9wmk+C1yXRDokPaP+t6F3zJ6qEYJXUTkEQI05ssdzoag1smEdv6QcyagbzEm
-         4PsHGnxYVgGGnkEpPncvC+soNcrHIfCRMbvVxYkSsgylSm+NXvkeLpmMNPTkhJZdBlyJ
-         tudg==
-X-Forwarded-Encrypted: i=1; AJvYcCXKAEzwBFe5+kYu5uUbcg/Nr8LRa+Ku/rS0FN5SG+pxRq7ZMaHLkkAJC+SKOM4QkmXCQt/8qp8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyg2Ol8TNG62j4ZtuGltfEqBabvk5hYcABGSMdSkh2lJZpzWsCr
-	h2mJ2mvVhFxUVCCBqW4zJUl0Mm5hefgM+8yupYu+VYnNRasaBRCA
-X-Gm-Gg: ASbGnct4JaT3Ki9Qbm2S41otsWYVPQVhTwYuYoU3ZJGKJz20qjuAuu6+6FYj9FN/rg2
-	Sm0UDMn8bpGjG9GBuqjBZiWaZGjqXu0EXrIHI6EHXgAckacCoMnjNJL7NkPHtbSYnWS9ph4UYWV
-	7/XUohKu4346adX7u+NLIGoGGzVJhtrknokTG4kNm0VJ8OOCNn5oRNPOF6xrpQlouIwHs+MYlmA
-	R53WJFs1PqbQfKEuV8tNOxnt/bvsD4uTxbkyKAkWXXxVhzFK5Uv+mdPeNalG8jpdCdBf+RpSf1a
-	G+uvh1pJfb1kVSTTtt3zWVlNvLzJzscmH2XD5nIRKri4g2n1D0ESLyifQdrwzoGaqp4x
-X-Google-Smtp-Source: AGHT+IEEgWCjPXRghYAZa+gPXNihB2ZL++gW0z8f0e4WP9GqNq4b4nwhxd2LSxpTg+MzM8uZRnIksw==
-X-Received: by 2002:a05:6000:2c5:b0:391:10c5:d1a9 with SMTP id ffacd0b85a97d-39132d82751mr15752267f8f.31.1741783981903;
-        Wed, 12 Mar 2025 05:53:01 -0700 (PDT)
+        bh=q4gPyi4FZZFwvRtlGe5MzJLQjJpIeYPB9yg885XBwy0=;
+        b=d/Zm1VUJqumqrcasd3DPtZnI/x2PaonCJaqGdz+G9JdDtMIQpfzq3to6mwcl1qG4xE
+         BRP+Ai53+xn4yyOGD09Vyg+O6Q1sS+kzrEu+9pgVxHKQd8w1MFi9RzUw4BXdgWqmV+9i
+         dfmF/4Tsy8GQ5uCkuVKOVNOkicY2xt0U/kuayiTj/8BQqeIbkQF6HT78fB6OLFuYCGdi
+         As+GMezKoLEDfvz7znn1vU7xlajSdytiQZIBp88E1tdkk5xUf/tHGiDUK08xzNy6QuvU
+         IKxOhyNK5+l1IOffzT+fIe4rTNmBAO15QfewVZzYpF/p0cItLVZEysNmMCb+5gSF+Z6T
+         wtPA==
+X-Forwarded-Encrypted: i=1; AJvYcCVnRvYuWG7t7xXOxNv5vBy7wve4eQArzMvY1SJrruqcD0Uj2/GuMHNP5SuDH690DMtJ9ocubcg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUoSmP641MZKOfYN7tt/RfmEDQMBZqOG7suqzf+/2orHhGAzP0
+	fnntgquvEKZBykukCCe0EasgIEjaO17ZRfn2W+/LM7ETYpEO4kNY
+X-Gm-Gg: ASbGncuIvrgAPTGQSQjq5pXgQsnuGrpDadp3rxTQC5M8zAseL6Cqdc7hnfGrVOE+LOM
+	xKza4ko+y9/xhF4INFp3sii9Zg6HPAViCwWp+tgHtNm9SywbLDz7ziY9ANEO7pPhF676DxUXFTo
+	MpYf/zEHTVO9WgcGvB7rJGoPCd8S+WSC0v+olh+dtNDm8opu0YWgojYP4UcnmGmPh/jMRVjKeKy
+	IB7/bW9dq4RWY4fn4kUOV0iwaETtjyWdcEF1K030oEVtmprmjmg4EWxsPmsu/OQnRK5WcCF100I
+	fpJgysTbozBRt50yZKIDPNf5GyLyLuuJ1dP639fXyvO2HExBzxycQpwtSQ==
+X-Google-Smtp-Source: AGHT+IFR3Rb2grZMDNG/FG7ThrCX73kNYbrZrm3oOz4rnrivx9Eh09Z0OPa03401c9Z37iby/jGepg==
+X-Received: by 2002:a5d:6487:0:b0:390:e9e0:5cc6 with SMTP id ffacd0b85a97d-3926bdf5c18mr7406230f8f.1.1741784107046;
+        Wed, 12 Mar 2025 05:55:07 -0700 (PDT)
 Received: from [192.168.116.141] ([148.252.129.108])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfdfdc5sm20609379f8f.25.2025.03.12.05.52.59
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfbab43sm21390829f8f.15.2025.03.12.05.55.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Mar 2025 05:53:01 -0700 (PDT)
-Message-ID: <65dd1ce6-1ee3-4678-a156-244e6c0ca127@gmail.com>
-Date: Wed, 12 Mar 2025 12:53:53 +0000
+        Wed, 12 Mar 2025 05:55:06 -0700 (PDT)
+Message-ID: <ff346763-07ad-4323-a46c-974adc71c121@gmail.com>
+Date: Wed, 12 Mar 2025 12:55:59 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,52 +68,54 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH net-next] page_pool: Track DMA-mapped pages and unmap
  them when destroying the pool
-To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
- Yunsheng Lin <linyunsheng@huawei.com>,
- Yunsheng Lin <yunshenglin0825@gmail.com>,
+To: Matthew Wilcox <willy@infradead.org>,
+ =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Cc: Mina Almasry <almasrymina@google.com>, David Wei <dw@davidwei.uk>,
  Andrew Morton <akpm@linux-foundation.org>,
  Jesper Dangaard Brouer <hawk@kernel.org>,
  Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- "David S. Miller" <davem@davemloft.net>
-Cc: Yonglong Liu <liuyonglong@huawei.com>,
- Mina Almasry <almasrymina@google.com>, Eric Dumazet <edumazet@google.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Yunsheng Lin <linyunsheng@huawei.com>, Yonglong Liu
+ <liuyonglong@huawei.com>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
  Simon Horman <horms@kernel.org>, linux-mm@kvack.org, netdev@vger.kernel.org
 References: <20250308145500.14046-1-toke@redhat.com>
- <d84e19c9-be0c-4d23-908b-f5e5ab6f3f3f@gmail.com> <87cyepxn7n.fsf@toke.dk>
- <2c363f6a-f9e4-4dd2-941d-db446c501885@huawei.com> <875xkgykmi.fsf@toke.dk>
- <136f1d94-2cdd-43f6-a195-b87c55df2110@huawei.com> <87wmcvitq8.fsf@toke.dk>
- <ae07144c-9295-4c9d-a400-153bb689fe9e@huawei.com> <871pv2igd9.fsf@toke.dk>
+ <CAHS8izPLDaF8tdDrXgUp4zLCQ4M+3rz-ncpi8ACxtcAbCNSGrg@mail.gmail.com>
+ <87cyeqml3d.fsf@toke.dk> <edc407d1-bd76-4c6b-a2b1-0f1313ca3be7@gmail.com>
+ <87tt7ziswg.fsf@toke.dk> <Z9Bo9osGdjTWct98@casper.infradead.org>
 Content-Language: en-US
 From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <871pv2igd9.fsf@toke.dk>
+In-Reply-To: <Z9Bo9osGdjTWct98@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 3/12/25 12:27, Toke Høiland-Jørgensen wrote:
-> Yunsheng Lin <linyunsheng@huawei.com> writes:
-...
->>>>> cases where it's absolutely needed.
->>>>
->>>> The above can also be done for using page_pool_item too as the
->>>> lower 2 bits can be used to indicate the pointer in 'struct page'
->>>> is 'page_pool_item' or 'page_pool', I just don't think it is
->>>> necessary yet as it might add more checking in the fast path.
+On 3/11/25 16:46, Matthew Wilcox wrote:
+> On Tue, Mar 11, 2025 at 02:44:15PM +0100, Toke Høiland-Jørgensen wrote:
+>> Pavel Begunkov <asml.silence@gmail.com> writes:
+>>> If we're out of space in the page, why can't we use struct page *
+>>> as indices into the xarray? Ala
 >>>
->>> Yup, did think about using the lower bits to distinguish if it does turn
->>> out that we can't avoid an indirection. See above; it's not actually the
+>>> struct page *p = ...;
+>>> xa_store(xarray, index=(unsigned long)p, p);
+>>>
+>>> Indices wouldn't be nicely packed, but it's still a map. Is there
+>>> a problem with that I didn't consider?
 >>
->> The 'memdesc' seems like an indirection to me when using that to shrink
->> 'struct page' to a smaller size.
+>> Huh. As I just replied to Yunsheng, I was under the impression that this
+>> was not supported. But since you're now the second person to suggest
+>> this, I looked again, and it looks like I was wrong. There does indeed
+>> seem to be other places in the kernel that does this.
+>>
+>> As you say the indices won't be as densely packed, though. So I'm
+>> wondering if using the bits in pp_magic would be better in any case to
+>> get the better packing? I guess we can try benchmarking both approaches
+>> and see if there's a measurable difference.
 > 
-> Yes, it does seem like we'll end up with an indirection of some kind
-> eventually. But let's cross that bridge when we get to it...
+> This is an absolutely terrible idea, only proposed by those who have no
+> understanding of how the XArray works.  It could not be more wasteful.
 
-At which point it might be easier to avoid all the "bump"s business,
-fully embrace net_iov / netmem format, wrap all pp pages into a
-structure on the page pool side, and pass that around. That would
-remove the indirection for most of the accesses, and the allocation
-can be easily cached.
+Which is why it's so great we have you here, not every one is
+developing xarray. So maybe it is useless for this case then.
 
 -- 
 Pavel Begunkov
