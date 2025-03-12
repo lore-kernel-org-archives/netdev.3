@@ -1,48 +1,43 @@
-Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60321E260C;
-	Wed, 12 Mar 2025 08:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471DA1B6CF1;
+	Wed, 12 Mar 2025 08:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741768779; cv=none; b=qNonJhx+y0dHWFEGAPGjFhELu7GKv9MOyhEt8fLuSEr/rnEaFO2msydubSN4NEH1VFNDiQlw31QdKjbhQN6B8SbZ65H8Q31kx9/h8eZq85oHRHnsMwnrQUAAmdnAHgbuwTML/rktjw6BP3P0anlefyPG13DZnkp9hc/J+ROkSE0=
+	t=1741769261; cv=none; b=tXJHBDVAwp9Kgx7sYfkTb31KEZpPYb0kFe9a3NQmCDKAePtsGt1SiKGFdLup8Yn3Dje2fBdGTZPrOPxL9C3wD+W7ikJ34KqszHSXKyL6dIbkltVkBWcjembyrC3gPwAD/YgbLtRiXH1WQtDV6CW090k9i2nZdZQMsTD7+I/Vcws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741768779; c=relaxed/simple;
-	bh=yNgoPSJjsf++4XSyvU8tPaX2ml30wu9PFCyRHSCM0U4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TVo/6tp9oy5GV4csKVu+i5tU8vU6sXmro2P5PYqp+7u2HHya30FvpF1rfrqeEigp+TXjByt1OPrSyRKwQVdEwKZhpOWAFuZoEjUt8cgApxH/I2GHdmwwKNFbt3tQXE1HMnalB2Z2wIBUdiJYxPjXPmthFMg8W13p9RbM+4lLYYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=buaa.edu.cn; spf=pass smtp.mailfrom=buaa.edu.cn; dkim=fail (0-bit key) header.d=buaa.edu.cn header.i=@buaa.edu.cn header.b=nKAI4Wwo reason="key not found in DNS"; arc=none smtp.client-ip=206.189.21.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=buaa.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buaa.edu.cn
+	s=arc-20240116; t=1741769261; c=relaxed/simple;
+	bh=1tRO4hH37QZmRWi+z2mHv/okE2DMGA9se8JzUfPJ/C8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dd82117fA6e3iLlN2kuu2JNhwOHJAgAiVHWKeETgscyl+zsRQua8vIua89cgQId811DuW75lR3nrupqOKPWtb/TjGn146/sAPf+Tt69fmrwQHHoVPISiF3Xp2rgSNUdcEQ879QLN0QTj6HMI5I9MM+dH5Zwm89pLPNcaGyclcWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=hGnc6ncO; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=buaa.edu.cn header.i=@buaa.edu.cn header.b="nKAI4Wwo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=buaa.edu.cn; s=buaa; h=Received:From:To:Cc:Subject:Date:
-	Message-Id:MIME-Version:Content-Transfer-Encoding; bh=5oUDC6wsjZ
-	WnHqf8K3FBO9GrUnuvrcLdJ7o5wYqKLR8=; b=nKAI4WwoRHKZacWc5f2elxeBrL
-	PDPej3tHtOJL+dJnEapzHlHd4WCRk8RGA0vGYxc9eGVIl99l7un3aR8rPCVNTX0D
-	FU4CzOMjp87COAe5i5EEzknFiVehn0Mkk5UVCgsApchTPoNrlxnGZmsPBnYNnK0n
-	n5stb56fPGQKaX2HI=
-Received: from localhost.localdomain (unknown [10.193.111.103])
-	by coremail-app1 (Coremail) with SMTP id OCz+CgA3_lMaSNFnwCS_AA--.24657S2;
-	Wed, 12 Mar 2025 16:38:50 +0800 (CST)
-From: Si-Jie Bai <sy2239101@buaa.edu.cn>
-To: luiz.dentz@gmail.com
-Cc: marcel@holtmann.org,
-	johan.hedberg@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	cuijianw@buaa.edu.cn,
-	sunyv@buaa.edu.cn,
-	baijiaju@buaa.edu.cn,
-	Si-Jie Bai <sy2239101@buaa.edu.cn>
-Subject: [PATCH] Bluetooth: HCI: Fix value of HCI_ERROR_UNSUPPORTED_REMOTE_FEATURE
-Date: Wed, 12 Mar 2025 16:38:47 +0800
-Message-Id: <20250312083847.7364-1-sy2239101@buaa.edu.cn>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="hGnc6ncO"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=X95azJM+IT89U4VuWfxRFj2NsUsKwEYbn5FZ+PCLLUA=; t=1741769260; x=1742978860; 
+	b=hGnc6ncOy9Rf2id0sdNB5ZhzlIc/P+3PVRU4AmPIm+dPUt8i5ALoSbWZsY8kID0diMNZ11Gub+0
+	c52SCajsIlQcETGuEnJOraa5rQiuWhA8QbIPGbbC0YG4oBhMFHRFq9J5PsEtOjGEisn5Gzl6LC/8Y
+	+SgUAqYuR2jpVvqX/wiNijxrQBISaAlbvYSn7AXt5z/BV+gyGMOf4oARZlTimqhzkWLfsKrfHJz08
+	gR/Sfv/8p7wmYnURkfEet3za/8dzCRgUi5e5cnbU88G3XXyhSoF9esR0r4PiHIF1j5zyaMDLFAKbr
+	O1rUhgemUmAeMXP3YEL4+B54EsYTv2Ii2iag==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tsHkX-00000008oJ0-3IUZ;
+	Wed, 12 Mar 2025 09:47:38 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Subject: pull-request: wireless-2025-03-12
+Date: Wed, 12 Mar 2025 09:46:17 +0100
+Message-ID: <20250312084733.10574-3-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,51 +45,80 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:OCz+CgA3_lMaSNFnwCS_AA--.24657S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Wr18uw15Gr4DXw15KF18AFb_yoWfurb_Aw
-	13ZF4kuryUAa4Sqr4qkan8Jw48ur1rZFykWFnxW347Jry29rs5J3sxWF4jq3W3Way7urWS
-	yF4IyFyfW343JjkaLaAFLSUrUUUU1b8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbgxFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK
-	67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I
-	0E14v26r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7Cj
-	xVAFwI0_GcCE3s1ln4kS14v26r1Y6r17M2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcV
-	Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y
-	6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-	vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
-	n4kS14v26r126r1DMxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6c
-	x26F1DJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUXVWUAwC20s02
-	6c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw
-	0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvE
-	c7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14
-	v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x
-	0JUDhLnUUUUU=
-X-CM-SenderInfo: tv1sjjizrqiqpexdthxhgxhubq/
 
-HCI_ERROR_UNSUPPORTED_REMOTE_FEATURE is actually 0x1a not 0x1e:
+Hi,
 
-BLUETOOTH CORE SPECIFICATION Version 5.3 | Vol 1, Part F
-page 371:
+Looks like I hae a couple more fixes, but that should be
+the last from what I can see now.
 
-  0x1A  Unsupported Remote Feature
+FWIW Stephen reported some conflicts between wireless and
+wireless-next, so I'll probably pull wireless into -next
+to resolve that, once this goes in.
 
-Signed-off-by: Si-Jie Bai <sy2239101@buaa.edu.cn>
----
- include/net/bluetooth/hci.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Please pull and let us know if there's any problem.
 
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index 0d51970d8..3ec915738 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -683,7 +683,7 @@ enum {
- #define HCI_ERROR_REMOTE_POWER_OFF	0x15
- #define HCI_ERROR_LOCAL_HOST_TERM	0x16
- #define HCI_ERROR_PAIRING_NOT_ALLOWED	0x18
--#define HCI_ERROR_UNSUPPORTED_REMOTE_FEATURE	0x1e
-+#define HCI_ERROR_UNSUPPORTED_REMOTE_FEATURE	0x1a
- #define HCI_ERROR_INVALID_LL_PARAMS	0x1e
- #define HCI_ERROR_UNSPECIFIED		0x1f
- #define HCI_ERROR_ADVERTISING_TIMEOUT	0x3c
--- 
-2.25.1
+Thanks,
+johannes
 
+
+
+The following changes since commit 3c6a041b317a9bb0c707343c0b99d2a29d523390:
+
+  Merge tag 'wireless-2025-03-04' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless (2025-03-04 08:48:34 -0800)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2025-03-12
+
+for you to fetch changes up to 8ae227f8a7749eec92fc381dfbe213429c852278:
+
+  wifi: mac80211: fix MPDU length parsing for EHT 5/6 GHz (2025-03-12 09:29:14 +0100)
+
+----------------------------------------------------------------
+Few more fixes:
+ - cfg80211/mac80211
+   - stop possible runaway wiphy worker
+   - EHT should not use reserved MPDU size bits
+   - don't run worker for stopped interfaces
+   - fix SA Query processing with MLO
+   - fix lookup of assoc link BSS entries
+   - correct station flush on unauthorize
+ - iwlwifi:
+   - TSO fixes
+   - fix non-MSI-X platforms
+   - stop possible runaway restart worker
+ - rejigger maintainers so I'm not CC'ed on
+   everything
+
+----------------------------------------------------------------
+Benjamin Berg (1):
+      wifi: mac80211: fix MPDU length parsing for EHT 5/6 GHz
+
+Emmanuel Grumbach (2):
+      wifi: iwlwifi: mvm: fix PNVM timeout for non-MSI-X platforms
+      wifi: mac80211: flush the station before moving it to UN-AUTHORIZED state
+
+Ilan Peer (1):
+      wifi: iwlwifi: pcie: Fix TSO preparation
+
+Johannes Berg (3):
+      wifi: rework MAINTAINERS entries a bit
+      wifi: nl80211: fix assoc link handling
+      wifi: mac80211: fix SA Query processing in MLO
+
+Miri Korenblit (3):
+      wifi: iwlwifi: trans: cancel restart work on op mode leave
+      wifi: mac80211: don't queue sdata::work for a non-running sdata
+      wifi: cfg80211: cancel wiphy_work before freeing wiphy
+
+ MAINTAINERS                                    | 37 +++++++++++++++++++-------
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.c |  2 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c    |  6 ++---
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c   | 11 ++++----
+ net/mac80211/eht.c                             |  9 ++++++-
+ net/mac80211/rx.c                              | 10 +++----
+ net/mac80211/sta_info.c                        | 20 +++++++++++---
+ net/mac80211/util.c                            |  8 +++---
+ net/wireless/core.c                            |  7 +++++
+ net/wireless/nl80211.c                         | 12 ++++++---
+ 10 files changed, 89 insertions(+), 33 deletions(-)
