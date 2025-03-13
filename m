@@ -1,39 +1,38 @@
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF92F2E3395;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AAA13C689;
 	Thu, 13 Mar 2025 10:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741862897; cv=none; b=LJS1YUXRvZCBx3Bi3UDc3QZM0QXBMNi4QBdkAY7VqNJp3AYoC4Jm/mtsShfrdrqjYvpH5nyb55agJvxE9rcZX4W68BYDOikduBI5ghoCmpdM19mOGv8M+YHseOL8jiiU8QvX0d0aZXU9oF7JIdff7H5pSkGr0IM+yF2ge+KtzOA=
+	t=1741862898; cv=none; b=q1GTdkmxR4KZALPj2kRFwV51x/1TqlsbmzRBVQJciuHEYTUmcntLcHhORgeVre/hbvlCY+XOVlQZ7Gg9Mw9XHrtnY/GtuVtJH/7ZDlC+fYOTi8s5xOM9qsmc3tKYx+BhXrgDBLfjcHMZ3r9cLM8o2GArb7kKhwyDFmGtvHeHI8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741862897; c=relaxed/simple;
-	bh=2BAgdhTG0MyMOE9u/1Mw7bOTtC21diLYJhKhPYbeD2Q=;
+	s=arc-20240116; t=1741862898; c=relaxed/simple;
+	bh=jGkhlWk2tTegMQiLWtrHHSTp67ji5KdWHFJVe5+xJHU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=IWNw3UHNmqQyiUw1Yl4AvN+yUoJTAO7tnT4O8SSsUAx9b5YaXFk9gOARHjLvprZ3UwzHKUcO0LEPGM4MqzY9HltcLLzhLRIVwqu8ITq848XmAWYEtNmemzvTMM3BfUb5IgGbGeO9oH0ZGUCQIz8KHsFpyVUb8heivEYv0brRS8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jeeKNE+f; arc=none smtp.client-ip=217.70.183.200
+	 In-Reply-To:To:Cc; b=UzM/i8VlcTMlpxUQZr1Q4qsSQMUfUvuwdpn9sK3NFbNkpZZUSFKVQBmjUx5TKS7xZGE9bpMab0R9X4FzTg2lw1XV63TlS7cKmzTTHW95fmp948tJbU5l0V+6JVVL/izeYzE3AH4NuNwChHvAU/nDuhSjpB5ZW5VRWiBc2/sR5ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mUhcr7a7; arc=none smtp.client-ip=217.70.183.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jeeKNE+f"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D329A4419B;
-	Thu, 13 Mar 2025 10:48:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mUhcr7a7"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1FB01431BA;
+	Thu, 13 Mar 2025 10:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1741862893;
+	t=1741862887;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RVlTbFyV5N/5xHl61rKIDqd8rD7gE6oj6RfqqWCHsKk=;
-	b=jeeKNE+fRwqsaUC2yMN5elP5M8g6G07RcTZphdmuPzJ36zeyeMAfsWzd1QxdbROpMuff5u
-	WXzl/ARtLzQ1juENVudcaEq71Z58NMVB3vKcxBL494Byyxt9sxwVBT3i8yzmd9ZUQhmC3E
-	E1F1vimcNjgsFQcyvLmm3FeOhqEOLXLOU1/qECABfz+xJKlczfG26adcOtfBWbFWUxIdKA
-	nbJN8DMnYoBO7cEP0Q62wpn63VDDRYmIWAR2OY/2Oz3U+5QYYCkKLWIC92z5MF3i5x+xUF
-	UDnIGpwxDntjzlGrYkxlbrYrcEVRsrabV6wiap1CCT5+w7C+m7Y6op6m4ERElg==
+	bh=H45c4NzZhV5gYbfD8p5CMhpXXGWiV6YgeCu5YDP+XW4=;
+	b=mUhcr7a7R/Grp7JlmYSr3Lk9L79pj4AWSftq0bN46L5EIZxe2YwDCRvUn9QB/sSFVf4ruG
+	iMsnrD6V7xD2K1QKX2m9EaFMsJXDTLTVKU79LcV9AWsqu9TscpRf6axzaPEijqzCQoUGJi
+	DrzPWtFuwys4yqrC0joonYcGIZC3SHjgtGS0hlzbPVFVOkpeSscgT+H36pPl19zYGf7VrB
+	HSJwg0ym3h9v/aABkO74Icxqjq0hUeCWGbqGOMmzB9wfELrfmtICLv6X56pqADesJFiOlg
+	MY3+rdThgF4e1mNMMEbfERj1ydQ9W1/L2wYUO/jGURkxuh5VaFCNBG6yEj46Xw==
 From: "Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>
-Date: Thu, 13 Mar 2025 11:48:04 +0100
-Subject: [PATCH 06/13] selftests/bpf: test_xsk: Don't exit immediately when
- gettimeofday fails
+Date: Thu, 13 Mar 2025 11:48:00 +0100
+Subject: [PATCH 02/13] selftests/bpf: test_xsk: Fix memory leaks
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250313-xsk-v1-6-7374729a93b9@bootlin.com>
+Message-Id: <20250313-xsk-v1-2-7374729a93b9@bootlin.com>
 References: <20250313-xsk-v1-0-7374729a93b9@bootlin.com>
 In-Reply-To: <20250313-xsk-v1-0-7374729a93b9@bootlin.com>
 To: =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, 
@@ -67,58 +66,98 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.14.2
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduvdejjeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomhepfdeurghsthhivghnucevuhhruhhttghhvghtucdlvgeurffhucfhohhunhgurghtihhonhdmfdcuoegsrghsthhivghnrdgtuhhruhhttghhvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegfeduhfeutddtieffteffleejffekveeviedutdegjeelfedtjeegtdejtddthfenucfkphepvdgrtddumegtsgduleemkedvheefmeguuddttdemfhelvgdumeeftgejudemjeeitdgtmedutggsrgenucevlhhushhtvghrufhiiigvpeegnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekvdehfeemugdutddtmehflegvudemfegtjedumeejiedttgemudgtsggrpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpegsrghsthhivghnrdgtuhhruhhttghhvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvkedprhgtphhtthhopegvugguhiiikeejsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmpdhrtghpt
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduvdejjeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomhepfdeurghsthhivghnucevuhhruhhttghhvghtucdlvgeurffhucfhohhunhgurghtihhonhdmfdcuoegsrghsthhivghnrdgtuhhruhhttghhvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegfeduhfeutddtieffteffleejffekveeviedutdegjeelfedtjeegtdejtddthfenucfkphepvdgrtddumegtsgduleemkedvheefmeguuddttdemfhelvgdumeeftgejudemjeeitdgtmedutggsrgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekvdehfeemugdutddtmehflegvudemfegtjedumeejiedttgemudgtsggrpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpegsrghsthhivghnrdgtuhhruhhttghhvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvkedprhgtphhtthhopegvugguhiiikeejsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmpdhrtghpt
  hhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhihkhholhgrlhesfhgsrdgtohhmpdhrtghpthhtohephihonhhghhhonhhgrdhsohhngheslhhinhhugidruggvvhdprhgtphhtthhopehmrghgnhhushdrkhgrrhhlshhsohhnsehinhhtvghlrdgtohhmpdhrtghpthhtohepmhgrrhhtihhnrdhlrghusehlihhnuhigrdguvghvpdhrtghpthhtohepsggrshhtihgvnhdrtghurhhuthgthhgvthessghoohhtlhhinhdrtghomh
 X-GND-Sasl: bastien.curutchet@bootlin.com
 
-exit_on_error() is called when gettimeofday() fails. This exits the
-program immediately and can lead to memory leaks.
+Some tests introduce memory leaks by not freeing all the pkt_stream
+objects they're creating.
 
-Return TEST_FAILURE instead of calling exit_on_error()
+Fix these memory leaks.
 
 Signed-off-by: Bastien Curutchet (eBPF Foundation) <bastien.curutchet@bootlin.com>
 ---
- tools/testing/selftests/bpf/xskxceiver.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/testing/selftests/bpf/xskxceiver.c | 32 +++++++++++++++++++++++++++++++-
+ 1 file changed, 31 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/bpf/xskxceiver.c b/tools/testing/selftests/bpf/xskxceiver.c
-index e2c136fc23ce40ff485de78dac18a4d8ba73353d..5b96f6860ff98de3c6160a1b94ae865a12121382 100644
+index 3585c5afe9842b59fbd50256e5bc83a58a0ee38f..f43a6ab524f4758d0e155c254af3838b4079df13 100644
 --- a/tools/testing/selftests/bpf/xskxceiver.c
 +++ b/tools/testing/selftests/bpf/xskxceiver.c
-@@ -1290,7 +1290,7 @@ static int receive_pkts(struct test_spec *test)
+@@ -791,6 +791,13 @@ static void pkt_stream_receive_half(struct test_spec *test)
+ 	struct pkt_stream *pkt_stream = test->ifobj_tx->xsk->pkt_stream;
+ 	u32 i;
  
- 	ret = gettimeofday(&tv_now, NULL);
- 	if (ret)
--		exit_with_error(errno);
-+		return TEST_FAILURE;
++	if (test->ifobj_rx->xsk->pkt_stream != test->rx_pkt_stream_default)
++		/* Packet stream has already been replaced so we have to release this one.
++		 * The newly created one will be freed by the restore_default() at the
++		 * end of the test
++		 */
++		pkt_stream_delete(test->ifobj_rx->xsk->pkt_stream);
++
+ 	test->ifobj_rx->xsk->pkt_stream = pkt_stream_generate(pkt_stream->nb_pkts,
+ 							      pkt_stream->pkts[0].len);
+ 	pkt_stream = test->ifobj_rx->xsk->pkt_stream;
+@@ -818,6 +825,22 @@ static void pkt_stream_even_odd_sequence(struct test_spec *test)
+ 	}
+ }
  
- 	timeradd(&tv_now, &tv_timeout, &tv_end);
++static void release_even_odd_sequence(struct test_spec *test)
++{
++	struct pkt_stream *later_free_tx = test->ifobj_tx->xsk->pkt_stream;
++	struct pkt_stream *later_free_rx = test->ifobj_rx->xsk->pkt_stream;
++	int i;
++
++	for (i = 0; i < test->nb_sockets; i++) {
++		/* later_free_{rx/tx} will be freed by restore_default() */
++		if (test->ifobj_tx->xsk_arr[i].pkt_stream != later_free_tx)
++			pkt_stream_delete(test->ifobj_tx->xsk_arr[i].pkt_stream);
++		if (test->ifobj_rx->xsk_arr[i].pkt_stream != later_free_rx)
++			pkt_stream_delete(test->ifobj_rx->xsk_arr[i].pkt_stream);
++	}
++
++}
++
+ static u64 pkt_get_addr(struct pkt *pkt, struct xsk_umem_info *umem)
+ {
+ 	if (!pkt->valid)
+@@ -2057,6 +2080,7 @@ static int testapp_stats_tx_invalid_descs(struct test_spec *test)
+ static int testapp_stats_rx_full(struct test_spec *test)
+ {
+ 	pkt_stream_replace(test, DEFAULT_UMEM_BUFFERS + DEFAULT_UMEM_BUFFERS / 2, MIN_PKT_SIZE);
++	pkt_stream_delete(test->ifobj_rx->xsk->pkt_stream);
+ 	test->ifobj_rx->xsk->pkt_stream = pkt_stream_generate(DEFAULT_UMEM_BUFFERS, MIN_PKT_SIZE);
  
-@@ -1306,7 +1306,7 @@ static int receive_pkts(struct test_spec *test)
+ 	test->ifobj_rx->xsk->rxqsize = DEFAULT_UMEM_BUFFERS;
+@@ -2068,6 +2092,7 @@ static int testapp_stats_rx_full(struct test_spec *test)
+ static int testapp_stats_fill_empty(struct test_spec *test)
+ {
+ 	pkt_stream_replace(test, DEFAULT_UMEM_BUFFERS + DEFAULT_UMEM_BUFFERS / 2, MIN_PKT_SIZE);
++	pkt_stream_delete(test->ifobj_rx->xsk->pkt_stream);
+ 	test->ifobj_rx->xsk->pkt_stream = pkt_stream_generate(DEFAULT_UMEM_BUFFERS, MIN_PKT_SIZE);
  
- 		ret = gettimeofday(&tv_now, NULL);
- 		if (ret)
--			exit_with_error(errno);
-+			return TEST_FAILURE;
+ 	test->ifobj_rx->use_fill_ring = false;
+@@ -2238,6 +2263,7 @@ static int testapp_xdp_shared_umem(struct test_spec *test)
+ {
+ 	struct xsk_xdp_progs *skel_rx = test->ifobj_rx->xdp_progs;
+ 	struct xsk_xdp_progs *skel_tx = test->ifobj_tx->xdp_progs;
++	int ret;
  
- 		if (timercmp(&tv_now, &tv_end, >)) {
- 			print_msg("ERROR: [%s] Receive loop timed out\n", __func__);
-@@ -1449,13 +1449,13 @@ static int wait_for_tx_completion(struct xsk_socket_info *xsk)
+ 	test->total_steps = 1;
+ 	test->nb_sockets = 2;
+@@ -2248,7 +2274,11 @@ static int testapp_xdp_shared_umem(struct test_spec *test)
  
- 	ret = gettimeofday(&tv_now, NULL);
- 	if (ret)
--		exit_with_error(errno);
-+		return TEST_FAILURE;
- 	timeradd(&tv_now, &tv_timeout, &tv_end);
+ 	pkt_stream_even_odd_sequence(test);
  
- 	while (xsk->outstanding_tx) {
- 		ret = gettimeofday(&tv_now, NULL);
- 		if (ret)
--			exit_with_error(errno);
-+			return TEST_FAILURE;
- 		if (timercmp(&tv_now, &tv_end, >)) {
- 			print_msg("ERROR: [%s] Transmission loop timed out\n", __func__);
- 			return TEST_FAILURE;
+-	return testapp_validate_traffic(test);
++	ret = testapp_validate_traffic(test);
++
++	release_even_odd_sequence(test);
++
++	return ret;
+ }
+ 
+ static int testapp_poll_txq_tmout(struct test_spec *test)
 
 -- 
 2.48.1
