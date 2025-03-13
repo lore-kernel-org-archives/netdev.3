@@ -1,37 +1,37 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6742269885;
-	Thu, 13 Mar 2025 16:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C617269808;
+	Thu, 13 Mar 2025 16:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741882671; cv=none; b=CBpcMDVDeGgFA+8SvZgA+AmjYfiuMvGrQmFJWetyEn0APd3LxnRcgWhJ+5Xwiw59E0m/T8/hT+IO05dL1RO0fZTRkIOhcyo0d0KIxyQC7tAx1zfkUi2dtPNC2NSy3q5uMLMeFZ61aMJUZZiKPitO+DoMVms5mmkUKHQXRPOOypg=
+	t=1741882671; cv=none; b=hQEQIma2x9OX3TJXa23ShqtYCHGlUI2MrS+bNHqhJkaoLjtqknzcTCDgkPBA3kKwPzpTxDMuXHtG2vgxU7oEGmsyZZNm3mBufb2WR2UIandjeUvxjvrQAZl/26kLLx5628CxwWGZf+wXDg1L7hiOKoK/Ef93rqCBT/hdWqKQp8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741882671; c=relaxed/simple;
-	bh=IUiUrzbIpNsn++CeN7RJzXT5fi6NuhaBEDIhz+xV8JQ=;
+	bh=7v3TujD06KFAViD9d3T0ENPYjJimOlUrSpxn1dfBAXs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=U0uMVJ/jPV2SCRWFHpbXvj1E940BKH1V7ML9zRNeBzdNil7fcfwfp8d2ki0F0xYI5L0EhQqjtwBnOZPg9Hb5n6KfxlkqOieuGLjfiMXJn7AUIP5GOF9j98LOkvogIK2azsmuLgKJaKe/ZmebWAT1utbQ5cLbl32QIrVIgD2jQ9Y=
+	 MIME-Version; b=HUwqdwgXeOhUQthF3BDRU2Q5gJ09eSWZMmD30UJrPypKncDQmSUChwCo7vLGjXcvixqmt8iNh99z72NYiCyYgIHAcTzCYvzrhqtACW9AvelgWM52EYNPheDacZinf/JMqySzoejlO/E+lnyiD5pH71yrB9Tgq4jUwuk6TIY84DQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from kero.packetmixer.de (p200300FA272413901a38a4Bc9C0DE305.dip0.t-ipconnect.de [IPv6:2003:fa:2724:1390:1a38:a4bc:9c0d:e305])
+Received: from kero.packetmixer.de (p200300fa272413901a38a4bC9c0De305.dip0.t-ipconnect.de [IPv6:2003:fa:2724:1390:1a38:a4bc:9c0d:e305])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 7FB4DFA1EE;
-	Thu, 13 Mar 2025 17:17:45 +0100 (CET)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 8687EFA132;
+	Thu, 13 Mar 2025 17:17:41 +0100 (CET)
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: davem@davemloft.net,
 	kuba@kernel.org
 Cc: netdev@vger.kernel.org,
 	b.a.t.m.a.n@lists.open-mesh.org,
-	Remi Pommarel <repk@triplefau.lt>,
+	Andy Strohman <andrew@andrewstrohman.com>,
 	stable@vger.kernel.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 4/5] batman-adv: Fix incorrect offset in batadv_tt_tvlv_ogm_handler_v1()
-Date: Thu, 13 Mar 2025 17:17:37 +0100
-Message-Id: <20250313161738.71299-5-sw@simonwunderlich.de>
+Subject: [PATCH 1/5] batman-adv: fix panic during interface removal
+Date: Thu, 13 Mar 2025 17:17:34 +0100
+Message-Id: <20250313161738.71299-2-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250313161738.71299-1-sw@simonwunderlich.de>
 References: <20250313161738.71299-1-sw@simonwunderlich.de>
@@ -43,62 +43,81 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Andy Strohman <andrew@andrewstrohman.com>
 
-Since commit 4436df478860 ("batman-adv: Add flex array to struct
-batadv_tvlv_tt_data"), the introduction of batadv_tvlv_tt_data's flex
-array member in batadv_tt_tvlv_ogm_handler_v1() put tt_changes at
-invalid offset. Those TT changes are supposed to be filled from the end
-of batadv_tvlv_tt_data structure (including vlan_data flexible array),
-but only the flex array size is taken into account missing completely
-the size of the fixed part of the structure itself.
+Reference counting is used to ensure that
+batadv_hardif_neigh_node and batadv_hard_iface
+are not freed before/during
+batadv_v_elp_throughput_metric_update work is
+finished.
 
-Fix the tt_change offset computation by using struct_size() instead of
-flex_array_size() so both flex array member and its container structure
-sizes are taken into account.
+But there isn't a guarantee that the hard if will
+remain associated with a soft interface up until
+the work is finished.
+
+This fixes a crash triggered by reboot that looks
+like this:
+
+Call trace:
+ batadv_v_mesh_free+0xd0/0x4dc [batman_adv]
+ batadv_v_elp_throughput_metric_update+0x1c/0xa4
+ process_one_work+0x178/0x398
+ worker_thread+0x2e8/0x4d0
+ kthread+0xd8/0xdc
+ ret_from_fork+0x10/0x20
+
+(the batadv_v_mesh_free call is misleading,
+and does not actually happen)
+
+I was able to make the issue happen more reliably
+by changing hardif_neigh->bat_v.metric_work work
+to be delayed work. This allowed me to track down
+and confirm the fix.
 
 Cc: stable@vger.kernel.org
-Fixes: 4436df478860 ("batman-adv: Add flex array to struct batadv_tvlv_tt_data")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Fixes: c833484e5f38 ("batman-adv: ELP - compute the metric based on the estimated throughput")
+Signed-off-by: Andy Strohman <andrew@andrewstrohman.com>
+[sven@narfation.org: prevent entering batadv_v_elp_get_throughput without
+ soft_iface]
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/translation-table.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ net/batman-adv/bat_v_elp.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 760d51fdbdf6..7d5de4cbb814 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -3959,23 +3959,21 @@ static void batadv_tt_tvlv_ogm_handler_v1(struct batadv_priv *bat_priv,
- 	struct batadv_tvlv_tt_change *tt_change;
- 	struct batadv_tvlv_tt_data *tt_data;
- 	u16 num_entries, num_vlan;
--	size_t flex_size;
-+	size_t tt_data_sz;
+diff --git a/net/batman-adv/bat_v_elp.c b/net/batman-adv/bat_v_elp.c
+index 1d704574e6bf..fbf499bcc671 100644
+--- a/net/batman-adv/bat_v_elp.c
++++ b/net/batman-adv/bat_v_elp.c
+@@ -66,12 +66,19 @@ static void batadv_v_elp_start_timer(struct batadv_hard_iface *hard_iface)
+ static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
+ {
+ 	struct batadv_hard_iface *hard_iface = neigh->if_incoming;
++	struct net_device *soft_iface = hard_iface->soft_iface;
+ 	struct ethtool_link_ksettings link_settings;
+ 	struct net_device *real_netdev;
+ 	struct station_info sinfo;
+ 	u32 throughput;
+ 	int ret;
  
- 	if (tvlv_value_len < sizeof(*tt_data))
- 		return;
++	/* don't query throughput when no longer associated with any
++	 * batman-adv interface
++	 */
++	if (!soft_iface)
++		return BATADV_THROUGHPUT_DEFAULT_VALUE;
++
+ 	/* if the user specified a customised value for this interface, then
+ 	 * return it directly
+ 	 */
+@@ -141,7 +148,7 @@ static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
  
- 	tt_data = tvlv_value;
--	tvlv_value_len -= sizeof(*tt_data);
--
- 	num_vlan = ntohs(tt_data->num_vlan);
- 
--	flex_size = flex_array_size(tt_data, vlan_data, num_vlan);
--	if (tvlv_value_len < flex_size)
-+	tt_data_sz = struct_size(tt_data, vlan_data, num_vlan);
-+	if (tvlv_value_len < tt_data_sz)
- 		return;
- 
- 	tt_change = (struct batadv_tvlv_tt_change *)((void *)tt_data
--						     + flex_size);
--	tvlv_value_len -= flex_size;
-+						     + tt_data_sz);
-+	tvlv_value_len -= tt_data_sz;
- 
- 	num_entries = batadv_tt_entries(tvlv_value_len);
- 
+ default_throughput:
+ 	if (!(hard_iface->bat_v.flags & BATADV_WARNING_DEFAULT)) {
+-		batadv_info(hard_iface->soft_iface,
++		batadv_info(soft_iface,
+ 			    "WiFi driver or ethtool info does not provide information about link speeds on interface %s, therefore defaulting to hardcoded throughput values of %u.%1u Mbps. Consider overriding the throughput manually or checking your driver.\n",
+ 			    hard_iface->net_dev->name,
+ 			    BATADV_THROUGHPUT_DEFAULT_VALUE / 10,
 -- 
 2.39.5
 
