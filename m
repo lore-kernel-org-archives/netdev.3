@@ -1,25 +1,25 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCEA26A0BA
-	for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 16:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0DB26A0F3
+	for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 16:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741884330; cv=none; b=anPZmik9UK6tcWDvuLnQV+WVzhgcnDyb5Z69N2oG6poE+nY0n6L27P8tg2jrCN5pOJSzVOc4vLEVTIyGsw5fy8vLiD2G+YqBsNWRPDQKglRpnhJ9l+KmfL67I3XBsr/S31VpqBjGHmLaG0H0wvNqL8a1F+Zc8buwIFByudeZNUM=
+	t=1741884331; cv=none; b=rQbdj2EM1cyMVMsKDHd7sMVPrm7V+W4juMen8hl5ApLo7k3Fr5I6NtdE+DOQnwT09FKs21KOATKXkj94d2f05cAz2XpIeCywXGlK9wO+8Lm7gFIdYD4TCzjbEL6dIEF0cDbCV6a/fmr3SLuddo8BfV4Jd1t0UWdCk1QKFtQLu1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741884330; c=relaxed/simple;
-	bh=57k+p9NtsYaFb+udUZ6ErgcLaD4Fhbn3xv9/HG1RZ9Q=;
+	s=arc-20240116; t=1741884331; c=relaxed/simple;
+	bh=l/SH9lwM63iubItcEfCoVV9ESdy0UjhCPBIuCZCqlig=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sx+iifIyUguyk85k3M/PZ91uq4Z24RxcJa4v7CjR+FV8vb1gObS+DQoOjyOwMZPaPl2BKfZgwRfQ1WHbhi1HaFxR9/u7IM7WhCaqqdoD7OIRKyz0GyT8o/Xkr/rga0I47brzlGx4JfMZuBaZdQuT4ZNc8+GSmevr6U0iFzBdlf0=
+	 MIME-Version; b=OuMG756zs7wEX1T7vr/OfuEyFI8fYj7XlVn40uPLX7A0C8XEAGeuHoWFQBFru1cYTIOJx+fvFaXguOp5e6icbXVkqegKnqvScSSL4Riuzco7zCILr14eGPPYOY1Ifz4NUO4m6fjGNegtwy9zgj18lQ8LAmScjdrxh/42JILAyAU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from kero.packetmixer.de (p200300FA272413901a38a4Bc9C0DE305.dip0.t-ipconnect.de [IPv6:2003:fa:2724:1390:1a38:a4bc:9c0d:e305])
+Received: from kero.packetmixer.de (p200300Fa272413901A38A4BC9c0De305.dip0.t-ipconnect.de [IPv6:2003:fa:2724:1390:1a38:a4bc:9c0d:e305])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 36BD2FA1EE;
-	Thu, 13 Mar 2025 17:45:26 +0100 (CET)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 5DAE0FA132;
+	Thu, 13 Mar 2025 17:45:28 +0100 (CET)
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: kuba@kernel.org,
 	davem@davemloft.net
@@ -27,9 +27,9 @@ Cc: netdev@vger.kernel.org,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 04/10] batman-adv: Add support for jumbo frames
-Date: Thu, 13 Mar 2025 17:45:13 +0100
-Message-Id: <20250313164519.72808-5-sw@simonwunderlich.de>
+Subject: [PATCH 06/10] batman-adv: Limit number of aggregated packets directly
+Date: Thu, 13 Mar 2025 17:45:15 +0100
+Message-Id: <20250313164519.72808-7-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250313164519.72808-1-sw@simonwunderlich.de>
 References: <20250313164519.72808-1-sw@simonwunderlich.de>
@@ -43,69 +43,58 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-Since batman-adv is not actually depending on hardware capabilities, it has
-no limit on the MTU. Only the lower hard interfaces can limit it. In case
-these have an high enough MTU or fragmentation is enabled, a higher MTU
-than 1500 can be enabled.
+The currently selected size in BATADV_MAX_AGGREGATION_BYTES (512) is chosen
+such that the number of possible aggregated packets is lower than 32. This
+number must be limited so that the type of
+batadv_forw_packet->direct_link_flags has enough bits to represent each
+packet (with the size of at least 24 bytes).
+
+This requirement is better implemented in code instead of having it inside
+a comment.
 
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/hard-interface.c | 4 +---
- net/batman-adv/main.h           | 2 ++
- net/batman-adv/soft-interface.c | 3 ++-
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ net/batman-adv/bat_iv_ogm.c | 4 ++++
+ net/batman-adv/main.h       | 3 ---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
-index 71b2236c0058..e7e7f14da03c 100644
---- a/net/batman-adv/hard-interface.c
-+++ b/net/batman-adv/hard-interface.c
-@@ -618,10 +618,8 @@ int batadv_hardif_min_mtu(struct net_device *soft_iface)
+diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
+index 8513f6661dd1..b715f7343ffd 100644
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -446,6 +446,7 @@ batadv_iv_ogm_can_aggregate(const struct batadv_ogm_packet *new_bat_ogm_packet,
+ 	struct batadv_ogm_packet *batadv_ogm_packet;
+ 	int aggregated_bytes = forw_packet->packet_len + packet_len;
+ 	struct batadv_hard_iface *primary_if = NULL;
++	u8 packet_num = forw_packet->num_packets + 1;
+ 	bool res = false;
+ 	unsigned long aggregation_end_time;
  
- 	/* the real soft-interface MTU is computed by removing the payload
- 	 * overhead from the maximum amount of bytes that was just computed.
--	 *
--	 * However batman-adv does not support MTUs bigger than ETH_DATA_LEN
- 	 */
--	return min_t(int, min_mtu - batadv_max_header_len(), ETH_DATA_LEN);
-+	return min_t(int, min_mtu - batadv_max_header_len(), BATADV_MAX_MTU);
- }
+@@ -468,6 +469,9 @@ batadv_iv_ogm_can_aggregate(const struct batadv_ogm_packet *new_bat_ogm_packet,
+ 	if (aggregated_bytes > BATADV_MAX_AGGREGATION_BYTES)
+ 		return false;
  
- /**
++	if (packet_num >= BITS_PER_TYPE(forw_packet->direct_link_flags))
++		return false;
++
+ 	/* packet is not leaving on the same interface. */
+ 	if (forw_packet->if_outgoing != if_outgoing)
+ 		return false;
 diff --git a/net/batman-adv/main.h b/net/batman-adv/main.h
-index 626618d0c366..4ecc304eaddd 100644
+index 5adefdfc69bc..c08c96b5b8b1 100644
 --- a/net/batman-adv/main.h
 +++ b/net/batman-adv/main.h
-@@ -22,6 +22,8 @@
- #define BATADV_THROUGHPUT_MAX_VALUE 0xFFFFFFFF
- #define BATADV_JITTER 20
+@@ -104,9 +104,6 @@
+  */
+ #define BATADV_TQ_SIMILARITY_THRESHOLD 50
  
-+#define BATADV_MAX_MTU (ETH_MAX_MTU - batadv_max_header_len())
-+
- /* Time To Live of broadcast messages */
- #define BATADV_TTL 50
+-/* should not be bigger than 512 bytes or change the size of
+- * forw_packet->direct_link_flags
+- */
+ #define BATADV_MAX_AGGREGATION_BYTES 512
+ #define BATADV_MAX_AGGREGATION_MS 100
  
-diff --git a/net/batman-adv/soft-interface.c b/net/batman-adv/soft-interface.c
-index d893c8013261..b1127e6e8900 100644
---- a/net/batman-adv/soft-interface.c
-+++ b/net/batman-adv/soft-interface.c
-@@ -790,7 +790,7 @@ static int batadv_softif_init_late(struct net_device *dev)
- 	atomic_set(&bat_priv->log_level, 0);
- #endif
- 	atomic_set(&bat_priv->fragmentation, 1);
--	atomic_set(&bat_priv->packet_size_max, ETH_DATA_LEN);
-+	atomic_set(&bat_priv->packet_size_max, BATADV_MAX_MTU);
- 	atomic_set(&bat_priv->bcast_queue_left, BATADV_BCAST_QUEUE_LEN);
- 	atomic_set(&bat_priv->batman_queue_left, BATADV_BATMAN_QUEUE_LEN);
- 
-@@ -1043,6 +1043,7 @@ static void batadv_softif_init_early(struct net_device *dev)
- 	 * have not been initialized yet
- 	 */
- 	dev->mtu = ETH_DATA_LEN;
-+	dev->max_mtu = BATADV_MAX_MTU;
- 
- 	/* generate random address */
- 	eth_hw_addr_random(dev);
 -- 
 2.39.5
 
