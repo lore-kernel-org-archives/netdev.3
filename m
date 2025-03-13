@@ -1,131 +1,112 @@
-Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C263266B5D;
-	Thu, 13 Mar 2025 12:20:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823CA266F09
+	for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 12:24:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741868421; cv=none; b=sWjBBsEHjWW6eY+NsovhRElRYFz/H9oEql8tAdv7rRJE/m/YJ0jwWn65UcU5ZQA4wzJh8m5HnBOt8kHjzMAzS4Neh3z7IJvGCHhHmUyWErTOUPkjw7AP8w5OgiVOASCxrH2Ds1Pp/WqqcW3apffSig79LfduC5Wr5GmmUkrqKO4=
+	t=1741868699; cv=none; b=RVyERIPspMHSAECde21RnQwVi+Bv6VRfmmWoQQJAIvB/FjxY/KNYtxdPwgUdlHJU3U1PgdjiXMWiLNk6Fy/wst3kXGG/p0jp6oLrmVXmQJMYNrjT98x39neMH0TBIwv5HfHpaY2JGsF8eCsArBNUdIfMsUW2Hml+YQ/YeAh0MYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741868421; c=relaxed/simple;
-	bh=3iGZSwuLq3yrknLL5RySYUSMhsg9VkT40uzIPuymtTY=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=maICDNhW4rWL+nUmSYmJ7AOFGGloATEYI203GxGa5SOGl9SWxXOr+JGa2Uz4vUiDHLc/FnVk2GUY+Jp8LBRCpah8oeWDhGj66p5Vkji1DdzochbgjZpN1Ds5JEMP5K/Im9fnffr0K7JzWG+nXTBmS37D8xPaZe6x6COpGPovc9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=GK71GE4t; arc=none smtp.client-ip=79.135.106.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1741868699; c=relaxed/simple;
+	bh=3piGY6Mos9lWEASypJlgl6NU89/tZvm07nsj0xWexd4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pqPOYtwaerhTBw+QZ9kz4ThhIo/hMJRTpktJRycJJT1RKXwt/ar3+JLEw5s/T01K6Tu+T6vWO6V+Uq9trhOu1G0oyea1F8mwQUdPv9UBflrJTuWvn8XKS5mYm3AN9KS0zQHaebCfiBBaMr3zPuZ2gaPPkWdtVdXn4kqbrpr1d1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SYTlV8iM; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="GK71GE4t"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=7xxo62i6crbnlchhsuekovtiea.protonmail; t=1741868416; x=1742127616;
-	bh=TathujLwFVMTye6lELcmgVbrxs57jJ//7gvzSyvksPM=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=GK71GE4ti4a71r/hc0+htbUWiwqKzC9yioxtJahuey4bUugslOMvEztwq+bQ0lfHa
-	 gi5l8l2xFIoGcpOrJDgreVJ3qFVQq7Oq2POsTU38znOQvgAs4MR2y8ZgDbKf95uAEh
-	 z1PqPpePqBL4RM8zRvqo8eQBKWR8iOMHKSR9Raz2HKZwGHefGNRoTDaMby3f7dY1vY
-	 uDGgnfbycgdXNIuMNgx5SGMHGdMqejzOd/fqhI0XkWPz2HNTD7m6lnF+rUuPDkcTZl
-	 uk+xy+ZkylddaxdRx9U44x1m+x5f09eOh5pedWWQwJ/uSQv4GJLKMKztpXs8eQtWIf
-	 r0BzW3/UhN5+g==
-Date: Thu, 13 Mar 2025 12:20:11 +0000
-To: Antonio Hickey <contact@antoniohickey.com>, Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Benno Lossin <y86-dev@protonmail.com>, linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, netdev@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH 3/3] rust: replace `addr_of[_mut]!` with `&raw [mut]`
-Message-ID: <D8F4TDZXEN5K.10OKB62YV8AKT@proton.me>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: f64ae2ea4dbafc85decddca94ca7eebb4bcd48cf
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SYTlV8iM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741868696;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=41pRJjFSQunsUf3a0XIIQpPveoWhQuMHRR8nqruq92Q=;
+	b=SYTlV8iMBX/OFZegE5Y5fCvF4+QCbUHOJSVYYkd0RJKNCrom1IXQj2CoxUl/Gz1R1O2flx
+	GIJU4HZypKYE3bxIG45jvgRXW1XHW3Q2TUR6a0UFPI/A94RnYaQx/IDlN7fb0XNut2Ib7W
+	h5K3HJpcb9pqT0RMdGjCUvwBu8MCppg=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-610-ocsOEouFPRSrhfTj1ROZ5Q-1; Thu, 13 Mar 2025 08:24:53 -0400
+X-MC-Unique: ocsOEouFPRSrhfTj1ROZ5Q-1
+X-Mimecast-MFC-AGG-ID: ocsOEouFPRSrhfTj1ROZ5Q_1741868692
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43cf446681cso4583985e9.1
+        for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 05:24:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741868692; x=1742473492;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=41pRJjFSQunsUf3a0XIIQpPveoWhQuMHRR8nqruq92Q=;
+        b=tRhAbih+6q3V4LCGpA7JBYBiycDGx6asF629T1GOcrrHH2FoGvvJ5ado62w0oKtjZi
+         axoSC+MKPYv90DRNAFmuhMLiziB7UrGoxC4DcKdwDJEWDS/34Fvb6EvawW4MG7Pl/sw2
+         qdk7yBr5UB8+rSrTrCkfEMzHPzMZEuvbJe0F7iwK5ewwLSIq4IWsJOI75IWsQRSypt2W
+         4r/dmWnQA9cKcf6Fy/XUHGscFDquorqODGvFqnOcKewT/sPzm5MgJwKZEo7PGILFnpwz
+         qWrBDQh+ZCoRvs/yxXa6b9+SolC0aD2Gwx+PNFdV0EYHZpaLpxxYSw/HS+fr4fNahDLo
+         ckFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWn9ndg5gAveUX+9vQVOLxgThNzqO9a9pBz7LsfxZm1nimFqOIS+cflfYai2aEMP4WkmAoMCgs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxM7XZRmhS/vulzXixjvAYjCLf75PWNPla/iyiYWiA9o6JWBbdb
+	iWKOvhhWmhQ488jm/h/t3x7+jQs5/+fJrXJqA2ik2LwrabTakN6ZqxRZ42FYt6p7dNirt8HO5/K
+	hjfa9npLk8W6rlTqOWBnyIpEe63jwAzVhzkDw01yzK9o2ibLgVWexUg==
+X-Gm-Gg: ASbGncsMrO7St5wJ+Bx6WEIJz+Un2Ni+MmWxx+LGnv9Efr41dtWE5yCwP2M/rrFrQiu
+	UC4fF06gcDLWYaGzxQGiqmptHT89wX+o/HaEqvPtA3DqkJa6KJJeMyT403tifTYy/jaON4rZXBV
+	T8cPb280YDtnn1+39h5i0ofWe7S6SI5VT/KEfmnDjDYrb+XgB7LdykwbRCdlr2GqQ3tD0WofBMB
+	iKLZ1vzugI4iYQgmMgdaO7B2RdpWZmg3iKXSeSzFKqUaRA80lf/Vhm/+PolywVQDaiVgXsQX7IT
+	s4XwgsmeIPRAOsGyyS4hc4owtkCy5WwIzKzDq8ZI
+X-Received: by 2002:a05:600c:3545:b0:434:fa55:eb56 with SMTP id 5b1f17b1804b1-43c5a600909mr210437635e9.7.1741868692009;
+        Thu, 13 Mar 2025 05:24:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFTta66vARQNmkgMsRaEzJLNRUO1YbSPiH3Ss6xOHBxWgJdBqQI4Hnl8PBkX5FvrFzJP6jwiQ==
+X-Received: by 2002:a05:600c:3545:b0:434:fa55:eb56 with SMTP id 5b1f17b1804b1-43c5a600909mr210437455e9.7.1741868691619;
+        Thu, 13 Mar 2025 05:24:51 -0700 (PDT)
+Received: from [192.168.88.253] (146-241-6-87.dyn.eolo.it. [146.241.6.87])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d0a7310e1sm52414735e9.6.2025.03.13.05.24.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Mar 2025 05:24:51 -0700 (PDT)
+Message-ID: <932f543d-8fa4-4891-a804-f58a55356ab9@redhat.com>
+Date: Thu, 13 Mar 2025 13:24:49 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rndis_host: Flag RNDIS modems as WWAN devices
+To: Lubomir Rintel <lkundrak@v3.sk>, linux-usb@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>
+References: <20250311091035.2523903-1-lkundrak@v3.sk>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250311091035.2523903-1-lkundrak@v3.sk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu Mar 13, 2025 at 6:33 AM CET, Antonio Hickey wrote:
-> Replacing all occurrences of `addr_of!(place)` with `&raw place`, and
-> all occurrences of `addr_of_mut!(place)` with `&raw mut place`.
->
-> Utilizing the new feature will allow us to reduce macro complexity, and
-> improve consistency with existing reference syntax as `&raw`, `&raw mut`
-> is very similar to `&`, `&mut` making it fit more naturally with other
-> existing code.
->
-> Depends on: Patch 1/3 0001-rust-enable-raw_ref_op-feature.patch
+On 3/11/25 10:10 AM, Lubomir Rintel wrote:
+> Set FLAG_WWAN instead of FLAG_ETHERNET for RNDIS interfaces on Mobile
+> Broadband Modems, as opposed to regular Ethernet adapters.
+> 
+> Otherwise NetworkManager gets confused, misjudges the device type,
+> and wouldn't know it should connect a modem to get the device to work.
+> What would be the result depends on ModemManager version -- older
+> ModemManager would end up disconnecting a device after an unsuccessful
+> probe attempt (if it connected without needing to unlock a SIM), while
+> a newer one might spawn a separate PPP connection over a tty interface
+> instead, resulting in a general confusion and no end of chaos.
+> 
+> The only way to get this work reliably is to fix the device type
+> and have good enough version ModemManager (or equivalent).
+> 
+> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 
-This information shouldn't be in the commit message. You can put it
-below the `---` (that won't end up in the commit message). But since you
-sent this as part of a series, you don't need to mention it.
+This looks like a fix for the net tree, could you please provide a
+suitable 'Fixes' tag? Also next time please additionally specify the
+target tree in the subj prefix,
 
-> Suggested-by: Benno Lossin <y86-dev@protonmail.com>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1148
-> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
-> ---
->  rust/kernel/block/mq/request.rs        |  4 ++--
->  rust/kernel/faux.rs                    |  4 ++--
->  rust/kernel/fs/file.rs                 |  2 +-
->  rust/kernel/init.rs                    |  8 ++++----
->  rust/kernel/init/macros.rs             | 28 +++++++++++++-------------
->  rust/kernel/jump_label.rs              |  4 ++--
->  rust/kernel/kunit.rs                   |  4 ++--
->  rust/kernel/list.rs                    |  2 +-
->  rust/kernel/list/impl_list_item_mod.rs |  6 +++---
->  rust/kernel/net/phy.rs                 |  4 ++--
->  rust/kernel/pci.rs                     |  4 ++--
->  rust/kernel/platform.rs                |  4 +---
->  rust/kernel/rbtree.rs                  | 22 ++++++++++----------
->  rust/kernel/sync/arc.rs                |  2 +-
->  rust/kernel/task.rs                    |  4 ++--
->  rust/kernel/workqueue.rs               |  8 ++++----
->  16 files changed, 54 insertions(+), 56 deletions(-)
+Thanks!
 
-[...]
-
-> diff --git a/rust/kernel/jump_label.rs b/rust/kernel/jump_label.rs
-> index 4e974c768dbd..05d4564714c7 100644
-> --- a/rust/kernel/jump_label.rs
-> +++ b/rust/kernel/jump_label.rs
-> @@ -20,8 +20,8 @@
->  #[macro_export]
->  macro_rules! static_branch_unlikely {
->      ($key:path, $keytyp:ty, $field:ident) =3D> {{
-> -        let _key: *const $keytyp =3D ::core::ptr::addr_of!($key);
-> -        let _key: *const $crate::bindings::static_key_false =3D ::core::=
-ptr::addr_of!((*_key).$field);
-> +        let _key: *const $keytyp =3D &raw $key;
-
-This should be `&raw const $key`. I wrote that wrongly in the issue.
-
-> +        let _key: *const $crate::bindings::static_key_false =3D &raw (*_=
-key).$field;
-
-Same here.
-
->          let _key: *const $crate::bindings::static_key =3D _key.cast();
-> =20
->          #[cfg(not(CONFIG_JUMP_LABEL))]
-> diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-> index 824da0e9738a..18357dd782ed 100644
-> --- a/rust/kernel/kunit.rs
-> +++ b/rust/kernel/kunit.rs
-> @@ -128,9 +128,9 @@ unsafe impl Sync for UnaryAssert {}
->              unsafe {
->                  $crate::bindings::__kunit_do_failed_assertion(
->                      kunit_test,
-> -                    core::ptr::addr_of!(LOCATION.0),
-> +                    &raw LOCATION.0,
-
-And here.
-
->                      $crate::bindings::kunit_assert_type_KUNIT_ASSERTION,
-> -                    core::ptr::addr_of!(ASSERTION.0.assert),
-> +                    &raw ASSERTION.0.assert,
-
-Lastly here as well.
-
----
-Cheers,
-Benno
+Paolo
 
