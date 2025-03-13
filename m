@@ -1,121 +1,75 @@
-Received: from orbyte.nwl.cc (orbyte.nwl.cc [151.80.46.58])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D163726658F
-	for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 11:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=151.80.46.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E19267399;
+	Thu, 13 Mar 2025 12:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741866742; cv=none; b=SiqRtlHaDi5x+nKS+SajqaCOupGPKS/XMhHgdRWHZFbEV69FFObA9B4k+xCRzpL8yZUboPm+kmFretXLx2BqfMOuIdIDnOlgJXI6zYAc0NyvnMeNZd3JcmdBWc27gv2IkpknuettyrKrGl7u4PTTUDeqr2rwhGOXPcrrd67ULdg=
+	t=1741867408; cv=none; b=MOGYJ5X8pBcK3oXdRorC8oj1mQw+QoqUw2zTwV5TIwypqJU4Y/lSQ3YxyHiZxTRB9KYE/GJWEAI03Oh4JG4cQQ3gGfxAsfb/1cH84xiX5olxOH+lk347dHUkdo5PFDUuLaPgZuWEXjuWq0QGjO7APotIeYbsljaGX/9zPHTQvz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741866742; c=relaxed/simple;
-	bh=hvhONuS1Va4aXa4gexiTlMB9pMUi68he2/K9g5leyVw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hzIFMHA5X8mcKMt0QAEZtsJRRGge0RsGDRHb70Dh4SvXuRf1WtAV1YGwhKSgqUVI7UG+c0cQB7k8bqRrUs1AG37Ror8j7YDUqEbZgrgMMZLKi4jEBWgnXgzUahcfGizbgtOFCSNGeDfZAtfHHeZwQpOoK92S2YOn0Td49K2nIy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nwl.cc; spf=pass smtp.mailfrom=nwl.cc; dkim=pass (2048-bit key) header.d=nwl.cc header.i=@nwl.cc header.b=jQMJNpEA; arc=none smtp.client-ip=151.80.46.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nwl.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nwl.cc
+	s=arc-20240116; t=1741867408; c=relaxed/simple;
+	bh=CPtuIJFPbVn0H1c4e5GFM0xMz0llPlIszfF5oAWZMQs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=JVzHQ1wSC9/klSk8w62HlArMU8ydlyPMdyntvgV7uYomK3yevpqSxe2Coh7/AhnRy9QnCs/dasZ3Kclb7/W3BEIW33vtYSAeZXhABhfdm0MF0/3qyJ1CExNlRrl55TR9Cd7d7KrVcITeKutnXzplQPO2Qa6zY/yw6+HzI7qOHVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hK6mGsH3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nwl.cc header.i=@nwl.cc header.b="jQMJNpEA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nwl.cc;
-	s=mail2022; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=ViwQmQRnI/xG0YiBwrcfVedfKN8UHZeYrhdukRSyi/A=; b=jQMJNpEAeETeirigfByVTis7rA
-	MZ3sNKJdWxEerTDffJoM6O9+DvVTVP3PmtBLPdYNVZIhMXc57NHGMAHVdKW5y1X2mHBR3MmvxgKwK
-	RJf+GlKHTvlouNmbvw+rORVXvfgaJiSOx8tRyTKJ8IE5Z1BZ7MK1LqITpE8Wk/RvRYuYa3umqjFst
-	a8T9HoF22GBTvPoaErVlt4L1IXhfIuuL8kDtXmyCx7Z494kijVlVe31xBg6RQm7aVljrbCnAPUn2l
-	Rx27hZln7aRuOxSvOYMas0KuYkFLi7uNSvI0DmvBrWypNysIAQvecslg7jR20uDvMwVUJcXKndiog
-	aCmfr4Rw==;
-Received: from n0-1 by orbyte.nwl.cc with local (Exim 4.97.1)
-	(envelope-from <phil@nwl.cc>)
-	id 1tsgju-000000006Xv-1bR2;
-	Thu, 13 Mar 2025 12:28:38 +0100
-Date: Thu, 13 Mar 2025 12:28:38 +0100
-From: Phil Sutter <phil@nwl.cc>
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: Matteo Croce <technoboy85@gmail.com>, netdev@vger.kernel.org,
-	Matteo Croce <teknoraver@meta.com>
-Subject: Re: [PATCH iproute2-next v2] color: default to dark color theme
-Message-ID: <Z9LBZsdh3PsjuB28@orbyte.nwl.cc>
-Mail-Followup-To: Phil Sutter <phil@nwl.cc>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Matteo Croce <technoboy85@gmail.com>, netdev@vger.kernel.org,
-	Matteo Croce <teknoraver@meta.com>
-References: <20250310203609.4341-1-technoboy85@gmail.com>
- <20250310141216.5cdfd133@hermes.local>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hK6mGsH3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCCBDC4CEDD;
+	Thu, 13 Mar 2025 12:03:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741867407;
+	bh=CPtuIJFPbVn0H1c4e5GFM0xMz0llPlIszfF5oAWZMQs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=hK6mGsH3rg4vRaCqNpeuDMLvnHjtrzA8hEOrVGlDuIMCXElvLAdF+pCTVgk4GzDUD
+	 AlMr/OsZUbPc61VpeBcung5hoDwP3QKeHWTm3aa09PtvYRx4VWif5eqxAhAqhKiZF2
+	 5VuiDyX0VebFTq6FRmcaJBaAvItv1UQa9MwQOZHXGJ9vmM1MEETfmK5LI9hY6+pRQL
+	 UlHzuS3ahTwu2nnXtUNwLzhVSrIIyijRN3D9JykbtQDJXB7zOSql3aTM0e3rGFTsjL
+	 t3dB0FZlzrz3FlRHqVkQ1YX8JPHaV27jawP4V3jCjPV2wvA3NKXNRzFPMRyQrLO/9b
+	 1wMLrMgm8Q4cQ==
+From: Leon Romanovsky <leon@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>, 
+ Konstantin Taranov <kotaranov@microsoft.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ longli@linuxonhyperv.com
+Cc: linux-rdma@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+ Long Li <longli@microsoft.com>
+In-Reply-To: <1741821332-9392-1-git-send-email-longli@linuxonhyperv.com>
+References: <1741821332-9392-1-git-send-email-longli@linuxonhyperv.com>
+Subject: Re: [patch rdma-next v6 1/2] net: mana: Change the function
+ signature of mana_get_primary_netdev_rcu
+Message-Id: <174186740244.531606.4287471152182071574.b4-ty@kernel.org>
+Date: Thu, 13 Mar 2025 08:03:22 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250310141216.5cdfd133@hermes.local>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-37811
 
-On Mon, Mar 10, 2025 at 02:12:16PM -0700, Stephen Hemminger wrote:
-> On Mon, 10 Mar 2025 21:36:09 +0100
-> Matteo Croce <technoboy85@gmail.com> wrote:
+
+On Wed, 12 Mar 2025 16:15:31 -0700, longli@linuxonhyperv.com wrote:
+> Change mana_get_primary_netdev_rcu() to mana_get_primary_netdev(), and
+> return the ndev with refcount held. The caller is responsible for dropping
+> the refcount.
 > 
-> > From: Matteo Croce <teknoraver@meta.com>
-> > 
-> > The majority of Linux terminals are using a dark background.
-> > iproute2 tries to detect the color theme via the `COLORFGBG` environment
-> > variable, and defaults to light background if not set.
-> >
+> Also drop the check for IFF_SLAVE as it is not necessary if the upper
+> device is present.
 > 
-> This is not true. The default gnome terminal color palette is not dark.
+> [...]
 
-ACK. Ever since that famous movie I stick to the real(TM) programmer
-colors of green on black[1], but about half of all the blue pill takers
-probably don't.
+Applied, thanks!
 
-> > Change the default behaviour to dark background, and while at it change
-> > the current logic which assumes that the color code is a single digit.
-> > 
-> > Signed-off-by: Matteo Croce <teknoraver@meta.com>
-> 
-> The code was added to follow the conventions of other Linux packages.
-> Probably best to do something smarter (like util-linux) or more exactly
-> follow what systemd or vim are doing.
+[1/2] net: mana: Change the function signature of mana_get_primary_netdev_rcu
+      https://git.kernel.org/rdma/rdma/c/a8445cfec101c4
+[2/2] RDMA/mana_ib: Handle net event for pointing to the current netdev
+      https://git.kernel.org/rdma/rdma/c/bee35b7161aaae
 
-I can't recall a single system on which I didn't have to 'set bg=dark'
-in .vimrc explicitly, so this makes me curious: Could you name a
-concrete example of working auto color adjustment to given terminal
-background?
+Best regards,
+-- 
+Leon Romanovsky <leon@kernel.org>
 
-Looking at vim-9.1.0794 source code, I see:
-
-|     char_u *
-| term_bg_default(void)
-| {
-| #if defined(MSWIN)
-|     // DOS console is nearly always black
-|     return (char_u *)"dark";
-| #else
-|     char_u      *p;
-| 
-|     if (STRCMP(T_NAME, "linux") == 0
-|             || STRCMP(T_NAME, "screen.linux") == 0
-|             || STRNCMP(T_NAME, "cygwin", 6) == 0
-|             || STRNCMP(T_NAME, "putty", 5) == 0
-|             || ((p = mch_getenv((char_u *)"COLORFGBG")) != NULL
-|                 && (p = vim_strrchr(p, ';')) != NULL
-|                 && ((p[1] >= '0' && p[1] <= '6') || p[1] == '8')
-|                 && p[2] == NUL))
-|         return (char_u *)"dark";
-|     return (char_u *)"light";
-| #endif
-| }
-
-So apart from a little guesswork based on terminal names, this does the
-same as iproute currently (in his commit 54eab4c79a608 implementing
-set_color_palette(), Petr Vorel even admitted where he had copied the
-code from). No hidden gems to be found in vim sources, at least!
-
-Cheers, Phil
-
-[1] And have the screen rotated 90 degrees to make it more realistic,
-    but that's off topic.
