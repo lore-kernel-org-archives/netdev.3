@@ -1,173 +1,121 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from orbyte.nwl.cc (orbyte.nwl.cc [151.80.46.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000EB266B73
-	for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 11:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D163726658F
+	for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 11:52:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=151.80.46.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741866625; cv=none; b=AdFKgyC5AlncSVSOFBf7KUhoyWPYh0AvaWjIQEjSMlQsJe4S/GLrpWVJSUmbnAQUpWsxVmQj1YktaIToTtHjxGpywqa96+kBDHN4x6t8cjUJqusG3VDHbYGpyvoFuBKaZdwTPmQIlIhH3+l1AEnWHX6JNVg+b0/w+WjBuCyjxs0=
+	t=1741866742; cv=none; b=SiqRtlHaDi5x+nKS+SajqaCOupGPKS/XMhHgdRWHZFbEV69FFObA9B4k+xCRzpL8yZUboPm+kmFretXLx2BqfMOuIdIDnOlgJXI6zYAc0NyvnMeNZd3JcmdBWc27gv2IkpknuettyrKrGl7u4PTTUDeqr2rwhGOXPcrrd67ULdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741866625; c=relaxed/simple;
-	bh=U0gsi+E+k3dwn/YEhXBoNvUugd/LyG9kvHBZ45yX0aE=;
+	s=arc-20240116; t=1741866742; c=relaxed/simple;
+	bh=hvhONuS1Va4aXa4gexiTlMB9pMUi68he2/K9g5leyVw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FQGilmZuoxgcdgnXTAeWTJvZCGDKWr0iu2XTTSBQg8hBBt74Wn5lbjtZsx9n7BMQU8uE8v46lr+obeOHztWn8TZCczNYisFp2tHxoAN5UkvS7fMSvctZi6C7bWVQ0x+oUu1SAPxSO6Djwmd3ivY4xP7QuYfRVQZPQwwqs4PjP7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U4XlGdFc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E17I1zcd; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=hzIFMHA5X8mcKMt0QAEZtsJRRGge0RsGDRHb70Dh4SvXuRf1WtAV1YGwhKSgqUVI7UG+c0cQB7k8bqRrUs1AG37Ror8j7YDUqEbZgrgMMZLKi4jEBWgnXgzUahcfGizbgtOFCSNGeDfZAtfHHeZwQpOoK92S2YOn0Td49K2nIy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nwl.cc; spf=pass smtp.mailfrom=nwl.cc; dkim=pass (2048-bit key) header.d=nwl.cc header.i=@nwl.cc header.b=jQMJNpEA; arc=none smtp.client-ip=151.80.46.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nwl.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nwl.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U4XlGdFc";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E17I1zcd"
-Date: Thu, 13 Mar 2025 12:50:18 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741866620;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W6UZLQU31/SVLLnCBXmHpww0TaJSbYXeNPsEYKH8Ub4=;
-	b=U4XlGdFcm4bxwB+EtvzyubiNM5hrwfb/Fw6fjHgMMaaLxhgs7hdt9MlXtfeCdpZerMKDxj
-	Mc9I5MmP21G08sTYmtpxHrJTR1iJseagwxx9Gb8L1EJIKwJuX1aCIajidpaFnZbkj9FzUY
-	kx82UsitjXKLb75oAJH9zroYdkn58PA/roGiHGgBmvd3kxFdtsjSJetEwHQTJD13vKM3ua
-	mImGqGsUJMEK1+kmnOw+eK8zxre1Y/ee5Ws4jZM2oFZ8AUY31KjrZgisENk8XRc3SEh48t
-	SuMZFNiUNJVzNlFG3lWcnc9qNJfU7KBqv1VjMSJKcYUckA/QdkI0clXAH8/y2Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741866620;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W6UZLQU31/SVLLnCBXmHpww0TaJSbYXeNPsEYKH8Ub4=;
-	b=E17I1zcdJR80NEjHZUbiC1RoJ8tRGS0KtdwwatG5Mwzzvuop6YwwmXxIwoi1gPSgSDAk+5
-	sJR4ww5pMNBB0UAg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: netdev@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	dev@openvswitch.org, Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: Re: [ovs-dev] [PATCH net-next 11/18] openvswitch: Use nested-BH
- locking for ovs_actions.
-Message-ID: <20250313115018.7xe77nJ-@linutronix.de>
-References: <20250309144653.825351-1-bigeasy@linutronix.de>
- <20250309144653.825351-12-bigeasy@linutronix.de>
- <9a1ededa-8b1f-4118-94b4-d69df766c61e@ovn.org>
- <20250310144459.wjPdPtUo@linutronix.de>
- <fd4c8167-0c2d-4f5f-bf70-1efcdf3de2fb@ovn.org>
+	dkim=pass (2048-bit key) header.d=nwl.cc header.i=@nwl.cc header.b="jQMJNpEA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nwl.cc;
+	s=mail2022; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=ViwQmQRnI/xG0YiBwrcfVedfKN8UHZeYrhdukRSyi/A=; b=jQMJNpEAeETeirigfByVTis7rA
+	MZ3sNKJdWxEerTDffJoM6O9+DvVTVP3PmtBLPdYNVZIhMXc57NHGMAHVdKW5y1X2mHBR3MmvxgKwK
+	RJf+GlKHTvlouNmbvw+rORVXvfgaJiSOx8tRyTKJ8IE5Z1BZ7MK1LqITpE8Wk/RvRYuYa3umqjFst
+	a8T9HoF22GBTvPoaErVlt4L1IXhfIuuL8kDtXmyCx7Z494kijVlVe31xBg6RQm7aVljrbCnAPUn2l
+	Rx27hZln7aRuOxSvOYMas0KuYkFLi7uNSvI0DmvBrWypNysIAQvecslg7jR20uDvMwVUJcXKndiog
+	aCmfr4Rw==;
+Received: from n0-1 by orbyte.nwl.cc with local (Exim 4.97.1)
+	(envelope-from <phil@nwl.cc>)
+	id 1tsgju-000000006Xv-1bR2;
+	Thu, 13 Mar 2025 12:28:38 +0100
+Date: Thu, 13 Mar 2025 12:28:38 +0100
+From: Phil Sutter <phil@nwl.cc>
+To: Stephen Hemminger <stephen@networkplumber.org>
+Cc: Matteo Croce <technoboy85@gmail.com>, netdev@vger.kernel.org,
+	Matteo Croce <teknoraver@meta.com>
+Subject: Re: [PATCH iproute2-next v2] color: default to dark color theme
+Message-ID: <Z9LBZsdh3PsjuB28@orbyte.nwl.cc>
+Mail-Followup-To: Phil Sutter <phil@nwl.cc>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Matteo Croce <technoboy85@gmail.com>, netdev@vger.kernel.org,
+	Matteo Croce <teknoraver@meta.com>
+References: <20250310203609.4341-1-technoboy85@gmail.com>
+ <20250310141216.5cdfd133@hermes.local>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fd4c8167-0c2d-4f5f-bf70-1efcdf3de2fb@ovn.org>
+In-Reply-To: <20250310141216.5cdfd133@hermes.local>
 
-On 2025-03-10 17:56:09 [+0100], Ilya Maximets wrote:
-> >>> +		local_lock_nested_bh(&ovs_actions.bh_lock);
-> >>
-> >> Wouldn't this cause a warning when we're in a syscall/process context?
+On Mon, Mar 10, 2025 at 02:12:16PM -0700, Stephen Hemminger wrote:
+> On Mon, 10 Mar 2025 21:36:09 +0100
+> Matteo Croce <technoboy85@gmail.com> wrote:
+> 
+> > From: Matteo Croce <teknoraver@meta.com>
 > > 
-> > My understanding is that is only invoked in softirq context. Did I
-> > misunderstood it?
+> > The majority of Linux terminals are using a dark background.
+> > iproute2 tries to detect the color theme via the `COLORFGBG` environment
+> > variable, and defaults to light background if not set.
+> >
 > 
-> It can be called from the syscall/process context while processing
-> OVS_PACKET_CMD_EXECUTE request.
-> 
-> > Otherwise that this_cpu_ptr() above should complain
-> > that preemption is not disabled and if preemption is indeed not disabled
-> > how do you ensure that you don't get preempted after the
-> > __this_cpu_inc_return() in several tasks (at the same time) leading to
-> > exceeding the OVS_RECURSION_LIMIT?
-> 
-> We disable BH in this case, so it should be safe (on non-RT).  See the
-> ovs_packet_cmd_execute() for more details.
+> This is not true. The default gnome terminal color palette is not dark.
 
-Yes, exactly. So if BH is disabled then local_lock_nested_bh() can
-safely acquire a per-CPU spinlock on PREEMPT_RT here. This basically
-mimics the local_bh_disable() behaviour in terms of exclusive data
-structures on a smaller scope.
+ACK. Ever since that famous movie I stick to the real(TM) programmer
+colors of green on black[1], but about half of all the blue pill takers
+probably don't.
 
-> >>> +		ovs_act->owner = current;
-> >>> +	}
-> >>> +
-> >>>  	level = __this_cpu_inc_return(ovs_actions.exec_level);
-> >>>  	if (unlikely(level > OVS_RECURSION_LIMIT)) {
-> >>>  		net_crit_ratelimited("ovs: recursion limit reached on datapath %s, probable configuration error\n",
-> >>> @@ -1710,5 +1718,10 @@ int ovs_execute_actions(struct datapath *dp, struct sk_buff *skb,
-> >>>  
-> >>>  out:
-> >>>  	__this_cpu_dec(ovs_actions.exec_level);
-> >>> +
-> >>> +	if (level == 1) {
-> >>> +		ovs_act->owner = NULL;
-> >>> +		local_unlock_nested_bh(&ovs_actions.bh_lock);
-> >>> +	}
-> >>
-> >> Seems dangerous to lock every time the owner changes but unlock only
-> >> once on level 1.  Even if this works fine, it seems unnecessarily
-> >> complicated.  Maybe it's better to just lock once before calling
-> >> ovs_execute_actions() instead?
+> > Change the default behaviour to dark background, and while at it change
+> > the current logic which assumes that the color code is a single digit.
 > > 
-> > My understanding is this can be invoked recursively. That means on first
-> > invocation owner == NULL and then you acquire the lock at which point
-> > exec_level goes 0->1. On the recursive invocation owner == current and
-> > you skip the lock but exec_level goes 1 -> 2.
-> > On your return path once level becomes 1, then it means that dec made it
-> > go 1 -> 0, you unlock the lock.
+> > Signed-off-by: Matteo Croce <teknoraver@meta.com>
 > 
-> My point is: why locking here with some extra non-obvious logic of owner
-> tracking if we can lock (unconditionally?) in ovs_packet_cmd_execute() and
-> ovs_dp_process_packet() instead?  We already disable BH in one of those
-> and take appropriate RCU locks in both.  So, feels like a better place
-> for the extra locking if necessary.  We will also not need to move around
-> any code in actions.c if the code there is guaranteed to be safe by holding
-> locks outside of it.
+> The code was added to follow the conventions of other Linux packages.
+> Probably best to do something smarter (like util-linux) or more exactly
+> follow what systemd or vim are doing.
 
-I think I was considering it but dropped it because it looks like one
-can call the other.
-ovs_packet_cmd_execute() is an unique entry to ovs_execute_actions().
-This could the lock unconditionally.
-Then we have ovs_dp_process_packet() as the second entry point towards
-ovs_execute_actions() and is the tricky one. One originates from
-netdev_frame_hook() which the "normal" packet receiving.
-Then within ovs_execute_actions() there is ovs_vport_send() which could
-use internal_dev_recv() for forwarding. This one throws the packet into
-the networking stack so it could come back via netdev_frame_hook().
-Then there is this internal forwarding via internal_dev_xmit() which
-also ends up in ovs_execute_actions(). Here I don't know if this can
-originate from within the recursion.
+I can't recall a single system on which I didn't have to 'set bg=dark'
+in .vimrc explicitly, so this makes me curious: Could you name a
+concrete example of working auto color adjustment to given terminal
+background?
 
-After looking at this and seeing the internal_dev_recv() I decided to
-move it to within ovs_execute_actions() where the recursion check itself
-is.
+Looking at vim-9.1.0794 source code, I see:
 
-> > The locking part happens only on PREEMPT_RT because !PREEMPT_RT has
-> > softirqs disabled which guarantee that there will be no preemption.
-> > 
-> > tools/testing/selftests/net/openvswitch should cover this?
-> 
-> It's not a comprehensive test suite, it covers some cases, but it
-> doesn't test anything related to preemptions specifically.
+|     char_u *
+| term_bg_default(void)
+| {
+| #if defined(MSWIN)
+|     // DOS console is nearly always black
+|     return (char_u *)"dark";
+| #else
+|     char_u      *p;
+| 
+|     if (STRCMP(T_NAME, "linux") == 0
+|             || STRCMP(T_NAME, "screen.linux") == 0
+|             || STRNCMP(T_NAME, "cygwin", 6) == 0
+|             || STRNCMP(T_NAME, "putty", 5) == 0
+|             || ((p = mch_getenv((char_u *)"COLORFGBG")) != NULL
+|                 && (p = vim_strrchr(p, ';')) != NULL
+|                 && ((p[1] >= '0' && p[1] <= '6') || p[1] == '8')
+|                 && p[2] == NUL))
+|         return (char_u *)"dark";
+|     return (char_u *)"light";
+| #endif
+| }
 
-From looking at the traces, everything originates from
-netdev_frame_hook() and there is sometimes one recursion from within
-ovs_execute_actions(). I haven't seen anything else.
+So apart from a little guesswork based on terminal names, this does the
+same as iproute currently (in his commit 54eab4c79a608 implementing
+set_color_palette(), Petr Vorel even admitted where he had copied the
+code from). No hidden gems to be found in vim sources, at least!
 
-> >> Also, the name of the struct ovs_action doesn't make a lot of sense,
-> >> I'd suggest to call it pcpu_storage or something like that instead.
-> >> I.e. have a more generic name as the fields inside are not directly
-> >> related to each other.
-> > 
-> > Understood. ovs_pcpu_storage maybe?
-> 
-> It's OK, I guess, but see also a point about locking inside datapath.c
-> instead and probably not needing to change anything in actions.c.
+Cheers, Phil
 
-If you say that adding a lock to ovs_dp_process_packet() and another to
-ovs_packet_cmd_execute() then I can certainly update. However based on
-what I wrote above, I am not sure.
-
-> >> Best regards, Ilya Maximets.
-
-Sebastian
+[1] And have the screen rotated 90 degrees to make it more realistic,
+    but that's off topic.
