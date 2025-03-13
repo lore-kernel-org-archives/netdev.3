@@ -1,108 +1,135 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C201EE013;
-	Thu, 13 Mar 2025 10:48:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1042661B6
+	for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 10:48:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741862896; cv=none; b=rUI/u0LFgrCMbiSGgkyVqjLp6Nr97MuNtvMWVaQHwsTVeBh+XqSWknOH4Yp1QWMSxFyNyQUY9I6q0uKAKstOrLcxq5HHOZroUwo6GAY4SvcX12vLN52OLPX7FmmSaF/rxOYQaLGBG//c6j99SVgKziF/iiU2X5QvNRDTEqIZfp0=
+	t=1741862896; cv=none; b=GkKAnsyn//ZYatQp3Z8bTPqVocmt9fjppjn3fWVrNpcX0b+4PmmNgPITpKPVJePmqtKANMKlXBWet1/TAiF9b8omI5pV5Ps1WmgfuPJxl0WGsOSrcuLVEhZJgm9aQdOgdJ0fhXLcnJMuyV833OHRtRrdeoh1Q8CL+rCq4b0+aDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741862896; c=relaxed/simple;
-	bh=jIrgB+Of8GjIDCFndWRj81685Oli/mbEm6qoFYFa2yY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CRkr5mfRQ6s7EYnIbO3jXynRyRTleBXFEK9s9AMWLg9WyKd+FwwY/YggDtCRZyZOfI9pBySd3MAHQw4pFAO1Bk14KkqWEyJ2+eMmuKPWyv0+jGvOLcyLrLbaZXOwKk3DK4ujG5vssMyVRHkmI4WLpY1or5hU9Jl7CIc7uegqjho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YjttR443; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	bh=ifXxEP9fQ+ca00C4NymK9lkHybBl5yWQFtzUvukmZnk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KCQqbpHgnlt/3KOgRYMS9s8/ZkOzj7RoVZKI1dcjVJm+1iuyvvtXtGyscZ+NLRCwrg88rno/dihSWlBA0Hm4DV8LTmUS2dLw7naH2grjSMv1FCEKXvT4A0hJ3nx28Ipsch8XSEHZmMzzm9GJLYTuLM+DKmST/Lq5I98+v0n/hU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TGUxO4Iz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YjttR443"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BDA6C43C67;
-	Thu, 13 Mar 2025 10:48:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1741862886;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rmVbak8eK+3pmfHwySA9orkO+49ATky8BJ/0nzXmFQg=;
-	b=YjttR4436+6VI8Zi9jf0L/AYsu6A5MtafcwfFwiThEihasOzpr7+dn8Oq/xtsgBguiGEZb
-	fEz6DTM7ts/VAp94pwUcLCfkTDUyVqcTzjVZ5CKXAWB7a4J4HGYmh4rpdERmindLqcm0+s
-	O3y2cReKQqBRsM2esGD1SwzK31WP3n9rkO74qOBheWUXkjxrzW/fRv9hrz8t+Qn3DOh9Hi
-	vnirruk7cN11aPwvG9UblAzMmHG2jEMXdcat3966q/P9fN8kOqsH3XBOH4P0pra9nQlePw
-	+9i4/2EIOhv3S0f0HO5IrihSlvfWcPSfek6AxEexiCXnP94oOLgDunZI1CxsIA==
-From: "Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>
-Date: Thu, 13 Mar 2025 11:47:59 +0100
-Subject: [PATCH 01/13] selftests/bpf: test_xsk: Initialize bitmap before
- use
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TGUxO4Iz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DF2C4CEEE;
+	Thu, 13 Mar 2025 10:48:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741862896;
+	bh=ifXxEP9fQ+ca00C4NymK9lkHybBl5yWQFtzUvukmZnk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TGUxO4IzaiCdImvWcK07pYxlaES+FKpyGSGQS+se2QRK+fS4IxGUEbGzelHwLB+/q
+	 u36Ov+lMh2bFtMiWiorUoJsCIqlxAB2/54A1bOfNySQ9EJUwXmVbWVZAZM+MLnNhDS
+	 q60fcF/44I6LM6PFWe6Q4t1c0f59nE8pUQQ4N/oOkfmndKcu330/DWQaC8bbtj/Jxf
+	 RfMCxb1oFk2O8r81YBQY3m2ZBt5oJyduarUFlJAn7NTGROXk+kX+4295LvHam9tbyq
+	 vq24P3CCHWEEcWcrREvOOvYs1e7H5PMvdPTFrQg6LkEM6DzQCCNoZpwVYZzqbe1W3J
+	 CwBUYe1l77zsw==
+Date: Thu, 13 Mar 2025 11:48:13 +0100
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Michal Kubiak <michal.kubiak@intel.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] net: airoha: Validate egress gdm port in
+ airoha_ppe_foe_entry_prepare()
+Message-ID: <Z9K37URcF_hkCTBM@lore-desk>
+References: <20250312-airoha-flowtable-null-ptr-fix-v1-1-6363fab884d0@kernel.org>
+ <Z9Ga7gx1u3JsOemE@localhost.localdomain>
+ <Z9GgHZxkSqFCkwMg@lore-desk>
+ <Z9GtKwAuEx+7HKjR@localhost.localdomain>
+ <Z9G01zGCpbw1YHNs@lore-desk>
+ <Z9K2vujs6+yhiXXh@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250313-xsk-v1-1-7374729a93b9@bootlin.com>
-References: <20250313-xsk-v1-0-7374729a93b9@bootlin.com>
-In-Reply-To: <20250313-xsk-v1-0-7374729a93b9@bootlin.com>
-To: =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, 
- Magnus Karlsson <magnus.karlsson@intel.com>, 
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
- Jonathan Lemon <jonathan.lemon@gmail.com>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Andrii Nakryiko <andrii@kernel.org>, 
- Martin KaFai Lau <martin.lau@linux.dev>, 
- Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, 
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
- Jiri Olsa <jolsa@kernel.org>, Mykola Lysenko <mykolal@fb.com>, 
- Shuah Khan <shuah@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Alexis Lothore <alexis.lothore@bootlin.com>, netdev@vger.kernel.org, 
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- "Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>
-X-Mailer: b4 0.14.2
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduvdejjeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomhepfdeurghsthhivghnucevuhhruhhttghhvghtucdlvgeurffhucfhohhunhgurghtihhonhdmfdcuoegsrghsthhivghnrdgtuhhruhhttghhvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegfeduhfeutddtieffteffleejffekveeviedutdegjeelfedtjeegtdejtddthfenucfkphepvdgrtddumegtsgduleemkedvheefmeguuddttdemfhelvgdumeeftgejudemjeeitdgtmedutggsrgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekvdehfeemugdutddtmehflegvudemfegtjedumeejiedttgemudgtsggrpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpegsrghsthhivghnrdgtuhhruhhttghhvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvkedprhgtphhtthhopegvugguhiiikeejsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmpdhrtghpt
- hhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhihkhholhgrlhesfhgsrdgtohhmpdhrtghpthhtohephihonhhghhhonhhgrdhsohhngheslhhinhhugidruggvvhdprhgtphhtthhopehmrghgnhhushdrkhgrrhhlshhsohhnsehinhhtvghlrdgtohhmpdhrtghpthhtohepmhgrrhhtihhnrdhlrghusehlihhnuhigrdguvghvpdhrtghpthhtohepsggrshhtihgvnhdrtghurhhuthgthhgvthessghoohhtlhhinhdrtghomh
-X-GND-Sasl: bastien.curutchet@bootlin.com
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="PLfdax2fnK8OYSBS"
+Content-Disposition: inline
+In-Reply-To: <Z9K2vujs6+yhiXXh@localhost.localdomain>
 
-bitmap is used before being initialized.
 
-Initialize it to zero before using it.
+--PLfdax2fnK8OYSBS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Bastien Curutchet (eBPF Foundation) <bastien.curutchet@bootlin.com>
----
- tools/testing/selftests/bpf/xskxceiver.c | 4 ++++
- 1 file changed, 4 insertions(+)
+> On Wed, Mar 12, 2025 at 05:22:47PM +0100, Lorenzo Bianconi wrote:
+> > > On Wed, Mar 12, 2025 at 03:54:21PM +0100, Lorenzo Bianconi wrote:
+> > > > > On Wed, Mar 12, 2025 at 12:31:46PM +0100, Lorenzo Bianconi wrote:
+> > > > > > The system occasionally crashes dereferencing a NULL pointer wh=
+en it is
+> > > > > > forwarding constant, high load bidirectional traffic.
+>=20
+> [...]
+>=20
+> > >=20
+> > > >=20
+> > > > >=20
+> > > > > > +		if (!eth->ports[i])
+> > > > > > +			continue;
+> > > > >=20
+> > > > > Isn't this NULL check redundant?
+> > > > > In the second check you compare the table element to a real point=
+er.
+> > > >=20
+> > > > Can netdev_priv() be NULL? If not, I guess we can remove this check.
+> > >=20
+> > > I guess it shouldn't be NULL since "devm_alloc_etherdev_mqs()" was
+> > > called, but I'm not 100% sure if there are any special cases for the =
+"airoha"
+> > > driver. Maybe in such cases it would be better to check for the netde=
+v_priv?
+> > > Anyway, such checks seem a bit too defensive to me.
+> >=20
+> > the dev pointer can be allocated even outside of airoha_eth driver.
+> > This pointer is provided by the flowtable.
+> > I guess we can drop the NULL pointer check above, and do something like:
+> >=20
+> > 	if (port && eth->ports[i] =3D=3D port)
+> > 		return 0;
+> >=20
+> > what do you think?
+> >=20
+> > Regards,
+> > Lorenzo
+> >=20
+>=20
+> I think if there's a risk that 'port' can be NULL, it looks like a
+> reasonable solution and I'm OK with that.
 
-diff --git a/tools/testing/selftests/bpf/xskxceiver.c b/tools/testing/selftests/bpf/xskxceiver.c
-index 11f047b8af75262b4bd5490ccedda00db4a639d2..3585c5afe9842b59fbd50256e5bc83a58a0ee38f 100644
---- a/tools/testing/selftests/bpf/xskxceiver.c
-+++ b/tools/testing/selftests/bpf/xskxceiver.c
-@@ -1265,6 +1265,8 @@ static int receive_pkts(struct test_spec *test)
- 	u32 sock_num = 0;
- 	int res, ret;
- 
-+	bitmap_zero(bitmap, test->nb_sockets);
-+
- 	ret = gettimeofday(&tv_now, NULL);
- 	if (ret)
- 		exit_with_error(errno);
-@@ -1455,6 +1457,8 @@ static int send_pkts(struct test_spec *test, struct ifobject *ifobject)
- 	DECLARE_BITMAP(bitmap, test->nb_sockets);
- 	u32 i, ret;
- 
-+	bitmap_zero(bitmap, test->nb_sockets);
-+
- 	while (!(all_packets_sent(test, bitmap))) {
- 		for (i = 0; i < test->nb_sockets; i++) {
- 			struct pkt_stream *pkt_stream;
+I guess you are right. I do not think netdev_priv pointer can be NULL since,
+even if size_priv is 0, it will just point to the end of the netdevice stru=
+ct.
+I will repost just doing:
 
--- 
-2.48.1
+	if (eth->ports[i] =3D=3D port)
+		return 0;
 
+Regards,
+Lorenzo
+
+>=20
+> Thanks,
+> Michal
+>=20
+
+--PLfdax2fnK8OYSBS
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZ9K37QAKCRA6cBh0uS2t
+rCf5AQCtpdGJkY45ujQJ6QxQbPLHKHEUhSbDaTD5WJCphEav2gD+J9GCbdGJ6O9g
+UPXzVUQ6dVmmww/RLljE9fOkDfMR0Qs=
+=f/tx
+-----END PGP SIGNATURE-----
+
+--PLfdax2fnK8OYSBS--
