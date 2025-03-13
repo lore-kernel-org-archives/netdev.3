@@ -1,99 +1,103 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.wizmail.org (smtp.wizmail.org [85.158.153.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC7586337;
-	Thu, 13 Mar 2025 14:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C50623BD13
+	for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 14:46:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.158.153.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741877183; cv=none; b=frX/astY/jWRhXpQ4yBrwby0cb9KAtmeUsz1oCMBwnsK+FOwY0vY/e462RBwgfj2oeIRe4eXu9BAsGPjnqld8tpno7i+OpDFNsEkMXZXLYCXtHaFB7Jutm2eWrpZO6lqhoqZ8KkR4SKbE0EBvvl2kXfnWZmX/Yal1qDjg+JDfg8=
+	t=1741877200; cv=none; b=FOjTOQueIRJNufWSFp3m3KNjYEkCRwD2NZNjxv4Ns1LAUIxfOXNrUySI5Y0qTyykm/71n0yCGl5JpwR6u7tymQ27IE7etGLXXKH0wKDAw5MoYDfG1YdX4gyiTOolz4c6kQF5JlH4MM96EGuYsYIUVNeNN/cqGmB0Wf3DvPdjmEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741877183; c=relaxed/simple;
-	bh=tshyggDOde6rCy5WxES5KRnyBHK98eY57xGucW/T14k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T7u9XQHGZIgbu/VOmNJqCohdfEaLUHxIxnHII3qLwu5WieSlnrx+IYiozuUCHjQB7KFjiDewb01DyAs9JDA8s3qSXXWMaL9yQzBuRg+KWFRpT/ZVLr/IpmdfvCj+ICgg4/IYMqdUta3YIlwOUgeikGWNJKIZuMpG1x65hEmTF0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J59mzNUm; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1741877200; c=relaxed/simple;
+	bh=I1IeQ3eOXuWo1Koz+4tC5CMTNtvDWBowb/FldwOpw5Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qEyh2SZSNybN+adJm5DyPruTM3LwuIi0tqu9EQ7m4fzZ7mPKdtiR7Qo9XurlkN3SB5f3jLgeRkuYvwdF2Xl9LbdaExlf7eWHJouIAFTOzuL3NTneAtkwd1EYxcGLBaNFkfm4KBsYSLlCggX5K/6lJuSbwSFYGL6QFfYa0VJ0yVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exim.org; spf=fail smtp.mailfrom=exim.org; dkim=permerror (0-bit key) header.d=wizmail.org header.i=@wizmail.org header.b=BM1Mm/Y3; dkim=pass (2048-bit key) header.d=wizmail.org header.i=@wizmail.org header.b=IUP/1JAD; arc=none smtp.client-ip=85.158.153.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exim.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=exim.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J59mzNUm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741877182; x=1773413182;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tshyggDOde6rCy5WxES5KRnyBHK98eY57xGucW/T14k=;
-  b=J59mzNUmu6aKO0B5e7jSChd9bf+dEKKGz27YyzeoJXM9zuoq/z/Mc9y8
-   Hk7tIVcdr/veSrXBiXqgkbBsJEPK97Aox+W4OEdZfl/s5M6hbMcvwUeV4
-   9Ta3Omi3NNqCoJwG7VKIKC9XOL9/ceapaW95JauAEizHjWChz3voJj+J3
-   CvhgvXPWTaiweSu0+wlX1iPlIlXfvMYOfrc4Dn6QRU5k46FszfW8dGD+I
-   QH9a4l6wuztv0ttNCKyHL8WU+afu6AX6aPYqsm1mbzNxvC0xIyCJ5agTt
-   4w0YF5NXREYzkCrcbTteNf2a+l/Hc1Y2a1BGtnWIAB4WpN2zlfJ6tpi/s
-   Q==;
-X-CSE-ConnectionGUID: EuPbakHSSZ2dHqkDasi3bw==
-X-CSE-MsgGUID: yoVLTT5eTX+SR8NIbF5aMw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11372"; a="43128154"
-X-IronPort-AV: E=Sophos;i="6.14,245,1736841600"; 
-   d="scan'208";a="43128154"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 07:46:21 -0700
-X-CSE-ConnectionGUID: 6aH8UiBVQRWTl1zZCHlr5w==
-X-CSE-MsgGUID: kkf6NXANQpCg4GIsyiprtw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,245,1736841600"; 
-   d="scan'208";a="120763387"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 07:46:20 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tsjpB-00000002Cuo-2dqq;
-	Thu, 13 Mar 2025 16:46:17 +0200
-Date: Thu, 13 Mar 2025 16:46:17 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Richard Cochran <richardcochran@gmail.com>
-Subject: Re: [PATCH v1 1/1] spi: Use inclusive language
-Message-ID: <Z9LvueoWc1o7ayUS@smile.fi.intel.com>
-References: <20250313111442.322850-1-andriy.shevchenko@linux.intel.com>
- <1c49edb2-2ffc-419e-be5e-7e15669a7839@sirena.org.uk>
- <Z9LlTflb1HQMyEv2@smile.fi.intel.com>
- <e329812d-90a5-456e-9a00-abb5c2c8d25d@sirena.org.uk>
- <Z9LqyWr4GH4RX6Nj@smile.fi.intel.com>
- <Z9Ls-zhryd7mJv-b@smile.fi.intel.com>
- <dc17b87b-29c1-4b66-9353-c934a68b929a@sirena.org.uk>
+	dkim=permerror (0-bit key) header.d=wizmail.org header.i=@wizmail.org header.b="BM1Mm/Y3";
+	dkim=pass (2048-bit key) header.d=wizmail.org header.i=@wizmail.org header.b="IUP/1JAD"
+DKIM-Signature: v=1; a=ed25519-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=wizmail.org; s=e202001; h=Content-Transfer-Encoding:MIME-Version:References
+	:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive:
+	Autocrypt; bh=tPvGIJIyPV9aObwYTmTs464VPbIIZSjvl5woqjoKk4w=; b=BM1Mm/Y3lpDG2un
+	313hi3KkxH0BYFEaXXQp53laVSc0vJ7mS7eP2W+MIWQriX+JfJiq0UE9UeU52xlf1hFWGBw==;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizmail.org
+	; s=r202001; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:From:Sender:Reply-To:Subject:Date:
+	Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive:
+	Autocrypt; bh=tPvGIJIyPV9aObwYTmTs464VPbIIZSjvl5woqjoKk4w=; b=IUP/1JADWrul2sI
+	RCIuxdYlJv3zfS7Qi/XG7FdSMkm9TDtXVIDNbPO7L+V23N4GDYc0VJZHEQ1O771rcoKsvctqJ+5ak
+	nXtRzo/WGIDTlswsXn8Ic1+vUMYECD7h/wXMvsHXYoT4dWXNO8vy1GRVSkMAlrNZC2t7zE+Weu6aY
+	uAPEt0jbUTgf0DyMucanMD6PubRDesu7C8Xn19IGmhsJuirb2mCGAk25QLsO07tn8XWHETYZkci7z
+	CwGpHPWouEXA4n6jYMIn6mpEmiyxPpiL1lU2KZnsglPR2gnw4rx9l86QSquBitvBnTGbUmQ+jLAEJ
+	HDRXYGUTDI9yD99Bnbg==;
+Authentication-Results: wizmail.org;
+	iprev=pass (hellmouth.gulag.org.uk) smtp.remote-ip=85.158.153.62;
+	auth=pass (PLAIN) smtp.auth=jgh@wizmail.org
+Received: from hellmouth.gulag.org.uk ([85.158.153.62] helo=macbook.dom.ain)
+	by www.wizmail.org (Exim 4.98.114)
+	(TLS1.3) tls TLS_AES_256_GCM_SHA384
+	with esmtpsa
+	id 1tsjpU-00000002LY6-2HXc
+	(return-path <jgh@exim.org>);
+	Thu, 13 Mar 2025 14:46:36 +0000
+From: Jeremy Harris <jgh@exim.org>
+To: netdev@vger.kernel.org
+Cc: Jeremy Harris <jgh@exim.org>
+Subject: [RFC PATCH net-next 2/2] TCP: pass accepted-TFO indication through getsockopt
+Date: Thu, 13 Mar 2025 14:45:51 +0000
+Message-ID: <3e9b638ad6846aff954a590dd87f764684a4ec8f.1741877016.git.jgh@exim.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <cover.1741877016.git.jgh@exim.org>
+References: <cover.1741877016.git.jgh@exim.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dc17b87b-29c1-4b66-9353-c934a68b929a@sirena.org.uk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+X-Pcms-Received-Sender: hellmouth.gulag.org.uk ([85.158.153.62] helo=macbook.dom.ain) with esmtpsa
 
-On Thu, Mar 13, 2025 at 02:39:27PM +0000, Mark Brown wrote:
-> On Thu, Mar 13, 2025 at 04:34:35PM +0200, Andy Shevchenko wrote:
-> > On Thu, Mar 13, 2025 at 04:25:13PM +0200, Andy Shevchenko wrote:
-> 
-> > > Yes, the base where it was merged to is eds-acpi branch of my public GH [1],
-> > > which has no SPI stuff in there.
-> 
-> > $ git checkout -b test-spi-mrg spi/for-next
-> > $ git cherry-pick -1 87a228960033
-> > [test-spi-mrg 8a11d1063109] spi: Use inclusive language
-> > Date: Fri Dec 8 19:02:54 2023 +0200
-> > 2 files changed, 64 insertions(+), 66 deletions(-)
-> 
-> > In any case there is a v2, please try that one.
-> 
-> That one does apply.
+Signed-off-by: Jeremy Harris <jgh@exim.org>
+---
+ include/uapi/linux/tcp.h | 1 +
+ net/ipv4/tcp.c           | 2 ++
+ 2 files changed, 3 insertions(+)
 
-Okay, It might be that I send the previous version by a mistake or it was based
-on an old spi/for-next. Now I don't know as it's gone.
-
+diff --git a/include/uapi/linux/tcp.h b/include/uapi/linux/tcp.h
+index 32a27b4a5..e958a145d 100644
+--- a/include/uapi/linux/tcp.h
++++ b/include/uapi/linux/tcp.h
+@@ -179,6 +179,7 @@ enum tcp_fastopen_client_fail {
+ #define TCPI_OPT_ECN_SEEN	16 /* we received at least one packet with ECT */
+ #define TCPI_OPT_SYN_DATA	32 /* SYN-ACK acked data in SYN sent or rcvd */
+ #define TCPI_OPT_USEC_TS	64 /* usec timestamps */
++#define TCPI_OPT_TFO_SEEN	128 /* we accepted a Fast Open option on SYN */
+ 
+ /*
+  * Sender's congestion state indicating normal or abnormal situations
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 46951e749..407bdfb12 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4146,6 +4146,8 @@ void tcp_get_info(struct sock *sk, struct tcp_info *info)
+ 		info->tcpi_options |= TCPI_OPT_SYN_DATA;
+ 	if (tp->tcp_usec_ts)
+ 		info->tcpi_options |= TCPI_OPT_USEC_TS;
++	if (tp->syn_fastopen_in)
++		info->tcpi_options |= TCPI_OPT_TFO_SEEN;
+ 
+ 	info->tcpi_rto = jiffies_to_usecs(icsk->icsk_rto);
+ 	info->tcpi_ato = jiffies_to_usecs(min_t(u32, icsk->icsk_ack.ato,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.48.1
 
