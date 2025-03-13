@@ -1,113 +1,88 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5CC1EE7A8;
-	Thu, 13 Mar 2025 12:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05DDFC0B;
+	Thu, 13 Mar 2025 12:20:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741868160; cv=none; b=e4j4w08C/KP7SJUR9Y5M/ngK+7DhxfO4aOCIM00UvxEkjH4PP6xC9MayT9mb7sRfDBwdxl+vncE+y+uWSzusKXWeU0x6S1nHjn1L+ZEufXV4Abhj+l7p/fMwYsjzkZWK2mgy8ep8oe1mreiEwnCLrp49ssKyN5e64YdfehGoJkk=
+	t=1741868409; cv=none; b=rbGEh3WW4p+bLPG+nfXMFiqGEP6A9jdYX2GQ08c27fzJjB9FGONvOYht4SWIEuAXu7Z1KPpfg6WWRrq2Op9tJTLdsci1MWCcP2I96idhTRHAYm66bBr6jv41+NvslqAGEKTN0+Rm7nU5yFCiloUoNqlu8gBaYbhNGIsIWXTZxl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741868160; c=relaxed/simple;
-	bh=kaAou0aCgzlU0oUfOlYrlysp520v5XX91y8STuDaS4w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sO7RDuTMre2vKkuLmHiUM0djQ+qHw16K3l7vDPqodzKxgJugD3LPTvcgxDIUg9xWx+GzYq1LflsRYZQHV5NPyzBsKH54YOJgNfqv6tPNg70ppb4UllTmXA3cjNdnT5rLEaM4v6f0G7w6hxfpelCMZnNMv90mjH7gmfd3I0nc2vM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BGKGsC+a; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1741868409; c=relaxed/simple;
+	bh=uqFaBSHIs6hkpHAepTQUQWUex2GHDEOlYVmk4sFY0oE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=IModOGShfQkU3aRrOvbvMbmCW+pxnFUg4Vlcc5EaQS3rScC+U+dgCA3bVJTbm6KibzQVGMKpYdk9S6rMbCeahUDCBfRXEnNhd91w6udzrL5U5veNsmFSq42NhNK3t9W96fsLHp5ZgaZY9NMiV917KQNbG/ZZ7DAcgWXS/lqfV5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eP310P8n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BGKGsC+a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741868158; x=1773404158;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kaAou0aCgzlU0oUfOlYrlysp520v5XX91y8STuDaS4w=;
-  b=BGKGsC+aTNDz8s3H7Uatw7AzNydq7Q/eBHRKMXyFcag8Kv7lvJL8bNbd
-   7Jfl2CAh7e+ZSyT/cnJx3zaKIeUTXilVjFQDy4QPD8HayPlv1TwQ77qeu
-   8CHLZHIBQpSzxOQAox0A/enhzEcvRLZebT63wIhySPzw6phyoIf7Y0R9z
-   zAj23/JIrq1DymzpbqgKoYAsXtutYiI0LKcETbYMxZjAYvEpVzo04/dHU
-   7Rrd3eMhu86qowhmSUAYjXt2hc9DUVtYsylh5d8y+wNLxQ86Ij+roqdbh
-   uTOzAGGTeAo5i+khJAAbxjQrchISVOe1RwRaCwZaXohg7WuqpHPnQyfo1
-   Q==;
-X-CSE-ConnectionGUID: ICs70ZJwTE6V10V5OJ6tzQ==
-X-CSE-MsgGUID: OJEVOFguS0mjzVWjK6j0mQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="43181045"
-X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; 
-   d="scan'208";a="43181045"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 05:15:57 -0700
-X-CSE-ConnectionGUID: RNQkYJ4BQiWZX4u2f7QQFA==
-X-CSE-MsgGUID: MbZIX0BrROucfQ4ERBpTHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; 
-   d="scan'208";a="120655368"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 05:15:52 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tshTY-00000002AQF-3GON;
-	Thu, 13 Mar 2025 14:15:48 +0200
-Date: Thu, 13 Mar 2025 14:15:48 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v7 02/10] property: Add functions to iterate named child
-Message-ID: <Z9LMdDKNLT57RdIL@smile.fi.intel.com>
-References: <cover.1741849323.git.mazziesaccount@gmail.com>
- <f613b5f120a4dde63d28b0a2e0186dcb8dbf57ae.1741849323.git.mazziesaccount@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eP310P8n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E75C4CEDD;
+	Thu, 13 Mar 2025 12:20:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741868408;
+	bh=uqFaBSHIs6hkpHAepTQUQWUex2GHDEOlYVmk4sFY0oE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=eP310P8nPsrfZu0rtZD6xG7FK3e5o9rKliwQp1gQBO339+T1RqyCDZD2G0LD5wcud
+	 JhmyGLFWYuvN/qsevv8ocEQX/oYzpUJONLlxxAMSnTSvodyjcSTmGOJekTwxgNk+Ix
+	 lBCly7Niqz+ZyQcm1Fqv31PXDVgDuKgCPja0kMNx5ThAqqPw1oylMUrMbCcoaAAkNQ
+	 jPsg9JnSI9G0grfDBs2e2TXNdhZVFAapmZRMfIrAdHwPEw2jXu5KBZItRiYIaRxvxx
+	 SGxJbh/UHQGuIEogUns6zc/S+YOSdS6nuBQ5KPqAzUYEsDrGsT+Vd/EqHFyHb7EbsP
+	 pKZ3McP8B/oCg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33D543806651;
+	Thu, 13 Mar 2025 12:20:44 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f613b5f120a4dde63d28b0a2e0186dcb8dbf57ae.1741849323.git.mazziesaccount@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/6] mlx5 misc fixes 2025-03-10
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174186844301.1489828.15120756086422441476.git-patchwork-notify@kernel.org>
+Date: Thu, 13 Mar 2025 12:20:43 +0000
+References: <1741644104-97767-1-git-send-email-tariqt@nvidia.com>
+In-Reply-To: <1741644104-97767-1-git-send-email-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, gal@nvidia.com, mbloch@nvidia.com,
+ moshe@nvidia.com, saeedm@nvidia.com, leon@kernel.org, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Thu, Mar 13, 2025 at 09:18:00AM +0200, Matti Vaittinen wrote:
-> There are a few use-cases where child nodes with a specific name need to
-> be parsed. Code like:
-> 
-> fwnode_for_each_child_node()
-> 	if (fwnode_name_eq())
-> 		...
-> 
-> can be found from a various drivers/subsystems. Adding a macro for this
-> can simplify things a bit.
-> 
-> In a few cases the data from the found nodes is later added to an array,
-> which is allocated based on the number of found nodes. One example of
-> such use is the IIO subsystem's ADC channel nodes, where the relevant
-> nodes are named as channel[@N].
-> 
-> Add helpers for iterating and counting device's sub-nodes with certain
-> name instead of open-coding this in every user.
+Hello:
 
-LGTM,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-I haven't checked the rendered kernel-doc, though.
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
+On Tue, 11 Mar 2025 00:01:38 +0200 you wrote:
+> Hi,
+> 
+> This patchset provides misc bug fixes from the team to the mlx5 core and
+> Eth drivers.
+> 
+> Thanks,
+> Tariq.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,1/6] net/mlx5: DR, use the right action structs for STEv3
+    https://git.kernel.org/netdev/net/c/03ebae199255
+  - [net,2/6] net/mlx5: HWS, Rightsize bwc matcher priority
+    https://git.kernel.org/netdev/net/c/521992337f67
+  - [net,3/6] net/mlx5: Fix incorrect IRQ pool usage when releasing IRQs
+    https://git.kernel.org/netdev/net/c/32d2724db5b2
+  - [net,4/6] net/mlx5: Lag, Check shared fdb before creating MultiPort E-Switch
+    https://git.kernel.org/netdev/net/c/32966984bee1
+  - [net,5/6] net/mlx5: Bridge, fix the crash caused by LAG state check
+    https://git.kernel.org/netdev/net/c/4b8eeed4fb10
+  - [net,6/6] net/mlx5e: Prevent bridge link show failure for non-eswitch-allowed devices
+    https://git.kernel.org/netdev/net/c/e92df790d07a
+
+You are awesome, thank you!
 -- 
-With Best Regards,
-Andy Shevchenko
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
