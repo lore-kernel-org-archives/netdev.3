@@ -1,190 +1,113 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866C11DDC3B
-	for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 19:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6AEEADA;
+	Thu, 13 Mar 2025 19:54:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741895581; cv=none; b=Ypirmeg8dE8Dwu9prGot7DP0bc7GC5GfqYrUyvMZkP/9RhYpQk0ekKFccBtQQHnfMym7rp2/TGD2Sym+Vyz8k/PjL30mOr8ZJ5o/CKHX3ftKR5lnQeqIaYwh5HqpZtwor6Tlfz5Q0bJ1qr4pKKfwV8VYKP2rK8ntl6BUQOBrZYk=
+	t=1741895687; cv=none; b=PbBmBZ9riAOXeGWhbk9fSeb0MZnpl8jgCLtyRf9EX0MRdK+7RjDxGCxXHh+UpLVYN4GzIZXRy1Cd6cvWwksOaVVzIvZj87QMKRqFdc0yQwPhrduNiyRbkVWgpzkE4vaCM8FT964VLadmchCKAzi5kYD1SWOwdSjHbb+3UEeQ4aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741895581; c=relaxed/simple;
-	bh=ssrY+rvJTsOIek9mChfxY5TLNOw4wZX11HmnNeMPqsw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=N+/jlWM16Zeao7hKgwK3AWTHvYp5DUOGGbEjZU8PnErqoPvn+iw9tHdAA1DQE042S/DMPp2+yBcoo88Ki/WHw4GkFQgcE2jfcKCY+ZhqVvCPHK+QVEkTjBJ49v2kW2aKQfMeru/PFQpETlrGe69u2l6e4GD4YV9+8Ua281XWpXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dMHZEq3m; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1741895687; c=relaxed/simple;
+	bh=n+WE2e1+CornPIYCL0FJAGHEjkt3BbG8jB/zF/vKQlc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jM7QJV3JjM3i1olB6h6sKqqm7Jf1rIrnEKc5OcT54f6FYS7j2e43r7WUsq8pjeT8J03h101QcMIQi54/g8qgUai0lJvd2AQce8wzriek2CrD+8yXQxcfRPdh7BBEVrnzxm7QKgpP10z9mx2AqCieaCUTk+T3+Uy2QlIH8kvYseU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BNMKGuhu; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dMHZEq3m"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741895578;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K5Rwgf9qGOGXudkqHlAtuBTuQYQzfN70qYMcLMsFPhA=;
-	b=dMHZEq3mSz9/v6XNkF0OJJ7iKzYhaQUbXiCLeMwc+DHgDLUcLq95GIJory+9EtJfPMF+LT
-	vv3eWgcPaz6lDhLKgrHWiNkf2VOWuyMcC4oY1+thLTux1mZgciS+6SCrpP55kr9UZOF48Y
-	rLsJLRRMfTQjA11ceU+t05EhJYAJd6Y=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-383-EXSCnH36OSS7zRy8YfqZUw-1; Thu, 13 Mar 2025 15:52:57 -0400
-X-MC-Unique: EXSCnH36OSS7zRy8YfqZUw-1
-X-Mimecast-MFC-AGG-ID: EXSCnH36OSS7zRy8YfqZUw_1741895576
-Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-5499c383444so745787e87.2
-        for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 12:52:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BNMKGuhu"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-472368b50d6so338121cf.2;
+        Thu, 13 Mar 2025 12:54:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741895685; x=1742500485; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XGLO2paAdzUxnzkAjPVsZKGAI+FEFQuCi8XTZqvAoxs=;
+        b=BNMKGuhusWl2r4N8SId9Lq6hdj28mqgOTn//zHExL8OR/FElvdcasDWY5ji1O10mXB
+         BymOp6wtG47PbgQ4P6L6X9q6ofL7WsHSBdDqaK3Rgr1MjO9dLYKkjL9o9cMzObstMU2Q
+         xa+26xB1/L/vDoJt3POmI+JWFZXB8lXaiBMn62X+Al8AM1WdxgohZ0DAGyZGSi+L99eP
+         uI3g4jm+7H1D72bXoNmZwVkRe79W+9vfN+PzjeN6P7fbTJrPXbh/a01QXxgkgT3nOaRl
+         0CKzcd/OV/Al0h6yGCsdasXYiiQZNfbPiU5whwnvo62gb79m40npKVP6dmiuVlQmG5bt
+         n4kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741895576; x=1742500376;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=K5Rwgf9qGOGXudkqHlAtuBTuQYQzfN70qYMcLMsFPhA=;
-        b=uO7pLV1F6Pptz0bfZ8VdzYGTOvWllE4Fe2Qu2xNZ4KC0D+3Br+NPzCtNWhh7nT7Ehz
-         HGJ8d8zBsa225KoOIJ9i/e7rFjeg9zZIJAzpkF6pgqLsdpI3q1zCFaxE1Jg2mjhh/pKF
-         vytuDHMCLSTMTAA6gEv5h1cG/LtdEKlWQOz97DLjj8a+QEC7zQUp176909sN5mF3WB9Z
-         t+XCj8VfSXb1oJcpQzDC961cjsTTKQxZtUnzgCOjslFbEATGLCGWhHJ3j05iBtgH7fpm
-         l+e0iFN8kvfzZ25dKzf7TR+iLEl6TFsbDptmnltRQHfA0wFOYmYSdWwcVAwO/Irzz9OV
-         XehA==
-X-Forwarded-Encrypted: i=1; AJvYcCVwLLpDrzoxjP9SiVID/C2sKAB4Bllx2TuERHcJ1xuUiF0tue3ooXyd8aTQx9DGnNn4vbzGDyY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoU8rY1Ks2/65eKTmHvpLP39qP9fCax4sBD0XDqHJwi5RWLCUU
-	PLIhxkwZ6c4WXNv7unPrdHpHg85b8bcfbWD9wgX06Wv89Qac5odw+e4ltM5x7mxRlmu+NSyzude
-	L8iaa3QWFWHgs2T12Zq51G3asd3AXpv8tHf/pSpab0zsMeqwRry8Ekw==
-X-Gm-Gg: ASbGncu+lYRqpIHQbUg7DcW1W2+wxaovcBGIAnNpnB5NBseQy8LivsudrigRbSbQowi
-	y4ZotLyfyoyHFU8lIySxdUu3MCD0sAg2vZLH3BPAp1Aht5NgyILghbGpo6yDiXcuZVQeu0mqZ+K
-	0NlPMV1yZxVIFz64P8DQGQqH/JDhwGBl60E3ieVYxc0QJ4ZIOfdsWLBQQuOkG1YjjPiNghzJ2Kr
-	6TgWt8PchsNol/1c0SvBuvoIQgp1dkj8DYaUMwH1edwGnpV1AuP80W6QBv+4ZGPQsMxNzcLzdgX
-	59xhDHPsTEJo
-X-Received: by 2002:a05:6512:3d0b:b0:549:7354:e4d1 with SMTP id 2adb3069b0e04-549c0a69cc9mr347163e87.38.1741895575589;
-        Thu, 13 Mar 2025 12:52:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGgazDuCvmszGomPJv4QwZuDgkCkfCLmqsdzf5Js6CYZfrk531WhEOt+lFCcA3MgDrafjMpgQ==
-X-Received: by 2002:a05:6512:3d0b:b0:549:7354:e4d1 with SMTP id 2adb3069b0e04-549c0a69cc9mr347149e87.38.1741895575138;
-        Thu, 13 Mar 2025 12:52:55 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-549ba8a79a9sm302680e87.221.2025.03.13.12.52.52
+        d=1e100.net; s=20230601; t=1741895685; x=1742500485;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XGLO2paAdzUxnzkAjPVsZKGAI+FEFQuCi8XTZqvAoxs=;
+        b=AWg1yF0M5uOT7Ylf8yzEYGJ+KYXOqJZ8aIj1C7Y97zD5h4pVSvat1QY4l1R6IVBz3A
+         zX8h+NsMbWzz9kEBycdE8AVgDV2kkRGvMDH/K0Bie8enwNTmOwKN02eaXrUbL9duRKPJ
+         ErNA81cG0DJo60e7ro0uhQ2Vw5gjCEDrv0tXuhv4H9kq2jHiLymjnAdykYLr5GCIhUgb
+         SWZmTTCPEpbwJPWvhZyaN9erKQ0yLUpxs07yceITpVhFlwYCu8qXPc2P2MOxRG3c9Sbz
+         4ts6+DM33pAH1cXnYMsir4fwODs6ZjBoMlusTN4ZFyFEQXx/0+RRiCa9o2WMrFzTThOx
+         IjVA==
+X-Forwarded-Encrypted: i=1; AJvYcCWKx9M6nXod/FjmpddpGYAMA1sYXLYKgaC4AJ9/qZzzRNpglFPI263W9U6JZH5J5e2i2lLUygGF@vger.kernel.org, AJvYcCXUR4w8zEw8trJUwOAlH9HuZAblpaBkJVUExueNVs6sQelm87mD1G0y6miIjbm7WMPCnflmawA7Yc7LXyM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfGd/EygNJQbiUTJJ4RsFerZm4ZL2G+/1kewBeXwgQ+cahdIi9
+	vTyc1gZ8AAHvhsFmnrwCbjW+bhuSuqveYFRBX/NjjQVZLPCK4Hfc8KCEdLQ=
+X-Gm-Gg: ASbGncv0jC7CVZ77R89Ut1mkQGs3AaUUMdvN2fpCGBR4r5dfEgjjHFzPCmyh8XtcF4u
+	tEWUg0YuTUflKHaegBFjtvSHUa9B3Asxo3jXcpaot5VfN2RCnS2LVY4J4ElAx8RDzZF4L7wixRC
+	AjPRd0ipKAVqrKOEZppckHsuypSPy2Ba6n9+4jrpU5QighZrUsfjhUfgMvt6JkEJU3GA957Fe29
+	uAy8QBQbVG/6nh8Gy2T6mVnKOKZvf1SipVHCjAt3P52I3zilPQfZkCClMsrNAMqpdj39x9KzUBB
+	EmVf4YmiN1heeHCIQzT6VvKS9wqm7iEiou0MpLswlQ==
+X-Google-Smtp-Source: AGHT+IG+sFRc0BbtzznoFbw3LS6WnCpgI30gRX6xy1ivIdThQI9VEpo1hDVok8W6MQRhqUayCtE8kQ==
+X-Received: by 2002:a05:622a:5e8a:b0:472:2122:5a43 with SMTP id d75a77b69052e-476665885eamr116028291cf.1.1741895684780;
+        Thu, 13 Mar 2025 12:54:44 -0700 (PDT)
+Received: from ise-alpha.. ([2620:0:e00:550a:642:1aff:fee8:511b])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c573c9be96sm136377985a.61.2025.03.13.12.54.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Mar 2025 12:52:53 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 43E5618FA899; Thu, 13 Mar 2025 20:52:50 +0100 (CET)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Amery Hung <ameryhung@gmail.com>, netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- alexei.starovoitov@gmail.com, martin.lau@kernel.org, kuba@kernel.org,
- edumazet@google.com, xiyou.wangcong@gmail.com, jhs@mojatatu.com,
- sinquersw@gmail.com, jiri@resnulli.us, stfomichev@gmail.com,
- ekarani.silvestre@ccc.ufcg.edu.br, yangpeihao@sjtu.edu.cn,
- yepeilin.cs@gmail.com, ameryhung@gmail.com, kernel-team@meta.com
-Subject: Re: [PATCH bpf-next v5 00/13] bpf qdisc
-In-Reply-To: <20250313190309.2545711-1-ameryhung@gmail.com>
-References: <20250313190309.2545711-1-ameryhung@gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Thu, 13 Mar 2025 20:52:50 +0100
-Message-ID: <87bju4u2r1.fsf@toke.dk>
+        Thu, 13 Mar 2025 12:54:44 -0700 (PDT)
+From: Chenyuan Yang <chenyuan0y@gmail.com>
+To: pablo@netfilter.org,
+	kadlec@netfilter.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chenyuan Yang <chenyuan0y@gmail.com>
+Subject: [PATCH] net: Initialize ctx to avoid memory allocation error
+Date: Thu, 13 Mar 2025 14:54:41 -0500
+Message-Id: <20250313195441.515267-1-chenyuan0y@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Amery Hung <ameryhung@gmail.com> writes:
+It is possible that ctx in nfqnl_build_packet_message() could be used
+before it is properly initialize, which is only initialized
+by nfqnl_get_sk_secctx().
 
-> Hi all,
->
-> This patchset aims to support implementing qdisc using bpf struct_ops.
-> This version takes a step back and only implements the minimum support
-> for bpf qdisc. 1) support of adding skb to bpf_list and bpf_rbtree
-> directly and 2) classful qdisc are deferred to future patchsets. In
-> addition, we only allow attaching bpf qdisc to root or mq for now.
-> This is to prevent accidentally breaking exisiting classful qdiscs
-> that rely on data in a child qdisc. This limit may be lifted in the
-> future after careful inspection.
->
-> * Overview *
->
-> This series supports implementing qdisc using bpf struct_ops. bpf qdisc
-> aims to be a flexible and easy-to-use infrastructure that allows users to
-> quickly experiment with different scheduling algorithms/policies. It only
-> requires users to implement core qdisc logic using bpf and implements the
-> mundane part for them. In addition, the ability to easily communicate
-> between qdisc and other components will also bring new opportunities for
-> new applications and optimizations.
->
-> * struct_ops changes *
->
-> To make struct_ops works better with bpf qdisc, two new changes are
-> introduced to bpf specifically for struct_ops programs. Frist, we
-> introduce "__ref" postfix for arguments in stub functions in patch 1-2.
-> It allows Qdisc_ops->enqueue to acquire an unique referenced kptr to the
-> skb argument. Through the reference object tracking mechanism in
-> the verifier, we can make sure that the acquired skb will be either
-> enqueued or dropped. Besides, no duplicate references can be acquired.
-> Then, we allow a referenced kptr to be returned from struct_ops programs
-> so that we can return an skb naturally. This is done and tested in patch 3
-> and 4.
->
-> * Performance of bpf qdisc *
->
-> This patchset includes two qdisc examples, bpf_fifo and bpf_fq, for
-> __testing__ purposes. For performance test, we compare selftests and their
-> kernel counterparts to give you a sense of the performance of qdisc
-> implemented in bpf.
->
-> The implementation of bpf_fq is fairly complex and slightly different from
-> fq so later we only compare the two fifo qdiscs. bpf_fq implements a=20
-> scheduling algorithm similar to fq before commit 29f834aa326e ("net_sched:
-> sch_fq: add 3 bands and WRR scheduling") was introduced. bpf_fifo uses a
-> single bpf_list as a queue instead of three queues for different
-> priorities in pfifo_fast. The time complexity of fifo however should be
-> similar since the queue selection time is negligible.
->
-> Test setup:
->
->     client -> qdisc ------------->  server
->     ~~~~~~~~~~~~~~~                 ~~~~~~
->     nested VM1 @ DC1               VM2 @ DC2
->
-> Throghput: iperf3 -t 600, 5 times
->
->       Qdisc        Average (GBits/sec)
->     ----------     -------------------
->     pfifo_fast       12.52 =C2=B1 0.26
->     bpf_fifo         11.72 =C2=B1 0.32=20
->     fq               10.24 =C2=B1 0.13
->     bpf_fq           11.92 =C2=B1 0.64=20
->
-> Latency: sockperf pp --tcp -t 600, 5 times
->
->       Qdisc        Average (usec)
->     ----------     --------------
->     pfifo_fast      244.58 =C2=B1 7.93
->     bpf_fifo        244.92 =C2=B1 15.22
->     fq              234.30 =C2=B1 19.25
->     bpf_fq          221.34 =C2=B1 10.76
->
-> Looking at the two fifo qdiscs, the 6.4% drop in throughput in the bpf
-> implementatioin is consistent with previous observation (v8 throughput
-> test on a loopback device). This should be able to be mitigated by
-> supporting adding skb to bpf_list or bpf_rbtree directly in the future.
->
-> * Clean up skb in bpf qdisc during reset *
->
-> The current implementation relies on bpf qdisc implementors to correctly
-> release skbs in queues (bpf graphs or maps) in .reset, which might not be
-> a safe thing to do. The solution as Martin has suggested would be
-> supporting private data in struct_ops. This can also help simplifying
-> implementation of qdisc that works with mq. For examples, qdiscs in the
-> selftest mostly use global data. Therefore, even if user add multiple
-> qdisc instances under mq, they would still share the same queue.=20
+This patch corrects this problem by initializing the lsmctx to a safe
+value when it is declared.
 
-Very cool to see this progress!
+This is similar to the commit 35fcac7a7c25
+("audit: Initialize lsmctx to avoid memory allocation error").
 
-Are you aware that the series has a mix of commit author email addresses
-(mixing your bytedance.com and gmail addresses)?
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+---
+ net/netfilter/nfnetlink_queue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Otherwise, for the series:
-
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index 5c913987901a..8b7b39d8a109 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -567,7 +567,7 @@ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
+ 	enum ip_conntrack_info ctinfo = 0;
+ 	const struct nfnl_ct_hook *nfnl_ct;
+ 	bool csum_verify;
+-	struct lsm_context ctx;
++	struct lsm_context ctx = { NULL, 0, 0 };
+ 	int seclen = 0;
+ 	ktime_t tstamp;
+ 
+-- 
+2.34.1
 
