@@ -1,80 +1,79 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10E826156B
-	for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 08:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E59526281A;
+	Thu, 13 Mar 2025 08:49:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741855478; cv=none; b=h7bP3qy91as8+k7vIpQ7mRmSDukuYTcceucC8yJvBbSDMSUQkKhwgJSMTB9uMfWkmr8pN4HBuOatm2wBspPa7/aqLV+cWPx6tDsOJu/bLKhKuA3r9HGVF6XDZXZFFKESdJPySWdYQq/HZVM880bxxVro1Wdunu2Ca8eLOZo3/0o=
+	t=1741855798; cv=none; b=PiBjl6dtaqfFyZ4slAFfbcb8YouApku61gNLKKLvK+r6pXPsmKkowtpS9JirL+LQZ4iYDdXK9A5N0QHm6xMhDRmO4gujkabmtiTkZPtrQJAo5YbtwShKjTgPovVWeTseMGkjwSG73IfesxsjvUmL3b7C6gkJIQ1htASQXz92TnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741855478; c=relaxed/simple;
-	bh=pjhXZ5mkdKGtF7dOyIO0Xl30xgfDbOJ2tgP+dlGEawg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j2wz3urFWh3nADRD7C1bmZF7Y+hIyCzCuWakqD5FHummQ/jN097vI45dmcKt9dA+jY5BpqCa8/jNgyuWfl5gN7JcslDo1fYWCDB668v6JA3Shbr0XQLPc66wb3L5KIB8V1NKdOjKv0ptUGysz91XRmX/e0TDNn1qYWfMsU6CWVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=O9ugxHfA; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+	s=arc-20240116; t=1741855798; c=relaxed/simple;
+	bh=Z9bhnmQuVTK3KlaOUmQ71atR3CCNcpznsgNzTr7cStk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=bCSCD66Cboxv+HmDYY3XFec5gjKhKnPxcgj8GD6E5sXF3MI+Sq4ECHr9Sc96rd5npcuXHMkknxn+tJEjhcj9j5HdMmZqVEwcLREX8JfcKyq9vsDjd3vNu7XDBysAWQwdZwXE6gFTFyMl6PCJRPMWY+HvoqGqLnT0bRCM+P67j8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G+9tQIfj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="O9ugxHfA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=J93E6Vw3VK+dqosx/C38S2yEZoCxKiYDJPynkA042n4=; b=O9ugxHfAgY3WEudjUwN0Ar0xeU
-	TbQNuDG9GefuP6cngv+wsY6/MzAfDSdqFiTuFFHLWP+l7kE9W2/W556UQe82tzHSzdY1jSk/Z0tuT
-	W4h048ZXziXn9X3yWtR28bPmcZ5/O1+ZVTZM1BQLbgfCgBnyXvDp+S4xreX5JVpY1/mE5L/AA7Qsx
-	nPMk4TlVD6/3Yo+5/ZyRPj1ZATrLoaqAGFQHtKqzeoNlatq5xVsjj6jOCdLGV9hCGu8phkz5p2e+D
-	xqYlKFgxMEWuwZjK5sEMIWNwbA3CZYdvkFHWejT5KWGmM3wDf6FxCKjGUdGcAMJg3LkpHxvGIDJYJ
-	yCZf1EQQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tseB9-0000000AabG-2B0j;
-	Thu, 13 Mar 2025 08:44:35 +0000
-Date: Thu, 13 Mar 2025 01:44:35 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Hannes Reinecke <hare@suse.de>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, netdev@vger.kernel.org,
-	Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org
-Subject: Re: [PATCH] mm: Decline to manipulate the refcount on a slab page
-Message-ID: <Z9Ka8-aGagGH0rd5@infradead.org>
-References: <20250310143544.1216127-1-willy@infradead.org>
- <20250311111511.2531b260@kernel.org>
- <4fc21641-e258-474b-9409-4949fe2fda2d@suse.de>
- <Z9BsCZ_aOozA5Al9@casper.infradead.org>
- <Z9EgGzPxjOFTKoLj@infradead.org>
- <9af6dff3-adce-40f8-8649-282212acad9e@suse.de>
- <Z9KK-n_JxOQ85Vgp@infradead.org>
- <17f4795a-f6c8-4e6c-ba31-c65eab18efd1@suse.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G+9tQIfj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92595C4CEDD;
+	Thu, 13 Mar 2025 08:49:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741855797;
+	bh=Z9bhnmQuVTK3KlaOUmQ71atR3CCNcpznsgNzTr7cStk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=G+9tQIfjeJErLON2J/nToFA2RBUmgwbQxm+0CYZjQjXaYAz1xuuwv0oBNxKwzXQjz
+	 cEKVukEuVIWDw8azuwTDidseHqEU/I4c5hbrK0bxqYIwwFg8ZRBHeQyUz8BB590FMA
+	 99O3TeIzuMcZ5c5gj0A9iCgI/1eIupk4OvlsLChq5RkBZT/8wqGcT9CpmLKYVbNVV7
+	 b9cOTqT7gcayjn03OseokgQivAx8Y6ZqSpaw/e1e93HjqEiS+cJ/fI39LoprugcUM8
+	 a0F5g1CSpOiX+nhCdwjlGKs5yA/BIfY/ePEaUu/hd8vi2WrU1WNvYJvpuwW5fozQ4M
+	 3CE1CdBnudnwA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33D8D3806651;
+	Thu, 13 Mar 2025 08:50:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <17f4795a-f6c8-4e6c-ba31-c65eab18efd1@suse.de>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: hns3: use string choices helper
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174185583203.1420926.338411681169004091.git-patchwork-notify@kernel.org>
+Date: Thu, 13 Mar 2025 08:50:32 +0000
+References: <20250307113733.819448-1-shaojijie@huawei.com>
+In-Reply-To: <20250307113733.819448-1-shaojijie@huawei.com>
+To: Jijie Shao <shaojijie@huawei.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ shenjian15@huawei.com, wangpeiyang1@huawei.com, liuyonglong@huawei.com,
+ chenhao418@huawei.com, jonathan.cameron@huawei.com,
+ shameerali.kolothum.thodi@huawei.com, salil.mehta@huawei.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Thu, Mar 13, 2025 at 09:34:39AM +0100, Hannes Reinecke wrote:
-> nvmf_connect_command_prep() returns a kmalloced buffer.
+Hello:
 
-Yes.
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-> That is stored in a bvec in _nvme_submit_sync_cmd() via
-> blk_mq_rq_map_kern()->bio_map_kern().
-> And from that point on we are dealing with bvecs (iterators
-> and all), and losing the information that the page referenced
-> is a slab page.
+On Fri, 7 Mar 2025 19:37:33 +0800 you wrote:
+> From: Jian Shen <shenjian15@huawei.com>
+> 
+> Use string choices helper for better readability.
+> 
+> Signed-off-by: Jian Shen <shenjian15@huawei.com>
+> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+> 
+> [...]
 
-Yes. But so does every other consomer of the block layer that passes
-slab memory, of which there are quite a few.  Various internal scsi
-and nvme command come to mind, as does the XFS buffer cache.
+Here is the summary with links:
+  - [net-next] net: hns3: use string choices helper
+    https://git.kernel.org/netdev/net-next/c/9e3285040514
 
-> The argument is that the network layer expected a kvec iterator
-> when slab pages are referred to, not a bvec iterator.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-It doesn't.  It just doesn't want you to use ->sendpage.
 
