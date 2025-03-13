@@ -1,122 +1,146 @@
-Received: from mx05lb.world4you.com (mx05lb.world4you.com [81.19.149.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BE91DF975
-	for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 10:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B871FBC87
+	for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 10:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741861837; cv=none; b=rmyPtpQ1oFkDHxVOorjC/oyIzsXFiOaj50vqUCKIucK5rQE+orceo3H6ao3qeajVUo+trwd78xyZCO5dlLUnwgAj0hdIuFwYZ3jFaka55i1OuZTHNoGNHp8hlYplGyttMsE41vuoY5sDUjuYwkSKbZbtY/KGfRTo9XnVkbj2jdU=
+	t=1741861876; cv=none; b=BnCLc8oOyBhfwK9WdGTeJeaaSrKsSPFfYBq6nVWpSkYINrkJf+Pl4c8pY+pYTMOI33PrCkYi/U5eDUz+NT38440We7DfiKmVJ9VrxXwKktn/JTtgv8x+N4cYZ3tahF7S67rXrsYAKO9KPBMkaGCIxgNkA1fTL+N1P+rpH2atP9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741861837; c=relaxed/simple;
-	bh=m5pbpbLYpwJSyLc0V4CphWHwkl+Dotrs0MjAqVYTn7A=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=MxCZmfDHmXbqRbeDgLEndTBzgwjaehP3mVTWNpygG4fUTfdKnQTgeOKDHDaUxVPgtVfPmy8FGCWsQR1RXqpx5Z1viHAWNoGpSm5QaIVBuxdYv8UYft/UxiaN0rzi8Yw6sOcmG0SZxqajXAFaXcCpM2C2a0wfRmITcDfoIoKU51M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=S9Qw2rRh; arc=none smtp.client-ip=81.19.149.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1741861876; c=relaxed/simple;
+	bh=+Qc1/rhEavEwxsG3hKdFM0w5lhAAqdDttjw6g+YQ8mg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aGSDNHN/GIgvJJZLkg4cUFtFMIB+PW1G6or8IW/8NQKnRSX5ogxwSVpN3cKiubX9ihxgex0Q1HrEaM6s0G3yDZP3f1R6rOH+NXKLozbIJP37zz2RnmtCEPnsIErMkq16XLjde1fuyaUyO6e1mZAbDkK5747Sd2z+4nn695SVq8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=QWMuSpED; arc=none smtp.client-ip=209.85.221.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="S9Qw2rRh"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=WTKwqv8fhSkg8kXBqznMdAIzww4mvBQswwBZ5xc61eg=; b=S9Qw2rRhyda5O8kIH+pD3CaB3V
-	WmqTfxrwOMBqn6yLQJ0ujTPPCJoetyxX87shy3G0Db05z/KmPhsnsU4hseLbL/8h3W6+/w4R+uPf2
-	CXamHd4pgKgdXn98XMnN9mF8u+zb0NRsKGuFlBrM4QCqYiR6lE6yFxzATwc3JidYvMcY=;
-Received: from [81.19.149.44] (helo=webmail.world4you.com)
-	by mx05lb.world4you.com with esmtpa (Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1tseyi-000000001Qf-1pzZ;
-	Thu, 13 Mar 2025 10:35:48 +0100
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="QWMuSpED"
+Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-391342fc148so504648f8f.2
+        for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 03:31:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1741861873; x=1742466673; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+Qc1/rhEavEwxsG3hKdFM0w5lhAAqdDttjw6g+YQ8mg=;
+        b=QWMuSpEDetsgtiuuFcbZJ2jMMxP3+kX5OgKgbwxmQW6sUGE8IjDwWuD/ep184RU4XP
+         BD2F9eMCwAnSns+1NQAs4b4H/nomuwTywijY2xjJybA6xPRGPTyQl4o+ef3fyYpAtbts
+         bwqG7XxKhlj2xXx9IvMYD1VKjQGVud02yvfi5eAR/VzUWU8ABMEfOkh2ftp7Pzt39LLJ
+         0wwhiFwh5oOh26mNNWvNJvHlYr/Iqk02Tic0tdSZtuvjGbyvzIbl3bXgAu6u/qXmAN0+
+         Bdd9rJU+2e9ANA/yJ21A4K+a0871DFhkdUDc1hVhXSlxtFVbnnqL2h1kIMIvSpEVWWWe
+         zDgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741861873; x=1742466673;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+Qc1/rhEavEwxsG3hKdFM0w5lhAAqdDttjw6g+YQ8mg=;
+        b=eq4O/RLwc7DD15LB2nceVDtxaera3CkPWIFQVH9ENchdjab4f7Vkcm9Z5LlgxYdeOp
+         kPLXcax2Hy/Em8XOPuXKnoIxo5J7IIiUzpAAjuKXhCB6W5jfZee7zLSFeIoJptlGZVtK
+         7QCCK7A6XrP6NN6BSFqB/2ZhVCUJpKF+QBGdIOm+4hjAxNI3L3HT9/2mHCEJUIO1E7tL
+         sCqHRRzyra4it+gEiTAzJ3DvtmTLcTPx1eCwqpQkdrqQ1n8IeiHx9dgR/OS16s3lJsXk
+         vDTSCPT55BCu1PwL/GWk7KvPHEVvAcqCNrS71viNSIm+OM9aT/xlJKPMmuoYPG5cMh8x
+         deIA==
+X-Forwarded-Encrypted: i=1; AJvYcCW7uEhBC6eGKKfgQi0F64ZNMKvY0A4uNVjUFrujNHwfnscUIzQYIavqERCRMc54F1Q4M3fpEGg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyort4nhEDMn5ZrMjT9zLIPqRLa+G0mvOgRxh/qt9iLkq1QUU5K
+	qGyC7u+lSo9tfGH5HP9K+1JlK6LdvVXaKvJQ0hFV32VsAleLU9gfOh2F7Q4CC9s=
+X-Gm-Gg: ASbGnctVULz2D/7ijdzeITSO0CCxrmTP8yj2Jiz08j19q9WaGNosEI/N+UfjVeEdc35
+	mx68/u53T1nehWU8nTCP1v/ALhMEzBHEHhFHPRqPlW1COpF0V3YmpA+Sj5qECqxbXkConPnrVPN
+	lmpMXqrEAi9EnRw9tnXGt6z3D53vWulm+4diXwwt9FuwuY7+Etr/Ud32Oavh48NczjJeA8MhIr9
+	+LtZGCSv3WybiFAu4Yk98PpiYQbJD0YdRoS3mySLlPXbFUF1uyKSKSuHSGw4JGf9Oesw8gib/J4
+	wuI30266BjSLePSAmxcTzWiZ6UpfxnwxX8+ZniQF2gY/wos=
+X-Google-Smtp-Source: AGHT+IGutrF+qhtpUeJyR+v5dxXEJQUHmE/j1jQ80iIR/51IL4Oi+Mu0pGNz5DfWd0qOs62NuhFHZQ==
+X-Received: by 2002:a5d:6dad:0:b0:390:de66:cc0c with SMTP id ffacd0b85a97d-3926c69b260mr11326833f8f.46.1741861872973;
+        Thu, 13 Mar 2025 03:31:12 -0700 (PDT)
+Received: from blackdock.suse.cz ([193.86.92.181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-395c7df31f6sm1651918f8f.6.2025.03.13.03.31.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Mar 2025 03:31:12 -0700 (PDT)
+Date: Thu, 13 Mar 2025 11:31:10 +0100
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+Cc: kuniyu@amazon.com, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, cgroups@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, 
+	Leon Romanovsky <leon@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Christian Brauner <brauner@kernel.org>, Lennart Poettering <mzxreary@0pointer.de>, 
+	Luca Boccassi <bluca@debian.org>, Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Shuah Khan <shuah@kernel.org>
+Subject: Re: [PATCH net-next 0/4] Add getsockopt(SO_PEERCGROUPID) and fdinfo
+ API to retreive socket's peer cgroup id
+Message-ID: <m73uknqti2uvh2sdak6fs75ms7ud6yken6cgaotbq3hllg7wmt@hgqewykjxkfn>
+References: <20250309132821.103046-1-aleksandr.mikhalitsyn@canonical.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 13 Mar 2025 10:35:47 +0100
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v10 3/5] net: phy: micrel: Add loopback support
-In-Reply-To: <20250313095729.53a621e0@fedora-2.home>
-References: <20250312203010.47429-1-gerhard@engleder-embedded.com>
- <20250312203010.47429-4-gerhard@engleder-embedded.com>
- <20250313095729.53a621e0@fedora-2.home>
-User-Agent: World4You Webmail
-Message-ID: <9b61088921bafd7da5739c786274c083@engleder-embedded.com>
-X-Sender: gerhard@engleder-embedded.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-AV-Do-Run: Yes
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="gn5un3rlxk2imiai"
+Content-Disposition: inline
+In-Reply-To: <20250309132821.103046-1-aleksandr.mikhalitsyn@canonical.com>
 
-Am 13.03.2025 09:57, schrieb Maxime Chevallier:
-> Hello Gerhard,
-> 
-> On Wed, 12 Mar 2025 21:30:08 +0100
-> Gerhard Engleder <gerhard@engleder-embedded.com> wrote:
-> 
->> The KSZ9031 PHYs requires full duplex for loopback mode. Add PHY
->> specific set_loopback() to ensure this.
->> 
->> Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
->> ---
->>  drivers/net/phy/micrel.c | 24 ++++++++++++++++++++++++
->>  1 file changed, 24 insertions(+)
->> 
->> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
->> index 289e1d56aa65..24882d30f685 100644
->> --- a/drivers/net/phy/micrel.c
->> +++ b/drivers/net/phy/micrel.c
->> @@ -1032,6 +1032,29 @@ static int ksz9021_config_init(struct 
->> phy_device *phydev)
->>  #define MII_KSZ9031RN_EDPD		0x23
->>  #define MII_KSZ9031RN_EDPD_ENABLE	BIT(0)
->> 
->> +static int ksz9031_set_loopback(struct phy_device *phydev, bool 
->> enable,
->> +				int speed)
->> +{
->> +	u16 ctl = BMCR_LOOPBACK;
->> +	int val;
->> +
->> +	if (!enable)
->> +		return genphy_loopback(phydev, enable, 0);
->> +
->> +	if (speed == SPEED_10 || speed == SPEED_100 || speed == SPEED_1000)
->> +		phydev->speed = speed;
->> +	else if (speed)
->> +		return -EINVAL;
->> +	phydev->duplex = DUPLEX_FULL;
->> +
->> +	ctl |= mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
->> +
->> +	phy_write(phydev, MII_BMCR, ctl);
->> +
->> +	return phy_read_poll_timeout(phydev, MII_BMSR, val, val & 
->> BMSR_LSTATUS,
->> +				     5000, 500000, true);
-> 
-> Maybe I don't fully get it, but it looks to me that you poll, waiting
-> for the link to become up. As you are in local loopback mode, how does
-> that work ? Do you need connection to an active LP for loopback to
-> work, or does the BMSR_LSTATUS bit behave differently under local
-> loopback ?
 
-Yes I'm polling for link to come up. This is identical to 
-genphy_loopback().
-There is no need for a link partner to get a link up in loopback mode.
-BMSR_LSTATUS reflects the loopback as link in this case.
+--gn5un3rlxk2imiai
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net-next 0/4] Add getsockopt(SO_PEERCGROUPID) and fdinfo
+ API to retreive socket's peer cgroup id
+MIME-Version: 1.0
 
-This series allows to configure a loopback with defined speed without 
-any
-link partner. Currently for PHY loopback a link partner is needed in 
-some
-cases (starting with 1 Gbps loopback).
+Hello.
 
-Gerhard
+On Sun, Mar 09, 2025 at 02:28:11PM +0100, Alexander Mikhalitsyn <aleksandr.=
+mikhalitsyn@canonical.com> wrote:
+> As we don't add any new state to the socket itself there is no potential =
+locking issues
+> or performance problems. We use already existing sk->sk_cgrp_data.
+
+This is the cgroup where the socket was created in. If such a socket is
+fd-passed to another cgroup, SO_PEERCGROUPID may not be what's expected.
+
+> We already have analogical interfaces to retrieve this
+> information:
+> - inet_diag: INET_DIAG_CGROUP_ID
+> - eBPF: bpf_sk_cgroup_id
+>=20
+> Having getsockopt() interface makes sense for many applications, because =
+using eBPF is
+> not always an option, while inet_diag has obvious complexety and performa=
+nce drawbacks
+> if we only want to get this specific info for one specific socket.
+
+I'm not that familiar with INET_DIAG_CGROUP_ID but that one sounds like
+fit for the purpose of obtaining socket creator's cgroup whereas what is
+desired here is slightly different thing -- cgroup of actual sender
+through the socket.
+
+> Idea comes from UAPI kernel group:
+> https://uapi-group.org/kernel-features/
+
+In theory shortlived (sending) program may reside in shortlived cgroup
+and the consumer of SO_PEERCGROUPID (even if it is real sender) would
+only have that number to work with.
+It doesn't guarantee existence of original cgroup or stable translation
+to cgroup path. I think having something like this could be useful but
+consumers must still be aware of limitations (and possible switch from
+path-oriented to id-oriented work with cgroups).
+
+Thanks,
+Michal
+
+--gn5un3rlxk2imiai
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTd6mfF2PbEZnpdoAkt3Wney77BSQUCZ9Kz2gAKCRAt3Wney77B
+Sbf6AP9fsNpqSW9pup+OWVUAqnwAa4Rv5tCANUaEBtzokfTACwD7BDGhFEavKmvp
+9jS3uaw95+lDb7W2z0WEmZBKQ0regAs=
+=CHE+
+-----END PGP SIGNATURE-----
+
+--gn5un3rlxk2imiai--
