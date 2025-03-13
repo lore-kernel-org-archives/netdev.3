@@ -1,90 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F2D22612;
-	Thu, 13 Mar 2025 14:39:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AB823BD13
+	for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 14:40:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741876772; cv=none; b=Q0Vy06Ia4pue1bAhs+zcD6Z4TLMjj5HjlawmPY2zfJYUwt5tZjBLnSFX68pYquQt2a4sRIsx6Sv4wwCWAm0EojsqeFBvDYe6aLaKWzZm+7WGNk/XKgYWK5p2sYv3rbKtQwiYKRTCSlFYV2IAiHvD3Rv9Kz477bICe7d9c5kzIE4=
+	t=1741876846; cv=none; b=Le6mC0V7Qa3VDgSbj68rHZ1tAFz0yUMYvMlEru59cWkQGJMbpOtfLLtFxU1kpIgkX2zKsXJCkhKvRYZeBgq0Of+qNdukaeG0lOsRGoFZBvsEIhado42+VQagrPR/f4h6ZPSyPL7CwBCIqOtP6qW+TjWALDwJr574RFaZOeNk7RI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741876772; c=relaxed/simple;
-	bh=MUgokbLQXVwrjubKZoMCX9GPPfkVn6vt/U2RaFfyvUk=;
+	s=arc-20240116; t=1741876846; c=relaxed/simple;
+	bh=nI9AbJnxfbTMS5UjVGjV5UoqXhG3DsJYZCC1fGpKZ58=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fsG5lh8f+nMrQvwjWaun0VkFzIonpw8GUkuoE+HpCUl9jjNtWGOHI/cBYnCfxXOUuaP/8KtljA9Vfa0eMOFNMwBoO9wQlnhMoz9EtcKhGK3H1g1TlprYSOmh9PXd/Mm2X+QiJC+I+4sI0cEqjG/hfAJInQxFYND98dCVemsfZdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iNE3B9Tz; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=kROpwG6KduD+IlZK8VM1mnzCK3FBEGcc2ZybIrekbRSyWPrT6myKXWA7gAC88fol1PuHexzk7SCHamgrpfpPPE3qibUKJqdRu/R6rM9urc3Xo4eexX1nHHDuLOwMDlHjZk5jT/XHkUldkjQ9I0RgG7BoN6OMN1Tv+fE4lh+3rcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4bYuuliP; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iNE3B9Tz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D42C4CEEA;
-	Thu, 13 Mar 2025 14:39:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741876772;
-	bh=MUgokbLQXVwrjubKZoMCX9GPPfkVn6vt/U2RaFfyvUk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iNE3B9TzqqCriHM+C3XTJXWg6i9B88Vj9eDoRgdP8Z9eGiIvrIlEjdpwIM+9GmmyT
-	 hHy7t7bLQ5z2wAUqED7XqJs9MDVej3Z+5rtO0PUhVM74l80gq+OwI5PzmRbVjDlXaV
-	 WEM07GqqmLYaWVgnvlGX0kxOjhPd70hTIwTfogmUCAIQ6ndbHKKEIj2k1hxHTykPPw
-	 BZ9HGXLc1FpgGdZqGDUnRGwNOnBpeYFkiG1qaLPmDPO3s+BZuA6W8k4GOesKKPy/Cf
-	 lEW8lT9hLRLCbd+ksTXbToEQtP7x5+CJ9NdfP+nzo+tfFe3ID5G6gQWESQ8q8l+Uc+
-	 ldVt0XeQqBPeA==
-Date: Thu, 13 Mar 2025 14:39:27 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Richard Cochran <richardcochran@gmail.com>
-Subject: Re: [PATCH v1 1/1] spi: Use inclusive language
-Message-ID: <dc17b87b-29c1-4b66-9353-c934a68b929a@sirena.org.uk>
-References: <20250313111442.322850-1-andriy.shevchenko@linux.intel.com>
- <1c49edb2-2ffc-419e-be5e-7e15669a7839@sirena.org.uk>
- <Z9LlTflb1HQMyEv2@smile.fi.intel.com>
- <e329812d-90a5-456e-9a00-abb5c2c8d25d@sirena.org.uk>
- <Z9LqyWr4GH4RX6Nj@smile.fi.intel.com>
- <Z9Ls-zhryd7mJv-b@smile.fi.intel.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4bYuuliP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=XZW/g3ThEAnyNENzFYz6ga3h6ego0Ozi4SXbqk3r0cI=; b=4b
+	YuuliP57NFCdjfOnZ3IHpFOSXDTpW363ckhPPTANwA7fNNrwsy+3Wz8s9Swk5NBPsfRM8uJvFMph4
+	fhFeCiCc/dsFltVYKy49ecsROgLN/GYuDueqK8nfwlUHnpC1EEig5BcsNQ2eeBeVNlO8hl2Lxd1jw
+	Ex2FBL8SD0aHX3c=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tsjjj-00518U-2p; Thu, 13 Mar 2025 15:40:39 +0100
+Date: Thu, 13 Mar 2025 15:40:39 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
+Cc: Vladimir Oltean <olteanv@gmail.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Vivien Didelot <vivien.didelot@gmail.com>,
+	Tobias Waldekranz <tobias@waldekranz.com>, netdev@vger.kernel.org,
+	Lev Olshvang <lev_o@rad.com>
+Subject: Re: [PATCH net 08/13] net: dsa: mv88e6xxx: enable .rmu_disable() for
+ 6320 family
+Message-ID: <9624f27a-8dd2-4e99-9f31-eff9b581d3fa@lunn.ch>
+References: <20250313134146.27087-1-kabel@kernel.org>
+ <20250313134146.27087-9-kabel@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="FBNcT1LVjMOpystl"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <Z9Ls-zhryd7mJv-b@smile.fi.intel.com>
-X-Cookie: A beer delayed is a beer denied.
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250313134146.27087-9-kabel@kernel.org>
 
+On Thu, Mar 13, 2025 at 02:41:41PM +0100, Marek Behún wrote:
+> Commit 9e5baf9b3636 ("net: dsa: mv88e6xxx: add RMU disable op") forgot
+> to add the .rmu_disable() method for the 6320 family. Fix it.
 
---FBNcT1LVjMOpystl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Please add a justification for stable. The rules say:
 
-On Thu, Mar 13, 2025 at 04:34:35PM +0200, Andy Shevchenko wrote:
-> On Thu, Mar 13, 2025 at 04:25:13PM +0200, Andy Shevchenko wrote:
+  It must either fix a real bug that bothers people or just add a
+  device ID.
 
-> > Yes, the base where it was merged to is eds-acpi branch of my public GH [1],
-> > which has no SPI stuff in there.
+How does this bother people?
 
-> $ git checkout -b test-spi-mrg spi/for-next
-> $ git cherry-pick -1 87a228960033
-> [test-spi-mrg 8a11d1063109] spi: Use inclusive language
-> Date: Fri Dec 8 19:02:54 2023 +0200
-> 2 files changed, 64 insertions(+), 66 deletions(-)
+Please look through all the patches in this set and split them between
+net and net-next. They do not all meet this requirement.
 
-> In any case there is a v2, please try that one.
+Andrew
 
-That one does apply.
-
---FBNcT1LVjMOpystl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmfS7h4ACgkQJNaLcl1U
-h9DQZAf/eERa8ly5YiZRIBreTJqXGAWex0ryWJYXkdSj9ol4ISYlBg/6U/nDq6/x
-UZys6FWmMoeCEtClsQTxw0FLLBXcE2YDUhQ7H99VXUWzmZAHIxxMWW09jlL6YOKr
-R4NSqOb4xvjPomzVmk+LRdEK+fhY+pzSMs473CQnihWY6eV0c72nbnmm7UcexAwk
-PM3PFW9sEdiqY48I2gWVTccUAAbqG2gWBEHH4RX1+2XlE6d9SqsbN9D+UTfMhgcD
-6IJ/mXvJY144tYPYzx763/8p2vS7V3Pb2xCQel6UwZrJTmWYIi9luxiwmf4Gycro
-aBsEbSfyt4F/gv9etaBKDsbm/d2Jsw==
-=cf78
------END PGP SIGNATURE-----
-
---FBNcT1LVjMOpystl--
+---
+pw-bot: cr
