@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1991FECC8
-	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 13:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48EAC1FF603
+	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 13:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741957761; cv=none; b=Aterkq88tca/YvZy3eVqcW8DYFXLEMM+wONWml92UFx9FwRCRMoM3QJ0WapmrQOf/6P2yw4mXnM0OmQspN4ScANEDt9U/RHGLTP3LgVyKZrjU31WQNvfoBOlFbDu8xiPAEWN47FePRMyAjwjtazj49IH/+/QANT8JD5ehkeOSEA=
+	t=1741957762; cv=none; b=VurSudZuvgelkhLO2yTWdYf2gPx8PlFgeR8wVs/4+mbrqpCGGIWbXEnHTe677EwA1TS+OOu6Igw0v+XMOrmcQVUMEg3T+GLpjNQtKnU4/YOU1hK44GxpNq42f0kM61Tp7cujkdp3zJziXB6/o8dPPdSVpooBfumyhT4d4/wB5Y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741957761; c=relaxed/simple;
-	bh=KimHpzC1wj7/b2yX4CJkec46k0I9JznTp2gZtkDvXck=;
+	s=arc-20240116; t=1741957762; c=relaxed/simple;
+	bh=IC552aT+X/cMiX3avKhLN9Kp5e+S8eMcg33A4vhkcbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X754f8a9pW/VxLPLOYjYwRmKdiLoJ/YjiG/Yil1nyhkz7dfwRrovpIhqrDamTvrxAhz15qQsI9/veqVjCuZ2Kz01SfjPZXHikr+KoHjoAaYAOZXTLVKk2KeBW4xdFEYYX6bfvNiEZR80PzzwyLwgjP49JhzSAMlmqNuhoyKSv7A=
+	 MIME-Version; b=uYnn+Ff8/zy80vNMv6ZqE4XowBE+Cx0fkUyUpXSvPp8M8LDQDGS4X1bru8tU8m8dI+Vybe75jkG6KG3LQOtLjQA3BA4m9QkHFpdq2uwrNXt7b2wro+tUSG+0C2AJhHCP43YVzBm8Su2ELEuVm0hPo52tZg/rsXytjQua88udxgA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,26 +18,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tt4mr-0007Kf-4H
-	for netdev@vger.kernel.org; Fri, 14 Mar 2025 14:09:17 +0100
+	id 1tt4ms-0007Mi-DB
+	for netdev@vger.kernel.org; Fri, 14 Mar 2025 14:09:18 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tt4mq-005hoO-1d
+	id 1tt4mr-005hpj-1g
 	for netdev@vger.kernel.org;
-	Fri, 14 Mar 2025 14:09:16 +0100
+	Fri, 14 Mar 2025 14:09:17 +0100
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 34CD83DBB76
-	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 13:09:16 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id 34C8E3DBB88
+	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 13:09:17 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 0EB1C3DBB4D;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 4EA453DBB51;
 	Fri, 14 Mar 2025 13:09:14 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id a16014f1;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id f21f756b;
 	Fri, 14 Mar 2025 13:09:12 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -45,13 +45,12 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	stable@vger.kernel.org,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 2/6] can: statistics: use atomic access in hot path
-Date: Fri, 14 Mar 2025 14:04:01 +0100
-Message-ID: <20250314130909.2890541-3-mkl@pengutronix.de>
+Subject: [PATCH net 5/6] can: flexcan: only change CAN state when link up in system PM
+Date: Fri, 14 Mar 2025 14:04:04 +0100
+Message-ID: <20250314130909.2890541-6-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250314130909.2890541-1-mkl@pengutronix.de>
 References: <20250314130909.2890541-1-mkl@pengutronix.de>
@@ -67,189 +66,70 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-In can_send() and can_receive() CAN messages and CAN filter matches are
-counted to be visible in the CAN procfs files.
+After a suspend/resume cycle on a down interface, it will come up as
+ERROR-ACTIVE.
 
-KCSAN detected a data race within can_send() when two CAN frames have
-been generated by a timer event writing to the same CAN netdevice at the
-same time. Use atomic operations to access the statistics in the hot path
-to fix the KCSAN complaint.
+$ ip -details -s -s a s dev flexcan0
+3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
+    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
+    can state STOPPED (berr-counter tx 0 rx 0) restart-ms 1000
 
-Reported-by: syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67cd717d.050a0220.e1a89.0006.GAE@google.com
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250310143353.3242-1-socketcan@hartkopp.net
+$ sudo systemctl suspend
+
+$ ip -details -s -s a s dev flexcan0
+3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
+    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 1000
+
+And only set CAN state to CAN_STATE_ERROR_ACTIVE when resume process
+has no issue, otherwise keep in CAN_STATE_SLEEPING as suspend did.
+
+Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20250314110145.899179-1-haibo.chen@nxp.com
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/all/20250314-married-polar-elephant-b15594-mkl@pengutronix.de
+[mkl: add newlines]
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- net/can/af_can.c | 12 ++++++------
- net/can/af_can.h | 12 ++++++------
- net/can/proc.c   | 46 +++++++++++++++++++++++++++-------------------
- 3 files changed, 39 insertions(+), 31 deletions(-)
+ drivers/net/can/flexcan/flexcan-core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/can/af_can.c b/net/can/af_can.c
-index 01f3fbb3b67d..65230e81fa08 100644
---- a/net/can/af_can.c
-+++ b/net/can/af_can.c
-@@ -287,8 +287,8 @@ int can_send(struct sk_buff *skb, int loop)
- 		netif_rx(newskb);
- 
- 	/* update statistics */
--	pkg_stats->tx_frames++;
--	pkg_stats->tx_frames_delta++;
-+	atomic_long_inc(&pkg_stats->tx_frames);
-+	atomic_long_inc(&pkg_stats->tx_frames_delta);
+diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
+index ac1a860986df..3a71fd235722 100644
+--- a/drivers/net/can/flexcan/flexcan-core.c
++++ b/drivers/net/can/flexcan/flexcan-core.c
+@@ -2266,8 +2266,9 @@ static int __maybe_unused flexcan_suspend(struct device *device)
+ 		}
+ 		netif_stop_queue(dev);
+ 		netif_device_detach(dev);
++
++		priv->can.state = CAN_STATE_SLEEPING;
+ 	}
+-	priv->can.state = CAN_STATE_SLEEPING;
  
  	return 0;
- 
-@@ -647,8 +647,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
- 	int matches;
- 
- 	/* update statistics */
--	pkg_stats->rx_frames++;
--	pkg_stats->rx_frames_delta++;
-+	atomic_long_inc(&pkg_stats->rx_frames);
-+	atomic_long_inc(&pkg_stats->rx_frames_delta);
- 
- 	/* create non-zero unique skb identifier together with *skb */
- 	while (!(can_skb_prv(skb)->skbcnt))
-@@ -669,8 +669,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
- 	consume_skb(skb);
- 
- 	if (matches > 0) {
--		pkg_stats->matches++;
--		pkg_stats->matches_delta++;
-+		atomic_long_inc(&pkg_stats->matches);
-+		atomic_long_inc(&pkg_stats->matches_delta);
- 	}
  }
+@@ -2278,7 +2279,6 @@ static int __maybe_unused flexcan_resume(struct device *device)
+ 	struct flexcan_priv *priv = netdev_priv(dev);
+ 	int err;
  
-diff --git a/net/can/af_can.h b/net/can/af_can.h
-index 7c2d9161e224..22f3352c77fe 100644
---- a/net/can/af_can.h
-+++ b/net/can/af_can.h
-@@ -66,9 +66,9 @@ struct receiver {
- struct can_pkg_stats {
- 	unsigned long jiffies_init;
+-	priv->can.state = CAN_STATE_ERROR_ACTIVE;
+ 	if (netif_running(dev)) {
+ 		netif_device_attach(dev);
+ 		netif_start_queue(dev);
+@@ -2298,6 +2298,8 @@ static int __maybe_unused flexcan_resume(struct device *device)
  
--	unsigned long rx_frames;
--	unsigned long tx_frames;
--	unsigned long matches;
-+	atomic_long_t rx_frames;
-+	atomic_long_t tx_frames;
-+	atomic_long_t matches;
- 
- 	unsigned long total_rx_rate;
- 	unsigned long total_tx_rate;
-@@ -82,9 +82,9 @@ struct can_pkg_stats {
- 	unsigned long max_tx_rate;
- 	unsigned long max_rx_match_ratio;
- 
--	unsigned long rx_frames_delta;
--	unsigned long tx_frames_delta;
--	unsigned long matches_delta;
-+	atomic_long_t rx_frames_delta;
-+	atomic_long_t tx_frames_delta;
-+	atomic_long_t matches_delta;
- };
- 
- /* persistent statistics */
-diff --git a/net/can/proc.c b/net/can/proc.c
-index bbce97825f13..25fdf060e30d 100644
---- a/net/can/proc.c
-+++ b/net/can/proc.c
-@@ -118,6 +118,13 @@ void can_stat_update(struct timer_list *t)
- 	struct can_pkg_stats *pkg_stats = net->can.pkg_stats;
- 	unsigned long j = jiffies; /* snapshot */
- 
-+	long rx_frames = atomic_long_read(&pkg_stats->rx_frames);
-+	long tx_frames = atomic_long_read(&pkg_stats->tx_frames);
-+	long matches = atomic_long_read(&pkg_stats->matches);
-+	long rx_frames_delta = atomic_long_read(&pkg_stats->rx_frames_delta);
-+	long tx_frames_delta = atomic_long_read(&pkg_stats->tx_frames_delta);
-+	long matches_delta = atomic_long_read(&pkg_stats->matches_delta);
+ 			flexcan_chip_interrupts_enable(dev);
+ 		}
 +
- 	/* restart counting in timer context on user request */
- 	if (user_reset)
- 		can_init_stats(net);
-@@ -127,35 +134,33 @@ void can_stat_update(struct timer_list *t)
- 		can_init_stats(net);
++		priv->can.state = CAN_STATE_ERROR_ACTIVE;
+ 	}
  
- 	/* prevent overflow in calc_rate() */
--	if (pkg_stats->rx_frames > (ULONG_MAX / HZ))
-+	if (rx_frames > (LONG_MAX / HZ))
- 		can_init_stats(net);
- 
- 	/* prevent overflow in calc_rate() */
--	if (pkg_stats->tx_frames > (ULONG_MAX / HZ))
-+	if (tx_frames > (LONG_MAX / HZ))
- 		can_init_stats(net);
- 
- 	/* matches overflow - very improbable */
--	if (pkg_stats->matches > (ULONG_MAX / 100))
-+	if (matches > (LONG_MAX / 100))
- 		can_init_stats(net);
- 
- 	/* calc total values */
--	if (pkg_stats->rx_frames)
--		pkg_stats->total_rx_match_ratio = (pkg_stats->matches * 100) /
--			pkg_stats->rx_frames;
-+	if (rx_frames)
-+		pkg_stats->total_rx_match_ratio = (matches * 100) / rx_frames;
- 
- 	pkg_stats->total_tx_rate = calc_rate(pkg_stats->jiffies_init, j,
--					    pkg_stats->tx_frames);
-+					    tx_frames);
- 	pkg_stats->total_rx_rate = calc_rate(pkg_stats->jiffies_init, j,
--					    pkg_stats->rx_frames);
-+					    rx_frames);
- 
- 	/* calc current values */
--	if (pkg_stats->rx_frames_delta)
-+	if (rx_frames_delta)
- 		pkg_stats->current_rx_match_ratio =
--			(pkg_stats->matches_delta * 100) /
--			pkg_stats->rx_frames_delta;
-+			(matches_delta * 100) /	rx_frames_delta;
- 
--	pkg_stats->current_tx_rate = calc_rate(0, HZ, pkg_stats->tx_frames_delta);
--	pkg_stats->current_rx_rate = calc_rate(0, HZ, pkg_stats->rx_frames_delta);
-+	pkg_stats->current_tx_rate = calc_rate(0, HZ, tx_frames_delta);
-+	pkg_stats->current_rx_rate = calc_rate(0, HZ, rx_frames_delta);
- 
- 	/* check / update maximum values */
- 	if (pkg_stats->max_tx_rate < pkg_stats->current_tx_rate)
-@@ -168,9 +173,9 @@ void can_stat_update(struct timer_list *t)
- 		pkg_stats->max_rx_match_ratio = pkg_stats->current_rx_match_ratio;
- 
- 	/* clear values for 'current rate' calculation */
--	pkg_stats->tx_frames_delta = 0;
--	pkg_stats->rx_frames_delta = 0;
--	pkg_stats->matches_delta   = 0;
-+	atomic_long_set(&pkg_stats->tx_frames_delta, 0);
-+	atomic_long_set(&pkg_stats->rx_frames_delta, 0);
-+	atomic_long_set(&pkg_stats->matches_delta, 0);
- 
- 	/* restart timer (one second) */
- 	mod_timer(&net->can.stattimer, round_jiffies(jiffies + HZ));
-@@ -214,9 +219,12 @@ static int can_stats_proc_show(struct seq_file *m, void *v)
- 	struct can_rcv_lists_stats *rcv_lists_stats = net->can.rcv_lists_stats;
- 
- 	seq_putc(m, '\n');
--	seq_printf(m, " %8ld transmitted frames (TXF)\n", pkg_stats->tx_frames);
--	seq_printf(m, " %8ld received frames (RXF)\n", pkg_stats->rx_frames);
--	seq_printf(m, " %8ld matched frames (RXMF)\n", pkg_stats->matches);
-+	seq_printf(m, " %8ld transmitted frames (TXF)\n",
-+		   atomic_long_read(&pkg_stats->tx_frames));
-+	seq_printf(m, " %8ld received frames (RXF)\n",
-+		   atomic_long_read(&pkg_stats->rx_frames));
-+	seq_printf(m, " %8ld matched frames (RXMF)\n",
-+		   atomic_long_read(&pkg_stats->matches));
- 
- 	seq_putc(m, '\n');
- 
+ 	return 0;
 -- 
 2.47.2
 
