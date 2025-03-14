@@ -1,183 +1,178 @@
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA4218B03;
-	Fri, 14 Mar 2025 02:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536332D05E
+	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 02:37:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741918969; cv=none; b=FKC8VpBkThJsi/FR5K5VtmNR5Q+cA4sPNdrAcLs6wazyoOwcFFhzVZTQqY1snMJQ0dctqWC9bxn1AgoqqlfrF6ziwjH2PuRxuXE805jBf1/Fxf8yoZTHYGcJqWpsjTcDIBi7mvCTO8xQ26J2aBE1YQ4j4BApZdqIM7ywGkzQ0/Q=
+	t=1741919878; cv=none; b=Kvd86DATzONldzdGcmdvpF35VdZ7EdAYYG+IcHpbI5nUYpVVFJXdAaelJaIsOOgXMZOlhLWomqq+ZHrCuwfOAcC3p+Iq1iR7aLauGylD2lWy+kzM7je21WSRZF/4T/F8FPxFvKC5F3IqTTgldj2kHBnBrDI8VwW4Z4B+fytCvrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741918969; c=relaxed/simple;
-	bh=sWKXN8cKrNB+gGdwxIZoWICKKlVuMO6GlnugQx/2dZo=;
+	s=arc-20240116; t=1741919878; c=relaxed/simple;
+	bh=kyuXt1mT2RpzBlkJKZTm21HYW8anG1jhcMdhVvgCx40=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=vAUPIuRqWjM3fgPS4AxSwexaFev5oki2dP8GPSBouChq2nELSrnLHv16PeJT0Q2kryeLcVtbM4w7PoBcdsmcneDPn611Irq3IB3evP1JJ2Vrq0CsfsrSGCbDIopO+ChMieAa+8/augXHrZNXsusjnCk7BaOP4Mguub63ZZFLiZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JVEUyqe9; arc=none smtp.client-ip=209.85.221.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=Fuuj9dVfsMs/1NEVse4adBaStFN6yLoCJeBfRvuE+wlFZew8oiGANdBCuEL9xZ59dkjzRfjfuG8P4VuoJaJQI0OP+1yfJDAgENyNkKCdIYwuKrWSK7/3ll2G7CDCoHh82AwfgNEiIg/okDU8EQ97/wv2+DiOBPiJ33R7OZThbVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WjMt8xWO; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JVEUyqe9"
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-524038ba657so1451635e0c.0;
-        Thu, 13 Mar 2025 19:22:47 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WjMt8xWO"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-22403cbb47fso32214055ad.0
+        for <netdev@vger.kernel.org>; Thu, 13 Mar 2025 19:37:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741918966; x=1742523766; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6pUSAt2gBWS/THix03rDWEWBe6ltaTHViojJEsG79IE=;
-        b=JVEUyqe9S0pc3xLgmFRmCg0gQXqijaJhY2QKO6zaknGbsOIszjX56pMiVMK0TQzDbo
-         rOD8K/QL+eWjWjlpPbgAK6JtZ0KnpoNJ0/3rUIB429b0tJsVNt6di9XPkimeIXcxybL9
-         r16nchIjG+KcPf8ISDYpRMIxGi/QqY/o2F7nXZSBMuYdEMV1TqMqUo+L5QCWNkD6zGTN
-         OBeoS9F3SiChvvBa7vLEyAK8IevYnlDT5OltvO4TXVz0xu7Mm7vhgVbMajwGPeevAYoE
-         Vvmtmxu17JRl0vlIUuSvQwFnLvkZWvxMes8nXwDHy/lnyDXUELxqYlrvkOImgPQ2tEz1
-         UEkA==
+        d=broadcom.com; s=google; t=1741919875; x=1742524675; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=kyuXt1mT2RpzBlkJKZTm21HYW8anG1jhcMdhVvgCx40=;
+        b=WjMt8xWOuESimRh8aVujiuXITGfxbUkDc5i/+tnCzl/A2eaaye1fCzIx3gbqNlTSnB
+         XrAyi+sMy9C3mNWcUYkTZ/bpdGjrVkWDkpjrnoC4WqG9/FMgwFsPCT4+WvKqgXYXtQOl
+         UwxiaJ3jJm2aPViuF9KfhieK23UOf+qtJHGP8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741918966; x=1742523766;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6pUSAt2gBWS/THix03rDWEWBe6ltaTHViojJEsG79IE=;
-        b=IThG/lI9Z1Pl0rWRRPyee2/g8x5cLf8A2j1nkEajHEQc/QjTLlNTv0HRgvbuOVQoQC
-         GaU6zXmToHJM4j5qLcmXn0WVc3kNQ8ZZWml7TXASH3e1uA9iZoO7emrGIMU6vU/K/cUM
-         aRGiXrgg5kYecSM7xT2dqKaeeG+p8ZUl0jlkkaBmu7Aq5KvvDpEQWlEnF38IdySuX4by
-         UuuBVjTHUjXvrmb9dxi9pm6jVlDagV8IiAFMIn1IC3KRFknWCp/VGIVd8D+yIlIb0O8z
-         YRRvyXGCFtIUCOleByZaeSG2hcLtIjW6YJEyMe9OTn0d9nUlmnfU5i8/42FE1UOYUivZ
-         zZkw==
-X-Forwarded-Encrypted: i=1; AJvYcCUZKitR8VIA+5eH+T7XS5wjpetCAzPjcpQPNsAQ5ZIpgU3npNeaXX4eAoIjWZ/vZXYd9gv1bfNHNFD6KGaZ@vger.kernel.org, AJvYcCUoKto7+J9o6G9/7XPxQb+ezcGfVjT0V1KrV6drUIo3cRckKllwtpIjdK0VmdkSDS6mUgiAUPqOxLl5SZyqxPXh80g=@vger.kernel.org, AJvYcCVrv7IqZklrJ26v1x3D2nn0SE25YIIX+aUQyQXl+NMcQq2Gop8nTzQfu07QlKHp/+R9dpo1286txE7O@vger.kernel.org, AJvYcCXeuvv1coHO78YbJwp+pkeXVcnr1NYE/6YOpRkZgUJ/1r3w6alyQkADGfJWhIn72GnYQPMH7qQ9@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBfOvnPaIy5iZuizhpB8jX2hBYiRNqsYjxTYE9GG+eDRP2w6h1
-	4fCvODKZeAURD4dU0Da1eMpbqUCxSi+fai3UJ6T5NMcSTIG8+pi6QIpffmEu4HLHjLMsxW05Kgk
-	GANtaUcAhUwPwIvoA7dNj2gGRe7U=
-X-Gm-Gg: ASbGncvMD/3hcqWhgN3TKAtqFEcPQdSONejnxCjUk3rFo8cET9uTC+WxZ5CBjT++uEv
-	q/mEX6P+mvzBY+pZgZ5/2ag6dpYIwEPLmlMQ4LkDPHmjM3O3O+FZG3T0i4H0ZrR2HoNgi1NC2kT
-	6SQ+EvNyjJDJr8X2asXN6fU1aQ9Q==
-X-Google-Smtp-Source: AGHT+IGs2NI4xge/a4lyvxOg3g3F9PYZhdFTackqpL56vrER50A7S7MWIvWppAene15n03kRY8o9uLvEhOJigkhj1z0=
-X-Received: by 2002:a05:6122:881:b0:50d:39aa:7881 with SMTP id
- 71dfb90a1353d-5244a70f321mr354682e0c.0.1741918966551; Thu, 13 Mar 2025
- 19:22:46 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1741919875; x=1742524675;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kyuXt1mT2RpzBlkJKZTm21HYW8anG1jhcMdhVvgCx40=;
+        b=KnxxO1IBJNgLbUV8fDH18eoiLqtBni5YjwQSV5B/IyBg2/lP26J91ujUWTjori/W+S
+         RgW7M6AkGyjPEWaL7YN4S6NH1jyN6wx2kaRQ61vO45tGXxZpDr08yMcX9GTQquSwIpv/
+         Q9EV0ml74p1IFDP4xNPNvzkSYANlSPGUdlXOGyzCf1pM7z83QFFVsyAS+UWUW+9r8SRS
+         qZaDVOuo7mo0M6Bc+0vxSKVKeQYvh+dpkKpWeHtGKKIyBskF+cE63E5UO9S/dPmKPvoC
+         kwiQEpZUEzA7wIrf9FiLsFwZHrjDoPMXCR0yw/FUpHSluCz+Nw+V0H44WqzXFqFlW2JL
+         1WPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVDQgrTT4D0bIf5zHsXc1+jHb8O+/Ck947F5UUb6Fg4ZZTbzLk8pjGPkO2yn2/n6IfC4Nk5/E4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzO3yBTjA7DuuqKd1TZTba4igpyGZZP7mqEHAYmjgr9VWzpb3Qx
+	iaL1/dhUCRFYcOzaXwZGgyE0gV9K4HD7moz7Gy18QCOSiXXTCDERGtwdvQJnqQ4m18ick7dRR3s
+	D5GDlyTowjeIod8OGF19VJ5AvOxUKC3ysS/ud
+X-Gm-Gg: ASbGncskw4j8y2SdNyI3RofzJX8Jp7DIGU8MnAqy4qcp9DlYqk9Hz2e6Gi+ubaeSQzV
+	gYL58ZhFvxytmhKyIejZV5om1baH811oVZ1e1nwKnjMzA7oR5WYDV1xbm56DJSpsy98nByjPmvB
+	SVFCy4HkkXn93fwgWEY6o9qeUwuO8=
+X-Google-Smtp-Source: AGHT+IFnsSNj8wzjEvat23vsGwK4dSbuSjXDNRp0pe/fghoL6vHD6zxY9KorPbMGwwDb3TwE/KjQLXAeDcCi1IZeuhI=
+X-Received: by 2002:a05:6a00:3c8d:b0:736:53c5:33ba with SMTP id
+ d2e1a72fcca58-737223e67f0mr947825b3a.16.1741919875392; Thu, 13 Mar 2025
+ 19:37:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250311221730.40720-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <20250311221730.40720-2-prabhakar.mahadev-lad.rj@bp.renesas.com> <20250312131623.GA489176-robh@kernel.org>
-In-Reply-To: <20250312131623.GA489176-robh@kernel.org>
-From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date: Fri, 14 Mar 2025 02:22:20 +0000
-X-Gm-Features: AQ5f1JpzjU4xztKpl7U06A1goxhOy8oR5lsFxv1C9RO1B1QjTjJrg3KeCUuStEU
-Message-ID: <CA+V-a8vvd7uGx=M=vUauKGA4O5uhwsCgRzVqb387Z8JUXFBHBQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 1/3] dt-bindings: net: dwmac: Increase
- 'maxItems' for 'interrupts' and 'interrupt-names'
-To: Rob Herring <robh@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	Biju Das <biju.das.jz@bp.renesas.com>, 
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+References: <1741893886-188294-1-git-send-email-tariqt@nvidia.com> <1741893886-188294-4-git-send-email-tariqt@nvidia.com>
+In-Reply-To: <1741893886-188294-4-git-send-email-tariqt@nvidia.com>
+From: Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>
+Date: Fri, 14 Mar 2025 08:07:43 +0530
+X-Gm-Features: AQ5f1JqgCcnaE3sJIZXWC4kiQRcCQL-P7dlQVU1fyK36sWA5MPP60anLMZvdSHY
+Message-ID: <CAH-L+nNsUKijoC3WGQGut6Zfs=s8T9mjGdS5jf+975E0OoE_zQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 3/4] net/mlx5e: Get counter group size by FW capability
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Gal Pressman <gal@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Yael Chemla <ychemla@nvidia.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000006c07660630445362"
+
+--0000000000006c07660630445362
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Rob,
-
-Thank you for the review.
-
-On Wed, Mar 12, 2025 at 1:16=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
-:
+On Fri, Mar 14, 2025 at 12:56=E2=80=AFAM Tariq Toukan <tariqt@nvidia.com> w=
+rote:
 >
-> On Tue, Mar 11, 2025 at 10:17:28PM +0000, Prabhakar wrote:
-> > From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> >
-> > Increase the `maxItems` value for the `interrupts` and `interrupt-names=
-`
-> > properties to 11 to support additional per-channel Tx/Rx completion
-> > interrupts on the Renesas RZ/V2H(P) SoC, which features the
-> > `snps,dwmac-5.20` IP.
-> >
-> > Refactor the `interrupt-names` property by replacing repeated `enum`
-> > entries with a `oneOf` list. Add support for per-channel receive and
-> > transmit completion interrupts using regex patterns.
-> >
-> > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> > ---
-> > Note, for adding constraints to vendor bindings patch [0] has been sent
-> > out seprately.
-> >
-> > [0] https://lore.kernel.org/all/20250309003301.1152228-1-prabhakar.maha=
-dev-lad.rj@bp.renesas.com/
-> >
-> > v2->v3
-> > - Dropped adding `additionalItems`
-> > - Moved interrupts description into interrupt-names
-> > - Replaced enum with a oneOf and added Rx/Tx regex patterns
-> >
-> > v1->v2
-> > - No change
-> > ---
-> >  .../devicetree/bindings/net/snps,dwmac.yaml   | 24 ++++++++++++-------
-> >  1 file changed, 15 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Do=
-cumentation/devicetree/bindings/net/snps,dwmac.yaml
-> > index 78b3030dc56d..bacec6e6514b 100644
-> > --- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-> > +++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-> > @@ -114,19 +114,25 @@ properties:
-> >
-> >    interrupts:
-> >      minItems: 1
-> > -    items:
-> > -      - description: Combined signal for various interrupt events
-> > -      - description: The interrupt to manage the remote wake-up packet=
- detection
-> > -      - description: The interrupt that occurs when Rx exits the LPI s=
-tate
-> > -      - description: The interrupt that occurs when HW safety error tr=
-iggered
-> > +    maxItems: 11
-> >
-> >    interrupt-names:
-> >      minItems: 1
-> > +    maxItems: 26
+> From: Yael Chemla <ychemla@nvidia.com>
 >
-> Oops! I assume you meant 11. With that fixed:
-Ouch, I will fix this in v4.
+> Retrieve the number of fields supported by each PPCNT counter group
+> based on the FW capability for this group.
+>
+> Signed-off-by: Yael Chemla <ychemla@nvidia.com>
+> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 
->
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
->
-> >      items:
-> > -      - const: macirq
-> > -      - enum: [eth_wake_irq, eth_lpi, sfty]
-> > -      - enum: [eth_wake_irq, eth_lpi, sfty]
-> > -      - enum: [eth_wake_irq, eth_lpi, sfty]
-> > +      oneOf:
-> > +        - description: Combined signal for various interrupt events
-> > +          const: macirq
-> > +        - description: The interrupt to manage the remote wake-up pack=
-et detection
-> > +          const: eth_wake_irq
-> > +        - description: The interrupt that occurs when Rx exits the LPI=
- state
-> > +          const: eth_lpi
-> > +        - description: The interrupt that occurs when HW safety error =
-triggered
-> > +          const: sfty
-> > +        - description: Per channel receive completion interrupt
-> > +          pattern: '^rx-queue-[0-3]$'
-> > +        - description: Per channel transmit completion interrupt
-> > +          pattern: '^tx-queue-[0-3]$'
-> >
-> >    clocks:
-> >      minItems: 1
-> > --
-> > 2.43.0
-> >
+LGTM,
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-Cheers,
-Prabhakar
+--=20
+Regards,
+Kalesh AP
+
+--0000000000006c07660630445362
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+riBJ/K1AFUjRAjFhGV64l++td7dkmnq/X8ET75ti+w1s4FRpFqkD2m7pg5NxdsZphYIXAgMBAAGj
+QjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSP8Et/qC5FJK5N
+UPpjmove4t0bvDANBgkqhkiG9w0BAQsFAAOCAQEAS0DbwFCq/sgM7/eWVEVJu5YACUGssxOGhigH
+M8pr5nS5ugAtrqQK0/Xx8Q+Kv3NnSoPHRHt44K9ubG8DKY4zOUXDjuS5V2yq/BKW7FPGLeQkbLmU
+Y/vcU2hnVj6DuM81IcPJaP7O2sJTqsyQiunwXUaMld16WCgaLx3ezQA3QY/tRG3XUyiXfvNnBB4V
+14qWtNPeTCekTBtzc3b0F5nCH3oO4y0IrQocLP88q1UOD5F+NuvDV0m+4S4tfGCLw0FREyOdzvcy
+a5QBqJnnLDMfOjsl0oZAzjsshnjJYS8Uuu7bVW/fhO4FCU29KNhyztNiUGUe65KXgzHZs7XKR1g/
+XzCCBWowggRSoAMCAQICDDfBRQmwNSI92mit0zANBgkqhkiG9w0BAQsFADBbMQswCQYDVQQGEwJC
+RTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMg
+UGVyc29uYWxTaWduIDIgQ0EgMjAyMDAeFw0yMjA5MTAwODI5NTZaFw0yNTA5MTAwODI5NTZaMIGi
+MQswCQYDVQQGEwJJTjESMBAGA1UECBMJS2FybmF0YWthMRIwEAYDVQQHEwlCYW5nYWxvcmUxFjAU
+BgNVBAoTDUJyb2FkY29tIEluYy4xHzAdBgNVBAMTFkthbGVzaCBBbmFra3VyIFB1cmF5aWwxMjAw
+BgkqhkiG9w0BCQEWI2thbGVzaC1hbmFra3VyLnB1cmF5aWxAYnJvYWRjb20uY29tMIIBIjANBgkq
+hkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxnv1Reaeezfr6NEmg3xZlh4cz9m7QCN13+j4z1scrX+b
+JfnV8xITT5yvwdQv3R3p7nzD/t29lTRWK3wjodUd2nImo6vBaH3JbDwleIjIWhDXLNZ4u7WIXYwx
+aQ8lYCdKXRsHXgGPY0+zSx9ddpqHZJlHwcvas3oKnQN9WgzZtsM7A8SJefWkNvkcOtef6bL8Ew+3
+FBfXmtsPL9I2vita8gkYzunj9Nu2IM+MnsP7V/+Coy/yZDtFJHp30hDnYGzuOhJchDF9/eASvE8T
+T1xqJODKM9xn5xXB1qezadfdgUs8k8QAYyP/oVBafF9uqDudL6otcBnziyDBQdFCuAQN7wIDAQAB
+o4IB5DCCAeAwDgYDVR0PAQH/BAQDAgWgMIGjBggrBgEFBQcBAQSBljCBkzBOBggrBgEFBQcwAoZC
+aHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyM3BlcnNvbmFsc2lnbjJj
+YTIwMjAuY3J0MEEGCCsGAQUFBzABhjVodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3Iz
+cGVyc29uYWxzaWduMmNhMjAyMDBNBgNVHSAERjBEMEIGCisGAQQBoDIBKAowNDAyBggrBgEFBQcC
+ARYmaHR0cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCQYDVR0TBAIwADBJBgNV
+HR8EQjBAMD6gPKA6hjhodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNp
+Z24yY2EyMDIwLmNybDAuBgNVHREEJzAlgSNrYWxlc2gtYW5ha2t1ci5wdXJheWlsQGJyb2FkY29t
+LmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNVHSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGP
+zzAdBgNVHQ4EFgQUI3+tdStI+ABRGSqksMsiCmO9uDAwDQYJKoZIhvcNAQELBQADggEBAGfe1o9b
+4wUud0FMjb/FNdc433meL15npjdYWUeioHdlCGB5UvEaMGu71QysfoDOfUNeyO9YKp0h0fm7clvo
+cBqeWe4CPv9TQbmLEtXKdEpj5kFZBGmav69mGTlu1A9KDQW3y0CDzCPG2Fdm4s73PnkwvemRk9E2
+u9/kcZ8KWVeS+xq+XZ78kGTKQ6Wii3dMK/EHQhnDfidadoN/n+x2ySC8yyDNvy81BocnblQzvbuB
+a30CvRuhokNO6Jzh7ZFtjKVMzYas3oo6HXgA+slRszMu4pc+fRPO41FHjeDM76e6P5OnthhnD+NY
+x6xokUN65DN1bn2MkeNs0nQpizDqd0QxggJgMIICXAIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYD
+VQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25h
+bFNpZ24gMiBDQSAyMDIwAgw3wUUJsDUiPdpordMwDQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcN
+AQkEMSIEILEQsJ7NK56qbcd61c7WmAJCAvrvOrTmkHYX707w2EVWMBgGCSqGSIb3DQEJAzELBgkq
+hkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDMxNDAyMzc1NVowXAYJKoZIhvcNAQkPMU8wTTAL
+BglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG
+9w0BAQcwCwYJYIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBAA7ZOLgZBsSN7llT9JI9gbiGXIRe
+PtNZQlIDZ/XgHv0Zi/NhU3iT1NO3wl2xtt9aZpGdIHVcB00ssuwUVpMnJuz5GDkFe0voG3e6L0ju
+YxUSFp1HHH+ubwwtufDtSkl9uQNcd0D/dSN3mGjmar3JXTlaP8ULL6WrqrTLXyqHkt7gBVdzXCsp
+e99rHqnz/yNWHdz9mfLCm+NZyLa503PeJG1TRR1KWF08ve6nqnPmfIxCw/vHy8qCiDCXrHftQqV7
+5gSOwTA1M5BaCirwedTAz1sdM9phlHNHALtc/a0aRJgguQ5gePPrypEs6OVzJt6YlVuREvbS0/yL
+SS3r55ze1I8=
+--0000000000006c07660630445362--
