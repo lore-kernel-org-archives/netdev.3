@@ -1,135 +1,109 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from serv108.segi.ulg.ac.be (serv108.segi.ulg.ac.be [139.165.32.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A4E18CBF2;
-	Fri, 14 Mar 2025 11:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809821FDE29
+	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 12:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.165.32.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741952879; cv=none; b=XOV3g9aNGnvV/QccWEmGexKlFs1p/gpLQiK/GmqW94rVu3d0cqMRsCM8ikOs4HImUfMHJTzCP2+Hj5Mn2v6pXXAB3w9cOCzkIlqhJtW9GTHeAIAXTyI3Ul6+gxUjW32htyyKooZAPkU0/WsCnrCZk1PDMXbgR9erb8urUPev76s=
+	t=1741953666; cv=none; b=iuyrBhkGAYaEB0/YiPEl87WSXOxzl08/Tyol2ypoZLaz3E1EAGVzfhMVNfF9c/x8uVC3RV0AbbYR2PClEb/X2rKlJv+t0UDa2KmAZ6XLI29LfnXQuFipc1Kg4UkN6XjfXyJeYkyB3VlPopNf4lkwf9huK08sXchxKRRS7gcCZ78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741952879; c=relaxed/simple;
-	bh=mgEzyDx0kJzXlOCfhoMyMCO6ULwoHS1KQrO2S70Es5Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KOCclsV2LY6ilhD1FGqe5I4851gpnD+kTmQ8W4tfD0Bx/f4VdCU8KRM6p7Q9i9qD8Qnn2O+iIcNppbSuZUYTXS2X8Iem9Gctaz5+ghiqtY9o5HOS6lRT2Qz2f7YDuBQxkuDNPyKIdcVRdBaeqzRNgwiAzI5bbGtp8fq2O+511ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=gOg5Repm; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1741953666; c=relaxed/simple;
+	bh=QNC8IfK98lQuTIgxbFnhzW0qsfyAo5xbkcTJuyiIFfc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kL9KqULdv6LNLm+2q+hb3rO2BMQopvreK4nCkPKXYX//FVUSQTDpwYVjGACewRtfClyCDDfwQXPSZNDWzUa5j1eCL5N4SEp2jNHp+KR3n70OeglaeaZjXG0BGMBwcQfqY9Jmfbdtetnlmkg9tECW3B8Brm4qqIm/h82HaYbAjuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=PSMHaIzi; arc=none smtp.client-ip=139.165.32.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uliege.be
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="gOg5Repm"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5A43344385;
-	Fri, 14 Mar 2025 11:47:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1741952869;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hmqktEn2OYB6PTygxAHkkzldHdqoQw8rh5G64rlD07s=;
-	b=gOg5Repm7jx90KdMCTBWK6lmbYhBAT8mWuYdmusXc5O3ReifoYsZzA0k0V3u/vwF17eW9c
-	3Pti0uLq7r5E/xlrZ4jQn2ZWR33TKYhrkO/QhWEwrf38IAnzO6fc0JegUO4wyvKEXYAtaf
-	fSuFZ9OqEbiZWTBulan+nR3qFzJlEO3MrPbIjNwOzjlStadAAh49wKmNIAw3uE0Kh8ai5B
-	iCgo0vd9LBrwiDdHAD69onrjeeUGjG3hAIc4vYSLeyCzmOl9lhPliqjFl1tMpLudSOJ5pL
-	jDd2HHszh/r2S4SqOUKMXFPk++jmGUGtGLPK1gA2zokJ/equp0d+vrcixUbs8g==
-Date: Fri, 14 Mar 2025 12:47:46 +0100
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Russell King - ARM Linux
- <linux@armlinux.org.uk>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, David Miller
- <davem@davemloft.net>, Xu Liang <lxu@maxlinear.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Jean Delvare
- <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
- "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>
-Subject: Re: [PATCH net-next 2/4] net: phy: tja11xx: remove call to
- devm_hwmon_sanitize_name
-Message-ID: <20250314124746.033a19d3@fedora-2.home>
-In-Reply-To: <5bb890a8-6436-4aa9-a5ea-5377c67a1d2d@gmail.com>
-References: <198f3cd0-6c39-4783-afe7-95576a4b8539@gmail.com>
-	<4452cb7e-1a2f-4213-b49f-9de196be9204@gmail.com>
-	<20250314084554.322e790c@fedora-2.home>
-	<5bb890a8-6436-4aa9-a5ea-5377c67a1d2d@gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="PSMHaIzi"
+Received: from localhost.localdomain (rtr-guestwired.meeting.ietf.org [31.133.144.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id 5569E200DB8C;
+	Fri, 14 Mar 2025 13:00:59 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be 5569E200DB8C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uliege.be;
+	s=ulg20190529; t=1741953661;
+	bh=/N+b2U5exw30WUtmMs5uGOIIslwhia7Le/wNC+fyVDM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PSMHaIziP2IYFV2l9xLpR+jyjlzkxAPKp55AKngtvxEoJ4SBz19Nr4yTE0d5W5oRg
+	 qTSS3fb4MTBUP3Iw5921jjMusesvfaSt15gnNsRY+BP2ywUmMChFyNTJ3qolWlpskq
+	 B9Uk6Qv2oc34iA6dvVOg2KwTI7x6s1izdiVQ6B2kW54+IyziqMnT8X4ulLPXC4ZQWs
+	 oiH2lYjwvo0/DWgj37RWU/B3u1YR+HanI2P+L10pK6JASGTxN7YMQVSTgAyIRdbmI8
+	 AEs1N5rT9x784yYCU99CFC5P/0Ml8nkJ785ZgKq3EV//OwOrydLOqdphER9b8WvIbe
+	 UENyCUL2QUVhA==
+From: Justin Iurman <justin.iurman@uliege.be>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	justin.iurman@uliege.be
+Subject: [PATCH net v2 0/3] net: fix lwtunnel reentry loops
+Date: Fri, 14 Mar 2025 13:00:45 +0100
+Message-Id: <20250314120048.12569-1-justin.iurman@uliege.be>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufedtjeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeevledtvdevueehhfevhfelhfekveeftdfgiedufeffieeltddtgfefuefhueeknecukfhppedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjedphhgvlhhopehfvgguohhrrgdqvddrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddvpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdpr
- hgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehlgihusehmrgiglhhinhgvrghrrdgtohhm
-X-GND-Sasl: maxime.chevallier@bootlin.com
+Content-Transfer-Encoding: 8bit
 
-On Fri, 14 Mar 2025 12:26:33 +0100
-Heiner Kallweit <hkallweit1@gmail.com> wrote:
+v2:
+- removed some patches from the -v1 series
+- added a patch that was initially sent separately
+- code style for the selftest (thanks Paolo)
+v1:
+- https://lore.kernel.org/all/20250311141238.19862-1-justin.iurman@uliege.be/
 
-> On 14.03.2025 08:45, Maxime Chevallier wrote:
-> > Hello Heiner,
-> > 
-> > On Thu, 13 Mar 2025 20:45:06 +0100
-> > Heiner Kallweit <hkallweit1@gmail.com> wrote:
-> >   
-> >> Since c909e68f8127 ("hwmon: (core) Use device name as a fallback in
-> >> devm_hwmon_device_register_with_info") we can simply provide NULL
-> >> as name argument.
-> >>
-> >> Note that neither priv->hwmon_name nor priv->hwmon_dev are used
-> >> outside tja11xx_hwmon_register.
-> >>
-> >> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-> >> ---
-> >>  drivers/net/phy/nxp-tja11xx.c | 19 +++++--------------
-> >>  1 file changed, 5 insertions(+), 14 deletions(-)
-> >>
-> >> diff --git a/drivers/net/phy/nxp-tja11xx.c b/drivers/net/phy/nxp-tja11xx.c
-> >> index 601094fe2..07e94a247 100644
-> >> --- a/drivers/net/phy/nxp-tja11xx.c
-> >> +++ b/drivers/net/phy/nxp-tja11xx.c
-> >> @@ -87,8 +87,6 @@
-> >>  #define TJA110X_RMII_MODE_REFCLK_IN       BIT(0)
-> >>  
-> >>  struct tja11xx_priv {
-> >> -	char		*hwmon_name;
-> >> -	struct device	*hwmon_dev;
-> >>  	struct phy_device *phydev;
-> >>  	struct work_struct phy_register_work;
-> >>  	u32 flags;
-> >> @@ -508,19 +506,12 @@ static const struct hwmon_chip_info tja11xx_hwmon_chip_info = {
-> >>  static int tja11xx_hwmon_register(struct phy_device *phydev,
-> >>  				  struct tja11xx_priv *priv)
-> >>  {
-> >> -	struct device *dev = &phydev->mdio.dev;
-> >> -
-> >> -	priv->hwmon_name = devm_hwmon_sanitize_name(dev, dev_name(dev));
-> >> -	if (IS_ERR(priv->hwmon_name))
-> >> -		return PTR_ERR(priv->hwmon_name);
-> >> -
-> >> -	priv->hwmon_dev =
-> >> -		devm_hwmon_device_register_with_info(dev, priv->hwmon_name,
-> >> -						     phydev,
-> >> -						     &tja11xx_hwmon_chip_info,
-> >> -						     NULL);
-> >> +	struct device *hdev, *dev = &phydev->mdio.dev;
-> >>  
-> >> -	return PTR_ERR_OR_ZERO(priv->hwmon_dev);
-> >> +	hdev = devm_hwmon_device_register_with_info(dev, NULL, phydev,
-> >> +						    &tja11xx_hwmon_chip_info,
-> >> +						    NULL);
-> >> +	return PTR_ERR_OR_ZERO(hdev);
-> >>  }  
-> > 
-> > The change look correct to me, however I think you can go one step
-> > further and remove the field tja11xx_priv.hwmon_name as well as
-> > hwmon_dev.
-> >   
-> This is part of the patch. Or what do you mean?
+When the destination is the same after the transformation, we enter a
+lwtunnel loop. This is true for most of lwt users: ioam6, rpl, seg6,
+seg6_local, ila_lwt, and lwt_bpf. It can happen in their input() and
+output() handlers respectively, where either dst_input() or dst_output()
+is called at the end. It can also happen in xmit() handlers.
 
-Uh you are correct :( meh OK sory for the noise then, morning coffee
-didn't go through entirely this morning it seems.
+Here is an example for rpl_input():
 
-Maxime
+dump_stack_lvl+0x60/0x80
+rpl_input+0x9d/0x320
+lwtunnel_input+0x64/0xa0
+lwtunnel_input+0x64/0xa0
+lwtunnel_input+0x64/0xa0
+lwtunnel_input+0x64/0xa0
+lwtunnel_input+0x64/0xa0
+[...]
+lwtunnel_input+0x64/0xa0
+lwtunnel_input+0x64/0xa0
+lwtunnel_input+0x64/0xa0
+lwtunnel_input+0x64/0xa0
+lwtunnel_input+0x64/0xa0
+ip6_sublist_rcv_finish+0x85/0x90
+ip6_sublist_rcv+0x236/0x2f0
+
+... until rpl_do_srh() fails, which means skb_cow_head() failed.
+
+This series provides a fix at the core level of lwtunnel to catch such
+loops when they're not caught by the respective lwtunnel users, and
+handle the loop case in ioam6 which is one of the users. This series
+also comes with a new selftest to detect some dst cache reference loops
+in lwtunnel users.
+
+Justin Iurman (3):
+  net: lwtunnel: fix recursion loops
+  net: ipv6: ioam6: fix lwtunnel_output() loop
+  selftests: net: test for lwtunnel dst ref loops
+
+ net/core/lwtunnel.c                           |  65 ++++-
+ net/ipv6/ioam6_iptunnel.c                     |   8 +-
+ tools/testing/selftests/net/Makefile          |   1 +
+ tools/testing/selftests/net/config            |   2 +
+ .../selftests/net/lwt_dst_cache_ref_loop.sh   | 246 ++++++++++++++++++
+ 5 files changed, 306 insertions(+), 16 deletions(-)
+ create mode 100755 tools/testing/selftests/net/lwt_dst_cache_ref_loop.sh
+
+-- 
+2.34.1
 
