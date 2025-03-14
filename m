@@ -1,35 +1,56 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F431DD0F6;
-	Fri, 14 Mar 2025 12:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F69018A6D7
+	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 13:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741957199; cv=none; b=jq5MGILspW875c+q3O+X0VjZJdipQ7sgp81S8N+1Txiy0zu7TlZwB9iS/CNCaJi684/BkDvYY8gmYN625OQQXMrvBuX/3WqujszhKLmDPJ9V8yTRAMCy2Bh8EaplFvxR8Luod0tNmR21xmr1BAmPSG22PYi9K46theMKi5OgLAs=
+	t=1741957604; cv=none; b=g07bzfGlJYgmmz9cBICcz/cch43aK0R0g3npQX8+n8brCWw8tv5WEEzaNvAPjsEGUj1Lbbr4k/D3cBwFpZo6QzRo1LWgw9QadNalmlW12a2RdP/HQ7HrHjaLJTzTO6vC0Q8cQcQId5zisinj4/zz+JlxdGlVJu16cJ0hjpiIx+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741957199; c=relaxed/simple;
-	bh=S0HqySVuO5WiYhgCIb/zMBQSPibu+lJKpZPHlZpJH4Q=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WW4IoQf3CfStxUP1ZNRbcwAAEBkFaxtd+gXR+mkIymXkSChmA3q6mxxoYNdIJAh2sUJOJ03uuUOFfe+hPZFpnySHLjzb5tNQTBRlzRNQZTKIPmgIczEsQC/xVhRe6XF0RY/Najc6cPI8TfXYlCpNWKTKQvzlC08LLJ51ciB1+GE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c6lEetIp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741957604; c=relaxed/simple;
+	bh=3YGKCK+ewOYcd/DScHQdu/MEE/0P9F2IvrvmwgaLrQg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WUb7Wu5Aw0LrETgNlODLd2RXWX+6a1uH6khOvW1bG1kZgJejcMZtHZGvCJqWq7rZq0QEQuQfHeed2ER1+rLw44uhFJdGiIR4Nf7eU0JdYJoVDnGeRQKsKe7IfTo9UymK7WO87J83/RDmhKzDmbJPbd9Uv4CwTxAhiw3joxINM2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g8w6BQma; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c6lEetIp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A075C4CEEB;
-	Fri, 14 Mar 2025 12:59:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741957199;
-	bh=S0HqySVuO5WiYhgCIb/zMBQSPibu+lJKpZPHlZpJH4Q=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=c6lEetIpMA8eTmxrerCnwktVrU/72fW9+g8ebVhJMRj44/rdzJY0xGw3BfrkzCUp9
-	 mLh3lbd3p8f+f9ic3FZ4JsRGElug0gRXGDuG+pCSKG/YQCpIqnr9nFGg4p1AVoMs2A
-	 CytBeLuHsUCfVt5h7qEeN8K6TH5mmO1YEc0nXy6NPt9cglsj1nF+1bUc6bJk3QxOiT
-	 RMuGNg/Zf6KOWdzE4Un0OzSdG80TUQ+nEgDT/rnbxj1yRZJQKa24FnDFZC3IssensX
-	 NyKBgGrvOQ/GH6d3CWS1bkHlRfgxOi4hRdhMQfMUV4mHMpUdifQMeyVez45lyCOpTu
-	 vEe3frLUcncwA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 347D6380CEE2;
-	Fri, 14 Mar 2025 13:00:35 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g8w6BQma"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741957601;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=H4utzkKvWoAtqOsB4M52os8tk1UzkUsgQBxuoUVE5SM=;
+	b=g8w6BQma8Hcac+yKUkbjc60jkBEzNGSHMLoe0pL1ZrCEB3RysHeNl85hGTsubBnLLWdr1G
+	vsHQ9o1q+/WxXHSuTKUR1zCtT3ucrJA6bm7+r6NYjduC/EbUXuQFRUfpvSmiblbgWVKZKb
+	5Sn3EE82PBb/xJJRNr1q8HMBpkhepvg=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-536-ky7eswvTN0W-PXuNjzT77A-1; Fri,
+ 14 Mar 2025 09:06:38 -0400
+X-MC-Unique: ky7eswvTN0W-PXuNjzT77A-1
+X-Mimecast-MFC-AGG-ID: ky7eswvTN0W-PXuNjzT77A_1741957596
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4B8EA180025B;
+	Fri, 14 Mar 2025 13:06:36 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.33.12])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4193F1955BCB;
+	Fri, 14 Mar 2025 13:06:32 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: [RFC PATCH 0/2] net: introduce per netns packet type chains
+Date: Fri, 14 Mar 2025 14:04:59 +0100
+Message-ID: <cover.1741957452.git.pabeni@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,57 +58,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] net/smc: use the correct ndev to find pnetid by
- pnetid table
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174195723401.2241450.4794096109279890304.git-patchwork-notify@kernel.org>
-Date: Fri, 14 Mar 2025 13:00:34 +0000
-References: <20250304124304.13732-1-guangguan.wang@linux.alibaba.com>
-In-Reply-To: <20250304124304.13732-1-guangguan.wang@linux.alibaba.com>
-To: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Cc: wenjia@linux.ibm.com, pasic@linux.ibm.com, jaka@linux.ibm.com,
- alibuda@linux.alibaba.com, tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Hello:
+The stack uses shared lists between all the network namespace to store
+all the packet taps not bound to any device.
 
-This patch was applied to netdev/net-next.git (main)
-by David S. Miller <davem@davemloft.net>:
+As a consequence, creating such taps in any namespace affects the
+performances in all the network namespaces.
 
-On Tue,  4 Mar 2025 20:43:04 +0800 you wrote:
-> When using smc_pnet in SMC, it will only search the pnetid in the
-> base_ndev of the netdev hierarchy(both HW PNETID and User-defined
-> sw pnetid). This may not work for some scenarios when using SMC in
-> container on cloud environment.
-> In container, there have choices of different container network,
-> such as directly using host network, virtual network IPVLAN, veth,
-> etc. Different choices of container network have different netdev
-> hierarchy. Examples of netdev hierarchy show below. (eth0 and eth1
-> in host below is the netdev directly related to the physical device).
->             _______________________________
->            |   _________________           |
->            |  |POD              |          |
->            |  |                 |          |
->            |  | eth0_________   |          |
->            |  |____|         |__|          |
->            |       |         |             |
->            |       |         |             |
->            |   eth1|base_ndev| eth0_______ |
->            |       |         |    | RDMA  ||
->            | host  |_________|    |_______||
-> 
-> [...]
+Patch 1 addresses the issue introducing new per network namespace packet
+type chains, while patch 2 try to minimize the impact of such addition.
 
-Here is the summary with links:
-  - [net-next,v2] net/smc: use the correct ndev to find pnetid by pnetid table
-    https://git.kernel.org/netdev/net-next/c/bfc6c67ec2d6
+The hotdata implications are IMHO not trivial ence the RFC tag; I
+suspect patch 2 being the most controversial. As such a possible
+alternative is also presented.
 
-You are awesome, thank you!
+Any feedback welcome!
+
+Paolo Abeni (2):
+  net: introduce per netns packet chains
+  net: hotdata optimization for netns ptypes
+
+ .../networking/net_cachelines/net_device.rst  |  2 +
+ include/linux/netdevice.h                     |  9 +-
+ include/net/hotdata.h                         |  1 -
+ include/net/net_namespace.h                   |  3 +
+ net/core/dev.c                                | 82 +++++++++++++++----
+ net/core/hotdata.c                            |  1 -
+ net/core/net-procfs.c                         | 16 ++--
+ net/core/net_namespace.c                      |  2 +
+ 8 files changed, 86 insertions(+), 30 deletions(-)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.48.1
 
