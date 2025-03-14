@@ -1,122 +1,92 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACE01FF605
-	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 13:09:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4311EB5B
+	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 13:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741957762; cv=none; b=B/ntOFNb88vfwsmsMCjLxDUz62atflhb+DLQ3IO6SncDNdQTr9EES6CUaQ4r6EHP/DMf1jVPzHzL5FvwLMgzoPksAVGgu5gSoT0d5lL2NpQZppLFP8rGFjW5R4iu2rv/3hmM+RbCs/RRB/VuiHDBpMVSLbX3YsN1hc2B8jjooc0=
+	t=1741958210; cv=none; b=tsZIBgMwovB/oGB/AMSEkhZP17N86nbk/TwGjTUs92XHLbAh4TfJK3XPifxICDU0cwjYeEH/ives8ZFyN/jeN1osKOV7O9W5weKsTBVcGjcxRSG1MWmcktjBDGdUKc5z+uQgoT8OWbFheepX7DWhsIxqqSAc29QXliSBWeiKWn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741957762; c=relaxed/simple;
-	bh=X+Tsk+cMiQc/zjxrJyKzIem1K2mtdzD/3IKHKdoQj7k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KakSblAz2pCcKgKoDGSKn+rhxxsSevNFBbxdUmflRwJEKzzIP9LG+linbN/ImPsB15wqsSJ9UUx/9TFKU0Zr/ZOwR14omBPtcI2qou5bv6QfY47akm7Xu+mmUd1EQMKjaj9QOKOpZmwfc0wQCvPLmZCondqMdukKiaMtk4h5l18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tt4ms-0007Nq-I0
-	for netdev@vger.kernel.org; Fri, 14 Mar 2025 14:09:18 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tt4mr-005hpp-2R
-	for netdev@vger.kernel.org;
-	Fri, 14 Mar 2025 14:09:17 +0100
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 6E5063DBB8A
-	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 13:09:17 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 7A9123DBB54;
-	Fri, 14 Mar 2025 13:09:14 +0000 (UTC)
-Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id a8f6cb66;
-	Fri, 14 Mar 2025 13:09:13 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Haibo Chen <haibo.chen@nxp.com>,
-	stable@vger.kernel.org,
-	Frank Li <frank.li@nxp.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 6/6] can: flexcan: disable transceiver during system PM
-Date: Fri, 14 Mar 2025 14:04:05 +0100
-Message-ID: <20250314130909.2890541-7-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250314130909.2890541-1-mkl@pengutronix.de>
-References: <20250314130909.2890541-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1741958210; c=relaxed/simple;
+	bh=6+rz3BmT0AgacH2FmIvbRq6TlS0E35xWSPG/ltHBt6M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j7l7mUNV0DND3wbpGXyEiAPvwmaeNnlhsoSCnQHTcxY0zBEPotSyImxWPjld/zftPupQZViOEfk+2qYe5kp/sSxgTnHOwKOYCWdUvnV+9syPsPU81+Mq2DPvnq3m4wuAISsyE/M8pvmDjCZDpL+2xNMZcfiETko3Eu37+UPvLok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JR5cM9OR; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=V7ai00Ht; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JR5cM9OR";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="V7ai00Ht"
+Date: Fri, 14 Mar 2025 14:16:45 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1741958206;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oumrGbwDvXAcmZx4C7Uh/ssk/QQ4ux59KUig3E4kMMI=;
+	b=JR5cM9OR5T9K7CekeKiJhKbV9YlufOhKOGwFYTZH9O0wni7oa5bLqiPLhJI4YInkHBy0fF
+	EB0EjW4pwbN86TTN+v7iZ3QGfK5/XObse/p2J3JF9XE7YwGLT368C16Z6k9L0ISKX3e/++
+	4ZB5ZZopoYSJH1e5bGyjwfsj6vHO/FhiY97D1Yu3NgdjvIOgIejJp4RKxbn/v8nqzRUw29
+	KhE7VkmYaRT1geMy/JXN+/ffVc50jOe9QfYyQoATU6tXSEBkkU2pyHteGQ0lRA4t/mS4O2
+	TzmS3nNRJgLOGVdgKfOVauBLc+zfoKPbDz3ZRlkRNtChM+adJk9awZx/ihgARg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1741958206;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oumrGbwDvXAcmZx4C7Uh/ssk/QQ4ux59KUig3E4kMMI=;
+	b=V7ai00HtojN05Kr5qMOWTio43S7fCmJl7XKjN2I7UAvNlQtOnszQ+/1ksedLU2oIEhFVuW
+	P0GROvUxB4Fic/DQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Wander Lairson Costa <wander@redhat.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, davem@davemloft.net,
+	kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
+	andrew+netdev@lunn.ch, netdev@vger.kernel.org, rostedt@goodmis.org,
+	clrkwllms@kernel.org, jgarzik@redhat.com, yuma@redhat.com,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH net 0/4][pull request] igb: fix igb_msix_other() handling
+ for PREEMPT_RT
+Message-ID: <20250314131645.1S4dYLPv@linutronix.de>
+References: <20250206115914.VfzGTwD8@linutronix.de>
+ <zy3irjybyc32hnow3ckhkfsrtfm5nev44aeovinlkkfc6tyyjv@gcblibp5ng3o>
+ <20250212151108.jI8qODdD@linutronix.de>
+ <CAAq0SU=aU=xpw0bDwaanFh_-r5tts0QNCtSmoteP3dM8-K6BFA@mail.gmail.com>
+ <20250212152925.M7otWPiV@linutronix.de>
+ <mtmm2bwn3lrsmsx3evzemzjvaddmzfvnk6g37yr3fmzb77bpyu@ffto5sq7nvfw>
+ <20250219163554.Ov685_ZQ@linutronix.de>
+ <kwmabr7bujzxkr425do5mtxwulpsnj3iaj7ek2knv4hfyoxev5@zhzqitfu4qo4>
+ <20250220113857.ZGo_j1eC@linutronix.de>
+ <CAAq0SUkMXDaSvDRELYQn9+Pk-kBjx2BWc7ucme54XPXD97_kkg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAAq0SUkMXDaSvDRELYQn9+Pk-kBjx2BWc7ucme54XPXD97_kkg@mail.gmail.com>
 
-From: Haibo Chen <haibo.chen@nxp.com>
+On 2025-03-14 09:12:20 [-0300], Wander Lairson Costa wrote:
+> On Thu, Feb 20, 2025 at 8:39=E2=80=AFAM Sebastian Andrzej Siewior
+> <bigeasy@linutronix.de> wrote:
+> >
+> > On 2025-02-20 08:35:17 [-0300], Wander Lairson Costa wrote:
+> > > > You confirmed that it works, right?
+> > > >
+> > >
+> > > Do you mean that earlier test removing IRQF_COND_ONESHOT? If so, yes.
+> >
+> > I mean just request_threaded_irq() as suggested in
+> >         https://lore.kernel.org/all/20250206115914.VfzGTwD8@linutronix.=
+de/
+> >
+>=20
+> I forgot to answer, sorry. The answer is yes.
 
-During system PM, if no wakeup requirement, disable transceiver to
-save power.
-
-Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
-Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <frank.li@nxp.com>
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20250314110145.899179-2-haibo.chen@nxp.com
-[mkl: add newlines]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/flexcan/flexcan-core.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-index 3a71fd235722..b080740bcb10 100644
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -2260,6 +2260,10 @@ static int __maybe_unused flexcan_suspend(struct device *device)
- 
- 			flexcan_chip_interrupts_disable(dev);
- 
-+			err = flexcan_transceiver_disable(priv);
-+			if (err)
-+				return err;
-+
- 			err = pinctrl_pm_select_sleep_state(device);
- 			if (err)
- 				return err;
-@@ -2292,10 +2296,16 @@ static int __maybe_unused flexcan_resume(struct device *device)
- 			if (err)
- 				return err;
- 
--			err = flexcan_chip_start(dev);
-+			err = flexcan_transceiver_enable(priv);
- 			if (err)
- 				return err;
- 
-+			err = flexcan_chip_start(dev);
-+			if (err) {
-+				flexcan_transceiver_disable(priv);
-+				return err;
-+			}
-+
- 			flexcan_chip_interrupts_enable(dev);
- 		}
- 
--- 
-2.47.2
-
-
+Are you going to post this a patch or want me doing it?
+=20
+Sebastian
