@@ -1,201 +1,194 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C2F2046B5
-	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 20:18:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD461EA7C9;
+	Fri, 14 Mar 2025 20:24:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741983505; cv=none; b=uypIrHO04WhvnqKk8Bggm3tbeDt/51/duzBGbQ7yMD0w10iMsMajjJpf2yHADFzVwrGqj9OksRy/AjOaePKSn337oUDZet7aUL3NPEzIewuJ4iWk9ERQ3hvXkl+4iev32HIc5nzEJ5MZSvhXK1nhTFYU4VPbK4b8fIHq7NSleWc=
+	t=1741983863; cv=none; b=pBXLsZ3UMZ8Hw+YWZHK7O1iu+Cobuzt2yyqmPwtikTsvehB9iHoFVr6en9ODDdPF4gsnunSJlX8mbUa6z0CFBRL3npjnxJusWrJ5DH2L0KabSM69o8zcGoXt6xQLBslfJTHapOQcC3sHnzCrEpN7RYBugjDfwPMe/++Ljm9FprI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741983505; c=relaxed/simple;
-	bh=arg524YUJs0hjW8iyvRoC0evthQ7yBKgyzCWno2KEbU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h+1zZBHcQn4UUSddaJ8DHQplYjOqLmE4KsfknP5kKBJhBUworAqAbpdj3XTXOX164x/8v7wuoLcH9vHnAckTTvf8ejS9fH9e8bnXXAfrNJi58snScgFRdgZshweaP4lQvOuKofdufVUWC92hShNFR7A1TLhhSvM0lhzolgqhyHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OVw0iJ3B; arc=none smtp.client-ip=209.85.214.172
+	s=arc-20240116; t=1741983863; c=relaxed/simple;
+	bh=dfMgX8andqPb6xNC5zAVzri++2MsC8tk88zE/F+0MmA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OmZ+LHTa/ds1YoAziUg8gzJ1LX6l1nzqKSo4BURiI5kQ1DAtFyFrnz/4wlkwouTh42XGhOilaKDzEkf1ITtoBE6DpRcoVb5yxZg93n69Afl+GMdmEjTf5xiDicROS3s5diFtdakmZJjBk9BidMIN3EpHMSIZgB7rDFEA/jmB/Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MGaX+eqe; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OVw0iJ3B"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2239c066347so53018245ad.2
-        for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 13:18:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MGaX+eqe"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43d0618746bso800475e9.2;
+        Fri, 14 Mar 2025 13:24:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741983503; x=1742588303; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=m1zTPh+VSQYAq1rV44toqDFwaON3RyU/6InZ+qGuCfo=;
-        b=OVw0iJ3BqzkCr5xKbjKj/JpH6C7wLgA6FGGn4CDUMXb0PHZNdN5E7C8DgOwzh9nQxg
-         L5fA1E/0f1wfRdgftlZnaIZgt59/N7QUSzS4/891bcxC//JIAeTuotNw+jJ8sn+kUvKy
-         SM7wTaUU2WTmRTEfqU35p2lPbSLva/n5dURgDzaOVUyLCj7VQT+Qt9rBa425yj72Dcyz
-         iARdy/1EStJCdWKLk/bJkOWp8hMsA/2gKbs7eQAvSrGyhI5cT1ksg65hLN5yMu9+Ia4s
-         70bjY0Y3LUJSequDL9GSKjcp3DNdnWlfYqWAIpf8+S1TptJby7CdZy/ax0hV6biYviPy
-         JJFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741983503; x=1742588303;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1741983860; x=1742588660; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=m1zTPh+VSQYAq1rV44toqDFwaON3RyU/6InZ+qGuCfo=;
-        b=ldqN8vcdyUpzzeguc/ERXNVVBFWPr/9DVusP2ggLSeJHFaKUXXPNeUfDa2JfmpMMnE
-         uKXTwH7q0J7T+sAYVBjAvd/R4nVoB/bLvLvEzqfjFcb+LCQd6mLm5ceL6STDKjPGnGa/
-         6+Lykf254KSWzZBAMqMGAMzDE0lFXtkZnxMiCgkTcvGlhqd5lneNkiYD6ABxL+6szONe
-         BC+r9rG6i5BYW2cxx1Rrc8JTvtSzdj20yfUtGn1qscbdNb6BbDTh1zOpEXi5Y0LmLrWs
-         +1A/qK/RHmU6Cs3ziP1PeEuvNuzPQ8QLHRdb6T+DFGptfvOFD3sV6U27IRK2ylrwrbx2
-         /hBA==
-X-Forwarded-Encrypted: i=1; AJvYcCVeMeWpCupNzNL5Ra9X3QjjgfLRZLsq+5eL/3eg2RgR9t0mNwzsIuS90cwr/y8OsAStWK7n5XQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZehMxpcvRlwivAl/awwdKBEGJG7nOxcnn40K5LmRZJBfl1qzV
-	MgRyZ4vcFX9gVnZsv9XhIrsE3gJ1AtNamPfpPENxWRTlZ7OO5cM=
-X-Gm-Gg: ASbGncvyaVfW2GDtO99Rz0p5c11HU589GKpHyx/qJBxwEPz776Mr4F/IL9lEOjDJe64
-	pzsiLMBxIaDJ4KGGIQm7S5iNosBTDiw8GQOcqQppLAFPM/EOfQ8ky8b7/Lj9A1nOeO8r8k4smVj
-	Yk05ZM37HeY+Y+nw89AYCZLqcMHfsU+QXGw1dcrh/9iAwy0fJd+maFpC/FUoXX+e5h3AEAGbZGs
-	evVeKHJggSDBu0Ki84JSh6KX0YoUxxkEr5pyE3BwkysiiGnYEiHFVUIQkAK4o0CZWxktr1O523u
-	xYPoPC2MjghokT4SnimY+sJbVt1/899bzjCbS7oW1yuf
-X-Google-Smtp-Source: AGHT+IF9xkqEfidiY9IiYwG06jnEkp9ffCOs0EmNga4QvDAWT5QS7EZrH0PdsyEe/d46qFV6xdM9Jg==
-X-Received: by 2002:a17:902:f711:b0:220:fe51:1aab with SMTP id d9443c01a7336-225e0af4f9cmr56753545ad.38.1741983502659;
-        Fri, 14 Mar 2025 13:18:22 -0700 (PDT)
-Received: from localhost ([2601:646:9e00:f56e:2844:3d8f:bf3e:12cc])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-225c68a6dfesm32816155ad.71.2025.03.14.13.18.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Mar 2025 13:18:22 -0700 (PDT)
-Date: Fri, 14 Mar 2025 13:18:21 -0700
-From: Stanislav Fomichev <stfomichev@gmail.com>
-To: Guillaume Nault <gnault@redhat.com>
-Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Antonio Quartulli <antonio@mandelbit.com>,
-	Ido Schimmel <idosch@idosch.org>, Petr Machata <petrm@nvidia.com>
-Subject: Re: [PATCH net v4 1/2] gre: Fix IPv6 link-local address generation.
-Message-ID: <Z9SPDT9_M_nH9JiM@mini-arch>
-References: <cover.1741375285.git.gnault@redhat.com>
- <559c32ce5c9976b269e6337ac9abb6a96abe5096.1741375285.git.gnault@redhat.com>
- <Z9RIyKZDNoka53EO@mini-arch>
- <Z9SB87QzBbod1t7R@debian>
+        bh=yBD7QjUwsZ4gRlPp86xCs1FmL95zEZ6TJFL9r0bh0AQ=;
+        b=MGaX+eqeyjkmvxADMbcnkYgut9TCKESKrJ+5jWTB9TAuJpK9g5k/ppjsBB870/D5my
+         vU3zAygrnl3P4ST54DXMmbeWIKvwXyT2TpBKw8QFoWMOk93ceKXrCFUkAB4IaCgTWDJW
+         DIdART7K9zFbbAJp4sEV3JrdcmmabtkcxL2khgt8+M7N31gRnezPLrFoZPxAJlGGOUdo
+         5yLNcuEDft+qW3acsP7/zYf9FNY02BMkE/UdbVYrE7X6qxpfkOq2GmQtvDHosp54FUdl
+         ZeGMVd6tgPDqUkYUHegYqu6TDsYIalkagJrrRv7IEAKL9ZygCb8Y72Mu8F1dKd0t7GFf
+         GSRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741983860; x=1742588660;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yBD7QjUwsZ4gRlPp86xCs1FmL95zEZ6TJFL9r0bh0AQ=;
+        b=GiV47R1y2+BnKhTV4ME7mzzOJrLvkKku2c14+lzh3yCsQeMb8RN3UVCqY28ur0rk0v
+         vNk6Gm7o7EBCv8ExYunWH5U1UDRqhVYsRjzmhfYgai/MDpltsnjZ0nRa53xkEYOafpdU
+         J46VklvXWY3j7vNUHtLKH3u+5Aj0f2IqQAM1+XdDZc9FFBhoaeLpKoUpUx5LQ9Xz0B6a
+         shK/+wY4LhWKdLxaGrUqxh7YuxUpPR99sp5iUA9i37R3gqlSgCAetD+vlRZAbJ+gVzUc
+         /k1Rsj8BsgpSuYMe41/ome8OtkUDNgrrPKV1ZPnaVGDGCjF1cnzji3zkZEvT0ha4p9cj
+         YwZw==
+X-Forwarded-Encrypted: i=1; AJvYcCXUWXKFLC4/1c8jm2C5/uCzBgNdvZUbw01FboofqiCTJhakmNAnm0QOZGjlwwv8/Uiv5Ew=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0kBbY8v59xMueknqZ0SxhrKPWFK+mPJ5yKfIdTmBHe8yhMrF8
+	iakqVjeI43kdD0EqF0jEnnbuIGOy4zzeoZI3mHeQWyZrt4M+wRXApH4u0yQqolbYytYH/YJoR8y
+	5ZOA+LHRxWn6T0SiK5kW+514ylI8=
+X-Gm-Gg: ASbGnct1ZYyCU250ez2uvcBo3mYBCL+yI6NO3kbe+uKMw99hcpTELHOp1fOTtAD8W4C
+	o4Afhx42DVtsXWxlXl4ZWsKduZsxjvz7ErRk9bzeco/K8c8N7A62+PWV9Bz8oKOimt0d9Clb1dW
+	7TSKOkkCnt38nIJr8L8VwTwWr+U6i84nUQzie5Rddacg==
+X-Google-Smtp-Source: AGHT+IEUNMDJ3nG+IH6AH21o7RpF08JjULqzpgNjnPhIfwuqNGOsyFp4OZ7skenM+n39xwG4bIPQoZrvESqdFNiDWWI=
+X-Received: by 2002:a5d:6da9:0:b0:38d:e401:fd61 with SMTP id
+ ffacd0b85a97d-39720d47e80mr5434628f8f.49.1741983859288; Fri, 14 Mar 2025
+ 13:24:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Z9SB87QzBbod1t7R@debian>
+References: <20250313190309.2545711-1-ameryhung@gmail.com> <20250313190309.2545711-8-ameryhung@gmail.com>
+In-Reply-To: <20250313190309.2545711-8-ameryhung@gmail.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Fri, 14 Mar 2025 13:24:08 -0700
+X-Gm-Features: AQ5f1JrDw7FkzebDgranqRMbOsiGMVmO7gfPCxRsi2xSOUZQXlm7S6u9HWqvpeY
+Message-ID: <CAADnVQKBe89WSjwsMaaGGmHAtGSSvCVQ+f7HstjQBzx8pu2gUQ@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v5 07/13] bpf: net_sched: Support updating qstats
+To: Amery Hung <ameryhung@gmail.com>
+Cc: Network Development <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Eric Dumazet <edumazet@google.com>, Cong Wang <xiyou.wangcong@gmail.com>, 
+	Jamal Hadi Salim <jhs@mojatatu.com>, Kui-Feng Lee <sinquersw@gmail.com>, 
+	=?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>, 
+	Jiri Pirko <jiri@resnulli.us>, Stanislav Fomichev <stfomichev@gmail.com>, 
+	ekarani.silvestre@ccc.ufcg.edu.br, yangpeihao@sjtu.edu.cn, 
+	Peilin Ye <yepeilin.cs@gmail.com>, Kernel Team <kernel-team@meta.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 03/14, Guillaume Nault wrote:
-> On Fri, Mar 14, 2025 at 08:18:32AM -0700, Stanislav Fomichev wrote:
-> > On 03/07, Guillaume Nault wrote:
-> > > Use addrconf_addr_gen() to generate IPv6 link-local addresses on GRE
-> > > devices in most cases and fall back to using add_v4_addrs() only in
-> > > case the GRE configuration is incompatible with addrconf_addr_gen().
-> > > 
-> > > GRE used to use addrconf_addr_gen() until commit e5dd729460ca
-> > > ("ip/ip6_gre: use the same logic as SIT interfaces when computing v6LL
-> > > address") restricted this use to gretap and ip6gretap devices, and
-> > > created add_v4_addrs() (borrowed from SIT) for non-Ethernet GRE ones.
-> > > 
-> > > The original problem came when commit 9af28511be10 ("addrconf: refuse
-> > > isatap eui64 for INADDR_ANY") made __ipv6_isatap_ifid() fail when its
-> > > addr parameter was 0. The commit says that this would create an invalid
-> > > address, however, I couldn't find any RFC saying that the generated
-> > > interface identifier would be wrong. Anyway, since gre over IPv4
-> > > devices pass their local tunnel address to __ipv6_isatap_ifid(), that
-> > > commit broke their IPv6 link-local address generation when the local
-> > > address was unspecified.
-> > > 
-> > > Then commit e5dd729460ca ("ip/ip6_gre: use the same logic as SIT
-> > > interfaces when computing v6LL address") tried to fix that case by
-> > > defining add_v4_addrs() and calling it to generate the IPv6 link-local
-> > > address instead of using addrconf_addr_gen() (apart for gretap and
-> > > ip6gretap devices, which would still use the regular
-> > > addrconf_addr_gen(), since they have a MAC address).
-> > > 
-> > > That broke several use cases because add_v4_addrs() isn't properly
-> > > integrated into the rest of IPv6 Neighbor Discovery code. Several of
-> > > these shortcomings have been fixed over time, but add_v4_addrs()
-> > > remains broken on several aspects. In particular, it doesn't send any
-> > > Router Sollicitations, so the SLAAC process doesn't start until the
-> > > interface receives a Router Advertisement. Also, add_v4_addrs() mostly
-> > > ignores the address generation mode of the interface
-> > > (/proc/sys/net/ipv6/conf/*/addr_gen_mode), thus breaking the
-> > > IN6_ADDR_GEN_MODE_RANDOM and IN6_ADDR_GEN_MODE_STABLE_PRIVACY cases.
-> > > 
-> > > Fix the situation by using add_v4_addrs() only in the specific scenario
-> > > where the normal method would fail. That is, for interfaces that have
-> > > all of the following characteristics:
-> > > 
-> > >   * run over IPv4,
-> > >   * transport IP packets directly, not Ethernet (that is, not gretap
-> > >     interfaces),
-> > >   * tunnel endpoint is INADDR_ANY (that is, 0),
-> > >   * device address generation mode is EUI64.
-> > 
-> > Could you please double check net/forwarding/ip6gre_custom_multipath_hash.sh ?
-> > It seems like it started falling after this series has been pulled:
-> > https://netdev-3.bots.linux.dev/vmksft-forwarding-dbg/results/31301/2-ip6gre-custom-multipath-hash-sh/stdout
-> 
-> Hum, net/forwarding/ip6gre_custom_multipath_hash.sh works for me on the
-> current net tree (I'm at commit 4003c9e78778). I have only one failure,
-> but it already happened before 183185a18ff9 ("gre: Fix IPv6 link-local
-> address generation.") was applied.
+On Thu, Mar 13, 2025 at 12:03=E2=80=AFPM Amery Hung <ameryhung@gmail.com> w=
+rote:
+>
+> From: Amery Hung <amery.hung@bytedance.com>
+>
+> Allow bpf qdisc programs to update Qdisc qstats directly with btf struct
+> access.
+>
+> Signed-off-by: Amery Hung <amery.hung@bytedance.com>
+> ---
+>  net/sched/bpf_qdisc.c | 53 ++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 45 insertions(+), 8 deletions(-)
+>
+> diff --git a/net/sched/bpf_qdisc.c b/net/sched/bpf_qdisc.c
+> index edf01f3f1c2a..6ad3050275a4 100644
+> --- a/net/sched/bpf_qdisc.c
+> +++ b/net/sched/bpf_qdisc.c
+> @@ -36,6 +36,7 @@ bpf_qdisc_get_func_proto(enum bpf_func_id func_id,
+>         }
+>  }
+>
+> +BTF_ID_LIST_SINGLE(bpf_qdisc_ids, struct, Qdisc)
+>  BTF_ID_LIST_SINGLE(bpf_sk_buff_ids, struct, sk_buff)
+>  BTF_ID_LIST_SINGLE(bpf_sk_buff_ptr_ids, struct, bpf_sk_buff_ptr)
+>
+> @@ -60,20 +61,37 @@ static bool bpf_qdisc_is_valid_access(int off, int si=
+ze,
+>         return bpf_tracing_btf_ctx_access(off, size, type, prog, info);
+>  }
+>
+> -static int bpf_qdisc_btf_struct_access(struct bpf_verifier_log *log,
+> -                                       const struct bpf_reg_state *reg,
+> -                                       int off, int size)
+> +static int bpf_qdisc_qdisc_access(struct bpf_verifier_log *log,
+> +                                 const struct bpf_reg_state *reg,
+> +                                 int off, int size)
 
-On my side I see the following (ignore ping6 FAILs):
+Introducing this func in patch 3 and refactoring in patch 7 ?
+pls avoid the churn.
+squash it ?
 
-bfc6c67ec2d6 - (net-next/main, net-next/HEAD) net/smc: use the correct ndev to find pnetid by pnetid table (7 hours ago) <Guangguan Wang>
+if (off + size > end) check wouldn't need to be duplicated.
+Can get the name of struct from btf for bpf_log() purpose.
 
-TAP version 13
-1..1
-# timeout set to 0
-# selftests: net/forwarding: ip6gre_custom_multipath_hash.sh
-[    9.275735][  T167] ip (167) used greatest stack depth: 23536 bytes left
-[   13.769300][  T255] gre: GRE over IPv4 demultiplexor driver
-[   13.838185][  T255] ip6_gre: GRE over IPv6 tunneling driver
-[   13.951780][   T12] ip6_tunnel: g1 xmit: Local address not yet configured!
-[   14.038101][   T12] ip6_tunnel: g1 xmit: Local address not yet configured!
-[   15.148469][  T281] 8021q: 802.1Q VLAN Support v1.8
-[   17.559477][  T321] GACT probability NOT on
-[   18.551876][   T12] ip6_tunnel: g2 xmit: Local address not yet configured!
-[   18.633656][   T12] ip6_tunnel: g2 xmit: Local address not yet configured!
-# TEST: ping                                                          [ OK ]
-# TEST: ping6                                                         [FAIL]
-# INFO: Running IPv4 overlay custom multipath hash tests
-# TEST: Multipath hash field: Inner source IP (balanced)              [FAIL]
-#       Expected traffic to be balanced, but it is not
-# INFO: Packets sent on path1 / path2: 1 / 12602
-# TEST: Multipath hash field: Inner source IP (unbalanced)            [ OK ]
-# INFO: Packets sent on path1 / path2: 0 / 12601
-# TEST: Multipath hash field: Inner destination IP (balanced)         [FAIL]
-#       Expected traffic to be balanced, but it is not
-# INFO: Packets sent on path1 / path2: 1 / 12600
-# TEST: Multipath hash field: Inner destination IP (unbalanced)       [ OK ]
-# INFO: Packets sent on path1 / path2: 0 / 12600
-...
-
-8ecea691e844 - (HEAD -> upstream/net-next/main) Revert "gre: Fix IPv6 link-local address generation." (2 minutes ago) <Stanislav Fomichev>
-
-TAP version 13
-1..1
-# timeout set to 0
-# selftests: net/forwarding: ip6gre_custom_multipath_hash.sh
-[   13.863060][  T252] gre: GRE over IPv4 demultiplexor driver
-[   13.911551][  T252] ip6_gre: GRE over IPv6 tunneling driver
-[   15.226124][  T277] 8021q: 802.1Q VLAN Support v1.8
-[   17.629460][  T317] GACT probability NOT on
-[   17.645781][  T315] tc (315) used greatest stack depth: 23040 bytes left
-# TEST: ping                                                          [ OK ]
-# TEST: ping6                                                         [FAIL]
-# INFO: Running IPv4 overlay custom multipath hash tests
-# TEST: Multipath hash field: Inner source IP (balanced)              [ OK ]
-# INFO: Packets sent on path1 / path2: 5552 / 7052
-# TEST: Multipath hash field: Inner source IP (unbalanced)            [ OK ]
-# INFO: Packets sent on path1 / path2: 12600 / 2
-[   36.278056][    C2] clocksource: Long readout interval, skipping watchdog check: cs_nsec: 1078005296 wd_nsec: 1078004682
-# TEST: Multipath hash field: Inner destination IP (balanced)         [ OK ]
-# INFO: Packets sent on path1 / path2: 6650 / 5950
-# TEST: Multipath hash field: Inner destination IP (unbalanced)       [ OK ]
-# INFO: Packets sent on path1 / path2: 0 / 12600
-...
-
-And I also see the failures on 4003c9e78778. Not sure why we see
-different results. And the NIPAs fails as well:
-
-https://netdev-3.bots.linux.dev/vmksft-forwarding-dbg/results/32922/1-ip6gre-custom-multipath-hash-sh/stdout
+>  {
+> -       const struct btf_type *t, *skbt;
+>         size_t end;
+>
+> -       skbt =3D btf_type_by_id(reg->btf, bpf_sk_buff_ids[0]);
+> -       t =3D btf_type_by_id(reg->btf, reg->btf_id);
+> -       if (t !=3D skbt) {
+> -               bpf_log(log, "only read is supported\n");
+> +       switch (off) {
+> +       case offsetof(struct Qdisc, qstats) ... offsetofend(struct Qdisc,=
+ qstats) - 1:
+> +               end =3D offsetofend(struct Qdisc, qstats);
+> +               break;
+> +       default:
+> +               bpf_log(log, "no write support to Qdisc at off %d\n", off=
+);
+> +               return -EACCES;
+> +       }
+> +
+> +       if (off + size > end) {
+> +               bpf_log(log,
+> +                       "write access at off %d with size %d beyond the m=
+ember of Qdisc ended at %zu\n",
+> +                       off, size, end);
+>                 return -EACCES;
+>         }
+>
+> +       return 0;
+> +}
+> +
+> +static int bpf_qdisc_sk_buff_access(struct bpf_verifier_log *log,
+> +                                   const struct bpf_reg_state *reg,
+> +                                   int off, int size)
+> +{
+> +       size_t end;
+> +
+>         switch (off) {
+>         case offsetof(struct sk_buff, tstamp):
+>                 end =3D offsetofend(struct sk_buff, tstamp);
+> @@ -115,6 +133,25 @@ static int bpf_qdisc_btf_struct_access(struct bpf_ve=
+rifier_log *log,
+>         return 0;
+>  }
+>
+> +static int bpf_qdisc_btf_struct_access(struct bpf_verifier_log *log,
+> +                                      const struct bpf_reg_state *reg,
+> +                                      int off, int size)
+> +{
+> +       const struct btf_type *t, *skbt, *qdisct;
+> +
+> +       skbt =3D btf_type_by_id(reg->btf, bpf_sk_buff_ids[0]);
+> +       qdisct =3D btf_type_by_id(reg->btf, bpf_qdisc_ids[0]);
+> +       t =3D btf_type_by_id(reg->btf, reg->btf_id);
+> +
+> +       if (t =3D=3D skbt)
+> +               return bpf_qdisc_sk_buff_access(log, reg, off, size);
+> +       else if (t =3D=3D qdisct)
+> +               return bpf_qdisc_qdisc_access(log, reg, off, size);
+> +
+> +       bpf_log(log, "only read is supported\n");
+> +       return -EACCES;
+> +}
+> +
+>  BTF_ID_LIST(bpf_qdisc_init_prologue_ids)
+>  BTF_ID(func, bpf_qdisc_init_prologue)
+>
+> --
+> 2.47.1
+>
