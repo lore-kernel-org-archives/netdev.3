@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3E0D51C
-	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 13:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC861FF7DE
+	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 13:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741958614; cv=none; b=Qv74T/aKR8BI8r6zO7eMm0APuf+RUYj8GAO/G+4BVMrvIIiYHkstVWbsY+T5e2+9hQK8bIPuNIgCtLTJ9osxySxBQSPgeaQI+VwrGMNaxi1KlSQte21WT/pOEuVuhwpUgdSRsazDnN9kuAB+c0UNHwJQp0XJbtGGmGM59vQM2e8=
+	t=1741958615; cv=none; b=fnsIcpR32yWdf+apT+PehGBN5eFvnooiJ0WPwCOfzJ0XQIHhXfKQ5+46PaxCn6sDfjx1CHMVGUPUj0dLWZ/71hIZrfxfZleCxUR0i1LgVS2szx7WFnBQOJb4ArU1gkijkoGvYeXWFiausFUrzPmp2n8niLuG5NQKrmfMzJYbhdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741958614; c=relaxed/simple;
-	bh=lMCIKNZKcc02fMfv+ywfFQtyP/pXJF8iB5Pk7aJHZjo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OANzTj36dR/STKn59tC97Ya4km5cdWnjqqlAska0QRMigS9f7wD7hUbYnjov/W+T5vg2SNwdHhKfkM8zLXEEvMslK60EG5sZDQmHYzL0izqU00uQ6Oi2VIuy5AjL9avKHeAemeCHGZ/j2vLddJoA2D/NuAmqeTQsOSh1p4bVoQ0=
+	s=arc-20240116; t=1741958615; c=relaxed/simple;
+	bh=LvnMNLHWoKuiNumCxL7ECzMMMh453gAZvkG4y03zw/I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Z4WCOg9SldWO+JgSDtPE0nydCTG8EXMzFp8wZdhnNycp+Ay9aSgWIjUMSqNj4Ygm5He4EbCP11da5YhHNzEV+dLMa+p6q4yRC0atfszNB3+6KBDXPEf5y0djyv/Ig9R/plscXCohH1yiKy3g5S7jNhHbkraYu/iAI8Idt/5jOyQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,37 +18,41 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tt50c-0001hS-Ui
-	for netdev@vger.kernel.org; Fri, 14 Mar 2025 14:23:30 +0100
+	id 1tt50d-0001iq-Q2
+	for netdev@vger.kernel.org; Fri, 14 Mar 2025 14:23:31 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tt50c-005i4w-2B
+	id 1tt50d-005i5i-19
 	for netdev@vger.kernel.org;
-	Fri, 14 Mar 2025 14:23:30 +0100
+	Fri, 14 Mar 2025 14:23:31 +0100
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 561A53DBBFE
-	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 13:23:30 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id 11B8C3DBC0A
+	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 13:23:31 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 3B6C93DBBE6;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 4C0EB3DBBE8;
 	Fri, 14 Mar 2025 13:23:29 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 7e77eee0;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 457b251f;
 	Fri, 14 Mar 2025 13:23:28 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: [PATCH net-next 0/4] pull-request: can-next 2025-03-14
-Date: Fri, 14 Mar 2025 14:19:14 +0100
-Message-ID: <20250314132327.2905693-1-mkl@pengutronix.de>
+	kernel@pengutronix.de,
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net-next 2/4] can: flexcan: add transceiver capabilities
+Date: Fri, 14 Mar 2025 14:19:16 +0100
+Message-ID: <20250314132327.2905693-3-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250314132327.2905693-1-mkl@pengutronix.de>
+References: <20250314132327.2905693-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,58 +65,106 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hello netdev-team,
+From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 
-this is a pull request of 4 patches for net-next/main.
+Currently the flexcan driver does only support adding PHYs by using the
+"old" regulator bindings. Add support for CAN transceivers as a PHY. Add
+the capability to ensure that the PHY is in operational state when the link
+is set to an "up" state.
 
-In the first 2 patches by Dimitri Fedrau add CAN transceiver support
-to the flexcan driver.
-
-Frank Li's patch adds i.MX94 support to the flexcan device tree
-bindings.
-
-The last patch is by Davide Caratti and adds protocol counter for
-AF_CAN sockets.
-
-regards,
-Marc
-
+Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Link: https://patch.msgid.link/20250312-flexcan-add-transceiver-caps-v4-2-29e89ae0225a@liebherr.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
-The following changes since commit 941defcea7e11ad7ff8f0d4856716dd637d757dd:
+ drivers/net/can/flexcan/flexcan-core.c | 27 ++++++++++++++++++++------
+ drivers/net/can/flexcan/flexcan.h      |  1 +
+ 2 files changed, 22 insertions(+), 6 deletions(-)
 
-  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-03-13 23:08:11 +0100)
+diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
+index b347a1c93536..7588cb54a909 100644
+--- a/drivers/net/can/flexcan/flexcan-core.c
++++ b/drivers/net/can/flexcan/flexcan-core.c
+@@ -26,6 +26,7 @@
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/platform_device.h>
+ #include <linux/can/platform/flexcan.h>
++#include <linux/phy/phy.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/property.h>
+ #include <linux/regmap.h>
+@@ -644,18 +645,22 @@ static void flexcan_clks_disable(const struct flexcan_priv *priv)
+ 
+ static inline int flexcan_transceiver_enable(const struct flexcan_priv *priv)
+ {
+-	if (!priv->reg_xceiver)
+-		return 0;
++	if (priv->reg_xceiver)
++		return regulator_enable(priv->reg_xceiver);
++	else if (priv->transceiver)
++		return phy_power_on(priv->transceiver);
+ 
+-	return regulator_enable(priv->reg_xceiver);
++	return 0;
+ }
+ 
+ static inline int flexcan_transceiver_disable(const struct flexcan_priv *priv)
+ {
+-	if (!priv->reg_xceiver)
+-		return 0;
++	if (priv->reg_xceiver)
++		return regulator_disable(priv->reg_xceiver);
++	else if (priv->transceiver)
++		return phy_power_off(priv->transceiver);
+ 
+-	return regulator_disable(priv->reg_xceiver);
++	return 0;
+ }
+ 
+ static int flexcan_chip_enable(struct flexcan_priv *priv)
+@@ -2086,6 +2091,7 @@ static int flexcan_probe(struct platform_device *pdev)
+ 	struct net_device *dev;
+ 	struct flexcan_priv *priv;
+ 	struct regulator *reg_xceiver;
++	struct phy *transceiver;
+ 	struct clk *clk_ipg = NULL, *clk_per = NULL;
+ 	struct flexcan_regs __iomem *regs;
+ 	struct flexcan_platform_data *pdata;
+@@ -2101,6 +2107,11 @@ static int flexcan_probe(struct platform_device *pdev)
+ 	else if (IS_ERR(reg_xceiver))
+ 		return PTR_ERR(reg_xceiver);
+ 
++	transceiver = devm_phy_optional_get(&pdev->dev, NULL);
++	if (IS_ERR(transceiver))
++		return dev_err_probe(&pdev->dev, PTR_ERR(transceiver),
++				     "failed to get phy\n");
++
+ 	if (pdev->dev.of_node) {
+ 		of_property_read_u32(pdev->dev.of_node,
+ 				     "clock-frequency", &clock_freq);
+@@ -2198,6 +2209,10 @@ static int flexcan_probe(struct platform_device *pdev)
+ 	priv->clk_per = clk_per;
+ 	priv->clk_src = clk_src;
+ 	priv->reg_xceiver = reg_xceiver;
++	priv->transceiver = transceiver;
++
++	if (transceiver)
++		priv->can.bitrate_max = transceiver->attrs.max_link_rate;
+ 
+ 	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_IRQ_3) {
+ 		priv->irq_boff = platform_get_irq(pdev, 1);
+diff --git a/drivers/net/can/flexcan/flexcan.h b/drivers/net/can/flexcan/flexcan.h
+index 2cf886618c96..16692a2502eb 100644
+--- a/drivers/net/can/flexcan/flexcan.h
++++ b/drivers/net/can/flexcan/flexcan.h
+@@ -107,6 +107,7 @@ struct flexcan_priv {
+ 	struct clk *clk_per;
+ 	struct flexcan_devtype_data devtype_data;
+ 	struct regulator *reg_xceiver;
++	struct phy *transceiver;
+ 	struct flexcan_stop_mode stm;
+ 
+ 	int irq_boff;
+-- 
+2.47.2
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next.git tags/linux-can-next-for-6.15-20250314
-
-for you to fetch changes up to 6bffe88452dbe284747442f10a7ac8249d6495d7:
-
-  can: add protocol counter for AF_CAN sockets (2025-03-14 13:27:33 +0100)
-
-----------------------------------------------------------------
-linux-can-next-for-6.15-20250314
-
-----------------------------------------------------------------
-Davide Caratti (1):
-      can: add protocol counter for AF_CAN sockets
-
-Dimitri Fedrau (2):
-      dt-bindings: can: fsl,flexcan: add transceiver capabilities
-      can: flexcan: add transceiver capabilities
-
-Frank Li (1):
-      dt-bindings: can: fsl,flexcan: add i.MX94 support
-
-Marc Kleine-Budde (1):
-      Merge patch series "can: flexcan: add transceiver capabilities"
-
- .../devicetree/bindings/net/can/fsl,flexcan.yaml   | 13 +++++++++++
- drivers/net/can/flexcan/flexcan-core.c             | 27 +++++++++++++++++-----
- drivers/net/can/flexcan/flexcan.h                  |  1 +
- net/can/af_can.c                                   |  2 ++
- net/can/bcm.c                                      |  1 +
- net/can/isotp.c                                    |  1 +
- net/can/raw.c                                      |  5 +++-
- 7 files changed, 43 insertions(+), 7 deletions(-)
 
