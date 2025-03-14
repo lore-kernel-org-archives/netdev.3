@@ -1,131 +1,169 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A081F3BB2
-	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 10:12:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5025726AFC
+	for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 10:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741947147; cv=none; b=Xrn4S6P+qfC5csPdWmMdSd7F1L2b1b93ZvL5URnySL0FYV4t2s0mQdBlJSBou8zU7wYcHQE2dKb9ujttj5hfaXk734zvaYQUhFTANT6JwnnSyp5WjE1e77R88Kn8JtqWbCusljFN313WNdc35fauroCjNg57fuIMdgGs81yAfaY=
+	t=1741947209; cv=none; b=F50BXtA36UVmlXTiQ7znQDSIGtU2nKKX2Ov45wnbXKWwgCFKARqR8o+CTnVy1LYIBHVu5CDa7nQAIdUNKsFs/NiMmgArUX2iXkGPhX/MrX9t1LEy6DC3fujEF/dRxdV07pNN+6RVBPucjUncYHYSU2hxyJw8XWjK5yB7vFZGr7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741947147; c=relaxed/simple;
-	bh=ZwQLt7Z4tHTJcWoA9ARFUEED+hl5/cCffTRlgZa7WQU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cyCEi+wMJgbX4oKAdmMc3e4ohj/GjMUc3e/m8MH2BDyr1gBeKMOv75UcQEkvBuA0zD6GCSVnfOUrmANei1Q8bh3uhBnV03dxaCFqYgxYT4DCteKqCNtdhhkVFeRY7ofv70IC2kg9l5yqlCbYcyW8g7XOJohPHTQYNATclbJGBo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VpVCqqfF; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1741947209; c=relaxed/simple;
+	bh=3fLWeHLKHrb18Uy/MS3QJBRi1rm/wOaI7DMw2a8UkqY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=px9xPCma2LRLz05Zsj1E7fJWdrMGV7+Fs8hBLsNbQed+ZRmGuUpd4e74NCtGlvBwUqGi3fmJQQC7QH2Ln7iG0HCZ0MVdrNoV2IjLA58mYyexYMSZziVLM6iF4MbtCfWKejyZoQ77M/mtzj4TeaRV/5BO4juV4FjSXzQAJiy0MAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hui0RsCL; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VpVCqqfF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hui0RsCL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741947141;
+	s=mimecast20190719; t=1741947207;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=9gm2z62YPqNWN8yJwphL0g3OWPmFyfl9EtTC0QPQVIU=;
-	b=VpVCqqfF73ZZSaIQJV5kFGtTMqdIhI+6uYvUmcMR+ergrLx4spkUJq2U12toySmInyr3pa
-	/79e8MlIbpNVLy6t2ZXhEvEUfEPx3oRGDmXZWdQb9Xd3DY4e6MjFlg3P05kAqlKc2uwvlB
-	3ifkaJ6g2l7jiM2iV0ejN+Yu1bpr6WA=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	 in-reply-to:in-reply-to:references:references;
+	bh=SPd+EnkY0Li2mTO/GP70bxnkH1XCMqHnQAmmracRGtI=;
+	b=hui0RsCLXrGu0G7zqLYhtgvrcDYAesZiooZ6iceleb/RzBG+99WWziCuOHcKEKPyXLPZZC
+	6v5KL5+nu2v8R52fCT1IecOjA8ZRlsSoAk7qBVcfvFFckebY1V6YsFS26HNuUXPpKbjYqE
+	sSEAI9qoXXN2SDFCWgUW05calS+4KBk=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-iOl9LxcWNCGo8FMvuFDO7w-1; Fri, 14 Mar 2025 06:12:19 -0400
-X-MC-Unique: iOl9LxcWNCGo8FMvuFDO7w-1
-X-Mimecast-MFC-AGG-ID: iOl9LxcWNCGo8FMvuFDO7w_1741947138
-Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-549979903c8so1029036e87.1
-        for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 03:12:19 -0700 (PDT)
+ us-mta-689-ORIaH1zoPSydUGwtXsdQVg-1; Fri, 14 Mar 2025 06:13:26 -0400
+X-MC-Unique: ORIaH1zoPSydUGwtXsdQVg-1
+X-Mimecast-MFC-AGG-ID: ORIaH1zoPSydUGwtXsdQVg_1741947205
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-ac27d8ac365so156519366b.2
+        for <netdev@vger.kernel.org>; Fri, 14 Mar 2025 03:13:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741947138; x=1742551938;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9gm2z62YPqNWN8yJwphL0g3OWPmFyfl9EtTC0QPQVIU=;
-        b=jaBUBGzSVri/lJRUEZ2lUHdLOnTeT3QpR1w7OqhPd1Q1cpSY4Caboe/Sq/1Ah9M5sx
-         //aialcT5crPXTWy3jbNTdfPUF7R3fTp0t88oZs5Pj3/R6YNM0arc8TrOmUqYzMnVcol
-         JJcPiDI4Bs4/Xs84FINVKP8/9amvvjjw3xEvtfR6VzWX4eFpZXtW5SGGy/fTHXRyA0yJ
-         cFDZM/K/avlp2h7bZzT0ar20yngkaWPusAgo5H7/BMvg8THWX3yCBG9NYYCkfesC6Whf
-         n/jhpQmdwEA7qpQCN+EerlOS44U5E7N7hUsnK7WCRzAdQmt8nd0U/dptneQDtdLiQwJA
-         rAVw==
-X-Gm-Message-State: AOJu0YwF2KJnMh71BEG/g8zSccIW8ICsPukbOybOqaG0b+N4isN2RU3/
-	Z3FQyUfzlZBJhm+QYZWNVU7dbEWU8u1XHxFeCrOz52QvmNWPrNJBJ+TzYNae+p47wOit9wnF0BV
-	hQmZgL/Buns0VpqFLv5nZhG3vI95qFAvRjeilfdPRKmkuwoRancUong==
-X-Gm-Gg: ASbGnctfeOsMmQ7+FhMmvB2un624jXM8PeQW3R+RjYvM0rVeDVGxY8JGg0zu4YRTbMI
-	ym60Pt4ZRJ/voLNrqyoVMLzUL+0FjD1nUyKNcB0tIo1NlhusBBeuuVpHcAayOWyxbCszRs9tD2E
-	CB4AHlq2K7V4SJBUQw9cuAh2tlkt66Jfx68vxQxQzWdoolgzmkC8WBJIAH9aomw77trexJBO3tH
-	BLLy/74wv7mWMykeCi0QcHjUuIHh5e6hVLMbBQ4yqdTfIvj6vu06+/L70YnJrV+Yeihb2VyV4+Q
-	3MV/d8fQ/U0a
-X-Received: by 2002:a05:6512:3ba4:b0:544:ca1:da41 with SMTP id 2adb3069b0e04-549c39897ddmr668063e87.44.1741947138256;
-        Fri, 14 Mar 2025 03:12:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFQUWKDrZlzJOt8qlYePG63LB20pTY5b0FHQCM+E2JqpqZhwzuf+fAjF8sgxJkwHe+V2bVHLw==
-X-Received: by 2002:a05:6512:3ba4:b0:544:ca1:da41 with SMTP id 2adb3069b0e04-549c39897ddmr668037e87.44.1741947137761;
-        Fri, 14 Mar 2025 03:12:17 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1741947205; x=1742552005;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SPd+EnkY0Li2mTO/GP70bxnkH1XCMqHnQAmmracRGtI=;
+        b=HcS6LUE1AG9OnAOKVzHiLF9Om1OnFYdI6wXAPm6A6qoCoOJqHZBXE2nhb2f3fOPmgC
+         uJYm/otwuOeFXRQ+xZBeNssiCr9pDjVvLFmRkgs3ywURLBhk75HxilaxaXfZIRLz/WrJ
+         24q4ixYqpr3ga1nXn41lJMlYTE4Fj0mlJ8D4A6uidzPnLoXhGMZQkyNSi7BjaEtOodWl
+         x+/ENhCoUCIh6pfFmdRR9Bfh/m3QPxutgPEVsFL+zJFqkuBu/eeGBhAINs3yb844ITjC
+         shcNw8igBcNNAzEKxGMUpFrlP5dWB94hKhg4EVHFh4hO17w/FCxIBU5iADiKS/NWb+4Z
+         jpWg==
+X-Forwarded-Encrypted: i=1; AJvYcCUbl7tzG+lEVg32dibRsASFKlyBa+5n1tNwbSfFVak7A8BsVsAaE/IwA+74/tWO9zGjAwlYSzE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxChHLhVBiGGsnPrMMCZbIZ/kSukZ726RMPzeY3xFoUyM6CmA2
+	TCLwizBv23vhwT+XVsAO37t7dFmcNmEqfq+wisk5lGhYwDbnWXT7Gtv/RsWvCU6FL+/HSgefc4p
+	E0Gt0AsFj/LYf3S0hMWlsi7tFGX556c+Ncg6PI65mK3xfYifhMDHKqA==
+X-Gm-Gg: ASbGnctl3CIuVTK0zqUyPP5b3qrVOMM2vG1tf/YXGH5nAe6PwhFUQXl+0qUYdtiw3pF
+	iF6VzB4wGU7l4uKo8U4H40pzKilu6u8bSWSOUjuQ8yPohot5SDflkDBVj3bWn7vNblKV3n7w0KX
+	R0RKeUf+X73VKck9Xw55TreocWxX8eeNDrz/MkkXCqb3iT5dpTZzKJRSiNmOpcPlU3WOwU1ZqLL
+	mXlRW8s8b/1LfbaMms7W0QSdfPf64wY1MBbB+WbN5E2cCfyPboWsUuhhunANJbfSN8sAQFX1AQi
+	f+PJRAgmt0Tr
+X-Received: by 2002:a17:907:7d87:b0:ac3:26fb:f420 with SMTP id a640c23a62f3a-ac3303715c9mr200509266b.42.1741947204949;
+        Fri, 14 Mar 2025 03:13:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFSV3Kxn90NGxgDHQH3cs1oxAKHVeo2b8VKgG0w+cX9fVNQ1pDU9yg6oVegNwiT56KvNkO8iQ==
+X-Received: by 2002:a17:907:7d87:b0:ac3:26fb:f420 with SMTP id a640c23a62f3a-ac3303715c9mr200503466b.42.1741947204252;
+        Fri, 14 Mar 2025 03:13:24 -0700 (PDT)
 Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-549ba7c11f7sm477629e87.84.2025.03.14.03.12.14
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3146aeb5asm204715966b.36.2025.03.14.03.13.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Mar 2025 03:12:15 -0700 (PDT)
+        Fri, 14 Mar 2025 03:13:23 -0700 (PDT)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 0737418FA92C; Fri, 14 Mar 2025 11:12:12 +0100 (CET)
-From: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Subject: [PATCH net-next 0/3] Fix late DMA unmap crash for page pool
-Date: Fri, 14 Mar 2025 11:10:18 +0100
-Message-Id: <20250314-page-pool-track-dma-v1-0-c212e57a74c2@redhat.com>
+	id 27E5218FA934; Fri, 14 Mar 2025 11:13:15 +0100 (CET)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Wang Liang <wangliang74@huawei.com>, jv@jvosburgh.net,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
+ hawk@kernel.org, john.fastabend@gmail.com, joamaki@gmail.com
+Cc: yuehaibing@huawei.com, zhangchangzhong@huawei.com,
+ wangliang74@huawei.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH net] bonding: check xdp prog when set bond mode
+In-Reply-To: <20250314073549.1030998-1-wangliang74@huawei.com>
+References: <20250314073549.1030998-1-wangliang74@huawei.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Fri, 14 Mar 2025 11:13:15 +0100
+Message-ID: <87y0x7rkck.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAIoA1GcC/x2MQQqDMBAAvyJ77sKa1R78ivSw6KpL2yQkQQLi3
- xt6nIGZC7Im0wxTd0HS07IF36B/dLAc4ndFWxuDIzcS94RRmoshfLAkWd64fgWJ2fHAMjxJoZU
- x6Wb1f53Ba0GvtcDrvn+tpLJRbwAAAA==
-X-Change-ID: 20250310-page-pool-track-dma-0332343a460e
-To: "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
- Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
- Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
- Simon Horman <horms@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
- Mina Almasry <almasrymina@google.com>, 
- Yonglong Liu <liuyonglong@huawei.com>, 
- Yunsheng Lin <linyunsheng@huawei.com>, 
- Pavel Begunkov <asml.silence@gmail.com>, 
- Matthew Wilcox <willy@infradead.org>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, linux-rdma@vger.kernel.org, 
- linux-mm@kvack.org, 
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>, 
- Qiuling Ren <qren@redhat.com>, Yuying Ma <yuma@redhat.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain
 
-This series fixes the late dma_unmap crash for page pool first reported
-by Yonglong Liu in [0]. It is an alternative approach to the one
-submitted by Yunsheng Lin, most recently in [1]. The first two commits
-are small refactors of the page pool code, in preparation of the main
-change in patch 3. See the commit message of patch 3 for the details.
+Wang Liang <wangliang74@huawei.com> writes:
+
+> Following operations can trigger a warning[1]:
+>
+>     ip netns add ns1
+>     ip netns exec ns1 ip link add bond0 type bond mode balance-rr
+>     ip netns exec ns1 ip link set dev bond0 xdp obj af_xdp_kern.o sec xdp
+>     ip netns exec ns1 ip link set bond0 type bond mode broadcast
+>     ip netns del ns1
+>
+> When delete the namespace, dev_xdp_uninstall() is called to remove xdp
+> program on bond dev, and bond_xdp_set() will check the bond mode. If bond
+> mode is changed after attaching xdp program, the warning may occur.
+>
+> Some bond modes (broadcast, etc.) do not support native xdp. Set bond mode
+> with xdp program attached is not good. Add check for xdp program when set
+> bond mode.
+>
+>     [1]
+>     ------------[ cut here ]------------
+>     WARNING: CPU: 0 PID: 11 at net/core/dev.c:9912 unregister_netdevice_many_notify+0x8d9/0x930
+>     Modules linked in:
+>     CPU: 0 UID: 0 PID: 11 Comm: kworker/u4:0 Not tainted 6.14.0-rc4 #107
+>     Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014
+>     Workqueue: netns cleanup_net
+>     RIP: 0010:unregister_netdevice_many_notify+0x8d9/0x930
+>     Code: 00 00 48 c7 c6 6f e3 a2 82 48 c7 c7 d0 b3 96 82 e8 9c 10 3e ...
+>     RSP: 0018:ffffc90000063d80 EFLAGS: 00000282
+>     RAX: 00000000ffffffa1 RBX: ffff888004959000 RCX: 00000000ffffdfff
+>     RDX: 0000000000000000 RSI: 00000000ffffffea RDI: ffffc90000063b48
+>     RBP: ffffc90000063e28 R08: ffffffff82d39b28 R09: 0000000000009ffb
+>     R10: 0000000000000175 R11: ffffffff82d09b40 R12: ffff8880049598e8
+>     R13: 0000000000000001 R14: dead000000000100 R15: ffffc90000045000
+>     FS:  0000000000000000(0000) GS:ffff888007a00000(0000) knlGS:0000000000000000
+>     CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>     CR2: 000000000d406b60 CR3: 000000000483e000 CR4: 00000000000006f0
+>     Call Trace:
+>      <TASK>
+>      ? __warn+0x83/0x130
+>      ? unregister_netdevice_many_notify+0x8d9/0x930
+>      ? report_bug+0x18e/0x1a0
+>      ? handle_bug+0x54/0x90
+>      ? exc_invalid_op+0x18/0x70
+>      ? asm_exc_invalid_op+0x1a/0x20
+>      ? unregister_netdevice_many_notify+0x8d9/0x930
+>      ? bond_net_exit_batch_rtnl+0x5c/0x90
+>      cleanup_net+0x237/0x3d0
+>      process_one_work+0x163/0x390
+>      worker_thread+0x293/0x3b0
+>      ? __pfx_worker_thread+0x10/0x10
+>      kthread+0xec/0x1e0
+>      ? __pfx_kthread+0x10/0x10
+>      ? __pfx_kthread+0x10/0x10
+>      ret_from_fork+0x2f/0x50
+>      ? __pfx_kthread+0x10/0x10
+>      ret_from_fork_asm+0x1a/0x30
+>      </TASK>
+>     ---[ end trace 0000000000000000 ]---
+>
+> Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
+> Signed-off-by: Wang Liang <wangliang74@huawei.com>
+> ---
+>  drivers/net/bonding/bond_options.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+> index 327b6ecdc77e..127181866829 100644
+> --- a/drivers/net/bonding/bond_options.c
+> +++ b/drivers/net/bonding/bond_options.c
+> @@ -868,6 +868,9 @@ static bool bond_set_xfrm_features(struct bonding *bond)
+>  static int bond_option_mode_set(struct bonding *bond,
+>  				const struct bond_opt_value *newval)
+>  {
+> +	if (bond->xdp_prog)
+> +		return -EOPNOTSUPP;
+> +
+
+Should we allow changing as long as the new mode also supports XDP?
 
 -Toke
-
-[0] https://lore.kernel.org/lkml/8067f204-1380-4d37-8ffd-007fc6f26738@kernel.org/T/
-[1] https://lore.kernel.org/r/20250307092356.638242-1-linyunsheng@huawei.com
-
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
----
-Toke Høiland-Jørgensen (3):
-      page_pool: Move pp_magic check into helper functions
-      page_pool: Turn dma_sync and dma_sync_cpu fields into a bitmap
-      page_pool: Track DMA-mapped pages and unmap them when destroying the pool
-
- drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c |  4 +-
- include/net/page_pool/helpers.h                  |  6 +-
- include/net/page_pool/types.h                    | 54 +++++++++++++++-
- mm/page_alloc.c                                  |  9 +--
- net/core/devmem.c                                |  3 +-
- net/core/netmem_priv.h                           | 33 +++++++++-
- net/core/page_pool.c                             | 81 ++++++++++++++++++++----
- net/core/skbuff.c                                | 16 +----
- net/core/xdp.c                                   |  4 +-
- 9 files changed, 164 insertions(+), 46 deletions(-)
----
-base-commit: 8ef890df4031121a94407c84659125cbccd3fdbe
-change-id: 20250310-page-pool-track-dma-0332343a460e
 
