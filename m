@@ -1,231 +1,105 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAC62036F6;
-	Fri, 14 Mar 2025 15:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EA51FFC50;
+	Fri, 14 Mar 2025 15:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741965647; cv=none; b=denxxGeCJRsMJ/oDPriG5lRatv/DJkmn/5fz/iYOeTItoGJdf8tKF25M6Lbc5XKhcLQyWJlByx3iIjCTTmhChzoFCukKObAYdeiQS0OTc2sSOnKk0Zho2T2deLzEM5zXvifu0plzWXbcS+aHyEeXXQ6GkqZ4yEAsLJ/YgCKPlEo=
+	t=1741965766; cv=none; b=mGknvg728mjLYwi7vRdaGGVP7QB/fSsFIwgoOHkhr5WF0PRwAnY6p5VMwqO5fwjMwtzuoTiprwRa0XnKsCDKzIm5kJjcr0nWlJmBoPNT7guq2hM4GO91K9sCvXHsgcfkbAbLS2uonCmg1lNh0k/p4AF+Hdi2G0JNNHMM1ID6Lz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741965647; c=relaxed/simple;
-	bh=L+KTJGvZZL6WNwZ6CkOfjghyQtuOOIuC3o33rScf4Sk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=S0TCML8N/TmStiNCl0drdmisemDsyyCAh3RCngOfWkUO22kG1kjWiRK+K8kVdgBBXMr5L9n7C7vnzIpR0lGlx6CmC2adP2+5m9t7sMXayDP+nLMn0p+5q3cGZ+er+0x9RjCZXpmYJcVNMFT1UNpHUxDwI+HzIlRr9jqUjoMYPs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=SyABiwyg; arc=none smtp.client-ip=185.226.149.37
+	s=arc-20240116; t=1741965766; c=relaxed/simple;
+	bh=eJSLWEhTvkiMA6Dti2k3l0C/8o83ZXMRPUdaq8/EY+4=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=uvvMPhihnM2Lp5BiAYT49evQgoKiYmIFIf8V6ZY4dz1wupDKesnyNnphOdp7Pcht9pNPMZ1zCuryiAXhIJs+UdsybHrrL4vpdF8hL3DGyny5KP3Qlmhdk+9+a6X0A+RszON7rFv9XjzdNd0036ZhGjkVX12BoewwYxW7vop2k6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=iVkP3H0D; arc=none smtp.client-ip=185.226.149.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="SyABiwyg"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="iVkP3H0D"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1tt6pt-006UWW-6n; Fri, 14 Mar 2025 16:20:33 +0100
+	id 1tt6rv-006FZg-9Y; Fri, 14 Mar 2025 16:22:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=75aQS4EfbBkL1uqPvlHJ3IbPh6aVg1PW4sCCjIyt6CQ=; b=SyABiwyg3y0nW0o10MYkGiGD+7
-	28/m8lG0cfTxXOSaZbC3zjJSVTvxQzl1BsznqpICN5TSaPSP4/rSE7YMT4rktiKA3W1DLaN+pDE33
-	hdbUoBcI6pIGsY9FQGA0mtT5RV6Vs1h0NCQB6o98XpXLqNQU49SRmFP8bnMDGfEl3qPRM3/YugacX
-	b44w1uj9GMxNHycB+OXP76Pxq3/wP7DyDw7pVSoS/nZJV71X5DAoD9TKi46OwZgweOkUaAtRohfCG
-	O9D7AGM4gjVJkwr9MavKK2nbdmHDLAnnTRyZfeTL96sAYZdXf2yNKflX0L91JBQZoCSnJh8zJApK2
-	8jRC7Nrw==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
+	bh=+TX5auO+Sp/XNcHwkCoFMPh3FVcUqaRUx7KOCoi/TRo=; b=iVkP3H0D6G4zbFZCVJJVkOQBii
+	GXcFykn67ktKPIlZy0blBbRT41J7dsVd/aY8RhTPhiO4J7wd6o0kfEKonpQI8+bdPAQHofroWyRZ3
+	UXlLkfOFt0e2S61XSu3n2sTcb7cpzz9/TBmzT8RJ0zEwttVhduh9pd64ytwE6ZGq54V+Repysst6k
+	BCwPij+RcSfM1zXnMjpA0XcVn0NOt7qyCs7cVz8ci7Epd9dpA6GB/YzO86TvXI08OHptjAJ19aO7m
+	AWrnPKXYpbiNDoqX0Rx+HFybtx/xbp924KPePcVNEKNCy3LdMGBLKqbsp8VAenyjw0NxvEov5k7Hb
+	cOJgeeOA==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1tt6pn-0007cc-H8; Fri, 14 Mar 2025 16:20:27 +0100
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	id 1tt6rs-0004ce-M7; Fri, 14 Mar 2025 16:22:37 +0100
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.93)
-	id 1tt6pc-00H06E-2g; Fri, 14 Mar 2025 16:20:16 +0100
-From: Michal Luczaj <mhal@rbox.co>
-Date: Fri, 14 Mar 2025 16:19:35 +0100
-Subject: [PATCH net v2 2/3] selftest/bpf: Add test for AF_VSOCK connect()
- racing sockmap update
+	id 1tt6rd-00FUzy-N8; Fri, 14 Mar 2025 16:22:21 +0100
+Message-ID: <90a758f2-e079-4148-8d47-ad2ec9161a13@rbox.co>
+Date: Fri, 14 Mar 2025 16:22:20 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+From: Michal Luczaj <mhal@rbox.co>
+Subject: Re: [PATCH net] vsock/bpf: Handle EINTR connect() racing against
+ sockmap update
+To: Luigi Leonardi <leonardi@redhat.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ netdev@vger.kernel.org, bpf@vger.kernel.org
+References: <20250307-vsock-trans-signal-race-v1-1-3aca3f771fbd@rbox.co>
+ <a96febaf-1d32-47d4-ad18-ce5d689b7bdb@rbox.co>
+ <vhda4sdbp725w7mkhha72u2nt3xpgyv2i4dphdr6lw7745qpuu@7c3lrl4tbomv>
+ <032764f5-e462-4f42-bfdc-8e31b25ada27@rbox.co>
+ <4pvmvfviu6jnljfigf4u7vjrktn3jub2sdw2c524vopgkjj7od@dmrjmx3pzgyq>
+Content-Language: pl-PL, en-GB
+In-Reply-To: <4pvmvfviu6jnljfigf4u7vjrktn3jub2sdw2c524vopgkjj7od@dmrjmx3pzgyq>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250314-vsock-trans-signal-race-v2-2-421a41f60f42@rbox.co>
-References: <20250314-vsock-trans-signal-race-v2-0-421a41f60f42@rbox.co>
-In-Reply-To: <20250314-vsock-trans-signal-race-v2-0-421a41f60f42@rbox.co>
-To: Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Bobby Eshleman <bobby.eshleman@bytedance.com>, 
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
- Mykola Lysenko <mykolal@fb.com>, Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, 
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
- Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, 
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.14.2
 
-Racing signal-interrupted connect() and sockmap update may result in an
-unconnected (and missing vsock transport) socket in a sockmap.
+On 3/11/25 14:49, Luigi Leonardi wrote:
+> Hi Michal,
+> 
+> On Fri, Mar 07, 2025 at 05:01:11PM +0100, Michal Luczaj wrote:
+>> On 3/7/25 15:35, Stefano Garzarella wrote:
+>>> On Fri, Mar 07, 2025 at 10:58:55AM +0100, Michal Luczaj wrote:
+>>>>> Signal delivered during connect() may result in a disconnect of an already
+>>>>> TCP_ESTABLISHED socket. Problem is that such established socket might have
+>>>>> been placed in a sockmap before the connection was closed. We end up with a
+>>>>> SS_UNCONNECTED vsock in a sockmap. And this, combined with the ability to
+>>>>> reassign (unconnected) vsock's transport to NULL, breaks the sockmap
+>>>>> contract. As manifested by WARN_ON_ONCE.
+>>>>
+>>>> Note that Luigi is currently working on a (vsock test suit) test[1] for a
+>>>> related bug, which could be neatly adapted to test this bug as well.
+>>>> [1]: https://lore.kernel.org/netdev/20250306-test_vsock-v1-0-0320b5accf92@redhat.com/
+>>>
+>>> Can you work with Luigi to include the changes in that series?
+>>
+>> I was just going to wait for Luigi to finish his work (no rush, really) and
+>> then try to parametrize it.
+>>
+> 
+> Here[1] I pushed the v2 of the series, it addresses Stefano's comments.
+> I use b4 to send the patches, so one commit looks "strange". It is used 
+> by b4 and it contains the cover letter.
+> [1]https://github.com/luigix25/linux/tree/test_vsock_v2
+> 
+> It would be nice to send both tests together, so whenever your patch is 
+> ready, feel free to open me a PR on github or send the series directly 
+> in the ML :)
 
-Test spends 2 seconds attempting to reach WARN_ON_ONCE().
+I've noticed you've already sent it to ML and I agree it's better this way.
+Perhaps my wording was unclear: by "wait for you to finish" I've meant
+"wait for you to get your work merged".
 
-connect
-  / state = SS_CONNECTED /
-                                sock_map_update_elem
-  if signal_pending
-    state = SS_UNCONNECTED
-
-connect
-  transport = NULL
-                                vsock_bpf_recvmsg
-                                  WARN_ON_ONCE(!vsk->transport)
-
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
- .../selftests/bpf/prog_tests/sockmap_basic.c       | 111 +++++++++++++++++++++
- 1 file changed, 111 insertions(+)
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-index 1e3e4392dcca0e1722c1982ecc649a80c27443b2..5c278353a924294a1452f650634cec0539804b1a 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-@@ -3,6 +3,7 @@
- #include <error.h>
- #include <netinet/tcp.h>
- #include <sys/epoll.h>
-+#include <linux/time64.h>
- 
- #include "test_progs.h"
- #include "test_skmsg_load_helpers.skel.h"
-@@ -1042,6 +1043,114 @@ static void test_sockmap_vsock_unconnected(void)
- 	xclose(map);
- }
- 
-+#define CONNECT_SIGNAL_RACE_TIMEOUT 2 /* seconds */
-+
-+static void sig_handler(int signum)
-+{
-+	/* nop */
-+}
-+
-+static void connect_signal_racer_cleanup(void *map)
-+{
-+	xclose(*(int *)map);
-+}
-+
-+static void *connect_signal_racer(void *arg)
-+{
-+	int map;
-+
-+	map = bpf_map_create(BPF_MAP_TYPE_SOCKMAP, NULL, sizeof(int),
-+			     sizeof(int), 1, NULL);
-+	if (!ASSERT_OK_FD(map, "bpf_map_create"))
-+		return NULL;
-+
-+	pthread_cleanup_push(connect_signal_racer_cleanup, &map);
-+
-+	for (;;) {
-+		int c = *(int *)arg;
-+		int zero = 0;
-+
-+		(void)bpf_map_update_elem(map, &zero, &c, BPF_ANY);
-+
-+		if (kill(0, SIGUSR1)) {
-+			FAIL_ERRNO("kill");
-+			break;
-+		}
-+
-+		pthread_testcancel();
-+	}
-+
-+	pthread_cleanup_pop(1);
-+
-+	return NULL;
-+}
-+
-+static void test_sockmap_vsock_connect_signal_race(void)
-+{
-+	struct sockaddr_vm addr = {
-+		.svm_family = AF_VSOCK,
-+		.svm_cid = VMADDR_CID_LOCAL,
-+		.svm_port = VMADDR_PORT_ANY
-+	};
-+	struct sockaddr_vm bad_addr;
-+	sighandler_t orig_handler;
-+	pthread_t thread;
-+	socklen_t alen;
-+	int s, c, p;
-+	__u64 tout;
-+
-+	orig_handler = signal(SIGUSR1, sig_handler);
-+	if (!ASSERT_NEQ(orig_handler, SIG_ERR, "signal handler setup"))
-+		return;
-+
-+	s = socket_loopback(AF_VSOCK, SOCK_SEQPACKET | SOCK_NONBLOCK);
-+	if (s < 0)
-+		goto restore;
-+
-+	alen = sizeof(addr);
-+	if (xgetsockname(s, (struct sockaddr *)&addr, &alen) < 0)
-+		goto close;
-+
-+	bad_addr = addr;
-+	bad_addr.svm_cid = 0x42424242; /* non-existing */
-+
-+	if (xpthread_create(&thread, 0, connect_signal_racer, &c))
-+		goto close;
-+
-+	tout = get_time_ns() + CONNECT_SIGNAL_RACE_TIMEOUT * NSEC_PER_SEC;
-+	do {
-+		c = xsocket(AF_VSOCK, SOCK_SEQPACKET, 0);
-+		if (c < 0)
-+			break;
-+
-+		if (!connect(c, (struct sockaddr *)&addr, alen) ||
-+		    errno != EINTR)
-+			goto retry;
-+
-+		if (!connect(c, (struct sockaddr *)&bad_addr, alen) ||
-+		    errno != ESOCKTNOSUPPORT)
-+			goto retry;
-+
-+		if ((recv(c, &(char){0}, 1, MSG_DONTWAIT) < 0) &&
-+		    errno == ENODEV) {
-+			FAIL_ERRNO("recv");
-+			tout = 0;
-+		}
-+retry:
-+		xclose(c);
-+		p = accept(s, NULL, NULL);
-+		if (p >= 0)
-+			xclose(p);
-+	} while (get_time_ns() < tout);
-+
-+	ASSERT_OK(pthread_cancel(thread), "pthread_cancel");
-+	xpthread_join(thread, NULL);
-+close:
-+	xclose(s);
-+restore:
-+	ASSERT_NEQ(signal(SIGUSR1, orig_handler), SIG_ERR, "handler restore");
-+}
-+
- void test_sockmap_basic(void)
- {
- 	if (test__start_subtest("sockmap create_update_free"))
-@@ -1108,4 +1217,6 @@ void test_sockmap_basic(void)
- 		test_sockmap_skb_verdict_vsock_poll();
- 	if (test__start_subtest("sockmap vsock unconnected"))
- 		test_sockmap_vsock_unconnected();
-+	if (test__start_subtest("sockmap vsock connect signal race"))
-+		test_sockmap_vsock_connect_signal_race();
- }
-
--- 
-2.48.1
-
+Sorry for confusion,
+Michal
