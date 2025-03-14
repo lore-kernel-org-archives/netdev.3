@@ -1,157 +1,112 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0291B1953A9;
-	Fri, 14 Mar 2025 22:25:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB93A17D2;
+	Fri, 14 Mar 2025 22:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741991149; cv=none; b=AnD/sUKq88AijqqAJbWoeMIcx3KKW/bUxQUwSjn09yXcNyQynq9Yv6qA1+fG1I8H6sPj8ZMYfguZ2tXFpAyCbx44Qx5hjpoVfzzNrBlShraBMYrlR7GlnBL8SjeXsEp6sgeac7yKhIwDVCEt2BGcQNTjc3MnU3WUx4BQ6ORhqkc=
+	t=1741991653; cv=none; b=umaV7OITYaHSJFnrb5fW88DZWxEWWdX23VXCcWhv/NOuxF5/ms/oQJymVZXR+muUQZRlDMF4RzAkRwiJL98L1wHbgXXHQWchWLHj2vHUI4Shm8iKUT2iWqp/Tq8+3kht1AQ71mIqUhI368MB/dLTtPm+EgToPQvCEZ/a01NGlm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741991149; c=relaxed/simple;
-	bh=ZVLdK11Lq3hOJ2AwZ/4yIqrekAVtkjZF3tElAiA+gIc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ka2+6SU9QbpdQVJQVNkl4Udon3uCCiOaqH+Z1iALNvnJiILFBZ9ZXG8tXsqrzNtl0JpGtlUTfKnZ4kxrPVmkfjfQ3xbtDZpIBNhQE0nSaKHF30L4UE43U6JJDkr86R0vX5IaG3wNwf7R3vGI87sDnQaKBGUmu5G5U0UetPHXPDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=0305XuJA; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1741991653; c=relaxed/simple;
+	bh=cxzm5zYY1l1bmlJvkobgWA6eYT2vP60f0sOLuMzfz3Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aj68CvqcW65+hOw82fO7YMGSB/2yNMg2OhlY7ajO8fr9P0hOcxe/xNuNaab99AU3DAL2I+kpivtixkF4a1txN/WIo2YKAxzytbqijubpeWPVJkPUHgWKrg27MSb4RMbFe7oVn+wc/H3UkqCDUmBXLqpS+wKIMK6th5X/+w2A7tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N76LKjBC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="0305XuJA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=lPaccfJ0sEBvFjPYyS8PLhimTq5kEa5pqJCwOZtsTeE=; b=0305XuJAFlMgsafcUGGQRfctCU
-	JdAoUkijrDOjSzQwqYtd9RcxWlj5Y9YLXBkmtaDZ1l3s/RQ64+yA3wQX4f+Zq5iBPQqb8ZdSG8xO+
-	WWmljz5V6MrKGxY7vHEI9iQO9bsYiy2f2amyKmrZAurAeIzyaCgVv2RLe7ly1hTyizB62imBvfLKD
-	BEWNlBDS6qyVnlY7GKB4eLnF7DtGuDWd/rC9TAd8dZkhGn3oxbsYkTncbLIT3jPpUec8j5/Ew3wUo
-	kZ8jAKbm+tqiptaY41cVEf9FS28l4G3rFBwGNOFRZewEfCVRJJySpiptptcwEwYVSoiVwZUiGy+9h
-	2WQQ5baw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41742)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1ttDT7-0000vY-0X;
-	Fri, 14 Mar 2025 22:25:29 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1ttDT0-0006x5-2r;
-	Fri, 14 Mar 2025 22:25:22 +0000
-Date: Fri, 14 Mar 2025 22:25:22 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Lee Jones <lee@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-	upstream@airoha.com
-Subject: Re: [net-next PATCH v12 07/13] net: mdio: regmap: add support for
- multiple valid addr
-Message-ID: <Z9Ss0qrxCcEbyJY7@shell.armlinux.org.uk>
-References: <20250309172717.9067-1-ansuelsmth@gmail.com>
- <20250309172717.9067-8-ansuelsmth@gmail.com>
- <Z83RsW1_bzoEWheo@shell.armlinux.org.uk>
- <67cdd3c9.df0a0220.1c827e.b244@mx.google.com>
- <0c6cb801-5592-4449-b776-a337161b3326@lunn.ch>
- <Z9SZRDykbTwvGW6S@shell.armlinux.org.uk>
- <67d49d64.050a0220.35694d.b7ab@mx.google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N76LKjBC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86015C4CEE9;
+	Fri, 14 Mar 2025 22:34:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741991653;
+	bh=cxzm5zYY1l1bmlJvkobgWA6eYT2vP60f0sOLuMzfz3Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=N76LKjBCyMduvUrbtCeEPqDsscXWs1R9nK/zj8bCDBOor1U0FwClA04kVBI+3xxT0
+	 bCPdF0M71MmpGPss64+jSxj0luB1Hk8wxbkfi1cyl8DWjBJE9ulUthibb9/07newUi
+	 InuE7pF+iaFH5Z9w8i1eRGdMj75Jjg9gcIKpWR6ydIqjMt1G3OUMloKcfqQC3XE3t3
+	 9FvH3qPi1wB1KhX8mDTrEHp27iCiAU2vfs4IU2qPN8FIo5cYPQtsedttMyG2Xvzks5
+	 8+ObQACokxuuTAeuobtWjEaGk44zzHO9ijIi/uLyZpSEUWIxYUBJob9zUmBl2y4QyY
+	 /ay9dX5bW1hFQ==
+Message-ID: <553dff52-f61a-4f16-af4c-72d2d2c6bc3d@kernel.org>
+Date: Fri, 14 Mar 2025 23:34:02 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <67d49d64.050a0220.35694d.b7ab@mx.google.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/8] Introduce fwctl subystem
+Content-Language: en-US
+To: Stanislav Fomichev <stfomichev@gmail.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ Saeed Mahameed <saeed@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+ Aron Silverton <aron.silverton@oracle.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Daniel Vetter <daniel.vetter@ffwll.ch>, Dave Jiang <dave.jiang@intel.com>,
+ Christoph Hellwig <hch@infradead.org>, Itay Avraham <itayavr@nvidia.com>,
+ Jiri Pirko <jiri@nvidia.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, Leonid Bloch <lbloch@nvidia.com>,
+ linux-cxl@vger.kernel.org, linux-rdma@vger.kernel.org,
+ netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+ "Nelson, Shannon" <shannon.nelson@amd.com>
+References: <20250304164203.38418211@kernel.org>
+ <20250305133254.GV133783@nvidia.com>
+ <mxw4ngjokr3vumdy5fp2wzxpocjkitputelmpaqo7ungxnhnxp@j4yn5tdz3ief>
+ <bcafcf60-47a8-4faf-bea3-19cf0cbc4e08@kernel.org>
+ <20250305182853.GO1955273@unreal> <Z8i2_9G86z14KbpB@x130>
+ <20250305232154.GB354511@nvidia.com>
+ <6af1429e-c36a-459c-9b35-6a9f55c3b2ac@kernel.org>
+ <20250311135921.GF7027@unreal>
+ <4c55e1ae-8cc1-463e-b81f-2bbae4ae4eed@kernel.org>
+ <Z9FjJAgdmWcepxkg@mini-arch>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <Z9FjJAgdmWcepxkg@mini-arch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 14, 2025 at 10:19:29PM +0100, Christian Marangi wrote:
-> On Fri, Mar 14, 2025 at 09:01:56PM +0000, Russell King (Oracle) wrote:
-> > I'd prefer we didn't bring that abomination back. The detail about how
-> > things are stored in regmap should be internal within regmap, and I
-> > think it would be better to have an API presented that takes sensible
-> > parameters, rather than something that's been encoded.
+On 3/12/25 11:34 AM, Stanislav Fomichev wrote:
+>> More specifically, I do not see netdev APIs ever recognizing RDMA
+>> concepts like domains and memory regions. For us, everything is relative
+>> to a domain and a region - e.g., whether a queue is created for a netdev
+>> device or an IB QP both use the same common internal APIs.  I would
+>> prefer not to use fwctl for something so basic.
 > 
-> Well problem is that regmap_write and regmap_read will take max 2 value
-> at the very end (reg and value) so it's really a matter of making the
-> encoding part internal but encoding it can't be skipped.
-> 
-> You are suggesting to introduce additional API like
-> 
-> mdio_regmap_write(regmap, phy, addr, val);
-> mdio_mmd_regmap_write(regmap, phy, mmd, addr, val);
-> 
-> And the encoding is done internally?
+> What specifically do you mean here by 'memory regions'? Ne
 
-Yes, because littering drivers with the details of the conversion is
-unreasonable.
+netdev queues and flows are a subset of RDMA operations, so I mean MRs
+as in:
 
-> My concern is the decoding part from the .write/read_bits regmap OPs.
-> I guess for that also some helper should be exposed (to keep the
-> decoding/encoding internal to the driver and not expose the
-> _abomination_)
+IBV_REG_MR(3)  Libibverbs Programmer's Manual
 
-Sadly, I don't think that's something we can get away from, but we
-should make it _easy_ for people to get it right.
 
-From what I remember from the days of shoe-horning C45 into the C22
-MDIO API, encoding and/or decoding addresses was buggy because people
-would use the wrong encoders and decoders.
+NAME
+       ibv_reg_mr, ibv_reg_mr_iova, ibv_reg_dmabuf_mr, ibv_dereg_mr -
+register or deregister a memory region (MR)
 
-For example, we had MDIO drivers using mdio_phy_id_is_c45() to test
-whether the access being requested was C45 - mdio_phy_id_is_c45() is
-for the _userspace_ MII API encoding (struct mii_ioctl_data), not the
-kernel space. Kernel space used:
+SYNOPSIS
+       #include <infiniband/verbs.h>
 
--#define MII_ADDR_C45 (1<<30)
--#define MII_DEVADDR_C45_SHIFT  16
--#define MII_REGADDR_C45_MASK   GENMASK(15, 0)
+       struct ibv_mr *ibv_reg_mr(struct ibv_pd *pd, void *addr,
+                                 size_t length, int access);
 
-to encode into the register number argument vs the userspace encoding
-into the phy_id member of struct mii_ioctl_data:
+       struct ibv_mr *ibv_reg_mr_iova(struct ibv_pd *pd, void *addr,
+                                      size_t length, uint64_t hca_va,
+                                      int access);
 
-#define MDIO_PHY_ID_C45                 0x8000
-#define MDIO_PHY_ID_PRTAD               0x03e0
-#define MDIO_PHY_ID_DEVAD               0x001f
+       struct ibv_mr *ibv_reg_dmabuf_mr(struct ibv_pd *pd, uint64_t offset,
+                                        size_t length, uint64_t iova,
+                                        int fd, int access);
 
-which is what the mdio_phy_id_*() accessors are using. The two
-approaches are incompatible, and using the userspace one in a MDIO
-driver wasn't going to work correctly - but people did it.
+       int ibv_dereg_mr(struct ibv_mr *mr);
 
-This is one of the reasons I hated the old MDIO API, and why we now
-have separate C22 and C45 interfaces in the driver code.
+DESCRIPTION
+       ibv_reg_mr() registers a memory region (MR) associated with the
+protection domain pd.  The MR's starting address is addr and its size is
+length.  The argument access describes the desired mem‐
+       ory protection attributes; it is either 0 or the bitwise OR of
+one or more of the following flags:
 
-This is exactly why I don't like reintroducing a new set of "massage
-the package, mmd and address into some single integer representation"
-and "decode a single integer into their respective parts" - we've
-been here before, it's lead to problems because driver authors can't
-grasp what the right approach is, and it results in bugs.
-
-Given the history here, my personal opinion would be... if regmap can't
-cope with MDIO devices having a three-part address without requiring
-callers to flatten it first, and then have various regmap drivers
-unflatten it, then regmap is unsuitable to be used with MDIO and ought
-not be used.
-
-So, this encoding/decoding is a problem that should be solved entirely
-within regmap, and not spread out into users of regmap and drivers
-behind regmap. Anything else is, IMHO, insane.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+...
