@@ -1,714 +1,739 @@
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618CD1FCCFA;
-	Sat, 15 Mar 2025 10:31:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC1818B499;
+	Sat, 15 Mar 2025 10:53:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742034672; cv=none; b=saZs+CXO2wGVca5jQctPHQ+hwaqjjt5Q+r4YVQlcd6AaV6IYSe2HiAgyx68JCXXAZ5YILMSHR+JvQSdw7RSVy86rfQZdzdth2I0t9I2pIzXgpBbGEygK+YRxInpetLaENbClo2eBYkKFtCWxvyuPdMByFHZv4RkcyK78GOIPThw=
+	t=1742035987; cv=none; b=D5K3Mv9eAW7kqcy9lSDiWDrkn6VOu+aMRtAY3srKJWsRsCqgvlE1iQQ+uIDxA4Hc14/xVO21k7PU5jtb/x2dxQzbgR3lq54uA4Srk/YPKYWkoQiwj8MigDD1Jt5e/u9Lc0hmez4EGSz3ybfDELo90z1gxsAJPn8+01VCJIVAA44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742034672; c=relaxed/simple;
-	bh=hq9s5srdFnc7QPUqhIHVUUHJEZhYYSCI546yWpXdPmc=;
-	h=Date:Message-Id:In-Reply-To:References:From:Subject:To:Cc; b=m+GY+1h4W8ibwpA/xQ2OslA+bPW/hCrTa0bZ740ufGGlIbi8l/i36Gkdp+/iGUr/pBJEsyCPac3rMpYA9/OAP+ZLNXGBKxI8dPgGsHW7FqW9w/gvhSl6cEXRwJoXV1O4LPmuUjXqL4uDiywL4B6cdCUyM9FK+mgjmR8Ps+U1aQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=Cic1ISm4; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+	s=arc-20240116; t=1742035987; c=relaxed/simple;
+	bh=BN4zYhXc4gjcqMDbT0T74F4r1a2ajeoKiyCwlCkShTo=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W8LD1M//BB3sB5u+sfLaEktpGhucJNGCHynxUaeDS3XZ97o3pSip4aPYi1D31qMXXAltRnyd44r7cUJJsL2bDaJi6C1kHC9vuWRAyEWXxpPt8Zb5zIkXp6GFbOiMcUBIeHiJEpAhn5eKF6GZ79ZApP6z0+2m+t2ovYhS1lZRjzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gw6LRjmA; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="Cic1ISm4"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=Cc:To:Subject:From:References:In-Reply-To:Message-Id:Date:
-	Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=12bTNIQ4qp+uVHm6mMioQ6QX+bgSJ+0cLz4U2S0lsro=; b=Cic1ISm4Pvy+d2++vo5igMEH+V
-	ek5WJT1y42q5jWRIL9IAUC6iglIufBqT0TcjUUMBeGDjuqqv+rzDqCCcYlSM9H9D7C/lVrQB1y9k7
-	qvv70LOsdtCpZ6gFBuKhITVJ5CoQ942MFFUq5YY6MdhfXqECm0y1gQ/J7x6gxCsEWrTz3p2nss4LM
-	WSiLZ995upA8kJfcxzt3xVE0QPGK/Y+GF6NyftoagTmUCC0gOUybXs8bTgpGylTLOxfkQy8XNjDTc
-	85BoW8qDmR5coG8Azf9Z8Cxfh+Wd0HJ8Hf8g1Vg+bJP0NaDRV9G9c5zL9urqhLTTReyReJsQ6CbuP
-	RCUWeOvw==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1ttOmx-006pCO-0h;
-	Sat, 15 Mar 2025 18:30:44 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 15 Mar 2025 18:30:43 +0800
-Date: Sat, 15 Mar 2025 18:30:43 +0800
-Message-Id: <d7bccafdf38259c2b820be79763f66bfaad1497e.1742034499.git.herbert@gondor.apana.org.au>
-In-Reply-To: <cover.1742034499.git.herbert@gondor.apana.org.au>
-References: <cover.1742034499.git.herbert@gondor.apana.org.au>
-From: Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [v5 PATCH 11/14] xfrm: ipcomp: Use crypto_acomp interface
-To: Linux Crypto Mailing List <linux-crypto@vger.kernel.org>
-Cc: Richard Weinberger <richard@nod.at>, Zhihao Cheng <chengzhihao1@huawei.com>, linux-mtd@lists.infradead.org, "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@ucw.cz>, linux-pm@vger.kernel.org, Steffen Klassert <steffen.klassert@secunet.com>, netdev@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gw6LRjmA"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43d0c18e84eso2251595e9.3;
+        Sat, 15 Mar 2025 03:53:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742035983; x=1742640783; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:subject:cc:to:from:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=cA52CDFt55Ctd+9FFuRNv/wOUL3w+SuZ4SAnv4Bn65c=;
+        b=Gw6LRjmAf7F1E0Hf2T9iarVHUdhoSGI/EnsBhbrO9G5+0b+OqPmmg0MUIdp6PHPNq+
+         hI4SpKjRd7bNYK8Y18GER2klkX1VEWZDNLSBU6Nuw+7iZni91rkDuaHzN22Vi6AGhIjJ
+         3nGb7+5EaIN+CkAop1yfll74+JNfwB3spNIBOGSkikJD6UuGWa+8SJiBUzk7PRMbw1mn
+         /R5/5TU1BDKFHgFp4iJmTK+irBw60jHehw6MJ07g2BSXJ7YKcZ3iWOlqgVU8uXZhy3Xy
+         SUYf2Es1VRP6VdMPGOK3DEQYI+eB9I+68Svs8nPnOKP/WZaVJ4aYns8YAluEslWb+ORd
+         tLiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742035983; x=1742640783;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:subject:cc:to:from:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cA52CDFt55Ctd+9FFuRNv/wOUL3w+SuZ4SAnv4Bn65c=;
+        b=QUm6Np+plX0wojKgN2WB0mA6MzONUzUfMMQLYsREnp17PbWMKAaOdJty2tewV6t3Wi
+         6PUW7kznb5GmMfuORmZX195+fvSVmbAovM1soalfmnpozmbTTOr57RnBsumTCv6vrDNJ
+         OE/q6CQUjnLqkjiG0M2GEhlovqStLpDgIUwGVclR0uNEacbdIjgeEzy2MfHfelKaj3+F
+         5FTI2MU3T0wP9wmaSv+lq48k7QJLCBOD8mt9iX0FHGhL9MkJBTubwiBirPHeUqjmtP+l
+         22RpHdYZ0eWrZyogxfL1Eda78lNrg1cRqZbYrwix8ttdD6ryI6XNBNXfU+8uKDAaapNm
+         vJZg==
+X-Forwarded-Encrypted: i=1; AJvYcCWgsDx9N+bhQnR/ABpt28kks8SdE6pNNSxlkQPc0LFrHz0WLU2sb2ACdbjeTdz8yOylcM4P7MKG@vger.kernel.org, AJvYcCXVPQGz/zvZiZ11RC9JT2xnakf/Y2APN6PZw/ojOEL4U6U1V4vNGdBWQ0TPDihPh3fWzoYnDNuhX/7q@vger.kernel.org, AJvYcCXZrd+iH+tvcZ8GGuZMKsWSGqvEVydlq42P5qjOBGncp/enu6gqRDZGmgzmpnFCoCeaD4Yz5Ge6QqZRtUH4@vger.kernel.org
+X-Gm-Message-State: AOJu0YykF4lM43eC3hPnkeXfCe7qPyxDHG01zMGJkHHyscCCuMwMNHb/
+	sAMeS9PsJNGk1hnEYdI0VmUHBkkIXKIt9gvVTxJ9k84qti2zUjXx
+X-Gm-Gg: ASbGncuoAVQfZYSxWj6ogARKSkwCNRp+uy8vDhObk/cVc6hB+++U8bG2AxZRVaW6lPt
+	bSaR3Rfw6irWk9E3GVscnfdcjJal9U594RXAh1oKfKO3u+7pGt/xbfU0QP5ga0eHQi1kBl4iarh
+	LTI8Qc/mnQuZu1GaGTkDDQqAc0TSBHUZf3fzFBkMyw0B61Hiuc4zdY+7o0U3AQEwA2J5HzuUwXK
+	OfSOcRYcjqKJty8K03QDn483E0FFqq+vQJgHUuB9qh2oTZWN/gitPV9zsPgalFkWPdO1T57IRqV
+	kpGvqB3xzyk4nmN1g7X+RNJm6AzxzbkYbYSNbjzWGU9+EGKfTFPAWJTV8zTr3mwraI2MGhhIGST
+	D
+X-Google-Smtp-Source: AGHT+IEr8beS2tlcDElX0jI/ofOzfq+dFurkUbet7hswYuF8zoOyMZ+cBvm5diiDA9LoZdT7hm6RLw==
+X-Received: by 2002:a05:600c:4447:b0:43c:eea9:f45a with SMTP id 5b1f17b1804b1-43d1ec646demr70979815e9.4.1742035983090;
+        Sat, 15 Mar 2025 03:53:03 -0700 (PDT)
+Received: from Ansuel-XPS. (93-34-90-129.ip49.fastwebnet.it. [93.34.90.129])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d2010e2d6sm45611095e9.38.2025.03.15.03.53.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Mar 2025 03:53:02 -0700 (PDT)
+Message-ID: <67d55c0e.7b0a0220.32becc.f4d0@mx.google.com>
+X-Google-Original-Message-ID: <Z9VcC_1_DF7OeWdc@Ansuel-XPS.>
+Date: Sat, 15 Mar 2025 11:52:59 +0100
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Lee Jones <lee@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	upstream@airoha.com
+Subject: Re: [net-next PATCH v12 09/13] mfd: an8855: Add support for Airoha
+ AN8855 Switch MFD
+References: <20250309172717.9067-1-ansuelsmth@gmail.com>
+ <20250309172717.9067-10-ansuelsmth@gmail.com>
+ <20250314113551.GK3890718@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250314113551.GK3890718@google.com>
 
-Replace the legacy comperssion interface with the new acomp
-interface.  This is the first user to make full user of the
-asynchronous nature of acomp by plugging into the existing xfrm
-resume interface.
+On Fri, Mar 14, 2025 at 11:35:51AM +0000, Lee Jones wrote:
+> On Sun, 09 Mar 2025, Christian Marangi wrote:
+> 
+> > Add support for Airoha AN8855 Switch MFD that provide support for a DSA
+> 
+> Drop all references to MFD.
+> 
+> It doesn't exist.  It is a figment of your (and my) imagination.
+> 
+> > switch and a NVMEM provider. Also provide support for a virtual MDIO
+> > passthrough as the PHYs address for the switch are shared with the switch
+> > address.
+> > 
+> > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> > ---
+> >  MAINTAINERS                 |   1 +
+> >  drivers/mfd/Kconfig         |  10 +
+> >  drivers/mfd/Makefile        |   1 +
+> >  drivers/mfd/airoha-an8855.c | 445 ++++++++++++++++++++++++++++++++++++
+> >  4 files changed, 457 insertions(+)
+> >  create mode 100644 drivers/mfd/airoha-an8855.c
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index b7075425c94e..5844addbda2b 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -730,6 +730,7 @@ F:	Documentation/devicetree/bindings/net/airoha,an8855-mdio.yaml
+> >  F:	Documentation/devicetree/bindings/net/airoha,an8855-phy.yaml
+> >  F:	Documentation/devicetree/bindings/net/dsa/airoha,an8855-switch.yaml
+> >  F:	Documentation/devicetree/bindings/nvmem/airoha,an8855-efuse.yaml
+> > +F:	drivers/mfd/airoha-an8855.c
+> >  
+> >  AIROHA ETHERNET DRIVER
+> >  M:	Lorenzo Bianconi <lorenzo@kernel.org>
+> > diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> > index 6b0682af6e32..1b5abe5e2694 100644
+> > --- a/drivers/mfd/Kconfig
+> > +++ b/drivers/mfd/Kconfig
+> > @@ -53,6 +53,16 @@ config MFD_ALTERA_SYSMGR
+> >  	  using regmap_mmio accesses for ARM32 parts and SMC calls to
+> >  	  EL3 for ARM64 parts.
+> >  
+> > +config MFD_AIROHA_AN8855
+> 
+> Should this be EN?
+>
 
-As a result of SG support by acomp, the linear scratch buffer
-in ipcomp can be removed.
+In official internal documentation this is referenced with AN8855...
 
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
----
- include/net/ipcomp.h   |  13 +-
- net/xfrm/xfrm_algo.c   |   7 +-
- net/xfrm/xfrm_ipcomp.c | 477 ++++++++++++++++++++---------------------
- 3 files changed, 236 insertions(+), 261 deletions(-)
+EN stands for EcoNet, Airoha then brought it so there currently a mix of
+name with old driver using EN and new one AN. This switch is new enough
+to use AN.
 
-diff --git a/include/net/ipcomp.h b/include/net/ipcomp.h
-index 8660a2a6d1fc..51401f01e2a5 100644
---- a/include/net/ipcomp.h
-+++ b/include/net/ipcomp.h
-@@ -3,20 +3,9 @@
- #define _NET_IPCOMP_H
- 
- #include <linux/skbuff.h>
--#include <linux/types.h>
--
--#define IPCOMP_SCRATCH_SIZE     65400
--
--struct crypto_comp;
--struct ip_comp_hdr;
--
--struct ipcomp_data {
--	u16 threshold;
--	struct crypto_comp * __percpu *tfms;
--};
- 
- struct ip_comp_hdr;
--struct sk_buff;
-+struct netlink_ext_ack;
- struct xfrm_state;
- 
- int ipcomp_input(struct xfrm_state *x, struct sk_buff *skb);
-diff --git a/net/xfrm/xfrm_algo.c b/net/xfrm/xfrm_algo.c
-index e6da7e8495c9..749011e031c0 100644
---- a/net/xfrm/xfrm_algo.c
-+++ b/net/xfrm/xfrm_algo.c
-@@ -5,13 +5,13 @@
-  * Copyright (c) 2002 James Morris <jmorris@intercode.com.au>
-  */
- 
-+#include <crypto/acompress.h>
- #include <crypto/aead.h>
- #include <crypto/hash.h>
- #include <crypto/skcipher.h>
- #include <linux/module.h>
- #include <linux/kernel.h>
- #include <linux/pfkeyv2.h>
--#include <linux/crypto.h>
- #include <linux/scatterlist.h>
- #include <net/xfrm.h>
- #if IS_ENABLED(CONFIG_INET_ESP) || IS_ENABLED(CONFIG_INET6_ESP)
-@@ -669,7 +669,7 @@ static const struct xfrm_algo_list xfrm_ealg_list = {
- };
- 
- static const struct xfrm_algo_list xfrm_calg_list = {
--	.find = crypto_has_comp,
-+	.find = crypto_has_acomp,
- 	.algs = calg_list,
- 	.entries = ARRAY_SIZE(calg_list),
- };
-@@ -828,8 +828,7 @@ void xfrm_probe_algs(void)
- 	}
- 
- 	for (i = 0; i < calg_entries(); i++) {
--		status = crypto_has_comp(calg_list[i].name, 0,
--					 CRYPTO_ALG_ASYNC);
-+		status = crypto_has_acomp(calg_list[i].name, 0, 0);
- 		if (calg_list[i].available != status)
- 			calg_list[i].available = status;
- 	}
-diff --git a/net/xfrm/xfrm_ipcomp.c b/net/xfrm/xfrm_ipcomp.c
-index 43eae94e4b0e..a5246227951f 100644
---- a/net/xfrm/xfrm_ipcomp.c
-+++ b/net/xfrm/xfrm_ipcomp.c
-@@ -3,7 +3,7 @@
-  * IP Payload Compression Protocol (IPComp) - RFC3173.
-  *
-  * Copyright (c) 2003 James Morris <jmorris@intercode.com.au>
-- * Copyright (c) 2003-2008 Herbert Xu <herbert@gondor.apana.org.au>
-+ * Copyright (c) 2003-2025 Herbert Xu <herbert@gondor.apana.org.au>
-  *
-  * Todo:
-  *   - Tunable compression parameters.
-@@ -11,169 +11,240 @@
-  *   - Adaptive compression.
-  */
- 
--#include <linux/crypto.h>
-+#include <crypto/acompress.h>
- #include <linux/err.h>
--#include <linux/list.h>
- #include <linux/module.h>
--#include <linux/mutex.h>
--#include <linux/percpu.h>
-+#include <linux/skbuff_ref.h>
- #include <linux/slab.h>
--#include <linux/smp.h>
--#include <linux/vmalloc.h>
--#include <net/ip.h>
- #include <net/ipcomp.h>
- #include <net/xfrm.h>
- 
--struct ipcomp_tfms {
--	struct list_head list;
--	struct crypto_comp * __percpu *tfms;
--	int users;
-+#define IPCOMP_SCRATCH_SIZE 65400
-+
-+struct ipcomp_skb_cb {
-+	struct xfrm_skb_cb xfrm;
-+	struct acomp_req *req;
- };
- 
--static DEFINE_MUTEX(ipcomp_resource_mutex);
--static void * __percpu *ipcomp_scratches;
--static int ipcomp_scratch_users;
--static LIST_HEAD(ipcomp_tfms_list);
-+struct ipcomp_data {
-+	u16 threshold;
-+	struct crypto_acomp *tfm;
-+};
- 
--static int ipcomp_decompress(struct xfrm_state *x, struct sk_buff *skb)
-+struct ipcomp_req_extra {
-+	struct xfrm_state *x;
-+	struct scatterlist sg[];
-+};
-+
-+static inline struct ipcomp_skb_cb *ipcomp_cb(struct sk_buff *skb)
- {
--	struct ipcomp_data *ipcd = x->data;
--	const int plen = skb->len;
--	int dlen = IPCOMP_SCRATCH_SIZE;
--	const u8 *start = skb->data;
--	u8 *scratch = *this_cpu_ptr(ipcomp_scratches);
--	struct crypto_comp *tfm = *this_cpu_ptr(ipcd->tfms);
--	int err = crypto_comp_decompress(tfm, start, plen, scratch, &dlen);
--	int len;
-+	struct ipcomp_skb_cb *cb = (void *)skb->cb;
- 
--	if (err)
--		return err;
-+	BUILD_BUG_ON(sizeof(*cb) > sizeof(skb->cb));
-+	return cb;
-+}
- 
--	if (dlen < (plen + sizeof(struct ip_comp_hdr)))
--		return -EINVAL;
-+static int ipcomp_post_acomp(struct sk_buff *skb, int err, int hlen)
-+{
-+	struct acomp_req *req = ipcomp_cb(skb)->req;
-+	struct ipcomp_req_extra *extra;
-+	const int plen = skb->data_len;
-+	struct scatterlist *dsg;
-+	int len, dlen;
- 
--	len = dlen - plen;
--	if (len > skb_tailroom(skb))
--		len = skb_tailroom(skb);
-+	if (unlikely(err))
-+		goto out_free_req;
- 
--	__skb_put(skb, len);
-+	extra = acomp_request_extra(req);
-+	dsg = extra->sg;
-+	dlen = req->dlen;
- 
--	len += plen;
--	skb_copy_to_linear_data(skb, scratch, len);
-+	pskb_trim_unique(skb, 0);
-+	__skb_put(skb, hlen);
- 
--	while ((scratch += len, dlen -= len) > 0) {
-+	/* Only update truesize on input. */
-+	if (!hlen)
-+		skb->truesize += dlen - plen;
-+	skb->data_len = dlen;
-+	skb->len += dlen;
-+
-+	do {
- 		skb_frag_t *frag;
- 		struct page *page;
- 
--		if (WARN_ON(skb_shinfo(skb)->nr_frags >= MAX_SKB_FRAGS))
--			return -EMSGSIZE;
--
- 		frag = skb_shinfo(skb)->frags + skb_shinfo(skb)->nr_frags;
--		page = alloc_page(GFP_ATOMIC);
--
--		if (!page)
--			return -ENOMEM;
-+		page = sg_page(dsg);
-+		dsg = sg_next(dsg);
- 
- 		len = PAGE_SIZE;
- 		if (dlen < len)
- 			len = dlen;
- 
- 		skb_frag_fill_page_desc(frag, page, 0, len);
--		memcpy(skb_frag_address(frag), scratch, len);
--
--		skb->truesize += len;
--		skb->data_len += len;
--		skb->len += len;
- 
- 		skb_shinfo(skb)->nr_frags++;
--	}
-+	} while ((dlen -= len));
- 
--	return 0;
-+	for (; dsg; dsg = sg_next(dsg))
-+		__free_page(sg_page(dsg));
-+
-+out_free_req:
-+	acomp_request_free(req);
-+	return err;
-+}
-+
-+static int ipcomp_input_done2(struct sk_buff *skb, int err)
-+{
-+	struct ip_comp_hdr *ipch = ip_comp_hdr(skb);
-+	const int plen = skb->len;
-+
-+	skb_reset_transport_header(skb);
-+
-+	return ipcomp_post_acomp(skb, err, 0) ?:
-+	       skb->len < (plen + sizeof(ip_comp_hdr)) ? -EINVAL :
-+	       ipch->nexthdr;
-+}
-+
-+static void ipcomp_input_done(void *data, int err)
-+{
-+	struct sk_buff *skb = data;
-+
-+	xfrm_input_resume(skb, ipcomp_input_done2(skb, err));
-+}
-+
-+static struct acomp_req *ipcomp_setup_req(struct xfrm_state *x,
-+					  struct sk_buff *skb, int minhead,
-+					  int dlen)
-+{
-+	const int dnfrags = min(MAX_SKB_FRAGS, 16);
-+	struct ipcomp_data *ipcd = x->data;
-+	struct ipcomp_req_extra *extra;
-+	struct scatterlist *sg, *dsg;
-+	const int plen = skb->len;
-+	struct crypto_acomp *tfm;
-+	struct acomp_req *req;
-+	int nfrags;
-+	int total;
-+	int err;
-+	int i;
-+
-+	ipcomp_cb(skb)->req = NULL;
-+
-+	do {
-+		struct sk_buff *trailer;
-+
-+		if (skb->len > PAGE_SIZE) {
-+			if (skb_linearize_cow(skb))
-+				return ERR_PTR(-ENOMEM);
-+			nfrags = 1;
-+			break;
-+		}
-+
-+		if (!skb_cloned(skb) && skb_headlen(skb) >= minhead) {
-+			if (!skb_is_nonlinear(skb)) {
-+				nfrags = 1;
-+				break;
-+			} else if (!skb_has_frag_list(skb)) {
-+				nfrags = skb_shinfo(skb)->nr_frags;
-+				nfrags++;
-+				break;
-+			}
-+		}
-+
-+		nfrags = skb_cow_data(skb, skb_headlen(skb) < minhead ?
-+					   minhead - skb_headlen(skb) : 0,
-+				      &trailer);
-+		if (nfrags < 0)
-+			return ERR_PTR(nfrags);
-+	} while (0);
-+
-+	tfm = ipcd->tfm;
-+	req = acomp_request_alloc_extra(
-+		tfm, sizeof(*extra) + sizeof(*sg) * (nfrags + dnfrags),
-+		GFP_ATOMIC);
-+	ipcomp_cb(skb)->req = req;
-+	if (!req)
-+		return ERR_PTR(-ENOMEM);
-+
-+	extra = acomp_request_extra(req);
-+	extra->x = x;
-+
-+	dsg = extra->sg;
-+	sg = dsg + dnfrags;
-+	sg_init_table(sg, nfrags);
-+	err = skb_to_sgvec(skb, sg, 0, plen);
-+	if (unlikely(err < 0))
-+		return ERR_PTR(err);
-+
-+	sg_init_table(dsg, dnfrags);
-+	total = 0;
-+	for (i = 0; i < dnfrags && total < dlen; i++) {
-+		struct page *page;
-+
-+		page = alloc_page(GFP_ATOMIC);
-+		if (!page)
-+			break;
-+		sg_set_page(dsg + i, page, PAGE_SIZE, 0);
-+		total += PAGE_SIZE;
-+	}
-+	if (!i)
-+		return ERR_PTR(-ENOMEM);
-+	sg_mark_end(dsg + i - 1);
-+
-+	acomp_request_set_params(req, sg, dsg, plen, dlen);
-+
-+	return req;
-+}
-+
-+static int ipcomp_decompress(struct xfrm_state *x, struct sk_buff *skb)
-+{
-+	struct acomp_req *req;
-+	int err;
-+
-+	req = ipcomp_setup_req(x, skb, 0, IPCOMP_SCRATCH_SIZE);
-+	err = PTR_ERR(req);
-+	if (IS_ERR(req))
-+		goto out;
-+
-+	acomp_request_set_callback(req, 0, ipcomp_input_done, skb);
-+	err = crypto_acomp_decompress(req);
-+	if (err == -EINPROGRESS)
-+		return err;
-+
-+out:
-+	return ipcomp_input_done2(skb, err);
- }
- 
- int ipcomp_input(struct xfrm_state *x, struct sk_buff *skb)
- {
--	int nexthdr;
--	int err = -ENOMEM;
--	struct ip_comp_hdr *ipch;
-+	struct ip_comp_hdr *ipch __maybe_unused;
- 
- 	if (!pskb_may_pull(skb, sizeof(*ipch)))
- 		return -EINVAL;
- 
--	if (skb_linearize_cow(skb))
--		goto out;
--
- 	skb->ip_summed = CHECKSUM_NONE;
- 
- 	/* Remove ipcomp header and decompress original payload */
--	ipch = (void *)skb->data;
--	nexthdr = ipch->nexthdr;
--
--	skb->transport_header = skb->network_header + sizeof(*ipch);
- 	__skb_pull(skb, sizeof(*ipch));
--	err = ipcomp_decompress(x, skb);
--	if (err)
--		goto out;
- 
--	err = nexthdr;
--
--out:
--	return err;
-+	return ipcomp_decompress(x, skb);
- }
- EXPORT_SYMBOL_GPL(ipcomp_input);
- 
--static int ipcomp_compress(struct xfrm_state *x, struct sk_buff *skb)
-+static int ipcomp_output_push(struct sk_buff *skb)
- {
--	struct ipcomp_data *ipcd = x->data;
--	const int plen = skb->len;
--	int dlen = IPCOMP_SCRATCH_SIZE;
--	u8 *start = skb->data;
--	struct crypto_comp *tfm;
--	u8 *scratch;
--	int err;
--
--	local_bh_disable();
--	scratch = *this_cpu_ptr(ipcomp_scratches);
--	tfm = *this_cpu_ptr(ipcd->tfms);
--	err = crypto_comp_compress(tfm, start, plen, scratch, &dlen);
--	if (err)
--		goto out;
--
--	if ((dlen + sizeof(struct ip_comp_hdr)) >= plen) {
--		err = -EMSGSIZE;
--		goto out;
--	}
--
--	memcpy(start + sizeof(struct ip_comp_hdr), scratch, dlen);
--	local_bh_enable();
--
--	pskb_trim(skb, dlen + sizeof(struct ip_comp_hdr));
-+	skb_push(skb, -skb_network_offset(skb));
- 	return 0;
--
--out:
--	local_bh_enable();
--	return err;
- }
- 
--int ipcomp_output(struct xfrm_state *x, struct sk_buff *skb)
-+static int ipcomp_output_done2(struct xfrm_state *x, struct sk_buff *skb,
-+			       int err)
- {
--	int err;
- 	struct ip_comp_hdr *ipch;
--	struct ipcomp_data *ipcd = x->data;
- 
--	if (skb->len < ipcd->threshold) {
--		/* Don't bother compressing */
-+	err = ipcomp_post_acomp(skb, err, sizeof(*ipch));
-+	if (err)
- 		goto out_ok;
--	}
--
--	if (skb_linearize_cow(skb))
--		goto out_ok;
--
--	err = ipcomp_compress(x, skb);
--
--	if (err) {
--		goto out_ok;
--	}
- 
- 	/* Install ipcomp header, convert into ipcomp datagram. */
- 	ipch = ip_comp_hdr(skb);
-@@ -182,135 +253,59 @@ int ipcomp_output(struct xfrm_state *x, struct sk_buff *skb)
- 	ipch->cpi = htons((u16 )ntohl(x->id.spi));
- 	*skb_mac_header(skb) = IPPROTO_COMP;
- out_ok:
--	skb_push(skb, -skb_network_offset(skb));
--	return 0;
-+	return ipcomp_output_push(skb);
-+}
-+
-+static void ipcomp_output_done(void *data, int err)
-+{
-+	struct ipcomp_req_extra *extra;
-+	struct sk_buff *skb = data;
-+	struct acomp_req *req;
-+
-+	req = ipcomp_cb(skb)->req;
-+	extra = acomp_request_extra(req);
-+
-+	xfrm_output_resume(skb_to_full_sk(skb), skb,
-+			   ipcomp_output_done2(extra->x, skb, err));
-+}
-+
-+static int ipcomp_compress(struct xfrm_state *x, struct sk_buff *skb)
-+{
-+	struct ip_comp_hdr *ipch __maybe_unused;
-+	struct acomp_req *req;
-+	int err;
-+
-+	req = ipcomp_setup_req(x, skb, sizeof(*ipch),
-+			       skb->len - sizeof(*ipch));
-+	err = PTR_ERR(req);
-+	if (IS_ERR(req))
-+		goto out;
-+
-+	acomp_request_set_callback(req, 0, ipcomp_output_done, skb);
-+	err = crypto_acomp_compress(req);
-+	if (err == -EINPROGRESS)
-+		return err;
-+
-+out:
-+	return ipcomp_output_done2(x, skb, err);
-+}
-+
-+int ipcomp_output(struct xfrm_state *x, struct sk_buff *skb)
-+{
-+	struct ipcomp_data *ipcd = x->data;
-+
-+	if (skb->len < ipcd->threshold) {
-+		/* Don't bother compressing */
-+		return ipcomp_output_push(skb);
-+	}
-+
-+	return ipcomp_compress(x, skb);
- }
- EXPORT_SYMBOL_GPL(ipcomp_output);
- 
--static void ipcomp_free_scratches(void)
--{
--	int i;
--	void * __percpu *scratches;
--
--	if (--ipcomp_scratch_users)
--		return;
--
--	scratches = ipcomp_scratches;
--	if (!scratches)
--		return;
--
--	for_each_possible_cpu(i)
--		vfree(*per_cpu_ptr(scratches, i));
--
--	free_percpu(scratches);
--	ipcomp_scratches = NULL;
--}
--
--static void * __percpu *ipcomp_alloc_scratches(void)
--{
--	void * __percpu *scratches;
--	int i;
--
--	if (ipcomp_scratch_users++)
--		return ipcomp_scratches;
--
--	scratches = alloc_percpu(void *);
--	if (!scratches)
--		return NULL;
--
--	ipcomp_scratches = scratches;
--
--	for_each_possible_cpu(i) {
--		void *scratch;
--
--		scratch = vmalloc_node(IPCOMP_SCRATCH_SIZE, cpu_to_node(i));
--		if (!scratch)
--			return NULL;
--		*per_cpu_ptr(scratches, i) = scratch;
--	}
--
--	return scratches;
--}
--
--static void ipcomp_free_tfms(struct crypto_comp * __percpu *tfms)
--{
--	struct ipcomp_tfms *pos;
--	int cpu;
--
--	list_for_each_entry(pos, &ipcomp_tfms_list, list) {
--		if (pos->tfms == tfms)
--			break;
--	}
--
--	WARN_ON(list_entry_is_head(pos, &ipcomp_tfms_list, list));
--
--	if (--pos->users)
--		return;
--
--	list_del(&pos->list);
--	kfree(pos);
--
--	if (!tfms)
--		return;
--
--	for_each_possible_cpu(cpu) {
--		struct crypto_comp *tfm = *per_cpu_ptr(tfms, cpu);
--		crypto_free_comp(tfm);
--	}
--	free_percpu(tfms);
--}
--
--static struct crypto_comp * __percpu *ipcomp_alloc_tfms(const char *alg_name)
--{
--	struct ipcomp_tfms *pos;
--	struct crypto_comp * __percpu *tfms;
--	int cpu;
--
--
--	list_for_each_entry(pos, &ipcomp_tfms_list, list) {
--		struct crypto_comp *tfm;
--
--		/* This can be any valid CPU ID so we don't need locking. */
--		tfm = this_cpu_read(*pos->tfms);
--
--		if (!strcmp(crypto_comp_name(tfm), alg_name)) {
--			pos->users++;
--			return pos->tfms;
--		}
--	}
--
--	pos = kmalloc(sizeof(*pos), GFP_KERNEL);
--	if (!pos)
--		return NULL;
--
--	pos->users = 1;
--	INIT_LIST_HEAD(&pos->list);
--	list_add(&pos->list, &ipcomp_tfms_list);
--
--	pos->tfms = tfms = alloc_percpu(struct crypto_comp *);
--	if (!tfms)
--		goto error;
--
--	for_each_possible_cpu(cpu) {
--		struct crypto_comp *tfm = crypto_alloc_comp(alg_name, 0,
--							    CRYPTO_ALG_ASYNC);
--		if (IS_ERR(tfm))
--			goto error;
--		*per_cpu_ptr(tfms, cpu) = tfm;
--	}
--
--	return tfms;
--
--error:
--	ipcomp_free_tfms(tfms);
--	return NULL;
--}
--
- static void ipcomp_free_data(struct ipcomp_data *ipcd)
- {
--	if (ipcd->tfms)
--		ipcomp_free_tfms(ipcd->tfms);
--	ipcomp_free_scratches();
-+	crypto_free_acomp(ipcd->tfm);
- }
- 
- void ipcomp_destroy(struct xfrm_state *x)
-@@ -319,9 +314,7 @@ void ipcomp_destroy(struct xfrm_state *x)
- 	if (!ipcd)
- 		return;
- 	xfrm_state_delete_tunnel(x);
--	mutex_lock(&ipcomp_resource_mutex);
- 	ipcomp_free_data(ipcd);
--	mutex_unlock(&ipcomp_resource_mutex);
- 	kfree(ipcd);
- }
- EXPORT_SYMBOL_GPL(ipcomp_destroy);
-@@ -348,15 +341,10 @@ int ipcomp_init_state(struct xfrm_state *x, struct netlink_ext_ack *extack)
- 	if (!ipcd)
- 		goto out;
- 
--	mutex_lock(&ipcomp_resource_mutex);
--	if (!ipcomp_alloc_scratches())
-+	ipcd->tfm = crypto_alloc_acomp(x->calg->alg_name, 0, 0);
-+	if (IS_ERR(ipcd->tfm))
- 		goto error;
- 
--	ipcd->tfms = ipcomp_alloc_tfms(x->calg->alg_name);
--	if (!ipcd->tfms)
--		goto error;
--	mutex_unlock(&ipcomp_resource_mutex);
--
- 	calg_desc = xfrm_calg_get_byname(x->calg->alg_name, 0);
- 	BUG_ON(!calg_desc);
- 	ipcd->threshold = calg_desc->uinfo.comp.threshold;
-@@ -367,7 +355,6 @@ int ipcomp_init_state(struct xfrm_state *x, struct netlink_ext_ack *extack)
- 
- error:
- 	ipcomp_free_data(ipcd);
--	mutex_unlock(&ipcomp_resource_mutex);
- 	kfree(ipcd);
- 	goto out;
- }
+> 
+> > +	tristate "Airoha AN8855 Switch MFD"
+> > +	select MFD_CORE
+> > +	select MDIO_DEVICE
+> > +	depends on NETDEVICES && OF
+> > +	help
+> > +	  Support for the Airoha AN8855 Switch MFD. This is a SoC Switch
+> 
+> Nit: "an SoC".
+> 
+> What kind of switch?
+> 
+> > +	  that provides various peripherals. Currently it provides a
+> 
+> Which other peripherals?
+> 
+> > +	  DSA switch and a NVMEM provider.
+> > +
+> >  config MFD_ACT8945A
+> >  	tristate "Active-semi ACT8945A"
+> >  	select MFD_CORE
+> > diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+> > index 9220eaf7cf12..37677f65a981 100644
+> > --- a/drivers/mfd/Makefile
+> > +++ b/drivers/mfd/Makefile
+> > @@ -8,6 +8,7 @@ obj-$(CONFIG_MFD_88PM860X)	+= 88pm860x.o
+> >  obj-$(CONFIG_MFD_88PM800)	+= 88pm800.o 88pm80x.o
+> >  obj-$(CONFIG_MFD_88PM805)	+= 88pm805.o 88pm80x.o
+> >  obj-$(CONFIG_MFD_88PM886_PMIC)	+= 88pm886.o
+> > +obj-$(CONFIG_MFD_AIROHA_AN8855)	+= airoha-an8855.o
+> >  obj-$(CONFIG_MFD_ACT8945A)	+= act8945a.o
+> >  obj-$(CONFIG_MFD_SM501)		+= sm501.o
+> >  obj-$(CONFIG_ARCH_BCM2835)	+= bcm2835-pm.o
+> > diff --git a/drivers/mfd/airoha-an8855.c b/drivers/mfd/airoha-an8855.c
+> > new file mode 100644
+> > index 000000000000..0a6440bd4118
+> > --- /dev/null
+> > +++ b/drivers/mfd/airoha-an8855.c
+> > @@ -0,0 +1,445 @@
+> > +// SPDX-License-Identifier: GPL-2.0+
+> > +/*
+> > + * MFD driver for Airoha AN8855 Switch
+> 
+> No such thing as an MFD driver.
+> 
+> Core is sometimes used in place of a better name.
+> 
+> > + */
+> > +
+> > +#include <linux/bitfield.h>
+> > +#include <linux/gpio/consumer.h>
+> > +#include <linux/mfd/core.h>
+> > +#include <linux/mdio.h>
+> > +#include <linux/mdio/mdio-regmap.h>
+> > +#include <linux/module.h>
+> > +#include <linux/phy.h>
+> > +#include <linux/regmap.h>
+> > +
+> > +/* Register for hw trap status */
+> 
+> Ironically, this is probably the most readable name, yet it is the only
+> one graced with a comment.  Also 'hw' is an abbreviation, so it should be
+> HW or H/W or better yet hardware.
+> 
+> > +#define AN8855_HWTRAP			0x1000009c
+> > +
+> > +#define AN8855_CREV			0x10005000
+> 
+> Chip?
+> 
+> > +#define   AN8855_ID			0x8855
+> 
+> What kid of ID?  Chip, revision, model, serial?
+> 
+> > +#define AN8855_RG_GPHY_AFE_PWD		0x1028c840
+> 
+> No idea!
+> 
+
+There magic name are the 1:1 map of the register on the internal
+documentation. Honestly it would put more harm than good to rename these
+register to a more symbolic name since it would make it even harder to
+find them.
+
+> > +/* MII Registers */
+> > +#define AN8855_PHY_SELECT_PAGE		0x1f
+> > +#define   AN8855_PHY_PAGE		GENMASK(2, 0)
+> > +#define   AN8855_PHY_PAGE_STANDARD	FIELD_PREP_CONST(AN8855_PHY_PAGE, 0x0)
+> > +#define   AN8855_PHY_PAGE_EXTENDED_1	FIELD_PREP_CONST(AN8855_PHY_PAGE, 0x1)
+> > +#define   AN8855_PHY_PAGE_EXTENDED_4	FIELD_PREP_CONST(AN8855_PHY_PAGE, 0x4)
+> > +
+> > +/* MII Registers Page 4 */
+> > +#define AN8855_PBUS_MODE		0x10
+> > +#define   AN8855_PBUS_MODE_ADDR_FIXED	0x0
+> > +#define AN8855_PBUS_MODE_ADDR_INCR	BIT(15)
+> > +#define AN8855_PBUS_WR_ADDR_HIGH	0x11
+> > +#define AN8855_PBUS_WR_ADDR_LOW		0x12
+> > +#define AN8855_PBUS_WR_DATA_HIGH	0x13
+> > +#define AN8855_PBUS_WR_DATA_LOW		0x14
+> > +#define AN8855_PBUS_RD_ADDR_HIGH	0x15
+> > +#define AN8855_PBUS_RD_ADDR_LOW		0x16
+> > +#define AN8855_PBUS_RD_DATA_HIGH	0x17
+> > +#define AN8855_PBUS_RD_DATA_LOW		0x18
+> > +
+> > +struct an8855_mfd_priv {
+> 
+> It's not an "mfd".
+> 
+> > +	struct mii_bus *bus;
+> > +
+> > +	unsigned int switch_addr;
+> > +	u16 current_page;
+> > +};
+> > +
+> > +static const struct mfd_cell an8855_mfd_devs[] = {
+> 
+> "_child_" or "_sub_" or drop it entirely.
+> 
+> > +	{
+> > +		.name = "an8855-efuse",
+> > +		.of_compatible = "airoha,an8855-efuse",
+> > +	}, {
+> > +		.name = "an8855-switch",
+> > +		.of_compatible = "airoha,an8855-switch",
+> > +	}, {
+> > +		.name = "an8855-mdio",
+> > +		.of_compatible = "airoha,an8855-mdio",
+> > +	}
+> > +};
+> > +
+> > +static int an8855_mii_set_page(struct an8855_mfd_priv *priv, u8 phy_id,
+> > +			       u8 page) __must_hold(&priv->bus->mdio_lock)
+> > +{
+> > +	struct mii_bus *bus = priv->bus;
+> > +	int ret;
+> > +
+> > +	ret = __mdiobus_write(bus, phy_id, AN8855_PHY_SELECT_PAGE, page);
+> 
+> Calling functions with '__' is a red flag.
+> 
+
+As already explained it's an unlucky name, __ was used at times
+probably to stress that this is an internal variant with no lock and
+should be used ONLY when actually intended (this is the case as the
+function enforce locking with the __must_hold)
+
+> > +	if (ret < 0)
+> > +		dev_err_ratelimited(&bus->dev,
+> > +				    "failed to set an8855 mii page\n");
+> 
+> Use 100-chars if it avoids these kind of line breaks.
+> 
+> > +	/* Cache current page if next mii read/write is for switch */
+> 
+> MII here?
+> 
+> "this switch"?
+> 
+> I don't see any checks here - how do we know if it is for switch or not?
+> 
+
+Check is done in an855_regmap_phy_reset_page.
+
+> > +	priv->current_page = page;
+> > +	return ret < 0 ? ret : 0;
+> 
+> You already check for 'ret < 0' at the call sites, so this little dance
+> is superfluous.
+> 
+> > +}
+> > +
+> > +static int an8855_mii_read32(struct mii_bus *bus, u8 phy_id, u32 reg,
+> > +			     u32 *val) __must_hold(&bus->mdio_lock)
+> > +{
+> > +	int lo, hi, ret;
+> > +
+> > +	ret = __mdiobus_write(bus, phy_id, AN8855_PBUS_MODE,
+> > +			      AN8855_PBUS_MODE_ADDR_FIXED);
+> 
+> 100-chars.
+> 
+> > +	if (ret < 0)
+> > +		goto err;
+> > +
+> > +	ret = __mdiobus_write(bus, phy_id, AN8855_PBUS_RD_ADDR_HIGH,
+> > +			      upper_16_bits(reg));
+> > +	if (ret < 0)
+> > +		goto err;
+> 
+> '\n'
+> 
+
+The idea for these operation without extra line were to pack the upper
+and lower part to form the full 32bit value. But ok will split.
+
+> > +	ret = __mdiobus_write(bus, phy_id, AN8855_PBUS_RD_ADDR_LOW,
+> > +			      lower_16_bits(reg));
+> > +	if (ret < 0)
+> > +		goto err;
+> > +
+> > +	hi = __mdiobus_read(bus, phy_id, AN8855_PBUS_RD_DATA_HIGH);
+> > +	if (hi < 0) {
+> > +		ret = hi;
+> > +		goto err;
+> > +	}
+> 
+> '\n'
+> 
+> > +	lo = __mdiobus_read(bus, phy_id, AN8855_PBUS_RD_DATA_LOW);
+> > +	if (lo < 0) {
+> > +		ret = lo;
+> > +		goto err;
+> > +	}
+> > +
+> > +	*val = ((u16)hi << 16) | ((u16)lo & 0xffff);
+> > +
+> > +	return 0;
+> > +err:
+> > +	dev_err_ratelimited(&bus->dev,
+> > +			    "failed to read an8855 register\n");
+> 
+> dev_err() will already print out the an8855 part.
+> 
+> > +	return ret;
+> > +}
+> > +
+> > +static int an8855_regmap_read(void *ctx, uint32_t reg, uint32_t *val)
+> > +{
+> > +	struct an8855_mfd_priv *priv = ctx;
+> > +	struct mii_bus *bus = priv->bus;
+> > +	u16 addr = priv->switch_addr;
+> > +	int ret;
+> > +
+> > +	mutex_lock_nested(&bus->mdio_lock, MDIO_MUTEX_NESTED);
+> 
+> guard()?
+> 
+
+Problem is that we can't even use scoped_guard as there isn't a variant
+with MUTEX_NESTED. This patch is already bit enough that I didn't want
+to pollute it more for it. If it's not a problem I will send a followup
+later.
+
+> > +	ret = an8855_mii_set_page(priv, addr, AN8855_PHY_PAGE_EXTENDED_4);
+> > +	if (ret < 0)
+> > +		goto exit;
+> > +
+> > +	ret = an8855_mii_read32(bus, addr, reg, val);
+> > +
+> > +exit:
+> > +	mutex_unlock(&bus->mdio_lock);
+> > +
+> > +	return ret < 0 ? ret : 0;
+> > +}
+> > +
+> > +static int an8855_mii_write32(struct mii_bus *bus, u8 phy_id, u32 reg,
+> > +			      u32 val) __must_hold(&bus->mdio_lock)
+> > +{
+> > +	int ret;
+> > +
+> > +	ret = __mdiobus_write(bus, phy_id, AN8855_PBUS_MODE,
+> > +			      AN8855_PBUS_MODE_ADDR_FIXED);
+> > +	if (ret < 0)
+> > +		goto err;
+> > +
+> > +	ret = __mdiobus_write(bus, phy_id, AN8855_PBUS_WR_ADDR_HIGH,
+> > +			      upper_16_bits(reg));
+> > +	if (ret < 0)
+> > +		goto err;
+> > +	ret = __mdiobus_write(bus, phy_id, AN8855_PBUS_WR_ADDR_LOW,
+> > +			      lower_16_bits(reg));
+> > +	if (ret < 0)
+> > +		goto err;
+> > +
+> > +	ret = __mdiobus_write(bus, phy_id, AN8855_PBUS_WR_DATA_HIGH,
+> > +			      upper_16_bits(val));
+> > +	if (ret < 0)
+> > +		goto err;
+> > +	ret = __mdiobus_write(bus, phy_id, AN8855_PBUS_WR_DATA_LOW,
+> > +			      lower_16_bits(val));
+> > +	if (ret < 0)
+> > +		goto err;
+> > +
+> > +	return 0;
+> > +err:
+> > +	dev_err_ratelimited(&bus->dev,
+> > +			    "failed to write an8855 register\n");
+> > +	return ret;
+> > +}
+> > +
+> > +static int an8855_regmap_write(void *ctx, uint32_t reg, uint32_t val)
+> > +{
+> > +	struct an8855_mfd_priv *priv = ctx;
+> > +	struct mii_bus *bus = priv->bus;
+> > +	u16 addr = priv->switch_addr;
+> > +	int ret;
+> > +
+> > +	mutex_lock_nested(&bus->mdio_lock, MDIO_MUTEX_NESTED);
+> > +	ret = an8855_mii_set_page(priv, addr, AN8855_PHY_PAGE_EXTENDED_4);
+> > +	if (ret < 0)
+> > +		goto exit;
+> > +
+> > +	ret = an8855_mii_write32(bus, addr, reg, val);
+> > +
+> > +exit:
+> > +	mutex_unlock(&bus->mdio_lock);
+> > +
+> > +	return ret < 0 ? ret : 0;
+> 
+> Doesn't the caller already expect possible >0 results?
+> 
+> > +}
+> > +
+> > +static int an8855_regmap_update_bits(void *ctx, uint32_t reg, uint32_t mask,
+> > +				     uint32_t write_val)
+> > +{
+> > +	struct an8855_mfd_priv *priv = ctx;
+> > +	struct mii_bus *bus = priv->bus;
+> > +	u16 addr = priv->switch_addr;
+> > +	u32 val;
+> > +	int ret;
+> > +
+> > +	mutex_lock_nested(&bus->mdio_lock, MDIO_MUTEX_NESTED);
+> > +	ret = an8855_mii_set_page(priv, addr, AN8855_PHY_PAGE_EXTENDED_4);
+> > +	if (ret < 0)
+> > +		goto exit;
+> > +
+> > +	ret = an8855_mii_read32(bus, addr, reg, &val);
+> > +	if (ret < 0)
+> > +		goto exit;
+> > +
+> > +	val &= ~mask;
+> > +	val |= write_val;
+> > +	ret = an8855_mii_write32(bus, addr, reg, val);
+> > +
+> > +exit:
+> > +	mutex_unlock(&bus->mdio_lock);
+> > +
+> > +	return ret < 0 ? ret : 0;
+> > +}
+> > +
+> > +static const struct regmap_range an8855_readable_ranges[] = {
+> > +	regmap_reg_range(0x10000000, 0x10000fff), /* SCU */
+> > +	regmap_reg_range(0x10001000, 0x10001fff), /* RBUS */
+> > +	regmap_reg_range(0x10002000, 0x10002fff), /* MCU */
+> > +	regmap_reg_range(0x10005000, 0x10005fff), /* SYS SCU */
+> > +	regmap_reg_range(0x10007000, 0x10007fff), /* I2C Slave */
+> > +	regmap_reg_range(0x10008000, 0x10008fff), /* I2C Master */
+> > +	regmap_reg_range(0x10009000, 0x10009fff), /* PDMA */
+> > +	regmap_reg_range(0x1000a100, 0x1000a2ff), /* General Purpose Timer */
+> > +	regmap_reg_range(0x1000a200, 0x1000a2ff), /* GPU timer */
+> > +	regmap_reg_range(0x1000a300, 0x1000a3ff), /* GPIO */
+> > +	regmap_reg_range(0x1000a400, 0x1000a5ff), /* EFUSE */
+> > +	regmap_reg_range(0x1000c000, 0x1000cfff), /* GDMP CSR */
+> > +	regmap_reg_range(0x10010000, 0x1001ffff), /* GDMP SRAM */
+> > +	regmap_reg_range(0x10200000, 0x10203fff), /* Switch - ARL Global */
+> > +	regmap_reg_range(0x10204000, 0x10207fff), /* Switch - BMU */
+> > +	regmap_reg_range(0x10208000, 0x1020bfff), /* Switch - ARL Port */
+> > +	regmap_reg_range(0x1020c000, 0x1020cfff), /* Switch - SCH */
+> > +	regmap_reg_range(0x10210000, 0x10213fff), /* Switch - MAC */
+> > +	regmap_reg_range(0x10214000, 0x10217fff), /* Switch - MIB */
+> > +	regmap_reg_range(0x10218000, 0x1021bfff), /* Switch - Port Control */
+> > +	regmap_reg_range(0x1021c000, 0x1021ffff), /* Switch - TOP */
+> > +	regmap_reg_range(0x10220000, 0x1022ffff), /* SerDes */
+> > +	regmap_reg_range(0x10286000, 0x10286fff), /* RG Batcher */
+> > +	regmap_reg_range(0x1028c000, 0x1028ffff), /* ETHER_SYS */
+> > +	regmap_reg_range(0x30000000, 0x37ffffff), /* I2C EEPROM */
+> > +	regmap_reg_range(0x38000000, 0x3fffffff), /* BOOT_ROM */
+> > +	regmap_reg_range(0xa0000000, 0xbfffffff), /* GPHY */
+> > +};
+> > +
+> > +static const struct regmap_access_table an8855_readable_table = {
+> > +	.yes_ranges = an8855_readable_ranges,
+> > +	.n_yes_ranges = ARRAY_SIZE(an8855_readable_ranges),
+> > +};
+> > +
+> > +static const struct regmap_config an8855_regmap_config = {
+> > +	.name = "switch",
+> > +	.reg_bits = 32,
+> > +	.val_bits = 32,
+> > +	.reg_stride = 4,
+> > +	.max_register = 0xbfffffff,
+> > +	.reg_read = an8855_regmap_read,
+> > +	.reg_write = an8855_regmap_write,
+> > +	.reg_update_bits = an8855_regmap_update_bits,
+> > +	.disable_locking = true,
+> > +	.rd_table = &an8855_readable_table,
+> > +};
+> > +
+> > +static int an855_regmap_phy_reset_page(struct an8855_mfd_priv *priv,
+> > +				       int phy) __must_hold(&priv->bus->mdio_lock)
+> > +{
+> > +	/* Check PHY page only for addr shared with switch */
+> > +	if (phy != priv->switch_addr)
+> > +		return 0;
+> > +
+> > +	/* Don't restore page if it's not set to switch page */
+> > +	if (priv->current_page != FIELD_GET(AN8855_PHY_PAGE,
+> > +					    AN8855_PHY_PAGE_EXTENDED_4))
+> > +		return 0;
+> > +
+> > +	/* Restore page to 0, PHY might change page right after but that
+> > +	 * will be ignored as it won't be a switch page.
+> > +	 */
+> 
+> Use proper multi-line comments please.
+> 
+> > +	return an8855_mii_set_page(priv, phy, AN8855_PHY_PAGE_STANDARD);
+> > +}
+> > +
+> > +static int an8855_regmap_phy_read(void *ctx, uint32_t reg, uint32_t *val)
+> > +{
+> > +	struct an8855_mfd_priv *priv = ctx;
+> > +	struct mii_bus *bus = priv->bus;
+> > +	u16 phy_id, addr;
+> > +	int ret;
+> > +
+> > +	phy_id = FIELD_GET(MDIO_REGMAP_PHY_ADDR, reg);
+> > +	addr = FIELD_GET(MDIO_REGMAP_PHY_REG, reg);
+> > +
+> > +	mutex_lock_nested(&bus->mdio_lock, MDIO_MUTEX_NESTED);
+> > +	ret = an855_regmap_phy_reset_page(priv, phy_id);
+> > +	if (ret)
+> > +		goto exit;
+> > +
+> > +	ret = __mdiobus_read(priv->bus, phy_id, addr);
+> > +
+> > +exit:
+> > +	mutex_unlock(&bus->mdio_lock);
+> > +
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	*val = ret;
+> > +	return 0;
+> > +}
+> > +
+> > +static int an8855_regmap_phy_write(void *ctx, uint32_t reg, uint32_t val)
+> > +{
+> > +	struct an8855_mfd_priv *priv = ctx;
+> > +	struct mii_bus *bus = priv->bus;
+> > +	u16 phy_id, addr;
+> > +	int ret;
+> > +
+> > +	phy_id = FIELD_GET(MDIO_REGMAP_PHY_ADDR, reg);
+> > +	addr = FIELD_GET(MDIO_REGMAP_PHY_REG, reg);
+> > +
+> > +	mutex_lock_nested(&bus->mdio_lock, MDIO_MUTEX_NESTED);
+> > +	ret = an855_regmap_phy_reset_page(priv, phy_id);
+> > +	if (ret)
+> > +		goto exit;
+> > +
+> > +	ret = __mdiobus_write(priv->bus, phy_id, addr, val);
+> > +
+> > +exit:
+> > +	mutex_unlock(&bus->mdio_lock);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +/* Regmap for MDIO Passtrough
+> > + * PHY Addr and PHY Reg are encoded in the regmap register.
+> > + */
+> > +static const struct regmap_config an8855_regmap_phy_config = {
+> > +	.name = "phy",
+> > +	.reg_bits = 20,
+> > +	.val_bits = 16,
+> > +	.reg_stride = 1,
+> > +	.max_register = MDIO_REGMAP_PHY_ADDR | MDIO_REGMAP_PHY_REG,
+> > +	.reg_read = an8855_regmap_phy_read,
+> > +	.reg_write = an8855_regmap_phy_write,
+> > +	.disable_locking = true,
+> > +};
+> > +
+> > +static int an8855_read_switch_id(struct device *dev, struct regmap *regmap)
+> > +{
+> > +	u32 id;
+> > +	int ret;
+> > +
+> > +	ret = regmap_read(regmap, AN8855_CREV, &id);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	if (id != AN8855_ID) {
+> > +		dev_err(dev, "Switch ID detected %x but expected %x\n",
+> 
+> "Detected Switch ID %x but %x was expected"
+> 
+> Or
+> 
+> "Expected Switch ID %x but %x was detected"
+> 
+> > +			id, AN8855_ID);
+> > +		return -ENODEV;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int an8855_mfd_probe(struct mdio_device *mdiodev)
+> > +{
+> > +	struct regmap *regmap, *regmap_phy;
+> > +	struct device *dev = &mdiodev->dev;
+> > +	struct an8855_mfd_priv *priv;
+> > +	struct gpio_desc *reset_gpio;
+> > +	u32 val;
+> > +	int ret;
+> > +
+> > +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> > +	if (!priv)
+> > +		return -ENOMEM;
+> > +
+> > +	priv->bus = mdiodev->bus;
+> > +	priv->switch_addr = mdiodev->addr;
+> > +	/* no DMA for mdiobus, mute warning for DMA mask not set */
+> 
+> Nit: Please start sentences with uppercase chars.
+> 
+> > +	dev->dma_mask = &dev->coherent_dma_mask;
+> > +
+> > +	regmap = devm_regmap_init(dev, NULL, priv, &an8855_regmap_config);
+> > +	if (IS_ERR(regmap))
+> > +		return dev_err_probe(dev, PTR_ERR(regmap),
+> > +				     "regmap initialization failed\n");
+> > +
+> > +	regmap_phy = devm_regmap_init(dev, NULL, priv, &an8855_regmap_phy_config);
+> > +	if (IS_ERR(regmap_phy))
+> > +		return dev_err_probe(dev, PTR_ERR(regmap_phy),
+> > +				     "regmap phy initialization failed\n");
+> > +
+> > +	reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
+> > +	if (IS_ERR(reset_gpio))
+> > +		return PTR_ERR(reset_gpio);
+> > +
+> > +	if (reset_gpio) {
+> > +		usleep_range(100000, 150000);
+> > +		gpiod_set_value_cansleep(reset_gpio, 0);
+> > +		usleep_range(100000, 150000);
+> > +		gpiod_set_value_cansleep(reset_gpio, 1);
+> > +
+> > +		/* Poll HWTRAP reg to wait for Switch to fully Init */
+> > +		ret = regmap_read_poll_timeout(regmap, AN8855_HWTRAP, val,
+> > +					       val, 20, 200000);
+> > +		if (ret)
+> > +			return ret;
+> > +	}
+> > +
+> > +	ret = an8855_read_switch_id(dev, regmap);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	/* Release global PHY power down */
+> > +	ret = regmap_write(regmap, AN8855_RG_GPHY_AFE_PWD, 0x0);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	return devm_mfd_add_devices(dev, PLATFORM_DEVID_AUTO, an8855_mfd_devs,
+> > +				    ARRAY_SIZE(an8855_mfd_devs), NULL, 0,
+> > +				    NULL);
+> > +}
+> > +
+> > +static const struct of_device_id an8855_mfd_of_match[] = {
+> > +	{ .compatible = "airoha,an8855" },
+> > +	{ /* sentinel */ }
+> > +};
+> > +MODULE_DEVICE_TABLE(of, an8855_mfd_of_match);
+> > +
+> > +static struct mdio_driver an8855_mfd_driver = {
+> > +	.probe = an8855_mfd_probe,
+> > +	.mdiodrv.driver = {
+> > +		.name = "an8855",
+> > +		.of_match_table = an8855_mfd_of_match,
+> > +	},
+> > +};
+> > +mdio_module_driver(an8855_mfd_driver);
+> > +
+> > +MODULE_AUTHOR("Christian Marangi <ansuelsmth@gmail.com>");
+> > +MODULE_DESCRIPTION("Driver for Airoha AN8855 MFD");
+> > +MODULE_LICENSE("GPL");
+> > -- 
+> > 2.48.1
+> > 
+> 
+> -- 
+> Lee Jones [李琼斯]
+
 -- 
-2.39.5
-
+	Ansuel
