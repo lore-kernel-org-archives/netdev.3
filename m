@@ -1,123 +1,220 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.servers.dxld.at (mail.servers.dxld.at [168.119.78.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651D48635E;
-	Sun, 16 Mar 2025 11:22:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4446FC5;
+	Sun, 16 Mar 2025 11:32:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.78.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742124124; cv=none; b=tJe7jlrbVCfuEScAiVfUZm+xerzM+r1JMaCeA6ACSjs8kBbflbJmzO0E5DTlx/J/+kwU29CZxzJREHSyvcA8KyQNtbuP/Ad8OxlgO5NLW38cYr7LDp585kfsFcNm7/kYT4wz0VMGMQjf/4ViD16joEc+ieNFIxprAy8nqqtASvs=
+	t=1742124732; cv=none; b=OCXpezHoGXfuhWY/Ksnee5ISVwdhS1fZ6r5rXsAbb873umRNdfk2IVfMpIHdyHmUaS7uXfSvTc2zswOsuJ0/FCVABEOkijp0RINRKAixIYgxPX/qp90RJV83DkYt6uG7wrwzlXgTVi8DjyMNzlvUNM4+l0+113DUWg+TuQ2EnQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742124124; c=relaxed/simple;
-	bh=SmU0h+d2L/ZnLPStnz6nB21B5/N2fkHE3+xO0Ydd7Vo=;
+	s=arc-20240116; t=1742124732; c=relaxed/simple;
+	bh=FCYHIP4JKxQLzH0PfhX+Q/h0X8BqcIVf4bvkz4S+1gE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=atLm2O1TmapA/y/s6aSRXySApRfz4xmMS3cC76p2XPLwhFqR/WtxvFnXBd/KwNZaK2inp+pfNwmWi+YBcJV21FKOX84aBc68iLUbzFCQQsEXN0zLj7gHvQeqjaRty0kHckSOMUh8ZD6bkh1tqjm2fLPm0EX2E4HS5a6p5YQ8mAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lBgnJ+wG; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lBgnJ+wG"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ac27cb35309so570318766b.2;
-        Sun, 16 Mar 2025 04:22:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742124121; x=1742728921; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=p2FKujD/WDFzQXcV+BlOMXkIXZNzBUdKMFbX2p6VQMU=;
-        b=lBgnJ+wGKoxVShopY/aPvhhpxilaXxkEwCiFO3oNUNLVtUT2yWpNvQgDPImSbn9CRt
-         gL6Bjh/PwVkjyJjoTeNC2jPJELxC9uuNHbgAwTeYBAEzFDZdFvYqyhafG0+Xm6HZmDjN
-         5fgXr+//nHKpqSbMNEV2MIN9pSsDe61quCN4x3sqY3ajA921nSM4Mdl/NcO75Wn5Bi7c
-         0T5omVSQkD3yLC3YBu692UIko/jAsROkI1KR22b3xAO3tGU+05Aoq5jC5FxvdmO8okPt
-         QpGSoeHVsOOiN1lRvdlcISZp2QRJkFE+FsguNNt51Bc4yH6XRmKByOjnF+Mfui3IDprB
-         3BMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742124121; x=1742728921;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p2FKujD/WDFzQXcV+BlOMXkIXZNzBUdKMFbX2p6VQMU=;
-        b=SBKAHnuH1AzynGRwBNFLFSCtilou2Uela22ZO8xi9dLzAeLkyZQJtX9nfvhlip7XZn
-         /nwScBoa5CgvMxaKy0qF7dgcNt2m2HwUksd97CjpHztyN8NK6FwT07Cid2YS6JLb5Chh
-         3c0+UMNtYFfm8+HH7t5yxx6fXMjykfWGGzYyDKXg+0EWr3bHFYWlBYgTR3YHFbFfx5as
-         Rjuhnxwi0MttgkMFVEM2Vb8T9Pn22HFOct4UQNb2wTuAKnnR3cViSWxfbp1WO8LpqSzT
-         4VUjddTm79jFG6nSqdj1zccNx8t6+SROTV9PUcJDgxyM8CfO0FkvY5jEI/ObNIMDDFiU
-         Tp9A==
-X-Forwarded-Encrypted: i=1; AJvYcCWqAL6mDSZW5G8P7cwUQbfl/UQ9gdFNbr9Y1f2FqEe27rGSOPAJeptleuLIZx2CXebG7bvJ5G1K@vger.kernel.org, AJvYcCXLf9tjtSREpqYeWBFqAvVqzNJjUrphIQr5mJu3adsuJw1UFa5c/9BlbTI91prnxMUnr4WQ2jlMHtvs0B4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXXy01gjeXdudtfBnwptsr2tzrg9TcEPHPd5uX4CtDXuiX69jZ
-	PXZcX1svL8OhzXWNlWfPMinxKrSytkdHy11iVBBzaFCD3ataIloQ
-X-Gm-Gg: ASbGncuBISdNJbXFUGMD+qHf0vX9eXTqti7ZKBNRW3Iac1tJQXDXiEbHSulLCOwNacI
-	9uW0WUvFT4WNNTnySJU60XYnzn/DjtNykxxT84T34CuMepjY3rK5ECMLHjvCrabx4fqwUKZOOrw
-	p5f+6tQ382oP/8LEx2I9VRpVIEwaqaLishGz5t9TUSoH8I11hzvIJuQyZwaMefDKTdy5GXcigEL
-	dRkOJ6SHa/5POsh6isc78lNm/Wou3fQctIWdeNpMxXfnwse5f5a62p4+BFaw0sr7Df0w+BKDpnR
-	2rSOF9Kn5iS2wI30n6SF3vttkk0PKujyJOKrtSI87A==
-X-Google-Smtp-Source: AGHT+IH/GWjOJrpmeT0R78wt9LzZ4p7kUJayvibJT5ShbE6GtGJriC+yQqB9quwCCLoTtd6wqbVeQQ==
-X-Received: by 2002:a17:907:d92:b0:ac2:d5e6:dea7 with SMTP id a640c23a62f3a-ac33017710cmr984890166b.13.1742124120501;
-        Sun, 16 Mar 2025 04:22:00 -0700 (PDT)
-Received: from debian ([2a00:79c0:612:2500:45fb:7d1a:5e4d:9727])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac314aa5a24sm488633866b.180.2025.03.16.04.21.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Mar 2025 04:22:00 -0700 (PDT)
-Date: Sun, 16 Mar 2025 12:21:58 +0100
-From: Dimitri Fedrau <dima.fedrau@gmail.com>
-To: Gerhard Engleder <gerhard@engleder-embedded.com>
-Cc: dimitri.fedrau@liebherr.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=XKgCQXilOWm2nrLOiGYBEbfX3sbFdrF08oLx+H9r1IpGsSK4e+N91t+39fTiVP24xTsE7MXN2Yi5mFRVx/IfLpSt47CcOE8cd9aAVhe1RIROUQerBD6uLut+A4W1bJ9eYvAZs6nJ2+jHl1SxXezD5XZwv3+CgttGDY6YtObJTtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=darkboxed.org; spf=pass smtp.mailfrom=darkboxed.org; arc=none smtp.client-ip=168.119.78.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=darkboxed.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=darkboxed.org
+Received: mail.servers.dxld.at;
+	Sun, 16 Mar 2025 12:15:20 +0100
+Date: Sun, 16 Mar 2025 12:15:16 +0100
+From: Daniel =?utf-8?Q?Gr=C3=B6ber?= <dxld@darkboxed.org>
+To: greearb@candelatech.com
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH] net: phy: dp83822: fix transmit amplitude if
- CONFIG_OF_MDIO not defined
-Message-ID: <20250316112158.GA4035@debian>
-References: <20250312-dp83822-fix-transceiver-mdio-v1-1-7b69103c5ab0@liebherr.com>
- <b753c0e7-e055-4764-b558-68b7258a6b6f@engleder-embedded.com>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	dsahern@kernel.org, wireguard@lists.zx2c4.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] net: wireguard: Allow binding to specific ifindex
+Message-ID: <20250316111516.4vxnot4osduc7oeh@House.clients.dxld.at>
+References: <20241203193939.1953303-1-greearb@candelatech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <b753c0e7-e055-4764-b558-68b7258a6b6f@engleder-embedded.com>
+In-Reply-To: <20241203193939.1953303-1-greearb@candelatech.com>
 
-Am Wed, Mar 12, 2025 at 08:53:29PM +0100 schrieb Gerhard Engleder:
-> On 12.03.25 18:23, Dimitri Fedrau via B4 Relay wrote:
-> > From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-> > 
-> > When CONFIG_OF_MDIO is not defined the index for selecting the transmit
-> > amplitude voltage for 100BASE-TX is set to 0, but it should be -1, if there
-> > is no need to modify the transmit amplitude voltage. Add a flag to make
-> > sure there is a need to modify it.
-> > 
-> > Fixes: 4f3735e82d8a ("net: phy: dp83822: Add support for changing the transmit amplitude voltage")
-> > Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-> > ---
-> >   drivers/net/phy/dp83822.c | 5 ++++-
-> >   1 file changed, 4 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/phy/dp83822.c b/drivers/net/phy/dp83822.c
-> > index 3662f3905d5ade8ad933608fcaeabb714a588418..d69000cb0ceff28e8288ba24e0af1c960ea9cc97 100644
-> > --- a/drivers/net/phy/dp83822.c
-> > +++ b/drivers/net/phy/dp83822.c
-> > @@ -201,6 +201,7 @@ struct dp83822_private {
-> >   	bool set_gpio2_clk_out;
-> >   	u32 gpio2_clk_out;
-> >   	bool led_pin_enable[DP83822_MAX_LED_PINS];
-> > +	bool tx_amplitude_100base_tx_modify;
-> >   	int tx_amplitude_100base_tx_index;
-> >   };
-> 
-> You could instead init tx_amplitude_100base_tx_index in
-> dp8382x_probe() to -1.
-> 
-> But functional it should be ok.
-> 
-> Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
->
-Hi Gerhard,
+Hi Ben,
 
-will send out an V2 implementing your proposal. Thanks for reviewing.
+I sent a more general patch adding essentially same feature quite a while
+ago (Nov 2023) "wireguard: Add netlink attrs for binding to address and
+netdev"
+https://lore.kernel.org/netdev/20240219114334.3057169-1-dxld@darkboxed.org/T/
 
-Best regards,
-Dimitri Fedrau
+Which also came with ready-to-go wireguard-tools userspace support.
+
+Unfortunately I never got any real feedback on it.
+
+I managed to catch Jason at FOSDEM this year at least and he seems to not
+be convinced either address or inteface binding are useful or necessary
+features for wg.
+
+The 1) "scaling" argument in the v3 patch was shot down due to Linux not
+being scalable in the number of interfaces due to linked lists anyway,
+which is fair if true. I added that argument in v3 to make the patch more
+apealing, previously I had some handwaving about multihoming
+https://lists.zx2c4.com/pipermail/wireguard/2023-November/008256.html :-)
+
+I still think there's plenty of operational reasons to want to do this
+outside of that consideration and I just seem to be failing to communicate
+them in a way that appeals to Jason's design beauty aesthetic.
+
+Perhaps you could explain your use-case in more depth to make the technical
+argument stronger than what I can muster? :-)
+
+Quickly comparing your code with mine I see you set fl.flowi*_oif in
+addition to bind_ifindex, did you find that necessary for packets to be
+emited on the right device?
+
+Thanks,
+--Daniel
+
+PS: I'm aware the v3 patch proably still has a subtle uninitialized memory
+problem, just haven't had the motivation to work on it due to lack of
+feedback.
+
+PPS: Sorry for the late response I don't read netdev regularly and
+apparently Jason's wireguard list has been more broken than I've been aware
+of.  I've got some sieve hacks to get wireguard mail from netdev now.
+
+On Tue, Dec 03, 2024 at 11:39:39AM -0800, greearb@candelatech.com wrote:
+> From: Ben Greear <greearb@candelatech.com>
+> 
+> Which allows us to bind to VRF.
+> 
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> ---
+> 
+> v2:  Fix bad use of comma, semicolon now used instead.
+> 
+>  drivers/net/wireguard/device.h  |  1 +
+>  drivers/net/wireguard/netlink.c | 12 +++++++++++-
+>  drivers/net/wireguard/socket.c  |  8 +++++++-
+>  include/uapi/linux/wireguard.h  |  3 +++
+>  4 files changed, 22 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireguard/device.h b/drivers/net/wireguard/device.h
+> index 43c7cebbf50b..9698d9203915 100644
+> --- a/drivers/net/wireguard/device.h
+> +++ b/drivers/net/wireguard/device.h
+> @@ -53,6 +53,7 @@ struct wg_device {
+>  	atomic_t handshake_queue_len;
+>  	unsigned int num_peers, device_update_gen;
+>  	u32 fwmark;
+> +	int lowerdev; /* ifindex of lower level device to bind UDP transport */
+>  	u16 incoming_port;
+>  };
+>  
+> diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
+> index f7055180ba4a..5de3d59a17b0 100644
+> --- a/drivers/net/wireguard/netlink.c
+> +++ b/drivers/net/wireguard/netlink.c
+> @@ -27,7 +27,8 @@ static const struct nla_policy device_policy[WGDEVICE_A_MAX + 1] = {
+>  	[WGDEVICE_A_FLAGS]		= { .type = NLA_U32 },
+>  	[WGDEVICE_A_LISTEN_PORT]	= { .type = NLA_U16 },
+>  	[WGDEVICE_A_FWMARK]		= { .type = NLA_U32 },
+> -	[WGDEVICE_A_PEERS]		= { .type = NLA_NESTED }
+> +	[WGDEVICE_A_PEERS]		= { .type = NLA_NESTED },
+> +	[WGDEVICE_A_LOWERDEV]		= { .type = NLA_U32 },
+>  };
+>  
+>  static const struct nla_policy peer_policy[WGPEER_A_MAX + 1] = {
+> @@ -232,6 +233,7 @@ static int wg_get_device_dump(struct sk_buff *skb, struct netlink_callback *cb)
+>  		if (nla_put_u16(skb, WGDEVICE_A_LISTEN_PORT,
+>  				wg->incoming_port) ||
+>  		    nla_put_u32(skb, WGDEVICE_A_FWMARK, wg->fwmark) ||
+> +		    nla_put_u32(skb, WGDEVICE_A_LOWERDEV, wg->lowerdev) ||
+>  		    nla_put_u32(skb, WGDEVICE_A_IFINDEX, wg->dev->ifindex) ||
+>  		    nla_put_string(skb, WGDEVICE_A_IFNAME, wg->dev->name))
+>  			goto out;
+> @@ -530,6 +532,14 @@ static int wg_set_device(struct sk_buff *skb, struct genl_info *info)
+>  			wg_socket_clear_peer_endpoint_src(peer);
+>  	}
+>  
+> +	if (info->attrs[WGDEVICE_A_LOWERDEV]) {
+> +		struct wg_peer *peer;
+> +
+> +		wg->lowerdev = nla_get_u32(info->attrs[WGDEVICE_A_LOWERDEV]);
+> +		list_for_each_entry(peer, &wg->peer_list, peer_list)
+> +			wg_socket_clear_peer_endpoint_src(peer);
+> +	}
+> +
+>  	if (info->attrs[WGDEVICE_A_LISTEN_PORT]) {
+>  		ret = set_port(wg,
+>  			nla_get_u16(info->attrs[WGDEVICE_A_LISTEN_PORT]));
+> diff --git a/drivers/net/wireguard/socket.c b/drivers/net/wireguard/socket.c
+> index 0414d7a6ce74..7cef4b27f6ba 100644
+> --- a/drivers/net/wireguard/socket.c
+> +++ b/drivers/net/wireguard/socket.c
+> @@ -25,7 +25,8 @@ static int send4(struct wg_device *wg, struct sk_buff *skb,
+>  		.daddr = endpoint->addr4.sin_addr.s_addr,
+>  		.fl4_dport = endpoint->addr4.sin_port,
+>  		.flowi4_mark = wg->fwmark,
+> -		.flowi4_proto = IPPROTO_UDP
+> +		.flowi4_proto = IPPROTO_UDP,
+> +		.flowi4_oif = wg->lowerdev,
+>  	};
+>  	struct rtable *rt = NULL;
+>  	struct sock *sock;
+> @@ -111,6 +112,9 @@ static int send6(struct wg_device *wg, struct sk_buff *skb,
+>  	struct sock *sock;
+>  	int ret = 0;
+>  
+> +	if (wg->lowerdev)
+> +		fl.flowi6_oif = wg->lowerdev;
+> +
+>  	skb_mark_not_on_list(skb);
+>  	skb->dev = wg->dev;
+>  	skb->mark = wg->fwmark;
+> @@ -360,6 +364,7 @@ int wg_socket_init(struct wg_device *wg, u16 port)
+>  		.family = AF_INET,
+>  		.local_ip.s_addr = htonl(INADDR_ANY),
+>  		.local_udp_port = htons(port),
+> +		.bind_ifindex = wg->lowerdev,
+>  		.use_udp_checksums = true
+>  	};
+>  #if IS_ENABLED(CONFIG_IPV6)
+> @@ -369,6 +374,7 @@ int wg_socket_init(struct wg_device *wg, u16 port)
+>  		.local_ip6 = IN6ADDR_ANY_INIT,
+>  		.use_udp6_tx_checksums = true,
+>  		.use_udp6_rx_checksums = true,
+> +		.bind_ifindex = wg->lowerdev,
+>  		.ipv6_v6only = true
+>  	};
+>  #endif
+> diff --git a/include/uapi/linux/wireguard.h b/include/uapi/linux/wireguard.h
+> index ae88be14c947..f3784885389a 100644
+> --- a/include/uapi/linux/wireguard.h
+> +++ b/include/uapi/linux/wireguard.h
+> @@ -29,6 +29,7 @@
+>   *    WGDEVICE_A_PUBLIC_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
+>   *    WGDEVICE_A_LISTEN_PORT: NLA_U16
+>   *    WGDEVICE_A_FWMARK: NLA_U32
+> + *    WGDEVICE_A_LOWERDEV: NLA_U32
+>   *    WGDEVICE_A_PEERS: NLA_NESTED
+>   *        0: NLA_NESTED
+>   *            WGPEER_A_PUBLIC_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
+> @@ -83,6 +84,7 @@
+>   *    WGDEVICE_A_PRIVATE_KEY: len WG_KEY_LEN, all zeros to remove
+>   *    WGDEVICE_A_LISTEN_PORT: NLA_U16, 0 to choose randomly
+>   *    WGDEVICE_A_FWMARK: NLA_U32, 0 to disable
+> + *    WGDEVICE_A_LOWERDEV: NLA_U32, ifindex to bind lower transport, 0 to disable
+>   *    WGDEVICE_A_PEERS: NLA_NESTED
+>   *        0: NLA_NESTED
+>   *            WGPEER_A_PUBLIC_KEY: len WG_KEY_LEN
+> @@ -157,6 +159,7 @@ enum wgdevice_attribute {
+>  	WGDEVICE_A_LISTEN_PORT,
+>  	WGDEVICE_A_FWMARK,
+>  	WGDEVICE_A_PEERS,
+> +	WGDEVICE_A_LOWERDEV,
+>  	__WGDEVICE_A_LAST
+>  };
+>  #define WGDEVICE_A_MAX (__WGDEVICE_A_LAST - 1)
+> -- 
+> 2.42.0
+> 
+> 
