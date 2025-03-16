@@ -1,169 +1,146 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22DAC2E0;
-	Sun, 16 Mar 2025 21:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F4214D2A0;
+	Sun, 16 Mar 2025 22:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742161450; cv=none; b=PeDJMBNXNyDViv3c24l8+TRAISi0GoGY5AqmiuKisQA3yzAETfal2hsjJBn2mVWXoEOYutZv4/KH966/jaQKyjfj//7dboGj0ZCraYQtBqzOQYA7lft8mZS9nqUPYOLhMc0TO6cp9HEPcvPBF0Zy9kIvyDvp9Btr03+BG0Uws8A=
+	t=1742165167; cv=none; b=TTQYKJe7O+hvE/Xiv6eUo8uPXG/bzTMLpm6ZsFvqyTVgzlcgzyGxNu8y6y8QjKs3Q1K9oTZt9mlAFatAvQMa+K7zVOShiznKre9GagheU4XapmDC0GM5aMJAFoYO74k0tCwULA8bNRySMVN74+qD7jFP0KVNQGimsRccZh9kU60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742161450; c=relaxed/simple;
-	bh=v4P/KcddWLuDTatda/HBTqKygV+7kfJ09+a2eRbRlKw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tn25GvPr55MUD3/f+AMvfaaW/1R6cxNLfEiEPxEVoIw1Wb+QNF/qpHEndf0pOnnZCZiQcQJ3ECLMtNau/P0YWcRa4aV21to+Ewv0GpBu2hFPkQH4oUw2nOHqZnD3bfm+xYpNYbowKOJGRrVAsDq+96+5n8ktIGJQz64yp0KRSvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Av5BSeRe; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742165167; c=relaxed/simple;
+	bh=3tj+sd1hBSK0PpyiKGpyyTMF/4GJvPBwbGnV9vwWXd0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=iX374H7CE5K4qmt2gdFkgmydQ7fh0mevX9tAc/OerDrfzAaLDbjOrE57yEoCXROkiqpXUdb8bzFm+/mOTNB1UIb4q+M3thJE26XYB2zvzH55EVSTMPuNfHgR77fnwJqIkMq8bl0Ev/bz0G/zdA4lVvUAxtEKAnhXHM3A+/RIjfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=MEOB1mNv; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Av5BSeRe"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-22401f4d35aso66748345ad.2;
-        Sun, 16 Mar 2025 14:44:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742161448; x=1742766248; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4mKilVKnBM4oRzcS1cLG80AavsaCOJuEZgc8LXHq/UQ=;
-        b=Av5BSeReNpTZbMpAoy6k2um4wrkL6vvvqb+NPR88d39OASCl6b3tM1DLLen/A3He73
-         0s0cpWxUwSMJThtIH6YlZ/0TbzvUvEGHuGDhIH1qu0UuYYtlRy/byia/WgOlTs5E2/jB
-         fVfFUq2f74rHFKkcOVx+OrOIxYfVfWgFxeJ6QExnaMpO+Rx9sz8wAB+mIElTGZaHpyOk
-         U0bTtwFa65BfnyzSKKZ4Beul70s1SF0mgwBugsx6fr08WBihuJUmXvHySaMBqcmto6S5
-         OxNtqJeFeGcmOAbxtMW/V3LN/0YIIjqr6nbkKZFCaCLOQDcA20e4ehd18ygRJsYUbuIC
-         j9gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742161448; x=1742766248;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4mKilVKnBM4oRzcS1cLG80AavsaCOJuEZgc8LXHq/UQ=;
-        b=fWiUwyV1CLhbPkZWplhltVHAvM1/YTYS6GQf5bdA/1TuaLlWrihIMwrkH02cztK3Ds
-         Jfnbrrau9UrTkPrGaeKRgHC9AgIg8ci1RbHGpu8G9cpkreoom31IEtZ07bNCmducvJYH
-         woev2wIWoMqieWbcDiW38qJ748xVsfUxqYw4xbKo0b+aFme1j/RqPUVJFuVDuj8xeMj9
-         DhqDvTZWi5W0dkToanmD14bXfsJ84/HtHcqdGiG6O/eofN3XVQXUZypz5QC57s+2OdaM
-         t5hio40/SqAcoUUq2b6MuL2WzZVAFAyyKAf8nnDSK4IEfLEqTXR7wiYg+tU/YgUJt0oW
-         BJyA==
-X-Forwarded-Encrypted: i=1; AJvYcCVvyH+6BA7OBbcY2K3AfR4nc02eWj+8RcuyO6Q6WfdwZa58jUFNuZRhXZfO+sYIJp+slxwQw7fdp3VN@vger.kernel.org, AJvYcCWJJ9jJZiOwNwL1NZPTOJQraPf6+1cWKMHKHPBv5yIo6BF0EWVFSJz/96QuXt+MTARlApDOMS4av5urYg==@vger.kernel.org, AJvYcCXUh9WcZTijg5tFsWzUmJgVLd80YfJwaq7b0B9GSFQmiYquljAbyDVgdRm/4Fq6BA4lGYUAA990@vger.kernel.org, AJvYcCXUrksHAFWGgjRznA60golSCLgeNdmTAZjjxATHNTG+p77m4zT60YtK5nyzBg7Ovf3uFgjb+6rdQDEqYoVW@vger.kernel.org, AJvYcCXV4oqnrC35ub3xEQ+Ld9NMaRJvszJu9RbmowvCo/RoT1GL8Y/qigaNa+YqUtL5yFZ9OYFUXf8gGlHF@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0w7sS0GLYq2IxOa17gWb+4repDhbALPpS646WsUQnQq797A3p
-	tgmo+U0LCMb39MV2GqkYnqItwGtBtMajDMKlRZ64uB78rcGKhx9F
-X-Gm-Gg: ASbGncuydSPA1/Dht+Iz0uYUXGvolnFpKiy9GSSLJnpEW6KVlhVfNcvvTGi//nwVgc5
-	Mz929IzbceOYuzfeXoIuDQ2MCBnU7nocPqg9DBDX5t8XOzBg/YDX22J6aQXmZseS8gTnIMJIV7N
-	WkaMqTYMNcZT3lXd8Xl6N2NO6cbgAPvXpLfmIS1Rw/A0K46s2sRRpU+phxi/jR1cDqzXBFdv4cZ
-	j/5GGm0h+cQcjlehgA4hvG7Tuaj3i/sfIO5T1d1/0H+G/UwsgwkWgTsSk4eR4vFIW/TDTkxMJHN
-	zyAe9Lh6ydY+rOHCIQ9y+Yk7fjKg/PU7ri2IcATOlmfB7//Lr/a3JQ==
-X-Google-Smtp-Source: AGHT+IHk3fWjPG0Lq3bYmcMnBWXcJVnNnmjKprgtboThBoy1lvBE5vc2ZBXIYdbzt5jjuHpjlPKXvA==
-X-Received: by 2002:a17:902:e74c:b0:223:3bf6:7e6a with SMTP id d9443c01a7336-225e0a40bb3mr144393215ad.12.1742161448027;
-        Sun, 16 Mar 2025 14:44:08 -0700 (PDT)
-Received: from localhost ([2804:30c:b31:2d00:277c:5cbe:7f44:752b])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-225c688858asm61634375ad.46.2025.03.16.14.44.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Mar 2025 14:44:06 -0700 (PDT)
-Date: Sun, 16 Mar 2025 18:45:03 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v7 02/10] property: Add functions to iterate named child
-Message-ID: <Z9dGX_ckIRUg6fZh@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1741849323.git.mazziesaccount@gmail.com>
- <f613b5f120a4dde63d28b0a2e0186dcb8dbf57ae.1741849323.git.mazziesaccount@gmail.com>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="MEOB1mNv"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1ttwjt-00Cseb-Sy; Sun, 16 Mar 2025 23:45:49 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=bxiMFSV63H5IMVOHX04yoU+77ubhpH+TthNc1KSiRUY=; b=MEOB1mNv8upfTIyCtq6gr4Uz/u
+	Vf0Mu3FRnLEAvUJFt0AdeoB25lxmr8BWdk1GIE2oyKD3i4Pz+TWPqiHfBaaUF/hhUDBPwaMuXoHyN
+	TJfGq64rRtfKfMsOwcIozkUq1u9tPPjyISftVhZU3XXvNbMhIYEHyE3+ws5FeqjoxSooykEuZDZSq
+	HDi+//XbRPEbstpx7Oo6ad0SexifaFSHA8xIHRmpDrLMwdHl8q/LgU4ODZatuSypUgHSNvKw+k2V2
+	SkuOIy9zcgYgNS0wX/Pwel9IviflUmhm9IwhnWfV2bgWRDMuk6gKF413Mm14Vrj+/HZJbiwHxUbwt
+	DuZZu+Ww==;
+Received: from [10.9.9.74] (helo=submission03.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1ttwjs-0000eH-ML; Sun, 16 Mar 2025 23:45:48 +0100
+Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1ttwjp-00AYw2-7u; Sun, 16 Mar 2025 23:45:45 +0100
+From: Michal Luczaj <mhal@rbox.co>
+Date: Sun, 16 Mar 2025 23:45:06 +0100
+Subject: [PATCH net v3 1/3] vsock/bpf: Fix EINTR connect() racing sockmap
+ update
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f613b5f120a4dde63d28b0a2e0186dcb8dbf57ae.1741849323.git.mazziesaccount@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250316-vsock-trans-signal-race-v3-1-17a6862277c9@rbox.co>
+References: <20250316-vsock-trans-signal-race-v3-0-17a6862277c9@rbox.co>
+In-Reply-To: <20250316-vsock-trans-signal-race-v3-0-17a6862277c9@rbox.co>
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Bobby Eshleman <bobby.eshleman@bytedance.com>, 
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+ Mykola Lysenko <mykolal@fb.com>, Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, 
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, 
+ virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-Hello,
+Signal delivery during connect() may result in a disconnect of an already
+TCP_ESTABLISHED socket. Problem is that such established socket might have
+been placed in a sockmap before the connection was closed. We end up with a
+SS_UNCONNECTED vsock in a sockmap. And this, combined with the ability to
+reassign (unconnected) vsock's transport to NULL, breaks the sockmap
+contract. As manifested by WARN_ON_ONCE.
 
-LGTM, few minor comments inline.
-With those sorted
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+connect
+  / state = SS_CONNECTED /
+                                sock_map_update_elem
+  if signal_pending
+    state = SS_UNCONNECTED
 
-On 03/13, Matti Vaittinen wrote:
-> There are a few use-cases where child nodes with a specific name need to
-> be parsed. Code like:
-> 
-> fwnode_for_each_child_node()
-> 	if (fwnode_name_eq())
-> 		...
-> 
-> can be found from a various drivers/subsystems. Adding a macro for this
-> can simplify things a bit.
-> 
-> In a few cases the data from the found nodes is later added to an array,
-> which is allocated based on the number of found nodes. One example of
-> such use is the IIO subsystem's ADC channel nodes, where the relevant
-> nodes are named as channel[@N].
-> 
-> Add helpers for iterating and counting device's sub-nodes with certain
-> name instead of open-coding this in every user.
-> 
-> Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> ---
-...
-> +/**
-> + * fwnode_get_named_child_node_count - number of child nodes with given name
-> + * @fwnode: Node which child nodes are counted.
-> + * @name: String to match child node name against.
-> + *
-> + * Scan child nodes and count all the nodes with a specific name. Potential
-> + * 'number' -ending after the 'at sign' for scanned names is ignored.
-> + * E.g.::
-> + *   device_get_named_child_node_count(dev, "channel");
+connect
+  transport = NULL
+                                vsock_bpf_recvmsg
+                                  WARN_ON_ONCE(!vsk->transport)
 
-The function being documented is fwnode_get_named_child_node_count().
-Shouldn't the example be
-   fwnode_get_named_child_node_count(fwnode, "channel");
-?
+Ensure the socket does not stay in sockmap.
 
-> + * would match all the nodes::
-> + *   channel { }, channel@0 {}, channel@0xabba {}...
-> + *
-> + * Return: the number of child nodes with a matching name for a given device.
-> + */
-...
-> +#define device_for_each_named_child_node(dev, child, name)		\
-> +		device_for_each_child_node(dev, child)			\
-> +			if (!fwnode_name_eq(child, name)) { } else
+WARNING: CPU: 8 PID: 1228 at net/vmw_vsock/vsock_bpf.c:97 vsock_bpf_recvmsg+0xb43/0xe00
+CPU: 8 UID: 0 PID: 1228 Comm: a.out Not tainted 6.14.0-rc5+
+RIP: 0010:vsock_bpf_recvmsg+0xb43/0xe00
+ sock_recvmsg+0x1b2/0x220
+ __sys_recvfrom+0x190/0x270
+ __x64_sys_recvfrom+0xdc/0x1b0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-nitpicking: add only one tab for each indentation level.
-	device_for_each_child_node(dev, child)			\
-		if (!fwnode_name_eq(child, name)) { } else
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ net/vmw_vsock/af_vsock.c  | 10 +++++++++-
+ net/vmw_vsock/vsock_bpf.c |  1 +
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-> +
->  #define device_for_each_child_node_scoped(dev, child)			\
->  	for (struct fwnode_handle *child __free(fwnode_handle) =	\
->  		device_get_next_child_node(dev, NULL);			\
->  	     child; child = device_get_next_child_node(dev, child))
->  
-> +#define device_for_each_named_child_node_scoped(dev, child, name)	\
-> +		device_for_each_child_node_scoped(dev, child)		\
-> +			if (!fwnode_name_eq(child, name)) { } else
-> +
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 7e3db87ae4333cf63327ec105ca99253569bb9fe..81b1b8e9c946a646778367ab78ca180cef75ef72 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1579,7 +1579,15 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
+ 
+ 		if (signal_pending(current)) {
+ 			err = sock_intr_errno(timeout);
+-			sk->sk_state = sk->sk_state == TCP_ESTABLISHED ? TCP_CLOSING : TCP_CLOSE;
++			if (sk->sk_state == TCP_ESTABLISHED) {
++				/* Might have raced with a sockmap update. */
++				if (sk->sk_prot->unhash)
++					sk->sk_prot->unhash(sk);
++
++				sk->sk_state = TCP_CLOSING;
++			} else {
++				sk->sk_state = TCP_CLOSE;
++			}
+ 			sock->state = SS_UNCONNECTED;
+ 			vsock_transport_cancel_pkt(vsk);
+ 			vsock_remove_connected(vsk);
+diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
+index 07b96d56f3a577af71021b1b8132743554996c4f..c68fdaf09046b68254dac3ea70ffbe73dfa45cef 100644
+--- a/net/vmw_vsock/vsock_bpf.c
++++ b/net/vmw_vsock/vsock_bpf.c
+@@ -127,6 +127,7 @@ static void vsock_bpf_rebuild_protos(struct proto *prot, const struct proto *bas
+ {
+ 	*prot        = *base;
+ 	prot->close  = sock_map_close;
++	prot->unhash = sock_map_unhash;
+ 	prot->recvmsg = vsock_bpf_recvmsg;
+ 	prot->sock_is_readable = sk_msg_is_readable;
+ }
 
-nitpicking: instead of two tabs, only one tab before device_for_..._scoped().
-	device_for_each_child_node_scoped(dev, child)		\
-		if (!fwnode_name_eq(child, name)) { } else
+-- 
+2.48.1
 
-Regards,
-Marcelo
