@@ -1,213 +1,200 @@
-Received: from mail-io1-f77.google.com (mail-io1-f77.google.com [209.85.166.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.164])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE19717A2EB
-	for <netdev@vger.kernel.org>; Mon, 17 Mar 2025 20:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.77
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742241870; cv=none; b=oggdBnwHjSvb5VUS/X6opaTBjR30PWhI4SGM0MYqwAtodKLeEoe1nu5rTEuE3UWlQLM6QhhBSX61MXz7WOgtBSCTNQh4rMphHC/HwSZtTtp52wsGRE1XL5d+Fzj5+bxda5wJ9I6Em3Tnx7WODnA5sVh7t/58ZVU6c4c+myZfwdA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742241870; c=relaxed/simple;
-	bh=zDiqGRosoV+/3ssgCGb2SGIWovWyXkTfd75EIs4R0Yo=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=NPawLPMMGcqQaerwOTtFpjFjO6fjh265ERMsptgR6phy77ujp62nxEa1Dyhxqnwtm2Eb8wcsUrx1qJMCrAd/EDrs6yUSdIlUjhTFke+Rd7SR0ivgAwkUgnIgzn0xBeQF1/x+Qq6ahIuC9MmB3Sdodoqe3FteBij6ZyqkObrEqSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f77.google.com with SMTP id ca18e2360f4ac-85dcaf42b61so735441139f.3
-        for <netdev@vger.kernel.org>; Mon, 17 Mar 2025 13:04:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742241868; x=1742846668;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=StTuGp4t5HsXJ4jfpO7DyuaszrNM9Zr0lwk+MnOE5aA=;
-        b=sdP0hb65Kr04QQgz1zV2iRT9RYPtxz4QStxXDkOxfGioq+l3L0kEErnrYdaFMtQDh3
-         YaTpFOsXHVv5NzcmocXQbg1kyRkWkqiwGjcPYbcUXvPLoXpdmyoXIBKRUYqw4/baVpmw
-         uhOUbobSopzgZB7zfS7wUVZ5m8ukvzbB6Qr2+SMKKHC5d7wdgKJvfrlhiQmW+rFlfI8R
-         Rx5BtBXFjxCHyj9wi2/ZdK0FfWq6qQRyFJ63/wYYCq5kjTB+7ltchcQnTRfkWSmqbAGV
-         5mTF6UfOEPkNkrLSUdVVrK69fi4zOqxZApN5mPy4QQW1XjC9QV/jSVsasIzUZg8tVerw
-         Wzww==
-X-Forwarded-Encrypted: i=1; AJvYcCWNJpMKX1tlBPdR2XEPGr99p32FHX8p4eKgtqOou1nq1wvNkVmXEmjDrz30mn3TV3rt0dWzgo4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIiLg8CruyYeiaaNtVKb6mhQiz3inzztkIL0FIn6pT5SNXIUGS
-	kvAauCgIqD44eRt7C1h5r2QA+QvNjRu7JEXwj95aDopHMa/zDItCfzFgceKarLkk11lLhb8BYrR
-	kqXgrv7Pd1dTBnRgo4b41y4GHDSbW2Kdno2TM583x5ZIKC57PV7FoTys=
-X-Google-Smtp-Source: AGHT+IGeF15yKLNNo1r8a8INaqF6xkYgfxfTQUNCS6v3ZgwGxHAJepaofrIpUvF9xjWF8HtBe5dVBrxfEzvhODoYQitLfeZnQdYv
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C1579E1;
+	Mon, 17 Mar 2025 20:05:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.164
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742241944; cv=pass; b=M+JdsfHsgkb4U1sR8EBT2SXpAaX403jttp1VvdJFXB/yHIYuNBo/plLePlW+xE8PzxouEkZBtf1uZ7FhTsiFQ6nX25dczFWlYRnzUarl632ZIbBZH6s9iyrn0ai1MUyu06N3fjAiSPXYd0xUzeML5AUCWaWfV1uQkY/77axfA6o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742241944; c=relaxed/simple;
+	bh=U6GrnPSi2yFmpgTKSdcqG84giw5n2Hxx/Ub9Os6ddrU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tCH5L9mUROQdYhjZL8iY3+twlrww5i1oDMuHdO0Mt0ebxVOlgv85v0ghbgxJGtzXKqaPLZkBht0v6DAuOYu2Qohj0BRoYfo0WpUi278VwV2ChZQL5hxcA/C2QGojMwX4nJaD6VdX/wXLd6qA6D+8+/csHN5R3j1Oza8qluH4eGI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fossekall.de; spf=pass smtp.mailfrom=a98shuttle.de; dkim=pass (2048-bit key) header.d=fossekall.de header.i=@fossekall.de header.b=Cac2+CLl; dkim=permerror (0-bit key) header.d=fossekall.de header.i=@fossekall.de header.b=7iLd6Nzb; arc=pass smtp.client-ip=81.169.146.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fossekall.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=a98shuttle.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=fossekall.de header.i=@fossekall.de header.b="Cac2+CLl";
+	dkim=permerror (0-bit key) header.d=fossekall.de header.i=@fossekall.de header.b="7iLd6Nzb"
+ARC-Seal: i=1; a=rsa-sha256; t=1742241939; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=iMaN/0r9fiKsQjO4zTbmKe41l7f7uYypplty658bV7ICObCTk765thwPK3NarMsrvU
+    gm+wzAUVxhZqNwcH6R0PQ8F4CuWtnszhSWFyspZ33TShFOCQLsjsTAV23BmCD5g1Jj7m
+    IC31BMIe/orZZ0M7NaVc78AAlDbls78DKb4gnUCtMLCxdK/GzQFQ+3SAtPFNJFtuLI8q
+    /KGPt+sGC20aMHo3KD6FqrsextiVDxKoarGQ+vibDtYArNTjJYs4ercUTHVsE1IObf+x
+    P5k8BdJmHPT1WFJVta0sWWvGmtNP5G0yy4Hk9JKdOHN5ET+umnVhG5GxUO6yOtNa5KZV
+    mpZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1742241939;
+    s=strato-dkim-0002; d=strato.com;
+    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=3kkBE2FADa1BSfO/iHOVTvgNaF7Wi7L3lOA9hYb6Sxg=;
+    b=LAmQMt9GD2imJ5RQRFZ6hErwewcLTxQmgc6FYojsj2A/5wmrAuCBfv3H/OIMAzKQRr
+    VpqgSguT9ZgC+GvhoA3Mqn7u36vXOPx0FgGUIGs3HkPMvlTCwkP1OAsoFzPDlEwonDj2
+    o032h/btULbxojf6DxECckCZKVCi7bCGr6gLUqUfJEFRqiJBLdpHjcDzFQL9jTGQmR5R
+    8eF40EcxX8gXdxSOIg/2mawHakCf/9KZR4s9W4Dhqns/4iwFYlAqurzfPKoZ3QEHHG6t
+    h2GXQtpbhpMOz5iG6/ct+REL3EqriJ2s1StzygdFDIpZsHnrotid+tIMxGwUzNOFeSMf
+    tFqg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1742241939;
+    s=strato-dkim-0002; d=fossekall.de;
+    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=3kkBE2FADa1BSfO/iHOVTvgNaF7Wi7L3lOA9hYb6Sxg=;
+    b=Cac2+CLlV+INs33cHUh4EGOzAZyXQgxW5ea5i1pFGu4zsQKM1sVVHb1f7NUimHeoIy
+    UqcbRi0kuzQWjY6/LkrrCE6XorXe6aGfeRFFt19lF5r3//jrzu5yn+3mUk8spZ80lNvc
+    Rg1TIXPptcdDMZQqSMeZKa8Rf6Wz6dAPIwbeSy5ZTdKyBjyoeKgCXxEoDmcwuuQYAbOh
+    VJaIeHyJfJ47wiO9EciALFrocRZ1H5kxOq7SKlTgqJ+Ko7zPonT8t4tf1HefGMHxNIBw
+    naZVP4x2R3AwcgB0o+ANGlBSmftvNT5bPyQzVdZnJk3gC8OFK01t/LG0P15IWvyek4hg
+    wREg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1742241939;
+    s=strato-dkim-0003; d=fossekall.de;
+    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=3kkBE2FADa1BSfO/iHOVTvgNaF7Wi7L3lOA9hYb6Sxg=;
+    b=7iLd6Nzb9gOrTv5iwwKfJoTyI5Lsunwwxt+GZUC6WeHSOv7k6zQPDpUMrjef+IujnL
+    BpVNJIupFdVgYQ5+0/Aw==
+X-RZG-AUTH: ":O2kGeEG7b/pS1EzgE2y7nF0STYsSLflpbjNKxx7cGrBdao6FTL4AJcMdm+lap4JEHkzok9eyEg=="
+Received: from aerfugl
+    by smtp.strato.de (RZmta 51.3.0 AUTH)
+    with ESMTPSA id f28b3512HK5cFzz
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 17 Mar 2025 21:05:38 +0100 (CET)
+Received: from koltrast.home ([192.168.1.27] helo=a98shuttle.de)
+	by aerfugl with smtp (Exim 4.96)
+	(envelope-from <michael@a98shuttle.de>)
+	id 1tuGiN-00085O-1C;
+	Mon, 17 Mar 2025 21:05:35 +0100
+Received: (nullmailer pid 93665 invoked by uid 502);
+	Mon, 17 Mar 2025 20:05:35 -0000
+From: Michael Klein <michael@fossekall.de>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Michael Klein <michael@fossekall.de>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [net-next v4 1/3] net: phy: realtek: Clean up RTL8211E ExtPage access
+Date: Mon, 17 Mar 2025 21:05:30 +0100
+Message-Id: <20250317200532.93620-2-michael@fossekall.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250317200532.93620-1-michael@fossekall.de>
+References: <20250317200532.93620-1-michael@fossekall.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1d8e:b0:3cf:bb6e:3065 with SMTP id
- e9e14a558f8ab-3d48397f585mr130592785ab.0.1742241867792; Mon, 17 Mar 2025
- 13:04:27 -0700 (PDT)
-Date: Mon, 17 Mar 2025 13:04:27 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67d8804b.050a0220.2ca2c6.006b.GAE@google.com>
-Subject: [syzbot] [wireless?] INFO: trying to register non-static key in cfg80211_dev_free
-From: syzbot <syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
 
-Hello,
+- Factor out RTL8211E extension page access code to
+  rtl8211e_modify_ext_page()/rtl8211e_read_ext_page() and add some
+  related #define:s
+- Group RTL8211E_* and RTL8211F_* #define:s
+- Clean up rtl8211e_config_init()
 
-syzbot found the following issue on:
-
-HEAD commit:    4003c9e78778 Merge tag 'net-6.14-rc7' of git://git.kernel...
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1763e04c580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=317038cbd53153e8
-dashboard link: https://syzkaller.appspot.com/bug?extid=aaf0488c83d1d5f4f029
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12c5ddb0580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16d2b03f980000
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-4003c9e7.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/ce870bfb8bac/vmlinux-4003c9e7.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/195015b7ce43/bzImage-4003c9e7.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com
-
-RBP: 0000000000000001 R08: 00007ffc330c8967 R09: 000055557c17e4c0
-R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000004
-R13: 00007fb851c063fc R14: 00007fb851bd6334 R15: 00007fb851c063e4
- </TASK>
-INFO: trying to register non-static key.
-The code is fine but needs lockdep annotation, or maybe
-you didn't initialize this object before use?
-turning off the locking correctness validator.
-CPU: 0 UID: 0 PID: 5935 Comm: syz-executor550 Not tainted 6.14.0-rc6-syzkaller-00103-g4003c9e78778 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- assign_lock_key kernel/locking/lockdep.c:983 [inline]
- register_lock_class+0xc39/0x1240 kernel/locking/lockdep.c:1297
- __lock_acquire+0x135/0x3c40 kernel/locking/lockdep.c:5103
- lock_acquire.part.0+0x11b/0x380 kernel/locking/lockdep.c:5851
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0x3a/0x60 kernel/locking/spinlock.c:162
- cfg80211_dev_free+0x30/0x3d0 net/wireless/core.c:1196
- device_release+0xa1/0x240 drivers/base/core.c:2568
- kobject_cleanup lib/kobject.c:689 [inline]
- kobject_release lib/kobject.c:720 [inline]
- kref_put include/linux/kref.h:65 [inline]
- kobject_put+0x1e4/0x5a0 lib/kobject.c:737
- put_device+0x1f/0x30 drivers/base/core.c:3774
- wiphy_free net/wireless/core.c:1224 [inline]
- wiphy_new_nm+0x1c1f/0x2160 net/wireless/core.c:562
- ieee80211_alloc_hw_nm+0x1b7a/0x2260 net/mac80211/main.c:835
- mac80211_hwsim_new_radio+0x1d6/0x54e0 drivers/net/wireless/virtual/mac80211_hwsim.c:5185
- hwsim_new_radio_nl+0xb42/0x12b0 drivers/net/wireless/virtual/mac80211_hwsim.c:6242
- genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2533
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1312 [inline]
- netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1338
- netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1882
- sock_sendmsg_nosec net/socket.c:718 [inline]
- __sock_sendmsg net/socket.c:733 [inline]
- ____sys_sendmsg+0xaaf/0xc90 net/socket.c:2573
- ___sys_sendmsg+0x135/0x1e0 net/socket.c:2627
- __sys_sendmsg+0x16e/0x220 net/socket.c:2659
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb851b909e9
-Code: 48 83 c4 28 c3 e8 c7 1b 00 00 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffc330c8bc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007ffc330c8c20 RCX: 00007fb851b909e9
-RDX: 0000000020000000 RSI: 0000400000000140 RDI: 0000000000000003
-RBP: 0000000000000001 R08: 00007ffc330c8967 R09: 000055557c17e4c0
-R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000004
-R13: 00007fb851c063fc R14: 00007fb851bd6334 R15: 00007fb851c063e4
- </TASK>
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 5935 at net/wireless/core.c:1197 cfg80211_dev_free+0x2e7/0x3d0 net/wireless/core.c:1197
-Modules linked in:
-CPU: 0 UID: 0 PID: 5935 Comm: syz-executor550 Not tainted 6.14.0-rc6-syzkaller-00103-g4003c9e78778 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:cfg80211_dev_free+0x2e7/0x3d0 net/wireless/core.c:1197
-Code: 00 00 49 8b bd e0 08 00 00 e8 85 7a 69 f7 4c 89 ef 48 83 c4 10 5b 5d 41 5c 41 5d 41 5e 41 5f e9 6f 7a 69 f7 e8 8a 0c 11 f7 90 <0f> 0b 90 e9 6f fd ff ff 4c 89 f7 e8 b9 2b 74 f7 e9 aa fe ff ff 4c
-RSP: 0018:ffffc90003e371b8 EFLAGS: 00010093
-RAX: 0000000000000000 RBX: 0000000000000293 RCX: ffffffff81972d2d
-RDX: ffff88802721c880 RSI: ffffffff8aa8e456 RDI: ffffc90003e37128
-RBP: ffff8880121b06a8 R08: 0000000000000001 R09: fffff520007c6e25
-R10: 0000000000000003 R11: 0000000000000001 R12: ffff8880121b06b8
-R13: ffff8880121b0000 R14: ffff8881050d1b80 R15: 0000000000000000
-FS:  000055557c17d380(0000) GS:ffff88806a600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000400000001ac0 CR3: 00000000122c0000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- device_release+0xa1/0x240 drivers/base/core.c:2568
- kobject_cleanup lib/kobject.c:689 [inline]
- kobject_release lib/kobject.c:720 [inline]
- kref_put include/linux/kref.h:65 [inline]
- kobject_put+0x1e4/0x5a0 lib/kobject.c:737
- put_device+0x1f/0x30 drivers/base/core.c:3774
- wiphy_free net/wireless/core.c:1224 [inline]
- wiphy_new_nm+0x1c1f/0x2160 net/wireless/core.c:562
- ieee80211_alloc_hw_nm+0x1b7a/0x2260 net/mac80211/main.c:835
- mac80211_hwsim_new_radio+0x1d6/0x54e0 drivers/net/wireless/virtual/mac80211_hwsim.c:5185
- hwsim_new_radio_nl+0xb42/0x12b0 drivers/net/wireless/virtual/mac80211_hwsim.c:6242
- genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2533
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1312 [inline]
- netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1338
- netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1882
- sock_sendmsg_nosec net/socket.c:718 [inline]
- __sock_sendmsg net/socket.c:733 [inline]
- ____sys_sendmsg+0xaaf/0xc90 net/socket.c:2573
- ___sys_sendmsg+0x135/0x1e0 net/socket.c:2627
- __sys_sendmsg+0x16e/0x220 net/socket.c:2659
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb851b909e9
-Code: 48 83 c4 28 c3 e8 c7 1b 00 00 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffc330c8bc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007ffc330c8c20 RCX: 00007fb851b909e9
-RDX: 0000000020000000 RSI: 0000400000000140 RDI: 0000000000000003
-RBP: 0000000000000001 R08: 00007ffc330c8967 R09: 000055557c17e4c0
-R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000004
-R13: 00007fb851c063fc R14: 00007fb851bd6334 R15: 00007fb851c063e4
- </TASK>
-
-
+Signed-off-by: Michael Klein <michael@fossekall.de>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/phy/realtek/realtek_main.c | 49 ++++++++++++++------------
+ 1 file changed, 27 insertions(+), 22 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index 7a0b19d66aca..58ec16cc8061 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -28,13 +28,21 @@
+ 
+ #define RTL821x_INSR				0x13
+ 
+-#define RTL821x_EXT_PAGE_SELECT			0x1e
++#define RTL8211E_EXT_PAGE_SELECT		0x1e
+ #define RTL821x_PAGE_SELECT			0x1f
+ 
++#define RTL8211E_SET_EXT_PAGE			0x07
++
++#define RTL8211E_CTRL_DELAY			BIT(13)
++#define RTL8211E_TX_DELAY			BIT(12)
++#define RTL8211E_RX_DELAY			BIT(11)
++
+ #define RTL8211F_PHYCR1				0x18
+ #define RTL8211F_PHYCR2				0x19
+ #define RTL8211F_INSR				0x1d
+ 
++#define RTL8211F_CLKOUT_EN			BIT(0)
++
+ #define RTL8211F_LEDCR				0x10
+ #define RTL8211F_LEDCR_MODE			BIT(15)
+ #define RTL8211F_LEDCR_ACT_TXRX			BIT(4)
+@@ -51,12 +59,6 @@
+ #define RTL8211F_ALDPS_ENABLE			BIT(2)
+ #define RTL8211F_ALDPS_XTAL_OFF			BIT(12)
+ 
+-#define RTL8211E_CTRL_DELAY			BIT(13)
+-#define RTL8211E_TX_DELAY			BIT(12)
+-#define RTL8211E_RX_DELAY			BIT(11)
+-
+-#define RTL8211F_CLKOUT_EN			BIT(0)
+-
+ #define RTL8201F_ISR				0x1e
+ #define RTL8201F_ISR_ANERR			BIT(15)
+ #define RTL8201F_ISR_DUPLEX			BIT(13)
+@@ -134,6 +136,21 @@ static int rtl821x_write_page(struct phy_device *phydev, int page)
+ 	return __phy_write(phydev, RTL821x_PAGE_SELECT, page);
+ }
+ 
++static int rtl8211e_modify_ext_page(struct phy_device *phydev, u16 ext_page,
++				    u32 regnum, u16 mask, u16 set)
++{
++	int oldpage, ret = 0;
++
++	oldpage = phy_select_page(phydev, RTL8211E_SET_EXT_PAGE);
++	if (oldpage >= 0) {
++		ret = __phy_write(phydev, RTL8211E_EXT_PAGE_SELECT, ext_page);
++		if (ret == 0)
++			ret = __phy_modify(phydev, regnum, mask, set);
++	}
++
++	return phy_restore_page(phydev, oldpage, ret);
++}
++
+ static int rtl821x_probe(struct phy_device *phydev)
+ {
+ 	struct device *dev = &phydev->mdio.dev;
+@@ -600,7 +617,8 @@ static int rtl8211f_led_hw_control_set(struct phy_device *phydev, u8 index,
+ 
+ static int rtl8211e_config_init(struct phy_device *phydev)
+ {
+-	int ret = 0, oldpage;
++	const u16 delay_mask = RTL8211E_CTRL_DELAY |
++		RTL8211E_TX_DELAY | RTL8211E_RX_DELAY;
+ 	u16 val;
+ 
+ 	/* enable TX/RX delay for rgmii-* modes, and disable them for rgmii. */
+@@ -630,20 +648,7 @@ static int rtl8211e_config_init(struct phy_device *phydev)
+ 	 * 12 = RX Delay, 11 = TX Delay
+ 	 * 10:0 = Test && debug settings reserved by realtek
+ 	 */
+-	oldpage = phy_select_page(phydev, 0x7);
+-	if (oldpage < 0)
+-		goto err_restore_page;
+-
+-	ret = __phy_write(phydev, RTL821x_EXT_PAGE_SELECT, 0xa4);
+-	if (ret)
+-		goto err_restore_page;
+-
+-	ret = __phy_modify(phydev, 0x1c, RTL8211E_CTRL_DELAY
+-			   | RTL8211E_TX_DELAY | RTL8211E_RX_DELAY,
+-			   val);
+-
+-err_restore_page:
+-	return phy_restore_page(phydev, oldpage, ret);
++	return rtl8211e_modify_ext_page(phydev, 0xa4, 0x1c, delay_mask, val);
+ }
+ 
+ static int rtl8211b_suspend(struct phy_device *phydev)
+-- 
+2.39.5
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
