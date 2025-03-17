@@ -1,167 +1,200 @@
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA8179D2;
-	Mon, 17 Mar 2025 04:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A07638DEC
+	for <netdev@vger.kernel.org>; Mon, 17 Mar 2025 04:28:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742184468; cv=none; b=NOeGywel7+s6wobB+YN8htLhqpcbfngws/izno6fV+ASl8YHM5lU+X8hyx5IDMDBMJzH/w7BVaPotI2NSSoBNvMSwX0z4DRM7rv7XtPDBVGRes2zkyDUANMaekyDcuiPOftmcaTaEcZ4xcZIKLz5z3xiqxtsF3v+JhdMcNee5mU=
+	t=1742185743; cv=none; b=qIGNzKjjwxj9KGvihU5KVZn3D+RXkmNQjU1OzXpldusgS7OZFJSTRPvOSF2nY7E1QTBOJQTdzmNwh3gvkl4lY27JDmT09sG+7xyY41Dd9O9l8otj0d1ns/Gtc1GeTO0KhjEJckscKQttj73ydiQ9APZzFwHo6imBdcMcDZlNtkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742184468; c=relaxed/simple;
-	bh=IhtH9py8CA8+Ld8RzERKZArjkqCMGLSW+c97C3UWBgk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=AO23SATw42MkVpn/WRcU7BVUbQdvexwt6hRnORjuvqs+t5XYHscvEWpKX0FAjNGCOTOP7GVcGpH4Ki8nUgTmrsWWXXITD23uohiQL8nTSSjEpANpIZAyQ8KJAuTXP/4zKMN6JE2NzMVAYtITOI2Nfe1IlIsDeGIS4zWSgCuSWX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4ZGLzx4DLyz27gks;
-	Mon, 17 Mar 2025 12:08:13 +0800 (CST)
-Received: from kwepemg200005.china.huawei.com (unknown [7.202.181.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id A8E1F1401F1;
-	Mon, 17 Mar 2025 12:07:37 +0800 (CST)
-Received: from [10.174.176.70] (10.174.176.70) by
- kwepemg200005.china.huawei.com (7.202.181.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 17 Mar 2025 12:07:36 +0800
-Message-ID: <fad4cb08-be38-4f43-ba61-db147e4d26d0@huawei.com>
-Date: Mon, 17 Mar 2025 12:07:35 +0800
+	s=arc-20240116; t=1742185743; c=relaxed/simple;
+	bh=htC2chstG2RXZKwQRcNLEg1bC1yAKoFDtn1vZBf4HKE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:In-Reply-To:
+	 Content-Type:References; b=hWiWbeJ0lwDv4uNBVQEpUuNZE7UmkMR7FsYJL7fZyUK0TUOMf4QpRHlySJ8YgtFAObG8s6W4vUnL8giQBTXiDT+8CKKhLVsNqDKV+adQwvQvFRTVGVPIWwGh1cceUV+R1gh0L4/tW9gvhiPHaou8XYaA44T67/zkC0ogOzibENA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=L0z+Glu3; arc=none smtp.client-ip=203.254.224.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="L0z+Glu3"
+Received: from epcas2p2.samsung.com (unknown [182.195.41.54])
+	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20250317042851epoutp03062acdf83cb7069dce04225b6c87fb90~tfLE7ibvk0057900579epoutp03A
+	for <netdev@vger.kernel.org>; Mon, 17 Mar 2025 04:28:51 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20250317042851epoutp03062acdf83cb7069dce04225b6c87fb90~tfLE7ibvk0057900579epoutp03A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1742185731;
+	bh=QDLrWXG8pt3LkBCgSr9AF9mFXUOQFmlcoAx/9zeoh7Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=L0z+Glu3j2F1ByjRmPGLYEirLMZ5fesE9I6zynByvXAj6iQHihyxb31mXx6gUM1sk
+	 ZQnjHMedvowWqPMNtWmPwLHk3SVekKcjJdNd2SgnjisIQdUcRoExd+scx1L/b3w+HX
+	 LGlR+FIzA6+Kqu5speSvdVB4kFsL1fCN+gUXGEjw=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+	epcas2p4.samsung.com (KnoxPortal) with ESMTP id
+	20250317042850epcas2p431023dc394375c87c2a690cdb2ad1068~tfLEC-Zva2428424284epcas2p4Z;
+	Mon, 17 Mar 2025 04:28:50 +0000 (GMT)
+Received: from epsmges2p1.samsung.com (unknown [182.195.36.99]) by
+	epsnrtp2.localdomain (Postfix) with ESMTP id 4ZGMRj707sz4x9Q6; Mon, 17 Mar
+	2025 04:28:49 +0000 (GMT)
+Received: from epcas2p2.samsung.com ( [182.195.41.54]) by
+	epsmges2p1.samsung.com (Symantec Messaging Gateway) with SMTP id
+	76.CD.23368.105A7D76; Mon, 17 Mar 2025 13:28:49 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+	epcas2p4.samsung.com (KnoxPortal) with ESMTPA id
+	20250317042849epcas2p4c48bfa439a29d8230c36c31c8bcf49fe~tfLC5AjCf2428424284epcas2p4T;
+	Mon, 17 Mar 2025 04:28:49 +0000 (GMT)
+Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
+	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20250317042849epsmtrp195ce9be0282a7507f0172c8b55730999~tfLC4AO5e1297712977epsmtrp1I;
+	Mon, 17 Mar 2025 04:28:49 +0000 (GMT)
+X-AuditID: b6c32a45-dc9f070000005b48-a1-67d7a5012c2e
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+	epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
+	1A.FC.33707.105A7D76; Mon, 17 Mar 2025 13:28:49 +0900 (KST)
+Received: from perf (unknown [10.229.95.91]) by epsmtip2.samsung.com
+	(KnoxPortal) with ESMTPA id
+	20250317042848epsmtip29da5f164d5738813e7ba22a6e5610290~tfLCixU8d1052310523epsmtip2G;
+	Mon, 17 Mar 2025 04:28:48 +0000 (GMT)
+Date: Mon, 17 Mar 2025 13:32:48 +0900
+From: Youngmin Nam <youngmin.nam@samsung.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, ncardwell@google.com, edumazet@google.com,
+	kuba@kernel.org, davem@davemloft.net, dsahern@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, guo88.liu@samsung.com, yiwang.cai@samsung.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	joonki.min@samsung.com, hajun.sung@samsung.com, d7271.choe@samsung.com,
+	sw.ju@samsung.com, dujeong.lee@samsung.com, ycheng@google.com,
+	yyd@google.com, kuro@kuroa.me, cmllamas@google.com, willdeacon@google.com,
+	maennich@google.com, gregkh@google.com, Lorenzo Colitti
+	<lorenzo@google.com>, Jason Xing <kerneljasonxing@gmail.com>, Youngmin Nam
+	<youngmin.nam@samsung.com>
+Subject: Re: [PATCH 2/2] tcp: fix forever orphan socket caused by tcp_abort
+Message-ID: <Z9el8JIHMsRbFRSd@perf>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] bonding: check xdp prog when set bond mode
-To: Nikolay Aleksandrov <razor@blackwall.org>,
-	=?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	<jv@jvosburgh.net>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<ast@kernel.org>, <daniel@iogearbox.net>, <hawk@kernel.org>,
-	<john.fastabend@gmail.com>, <joamaki@gmail.com>
-CC: <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<bpf@vger.kernel.org>
-References: <20250314073549.1030998-1-wangliang74@huawei.com>
- <87y0x7rkck.fsf@toke.dk> <21d52659-622a-4b2a-b091-787bf0f5d67f@blackwall.org>
- <96a4043b-fdac-4ca1-a7b9-a6352b1d7dfe@blackwall.org>
-From: Wang Liang <wangliang74@huawei.com>
-In-Reply-To: <96a4043b-fdac-4ca1-a7b9-a6352b1d7dfe@blackwall.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemg200005.china.huawei.com (7.202.181.32)
+In-Reply-To: <2025031411-sandbag-scabby-eb1c@gregkh>
+X-Brightmail-Tracker: H4sIAAAAAAAAA02TfUybVRTGd/u2fdsmmA4Y3HVkwc4RmZa1WMoFgYgiK+syMLrMj2T1lb4W
+	QmlLPwg6zSof5cMJQzZBNmaBLGNVxyRYO0oHFgYMTNSR0oxtwYFjogVGx3DFMGxpmf73Oyfn
+	uc859+QwsNAynMPIV+pIjZJQcOksqmUgVsQD51xy/siQCC33X8fRhL0eR2d+Lqeiiz0VFDRr
+	aqKiu0PTOJpd8WKorL2TjhpOAlTadx1D03UjdOS0LWDIZmnE0S+WWhpyDNzD0XjPGTrqHFsA
+	aMXuxlHVLTsVDZki0MqYGyDTd9MAVcw8wFGl9y8qWp5x0tHScCmO2vs9OCprvUh9KUrcfeEG
+	RXy5+TYuNnXpxV3marrYVIuL+1q+wcWLV5x0cW23GYgfdO3MYb5dkJJHEjJSE00qc1WyfKU8
+	lSt5XfqKNEHEF/AESSiRG60kCslUbsaBHF5mvsI3Pze6mFDofakcQqvl7k1L0aj0OjI6T6XV
+	pXJJtUyhTlTHaYlCrV4pj1OSumQBnx+f4Ct8tyDvZt8CRT3PKWlZclMNYDCiBjAZkC2EI5Wn
+	QA1gMULZVgDv9U7jgcADoPfvNsqTYGW0gr4pcVrNQcllAL+oHg9K7gBY7bYBfxWVvRt2rd2i
+	+JnO5kHLyOONfDj7WTh3dZLqZ4x9nAanFo75OYwtgRP9p3A/h7B3QavlRpC3wmtf/u6rZzCY
+	Pue7P73v94Ls00x4ybOMBTrKgK3TV4LdhcE/h7vxAHPgXJ0xyFpomJrEAuJyAEddfwTFL8Dm
+	2UrgN8DYeXDcxPIj9PUwuNnmU7BqYA0PpENglTE0IIyBqycvgQBHQVt7R/BBMbS7vbTAlywB
+	uLj4CDsBdjb/b5rm/8yaNxyehyabhx5I74DnHzMCGAs7e/aaAM0MIki1tlBOauPVgif7zVUV
+	doGNa9jzqhU0zN+PcwAKAzgAZGDc8JC6Npc8NERGfPAhqVFJNXoFqXWABN9m6jHOtlyV75yU
+	OqlAmMQXikSCxPgEfiI3MuSotVweypYTOrKAJNWkZlNHYTA5Boqd83I1PVc0qD1SZD5u321+
+	rXHLpLrxmTfOlxQlPaR+4s2spzVxzKWHt6UVJxLf1qjckaznXMKi+z9c3b76aF9TgbC4KHn0
+	yL53vjLu+Lq3o6Mn/WFP1Ge/UiRnixUVFXf4Mc7Kp5syRPah9SnJcLzUS6TE1Xa+d3Dr8YT1
+	gZIfcz6KUWw5PaMs1/MstwFwhOnWkz+VxMR/DscPWX6jrTLGeJRd4MXea0SsMXvh+yxmlq1l
+	RLCWb6C8acg68NY/jWNpxqNVN/nGaklr5LGqbOmFiY8b1p2y/FVW+UBmN8twsDQtfP/a4SVP
+	9nyDy7W94myMtfbQ/tE2jwzrdJxLn0sXcqnaPEKwB9NoiX8B9hof45YEAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Ra0hTYRjHfXeOO2eD0Wmzer2UNRNipSkVvKCoFNUpi6L6IF2oUzuucpuy
+	qVRQWSk5P5iZpi2jlaVpOmnoZpelTXPLkkpbNrMkzUs2FS8tLbScFvXtx/P//x4eeEhM2ID7
+	kEeUiaxKycjFXD5urBP7B4HbrbIQ8wAPjdU2E+it+SKBCl6m4kj/II2DenT5OOpu6CRQj2sC
+	Q+cKK7joUg5AZ2uaMdR5wcZF9oeDGHpozCPQK2OmJ7LU9RKo5UEBF1U8HwTIZXYSKL3djKMG
+	3Xzkeu4ESHevE6C0rlECnZ/4iqOxLjsXDVvPEqiwdoRA527o8Sg/urLEwaHvaz8QtM6QRBtK
+	NVxal0nQNdfKCHrosZ1LZ1aWAnrUsGg7bzc/XMrKjySzqpURB/iHdRmNIKEcHmssD0kB17wy
+	AI+E1Gpory4FGYBPCikTgF8z7oPZwA++L2nxnGUR7Eit95wtdQD4vuXMTAmnAqFhsp3jZi4V
+	BI22qZm5F7UMfnnahrsFjMryhJfHbDMlERUN39bmEm4WUAGw2uggZrcOA3ilqedPMBc+u/IZ
+	dzNGSeC7qS/TMjnNvrB4inQjb/rs7hexWYDS/ido/xO0/wQdwErBPDZBrZApDiWEBqsZhTpJ
+	KQs+FK8wgJlXS3ZUg6KKyWAL4JDAAiCJib0EF262yoQCKXP8BKuK369KkrNqC/AlcfECQYBc
+	IxVSMiaRjWPZBFb1N+WQPJ8UjnStg7xlkytrhDU3GP8cuS3TldMnt+5avmLkjli0Q3mV/2nd
+	nJPWuM6+cf1wd20dMTlwrzU0Gezd2k59FKX8NMnKDi553WsSxWcvmrfUf1Xx4pg2QXaJCQ4Z
+	FnRdjZFefJS7oSoxum1P10QhP8yh+diadTQyd4tEP2JqDFdXRpqUeczrIV36lHTz+fxX1/d7
+	kY6OImvzidhtdm/zar3r3Zv6/jVrs8OqPBQ7CcuP+A+afU1O17foXqfHwbDvRRK/KmeEdmBT
+	X/Iqx90XHtaKtoB9SwMNT6J+ucjRPSPF+UgT4h0Rd5pz6tfC9P6mfL5/7JaXJyc2hprX9+eN
+	pzBOMa4+zIRKMJWa+Q3GYDWJWQMAAA==
+X-CMS-MailID: 20250317042849epcas2p4c48bfa439a29d8230c36c31c8bcf49fe
+X-Msg-Generator: CA
+Content-Type: multipart/mixed;
+	boundary="----eH2_J4jYqvRXP4eDI3fJMDII8MgNqIHEmJE4NX.asT6eXmTC=_21c3b_"
+X-Sendblock-Type: AUTO_CONFIDENTIAL
+CMS-TYPE: 102P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250314092130epcas2p34e60b23ff983fe03195820a38fb376c5
+References: <20250314092446.852230-1-youngmin.nam@samsung.com>
+	<CGME20250314092130epcas2p34e60b23ff983fe03195820a38fb376c5@epcas2p3.samsung.com>
+	<20250314092446.852230-2-youngmin.nam@samsung.com>
+	<2025031411-sandbag-scabby-eb1c@gregkh>
+
+------eH2_J4jYqvRXP4eDI3fJMDII8MgNqIHEmJE4NX.asT6eXmTC=_21c3b_
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+
+On Fri, Mar 14, 2025 at 01:24:26PM +0100, Greg KH wrote:
+> On Fri, Mar 14, 2025 at 06:24:46PM +0900, Youngmin Nam wrote:
+> > From: Xueming Feng <kuro@kuroa.me>
+> > 
+> > commit bac76cf89816bff06c4ec2f3df97dc34e150a1c4 upstream.
+> > 
+> > We have some problem closing zero-window fin-wait-1 tcp sockets in our
+> > environment. This patch come from the investigation.
+> > 
+> > Previously tcp_abort only sends out reset and calls tcp_done when the
+> > socket is not SOCK_DEAD, aka orphan. For orphan socket, it will only
+> > purging the write queue, but not close the socket and left it to the
+> > timer.
+> > 
+> > While purging the write queue, tp->packets_out and sk->sk_write_queue
+> > is cleared along the way. However tcp_retransmit_timer have early
+> > return based on !tp->packets_out and tcp_probe_timer have early
+> > return based on !sk->sk_write_queue.
+> > 
+> > This caused ICSK_TIME_RETRANS and ICSK_TIME_PROBE0 not being resched
+> > and socket not being killed by the timers, converting a zero-windowed
+> > orphan into a forever orphan.
+> > 
+> > This patch removes the SOCK_DEAD check in tcp_abort, making it send
+> > reset to peer and close the socket accordingly. Preventing the
+> > timer-less orphan from happening.
+> > 
+> > According to Lorenzo's email in the v1 thread, the check was there to
+> > prevent force-closing the same socket twice. That situation is handled
+> > by testing for TCP_CLOSE inside lock, and returning -ENOENT if it is
+> > already closed.
+> > 
+> > The -ENOENT code comes from the associate patch Lorenzo made for
+> > iproute2-ss; link attached below, which also conform to RFC 9293.
+> > 
+> > At the end of the patch, tcp_write_queue_purge(sk) is removed because it
+> > was already called in tcp_done_with_error().
+> > 
+> > p.s. This is the same patch with v2. Resent due to mis-labeled "changes
+> > requested" on patchwork.kernel.org.
+> > 
+> > Link: https://protect2.fireeye.com/v1/url?k=f1caf90b-ae51376f-f1cb7244-000babda0201-1111684dae24e0cf&q=1&e=32bd2804-1687-48c6-945d-f20eded99c42&u=https%3A%2F%2Fpatchwork.ozlabs.org%2Fproject%2Fnetdev%2Fpatch%2F1450773094-7978-3-git-send-email-lorenzo%40google.com%2F
+> > Fixes: c1e64e298b8c ("net: diag: Support destroying TCP sockets.")
+> > Signed-off-by: Xueming Feng <kuro@kuroa.me>
+> > Tested-by: Lorenzo Colitti <lorenzo@google.com>
+> > Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+> > Reviewed-by: Eric Dumazet <edumazet@google.com>
+> > Link: https://protect2.fireeye.com/v1/url?k=66416ec8-39daa0ac-6640e587-000babda0201-21346ca5121765eb&q=1&e=32bd2804-1687-48c6-945d-f20eded99c42&u=https%3A%2F%2Fpatch.msgid.link%2F20240826102327.1461482-1-kuro%40kuroa.me
+> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> > Cc: <stable@vger.kernel.org> # v5.10+
+> 
+> Does not apply to 6.1.y or older, what did you want this applied to?
+> 
+> thanks,
+> 
+> greg k-h
+> 
+Hi Greg,
+
+Sorry about that. Let me resend these patches for 6.1 and 5.15.
+
+As for 5.10, it seems to have more dependencies for the backport.
+I think the maintainer should handle it to ensure a safe backport.
+
+------eH2_J4jYqvRXP4eDI3fJMDII8MgNqIHEmJE4NX.asT6eXmTC=_21c3b_
+Content-Type: text/plain; charset="utf-8"
 
 
-在 2025/3/14 18:44, Nikolay Aleksandrov 写道:
-> On 3/14/25 12:22 PM, Nikolay Aleksandrov wrote:
->> On 3/14/25 12:13 PM, Toke Høiland-Jørgensen wrote:
->>> Wang Liang <wangliang74@huawei.com> writes:
->>>
->>>> Following operations can trigger a warning[1]:
->>>>
->>>>      ip netns add ns1
->>>>      ip netns exec ns1 ip link add bond0 type bond mode balance-rr
->>>>      ip netns exec ns1 ip link set dev bond0 xdp obj af_xdp_kern.o sec xdp
->>>>      ip netns exec ns1 ip link set bond0 type bond mode broadcast
->>>>      ip netns del ns1
->>>>
->>>> When delete the namespace, dev_xdp_uninstall() is called to remove xdp
->>>> program on bond dev, and bond_xdp_set() will check the bond mode. If bond
->>>> mode is changed after attaching xdp program, the warning may occur.
->>>>
->>>> Some bond modes (broadcast, etc.) do not support native xdp. Set bond mode
->>>> with xdp program attached is not good. Add check for xdp program when set
->>>> bond mode.
->>>>
->>>>      [1]
->>>>      ------------[ cut here ]------------
->>>>      WARNING: CPU: 0 PID: 11 at net/core/dev.c:9912 unregister_netdevice_many_notify+0x8d9/0x930
->>>>      Modules linked in:
->>>>      CPU: 0 UID: 0 PID: 11 Comm: kworker/u4:0 Not tainted 6.14.0-rc4 #107
->>>>      Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014
->>>>      Workqueue: netns cleanup_net
->>>>      RIP: 0010:unregister_netdevice_many_notify+0x8d9/0x930
->>>>      Code: 00 00 48 c7 c6 6f e3 a2 82 48 c7 c7 d0 b3 96 82 e8 9c 10 3e ...
->>>>      RSP: 0018:ffffc90000063d80 EFLAGS: 00000282
->>>>      RAX: 00000000ffffffa1 RBX: ffff888004959000 RCX: 00000000ffffdfff
->>>>      RDX: 0000000000000000 RSI: 00000000ffffffea RDI: ffffc90000063b48
->>>>      RBP: ffffc90000063e28 R08: ffffffff82d39b28 R09: 0000000000009ffb
->>>>      R10: 0000000000000175 R11: ffffffff82d09b40 R12: ffff8880049598e8
->>>>      R13: 0000000000000001 R14: dead000000000100 R15: ffffc90000045000
->>>>      FS:  0000000000000000(0000) GS:ffff888007a00000(0000) knlGS:0000000000000000
->>>>      CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->>>>      CR2: 000000000d406b60 CR3: 000000000483e000 CR4: 00000000000006f0
->>>>      Call Trace:
->>>>       <TASK>
->>>>       ? __warn+0x83/0x130
->>>>       ? unregister_netdevice_many_notify+0x8d9/0x930
->>>>       ? report_bug+0x18e/0x1a0
->>>>       ? handle_bug+0x54/0x90
->>>>       ? exc_invalid_op+0x18/0x70
->>>>       ? asm_exc_invalid_op+0x1a/0x20
->>>>       ? unregister_netdevice_many_notify+0x8d9/0x930
->>>>       ? bond_net_exit_batch_rtnl+0x5c/0x90
->>>>       cleanup_net+0x237/0x3d0
->>>>       process_one_work+0x163/0x390
->>>>       worker_thread+0x293/0x3b0
->>>>       ? __pfx_worker_thread+0x10/0x10
->>>>       kthread+0xec/0x1e0
->>>>       ? __pfx_kthread+0x10/0x10
->>>>       ? __pfx_kthread+0x10/0x10
->>>>       ret_from_fork+0x2f/0x50
->>>>       ? __pfx_kthread+0x10/0x10
->>>>       ret_from_fork_asm+0x1a/0x30
->>>>       </TASK>
->>>>      ---[ end trace 0000000000000000 ]---
->>>>
->>>> Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
->>>> Signed-off-by: Wang Liang <wangliang74@huawei.com>
->>>> ---
->>>>   drivers/net/bonding/bond_options.c | 3 +++
->>>>   1 file changed, 3 insertions(+)
->>>>
->>>> diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
->>>> index 327b6ecdc77e..127181866829 100644
->>>> --- a/drivers/net/bonding/bond_options.c
->>>> +++ b/drivers/net/bonding/bond_options.c
->>>> @@ -868,6 +868,9 @@ static bool bond_set_xfrm_features(struct bonding *bond)
->>>>   static int bond_option_mode_set(struct bonding *bond,
->>>>   				const struct bond_opt_value *newval)
->>>>   {
->>>> +	if (bond->xdp_prog)
->>>> +		return -EOPNOTSUPP;
->>>> +
->>> Should we allow changing as long as the new mode also supports XDP?
->>>
->>> -Toke
->>>
->>>
->> +1
->> I think we should allow it, the best way probably is to add a new option
->> BOND_VALFLAG_XDP_UNSUPP (for example) as a bond option flag and to set
->> it in bond_options.c for each mode that doesn't support XDP, then you
->> can do the check in a generic way (for any option) in
->> bond_opt_check_deps. Any bond option that can't be changed with XDP prog
-> err, I meant any bond option's value that isn't supported with XDP, for
-> a whole option it would be a bit different
-Thanks for your suggestions!
-
-When install xdp prog, bond_xdp_set() use bond_xdp_check() to check 
-whether the bond mode support xdp.
-
-When uninstall xdp prog, the paramter prog of bond_xdp_set() is NULL. 
-How about not call bond_xdp_check() to avoid the warning when the prog 
-is NULL, like:
-
-static int bond_xdp_set(struct net_device *dev, struct bpf_prog *prog,
-             struct netlink_ext_ack *extack)
-     ...
-     if (prog && !bond_xdp_check(bond))
->> should have that flag set.
->>
->> Cheers,
->>   Nik
->>
->
+------eH2_J4jYqvRXP4eDI3fJMDII8MgNqIHEmJE4NX.asT6eXmTC=_21c3b_--
