@@ -1,220 +1,137 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A97222570
-	for <netdev@vger.kernel.org>; Mon, 17 Mar 2025 09:29:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80922253E4;
+	Mon, 17 Mar 2025 09:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742203762; cv=none; b=sD9PS3b3394qxnIWSbwAdR9L5aedvglP6vONcNXzg7w/osvpczM1bS8KBqVEdH+//wIhPgXoZB2VILlz49t5S6Kba0d39faXlfFshwfv8m2+qU8gRUlgB8W1Dj56+STS7lgt3L6zFGf0i3+Up3f88kYlWRbXXxo19ogmtUgP4nA=
+	t=1742204513; cv=none; b=IQXN186D4772MQ5R5KogOFTE0OQPjXMl3koHnC2Os5obh7sxz5eSi08rp0RLhf40TwCv2sa93GUGwSt6Z9AxA1Us7KwsFdzP7XfeIx1P+l0v49gZq8j1t+1NVCfmb+P+ECTP7mqykNIp7WFo/PlQczoDfesDQxlYXxljioA5D8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742203762; c=relaxed/simple;
-	bh=v6b1hOqA8LaA+3NZNe9pj0/6BawfIs755ND7o1Yr1G4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aXOaKu4zkbocE/L13/A/UuFSg5Nrw4aXOLE8iO6LrXYGaTo0mvApCfgsD7stGb/Y5u862gJb7SStbql3ut4OjlcJnwA4IE1XaTjSDHCFUrk2l3l9F4LtHo10K5VCk4596+0U3CciZeUE5K8YIoa9GdEV1XxpVMhphfKrhKoj6Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tu6mJ-00007m-3d; Mon, 17 Mar 2025 10:28:59 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tu6mH-000Dk8-2m;
-	Mon, 17 Mar 2025 10:28:58 +0100
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tu6mI-001857-0S;
-	Mon, 17 Mar 2025 10:28:58 +0100
-Date: Mon, 17 Mar 2025 10:28:58 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Kory Maincent <kory.maincent@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Rob Herring <robh@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	Kyle Swenson <kyle.swenson@est.tech>,
-	Dent Project <dentproject@linuxfoundation.org>,
-	kernel@pengutronix.de,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v6 02/12] net: pse-pd: Add support for reporting
- events
-Message-ID: <Z9frWsKESEaB9GcZ@pengutronix.de>
-References: <20250304-feature_poe_port_prio-v6-0-3dc0c5ebaf32@bootlin.com>
- <20250304-feature_poe_port_prio-v6-2-3dc0c5ebaf32@bootlin.com>
+	s=arc-20240116; t=1742204513; c=relaxed/simple;
+	bh=WgoXdLJiBNEJMMeoeNJzawp92D0dkUqgjc8b4u8OfM0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=o9wxpiKsL29o361GBkg/2Yk2uPhWAjKE4Y+iZ+FIPwVZsQiYYZ6HPDQM15u3bNH1tQQEn0elqFQ5y3Vb3t+0uzntCnTA2MBAvCFnitpIq31IlcO0OmvQtLrO2M2yuv6gV5VejvFLMGNiqmAGF8O3s7OUln96JXUCc3EAtMcl4qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XF+IwOx/; arc=none smtp.client-ip=209.85.219.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XF+IwOx/"
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e53a91756e5so3793288276.1;
+        Mon, 17 Mar 2025 02:41:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742204510; x=1742809310; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4XfnRDuFPcGv3nyYq3wNZc9i5NYc3wanimznJNeWrG4=;
+        b=XF+IwOx/m2sYkrMeLquRAchocuwXUhK/YnCufhRuN2Z5tBC44LgtXd5E5gmywesk84
+         gF9alZEvXFBZThyntOxGsFcMY72ODlFXz61nEA0Dd+N7euDZw0saL9N5jHNqihoDXR4v
+         H6zpORRRaRZZ+Ic75MQAvAFjNWeelCRePck1wDeJYwAWwzPvkpCqUx+e16WI8pXLZk8K
+         hFr+2JgfopBDXSwPalDMK51Q+swkiszXwA3VSULycmlv/FwLILPWc8TS/xYsDRDBEiex
+         3iYA0C57rDhOg5z0Tkj8uHy06agdubDXO7iKnyGb8zlIrkeiocM41ERmozZ7Qr+3VkzH
+         Fupg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742204510; x=1742809310;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4XfnRDuFPcGv3nyYq3wNZc9i5NYc3wanimznJNeWrG4=;
+        b=n71dItC+DjJpMZXYrgWr51m3x0kaclKXsOWa8dE1m109R025agttRjKoEIVoKBInhn
+         Zp+8uAzD9vvLcllAx/Fr2SaZonZ+7iVvFnZ9nC39RZPtIpcb7oxdXwLtAVeIcUfdPBkA
+         ORZTRKiv9g7OGZlt8ROqJxxksS9IpnR49R9+TC1ARl2DBDM/K0oOhA/VZCODG2jcGEzi
+         Ec6bCMKG3gk3dM+wTpaSW02/fDx6MLEOddZsxyQ4xFM8BVynJPC1I63bkffW7pdvzC5e
+         bJnZWmr4/4ZuptJAh6LBSBXrTF0DjRapB/Wv41PTEBF2dZGl7p77ozTNv3YALKsQ/rkA
+         seyg==
+X-Forwarded-Encrypted: i=1; AJvYcCV70dcVxXw+dMa9lL3m+Oxco1R4lQT00qAZjprT6fp34tzGSbyx9LPUjPrpERiWqrkRE9WOWVE2uIWDQibGhY51@vger.kernel.org, AJvYcCVSI6xtjPzzFeS8XDFW55h7qAjnXvH2eUrS2A7TGHOf678bDEOSrMYJaMckiq9Y0lx9XijMqowB@vger.kernel.org, AJvYcCXHieT9LkXcPWpH9OSKHN+ItOBIbeGMJSG7Swlblf6rtfI8TJGEZdNz5Kr/9ntxrZJZso4crVpRJo35Vqc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9I4j9S82V42rXFoK/lcGM3d5bsnDOPA5R1MpD0d20qC2wVTMG
+	WrEGfgaFoF2NPshssnPmNB6UFYa2H82A3+dU8wp6DuyOj2CdSb5UcSmgwEBwD/vk7foXwcmIvcz
+	dcCRa8R36jH4TF4rOzn91/BUgdBCrJKEaaWw7Dg==
+X-Gm-Gg: ASbGncsFMy2tDLIu14scUB/Km3pTK1lRSgsRvKUgrzywiYEq/Fl8koPmTGZvbxuu9zv
+	AzRpNnjD0n2f+8zyIaBvRh1Ax4q3QIpUvtt1pwyAuyJH01H2MTHCMTwEZsBTYWJm/mrk7FvxmOQ
+	RvvcczOQsNZoYEfkH7te5PF40aBfIFMqxqd03g+mQ2sw==
+X-Google-Smtp-Source: AGHT+IHecUoXKGAeLJ4sKHHMSQWvvRkqT9levx35XDLPlH6rsi48/CowlJANQ7a2C4L6J9CWmMAeDZfnMSiJVxYp+ig=
+X-Received: by 2002:a05:6902:208a:b0:e5b:3823:4176 with SMTP id
+ 3f1490d57ef6-e63f64f855amr14527392276.13.1742204510491; Mon, 17 Mar 2025
+ 02:41:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250304-feature_poe_port_prio-v6-2-3dc0c5ebaf32@bootlin.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+References: <20250312-b4-ovpn-v23-3-76066bc0a30c@openvpn.net>
+ <20250317060947.2368390-1-dqfext@gmail.com> <f4c9a29f-a5c6-464a-a659-c7ffeaf123c1@openvpn.net>
+In-Reply-To: <f4c9a29f-a5c6-464a-a659-c7ffeaf123c1@openvpn.net>
+From: Qingfang Deng <dqfext@gmail.com>
+Date: Mon, 17 Mar 2025 17:41:39 +0800
+X-Gm-Features: AQ5f1JptaNz1J3kvfSOyKipGWiLpaJWangM2TfyyVpkqlY7egoQOh0qGwq6CYZQ
+Message-ID: <CALW65jZe3JQGNcWsZtqU-B4-V-JZ6ocninxvoqMGeusMaU7C=A@mail.gmail.com>
+Subject: Re: [PATCH net-next v23 03/23] ovpn: add basic interface
+ creation/destruction/management routines
+To: Antonio Quartulli <antonio@openvpn.net>
+Cc: andrew+netdev@lunn.ch, donald.hunter@gmail.com, edumazet@google.com, 
+	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	ryazanov.s.a@gmail.com, sd@queasysnail.net, shaw.leon@gmail.com, 
+	shuah@kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Köry,
+Hi Antonio,
 
-sorry for late review.
+On Mon, Mar 17, 2025 at 5:23=E2=80=AFPM Antonio Quartulli <antonio@openvpn.=
+net> wrote:
+> >> +static void ovpn_setup(struct net_device *dev)
+> >> +{
+> >> +    netdev_features_t feat =3D NETIF_F_SG | NETIF_F_HW_CSUM | NETIF_F=
+_RXCSUM |
+> >
+> > Do not advertise NETIF_F_HW_CSUM or NETIF_F_RXCSUM, as TX/RX checksum i=
+s
+> > not handled in hardware.
+>
+> The idea behind these flags was that the OpenVPN protocol will take care
+> of authenticating packets, thus substituting what the CSUM would do here.
+> For this I wanted to avoid the stack to spend time computing the CSUM in
+> software.
 
-On Tue, Mar 04, 2025 at 11:18:51AM +0100, Kory Maincent wrote:
-> From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
-...
-> diff --git a/drivers/net/mdio/fwnode_mdio.c b/drivers/net/mdio/fwnode_mdio.c
-> index aea0f03575689..9b41d4697a405 100644
-> --- a/drivers/net/mdio/fwnode_mdio.c
-> +++ b/drivers/net/mdio/fwnode_mdio.c
-> @@ -18,7 +18,8 @@ MODULE_LICENSE("GPL");
->  MODULE_DESCRIPTION("FWNODE MDIO bus (Ethernet PHY) accessors");
->  
->  static struct pse_control *
-> -fwnode_find_pse_control(struct fwnode_handle *fwnode)
-> +fwnode_find_pse_control(struct fwnode_handle *fwnode,
-> +			struct phy_device *phydev)
->  {
->  	struct pse_control *psec;
->  	struct device_node *np;
-> @@ -30,7 +31,7 @@ fwnode_find_pse_control(struct fwnode_handle *fwnode)
->  	if (!np)
->  		return NULL;
->  
-> -	psec = of_pse_control_get(np);
-> +	psec = of_pse_control_get(np, phydev);
->  	if (PTR_ERR(psec) == -ENOENT)
->  		return NULL;
->  
-> @@ -128,15 +129,9 @@ int fwnode_mdiobus_register_phy(struct mii_bus *bus,
->  	u32 phy_id;
->  	int rc;
->  
-> -	psec = fwnode_find_pse_control(child);
-> -	if (IS_ERR(psec))
-> -		return PTR_ERR(psec);
-> -
->  	mii_ts = fwnode_find_mii_timestamper(child);
-> -	if (IS_ERR(mii_ts)) {
-> -		rc = PTR_ERR(mii_ts);
-> -		goto clean_pse;
-> -	}
-> +	if (IS_ERR(mii_ts))
-> +		return PTR_ERR(mii_ts);
->  
->  	is_c45 = fwnode_device_is_compatible(child, "ethernet-phy-ieee802.3-c45");
->  	if (is_c45 || fwnode_get_phy_id(child, &phy_id))
-> @@ -169,6 +164,12 @@ int fwnode_mdiobus_register_phy(struct mii_bus *bus,
->  			goto clean_phy;
->  	}
->  
-> +	psec = fwnode_find_pse_control(child, phy);
-> +	if (IS_ERR(psec)) {
-> +		rc = PTR_ERR(psec);
-> +		goto unregister_phy;
-> +	}
+For the RX part (NETIF_F_RXCSUM), you might be correct, but in patch
+08 you wrote:
+> /* we can't guarantee the packet wasn't corrupted before entering the
+> * VPN, therefore we give other layers a chance to check that
+> */
+> skb->ip_summed =3D CHECKSUM_NONE;
 
-Hm... we are starting to dereference the phydev pointer to a different
-framework without managing the ref-counting.
+So NETIF_F_RXCSUM has no effect.
 
-We will need to have some form of get_device(&phydev->mdio.dev).
-Normally it is done by phy_attach_direct().
+For the TX part (NETIF_F_HW_CSUM) however, I believe wireguard made
+the same mistake.
+Your code both contains the pattern:
 
-And the counterpart: put_device() or phy_device_free()
+if (skb->ip_summed =3D=3D CHECKSUM_PARTIAL && skb_checksum_help(skb)) // ..=
+.
 
- 
->  static int of_load_single_pse_pi_pairset(struct device_node *node,
-> @@ -557,6 +560,151 @@ int devm_pse_controller_register(struct device *dev,
->  }
->  EXPORT_SYMBOL_GPL(devm_pse_controller_register);
->  
-> +struct pse_irq {
-> +	struct pse_controller_dev *pcdev;
-> +	struct pse_irq_desc desc;
-> +	unsigned long *notifs;
-> +};
-> +
-> +/**
-> + * pse_to_regulator_notifs - Convert PSE notifications to Regulator
-> + *			     notifications
-> + * @notifs: PSE notifications
-> + *
-> + * Return: Regulator notifications
-> + */
-> +static unsigned long pse_to_regulator_notifs(unsigned long notifs)
-> +{
-> +	unsigned long rnotifs = 0;
-> +
-> +	if (notifs & ETHTOOL_PSE_EVENT_OVER_CURRENT)
-> +		rnotifs |= REGULATOR_EVENT_OVER_CURRENT;
-> +	if (notifs & ETHTOOL_PSE_EVENT_OVER_TEMP)
-> +		rnotifs |= REGULATOR_EVENT_OVER_TEMP;
-> +
-> +	return rnotifs;
-> +}
-> +
-> +/**
-> + * pse_control_find_phy_by_id - Find PHY attached to the pse control id
-> + * @pcdev: a pointer to the PSE
-> + * @id: index of the PSE control
-> + *
-> + * Return: PHY device pointer or NULL
-> + */
-> +static struct phy_device *
-> +pse_control_find_phy_by_id(struct pse_controller_dev *pcdev, int id)
-> +{
-> +	struct pse_control *psec;
-> +
-> +	mutex_lock(&pse_list_mutex);
-> +	list_for_each_entry(psec, &pcdev->pse_control_head, list) {
-> +		if (psec->id == id) {
-> +			mutex_unlock(&pse_list_mutex);
-> +			return psec->attached_phydev;
-> +		}
-> +	}
-> +	mutex_unlock(&pse_list_mutex);
-> +
+NETIF_F_HW_CSUM causes the upper layers to send packets with
+CHECKSUM_PARTIAL, assuming hardware offload will complete the
+checksum, but if skb_checksum_help(skb) is invoked, the checksum is
+still computed in software. This means there's no real benefit unless
+there's an actual hardware offload mechanism.
 
++Cc: zx2c4
 
-Here we should increase ref-counting withing the mutex protection:
-
-    mutex_lock(&pse_list_mutex);
-    list_for_each_entry(psec, &pcdev->pse_control_head, list) {
-        if (psec->id == id) {
-            phydev = psec->attached_phydev;
-            if (phydev)
-                get_device(&phydev->mdio.dev);  // Increase reference count
-            break;
-        }
-    }
-    mutex_unlock(&pse_list_mutex);
-
-
-May be we will need a generic function for the PHYlib: phy_device_get() ?
- 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>
+> I believe wireguard sets those flags for the same reason.
+>
+> Does it make sense to you?
+>
+> >
+> >> +                             NETIF_F_GSO | NETIF_F_GSO_SOFTWARE |
+> >> +                             NETIF_F_HIGHDMA;
+>
+>
+> Regards,
+>
+> --
+> Antonio Quartulli
+> OpenVPN Inc.
+>
