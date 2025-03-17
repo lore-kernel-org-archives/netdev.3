@@ -1,191 +1,100 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C793923A9AB
-	for <netdev@vger.kernel.org>; Mon, 17 Mar 2025 12:02:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD78619DF64
+	for <netdev@vger.kernel.org>; Mon, 17 Mar 2025 12:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742212932; cv=none; b=j/14fWD/R5JBO7uHD/QOlOUu5BChIuMPbntSP40RaA7U4adg2HecC5Mz6LcBQ1t321Gwwg4SAmX0X/5mM6P5MQJMGqH7XGE3nVWv4iQxHT1EgRYk1NroXHVSLhbbQKO11kPG6OFTqUp8fLkAH/6/anXeF4UKzw2UOWAlu+USNw8=
+	t=1742213002; cv=none; b=HvYE0SSDdaT0/POSST+D4gu2HeGriIj88FCRhWbYLYcXyOvA0A2l1I1fQM+WJFU++A0uBYrwKemwHZIjpmK20Z5PYrav9eP6yVJzxdx5+HcipU/hMcmz3oM5oGFQTjEsvn6PbQzonUvCgk6ZJ25fLljaz4xLDMf80L4LzSHWgKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742212932; c=relaxed/simple;
-	bh=PlMEiEJDam59+aty2oFc2pESN+enaEybP02730+FEq8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WBx7+ZpJOlGGs2eAZWVRn8uOr/xPFqdMfjvqdnhlBZN1LMISsgSf/IkxcW8w/rQ7pktGWMxmlhyTwzeQ5lG3n+1F53wpl0qVxkF+nG4KR5FIIwbQKT/jzUNUO3WcThvs2PvAlAB8P2XQyPV93FwNuamSrJauLi1+XfQlRi3CQd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tu99w-00020y-0U; Mon, 17 Mar 2025 13:01:32 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tu99t-000EuM-0g;
-	Mon, 17 Mar 2025 13:01:29 +0100
-Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id A87EC3DE480;
-	Mon, 17 Mar 2025 10:41:48 +0000 (UTC)
-Date: Mon, 17 Mar 2025 11:41:48 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ming Yu <a0282524688@gmail.com>
-Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, 
-	brgl@bgdev.pl, andi.shyti@kernel.org, mailhol.vincent@wanadoo.fr, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
-	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-rtc@vger.kernel.org, 
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH v8 4/7] can: Add Nuvoton NCT6694 CANFD support
-Message-ID: <20250317-outrageous-helpful-agama-39476f-mkl@pengutronix.de>
-References: <20250225081644.3524915-1-a0282524688@gmail.com>
- <20250225081644.3524915-5-a0282524688@gmail.com>
+	s=arc-20240116; t=1742213002; c=relaxed/simple;
+	bh=aLINJxXGpjNW8wHZB9DthJVcFjbeN8QFm6Qa/JaEH6A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dqWhvi5EmE6BRVO3t61zK2TKohjNN6FbDfczU/WmjEKe5Tj7+5H2ZmTk6XWXGILOzk47GjHFkZD/H4ZtxKx5lTzqq55Zj/tDrVuY8WuCdQnf9OLAeNPP+D2JLcGGNj5M8OVagXWC0616f9pcujBy6wDlimgfJDAQI0OiebSUfHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WqiG9KN1; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WqiG9KN1"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-22401f4d35aso76605095ad.2
+        for <netdev@vger.kernel.org>; Mon, 17 Mar 2025 05:03:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742213000; x=1742817800; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3oWc5E9Z1bFngKjW2yml7E2dzD8FTIkYP9J9pXuWdaA=;
+        b=WqiG9KN1ERHyJunKnokmxzFvvTgJB4sbGl131RUTNf3veL4I4yML8TKe4UhviOOqSj
+         4vFyuW6vHToQrREiFlDEs3ZzoXQoDld2tcGPWCiW4LR1uFiYoEd0El7op8o4Awk94+Dc
+         XSOG2/6st6KwzRkYcnxa5qpDV0ADtA0R4YpLkt1/Ld+1dt75KDUvBkv4clRjGUqb9vHX
+         jL2W/t8aBELPgFGg4+PRuUl/Umr/daYn8RsSbDZu+7Pdx8VHlE4By0qSI+si21LzFAs2
+         IFjdMUMzaiV6WeoK74UBzPAXlRsy/XDfbDzI6+yhISm2wWSqpdZq5N7Z1GS34XipsmgF
+         wsAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742213000; x=1742817800;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3oWc5E9Z1bFngKjW2yml7E2dzD8FTIkYP9J9pXuWdaA=;
+        b=qhTHCuALTRzOBo+IM/s0Ne75OpegyjNrKMyzwhh+buKB9Ver2wdQfB85/cvDyCU6dk
+         IG6cuCWXwonOSDPcx8/Aqzn2B2sqrbPnysgInlD/19nFY1nTpxrhs999YHfaJwtJUm4x
+         7utelMwJSjxXi5dwsgGBUlLX5bI0Vk855UlRuuBskpbdoZLOIQR9E0bmtnEog1PuTJQZ
+         lMAvQI6OjmU+LzyoZxt80mPqrDrzf16Kpa5kk7HQwxER/ebEZnbPF5zL8TsTkUtzMu3Q
+         ehMf4yacO0sCDjqLJyPbCVsBw72lHkIz9lM0mKgNuxVQ3ucdH7BSJhBe8+h3IqNhu60X
+         b8Dg==
+X-Gm-Message-State: AOJu0YyymWaQ3Oe2z1Y6fCwnzeAAAvr8IvkHmbXUmRsIVJuKi5Fets3M
+	iOgtdZafxtGUgVtnPWgeuBXCo0MuUH8CCZfKNXVIMo3yImy0p51FpWxfZJHLVDra3w==
+X-Gm-Gg: ASbGncsycwCSXunGl3yVvohQ8LDVGsPuhf0nZ5DUf5xNxcKw2svgE5DHiJlMoGnbY7H
+	Qxf4aBgGeo+qIsdtLen4FQUTxMjklvm3rqX23J+XdZf/Bf0364SZ0sF+WZtMPcQhVIbjAz7OIDA
+	/nIk+8b5CrfOEu/O/CCKIaw/WU0o3J90r/XLFqYZglR+fTNWzgoche+GcyYsM9Ta3x1HTgXc/Kg
+	k8Rs9W8DvW2vr3tekESxlXnwi9MpmJGr0u0z5ceqJxjpm1CJOlyhSUcpMq+Hn7wWxDskN5qO2s9
+	s8Dg0ITIB+gNf4OoJHWNEDH6BaKW49vzonvKyjw5KI3ZacQsDSc4YgzHA2C+nnA8K3HFG6JlbMG
+	SrxbGvR6h9msuDMmM
+X-Google-Smtp-Source: AGHT+IF9mmMQzHTCgqXH005UB7Z42fqHHUR6wFWPoiOpfd0+as0Bj2ZukRAxXdKum5WskrbHikrg4g==
+X-Received: by 2002:a17:903:2349:b0:223:4d7e:e52c with SMTP id d9443c01a7336-225e0a23febmr158267375ad.5.1742212999977;
+        Mon, 17 Mar 2025 05:03:19 -0700 (PDT)
+Received: from KERNELXING-MB0.tencent.com ([43.132.141.24])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c6bd4e02sm73045835ad.226.2025.03.17.05.03.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Mar 2025 05:03:19 -0700 (PDT)
+From: Jason Xing <kerneljasonxing@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	ncardwell@google.com,
+	kuniyu@amazon.com,
+	dsahern@kernel.org
+Cc: netdev@vger.kernel.org,
+	Jason Xing <kerneljasonxing@gmail.com>
+Subject: [PATCH net-next v4 0/2] support TCP_RTO_MIN_US and TCP_DELACK_MAX_US for set/getsockopt
+Date: Mon, 17 Mar 2025 20:03:12 +0800
+Message-Id: <20250317120314.41404-1-kerneljasonxing@gmail.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vzg54m2aeg5i4qkb"
-Content-Disposition: inline
-In-Reply-To: <20250225081644.3524915-5-a0282524688@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 
+Add set/getsockopt supports for TCP_RTO_MIN_US and TCP_DELACK_MAX_US.
 
---vzg54m2aeg5i4qkb
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v8 4/7] can: Add Nuvoton NCT6694 CANFD support
-MIME-Version: 1.0
+v4
+1. add more detailed information into commit log (Eric)
+2. use val directly in do_tcp_getsockopt (Eric)
 
-On 25.02.2025 16:16:41, Ming Yu wrote:
-[...]
+Jason Xing (2):
+  tcp: support TCP_RTO_MIN_US for set/getsockopt use
+  tcp: support TCP_DELACK_MAX_US for set/getsockopt use
 
-> diff --git a/drivers/net/can/usb/nct6694_canfd.c b/drivers/net/can/usb/nc=
-t6694_canfd.c
-> new file mode 100644
-> index 000000000000..d97fce5cdf32
-> --- /dev/null
-> +++ b/drivers/net/can/usb/nct6694_canfd.c
+ Documentation/networking/ip-sysctl.rst |  4 ++--
+ include/net/tcp.h                      |  2 +-
+ include/uapi/linux/tcp.h               |  2 ++
+ net/ipv4/tcp.c                         | 26 ++++++++++++++++++++++++--
+ net/ipv4/tcp_output.c                  |  2 +-
+ 5 files changed, 30 insertions(+), 6 deletions(-)
 
-[...]
+-- 
+2.43.5
 
-> +static const struct can_bittiming_const nct6694_can_bittiming_nominal_co=
-nst =3D {
-> +	.name =3D DRVNAME,
-> +	.tseg1_min =3D 2,
-> +	.tseg1_max =3D 256,
-> +	.tseg2_min =3D 2,
-> +	.tseg2_max =3D 128,
-> +	.sjw_max =3D 128,
-> +	.brp_min =3D 1,
-> +	.brp_max =3D 511,
-> +	.brp_inc =3D 1,
-> +};
-> +
-> +static const struct can_bittiming_const nct6694_can_bittiming_data_const=
- =3D {
-> +	.name =3D DRVNAME,
-> +	.tseg1_min =3D 1,
-> +	.tseg1_max =3D 32,
-> +	.tseg2_min =3D 1,
-> +	.tseg2_max =3D 16,
-> +	.sjw_max =3D 16,
-> +	.brp_min =3D 1,
-> +	.brp_max =3D 31,
-> +	.brp_inc =3D 1,
-> +};
-
-[...]
-
-> +static int nct6694_can_start(struct net_device *ndev)
-> +{
-> +	struct nct6694_can_priv *priv =3D netdev_priv(ndev);
-> +	const struct can_bittiming *d_bt =3D &priv->can.data_bittiming;
-> +	const struct can_bittiming *n_bt =3D &priv->can.bittiming;
-> +	struct nct6694_can_setting *setting __free(kfree) =3D NULL;
-> +	const struct nct6694_cmd_header cmd_hd =3D {
-> +		.mod =3D NCT6694_CAN_MOD,
-> +		.cmd =3D NCT6694_CAN_SETTING,
-> +		.sel =3D ndev->dev_port,
-> +		.len =3D cpu_to_le16(sizeof(*setting))
-> +	};
-> +	int ret;
-> +
-> +	setting =3D kzalloc(sizeof(*setting), GFP_KERNEL);
-> +	if (!setting)
-> +		return -ENOMEM;
-> +
-> +	setting->nbr =3D cpu_to_le32(n_bt->bitrate);
-> +	setting->dbr =3D cpu_to_le32(d_bt->bitrate);
-
-I just noticed one thing that needs clarification/documentation.
-
-You have nct6694_can_bittiming_nominal_const and
-nct6694_can_bittiming_data_const, but only pass the bit rates to your
-device.
-
-Do the bit timing const really reflect the HW limitations of your
-device?
-
-Are you sure your device uses the same algorithm as the kernel and
-calculates the same bit timing parameters as the kernel, so that the
-values given to the user space reflects the bit timing parameter chosen
-by your device?
-
-> +
-> +	if (priv->can.ctrlmode & CAN_CTRLMODE_LISTENONLY)
-> +		setting->ctrl1 |=3D cpu_to_le16(NCT6694_CAN_SETTING_CTRL1_MON);
-> +
-> +	if (priv->can.ctrlmode & CAN_CTRLMODE_FD_NON_ISO)
-> +		setting->ctrl1 |=3D cpu_to_le16(NCT6694_CAN_SETTING_CTRL1_NISO);
-> +
-> +	if (priv->can.ctrlmode & CAN_CTRLMODE_LOOPBACK)
-> +		setting->ctrl1 |=3D cpu_to_le16(NCT6694_CAN_SETTING_CTRL1_LBCK);
-> +
-> +	ret =3D nct6694_write_msg(priv->nct6694, &cmd_hd, setting);
-> +	if (ret)
-> +		return ret;
-> +
-> +	priv->can.state =3D CAN_STATE_ERROR_ACTIVE;
-> +
-> +	return 0;
-> +}
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---vzg54m2aeg5i4qkb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmfX/GkACgkQDHRl3/mQ
-kZzJDgf8DgOIcr0MWwz7wlhWys5Fxw4Vtn5MszTN3NLbf2p+jPRy/TQKbi3A7p+B
-PZFdTyo+sYOdG9csQChfdGGqWEA5cd6vIMYmIbUO1401s5U+bYudq1+h68pyfOhf
-XOKXDxnSWXlzFLw2vu2SsZ3M4svT1cU0S6NRSxPx/o4QuFfsG7KLFqwdMK+MEc8P
-CcqcJKo47KwOEcWuQm/eTq4LQFvmmKz8/6PCcrY2P99PQ9bqTkoiC7R+KMONa1p3
-f2/q875xuTHckepTB7slLcXA9K7ikoT7T865z4jHsZt5ClD3+L/j5pSa82E1kcxN
-nv4xvBHXTSmzW8wtGa6VrUWOif5cYg==
-=GQzc
------END PGP SIGNATURE-----
-
---vzg54m2aeg5i4qkb--
