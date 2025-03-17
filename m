@@ -1,71 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CF01CA81;
-	Mon, 17 Mar 2025 17:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D72D1527B4;
+	Mon, 17 Mar 2025 18:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742234196; cv=none; b=YSy/KUVX9+c55M7Vhq8avEihNkYzAKTrqt023d9A6HotuBIk+Vq15PfJuYCPcFGrxUj6sKXapz0etGFb7jnelKo3SKPN4pSzNyhr9BfsTplw+He4NE2+Q2tTigbVsbZD1LiP200iTs1vvosMkRY5CaXwT2SAUvuWBdCLuxtaz2Q=
+	t=1742234999; cv=none; b=d95OJVHh4Ka/2BmJAy4UsIc0F3pSbc36tyWwsOsDG31KZxAr6bjLIOqxoR/sllKhPLkdgIAxBXsmoaY7bgSpAhttADyQY9lh6aefq5YtfO9rPsqw2i/tI0NIISKzGJ6Ek+kx6wtwRlm4hcV4FD4SseZnL+x8N7h4xOgizkn0gLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742234196; c=relaxed/simple;
-	bh=9CIQEDMqipxZkoDlNbl4r93dgPJcZzoJUDoBfZorCPM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KAPXc/xcPshWfbXs+5lED4dw6t0yFHVE98t3PLpN4Rq8AdjgX1cilpY65TxaKGL8n8OwzwWVBpA/+JBwcoAyHH9sLiD8ruO5Pb+LayB29l9cwHSKBrONhYI4FEewrlV704uAwpYf/VtRGzs3ofrWnb2Zc8Naxz65bMrIhQysR4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o94AdjfK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742234999; c=relaxed/simple;
+	bh=S61WwX5SYcFVNzBvRGsTiux8cCXQ2421uz6PYqITOes=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=oMcbvyYcPGeUoTdl3+uidfLqZCrCRq27flD12YB8mjU/drLSLSCV/FN9gxPbdlK6dcgNKqEhJ86XDijUmMsG60Do6jm8Gu8dsrrNI25eEb7/PBNXXPww+uh+o2pwIoSq+7bTFn9xL0pJLYHnRAymOPatCJi1XGiRcEwLNngpLQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o67oqCV1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o94AdjfK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3080EC4CEE3;
-	Mon, 17 Mar 2025 17:56:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o67oqCV1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE77C4CEED;
+	Mon, 17 Mar 2025 18:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742234195;
-	bh=9CIQEDMqipxZkoDlNbl4r93dgPJcZzoJUDoBfZorCPM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o94AdjfKm1/Yr2/hu0lhVwsra56G8VnN/r+qQPiLLvZMwmDOufoziwHdQZNs7LJ5l
-	 IXpIqYmFNIjzVrKQVZKKjYXdtMdgeT21/Hbzi1skeCEBUIN/NeOF8FihS1AJkZLfd3
-	 o7BQOEV0OvtsfPTPTlM6jgRraxF4AdmBb/cQRDj1sHs2gVdIofengeUpWJlR18EVe3
-	 gqNnkBs1Ut2t4oY+KjJELsb6aoG2+ynFdIex4WMDvXZFhctY4TGaeXWwqt6F5hkKH+
-	 a7R6qdLsi5xSBMOFeaejH1FAGjYGYvANqHebGHZvNn5yh9APBvxarEPO8XzFcgUZLO
-	 grT79zH5JmxNQ==
-Date: Mon, 17 Mar 2025 17:56:32 +0000
-From: Simon Horman <horms@kernel.org>
-To: Suraj Patil <surajpatil522@gmail.com>
-Cc: isdn@linux-pingi.de, kuba@kernel.org, quic_jjohnson@quicinc.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] isdn: mISDN: Fix typo 'intervall' to 'interval' in
- hfcsusb.c
-Message-ID: <20250317175632.GJ688833@kernel.org>
-References: <20250311160637.467759-1-surajpatil522@gmail.com>
+	s=k20201202; t=1742234999;
+	bh=S61WwX5SYcFVNzBvRGsTiux8cCXQ2421uz6PYqITOes=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=o67oqCV1PP9VCQRXJUZXANOao7HKeO8o0o5AjTmcbmE8hdgnio9qjKkdoKFVQm14e
+	 LVLwssWBSgJuQqOWgWal00dYMnRoGIq21iwXmSNSi2KNdpfqUm9mdMAZPYrww/VG2+
+	 7RYtr9xDi6HwophRftsbMVuZteBtb9urP0rgvpD4g8hcsaJFjUdsRkS/iG46RwEEd3
+	 aEXH3RVQXNBsdsZQRm1sPdLOuBbGEhfrLtJgj4gVwHoDiMgiU1zyOLweUxqi9Uj1r2
+	 76k1RpQF96prgBHSDQkzowyIstoV7FKkB7+QctboOPfJPElphukXCXjQjEicBNE+MS
+	 UZnuHK305vrXA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7108D380CFF7;
+	Mon, 17 Mar 2025 18:10:35 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250311160637.467759-1-surajpatil522@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/3] mlx5: Support HWS flow meter/sampler actions in
+ FS core
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174223503427.3862374.13525687285276014271.git-patchwork-notify@kernel.org>
+Date: Mon, 17 Mar 2025 18:10:34 +0000
+References: <1741543663-22123-1-git-send-email-tariqt@nvidia.com>
+In-Reply-To: <1741543663-22123-1-git-send-email-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, gal@nvidia.com, mbloch@nvidia.com,
+ moshe@nvidia.com, saeedm@nvidia.com, leon@kernel.org, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Tue, Mar 11, 2025 at 04:06:37PM +0000, Suraj Patil wrote:
-> Signed-off-by: Suraj Patil <surajpatil522@gmail.com>
-> ---
->  drivers/isdn/hardware/mISDN/hfcsusb.c | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Sun, 9 Mar 2025 20:07:40 +0200 you wrote:
+> Hi,
 > 
-> diff --git a/drivers/isdn/hardware/mISDN/hfcsusb.c b/drivers/isdn/hardware/mISDN/hfcsusb.c
-> index e54419a4e731..ebe57c190476 100644
-> --- a/drivers/isdn/hardware/mISDN/hfcsusb.c
-> +++ b/drivers/isdn/hardware/mISDN/hfcsusb.c
-> @@ -1063,7 +1063,7 @@ rx_iso_complete(struct urb *urb)
->  
->  		fill_isoc_urb(urb, fifo->hw->dev, fifo->pipe,
->  			      context_iso_urb->buffer, num_isoc_packets,
-> -			      fifo->usb_packet_maxlen, fifo->intervall,
-> +			      fifo->usb_packet_maxlen, fifo->interval,
+> This series by Moshe adds support for flow meter and flow sampler HW
+> Steering actions in FS core level. As these actions can be shared by
+> multiple rules, these patches use refcounts to manage the HWS actions
+> sharing in FS core level.
+> 
+> [...]
 
-Perhaps it is addressed in patch 1/2 (which i am unable to locate), in
-which case the relevant change should be folded into this patch to avoid
-breaking bisection. But as this stands, with this patch (only) applied
-builds fail because there is no member called interval in struct usb_fifo.
+Here is the summary with links:
+  - [net-next,1/3] net/mlx5: fs, add API for sharing HWS action by refcount
+    https://git.kernel.org/netdev/net-next/c/cc2cc56fc6e6
+  - [net-next,2/3] net/mlx5: fs, add support for flow meters HWS action
+    https://git.kernel.org/netdev/net-next/c/82d3639ef7dc
+  - [net-next,3/3] net/mlx5: fs, add support for dest flow sampler HWS action
+    https://git.kernel.org/netdev/net-next/c/32e658c84b6d
 
+You are awesome, thank you!
 -- 
-pw-bot: not-applicable
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
