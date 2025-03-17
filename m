@@ -1,131 +1,98 @@
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B611A08BC
-	for <netdev@vger.kernel.org>; Mon, 17 Mar 2025 16:49:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DBDA48;
+	Mon, 17 Mar 2025 17:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742230147; cv=none; b=TnLRcEYFXGCN9KFak8LqDVSosn15P0j90vkeSNm/pTqshjEBS29To0/DXrOQWj7f8XSZZ2Dr1bwhcqYkAk46P7RRjxdJmKoE0YbvvkyPb5xQKurLbHA+qScBvYXnx5GPeHGjIL+jcW5nT8nIFym1h+wfakCXIdDvxsxvWjkruyw=
+	t=1742230921; cv=none; b=sg/JEHLYZ5a4cLjghxBvwnG3zsUNUx0SP93n1XIWNQp6unebZD48OSgGmrRAJ7yPYi7wCQYd4b70HlF184/1sUC3t7VhfxqQiVWP/1FbXG/JsMEXdgOz21GopXO3uyHvfp9r3qraKiWPKfI8rwNJXfGKAk9Rk8L4IHcSqIYMitU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742230147; c=relaxed/simple;
-	bh=eM5va7AuXLT0rsHrtPonGC4+dBUXGMAWOPLF0ULzaE8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oLGmLIejfz78dsECKR63Ze+X0ps0SVVq0YBz3yAxgF90Tr5N8JuIBNAuiSkf2P8cGmAYV6T+YsqFlxAocLJFTRGFyYJDnpwrp2YNXycU69PxSf0YW3d6DJ0kbBGVnUnmyGLdx6KACS7Vf1WbqPx9UvbmB8/c3Rp68U/RmNQZsaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=SphrnGmx; arc=none smtp.client-ip=209.85.161.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1742230921; c=relaxed/simple;
+	bh=x/mGAkrV+8U34K+5jMdXc/eUYG9sUfn3SkW/CtmeZXA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pD6mzkpvtjn7PEHLwI6KmKLXkBDeHUU15WibuVehQbxLs1Vo6dEQjUE3sIs10U55TjJoWX+x46MQgfBD9IBUHt5LA4F/QG4Kx3xcJoBcak9IEeSM0dg0gOYaZ8E+5/+cM+fMXyK1f8uiu6xrgQ5WqNM9lxmfJ6WiratVCmqccHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MXWjDHjA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="SphrnGmx"
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-601c469cce3so1162134eaf.2
-        for <netdev@vger.kernel.org>; Mon, 17 Mar 2025 09:49:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1742230144; x=1742834944; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=hR+2cdo6mmbMt3HXD2jP5VNCtOJ9m0Gv6fbcgcv/bBU=;
-        b=SphrnGmx4itMCN/ExoJlagg96dOO2GROqAOk5kcZ0CBC0m1fxSmJO1kDeb6MLPPW06
-         kB+NGW1cjPfDCQ56bQrADRBckubZ8uqZ529CRVpA5/c1GEuz+0M6B0nlJHURzm0bET24
-         cXVldmTY5NvTAyszkqxWY51qrbWCt3++YmLm0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742230144; x=1742834944;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hR+2cdo6mmbMt3HXD2jP5VNCtOJ9m0Gv6fbcgcv/bBU=;
-        b=kxVI8KBV7RjPuAFGuzvEiEY1w7irn2fM+v7YjROV4FlRe4Rk3P5vkAQRM6o08XqJnW
-         ++FM0y4Qbuh8MaYnr5xJ0QSOG9hHSa6ulQImZ+Ho5bBohsDteN2sllRIk56VR+/dOK7s
-         DvtTVOrOofhUJPGSaBlzAZXWoqO1u/+LyHMFzdG71C4q7dnyKHmwkcCdFwXhb4C3AfZZ
-         W8Kw1dodQRiY4MurRATjYB0l8hL1GJA5S3dVlFXXdq3PkiRGs3X7WZkI0DAZKQyacGJC
-         lmVGQu6Ucd8RYaimzwwjzs1Xnca5dNnaZeBmo7vERf3f/WiqqzsXggzZD8q/zYzRUE0J
-         N9FQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUgVZa9cuDK4joC0/dX8VUZ1ArswBJ1yTJ1My3bqkw+F4MmpG9EsVhUGTW9zTqHeEVlDaiUbR8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPkx1j0xB1YiOC5Iu7BKcJK7/wWrwXbs8GGeaWIieF7AgCkbJc
-	AWmPD7ZZ3Pf8rLSC8ZHyUCiLFs7xCtaL73J/qdHrpyEa6MPP5SPAzOV8qB1a6A==
-X-Gm-Gg: ASbGnctUyl+7/zn8aQAyVWCRRGqj8sjpSoz3xVrAX3W00dIdQRtk+RA6OhjQEZlT7/P
-	sFkrpYjQ0Q9yYGAgguPU+w98iuNlDdiikxK/eRrWT8nuU/NVkamFfOGBVmmiU92Zifu7fuk1nk2
-	V1x7M2UFWhasYKIHOAGyDoa2D31IQ1+ESrmRpI1KAS5ArNATZjScBtcz9jWSkjhvDetOvGPsgzl
-	4Xd4OMuhAC4DGrNBj/BlrTG09SYdNQqTKhSph3tJnc9hBnlmxw+55uka3RKb9XDrtEyxPeqHsFe
-	NbwC8y9H7KIs2V+bqS2oxuZ93HSIZZ2NlfCEefmtPHipl2AVIQc3hhjlOuWFaGR7sko901Yrajw
-	BNS0dyNMF
-X-Google-Smtp-Source: AGHT+IEXhCY9xr89eX6tBMG7DkAAspzRtGTTpjNmGgFlbsiwNx2AOKEyzh8EpraAE7G5FQCFX748sA==
-X-Received: by 2002:a05:6820:883:b0:601:b7e1:9233 with SMTP id 006d021491bc7-601e45c8543mr6433144eaf.3.1742230144551;
-        Mon, 17 Mar 2025 09:49:04 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-601db6598aesm1673541eaf.5.2025.03.17.09.49.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Mar 2025 09:49:03 -0700 (PDT)
-Message-ID: <2464508f-864e-4697-8fd5-ffa5c06f64a0@broadcom.com>
-Date: Mon, 17 Mar 2025 09:49:00 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MXWjDHjA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 970C2C4CEE3;
+	Mon, 17 Mar 2025 17:01:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742230920;
+	bh=x/mGAkrV+8U34K+5jMdXc/eUYG9sUfn3SkW/CtmeZXA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MXWjDHjAQFJe8AyUlboM8EDsbGsI17LHbp41AxpboHEAeN98Ipu+r2oayp08t8UtW
+	 XqG42w5KElVvK7Q+P4xrFXnbGIRvFf6BIg20Zcwty/Z+qVcQwiBvQ8YHbVP1AvqkYY
+	 E2d4w7TbmD8UVSQgMYSfiJUHx+42w8E5HxwCZHb3/CDJqmdbX8+5wMpGe+kDJHEhlw
+	 L9ijnqFj5FKc+wF09fwVT5XKhB1dNY6HSPN8dWHwxl6UOlPSgr0f3ewg3shFuSv8pL
+	 llh1wIQLTV/v8K8jtkQzphsFTQ5djNE/QKPl906ptEVZ6spMGcjtR+XA+2vVi2eW1J
+	 FDf9ctn+TtMuw==
+Date: Mon, 17 Mar 2025 17:01:54 +0000
+From: Simon Horman <horms@kernel.org>
+To: Sai Krishna Gajula <saikrishnag@marvell.com>
+Cc: "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+	Geethasowjanya Akula <gakula@marvell.com>,
+	Linu Cherian <lcherian@marvell.com>,
+	Jerin Jacob <jerinj@marvell.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Subbaraya Sundeep Bhatta <sbhatta@marvell.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	"nathan@kernel.org" <nathan@kernel.org>,
+	"ndesaulniers@google.com" <ndesaulniers@google.com>,
+	"morbo@google.com" <morbo@google.com>,
+	"justinstitt@google.com" <justinstitt@google.com>,
+	"llvm@lists.linux.dev" <llvm@lists.linux.dev>,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [net-next PATCH v2] octeontx2-af: fix build warnings flagged by
+ clang, sparse ,kernel test robot
+Message-ID: <20250317170154.GF688833@kernel.org>
+References: <20250305094623.2819994-1-saikrishnag@marvell.com>
+ <20250306164322.GC3666230@kernel.org>
+ <BY3PR18MB470761F0063CA2AA4481DF7CA0D12@BY3PR18MB4707.namprd18.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH stable 5.4 0/2] openvswitch port output fixes
-To: stable@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>, Pravin B Shelar
- <pshelar@ovn.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <kafai@fb.com>,
- Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
- Andrii Nakryiko <andriin@fb.com>, Sasha Levin <sashal@kernel.org>,
- Eric Dumazet <edumazet@google.com>, Willem de Bruijn <willemb@google.com>,
- Jakub Kicinski <kuba@kernel.org>, David Ahern <dsahern@kernel.org>,
- =?UTF-8?Q?Beno=C3=AEt_Monin?= <benoit.monin@gmx.fr>,
- Xin Long <lucien.xin@gmail.com>, Felix Huettner
- <felix.huettner@mail.schwarz>,
- "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:OPENVSWITCH" <dev@openvswitch.org>,
- "open list:BPF (Safe dynamic programs and tools)" <bpf@vger.kernel.org>
-References: <20250317154023.3470515-1-florian.fainelli@broadcom.com>
-Content-Language: en-US
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <20250317154023.3470515-1-florian.fainelli@broadcom.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BY3PR18MB470761F0063CA2AA4481DF7CA0D12@BY3PR18MB4707.namprd18.prod.outlook.com>
 
-On 3/17/25 08:40, Florian Fainelli wrote:
-> This patch series contains some missing openvswitch port output fixes
-> for the stable 5.4 kernel.
+On Tue, Mar 11, 2025 at 08:57:22AM +0000, Sai Krishna Gajula wrote:
 
-Scratch that and the two others targeting 5.10 and 5.15, I missed that 
-DEBUG_NET_WARN_ON_ONCE was not added until later. Will submit a v2 later 
-today. Thanks!
--- 
-Florian
+...
+
+> > > diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+> > > b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+> > > index cd0d7b7774f1..c850ea5d1960 100644
+> > > --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+> > > +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+> > > @@ -591,7 +591,7 @@ static void rvu_check_min_msix_vec(struct rvu
+> > > *rvu, int nvecs, int pf, int vf)
+> > >
+> > >  check_pf:
+> > >  	if (pf == 0)
+> > > -		min_vecs = RVU_AF_INT_VEC_CNT + RVU_PF_INT_VEC_CNT;
+> > > +		min_vecs = (int)RVU_AF_INT_VEC_CNT +
+> > (int)RVU_PF_INT_VEC_CNT;
+> > >  	else
+> > >  		min_vecs = RVU_PF_INT_VEC_CNT;
+> > >
+> > 
+> > I think that in the light of Linus's feedback and the subsequent patch that
+> > demoted -Wenum-enum-conversion from W=1 to W=1 this is not necessary.
+> 
+> Ack, will ignore these changes which are flagged by  -Wenum-enum-conversion
+
+Thanks,
+
+FTR this should have read "from W=1 to W=2"
+
+...
