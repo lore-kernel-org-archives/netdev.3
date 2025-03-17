@@ -1,93 +1,64 @@
-Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E661E51D;
-	Mon, 17 Mar 2025 12:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3091C861C;
+	Mon, 17 Mar 2025 12:52:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742215674; cv=none; b=Q4AtOKBiDrYHj+/78Jh2Kp/sSLWHF+pCPYlbScQS3apLHl1tc1Z76PVoBTwxWzrqcdap334qmcsj4wUiaIDfzHy2MeEY32Gcqd8kYznh3/TI0wHhdKH92jSSzJbvV/VyFtt+eCXIwE3S66p7ZTW6YljpHpizoXYOTTqXNGXbIms=
+	t=1742215968; cv=none; b=bO5PYN77a4eeEfTC+hbLI3Yj/Dz49dKyy4eVjPIaHpTQQlov4dlIepesw+W8dnzu7PdeyHW+D8LctsC87vvMnePLVB6xmwKT0YQrRWWQ3lnNLEOACt8oXVz9se+wb50GM4KvjWs006fnCBSEHbNSrOYKF2LMn/mjv5+ZF1NOfO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742215674; c=relaxed/simple;
-	bh=Ye5Gao2ubxI+kT38MqsJdM2eFmSxaCCF5YnrUkgWwwQ=;
+	s=arc-20240116; t=1742215968; c=relaxed/simple;
+	bh=KFYSRneptkjRCu9Vj5fQekt7blYDP9RXS5HicNdn/AE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K6Qk89FgJgQdK97gqmM58BctbIXsRurJC1s6YuA/vmJCM99FJN9PhJzOh8S5/bykJZ8iiRclyF7tjIlK+StkublPQ7IAX4KOlrs8naqfW2+9opYR8CUbOfQ34SgDzJ5H8/E8M0fwa07x4ZFWROz9RIc9DrHsPDXTqSq7PS8Bih0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=CZfoZPdL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=59jkkaMh; arc=none smtp.client-ip=202.12.124.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=jyajQ06TacGOwhI4xhTJFSRVALBvJ2KsdvQ+Nx4hHyVdT19IktoygHitnn2If+6opuc1Yq6yZS+nr5lE9+ePSIvV9vCwJjdhVZTjSG6wc7Vm8XpX8OEnYs3rABIQ6LXKDUCWRVBJOikAiTXtNEQMfQi1URiXSv34uu26sv7EMGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QrZlAHa1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="CZfoZPdL";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="59jkkaMh"
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfout.stl.internal (Postfix) with ESMTP id 39ECD11401AC;
-	Mon, 17 Mar 2025 08:47:49 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Mon, 17 Mar 2025 08:47:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1742215669; x=
-	1742302069; bh=7689idzZmsV6rCPPWrq4dbeF4f2EAXHJXFHVxjUy7l0=; b=C
-	ZfoZPdLOZn7vB7EkZsYEWiZEYd6H8ai2Aer2bruzHUvlramKZDuylJQzjZ45hQty
-	zww1LtbK3Pu9bQ6kb0HFTN4xiHIjzOzRnRGJWp8nsZI3UCozaO2SXQuLm5d7FJi1
-	zfwTr/iIVTPPSUR94IUGlDEyl/c+DFpwo7cm99LZURCSXCXAEHsKEMp8446DJL6d
-	isD6agpykjr6grTnSl1pzgZvJCIiwo5he3WSyUaOj4B2orvdcd/9oz1JX/GGSE57
-	VUzneaUkzAhjAUU5GPh/6jaeKdddKbU20pZaR1I8iuxJ+u12XclmaA4RZ6Eh3iI3
-	7MuRRDEnhZm+MsJ51RVXg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1742215669; x=1742302069; bh=7689idzZmsV6rCPPWrq4dbeF4f2EAXHJXFH
-	VxjUy7l0=; b=59jkkaMhASm5Rgf9v5kmdP3pD0iP2OtpAnIaQ5DshOtwr+B5KPN
-	9nq9fom8FiSedksRMRwuO5yUXSHHXpxOiWWLDPlO0voxecyaEHD3e7UWSTQctqjL
-	um8ic+nHqsFO32uYmGrhkvoh6G7E4xCONFNlS0nO4+NpYvHtOdm1ttL7pAS/DXsb
-	VpYSk6JB/WDJZN7+s6IDoNbrx9G7tbP+Tal7S6PrWA4Sti612N++tVJkQna3/9Jm
-	QtTUAPHMar6pye+I2ezqpbN7aRof+EgFoWscF0kpuBjvkRerKOJpt23KiWASbbr2
-	8ZWqmcv3DyNzDCwxemA+SaA9bWwPvfD8vQg==
-X-ME-Sender: <xms:9BnYZ3XlOgWppPvX6G-thwrWMhq6QysEDEK6UvDvTJc5HUbx1Riq4Q>
-    <xme:9BnYZ_nsDGrfrsgm_Urj86ZRpcKQiBb304tsrJtCsB9UuBim0hgHfaEfok8PdYVHI
-    iao3w3ziGHI6lZihnQ>
-X-ME-Received: <xmr:9BnYZzb0VB81EbF12joiQlXubw73Z-rdctX8jEHwpNL04t1DszpD-9a2gsoH>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufeelheehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    jeenucfhrhhomhepufgrsghrihhnrgcuffhusghrohgtrgcuoehsugesqhhuvggrshihsh
-    hnrghilhdrnhgvtheqnecuggftrfgrthhtvghrnhepuefhhfffgfffhfefueeiudegtdef
-    hfekgeetheegheeifffguedvuefffefgudffnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhn
-    sggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghnth
-    honhhiohesohhpvghnvhhpnhdrnhgvthdprhgtphhtthhopehnvghtuggvvhesvhhgvghr
-    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrd
-    gtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehp
-    rggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepughonhgrlhgurdhhuhhnth
-    gvrhesghhmrghilhdrtghomhdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehrhigriigrnhhovhdrshdrrgesghhmrghilhdrtghomhdprhgtph
-    htthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghh
-X-ME-Proxy: <xmx:9BnYZyXrP-Wj9aJ_8V1IWWiKCloS0zrgVwFTn2kOLC8C3PUVDDPRIw>
-    <xmx:9BnYZxkh2iHmNHxuaexFt9DfO8Nv3Cy-PNLfQYIlEu2hpeV16xZ1zQ>
-    <xmx:9BnYZ_cpjxWk2vVUFXtSD_CGHtku8YxRZSzW843idKuDMAzPUxRsAA>
-    <xmx:9BnYZ7FZ-iEWBW08wkJ_aO1GsSJo9kjccE5jpw9Sy0ZQTATt-CFjcw>
-    <xmx:9RnYZzmf0eA5UKoAP4C6ZARdBF_T5zjpBFc79IPnFXznLLx-oclh2Ezv>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 17 Mar 2025 08:47:47 -0400 (EDT)
-Date: Mon, 17 Mar 2025 13:47:46 +0100
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Antonio Quartulli <antonio@openvpn.net>
-Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Shuah Khan <shuah@kernel.org>, ryazanov.s.a@gmail.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, Xiao Liang <shaw.leon@gmail.com>
-Subject: Re: [PATCH net-next v23 18/23] ovpn: implement peer
- add/get/dump/delete via netlink
-Message-ID: <Z9gZ8l9mrF75M-Ih@krikkit>
-References: <20250312-b4-ovpn-v23-0-76066bc0a30c@openvpn.net>
- <20250312-b4-ovpn-v23-18-76066bc0a30c@openvpn.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QrZlAHa1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825A6C4CEE3;
+	Mon, 17 Mar 2025 12:52:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742215968;
+	bh=KFYSRneptkjRCu9Vj5fQekt7blYDP9RXS5HicNdn/AE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QrZlAHa1z5iPyPJJCsafMVQtn/K0FUSwDTqmM5vaQ55LPF2PglgvqWg6xDOfwpnDt
+	 KAqECxr241B+9qjlAtBhDmtQ4eOmP7H8tTkoLVq88tMceB8V+8i2CCU5NPRIdQ4v4I
+	 2zIm3P1K99MrCFLXv1uYjEDcamTW/wgWUxNaN9HihDW4Gj00am51/gSn2Awopa3sJH
+	 9gF+P/joAvRSWMqjU+m0XEruv95ixyXh9JelNR+z07aKBZxlDaqFI4Ov060RXJXgjX
+	 fhupxbXDwuxh9+Gtx0/NYORQ/k6k4mckwJhgg6+Tky9Xb0A/+s5tcWEHLUWNImFhk2
+	 51gN2A3x6wiPA==
+Date: Mon, 17 Mar 2025 14:52:41 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Bernard Metzler <BMT@zurich.ibm.com>
+Cc: Nikolay Aleksandrov <nikolay@enfabrica.net>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"shrijeet@enfabrica.net" <shrijeet@enfabrica.net>,
+	"alex.badea@keysight.com" <alex.badea@keysight.com>,
+	"eric.davis@broadcom.com" <eric.davis@broadcom.com>,
+	"rip.sohan@amd.com" <rip.sohan@amd.com>,
+	"dsahern@kernel.org" <dsahern@kernel.org>,
+	"roland@enfabrica.net" <roland@enfabrica.net>,
+	"winston.liu@keysight.com" <winston.liu@keysight.com>,
+	"dan.mihailescu@keysight.com" <dan.mihailescu@keysight.com>,
+	Kamal Heib <kheib@redhat.com>,
+	"parth.v.parikh@keysight.com" <parth.v.parikh@keysight.com>,
+	Dave Miller <davem@redhat.com>,
+	"ian.ziemba@hpe.com" <ian.ziemba@hpe.com>,
+	"andrew.tauferner@cornelisnetworks.com" <andrew.tauferner@cornelisnetworks.com>,
+	"welch@hpe.com" <welch@hpe.com>,
+	"rakhahari.bhunia@keysight.com" <rakhahari.bhunia@keysight.com>,
+	"kingshuk.mandal@keysight.com" <kingshuk.mandal@keysight.com>,
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [RFC PATCH 00/13] Ultra Ethernet driver introduction
+Message-ID: <20250317125241.GV1322339@unreal>
+References: <20250306230203.1550314-1-nikolay@enfabrica.net>
+ <20250308184650.GV1955273@unreal>
+ <2f06a40d-2f14-439a-9c95-0231dce5772d@enfabrica.net>
+ <20250312112921.GA1322339@unreal>
+ <86af1a4b-e988-4402-aed2-60609c319dc1@enfabrica.net>
+ <20250312151037.GE1322339@unreal>
+ <BN8PR15MB25133D6B2BC61C81408D6FE899D22@BN8PR15MB2513.namprd15.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -96,70 +67,90 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250312-b4-ovpn-v23-18-76066bc0a30c@openvpn.net>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <BN8PR15MB25133D6B2BC61C81408D6FE899D22@BN8PR15MB2513.namprd15.prod.outlook.com>
 
-Hello,
+On Fri, Mar 14, 2025 at 02:53:40PM +0000, Bernard Metzler wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Leon Romanovsky <leon@kernel.org>
+> > Sent: Wednesday, March 12, 2025 4:11 PM
+> > To: Nikolay Aleksandrov <nikolay@enfabrica.net>
+> > Cc: netdev@vger.kernel.org; shrijeet@enfabrica.net;
+> > alex.badea@keysight.com; eric.davis@broadcom.com; rip.sohan@amd.com;
+> > dsahern@kernel.org; Bernard Metzler <BMT@zurich.ibm.com>;
+> > roland@enfabrica.net; winston.liu@keysight.com;
+> > dan.mihailescu@keysight.com; Kamal Heib <kheib@redhat.com>;
+> > parth.v.parikh@keysight.com; Dave Miller <davem@redhat.com>;
+> > ian.ziemba@hpe.com; andrew.tauferner@cornelisnetworks.com; welch@hpe.com;
+> > rakhahari.bhunia@keysight.com; kingshuk.mandal@keysight.com; linux-
+> > rdma@vger.kernel.org; kuba@kernel.org; Paolo Abeni <pabeni@redhat.com>;
+> > Jason Gunthorpe <jgg@nvidia.com>
+> > Subject: [EXTERNAL] Re: [RFC PATCH 00/13] Ultra Ethernet driver
+> > introduction
+> > 
+> > On Wed, Mar 12, 2025 at 04:20:08PM +0200, Nikolay Aleksandrov wrote:
+> > > On 3/12/25 1:29 PM, Leon Romanovsky wrote:
+> > > > On Wed, Mar 12, 2025 at 11:40:05AM +0200, Nikolay Aleksandrov wrote:
+> > > >> On 3/8/25 8:46 PM, Leon Romanovsky wrote:
+> > > >>> On Fri, Mar 07, 2025 at 01:01:50AM +0200, Nikolay Aleksandrov wrote:
+> > > [snip]
+> > > >> Also we have the ephemeral PDC connections>> that come and go as
+> > > needed. There more such objects coming with more
+> > > >> state, configuration and lifecycle management. That is why we added a
+> > > >> separate netlink family to cleanly manage them without trying to fit
+> > > >> a square peg in a round hole so to speak.
+> > > >
+> > > > Yeah, I saw that you are planning to use netlink to manage objects,
+> > > > which is very questionable. It is slow, unreliable, requires sockets,
+> > > > needs more parsing logic e.t.c
+> > > >
+> > > > To avoid all this overhead, RDMA uses netlink-like ioctl calls, which
+> > > > fits better for object configurations.
+> > > >
+> > > > Thanks
+> > >
+> > > We'd definitely like to keep using netlink for control path object
+> > > management. Also please note we're talking about genetlink family. It is
+> > > fast and reliable enough for us, very easily extensible,
+> > > has a nice precise object definition with policies to enforce various
+> > > limitations, has extensive tooling (e.g. ynl), communication can be
+> > > monitored in realtime for debugging (e.g. nlmon), has a nice human
+> > > readable error reporting, gives the ability to easily dump large object
+> > > groups with filters applied, YAML family definitions and so on.
+> > > Having sockets or parsing are not issues.
+> > 
+> > Of course it is issue as netlink relies on Netlink sockets, which means
+> > that you constantly move your configuration data instead of doing
+> > standard to whole linux kernel pattern of allocating configuration
+> > structs in user-space and just providing pointer to that through ioctl
+> > call.
+> > 
+> > However, this discussion is premature and as an intro it is worth to
+> > read this cover letter for how object management is done in RDMA
+> > subsystem.
+> > 
+> > https://lore.kernel.org/linux% 
+> > 2Drdma_1501765627-2D104860-2D1-2Dgit-2Dsend-2Demail-2Dmatanb-
+> > 40mellanox.com_&d=DwIBAg&c=BSDicqBQBDjDI9RkVyTcHQ&r=4ynb4Sj_4MUcZXbhvovE4tY
+> > SbqxyOwdSiLedP4yO55g&m=U78K-khiLd-
+> > LLkbuNRzBStNppsXFTXdM7br052fwal1mzxpaOcOSQXCnguAK8t3g&s=U9dQl07fp-
+> > e9380xjR94fW-UGixoMsoxr5HfXKYggLk&e=
+> > 
+> Nice old stuff. Often history teaches us something. 😉
 
-A few comments since it seems you'll have to send one more version
-(otherwise they could be fixed later).
+Maybe, and this is what this submission is missing. An explanation what
+was learnt, what needs to be changed, why it is impossible to fix and
+everything needs to be started from the scratch.
 
-2025-03-12, 21:54:27 +0100, Antonio Quartulli wrote:
-> diff --git a/drivers/net/ovpn/netlink.c b/drivers/net/ovpn/netlink.c
-> index 8d267d4c82283d9b5f989478102086ce385195d5..407b5b908be431625a3c258e7887211ef0f4b197 100644
-> --- a/drivers/net/ovpn/netlink.c
-> +++ b/drivers/net/ovpn/netlink.c
-[...]
-> +static int ovpn_nl_peer_modify(struct ovpn_peer *peer, struct genl_info *info,
-> +			       struct nlattr **attrs)
-> +{
-> +	struct sockaddr_storage ss = {};
-> +	void *local_ip = NULL;
-> +	u32 interv, timeout;
-> +	bool rehash = false;
-> +	int ret;
-> +
-> +	spin_lock_bh(&peer->lock);
-> +
-> +	if (ovpn_nl_attr_sockaddr_remote(attrs, &ss)) {
-> +		/* we carry the local IP in a generic container.
-> +		 * ovpn_peer_reset_sockaddr() will properly interpret it
-> +		 * based on ss.ss_family
-> +		 */
-> +		local_ip = ovpn_nl_attr_local_ip(attrs);
-> +
-> +		/* set peer sockaddr */
-> +		ret = ovpn_peer_reset_sockaddr(peer, &ss, local_ip);
-> +		if (ret < 0) {
-> +			NL_SET_ERR_MSG_FMT_MOD(info->extack,
-> +					       "cannot set peer sockaddr: %d",
-> +					       ret);
-> +			goto err_unlock;
-> +		}
+> 
+> I assume the correct way forward is to first clarify the
+> structure of all user-visible objects that need to be
+> created/controlled/destroyed, and to route them through
+> this interface. 
 
-Similar to the floating case, this should reset the peer dst_cache? In
-both cases we're updating the remote peer's address and our local
-address.
+Yes, the actual objects structure, their relation and exposure is
+actually the interesting part.
 
-
-...
-> diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
-> index 0d8b12fd5de4cd6fe15455b435c7d6807203a825..aead1d75400a604a320c886aed5308fb20475da3 100644
-> --- a/drivers/net/ovpn/peer.c
-> +++ b/drivers/net/ovpn/peer.c
-...
-> @@ -1335,8 +1356,11 @@ void ovpn_peer_keepalive_work(struct work_struct *work)
->  		netdev_dbg(ovpn->dev,
->  			   "scheduling keepalive work: now=%llu next_run=%llu delta=%llu\n",
->  			   next_run, now, next_run - now);
-> +		/* due to the waiting above, the next_run deadline may have
-> +		 * passed: in this case we reschedule the worker immediately
-> +		 */
->  		schedule_delayed_work(&ovpn->keepalive_work,
-> -				      (next_run - now) * HZ);
-> +				      (now - next_run) * HZ);
-
-This whole hunk should be dropped, no? The comment is outdated, and
-the sign swap is confusing me.
-
--- 
-Sabrina
+Thanks
