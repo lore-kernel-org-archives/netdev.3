@@ -1,191 +1,111 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53D720FA98
-	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 15:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267D928FD;
+	Tue, 18 Mar 2025 15:39:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742312209; cv=none; b=MUVJfDhP+uN2b+tqQ/5MMAtlnRyXoxt4ypdEuKZzjdpBMBKK8yIEnnk0gdL2uwSF7btwkM3sb3mWoPceof4+tlP5qF0X46R6y2ZxkVAf9OEmiZhIwfh1z0C99Hme/k3QjyrT8pZ7MvvmUEERda+yNc+Xe1Oe/+3GcKftHGuwy7k=
+	t=1742312395; cv=none; b=imAEP2ZVxiPX8ypN7hzsiJ8eIQhmSKJkTFBvktFp8XFpdfJOQAI3sUc/Qh3zXQEa1DR/TARCW71+lxwghvD0k3BYxicfDQzKiNtqlWDbeG639AdA82WeH5wV1uJpZN2TDTI2nAoiAuFWLCQsZMxi++BgkgAXA7R0W8ik9FkdJ3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742312209; c=relaxed/simple;
-	bh=PGlbXScemvaDyH4TxR4GSRe6Njs2b8zlIwIBZVQwo18=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fyQHnUrzvLwSeNpAl10OQTTdNY7qmPz+xxZ/85it/7snttD5bJVP3wlc1ayTm/9oie3+FTfcfHnBSDFRNvJu4R18zhq0sbAvrWMUL9tTAoApl9k+JC9ith8OhuX78W05AlstdMBzFX6hwvBv/iOgNZhvlqDzdMWrHhyFHXy//Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=JOImvvIX; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1742312395; c=relaxed/simple;
+	bh=HGMDziiE3s6UYg6dbzugRUjMN9etTjrHdfpaAWINEqM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gGCJXlr2P/E6LQAeccaFQ3nlk0Mh5KE3Z9Fkj2nZZkwz7/hvx89aWB9lYQpUr9fNaOjKDxfj4I4a5uY3vKqFMvcLq/Q0EQ3P6WurTc+/3c6YxzRzdpBjz+fHTKk4aQuqmGQSzghywq65oZhUccXLXtva9/XnfzQ+ObCyDHQzU3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bL6ONo1+; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="JOImvvIX"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43d0618746bso27065905e9.2
-        for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 08:36:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1742312202; x=1742917002; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u8j6HJ/LXsaiiYYsFgCSAtpRLzT4odfs6A0txp6rEV8=;
-        b=JOImvvIXDgK9FsiI3B2mG8MJ9+FNuCK2NjDjYuavhyXcDY9r2A4uBJRJlyQGyQdD1r
-         HpSsCxeQRkTkDEN5oXp7JcoNsmeSPOGl+nMeQCDP6TCKUzcng5e7WfbQiVhHo/yerB60
-         htVEwbIUzh8/VpToHyAf37+e4EWlql+nKPDJe7yRcO5s2SINGurXBHNWRBB6HG/xLDW5
-         Jv/7sHq1BYSlctj4fdS9reGnGTk9SvEx6dvFydHatm5S3KlQlt0D+eC6TFNiQW0NNlhm
-         tkix/VTI6WUrBPiQL4RSBunN7Gu/QpfpCbAmpIC+VHDRDJHxFFImeAuxyC1hFydei9x4
-         gnXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742312202; x=1742917002;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u8j6HJ/LXsaiiYYsFgCSAtpRLzT4odfs6A0txp6rEV8=;
-        b=UGbMb4lQuuQTGGwCFNIE2xuSYe6kprpCcCEgqiu2SXGj394HFcvCehuuMi3DnrOBfp
-         Kft1AkkEJ9B4diTjtKMOc+srGwGRBiua2eHiZzjvTYmcYhGHbVnUW/E85PQqToiQBtrm
-         8Zk0h2q7y6A1pNRoVAQVp5YX8VDnVmT+ZKFisrhn2cr9p0tOZsghawHsL2X83zke1zGd
-         jw0wEwUtBaLg4ll+fcbb7/k+aAczKY3HCmLnrJYBKfoEcgE8vjUfg7o6UsbNyoUX0yMK
-         MvJg/2RLW1GHojySp2Zl3g0nZglcEUwVbT9RlXpxG4v6WIzI4ShgpWlyBLjYUboPwfdx
-         eMDw==
-X-Gm-Message-State: AOJu0Ywnh1+73yRfKRTd0YPn+0ivGevEZI/wcgNKDgSuAQpxTkRSMzyv
-	GAc3qFpb6CPpkUAI5AAQ4UqRoWVgtox+RMCuYF+yebiX+oMPpDZyjaJ0npWz8yFWsB8patj9MWQ
-	c
-X-Gm-Gg: ASbGncshDn6KF1a9/NBPVvXWIju3xyEPmg6IX1MCy/LUTuT29Ao0hvf90m13tCkTzeq
-	XUwjOje2bqnLvaPlUKQDsURSL6xUKXb0hwL47OjcgLR8pdJ4T7s/8zC+VbUJCmB0IRB1Dhkm0qi
-	rbRZyZa+r/4KWfp4x6t3Vsx5RIztIylRkS9HK+kPTcRgLf09zo/yvav0lKrQra1LPcd6cNvNXNZ
-	0oTbZaJyBgpWVqINp8x+9QGG4POOR/FT85gkU6e0w8F0byw/y9FdHYHRR07xaJqk0m7qSAyTzLJ
-	kovNI+A7+bJR90tknbWJH+bUaiXDx44S7DVcgw==
-X-Google-Smtp-Source: AGHT+IEBGGYzQbEmEn90xv9VamN9pFtpDpHco/XFe0t/mH4e0dpEJ1hbJBX6QSfTRqr1d2r9mBtSaw==
-X-Received: by 2002:a05:600c:4fc3:b0:43d:ce4:ef3f with SMTP id 5b1f17b1804b1-43d3b9a9571mr26048635e9.12.1742312201855;
-        Tue, 18 Mar 2025 08:36:41 -0700 (PDT)
-Received: from localhost ([193.47.165.251])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d1fdda2dbsm138634165e9.2.2025.03.18.08.36.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Mar 2025 08:36:41 -0700 (PDT)
-From: Jiri Pirko <jiri@resnulli.us>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	donald.hunter@gmail.com,
-	parav@nvidia.com
-Subject: [PATCH net-next 3/4] devlink: add function unique identifier to devlink dev info
-Date: Tue, 18 Mar 2025 16:36:26 +0100
-Message-ID: <20250318153627.95030-4-jiri@resnulli.us>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250318153627.95030-1-jiri@resnulli.us>
-References: <20250318153627.95030-1-jiri@resnulli.us>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bL6ONo1+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742312393; x=1773848393;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=HGMDziiE3s6UYg6dbzugRUjMN9etTjrHdfpaAWINEqM=;
+  b=bL6ONo1+TbG0AVReaEpn09/chZUy7OZhLfTTUWEFHQNheupyv27VpoOJ
+   o7gXbcLw3t5YPmx3hYTBuqOcF439fwpK0fdmqhrJImQFsrVKi7ThWFuXk
+   BTtd8rsDYRyXQeOgTRAX4bEacLtS6Lj3iuhXI9WDvc13aBcUIrarlHZVm
+   9CoWTyueKqdYUhBEs9+PHEQNlHge8Qhs2Pc2iQ71fI+D7WHTmk8i8e66o
+   oemSh5xOLe62wGagpn6KSdFjVcl2LpzpStTOLeH+7RAMyumwj5zgx+Tt8
+   QgQNDsfIcfgAGNQnlyT60XfaW9nWE5HwuzXQA79Q4d8ytpdxR9KJscj6j
+   g==;
+X-CSE-ConnectionGUID: 8meveWqTRHKAJ1I5ZqQHKQ==
+X-CSE-MsgGUID: xfhBtjdsQtahe64nw6hgpw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="65923377"
+X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; 
+   d="scan'208";a="65923377"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 08:39:53 -0700
+X-CSE-ConnectionGUID: Qg5gH4J2Rp2uqB52/qWaNg==
+X-CSE-MsgGUID: 5/ca5hK0SqejbTs6A5ffDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; 
+   d="scan'208";a="159459205"
+Received: from msatwood-mobl.amr.corp.intel.com (HELO [10.125.109.211]) ([10.125.109.211])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 08:39:51 -0700
+Message-ID: <9e3019af-7817-49db-a293-3242e2962c22@intel.com>
+Date: Tue, 18 Mar 2025 08:39:50 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/8] Introduce fwctl subystem
+To: Jason Gunthorpe <jgg@nvidia.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Keller, Jacob E" <jacob.e.keller@intel.com>,
+ David Ahern <dsahern@kernel.org>, "Nelson, Shannon"
+ <shannon.nelson@amd.com>, Leon Romanovsky <leon@kernel.org>,
+ Jiri Pirko <jiri@resnulli.us>, Jakub Kicinski <kuba@kernel.org>,
+ Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+ Aron Silverton <aron.silverton@oracle.com>,
+ "Williams, Dan J" <dan.j.williams@intel.com>,
+ Daniel Vetter <daniel.vetter@ffwll.ch>, Christoph Hellwig
+ <hch@infradead.org>, Itay Avraham <itayavr@nvidia.com>,
+ Jiri Pirko <jiri@nvidia.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, Leonid Bloch <lbloch@nvidia.com>,
+ "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Saeed Mahameed <saeedm@nvidia.com>,
+ "Sinyuk, Konstantin" <konstantin.sinyuk@intel.com>
+References: <bcafcf60-47a8-4faf-bea3-19cf0cbc4e08@kernel.org>
+ <20250305182853.GO1955273@unreal>
+ <dc72c6fe-4998-4dba-9442-73ded86470f5@kernel.org>
+ <20250313124847.GM1322339@unreal>
+ <54781c0c-a1e7-4e97-acf1-1fc5a2ee548c@amd.com>
+ <d0e95c47-c812-4aa8-812f-f5d7f6abbbb1@intel.com>
+ <20250317123333.GB9311@nvidia.com>
+ <1eae139c-f678-4b28-a466-5c47967b5d13@kernel.org>
+ <CO1PR11MB5089AB36220DFEACBF7A5D1CD6DF2@CO1PR11MB5089.namprd11.prod.outlook.com>
+ <2025031840-phrasing-rink-c7bb@gregkh> <20250318132528.GR9311@nvidia.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20250318132528.GR9311@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Jiri Pirko <jiri@nvidia.com>
 
-Presently, for multi-PF NIC each PF reports the same serial_number and
-board.serial_number.
 
-To universally identify a function, add function unique identifier (uid)
-to be obtained from the driver as a string of arbitrary length.
+On 3/18/25 6:25 AM, Jason Gunthorpe wrote:
+> On Tue, Mar 18, 2025 at 02:20:45PM +0100, Greg Kroah-Hartman wrote:
+> 
+>> Yes, note, the issue came up in the 2.5.x kernel days, _WAY_ before we
+>> had git, so this wasn't a git issue.  I'm all for "drivers/core/" but
+>> note, that really looks like "the driver core" area of the kernel, so
+>> maybe pick a different name?
+> 
+> Yeah, +1. We have lots of places calling what is in drivers/base 'core'.
 
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Parav Pandit <parav@nvidia.com>
----
- Documentation/netlink/specs/devlink.yaml          | 4 ++++
- Documentation/networking/devlink/devlink-info.rst | 5 +++++
- include/net/devlink.h                             | 2 ++
- include/uapi/linux/devlink.h                      | 2 ++
- net/devlink/dev.c                                 | 9 +++++++++
- 5 files changed, 22 insertions(+)
+just throwing in my 2c
 
-diff --git a/Documentation/netlink/specs/devlink.yaml b/Documentation/netlink/specs/devlink.yaml
-index bd9726269b4f..5d39eb68aefb 100644
---- a/Documentation/netlink/specs/devlink.yaml
-+++ b/Documentation/netlink/specs/devlink.yaml
-@@ -820,6 +820,9 @@ attribute-sets:
-       -
-         name: region-direct
-         type: flag
-+      -
-+        name: info-function-uid
-+        type: string
- 
-   -
-     name: dl-dev-stats
-@@ -1869,6 +1872,7 @@ operations:
-             - info-version-running
-             - info-version-stored
-             - info-board-serial-number
-+            - info-function-uid
-       dump:
-         reply: *info-get-reply
- 
-diff --git a/Documentation/networking/devlink/devlink-info.rst b/Documentation/networking/devlink/devlink-info.rst
-index 23073bc219d8..04afceee0c03 100644
---- a/Documentation/networking/devlink/devlink-info.rst
-+++ b/Documentation/networking/devlink/devlink-info.rst
-@@ -50,6 +50,11 @@ versions is generally discouraged - here, and via any other Linux API.
-        This is usually the serial number of the board, often available in
-        PCI *Vital Product Data*.
- 
-+   * - ``function.uid``
-+     - Function uniqueue identifier.
-+
-+       Vendor defined uniqueue identifier of a function.
-+
-    * - ``fixed``
-      - Group for hardware identifiers, and versions of components
-        which are not field-updatable.
-diff --git a/include/net/devlink.h b/include/net/devlink.h
-index b8783126c1ed..a0b84efd4740 100644
---- a/include/net/devlink.h
-+++ b/include/net/devlink.h
-@@ -1846,6 +1846,8 @@ int devlink_info_serial_number_put(struct devlink_info_req *req,
- 				   const char *sn);
- int devlink_info_board_serial_number_put(struct devlink_info_req *req,
- 					 const char *bsn);
-+int devlink_info_function_uid_put(struct devlink_info_req *req,
-+				  const char *fuid);
- 
- enum devlink_info_version_type {
- 	DEVLINK_INFO_VERSION_TYPE_NONE,
-diff --git a/include/uapi/linux/devlink.h b/include/uapi/linux/devlink.h
-index 9401aa343673..816339790409 100644
---- a/include/uapi/linux/devlink.h
-+++ b/include/uapi/linux/devlink.h
-@@ -614,6 +614,8 @@ enum devlink_attr {
- 
- 	DEVLINK_ATTR_REGION_DIRECT,		/* flag */
- 
-+	DEVLINK_ATTR_INFO_FUNCTION_UID,		/* string */
-+
- 	/* Add new attributes above here, update the spec in
- 	 * Documentation/netlink/specs/devlink.yaml and re-generate
- 	 * net/devlink/netlink_gen.c.
-diff --git a/net/devlink/dev.c b/net/devlink/dev.c
-index d6e3db300acb..6c442549722c 100644
---- a/net/devlink/dev.c
-+++ b/net/devlink/dev.c
-@@ -763,6 +763,15 @@ int devlink_info_board_serial_number_put(struct devlink_info_req *req,
- }
- EXPORT_SYMBOL_GPL(devlink_info_board_serial_number_put);
- 
-+int devlink_info_function_uid_put(struct devlink_info_req *req,
-+				  const char *fuid)
-+{
-+	if (!req->msg)
-+		return 0;
-+	return nla_put_string(req->msg, DEVLINK_ATTR_INFO_FUNCTION_UID, fuid);
-+}
-+EXPORT_SYMBOL_GPL(devlink_info_function_uid_put);
-+
- static int devlink_info_version_put(struct devlink_info_req *req, int attr,
- 				    const char *version_name,
- 				    const char *version_value,
--- 
-2.48.1
+drivers/main
+drivers/common
+drivers/primary
+
+
+> 
+> Jason
 
