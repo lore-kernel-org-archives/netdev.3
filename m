@@ -1,226 +1,108 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A991E3DD7
-	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 14:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742306515; cv=fail; b=dEAcquXgXzoE4YWNE7aiMPuYuxaWJ1jBC6UZsjqLoxuSwPq8jzp8x96SFDJgdEUj5wDoMURJ8Fq/Gb/oY9KKkxwWYp9vRtzXnI5n7kPmHWHnBjU3vn+SNMNNUBEHD+QxJQ8HwEFhQR8PiJrHnm9hQ7Dv69XZxDsExPPwk0E8ir0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742306515; c=relaxed/simple;
-	bh=cIxI+jlX36KPEGh7O6XwOMjHlijWBp5OnmVquHojBdM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=lGs6I5Q3/7t0AEKt+indh5mG+u0cfFEPD//B5nedy6k45vVWwQ9CCos0lucmWro6RiSvBAwoG5mPPO/LDAO7eZxAd0AmFUI8MamWu8YbTHxGHiSij6yVaoswAW6EzdlT8+H10teNM7hFq2CIy2oodSs7UFIqaPmD4K8ijBPzSy4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fc2CbMAn; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B417126BFA
+	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 14:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742306559; cv=none; b=Yr8SN0MlvYxV5DvHiKfDKSmQMF5kyOKHGvLrayGASGleURP5+eKWeV/5ncMxj77NXFL2o3MeAaNxpmMvffPTdQuAVtBSEdqyw7pxzQV0Vqv8IMhKpg/g/kSOWPiixJOy9glbiOZ7hYmFgYa4mB5NI5cxVwuJj7GTwjA8zUO0ZdU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742306559; c=relaxed/simple;
+	bh=F2e40r40n6eqSC6k5MgBH3+wCup0YURGMSpP32SAcWc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=D62Oi4nnQapxavP9IIgKv+GIvLio0RPOKVKRQYHYqCyknROJYNRRyX1Tul0SR9fwA1LHkLOYS8WJKV1zIx3fZxIvXwt7+rJ54OjIDCsXhVKcXOxkas+4tIFjAQDBg36sBKTOFgHv8i3mYmxANUldvPF0FC54JzhXUXtbAWW73U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=0mT47E2y; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fc2CbMAn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742306513; x=1773842513;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=cIxI+jlX36KPEGh7O6XwOMjHlijWBp5OnmVquHojBdM=;
-  b=Fc2CbMAnCtSCxGP5KT3lY1VRt35534ftNK9RP7VjbM2oF5fxaCzW5rmK
-   3MRUiNg5LIHEG4Coly3ypKb1hFYt4DgufkV5M2YFwxna4HJlg2EawsWYV
-   8gew3SiasygZw+jOz+PSIKK71aQhq6VjKTtnslhJvRYWjQUUk7NnIwj7h
-   XLi1tbYxdpze77cDIYJOgeJKgw23P8J43WQqia4/cp28RIVZOyiQD0ytN
-   veInYhNztjCqMapNvISa8cVGdO/Nm1AOs/Xuf0gZi286YEuoBjTr3mU/Z
-   tCchSrZhn5zQ/2JgnuGhYJeIX6vCZIqQJ0CIFQiTY5bManHzpFj+tjT6j
-   Q==;
-X-CSE-ConnectionGUID: Ib2O95VgTlewGlz5Sge+2A==
-X-CSE-MsgGUID: AEdxvcpqRuOb6EvtkfDBFQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="43334800"
-X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; 
-   d="scan'208";a="43334800"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 07:00:56 -0700
-X-CSE-ConnectionGUID: b9hc5yIcSl6NmWL9InDEkQ==
-X-CSE-MsgGUID: 7IHBafORS1aOd7VOLQcONg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; 
-   d="scan'208";a="123207177"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 18 Mar 2025 07:00:55 -0700
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Tue, 18 Mar 2025 07:00:54 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Tue, 18 Mar 2025 07:00:54 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.169)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Tue, 18 Mar 2025 07:00:53 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=noqzBs+1iBA/fISjzNFbB4wnLqlic3Yo4xHWkLXNyXHlgLtT0MLq4Ji0brtVgKqCiUz8svBUWWuJaMnwchB0k9WJo3tGGHedzdKbGkALIkJyM3OZNsf8L2wagXJ/rPNUi43BxKA14WnqIan2y3cBS4u+UYYHPTVqwfC+b9LMwfIK27B053ZvR7Q3iqEDo+uVyxg1681xkPoJRZAJmbnfny/jB+Vw3zGtUGYU7Ndapg9DA5JRML8Zk4Tn0RRSwd0cNephCC8wjOoyWBq6CwbJFkFQrOtq/YsHmwYz8R/ZSIZjYAdkOPlElBednPS2+soF3E/u3QzM/1dInQ+8Jh5eRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cIxI+jlX36KPEGh7O6XwOMjHlijWBp5OnmVquHojBdM=;
- b=qEiF9kFH5EYobsGKuNLp/5a7Wvzhx+Ux/LPjWjk74vifkHMFobqbUDo32eKeZ+Z9y0zeOWdGAP3bI1D+1UdC2L8xeSkWAiOWcTvCVEDkOL8dmRdQGKNsRH8+SHkPnqioDFVFJ/LTDviG+xZjGoN/Rf3G4sL1vfmgjnSMs1/E1iCrbpnouhbcLjNx7oaar9zZVw87B/NOYYue75Xxd0rHVtlkSclI6ImzJN6orlXtZfjY02fU+4vn2O+eg4+B6FBABaLn97vYFitexHWiqkphxnMgzMLuNTW+bBBwOAlE8gBXbq224G/BKN2/GGtWQghzFzAEKa+SDWG/vhoprl/45w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA1PR11MB6219.namprd11.prod.outlook.com (2603:10b6:208:3e9::15)
- by SJ0PR11MB4861.namprd11.prod.outlook.com (2603:10b6:a03:2ac::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.33; Tue, 18 Mar
- 2025 14:00:51 +0000
-Received: from IA1PR11MB6219.namprd11.prod.outlook.com
- ([fe80::f302:c534:2d71:822b]) by IA1PR11MB6219.namprd11.prod.outlook.com
- ([fe80::f302:c534:2d71:822b%4]) with mapi id 15.20.8534.034; Tue, 18 Mar 2025
- 14:00:50 +0000
-From: "Nitka, Grzegorz" <grzegorz.nitka@intel.com>
-To: Simon Horman <horms@kernel.org>
-CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Kolacinski, Karol"
-	<karol.kolacinski@intel.com>, Michal Swiatkowski
-	<michal.swiatkowski@linux.intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>
-Subject: RE: [PATCH iwl-next v2 1/3] ice: remove SW side band access
- workaround for E825
-Thread-Topic: [PATCH iwl-next v2 1/3] ice: remove SW side band access
- workaround for E825
-Thread-Index: AQHbkbfzOdFT3olD202HwPeAUlW8jbN3ke2AgAFmhcA=
-Date: Tue, 18 Mar 2025 14:00:50 +0000
-Message-ID: <IA1PR11MB62195CF656933B53CE11BB6A92DE2@IA1PR11MB6219.namprd11.prod.outlook.com>
-References: <20250310122439.3327908-1-grzegorz.nitka@intel.com>
- <20250310122439.3327908-2-grzegorz.nitka@intel.com>
- <20250317163607.GD688833@kernel.org>
-In-Reply-To: <20250317163607.GD688833@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR11MB6219:EE_|SJ0PR11MB4861:EE_
-x-ms-office365-filtering-correlation-id: 088825ee-3132-4980-c378-08dd66254aa3
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?BTTkGYybaSgVnY5hexX3I3mpKMgnFnpw5HtRxR14kGxzTBo6pvvYTgiFkJt/?=
- =?us-ascii?Q?10eDssL5QFwG1A7RzCY4z3B1gKR1jIFhnLesYIxFEeDXu5xDBmW+JoaacBSM?=
- =?us-ascii?Q?wAcBs2xpJke95WUrOcIhS5+lESkat3PVUX3z7sPnGUXagyUvkJ6cdPj3vRq1?=
- =?us-ascii?Q?5Pz6FZKuyRQcBjSxozbDEdyWBMIll+fBkeS49/WX5qs4MKBcxDZMnSqypAet?=
- =?us-ascii?Q?1CqKffH3Aj0wL4Yxb66BCDZsor4avP4kzw95Mng/hxrQdfevI9ojjnzVU8Q6?=
- =?us-ascii?Q?8NyEj9ghSj8Gb4DQYR38cwGcZTs972oQfDDzCwqPrpMVeq2Yf7xct0PUrvSH?=
- =?us-ascii?Q?9++4I/Bj068lEDW5XeQh4B13fNpTZJI7kDRIjcq4qfLhBhRyCpKePSQ0unev?=
- =?us-ascii?Q?nbqcEe6oYzugbb0C1pRkwezCLnXmJhZEm7RskNKf3XXosznoQGpgbrTuyPSJ?=
- =?us-ascii?Q?5NSWh8g+iEBB9vczSgcqhO7tu+I5kb40yKUy3zSMwM6OjzM2oq5EsEeOm7ZM?=
- =?us-ascii?Q?oTRlBdhhFJEzufaYvcCDuvJRvHOzgEZhKgua8T7aiLJcqoMt4TbIsqkTxik9?=
- =?us-ascii?Q?ihRK4Pm/sPMF56q5Xe/RGTxUo+tTmofPCtArid0S22QNTxNTcvdvGwZ2rHGS?=
- =?us-ascii?Q?suzo+2OWzExorNhJPKsMaFNGv0sz6d19YkBidHDj7RLY3RizRb0DJ8LtWJoq?=
- =?us-ascii?Q?26snkdy4AWCnSkJU0cGB9Bh6LAY2sgHFDV8T0nITOoxmOvUZS/+nJORqjw2V?=
- =?us-ascii?Q?BjRCCbJjbBeEKgUGhWjAKNPgWAQfnTLRMwpmBgkjk0MhKVxI1PuWsacg/6yr?=
- =?us-ascii?Q?asNslzXQ7nbn7gVn2Xa04GkMw6cLf6UlZv4Fxo3WzoPpOSKCsjQZBct2v9OR?=
- =?us-ascii?Q?S64zxeiZ+UKIAj7pT9OI8MSUQzRoxVjzSvb9xCtLq6WLAvc5xwnW4Guo3QcP?=
- =?us-ascii?Q?4f5f4+F5g4FxUJNvrhdeeR0kcOZJw9pZLEAHL/t2y/MZllsRkbbs0CYKUv0S?=
- =?us-ascii?Q?sv126mQgfI/kXcq8OVUAuh9R8Gq2omztF0R5ezJiQqp2QNUtVGEV+kkcAgTq?=
- =?us-ascii?Q?hoKqI3zGZ0TYt6JK9iP11Ski0eGml6gch5sqsdKU5bK4x1tmRhlQb93ZU9BE?=
- =?us-ascii?Q?0a+SZakMdANVbgjeFGY+Diw6fnU+CESBYKJ+gpKM8zcDwIKfhwC0ewGbV8Fu?=
- =?us-ascii?Q?dYavBCrYPlTGhoUdMxEBB08jqeoso9RvX3AD5Lxm6rcTe51Shv053+kiCEry?=
- =?us-ascii?Q?vpwJnTAHQs5HjrjgpAI4ckI9TwdENqjOCaHCl09+4UGINjHABsS1YwrA0mMB?=
- =?us-ascii?Q?PhgmSjeNWNtdmVc6H4LQqxM0lHBIDJzd8ztwY0cJuRsZ6oCTLusimMB6rvzc?=
- =?us-ascii?Q?ZrDKg35OG444evyIrO02rbV/bs5hdXaxdCkpQW7List8aqF8VDmRHWpvTVql?=
- =?us-ascii?Q?ya38f+pZi3m0yhCo+BUPJSpn2JzYlimQ?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6219.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Vw8RxdoUs3ZUHWpyYctE0y1CcBMk0mowEYscEcPYm3QhD7ERa6G9trl3aPo2?=
- =?us-ascii?Q?VATP4ux1iA8TWpLTSOy3Aple7S6bRmNE7uHPuuLtwpfnfGkifB7jZUQ9Qg6e?=
- =?us-ascii?Q?CttMsf3RZrExgNfo94A8nizNsRh4RuXLjhUHhv6WlrRQTaJtHxxbmABH98L+?=
- =?us-ascii?Q?XT3i1ce5JRmIoAXAR1/82yCJTGikaIAJGigkllfuBR2QfQbYhNaDUD/I7Rzr?=
- =?us-ascii?Q?AZpI104GIXksVGu5Nmfln8KTZnwyazppXTWJl3kLgOQ9+coyuA1aKB7m46z8?=
- =?us-ascii?Q?F+KadMB5PD7D59c1EPoZZNuWutSDrRNiqnighiC1IDWAJ5NkGUV9gQMjSDPg?=
- =?us-ascii?Q?KMH495HmNspC73VWsJBvfDVbQzBvIVIFp27wG2wU5wN0nxt9PVyCujJ1aC3O?=
- =?us-ascii?Q?bUZSXXj1FTsop+6sgHSzIN7O23+URTcRhMrAtFga/xUlpNjsNHAdztmzd+W+?=
- =?us-ascii?Q?XYvC6iVYEKfaP/zbFW0Xkgz/LcUeZhiAXiGcrrKS01SpX5565Jdl2QRVsx8E?=
- =?us-ascii?Q?xTlmKdodSHoQtuGn/we796OdpzseoS91aG/fGD5lveD+z8CWKvK4nZJ9qsUP?=
- =?us-ascii?Q?Y2G9l30eEu2rPYB9qDCtm8MdZ7NDWs3HSASDfruMpHbUcJMnTMUl6keRMyNq?=
- =?us-ascii?Q?NBwbdl1v0tSUjxm5xeHVbo+Y4oX1g/AnYFApvlkNzsJMEbgxS8RdIOjlFeGV?=
- =?us-ascii?Q?dKrBRCwERYGcCLH8TbzZbZQO6a03yZBeZxvaFnVfpOcAT18Iy3B4JhEafteO?=
- =?us-ascii?Q?mMxw9XAe2gmhhpiTAvoUnYzvR44WhzmN9qS40ebGOVytMX4/dVNUMW/6lypa?=
- =?us-ascii?Q?pu+IgcXU0nwnHxk3c45eGpFNODky5Odttw47WxT9Vh82eMPLrirqe40kZDrV?=
- =?us-ascii?Q?5nDrgn+c4/n0TK+i+30Twncib1g/PZhER2u1kBmVMDQOnpsuv3pJk6OPHg0v?=
- =?us-ascii?Q?31J54L6Ji0Ovmfv/RLI363d07KynN6BCSnG/z2FYQu4dtbhKu3EyM+nDL6Ir?=
- =?us-ascii?Q?DNBkiBXQ7IxTc/wQc7dHCBDRsaxS4w9qad47b+4OHmTDvg4vffy5Mk4SqVvw?=
- =?us-ascii?Q?V0iPddNqxT8db7WntTnRi5s0NGCTQLQiY+jerrMn1ewfxZ5Z5Yrz1cc4aOlu?=
- =?us-ascii?Q?1wAgYeSujlCx2FdS8mUj+kJXo7XUvlnxMhz4bkd4EFQUd66q8DXMUp++SOrI?=
- =?us-ascii?Q?gJS0xiVp8DKz8fpmuGtJNvJufPKl4rpBBxtdW2hCELnc0m9ek6KQSHUtxI6p?=
- =?us-ascii?Q?igbNiMQJM6KfK3UK0G+ZZsYKk6uR/hmBLrFpDVnYl96PmGQAhDNe5YV4q7/1?=
- =?us-ascii?Q?RcwOs+psNXEW8/lpKN4CP/BYyyChJyEFK9KfLynlT7/C/rexCUY0imYB594S?=
- =?us-ascii?Q?dDWt9FOv9dPOhMGQ2t1aQtlGKSx04D4RDf1OG0EBOsgn2czZSqqUbiEb4URC?=
- =?us-ascii?Q?JQ2BWLZCDLJukxg7lJ15c6IbFrDTkZlo3GPdBuQZubUCs72B9ROTjJs85lzb?=
- =?us-ascii?Q?LkNAmXnGIaT44tMc4nvKxA3+xKiBBRmh/J/GLunhlzEsTJOQukG6TDDSz3RJ?=
- =?us-ascii?Q?AIuardJ2MrT8817udUlMbF88PZ9+bNu2KyLbZUKc?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="0mT47E2y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1742306170;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zS6U9IbqxukiJ1clWx1A4PxWHL2mCHGPOXvVeRtKO/w=;
+	b=0mT47E2yVSK9sQUtr2JzKuXdSBEYGzBRbtTqUi6/gq6OOpst2y3o9eErHmgUIOC2b45dNM
+	Zooer++1C3wtMq0Ny7oqY3hp7V5Xv2cWZz3iH7s22ByHUs/BA1dX2yUU4YFq68mumjPtEd
+	DRYMGzX0hI7yjd78mlCtcrGgOdQjYGo=
+From: Sven Eckelmann <sven@narfation.org>
+To: Simon Wunderlich <sw@simonwunderlich.de>, davem@davemloft.net,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: kuba@kernel.org, netdev@vger.kernel.org, b.a.t.m.a.n@lists.open-mesh.org
+Subject: Re: [PATCH 0/5] pull request for net: batman-adv 2025-03-13
+Date: Tue, 18 Mar 2025 14:56:07 +0100
+Message-ID: <3809149.MHq7AAxBmi@ripper>
+In-Reply-To: <a0f1deec-2770-4b51-ad2b-b3d0e846be25@redhat.com>
+References:
+ <20250313161738.71299-1-sw@simonwunderlich.de>
+ <a0f1deec-2770-4b51-ad2b-b3d0e846be25@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6219.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 088825ee-3132-4980-c378-08dd66254aa3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2025 14:00:50.8226
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uodKtKTsB57IitxeFO56+K4YOylk8OZw4Biw/Ykes/zSt35m2eKz28zELirgx7Sqpq4VOpWXfHriphzTw7nuUA4R/Gf57irfNZezYaEwvUg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4861
-X-OriginatorOrg: intel.com
+Content-Type: multipart/signed; boundary="nextPart1964837.taCxCBeP46";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-> -----Original Message-----
-> From: Simon Horman <horms@kernel.org>
-> Sent: Monday, March 17, 2025 5:36 PM
-> To: Nitka, Grzegorz <grzegorz.nitka@intel.com>
-> Cc: intel-wired-lan@lists.osuosl.org; netdev@vger.kernel.org; Kolacinski,
-> Karol <karol.kolacinski@intel.com>; Michal Swiatkowski
-> <michal.swiatkowski@linux.intel.com>; Kitszel, Przemyslaw
-> <przemyslaw.kitszel@intel.com>
-> Subject: Re: [PATCH iwl-next v2 1/3] ice: remove SW side band access
-> workaround for E825
->=20
-> On Mon, Mar 10, 2025 at 01:24:37PM +0100, Grzegorz Nitka wrote:
-> > From: Karol Kolacinski <karol.kolacinski@intel.com>
-> >
-> > Due to the bug in FW/NVM autoload mechanism (wrong default
-> > SB_REM_DEV_CTL register settings), the access to peer PHY and CGU
-> > clients was disabled by default.
-> >
-> > As the workaround solution, the register value was overwritten by the
-> > driver at the probe or reset handling.
-> > Remove workaround as it's not needed anymore. The fix in autoload
-> > procedure has been provided with NVM 3.80 version.
->=20
-> Hi Grzegorz,
->=20
-> As per my belated comment on v2 [*], I think it would be worth adding
-> a brief comment here regarding this not being expected to cause
-> a regression in HW+FW seen in the wild.
->=20
-> [*] https://lore.kernel.org/netdev/20250317163359.GC688833@kernel.org/
->=20
+--nextPart1964837.taCxCBeP46
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+Subject: Re: [PATCH 0/5] pull request for net: batman-adv 2025-03-13
+Date: Tue, 18 Mar 2025 14:56:07 +0100
+Message-ID: <3809149.MHq7AAxBmi@ripper>
+In-Reply-To: <a0f1deec-2770-4b51-ad2b-b3d0e846be25@redhat.com>
+MIME-Version: 1.0
 
-Thanks Simon for your feedback.
-Sure, I'll address it in next version.
+On Tuesday, 18 March 2025 12:05:52 CET Paolo Abeni wrote:
+> The series does not apply cleanly to the net tree, could you please
+> rebase it?
 
-Kind Regards
+$ git log -1 --oneline
+9a81fc3480bf (HEAD, net/main) ipv6: Set errno after ip_fib_metrics_init() in ip6_route_info_create().
 
-Grzegorz
+$ git pull --no-ff git://git.open-mesh.org/linux-merge.git tags/batadv-net-pullrequest-20250313
+From git://git.open-mesh.org/linux-merge
+ * tag                         batadv-net-pullrequest-20250313 -> FETCH_HEAD
+Merge made by the 'ort' strategy.
+ net/batman-adv/bat_iv_ogm.c | 3 +--
+ net/batman-adv/bat_v_ogm.c  | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-> >
-> > Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> > Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-> > Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
-> > Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
->=20
-> ...
+So, it works perfectly fine for me .
+
+I understand that it is confusing that that Simon send a PR with 5 patches 
+mentioned. It is actually only 1 patch - 4 were already submitted in the last 
+PR. But still, the PR seems to apply cleanly for me.
+
+Any hints how to reproduce your problem?
+ 
+> While at it, could you please include the target tree in the subj prefix?
+
+It currently mentions net in the subject. But I think you mean to change it 
+from "[PATCH 0/5] pull request for net: batman-adv 2025-03-13" to 
+"[PATCH net 0/5] pull request: batman-adv 2025-03-13". Or which exact format 
+do you prefer?
+
+Kind regards,
+	Sven
+
+
+--nextPart1964837.taCxCBeP46
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCZ9l7dwAKCRBND3cr0xT1
+y5/DAQD20CG4iCNDzl8RXkBPzxz4miX+U6QNUXpR+iB0JCSm8QEAzVj7p6ylNvFQ
+Cqf6IBTk8Z+k1c9gZxXP1SkDzm6uAwk=
+=+ADe
+-----END PGP SIGNATURE-----
+
+--nextPart1964837.taCxCBeP46--
+
+
+
