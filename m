@@ -1,66 +1,66 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E591DE898
-	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 01:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2381E51FC
+	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 01:41:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742262090; cv=none; b=DRwR3I3/zoHaOi618beamPCCF7QSP9HocYm5tg6QCs+5P6MHGJr4aP7IcJ1pgcrThCr0/Cx3cq4/8T2oddmki9wJqdUG1qlkxGkqGmPoFqp9HjflgCTX8Bk35EsJVBCFcA1IknO7PFMmh2QvnPr8BmmbFod6G7W71WUNbrhw7zM=
+	t=1742262092; cv=none; b=BrBJcaEgXcUL95MHvZymNoxkQmfbORY40STGOnv7C3tsR2Jb//yiZN9Y91SZZ+yI7lQLBVQEcE9EHY+9LHsqekzED+MQTH33Dh66+GZSqKr5at55TKAtmwFE2KRWSmrJBJhcCc+XjrmlfdQ0Eyb22CAPd2aAgsZmCtQO9M8Cylk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742262090; c=relaxed/simple;
-	bh=WzA4W5yiLClKqXAIval/Es9nOzvPao024+fRff5R43c=;
+	s=arc-20240116; t=1742262092; c=relaxed/simple;
+	bh=GD8Rl6f+S3vTbseY94MaV9fGZR5rWoBgeUQmIJN+/CU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ouuBw+kDaO/69A3sCF02k0SufbGXot51ryVhEiBvzwEQzYzNxV3ydljQWYGdCk2diC8VHY1EyOtoCTj4dYBEA1QMhXOKVXCN9d93w8XVm6imBu0rYD2LbolQHx51vHFWzWj+PPROqvSF5q6nj2hlbikpgH56E4FDyfVd9lqCaaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=XrScZXYl; arc=none smtp.client-ip=209.85.221.51
+	 In-Reply-To:To:Cc; b=VkGjQf0kgPXcPgU3yPJhn7a9awDsAfUAwAwg3q+Kk/is6TDLFeyl2s2dw6LJmiVYHQwG5ozz3QtxvShdf+LnFmNf0rbAw6npnHwNLVOo6c2LCPBDqi6yIInDfzXUgHk1hG6K2c4mpWcVlHKTrWgDrp7uXhE+xnNjKK/RzWO9bIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=GbeqpiN+; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="XrScZXYl"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-39133f709f5so3084648f8f.0
-        for <netdev@vger.kernel.org>; Mon, 17 Mar 2025 18:41:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="GbeqpiN+"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3913b539aabso3184093f8f.2
+        for <netdev@vger.kernel.org>; Mon, 17 Mar 2025 18:41:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1742262084; x=1742866884; darn=vger.kernel.org;
+        d=openvpn.net; s=google; t=1742262087; x=1742866887; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=caqGQYm8f0f/nARw7ta/lh6FRvRnWL63gLzClc2Z/Ss=;
-        b=XrScZXYlV7t8eFRgGsbUtsL+IyEU455cNxpVpPGB+lrX2WoAkfZJHynulZhisO5IEI
-         K1bLvgwGGCD77mw++s6OgKEXI+oY2hy9wSvlcBjMp+IyomUM0/5HUWXPhMtyxagg8C+3
-         W7wCLh9UC5ToeMoQVc5WiJi7RZn3KgDWZZ5yFigEWdxGwK9uinMEWD0lk0FqUTqnMX3E
-         WxsCq6yiFd2z7VgHeCYnhEMqZQiPkqa8gxBA3tBAG22wqV2Hj/A2nx2WEq3oo4zvPP+e
-         oTx4cEFNLuC3P+3Vlfjh5vTt4e60gSxg6QWgZ3XRzP+z6CTif+pTnR3Z1HNkE4PFCz/5
-         3zPA==
+        bh=j+QaWcsm/bYmbbie8Pttkb9H+MwD+6/dUPKjHa5/Jks=;
+        b=GbeqpiN+92ChJewe4+RWJecTmwd5JusLLP87icHVYET5OO6oZQfgsbR9ipYFe4AdgP
+         wRmc176BKSQNGekWRZGjePDsfIXlEwM2SgVl+X2B6p7fppgjPV6jKOPTywN1HDHBW2ht
+         qLGr+nHHy4bVPkG284lWwPyj5yM5sdqMaP1UZ/miBxeY1b9WgLbdABaHNUGV+abPEizg
+         C384rFcu3rgdH7bsm+blITHACOfZpzT/6j/q8dKKVe3+KqyvWYWt0cL0pL4c+zjsf3cg
+         Cj+phP9pXJhgEyRZDYXfG1uoouvPItPjxudBXCrak+m6GAvQkleso+78wgIPDNq6WIFj
+         wokg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742262084; x=1742866884;
+        d=1e100.net; s=20230601; t=1742262087; x=1742866887;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=caqGQYm8f0f/nARw7ta/lh6FRvRnWL63gLzClc2Z/Ss=;
-        b=l4QRixxpwYR3EX67FJUOmwLargAtBm4yiBn4dS9zkohlM7O/7dfQgkYMiSA7Uqh1x/
-         dDYTUDGHqpfAPNlnQB4iF4OiwAE5TKmTDvsbYM7IaBIwBpGmQTb7sKQYvizNPWKcWrBs
-         6jSk4REYVhih0LE6pfdBNMFIIcbmWm2Sk5oy1IZtIOUkYThChDpu8/+gNNr2J/7xwacQ
-         q+T+NHQRHGnpeBazyoR1i4YI87Xd1HqUQvWDU5/DjuanniKplIxeU8CDMr46v5Bdjc9J
-         0vV5f/TLkrp04A1vqQrq7Uwlc+OcKhPnpsRxDuLS+yypXxlnhTeE5zJhnyHsZFTCSste
-         5vww==
-X-Gm-Message-State: AOJu0YzQMpgB/CLg0okp7u6a/cSt9pvwuiSfpBDoqP28OYCpci6XdA/k
-	O2LFOjIaQ+URMgVuLnjLpfPesOwKR4YETCeciRehuPNoGi1ocvHr8yibb/A+2aySay5qj5TBg+x
-	G0gTQnsQeLDGGKNx2MuG3UJ95hM3fSx363x7DgGB+VhCwW8E=
-X-Gm-Gg: ASbGncv/TWodPQ1qk/2H2zcM9g3aXwAc3YGTNFfqHHXK9ot7gKGRzOwh+3ig2xcQla4
-	iYNDm0mSirCCjCxf/WyqjeYwUkZEGqU7FNC+SnDp+RawA4U9nZ0OMOs/RJD6JBKpUwJe6u5oT68
-	CKjrp+boEpcvrrj+sH6cI8x5wASzEUrHSbjnMefWgfCEtkV/waGuJzZrJ4nSJVY8RqZHCClXqrT
-	lw7mbxyCp5QKsWhy3ZG9ZHCap7huvwJNKYV1PtHu2Pxs7towRVQq/pvTD0YMJ++nZqDmv9lgpRz
-	ePU0/GSJU5SUi0lysQMOCVKKse22A79gL3YOQDX0qQ==
-X-Google-Smtp-Source: AGHT+IEfZSP12MMv19G/nwYq83GpBV/XM+nPiEr+HbAb85B10fINC5Eh/jMvq7THLez34FluHHZZIg==
-X-Received: by 2002:a05:6000:2a7:b0:391:2e6a:30fe with SMTP id ffacd0b85a97d-3971f9e517bmr16674566f8f.39.1742262084141;
-        Mon, 17 Mar 2025 18:41:24 -0700 (PDT)
+        bh=j+QaWcsm/bYmbbie8Pttkb9H+MwD+6/dUPKjHa5/Jks=;
+        b=LRJVLcPHrLf4C/aKexRTOeKRMf2w70hh43nvNZFq0lKWmN7e0EzUKiZo5AeQEV3Nw1
+         OYCSEfOoSshNr+pWIF+1UmyYKGdU89vaS1ZoqiAWIGdYDo3Rh2oca51LsvTtX7xk7nNS
+         4W9axsrexY7AZrr1HSorv3gNpkNZAfadz7N7N0l9qIxC6AcS++EiVgvkUUikaGjOqZ2o
+         lFjO/IYbQxVMyVtxr+w5QMOgrSfG0eQNuy8LKduA/SI6sEslVyOHDFWiMalA8KhpYvbr
+         FG2D5qsKMGkjVKHZLiBq/0dylHVv4PIHVC/YZRXDDQ1fK/qNfAibBdmp0DAPbeSDlBpr
+         p5Iw==
+X-Gm-Message-State: AOJu0Ywfh5pL7BtahdGtV1qmmsC9hzg5V8ZyxtBNTNtmxsx3TPZGAVmE
+	UmHVPwQG1dxOFBHuWVLZFUDGlAeJeweUBz39W9JZfdqy9eLPeNqjeP2EHE9fUbkwhzyd7egKibr
+	/Qop7Huct8kaIYZ6AqQjhyfoDb8ULIEO7TS08SRkoZkVb618=
+X-Gm-Gg: ASbGnct7YjTZJDTREwNEbP1IjZuH/rw0cazup/6qozGL4GmzgEsEeDrWmMHtRSGbDiG
+	G1SsYLbr7A+GZxaICYxu+mY9HqY9H5acqcvBTBKSxL0lwmdAdlqYGLt8FHhb/xpdwNyf+q+Uh6g
+	Hj8zVVlXlIPgCLGoFHuQhefo2C0KTg2yt5dakO9Eg7Di3yNOBdGkTQVOnGtoUhvbF+JidB2jofq
+	FogMY8h9d2zZAiN371pfZ7WdLh9yMTU4POPmm4DgCct/AZnESk1PuC4KWFnnmC+xvz3tcFF675c
+	BNXlGBCRG6pBCST4xHFfxcITF6m6fNUP27j3g6DoMg==
+X-Google-Smtp-Source: AGHT+IF+s6qt9A/xjjy3I9KcWmJiQqWMHdDVlgaD7NKSR0g0eM/LLfpwaDjMzfa0KVPASFlqZ0FYnA==
+X-Received: by 2002:a05:6000:18ab:b0:391:47a7:299c with SMTP id ffacd0b85a97d-39720962980mr18611116f8f.40.1742262086823;
+        Mon, 17 Mar 2025 18:41:26 -0700 (PDT)
 Received: from [127.0.0.1] ([2001:67c:2fbc:1:3577:c57d:1329:9a15])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-395c83b6b2bsm16230838f8f.26.2025.03.17.18.41.23
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-395c83b6b2bsm16230838f8f.26.2025.03.17.18.41.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Mar 2025 18:41:23 -0700 (PDT)
+        Mon, 17 Mar 2025 18:41:26 -0700 (PDT)
 From: Antonio Quartulli <antonio@openvpn.net>
-Date: Tue, 18 Mar 2025 02:40:53 +0100
-Subject: [PATCH net-next v24 18/23] ovpn: implement peer
- add/get/dump/delete via netlink
+Date: Tue, 18 Mar 2025 02:40:55 +0100
+Subject: [PATCH net-next v24 20/23] ovpn: kill key and notify userspace in
+ case of IV exhaustion
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250318-b4-ovpn-v24-18-3ec4ab5c4a77@openvpn.net>
+Message-Id: <20250318-b4-ovpn-v24-20-3ec4ab5c4a77@openvpn.net>
 References: <20250318-b4-ovpn-v24-0-3ec4ab5c4a77@openvpn.net>
 In-Reply-To: <20250318-b4-ovpn-v24-0-3ec4ab5c4a77@openvpn.net>
 To: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
@@ -81,507 +81,159 @@ To: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
 Cc: Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, Xiao Liang <shaw.leon@gmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=27635; i=antonio@openvpn.net;
- h=from:subject:message-id; bh=WzA4W5yiLClKqXAIval/Es9nOzvPao024+fRff5R43c=;
- b=owEBbQGS/pANAwAIAQtw5TqgONWHAcsmYgBn2M8qa1ke78PRC7+W+1mYgcaxt4qgtw/ixfI54
- tdOdIkFEt+JATMEAAEIAB0WIQSZq9xs+NQS5N5fwPwLcOU6oDjVhwUCZ9jPKgAKCRALcOU6oDjV
- h95DB/9VDEwhF+GNiHdXdL7Ncduz5USmKDXO+QcjmLiJJy+o+3ztMyXKIqg5roAbKa2QWMplzqv
- gOW6InyIXEieP1o8Xs45snQtl0la3v65pxDeXyz9uvVEocGRAZgYkUVC94Me8r1gt+5fvm0nR6c
- WWYsFvfOQN2TI+T9w5N7FegdAiZ0EK13VzbPbl6ctAILt8SQyaGPp9Pie+YHx6pJjopKJYenTzq
- XXr/zvugAPHMEcoc8NB9NcFfKDD22FgymMEdCfzQyvuQjr7ZvaWx9hiQkuXxDZKBRLjkRbIsPoj
- AshNSLVS4as2rwJRn5PWpj+F0nx4G6v7aVsnhexQzByVDOdY
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5907; i=antonio@openvpn.net;
+ h=from:subject:message-id; bh=GD8Rl6f+S3vTbseY94MaV9fGZR5rWoBgeUQmIJN+/CU=;
+ b=owEBbQGS/pANAwAIAQtw5TqgONWHAcsmYgBn2M8r0r1a/HV+I8gz53rdhTzlQlYXS/EFqDgSj
+ CNuw5uG+KGJATMEAAEIAB0WIQSZq9xs+NQS5N5fwPwLcOU6oDjVhwUCZ9jPKwAKCRALcOU6oDjV
+ h4qXB/99Yu8FqnVusVUDUGBcu+eyzJL4ROYLxnZ7Ts9NCSYoKewi6F1cuNS8JMEPjBTuzQds4Rd
+ eh3B0chvkvltA1E1wr/oUn7soo6kBTX4vmXIqkCjvjX1+NrP9JX4soZyBavmYbXmoh6D6RkVcm1
+ b8nKjvxpT150GeghWu1keOnQY0R0YcXNDdxDXdc4862PWF3sUem+i3IGYmM3xCqk/a8TgttrJO8
+ bCsBVbyCLXsS2HdZdUofThRf7GXSMsrmXtFzkls1va9K5czMgFHKOE2NXox2KwUeYS6AcJ775BM
+ X42VxVdwuFUerL+lquvsERn3F+fkqgla3yNq7RFl1kvUNnAV
 X-Developer-Key: i=antonio@openvpn.net; a=openpgp;
  fpr=CABDA1282017C267219885C748F0CCB68F59D14C
 
-This change introduces the netlink command needed to add, delete and
-retrieve/dump known peers. Userspace is expected to use these commands
-to handle known peer lifecycles.
+IV wrap-around is cryptographically dangerous for a number of ciphers,
+therefore kill the key and inform userspace (via netlink) should the
+IV space go exhausted.
+
+Userspace has two ways of deciding when the key has to be renewed before
+exhausting the IV space:
+1) time based approach:
+   after X seconds/minutes userspace generates a new key and sends it
+   to the kernel. This is based on guestimate and normally default
+   timer value works well.
+
+2) packet count based approach:
+   after X packets/bytes userspace generates a new key and sends it to
+   the kernel. Userspace keeps track of the amount of traffic by
+   periodically polling GET_PEER and fetching the VPN/LINK stats.
 
 Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
 ---
- drivers/net/ovpn/netlink.c | 678 ++++++++++++++++++++++++++++++++++++++++++++-
- drivers/net/ovpn/peer.c    |  79 ++++--
- drivers/net/ovpn/peer.h    |   5 +
- drivers/net/ovpn/socket.c  |   4 +-
- 4 files changed, 730 insertions(+), 36 deletions(-)
+ drivers/net/ovpn/crypto.c  | 19 ++++++++++++++
+ drivers/net/ovpn/crypto.h  |  2 ++
+ drivers/net/ovpn/io.c      | 13 ++++++++++
+ drivers/net/ovpn/netlink.c | 64 ++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/net/ovpn/netlink.h |  2 ++
+ 5 files changed, 100 insertions(+)
 
+diff --git a/drivers/net/ovpn/crypto.c b/drivers/net/ovpn/crypto.c
+index 3c15d6d78f0f5ceeeb5ee39bfaaa7005d01a87fc..f6cb14c9ec4a8f12a99fe449f011bd0d633bf904 100644
+--- a/drivers/net/ovpn/crypto.c
++++ b/drivers/net/ovpn/crypto.c
+@@ -54,6 +54,25 @@ void ovpn_crypto_state_release(struct ovpn_crypto_state *cs)
+ 	}
+ }
+ 
++/* removes the key matching the specified id from the crypto context */
++void ovpn_crypto_kill_key(struct ovpn_crypto_state *cs, u8 key_id)
++{
++	struct ovpn_crypto_key_slot *ks = NULL;
++
++	spin_lock_bh(&cs->lock);
++	if (rcu_access_pointer(cs->slots[0])->key_id == key_id) {
++		ks = rcu_replace_pointer(cs->slots[0], NULL,
++					 lockdep_is_held(&cs->lock));
++	} else if (rcu_access_pointer(cs->slots[1])->key_id == key_id) {
++		ks = rcu_replace_pointer(cs->slots[1], NULL,
++					 lockdep_is_held(&cs->lock));
++	}
++	spin_unlock_bh(&cs->lock);
++
++	if (ks)
++		ovpn_crypto_key_slot_put(ks);
++}
++
+ /* Reset the ovpn_crypto_state object in a way that is atomic
+  * to RCU readers.
+  */
+diff --git a/drivers/net/ovpn/crypto.h b/drivers/net/ovpn/crypto.h
+index 487d24a7d26635c9ca0fd66c75717502f60e7a0c..4397253893ff2638b86b9d55bd21e11d0aeacf80 100644
+--- a/drivers/net/ovpn/crypto.h
++++ b/drivers/net/ovpn/crypto.h
+@@ -140,4 +140,6 @@ int ovpn_crypto_config_get(struct ovpn_crypto_state *cs,
+ 			   enum ovpn_key_slot slot,
+ 			   struct ovpn_key_config *keyconf);
+ 
++void ovpn_crypto_kill_key(struct ovpn_crypto_state *cs, u8 key_id);
++
+ #endif /* _NET_OVPN_OVPNCRYPTO_H_ */
+diff --git a/drivers/net/ovpn/io.c b/drivers/net/ovpn/io.c
+index 49bb58868053e2d1542a8a5849c4bbc256083efc..c11ed75c62a2599bf68150be897693cc4806e4f6 100644
+--- a/drivers/net/ovpn/io.c
++++ b/drivers/net/ovpn/io.c
+@@ -255,6 +255,19 @@ void ovpn_encrypt_post(void *data, int ret)
+ 	if (likely(ovpn_skb_cb(skb)->req))
+ 		aead_request_free(ovpn_skb_cb(skb)->req);
+ 
++	if (unlikely(ret == -ERANGE)) {
++		/* we ran out of IVs and we must kill the key as it can't be
++		 * use anymore
++		 */
++		netdev_warn(peer->ovpn->dev,
++			    "killing key %u for peer %u\n", ks->key_id,
++			    peer->id);
++		ovpn_crypto_kill_key(&peer->crypto, ks->key_id);
++		/* let userspace know so that a new key must be negotiated */
++		ovpn_nl_key_swap_notify(peer, ks->key_id);
++		goto err;
++	}
++
+ 	if (unlikely(ret < 0))
+ 		goto err;
+ 
 diff --git a/drivers/net/ovpn/netlink.c b/drivers/net/ovpn/netlink.c
-index 8d267d4c82283d9b5f989478102086ce385195d5..873386aa217e71405c2682aec44d459227262e80 100644
+index 21784b44a897a5590bd8dc02754ca66cef841520..93152734098948b58ec1ba8a2ed05f8bb40c91eb 100644
 --- a/drivers/net/ovpn/netlink.c
 +++ b/drivers/net/ovpn/netlink.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/netdevice.h>
-+#include <linux/types.h>
- #include <net/genetlink.h>
- 
- #include <uapi/linux/ovpn.h>
-@@ -15,6 +16,9 @@
- #include "main.h"
- #include "netlink.h"
- #include "netlink-gen.h"
-+#include "bind.h"
-+#include "peer.h"
-+#include "socket.h"
- 
- MODULE_ALIAS_GENL_FAMILY(OVPN_FAMILY_NAME);
- 
-@@ -89,29 +93,693 @@ void ovpn_nl_post_doit(const struct genl_split_ops *ops, struct sk_buff *skb,
- 		netdev_put(ovpn->dev, tracker);
+@@ -1095,6 +1095,70 @@ int ovpn_nl_key_del_doit(struct sk_buff *skb, struct genl_info *info)
+ 	return 0;
  }
  
-+static bool ovpn_nl_attr_sockaddr_remote(struct nlattr **attrs,
-+					 struct sockaddr_storage *ss)
-+{
-+	struct sockaddr_in6 *sin6;
-+	struct sockaddr_in *sin;
-+	struct in6_addr *in6;
-+	__be16 port = 0;
-+	__be32 *in;
-+
-+	ss->ss_family = AF_UNSPEC;
-+
-+	if (attrs[OVPN_A_PEER_REMOTE_PORT])
-+		port = nla_get_be16(attrs[OVPN_A_PEER_REMOTE_PORT]);
-+
-+	if (attrs[OVPN_A_PEER_REMOTE_IPV4]) {
-+		ss->ss_family = AF_INET;
-+		in = nla_data(attrs[OVPN_A_PEER_REMOTE_IPV4]);
-+	} else if (attrs[OVPN_A_PEER_REMOTE_IPV6]) {
-+		ss->ss_family = AF_INET6;
-+		in6 = nla_data(attrs[OVPN_A_PEER_REMOTE_IPV6]);
-+	} else {
-+		return false;
-+	}
-+
-+	switch (ss->ss_family) {
-+	case AF_INET6:
-+		/* If this is a regular IPv6 just break and move on,
-+		 * otherwise switch to AF_INET and extract the IPv4 accordingly
-+		 */
-+		if (!ipv6_addr_v4mapped(in6)) {
-+			sin6 = (struct sockaddr_in6 *)ss;
-+			sin6->sin6_port = port;
-+			memcpy(&sin6->sin6_addr, in6, sizeof(*in6));
-+			break;
-+		}
-+
-+		/* v4-mapped-v6 address */
-+		ss->ss_family = AF_INET;
-+		in = &in6->s6_addr32[3];
-+		fallthrough;
-+	case AF_INET:
-+		sin = (struct sockaddr_in *)ss;
-+		sin->sin_port = port;
-+		sin->sin_addr.s_addr = *in;
-+		break;
-+	}
-+
-+	return true;
-+}
-+
-+static u8 *ovpn_nl_attr_local_ip(struct nlattr **attrs)
-+{
-+	u8 *addr6;
-+
-+	if (!attrs[OVPN_A_PEER_LOCAL_IPV4] && !attrs[OVPN_A_PEER_LOCAL_IPV6])
-+		return NULL;
-+
-+	if (attrs[OVPN_A_PEER_LOCAL_IPV4])
-+		return nla_data(attrs[OVPN_A_PEER_LOCAL_IPV4]);
-+
-+	addr6 = nla_data(attrs[OVPN_A_PEER_LOCAL_IPV6]);
-+	/* this is an IPv4-mapped IPv6 address, therefore extract the actual
-+	 * v4 address from the last 4 bytes
-+	 */
-+	if (ipv6_addr_v4mapped((struct in6_addr *)addr6))
-+		return addr6 + 12;
-+
-+	return addr6;
-+}
-+
-+static sa_family_t ovpn_nl_family_get(struct nlattr *addr4,
-+				      struct nlattr *addr6)
-+{
-+	if (addr4)
-+		return AF_INET;
-+
-+	if (addr6) {
-+		if (ipv6_addr_v4mapped((struct in6_addr *)nla_data(addr6)))
-+			return AF_INET;
-+		return AF_INET6;
-+	}
-+
-+	return AF_UNSPEC;
-+}
-+
-+static int ovpn_nl_peer_precheck(struct ovpn_priv *ovpn,
-+				 struct genl_info *info,
-+				 struct nlattr **attrs)
-+{
-+	sa_family_t local_fam, remote_fam;
-+
-+	if (NL_REQ_ATTR_CHECK(info->extack, info->attrs[OVPN_A_PEER], attrs,
-+			      OVPN_A_PEER_ID))
-+		return -EINVAL;
-+
-+	if (attrs[OVPN_A_PEER_REMOTE_IPV4] && attrs[OVPN_A_PEER_REMOTE_IPV6]) {
-+		NL_SET_ERR_MSG_MOD(info->extack,
-+				   "cannot specify both remote IPv4 or IPv6 address");
-+		return -EINVAL;
-+	}
-+
-+	if (!attrs[OVPN_A_PEER_REMOTE_IPV4] &&
-+	    !attrs[OVPN_A_PEER_REMOTE_IPV6] && attrs[OVPN_A_PEER_REMOTE_PORT]) {
-+		NL_SET_ERR_MSG_MOD(info->extack,
-+				   "cannot specify remote port without IP address");
-+		return -EINVAL;
-+	}
-+
-+	if (!attrs[OVPN_A_PEER_REMOTE_IPV4] &&
-+	    attrs[OVPN_A_PEER_LOCAL_IPV4]) {
-+		NL_SET_ERR_MSG_MOD(info->extack,
-+				   "cannot specify local IPv4 address without remote");
-+		return -EINVAL;
-+	}
-+
-+	if (!attrs[OVPN_A_PEER_REMOTE_IPV6] &&
-+	    attrs[OVPN_A_PEER_LOCAL_IPV6]) {
-+		NL_SET_ERR_MSG_MOD(info->extack,
-+				   "cannot specify local IPV6 address without remote");
-+		return -EINVAL;
-+	}
-+
-+	/* check that local and remote address families are the same even
-+	 * after parsing v4mapped IPv6 addresses.
-+	 * (if addresses are not provided, family will be AF_UNSPEC and
-+	 * the check is skipped)
-+	 */
-+	local_fam = ovpn_nl_family_get(attrs[OVPN_A_PEER_LOCAL_IPV4],
-+				       attrs[OVPN_A_PEER_LOCAL_IPV6]);
-+	remote_fam = ovpn_nl_family_get(attrs[OVPN_A_PEER_REMOTE_IPV4],
-+					attrs[OVPN_A_PEER_REMOTE_IPV6]);
-+	if (local_fam != AF_UNSPEC && remote_fam != AF_UNSPEC &&
-+	    local_fam != remote_fam) {
-+		NL_SET_ERR_MSG_MOD(info->extack,
-+				   "mismatching local and remote address families");
-+		return -EINVAL;
-+	}
-+
-+	if (remote_fam != AF_INET6 && attrs[OVPN_A_PEER_REMOTE_IPV6_SCOPE_ID]) {
-+		NL_SET_ERR_MSG_MOD(info->extack,
-+				   "cannot specify scope id without remote IPv6 address");
-+		return -EINVAL;
-+	}
-+
-+	/* VPN IPs are needed only in MP mode for selecting the right peer */
-+	if (ovpn->mode == OVPN_MODE_P2P && (attrs[OVPN_A_PEER_VPN_IPV4] ||
-+					    attrs[OVPN_A_PEER_VPN_IPV6])) {
-+		NL_SET_ERR_MSG_FMT_MOD(info->extack,
-+				       "unexpected VPN IP in P2P mode");
-+		return -EINVAL;
-+	}
-+
-+	if ((attrs[OVPN_A_PEER_KEEPALIVE_INTERVAL] &&
-+	     !attrs[OVPN_A_PEER_KEEPALIVE_TIMEOUT]) ||
-+	    (!attrs[OVPN_A_PEER_KEEPALIVE_INTERVAL] &&
-+	     attrs[OVPN_A_PEER_KEEPALIVE_TIMEOUT])) {
-+		NL_SET_ERR_MSG_FMT_MOD(info->extack,
-+				       "keepalive interval and timeout are required together");
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
 +/**
-+ * ovpn_nl_peer_modify - modify the peer attributes according to the incoming msg
-+ * @peer: the peer to modify
-+ * @info: generic netlink info from the user request
-+ * @attrs: the attributes from the user request
++ * ovpn_nl_key_swap_notify - notify userspace peer's key must be renewed
++ * @peer: the peer whose key needs to be renewed
++ * @key_id: the ID of the key that needs to be renewed
 + *
-+ * Return: a negative error code in case of failure, 0 on success or 1 on
-+ *	   success and the VPN IPs have been modified (requires rehashing in MP
-+ *	   mode)
++ * Return: 0 on success or a negative error code otherwise
 + */
-+static int ovpn_nl_peer_modify(struct ovpn_peer *peer, struct genl_info *info,
-+			       struct nlattr **attrs)
++int ovpn_nl_key_swap_notify(struct ovpn_peer *peer, u8 key_id)
 +{
-+	struct sockaddr_storage ss = {};
-+	void *local_ip = NULL;
-+	u32 interv, timeout;
-+	bool rehash = false;
-+	int ret;
-+
-+	spin_lock_bh(&peer->lock);
-+
-+	if (ovpn_nl_attr_sockaddr_remote(attrs, &ss)) {
-+		/* we carry the local IP in a generic container.
-+		 * ovpn_peer_reset_sockaddr() will properly interpret it
-+		 * based on ss.ss_family
-+		 */
-+		local_ip = ovpn_nl_attr_local_ip(attrs);
-+
-+		/* set peer sockaddr */
-+		ret = ovpn_peer_reset_sockaddr(peer, &ss, local_ip);
-+		if (ret < 0) {
-+			NL_SET_ERR_MSG_FMT_MOD(info->extack,
-+					       "cannot set peer sockaddr: %d",
-+					       ret);
-+			goto err_unlock;
-+		}
-+		dst_cache_reset(&peer->dst_cache);
-+	}
-+
-+	if (attrs[OVPN_A_PEER_VPN_IPV4]) {
-+		rehash = true;
-+		peer->vpn_addrs.ipv4.s_addr =
-+			nla_get_in_addr(attrs[OVPN_A_PEER_VPN_IPV4]);
-+	}
-+
-+	if (attrs[OVPN_A_PEER_VPN_IPV6]) {
-+		rehash = true;
-+		peer->vpn_addrs.ipv6 =
-+			nla_get_in6_addr(attrs[OVPN_A_PEER_VPN_IPV6]);
-+	}
-+
-+	/* when setting the keepalive, both parameters have to be configured */
-+	if (attrs[OVPN_A_PEER_KEEPALIVE_INTERVAL] &&
-+	    attrs[OVPN_A_PEER_KEEPALIVE_TIMEOUT]) {
-+		interv = nla_get_u32(attrs[OVPN_A_PEER_KEEPALIVE_INTERVAL]);
-+		timeout = nla_get_u32(attrs[OVPN_A_PEER_KEEPALIVE_TIMEOUT]);
-+		ovpn_peer_keepalive_set(peer, interv, timeout);
-+	}
-+
-+	netdev_dbg(peer->ovpn->dev,
-+		   "modify peer id=%u endpoint=%pIScp VPN-IPv4=%pI4 VPN-IPv6=%pI6c\n",
-+		   peer->id, &ss,
-+		   &peer->vpn_addrs.ipv4.s_addr, &peer->vpn_addrs.ipv6);
-+
-+	spin_unlock_bh(&peer->lock);
-+
-+	return rehash ? 1 : 0;
-+err_unlock:
-+	spin_unlock_bh(&peer->lock);
-+	return ret;
-+}
-+
- int ovpn_nl_peer_new_doit(struct sk_buff *skb, struct genl_info *info)
- {
--	return -EOPNOTSUPP;
-+	struct nlattr *attrs[OVPN_A_PEER_MAX + 1];
-+	struct ovpn_priv *ovpn = info->user_ptr[0];
-+	struct ovpn_socket *ovpn_sock;
-+	struct socket *sock = NULL;
-+	struct ovpn_peer *peer;
-+	u32 sockfd, peer_id;
-+	int ret;
-+
-+	if (GENL_REQ_ATTR_CHECK(info, OVPN_A_PEER))
-+		return -EINVAL;
-+
-+	ret = nla_parse_nested(attrs, OVPN_A_PEER_MAX, info->attrs[OVPN_A_PEER],
-+			       ovpn_peer_nl_policy, info->extack);
-+	if (ret)
-+		return ret;
-+
-+	ret = ovpn_nl_peer_precheck(ovpn, info, attrs);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (NL_REQ_ATTR_CHECK(info->extack, info->attrs[OVPN_A_PEER], attrs,
-+			      OVPN_A_PEER_SOCKET))
-+		return -EINVAL;
-+
-+	/* in MP mode VPN IPs are required for selecting the right peer */
-+	if (ovpn->mode == OVPN_MODE_MP && !attrs[OVPN_A_PEER_VPN_IPV4] &&
-+	    !attrs[OVPN_A_PEER_VPN_IPV6]) {
-+		NL_SET_ERR_MSG_FMT_MOD(info->extack,
-+				       "VPN IP must be provided in MP mode");
-+		return -EINVAL;
-+	}
-+
-+	peer_id = nla_get_u32(attrs[OVPN_A_PEER_ID]);
-+	peer = ovpn_peer_new(ovpn, peer_id);
-+	if (IS_ERR(peer)) {
-+		NL_SET_ERR_MSG_FMT_MOD(info->extack,
-+				       "cannot create new peer object for peer %u: %ld",
-+				       peer_id, PTR_ERR(peer));
-+		return PTR_ERR(peer);
-+	}
-+
-+	/* lookup the fd in the kernel table and extract the socket object */
-+	sockfd = nla_get_u32(attrs[OVPN_A_PEER_SOCKET]);
-+	/* sockfd_lookup() increases sock's refcounter */
-+	sock = sockfd_lookup(sockfd, &ret);
-+	if (!sock) {
-+		NL_SET_ERR_MSG_FMT_MOD(info->extack,
-+				       "cannot lookup peer socket (fd=%u): %d",
-+				       sockfd, ret);
-+		ret = -ENOTSOCK;
-+		goto peer_release;
-+	}
-+
-+	/* Only when using UDP as transport protocol the remote endpoint
-+	 * can be configured so that ovpn knows where to send packets to.
-+	 */
-+	if (sock->sk->sk_protocol == IPPROTO_UDP &&
-+	    !attrs[OVPN_A_PEER_REMOTE_IPV4] &&
-+	    !attrs[OVPN_A_PEER_REMOTE_IPV6]) {
-+		NL_SET_ERR_MSG_FMT_MOD(info->extack,
-+				       "missing remote IP address for UDP socket");
-+		sockfd_put(sock);
-+		ret = -EINVAL;
-+		goto peer_release;
-+	}
-+
-+	/* In case of TCP, the socket is connected to the peer and ovpn
-+	 * will just send bytes over it, without the need to specify a
-+	 * destination.
-+	 */
-+	if (sock->sk->sk_protocol == IPPROTO_TCP &&
-+	    (attrs[OVPN_A_PEER_REMOTE_IPV4] ||
-+	     attrs[OVPN_A_PEER_REMOTE_IPV6])) {
-+		NL_SET_ERR_MSG_FMT_MOD(info->extack,
-+				       "unexpected remote IP address with TCP socket");
-+		sockfd_put(sock);
-+		ret = -EINVAL;
-+		goto peer_release;
-+	}
-+
-+	ovpn_sock = ovpn_socket_new(sock, peer);
-+	/* at this point we unconditionally drop the reference to the socket:
-+	 * - in case of error, the socket has to be dropped
-+	 * - if case of success, the socket is configured and let
-+	 *   userspace own the reference, so that the latter can
-+	 *   trigger the final close()
-+	 */
-+	sockfd_put(sock);
-+	if (IS_ERR(ovpn_sock)) {
-+		NL_SET_ERR_MSG_FMT_MOD(info->extack,
-+				       "cannot encapsulate socket: %ld",
-+				       PTR_ERR(ovpn_sock));
-+		ret = -ENOTSOCK;
-+		goto peer_release;
-+	}
-+
-+	rcu_assign_pointer(peer->sock, ovpn_sock);
-+
-+	ret = ovpn_nl_peer_modify(peer, info, attrs);
-+	if (ret < 0)
-+		goto sock_release;
-+
-+	ret = ovpn_peer_add(ovpn, peer);
-+	if (ret < 0) {
-+		NL_SET_ERR_MSG_FMT_MOD(info->extack,
-+				       "cannot add new peer (id=%u) to hashtable: %d",
-+				       peer->id, ret);
-+		goto sock_release;
-+	}
-+
-+	return 0;
-+
-+sock_release:
-+	ovpn_socket_release(peer);
-+peer_release:
-+	/* release right away because peer was not yet hashed, thus it is not
-+	 * used in any context
-+	 */
-+	ovpn_peer_release(peer);
-+
-+	return ret;
- }
- 
- int ovpn_nl_peer_set_doit(struct sk_buff *skb, struct genl_info *info)
- {
--	return -EOPNOTSUPP;
-+	struct nlattr *attrs[OVPN_A_PEER_MAX + 1];
-+	struct ovpn_priv *ovpn = info->user_ptr[0];
 +	struct ovpn_socket *sock;
-+	struct ovpn_peer *peer;
-+	u32 peer_id;
-+	int ret;
-+
-+	if (GENL_REQ_ATTR_CHECK(info, OVPN_A_PEER))
-+		return -EINVAL;
-+
-+	ret = nla_parse_nested(attrs, OVPN_A_PEER_MAX, info->attrs[OVPN_A_PEER],
-+			       ovpn_peer_nl_policy, info->extack);
-+	if (ret)
-+		return ret;
-+
-+	ret = ovpn_nl_peer_precheck(ovpn, info, attrs);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (attrs[OVPN_A_PEER_SOCKET]) {
-+		NL_SET_ERR_MSG_FMT_MOD(info->extack,
-+				       "socket cannot be modified");
-+		return -EINVAL;
-+	}
-+
-+	peer_id = nla_get_u32(attrs[OVPN_A_PEER_ID]);
-+	peer = ovpn_peer_get_by_id(ovpn, peer_id);
-+	if (!peer) {
-+		NL_SET_ERR_MSG_FMT_MOD(info->extack,
-+				       "cannot find peer with id %u", peer_id);
-+		return -ENOENT;
-+	}
-+
-+	/* when using a TCP socket the remote IP is not expected */
-+	rcu_read_lock();
-+	sock = rcu_dereference(peer->sock);
-+	if (sock && sock->sock->sk->sk_protocol == IPPROTO_TCP &&
-+	    (attrs[OVPN_A_PEER_REMOTE_IPV4] ||
-+	     attrs[OVPN_A_PEER_REMOTE_IPV6])) {
-+		rcu_read_unlock();
-+		NL_SET_ERR_MSG_FMT_MOD(info->extack,
-+				       "unexpected remote IP address with TCP socket");
-+		ovpn_peer_put(peer);
-+		return -EINVAL;
-+	}
-+	rcu_read_unlock();
-+
-+	spin_lock_bh(&ovpn->lock);
-+	ret = ovpn_nl_peer_modify(peer, info, attrs);
-+	if (ret < 0) {
-+		spin_unlock_bh(&ovpn->lock);
-+		ovpn_peer_put(peer);
-+		return ret;
-+	}
-+
-+	/* ret == 1 means that VPN IPv4/6 has been modified and rehashing
-+	 * is required
-+	 */
-+	if (ret > 0)
-+		ovpn_peer_hash_vpn_ip(peer);
-+	spin_unlock_bh(&ovpn->lock);
-+	ovpn_peer_put(peer);
-+
-+	return 0;
-+}
-+
-+static int ovpn_nl_send_peer(struct sk_buff *skb, const struct genl_info *info,
-+			     const struct ovpn_peer *peer, u32 portid, u32 seq,
-+			     int flags)
-+{
-+	const struct ovpn_bind *bind;
-+	struct ovpn_socket *sock;
++	struct nlattr *k_attr;
++	struct sk_buff *msg;
 +	int ret = -EMSGSIZE;
-+	struct nlattr *attr;
-+	__be16 local_port;
 +	void *hdr;
-+	int id;
 +
-+	hdr = genlmsg_put(skb, portid, seq, &ovpn_nl_family, flags,
-+			  OVPN_CMD_PEER_GET);
-+	if (!hdr)
-+		return -ENOBUFS;
++	netdev_info(peer->ovpn->dev, "peer with id %u must rekey - primary key unusable.\n",
++		    peer->id);
 +
-+	attr = nla_nest_start(skb, OVPN_A_PEER);
-+	if (!attr)
-+		goto err;
++	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_ATOMIC);
++	if (!msg)
++		return -ENOMEM;
++
++	hdr = genlmsg_put(msg, 0, 0, &ovpn_nl_family, 0, OVPN_CMD_KEY_SWAP_NTF);
++	if (!hdr) {
++		ret = -ENOBUFS;
++		goto err_free_msg;
++	}
++
++	if (nla_put_u32(msg, OVPN_A_IFINDEX, peer->ovpn->dev->ifindex))
++		goto err_cancel_msg;
++
++	k_attr = nla_nest_start(msg, OVPN_A_KEYCONF);
++	if (!k_attr)
++		goto err_cancel_msg;
++
++	if (nla_put_u32(msg, OVPN_A_KEYCONF_PEER_ID, peer->id))
++		goto err_cancel_msg;
++
++	if (nla_put_u16(msg, OVPN_A_KEYCONF_KEY_ID, key_id))
++		goto err_cancel_msg;
++
++	nla_nest_end(msg, k_attr);
++	genlmsg_end(msg, hdr);
 +
 +	rcu_read_lock();
 +	sock = rcu_dereference(peer->sock);
@@ -589,406 +241,34 @@ index 8d267d4c82283d9b5f989478102086ce385195d5..873386aa217e71405c2682aec44d4592
 +		ret = -EINVAL;
 +		goto err_unlock;
 +	}
-+
-+	if (!net_eq(genl_info_net(info), sock_net(sock->sock->sk))) {
-+		id = peernet2id_alloc(genl_info_net(info),
-+				      sock_net(sock->sock->sk),
-+				      GFP_ATOMIC);
-+		if (nla_put_s32(skb, OVPN_A_PEER_SOCKET_NETNSID, id))
-+			goto err_unlock;
-+	}
-+	local_port = inet_sk(sock->sock->sk)->inet_sport;
++	genlmsg_multicast_netns(&ovpn_nl_family, sock_net(sock->sock->sk),
++				msg, 0, OVPN_NLGRP_PEERS, GFP_ATOMIC);
 +	rcu_read_unlock();
-+
-+	if (nla_put_u32(skb, OVPN_A_PEER_ID, peer->id))
-+		goto err;
-+
-+	if (peer->vpn_addrs.ipv4.s_addr != htonl(INADDR_ANY))
-+		if (nla_put_in_addr(skb, OVPN_A_PEER_VPN_IPV4,
-+				    peer->vpn_addrs.ipv4.s_addr))
-+			goto err;
-+
-+	if (!ipv6_addr_equal(&peer->vpn_addrs.ipv6, &in6addr_any))
-+		if (nla_put_in6_addr(skb, OVPN_A_PEER_VPN_IPV6,
-+				     &peer->vpn_addrs.ipv6))
-+			goto err;
-+
-+	if (nla_put_u32(skb, OVPN_A_PEER_KEEPALIVE_INTERVAL,
-+			peer->keepalive_interval) ||
-+	    nla_put_u32(skb, OVPN_A_PEER_KEEPALIVE_TIMEOUT,
-+			peer->keepalive_timeout))
-+		goto err;
-+
-+	rcu_read_lock();
-+	bind = rcu_dereference(peer->bind);
-+	if (bind) {
-+		if (bind->remote.in4.sin_family == AF_INET) {
-+			if (nla_put_in_addr(skb, OVPN_A_PEER_REMOTE_IPV4,
-+					    bind->remote.in4.sin_addr.s_addr) ||
-+			    nla_put_net16(skb, OVPN_A_PEER_REMOTE_PORT,
-+					  bind->remote.in4.sin_port) ||
-+			    nla_put_in_addr(skb, OVPN_A_PEER_LOCAL_IPV4,
-+					    bind->local.ipv4.s_addr))
-+				goto err_unlock;
-+		} else if (bind->remote.in4.sin_family == AF_INET6) {
-+			if (nla_put_in6_addr(skb, OVPN_A_PEER_REMOTE_IPV6,
-+					     &bind->remote.in6.sin6_addr) ||
-+			    nla_put_u32(skb, OVPN_A_PEER_REMOTE_IPV6_SCOPE_ID,
-+					bind->remote.in6.sin6_scope_id) ||
-+			    nla_put_net16(skb, OVPN_A_PEER_REMOTE_PORT,
-+					  bind->remote.in6.sin6_port) ||
-+			    nla_put_in6_addr(skb, OVPN_A_PEER_LOCAL_IPV6,
-+					     &bind->local.ipv6))
-+				goto err_unlock;
-+		}
-+	}
-+	rcu_read_unlock();
-+
-+	if (nla_put_net16(skb, OVPN_A_PEER_LOCAL_PORT, local_port) ||
-+	    /* VPN RX stats */
-+	    nla_put_uint(skb, OVPN_A_PEER_VPN_RX_BYTES,
-+			 atomic64_read(&peer->vpn_stats.rx.bytes)) ||
-+	    nla_put_uint(skb, OVPN_A_PEER_VPN_RX_PACKETS,
-+			 atomic64_read(&peer->vpn_stats.rx.packets)) ||
-+	    /* VPN TX stats */
-+	    nla_put_uint(skb, OVPN_A_PEER_VPN_TX_BYTES,
-+			 atomic64_read(&peer->vpn_stats.tx.bytes)) ||
-+	    nla_put_uint(skb, OVPN_A_PEER_VPN_TX_PACKETS,
-+			 atomic64_read(&peer->vpn_stats.tx.packets)) ||
-+	    /* link RX stats */
-+	    nla_put_uint(skb, OVPN_A_PEER_LINK_RX_BYTES,
-+			 atomic64_read(&peer->link_stats.rx.bytes)) ||
-+	    nla_put_uint(skb, OVPN_A_PEER_LINK_RX_PACKETS,
-+			 atomic64_read(&peer->link_stats.rx.packets)) ||
-+	    /* link TX stats */
-+	    nla_put_uint(skb, OVPN_A_PEER_LINK_TX_BYTES,
-+			 atomic64_read(&peer->link_stats.tx.bytes)) ||
-+	    nla_put_uint(skb, OVPN_A_PEER_LINK_TX_PACKETS,
-+			 atomic64_read(&peer->link_stats.tx.packets)))
-+		goto err;
-+
-+	nla_nest_end(skb, attr);
-+	genlmsg_end(skb, hdr);
 +
 +	return 0;
 +err_unlock:
 +	rcu_read_unlock();
-+err:
-+	genlmsg_cancel(skb, hdr);
++err_cancel_msg:
++	genlmsg_cancel(msg, hdr);
++err_free_msg:
++	nlmsg_free(msg);
 +	return ret;
- }
- 
- int ovpn_nl_peer_get_doit(struct sk_buff *skb, struct genl_info *info)
- {
--	return -EOPNOTSUPP;
-+	struct nlattr *attrs[OVPN_A_PEER_MAX + 1];
-+	struct ovpn_priv *ovpn = info->user_ptr[0];
-+	struct ovpn_peer *peer;
-+	struct sk_buff *msg;
-+	u32 peer_id;
-+	int ret;
-+
-+	if (GENL_REQ_ATTR_CHECK(info, OVPN_A_PEER))
-+		return -EINVAL;
-+
-+	ret = nla_parse_nested(attrs, OVPN_A_PEER_MAX, info->attrs[OVPN_A_PEER],
-+			       ovpn_peer_nl_policy, info->extack);
-+	if (ret)
-+		return ret;
-+
-+	if (NL_REQ_ATTR_CHECK(info->extack, info->attrs[OVPN_A_PEER], attrs,
-+			      OVPN_A_PEER_ID))
-+		return -EINVAL;
-+
-+	peer_id = nla_get_u32(attrs[OVPN_A_PEER_ID]);
-+	peer = ovpn_peer_get_by_id(ovpn, peer_id);
-+	if (!peer) {
-+		NL_SET_ERR_MSG_FMT_MOD(info->extack,
-+				       "cannot find peer with id %u", peer_id);
-+		return -ENOENT;
-+	}
-+
-+	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	if (!msg) {
-+		ret = -ENOMEM;
-+		goto err;
-+	}
-+
-+	ret = ovpn_nl_send_peer(msg, info, peer, info->snd_portid,
-+				info->snd_seq, 0);
-+	if (ret < 0) {
-+		nlmsg_free(msg);
-+		goto err;
-+	}
-+
-+	ret = genlmsg_reply(msg, info);
-+err:
-+	ovpn_peer_put(peer);
-+	return ret;
- }
- 
- int ovpn_nl_peer_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
- {
--	return -EOPNOTSUPP;
-+	const struct genl_info *info = genl_info_dump(cb);
-+	int bkt, last_idx = cb->args[1], dumped = 0;
-+	netdevice_tracker tracker;
-+	struct ovpn_priv *ovpn;
-+	struct ovpn_peer *peer;
-+
-+	ovpn = ovpn_get_dev_from_attrs(sock_net(cb->skb->sk), info, &tracker);
-+	if (IS_ERR(ovpn))
-+		return PTR_ERR(ovpn);
-+
-+	if (ovpn->mode == OVPN_MODE_P2P) {
-+		/* if we already dumped a peer it means we are done */
-+		if (last_idx)
-+			goto out;
-+
-+		rcu_read_lock();
-+		peer = rcu_dereference(ovpn->peer);
-+		if (peer) {
-+			if (ovpn_nl_send_peer(skb, info, peer,
-+					      NETLINK_CB(cb->skb).portid,
-+					      cb->nlh->nlmsg_seq,
-+					      NLM_F_MULTI) == 0)
-+				dumped++;
-+		}
-+		rcu_read_unlock();
-+	} else {
-+		rcu_read_lock();
-+		hash_for_each_rcu(ovpn->peers->by_id, bkt, peer,
-+				  hash_entry_id) {
-+			/* skip already dumped peers that were dumped by
-+			 * previous invocations
-+			 */
-+			if (last_idx > 0) {
-+				last_idx--;
-+				continue;
-+			}
-+
-+			if (ovpn_nl_send_peer(skb, info, peer,
-+					      NETLINK_CB(cb->skb).portid,
-+					      cb->nlh->nlmsg_seq,
-+					      NLM_F_MULTI) < 0)
-+				break;
-+
-+			/* count peers being dumped during this invocation */
-+			dumped++;
-+		}
-+		rcu_read_unlock();
-+	}
-+
-+out:
-+	netdev_put(ovpn->dev, &tracker);
-+
-+	/* sum up peers dumped in this message, so that at the next invocation
-+	 * we can continue from where we left
-+	 */
-+	cb->args[1] += dumped;
-+	return skb->len;
- }
- 
- int ovpn_nl_peer_del_doit(struct sk_buff *skb, struct genl_info *info)
- {
--	return -EOPNOTSUPP;
-+	struct nlattr *attrs[OVPN_A_PEER_MAX + 1];
-+	struct ovpn_priv *ovpn = info->user_ptr[0];
-+	struct ovpn_peer *peer;
-+	u32 peer_id;
-+	int ret;
-+
-+	if (GENL_REQ_ATTR_CHECK(info, OVPN_A_PEER))
-+		return -EINVAL;
-+
-+	ret = nla_parse_nested(attrs, OVPN_A_PEER_MAX, info->attrs[OVPN_A_PEER],
-+			       ovpn_peer_nl_policy, info->extack);
-+	if (ret)
-+		return ret;
-+
-+	if (NL_REQ_ATTR_CHECK(info->extack, info->attrs[OVPN_A_PEER], attrs,
-+			      OVPN_A_PEER_ID))
-+		return -EINVAL;
-+
-+	peer_id = nla_get_u32(attrs[OVPN_A_PEER_ID]);
-+	peer = ovpn_peer_get_by_id(ovpn, peer_id);
-+	if (!peer) {
-+		NL_SET_ERR_MSG_FMT_MOD(info->extack,
-+				       "cannot find peer with id %u", peer_id);
-+		return -ENOENT;
-+	}
-+
-+	netdev_dbg(ovpn->dev, "del peer %u\n", peer->id);
-+	ret = ovpn_peer_del(peer, OVPN_DEL_PEER_REASON_USERSPACE);
-+	ovpn_peer_put(peer);
-+
-+	return ret;
- }
- 
- int ovpn_nl_key_new_doit(struct sk_buff *skb, struct genl_info *info)
-diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
-index 0d8b12fd5de4cd6fe15455b435c7d6807203a825..3af4531393f66a4c9e0fe64dc333f89b98efff6f 100644
---- a/drivers/net/ovpn/peer.c
-+++ b/drivers/net/ovpn/peer.c
-@@ -135,9 +135,9 @@ struct ovpn_peer *ovpn_peer_new(struct ovpn_priv *ovpn, u32 id)
-  *
-  * Return: 0 on success or a negative error code otherwise
-  */
--static int ovpn_peer_reset_sockaddr(struct ovpn_peer *peer,
--				    const struct sockaddr_storage *ss,
--				    const void *local_ip)
-+int ovpn_peer_reset_sockaddr(struct ovpn_peer *peer,
-+			     const struct sockaddr_storage *ss,
-+			     const void *local_ip)
- {
- 	struct ovpn_bind *bind;
- 	size_t ip_len;
-@@ -149,19 +149,21 @@ static int ovpn_peer_reset_sockaddr(struct ovpn_peer *peer,
- 	if (IS_ERR(bind))
- 		return PTR_ERR(bind);
- 
--	if (ss->ss_family == AF_INET) {
--		ip_len = sizeof(struct in_addr);
--	} else if (ss->ss_family == AF_INET6) {
--		ip_len = sizeof(struct in6_addr);
--	} else {
--		net_dbg_ratelimited("%s: invalid family %u for remote endpoint for peer %u\n",
--				    netdev_name(peer->ovpn->dev),
--				    ss->ss_family, peer->id);
--		kfree(bind);
--		return -EINVAL;
--	}
-+	if (local_ip) {
-+		if (ss->ss_family == AF_INET) {
-+			ip_len = sizeof(struct in_addr);
-+		} else if (ss->ss_family == AF_INET6) {
-+			ip_len = sizeof(struct in6_addr);
-+		} else {
-+			net_dbg_ratelimited("%s: invalid family %u for remote endpoint for peer %u\n",
-+					    netdev_name(peer->ovpn->dev),
-+					    ss->ss_family, peer->id);
-+			kfree(bind);
-+			return -EINVAL;
-+		}
- 
--	memcpy(&bind->local, local_ip, ip_len);
-+		memcpy(&bind->local, local_ip, ip_len);
-+	}
- 
- 	/* set binding */
- 	ovpn_bind_reset(peer, bind);
-@@ -346,7 +348,7 @@ static void ovpn_peer_release_rcu(struct rcu_head *head)
-  * ovpn_peer_release - release peer private members
-  * @peer: the peer to release
-  */
--static void ovpn_peer_release(struct ovpn_peer *peer)
-+void ovpn_peer_release(struct ovpn_peer *peer)
- {
- 	ovpn_crypto_state_release(&peer->crypto);
- 	spin_lock_bh(&peer->lock);
-@@ -887,6 +889,37 @@ bool ovpn_peer_check_by_src(struct ovpn_priv *ovpn, struct sk_buff *skb,
- 	return match;
- }
- 
-+void ovpn_peer_hash_vpn_ip(struct ovpn_peer *peer)
-+{
-+	struct hlist_nulls_head *nhead;
-+
-+	lockdep_assert_held(&peer->ovpn->lock);
-+
-+	/* rehashing makes sense only in multipeer mode */
-+	if (peer->ovpn->mode != OVPN_MODE_MP)
-+		return;
-+
-+	if (peer->vpn_addrs.ipv4.s_addr != htonl(INADDR_ANY)) {
-+		/* remove potential old hashing */
-+		hlist_nulls_del_init_rcu(&peer->hash_entry_addr4);
-+
-+		nhead = ovpn_get_hash_head(peer->ovpn->peers->by_vpn_addr4,
-+					   &peer->vpn_addrs.ipv4,
-+					   sizeof(peer->vpn_addrs.ipv4));
-+		hlist_nulls_add_head_rcu(&peer->hash_entry_addr4, nhead);
-+	}
-+
-+	if (!ipv6_addr_any(&peer->vpn_addrs.ipv6)) {
-+		/* remove potential old hashing */
-+		hlist_nulls_del_init_rcu(&peer->hash_entry_addr6);
-+
-+		nhead = ovpn_get_hash_head(peer->ovpn->peers->by_vpn_addr6,
-+					   &peer->vpn_addrs.ipv6,
-+					   sizeof(peer->vpn_addrs.ipv6));
-+		hlist_nulls_add_head_rcu(&peer->hash_entry_addr6, nhead);
-+	}
 +}
 +
  /**
-  * ovpn_peer_add_mp - add peer to related tables in a MP instance
-  * @ovpn: the instance to add the peer to
-@@ -948,19 +981,7 @@ static int ovpn_peer_add_mp(struct ovpn_priv *ovpn, struct ovpn_peer *peer)
- 			   ovpn_get_hash_head(ovpn->peers->by_id, &peer->id,
- 					      sizeof(peer->id)));
- 
--	if (peer->vpn_addrs.ipv4.s_addr != htonl(INADDR_ANY)) {
--		nhead = ovpn_get_hash_head(ovpn->peers->by_vpn_addr4,
--					   &peer->vpn_addrs.ipv4,
--					   sizeof(peer->vpn_addrs.ipv4));
--		hlist_nulls_add_head_rcu(&peer->hash_entry_addr4, nhead);
--	}
--
--	if (!ipv6_addr_any(&peer->vpn_addrs.ipv6)) {
--		nhead = ovpn_get_hash_head(ovpn->peers->by_vpn_addr6,
--					   &peer->vpn_addrs.ipv6,
--					   sizeof(peer->vpn_addrs.ipv6));
--		hlist_nulls_add_head_rcu(&peer->hash_entry_addr6, nhead);
--	}
-+	ovpn_peer_hash_vpn_ip(peer);
- out:
- 	spin_unlock_bh(&ovpn->lock);
- 	return ret;
-diff --git a/drivers/net/ovpn/peer.h b/drivers/net/ovpn/peer.h
-index f1288734ff100ee76b0c41ebb6dc71725ea33261..a1423f2b09e066d9c2392685d3765a2ec29a82ba 100644
---- a/drivers/net/ovpn/peer.h
-+++ b/drivers/net/ovpn/peer.h
-@@ -125,6 +125,7 @@ static inline bool ovpn_peer_hold(struct ovpn_peer *peer)
- 	return kref_get_unless_zero(&peer->refcount);
- }
- 
-+void ovpn_peer_release(struct ovpn_peer *peer);
- void ovpn_peer_release_kref(struct kref *kref);
- 
- /**
-@@ -147,6 +148,7 @@ struct ovpn_peer *ovpn_peer_get_by_transp_addr(struct ovpn_priv *ovpn,
- struct ovpn_peer *ovpn_peer_get_by_id(struct ovpn_priv *ovpn, u32 peer_id);
- struct ovpn_peer *ovpn_peer_get_by_dst(struct ovpn_priv *ovpn,
- 				       struct sk_buff *skb);
-+void ovpn_peer_hash_vpn_ip(struct ovpn_peer *peer);
- bool ovpn_peer_check_by_src(struct ovpn_priv *ovpn, struct sk_buff *skb,
- 			    struct ovpn_peer *peer);
- 
-@@ -154,5 +156,8 @@ void ovpn_peer_keepalive_set(struct ovpn_peer *peer, u32 interval, u32 timeout);
- void ovpn_peer_keepalive_work(struct work_struct *work);
- 
- void ovpn_peer_endpoints_update(struct ovpn_peer *peer, struct sk_buff *skb);
-+int ovpn_peer_reset_sockaddr(struct ovpn_peer *peer,
-+			     const struct sockaddr_storage *ss,
-+			     const void *local_ip);
- 
- #endif /* _NET_OVPN_OVPNPEER_H_ */
-diff --git a/drivers/net/ovpn/socket.c b/drivers/net/ovpn/socket.c
-index be20c500f373fb894d0df5e02ce1996cf386d195..6ecf40857651afbd0986793afeb2a2f66f336aaf 100644
---- a/drivers/net/ovpn/socket.c
-+++ b/drivers/net/ovpn/socket.c
-@@ -49,8 +49,8 @@ static bool ovpn_socket_put(struct ovpn_peer *peer, struct ovpn_socket *sock)
-  * ovpn_socket_release - release resources owned by socket user
-  * @peer: peer whose socket should be released
+  * ovpn_nl_register - perform any needed registration in the NL subsustem
   *
-- * This function should be invoked when the user is shutting
-- * down and wants to drop its link to the socket.
-+ * This function should be invoked when the peer is being removed
-+ * and wants to drop its link to the socket.
-  *
-  * In case of UDP, the detach routine will drop a reference to the
-  * ovpn netdev, pointed by the ovpn_socket.
+diff --git a/drivers/net/ovpn/netlink.h b/drivers/net/ovpn/netlink.h
+index 0d6c34e17082cc7c52dd9c5d5ed1e964925b3f4b..5dc84c8e5e803014053faa0d892fc3a7259d40e5 100644
+--- a/drivers/net/ovpn/netlink.h
++++ b/drivers/net/ovpn/netlink.h
+@@ -12,4 +12,6 @@
+ int ovpn_nl_register(void);
+ void ovpn_nl_unregister(void);
+ 
++int ovpn_nl_key_swap_notify(struct ovpn_peer *peer, u8 key_id);
++
+ #endif /* _NET_OVPN_NETLINK_H_ */
 
 -- 
 2.48.1
