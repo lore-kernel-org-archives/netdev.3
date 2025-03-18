@@ -1,93 +1,78 @@
-Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5A1224CC
-	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 23:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C556224CC
+	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 23:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742340778; cv=none; b=pmU9wgK4ayRpnPDtH1qH3SxJJTReDgCOemf95tWHradvt1ZDvfYJyJi0gikE/dDJ07mbqp9lJfSZZsQ+Xv3/C7pZmZe1gNO3YXIgOKcAqcdtWlCQMMftxccq/3cyKsHFRU1UPRtSBgVMmBLNYr4qqhtllnUDH7qelYABJ8TmhgI=
+	t=1742340784; cv=none; b=bPbepyswkWOj4pPS8GB3wmevgrGUwFEKPegyRznlE7Ds22wiN9JVg/7CGN7yBotpioaxNJ/RnEXt4uiqkOaMEGoDt3k9sXTbITRv7kB6hShN7zXT0wdy6h92IXP45wzHBQq7dgyVJQf8UuRFgjZzIqPG39Dr9qjaMcFmORWJjSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742340778; c=relaxed/simple;
-	bh=96UYYXOnpsBc07DkVwZad3vVXkFez4nUsv533xUkDNc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RS9OCEl7YahZuaFQ32Ygk7JevIND1wqiA/CWxHPp+j0At5nL1FIvb+3rDZgXEsEFoAVu3HhVT6BkmbK+dbEAQxoXYSq4tujXH1SoHkRd7POCeybqiSmXdYFx2c0ZaWZmZg0sd5LFupgW/nuuzBnEFnTSCzX+7bHtmcUnV1SBVmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Y3gLrlJm; arc=none smtp.client-ip=52.119.213.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1742340784; c=relaxed/simple;
+	bh=xXXCQ3Cgl7/w5wAwWQBHtL2Y4AqdyS1REBPw7uefWJ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pGBl+ice0R3w7e3RIMvauwojcY9vM2IzxZumwIPxgqcqnK7xgeMI0Ji2rNfRFvwC+quN93JsuSfjEIupwziQX/ow0NRKmI+rShN33jaFHZ7eg0fZym3uW7Hvf4M8kt0a8mI2167B2UyyMxI/TcngX4h5IUUpERRcEUBg2jvPUG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=U0HlWR7L; arc=none smtp.client-ip=95.215.58.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Y3gLrlJm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1742340777; x=1773876777;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=c0644+xIhkgt9GTTpY9lFJMmedgNi0t1FG7aI/uC990=;
-  b=Y3gLrlJmiPscrBQHOGDJUVrDlXHGsGs5adLGW1R/st4H7CFSPaujSSKQ
-   wyRCzEscgw/fBqiqTwVOh0mIL9Tm5gfonPKW6Nag5DDcB/A2NWi+CbVac
-   SR6Agxxgj87mqIF1PJNqq3V/tqR6JRTuquPnHDdMLuaNfgkAuK4xZrRIH
-   w=;
-X-IronPort-AV: E=Sophos;i="6.14,258,1736812800"; 
-   d="scan'208";a="706166306"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 23:32:53 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [10.0.21.151:62837]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.41.90:2525] with esmtp (Farcaster)
- id 818ed80a-3113-40a4-b9a4-b4f3bcee0481; Tue, 18 Mar 2025 23:32:52 +0000 (UTC)
-X-Farcaster-Flow-ID: 818ed80a-3113-40a4-b9a4-b4f3bcee0481
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Tue, 18 Mar 2025 23:32:52 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.135.212.115) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Tue, 18 Mar 2025 23:32:49 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: David Ahern <dsahern@kernel.org>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>
-CC: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v1 net-next 0/7] nexthop: Convert RTM_{NEW,DEL}NEXTHOP to per-netns RTNL.
-Date: Tue, 18 Mar 2025 16:31:43 -0700
-Message-ID: <20250318233240.53946-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="U0HlWR7L"
+Message-ID: <08387a7e-55b0-4499-a225-07207453c8d5@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1742340780;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G3g0VDVZvjKKbD7htmR0YK/Eqvc6pnALzgbyLDThChY=;
+	b=U0HlWR7LL+NQhm02pd5/mJ7DD5OevAErpcCeOucUBXWo6nkX8rlWcEyCJFbRvQEETSWOWR
+	EIhb+xRpw+gmNaegMy0sj3Ng2brfo6BhlUF93RLnt6jk604onUHDfr0FhsEvT+Xs8yMxoA
+	M6cXU9EkHs4VEqER31SKdLN4NuY07tU=
+Date: Tue, 18 Mar 2025 16:32:55 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D046UWA004.ant.amazon.com (10.13.139.76) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+Subject: Re: [RFC PATCH bpf-next 0/3] Avoid skipping sockets with socket
+ iterators
+To: Jordan Rife <jrife@google.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Yonghong Song <yonghong.song@linux.dev>,
+ Aditi Ghag <aditi.ghag@isovalent.com>
+References: <20250313233615.2329869-1-jrife@google.com>
+ <384c31a4-f0d7-449b-a7a4-2994f936d049@linux.dev>
+ <CADKFtnQk+Ve57h0mMY1o2u=ZDaqNuyjx=vtE8fzy0q-9QK52tw@mail.gmail.com>
+ <CADKFtnQyiz_r_vfyYfTvzi3MvNpRt62mDrNyEvp9tm82UcSFjQ@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+In-Reply-To: <CADKFtnQyiz_r_vfyYfTvzi3MvNpRt62mDrNyEvp9tm82UcSFjQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Patch 1 - 5 move some validation for RTM_NEWNEXTHOP so that it can be
-done without RTNL.
+On 3/18/25 4:09 PM, Jordan Rife wrote:
+> To add to this, I actually encountered some strange behavior today
+> where using bpf_sock_destroy actually /causes/ sockets to repeat
+> during iteration. In my environment, I just have one socket in a
+> network namespace with a socket iterator that destroys it. The
+> iterator visits the same socket twice and calls bpf_sock_destroy twice
+> as a result. In the UDP case (and maybe TCP, I haven't checked)
+> bpf_sock_destroy() can call udp_abort (sk->sk_prot->diag_destroy()) ->
+> __udp_disconnect() -> udp_v4_rehash() (sk->sk_prot->rehash(sk)) which
+> rehashes the socket and moves it to a new bucket. Depending on where a
+> socket lands, you may encounter it again as you progress through the
+> buckets. Doing some inspection with bpftrace seems to confirm this. As
+> opposed to the edge cases I described before, this is more likely. I
+> noticed this when I tried to use bpf_seq_write to write something for
+> every socket that got deleted for an accurate count at the end in
+> userspace which seems like a fairly valid use case.
 
-Patch 6 & 7 converts RTM_NEWNEXTHOP and RTM_DELNEXTHOP to per-netns RTNL.
-
-Note that RTM_GETNEXTHOP and RTM_GETNEXTHOPBUCKET are not touched in
-this series.
-
-rtm_get_nexthop() can be easily converted to RCU, but rtm_dump_nexthop()
-needs more work due to the left-to-right rbtree walk, which looks prone
-to node deletion and tree rotation without a retry mechanism.
-
-
-Kuniyuki Iwashima (7):
-  nexthop: Move nlmsg_parse() in rtm_to_nh_config() to
-    rtm_new_nexthop().
-  nexthop: Split nh_check_attr_group().
-  nexthop: Move NHA_OIF validation to rtm_to_nh_config_rtnl().
-  nexthop: Check NLM_F_REPLACE and NHA_ID in rtm_new_nexthop().
-  nexthop: Remove redundant group len check in nexthop_create_group().
-  nexthop: Convert RTM_NEWNEXTHOP to per-netns RTNL.
-  nexthop: Convert RTM_DELNEXTHOP to per-netns RTNL.
-
- net/ipv4/nexthop.c | 183 +++++++++++++++++++++++++++------------------
- 1 file changed, 112 insertions(+), 71 deletions(-)
-
--- 
-2.48.1
-
+imo, this is not a problem for bpf. The bpf prog has access to many fields of a 
+udp_sock (ip addresses, ports, state...etc) to make the right decision. The bpf 
+prog can decide if that rehashed socket needs to be bpf_sock_destroy(), e.g. the 
+saddr in this case because of inet_reset_saddr(sk) before the rehash. From the 
+bpf prog's pov, the rehashed udp_sock is not much different from a new udp_sock 
+getting added from the userspace into the later bucket.
