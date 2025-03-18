@@ -1,78 +1,149 @@
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+Received: from smtp-fw-80008.amazon.com (smtp-fw-80008.amazon.com [99.78.197.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C556224CC
-	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 23:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08EE1EF39E
+	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 23:33:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742340784; cv=none; b=bPbepyswkWOj4pPS8GB3wmevgrGUwFEKPegyRznlE7Ds22wiN9JVg/7CGN7yBotpioaxNJ/RnEXt4uiqkOaMEGoDt3k9sXTbITRv7kB6hShN7zXT0wdy6h92IXP45wzHBQq7dgyVJQf8UuRFgjZzIqPG39Dr9qjaMcFmORWJjSU=
+	t=1742340800; cv=none; b=YCk2W+duGvclHIkDzF1q+1f15+5awc+8QiHohd/P2v49YS63QbJz+cx3kBiYfCvfGTbAKL2hb6Kc1FANwJzcugfkO9oAlLYG7z9LW1mOmHwuuZn2NXDi/sOu/jFLcHR+8ZMKo4JIJlTy41Sw3n679ZBFMzs9Kcn+rZf6UuhE13U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742340784; c=relaxed/simple;
-	bh=xXXCQ3Cgl7/w5wAwWQBHtL2Y4AqdyS1REBPw7uefWJ4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pGBl+ice0R3w7e3RIMvauwojcY9vM2IzxZumwIPxgqcqnK7xgeMI0Ji2rNfRFvwC+quN93JsuSfjEIupwziQX/ow0NRKmI+rShN33jaFHZ7eg0fZym3uW7Hvf4M8kt0a8mI2167B2UyyMxI/TcngX4h5IUUpERRcEUBg2jvPUG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=U0HlWR7L; arc=none smtp.client-ip=95.215.58.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1742340800; c=relaxed/simple;
+	bh=4i13R7Ze1ivTLzxG2CFzV2CD2mtQO9xvEdXP237qUUo=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OTCRhbPuNOWGIHszFbbMOrsKAj2yK9ZHJolvCYpVnkT170yO2RzL8jzEC6uCB7YW+2/mUewgQbzvKgsygOZDiF8HypISh/NCDPmer8V6asV2V1qOeVWC8/7HMbHs3jLvw38APdbXzuXJK77rqKTwGyKDazK2YU0YXIWxS6romKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=TQnNsIEW; arc=none smtp.client-ip=99.78.197.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="U0HlWR7L"
-Message-ID: <08387a7e-55b0-4499-a225-07207453c8d5@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1742340780;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G3g0VDVZvjKKbD7htmR0YK/Eqvc6pnALzgbyLDThChY=;
-	b=U0HlWR7LL+NQhm02pd5/mJ7DD5OevAErpcCeOucUBXWo6nkX8rlWcEyCJFbRvQEETSWOWR
-	EIhb+xRpw+gmNaegMy0sj3Ng2brfo6BhlUF93RLnt6jk604onUHDfr0FhsEvT+Xs8yMxoA
-	M6cXU9EkHs4VEqER31SKdLN4NuY07tU=
-Date: Tue, 18 Mar 2025 16:32:55 -0700
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="TQnNsIEW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1742340798; x=1773876798;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=+ymCdQhgVdJVYK45xjx4+I3K0h7s+YUkZc2dbRPZ3uQ=;
+  b=TQnNsIEWABZdHE8XUorCJwOrgt1BprZ5KofmTi/r4afbBxFHB7Ohix1N
+   7Hu0Qhp0lDj61THmRcuAE9+bE9B+xdnx529hhK+uF/lSehlDP5o2mUOKr
+   l2FwNgvry6hu2jX8JdxqJLugM9RU7ywWvkXcISijTTqG+BGk3ZaPOOI6N
+   c=;
+X-IronPort-AV: E=Sophos;i="6.14,258,1736812800"; 
+   d="scan'208";a="179801360"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80008.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 23:33:17 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.7.35:53629]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.40.40:2525] with esmtp (Farcaster)
+ id afcf3cd4-3665-4882-a76d-397a305887df; Tue, 18 Mar 2025 23:33:16 +0000 (UTC)
+X-Farcaster-Flow-ID: afcf3cd4-3665-4882-a76d-397a305887df
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 18 Mar 2025 23:33:16 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.135.212.115) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 18 Mar 2025 23:33:14 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: David Ahern <dsahern@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>
+CC: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, <netdev@vger.kernel.org>
+Subject: [PATCH v1 net-next 1/7] nexthop: Move nlmsg_parse() in rtm_to_nh_config() to rtm_new_nexthop().
+Date: Tue, 18 Mar 2025 16:31:44 -0700
+Message-ID: <20250318233240.53946-2-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250318233240.53946-1-kuniyu@amazon.com>
+References: <20250318233240.53946-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [RFC PATCH bpf-next 0/3] Avoid skipping sockets with socket
- iterators
-To: Jordan Rife <jrife@google.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
- Daniel Borkmann <daniel@iogearbox.net>,
- Yonghong Song <yonghong.song@linux.dev>,
- Aditi Ghag <aditi.ghag@isovalent.com>
-References: <20250313233615.2329869-1-jrife@google.com>
- <384c31a4-f0d7-449b-a7a4-2994f936d049@linux.dev>
- <CADKFtnQk+Ve57h0mMY1o2u=ZDaqNuyjx=vtE8fzy0q-9QK52tw@mail.gmail.com>
- <CADKFtnQyiz_r_vfyYfTvzi3MvNpRt62mDrNyEvp9tm82UcSFjQ@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-In-Reply-To: <CADKFtnQyiz_r_vfyYfTvzi3MvNpRt62mDrNyEvp9tm82UcSFjQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D043UWA002.ant.amazon.com (10.13.139.53) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On 3/18/25 4:09 PM, Jordan Rife wrote:
-> To add to this, I actually encountered some strange behavior today
-> where using bpf_sock_destroy actually /causes/ sockets to repeat
-> during iteration. In my environment, I just have one socket in a
-> network namespace with a socket iterator that destroys it. The
-> iterator visits the same socket twice and calls bpf_sock_destroy twice
-> as a result. In the UDP case (and maybe TCP, I haven't checked)
-> bpf_sock_destroy() can call udp_abort (sk->sk_prot->diag_destroy()) ->
-> __udp_disconnect() -> udp_v4_rehash() (sk->sk_prot->rehash(sk)) which
-> rehashes the socket and moves it to a new bucket. Depending on where a
-> socket lands, you may encounter it again as you progress through the
-> buckets. Doing some inspection with bpftrace seems to confirm this. As
-> opposed to the edge cases I described before, this is more likely. I
-> noticed this when I tried to use bpf_seq_write to write something for
-> every socket that got deleted for an accurate count at the end in
-> userspace which seems like a fairly valid use case.
+We will split rtm_to_nh_config() into non-RTNL and RTNL parts,
+and then the latter also needs tb.
 
-imo, this is not a problem for bpf. The bpf prog has access to many fields of a 
-udp_sock (ip addresses, ports, state...etc) to make the right decision. The bpf 
-prog can decide if that rehashed socket needs to be bpf_sock_destroy(), e.g. the 
-saddr in this case because of inet_reset_saddr(sk) before the rehash. From the 
-bpf prog's pov, the rehashed udp_sock is not much different from a new udp_sock 
-getting added from the userspace into the later bucket.
+As a prep, let's move nlmsg_parse() to rtm_new_nexthop().
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+---
+ net/ipv4/nexthop.c | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
+
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index 01df7dd795f0..487933ecdb68 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -3016,19 +3016,13 @@ static int rtm_to_nh_config_grp_res(struct nlattr *res, struct nh_config *cfg,
+ }
+ 
+ static int rtm_to_nh_config(struct net *net, struct sk_buff *skb,
+-			    struct nlmsghdr *nlh, struct nh_config *cfg,
++			    struct nlmsghdr *nlh, struct nlattr **tb,
++			    struct nh_config *cfg,
+ 			    struct netlink_ext_ack *extack)
+ {
+ 	struct nhmsg *nhm = nlmsg_data(nlh);
+-	struct nlattr *tb[ARRAY_SIZE(rtm_nh_policy_new)];
+ 	int err;
+ 
+-	err = nlmsg_parse(nlh, sizeof(*nhm), tb,
+-			  ARRAY_SIZE(rtm_nh_policy_new) - 1,
+-			  rtm_nh_policy_new, extack);
+-	if (err < 0)
+-		return err;
+-
+ 	err = -EINVAL;
+ 	if (nhm->resvd || nhm->nh_scope) {
+ 		NL_SET_ERR_MSG(extack, "Invalid values in ancillary header");
+@@ -3093,7 +3087,8 @@ static int rtm_to_nh_config(struct net *net, struct sk_buff *skb,
+ 			NL_SET_ERR_MSG(extack, "Invalid group type");
+ 			goto out;
+ 		}
+-		err = nh_check_attr_group(net, tb, ARRAY_SIZE(tb),
++
++		err = nh_check_attr_group(net, tb, ARRAY_SIZE(rtm_nh_policy_new),
+ 					  cfg->nh_grp_type, extack);
+ 		if (err)
+ 			goto out;
+@@ -3211,18 +3206,26 @@ static int rtm_to_nh_config(struct net *net, struct sk_buff *skb,
+ static int rtm_new_nexthop(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			   struct netlink_ext_ack *extack)
+ {
++	struct nlattr *tb[ARRAY_SIZE(rtm_nh_policy_new)];
+ 	struct net *net = sock_net(skb->sk);
+ 	struct nh_config cfg;
+ 	struct nexthop *nh;
+ 	int err;
+ 
+-	err = rtm_to_nh_config(net, skb, nlh, &cfg, extack);
+-	if (!err) {
+-		nh = nexthop_add(net, &cfg, extack);
+-		if (IS_ERR(nh))
+-			err = PTR_ERR(nh);
+-	}
++	err = nlmsg_parse(nlh, sizeof(struct nhmsg), tb,
++			  ARRAY_SIZE(rtm_nh_policy_new) - 1,
++			  rtm_nh_policy_new, extack);
++	if (err < 0)
++		goto out;
+ 
++	err = rtm_to_nh_config(net, skb, nlh, tb, &cfg, extack);
++	if (err)
++		goto out;
++
++	nh = nexthop_add(net, &cfg, extack);
++	if (IS_ERR(nh))
++		err = PTR_ERR(nh);
++out:
+ 	return err;
+ }
+ 
+-- 
+2.48.1
+
