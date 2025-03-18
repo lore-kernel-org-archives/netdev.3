@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D08C207A30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993ED207A3E
 	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 09:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742290467; cv=none; b=nmxZtkl8cniBIUSn3muf3Ukbev1ShL3MAgXHOSRjH5ZMzCgrAP7tgJKFHN23N622mj7Ywk1UlYN8h/j2ZxnPolhY3c6dIQxL7vxZLqi/RTm7KLO2i9bBRfQBCjQ5Km9FFlK9RU28yFzzKkEjzuPwg15R77kvpzufn4j+xLAwNeU=
+	t=1742290467; cv=none; b=qHE9282t/ak/c9mgy7dSiFffl50GpbWGRHkhPBLd3Q1TYLw2/j8nVseFEa95Oa8bmrJnTyagCsjRxdVl61Hp5i+e7ICUvenkdYVQnoQMGvFyr4NntCxug7xh7E/66ctnascVY0s/clwRbZAVbdY+YFYwDXLN7Y3FGByrpR52yo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1742290467; c=relaxed/simple;
-	bh=GOgGPCG0Hzz9F9wHqmx2VxDQR/YAO+/6jXkuUnfVXDA=;
+	bh=b8G0xHBrERk6HOzvZz5Ak5jFc0QZIpvIzeIrIMbIcB0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=J9Z3jo+ng8Xxjt2wJVeo1NSC5ahshJdye5ttbiTQ3q2klPXstuTZO1giCNG7bZ3gVf9GkRhoiA1VIkSZa16eyTSgo3xI4iEwFJluDgzG2aHI2wSCKNhr4BwvKHegfxWCTHbNw9qBlGKJe5ee06LBhbqE9tpY/JdWt70yFVmm23c=
+	 MIME-Version; b=Dc+iRPFXIQj0Z12eWa7msQJxFqA4Gl2YnfxJ3OPCgNd/1YRIhdCzUJ+zP4gYlWf8qi5VyHFSdRKQiWcRPJYQ72wIXYJ3iSdBXReRn+mFYdUHFWjm6qX8uLgmo7eUKq3XmEW+NNiXhkdwAEv2tjeHCH3uuoyVXirwwEEBW7PPjnA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tuTKu-0005yL-LX; Tue, 18 Mar 2025 10:34:12 +0100
+	id 1tuTKu-0005yK-LX; Tue, 18 Mar 2025 10:34:12 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tuTKt-000Oyc-0T;
+	id 1tuTKt-000OyV-0M;
 	Tue, 18 Mar 2025 10:34:11 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tuTKt-00Cmvl-1H;
+	id 1tuTKt-00CmvF-17;
 	Tue, 18 Mar 2025 10:34:11 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -40,16 +40,16 @@ To: "David S. Miller" <davem@davemloft.net>,
 	Thangaraj Samynathan <Thangaraj.S@microchip.com>,
 	Rengarajan Sundararajan <Rengarajan.S@microchip.com>
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com,
 	Phil Elwell <phil@raspberrypi.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next v4 10/10] net: usb: lan78xx: remove unused struct members
-Date: Tue, 18 Mar 2025 10:34:10 +0100
-Message-Id: <20250318093410.3047828-11-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v4 07/10] net: usb: lan78xx: port link settings to phylink API
+Date: Tue, 18 Mar 2025 10:34:07 +0100
+Message-Id: <20250318093410.3047828-8-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250318093410.3047828-1-o.rempel@pengutronix.de>
 References: <20250318093410.3047828-1-o.rempel@pengutronix.de>
@@ -65,60 +65,83 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Remove unused members from struct lan78xx_net, including:
+Refactor lan78xx_get_link_ksettings and lan78xx_set_link_ksettings to
+use the phylink API (phylink_ethtool_ksettings_get and
+phylink_ethtool_ksettings_set) instead of directly interfacing with the
+PHY. This change simplifies the code and ensures better integration with
+the phylink framework for link management.
 
-    driver_priv
-    suspend_count
-    link_on
-    mdix_ctrl
-    interface
-    fc_autoneg
-    fc_request_control
-
-These fields are no longer used in the driver and can be safely removed
-as part of a cleanup.
+Additionally, the explicit calls to usb_autopm_get_interface() and
+usb_autopm_put_interface() have been removed. These were originally
+needed to manage USB power management during register accesses. However,
+lan78xx_mdiobus_read() and lan78xx_mdiobus_write() already handle USB
+auto power management internally, ensuring that the interface remains
+active when necessary. Since there are no other direct register accesses
+in these functions that require explicit power management handling, the
+extra calls have become redundant and are no longer needed.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- drivers/net/usb/lan78xx.c | 9 ---------
- 1 file changed, 9 deletions(-)
+changes v4:
+- add explanation why we do not care about usb_autopm in this functions
+---
+ drivers/net/usb/lan78xx.c | 34 ++--------------------------------
+ 1 file changed, 2 insertions(+), 32 deletions(-)
 
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index c2ff358a0ec0..08fe9668adaf 100644
+index 18fd90dd9916..b8d86b4aca57 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -414,7 +414,6 @@ struct lan78xx_net {
- 	struct net_device	*net;
- 	struct usb_device	*udev;
- 	struct usb_interface	*intf;
--	void			*driver_priv;
- 
- 	unsigned int		tx_pend_data_len;
- 	size_t			n_tx_urbs;
-@@ -449,23 +448,15 @@ struct lan78xx_net {
- 	unsigned long		flags;
- 
- 	wait_queue_head_t	*wait;
--	unsigned char		suspend_count;
- 
- 	unsigned int		maxpacket;
- 	struct timer_list	stat_monitor;
- 
- 	unsigned long		data[5];
- 
--	int			link_on;
--	u8			mdix_ctrl;
+@@ -1862,46 +1862,16 @@ static int lan78xx_get_link_ksettings(struct net_device *net,
+ 				      struct ethtool_link_ksettings *cmd)
+ {
+ 	struct lan78xx_net *dev = netdev_priv(net);
+-	struct phy_device *phydev = net->phydev;
+-	int ret;
 -
- 	u32			chipid;
- 	u32			chiprev;
- 	struct mii_bus		*mdiobus;
--	phy_interface_t		interface;
--
--	int			fc_autoneg;
--	u8			fc_request_control;
+-	ret = usb_autopm_get_interface(dev->intf);
+-	if (ret < 0)
+-		return ret;
  
- 	int			delta;
- 	struct statstage	stats;
+-	phy_ethtool_ksettings_get(phydev, cmd);
+-
+-	usb_autopm_put_interface(dev->intf);
+-
+-	return ret;
++	return phylink_ethtool_ksettings_get(dev->phylink, cmd);
+ }
+ 
+ static int lan78xx_set_link_ksettings(struct net_device *net,
+ 				      const struct ethtool_link_ksettings *cmd)
+ {
+ 	struct lan78xx_net *dev = netdev_priv(net);
+-	struct phy_device *phydev = net->phydev;
+-	int ret = 0;
+-	int temp;
+-
+-	ret = usb_autopm_get_interface(dev->intf);
+-	if (ret < 0)
+-		return ret;
+-
+-	/* change speed & duplex */
+-	ret = phy_ethtool_ksettings_set(phydev, cmd);
+ 
+-	if (!cmd->base.autoneg) {
+-		/* force link down */
+-		temp = phy_read(phydev, MII_BMCR);
+-		phy_write(phydev, MII_BMCR, temp | BMCR_LOOPBACK);
+-		mdelay(1);
+-		phy_write(phydev, MII_BMCR, temp);
+-	}
+-
+-	usb_autopm_put_interface(dev->intf);
+-
+-	return ret;
++	return phylink_ethtool_ksettings_set(dev->phylink, cmd);
+ }
+ 
+ static void lan78xx_get_pause(struct net_device *net,
 -- 
 2.39.5
 
