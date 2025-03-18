@@ -1,391 +1,212 @@
-Received: from mx0b-000eb902.pphosted.com (mx0b-000eb902.pphosted.com [205.220.177.212])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2064.outbound.protection.outlook.com [40.107.95.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819337E9;
-	Tue, 18 Mar 2025 22:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.212
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEECF1EFF97;
+	Tue, 18 Mar 2025 22:49:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.64
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742337850; cv=fail; b=hDkbUOEjvmuBtQDMo/z2dsgsHR/P5iCxfHyydm/qOtr3XEHJELpjdr5p6QgyGPx64/6fkWZFzTPz0C5kuarwBzooRo+iLRyQS0OQ49XLkZmpc2YL51VkqDyvttLA05tlJL2sVW8vvwXgK5EWDNwNclWtIR1mZCO0PMSO/KH/LsA=
+	t=1742338160; cv=fail; b=h+aSzT8LutnpOQssrElljj32Y/VztTPJUsQ+1pXbzW2fEYicA2Lg/LZa6Q32n0GF9F3u4X9bBphzU3kZaM6mj+en+euie2avo5KrZiODkczWivyFo6CLURCSCn51Ie8ijnY+kZDYjwgAxtcQJmPJOTITuYBkAO8HTswlVkhy1KY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742337850; c=relaxed/simple;
-	bh=FV0ggYcvQmupmghgj0ZQ5hk80GfklRnP0Bv3R+iULxE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IsUZvPrv+D+xrjQ0HUSk63K46ilX3Z0MY4VnATJukrvbsCBlK4FNnvgHnGS89TZvk6vkoVKGu/XZi2UyABYVw++8uy62qqKLf3eKzK5lEX4M1mMGyZ6dlz/ACyzyDoLRppvzRkS3NbMrIkNW34lLn3Nubkvu2g7sYgtfggwbu/E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=garmin.com; spf=pass smtp.mailfrom=garmin.com; dkim=pass (2048-bit key) header.d=garmin.com header.i=@garmin.com header.b=c6hy4+9x; dkim=pass (2048-bit key) header.d=garmin.com header.i=@garmin.com header.b=nnwjI264; arc=fail smtp.client-ip=205.220.177.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=garmin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garmin.com
+	s=arc-20240116; t=1742338160; c=relaxed/simple;
+	bh=2fInRnCjBnM0aHg2NfcvojEjll7xFvxbx1lKWXoWx1A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ECAwZz5hlikmSfYJ1zowfx1kGOVB+c0GqHAKNnx3cSQ4CJBW7saeMBuk2aRhlKK/5C8MjA79PrF1dnuRE1QHnUnKtlxEDilwJBXS/ctNMcAZBai4BlcXwOXHFx4VPETEv6EwNhMrsU2KfDk/MIhGYaymJn55UTAhKXl0MqabLQU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=f4Mdow3M; arc=fail smtp.client-ip=40.107.95.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=garmin.com header.i=@garmin.com header.b="c6hy4+9x";
-	dkim=pass (2048-bit key) header.d=garmin.com header.i=@garmin.com header.b="nnwjI264"
-Received: from pps.filterd (m0220299.ppops.net [127.0.0.1])
-	by mx0a-000eb902.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52ILqVsx027544;
-	Tue, 18 Mar 2025 17:43:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garmin.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps1; bh=WBwD6
-	hd47xClh+PmD0jdENGg4VXS44G+LR/HbwfXRMA=; b=c6hy4+9x6PDEgTZbo1lrP
-	lz6hD/aDUpRxgMNeOpwVQh3v338FjjhQBxv4TLdXHqp0+iLsnU/JftmFY8F7cUCD
-	PlEm8Ub8SRy+PqdHCht4Lciv2/K9ZLiUxTElPhZY7oPcBT+yAn+H7lNCEliC8bsp
-	A4Yjl6Z9y9UyTatLP4LM5zUpiCLKZyH9Bs5T8F6OZPBxInuWtfcWu3DLqYc/nBK5
-	TXEV+p+JTkNCBM6tNQA7grNn5BIZg7etYpI6YFwGkmmx120kltt3Uh5Bk7Y3fs2H
-	FsL6W+7pU3/SxlCE3dFkVl7lvUntyH+byg/ncOwGJ3WWos7MYuXO/wif3ih9xRsD
-	w==
-Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazlp17010005.outbound.protection.outlook.com [40.93.11.5])
-	by mx0a-000eb902.pphosted.com (PPS) with ESMTPS id 45f6whh9xp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Mar 2025 17:43:44 -0500 (CDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="f4Mdow3M"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oNdJhwuRHFJc4Ser/SBudRTCRXMfACMEG4OGq90B7mYGtIn/9VgD93Lq5GR2rnqwVinTIb7v0o7KkjZdQkeTRRKD+T/2RYz1uz86Grk4Mh9Qk2xLbiylOOOPv5jIobnaAaP6dCpKEWf9Jir5n0fE3d9sd+CEf/1TeIEj9Dcz30gsum4mnzqw18W1ke1eTP7wWzPhzSyh+EV2G0YkAXk3hLQYuutxUpTcHhCeAqFedyYzq3Js6BDowSkqVrJ9XfNoEekGeJPaKxmES+lriPLE8vGmAXYYDh77LXITXVmdS0RJxkbnpBxyB1q+etXshTaT/4P74pegGyallfvmm6MTsA==
+ b=dgOTVBEJB/zobkc2M7Ulke3PZ7ZJwX/J68oSAQGUmcCS+1O1hSRZxH5fGRywsL2IUDkXytXYZkbBoZoX3/mvQNnn7BGjjLPGE6jWopSs29VGlXyJEvyACtSCKGnNheRRW4DjUOnKUtxtaEE1w3M5MuGyO9bnUTlyW8SDHrWpUWhRLeJUOpH1PzTNxRm/f2s8GfdXOLT4ilZ3AaXwC3S0gA9uKjJYwFXPGKS20Ot3AMqlLfXvoyK9wBT5k4HGSJzp+s32zoi0y6ZbIx4hzacgfcdosn0n9Md8zsDODfzP/An9MXs7zRoSAWA+sN2ssE5b3s2bEJ8DXgmZuWhpNLTC9Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WBwD6hd47xClh+PmD0jdENGg4VXS44G+LR/HbwfXRMA=;
- b=Jwkp3Q+WR+l4XTKdr/xYw1oW3CgTR/MuowHK4X8kybTCnvcBGncrBiHCdYnhPtnsjXerXSZJY9CwyW1eaY5WNfy0BRLsLYrop32Rj5oDUyszRn1xi+eDQMIj7ws5/QOGXMTTAK0O8/KqcEPwNQmVKuCDhHvrUzoYt9//mDVKz8xWtzJDU1XUjjZw/emNogCoPZug8wQazeC+Xxtscy0pG81ys2PFDTpzHMgdOvFqk13b2Ix5+ZVsobqeo1bZI3hywSHRI0/rzd4a9xp+kGTxOwQ1DgfMJ/4HR47UoJXdvEFHSOBes3PL0VANJY1oQMgqN3Nb4h9IIlx+4TworPQT7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 204.77.163.244) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=garmin.com;
- dmarc=pass (p=reject sp=quarantine pct=100) action=none
- header.from=garmin.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garmin.com;
+ bh=egwzTCbYiFMFRa/6Q138Im1l3tIHhdlEMn4qx8PFyb8=;
+ b=pBnYzVj0KnMNGk4DvdeqGv0JI72tlCOxj01lxRcMtwk6YCdJwVj1EIGrXke3Bj6ibZOCdEhUszhV6Bkpd5E1vU+GDOxuk8kwmGtwjOPJZH/JyRLti8XxXlVzeUc4jm3f+ahEeKK8JGAGnhZiL01cPrfAs1SIwOxhcxvKdQJx6BfjP0xz1kca5ZwbSzIkX7zFx6s8CG6VQXWHSwsbKNMhkM7aP78pbl10SpgVv1j2kduizp21d0AACBdUOR05UOJPtBqbMlR2r3N7gOatRK+puNSZz0ySa+YLcvXS+Ybk+CzloQXgZkbdA/4qp50Llh4+0Q1WXnf+Lcs3jV5rIJfsyw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WBwD6hd47xClh+PmD0jdENGg4VXS44G+LR/HbwfXRMA=;
- b=nnwjI264M5sL9C6WVCqnQxK6yZo9FastokkbZP5kAzlryHM5H/U0cKZLkaDphhJ88CaQycOgfWIwFfxW7gwmvQ/PUBnpijyxDFTscJNQIXWXT3rgr/vaM4r6dVTTxm7dpLIGE0Mfrrxd/F0udXCJVLSOKS2b3Q+05StV1MM4cJyF1aJpNLKhIOA7YwvizqcxVQ/lPY13ZOr21rko52V3WhMf/ijWB+Yx1Cog/WFyulmk94eeHB406v2p4evX9GLMJuJtEWAYtxsBUyuyrhNNcMVl4OcAJTC8pwis9EG2Qx2vpq3NILOFhpfdBzkkED0++LaocqgaUOu2ba0FFPGxAA==
-Received: from DM6PR07CA0093.namprd07.prod.outlook.com (2603:10b6:5:337::26)
- by DM8PR04MB8005.namprd04.prod.outlook.com (2603:10b6:8:f::24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8534.33; Tue, 18 Mar 2025 22:43:42 +0000
-Received: from DS1PEPF00017095.namprd03.prod.outlook.com
- (2603:10b6:5:337:cafe::fa) by DM6PR07CA0093.outlook.office365.com
- (2603:10b6:5:337::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8534.33 via Frontend Transport; Tue,
- 18 Mar 2025 22:43:42 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 204.77.163.244)
- smtp.mailfrom=garmin.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=garmin.com;
-Received-SPF: Pass (protection.outlook.com: domain of garmin.com designates
- 204.77.163.244 as permitted sender) receiver=protection.outlook.com;
- client-ip=204.77.163.244; helo=edgetransport.garmin.com; pr=C
-Received: from edgetransport.garmin.com (204.77.163.244) by
- DS1PEPF00017095.mail.protection.outlook.com (10.167.17.138) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8534.20 via Frontend Transport; Tue, 18 Mar 2025 22:43:42 +0000
-Received: from cv1wpa-exmb6.ad.garmin.com (10.5.144.76) by cv1wpa-edge1
- (10.60.4.251) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 18 Mar
- 2025 17:43:29 -0500
-Received: from cv1wpa-exmb3.ad.garmin.com (10.5.144.73) by
- cv1wpa-exmb6.ad.garmin.com (10.5.144.76) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Tue, 18 Mar 2025 17:43:31 -0500
-Received: from cv1wpa-exmb1.ad.garmin.com (10.5.144.71) by
- cv1wpa-exmb3.ad.garmin.com (10.5.144.73) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 18 Mar 2025 17:43:30 -0500
-Received: from CAR-4RCMR33.ad.garmin.com (10.5.209.17) by smtp.garmin.com
- (10.5.144.71) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Tue, 18 Mar 2025 17:43:30 -0500
-From: Joseph Huang <Joseph.Huang@garmin.com>
-To: <netdev@vger.kernel.org>
-CC: Joseph Huang <Joseph.Huang@garmin.com>,
-        Joseph Huang
-	<joseph.huang.2024@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S.
- Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Roopa Prabhu
-	<roopa@nvidia.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Simon Horman
-	<horms@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <bridge@lists.linux.dev>
-Subject: [Patch net-next 2/3] net: bridge: mcast: Notify on offload flag change
-Date: Tue, 18 Mar 2025 18:42:47 -0400
-Message-ID: <20250318224255.143683-3-Joseph.Huang@garmin.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250318224255.143683-1-Joseph.Huang@garmin.com>
-References: <20250318224255.143683-1-Joseph.Huang@garmin.com>
+ bh=egwzTCbYiFMFRa/6Q138Im1l3tIHhdlEMn4qx8PFyb8=;
+ b=f4Mdow3MZQaS7ro6eimGv65ZPus8ItJVvUUEwZiu+7EET5i58ZTJR9sZ0Q5InnstrRtwSX2gEbLOsii+1U1liqOnwwnaPTZTlVRIsrItndbIIP7SrHRdyHgTC90BJezVfJCM1q0Do0nqzpsBtt6mNA1XrP9R1Rd83uYUQn0DuZoy88ruqDrmgKYO28qSgFx/dLG6Y0o9cDPYmIm6F1MLckGVRBkdyrPH9ZsmU4KAejal59YRHWmWVdx+y/ooAXkz4nr+9l4LwyHhSxEriKyDPcmha+PaZAc48SH48JCZkRxASsRcNduR9y+Ay4+DD7XbT+VBnTjDcIskwXL4B/Kg+A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by PH0PR12MB7813.namprd12.prod.outlook.com (2603:10b6:510:286::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Tue, 18 Mar
+ 2025 22:49:13 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.8534.034; Tue, 18 Mar 2025
+ 22:49:13 +0000
+Date: Tue, 18 Mar 2025 19:49:12 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Leon Romanovsky <leon@kernel.org>,
+	Nikolay Aleksandrov <nikolay@enfabrica.net>,
+	Linux Kernel Network Developers <netdev@vger.kernel.org>,
+	Shrijeet Mukherjee <shrijeet@enfabrica.net>,
+	alex.badea@keysight.com, eric.davis@broadcom.com, rip.sohan@amd.com,
+	David Ahern <dsahern@kernel.org>, bmt@zurich.ibm.com,
+	roland@enfabrica.net, Winston Liu <winston.liu@keysight.com>,
+	dan.mihailescu@keysight.com, kheib@redhat.com,
+	parth.v.parikh@keysight.com, davem@redhat.com, ian.ziemba@hpe.com,
+	andrew.tauferner@cornelisnetworks.com, welch@hpe.com,
+	rakhahari.bhunia@keysight.com, kingshuk.mandal@keysight.com,
+	linux-rdma@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: Netlink vs ioctl WAS(Re: [RFC PATCH 00/13] Ultra Ethernet driver
+ introduction
+Message-ID: <20250318224912.GB9311@nvidia.com>
+References: <20250306230203.1550314-1-nikolay@enfabrica.net>
+ <20250308184650.GV1955273@unreal>
+ <2f06a40d-2f14-439a-9c95-0231dce5772d@enfabrica.net>
+ <20250312112921.GA1322339@unreal>
+ <86af1a4b-e988-4402-aed2-60609c319dc1@enfabrica.net>
+ <20250312151037.GE1322339@unreal>
+ <CAM0EoMnJW7zJ2_DBm2geTpTnc5ZenNgvcXkLn1eXk4Tu0H0R+A@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAM0EoMnJW7zJ2_DBm2geTpTnc5ZenNgvcXkLn1eXk4Tu0H0R+A@mail.gmail.com>
+X-ClientProxiedBy: MN2PR22CA0007.namprd22.prod.outlook.com
+ (2603:10b6:208:238::12) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017095:EE_|DM8PR04MB8005:EE_
-X-MS-Office365-Filtering-Correlation-Id: 43c836cd-3101-4dd3-7e68-08dd666e55ca
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|PH0PR12MB7813:EE_
+X-MS-Office365-Filtering-Correlation-Id: a94df98d-263a-4a16-d99c-08dd666f1ac2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|7416014|376014;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?QY19kAmD18J2UtoF0+5z1glj9HkQVugaglj2x1t7iZi/STOQh7Bt4Ef/tQTG?=
- =?us-ascii?Q?H1KUsSds4wh16ciQ41jbMl46DjSRar5A9hW5MoRTGbzgGtGt7H3NqIIIy26/?=
- =?us-ascii?Q?ivUAn2aFtmPaT0l3FpVtHbmVC4nGegfPCl++MWW8FboGMsWTp1fwT8X/FXW4?=
- =?us-ascii?Q?bcATdnC9Ddivwfii4gjWYqN24V1UEJjvVlAtEOSAbSBaPUxCBCsla3YSbOVN?=
- =?us-ascii?Q?q+wp6XlpH9fqNTqGNrfv/2DpSPx4vAXh+4dVk5yYUtARkGh26Ha9hLLgko/o?=
- =?us-ascii?Q?965AZDyoBG52D0d9isliPAdohKV8zZYzt/2co6OMNEAM6jV3XRMTsOPvKros?=
- =?us-ascii?Q?tGJ+xrhxYTMnEh8OLXappm6hiojDuKHqC92a5149sLIh1ygPBbe+L43fRCA7?=
- =?us-ascii?Q?u3Mu5ULyyfCLwcxkGwkLzKFCqWHopxCsl4hwYXu9c3WUxoWiZXC4sSAB8hjY?=
- =?us-ascii?Q?KNcbYDMnFqC5J/rweJ1UOhqUiRDsIqCtmzxrSPHaRPyUZhlbMc2fmT3nyPjn?=
- =?us-ascii?Q?GRYTNIzQLE0ta4qcd4Rvy5l9jeYTzwsIWctro1hGWY4hgxFeOB4c5OccZMtJ?=
- =?us-ascii?Q?/MxvdTZChjZo4GSatG6RdJsGpbqn1n4+VMWgZ2D9kU9WrEz3mSqXa81kgEXa?=
- =?us-ascii?Q?aK2ajCbb9Gy8nfTdOvp+SwUWNvGsBm5NguToXOzOvp15mqJJJ4KoI2zE8pvd?=
- =?us-ascii?Q?JQMOI55u5090439dGx57l4iCUwZkgptbLHl5+vsYevRLT/t6AZ+LRuNODu+6?=
- =?us-ascii?Q?OwMdr+E5mVNvGkCjn5zDraydP/cypchSQ3P0/3T/dU7OrRWlBVHqTNFAg26Y?=
- =?us-ascii?Q?4Vt700hqh/JrIBdIg3v0KtA04vlvzoKKMu/22nQmjz8GTb0W8oBNl46L5UxF?=
- =?us-ascii?Q?ChInPSNaQQUIprqywemgETlWTr+s+rJX9RI0YxUNjRm6fnyL5SzxMRfG1mo7?=
- =?us-ascii?Q?KfkNNztjn0PLOZ4k5qzVcv5J2wWXrxOzEcluy6Xq/2wrqqTwJvZgUH8NBH3Z?=
- =?us-ascii?Q?jGjEUUtnfWYAZQwSOh3bPs9EV1dn/J4+7R8O6W8DlGFiAbSyquy2XGFcIO+C?=
- =?us-ascii?Q?yLNj/Q90GYZe0uFUazmu+/xZB49r4pWry04TsKJr+LBz/aHwvPhJO1G+WZBz?=
- =?us-ascii?Q?e8JGXvP34m+n/kfMKkfSgamP49SxX1YlhG1Wxo8P+KLNxVNF8bHG23vmOQew?=
- =?us-ascii?Q?S2IhD7ZYdjTvRW4sjAcqCs1Qsy1eGJxV1KbiM40Xy5B/XMPUwvlfbMGE0YS8?=
- =?us-ascii?Q?7AgT/Q3p9+MVnHQEUvveNLrqI+L0Oq9JyrYEbaqdtdo8XR5ZA3P3KIL3mof1?=
- =?us-ascii?Q?Tf+eYoNQngb9oCyq3noTL30DQpI+YRN+G4v/GRtUemXwjrWbDwQPqMJazEij?=
- =?us-ascii?Q?UE3ETQQKYXWBOY7IO+UmIiSoHhGZYY+ajRdMWabXPV8rjOqm+hGI9HMHYr5u?=
- =?us-ascii?Q?oLL2b+Dk5a3zG354eWiKi06eJquLq82lfubcb5hyxJKJR9sRSvneuYfIHms0?=
- =?us-ascii?Q?o6bqX5ZaJyX1MQA=3D?=
+	=?us-ascii?Q?CnpzT5bUKFDPo5EjXqzOhwTPTDPimaOJwwgP5UftTeIM7jjzQjJwtX2Nrcxx?=
+ =?us-ascii?Q?LixpAdApShaeiPZ+IV/IhOMpznrCzvBqb0gTAo/ZsGznWB5atxQ/EBveG0Rp?=
+ =?us-ascii?Q?k/YJ7+ShiZclA9meCT8vNAeFACRFLC4MJlufcSKUAPKfGYG9gIMcmY2EDSxW?=
+ =?us-ascii?Q?Dve9UFNGDB8GXxCfSJZSVzVzCrim85GLrYWkut3rWEZXOqK70KeAaPl6jGqO?=
+ =?us-ascii?Q?qoocN4NxV6m/2byrM1Aqw41ED2u3s6KMBN5r5qZbAc1XQRbV+3xzUYzd1z69?=
+ =?us-ascii?Q?cbe4adBd+bT4MC/GrO5BHiZhLF2PdIB9orRwU6etzXDgpONVuLXo7o8/kZOI?=
+ =?us-ascii?Q?b1gkSVQIJ34ciF26r87PXMuHF57OT42DIryXseMObMkyxrEsaNO5dqj0nIN5?=
+ =?us-ascii?Q?3KQD+Q8v1qR4+Qc40MgDm7K4d75gZIKOe3IfHTxtO9C6mhP1or0iJRnDrz8T?=
+ =?us-ascii?Q?11TGSazlmySFggu6WDaOHS7QtyP9+FZipnn5chxlEgBdFEE+V1XMjcJGU/Lf?=
+ =?us-ascii?Q?5NIT1kYbtnr7ALPPUgNqb+q3qUcf6pF0qIDkWTPcMWIJsKCHscUmhQJTt+OV?=
+ =?us-ascii?Q?WesVKL60Q0EW3IdaQpcyh07GYdfL7dhmi1C869pqatQNtInfWBW/XftJMHls?=
+ =?us-ascii?Q?4ke5Xr2HK83LlhHzGNyqUL+EQoa303c5PDpxvJOq8P+GOrsL1wXpKTRsFX16?=
+ =?us-ascii?Q?yx6wSquCSsPXNbNNGlGan+iq7e2gAYCOvTx7wo+afThQuP/alwTM+8n7yoY/?=
+ =?us-ascii?Q?3Dm2au0VwR5SS5E/BczhIjzEmP4GdKfCqkcb9mVg6FvK/idQ4hUtoGh0dGgx?=
+ =?us-ascii?Q?MBLddEcu69XQ+9g1KUOU+G9d6jexHuIUtvBKywtjnTOFc8pcSonIa12xY58g?=
+ =?us-ascii?Q?HlXlBNJ7ANvFjpaBPxdXzv8XFKoi+5++UZ0+Y7usdHyx5J6jgPfDdEV0FERy?=
+ =?us-ascii?Q?RGxLsFSmX4BAN9t+F7PfHhU1X3/gv0kVsa4RT7/nIbrL+s8qmpnJnnt9tOhC?=
+ =?us-ascii?Q?fGKC4xZ1XMo85LtgtG4ZMVyfX2M0zQIEKzBMZV43YHBk7ZvgzG4JU9GQ8TtS?=
+ =?us-ascii?Q?/3I2nHH+slPiTTXPJzCvhKBQLo9qrNPO/IqahgewBuNGCmgLw0flP8DyI+Gq?=
+ =?us-ascii?Q?nivZSLbAiiT6QNxqkzG8ze59uoRa1o/NSjf32gzt+05FxqhxAF7HdhJTuHr4?=
+ =?us-ascii?Q?Hy4/TngJK/mheg8WzjFInwkLOWXraa22RSDrD0SLwqGYYEEAnFuiQrlkosCx?=
+ =?us-ascii?Q?YRwV4EV1MwSybOmD8xUlQ5Espp1AfcL2oqNlD1KSLpri2UT14D0VCJD+avg7?=
+ =?us-ascii?Q?+HUe2pAUSlswEXk5MdiwhOJkYzOK+pyzcxIj17UbsSOaWz5prnzGvdqHUk2r?=
+ =?us-ascii?Q?go7k+YCsB6OLghKtCSjpQGNKd6Kc?=
 X-Forefront-Antispam-Report:
-	CIP:204.77.163.244;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:edgetransport.garmin.com;PTR:extedge.garmin.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(7416014)(376014);DIR:OUT;SFP:1102;
-X-OriginatorOrg: garmin.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2025 22:43:42.7310
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?uvCoSY9e6b7XjwHKZKk1ErWb+O4SlDvSHiqUpbW2lzJhEZBKBYC8EPTq1spn?=
+ =?us-ascii?Q?hMz6Nlj4FHAcMbw837PMgbGklpxNVTEEhMXYEvGdQh57ifSHFqYB73nGaUPg?=
+ =?us-ascii?Q?DfbctMSedbv/mlW8btaq36ZIKJWZc2MgN3ihI/wxR9hJPtDJ67qNztau1j4K?=
+ =?us-ascii?Q?LEA1mPtcn3pZx8x/mkhRnb632eV3JEycu8ap1z+3eQLn2nD/DVvw4FDIODSg?=
+ =?us-ascii?Q?hoB+cYmPis7lYgM3vB/lRBmWnQyf6c6PTaVXcWHTKm9jTVRNyE/G5GsuEPby?=
+ =?us-ascii?Q?ojukkeSE0/hBwkR6Z+BYHJ4LC3Od/zOVN/Uzrrr0VSAjZuxAXlP8BKl6x2p4?=
+ =?us-ascii?Q?WTC8Q2q3XuocCXWKJQW6B1n8+TUGAarca/wNa+YAW6RHiH1zGwkwPhVStuRg?=
+ =?us-ascii?Q?t8ly3jj+3vJ+XA+z+x2OpICKA0gpNa7MbvqBd9SjBKNiQBp1prDDsX6P1Bzl?=
+ =?us-ascii?Q?fCidjbNHB1cU2B2KD6Formrt0jsuxelrvu5ucGoIgcKKY7yqzZHJKjN38/q2?=
+ =?us-ascii?Q?RcMaoZH62082QEcHJoomcCg7SzVXpyNOljDZ6Sl1Tmw2BmKbq3m6Xh0slPyz?=
+ =?us-ascii?Q?vLWOIPwSjNEE3FTBy4mlt79a3/6c5BdZ+YxCVk7vpUzFFglJ4AFsW9Wi10sb?=
+ =?us-ascii?Q?Zj/e1jL2ToMSjNHXcJtIxTa+BP4T8V45vvXApsvKE+OYE5FTqZ0uzbwHbalo?=
+ =?us-ascii?Q?Lc1FDVOdxizIwHLpw2BDVw7gUE8wjZhVZSYK1yOEfxFlawj4Iit2eIDQtinR?=
+ =?us-ascii?Q?z8hIHtkWgHhvLrx0XdPRF19TWtCrMRGPefWkL/WnvFF2CST2hKNvJIFqded1?=
+ =?us-ascii?Q?WbNm/IavICIA5B6xaWUu2TSNEVEhnRQdWG07zRweJlL60bbxw/5UE8+XE7ft?=
+ =?us-ascii?Q?NqhhrR5t2IQOAue7BpZ2opwHqBijlaXKfT5IngFsh0/HQArbBdMWNQJ8RbVD?=
+ =?us-ascii?Q?w+f0dRzAlD6bBSv+MilOS6QnGcgXBJ5DL5k5he8ZkA02tvQ4LkAmdM39L8BL?=
+ =?us-ascii?Q?1FpE6DWNUD0Jo5FuReKrViYYQhPc5zrY+PjxaabPmw+a/UxGCrd7wAK+BqcY?=
+ =?us-ascii?Q?w8NmjmRaxA8ATwQmz+FLzj5wqlek7feSssRCdcH3HTIoYA8W4F+E81ZqHze0?=
+ =?us-ascii?Q?YMBlTH9gqJFgYxZEi+N6DJ6ZMJ/AdNNJ0MkqU4aOB9lj7IN2nBPPZvsnNTNG?=
+ =?us-ascii?Q?az4Ib3TwTNtIjL1jVQ2vUukcBYKRZvywSGct+z90yT7FWXhW6eK4kG8Wo2mo?=
+ =?us-ascii?Q?78Yf1UCx/1RKwbQvv8i7HG1HzI7s0lh7+cUt69n+Wq6qAOq8ZlgIWGJY0362?=
+ =?us-ascii?Q?P3IoGQXY7fb1MAOOFHDqLHNK0squU9KlQCgszvf2PUSRqhRnxQ2TsIF8ljhX?=
+ =?us-ascii?Q?QLLjxHfr2m0/GIYT6kbYLk922yl1FYnchLQ92tr5oaAw/glWF5FBNJWOkNdS?=
+ =?us-ascii?Q?bUblJEPcMlmJs9vp/Jw54BTCzlSEnmevvWCWNZcQRdiNnsHHtUlEIvwBrC8h?=
+ =?us-ascii?Q?atdfwPfXN4tECqg7ZZIj0L0+3tnZ0rEYj5ndAsZYTsJD2VZaJ/8CFupWn8kW?=
+ =?us-ascii?Q?/RGOXFJ4Vf19DPXxHsw=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a94df98d-263a-4a16-d99c-08dd666f1ac2
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2025 22:49:13.5270
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 43c836cd-3101-4dd3-7e68-08dd666e55ca
-X-MS-Exchange-CrossTenant-Id: 38d0d425-ba52-4c0a-a03e-2a65c8e82e2d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=38d0d425-ba52-4c0a-a03e-2a65c8e82e2d;Ip=[204.77.163.244];Helo=[edgetransport.garmin.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF00017095.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR04MB8005
-X-Proofpoint-ORIG-GUID: 9zVcsFn71wb4tvfsLqepICERyHoAYZVV
-X-Authority-Analysis: v=2.4 cv=b8iy4sGx c=1 sm=1 tr=0 ts=67d9f720 cx=c_pps a=8NhCg2oU0sQOR5chO7ltBw==:117 a=YA0UzX50FYCGjWi3QxTvkg==:17 a=h8e1o3o8w34MuCiiGQrqVE4VwXA=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=Vs1iUdzkB0EA:10
- a=qm69fr9Wx_0A:10 a=NbHB2C0EAAAA:8 a=VGaYpauLdRoLlJ9qq5IA:9 cc=ntf
-X-Proofpoint-GUID: 9zVcsFn71wb4tvfsLqepICERyHoAYZVV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-18_10,2025-03-17_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
- malwarescore=0 mlxlogscore=999 suspectscore=0 priorityscore=1501
- mlxscore=0 bulkscore=0 spamscore=0 adultscore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a
- authcc=notification route=outbound adjust=0 reason=mlx scancount=1
- engine=8.21.0-2502280000 definitions=main-2503180165
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mOWkcDluNRtOpMLt22reQ5RVdP/g5nk8xRK4uw1774dv1caWi9QTC2mJbKOgS2Ee
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7813
 
-Notify user space on offload flag(s) change.
+On Sat, Mar 15, 2025 at 04:49:20PM -0400, Jamal Hadi Salim wrote:
 
-This behavior is controlled by the new knob mdb_notify_on_flag_change:
+> On "unreliable": This is typically a result of some request response
+> (or a subscribed to event) whose execution has failed to allocate
+> memory in the kernel or overrun some buffers towards user space;
+> however, any such failures are signalled to user space and can be
+> recovered from.
 
-0 - the bridge will not notify user space about MDB flag change
-1 - the bridge will notify user space about flag change if either
-    MDB_PG_FLAGS_OFFLOAD or MDB_PG_FLAGS_OFFLOAD_FAILED has changed
-2 - the bridge will notify user space about flag change only if
-    MDB_PG_FLAGS_OFFLOAD_FAILED has changed
+No, they can't be recovered from in all cases. Randomly failing system
+calls because of memory pressure is a horrible foundation to build
+what something like RDMA needs. It is not acceptable that something
+like a destroy system call would just randomly fail because the kernel
+is OOMing. There is no recovery from this beyond leaking memory - the
+opposite of what you want in an OOM situation.
 
-The default value is 0.
+> ioctl is synchronous which gives it the "reliability" and "speed".
+> iirc, if memory failure was to happen on ioctl it will block until it
+> is successful? 
 
-Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
----
- net/bridge/br_mdb.c       | 28 +++++++++++++++++++++++-----
- net/bridge/br_multicast.c | 25 +++++++++++++++++++++++++
- net/bridge/br_private.h   | 15 +++++++++++++++
- net/bridge/br_switchdev.c | 25 +++++++++++++++++++++++--
- 4 files changed, 86 insertions(+), 7 deletions(-)
+It would fail back to userspace and unwind whatever it did.
 
-diff --git a/net/bridge/br_mdb.c b/net/bridge/br_mdb.c
-index 0639691cd19b..d206b5a160f3 100644
---- a/net/bridge/br_mdb.c
-+++ b/net/bridge/br_mdb.c
-@@ -519,16 +519,17 @@ static size_t rtnl_mdb_nlmsg_size(const struct net_bridge_port_group *pg)
- 	       rtnl_mdb_nlmsg_pg_size(pg);
- }
- 
--void br_mdb_notify(struct net_device *dev,
--		   struct net_bridge_mdb_entry *mp,
--		   struct net_bridge_port_group *pg,
--		   int type)
-+static void _br_mdb_notify(struct net_device *dev,
-+			   struct net_bridge_mdb_entry *mp,
-+			   struct net_bridge_port_group *pg,
-+			   int type, bool notify_switchdev)
- {
- 	struct net *net = dev_net(dev);
- 	struct sk_buff *skb;
- 	int err = -ENOBUFS;
- 
--	br_switchdev_mdb_notify(dev, mp, pg, type);
-+	if (notify_switchdev)
-+		br_switchdev_mdb_notify(dev, mp, pg, type);
- 
- 	skb = nlmsg_new(rtnl_mdb_nlmsg_size(pg), GFP_ATOMIC);
- 	if (!skb)
-@@ -546,6 +547,23 @@ void br_mdb_notify(struct net_device *dev,
- 	rtnl_set_sk_err(net, RTNLGRP_MDB, err);
- }
- 
-+void br_mdb_notify(struct net_device *dev,
-+		   struct net_bridge_mdb_entry *mp,
-+		   struct net_bridge_port_group *pg,
-+		   int type)
-+{
-+	_br_mdb_notify(dev, mp, pg, type, true);
-+}
-+
-+#ifdef CONFIG_NET_SWITCHDEV
-+void br_mdb_flag_change_notify(struct net_device *dev,
-+			       struct net_bridge_mdb_entry *mp,
-+			       struct net_bridge_port_group *pg)
-+{
-+	_br_mdb_notify(dev, mp, pg, RTM_NEWMDB, false);
-+}
-+#endif
-+
- static int nlmsg_populate_rtr_fill(struct sk_buff *skb,
- 				   struct net_device *dev,
- 				   int ifindex, u16 vid, u32 pid,
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index b2ae0d2434d2..8d583caecd40 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -4051,6 +4051,10 @@ void br_multicast_ctx_init(struct net_bridge *br,
- 	brmctx->ip6_querier.port_ifidx = 0;
- 	seqcount_spinlock_init(&brmctx->ip6_querier.seq, &br->multicast_lock);
- #endif
-+#ifdef CONFIG_NET_SWITCHDEV
-+	brmctx->multicast_mdb_notify_on_flag_change =
-+		MDB_NOTIFY_ON_FLAG_CHANGE_DISABLE;
-+#endif
- 
- 	timer_setup(&brmctx->ip4_mc_router_timer,
- 		    br_ip4_multicast_local_router_expired, 0);
-@@ -4708,6 +4712,27 @@ int br_multicast_set_mld_version(struct net_bridge_mcast *brmctx,
- }
- #endif
- 
-+#ifdef CONFIG_NET_SWITCHDEV
-+int br_multicast_set_mdb_notify_on_flag_change(struct net_bridge_mcast *brmctx,
-+					       u8 val)
-+{
-+	switch (val) {
-+	case MDB_NOTIFY_ON_FLAG_CHANGE_DISABLE:
-+	case MDB_NOTIFY_ON_FLAG_CHANGE_BOTH:
-+	case MDB_NOTIFY_ON_FLAG_CHANGE_FAIL_ONLY:
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	spin_lock_bh(&brmctx->br->multicast_lock);
-+	brmctx->multicast_mdb_notify_on_flag_change = val;
-+	spin_unlock_bh(&brmctx->br->multicast_lock);
-+
-+	return 0;
-+}
-+#endif
-+
- void br_multicast_set_query_intvl(struct net_bridge_mcast *brmctx,
- 				  unsigned long val)
- {
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index cd6b4e91e7d6..8e8de5d54ae3 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -132,6 +132,10 @@ struct net_bridge_mcast_port {
- #endif /* CONFIG_BRIDGE_IGMP_SNOOPING */
- };
- 
-+#define MDB_NOTIFY_ON_FLAG_CHANGE_DISABLE	0
-+#define MDB_NOTIFY_ON_FLAG_CHANGE_BOTH		1
-+#define MDB_NOTIFY_ON_FLAG_CHANGE_FAIL_ONLY	2
-+
- /* net_bridge_mcast must be always defined due to forwarding stubs */
- struct net_bridge_mcast {
- #ifdef CONFIG_BRIDGE_IGMP_SNOOPING
-@@ -146,6 +150,9 @@ struct net_bridge_mcast {
- 	u8				multicast_router;
- #if IS_ENABLED(CONFIG_IPV6)
- 	u8				multicast_mld_version;
-+#endif
-+#ifdef CONFIG_NET_SWITCHDEV
-+	u8				multicast_mdb_notify_on_flag_change;
- #endif
- 	unsigned long			multicast_last_member_interval;
- 	unsigned long			multicast_membership_interval;
-@@ -988,6 +995,10 @@ int br_multicast_set_igmp_version(struct net_bridge_mcast *brmctx,
- int br_multicast_set_mld_version(struct net_bridge_mcast *brmctx,
- 				 unsigned long val);
- #endif
-+#ifdef CONFIG_NET_SWITCHDEV
-+int br_multicast_set_mdb_notify_on_flag_change(struct net_bridge_mcast *brmctx,
-+					       u8 val);
-+#endif
- struct net_bridge_mdb_entry *
- br_mdb_ip_get(struct net_bridge *br, struct br_ip *dst);
- struct net_bridge_mdb_entry *
-@@ -1004,6 +1015,10 @@ int br_mdb_hash_init(struct net_bridge *br);
- void br_mdb_hash_fini(struct net_bridge *br);
- void br_mdb_notify(struct net_device *dev, struct net_bridge_mdb_entry *mp,
- 		   struct net_bridge_port_group *pg, int type);
-+#ifdef CONFIG_NET_SWITCHDEV
-+void br_mdb_flag_change_notify(struct net_device *dev, struct net_bridge_mdb_entry *mp,
-+			       struct net_bridge_port_group *pg);
-+#endif
- void br_rtr_notify(struct net_device *dev, struct net_bridge_mcast_port *pmctx,
- 		   int type);
- void br_multicast_del_pg(struct net_bridge_mdb_entry *mp,
-diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
-index 68dccc2ff7b1..5b09cfcdf3f3 100644
---- a/net/bridge/br_switchdev.c
-+++ b/net/bridge/br_switchdev.c
-@@ -504,20 +504,41 @@ static void br_switchdev_mdb_complete(struct net_device *dev, int err, void *pri
- 	struct net_bridge_mdb_entry *mp;
- 	struct net_bridge_port *port = data->port;
- 	struct net_bridge *br = port->br;
-+	bool offload_changed = false;
-+	bool failed_changed = false;
-+	u8 notify;
- 
- 	spin_lock_bh(&br->multicast_lock);
- 	mp = br_mdb_ip_get(br, &data->ip);
- 	if (!mp)
- 		goto out;
-+
-+	notify = br->multicast_ctx.multicast_mdb_notify_on_flag_change;
-+
- 	for (pp = &mp->ports; (p = mlock_dereference(*pp, br)) != NULL;
- 	     pp = &p->next) {
- 		if (p->key.port != port)
- 			continue;
- 
--		if (err)
-+		if (err) {
-+			if (!(p->flags & MDB_PG_FLAGS_OFFLOAD_FAILED))
-+				failed_changed = true;
- 			p->flags |= MDB_PG_FLAGS_OFFLOAD_FAILED;
--		else
-+		} else {
-+			if (!(p->flags & MDB_PG_FLAGS_OFFLOAD))
-+				offload_changed = true;
- 			p->flags |= MDB_PG_FLAGS_OFFLOAD;
-+		}
-+
-+		if (notify == MDB_NOTIFY_ON_FLAG_CHANGE_DISABLE ||
-+		    (!offload_changed && !failed_changed))
-+			continue;
-+
-+		if (notify == MDB_NOTIFY_ON_FLAG_CHANGE_FAIL_ONLY &&
-+		    !failed_changed)
-+			continue;
-+
-+		br_mdb_flag_change_notify(br->dev, mp, p);
- 	}
- out:
- 	spin_unlock_bh(&br->multicast_lock);
--- 
-2.49.0
+The unwinding is tricky and RDMA's infrastructure has alot of support
+to make it easier for driver writers to get this right in all the
+different error cases.
 
+Overall systems calls here should either succeed or fail and be the
+same as a NOP. No failure that actually did something and then creates
+some resource leak or something because userspace didn't know about
+it.
+
+> Extensibility: ioctl take binary structs which make it much harder to
+> extend but adds to that "speed". Once you pick your struct, you are
+> stuck with it - as opposed to netlink which uses very extensible
+> formally defined TLVs that makes it highly extensible. 
+
+RDMA uses TLVs now too. It has one of the largest uAPI surfaces in the
+kernel, TLVs were introduced for the same reason netlink uses them.
+
+RDMA also has special infrastructure to split up the TLV space between
+core code and HW driver code which is a key feature and necessary part
+of how you'd build a user/kernel split driver.
+
+> - And as Nik mentioned: The new (yaml)model-to-generatedcode approach
+> that is now common in generic netlink highly reduces developer effort.
+> Although in my opinion we really need this stuff integrated into tools
+> like iproute2..
+
+RDMA also has a DSL like scheme for defining schema, and centralized
+parsing and validation. IMHO it's capability falls someplace between
+the old netlink policy stuff and the new YAML stuff.
+
+But just focusing on schema and TLVs really undersells all the
+specialized infrastructure that exists for managing objects, security,
+HW pass through and other infrastructure things unique to RDMA.
+
+Jason
