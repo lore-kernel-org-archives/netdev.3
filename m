@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49CA211282
-	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 16:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6A7211474
+	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 16:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742314430; cv=none; b=YFs3D+zZTqgCRp5r5u8WoqRwODjMtr8BfXyF4LMjGEfzEJKq6Jm+vbLvLtplhVUhOLYP1Fd7YCFVDA7cFwVMU1fQNqeXkTiAioDTVpjzPf5rqFAmce94P8SjHRrA5hGnSyqM2r5jytbk/77TB2YNXhTJLx8x2RTN4vbtT7OlAFk=
+	t=1742314430; cv=none; b=hlprF4dRIViaRf1I41i1AmOyJfpcHGPadmuICbfnQJePAVeNRxCZaTGANaqNuIUjXeVJxF1BVAptgqm5hIiFNitjYkVpwKeEdF+kEOkqUHljqJm1A8iiZLItOYtFlO1Ns4C5Md3QwDy1fAriyUCQpEY9fbyiAitv0MchiqXyqcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1742314430; c=relaxed/simple;
-	bh=9VptalQvmstRZHW7Fv4oQ2wBKPlQ7I921u+iPavmPRA=;
+	bh=4YJaroMvTIqSqX3l7euhQpEZy8h9JhaFKtiIJI6+9zI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VGIMiXl7iEHE50kFW2Ltl5ysV0B+lu8oeDVZpoeayaMV00jJf/uC/Ul/+KFFA/33jqN4G7W5uBGIjjl4W+E7TnbKLSLqUQRZlwucNG9uTpEJAEC2za5g0RxH8cRXN1L/avys16VvAmjtG5sjvHVYpDQw38/9JNZPOR+9JZUTYb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JnmLMvwQ; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=bQN0RKngG39+4S/RomVoo/9v9TLAq9oIxUb2iyTFX0YWpa8do4CC4GWEG4v+RcHG1eBluSisBHYkWHxDhlXEA3kDqW01FKF1iEPfUSwyL1VwnIZHcv2cNjPJeImyi3bfv5nTDsZFH2NcG5DfhkT9mkbjNbMly16JXgDYpzhQ6uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WBxmG48Q; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JnmLMvwQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WBxmG48Q"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742314428; x=1773850428;
+  t=1742314425; x=1773850425;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=9VptalQvmstRZHW7Fv4oQ2wBKPlQ7I921u+iPavmPRA=;
-  b=JnmLMvwQEvw92jPQdIPwyL+rWzObHh1R0KSgFsusRJZZ6s6mNXeXYRfg
-   eW9f5Pjbfc+aO7WJATzI7UtjaE3yBuDSvbpVQvMjnIaCmdj3Zdnubv0ru
-   HucLZ9rCFmOKiAz8aPVMDghrF5zDvaZhlNWI/QvfbKemsZjQ7OH90JpK4
-   TeOB/ThBIvrUpU06FEpwhlCueSS/q4y3oY0XGQGw5mfLuOs5rXs2ve9+h
-   98d5UyzIp25qV344rLU+TrPQDnMy7zvGFL7j+brxfImWEqh1WzaHtFNuQ
-   DPuBgxNBofc2OGV1gej9rjNDnDopP4JUbqpt7pOT8ZQOeGMaApMIse6Tx
-   w==;
-X-CSE-ConnectionGUID: DuPdl7rvRD6Pe9wfslaOhQ==
-X-CSE-MsgGUID: 6XjOIpgOSyiM/TOnHNHMxg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="54458858"
+  bh=4YJaroMvTIqSqX3l7euhQpEZy8h9JhaFKtiIJI6+9zI=;
+  b=WBxmG48Q+Pl1tLRBJE8UbNd09Sw3gCFyddoofP5buAoRA0KqzreOZed5
+   AfK2RDg3qi1KNIEApAYxlfFxOJbQmDqxzSYwmCSw/07L20+jaTzMNpYY8
+   KV6W4P5j2z8RRZFyy2wkDjBRV7f2uGdnqR3Fnl6bPVkgyFOmrH2Nh1/ht
+   ZsRMbRZWTYXzMKMYpu/Bp0erJNG59hMRteSTZeiRa2GX4MSQoRYRrm/Of
+   lApD5FR3RfGiw0Jb9e56gqrlKb12LfaXd+tD2Pw4x9KDrtnoqHn56+H2r
+   RfznESYwQ876qAwpqG74IYMRMjwhEP6erh9W+EwD1bthHlVmvhPgKdeZH
+   Q==;
+X-CSE-ConnectionGUID: e+dM3jcoSkux+MwE34VIjA==
+X-CSE-MsgGUID: I1nCCfgFT9emGANw40IQ0g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="54458841"
 X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; 
-   d="scan'208";a="54458858"
+   d="scan'208";a="54458841"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
   by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 09:13:34 -0700
-X-CSE-ConnectionGUID: RL8boWoiR+W11bVDmruwHQ==
-X-CSE-MsgGUID: RX2EcoRAS32nbwbenf4T/g==
+X-CSE-ConnectionGUID: LkFq52ETQY+eWsUo8LM/DA==
+X-CSE-MsgGUID: g+kE0eVRSxWReQveJGGbzg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; 
-   d="scan'208";a="122041970"
+   d="scan'208";a="122041958"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa009.jf.intel.com with ESMTP; 18 Mar 2025 09:13:35 -0700
+  by orviesa009.jf.intel.com with ESMTP; 18 Mar 2025 09:13:34 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -55,12 +55,13 @@ Cc: Milena Olech <milena.olech@intel.com>,
 	przemyslaw.kitszel@intel.com,
 	karol.kolacinski@intel.com,
 	richardcochran@gmail.com,
-	YiFei Zhu <zhuyifei@google.com>,
-	Mina Almasry <almasrymina@google.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Pavan Kumar Linga <pavan.kumar.linga@intel.com>,
 	Samuel Salin <Samuel.salin@intel.com>
-Subject: [PATCH net-next 09/10] idpf: add support for Rx timestamping
-Date: Tue, 18 Mar 2025 09:13:24 -0700
-Message-ID: <20250318161327.2532891-10-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next 07/10] idpf: add Tx timestamp capabilities negotiation
+Date: Tue, 18 Mar 2025 09:13:22 -0700
+Message-ID: <20250318161327.2532891-8-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250318161327.2532891-1-anthony.l.nguyen@intel.com>
 References: <20250318161327.2532891-1-anthony.l.nguyen@intel.com>
@@ -74,211 +75,269 @@ Content-Transfer-Encoding: 8bit
 
 From: Milena Olech <milena.olech@intel.com>
 
-Add Rx timestamp function when the Rx timestamp value is read directly
-from the Rx descriptor. In order to extend the Rx timestamp value to 64
-bit in hot path, the PHC time is cached in the receive groups.
-Add supported Rx timestamp modes.
+Tx timestamp capabilities are negotiated for the uplink Vport.
+Driver receives information about the number of available Tx timestamp
+latches, the size of Tx timestamp value and the set of indexes used
+for Tx timestamping.
 
-Tested-by: YiFei Zhu <zhuyifei@google.com>
-Tested-by: Mina Almasry <almasrymina@google.com>
+Add function to get the Tx timestamp capabilities and parse the uplink
+vport flag.
+
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Co-developed-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Co-developed-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
 Signed-off-by: Milena Olech <milena.olech@intel.com>
 Tested-by: Samuel Salin <Samuel.salin@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- .../net/ethernet/intel/idpf/idpf_ethtool.c    |  1 +
- drivers/net/ethernet/intel/idpf/idpf_lib.c    |  6 +-
- drivers/net/ethernet/intel/idpf/idpf_ptp.c    | 89 ++++++++++++++++++-
- drivers/net/ethernet/intel/idpf/idpf_ptp.h    | 21 +++++
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 30 +++++++
- drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  7 +-
- 6 files changed, 150 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf.h        |  10 ++
+ drivers/net/ethernet/intel/idpf/idpf_ptp.c    |  65 +++++++++
+ drivers/net/ethernet/intel/idpf/idpf_ptp.h    |  95 ++++++++++++-
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   |  11 ++
+ .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   | 128 +++++++++++++++++-
+ drivers/net/ethernet/intel/idpf/virtchnl2.h   |  12 +-
+ 6 files changed, 317 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-index ec4183a609c4..7a4793749bc5 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-@@ -1333,6 +1333,7 @@ static void idpf_get_timestamp_filters(const struct idpf_vport *vport,
- 				SOF_TIMESTAMPING_RAW_HARDWARE;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
+index d5d5064d313b..fe4d8ad75b04 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf.h
++++ b/drivers/net/ethernet/intel/idpf/idpf.h
+@@ -292,6 +292,7 @@ struct idpf_port_stats {
+  * @port_stats: per port csum, header split, and other offload stats
+  * @link_up: True if link is up
+  * @sw_marker_wq: workqueue for marker packets
++ * @tx_tstamp_caps: Capabilities negotiated for Tx timestamping
+  */
+ struct idpf_vport {
+ 	u16 num_txq;
+@@ -336,6 +337,8 @@ struct idpf_vport {
+ 	bool link_up;
  
- 	info->tx_types = BIT(HWTSTAMP_TX_OFF);
-+	info->rx_filters = BIT(HWTSTAMP_FILTER_NONE) | BIT(HWTSTAMP_FILTER_ALL);
+ 	wait_queue_head_t sw_marker_wq;
++
++	struct idpf_ptp_vport_tx_tstamp_caps *tx_tstamp_caps;
+ };
  
- 	if (!vport->tx_tstamp_caps ||
- 	    vport->adapter->ptp->tx_tstamp_access == IDPF_PTP_NONE)
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index b4752de5f091..177bde44baa2 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -2361,7 +2361,8 @@ static int idpf_hwtstamp_set(struct net_device *netdev,
- 		return -EPERM;
- 	}
+ /**
+@@ -480,6 +483,13 @@ struct idpf_vport_config {
  
--	if (!idpf_ptp_is_vport_tx_tstamp_ena(vport)) {
-+	if (!idpf_ptp_is_vport_tx_tstamp_ena(vport) &&
-+	    !idpf_ptp_is_vport_rx_tstamp_ena(vport)) {
- 		idpf_vport_ctrl_unlock(netdev);
- 		return -EOPNOTSUPP;
- 	}
-@@ -2386,7 +2387,8 @@ static int idpf_hwtstamp_get(struct net_device *netdev,
- 		return -EPERM;
- 	}
+ struct idpf_vc_xn_manager;
  
--	if (!idpf_ptp_is_vport_tx_tstamp_ena(vport)) {
-+	if (!idpf_ptp_is_vport_tx_tstamp_ena(vport) &&
-+	    !idpf_ptp_is_vport_rx_tstamp_ena(vport)) {
- 		idpf_vport_ctrl_unlock(netdev);
- 		return 0;
- 	}
++#define idpf_for_each_vport(adapter, iter) \
++	for (struct idpf_vport **__##iter = &(adapter)->vports[0], \
++	     *iter = (adapter)->max_vports ? *__##iter : NULL; \
++	     iter; \
++	     iter = (++__##iter) < &(adapter)->vports[(adapter)->max_vports] ? \
++	     *__##iter : NULL)
++
+ /**
+  * struct idpf_adapter - Device data struct generated on probe
+  * @pdev: PCI device struct given on probe
 diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-index 36bff5afa474..85a9a25c44d6 100644
+index 5aa00b9177b2..d2c629a88cc5 100644
 --- a/drivers/net/ethernet/intel/idpf/idpf_ptp.c
 +++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-@@ -317,12 +317,41 @@ static int idpf_ptp_gettimex64(struct ptp_clock_info *info,
+@@ -62,6 +62,13 @@ void idpf_ptp_get_features_access(const struct idpf_adapter *adapter)
+ 	ptp->adj_dev_clk_time_access = idpf_ptp_get_access(adapter,
+ 							   direct,
+ 							   mailbox);
++
++	/* Tx timestamping */
++	direct = VIRTCHNL2_CAP_PTP_TX_TSTAMPS;
++	mailbox = VIRTCHNL2_CAP_PTP_TX_TSTAMPS_MB;
++	ptp->tx_tstamp_access = idpf_ptp_get_access(adapter,
++						    direct,
++						    mailbox);
+ }
+ 
+ /**
+@@ -521,6 +528,61 @@ static int idpf_ptp_create_clock(const struct idpf_adapter *adapter)
  	return 0;
  }
  
 +/**
-+ * idpf_ptp_update_phctime_rxq_grp - Update the cached PHC time for a given Rx
-+ *				     queue group.
-+ * @grp: receive queue group in which Rx timestamp is enabled
-+ * @split: Indicates whether the queue model is split or single queue
-+ * @systime: Cached system time
++ * idpf_ptp_release_vport_tstamp - Release the Tx timestamps trakcers for a
++ *				   given vport.
++ * @vport: Virtual port structure
++ *
++ * Remove the queues and delete lists that tracks Tx timestamp entries for a
++ * given vport.
 + */
-+static void
-+idpf_ptp_update_phctime_rxq_grp(const struct idpf_rxq_group *grp, bool split,
-+				u64 systime)
++static void idpf_ptp_release_vport_tstamp(struct idpf_vport *vport)
 +{
-+	struct idpf_rx_queue *rxq;
-+	u16 i;
++	struct idpf_ptp_tx_tstamp *ptp_tx_tstamp, *tmp;
++	struct list_head *head;
 +
-+	if (!split) {
-+		for (i = 0; i < grp->singleq.num_rxq; i++) {
-+			rxq = grp->singleq.rxqs[i];
-+			if (rxq)
-+				WRITE_ONCE(rxq->cached_phc_time, systime);
-+		}
-+	} else {
-+		for (i = 0; i < grp->splitq.num_rxq_sets; i++) {
-+			rxq = &grp->splitq.rxq_sets[i]->rxq;
-+			if (rxq)
-+				WRITE_ONCE(rxq->cached_phc_time, systime);
-+		}
++	/* Remove list with free latches */
++	spin_lock(&vport->tx_tstamp_caps->lock_free);
++
++	head = &vport->tx_tstamp_caps->latches_free;
++	list_for_each_entry_safe(ptp_tx_tstamp, tmp, head, list_member) {
++		list_del(&ptp_tx_tstamp->list_member);
++		kfree(ptp_tx_tstamp);
 +	}
++
++	spin_unlock(&vport->tx_tstamp_caps->lock_free);
++
++	/* Remove list with latches in use */
++	spin_lock(&vport->tx_tstamp_caps->lock_in_use);
++
++	head = &vport->tx_tstamp_caps->latches_in_use;
++	list_for_each_entry_safe(ptp_tx_tstamp, tmp, head, list_member) {
++		list_del(&ptp_tx_tstamp->list_member);
++		kfree(ptp_tx_tstamp);
++	}
++
++	spin_unlock(&vport->tx_tstamp_caps->lock_in_use);
++
++	kfree(vport->tx_tstamp_caps);
++	vport->tx_tstamp_caps = NULL;
 +}
 +
- /**
-  * idpf_ptp_update_cached_phctime - Update the cached PHC time values
-  * @adapter: Driver specific private structure
-  *
-  * This function updates the system time values which are cached in the adapter
-- * structure.
-+ * structure and the Rx queues.
-  *
-  * This function must be called periodically to ensure that the cached value
-  * is never more than 2 seconds old.
-@@ -345,6 +374,21 @@ static int idpf_ptp_update_cached_phctime(struct idpf_adapter *adapter)
- 	WRITE_ONCE(adapter->ptp->cached_phc_time, systime);
- 	WRITE_ONCE(adapter->ptp->cached_phc_jiffies, jiffies);
- 
++/**
++ * idpf_ptp_release_tstamp - Release the Tx timestamps trackers
++ * @adapter: Driver specific private structure
++ *
++ * Remove the queues and delete lists that tracks Tx timestamp entries.
++ */
++static void idpf_ptp_release_tstamp(struct idpf_adapter *adapter)
++{
 +	idpf_for_each_vport(adapter, vport) {
-+		bool split;
-+
-+		if (!vport || !vport->rxq_grps)
++		if (!idpf_ptp_is_vport_tx_tstamp_ena(vport))
 +			continue;
 +
-+		split = idpf_is_queue_model_split(vport->rxq_model);
-+
-+		for (u16 i = 0; i < vport->num_rxq_grp; i++) {
-+			struct idpf_rxq_group *grp = &vport->rxq_grps[i];
-+
-+			idpf_ptp_update_phctime_rxq_grp(grp, split, systime);
-+		}
-+	}
-+
- 	return 0;
- }
- 
-@@ -608,6 +652,48 @@ int idpf_ptp_request_ts(struct idpf_tx_queue *tx_q, struct sk_buff *skb,
- 	return 0;
- }
- 
-+/**
-+ * idpf_ptp_set_rx_tstamp - Enable or disable Rx timestamping
-+ * @vport: Virtual port structure
-+ * @rx_filter: bool value for whether timestamps are enabled or disabled
-+ */
-+static void idpf_ptp_set_rx_tstamp(struct idpf_vport *vport, int rx_filter)
-+{
-+	bool enable = true, splitq;
-+
-+	splitq = idpf_is_queue_model_split(vport->rxq_model);
-+
-+	if (rx_filter == HWTSTAMP_FILTER_NONE) {
-+		enable = false;
-+		vport->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
-+	} else {
-+		vport->tstamp_config.rx_filter = HWTSTAMP_FILTER_ALL;
-+	}
-+
-+	for (u16 i = 0; i < vport->num_rxq_grp; i++) {
-+		struct idpf_rxq_group *grp = &vport->rxq_grps[i];
-+		struct idpf_rx_queue *rx_queue;
-+		u16 j, num_rxq;
-+
-+		if (splitq)
-+			num_rxq = grp->splitq.num_rxq_sets;
-+		else
-+			num_rxq = grp->singleq.num_rxq;
-+
-+		for (j = 0; j < num_rxq; j++) {
-+			if (splitq)
-+				rx_queue = &grp->splitq.rxq_sets[j]->rxq;
-+			else
-+				rx_queue = grp->singleq.rxqs[j];
-+
-+			if (enable)
-+				idpf_queue_set(PTP, rx_queue);
-+			else
-+				idpf_queue_clear(PTP, rx_queue);
-+		}
++		idpf_ptp_release_vport_tstamp(vport);
 +	}
 +}
 +
  /**
-  * idpf_ptp_set_timestamp_mode - Setup driver for requested timestamp mode
-  * @vport: Virtual port structure
-@@ -630,6 +716,7 @@ int idpf_ptp_set_timestamp_mode(struct idpf_vport *vport,
- 	}
+  * idpf_ptp_init - Initialize PTP hardware clock support
+  * @adapter: Driver specific private structure
+@@ -605,6 +667,9 @@ void idpf_ptp_release(struct idpf_adapter *adapter)
+ 	if (!ptp)
+ 		return;
  
- 	vport->tstamp_config.tx_type = config->tx_type;
-+	idpf_ptp_set_rx_tstamp(vport, config->rx_filter);
- 	*config = vport->tstamp_config;
++	if (ptp->tx_tstamp_access != IDPF_PTP_NONE)
++		idpf_ptp_release_tstamp(adapter);
++
+ 	if (ptp->clock)
+ 		ptp_clock_unregister(ptp->clock);
  
- 	return 0;
 diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.h b/drivers/net/ethernet/intel/idpf/idpf_ptp.h
-index 5cb7b68085b6..c3ad2c578868 100644
+index e7ccdcbdbd47..3a9763bc3257 100644
 --- a/drivers/net/ethernet/intel/idpf/idpf_ptp.h
 +++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.h
-@@ -234,6 +234,27 @@ static inline bool idpf_ptp_is_vport_tx_tstamp_ena(struct idpf_vport *vport)
- 		return true;
- }
+@@ -83,6 +83,70 @@ struct idpf_ptp_secondary_mbx {
+ 	bool valid:1;
+ };
  
 +/**
-+ * idpf_ptp_is_vport_rx_tstamp_ena - Verify the Rx timestamping enablement for
++ * enum idpf_ptp_tx_tstamp_state - Tx timestamp states
++ * @IDPF_PTP_FREE: Tx timestamp index free to use
++ * @IDPF_PTP_REQUEST: Tx timestamp index set to the Tx descriptor
++ * @IDPF_PTP_READ_VALUE: Tx timestamp value ready to be read
++ */
++enum idpf_ptp_tx_tstamp_state {
++	IDPF_PTP_FREE,
++	IDPF_PTP_REQUEST,
++	IDPF_PTP_READ_VALUE,
++};
++
++/**
++ * struct idpf_ptp_tx_tstamp_status - Parameters to track Tx timestamp
++ * @skb: the pointer to the SKB that received the completion tag
++ * @state: the state of the Tx timestamp
++ */
++struct idpf_ptp_tx_tstamp_status {
++	struct sk_buff *skb;
++	enum idpf_ptp_tx_tstamp_state state;
++};
++
++/**
++ * struct idpf_ptp_tx_tstamp - Parameters for Tx timestamping
++ * @list_member: the list member structure
++ * @tx_latch_reg_offset_l: Tx tstamp latch low register offset
++ * @tx_latch_reg_offset_h: Tx tstamp latch high register offset
++ * @skb: the pointer to the SKB for this timestamp request
++ * @tstamp: the Tx tstamp value
++ * @idx: the index of the Tx tstamp
++ */
++struct idpf_ptp_tx_tstamp {
++	struct list_head list_member;
++	u32 tx_latch_reg_offset_l;
++	u32 tx_latch_reg_offset_h;
++	struct sk_buff *skb;
++	u64 tstamp;
++	u32 idx;
++};
++
++/**
++ * struct idpf_ptp_vport_tx_tstamp_caps - Tx timestamp capabilities
++ * @vport_id: the vport id
++ * @num_entries: the number of negotiated Tx timestamp entries
++ * @tstamp_ns_lo_bit: first bit for nanosecond part of the timestamp
++ * @lock_in_use: the lock to the used latches list
++ * @lock_free: the lock to free the latches list
++ * @lock_status: the lock to the status tracker
++ * @latches_free: the list of the free Tx timestamps latches
++ * @latches_in_use: the list of the used Tx timestamps latches
++ * @tx_tstamp_status: Tx tstamp status tracker
++ */
++struct idpf_ptp_vport_tx_tstamp_caps {
++	u32 vport_id;
++	u16 num_entries;
++	u16 tstamp_ns_lo_bit;
++	spinlock_t lock_in_use;
++	spinlock_t lock_free;
++	spinlock_t lock_status;
++	struct list_head latches_free;
++	struct list_head latches_in_use;
++	struct idpf_ptp_tx_tstamp_status tx_tstamp_status[];
++};
++
+ /**
+  * struct idpf_ptp - PTP parameters
+  * @info: structure defining PTP hardware capabilities
+@@ -97,6 +161,7 @@ struct idpf_ptp_secondary_mbx {
+  * @get_cross_tstamp_access: access type for the cross timestamping
+  * @set_dev_clk_time_access: access type for setting the device clock time
+  * @adj_dev_clk_time_access: access type for the adjusting the device clock
++ * @tx_tstamp_access: access type for the Tx timestamp value read
+  * @rsv: reserved bits
+  * @secondary_mbx: parameters for using dedicated PTP mailbox
+  */
+@@ -113,7 +178,8 @@ struct idpf_ptp {
+ 	enum idpf_ptp_access get_cross_tstamp_access:2;
+ 	enum idpf_ptp_access set_dev_clk_time_access:2;
+ 	enum idpf_ptp_access adj_dev_clk_time_access:2;
+-	u8 rsv;
++	enum idpf_ptp_access tx_tstamp_access:2;
++	u8 rsv:6;
+ 	struct idpf_ptp_secondary_mbx secondary_mbx;
+ };
+ 
+@@ -141,6 +207,27 @@ struct idpf_ptp_dev_timers {
+ 	u64 dev_clk_time_ns;
+ };
+ 
++/**
++ * idpf_ptp_is_vport_tx_tstamp_ena - Verify the Tx timestamping enablement for
 + *				     a given vport.
 + * @vport: Virtual port structure
 + *
-+ * Rx timestamp feature is enabled if the PTP clock for the adapter is created
-+ * and it is possible to read the value of the device clock. The second
-+ * assumption comes from the need to extend the Rx timestamp value to 64 bit
-+ * based on the current device clock time.
++ * Tx timestamp capabilities are negotiated with the Control Plane only if the
++ * device clock value can be read, Tx timestamp access type is different than
++ * NONE, and the PTP clock for the adapter is created. When all those conditions
++ * are satisfied, Tx timestamp feature is enabled and tx_tstamp_caps is
++ * allocated and fulfilled.
 + *
-+ * Return: true if the Rx timestamping is enabled, false otherwise.
++ * Return: true if the Tx timestamping is enabled, false otherwise.
 + */
-+static inline bool idpf_ptp_is_vport_rx_tstamp_ena(struct idpf_vport *vport)
++static inline bool idpf_ptp_is_vport_tx_tstamp_ena(struct idpf_vport *vport)
 +{
-+	if (!vport->adapter->ptp ||
-+	    vport->adapter->ptp->get_dev_clk_time_access == IDPF_PTP_NONE)
++	if (!vport->tx_tstamp_caps)
 +		return false;
 +	else
 +		return true;
@@ -287,100 +346,241 @@ index 5cb7b68085b6..c3ad2c578868 100644
  #if IS_ENABLED(CONFIG_PTP_1588_CLOCK)
  int idpf_ptp_init(struct idpf_adapter *adapter);
  void idpf_ptp_release(struct idpf_adapter *adapter);
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 0aa0680e57ad..5137e9d15adb 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -3170,6 +3170,33 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
- 	return 0;
+@@ -153,6 +240,7 @@ int idpf_ptp_get_cross_time(struct idpf_adapter *adapter,
+ int idpf_ptp_set_dev_clk_time(struct idpf_adapter *adapter, u64 time);
+ int idpf_ptp_adj_dev_clk_fine(struct idpf_adapter *adapter, u64 incval);
+ int idpf_ptp_adj_dev_clk_time(struct idpf_adapter *adapter, s64 delta);
++int idpf_ptp_get_vport_tstamps_caps(struct idpf_vport *vport);
+ #else /* CONFIG_PTP_1588_CLOCK */
+ static inline int idpf_ptp_init(struct idpf_adapter *adapter)
+ {
+@@ -201,5 +289,10 @@ static inline int idpf_ptp_adj_dev_clk_time(struct idpf_adapter *adapter,
+ 	return -EOPNOTSUPP;
  }
  
-+/**
-+ * idpf_rx_hwtstamp - check for an RX timestamp and pass up the stack
-+ * @rxq: pointer to the rx queue that receives the timestamp
-+ * @rx_desc: pointer to rx descriptor containing timestamp
-+ * @skb: skb to put timestamp in
-+ */
-+static void
-+idpf_rx_hwtstamp(const struct idpf_rx_queue *rxq,
-+		 const struct virtchnl2_rx_flex_desc_adv_nic_3 *rx_desc,
-+		 struct sk_buff *skb)
++static inline int idpf_ptp_get_vport_tstamps_caps(struct idpf_vport *vport)
 +{
-+	u64 cached_time, ts_ns;
-+	u32 ts_high;
-+
-+	if (!(rx_desc->ts_low & VIRTCHNL2_RX_FLEX_TSTAMP_VALID))
-+		return;
-+
-+	cached_time = READ_ONCE(rxq->cached_phc_time);
-+
-+	ts_high = le32_to_cpu(rx_desc->ts_high);
-+	ts_ns = idpf_ptp_tstamp_extend_32b_to_64b(cached_time, ts_high);
-+
-+	*skb_hwtstamps(skb) = (struct skb_shared_hwtstamps) {
-+		.hwtstamp = ns_to_ktime(ts_ns),
-+	};
++	return -EOPNOTSUPP;
 +}
 +
- /**
-  * idpf_rx_process_skb_fields - Populate skb header fields from Rx descriptor
-  * @rxq: Rx descriptor ring packet is being transacted on
-@@ -3195,6 +3222,9 @@ idpf_rx_process_skb_fields(struct idpf_rx_queue *rxq, struct sk_buff *skb,
- 	/* process RSS/hash */
- 	idpf_rx_hash(rxq, skb, rx_desc, decoded);
+ #endif /* CONFIG_PTP_1588_CLOCK */
+ #endif /* _IDPF_PTP_H */
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 5bd25dbc0e4c..be45d09e913e 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -169,6 +169,8 @@ static bool idpf_ptp_is_mb_msg(u32 op)
+ 	case VIRTCHNL2_OP_PTP_SET_DEV_CLK_TIME:
+ 	case VIRTCHNL2_OP_PTP_ADJ_DEV_CLK_FINE:
+ 	case VIRTCHNL2_OP_PTP_ADJ_DEV_CLK_TIME:
++	case VIRTCHNL2_OP_PTP_GET_VPORT_TX_TSTAMP_CAPS:
++	case VIRTCHNL2_OP_PTP_GET_VPORT_TX_TSTAMP:
+ 		return true;
+ 	default:
+ 		return false;
+@@ -3134,6 +3136,7 @@ void idpf_vport_init(struct idpf_vport *vport, struct idpf_vport_max_q *max_q)
+ 	u16 rx_itr[] = {2, 8, 32, 96, 128};
+ 	struct idpf_rss_data *rss_data;
+ 	u16 idx = vport->idx;
++	int err;
  
-+	if (idpf_queue_has(PTP, rxq))
-+		idpf_rx_hwtstamp(rxq, rx_desc, skb);
+ 	vport_config = adapter->vport_config[idx];
+ 	rss_data = &vport_config->user_config.rss_data;
+@@ -3168,6 +3171,14 @@ void idpf_vport_init(struct idpf_vport *vport, struct idpf_vport_max_q *max_q)
+ 	idpf_vport_alloc_vec_indexes(vport);
+ 
+ 	vport->crc_enable = adapter->crc_enable;
 +
- 	skb->protocol = eth_type_trans(skb, rxq->netdev);
- 	skb_record_rx_queue(skb, rxq->idx);
- 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index 9b7aa72e1f32..c779fe71df99 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -290,6 +290,8 @@ struct idpf_ptype_state {
-  * @__IDPF_Q_POLL_MODE: Enable poll mode
-  * @__IDPF_Q_CRC_EN: enable CRC offload in singleq mode
-  * @__IDPF_Q_HSPLIT_EN: enable header split on Rx (splitq)
-+ * @__IDPF_Q_PTP: indicates whether the Rx timestamping is enabled for the
-+ *		  queue
-  * @__IDPF_Q_FLAGS_NBITS: Must be last
-  */
- enum idpf_queue_flags_t {
-@@ -300,6 +302,7 @@ enum idpf_queue_flags_t {
- 	__IDPF_Q_POLL_MODE,
- 	__IDPF_Q_CRC_EN,
- 	__IDPF_Q_HSPLIT_EN,
-+	__IDPF_Q_PTP,
- 
- 	__IDPF_Q_FLAGS_NBITS,
- };
-@@ -496,6 +499,7 @@ struct idpf_txq_stash {
-  * @next_to_alloc: RX buffer to allocate at
-  * @skb: Pointer to the skb
-  * @truesize: data buffer truesize in singleq
-+ * @cached_phc_time: Cached PHC time for the Rx queue
-  * @stats_sync: See struct u64_stats_sync
-  * @q_stats: See union idpf_rx_queue_stats
-  * @q_id: Queue id
-@@ -543,6 +547,7 @@ struct idpf_rx_queue {
- 
- 	struct sk_buff *skb;
- 	u32 truesize;
-+	u64 cached_phc_time;
- 
- 	struct u64_stats_sync stats_sync;
- 	struct idpf_rx_queue_stats q_stats;
-@@ -562,7 +567,7 @@ struct idpf_rx_queue {
- 	__cacheline_group_end_aligned(cold);
- };
- libeth_cacheline_set_assert(struct idpf_rx_queue, 64,
--			    80 + sizeof(struct u64_stats_sync),
-+			    88 + sizeof(struct u64_stats_sync),
- 			    32);
++	if (!(vport_msg->vport_flags &
++	      cpu_to_le16(VIRTCHNL2_VPORT_UPLINK_PORT)))
++		return;
++
++	err = idpf_ptp_get_vport_tstamps_caps(vport);
++	if (err)
++		pci_dbg(vport->adapter->pdev, "Tx timestamping not supported\n");
+ }
  
  /**
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+index 5de4bf94049b..12e776aedf63 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+@@ -22,7 +22,8 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+ 				    VIRTCHNL2_CAP_PTP_GET_CROSS_TIME |
+ 				    VIRTCHNL2_CAP_PTP_GET_CROSS_TIME_MB |
+ 				    VIRTCHNL2_CAP_PTP_SET_DEVICE_CLK_TIME_MB |
+-				    VIRTCHNL2_CAP_PTP_ADJ_DEVICE_CLK_MB)
++				    VIRTCHNL2_CAP_PTP_ADJ_DEVICE_CLK_MB |
++				    VIRTCHNL2_CAP_PTP_TX_TSTAMPS_MB)
+ 	};
+ 	struct idpf_vc_xn_params xn_params = {
+ 		.vc_op = VIRTCHNL2_OP_PTP_GET_CAPS,
+@@ -314,3 +315,128 @@ int idpf_ptp_adj_dev_clk_fine(struct idpf_adapter *adapter, u64 incval)
+ 
+ 	return 0;
+ }
++
++/**
++ * idpf_ptp_get_vport_tstamps_caps - Send virtchnl to get tstamps caps for vport
++ * @vport: Virtual port structure
++ *
++ * Send virtchnl get vport tstamps caps message to receive the set of tstamp
++ * capabilities per vport.
++ *
++ * Return: 0 on success, -errno otherwise.
++ */
++int idpf_ptp_get_vport_tstamps_caps(struct idpf_vport *vport)
++{
++	struct virtchnl2_ptp_get_vport_tx_tstamp_caps send_tx_tstamp_caps;
++	struct virtchnl2_ptp_get_vport_tx_tstamp_caps *rcv_tx_tstamp_caps;
++	struct idpf_ptp_tx_tstamp *ptp_tx_tstamp, *ptp_tx_tstamps, *tmp;
++	struct virtchnl2_ptp_tx_tstamp_latch_caps tx_tstamp_latch_caps;
++	struct idpf_ptp_vport_tx_tstamp_caps *tstamp_caps;
++	struct idpf_vc_xn_params xn_params = {
++		.vc_op = VIRTCHNL2_OP_PTP_GET_VPORT_TX_TSTAMP_CAPS,
++		.send_buf.iov_base = &send_tx_tstamp_caps,
++		.send_buf.iov_len = sizeof(send_tx_tstamp_caps),
++		.recv_buf.iov_len = IDPF_CTLQ_MAX_BUF_LEN,
++		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
++	};
++	enum idpf_ptp_access tstamp_access, get_dev_clk_access;
++	struct idpf_ptp *ptp = vport->adapter->ptp;
++	struct list_head *head;
++	int err = 0, reply_sz;
++	u16 num_latches;
++	u32 size;
++
++	if (!ptp)
++		return -EOPNOTSUPP;
++
++	tstamp_access = ptp->tx_tstamp_access;
++	get_dev_clk_access = ptp->get_dev_clk_time_access;
++	if (tstamp_access == IDPF_PTP_NONE ||
++	    get_dev_clk_access == IDPF_PTP_NONE)
++		return -EOPNOTSUPP;
++
++	rcv_tx_tstamp_caps = kzalloc(IDPF_CTLQ_MAX_BUF_LEN, GFP_KERNEL);
++	if (!rcv_tx_tstamp_caps)
++		return -ENOMEM;
++
++	send_tx_tstamp_caps.vport_id = cpu_to_le32(vport->vport_id);
++	xn_params.recv_buf.iov_base = rcv_tx_tstamp_caps;
++
++	reply_sz = idpf_vc_xn_exec(vport->adapter, &xn_params);
++	if (reply_sz < 0) {
++		err = reply_sz;
++		goto get_tstamp_caps_out;
++	}
++
++	num_latches = le16_to_cpu(rcv_tx_tstamp_caps->num_latches);
++	size = struct_size(rcv_tx_tstamp_caps, tstamp_latches, num_latches);
++	if (reply_sz != size) {
++		err = -EIO;
++		goto get_tstamp_caps_out;
++	}
++
++	size = struct_size(tstamp_caps, tx_tstamp_status, num_latches);
++	tstamp_caps = kzalloc(size, GFP_KERNEL);
++	if (!tstamp_caps) {
++		err = -ENOMEM;
++		goto get_tstamp_caps_out;
++	}
++
++	tstamp_caps->num_entries = num_latches;
++	INIT_LIST_HEAD(&tstamp_caps->latches_in_use);
++	INIT_LIST_HEAD(&tstamp_caps->latches_free);
++
++	spin_lock_init(&tstamp_caps->lock_free);
++	spin_lock_init(&tstamp_caps->lock_in_use);
++	spin_lock_init(&tstamp_caps->lock_status);
++
++	tstamp_caps->tstamp_ns_lo_bit = rcv_tx_tstamp_caps->tstamp_ns_lo_bit;
++
++	ptp_tx_tstamps = kcalloc(tstamp_caps->num_entries,
++				 sizeof(*ptp_tx_tstamp), GFP_KERNEL);
++	if (!ptp_tx_tstamps) {
++		err = -ENOMEM;
++		goto err_free_ptp_tx_stamp_list;
++	}
++
++	for (u16 i = 0; i < tstamp_caps->num_entries; i++) {
++		__le32 offset_l, offset_h;
++
++		ptp_tx_tstamp = ptp_tx_tstamps + i;
++		tx_tstamp_latch_caps = rcv_tx_tstamp_caps->tstamp_latches[i];
++
++		if (tstamp_access != IDPF_PTP_DIRECT)
++			goto skip_offsets;
++
++		offset_l = tx_tstamp_latch_caps.tx_latch_reg_offset_l;
++		offset_h = tx_tstamp_latch_caps.tx_latch_reg_offset_h;
++		ptp_tx_tstamp->tx_latch_reg_offset_l = le32_to_cpu(offset_l);
++		ptp_tx_tstamp->tx_latch_reg_offset_h = le32_to_cpu(offset_h);
++
++skip_offsets:
++		ptp_tx_tstamp->idx = tx_tstamp_latch_caps.index;
++
++		list_add(&ptp_tx_tstamp->list_member,
++			 &tstamp_caps->latches_free);
++
++		tstamp_caps->tx_tstamp_status[i].state = IDPF_PTP_FREE;
++	}
++
++	vport->tx_tstamp_caps = tstamp_caps;
++	kfree(rcv_tx_tstamp_caps);
++
++	return 0;
++
++err_free_ptp_tx_stamp_list:
++	head = &tstamp_caps->latches_free;
++	list_for_each_entry_safe(ptp_tx_tstamp, tmp, head, list_member) {
++		list_del(&ptp_tx_tstamp->list_member);
++		kfree(ptp_tx_tstamp);
++	}
++
++	kfree(tstamp_caps);
++get_tstamp_caps_out:
++	kfree(rcv_tx_tstamp_caps);
++
++	return err;
++}
+diff --git a/drivers/net/ethernet/intel/idpf/virtchnl2.h b/drivers/net/ethernet/intel/idpf/virtchnl2.h
+index 44a5ee84ed60..07235f1b4c5c 100644
+--- a/drivers/net/ethernet/intel/idpf/virtchnl2.h
++++ b/drivers/net/ethernet/intel/idpf/virtchnl2.h
+@@ -569,6 +569,14 @@ struct virtchnl2_queue_reg_chunks {
+ };
+ VIRTCHNL2_CHECK_STRUCT_LEN(8, virtchnl2_queue_reg_chunks);
+ 
++/**
++ * enum virtchnl2_vport_flags - Vport flags that indicate vport capabilities.
++ * @VIRTCHNL2_VPORT_UPLINK_PORT: Representatives of underlying physical ports
++ */
++enum virtchnl2_vport_flags {
++	VIRTCHNL2_VPORT_UPLINK_PORT	= BIT(0),
++};
++
+ /**
+  * struct virtchnl2_create_vport - Create vport config info.
+  * @vport_type: See enum virtchnl2_vport_type.
+@@ -587,7 +595,7 @@ VIRTCHNL2_CHECK_STRUCT_LEN(8, virtchnl2_queue_reg_chunks);
+  * @max_mtu: Max MTU. CP populates this field on response.
+  * @vport_id: Vport id. CP populates this field on response.
+  * @default_mac_addr: Default MAC address.
+- * @pad: Padding.
++ * @vport_flags: See enum virtchnl2_vport_flags.
+  * @rx_desc_ids: See VIRTCHNL2_RX_DESC_IDS definitions.
+  * @tx_desc_ids: See VIRTCHNL2_TX_DESC_IDS definitions.
+  * @pad1: Padding.
+@@ -620,7 +628,7 @@ struct virtchnl2_create_vport {
+ 	__le16 max_mtu;
+ 	__le32 vport_id;
+ 	u8 default_mac_addr[ETH_ALEN];
+-	__le16 pad;
++	__le16 vport_flags;
+ 	__le64 rx_desc_ids;
+ 	__le64 tx_desc_ids;
+ 	u8 pad1[72];
 -- 
 2.47.1
 
