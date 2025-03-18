@@ -1,121 +1,304 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7A328FD
-	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 15:43:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AE528FD
+	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 15:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742312590; cv=none; b=uLe0/62zTcYCzXQoVyquoPdQJyZC1Bz9pU474FhdTQFopjlvL+k4RmPG0+XT+OH2w0W27tDxGMRYCQ+Ut/ZlC/o5Ag0GCrh8QlD8B5YNq8LbKvZZsquBY1rnLsEwgdPUE8ZDFpx++xALNsi5qnyjMdRCH8AA/J46ioAuJkzZ5e4=
+	t=1742312645; cv=none; b=XA9zKl81LLqW0uaWzHymn/+x5PE6Jaj7Ixr0vecaLd5GOXeY8g9G4/GE4qhNLY2LKG1jo3eNMyfnCqOXw8TTv0byEL6FJHsD6PDJ7QGp1ErJ9Tm88O33OaoGTk6KetKrFKY2SBSfd8u7cLkPo/helXwVvDYgLYDvE6mek3i8934=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742312590; c=relaxed/simple;
-	bh=d435AHZtuTLEGL1nqnjHLieFtvDf9lop14Ye+nMsIDM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cDcQO5r9S+qIcMZynqBQCzIlu85IU6kSQz3i1GZ6kuMY0XtVei8kiB5m+roIfZZ9QFL71/F7LHWep38TTlHhYm13Rs43tSYCrAegTf19c39TAMsxmtb1DP7jqirMOM+cHtPo0kbNePMSSTQrYSYKU/95joIfh2/lE41N0PH+Ir4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=y4eREmwl; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1742312645; c=relaxed/simple;
+	bh=Opt7isNdF5x9IEOpBs9jrKUfAf8OfOfiZmzeLXh0S1U=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=FUROne32uooXBtNJBPRu7xQCgZj3agesi1EyJdrWtsfelX2o1uZdrmJG22Gin2rzjligQ/EY5GoDygBuAXoooSpKGLHW0xuS8GwFcoXiM+IJPbfd75stt8AdarBbsG5aWhYU2XVYyVYhdyffHoTXyWdbYEuFFA17WGZrAxTPVi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OjlX3Kov; arc=none smtp.client-ip=209.85.160.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="y4eREmwl"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4394a0c65fcso32543685e9.1
-        for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 08:43:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OjlX3Kov"
+Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-4766c80d57eso106142881cf.2
+        for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 08:44:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1742312587; x=1742917387; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T2msgjxCz2DcPYQE12074YoE2WnARoI0a5JesfxOEjE=;
-        b=y4eREmwlk1oO8/rsvaQM2yPukGtp6mqy+H4rANURxdOLqr7TlqCAb6P+VsPHyws8vi
-         qadOFNbty1bvhT+OQIlpASQAMZpYPS2+zg7QxRwF+0/TwpMgOays+sDopwAu4z85WzPZ
-         TX8aoB/4b95A3GUzGxP8dZYmM3yGCUOfva6M4abTviw2mtcgpNoWiSW5fo2wnsZgox/z
-         3Ldk26Z+62KItJIElqte2w0H+Dd0UKajZfwD5u4WgcJ7o74Rmb/4T2SSFOGGES7d389H
-         D3y48yAQ2ZmdKwNc+vrNoYLlMjfRqiIOc9TYCxXyJDidZKAvVNHjdg8a1tWWKXl6bR9C
-         45Zg==
+        d=google.com; s=20230601; t=1742312642; x=1742917442; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jr+RSfm3rPPfZIgYa6vjm7ADp3pAtwuhM9kcy00jF9I=;
+        b=OjlX3KovRjorS16izBr6zf9+n0IEmMr+dU806DeU592AKSk8WleCk38Y7+xgEMN3pl
+         wQYvLkbnmDYP5w8JL5ZlB+NIYOTiV6KAtHmNRoAxHIINrfsGQsLO7qqu4z7X81E6Q7tJ
+         EeAJF3xecjwG0jcs4sQc7pali/hPUdYa5XERKSzVMJtxXYqTniLnRu8YMswecwmy68sQ
+         +0EoGT400PoPb3GtBWvXKvbQ+TzkgWiKJua0YAZBQwYhBNq1INZ4bryLExRGlzZUMnCc
+         XApxSuF5UI7h/z55KOAjYX07JjZPbICswwhVtdesypJ/lnMp2b0yvsVjksD4jwfrIIpS
+         sDTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742312587; x=1742917387;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T2msgjxCz2DcPYQE12074YoE2WnARoI0a5JesfxOEjE=;
-        b=MmMVyVeBPuaEnp/RVkI2aXQcNzF/+FVXlkTxIGqlqkzr6j+93HgRXkWgBgvnzQCgRN
-         HLvctadnapNmUQAiC0wQi6GqotVLszL/gd9D7hZE0w7s+ygkno64HPuktin8VRAfyxvm
-         dp0kX10bpHqgtSRbBLYD5OW3ViWhjOYg09me9k9UIICP9jh/tIz913J2IWeMl+f1/cfE
-         9nplv4xvst9F60ADObZp52cXj0l/m3KGt2YEfJmGW/CSvg2OpPinudzaXEVllutZAN8y
-         nRRSiXKpLWBJCAGessq7rxPD9v/YJ/Za6EZRqNlJKF7StQ5iATe3br/xEHaf8o8eEzvq
-         cBcg==
-X-Forwarded-Encrypted: i=1; AJvYcCUhHLAvZePOfn0OsnjPmPBF87i0mYjNFMpHkgxs8SpF0WSi1B5if8esK6hxfRVLZWhEN6NTqH4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyptGErdnRdC/96xCblUULxd6nOvYnS1zS/33BSjEt6Wc/tu2uE
-	C6uN5iLGVbKEElDP7ea/IJiTyOe2I0MSkHCm4SeBlXGFTJB4sQodFSAGlztfh+DNjSejB3oS50X
-	J
-X-Gm-Gg: ASbGncuzt/FaAtzNO7FMdjmtzenkBjk56CtLztv4azWK+/UH0LJOOkkx2Ief/MmX1zC
-	RyzGWzugDkXrsnWxYv/2ADSeg20Vqgt5ztzom4BFR10gvFNYksRcm25nXwGV9/h8F6K+7yv3jMW
-	Ts+DWCHYFAPaJbAhDwgaOTN90jQrG+xoq9hHHZkdQKNbPYjsfvdoHbTJcLr5wKhbRkA37+rmym7
-	9NJPIZRvn5I1963ocJ+Q6Kl0u9NmlakAaKWCGrPo7YrFHcM48uZ4GJ0uNlXEr98ZxB5aM1NEElz
-	Ucmepy8bUNLM5TCa+/vsPXv7bqZHz/rRVu/bbGswBFKLYFg5hwbzYA/YYtE+L1SS96vQoHmGOdU
-	3
-X-Google-Smtp-Source: AGHT+IFYgyumGr+fp7DYJkr3lnZZ0Wg+ROxQga4Jqlf85DUT7rg0dECXHPfzOdbnhe950EIsNaSwng==
-X-Received: by 2002:a05:600c:46c5:b0:43c:fb95:c752 with SMTP id 5b1f17b1804b1-43d3b9620ddmr27754325e9.3.1742312587310;
-        Tue, 18 Mar 2025 08:43:07 -0700 (PDT)
-Received: from jiri-mlt.client.nvidia.com ([193.47.165.251])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d1ffbf901sm136872725e9.15.2025.03.18.08.43.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Mar 2025 08:43:06 -0700 (PDT)
-Date: Tue, 18 Mar 2025 16:42:57 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Cosmin Ratiu <cratiu@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, netdev@vger.kernel.org, 
-	Konrad Knitter <konrad.knitter@intel.com>, Jacob Keller <jacob.e.keller@intel.com>, davem@davemloft.net, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew@lunn.ch>, 
-	linux-kernel@vger.kernel.org, ITP Upstream <nxne.cnse.osdt.itp.upstreaming@intel.com>, 
-	Carolina Jubran <cjubran@nvidia.com>
-Subject: Re: [RFC net-next v2 1/2] devlink: add whole device devlink instance
-Message-ID: <olhqg2npoigaebjnwp5ddqoaegnafizk7jrtshs44v7ytrai7x@6yhpydbawdwn>
-References: <20250219164410.35665-1-przemyslaw.kitszel@intel.com>
- <20250219164410.35665-2-przemyslaw.kitszel@intel.com>
+        d=1e100.net; s=20230601; t=1742312642; x=1742917442;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jr+RSfm3rPPfZIgYa6vjm7ADp3pAtwuhM9kcy00jF9I=;
+        b=m5Ka2/XmuGJPfNSSW4vqFQfy1qB1q0y+JyQcihiLSJ0v+nzgaqmfP52R1AKUZ3UlCj
+         izLYojeazHPVRxzjOEUNO/3Im1tJk+sj5xPkl6IAmQjp7i5w6kgftZhm21bc6QLv1LUF
+         q0YZqrwsK+3TG4emXgA6g0GqvT25HMJ3DgbkvkuN22q0KaGLWtAiEntcn9Wr0pFmd8Zi
+         YvX6LY/fMOlWKNUx97PblVYEMfoEFCsGBgcYIT7KSLCJO4hGEsBHfGDMdZRnGosm2+5U
+         3lmRAxYKZyHhVD7Kk3Iw6KWgqzIxX3iPBzv/A71Lix5JzmQbHMDp304PKJOEGFnuYhkt
+         DQ6g==
+X-Forwarded-Encrypted: i=1; AJvYcCVK+JxTPwSK1YGhPKzACs7E3yOZs9aVhVuslCeTTY5e/0iKZF2g8S8jKbMz5t/JcwQNZQPu128=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVOiVhretBZQxyllrSsloA6rY9g/I9o0mhzqXMlADSC3ZkyJXl
+	zod6rpluoGm4QwBIvQIEb8unX2PksQq0yfFHTQ+h6YcwpXdQ5ejYLZ4faVfMB5YaELfF3G0hcSW
+	57SvcHc8Pjg==
+X-Google-Smtp-Source: AGHT+IHIwTfEr5shpxVCPC88wmptfuBxRYgx0AxDhFv5A7P2NiiWAPy9kITDs2FTY2hMEZaN6bP+s8vFGTUn+w==
+X-Received: from qkf13.prod.google.com ([2002:a05:620a:a20d:b0:7c3:df8d:ab51])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:528a:b0:476:977c:2eb0 with SMTP id d75a77b69052e-476c815e517mr260203731cf.30.1742312642460;
+ Tue, 18 Mar 2025 08:44:02 -0700 (PDT)
+Date: Tue, 18 Mar 2025 15:43:58 +0000
+In-Reply-To: <20250318154359.778438-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250219164410.35665-2-przemyslaw.kitszel@intel.com>
+Mime-Version: 1.0
+References: <20250318154359.778438-1-edumazet@google.com>
+X-Mailer: git-send-email 2.49.0.rc1.451.g8f38331e32-goog
+Message-ID: <20250318154359.778438-2-edumazet@google.com>
+Subject: [PATCH v2 net-next 1/2] tcp/dccp: remove icsk->icsk_timeout
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Wed, Feb 19, 2025 at 05:32:54PM +0100, przemyslaw.kitszel@intel.com wrote:
->Add a support for whole device devlink instance. Intented as a entity
->over all PF devices on given physical device.
->
->In case of ice driver we have multiple PF devices (with their devlink
->dev representation), that have separate drivers loaded. However those
->still do share lots of resources due to being the on same HW. Examples
->include PTP clock and RSS LUT. Historically such stuff was assigned to
->PF0, but that was both not clear and not working well. Now such stuff
->is moved to be covered into struct ice_adapter, there is just one instance
->of such per HW.
->
->This patch adds a devlink instance that corresponds to that ice_adapter,
->to allow arbitrage over resources (as RSS LUT) via it (further in the
->series (RFC NOTE: stripped out so far)).
->
->Thanks to Wojciech Drewek for very nice naming of the devlink instance:
->PF0:		pci/0000:00:18.0
->whole-dev:	pci/0000:00:18
->But I made this a param for now (driver is free to pass just "whole-dev").
->
->$ devlink dev # (Interesting part of output only)
->pci/0000:af:00:
->  nested_devlink:
->    pci/0000:af:00.0
->    pci/0000:af:00.1
->    pci/0000:af:00.2
->    pci/0000:af:00.3
->    pci/0000:af:00.4
->    pci/0000:af:00.5
->    pci/0000:af:00.6
->    pci/0000:af:00.7
+icsk->icsk_timeout can be replaced by icsk->icsk_retransmit_timer.expires
 
-Please check my RFC attempt to solve this for mlx5:
-https://lore.kernel.org/all/20250318124706.94156-1-jiri@resnulli.us/
+This saves 8 bytes in TCP/DCCP sockets and helps for better cache locality.
 
-I believe that the same could work for you too.
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+---
+ .../net_cachelines/inet_connection_sock.rst          |  3 +--
+ include/net/inet_connection_sock.h                   | 12 ++++++++----
+ net/dccp/timer.c                                     |  4 ++--
+ net/ipv4/inet_diag.c                                 |  4 ++--
+ net/ipv4/tcp_ipv4.c                                  |  4 ++--
+ net/ipv4/tcp_timer.c                                 | 11 ++++++-----
+ net/ipv6/tcp_ipv6.c                                  |  4 ++--
+ net/mptcp/protocol.c                                 |  2 +-
+ tools/testing/selftests/bpf/progs/bpf_iter_tcp4.c    |  4 ++--
+ tools/testing/selftests/bpf/progs/bpf_iter_tcp6.c    |  4 ++--
+ 10 files changed, 28 insertions(+), 24 deletions(-)
+
+diff --git a/Documentation/networking/net_cachelines/inet_connection_sock.rst b/Documentation/networking/net_cachelines/inet_connection_sock.rst
+index b2401aa7c45090b07c2262ac31a3584725f92233..5fb0dd70c9af76ca68b3406ce76d4b61957c7da9 100644
+--- a/Documentation/networking/net_cachelines/inet_connection_sock.rst
++++ b/Documentation/networking/net_cachelines/inet_connection_sock.rst
+@@ -12,8 +12,7 @@ struct inet_sock                    icsk_inet              read_mostly         r
+ struct request_sock_queue           icsk_accept_queue
+ struct inet_bind_bucket             icsk_bind_hash         read_mostly                             tcp_set_state
+ struct inet_bind2_bucket            icsk_bind2_hash        read_mostly                             tcp_set_state,inet_put_port
+-unsigned_long                       icsk_timeout           read_mostly                             inet_csk_reset_xmit_timer,tcp_connect
+-struct timer_list                   icsk_retransmit_timer  read_mostly                             inet_csk_reset_xmit_timer,tcp_connect
++struct timer_list                   icsk_retransmit_timer  read_write                              inet_csk_reset_xmit_timer,tcp_connect
+ struct timer_list                   icsk_delack_timer      read_mostly                             inet_csk_reset_xmit_timer,tcp_connect
+ u32                                 icsk_rto               read_write                              tcp_cwnd_validate,tcp_schedule_loss_probe,tcp_connect_init,tcp_connect,tcp_write_xmit,tcp_push_one
+ u32                                 icsk_rto_min
+diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
+index f736d3097e43d97ee32f5d31f0e566536fe05a35..018118da0ce15c5ba5e3b7fcc1b36425794ec9a1 100644
+--- a/include/net/inet_connection_sock.h
++++ b/include/net/inet_connection_sock.h
+@@ -58,7 +58,6 @@ struct inet_connection_sock_af_ops {
+  * @icsk_accept_queue:	   FIFO of established children
+  * @icsk_bind_hash:	   Bind node
+  * @icsk_bind2_hash:	   Bind node in the bhash2 table
+- * @icsk_timeout:	   Timeout
+  * @icsk_retransmit_timer: Resend (no ack)
+  * @icsk_rto:		   Retransmit timeout
+  * @icsk_pmtu_cookie	   Last pmtu seen by socket
+@@ -85,7 +84,6 @@ struct inet_connection_sock {
+ 	struct request_sock_queue icsk_accept_queue;
+ 	struct inet_bind_bucket	  *icsk_bind_hash;
+ 	struct inet_bind2_bucket  *icsk_bind2_hash;
+-	unsigned long		  icsk_timeout;
+  	struct timer_list	  icsk_retransmit_timer;
+  	struct timer_list	  icsk_delack_timer;
+ 	__u32			  icsk_rto;
+@@ -191,6 +189,12 @@ static inline void inet_csk_delack_init(struct sock *sk)
+ 	memset(&inet_csk(sk)->icsk_ack, 0, sizeof(inet_csk(sk)->icsk_ack));
+ }
+ 
++static inline unsigned long
++icsk_timeout(const struct inet_connection_sock *icsk)
++{
++	return READ_ONCE(icsk->icsk_retransmit_timer.expires);
++}
++
+ static inline void inet_csk_clear_xmit_timer(struct sock *sk, const int what)
+ {
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+@@ -229,8 +233,8 @@ static inline void inet_csk_reset_xmit_timer(struct sock *sk, const int what,
+ 	if (what == ICSK_TIME_RETRANS || what == ICSK_TIME_PROBE0 ||
+ 	    what == ICSK_TIME_LOSS_PROBE || what == ICSK_TIME_REO_TIMEOUT) {
+ 		smp_store_release(&icsk->icsk_pending, what);
+-		icsk->icsk_timeout = jiffies + when;
+-		sk_reset_timer(sk, &icsk->icsk_retransmit_timer, icsk->icsk_timeout);
++		when += jiffies;
++		sk_reset_timer(sk, &icsk->icsk_retransmit_timer, when);
+ 	} else if (what == ICSK_TIME_DACK) {
+ 		smp_store_release(&icsk->icsk_ack.pending,
+ 				  icsk->icsk_ack.pending | ICSK_ACK_TIMER);
+diff --git a/net/dccp/timer.c b/net/dccp/timer.c
+index a4cfb47b60e523bd4a8f1f47cfedc11e633945c6..9fd14a3361893d5f2d9f0ad18a65cff963cc7e22 100644
+--- a/net/dccp/timer.c
++++ b/net/dccp/timer.c
+@@ -139,9 +139,9 @@ static void dccp_write_timer(struct timer_list *t)
+ 	if (sk->sk_state == DCCP_CLOSED || !icsk->icsk_pending)
+ 		goto out;
+ 
+-	if (time_after(icsk->icsk_timeout, jiffies)) {
++	if (time_after(icsk_timeout(icsk), jiffies)) {
+ 		sk_reset_timer(sk, &icsk->icsk_retransmit_timer,
+-			       icsk->icsk_timeout);
++			       icsk_timeout(icsk));
+ 		goto out;
+ 	}
+ 
+diff --git a/net/ipv4/inet_diag.c b/net/ipv4/inet_diag.c
+index efe2a085cf68e90cd1e79b5556e667a0fd044bfd..c2bb91d9e9ffd1fc7dc9bf048c1d6bbd75462997 100644
+--- a/net/ipv4/inet_diag.c
++++ b/net/ipv4/inet_diag.c
+@@ -315,12 +315,12 @@ int inet_sk_diag_fill(struct sock *sk, struct inet_connection_sock *icsk,
+ 		r->idiag_timer = 1;
+ 		r->idiag_retrans = icsk->icsk_retransmits;
+ 		r->idiag_expires =
+-			jiffies_delta_to_msecs(icsk->icsk_timeout - jiffies);
++			jiffies_delta_to_msecs(icsk_timeout(icsk) - jiffies);
+ 	} else if (icsk_pending == ICSK_TIME_PROBE0) {
+ 		r->idiag_timer = 4;
+ 		r->idiag_retrans = icsk->icsk_probes_out;
+ 		r->idiag_expires =
+-			jiffies_delta_to_msecs(icsk->icsk_timeout - jiffies);
++			jiffies_delta_to_msecs(icsk_timeout(icsk) - jiffies);
+ 	} else if (timer_pending(&sk->sk_timer)) {
+ 		r->idiag_timer = 2;
+ 		r->idiag_retrans = icsk->icsk_probes_out;
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 4fa4fbb0ad12dba8b99f5698c74793743ba1bdaf..4ffc41990b6d271a356d9c5f208a9a927da39874 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -2925,10 +2925,10 @@ static void get_tcp4_sock(struct sock *sk, struct seq_file *f, int i)
+ 	    icsk_pending == ICSK_TIME_REO_TIMEOUT ||
+ 	    icsk_pending == ICSK_TIME_LOSS_PROBE) {
+ 		timer_active	= 1;
+-		timer_expires	= icsk->icsk_timeout;
++		timer_expires	= icsk_timeout(icsk);
+ 	} else if (icsk_pending == ICSK_TIME_PROBE0) {
+ 		timer_active	= 4;
+-		timer_expires	= icsk->icsk_timeout;
++		timer_expires	= icsk_timeout(icsk);
+ 	} else if (timer_pending(&sk->sk_timer)) {
+ 		timer_active	= 2;
+ 		timer_expires	= sk->sk_timer.expires;
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index 728bce01ccd3ddb1f374fa96b86434a415dbe2cb..d828b74c3e73d75cdae777645e8e8856c0751201 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -509,7 +509,7 @@ static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
+ 	 * and tp->rcv_tstamp might very well have been written recently.
+ 	 * rcv_delta can thus be negative.
+ 	 */
+-	rcv_delta = icsk->icsk_timeout - tp->rcv_tstamp;
++	rcv_delta = icsk_timeout(icsk) - tp->rcv_tstamp;
+ 	if (rcv_delta <= timeout)
+ 		return false;
+ 
+@@ -685,7 +685,8 @@ out:;
+ }
+ 
+ /* Called with bottom-half processing disabled.
+-   Called by tcp_write_timer() */
++ * Called by tcp_write_timer() and tcp_release_cb().
++ */
+ void tcp_write_timer_handler(struct sock *sk)
+ {
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+@@ -695,11 +696,11 @@ void tcp_write_timer_handler(struct sock *sk)
+ 	    !icsk->icsk_pending)
+ 		return;
+ 
+-	if (time_after(icsk->icsk_timeout, jiffies)) {
+-		sk_reset_timer(sk, &icsk->icsk_retransmit_timer, icsk->icsk_timeout);
++	if (time_after(icsk_timeout(icsk), jiffies)) {
++		sk_reset_timer(sk, &icsk->icsk_retransmit_timer,
++			       icsk_timeout(icsk));
+ 		return;
+ 	}
+-
+ 	tcp_mstamp_refresh(tcp_sk(sk));
+ 	event = icsk->icsk_pending;
+ 
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index e182ee0a233046468b14832b0e4730b2846e1d43..988111f09a3e2c8850a0ac551c3a50cf3bb22824 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -2199,10 +2199,10 @@ static void get_tcp6_sock(struct seq_file *seq, struct sock *sp, int i)
+ 	    icsk_pending == ICSK_TIME_REO_TIMEOUT ||
+ 	    icsk_pending == ICSK_TIME_LOSS_PROBE) {
+ 		timer_active	= 1;
+-		timer_expires	= icsk->icsk_timeout;
++		timer_expires	= icsk_timeout(icsk);
+ 	} else if (icsk_pending == ICSK_TIME_PROBE0) {
+ 		timer_active	= 4;
+-		timer_expires	= icsk->icsk_timeout;
++		timer_expires	= icsk_timeout(icsk);
+ 	} else if (timer_pending(&sp->sk_timer)) {
+ 		timer_active	= 2;
+ 		timer_expires	= sp->sk_timer.expires;
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index ad780ae1d30dcb6ff72960b340e1472a1400618a..1ac378ba1d67cd17449ab6c4b4793b65d520ec44 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -422,7 +422,7 @@ static long mptcp_timeout_from_subflow(const struct mptcp_subflow_context *subfl
+ 	const struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+ 
+ 	return inet_csk(ssk)->icsk_pending && !subflow->stale_count ?
+-	       inet_csk(ssk)->icsk_timeout - jiffies : 0;
++	       icsk_timeout(inet_csk(ssk)) - jiffies : 0;
+ }
+ 
+ static void mptcp_set_timeout(struct sock *sk)
+diff --git a/tools/testing/selftests/bpf/progs/bpf_iter_tcp4.c b/tools/testing/selftests/bpf/progs/bpf_iter_tcp4.c
+index d22449c69363afe3c3aaae158f0ef0c6ef65916c..164640db3a29cf720e193453cab79f4bc317917c 100644
+--- a/tools/testing/selftests/bpf/progs/bpf_iter_tcp4.c
++++ b/tools/testing/selftests/bpf/progs/bpf_iter_tcp4.c
+@@ -99,10 +99,10 @@ static int dump_tcp_sock(struct seq_file *seq, struct tcp_sock *tp,
+ 	    icsk->icsk_pending == ICSK_TIME_REO_TIMEOUT ||
+ 	    icsk->icsk_pending == ICSK_TIME_LOSS_PROBE) {
+ 		timer_active = 1;
+-		timer_expires = icsk->icsk_timeout;
++		timer_expires = icsk->icsk_retransmit_timer.expires;
+ 	} else if (icsk->icsk_pending == ICSK_TIME_PROBE0) {
+ 		timer_active = 4;
+-		timer_expires = icsk->icsk_timeout;
++		timer_expires = icsk->icsk_retransmit_timer.expires;
+ 	} else if (timer_pending(&sp->sk_timer)) {
+ 		timer_active = 2;
+ 		timer_expires = sp->sk_timer.expires;
+diff --git a/tools/testing/selftests/bpf/progs/bpf_iter_tcp6.c b/tools/testing/selftests/bpf/progs/bpf_iter_tcp6.c
+index 8b072666f9d9a0ce023e7cb2c2716bf4a5bd3905..591c703f5032f024e4b511a6af8d63d1233a042a 100644
+--- a/tools/testing/selftests/bpf/progs/bpf_iter_tcp6.c
++++ b/tools/testing/selftests/bpf/progs/bpf_iter_tcp6.c
+@@ -99,10 +99,10 @@ static int dump_tcp6_sock(struct seq_file *seq, struct tcp6_sock *tp,
+ 	    icsk->icsk_pending == ICSK_TIME_REO_TIMEOUT ||
+ 	    icsk->icsk_pending == ICSK_TIME_LOSS_PROBE) {
+ 		timer_active = 1;
+-		timer_expires = icsk->icsk_timeout;
++		timer_expires = icsk->icsk_retransmit_timer.expires;
+ 	} else if (icsk->icsk_pending == ICSK_TIME_PROBE0) {
+ 		timer_active = 4;
+-		timer_expires = icsk->icsk_timeout;
++		timer_expires = icsk->icsk_retransmit_timer.expires;
+ 	} else if (timer_pending(&sp->sk_timer)) {
+ 		timer_active = 2;
+ 		timer_expires = sp->sk_timer.expires;
+-- 
+2.49.0.rc1.451.g8f38331e32-goog
+
