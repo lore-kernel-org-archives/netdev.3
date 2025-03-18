@@ -1,45 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5915C20ADF4
-	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 16:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5032101AF
+	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 16:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742314419; cv=none; b=MY+Z78WtJK4NnDxNSaPzt7I4ER/kLewgPnMRvBo5fJ2CoJyHF0/OrQFRJAfMXRxt75Eh6k4w6W67BIaEflXErjqSyBRv1MnTnkEMQb07qiPY5a9XdTXo3M5VLeBgzFeiaHQERclUFhiZR8SNk56ITzW8FDlAC+ChA7VV/FkZg4M=
+	t=1742314419; cv=none; b=dGRWW9zBHImJ9HJenL0j31CXZFiiKkpLid46pSQhuEK5STC8aoHqCSklQskPxlnQrxlm5NCskg5pQC87XzBnsDNEw/b0jfyJkriKyuUmSvOHWk9wvbIqyp6t5aYqNkYj+M4j1UbFegT6P20CK1E9t8PDSxB/CsLT2YHQv+AYg8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1742314419; c=relaxed/simple;
-	bh=KHZmWIDBjEhcVDZ+cpgRQhrqLsnPQKA55BEIHKUA1rc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ptaNMkxB7IM1LdAgbiLimukkRUH40H3yFaZtUCJt/P25CPcNDIiJ73/WV6lXJb7u4YdT634JOyoAB07hEbehJCA3p5MOPmUZ2eaMdvJ6dPMVyHDKsNT5Tm8lxzB+EiPQoT5+YlfIIS9Y5/5Hc0Aw1GJeSQ4SNkbgrV0BgAHq5jA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yt9VG6yf; arc=none smtp.client-ip=198.175.65.13
+	bh=9TLxKhIEeX1+IvbmH1GrdaCGC+ET/W2qX6O/xK0Kaas=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dBgW+iE0oLbtMmSLu58qK8jy6OD3rGaNCfVSg/AICBErdqeLR3Wpn9jhvLSxhgPqpBP1uPIfKQ+UIx2jiY8XVohu9kK0nK/lItU3Hf8eyECbVJR4SenBXbwx3webPdOkxaXA3SPYvghR/SKpsOjlfdWsv69oo+hol6pcEwLfMIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cA+IbwWt; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yt9VG6yf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cA+IbwWt"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742314413; x=1773850413;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=KHZmWIDBjEhcVDZ+cpgRQhrqLsnPQKA55BEIHKUA1rc=;
-  b=Yt9VG6yfBhIloDOe4aE+dKjWU/ypOZ8SKBVVGqTytnUwCKh/q0ukYOFo
-   vBGKKa9ZbEGGwZHIKeVUySg7wevVIN3n6yVNWdZvkmfVl0KW3a50Mwi9C
-   dgbcRsr88UYit9r7hr2IH2j4XcGhwT4WhwwVBCoketxCOj4aJctxpNWUp
-   t7NZdZWc5Fjg6RVjpUCKzHZrgPFJLqs9iLiquvz2P+56ZQ+OiGVk+2gx1
-   yRmK+D3C8mlmacN5I8QaFDB5eBQEOegxk1yGdUk3GqXwhr4oEVL+ZhTnM
-   32r/8RP/ZqKERiNW+zbzAFztykQ386jfIWwmry5lGM3WyTxD9YkxTPvJO
+  t=1742314417; x=1773850417;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=9TLxKhIEeX1+IvbmH1GrdaCGC+ET/W2qX6O/xK0Kaas=;
+  b=cA+IbwWt44sYbyBPleld6OMpoiI6PWSXUjGqqrKbRhOorPti0SFuNFIS
+   7xPwAn5ZYsg4GQb6JARyHoZkhzydZLlENmncRGk9pXeFRrCbzkyIujZf7
+   F/lCQvgE/fIyFfqoqjYpVqMclPMbHcmll+AXw1QEAAHt+qZUPk1LRNhKP
+   iY1DPHVIZQCrf8GRI0Tk7VgrBzuqwVPqEfa8cBoKp8mkOAEejxo5MXknx
+   pCcaMDcuj5wBwF1fLg3RtbnkkCx3fOcFr51Rfi5QMKwCbxbV4/gznERpi
+   crslfTLFrhTjbmD4X+5gnpvf8HNL/vuelltoAb7N9RfkDO34UNJ8+T9AY
    A==;
-X-CSE-ConnectionGUID: APVNPKNAQgmK2NvBekREtw==
-X-CSE-MsgGUID: bi+vL7/FS2KFLwhUtML7gg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="54458787"
+X-CSE-ConnectionGUID: eXkJntzjSJGSA+1U+P3vqw==
+X-CSE-MsgGUID: SD73cWflQlmHN18gTYLTVQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="54458810"
 X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; 
-   d="scan'208";a="54458787"
+   d="scan'208";a="54458810"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 09:13:32 -0700
-X-CSE-ConnectionGUID: 8bJRR5y4Q9eUOfTyEIfqPg==
-X-CSE-MsgGUID: /GbrMGfiQYGjr6gcQe3OaQ==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 09:13:33 -0700
+X-CSE-ConnectionGUID: 2/IGeKfvSme+kYveptoYaQ==
+X-CSE-MsgGUID: aOuAc5biQAO+y1WfoPS1Kw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; 
-   d="scan'208";a="122041923"
+   d="scan'208";a="122041936"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa009.jf.intel.com with ESMTP; 18 Mar 2025 09:13:33 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -49,15 +50,21 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	milena.olech@intel.com,
+Cc: Milena Olech <milena.olech@intel.com>,
+	anthony.l.nguyen@intel.com,
 	przemyslaw.kitszel@intel.com,
 	karol.kolacinski@intel.com,
-	richardcochran@gmail.com
-Subject: [PATCH net-next 00/10][pull request] idpf: add initial PTP support
-Date: Tue, 18 Mar 2025 09:13:15 -0700
-Message-ID: <20250318161327.2532891-1-anthony.l.nguyen@intel.com>
+	richardcochran@gmail.com,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Samuel Salin <Samuel.salin@intel.com>
+Subject: [PATCH net-next 03/10] idpf: move virtchnl structures to the header file
+Date: Tue, 18 Mar 2025 09:13:18 -0700
+Message-ID: <20250318161327.2532891-4-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250318161327.2532891-1-anthony.l.nguyen@intel.com>
+References: <20250318161327.2532891-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,80 +73,228 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Milena Olech says:
+From: Milena Olech <milena.olech@intel.com>
 
-This patch series introduces support for Precision Time Protocol (PTP) to
-Intel(R) Infrastructure Data Path Function (IDPF) driver. PTP feature is
-supported when the PTP capability is negotiated with the Control
-Plane (CP). IDPF creates a PTP clock and sets a set of supported
-functions.
+Move virtchnl structures to the header file to expose them for the PTP
+virtchnl file.
 
-During the PTP initialization, IDPF requests a set of PTP capabilities
-and receives a writeback from the CP with the set of supported options.
-These options are:
-- get time of the PTP clock
-- get cross timestamp
-- set the time of the PTP clock
-- adjust the PTP clock
-- Tx timestamping
-
-Each feature is considered to have direct access, where the operations
-on PCIe BAR registers are allowed, or the mailbox access, where the
-virtchnl messages are used to perform any PTP action. Mailbox access
-means that PTP requests are sent to the CP through dedicated secondary
-mailbox and the CP reads/writes/modifies desired resource - PTP Clock
-or Tx timestamp registers.
-
-Tx timestamp capabilities are negotiated only for vports that have
-UPLINK_VPORT flag set by the CP. Capabilities provide information about
-the number of available Tx timestamp latches, their indexes and size of
-the Tx timestamp value. IDPF requests Tx timestamp by setting the
-TSYN bit and the requested timestamp index in the context descriptor for
-the PTP packets. When the completion tag for that packet is received,
-IDPF schedules a worker to read the Tx timestamp value.
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Tested-by: Mina Almasry <almasrymina@google.com>
+Signed-off-by: Milena Olech <milena.olech@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
-IWL: https://lore.kernel.org/intel-wired-lan/20250313180417.2348593-1-milena.olech@intel.com/
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 86 +------------------
+ .../net/ethernet/intel/idpf/idpf_virtchnl.h   | 84 ++++++++++++++++++
+ 2 files changed, 86 insertions(+), 84 deletions(-)
 
-The following are changes since commit 23c9ff659140f97d44bf6fb59f89526a168f2b86:
-  Merge branch 'net-stmmac-remove-unnecessary-of_get_phy_mode-calls'
-and are available in the git repository at:
-  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue 200GbE
-
-Milena Olech (10):
-  idpf: add initial PTP support
-  virtchnl: add PTP virtchnl definitions
-  idpf: move virtchnl structures to the header file
-  idpf: negotiate PTP capabilities and get PTP clock
-  idpf: add mailbox access to read PTP clock time
-  idpf: add PTP clock configuration
-  idpf: add Tx timestamp capabilities negotiation
-  idpf: add Tx timestamp flows
-  idpf: add support for Rx timestamping
-  idpf: change the method for mailbox workqueue allocation
-
- drivers/net/ethernet/intel/idpf/Kconfig       |    1 +
- drivers/net/ethernet/intel/idpf/Makefile      |    3 +
- drivers/net/ethernet/intel/idpf/idpf.h        |   35 +
- .../ethernet/intel/idpf/idpf_controlq_api.h   |    3 +
- drivers/net/ethernet/intel/idpf/idpf_dev.c    |   14 +
- .../net/ethernet/intel/idpf/idpf_ethtool.c    |   75 +-
- .../ethernet/intel/idpf/idpf_lan_pf_regs.h    |    4 +
- .../net/ethernet/intel/idpf/idpf_lan_txrx.h   |   13 +-
- drivers/net/ethernet/intel/idpf/idpf_lib.c    |   57 +
- drivers/net/ethernet/intel/idpf/idpf_main.c   |    9 +-
- drivers/net/ethernet/intel/idpf/idpf_ptp.c    | 1000 +++++++++++++++++
- drivers/net/ethernet/intel/idpf/idpf_ptp.h    |  370 ++++++
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  171 ++-
- drivers/net/ethernet/intel/idpf/idpf_txrx.h   |   18 +-
- .../net/ethernet/intel/idpf/idpf_virtchnl.c   |  161 ++-
- .../net/ethernet/intel/idpf/idpf_virtchnl.h   |   84 ++
- .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   |  677 +++++++++++
- drivers/net/ethernet/intel/idpf/virtchnl2.h   |  314 +++++-
- 18 files changed, 2906 insertions(+), 103 deletions(-)
- create mode 100644 drivers/net/ethernet/intel/idpf/idpf_ptp.c
- create mode 100644 drivers/net/ethernet/intel/idpf/idpf_ptp.h
- create mode 100644 drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
-
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 1d42f8aee4aa..e27f3f2777a2 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -7,88 +7,6 @@
+ #include "idpf_virtchnl.h"
+ #include "idpf_ptp.h"
+ 
+-#define IDPF_VC_XN_MIN_TIMEOUT_MSEC	2000
+-#define IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC	(60 * 1000)
+-#define IDPF_VC_XN_IDX_M		GENMASK(7, 0)
+-#define IDPF_VC_XN_SALT_M		GENMASK(15, 8)
+-#define IDPF_VC_XN_RING_LEN		U8_MAX
+-
+-/**
+- * enum idpf_vc_xn_state - Virtchnl transaction status
+- * @IDPF_VC_XN_IDLE: not expecting a reply, ready to be used
+- * @IDPF_VC_XN_WAITING: expecting a reply, not yet received
+- * @IDPF_VC_XN_COMPLETED_SUCCESS: a reply was expected and received,
+- *				  buffer updated
+- * @IDPF_VC_XN_COMPLETED_FAILED: a reply was expected and received, but there
+- *				 was an error, buffer not updated
+- * @IDPF_VC_XN_SHUTDOWN: transaction object cannot be used, VC torn down
+- * @IDPF_VC_XN_ASYNC: transaction sent asynchronously and doesn't have the
+- *		      return context; a callback may be provided to handle
+- *		      return
+- */
+-enum idpf_vc_xn_state {
+-	IDPF_VC_XN_IDLE = 1,
+-	IDPF_VC_XN_WAITING,
+-	IDPF_VC_XN_COMPLETED_SUCCESS,
+-	IDPF_VC_XN_COMPLETED_FAILED,
+-	IDPF_VC_XN_SHUTDOWN,
+-	IDPF_VC_XN_ASYNC,
+-};
+-
+-struct idpf_vc_xn;
+-/* Callback for asynchronous messages */
+-typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
+-			    const struct idpf_ctlq_msg *);
+-
+-/**
+- * struct idpf_vc_xn - Data structure representing virtchnl transactions
+- * @completed: virtchnl event loop uses that to signal when a reply is
+- *	       available, uses kernel completion API
+- * @state: virtchnl event loop stores the data below, protected by the
+- *	   completion's lock.
+- * @reply_sz: Original size of reply, may be > reply_buf.iov_len; it will be
+- *	      truncated on its way to the receiver thread according to
+- *	      reply_buf.iov_len.
+- * @reply: Reference to the buffer(s) where the reply data should be written
+- *	   to. May be 0-length (then NULL address permitted) if the reply data
+- *	   should be ignored.
+- * @async_handler: if sent asynchronously, a callback can be provided to handle
+- *		   the reply when it's received
+- * @vc_op: corresponding opcode sent with this transaction
+- * @idx: index used as retrieval on reply receive, used for cookie
+- * @salt: changed every message to make unique, used for cookie
+- */
+-struct idpf_vc_xn {
+-	struct completion completed;
+-	enum idpf_vc_xn_state state;
+-	size_t reply_sz;
+-	struct kvec reply;
+-	async_vc_cb async_handler;
+-	u32 vc_op;
+-	u8 idx;
+-	u8 salt;
+-};
+-
+-/**
+- * struct idpf_vc_xn_params - Parameters for executing transaction
+- * @send_buf: kvec for send buffer
+- * @recv_buf: kvec for recv buffer, may be NULL, must then have zero length
+- * @timeout_ms: timeout to wait for reply
+- * @async: send message asynchronously, will not wait on completion
+- * @async_handler: If sent asynchronously, optional callback handler. The user
+- *		   must be careful when using async handlers as the memory for
+- *		   the recv_buf _cannot_ be on stack if this is async.
+- * @vc_op: virtchnl op to send
+- */
+-struct idpf_vc_xn_params {
+-	struct kvec send_buf;
+-	struct kvec recv_buf;
+-	int timeout_ms;
+-	bool async;
+-	async_vc_cb async_handler;
+-	u32 vc_op;
+-};
+-
+ /**
+  * struct idpf_vc_xn_manager - Manager for tracking transactions
+  * @ring: backing and lookup for transactions
+@@ -450,8 +368,8 @@ static void idpf_vc_xn_push_free(struct idpf_vc_xn_manager *vcxn_mngr,
+  * >= @recv_buf.iov_len, but we never overflow @@recv_buf_iov_base). < 0 for
+  * error.
+  */
+-static ssize_t idpf_vc_xn_exec(struct idpf_adapter *adapter,
+-			       const struct idpf_vc_xn_params *params)
++ssize_t idpf_vc_xn_exec(struct idpf_adapter *adapter,
++			const struct idpf_vc_xn_params *params)
+ {
+ 	const struct kvec *send_buf = &params->send_buf;
+ 	struct idpf_vc_xn *xn;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+index 83da5d8da56b..3522c1238ea2 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+@@ -4,6 +4,88 @@
+ #ifndef _IDPF_VIRTCHNL_H_
+ #define _IDPF_VIRTCHNL_H_
+ 
++#define IDPF_VC_XN_MIN_TIMEOUT_MSEC	2000
++#define IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC	(60 * 1000)
++#define IDPF_VC_XN_IDX_M		GENMASK(7, 0)
++#define IDPF_VC_XN_SALT_M		GENMASK(15, 8)
++#define IDPF_VC_XN_RING_LEN		U8_MAX
++
++/**
++ * enum idpf_vc_xn_state - Virtchnl transaction status
++ * @IDPF_VC_XN_IDLE: not expecting a reply, ready to be used
++ * @IDPF_VC_XN_WAITING: expecting a reply, not yet received
++ * @IDPF_VC_XN_COMPLETED_SUCCESS: a reply was expected and received, buffer
++ *				  updated
++ * @IDPF_VC_XN_COMPLETED_FAILED: a reply was expected and received, but there
++ *				 was an error, buffer not updated
++ * @IDPF_VC_XN_SHUTDOWN: transaction object cannot be used, VC torn down
++ * @IDPF_VC_XN_ASYNC: transaction sent asynchronously and doesn't have the
++ *		      return context; a callback may be provided to handle
++ *		      return
++ */
++enum idpf_vc_xn_state {
++	IDPF_VC_XN_IDLE = 1,
++	IDPF_VC_XN_WAITING,
++	IDPF_VC_XN_COMPLETED_SUCCESS,
++	IDPF_VC_XN_COMPLETED_FAILED,
++	IDPF_VC_XN_SHUTDOWN,
++	IDPF_VC_XN_ASYNC,
++};
++
++struct idpf_vc_xn;
++/* Callback for asynchronous messages */
++typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
++			    const struct idpf_ctlq_msg *);
++
++/**
++ * struct idpf_vc_xn - Data structure representing virtchnl transactions
++ * @completed: virtchnl event loop uses that to signal when a reply is
++ *	       available, uses kernel completion API
++ * @state: virtchnl event loop stores the data below, protected by the
++ *	   completion's lock.
++ * @reply_sz: Original size of reply, may be > reply_buf.iov_len; it will be
++ *	      truncated on its way to the receiver thread according to
++ *	      reply_buf.iov_len.
++ * @reply: Reference to the buffer(s) where the reply data should be written
++ *	   to. May be 0-length (then NULL address permitted) if the reply data
++ *	   should be ignored.
++ * @async_handler: if sent asynchronously, a callback can be provided to handle
++ *		   the reply when it's received
++ * @vc_op: corresponding opcode sent with this transaction
++ * @idx: index used as retrieval on reply receive, used for cookie
++ * @salt: changed every message to make unique, used for cookie
++ */
++struct idpf_vc_xn {
++	struct completion completed;
++	enum idpf_vc_xn_state state;
++	size_t reply_sz;
++	struct kvec reply;
++	async_vc_cb async_handler;
++	u32 vc_op;
++	u8 idx;
++	u8 salt;
++};
++
++/**
++ * struct idpf_vc_xn_params - Parameters for executing transaction
++ * @send_buf: kvec for send buffer
++ * @recv_buf: kvec for recv buffer, may be NULL, must then have zero length
++ * @timeout_ms: timeout to wait for reply
++ * @async: send message asynchronously, will not wait on completion
++ * @async_handler: If sent asynchronously, optional callback handler. The user
++ *		   must be careful when using async handlers as the memory for
++ *		   the recv_buf _cannot_ be on stack if this is async.
++ * @vc_op: virtchnl op to send
++ */
++struct idpf_vc_xn_params {
++	struct kvec send_buf;
++	struct kvec recv_buf;
++	int timeout_ms;
++	bool async;
++	async_vc_cb async_handler;
++	u32 vc_op;
++};
++
+ struct idpf_adapter;
+ struct idpf_netdev_priv;
+ struct idpf_vec_regs;
+@@ -11,6 +93,8 @@ struct idpf_vport;
+ struct idpf_vport_max_q;
+ struct idpf_vport_user_config_data;
+ 
++ssize_t idpf_vc_xn_exec(struct idpf_adapter *adapter,
++			const struct idpf_vc_xn_params *params);
+ int idpf_init_dflt_mbx(struct idpf_adapter *adapter);
+ void idpf_deinit_dflt_mbx(struct idpf_adapter *adapter);
+ int idpf_vc_core_init(struct idpf_adapter *adapter);
 -- 
 2.47.1
 
