@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33CE2139D8
-	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 20:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1040213227
+	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 20:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742328328; cv=none; b=tSjG5TYl0fC+ck+RuxAgjBKArFz9nAlPVLBDZvjaw0FIeTjRu3a/ZkWOHWPV0z54mXp5LdO7VOve+ytQMejYeqlMAu/1aBplgtaIDh38h+Y6Wur1SGV7KeI+1xtlQwsvizavSWyjRwIjGMggBag7Kun6CcEoPLPuuMmVXFccN5o=
+	t=1742328329; cv=none; b=MzPvbBg6DGQbV2EzC7DPbm8oGPNS0wtpnViXaMTN3Olg4ZzGjwYpj0sDk3aFh7tuQaeocAhjzzT33hKd+axbfTpnCzm18TdKOcPHWzPLh5v8O1lahCD+ph3ffqhZpeQYcrTHSbDeKL64FuZjsItabPuTWBtYG1u/SDTYiBk51o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742328328; c=relaxed/simple;
-	bh=3yaUMTyiDdA4jWRLhO6/l6GfsPCVWc9gKQxFrd72O4A=;
+	s=arc-20240116; t=1742328329; c=relaxed/simple;
+	bh=EuZ2mOFCRP/rGVath4UQsx9IGgcsqSgyBOwf8/ki7ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HXN8JyHCuHKOF3KEE/4bY/dmFI2wiptfCgRMXBq2iFS32uLGps+rL/yV6ixhoHw6tWtCDYr6vIjtIc6EVfrn7DbYLch9ylT2KsIg+p2H7mv15aC0IzTd1BqJ7LsH9IV8G/SY+iI7BDgRhMbzetW2nwQj5DzYM4PGdmK0lss/Dqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V5raQX96; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=Tc0WU+mFi6NFv33UqZtxNjGU0Gbqp2pKJuCtiTwinxtaAD+EyHusr4XYLEuDANvtVVVLM4U2CjFgRVTVBB9OKLfNtAAVGlmSqJkZj/h0skX6NRMkD4vI29BJh5NfVu4ENpRiUv1W6lSfytladoXPTkz/4Fbb8VWP6HY9ydOBlPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dgQDRsHp; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V5raQX96"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dgQDRsHp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742328327; x=1773864327;
+  t=1742328325; x=1773864325;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=3yaUMTyiDdA4jWRLhO6/l6GfsPCVWc9gKQxFrd72O4A=;
-  b=V5raQX96HdjU9zT0zwxUjDiCrOtfGfCaJJZL3tqPDZsbQV3/o55ug+Cd
-   eC0WTkOvnoIyCc/tpqMNVoICsZwE/GSM8xND7i+INfqYRLZdqow1yKWEt
-   44WXMdkw2PrBVuk01PshExT/89+fStZeR1wUJBZzgwhiTMBeEf++Tjuqp
-   wcg0U51JCKSCdr47d3ZwkDRB+lFE62nNQIi+tGBbklpyHCmV189WT7B1V
-   nuko7H3IJmOCBUDsE6cM060DRCOhQTbW2emZooC97fdc2i8+Jr1Bo8h+Z
-   qnfzP/YVfAtj2IW7eACiPWjaWafuWu1hND9uCqNNTO+iR+G5l/VrqOj51
+  bh=EuZ2mOFCRP/rGVath4UQsx9IGgcsqSgyBOwf8/ki7ck=;
+  b=dgQDRsHpKv+R6SuRN4GiCtss5RXJFmsmAQ0E88EYTbN8Kdk1nAc5QLKX
+   qS8B2rMW9dNjOT0unGuocgu9kVhWXnHJwPzZMDm+3YQ3WDtU6JRpOuNGA
+   Qh8WNCpZOk5A51ZWVO80nXRr+iVgtojzEiTToifvmcg06OFY2B/5Xrr/S
+   eI9BFLn6a4LIjC2b1OAzR8O1X+iqLq13MPvU8WekmC/HAqExQlSW1P9zu
+   /eWqUJzmuJHFLkurEl0n+Wuug236TfmBMx1jZubsdc8cGFaa3UJABwvL6
+   TJndDEGkQktynBDYIx1mE60lAQNh8xtREhvCBAfPf8A6QL5i5br28Dm3+
    g==;
-X-CSE-ConnectionGUID: Ui7xPPnCR1S76bi8hR4Rzg==
-X-CSE-MsgGUID: Ymrmhj6bQFKIl1q9W7U4YA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="43593080"
+X-CSE-ConnectionGUID: tUjqKDQNRIus0PAI/MslVw==
+X-CSE-MsgGUID: gponosPVTfKiKjxR4cwfyg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="43593055"
 X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; 
-   d="scan'208";a="43593080"
+   d="scan'208";a="43593055"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 13:05:23 -0700
-X-CSE-ConnectionGUID: O8EH/kTNSGqZZFBH82uW/A==
-X-CSE-MsgGUID: 3bXQ/Pt6SQeS5jdBnmEIuw==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 13:05:22 -0700
+X-CSE-ConnectionGUID: dutpkPZ/S9moRlFKzNmTng==
+X-CSE-MsgGUID: r5119TVoSPaXBrshfMCB/g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; 
-   d="scan'208";a="153363167"
+   d="scan'208";a="153363153"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa001.fm.intel.com with ESMTP; 18 Mar 2025 13:05:22 -0700
+  by fmviesa001.fm.intel.com with ESMTP; 18 Mar 2025 13:05:21 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,16 +50,16 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Emil Tantilov <emil.s.tantilov@intel.com>,
+Cc: Jan Glaza <jan.glaza@intel.com>,
 	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	willemb@google.com,
-	decot@google.com,
-	horms@kernel.org,
-	Samuel Salin <Samuel.salin@intel.com>
-Subject: [PATCH net 9/9] idpf: check error for register_netdev() on init
-Date: Tue, 18 Mar 2025 13:04:53 -0700
-Message-ID: <20250318200511.2958251-10-anthony.l.nguyen@intel.com>
+	jiri@resnulli.us,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>
+Subject: [PATCH net 6/9] ice: validate queue quanta parameters to prevent OOB access
+Date: Tue, 18 Mar 2025 13:04:50 -0700
+Message-ID: <20250318200511.2958251-7-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250318200511.2958251-1-anthony.l.nguyen@intel.com>
 References: <20250318200511.2958251-1-anthony.l.nguyen@intel.com>
@@ -71,97 +71,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: Jan Glaza <jan.glaza@intel.com>
 
-Current init logic ignores the error code from register_netdev(),
-which will cause WARN_ON() on attempt to unregister it, if there was one,
-and there is no info for the user that the creation of the netdev failed.
+Add queue wraparound prevention in quanta configuration.
+Ensure end_qid does not overflow by validating start_qid and num_queues.
 
-WARNING: CPU: 89 PID: 6902 at net/core/dev.c:11512 unregister_netdevice_many_notify+0x211/0x1a10
-...
-[ 3707.563641]  unregister_netdev+0x1c/0x30
-[ 3707.563656]  idpf_vport_dealloc+0x5cf/0xce0 [idpf]
-[ 3707.563684]  idpf_deinit_task+0xef/0x160 [idpf]
-[ 3707.563712]  idpf_vc_core_deinit+0x84/0x320 [idpf]
-[ 3707.563739]  idpf_remove+0xbf/0x780 [idpf]
-[ 3707.563769]  pci_device_remove+0xab/0x1e0
-[ 3707.563786]  device_release_driver_internal+0x371/0x530
-[ 3707.563803]  driver_detach+0xbf/0x180
-[ 3707.563816]  bus_remove_driver+0x11b/0x2a0
-[ 3707.563829]  pci_unregister_driver+0x2a/0x250
-
-Introduce an error check and log the vport number and error code.
-On removal make sure to check VPORT_REG_NETDEV flag prior to calling
-unregister and free on the netdev.
-
-Add local variables for idx, vport_config and netdev for readability.
-
-Fixes: 0fe45467a104 ("idpf: add create vport and netdev configuration")
-Suggested-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Fixes: 015307754a19 ("ice: Support VF queue rate limit and quanta size configuration")
+Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Jan Glaza <jan.glaza@intel.com>
+Signed-off-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf_lib.c | 31 +++++++++++++++-------
- 1 file changed, 22 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index a3d6b8f198a8..a055a47449f1 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -927,15 +927,19 @@ static int idpf_stop(struct net_device *netdev)
- static void idpf_decfg_netdev(struct idpf_vport *vport)
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+index 346aee373ccd..df13f5110168 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -1900,13 +1900,21 @@ static int ice_vc_cfg_q_bw(struct ice_vf *vf, u8 *msg)
+  */
+ static int ice_vc_cfg_q_quanta(struct ice_vf *vf, u8 *msg)
  {
- 	struct idpf_adapter *adapter = vport->adapter;
-+	u16 idx = vport->idx;
++	u16 quanta_prof_id, quanta_size, start_qid, num_queues, end_qid, i;
+ 	enum virtchnl_status_code v_ret = VIRTCHNL_STATUS_SUCCESS;
+-	u16 quanta_prof_id, quanta_size, start_qid, end_qid, i;
+ 	struct virtchnl_quanta_cfg *qquanta =
+ 		(struct virtchnl_quanta_cfg *)msg;
+ 	struct ice_vsi *vsi;
+ 	int ret;
  
- 	kfree(vport->rx_ptype_lkup);
- 	vport->rx_ptype_lkup = NULL;
- 
--	unregister_netdev(vport->netdev);
--	free_netdev(vport->netdev);
-+	if (test_and_clear_bit(IDPF_VPORT_REG_NETDEV,
-+			       adapter->vport_config[idx]->flags)) {
-+		unregister_netdev(vport->netdev);
-+		free_netdev(vport->netdev);
++	start_qid = qquanta->queue_select.start_queue_id;
++	num_queues = qquanta->queue_select.num_queues;
++
++	if (check_add_overflow(start_qid, num_queues, &end_qid)) {
++		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
++		goto err;
 +	}
- 	vport->netdev = NULL;
- 
--	adapter->netdevs[vport->idx] = NULL;
-+	adapter->netdevs[idx] = NULL;
- }
- 
- /**
-@@ -1536,13 +1540,22 @@ void idpf_init_task(struct work_struct *work)
++
+ 	if (!test_bit(ICE_VF_STATE_ACTIVE, vf->vf_states)) {
+ 		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
+ 		goto err;
+@@ -1918,8 +1926,6 @@ static int ice_vc_cfg_q_quanta(struct ice_vf *vf, u8 *msg)
+ 		goto err;
  	}
  
- 	for (index = 0; index < adapter->max_vports; index++) {
--		if (adapter->netdevs[index] &&
--		    !test_bit(IDPF_VPORT_REG_NETDEV,
--			      adapter->vport_config[index]->flags)) {
--			register_netdev(adapter->netdevs[index]);
--			set_bit(IDPF_VPORT_REG_NETDEV,
--				adapter->vport_config[index]->flags);
-+		struct net_device *netdev = adapter->netdevs[index];
-+		struct idpf_vport_config *vport_config;
-+
-+		vport_config = adapter->vport_config[index];
-+
-+		if (!netdev ||
-+		    test_bit(IDPF_VPORT_REG_NETDEV, vport_config->flags))
-+			continue;
-+
-+		err = register_netdev(netdev);
-+		if (err) {
-+			dev_err(&pdev->dev, "failed to register netdev for vport %d: %pe\n",
-+				index, ERR_PTR(err));
-+			continue;
- 		}
-+		set_bit(IDPF_VPORT_REG_NETDEV, vport_config->flags);
+-	end_qid = qquanta->queue_select.start_queue_id +
+-		  qquanta->queue_select.num_queues;
+ 	if (end_qid > ICE_MAX_RSS_QS_PER_VF ||
+ 	    end_qid > min_t(u16, vsi->alloc_txq, vsi->alloc_rxq)) {
+ 		dev_err(ice_pf_to_dev(vf->pf), "VF-%d trying to configure more than allocated number of queues: %d\n",
+@@ -1948,7 +1954,6 @@ static int ice_vc_cfg_q_quanta(struct ice_vf *vf, u8 *msg)
+ 		goto err;
  	}
  
- 	/* As all the required vports are created, clear the reset flag
+-	start_qid = qquanta->queue_select.start_queue_id;
+ 	for (i = start_qid; i < end_qid; i++)
+ 		vsi->tx_rings[i]->quanta_prof_id = quanta_prof_id;
+ 
 -- 
 2.47.1
 
