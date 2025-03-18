@@ -1,116 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2071.outbound.protection.outlook.com [40.107.103.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD8020D4FE;
-	Tue, 18 Mar 2025 13:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742306056; cv=none; b=l2n62RPfjqqeotsHvX0QJZolZNEcWTLH6giU/SgHTQ7Eqzk/Fl5DiVpxtkTFDRqcztkQh8j6nOLSprfPH7FoCRqF3svNhWnnuXfrOkvGdrdMcnStKAmhqcAkQI4/7OeXz0tkr4yA1ftwmASFtnAghBob6hYmEm3dycRkq69rVjo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742306056; c=relaxed/simple;
-	bh=MQJNg6mROFDZ7aRUJyj8+ib7C6toJaNGkiuTO74TuVs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pF0PljLy5o50ZdHYFuwK41JYYsGgoo+MqmxLh3dGAgQLptQJSVx8jz1dgz050YTUQJkGD7BDEtt8LnnxI77peJLbCKfa2sxS7LC5Jrn3oxAV9D4c3090C49FH+6kuWec5flZ6doYgu1Xy50sEFsZLjIjs9UjJzISR631WzwmIfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kw3vspTL; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636F620DD5C;
+	Tue, 18 Mar 2025 13:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742306283; cv=fail; b=fexsPxOztvq5E6IggdKF2VZ+rHDYkRoj8OyYZtyigwYgvQbPD5M4tS2aTgwdepU8YZX6HHZnsLVuWmFIUrRKUJ2/Z1RX6w9sjyIAdOlpaHlhwP49C8bDBysdJgK0BznTQ46+YG8O6llmRn82WxopwDItkhYztplayQEz4lrqUF4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742306283; c=relaxed/simple;
+	bh=4nbFtz1YjVIByACs/TnUxALLW0iwj7MDlsiUXWAkqMo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=H9rdCAoy++wwny8k6lO6Ya6GyxW6CJZEjdgoO+6EQ4RmEmXbVO4pZoyG5RmRsCx7+8X8LBldNRbO9DlIb6W63cXgAj5k5fBGh4OaBDMzeMi0x5paqQnwm2ukjBM/7fULhIV8FYOEkEo59BEII6vAs3GizcxSRbXaHpgUqWNsiQY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=N+aciL01; arc=fail smtp.client-ip=40.107.103.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kw3vspTL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160E1C4CEE3;
-	Tue, 18 Mar 2025 13:54:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742306055;
-	bh=MQJNg6mROFDZ7aRUJyj8+ib7C6toJaNGkiuTO74TuVs=;
-	h=From:Date:Subject:To:Cc:From;
-	b=kw3vspTLYcuBLz+iPQk+dJ4KMTcNmA3+xP7dYcNp8M+DQP5rpmuxJPQjoLWF+bx+B
-	 vZLHezaDIuJvUeYzG2EVwBQH8Xjq6GCCbHm3uSrV5FvXyH9UUpBL732JJf53sIubJw
-	 bfGzVNY/qidjvHrJwB1nXWtbTMa+Zrzd0emXl/FKowoifTvxcUHmAOrHZZg0KLaiLj
-	 +a3lUANpcFLeAGzoUUuxn41W/dC/IPpvhhXzj53evIjW+FTqxbouJ5ngyDzvgqOqAk
-	 +9qizX8kUlvLBTb6+/p/bDgXy3zS4Ln9Ko69BIZNEVqAND21ngPpYnLvkk218QsgcI
-	 WGLTJAR81ByGg==
-From: Simon Horman <horms@kernel.org>
-Date: Tue, 18 Mar 2025 13:53:34 +0000
-Subject: [PATCH net-next v3] net: tulip: avoid unused variable warning
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="N+aciL01"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mXAcb/2vEU9Lv+rHJSKG9F+7vM9/iVlv07v2hacNj8WrV0AlJjP2MuyTBcZ0xDGwhevXfq/M1mrA6G43hbvHBuQ2fk7KkAuWuDrsBO5/Z/aNrqqOdRee64GbITV90S43ldPRTplzEkWaUtgMIGN6gzjX44S69szQh/nz/JyO1vnpprvQ1aXzBndyVA24uW9UhoUI/VpIvNlyWTs2q2MznHVntlSRaosJch0dqUm8LetA+dlqYNDiCmOdDMGN1G4oLoCsSWGq9vqvzJGXINhl1DRzzhlarGvFSt5PEVOXsqquR5NGO+gl6yw+JGf2Z7wAEzby9Y+yBUvs04F8eydeOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4nbFtz1YjVIByACs/TnUxALLW0iwj7MDlsiUXWAkqMo=;
+ b=glQjin/uw+NBrH3p0Owf1+2f7UGz5BmjauhnbebQSgPsOB0Y8RrL0nN0DI+e6qal5h0xNZGFbH6ENcVJnWeQLvSMq+/OBSiA3veZLbK54qQHrS0ptiotGwxdpSCkudzUaB5xUm0WGarREDPUH7P6CxUXr+JmiVOGfww4hbcOIfuSKlApd7+VT1cKxnQgGicFM1038S67SO8CP91ulNii0adI1EqQe7HtDlbzLxHtFpUE88BvABIFQBukHjOkR7q6lI6DmT5+4ybuongM+0JibuUw+GxzL89gPYcuhopez6XsESVf1tSeACj0Ar9TJdzE8gJTQ99eaNQa0rHUnwgurg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4nbFtz1YjVIByACs/TnUxALLW0iwj7MDlsiUXWAkqMo=;
+ b=N+aciL01nvRJili32HRImwZFWl8Yt7TXqcOf62bUUP9D2wTOBG7s2ccVMm1j5gac0REowj8DH1fMBEHTnSly3DkrEK80v570FkmIzJmly89VxDgg/o6IEKYF3k9QHaOO5ru4SWqwW+q8B9L7M+5JTkbUJuf0OzME4ZY1dSLwLLY4OjYR1L02DgrnsJ6o2uug1I4+rA2DQJ9iRnB299DdEWh3Hl7L6VM47kvaXJmbk9vvMa4hm6RJzrf2X+uwEZnpfw269OUUk0TXAXWmEnb9UeIL8SbFAE6ezpMIj9gUkYomV4nn6qJrAZ1SBz6KuBQbCuXVW7noMGLdN6FINds3Ig==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AS8PR04MB8820.eurprd04.prod.outlook.com (2603:10a6:20b:42f::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Tue, 18 Mar
+ 2025 13:57:54 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8534.031; Tue, 18 Mar 2025
+ 13:57:54 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "christophe.leroy@csgroup.eu"
+	<christophe.leroy@csgroup.eu>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: RE: [PATCH v4 net-next 11/14] net: enetc: move generic VLAN hash
+ filter functions to enetc_pf_common.c
+Thread-Topic: [PATCH v4 net-next 11/14] net: enetc: move generic VLAN hash
+ filter functions to enetc_pf_common.c
+Thread-Index: AQHbkkpjqqWSAAAOAEKKZWKjEY8LSLN4umeAgAAryxA=
+Date: Tue, 18 Mar 2025 13:57:54 +0000
+Message-ID:
+ <PAXPR04MB8510E831836A28A00C5CC76988DE2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250311053830.1516523-1-wei.fang@nxp.com>
+ <20250311053830.1516523-12-wei.fang@nxp.com>
+ <20250318102121.5vmv4x6qs32x2y5s@skbuf>
+In-Reply-To: <20250318102121.5vmv4x6qs32x2y5s@skbuf>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AS8PR04MB8820:EE_
+x-ms-office365-filtering-correlation-id: f38a1aad-7fb0-4276-4220-08dd6624e177
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?EvirBjNEjKa7Lrn3sR/N1nRFbD4Z3uiU61FSTY30N2RwAUTWCcTc8gwhy5F+?=
+ =?us-ascii?Q?nPOmgRr1WFx6ofZW5F5keeeUwfCc0hWgovnlRAz1IPq4wXMY/4NJbJtBIibR?=
+ =?us-ascii?Q?i8MBOONW70wIHcxXwP4qd35qnQvfP4GhU8kxaSCZypK6k2/u22lP6puekaTk?=
+ =?us-ascii?Q?DTZ7M4XkRP/jJVceoGgOW/PJP3C3WGkNP+n8Y4e/rK0+Pg2Jj0QGG9enV6+F?=
+ =?us-ascii?Q?EQBDAQOvQHN9FCAr1dSmfs6+kNLhXj/p9jMDYBAFgGE4/2Xfp7cPlYCPJ5Ap?=
+ =?us-ascii?Q?JhxSWkxmEQVcTYyMwufwDD9OfMrt0ft/OqMTchIzlr8dvooZUz2BA6xG4XnV?=
+ =?us-ascii?Q?o0kPMe6TbuTYV16ALE9F8F5CH4tuZ/hL+ivtLf+vsfLfkaxAv5e+5iuDjJFd?=
+ =?us-ascii?Q?bwdbKU+QK/SyRrgucHEarqIOFIOU6WxlF8OIPQQVQbsBC9IXT43BZQInpgNu?=
+ =?us-ascii?Q?m5CH1lUjJsqlz2to4rAzKe/PKcnr4BcR10RB5w7W+U+ZzT/UgFu1UlyLx1yk?=
+ =?us-ascii?Q?1OL/TOLME+3FyZtwWWfkZVqofBwefU6KRoC+Kn72Fof4odcjquNMvCd61dPN?=
+ =?us-ascii?Q?pM9xU++bNlBWVLH+0jBDmBIOHWMixo8h7v6ybuYyzmgG6ldDQioyK9F6s0Z9?=
+ =?us-ascii?Q?CO+LsmwQCCybJml/xS9q+NUur9JQQGtccQ4Ed5e0uVLszmrq3CXkIvER9N9A?=
+ =?us-ascii?Q?SrStnwZDYxbDPB+1RyLOejOiiRxfiUL03FpRHcDn1YjuPo2i+xkkthWSuaFH?=
+ =?us-ascii?Q?HcCJJNJjjNMnpaA0QiCKkpceng+iLfuDpde300fNsAoG+q1qZwas+dZs2Yjp?=
+ =?us-ascii?Q?QS7NJVnOPOa/GBptqQNV6vDqsG2i4fw5pUgtA+A0gIEL6vlgaNiysrGE49ND?=
+ =?us-ascii?Q?C+QURqkcMFa0G+yYLE2/Ka1m884E7xy/ikl21enOcVfAgVLg+aOOfwKK9aEn?=
+ =?us-ascii?Q?iQhIr6Czv41LRzDMBQADyjEFQcMoRKmpNH0WaGy5p5luPEELcjA/SH4SbnXt?=
+ =?us-ascii?Q?YPpc7sW62aPEalGjLsgrqxFqix09qjpJbbBICpDJETrcJbwbUo9GRmGEnfs1?=
+ =?us-ascii?Q?xj8X9lIKyCABD+Hwn2n8EU0XzVoL3olZkl6xJ8oVcQafaNY36LL9sb4z3aol?=
+ =?us-ascii?Q?S+p/uXsYEKrY48UozNa77PKzRplfkuL4ig51VclbqBeNNMGyMeMUdGXg43Fa?=
+ =?us-ascii?Q?c/INocBbaDeHNWp//Bfz7vahQ8CbqbxnzxtnFYfLnrs+NNy6YnuYY57bBpOq?=
+ =?us-ascii?Q?4jz4pxSeNC/bv5qlhl2B06rvSbIb+ml8Y7HcdgUh0eLETQgewJ4p0wHaNIIT?=
+ =?us-ascii?Q?pXE3EodnLWmVb+2LQqGRdZ2ksK1I/jN5iy3exhHHCI30jcCZQGcmVfQB+HMO?=
+ =?us-ascii?Q?Rvt4PctUHgZvtVB/eYTfQTzi2wQyn8/mdwr+wBrfR6M9Zwqh8lIrM/GQoAwV?=
+ =?us-ascii?Q?dm4zqfVDvfbZeUr5dLdSokCj80cgGsGF?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?WZvayS75+dePGVDqQHL/3HxHM5+fio2EmA6Dv6JTmNN9vXoVGS+SqejC3zqL?=
+ =?us-ascii?Q?FUTzC5joRZCqYAXWjWAz7SUNu5aqnlVUPOloIeGGmSUGtsJEwOKzSWCBlsIQ?=
+ =?us-ascii?Q?UN3nZ2ecXPvs/QndVZmFRiDrrjggGUGMzMWD0m4K2Lc5b0GC5cbhlj4/d16X?=
+ =?us-ascii?Q?+4xXfJdDor6WN20w/05XEclPulODAzAvAnITCKBHkBzHQFftNu7OlJtQhXWD?=
+ =?us-ascii?Q?oE7+8gagTDTkSdAwld7XQnzYc19mFkk9kSOZOBT181fY+M+lkEe3AJ6cusc+?=
+ =?us-ascii?Q?xRU8si+BNkoUHx9LEy6v8StXAfpUrSlrc41gX+rutxBP6ABQTBXace3tnFUE?=
+ =?us-ascii?Q?laq4vRUoHVDODLuCbO/tW7uTtCBWdGR+J0BWY9M8+P0/relk50/a8bBPwzmQ?=
+ =?us-ascii?Q?2DZbppb8ACzjvBSPZiyV6N+1J+uKtFzD7xppskGyiKRQL5UKwSIY4kJiZ0tw?=
+ =?us-ascii?Q?pg3EbzvN7ifEnN5kSUeS3cypwGy7k/Cl6SJ0x/U7gF11MXeYgF4isxPBmCeY?=
+ =?us-ascii?Q?1NELGwlmxS0v+lfBATy8b7wPO+VMax7h4o/DK3hh0EUdVUacEn5aGyVlzUaY?=
+ =?us-ascii?Q?mIH3InmORT2awL5iqKQT6spyKJoBDM9Nm/UgWpvwh5I1rr7KJzWZ0s9106nI?=
+ =?us-ascii?Q?P0AGVC4tgMyoXdvojr4BJM96IMwC5G/9xpPNjEK4QUJ6Qic3XRZetK7AKS4X?=
+ =?us-ascii?Q?m664qCYSrLZ97GEm8Mhs7zg5h+7eYJhcrqwyhTGWHNMWUmR6YyAP4x0N/Dny?=
+ =?us-ascii?Q?Jm0r5LOLk9mW040E/HR7glEK/Aj9EUMmQvuJ1gkZxu/CsREFdCLfLXST0DR9?=
+ =?us-ascii?Q?QOwlkvlL89+S5f3uz5eQO5V4V+IQl2P4FIEWfh0dtVhfQsbQeovY4vpGaWui?=
+ =?us-ascii?Q?XQQ7fqagA8OJHz1wmkmAISPe0xltIFrpOMabOwzaQyGe3T6onPguLx/CQM8A?=
+ =?us-ascii?Q?Z3rlmG0lVp6kVBBJGHmMHeGvbJJsAWe507YR9GT+Q8qsITEY8NZYBHBexfkz?=
+ =?us-ascii?Q?yXfpfitYVsiD39avtCCI4VbPwypo/DYG1boDhnthIF7SXMVXItnWyIcioxEJ?=
+ =?us-ascii?Q?6ZVAS4OGLm/LqN1cEEiokmszjUb2CdPa0yd4gPbcltfPKHGiJ1X8a2hyl7wY?=
+ =?us-ascii?Q?6v/0axC/TQFaAnnmTDPPhhqCnTwV6ni7e46K7/OI6YFn3Qtg0gmkzOR8MFYH?=
+ =?us-ascii?Q?2MnEIOuiMLLkC6D6Y5xjB759xMGlLmhzT9/kO+iy7h9aRvxZSCvV60xWmyH8?=
+ =?us-ascii?Q?jxbAK44vG5iowRWJBPnEp4yrKel+QErx0Dle+eJDw5tYt7SLLx34t0/QQ6Ny?=
+ =?us-ascii?Q?n0j305au0DdZ5wX4DmI8G9t5VqdPu6ZrUuxCgAWWb+kEUdSflSmFXMJLSEPq?=
+ =?us-ascii?Q?UAfOdUToLbgj9QtCgm/xBsebCBECURLMHkGu3Y8NmBVxGV4YhGOj4oUqWvuE?=
+ =?us-ascii?Q?plf+Qe/sNBeEZ5J+2QV7KRwNjfiHhi3KDdOpJy7FMk+ncF0OVrSjKRIZji+y?=
+ =?us-ascii?Q?cF1AKGBsGAUiZ5jv3ZAPBwUXG9AaQruu2nzlvrmHV6voxRZ8qocooPuy7d6I?=
+ =?us-ascii?Q?0TXDw5mV/j+wRd22Z0Q=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250318-tulip-w1-v3-1-a813fadd164d@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAN162WcC/2WNQQqDMBBFryKz7pSYVMWueo/iIpiJDpUoSWotk
- rs3ZNvl433ePyGQZwpwr07wtHPg1WVQlwrGWbuJkE1mkEI2QtUK43vhDT81Umd1c9OmbbsR8nz
- zZPkoqSc4iujoiDBkM3OIq/+Wj10W/5/bJdYo9SiMMr3obf94kXe0XFc/wZBS+gEN5fRPqwAAA
- A==
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Helge Deller <deller@gmx.de>, netdev@vger.kernel.org, 
- linux-parisc@vger.kernel.org
-X-Mailer: b4 0.14.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f38a1aad-7fb0-4276-4220-08dd6624e177
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2025 13:57:54.3588
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Z10zoQAM0aWO8M9N6JWDz1Rr/HHGmL7zpbaM1BEj5snPPlS8v5PmLWRyeyV62JcoGRbKg+hpENS8b646A9Vk3w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8820
 
-There is an effort to achieve W=1 kernel builds without warnings.
-As part of that effort Helge Deller highlighted the following warnings
-in the tulip driver when compiling with W=1 and CONFIG_TULIP_MWI=n:
+> On Tue, Mar 11, 2025 at 01:38:27PM +0800, Wei Fang wrote:
+> > Since the VLAN hash filter of ENETC v1 and v4 is the basically same, th=
+e
+> > only difference is the offset of the VLAN hash filter registers. So, th=
+e
+> > .set_si_vlan_hash_filter() hook is added to struct enetc_pf_ops to set
+> > the registers of the corresponding platform.
+>=20
+> For the RSS hash key register, you added a function which retrieves the
+> register base. For the VLAN hash filter, you add ops. Same problem,
+> different solutions?
 
-  .../tulip_core.c: In function ‘tulip_init_one’:
-  .../tulip_core.c:1309:22: warning: variable ‘force_csr0’ set but not used
-
-This patch addresses that problem using IS_ENABLED(). This approach has
-the added benefit of reducing conditionally compiled code. And thus
-increasing compile coverage. E.g. for allmodconfig builds which enable
-CONFIG_TULIP_MWI.
-
-Compile tested only.
-No run-time effect intended.
-
-Acked-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Simon Horman <horms@kernel.org>
----
-Changes in v3:
-- Fix mangled commit message
-- Link to v2: https://lore.kernel.org/r/20250313-tulip-w1-v2-1-2ac0d3d909f9@kernel.org
-
-Changes in v2:
-- Use IS_ENABLED rather than __maybe_unused
-- Link to v1: https://lore.kernel.org/netdev/20250309214238.66155-1-deller@kernel.org/
-
-Note about v1:
-- Original patch by Helge Deller
----
- drivers/net/ethernet/dec/tulip/tulip_core.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/dec/tulip/tulip_core.c b/drivers/net/ethernet/dec/tulip/tulip_core.c
-index 27e01d780cd0..75eac18ff246 100644
---- a/drivers/net/ethernet/dec/tulip/tulip_core.c
-+++ b/drivers/net/ethernet/dec/tulip/tulip_core.c
-@@ -1177,7 +1177,6 @@ static void set_rx_mode(struct net_device *dev)
- 	iowrite32(csr6, ioaddr + CSR6);
- }
- 
--#ifdef CONFIG_TULIP_MWI
- static void tulip_mwi_config(struct pci_dev *pdev, struct net_device *dev)
- {
- 	struct tulip_private *tp = netdev_priv(dev);
-@@ -1251,7 +1250,6 @@ static void tulip_mwi_config(struct pci_dev *pdev, struct net_device *dev)
- 		netdev_dbg(dev, "MWI config cacheline=%d, csr0=%08x\n",
- 			   cache, csr0);
- }
--#endif
- 
- /*
-  *	Chips that have the MRM/reserved bit quirk and the burst quirk. That
-@@ -1463,10 +1461,9 @@ static int tulip_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	INIT_WORK(&tp->media_work, tulip_tbl[tp->chip_id].media_task);
- 
--#ifdef CONFIG_TULIP_MWI
--	if (!force_csr0 && (tp->flags & HAS_PCI_MWI))
-+	if (IS_ENABLED(CONFIG_TULIP_MWI) && !force_csr0 &&
-+	    (tp->flags & HAS_PCI_MWI))
- 		tulip_mwi_config (pdev, dev);
--#endif
- 
- 	/* Stop the chip's Tx and Rx processes. */
- 	tulip_stop_rxtx(tp);
+I thought it was a bit different, because we have a 'si' parameter, anyway,
+I think it is fine to remove this ops and use the same way as RSS.
 
