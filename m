@@ -1,63 +1,63 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9345212F98;
-	Tue, 18 Mar 2025 23:59:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF04209689;
+	Tue, 18 Mar 2025 23:59:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742342376; cv=none; b=SI0ChMDBcuk29CokwSJoHgmNnkAksGgiN5PyYVtQbY6mR9xiWw8d+XvukE39DPREXXtZQey1rSoP+iy7yUeMpaUJOIbjP3wJVqkcMtVEQ7Wt3nYn2qi1c/j7uJdhCHveb19F7Ulb9PHlwc1LoA/t8N2R3y5wA7U7Qy1IMRnASjc=
+	t=1742342379; cv=none; b=BeKU1UZvTnGPIfH1KFZ2oxly3/s8nz1sKo0v/9z8fABIMItRU9OtacXN1UtWSZWqmKIva+k8Ssgb/5vY6wIbp9hEVklPhqoZmJoLHw+6NSha3L9vUjQaW7SRv98rzhoudZPyrZ4gqy0Lmmo5wQBtbUtRXTPrslCsDKjrCesX5Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742342376; c=relaxed/simple;
-	bh=JrUHA9FpyCx4DvvaC69xCjH0gw4/2gWMhta4nhQFkZE=;
+	s=arc-20240116; t=1742342379; c=relaxed/simple;
+	bh=jFcXF/4dVf1e7vAXuyL5qekxKu5hoLO5I3j0YrY52CI=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4QEHOygYq83hTNXi8iBIP75COJbisqJNRfDn8JZfgo9bVYF9hWNVvST/lp+gFNN3AFIrINAnfHc1QGPs5IchRnzKm9p914NLSlhiBPA7lK08WT6o+gPZ+ewe2Gpi5bo4HIeTSxDwwd96B191z/S8hlLsjt0xmtGc7FDoQM1nm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k9/ExYKN; arc=none smtp.client-ip=209.85.128.54
+	 MIME-Version; b=Od/aXmWpZFOXZY6DA/Pve5zt1jA0wz5u2wnFSt9EkgDrzeTxEHuk9R9C3YYUP8zAnTn8znf2Aa9az9ObdxljzFjfseFp4MbAaZFccazjQcwpKkK1W0pUc+8XEgPLVlDqFhtUSRkzmLVeNZVBZXGXIia/Cutgq96rliYg52tMzxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GBwu1zLD; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k9/ExYKN"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43cf257158fso26341405e9.2;
-        Tue, 18 Mar 2025 16:59:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GBwu1zLD"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3914a5def6bso3373767f8f.1;
+        Tue, 18 Mar 2025 16:59:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742342373; x=1742947173; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742342376; x=1742947176; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0/5iYgZbCUJsXiO7D38VJCrRh0YKXMu8sk/DBCkW7ic=;
-        b=k9/ExYKN5QQpnlwA+Mll3lgCPssOArzK3g8Pf3kphz5XiExtuuPJ0Rx+d3U0w+07y+
-         ZnO/0mLH+Y0QZ1NYMevilLj588fLe/eGTnoCQ8bJ+Kob/qW29NWGSeC+DD+r2sZgy4fZ
-         p5IM9SlHMjhIbCBxaMmWZwMpJQXiaqWTRf9l6vcjE1GZE0yacyKWL/UOq9Bky/f0DE8I
-         zU63+SPiK6ubOuUfvD4Nuvnkp7BrKe9p1Qp+tQy2sJnRhLzWTdYkDBKwd3DoBdhoSf5s
-         OU2CTKIquGwKyeoowx6fKaOFKvEh6lmYFjGNdj1t1S/4WFOk092hJX9sM2zjaXbMv6Fe
-         LSMw==
+        bh=Cwoa6YEoLumzQE8cS+ad1dIlqWJKYevB3c6NtJXNM8U=;
+        b=GBwu1zLDsh3vk/hwlsKsA7RdcSJaP3/Bs7kKVBkDl9VyUD25g+VXNvgGzxTs4WobgN
+         k/Ph6jJlMFMwye0B9zgeUNc4K/5/RC3WOUeT26T8jx57R65xUi/TWllt30Dgky2YTUJC
+         P8mQYG3UdnwyjaX3/PbgWCOQduO+FhbAzbCp/5SAR2f0C6RyWMiD/7nxbXLbAIf2PDY5
+         kolPQNRHjQiA8wMut4ciQGAGtwmCf19mWdHM8eXme9iXf5rKGRQmpvQrEJMG9vJ6H9W3
+         86p3RQYyykLlxrNeQkwvqKgSZCTPAIhtQAOKPtYB5kO72RpSevCxziCz9N6eDtTTIwaB
+         +oiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742342373; x=1742947173;
+        d=1e100.net; s=20230601; t=1742342376; x=1742947176;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0/5iYgZbCUJsXiO7D38VJCrRh0YKXMu8sk/DBCkW7ic=;
-        b=shsLjEKNlvQgSA1yi8VVOctslNavw4bsO0OLYo5s6cjR6quzozpgp4/3UjW5l/O1EF
-         zXqFmnXoBVVFQjZSgEm7bGpPixhmA6VjJOK89zJ/9S3PvnVWPc0gqEWRTGkSRRZDQnJN
-         cH79gbkQVG79NKoULN8ZVuFFFOakBJJYKIsmbYjuX9E97TZOCQ+c0IoW9LG5g1hZzR2I
-         6M0aPc82eiTH9fXhqa/vSxkR2TS9fJjsNSZ/t9l1cKynN0vaD7zYSsXyVi9dHKQCHMhG
-         V7STdbuzXHfamcMzETpUpmKnljJbVv2yMBs0gmzpOSyw3tlgS0E1H6zxR7EfvEc04Xwz
-         kaaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVjVOYLyBHkRpQJ3EKivg1RdoryOs+uPec3WxhpmsgCHa4wWKBywY43rdJasYCrUV9OdAN57ask@vger.kernel.org, AJvYcCWJnZ3vmsNLu/CKBqhMHPOm2OR2RnjMUf3wQZwYPOHnJu6q3dgGyOAThFL5AVkM8cA4ZwsF6VN22um7@vger.kernel.org, AJvYcCWO0W3Uezi3tSK4WuDXJJ0sMoUhM6riu8SviwO9SUgV6X3DQwjOmPa9JR04CRwcJVPeSWnCBW4zRZ27hjRE@vger.kernel.org
-X-Gm-Message-State: AOJu0YwW4DNfi4aLp2KRA+MjkF0V3JQwUF4EQUVPG7+ZzQh0zSMt7g/b
-	hBDqbbzbFA7j/JM/JlLl6jxqsK+/WdamNX81SGq949otKwE0kI9x
-X-Gm-Gg: ASbGncuEAxyYhFHRHzaHb1EsFUtlMyZBAKUOhyA7Vad39jQNVRqd8Qa+s5dgYhJisdj
-	CYTatI3RItw0Of77O2b5tjVEP6X5KLjYSOQcsxQ07BqEmOHguDI/V1VeQqqbAA/WB4qGQ1x2vWB
-	aM7o2dsyAPJbxocAVX2MkIpCUkWMun+y/2gWBPtPOL17ewwpAY2YryMEheOcHTxc8ibf3XOCxG3
-	s+DkPdIckL24bb9lyHtVa03rMpFveqKhB7ZaCdKnAeZ5d90AOQRhdREbblmo68DMkkAQ+Z43WZF
-	jQm/3mLuZ29v7Z7ZN95ipKvgZrnZnluRcNxy5e1B+qEYXfPP/nBwqZN2wAkyc+RyljnZII4t0zp
-	aKCzEUbGV5o0HoQ==
-X-Google-Smtp-Source: AGHT+IHrUSW7kZea5qNUZamEroXL3N7I9riIWyNVShpuuVCd9aDBwNYHeRAO22OFdLWg0+M39Je/vA==
-X-Received: by 2002:a05:600c:b9b:b0:43b:cd0d:9466 with SMTP id 5b1f17b1804b1-43d4378cf45mr3381605e9.9.1742342372613;
-        Tue, 18 Mar 2025 16:59:32 -0700 (PDT)
+        bh=Cwoa6YEoLumzQE8cS+ad1dIlqWJKYevB3c6NtJXNM8U=;
+        b=QVTRoBmEWh2zlxn9IzwPwUKXczjtNDOr1AH1ExSrGpGb9/mS9M/DX2yX5lPwlbEqRn
+         nrl3+UfW/OgNN4qIy+YwW7b+npTBe8eTysKmIhD4Z9oEoDboHWJfpdLTgLO0svA6c6FO
+         tIYEpugwv9kW48UmeWwalCG6PzPpXYS013p3ZcvIhGpJJPCtoc1XBUiUAyBbR0tDtzQx
+         L/4eQJgNBKCCQuNTAMvkxyLbmLpkD/yI740tatcGkOjFjT25nLpWOOGvHgDV8HOM98eY
+         VbwU4ePt3VND/e/WIOovHDKqRRRr/gPBdh9zicAs0TirLexb9/cAYFUSG9Mt4hWGHvqF
+         eeyg==
+X-Forwarded-Encrypted: i=1; AJvYcCU4Fa0uYsx8n/wd+py51KqyyIfzJrrMqcGmB2M9ETVN95W3eHl6UUCPSMfMCc0usqw+nCyf6FDHmkrpI5WD@vger.kernel.org, AJvYcCWKt2OcXkTXzDqI2aeRFvLVAb7JhcHrSJSoTdgcYm/YdwdBmxrBo5TzDBLjWk96rTrbP+oy2EEO@vger.kernel.org, AJvYcCXVHxULPiqJ8zcd5BnPNFwlrkt+uChG8n0u6aviiLiidyDbxTbPAqwjffYt+cimKDmzDP3mGhHRE//l@vger.kernel.org
+X-Gm-Message-State: AOJu0YxS0lauueUxg+dShi4lmvRYtf0woTLIO4st2XByWYDDTJsWUjD5
+	V6DwLcU9JsQ3NhyxcLcM8Cn9BYgRZPnnNY10JOy85/ZOxhYcEVbq
+X-Gm-Gg: ASbGncvrVmu9tlffC9+tk41HvsLnR+AGe9UWJr0l0YenIY1MVXFaf2b7lLFDLLxynUq
+	+cbGNPQfiUK2PnfPBw1gSMqwj7xq35sQ5SgbTiamEnjRiA7Xlvtrdm4JYnpQf9RHcFpAFdqT7q0
+	4kssaZOifiheswbwgRYP0O/yYSj6vQDA5Pt4G8egO6/5l+oTttzBwPUv8mNj7N8nPz8IDIllwt9
+	97To4iInglfvvM+ZFeFwqfIfVKBi9wEgGkRTDN63vLcMOmCajLhHxKCdiW8oH3UlC9nckIqaJ1a
+	lfjIMTLr6LykxXldYhbIrCUL6YJKJ/3DwG+VkwK9dxi+7Df+iN/jhHWcqeCkwEZONIq/TYqFwTs
+	vmEopn7Phmuwkdw==
+X-Google-Smtp-Source: AGHT+IERNl/pUPey+/B30c2nHPSjciwnTH0tROmHtboEq+44mcIocSnX3h3zJgIyWPMByWTyzCy1fA==
+X-Received: by 2002:a05:6000:42ca:b0:391:10c5:d1a9 with SMTP id ffacd0b85a97d-399739cb99dmr397745f8f.31.1742342376093;
+        Tue, 18 Mar 2025 16:59:36 -0700 (PDT)
 Received: from localhost.localdomain (93-34-90-129.ip49.fastwebnet.it. [93.34.90.129])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-395c83b748bsm19713268f8f.39.2025.03.18.16.59.31
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-395c83b748bsm19713268f8f.39.2025.03.18.16.59.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Mar 2025 16:59:32 -0700 (PDT)
+        Tue, 18 Mar 2025 16:59:35 -0700 (PDT)
 From: Christian Marangi <ansuelsmth@gmail.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -76,9 +76,9 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	upstream@airoha.com
-Subject: [net-next PATCH 4/6] dt-bindings: net: ethernet-controller: permit to define multiple PCS
-Date: Wed, 19 Mar 2025 00:58:40 +0100
-Message-ID: <20250318235850.6411-5-ansuelsmth@gmail.com>
+Subject: [net-next PATCH 6/6] dt-bindings: net: pcs: Document support for Airoha Ethernet PCS
+Date: Wed, 19 Mar 2025 00:58:42 +0100
+Message-ID: <20250318235850.6411-7-ansuelsmth@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250318235850.6411-1-ansuelsmth@gmail.com>
 References: <20250318235850.6411-1-ansuelsmth@gmail.com>
@@ -90,31 +90,138 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Drop the limitation of a single PCS in pcs-handle property. Multiple PCS
-can be defined for an ethrnet-controller node to support various PHY
-interface mode type.
+Document support for Airoha Ethernet PCS for AN7581 SoC.
 
-It's very common for SoCs to have a dedicated PCS for SGMII mode and one
-for USXGMII mode.
+Airoha AN7581 SoC expose multiple Physical Coding Sublayer (PCS) for
+the various Serdes port supporting different Media Independent Interface
+(10BASE-R, USXGMII, 2500BASE-X, 1000BASE-X, SGMII).
+
+This follow the new PCS provider with the use of #pcs-cells property.
 
 Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 ---
- Documentation/devicetree/bindings/net/ethernet-controller.yaml | 2 --
- 1 file changed, 2 deletions(-)
+ .../bindings/net/pcs/airoha,pcs.yaml          | 112 ++++++++++++++++++
+ 1 file changed, 112 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/pcs/airoha,pcs.yaml
 
-diff --git a/Documentation/devicetree/bindings/net/ethernet-controller.yaml b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
-index 45819b235800..a260ab8e056e 100644
---- a/Documentation/devicetree/bindings/net/ethernet-controller.yaml
-+++ b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
-@@ -110,8 +110,6 @@ properties:
- 
-   pcs-handle:
-     $ref: /schemas/types.yaml#/definitions/phandle-array
--    items:
--      maxItems: 1
-     description:
-       Specifies a reference to a node representing a PCS PHY device on a MDIO
-       bus to link with an external PHY (phy-handle) if exists.
+diff --git a/Documentation/devicetree/bindings/net/pcs/airoha,pcs.yaml b/Documentation/devicetree/bindings/net/pcs/airoha,pcs.yaml
+new file mode 100644
+index 000000000000..8bcf7757c728
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/pcs/airoha,pcs.yaml
+@@ -0,0 +1,112 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/pcs/airoha,pcs.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Airoha Ethernet PCS and Serdes
++
++maintainers:
++  - Christian Marangi <ansuelsmth@gmail.com>
++
++description:
++  Airoha AN7581 SoC expose multiple Physical Coding Sublayer (PCS) for
++  the various Serdes port supporting different Media Independent Interface
++  (10BASE-R, USXGMII, 2500BASE-X, 1000BASE-X, SGMII).
++
++properties:
++  compatible:
++    enum:
++      - airoha,an7581-pcs-eth
++      - airoha,an7581-pcs-pon
++
++  reg:
++    items:
++      - description: XFI MAC reg
++      - description: HSGMII AN reg
++      - description: HSGMII PCS reg
++      - description: MULTI SGMII reg
++      - description: USXGMII reg
++      - description: HSGMII rate adaption reg
++      - description: XFI Analog register
++      - description: XFI PMA (Physical Medium Attachment) register
++
++  reg-names:
++    items:
++      - const: xfi_mac
++      - const: hsgmii_an
++      - const: hsgmii_pcs
++      - const: multi_sgmii
++      - const: usxgmii
++      - const: hsgmii_rate_adp
++      - const: xfi_ana
++      - const: xfi_pma
++
++  resets:
++    items:
++      - description: MAC reset
++      - description: PHY reset
++
++  reset-names:
++    items:
++      - const: mac
++      - const: phy
++
++  "#pcs-cells":
++    const: 0
++
++required:
++  - compatible
++  - reg
++  - reg-names
++  - resets
++  - reset-names
++  - "#pcs-cells"
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/reset/airoha,en7581-reset.h>
++
++    pcs@1fa08000 {
++        compatible = "airoha,an7581-pcs-pon";
++        reg = <0x1fa08000 0x1000>,
++              <0x1fa80000 0x60>,
++              <0x1fa80a00 0x164>,
++              <0x1fa84000 0x450>,
++              <0x1fa85900 0x338>,
++              <0x1fa86000 0x300>,
++              <0x1fa8a000 0x1000>,
++              <0x1fa8b000 0x1000>;
++        reg-names = "xfi_mac", "hsgmii_an", "hsgmii_pcs",
++                    "multi_sgmii", "usxgmii",
++                    "hsgmii_rate_adp", "xfi_ana", "xfi_pma";
++
++        resets = <&scuclk EN7581_XPON_MAC_RST>,
++                 <&scuclk EN7581_XPON_PHY_RST>;
++        reset-names = "mac", "phy";
++
++        #pcs-cells = <0>;
++    };
++
++    pcs@1fa09000 {
++        compatible = "airoha,an7581-pcs-eth";
++        reg = <0x1fa09000 0x1000>,
++              <0x1fa70000 0x60>,
++              <0x1fa70a00 0x164>,
++              <0x1fa74000 0x450>,
++              <0x1fa75900 0x338>,
++              <0x1fa76000 0x300>,
++              <0x1fa7a000 0x1000>,
++              <0x1fa7b000 0x1000>;
++        reg-names = "xfi_mac", "hsgmii_an", "hsgmii_pcs",
++                    "multi_sgmii", "usxgmii",
++                    "hsgmii_rate_adp", "xfi_ana", "xfi_pma";
++
++        resets = <&scuclk EN7581_XSI_MAC_RST>,
++                 <&scuclk EN7581_XSI_PHY_RST>;
++        reset-names = "mac", "phy";
++
++        #pcs-cells = <0>;
++    };
 -- 
 2.48.1
 
