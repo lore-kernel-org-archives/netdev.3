@@ -1,46 +1,76 @@
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725FB20F073
-	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 18:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742324186; cv=none; b=YV4k1jNm1zyB4fI55H1W7q4Ju03D920RQywHXYnU6KJTl9ejOu+VyXwJpBSh6LdJGHJ+jNQx174bNO9F+WDZHYXxAD6hErtqRGQotDQKZ7GrU4OYWhXq34ul1QTS8oOSNPRuGEfeuzbZpUwi3seHbUrmGlgJVPgvf1B7R/oyR/Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742324186; c=relaxed/simple;
-	bh=3pC3gjvSu3lQEdG9zh7ylkORQiG7ySyfjcVk4Nq9ttw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PGb9EAg2Z2gfyRKuhXqrLSdoR475mhz5Gnu5BZy+T7aPlr/8mIUVRkgdj5Q1KdOg0Au5YlFKqe2HQbanb/OlxUaptnD+e1Ff06zlV7NqSxZt0I+mzh3SdR44bWW/WfCgH5Sxre9QxPQ8YCSQ62IAHtipc4Dk/2tdkcTGcDnURFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jQtxxWMN; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5974A2135DD;
+	Tue, 18 Mar 2025 19:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742324821; cv=pass; b=GcX/Z/6RkOwxge5cxuvVF2Q9k/VpwVmCoaik5r5BbUGHCixAKpAOCmnezQa8kRpqmouH6GHCSXpfNUqOUX2l1HIq9hdmsRq8vMtnL977mmDhOy1ln42r4Bz7so4nNvwVU4awFI0OIZVLhjdbYxiCOg5FZdVjRNbMQEHHc54Boz4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742324821; c=relaxed/simple;
+	bh=q70UAXhsENkm9ZeXmtS2XijVh5iSYWo7ckxIbMjrRH0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o9qCTI1sZlf1iRbRUOJGCfOBAAlVIg+HAsPdGcSwTHYxaySHFk5fZxXxWKa5fRmdnjHCRVBCBB6NrTKS1ktdjcNVDA42NbGk3bWA9LkWrb5XX6nkRcoUUcWf4n235kxtyem6fsmK7P9ZYxgTeOPDL9bc+xLVVSK42UBOtslycxo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=u1SmbPA3; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jQtxxWMN"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1742324178;
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="u1SmbPA3"
+Received: from monolith.lan (unknown [193.138.7.158])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pav)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4ZHLtR4rFYz49Q6T;
+	Tue, 18 Mar 2025 21:06:55 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1742324816;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=djNKGzX9ZcA55R+w5dijyS9ARkrFmZ7NXtXx0AoZVw8=;
-	b=jQtxxWMNDhi/Xrme4343z8GIhKshDUS/qBiefA8vduB3JEb5BOYt9aDHT/a+ugnRRzSZcB
-	vdA6F8Ou1n52SKyffUQ0AHMn1UhzqDkVOKCpBE08KPyPuOFcPt9tH56Y/IMWVsBzFUUrQi
-	AekjmmJcaoIEq6lq9kauiWFCbRN7fjk=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7+AxRvhWzK8Bfth2Uhhm+w7hR/Z5mABCOIn/69HeMbQ=;
+	b=u1SmbPA3jbAH9ZxJfNzJilgsZg1ZgmeNnLp0Y6TMTm7saWtqmZCnN5+rm7vQjE8uDL0GGW
+	DvZMHkWegpK480xwyhONxT/lDaQvGJFjDo0B9xfyVBPDgM/KK3T0aMhxySPtmPKR/7ZPjQ
+	cLX2dpeUHzCgAxacG2hh0clB1YfbMKHFFvGWd+Gz6ZPnr7QaLcRhyikblcUOAX33w9NwRb
+	Jayj3OlHHQzIe+Lua9YU1jyireiAsyUczH+YWwt5y/8wm/bqKV2tHKGRjstincDw25/GnZ
+	BBXaKPuJwmTAFFHckOEYuKyoxNfi5CuWCPXNJtPVaEhoA8W61PO8c6uXER5jvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1742324816;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7+AxRvhWzK8Bfth2Uhhm+w7hR/Z5mABCOIn/69HeMbQ=;
+	b=QznujIy+EqYO2vZAZdxuteyssZYpyQvIqOS/9FkNSJzLMWWFuwzxQlw3uQBUHMq1Pxxavy
+	kGMskjxRonyEGRQQXjmHWAWBQYQC/4uNfgsDO2zoJGrCeVyC2V9dPESZfNK7oSmYvAwQZJ
+	L9yD7U9GKuvZAqB8h/2U8tXAdMA0/aI4xPyw9VRKilssmOt6mLaHZUZnnJc4cq6hZR//ak
+	O0E4uQSyHLJAf+XIPMg2WR8SO9WCw36daG7icThmRT0WxWexgnLT8+IfArka3Ace3EJcu3
+	v1cbYADxqJjom3WCa8LQbyOJBuvaT2A6UAVs2ulKcGRi3cnfUR31H50gzFlIVg==
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1742324816; a=rsa-sha256;
+	cv=none;
+	b=JyL+djjeyL5qS3KcInAhp0RtQU+nmIeMtFQYhumIjcPSV6e7dhLSuVoYw/TyR3Qnxt03jN
+	jGYcJ6ytO1MX0Nr2fmcdC4Vza1TpzbwovGEO8OgUUOdTtMGCdyOrMvAAzZmpqoifbPyyta
+	YtKqrc94mvymm+WtJQxfqlsWC8YEEKCyLdd0z3FCYGzEdsRJFtBmNisPl1gycmIAdc9QoG
+	JBx58zGKRzFaEcqHiJRr5joAx16KTDbY/6inABCaBkHST47hqpLEMpJdabbM8Kav4hKVuo
+	ENZMSUE+OW05m7j5yiGAIlnaTbH4+PrwDxE323iIpxtodIGs1S+KeHRvMjbhfA==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=pav smtp.mailfrom=pav@iki.fi
+From: Pauli Virtanen <pav@iki.fi>
+To: linux-bluetooth@vger.kernel.org
+Cc: Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] netfilter: xtables: Use strscpy() instead of strscpy_pad()
-Date: Tue, 18 Mar 2025 19:55:19 +0100
-Message-ID: <20250318185519.107323-2-thorsten.blum@linux.dev>
+	davem@davemloft.net,
+	kuba@kernel.org,
+	willemdebruijn.kernel@gmail.com
+Subject: [PATCH v5 3/5] Bluetooth: ISO: add TX timestamping
+Date: Tue, 18 Mar 2025 21:06:44 +0200
+Message-ID: <af69c75a4d38e42bb11b344defc96adc5f703357.1742324341.git.pav@iki.fi>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <cover.1742324341.git.pav@iki.fi>
+References: <cover.1742324341.git.pav@iki.fi>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,33 +78,111 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-kzalloc() already zero-initializes the destination buffer, making
-strscpy() sufficient for safely copying the name. The additional NUL-
-padding performed by strscpy_pad() is unnecessary.
+Add BT_SCM_ERROR socket CMSG type.
 
-The size parameter is optional, and strscpy() automatically determines
-the size of the destination buffer using sizeof() if the argument is
-omitted. This makes the explicit sizeof() call unnecessary; remove it.
+Support TX timestamping in ISO sockets.
 
-No functional changes intended.
+Support MSG_ERRQUEUE in ISO recvmsg.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+If a packet from sendmsg() is fragmented, only the first ACL fragment is
+timestamped.
+
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
 ---
- net/netfilter/xt_repldata.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/xt_repldata.h b/net/netfilter/xt_repldata.h
-index 5d1fb7018dba..600060ca940a 100644
---- a/net/netfilter/xt_repldata.h
-+++ b/net/netfilter/xt_repldata.h
-@@ -29,7 +29,7 @@
- 	if (tbl == NULL) \
- 		return NULL; \
- 	term = (struct type##_error *)&(((char *)tbl)[term_offset]); \
--	strscpy_pad(tbl->repl.name, info->name, sizeof(tbl->repl.name)); \
-+	strscpy(tbl->repl.name, info->name); \
- 	*term = (struct type##_error)typ2##_ERROR_INIT;  \
- 	tbl->repl.valid_hooks = hook_mask; \
- 	tbl->repl.num_entries = nhooks + 1; \
+Notes:
+    v5:
+    - use sockcm_init -> hci_sockcm_init
+
+ include/net/bluetooth/bluetooth.h |  1 +
+ net/bluetooth/iso.c               | 24 ++++++++++++++++++++----
+ 2 files changed, 21 insertions(+), 4 deletions(-)
+
+diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
+index 435250c72d56..bbefde319f95 100644
+--- a/include/net/bluetooth/bluetooth.h
++++ b/include/net/bluetooth/bluetooth.h
+@@ -156,6 +156,7 @@ struct bt_voice {
+ #define BT_PKT_STATUS           16
+ 
+ #define BT_SCM_PKT_STATUS	0x03
++#define BT_SCM_ERROR		0x04
+ 
+ #define BT_ISO_QOS		17
+ 
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 0cb52a3308ba..3501a991f1c6 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -518,7 +518,8 @@ static struct bt_iso_qos *iso_sock_get_qos(struct sock *sk)
+ 	return &iso_pi(sk)->qos;
+ }
+ 
+-static int iso_send_frame(struct sock *sk, struct sk_buff *skb)
++static int iso_send_frame(struct sock *sk, struct sk_buff *skb,
++			  const struct sockcm_cookie *sockc)
+ {
+ 	struct iso_conn *conn = iso_pi(sk)->conn;
+ 	struct bt_iso_qos *qos = iso_sock_get_qos(sk);
+@@ -538,10 +539,12 @@ static int iso_send_frame(struct sock *sk, struct sk_buff *skb)
+ 	hdr->slen = cpu_to_le16(hci_iso_data_len_pack(len,
+ 						      HCI_ISO_STATUS_VALID));
+ 
+-	if (sk->sk_state == BT_CONNECTED)
++	if (sk->sk_state == BT_CONNECTED) {
++		hci_setup_tx_timestamp(skb, 1, sockc);
+ 		hci_send_iso(conn->hcon, skb);
+-	else
++	} else {
+ 		len = -ENOTCONN;
++	}
+ 
+ 	return len;
+ }
+@@ -1348,6 +1351,7 @@ static int iso_sock_sendmsg(struct socket *sock, struct msghdr *msg,
+ {
+ 	struct sock *sk = sock->sk;
+ 	struct sk_buff *skb, **frag;
++	struct sockcm_cookie sockc;
+ 	size_t mtu;
+ 	int err;
+ 
+@@ -1360,6 +1364,14 @@ static int iso_sock_sendmsg(struct socket *sock, struct msghdr *msg,
+ 	if (msg->msg_flags & MSG_OOB)
+ 		return -EOPNOTSUPP;
+ 
++	hci_sockcm_init(&sockc, sk);
++
++	if (msg->msg_controllen) {
++		err = sock_cmsg_send(sk, msg, &sockc);
++		if (err)
++			return err;
++	}
++
+ 	lock_sock(sk);
+ 
+ 	if (sk->sk_state != BT_CONNECTED) {
+@@ -1405,7 +1417,7 @@ static int iso_sock_sendmsg(struct socket *sock, struct msghdr *msg,
+ 	lock_sock(sk);
+ 
+ 	if (sk->sk_state == BT_CONNECTED)
+-		err = iso_send_frame(sk, skb);
++		err = iso_send_frame(sk, skb, &sockc);
+ 	else
+ 		err = -ENOTCONN;
+ 
+@@ -1474,6 +1486,10 @@ static int iso_sock_recvmsg(struct socket *sock, struct msghdr *msg,
+ 
+ 	BT_DBG("sk %p", sk);
+ 
++	if (unlikely(flags & MSG_ERRQUEUE))
++		return sock_recv_errqueue(sk, msg, len, SOL_BLUETOOTH,
++					  BT_SCM_ERROR);
++
+ 	if (test_and_clear_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags)) {
+ 		sock_hold(sk);
+ 		lock_sock(sk);
+-- 
+2.48.1
+
