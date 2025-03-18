@@ -1,35 +1,40 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBA620468F;
-	Tue, 18 Mar 2025 14:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D680F20F065;
+	Tue, 18 Mar 2025 15:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742309999; cv=none; b=QL9w8lNG6Ewr0J1Ng747Fs2iyJ9ggmhKzruAlwutG8AqQhHeydmHbTZWTcd++rOrhd8zBi2J8zE8d2MeHg8qOmS87aYfKCXcJe6TjFIhvgQ29J7SWEgS+KYBdeAB/qaFMEhE2mgtXACLtd6mVR9OcTtG5WzrwsATKl/PQduvy9k=
+	t=1742310050; cv=none; b=S154w34fx/N5VBXT2U1VsNUP+8+Q+xu5WvbA0+0+2qkT94uGo9/si7wY7Ui3JfW313/dpiReXt1mzhC4Iz7s+HMFqKKi9ZCqLyEwQ3YsG8LfCUwhCJwDw+hDs8Hl3kanQW9Hsq0FS/q/jfVPJgqfGDDrrzvPaSoerdMKu42mMh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742309999; c=relaxed/simple;
-	bh=r0NrzcNDxEAo6t+Xoz4A+ZsjzVa5mHQEjDvSbM8+ItM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=D4DmxnWlalXKhAQCcNgF3DdpZvZcTTJBxiLk7JlNNslFFhEMChaHZVvlMgNdpihKZuBRdg0pXBz4v7OhpEMsyyEwPGbPnr1719CsXH7vd4KXaMVifvzXKaqv2Ex3ctzaZAdybzMDF/9BeohHVQVPmldLS1vtbG7NiwGjOlBVN0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y7BIYDHM; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y7BIYDHM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8457EC4CEE3;
-	Tue, 18 Mar 2025 14:59:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742309998;
-	bh=r0NrzcNDxEAo6t+Xoz4A+ZsjzVa5mHQEjDvSbM8+ItM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Y7BIYDHM86vWww2amj46/mLjgIS9Pd+7uQlOXialHBqRDb8TRbN8eHCTUEXr44qjw
-	 aOIsxiBVjuJYca07fp8YJLOmvV2xbFRNjwOTK8w5dGpjOC458+667lzGFnKd2sgF/1
-	 MEqYnxpu7gk3iP8HTvN1PWsLX0tL2Uj55mHuE+F3f28JLUTnj9Z4g7dyNsZ3F+4/H6
-	 R50JhgxMv4KAL7casbv0AMtCC8Z+tM+JYOUVRCDLWi9HIqN1ZRbUBrCJxUCMly60Ol
-	 WGvhYD4LhyMINquvspNJGrgYwK7dKnt2Dl9H9NLPMMwWUBPcz/3jkWkeTnNeNlWhPd
-	 3mvxeqCe3WO5Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33FFB380DBE8;
-	Tue, 18 Mar 2025 15:00:35 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1742310050; c=relaxed/simple;
+	bh=wyn3VpaSleocOcFN9TKcRvlozK514gBG9UmOzKFHjxc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=MxLQhSDpBuJz6ek5Uh3JgX0+zIG2mKl1PykBfJF9Q0gBdfR+APV3ztXb7GFSZ9zi39IDKYmVKJIWdN1wsI3DebiZZmqBM0VcEOsI4yYLchFZw4dtRHHe41MiGRMz6AOAU06kcLmpifOFMbi/zPZN8ArRy7/cd6hrzbp9E2auIbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+Received: from kero.packetmixer.de (p200300C5973197D81320d84731f3581A.dip0.t-ipconnect.de [IPv6:2003:c5:9731:97d8:1320:d847:31f3:581a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id D3090FA132;
+	Tue, 18 Mar 2025 16:00:38 +0100 (CET)
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: davem@davemloft.net,
+	kuba@kernel.org
+Cc: netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
+	stable@vger.kernel.org,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net 1/1] batman-adv: Ignore own maximum aggregation size during RX
+Date: Tue, 18 Mar 2025 16:00:35 +0100
+Message-Id: <20250318150035.35356-2-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250318150035.35356-1-sw@simonwunderlich.de>
+References: <20250318150035.35356-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,64 +42,59 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/9] net: stmmac: remove unnecessary
- of_get_phy_mode() calls
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174231003400.344268.9977818669398853411.git-patchwork-notify@kernel.org>
-Date: Tue, 18 Mar 2025 15:00:34 +0000
-References: <Z9FQjQZb0IMaQJ9H@shell.armlinux.org.uk>
-In-Reply-To: <Z9FQjQZb0IMaQJ9H@shell.armlinux.org.uk>
-To: Russell King (Oracle) <linux@armlinux.org.uk>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, alexandre.torgue@foss.st.com,
- andrew+netdev@lunn.ch, angelogioacchino.delregno@collabora.com,
- wens@csie.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- jernej.skrabec@gmail.com, jbrunet@baylibre.com, khilman@baylibre.com,
- linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev,
- martin.blumenstingl@googlemail.com, matthias.bgg@gmail.com,
- mcoquelin.stm32@gmail.com, neil.armstrong@linaro.org, netdev@vger.kernel.org,
- pabeni@redhat.com, samuel@sholland.org, vkoul@kernel.org
 
-Hello:
+From: Sven Eckelmann <sven@narfation.org>
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+An OGMv1 and OGMv2 packet receive processing were not only limited by the
+number of bytes in the received packet but also by the nodes maximum
+aggregation packet size limit. But this limit is relevant for TX and not
+for RX. It must not be enforced by batadv_(i)v_ogm_aggr_packet to avoid
+loss of information in case of a different limit for sender and receiver.
 
-On Wed, 12 Mar 2025 09:14:53 +0000 you wrote:
-> Hi,
-> 
-> This series removes unnecessary of_get_phy_mode() calls from the stmmac
-> glue drivers. stmmac_probe_config_dt() / devm_stmmac_probe_config_dt()
-> already gets the interface mode using device_get_phy_mode() and stores
-> it in plat_dat->phy_interface.
-> 
-> [...]
+This has a minor side effect for B.A.T.M.A.N. IV because the
+batadv_iv_ogm_aggr_packet is also used for the preprocessing for the TX.
+But since the aggregation code itself will not allow more than
+BATADV_MAX_AGGREGATION_BYTES bytes, this check was never triggering (in
+this context) prior of removing it.
 
-Here is the summary with links:
-  - [net-next,v2,1/9] net: stmmac: qcom-ethqos: remove of_get_phy_mode()
-    https://git.kernel.org/netdev/net-next/c/8ee1c926f31e
-  - [net-next,v2,2/9] net: stmmac: mediatek: remove of_get_phy_mode()
-    https://git.kernel.org/netdev/net-next/c/46f84d700cb8
-  - [net-next,v2,3/9] net: stmmac: anarion: remove of_get_phy_mode()
-    https://git.kernel.org/netdev/net-next/c/e3ef12172a83
-  - [net-next,v2,4/9] net: stmmac: ipq806x: remove of_get_phy_mode()
-    https://git.kernel.org/netdev/net-next/c/f07cb4b4b481
-  - [net-next,v2,5/9] net: stmmac: meson8b: remove of_get_phy_mode()
-    https://git.kernel.org/netdev/net-next/c/3e5833060efb
-  - [net-next,v2,6/9] net: stmmac: rk: remove of_get_phy_mode()
-    https://git.kernel.org/netdev/net-next/c/9886718ad1c5
-  - [net-next,v2,7/9] net: stmmac: sti: remove of_get_phy_mode()
-    https://git.kernel.org/netdev/net-next/c/3e2858bb3f59
-  - [net-next,v2,8/9] net: stmmac: sun8i: remove of_get_phy_mode()
-    https://git.kernel.org/netdev/net-next/c/3d9e9dfce04c
-  - [net-next,v2,9/9] net: stmmac: sunxi: remove of_get_phy_mode()
-    https://git.kernel.org/netdev/net-next/c/00d2c3c07124
+Cc: stable@vger.kernel.org
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Fixes: 9323158ef9f4 ("batman-adv: OGMv2 - implement originators logic")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/bat_iv_ogm.c | 3 +--
+ net/batman-adv/bat_v_ogm.c  | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-You are awesome, thank you!
+diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
+index 07ae5dd1f150..b12645949ae5 100644
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -325,8 +325,7 @@ batadv_iv_ogm_aggr_packet(int buff_pos, int packet_len,
+ 	/* check if there is enough space for the optional TVLV */
+ 	next_buff_pos += ntohs(ogm_packet->tvlv_len);
+ 
+-	return (next_buff_pos <= packet_len) &&
+-	       (next_buff_pos <= BATADV_MAX_AGGREGATION_BYTES);
++	return next_buff_pos <= packet_len;
+ }
+ 
+ /* send a batman ogm to a given interface */
+diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
+index e503ee0d896b..8f89ffe6020c 100644
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -839,8 +839,7 @@ batadv_v_ogm_aggr_packet(int buff_pos, int packet_len,
+ 	/* check if there is enough space for the optional TVLV */
+ 	next_buff_pos += ntohs(ogm2_packet->tvlv_len);
+ 
+-	return (next_buff_pos <= packet_len) &&
+-	       (next_buff_pos <= BATADV_MAX_AGGREGATION_BYTES);
++	return next_buff_pos <= packet_len;
+ }
+ 
+ /**
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.39.5
 
