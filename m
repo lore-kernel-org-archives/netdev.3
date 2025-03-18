@@ -1,108 +1,103 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B417126BFA
-	for <netdev@vger.kernel.org>; Tue, 18 Mar 2025 14:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2C420CCF5;
+	Tue, 18 Mar 2025 14:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742306559; cv=none; b=Yr8SN0MlvYxV5DvHiKfDKSmQMF5kyOKHGvLrayGASGleURP5+eKWeV/5ncMxj77NXFL2o3MeAaNxpmMvffPTdQuAVtBSEdqyw7pxzQV0Vqv8IMhKpg/g/kSOWPiixJOy9glbiOZ7hYmFgYa4mB5NI5cxVwuJj7GTwjA8zUO0ZdU=
+	t=1742306599; cv=none; b=D82+3Bg86lUUQZHd7+QgQ7/+wkWpnJQEXH8EOveYUW3f42iuDyMAcYP3tnzI0lvK5x+6tqz6RpKL8kiLQvcCbMUctWaJWV0xHpTcNyC46Mi2Eb2uXHuCBSyBfZyMDVHiP9/qPcp9NvrxEFveFbfzZRrqlzKjo2aHDlalPc94gOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742306559; c=relaxed/simple;
-	bh=F2e40r40n6eqSC6k5MgBH3+wCup0YURGMSpP32SAcWc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D62Oi4nnQapxavP9IIgKv+GIvLio0RPOKVKRQYHYqCyknROJYNRRyX1Tul0SR9fwA1LHkLOYS8WJKV1zIx3fZxIvXwt7+rJ54OjIDCsXhVKcXOxkas+4tIFjAQDBg36sBKTOFgHv8i3mYmxANUldvPF0FC54JzhXUXtbAWW73U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=0mT47E2y; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	s=arc-20240116; t=1742306599; c=relaxed/simple;
+	bh=ONEQCJHxtWXCTHYNxmFxRZ9fNTNwrSUvdGTV4QoojI4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nLttlobn/a1x5NasoHrg4EMs9ypHSDFmujJKEqhZ74+k/H7blHy9shjkDe2Xn4ph6bD0MEWJg87jYFkg1GYFTLSgRstCnF6erHYyEhJl8nejcAfPUk4ExzoKo55ER8ngQhmmNDTHvsqse9gFwZuKdVOWDnJxaUiKnGXyBiy9TKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=357SSSF2; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="0mT47E2y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1742306170;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zS6U9IbqxukiJ1clWx1A4PxWHL2mCHGPOXvVeRtKO/w=;
-	b=0mT47E2yVSK9sQUtr2JzKuXdSBEYGzBRbtTqUi6/gq6OOpst2y3o9eErHmgUIOC2b45dNM
-	Zooer++1C3wtMq0Ny7oqY3hp7V5Xv2cWZz3iH7s22ByHUs/BA1dX2yUU4YFq68mumjPtEd
-	DRYMGzX0hI7yjd78mlCtcrGgOdQjYGo=
-From: Sven Eckelmann <sven@narfation.org>
-To: Simon Wunderlich <sw@simonwunderlich.de>, davem@davemloft.net,
- Paolo Abeni <pabeni@redhat.com>
-Cc: kuba@kernel.org, netdev@vger.kernel.org, b.a.t.m.a.n@lists.open-mesh.org
-Subject: Re: [PATCH 0/5] pull request for net: batman-adv 2025-03-13
-Date: Tue, 18 Mar 2025 14:56:07 +0100
-Message-ID: <3809149.MHq7AAxBmi@ripper>
-In-Reply-To: <a0f1deec-2770-4b51-ad2b-b3d0e846be25@redhat.com>
-References:
- <20250313161738.71299-1-sw@simonwunderlich.de>
- <a0f1deec-2770-4b51-ad2b-b3d0e846be25@redhat.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="357SSSF2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=0yf+Edtj7qyHSUTzNfZ+JKXVNOrD8jm+TXRXVg69QbA=; b=357SSSF22yh5nMcYWPclY7KXns
+	bBTRpnsCM0yabQo6ggsqvDtS521lMh5u73mchyQSJ01CwKeyG0v+3YePiHNisxh+qWVKy4GBaVYcn
+	r0Q3lIM+FIwRUz5pkuG+bJ7OENHhjUHK7BtAmWbnOGI3HE7L6QrQAaz1gFMU1LblELAo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tuXX5-006Gct-Rs; Tue, 18 Mar 2025 15:03:03 +0100
+Date: Tue, 18 Mar 2025 15:03:03 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jacky Chou <jacky_chou@aspeedtech.com>
+Cc: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"joel@jms.id.au" <joel@jms.id.au>,
+	"andrew@codeconstruct.com.au" <andrew@codeconstruct.com.au>,
+	"ratbert@faraday-tech.com" <ratbert@faraday-tech.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
+	BMC-SW <BMC-SW@aspeedtech.com>
+Subject: Re: =?utf-8?B?5Zue6KaGOiBbbmV0LW5leA==?= =?utf-8?Q?t?= 2/4] ARM:
+ dts: ast2600-evb: add default RGMII delay
+Message-ID: <8c0195dd-50b3-4f30-a021-c5b77d39d895@lunn.ch>
+References: <20250317025922.1526937-1-jacky_chou@aspeedtech.com>
+ <20250317025922.1526937-3-jacky_chou@aspeedtech.com>
+ <5db47dea-7d90-45a1-85a1-1f4f5edd3567@lunn.ch>
+ <SEYPR06MB5134A69692C6C474BDE9A6A99DDE2@SEYPR06MB5134.apcprd06.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart1964837.taCxCBeP46";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SEYPR06MB5134A69692C6C474BDE9A6A99DDE2@SEYPR06MB5134.apcprd06.prod.outlook.com>
 
---nextPart1964837.taCxCBeP46
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-Subject: Re: [PATCH 0/5] pull request for net: batman-adv 2025-03-13
-Date: Tue, 18 Mar 2025 14:56:07 +0100
-Message-ID: <3809149.MHq7AAxBmi@ripper>
-In-Reply-To: <a0f1deec-2770-4b51-ad2b-b3d0e846be25@redhat.com>
-MIME-Version: 1.0
+On Tue, Mar 18, 2025 at 11:00:27AM +0000, Jacky Chou wrote:
+> Hi Andrew,
+> 
+> Thank you for your reply.
+> 
+> > >  	phy-mode = "rgmii";
+> > >  	phy-handle = <&ethphy2>;
+> > >
+> > > +	tx-internal-delay-ps = <8>;
+> > > +	rx-internal-delay-ps = <4>;
+> > > +
+> > 
+> > Ideally you want:
+> > 
+> > 	phy-mode = "rgmii-id";
+> > 	tx-internal-delay-ps = <0>;
+> > 	rx-internal-delay-ps = <0>;
+> > 
+> > Since 'rgmii-id' correctly describes the hardware.
+> 
+> I still confuse about ethernet-controller.yaml.
+> It lists 'rgmi', 'rgmii-rxid', 'rgmii-txid' and 'rgmii-id'.
 
-On Tuesday, 18 March 2025 12:05:52 CET Paolo Abeni wrote:
-> The series does not apply cleanly to the net tree, could you please
-> rebase it?
+DT describes the board. Does the board add the 2ns delay via extra
+long clock lines? If yes, use rgmii. If the MAC/PHY pair need to add
+the 2ns delay, use rgmii-id.
 
-$ git log -1 --oneline
-9a81fc3480bf (HEAD, net/main) ipv6: Set errno after ip_fib_metrics_init() in ip6_route_info_create().
+If the MAC/PHY pair is adding the delay, the DT says nothing about how
+they add the delay.
 
-$ git pull --no-ff git://git.open-mesh.org/linux-merge.git tags/batadv-net-pullrequest-20250313
-From git://git.open-mesh.org/linux-merge
- * tag                         batadv-net-pullrequest-20250313 -> FETCH_HEAD
-Merge made by the 'ort' strategy.
- net/batman-adv/bat_iv_ogm.c | 3 +--
- net/batman-adv/bat_v_ogm.c  | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+The general rule is the PHY adds the delay. If you look at
+drivers/net/phy/*.c, every PHY that implements RGMII support both
+PHY_INTERFACE_MODE_RGMII_ID and PHY_INTERFACE_MODE_RGMII. There is no
+reason not to follow ever other MAC/PHY pair and have the PHY add the
+delay. The MAC can then do fine tuning if needed, adding small delays.
 
-So, it works perfectly fine for me .
-
-I understand that it is confusing that that Simon send a PR with 5 patches 
-mentioned. It is actually only 1 patch - 4 were already submitted in the last 
-PR. But still, the PR seems to apply cleanly for me.
-
-Any hints how to reproduce your problem?
- 
-> While at it, could you please include the target tree in the subj prefix?
-
-It currently mentions net in the subject. But I think you mean to change it 
-from "[PATCH 0/5] pull request for net: batman-adv 2025-03-13" to 
-"[PATCH net 0/5] pull request: batman-adv 2025-03-13". Or which exact format 
-do you prefer?
-
-Kind regards,
-	Sven
-
-
---nextPart1964837.taCxCBeP46
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCZ9l7dwAKCRBND3cr0xT1
-y5/DAQD20CG4iCNDzl8RXkBPzxz4miX+U6QNUXpR+iB0JCSm8QEAzVj7p6ylNvFQ
-Cqf6IBTk8Z+k1c9gZxXP1SkDzm6uAwk=
-=+ADe
------END PGP SIGNATURE-----
-
---nextPart1964837.taCxCBeP46--
-
-
-
+	Andrew
