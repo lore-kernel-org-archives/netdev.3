@@ -1,120 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E5114D70E;
-	Wed, 19 Mar 2025 16:59:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07131B4140;
+	Wed, 19 Mar 2025 17:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742403563; cv=none; b=KLgKKWdgJWxoea6VhfPBkgbZtq9maat6H5VXK/Llk1CeRYjCkmSw+kGLgcUJemGreYWs3/XlYw0SD7M7ujLbCv9yuijU7i9GzXtBnZx3KWwDHzrP4LiKx0b6eeosT1Giqakm3IVki61x7gX43xk2007zP2umDoJ/tOJWL9Q+rzs=
+	t=1742403780; cv=none; b=ohMdaEE9A34Z0MVYnPIEMJNvg8AIbTXNRP01eOIL0LoN6EGYATf6my4ItNzb7FFGOsnop5/0vn8vjmxVrslLj3S7bjrLQSwyXq62e6jDfVczuf8KZ9UEwOZ3WiuSH8CNkuoOXp5tP1vaponjxCme0dayiI6r6/si44v1zmmEjqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742403563; c=relaxed/simple;
-	bh=C/oLQqGLGQ9DX0nwXmSdMgfjgHP3EaILZb0W8jEkeYk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uBojvTw3Y69xNiB22AqWQKFyxqcA9KJIYwdqHO1JUYoU1QhU00PYj2vDJ1v40DQx1FQWFLVLkRlDMphcJQXfNasf69tXblYr2XnbiusMbBa5Mdr8GPa2HQjRc31Th4C87R0lvmsKDksH50FozoMcdurpvjryJQgToA0BqUS900o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=Tq66VM76; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Tq66VM76"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4FAC4CEE4;
-	Wed, 19 Mar 2025 16:59:22 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Tq66VM76"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1742403561;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uf/p7VlVNzQ814HdQ3t8Ub9K7Z0QRnEkUpNVCIzegLU=;
-	b=Tq66VM76yopfaCOE3UPF1qlAPt1DsX2zUYDHrSNummG1xYmOUI7d8Ewg8pRwES15HaorQh
-	bAv7+5B4aGoERuQIVOXGVzyCehOPPd1G3/XdxZzpA0ux+Kqg6s8VIUj2UF3RS5Dwklc4og
-	pWkNWnxxVysrGgrmfc8P7GhTYzMigRg=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 7a205e8a (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Wed, 19 Mar 2025 16:59:20 +0000 (UTC)
-Date: Wed, 19 Mar 2025 17:59:16 +0100
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Dmitrii Ermakov <demonihin@gmail.com>
-Cc: wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] wireguard: use rhashtables instead of hashtables
-Message-ID: <Z9r35H2rfLV8m5iW@zx2c4.com>
-References: <20250105110036.70720-2-demonihin@gmail.com>
+	s=arc-20240116; t=1742403780; c=relaxed/simple;
+	bh=QQEhEFjq9wfqNSHOh65dEw6Lr7M4kDIxuqMqTzNOoGM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=GAQ9j5aFH5ZHGNwfxYAZ95Wds95SgwBdNWmpaT1osV3HX9LJPXVr2I59DrkxtiObsXhProuHowcwvLW903oclPZ+uXdQusDVnR42+Yu2KmtJ5OMRg14E9E+tN0FKMbCZUgdOBI2r10UG9ypSeoIN7nxuRLM1eRQBTReDYulWhr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ac2c663a3daso734895866b.2;
+        Wed, 19 Mar 2025 10:02:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742403777; x=1743008577;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4emXJwNKSYYRU1ppTj5t1hQiQWF9TYLKaQBYefea5/o=;
+        b=Wnn91x44EetNg8Acwl09S85MUi+xv0NWn44Ju4vRniYVSiuUShhikN9VjMO7su3p6k
+         kxw9bEa3tosc0/7pgIW5Nsuyj/7m237xSyxwHh7eIBlleXal6e8ktbqgZjkQzRjGXrKJ
+         OBizOZBYb5+xMgiNprpvhAeWhJAZzaNMMyxr5LwkzkSLfXeymqUSv72mZ3UzRSzUjcJy
+         nIqPi/FBanNbkfzh2OXJ6cwGwAYsPQAfp72xaSmHIZUBXK6s6LXX1HxBk3qCxWYkJTUq
+         0axmIY2PCbrkNkz5j05+4GDF2ExXeyYA4s/wZqkBaxXOz4lfZbCL3Us1LRduqeXjbh1c
+         tY/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXwrh3GCCR0smrt/DPIw+Zkv9yEuIwKe/qUcEG5Kz/T3X7O09DObWzYF3/CIsH4VqOAuNCI3ygBq1iCaO8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxdl2neQ2dh0AeLldWu0CUBR2Q3TdULkNXC2XQKzvHiTcC1OaZ6
+	n5h4Zy3vsBGXi/gy8dMe3t1yP3Ua1fWQEyfQGpisXgA0vAaB4FHW
+X-Gm-Gg: ASbGnct/7iYlUN+KYtJGbnLcfNPyyzCVHTHS8aLuoXe2BRPjyiuHcV4SNRkuYeSAoRD
+	S+YNOQdn2+hUiT0l8LpMPhuxMoUOkjUpvjm3ro/fUCt3JVjQ9WUYzvA5A8Zl6DstDYhVgQxl5Q9
+	v9jo5B4oDXdx7jNwjo/uGxC/KjyxE8CnnwkrNLNLX7XGNFkJcNwoV8z163LVW1M3nSHe8NVdv3c
+	GhzPpr1RR4KrPmolLJGRbxaCe/WWIlp//QqP4oNvjX9XNVyRC6gTJnYwgCubbWbyLWN/Rn3tROV
+	h3AWczPDGQ84Y5ZNq6eEXrRky326LM2LjXcn
+X-Google-Smtp-Source: AGHT+IEZLBoorOK0i/CAV4CmsJ+tQcdBO8kzpdre61WTzVJ+OCVuetyxxb0YvTAMHnHVKZy7YFqmhg==
+X-Received: by 2002:a17:907:60ca:b0:abf:5266:6542 with SMTP id a640c23a62f3a-ac3b7fc05c1mr351075866b.55.1742403773151;
+        Wed, 19 Mar 2025 10:02:53 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:74::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3146aeaa1sm1029706066b.2.2025.03.19.10.02.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Mar 2025 10:02:52 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 19 Mar 2025 10:02:44 -0700
+Subject: [PATCH net-next] netpoll: Eliminate redundant assignment
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250105110036.70720-2-demonihin@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250319-netpoll_nit-v1-1-a7faac5cbd92@debian.org>
+X-B4-Tracking: v=1; b=H4sIALP42mcC/x3MWQqEMBAFwKs079tANLjlKjKIS6sN0koSBkG8u
+ 2AdoG5EDsIRnm4E/kuUQ+EpzwjTNujKRmZ4QmGL0rq8NcrpPPa9V0mmcq2tS1fbZpyQEc7Ai1z
+ f1kE5GeUr4fc8L5XBoFhnAAAA
+X-Change-ID: 20250319-netpoll_nit-6390753708bc
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.15-dev-42535
+X-Developer-Signature: v=1; a=openpgp-sha256; l=859; i=leitao@debian.org;
+ h=from:subject:message-id; bh=QQEhEFjq9wfqNSHOh65dEw6Lr7M4kDIxuqMqTzNOoGM=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBn2vi7csTf8sOFP820VIfSbD0Nb52LCyLoxcWhT
+ Ghu1gQhGtmJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCZ9r4uwAKCRA1o5Of/Hh3
+ bTtSEACKlhCZ64vfCh0guBHi0j0RFZBrHSPsYdJV5ZaCfjptsM6MRYTXxB8jfiRbqv2/y6oUlbp
+ PkRoRiUScjI/yAt2e7NaMMfk+pL8LnFScVeAfRhGP8UDhnzQviQI+TpF3aoiRYx3MEFXQZLlft0
+ KWVWcso3EtUSgJzTJH7KSElJGHExxWmc8/S5r6pxc/EDXpS1aowwRideyXVR/vU6PPQiP9D4cxN
+ WoQYZR+SPh/9hQpc9McyZsaI0BqfMl51st7ouvJ8/Ein1Cj+8/V7KtLf90/iMybE6az7+I3v+Py
+ yGxtSNQO0iNveIVNGCxEJ6B1wPK6qeVyVeDaZtMkl3hy04ySbCyGC3perYsszWdOEwWueVTHGfs
+ Xv+m9RIhC2TXicF5UFCOUrifQALJQaW+ixB9kFSDVlJAINtTLMX8lr7gfwtRtfnaEB4j5mxA2i1
+ v4vbB2D03p89ecukZ9/4Ys/6O4+SkQ2KJJaoJfqwaJOECfY8a7NK8QOCVcJYwAeLGMI+uPFNbZf
+ BgdePNS+/WVzDx1OnXIjPVolxR4v2bX6DvsxqGfr2F1mOBrTg8DN5c31PYO4yDLO9y8OQCj11q2
+ h/FWD7r4odEdkXIGr7EmflxUKqoMGmQRIiAAG/Gcd7LM5C5hYuLbq3fIlybZE2ZcAB7clkTj9Bf
+ gTj5XEP8wBZRL5Q==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-On Sun, Jan 05, 2025 at 12:00:17PM +0100, Dmitrii Ermakov wrote:
-> @@ -74,7 +75,6 @@ struct noise_handshake {
->  	u8 remote_static[NOISE_PUBLIC_KEY_LEN];
->  	u8 remote_ephemeral[NOISE_PUBLIC_KEY_LEN];
->  	u8 precomputed_static_static[NOISE_PUBLIC_KEY_LEN];
-> -
->  	u8 preshared_key[NOISE_SYMMETRIC_KEY_LEN];
->  
->  	u8 hash[NOISE_HASH_LEN];
-> @@ -83,6 +83,8 @@ struct noise_handshake {
->  	u8 latest_timestamp[NOISE_TIMESTAMP_LEN];
->  	__le32 remote_index;
->  
-> +	siphash_key_t hash_seed;
+The assignment of zero to udph->check is unnecessary as it is
+immediately overwritten in the subsequent line. Remove the redundant
+assignment.
 
-Why?
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ net/core/netpoll.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-> +#include "linux/printk.h"
-> +#include "linux/rcupdate.h"
-> +#include "linux/rhashtable-types.h"
-> +#include "linux/rhashtable.h"
-> +#include "linux/siphash.h"
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 3cc3eae9def30..4e1dba572f5ac 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -433,7 +433,6 @@ int netpoll_send_udp(struct netpoll *np, const char *msg, int len)
+ 	udph->len = htons(udp_len);
+ 
+ 	if (np->ipv6) {
+-		udph->check = 0;
+ 		udph->check = csum_ipv6_magic(&np->local_ip.in6,
+ 					      &np->remote_ip.in6,
+ 					      udp_len, IPPROTO_UDP,
 
-Seems wrong.
+---
+base-commit: 23c9ff659140f97d44bf6fb59f89526a168f2b86
+change-id: 20250319-netpoll_nit-6390753708bc
 
-> +#include "messages.h"
->  #include "peer.h"
->  #include "noise.h"
-> +#include "linux/memory.h"
+Best regards,
+-- 
+Breno Leitao <leitao@debian.org>
 
-Ditto.
-
->  
-> -static struct hlist_head *pubkey_bucket(struct pubkey_hashtable *table,
-> -					const u8 pubkey[NOISE_PUBLIC_KEY_LEN])
-> +static inline u32 index_hashfn(const void *data, u32 len, u32 seed)
->  {
-> -	/* siphash gives us a secure 64bit number based on a random key. Since
-> -	 * the bits are uniformly distributed, we can then mask off to get the
-> -	 * bits we need.
-> -	 */
-> -	const u64 hash = siphash(pubkey, NOISE_PUBLIC_KEY_LEN, &table->key);
-> +	const u32 *index = data;
-> +	return *index;
-> +}
-
-But shouldn't this actually use siphash? What's happening here?
-
-> +struct peer_hash_pubkey {
-> +	siphash_key_t key;
-> +	u8 pubkey[NOISE_PUBLIC_KEY_LEN];
-> +};
-> +
-> +static inline u32 wg_peer_obj_hashfn(const void *data, u32 len, u32 seed)
-> +{
-> +	const struct wg_peer *peer = data;
-> +	struct peer_hash_pubkey key;
-> +	u64 hash;
-> +
-> +	memcpy(&key.key, &peer->handshake.hash_seed, sizeof(key.key));
-> +	memcpy(&key.pubkey, &peer->handshake.remote_static, NOISE_PUBLIC_KEY_LEN);
-> +
-> +	hash = siphash(&key.pubkey, NOISE_PUBLIC_KEY_LEN, &key.key);
-
-Why this weird construction with this other struct?
-
-I'll stop reading here. There's a lot of strangeness with this patch.
-Maybe it's workable with enough care, but I think to review this into
-shape, in its current state, would be about the same as just rewriting
-it.
