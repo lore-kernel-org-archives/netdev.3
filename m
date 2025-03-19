@@ -1,101 +1,207 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925251DEFD7;
-	Wed, 19 Mar 2025 14:55:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C711DED44;
+	Wed, 19 Mar 2025 15:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742396153; cv=none; b=t4smvNPzQmxUI+uet5S+LddicLtkoXUdk87oU+7qeYwwdt+VA9UacE+LNmaRndEqfBUj4iOHgCyd0aGlfnxXJT9EaXnELNZhLTnD1pApPk5O1HaPc8/njZCUaKfTW419MzYIxIPFKcOhthdQIYu9OBmPMYASH7uvTnjaMAP0u84=
+	t=1742396693; cv=none; b=LRRm+0s3+74C00VPQO3ifPYMnIoxeiJ3fIS67/JHbNwcLTbPQ5MLcKj61RBYaJEvFqt1ENMmEBfObzL0OYtCJGfkhy3u/S9BTUPiwRO/+DBzhgpObV9t70BvoFygqWoiVjEYwM+4Q7ffSzsGP5c8jeS5xUP4B6x/+25XXrFPGbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742396153; c=relaxed/simple;
-	bh=cqlvzY55RcwBDFprNdjw52JF3DSZ7waUI40/fMoYc1E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HLP9AVdDsZEhjfuPnfwyJqCNV2L/ss6obFdprMydiTS786Qhe7ZbpJv+HAK4IE9e+xuaEDPmDyvnN88tTmdgB/2w6guP1m8b+lZsmhhxBv5gxRdoW0ueKf2t2H5FWnHso7FMz6KBL8BzlbA/Ok61BJhiEqInDGu6XTHoQ8/mnXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iDaDc+xj; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742396693; c=relaxed/simple;
+	bh=53MfkwdepljijTDRfPdVKtK+TY8s/9aPwditmMoctv0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M2ioR0L7fRCwqQWxMlICN+d9/jlKz1xkTrPEVc2+tJSXheod2eMQGvFIZZP9KpluzbA2qWaNesnnoav/RGci9YfrjPKNHX9APQhtk9rmhfieSnrhGLNJhgvXUwWagV23nYyFebIY3vnxWoQSJk9X/xo2b2fRQOh1QLAsXScZ3qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=it2L9jiC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iDaDc+xj"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4393dc02b78so31478885e9.3;
-        Wed, 19 Mar 2025 07:55:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742396150; x=1743000950; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cqlvzY55RcwBDFprNdjw52JF3DSZ7waUI40/fMoYc1E=;
-        b=iDaDc+xjqcmW12fdXmNfysGPv9rHR8V6Gt3jU+Vj9tQiidGInxfb5bO9vl9oo/m4Ry
-         LhH2Ip1IgzJ7zvUgV5JDKE8DMF4Xa3amrKjqvWqM5h+SQIs+AzuSl+dBWezf3Rv/4nxs
-         z1zP2NEJ7jfYzuezTKPoQcuqb4g7If0HYkPbe94hZJtQjmUKRDkPcqtrhQXFuIPstcr9
-         GutAgGbiwK1L5n9T3e0Y1eR3j5S+iThWmbKP0T0ugAS/VV3T+IFOutPgYBZFqoVVTv0T
-         YFJv2XJ0voKBNK7SAG01vTJKpxPBt4CAb1yeKdNbpEe7fs72pJBVAaIsMaqA4lHrTm5F
-         lIJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742396150; x=1743000950;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cqlvzY55RcwBDFprNdjw52JF3DSZ7waUI40/fMoYc1E=;
-        b=mw8kEwzgjFwpZhrJ8eb4JZ0yUqXPAYVUetmzsUDoAh1ioNvrOZfCnI0V3ReogqPzEp
-         6YutrD+EOBpwIWMupSX3Oej1BOmzc/RiCYCP6yGqKcO4ZuvHRq1D0etnTYEdpJBVmy15
-         eV3HAM2+ygWkoxUy5lHBQNyRj7odhBfvz5YClwOsCn7eLLsEGcK0yodbVX5UpSQ+tQlF
-         VkJZQX9YaciZZFJLCl3kgPm4qNdTlAUWS5YsRPyqL+b3f9zRpU+Znk0PHvB5gQILVLTf
-         63qtHAjLBmxdmkaik4KYyuzB4N+e0eDIVSmzvTlrVNFjB1o5W4fJ64ve04WdmIN6Xcu8
-         ffIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV7UhxPc2mEDTR0F2k5NvdNjj5Vj1KV4nUWqr5NfNcKP5QmbmY9rNUpcoSf2QngaQ1HGo3OQcznnzlq9w==@vger.kernel.org, AJvYcCVHV5BSE445FJw6KSV+jX8R27IiHu6v+FabQMytefA3V7R8flHfaigJoiFevEqaueBLe+M=@vger.kernel.org, AJvYcCWL6OfAaCQcawx+G9RbcQmXcLrVP3Q6k/mnxGYYyNU8OdaemECCeEU8Nlw5w1WLmYltHD3itNeMTvfNKCe1@vger.kernel.org, AJvYcCWmJmtQo/X89AZah0t/a8fEnkWCgfeMsLg+92aIH21d9gYPSnEB70xecvLOS8s4YHuGbSHW07Op@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoVN/5w4gtacK1hzGySVME2TKTCQVYoZE3lMd+qrkTXv1jn9th
-	eA/FQfn0sNFw9OECFuHTpHkbsjFjb1s+Z4GTBf6VmN3+7UKmsM8RWnoke/xzQ5CqESlhezTS7wH
-	WOdB1AhdPYYQAKzcFnU11O03OGfg=
-X-Gm-Gg: ASbGnctBe0PN9PVxAzUpltHy1oBcGHAXrQf/2ZK1U6Vz4LoYni3NYhyvMEwVaRiZfk1
-	8LqtQbHsBBywfAh5b4AH74zuovA5Wz34IV/SFY4IVP2aBVQF/6BipHTYAt52sLnru8zKOf/n7Mh
-	G4MgDamOAfh0A+IIptgRukLtcqejP5WJv4s4tbVPHC272uaMPkNi9f32HnBhY=
-X-Google-Smtp-Source: AGHT+IFYLJulgyA42kMSpPcMFV1BLWkjwnsRvgCvCmWo2WTkZJgZ47MI8MQWGFGPtZ9EU0QvFVF22Njp4qnWSDBleeU=
-X-Received: by 2002:a05:600c:1d15:b0:43c:ec4c:25b4 with SMTP id
- 5b1f17b1804b1-43d4378b3ddmr23619225e9.10.1742396149442; Wed, 19 Mar 2025
- 07:55:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="it2L9jiC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BCDC4CEE8;
+	Wed, 19 Mar 2025 15:04:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742396692;
+	bh=53MfkwdepljijTDRfPdVKtK+TY8s/9aPwditmMoctv0=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=it2L9jiCjAaWZF4JSUDhhp1bd40OcpIP5ccA07xfjCr7OVH/3B7ZAuuvsGtl0ygI4
+	 gEW4UW4PTvY45S9hnlDTOjmYx1hsNT+rKxgsoJeZx1cgmJo0C1Z+ApXl96wmLU6Fb5
+	 m2nbLI4DbapQzAF+3WRelbM1cTIym8JY1cyQZGHcwlBNYc4aPi6AShemp4dPp5GfjX
+	 gHDZu7D/j9quoNZjOqsRmhZuUgdHTAdb7KJvpOFc8kRjzwaZNGL9W4sqvQW3QCp9no
+	 XzcaCk8mFhzZZDmfkcsVZX+wINZ/qZq5lXWcyG977l0L1FtZDak3up+uKn56yHYSA8
+	 eyh4FCDZ3ThmQ==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 40313CE0BC5; Wed, 19 Mar 2025 08:04:52 -0700 (PDT)
+Date: Wed, 19 Mar 2025 08:04:52 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Eric Dumazet <edumazet@google.com>, kuba@kernel.org, jhs@mojatatu.com,
+	xiyou.wangcong@gmail.com, jiri@resnulli.us, kuniyu@amazon.com,
+	rcu@vger.kernel.org, kasan-dev@googlegroups.com,
+	netdev@vger.kernel.org
+Subject: Re: tc: network egress frozen during qdisc update with debug kernel
+Message-ID: <5e0527e8-c92e-4dfb-8dc7-afe909fb2f98@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20250319-meticulous-succinct-mule-ddabc5@leitao>
+ <CANn89iLRePLUiBe7LKYTUsnVAOs832Hk9oM8Fb_wnJubhAZnYA@mail.gmail.com>
+ <20250319-sloppy-active-bonobo-f49d8e@leitao>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250319133309.6fce6404@canb.auug.org.au> <CAADnVQKotSrp8CkVpFw-y800NJ_R7An-iw-twrQZaOdYUeRtqQ@mail.gmail.com>
- <CAP01T76CqOxzEiMLKJ2y_YD=qDgWq+Fq5Zy-fnKP4AAyS30Dwg@mail.gmail.com>
- <CAP01T77_qMiMmyeyizud=-sbBH5q1jvY_Jkj-QLZqM1zh0a2hg@mail.gmail.com> <CAP01T77St7cpkvJ7w+5d3Ji-ULdz04QhZDxQWdNSBX9W7vXJCw@mail.gmail.com>
-In-Reply-To: <CAP01T77St7cpkvJ7w+5d3Ji-ULdz04QhZDxQWdNSBX9W7vXJCw@mail.gmail.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Wed, 19 Mar 2025 07:55:37 -0700
-X-Gm-Features: AQ5f1JrUGFyb55SOF2EzAAJYS9bLqfvB0QpPJ5iTTYTfSGUGnuhAmOsJWefBzbE
-Message-ID: <CAADnVQ+8apdQtyvMO=SKXCE_HWpQEo3CaTUwd39ekYEj-D4TQA@mail.gmail.com>
-Subject: Re: linux-next: build failure after merge of the bpf-next tree
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Uros Bizjak <ubizjak@gmail.com>, bpf <bpf@vger.kernel.org>, 
-	Networking <netdev@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Linux Next Mailing List <linux-next@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250319-sloppy-active-bonobo-f49d8e@leitao>
 
-On Wed, Mar 19, 2025 at 7:36=E2=80=AFAM Kumar Kartikeya Dwivedi
-<memxor@gmail.com> wrote:
->
+On Wed, Mar 19, 2025 at 07:56:40AM -0700, Breno Leitao wrote:
+> On Wed, Mar 19, 2025 at 03:41:37PM +0100, Eric Dumazet wrote:
+> > On Wed, Mar 19, 2025 at 2:09 PM Breno Leitao <leitao@debian.org> wrote:
+> > 
+> > > Hello,
 > > >
-> > > I've sent a fix [0], but unfortunately I was unable to reproduce the
-> > > problem with an LLVM >=3D 19 build, idk why. I will try with GCC >=3D=
- 14
-> > > as the patches require to confirm, but based on the error I am 99%
-> > > sure it will fix the problem.
-> >
-> > Probably because __seg_gs has CC_HAS_NAMED_AS depends on CC_IS_GCC.
-> > Let me give it a go with GCC.
-> >
->
-> Can confirm now that this fixes it, I just did a build with GCC 14
-> where Uros's __percpu checks kick in.
+> > > I am experiencing an issue with upstream kernel when compiled with debug
+> > > capabilities. They are CONFIG_DEBUG_NET, CONFIG_KASAN, and
+> > > CONFIG_LOCKDEP plus a few others. You can find the full configuration at
+> > > ....
+> > >
+> > > Basically when running a `tc replace`, it takes 13-20 seconds to finish:
+> > >
+> > >         # time /usr/sbin/tc qdisc replace dev eth0 root handle 0x1234: mq
+> > >         real    0m13.195s
+> > >         user    0m0.001s
+> > >         sys     0m2.746s
+> > >
+> > > While this is running, the machine loses network access completely. The
+> > > machine's network becomes inaccessible for 13 seconds above, which is far
+> > > from
+> > > ideal.
+> > >
+> > > Upon investigation, I found that the host is getting stuck in the following
+> > > call path:
+> > >
+> > >         __qdisc_destroy
+> > >         mq_attach
+> > >         qdisc_graft
+> > >         tc_modify_qdisc
+> > >         rtnetlink_rcv_msg
+> > >         netlink_rcv_skb
+> > >         netlink_unicast
+> > >         netlink_sendmsg
+> > >
+> > > The big offender here is rtnetlink_rcv_msg(), which is called with
+> > > rtnl_lock
+> > > in the follow path:
+> > >
+> > >         static int tc_modify_qdisc() {
+> > >                 ...
+> > >                 netdev_lock_ops(dev);
+> > >                 err = __tc_modify_qdisc(skb, n, extack, dev, tca, tcm,
+> > > &replay);
+> > >                 netdev_unlock_ops(dev);
+> > >                 ...
+> > >         }
+> > >
+> > > So, the rtnl_lock is held for 13 seconds in the case above. I also
+> > > traced that __qdisc_destroy() is called once per NIC queue, totalling
+> > > a total of 250 calls for the cards I am using.
+> > >
+> > > Ftrace output:
+> > >
+> > >         # perf ftrace --graph-opts depth=100,tail,noirqs -G
+> > > rtnetlink_rcv_msg   /usr/sbin/tc qdisc replace dev eth0 root handle 0x1: mq
+> > > | grep \\$
+> > >         7) $ 4335849 us  |        } /* mq_init */
+> > >         7) $ 4339715 us  |      } /* qdisc_create */
+> > >         11) $ 15844438 us |        } /* mq_attach */
+> > >         11) $ 16129620 us |      } /* qdisc_graft */
+> > >         11) $ 20469368 us |    } /* tc_modify_qdisc */
+> > >         11) $ 20470448 us |  } /* rtnetlink_rcv_msg */
+> > >
+> > >         In this case, the rtnetlink_rcv_msg() took 20 seconds, and, while
+> > > it
+> > >         was running, the NIC was not being able to send any packet
+> > >
+> > > Going one step further, this matches what I described above:
+> > >
+> > >         # perf ftrace --graph-opts depth=100,tail,noirqs -G
+> > > rtnetlink_rcv_msg   /usr/sbin/tc qdisc replace dev eth0 root handle 0x1: mq
+> > > | grep "\\@\|\\$"
+> > >
+> > >         7) $ 4335849 us  |        } /* mq_init */
+> > >         7) $ 4339715 us  |      } /* qdisc_create */
+> > >         14) @ 210619.0 us |                      } /* schedule */
+> > >         14) @ 210621.3 us |                    } /* schedule_timeout */
+> > >         14) @ 210654.0 us |                  } /*
+> > > wait_for_completion_state */
+> > >         14) @ 210716.7 us |                } /* __wait_rcu_gp */
+> > >         14) @ 210719.4 us |              } /* synchronize_rcu_normal */
+> > >         14) @ 210742.5 us |            } /* synchronize_rcu */
+> > >         14) @ 144455.7 us |            } /* __qdisc_destroy */
+> > >         14) @ 144458.6 us |          } /* qdisc_put */
+> > >         <snip>
+> > >         2) @ 131083.6 us |                        } /* schedule */
+> > >         2) @ 131086.5 us |                      } /* schedule_timeout */
+> > >         2) @ 131129.6 us |                    } /*
+> > > wait_for_completion_state */
+> > >         2) @ 131227.6 us |                  } /* __wait_rcu_gp */
+> > >         2) @ 131231.0 us |                } /* synchronize_rcu_normal */
+> > >         2) @ 131242.6 us |              } /* synchronize_rcu */
+> > >         2) @ 152162.7 us |            } /* __qdisc_destroy */
+> > >         2) @ 152165.7 us |          } /* qdisc_put */
+> > >         11) $ 15844438 us |        } /* mq_attach */
+> > >         11) $ 16129620 us |      } /* qdisc_graft */
+> > >         11) $ 20469368 us |    } /* tc_modify_qdisc */
+> > >         11) $ 20470448 us |  } /* rtnetlink_rcv_msg */
+> > >
+> > > From the stack trace, it appears that most of the time is spent waiting
+> > > for the
+> > > RCU grace period to free the qdisc (!?):
+> > >
+> > >         static void __qdisc_destroy(struct Qdisc *qdisc)
+> > >         {
+> > >                 if (ops->destroy)
+> > >                         ops->destroy(qdisc);
+> > >
+> > >                 call_rcu(&qdisc->rcu, qdisc_free_cb);
+> > >
+> > 
+> > call_rcu() is asynchronous, this is very different from synchronize_rcu().
+> 
+> That is a good point. The offender is synchronize_rcu() is here.
 
-Great. Thanks for checking and quick fix.
+Should that be synchronize_net()?
 
-btw clang supports it with __attribute__((address_space(256))),
-so CC_IS_GCC probably should be relaxed.
+							Thanx, Paul
+
+> > >         }
+> > >
+> > > So, from my newbie PoV, the issue can be summarized as follows:
+> > >
+> > >         netdev_lock_ops(dev);
+> > >         __tc_modify_qdisc()
+> > >           qdisc_graft()
+> > >             for (i = 0; i <  255; i++)
+> > >               qdisc_put()
+> > >                 ____qdisc_destroy()
+> > >                   call_rcu()
+> > >               }
+> > >
+> > > Questions:
+> > >
+> > > 1) I assume the egress traffic is blocked because we are modifying the
+> > >    qdisc, which makes sense. How is this achieved? Is it related to
+> > >    rtnl_lock?
+> > >
+> > > 2) Would it be beneficial to attempt qdisc_put() outside of the critical
+> > >    section (rtnl_lock?) to prevent this freeze?
+> > >
+> > >
+> > 
+> > It is unclear to me why you have syncrhonize_rcu() calls.
+> 
+> This is coming from:
+> 
+> 	__qdisc_destroy() {
+> 		lockdep_unregister_key(&qdisc->root_lock_key) {
+> 			...
+> 			/* Wait until is_dynamic_key() has finished accessing k->hash_entry. */
+> 			synchronize_rcu();
