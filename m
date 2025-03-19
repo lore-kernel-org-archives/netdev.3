@@ -1,149 +1,210 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB85A253F09;
-	Wed, 19 Mar 2025 09:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FB0256C92;
+	Wed, 19 Mar 2025 09:44:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742377269; cv=none; b=nB2eUyF4uEtpEIXJyKs3rRqhj3FeoiumPeKihvfobpdF/xn6otLqkwA3JpAykYtuYRGoFagrPNzApM1GXpD27+HjDaoJ2iZoIc/31Dc8z3U3or/qyB1pE3QPpOUEPsXB7fRwLmEi4+K6OK9DwpuKUMEdV4e6gjeNSlfb1KtBAB8=
+	t=1742377464; cv=none; b=iD1Awj3Rj8T+6z3oYU8A3HhaxZS6pxdV/y1WdSVF5AhU052yHC1B4RJIETldnrPRwdI4WD7HC/0+r72E/CfsxZhefSdrLKJQTzfYT3x++uCZbxpZ1Yz/XGioEfEFXNu5DJ5J+c8PySfvEade7KdAmrDmD5AW2xM3n2FTJ+4i6dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742377269; c=relaxed/simple;
-	bh=PJ7H4hxlsVt4HnZ26XPNszbRIKovfbpjMkYUm9hcA2w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tLjWKomYCLthUm3LtK5ERMsGsKl7IcL/6CvER3JQiVzagrxh14SgC9q1an9bk0HHIK0fDGg7BVDRU3DMsI4jDJ0gCHXybyEmHWdJxYtShNI3juPMycXb/OuWQpMVWPWG389kyZLlrZcKkYxFk+MQZoWGEaD+lWQihaXfDPYfAhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UxRpwZqr; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UxRpwZqr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742377268; x=1773913268;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PJ7H4hxlsVt4HnZ26XPNszbRIKovfbpjMkYUm9hcA2w=;
-  b=UxRpwZqrYw/XaJeNnoWUPe8fQO/h3GcmlqixiEN68KYwiPa/AfdYwRnB
-   jaZhgcfaO+RMGHTThE4qJ5ZZSHYl0iZ9O2O4+nZJ2tMieU8vvE1vV3jx2
-   SICtP17AE762gAB1wP+DUR6QZLvRdb6CSCUVInEp6LPZ96DAJhOhwVCCu
-   szp4vhbQzpzqpUa9/kkJCbM16oAwfsg6exVI/d6wAmUy/zKST8GBsSq8u
-   U4b6hAEwnT33RzRmvN9MzSBvZTcYgTRLNNWxE0SR6dmOjVmoYbfE4HYhe
-   nuv+qYATaEPnm8whj2ooze7gXvA1nOgXBMx2WpmdFG60lVteGyGfpZn3u
-   w==;
-X-CSE-ConnectionGUID: mFJ8xhVqQz6SkEOLf1Dk6A==
-X-CSE-MsgGUID: gp5wc2QXSpiVKSZWpTFn5Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="43658684"
-X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; 
-   d="scan'208";a="43658684"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2025 02:40:56 -0700
-X-CSE-ConnectionGUID: 5D0h7bGjRNGNDKS2yrwXHg==
-X-CSE-MsgGUID: ZwOtwQZVQCSFoVZm2GVxWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; 
-   d="scan'208";a="122545409"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2025 02:40:53 -0700
-Date: Wed, 19 Mar 2025 10:36:53 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Gal Pressman <gal@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Moshe Shemesh <moshe@nvidia.com>, Mark Bloch <mbloch@nvidia.com>
-Subject: Re: [PATCH net 2/2] net/mlx5: Start health poll after enable hca
-Message-ID: <Z9qQNe/M7IAkpR33@mev-dev.igk.intel.com>
-References: <1742331077-102038-1-git-send-email-tariqt@nvidia.com>
- <1742331077-102038-3-git-send-email-tariqt@nvidia.com>
+	s=arc-20240116; t=1742377464; c=relaxed/simple;
+	bh=pID1YVqDrR/XGfOmfBf1DckSXCMMhnSS8zNIM2xIcXo=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=YGu1TUHnDtxgHvNRVKGP4aIu85BNnPNiADIUlOH7yFFA1yAK6dDejUZDXv02emQ9LCFZTNC0LCSpJULMmLi4zDzZe1RFg9k6FwJocrbhtOpi66KsrllZ6Tl0C7+MlwK8Pv1IeUNDEH1dpD36kBIm+51Ig+4bTEsKrACcTMOeKGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4ZHkLY6m8Gz1d0DC;
+	Wed, 19 Mar 2025 17:44:05 +0800 (CST)
+Received: from kwepemk500005.china.huawei.com (unknown [7.202.194.90])
+	by mail.maildlp.com (Postfix) with ESMTPS id 728FC1800C8;
+	Wed, 19 Mar 2025 17:44:19 +0800 (CST)
+Received: from [10.174.178.46] (10.174.178.46) by
+ kwepemk500005.china.huawei.com (7.202.194.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 19 Mar 2025 17:44:18 +0800
+Subject: Re: [v5 PATCH 14/14] ubifs: Pass folios to acomp
+To: Herbert Xu <herbert@gondor.apana.org.au>, Linux Crypto Mailing List
+	<linux-crypto@vger.kernel.org>
+CC: Richard Weinberger <richard@nod.at>, <linux-mtd@lists.infradead.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+	<linux-pm@vger.kernel.org>, Steffen Klassert <steffen.klassert@secunet.com>,
+	<netdev@vger.kernel.org>
+References: <cover.1742034499.git.herbert@gondor.apana.org.au>
+ <99ae6a15afc1478bab201949dc3dbb2c7634b687.1742034499.git.herbert@gondor.apana.org.au>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
+Message-ID: <9f77f2a4-e4ba-813e-f44d-3a42d9637d0f@huawei.com>
+Date: Wed, 19 Mar 2025 17:44:17 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1742331077-102038-3-git-send-email-tariqt@nvidia.com>
+In-Reply-To: <99ae6a15afc1478bab201949dc3dbb2c7634b687.1742034499.git.herbert@gondor.apana.org.au>
+Content-Type: text/plain; charset="gbk"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemk500005.china.huawei.com (7.202.194.90)
 
-On Tue, Mar 18, 2025 at 10:51:17PM +0200, Tariq Toukan wrote:
-> From: Moshe Shemesh <moshe@nvidia.com>
+ÔÚ 2025/3/15 18:30, Herbert Xu Ð´µÀ:
+> As the acomp interface supports folios, use that instead of mapping
+> the data in ubifs.
 > 
-> The health poll mechanism performs periodic checks to detect firmware
-> errors. One of the checks verifies the function is still enabled on
-> firmware side, but the function is enabled only after enable_hca command
-> completed. Start health poll after enable_hca command to avoid a race
-> between function enabled and first health polling.
-> 
-> Fixes: 9b98d395b85d ("net/mlx5: Start health poll at earlier stage of driver load")
-> Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-> Reviewed-by: Shay Drori <shayd@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 > ---
->  drivers/net/ethernet/mellanox/mlx5/core/main.c | 15 +++++++--------
->  1 file changed, 7 insertions(+), 8 deletions(-)
+>   fs/ubifs/compress.c | 106 +++++++++++++++++++++++++++++++++++++++++++-
+>   fs/ubifs/file.c     |  74 +++++++++++--------------------
+>   fs/ubifs/journal.c  |   9 ++--
+>   fs/ubifs/ubifs.h    |  11 ++++-
+>   4 files changed, 145 insertions(+), 55 deletions(-)
+
+
+Tested-by: Zhihao Cheng <chengzhihao1@huawei.com> # For xfstests
+
 > 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-> index ec956c4bcebd..7c3312d6aed9 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-> @@ -1205,24 +1205,24 @@ static int mlx5_function_enable(struct mlx5_core_dev *dev, bool boot, u64 timeou
->  	dev->caps.embedded_cpu = mlx5_read_embedded_cpu(dev);
->  	mlx5_cmd_set_state(dev, MLX5_CMDIF_STATE_UP);
->  
-> -	mlx5_start_health_poll(dev);
-> -
->  	err = mlx5_core_enable_hca(dev, 0);
->  	if (err) {
->  		mlx5_core_err(dev, "enable hca failed\n");
-> -		goto stop_health_poll;
-> +		goto err_cmd_cleanup;
->  	}
->  
-> +	mlx5_start_health_poll(dev);
+> diff --git a/fs/ubifs/compress.c b/fs/ubifs/compress.c
+> index a241ba01c9a8..ea6f06adcd43 100644
+> --- a/fs/ubifs/compress.c
+> +++ b/fs/ubifs/compress.c
+> @@ -16,6 +16,7 @@
+>    */
+>   
+>   #include <crypto/acompress.h>
+> +#include <linux/highmem.h>
+>   #include "ubifs.h"
+>   
+>   /* Fake description object for the "none" compressor */
+> @@ -126,7 +127,7 @@ void ubifs_compress(const struct ubifs_info *c, const void *in_buf,
+>   	{
+>   		ACOMP_REQUEST_ALLOC(req, compr->cc, GFP_NOFS | __GFP_NOWARN);
+>   
+> -		acomp_request_set_src_nondma(req, in_buf, in_len);
+> +		acomp_request_set_src_dma(req, in_buf, in_len);
+
+Why not merging it into patch 13?
+>   		err = ubifs_compress_req(c, req, out_buf, out_len, compr->name);
+>   	}
+>   
+> @@ -141,6 +142,58 @@ void ubifs_compress(const struct ubifs_info *c, const void *in_buf,
+>   	*compr_type = UBIFS_COMPR_NONE;
+>   }
+>   
+> +/**
+> + * ubifs_compress_folio - compress folio.
+> + * @c: UBIFS file-system description object
+> + * @in_folio: data to compress
+> + * @in_offset: offset into @in_folio
+> + * @in_len: length of the data to compress
+> + * @out_buf: output buffer where compressed data should be stored
+> + * @out_len: output buffer length is returned here
+> + * @compr_type: type of compression to use on enter, actually used compression
+> + *              type on exit
+> + *
+> + * This function compresses input folio @in_folio of length @in_len and
+> + * stores the result in the output buffer @out_buf and the resulting length
+> + * in @out_len. If the input buffer does not compress, it is just copied
+> + * to the @out_buf. The same happens if @compr_type is %UBIFS_COMPR_NONE
+> + * or if compression error occurred.
+> + *
+> + * Note, if the input buffer was not compressed, it is copied to the output
+> + * buffer and %UBIFS_COMPR_NONE is returned in @compr_type.
+> + */
+> +void ubifs_compress_folio(const struct ubifs_info *c, struct folio *in_folio,
+> +			  size_t in_offset, int in_len, void *out_buf,
+> +			  int *out_len, int *compr_type)
+> +{
+> +	int err;
+> +	struct ubifs_compressor *compr = ubifs_compressors[*compr_type];
 > +
->  	err = mlx5_core_set_issi(dev);
->  	if (err) {
->  		mlx5_core_err(dev, "failed to set issi\n");
-> -		goto err_disable_hca;
-> +		goto stop_health_poll;
->  	}
->  
->  	err = mlx5_satisfy_startup_pages(dev, 1);
->  	if (err) {
->  		mlx5_core_err(dev, "failed to allocate boot pages\n");
-> -		goto err_disable_hca;
-> +		goto stop_health_poll;
->  	}
->  
->  	err = mlx5_tout_query_dtor(dev);
-> @@ -1235,10 +1235,9 @@ static int mlx5_function_enable(struct mlx5_core_dev *dev, bool boot, u64 timeou
->  
->  reclaim_boot_pages:
->  	mlx5_reclaim_startup_pages(dev);
-> -err_disable_hca:
-> -	mlx5_core_disable_hca(dev, 0);
->  stop_health_poll:
->  	mlx5_stop_health_poll(dev, boot);
-> +	mlx5_core_disable_hca(dev, 0);
->  err_cmd_cleanup:
->  	mlx5_cmd_set_state(dev, MLX5_CMDIF_STATE_DOWN);
->  	mlx5_cmd_disable(dev);
-> @@ -1249,8 +1248,8 @@ static int mlx5_function_enable(struct mlx5_core_dev *dev, bool boot, u64 timeou
->  static void mlx5_function_disable(struct mlx5_core_dev *dev, bool boot)
->  {
->  	mlx5_reclaim_startup_pages(dev);
-> -	mlx5_core_disable_hca(dev, 0);
->  	mlx5_stop_health_poll(dev, boot);
-> +	mlx5_core_disable_hca(dev, 0);
->  	mlx5_cmd_set_state(dev, MLX5_CMDIF_STATE_DOWN);
->  	mlx5_cmd_disable(dev);
->  }
+> +	if (*compr_type == UBIFS_COMPR_NONE)
+> +		goto no_compr;
+> +
+> +	/* If the input data is small, do not even try to compress it */
+> +	if (in_len < UBIFS_MIN_COMPR_LEN)
+> +		goto no_compr;
+> +
+> +	{
+> +		ACOMP_REQUEST_ALLOC(req, compr->cc, GFP_NOFS | __GFP_NOWARN);
+> +
+> +		acomp_request_set_src_folio(req, in_folio, in_offset, in_len);
+> +		err = ubifs_compress_req(c, req, out_buf, out_len, compr->name);
+> +	}
+> +
+> +	if (err)
+> +		goto no_compr;
+> +
+> +	return;
+> +
+> +no_compr:
+> +	memcpy_from_folio(out_buf, in_folio, in_offset, in_len);
+> +	*out_len = in_len;
+> +	*compr_type = UBIFS_COMPR_NONE;
+> +}
+> +
+>   static int ubifs_decompress_req(const struct ubifs_info *c,
+>   				struct acomp_req *req,
+>   				const void *in_buf, int in_len, int *out_len,
+> @@ -205,7 +258,56 @@ int ubifs_decompress(const struct ubifs_info *c, const void *in_buf,
+>   	{
+>   		ACOMP_REQUEST_ALLOC(req, compr->cc, GFP_NOFS | __GFP_NOWARN);
+>   
+> -		acomp_request_set_dst_nondma(req, out_buf, *out_len);
+> +		acomp_request_set_dst_dma(req, out_buf, *out_len);
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-
-> -- 
-> 2.31.1
+Same as the suggestion above.
+> +		return ubifs_decompress_req(c, req, in_buf, in_len, out_len,
+> +					    compr->name);
+> +	}
+> +}
+> +
+> +/**
+> + * ubifs_decompress_folio - decompress folio.
+> + * @c: UBIFS file-system description object
+> + * @in_buf: data to decompress
+> + * @in_len: length of the data to decompress
+> + * @out_folio: output folio where decompressed data should
+> + * @out_offset: offset into @out_folio
+> + * @out_len: output length is returned here
+> + * @compr_type: type of compression
+> + *
+> + * This function decompresses data from buffer @in_buf into folio
+> + * @out_folio.  The length of the uncompressed data is returned in
+> + * @out_len.  This functions returns %0 on success or a negative error
+> + * code on failure.
+> + */
+> +int ubifs_decompress_folio(const struct ubifs_info *c, const void *in_buf,
+> +			   int in_len, struct folio *out_folio,
+> +			   size_t out_offset, int *out_len, int compr_type)
+> +{
+> +	struct ubifs_compressor *compr;
+> +
+> +	if (unlikely(compr_type < 0 || compr_type >= UBIFS_COMPR_TYPES_CNT)) {
+> +		ubifs_err(c, "invalid compression type %d", compr_type);
+> +		return -EINVAL;
+> +	}
+> +
+> +	compr = ubifs_compressors[compr_type];
+> +
+> +	if (unlikely(!compr->capi_name)) {
+> +		ubifs_err(c, "%s compression is not compiled in", compr->name);
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (compr_type == UBIFS_COMPR_NONE) {
+> +		memcpy_to_folio(out_folio, out_offset, in_buf, in_len);
+> +		*out_len = in_len;
+> +		return 0;
+> +	}
+> +
+> +	{
+> +		ACOMP_REQUEST_ALLOC(req, compr->cc, GFP_NOFS | __GFP_NOWARN);
+> +
+> +		acomp_request_set_dst_folio(req, out_folio, out_offset,
+> +					    *out_len);
+>   		return ubifs_decompress_req(c, req, in_buf, in_len, out_len,
+>   					    compr->name);
+>   	}
