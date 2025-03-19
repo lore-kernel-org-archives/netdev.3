@@ -1,75 +1,63 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64811F9DA
-	for <netdev@vger.kernel.org>; Wed, 19 Mar 2025 15:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450F542048;
+	Wed, 19 Mar 2025 15:58:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742399822; cv=none; b=GhE0R4PRzbEz9jTSeCTENNzclLk+4jxCvT4W1vVqzgckjwDZMloi5jL84xxtdqVJMlzNRCWgDK9/jL8E1U/EvRDGdHPAk3SQBxfSYV6yeOedEml7DX7J+olJzzZ7wTyTD+YiQuEYjsOXvSssJRfig1VxQWAXJzBBkd98UmcC8RE=
+	t=1742399910; cv=none; b=AlDv9FE2GGTk418gpcxlQs0EoIRax9w8WYzeTAy5hespVae9rtA7VaWMeRN5E8urKQa5OUkIfF/1gueMzoTBNGzAGSP+GQ5b7ldjr9yVhU3EO164BvVpQOCd0hS7W4vSlH9A/8Pqf3lCqpvRgFBnoUfeEOjnMU99oM9xK6xRWQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742399822; c=relaxed/simple;
-	bh=f+9eQvUdIVyplo97+8h5Gnyx9GiJPqVnK2N7PiScMhM=;
+	s=arc-20240116; t=1742399910; c=relaxed/simple;
+	bh=gHPpYtCLpFpzgI6lWlHYyKI4j6MciQKQyMXmkFGAFpY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ljfzAo/sy+9bxyFjlnm53mzdA+JscasDw4Yxks2z7bust5SkY/ihJPlmSOnwekEJhHdf2DH/oHvHZmiJ3fY7e1e9vg1Ogcs6m4ZWca1fMKV5vKRF8byDEThj6E7i28WCkKUBGyLz3P6NILvUZAzS1CbCMTFUaD8kt32P36XSVX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=lG8/MyUj; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=FBmMPlTfOYYxd758ftXG1fS0cYw9VfgYToIf0uLTZxYEISmzBSL36yHOT3Dtg7mvue8aNZhJDKqYsoaPt5PLR6k6SDfT6KWYNkp/B5Q50oYOSFUjmgmkFPy66FoS6FdnkwPnGTp+TeGnQXX1JGJDLss4/siDuHWI5l5vzbke/Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=KiLpgID4; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="lG8/MyUj"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-224171d6826so48657325ad.3
-        for <netdev@vger.kernel.org>; Wed, 19 Mar 2025 08:57:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1742399819; x=1743004619; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vH+Ne/GeJpiV7zojk6DlYEVxyrcSW023NyPjhVX8Uqo=;
-        b=lG8/MyUjvbjICR42S3jPEfvVSjnCBfg844F9Qea9piJ2N19iDkF2XJrW4sdnEXgScP
-         6MboNEjMiolWJ1dVNDen6DOy/CRRnh0HE5A9h/7YXapxGfK5Y++XmHBzkB24vy2XxaXu
-         mu0Ku+BqhB5HNfZZ9Mn6CG3m253JN+3t7zZNM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742399819; x=1743004619;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vH+Ne/GeJpiV7zojk6DlYEVxyrcSW023NyPjhVX8Uqo=;
-        b=iI8K/3QijL5zZGh5Sxy731hIrTTZpUIMtOHSdADPVBASFU86OusaxUp+0SpG+mRrsF
-         6YL0a852t5RJkJz4CZZB/A3vyfNHm6LWA9L0d9w5XoymJxNeP0doBT5lFvPW8NsHYxNm
-         5C/K3cLok8zdG52jPO+ixuVH2IRAuu1edEJ+03Wl4NUPWzZMNnmhN/qEvm2J+UDSTZvy
-         Mqjw2rl97fe+gWaeCdssiSwCHy/nsM8T1sYnaD1j33xJllYBGEndOxSMuLMAg2XzlEix
-         2ibZHC+sw0gu04MA3I7iWOrNmietDfVDyg8Aidx5+YoIf9z0rMFt4Awd48j+FAhfIwHK
-         jjKg==
-X-Forwarded-Encrypted: i=1; AJvYcCVyaQht/VA4hulwXlmHBZHbJKA1WZ9gcN612zHdGLn9g2wYspps+Oq1AjXtQMXVJLIYbQ6arWk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZhAQucjCLB8OnoX6GjvsuCPMWdOVKJKFdQiflzetN32n4tDkd
-	nJT05IGy443rEBvunw+Q3W83rrQaDIA6i9azm0IOiXvp2SNvKZ2VkA8yyE0GojigQ0Yafa8R8Zf
-	G
-X-Gm-Gg: ASbGncuxxPYlVe7gxVx8xDSljS9BKdqFYYmBS5FL441zCYOuSvEgIdAOichz6viIALo
-	wgagK7RHzJMHdK+NdUEH4bK7Q44QEQBbw7gKRPkwHogBpYuG/2WWsYYRQ1MQBuf3jwdkXg9Zoz1
-	7+AviIbmrDEw1eMcyy/W1WXbx4itM0Ejos4x8/SlicJ/iKapzaFQZjsIqzG0PvYHyiTAHPHdskg
-	sdta03ADfBFGpoOA0AVwI8V+f6/JjeEEenuTkrjVjFf/Meh1d7Rxi+s70MkCL8fwB0B7B9J/YtT
-	5i7nJd1/d6UZ+EYGqZZ6/Z4S5dJpAfGYATrDO2WIUhWiC9shN/u89CxjEOEIqHjHs0DWcwK+afz
-	UXomcgKJ3ZgC5w5ti
-X-Google-Smtp-Source: AGHT+IGZKa6DjH1sSbKETfBrAx2FPuAUauFFga5rakOTfFmzrNpyGQ0tTt9LHuAP/z4HS1NhFvfzbg==
-X-Received: by 2002:a17:902:c950:b0:223:f9a4:3fb6 with SMTP id d9443c01a7336-2264981dc7bmr46750195ad.11.1742399819573;
-        Wed, 19 Mar 2025 08:56:59 -0700 (PDT)
-Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c6bbfb4fsm116134265ad.208.2025.03.19.08.56.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Mar 2025 08:56:59 -0700 (PDT)
-Date: Wed, 19 Mar 2025 08:56:56 -0700
-From: Joe Damato <jdamato@fastly.com>
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
-	kuba@kernel.org, kuni1840@gmail.com, netdev@vger.kernel.org,
-	pabeni@redhat.com
-Subject: Re: [PATCH v1 net-next 1/4] af_unix: Sort headers.
-Message-ID: <Z9rpSFrBxOfIVRNb@LQ3V64L9R2>
-Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>, davem@davemloft.net,
-	edumazet@google.com, horms@kernel.org, kuba@kernel.org,
-	kuni1840@gmail.com, netdev@vger.kernel.org, pabeni@redhat.com
-References: <Z9n8w-6nXiBUI20T@LQ3V64L9R2>
- <20250318235208.57089-1-kuniyu@amazon.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="KiLpgID4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Np/nX4RQYl76B3DOF+lcwAiFuD7qauib8soLH9wPPWM=; b=KiLpgID4bAWzCDTTHLQy5DyOFx
+	e9YZhVFbbCNPHk9Y+K7iv5Ba8sALmIR+fnXAyMCo+Z2Y/QwP8w5Zpl7GwHQsikQoreFDMBD0vPg5X
+	WKJhkazKbQD/2Gmc0kZ+tPcCJdtyKPEh1Dp0TpBmBgtpT27xLZApYWOlvB7vBcz7TpI1BGtg3L/4V
+	OEHcGNTtT+rOc98PsJjN/r8qYbSBlKbFaM3iYqX1Bg2zaQkAawe3uyhI5ugBnyeV3cdwZzJhbYNKB
+	xMfm7SES+tpphE/JcM3KEvV7a3fPfnaTK5e+nf5nHGliLSo2JpS10W0yxf2UgAzSCtAbe02eQ8PgK
+	XZxG9nHw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33446)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tuvo9-0006dc-20;
+	Wed, 19 Mar 2025 15:58:17 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tuvo6-0005jc-0l;
+	Wed, 19 Mar 2025 15:58:14 +0000
+Date: Wed, 19 Mar 2025 15:58:14 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Daniel Golle <daniel@makrotopia.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	upstream@airoha.com
+Subject: Re: [net-next PATCH 3/6] net: phylink: Correctly handle PCS probe
+ defer from PCS provider
+Message-ID: <Z9rplhTelXb-oZdC@shell.armlinux.org.uk>
+References: <20250318235850.6411-1-ansuelsmth@gmail.com>
+ <20250318235850.6411-4-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,40 +66,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250318235208.57089-1-kuniyu@amazon.com>
+In-Reply-To: <20250318235850.6411-4-ansuelsmth@gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Mar 18, 2025 at 04:50:00PM -0700, Kuniyuki Iwashima wrote:
-> From: Joe Damato <jdamato@fastly.com>
-> Date: Tue, 18 Mar 2025 16:07:47 -0700
-> > > +#include <linux/in.h>
-> > >  #include <linux/init.h>
-> > > +#include <linux/kernel.h>
-> > > +#include <linux/module.h>
-> > > +#include <linux/mount.h>
-> > > +#include <linux/namei.h>
-> > > +#include <linux/net.h>
-> > > +#include <linux/netdevice.h>
-> > >  #include <linux/poll.h>
-> > > +#include <linux/proc_fs.h>
-> > >  #include <linux/rtnetlink.h>
-> > > -#include <linux/mount.h>
-> > > -#include <net/checksum.h>
-> > > +#include <linux/sched/signal.h>
-> > 
-> > Not sure what the sorting rules are, but I was wondering if maybe
-> > "linux/sched/*.h" should come after linux/*.h and not sorted within
-> > linux/s*.h ?
-> 
-> It's simply sorted in the alphabetial order.
+On Wed, Mar 19, 2025 at 12:58:39AM +0100, Christian Marangi wrote:
+> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+> index 7f71547e89fe..c6d9e4efed13 100644
+> --- a/drivers/net/phy/phylink.c
+> +++ b/drivers/net/phy/phylink.c
+> @@ -1395,6 +1395,15 @@ static void phylink_major_config(struct phylink *pl, bool restart,
+>  	if (pl->mac_ops->mac_select_pcs) {
+>  		pcs = pl->mac_ops->mac_select_pcs(pl->config, state->interface);
+>  		if (IS_ERR(pcs)) {
+> +			/* PCS can be removed unexpectedly and not available
+> +			 * anymore.
+> +			 * PCS provider will return probe defer as the PCS
+> +			 * can't be found in the global provider list.
+> +			 * In such case, return -ENOENT as a more symbolic name
+> +			 * for the error message.
+> +			 */
+> +			if (PTR_ERR(pcs) == -EPROBE_DEFER)
+> +				pcs = ERR_PTR(-ENOENT);
 
-Yea, I understand that - just wasn't sure if subdirectories should
-be sorted separately.
- 
-> Actually I haven't cared about the / level, so I grepped the
-> linux/sched/signal.h users and it looks like most didn't care.
-> 
->   grep -rnI --include=*.c --include=*.h "linux/sched/signal.h" -C 3
+I don't particularly like the idea of returning -EPROBE_DEFER from
+mac_select_pcs()... there is no way *ever* that such an error code
+could be handled.
 
-OK, fair enough.
+>  	linkmode_fill(pl->supported);
+>  	linkmode_copy(pl->link_config.advertising, pl->supported);
+> -	phylink_validate(pl, pl->supported, &pl->link_config);
+> +	ret = phylink_validate(pl, pl->supported, &pl->link_config);
+> +	/* The PCS might not available at the time phylink_create
+> +	 * is called. Check this and communicate to the MAC driver
+> +	 * that probe should be retried later.
+> +	 *
+> +	 * Notice that this can only happen in probe stage and PCS
+> +	 * is expected to be avaialble in phylink_major_config.
+> +	 */
+> +	if (ret == -EPROBE_DEFER) {
+> +		kfree(pl);
+> +		return ERR_PTR(ret);
+> +	}
 
-Reviewed-by: Joe Damato <jdamato@fastly.com>
+This does not solve the problem - what if the interface mode is
+currently not one that requires a PCS that may not yet be probed?
+
+I don't like the idea that mac_select_pcs() might be doing a complex
+lookup - that could make scanning the interface modes (as
+phylink_validate_mask() does) quite slow and unreliable, and phylink
+currently assumes that a PCS that is validated as present will remain
+present.
+
+If it goes away by the time phylink_major_config() is called, then we
+leave the phylink state no longer reflecting how the hardware is
+programmed, but we still continue to call mac_link_up() - which should
+probably be fixed.
+
+Given that netdev is severely backlogged, I'm not inclined to add to
+the netdev maintainers workloads by trying to fix this until after
+the merge window - it looks like they're at least one week behind.
+Consequently, I'm expecting that most patches that have been
+submitted during this week will be dropped from patchwork, which
+means submitting patches this week is likely not useful.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
