@@ -1,92 +1,167 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B185254B0B;
-	Wed, 19 Mar 2025 11:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99093254B05;
+	Wed, 19 Mar 2025 11:22:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742383357; cv=none; b=GV+fAYU6IAVyGgnljxyBR4ZiJyMgiMj555KzygW6y6vH93TYhRPD80CbRFGJ+FITr/PvRwQJgAV42B8kIKQyxj6Ma4zVoCUPb8sT9SdZHNhsvplkFmrjspoFUmQStIXnGRxw2V/xLtAPAfdNQAOooFUBatJixb6KnK9BY8gTH60=
+	t=1742383357; cv=none; b=raKyw7pOcN4TTNzZYcB1ILDjNdCeyQLbkShU2lY/d2QmLiWjXaKSgWj6RvGLlaq8IdMAs4PiPPGC8A4n08vdkzXi/9+qXv7BWV2VwaDJJ6Wg5dIoL+8nePyKLjyeHiD+D9swJiuEQ0RzichBsCFmtJvSrMhPrF62x9us5Thn0+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1742383357; c=relaxed/simple;
-	bh=cujdxR9tJsCSokcNg/S3qzmyatuAJjZjTxgqBQEZgyM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qCbzOyIF5FHMfEj2d83jdrxbTQ09iLnreulijWVsGlB+tet5SdigdCPPrDYSJ7dqd0/ZsQ7oUv9+gK/iezPcCH9pLQO6Yj/JInkESaTa1GLyhzI0dT9WH9vJmTZKnDuX2iBKRf+0+XFiuTXWc/w5LgrOrhV6TQG2QmcnlYEDdGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jdU0PMCg; arc=none smtp.client-ip=10.30.226.201
+	bh=aY+wT718jcd7J9zYcBPNjAxxvgMi/7jJqwdrk3HqTIE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=kw9ZIaHRHCLshYBxRrDRpObi7AkeYU+L+9rNMERPJM211/gCFRf3XZtovWbfWxS1uAP0CNhpbvctJ6ndgCKxbm8OTWo5pKSTRZnUkJjTtQXGCC7g1aVBzA5NuKhFQZJR5NH0+tdCFOMQM/uW2Kj179gqjJoOloJb1rWX++Lie/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A4cgMsPl; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jdU0PMCg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59677C4CEE9;
-	Wed, 19 Mar 2025 11:22:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742383356;
-	bh=cujdxR9tJsCSokcNg/S3qzmyatuAJjZjTxgqBQEZgyM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jdU0PMCgpKLfQYoamDe5ixeQMmUrEWrK9eWydFxaOWC8v4dghVVk3h1vfaP/f6Ow0
-	 dB3IrvWCx1pCL7G0GA7VUVTfyODi3qhnkHJ/X73mMTe9bXCoYcRBH9KmcPSJx3ycJX
-	 Yig1nCJ1ubVxRf4CgI9M7JS5eaUnqg4noQsd1qykbvciGNhwnl1T967UCk0nHbglzd
-	 3lTraga9J1SkO1dZ7w1SOKa4xYB82RgJ17pDEe+WkK7EQgmt2/K3LJKpd0vpNPyQVE
-	 h6CwNtqKrMakGN7Qv/xFBzEafXqOIG2jG7fwhWanQIJQjFtvlH6e9XycW9cfpr4bjL
-	 J6Oyzgva0YijQ==
-Date: Wed, 19 Mar 2025 13:22:32 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jason Gunthorpe <jgg@nvidia.com>, Dave Jiang <dave.jiang@intel.com>,
-	"Keller, Jacob E" <jacob.e.keller@intel.com>,
-	David Ahern <dsahern@kernel.org>,
-	"Nelson, Shannon" <shannon.nelson@amd.com>,
-	Jiri Pirko <jiri@resnulli.us>, Jakub Kicinski <kuba@kernel.org>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	Aron Silverton <aron.silverton@oracle.com>,
-	"Williams, Dan J" <dan.j.williams@intel.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Christoph Hellwig <hch@infradead.org>,
-	Itay Avraham <itayavr@nvidia.com>, Jiri Pirko <jiri@nvidia.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Leonid Bloch <lbloch@nvidia.com>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	"Sinyuk, Konstantin" <konstantin.sinyuk@intel.com>
-Subject: Re: [PATCH v5 0/8] Introduce fwctl subystem
-Message-ID: <20250319112232.GJ1322339@unreal>
-References: <20250317123333.GB9311@nvidia.com>
- <1eae139c-f678-4b28-a466-5c47967b5d13@kernel.org>
- <CO1PR11MB5089AB36220DFEACBF7A5D1CD6DF2@CO1PR11MB5089.namprd11.prod.outlook.com>
- <2025031840-phrasing-rink-c7bb@gregkh>
- <20250318132528.GR9311@nvidia.com>
- <9e3019af-7817-49db-a293-3242e2962c22@intel.com>
- <2025031836-monastery-imaginary-7f5e@gregkh>
- <95da9782-7c46-4ddc-8d7e-ffb3db31ebc3@intel.com>
- <20250319081416.GE1322339@unreal>
- <81005d10-15ae-4d85-bf67-9362a2169151@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A4cgMsPl"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-39129fc51f8so5986130f8f.0;
+        Wed, 19 Mar 2025 04:22:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742383353; x=1742988153; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yqFmyb1JpY335n5hykX+2u4g/6H0xVX+LFgESzsIi/w=;
+        b=A4cgMsPla1CWwWVu7RKMYAxXi19+QtETv5crQ+5eO1po7uYNVFhhCtP5IeOO5o+s5x
+         mmRWbvFbrclzhsMmZWx5ksCxSoey4gTmAiLA/V3y7NwGD36un8bUowS+c5zvFfLKuD8f
+         D+G7BDIHAxevKCsWu3MCJvNJZXYPnEK+GslXLwPmTIYio8RCkS3zqbqWZJAqR6G75DjV
+         oDTpyww7ZnOL16SlFrrls+IWUk0AW9s8jDNZ0koqYB4vRUbCjeGPlloDNUVFEw+fIF64
+         WR3SFc/2crfyT3fl1Jtre+THj9yecE1Zy7C2X0U0iwjnMHN6q+AAZfbpmmfc9bF6uDxH
+         vBSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742383353; x=1742988153;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yqFmyb1JpY335n5hykX+2u4g/6H0xVX+LFgESzsIi/w=;
+        b=a9S6Ebtemt/0wHCe9P2QvOPyUusk9pyd4LbeJJgg9K+KmnYcKRvioTVAK/p1IDTEFU
+         N2eTTrfJeRfHB6wpMZ4b/X4SdlPw4dO5mF0tGLMK/v9bhr4FNkOOqWY+MkPcrJKiwuVV
+         BtaCBuACfobWECHFb9tZnDtG1x5VkUMAGlNtapVCCG8sWEhvImcRX+DP2VYcAasCuTHy
+         0/DEQgAc7fwZhwz66/AnV+WbnBWFa/U0HOrf6xJn/VxASn2C0ucTTRhfrt+iFoYhyj3n
+         AZOrwCPasUVtmXnzM66ECfVzOtzXdxm1NUFyHBi1wTbsmh97yLoC34EA6EgZ2Xz25OX6
+         +YCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU8zZZpuHilNMH47pYDF0GzOQwFRcz7KIclZonVLCZNciOrewb6SL9Sx7MTEDsqZsRDQm2MeFFd@vger.kernel.org, AJvYcCVyTdgRUlz9FSxLqy/Em+T4Cj3uKbaPb/3KCjOKWCKCoRWp+D5FUOHPW/1DjsMRmO+eOkw/LNNWvXQIYxQ=@vger.kernel.org, AJvYcCXfr14WRzbzNbJZA4ZhphZZL9dagqqSK4NwFxD75aQ90ZUEuAN2r8v5oS/k3N7NpGQU+FbXzyQi@vger.kernel.org
+X-Gm-Message-State: AOJu0Yykyq9nazoH97AJT7CiYqp1ffneAxfBLyQ7q1nAu+6aTCCm5dBp
+	MJ47gtXJVWT5CU13zFP4Z/P1uWCZoL19WSJptL422FK9115kguzp
+X-Gm-Gg: ASbGncslXTMpnM3bhCvESr0DJ6jL4/GJMCETxS2RxUS/CRCuuhKVVU7NtDLvJ1QUJnC
+	nDoPFmolnxc4BtyoM0em7Y56B5L1DlPQchgIvi4vqBd2zZXy7ntxPA/OdP1hOahZFw8CQuOzxsv
+	qZkBNZ+A0q2462rduhLb4hNfBFQNp7wUb0YlxN72BJDdZa1CsI3HaifqpHuLshxV3pk1mXBj3xq
+	moKepkHDkLXeaCqBx45Gq2ISx7/hsO+Bn1lzh7Inq+IZh7zngZGzoxrn7m4nHaVf53dn0DA1/+q
+	klac+C2Q36seGXSHDyO30tSahDphfM0j1DtDMBq7E3uy
+X-Google-Smtp-Source: AGHT+IFL9MGUujUDBlU3/GDWOPTBACNACMU/SkTPOYXvhtc0IL+svb6lUh6e379UZLXYraEphqGwbg==
+X-Received: by 2002:a5d:5847:0:b0:390:e311:a8c7 with SMTP id ffacd0b85a97d-399739b63d0mr1968735f8f.5.1742383352680;
+        Wed, 19 Mar 2025 04:22:32 -0700 (PDT)
+Received: from qasdev.Home ([2a02:c7c:6696:8300:7659:65a:5e42:31a9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d43f331dasm16129995e9.8.2025.03.19.04.22.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Mar 2025 04:22:32 -0700 (PDT)
+From: Qasim Ijaz <qasdev00@gmail.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/4] net: fix uninitialised access in mii_nway_restart()
+Date: Wed, 19 Mar 2025 11:21:53 +0000
+Message-Id: <20250319112156.48312-2-qasdev00@gmail.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250319112156.48312-1-qasdev00@gmail.com>
+References: <20250319112156.48312-1-qasdev00@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <81005d10-15ae-4d85-bf67-9362a2169151@intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 19, 2025 at 11:46:15AM +0100, Przemek Kitszel wrote:
-> 
-> > We are discussing where to move XXX_core drivers which historically were
-> > located in drivers/net/ethernet/XXX/, see this idea https://lore.kernel.org/all/20250211075553.GF17863@unreal/
-> 
-> yes, I know
-> 
-> > FWCTL is unrelated to this discussion and
-> 
-> it is related,
-> I see the move as a workaround for "netdev maintainer complains more
-> than I would like", sorry :P
+In mii_nway_restart() during the line:
 
-No, it is not. There is no technical reason to keep non-netdev code in
-netdev subsystem. If you have an explanation why PCI-to-AUX, VDPA, VFIO
-and RDMA logic MUST be under netdev subsystem, please speak it now.
+        bmcr = mii->mdio_read(mii->dev, mii->phy_id, MII_BMCR);
 
-Otherwise please keep brigading out of this discussion.
+The code attempts to call mii->mdio_read which is ch9200_mdio_read().
 
-Thanks
+ch9200_mdio_read() utilises a local buffer, which is initialised
+with control_read():
+
+        unsigned char buff[2];
+
+However buff is conditionally initialised inside control_read():
+
+        if (err == size) {
+                memcpy(data, buf, size);
+        }
+
+If the condition of "err == size" is not met, then buff remains
+uninitialised. Once this happens the uninitialised buff is accessed
+and returned during ch9200_mdio_read():
+
+        return (buff[0] | buff[1] << 8);
+
+The problem stems from the fact that ch9200_mdio_read() ignores the
+return value of control_read(), leading to uinit-access of buff.
+
+To fix this we should check the return value of control_read()
+and return early on error.
+
+Reported-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=3361c2d6f78a3e0892f9
+Tested-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
+Fixes: 4a476bd6d1d9 ("usbnet: New driver for QinHeng CH9200 devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+---
+ drivers/net/mii.c        | 2 ++
+ drivers/net/usb/ch9200.c | 7 +++++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/mii.c b/drivers/net/mii.c
+index 37bc3131d31a..e305bf0f1d04 100644
+--- a/drivers/net/mii.c
++++ b/drivers/net/mii.c
+@@ -464,6 +464,8 @@ int mii_nway_restart (struct mii_if_info *mii)
+ 
+ 	/* if autoneg is off, it's an error */
+ 	bmcr = mii->mdio_read(mii->dev, mii->phy_id, MII_BMCR);
++	if (bmcr < 0)
++		return bmcr;
+ 
+ 	if (bmcr & BMCR_ANENABLE) {
+ 		bmcr |= BMCR_ANRESTART;
+diff --git a/drivers/net/usb/ch9200.c b/drivers/net/usb/ch9200.c
+index f69d9b902da0..a206ffa76f1b 100644
+--- a/drivers/net/usb/ch9200.c
++++ b/drivers/net/usb/ch9200.c
+@@ -178,6 +178,7 @@ static int ch9200_mdio_read(struct net_device *netdev, int phy_id, int loc)
+ {
+ 	struct usbnet *dev = netdev_priv(netdev);
+ 	unsigned char buff[2];
++	int ret;
+ 
+ 	netdev_dbg(netdev, "%s phy_id:%02x loc:%02x\n",
+ 		   __func__, phy_id, loc);
+@@ -185,8 +186,10 @@ static int ch9200_mdio_read(struct net_device *netdev, int phy_id, int loc)
+ 	if (phy_id != 0)
+ 		return -ENODEV;
+ 
+-	control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
+-		     CONTROL_TIMEOUT_MS);
++	ret = control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
++			   CONTROL_TIMEOUT_MS);
++	if (ret < 0)
++		return ret;
+ 
+ 	return (buff[0] | buff[1] << 8);
+ }
+-- 
+2.39.5
+
