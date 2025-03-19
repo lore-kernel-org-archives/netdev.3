@@ -1,106 +1,92 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91D220C480;
-	Wed, 19 Mar 2025 11:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B185254B0B;
+	Wed, 19 Mar 2025 11:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742383354; cv=none; b=r/GnVBPaL0edYUnpNXqL4UPyxlChSx4n4fXU0GmSy6cCBnwfs++9Z2S0Drn02seyWkq2gjal7Lhxan2VyS7LAxTKzOG1aB8/j3kZvW1YCYtJHekDo9JNh94fKTsBSiWu4A4gxKzrvBrAwxv4UuiLY1eb6dSNr1/+9OecndDdTsA=
+	t=1742383357; cv=none; b=GV+fAYU6IAVyGgnljxyBR4ZiJyMgiMj555KzygW6y6vH93TYhRPD80CbRFGJ+FITr/PvRwQJgAV42B8kIKQyxj6Ma4zVoCUPb8sT9SdZHNhsvplkFmrjspoFUmQStIXnGRxw2V/xLtAPAfdNQAOooFUBatJixb6KnK9BY8gTH60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742383354; c=relaxed/simple;
-	bh=osJJQcQ2nmAo0FdyEwaJWn0c0MRWHvUi1OLb8L87Z9o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=b0baWjamudxPHsiGESAo62iyfDFoefuT9jVDIDl0ayfA/QqqPj1cNPu4bPfN26+lITM2Id1nwbuQAewNeOiekns4EwsYhsaajKYbJCqcVv3wNIa0TSXWUrp8JK6ssOAXrjtEiQmtFFl10sF3lwSOIwFSRzR90FQnFzmesih6Fx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BLdyJFiD; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742383357; c=relaxed/simple;
+	bh=cujdxR9tJsCSokcNg/S3qzmyatuAJjZjTxgqBQEZgyM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qCbzOyIF5FHMfEj2d83jdrxbTQ09iLnreulijWVsGlB+tet5SdigdCPPrDYSJ7dqd0/ZsQ7oUv9+gK/iezPcCH9pLQO6Yj/JInkESaTa1GLyhzI0dT9WH9vJmTZKnDuX2iBKRf+0+XFiuTXWc/w5LgrOrhV6TQG2QmcnlYEDdGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jdU0PMCg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLdyJFiD"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43cf0d787eeso45563125e9.3;
-        Wed, 19 Mar 2025 04:22:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742383351; x=1742988151; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dbeE2fgp81u7MCwe3BPnaNUz6esZhVHQ8xy+UyX7a/g=;
-        b=BLdyJFiDosH/X84AkGacgFEKnn39JPcS4OxoDF/cG8FHntYKQBZlNK54SKYOyyD2VF
-         Mjy1U5cZXGcIn5UdnyAaI+IrlBNsESYZiwK23dP9lgAsb0obXGqIE7I2wB058z07uU9r
-         4S0I8Rx81wq8X7zUwR9uocQx3sVJU9cWlrj4NMwPCGZnAO8RNjdVozA1jTi0qxAQ81Xn
-         K7htSaZIJnjQgxNlUp0inRF8FBs/EZwkX9Vs0PciJP4S8aVZGmAdLGftdHp8bjaxyJZp
-         JE7etNZCXEz8NtQ6KklmDR7RdhyPFSF9CjFpJRWX+qUeEeXCiy+tFMchGMZ7znXdGfLW
-         6FSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742383351; x=1742988151;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dbeE2fgp81u7MCwe3BPnaNUz6esZhVHQ8xy+UyX7a/g=;
-        b=IBwNMTa2cC04qCKY1vkHYa/QA5TI/qW32Rh1ICp8fxwhGztsKyJUBxx4zW7hTQj8n5
-         PljshbLxXl9M6WvlmU7n8Eb8mXuhZslA4ZSBVVDmPaRTjPzqTzwJR0puTxR7g6tFa7U7
-         kjXFCL6Wgrl+Xq0vUHUnqxPv4n1CA20/+WnwUEMMe1JF6jjmxl/j9QaGIEukLnWBoPzZ
-         h7cl54OFQ85BtjlXgqUhlXKGB7sXm2qoH8P6AWqYInVmqO9nz/AUJWm7DIDP4Pd8TffU
-         qdcvXRGVyApkuAXt/wpD5bCazW9AHnVd6AdULvOwUCO0rzNN/Xu3FSRYg2RBNsQbtsE3
-         31mg==
-X-Forwarded-Encrypted: i=1; AJvYcCUqd3A3mahWyDAmVz/0MQIMPQXKC+nX6ktcX+laVe+CoAkOGC8VIgDpqnAtsrDAqIbkywGLyxQyNbGRl8w=@vger.kernel.org, AJvYcCWOeU7aDu2dTPmI6Ldgew3FqLgpmLgtFk4UCmzXrNF04RD+PXQc+bA+uVD2kxapk9a7JvSlV2it@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+H3tZ7IpkGo4Zb1IOka+EX4gUbdahrxpUcFeHbn4yh67JTnY6
-	kF0Qg/jAtm2hQWYrD9OnO8kqb81qzqW46NJAc900rA2gRXupGQJl
-X-Gm-Gg: ASbGncvDhM7BwJpyBI+cSC3Vq4RpIPmGxeCzCS7/JDhmbJu4Imed785UwmI1nXj/KiN
-	xjafdm6yg4kPSyb8l6Wh+QPrSDiq1ovegCMI2eHYAjzEFJbhsrUHzspigR6JB1d6T7wxwqEqP1E
-	/zFbySt26aQZeG/eVVJvpkGb/CmxbWo6w5dzcRHGiyxex6onprUUsOudTFvK4/o78OKgi5iRmt+
-	xDjzquoj62vGOVqmSFDqITEQb2/++DE5bDGXn/Rfe9G/6MSITTudvGZyEZExputEFxF8uHmSMAt
-	rWsoxGwcA6xFf4C10GZ1jGqUs+tjgSKJBBLLUOoDG4vK
-X-Google-Smtp-Source: AGHT+IEtvR8KBMumARxwGWjxQg1PRfyg+4GfclicvVVuvjC+VjFTVVyF5Tz8P6tJPJ43nA6VNeT8fA==
-X-Received: by 2002:a05:600c:3494:b0:43c:e8a5:87a with SMTP id 5b1f17b1804b1-43d437a9710mr23798875e9.16.1742383350941;
-        Wed, 19 Mar 2025 04:22:30 -0700 (PDT)
-Received: from qasdev.Home ([2a02:c7c:6696:8300:7659:65a:5e42:31a9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d43f331dasm16129995e9.8.2025.03.19.04.22.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Mar 2025 04:22:30 -0700 (PDT)
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Qasim Ijaz <qasdev00@gmail.com>
-Subject: [PATCH 0/4] net: fix bugs and error handling in qinheng ch9200 driver and mii interface 
-Date: Wed, 19 Mar 2025 11:21:52 +0000
-Message-Id: <20250319112156.48312-1-qasdev00@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jdU0PMCg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59677C4CEE9;
+	Wed, 19 Mar 2025 11:22:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742383356;
+	bh=cujdxR9tJsCSokcNg/S3qzmyatuAJjZjTxgqBQEZgyM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jdU0PMCgpKLfQYoamDe5ixeQMmUrEWrK9eWydFxaOWC8v4dghVVk3h1vfaP/f6Ow0
+	 dB3IrvWCx1pCL7G0GA7VUVTfyODi3qhnkHJ/X73mMTe9bXCoYcRBH9KmcPSJx3ycJX
+	 Yig1nCJ1ubVxRf4CgI9M7JS5eaUnqg4noQsd1qykbvciGNhwnl1T967UCk0nHbglzd
+	 3lTraga9J1SkO1dZ7w1SOKa4xYB82RgJ17pDEe+WkK7EQgmt2/K3LJKpd0vpNPyQVE
+	 h6CwNtqKrMakGN7Qv/xFBzEafXqOIG2jG7fwhWanQIJQjFtvlH6e9XycW9cfpr4bjL
+	 J6Oyzgva0YijQ==
+Date: Wed, 19 Mar 2025 13:22:32 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jason Gunthorpe <jgg@nvidia.com>, Dave Jiang <dave.jiang@intel.com>,
+	"Keller, Jacob E" <jacob.e.keller@intel.com>,
+	David Ahern <dsahern@kernel.org>,
+	"Nelson, Shannon" <shannon.nelson@amd.com>,
+	Jiri Pirko <jiri@resnulli.us>, Jakub Kicinski <kuba@kernel.org>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Aron Silverton <aron.silverton@oracle.com>,
+	"Williams, Dan J" <dan.j.williams@intel.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Christoph Hellwig <hch@infradead.org>,
+	Itay Avraham <itayavr@nvidia.com>, Jiri Pirko <jiri@nvidia.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Leonid Bloch <lbloch@nvidia.com>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	"Sinyuk, Konstantin" <konstantin.sinyuk@intel.com>
+Subject: Re: [PATCH v5 0/8] Introduce fwctl subystem
+Message-ID: <20250319112232.GJ1322339@unreal>
+References: <20250317123333.GB9311@nvidia.com>
+ <1eae139c-f678-4b28-a466-5c47967b5d13@kernel.org>
+ <CO1PR11MB5089AB36220DFEACBF7A5D1CD6DF2@CO1PR11MB5089.namprd11.prod.outlook.com>
+ <2025031840-phrasing-rink-c7bb@gregkh>
+ <20250318132528.GR9311@nvidia.com>
+ <9e3019af-7817-49db-a293-3242e2962c22@intel.com>
+ <2025031836-monastery-imaginary-7f5e@gregkh>
+ <95da9782-7c46-4ddc-8d7e-ffb3db31ebc3@intel.com>
+ <20250319081416.GE1322339@unreal>
+ <81005d10-15ae-4d85-bf67-9362a2169151@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <81005d10-15ae-4d85-bf67-9362a2169151@intel.com>
 
-This patch series aims to fix various issues throughout the QinHeng CH9200
-driver. This driver fails to handle failures throughout, which in one
-case has lead to a uninit access bug found via syzbot. Upon reviewing
-the driver I fixed a few more issues which I have included in this patch
-series.
+On Wed, Mar 19, 2025 at 11:46:15AM +0100, Przemek Kitszel wrote:
+> 
+> > We are discussing where to move XXX_core drivers which historically were
+> > located in drivers/net/ethernet/XXX/, see this idea https://lore.kernel.org/all/20250211075553.GF17863@unreal/
+> 
+> yes, I know
+> 
+> > FWCTL is unrelated to this discussion and
+> 
+> it is related,
+> I see the move as a workaround for "netdev maintainer complains more
+> than I would like", sorry :P
 
-Parts of this series are the product of discussions and suggestions I had
-from others like Andrew Lunn and Simon Horman, you can view those
-discussions below:
+No, it is not. There is no technical reason to keep non-netdev code in
+netdev subsystem. If you have an explanation why PCI-to-AUX, VDPA, VFIO
+and RDMA logic MUST be under netdev subsystem, please speak it now.
 
-Link: <https://lore.kernel.org/all/20250218002443.11731-1-qasdev00@gmail.com/>
-Link: <https://lore.kernel.org/all/20250311161157.49065-1-qasdev00@gmail.com/>
+Otherwise please keep brigading out of this discussion.
 
-Qasim Ijaz (4):
-  fix uninitialised access in mii_nway_restart()
-  remove extraneous return in control_write() to propagate failures
-  improve error handling in get_mac_address()
-  add error handling in ch9200_bind()
-
- drivers/net/mii.c        |  2 ++
- drivers/net/usb/ch9200.c | 59 ++++++++++++++++++++++++++--------------
- 2 files changed, 41 insertions(+), 20 deletions(-)
-
--- 
-2.39.5
-
+Thanks
