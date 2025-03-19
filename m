@@ -1,177 +1,101 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7608F1C4A24;
-	Wed, 19 Mar 2025 14:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925251DEFD7;
+	Wed, 19 Mar 2025 14:55:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395755; cv=none; b=Fti/gKfu66lSYLl/T/9sAaY5ibFi70jkgMfb/ggm19kF/v3GuxCDxTHeUPGcexDKduSUmqDp0xaHoKh1lHfDAUUKVdLELoAW3HCK9hqqbrDi5JRFqLjWdXWcy/2VUruU0QNYn8c2PHQYUSwfokM7LXbewfi0o6SrJenVjpEi7JY=
+	t=1742396153; cv=none; b=t4smvNPzQmxUI+uet5S+LddicLtkoXUdk87oU+7qeYwwdt+VA9UacE+LNmaRndEqfBUj4iOHgCyd0aGlfnxXJT9EaXnELNZhLTnD1pApPk5O1HaPc8/njZCUaKfTW419MzYIxIPFKcOhthdQIYu9OBmPMYASH7uvTnjaMAP0u84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395755; c=relaxed/simple;
-	bh=IgqdygoDFkNgkx3Pd8VQh6/rq2Y3/f/9Yb1pi8jeRks=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=JbZ5YadqFmTw/ws3njDJgwgBc01pRAR5eHC3klpM5fl4s6frc4F4UWiQAQ30SyIH/gHexsvv+wPWi1+ji89ltU8jxzo9vZ11O0qfYlmhKYKb/556SV0iEPWQ6Fb6NUDM2Oys4dRRORGo1xxo+U2cfOp603L9JtTkgsTtP0eDJo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FybiXmq4; arc=none smtp.client-ip=209.85.219.41
+	s=arc-20240116; t=1742396153; c=relaxed/simple;
+	bh=cqlvzY55RcwBDFprNdjw52JF3DSZ7waUI40/fMoYc1E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HLP9AVdDsZEhjfuPnfwyJqCNV2L/ss6obFdprMydiTS786Qhe7ZbpJv+HAK4IE9e+xuaEDPmDyvnN88tTmdgB/2w6guP1m8b+lZsmhhxBv5gxRdoW0ueKf2t2H5FWnHso7FMz6KBL8BzlbA/Ok61BJhiEqInDGu6XTHoQ8/mnXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iDaDc+xj; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FybiXmq4"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-6e8fd49b85eso16972746d6.0;
-        Wed, 19 Mar 2025 07:49:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iDaDc+xj"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4393dc02b78so31478885e9.3;
+        Wed, 19 Mar 2025 07:55:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742395752; x=1743000552; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1742396150; x=1743000950; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SQTPTxM0JT11SSMTW8cQivSj7lB8UZ8KUBStzQyLTrk=;
-        b=FybiXmq4RO9e+/ka1N/Ar74nYb9uGf30FHZaP3tbLSlQGPTUR8QE1opnoZgnnU0RNN
-         VBwLGd4Sb+0q4nIzxAPyXcVDbEp3zMB0YLXS8QmkyM65hnr+2ncWVRugWa7MxTjTaEc9
-         OmRpp/nvyRppjoTX/D+iLZeOgs6IdWXm/wKguZ5F6XwSxnHk9V09Gf5/JbVN1owklIiH
-         AGZDX9Y7rNvgSSw5HYdMSXCxSjAx+9lSV+uEc1Y5ZEXMIkiSnVt9updudjnfGTW68IiH
-         xAvTCz4ofqbiNG/CCXdHxv/t/EQqEnW0Ka5k+ND2RnA/ditKyfsbbyKJLTXTvql3lExT
-         C4aA==
+        bh=cqlvzY55RcwBDFprNdjw52JF3DSZ7waUI40/fMoYc1E=;
+        b=iDaDc+xjqcmW12fdXmNfysGPv9rHR8V6Gt3jU+Vj9tQiidGInxfb5bO9vl9oo/m4Ry
+         LhH2Ip1IgzJ7zvUgV5JDKE8DMF4Xa3amrKjqvWqM5h+SQIs+AzuSl+dBWezf3Rv/4nxs
+         z1zP2NEJ7jfYzuezTKPoQcuqb4g7If0HYkPbe94hZJtQjmUKRDkPcqtrhQXFuIPstcr9
+         GutAgGbiwK1L5n9T3e0Y1eR3j5S+iThWmbKP0T0ugAS/VV3T+IFOutPgYBZFqoVVTv0T
+         YFJv2XJ0voKBNK7SAG01vTJKpxPBt4CAb1yeKdNbpEe7fs72pJBVAaIsMaqA4lHrTm5F
+         lIJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742395752; x=1743000552;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=SQTPTxM0JT11SSMTW8cQivSj7lB8UZ8KUBStzQyLTrk=;
-        b=Dw/uDrbEau66stRz2Q2qViBNAThv7jum0G3U1C4eAmMZue5SLhSe6KlVUiO/M+DqCK
-         jJ6uh1WY3aprTeTYw8io+jlDkkhcgW6IAqcmJKg7dppNZd+iblbgItIJn0K4jVnMzsvv
-         7Tct2hRtOgDHUlKNJqkxpyVwBYxska7RSuDI23rsvrbj7V15SM9q89v1hekJmfCf7c7q
-         9Ncrnx3ESPQTTSUyvn0+fo1iWyTj/Eh1gB1IiZN1KEFnf/hls8ZUOIILc9whQNJu7aBM
-         zLUz+Rakpj7UL7qfgAwdUziuWnB/Gbjdh+R/plVVA0aTKFNeJSmPqMQMojiwITi1zafc
-         XChg==
-X-Forwarded-Encrypted: i=1; AJvYcCUh4/zTuSnv9aq+zzDIChFhK1dQwSQK6AvR2PUm8sIF3lvVvNaMtwaxXEenPZcXTwz9stGV+AZ9KdJB1zOfUFU=@vger.kernel.org, AJvYcCV/frI6a8qNsmsa/6qEggAoBqBOMpDByhu74En6yJ0QLVqS/XMLi7biHPhtFbMr4sXyFXCKHW40@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxy1hKAF1zePyBeRtDHcSrBaw7oIRn4i0GP3NreRgeAjfUGQFRb
-	lM9OlLquPuIddaR5o74jhOyxv2tUveGm1LknmBB81M2NJSuxu7+Jw3Bn2w==
-X-Gm-Gg: ASbGncvOpproZxV8UZZ0VX6QzePd7qcpl1mhGi49FXXswWpIW6TMpfBRsXO+28FU5Yu
-	5rw3g62IAhDBnDAW9xy+Jh6PEOKN8gXQFgbLCe+q1JyxpcwklVqxLj1udpOLarXqTujQyaHb/oL
-	akwmiWDLPTd/Zb6L6EiwS1JZu4/P0+WgAFSXXOp+xS+iFyqh0wEIEQ06Bz6oR9QyG0vS9wE5RVb
-	DVXr0X/ImC9v1W3WREQ4Rm66D+kadLbcs+K2iDGqu2cUwX1U0XfKzItDKqam2PQIVO6qPxmYQzJ
-	LE1PEcSPk5MiNZVZeCN5CrYYBSE+rcC+reuMhMOgK+C4Hihp9WR8wlITyz1X2B7dDAJMi7Ujx7O
-	2W+Y+tFM1hadAHincEfd9Kw==
-X-Google-Smtp-Source: AGHT+IECNHCRRJCTPE5ymJeNjONA3wR4/ZXwaHa5hu3l6CGS1uSHgFotC5xcZKcHUyoF2AHdSp7/HA==
-X-Received: by 2002:a05:6214:27e4:b0:6e8:fb7e:d33a with SMTP id 6a1803df08f44-6eb293a9a0dmr40013316d6.22.1742395752111;
-        Wed, 19 Mar 2025 07:49:12 -0700 (PDT)
-Received: from localhost (86.235.150.34.bc.googleusercontent.com. [34.150.235.86])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eade330cf4sm81407196d6.77.2025.03.19.07.49.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Mar 2025 07:49:11 -0700 (PDT)
-Date: Wed, 19 Mar 2025 10:49:11 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Pauli Virtanen <pav@iki.fi>, 
- linux-bluetooth@vger.kernel.org
-Cc: Pauli Virtanen <pav@iki.fi>, 
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
- netdev@vger.kernel.org, 
- davem@davemloft.net, 
- kuba@kernel.org, 
- willemdebruijn.kernel@gmail.com
-Message-ID: <67dad9672e000_5948294b6@willemb.c.googlers.com.notmuch>
-In-Reply-To: <af69c75a4d38e42bb11b344defc96adc5f703357.1742324341.git.pav@iki.fi>
-References: <cover.1742324341.git.pav@iki.fi>
- <af69c75a4d38e42bb11b344defc96adc5f703357.1742324341.git.pav@iki.fi>
-Subject: Re: [PATCH v5 3/5] Bluetooth: ISO: add TX timestamping
+        d=1e100.net; s=20230601; t=1742396150; x=1743000950;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cqlvzY55RcwBDFprNdjw52JF3DSZ7waUI40/fMoYc1E=;
+        b=mw8kEwzgjFwpZhrJ8eb4JZ0yUqXPAYVUetmzsUDoAh1ioNvrOZfCnI0V3ReogqPzEp
+         6YutrD+EOBpwIWMupSX3Oej1BOmzc/RiCYCP6yGqKcO4ZuvHRq1D0etnTYEdpJBVmy15
+         eV3HAM2+ygWkoxUy5lHBQNyRj7odhBfvz5YClwOsCn7eLLsEGcK0yodbVX5UpSQ+tQlF
+         VkJZQX9YaciZZFJLCl3kgPm4qNdTlAUWS5YsRPyqL+b3f9zRpU+Znk0PHvB5gQILVLTf
+         63qtHAjLBmxdmkaik4KYyuzB4N+e0eDIVSmzvTlrVNFjB1o5W4fJ64ve04WdmIN6Xcu8
+         ffIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV7UhxPc2mEDTR0F2k5NvdNjj5Vj1KV4nUWqr5NfNcKP5QmbmY9rNUpcoSf2QngaQ1HGo3OQcznnzlq9w==@vger.kernel.org, AJvYcCVHV5BSE445FJw6KSV+jX8R27IiHu6v+FabQMytefA3V7R8flHfaigJoiFevEqaueBLe+M=@vger.kernel.org, AJvYcCWL6OfAaCQcawx+G9RbcQmXcLrVP3Q6k/mnxGYYyNU8OdaemECCeEU8Nlw5w1WLmYltHD3itNeMTvfNKCe1@vger.kernel.org, AJvYcCWmJmtQo/X89AZah0t/a8fEnkWCgfeMsLg+92aIH21d9gYPSnEB70xecvLOS8s4YHuGbSHW07Op@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoVN/5w4gtacK1hzGySVME2TKTCQVYoZE3lMd+qrkTXv1jn9th
+	eA/FQfn0sNFw9OECFuHTpHkbsjFjb1s+Z4GTBf6VmN3+7UKmsM8RWnoke/xzQ5CqESlhezTS7wH
+	WOdB1AhdPYYQAKzcFnU11O03OGfg=
+X-Gm-Gg: ASbGnctBe0PN9PVxAzUpltHy1oBcGHAXrQf/2ZK1U6Vz4LoYni3NYhyvMEwVaRiZfk1
+	8LqtQbHsBBywfAh5b4AH74zuovA5Wz34IV/SFY4IVP2aBVQF/6BipHTYAt52sLnru8zKOf/n7Mh
+	G4MgDamOAfh0A+IIptgRukLtcqejP5WJv4s4tbVPHC272uaMPkNi9f32HnBhY=
+X-Google-Smtp-Source: AGHT+IFYLJulgyA42kMSpPcMFV1BLWkjwnsRvgCvCmWo2WTkZJgZ47MI8MQWGFGPtZ9EU0QvFVF22Njp4qnWSDBleeU=
+X-Received: by 2002:a05:600c:1d15:b0:43c:ec4c:25b4 with SMTP id
+ 5b1f17b1804b1-43d4378b3ddmr23619225e9.10.1742396149442; Wed, 19 Mar 2025
+ 07:55:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20250319133309.6fce6404@canb.auug.org.au> <CAADnVQKotSrp8CkVpFw-y800NJ_R7An-iw-twrQZaOdYUeRtqQ@mail.gmail.com>
+ <CAP01T76CqOxzEiMLKJ2y_YD=qDgWq+Fq5Zy-fnKP4AAyS30Dwg@mail.gmail.com>
+ <CAP01T77_qMiMmyeyizud=-sbBH5q1jvY_Jkj-QLZqM1zh0a2hg@mail.gmail.com> <CAP01T77St7cpkvJ7w+5d3Ji-ULdz04QhZDxQWdNSBX9W7vXJCw@mail.gmail.com>
+In-Reply-To: <CAP01T77St7cpkvJ7w+5d3Ji-ULdz04QhZDxQWdNSBX9W7vXJCw@mail.gmail.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Wed, 19 Mar 2025 07:55:37 -0700
+X-Gm-Features: AQ5f1JrUGFyb55SOF2EzAAJYS9bLqfvB0QpPJ5iTTYTfSGUGnuhAmOsJWefBzbE
+Message-ID: <CAADnVQ+8apdQtyvMO=SKXCE_HWpQEo3CaTUwd39ekYEj-D4TQA@mail.gmail.com>
+Subject: Re: linux-next: build failure after merge of the bpf-next tree
+To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Uros Bizjak <ubizjak@gmail.com>, bpf <bpf@vger.kernel.org>, 
+	Networking <netdev@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Pauli Virtanen wrote:
-> Add BT_SCM_ERROR socket CMSG type.
-> 
-> Support TX timestamping in ISO sockets.
-> 
-> Support MSG_ERRQUEUE in ISO recvmsg.
-> 
-> If a packet from sendmsg() is fragmented, only the first ACL fragment is
-> timestamped.
-> 
-> Signed-off-by: Pauli Virtanen <pav@iki.fi>
-> ---
-> 
-> Notes:
->     v5:
->     - use sockcm_init -> hci_sockcm_init
-> 
->  include/net/bluetooth/bluetooth.h |  1 +
->  net/bluetooth/iso.c               | 24 ++++++++++++++++++++----
->  2 files changed, 21 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
-> index 435250c72d56..bbefde319f95 100644
-> --- a/include/net/bluetooth/bluetooth.h
-> +++ b/include/net/bluetooth/bluetooth.h
-> @@ -156,6 +156,7 @@ struct bt_voice {
->  #define BT_PKT_STATUS           16
->  
->  #define BT_SCM_PKT_STATUS	0x03
-> +#define BT_SCM_ERROR		0x04
->  
->  #define BT_ISO_QOS		17
->  
-> diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-> index 0cb52a3308ba..3501a991f1c6 100644
-> --- a/net/bluetooth/iso.c
-> +++ b/net/bluetooth/iso.c
-> @@ -518,7 +518,8 @@ static struct bt_iso_qos *iso_sock_get_qos(struct sock *sk)
->  	return &iso_pi(sk)->qos;
->  }
->  
-> -static int iso_send_frame(struct sock *sk, struct sk_buff *skb)
-> +static int iso_send_frame(struct sock *sk, struct sk_buff *skb,
-> +			  const struct sockcm_cookie *sockc)
->  {
->  	struct iso_conn *conn = iso_pi(sk)->conn;
->  	struct bt_iso_qos *qos = iso_sock_get_qos(sk);
-> @@ -538,10 +539,12 @@ static int iso_send_frame(struct sock *sk, struct sk_buff *skb)
->  	hdr->slen = cpu_to_le16(hci_iso_data_len_pack(len,
->  						      HCI_ISO_STATUS_VALID));
->  
-> -	if (sk->sk_state == BT_CONNECTED)
-> +	if (sk->sk_state == BT_CONNECTED) {
-> +		hci_setup_tx_timestamp(skb, 1, sockc);
->  		hci_send_iso(conn->hcon, skb);
-> -	else
-> +	} else {
->  		len = -ENOTCONN;
-> +	}
->  
->  	return len;
->  }
-> @@ -1348,6 +1351,7 @@ static int iso_sock_sendmsg(struct socket *sock, struct msghdr *msg,
->  {
->  	struct sock *sk = sock->sk;
->  	struct sk_buff *skb, **frag;
-> +	struct sockcm_cookie sockc;
->  	size_t mtu;
->  	int err;
->  
-> @@ -1360,6 +1364,14 @@ static int iso_sock_sendmsg(struct socket *sock, struct msghdr *msg,
->  	if (msg->msg_flags & MSG_OOB)
->  		return -EOPNOTSUPP;
->  
-> +	hci_sockcm_init(&sockc, sk);
-> +
-> +	if (msg->msg_controllen) {
-> +		err = sock_cmsg_send(sk, msg, &sockc);
-> +		if (err)
-> +			return err;
-> +	}
-> +
+On Wed, Mar 19, 2025 at 7:36=E2=80=AFAM Kumar Kartikeya Dwivedi
+<memxor@gmail.com> wrote:
+>
+> > >
+> > > I've sent a fix [0], but unfortunately I was unable to reproduce the
+> > > problem with an LLVM >=3D 19 build, idk why. I will try with GCC >=3D=
+ 14
+> > > as the patches require to confirm, but based on the error I am 99%
+> > > sure it will fix the problem.
+> >
+> > Probably because __seg_gs has CC_HAS_NAMED_AS depends on CC_IS_GCC.
+> > Let me give it a go with GCC.
+> >
+>
+> Can confirm now that this fixes it, I just did a build with GCC 14
+> where Uros's __percpu checks kick in.
 
-Minor: do you want to return an error if the process set unexpected
-sockc fields?
+Great. Thanks for checking and quick fix.
 
-If allowing to set them now, but ignoring them, it will be harder to
-support them later. As then it will result in a kernel behavioral
-change for the same sendmsg() call.
-
-Though I suppose that is already the case if all cmsg are ignored
-currently. So fine to keep if you don't care.
+btw clang supports it with __attribute__((address_space(256))),
+so CC_IS_GCC probably should be relaxed.
