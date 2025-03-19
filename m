@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD2B251792
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D33E21129E
 	for <netdev@vger.kernel.org>; Wed, 19 Mar 2025 08:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742374206; cv=none; b=aB+4eliYbWqDnh69If7X0XQwOdnWU19VsFWjz3hy2jCeFc4oX0G3l9qLrVHEAb64tkHUFUZeyCX+RewBkXcxZOJ+duqIB7blI+TwD+EWN+JK1YOs5e/1b3pJ6ksnGh8aXjY1jssEuELiIocJqN+SeN+rEsWVS9kLSokdj6k2Neg=
+	t=1742374207; cv=none; b=IeDaGm9r8I6Qf7AMNXS1uXdOwx3GORuQBn2NB35Ijstp7fQu12Nq+MAZ52t7jStQ9SxiXTG2C0avxpx4R3vGuhEypl19D6zbnkcndAx2TZJxHT8Y3GOu47zyrHm6B/khPk6kwYF5cZwX90uMzJR3Gp5xMYKyRf9mlZsGNKgtL74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742374206; c=relaxed/simple;
-	bh=S+xPkBFwmZSenA+P1rJEAhj1llQPml3VNhZXeftqDDE=;
+	s=arc-20240116; t=1742374207; c=relaxed/simple;
+	bh=Z9QEyaPhy662m6JIaFR7Iia5pYII2Ub3GGRMkvCPckI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aqYcFCxgeC7oVeWLmMPDKjGusL/WdTfDmInsw2hrUulf7hBJHs1KB5nkOEuQOaudqJqH/6i9Y/ndA6Nn1VAdRdFtP16+Ur5Gs4az21pw9pW4PXtjSmENfb2JWaiGKbaq2V607uqpksteBCAu3Hzmc8GV4Bhz7XEbvyJOJ5S4w+o=
+	 MIME-Version; b=EZGa6/kRN+H/yuYDCtGUOh4KBTxLTozLlBj7X/lDlyI67d4pdGcXctnQGmvlVMDUvbBw3Kd5jAtRIMgH0969eZpXpl21KWi5Isy3+xYARhBgQMVfNiwfh2+ob+0lIo8t6apWhUeN938yHWmjKkqjjhXmSoCQtcQwPuf1u182mqQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tup7b-0008Ox-V3; Wed, 19 Mar 2025 09:49:55 +0100
+	id 1tup7b-0008Ou-V8; Wed, 19 Mar 2025 09:49:55 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tup7Z-000Z4S-0w;
+	id 1tup7Z-000Z4O-0d;
 	Wed, 19 Mar 2025 09:49:53 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tup7Z-001l2C-1w;
+	id 1tup7Z-001l1i-1j;
 	Wed, 19 Mar 2025 09:49:53 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -47,9 +47,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Phil Elwell <phil@raspberrypi.org>,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next v5 5/6] net: usb: lan78xx: Integrate EEE support with phylink LPI API
-Date: Wed, 19 Mar 2025 09:49:51 +0100
-Message-Id: <20250319084952.419051-6-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v5 2/6] net: usb: lan78xx: Convert to PHYlink for improved PHY and MAC management
+Date: Wed, 19 Mar 2025 09:49:48 +0100
+Message-Id: <20250319084952.419051-3-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250319084952.419051-1-o.rempel@pengutronix.de>
 References: <20250319084952.419051-1-o.rempel@pengutronix.de>
@@ -59,202 +59,927 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Refactor Energy-Efficient Ethernet (EEE) support in the LAN78xx driver to
-fully integrate with the phylink Low Power Idle (LPI) API. This includes:
+Convert the LAN78xx driver to use the PHYlink framework for managing
+PHY and MAC interactions.
 
-- Replacing direct calls to `phy_ethtool_get_eee` and `phy_ethtool_set_eee`
-  with `phylink_ethtool_get_eee` and `phylink_ethtool_set_eee`.
-- Implementing `.mac_enable_tx_lpi` and `.mac_disable_tx_lpi` to control
-  LPI transitions via phylink.
-- Configuring `lpi_timer_default` to align with recommended values from
-  LAN7800 documentation.
-- ensure EEE is disabled on controller reset
+Key changes include:
+- Replace direct PHY operations with phylink equivalents (e.g.,
+  phylink_start, phylink_stop).
+- Introduce lan78xx_phylink_setup for phylink initialization and
+  configuration.
+- Add phylink MAC operations (lan78xx_mac_config,
+  lan78xx_mac_link_down, lan78xx_mac_link_up) for managing link
+  settings and flow control.
+- Remove redundant and now phylink-managed functions like
+  `lan78xx_link_status_change`.
+- update lan78xx_get/set_pause to use phylink helpers
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
 changes v5:
-- remove redundant error prints
+- merge ethtool pause interface changes to this patch
+changes v4:
+- add PHYLINK dependency
+- remove PHYLIB and FIXED_PHY, both are replaced by PHYLINK
+changes v3:
+- lan78xx_phy_init: drop phy_suspend()
+- lan78xx_phylink_setup: use phy_interface_set_rgmii()
 changes v2:
-- use latest PHYlink TX_LPI API
----
- drivers/net/usb/lan78xx.c | 111 +++++++++++++++++++++++---------------
- 1 file changed, 67 insertions(+), 44 deletions(-)
+- lan78xx_mac_config: remove unused rgmii_id
+- lan78xx_mac_config: PHY_INTERFACE_MODE_RGMII* variants
+- lan78xx_mac_config: remove auto-speed and duplex configuration
+- lan78xx_phylink_setup: set link_interface to PHY_INTERFACE_MODE_RGMII_ID
+  instead of PHY_INTERFACE_MODE_NA.
+- lan78xx_phy_init: use phylink_set_fixed_link() instead of allocating
+  fixed PHY.
+- lan78xx_configure_usb: move function values to separate variables
 
+20220427_lukas_polling_be_gone_on_lan95xx.cover
+---
+ drivers/net/usb/Kconfig   |   3 +-
+ drivers/net/usb/lan78xx.c | 615 ++++++++++++++++++--------------------
+ 2 files changed, 298 insertions(+), 320 deletions(-)
+
+diff --git a/drivers/net/usb/Kconfig b/drivers/net/usb/Kconfig
+index 3c360d4f0635..71168e47a9b1 100644
+--- a/drivers/net/usb/Kconfig
++++ b/drivers/net/usb/Kconfig
+@@ -115,9 +115,8 @@ config USB_RTL8152
+ config USB_LAN78XX
+ 	tristate "Microchip LAN78XX Based USB Ethernet Adapters"
+ 	select MII
+-	select PHYLIB
++	select PHYLINK
+ 	select MICROCHIP_PHY
+-	select FIXED_PHY
+ 	select CRC32
+ 	help
+ 	  This option adds support for Microchip LAN78XX based USB 2
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 9ff8e7850e1e..074ac4d1cbcb 100644
+index 13b5da18850a..fd6e80f9c35f 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -1785,54 +1785,15 @@ static int lan78xx_set_wol(struct net_device *netdev,
- static int lan78xx_get_eee(struct net_device *net, struct ethtool_keee *edata)
+@@ -6,6 +6,7 @@
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+ #include <linux/ethtool.h>
++#include <linux/phylink.h>
+ #include <linux/usb.h>
+ #include <linux/crc32.h>
+ #include <linux/signal.h>
+@@ -384,7 +385,7 @@ struct skb_data {		/* skb->cb is one of these */
+ #define EVENT_RX_HALT			1
+ #define EVENT_RX_MEMORY			2
+ #define EVENT_STS_SPLIT			3
+-#define EVENT_LINK_RESET		4
++#define EVENT_PHY_INT_ACK		4
+ #define EVENT_RX_PAUSED			5
+ #define EVENT_DEV_WAKING		6
+ #define EVENT_DEV_ASLEEP		7
+@@ -470,6 +471,9 @@ struct lan78xx_net {
+ 	struct statstage	stats;
+ 
+ 	struct irq_domain_data	domain_data;
++
++	struct phylink		*phylink;
++	struct phylink_config	phylink_config;
+ };
+ 
+ /* use ethtool to change the level for any given device */
+@@ -1554,40 +1558,6 @@ static void lan78xx_set_multicast(struct net_device *netdev)
+ 	schedule_work(&pdata->set_multicast);
+ }
+ 
+-static int lan78xx_update_flowcontrol(struct lan78xx_net *dev, u8 duplex,
+-				      u16 lcladv, u16 rmtadv)
+-{
+-	u32 flow = 0, fct_flow = 0;
+-	u8 cap;
+-
+-	if (dev->fc_autoneg)
+-		cap = mii_resolve_flowctrl_fdx(lcladv, rmtadv);
+-	else
+-		cap = dev->fc_request_control;
+-
+-	if (cap & FLOW_CTRL_TX)
+-		flow |= (FLOW_CR_TX_FCEN_ | 0xFFFF);
+-
+-	if (cap & FLOW_CTRL_RX)
+-		flow |= FLOW_CR_RX_FCEN_;
+-
+-	if (dev->udev->speed == USB_SPEED_SUPER)
+-		fct_flow = FLOW_CTRL_THRESHOLD(FLOW_ON_SS, FLOW_OFF_SS);
+-	else if (dev->udev->speed == USB_SPEED_HIGH)
+-		fct_flow = FLOW_CTRL_THRESHOLD(FLOW_ON_HS, FLOW_OFF_HS);
+-
+-	netif_dbg(dev, link, dev->net, "rx pause %s, tx pause %s",
+-		  (cap & FLOW_CTRL_RX ? "enabled" : "disabled"),
+-		  (cap & FLOW_CTRL_TX ? "enabled" : "disabled"));
+-
+-	lan78xx_write_reg(dev, FCT_FLOW, fct_flow);
+-
+-	/* threshold value should be set before enabling flow */
+-	lan78xx_write_reg(dev, FLOW, flow);
+-
+-	return 0;
+-}
+-
+ static void lan78xx_rx_urb_submit_all(struct lan78xx_net *dev);
+ 
+ static int lan78xx_mac_reset(struct lan78xx_net *dev)
+@@ -1636,99 +1606,10 @@ static int lan78xx_mac_reset(struct lan78xx_net *dev)
+ 	return ret;
+ }
+ 
+-static int lan78xx_link_reset(struct lan78xx_net *dev)
++static int lan78xx_phy_int_ack(struct lan78xx_net *dev)
+ {
+-	struct phy_device *phydev = dev->net->phydev;
+-	struct ethtool_link_ksettings ecmd;
+-	int ladv, radv, ret, link;
+-	u32 buf;
+-
+ 	/* clear LAN78xx interrupt status */
+-	ret = lan78xx_write_reg(dev, INT_STS, INT_STS_PHY_INT_);
+-	if (unlikely(ret < 0))
+-		return ret;
+-
+-	mutex_lock(&phydev->lock);
+-	phy_read_status(phydev);
+-	link = phydev->link;
+-	mutex_unlock(&phydev->lock);
+-
+-	if (!link && dev->link_on) {
+-		dev->link_on = false;
+-
+-		/* reset MAC */
+-		ret = lan78xx_mac_reset(dev);
+-		if (ret < 0)
+-			return ret;
+-
+-		del_timer(&dev->stat_monitor);
+-	} else if (link && !dev->link_on) {
+-		dev->link_on = true;
+-
+-		phy_ethtool_ksettings_get(phydev, &ecmd);
+-
+-		if (dev->udev->speed == USB_SPEED_SUPER) {
+-			if (ecmd.base.speed == 1000) {
+-				/* disable U2 */
+-				ret = lan78xx_read_reg(dev, USB_CFG1, &buf);
+-				if (ret < 0)
+-					return ret;
+-				buf &= ~USB_CFG1_DEV_U2_INIT_EN_;
+-				ret = lan78xx_write_reg(dev, USB_CFG1, buf);
+-				if (ret < 0)
+-					return ret;
+-				/* enable U1 */
+-				ret = lan78xx_read_reg(dev, USB_CFG1, &buf);
+-				if (ret < 0)
+-					return ret;
+-				buf |= USB_CFG1_DEV_U1_INIT_EN_;
+-				ret = lan78xx_write_reg(dev, USB_CFG1, buf);
+-				if (ret < 0)
+-					return ret;
+-			} else {
+-				/* enable U1 & U2 */
+-				ret = lan78xx_read_reg(dev, USB_CFG1, &buf);
+-				if (ret < 0)
+-					return ret;
+-				buf |= USB_CFG1_DEV_U2_INIT_EN_;
+-				buf |= USB_CFG1_DEV_U1_INIT_EN_;
+-				ret = lan78xx_write_reg(dev, USB_CFG1, buf);
+-				if (ret < 0)
+-					return ret;
+-			}
+-		}
+-
+-		ladv = phy_read(phydev, MII_ADVERTISE);
+-		if (ladv < 0)
+-			return ladv;
+-
+-		radv = phy_read(phydev, MII_LPA);
+-		if (radv < 0)
+-			return radv;
+-
+-		netif_dbg(dev, link, dev->net,
+-			  "speed: %u duplex: %d anadv: 0x%04x anlpa: 0x%04x",
+-			  ecmd.base.speed, ecmd.base.duplex, ladv, radv);
+-
+-		ret = lan78xx_update_flowcontrol(dev, ecmd.base.duplex, ladv,
+-						 radv);
+-		if (ret < 0)
+-			return ret;
+-
+-		if (!timer_pending(&dev->stat_monitor)) {
+-			dev->delta = 1;
+-			mod_timer(&dev->stat_monitor,
+-				  jiffies + STAT_UPDATE_TIMER);
+-		}
+-
+-		lan78xx_rx_urb_submit_all(dev);
+-
+-		local_bh_disable();
+-		napi_schedule(&dev->napi);
+-		local_bh_enable();
+-	}
+-
+-	return 0;
++	return lan78xx_write_reg(dev, INT_STS, INT_STS_PHY_INT_);
+ }
+ 
+ /* some work can't be done in tasklets, so we use keventd
+@@ -1757,7 +1638,7 @@ static void lan78xx_status(struct lan78xx_net *dev, struct urb *urb)
+ 
+ 	if (intdata & INT_ENP_PHY_INT) {
+ 		netif_dbg(dev, link, dev->net, "PHY INTR: 0x%08x\n", intdata);
+-		lan78xx_defer_kevent(dev, EVENT_LINK_RESET);
++		lan78xx_defer_kevent(dev, EVENT_PHY_INT_ACK);
+ 
+ 		if (dev->domain_data.phyirq > 0)
+ 			generic_handle_irq_safe(dev->domain_data.phyirq);
+@@ -2039,63 +1920,16 @@ static void lan78xx_get_pause(struct net_device *net,
+ 			      struct ethtool_pauseparam *pause)
  {
  	struct lan78xx_net *dev = netdev_priv(net);
 -	struct phy_device *phydev = net->phydev;
+-	struct ethtool_link_ksettings ecmd;
+-
+-	phy_ethtool_ksettings_get(phydev, &ecmd);
+-
+-	pause->autoneg = dev->fc_autoneg;
+ 
+-	if (dev->fc_request_control & FLOW_CTRL_TX)
+-		pause->tx_pause = 1;
+-
+-	if (dev->fc_request_control & FLOW_CTRL_RX)
+-		pause->rx_pause = 1;
++	phylink_ethtool_get_pauseparam(dev->phylink, pause);
+ }
+ 
+ static int lan78xx_set_pause(struct net_device *net,
+ 			     struct ethtool_pauseparam *pause)
+ {
+ 	struct lan78xx_net *dev = netdev_priv(net);
+-	struct phy_device *phydev = net->phydev;
+-	struct ethtool_link_ksettings ecmd;
 -	int ret;
--	u32 buf;
 -
--	ret = usb_autopm_get_interface(dev->intf);
--	if (ret < 0)
--		return ret;
+-	phy_ethtool_ksettings_get(phydev, &ecmd);
 -
--	ret = phy_ethtool_get_eee(phydev, edata);
--	if (ret < 0)
+-	if (pause->autoneg && !ecmd.base.autoneg) {
+-		ret = -EINVAL;
 -		goto exit;
--
--	ret = lan78xx_read_reg(dev, MAC_CR, &buf);
--	if (buf & MAC_CR_EEE_EN_) {
--		/* EEE_TX_LPI_REQ_DLY & tx_lpi_timer are same uSec unit */
--		ret = lan78xx_read_reg(dev, EEE_TX_LPI_REQ_DLY, &buf);
--		edata->tx_lpi_timer = buf;
--	} else {
--		edata->tx_lpi_timer = 0;
 -	}
+-
+-	dev->fc_request_control = 0;
+-	if (pause->rx_pause)
+-		dev->fc_request_control |= FLOW_CTRL_RX;
+ 
+-	if (pause->tx_pause)
+-		dev->fc_request_control |= FLOW_CTRL_TX;
+-
+-	if (ecmd.base.autoneg) {
+-		__ETHTOOL_DECLARE_LINK_MODE_MASK(fc) = { 0, };
+-		u32 mii_adv;
+-
+-		linkmode_clear_bit(ETHTOOL_LINK_MODE_Pause_BIT,
+-				   ecmd.link_modes.advertising);
+-		linkmode_clear_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT,
+-				   ecmd.link_modes.advertising);
+-		mii_adv = (u32)mii_advertise_flowctrl(dev->fc_request_control);
+-		mii_adv_to_linkmode_adv_t(fc, mii_adv);
+-		linkmode_or(ecmd.link_modes.advertising, fc,
+-			    ecmd.link_modes.advertising);
+-
+-		phy_ethtool_ksettings_set(phydev, &ecmd);
+-	}
+-
+-	dev->fc_autoneg = pause->autoneg;
 -
 -	ret = 0;
 -exit:
--	usb_autopm_put_interface(dev->intf);
- 
 -	return ret;
-+	return phylink_ethtool_get_eee(dev->phylink, edata);
++	return phylink_ethtool_set_pauseparam(dev->phylink, pause);
  }
  
- static int lan78xx_set_eee(struct net_device *net, struct ethtool_keee *edata)
- {
- 	struct lan78xx_net *dev = netdev_priv(net);
+ static int lan78xx_get_regs_len(struct net_device *netdev)
+@@ -2356,26 +2190,6 @@ static void lan78xx_remove_mdio(struct lan78xx_net *dev)
+ 	mdiobus_free(dev->mdiobus);
+ }
+ 
+-static void lan78xx_link_status_change(struct net_device *net)
+-{
+-	struct lan78xx_net *dev = netdev_priv(net);
+-	struct phy_device *phydev = net->phydev;
+-	u32 data;
 -	int ret;
--	u32 buf;
 -
--	ret = usb_autopm_get_interface(dev->intf);
+-	ret = lan78xx_read_reg(dev, MAC_CR, &data);
 -	if (ret < 0)
--		return ret;
- 
--	ret = phy_ethtool_set_eee(net->phydev, edata);
--	if (ret < 0)
--		goto out;
+-		return;
 -
--	buf = (u32)edata->tx_lpi_timer;
--	ret = lan78xx_write_reg(dev, EEE_TX_LPI_REQ_DLY, buf);
--out:
--	usb_autopm_put_interface(dev->intf);
+-	if (phydev->enable_tx_lpi)
+-		data |=  MAC_CR_EEE_EN_;
+-	else
+-		data &= ~MAC_CR_EEE_EN_;
+-	lan78xx_write_reg(dev, MAC_CR, data);
 -
--	return ret;
-+	return phylink_ethtool_set_eee(dev->phylink, edata);
+-	phy_print_status(phydev);
+-}
+-
+ static int irq_map(struct irq_domain *d, unsigned int irq,
+ 		   irq_hw_number_t hwirq)
+ {
+@@ -2508,26 +2322,210 @@ static void lan78xx_remove_irq_domain(struct lan78xx_net *dev)
+ 	dev->domain_data.irqdomain = NULL;
  }
  
- static void lan78xx_get_drvinfo(struct net_device *net,
-@@ -2470,10 +2431,50 @@ static void lan78xx_mac_link_up(struct phylink_config *config,
- 		   ERR_PTR(ret));
- }
- 
-+static int lan78xx_mac_eee_enable(struct lan78xx_net *dev, bool enable)
-+{
-+	u32 mac_cr = 0;
-+
-+	if (enable)
-+		mac_cr |= MAC_CR_EEE_EN_;
-+
-+	/* make sure TXEN and RXEN are disabled before reconfiguring MAC */
-+	return lan78xx_update_reg(dev, MAC_CR, MAC_CR_EEE_EN_, mac_cr);
-+}
-+
-+static void lan78xx_mac_disable_tx_lpi(struct phylink_config *config)
++static void lan78xx_mac_config(struct phylink_config *config, unsigned int mode,
++			       const struct phylink_link_state *state)
 +{
 +	struct net_device *net = to_net_dev(config->dev);
 +	struct lan78xx_net *dev = netdev_priv(net);
++	u32 mac_cr = 0;
++	int ret;
 +
-+	lan78xx_mac_eee_enable(dev, false);
++	/* Check if the mode is supported */
++	if (mode != MLO_AN_FIXED && mode != MLO_AN_PHY) {
++		netdev_err(net, "Unsupported negotiation mode: %u\n", mode);
++		return;
++	}
++
++	switch (state->interface) {
++	case PHY_INTERFACE_MODE_INTERNAL:
++	case PHY_INTERFACE_MODE_GMII:
++		mac_cr |= MAC_CR_GMII_EN_;
++		break;
++	case PHY_INTERFACE_MODE_RGMII:
++	case PHY_INTERFACE_MODE_RGMII_ID:
++	case PHY_INTERFACE_MODE_RGMII_TXID:
++	case PHY_INTERFACE_MODE_RGMII_RXID:
++		break;
++	default:
++		netdev_warn(net, "Unsupported interface mode: %d\n",
++			    state->interface);
++		return;
++	}
++
++	ret = lan78xx_update_reg(dev, MAC_CR, MAC_CR_GMII_EN_, mac_cr);
++	if (ret < 0)
++		netdev_err(net, "Failed to config MAC with error %pe\n",
++			   ERR_PTR(ret));
 +}
 +
-+static int lan78xx_mac_enable_tx_lpi(struct phylink_config *config, u32 timer,
-+				     bool tx_clk_stop)
++static void lan78xx_mac_link_down(struct phylink_config *config,
++				  unsigned int mode, phy_interface_t interface)
 +{
 +	struct net_device *net = to_net_dev(config->dev);
 +	struct lan78xx_net *dev = netdev_priv(net);
 +	int ret;
 +
-+	/* Software should only change this field when Energy Efficient
-+	 * Ethernet Enable (EEEEN) is cleared. We ensure that by clearing
-+	 * EEEEN during probe, and phylink itself guarantees that
-+	 * mac_disable_tx_lpi() will have been previously called.
++	/* MAC reset will not de-assert TXEN/RXEN, we need to stop them
++	 * manually before reset. TX and RX should be disabled before running
++	 * link_up sequence.
 +	 */
-+	ret = lan78xx_write_reg(dev, EEE_TX_LPI_REQ_DLY, timer);
++	ret = lan78xx_stop_tx_path(dev);
++	if (ret < 0)
++		goto link_down_fail;
++
++	ret = lan78xx_stop_rx_path(dev);
++	if (ret < 0)
++		goto link_down_fail;
++
++	/* MAC reset seems to not affect MAC configuration, no idea if it is
++	 * really needed, but it was done in previous driver version. So, leave
++	 * it here.
++	 */
++	ret = lan78xx_mac_reset(dev);
++	if (ret < 0)
++		goto link_down_fail;
++
++	return;
++
++link_down_fail:
++	netdev_err(dev->net, "Failed to set MAC down with error %pe\n",
++		   ERR_PTR(ret));
++}
++
++static int lan78xx_configure_usb(struct lan78xx_net *dev, int speed)
++{
++	u32 mask, val;
++	int ret;
++
++	/* Return early if USB speed is not SuperSpeed */
++	if (dev->udev->speed != USB_SPEED_SUPER)
++		return 0;
++
++	/* Update U1 and U2 settings based on speed */
++	if (speed != SPEED_1000) {
++		mask = USB_CFG1_DEV_U2_INIT_EN_ | USB_CFG1_DEV_U1_INIT_EN_;
++		val = USB_CFG1_DEV_U2_INIT_EN_ | USB_CFG1_DEV_U1_INIT_EN_;
++		return lan78xx_update_reg(dev, USB_CFG1, mask, val);
++	}
++
++	/* For 1000 Mbps: disable U2 and enable U1 */
++	mask = USB_CFG1_DEV_U2_INIT_EN_;
++	val = 0;
++	ret = lan78xx_update_reg(dev, USB_CFG1, mask, val);
 +	if (ret < 0)
 +		return ret;
 +
-+	return lan78xx_mac_eee_enable(dev, true);
++	mask = USB_CFG1_DEV_U1_INIT_EN_;
++	val = USB_CFG1_DEV_U1_INIT_EN_;
++	return lan78xx_update_reg(dev, USB_CFG1, mask, val);
 +}
 +
- static const struct phylink_mac_ops lan78xx_phylink_mac_ops = {
- 	.mac_config = lan78xx_mac_config,
- 	.mac_link_down = lan78xx_mac_link_down,
- 	.mac_link_up = lan78xx_mac_link_up,
-+	.mac_disable_tx_lpi = lan78xx_mac_disable_tx_lpi,
-+	.mac_enable_tx_lpi = lan78xx_mac_enable_tx_lpi,
- };
- 
- static struct phy_device *lan7801_phy_init(struct lan78xx_net *dev)
-@@ -2528,6 +2529,26 @@ static int lan78xx_phylink_setup(struct lan78xx_net *dev)
- 	pc->mac_capabilities = MAC_SYM_PAUSE | MAC_ASYM_PAUSE | MAC_10 |
- 			       MAC_100 | MAC_1000FD;
- 	pc->mac_managed_pm = true;
-+	pc->lpi_capabilities = MAC_100FD | MAC_1000FD;
-+	/*
-+	 * Default TX LPI (Low Power Idle) request delay count is set to 50us.
-+	 *
-+	 * Source: LAN7800 Documentation, DS00001992H, Section 15.1.57, Page 204.
-+	 *
-+	 * Reasoning:
-+	 * According to the application note in the LAN7800 documentation, a
-+	 * zero delay may negatively impact the TX data path’s ability to
-+	 * support Gigabit operation. A value of 50us is recommended as a
-+	 * reasonable default when the part operates at Gigabit speeds,
-+	 * balancing stability and power efficiency in EEE mode. This delay can
-+	 * be increased based on performance testing, as EEE is designed for
-+	 * scenarios with mostly idle links and occasional bursts of full
-+	 * bandwidth transmission. The goal is to ensure reliable Gigabit
-+	 * performance without overly aggressive power optimization during
-+	 * inactive periods.
-+	 */
-+	pc->lpi_timer_default = 50;
-+	pc->eee_enabled_default = true;
- 
- 	if (dev->chipid == ID_REV_CHIP_ID_7801_) {
- 		phy_interface_set_rgmii(pc->supported_interfaces);
-@@ -2538,6 +2559,10 @@ static int lan78xx_phylink_setup(struct lan78xx_net *dev)
- 		link_interface = PHY_INTERFACE_MODE_INTERNAL;
- 	}
- 
-+	memcpy(dev->phylink_config.lpi_interfaces,
-+	       dev->phylink_config.supported_interfaces,
-+	       sizeof(dev->phylink_config.lpi_interfaces));
++static int lan78xx_configure_flowcontrol(struct lan78xx_net *dev,
++					 bool tx_pause, bool rx_pause)
++{
++	u32 flow = 0, fct_flow = 0;
++	int ret;
 +
- 	phylink = phylink_create(pc, dev->net->dev.fwnode,
- 				 link_interface, &lan78xx_phylink_mac_ops);
- 	if (IS_ERR(phylink))
-@@ -2607,8 +2632,6 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
- 		return ret;
++	if (tx_pause)
++		flow |= (FLOW_CR_TX_FCEN_ | 0xFFFF);
++
++	if (rx_pause)
++		flow |= FLOW_CR_RX_FCEN_;
++
++	if (dev->udev->speed == USB_SPEED_SUPER)
++		fct_flow = FLOW_CTRL_THRESHOLD(FLOW_ON_SS, FLOW_OFF_SS);
++	else if (dev->udev->speed == USB_SPEED_HIGH)
++		fct_flow = FLOW_CTRL_THRESHOLD(FLOW_ON_HS, FLOW_OFF_HS);
++
++	ret = lan78xx_write_reg(dev, FCT_FLOW, fct_flow);
++	if (ret < 0)
++		return ret;
++
++	/* threshold value should be set before enabling flow */
++	return lan78xx_write_reg(dev, FLOW, flow);
++}
++
++static void lan78xx_mac_link_up(struct phylink_config *config,
++				struct phy_device *phy,
++				unsigned int mode, phy_interface_t interface,
++				int speed, int duplex,
++				bool tx_pause, bool rx_pause)
++{
++	struct net_device *net = to_net_dev(config->dev);
++	struct lan78xx_net *dev = netdev_priv(net);
++	u32 mac_cr = 0;
++	int ret;
++
++	switch (speed) {
++	case SPEED_1000:
++		mac_cr |= MAC_CR_SPEED_1000_;
++		break;
++	case SPEED_100:
++		mac_cr |= MAC_CR_SPEED_100_;
++		break;
++	case SPEED_10:
++		mac_cr |= MAC_CR_SPEED_10_;
++		break;
++	default:
++		netdev_err(dev->net, "Unsupported speed %d\n", speed);
++		return;
++	}
++
++	if (duplex == DUPLEX_FULL)
++		mac_cr |= MAC_CR_FULL_DUPLEX_;
++
++	/* make sure TXEN and RXEN are disabled before reconfiguring MAC */
++	ret = lan78xx_update_reg(dev, MAC_CR, MAC_CR_SPEED_MASK_ |
++				 MAC_CR_FULL_DUPLEX_ | MAC_CR_EEE_EN_, mac_cr);
++	if (ret < 0)
++		goto link_up_fail;
++
++	ret = lan78xx_configure_flowcontrol(dev, tx_pause, rx_pause);
++	if (ret < 0)
++		goto link_up_fail;
++
++	ret = lan78xx_configure_usb(dev, speed);
++	if (ret < 0)
++		goto link_up_fail;
++
++	lan78xx_rx_urb_submit_all(dev);
++
++	ret = lan78xx_flush_rx_fifo(dev);
++	if (ret < 0)
++		goto link_up_fail;
++
++	ret = lan78xx_flush_tx_fifo(dev);
++	if (ret < 0)
++		goto link_up_fail;
++
++	ret = lan78xx_start_tx_path(dev);
++	if (ret < 0)
++		goto link_up_fail;
++
++	ret = lan78xx_start_rx_path(dev);
++	if (ret < 0)
++		goto link_up_fail;
++
++	return;
++link_up_fail:
++	netdev_err(dev->net, "Failed to set MAC up with error %pe\n",
++		   ERR_PTR(ret));
++}
++
++static const struct phylink_mac_ops lan78xx_phylink_mac_ops = {
++	.mac_config = lan78xx_mac_config,
++	.mac_link_down = lan78xx_mac_link_down,
++	.mac_link_up = lan78xx_mac_link_up,
++};
++
+ static struct phy_device *lan7801_phy_init(struct lan78xx_net *dev)
+ {
+-	struct fixed_phy_status fphy_status = {
+-		.link = 1,
+-		.speed = SPEED_1000,
+-		.duplex = DUPLEX_FULL,
+-	};
+ 	struct phy_device *phydev;
+ 	int ret;
+ 
+ 	phydev = phy_find_first(dev->mdiobus);
+ 	if (!phydev) {
+-		netdev_dbg(dev->net, "PHY Not Found!! Registering Fixed PHY\n");
+-		phydev = fixed_phy_register(PHY_POLL, &fphy_status, NULL);
+-		if (IS_ERR(phydev)) {
+-			netdev_err(dev->net, "No PHY/fixed_PHY found\n");
+-			return ERR_PTR(-ENODEV);
+-		}
+-		netdev_dbg(dev->net, "Registered FIXED PHY\n");
+-		dev->interface = PHY_INTERFACE_MODE_RGMII;
++		netdev_dbg(dev->net, "PHY Not Found!! Forcing RGMII configuration\n");
+ 		ret = lan78xx_write_reg(dev, MAC_RGMII_ID,
+ 					MAC_RGMII_ID_TXC_DELAY_EN_);
+ 		if (ret < 0)
+@@ -2547,7 +2545,7 @@ static struct phy_device *lan7801_phy_init(struct lan78xx_net *dev)
+ 			netdev_err(dev->net, "no PHY driver found\n");
+ 			return ERR_PTR(-EINVAL);
+ 		}
+-		dev->interface = PHY_INTERFACE_MODE_RGMII_ID;
++		phydev->interface = PHY_INTERFACE_MODE_RGMII_ID;
+ 		/* The PHY driver is responsible to configure proper RGMII
+ 		 * interface delays. Disable RGMII delays on MAC side.
+ 		 */
+@@ -2561,21 +2559,64 @@ static struct phy_device *lan7801_phy_init(struct lan78xx_net *dev)
+ 	return phydev;
+ }
+ 
++static int lan78xx_phylink_setup(struct lan78xx_net *dev)
++{
++	struct phylink_config *pc = &dev->phylink_config;
++	phy_interface_t link_interface;
++	struct phylink *phylink;
++
++	pc->dev = &dev->net->dev;
++	pc->type = PHYLINK_NETDEV;
++	pc->mac_capabilities = MAC_SYM_PAUSE | MAC_ASYM_PAUSE | MAC_10 |
++			       MAC_100 | MAC_1000FD;
++	pc->mac_managed_pm = true;
++
++	if (dev->chipid == ID_REV_CHIP_ID_7801_) {
++		phy_interface_set_rgmii(pc->supported_interfaces);
++		link_interface = PHY_INTERFACE_MODE_RGMII_ID;
++	} else {
++		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
++			  pc->supported_interfaces);
++		link_interface = PHY_INTERFACE_MODE_INTERNAL;
++	}
++
++	phylink = phylink_create(pc, dev->net->dev.fwnode,
++				 link_interface, &lan78xx_phylink_mac_ops);
++	if (IS_ERR(phylink))
++		return PTR_ERR(phylink);
++
++	dev->phylink = phylink;
++
++	return 0;
++}
++
+ static int lan78xx_phy_init(struct lan78xx_net *dev)
+ {
+-	__ETHTOOL_DECLARE_LINK_MODE_MASK(fc) = { 0, };
+-	int ret;
+-	u32 mii_adv;
+ 	struct phy_device *phydev;
++	int ret;
+ 
+ 	switch (dev->chipid) {
+ 	case ID_REV_CHIP_ID_7801_:
+ 		phydev = lan7801_phy_init(dev);
++		/* If no PHY found, set fixed link, probably there is no
++		 * device or some kind of different device like switch.
++		 * For example: EVB-KSZ9897-1 (KSZ9897 switch evaluation board
++		 * with LAN7801 & KSZ9031)
++		 */
+ 		if (IS_ERR(phydev)) {
+-			netdev_err(dev->net, "lan7801: failed to init PHY: %pe\n",
+-				   phydev);
+-			return PTR_ERR(phydev);
++			struct phylink_link_state state = {
++				.speed = SPEED_1000,
++				.duplex = DUPLEX_FULL,
++				.interface = PHY_INTERFACE_MODE_RGMII,
++			};
++
++			ret = phylink_set_fixed_link(dev->phylink, &state);
++			if (ret)
++				netdev_err(dev->net, "Could not set fixed link\n");
++
++			return ret;
+ 		}
++
+ 		break;
+ 
+ 	case ID_REV_CHIP_ID_7800_:
+@@ -2586,7 +2627,7 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
+ 			return -ENODEV;
+ 		}
+ 		phydev->is_internal = true;
+-		dev->interface = PHY_INTERFACE_MODE_GMII;
++		phydev->interface = PHY_INTERFACE_MODE_GMII;
+ 		break;
+ 
+ 	default:
+@@ -2601,37 +2642,13 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
+ 		phydev->irq = PHY_POLL;
+ 	netdev_dbg(dev->net, "phydev->irq = %d\n", phydev->irq);
+ 
+-	/* set to AUTOMDIX */
+-	phydev->mdix = ETH_TP_MDI_AUTO;
+-
+-	ret = phy_connect_direct(dev->net, phydev,
+-				 lan78xx_link_status_change,
+-				 dev->interface);
++	ret = phylink_connect_phy(dev->phylink, phydev);
+ 	if (ret) {
+-		netdev_err(dev->net, "can't attach PHY to %s\n",
+-			   dev->mdiobus->id);
+-		if (dev->chipid == ID_REV_CHIP_ID_7801_) {
+-			if (phy_is_pseudo_fixed_link(phydev)) {
+-				fixed_phy_unregister(phydev);
+-				phy_device_free(phydev);
+-			}
+-		}
+-		return -EIO;
++		netdev_err(dev->net, "can't attach PHY to %s, error %pe\n",
++			   dev->mdiobus->id, ERR_PTR(ret));
++		return ret;
  	}
  
--	phy_support_eee(phydev);
+-	/* MAC doesn't support 1000T Half */
+-	phy_remove_link_mode(phydev, ETHTOOL_LINK_MODE_1000baseT_Half_BIT);
 -
+-	/* support both flow controls */
+-	dev->fc_request_control = (FLOW_CTRL_RX | FLOW_CTRL_TX);
+-	linkmode_clear_bit(ETHTOOL_LINK_MODE_Pause_BIT,
+-			   phydev->advertising);
+-	linkmode_clear_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT,
+-			   phydev->advertising);
+-	mii_adv = (u32)mii_advertise_flowctrl(dev->fc_request_control);
+-	mii_adv_to_linkmode_adv_t(fc, mii_adv);
+-	linkmode_or(phydev->advertising, fc, phydev->advertising);
+-
+ 	phy_support_eee(phydev);
+ 
  	if (phydev->mdio.dev.of_node) {
- 		u32 reg;
- 		int len;
-@@ -3131,7 +3154,7 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+@@ -2661,10 +2678,6 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
+ 		}
+ 	}
+ 
+-	genphy_config_aneg(phydev);
+-
+-	dev->fc_autoneg = phydev->autoneg;
+-
+ 	return 0;
+ }
+ 
+@@ -3004,7 +3017,6 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+ 	unsigned long timeout;
+ 	int ret;
+ 	u32 buf;
+-	u8 sig;
+ 
+ 	ret = lan78xx_read_reg(dev, HW_CFG, &buf);
+ 	if (ret < 0)
+@@ -3161,22 +3173,12 @@ static int lan78xx_reset(struct lan78xx_net *dev)
  	if (ret < 0)
  		return ret;
  
--	buf &= ~(MAC_CR_AUTO_DUPLEX_ | MAC_CR_AUTO_SPEED_);
-+	buf &= ~(MAC_CR_AUTO_DUPLEX_ | MAC_CR_AUTO_SPEED_ | MAC_CR_EEE_EN_);
- 
++	buf &= ~(MAC_CR_AUTO_DUPLEX_ | MAC_CR_AUTO_SPEED_);
++
  	/* LAN7801 only has RGMII mode */
- 	if (dev->chipid == ID_REV_CHIP_ID_7801_)
+-	if (dev->chipid == ID_REV_CHIP_ID_7801_) {
++	if (dev->chipid == ID_REV_CHIP_ID_7801_)
+ 		buf &= ~MAC_CR_GMII_EN_;
+-		/* Enable Auto Duplex and Auto speed */
+-		buf |= MAC_CR_AUTO_DUPLEX_ | MAC_CR_AUTO_SPEED_;
+-	}
+ 
+-	if (dev->chipid == ID_REV_CHIP_ID_7800_ ||
+-	    dev->chipid == ID_REV_CHIP_ID_7850_) {
+-		ret = lan78xx_read_raw_eeprom(dev, 0, 1, &sig);
+-		if (!ret && sig != EEPROM_INDICATOR) {
+-			/* Implies there is no external eeprom. Set mac speed */
+-			netdev_info(dev->net, "No External EEPROM. Setting MAC Speed\n");
+-			buf |= MAC_CR_AUTO_DUPLEX_ | MAC_CR_AUTO_SPEED_;
+-		}
+-	}
+ 	ret = lan78xx_write_reg(dev, MAC_CR, buf);
+ 	if (ret < 0)
+ 		return ret;
+@@ -3226,9 +3228,11 @@ static int lan78xx_open(struct net_device *net)
+ 
+ 	mutex_lock(&dev->dev_mutex);
+ 
+-	phy_start(net->phydev);
++	lan78xx_init_stats(dev);
++
++	napi_enable(&dev->napi);
+ 
+-	netif_dbg(dev, ifup, dev->net, "phy initialised successfully");
++	set_bit(EVENT_DEV_OPEN, &dev->flags);
+ 
+ 	/* for Link Check */
+ 	if (dev->urb_intr) {
+@@ -3240,31 +3244,9 @@ static int lan78xx_open(struct net_device *net)
+ 		}
+ 	}
+ 
+-	ret = lan78xx_flush_rx_fifo(dev);
+-	if (ret < 0)
+-		goto done;
+-	ret = lan78xx_flush_tx_fifo(dev);
+-	if (ret < 0)
+-		goto done;
+-
+-	ret = lan78xx_start_tx_path(dev);
+-	if (ret < 0)
+-		goto done;
+-	ret = lan78xx_start_rx_path(dev);
+-	if (ret < 0)
+-		goto done;
+-
+-	lan78xx_init_stats(dev);
+-
+-	set_bit(EVENT_DEV_OPEN, &dev->flags);
++	phylink_start(dev->phylink);
+ 
+ 	netif_start_queue(net);
+-
+-	dev->link_on = false;
+-
+-	napi_enable(&dev->napi);
+-
+-	lan78xx_defer_kevent(dev, EVENT_LINK_RESET);
+ done:
+ 	mutex_unlock(&dev->dev_mutex);
+ 
+@@ -3332,12 +3314,7 @@ static int lan78xx_stop(struct net_device *net)
+ 		   net->stats.rx_packets, net->stats.tx_packets,
+ 		   net->stats.rx_errors, net->stats.tx_errors);
+ 
+-	/* ignore errors that occur stopping the Tx and Rx data paths */
+-	lan78xx_stop_tx_path(dev);
+-	lan78xx_stop_rx_path(dev);
+-
+-	if (net->phydev)
+-		phy_stop(net->phydev);
++	phylink_stop(dev->phylink);
+ 
+ 	usb_kill_urb(dev->urb_intr);
+ 
+@@ -3347,7 +3324,7 @@ static int lan78xx_stop(struct net_device *net)
+ 	 */
+ 	clear_bit(EVENT_TX_HALT, &dev->flags);
+ 	clear_bit(EVENT_RX_HALT, &dev->flags);
+-	clear_bit(EVENT_LINK_RESET, &dev->flags);
++	clear_bit(EVENT_PHY_INT_ACK, &dev->flags);
+ 	clear_bit(EVENT_STAT_UPDATE, &dev->flags);
+ 
+ 	cancel_delayed_work_sync(&dev->wq);
+@@ -4271,14 +4248,14 @@ static void lan78xx_delayedwork(struct work_struct *work)
+ 		}
+ 	}
+ 
+-	if (test_bit(EVENT_LINK_RESET, &dev->flags)) {
++	if (test_bit(EVENT_PHY_INT_ACK, &dev->flags)) {
+ 		int ret = 0;
+ 
+-		clear_bit(EVENT_LINK_RESET, &dev->flags);
+-		if (lan78xx_link_reset(dev) < 0) {
+-			netdev_info(dev->net, "link reset failed (%d)\n",
+-				    ret);
+-		}
++		clear_bit(EVENT_PHY_INT_ACK, &dev->flags);
++		ret = lan78xx_phy_int_ack(dev);
++		if (ret)
++			netdev_info(dev->net, "PHY INT ack failed (%pe)\n",
++				    ERR_PTR(ret));
+ 	}
+ 
+ 	if (test_bit(EVENT_STAT_UPDATE, &dev->flags)) {
+@@ -4352,32 +4329,29 @@ static void lan78xx_disconnect(struct usb_interface *intf)
+ 	struct lan78xx_net *dev;
+ 	struct usb_device *udev;
+ 	struct net_device *net;
+-	struct phy_device *phydev;
+ 
+ 	dev = usb_get_intfdata(intf);
+ 	usb_set_intfdata(intf, NULL);
+ 	if (!dev)
+ 		return;
+ 
+-	netif_napi_del(&dev->napi);
+-
+ 	udev = interface_to_usbdev(intf);
+ 	net = dev->net;
+ 
++	rtnl_lock();
++	phylink_stop(dev->phylink);
++	phylink_disconnect_phy(dev->phylink);
++	rtnl_unlock();
++
++	netif_napi_del(&dev->napi);
++
+ 	unregister_netdev(net);
+ 
+ 	timer_shutdown_sync(&dev->stat_monitor);
+ 	set_bit(EVENT_DEV_DISCONNECT, &dev->flags);
+ 	cancel_delayed_work_sync(&dev->wq);
+ 
+-	phydev = net->phydev;
+-
+-	phy_disconnect(net->phydev);
+-
+-	if (phy_is_pseudo_fixed_link(phydev)) {
+-		fixed_phy_unregister(phydev);
+-		phy_device_free(phydev);
+-	}
++	phylink_destroy(dev->phylink);
+ 
+ 	usb_scuttle_anchored_urbs(&dev->deferred);
+ 
+@@ -4461,7 +4435,6 @@ static int lan78xx_probe(struct usb_interface *intf,
+ 		goto out1;
+ 	}
+ 
+-	/* netdev_printk() needs this */
+ 	SET_NETDEV_DEV(netdev, &intf->dev);
+ 
+ 	dev = netdev_priv(netdev);
+@@ -4573,14 +4546,18 @@ static int lan78xx_probe(struct usb_interface *intf,
+ 	/* driver requires remote-wakeup capability during autosuspend. */
+ 	intf->needs_remote_wakeup = 1;
+ 
+-	ret = lan78xx_phy_init(dev);
++	ret = lan78xx_phylink_setup(dev);
+ 	if (ret < 0)
+ 		goto free_urbs;
+ 
++	ret = lan78xx_phy_init(dev);
++	if (ret < 0)
++		goto destroy_phylink;
++
+ 	ret = register_netdev(netdev);
+ 	if (ret != 0) {
+ 		netif_err(dev, probe, netdev, "couldn't register the device\n");
+-		goto out8;
++		goto disconnect_phy;
+ 	}
+ 
+ 	usb_set_intfdata(intf, dev);
+@@ -4595,8 +4572,10 @@ static int lan78xx_probe(struct usb_interface *intf,
+ 
+ 	return 0;
+ 
+-out8:
+-	phy_disconnect(netdev->phydev);
++disconnect_phy:
++	phylink_disconnect_phy(dev->phylink);
++destroy_phylink:
++	phylink_destroy(dev->phylink);
+ free_urbs:
+ 	usb_free_urb(dev->urb_intr);
+ out5:
+@@ -5158,7 +5137,7 @@ static int lan78xx_reset_resume(struct usb_interface *intf)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	phy_start(dev->net->phydev);
++	phylink_start(dev->phylink);
+ 
+ 	ret = lan78xx_resume(intf);
+ 
 -- 
 2.39.5
 
