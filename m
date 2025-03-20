@@ -1,122 +1,114 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85D6215F78
-	for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 09:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF0020E32B
+	for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 09:21:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742461697; cv=none; b=NVIRBVLzjJx95eOPjJHitRzinE4g4hAYT278+zcP+B0elHX4bvYvqXC39ry+9T61q1pg/4Y8rSpzRgtY2i3yJIPP1DVuuOjxXBKyxnl7Gxdg4F7ipBVqGfn4JKNrwaCM0iLOvJZ5ydCkMkf211Je2R6KWp7kljR43V5rLNsvK64=
+	t=1742462469; cv=none; b=sE056E8Pu4TpmsDz9laeL0lEimRhoMP/HGxFs4Zf13FuJJHDA1tHEurQM/qUiFu9dZI4TfEd+cgJaEdCyQxJQkbmQuNdjOVPPgR8di6o1YcjsmVOQrWQr1W0lodB7yr17LKaIpF7Evb9Wf//dTta1z1ld7PB5plXnzEWOp6uH5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742461697; c=relaxed/simple;
-	bh=5W1uHTX0JS3ybfrgNeMmG6TgEZd4dU4vl69eG6Vq4OU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YA+llZH7aQQ9CZVqlfwyYYGc6JSlpdEMYYL+YMvvYFhP8EbyqacIwuU1ynLk/7HEeXlAGgTAje/JBWDVbB/qR+0mKR/LaRG2ccoo3rjb3cxk8VkF6o3rjhXd/mTkEghYlt/w0BEvA6scYYiqvj6ufMIYb9jzvY6MaVJzVT1cOpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iMUff2xb; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1742462469; c=relaxed/simple;
+	bh=e4dH9wUBMw5WFrVQjzb4pZql51U4KOcoBn+Aq7FHrEM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iyYPSDCoHSvXuJpZsWK/ANouTulLhutWAH1XeelzxaNJ6goh7u5WJt+Qta/t3oT+gSX+Qozu49YFEe7PhPHWm4em0b801D+hymP0TdfjDbs67yTGzX5Jg3o5c0x4gnhQLYIuOo3z72oqotJNJineFEBPA8EYMYYmoeCY4sq2DcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gc2AJ48X; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iMUff2xb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742461693;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bDTq60/uptS/vYIusNxJ/yOQlPzuUR9or0TJgSxpmhw=;
-	b=iMUff2xbcMVsZUkbgKSwbBzHicSNpA5LIqYyjHnuGJdO8bVfNuw5N7PRqYJbF9hB0a46wz
-	fezjH9hdKJdUs0zWGtWSu5wUfdO9uLYHtQLNTOCnPmtxwVbN5SA611RLuMBm8J95BTpr1J
-	IyvZS7Dya2r8vBDAa1UNqV8ZCFvcwIA=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-568-WcY5fbvyPZWlD-Ic41AP1Q-1; Thu, 20 Mar 2025 05:08:11 -0400
-X-MC-Unique: WcY5fbvyPZWlD-Ic41AP1Q-1
-X-Mimecast-MFC-AGG-ID: WcY5fbvyPZWlD-Ic41AP1Q_1742461690
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-5d9e4d33f04so480200a12.0
-        for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 02:08:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gc2AJ48X"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5e6ff035e9aso1058937a12.0
+        for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 02:21:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742462466; x=1743067266; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=sm6oorFvkOexn0ubUKkqDUbSVLnqmVP5NuY9g+uHVlI=;
+        b=Gc2AJ48XKqhiA9oRxfJFDvQkrT5IzmRfVZi8iRreQU6RhYenULcxIiA1FDS2KvbK0G
+         cIdfly2yWd+Wvi8y+a3g/nTjefKivPGkCTjXXIZ3V4p+hsWr0rfS4Jm0/xd5lBXwb94G
+         b3Wo+E72WuTo67clUWo+G1hRy1+/lrkzstITOeRBKL2UNJlyRFdToPZCs6mcG//IMbfJ
+         4UF8Fosvtn5vyHh9NV1O+2qLQOryBxsFhySQh9sqC4miziiPoJa6nNH++Oti57ZognPj
+         L5S6G95L6iG2Ri7i4tTyQ5SIcDAAjh7orHAIXJEF6itoat4WachdLbJgwAg3pKE3uX1z
+         jypQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742461690; x=1743066490;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bDTq60/uptS/vYIusNxJ/yOQlPzuUR9or0TJgSxpmhw=;
-        b=MA8N3ThJ5e6CuM0qwG8qfjHvCmPHuYDuuigQruxkEPyTB726xrb7qAuz1gUboPCkh1
-         hSv/qT9rydehBujvK+fXnocTvn4FMwbQnciT26z+/45lEhDsLzns6zdmSyA1kocdW1i7
-         440hoksxBKx91f0940Jw8uR2mSIl6Q2W7pCVOExLEcnutfKyngjhZfHBbigueYvL7ded
-         S3kXu1qmxrAFedWiAuXdZko51I3AjwLg4ZcGLcI0NKrPQyzwFnsoCwupD2AjObRZcoem
-         kQ72QhZhkG2NaHwgDCZh7o343fh7o11dh/AoZjFHIQrJCX00u8WKOWcc61A0qbDwbnPD
-         Tz4A==
-X-Forwarded-Encrypted: i=1; AJvYcCX3C/WfD+3HYRK11qm8rgb7NT8LaLt2FnXaPJX76FqtGj9RdvS3gN1wXiKj5l3lTlpHJ7I9rC4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywfP0cGXKDqcoE0kutdjHuq6w2yqwyLV5gWcKH0sWkczGWTzmE
-	QJi/aby7LnwQyhSw7fPQfmr0++FLYphG0KX4FqXx6pgHPD/FLKyaKp5KG2XB4/yZfKGot9v4G97
-	JDobQksej6DCJqfx/ytjGdj+OwTgy759GCnC9U8TdhYCMnCic9oErew==
-X-Gm-Gg: ASbGncuad+blOWqHoz1CkeoTLSpnTQ+3BYIaN3c59CEVW6KYwjYBPcSnZerD5rYgbQ1
-	pkMXQedh4kRR/uyWtYuzXNbUVLOjlxrNfM+q76k+8d5D4VLOUykMYoqBLUcLBwUcV2X5G3nVNCn
-	3yvrim8kcz/wd8OZMq2e/x+LsoEvlxe34pwxXvVXjZ8ntDummq1ymFV6bBCX6KUkIX1IFRhar5H
-	TuZ4YVv9NlBEJWe5N0uH22f6yCRvuAomtBZoX/x9t4iIP8NILJdhEa5otTVRX1+zKMItd42Inwm
-	lZacTbhBfhq9G/YqiBpHkDn740C10BUcZb+g6nbikjRUN48qlAdxKzUNQS2daHix
-X-Received: by 2002:a05:6402:13cf:b0:5e7:c779:85db with SMTP id 4fb4d7f45d1cf-5eb80cdea32mr5839739a12.4.1742461690260;
-        Thu, 20 Mar 2025 02:08:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGOQHfmcgMblKkiR1tHejD7TWeiNXKZXGZAyBKU76H5X4T1+QQ1dIB97fNyYdpVkDoNZIj46Q==
-X-Received: by 2002:a05:6402:13cf:b0:5e7:c779:85db with SMTP id 4fb4d7f45d1cf-5eb80cdea32mr5839682a12.4.1742461689546;
-        Thu, 20 Mar 2025 02:08:09 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-12-25-55.business.telecomitalia.it. [87.12.25.55])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e816afeaabsm10004728a12.69.2025.03.20.02.08.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Mar 2025 02:08:09 -0700 (PDT)
-Date: Thu, 20 Mar 2025 10:08:02 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Bobby Eshleman <bobbyeshleman@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Bryan Tan <bryan-bt.tan@broadcom.com>, 
-	Vishnu Dasa <vishnu.dasa@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, "David S. Miller" <davem@davemloft.net>, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] vhost/vsock: use netns of process that opens the
- vhost-vsock-netns device
-Message-ID: <nwksousz7f4pkzwefvrpbgmmq6bt5kimv4icdkvm7n2nlom6yu@e62c5gdzmamg>
-References: <20250312-vsock-netns-v2-0-84bffa1aa97a@gmail.com>
- <20250312-vsock-netns-v2-3-84bffa1aa97a@gmail.com>
- <09c84a94-85f3-4e28-8e7d-bdc227bf99ab@redhat.com>
+        d=1e100.net; s=20230601; t=1742462466; x=1743067266;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sm6oorFvkOexn0ubUKkqDUbSVLnqmVP5NuY9g+uHVlI=;
+        b=H3jdkIKnAtm6qZ0a1ppthq53LN7t9tfjlWtsrMANMX2X/a9UYYcXo02Jfbb3zcMUQM
+         QbQoLK4MkpUgsKLH8qZN4WFQ82/NUcxX2Pqm/FZrFwAKFSuB1VPvnPh0jC/3Zq5ucZVP
+         XDSxrIC0eP9EQlZBbLUnWqVHWMYMnJ1hjdF0jlnJGqTgJQ/SWHCLeyhQyAvCIiwCbfm8
+         5AJMwfB38aqcaBJxBbDQH+MYdWgMYGg+2qQua2fp1zaO5biIWaBHvX6lr3r6noqUl5v7
+         6WU4NI5p29bC76pBUFh4MI66TPFVITyTiRNE0gIq+tTD6RjbMsBDwU5UHkBIJQBIoGu0
+         OSQw==
+X-Forwarded-Encrypted: i=1; AJvYcCWrt532ozgGkNCrNy185MnBTRoto6wdKh96MjwP6L9cE5tHRf9I11MAam7yMgAh5gNYhHqpPIE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRnBhPb6/Yc/8p3vmodeckRkrr7ghnQajoPAj4hPzfXRWRg3nr
+	Fx5pQjpa0dDPDXfjd1hd66HfVLjAoo2LDj/+bAgixWQbvStH1+cG7RklJTbQ7XX7aD+UWFq4QS/
+	tmpvbX/uI2QQK2lhztgqu+D6SwVo=
+X-Gm-Gg: ASbGncuRmp4ZLfDdipL8JGioZ91JPy1h+xVJU4bO5yBHHY3XXf7kKJShhVUH9hxJOZz
+	OUmEE7ZR3qQbPCEHgwTOoFPk9A3t8aw6n8TN3S9HyzFGgokUZ8IgSQXyEa/luqikTUkEJ4FYDx1
+	Vii9QODfKuLA1fOMtupwQe57lUTZMnbg9d6/JvtA2Se1UEnWI0B5JAixOwWA==
+X-Google-Smtp-Source: AGHT+IFiImGQ9hNzP19ORUvyFmBLx2u5M1vOAxyM1NmZs6HCjkxGHCojTLD/acZjSzPucHqeYJvtSQzp1giksQ4TSog=
+X-Received: by 2002:a05:6402:40c9:b0:5e0:9959:83cd with SMTP id
+ 4fb4d7f45d1cf-5eb80f705f6mr5610683a12.21.1742462465794; Thu, 20 Mar 2025
+ 02:21:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <09c84a94-85f3-4e28-8e7d-bdc227bf99ab@redhat.com>
+References: <20250319124508.3979818-1-maxim@isovalent.com> <fadfb5af-afdf-43c3-bc1b-58d5b1eb0d70@nvidia.com>
+ <CAKErNvrbdaEom1LQZd6W+4M-Vjfg+YRzgEz3F7YWoCXB_U+dug@mail.gmail.com>
+ <fe4b2e7b-1704-426e-99e7-da55375b676d@nvidia.com> <8a92051f-8169-44a1-a26d-85efa71a5e31@gmail.com>
+In-Reply-To: <8a92051f-8169-44a1-a26d-85efa71a5e31@gmail.com>
+From: Maxim Mikityanskiy <maxtram95@gmail.com>
+Date: Thu, 20 Mar 2025 11:20:39 +0200
+X-Gm-Features: AQ5f1Jpo5NQTsdDMMm6pIr-ijyIQR_KzYf21hr4OUlSE6tMA3mUF9o2nLP_suRM
+Message-ID: <CAKErNvrnTEDNg+Fi2G2OyZuv411YRX4ELd-R-91sS4neHcB_kw@mail.gmail.com>
+Subject: Re: [PATCH net] net/mlx5e: Fix ethtool -N flow-type ip4 to RSS context
+To: Tariq Toukan <ttoukan.linux@gmail.com>
+Cc: Gal Pressman <gal@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
+	Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	Maxim Mikityanskiy <maxim@isovalent.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Mar 19, 2025 at 10:09:44PM +0100, Paolo Abeni wrote:
->On 3/12/25 9:59 PM, Bobby Eshleman wrote:
->> @@ -753,6 +783,8 @@ static int vhost_vsock_dev_release(struct inode *inode, struct file *file)
->>  	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
->>
->>  	vhost_dev_cleanup(&vsock->dev);
->> +	if (vsock->net)
->> +		put_net(vsock->net);
+On Thu, 20 Mar 2025 at 10:58, Tariq Toukan <ttoukan.linux@gmail.com> wrote:
 >
->put_net() is a deprecated API, you should use put_net_track() instead.
 >
->>  	kfree(vsock->dev.vqs);
->>  	vhost_vsock_free(vsock);
->>  	return 0;
 >
->Also series introducing new features should also include the related
->self-tests.
+> On 20/03/2025 10:44, Gal Pressman wrote:
+> > On 20/03/2025 10:28, Maxim Mikityanskiy wrote:
+> >> On Thu, 20 Mar 2025 at 10:25, Gal Pressman <gal@nvidia.com> wrote:
+> >>>
+> >>> Hey Maxim!
+> >>>
+> >>> On 19/03/2025 14:45, Maxim Mikityanskiy wrote:
+> >>>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
+> >>>> index 773624bb2c5d..d68230a7b9f4 100644
+> >>>> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
+> >>>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
+> >>>> @@ -884,8 +884,10 @@ static int flow_type_to_traffic_type(u32 flow_type)
+> >>>>        case ESP_V6_FLOW:
+> >>>>                return MLX5_TT_IPV6_IPSEC_ESP;
+> >>>>        case IPV4_FLOW:
+> >>>> +     case IP_USER_FLOW:
+> >>>
+> >>> They're the same, but I think IPV4_USER_FLOW is the "modern" define that
+> >>> should be used.
+> >>
+> >> Yeah, I used IP_USER_FLOW for consistency with other places in this
+> >> file. If you prefer that, I can resubmit with IPV4_USER_FLOW.
+> >
+> > I don't mind, up to Tariq.
+> > We can followup with a patch that converts all usages.
+> >
+>
+> Please keep using IP_USER_FLOW for consistency with existing code.
+> We may converts them all together later.
 
-Yes, I was thinking about testing as well, but to test this I think we 
-need to run QEMU with Linux in it, is this feasible in self-tests?
+OK, sounds good to me, keeping as is.
 
-We should start looking at that, because for now I have my own ansible 
-script that runs tests (tools/testing/vsock/vsock_test) in nested VMs to 
-test both host (vhost-vsock) and guest (virtio-vsock).
-
-Thanks,
-Stefano
-
+Thanks for the reviews!
