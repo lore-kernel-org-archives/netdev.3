@@ -1,259 +1,204 @@
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2066.outbound.protection.outlook.com [40.107.101.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80AF4221F24;
-	Thu, 20 Mar 2025 19:29:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742498976; cv=none; b=MY/FbXJOplCbibTKrW6ttIUMYu9uky2zXAN82FexkRH9xA3fYpb5Ayg0vsA/nnis5vYPhuYk87Db4F+FIOoSWJuobjXpoMZfyDhZME/nPviACt//1szIgcj4smJevaMvCe9aG6WswsMnycS2AshmT/z1CrS5wvRIOdV88SsQxmw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742498976; c=relaxed/simple;
-	bh=xA/L31AqH22YF+KwVqyZLZxhcULSKRtUepyMdBumU/A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XjSYhvPCeY97sQBnep2Lc7wvIjqVPaApmJOAyDaxJVxBrD3sTJILSZ13pNJwhf+9bdqwrKNLZSea55fe1UJ78OLn+BY1Q/xQ+DWTniepG2h2GIS6KEPgVSGAJv7lMLxFZXrFoXTjHt50pO6uhoETuLrRhsd/y5xnbz8BUSr5Ah4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O8jLQtF7; arc=none smtp.client-ip=209.85.222.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD93B339A1;
+	Thu, 20 Mar 2025 19:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742499878; cv=fail; b=TwKv2a7Hm+QIJgFE6DfZ32MjvrJfnJGLvcmNSFzcrAI6RfyfrHQpZXpzRZNX6J+L+ZvXa3LuzeralnW30pk+9HuSJKiDtohmT0/TVEU7y3zVgZ9cK1OMoys9kTYacxH6kT1f138PyFNyaToqMMdMvdX9esMccDqPQAhqn29zerY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742499878; c=relaxed/simple;
+	bh=g6fcp/8gwBh2NWzsXTXt7qYyqff63v09pKfCnNC5M7U=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ERPFxj3sUWjGtoIc8rJIuoGwsMtYh3Rv6+2PvjwB5Qw2kzEXbWXHUSrXTjerPn1Agw82cP4KYsIVJ01s3uvnV0WmqgUhNA0OeAXOW8jhyihL9Sri5rRhHNBTLfw7p+qeikdTZjiguBp2OxA4lMVdL37JEddXH4mmym+jrPialMU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=mRMY88VE; arc=fail smtp.client-ip=40.107.101.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O8jLQtF7"
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-86ba07fe7a4so898675241.2;
-        Thu, 20 Mar 2025 12:29:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742498973; x=1743103773; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MqYIDVSoXi4cOMiLK+CujjyxUYRDhFvgRYDKz8VXGi0=;
-        b=O8jLQtF7EPeWRyTHVSlAFzhpENsAPSgLvk943B/CISa+08wBNv8CEmK27gghscaps7
-         zcb0q9WR0346ECmret/6foA9WtVAGZaYhue15smZfcXBeT2PkqwrcsHXStg/3bQxeBsv
-         dxAFSeQt5aO0SOQluu4r75vNBZLSBThjxPMNCnW5vb3N/MwDIH1l1pFzur+ClAAbElQT
-         sRidYaO6iYTybabYmZaOf8w+6Xv6+ixt20u2idmzEYQM7+pY+j8boRJWy3afbmTYBAxy
-         GQLTCfmVPUJ6ch6rfYQPTaPog6P3Q60Ui84GvwFMEFOl9BYrBOZ7dU02INW6lkoanA6A
-         C0mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742498973; x=1743103773;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MqYIDVSoXi4cOMiLK+CujjyxUYRDhFvgRYDKz8VXGi0=;
-        b=BruhKP3sQMEYh3dfozbeW3imYt6YvRdjAR2Zc6+zR7dSnOz2uh1jgKcM+sv3xCIixc
-         Cs3ykuZXAypfpDT3rJg77hKz9qxb5xqytZcjilvYVdL7mrji9Zgntj6yD1xYWVwRvLwZ
-         UUvn8qeVyH+kDheQ/lTkDih5x28IFcq1sZKr2wCCObOy3t0hPO/u9f2pzVGs6/HiDCBO
-         B1wogbSuIaqt3tSbW9dIUYfd3FFkRqO/eeBQvRPOmyeeCHeoxPg8LFA3z+P8HPrm0S6u
-         zswaHij2TWjY5tzYXGI6chuxVl+H+V1b1TPw+7PceobEhf3oHPrp3m+uzvQ7/CZxhP00
-         /6UQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUghNO4gIjNcfYhf3JDJMDJD3+/EJdmkY52TAaesUdvutXwXPRX291gHqKAgfwBBjz/YRiesbg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyJh/Qau/E27sgVF0iCFzscuFOajBZig8y9ROA2uP6Uv2ooeZC
-	bp27nEBoxLUaL9+3NbWuvEO0xng3SlzXCeAuGX3wgXgXlcdywver
-X-Gm-Gg: ASbGncu83CH5VX97nC01S5919p3HorSJzyrQQ1v3TbKoVD+az2Rb6vs6qlPwWPdBq1R
-	IIlgDtut24SwRc348DUFnqQimjG6b/BrezwaaqWe4HxbqiNig4bjrFqIxO8F+ZhpDIyPVOtS4zs
-	c5cv6TVZWqs/t5zWgRL2vwgDZ4zKgztJAFy/FxcJ7HCzf+SBrt67DbZc2pijAxt0pKFsz4yEUBg
-	iYtqMyCLFs7dZ2kkTfRYB4xH0TWso3PTuJbmnBlovz7I7UNA4Eo/kUjuzVxFtwetDaGoNbm6ErJ
-	6zW+mNUIkMzBTWHDqMwPUjkcSawCebGapWe0FgGQTVjDeYcSF9hAU8AhwgrJ+BUbrZXlqbJkz4e
-	FDee+Y0zGxK36iw==
-X-Google-Smtp-Source: AGHT+IFCjwF3ss/OuoZ1XCLPQlAhf4wbIFaYrwB7ea5/FWFTb9SnwrgwR2WlxIwG5sxQBbhXquYaig==
-X-Received: by 2002:a05:6102:330a:b0:4bb:d394:46d7 with SMTP id ada2fe7eead31-4c50d4afbcfmr674812137.6.1742498973007;
-        Thu, 20 Mar 2025 12:29:33 -0700 (PDT)
-Received: from lvondent-mobl5.. (syn-050-089-067-214.res.spectrum.com. [50.89.67.214])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4c50bc55ad1sm99391137.18.2025.03.20.12.29.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Mar 2025 12:29:30 -0700 (PDT)
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Cc: linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [GIT PULL] bluetooth-next 2025-03-20
-Date: Thu, 20 Mar 2025 15:29:29 -0400
-Message-ID: <20250320192929.1557825-1-luiz.dentz@gmail.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="mRMY88VE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iBestN5kLRFQSJDBjDP33yYwAIeo5KLimfYgzmiNQlYRqoLU0zb0A/ex66L4nJRR2lkQoUleWn+cI6CUo0c57BbafRKVoXXtOAAeSqRwpi3q9bCTr1RULumuDbW7GEXzorxXTgJrFTLuqWBYcaHTxvf++Z7y3nQNe0SykaGjfDOOiFo0u7L50hGf6+qwMrEvVLUXfYZLncvmjWUnFdZ7hgcRPhV2uA7OrH1S1Yy7hxUJKWrYcazcn5iK2ZaO7aAcVO0yd/sTB0NzwvAwsdqm4lrxjQn0MOoGkjOEmPB07iL2+2YX0uChnyRHpa8SJyoJR5IFLBprPOu2E9s9CbWjZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lFtX6E5XI+YwAwgcmjPaW6YAjJHcCZ2+4iRbhvB5dKE=;
+ b=wKcfBtY6y3xB+KrjkggJm5daEwQPDUVsfzXiMljPsg4my8HfZbKBgr1uQ8cnmoJs34dD9ESagaYeg2sG1BaVSadqw0PKbgiHga5eV6YSQ6wQOekFp2SBuSOBXcQN4Gb67wqL8V+lW5ZvlAS+v4kxtMMt0w4r7fftsZoaJtZiXF0hETbekWeLoIDgdBSdYKEKG90ENPrNPvlP3NwwQlegVOTwjH+O6Uanojebp9TYwQgngR4ScBlVVMiPBkXGZReS2f0S/AvDbSHGxUuDUjQnk8CZnQRuz9Hl6RYiWA31oZBHr1GZYVAfSvziU7SFlMEjdi3JcMSBW4jWWWeL6tW9EQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nvidia.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lFtX6E5XI+YwAwgcmjPaW6YAjJHcCZ2+4iRbhvB5dKE=;
+ b=mRMY88VESIpraWWcNmYoa8x83tBwvAXxQ5694Gv5Y0AvHvLeaE31kuY8+L8UMJyt6UsE/hnC0/nIdeCbLBumk/ov3lTFT2iehYzQa3wFMLRGcryRYfXXMuNeTXdbFuyaca8RhyBRRwCu+awdlN8vfjnWwNSizT8aPC+KGBCr1m4=
+Received: from BN0PR03CA0009.namprd03.prod.outlook.com (2603:10b6:408:e6::14)
+ by CY5PR12MB6575.namprd12.prod.outlook.com (2603:10b6:930:41::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.36; Thu, 20 Mar
+ 2025 19:44:33 +0000
+Received: from BL02EPF0001A0FD.namprd03.prod.outlook.com
+ (2603:10b6:408:e6:cafe::a6) by BN0PR03CA0009.outlook.office365.com
+ (2603:10b6:408:e6::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8534.34 via Frontend Transport; Thu,
+ 20 Mar 2025 19:44:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL02EPF0001A0FD.mail.protection.outlook.com (10.167.242.104) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8534.20 via Frontend Transport; Thu, 20 Mar 2025 19:44:32 +0000
+Received: from driver-dev1.pensando.io (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 20 Mar
+ 2025 14:44:30 -0500
+From: Shannon Nelson <shannon.nelson@amd.com>
+To: <jgg@nvidia.com>, <andrew.gospodarek@broadcom.com>,
+	<aron.silverton@oracle.com>, <dan.j.williams@intel.com>,
+	<daniel.vetter@ffwll.ch>, <dave.jiang@intel.com>, <dsahern@kernel.org>,
+	<gregkh@linuxfoundation.org>, <hch@infradead.org>, <itayavr@nvidia.com>,
+	<jiri@nvidia.com>, <Jonathan.Cameron@huawei.com>, <kuba@kernel.org>,
+	<lbloch@nvidia.com>, <leonro@nvidia.com>, <linux-cxl@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>, <saeedm@nvidia.com>
+CC: <brett.creeley@amd.com>, Shannon Nelson <shannon.nelson@amd.com>
+Subject: [PATCH v5 1/6] pds_core: make pdsc_auxbus_dev_del() void
+Date: Thu, 20 Mar 2025 12:44:07 -0700
+Message-ID: <20250320194412.67983-2-shannon.nelson@amd.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20250320194412.67983-1-shannon.nelson@amd.com>
+References: <20250320194412.67983-1-shannon.nelson@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FD:EE_|CY5PR12MB6575:EE_
+X-MS-Office365-Filtering-Correlation-Id: 296999a4-0479-4095-7356-08dd67e7a2b6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|7416014|376014|1800799024|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Q9iqf0SQM9tjiZLQmdC+/7rGtlFO/9FcYy+S0fOQIZskVJtuwjGL2IIRG6Wb?=
+ =?us-ascii?Q?A3bQOk27e5Dc18Hc2u4BjrswWqk29RedwENjmVK0TUlD7HbJ0lOiZm9omzBE?=
+ =?us-ascii?Q?7evwMaKxHHBCiNq8n0hRFxzhMJylxseLWZghppehEcw+Fucqq9UtJTVrOavf?=
+ =?us-ascii?Q?2DRR4W/5sxcMWExaUZYR/KINwa7RPd/pybAH8qWfiQi+EEopqaovfGnE8DNx?=
+ =?us-ascii?Q?xmsoOePv8mZ+h9OmBEcdoUKSzxEZbZ04D++mqMwzN5G6e88exLYm/UJ7a/fw?=
+ =?us-ascii?Q?XTWHSYAarsO4LEKa7GrfZoXDPYZwBMR8WBvNbUWefkX49KuRDUK/CRNfMfFH?=
+ =?us-ascii?Q?ncPunWa/zX89w93/utv8xk4A5n+ZS1AoEGFFrdVx7FZNny9UTUE5YQN2hD4l?=
+ =?us-ascii?Q?tf85JcdcZIjbyq6ml9YGZu9/3k3C0jE5VG1XqEgLXlb7rUiBadlxCGbweDJo?=
+ =?us-ascii?Q?Ib8K1ky6w28CVusz+3KfSpS9nhcAnhWnCWpPuBn4pNuS/dG2wOrFCUW5UJyc?=
+ =?us-ascii?Q?u0WXmI9K/brZ9eene6uGlK7lZA9nKs3tyKiR7uuzjnLyuHLZadxnKR5zMl6v?=
+ =?us-ascii?Q?ei/gTB8mC4yIukvhrSqNhk1yw/5zmnPenmujmb+lfid5PbWbHcrgWjtHOMr+?=
+ =?us-ascii?Q?vmuVMjC7rSaWGgwc0a+vMFuJ46jKyiOEZGr17V8tqwYxgm+dYL/II4o1KEeH?=
+ =?us-ascii?Q?gHHEOO/E3djKxJcekneu76mOYMSJu8EU1N/YCT9SJxpV0jtpck93w+oEBwfD?=
+ =?us-ascii?Q?XLrRsVAJHrK2iPtzBAsUWmsGCqjX5+gHdN3Y2SLoO2OcjTUJzbUQD2ohP1eg?=
+ =?us-ascii?Q?98MdYFNnJjK0g+ZI69GLmfDzZB9v03lby4Paf0syGlsN/wqeYIOZ7VUdUXld?=
+ =?us-ascii?Q?NvWIIE9CnVQo6b3XcPZtlKzjimLQI2ZNPOcaWy5X2CcyYy4sq/8rJlSM8AD+?=
+ =?us-ascii?Q?VNS+pwhpc4aBsCauG5ISpl+k8sxM52ONU9MvIujBi1A3uV2nCBTpX+aUJmlo?=
+ =?us-ascii?Q?YGbfpWb9XvnbdZw5HPA9wak1LS2V0gpXZu8KBbSPWDADzKxqlVOIhNM/ec2Y?=
+ =?us-ascii?Q?ijMzJe7q1W64wW8vrYmXGit1OI+pYZ1ou6nVnvyFcn97vMk5+RuYjXBNzz/q?=
+ =?us-ascii?Q?3vT2ILwhPT+Q6u3Y6de2PHM4Xx5N7HicGHQK8V8m0yhWG8t1UvYsOKUTBO/L?=
+ =?us-ascii?Q?KRRG1KHQvcQ6xn3GZ8A71cKam8xI4T1ZU/kyOZfbGhO2QYufD842p4+9ODnG?=
+ =?us-ascii?Q?bL+oqiTLyp+ezvSk6DZLTYXNNE138olJgK8NPjMx/wV3xmMZqPFReR83F2NF?=
+ =?us-ascii?Q?4bST5CdY5LRGvEmeJut8lprCFnlvcEcv6nbXhSjobiz3LaAqJfBeGIriUZWG?=
+ =?us-ascii?Q?dMLhqvizQJ0X+ZJLA5BQLBM5FStQIrO/X2A8T6Stip7Z8jvJGOOsBhqDDjP1?=
+ =?us-ascii?Q?NVV+SwBuK3FrKN6054mqoNBtNm/VFt856J7V/JRBCCLa7DcSjIibHYN5xHoF?=
+ =?us-ascii?Q?fsRArA73GbgMmdHcxEmqtIbpdfU0GVL73oCO?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(7416014)(376014)(1800799024)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2025 19:44:32.0982
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 296999a4-0479-4095-7356-08dd67e7a2b6
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0001A0FD.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6575
 
-The following changes since commit 6855b9be9cf70d3fd4b4b9a00696eae65335320c:
+Since there really is no useful return, advertising a return value
+is rather misleading.  Make pdsc_auxbus_dev_del() a void function.
 
-  Merge branch 'mptcp-pm-prep-work-for-new-ops-and-sysctl-knobs' (2025-03-20 10:14:53 +0100)
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+---
+ drivers/net/ethernet/amd/pds_core/auxbus.c  | 7 +------
+ drivers/net/ethernet/amd/pds_core/core.h    | 2 +-
+ drivers/net/ethernet/amd/pds_core/devlink.c | 6 ++++--
+ 3 files changed, 6 insertions(+), 9 deletions(-)
 
-are available in the Git repository at:
+diff --git a/drivers/net/ethernet/amd/pds_core/auxbus.c b/drivers/net/ethernet/amd/pds_core/auxbus.c
+index 2babea110991..78fba368e797 100644
+--- a/drivers/net/ethernet/amd/pds_core/auxbus.c
++++ b/drivers/net/ethernet/amd/pds_core/auxbus.c
+@@ -175,13 +175,9 @@ static struct pds_auxiliary_dev *pdsc_auxbus_dev_register(struct pdsc *cf,
+ 	return padev;
+ }
+ 
+-int pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf)
++void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf)
+ {
+ 	struct pds_auxiliary_dev *padev;
+-	int err = 0;
+-
+-	if (!cf)
+-		return -ENODEV;
+ 
+ 	mutex_lock(&pf->config_lock);
+ 
+@@ -195,7 +191,6 @@ int pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf)
+ 	pf->vfs[cf->vf_id].padev = NULL;
+ 
+ 	mutex_unlock(&pf->config_lock);
+-	return err;
+ }
+ 
+ int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf)
+diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
+index 14522d6d5f86..631a59cfdd7e 100644
+--- a/drivers/net/ethernet/amd/pds_core/core.h
++++ b/drivers/net/ethernet/amd/pds_core/core.h
+@@ -304,7 +304,7 @@ int pdsc_register_notify(struct notifier_block *nb);
+ void pdsc_unregister_notify(struct notifier_block *nb);
+ void pdsc_notify(unsigned long event, void *data);
+ int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf);
+-int pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf);
++void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf);
+ 
+ void pdsc_process_adminq(struct pdsc_qcq *qcq);
+ void pdsc_work_thread(struct work_struct *work);
+diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
+index 44971e71991f..4e2b92ddef6f 100644
+--- a/drivers/net/ethernet/amd/pds_core/devlink.c
++++ b/drivers/net/ethernet/amd/pds_core/devlink.c
+@@ -56,8 +56,10 @@ int pdsc_dl_enable_set(struct devlink *dl, u32 id,
+ 	for (vf_id = 0; vf_id < pdsc->num_vfs; vf_id++) {
+ 		struct pdsc *vf = pdsc->vfs[vf_id].vf;
+ 
+-		err = ctx->val.vbool ? pdsc_auxbus_dev_add(vf, pdsc) :
+-				       pdsc_auxbus_dev_del(vf, pdsc);
++		if (ctx->val.vbool)
++			err = pdsc_auxbus_dev_add(vf, pdsc);
++		else
++			pdsc_auxbus_dev_del(vf, pdsc);
+ 	}
+ 
+ 	return err;
+-- 
+2.17.1
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git tags/for-net-next-2025-03-20
-
-for you to fetch changes up to 1a6e1539e97303c60d82e3d5e163973e771a9d7f:
-
-  Bluetooth: btnxpuart: Fix kernel panic during FW release (2025-03-20 14:59:07 -0400)
-
-----------------------------------------------------------------
-bluetooth-next pull request for net-next:
-
-core:
-
- - Add support for skb TX SND/COMPLETION timestamping
- - hci_core: Enable buffer flow control for SCO/eSCO
- - coredump: Log devcd dumps into the monitor
-
- drivers:
-
- - btusb: Add 2 HWIDs for MT7922
- - btusb: Fix regression in the initialization of fake Bluetooth controllers
- - btusb: Add 14 USB device IDs for Qualcomm WCN785x
- - btintel: Add support for Intel Scorpius Peak
- - btintel: Add support to configure TX power
- - btintel: Add DSBR support for ScP
- - btintel_pcie: Add device id of Whale Peak
- - btintel_pcie: Setup buffers for firmware traces
- - btintel_pcie: Read hardware exception data
- - btintel_pcie: Add support for device coredump
- - btintel_pcie: Trigger device coredump on hardware exception
- - btnxpuart: Support for controller wakeup gpio config
- - btnxpuart: Add support to set BD address
- - btnxpuart: Add correct bootloader error codes
- - btnxpuart: Handle bootloader error during cmd5 and cmd7
- - btnxpuart: Fix kernel panic during FW release
- - qca: add WCN3950 support
- - hci_qca: use the power sequencer for wcn6750
- - btmtksdio: Prevent enabling interrupts after IRQ handler removal
-
-----------------------------------------------------------------
-Arkadiusz Bokowy (1):
-      Bluetooth: hci_event: Fix connection regression between LE and non-LE adapters
-
-Arseniy Krasnov (2):
-      Bluetooth: hci_uart: fix race during initialization
-      Bluetooth: hci_uart: Fix another race during initialization
-
-Dan Carpenter (1):
-      Bluetooth: Fix error code in chan_alloc_skb_cb()
-
-Dmitry Baryshkov (3):
-      dt-bindings: net: bluetooth: qualcomm: document WCN3950
-      Bluetooth: qca: simplify WCN399x NVM loading
-      Bluetooth: qca: add WCN3950 support
-
-Dorian Cruveiller (1):
-      Bluetooth: btusb: Add new VID/PID for WCN785x
-
-Douglas Anderson (1):
-      Bluetooth: btusb: mediatek: Add err code to btusb claim iso printout
-
-Dr. David Alan Gilbert (2):
-      Bluetooth: MGMT: Remove unused mgmt_pending_find_data
-      Bluetooth: MGMT: Remove unused mgmt_*_discovery_complete
-
-Easwar Hariharan (4):
-      Bluetooth: hci_vhci: convert timeouts to secs_to_jiffies()
-      Bluetooth: MGMT: convert timeouts to secs_to_jiffies()
-      Bluetooth: SMP: convert timeouts to secs_to_jiffies()
-      Bluetooth: L2CAP: convert timeouts to secs_to_jiffies()
-
-Hao Qin (1):
-      Bluetooth: btmtk: Remove the resetting step before downloading the fw
-
-Janaki Ramaiah Thota (1):
-      Bluetooth: hci_qca: use the power sequencer for wcn6750
-
-Jeremy Clifton (1):
-      Bluetooth: Fix code style warning
-
-Jiande Lu (1):
-      Bluetooth: btusb: Add 2 HWIDs for MT7922
-
-Kiran K (8):
-      Bluetooth: btintel: Add support for Intel Scorpius Peak
-      Bluetooth: btintel_pcie: Add device id of Whale Peak
-      Bluetooth: btintel: Add DSBR support for ScP
-      Bluetooth: btintel_pcie: Setup buffers for firmware traces
-      Bluetooth: btintel_pcie: Read hardware exception data
-      Bluetooth: btintel_pcie: Add support for device coredump
-      Bluetooth: btintel_pcie: Trigger device coredump on hardware exception
-      Bluetooth: btintel: Fix leading white space
-
-Loic Poulain (2):
-      bluetooth: btnxpuart: Support for controller wakeup gpio config
-      dt-bindings: net: bluetooth: nxp: Add wakeup pin properties
-
-Luiz Augusto von Dentz (4):
-      Bluetooth: btintel_pci: Fix build warning
-      Bluetooth: hci_core: Enable buffer flow control for SCO/eSCO
-      Bluetooth: hci_vhci: Mark Sync Flow Control as supported
-      HCI: coredump: Log devcd dumps into the monitor
-
-Neeraj Sanjay Kale (7):
-      Bluetooth: btnxpuart: Move vendor specific initialization to .post_init
-      Bluetooth: btnxpuart: Add support for HCI coredump feature
-      dt-bindings: net: bluetooth: nxp: Add support to set BD address
-      Bluetooth: btnxpuart: Add support to set BD address
-      Bluetooth: btnxpuart: Add correct bootloader error codes
-      Bluetooth: btnxpuart: Handle bootloader error during cmd5 and cmd7
-      Bluetooth: btnxpuart: Fix kernel panic during FW release
-
-Pauli Virtanen (5):
-      net-timestamp: COMPLETION timestamp on packet tx completion
-      Bluetooth: add support for skb TX SND/COMPLETION timestamping
-      Bluetooth: ISO: add TX timestamping
-      Bluetooth: L2CAP: add TX timestamping
-      Bluetooth: SCO: add TX timestamping
-
-Pedro Nishiyama (4):
-      Bluetooth: Add quirk for broken READ_VOICE_SETTING
-      Bluetooth: Add quirk for broken READ_PAGE_SCAN_TYPE
-      Bluetooth: Disable SCO support if READ_VOICE_SETTING is unsupported/broken
-      Bluetooth: btusb: Fix regression in the initialization of fake Bluetooth controllers
-
-Sean Wang (1):
-      Bluetooth: btmtksdio: Prevent enabling interrupts after IRQ handler removal
-
-Vijay Satija (1):
-      Bluetooth: btintel: Add support to configure TX power
-
-Wentao Guan (1):
-      Bluetooth: HCI: Add definition of hci_rp_remote_name_req_cancel
-
-Zijun Hu (1):
-      Bluetooth: btusb: Add 13 USB device IDs for Qualcomm WCN785x
-
- .../bindings/net/bluetooth/nxp,88w8987-bt.yaml     |  18 +-
- .../bindings/net/bluetooth/qualcomm-bluetooth.yaml |   2 +
- Documentation/networking/timestamping.rst          |   8 +
- drivers/bluetooth/bfusb.c                          |   3 +-
- drivers/bluetooth/btintel.c                        | 341 ++++++++++++
- drivers/bluetooth/btintel.h                        |  24 +
- drivers/bluetooth/btintel_pcie.c                   | 582 ++++++++++++++++++++-
- drivers/bluetooth/btintel_pcie.h                   |  93 ++++
- drivers/bluetooth/btmtk.c                          |  10 -
- drivers/bluetooth/btmtksdio.c                      |   3 +-
- drivers/bluetooth/btnxpuart.c                      | 407 +++++++++++---
- drivers/bluetooth/btqca.c                          |  27 +-
- drivers/bluetooth/btqca.h                          |   4 +
- drivers/bluetooth/btusb.c                          |  36 +-
- drivers/bluetooth/hci_ldisc.c                      |  19 +-
- drivers/bluetooth/hci_qca.c                        |  27 +-
- drivers/bluetooth/hci_uart.h                       |   1 +
- drivers/bluetooth/hci_vhci.c                       |   5 +-
- include/linux/skbuff.h                             |   7 +-
- include/net/bluetooth/bluetooth.h                  |   1 +
- include/net/bluetooth/hci.h                        |  36 +-
- include/net/bluetooth/hci_core.h                   |  27 +-
- include/net/bluetooth/l2cap.h                      |   7 +-
- include/uapi/linux/errqueue.h                      |   1 +
- include/uapi/linux/net_tstamp.h                    |   6 +-
- net/bluetooth/6lowpan.c                            |   9 +-
- net/bluetooth/coredump.c                           |  28 +-
- net/bluetooth/hci_conn.c                           | 122 +++++
- net/bluetooth/hci_core.c                           |  77 +--
- net/bluetooth/hci_event.c                          |  15 +-
- net/bluetooth/hci_sync.c                           |  32 +-
- net/bluetooth/iso.c                                |  24 +-
- net/bluetooth/l2cap_core.c                         |  45 +-
- net/bluetooth/l2cap_sock.c                         |  15 +-
- net/bluetooth/mgmt.c                               |  46 +-
- net/bluetooth/mgmt_util.c                          |  17 -
- net/bluetooth/mgmt_util.h                          |   4 -
- net/bluetooth/sco.c                                |  19 +-
- net/bluetooth/smp.c                                |   4 +-
- net/core/skbuff.c                                  |   2 +
- net/ethtool/common.c                               |   1 +
- net/socket.c                                       |   3 +
- 42 files changed, 1890 insertions(+), 268 deletions(-)
