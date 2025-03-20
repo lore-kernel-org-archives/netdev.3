@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B3E226165
-	for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 14:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0174226CFB
+	for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 14:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742480432; cv=none; b=OF77pECnUrt4fImfWsPdVPgG4chFXRRs5RRXuvmzYmOf+hjw3Dgd7HoTnzidBMMkm1qSbY6NypcDxfAj70Mr7OatUYUrcr8zk/C9LtpdNtQYWLOwtPUB0sE/zUS8VXRhqwOoR0xz6DaXyW++5uf2Zsmeh1vPg1aRcxySdKgAJH4=
+	t=1742480434; cv=none; b=WMIHnQe/kb4XrQnahmI4MYtz4EaOvoFdrZZm3D5KxdU9XOP5N8zyDMUHXZhmjp1pTr6lQ5cc+OXube4rhPSSk0TJsobcj+mm9tnjtMgCl/ZR0SiAJDSaDKXlK3cTR15SIwoXsZNE9bhRecG9GMy7UTsA4BVG2iwgJxi2GAY4iSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742480432; c=relaxed/simple;
-	bh=FIGEszkndZKKx4q3IN7Id/WWWtKCe06mBAQ0OOZmY1I=;
+	s=arc-20240116; t=1742480434; c=relaxed/simple;
+	bh=eezOHvkT+vtkcWUhQkZKES+usNBF4EoxjQNwxX5b1Hw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FY2vKFf21RU0eOUv+MMR5HTgs5fk/cT79cXvL84v9AWRptgimfbfgfSxLekeKEYwCWXXQXuB0X+J2KemUm2Z79ftXIgpw/C64I9T60LG9b6MWydLz3rifqh+jZkVI6NmWXHoCALxlzFQNpr9XeCqYP7EKuCW4XGR9ckc5FIKVvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XYDOANAd; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=hNlqKA4BCmB5Ff0ySHwSnBbRwVyyZ7RnXcHJCCm5v5ZaZAYNcsbk2S/yaekF6h+dZuf1j76KxBg0y2UUo9BxTE9BQi3u7009UTO0DUxj9IHBudDIdfjdymxhJxoCp1kf4CAvDopiOymEc/nEKXQHvwCdrYFiFvH2zOYY6c8WDKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CnByeUgm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XYDOANAd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CADFC4CEE3;
-	Thu, 20 Mar 2025 14:20:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CnByeUgm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708E7C4CEE3;
+	Thu, 20 Mar 2025 14:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742480431;
-	bh=FIGEszkndZKKx4q3IN7Id/WWWtKCe06mBAQ0OOZmY1I=;
+	s=k20201202; t=1742480433;
+	bh=eezOHvkT+vtkcWUhQkZKES+usNBF4EoxjQNwxX5b1Hw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XYDOANAdpxkBtVwcFr3MWp1VYX7EW+YSx1PdIbYR55o7WQTbHWP4NLcfeZ+UwagAr
-	 BifWaU3vKxz1ZVNAHLrQvrhCIGopdier4PefYLVRyacqU0c0rcEqVUo1NMujC1eucr
-	 g++76RQOTbOrdddwLcem3y9dAniBAXolCNyLMUkQQDHOqKgQK0EsvtfqEN6OwSW3cg
-	 iFkoDyv3MkQKPKbYv9BflpEwWEjymAJ1WzzCjB3jFRNSeXCIGIld/m/5GW7zUjZVit
-	 rSUW1fN5yxFU7ESJVHCwlmpUw8UYStDOEDuHNXo9hy2ZeNOImB0o1dYbh1zoU4wZcT
-	 fDTBhhdFlzbwQ==
-Message-ID: <c00f4147-1f64-410c-9b84-5882f9a4ea44@kernel.org>
-Date: Thu, 20 Mar 2025 08:20:31 -0600
+	b=CnByeUgmCqmuAOiqAZ5B0A7dCU5+PRE837d/D6IbFuIPa+o6MBny6LyKIqbg5tVvr
+	 +KOOEKAR6ZDJbv6UriLKsD8/CINzP2hYsvmMmO8bY+OH5YsrNKtcXMOaFw/5B/5b25
+	 pOee07NzDEsaUzfAGj/cRSe9wkvRtM2XO9LmMH+YwJqbiYqBboxtgJwL64z9EztS+y
+	 VoULNyOAd2i8sBnrAownBDzhflnj2j3FB7h9B/POwClUl+mVo8Z5T6mrVao9ZOLqrl
+	 VhVfPoq6rA93wk/ANeo/J1m8imGpoL1O4GKxRbFbN37kHPLObQ1aDA9UKcr9gHckRo
+	 FP/ew3f9VO6+A==
+Message-ID: <ce7ce83f-b52f-443e-97f8-beffde023274@kernel.org>
+Date: Thu, 20 Mar 2025 08:20:33 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net-next 5/7] nexthop: Remove redundant group len check
- in nexthop_create_group().
+Subject: Re: [PATCH v2 net-next 6/7] nexthop: Convert RTM_NEWNEXTHOP to
+ per-netns RTNL.
 Content-Language: en-US
 To: Kuniyuki Iwashima <kuniyu@amazon.com>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
@@ -44,22 +44,22 @@ To: Kuniyuki Iwashima <kuniyu@amazon.com>,
 Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
  netdev@vger.kernel.org
 References: <20250319230743.65267-1-kuniyu@amazon.com>
- <20250319230743.65267-6-kuniyu@amazon.com>
+ <20250319230743.65267-7-kuniyu@amazon.com>
 From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20250319230743.65267-6-kuniyu@amazon.com>
+In-Reply-To: <20250319230743.65267-7-kuniyu@amazon.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 3/19/25 5:06 PM, Kuniyuki Iwashima wrote:
-> The number of NHA_GROUP entries is guaranteed to be non-zero in
-> nh_check_attr_group().
+> If we pass false to the rtnl_held param of lwtunnel_valid_encap_type(),
+> we can move RTNL down before rtm_to_nh_config_rtnl().
 > 
-> Let's remove the redundant check in nexthop_create_group().
+> Let's use rtnl_net_lock() in rtm_new_nexthop().
 > 
 > Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 > ---
->  net/ipv4/nexthop.c | 3 ---
->  1 file changed, 3 deletions(-)
+>  net/ipv4/nexthop.c | 16 +++++++++++-----
+>  1 file changed, 11 insertions(+), 5 deletions(-)
 > 
 
 Reviewed-by: David Ahern <dsahern@kernel.org>
