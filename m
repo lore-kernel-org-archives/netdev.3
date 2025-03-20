@@ -1,103 +1,87 @@
-Received: from mx23lb.world4you.com (mx23lb.world4you.com [81.19.149.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736401EBFFF
-	for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 06:55:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65227819
+	for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 07:00:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742453721; cv=none; b=NnKnkk2Tp3x5xUm0gtM5XFrMcNxF06eJSvFFkGBlFmWiqIPBSOf7wuf/dHI59O6YsoMk1fiSPYI0LQUdOLKFsVs2uic6fE5E1SzAq950IcDI4SFiaG89iMhRsLv0a466PhEDBytvRNZyA4t3LkyHGhrzrXOEQJQSfkArNWdKYss=
+	t=1742454051; cv=none; b=k62fceNd6sfLr7Wb72jqrTnGKHWJjw+Gi++JZ/QmJf1bWJbAkvkOeObBmRoWbNrWS2eHAia2JRtLTah6G9bko7Fyxiun7IGGGLJVhDEEKC6TRMBIz3CHT6PIcd767lj6zA1CBiL93gzMdFVEa2NKPqhsLMeVt/j54TuBonDUmR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742453721; c=relaxed/simple;
-	bh=e1wOclOL5bzXvZb+4yPbuF+qVxaILuXqDjuPZCxXuDQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hhgctRtm1ipF34iJ546SolPCkVK8zR8LCflEYNakMj32rp2vG85P8cFdbmOjBWE1n80Pmaj9thvTlJcwdKvspcUQEsVZufkfpzs4Y/WYDo9ZykZj64I47iwAk+YaAwglPqS6eVI7sDyhOzVj/0chGVf7LxvUw03KVJfiFixV4q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=hHFWuz+u; arc=none smtp.client-ip=81.19.149.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1742454051; c=relaxed/simple;
+	bh=8v4VZnLyl3+dyYNF7e8jakagvSXtI9RKvGesLqR5o+U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m0DfXdelf1cFryIgmcgzbPcM/hwOhYxXWsp3zAb5mMvcVD+hF2kYVSyB1vZeqH0TinIqYi5+E0q+K90zZXO3fxI/GGA/mrEoR3h8P+UtrCCgn/s+ibCcW0N4dXLr4sS2jPs/f54FE80zE1pi8tdRwGnbd7iDEf98cEyxqZgfm8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vMEJraS7; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="hHFWuz+u"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=m6lk21RutrjsrkWDVoOVfb1WIpMZ24B9YQYoi8EfxGA=; b=hHFWuz+uDKZ/B8ct+USZiSyWBg
-	uHWUPq+qD0w2Ez0r58x7xukNZI5y0hx6V3PlAHkYjizZTKoLfnMhy/lWUag5QsFKKgPTrgshvOF8G
-	VASr0e/4g91rASl5qnDDfJuEnu5Yb+peOgvS0OWj/YB2L4aTTKfx5vbfuxoCFOOQGC+k=;
-Received: from [80.121.79.4] (helo=[10.0.0.160])
-	by mx23lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1tv9Mj-000000004QT-1riP;
-	Thu, 20 Mar 2025 07:26:53 +0100
-Message-ID: <ab02f08f-d294-462e-bbda-bb6909781ce6@engleder-embedded.com>
-Date: Thu, 20 Mar 2025 07:26:52 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vMEJraS7"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-476b89782c3so5629741cf.1
+        for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 00:00:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1742454049; x=1743058849; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8v4VZnLyl3+dyYNF7e8jakagvSXtI9RKvGesLqR5o+U=;
+        b=vMEJraS7VK1v3mqPIXnMKmDHqU3yZG377SlUKGCOG+u/5wzK0Tyd69nrYmuZ/SY8N2
+         HKZI0qtF/N9Auswu5n3XlFczwq1Lg9T1fiYCk6b+mUWiGcHl+T7KjhPSL3xlPD+PNiOn
+         qiqfhAgF65SjMpyCKSPpuS5/QZmf3ft1FbtSnkP+Mj2RJ7TCPYHzTDlvvn4vONYpOnIl
+         z27jzz2FzFcZk2uF2kfhE29F9mwnoSSaD8jU1NBAEGVEbntxdfkazztpS0tmy2hnpQVg
+         wz518zYTpmiaVEsACd2fJkRSp/Qc0cBNrHO2FxIbkbLT3QPhcdPn+oxByh+mGcMX/lW1
+         dVww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742454049; x=1743058849;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8v4VZnLyl3+dyYNF7e8jakagvSXtI9RKvGesLqR5o+U=;
+        b=oeWarE3Ew8M6fVSKSIlzeTIb8l+vxiEyJfkO2p6jyBvnEt1tZPnSpTlFTS92gE4o72
+         ZPpL/LhxIgMSlwjXONniv+Ym8EBPuz7aFoxQUIj4mGbD2AHsC3/cjLrpJBPhVrvTiUoH
+         Fo4YGp9BImKnYrJG+wp76xftowlFqTBcdIXS7IIhoi/a7Q4FHr4AmLogXxggJ/BTag8P
+         IEdDA+GjgedENGuqgllZMlp8Cr+RjWlEAfQcaMn7SIAs6ShjYKV/au8nwVEYygTwKfWO
+         afXt8d7dtTQPq2Z90o8w2NaVtc6KbvweVw81UWf0Jf+iqNLsbfM3XA3cNaOeMVzHgj7E
+         tPkg==
+X-Forwarded-Encrypted: i=1; AJvYcCXQKi8sbz+U1AS0XS2niqdAov5MZv0cGHjRUNgOS/6fze9XzaeSuPD067Hd7YtCMoUpF/9biDk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5jj2I7ruPu0sP2lpDe66tmybplxlFAVo7n79ly1FZcr+X/bFe
+	C2hHkUQHHPfMRWE1ZsJO+j/WwR094lbxlUBtwT0tU0NYmzFzVko/sqtFdmJJDGTGEObWyRxxkwd
+	+2zEehfistm19Y5KHi/0DCSGGMTkmlQRQYTuv
+X-Gm-Gg: ASbGnctbvxk9uret/PgQ/fOb2IbC1GkCjWbn1/QfS5lZMHt/ecvteqXlkwshmEq+SPv
+	/Qz+qjSJrq95ziV1pZncXf/20p8Z2fyrSZ/oQt8/fCbWM7XeuvCM5DUE/YY0XbYPN9mgUjQXn6p
+	5JNc7ooO0WhKR6PcL+I2XXIqYx
+X-Google-Smtp-Source: AGHT+IHcJMJVo8YDzVput7IMo+7I0nw/PKxf4vhV6/l73w3i5sRd6nrg3ckxIUDzfCAG0ChaxfouMoaX3KrprZbl9eU=
+X-Received: by 2002:a05:622a:1bab:b0:476:6ddb:1a25 with SMTP id
+ d75a77b69052e-47708307153mr87161671cf.26.1742454048994; Thu, 20 Mar 2025
+ 00:00:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v10 0/5] Support loopback mode speed selection
-To: andrew@lunn.ch
-Cc: netdev@vger.kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, ltrager@meta.com, Jijie Shao <shaojijie@huawei.com>
-References: <20250312203010.47429-1-gerhard@engleder-embedded.com>
-Content-Language: en-US
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-In-Reply-To: <20250312203010.47429-1-gerhard@engleder-embedded.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AV-Do-Run: Yes
+References: <20250319230743.65267-1-kuniyu@amazon.com> <20250319230743.65267-2-kuniyu@amazon.com>
+In-Reply-To: <20250319230743.65267-2-kuniyu@amazon.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 20 Mar 2025 08:00:37 +0100
+X-Gm-Features: AQ5f1JrdgK9IKlKPv569Vb8SszWPk1O9itEnD7iOK0Dj-fux-U-88ePunB0FRPI
+Message-ID: <CANn89iKEHLQaTqVJc6p2q0-Y7wFSUbX=E3R584ADNH6vV7OhyA@mail.gmail.com>
+Subject: Re: [PATCH v2 net-next 1/7] nexthop: Move nlmsg_parse() in
+ rtm_to_nh_config() to rtm_new_nexthop().
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: David Ahern <dsahern@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12.03.25 21:30, Gerhard Engleder wrote:
-> Previously to commit 6ff3cddc365b ("net: phylib: do not disable autoneg
-> for fixed speeds >= 1G") it was possible to select the speed of the
-> loopback mode by configuring a fixed speed before enabling the loopback
-> mode. Now autoneg is always enabled for >= 1G and a fixed speed of >= 1G
-> requires successful autoneg. Thus, the speed of the loopback mode depends
-> on the link partner for >= 1G. There is no technical reason to depend on
-> the link partner for loopback mode. With this behavior the loopback mode
-> is less useful for testing.
-> 
-> Allow PHYs to support optional speed selection for the loopback mode.
-> This support is implemented for the generic loopback support and for PHY
-> drivers, which obviously support speed selection for loopback mode.
-> Additionally, loopback support according to the data sheet is added to
-> the KSZ9031 PHY.
-> 
-> Extend phy_loopback() to signal link up and down if speed changes,
-> because a new link speed requires link up signalling.
-> 
-> Use this loopback speed selection in the tsnep driver to select the
-> loopback mode speed depending the previously active speed. User space
-> tests with 100 Mbps and 1 Gbps loopback are possible again.
-> 
-> v10:
-> - remove selftests, because Anrew Lunn expects a new netlink API for
->    selftests and the selftest patches should wait for it
+On Thu, Mar 20, 2025 at 12:08=E2=80=AFAM Kuniyuki Iwashima <kuniyu@amazon.c=
+om> wrote:
 >
+> We will split rtm_to_nh_config() into non-RTNL and RTNL parts,
+> and then the latter also needs tb.
+>
+> As a prep, let's move nlmsg_parse() to rtm_new_nexthop().
+>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-Hello Andrew,
-
-The patchset now does not touch any selftest code anymore. It now only
-fixes the 1Gbps loopback, which requires a link partner since
-6ff3cddc365b. tsnep is using the extended phy_loopback() interface
-to select the loopback speed. Also the phy_loopback() usage in tsnep
-could be simplified, because thanks to your review comments link speed
-changes are now signaled correctly by phy_loopback().
-
-I'm curious about the work of Lee Trager and I will definitely take a
-look on it. I will take a look to the netdev 0x19 talk as soon as the
-slides or the recording is available.
-
-I did not get an answer from you to my last reply of v9. That's the
-reason why I decided to post v10 without selftests. How to proceed
-with this changes? The development cycle is near the end, so maybe
-you want to delay this change to the beginning of the next development
-cycle?
-
-Gerhard
+Reviewed-by: Eric Dumazet <edumazet@google.com>
