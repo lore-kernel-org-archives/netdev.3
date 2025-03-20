@@ -1,83 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26BF21CA0E;
-	Thu, 20 Mar 2025 14:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B7822332C
+	for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 14:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742480396; cv=none; b=OjcwYjYG2VDjUQHqnIpIQo0aTMc5HcORuVtXdDUtCtUej0XRN1A83Peu+ABxJ7XZYI1XhnFXkIdp6GkiOSTKyXKs1wc8AGXGFmrx6W8F5RKTTjbiSU30VdjpguSgB8/lKhBqvih5bvCkV85kpEZnaWoqrTBO32nvnRaclWYTXpo=
+	t=1742480422; cv=none; b=QdAcU4D8wdJeJ5HeHOTdCvIAvfTF59yB8J3gq+0Pk7/SOz/IBu/bUYWLj8VFHhXjGlUKm+3sFlnmzFpVEDKeYbPtaCRBcimTyf2CyCOSMC6PUBNcCOAchQvHAW/E5QE5461arz+wgyHf91O06s6IAALExex/kG0b3RdqKl33XYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742480396; c=relaxed/simple;
-	bh=qyfaxEvK49XR27EAJ+fha8D6RJrKSVW9cEOBHN9smow=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rDn8Y/0MC/2y2qj6J5SbNyn3wgBfMtH+hwpvLQ+vmIUOvIm8mY8M8+qw7SRQSyn2yc8k1+k703+IJCXW8zY3vY/GXyi74YbqKdJtZ8yRNcamUyCEbePSXq8jLU0dlTLBbYvDcTBFFg5g0T5xAYtgpg6JsA7PIkvvqYz9W2YagNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hU/MsPs1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742480422; c=relaxed/simple;
+	bh=kK1zvF7trXLu22tzbyAnT+VsKSHEHuKXe/qFGK7emd0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uDHCU9VUy92sqavBnTBYwY7gbqkRjqPe8FjhWkOZZgvGJDk9/pfBqbLAHCarqR68sQuSW3AbVc6RY836Bpxu0fCbowHM3gQTjSLQZIuzeV5BrhxtMLdHg+9fynCKOkF/jZut2O4IvveDOxMhueACk5QXVuv013QT9zFVl5+iMqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YjId6PDl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hU/MsPs1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B62BC4CEDD;
-	Thu, 20 Mar 2025 14:19:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YjId6PDl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BABC4CEDD;
+	Thu, 20 Mar 2025 14:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742480396;
-	bh=qyfaxEvK49XR27EAJ+fha8D6RJrKSVW9cEOBHN9smow=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=hU/MsPs1238cpRZqFXwzNfbraISgJ0SS/+KPvba1hyFk1p1hAus3Q3KvdFMAwDVyC
-	 YrlYLOVeyvH4+pW3XGaoZ/f84UMVX5a7WZRsSi5faXjEXYKj9lzR+TFp5c4QaaIBoe
-	 NxaUUB3R/YbXQ1+k7prnr9o3Oo8TNPyK34lUQJvthvt7cp934HG6T93PAq9yRQ3bgX
-	 y9Bf/Q7daApE7gKdFjES+zaG+UEfVTp6mqcUHFmdWVI6ag6YD0T+p13Y9lAkWD7NhT
-	 Qal7+HWP3SWxWVDsJlKYRt7tP/a2feVNHLTCgqdoc8MQ9B3j2QQKSl3mzblzBIO1KL
-	 SlG66qVICCDLA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE0AB3806654;
-	Thu, 20 Mar 2025 14:20:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1742480421;
+	bh=kK1zvF7trXLu22tzbyAnT+VsKSHEHuKXe/qFGK7emd0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YjId6PDlYHm66z85AKqL6l3J7qW5Z1g/X/3JwzZlwIjsmQzdq/6f/q9kgxzB81i28
+	 eATnTOS5/8onoXcRXGpFHLRzHegyLMjLJwKHpxx36tK9LjytbkjvGHHuo+2kbuFtKQ
+	 islfXCdZs00HCiT/i9G0Hn8hfoy4tIC98CbvhqppgE90tNPi+Eib1LuxbYSYG5hSS5
+	 PDAwXoFGg/b3QIxIebS39LjsuTLLcKuu02+eore18k5u3uEEZJYYqIA0WflXOrc4cK
+	 8vXC/QX4k8aazdcmOrwNiXGV+SZv0YS0uWAwwvLHvi/rGLUl+pp736ElhFr6VBsvqy
+	 pImH78dEzaAGQ==
+Message-ID: <9edc25a5-514a-4334-ba52-eb42b86f2a31@kernel.org>
+Date: Thu, 20 Mar 2025 08:20:20 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/3] mptcp: fix data stream corruption and missing
- sockopts
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174248043234.1784312.9345758838813943465.git-patchwork-notify@kernel.org>
-Date: Thu, 20 Mar 2025 14:20:32 +0000
-References: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-0-122dbb249db3@kernel.org>
-In-Reply-To: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-0-122dbb249db3@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, fw@strlen.de, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, amongodin@randorisec.fr, stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net-next 2/7] nexthop: Split nh_check_attr_group().
+Content-Language: en-US
+To: Kuniyuki Iwashima <kuniyu@amazon.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+ netdev@vger.kernel.org
+References: <20250319230743.65267-1-kuniyu@amazon.com>
+ <20250319230743.65267-3-kuniyu@amazon.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20250319230743.65267-3-kuniyu@amazon.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Fri, 14 Mar 2025 21:11:30 +0100 you wrote:
-> Here are 3 unrelated fixes for the net tree.
+On 3/19/25 5:06 PM, Kuniyuki Iwashima wrote:
+> We will push RTNL down to rtm_new_nexthop(), and then we
+> want to move non-RTNL operations out of the scope.
 > 
-> - Patch 1: fix data stream corruption when ending up not sending an
->   ADD_ADDR.
+> nh_check_attr_group() validates NHA_GROUP attributes, and
+> nexthop_find_by_id() and some validation requires RTNL.
 > 
-> - Patch 2: fix missing getsockopt(IPV6_V6ONLY) support -- the set part
->   is supported.
+> Let's factorise such parts as nh_check_attr_group_rtnl()
+> and call it from rtm_to_nh_config_rtnl().
 > 
-> [...]
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+> ---
+>  net/ipv4/nexthop.c | 68 ++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 47 insertions(+), 21 deletions(-)
+> 
 
-Here is the summary with links:
-  - [net,1/3] mptcp: Fix data stream corruption in the address announcement
-    https://git.kernel.org/netdev/net/c/2c1f97a52cb8
-  - [net,2/3] mptcp: sockopt: fix getting IPV6_V6ONLY
-    (no matching commit)
-  - [net,3/3] mptcp: sockopt: fix getting freebind & transparent
-    (no matching commit)
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Reviewed-by: David Ahern <dsahern@kernel.org>
 
 
