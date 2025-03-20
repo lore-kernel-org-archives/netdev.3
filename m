@@ -1,92 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6766A8BF8;
-	Thu, 20 Mar 2025 14:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3530C1E5B90
+	for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 14:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742482566; cv=none; b=mh1ve5cv2flho31P+ityFIuaZD02Lg5LS5NARLEBtkTLZq779i9CbrWiPFdjpvseyNYdezbv90Jt8yX4+NKeQ8ifyBX0WNPOmQv0oCNlC0OODHj4UyF+PM3QPtIvaHTqK7foMTEJJcaFBeLKkT6fNomgMqoctLUDL2oPYQtqOac=
+	t=1742482799; cv=none; b=izSt6idwJllyojbjza/u9d1VcVqvqQeNzgM+51mBtkT7U7smMsU7aiObjwAvpf0fuWSdhxBMGby8EChEkWm0CLUkbrH71ihEMD5pA9id502+V4padx5qotDYT6hn/XyS5ggk01rbCgAl90Kp0uN75Xs4cKKnGgZMPFtOgWW0ZoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742482566; c=relaxed/simple;
-	bh=DEQ4SQovtGJhf5I7qm+v1bo7YXqeiuODFmBSdVBmv4k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T5XME/LgeFq9Z9/Aq9fTw/3G/2AwLZdgeKHwu00nRzPafU9jsL85tgWEjdedAbYFZSbIMg7bnAm6t7r8cZz32rwdT++5VzJcj+VOVmlBYAY1nnVajYl0VUGsyulkKbp4v8E/5a/AblfSWyOfgBVzI20Scc31VoY12fQo9Xt7/kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YSVMFLXy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742482799; c=relaxed/simple;
+	bh=5VKNO6a5SBy5EC2GhBunVgbLz77/7zsFTmb/0D9Xv+k=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=OLAY6iLs/T1rierE8+yzQjnsLpkNvo5TdkYOHvqxfQ6u3p9q5J1JcS780tnDU4CBd69JTrXhbngLp/1s3aQiypOjWqqXx7HOPChArgRSbt9ch1shdKpbiqPQiNpmixGwjBEXqJihVuqnRuPM3yupjwC5+LTIObnAqMSqVol6wEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pHFMM+bW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YSVMFLXy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 909BBC4CEDD;
-	Thu, 20 Mar 2025 14:56:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pHFMM+bW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AC7C4CEDD;
+	Thu, 20 Mar 2025 14:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742482565;
-	bh=DEQ4SQovtGJhf5I7qm+v1bo7YXqeiuODFmBSdVBmv4k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YSVMFLXyFzPJI+hkOQlOLu+y4DXUt2bDNDNburzDNwR9viykexwmdG3Jdp0RaYwSH
-	 +ZFT/SrMHPUxZyhpjyrx/+Py3pUnIqWDEUQVtfwjDTgGt8QEWFkeTLD6Xx0DW5xqN5
-	 I4zBCSuzfgrNP3RZa9GPa7Pc3fjcgvoFxp2MiSjsSahfg90jCvZnlH+pqkUW3J96TH
-	 pMIyyVQ/2xtap+g/qlVnh3opT3GX8psMTBXvIfD4J3/N/DFnXiUmsFlFmMw0s9UyOd
-	 VT/IvIle3SPNmPK6GZF2A/CNEbwt0JfPV/i5zCxTtajyykItR9uTSkUOrUrRfDwUYA
-	 7ytacpmnvrw/A==
-Date: Thu, 20 Mar 2025 14:55:59 +0000
-From: Simon Horman <horms@kernel.org>
-To: Gur Stavi <gur.stavi@huawei.com>
-Cc: Fan Gong <gongfan1@huawei.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Lee Trager <lee@trager.us>,
-	linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Cai Huoqing <cai.huoqing@linux.dev>, luosifu <luosifu@huawei.com>,
-	Xin Guo <guoxin09@huawei.com>,
-	Shen Chenyang <shenchenyang1@hisilicon.com>,
-	Zhou Shuai <zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>,
-	Shi Jing <shijing34@huawei.com>,
-	Meny Yossefi <meny.yossefi@huawei.com>,
-	Suman Ghosh <sumang@marvell.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Joe Damato <jdamato@fastly.com>
-Subject: Re: [PATCH net-next v09 1/1] hinic3: module initialization and tx/rx
- logic
-Message-ID: <20250320145559.GB889584@horms.kernel.org>
-References: <cover.1742202778.git.gur.stavi@huawei.com>
- <60a3c7b146920eee8b15464e0b0d1ea35db0b30e.1742202778.git.gur.stavi@huawei.com>
+	s=k20201202; t=1742482798;
+	bh=5VKNO6a5SBy5EC2GhBunVgbLz77/7zsFTmb/0D9Xv+k=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=pHFMM+bW1tWffcQwz3EenwPV97enQUYCmAV/afllelXzTGPD/pyr4JgjTGX0qJ+fd
+	 ODMaIQWEXAD7LHj2cxK/A6ezUm66sWdomonszcxhcMmaTnTbW9URDMjdw6JvfxLnwe
+	 yYBkTpNygvT5p8SQ7G2JqLc8D4VHANoMrPbNz7JjKUEKsXbHOHszhzDs3/dml/O1yj
+	 CLY9/9UiYYLG3cr7i4zOBWpdXE58UxSRLvl0QYgSqkb9TrXjrthTzTd2R3OxOEPB0M
+	 5unfj6gdcQEIyNIA3APPciUjMS+Rg1yDMdWjmXrIXKkEnfv7tVp4hzK52q2O2liLD3
+	 Bub8ZPpQqwP0g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADCFD3806654;
+	Thu, 20 Mar 2025 15:00:35 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <60a3c7b146920eee8b15464e0b0d1ea35db0b30e.1742202778.git.gur.stavi@huawei.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/2] gre: Revert IPv6 link-local address fix.
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174248283452.1799091.6719873799631324140.git-patchwork-notify@kernel.org>
+Date: Thu, 20 Mar 2025 15:00:34 +0000
+References: <cover.1742418408.git.gnault@redhat.com>
+In-Reply-To: <cover.1742418408.git.gnault@redhat.com>
+To: Guillaume Nault <gnault@redhat.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, netdev@vger.kernel.org, horms@kernel.org,
+ dsahern@kernel.org, antonio@mandelbit.com, idosch@idosch.org,
+ petrm@nvidia.com, stfomichev@gmail.com
 
-On Mon, Mar 17, 2025 at 11:40:39AM +0200, Gur Stavi wrote:
-> From: Fan Gong <gongfan1@huawei.com>
-> 
-> This is [1/3] part of hinic3 Ethernet driver initial submission.
-> With this patch hinic3 is a valid kernel module but non-functional
-> driver.
-> 
-> The driver parts contained in this patch:
-> Module initialization.
-> PCI driver registration but with empty id_table.
-> Auxiliary driver registration.
-> Net device_ops registration but open/stop are empty stubs.
-> tx/rx logic.
-> 
-> All major data structures of the driver are fully introduced with the
-> code that uses them but without their initialization code that requires
-> management interface with the hw.
-> 
-> Co-developed-by: Xin Guo <guoxin09@huawei.com>
-> Signed-off-by: Xin Guo <guoxin09@huawei.com>
-> Signed-off-by: Fan Gong <gongfan1@huawei.com>
-> Co-developed-by: Gur Stavi <gur.stavi@huawei.com>
-> Signed-off-by: Gur Stavi <gur.stavi@huawei.com>
+Hello:
 
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Thanks for addressing my feedback on v8.
+On Wed, 19 Mar 2025 22:26:39 +0100 you wrote:
+> Following Paolo's suggestion, let's revert the IPv6 link-local address
+> generation fix for GRE devices. The patch introduced regressions in the
+> upstream CI, which are still under investigation.
+> 
+> Start by reverting the kselftest that depend on that fix (patch 1), then
+> revert the kernel code itself (patch 2).
+> 
+> [...]
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Here is the summary with links:
+  - [net,1/2] Revert "selftests: Add IPv6 link-local address generation tests for GRE devices."
+    https://git.kernel.org/netdev/net/c/355d940f4d5a
+  - [net,2/2] Revert "gre: Fix IPv6 link-local address generation."
+    https://git.kernel.org/netdev/net/c/fc486c2d060f
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
