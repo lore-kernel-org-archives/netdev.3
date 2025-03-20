@@ -1,71 +1,72 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9907A22A817
-	for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 23:25:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BE9218ADD
+	for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 23:25:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742513158; cv=none; b=gh2Ekgzt2XSvclZljf4csUTsB+wG/PkqKxFAuRcJ6anctrq4sVcKc/KVBGMEfPedtHGBH/M+p+95HDVS8LB66vfO3/SD5EpKh0lKVLl2Lwa1lZ33BTU0hHUBciqIIWiLwEl3aSVaiUJnAIM8uouvXQKRCXMnOnxXLrdgk+JPLgI=
+	t=1742513162; cv=none; b=hJ8z2BuSEYSSGzFy4tjimxhIcPwK3MoLTeoeUoMCbh6r+sCSkBZbU7IK0t82QHu8AHIZhNU2g+STGKjhBkx2L0D5b+Vg0InfQWM2sK2UHvBcMwuVJOlxNcZ0w+7ps3VQ9egLNApFMMZ//8hR2w1v161d/3lYHaG6c7UAHt8Or1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742513158; c=relaxed/simple;
-	bh=rHX1QWU5eiWuX+n9VOOkmnkpZeMnmrL3na+ia443Bow=;
+	s=arc-20240116; t=1742513162; c=relaxed/simple;
+	bh=dApKGmJ/IF/wGEWe4n8B5OuVLv2uAAZs/hIwWmymfaU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VU5t25GLyewaZCBvA9B7Qm/JhEI7zgerA0p7obaMu1PTa3x8LBDgDiJhH0whTz5pD3qnH1714kXhlGX/PhBID+PVhK/NjQyasPQMfLAjRyFlmmuQb25IbvbRbjaTagV5DsrQq8Ti7XQhGwjTcpcJ8VXUfg55USPfMce+eV2O8g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XwuV0x8D; arc=none smtp.client-ip=209.85.214.181
+	 MIME-Version; b=P4hgxdLFv/hEQUQmc/s8T88KmXMpOCo84A3Ao67eC5jUsjy/MYth/fDhH+NEaVSWwv3t3QYrHEAkTRuwAsveKwgUnN5ZIr8BdUm6GEbZ1WRpz6MdU3LuVfzFAcR0cI7DFHPpsIYOX1fSMCPrXTjH4+Yn938vu1bqnDhyyCDJJHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rnx4gX+M; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XwuV0x8D"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-225a28a511eso30035745ad.1
-        for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 16:25:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rnx4gX+M"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2241053582dso33592045ad.1
+        for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 16:25:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742513152; x=1743117952; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742513156; x=1743117956; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fImpDEeSKh+sUQxlOk8pcKlX1iFw4vWLG+z9axE+4/U=;
-        b=XwuV0x8DotRDaQSBMNKPqROGfa2SFS1FhdscKWC6sCCuohUXhDR29JJOwgFs8tgnLt
-         XooneweTZ1CfMne+nOWSPE5HI9acW1mAfxIT5BhMxLdSJPG+fxKqEEPw/0vxQz/vckks
-         wh2vL8pmedR4J+LqTGIZxOB0QIsmUjL07/77p6/tihY9U2kxIr+OL3+tpMB6Hsaw4mlY
-         9O5HOHOgl1ob3lBE+8gFycO6rkuIr6PqdYuf0lV74YEiH2mxh5qxcFApGB2U3B8RXm8x
-         kaAJiqiE5rUO1Dz1nXClfBP2zW9qd9j7AVtJ5qqH0UaH8otC13T1JELJ9x7KWVDlF5tp
-         ClcA==
+        bh=c2RGUSJ1w4xWHYvp/jlzn59SSKnfWw+9Twnn1Z1lsAU=;
+        b=Rnx4gX+MFs3SFPq4nPuYflC61yd6WoK/UG/35Zkom8tOxAPcbsWFlljp1jdPbtwZkt
+         1Wt/Cpl/slOw7n0EkK4eENoOeDx+nNX/J0ygF1x2sWcniI+Yuu6/R9ZvHdGuDBTFZ3HC
+         4Hp+ect88mBOQbeK6tsT4Pp8zfOTFgmvmMN3mDvO0bBAqLbXOqfRXDCWEjswD/g8RK+j
+         4txACw+lqUpH2M/L8g/NeJZ2teYLw3eruzD0GyKkz64As+5DQKsbHICxAc+1DJ9n4ccL
+         KMq9bxgvnEZmjizVimzjpF45D4ylzgr2GHg7jrhrSnVnAdFcVr536bJfTdYU4+BUDkeD
+         hRCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742513152; x=1743117952;
+        d=1e100.net; s=20230601; t=1742513156; x=1743117956;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fImpDEeSKh+sUQxlOk8pcKlX1iFw4vWLG+z9axE+4/U=;
-        b=In20XOtY0cRlGio5i3n+YdrvrxdFSYUZBKv4FY6BYB/UQQv6dtYnlXpbhP9rLVvwem
-         Ai828Sv/FtxhLOZOu0ue4ax91Dtm4/RDBFvkPvPolOwL484/v+UOaM2se0G91GVyi+7c
-         ZcLO028DE3dkrVyrjO9W4iR5nCq9dUykhD5bwrQ+rpBKmztE/4BsdQ05nJCbekNGB5P4
-         wQAOiyvk8SOz/eJNwRnytXAx2ykjlzc3ciqMBFtYFFnjtMcdavFzOCFmxqkZsXGjyJyL
-         /J89VDgc+rK+XrlxB3hrRsUcOGPY8Q4cY50v4rlKuMu9Gbh7RXD1PuCvK94CLDFUVi6t
-         BiGA==
-X-Gm-Message-State: AOJu0Yza4XLCeViun9NiarX/hnm/B1X5Wo1cX57I4tiWKUmD4wMIT5Yz
-	gV/TqmRJyTGBYia5pYnDKTra6eNjOrRrXO6HMBa6/YGuIOHJgLNyX1sxPA==
-X-Gm-Gg: ASbGncup7J5GsHmC0ce6BHyyEfOJzeQ6ej93YmbqMB6CL+hAD4GlHhgDONsDBcQN+7U
-	bLy00Bf/fMGTPhOYWSTs2eeTEtyTqkDqZyuMyMpyovwtMJy7vdoyA6S2oQfVBh0fEvYLTSI/1oI
-	PdI3iHP70TIaSOKI4zZZ8u/AVEx+/XhGXPEkh1tRwbiG3xhfWfKIuprrafoW3vEB3kxCZJ/Rl0K
-	qt7D+Drjqcl7Dnwi4NRMGAk8Ss3T4J9igSY+b4sn1U2kFDcBRNgBzW/4vpslfDhuegvSs8uqiyj
-	VP3cPLWOweTuAAc0i5VfgBfIGfPCAee8ieF6Np09XE8C6j0g3pG18iM=
-X-Google-Smtp-Source: AGHT+IGgJQDI4IHylZFIDtQP5faPt/mYI2tYEjIFxLVTRhgUOHA5NHIKoLBA0dN/FOSBRHbYiflSaw==
-X-Received: by 2002:a05:6a20:3d89:b0:1f5:535c:82dc with SMTP id adf61e73a8af0-1fe4330dcf3mr2018511637.42.1742513152250;
-        Thu, 20 Mar 2025 16:25:52 -0700 (PDT)
+        bh=c2RGUSJ1w4xWHYvp/jlzn59SSKnfWw+9Twnn1Z1lsAU=;
+        b=ImZtVfBpMecn7rAvAC4uQ5Z745aSLL4mNlnxgcFCcLAwKdPXvnYhhgsCDbuBoRxI9q
+         DfqyJVaUvDXwHD3o4ufUkeANhZyqKfLSeDIaR4oPBNIdA8j8T8JtBXF0fSq68JiJD2VZ
+         GHyEz0NIH+668wmQXm60BaIcWXL41gqK0e67LQAaOJjKWrf8d3eQlhb6HNv6PUlKwSqu
+         mOmtROx3aJx8GlM1fN5E0vc+ApJ8s3boaeLd+LYikNII0+NtpIvaa5HJJBUKBArHSBAM
+         mXsBzEr/zihipW3QSICOgBHeM5uWGkC9SLiM2CYU+uJr/zUVg47ZuoWI+jARgd5fj7BR
+         1dgA==
+X-Gm-Message-State: AOJu0YypCcuSRGJ03s1xxw3vc0k9o3mCfcce3mRiGs5Fco23EN7yPVBH
+	udv0O4z6L5Mpurtj6k64rbW4WS0oJbCYZRUPi6Qq3A1CpMghMsPZql8vIDMg
+X-Gm-Gg: ASbGncvozpCyqtNSvNYZsAafWymrPTAFMkC4ozNEzg/4ggmnMElPv1tdb/YLe0PRAY2
+	n5CeL8aFk+tbpLlLlxDRxjQYKtTPmZMbGjZIfr0P7y0nlqusIRt5xfn3vXTkd/NSJwm/gIhfO2e
+	m651uYM9qFiVHR1tE/j5KlsWUPstbSnJ3Y/06gCzghHwfo1TjHF3HtUcWeqQOSyJDkBL3D2Mvnc
+	LiFdGBh6sR6so4ENtAL8tZTWZWD6+0i5J2lBc9DwnI6ttgjWjLFdodOjLDXr8xZupwYvBiZbg27
+	9peuQ4d64f60/7HeE25v1SD1s/MUhTfbA5FEQaZL3GDxYSxn45MtBCo=
+X-Google-Smtp-Source: AGHT+IENDqsMgAt7miux9jGTFme73My/jmhTSgpiWcIAAvj2ITkE5k0Q7qws6aApPTbuuAm+tBVM/w==
+X-Received: by 2002:a05:6a00:1409:b0:737:e73:f64b with SMTP id d2e1a72fcca58-7390593b7ffmr1775638b3a.1.1742513156528;
+        Thu, 20 Mar 2025 16:25:56 -0700 (PDT)
 Received: from pop-os.scu.edu ([129.210.115.104])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7390611ccf8sm416306b3a.120.2025.03.20.16.25.51
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7390611ccf8sm416306b3a.120.2025.03.20.16.25.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Mar 2025 16:25:51 -0700 (PDT)
+        Thu, 20 Mar 2025 16:25:55 -0700 (PDT)
 From: Cong Wang <xiyou.wangcong@gmail.com>
 To: netdev@vger.kernel.org
 Cc: jhs@mojatatu.com,
 	jiri@resnulli.us,
 	edumazet@google.com,
 	gerrard.tai@starlabs.sg,
-	Cong Wang <xiyou.wangcong@gmail.com>
-Subject: [Patch net 04/12] sch_qfq: make qfq_qlen_notify() idempotent
-Date: Thu, 20 Mar 2025 16:25:31 -0700
-Message-Id: <20250320232539.486091-4-xiyou.wangcong@gmail.com>
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Pedro Tammela <pctammela@mojatatu.com>
+Subject: [Patch net 07/12] selftests/tc-testing: Add a test case for FQ_CODEL with HTB parent
+Date: Thu, 20 Mar 2025 16:25:34 -0700
+Message-Id: <20250320232539.486091-7-xiyou.wangcong@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250320232539.486091-1-xiyou.wangcong@gmail.com>
 References: <20250320232211.485785-1-xiyou.wangcong@gmail.com>
@@ -78,60 +79,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-qfq_qlen_notify() always deletes its class from its active list
-with list_del_init() _and_ calls qfq_deactivate_agg() when the whole list
-becomes empty.
+Add a test case for FQ_CODEL with HTB parent to verify packet drop
+behavior when the queue becomes empty. This helps ensure proper
+notification mechanisms between qdiscs.
 
-To make it idempotent, just skip everything when it is not in the active
-list.
+Note this is best-effort, it is hard to play with those parameters
+perfectly to always trigger ->qlen_notify().
 
-Also change other list_del()'s to list_del_init() just to be extra safe.
-
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Cc: Pedro Tammela <pctammela@mojatatu.com>
 Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
 ---
- net/sched/sch_qfq.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ .../tc-testing/tc-tests/infra/qdiscs.json     | 33 ++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index 6a07cdbdb9e1..9f8e1ada058c 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -347,7 +347,7 @@ static void qfq_deactivate_class(struct qfq_sched *q, struct qfq_class *cl)
- 	struct qfq_aggregate *agg = cl->agg;
- 
- 
--	list_del(&cl->alist); /* remove from RR queue of the aggregate */
-+	list_del_init(&cl->alist); /* remove from RR queue of the aggregate */
- 	if (list_empty(&agg->active)) /* agg is now inactive */
- 		qfq_deactivate_agg(q, agg);
- }
-@@ -474,6 +474,7 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
- 	gnet_stats_basic_sync_init(&cl->bstats);
- 	cl->common.classid = classid;
- 	cl->deficit = lmax;
-+	INIT_LIST_HEAD(&cl->alist);
- 
- 	cl->qdisc = qdisc_create_dflt(sch->dev_queue, &pfifo_qdisc_ops,
- 				      classid, NULL);
-@@ -982,7 +983,7 @@ static struct sk_buff *agg_dequeue(struct qfq_aggregate *agg,
- 	cl->deficit -= (int) len;
- 
- 	if (cl->qdisc->q.qlen == 0) /* no more packets, remove from list */
--		list_del(&cl->alist);
-+		list_del_init(&cl->alist);
- 	else if (cl->deficit < qdisc_pkt_len(cl->qdisc->ops->peek(cl->qdisc))) {
- 		cl->deficit += agg->lmax;
- 		list_move_tail(&cl->alist, &agg->active);
-@@ -1415,6 +1416,8 @@ static void qfq_qlen_notify(struct Qdisc *sch, unsigned long arg)
- 	struct qfq_sched *q = qdisc_priv(sch);
- 	struct qfq_class *cl = (struct qfq_class *)arg;
- 
-+	if (list_empty(&cl->alist))
-+		return;
- 	qfq_deactivate_class(q, cl);
- }
- 
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json b/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
+index 9044ac054167..06cb2c3c577e 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
+@@ -126,5 +126,36 @@
+             "$TC qdisc del dev $DUMMY root handle 1: drr",
+             "$IP addr del 10.10.10.10/24 dev $DUMMY"
+         ]
+-   }
++   },
++    {
++        "id": "a4bb",
++        "name": "Test FQ_CODEL with HTB parent - force packet drop with empty queue",
++        "category": [
++            "qdisc",
++            "fq_codel",
++            "htb"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$IP link set dev $DUMMY up || true",
++            "$IP addr add 10.10.10.10/24 dev $DUMMY || true",
++            "$TC qdisc add dev $DUMMY handle 1: root htb default 10",
++            "$TC class add dev $DUMMY parent 1: classid 1:10 htb rate 1kbit",
++            "$TC qdisc add dev $DUMMY parent 1:10 handle 10: fq_codel memory_limit 1 flows 1 target 0.1ms interval 1ms",
++            "$TC filter add dev $DUMMY parent 1: protocol ip prio 1 u32 match ip protocol 1 0xff flowid 1:10",
++            "ping -c 5 -f -I $DUMMY 10.10.10.1 > /dev/null || true",
++            "sleep 0.1"
++        ],
++        "cmdUnderTest": "$TC -s qdisc show dev $DUMMY",
++        "expExitCode": "0",
++        "verifyCmd": "$TC -s qdisc show dev $DUMMY | grep -A 5 'qdisc fq_codel'",
++        "matchPattern": "dropped [1-9][0-9]*",
++        "matchCount": "1",
++        "teardown": [
++            "$TC qdisc del dev $DUMMY handle 1: root",
++            "$IP addr del 10.10.10.10/24 dev $DUMMY || true"
++        ]
++    }
+ ]
 -- 
 2.34.1
 
