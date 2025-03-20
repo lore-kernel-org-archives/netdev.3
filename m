@@ -1,116 +1,83 @@
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959B6EEBA;
-	Thu, 20 Mar 2025 14:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26BF21CA0E;
+	Thu, 20 Mar 2025 14:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742479792; cv=none; b=uNrBhCDEcwVdRg3FKrjE5P576O5OxTDcazAMNjyzqC0w2y1tU5ABkmRTaIAxQgPjWbR7+s7EXT9OGBSPt0MbBrHWFB196mYRrvOtS4ngN54ZHchL1FIyNgT60SD0bQCPsevgCmb3HKTF+W2xupZamPapptjPKjJSAdAxVwb04Zw=
+	t=1742480396; cv=none; b=OjcwYjYG2VDjUQHqnIpIQo0aTMc5HcORuVtXdDUtCtUej0XRN1A83Peu+ABxJ7XZYI1XhnFXkIdp6GkiOSTKyXKs1wc8AGXGFmrx6W8F5RKTTjbiSU30VdjpguSgB8/lKhBqvih5bvCkV85kpEZnaWoqrTBO32nvnRaclWYTXpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742479792; c=relaxed/simple;
-	bh=3gUsqaE7mUufKOG+8Ij0UulGdSKP7dyRB6jukOjry5w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j4dK9tmiBtTp6InsfuPnLSryiHUlotFM1WFhkHhRSC1+XK2pRWOntJpWyaWUiS7X1mSxOchuZvfnFjhJbSPHukt4SMLZ3LxWPc0yqnZrGrwcx0S8+z5HHJ+K6smazNI1EfoI0xxdixi5c2v/KZ9jKEQm83Y9WtQnDxiMmAH7ybY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RnjYKOkT; arc=none smtp.client-ip=217.70.183.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1742480396; c=relaxed/simple;
+	bh=qyfaxEvK49XR27EAJ+fha8D6RJrKSVW9cEOBHN9smow=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=rDn8Y/0MC/2y2qj6J5SbNyn3wgBfMtH+hwpvLQ+vmIUOvIm8mY8M8+qw7SRQSyn2yc8k1+k703+IJCXW8zY3vY/GXyi74YbqKdJtZ8yRNcamUyCEbePSXq8jLU0dlTLBbYvDcTBFFg5g0T5xAYtgpg6JsA7PIkvvqYz9W2YagNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hU/MsPs1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RnjYKOkT"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9A3AB444F5;
-	Thu, 20 Mar 2025 14:09:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742479787;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+k1WKBS8wmBGYzs9sr3LXVqLTZJWa/ILl+XBNscDrbY=;
-	b=RnjYKOkToOruA8gtWMfVJQ2lVzosiERg2s/F0lfOMsW+ruPaTOwSBxJrVEsbEBOUHf/zsi
-	Taf0zisRRm7yXvuh9Y9N/mcLcRLWcp9ghxNIIYxEdy4JgNKmvIzry06R7k4pdux4r+kp3/
-	Jc8HCqJe+bRnGbNoYJ7/HbDSLXy8gId8hxT7K3adtc9V9+q7l8sWWqbpXywAuhYgDoFbLW
-	XxgGGb4+afw6A+479MukdQiPptRg7ekdm1cE33XeQWAMLG2GpfHYuROX5G5njn2M6xixjx
-	uCjG68LJ3GXjQQhXjXUpVGe1Yppmn19/s3b/4tpGVIw1gaJFCZLHvOOs+TeVfw==
-Date: Thu, 20 Mar 2025 15:09:44 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Donald Hunter
- <donald.hunter@gmail.com>, Rob Herring <robh@kernel.org>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>, Heiner Kallweit
- <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam
- Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, Dent
- Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, Maxime
- Chevallier <maxime.chevallier@bootlin.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v6 03/12] net: pse-pd: tps23881: Add support
- for PSE events and interrupts
-Message-ID: <20250320150944.6ee054c3@kmaincent-XPS-13-7390>
-In-Reply-To: <Z9fu3u34K3-OeDis@pengutronix.de>
-References: <20250304-feature_poe_port_prio-v6-0-3dc0c5ebaf32@bootlin.com>
-	<20250304-feature_poe_port_prio-v6-3-3dc0c5ebaf32@bootlin.com>
-	<Z9fu3u34K3-OeDis@pengutronix.de>
-Organization: bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hU/MsPs1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B62BC4CEDD;
+	Thu, 20 Mar 2025 14:19:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742480396;
+	bh=qyfaxEvK49XR27EAJ+fha8D6RJrKSVW9cEOBHN9smow=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=hU/MsPs1238cpRZqFXwzNfbraISgJ0SS/+KPvba1hyFk1p1hAus3Q3KvdFMAwDVyC
+	 YrlYLOVeyvH4+pW3XGaoZ/f84UMVX5a7WZRsSi5faXjEXYKj9lzR+TFp5c4QaaIBoe
+	 NxaUUB3R/YbXQ1+k7prnr9o3Oo8TNPyK34lUQJvthvt7cp934HG6T93PAq9yRQ3bgX
+	 y9Bf/Q7daApE7gKdFjES+zaG+UEfVTp6mqcUHFmdWVI6ag6YD0T+p13Y9lAkWD7NhT
+	 Qal7+HWP3SWxWVDsJlKYRt7tP/a2feVNHLTCgqdoc8MQ9B3j2QQKSl3mzblzBIO1KL
+	 SlG66qVICCDLA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE0AB3806654;
+	Thu, 20 Mar 2025 14:20:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugeekgedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtqhertdertdejnecuhfhrohhmpefmohhrhicuofgrihhntggvnhhtuceokhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgfdutdefvedtudegvefgvedtgfdvhfdtueeltefffefffffhgfetkedvfeduieeinecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehkmhgrihhntggvnhhtqdgirffuqddufedqjeefledtpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvdejpdhrtghpthhtohepohdrrhgvmhhpvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehku
- hgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopegtohhrsggvtheslhifnhdrnhgvthdprhgtphhtthhopeguohhnrghlugdrhhhunhhtvghrsehgmhgrihhlrdgtohhm
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/3] mptcp: fix data stream corruption and missing
+ sockopts
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174248043234.1784312.9345758838813943465.git-patchwork-notify@kernel.org>
+Date: Thu, 20 Mar 2025 14:20:32 +0000
+References: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-0-122dbb249db3@kernel.org>
+In-Reply-To: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-0-122dbb249db3@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, fw@strlen.de, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, amongodin@randorisec.fr, stable@vger.kernel.org
 
-On Mon, 17 Mar 2025 10:43:58 +0100
-Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+Hello:
 
-> On Tue, Mar 04, 2025 at 11:18:52AM +0100, Kory Maincent wrote:
-> > +static int tps23881_irq_handler(int irq, struct pse_controller_dev *pc=
-dev,
-> > +				unsigned long *notifs,
-> > +				unsigned long *notifs_mask)
-> > +{
-> > +	struct tps23881_priv *priv =3D to_tps23881_priv(pcdev);
-> > +	struct i2c_client *client =3D priv->client;
-> > +	int ret, it_mask;
-> > +
-> > +	/* Get interruption mask */
-> > +	ret =3D i2c_smbus_read_word_data(client, TPS23881_REG_IT_MASK);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +	it_mask =3D ret;
-> > +
-> > +	/* Read interrupt register until it frees the interruption pin. */
-> > +	while (true) { =20
->=20
-> If the hardware has a stuck interrupt, this could result in an infinite
-> loop. max_retries with some sane value would be good.
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Ack I will. Do you have a value in mind as a sane value?
+On Fri, 14 Mar 2025 21:11:30 +0100 you wrote:
+> Here are 3 unrelated fixes for the net tree.
+> 
+> - Patch 1: fix data stream corruption when ending up not sending an
+>   ADD_ADDR.
+> 
+> - Patch 2: fix missing getsockopt(IPV6_V6ONLY) support -- the set part
+>   is supported.
+> 
+> [...]
 
-> > +
-> > +static int tps23881_setup_irq(struct tps23881_priv *priv, int irq)
-> > +{
-> > +	struct i2c_client *client =3D priv->client;
-> > +	struct pse_irq_desc irq_desc =3D {
-> > +		.name =3D "tps23881-irq", =20
->=20
-> here or in devm_pse_irq_helper() it would be good to add intex suffix to
-> the irq handler name.
+Here is the summary with links:
+  - [net,1/3] mptcp: Fix data stream corruption in the address announcement
+    https://git.kernel.org/netdev/net/c/2c1f97a52cb8
+  - [net,2/3] mptcp: sockopt: fix getting IPV6_V6ONLY
+    (no matching commit)
+  - [net,3/3] mptcp: sockopt: fix getting freebind & transparent
+    (no matching commit)
 
-You mean index? Like the PSE index?
-So I will need to add back the support of the PSE index in the series.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+
