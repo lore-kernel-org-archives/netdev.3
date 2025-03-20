@@ -1,61 +1,61 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF3722A80A
-	for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 23:25:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B0F22AE68
+	for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 23:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742513154; cv=none; b=G7pXsIpEjb8UoO6HOtLLMeyXL3O449nBsUiRrjam+Df6tVPI+Kc9qjXQR6JxTmt0gYN1aH/mc8Qmeoac+QHhPRAbnW9fW4XYmY5r8zooZ35ngftv3Lgf60TPYcz6JJOSi0ztRCeNwU+3E5CDcXNZyhs3f1Jxim+Tq67wdSp7nOU=
+	t=1742513157; cv=none; b=ERC+v4SfuRBQE0a/Wi5qQv15HMvTagvaNVBuMAiOpN2gd3qIb0K06cTZd4uEr+DnGhNsoKVdADKge6yckQrL9pXhXkjyJJSQ+2B+VFiMGBjQT6EAfpncmuiAGqK1lUsRcv297G6DlkEMk57Li3UbGVys+rCLkAgbieilxkc/eDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742513154; c=relaxed/simple;
-	bh=hHIYHezDOoxCNpJNOVopdAZG9dE34xIK63RE3y96P7M=;
+	s=arc-20240116; t=1742513157; c=relaxed/simple;
+	bh=pQeK2BrF55u/0EXsKN0Qf4SQL6dnj2ecn8e7A3L1A0s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ec82+slcy6FwCC9TKr4mDwWrwc5G+tFK7nw8DDFVXY/qOBDz6L83207vNqkNPLK9CwOINmvLL6TYYfbpeDLAfO1eP3tHYsBGnzT+CdQquThlfZPTmSKKA7yez/cFFowa1+I8Zi7KRIpxgICIM7A0yYD3sQmKzlFYbtTJ891y5TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NwX6qItL; arc=none smtp.client-ip=209.85.214.181
+	 MIME-Version; b=jPhl0XzVxYZg3OeHiHlC3c5zKshIabqbyUN83mWq55qZ80jotbBzeKg4PTNUE1mYYa4ewTi8dIYOI3IKLdJy4q2MPTeQTZ1ScnPjWGVaeHqBz/2nIbGMulADt2UvxpWSq6svbE0TtyhVgxVxbNLveINNGP78Eqz6kyH9ZVDkikk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ncSKF2i1; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NwX6qItL"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-22622ddcc35so34797965ad.2
-        for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 16:25:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ncSKF2i1"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-224100e9a5cso26647705ad.2
+        for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 16:25:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742513151; x=1743117951; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742513154; x=1743117954; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fwt8GGRRu6e4+a9i4CGYtv0iwbrJOPzYW8+muO/Prik=;
-        b=NwX6qItLiZBF4qQJQuHDpQCtYW7s/eiZoon1hVtxtSwuAdFOd5exz1QNjIKHb7nz09
-         Zq4ueLxRCYh2MtXOy2EmXiFLahRcvOdtIUrLvHbUY7Kjb4YorU3A+2CkHoK8WumSwnLQ
-         i9ewzeIIBYQHykAZ6Ti0I3djQ/4yDP2qsnqKfNuquUW2y5Wkelql2DKUhjPW2gwB0Joy
-         e2q4alJD07Efg45h8rK6Cp5GL0sYrgw2a6f5ezxt1Lfm/6yoSa8MmVq70nrQTniGaF0j
-         uwW//L09AJ66XxvJ1lQCmmDIGdkIEMDMayj+NmAE7Guw7b95Kwe4QfrD2b5NObvv3d+I
-         EVTw==
+        bh=moIEMrDcqnevzQAwwG+Lt8rXFaw/vlBOis0iockljXY=;
+        b=ncSKF2i1W4/YUVaaI9Xm2b/Nz5KXm/+A/UNhKyOj0+//PoxwlZiUZtGHN2YufRqfWl
+         QbTXLIFjvqFCUBsRvm1m328XTAX1Eniph4jxuW/uzTcVBmLMAc9FQxZ9JECBIVa7eDvr
+         qTc6SpHDDPiuICnfNNrQexZ0wgIJKmPd+vyoF7nbq6WHPTNK1JNGib2F9/N6BB/4mbZO
+         x+4OjOEnAb/hFw6Imw6fOuhJLseUNEUsK296r163D+X7pV3SNwH5KNV8qy2vM8Y5UEBY
+         Np2L4Eror17mvHdHYBmWCBPUynCOLZOfHr9DCdhoiLgUu3ro0RqWvIY+ppVS/tY7X4I8
+         Utvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742513151; x=1743117951;
+        d=1e100.net; s=20230601; t=1742513154; x=1743117954;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fwt8GGRRu6e4+a9i4CGYtv0iwbrJOPzYW8+muO/Prik=;
-        b=rCIUZLVNNKaqVh3r6pURpmIN3OV60beJptMoUAICJJgudbbKuY8Om1A7qE9rQwuURW
-         ep4/dKemmed0pV7ybyV8zV9zlOaDbNb/94d+t2cvJ7byq6T6hsecuka9cvD2l0Z3MmQU
-         EPE51X49pNPRvzitfH9KeC3rwe6byXcFkEpwS3R75fQ2tYOlj5G3RpRJc8sWjQs7p1Z9
-         OZ+NT9jCsv/jt9imfdnp11q2kskDysw6UGYaZzLaNy6M0HexPUSRH53eErRhHuPROaic
-         mzVlnQT4YdkkXZB1nVQbmZ3/u0zWmYxr1ohT2UFD3zu0qcHOtEalQPeALhRshPAiMbiy
-         QARw==
-X-Gm-Message-State: AOJu0YzzEzgisUZK0N/xX/53dRoYJzwlN2J6B+rDodrGsJW2xbQodoWx
-	X3kBkkfYm8ZwxPbWXxq5H3hMwtyHZpHGMXLHT1HScASG2liZQKwqCMSWlA==
-X-Gm-Gg: ASbGncsy3kl7fI52KXbDDSCemU0pUHXoGS8x4BNNqCirVGY3HT82AeE/zJ0k0qjtYbJ
-	WYOEfYoWafiVz1WDTA3h7ZZVZrHShz0t6FLXHbgjvFrlHXszbpTP0kH0pvFJrKTlDvYoHShu0jL
-	WTvT7tipIBXtbdHD0zJA2nmnbpRX9dPcv6rcR7YdTZ9LHHjuk6sJFZXE9ekVyGZLvLMOL70a7sg
-	TpUQRmtv04nyn4xObe4dcXnnY2mYYtBqO3T+bGZVFpWwfVO9yp7wpJYCzGbkSC2Uxgeyv7IGYUF
-	rc/627xx/k6qb7d9V9VT05iRgAk4kEFG594H0jULQWp5HMFIx9jLijk=
-X-Google-Smtp-Source: AGHT+IGyd300sXs8kHITPgTm8Jy5EFi8V1/6XJZOy8npHfYxNizoLBzkjCHV2uhDqc1dbf3m0A6T7w==
-X-Received: by 2002:a17:902:e844:b0:220:e896:54e1 with SMTP id d9443c01a7336-22780d8c42emr17726075ad.26.1742513150959;
-        Thu, 20 Mar 2025 16:25:50 -0700 (PDT)
+        bh=moIEMrDcqnevzQAwwG+Lt8rXFaw/vlBOis0iockljXY=;
+        b=EmYAQQBE6A1vO5ww6340xkReZRnEbBnEVbXl6b8adDdtEcxJ0fqKnJLgewkfDT1Fqf
+         WPnn5hJXdWKKOl0WgxeQTPjXDKNRXksocg1s6C/mivKS44tgk+C/wgclb1Uj7RssS5xQ
+         leObXki7Gs3A21cqjnPLefN7ayWVL3rbJlcphMg8pGW5CVtwOddLVFH4hdFBEqLRd9m0
+         Jac6cXJ+cRv2awB+77Da19P/VRqwxqs8808csb6S8TiEslZ16pGfUDpm6L+jzqeDbq09
+         nrBaozUF257dwROt0XFu/XPyKkuKOgy09gj5jX7Dh7JGL0ynIayaAixhwDPDoSZh96Da
+         I5VA==
+X-Gm-Message-State: AOJu0YzWMZloHGxHrbixoZKYayH5rn9Dbpztg0Rl4mBisZjLyr29l3gC
+	VUKyaOGqZ011hTybnY+PuomTq3GoViv0E9Qb+haOo54mZDskoDh2C0yiHg==
+X-Gm-Gg: ASbGncsExQq+Cjg0tgmHBNr4zNQLfxg0Lx4GJHb2uYlJT0SaHJE+16pzRISxwheURle
+	J0PeSrrPOJwox5mz1U0eY7d9u6wF0FrTbcF2lgwSwPGBAFuyxUVjqATZ0UR8xYbqWHF/kWmwT5v
+	DcHXiunMZKTSGeEUzZrG6Jj0hPbKPzYrMU2hWBA1Ri2+rU5rTQr8rYzCebOl/cHh26H0fT5yeCU
+	4gVwI3KMJ1GuaCq/AtR4Ksh8BfvLLm2N9y/t/XaxZ4HYBs6QAEG7A14Qma+qu0y4pd4Lhu/OCI1
+	08tEk5Yi3yOVI/6zP2sY9E6jzxzPnvIhgiHDwjJBJ83mNN5zJZHX4YKEgaC5CDiGeQ==
+X-Google-Smtp-Source: AGHT+IFf87YePQ0f09foI9ljWfF+G9xS6y+YMbqxzOetLb/fAEoUbSK5ZvCaJL7A+WBdb2gZLaG7kA==
+X-Received: by 2002:a17:903:40cb:b0:224:e33:8896 with SMTP id d9443c01a7336-22780c536c7mr18302565ad.11.1742513153656;
+        Thu, 20 Mar 2025 16:25:53 -0700 (PDT)
 Received: from pop-os.scu.edu ([129.210.115.104])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7390611ccf8sm416306b3a.120.2025.03.20.16.25.49
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7390611ccf8sm416306b3a.120.2025.03.20.16.25.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Mar 2025 16:25:50 -0700 (PDT)
+        Thu, 20 Mar 2025 16:25:52 -0700 (PDT)
 From: Cong Wang <xiyou.wangcong@gmail.com>
 To: netdev@vger.kernel.org
 Cc: jhs@mojatatu.com,
@@ -63,9 +63,9 @@ Cc: jhs@mojatatu.com,
 	edumazet@google.com,
 	gerrard.tai@starlabs.sg,
 	Cong Wang <xiyou.wangcong@gmail.com>
-Subject: [Patch net 03/12] sch_hfsc: make hfsc_qlen_notify() idempotent
-Date: Thu, 20 Mar 2025 16:25:30 -0700
-Message-Id: <20250320232539.486091-3-xiyou.wangcong@gmail.com>
+Subject: [Patch net 05/12] sch_ets: make est_qlen_notify() idempotent
+Date: Thu, 20 Mar 2025 16:25:32 -0700
+Message-Id: <20250320232539.486091-5-xiyou.wangcong@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250320232539.486091-1-xiyou.wangcong@gmail.com>
 References: <20250320232211.485785-1-xiyou.wangcong@gmail.com>
@@ -78,48 +78,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-hfsc_qlen_notify() is not idempotent either and not friendly
-to its callers, like fq_codel_dequeue(). Let's make it idempotent
-to ease qdisc_tree_reduce_backlog() callers' life:
+est_qlen_notify() deletes its class from its active list with
+list_del() when qlen is 0, therefore, it is not idempotent and
+not friendly to its callers, like fq_codel_dequeue().
 
-1. update_vf() decreases cl->cl_nactive, so we can check whether it is
-non-zero before calling it.
-
-2. eltree_remove() always removes RB node cl->el_node, but we can use
-   RB_EMPTY_NODE() + RB_CLEAR_NODE() to make it safe.
+Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
+life. Also change other list_del()'s to list_del_init() just to be
+extra safe.
 
 Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
 Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
 ---
- net/sched/sch_hfsc.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/sched/sch_ets.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index c287bf8423b4..ce5045eea065 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -203,7 +203,10 @@ eltree_insert(struct hfsc_class *cl)
- static inline void
- eltree_remove(struct hfsc_class *cl)
- {
--	rb_erase(&cl->el_node, &cl->sched->eligible);
-+	if (!RB_EMPTY_NODE(&cl->el_node)) {
-+		rb_erase(&cl->el_node, &cl->sched->eligible);
-+		RB_CLEAR_NODE(&cl->el_node);
-+	}
+diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
+index 516038a44163..c3bdeb14185b 100644
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -293,7 +293,7 @@ static void ets_class_qlen_notify(struct Qdisc *sch, unsigned long arg)
+ 	 * to remove them.
+ 	 */
+ 	if (!ets_class_is_strict(q, cl) && sch->q.qlen)
+-		list_del(&cl->alist);
++		list_del_init(&cl->alist);
  }
  
- static inline void
-@@ -1220,7 +1223,8 @@ hfsc_qlen_notify(struct Qdisc *sch, unsigned long arg)
- 	/* vttree is now handled in update_vf() so that update_vf(cl, 0, 0)
- 	 * needs to be called explicitly to remove a class from vttree.
- 	 */
--	update_vf(cl, 0, 0);
-+	if (cl->cl_nactive)
-+		update_vf(cl, 0, 0);
- 	if (cl->cl_flags & HFSC_RSC)
- 		eltree_remove(cl);
- }
+ static int ets_class_dump(struct Qdisc *sch, unsigned long arg,
+@@ -488,7 +488,7 @@ static struct sk_buff *ets_qdisc_dequeue(struct Qdisc *sch)
+ 			if (unlikely(!skb))
+ 				goto out;
+ 			if (cl->qdisc->q.qlen == 0)
+-				list_del(&cl->alist);
++				list_del_init(&cl->alist);
+ 			return ets_qdisc_dequeue_skb(sch, skb);
+ 		}
+ 
+@@ -657,7 +657,7 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
+ 	}
+ 	for (i = q->nbands; i < oldbands; i++) {
+ 		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
+-			list_del(&q->classes[i].alist);
++			list_del_init(&q->classes[i].alist);
+ 		qdisc_tree_flush_backlog(q->classes[i].qdisc);
+ 	}
+ 	WRITE_ONCE(q->nstrict, nstrict);
+@@ -713,7 +713,7 @@ static void ets_qdisc_reset(struct Qdisc *sch)
+ 
+ 	for (band = q->nstrict; band < q->nbands; band++) {
+ 		if (q->classes[band].qdisc->q.qlen)
+-			list_del(&q->classes[band].alist);
++			list_del_init(&q->classes[band].alist);
+ 	}
+ 	for (band = 0; band < q->nbands; band++)
+ 		qdisc_reset(q->classes[band].qdisc);
 -- 
 2.34.1
 
