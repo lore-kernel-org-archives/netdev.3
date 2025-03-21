@@ -1,80 +1,76 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323541D5AD4;
-	Fri, 21 Mar 2025 20:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE451E9B32
+	for <netdev@vger.kernel.org>; Fri, 21 Mar 2025 20:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742589530; cv=none; b=pYxfL1cnVdckPYT/Ept+Ce9J20eidCzJbvGfmllcMrzQVeRMbPgTZL9MEJmndLNHy6jb63dWcP0Z5ULXTKJ5UE+0KrdlLUpIAFF9cot7VUEXSXJCMkFT1951lvg4TmcsnJoqsWdPuL9Q1Js9zV+yjOQmpaBUmwuzyZo2w3LhK/I=
+	t=1742590199; cv=none; b=bCyEUbYezlbxvHM5ogfVUwYngeZJ5nJF1FyUIfKVpRDcsFfx5DbNpT320IHYNmlGwxn57X9/BVSV9v2VI9U9DJy21kwfDT+d9Wa/xmTgaSGFw2gkRTJV/G2LEpL1wDvF2DITfHmDn/PPKtGWpGxvk3gzE/lPF/Vg3ocMnwNJ/9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742589530; c=relaxed/simple;
-	bh=8RjxbWDW/i69LK0w659MT1nZJrKwlwIZ1efwQ7T5VSA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=nNWAS26yndwold1g6unzzcZZeKWIw85f+5+YKVzxdr9P8Yl7aMHzJMxBGcZAYgD7dwljmFG1qdIkLBIbbPGbUk/SfuWehVMZzeNkJrU912hFlELRjw3o8osK/2GoZf/R51l0umIGOANpmZDefWoardHsvtDiLcOx/Tl7u+/BF54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0y4gIFM5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/+d3Xmy7; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1742590199; c=relaxed/simple;
+	bh=ScYzvyw/Eu0uHr7Q4/v3AWub7uxlANqoKlGR6KP6aEo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=VUhV+TWZiwOJrwndu/EqpuIBNGQlSy5ouWR0+Mz8y2I42qGGIT2NsOzPLxdWrJhjbY+ufrKp/Zk6/XzKwQa2aLYYnFTu/vPDUNCEqaf/vEKbmGnrt5ptXxEHQkk8wuAhL05hQcWOn9GpFoYXSlGDJ4gFuKQLCn8V8XE2W/99/hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qn0O6218; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0y4gIFM5";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/+d3Xmy7"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1742589527;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WOtohB+AKI748h04VvFfjvO0Ky51rTdztfJFNReMd6c=;
-	b=0y4gIFM5b1fRGq5GX5LD0gY6UEsfjqARtLJwS8pVDLjOwM8eSkp8Ih792VnsDCu2wyRxyz
-	V6ivFe/h8F0eeNSQ4a++gAh36rYF1V6XhjWTLYRsAs8G9xUi1zF55ZnEJEWcmxUyNTq5ES
-	dGWExdsAq9Mw+GXsIw6qg1XnibFCnM4PEmMj56JtVtEmYSAVm1X6gtugapg8uPifIKPvJm
-	ZJLVPqlQu3gs8B9iZLONLzUf0i4GNpEUBB+SaNSdCMkpuFymCGrOMXbfga2vIF0XJsmeMU
-	zSJmlohRq2t/43pVgBuaHYO+uxpbktDXD9cUaLCiLrUn5ZGgtxP+FbxHBRJAIg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1742589527;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WOtohB+AKI748h04VvFfjvO0Ky51rTdztfJFNReMd6c=;
-	b=/+d3Xmy7DvWBVqozBJgQVFKEFutX8Ih9amWjVC5+vZUnAZ6C7M+qacJIfmlR13zf9ANe8I
-	CNw5JQAVw25dxbDg==
-To: Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
- frederic@kernel.org, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
- tgunders@redhat.com, me@kloenk.dev, david.laight.linux@gmail.com
-Subject: Re: [PATCH v11 6/8] MAINTAINERS: rust: Add new sections for
- DELAY/SLEEP and TIMEKEEPING API
-In-Reply-To: <87jz8ichv5.fsf@kernel.org>
-References: <20250220070611.214262-1-fujita.tomonori@gmail.com>
- <20250220070611.214262-7-fujita.tomonori@gmail.com>
- <Z9xnDzwixCbbBm0o@boqun-archlinux> <87jz8ichv5.fsf@kernel.org>
-Date: Fri, 21 Mar 2025 21:38:46 +0100
-Message-ID: <87o6xu15m1.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qn0O6218"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A017AC4CEE7;
+	Fri, 21 Mar 2025 20:49:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742590198;
+	bh=ScYzvyw/Eu0uHr7Q4/v3AWub7uxlANqoKlGR6KP6aEo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Qn0O6218FkambvyK+oPIEfUL81SPQZLb8ok22e3Z34oNP1iwFRkpkr5GEjM6mhiWA
+	 s2vOKpCx4kVmKxvkOVA/Il4ucOdJ4FaCk++Aphxqf4ydbHF+Xe+quEFgLvxOq2c8kj
+	 IPJxC8fCG+rTmJBlVkwD/g2X7uqqD+fSXDGDA7vKSpubQstI4mVR6KfGi6CEp6ZtzO
+	 mggRlMX9VyvCEpVyq2j0V6SMPvAouComrjHmIJ4PyUJpRTX2Pgj6X/ybY210n3GAOy
+	 LFzNydebnmrGPmEz1cwgDVi8uWZYIgDUml8GC13NoMjXGFs0yL8kddFiKihqGH9Uih
+	 JfUtym8NL6AhQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB11D3806659;
+	Fri, 21 Mar 2025 20:50:35 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: phy: realtek: disable PHY-mode EEE
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174259023475.2618986.529982351265877058.git-patchwork-notify@kernel.org>
+Date: Fri, 21 Mar 2025 20:50:34 +0000
+References: <E1ttnHW-00785s-Uq@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1ttnHW-00785s-Uq@rmk-PC.armlinux.org.uk>
+To: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, netdev@vger.kernel.org,
+ pabeni@redhat.com
 
-On Fri, Mar 21 2025 at 20:18, Andreas Hindborg wrote:
->> Could you add me as a reviewer in these entries?
->>
->
-> I would like to be added as well.
+Hello:
 
-Please add the relevant core code maintainers (Anna-Maria, Frederic,
-John Stultz and myself) as well to the reviewers list, so that this does
-not end up with changes going in opposite directions.
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Thanks,
+On Sun, 16 Mar 2025 12:39:54 +0000 you wrote:
+> Realtek RTL8211F has a "PHY-mode" EEE support which interferes with an
+> IEEE 802.3 compliant implementation. This mode defaults to enabled, and
+> results in the MAC receive path not seeing the link transition to LPI
+> state.
+> 
+> Fix this by disabling PHY-mode EEE.
+> 
+> [...]
 
-        tglx
+Here is the summary with links:
+  - [net-next] net: phy: realtek: disable PHY-mode EEE
+    https://git.kernel.org/netdev/net-next/c/bfc17c165835
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
