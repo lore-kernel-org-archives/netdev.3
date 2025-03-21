@@ -1,124 +1,71 @@
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CB51EFFB0;
-	Fri, 21 Mar 2025 08:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DD61EE02F
+	for <netdev@vger.kernel.org>; Fri, 21 Mar 2025 08:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742544842; cv=none; b=ctVMID23+C93KvAeD9k2PNJyDBMHB/Kt0Nnvifu9xlxv21/NONKw1/YjNaQhq2aqreqIK7Fpcy+9Z570g9yXFTENFsPEzQFbgemEtZDvlNJtqfCBrTLAmwFT2LUvdJ5btrWoNpMCupXTKvX0j/MKY+z+KLanocw4Zg70jwRnohA=
+	t=1742545032; cv=none; b=ZHRiE43zWf3iIVT9dGu592RQ3SE5KVPQMndnDlaUtYmDlMjuSMaCKZDZjYcBkdq+0hPAcSnb42IWzhivTuLs0x4q+ezkFkelkqvD66fzep4BzyPbfLMrU6gDpQo7gjmW/hTHIJdj4AEIXKp/Y3AQrH7teeVl51o79oXbZuOMqbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742544842; c=relaxed/simple;
-	bh=JpD9u0twb5dAxGiFWUchmDBKnqRKrQEd8Fwfp/GhSNc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rvQ8Zvpnsr4zfBhwmiOlEwR1qh+elW0eBT6WHXBReDYCB9k8vbrDmABO6OcweibXLr3oJQzmwl7bTEgBOEioRy1V8H8wHxdaxM0SzJkw2fOD7ToE8OgKDAJG76qoASeLznadalzYNZRyx6P4juNz4U3g7g0eqMX+c/PjsItXJWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=sto7GVEJ; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1742545032; c=relaxed/simple;
+	bh=I6TBOGMG1VaLCmMd8p5mAIbd3Ka8wLm635EByw3igFM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FRhp20eXSdggAftwY4vWZzU63+b5iWDirfS25wadtDyyDUr9mGV5ZY6L7yntuwHMR6Dyl2Xb6F5cCJQKPcEndylYuih5GhoB39h5sfFikC0pKrrnMslfHCfxXlIrwdzk7g6H0N9dPuEW7Q8ql4BG0dgLooMAZnNrm7Q74bLvs0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fls2TqWs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="sto7GVEJ"
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52L8DPbG855093
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 21 Mar 2025 03:13:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1742544805;
-	bh=1QRNK+uPPm6yb6KBM5lbIV1SyTZ1Gd9sAIkbavrbAec=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=sto7GVEJouptHh6GN3t6GCGUgDh+g46IXFvmSmtOvryCGGvtNFAw5OG7rR6LyJ5Lm
-	 v6davIjJ1lDWvt0XRjj9UNuAxldmgVFwO4zXMH32TZCvSuz2JqpDmjApSaIk60oyi/
-	 xx1bStAQykHr80s816v6Irmu5OW7qUe4kB+mW16w=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52L8DPCs119303
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 21 Mar 2025 03:13:25 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 21
- Mar 2025 03:13:24 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 21 Mar 2025 03:13:24 -0500
-Received: from lelv0854.itg.ti.com (lelv0854.itg.ti.com [10.181.64.140])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52L8DOEl092783;
-	Fri, 21 Mar 2025 03:13:24 -0500
-Received: from localhost (meghana-pc.dhcp.ti.com [10.24.69.13] (may be forged))
-	by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 52L8DNXE032434;
-	Fri, 21 Mar 2025 03:13:24 -0500
-From: Meghana Malladi <m-malladi@ti.com>
-To: <pabeni@redhat.com>, <kuba@kernel.org>, <edumazet@google.com>,
-        <davem@davemloft.net>, <andrew+netdev@lunn.ch>
-CC: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <kory.maincent@bootlin.com>, <dan.carpenter@linaro.org>,
-        <javier.carrasco.cruz@gmail.com>, <diogo.ivo@siemens.com>,
-        <jacob.e.keller@intel.com>, <horms@kernel.org>, <m-malladi@ti.com>,
-        <john.fastabend@gmail.com>, <hawk@kernel.org>, <daniel@iogearbox.net>,
-        <ast@kernel.org>, <srk@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
-        Roger
- Quadros <rogerq@kernel.org>, <danishanwar@ti.com>
-Subject: [PATCH net-next v2 2/3] net: ti: prueth: Fix possible NULL pointer dereference inside emac_xmit_xdp_frame()
-Date: Fri, 21 Mar 2025 13:43:12 +0530
-Message-ID: <20250321081313.37112-3-m-malladi@ti.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250321081313.37112-1-m-malladi@ti.com>
-References: <20250321081313.37112-1-m-malladi@ti.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fls2TqWs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A066CC4CEE8;
+	Fri, 21 Mar 2025 08:17:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742545031;
+	bh=I6TBOGMG1VaLCmMd8p5mAIbd3Ka8wLm635EByw3igFM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fls2TqWsk9/NK/Y7GPxYu4cYuPktcf3gNfxfZi5Rj+oc81v2YgZmKYShcmCIEJxpe
+	 YOLtXCEM7Xc7etfItJrXfNMDj7Rci0/BB+y/9L9L5iAixCj/YKPifwVECEoht17n+D
+	 S+zfQ7UtuA5PBC/UDKffcYLdyqUgIT+t5j7a0YbbY663aI0+UrCTQWg0fRQZ9PpOCJ
+	 Fe1+qkGiW1WVvggKgqY/8GYxhgR6EurpD3Je8nE9eN8xXuA164Eg+WUw7pM/PYKrf6
+	 02XndYmBHhUnUlNEO/EV058d5wgXvEP9aisFDhG/XARAYKMPc8UbN/y/j9yWOxxEdL
+	 RpP4xZGiG13tg==
+Date: Fri, 21 Mar 2025 08:17:07 +0000
+From: Simon Horman <horms@kernel.org>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [PATCH net 1/3] net: dsa: sja1105: fix displaced ethtool
+ statistics counters
+Message-ID: <20250321081707.GM892515@horms.kernel.org>
+References: <20250318115716.2124395-1-vladimir.oltean@nxp.com>
+ <20250318115716.2124395-2-vladimir.oltean@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250318115716.2124395-2-vladimir.oltean@nxp.com>
 
-There is an error check inside emac_xmit_xdp_frame() function which
-is called when the driver wants to transmit XDP frame, to check if
-the allocated tx descriptor is NULL, if true to exit and return
-ICSSG_XDP_CONSUMED implying failure in transmission.
+On Tue, Mar 18, 2025 at 01:57:14PM +0200, Vladimir Oltean wrote:
+> Port counters with no name (aka
+> sja1105_port_counters[__SJA1105_COUNTER_UNUSED]) are skipped when
+> reporting sja1105_get_sset_count(), but are not skipped during
+> sja1105_get_strings() and sja1105_get_ethtool_stats().
+> 
+> As a consequence, the first reported counter has an empty name and a
+> bogus value (reads from area 0, aka MAC, from offset 0, bits start:end
+> 0:0). Also, the last counter (N_NOT_REACH on E/T, N_RX_BCAST on P/Q/R/S)
+> gets pushed out of the statistics counters that get shown.
+> 
+> Skip __SJA1105_COUNTER_UNUSED consistently, so that the bogus counter
+> with an empty name disappears, and in its place appears a valid counter.
+> 
+> Fixes: 039b167d68a3 ("net: dsa: sja1105: don't use burst SPI reads for port statistics")
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-In this case trying to free a descriptor which is NULL will result
-in kernel crash due to NULL pointer dereference. Fix this error handling
-and increase netdev tx_dropped stats in the caller of this function
-if the function returns ICSSG_XDP_CONSUMED.
-
-Fixes: 62aa3246f462 ("net: ti: icssg-prueth: Add XDP support")
-Signed-off-by: Meghana Malladi <m-malladi@ti.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
----
-
-Changes from v1(v2-v1):
-- Collected RB tag from Simon Horman <horms@kernel.org>
-
- drivers/net/ethernet/ti/icssg/icssg_common.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_common.c b/drivers/net/ethernet/ti/icssg/icssg_common.c
-index afa01c22dee8..f0224576b95f 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_common.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_common.c
-@@ -584,7 +584,7 @@ u32 emac_xmit_xdp_frame(struct prueth_emac *emac,
- 	first_desc = k3_cppi_desc_pool_alloc(tx_chn->desc_pool);
- 	if (!first_desc) {
- 		netdev_dbg(ndev, "xdp tx: failed to allocate descriptor\n");
--		goto drop_free_descs;	/* drop */
-+		return ICSSG_XDP_CONSUMED;	/* drop */
- 	}
- 
- 	if (page) { /* already DMA mapped by page_pool */
-@@ -672,8 +672,10 @@ static u32 emac_run_xdp(struct prueth_emac *emac, struct xdp_buff *xdp,
- 
- 		q_idx = smp_processor_id() % emac->tx_ch_num;
- 		result = emac_xmit_xdp_frame(emac, xdpf, page, q_idx);
--		if (result == ICSSG_XDP_CONSUMED)
-+		if (result == ICSSG_XDP_CONSUMED) {
-+			ndev->stats.tx_dropped++;
- 			goto drop;
-+		}
- 
- 		dev_sw_netstats_rx_add(ndev, xdpf->len);
- 		return result;
--- 
-2.43.0
 
