@@ -1,83 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7B3231A3F
-	for <netdev@vger.kernel.org>; Fri, 21 Mar 2025 20:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BF6221DA2;
+	Fri, 21 Mar 2025 20:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742590200; cv=none; b=elAPkdNspOihej6G2GgjINkXz9vjnES4hxJsZOgjuObqTX3Pq3ahqVqTZ4ADFZzsVpIU8UqVAIKVHto0YhQX0H2OZLwUU+4adP/L405/v7egYZQTB4aOnfL6w67ZZKiCOV+rcMBPpDDgbXphnywHeAXbro2KlQTD/B2n+mczgHE=
+	t=1742590212; cv=none; b=DdhCldJhg3x88lL6s4PHIafYqcw9584S0Hn5ZQEE1zukYWdhBJhI4Xe1bsf41s1Fb9L+cvgTcb5XAgHbtmUSMnDMazQKmRH+uSaEEdYZ8nxGVsrGg42IM/vTXZkUb/MO9hQQL/6jhA61hTugmZw4eweqrUnLUE31qCoBNWJ62bE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742590200; c=relaxed/simple;
-	bh=DQpLHfQi1cWf6zI5gcc1psD3v7nQD+6SGvuVMIxnlH0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=cVfM0JrWX8tLUMs/y7BpalaFR9LF3ITSnM+hOT6KwK8hoZetXIkqYAt9yghgAYc1jzyrDG4lnaWS9r9PFEx+XbayGy5DabobDEl3DZtyowXSznSgqxTHqXMIG/8QTiCIsqTyjGb9uuKKxJ6jhrtBGHdfSBMwIbVradbAjDHylXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s6F1PEOK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742590212; c=relaxed/simple;
+	bh=NYDV0AH6VMybj+/Wwpfj6w3HLv/oqsj2RU5ib1yXgO8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RgCFdOv3/FjSXBRCeFRimXq6nzQ1g+PXYrL13JPJL4NYM44ySieUYIUFK8wq40r9qi4y+XYLIDxz1m1JyvKmA7ABgeQJyDhT8+vXIEZlodCxy8cHFxgkNGZ9gTx6Hzw5NSGl4bREFUsfZn3tJkzvJzm1QMNCQGvQ/T7Rxyq1Y+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=TGFtRI8s; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s6F1PEOK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30FF6C4CEE7;
-	Fri, 21 Mar 2025 20:50:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742590200;
-	bh=DQpLHfQi1cWf6zI5gcc1psD3v7nQD+6SGvuVMIxnlH0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=s6F1PEOKtUbVET2CyM6O26WU1+UJ26mG65zqPIsX7HuIP+2LGu5nFZn3QDooE43WP
-	 XiMn4QXPRT+zA3AOXBR16oC1V+taHobNrsdQXrSiLyHsGsj99oLyn64nJl2oJTsXV2
-	 b7FmNrJj5XW7fTgE7mHswUhRqhhuYLU2Z9Hqy9tOn3Y6+feytcRC1t8KcToQCF/dHR
-	 o5fSiszCjtBPYHdx+zVD0RltotjAdKjtXO8TQli6nSzFCCQLHJ1Flu5yKE06wujjUf
-	 EQQnwHdgHQpkiJKHF8WHHK9PfLxmA+GHCG3aXaPxsefr7JEB7i6KEiUMOJbMwgtr7J
-	 b8UReuWTaRnLA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 711E53806659;
-	Fri, 21 Mar 2025 20:50:37 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="TGFtRI8s"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=yFzOysCPLuMjK3qzNNnYKx7eqzyb8A3svd4W9fSzPuQ=; b=TGFtRI8spN1abBT9KlSGFueqQh
+	6/YP2EDo6BjswLesT6nGpeMQ9l84PUNmOlDHSQO43O70iL0m5u383PDralyj13qYDcr5D7CjO2NAZ
+	RltzmllqpVOG9toqHbT8+tzjdJcPirCbfOYaqh9GGwj5dM49R26FCx00XWpFfKRnRsoQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tvjJA-006eT6-Hj; Fri, 21 Mar 2025 21:49:36 +0100
+Date: Fri, 21 Mar 2025 21:49:36 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Tawfik Bayouk <tawfik.bayouk@mobileye.com>
+Subject: Re: [PATCH net-next 01/13] dt-bindings: net: cdns,macb: add Mobileye
+ EyeQ5 ethernet interface
+Message-ID: <2dbbd6c0-84d0-4846-a48d-31891f395c7c@lunn.ch>
+References: <20250321-macb-v1-0-537b7e37971d@bootlin.com>
+ <20250321-macb-v1-1-537b7e37971d@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: phy: fix genphy_c45_eee_is_active() for
- disabled EEE
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174259023600.2618986.2107650390226882487.git-patchwork-notify@kernel.org>
-Date: Fri, 21 Mar 2025 20:50:36 +0000
-References: <E1ttmWN-0077Mb-Q6@rmk-PC.armlinux.org.uk>
-In-Reply-To: <E1ttmWN-0077Mb-Q6@rmk-PC.armlinux.org.uk>
-To: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, netdev@vger.kernel.org,
- pabeni@redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250321-macb-v1-1-537b7e37971d@bootlin.com>
 
-Hello:
+>            - atmel,sama5d2-gem         # GEM IP (10/100) on Atmel sama5d2 SoCs
+>            - atmel,sama5d3-gem         # Gigabit IP on Atmel sama5d3 SoCs
+>            - atmel,sama5d4-gem         # GEM IP (10/100) on Atmel sama5d4 SoCs
+> +          - mobileye,eyeq5-gem        # Mobileye EyeQ5 SoCs
+>            - cdns,np4-macb             # NP4 SoC devices
+>            - microchip,sama7g5-emac    # Microchip SAMA7G5 ethernet interface
+>            - microchip,sama7g5-gem     # Microchip SAMA7G5 gigabit ethernet interface
 
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+These are kind of sorted. Maybe put mobileye after microchip?
 
-On Sun, 16 Mar 2025 11:51:11 +0000 you wrote:
-> Commit 809265fe96fe ("net: phy: c45: remove local advertisement
-> parameter from genphy_c45_eee_is_active") stopped reading the local
-> advertisement from the PHY earlier in this development cycle, which
-> broke "ethtool --set-eee ethX eee off".
-> 
-> When ethtool is used to set EEE off, genphy_c45_eee_is_active()
-> indicates that EEE was active if the link partner reported an
-> advertisement, which causes phylib to set phydev->enable_tx_lpi on
-> link up, despite our local advertisement in hardware being empty.
-> However, phydev->advertising_eee is preserved while EEE is turned off,
-> which leads to genphy_c45_eee_is_active() incorrectly reporting that
-> EEE is active.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next] net: phy: fix genphy_c45_eee_is_active() for disabled EEE
-    https://git.kernel.org/netdev/net-next/c/4b9235a880f1
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+	Andrew
