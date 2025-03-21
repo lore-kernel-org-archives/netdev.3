@@ -1,176 +1,142 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D931E5B66;
-	Fri, 21 Mar 2025 04:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BFA4206B
+	for <netdev@vger.kernel.org>; Fri, 21 Mar 2025 04:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742531902; cv=none; b=VJxuCXknAKWH4eFfboMg9Jrdt6RXow9zX+PT+CDG7NHU4al0UEkgsQZ4xV/AEWFE08G3wYbgyMOmeAFBxeLZ7iweCM7lTqN5XTtB00MUz1cwB63/ulBpzhKhM6RB0wWBh8HWEPbst8QZwQG10vPUVJLrRloc01PIodRLlGmyURw=
+	t=1742532182; cv=none; b=KLlqV8odldp/OWULXi7HaLNwcqaaCblghI84/UUgH2ayim3hjMmynbuvz5zXA3Zcu+vityjzZb5jIAuBLAW92XrqY9WLPV/zoQwiHk50GspDAXoqEQ3MZM4tMiVLlxxYIihsg3aDG39b61fkGBHtwHDT+ve6WymCED69zm/htBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742531902; c=relaxed/simple;
-	bh=zonYSx1PVd0UWa5I8mzVax0b0TMtOpfoDQoAaGj4DEw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QHGgGYi1N6OXuB+FUJ6w+aUjZmwNWq4LXfRn7Uu23mUsS+XGkNM05JSdqV1a3Uw9hDihSpwAspOW/5sBoCcUtEiuVh07JdqeY5pnIa+wHzpBFp2FD2CiWqlVH6NcGS9dW/83euuvwC1BxD7hFvrjRON9iMJsgDN0kKdpZuobTAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4ZJqNT4lbgzCsFh;
-	Fri, 21 Mar 2025 12:34:33 +0800 (CST)
-Received: from kwepemg200005.china.huawei.com (unknown [7.202.181.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 50F6B1402CF;
-	Fri, 21 Mar 2025 12:38:10 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by kwepemg200005.china.huawei.com
- (7.202.181.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 21 Mar
- 2025 12:38:08 +0800
-From: Wang Liang <wangliang74@huawei.com>
-To: <jv@jvosburgh.net>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<horms@kernel.org>, <ast@kernel.org>, <daniel@iogearbox.net>,
-	<hawk@kernel.org>, <john.fastabend@gmail.com>, <joamaki@gmail.com>
-CC: <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
-	<wangliang74@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>
-Subject: [PATCH net v2] bonding: check xdp prog when set bond mode
-Date: Fri, 21 Mar 2025 12:48:52 +0800
-Message-ID: <20250321044852.1086551-1-wangliang74@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1742532182; c=relaxed/simple;
+	bh=/J/l2xndIYzwBh3TqfFRxLFB3IOJWbXnrMRVsBmO9EQ=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=CA2198OnQ7uZc0CXYol86uXz0DzEMelfQ98VSi4fc2wU0A8jXwdgmDG8reqermANUK0qdtHLakA2qKZq0PMgnYVVgQhIWJhRhIjcNOTIPyeh/4bZZaixMRIXMONhpVRLzjk8Bavs129ifwvpSOVYaBaIhKJc/u7vjXxWgf66AW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IX+BSGAu; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IX+BSGAu"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-225e3002dffso22265265ad.1
+        for <netdev@vger.kernel.org>; Thu, 20 Mar 2025 21:43:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742532180; x=1743136980; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jaHeJ6qSwJ3u/x/VdsUMlK82s8mbA82yyCP5yyeo3Fc=;
+        b=IX+BSGAuyK0faO/55sbuhOf5a6TMPLuOcU+ylFUZ5MObFrKbh/NGSgkYoGdnyxwJvU
+         LVpSpPw/G4qLGhrSDXcl1sCkjaqGkiasx3V10nryp0ohrgpWKTN2UdwYkbzE6ntLbbfh
+         PU+lRYeIaft0Inp7UFL5Mozo+xuA3LJr9FBvDJpZb63FMi3ac0vb0W7L0g+jqG5ckwyD
+         NMyTnQWaVyXmA2ClNVbqeevl/1TyxKHJKQjLsPBAsvaD9NX1zHK2Qa26Tzw+7g30C0OV
+         0zWH3nrblffaRxQZUP0HKUmFRIc6lJO6GsrmkzayA0p/VUXL7jGniXSeFLNBfJ2+sbhf
+         xyxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742532180; x=1743136980;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jaHeJ6qSwJ3u/x/VdsUMlK82s8mbA82yyCP5yyeo3Fc=;
+        b=n7/hQrii/0D9o541F3FRVb3IV6VkrlHIhkrwWo2x+fVb03xGbeBhz0HQZmv3Ck7UFH
+         +sj3qQkoVag3ujF/bViIIn1+rb2jrHUOFiCMgcAYdhhUb9pBPw9cGUOh4TUUDoh3V/7D
+         C+o9Bs6ta8GhQiZ/7kcqHiHi481OiqsAgkQZZgAYOMHMyy/dJBbk8POoUobgoDZvYejM
+         3hHQneI48VGkFBeYmKoEVQNvgaV/d4Tje2zCyVab+JedcIkiqmoJrgXREAgeoV4NA3lD
+         bifIKKRZ0mRBKqV6fCheG7OVlrQgp7gBQlmKmmhqZaQI6JspB59JpxTB8fA9ewMAprIM
+         h4GA==
+X-Forwarded-Encrypted: i=1; AJvYcCWUUV21rvBQACzLmDyhJXbxsUXo8cHghBf8mnhKpPXMVdtxo1t0Tx8w9zIftFg1vnWcQwMcUZY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVKknJF/PbMQ7lI1958mRCRmXUvLc+b1sK7oIFv47SBKvE6+5v
+	L/7OJv3aYmmzUhtrkEJzNDxV5hu4GG0Z1BXJVyGIuNSmdco2rhF6PBNcFCr5AA==
+X-Gm-Gg: ASbGncsTP9gs/Ahvxh+UCNc9OEo5ITSPE1DEo8gRnBOI7JqCD4q8vJBcWqTXIvQOemm
+	N1QjR82ZmfT/0/MqAFMqsjiF50jQJhY1usj5WVO/TBZeGOpKq1wevRxvGZsrMUtAUvieHK8VV6p
+	BnOO7uDZTImXqgh0sntkSiBdMPs3qvlMAwDqG+XrmiRHYStkx/R895/v9fG+6FGSHXJU/2M99Pm
+	VYwmDxsc3lw+VmM16gt8pbeT+/tEIe7iZblZUV02nWWzBZZvU5E6fcD1UJPSCw4joBueOj24pbU
+	heibRY5AEQflO1w0FcSjPNThF0YLU1FtHEOKI7lWI1Va
+X-Google-Smtp-Source: AGHT+IFCZZBsBpT+JgPon/LLEbu72ysiHsPxVJfQnDNrm7RkPGl69Wa7QQ0PvDzg1cJp1vKd8UOSxQ==
+X-Received: by 2002:a17:903:2286:b0:224:249f:9723 with SMTP id d9443c01a7336-22780e38317mr26158175ad.51.1742532180528;
+        Thu, 20 Mar 2025 21:43:00 -0700 (PDT)
+Received: from ?IPv6:::1? ([2409:40f4:3109:f8b2:8000::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-227811da38asm6929485ad.186.2025.03.20.21.42.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Mar 2025 21:43:00 -0700 (PDT)
+Date: Fri, 21 Mar 2025 10:12:55 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Wei Fang <wei.fang@nxp.com>,
+ devnull+manivannan.sadhasivam.linaro.org@kernel.org
+CC: bartosz.golaszewski@linaro.org, bhelgaas@google.com, brgl@bgdev.pl,
+ conor+dt@kernel.org, devicetree@vger.kernel.org, krzk+dt@kernel.org,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, robh@kernel.org,
+ netdev@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3_3/5=5D_PCI/pwrctrl=3A_Skip_scanning_fo?=
+ =?US-ASCII?Q?r_the_device_further_if_pwrctrl_device_is_created?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20250321025940.2103854-1-wei.fang@nxp.com>
+References: <20250116-pci-pwrctrl-slot-v3-3-827473c8fbf4@linaro.org> <20250321025940.2103854-1-wei.fang@nxp.com>
+Message-ID: <2BFDC577-949F-49EE-A639-A21010FEEE0E@linaro.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemg200005.china.huawei.com (7.202.181.32)
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Following operations can trigger a warning[1]:
+Hi,
 
-    ip netns add ns1
-    ip netns exec ns1 ip link add bond0 type bond mode balance-rr
-    ip netns exec ns1 ip link set dev bond0 xdp obj af_xdp_kern.o sec xdp
-    ip netns exec ns1 ip link set bond0 type bond mode broadcast
-    ip netns del ns1
+On March 21, 2025 8:29:40 AM GMT+05:30, Wei Fang <wei=2Efang@nxp=2Ecom> wr=
+ote:
+>@@ -2487,7 +2487,14 @@ static struct pci_dev *pci_scan_device(struct pci_=
+bus *bus, int devfn)
+> 	struct pci_dev *dev;
+> 	u32 l;
+>=20
+>-	pci_pwrctrl_create_device(bus, devfn);
+>+	/*
+>+	 * Create pwrctrl device (if required) for the PCI device to handle the
+>+	 * power state=2E If the pwrctrl device is created, then skip scanning
+>+	 * further as the pwrctrl core will rescan the bus after powering on
+>+	 * the device=2E
+>+	 */
+>+	if (pci_pwrctrl_create_device(bus, devfn))
+>+		return NULL;
+>
+>Hi Manivannan,
+>
+>The current patch logic is that if the pcie device node is found to have
+>the "xxx-supply" property, the scan will be skipped, and then the pwrctrl
+>driver will rescan and enable the regulators=2E However, after merging th=
+is
+>patch, there is a problem on our platform=2E The =2Eprobe() of our device
+>driver will not be called=2E The reason is that CONFIG_PCI_PWRCTL_SLOT is
+>not enabled at all in our configuration file, and the compatible string
+>of the device is also not added to the pwrctrl driver=2E
 
-When delete the namespace, dev_xdp_uninstall() is called to remove xdp
-program on bond dev, and bond_xdp_set() will check the bond mode. If bond
-mode is changed after attaching xdp program, the warning may occur.
+Hmm=2E So I guess the controller driver itself is enabling the supplies I =
+believe (which I failed to spot)=2E May I know what platforms are affected?
 
-Some bond modes (broadcast, etc.) do not support native xdp. Set bond mode
-with xdp program attached is not good. Add check for xdp program when set
-bond mode.
+> I think other
+>platforms should also have similar problems, which undoubtedly make these
+>platforms be unstable=2E This patch has been applied, and I am not famili=
+ar
+>with this=2E Can you fix this problem? I mean that those platforms that d=
+o
+>not use pwrctrl can avoid skipping the scan=2E
 
-    [1]
-    ------------[ cut here ]------------
-    WARNING: CPU: 0 PID: 11 at net/core/dev.c:9912 unregister_netdevice_many_notify+0x8d9/0x930
-    Modules linked in:
-    CPU: 0 UID: 0 PID: 11 Comm: kworker/u4:0 Not tainted 6.14.0-rc4 #107
-    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014
-    Workqueue: netns cleanup_net
-    RIP: 0010:unregister_netdevice_many_notify+0x8d9/0x930
-    Code: 00 00 48 c7 c6 6f e3 a2 82 48 c7 c7 d0 b3 96 82 e8 9c 10 3e ...
-    RSP: 0018:ffffc90000063d80 EFLAGS: 00000282
-    RAX: 00000000ffffffa1 RBX: ffff888004959000 RCX: 00000000ffffdfff
-    RDX: 0000000000000000 RSI: 00000000ffffffea RDI: ffffc90000063b48
-    RBP: ffffc90000063e28 R08: ffffffff82d39b28 R09: 0000000000009ffb
-    R10: 0000000000000175 R11: ffffffff82d09b40 R12: ffff8880049598e8
-    R13: 0000000000000001 R14: dead000000000100 R15: ffffc90000045000
-    FS:  0000000000000000(0000) GS:ffff888007a00000(0000) knlGS:0000000000000000
-    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-    CR2: 000000000d406b60 CR3: 000000000483e000 CR4: 00000000000006f0
-    Call Trace:
-     <TASK>
-     ? __warn+0x83/0x130
-     ? unregister_netdevice_many_notify+0x8d9/0x930
-     ? report_bug+0x18e/0x1a0
-     ? handle_bug+0x54/0x90
-     ? exc_invalid_op+0x18/0x70
-     ? asm_exc_invalid_op+0x1a/0x20
-     ? unregister_netdevice_many_notify+0x8d9/0x930
-     ? bond_net_exit_batch_rtnl+0x5c/0x90
-     cleanup_net+0x237/0x3d0
-     process_one_work+0x163/0x390
-     worker_thread+0x293/0x3b0
-     ? __pfx_worker_thread+0x10/0x10
-     kthread+0xec/0x1e0
-     ? __pfx_kthread+0x10/0x10
-     ? __pfx_kthread+0x10/0x10
-     ret_from_fork+0x2f/0x50
-     ? __pfx_kthread+0x10/0x10
-     ret_from_fork_asm+0x1a/0x30
-     </TASK>
-    ---[ end trace 0000000000000000 ]---
+Sure=2E It makes sense to add a check to see if the pwrctrl driver is enab=
+led or not=2E If it is not enabled, then the pwrctrl device creation could =
+be skipped=2E I'll send a patch once I'm infront of my computer=2E
 
-Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
----
- drivers/net/bonding/bond_main.c    | 8 ++++----
- drivers/net/bonding/bond_options.c | 3 +++
- include/net/bonding.h              | 1 +
- 3 files changed, 8 insertions(+), 4 deletions(-)
+But in the long run, we would like to move all platforms to use pwrctrl in=
+stead of fiddling the power supplies in the controller driver (well that wa=
+s the motivation to introduce it in the first place)=2E
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index e45bba240cbc..4da5fcb7def4 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -322,9 +322,9 @@ static bool bond_sk_check(struct bonding *bond)
- 	}
- }
- 
--static bool bond_xdp_check(struct bonding *bond)
-+bool bond_xdp_check(struct bonding *bond, int mode)
- {
--	switch (BOND_MODE(bond)) {
-+	switch (mode) {
- 	case BOND_MODE_ROUNDROBIN:
- 	case BOND_MODE_ACTIVEBACKUP:
- 		return true;
-@@ -1937,7 +1937,7 @@ void bond_xdp_set_features(struct net_device *bond_dev)
- 
- 	ASSERT_RTNL();
- 
--	if (!bond_xdp_check(bond) || !bond_has_slaves(bond)) {
-+	if (!bond_xdp_check(bond, BOND_MODE(bond)) || !bond_has_slaves(bond)) {
- 		xdp_clear_features_flag(bond_dev);
- 		return;
- 	}
-@@ -5699,7 +5699,7 @@ static int bond_xdp_set(struct net_device *dev, struct bpf_prog *prog,
- 
- 	ASSERT_RTNL();
- 
--	if (!bond_xdp_check(bond)) {
-+	if (!bond_xdp_check(bond, BOND_MODE(bond))) {
- 		BOND_NL_ERR(dev, extack,
- 			    "No native XDP support for the current bonding mode");
- 		return -EOPNOTSUPP;
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 327b6ecdc77e..625aeb40d9bf 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -868,6 +868,9 @@ static bool bond_set_xfrm_features(struct bonding *bond)
- static int bond_option_mode_set(struct bonding *bond,
- 				const struct bond_opt_value *newval)
- {
-+	if (bond->xdp_prog && !bond_xdp_check(bond, newval->value))
-+		return -EOPNOTSUPP;
-+
- 	if (!bond_mode_uses_arp(newval->value)) {
- 		if (bond->params.arp_interval) {
- 			netdev_dbg(bond->dev, "%s mode is incompatible with arp monitoring, start mii monitoring\n",
-diff --git a/include/net/bonding.h b/include/net/bonding.h
-index 8bb5f016969f..95f67b308c19 100644
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -695,6 +695,7 @@ void bond_debug_register(struct bonding *bond);
- void bond_debug_unregister(struct bonding *bond);
- void bond_debug_reregister(struct bonding *bond);
- const char *bond_mode_name(int mode);
-+bool bond_xdp_check(struct bonding *bond, int mode);
- void bond_setup(struct net_device *bond_dev);
- unsigned int bond_get_num_tx_queues(void);
- int bond_netlink_init(void);
--- 
-2.34.1
+Once you share the platform details, I'll try to migrate it to use pwrctrl=
+=2E Also, please note that we are going to enable pwrctrl in ARM64 defconfi=
+g very soon=2E So I'll try to fix the affected platforms before that happen=
+s=2E
 
+- Mani
+
+=E0=AE=AE=E0=AE=A3=E0=AE=BF=E0=AE=B5=E0=AE=A3=E0=AF=8D=E0=AE=A3=E0=AE=A9=
+=E0=AF=8D =E0=AE=9A=E0=AE=A4=E0=AE=BE=E0=AE=9A=E0=AE=BF=E0=AE=B5=E0=AE=AE=
+=E0=AF=8D
