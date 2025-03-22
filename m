@@ -1,41 +1,41 @@
-Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [178.154.239.85])
+Received: from forward101b.mail.yandex.net (forward101b.mail.yandex.net [178.154.239.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A65F22CBF4;
-	Sat, 22 Mar 2025 14:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B2322D7A1;
+	Sat, 22 Mar 2025 14:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742654460; cv=none; b=uU8O0xgaC8CqLAGDh5ptJYIOMAQLX+e1bnMwPwOpKJ06lrpagi8UwrP08SBjvmrQV6mWVm7pndiOftr0LgXWIrZhwfCi+0xN6/pRjo0LP1viBD9IjT5XnuR62mgAfwo8lM6HPBPXmaoDTxfo4Lq8bVfgeC/4YjrTHnDl1H6/vJU=
+	t=1742654474; cv=none; b=meV6a6VX+42sMzX5AQwHSd2hmSbMoNqm2FOh2S5rDyd3NzczuzypOfafiT2ZpF6xKM5omaqKdtcG8OkZmukSwokkrMwFORWS8jZIp82R40AM48v1ldKkMQ+lds/vj77XsXPjoJLYSl3vCz7N5R4VBKoYmyUrOzee4niAwghjQQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742654460; c=relaxed/simple;
-	bh=xfcE0oEemgxzLnRT89qKbw4/jsPMERcK2pa4Ej0bzuA=;
+	s=arc-20240116; t=1742654474; c=relaxed/simple;
+	bh=tb5p+i4RGOXtseU+3CAkPWvzulPLmWT/jlCUUJasVGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m6ekGnJuo4opFCSabamcygaeCrAEIrPk3Hh3olO5hq7qvpX0ic6uVD5vah1zFIusslJe04dUmL4PHT4tl3vXm8YU+lsK8FqpUr+TVKoZ+3lik8psr0fXUGN+LzTN4y7K8lvgBVaP1I5ndjSw1GiPCernfg4UA667HLDa6pGLA8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ya.ru; spf=pass smtp.mailfrom=ya.ru; dkim=pass (1024-bit key) header.d=ya.ru header.i=@ya.ru header.b=QaExM0DA; arc=none smtp.client-ip=178.154.239.85
+	 MIME-Version:Content-Type; b=VXJnA0rtOjhRpOIMH/VgE0lIw5znZpzTdd5s3WU9Qae2pnx6vjX+aspixUqtoyoF0/1c6Wi0DcL0wqGbKRyQ+AIZEsTrVpO4btgIEhVjkT8R9Mh6GFtFpCJSnLZKJoT31nNp0N+/lZzsUi57V4VCSFbuPTFgLGKAOX+lP1NjccE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ya.ru; spf=pass smtp.mailfrom=ya.ru; dkim=pass (1024-bit key) header.d=ya.ru header.i=@ya.ru header.b=QQvDSMX1; arc=none smtp.client-ip=178.154.239.148
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ya.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ya.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ya.ru header.i=@ya.ru header.b="QaExM0DA"
-Received: from mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:4d95:0:640:af03:0])
-	by forward102a.mail.yandex.net (Yandex) with ESMTPS id 38CED60D88;
-	Sat, 22 Mar 2025 17:40:56 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id seNh1lXLnGk0-6AWHxyIH;
-	Sat, 22 Mar 2025 17:40:55 +0300
+	dkim=pass (1024-bit key) header.d=ya.ru header.i=@ya.ru header.b="QQvDSMX1"
+Received: from mail-nwsmtp-smtp-production-main-72.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-72.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:472f:0:640:f355:0])
+	by forward101b.mail.yandex.net (Yandex) with ESMTPS id A34A360B3F;
+	Sat, 22 Mar 2025 17:41:10 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-72.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 8fNnFaKLceA0-4aTpwJ8g;
+	Sat, 22 Mar 2025 17:41:10 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ya.ru; s=mail;
-	t=1742654455; bh=zr79NYPm7UH1yKBmdHj6hbTkPhABeijb9QoXbUFqw9M=;
+	t=1742654470; bh=xe2OMQz2t6ju5AjT3jlRd8HjwbMKDuwMDckkwQ7oxwM=;
 	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
-	b=QaExM0DAH16qy2+gWm5Oapg8hQAyVJU/MEl1kOVpLfJJ0uY6WCficvtK7miGtDfIv
-	 MkhHBtKWHqfAaxlzsrQqGDrScPzNg9hqirGoMpJpIoVndFcD6+vCs0WAGnU/58QgGh
-	 ORhFEVD9nI7lty7fI9nYcldRprj8oo3qULQpF1pg=
-Authentication-Results: mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net; dkim=pass header.i=@ya.ru
+	b=QQvDSMX1eEOL8QWTmlrqRVRR/VGH5hrPbexL1a906dqu+YjP51bqWP/+ZVjdcj6TI
+	 dOfOYjx2M5rEH0A85K4WJU3qy47DiHz2le6UaKpx86jPrDtO9YDGU5oJ8JxnKsCRzz
+	 tFEjDtT4p6PnSbch+kDesd4iiwfFB1kSNW+Yl7VM=
+Authentication-Results: mail-nwsmtp-smtp-production-main-72.iva.yp-c.yandex.net; dkim=pass header.i=@ya.ru
 From: Kirill Tkhai <tkhai@ya.ru>
 To: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: tkhai@ya.ru
-Subject: [PATCH NET-PREV 24/51] lapbeth: Provide determined context in __register_netdevice()
-Date: Sat, 22 Mar 2025 17:40:54 +0300
-Message-ID: <174265445402.356712.9364160514313425614.stgit@pro.pro>
+Subject: [PATCH NET-PREV 26/51] 6lowpan: Use __register_netdevice in .newlink
+Date: Sat, 22 Mar 2025 17:41:08 +0300
+Message-ID: <174265446855.356712.5159257797992093401.stgit@pro.pro>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <174265415457.356712.10472727127735290090.stgit@pro.pro>
 References: <174265415457.356712.10472727127735290090.stgit@pro.pro>
@@ -49,76 +49,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-In case of caller already owns nd_lock, there is
-nesting without underlying that to lockdep.
-
-So we use trylock and __register_netdevice() here.
-
-XXX: after callers of netdevice notifyiers are converted,
-we will inherit @edev nd_lock instead.
+The objective is to conform .newlink with its callers,
+which already assign nd_lock (and matches master nd_lock
+if there is one).
 
 Signed-off-by: Kirill Tkhai <tkhai@ya.ru>
 ---
- drivers/net/wan/lapbether.c |   28 +++++++++++++++++++++++++---
- 1 file changed, 25 insertions(+), 3 deletions(-)
+ net/6lowpan/core.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wan/lapbether.c b/drivers/net/wan/lapbether.c
-index 56326f38fe8a..793a2ed424c0 100644
---- a/drivers/net/wan/lapbether.c
-+++ b/drivers/net/wan/lapbether.c
-@@ -380,6 +380,7 @@ static int lapbeth_new_device(struct net_device *dev)
+diff --git a/net/6lowpan/core.c b/net/6lowpan/core.c
+index 850d4a185f55..b5cbf85b291c 100644
+--- a/net/6lowpan/core.c
++++ b/net/6lowpan/core.c
+@@ -39,7 +39,7 @@ int lowpan_register_netdevice(struct net_device *dev,
+ 
+ 	dev->ndisc_ops = &lowpan_ndisc_ops;
+ 
+-	ret = register_netdevice(dev);
++	ret = __register_netdevice(dev);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -52,10 +52,18 @@ EXPORT_SYMBOL(lowpan_register_netdevice);
+ int lowpan_register_netdev(struct net_device *dev,
+ 			   enum lowpan_lltypes lltype)
  {
- 	struct net_device *ndev;
- 	struct lapbethdev *lapbeth;
 +	struct nd_lock *nd_lock;
- 	int rc = -ENOMEM;
+ 	int ret;
  
- 	ASSERT_RTNL();
-@@ -392,6 +393,23 @@ static int lapbeth_new_device(struct net_device *dev)
- 	if (!ndev)
- 		goto out;
- 
-+	rc = -ENOMEM;
-+	nd_lock = alloc_nd_lock();
-+	if (!nd_lock)
-+		goto err_free;
-+
-+	/* This is called from netdevice notifier, which is not converted yet.
-+	 * The context is unknown: either some nd_lock is locked or not. Since
-+	 * @ndev is undependent of @edev (on this stage of convertation we don't
-+	 * require that, we will require when we convert unregister_netdev()).
-+	 * So, a new nd_lock is used for @ndev for now.
-+	 * Q: Why is trylock, despite it can't fail?
-+	 * A: Caller may own some other nd_lock, so lockdep will unhappy seeing
-+	 * there is nested lock without mutex_lock_nested() prefix.
-+	 */
-+	BUG_ON(!mutex_trylock(&nd_lock->mutex));
-+	attach_nd_lock(ndev, nd_lock);
-+
- 	/* When transmitting data:
- 	 * first this driver removes a pseudo header of 1 byte,
- 	 * then the lapb module prepends an LAPB header of at most 3 bytes,
-@@ -415,15 +433,19 @@ static int lapbeth_new_device(struct net_device *dev)
- 	netif_napi_add_weight(ndev, &lapbeth->napi, lapbeth_napi_poll, 16);
- 
- 	rc = -EIO;
--	if (register_netdevice(ndev))
--		goto fail;
-+	if (__register_netdevice(ndev))
-+		goto err_put;
+ 	rtnl_lock();
++	if (!attach_new_nd_lock(dev))
++		goto out;
++	lock_netdev(dev, &nd_lock);
+ 	ret = lowpan_register_netdevice(dev, lltype);
++	if (ret)
++		detach_nd_lock(dev);
 +	unlock_netdev(nd_lock);
- 
- 	list_add_rcu(&lapbeth->node, &lapbeth_devices);
- 	rc = 0;
- out:
- 	return rc;
--fail:
-+err_put:
- 	dev_put(dev);
-+	detach_nd_lock(ndev);
-+	unlock_netdev(nd_lock);
-+err_free:
- 	free_netdev(ndev);
- 	goto out;
++out:
+ 	rtnl_unlock();
+ 	return ret;
  }
 
