@@ -1,102 +1,86 @@
-Received: from forward205a.mail.yandex.net (forward205a.mail.yandex.net [178.154.239.88])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E623230BFE;
-	Sat, 22 Mar 2025 14:48:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.88
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073F61531C8;
+	Sat, 22 Mar 2025 15:29:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742654899; cv=none; b=HLY6MXVjJKKSFzCS0rdmsx5vVNi1NYmej0LnKmRYhc0vxowaGQ7LoQPSvb678RGxibXNeMp1ky6hDo0t3DiPznC7N00qtfWGH3Mq7u6v+GpUSlGWmTIVe8ocJI4Y8JWGJT5k6kdQLCuJxiqBOfV5auTmRireLXzZz6Ypf5qXELA=
+	t=1742657349; cv=none; b=ByW7aK3mZH90YciP83qvAu/h1HjC8ceILTJcf5QTKeL6cleQ3mWW6TEMleoXwe/SYY/OlMcuc/ffyaJ+ycRYJjroKYS8bCONETOnOzcbTcgEZ/WqkEJOOCbOifZKUJ0K2nTKKMpIjGgGZUMg9xLUHZ6N/JbNwcvvMrbssdfIMC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742654899; c=relaxed/simple;
-	bh=BZ6b5ix0yW4k4uUo1bfPj64RMujkEgkmbMn8X2sy9oY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dOzy5mjLjHwrw5YDwJhmwlrdbjTw38d12nZj+9VqKBvvNufeK+yigmErKrzTG2WcYCMxmq9xJP5QC9usauFnKZhWo5Qmo5HILoEs3ZjlWH8NZygvviq8n+69HoQPyKasW7rChOstQYsXN71++z06bvCsg0XLrZhmztNiwQAGB+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ya.ru; spf=pass smtp.mailfrom=ya.ru; dkim=pass (1024-bit key) header.d=ya.ru header.i=@ya.ru header.b=RrF8tCT2; arc=none smtp.client-ip=178.154.239.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ya.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ya.ru
+	s=arc-20240116; t=1742657349; c=relaxed/simple;
+	bh=LX1DsUp4v2j/eiwibU3yVN9Ap65ACr+CkNOOgJvvI80=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u4NmjFPs/snAbfW6bA4JuERY7wulb/1TRuaDwICNBJ0NPpg7ZSs9vPxN2KcDTAshIMwDvOwRNCFlDQXZKO2l3hylY6vwQ9av3ha4wR6txRa1Taa7vzjnlpMsdXILIHE0vXwn8oNOLRBhisl4n65LLMceVQvNdmHSLiceh+keJco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GSwE/MeU; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ya.ru header.i=@ya.ru header.b="RrF8tCT2"
-Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d100])
-	by forward205a.mail.yandex.net (Yandex) with ESMTPS id E444266699;
-	Sat, 22 Mar 2025 17:40:19 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-88.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-88.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:12a5:0:640:7a62:0])
-	by forward100a.mail.yandex.net (Yandex) with ESMTPS id 41D2647275;
-	Sat, 22 Mar 2025 17:40:12 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-88.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id AeNPUSKLcW20-IxkrtWBG;
-	Sat, 22 Mar 2025 17:40:11 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ya.ru; s=mail;
-	t=1742654411; bh=ihOqdVJ7xLtJJSTxOo94QY2KJsfJPmwm6+SFx40nNuY=;
-	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
-	b=RrF8tCT2geWojla1qGohD8ENjoyqLiZDZHQkZs850lCK4R31RioyjjXAek+jYlGLN
-	 xGuuzvExKKrm2pErzjmtfO2n6Ky0h5erBl/Bamt0W7DP9D7ivZ5manoRCwgUHn+j1I
-	 OyIDg2VAW5xBN8M0Q+FqVFQTm7QIUKo+Na9twCwU=
-Authentication-Results: mail-nwsmtp-smtp-production-main-88.iva.yp-c.yandex.net; dkim=pass header.i=@ya.ru
-From: Kirill Tkhai <tkhai@ya.ru>
-To: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: tkhai@ya.ru
-Subject: [PATCH NET-PREV 18/51] qmi_wwan: Use __register_netdevice in .newlink
-Date: Sat, 22 Mar 2025 17:40:10 +0300
-Message-ID: <174265441009.356712.14099994401904581590.stgit@pro.pro>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <174265415457.356712.10472727127735290090.stgit@pro.pro>
-References: <174265415457.356712.10472727127735290090.stgit@pro.pro>
-User-Agent: StGit/0.19
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GSwE/MeU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=F6DnPCoCwNoNSr0FXhPtLlu4rkM00mEhuf5ucwx1PcY=; b=GSwE/MeU9A3ANNnVLNzEWtwzhe
+	b/US4Gz2qoOEuOy10s1SViRbA3OhvDr19oHsqR2y7mI6B/gnMYG3mu8t9ZtgWRpPPthhRYjo0A34k
+	fLgiLW01Ma/T1LavEHLFlsuuO5ESVCH8KGv4ZuKYKdQ0NiW4SgYvSVnJdi6j2t/jex/8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tw0mN-006jYL-MG; Sat, 22 Mar 2025 16:28:55 +0100
+Date: Sat, 22 Mar 2025 16:28:55 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	=?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
+	Simon Horman <horms@kernel.org>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	=?iso-8859-1?Q?Bj=F8rn?= Mork <bjorn@mork.no>
+Subject: Re: [PATCH net-next v4 1/2] net: phy: sfp: Add support for SMBus
+ module access
+Message-ID: <24cff763-8312-4502-9e86-b20883ad616b@lunn.ch>
+References: <20250322075745.120831-1-maxime.chevallier@bootlin.com>
+ <20250322075745.120831-2-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250322075745.120831-2-maxime.chevallier@bootlin.com>
 
-The objective is to conform .newlink with its callers,
-which already assign nd_lock (and matches master nd_lock
-if there is one).
+On Sat, Mar 22, 2025 at 08:57:44AM +0100, Maxime Chevallier wrote:
+> The SFP module's eeprom and internals are accessible through an i2c bus.
+> 
+> It is possible that the SFP might be connected to an SMBus-only
+> controller, such as the one found in some PHY devices in the VSC85xx
+> family.
+> 
+> Introduce a set of sfp read/write ops that are going to be used if the
+> i2c bus is only capable of doing smbus byte accesses.
+> 
+> As Single-byte SMBus transaction go against SFF-8472 and breaks the
+> atomicity for diagnostics data access, hwmon is disabled in the case
+> of SMBus access.
+> 
+> Moreover, as this may cause other instabilities, print a warning at
+> probe time to indicate that the setup may be unreliable because of the
+> hardware design.
+> 
+> As hwmon may be disabled for both broken EEPROM and smbus, the warnings
+> are udpated accordingly.
+> 
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-Signed-off-by: Kirill Tkhai <tkhai@ya.ru>
----
- drivers/net/usb/qmi_wwan.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 4823dbdf5465..beec69580978 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -246,6 +246,7 @@ static int qmimux_register_device(struct net_device *real_dev, u8 mux_id)
- {
- 	struct net_device *new_dev;
- 	struct qmimux_priv *priv;
-+	struct nd_lock *nd_lock;
- 	int err;
- 
- 	new_dev = alloc_netdev(sizeof(struct qmimux_priv),
-@@ -260,14 +261,23 @@ static int qmimux_register_device(struct net_device *real_dev, u8 mux_id)
- 
- 	new_dev->sysfs_groups[0] = &qmi_wwan_sysfs_qmimux_attr_group;
- 
--	err = register_netdevice(new_dev);
--	if (err < 0)
-+	err = -ENOMEM;
-+
-+	lock_netdev(real_dev, &nd_lock);
-+	attach_nd_lock(new_dev, nd_lock);
-+	err = __register_netdevice(new_dev);
-+	if (err < 0) {
-+		detach_nd_lock(new_dev);
-+		unlock_netdev(nd_lock);
- 		goto out_free_newdev;
-+	}
- 
- 	/* Account for reference in struct qmimux_priv_priv */
- 	dev_hold(real_dev);
- 
- 	err = netdev_upper_dev_link(real_dev, new_dev, NULL);
-+	unlock_netdev(nd_lock);
-+
- 	if (err)
- 		goto out_unregister_netdev;
- 
-
+    Andrew
