@@ -1,44 +1,44 @@
-Received: from forward205b.mail.yandex.net (forward205b.mail.yandex.net [178.154.239.152])
+Received: from forward203b.mail.yandex.net (forward203b.mail.yandex.net [178.154.239.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E5121A43C;
-	Sat, 22 Mar 2025 14:45:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CC920A5C2;
+	Sat, 22 Mar 2025 14:46:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742654761; cv=none; b=XRhXMeFz8rhisPPMu9+xRW+0w/CXLx6RGmHi4bE1Z4vK4AwCHmi1IZHswew65A/+ErXZwk3WZCW2Le2DhdDaWZOthOSyoTBx9wr78r7RVVYLob9VJa66JXZnRrXbN5H4Hlhxa6L1gWUkPS8D6zQ5N4+zzXpCWdWMAZlNIABki4Y=
+	t=1742654792; cv=none; b=T9BD3GX21+tzx2V0USg8q+caMqTAqWrx4NrvX3Un9d3PHur71D+eiYTivQfED9Ca1aL7ID9KOiZmVyNJ53jVzxac7hlBE9JnMgJyd3NQGmXQdgJzzAPHmoclAx3N/HxdyK6T8fr/OH/5RlnSfP5GuR3yKwMpZGrX/KIWhCms+Mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742654761; c=relaxed/simple;
-	bh=OVEvy/nd3HpBvSpRFjKu5YD1urAvdfRskjLBsnNE1qM=;
+	s=arc-20240116; t=1742654792; c=relaxed/simple;
+	bh=e8LQJuIyZaRn7Eu6hBEKfyZFwONV5g0smsNc9szcskM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jn1k+8u0LCZzcEsQfMENinYbLYmSvPIy7zyexcxD0WDZStFxAInYaBR1I0Cmi3/wWzFEwJD6F2iib5a2sTsLQ3UlLwuZZdHtkTJ5lEQZQvKF/MSN6+ZCK6r2w0Ok8ZXS7Ljahbx4eNSwAIf5kjGG3OBRwzdrYR7CMlV4iuKaFoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ya.ru; spf=pass smtp.mailfrom=ya.ru; dkim=pass (1024-bit key) header.d=ya.ru header.i=@ya.ru header.b=JBrOzYYn; arc=none smtp.client-ip=178.154.239.152
+	 MIME-Version:Content-Type; b=OPo1w9qCDDPSnIJuLMO2t+Bu2X6lUz0KwdcKTD7E0nBL2Q9UlALTP3eybctv2cIjBfajqdP35VcHy6yOnd6x8UpnjEa7t+b6z2AazOlYF06PxxcAGM4O0dsG3AEhxgTRi6WAm2+7AFR5MTS4ziwBojHuGwbq8xjm1RpcG3Q1dGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ya.ru; spf=pass smtp.mailfrom=ya.ru; dkim=pass (1024-bit key) header.d=ya.ru header.i=@ya.ru header.b=NypijFpH; arc=none smtp.client-ip=178.154.239.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ya.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ya.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ya.ru header.i=@ya.ru header.b="JBrOzYYn"
-Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d100])
-	by forward205b.mail.yandex.net (Yandex) with ESMTPS id DD55064628;
-	Sat, 22 Mar 2025 17:40:05 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:36c1:0:640:ebf1:0])
-	by forward100b.mail.yandex.net (Yandex) with ESMTPS id A13F260AA3;
-	Sat, 22 Mar 2025 17:39:57 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id tdNdDJXLi0U0-8nqtfSq0;
-	Sat, 22 Mar 2025 17:39:57 +0300
+	dkim=pass (1024-bit key) header.d=ya.ru header.i=@ya.ru header.b="NypijFpH"
+Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d103])
+	by forward203b.mail.yandex.net (Yandex) with ESMTPS id 9D918649EA;
+	Sat, 22 Mar 2025 17:38:26 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net [IPv6:2a02:6b8:c37:7da2:0:640:6456:0])
+	by forward103b.mail.yandex.net (Yandex) with ESMTPS id D94EB60913;
+	Sat, 22 Mar 2025 17:38:17 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id FcNfZRXLk8c0-xFdWvRWM;
+	Sat, 22 Mar 2025 17:38:17 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ya.ru; s=mail;
-	t=1742654397; bh=brgsRbR54QJglAcnkEEgSrX364WQZEHuaJXYkN6xaB0=;
+	t=1742654297; bh=qvmvH0pKqRvkSJNE0tCMWofFZ3w3OZ2YK6UWMI03jJs=;
 	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
-	b=JBrOzYYnQIZn704A5BTnY6DZ4wjy18YOKuFNvvJA8DyU0J8J4mseQhhEAalYAOPD5
-	 TcZa/7QEqq6GoWb7QnFE6oxpAiMY7xaDQav/g0x6vXvrv3ogRhQgD2HaiQ+MXGoWxu
-	 mQf2XHh0dutBgHEHI5aEoHqbcMbZfeH0QZAPW9SE=
-Authentication-Results: mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net; dkim=pass header.i=@ya.ru
+	b=NypijFpHpQw1XVtYSXX++IfSIDa+Wi2+EfGjP4k0upY+9OoYJWXtqhm2KukzdiI3e
+	 FLPpEXFG9miVgwhENUI7XAZvv4XpAUtrr28oHH86VqI+k2hW5hw8MyfhYX4SPt/b/p
+	 oTbq0a9kWJnvOvfTqQ4EQuZ3LWjWceMZYiKQshPo=
+Authentication-Results: mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net; dkim=pass header.i=@ya.ru
 From: Kirill Tkhai <tkhai@ya.ru>
 To: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: tkhai@ya.ru
-Subject: [PATCH NET-PREV 16/51] geneve: Use __register_netdevice in .newlink
-Date: Sat, 22 Mar 2025 17:39:55 +0300
-Message-ID: <174265439526.356712.16198592761679126897.stgit@pro.pro>
+Subject: [PATCH NET-PREV 03/51] net: do_setlink() refactoring: move target_net acquiring to callers
+Date: Sat, 22 Mar 2025 17:38:15 +0300
+Message-ID: <174265429530.356712.918910072525880381.stgit@pro.pro>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <174265415457.356712.10472727127735290090.stgit@pro.pro>
 References: <174265415457.356712.10472727127735290090.stgit@pro.pro>
@@ -52,56 +52,220 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-The objective is to conform .newlink with its callers,
-which already assign nd_lock (and matches master nd_lock
-if there is one).
+The patch is preparation in rtnetlink code for using nd_lock.
+This is a step to move dereference of tb[IFLA_MASTER] up
+to where main dev is dereferenced by ifi_index.
 
 Signed-off-by: Kirill Tkhai <tkhai@ya.ru>
 ---
- drivers/net/geneve.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ net/core/rtnetlink.c |   78 +++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 49 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index 838e85ddec67..f74f92753063 100644
---- a/drivers/net/geneve.c
-+++ b/drivers/net/geneve.c
-@@ -1380,7 +1380,7 @@ static int geneve_configure(struct net *net, struct net_device *dev,
- 		dev->flags = IFF_POINTOPOINT | IFF_NOARP;
- 	}
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 34e35b81cfa6..a5af69af235f 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -2774,7 +2774,7 @@ static int do_set_proto_down(struct net_device *dev,
+ #define DO_SETLINK_MODIFIED	0x01
+ /* notify flag means notify + modified. */
+ #define DO_SETLINK_NOTIFY	0x03
+-static int do_setlink(const struct sk_buff *skb,
++static int do_setlink(struct net *net, const struct sk_buff *skb,
+ 		      struct net_device *dev, struct ifinfomsg *ifm,
+ 		      struct netlink_ext_ack *extack,
+ 		      struct nlattr **tb, int status)
+@@ -2788,25 +2788,16 @@ static int do_setlink(const struct sk_buff *skb,
+ 	else
+ 		ifname[0] = '\0';
  
--	err = register_netdevice(dev);
-+	err = __register_netdevice(dev);
- 	if (err)
- 		return err;
+-	if (tb[IFLA_NET_NS_PID] || tb[IFLA_NET_NS_FD] || tb[IFLA_TARGET_NETNSID]) {
++	if (net) { /* target net */
+ 		const char *pat = ifname[0] ? ifname : NULL;
+-		struct net *net;
+ 		int new_ifindex;
  
-@@ -1830,6 +1830,7 @@ struct net_device *geneve_dev_create_fb(struct net *net, const char *name,
- 					u8 name_assign_type, u16 dst_port)
- {
- 	struct nlattr *tb[IFLA_MAX + 1];
-+	struct nd_lock *nd_lock;
+-		net = rtnl_link_get_net_capable(skb, dev_net(dev),
+-						tb, CAP_NET_ADMIN);
+-		if (IS_ERR(net)) {
+-			err = PTR_ERR(net);
+-			goto errout;
+-		}
+-
+ 		if (tb[IFLA_NEW_IFINDEX])
+ 			new_ifindex = nla_get_s32(tb[IFLA_NEW_IFINDEX]);
+ 		else
+ 			new_ifindex = 0;
+ 
+ 		err = __dev_change_net_namespace(dev, net, pat, new_ifindex);
+-		put_net(net);
+ 		if (err)
+ 			goto errout;
+ 		status |= DO_SETLINK_MODIFIED;
+@@ -3171,6 +3162,7 @@ static int rtnl_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	struct net *net = sock_net(skb->sk);
+ 	struct ifinfomsg *ifm;
  	struct net_device *dev;
- 	LIST_HEAD(list_kill);
++	struct net *target_net = NULL;
  	int err;
-@@ -1846,12 +1847,21 @@ struct net_device *geneve_dev_create_fb(struct net *net, const char *name,
- 	if (IS_ERR(dev))
- 		return dev;
+ 	struct nlattr *tb[IFLA_MAX+1];
  
-+	if (!attach_new_nd_lock(dev)) {
-+		free_netdev(dev);
-+		return ERR_PTR(-ENOMEM);
+@@ -3183,6 +3175,13 @@ static int rtnl_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	if (err < 0)
+ 		goto errout;
+ 
++	target_net = rtnl_link_get_net_capable(skb, net, tb, CAP_NET_ADMIN);
++	if (IS_ERR(target_net)) {
++		err = PTR_ERR(target_net);
++		target_net = NULL;
++		goto errout;
 +	}
 +
- 	init_tnl_info(&cfg.info, dst_port);
-+	lock_netdev(dev, &nd_lock);
- 	err = geneve_configure(net, dev, NULL, &cfg);
- 	if (err) {
-+		detach_nd_lock(dev);
-+		unlock_netdev(nd_lock);
- 		free_netdev(dev);
- 		return ERR_PTR(err);
- 	}
-+	unlock_netdev(nd_lock);
+ 	err = -EINVAL;
+ 	ifm = nlmsg_data(nlh);
+ 	if (ifm->ifi_index > 0)
+@@ -3201,8 +3200,10 @@ static int rtnl_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	if (err < 0)
+ 		goto errout;
  
- 	/* openvswitch users expect packet sizes to be unrestricted,
- 	 * so set the largest MTU we can.
+-	err = do_setlink(skb, dev, ifm, extack, tb, 0);
++	err = do_setlink(target_net, skb, dev, ifm, extack, tb, 0);
+ errout:
++	if (target_net)
++		put_net(target_net);
+ 	return err;
+ }
+ 
+@@ -3440,38 +3441,51 @@ static int rtnl_group_changelink(const struct sk_buff *skb,
+ 		struct nlattr **tb)
+ {
+ 	struct net_device *dev, *aux;
++	struct net *target_net;
+ 	int err;
+ 
++	target_net = rtnl_link_get_net_capable(skb, net, tb, CAP_NET_ADMIN);
++	if (IS_ERR(target_net)) {
++		err = PTR_ERR(target_net);
++		target_net = NULL;
++		goto out;
++	}
++
+ 	for_each_netdev_safe(net, dev, aux) {
+ 		if (dev->group == group) {
+ 			err = validate_linkmsg(dev, tb, extack);
+ 			if (err < 0)
+-				return err;
+-			err = do_setlink(skb, dev, ifm, extack, tb, 0);
++				break;
++			err = do_setlink(target_net, skb, dev, ifm, extack, tb, 0);
+ 			if (err < 0)
+-				return err;
++				break;
+ 		}
+ 	}
+-
+-	return 0;
++out:
++	if (target_net)
++		put_net(target_net);
++	return err;
+ }
+ 
+ static int rtnl_newlink_create(struct sk_buff *skb, struct ifinfomsg *ifm,
+ 			       const struct rtnl_link_ops *ops,
+ 			       const struct nlmsghdr *nlh,
+ 			       struct nlattr **tb, struct nlattr **data,
+-			       struct netlink_ext_ack *extack)
++			       struct netlink_ext_ack *extack,
++			       struct net *dest_net)
+ {
+ 	unsigned char name_assign_type = NET_NAME_USER;
+ 	struct net *net = sock_net(skb->sk);
+ 	u32 portid = NETLINK_CB(skb).portid;
+-	struct net *dest_net, *link_net;
++	struct net *link_net;
+ 	struct net_device *dev;
+ 	char ifname[IFNAMSIZ];
+ 	int err;
+ 
+ 	if (!ops->alloc && !ops->setup)
+ 		return -EOPNOTSUPP;
++	if (!dest_net)
++		dest_net = net;
+ 
+ 	if (tb[IFLA_IFNAME]) {
+ 		nla_strscpy(ifname, tb[IFLA_IFNAME], IFNAMSIZ);
+@@ -3480,11 +3494,6 @@ static int rtnl_newlink_create(struct sk_buff *skb, struct ifinfomsg *ifm,
+ 		name_assign_type = NET_NAME_ENUM;
+ 	}
+ 
+-	dest_net = rtnl_link_get_net_capable(skb, net, tb, CAP_NET_ADMIN);
+-	if (IS_ERR(dest_net))
+-		return PTR_ERR(dest_net);
+-	dest_net = dest_net ? : get_net(net);
+-
+ 	if (tb[IFLA_LINK_NETNSID]) {
+ 		int id = nla_get_s32(tb[IFLA_LINK_NETNSID]);
+ 
+@@ -3535,7 +3544,6 @@ static int rtnl_newlink_create(struct sk_buff *skb, struct ifinfomsg *ifm,
+ out:
+ 	if (link_net)
+ 		put_net(link_net);
+-	put_net(dest_net);
+ 	return err;
+ out_unregister:
+ 	if (ops->newlink) {
+@@ -3557,7 +3565,8 @@ struct rtnl_newlink_tbs {
+ 
+ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			  struct rtnl_newlink_tbs *tbs,
+-			  struct netlink_ext_ack *extack)
++			  struct netlink_ext_ack *extack,
++			  struct net *target_net)
+ {
+ 	struct nlattr *linkinfo[IFLA_INFO_MAX + 1];
+ 	struct nlattr ** const tb = tbs->tb;
+@@ -3688,7 +3697,7 @@ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			status |= DO_SETLINK_NOTIFY;
+ 		}
+ 
+-		return do_setlink(skb, dev, ifm, extack, tb, status);
++		return do_setlink(target_net, skb, dev, ifm, extack, tb, status);
+ 	}
+ 
+ 	if (!(nlh->nlmsg_flags & NLM_F_CREATE)) {
+@@ -3722,12 +3731,14 @@ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		return -EOPNOTSUPP;
+ 	}
+ 
+-	return rtnl_newlink_create(skb, ifm, ops, nlh, tb, data, extack);
++	return rtnl_newlink_create(skb, ifm, ops, nlh, tb, data, extack, target_net);
+ }
+ 
+ static int rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			struct netlink_ext_ack *extack)
+ {
++	struct net *net = sock_net(skb->sk);
++	struct net *target_net = NULL;
+ 	struct rtnl_newlink_tbs *tbs;
+ 	struct nlattr **tb;
+ 	int ret;
+@@ -3746,8 +3757,17 @@ static int rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	ret = __rtnl_newlink(skb, nlh, tbs, extack);
++	target_net = rtnl_link_get_net_capable(skb, net, tb, CAP_NET_ADMIN);
++	if (IS_ERR(target_net)) {
++		ret = PTR_ERR(target_net);
++		target_net = NULL;
++		goto out;
++	}
++
++	ret = __rtnl_newlink(skb, nlh, tbs, extack, target_net);
+ out:
++	if (target_net)
++		put_net(target_net);
+ 	kfree(tbs);
+ 	return ret;
+ }
 
