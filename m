@@ -1,116 +1,78 @@
-Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF67263F42
-	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 16:58:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014A11D514A;
+	Mon, 24 Mar 2025 16:59:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742835487; cv=none; b=i45ToLzBJpWZnfwD4CS+mhhTzZRDEOVFA2ngIOuWfPukm+kVdnIPcJDxEAN7iNQUAQO3A6SNi1cusjXxKMWatacVV5R/Yq/UnipMEsvtbD4GQbEdDed0AndZ5PqXRld6kqhxbQqzXuImfiHTVaCIvrcnKGKjskl9bw3FLP2Uhj8=
+	t=1742835599; cv=none; b=cl59fO7yFUTbqjQnkg0Gq3g3WAHr0ucLxqRuEPm0lI4sjKaz/5mWq8Q/KElWHcQjcMb7nUHwpMWad8MU442IGbuwKFbuAFvxHxLMi9k7Zyd+xwddHhME7DAVLI/Owab2J5ZH0ozs0fBNJ8fFwdKtLjo572HthTzqNSx3tHATlbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742835487; c=relaxed/simple;
-	bh=WnPwaB35oqXsP80002Pjpx9cPs2BAejUoSsuThEW0qU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BWBz4hocabqbTnlGnYnMlxf+9b5++hIzd7Pzl0vMLVK3bafk2FQ1/C6IKyd1v045gswTQbZELuv2gAi8py78WG4Rjq1+hUMqjQgzLUi1cIMuTa23iy9u2YAma1AGeBI398Fa1/QsW1iBVaKF+6Xg/W5q5LFWP0tjdbtmXIvUtKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ms24x6lj; arc=none smtp.client-ip=209.85.166.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742835599; c=relaxed/simple;
+	bh=R8Y139KSJEoEMPvzdoIiX04zKRPgVlk+9dHVzsRpa/g=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Yd/RXIgLaZYvofg7SZtctuW/9cL9U8waWuxz7ou5q0RvcnTe/drsvK/Y9NlMvkrwiHNZ3NrdqTp4Yk4EiQK3JoznMYOU9CniOlYR6jrL2o8MlngjJUaaPEDJZ7OjMYGAeUdfQPsqog8qs6LsOxTPI4/1TqhZZaP7SP9dHBiSjgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XHe5Zm5b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ms24x6lj"
-Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-3d2a869d016so12522245ab.0
-        for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 09:58:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742835485; x=1743440285; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dN/jHxt/H1z9pfytvHl7h9kDce47kQxmXsLuB10CBtY=;
-        b=Ms24x6ljpAH8tZqADDM9lw4tngg8Q/skqif45aUABLlH2IT5xpU0Ho/BvM1uaHhGME
-         nc7vLlrSeM1pW9ugunZ4StiShe4aX7MtessIYhQ5SvETgYXaeQjzt5C96Rbgs2EVdZW1
-         rWa9WTzHb23Fre2622EkA4QV3yXpvPoOQeuF4qNhdvr4cRXyM1u4OHFlQbDfsuAIUv/d
-         FcjVvS4Wg1x+QrJtPHSoNhJwESKjBLzYzQfICcfFfVgSfX9/iuI8SH0AZhg2iuMQ1Nr+
-         uGyhaYg7vCDO+RFxW7CEGrsmnmw4H/XSopPz1zkaUwVEWk3OVZ7nMxlQ8pmSXGrJF5Or
-         t8dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742835485; x=1743440285;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dN/jHxt/H1z9pfytvHl7h9kDce47kQxmXsLuB10CBtY=;
-        b=rST7+qj5aFPGnWMbVUm0XlVoGHbNW9mAPmDjU8Nv/E551qrVhRiYq4T+kzw9x/VhLl
-         r3X/ZFbjmsKF57EMkcBqBk8MwLwVczAjDzzkS/AiTTBBLSOf0XPLWmjL845Mt5lDd+3A
-         dwILKjt9UfCBXVdEfbPhJyyDRJ+e+bdpOOlaCtzEdNROtAq+UL9wJFYoTsSViR7zK8/A
-         V8f+1jpNAOOS6/FGD88PPSItBE5CXcIWDSI2hfb1tCNQvitdio5feItOMkDTDgtX7875
-         Ld+kBgY/o/xj+4epZUz1QJG4O99/YBnHUWPcXPFVgsrw3uOmqWKOc+JdyjWRRq7nOtwl
-         CGJg==
-X-Gm-Message-State: AOJu0Yw2QVYBVRO/v4AVAvH8MRYS/9iP89an9wmV5zG/4NLi1sCOg/iH
-	RKupLy0BT1w+JB9FpkXtQVkzvNlh484aflDkkHaewSrp9xfGD22quLgUKm5PHhmhxXt0iMBMuq9
-	+x2fYOfTtL2eRZAnnLPqtuGkv89k=
-X-Gm-Gg: ASbGncuWY1bWMtVnO4rISn+jHUshKFRuk0iVm7jRzZYCUK5tDU5tPE6urfLzpqUJebk
-	ndHJ1r914yDg9AjcGW+VJwruHa+2rCi3of2XABFpQ0T5CUXboxJplhybyyhp60i1r9EmCCAWgRq
-	aJ0B0jsCwHTWysL+2CEK/4/l6nQw==
-X-Google-Smtp-Source: AGHT+IGHdrwQWTcETTkUJDk/9vaT3Df4cLT/Mk8eCYR3Df8s3smu3YLy0TYY1SXNdR8auf+H2jA8LNXEqSVFU64+XnY=
-X-Received: by 2002:a05:6e02:3f0a:b0:3d5:81aa:4d0a with SMTP id
- e9e14a558f8ab-3d5960f2b57mr139921775ab.6.1742835485198; Mon, 24 Mar 2025
- 09:58:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XHe5Zm5b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDEDC4CEDD;
+	Mon, 24 Mar 2025 16:59:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742835598;
+	bh=R8Y139KSJEoEMPvzdoIiX04zKRPgVlk+9dHVzsRpa/g=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=XHe5Zm5bjWlwo07Trq4d3uRndKyy3KfqnkClIbTO0O1F00/DBxfEZdjaQq9f26Njq
+	 bxMDb8sXKqefMVVJIDxTW3QbPNSy4ZqokpyT+Mx89zqOEI0HTW0UGftGuZmVjz0CdI
+	 jrbIi06xLkbkgyzb6uGxAQydqtOfk/LqjUTlspEoiSRd7Z7a3e9LlQPoxnr5e5K4ll
+	 MGn4R8BcsR80i7DapKderb/OP1aVmtOvL1Oo6gOaxOuRt6BhU8l0IoEuoW2+3lAtC/
+	 mrtaOV87FfINouhgI88jGMu3zOCRsKcIzVP9aPx1LcDSVnqTjYz+TVP5tdUjyMfw3w
+	 MwP0RkOkF31Ig==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE886380664D;
+	Mon, 24 Mar 2025 17:00:35 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250317120314.41404-1-kerneljasonxing@gmail.com> <CAL+tcoA6uawe99jrkRugrPmgEOsnCAgcqak-2uBO80jMDB+SHg@mail.gmail.com>
-In-Reply-To: <CAL+tcoA6uawe99jrkRugrPmgEOsnCAgcqak-2uBO80jMDB+SHg@mail.gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Tue, 25 Mar 2025 00:57:29 +0800
-X-Gm-Features: AQ5f1Jp5-aHp-ycaqgv2FYYTviJkNk62jt8umm6jowvGG9HtRJet3CW2qEkSPiU
-Message-ID: <CAL+tcoDD-byX4hNWUpDTv6aPPzt3AMHbgZp30V2abADphf7JbQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 0/2] support TCP_RTO_MIN_US and
- TCP_DELACK_MAX_US for set/getsockopt
-To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, ncardwell@google.com, kuniyu@amazon.com, 
-	dsahern@kernel.org
-Cc: netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2] net: phy: dp83822: fix transmit amplitude if
+ CONFIG_OF_MDIO not defined
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174283563452.4097226.5621496775450844248.git-patchwork-notify@kernel.org>
+Date: Mon, 24 Mar 2025 17:00:34 +0000
+References: <20250317-dp83822-fix-transceiver-mdio-v2-1-fb09454099a4@liebherr.com>
+In-Reply-To: <20250317-dp83822-fix-transceiver-mdio-v2-1-fb09454099a4@liebherr.com>
+To: Dimitri Fedrau via B4 Relay <devnull+dimitri.fedrau.liebherr.com@kernel.org>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, dima.fedrau@gmail.com,
+ gerhard@engleder-embedded.com, dimitri.fedrau@liebherr.com
 
-On Tue, Mar 25, 2025 at 12:35=E2=80=AFAM Jason Xing <kerneljasonxing@gmail.=
-com> wrote:
->
-> On Mon, Mar 17, 2025 at 8:03=E2=80=AFPM Jason Xing <kerneljasonxing@gmail=
-.com> wrote:
-> >
-> > Add set/getsockopt supports for TCP_RTO_MIN_US and TCP_DELACK_MAX_US.
-> >
-> > v4
-> > 1. add more detailed information into commit log (Eric)
-> > 2. use val directly in do_tcp_getsockopt (Eric)
-> >
-> > Jason Xing (2):
-> >   tcp: support TCP_RTO_MIN_US for set/getsockopt use
-> >   tcp: support TCP_DELACK_MAX_US for set/getsockopt use
->
-> Gentle ping here :) I noticed that net-next is closed, so I decided to
-> reply to this thread.
+Hello:
 
-Oh, I should have noticed that most of the core maintainers are absent
-these days. Sorry, I don't expect to add more burden so I can resend
-after net-next is open. Anyway, either way is fine with me. Just
-please let me know :)
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Thank you.
+On Mon, 17 Mar 2025 08:48:34 +0100 you wrote:
+> From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+> 
+> When CONFIG_OF_MDIO is not defined the index for selecting the transmit
+> amplitude voltage for 100BASE-TX is set to 0, but it should be -1, if there
+> is no need to modify the transmit amplitude voltage. Move initialization of
+> the index from dp83822_of_init to dp8382x_probe.
+> 
+> [...]
 
->
-> Thanks,
-> Jason
->
-> >
-> >  Documentation/networking/ip-sysctl.rst |  4 ++--
-> >  include/net/tcp.h                      |  2 +-
-> >  include/uapi/linux/tcp.h               |  2 ++
-> >  net/ipv4/tcp.c                         | 26 ++++++++++++++++++++++++--
-> >  net/ipv4/tcp_output.c                  |  2 +-
-> >  5 files changed, 30 insertions(+), 6 deletions(-)
-> >
-> > --
-> > 2.43.5
-> >
+Here is the summary with links:
+  - [v2] net: phy: dp83822: fix transmit amplitude if CONFIG_OF_MDIO not defined
+    https://git.kernel.org/netdev/net-next/c/8fa649fd7d30
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
