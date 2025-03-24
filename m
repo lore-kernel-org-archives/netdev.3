@@ -1,79 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7961EF0AE;
-	Mon, 24 Mar 2025 22:30:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878F035944
+	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 22:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742855400; cv=none; b=rZFFbfd8SHuZwa5R89DSFZF5nGW1JA3q96IOYwFZswV5xMyyav8YZeHmrNbpxs/mrIyP2hvCI1YUK7YLY85xlW+4AbmhCwc45myqWnTCPP2N89TkHyT+b+HVzcDEshJ1m7ZZZPrxQPpF6bWOP2tWSwRjszTTmtww3du2CgXyx6k=
+	t=1742855570; cv=none; b=EF318JhkTqzqcZahd6uiJrfpO1Jqr8GNOEGIWj78aFTp9YRKVzCZOQfFCXftlNIRB9TCuDTn3tSH1sx0038qjteRyhcLbD2GiNDPNXvceO/NuvBpcwiWKTZwMno+Pc+YR0s+ihWpf8OmGignbyYrvpIGKUjhCsKfgprS8V4EKbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742855400; c=relaxed/simple;
-	bh=X4EfX9qgWirtka/bFgHfRiyMAueVgKbaWpo+MPYkdiU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NvTbsPRZi/BafSNn681NSCVQcB0fwO5q+k9sxq/ME8/D+ywzwMiRe7IRpet9NMz98tA2zp8CoBNVMRCOsHLwzZIsonSgH6kWeqF4KSuchmYoNhNTHtC+AMauSxT8PyziITsM0nyuoxLXzlcTwCZ2J2dPE4I9LN7UksST8/oQQWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lcmcIK2j; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742855570; c=relaxed/simple;
+	bh=ebo/ZpJA7JESxl003JeTcfuBdb+2v6IpDnphTeBxybk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nmW1Xgb2b0gKWB6jrKwSLnwRIrAEh4gazn44tsNmIjY9RoxOf1CO8+WAG40kP616+nuPRfVDenPMwvlJVeP1b/pZ1eg/BSKEwHduzkfjkXmfBGcnsdS9ztWcPfhHhOe0j32WYPFP6GIVZQomPRxoPMJAn73iFaTIYtgUrg6NmzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MBlwv313; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lcmcIK2j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04865C4CEDD;
-	Mon, 24 Mar 2025 22:30:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742855400;
-	bh=X4EfX9qgWirtka/bFgHfRiyMAueVgKbaWpo+MPYkdiU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=lcmcIK2jNzYdsH+BSbQCJttCQL9SAqZQXstez+5CVh8GSqGgVhGRz41MZC6AihvKN
-	 05bt5y2/6w8vcvWsr0+eKWpnrhf8sj2B2DW9lWakhjrX1KiZhj6MA8o2SFrBqCKTEp
-	 ko/IlB4bVrC8mzSYC1KqDBruoyZ1ZgGjQyd842LvTuEEy9gTG4pgbA5Jb+HgmBVj1b
-	 fw2R6sWpJ2kYuP+4LLRRGiotaKMNExX5+vkx3q2eOYULHG2KK2XcGGeuDyxSlm6yin
-	 PdTC27maueQRb3AQugfS4Q0nIhPH2IuVaQ6XwC5dmLaLOSBSJqP0umysssQFmJYaTJ
-	 8NLa0XotgbtBQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 714E4380664F;
-	Mon, 24 Mar 2025 22:30:37 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MBlwv313"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2260c915749so65026605ad.3
+        for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 15:32:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742855569; x=1743460369; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/1HJWPNlR/yseKGXxIqgpUwzgY58AlzPfOhvKFbYDvI=;
+        b=MBlwv313uFN33HjVAz6cyBw1bRi5qE8OIBPPMN+DijNh8CnFDRS93NIIYc2kFhLh2h
+         NG/i5MnQVC0hSJxSxCARxqIfUd5wKjnRz9EtdLZKty8CcypknrEg+FbEMqE4qMlJtWeu
+         h/Ua+CIC5CwNsIA5Dy7sNGTgpwULDyo5JhdtjFwRbhfkZD6fkVJiM4IWt+xuRQsPPbMv
+         l7JMGpEtTGqpHJ4aGzTfnj+fij0uq3r7xDn6abh5NeQWZt1qdUTjAoRmfxU4hB3dMo0n
+         OL+PEgtIBGHWscBkPquDvrR1H7+PGsNmDfFAkyNJm7VeRJBlciSfNIDCX2IJJueYVl+R
+         IPtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742855569; x=1743460369;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/1HJWPNlR/yseKGXxIqgpUwzgY58AlzPfOhvKFbYDvI=;
+        b=kPv1MaorYYIJBUReBrpE2NXrknpkW7TNdPdgpc1PHkFclZsYKlWew8gH6gx2gLurSn
+         rFB0fpf4qn+BOEvgII3PlUns1eJox71ZVWrO9xVtM2JNJAJ+Mdqvi6nL/JSg8jTzBzg2
+         DxJ16EjSj3PMHo7VHlrZqbPZW+YgQxaaG9+AgRSW8dSYFH5OoXK09bhHMdXI3KE60uFC
+         bdG0awYqRaST+Do6jVg2AqMtB+M9TFu+/U20RoUGUOaRd7ysGwf5pieFzZGy1TURODz7
+         TgTLmJ9BhDTISwS6SNfNotExyxj+x6YDcvdhE4KEWIBHbNqZp0rVhE5iNa1eMI1i2VZs
+         7JPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUNF6pYEqod0UHjxO7vgTQMEINKHPKVVPI1QZLTTVD4oNnGsBJiN32Ofn8B0ay9R8gMhkj2dCQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvOIP/IoK7viycaIQLhZN1K+y0sG1zuZfQJ//W3wltDJE+18Wc
+	1/9ChuGX8a2T48E/FahlkADqVyygSBkqwHEpKJIyODhuoi1GFTvgNJpkk6J2Mw==
+X-Gm-Gg: ASbGncuiBVXKTQG9fVMuEvtav6lNQM6jOs3qNisaOgdG9yAfBpzgzYn2pQiUPuzcpKB
+	UloITpdFKsOCRerCYFlu5MINljJqrDnaoTZbvFx589CFbuR7Esi907DteWDQonX2pAikbgDIOPV
+	ecjRQU7WaWW5XPR5EkM8A95Uj7BuLir8cCbX301VKrx7ZwlCFsz/62Gtl/nPJ4EO/hnLK+qpa7F
+	dsicsnONXx7JAIfOg9m7kaNEALswyarQ3A2gkvtkAccJY3/d0G6/emM8EZepQOS14N2CU0WgBkx
+	gLK7q+qE1ZWlBlbtLn5ALf9kzG4FGmxtZ1uAeOQ20v8A
+X-Google-Smtp-Source: AGHT+IFOGcuS1XTOkY5Ix5qp2qSjH0lGTU8WkXvnmoPw5bq/8TIm8bQrunmJXU806iBgFQ0eWoh/8g==
+X-Received: by 2002:a17:903:22c7:b0:223:3630:cd32 with SMTP id d9443c01a7336-22780e44f87mr216289905ad.53.1742855568494;
+        Mon, 24 Mar 2025 15:32:48 -0700 (PDT)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-227811f442fsm76690575ad.227.2025.03.24.15.32.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Mar 2025 15:32:48 -0700 (PDT)
+Date: Mon, 24 Mar 2025 15:32:47 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller " <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	almasrymina@google.com, willemb@google.com, jdamato@fastly.com,
+	mkarsten@uwaterloo.ca, netdev@vger.kernel.org
+Subject: Re: [RFC PATCH net-next] Add xsk_rr an AF_XDP benchmark to measure
+ latency
+Message-ID: <Z-Hdj_u0-IkYY4ob@mini-arch>
+References: <20250320163523.3501305-1-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] mlxsw: spectrum_acl_bloom_filter: Workaround for some
- LLVM versions
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174285543614.6006.9338081656329375744.git-patchwork-notify@kernel.org>
-Date: Mon, 24 Mar 2025 22:30:36 +0000
-References: <A1858F1D36E653E0+20250318103654.708077-1-wangyuli@uniontech.com>
-In-Reply-To: <A1858F1D36E653E0+20250318103654.708077-1-wangyuli@uniontech.com>
-To: WangYuli <wangyuli@uniontech.com>
-Cc: idosch@nvidia.com, petrm@nvidia.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, czj2441@163.com,
- zhanjun@uniontech.com, niecheng1@uniontech.com, guanwentao@uniontech.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250320163523.3501305-1-skhawaja@google.com>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 18 Mar 2025 18:36:54 +0800 you wrote:
-> This is a workaround to mitigate a compiler anomaly.
+On 03/20, Samiullah Khawaja wrote:
+> Note: This is a benchmarking tool that is used for experiments in the
+> upcoming v4 of Napi threaded busypoll series. Not intended to be merged.
 > 
-> During LLVM toolchain compilation of this driver on s390x architecture, an
-> unreasonable __write_overflow_field warning occurs.
-> 
-> Contextually, chunk_index is restricted to 0, 1 or 2. By expanding these
-> possibilities, the compile warning is suppressed.
-> 
-> [...]
+> xsk_rr is a benchmarking tool to measure latency using AF_XDP between
+> two nodes. The benchmark can be run with different arguments to simulate
+> traffic:
 
-Here is the summary with links:
-  - [net,v3] mlxsw: spectrum_acl_bloom_filter: Workaround for some LLVM versions
-    https://git.kernel.org/netdev/net/c/4af9939a4977
+We might want to have something like this, but later, once we have NIPA
+runners for vendor NICs. The test would have to live in
+tools/testing/selftests/drivers/net/hw, have a python executor to run
+it on host/peer and expose the data in some ingestible/trackable format
+(so we can mark it red/green depending on the range on the dashboard).
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+But I might be wrong, having flaky (most of them are) perf tests might not
+be super valuable.
