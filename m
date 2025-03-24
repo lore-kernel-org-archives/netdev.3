@@ -1,391 +1,217 @@
-Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38FC17555
-	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 02:01:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56A82E3372;
+	Mon, 24 Mar 2025 02:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742781713; cv=none; b=MbnG9k7KcLdikgGs7NN/ctRPEW5XmwRkuGDQ+nSTlgyNUZMDXMIHT3/U3xkeh0lvvEPrAscw6Z+czIMz5dDeM4QS6N45gajBDR9fU9cVjLgnyhevO/kxVrOua9Ojp5EwExDJre6vOy0jNbV0+tSac1KjoYvJl/5uo23t9rH1dUM=
+	t=1742783460; cv=none; b=rnwhVkQ2aEL3xu+aHOHO4IdK7hQ4nei7iRgsJ/996b1///VwqfnHsED2my2Pn2vuQVpSL4T+pAgX8rasqGB5XuYz2HFdbsyirlWQtHrdBIDnGHWxqYk+jw1dsbeCQ8zA1T+/u3PCXm7qjQJVOYllbzyFiqHLuoFNZn9A20/+Z1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742781713; c=relaxed/simple;
-	bh=Jzttg+/1ybN5U6lwfzGW6+yZT2z2es7vNYa7c7TCYa8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUXYWtic+Yl5YsZ6Es/Tsyn5LcM4HZgUWtPer+PcNqLSdTmnIFzDQ3SgTSjgYFj367YWANkLH0orypxSTr+h5qPGIo4DjJmZO1ZsKWCjxT7Uo+LCyM4hTceKwmy6uiM+cekXQMHhyHdUjN9Ribqb4/6HiAY6+t35OMU0SaTtye4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=18.132.163.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: bizesmtpsz6t1742781661t3lpnvm
-X-QQ-Originating-IP: 3JpRkCE6J8Kf2oYVhtNdRq0EQpUaypx6hZj57zi94Po=
-Received: from localhost.localdomain ( [60.186.241.229])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 24 Mar 2025 10:01:00 +0800 (CST)
-X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 8230435162170857582
-From: Mengyuan Lou <mengyuanlou@net-swift.com>
-To: netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	horms@kernel.org,
-	jiawenwu@trustnetic.com,
-	duanqiangwen@net-swift.com,
-	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [RESEND,PATCH net-next v9 5/6] net: ngbe: add sriov function support
-Date: Mon, 24 Mar 2025 10:00:32 +0800
-Message-ID: <9B4D34D65A81485C+20250324020033.36225-6-mengyuanlou@net-swift.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250324020033.36225-1-mengyuanlou@net-swift.com>
-References: <20250324020033.36225-1-mengyuanlou@net-swift.com>
+	s=arc-20240116; t=1742783460; c=relaxed/simple;
+	bh=/rzzdZJlmQ5zb2IM26oAquHgY1NbEZ1MjFid6PgfYYU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jxnRDaV3Oe3CwhDWzOhv0cp6PqIMNqkOUBGfC0Hpx5lSawOc3nHahR9phitwLimp4IsOpkTIJWK3LTsStDWQhEV7rZ5zYBakFaq5pg3mrLpYBoZ264UH6c43S+vqFjXq5ARKjIPELPRshSPic0NUr5EkeRPJZy/SMrNLaWprito=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f8M1nk8E; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f8M1nk8E"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2240b4de12bso54528645ad.2;
+        Sun, 23 Mar 2025 19:30:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742783458; x=1743388258; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=dWmKD0zxPc9GyGbKnAUcHzGx7aZdb/2XMSjzXTa1Vco=;
+        b=f8M1nk8EkPnMaM/SN1PU6ZlbTNIiQwGxL0CDWHcQcZjN8YIlqFA4w1WIDku03JHjm3
+         z+G5p2N/MCgrYGm8kBXNoP4d3oGwQuk9siwp5T/KhK5dpZIwooZYTyiSu0tFkxHfv1M3
+         so4yhTryK/kTpUQ9f5M98IAQ6YBtDYX7jUR8aJIGBp3BMJWnOtcKph7c+k0GJp4B2QKF
+         yiirJJmdlcza1Xv6iwPZoAhaRjcR58BDvMt7Ux5cEihLvZTFbw3XpMlIWhqKzrJhyQSN
+         JgcXor8Qda7ABuU/7L12r/1yALG+ty2aVA712N0iUxYpdkSyjZazQtMPQbXAm/YmH1Ea
+         ktTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742783458; x=1743388258;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dWmKD0zxPc9GyGbKnAUcHzGx7aZdb/2XMSjzXTa1Vco=;
+        b=Z7d06q1FzwNTsoPkoKDO6xf+fi2ppQFAtxtS9WLaJjMSaLBBQ2Dq04yTiom6h4+XTQ
+         KDhSQHwP9raS9Alv+6sFadxhTtPiEMhD1eMnJAx6K3ATsgkSAMmPxCVa5su7iwwWDik2
+         fr8bSws1rfGl9yPitoCasrnE5JZxiBi9skvW0zhPub6d8Z6Al8/27Ikt8T4uimggxdEm
+         5RJ3HEu21H+9cEAi7FMgSGhXnTnENBmwjwog6oIZjeSFIOJ5/iUbQLEqcelyWRzttRXd
+         pUmv/WEWb/iKn2Hev+46rkw09e3/9Lk4AzP4iz9BTU41wUbaWi1dE7/OPcTtKrZSvUQo
+         zscw==
+X-Forwarded-Encrypted: i=1; AJvYcCVTdnegK092DJ/cES/K7CVaa9IMx9DZ6jDCaZDxKoa7FJAH+LmZt3GACWnI5L3LROnw3rqTZ7s7/DmgKgM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz23c0TkNCUI9gsRYj+wDdjX+SsMlbgiYHVRR1GrVZMOfsvxkcc
+	BGQSu7aS8Crbb7HUnjl+AjBc/5hJkcHrfe2vvdOxV8Re//aCX65i2y5u/opQ8D4=
+X-Gm-Gg: ASbGncucW4ieGoPL88e6RNVUuK5D3Cdv2LqMyQ/AB5VFqL17tllN6Lbd5hMTQAMbaRm
+	GPTaskpf1sOkbS9eQfl19Wpngd4SyuhbP27jcPV6r7TMeUfhLQ90sPgDD/GaGXwAAXQ2Awfw5sW
+	aWrh7A6zp/WdtEvH8FhO4FS6fidx8FiVu7/aw2iiS0zKgBEJl1K7RYCvbzrNTtWRQ2ccREUaYK5
+	p95Euko6KBgKCDQxoyK3N0M9C+gPg0Ff5hlY7SkMbasVzj2VMFp9Y3quGVlBSdZA6Cc5+zzNecY
+	sI8rOlaZaE7InQTNmuUtc9CRhkQGko9WhUW2EUByO9tEpRXWHQ==
+X-Google-Smtp-Source: AGHT+IGfmLGFc9uBS4LBov4T4e/f/ddrrxlEy5QvxNrD7sufqdSP5PrFCTaBVyhi12x0HATkXgxzNw==
+X-Received: by 2002:a05:6a20:c906:b0:1f5:8e54:9f10 with SMTP id adf61e73a8af0-1fe43205c56mr24279585637.34.1742783457966;
+        Sun, 23 Mar 2025 19:30:57 -0700 (PDT)
+Received: from fedora ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73905fab1aesm6632907b3a.36.2025.03.23.19.30.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Mar 2025 19:30:57 -0700 (PDT)
+Date: Mon, 24 Mar 2025 02:30:49 +0000
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: Jay Vosburgh <jv@jvosburgh.net>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Simon Horman <horms@kernel.org>, Cosmin Ratiu <cratiu@nvidia.com>,
+	linux-kernel@vger.kernel.org, Liang Li <liali@redhat.com>
+Subject: Re: [PATCH net] bonding: use permanent address for MAC swapping if
+ device address is same
+Message-ID: <Z-DD2TcMZmBUugIY@fedora>
+References: <20250319080947.2001-1-liuhangbin@gmail.com>
+ <2696885.1742497994@famine>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:net-swift.com:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: OQhZ3T0tjf0a2u+GkbXeezS4rf4J4DplaT7ZsyIQ2FHcoz69KjWhy42k
-	DKSKe6RdpgLFhQ3Xyb9T3DG9GbcANSzF/rKlboF5SnUqEuMLtGSglRUwLmNEgWDs3+sMvsM
-	z/G+8Rxtf8K26fAgW+t2GUQLwUkdz/5UPRJhhCCNMmOVqruQpgDIrFnqBjxOOlEK0bfJx8N
-	K0xs7tCrD36dQfGXQYRVUpewZPBtKWAOyeSrVRD0J6BOfE26gwmbu0of4oIwYsxgqj+gsj3
-	dJc9pxPdmMoW6cQK/o1aN/4SIAxo9trjqP2gEvZ8ojBfi4GAJAe/wN3XwLaMAAbGGw988Vs
-	eJ1p24AmS2vMEXhZiWH4xTDunb/dQC/DDgLHvQuPot6OWKXWVYksvoaIRNl1t97hj85Jjks
-	HIWIzsHZ56zZ0r+9RZc0xP+zGC/Bp9AD+n9mEwDSUJMCZ1B4otmmJraLYVX/UDqbWSsQHaf
-	yKtfDV0QbGdHCnaiYpCj98QrsBrPSL3W+2qF1zTZSJRGGFVuZXstKHvCeUh0QnUKaOoXVxz
-	Nh8k22d392OTLsvW/1PO6OZiy5OygnTwNYADyJBuuVdFknBey8zgqPje5h9cDyPiICI2ROi
-	X6w0Jq0OgfHOs6QOsppBzHbpbRV5M9wyJVZ8xoejKTvlbXeWA1hBE3+UB2bhCXCbgGNB08+
-	SSRrIyRjjFfOabqzBfe3BFlYoB4W4lDWTjmxPYJn7VT5aPu8/sZLz2VGaKzDb1F34BHObmR
-	GaMEc+em4E+XsHUrRIxq0l9MG1OoYDYlxaRyVXaMUasjCYa+2I1ZuiYZmfT2ZId8oxEDZvY
-	kRU9YbPdv9b4ZEzD20XY2awHU4ZmPKAKGgEIlbPoRQk/zQDnBg4rUUIUjZQ9vJuf+zByPda
-	PrI1xUwJY+N1w/mDI+cc8/et37Z/t+CPGMYd6v8+hZ/u3PDW6+eO5fqlPBhDMtNt0Z4hgez
-	zlyAd5VjPfYMbRufS5j/pt+M2JrDqw8zVS9B07YI794YF4WwOe51yUFfSOp5mpNrMJLjGg3
-	gFGY5bzONubyVnp+XjvlhqDG9kIZHXsM9PcdV8rBNCxJhtdPlnpYjZU3zmXoB0GT7PexiP1
-	A==
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
-X-QQ-RECHKSPAM: 0
+In-Reply-To: <2696885.1742497994@famine>
 
-Add sriov_configure for driver ops.
-Add mailbox handler wx_msg_task for ngbe in
-the interrupt handler.
-Add the notification flow when the vfs exist.
+On Thu, Mar 20, 2025 at 12:13:14PM -0700, Jay Vosburgh wrote:
+> Hangbin Liu <liuhangbin@gmail.com> wrote:
+> 
+> >Similar with a951bc1e6ba5 ("bonding: correct the MAC address for "follow"
+> >fail_over_mac policy"). The fail_over_mac follow mode requires the formerly
+> >active slave to swap MAC addresses with the newly active slave during
+> >failover. However, the slave's MAC address can be same under certain
+> >conditions:
+> >
+> >1) ip link set eth0 master bond0
+> >   bond0 adopts eth0's MAC address (MAC0).
+> >
+> >1) ip link set eth1 master bond0
+> >   eth1 is added as a backup with its own MAC (MAC1).
+> >
+> >3) ip link set eth0 nomaster
+> >   eth0 is released and restores its MAC (MAC0).
+> >   eth1 becomes the active slave, and bond0 assigns MAC0 to eth1.
+> >
+> >4) ip link set eth0 master bond0
+> >   eth0 is re-added to bond0, but both eth0 and eth1 now have MAC0,
+> >   breaking the follow policy.
+> 
+> 	Are all of these steps necessary, or does the issue happen if a
+> new interface (not previously part of the bond) is added to the bond
+> with its MAC set to whatever the bond's MAC is?
 
-Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_sriov.c | 31 +++++++
- drivers/net/ethernet/wangxun/libwx/wx_sriov.h |  2 +
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |  2 +
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 93 +++++++++++++++++--
- drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c |  5 +
- drivers/net/ethernet/wangxun/ngbe/ngbe_type.h |  3 +
- 6 files changed, 127 insertions(+), 9 deletions(-)
+Yes, any new interface(usually the previous first bond link) with MAC
+same to bond will has this issue.
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_sriov.c b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
-index 1a7cadbf7234..a31b574a343e 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
-@@ -834,3 +834,34 @@ void wx_msg_task(struct wx *wx)
- 	}
- }
- EXPORT_SYMBOL(wx_msg_task);
-+
-+void wx_disable_vf_rx_tx(struct wx *wx)
-+{
-+	wr32(wx, WX_TDM_VFTE_CLR(0), U32_MAX);
-+	wr32(wx, WX_RDM_VFRE_CLR(0), U32_MAX);
-+	if (wx->mac.type != wx_mac_em) {
-+		wr32(wx, WX_TDM_VFTE_CLR(1), U32_MAX);
-+		wr32(wx, WX_RDM_VFRE_CLR(1), U32_MAX);
-+	}
-+}
-+EXPORT_SYMBOL(wx_disable_vf_rx_tx);
-+
-+void wx_ping_all_vfs_with_link_status(struct wx *wx, bool link_up)
-+{
-+	u32 msgbuf[2] = {0, 0};
-+	u16 i;
-+
-+	if (!wx->num_vfs)
-+		return;
-+	msgbuf[0] = WX_PF_NOFITY_VF_LINK_STATUS | WX_PF_CONTROL_MSG;
-+	if (link_up)
-+		msgbuf[1] = FIELD_PREP(GENMASK(31, 1), wx->speed) | link_up;
-+	if (wx->notify_down)
-+		msgbuf[1] |= WX_PF_NOFITY_VF_NET_NOT_RUNNING;
-+	for (i = 0; i < wx->num_vfs; i++) {
-+		if (wx->vfinfo[i].clear_to_send)
-+			msgbuf[0] |= WX_VT_MSGTYPE_CTS;
-+		wx_write_mbx_pf(wx, msgbuf, 2, i);
-+	}
-+}
-+EXPORT_SYMBOL(wx_ping_all_vfs_with_link_status);
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_sriov.h b/drivers/net/ethernet/wangxun/libwx/wx_sriov.h
-index d3f29617c7d3..376d8e0e49f3 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_sriov.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_sriov.h
-@@ -11,5 +11,7 @@
- void wx_disable_sriov(struct wx *wx);
- int wx_pci_sriov_configure(struct pci_dev *pdev, int num_vfs);
- void wx_msg_task(struct wx *wx);
-+void wx_disable_vf_rx_tx(struct wx *wx);
-+void wx_ping_all_vfs_with_link_status(struct wx *wx, bool link_up);
- 
- #endif /* _WX_SRIOV_H_ */
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index a5ca2ca0aba7..9b9345290594 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -92,6 +92,7 @@
- /************************* Port Registers ************************************/
- /* port cfg Registers */
- #define WX_CFG_PORT_CTL              0x14400
-+#define WX_CFG_PORT_CTL_PFRSTD       BIT(14)
- #define WX_CFG_PORT_CTL_DRV_LOAD     BIT(3)
- #define WX_CFG_PORT_CTL_QINQ         BIT(2)
- #define WX_CFG_PORT_CTL_D_VLAN       BIT(0) /* double vlan*/
-@@ -1231,6 +1232,7 @@ struct wx {
- 	u8 swfw_index;
- 
- 	/* PHY stuff */
-+	bool notify_down;
- 	unsigned int link;
- 	int speed;
- 	int duplex;
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index a6159214ec0a..d321c7f23b0b 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -15,6 +15,8 @@
- #include "../libwx/wx_hw.h"
- #include "../libwx/wx_lib.h"
- #include "../libwx/wx_ptp.h"
-+#include "../libwx/wx_mbx.h"
-+#include "../libwx/wx_sriov.h"
- #include "ngbe_type.h"
- #include "ngbe_mdio.h"
- #include "ngbe_hw.h"
-@@ -129,6 +131,10 @@ static int ngbe_sw_init(struct wx *wx)
- 	wx->tx_work_limit = NGBE_DEFAULT_TX_WORK;
- 	wx->rx_work_limit = NGBE_DEFAULT_RX_WORK;
- 
-+	wx->mbx.size = WX_VXMAILBOX_SIZE;
-+	wx->setup_tc = ngbe_setup_tc;
-+	set_bit(0, &wx->fwd_bitmask);
-+
- 	return 0;
- }
- 
-@@ -200,12 +206,10 @@ static irqreturn_t ngbe_intr(int __always_unused irq, void *data)
- 	return IRQ_HANDLED;
- }
- 
--static irqreturn_t ngbe_msix_other(int __always_unused irq, void *data)
-+static irqreturn_t ngbe_msix_common(struct wx *wx, u32 eicr)
- {
--	struct wx *wx = data;
--	u32 eicr;
--
--	eicr = wx_misc_isb(wx, WX_ISB_MISC);
-+	if (eicr & NGBE_PX_MISC_IC_VF_MBOX)
-+		wx_msg_task(wx);
- 
- 	if (unlikely(eicr & NGBE_PX_MISC_IC_TIMESYNC))
- 		wx_ptp_check_pps_event(wx);
-@@ -217,6 +221,35 @@ static irqreturn_t ngbe_msix_other(int __always_unused irq, void *data)
- 	return IRQ_HANDLED;
- }
- 
-+static irqreturn_t ngbe_msix_other(int __always_unused irq, void *data)
-+{
-+	struct wx *wx = data;
-+	u32 eicr;
-+
-+	eicr = wx_misc_isb(wx, WX_ISB_MISC);
-+
-+	return ngbe_msix_common(wx, eicr);
-+}
-+
-+static irqreturn_t ngbe_msic_and_queue(int __always_unused irq, void *data)
-+{
-+	struct wx_q_vector *q_vector;
-+	struct wx *wx = data;
-+	u32 eicr;
-+
-+	eicr = wx_misc_isb(wx, WX_ISB_MISC);
-+	if (!eicr) {
-+		/* queue */
-+		q_vector = wx->q_vector[0];
-+		napi_schedule_irqoff(&q_vector->napi);
-+		if (netif_running(wx->netdev))
-+			ngbe_irq_enable(wx, true);
-+		return IRQ_HANDLED;
-+	}
-+
-+	return ngbe_msix_common(wx, eicr);
-+}
-+
- /**
-  * ngbe_request_msix_irqs - Initialize MSI-X interrupts
-  * @wx: board private structure
-@@ -249,8 +282,16 @@ static int ngbe_request_msix_irqs(struct wx *wx)
- 		}
- 	}
- 
--	err = request_irq(wx->msix_entry->vector,
--			  ngbe_msix_other, 0, netdev->name, wx);
-+	/* Due to hardware design, when num_vfs < 7, pf can use 0 for misc and 1
-+	 * for queue. But when num_vfs == 7, vector[1] is assigned to vf6.
-+	 * Misc and queue should reuse interrupt vector[0].
-+	 */
-+	if (wx->num_vfs == 7)
-+		err = request_irq(wx->msix_entry->vector,
-+				  ngbe_msic_and_queue, 0, netdev->name, wx);
-+	else
-+		err = request_irq(wx->msix_entry->vector,
-+				  ngbe_msix_other, 0, netdev->name, wx);
- 
- 	if (err) {
- 		wx_err(wx, "request_irq for msix_other failed: %d\n", err);
-@@ -302,6 +343,22 @@ static void ngbe_disable_device(struct wx *wx)
- 	struct net_device *netdev = wx->netdev;
- 	u32 i;
- 
-+	if (wx->num_vfs) {
-+		/* Clear EITR Select mapping */
-+		wr32(wx, WX_PX_ITRSEL, 0);
-+
-+		/* Mark all the VFs as inactive */
-+		for (i = 0; i < wx->num_vfs; i++)
-+			wx->vfinfo[i].clear_to_send = 0;
-+		wx->notify_down = true;
-+		/* ping all the active vfs to let them know we are going down */
-+		wx_ping_all_vfs_with_link_status(wx, false);
-+		wx->notify_down = false;
-+
-+		/* Disable all VFTE/VFRE TX/RX */
-+		wx_disable_vf_rx_tx(wx);
-+	}
-+
- 	/* disable all enabled rx queues */
- 	for (i = 0; i < wx->num_rx_queues; i++)
- 		/* this call also flushes the previous write */
-@@ -324,12 +381,19 @@ static void ngbe_disable_device(struct wx *wx)
- 	wx_update_stats(wx);
- }
- 
-+static void ngbe_reset(struct wx *wx)
-+{
-+	wx_flush_sw_mac_table(wx);
-+	wx_mac_set_default_filter(wx, wx->mac.addr);
-+	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
-+		wx_ptp_reset(wx);
-+}
-+
- void ngbe_down(struct wx *wx)
- {
- 	phylink_stop(wx->phylink);
- 	ngbe_disable_device(wx);
--	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
--		wx_ptp_reset(wx);
-+	ngbe_reset(wx);
- 	wx_clean_all_tx_rings(wx);
- 	wx_clean_all_rx_rings(wx);
- }
-@@ -352,6 +416,11 @@ void ngbe_up(struct wx *wx)
- 		ngbe_sfp_modules_txrx_powerctl(wx, true);
- 
- 	phylink_start(wx->phylink);
-+	/* Set PF Reset Done bit so PF/VF Mail Ops can work */
-+	wr32m(wx, WX_CFG_PORT_CTL,
-+	      WX_CFG_PORT_CTL_PFRSTD, WX_CFG_PORT_CTL_PFRSTD);
-+	if (wx->num_vfs)
-+		wx_ping_all_vfs_with_link_status(wx, false);
- }
- 
- /**
-@@ -596,6 +665,10 @@ static int ngbe_probe(struct pci_dev *pdev,
- 		goto err_pci_release_regions;
- 	}
- 
-+	/* The emerald supports up to 8 VFs per pf, but physical
-+	 * function also need one pool for basic networking.
-+	 */
-+	pci_sriov_set_totalvfs(pdev, NGBE_MAX_VFS_DRV_LIMIT);
- 	wx->driver_name = ngbe_driver_name;
- 	ngbe_set_ethtool_ops(netdev);
- 	netdev->netdev_ops = &ngbe_netdev_ops;
-@@ -743,6 +816,7 @@ static void ngbe_remove(struct pci_dev *pdev)
- 	struct net_device *netdev;
- 
- 	netdev = wx->netdev;
-+	wx_disable_sriov(wx);
- 	unregister_netdev(netdev);
- 	phylink_destroy(wx->phylink);
- 	pci_release_selected_regions(pdev,
-@@ -802,6 +876,7 @@ static struct pci_driver ngbe_driver = {
- 	.suspend  = ngbe_suspend,
- 	.resume   = ngbe_resume,
- 	.shutdown = ngbe_shutdown,
-+	.sriov_configure = wx_pci_sriov_configure,
- };
- 
- module_pci_driver(ngbe_driver);
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-index ea1d7e9a91f3..c63bb6e6f405 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-@@ -9,6 +9,7 @@
- #include "../libwx/wx_type.h"
- #include "../libwx/wx_ptp.h"
- #include "../libwx/wx_hw.h"
-+#include "../libwx/wx_sriov.h"
- #include "ngbe_type.h"
- #include "ngbe_mdio.h"
- 
-@@ -70,6 +71,8 @@ static void ngbe_mac_link_down(struct phylink_config *config,
- 	wx->speed = SPEED_UNKNOWN;
- 	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
- 		wx_ptp_reset_cyclecounter(wx);
-+	/* ping all the active vfs to let them know we are going down */
-+	wx_ping_all_vfs_with_link_status(wx, false);
- }
- 
- static void ngbe_mac_link_up(struct phylink_config *config,
-@@ -114,6 +117,8 @@ static void ngbe_mac_link_up(struct phylink_config *config,
- 	wx->last_rx_ptp_check = jiffies;
- 	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
- 		wx_ptp_reset_cyclecounter(wx);
-+	/* ping all the active vfs to let them know we are going up */
-+	wx_ping_all_vfs_with_link_status(wx, true);
- }
- 
- static const struct phylink_mac_ops ngbe_mac_ops = {
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-index 992adbb98c7d..bb74263f0498 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-@@ -73,12 +73,14 @@
- #define NGBE_PX_MISC_IEN_TIMESYNC		BIT(11)
- #define NGBE_PX_MISC_IEN_ETH_LK			BIT(18)
- #define NGBE_PX_MISC_IEN_INT_ERR		BIT(20)
-+#define NGBE_PX_MISC_IC_VF_MBOX			BIT(23)
- #define NGBE_PX_MISC_IEN_GPIO			BIT(26)
- #define NGBE_PX_MISC_IEN_MASK ( \
- 				NGBE_PX_MISC_IEN_DEV_RST | \
- 				NGBE_PX_MISC_IEN_TIMESYNC | \
- 				NGBE_PX_MISC_IEN_ETH_LK | \
- 				NGBE_PX_MISC_IEN_INT_ERR | \
-+				NGBE_PX_MISC_IC_VF_MBOX | \
- 				NGBE_PX_MISC_IEN_GPIO)
- 
- /* Extended Interrupt Cause Read */
-@@ -134,6 +136,7 @@
- #define NGBE_MAX_RXD				8192
- #define NGBE_MIN_RXD				128
- 
-+#define NGBE_MAX_VFS_DRV_LIMIT			7
- extern char ngbe_driver_name[];
- 
- void ngbe_down(struct wx *wx);
--- 
-2.48.1
+> 
+> 	Did this come up in practise somewhere, or through inspection /
+> testing?  I'm curious as I'd expect usage of this option today would be
+> rare, as I hope that current hardware wouldn't have the "MAC assigned to
+> multiple ports" issues that led to the "follow" logic.  If memory
+> serves, the issue arose originally in the ehea network device (on IBM
+> POWER), which I believe is out of production now for some years.
 
+This issue has also been reported by OCP users[1] with NetworkManager setups.
+When the bond is controlled by NetworkManager, using nmcli to set a slave
+link down will remove the slave from the bond and bring the interface down.
+Similarly, using nmcli to bring the link up will add the slave back to the bond.
+
+This is the default link operation logic of NetworkManager, and there is
+little possibility of changing it. However, this behavior makes the MAC
+address duplication issue much easier to trigger.
+
+[1] https://github.com/openshift/machine-config-operator/pull/4609
+
+> >To resolve this issue, we need to swap the new active slave’s permanent
+> >MAC address with the old one. The new active slave then uses the old
+> >dev_addr, ensuring that it matches the bond address. After the fix:
+> >
+> >5) ip link set bond0 type bond active_slave eth0
+> >   dev_addr is the same, swap old active eth1's MAC (MAC0) with eth0.
+> >   Swap new active eth0's permanent MAC (MAC0) to eth1.
+> >   MAC addresses remain unchanged.
+> >
+> >6) ip link set bond0 type bond active_slave eth1
+> >   dev_addr is the same, swap the old active eth0's MAC (MAC0) with eth1.
+> >   Swap new active eth1's permanent MAC (MAC1) to eth0.
+> >   The MAC addresses are now correctly differentiated.
+> 
+> 	An alternative solution could be to disallow adding a new
+> interface in "follow" mode if its MAC matches the active interface of
+> the bond.  If this patch is more of an correctness exercise rather than
+> something found out in the world impacting production deployments, it
+> might be better to keep the MAC swapping logic in the failover code
+> simpler.
+
+With the NetworkManager operations situation. It looks we can't simply
+disallow adding the interface back to bond if its MAC the same with active
+interface of bond.
+
+Thanks
+Hangbin
+> 
+> 	-J
+> 
+> >Fixes: 3915c1e8634a ("bonding: Add "follow" option to fail_over_mac")
+> >Reported-by: Liang Li <liali@redhat.com>
+> >Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+> >---
+> > drivers/net/bonding/bond_main.c | 9 +++++++--
+> > include/net/bonding.h           | 8 ++++++++
+> > 2 files changed, 15 insertions(+), 2 deletions(-)
+> >
+> >diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+> >index e45bba240cbc..9cc2348d4ee9 100644
+> >--- a/drivers/net/bonding/bond_main.c
+> >+++ b/drivers/net/bonding/bond_main.c
+> >@@ -1107,8 +1107,13 @@ static void bond_do_fail_over_mac(struct bonding *bond,
+> > 			old_active = bond_get_old_active(bond, new_active);
+> > 
+> > 		if (old_active) {
+> >-			bond_hw_addr_copy(tmp_mac, new_active->dev->dev_addr,
+> >-					  new_active->dev->addr_len);
+> >+			if (bond_hw_addr_equal(old_active->dev->dev_addr, new_active->dev->dev_addr,
+> >+					       new_active->dev->addr_len))
+> >+				bond_hw_addr_copy(tmp_mac, new_active->perm_hwaddr,
+> >+						  new_active->dev->addr_len);
+> >+			else
+> >+				bond_hw_addr_copy(tmp_mac, new_active->dev->dev_addr,
+> >+						  new_active->dev->addr_len);
+> > 			bond_hw_addr_copy(ss.__data,
+> > 					  old_active->dev->dev_addr,
+> > 					  old_active->dev->addr_len);
+> >diff --git a/include/net/bonding.h b/include/net/bonding.h
+> >index 8bb5f016969f..de965c24dde0 100644
+> >--- a/include/net/bonding.h
+> >+++ b/include/net/bonding.h
+> >@@ -463,6 +463,14 @@ static inline void bond_hw_addr_copy(u8 *dst, const u8 *src, unsigned int len)
+> > 	memcpy(dst, src, len);
+> > }
+> > 
+> >+static inline bool bond_hw_addr_equal(const u8 *dst, const u8 *src, unsigned int len)
+> >+{
+> >+	if (len == ETH_ALEN)
+> >+		return ether_addr_equal(dst, src);
+> >+	else
+> >+		return (memcmp(dst, src, len) == 0);
+> >+}
+> >+
+> > #define BOND_PRI_RESELECT_ALWAYS	0
+> > #define BOND_PRI_RESELECT_BETTER	1
+> > #define BOND_PRI_RESELECT_FAILURE	2
+> >-- 
+> >2.46.0
+> 
+> ---
+> 	-Jay Vosburgh, jv@jvosburgh.net
+> 
