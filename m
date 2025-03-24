@@ -1,115 +1,243 @@
-Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135DF1A01C6
-	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 22:33:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01C919049B;
+	Mon, 24 Mar 2025 22:34:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742855582; cv=none; b=XiAZP+oyz9u1DwhabmZtiJJikb6VnH/kfc+LJT8/MqawJqGb/7mdMYVbbeDOzN2+pd4cNR2zRX1zgQeuQaENVdSp92/qwxSIvSg7yLF2/rAVywPo4syrstWrOTo3RFR647Pg6j9SRTEk6ArLNzFpUrMCxuBFuURf7HE1I1YTlXc=
+	t=1742855688; cv=none; b=KMDBGwREoiiOf6t2zyL6tMBKhYDZZfIhDzqQ87vqZwZPdlrwFFodB7kF0uTOrg+naxfJzM/fGuM4ID/RE/+XXHTXeg9roQhX7FsQpkxi5PeeCv3HhfIjt5u5lNKGvqJE3DR2tJtJUV3ErOhcmEonELY2GPAtnV7jzP70IXnJ7iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742855582; c=relaxed/simple;
-	bh=2+fr3WVb38GlBHVy+wuFIIpZBa6EdZZkmFipXee6Bas=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eQhFslwBrysZ9Nja5erWgprT388UHf5mSuelV9vE78NP1KUCrMWdnYjsz1hfuOQaQ6uPUb0OTz0kfWrfGINbttQTUlNtC8NatJ4chjYdCfHos8ZEpuCeUXOjjVqlg/qD5/BESFGILBWBNEyrHAgztsg0efrxR4OoD4xO1Gd4pHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=NiKCCa/q; arc=none smtp.client-ip=52.119.213.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1742855688; c=relaxed/simple;
+	bh=Vi1NzMDRhqogQCW68vwegbAdQ8YER+p1F3Pyameq8ps=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e3RZHeCG7QBZmE+jwcBCGHz1Hw6HCGYGG/FU5/eIHa2hdkz88PM7pJHEs4qOWUcUrlfr11CcyXsv4Zby/LukO35thoj/u20JRVRs6vcoIDd/3nWfqJKhbMBIHaUeDC2kSWE7lq/QHa5+GfVbaS9B17S90p2aAaL3dhJIpFOGLJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sA3MJPAX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="NiKCCa/q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1742855581; x=1774391581;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=bgEdfZiIcBa5XBRmjV3AmFxOHnS/m69hf+qceDrGl2E=;
-  b=NiKCCa/qKegnRUZsrLriEXDicPKQ5Mv/xgAJDaPiL7PF9d4U1OjdA9vz
-   la8elWiCMURDW6uqGPEzWIZBa9FtUvh8ERjVFTRDyOB/bh7ZyPBY0OMr3
-   lWv75LRg92+UuyuzKtfiBO1RGxT0z1BI6QW4E3xrYC3ASCisLohIGyiz+
-   o=;
-X-IronPort-AV: E=Sophos;i="6.14,273,1736812800"; 
-   d="scan'208";a="707802622"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2025 22:32:57 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.21.151:13574]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.83:2525] with esmtp (Farcaster)
- id 8507564c-cc8a-4732-b911-273b0827440d; Mon, 24 Mar 2025 22:32:57 +0000 (UTC)
-X-Farcaster-Flow-ID: 8507564c-cc8a-4732-b911-273b0827440d
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Mon, 24 Mar 2025 22:32:55 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.106.100.20) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Mon, 24 Mar 2025 22:32:52 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <edumazet@google.com>
-CC: <davem@davemloft.net>, <eric.dumazet@gmail.com>, <horms@kernel.org>,
-	<kuba@kernel.org>, <kuniyu@amazon.com>, <ncardwell@google.com>,
-	<netdev@vger.kernel.org>, <pabeni@redhat.com>
-Subject: Re: [PATCH net-next] tcp: avoid atomic operations on sk->sk_rmem_alloc
-Date: Mon, 24 Mar 2025 15:32:15 -0700
-Message-ID: <20250324223243.76632-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250320121604.3342831-1-edumazet@google.com>
-References: <20250320121604.3342831-1-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sA3MJPAX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07807C4CEDD;
+	Mon, 24 Mar 2025 22:34:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742855688;
+	bh=Vi1NzMDRhqogQCW68vwegbAdQ8YER+p1F3Pyameq8ps=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sA3MJPAXo8PHThugpPhAUQ/aoelMEhTy0UtW3P+EKpCt96WJSyW32SPp0TRq8Icuk
+	 UeVh5ejO6yxoO2CTLPSF9493z8Bwtz13vyKrMTW7uNr8zLwRW/a07qOUv6+pZUNDJA
+	 k8i7hxaUDjqAKmRnRfrw8jR8dJGIKFoLyHtLvvVFqg3Wj9h2H6rj1T3loAvVObIFLv
+	 O702AmHcWO8yCcI707/6GRSr9nTaDlr4eqIxUGUBK1sbRFoheKSPMOHKsFo9JnrGKN
+	 yg39GG80odtia61Qyk31GQ38OA2KL2f7lQhZOX6JFwHOe/EQB1MLntwo0xaYxtxq7R
+	 AUoQ3IaJx7ZQw==
+Message-ID: <3a086834-9237-42df-a048-e30444c30cf9@kernel.org>
+Date: Mon, 24 Mar 2025 23:34:43 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC net-next v1] page_pool: import Jesper's page_pool
+ benchmark
+To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Jakub Kicinski <kuba@kernel.org>, =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgense?=
+ =?UTF-8?Q?n?= <toke@toke.dk>
+References: <20250309084118.3080950-1-almasrymina@google.com>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <20250309084118.3080950-1-almasrymina@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWC004.ant.amazon.com (10.13.139.246) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 20 Mar 2025 12:16:04 +0000
-> TCP uses generic skb_set_owner_r() and sock_rfree()
-> for received packets, with socket lock being owned.
-> 
-> Switch to private versions, avoiding two atomic operations
-> per packet.
-> 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
->  include/net/tcp.h       | 15 +++++++++++++++
->  net/ipv4/tcp.c          | 18 ++++++++++++++++--
->  net/ipv4/tcp_fastopen.c |  2 +-
->  net/ipv4/tcp_input.c    |  6 +++---
->  4 files changed, 35 insertions(+), 6 deletions(-)
-> 
-> diff --git a/include/net/tcp.h b/include/net/tcp.h
-> index d08fbf90495de69b157d3c87c50e82d781a365df..dd6d63a6f42b99774e9461b69d3e7932cf629082 100644
-> --- a/include/net/tcp.h
-> +++ b/include/net/tcp.h
-> @@ -779,6 +779,7 @@ static inline int tcp_bound_to_half_wnd(struct tcp_sock *tp, int pktsize)
->  
->  /* tcp.c */
->  void tcp_get_info(struct sock *, struct tcp_info *);
-> +void tcp_sock_rfree(struct sk_buff *skb);
->  
->  /* Read 'sendfile()'-style from a TCP socket */
->  int tcp_read_sock(struct sock *sk, read_descriptor_t *desc,
-> @@ -2898,4 +2899,18 @@ enum skb_drop_reason tcp_inbound_hash(struct sock *sk,
->  		const void *saddr, const void *daddr,
->  		int family, int dif, int sdif);
->  
-> +/* version of skb_set_owner_r() avoiding one atomic_add() */
-> +static inline void tcp_skb_set_owner_r(struct sk_buff *skb, struct sock *sk)
-> +{
-> +	skb_orphan(skb);
-> +	skb->sk = sk;
-> +	skb->destructor = tcp_sock_rfree;
+
+On 09/03/2025 09.41, Mina Almasry wrote:
+> diff --git a/lib/bench/time_bench.c b/lib/bench/time_bench.c
+> new file mode 100644
+> index 000000000000..4f5314419644
+> --- /dev/null
+> +++ b/lib/bench/time_bench.c
+> @@ -0,0 +1,426 @@
+> +/*
+> + * Benchmarking code execution time inside the kernel
+> + *
+> + * Copyright (C) 2014, Red Hat, Inc., Jesper Dangaard Brouer
+> + *  for licensing details see kernel-base/COPYING
+> + */
+> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 > +
-> +	sock_owned_by_me(sk);
-> +	atomic_set(&sk->sk_rmem_alloc,
-> +		   atomic_read(&sk->sk_rmem_alloc) + skb->truesize);
+> +#include <linux/module.h>
+> +#include <linux/time.h>
+> +#include <linux/time_bench.h>
+> +
+> +#include <linux/perf_event.h> /* perf_event_create_kernel_counter() */
+> +
+> +/* For concurrency testing */
+> +#include <linux/completion.h>
+> +#include <linux/sched.h>
+> +#include <linux/workqueue.h>
+> +#include <linux/kthread.h>
+> +
+> +static int verbose = 1;
+> +
+> +/** TSC (Time-Stamp Counter) based **
+> + * See: linux/time_bench.h
+> + *  tsc_start_clock() and tsc_stop_clock()
+> + */
+> +
+> +/** Wall-clock based **
+> + */
+> +
+> +/** PMU (Performance Monitor Unit) based **
+> + */
+> +#define PERF_FORMAT					    \
+> +	(PERF_FORMAT_GROUP | PERF_FORMAT_ID |		    \
+> +	PERF_FORMAT_TOTAL_TIME_ENABLED |		    \
+> +	PERF_FORMAT_TOTAL_TIME_RUNNING)
+> +
+> +struct raw_perf_event {
+> +	uint64_t  config;  /* event */
+> +	uint64_t  config1; /* umask */
+> +	struct perf_event *save;
+> +	char *desc;
+> +};
+> +
+> +/* if HT is enable a maximum of 4 events (5 if one is instructions
+> + * retired can be specified, if HT is disabled a maximum of 8 (9 if
+> + * one is instructions retired) can be specified.
+> + *
+> + * From Table 19-1. Architectural Performance Events
+> + * Architectures Software Developer’s Manual Volume 3: System Programming Guide
+> + */
+> +struct raw_perf_event perf_events[] = {
+> +	{ 0x3c, 0x00, NULL, "Unhalted CPU Cycles" },
+> +	{ 0xc0, 0x00, NULL, "Instruction Retired" }
+> +};
+> +
+> +#define NUM_EVTS (sizeof(perf_events) / sizeof(struct raw_perf_event))
+> +
+> +/* WARNING: PMU config is currently broken!
+> + */
 
-It's nice to learn that atomic_set() and _read() are just __WRITE_ONCE()
-and __READ_ONCE() and have no LOCK_PREFIX :)
+As the comment says PMU usage is in a broken state...
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+I've not used it for years... below config setup code doesn't enable PMU 
+correctly.
+The way I've activated it (in the past) is by loading (modprobe) the
+module under the `perf stat` commands, which does the correct setup, and
+then benchmark code can read the PMU counters.
 
-Thanks!
+IMHO we should just remove all the PMU code (i.e. not upstream it).
+Unless, ACME can fix below setup code in seconds... else let's not bother.
+
+> +bool time_bench_PMU_config(bool enable)
+> +{
+> +	int i;
+> +	struct perf_event_attr perf_conf;
+> +	struct perf_event *perf_event;
+> +	int cpu;
+> +
+> +	preempt_disable();
+> +	cpu = smp_processor_id();
+> +	pr_info("DEBUG: cpu:%d\n", cpu);
+> +	preempt_enable();
+> +
+> +	memset(&perf_conf, 0, sizeof(struct perf_event_attr));
+> +	perf_conf.type           = PERF_TYPE_RAW;
+> +	perf_conf.size           = sizeof(struct perf_event_attr);
+> +	perf_conf.read_format    = PERF_FORMAT;
+> +	perf_conf.pinned         = 1;
+> +	perf_conf.exclude_user   = 1; /* No userspace events */
+> +	perf_conf.exclude_kernel = 0; /* Only kernel events */
+> +
+> +	for (i = 0; i < NUM_EVTS; i++) {
+> +		perf_conf.disabled = enable;
+> +		perf_conf.config = perf_events[i].config;
+> +		perf_conf.config1 = perf_events[i].config1;
+> +		if (verbose)
+> +			pr_info("%s() enable PMU counter: %s\n",
+> +				__func__, perf_events[i].desc);
+> +		perf_event = perf_event_create_kernel_counter(&perf_conf, cpu,
+> +						 NULL /* task */,
+> +						 NULL /* overflow_handler*/,
+> +						 NULL /* context */);
+> +		if (perf_event) {
+> +			perf_events[i].save = perf_event;
+> +			pr_info("%s():DEBUG perf_event success\n", __func__);
+> +
+> +			perf_event_enable(perf_event);
+> +		} else {
+> +			pr_info("%s():DEBUG perf_event is NULL\n", __func__);
+> +		}
+> +	}
+> +
+> +	return true;
+> +}
+> +EXPORT_SYMBOL_GPL(time_bench_PMU_config);
+
+Below code that reads the PMU registers are likely also flawed.
+ACME feel free to yell a me ;-)
+
+[...]
+ > +/** PMU (Performance Monitor Unit) based **
+ > + *
+ > + * Needed for calculating: Instructions Per Cycle (IPC)
+ > + * - The IPC number tell how efficient the CPU pipelining were
+ > + */
+ > +//lookup: perf_event_create_kernel_counter()
+ > +
+ > +bool time_bench_PMU_config(bool enable);
+ > +
+ > +/* Raw reading via rdpmc() using fixed counters
+ > + *
+ > + * From:https://github.com/andikleen/simple-pmu
+ > + */
+ > +enum {
+ > +	FIXED_SELECT = (1U << 30), /* == 0x40000000 */
+ > +	FIXED_INST_RETIRED_ANY      = 0,
+ > +	FIXED_CPU_CLK_UNHALTED_CORE = 1,
+ > +	FIXED_CPU_CLK_UNHALTED_REF  = 2,
+ > +};
+ > +
+ > +static __always_inline unsigned long long p_rdpmc(unsigned in)
+ > +{
+ > +	unsigned d, a;
+ > +
+ > +	asm volatile("rdpmc" : "=d" (d), "=a" (a) : "c" (in) : "memory");
+ > +	return ((unsigned long long)d << 32) | a;
+ > +}
+ > +
+ > +/* These PMU counter needs to be enabled, but I don't have the
+ > + * configure code implemented.  My current hack is running:
+ > + *  sudo perf stat -e cycles:k -e instructions:k insmod 
+lib/ring_queue_test.ko
+ > + */
+
+Here I spell out how I run the `insmod` under `perf stat`.
+
+
+ > +/* Reading all pipelined instruction */
+ > +static __always_inline unsigned long long pmc_inst(void)
+ > +{
+ > +	return p_rdpmc(FIXED_SELECT | FIXED_INST_RETIRED_ANY);
+ > +}
+ > +
+ > +/* Reading CPU clock cycles */
+ > +static __always_inline unsigned long long pmc_clk(void)
+ > +{
+ > +	return p_rdpmc(FIXED_SELECT | FIXED_CPU_CLK_UNHALTED_CORE);
+ > +}
+ > +
+ > +/* Raw reading via MSR rdmsr() is likely wrong
+ > + * FIXME: How can I know which raw MSR registers are conf for what?
+ > + */
+ > +#define MSR_IA32_PCM0 0x400000C1 /* PERFCTR0 */
+ > +#define MSR_IA32_PCM1 0x400000C2 /* PERFCTR1 */
+ > +#define MSR_IA32_PCM2 0x400000C3
+ > +static inline uint64_t msr_inst(unsigned long long *msr_result)
+ > +{
+ > +	return rdmsrl_safe(MSR_IA32_PCM0, msr_result);
+ > +}
+
+
+--Jesper
