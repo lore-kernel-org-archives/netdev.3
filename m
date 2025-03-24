@@ -1,91 +1,242 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D415263F32;
-	Mon, 24 Mar 2025 16:57:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37E82620C4
+	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 16:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742835458; cv=none; b=DPefcdEypyhNRu8stkThVrxUw0WV0BH1/1Psk1HjDw7pnvJpvr1xoULTqQduj2kNj8w1NvQA4AhTwr6F18WeLxV5g7f5AZpS2xCtoaKn/CG3myZaAdKk9l4K98MxEoQjjzWAAaBYdH4wEHGqthyLlaftpDtYp/bepWxz4mYkLVg=
+	t=1742835481; cv=none; b=ZawAlmuJ92rpX5qQMH9uj7ETHuysxJRDSu7WTl+9HpktYRKVl41xwuAJly1B2hxmqzQqxZbotIiXuhXAdvspl5rhODj3v5q9SmaHT+lVcU0w0Js8u0tDZtca0NOZsLtNUo3PuZdKdNUvnfIIpuv3F/Zm01q+YMKngtkaGB1C0Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742835458; c=relaxed/simple;
-	bh=jq6KD5dap90lJjDbFAXTSsraPhA8AgZwRfwkBkYFXd4=;
+	s=arc-20240116; t=1742835481; c=relaxed/simple;
+	bh=GAjiWgg4HWPbPDZzuesmogypGDRcnSTqKozhcrydPGk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q2zbPoiM/rBdJ60wSZ3MvNbTjt0vuoIeUYk6BeqiC67uCf3oJOrISk4CG7Z18dSCwJowj+oNJCSwMopmbQ1HqAHDi1mZga8XtNlXSsMyo2X0swIAhi2GTfmLoiPQe76eIm29y6UjF2IgoRCxeZifGGxkIArhFQsnxCIxttGLzwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=gdz8rqnf; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=tAorWFnM+ZURxQxXNmJxWx1YXlIXvbNg5L7IkJ3/I2GSAvLo6Vp3/hVVUopXNMPTq5YD1BWuJjP2Eh27Z+RbuTH3fXHiuGJz5vYW+XEjL5lHlR1cN+YYUOXTdcIY1470O9U377I7jX9xunyGGe0jPy62PNTgpUnotgxVL4OpvKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cNIjS1gZ; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="gdz8rqnf"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=uZpqntUszdnsbmO2CLvPIRMBPHQt2FjCDjhNfY3enx8=; b=gdz8rqnflfUQmNqlW8cugrADyx
-	tR0ieqeTXjdBctwFTHy6WtN9lCNOB/Q2ykM7uh3n0xFCfTcaDUK6MJBXp24tl5CvfAPK1r6CfTNpZ
-	IWH3u5184nub6oajbyn2fHFVZZ0xcXYO8KLDfUFoAvg5mdL6mf/btK38yCAusTk5QGT56Wcu2XsQH
-	p9KUyUW1uSrloC02ZEwL1LHPwhJnH73GQKO2Sc9SpSWX61MAQTDQSP94Qy9SQsQogCq/n6GyhbfJJ
-	dSNydzi/EnFXdSsjz0mIARU+rbisaTNIHfhaX2Xt9GXR6nWe9iXSf4gPu77KF8KR2ScYmqgRXvAhc
-	01ol2dsw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55898)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1twl77-0003ph-2z;
-	Mon, 24 Mar 2025 16:57:26 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1twl74-0002PR-18;
-	Mon, 24 Mar 2025 16:57:22 +0000
-Date: Mon, 24 Mar 2025 16:57:22 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Jim Liu <jim.t90615@gmail.com>
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>, JJLIU0@nuvoton.com,
-	andrew@lunn.ch, hkallweit1@gmail.com, kuba@kernel.org,
-	edumazet@google.com, pabeni@redhat.com, netdev@vger.kernel.org,
-	giulio.benetti+tekvox@benettiengineering.com,
-	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org
-Subject: Re: [v2,net] net: phy: broadcom: Correct BCM5221 PHY model detection
- failure
-Message-ID: <Z-GO8iFP7TRPPdql@shell.armlinux.org.uk>
-References: <20250317063452.3072784-1-JJLIU0@nuvoton.com>
- <Z9f4W86z90PgtkBc@shell.armlinux.org.uk>
- <9391fb55-11c4-4fa9-b38f-500cb1ae325c@broadcom.com>
- <Z9gjylMFV5zFG-i5@shell.armlinux.org.uk>
- <CAKUZ0+GV1J0VxU8Eycv2eCNs2yKvJ9YTob27n+G4Jy-TJhhLZQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cNIjS1gZ"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-224171d6826so14148805ad.3
+        for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 09:57:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742835479; x=1743440279; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Hl5JXhB/oD5qd1jityM6Yrtw+6FmDeKJJHolJ+2qNF0=;
+        b=cNIjS1gZeXCrKz64tinsDruTggZH+wVtDbTLFpNhi59G0O/agNAvsIFIqqpa7CCtb5
+         pmkRgmk2MlwfNiE4xf/A+rIsnmQ68HP4ZpLAmid8yZTxF3DPtEwbLR80Rn5+SL4azoZk
+         40Vnmqpd0hHDT8yS/T6bEY6yemqAWhf4w131JX1qBlVnnVLncTVXh2D84i3v5MwR414K
+         k1k+Dgph4VEZyhukVQ2Pe+HFOUoVXZBe/Np4x4CLlGGheSm9in9qUP7tLek2+1NUNZQJ
+         n5c0FLV8jluC1rr7V3Hvsj+RRx61oFinRIehSCNDoC9uqtQV7QkQGvaG5m5lgUZfJziy
+         lb7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742835479; x=1743440279;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Hl5JXhB/oD5qd1jityM6Yrtw+6FmDeKJJHolJ+2qNF0=;
+        b=tdn7+4DfXwBSe4q2R4XHP76ZvpL0p9Vhms8y1Ev1CcV/bX7NqqmVvNouxkdmqzqf7T
+         ujsQZppcJYpX/YLtVPLvi5CjsM4RvwOEAY3Q9tlJ2upOA3mzpN3AI3l8RSdsBiZloyRh
+         esT8v6t8zg4p3isulkmm/Pfd/xWXXO6JvBX22Gz5QNmTKDkAYxiz4TMFY5DHxFsoeFtQ
+         PrJE39pNI5SSrBCvaS1YZgs3iZBacZ9cNJvJn52nmodCka0Zldkinpl5T2ryEEu9EoFH
+         UNXi3UOCYiFjje4aVhe0w2lffsTeDsrh3nkPNpfpeGOfskJ4w9mYtBgVTq1gt3KtBQGV
+         ryyg==
+X-Gm-Message-State: AOJu0Yyjp+L1B/BMAM/ecdE+W7F7d/SUtf4V5yL/SY7g2LlkdRAlotZx
+	z1nZnbX75whQjf1FB4MXHammyuCqLKWyad/ZnSHnr0EA79aDjDM=
+X-Gm-Gg: ASbGncsXJKgQ2KL/r28AQ/GhcX4j9rG8Y066W4IxB8QwsOkBdMNXxD69f7WPubjLdlj
+	wzhsHdsLwb/mYKzBxFZLaH7W+I1H+EIq1brztQg9XVoBIW9yAvpFyQ8FhoHiFwcfWnZCj5Se8Bg
+	AhknkIodaZvyGqhnHRmiF+jfhijiXDTawlpH0Murl62Syr/mxMHia7hEx4jnNaC4fd2ummrhW3F
+	U6bW7OSZz1DZBuTYfzi+Iku/Tle1KTtcTvUT3jgkAw0jkLx9advV+QvTQFPn8scIheLtVThIegC
+	GSkmJ/8DiI+mbpPDDJyMqAsbmUPEB1FyDzse+RLdm4T4JSfdfojQpSk=
+X-Google-Smtp-Source: AGHT+IFadqbpzD4JsYCKKDm44rNLSCudtS0pgYdD383YmmV+Nxgemxz+5BlXSouhRN/021w5S+2rng==
+X-Received: by 2002:a05:6a21:6182:b0:1f5:92ac:d6b7 with SMTP id adf61e73a8af0-1fe42f07d09mr21653334637.4.1742835478660;
+        Mon, 24 Mar 2025 09:57:58 -0700 (PDT)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-af8a284888bsm7424507a12.46.2025.03.24.09.57.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Mar 2025 09:57:58 -0700 (PDT)
+Date: Mon, 24 Mar 2025 09:57:57 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Taehee Yoo <ap420073@gmail.com>
+Cc: Netdev <netdev@vger.kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
+	David Miller <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: Re: Report deadlock in the latest net-next
+Message-ID: <Z-GPFQou5GomWCOo@mini-arch>
+References: <CAMArcTX2dEs=H586fumSEv_V8_p-pcAjyyPXkcLG9WkQM+c0cA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAKUZ0+GV1J0VxU8Eycv2eCNs2yKvJ9YTob27n+G4Jy-TJhhLZQ@mail.gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <CAMArcTX2dEs=H586fumSEv_V8_p-pcAjyyPXkcLG9WkQM+c0cA@mail.gmail.com>
 
-On Tue, Mar 18, 2025 at 11:15:09AM +0800, Jim Liu wrote:
-> Maybe i can add this modify in patch
+On 03/17, Taehee Yoo wrote:
+> Hi Stanislav,
+> I found a deadlock in the latest net-next kernel.
+> The calltrace indicates your current
+> commit ad7c7b2172c3 ("net: hold netdev instance lock during sysfs operations").
+> The dev->lock was acquired in do_setlink.constprop.0+0x12a/0x3440,
+> which is net/core/rtnetlink.c:3025
+> And then dev->lock is acquired in dev_disable_lro+0x81/0x1f0,
+> which is /net/core/dev_api.c:255
+> dev_disable_lro() is called by netdev notification, but notification
+> seems to be called both outside and inside dev->lock context.
+> This case is that netdev notification is called inside dev->lock context.
+> So deadlock occurs.
+> Could you please look into this?
 > 
-> #define BRCM_PHY_MODEL(phydev) \
-> -       ((phydev)->drv->phy_id & (phydev)->drv->phy_id_mask)
-> +       ((phydev)->phy_id & (phydev)->drv->phy_id_mask)
+> Reproducer:
+> modprobe netdevsim
+> ip netns add ns_test
+> echo 1 > /sys/bus/netdevsim/new_device
+> ip link set $interface netns ns_test
+> 
+> ============================================
+> WARNING: possible recursive locking detected
+> 6.14.0-rc6+ #56 Not tainted
+> --------------------------------------------
+> ip/1672 is trying to acquire lock:
+> ffff888231fbad90 (&dev->lock){+.+.}-{4:4}, at: dev_disable_lro+0x81/0x1f0
+> 
+> but task is already holding lock:
+> ffff888231fbad90 (&dev->lock){+.+.}-{4:4}, at:
+> do_setlink.constprop.0+0x12a/0x3440
+> 
+> other info that might help us debug this:
+>  Possible unsafe locking scenario:
+> 
+>        CPU0
+>        ----
+>   lock(&dev->lock);
+>   lock(&dev->lock);
+> 
+>  *** DEADLOCK ***
+> 
+>  May be due to missing lock nesting notation
+> 
+> 3 locks held by ip/1672:
+>  #0: ffffffff943ba050 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_newlink+0x6b4/0x1c60
+>  #1: ffff88813abc6170 (&net->rtnl_mutex){+.+.}-{4:4}, at:
+> rtnl_newlink+0x6f6/0x1c60
+>  #2: ffff888231fbad90 (&dev->lock){+.+.}-{4:4}, at:
+> do_setlink.constprop.0+0x12a/0x3440
+> 
+> stack backtrace:
+> CPU: 2 UID: 0 PID: 1672 Comm: ip Not tainted 6.14.0-rc6+ #56
+> 66129e0c5b1b922fef38623168aea99c0593a519
+> Hardware name: ASUS System Product Name/PRIME Z690-P D4, BIOS 0603 11/01/2021
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl+0x7e/0xc0
+>  print_deadlock_bug+0x4fd/0x8e0
+>  __lock_acquire+0x3082/0x4fd0
+>  ? __pfx___lock_acquire+0x10/0x10
+>  ? mark_lock.part.0+0xfa/0x2f60
+>  ? __pfx___lock_acquire+0x10/0x10
+>  ? check_chain_key+0x1c1/0x520
+>  lock_acquire+0x1b0/0x570
+>  ? dev_disable_lro+0x81/0x1f0
+>  ? __pfx_lock_acquire+0x10/0x10
+>  __mutex_lock+0x17c/0x17c0
+>  ? dev_disable_lro+0x81/0x1f0
+>  ? dev_disable_lro+0x81/0x1f0
+>  ? __pfx___mutex_lock+0x10/0x10
+>  ? mark_held_locks+0xa5/0xf0
+>  ? neigh_parms_alloc+0x36b/0x4f0
+>  ? __local_bh_enable_ip+0xa5/0x120
+>  ? lockdep_hardirqs_on+0xbe/0x140
+>  ? dev_disable_lro+0x81/0x1f0
+>  dev_disable_lro+0x81/0x1f0
+>  inetdev_init+0x2d1/0x4a0
+>  inetdev_event+0x9b3/0x1590
+>  ? __pfx_lock_release+0x10/0x10
+>  ? __pfx_inetdev_event+0x10/0x10
+>  ? notifier_call_chain+0x9b/0x300
+>  notifier_call_chain+0x9b/0x300
+>  netif_change_net_namespace+0xdfe/0x1390
+>  ? __pfx_netif_change_net_namespace+0x10/0x10
+>  ? __pfx_validate_linkmsg+0x10/0x10
+>  ? __pfx___lock_acquire+0x10/0x10
+>  do_setlink.constprop.0+0x241/0x3440
+>  ? lock_acquire+0x1b0/0x570
+>  ? __pfx_do_setlink.constprop.0+0x10/0x10
+>  ? rtnl_newlink+0x6f6/0x1c60
+>  ? __pfx_lock_acquired+0x10/0x10
+>  ? netlink_sendmsg+0x712/0xbc0
+>  ? rcu_is_watching+0x11/0xb0
+>  ? trace_contention_end+0xef/0x140
+>  ? __mutex_lock+0x935/0x17c0
+>  ? __create_object+0x36/0x90
+>  ? __pfx_lock_release+0x10/0x10
+>  ? rtnl_newlink+0x6f6/0x1c60
+>  ? __nla_validate_parse+0xb9/0x2830
+>  ? __pfx___mutex_lock+0x10/0x10
+>  ? lockdep_hardirqs_on+0xbe/0x140
+>  ? __pfx___nla_validate_parse+0x10/0x10
+>  ? rcu_is_watching+0x11/0xb0
+>  ? cap_capable+0x17d/0x360
+>  ? fdget+0x4e/0x1d0
+>  rtnl_newlink+0x108d/0x1c60
+>  ? __pfx_rtnl_newlink+0x10/0x10
+>  ? mark_lock.part.0+0xfa/0x2f60
+>  ? __pfx___lock_acquire+0x10/0x10
+>  ? __pfx_mark_lock.part.0+0x10/0x10
+>  ? __pfx_lock_release+0x10/0x10
+>  ? __pfx_rtnl_newlink+0x10/0x10
+>  rtnetlink_rcv_msg+0x71c/0xc10
+>  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
+>  ? check_chain_key+0x1c1/0x520
+>  ? __pfx___lock_acquire+0x10/0x10
+>  netlink_rcv_skb+0x12c/0x360
+>  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
+>  ? __pfx_netlink_rcv_skb+0x10/0x10
+>  ? netlink_deliver_tap+0xcb/0x9e0
+>  ? netlink_deliver_tap+0x14b/0x9e0
+>  netlink_unicast+0x447/0x710
+>  ? __pfx_netlink_unicast+0x10/0x10
+>  netlink_sendmsg+0x712/0xbc0
+>  ? __pfx_netlink_sendmsg+0x10/0x10
+>  ? _copy_from_user+0x3e/0xa0
+>  ____sys_sendmsg+0x7ab/0xa10
+>  ? __pfx_____sys_sendmsg+0x10/0x10
+>  ? __pfx_copy_msghdr_from_user+0x10/0x10
+>  ___sys_sendmsg+0xee/0x170
+>  ? __pfx___lock_acquire+0x10/0x10
+>  ? kasan_save_stack+0x20/0x40
+>  ? __pfx____sys_sendmsg+0x10/0x10
+>  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>  ? kasan_save_stack+0x30/0x40
+>  ? __pfx_lock_release+0x10/0x10
+>  ? __might_fault+0xbf/0x170
+>  __sys_sendmsg+0x105/0x190
+>  ? __pfx___sys_sendmsg+0x10/0x10
+>  ? rseq_syscall+0xc3/0x130
+>  do_syscall_64+0x64/0x140
+>  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> RIP: 0033:0x7fd20f92c004
+> Code: 15 19 6e 0d 00 f7 d8 64 89 02 b8 ff ff ff ff eb bf 0f 1f 44 00
+> 00 f3 0f 1e fa 80 3d 45 f0 0d 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d
+> 005
+> RSP: 002b:00007fff40636e68 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+> RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007fd20f92c004
+> RDX: 0000000000000000 RSI: 00007fff40636ee0 RDI: 0000000000000003
+> RBP: 00007fff40636f50 R08: 0000000067d7b7e9 R09: 0000000000000050
+> R10: 0000000000000001 R11: 0000000000000202 R12: 0000000000000003
+> R13: 0000000067d7b7ea R14: 000055d14b9e4040 R15: 0000000000000000
+> 
+> Thanks a lot!
+> Taehee Yoo
 
-I would suggest that this becomes merely:
+Sorry, I completely missed that, I think this is similar to:
 
-#define BRCM_PHY_MODEL(phydev)	((phydev))->drv->phy_id)
+https://lore.kernel.org/netdev/Z-GDBlDsnPyc21RM@mini-arch/T/#u
 
-because the constants that are being used to check against this are the
-constants used to initialise that member.
+?
 
-Or even get rid of BRCM_PHY_MODEL() altogether, thus the tests become
-(e.g.):
-
-        /* Unmask events we are interested in and mask interrupts globally. */
--       if (phydev->phy_id == PHY_ID_BCM5221)
-+       if (phydev->drv->phy_id == PHY_ID_BCM5221)
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Can you give it a quick test with the patches from that link?
