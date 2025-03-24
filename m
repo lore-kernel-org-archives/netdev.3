@@ -1,44 +1,44 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8309139FD9
-	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 06:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDD7191F91
+	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 06:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742797150; cv=none; b=ozXWjgYcyz8Xiyn92xezcJfotktZNSU3dR/gdTJfQ+0m4NB+ligQRsIFds5LCEU3cOADr7mfqkTqzLB2yfPszgUWawxWUly9dDuqmFKI5SbQDAw5WdtQfNBTGP/6/6gjYaCP71yKnMGH28hp++vwx8IZYI8MwXcuDiQDw9VyQNQ=
+	t=1742797152; cv=none; b=nURAR4VcCTGL0O55TeCePjCuT6vuU6mY0YCjRiatuFvyRqzbBdn7rtBLKUdqc5NE+GVZrJ2OG0WF5+f2+Tl4SLpIqgnlSTk8MntD5iU5CVYdOsXvTsxMaj7w0uoEKavwCVDlH8F74K9IQngxluyTgyKJQMCObYrP4BA/dqH4ZBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742797150; c=relaxed/simple;
-	bh=iL6foIisTntDK6QknFM3dj6IIJErInRpBCeouo0ZmQM=;
+	s=arc-20240116; t=1742797152; c=relaxed/simple;
+	bh=ZORXetLAv3Pu50j8KqGNskN+PEJrY1tX6LhTilyN/So=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mTcNSGHlGVpUyHXIiAq7BVGAo6Hb5UtIMKrjwiSr3sAuVh1g5QejjaGTcpWjRJIO7US/xsi5mxhBNiljMUK9y2CQsAblcrxiZOIx4v52JnmPpbnbuhlN7NBpkhZKMG/dSEWMuRk+jCk60HsA3eP7k0v8JArJ5mRh1BKg7GlXDT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=cHDEr3ki; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=reyBmkRl4jCwead8YreN5vF30JW0mm1z4sxGN0/0k2qwPACtoKIQnGCGFaIq+Agfix8VHWjgHwDTjdORzqeupposKcx/Da4DSkPhi9K/XIvC00sxvHWWHsvmDtidfQVqa5RO/70WKpTXS5Z/RzML4zGNxF0uRVDNBRXCiPeyPCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=dJtilWl4; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="cHDEr3ki"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="dJtilWl4"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 0D408207BE;
-	Mon, 24 Mar 2025 07:18:59 +0100 (CET)
+	by mx1.secunet.com (Postfix) with ESMTP id B5F5520764;
+	Mon, 24 Mar 2025 07:19:00 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 6ZfWop_fVMfa; Mon, 24 Mar 2025 07:18:58 +0100 (CET)
+ with ESMTP id 0AReqygrZSZy; Mon, 24 Mar 2025 07:19:00 +0100 (CET)
 Received: from cas-essen-01.secunet.de (rl1.secunet.de [10.53.40.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 4068720539;
+	by mx1.secunet.com (Postfix) with ESMTPS id F0DA9207BB;
 	Mon, 24 Mar 2025 07:18:58 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 4068720539
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com F0DA9207BB
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1742797138;
-	bh=5nZEdkFPKIuIQ4O9yxtyW50TbMOi/nQMUdlZXoiYfbc=;
+	s=202301; t=1742797139;
+	bh=r3sLdMxNlW+yZKmEZI7ZektX8tJ1YwQixiNg40VVu9w=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=cHDEr3ki4l+VA/vCgUnFvbl0QH2OatdrUARwJbeZG082k479VKcj00ofdTm6qBOpi
-	 pSCbChhwBpB70yRq9AAIpFUqvtqSf8j3pAoMxx2YIU6opJWKz7UzHXmkgEXEHtW6fB
-	 jo5Y/ZBAo4FZp38Sw0wGcDjVIuMCUEcSF4j47wjdDs0iyVuufkHUMb3J+NziWSm1zI
-	 RHYouIRwG7gbwNm7WCxh6RnIJXJZPdPIvhdfhmhe/dhBpIbAodeeRw7UVoBZDde7bd
-	 wmfg0+8NQCi3I+7pBRqOZJVDxidOwrSsD4cevA1kOa1Uc4MOngONQBVdDcwkKJlze7
-	 +01w7e23tJ+iA==
+	b=dJtilWl4ueKtNlGJuSRm/kuUgJv1jAJUiIMmcPhJ5OLcxoroXuxwOUuz1ZmLcdlOM
+	 azsV40ZxMYApV0Qh8/OayRjcRQI6Aua6DoOKj3cvt/m2mDr+fDC4SORHP1ds80nsJ2
+	 lkHkhlX5U4bkQ0tCMctBC9+DIOytRJeiuzHhAHTiK0R9geEUT/r/oBW8kZBwsRRLb4
+	 ctCCt/+gmhUJwZbqgjguaD3MKTz/B2RRpT16bKrcoCiXpzGNeQt4mINPiTg/75v66n
+	 YazwhFgHMyIKDieeeEXkEoG1oBxqLxSKbl57OInPOSwoscka5GLfhjBHq0FWXSZpX7
+	 i/uxTyNPXy2Iw==
 Received: from mbx-essen-02.secunet.de (10.53.40.198) by
  cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
@@ -46,16 +46,16 @@ Received: from mbx-essen-02.secunet.de (10.53.40.198) by
 Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
  (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Mar
- 2025 07:18:57 +0100
+ 2025 07:18:58 +0100
 Received: by gauss2.secunet.de (Postfix, from userid 1000)
-	id 7DAD0318295A; Mon, 24 Mar 2025 07:18:57 +0100 (CET)
+	id 916563183E89; Mon, 24 Mar 2025 07:18:57 +0100 (CET)
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 3/8] xfrm: simplify SA initialization routine
-Date: Mon, 24 Mar 2025 07:18:50 +0100
-Message-ID: <20250324061855.4116819-4-steffen.klassert@secunet.com>
+Subject: [PATCH 8/8] xfrm: Remove unnecessary NULL check in xfrm_lookup_with_ifid()
+Date: Mon, 24 Mar 2025 07:18:55 +0100
+Message-ID: <20250324061855.4116819-9-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250324061855.4116819-1-steffen.klassert@secunet.com>
 References: <20250324061855.4116819-1-steffen.klassert@secunet.com>
@@ -71,99 +71,33 @@ X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
  mbx-essen-02.secunet.de (10.53.40.198)
 X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-SA replay mode is initialized differently for user-space and
-kernel-space users, but the call to xfrm_init_replay() existed in
-common path with boolean protection. That caused to situation where
-we have two different function orders.
+This NULL check is unnecessary and can be removed.  It confuses
+Smatch static analysis tool because it makes Smatch think that
+xfrm_lookup_with_ifid() can return a mix of NULL pointers and errors so
+it creates a lot of false positives.  Remove it.
 
-So let's rewrite the SA initialization flow to have same order for
-both in-kernel and user-space callers.
-
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- include/net/xfrm.h    |  3 +--
- net/xfrm/xfrm_state.c | 22 ++++++++++------------
- net/xfrm/xfrm_user.c  |  2 +-
- 3 files changed, 12 insertions(+), 15 deletions(-)
+ net/xfrm/xfrm_policy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index e1eed5d47d07..15997374a594 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -1769,8 +1769,7 @@ void xfrm_spd_getinfo(struct net *net, struct xfrmk_spdinfo *si);
- u32 xfrm_replay_seqhi(struct xfrm_state *x, __be32 net_seq);
- int xfrm_init_replay(struct xfrm_state *x, struct netlink_ext_ack *extack);
- u32 xfrm_state_mtu(struct xfrm_state *x, int mtu);
--int __xfrm_init_state(struct xfrm_state *x, bool init_replay,
--		      struct netlink_ext_ack *extack);
-+int __xfrm_init_state(struct xfrm_state *x, struct netlink_ext_ack *extack);
- int xfrm_init_state(struct xfrm_state *x);
- int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type);
- int xfrm_input_resume(struct sk_buff *skb, int nexthdr);
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 69af5964c886..7b1028671144 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -3120,8 +3120,7 @@ u32 xfrm_state_mtu(struct xfrm_state *x, int mtu)
- }
- EXPORT_SYMBOL_GPL(xfrm_state_mtu);
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 6551e588fe52..30970d40a454 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -3294,7 +3294,7 @@ struct dst_entry *xfrm_lookup_with_ifid(struct net *net,
  
--int __xfrm_init_state(struct xfrm_state *x, bool init_replay,
--		      struct netlink_ext_ack *extack)
-+int __xfrm_init_state(struct xfrm_state *x, struct netlink_ext_ack *extack)
- {
- 	const struct xfrm_mode *inner_mode;
- 	const struct xfrm_mode *outer_mode;
-@@ -3188,12 +3187,6 @@ int __xfrm_init_state(struct xfrm_state *x, bool init_replay,
- 	}
- 
- 	x->outer_mode = *outer_mode;
--	if (init_replay) {
--		err = xfrm_init_replay(x, extack);
--		if (err)
--			goto error;
--	}
--
- 	if (x->nat_keepalive_interval) {
- 		if (x->dir != XFRM_SA_DIR_OUT) {
- 			NL_SET_ERR_MSG(extack, "NAT keepalive is only supported for outbound SAs");
-@@ -3225,11 +3218,16 @@ int xfrm_init_state(struct xfrm_state *x)
- {
- 	int err;
- 
--	err = __xfrm_init_state(x, true, NULL);
--	if (!err)
--		x->km.state = XFRM_STATE_VALID;
-+	err = __xfrm_init_state(x, NULL);
-+	if (err)
-+		return err;
- 
--	return err;
-+	err = xfrm_init_replay(x, NULL);
-+	if (err)
-+		return err;
-+
-+	x->km.state = XFRM_STATE_VALID;
-+	return 0;
- }
- 
- EXPORT_SYMBOL(xfrm_init_state);
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index b5266e0848e8..784a2d124749 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -919,7 +919,7 @@ static struct xfrm_state *xfrm_state_construct(struct net *net,
- 			goto error;
- 	}
- 
--	err = __xfrm_init_state(x, false, extack);
-+	err = __xfrm_init_state(x, extack);
- 	if (err)
- 		goto error;
- 
+ ok:
+ 	xfrm_pols_put(pols, drop_pols);
+-	if (dst && dst->xfrm &&
++	if (dst->xfrm &&
+ 	    (dst->xfrm->props.mode == XFRM_MODE_TUNNEL ||
+ 	     dst->xfrm->props.mode == XFRM_MODE_IPTFS))
+ 		dst->flags |= DST_XFRM_TUNNEL;
 -- 
 2.34.1
 
