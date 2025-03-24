@@ -1,132 +1,281 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FC625E47C;
-	Mon, 24 Mar 2025 12:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21A3802;
+	Mon, 24 Mar 2025 13:07:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742820991; cv=none; b=KFssJdKOhi3HUkwIxNszVRBamSW/vMzRaOqso1WECHW/3XjLLIXx+ZhugHW9G6Ete2Mx4vEIrDO2FVzr2hGkGBcigr5JP9KHBiB1jOeJQhHqcS6MWGZRKIagnFQ+g2jkDTrSZxNMmkFuO4j3jf65qGjEb018PDMhp0nrn17qE8w=
+	t=1742821680; cv=none; b=C7IsCNxOF536dmryzXuUn9ixqkzTWukqWmvFm0sGUNGr3QdgCxhCwzIRGNL89I1VhiN+/xbdNjm6TITSCo9c7BfPSUJp1grbGJ99Bn/G3GOs/DzYhnaDIv7SK2RUSSkLsSArKWniQT7A/t2Tz0kR/DBP5yrUeRoiOPUM5TG08r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742820991; c=relaxed/simple;
-	bh=ezGvbO1wqUoNHwv+PN6VCungnRScJm/t4mGyq5mDsTE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aMlPdksYyy21972xDZ1u6bF0bZTs+5nKE5GI2azvJtfqyr8u6w2cgyq9ilITIcNYeeekD0pSTgABUV4iitSaOX9IQwY0w3heMwc87qD81EWpyrJ71xMsv3OKDnRXIYtjMH8lJwkI/eGcCb2MemYyJZTFGi5UpVMxgto4Vt5ogJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hnGdIw95; arc=none smtp.client-ip=209.85.214.170
+	s=arc-20240116; t=1742821680; c=relaxed/simple;
+	bh=s+Gxhu0feqLh4H7P1AMMchfqpStJx3F1MnMzt+MUNRk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gWsHd0hyGzcteL6Vf0FunmLSACPdDVqKwcdyVryWhJgWGMTMHokGIm3L0x26etdv+p6BV0gUl0s4U4XJ8aLI6uA0/JwBtXeJP1kjDqx+NzkKXP8ak+a4kMCJEn4V9NTpZHfqr9dilA534tZ9FVXPdboZqR987BzkYLqwYDgM0YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KQXNQEZ1; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hnGdIw95"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2240d930f13so7846015ad.3;
-        Mon, 24 Mar 2025 05:56:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KQXNQEZ1"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30bf1d48843so41480081fa.2;
+        Mon, 24 Mar 2025 06:07:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742820989; x=1743425789; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zxh53Yydk3txbsGDbkvLklPCWbXYfybueW5aMTdDXaw=;
-        b=hnGdIw95IZgqiH/s4AcEJvoPUUlzx7Xmxgq1wetjzxivoqFQSjHCL4AjWqcDbqJob/
-         nILRTbKyYN6Mlc95VBFXdw9mvTGuM0tIzk1EcHhbaRed1z1ERCvoyfQ/iPd+Ubnzj4CN
-         D39oqjyMck9WYbQpnqTp08699xQzcqjFQ0oGOyHPVJqPyRz5X7QVXh1+DNaA0rkLUvjV
-         NkpAZQsPDxABnsMxQguon9C6loIBDyAuQIEvFxiNtu9ciYqQJMKg/7IjJ9D3nMGdIbGa
-         Qr1SiVCXeYHpGsSzxiEWACnU3AcEbotJsVIXWOKZv9dDDPXJTYbcoS9o5YpwImBK0OH4
-         84QQ==
+        d=gmail.com; s=20230601; t=1742821677; x=1743426477; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GNSuqIvT2Ng2JeZ8xE0YsDMx2KisrkadgylHR868IY4=;
+        b=KQXNQEZ1GKinvegBO9tGJM7rnMgihd7i7Frh6Yu1dFZkO3FrEFjesUbPrKoMzPHFw4
+         bCAXWd+96JDoUtuQCuliApwxOmhAKzHndtf44sezShXe10ZqBpgmURepJ+BZJpZHB0cT
+         ML3dmTI/1YQn24Lg9hFVxR00+HDkls0cXD6VJRlL0W0c1tULu4YGjZEKLv/LAqSvJVaA
+         8R6oChukmcAVUVCh5Dld9/fv6clFyTjJMIdN3y2A5zjWTwHyR2pRwHdwoxgTAQ5vaH8V
+         EidXJpX+iWr0cyFdXswVuKNjIkxIkjxpFNyS/B5tqcT55Ltyft7dDI1YQmnWunzArLhT
+         E3qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742820989; x=1743425789;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zxh53Yydk3txbsGDbkvLklPCWbXYfybueW5aMTdDXaw=;
-        b=HXlHAxkIYTeYRVCM0ipa5vQnU0d9knFFj4U0STsDrnwDabrbmghDe5umgFZo3zD70V
-         rm2k1g3gY7juxCtTR2Kq/yYivAYJMAMBEGWHvnC09i8lo8McZhzxBR/6W2aOOxtIIJq5
-         y287HwKerJbyWmffHh9PzdG5YglcnJgaFWPY0Anoiklq5Dwp4z8PnETNcY+YrwiPJ8E4
-         ZFpykqG2Rst1FV/6Pe/nWXZy3zo2N68YhqFSjgaqk/2cDgov2cFCJEE1f5CVHoFJx5VC
-         MqtYD6pAJh8uhodFoPGKXN9PU4mTmK6FDv1ptIoHpbPsJlcmQ7R/eYTVGkIplqNJPztO
-         Bv3w==
-X-Forwarded-Encrypted: i=1; AJvYcCWN/1ntPsARgJ8GVIZf1tp3/ZEmkzGLeW+gprB1ETN6JdLA2scu/sdhx8vZOh3vC6LnvpVj/1KH@vger.kernel.org, AJvYcCXom/unPKpLgZo7Mn2GhX+XIumcXtzF8H2gy6UBKXcq6iNSb5+mtFim5Cwl+Qs2OI8NFNMVihZT+ioRDvE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnLefX4bC0FD4rkoWpf8TNs8SCJ72YNFYL8PXMeiUbvJRM3eOy
-	esCuAOVWVly6v90EMHMy1rn4NIca4db1xlWICKNIAVIPh11Sg75AzDJIuRUo
-X-Gm-Gg: ASbGnctojP7KKjs4aF+R+vkQtKIXvX2PMAJpEIg3+5rsJePcST9bz4LGm1VR2OYAkyp
-	yyEcRtJL4Yf64wGFvBddIXvLEBczOL+6OGtdzkedfBkNEdDYp5a9KrWsBhNnOB/CxloIXbdUn8y
-	G0gJPqF7XG3vFq8VbVjqGL9bMu/4wE8rz/0PKCkzm387X8t5tdr6dnwThPXaEzoovtYbIzWYzZ0
-	F9wMLZJeW8fWy3TbUCHFkM+WF28JPxR1YKpGcMLVx+o0+SPXuvVQ6DRmS04cKq8XSH7NhkDvdVV
-	tYTKrLSgUnQcil5SFb/DNosdsl4MAl2R88HcXKJ/e3I8nACAPJ5PmfwqtyDC/XQZdbJXe1cBWTC
-	0D9juSwNZ
-X-Google-Smtp-Source: AGHT+IELD3OXpCg41ArCduhKMvNWj039uDftBpiIIy4uFbX+0C/gGjBEXV3FiTVRks/a2rOSsAVzJg==
-X-Received: by 2002:a17:903:2306:b0:223:49ce:67a2 with SMTP id d9443c01a7336-22780def8e7mr75066035ad.9.1742820989397;
-        Mon, 24 Mar 2025 05:56:29 -0700 (PDT)
-Received: from crabo-Latitude-7350.. (1-34-73-169.hinet-ip.hinet.net. [1.34.73.169])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-227811bafabsm69308745ad.139.2025.03.24.05.56.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 05:56:29 -0700 (PDT)
-From: Crag Wang <crag0715@gmail.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>,
-	nic_swsd@realtek.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: crag.wang@dell.com,
-	dell.client.kernel@dell.com,
-	Crag Wang <crag0715@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] r8169: add module parameter aspm_en_force
-Date: Mon, 24 Mar 2025 20:55:19 +0800
-Message-ID: <20250324125543.6723-1-crag0715@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1742821677; x=1743426477;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GNSuqIvT2Ng2JeZ8xE0YsDMx2KisrkadgylHR868IY4=;
+        b=eQUk+DbRmrg61iKtvlp+62rSHZGu0wQNczsaLFdKUTCcaFwox6PmcdGrIlL9sCVSWs
+         gOSv0K1EHVSQSuk7ozCUmrIXphgh9zbOjoUat1tMyGlAwilpo1UgcsxzGpo23JND4PRY
+         wZHCdqA1xPDcEQpQeKw3mfxxJKjVH1FNOJxZj0NvnrHotb3JbfFCGTG/QEWknkHa/mrL
+         kPJXFggMwkL9idtmM7LFyV/l4MqKmchiWfkO2fc7AxBYdYN024doiPtcE6/6b6s/ib0U
+         3jq7H/CBC4xKellkMexjEnXLI4wyIUur3ueV+LMU3FaFwn1FQpPQE4tnEFW5pGbO7uyF
+         bWaw==
+X-Forwarded-Encrypted: i=1; AJvYcCW4EqPr47/XAthyg9ZeLG7c8c0tS/aWF2+u5qKFkkYxytlIhZsf2Dl1dOqG7JM8NPGFh1l3kUM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yws1FXyQsoQdJVwM8OnZk7JFO+6H2P0SDc4zxsSR/OuJ+6YK4SP
+	Jv6ANQEP1GRqaE8BvknykEbooFu+i0rcQLpR/e16x4YFk72Svnl84rH5dFkotPFqoyieDgOLfoB
+	K5LvhPNwwsYxsni/1jcofYZ0K8xU=
+X-Gm-Gg: ASbGncttfqgYdtdkROOFwwvLdpCKn6lwB2uSzS3OrQxuxMk9Cl/xwEFf7wpm9SPkv4x
+	ImpVhju0eTJZ6x5HxWH/epQNeeEck1wNv09hODLIfTLEpfexP524fRamw7W/gfbH0KecmG1t5VT
+	ul6pH1W6CYeyTutqpgwfMmnv3r
+X-Google-Smtp-Source: AGHT+IFYwrfjIuJ65+z+yOC9oj8VtgI5vtpbiLrzAZV3cVO4V6HBz9U+KhZgx42D8gJ9aBmH+/UDc2ExLe6gnPbyODw=
+X-Received: by 2002:a2e:900d:0:b0:30b:ed8c:b1e7 with SMTP id
+ 38308e7fff4ca-30d7e229ffbmr46276281fa.18.1742821676045; Mon, 24 Mar 2025
+ 06:07:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250320192929.1557825-1-luiz.dentz@gmail.com>
+In-Reply-To: <20250320192929.1557825-1-luiz.dentz@gmail.com>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Mon, 24 Mar 2025 09:07:42 -0400
+X-Gm-Features: AQ5f1Jq91YKYKybykBbYDHzL0WeXRuk5doaYghOqvu9RltnDqfXWDi9cBhaap8U
+Message-ID: <CABBYNZ+b31WUEB_H=ZWCvjOSGMpoHpxCZZs5OrMw2uaqbCxQqQ@mail.gmail.com>
+Subject: Re: [GIT PULL] bluetooth-next 2025-03-20
+To: davem@davemloft.net, kuba@kernel.org
+Cc: linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-ASPM is disabled by default and is enabled if the chip register is
-pre-configured, as explained in #c217ab7.
+Hi,
 
-A module parameter is being added to the driver to allow users to
-override the default setting. This allows users to opt in and forcefully
-enable or disable ASPM power-saving mode.
+On Thu, Mar 20, 2025 at 3:29=E2=80=AFPM Luiz Augusto von Dentz
+<luiz.dentz@gmail.com> wrote:
+>
+> The following changes since commit 6855b9be9cf70d3fd4b4b9a00696eae6533532=
+0c:
+>
+>   Merge branch 'mptcp-pm-prep-work-for-new-ops-and-sysctl-knobs' (2025-03=
+-20 10:14:53 +0100)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.=
+git tags/for-net-next-2025-03-20
+>
+> for you to fetch changes up to 1a6e1539e97303c60d82e3d5e163973e771a9d7f:
+>
+>   Bluetooth: btnxpuart: Fix kernel panic during FW release (2025-03-20 14=
+:59:07 -0400)
+>
+> ----------------------------------------------------------------
+> bluetooth-next pull request for net-next:
+>
+> core:
+>
+>  - Add support for skb TX SND/COMPLETION timestamping
+>  - hci_core: Enable buffer flow control for SCO/eSCO
+>  - coredump: Log devcd dumps into the monitor
+>
+>  drivers:
+>
+>  - btusb: Add 2 HWIDs for MT7922
+>  - btusb: Fix regression in the initialization of fake Bluetooth controll=
+ers
+>  - btusb: Add 14 USB device IDs for Qualcomm WCN785x
+>  - btintel: Add support for Intel Scorpius Peak
+>  - btintel: Add support to configure TX power
+>  - btintel: Add DSBR support for ScP
+>  - btintel_pcie: Add device id of Whale Peak
+>  - btintel_pcie: Setup buffers for firmware traces
+>  - btintel_pcie: Read hardware exception data
+>  - btintel_pcie: Add support for device coredump
+>  - btintel_pcie: Trigger device coredump on hardware exception
+>  - btnxpuart: Support for controller wakeup gpio config
+>  - btnxpuart: Add support to set BD address
+>  - btnxpuart: Add correct bootloader error codes
+>  - btnxpuart: Handle bootloader error during cmd5 and cmd7
+>  - btnxpuart: Fix kernel panic during FW release
+>  - qca: add WCN3950 support
+>  - hci_qca: use the power sequencer for wcn6750
+>  - btmtksdio: Prevent enabling interrupts after IRQ handler removal
+>
+> ----------------------------------------------------------------
+> Arkadiusz Bokowy (1):
+>       Bluetooth: hci_event: Fix connection regression between LE and non-=
+LE adapters
+>
+> Arseniy Krasnov (2):
+>       Bluetooth: hci_uart: fix race during initialization
+>       Bluetooth: hci_uart: Fix another race during initialization
+>
+> Dan Carpenter (1):
+>       Bluetooth: Fix error code in chan_alloc_skb_cb()
+>
+> Dmitry Baryshkov (3):
+>       dt-bindings: net: bluetooth: qualcomm: document WCN3950
+>       Bluetooth: qca: simplify WCN399x NVM loading
+>       Bluetooth: qca: add WCN3950 support
+>
+> Dorian Cruveiller (1):
+>       Bluetooth: btusb: Add new VID/PID for WCN785x
+>
+> Douglas Anderson (1):
+>       Bluetooth: btusb: mediatek: Add err code to btusb claim iso printou=
+t
+>
+> Dr. David Alan Gilbert (2):
+>       Bluetooth: MGMT: Remove unused mgmt_pending_find_data
+>       Bluetooth: MGMT: Remove unused mgmt_*_discovery_complete
+>
+> Easwar Hariharan (4):
+>       Bluetooth: hci_vhci: convert timeouts to secs_to_jiffies()
+>       Bluetooth: MGMT: convert timeouts to secs_to_jiffies()
+>       Bluetooth: SMP: convert timeouts to secs_to_jiffies()
+>       Bluetooth: L2CAP: convert timeouts to secs_to_jiffies()
+>
+> Hao Qin (1):
+>       Bluetooth: btmtk: Remove the resetting step before downloading the =
+fw
+>
+> Janaki Ramaiah Thota (1):
+>       Bluetooth: hci_qca: use the power sequencer for wcn6750
+>
+> Jeremy Clifton (1):
+>       Bluetooth: Fix code style warning
+>
+> Jiande Lu (1):
+>       Bluetooth: btusb: Add 2 HWIDs for MT7922
+>
+> Kiran K (8):
+>       Bluetooth: btintel: Add support for Intel Scorpius Peak
+>       Bluetooth: btintel_pcie: Add device id of Whale Peak
+>       Bluetooth: btintel: Add DSBR support for ScP
+>       Bluetooth: btintel_pcie: Setup buffers for firmware traces
+>       Bluetooth: btintel_pcie: Read hardware exception data
+>       Bluetooth: btintel_pcie: Add support for device coredump
+>       Bluetooth: btintel_pcie: Trigger device coredump on hardware except=
+ion
+>       Bluetooth: btintel: Fix leading white space
+>
+> Loic Poulain (2):
+>       bluetooth: btnxpuart: Support for controller wakeup gpio config
+>       dt-bindings: net: bluetooth: nxp: Add wakeup pin properties
+>
+> Luiz Augusto von Dentz (4):
+>       Bluetooth: btintel_pci: Fix build warning
+>       Bluetooth: hci_core: Enable buffer flow control for SCO/eSCO
+>       Bluetooth: hci_vhci: Mark Sync Flow Control as supported
+>       HCI: coredump: Log devcd dumps into the monitor
+>
+> Neeraj Sanjay Kale (7):
+>       Bluetooth: btnxpuart: Move vendor specific initialization to .post_=
+init
+>       Bluetooth: btnxpuart: Add support for HCI coredump feature
+>       dt-bindings: net: bluetooth: nxp: Add support to set BD address
+>       Bluetooth: btnxpuart: Add support to set BD address
+>       Bluetooth: btnxpuart: Add correct bootloader error codes
+>       Bluetooth: btnxpuart: Handle bootloader error during cmd5 and cmd7
+>       Bluetooth: btnxpuart: Fix kernel panic during FW release
+>
+> Pauli Virtanen (5):
+>       net-timestamp: COMPLETION timestamp on packet tx completion
+>       Bluetooth: add support for skb TX SND/COMPLETION timestamping
+>       Bluetooth: ISO: add TX timestamping
+>       Bluetooth: L2CAP: add TX timestamping
+>       Bluetooth: SCO: add TX timestamping
+>
+> Pedro Nishiyama (4):
+>       Bluetooth: Add quirk for broken READ_VOICE_SETTING
+>       Bluetooth: Add quirk for broken READ_PAGE_SCAN_TYPE
+>       Bluetooth: Disable SCO support if READ_VOICE_SETTING is unsupported=
+/broken
+>       Bluetooth: btusb: Fix regression in the initialization of fake Blue=
+tooth controllers
+>
+> Sean Wang (1):
+>       Bluetooth: btmtksdio: Prevent enabling interrupts after IRQ handler=
+ removal
+>
+> Vijay Satija (1):
+>       Bluetooth: btintel: Add support to configure TX power
+>
+> Wentao Guan (1):
+>       Bluetooth: HCI: Add definition of hci_rp_remote_name_req_cancel
+>
+> Zijun Hu (1):
+>       Bluetooth: btusb: Add 13 USB device IDs for Qualcomm WCN785x
+>
+>  .../bindings/net/bluetooth/nxp,88w8987-bt.yaml     |  18 +-
+>  .../bindings/net/bluetooth/qualcomm-bluetooth.yaml |   2 +
+>  Documentation/networking/timestamping.rst          |   8 +
+>  drivers/bluetooth/bfusb.c                          |   3 +-
+>  drivers/bluetooth/btintel.c                        | 341 ++++++++++++
+>  drivers/bluetooth/btintel.h                        |  24 +
+>  drivers/bluetooth/btintel_pcie.c                   | 582 +++++++++++++++=
++++++-
+>  drivers/bluetooth/btintel_pcie.h                   |  93 ++++
+>  drivers/bluetooth/btmtk.c                          |  10 -
+>  drivers/bluetooth/btmtksdio.c                      |   3 +-
+>  drivers/bluetooth/btnxpuart.c                      | 407 +++++++++++---
+>  drivers/bluetooth/btqca.c                          |  27 +-
+>  drivers/bluetooth/btqca.h                          |   4 +
+>  drivers/bluetooth/btusb.c                          |  36 +-
+>  drivers/bluetooth/hci_ldisc.c                      |  19 +-
+>  drivers/bluetooth/hci_qca.c                        |  27 +-
+>  drivers/bluetooth/hci_uart.h                       |   1 +
+>  drivers/bluetooth/hci_vhci.c                       |   5 +-
+>  include/linux/skbuff.h                             |   7 +-
+>  include/net/bluetooth/bluetooth.h                  |   1 +
+>  include/net/bluetooth/hci.h                        |  36 +-
+>  include/net/bluetooth/hci_core.h                   |  27 +-
+>  include/net/bluetooth/l2cap.h                      |   7 +-
+>  include/uapi/linux/errqueue.h                      |   1 +
+>  include/uapi/linux/net_tstamp.h                    |   6 +-
+>  net/bluetooth/6lowpan.c                            |   9 +-
+>  net/bluetooth/coredump.c                           |  28 +-
+>  net/bluetooth/hci_conn.c                           | 122 +++++
+>  net/bluetooth/hci_core.c                           |  77 +--
+>  net/bluetooth/hci_event.c                          |  15 +-
+>  net/bluetooth/hci_sync.c                           |  32 +-
+>  net/bluetooth/iso.c                                |  24 +-
+>  net/bluetooth/l2cap_core.c                         |  45 +-
+>  net/bluetooth/l2cap_sock.c                         |  15 +-
+>  net/bluetooth/mgmt.c                               |  46 +-
+>  net/bluetooth/mgmt_util.c                          |  17 -
+>  net/bluetooth/mgmt_util.h                          |   4 -
+>  net/bluetooth/sco.c                                |  19 +-
+>  net/bluetooth/smp.c                                |   4 +-
+>  net/core/skbuff.c                                  |   2 +
+>  net/ethtool/common.c                               |   1 +
+>  net/socket.c                                       |   3 +
+>  42 files changed, 1890 insertions(+), 268 deletions(-)
 
--1: default unset
- 0: ASPM disabled forcefully
- 1: ASPM enabled forcefully
+Is there a problem that these changes haven't been pulled yet?
 
-Signed-off-by: Crag Wang <crag0715@gmail.com>
----
- drivers/net/ethernet/realtek/r8169_main.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 53e541ddb439..161b2f2edf52 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -35,6 +35,10 @@
- #include "r8169.h"
- #include "r8169_firmware.h"
- 
-+static int aspm_en_force = -1;
-+module_param(aspm_en_force, int, 0444);
-+MODULE_PARM_DESC(aspm_en_force, "r8169: An integer, set 1 to force enable link ASPM");
-+
- #define FIRMWARE_8168D_1	"rtl_nic/rtl8168d-1.fw"
- #define FIRMWARE_8168D_2	"rtl_nic/rtl8168d-2.fw"
- #define FIRMWARE_8168E_1	"rtl_nic/rtl8168e-1.fw"
-@@ -5398,6 +5402,14 @@ static void rtl_init_mac_address(struct rtl8169_private *tp)
- /* register is set if system vendor successfully tested ASPM 1.2 */
- static bool rtl_aspm_is_safe(struct rtl8169_private *tp)
- {
-+	if (aspm_en_force == 0) {
-+		dev_info(tp_to_dev(tp), "ASPM disabled forcefully");
-+		return false;
-+	} else if (aspm_en_force > 0) {
-+		dev_info(tp_to_dev(tp), "ASPM enabled forcefully");
-+		return true;
-+	}
-+
- 	if (tp->mac_version >= RTL_GIGA_MAC_VER_61 &&
- 	    r8168_mac_ocp_read(tp, 0xc0b2) & 0xf)
- 		return true;
--- 
-2.43.0
-
+--=20
+Luiz Augusto von Dentz
