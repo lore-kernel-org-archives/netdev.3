@@ -1,43 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D8625F988
-	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 14:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2A125DAF7
+	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 14:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742825784; cv=none; b=omyQGlzXv79xnooAPZJY6EE27SNM0BE4fKzX5b9cqS9kej3G6uzr/8jUD2LVHWu/hAsNEgFNejtYHcu/IRtBPozadEaj5LJ7cdUk7r4klr/Yt6PJhC//cRw2TnKPnULBx+GPW40mp+505mGl7U6qDXL3rdXrePKr1Yh8Eq/6LIw=
+	t=1742825900; cv=none; b=tlBojHMEMPaEfzekfv27Mj+Nsx2daAiDdrMm26SD3d2Zp3N6aE1HZXOqjBkQoYzsCpgyXTcl3Wr/WCf58glxAttgxDmQlYn32Gxi7OtR5IWE1uwBdvqUdXkyjE0m6JonlKMqA6u9LAPuVZJNCi5C7BRH1okpT9i4na4x894EBxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742825784; c=relaxed/simple;
-	bh=SDy+xAScuDPanV/Ei4cGrSeN2jvSJjen3Flv0enuu5E=;
+	s=arc-20240116; t=1742825900; c=relaxed/simple;
+	bh=w7AiCJEovNS51vP+s/ylXjk8R6u4vH6S2IHQoxU+3z8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aKfgVY3q5B+ZN7taEOzAoWPT3tUlEYZCwhOIWNfTZsFS9DKiWIC2OxU4tLkynE7frjcGaA5eULFEdlbZyz7zOWRow6KxnQWsYtaZamxhtd7NigQ7TjGhk5HBb+sClZIb4q6Jab2YE6SIEqcwxdSjsEG19IBCXofAJPR1cnX6Gfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e1Bz+J2U; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=B6XJN2heNgSxwnMRro4yDdH5KMWn2DQ2YcdjX2rR7PagWESsCB99vyy7Vm3IUzCykuFgMvN9JpVwA6GwVDunakZwiI/se6ltA0rJAhJ1lYAPm6FeVGkBnVL5YKW1hxJSl8hXPqrqOLg4W3B9B76DX8YuM6eMgkCV6/2TYzfde+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=p5LtoI5q; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e1Bz+J2U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D17E8C4CEDD;
-	Mon, 24 Mar 2025 14:16:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742825783;
-	bh=SDy+xAScuDPanV/Ei4cGrSeN2jvSJjen3Flv0enuu5E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e1Bz+J2USgAWvrPIWodT1WNIRBHETF0IGwqLlSRID3e1jc0mMntx7W7+2raglxwWS
-	 GQSoPToo0Nf72gS1gyjIDOARW3jsfZQzz0/u7avAHuV9O5gWkvA1lcRqGJpY89lT/+
-	 q/gEYsSoSNmZIyRSi+r27R+CuPXmBT+nFktQrbkJYVHgvECmpIH3EGA4RzrDxIty6i
-	 pdkYdh95dVqyK+1e/APvHlZmJFtfx/xAFe5rlI702waefKa2tFwlrSo86vHkzm5j4c
-	 41Vr8VK9ue7WP76PgkUSuLYPQiy+KQdPJ5r4ygD2raKn8ZgBYtANi4rZUuGv17HXtv
-	 2IjagOZr5518w==
-Date: Mon, 24 Mar 2025 14:16:19 +0000
-From: Simon Horman <horms@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Neal Cardwell <ncardwell@google.com>, netdev@vger.kernel.org,
-	eric.dumazet@gmail.com, Tom Herbert <tom@herbertland.com>
-Subject: Re: [PATCH net-next] net: rfs: hash function change
-Message-ID: <20250324141619.GE892515@horms.kernel.org>
-References: <20250321171309.634100-1-edumazet@google.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="p5LtoI5q"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Wr61wG5gGFMP0iMfqIz9bScXDKcyIXQbv3cGXrGFgxM=; b=p5LtoI5qvVS9dmRTJnpArEH8nU
+	CXhqCkAuTGSIpAERlm40hcpR+CaemeKieTXGUnacJtZv8tWIeNCxmXVqMXxvjNqEjim1b1INlmGVN
+	kptyaXF2rFACaDnnjMmJEEJyJB/aRwsatm+fn3CSYq8yiRX32nhrGU+nkl/3USCDNAeE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1twid5-006wYz-Lq; Mon, 24 Mar 2025 15:18:15 +0100
+Date: Mon, 24 Mar 2025 15:18:15 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: David Wei <dw@davidwei.uk>
+Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Stanislav Fomichev <stfomichev@gmail.com>
+Subject: Re: [PATCH net] net: page_pool: replace ASSERT_RTNL() in
+ page_pool_init()
+Message-ID: <85f2a226-4dd3-4ad0-afb4-351ce2487961@lunn.ch>
+References: <20250324014639.4105332-1-dw@davidwei.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,57 +48,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250321171309.634100-1-edumazet@google.com>
+In-Reply-To: <20250324014639.4105332-1-dw@davidwei.uk>
 
-On Fri, Mar 21, 2025 at 05:13:09PM +0000, Eric Dumazet wrote:
-> RFS is using two kinds of hash tables.
+On Sun, Mar 23, 2025 at 06:46:39PM -0700, David Wei wrote:
+> Replace a stray ASSERT_RTNL() in page_pool_init() with
+> netdev_assert_locked().
 > 
-> First one is controled by /proc/sys/net/core/rps_sock_flow_entries = 2^N
-> and using the N low order bits of the l4 hash is good enough.
+> Fixes: 1d22d3060b9b ("net: drop rtnl_lock for queue_mgmt operations")
+> Signed-off-by: David Wei <dw@davidwei.uk>
+> ---
+>  net/core/page_pool.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Then each RX queue has its own hash table, controled by
-> /sys/class/net/eth1/queues/rx-$q/rps_flow_cnt = 2^X
-> 
-> Current hash function, using the X low order bits is suboptimal,
-> because RSS is usually using Func(hash) = (hash % power_of_two);
-> 
-> For example, with 32 RX queues, 6 low order bits have no entropy
-> for a given queue.
-> 
-> Switch this hash function to hash_32(hash, log) to increase
-> chances to use all possible slots and reduce collisions.
-> 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Cc: Tom Herbert <tom@herbertland.com>
+> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> index f5e908c9e7ad..2f469b02ea31 100644
+> --- a/net/core/page_pool.c
+> +++ b/net/core/page_pool.c
+> @@ -281,7 +281,7 @@ static int page_pool_init(struct page_pool *pool,
+>  		 * configuration doesn't change while we're initializing
+>  		 * the page_pool.
+>  		 */
+> -		ASSERT_RTNL();
+> +		netdev_assert_locked(params->netdev);
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Adding a bit more context:
 
-...
+        if (pool->slow.flags & PP_FLAG_ALLOW_UNREADABLE_NETMEM) {
+                /* We rely on rtnl_lock()ing to make sure netdev_rx_queue
+                 * configuration doesn't change while we're initializing
+                 * the page_pool.
+                 */
+                ASSERT_RTNL();
 
-> @@ -4903,13 +4908,13 @@ bool rps_may_expire_flow(struct net_device *dev, u16 rxq_index,
->  
->  	rcu_read_lock();
->  	flow_table = rcu_dereference(rxqueue->rps_flow_table);
-> -	if (flow_table && flow_id <= flow_table->mask) {
-> +	if (flow_table && flow_id < (1UL << flow_table->log)) {
->  		rflow = &flow_table->flows[flow_id];
->  		cpu = READ_ONCE(rflow->cpu);
->  		if (READ_ONCE(rflow->filter) == filter_id && cpu < nr_cpu_ids &&
->  		    ((int)(READ_ONCE(per_cpu(softnet_data, cpu).input_queue_head) -
->  			   READ_ONCE(rflow->last_qtail)) <
-> -		     (int)(10 * flow_table->mask)))
-> +		     (int)(10 << flow_table->log)))
+If ASSERT_RTNL() is now wrong, you also need to update the comment.
 
-I am assuming that we don't care that (10 * flow_table->mask) and
-(10 << flow_table->log) are close but not exactly the same.
-
-e.g. mask = 0x3f => log = 6
-
-     10 * 0x3f = 630
-     10 << 6   = 640
-
->  			expire = false;
->  	}
->  	rcu_read_unlock();
-
-...
+	Andrew
