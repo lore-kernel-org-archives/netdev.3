@@ -1,72 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD99263F59;
-	Mon, 24 Mar 2025 18:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BF8263F59
+	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 18:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742840779; cv=none; b=lfhC2GQIqlsU2LjJ2lQKlSifQtpryJqlEycaK7q3Fw+Kq8XdsthOut5Xzd4kZQyS9vZVyz3QItTzodi1Sz2C515ztvWbd9nfHCqKNbEGDtiITTlDUddqrZf3Bk2r8MN0MUSiiziCBguXKizN7xc+bxkwe4sQzLiXcCna5MwFms0=
+	t=1742840795; cv=none; b=ENIbCLbr+/0aDe7MziMmFJKnxD0VGhaWfnURukUX8ZJFr/MMSKiTRPBtNS5ynRYTT1PMKwF9IjSN377MkjSFbJrhLQYgEYfcJpLwf8StaVzLc6SqnDASJx6WZx19paxLu7sMEX2aDpaZjasnmJSDNSBsyQNn5t3GKucz5UHKd4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742840779; c=relaxed/simple;
-	bh=iwATA+Qn6Ifas2JD09TOZptJ0vS/eM5Ffuc+wJCxIvI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MdP2YhVaTI37ljHZ0RgQJDAkaV+WtLRQvpLPmZhXfhQHYnK6wLgIPLg1cra7h6n81EXJFXAs4IatnKUku6S1zz2O9vfNV9jpvnZszOPmCCQHtEGqsNOL8EFhKtFeEMBtHj276QyNQZjt0ZjnYZ8fVzPEK1gUnp4rogGNLy5Njsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iP2VTDwz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742840795; c=relaxed/simple;
+	bh=sgxob3PFAPhjAH5p7mwcZ4U4FELSoCR+TXLS7js9IXE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gJZ+kOFuoFz/gUhZr5NBgc/dhnSxRb+fVHngC3Z/f3fPYhn9OK/bae9fQEnOB039hLBYsGoa7mDcySU/HYtJUjSV+dVB9bGOMDFQDDlImKcNRmbLbaP343rEXYPSzMyt7JnAiawOS7nP84r6PL7g0X0bvjRbQPFTcJiltoo5n9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Xi3wp2Fw; arc=none smtp.client-ip=207.171.188.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iP2VTDwz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7B0C4CEDD;
-	Mon, 24 Mar 2025 18:26:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742840778;
-	bh=iwATA+Qn6Ifas2JD09TOZptJ0vS/eM5Ffuc+wJCxIvI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iP2VTDwzmXqLWhG+ptlDEO7KWTJGwF7OJfyLAuSBPfEOOT6C0yv4lK0Vi6U6Twly3
-	 8SqeJr+ZgB2BA/QkkjJbw73N0gbB39OJSsn7woEn5P2TL1RsGMn/LOfxiu5NoeCGxe
-	 HcvWrwgZnbxZcGF/qDc5WMJ6SntjQOiz7/5C6CC7qmmJ92KCuLkK81alYCxuKB7YC+
-	 5k0PGOJhu/61RuWeeEw6SscV5SBrG+BWNvhU6mxiMJg7f6kqmyXhCYOZ3CzhUBq2Ap
-	 /7Z9qG25Hq3K3r/5YotV0eBJHt8QBAczbVt+GES7ffspQKX5YKRXtyXvT8icG8oNCa
-	 m2iY/T/E4Sr0Q==
-Date: Mon, 24 Mar 2025 11:26:11 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Lubomir Rintel <lkundrak@v3.sk>
-Cc: linux-usb@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, Eric Dumazet
- <edumazet@google.com>, "David S. Miller" <davem@davemloft.net>, Andrew Lunn
- <andrew+netdev@lunn.ch>
-Subject: Re: [PATCH v2 net-next] rndis_host: Flag RNDIS modems as WWAN
- devices
-Message-ID: <20250324112611.0eb6fdc3@kernel.org>
-In-Reply-To: <20250317150739.2986057-1-lkundrak@v3.sk>
-References: <20250317150739.2986057-1-lkundrak@v3.sk>
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Xi3wp2Fw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1742840794; x=1774376794;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=U+MlLshkUAnl5AL1tVgvSJvh9OhyxNCptRapEC4hVo4=;
+  b=Xi3wp2FwGljpIGXSsUIlX2JtUarGEeqxt5fje4Ms9e7DL1ABgbh0Y7r6
+   +g660owHXQvqWUQaUpwu9dDM1o1iGxf4LTNgyDtyMtMJGKaOHGfwx/3UO
+   h41gh94aMLPsUoGqq7XAbT6QPTRjGrFkq5zpxixkwrwzcHeaI/hap8xlv
+   E=;
+X-IronPort-AV: E=Sophos;i="6.14,272,1736812800"; 
+   d="scan'208";a="810140830"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2025 18:26:27 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [10.0.7.35:9191]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.63.40:2525] with esmtp (Farcaster)
+ id b4aeecf6-bfbf-4ed5-9a6d-6902fdcbc565; Mon, 24 Mar 2025 18:26:14 +0000 (UTC)
+X-Farcaster-Flow-ID: b4aeecf6-bfbf-4ed5-9a6d-6902fdcbc565
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Mon, 24 Mar 2025 18:26:13 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.106.100.20) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Mon, 24 Mar 2025 18:26:10 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <willemdebruijn.kernel@gmail.com>
+CC: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
+	<horms@kernel.org>, <kuba@kernel.org>, <kuni1840@gmail.com>,
+	<kuniyu@amazon.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>
+Subject: Re: [PATCH v1 net 3/3] selftest: net: Check wraparounds for sk->sk_rmem_alloc.
+Date: Mon, 24 Mar 2025 11:25:20 -0700
+Message-ID: <20250324182602.47871-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <67e1810e3b460_2f662329482@willemb.c.googlers.com.notmuch>
+References: <67e1810e3b460_2f662329482@willemb.c.googlers.com.notmuch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D033UWA004.ant.amazon.com (10.13.139.85) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On Mon, 17 Mar 2025 16:07:37 +0100 Lubomir Rintel wrote:
-> Set FLAG_WWAN instead of FLAG_ETHERNET for RNDIS interfaces on Mobile
-> Broadband Modems, as opposed to regular Ethernet adapters.
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Date: Mon, 24 Mar 2025 11:58:06 -0400
+> > +TEST_F(so_rcvbuf, rmem_max)
+> > +{
+> > +	char buf[16] = {};
+> > +	int ret, i;
+> > +
+> > +	create_socketpair(_metadata, self, variant);
+> > +
+> > +	ret = setsockopt(self->server, SOL_SOCKET, SO_RCVBUFFORCE,
+> > +			 &(int){INT_MAX}, sizeof(int));
+> > +	ASSERT_EQ(ret, 0);
+> > +
+> > +	ASSERT_EQ(get_prot_pages(_metadata, variant), 0);
+> > +
+> > +	for (i = 1; ; i++) {
+> > +		ret = send(self->client, buf, sizeof(buf), 0);
+> > +		ASSERT_EQ(ret, sizeof(buf));
+> > +
+> > +		if (i % 10000 == 0) {
+> > +			int pages = get_prot_pages(_metadata, variant);
+> > +
+> > +			/* sk_rmem_alloc wrapped around too much ? */
+> > +			ASSERT_LE(pages, *variant->max_pages);
+> > +
+> > +			if (pages == *variant->max_pages)
+> > +				break;
 > 
-> Otherwise NetworkManager gets confused, misjudges the device type,
-> and wouldn't know it should connect a modem to get the device to work.
-> What would be the result depends on ModemManager version -- older
-> ModemManager would end up disconnecting a device after an unsuccessful
-> probe attempt (if it connected without needing to unlock a SIM), while
-> a newer one might spawn a separate PPP connection over a tty interface
-> instead, resulting in a general confusion and no end of chaos.
-> 
-> The only way to get this work reliably is to fix the device type
-> and have good enough version ModemManager (or equivalent).
-> 
-> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-> Fixes: 475ddf05ce2d ("rndis_host: Flag RNDIS modems as WWAN devices")
+> Does correctness depend here on max_pages being a multiple of 10K?
 
-This should point to the commit you're fixing. Judging purely by the
-touched lines perhaps 63ba395cd7a5 ("rndis_host: support Novatel Verizon
-USB730L") ?
--- 
-pw-bot: cr
+10K may be too conservative, but at least we need to ensure
+that the size of accumulated skbs exceeds 1 PAGE_SIZE to
+fail on the ASSERT_LE(), otherwise we can't detect the multiple
+wraparounds even without patch 1.
+
+The later sleep for call_rcu() was dominant than this loop on
+my machine.
+
+Thanks!
