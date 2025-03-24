@@ -1,236 +1,146 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F06625FA03
-	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 12:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9267125DD04
+	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 12:56:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742820750; cv=none; b=O+IBLI2/z3nKmY0YX3psCWr/+zGMgv9lEZpasweRPbg4FZP7IOGAo1Y2Z9uYUpJU8oJKkIFLE5lVlUa/O4d1Bli+t1mIcVpFd2SgsEBaPF/Lg1HPNofHk2WEh7TEspcjl3yrrTFRWuZm+S+ppr8Mcj5qH2f6foRMRAuXyDMbb6c=
+	t=1742820973; cv=none; b=cAboRgm+hTtR0QoMa8Pdtjhfi1W6rehA7EPzeSRUgBCdCNmkNYYIZV1Wdk+xHWjqogszQIEAZ0uN4eIBUPOPEDzSqxk/+PeMZWFK4oZJHTPKze4XVepY/R2h7cSWxQYx17mGgcPGhlZz2D+a6T7OfP7hjbXR0/LZI3a3LzvmuXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742820750; c=relaxed/simple;
-	bh=chitrqrnSa6cJWsoZBuUNvscJvUlLOoj3Yo6FWLqkkY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WYmZpY89XOH+l06opskq5LxRJFYy53kpf21myGDNe+wh1KMZ6vDlUFH2oqnYLVUlgyK+EMvkXRdtEhONQNP0QpVkmDoWi8Jujj9SlD18w4169FRAmjHUszdOIeSrgL76jIS6CwwC5Cg/xDzzsuQFfwE/UQknyrDrag1HliF/ZYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XlmsQXd0; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1742820973; c=relaxed/simple;
+	bh=Bb5ashzNWlu6TPRKb3SZq8oM68pwtoH9f4wtwRqtYQc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TIREFCPX2U3B0zzrR3TThkjZJpzqs2r5L3klMrdQdkNIzhCrr5Uagoy7uNT5+hNZtEM3dsqkRAZy+BOzUi4BTfo65TINNR3QpW7dLB+T71Be8e+UxUGeASP3GEjyxAWrfKMH/dfJ/Y9R+9/tQ3JXhMpTxCYYUig080CXQolK9KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=doxrXvdx; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XlmsQXd0"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43ce4e47a85so4998145e9.0
-        for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 05:52:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="doxrXvdx"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3913fdd003bso2153325f8f.1
+        for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 05:56:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742820746; x=1743425546; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LzQkT2/vQ7md+WCBkEBxd0za9gJ+1+dJS4YU8fFuils=;
-        b=XlmsQXd0Wz8I4pY28KoUIEZVjuQWPht89M9yhZJWoiSOrQfNeCq6o2Ud458tOG0gFy
-         joJFaZ22O432JwXVbvpUevrP0qAaInsUOgflWn3vFNO69sprFJuyJTBBhM/auan/W7GG
-         MbuT+0aDtE5+RlKEeu2hocC4zw4tLPCr+NmjmU7CaxS5FYjynOrW5vwytgz1aKZqgHhR
-         HmX13ziOEtf7N5pG0pNmrLaCN5SC+arCQhuaaS3rajzmJRN1wkZVzl1WdYRpnZu8jQqb
-         79qTUm8Qc6wAJHqcqwI/5XUylUoS1mOlX+fTnvV20/uigUhLXO+RLGQ9D2hhKH5C+ExF
-         oabg==
+        d=suse.com; s=google; t=1742820970; x=1743425770; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bb5ashzNWlu6TPRKb3SZq8oM68pwtoH9f4wtwRqtYQc=;
+        b=doxrXvdxyYtGGTFF7JEWuCuWVtoQ0ZD/FKlMJu0BlMlhNPZ+t2jGrdj3lh3LGcy1Nm
+         TkLRba8CUr24B9iq689xezt/BFmnrEMdce5/y+LpXyCjOO4E6xJfPNlC22s4uHf3xX0N
+         boycByc/0lXny9nwjTXnAgxz7aj0EczA/Kwr0M33OUWr9SY2tjs5lwX9LSMoUwblKTRE
+         jzW++xaud7iyE0+EW9YDVQ8lhvlPdeatWTpqdluLeptwiWKOM41rjH7nYk9ChcTjUDCr
+         wdq0/ZN1iKGOCUfa65d3mCnAlkq4c/9I++ooSdTOPBZrMz4XKcli8nbPBgaewIlIBdJi
+         ZQJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742820746; x=1743425546;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LzQkT2/vQ7md+WCBkEBxd0za9gJ+1+dJS4YU8fFuils=;
-        b=Gb9CJc0qMtzuQQVBRgpCxDcm/bkb7tZ+46+HQ23xLtzwJDvCczOgLuHkGps29lDypl
-         HlLx/HrB4ytfXwh5e5FwXBzEzSXnXsfeNRPFKctZJvukwHbAJvNM0AnH+59Lqo20nEjQ
-         NdCtrJHxPEdCysiSsOY93/QsaPXLg/1Q213Sh2HQ6dh+7s3u6KKKMRDeNpE+KHRoPb8o
-         jTZgPFs5LDNI+TUIxoJdfLDwCpjZpUeIcFxEw9ExywUA6THC+lVSTIqNCAy1srhTj2sw
-         m19rFTXICvVv7cr0msLxrqoGwp0d7Un9SXc3klXzBlKb+hdPaYIlxzBbz/mXmIJYih4N
-         SUuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXwV/vNoyQuN3T2SXFdvjJwy+YNl4U2Mv74/glWq8usonkE9JUQK9E1BRbpcGOOYN1fqsQsD/8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoVze4JYaCWKklvFNn25/EaBKJFgaUSGYrgjAK5FdJEHtpz0Sv
-	SKQEYOLt+8gYDG3NMR/cuyQgg4uk2F01pUtifDII4gi5psJP49DF0n3Jb5a1hXc=
-X-Gm-Gg: ASbGncuaNfzkKwVBcSwOgUzlMAVqdaM0dWj5MYiUQQxZPkAm8RcAD5/6LYed7FnGmwG
-	i76Dr+SO0tzEiPlmwZDgQhl6eIX670GxtKyIueSCicsfNQ96CfWJH9sVqkNMf6aMAbpl/+v5D8L
-	Y8Mez/6vraOp8ybimqCNcNg5rLL6EDdOU/9RQYmHz6ttNm6kYLryOk7vKQBTVD8aAl+UxW98zmV
-	eCHVCd+v+ms/rW0NrOa1PQMZ3qxwYELq/T10+ZTxzOrDIDOi5G/eH6Bww1nNmCzTJpGv4EW5rSH
-	3/1dlPaoWnRPCa+7IxW/9rHTYXf5AP/wxniJrs5P+h1kGDwov9VRNKxdFA==
-X-Google-Smtp-Source: AGHT+IHigrY3PHOFldlCzJ8vlwnInEATFLh/99kGQvln1Q9qBXvO1GQ8JqQwrXTWTD0MPZYBaFhJrw==
-X-Received: by 2002:a05:600c:c08:b0:43b:bbb9:e25f with SMTP id 5b1f17b1804b1-43d50a526bfmr48046505e9.6.1742820746484;
-        Mon, 24 Mar 2025 05:52:26 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.198.86])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d4fd277d5sm120614535e9.19.2025.03.24.05.52.25
+        d=1e100.net; s=20230601; t=1742820970; x=1743425770;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bb5ashzNWlu6TPRKb3SZq8oM68pwtoH9f4wtwRqtYQc=;
+        b=ekGGsMcuMATN0+GCJ0l2F2CwFsVV/lboSIY+TsWMt2YORjUr1tKiDV6hoT/Zt9ui+o
+         r8P125VQ4Ewls+To0ur7qdOFHc3GROguJDnxjMxNiTM+5VifXfc8XyOPxE9rwcmszLQN
+         9RXEoqXLRLPnfaq2w5rROt5duwSaJLM6sCx/zBCS3xNA+ODyt3NfSsAtJi9c74XG5zSO
+         YHBcNDhsp0IUGRaj/yd3W8qnxDfaBJWwICTMfTth7jx6S1qqNYgsTH4gUBwRtNM5XPXy
+         UcyTiHzk4c4yTdzU03tJggn1dGSOlcm6KlTbb2VdVxBAuCzP3DoONVodWBaQxxs3ntuT
+         3JLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVV7AliQsIlw+9H9YPHMLXBB1eF7BaZr42ixOP4CfqL1FckUYS0PR4YyeICpEfatQjRjnW+pZA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBV68jj+MWMn5RyAQeX1XKPccR/POvb+IQBTyeNWDoTmk1FalD
+	57kKV3b99hG5vxaexQJRK1iRYAHldRFve2OXNGGyjceoeZNUdYP5zqpu0koG5Ts=
+X-Gm-Gg: ASbGncuSm0d++QbPr0dcovF0VXTCMLw9uzNr2PvZcaQRsccKi3708tul30x320f+Wcs
+	3KkfhxzqwcgMjyf/eAbgOybV2uQQFVkGOGc80k14e5mwKa172gCoIuZNMlMEBYJZ15YmNM8rZRR
+	/DiIlD7VVuZ5lDfgOcsFEdTyobNPhHIAl9ffo538n/vQ/IciRWK7+dDqNCT/SBxQpDZ/IrqDSpm
+	miPqzBp9Y4rhDvqx01dDvbUH/yLtVGWVXE6Bc1iPImysUJofmjgK5kT6sou6Cc8XfMrneMKF69v
+	bCYRq2U+T8dodjQQpqiKszPzE0ILuxuWNDp6LfS4RvnQ4Tk=
+X-Google-Smtp-Source: AGHT+IEh+2cx2NjeBYko3qeni7OqGRsZaVwIGE91RRbMpXS3hmSeZB73isRPNemQZA8pSphOxB2XdQ==
+X-Received: by 2002:a05:6000:1565:b0:38d:b028:d906 with SMTP id ffacd0b85a97d-3997f933816mr11122788f8f.21.1742820969725;
+        Mon, 24 Mar 2025 05:56:09 -0700 (PDT)
+Received: from blackdock.suse.cz ([193.86.92.181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9e65besm11013603f8f.65.2025.03.24.05.56.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 05:52:25 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Alex Elder <elder@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH] dt-bindings: net: qcom,ipa: Correct indentation and style in DTS example
-Date: Mon, 24 Mar 2025 13:52:22 +0100
-Message-ID: <20250324125222.82057-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.43.0
+        Mon, 24 Mar 2025 05:56:09 -0700 (PDT)
+Date: Mon, 24 Mar 2025 13:56:07 +0100
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jozsef Kadlecsik <kadlec@netfilter.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, cgroups@vger.kernel.org, 
+	Jan Engelhardt <ej@inai.de>, Florian Westphal <fw@strlen.de>
+Subject: Re: [PATCH v2] netfilter: Make xt_cgroup independent from net_cls
+Message-ID: <rpu5hl3jyvwhbvamjykjpxdxdvfmqllj4zyh7vygwdxhkpblbz@5i2abljyp2ts>
+References: <20250305170935.80558-1-mkoutny@suse.com>
+ <Z9_SSuPu2TXeN2TD@calendula>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6dgz5r7q7tf2aomx"
+Content-Disposition: inline
+In-Reply-To: <Z9_SSuPu2TXeN2TD@calendula>
 
-DTS example in the bindings should be indented with 2- or 4-spaces and
-aligned with opening '- |', so correct any differences like 3-spaces or
-mixtures 2- and 4-spaces in one binding.
 
-No functional changes here, but saves some comments during reviews of
-new patches built on existing code.
+--6dgz5r7q7tf2aomx
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2] netfilter: Make xt_cgroup independent from net_cls
+MIME-Version: 1.0
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- .../devicetree/bindings/net/qcom,ipa.yaml     | 124 +++++++++---------
- 1 file changed, 62 insertions(+), 62 deletions(-)
+Hello Pablo.
 
-diff --git a/Documentation/devicetree/bindings/net/qcom,ipa.yaml b/Documentation/devicetree/bindings/net/qcom,ipa.yaml
-index 1a46d80a66e8..b4a79912d473 100644
---- a/Documentation/devicetree/bindings/net/qcom,ipa.yaml
-+++ b/Documentation/devicetree/bindings/net/qcom,ipa.yaml
-@@ -210,70 +210,70 @@ additionalProperties: false
- 
- examples:
-   - |
--        #include <dt-bindings/interrupt-controller/arm-gic.h>
--        #include <dt-bindings/clock/qcom,rpmh.h>
--        #include <dt-bindings/interconnect/qcom,sdm845.h>
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/clock/qcom,rpmh.h>
-+    #include <dt-bindings/interconnect/qcom,sdm845.h>
- 
--        smp2p-mpss {
--                compatible = "qcom,smp2p";
--                interrupts = <GIC_SPI 576 IRQ_TYPE_EDGE_RISING>;
--                mboxes = <&apss_shared 6>;
--                qcom,smem = <94>, <432>;
--                qcom,local-pid = <0>;
--                qcom,remote-pid = <5>;
-+    smp2p-mpss {
-+        compatible = "qcom,smp2p";
-+        interrupts = <GIC_SPI 576 IRQ_TYPE_EDGE_RISING>;
-+        mboxes = <&apss_shared 6>;
-+        qcom,smem = <94>, <432>;
-+        qcom,local-pid = <0>;
-+        qcom,remote-pid = <5>;
- 
--                ipa_smp2p_out: ipa-ap-to-modem {
--                        qcom,entry-name = "ipa";
--                        #qcom,smem-state-cells = <1>;
--                };
--
--                ipa_smp2p_in: ipa-modem-to-ap {
--                        qcom,entry-name = "ipa";
--                        interrupt-controller;
--                        #interrupt-cells = <2>;
--                };
-+        ipa_smp2p_out: ipa-ap-to-modem {
-+                qcom,entry-name = "ipa";
-+                #qcom,smem-state-cells = <1>;
-         };
- 
--        ipa@1e40000 {
--                compatible = "qcom,sc7180-ipa";
--
--                qcom,gsi-loader = "self";
--                memory-region = <&ipa_fw_mem>;
--                firmware-name = "qcom/sc7180-trogdor/modem/modem.mbn";
--
--                iommus = <&apps_smmu 0x440 0x0>,
--                         <&apps_smmu 0x442 0x0>;
--                reg = <0x1e40000 0x7000>,
--                      <0x1e47000 0x2000>,
--                      <0x1e04000 0x2c000>;
--                reg-names = "ipa-reg",
--                            "ipa-shared",
--                            "gsi";
--
--                interrupts-extended = <&intc GIC_SPI 311 IRQ_TYPE_EDGE_RISING>,
--                                      <&intc GIC_SPI 432 IRQ_TYPE_LEVEL_HIGH>,
--                                      <&ipa_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
--                                      <&ipa_smp2p_in 1 IRQ_TYPE_EDGE_RISING>;
--                interrupt-names = "ipa",
--                                  "gsi",
--                                  "ipa-clock-query",
--                                  "ipa-setup-ready";
--
--                clocks = <&rpmhcc RPMH_IPA_CLK>;
--                clock-names = "core";
--
--                interconnects =
--                        <&aggre2_noc MASTER_IPA 0 &mc_virt SLAVE_EBI1 0>,
--                        <&aggre2_noc MASTER_IPA 0 &system_noc SLAVE_IMEM 0>,
--                        <&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_IPA_CFG 0>;
--                interconnect-names = "memory",
--                                     "imem",
--                                     "config";
--
--                qcom,qmp = <&aoss_qmp>;
--
--                qcom,smem-states = <&ipa_smp2p_out 0>,
--                                   <&ipa_smp2p_out 1>;
--                qcom,smem-state-names = "ipa-clock-enabled-valid",
--                                        "ipa-clock-enabled";
-+        ipa_smp2p_in: ipa-modem-to-ap {
-+                qcom,entry-name = "ipa";
-+                interrupt-controller;
-+                #interrupt-cells = <2>;
-         };
-+    };
-+
-+    ipa@1e40000 {
-+        compatible = "qcom,sc7180-ipa";
-+
-+        qcom,gsi-loader = "self";
-+        memory-region = <&ipa_fw_mem>;
-+        firmware-name = "qcom/sc7180-trogdor/modem/modem.mbn";
-+
-+        iommus = <&apps_smmu 0x440 0x0>,
-+                 <&apps_smmu 0x442 0x0>;
-+        reg = <0x1e40000 0x7000>,
-+              <0x1e47000 0x2000>,
-+              <0x1e04000 0x2c000>;
-+        reg-names = "ipa-reg",
-+                    "ipa-shared",
-+                    "gsi";
-+
-+        interrupts-extended = <&intc GIC_SPI 311 IRQ_TYPE_EDGE_RISING>,
-+                              <&intc GIC_SPI 432 IRQ_TYPE_LEVEL_HIGH>,
-+                              <&ipa_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
-+                              <&ipa_smp2p_in 1 IRQ_TYPE_EDGE_RISING>;
-+        interrupt-names = "ipa",
-+                          "gsi",
-+                          "ipa-clock-query",
-+                          "ipa-setup-ready";
-+
-+        clocks = <&rpmhcc RPMH_IPA_CLK>;
-+        clock-names = "core";
-+
-+        interconnects =
-+                <&aggre2_noc MASTER_IPA 0 &mc_virt SLAVE_EBI1 0>,
-+                <&aggre2_noc MASTER_IPA 0 &system_noc SLAVE_IMEM 0>,
-+                <&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_IPA_CFG 0>;
-+        interconnect-names = "memory",
-+                             "imem",
-+                             "config";
-+
-+        qcom,qmp = <&aoss_qmp>;
-+
-+        qcom,smem-states = <&ipa_smp2p_out 0>,
-+                           <&ipa_smp2p_out 1>;
-+        qcom,smem-state-names = "ipa-clock-enabled-valid",
-+                                "ipa-clock-enabled";
-+    };
--- 
-2.43.0
+On Sun, Mar 23, 2025 at 10:20:10AM +0100, Pablo Neira Ayuso <pablo@netfilte=
+r.org> wrote:
+> why classid !=3D 0 is accepted for cgroup_mt_check_v0()?
 
+It is opposite, only classid =3D=3D 0 is accepted (that should be same for
+all of v0..v2). (OTOH, there should be no change in validation with
+CONFIG_CGROUP_NET_CLASSID.)
+
+> cgroup_mt_check_v0 represents revision 0 of this match, and this match
+> only supports for clsid (groupsv1).
+>=20
+> History of revisions of cgroupsv2:
+>=20
+> - cgroup_mt_check_v0 added to match on clsid (initial version of this mat=
+ch)
+> - cgroup_mt_check_v1 is added to support cgroupsv2 matching=20
+> - cgroup_mt_check_v2 is added to make cgroupsv2 matching more flexible
+=20
+> I mean, if !IS_ENABLED(CONFIG_CGROUP_NET_CLASSID) then xt_cgroup
+> should fail for cgroup_mt_check_v0.
+
+
+I considered classid =3D=3D 0 valid (regardless of CONFIG_*) as counterpart
+to implementation of sock_cgroup_classid() that collapses to 0 when
+!CONFIG_CGROUP_NET_CLASSID (thus at least rules with classid=3D0 remain
+acceptable).
+
+> But a more general question: why this check for classid =3D=3D 0 in
+> cgroup_mt_check_v1 and cgroup_mt_check_v2?
+
+cgroup_mt_check_v1 is for cgroupv2 OR classid matching. Similar with
+cgroup_mt_check_v2.
+
+IOW, all three versions accept classid=3D0 with !CONFIG_CGROUP_NET_CLASSID
+equally because that is the value that sockets reported classid falls
+back to.
+
+But please correct me if I misunderstood the logic.
+
+Thanks,
+Michal
+
+--6dgz5r7q7tf2aomx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTd6mfF2PbEZnpdoAkt3Wney77BSQUCZ+FWZAAKCRAt3Wney77B
+SRC+AP9sgXg3/nlHJXqWYQNOLruM+2kuDLj+lHSd6Lank2sSnAEAlIfDtD+FKSEZ
+igeXXdA6fXYy92Cwb3N2vY8ZfDd2SQg=
+=IEko
+-----END PGP SIGNATURE-----
+
+--6dgz5r7q7tf2aomx--
