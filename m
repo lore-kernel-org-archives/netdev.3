@@ -1,43 +1,44 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9AC13A26D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F03A84037
 	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 06:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742797149; cv=none; b=do6zwdJyRfdO7ATA+Hr25lkPRn7+zLT1Lk3zsGtQ6hOUTcAd7t16qU2SpNkOMZGP68TkouK4ZFmmsx39Vxthj4ckLLAtjCllFlonbOGim73rntjC8Z3o+igvym+N5kDOsmG3XG7zRxxEW+bnPPRuB9BT0++asdGViz9ULGHmnFM=
+	t=1742797149; cv=none; b=SyfsP5rqpchnbcFC0pauVWFprVqCKcaYw6nCrzVgQvtwusD6Az4gxm1b7srZiGfPkdR49XeiMes7JxLAYpyPvU8ZhLuqD8SVQXfrMKxujxhKBhU6i9YNlqWb01TYvI1Kus3sNT38agj21sPkNygsuJ+plJIXYqRPXu1LSSQhap8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1742797149; c=relaxed/simple;
-	bh=WPfVgUlu27qSIWQm2FViHZyZ3KQmqfqCpubCZEFvcqI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YrNWDMF6TEBeKq91onXvsllLxlpimjJNCgrzJthModqfHxeMXNixOIBfx4NjQQPjTzojzLLQmeuYSJJlFsCpKWg8FXozmmaoi2Ts6zkPdhHJD5jSi5DCZBRb9jhPjM22U40fFfryxv9wl2MTkHRMy8aZi1nkyxks6+6M/Uwz+wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=gh0sczaX; arc=none smtp.client-ip=62.96.220.36
+	bh=J1ihKVg29vha1REgeYEK9STd6fEIw8twnr0BcDz9GK8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uecRZiLDnXx9DZSYDRlVfaBhDcYqHi8jXTkK2D0JOMLECyQzs51uozr7tiBIQcLA5axQp1REdJszxdkRHj7B/5A6jbPaTpPltAwVBS9k9BO+ofDY+ESBqwNBj4t0TJ8d7LS40IVXeDGal2rDOF2K4N9otfDNIPotS1T6Urs2fFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=fT8ukGTb; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="gh0sczaX"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="fT8ukGTb"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id AAE21207B0;
+	by mx1.secunet.com (Postfix) with ESMTP id 3EB1C207AC;
 	Mon, 24 Mar 2025 07:19:00 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Mu-0GS0FXnFv; Mon, 24 Mar 2025 07:18:59 +0100 (CET)
+ with ESMTP id mDJ_Xa8GRoU1; Mon, 24 Mar 2025 07:18:59 +0100 (CET)
 Received: from cas-essen-01.secunet.de (rl1.secunet.de [10.53.40.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 7ADB620764;
+	by mx1.secunet.com (Postfix) with ESMTPS id CB941207B2;
 	Mon, 24 Mar 2025 07:18:58 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 7ADB620764
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com CB941207B2
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
 	s=202301; t=1742797138;
-	bh=MvCMlHfT7nbz5NaCqH2ZhXMY65JIjNuPVDqFl2NPi8M=;
-	h=From:To:CC:Subject:Date:From;
-	b=gh0sczaXkfKsy5WNEaVKzp6/ucXQ4S5iq9ONOQRpHUli2iKPYgY08mKzgcCDjJB3r
-	 Ijf0ITZOnFasVAvZwYfUiECuJBq8zcGZQjsgc03DDHYjUyrhBDbQW5KAHqDfy0Crj8
-	 dEiYlOVxbXdc2+fjUIvfYluOy4Ri16/CXZIPucxDhKI8OkfzskaWPqYuypO1ojOEJn
-	 uGxjOs7OeWyFd/8zVceQk0VFJaAV9Zn4TObo0atE3De2pn3CtOcf559nUuXEJKSkdz
-	 2dsn6wmRNw2v60Ldm/KaKiuJCgAjpuSJiTOTIO9aOKQ+0TyxZKexDdOO5z9b35Yqku
-	 k4W8WRm3urjBQ==
+	bh=tV6ljVpGC+yw/IXeNh2TziFLI50t1aDlk0H7wBbnrIU=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=fT8ukGTbStIeCndSRPAHzokebQo/9ufnYTeiSE6Pu3mntdF0Glc9yKcizJCMXlT2G
+	 +au79aMthgZ3MqkEdiDfLRSdY2ogpls6R2Y9gjNDQ7p0IuITykrEK1JjdFI3astocU
+	 QRrmJghX4JvObAypP3uc8sFSTCGJ1po6ubkmPMKOWuWFu5DnBSCZbscD0HWAFwRa9O
+	 A4/6utSMMLQAP7BSK2tkgfp7ED9wQXTAK+b5TOJNJPhrQaDcOpTFTyRlwSvMZwQXaJ
+	 38Vm7glw95p5aAEAzL0KBifhn1iAQbQb4axZ2UWsggPTyUo9vrorGCHf45Up/xdx8V
+	 uQfdHtbtAQmGA==
 Received: from mbx-essen-02.secunet.de (10.53.40.198) by
  cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
@@ -47,15 +48,17 @@ Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Mar
  2025 07:18:57 +0100
 Received: by gauss2.secunet.de (Postfix, from userid 1000)
-	id 756F63182BF8; Mon, 24 Mar 2025 07:18:57 +0100 (CET)
+	id 82BC93182BD9; Mon, 24 Mar 2025 07:18:57 +0100 (CET)
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 0/8] pull request (net-next): ipsec-next 2025-03-24
-Date: Mon, 24 Mar 2025 07:18:47 +0100
-Message-ID: <20250324061855.4116819-1-steffen.klassert@secunet.com>
+Subject: [PATCH 4/8] xfrm: rely on XFRM offload
+Date: Mon, 24 Mar 2025 07:18:51 +0100
+Message-ID: <20250324061855.4116819-5-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250324061855.4116819-1-steffen.klassert@secunet.com>
+References: <20250324061855.4116819-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,74 +67,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
+X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
  mbx-essen-02.secunet.de (10.53.40.198)
 X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-1) Prevent setting high order sequence number bits input in
-   non-ESN mode. From Leon Romanovsky.
+From: Leon Romanovsky <leonro@nvidia.com>
 
-2) Support PMTU handling in tunnel mode for packet offload.
-   From Leon Romanovsky.
+After change of initialization of x->type_offload pointer to be valid
+only for offloaded SAs. There is no need to rely on both x->type_offload
+and x->xso.type to determine if SA is offloaded or not.
 
-3) Make xfrm_state_lookup_byaddr lockless.
-   From Florian Westphal.
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+---
+ net/xfrm/xfrm_device.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-4) Remove unnecessary NULL check in xfrm_lookup_with_ifid().
-   From Dan Carpenter.
+diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+index 97c8030cc417..8d24f4743107 100644
+--- a/net/xfrm/xfrm_device.c
++++ b/net/xfrm/xfrm_device.c
+@@ -419,13 +419,11 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
+ 	struct xfrm_dst *xdst = (struct xfrm_dst *)dst;
+ 	struct net_device *dev = x->xso.dev;
+ 
+-	if (!x->type_offload ||
+-	    (x->xso.type == XFRM_DEV_OFFLOAD_UNSPECIFIED && x->encap))
++	if (x->xso.type == XFRM_DEV_OFFLOAD_UNSPECIFIED)
+ 		return false;
+ 
+ 	if (x->xso.type == XFRM_DEV_OFFLOAD_PACKET ||
+-	    ((!dev || (dev == xfrm_dst_path(dst)->dev)) &&
+-	     !xdst->child->xfrm)) {
++	    ((dev == xfrm_dst_path(dst)->dev) && !xdst->child->xfrm)) {
+ 		mtu = xfrm_state_mtu(x, xdst->child_mtu_cached);
+ 		if (skb->len <= mtu)
+ 			goto ok;
+@@ -437,8 +435,8 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
+ 	return false;
+ 
+ ok:
+-	if (dev && dev->xfrmdev_ops && dev->xfrmdev_ops->xdo_dev_offload_ok)
+-		return x->xso.dev->xfrmdev_ops->xdo_dev_offload_ok(skb, x);
++	if (dev->xfrmdev_ops->xdo_dev_offload_ok)
++		return dev->xfrmdev_ops->xdo_dev_offload_ok(skb, x);
+ 
+ 	return true;
+ }
+-- 
+2.34.1
 
-Please pull or let me know if there are problems.
-
-Thanks!
-
-The following changes since commit 4e41231249f4083a095085ff86e317e29313c2c3:
-
-  Merge branch '100GbE' of git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue (2025-02-11 19:51:16 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next.git tags/ipsec-next-2025-03-24
-
-for you to fetch changes up to 399e0aae5aab30f911098a0430204e9034ff78bb:
-
-  xfrm: Remove unnecessary NULL check in xfrm_lookup_with_ifid() (2025-03-19 03:13:14 +0100)
-
-----------------------------------------------------------------
-ipsec-next-2025-03-24
-
-----------------------------------------------------------------
-Dan Carpenter (1):
-      xfrm: Remove unnecessary NULL check in xfrm_lookup_with_ifid()
-
-Florian Westphal (1):
-      xfrm: state: make xfrm_state_lookup_byaddr lockless
-
-Leon Romanovsky (6):
-      xfrm: prevent high SEQ input in non-ESN mode
-      xfrm: delay initialization of offload path till its actually requested
-      xfrm: simplify SA initialization routine
-      xfrm: rely on XFRM offload
-      xfrm: provide common xdo_dev_offload_ok callback implementation
-      xfrm: check for PMTU in tunnel mode for packet offload
-
-Steffen Klassert (1):
-      Merge branch 'Support-PMTU-in-tunnel-mode-for-packet-offload'
-
- Documentation/networking/xfrm_device.rst           |  3 +-
- drivers/net/bonding/bond_main.c                    | 16 ++-----
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c    | 21 ---------
- .../chelsio/inline_crypto/ch_ipsec/chcr_ipsec.c    | 16 -------
- drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c     | 21 ---------
- drivers/net/ethernet/intel/ixgbevf/ipsec.c         | 21 ---------
- .../ethernet/marvell/octeontx2/nic/cn10k_ipsec.c   | 15 ------
- .../ethernet/mellanox/mlx5/core/en_accel/ipsec.c   | 16 -------
- drivers/net/ethernet/netronome/nfp/crypto/ipsec.c  | 11 -----
- drivers/net/netdevsim/ipsec.c                      | 11 -----
- drivers/net/netdevsim/netdevsim.h                  |  1 -
- include/net/xfrm.h                                 | 21 ++++++++-
- net/xfrm/xfrm_device.c                             | 46 +++++++++++++-----
- net/xfrm/xfrm_output.c                             |  6 ++-
- net/xfrm/xfrm_policy.c                             |  2 +-
- net/xfrm/xfrm_state.c                              | 54 ++++++++++------------
- net/xfrm/xfrm_user.c                               | 14 +++++-
- 17 files changed, 102 insertions(+), 193 deletions(-)
