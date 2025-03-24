@@ -1,64 +1,64 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09972210FB
-	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 18:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31854210FB
+	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 18:25:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742840693; cv=none; b=JgDqZ2yUdX9NXaM7cRFABx6aGz/SBXvUWQpyHIxeoZh7NcjOXHDXRSxv3FhLJOBsEuZZTF0DLAMk7pQOZA5EiM/skAWracp7BGPF/ps347raqynHEN0pjrCUo7boOl4qJ0RREGNaG6IRzQ6QUpy+Xtizy0UmQw44uwGtg1/k3f0=
+	t=1742840729; cv=none; b=Fi8AlKgCumm0tOq5dbCkJ+p5tiCY2TqMcH3Yuru9w3Fv0vQOOhoA87H9TXuYIewkvNAFCC0zGdzFJr6HhYr3duT03PujKnzkebB1T/fdrQIuyZ2MdHGlsKo2Qs4ZBvlw4BEEUCUqTo1a9qQBaGK1/NlIR7S96qA1uaq4MkGCKkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742840693; c=relaxed/simple;
-	bh=WiwT0XrvPrC3bVFMA4S/BESuqwYm7MiYZb2Tfa2X5Xg=;
+	s=arc-20240116; t=1742840729; c=relaxed/simple;
+	bh=5U/I/KBZ6BFN6/AEtwlrLyDtxRpuKQP9p+JItDJqm28=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PEkr7lLqv+5kfgXgP2Cefz7lhnzsOUz1RNxRm2iQmYMqKhOsy47HxcB6VG9ISLCbW7gWe5m2M+WqdReIGrzcgXWUmLQJwyM2pY2CmwW37O9pnzdXjmrNxONTtzspU8uyITWhA0nseZNCUaKxgkqe8BaMl20Dhzp4m7TTlwSS644=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=mEcLz4qp; arc=none smtp.client-ip=209.85.214.176
+	 In-Reply-To:Content-Type; b=dkQup0gvEURGkRGzaUj3nao0LmcqfiLaj2N8Q7YFfGh37M25EFsD5Unpfm/WBm/OJo+IVvKhjFVXbYTB0uh5n2M7v+nnLW//XB6Nonj5z7zNgPPblmkDkGNblnTdW5cmzVkY7qkR9sShWn58BrLNUUbau+Sn77htjt8mAEq314k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=VDTMYuGd; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="mEcLz4qp"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-227914acd20so44735595ad.1
-        for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 11:24:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="VDTMYuGd"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2264aefc45dso78594385ad.0
+        for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 11:25:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1742840691; x=1743445491; darn=vger.kernel.org;
+        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1742840727; x=1743445527; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=q2XplSBrcws3RmA9Orl7MMJxKS9Jl8eEwEQfJBbWl8w=;
-        b=mEcLz4qptwk/Bn2B9GvK43VbxBySmEIjmzDgA6UsNtT72fzKzwtDyr11yNBgxNNF0R
-         o3LG1k37hWQ/F8KyxBHuaK3vetkgawuLTGcv82dHVZtLkKYnY+vb888odAwyOlcxKhk2
-         95kpp/KdE4FQmTV/gZjXmCzO/vMO+m3moKuMnNMdGDqqw7r8gsaDza4OZNjb6lsCiU9F
-         EzjcIy0+SIw0jzYycWYMrGwMs413tBvMIfv/YSvExx0Yob3IEUOt6+ZfXih2UaB1dq4L
-         X4qeD1TxWZAgEJswp8y7AsLNWtFU4adS5oCqRaDr0JmwAMo8ZURkbVcJ1b0NVmAkk8xn
-         AAIw==
+        bh=dti23/BRzO4sMSE1QyRrcc2O7LFCO9s38xoCuIG/pFo=;
+        b=VDTMYuGdZALZxNlSUgSUIszXcTXej51+gK9tvjUrlF0qd9AuYRIWnmwNimgXJp4sQ2
+         oZXfczFBey9RLNqu9Er45mvbfeKCQbp6cZVFoTeWKG7Pb9BIdtsvPoAAAi8st7mQKPIZ
+         d8GmaYnfz4iQ4+keet9KvjRENSykDkCab+8YJbwEFGml6lmuQmAHCz2oaROzwzgux3Wb
+         zgzX2e+Fu3RAcHFJQKt7mpKbEtitWMNu6x8Q5MRKZxW5kC3ETLckNrVtXZel/hA7ZxaU
+         t28DrSehbXMwjmrpK3ZMh1zEJoDIzFV+dj4tlohR5ckKB9P4IX88SxWbR8yVPAZ2W63V
+         aVJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742840691; x=1743445491;
+        d=1e100.net; s=20230601; t=1742840727; x=1743445527;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=q2XplSBrcws3RmA9Orl7MMJxKS9Jl8eEwEQfJBbWl8w=;
-        b=Sjdz8AW6qHVJvTACnm9YMvI8WBJD6Y7ibBrAiFgraOTfVbwAfuHDYU7E0D2Q3CU8VC
-         iTMhkxPP7BMY4awViUwjtj3sKwwz9mAKHvV/OVPJ1WNMkkZ7w2MHGtsdqZ+O9Ck77/4R
-         aZwPPVk3RDyJZAzYKqKNaQ8fIMx/8/RdpGjfY8Sik8oIkCcCltmmdhTMG2CJRyHjPIjF
-         JvhxfFdm1s8uaBbnM2rDpV1rLAff+k4w3kTgOFNgybDZIl/4LXOhT8NCqkinHtFc2EOO
-         +nep132zg5BcaKnb5/mn0JmLn/Lxp7iJAg/0CQQQ0jgZnnAki3aDQTlUpMf/T7FAkmFB
-         06Ig==
-X-Gm-Message-State: AOJu0YwuqVL7aSAAjKJoUCgnqFDu+c3aEdSIHJu55oqbopVVUldwJiZ+
-	hVkzJanwWueqwDx1785+B0cc7/pZS5k2G8+CSCCmZlcy7vMKJx1Mwnd+cA+icDI=
-X-Gm-Gg: ASbGncvoNpe6BRvRqum6uBpdBbYST2N/KoafOHPLfAps+qG8pHZ20X/GygWfoP2zRnt
-	2RSXproIqe8e6DNSWN63xejvSodTESOcL5mWXEtSmKxmnY++xiB4cuMTngxdcTSAQlIUZwOp4+O
-	VK1iDC53c9MixCTkqsFDEbpOLZQzrvjE9vhpuy34mZ6bY578U/Hs7h7TvBVme+sMm5bJZkJ75VU
-	IxRR9ufeb8oW1W7hfrPmkuesiU9R6KSb6aLxgTqaKL2Ak12iNfeioUOlZjNAjcbrkNjNJXs09c8
-	jYiI7Ehr9Hg++wJSX4cgC7ZhXG6//vCDSM9HvPgAU+17Jr/ZwTND0idOZRPpdZQmSRC1ySsqvSS
-	l/nRuv5qrIlQJmXfyxw==
-X-Google-Smtp-Source: AGHT+IFmIDypCwV91aO03KswV2HrXXksnnXqAZQGCdOvLTpHFUUfrBXRGo9E07StEfVzt1BBVy1W7A==
-X-Received: by 2002:a05:6a00:a2a:b0:736:5813:8c46 with SMTP id d2e1a72fcca58-7377a1b16a2mr32255940b3a.8.1742840690975;
-        Mon, 24 Mar 2025 11:24:50 -0700 (PDT)
+        bh=dti23/BRzO4sMSE1QyRrcc2O7LFCO9s38xoCuIG/pFo=;
+        b=WSgFW+ZMz28KD+zg/vv286bvrDe7pjS/400j8aUNZQ0b1DJTs3lbj8koHHDv/hSgq1
+         ThSZFCa5g47quqgELP6R4sIla1cppoppDALMC4mfi/fLLDM1H51MvM96HJL4Z2tgdSdY
+         oy/m/oF0CMNYIJ/niEDcc92xdvA+BVjjEwFl683uszmi8lDDS6ZShRecF0E3AIxExzZ+
+         BUm566AHdmwbCB3he8B5tUcbChS0jhPLMa3RZuN/R2/VqyX30E24020nPLG8VaCti/DL
+         rt7vgSJ3yPFcQH5KYtpMSECAYfLM36kaOrvarFmYyJu48DGcsKYPOqcd8pwJbHpnSsSB
+         /q+Q==
+X-Gm-Message-State: AOJu0YwHLjWBuIqxjLXlmtn5WZUeBDNEW/myXNPmLNvPQfA/Q5n6h6aA
+	eTAwTJrT0C9DMSp6LjLpfqASla+SroY6z214mzdwgEOD2ni1eDtznUeD8JC4fYo=
+X-Gm-Gg: ASbGncvtWR7k/j68YYdGnq+dQeA/i4CDy0vUl+hXo+7Ud/n+G2lxrBu5lhpUzpdQfma
+	Uo7pArSKacIlJh6TEdCvSv2jQL9HNN+23SmzMiCDrQGAW2QwBxqHO5CIXdGZXt55cXzrSxpymR7
+	g8zCqmvrc7+JBA5nrPS3xHdDMuS9sei/TpTtmzf+ezbSzQ20ANLIiyJl1nJ9xSoldzNsOsLHjze
+	oq1bxtwo+iY6R4nw41M5chYrkqP/l5hBWwmcbIvqYVognSzjQJRVCR3JdB61wtcD3ClwHXwRA51
+	L3oznxRG8B2xa1BvW9wwAwmASz+RqEq6JFaWQ0ar0HjNQ++ZIShQPUKVMS/MgRjLDNw5OLfqMps
+	2J4Jc2fs=
+X-Google-Smtp-Source: AGHT+IGGMPe7XC77XlupSn7/YvdG4D2mOcRm+JPSPO3uvSW3aTHHYfmqPH4OFTMuxGZbDGNvmo5InA==
+X-Received: by 2002:a17:902:fc45:b0:21d:dfae:300c with SMTP id d9443c01a7336-22780c546a8mr220163435ad.3.1742840727426;
+        Mon, 24 Mar 2025 11:25:27 -0700 (PDT)
 Received: from ?IPV6:2a03:83e0:1156:1:1cf1:8569:9916:d71f? ([2620:10d:c090:500::7:f781])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73905fa97f2sm8339797b3a.34.2025.03.24.11.24.49
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-227811f6f88sm73996335ad.237.2025.03.24.11.25.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Mar 2025 11:24:50 -0700 (PDT)
-Message-ID: <86802849-6374-4146-a141-b34740463d26@davidwei.uk>
-Date: Mon, 24 Mar 2025 11:24:48 -0700
+        Mon, 24 Mar 2025 11:25:27 -0700 (PDT)
+Message-ID: <d4d89a4b-acd2-4bf1-8652-5f180df7d742@davidwei.uk>
+Date: Mon, 24 Mar 2025 11:25:25 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,19 +69,20 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH net] net: page_pool: replace ASSERT_RTNL() in
  page_pool_init()
 Content-Language: en-GB
-To: Stanislav Fomichev <stfomichev@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
 Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
  Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jesper Dangaard Brouer <hawk@kernel.org>
+ Eric Dumazet <edumazet@google.com>, Jesper Dangaard Brouer
+ <hawk@kernel.org>, Stanislav Fomichev <stfomichev@gmail.com>
 References: <20250324014639.4105332-1-dw@davidwei.uk>
- <Z-DF95BDIYF2h_k0@mini-arch>
+ <85f2a226-4dd3-4ad0-afb4-351ce2487961@lunn.ch>
 From: David Wei <dw@davidwei.uk>
-In-Reply-To: <Z-DF95BDIYF2h_k0@mini-arch>
+In-Reply-To: <85f2a226-4dd3-4ad0-afb4-351ce2487961@lunn.ch>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 2025-03-23 19:39, Stanislav Fomichev wrote:
-> On 03/23, David Wei wrote:
+On 2025-03-24 07:18, Andrew Lunn wrote:
+> On Sun, Mar 23, 2025 at 06:46:39PM -0700, David Wei wrote:
 >> Replace a stray ASSERT_RTNL() in page_pool_init() with
 >> netdev_assert_locked().
 >>
@@ -101,23 +102,20 @@ On 2025-03-23 19:39, Stanislav Fomichev wrote:
 >>  		 */
 >> -		ASSERT_RTNL();
 >> +		netdev_assert_locked(params->netdev);
->>  		rxq = __netif_get_rx_queue(pool->slow.netdev,
->>  					   pool->slow.queue_idx);
->>  		pool->mp_priv = rxq->mp_params.mp_priv;
 > 
-> Not sure we can do this unconditionally. Since we still have plenty of
-> drivers that might not use netdev instance lock (yet). Probably should
-> be something like the following?
+> Adding a bit more context:
 > 
-> if (netdev_need_ops_lock(params->netdev))
-> 	netdev_assert_locked(params->netdev);
-> else
-> 	ASSERT_RTNL();
+>         if (pool->slow.flags & PP_FLAG_ALLOW_UNREADABLE_NETMEM) {
+>                 /* We rely on rtnl_lock()ing to make sure netdev_rx_queue
+>                  * configuration doesn't change while we're initializing
+>                  * the page_pool.
+>                  */
+>                 ASSERT_RTNL();
 > 
-> ?
-> 
-> We should probably wait for https://lore.kernel.org/netdev/20250312223507.805719-11-kuba@kernel.org/T/#m2053ac617759a9005806e56a7df97c378b76ec77
-> to land and use netdev_ops_assert_locked instead?
+> If ASSERT_RTNL() is now wrong, you also need to update the comment.
 
-Ah I didn't realise that migration hasn't entirely happened. Yes, I'll
-wait for netdev_ops_assert_locked() first.
+Thanks, I'll update the docs too after switching to
+netdev_ops_assert_locked().
+
+> 
+> 	Andrew
