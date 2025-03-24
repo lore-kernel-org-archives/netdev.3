@@ -1,93 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F8814386D;
-	Mon, 24 Mar 2025 10:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9C725C6FE;
+	Mon, 24 Mar 2025 10:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742812301; cv=none; b=V29mWiU0I3wfODOdrM7n5aTJxcWaVE+d7oLqfyjr2PIcBcNpvlVjcNTRah8MPOgoNq2hZtYapTfmFR0iiWbnFZy7/2MmZhclI7xaSneUW5EBq3+Xw3l2xnC/E3OkJoka9JhzsDxOk1Z4BObpMgNrqNxsAq3srFPnVSfSj6apAgM=
+	t=1742812825; cv=none; b=phQM6WBe/yzl9dmczeIQAl6GH2TzwMiB7uyXpgnQH2/iz+1deBLTgrvfm9pcWR1fXuHGQZ0oqNIgQQGuiuTKaAakFrv9iIw4GM/yNNoYaZPvDxcvavgRR7C5U3ZfVWQUwl1h0JCYahYcc8pmzbDc1Ft72LeK+BFJlNv+lGJVpMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742812301; c=relaxed/simple;
-	bh=7GAZFJZl+eKu5P9ihY2WmQuvZGa6gA3gVGjHE+fPDMo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yuwy2ty9+Q0069q16rkraxy6G3wWTDigQzkwqWNWBYeeDt7AG2O/nwYyHtTxE0W90lBkqJC253qou5Ac44wdPYZ6fG7qHvf6ljQTmTPpH2c9ufWHmbBOqUE47uR9cV6qlE7FvpRXbqVzkAHVHGtGVXA08XFP5hTDWJ5129p3SZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o3Oh38jK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742812825; c=relaxed/simple;
+	bh=kMybscdgGaHJw9+FAnU/QcjQMP6+FYe6JZlRsdjOPlE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fRxhtYpIZUB/H9EOa5fNwXFcVbAfanO87ZhS9SAbPzjVRrygWlmG8RBlPI+PhUpl1lcnCB2hJ0q/6TBnVaPaCFBXXuYD4MIVURvBOjLl6RVdSMCRR1HsWNw/JNhkQDrA29+7mzypSKYVKSZWR4nv8MawITDJAz/Py6xXbBS//6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Y2dv5YKT; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o3Oh38jK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F69C4CEDD;
-	Mon, 24 Mar 2025 10:31:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742812300;
-	bh=7GAZFJZl+eKu5P9ihY2WmQuvZGa6gA3gVGjHE+fPDMo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=o3Oh38jKmLbmx2Hy9PuIK6O8ifW4Y0N/uz0RAy/iM6IehElvV79s5T/S0HnlpjEbj
-	 CmquiYEvuA9O2qYRu6Jy3udMGB+/ImugKje5kRLPpU0rGJgmmjwa92rnD5SIW2gtjh
-	 I/RCkgdLwrK0tz1nXth2eJCD9l0DW53CiFJqn2aStOg9EERHD7wXDs9LEm5Ex4BfjK
-	 7z1UkMS6uNVFLXJPXYTp5FlDOo2f/q+SPd5xsISTmMbHr+F9LwH6HclxFneC3VUO4W
-	 muKE/QeNmJJhfayAnei1uqT+8MbSJMn9ChCu6fHf62r9NERRKh1i1EGMqY4hVuIdBK
-	 2nFLB2fDdo/Xw==
-Date: Mon, 24 Mar 2025 03:31:29 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Willem de Bruijn
- <willemdebruijn.kernel@gmail.com>, Jason Wang <jasowang@redhat.com>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>, Shuah Khan <shuah@kernel.org>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux-foundation.org, linux-kselftest@vger.kernel.org,
- Yuri Benditovich <yuri.benditovich@daynix.com>, Andrew Melnychenko
- <andrew@daynix.com>, Stephen Hemminger <stephen@networkplumber.org>,
- gur.stavi@huawei.com, Lei Yang <leiyang@redhat.com>, Simon Horman
- <horms@kernel.org>
-Subject: Re: [PATCH net-next v11 09/10] selftest: tap: Add tests for
- virtio-net ioctls
-Message-ID: <20250324033129.0016abc9@kernel.org>
-In-Reply-To: <20250317-rss-v11-9-4cacca92f31f@daynix.com>
-References: <20250317-rss-v11-0-4cacca92f31f@daynix.com>
-	<20250317-rss-v11-9-4cacca92f31f@daynix.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Y2dv5YKT"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A56114331A;
+	Mon, 24 Mar 2025 10:40:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1742812821;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bynjWbNkBctQ6Jxc04916fgsV3PBTm6dOdvJ+TUtb28=;
+	b=Y2dv5YKTqVI8LdnEynEEO/37DPTOzkNLhbj+/4oIPs9LaP6Iq2pM3IaIJcKxO8JIzlaO2F
+	hA+FdvuGywcj37YQEnc47Bn2xT2dX8zw8iefuQDj3xqpVnxN7YQvB/cdz5y8E8Wnluc/jk
+	5h2E6f7dbPlbe9EnUco/DpmzjCkznAy5fElySBksLNSWfCMFE1kXPrUkBe0zr7Y9oyXZQg
+	aEREUI6+3cGao3DRqjU0jdV0LfCKwnxPO1IzoWiiAVzBPwgJKVqG2CaHkhz4x3LZ7kfiDj
+	ey1REc7JthamfCvzaAmJUdOmamCrA1akbv9gEhrlLzJmuKbEVrDkNox3UPC7xQ==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: davem@davemloft.net,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	linux-arm-kernel@lists.infradead.org,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Simon Horman <horms@kernel.org>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Piergiorgio Beruto <piergiorgio.beruto@gmail.com>
+Subject: [PATCH net-next v4 3/8] net: ethtool: netlink: Rename ethnl_default_dump_one
+Date: Mon, 24 Mar 2025 11:40:05 +0100
+Message-ID: <20250324104012.367366-4-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250324104012.367366-1-maxime.chevallier@bootlin.com>
+References: <20250324104012.367366-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduheelheehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveegtdffleffleevueellefgjeefvedvjefhheegfefgffdvfeetgeevudetffdtnecukfhppedvrgdtudemtggsudelmeekugegheemgeeltddtmeehvdgrfeemjegsledumeduhegtleemtgeltdeinecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugeehmeegledttdemhedvrgefmeejsgeludemudehtgelmegtledtiedphhgvlhhopeguvghvihgtvgdqvdegrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvuddprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvu
+ ghumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomhdprhgtphhtthhopehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-On Mon, 17 Mar 2025 19:57:59 +0900 Akihiko Odaki wrote:
-> +TEST_F(tap, test_vnetbe)
-> +{
-> +	int be = 1;
-> +	int ret;
-> +
-> +	ASSERT_FALSE(dev_delete(param_dev_tap_name));
-> +	self->deleted = true;
-> +
-> +	ret = ioctl(self->fd, TUNSETVNETBE, &be);
-> +	if (ret == -1 && errno == EINVAL)
-> +		SKIP(return, "TUNSETVNETBE not supported");
-> +
-> +	ASSERT_FALSE(ret);
-> +	be = 0;
-> +	ASSERT_FALSE(ioctl(self->fd, TUNGETVNETBE, &be));
-> +	EXPECT_EQ(1, be);
+As we work on getting more objects out of a per-netdev DUMP, rename
+ethnl_default_dump_one() into ethnl_default_dump_one_dev(), making it
+explicit that this dumps everything for one netdev.
 
-The config options needed by selftests should be listed in the relevant
-config file, I think you need this snippet:
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+V4 : No changes
 
-diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-index 130d532b7e67..9b6aa8c4e6d8 100644
---- a/tools/testing/selftests/net/config
-+++ b/tools/testing/selftests/net/config
-@@ -101,6 +101,7 @@ CONFIG_IPV6_IOAM6_LWTUNNEL=y
- CONFIG_CRYPTO_SM4_GENERIC=y
- CONFIG_AMT=m
- CONFIG_TUN=y
-+CONFIG_TUN_VNET_CROSS_LE=y
- CONFIG_VXLAN=m
- CONFIG_IP_SCTP=m
- CONFIG_NETFILTER_XT_MATCH_POLICY=m
+ net/ethtool/netlink.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
+index 31ab89ca0bcc..63ede3638708 100644
+--- a/net/ethtool/netlink.c
++++ b/net/ethtool/netlink.c
+@@ -540,9 +540,9 @@ static int ethnl_default_doit(struct sk_buff *skb, struct genl_info *info)
+ 	return ret;
+ }
+ 
+-static int ethnl_default_dump_one(struct sk_buff *skb, struct net_device *dev,
+-				  const struct ethnl_dump_ctx *ctx,
+-				  const struct genl_info *info)
++static int ethnl_default_dump_one_dev(struct sk_buff *skb, struct net_device *dev,
++				      const struct ethnl_dump_ctx *ctx,
++				      const struct genl_info *info)
+ {
+ 	void *ehdr;
+ 	int ret;
+@@ -590,7 +590,8 @@ static int ethnl_dump_all(struct sk_buff *skb, struct netlink_callback *cb)
+ 		rcu_read_unlock();
+ 
+ 		ctx->req_info->dev = dev;
+-		ret = ethnl_default_dump_one(skb, dev, ctx, genl_info_dump(cb));
++		ret = ethnl_default_dump_one_dev(skb, dev, ctx,
++						 genl_info_dump(cb));
+ 
+ 		rcu_read_lock();
+ 		dev_put(dev);
+@@ -618,8 +619,8 @@ static int ethnl_default_dumpit(struct sk_buff *skb,
+ 		/* Filtered DUMP request targeted to a single netdev. We already
+ 		 * hold a ref to the netdev from ->start()
+ 		 */
+-		ret = ethnl_default_dump_one(skb, ctx->req_info->dev, ctx,
+-					     genl_info_dump(cb));
++		ret = ethnl_default_dump_one_dev(skb, ctx->req_info->dev, ctx,
++						 genl_info_dump(cb));
+ 		netdev_put(ctx->req_info->dev, &ctx->req_info->dev_tracker);
+ 
+ 		if (ret < 0 && ret != -EOPNOTSUPP && likely(skb->len))
 -- 
-pw-bot: cr
+2.48.1
+
