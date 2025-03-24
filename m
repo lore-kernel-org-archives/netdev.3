@@ -1,75 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E5B25F96B;
-	Mon, 24 Mar 2025 16:40:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159112638B0
+	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 16:40:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742834402; cv=none; b=itNIDqSLeoBFqQY4DT+hBUhICP56bb1x+XlL1lIprRRe/Q+hS59RONTPA7O7fBBKaWBNpkmy8oU4DsBBY7KZsXAv/4Uf5tDVlU07OxVI3nAZBs/7qQkDkNc4w8F+eNg3Sm4IrDInNCNpAewJmR9Uy8pSF2VtoDa29tWmdmS/uLk=
+	t=1742834446; cv=none; b=RRMM4e5270/zrJuj855roMjZiBnklHoSQxkLg5qOjeKvtiVRmQCA6986akXsaY4XMqNKsxaSWJjhczI941gU4KuXCxJ21Fk2ldUl/mw6+FT0r8Xh6aLgic0qt5CIWmJwLG4rOUibEF/EhbBRTRAeN2/SRBaEiknZ7Ut7PGKL1qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742834402; c=relaxed/simple;
-	bh=ScvMxJI186dl4CQyaDxTn9qhivQxRTBmg5YWV6j7RAo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ebdpBz2BQFKQGWOl/yasKWDkCYOHyIJksfygs97WFFKQ6+6xAJUOJyUiQt3GyK4tchh9xT3K2YKUDb3WvxIv5Mrk1HRyW7HdyLCCmVdjErt9VCWGdMlwH1xrgWNbgqP57kNnCaiCnTOvzHrO77Dyo7u3nbuTfyBGqAauNH9iZPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hcVil8TR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742834446; c=relaxed/simple;
+	bh=CoaoaItT6ngOPjWLeVv8s3EE4bnrFax4CzzAt1jbklQ=;
+	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
+	 Message-Id:Date; b=UcnAanB5A+h7XFeRViNFQC1pBTTpowdDG4Qn8V/k+y4oSGc6Nwb72RzpoU2oHSIt9GNsWRAU7ZdUEruHrY0mrthfhD/X/hFLRY82V7774LgJEIBH840ihjeaASNm71LlC6UXx1lSKKpMbRZ8dDXfM3lmC1NFsly3tE2BDt56q/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=juF2w3fy; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hcVil8TR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F35EC4CEDD;
-	Mon, 24 Mar 2025 16:40:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742834402;
-	bh=ScvMxJI186dl4CQyaDxTn9qhivQxRTBmg5YWV6j7RAo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=hcVil8TRfzS2hEfvDVxQ3tmxRCv25jmBOxAgwa9BhRdLK8zC3qgNl7ARNTQK91Igk
-	 TrICu1AYnObX632AHHtLPwWBzIVt6so4SsvyRclrvw2W/ODxuwL8C9eBa9hjnI+iXT
-	 z5XxWAPXjrUyS+kBsDK61xbID9r6L1dHueJzA5fAh7HKmuQmQ3AMeUIZxeu/N0nosT
-	 3UcOX8ZO9jmSnnX9u1xQw6/7wld/kMxV+VbjeuCUUiS2+KFl3cYEGBzcGP0fYPlK+T
-	 0ReZInUBPYryI0ikYy8TL+iZIiHIyDiy49OYST7LBfh0BXCRe5ms01Ssk2WPejmBR3
-	 SGLlzIQyudpQw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70FD3380664D;
-	Mon, 24 Mar 2025 16:40:39 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="juF2w3fy"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=MYyp8xOp5CqL3tk5cl2ZZNgAxtFYffkmMs1CgaTsZaI=; b=juF2w3fyLqp3ZtLtNWSF24YWo2
+	9c1cnybZkIV3Zq+CUyzDjFyj4op7Q25sVIK5/TFjENPEX/7A46imXV9tpDhoCs9LEg/s2hDVx0yIC
+	1wP4PIjfcNYikyWnjRI5rAg1AGbGLmDSN1zNTDjXnT8JRHTnv/4oebfevEWTq4nR0BwKC97zAiBH5
+	0R5rFqU/KjPDtTPRLo15571uoRFCY/NC0c8awKYMPN8hJvja/QW3KVUmjMJxi9vYxVMayY3eaNqcr
+	YtMO5oTKPSWAsn6LQKmeZSAnOycxZZTKlajXpKf9dSZUoShyWC5DvIjyBgkYW8RCACJxwfyq3tUWM
+	abxqCd2g==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:53274 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1twkqu-0003oP-09;
+	Mon, 24 Mar 2025 16:40:40 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1twkqO-0006FI-Gm; Mon, 24 Mar 2025 16:40:08 +0000
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next] net: phylink: force link down on major_config
+ failure
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: phy: phy_interface_t: Fix RGMII_TXID code comment
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174283443813.4090423.15655049016392813950.git-patchwork-notify@kernel.org>
-Date: Mon, 24 Mar 2025 16:40:38 +0000
-References: <20250316071551.9794-1-ihor.matushchak@foobox.net>
-In-Reply-To: <20250316071551.9794-1-ihor.matushchak@foobox.net>
-To: Ihor Matushchak <ihor.matushchak@foobox.net>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1twkqO-0006FI-Gm@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Mon, 24 Mar 2025 16:40:08 +0000
 
-Hello:
+If we fail to configure the MAC or PCS according to the desired mode,
+do not allow the network link to come up until we have successfully
+configured the MAC and PCS. This improves phylink's behaviour when an
+error occurs.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ drivers/net/phy/phylink.c | 42 +++++++++++++++++++++++++++++++--------
+ 1 file changed, 34 insertions(+), 8 deletions(-)
 
-On Sun, 16 Mar 2025 08:15:51 +0100 you wrote:
-> Fix copy-paste error in the code comment for Interface Mode definitions.
-> The code refers to Internal TX delay, not Internal RX delay. It was likely
-> copied from the line above this one.
-> 
-> Signed-off-by: Ihor Matushchak <ihor.matushchak@foobox.net>
-> ---
->  include/linux/phy.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Here is the summary with links:
-  - net: phy: phy_interface_t: Fix RGMII_TXID code comment
-    https://git.kernel.org/netdev/net-next/c/ca1914a32cdc
-
-You are awesome, thank you!
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 0f70a7f3dfcc..047ebb5d5f8c 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -83,6 +83,7 @@ struct phylink {
+ 	unsigned int pcs_state;
+ 
+ 	bool link_failed;
++	bool major_config_failed;
+ 	bool mac_supports_eee_ops;
+ 	bool mac_supports_eee;
+ 	bool phy_enable_tx_lpi;
+@@ -1217,12 +1218,16 @@ static void phylink_major_config(struct phylink *pl, bool restart,
+ 		    phylink_an_mode_str(pl->req_link_an_mode),
+ 		    phy_modes(state->interface));
+ 
++	pl->major_config_failed = false;
++
+ 	if (pl->mac_ops->mac_select_pcs) {
+ 		pcs = pl->mac_ops->mac_select_pcs(pl->config, state->interface);
+ 		if (IS_ERR(pcs)) {
+ 			phylink_err(pl,
+ 				    "mac_select_pcs unexpectedly failed: %pe\n",
+ 				    pcs);
++
++			pl->major_config_failed = true;
+ 			return;
+ 		}
+ 
+@@ -1244,6 +1249,7 @@ static void phylink_major_config(struct phylink *pl, bool restart,
+ 		if (err < 0) {
+ 			phylink_err(pl, "mac_prepare failed: %pe\n",
+ 				    ERR_PTR(err));
++			pl->major_config_failed = true;
+ 			return;
+ 		}
+ 	}
+@@ -1267,19 +1273,27 @@ static void phylink_major_config(struct phylink *pl, bool restart,
+ 
+ 	phylink_mac_config(pl, state);
+ 
+-	if (pl->pcs)
+-		phylink_pcs_post_config(pl->pcs, state->interface);
++	if (pl->pcs) {
++		err = phylink_pcs_post_config(pl->pcs, state->interface);
++		if (err < 0) {
++			phylink_err(pl, "pcs_post_config failed: %pe\n",
++				    ERR_PTR(err));
++
++			pl->major_config_failed = true;
++		}
++	}
+ 
+ 	if (pl->pcs_state == PCS_STATE_STARTING || pcs_changed)
+ 		phylink_pcs_enable(pl->pcs);
+ 
+ 	err = phylink_pcs_config(pl->pcs, pl->pcs_neg_mode, state,
+ 				 !!(pl->link_config.pause & MLO_PAUSE_AN));
+-	if (err < 0)
+-		phylink_err(pl, "pcs_config failed: %pe\n",
+-			    ERR_PTR(err));
+-	else if (err > 0)
++	if (err < 0) {
++		phylink_err(pl, "pcs_config failed: %pe\n", ERR_PTR(err));
++		pl->major_config_failed = true;
++	} else if (err > 0) {
+ 		restart = true;
++	}
+ 
+ 	if (restart)
+ 		phylink_pcs_an_restart(pl);
+@@ -1287,16 +1301,22 @@ static void phylink_major_config(struct phylink *pl, bool restart,
+ 	if (pl->mac_ops->mac_finish) {
+ 		err = pl->mac_ops->mac_finish(pl->config, pl->act_link_an_mode,
+ 					      state->interface);
+-		if (err < 0)
++		if (err < 0) {
+ 			phylink_err(pl, "mac_finish failed: %pe\n",
+ 				    ERR_PTR(err));
++
++			pl->major_config_failed = true;
++		}
+ 	}
+ 
+ 	if (pl->phydev && pl->phy_ib_mode) {
+ 		err = phy_config_inband(pl->phydev, pl->phy_ib_mode);
+-		if (err < 0)
++		if (err < 0) {
+ 			phylink_err(pl, "phy_config_inband: %pe\n",
+ 				    ERR_PTR(err));
++
++			pl->major_config_failed = true;
++		}
+ 	}
+ 
+ 	if (pl->sfp_bus) {
+@@ -1640,6 +1660,12 @@ static void phylink_resolve(struct work_struct *w)
+ 		}
+ 	}
+ 
++	/* If configuration of the interface failed, force the link down
++	 * until we get a successful configuration.
++	 */
++	if (pl->major_config_failed)
++		link_state.link = false;
++
+ 	if (link_state.link != cur_link_state) {
+ 		pl->old_link_state = link_state.link;
+ 		if (!link_state.link)
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.30.2
 
