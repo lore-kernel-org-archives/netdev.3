@@ -1,27 +1,27 @@
-Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC891E521
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788785BAF0
 	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 02:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742781691; cv=none; b=BS58lUxlg5qxREj1XsfyLTwFFDPN/BQlrbxMvhCTq7xDfPFfU1jMXeeXTnqGMvMugUGzcTbIYbEjzpeJkc0YI76spC7dABws0+Z3A8qNJraImqY3E51iH6YuuirTA4wTKKPcivDauEwpbcWD8RnqsW2ndSgQwZxZvvaig8goBJQ=
+	t=1742781691; cv=none; b=Y/aJyR6zqkPIfj69ysdN4/E3VHAMMV89Qf8M7GxF2I+vqI9/g29BtO87Fckv3GGlox5wXydwNZKdzoxEQZylGMlAd4h6aR0YGGqBJ2fSgVAidj5gqUWYgfsdTfv5fNIbbZsIQGbkCfzWGO+7d5d+bRk0+zZceb8EcDqO1VI1p4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1742781691; c=relaxed/simple;
-	bh=cjz+Njn/Q6iLLNpHA7OjaNaCafUa9yIGWe/cLLn+L70=;
+	bh=vonyUNNLTOX2+ULHcPkFzCbjVig7weYuDDOsbKrIKFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iwq9FXc7frjEANG6SlUncS3o+0ZgCa+OOG0nHmMYTfH1XdILxS6EpOFK9Lc3eF1j9oR3865To8Z3d8n/VA7brKOoQxx6d8Qr9XLDYxGGwjn87P4SDGsWeGKwUgZgjuYxpityXZrRoqKg+XT3SNjsbFw08BgLSsofdkNCQw3gvDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.206.34.216
+	 MIME-Version; b=h861KrJJyICxls9c8bU6oCyj+RI3Ee18zGEMh5pKodPgDWBQWk+Zujo2YpMtHuFOspImB508TkSjsrpe41j6vFI3cJI27MkCHhqySeOXIVYEGG/Z7YXNbHoBAt7Sp5sjBErQp5iBktHXPsonxZuXidzLnLTmsxtPhGavHBc71B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.207.22.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: bizesmtpsz6t1742781665t00aisr
-X-QQ-Originating-IP: 4X0HNPqsQY0aId5tz9waVrNU7e8ywy1Iwm661WfYxLI=
+X-QQ-mid: bizesmtpsz6t1742781648tcv42c9
+X-QQ-Originating-IP: 9DzjUFN/FteGN4Zbl8ydwCjbS0rXNkGVr26Cwx7PyLc=
 Received: from localhost.localdomain ( [60.186.241.229])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 24 Mar 2025 10:01:03 +0800 (CST)
+	id ; Mon, 24 Mar 2025 10:00:45 +0800 (CST)
 X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 8107421278965892175
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 6330068023074371164
 From: Mengyuan Lou <mengyuanlou@net-swift.com>
 To: netdev@vger.kernel.org
 Cc: kuba@kernel.org,
@@ -29,9 +29,9 @@ Cc: kuba@kernel.org,
 	jiawenwu@trustnetic.com,
 	duanqiangwen@net-swift.com,
 	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [RESEND,PATCH net-next v9 6/6] net: txgbe: add sriov function support
-Date: Mon, 24 Mar 2025 10:00:33 +0800
-Message-ID: <212BF3F0A2A3F362+20250324020033.36225-7-mengyuanlou@net-swift.com>
+Subject: [RESEND,PATCH net-next v9 1/6] net: libwx: Add mailbox api for wangxun pf drivers
+Date: Mon, 24 Mar 2025 10:00:28 +0800
+Message-ID: <A6047EA595026AA9+20250324020033.36225-2-mengyuanlou@net-swift.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250324020033.36225-1-mengyuanlou@net-swift.com>
 References: <20250324020033.36225-1-mengyuanlou@net-swift.com>
@@ -44,333 +44,302 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: bizesmtpsz:net-swift.com:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: NvH2zBBgt3uT4hHMIR7Brw/f++5JLBowjWBb0eFAUynG9eAm4k4ldkRn
-	NONOhB0UTEHl0X+FgJuhcq/72Bp8+anEWqbNH9wS1ZmJhKg5yhDw3lySPjN0kYNVh1ElFng
-	QG3VFNbG3Xr7y4V4VeFEyt6CaUsEx7a3y/dUc2L0am8WFcHni/3vcV+bvvlfPfnxP9UlOCC
-	9MFLPesmVKv7J1JWxwpZgDrGnwhv1o45T24hC8dElF8mSHbVWhRTyZ9JmVT4uSiTLQUODnQ
-	a9MCoxtmLyybVbgdXDsBPfFBvKxb4cSmfnnZg166G7aFzK+6ASPnrZq+11owKLyHo0eMAOb
-	v6LBasEc6CEvzk4NpEUA21wh6MN+aqDmVqJfydA4JeuIWw26blKSow/7wR32ModezGH2ywA
-	y1P+aEtZ1P3Bz+G0RT/gZ50b80ERCYeCyKMada42YjAkxOP7UcbC6Sz0QJp1NzNasF/i1lX
-	yvRl/CKMR3GsJ3l3Hfsq0uLzRJ/8YzK9ywnO4acdYKPkDu0gVNQ4JrODHDKxdqMn0GRYmWQ
-	q/wVnfTK5zKgU65nVpWPSm3ebxIlD/uXBjHjeYTKjxKoCizI9gsDczVSF4eW3Ij9T/rCsB3
-	q1E//ZqtAbQtMlB/EHy/d6DOKnJXhPdp8+3eyRMFy2W/NY/AUxuqhj5A5qCnZZHISbj1FMH
-	qPJ04PRw3JFeOKPgOVMkdcq/RvIbT4ZO9MHyenROzDg3tQGE1c5eH5KJ1Q9eo1Hz3/24MHX
-	woVLD2Typ3siKfE3CbSaPYizGuJNQYTXF0vNhosWjmd4jiroBaTyfw10Yv6crOI+oY94kId
-	hSne+CxzmzWwb/PeZ2XRGM8KwEW1UHMjSdHfnGY9lipsgpiWBN+KVVCKBCSV0bJ/mPJIYdm
-	VzuwmRTBg3aps23WTLuU8wxCpgoh8tF1RSFpCOePAPGbHZsTypTdNkwdeQMo7lULbJeTM1z
-	zIVZueOIAtC+J4eIVu3DzYs9PaS5M/uIVIh/vtt7pf6FStILDwhjyhDqipp4LnTPbBwyzW7
-	IBYmfieRVl7cEV3QMH3JtRPYfGEeqLuy7poRtlb7Vzd2fMwzB2yA1hWXykcGw=
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+X-QQ-XMAILINFO: M0vknKB9I1DpVPK/hUTmvAeH4WipyEHfF+WiKd+9W1luhisAJUBXNpFq
+	GJ8G9kKtbo0u0mwW9iJp+Vl2ydTkHVUmgjSVyZPL+pGoId8Ja9IBWAH0AogVql0TzQQseBO
+	DwLUgDHs8+cK6ku3QtT/LO9O9Wajwsxcz54XUAszyZhvq9Iv1lncdsj0iAKNcsq1bjMdBaz
+	B0YpoQET6UI8r7Th+bb53HrmWvpct3xWDLczY/kJUr9ct3nnaFKrZFlhIz+dMdduUfpBfVH
+	zEcvJYgbGnMQsaYH891ZlNj9LwXdlRr1WojH3S1xezu3AQ2OGrEGeTueslwNz7b3sd9FegN
+	GcJ8cRFVvxTNUPOHb3x6xUJOuxKSK/6wejkmM38OmW+xNu5UKrZw8ea+7GQmAqMpvUo3Ydf
+	25/ZABghl1l3tm1+syIhYrllbDg3TZ0a1lDZV3CI1cyfuGuszIvZEpIyNfkHk4EKpt/YBRg
+	7svGiLPg59UQ3rwlr+sHcOyHp5mXEaHnziQuG0jwNVr+i1eP2wL5nrIutJ2Cj9r5ROJGRbN
+	9AMWMO1Fi6LWE99tDUeNyvtaFCDV0aGFRUg2vbOeIMyZfsL7RbejY1/RmFjXoJdWYGDlEuS
+	TugRFWX37Ww2kgdl7U1QkD3/pQ4bDlkDX9n0yQdAL7qptbkLlyyA5MDIV6azeZNnH7SLedY
+	K+ut6YDGngn7WBceMHJq0v9f2e08CNRAaOzplVckWbB6vJND8RrnHovPBsbCSO9PdqvBoGY
+	IwuctpfbthBgV6+VWCwUDa9yKF839pXhakx1gbBBvYPeI2WZhd0HeVB6GbsqJKcoXdu8CSf
+	U8D9mEuKCMg2cfJGpAHIxIzMQfJ6Pi0jXlV6He5uAS/QZ7IjZnU0JI7kvfie3kLyArXJxHh
+	xqUt5ewhSYq3T4VsuulqlhbiawAmLoevwCtof4n14LEkSWv5KT4XQdp6e4uzWsN+BNAwa42
+	L/WkEcAjc1CP+VNsQ34/Aqr3/WwGuZAIhHCCtlv11RlKS9rECYL73oPypN4YLJoL4BMOBgd
+	uRsNqkL5lZRE0yvdVAbNFm5bFthHE=
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
 X-QQ-RECHKSPAM: 0
 
-Add sriov_configure for driver ops.
-Add mailbox handler wx_msg_task for txgbe.
+Implements the mailbox interfaces for wangxun pf drivers
+ngbe and txgbe.
 
 Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_sriov.c | 42 +++++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_sriov.h |  1 +
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |  1 +
- .../net/ethernet/wangxun/txgbe/txgbe_irq.c    | 21 ++++++++--
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   | 27 ++++++++++++
- .../net/ethernet/wangxun/txgbe/txgbe_phy.c    |  6 +++
- .../net/ethernet/wangxun/txgbe/txgbe_type.h   |  7 +++-
- 7 files changed, 101 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/Makefile  |   2 +-
+ drivers/net/ethernet/wangxun/libwx/wx_mbx.c  | 176 +++++++++++++++++++
+ drivers/net/ethernet/wangxun/libwx/wx_mbx.h  |  32 ++++
+ drivers/net/ethernet/wangxun/libwx/wx_type.h |   8 +
+ 4 files changed, 217 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_mbx.c
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_mbx.h
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_sriov.c b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
-index a31b574a343e..52e6a6faf715 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
-@@ -282,6 +282,15 @@ static void wx_clear_vmvir(struct wx *wx, u32 vf)
- 	wr32(wx, WX_TDM_VLAN_INS(vf), 0);
- }
+diff --git a/drivers/net/ethernet/wangxun/libwx/Makefile b/drivers/net/ethernet/wangxun/libwx/Makefile
+index e9f0f1f2309b..cd1675ef3253 100644
+--- a/drivers/net/ethernet/wangxun/libwx/Makefile
++++ b/drivers/net/ethernet/wangxun/libwx/Makefile
+@@ -4,4 +4,4 @@
  
-+static void wx_ping_vf(struct wx *wx, int vf)
+ obj-$(CONFIG_LIBWX) += libwx.o
+ 
+-libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o
++libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o wx_mbx.o
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_mbx.c b/drivers/net/ethernet/wangxun/libwx/wx_mbx.c
+new file mode 100644
+index 000000000000..73af5f11c3bd
+--- /dev/null
++++ b/drivers/net/ethernet/wangxun/libwx/wx_mbx.c
+@@ -0,0 +1,176 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2015 - 2025 Beijing WangXun Technology Co., Ltd. */
++
++#include <linux/pci.h>
++#include "wx_type.h"
++#include "wx_mbx.h"
++
++/**
++ *  wx_obtain_mbx_lock_pf - obtain mailbox lock
++ *  @wx: pointer to the HW structure
++ *  @vf: the VF index
++ *
++ *  Return: return 0 on success and -EBUSY on failure
++ **/
++static int wx_obtain_mbx_lock_pf(struct wx *wx, u16 vf)
 +{
-+	u32 ping = WX_PF_CONTROL_MSG;
++	int count = 5;
++	u32 mailbox;
 +
-+	if (wx->vfinfo[vf].clear_to_send)
-+		ping |= WX_VT_MSGTYPE_CTS;
-+	wx_write_mbx_pf(wx, &ping, 1, vf);
-+}
++	while (count--) {
++		/* Take ownership of the buffer */
++		wr32(wx, WX_PXMAILBOX(vf), WX_PXMAILBOX_PFU);
 +
- static void wx_set_vf_rx_tx(struct wx *wx, int vf)
- {
- 	u32 index = WX_VF_REG_OFFSET(vf), vf_bit = WX_VF_IND_SHIFT(vf);
-@@ -865,3 +874,36 @@ void wx_ping_all_vfs_with_link_status(struct wx *wx, bool link_up)
- 	}
- }
- EXPORT_SYMBOL(wx_ping_all_vfs_with_link_status);
-+
-+static void wx_set_vf_link_state(struct wx *wx, int vf, int state)
-+{
-+	wx->vfinfo[vf].link_state = state;
-+	switch (state) {
-+	case IFLA_VF_LINK_STATE_AUTO:
-+		if (netif_running(wx->netdev))
-+			wx->vfinfo[vf].link_enable = true;
-+		else
-+			wx->vfinfo[vf].link_enable = false;
-+		break;
-+	case IFLA_VF_LINK_STATE_ENABLE:
-+		wx->vfinfo[vf].link_enable = true;
-+		break;
-+	case IFLA_VF_LINK_STATE_DISABLE:
-+		wx->vfinfo[vf].link_enable = false;
-+		break;
++		/* reserve mailbox for vf use */
++		mailbox = rd32(wx, WX_PXMAILBOX(vf));
++		if (mailbox & WX_PXMAILBOX_PFU)
++			return 0;
++		else if (count)
++			udelay(10);
 +	}
-+	/* restart the VF */
-+	wx->vfinfo[vf].clear_to_send = false;
-+	wx_ping_vf(wx, vf);
++	wx_err(wx, "Failed to obtain mailbox lock for PF%d", vf);
 +
-+	wx_set_vf_rx_tx(wx, vf);
++	return -EBUSY;
 +}
 +
-+void wx_set_all_vfs(struct wx *wx)
++static int wx_check_for_bit_pf(struct wx *wx, u32 mask, int index)
 +{
-+	int i;
++	u32 mbvficr = rd32(wx, WX_MBVFICR(index));
 +
-+	for (i = 0; i < wx->num_vfs; i++)
-+		wx_set_vf_link_state(wx, i, wx->vfinfo[i].link_state);
++	if (!(mbvficr & mask))
++		return -EBUSY;
++	wr32(wx, WX_MBVFICR(index), mask);
++
++	return 0;
 +}
-+EXPORT_SYMBOL(wx_set_all_vfs);
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_sriov.h b/drivers/net/ethernet/wangxun/libwx/wx_sriov.h
-index 376d8e0e49f3..8a3a47bb5815 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_sriov.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_sriov.h
-@@ -13,5 +13,6 @@ int wx_pci_sriov_configure(struct pci_dev *pdev, int num_vfs);
- void wx_msg_task(struct wx *wx);
- void wx_disable_vf_rx_tx(struct wx *wx);
- void wx_ping_all_vfs_with_link_status(struct wx *wx, bool link_up);
-+void wx_set_all_vfs(struct wx *wx);
- 
- #endif /* _WX_SRIOV_H_ */
++
++/**
++ *  wx_check_for_ack_pf - checks to see if the VF has acked
++ *  @wx: pointer to the HW structure
++ *  @vf: the VF index
++ *
++ *  Return: return 0 if the VF has set the status bit or else -EBUSY
++ **/
++int wx_check_for_ack_pf(struct wx *wx, u16 vf)
++{
++	u32 index = vf / 16, vf_bit = vf % 16;
++
++	return wx_check_for_bit_pf(wx,
++				   FIELD_PREP(WX_MBVFICR_VFACK_MASK,
++					      BIT(vf_bit)),
++				   index);
++}
++
++/**
++ *  wx_check_for_msg_pf - checks to see if the VF has sent mail
++ *  @wx: pointer to the HW structure
++ *  @vf: the VF index
++ *
++ *  Return: return 0 if the VF has got req bit or else -EBUSY
++ **/
++int wx_check_for_msg_pf(struct wx *wx, u16 vf)
++{
++	u32 index = vf / 16, vf_bit = vf % 16;
++
++	return wx_check_for_bit_pf(wx,
++				   FIELD_PREP(WX_MBVFICR_VFREQ_MASK,
++					      BIT(vf_bit)),
++				   index);
++}
++
++/**
++ *  wx_write_mbx_pf - Places a message in the mailbox
++ *  @wx: pointer to the HW structure
++ *  @msg: The message buffer
++ *  @size: Length of buffer
++ *  @vf: the VF index
++ *
++ *  Return: return 0 on success and -EINVAL/-EBUSY on failure
++ **/
++int wx_write_mbx_pf(struct wx *wx, u32 *msg, u16 size, u16 vf)
++{
++	struct wx_mbx_info *mbx = &wx->mbx;
++	int ret, i;
++
++	/* mbx->size is up to 15 */
++	if (size > mbx->size) {
++		wx_err(wx, "Invalid mailbox message size %d", size);
++		return -EINVAL;
++	}
++
++	/* lock the mailbox to prevent pf/vf race condition */
++	ret = wx_obtain_mbx_lock_pf(wx, vf);
++	if (ret)
++		return ret;
++
++	/* flush msg and acks as we are overwriting the message buffer */
++	wx_check_for_msg_pf(wx, vf);
++	wx_check_for_ack_pf(wx, vf);
++
++	/* copy the caller specified message to the mailbox memory buffer */
++	for (i = 0; i < size; i++)
++		wr32a(wx, WX_PXMBMEM(vf), i, msg[i]);
++
++	/* Interrupt VF to tell it a message has been sent and release buffer */
++	/* set mirrored mailbox flags */
++	wr32a(wx, WX_PXMBMEM(vf), WX_VXMAILBOX_SIZE, WX_PXMAILBOX_STS);
++	wr32(wx, WX_PXMAILBOX(vf), WX_PXMAILBOX_STS);
++
++	return 0;
++}
++
++/**
++ *  wx_read_mbx_pf - Read a message from the mailbox
++ *  @wx: pointer to the HW structure
++ *  @msg: The message buffer
++ *  @size: Length of buffer
++ *  @vf: the VF index
++ *
++ *  Return: return 0 on success and -EBUSY on failure
++ **/
++int wx_read_mbx_pf(struct wx *wx, u32 *msg, u16 size, u16 vf)
++{
++	struct wx_mbx_info *mbx = &wx->mbx;
++	int ret;
++	u16 i;
++
++	/* limit read to size of mailbox and mbx->size is up to 15 */
++	if (size > mbx->size)
++		size = mbx->size;
++
++	/* lock the mailbox to prevent pf/vf race condition */
++	ret = wx_obtain_mbx_lock_pf(wx, vf);
++	if (ret)
++		return ret;
++
++	for (i = 0; i < size; i++)
++		msg[i] = rd32a(wx, WX_PXMBMEM(vf), i);
++
++	/* Acknowledge the message and release buffer */
++	/* set mirrored mailbox flags */
++	wr32a(wx, WX_PXMBMEM(vf), WX_VXMAILBOX_SIZE, WX_PXMAILBOX_ACK);
++	wr32(wx, WX_PXMAILBOX(vf), WX_PXMAILBOX_ACK);
++
++	return 0;
++}
++
++/**
++ *  wx_check_for_rst_pf - checks to see if the VF has reset
++ *  @wx: pointer to the HW structure
++ *  @vf: the VF index
++ *
++ *  Return: return 0 on success and -EBUSY on failure
++ **/
++int wx_check_for_rst_pf(struct wx *wx, u16 vf)
++{
++	u32 reg_offset = WX_VF_REG_OFFSET(vf);
++	u32 vf_shift = WX_VF_IND_SHIFT(vf);
++	u32 vflre = 0;
++
++	vflre = rd32(wx, WX_VFLRE(reg_offset));
++	if (!(vflre & BIT(vf_shift)))
++		return -EBUSY;
++	wr32(wx, WX_VFLREC(reg_offset), BIT(vf_shift));
++
++	return 0;
++}
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_mbx.h b/drivers/net/ethernet/wangxun/libwx/wx_mbx.h
+new file mode 100644
+index 000000000000..c09b25f3e43d
+--- /dev/null
++++ b/drivers/net/ethernet/wangxun/libwx/wx_mbx.h
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (c) 2015 - 2025 Beijing WangXun Technology Co., Ltd. */
++#ifndef _WX_MBX_H_
++#define _WX_MBX_H_
++
++#define WX_VXMAILBOX_SIZE    15
++
++/* PF Registers */
++#define WX_PXMAILBOX(i)      (0x600 + (4 * (i))) /* i=[0,63] */
++#define WX_PXMAILBOX_STS     BIT(0) /* Initiate message send to VF */
++#define WX_PXMAILBOX_ACK     BIT(1) /* Ack message recv'd from VF */
++#define WX_PXMAILBOX_PFU     BIT(3) /* PF owns the mailbox buffer */
++
++#define WX_PXMBMEM(i)        (0x5000 + (64 * (i))) /* i=[0,63] */
++
++#define WX_VFLRE(i)          (0x4A0 + (4 * (i))) /* i=[0,1] */
++#define WX_VFLREC(i)         (0x4A8 + (4 * (i))) /* i=[0,1] */
++
++/* SR-IOV specific macros */
++#define WX_MBVFICR(i)         (0x480 + (4 * (i))) /* i=[0,3] */
++#define WX_MBVFICR_VFREQ_MASK GENMASK(15, 0)
++#define WX_MBVFICR_VFACK_MASK GENMASK(31, 16)
++
++#define WX_VT_MSGINFO_MASK    GENMASK(23, 16)
++
++int wx_write_mbx_pf(struct wx *wx, u32 *msg, u16 size, u16 vf);
++int wx_read_mbx_pf(struct wx *wx, u32 *msg, u16 size, u16 vf);
++int wx_check_for_rst_pf(struct wx *wx, u16 mbx_id);
++int wx_check_for_msg_pf(struct wx *wx, u16 mbx_id);
++int wx_check_for_ack_pf(struct wx *wx, u16 mbx_id);
++
++#endif /* _WX_MBX_H_ */
 diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 9b9345290594..e13172c9eeed 100644
+index 5b230ecbbabb..18287b0ee040 100644
 --- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
 +++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1173,6 +1173,7 @@ struct vf_data_storage {
- 	u16 vf_mc_hashes[WX_MAX_VF_MC_ENTRIES];
- 	u16 num_vf_mc_hashes;
- 	u16 vlan_count;
-+	int link_state;
+@@ -22,6 +22,9 @@
+ #define WX_PCI_LINK_STATUS                      0xB2
+ 
+ /**************** Global Registers ****************************/
++#define WX_VF_REG_OFFSET(_v)         FIELD_GET(GENMASK(15, 5), (_v))
++#define WX_VF_IND_SHIFT(_v)          FIELD_GET(GENMASK(4, 0), (_v))
++
+ /* chip control Registers */
+ #define WX_MIS_PWR                   0x10000
+ #define WX_MIS_RST                   0x1000C
+@@ -779,6 +782,10 @@ struct wx_bus_info {
+ 	u16 device;
  };
  
- struct vf_macvlans {
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-index 8658a51ee810..280c74a57f6e 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-@@ -7,6 +7,7 @@
- #include "../libwx/wx_type.h"
- #include "../libwx/wx_lib.h"
- #include "../libwx/wx_hw.h"
-+#include "../libwx/wx_sriov.h"
- #include "txgbe_type.h"
- #include "txgbe_phy.h"
- #include "txgbe_irq.h"
-@@ -109,8 +110,17 @@ static irqreturn_t txgbe_misc_irq_handle(int irq, void *data)
- 	struct wx *wx = txgbe->wx;
- 	u32 eicr;
- 
--	if (wx->pdev->msix_enabled)
-+	if (wx->pdev->msix_enabled) {
-+		eicr = wx_misc_isb(wx, WX_ISB_MISC) & TXGBE_PX_MISC_IEN_MASK;
-+		if (!eicr)
-+			return IRQ_NONE;
-+		txgbe->eicr = eicr;
-+		if (eicr & TXGBE_PX_MISC_IC_VF_MBOX) {
-+			wx_msg_task(txgbe->wx);
-+			wx_intr_enable(wx, TXGBE_INTR_MISC);
-+		}
- 		return IRQ_WAKE_THREAD;
-+	}
- 
- 	eicr = wx_misc_isb(wx, WX_ISB_VEC0);
- 	if (!eicr) {
-@@ -129,6 +139,11 @@ static irqreturn_t txgbe_misc_irq_handle(int irq, void *data)
- 	q_vector = wx->q_vector[0];
- 	napi_schedule_irqoff(&q_vector->napi);
- 
-+	eicr = wx_misc_isb(wx, WX_ISB_MISC) & TXGBE_PX_MISC_IEN_MASK;
-+	if (!eicr)
-+		return IRQ_NONE;
-+	txgbe->eicr = eicr;
++struct wx_mbx_info {
++	u16 size;
++};
 +
- 	return IRQ_WAKE_THREAD;
- }
- 
-@@ -140,7 +155,7 @@ static irqreturn_t txgbe_misc_irq_thread_fn(int irq, void *data)
- 	unsigned int sub_irq;
- 	u32 eicr;
- 
--	eicr = wx_misc_isb(wx, WX_ISB_MISC);
-+	eicr = txgbe->eicr;
- 	if (eicr & (TXGBE_PX_MISC_ETH_LK | TXGBE_PX_MISC_ETH_LKDN |
- 		    TXGBE_PX_MISC_ETH_AN)) {
- 		sub_irq = irq_find_mapping(txgbe->misc.domain, TXGBE_IRQ_LINK);
-@@ -183,7 +198,7 @@ int txgbe_setup_misc_irq(struct txgbe *txgbe)
- 	if (wx->mac.type == wx_mac_aml)
- 		goto skip_sp_irq;
- 
--	txgbe->misc.nirqs = 1;
-+	txgbe->misc.nirqs = TXGBE_IRQ_MAX;
- 	txgbe->misc.domain = irq_domain_add_simple(NULL, txgbe->misc.nirqs, 0,
- 						   &txgbe_misc_irq_domain_ops, txgbe);
- 	if (!txgbe->misc.domain)
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index a2e245e3b016..239270c28a89 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -15,6 +15,8 @@
- #include "../libwx/wx_lib.h"
- #include "../libwx/wx_ptp.h"
- #include "../libwx/wx_hw.h"
-+#include "../libwx/wx_mbx.h"
-+#include "../libwx/wx_sriov.h"
- #include "txgbe_type.h"
- #include "txgbe_hw.h"
- #include "txgbe_phy.h"
-@@ -117,6 +119,12 @@ static void txgbe_up_complete(struct wx *wx)
- 
- 	/* enable transmits */
- 	netif_tx_start_all_queues(netdev);
-+
-+	/* Set PF Reset Done bit so PF/VF Mail Ops can work */
-+	wr32m(wx, WX_CFG_PORT_CTL, WX_CFG_PORT_CTL_PFRSTD,
-+	      WX_CFG_PORT_CTL_PFRSTD);
-+	/* update setting rx tx for all active vfs */
-+	wx_set_all_vfs(wx);
- }
- 
- static void txgbe_reset(struct wx *wx)
-@@ -165,6 +173,16 @@ static void txgbe_disable_device(struct wx *wx)
- 		wx_err(wx, "%s: invalid bus lan id %d\n",
- 		       __func__, wx->bus.func);
- 
-+	if (wx->num_vfs) {
-+		/* Clear EITR Select mapping */
-+		wr32(wx, WX_PX_ITRSEL, 0);
-+		/* Mark all the VFs as inactive */
-+		for (i = 0 ; i < wx->num_vfs; i++)
-+			wx->vfinfo[i].clear_to_send = 0;
-+		/* update setting rx tx for all active vfs */
-+		wx_set_all_vfs(wx);
-+	}
-+
- 	if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
- 	      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
- 		/* disable mac transmiter */
-@@ -307,12 +325,15 @@ static int txgbe_sw_init(struct wx *wx)
- 	/* set default ring sizes */
- 	wx->tx_ring_count = TXGBE_DEFAULT_TXD;
- 	wx->rx_ring_count = TXGBE_DEFAULT_RXD;
-+	wx->mbx.size = WX_VXMAILBOX_SIZE;
- 
- 	/* set default work limits */
- 	wx->tx_work_limit = TXGBE_DEFAULT_TX_WORK;
- 	wx->rx_work_limit = TXGBE_DEFAULT_RX_WORK;
- 
-+	wx->setup_tc = txgbe_setup_tc;
- 	wx->do_reset = txgbe_do_reset;
-+	set_bit(0, &wx->fwd_bitmask);
- 
- 	switch (wx->mac.type) {
- 	case wx_mac_sp:
-@@ -604,6 +625,10 @@ static int txgbe_probe(struct pci_dev *pdev,
- 		goto err_pci_release_regions;
- 	}
- 
-+	/* The sapphire supports up to 63 VFs per pf, but physical
-+	 * function also need one pool for basic networking.
-+	 */
-+	pci_sriov_set_totalvfs(pdev, TXGBE_MAX_VFS_DRV_LIMIT);
- 	wx->driver_name = txgbe_driver_name;
- 	txgbe_set_ethtool_ops(netdev);
- 	netdev->netdev_ops = &txgbe_netdev_ops;
-@@ -794,6 +819,7 @@ static void txgbe_remove(struct pci_dev *pdev)
+ struct wx_thermal_sensor_data {
+ 	s16 temp;
+ 	s16 alarm_thresh;
+@@ -1129,6 +1136,7 @@ struct wx {
+ 	struct pci_dev *pdev;
  	struct net_device *netdev;
- 
- 	netdev = wx->netdev;
-+	wx_disable_sriov(wx);
- 	unregister_netdev(netdev);
- 
- 	txgbe_remove_phy(txgbe);
-@@ -816,6 +842,7 @@ static struct pci_driver txgbe_driver = {
- 	.probe    = txgbe_probe,
- 	.remove   = txgbe_remove,
- 	.shutdown = txgbe_shutdown,
-+	.sriov_configure = wx_pci_sriov_configure,
- };
- 
- module_pci_driver(txgbe_driver);
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-index 85f022ceef4f..1863cfd27ee7 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-@@ -16,6 +16,8 @@
- #include "../libwx/wx_type.h"
- #include "../libwx/wx_lib.h"
- #include "../libwx/wx_ptp.h"
-+#include "../libwx/wx_sriov.h"
-+#include "../libwx/wx_mbx.h"
- #include "../libwx/wx_hw.h"
- #include "txgbe_type.h"
- #include "txgbe_phy.h"
-@@ -184,6 +186,8 @@ static void txgbe_mac_link_down(struct phylink_config *config,
- 	wx->speed = SPEED_UNKNOWN;
- 	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
- 		wx_ptp_reset_cyclecounter(wx);
-+	/* ping all the active vfs to let them know we are going down */
-+	wx_ping_all_vfs_with_link_status(wx, false);
- }
- 
- static void txgbe_mac_link_up(struct phylink_config *config,
-@@ -225,6 +229,8 @@ static void txgbe_mac_link_up(struct phylink_config *config,
- 	wx->last_rx_ptp_check = jiffies;
- 	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
- 		wx_ptp_reset_cyclecounter(wx);
-+	/* ping all the active vfs to let them know we are going up */
-+	wx_ping_all_vfs_with_link_status(wx, true);
- }
- 
- static int txgbe_mac_prepare(struct phylink_config *config, unsigned int mode,
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-index 9c1c26234cad..5937cbc6bd05 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-@@ -77,11 +77,13 @@
- #define TXGBE_PX_MISC_ETH_LK                    BIT(18)
- #define TXGBE_PX_MISC_ETH_AN                    BIT(19)
- #define TXGBE_PX_MISC_INT_ERR                   BIT(20)
-+#define TXGBE_PX_MISC_IC_VF_MBOX                BIT(23)
- #define TXGBE_PX_MISC_GPIO                      BIT(26)
- #define TXGBE_PX_MISC_IEN_MASK                            \
- 	(TXGBE_PX_MISC_ETH_LKDN | TXGBE_PX_MISC_DEV_RST | \
- 	 TXGBE_PX_MISC_ETH_EVENT | TXGBE_PX_MISC_ETH_LK | \
--	 TXGBE_PX_MISC_ETH_AN | TXGBE_PX_MISC_INT_ERR)
-+	 TXGBE_PX_MISC_ETH_AN | TXGBE_PX_MISC_INT_ERR | \
-+	 TXGBE_PX_MISC_IC_VF_MBOX)
- 
- /* Port cfg registers */
- #define TXGBE_CFG_PORT_ST                       0x14404
-@@ -174,6 +176,8 @@
- #define TXGBE_SP_RX_PB_SIZE     512
- #define TXGBE_SP_TDB_PB_SZ      (160 * 1024) /* 160KB Packet Buffer */
- 
-+#define TXGBE_MAX_VFS_DRV_LIMIT                 63
-+
- #define TXGBE_DEFAULT_ATR_SAMPLE_RATE           20
- 
- /* Software ATR hash keys */
-@@ -348,6 +352,7 @@ struct txgbe {
- 	struct clk *clk;
- 	struct gpio_chip *gpio;
- 	unsigned int link_irq;
-+	u32 eicr;
- 
- 	/* flow director */
- 	struct hlist_head fdir_filter_list;
+ 	struct wx_bus_info bus;
++	struct wx_mbx_info mbx;
+ 	struct wx_mac_info mac;
+ 	enum em_mac_type mac_type;
+ 	enum sp_media_type media_type;
 -- 
 2.48.1
+
 
