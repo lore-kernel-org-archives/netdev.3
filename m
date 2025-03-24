@@ -1,79 +1,127 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760D2266F13
-	for <netdev@vger.kernel.org>; Mon, 24 Mar 2025 17:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF09264617;
+	Mon, 24 Mar 2025 17:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742838002; cv=none; b=u7iLC6fLbdk7KduPP+Ep5gypvy/aNn0ko5tyVkHZg4YDroTLeVCZDzbfTF8FUJf89N7GOo3hn1Zk4yyQ4tBlMeGcLrqMMzVMEHKFB22GmDmLYrKeKe1nKzTIJTpTwXNB60ddbmZeKc6Sx9xUrlWcR5hFdw7TRH3CzG8U3TFEn94=
+	t=1742838102; cv=none; b=eI2YUOpfAokuZ+Vg2O0RkknKnaXi35pqAnHfVP/d0eCul4AvUV9NwWMTPN1GQbKxxfRewVzm82KoIkyrjQCCpadsAW1X92dUwOp2hF9LnjR90aK5vuQOEw3CQPguVpKlTmgx2fDc2q57Z7/WcXGMw5owr0SyPnf7AbWeqLSjZKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742838002; c=relaxed/simple;
-	bh=L7zHiXorn6aA9p5vOwjnNHiZUQTutSOkrnfclwWeuc8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BGnyauX+gabFeWpwhD/Gh6r5pZewLnLZo79TemrPa7ZQTJdhcNi3helbp3uLdPtzxKHwbYyWCg0KZsZVR0Ym/UkmX1jzXR7NaVOpcNRddyrkXkTuzx8IL134mwxwgNaR9YriDICObxCBmHuZGzf8P2BkGe9aQj89y7SsT7y6ISg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pRup2H21; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742838102; c=relaxed/simple;
+	bh=8PFrtxpnJpLFkdaeNeF+Kojf2rI5Gt9WPBc0gGLSfzc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=u2P701ezt0xcNFd2tSmAkabfEp7A/MzEnq0x1jo36juuNjEVtRPLbxbVL6XqhOwMp6b+dJgQG9JarKcvUDladu4HT4gQpfhsw06uhqgRk7JO88NcCLJC8jLLzhwIGOXyOGZ5u3jFXmoqAXdizGClYBrAaS9MBWJ/60ItTI+bVuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ig2n0jQp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pRup2H21"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A87C4CEDD;
-	Mon, 24 Mar 2025 17:40:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ig2n0jQp"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 85334C4CEEF;
+	Mon, 24 Mar 2025 17:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742838002;
-	bh=L7zHiXorn6aA9p5vOwjnNHiZUQTutSOkrnfclwWeuc8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=pRup2H212+dxikKxv+NVRIG2/CQvHfHwV79x0xB4g9AJJ6L5B7Y+xThUguiK1lCAq
-	 eMTZDwEvT6bWJzqop+ceFFOJG3PIFSybgc9ayYf8eKHAu+gzeT1JJzJK0st3TCVGqm
-	 SyPaoO9Ud6xl5LhhFknLt/DBJ4AAlnRenuYzNjLbZ/nd5VCKSHpMNBNRJjOEdQFgmc
-	 cJlWUNSW53wzTEkBURGV4EMM0vVVBcRlBSV9OUrj9OpslcXlgrHBOIQOCwlIsnUlsP
-	 RVdMcyam/f4BShvOJtH8wLTYbZrUzmRYY/rY50Mk4cX4FrK224UmZ/591bRUPib/2a
-	 +4hJG6VIV6J3w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE108380664D;
-	Mon, 24 Mar 2025 17:40:39 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1742838102;
+	bh=8PFrtxpnJpLFkdaeNeF+Kojf2rI5Gt9WPBc0gGLSfzc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=ig2n0jQp/tRrUP/isobTD5FA47J2zoG/kTryfUGI1GGxLH64kBHF8vlGQedfZVK8w
+	 y+rtw0NPTMF08NCUn8yoth5YfDYXQMM1H3QeQuo50mdDQVH+C2jXZpOhFe0yB4EOtk
+	 3MeKDsa5gkFo0iN2wmG0Nmn6hG1xw0oAC6zEr0f14yXDBnsxpmopxVIJRQ1A+Ze8Yg
+	 sQ6HCc/r8Ha9Ciius+Vjje+6nTdu23qgsxadiSUBRpAckHKHvVM6S77LouYukB62s/
+	 Ydr4APVyW2G2f2AzbMzFqwLaDuyngV7jYoJSac/7LgLcVh0u1bEyKbiU77ruuge/rO
+	 n/7yCrCfGoTlw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B721C36008;
+	Mon, 24 Mar 2025 17:41:42 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Mon, 24 Mar 2025 18:41:39 +0100
+Subject: [PATCH v5 2/5] dt-bindings: net: Add generic wireless controller
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] tcp: move icsk_clean_acked to a better location
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174283803826.4111679.7163094076104773870.git-patchwork-notify@kernel.org>
-Date: Mon, 24 Mar 2025 17:40:38 +0000
-References: <20250317085313.2023214-1-edumazet@google.com>
-In-Reply-To: <20250317085313.2023214-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- ncardwell@google.com, kuniyu@amazon.com, borisp@nvidia.com,
- john.fastabend@gmail.com, horms@kernel.org, netdev@vger.kernel.org,
- eric.dumazet@gmail.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250324-dt-bindings-network-class-v5-2-f5c3fe00e8f0@ixit.cz>
+References: <20250324-dt-bindings-network-class-v5-0-f5c3fe00e8f0@ixit.cz>
+In-Reply-To: <20250324-dt-bindings-network-class-v5-0-f5c3fe00e8f0@ixit.cz>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Mailing List <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, 
+ Johannes Berg <johannes@sipsolutions.net>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>, van Spriel <arend@broadcom.com>, 
+ =?utf-8?q?J=C3=A9r=C3=B4me_Pouiller?= <jerome.pouiller@silabs.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Andy Gross <agross@kernel.org>, 
+ Mailing List <devicetree-spec@vger.kernel.org>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, Janne Grunau <j@jannau.net>, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1188; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=s4h8B9gNJQ6JIaRS+FZDFjTYjzD5y6gNzE0ffwMuDco=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBn4ZlUkO2OTp2AzhwK0TqhMqWIaIvFxzYIv7hU4
+ sC1q5W8JXGJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCZ+GZVAAKCRBgAj/E00kg
+ ctX+EACIls3D2cw/sYf6yNpFF7jMddNcznl3sRLq0U1Gq9Qpqn/AgYTzBJXrYWOyGxwhoO3hegV
+ XZIj25cuIt6LQglWdRSdQ+sF0s1ta/419YsW2ACTqCWRfh8YZvXVLeiCGB3JcsgDW9usnOSR1Rq
+ AGAYg0uegeuRC9Sx2XL+ydP3Y8BhmVdRTvy3Axxl0E4WjS++hCsAnukU0Ju3RJo9Q4Qc5iQAu2I
+ hKvmzxRxF22/do9WKRea5LFe8/5P+nc23dvqF253VsOELmU/6v93iE7dYDluB2oyQnxvxWeNWLA
+ s8He4wM7PDJOeysx19z6LJ5WqFfu1XVq66U1KHOsxoJed7Lm2humQSmQdVXccwjoHfy/vpZR0Zg
+ qLCqTJPrsOrfTnzeXzpCp9HCJjQnZQpbJkOdLVuE0cjaSpS6dejVpWDdGZS6GueJAy3wV61jvBQ
+ VYMX3QHRMJCVVN/z3N1NxMLjFzlhzu/+iX9jTlctE6gvB1TUD/0ILv+ainKo6XrHQahwh9hQzoB
+ lQa+apHVJhkaaILysbh3KHnsqjvojDCOqT4UTyJJRJ3JEYXrFlZ+IO9Yieyi45/ZPjnCKALZUUe
+ QSU12CiBMB+QJdBXtETwNFowKfPLsuRti24UbsIjbhFPKd7ljtNqgpdcDATIJJUTGfk6EwwIxye
+ EJtNFGT07HwaRFg==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-Hello:
+From: David Heidelberg <david@ixit.cz>
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Wireless controllers share the common properties.
 
-On Mon, 17 Mar 2025 08:53:13 +0000 you wrote:
-> As a followup of my presentation in Zagreb for netdev 0x19:
-> 
-> icsk_clean_acked is only used by TCP when/if CONFIG_TLS_DEVICE
-> is enabled from tcp_ack().
-> 
-> Rename it to tcp_clean_acked, move it to tcp_sock structure
-> in the tcp_sock_read_rx for better cache locality in TCP
-> fast path.
-> 
-> [...]
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ .../bindings/net/wireless/wireless-controller.yaml | 23 ++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-Here is the summary with links:
-  - [net-next] tcp: move icsk_clean_acked to a better location
-    https://git.kernel.org/netdev/net-next/c/1937a0be28c0
+diff --git a/Documentation/devicetree/bindings/net/wireless/wireless-controller.yaml b/Documentation/devicetree/bindings/net/wireless/wireless-controller.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..7379f6c1aa05c15a5bc7b34df6502cc174af9a90
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/wireless/wireless-controller.yaml
+@@ -0,0 +1,23 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/wireless/wireless-controller.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Wireless Controller Common Properties
++
++maintainers:
++  - Lorenzo Bianconi <lorenzo@kernel.org>
++
++properties:
++  $nodename:
++    pattern: "^wifi(@.*)?$"
++
++allOf:
++  - $ref: ieee80211.yaml#
++  - $ref: /schemas/net/network-class.yaml#
++
++additionalProperties: true
++
++...
++
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.49.0
 
 
