@@ -1,142 +1,152 @@
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53031FAC3D;
-	Tue, 25 Mar 2025 09:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD01C15666B;
+	Tue, 25 Mar 2025 09:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742895642; cv=none; b=Cpk9lDrgZwjWhAbjVgBtxdEi/e6VKTg1MbopVmbAwCb/HAbJhXuzxM/GS0rhbwA38nh2vNUTFeKh3nQR1usjU/IkYhPYkHYI3jhacfeiaRlaw5KozCI3N8n2KqjEMHecIOWbGFlW0M9ogjU2CGWW05inFAhxfV76Jyn1rvV1xEQ=
+	t=1742895866; cv=none; b=BwzbTP3G9j++kxCB3H2aO7ff2mTBwy+0CagVMnRzlbnx4AUFCAtiI4trN+Zk6FITn4qQ8MfJJTIq2zLNm3UWG3bUTcb6xbEM1acdgWVSdAyEcryIWAmY7j2bGKnvBbk6E7pSVReUUJhkdxtDgjYi2XchBr0OZYg87yAGmc9djgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742895642; c=relaxed/simple;
-	bh=eud//FrrPTn/NL9oNFt/scdtsVUNC3WUkl6HvB+h21I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hDiqjFJ+1Q7PVu1aEmVqeukrp5Olq6gr6jGuWC6smP58C9OQoljhM7JixslgVJGp+ptoi8i0UKL+2UYjHTibQ7KIiI9EepmTT+wPinA3c1soF5hco3dLdbaBYLgwE4vpVxjeTnz9whZ5XKJPVQO/mLI9N7MgJXgYRxNSgLSJohY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=XtLZHqs9; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AujYp9nI; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="XtLZHqs9";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AujYp9nI"
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id B3DBE11402AF;
-	Tue, 25 Mar 2025 05:40:37 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Tue, 25 Mar 2025 05:40:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1742895637; x=
-	1742982037; bh=jJPAD2UcHldTjErdg3Kf7WH+pXGiXV6MKPRaF1AAmD8=; b=X
-	tLZHqs9AgHLr1kLcEAoRmL+WNrUdMjZNi/wlElR9ByrLL5zn6m/GxaiQKnHivG06
-	WvVjui0aG24m6qEh4cE7A6tAR46pGZpwfO1uCiI8Y8cDHwHJQD92VMG6meBQJojk
-	7+Cdps11bKHRiIlrBi/ar2kspXrT/SOqTMeJ4ZwFMko5ecbnzmNkUcnSzKebS1tm
-	QsMowBqYXF9tWW3FwhbiyKtH3iNtgf7lB+qgPtCH2HWMDZWm5uk2FiQ7kIVSniS6
-	NwCl0L26eA0T587BZ987x60v5s9uh3O9p7u2VrQWUK1ejNP08GD3CxGFdRDyp6Nk
-	MNkPGods9D2TxlrEAd6Ew==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1742895637; x=1742982037; bh=jJPAD2UcHldTjErdg3Kf7WH+pXGiXV6MKPR
-	aF1AAmD8=; b=AujYp9nITJlK//rS43Gr10ZLd+shKs1Og20Pb1uMq2JQ+HQN/M3
-	DEpErdnCWySL/BQhwE/Hks0OvlDsnCeklzWd+WkhHg48bq3ru+Ji1ItnBh8NDwDJ
-	jSpot9UVM7fRgJK4nQUOiZqUyQUA3mXTHRK0grTwyo/j1W2H4gAmDSudcscKx45E
-	k0e29rJ31hhqasNWsJAV5L0eeqoGH362N7UTYOqhTSxaJUFwAyhWy4M/RqSSbkvs
-	msnvuiawgrvJWrCcxcVc6QqUl+hL1wni4R25uZYuEGL8rOYFMEY2sEgQl+mXe9mx
-	py5yMwYMDYHmQkPq/2KCPmdpq4ShPIfisTA==
-X-ME-Sender: <xms:FXriZ8uJQWN9AMjb-7FeO80wRmTJN7u8IUt_VZfLzGje0zs8_zsJUA>
-    <xme:FXriZ5cpzn2OT48ugIRXwZHGUQOVBl6dVjQja735_6jPcx9YxGQbsEZ1PGvbwCdvc
-    hUaUFezBqVS9n9ilik>
-X-ME-Received: <xmr:FXriZ3y3uQpydWUEkAuBq5qDvag92B_B0djhDbD_fasn2Oi1wZjKxdMUix2T>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduiedvfeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    jeenucfhrhhomhepufgrsghrihhnrgcuffhusghrohgtrgcuoehsugesqhhuvggrshihsh
-    hnrghilhdrnhgvtheqnecuggftrfgrthhtvghrnhepuefhhfffgfffhfefueeiudegtdef
-    hfekgeetheegheeifffguedvuefffefgudffnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhn
-    sggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghnth
-    honhhiohesohhpvghnvhhpnhdrnhgvthdprhgtphhtthhopehnvghtuggvvhesvhhgvghr
-    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrd
-    gtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehp
-    rggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepughonhgrlhgurdhhuhhnth
-    gvrhesghhmrghilhdrtghomhdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehrhigriigrnhhovhdrshdrrgesghhmrghilhdrtghomhdprhgtph
-    htthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghh
-X-ME-Proxy: <xmx:FXriZ_PzH1_2lmZRkmn8CYwcJqsqWo5i11g3ExFDqlzZW_5gm0OsVQ>
-    <xmx:FXriZ8_0DhBEqBhNrtDZ4b4QqaY3DkqPeXOjLLOUB1cuCmj4ze_I8A>
-    <xmx:FXriZ3XSCvioqBjHsh6m5MECSV_YYZ96ZhSOlUNusU_JOo3lqkjIOQ>
-    <xmx:FXriZ1dLKkIaPeuoheJeWz35FqaXM-hAr39j2AsDghQ9iIDaO6khBg>
-    <xmx:FXriZ2fuh1nrrdKCKQIBvDjIIdQQYbDBH3vcpDnpmDzTeYBj1sPFtKAZ>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 25 Mar 2025 05:40:36 -0400 (EDT)
-Date: Tue, 25 Mar 2025 10:40:34 +0100
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Antonio Quartulli <antonio@openvpn.net>
-Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Shuah Khan <shuah@kernel.org>, ryazanov.s.a@gmail.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, Xiao Liang <shaw.leon@gmail.com>
-Subject: Re: [PATCH net-next v24 09/23] ovpn: implement packet processing
-Message-ID: <Z-J6EmX-wZRUYt4f@krikkit>
-References: <20250318-b4-ovpn-v24-0-3ec4ab5c4a77@openvpn.net>
- <20250318-b4-ovpn-v24-9-3ec4ab5c4a77@openvpn.net>
- <Z-E70n1tkzKdepTo@krikkit>
- <ae9f3c18-7b03-4a49-83a4-a3e7d8c52a3e@openvpn.net>
+	s=arc-20240116; t=1742895866; c=relaxed/simple;
+	bh=YExHr+2mn/5PLGawiihdqqA9Qe1EXHQUBAkBpbg9IW4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RWhvcV+vI/QIx67RbrDHM0rbK/JVkWCZQ9zEcGiv2BMMmhfso9dD1XRcex47yeAED+3GNraRQ5LprT9dZyaMpxrqd2gRvr3yk7bF/dYBR+3e8H2oy3PeYKZX9Auqv6/UE2cqhXZzYoS+hQy2Px9x0jMMb/hKU57zemyppHdTUgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4ZMPyj382Mz1jBPp;
+	Tue, 25 Mar 2025 17:39:41 +0800 (CST)
+Received: from kwepemg200005.china.huawei.com (unknown [7.202.181.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 54F7B1A0188;
+	Tue, 25 Mar 2025 17:44:19 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by kwepemg200005.china.huawei.com
+ (7.202.181.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 25 Mar
+ 2025 17:44:18 +0800
+From: Wang Liang <wangliang74@huawei.com>
+To: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
+	<cong.wang@bytedance.com>, <kuniyu@amazon.com>
+CC: <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
+	<wangliang74@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH net] ipv6: sit: fix skb_under_panic with overflowed needed_headroom
+Date: Tue, 25 Mar 2025 17:54:49 +0800
+Message-ID: <20250325095449.2594874-1-wangliang74@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ae9f3c18-7b03-4a49-83a4-a3e7d8c52a3e@openvpn.net>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemg200005.china.huawei.com (7.202.181.32)
 
-2025-03-24, 21:53:02 +0100, Antonio Quartulli wrote:
-> On 24/03/2025 12:02, Sabrina Dubroca wrote:
-> > 2025-03-18, 02:40:44 +0100, Antonio Quartulli wrote:
-> > > +int ovpn_crypto_state_reset(struct ovpn_crypto_state *cs,
-> > > +			    const struct ovpn_peer_key_reset *pkr)
-> > > +{
-> > > +	struct ovpn_crypto_key_slot *old = NULL, *new;
-> > > +	u8 idx;
-> > > +
-> > > +	if (pkr->slot != OVPN_KEY_SLOT_PRIMARY &&
-> > > +	    pkr->slot != OVPN_KEY_SLOT_SECONDARY)
-> > > +		return -EINVAL;
-> > > +
-> > > +	new = ovpn_aead_crypto_key_slot_new(&pkr->key);
-> > > +	if (IS_ERR(new))
-> > > +		return PTR_ERR(new);
-> > > +
-> > > +	spin_lock_bh(&cs->lock);
-> > 
-> > At this point, should there be a check that we're not installing 2
-> > keys with the same key_id at the same time? I expect a well-behaved
-> > userspace never does that, but it would confuse
-> > ovpn_crypto_key_id_to_slot if it ever happened.
-> > 
-> > ["well, then the tunnel is broken. if userspace sets up a broken
-> > config that's not the kernel's problem." is an acceptable answer]
-> > 
-> 
-> The behaviour of ovpn_crypto_key_id_to_slot() is still "deterministic" as we
-> will first lookup the primary key.
-> 
-> Therefore we will simply always use the primary key and never the other,
-> which is what we should expect in this situation from the code.
-> 
-> I'd say this is just an ill-formed configuration, yet not invalid.
-> As per your statement, I'd say it's userspace's problem.
+When create ipip6 tunnel, if tunnel->parms.link is assigned to the previous
+created tunnel device, the dev->needed_headroom will increase based on the
+previous one.
 
-Ok, sounds good, thanks.
+If the number of tunnel device is sufficient, the needed_headroom can be
+overflowed. The overflow happens like this:
 
+  ipip6_newlink
+    ipip6_tunnel_create
+      register_netdevice
+        ipip6_tunnel_init
+          ipip6_tunnel_bind_dev
+            t_hlen = tunnel->hlen + sizeof(struct iphdr); // 40
+            hlen = tdev->hard_header_len + tdev->needed_headroom; // 65496
+            dev->needed_headroom = t_hlen + hlen; // 65536 -> 0
+
+The value of LL_RESERVED_SPACE(rt->dst.dev) may be HH_DATA_MOD, that leads
+to a small skb allocated in __ip_append_data(), which triggers a
+skb_under_panic:
+
+  ------------[ cut here ]------------
+  kernel BUG at net/core/skbuff.c:209!
+  Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+  CPU: 0 UID: 0 PID: 24133 Comm: test Tainted: G W 6.14.0-rc7-00067-g76b6905c11fd-dirty #1
+  Tainted: [W]=WARN
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014
+  RIP: 0010:skb_panic+0x156/0x1d0
+  Call Trace:
+   <TASK>
+   skb_push+0xc8/0xe0
+   fou_build_udp+0x31/0x3a0
+   gue_build_header+0xf7/0x150
+   ip_tunnel_xmit+0x684/0x3660
+   sit_tunnel_xmit__.isra.0+0xeb/0x150
+   sit_tunnel_xmit+0x2e3/0x2930
+   dev_hard_start_xmit+0x1a6/0x7b0
+   __dev_queue_xmit+0x2fa9/0x4120
+   neigh_connected_output+0x39e/0x590
+   ip_finish_output2+0x7bb/0x1f00
+   __ip_finish_output+0x442/0x940
+   ip_finish_output+0x31/0x380
+   ip_mc_output+0x1c4/0x6a0
+   ip_send_skb+0x339/0x570
+   udp_send_skb+0x905/0x1540
+   udp_sendmsg+0x17c8/0x28f0
+   udpv6_sendmsg+0x17f1/0x2c30
+   inet6_sendmsg+0x105/0x140
+   ____sys_sendmsg+0x801/0xc70
+   ___sys_sendmsg+0x110/0x1b0
+   __sys_sendmmsg+0x1f2/0x410
+   __x64_sys_sendmmsg+0x99/0x100
+   do_syscall_64+0x6e/0x1c0
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  ---[ end trace 0000000000000000 ]---
+
+Fix this by add check for needed_headroom in ipip6_tunnel_bind_dev().
+
+Reported-by: syzbot+4c63f36709a642f801c5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4c63f36709a642f801c5
+Fixes: c88f8d5cd95f ("sit: update dev->needed_headroom in ipip6_tunnel_bind_dev()")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+---
+ net/ipv6/sit.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+index 39bd8951bfca..1662b735c5e3 100644
+--- a/net/ipv6/sit.c
++++ b/net/ipv6/sit.c
+@@ -1095,7 +1095,7 @@ static netdev_tx_t sit_tunnel_xmit(struct sk_buff *skb,
+ 
+ }
+ 
+-static void ipip6_tunnel_bind_dev(struct net_device *dev)
++static int ipip6_tunnel_bind_dev(struct net_device *dev)
+ {
+ 	struct ip_tunnel *tunnel = netdev_priv(dev);
+ 	int t_hlen = tunnel->hlen + sizeof(struct iphdr);
+@@ -1134,7 +1134,12 @@ static void ipip6_tunnel_bind_dev(struct net_device *dev)
+ 		WRITE_ONCE(dev->mtu, mtu);
+ 		hlen = tdev->hard_header_len + tdev->needed_headroom;
+ 	}
++
++	if (t_hlen + hlen > U16_MAX)
++		return -EOVERFLOW;
++
+ 	dev->needed_headroom = t_hlen + hlen;
++	return 0;
+ }
+ 
+ static void ipip6_tunnel_update(struct ip_tunnel *t,
+@@ -1452,7 +1457,9 @@ static int ipip6_tunnel_init(struct net_device *dev)
+ 	tunnel->net = dev_net(dev);
+ 	strcpy(tunnel->parms.name, dev->name);
+ 
+-	ipip6_tunnel_bind_dev(dev);
++	err = ipip6_tunnel_bind_dev(dev);
++	if (err)
++		return err;
+ 
+ 	err = dst_cache_init(&tunnel->dst_cache, GFP_KERNEL);
+ 	if (err)
 -- 
-Sabrina
+2.34.1
+
