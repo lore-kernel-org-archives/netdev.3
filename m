@@ -1,94 +1,100 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D33188A3A;
-	Tue, 25 Mar 2025 13:00:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A455A95E;
+	Tue, 25 Mar 2025 13:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742907639; cv=none; b=q2zWf7uDfNOLn3YtjschvDoPSh+lQlWKumm+als41rsINxJHUTiuBieqnAhTedC9t2b7mYNq5tDx7Te4ktjp2jL1tRC46jXh9Cpz8T8EFVdtdFOPeAEJsaHlDm/JfmzIG8ABLzbmzkokuip5UwZfD6qE2m5rGhnWSl3BlU+tM6g=
+	t=1742907792; cv=none; b=CdaGbCCGvXxDlvuOUnQ0B2UpL73stVotCcqDsv2ZXBPkUg6nw8rrDCzAsMtCnW0QWk8TOSiIbpfjdbwFlJ0ErzTLyJjEteRfSkalJfrL3VjTo9w5oWgIUd+5RrTzIOJ61UYrd1BMkl3G+g8EKbynNPoxcI9A4UNP0UDV5W81jVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742907639; c=relaxed/simple;
-	bh=/6uaON5smXHqQtVSKe215zqyNkdbFUTP9lCiLLW0nFc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C7EbH4H/mqopsWzBqY7vYa9t1jXFeWEcLTcEufNEMQ8fyvVCjdum/jRctK9zYN+RHqJ059moBOep7Cp0IxdJh35YaCWu4KGRF4oBkMQvedZEx+qrmGMGVpIo+MP33Ton03eYctdMWB0ew4wqlmg0BRuBwx+Orocuxqx0fUgYQw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=NkF6jK5r; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1742907792; c=relaxed/simple;
+	bh=NOtSZO6+mIJhpKmav78FIQ7+8EjmLGHsFa+GzKNPUZg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dg2zp2IWCtjFhTd+TXZ6O45CndY0BAF9BKSOKHIdLWBTUHXqMxD4A8+Pk2tmvYHIIv3xRK/64wko6/SFQ6DagCECAAQUFA4IryJWlIATRM3kRalc7zbfb9+766VHFME21py5Go3WSE5vtwML2T7JuTTAi/kyXDjSV3RMpIcdLk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fkt2f92k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="NkF6jK5r"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=ZCCmE3ChXDzeZzCiCtSrUM14/B1R5KKCHoYXvznttWA=; b=NkF6jK5rv/0YVolhaIGFpbswAV
-	z140+YRdKiySD59l8bhuixIF2iSJeG33ic193TwL761LeMh5wjxDZaCgz9Lfr8PzGn3yzYbnBC09N
-	2fZ4B+tB2OzBnQ6YBtR4n7GYLsaSPvyS5g1f7BC8xVdxUX58ZsDp79our5HI5ZzdeygY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tx3tK-0072tp-PR; Tue, 25 Mar 2025 14:00:26 +0100
-Date: Tue, 25 Mar 2025 14:00:26 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: add a debugfs files for showing netns refcount
- tracking info
-Message-ID: <8bd706d6-1a85-4b36-a65a-fc6afe73950b@lunn.ch>
-References: <20250324-netns-debugfs-v1-1-c75e9d5a6266@kernel.org>
- <59446182-8d60-40a0-975f-30069b0afe86@lunn.ch>
- <33f758b03548b869f75d72a24c3abbcf382427ae.camel@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fkt2f92k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 111C7C4CEF3;
+	Tue, 25 Mar 2025 13:03:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742907792;
+	bh=NOtSZO6+mIJhpKmav78FIQ7+8EjmLGHsFa+GzKNPUZg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Fkt2f92kJiGWhH8dgk17/UoRqdJx0EFe/3P/dy4V1s5KFOcQBfhFPknqCwMCrbm6/
+	 xQjQOvggDEzDyOsIOE623THEpITveY2dRX8fO+8ia0MsnvPzH3VZCtioaeqCxzuBjy
+	 JaoZsexlhO6gfrDEN2F6R84U7RTlY1tzf+2VXUZZvzGoGB4oL1cGPJnw40aRmZVpU2
+	 N/M9WO1QdqSS6PBVtpgJQypgCL9UBhGszkA+cg0oNo1w2WVNHVRgsafoRthA/cgVJz
+	 KlRJZSKbHbQrWjY9jRq12NqOaBRm8MvivREYHKVonSwAKmbUfLZQJ9B3ALN3qcs8ae
+	 nAVXsi7XusNvg==
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5e5b6f3025dso8674346a12.1;
+        Tue, 25 Mar 2025 06:03:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU4X3X5uabf4fdRLpBFAOBP91rSdxdhBlQ4V54FhgYfHLdB5+31LbK5+ksNOoBnQ0luNndG5qRGIGC1c4TRqJk=@vger.kernel.org, AJvYcCUPiKl7sGumk37Qo/LRDum9KYYbHfZhDIbC9xEAYDdXUGvkzcy10EC7YbxDYk1wLeXlLk/bmKif99FPf4gm4Q==@vger.kernel.org, AJvYcCVK06wdAIXemLnSaK70GvnDkFUVYa2kbfjKXRnxD4MrC0oSyobtzMI97pJxdHrqC37m+X0QfhnidtUfrw==@vger.kernel.org, AJvYcCVWyJ/1Sh8Fv9s4wLOUuAfkPFMNXSMXehx8awAI74DBHo9xV4SN96m16/ME1hd5lJj/XPy1Xw97kLv8Wc4G@vger.kernel.org, AJvYcCWwLqXvdcYzq7yZypByv3OGe3KWfoinL353dRklC0UbiWQWDEp32PV+f1MA3sVCuclikI5Vgh6BUgXvyDEVTiM=@vger.kernel.org, AJvYcCXPT1P0ZT44NE0qGLi4LpIq9TFCQHhjs31kWxIL3PLGVHjwxsIXL5QeVMnMouIkbK5+9kxKLRVI@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyiU3GODGyL4a/LBV4c+txrLdnizbVXq1kYMqpIBpTKnysNpU2
+	01IkjShI/j3/6Tt14iRTQcc/cUBcEDUpL4+2dPk62niJyT61vYuUAebqdsLjYjYwnG670csdHPy
+	OD4Ay0mesMKaJ0OYdjrAKkrecUg==
+X-Google-Smtp-Source: AGHT+IE9YIgEdFy0C8MVlG0nopmhGsYdec5XnoCD98500ifVdHHqN4dUOGNkZiKuQcgs2ZSWsIpcRThQGaL/16F7l+4=
+X-Received: by 2002:a05:6402:5189:b0:5e5:4807:5441 with SMTP id
+ 4fb4d7f45d1cf-5ebcd520049mr11476593a12.30.1742907790342; Tue, 25 Mar 2025
+ 06:03:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <33f758b03548b869f75d72a24c3abbcf382427ae.camel@kernel.org>
+References: <20250324-dt-bindings-network-class-v5-0-f5c3fe00e8f0@ixit.cz> <3452b67752228665fa275030a7d8100b73063392.camel@sipsolutions.net>
+In-Reply-To: <3452b67752228665fa275030a7d8100b73063392.camel@sipsolutions.net>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 25 Mar 2025 08:02:59 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLv9THitHzj8nj7ppCp-aKn010-Oz=s+AUNKOCoDmBnbQ@mail.gmail.com>
+X-Gm-Features: AQ5f1JriMZBTiF3C2w64Aagyvo_O56C7A0zRxATovzxB1bkU0K4BsN971bbnmGo
+Message-ID: <CAL_JsqLv9THitHzj8nj7ppCp-aKn010-Oz=s+AUNKOCoDmBnbQ@mail.gmail.com>
+Subject: Re: [PATCH v5 0/5] dt-bindings: net: Add network-class.yaml schema
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: david@ixit.cz, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Mailing List <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, van Spriel <arend@broadcom.com>, 
+	=?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Andy Gross <agross@kernel.org>, Mailing List <devicetree-spec@vger.kernel.org>, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, Janne Grunau <j@jannau.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 24, 2025 at 08:37:57PM -0400, Jeff Layton wrote:
-> On Mon, 2025-03-24 at 21:50 +0100, Andrew Lunn wrote:
-> > On Mon, Mar 24, 2025 at 04:24:47PM -0400, Jeff Layton wrote:
-> > > CONFIG_NET_NS_REFCNT_TRACKER currently has no convenient way to display
-> > > its tracking info. Add a new net_ns directory in debugfs. Have a
-> > > directory in there for every net, with refcnt and notrefcnt files that
-> > > show the currently tracked active and passive references.
-> > 
-> > Hi Jeff
-> > 
-> > CONFIG_NET_NS_REFCNT_TRACKER is just an instance of
-> > CONFIG_REF_TRACKER.
-> > 
-> > It would be good to explain why you are doing it at the netdev level,
-> > rather than part of the generic CONFIG_REF_TRACKER level. Why would
-> > other subsystems not benefit from having their reference trackers in
-> > debugfs?
-> > 
-> > 
-> 
-> Mostly because I just needed the NS_REFCNT_TRACKER at the time.
-> 
-> I'm OK with making this more general, but all of those subsystems using
-> refcount trackers would need to add the infrastructure to create
-> directories to track them.
+On Tue, Mar 25, 2025 at 5:33=E2=80=AFAM Johannes Berg <johannes@sipsolution=
+s.net> wrote:
+>
+> On Mon, 2025-03-24 at 18:41 +0100, David Heidelberg via B4 Relay wrote:
+> > The Devicetree Specification, Release v0.3 specifies in section 4.3.1
+> > a "Network Class Binding". This covers MAC address and maximal frame
+> > size properties. "local-mac-address" and "mac-address" with a fixed
+> > "address-size" of 48 bits are already in the ethernet-controller.yaml
+> > schema so move those over.
+> >
+> > Keep "address-size" fixed to 48 bits as it's unclear if network protoco=
+ls
+> > using 64-bit mac addresses like ZigBee, 6LoWPAN and others are relevant=
+ for
+> > this binding. This allows mac address array size validation for etherne=
+t
+> > and wireless lan devices.
+> >
+> > "max-frame-size" in the Devicetree Specification is written to cover th=
+e
+> > whole layer 2 ethernet frame but actual use for this property is the
+> > payload size. Keep the description from ethernet-controller.yaml which
+> > specifies the property as MTU.
+> >
+>
+> I have no idea what tree this should go through, and you CC'ed enough
+> people that I can't figure it out either ... I'll assume not wifi but DT
+> for now?
 
-The base directory can be created by ref_tracker itself.
+Can you take it via wifi as the main target here is wifi bindings.
 
-> To whit:
-> 
-> What would the directory structure look like for the more general case?
-
- ref_tracker_dir_init(struct ref_tracker_dir *dir,
-					unsigned int quarantine_count,
-					const char *name)
-
-and then each tracker use 'name' as the debugfs filename. You would
-need to check it is unique before creating it, since uniqueness was
-probably not a requirement before.
-
-	Andrew
+Rob
