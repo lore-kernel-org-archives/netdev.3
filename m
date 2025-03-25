@@ -1,64 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8107625A2B4;
-	Tue, 25 Mar 2025 15:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0B925BAAB;
+	Tue, 25 Mar 2025 15:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742915890; cv=none; b=Rzl7QEK6mJ/cxV78p/a/Gi/wC/esM2FutrRBkyvREVbOE6MouDtrdhoNrhJPLdiDlOxZmV+9uJ7+Ltqk8M3o+zW80zGkD2zcJ9gUFPErDyel4z47vEyuKxuZRZXRoY/0rxiNZseb+Dh0Xy/XN1LcJQLOz9As5BWfoIw0WENxWhM=
+	t=1742916038; cv=none; b=mGWaIBb7cydA0MSCJgYd4XrSEhJAruLW12kEp6bxL7pEb6pZA2Cv7OJLMM9PNlUYzxyz/uGGCXa9lFXd9ew+uKVz40JyKc4pTXniZkh3+N/WkgQnHoS2+TaHVb7ebq8Uyfbsxas5spV4S2IGewzzdgzNUp11KHIPPtfSSy+fZGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742915890; c=relaxed/simple;
-	bh=Vpd5GeG6Mp06dZYbUW5WcOk7AYIJQGulxX8EOSHF2dk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KadLL320mbAyaP9aoMYHXASZFJ5j9FQE7U/a8IM2v9FlDgDY4OA/R7Am+Z32ruxsxnNa+SuyTd3o8+IkZEKOS2ZmFEn6MIal2XFtzRIQBlKuvEKhtJW9P7zeI0xw9493e7t5F8ABKOLRuGw5XGE7NLClLWGZcvCT8RBKujpiDWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ap9ZfMAj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742916038; c=relaxed/simple;
+	bh=OJ901v1Zl6w+ZmNx9DfZfxUG7OmSS70uPsKHoNWUPTk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=t/QrPJii2msaJLOuyYCVNw5eLJkvqFCwl7QDFPXCbX7n4u5xT1bIo3fzm4px8XwXj0LklRERbLAsoivvZuVjKmUoqq3UTKtMu0lQUZWN38o8n8aKq0kRK3Jp/owRjZYU7gHA1yQ9bTnN3be/hLLbOG64oxzEhxndE6AEuqH8M4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZKDPHiI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ap9ZfMAj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C654C4CEE4;
-	Tue, 25 Mar 2025 15:18:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZKDPHiI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389EFC4CEEA;
+	Tue, 25 Mar 2025 15:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742915890;
-	bh=Vpd5GeG6Mp06dZYbUW5WcOk7AYIJQGulxX8EOSHF2dk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ap9ZfMAjPGQlKbyKbnul4t1wyk3xZP61liBgD02DdCiVE99XqMsQG2oWSVuVNy4fh
-	 mcEineyVLhKL8MkTv2qYTTjjSmVo0/U7zc+g7AKcwAVGlTixjID3DvJt6c4iuHKH0E
-	 poy6IIUxgk68Cr4UX7yV+NtEu1c0xcwk2fUI15U9lAjsKIhUJ84A/4pVFkmvZ0cySG
-	 LUVHakpDxjT3pdo1wfLiw84FD11eE02kbhf9YYpBmK/kmjhXNzHS98onYVPK2sdzQC
-	 6l2XNuxrBIQv8Yphdyv9JsxjljRxlX2MY1WEDy3HCG/RZ6P4EH0JCaUW44DD3erYVO
-	 YsbPgbatm2BAA==
-Date: Tue, 25 Mar 2025 08:18:03 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: davem@davemloft.net, linux-bluetooth@vger.kernel.org,
- netdev@vger.kernel.org
-Subject: Re: [GIT PULL] bluetooth-next 2025-03-20
-Message-ID: <20250325081803.4fa1e08f@kernel.org>
-In-Reply-To: <CABBYNZ+b31WUEB_H=ZWCvjOSGMpoHpxCZZs5OrMw2uaqbCxQqQ@mail.gmail.com>
-References: <20250320192929.1557825-1-luiz.dentz@gmail.com>
-	<CABBYNZ+b31WUEB_H=ZWCvjOSGMpoHpxCZZs5OrMw2uaqbCxQqQ@mail.gmail.com>
+	s=k20201202; t=1742916038;
+	bh=OJ901v1Zl6w+ZmNx9DfZfxUG7OmSS70uPsKHoNWUPTk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=SZKDPHiIhYzKiG8LlcpgLLqBfQpSyeYoVbLqtFmxSruJ4Dkyy5peJ15xe7+gFSUgx
+	 1QWN9GEuxg2N5PQemHtFMgihBLWIKxX3sKEqd7w/z0w0d1gR36a2lX+KNbHzr88ULC
+	 LJuhbu1BXmflNbeyG4fhYRlK6RoTmHn5Q8skZzwtYTUey5csn8Eo4UdIvxMP2BGkPx
+	 Q0cZLcATcf+s4ADtdzrsLo3c64na17ZzjoTso9ap4ZnQTWO4RCfapVU3w5A4wwbeN0
+	 nidp8CqDVwQu85SDp9DzTzcnKTKCf5eqpUxMvkjVfD3mlCXD/3RcfJMC/6ODtiaNXI
+	 zACopP3BruTyA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE10380CFE7;
+	Tue, 25 Mar 2025 15:21:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: wireless-next-2025-03-20
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174291607451.613159.4085141288279158538.git-patchwork-notify@kernel.org>
+Date: Tue, 25 Mar 2025 15:21:14 +0000
+References: <20250320131106.33266-3-johannes@sipsolutions.net>
+In-Reply-To: <20250320131106.33266-3-johannes@sipsolutions.net>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 
-On Mon, 24 Mar 2025 09:07:42 -0400 Luiz Augusto von Dentz wrote:
-> >  42 files changed, 1890 insertions(+), 268 deletions(-)  
+Hello:
+
+This pull request was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 20 Mar 2025 14:09:50 +0100 you wrote:
+> Hi,
 > 
-> Is there a problem that these changes haven't been pulled yet?
+> This is obviously going to be the last pull request before
+> the merge window. Nothing really stands out except for the
+> new iwlmld sub-driver for iwlwifi.
+> 
+> Note I pulled net-next back after wireless/net went in, to
+> fix the reported conflicts.
+> 
+> [...]
 
-We were behind the ML traffic by significant margin, see:
-https://lore.kernel.org/r/20250324075539.2b60eb42@kernel.org/
+Here is the summary with links:
+  - pull-request: wireless-next-2025-03-20
+    https://git.kernel.org/netdev/net-next/c/1952e19c02ae
 
-Could you please mend the Fixes tags?
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Commit: 25ba50076a65 ("Bluetooth: btintel: Fix leading white space")
-	Fixes tag: Fixes: 00b3e258e1c0 ("Bluetooth: btintel_pcie: Setup buffers for firmware traces")
-	Has these problem(s):
-		- Target SHA1 does not exist
-	Fixes tag: Fixes: f5d8a90511b7 ("Bluetooth: btintel: Add DSBR support for ScP")
-	Has these problem(s):
-		- Target SHA1 does not exist
+
