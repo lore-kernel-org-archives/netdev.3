@@ -1,168 +1,131 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D93257AFC;
-	Tue, 25 Mar 2025 17:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C63234964
+	for <netdev@vger.kernel.org>; Tue, 25 Mar 2025 17:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742923820; cv=none; b=AaVCs4iUGPpXqa3WQkAWEsdPJnMs53sHNOq4m5BMpmIn4msmW8seDq7ouXRLrYcU7MLpSv7DgCRqdmDrgoFvZVRlhAuyTrzdvL1tnzBNbYeiZjdupcwQBMECmRAG2AXC59+B0idef7EEYQNsMcaZ3z8vEj2gXedo+DiHflWdN0M=
+	t=1742924019; cv=none; b=arceZdnIvhSkB8yXXhDgQvk8fMujxJdfpfJRlN2XMTvdCN1x0FmcIcWYt7a6n2uoltJPxhoDKVj+nbLT0QfD8yvkTKeNjlrjrB+Yl1rA/Dh3ybl78qSSphvQcnOk5Tf2htdGb/8SL5/hMgjZKWy5+rStULkc9QHvUZo2y8qHJqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742923820; c=relaxed/simple;
-	bh=af/qHaAv8wr7ohqEEz6YmtWfQIwybjKt+19CY5VMK/k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pKak+AZLfzkM6osG28wthCkNSUuNeYiFMhzHPgbyJuv18wet5Fot4nhagn/5hCE/wC+LQciebpUKGU3gSVWS8vQG3K6Q3I9hpVVmPV+5azB/mACnBpY3h/zA3NGVAXKSgz84/b3ZNYrOa1Euig04JtcaBjXzZOjf9+u1+ByFkz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=eYd7Nzep; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1742924019; c=relaxed/simple;
+	bh=XvKo2kCSE1hUa4iyrsUCh76FeiEKIDTY4SmAmmXMA/E=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=c7qR8YF/Bvwxp2mvq4hqB3iMfUmGGpQyNg8QFC4621tWO6NvmTHTLotbFHSIeBEM5GEK+8nB0uiClP+MjZqWcjQkXo6QQSobUSKPLY9fDC+/ZLX85tzU9hK12kUVFq0bM/brpMGcLXCi+IRGVehbeAYi/vBa9XZGjnZ/0uysRx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=insidepacket.com; spf=pass smtp.mailfrom=insidepacket.com; dkim=pass (2048-bit key) header.d=insidepacket-com.20230601.gappssmtp.com header.i=@insidepacket-com.20230601.gappssmtp.com header.b=d/gGRGNy; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=insidepacket.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=insidepacket.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="eYd7Nzep"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 34D83102F66E4;
-	Tue, 25 Mar 2025 18:30:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1742923815; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=eI14fRc9SgUgLwy7/SzPwK7ui4N4JuoaWPwp0MI9v1w=;
-	b=eYd7NzepKQqK2eSrPI8FEFriEYWhaavSzTZJ4hcetjyIwJx+vVQimsoU9aOfT5VG5+vl6X
-	iCDiYqDiDVvvRetIf3pstTAnVGxtuUydTSc8sJUpPWU4ea8nUIFi8sqqK89G22zhBTUCjY
-	UegnfTP43buAPi1PaCWNEOfrZgoYRA3tIaOLY446g0RdlGQBSa9B2K1B2z8SWDefqSJTGF
-	PrtAMFV08qt85/1bjQOBFE5ud0RGAmt33zkvcC8hQKNmKl5OcvufCWKM29NwWBqhfnnu+B
-	BvATIGVovo0wlnzbyerfviUh+4aYAUtqC0HqH0bRbYcCKNG8BUeKXQk4ERDsgQ==
-Date: Tue, 25 Mar 2025 18:30:09 +0100
-From: Lukasz Majewski <lukma@denx.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn
- Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Paolo
- Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, Eric Dumazet
- <edumazet@google.com>, davem@davemloft.net, Andrew Lunn
- <andrew+netdev@lunn.ch>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Richard Cochran <richardcochran@gmail.com>,
- netdev@vger.kernel.org, Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH 5/5] net: mtip: The L2 switch driver for imx287
-Message-ID: <20250325183009.3f7e8a1c@wsk>
-In-Reply-To: <39ec01b8-c2d7-47c3-90d9-32fe41f08a5d@kernel.org>
-References: <20250325115736.1732721-1-lukma@denx.de>
-	<20250325115736.1732721-6-lukma@denx.de>
-	<32d93a90-3601-4094-8054-2737a57acbc7@kernel.org>
-	<20250325142810.0aa07912@wsk>
-	<0a908dc7-55eb-4e23-8452-7b7d2e0f4289@lunn.ch>
-	<20250325173846.4c7db33c@wsk>
-	<39ec01b8-c2d7-47c3-90d9-32fe41f08a5d@kernel.org>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=insidepacket-com.20230601.gappssmtp.com header.i=@insidepacket-com.20230601.gappssmtp.com header.b="d/gGRGNy"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3913b539aabso3274783f8f.2
+        for <netdev@vger.kernel.org>; Tue, 25 Mar 2025 10:33:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=insidepacket-com.20230601.gappssmtp.com; s=20230601; t=1742924015; x=1743528815; darn=vger.kernel.org;
+        h=to:references:message-id:cc:date:in-reply-to:from:subject
+         :mime-version:content-transfer-encoding:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XvKo2kCSE1hUa4iyrsUCh76FeiEKIDTY4SmAmmXMA/E=;
+        b=d/gGRGNyAGtOpyDPUYwpPwdBcWVHJStFbnlVfRC1hdvIy+0wV0542HhSsujIXDj7OU
+         sl8fxp22/hx+6XG38VDRaiBgC3h9EujfZyhGMaxeKk4sLsuPUsBrPC1jrkPYvvvW6BlY
+         RexUuBEymAzqPJfoDtpOCwWmUUXIt0aaiwOyxcl4mKQeUyXYfEjVv9qGVzzSKEwOI8n3
+         ZGfqXgwoHaqKRDsuOEyIix2qUpWcTVVuwl6X/AAbKotceakJdtE9YoswchwB/C1kD8ww
+         R71pBu/At9Qb3ZvZGWMyizpXX8xzNOgbqoVNZ7nmHLuPIq/Bt6cNDQQnc+YPRIbD982X
+         M4aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742924015; x=1743528815;
+        h=to:references:message-id:cc:date:in-reply-to:from:subject
+         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=XvKo2kCSE1hUa4iyrsUCh76FeiEKIDTY4SmAmmXMA/E=;
+        b=MasZMs8Zx1BFiaTYTMxUcVMjwrGXVTnZOE2npb+2TyrR8kUN7Jf79DjWe2wsKQ2oZs
+         t6wjxt6ILmhngQqIMv6Xc6Co5I/LVMRqEd8NfsNEgbd/67DKgBu9nzOT+y8L043bSjEq
+         fpEyC2H4Ky+JRQwnR4t1tjUlq4LF0btsZm7XEhs3AdT7E1ojEiVb2XpbgDYcDIKRJein
+         2yQnYcY2riAdCUFWyOlU8M4kwcOG7PH+t3FRO6Y6GR4nWwUiljjYWO+ejMF71D9rd0VE
+         n9nfwMBQVQxcY77Pt1SOIe6fFOdiAm+/D7dxHy790FCajKf+mQLgUSXq48vpJf3UHIqf
+         EyFA==
+X-Gm-Message-State: AOJu0YyIXf5QjZhXprHwddeDgnlZGNsAWSLpbNrCJ5DK8Wequ+LXXA0F
+	3koBeo2LRUtosvfAFd8E285jPB9R3nnqv8eKoGelxCyMHaxIvjr1+jweJe75zfB+V9B1ptaFIDF
+	r
+X-Gm-Gg: ASbGncvKZIvY45WrwZ5AUVB9YKkon1IpmGfEWJ6UJ/tG1Ff8QlFzIAFCKuqnAnUHF3e
+	foMLDoJOj7hbdhLNdp28KcnHWoysz05HfG1eZu97SIgLagC0iy0BJe8l7J5Pbn5RmbFUXx2bDOH
+	tHOlBP+DSb4HZR/Wt++O9B7jRMjRjmHBePRkVnhEyjiFmk+aXPwTvQ3Jveg5rVjxMJ8Qc/W7jlZ
+	PjlBs0ClDsEcQn+vc95qxgHquODC9NiiJKFHrb91ZCByBzhPSYR9m84EPJJw6//aMbsmM/asB86
+	QpAyvOtN21rm018zD46YkcLP2/nb9pvqQoCfCVvSnKnu/epgOSZBirMeM3hF7uzt4JaWp2vdHQt
+	8
+X-Google-Smtp-Source: AGHT+IGinoxR+GZ/HVJcTEOVEM0wDptjvcp98u3jdh2sYiWM6k+3te7eQBWd9rhMt2EzPROq03KuyQ==
+X-Received: by 2002:a5d:6da5:0:b0:391:2f71:bbb3 with SMTP id ffacd0b85a97d-3997f958f34mr14530412f8f.46.1742924015036;
+        Tue, 25 Mar 2025 10:33:35 -0700 (PDT)
+Received: from smtpclient.apple ([2a0d:6fc7:722:17b9:f1aa:61b4:bf67:cab0])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f99540bsm14188198f8f.2.2025.03.25.10.33.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Mar 2025 10:33:34 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/mrx3VObtQardV+8O_zt0.CL";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+Mime-Version: 1.0 (1.0)
+Subject: Re: ethtool read EEPROM
+From: Eliyah Havemann <eliyah@insidepacket.com>
+In-Reply-To: <b5dflgmqztzjmt42rw3x5ccrdth7qkc2kicr6jtofkkrmyo2cy@utly225o6zn3>
+Date: Tue, 25 Mar 2025 19:33:23 +0200
+Cc: netdev@vger.kernel.org
+Message-Id: <B26690A4-C7E8-4D68-932F-D017A645989F@insidepacket.com>
+References: <b5dflgmqztzjmt42rw3x5ccrdth7qkc2kicr6jtofkkrmyo2cy@utly225o6zn3>
+To: Michal Kubecek <mkubecek@suse.cz>
+X-Mailer: iPhone Mail (22D82)
 
---Sig_/mrx3VObtQardV+8O_zt0.CL
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi Michal,
 
-Hi Krzysztof,
+thanks so much for your response. I will look into devlink and am looking fo=
+rward to your insights!
 
-> On 25/03/2025 17:38, Lukasz Majewski wrote:
-> >>>>
-> >>>> I don't understand this code. Do you want to re-implement
-> >>>> get_optional? But why?   =20
-> >>>
-> >>> Here the get_optional() shall be used.   =20
-> >>
-> >> This is the problem with trying to use old code. It needs more work
-> >> than just making it compile. It needs to be brought up to HEAD of
-> >> mainline standard, which often nearly ends in a re-write. =20
-> >=20
-> > But you cannot rewrite this code from scratch, as the IP block is
-> > not so well documented, and there maybe are some issues that you
-> > are not aware of.
-> >=20
-> > Moreover, this code is already in production use, and you don't
-> > want to be in situation when regression tests cannot be run. =20
+Best
+Eliyah=20
+
+> On 25 Mar 2025, at 19:03, Michal Kubecek <mkubecek@suse.cz> wrote:
 >=20
-> This is a good reason to add it to staging, but not to mainline. Just
-> because someone has somewhere products with poor code is not the
-> reason to accept that poor code.
-
-I've tried to upstream this driver several times. Attempts were
-made for 4.19 and 5.12. The reason the code was not accepted was that
-conceptually the code had to be written in a different way (exact
-discussion is available [1]).
-
-What I've tried to say above - was that I need to have working device
-at any point of development.
-
-And, yes "upstream first" is a great policy, but imx287 based HW was in
-the kernel long time ago.
-
-> Otherwise all the people and
-> companies who upstream BEFORE would be quite disappointed. Why anyone
-> would care to work on upstreaming BEFORE hardware release,=20
-
-Yes, this shall be appreciated.
-
-> if you can
-> ship whatever to production and then ask mainline to pick up "because
-> it is in production use".
-
-Where I've stated this?
-
-My point is that for regression testing I prefer to gradually update
-the code and not start from scratch.
-
-I do appreciate your and Andrew's feedback and try to make the driver
-eligible for upstreaming.
-
-To sum up:
-##########
-
-- Yes, I'm aware that this code needs some more adjustments/update
-
-- Yes, fsl,fec.yaml was the wrong file to use as a starting point
-
-- Yes, bindings are ABI and shall be done right (that was one of the
-  reason the driver from 5.12 was not accepted).
-
-
-Links:
-[1] - https://lore.kernel.org/netdev/20210629140104.70a3da1a@ktm/T/
-
+> =EF=BB=BFOn Tue, Mar 25, 2025 at 05:16:52PM +0200, Eliyah Havemann wrote:
+>> Hi Michael,
+>>=20
+>> You seem to be the current maintainer and top contributor to the
+>> ethtool project. First of all: Thank you for your contribution to OSS!
+>>=20
+>> I ran into an issue with a whitebox switch with 100G and 400G QSFP
+>> slots, that I was hoping ethtool could solve and I want to ask you for
+>> assistance. It=E2=80=99s pretty simple: I need to read EEPROM binary data=
+ from
+>> these QSFP transceivers, but they are not associated with any linux
+>> interface. This is because vpp is controlling them directly. The
+>> ethtool has a function to output the EEPROM of an interface, but I
+>> can=E2=80=99t feed it the file back to it to read it. The file it outputs=
+ has
+>> the exact same format of the file the whitebox switch provides. I
+>> created a small python script to read the file and it gives reasonable
+>> output, but I don=E2=80=99t have a way to test this against a big collect=
+ion
+>> of SFPs and I know that this work was already done in ethtool.
+>>=20
+>> My questions:
+>> 1. Do you know of a tool that can read these files that ethtool
+>> outputs? Maybe it exists, and I just didn=E2=80=99t find it=E2=80=A6
+>> 2. If not, can you provide some guidance on how to add the
+>> functionality to ethtool to read EEPROMs directly?
 >=20
-> Best regards,
-> Krzysztof
-
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/mrx3VObtQardV+8O_zt0.CL
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmfi6CEACgkQAR8vZIA0
-zr3NAAgAhtMjYHZz0S6KDjq/IEmqopGlqJgFjvjtklfA8BpjDXNA6Is65pgFd6LH
-idHOlhnCV/PAkb0gwJ3VMuG++BluGUsIWV/JZ236mXW9VFoRFYC5zT4IDPJLd4Or
-pObbUtxs3V3ZVpn1ZFQ+y4aDcCYZL0iAIiYWdF36F30xJ821EjeCn5Ah43GfyCWk
-WSTG/uTuCNkOoGXyjeJHD+GG+YshNwd0GyJrdbSlUaPsSaBy1D4tST0QKinduNWq
-nvSvlUXZlL5o7jHPt+XXtWvyfNp3Odh/fdhshgeS4uIjd+3dGFdg0F4jx/TUVoiv
-A9YioUZbLh9npLz19KYNKzaGJDLNsw==
-=GR0R
------END PGP SIGNATURE-----
-
---Sig_/mrx3VObtQardV+8O_zt0.CL--
+> If I understand you correctly, your problem is that ethtool can
+> interpret the content of the module EEPROM but cannot read it for
+> a module in a smart switch.
+>=20
+> In general, devlink should be the tool designed to handle smart switches
+> and similar devices and their components. I'm not aware if it can also
+> interpret the module EEPROM content like ethtool does but it's the tool
+> you should definitely take a look at.
+>=20
+> Implementing a feature that would allow to use the ethtool code for
+> interpreting the module EEPROM content also on a dump read from a file
+> is something that would probably make sense whether you can use devlink
+> for your purpose. I'll check what would be the most appropriate way to
+> do that.
+>=20
+> Michal
