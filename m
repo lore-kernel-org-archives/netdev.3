@@ -1,35 +1,59 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883031E5B91;
-	Tue, 25 Mar 2025 11:49:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5039254845;
+	Tue, 25 Mar 2025 11:58:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742903399; cv=none; b=oADPqe4pX9MF7fZopanPJtisygDnPS7Gg16hJSystu0rOMKL3KOZsGF11njWVGMgKoNgCkIEgaObGVBUHKR58RPxHzUk1/gv4DBmRplhqdvfLyirtxmmI/GQv44s9Vcm7pT/4T7vpX/+d5N/fgRIXcqqPtSZX0oswlfnpJUiIFo=
+	t=1742903901; cv=none; b=SVtqpCrFtwV08NR/2/DNLeLpyfnseWaAk45hsJNqKpUR6XbxLJ9ufWA1R/B7WkKcxVM+8Sws80AyS3kMhSdYJQUeb18/Gnk2zc0YLuwebmhOfN8JoJ4sZA8EV+9D6z0c8c5eghdttPoLCLz8rYN7FS0M53uO+KfJhnbLJtCGhOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742903399; c=relaxed/simple;
-	bh=ZZdZYmOj1ovGoh5945Z2dttRqyMKc3WTfbIx0vwUbGU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=f7m5Q0R9ZBGOQxBlSSbj+2WUaaoXU9yWvwTZibMqs38BBVDUKr46WG3fojAxDoXKvb31yW8Jk/OCfSwAIrmLzbKbcN+P08GPCBm0GGGkK0UktyNKw2A7+AiJZ8KwLq1mJ5GtqZeiki3BQCrW23kjxlYPFzXuIaWiPvElUfpEnLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gGJRZLy1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742903901; c=relaxed/simple;
+	bh=hKKHVnJAJWrf9Blr24e0dDIpt5a0WT1rLCETEy1eAd0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=iv59C+gqnxTv7MFwPiz1vZ5hv+PW2bWlSqpF6vBmFTJj4qsPKhDxq17G573MlfCV7pidpbO2umIfZO7O49wHUFpfP4dnywDeK67MlZrXqG5aB8116Z3MMCBIlwnD6Io3sKmZ81v2ELIDK7V/Rd/oifBXqItMAK6ScoFwaZb6ABw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=hE9L4sZc; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gGJRZLy1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08523C4CEE4;
-	Tue, 25 Mar 2025 11:49:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742903399;
-	bh=ZZdZYmOj1ovGoh5945Z2dttRqyMKc3WTfbIx0vwUbGU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=gGJRZLy1WGT9Tlf+yIt17XTtbRhH1gW691Kv6DYWjKAY4BItY+DhyvHWMw5kkvaoL
-	 KKsPEXE9qRjWO3l1qgg7swuhUQzYBPxB1XcIvus+PE/QNvk+bvElBA9WlxrowNC+3J
-	 Y/E1Rxuk9kjweHN8UdkGlc5m2rSLwZIvT/4rpNOvPNwFhbJQndITX5eMQtV83H0FeO
-	 S6YgvuRJjN/6+ry/NbXtK79Sr+qsVpn1E7JVmhX4DfDtQ5yTeMmIqsK6sizO53MYAZ
-	 txFuebDaPwmCa22+MNq5Qg9wExdULRD/Zznoan+rsGvmEgpC921giO5iaFVjMikx8c
-	 dcr43+rM0WDCQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 71530380CFE7;
-	Tue, 25 Mar 2025 11:50:36 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="hE9L4sZc"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 97F9D102EBA43;
+	Tue, 25 Mar 2025 12:58:15 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1742903897; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Nb+uumKIAlcQT03N8XP/zmijiZ83zsuKYhUq6ru23a8=;
+	b=hE9L4sZcZzz9FzHmEBdosqshpQdnTj6W+zRWPlaT00yc64jvRwPQ/olH5eIdJ8kR6wUrcC
+	LWNxVQGxsOs2ba95HFP2LKKWf9vcYHbYp6IWi8HTOw6eKAlpsySTTQaV000hiPzZMdiskr
+	jVyKTtAIuU8JfmsZL5Jf46JJ0y7aRXuSdxhniMd+3mI6DmDRb9AH8UdmZwXToI4b10wsPp
+	wbp4bU1ejZmpw7pG1l/Pb+n1iR9M8XPm+Cin3OTPj9gbE3i4ugBN3UU2AmFpLZhZwE2qCt
+	J7i3VWbs308Sl3qPCSXdJcIA0sJjCYmYZmcj8THMaTbnC8K1UHduDCQKWBfucA==
+From: Lukasz Majewski <lukma@denx.de>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	davem@davemloft.net,
+	Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Lukasz Majewski <lukma@denx.de>
+Subject: [PATCH 1/5] MAINTAINERS: Add myself as the MTIP L2 switch maintainer (IMX SoCs: imx287)
+Date: Tue, 25 Mar 2025 12:57:32 +0100
+Message-Id: <20250325115736.1732721-2-lukma@denx.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250325115736.1732721-1-lukma@denx.de>
+References: <20250325115736.1732721-1-lukma@denx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,66 +61,33 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/7] net: xdp: Add missing metadata support for
- some xdp drvs
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174290343526.531918.1341302638467898392.git-patchwork-notify@kernel.org>
-Date: Tue, 25 Mar 2025 11:50:35 +0000
-References: <20250318-mvneta-xdp-meta-v2-0-b6075778f61f@kernel.org>
-In-Reply-To: <20250318-mvneta-xdp-meta-v2-0-b6075778f61f@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: marcin.s.wojtas@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
- linux@armlinux.org.uk, ilias.apalodimas@linaro.org,
- kojima.masahisa@socionext.com, sgoutham@marvell.com, gakula@marvell.com,
- sbhatta@marvell.com, hkelam@marvell.com, bbhushan2@marvell.com, nbd@nbd.name,
- sean.wang@mediatek.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, kys@microsoft.com,
- haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
- s-vadapalli@ti.com, rogerq@kernel.org, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, linux-hyperv@vger.kernel.org,
- linux-omap@vger.kernel.org, michal.kubiak@intel.com
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+Add myself as a maintainer for this particular network driver.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
+---
+ MAINTAINERS | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-On Tue, 18 Mar 2025 12:46:04 +0100 you wrote:
-> Introduce missing metadata support for some xdp drivers setting metadata
-> size building the skb from xdp_buff.
-> Please note most of the drivers are just compile tested.
-> 
-> ---
-> Changes in v2:
-> - Improve commit logs for each patch specifying xdp headroom size for
->   each modified driver.
-> - Link to v1: https://lore.kernel.org/r/20250311-mvneta-xdp-meta-v1-0-36cf1c99790e@kernel.org
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v2,1/7] net: mvneta: Add metadata support for xdp mode
-    https://git.kernel.org/netdev/net-next/c/07b2fbffaaea
-  - [net-next,v2,2/7] net: mvpp2: Add metadata support for xdp mode
-    https://git.kernel.org/netdev/net-next/c/9a45e193c88a
-  - [net-next,v2,3/7] net: netsec: Add metadata support for xdp mode
-    https://git.kernel.org/netdev/net-next/c/a5fec3c88142
-  - [net-next,v2,4/7] net: octeontx2: Add metadata support for xdp mode
-    https://git.kernel.org/netdev/net-next/c/33bfff8fc8ba
-  - [net-next,v2,5/7] net: ethernet: mediatek: Add metadata support for xdp mode
-    https://git.kernel.org/netdev/net-next/c/74fb1346bc77
-  - [net-next,v2,6/7] net: mana: Add metadata support for xdp mode
-    https://git.kernel.org/netdev/net-next/c/c313d35f60c1
-  - [net-next,v2,7/7] net: ti: cpsw: Add metadata support for xdp mode
-    https://git.kernel.org/netdev/net-next/c/b3a54be70ca6
-
-You are awesome, thank you!
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5959513a7359..255edd825fa1 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9270,6 +9270,13 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/i2c/i2c-mpc.yaml
+ F:	drivers/i2c/busses/i2c-mpc.c
+ 
++FREESCALE MTIP ETHERNET SWITCH DRIVER
++M:	Lukasz Majewski <lukma@denx.de>
++L:	netdev@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/net/fec,mtip-switch.yaml
++F:	drivers/net/ethernet/freescale/mtipsw/*
++
+ FREESCALE QORIQ DPAA ETHERNET DRIVER
+ M:	Madalin Bucur <madalin.bucur@nxp.com>
+ L:	netdev@vger.kernel.org
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.39.5
 
