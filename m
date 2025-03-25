@@ -1,166 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A5D26656F;
-	Tue, 25 Mar 2025 12:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A232267F58
+	for <netdev@vger.kernel.org>; Tue, 25 Mar 2025 12:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905630; cv=none; b=lSA3gxwGMP/D51a9ShRV/Oui4UEy61exe2Mv+BKBak0UgB7m4jJIHGjj0+7TLuFR2KNhEFA/mczgbvnRp03mEMupxoD1KJHWdo+Eujo1UCBc+T2KCqPNJp3JJWS/nBdfOfzxjPuPTxGe3gYu5R7Ep3kT/Q4o1XEk6hLYrPSeR0c=
+	t=1742905866; cv=none; b=WEQHAnCw6jMBgBaVtGycrjlNzPy81/VEPTl15iRDdr72i4aOi5rOxTaoc+3MUkDwDze9OrdrKZKpUOs1OGNgnOkYb/QVDzEIrcJ/gFYaZzBUvzKI4Jl8n5VF9EanHPY/KttyWlKiNKVd1YBXZ79y30bmBDuZF/ek5qMtQyn3HOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905630; c=relaxed/simple;
-	bh=AWjl4tBrnhRkcRiex/88q6k6fRAmxNwISnnYEf7182Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m7H9qapBaAXxp+Tk/PZCNHDJ6C4mD/pSePwrd1a/6/Tpx1ArkIgEI3BWkrsbOuqwD6m/wzfajLNCAzXD44K6TbUyVOB/5XfCwq9++a2oUEsNuZanagW71We/UNy58cXcTT44MAPbwL1lWHgx6/qYWxj98cbkeF7XQEDU70gebQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BOK/wPKS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742905866; c=relaxed/simple;
+	bh=0MCOUrzYIIvvCG567dqPHEyy66MNTZeT2L0TmtlGyR8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ig30TbouOVEMM/PIkCyIF6tnEM7IYvwkLD5f5rw02ttwsOMr41qTZ63yg/MBRKZUToITeYB7w1qIOEqV6SiUx/e9FA/2IrloX94Foi0bdtoulFbkkIS9Y0pAchPL2KEqhyCHNSXsVqoziG/hf82Hl4AhyHxyGkSqDXbWf+KhGQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NIXQ4K5P; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BOK/wPKS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF18C4CEE4;
-	Tue, 25 Mar 2025 12:26:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NIXQ4K5P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F2BC4CEE4;
+	Tue, 25 Mar 2025 12:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742905629;
-	bh=AWjl4tBrnhRkcRiex/88q6k6fRAmxNwISnnYEf7182Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BOK/wPKSymoONoK8d8zXPGGMy5MG+aYpHf3TkadCLwDPTOQJGUAW9et07ZG7zCZWv
-	 ef4pdsDxtkJTHjY+SAKtAcW26il80oDtB38MozaTEhXlGd4IkrTlN3tIWkXmAwnoLn
-	 BzHu8ImCylu3Yb81WL68Buni1g0ODfLOGd7OBrnKV/M2af0y77JoFV43LSNATjnN4G
-	 9CzIE3AozXUaiD7HuaDWAl0wAkWF1HUbFGm1CJxGQ45QPczxfx9HKr6TYKmSS9kPAD
-	 gZpFZHUBEZFz8k7KsyAguseekaOJzmeEib25mONLZRMhFlnpUorLwGTrqPnI6I56MM
-	 2bv1z0/9P4X3A==
-From: guoren@kernel.org
-To: arnd@arndb.de,
-	gregkh@linuxfoundation.org,
-	torvalds@linux-foundation.org,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	anup@brainfault.org,
-	atishp@atishpatra.org,
-	oleg@redhat.com,
-	kees@kernel.org,
-	tglx@linutronix.de,
-	will@kernel.org,
-	mark.rutland@arm.com,
-	brauner@kernel.org,
-	akpm@linux-foundation.org,
-	rostedt@goodmis.org,
-	edumazet@google.com,
-	unicorn_wang@outlook.com,
-	inochiama@outlook.com,
-	gaohan@iscas.ac.cn,
-	shihua@iscas.ac.cn,
-	jiawei@iscas.ac.cn,
-	wuwei2016@iscas.ac.cn,
-	drew@pdp7.com,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	ctsai390@andestech.com,
-	wefu@redhat.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	josef@toxicpanda.com,
-	dsterba@suse.com,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	boqun.feng@gmail.com,
-	guoren@kernel.org,
-	xiao.w.wang@intel.com,
-	qingfang.deng@siflower.com.cn,
-	leobras@redhat.com,
-	jszhang@kernel.org,
-	conor.dooley@microchip.com,
-	samuel.holland@sifive.com,
-	yongxuan.wang@sifive.com,
-	luxu.kernel@bytedance.com,
-	david@redhat.com,
-	ruanjinjie@huawei.com,
-	cuiyunhui@bytedance.com,
-	wangkefeng.wang@huawei.com,
-	qiaozhe@iscas.ac.cn
-Cc: ardb@kernel.org,
-	ast@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	maple-tree@lists.infradead.org,
-	linux-trace-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net,
-	linux-btrfs@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	linux-nfs@vger.kernel.org,
-	linux-sctp@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-media@vger.kernel.org
-Subject: [RFC PATCH V3 43/43] riscv: Fixup address space overlay of print_mlk
-Date: Tue, 25 Mar 2025 08:16:24 -0400
-Message-Id: <20250325121624.523258-44-guoren@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20250325121624.523258-1-guoren@kernel.org>
-References: <20250325121624.523258-1-guoren@kernel.org>
+	s=k20201202; t=1742905865;
+	bh=0MCOUrzYIIvvCG567dqPHEyy66MNTZeT2L0TmtlGyR8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=NIXQ4K5PQw068AnBMK2YaGISRAWh7yxIEY3iVIbrb8OY5g4GwezpzDsR6NXnhTxKK
+	 RYegfNhLccO9l25gAvGQlWyDBFlKRImWl1T1ceCFDC5KokcREtDNNNMBMCtN3m/o+R
+	 TAIkOUGQjIVi3+RE583a1026GVUg4Bp881Rqc9iDXQNqbiuAZJiSc8nTMAINfUFOUm
+	 TIcGUcRsbjL2iTSOxiYNGy8HHLl4YiwAQ7jWhEcwrOmdD9vY+eWFSCdqN35h3XFMRc
+	 ev2Xr+FdyhBhH6CtgG3QECQlQ0KVEiYi8T6U+bVqn147xaBbb9Zf+BEBgHgQ0RSNyZ
+	 YdYijfDH/UnDA==
+Date: Tue, 25 Mar 2025 05:30:58 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Matthieu Baerts <matttbe@kernel.org>, Mat Martineau
+ <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] mptcp: pm: Fix undefined behavior in
+ mptcp_remove_anno_list_by_saddr()
+Message-ID: <20250325053058.412af7c5@kernel.org>
+In-Reply-To: <7F685866-E146-4E99-A750-47154BDE44C6@linux.dev>
+References: <20250325110639.49399-2-thorsten.blum@linux.dev>
+	<7F685866-E146-4E99-A750-47154BDE44C6@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: "Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>
+On Tue, 25 Mar 2025 12:33:11 +0100 Thorsten Blum wrote:
+> On 25. Mar 2025, at 12:06, Thorsten Blum wrote:
+> > 
+> > Commit e4c28e3d5c090 ("mptcp: pm: move generic PM helpers to pm.c")
+> > removed a necessary if-check, leading to undefined behavior because
+> > the freed pointer is subsequently returned from the function.
+> > 
+> > Reintroduce the if-check to fix this and add a local return variable to
+> > prevent further checkpatch warnings, which originally led to the removal
+> > of the if-check.
+> > 
+> > Fixes: e4c28e3d5c090 ("mptcp: pm: move generic PM helpers to pm.c")
+> > Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> > ---  
+> 
+> Never mind, technically it's not actually undefined behavior because of
+> the implicit bool conversion, but returning a freed pointer still seems
+> confusing.
 
-If phyical memory is 1GiB for ilp32 linux, then print_mlk would be:
-lowmem : 0xc0000000 - 0x00000000   ( 1024 MB)
-
-After fixup:
-lowmem : 0xc0000000 - 0xffffffff   ( 1024 MB)
-
-Signed-off-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
----
- arch/riscv/mm/init.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 3cdbb033860e..e09286d4916a 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -105,26 +105,26 @@ static void __init zone_sizes_init(void)
- 
- static inline void print_mlk(char *name, unsigned long b, unsigned long t)
- {
--	pr_notice("%12s : 0x%08lx - 0x%08lx   (%4ld kB)\n", name, b, t,
-+	pr_notice("%12s : 0x%08lx - 0x%08lx   (%4ld kB)\n", name, b, t - 1,
- 		  (((t) - (b)) >> LOG2_SZ_1K));
- }
- 
- static inline void print_mlm(char *name, unsigned long b, unsigned long t)
- {
--	pr_notice("%12s : 0x%08lx - 0x%08lx   (%4ld MB)\n", name, b, t,
-+	pr_notice("%12s : 0x%08lx - 0x%08lx   (%4ld MB)\n", name, b, t - 1,
- 		  (((t) - (b)) >> LOG2_SZ_1M));
- }
- 
- static inline void print_mlg(char *name, unsigned long b, unsigned long t)
- {
--	pr_notice("%12s : 0x%08lx - 0x%08lx   (%4ld GB)\n", name, b, t,
-+	pr_notice("%12s : 0x%08lx - 0x%08lx   (%4ld GB)\n", name, b, t - 1,
- 		   (((t) - (b)) >> LOG2_SZ_1G));
- }
- 
- #if BITS_PER_LONG == 64
- static inline void print_mlt(char *name, unsigned long b, unsigned long t)
- {
--	pr_notice("%12s : 0x%08lx - 0x%08lx   (%4ld TB)\n", name, b, t,
-+	pr_notice("%12s : 0x%08lx - 0x%08lx   (%4ld TB)\n", name, b, t - 1,
- 		   (((t) - (b)) >> LOG2_SZ_1T));
- }
- #else
+CCing the list back in.
 -- 
-2.40.1
-
+pw-bot: cr
