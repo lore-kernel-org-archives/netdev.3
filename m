@@ -1,38 +1,38 @@
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.205])
+Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBC51F3FC2;
-	Tue, 25 Mar 2025 19:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39351EB1B3;
+	Tue, 25 Mar 2025 19:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742930571; cv=none; b=KFdykJxhjS2whOfGcWsYFronqQrJqnDAqrF024h2iceb4h/76ZRQKUg20mYd3koFBZzyyCOMwVGvAaIhQ+a5JrQ+Cdn6hE3GBcqRxTIcrUwnaCahp1x34o4h15y+MDvSFBlZTDyFHEN9b30/e1T/PP+WNcEY1BgIDXQ26EYzJwE=
+	t=1742930592; cv=none; b=tmkr/H/BSWeU69axI/Mb3+rg3V7Zghdx2w6+cTPsuzogI3vWpEWp0CddTwXFUfbWK1/ozU105TudwymDYzlirT9pKN4UjVKEhuYmdkaHv3U3pHz6a3s4NcEonq6DMFB2cae69eXmD2CMSicyV9tJd1NCQxYUaM4DP2gdMd9uvTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742930571; c=relaxed/simple;
+	s=arc-20240116; t=1742930592; c=relaxed/simple;
 	bh=kkvOio4ji9d9lxGqGA/GaudcwgwMaItK1/qm1HsZzDk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=joepB1qVm1VFTjG4w0O8vLbQDiP8feRhHAh4Kf+Q9C8KAf59UcGX9G3SxbqNf++73Ft3QFwxug8tptOS3kAZVK6aPzJRkV6+UQzhlUk3SZlyH+e1bpiGFObJVrBEVuCV99C3Ac7qq1D5JB+ZFmmG+M9lmzTc85qR6xU8Fn2mZdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=sIM+3z2Z; arc=none smtp.client-ip=192.19.144.205
+	 MIME-Version; b=P5Lgkgn3yzfed7FBQ5zlD95GPm6Pq09r1AeK6Dm3PkMKvtcA2l6Rz3RI7LBEFz4s12omdZMAA2nHGq3Xz6hta+BFotts7QvkUrm+DcnHSVICU+O1OHTBVj/N0Dg+5ytsaS7uhB6P5neKR9LYnv383o2Gdldyz4qbC4KrFGPQpBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=sPcDkCvN; arc=none smtp.client-ip=192.19.144.207
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="sIM+3z2Z"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="sPcDkCvN"
 Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 20512C0003F1;
-	Tue, 25 Mar 2025 12:22:49 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 20512C0003F1
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id D449AC002821;
+	Tue, 25 Mar 2025 12:23:08 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com D449AC002821
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1742930569;
+	s=dkimrelay; t=1742930588;
 	bh=kkvOio4ji9d9lxGqGA/GaudcwgwMaItK1/qm1HsZzDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sIM+3z2Zj23wxjrlTpUlq9RKtbqb0oCW/6fSxGJm0k/n1aPVVN/f5bILW0WkQw15a
-	 8va5A18Wysf+YiGrYoyEWZxJUMy+rXy/SrAvsmashHZCYAfv8Vgh+S1q+VilzoYSvo
-	 ZSbVC7+V22CLygunnCDBGsyLDV/FDv2Ggtv+1hbU=
+	b=sPcDkCvNFt/w7vCOBuB1f24k2m8SJf5oV9BomAJAHGH/0d+JzN6bSgsEWrWpypKPm
+	 rY+RvQpBqaJnWJ26vUmVDkSkNarGOWJHHjrJLqg3i6nl7WHgPJPn2ZnXYviu1CmNOz
+	 YsAfer/NgnJ4AgjoxeYIyfp7KfOmzWP1Y18Gbd5o=
 Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id 89858180004FC;
-	Tue, 25 Mar 2025 12:22:48 -0700 (PDT)
+	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id 44D9218000520;
+	Tue, 25 Mar 2025 12:22:38 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: stable@vger.kernel.org
 Cc: Ilya Maximets <i.maximets@ovn.org>,
@@ -54,26 +54,26 @@ Cc: Ilya Maximets <i.maximets@ovn.org>,
 	KP Singh <kpsingh@kernel.org>,
 	Eric Dumazet <edumazet@google.com>,
 	Willem de Bruijn <willemb@google.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Felix Huettner <felix.huettner@mail.schwarz>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Breno Leitao <leitao@debian.org>,
+	Felix Huettner <felix.huettner@mail.schwarz>,
 	Yan Zhai <yan@cloudflare.com>,
 	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
-	Joe Stringer <joestringer@nicira.com>,
+	Thomas Graf <tgraf@suug.ch>,
 	Justin Pettit <jpettit@nicira.com>,
 	Andy Zhou <azhou@nicira.com>,
-	Luca Czesla <luca.czesla@mail.schwarz>,
 	Simon Horman <simon.horman@corigine.com>,
+	Luca Czesla <luca.czesla@mail.schwarz>,
 	netdev@vger.kernel.org (open list:NETWORKING [GENERAL]),
 	linux-kernel@vger.kernel.org (open list),
 	dev@openvswitch.org (open list:OPENVSWITCH),
 	bpf@vger.kernel.org (open list:BPF (Safe dynamic programs and tools))
-Subject: [PATCH stable 5.15 v2 2/2] openvswitch: fix lockup on tx to unregistering netdev with carrier
-Date: Tue, 25 Mar 2025 12:22:46 -0700
-Message-Id: <20250325192246.1849981-3-florian.fainelli@broadcom.com>
+Subject: [PATCH stable 5.10 v2 2/2] openvswitch: fix lockup on tx to unregistering netdev with carrier
+Date: Tue, 25 Mar 2025 12:22:36 -0700
+Message-Id: <20250325192236.1849940-3-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250325192246.1849981-1-florian.fainelli@broadcom.com>
-References: <20250325192246.1849981-1-florian.fainelli@broadcom.com>
+In-Reply-To: <20250325192236.1849940-1-florian.fainelli@broadcom.com>
+References: <20250325192236.1849940-1-florian.fainelli@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
