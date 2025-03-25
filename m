@@ -1,83 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72BB19ABA3;
-	Tue, 25 Mar 2025 10:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE322E3378;
+	Tue, 25 Mar 2025 11:00:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742900296; cv=none; b=t8+oYt+/3b8fBgx8AlWqg0VVFt/IgPk80s3zzV6VJJQbHPBToTMypS6rWhKYc1btG/0awNCFztqht15Pew5JqDlMhXX4sa1d8dp1DfFMpGzzjoUnZ6jOMb5D8XM/x6wkQQS3gHXvHXBg48y7a8R9u/aAdvjoGKPEQ7fQPrTLyzk=
+	t=1742900430; cv=none; b=KjxIA8lfCtkH9hu+9vYkrlFK8gyoMWoCntL4vCidFoZjF4GAoqEXkcB7XjQw/3I1EYwqSUYTa2t6FD5mpf/AjyW/F3zyIdR/F4/4XjeQ6wTkQIe//DuLvsfGKU8PIUyGoM0wSlSY4DQXG5Iv/es3Z0cRjLtPbk9dcgsngG/NA1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742900296; c=relaxed/simple;
-	bh=P3bPbH+Azqmwwom7wzhZPBwoYBI0P90RVi4NSaG7VWk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KgMWyaCqNnsl34eNluFI1/RP+/rfy8BOV7hY/nC5LqVvgAzZYOWPcXQXihEtQH7RSiXtyNTqfE7D4ORx6USi6cPrISn/7Hx1T0DVepOXcZ3oDr8bnomPCoPjty1og6ZlKQ3tOWAS81Tjj2NBBpf1VkaNc9N4tyW41g+HVj6QxfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K44tk8xC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742900430; c=relaxed/simple;
+	bh=phowVCc4uTjG/AswATQd9ZKQuxqVfWCIa0kdrQaIi0I=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=e/5+aFK6BtehCMFLFPAkSH6DeMU7naB6wF0g3SsTNAh4EqAsY0yMYvOuQ2MX4LFOz/yQgEXQ/gNODq9VTGzRU8G6kQ9u/9phZdKQCZbxgg378LwQt0uSbjQj9N0gyRB6HmdNd9SgGlBX1XYu5/a2dexkKTXmmGE4hD+KGJbR0Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=liVmaXlJ; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K44tk8xC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62273C4CEE4;
-	Tue, 25 Mar 2025 10:58:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742900295;
-	bh=P3bPbH+Azqmwwom7wzhZPBwoYBI0P90RVi4NSaG7VWk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=K44tk8xC5N9cufpSEE4PG2UnPmT5T55Ry3AjeTxt66WyP+jfiMRYeMtTtCvlQiyar
-	 kgIpTcOvYPFZBHxZV+G/fgcNFpwxgbs+TI73JR+hLDMfTi9BMuTTkDqR9ACi7RGYIX
-	 HvbH3YEVRmKk8Z9kehEWo2YKQ/d7a9UAMerMLamJFu8t0hlqpih8woChc5eZ3umGFv
-	 vwBzZJAfNMSGPtNoCrzeGJKBWYOr4gejJVWy9DOrDCO0HORaOda8xCcbVk1D4vaIDJ
-	 hAlGSwkGGECeC/EzluywwMhMTZuooB8iflhg+sodmCUQjL0UYpk9T8llgU9rkKT1ZB
-	 /GLGyEVW29pnw==
-Date: Tue, 25 Mar 2025 03:58:05 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- edumazet@google.com, kuniyu@amazon.com, davem@davemloft.net,
- pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
- ncardwell@google.com, mrpre@163.com
-Subject: Re: [PATCH net-next v1] tcp: Support skb PAWS drop reason when
- TIME-WAIT
-Message-ID: <20250325035805.202ffe52@kernel.org>
-In-Reply-To: <20250324131805.23103-1-jiayuan.chen@linux.dev>
-References: <20250324131805.23103-1-jiayuan.chen@linux.dev>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="liVmaXlJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1742900428; x=1774436428;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=phowVCc4uTjG/AswATQd9ZKQuxqVfWCIa0kdrQaIi0I=;
+  b=liVmaXlJL49FLenH8rZuetx7ONNZqCQrsHbh9Tf9deU8VXPs0NXtPLSf
+   whcB4xaiistSYWjjsP9v0LR3JsSmJtLyd1bD1dHldshAO+3cavbS2S7PX
+   pW7t1cY3eaQt5Fe7ZuAsRUijX331vfGrfebik8nmvpHLeInvXN/RcQ4Zg
+   8Lm+ZO0J7zjDnMbNRcFK0PF5xba0R49b9HBEIraF1ekIyLY1pdq9NAHKh
+   8kfg57Ibqh6sd5xXR9CO63fm/or/CHmVu/ekFXt16Kfl1tzwFxmj8fOAA
+   7v+hM6zPkSvWE2dtqt+bA6vgtumntI6OWy3+3P2zdNRVkHhcUnQFYLPTP
+   g==;
+X-CSE-ConnectionGUID: QCM7Q2TFRhOTjnxaI+S+Ng==
+X-CSE-MsgGUID: YxEN5IEmSd2KEJ+Bkl5RiA==
+X-IronPort-AV: E=Sophos;i="6.14,274,1736838000"; 
+   d="scan'208";a="271054509"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 25 Mar 2025 04:00:21 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Tue, 25 Mar 2025 04:00:01 -0700
+Received: from che-ld-unglab06.microchip.com (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.44 via Frontend Transport; Tue, 25 Mar 2025 03:59:58 -0700
+From: Thangaraj Samynathan <thangaraj.s@microchip.com>
+To: <netdev@vger.kernel.org>
+CC: <bryan.whitehead@microchip.com>, <UNGLinuxDriver@microchip.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH net v2] net: ethernet: microchip: lan743x: Fix memory allocation failure
+Date: Tue, 25 Mar 2025 16:26:53 +0530
+Message-ID: <20250325105653.6607-1-thangaraj.s@microchip.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Mon, 24 Mar 2025 21:18:05 +0800 Jiayuan Chen wrote:
-> When the server actively closes a connection and enters the TIME_WAIT
-> state, if PAWS validation fails, the discarded skb previously lacked a
-> corresponding reason identifier. This commit assigns the existing
-> SKB_DROP_REASON_TCP_RFC7323_PAWS as the reason for such drops.
-> 
-> We use 'pwru' to capture drop reason.
+The driver allocates ring elements using GFP_DMA flags. There is
+no dependency from LAN743x hardware on memory allocation should be
+in DMA_ZONE. Hence modifying the flags to use only GFP_ATOMIC
 
-This patch does not apply cleanly to net-next:
+Fixes: e8684db191e4 ("net: ethernet: microchip: lan743x: Fix skb allocation failure")
+Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
+---
+v0
+-Initial Commit
 
-Applying: tcp: Support skb PAWS drop reason when TIME-WAIT
-Using index info to reconstruct a base tree...
-M	include/net/tcp.h
-M	net/ipv4/tcp_ipv4.c
-M	net/ipv4/tcp_minisocks.c
-M	net/ipv6/tcp_ipv6.c
-Falling back to patching base and 3-way merge...
-Auto-merging net/ipv6/tcp_ipv6.c
-CONFLICT (content): Merge conflict in net/ipv6/tcp_ipv6.c
-Auto-merging net/ipv4/tcp_minisocks.c
-Auto-merging net/ipv4/tcp_ipv4.c
-CONFLICT (content): Merge conflict in net/ipv4/tcp_ipv4.c
-Auto-merging include/net/tcp.h
-Recorded preimage for 'net/ipv4/tcp_ipv4.c'
-Recorded preimage for 'net/ipv6/tcp_ipv6.c'
-error: Failed to merge in the changes.
-hint: Use 'git am --show-current-patch=diff' to see the failed patch
-hint: When you have resolved this problem, run "git am --continue".
-hint: If you prefer to skip this patch, run "git am --skip" instead.
-hint: To restore the original branch and stop patching, run "git am --abort".
-hint: Disable this message with "git config set advice.mergeConflict false"
-Patch failed at 0001 tcp: Support skb PAWS drop reason when TIME-WAIT
+v1
+-Modified GFP flags from GFP_KERNEL to GFP_ATOMIC
+-added fixes tag
+
+---
+ drivers/net/ethernet/microchip/lan743x_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index 23760b613d3e..8b6b9b6efe18 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -2495,8 +2495,7 @@ static int lan743x_rx_process_buffer(struct lan743x_rx *rx)
+ 
+ 	/* save existing skb, allocate new skb and map to dma */
+ 	skb = buffer_info->skb;
+-	if (lan743x_rx_init_ring_element(rx, rx->last_head,
+-					 GFP_ATOMIC | GFP_DMA)) {
++	if (lan743x_rx_init_ring_element(rx, rx->last_head, GFP_ATOMIC)) {
+ 		/* failed to allocate next skb.
+ 		 * Memory is very low.
+ 		 * Drop this packet and reuse buffer.
 -- 
-pw-bot: cr
+2.25.1
+
