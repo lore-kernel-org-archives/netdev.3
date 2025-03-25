@@ -1,87 +1,90 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06B8264A77
-	for <netdev@vger.kernel.org>; Tue, 25 Mar 2025 12:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E6625A2C0
+	for <netdev@vger.kernel.org>; Tue, 25 Mar 2025 13:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742907116; cv=none; b=G5OkrjKRGwPUU1QG68FyfgJ8NHrf40iqwNls+pJBs9Jgf4Ey/G9JbkzsIE9+emrPWrtjcqse7KmQdN4BVYibxs462RCPjxEIVwB3eBEfnb6/VgyuxxVGy6WtiBJ/EObObamM3+AFr0CxkqHRjzpuu8lX9RLqTt8mZfppYGsfR20=
+	t=1742907639; cv=none; b=fS2N23t2jv0MHJRjz7qigSORRtK6P7doAHB2I10b2T/ipo9FF3FlF5de7SpWfsXs+hjIYUdyEUQi61a+bCaucipbyvnm4fVg7ZUCCIZ47ut5iHHwrRR4a6pJ4HiP/a0sDp2rof47g18HBJladHejKjMBMFCsCo5yBpgOY4Pj0Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742907116; c=relaxed/simple;
-	bh=04WyPtnaqXX/qjdJRYC16LNgsnbV5owsAL6ATqenmEQ=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=gQJHiL9YgUxAkkKWAfBlP0+ERY/rAoobvh77ELXoi74LfBVMkPYVAXzYj9MYn3KzVEXOcvOGvOQCucqhhg/gkw8EgpGFYyU5YOywBwWXieH+opjOIqBbgV1XU+GKwEW8QgLAG7G/Je8i23JjlN1NmQrkbnUoCUumP1SdkEz6dto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DDalLAdL; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1742907639; c=relaxed/simple;
+	bh=osUZqh8OiPa1kToH8jOhy7QTKetaqfKzeenIuuruPXc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=K0gztoGTNf1YvuAILeolfJFyJ82inYjIKhBhQ2hw619IoS82ud+sTYpvD7nc43dUi6jh2XdnuUJBONwoDsC5pW4L0KNTozEuWdt1iiaTnrK4QcZnjFLS2p44lz+2RFZhRQQ8GKfgSkxbkdod00EF/JAv2uXI57262tXp8efOuJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JsLELxgM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DDalLAdL"
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1742907102;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IOe5X9hTl3U+JuiEs3iaGAEn3PxEP3IbrqzHiKu85PU=;
-	b=DDalLAdLc1qsrGojQfDv+X25eSAk9RrKF+RV8ZtD97V3nbAiMOhFWvAKek/ziJqHzxMzFo
-	KJioyNTcyN+0FbwfqSSrxT75ynzhZo4+MPlOXhd5HPXdxqB4Wikq7M2pfZZDVSuWvz1Y/I
-	zUOfOR9vV5WiNaEJvdDw1tUNIAN6BT4=
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JsLELxgM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19381C4CEED;
+	Tue, 25 Mar 2025 13:00:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742907639;
+	bh=osUZqh8OiPa1kToH8jOhy7QTKetaqfKzeenIuuruPXc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=JsLELxgMNTPbBGIbTs3b1a2OZzpaV2wnbtYXraFnIA83gn5Wwv5CSNah42jdTZAab
+	 LEqz8K7tPPkARWw+lq2LIwVOb55JCINOO9MEEPl471QOAImnp4fUCR0s6mO/YVvL8D
+	 vix2nDL/brEioXwBOl+potgJvh4H6tlMsOqQ9bZeB3g/RBMKCeAy9GstN7WRT0fK5c
+	 042QFcIFykymB5VvZVrjKwz/YiTTH80eGEGe76Y/KcCvLqPA3aCK6RTS4RO3zZuwYa
+	 v08J9zIfy1H/EAWnSsOP5sc0Y8hmVjsCo9mZxPGoEZNSZAOxA/qNRc/kJHq6gBogQj
+	 aMAJdIquPnx1w==
+Date: Tue, 25 Mar 2025 06:00:30 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
+ andrew+netdev@lunn.ch, netdev@vger.kernel.org, Milena Olech
+ <milena.olech@intel.com>, przemyslaw.kitszel@intel.com,
+ karol.kolacinski@intel.com, richardcochran@gmail.com, Josh Hay
+ <joshua.a.hay@intel.com>, Samuel Salin <Samuel.salin@intel.com>
+Subject: Re: [PATCH net-next 08/10] idpf: add Tx timestamp flows
+Message-ID: <20250325060030.279c99bf@kernel.org>
+In-Reply-To: <20250318161327.2532891-9-anthony.l.nguyen@intel.com>
+References: <20250318161327.2532891-1-anthony.l.nguyen@intel.com>
+	<20250318161327.2532891-9-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
-Subject: Re: [PATCH net-next] mptcp: pm: Fix undefined behavior in
- mptcp_remove_anno_list_by_saddr()
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Thorsten Blum <thorsten.blum@linux.dev>
-In-Reply-To: <20250325053058.412af7c5@kernel.org>
-Date: Tue, 25 Mar 2025 13:51:28 +0100
-Cc: Matthieu Baerts <matttbe@kernel.org>,
- Mat Martineau <martineau@kernel.org>,
- Geliang Tang <geliang@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org,
- mptcp@lists.linux.dev,
- linux-kernel@vger.kernel.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <7EEE7001-CCD4-4A5A-8723-3AAC3A88F6FF@linux.dev>
-References: <20250325110639.49399-2-thorsten.blum@linux.dev>
- <7F685866-E146-4E99-A750-47154BDE44C6@linux.dev>
- <20250325053058.412af7c5@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-X-Migadu-Flow: FLOW_OUT
 
-On 25. Mar 2025, at 13:30, Jakub Kicinski wrote:
-> On Tue, 25 Mar 2025 12:33:11 +0100 Thorsten Blum wrote:
->> On 25. Mar 2025, at 12:06, Thorsten Blum wrote:
->>> 
->>> Commit e4c28e3d5c090 ("mptcp: pm: move generic PM helpers to pm.c")
->>> removed a necessary if-check, leading to undefined behavior because
->>> the freed pointer is subsequently returned from the function.
->>> 
->>> Reintroduce the if-check to fix this and add a local return variable to
->>> prevent further checkpatch warnings, which originally led to the removal
->>> of the if-check.
->>> 
->>> Fixes: e4c28e3d5c090 ("mptcp: pm: move generic PM helpers to pm.c")
->>> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
->>> ---  
->> 
->> Never mind, technically it's not actually undefined behavior because of
->> the implicit bool conversion, but returning a freed pointer still seems
->> confusing.
-> 
-> CCing the list back in.
+On Tue, 18 Mar 2025 09:13:23 -0700 Tony Nguyen wrote:
+> +/**
+> + * struct idpf_tx_tstamp_stats - Tx timestamp statistics
+> + * @tx_hwtstamp_lock: Lock to protect Tx tstamp stats
+> + * @tx_hwtstamp_discarded: Number of Tx skbs discarded due to cached PHC time
+> + *			   being too old to correctly extend timestamp
+> + * @tx_hwtstamp_flushed: Number of Tx skbs flushed due to interface closed
+> + */
+> +struct idpf_tx_tstamp_stats {
+> +	struct mutex tx_hwtstamp_lock;
+> +	u32 tx_hwtstamp_discarded;
+> +	u32 tx_hwtstamp_flushed;
+> +};
 
-Thanks!
+>   * idpf_get_rxnfc - command to get RX flow classification rules
+> @@ -479,6 +480,9 @@ static const struct idpf_stats idpf_gstrings_port_stats[] = {
+>  	IDPF_PORT_STAT("tx-unicast_pkts", port_stats.vport_stats.tx_unicast),
+>  	IDPF_PORT_STAT("tx-multicast_pkts", port_stats.vport_stats.tx_multicast),
+>  	IDPF_PORT_STAT("tx-broadcast_pkts", port_stats.vport_stats.tx_broadcast),
+> +	IDPF_PORT_STAT("tx-hwtstamp_skipped", port_stats.tx_hwtstamp_skipped),
+> +	IDPF_PORT_STAT("tx-hwtstamp_flushed", tstamp_stats.tx_hwtstamp_flushed),
+> +	IDPF_PORT_STAT("tx-hwtstamp_discarded", tstamp_stats.tx_hwtstamp_discarded),
 
-The change imo still makes sense, but the commit message should be
-updated. I'll submit a new patch for after the merge window.
+I don't see you implementing .get_ts_stats ? If there is a reason
+please explain in the commit msg. We require that standard stats
+are reported if you want to report custom, more granular ones.
 
+> +static int idpf_get_ts_info(struct net_device *netdev,
+> +			    struct kernel_ethtool_ts_info *info)
+> +{
+> +	struct idpf_netdev_priv *np = netdev_priv(netdev);
+> +	struct idpf_vport *vport;
+> +	int err = 0;
+> +
+> +	if (!mutex_trylock(&np->adapter->vport_ctrl_lock))
+
+Why trylock? This also needs a solid and well documented justification
+to pass.
+-- 
+pw-bot: cr
