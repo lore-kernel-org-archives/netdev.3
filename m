@@ -1,101 +1,93 @@
-Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BDB19F42C
-	for <netdev@vger.kernel.org>; Tue, 25 Mar 2025 19:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD401F1913;
+	Tue, 25 Mar 2025 19:59:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742932729; cv=none; b=fJWZza9nMgSvD7r+sWaP0c6ru1vuW8FyZo8ElgEB+Kvimp8bGhQTaqfsPkd8ZtXO6Kb/+JUUYDrC8XQqIz4hqhA3is/ic9/X7t190MAFCRlCWEMayO9AqaWj7tcBu0MMKU/CgMe0xBAjYr4y8QWdVAK38fyZQ+ibXAGaJhjfWd4=
+	t=1742932752; cv=none; b=DtO2AJTicX9u5Tv1fqQFlK2KKRzB4g1m+VUQS5jE3F3gSwjdVEvj0zIZcNh4FE3UUGlov7P4FIuMEjMnK+0rINQAOP8RUELrNefSY+Oajwjnnh84efWPD/N8qPFIEzVEPUlxu72Q5XaFG0UH0688Xw32QPfSEAXkv/cn44gX3hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742932729; c=relaxed/simple;
-	bh=W8p7OwgXAZp3YkCmGND4xFL/B0wyDusKCNrchEASDrw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RRBcqrWD38Qh6Gvw8sK7zwwRVgQK5B4IaihUdsx50YKUHzDOkzZtHGlzhExYqRRSu9QGJZZM2zC6pWDRlkt8lLWRUDYOKOMg/tr5VWYCl2y4zgIpSnBKNtmgl8AIxgE/3O43f31OxrMNNBOpTfZRuhrRrvUlvTGCXE2RKbkbouo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=EgQmpPdB; arc=none smtp.client-ip=52.119.213.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1742932752; c=relaxed/simple;
+	bh=Kmce4MR3+inOg7HfHkfr1xXue4qdR8d/2SSpd5/SfNE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JHJFGKA0qfh6+Ipybr8TE2C0wMyKOxSLsj78wTNA+55lxrjmNi2ml4pLSnMkt3dmv6F3Y+Bmq5+ZZd8oNUN+YTO0iZ9muQ7luyPqo8/J9SnxW/WIH+GsUMjS8YEtWpB98Oi2emVla5rKzrI2MWwV2icGEn/pDvGsYK+pbU1iM74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=nMe+Ry21; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="EgQmpPdB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1742932725; x=1774468725;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=D5W2ZvFVCJ2olIjgczhwBZtBLeRSu58K3lfmo9cxIfs=;
-  b=EgQmpPdBVxiKCx7QU7Qp/6WHCgN3mWVGGGEnsK6Sy1pLLtM8aIUzCOQG
-   KvuEVkLTpN5CZySfIdHBCpu/Z+7Y4DK+LSgDeSQjjfkg1MpN2wSBJiv0T
-   21aDTvM3jYvL3RPvv7FwLeY/0FPAZnSwHgsicC/SwG7vTz/yFGcPXCGWp
-   w=;
-X-IronPort-AV: E=Sophos;i="6.14,275,1736812800"; 
-   d="scan'208";a="282529788"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
-  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2025 19:58:41 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [10.0.21.151:9748]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.27.18:2525] with esmtp (Farcaster)
- id 6693b8d4-5270-4be4-8b95-46775d5f688b; Tue, 25 Mar 2025 19:58:40 +0000 (UTC)
-X-Farcaster-Flow-ID: 6693b8d4-5270-4be4-8b95-46775d5f688b
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Tue, 25 Mar 2025 19:58:39 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.106.100.12) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Tue, 25 Mar 2025 19:58:36 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, "David S. Miller"
-	<davem@davemloft.net>, David Ahern <dsahern@kernel.org>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-CC: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v2 net 0/3] udp: Fix two integer overflows when sk->sk_rcvbuf is close to INT_MAX.
-Date: Tue, 25 Mar 2025 12:58:12 -0700
-Message-ID: <20250325195826.52385-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="nMe+Ry21"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=zASb+pDKpANBRsEZlpC72O+O+RlCzusRinXEvy0fxqU=; b=nMe+Ry21jpk3cRkc5nVgAP1JUk
+	q4VJXR9zH6nu56ZEW7EvGapafBds7R97l1UOS1iypLq6k546wjGV974D7x3loABlnDVqiqUcOoYhn
+	H7asLD5Hj/awUS9uWgvbOwpHOBuJXL+Y9ePnPrkAugLjbTVzw5vPjuL9F/RT48D8Xr7o=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1txAQI-00760q-Ox; Tue, 25 Mar 2025 20:58:54 +0100
+Date: Tue, 25 Mar 2025 20:58:54 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Haiyang Zhang <haiyangz@microsoft.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	KY Srinivasan <kys@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	Long Li <longli@microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	"horms@kernel.org" <horms@kernel.org>,
+	"brett.creeley@amd.com" <brett.creeley@amd.com>,
+	"surenb@google.com" <surenb@google.com>,
+	"schakrabarti@linux.microsoft.com" <schakrabarti@linux.microsoft.com>,
+	"kent.overstreet@linux.dev" <kent.overstreet@linux.dev>,
+	"shradhagupta@linux.microsoft.com" <shradhagupta@linux.microsoft.com>,
+	"erick.archer@outlook.com" <erick.archer@outlook.com>,
+	"rosenp@gmail.com" <rosenp@gmail.com>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+	Paul Rosswurm <paulros@microsoft.com>
+Subject: Re: [EXTERNAL] Re: [PATCH 2/3] net: mana: Implement
+ set_link_ksettings in ethtool for speed
+Message-ID: <6396c1f7-756d-476a-833e-7ea35ae41da8@lunn.ch>
+References: <1742473341-15262-1-git-send-email-ernis@linux.microsoft.com>
+ <1742473341-15262-3-git-send-email-ernis@linux.microsoft.com>
+ <fb6b544f-f683-4307-8adf-82d37540c556@lunn.ch>
+ <20250325170955.GB23398@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <adaaa2b0-c161-4d4f-8199-921002355d05@lunn.ch>
+ <20250325122135.14ffa389@kernel.org>
+ <MN0PR21MB3437DA2C43930B08036BB146CAA72@MN0PR21MB3437.namprd21.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D035UWA004.ant.amazon.com (10.13.139.109) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <MN0PR21MB3437DA2C43930B08036BB146CAA72@MN0PR21MB3437.namprd21.prod.outlook.com>
 
-I got a report that UDP mem usage in /proc/net/sockstat did not
-drop even after an application was terminated.
+> This patch is just to support the ethtool option for the speed.
+> And seems there is no option on ethtool to reset NIC to the default
+> speed?
 
-The issue could happen if sk->sk_rmem_alloc wraps around due
-to a large sk->sk_rcvbuf, which was INT_MAX in our case.
+There is no such thing as default speed. Speed is either:
 
-The patch 2 fixes the issue, and the patch 1 fixes yet another
-overflow I found while investigating the issue.
+1) Negotiated with the link partner, picking the highest speed link
+modes both partners support
 
+2) Forced to a specific speed, based on one of the link modes the
+interfaces supports.
 
-v2:
-  * Patch 1
-    * Define rmem and rcvbuf as unsigned int (Eric)
-    * Take skb->truesize into account for sk with large rcvbuf (Willem)
+Since you don't have link modes, you are abusing the API. You should
+choose a different API which actually fits what you are doing,
+configuring a leaky bucket shaper.
 
-  * Patch 3
-    * Add a comment
-
-v1: https://lore.kernel.org/netdev/20250323231016.74813-1-kuniyu@amazon.com/
-
-
-Kuniyuki Iwashima (3):
-  udp: Fix multiple wraparounds of sk->sk_rmem_alloc.
-  udp: Fix memory accounting leak.
-  selftest: net: Check wraparounds for sk->sk_rmem_alloc.
-
- net/ipv4/udp.c                          |  40 +++---
- tools/testing/selftests/net/.gitignore  |   1 +
- tools/testing/selftests/net/Makefile    |   2 +-
- tools/testing/selftests/net/so_rcvbuf.c | 181 ++++++++++++++++++++++++
- 4 files changed, 206 insertions(+), 18 deletions(-)
- create mode 100644 tools/testing/selftests/net/so_rcvbuf.c
-
--- 
-2.48.1
-
+	Andrew
