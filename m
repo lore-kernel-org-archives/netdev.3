@@ -1,244 +1,95 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DBB257AF2;
-	Tue, 25 Mar 2025 17:25:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF8984FAD
+	for <netdev@vger.kernel.org>; Tue, 25 Mar 2025 17:29:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742923551; cv=none; b=q7U2IeiopDa6/dC6ooXOLw3irpoBupcn2hfeBlzQK4GL75OJMtSw+UNZ6JTX95VU2seqtvUj2/9284UXX5clNy6aZ/fWC2QZinPwSldFalDpKbTS9887qSKB98MM32rqKJy4cMMwsyxwDJWOaQUudYVNVFijZzV6HgDIfR4uouE=
+	t=1742923799; cv=none; b=ePGhqFSAWDM55M2jgwXgk3BimRpjT0bdCQw8YM3NIfAh9Pewio2+mCLeJeU/JQD5mHEYZK3vwFgpZkmw0kfR5K5lB02mFF6qDB3bM/BiaLoxp6GQuI+FQmh2cE5CXdCJTQqpvwkzKtb6pgrWHrmQn4sLUrwYUh6xxkWj8i3Y788=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742923551; c=relaxed/simple;
-	bh=S6T4TmlUdE7gvOPo3bQyO4uG51sRLu56OEoAsFNC4ek=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=rIzGdSk6a2wN13ym1YSnz593dNTtZEQ6K7dOKZ7v8znytSx6c78Do2k5Mr6rFWBPjHg73BrJYdl0FuSUv5MV9UNyJM6Vv8pueXEOfS5bfRRNjXqmKOK9OzrLoV7yigXMz2NRlTlx2XKuyXQdiqIWACIOvNAlP9BDAWahDGLYGKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=djRgAH9Y; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1742923799; c=relaxed/simple;
+	bh=4ZBZEas9JX4RPOUELxrNq4XvA2dxPQQQA7l9LOPb+xA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hGTmrh2oM6UG0mgxXkSjzAgKMgWDNDKEadAEgnjit6muZqYgi2ZX/WtWCOxZRtxPG16QVxYc8jPGjjFcS2p7989RPHq7Ilpxv8qE09H8iq1ss+qdtz5ZNKgGgkq2CeMIwWhdaMA1lCnt16MrdmI46sreE0pYNBB8tc0CA85K/XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HEKafJ2r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="djRgAH9Y"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 49E3A4433E;
-	Tue, 25 Mar 2025 17:25:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742923540;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LPvEeQoVwOan9vRz2MGLJjUipurACCpBk5gQyvnta10=;
-	b=djRgAH9YaswUdPWsaCe87EAlbswo5U9GhK3K6k5EYX2bvj6cj9H9AR++Q4xTrMjSQ5oaeG
-	rcgZDAWu9heu7gNHnzttKf1INMvKr+9LZuo1gvCZAUY1oDoIRAVMCJ/WLARxMlHSLL4LcR
-	uR4n0biXynNB5c/tk1wx15MFRJG8J1WrjS72JV1JIVc9wCjBi/7ysxM2w4T8zo1cH8CWaf
-	qJDgx/MHlD8/MDD2UNoAyImdQnzenXWLo9pfgfF1S/ruhg5GNfwtM4XkqyykzaobOQR38a
-	fZSaHTaOlra0UWasXGnvQYGeOOxYV9B89I4/ap9vV1559suWOMT3MzmRzHpevQ==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HEKafJ2r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B37CFC4CEE4;
+	Tue, 25 Mar 2025 17:29:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742923797;
+	bh=4ZBZEas9JX4RPOUELxrNq4XvA2dxPQQQA7l9LOPb+xA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=HEKafJ2rzw5ZPa8REfEU1axJnIDBLCUg73AnfqDwO6ZP4tTuMsYngDNbwP4feennK
+	 Vq9rZzPB3OftQMVqvna9ZVcdxPwjVW/c4CgBgbGuHn65m6de75VIcWmy+enxzh16/B
+	 t0hb3QJKNirsOk/nWSrHs74JpRrGViXrunO4TbWLAkDnURwKcyARIDy0nmgx7kAkvc
+	 WUzG6oLwHn3mPsBcknW86siP41pvUt8C1e+W21/8FgeBMkysbaYhRR/cyR1kP3h38f
+	 8q9Fgqo+2MfKLNMnWpyFmlF/yRqBzhuSYKRK53fTYnYx+cwcgBD93BDMU3Rk0tiom0
+	 SYdat4wcULT2g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33B9A380CFE7;
+	Tue, 25 Mar 2025 17:30:35 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 25 Mar 2025 18:25:35 +0100
-Message-Id: <D8PITUNTWTXA.366TNSXDUL48G@bootlin.com>
-Cc: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
- <linux-mips@vger.kernel.org>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, "Tawfik Bayouk"
- <tawfik.bayouk@mobileye.com>
-To: "Claudiu Beznea" <claudiu.beznea@tuxon.dev>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Nicolas Ferre" <nicolas.ferre@microchip.com>, "Paul Walmsley"
- <paul.walmsley@sifive.com>, "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert
- Ou" <aou@eecs.berkeley.edu>, "Alexandre Ghiti" <alex@ghiti.fr>, "Samuel
- Holland" <samuel.holland@sifive.com>, "Richard Cochran"
- <richardcochran@gmail.com>, "Russell King" <linux@armlinux.org.uk>, "Thomas
- Bogendoerfer" <tsbogend@alpha.franken.de>, "Vladimir Kondratiev"
- <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
- <gregory.clement@bootlin.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next 10/13] net: macb: Add "mobileye,eyeq5-gem"
- compatible
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250321-macb-v1-0-537b7e37971d@bootlin.com>
- <20250321-macb-v1-10-537b7e37971d@bootlin.com>
- <ea5de004-a26c-43a1-9408-0089fa18b44d@tuxon.dev>
-In-Reply-To: <ea5de004-a26c-43a1-9408-0089fa18b44d@tuxon.dev>
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduieefvdehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkvefvhffuofhfjgesthhqredtredtjeenucfhrhhomhepvfhhrohoucfnvggsrhhunhcuoehthhgvohdrlhgvsghruhhnsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeigfelffeuffetteetuddufffghefhudeuteeigeekteevgeeileejgfdvffelheenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepjeejrddufeehrdekuddrieehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepjeejrddufeehrdekuddrieehpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehthhgvohdrlhgvsghruhhnsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvjedprhgtphhtthhopegtlhgruhguihhurdgsvgiinhgvrgesthhugihonhdruggvvhdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrg
- hdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrgh
-X-GND-Sasl: theo.lebrun@bootlin.com
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2 00/11] net: skip taking rtnl_lock for queue GET
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174292383401.660431.1912162765020068057.git-patchwork-notify@kernel.org>
+Date: Tue, 25 Mar 2025 17:30:34 +0000
+References: <20250324224537.248800-1-kuba@kernel.org>
+In-Reply-To: <20250324224537.248800-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, sdf@fomichev.me
 
-On Mon Mar 24, 2025 at 9:18 AM CET, Claudiu Beznea wrote:
-> On 21.03.2025 21:09, Th=C3=A9o Lebrun wrote:
->> Add support for the two GEM instances inside Mobileye EyeQ5 SoCs, using
->> compatible "mobileye,eyeq5-gem". With it, add a custom init sequence
->> that accesses two system-controller registers.
->>=20
->> Noteworthy: NET_IP_ALIGN=3D2 on MIPS but the hardware does not align and
->> low bits aren't configurable, so we cannot respect the requested IP
->> header alignment.
->>=20
->> Signed-off-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
->> ---
->>  drivers/net/ethernet/cadence/macb_main.c | 95 +++++++++++++++++++++++++=
-+++++++
->>  1 file changed, 95 insertions(+)
->>=20
->> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethe=
-rnet/cadence/macb_main.c
->> index 79161d559166478f85a6f8294d488ed961d9be7f..9f2a5bf9a5ebca5941229bd9=
-6091a0fb96f0607d 100644
->> --- a/drivers/net/ethernet/cadence/macb_main.c
->> +++ b/drivers/net/ethernet/cadence/macb_main.c
+Hello:
 
-[...]
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
->> +static int eyeq5_init(struct platform_device *pdev)
->> +{
->> +	struct device *dev =3D &pdev->dev;
->> +	struct net_device *netdev =3D platform_get_drvdata(pdev);
->> +	struct macb *bp =3D netdev_priv(netdev);
->> +	struct device_node *np =3D dev->of_node;
->> +	unsigned int gp, sgmii;
->> +	struct regmap *regmap;
->> +	unsigned int args[2];
->> +	unsigned int reg;
->> +	int ret;
->> +
->> +	regmap =3D syscon_regmap_lookup_by_phandle_args(np, "mobileye,olb", 2,=
- args);
->> +	if (IS_ERR(regmap))
->> +		return PTR_ERR(regmap);
->> +
->> +	gp =3D args[0];
->> +	sgmii =3D args[1];
->> +
->> +	/* Forced reset */
->> +	regmap_write(regmap, gp, 0);
->> +	regmap_write(regmap, sgmii, 0);
->> +	usleep_range(5, 20);
->> +
->> +	if (bp->phy_interface =3D=3D PHY_INTERFACE_MODE_SGMII) {
->> +		regmap_write(regmap, gp, EYEQ5_OLB_GP_SGMII_MODE);
->> +
->> +		reg =3D EYEQ5_OLB_SGMII_PWR_EN | EYEQ5_OLB_SGMII_RST_DIS |
->> +		      EYEQ5_OLB_SGMII_PLL_EN;
->> +		regmap_write(regmap, sgmii, reg);
->> +
->> +		ret =3D regmap_read_poll_timeout(regmap, sgmii, reg,
->> +					       reg & EYEQ5_OLB_SGMII_PLL_ACK,
->> +					       1, 100);
->> +		if (ret)
->> +			return dev_err_probe(dev, ret, "PLL timeout");
->> +
->> +		regmap_read(regmap, sgmii, &reg);
->> +		reg |=3D EYEQ5_OLB_SGMII_PWR_STATE | EYEQ5_OLB_SGMII_SIG_DET_SW;
->> +		regmap_write(regmap, sgmii, reg);
->
-> You can use regmap_update_bits() here.
->
->> +	}
->> +
->> +	regmap_read(regmap, gp, &reg);
->> +	reg &=3D ~EYEQ5_OLB_GP_RGMII_DRV;
->> +	if (phy_interface_mode_is_rgmii(bp->phy_interface))
->> +		reg |=3D FIELD_PREP(EYEQ5_OLB_GP_RGMII_DRV, 0x9);
->> +	reg |=3D EYEQ5_OLB_GP_TX_SWRST_DIS | EYEQ5_OLB_GP_TX_M_CLKE;
->> +	reg |=3D EYEQ5_OLB_GP_SYS_SWRST_DIS | EYEQ5_OLB_GP_SYS_M_CLKE;
->> +	regmap_write(regmap, gp, reg);
->
-> To me it looks like this code could be abstracted as a phy driver. E.g.,
-> check the init_reset_optional() and its usage on "cdns,zynqmp-gem" (phy
-> driver here: drivers/phy/xilinx/phy-zynqmp.c).
+On Mon, 24 Mar 2025 15:45:26 -0700 you wrote:
+> Skip taking rtnl_lock for queue GET ops on devices which opt
+> into running all ops under the instance lock.
+> 
+> This fixes and completes Stan's ops-locking work, so I think
+> for sanity / ease of backporting fixes we should merge it for
+> v6.15.
+> 
+> [...]
 
-I thought about that question. Options to implement that sequence are:
+Here is the summary with links:
+  - [net-next,v2,01/11] net: bubble up taking netdev instance lock to callers of net_devmem_unbind_dmabuf()
+    https://git.kernel.org/netdev/net-next/c/ba6f418fbf64
+  - [net-next,v2,02/11] net: remove netif_set_real_num_rx_queues() helper for when SYSFS=n
+    https://git.kernel.org/netdev/net-next/c/bae2da826196
+  - [net-next,v2,03/11] net: constify dev pointer in misc instance lock helpers
+    https://git.kernel.org/netdev/net-next/c/e2f81e8f4d0c
+  - [net-next,v2,04/11] net: explain "protection types" for the instance lock
+    (no matching commit)
+  - [net-next,v2,05/11] net: designate queue counts as "double ops protected" by instance lock
+    https://git.kernel.org/netdev/net-next/c/0a65dcf6249b
+  - [net-next,v2,06/11] net: designate queue -> napi linking as "ops protected"
+    https://git.kernel.org/netdev/net-next/c/310ae9eb2617
+  - [net-next,v2,07/11] net: protect rxq->mp_params with the instance lock
+    https://git.kernel.org/netdev/net-next/c/b52458652eca
+  - [net-next,v2,08/11] net: make NETDEV_UNREGISTER and instance lock more consistent
+    (no matching commit)
+  - [net-next,v2,09/11] net: designate XSK pool pointers in queues as "ops protected"
+    (no matching commit)
+  - [net-next,v2,10/11] netdev: add "ops compat locking" helpers
+    (no matching commit)
+  - [net-next,v2,11/11] netdev: don't hold rtnl_lock over nl queue info get when possible
+    (no matching commit)
 
- - (1) Implement a separate PHY driver, what you are proposing. I just
-   made a prototype branch to see what it'd look like. Nothing too
-   surprising; mostly the above sequence is copy-pasted inside
-   phy_init|power_on(). I see two issues:
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-    - First, a practical one. This adds a lot of boilerplate for no
-      obvious benefit compared to a raw registers read/write sequence
-      inside macb_config->init().
-
-      The main reason for that boilerplate is to allow reuse of a PHY
-      across MACs; here we already know that cannot be useful because
-      the EyeQ5 has two GEMs and nothing else. Those registers are
-      EyeQ5-specific.
-
-    - Second, a semantic one. The registers we are touching are *not*
-      the PHY's registers. They are configuring the PHY's integration:
-      its input PLL, resets, etc.
-
- - (2) Second, taking into account that what we are configuring isn't
-   the PHY itself but its resources, we could try modeling each
-   individual register+field as a reset / clock / pin control (there is
-   some drive strength in here, *I think*). Issue: this would get
-   messy, fast.
-    - A single register would expose many resources.
-    - The sequence in macb_config->init() would need to be the exact
-      same order. IE we can't abstract much.
-
-   Something like this pseudocode (which is a bad idea, we'd all agree
-   here):
-
-      reset_deassert(bp->eq5_sgmii_reset);
-      reset_deassert(bp->eq5_sgmii_reset_pwr);
-      reset_deassert(bp->eq5_phy_reset_tx);
-      reset_deassert(bp->eq5_phy_reset_sys);
-
-      if (bp->phy_interface =3D=3D PHY_INTERFACE_MODE_SGMII) {
-         pinctrl_select_state(bp->eq5_phy_input_pinctrl, bp->eq5_pins_sgmii=
-);
-
-         reset_deassert(bp->eq5_sgmii_reset);
-         clk_prepare_enable(bp->eq5_sgmii_phy_input_pll);
-
-         reset_deassert(bp->eq5_sgmii_reset_pwr);
-      } else {
-         pinctrl_select_state(bp->eq5_pinctrl, bp->eq5_pins_rgmii);
-      }
-
-      reset_deassert(bp->eq5_phy_reset_tx);
-      reset_deassert(bp->eq5_phy_reset_sys);
-      clk_prepare_enable(bp->eq5_phy_mclk_tx);
-      clk_prepare_enable(bp->eq5_phy_mclk_sys);
-
- - (3) Keep the sequence in macb_config->init(). Plain and simple.
-    - Issue: it is somewhat unrelated platform-specific code that's
-      present inside macb_main.c.
-
-The two serious options are (1) and (3).
-(1) is what you proposed and (3) is what's in the series.
-
->>  static const struct of_device_id macb_dt_ids[] =3D {
->>  	{ .compatible =3D "cdns,at91sam9260-macb", .data =3D &at91sam9260_conf=
-ig },
->>  	{ .compatible =3D "cdns,macb" },
->> @@ -5152,6 +5246,7 @@ static const struct of_device_id macb_dt_ids[] =3D=
- {
->>  	{ .compatible =3D "cdns,zynqmp-gem", .data =3D &zynqmp_config}, /* dep=
-recated */
->>  	{ .compatible =3D "cdns,zynq-gem", .data =3D &zynq_config }, /* deprec=
-ated */
->>  	{ .compatible =3D "sifive,fu540-c000-gem", .data =3D &fu540_c000_confi=
-g },
->> +	{ .compatible =3D "mobileye,eyeq5-gem", .data =3D &eyeq5_config },
->
-> Maybe move it after microchip to have it a bit sorted.
-
-Argh those semi sorted lists. I saw "cdns" then "atmel" then "cdns" so I
-ignored sorting.
-
-Thanks for the review!
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
