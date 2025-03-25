@@ -1,110 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28F525D52F
-	for <netdev@vger.kernel.org>; Tue, 25 Mar 2025 15:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A790581749;
+	Tue, 25 Mar 2025 15:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742916061; cv=none; b=W1evdHqo/iP3Xy8L1kcMMq24wxGbCm1YsQSkUmJqhuQ6TBxvHMR1kHJ1DN/U0+0VoMDLAPDnWPCUvyiNnNBjBjaFYAj+u+zaBgzoyp9Y8JU/zgiEB/FcRuHWoOOI7OLer/nf3o5e3rD7cFeGLq5sLTej9ikzb/XvPng6jRCjALo=
+	t=1742916236; cv=none; b=ldnRvWQWd1yM2k4QGn88b7tXkcTo+u7m1ju2HU7Jyb9BWgxs3p69icJRiukCNIV4dkZ0s2z9IyHZgB2MKKBO9m/ukE3maPTO9KgYmJ9EfBZKEfNXPlNxH7m0MxtFDOkc7MPPusNLEE29p4/TcnqoZCosf4DPG7zHFKswV3rA/M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742916061; c=relaxed/simple;
-	bh=jRjEZkuasdP2Y6bo3n1Ll13SMx3q8a4wDptWsbzEyNQ=;
+	s=arc-20240116; t=1742916236; c=relaxed/simple;
+	bh=/exxyeix3TXgoxDMiFUprsNekll1tQICKKyQseLBw60=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CwKGaYKwL7bkAwhReuO7xnURzkCBd8DZm5fSNOZbsdTySrKYyULMqmtoGIu09Q+x/2zV3fTJ89t/7aDsvqMLldscThfiqn7ZtLJeRRx8s2anN1NixHjUWdJlvou5PFB/tVrh7Ppi8IPOSgmp0Gd+qx1Y/geLEkXXDRokh9Vz2p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QJ+2HZsa; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=iXRtLQElo/ghq9kdhFb52Ln0G4Dh66BaZ0LcvUgZEHpaE9rFbcb298/1Il2DsJQnsQ7Ci5j+XJEU2M70l/7upX0gVjruDsR4ENZVI+CRThPCkrxFfI0UbjlFctd5HOrStjQaPEXz8WLw3o+GehgjtH8PMP/wbgdFaYDx7DfKSmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d9xjUrfY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QJ+2HZsa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A637C4CEE4;
-	Tue, 25 Mar 2025 15:20:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d9xjUrfY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A78C4CEED;
+	Tue, 25 Mar 2025 15:23:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742916061;
-	bh=jRjEZkuasdP2Y6bo3n1Ll13SMx3q8a4wDptWsbzEyNQ=;
+	s=k20201202; t=1742916236;
+	bh=/exxyeix3TXgoxDMiFUprsNekll1tQICKKyQseLBw60=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QJ+2HZsarEvfjZcuADuA+GyBUFazxpt8THVIe6F76i8v/MgqsWKlTx7DuFulmfkYW
-	 5Oq2+b4nkJqXAUc06cX+EeP7AM6UsdLFC0mqaff5YSRJX833jgkmAkAK13tgMocruu
-	 1+q9352vQvEcDQrI6Pw7wSsD5EtGGO/lw2PGU4vp1Ijgxj9+KZTRbuC4HIjS+e9lZe
-	 PQxmVlcPIqA9QPUH+D1pjbzmG94/jn59qwg/wJ3rcM12PHYH5Zu7uE/ep17KAnapnL
-	 4aMUs9txQFB8oszOcZbcHpCGlqiKmKH7xXbIn+xErq60KrMo9GqiEmD3tTHxr39olt
-	 r5PBCP3ApYplw==
-Date: Tue, 25 Mar 2025 15:20:57 +0000
+	b=d9xjUrfYpCJVEDuc6UqP+9nRxapQq4WXzi+6ATNwvT7zMa+aU3S9bHM9A+hWmOFz4
+	 0dfpAYKNxz+kngK3PyNHVUJVysZmeVJHmlx+usRSa6Eui4BErhwvmkNpF2o4M/YFU/
+	 bIT2qAf/35163FzT8Z18rkNY0B4aoLM/c8/ws/rPCgfruZrKQegvxja70bCHgDZOxA
+	 O+/Smvh6SVHzPsHKtvay0iahBagbo85ukwd/36iN7741Na5y1Uh0kiogXNG1g2+bWD
+	 9I000wcr1u44r2Eyi0xnhkNUKNz0/5awXlLf82rvWQbWtuS+zV6r0kkjCrvpd7IwEs
+	 QPBaSs/G02DlQ==
+Date: Tue, 25 Mar 2025 15:23:52 +0000
 From: Simon Horman <horms@kernel.org>
-To: "mengyuanlou@net-swift.com" <mengyuanlou@net-swift.com>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, jiawenwu@trustnetic.com,
-	duanqiangwen@net-swift.com
-Subject: Re: [RESEND,PATCH net-next v9 5/6] net: ngbe: add sriov function
- support
-Message-ID: <20250325152057.GS892515@horms.kernel.org>
-References: <20250324020033.36225-1-mengyuanlou@net-swift.com>
- <9B4D34D65A81485C+20250324020033.36225-6-mengyuanlou@net-swift.com>
- <20250324192116.GK892515@horms.kernel.org>
- <D3FEA7AF-1990-40DF-903C-30790ED782E9@net-swift.com>
+To: Alejandro Lucero Palau <alucerop@amd.com>
+Cc: alejandro.lucero-palau@amd.com, linux-cxl@vger.kernel.org,
+	netdev@vger.kernel.org, dan.j.williams@intel.com,
+	edward.cree@amd.com, davem@davemloft.net, kuba@kernel.org,
+	pabeni@redhat.com, edumazet@google.com, dave.jiang@intel.com
+Subject: Re: [PATCH v11 13/23] cxl: define a driver interface for DPA
+ allocation
+Message-ID: <20250325152352.GT892515@horms.kernel.org>
+References: <20250310210340.3234884-1-alejandro.lucero-palau@amd.com>
+ <20250310210340.3234884-14-alejandro.lucero-palau@amd.com>
+ <20250320161847.GA892515@horms.kernel.org>
+ <3af51327-7745-4b18-a478-f47c57683576@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <D3FEA7AF-1990-40DF-903C-30790ED782E9@net-swift.com>
+In-Reply-To: <3af51327-7745-4b18-a478-f47c57683576@amd.com>
 
-On Tue, Mar 25, 2025 at 10:36:00AM +0800, mengyuanlou@net-swift.com wrote:
-> > 2025年3月25日 03:21，Simon Horman <horms@kernel.org> 写道：
-> > On Mon, Mar 24, 2025 at 10:00:32AM +0800, Mengyuan Lou wrote:
-
-...
-
-> That’s right.
-> > If so, I believe this addresses Jakub's concerns.
+On Mon, Mar 24, 2025 at 04:16:05PM +0000, Alejandro Lucero Palau wrote:
+> 
+> On 3/20/25 16:18, Simon Horman wrote:
+> > On Mon, Mar 10, 2025 at 09:03:30PM +0000, alejandro.lucero-palau@amd.com wrote:
+> > > From: Alejandro Lucero <alucerop@amd.com>
+> > > 
+> > > Region creation involves finding available DPA (device-physical-address)
+> > > capacity to map into HPA (host-physical-address) space. Define an API,
+> > > cxl_request_dpa(), that tries to allocate the DPA memory the driver
+> > > requires to operate. The memory requested should not be bigger than the
+> > > max available HPA obtained previously with cxl_get_hpa_freespace.
+> > > 
+> > > Based on https://lore.kernel.org/linux-cxl/168592158743.1948938.7622563891193802610.stgit@dwillia2-xfh.jf.intel.com/
+> > > 
+> > > Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+> > Hi Alejandro,
+> 
+> 
+> Hi Simon,
+> 
+> 
 > > 
-> > And given that we are at v9 and the last feedback of substance was the
-> > above comment from Jakub, I think this looks good.
+> > As reported by the Kernel Test Robot, in some circumstances this
+> > patch fails to build.
 > > 
-> > Reviewed-by: Simon Horman <horms@kernel.org>
+> > I did not see this with x86_64 or arm64 allmodconfig.
+> > But I did see the problem on ARM and was able to reproduce it (quickly)
+> > like this using the toolchain here [*].
 > > 
-> > But I would like to say that there could be some follow-up to align
-> > the comment and the names of the handlers:
+> > $ PATH=.../gcc-12.3.0-nolibc/arm-linux-gnueabi/bin:$PATH
 > > 
-> > * "other" seems to be used as a synonym for "misc".
-> >  Perhaps ngbe_msix_misc() ?
-> > * "common" seems to only process "misc" interrupts.
-> >  Perhaps __ngbe_msix_misc() ?
-> > * msic seems to be a misspelling of misc.
+> > $ ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- make allmodconfig
+> > $ echo CONFIG_GCC_PLUGINS=n >> .config
+> > $ ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- make oldconfig
 > > 
+> > $ ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- make drivers/cxl/core/hdm.o
+> > ...
+> >    CC [M]  drivers/cxl/core/hdm.o
+> > In file included from drivers/cxl/core/hdm.c:6:
+> > ./include/cxl/cxl.h:150:22: error: field 'dpa_range' has incomplete type
+> >    150 |         struct range dpa_range;
+> >        |                      ^~~~~~~~~
+> > ./include/cxl/cxl.h:221:30: error: field 'range' has incomplete type
+> >    221 |                 struct range range;
+> >        |
+> > 
+> > [*] https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86_64/14.2.0/
+> > 
+> > ...
 > 
 > 
-> >> +static irqreturn_t ngbe_msix_misc(int __always_unused irq, void *data)
-> >> +{
-> >>  ...
-> >> + return __ngbe_msix_misc(wx, eicr);
-> >> +}
-> >> +
-> >> +static irqreturn_t ngbe_misc_and_queue(int __always_unused irq, void *data)
-> >> +{
-> >>  ...
-> >> + return __ngbe_msix_misc(wx, eicr);
-> 
-> 
-> if (wx->num_vfs == 7)
-> 	err = request_irq(wx->msix_entry->vector,
-> 			  ngbe_misc_and_queue, 0, netdev->name, wx);
-> else
-> 	err = request_irq(wx->msix_entry->vector,
-> 			  ngbe_msix_misc, 0, netdev->name, wx);
-> 
-> It’s more appropriate.
-> 
-> Thanks！
+> Thanks for the references. I'll try it and figure out what is required.
 
-Yes, thanks.
+Thanks,
 
-And I also think it would also be nice to rename ngbe_msix_common()
-as __ngbe_msix_misc().
-
-But please hold off with any updates or follow-up as net-next is now closed
-for the merge window.
-
-Link: https://lore.kernel.org/netdev/20250324075539.2b60eb42@kernel.org/
+I realised after posting that PATH above uses gcc-12.3 while the link
+above is for gcc-14.2.0. Which is inconsistent. But in practice I tried both :)
 
 ...
