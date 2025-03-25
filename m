@@ -1,124 +1,105 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D7F537E9
-	for <netdev@vger.kernel.org>; Tue, 25 Mar 2025 10:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF1325487D
+	for <netdev@vger.kernel.org>; Tue, 25 Mar 2025 10:44:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742899322; cv=none; b=n2v3ddeNufxLCBrZYNcpHpG/G6wxlNDhDBATn4Jbc24P/FJk85a38ytlDPp1HYyfoxZyUJBEZgceGhK1GGv9g4TvGa2D2VkUru0/DhEE/457vHTu2v+5JRPb7YnLpoBDQ9yAan8gO7888mNfY7ZuLmXmZo4u1wKD172Hmt9pMbY=
+	t=1742899468; cv=none; b=cLZv992gIk7gBLyMCv8zZCqyFc+l/7pnxjPmMsNJZOjS1FJ9E2+CWUAiRcD3O5A6OBQDnRKaStn5h9tLO9hCi8c8hLxOUBqOsFty0H26oR81kufGHx3oBoQ9oY2wSquIigFjSw9tpX6EE7p0wt0qW4Eb+VzizgGdCa5trt6BWnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742899322; c=relaxed/simple;
-	bh=oeejJ9QsMBajSRKn0+0g2cxUIth6DStbF7DSGbR5RY0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hivkwu/QgfOlaAN3W1hqyE+mo+5cRq+xmHdaDvIDx/Yz527X+LRf3w02Oex3hg9fEeOB2SxygZs9YrmPKHpluRrhBrI3UlnEIGqwhBXH1ffC/RRtGbvWO/8k/gH+u974i5gSEEEaKpKjkbq54AFNkxj3SzEhmGNXCqA41nG1RXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FM4547iW; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1742899468; c=relaxed/simple;
+	bh=N6hRMYy+MK85vVzpO/DUY6jOdzgjRqCiLpk8t7pXv0g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oXu07cbtgojSfOSvTq2vDDMuPh3xZet0bE1Q0Y8NeGozy8dfXqzK88H3WnikpmBLhTD78suEKcNpjbkStK7VZZEuzx6yZ+vHEr/S/WQizY8YwLXOE9lEMArlC6Vy2biYb8ELM0RWORg3LWOFB4VdLDL95ispulVmKPQqsnVDHDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ll7LLZFj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3Gdo7Xpq; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FM4547iW"
-Message-ID: <0316a190-6022-4656-bd5e-1a1f544efa2d@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1742899317;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ll7LLZFj";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3Gdo7Xpq"
+Date: Tue, 25 Mar 2025 11:46:11 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1742899464;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EV976PessGNrW4Do3I1JXJI6SL8uXNP/+1stgRQFulw=;
-	b=FM4547iWYQjQlUKZlJ5/13iW63UbzSNd60H9ra8p3LsMjr/w2xXI0mL6bOcre4Mu/Ws0RA
-	IIbhYqqp00c0iloAP8Y0I6B29l0vlgiXjuIaX3aaNZXAfwSoGIrrZHrYR8VBLrQw599kc1
-	NqkA7pxosMFMo2nb/727lzgcTbxY+bU=
-Date: Tue, 25 Mar 2025 10:41:53 +0000
+	bh=a6xB2BErYVm3L4Qmt0N4AMI9m5or0sB4d/bwn8BYc7g=;
+	b=ll7LLZFjSBxx6ZPOBQfxIP2GkHNsDVkuwQCC15nIUEnZxghTyZ4zODPzOvFtcNmB5w4xhi
+	cdOl8GJBa/xbwdPFnCwzKEK5zbT747nY/RLeUsTASXd7NDzUCwq9e5k8xkB7cEYu76IrgQ
+	Vg2kEWUxTrtMJorksZAZIPZxMTluOgB2o1myBVBtgpIbEPNxRINxXX+2H0w041QESKxOL0
+	Bgu3HjgtKSyGfZV8nYT52PBoFLZHLpbH8inYoSOtTG9GPAOnUrlMTV0rwCrTXvzt10C2rg
+	9eM5FrLENffTG3jCXvd14cP0g7YGLonTf4CwGEcIxY89WFHZUM3aI8K0uHHBwQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1742899464;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a6xB2BErYVm3L4Qmt0N4AMI9m5or0sB4d/bwn8BYc7g=;
+	b=3Gdo7XpqYK9h0Ql+elvHd2RaL5gAgUhMNEMfJLAseXkUbsHtMbgdJ187rfdxZszvxgVC2J
+	TeW0kqC/0wCThrBA==
+From: Benedikt Spranger <b.spranger@linutronix.de>
+To: Roger Quadros <rogerq@kernel.org>
+Cc: netdev@vger.kernel.org, MD Danish Anwar <danishanwar@ti.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>
+Subject: Re: [PATCH] net: ti: icssg-prueth: Check return value to avoid a
+ kernel oops
+Message-ID: <20250325114611.4ac846b6@mitra>
+In-Reply-To: <3bd78b6a-3c6d-4130-b086-36f2f728bc3e@kernel.org>
+References: <20250322143314.1806893-1-b.spranger@linutronix.de>
+	<89f81b99-b505-48ad-b717-99e5d4d8e87b@kernel.org>
+	<20250323161826.5bcd9cf8@mitra>
+	<3bd78b6a-3c6d-4130-b086-36f2f728bc3e@kernel.org>
+Organization: Linutronix GmbH
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: bnxt_en: Incorrect tx timestamp report
-To: Kamil Zaripov <zaripov-kamil@avride.ai>
-Cc: Michael Chan <michael.chan@broadcom.com>,
- Jacob Keller <jacob.e.keller@intel.com>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>,
- Linux Netdev List <netdev@vger.kernel.org>
-References: <DE1DD9A1-3BB2-4AFB-AE3B-9389D3054875@avride.ai>
- <8f128d86-a39c-4699-800a-67084671e853@intel.com>
- <CAGtf3iaO+Q=He7xyCCfzfPQDH_dHYYG1rHbpaUe-oBo90JBtjA@mail.gmail.com>
- <CACKFLinG2s5HVisa7YoWAZByty0AyCqO-gixAE8FSwVHKK8cjQ@mail.gmail.com>
- <CALs4sv1H=rS96Jq_4i=S0kL57uR6v-sEKbZcqm2VgY6UXbVeMA@mail.gmail.com>
- <9200948E-51F9-45A4-A04C-8AD0C749AD7B@avride.ai>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <9200948E-51F9-45A4-A04C-8AD0C749AD7B@avride.ai>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 25/03/2025 10:13, Kamil Zaripov wrote:
+On Mon, 24 Mar 2025 16:44:20 +0200
+Roger Quadros <rogerq@kernel.org> wrote:
+
+> On 23/03/2025 17:18, Benedikt Spranger wrote:
+> > On Sun, 23 Mar 2025 09:19:35 +0200
+> > Roger Quadros <rogerq@kernel.org> wrote:
+> >   
+> >> Did you actually get a kernel oops?  
+> > Yes. And I would like to attach the kernel output, but I do not have
+> > access to the board ATM.
+> >   
+> >> If yes, which part of code produces the oops.  
+> > I get an NULL pointer dereference in is_multicast_ether_addr().
+> > It happens here:
+> > 
+> >     u32 a = *(const u32 *)addr;  
 > 
->> On 24 Mar 2025, at 17:04, Pavan Chebbi <pavan.chebbi@broadcom.com> wrote:
->>
->>> On Fri, 21 Mar, 2025, 11:03 pm Michael Chan, <michael.chan@broadcom.com> wrote:
->>>
->>>> On Fri, Mar 21, 2025 at 8:17 AM Kamil Zaripov <zaripov-kamil@avride.ai> wrote:
->>>>
->>>>> That depends. If it has only one underlying clock, but each PF has its
->>>>> own register space, it may functionally be independent clocks in
->>>>> practice. I don't know the bnxt_en driver or hardware well enough to
->>>>> know if that is the case.
->>>>
->>>>> If it really is one clock with one set of registers to control it, then
->>>>> it should only expose one PHC. This may be tricky depending on the
->>>>> driver design. (See ice as an example where we've had a lot of
->>>>> challenges in this space because of the multiple PFs)
->>>>
->>>> I can only guess, from looking at the __bnxt_hwrm_ptp_qcfg function,
->>>> that it depends on hardware and/or firmware (see
->>>> https://elixir.bootlin.com/linux/v6.13.7/source/drivers/net/ethernet/broadcom/bnxt/bnxt.c#L9427-L9431).
->>>> I hope that broadcom folks can clarify this.
->>>>
->>>
->>> It is one physical PHC per chip.  Each function has access to the
->>> shared PHC.   It won't work properly when multiple functions try to
->>> adjust the PHC independently.  That's why we use the non-RTC mode when
->>> the PHC is shared in multi-function mode.  Pavan can add more details
->>> on this.
->> Yes, that's correct. It's one PHC shared across functions. The way we handle multiple
->> functions accessing the shared PHC is by firmware allowing only one function to adjust
->> the frequency. All the other functions' adjustments are ignored. ...
+> But this should not happen. Because ndev->addr (pointer) should not
+> be zero. Driver allocated ndev with alloc_etherdev_mq() which
+> allocates memory for ndev->addr using dev_addr_init(dev)).
+Emphasis on *should* :)
+OK, got your point. Dig deeper into that.
+
+> >> Even if it fails we do set a random MAC address and do not return
+> >> error. So above statement is false.  
+> > I doubt that. of_get_ethdev_address() do not set a random MAC
+> > address in case of a failure. It simply returns -ENODEV. Since
+> > is_valid_ether_addr() fails with a NULL pointer dereference in
+> > is_multicast_ether_addr() on the other hand, no random MAC address
+> > is set.   
 > 
-> I guess I don’t understand how does it work. Am I right that if userspace program changes frequency of PHC devices 0,1,2,3 (one for each port present in NIC) driver will send PHC frequency change 4 times but firmware will drop 3 of these frequency change commands and will pick up only one? How can I understand which PHC will actually represent adjustable clock and which one is phony?
+> What I meant was we set random address using eth_hw_addr_random().
+But that happens after the failing check. So evaluating the return of
+of_get_ethdev_address() seem to be a good thing in the first place.
 
-It can be any of PHC devices, mostly the first to try to adjust will be 
-used.
+I my understanding (for now) it is nessesary to check both: the return
+of of_get_ethdev_address() *and* !is_valid_ether_addr(). If any of these
+checks fail eth_hw_addr_random() should be called and therefore a
+random MAC address be set.
 
-> 
-> Another thing that I cannot understand is so-called RTC and non-RTC mode. Is there any documentation that describes it? Or specific parts of the driver that change its behavior on for RTC and non-RTC mode?
-
-Generally, non-RTC means free-running HW PHC clock with timecounter
-adjustment on top of it. With RTC mode every adjfine() call tries to
-adjust HW configuration to change the slope of PHC.
-
-> 
->> … However, needless to say,
->> they all still receive the latest timestamps. As I recall, this event design was an earlier
->> version of our multi host support implementation where the rollover was being tracked in
->> the firmware.
-> 
->  From which version the bnxt_en driver starts to track rollover on the driver side rather than firmware side?
-
-It was done a couple of years ago, in 5.x era.
-
-> 
->> The latest driver handles the rollover on its own and we don't need the firmware to tell us.
->> I checked with the firmware team and I gather that the version you are using is very old.
->> Firmware version 230.x onwards, you should not receive this event for rollovers.
->> Is it possible for you to update the firmware? Do you have access to a more recent (230+) firmware?
-> 
-> Yes, I can update firmware if you can tell where can I find the latest firmware and the update instructions?
-> 
-
-Broadcom's web site has pretty easy support portal with NIC firmware
-publicly available. Current version is 232 and it has all the
-improvements Pavan mentioned.
-
+Regards
+    Bene
