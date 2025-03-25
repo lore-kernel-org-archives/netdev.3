@@ -1,318 +1,263 @@
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A906F1C84B2;
-	Tue, 25 Mar 2025 19:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2AC198851;
+	Tue, 25 Mar 2025 19:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742931097; cv=none; b=plmF1KfldYjB3DfisRPMaJV8hX/w+dljIVzE8I0Q3KFQ4LNm6ZPoDizaZze0g/4J0wDmxs3cDw0zcI6ZX3dtHaCIxePcyLH0H18+m1Y2ld41ispx+9M0HNZq7c6o6zSf+yQz8bk51HiB8jeafTFFHeZ02Q2lzTjE1vM9WaGyRy4=
+	t=1742931747; cv=none; b=O5yL1wAIcmrlG1Qc4YOZHxwfPpNKXOyM3X4iz7BgQM31DCgfNxV2v4aZqzxLxQK8GB1CvssQMYuh93a33sJTZsTQGugB5o2oOUcEdGZ9Vktsjk5Y+ZfnVFra9fox7Xm2xPGH/SuSUh8Qu50isM/gJRcofOdwTAyaGr3Fxc0hSiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742931097; c=relaxed/simple;
-	bh=MEudjr4gVzSBHE7H0/Txhb+YvNrNq/8FQz6k3HL6/lc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HYLJS78m2fkRb2B+nDTk1NnQ4KxsEuChVoPDBTxeb3uXa2B9zwrC/TPU+WOXkcgSMttmvZgsADKuddr17Ze3p98mDQNMFmk9A6dhNNn/ngwUiBURI708fytStRQMGNRA7q1qRDwLvJp7AAwTXN9ZF+3xNTld5C6vXphHfqFOvRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=E3hYGRBy; arc=none smtp.client-ip=192.19.144.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1742931747; c=relaxed/simple;
+	bh=/4Tr2YHezReD5GfIXzuly0inwea4xXnaQgrkkdIt3hU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q/WTSTSyeWTHvfQNeSSHCXFt+yytwaSJxGBHFT7MJg40nPKfpqYSoU4k932+IqmbS6Tyl0551sAWPgDV7YwPp2lfJ/Vfm+jX8b0mVA13+rd8b0I4gFEQ0lDEGqbooFmJdc6JA9RkacQ0I6MZtOtMl6KpW6JFwchrt74bYXsPG9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GjO7E8p2; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="E3hYGRBy"
-Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 5C513C0000FF;
-	Tue, 25 Mar 2025 12:22:25 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 5C513C0000FF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1742930545;
-	bh=MEudjr4gVzSBHE7H0/Txhb+YvNrNq/8FQz6k3HL6/lc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E3hYGRByBACEC/La4lYEsqdpdDrDFtiVdFFfdN3gE6euzTjN1oYTBbgu8wA2fOSrL
-	 y+AZwMBH2ivBE71Vt/1LbGInWl51sqf3jCEtzWFJMftU9dJz63LS08gzrPXnvXd8pf
-	 PgBE5hwhfcN5qeNPZdrHuUehnLBumglXyxxj0GYw=
-Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id C943718000530;
-	Tue, 25 Mar 2025 12:22:24 -0700 (PDT)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: stable@vger.kernel.org
-Cc: Felix Huettner <felix.huettner@mail.schwarz>,
-	Luca Czesla <luca.czesla@mail.schwarz>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Carlos Soto <carlos.soto@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Pravin B Shelar <pshelar@ovn.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <kafai@fb.com>,
-	Song Liu <songliubraving@fb.com>,
-	Yonghong Song <yhs@fb.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
-	Yan Zhai <yan@cloudflare.com>,
-	Joe Stringer <joestringer@nicira.com>,
-	Andy Zhou <azhou@nicira.com>,
-	Justin Pettit <jpettit@nicira.com>,
-	Thomas Graf <tgraf@suug.ch>,
-	netdev@vger.kernel.org (open list:NETWORKING [GENERAL]),
-	linux-kernel@vger.kernel.org (open list),
-	dev@openvswitch.org (open list:OPENVSWITCH),
-	bpf@vger.kernel.org (open list:BPF (Safe dynamic programs and tools))
-Subject: [PATCH stable 5.4 v2 1/2] net: openvswitch: fix race on port output
-Date: Tue, 25 Mar 2025 12:22:19 -0700
-Message-Id: <20250325192220.1849902-2-florian.fainelli@broadcom.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250325192220.1849902-1-florian.fainelli@broadcom.com>
-References: <20250325192220.1849902-1-florian.fainelli@broadcom.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GjO7E8p2"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4766631a6a4so60350311cf.2;
+        Tue, 25 Mar 2025 12:42:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742931745; x=1743536545; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=4kuWfubrYLQqCtXqxj3ycgJGcbDPfPrIR6m9CHzJJoM=;
+        b=GjO7E8p2ndznE5YMJ2NXJ+ZxXcT1gSSLJxriR6tI9KO4EDe6xugBdPC/brn7cYkEPS
+         wUh1eRTQKHn72dcOfCOaMiJQnwJdRE8bbbVVSI1qFMoWqFGQpNixF5Su+7mKjBUZ+wSO
+         3IJK9J0fZAPwFBnlY2RWkZnWO4BmZP80rLeymm2DwSjsyTcCr9hludAGdbXq6wr4TKru
+         eef9yXzFeY5B63Wpht6LeFg+k/2GBVRNIozLhuiVFZTAFfNm2ghcgL3JQDUFMS+c/tuM
+         0LGVX5UmefBzQeSyqgTquCx22ZekF/LHVL300b3vc9nOPq2CWqUmAMP1YTD2Hc4MiEz+
+         NZGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742931745; x=1743536545;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4kuWfubrYLQqCtXqxj3ycgJGcbDPfPrIR6m9CHzJJoM=;
+        b=r5PxOfooaFcKjGgyIOML6/WaY0YnIaB7LfUGhgdbWwzpFMD9pliIDV/7k55L81p27w
+         NWi1Kx3YSCRI4mPyoBVWTISfSvoZX5wEEsSqY+iM82PE/QAHqTlGU622oSeIB4EJhDnj
+         4p5pWki/JmlAzkwNC9InAV59zeUh646q7yB8DU+dvjaXDyb7NkEVbYaApqhO4rl+Mhw1
+         URjuBsTWt+ssJzJcQa16FOcPrlDq+cwSu15zCrgQArUzXtd99GnzmUX7cQBP0ZFLPak1
+         gtlgVevLF/7Ue4XvI6acsrsCjxmQhcKQeer1VDP7yBpdurGLr/H6EQkYzSCQCXsSzR8c
+         4n1A==
+X-Forwarded-Encrypted: i=1; AJvYcCUmdE7xIeo5FvQPrdqhqbZH4HJF9wRspN9Zd1MkpqVy/c7biVMbM1lbKfJeSQo/UbBZl9q7ZdkC2woPWo0=@vger.kernel.org, AJvYcCVUtlxYdxkPTshada7KOrTjz0FExRgtbR9Ayc1RArzNCqDoeUAuS71IO7wc88W8ruAz6qtjEC2r@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcP1zLEEOWSmCzFtx4xq89rQCKZWZSoYkG20odwYSexZIhrIst
+	ortaE5z1k7BPZMcYSnOxVlDVQ1OfSe8gt5y+w3jidmCH5L4AIPYJ
+X-Gm-Gg: ASbGnct0nryTE/IDFCbj4nAEndO7HZmdQggskDV9Heq2qzfwRc9t6+rXVXAoFhYseF5
+	hO1mN5uJ5ND/WD4+v7Cv4rckQQNil8xoeaYZtrdPF9gGM8I6IYM5uVb/D9yg3phHoViuUWlFuKF
+	r9wMIUM2u36Vu7Z/K42gsdP0kpkyt972mMoMNbVQh3jYCsXeJAffQM4tLlJaPklf4YR4suOU+Gr
+	f1up5x2Sns1kxnbOMpbfp1K9LSrIQl1z/RoWaYsY2uejog46mzEhl/5CEqERZLlsxCu2T9iKFxZ
+	RFjhlFJGalc6rsvZdXKffaAL4ffdoPd2VyIC9x4olnSOXU8kcSinq2ynshzjHP5sxOefzX04b2m
+	EstgqsERrVsxJjtnTXtka8VfCi6isl1hKxbw=
+X-Google-Smtp-Source: AGHT+IFWeGo6VJgDw5xCYNe/SKyK2rIPG277FLuDdhfuIuOtMtnu+14mPmK1jSw23WpemqZy8m5wug==
+X-Received: by 2002:a05:622a:410e:b0:476:79d2:af58 with SMTP id d75a77b69052e-4771dd88c0emr317945971cf.23.1742931744785;
+        Tue, 25 Mar 2025 12:42:24 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4771d17611esm63704461cf.21.2025.03.25.12.42.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Mar 2025 12:42:24 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C8D951200043;
+	Tue, 25 Mar 2025 15:42:23 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Tue, 25 Mar 2025 15:42:23 -0400
+X-ME-Sender: <xms:HwfjZysUPbJ6C8n1_5Id-I_krUgT0OtN2kcPI_Ux2Gaz74uuOw3_LA>
+    <xme:HwfjZ3dUuu3emfHLzrG8TPR8xkiJeBFArkssjIsJq7paNjDqNGqEw3U3gjSNK446X
+    2BMTk-wmRGUJpwJjA>
+X-ME-Received: <xmr:HwfjZ9w4Tae2okXP5oOMjb8epI-tufP8ev8cH1_q9DMd79ZONniOvV2mKh4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduieefhedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddt
+    tddunecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrg
+    hilhdrtghomheqnecuggftrfgrthhtvghrnheptdegheelveffudejffegvdelgffhhfel
+    keeiieefgeevteejvdegveeuffeihefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+    hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
+    rghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpe
+    epghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedugedp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhlohhnghesrhgvughhrghtrdgtoh
+    hmpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthho
+    pehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlvghithgroh
+    esuggvsghirghnrdhorhhgpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhm
+    pdhrtghpthhtohepfihilhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrvghhse
+    hmvghtrgdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlh
+    drohhrgh
+X-ME-Proxy: <xmx:HwfjZ9NJqhQ4kTASTOPxLZ8AFpQgi8Fq-5e3hKABW0ZwAnownBudtw>
+    <xmx:HwfjZy_FnA_7i_WTqHoHZdOZ6Gl5rDnIVS128YYIKMGCgRxIbJoZPA>
+    <xmx:HwfjZ1XLIokqKyLvbTPdkbfxzUbfFGVZD423K86mdF8OaeBRip61QQ>
+    <xmx:HwfjZ7eCeEFODzVH6R5FkCNuW60XdP4D-b1z6-BBKfaeGLVEhNCQJQ>
+    <xmx:HwfjZ8feJGE_xSBOb5B8_lueZVKLYlIouTszXqJADDJTvGdxy-Jqb96h>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 25 Mar 2025 15:42:23 -0400 (EDT)
+Date: Tue, 25 Mar 2025 12:42:20 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Waiman Long <llong@redhat.com>
+Cc: Eric Dumazet <edumazet@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Breno Leitao <leitao@debian.org>, Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>, aeh@meta.com,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	jhs@mojatatu.com, kernel-team@meta.com,
+	Erik Lundgren <elundgren@meta.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>
+Subject: Re: [PATCH] lockdep: Speed up lockdep_unregister_key() with
+ expedited RCU synchronization
+Message-ID: <Z-MHHFTS3kcfWIlL@boqun-archlinux>
+References: <20250324121202.GG14944@noisy.programming.kicks-ass.net>
+ <CANn89iKykrnUVUsqML7dqMuHx6OuGnKWg-xRUV4ch4vGJtUTeg@mail.gmail.com>
+ <67e1b0a6.050a0220.91d85.6caf@mx.google.com>
+ <67e1b2c4.050a0220.353291.663c@mx.google.com>
+ <67e1fd15.050a0220.bc49a.766e@mx.google.com>
+ <c0a9a0d5-400b-4238-9242-bf21f875d419@redhat.com>
+ <Z-Il69LWz6sIand0@Mac.home>
+ <934d794b-7ebc-422c-b4fe-3e658a2e5e7a@redhat.com>
+ <Z-L5ttC9qllTAEbO@boqun-archlinux>
+ <f1ae824f-f506-49f7-8864-1adc0f7cbee6@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <f1ae824f-f506-49f7-8864-1adc0f7cbee6@redhat.com>
 
-From: Felix Huettner <felix.huettner@mail.schwarz>
+On Tue, Mar 25, 2025 at 03:23:30PM -0400, Waiman Long wrote:
+[...]
+> > > > That commit seemed fixing a race between disabling lockdep and
+> > > > unregistering key, and most importantly, call zap_class() for the
+> > > > unregistered key even if lockdep is disabled (debug_locks = 0). It might
+> > > > be related, but I'm not sure that's the reason of putting
+> > > > synchronize_rcu() there. Say you want to synchronize between
+> > > > /proc/lockdep and lockdep_unregister_key(), and you have
+> > > > synchronize_rcu() in lockdep_unregister_key(), what's the RCU read-side
+> > > > critical section at /proc/lockdep?
+> > > I agree that the commit that I mentioned is not relevant to the current
+> > > case. You are right that is_dynamic_key() is the only function that is
+> > > problematic, the other two are protected by the lockdep_lock. So they are
+> > > safe. Anyway, I believe that the actual race happens in the iteration of the
+> > > hashed list in is_dynamic_key(). The key that you save in the
+> > > lockdep_key_hazptr in your proposed patch should never be the key (dead_key)
+> > The key stored in lockdep_key_hazptr is the one that the rest of the
+> > function will use after is_dynamic_key() return true. That is,
+> > 
+> > 	CPU 0				CPU 1
+> > 	=====				=====
+> > 	WRITE_ONCE(*lockdep_key_hazptr, key);
+> > 	smp_mb();
+> > 
+> > 	is_dynamic_key():
+> > 	  hlist_for_each_entry_rcu(k, hash_head, hash_entry) {
+> > 	    if (k == key) {
+> > 	      found = true;
+> > 	      break;
+> > 	    }
+> > 	  }
+> > 	  				lockdep_unregister_key():
+> > 					  hlist_for_each_entry_rcu(k, hash_head, hash_entry) {
+> > 					    if (k == key) {
+> > 					      hlist_del_rcu(&k->hash_entry);
+> > 				              found = true;
+> > 				              break;
+> > 					    }
+> > 					  }
+> > 
+> > 				        smp_mb();
+> > 
+> > 					synchronize_lockdep_key_hazptr():
+> > 					  for_each_possible_cpu(cpu) {
+> > 					    <wait for the hazptr slot on
+> > 					    that CPU to be not equal to
+> > 					    the removed key>
+> > 					  }
+> > 
+> > 
+> > , so that if is_dynamic_key() finds a key was in the hash, even though
+> > later on the key would be removed by lockdep_unregister_key(), the
+> > hazard pointers guarantee lockdep_unregister_key() would wait for the
+> > hazard pointer to release.
+> > 
+> > > that is passed to lockdep_unregister_key(). In is_dynamic_key():
+> > > 
+> > >      hlist_for_each_entry_rcu(k, hash_head, hash_entry) {
+> > >                  if (k == key) {
+> > >                          found = true;
+> > >                          break;
+> > >                  }
+> > >          }
+> > > 
+> > > key != k (dead_key), but before accessing its content to get to hash_entry,
+> > It is the dead_key.
+> > 
+> > > an interrupt/NMI can happen. In the mean time, the structure holding the key
+> > > is freed and its content can be overwritten with some garbage. When
+> > > interrupt/NMI returns, hash_entry can point to anything leading to crash or
+> > > an infinite loop.  Perhaps we can use some kind of synchronization mechanism
+> > No, hash_entry cannot be freed or overwritten because the user has
+> > protect the key with hazard pointers, only when the user reset the
+> > hazard pointer to NULL, lockdep_unregister_key() can then return and the
+> > key can be freed.
+> > 
+> > > between is_dynamic_key() and lockdep_unregister_key() to prevent this kind
+> > > of racing. For example, we can have an atomic counter associated with each
+> > The hazard pointer I proposed provides the exact synchronization ;-)
+> 
+> What I am saying is that register_lock_class() is trying to find a newkey
+> while lockdep_unregister_key() is trying to take out an oldkey (newkey !=
+> oldkey). If they happens in the same hash list, register_lock_class() will
+> put newkey into the hazard pointer, but synchronize_lockdep_key_hazptr()
+> call from lockdep_unregister_key() is checking for oldkey which is not the
+> one saved in the hazard pointer. So lockdep_unregister_key() will return and
+> the key will be freed and reused while is_dynamic_key() may just have a
+> reference to the oldkey and trying to access its content which is invalid. I
+> think this is a possible scenario.
+> 
 
-[ Upstream commit 066b86787fa3d97b7aefb5ac0a99a22dad2d15f8 ]
+Oh, I see. And yes, the hazard pointers I proposed cannot prevent this
+race unfortunately. (Well, technically we can still use an extra slot to
+hold the key in the hash list iteration, but that would generates a lot
+of stores, so it won't be ideal). But...
 
-assume the following setup on a single machine:
-1. An openvswitch instance with one bridge and default flows
-2. two network namespaces "server" and "client"
-3. two ovs interfaces "server" and "client" on the bridge
-4. for each ovs interface a veth pair with a matching name and 32 rx and
-   tx queues
-5. move the ends of the veth pairs to the respective network namespaces
-6. assign ip addresses to each of the veth ends in the namespaces (needs
-   to be the same subnet)
-7. start some http server on the server network namespace
-8. test if a client in the client namespace can reach the http server
+[...]
+> > > head of the hashed table. is_dynamic_key() can increment the counter if it
+> > > is not zero to proceed and lockdep_unregister_key() have to make sure it can
+> > > safely decrement the counter to 0 before going ahead. Just a thought!
+> > > 
 
-when following the actions below the host has a chance of getting a cpu
-stuck in a infinite loop:
-1. send a large amount of parallel requests to the http server (around
-   3000 curls should work)
-2. in parallel delete the network namespace (do not delete interfaces or
-   stop the server, just kill the namespace)
+Your idea inspires another solution with hazard pointers, we can
+put the pointer of the hash_head into the hazard pointer slot ;-)
 
-there is a low chance that this will cause the below kernel cpu stuck
-message. If this does not happen just retry.
-Below there is also the output of bpftrace for the functions mentioned
-in the output.
+in register_lock_class():
 
-The series of events happening here is:
-1. the network namespace is deleted calling
-   `unregister_netdevice_many_notify` somewhere in the process
-2. this sets first `NETREG_UNREGISTERING` on both ends of the veth and
-   then runs `synchronize_net`
-3. it then calls `call_netdevice_notifiers` with `NETDEV_UNREGISTER`
-4. this is then handled by `dp_device_event` which calls
-   `ovs_netdev_detach_dev` (if a vport is found, which is the case for
-   the veth interface attached to ovs)
-5. this removes the rx_handlers of the device but does not prevent
-   packages to be sent to the device
-6. `dp_device_event` then queues the vport deletion to work in
-   background as a ovs_lock is needed that we do not hold in the
-   unregistration path
-7. `unregister_netdevice_many_notify` continues to call
-   `netdev_unregister_kobject` which sets `real_num_tx_queues` to 0
-8. port deletion continues (but details are not relevant for this issue)
-9. at some future point the background task deletes the vport
+		/* hazptr: protect the key */
+		WRITE_ONCE(*key_hazptr, keyhashentry(lock->key));
 
-If after 7. but before 9. a packet is send to the ovs vport (which is
-not deleted at this point in time) which forwards it to the
-`dev_queue_xmit` flow even though the device is unregistering.
-In `skb_tx_hash` (which is called in the `dev_queue_xmit`) path there is
-a while loop (if the packet has a rx_queue recorded) that is infinite if
-`dev->real_num_tx_queues` is zero.
+		/* Synchronizes with the smp_mb() in synchronize_lockdep_key_hazptr() */
+		smp_mb();
 
-To prevent this from happening we update `do_output` to handle devices
-without carrier the same as if the device is not found (which would
-be the code path after 9. is done).
+		if (!static_obj(lock->key) && !is_dynamic_key(lock->key)) {
+			return NULL;
+		}
 
-Additionally we now produce a warning in `skb_tx_hash` if we will hit
-the infinite loop.
+in lockdep_unregister_key():
 
-bpftrace (first word is function name):
+	/* Wait until register_lock_class() has finished accessing k->hash_entry. */
+	synchronize_lockdep_key_hazptr(keyhashentry(key));
 
-__dev_queue_xmit server: real_num_tx_queues: 1, cpu: 2, pid: 28024, tid: 28024, skb_addr: 0xffff9edb6f207000, reg_state: 1
-netdev_core_pick_tx server: addr: 0xffff9f0a46d4a000 real_num_tx_queues: 1, cpu: 2, pid: 28024, tid: 28024, skb_addr: 0xffff9edb6f207000, reg_state: 1
-dp_device_event server: real_num_tx_queues: 1 cpu 9, pid: 21024, tid: 21024, event 2, reg_state: 1
-synchronize_rcu_expedited: cpu 9, pid: 21024, tid: 21024
-synchronize_rcu_expedited: cpu 9, pid: 21024, tid: 21024
-synchronize_rcu_expedited: cpu 9, pid: 21024, tid: 21024
-synchronize_rcu_expedited: cpu 9, pid: 21024, tid: 21024
-dp_device_event server: real_num_tx_queues: 1 cpu 9, pid: 21024, tid: 21024, event 6, reg_state: 2
-ovs_netdev_detach_dev server: real_num_tx_queues: 1 cpu 9, pid: 21024, tid: 21024, reg_state: 2
-netdev_rx_handler_unregister server: real_num_tx_queues: 1, cpu: 9, pid: 21024, tid: 21024, reg_state: 2
-synchronize_rcu_expedited: cpu 9, pid: 21024, tid: 21024
-netdev_rx_handler_unregister ret server: real_num_tx_queues: 1, cpu: 9, pid: 21024, tid: 21024, reg_state: 2
-dp_device_event server: real_num_tx_queues: 1 cpu 9, pid: 21024, tid: 21024, event 27, reg_state: 2
-dp_device_event server: real_num_tx_queues: 1 cpu 9, pid: 21024, tid: 21024, event 22, reg_state: 2
-dp_device_event server: real_num_tx_queues: 1 cpu 9, pid: 21024, tid: 21024, event 18, reg_state: 2
-netdev_unregister_kobject: real_num_tx_queues: 1, cpu: 9, pid: 21024, tid: 21024
-synchronize_rcu_expedited: cpu 9, pid: 21024, tid: 21024
-ovs_vport_send server: real_num_tx_queues: 0, cpu: 2, pid: 28024, tid: 28024, skb_addr: 0xffff9edb6f207000, reg_state: 2
-__dev_queue_xmit server: real_num_tx_queues: 0, cpu: 2, pid: 28024, tid: 28024, skb_addr: 0xffff9edb6f207000, reg_state: 2
-netdev_core_pick_tx server: addr: 0xffff9f0a46d4a000 real_num_tx_queues: 0, cpu: 2, pid: 28024, tid: 28024, skb_addr: 0xffff9edb6f207000, reg_state: 2
-broken device server: real_num_tx_queues: 0, cpu: 2, pid: 28024, tid: 28024
-ovs_dp_detach_port server: real_num_tx_queues: 0 cpu 9, pid: 9124, tid: 9124, reg_state: 2
-synchronize_rcu_expedited: cpu 9, pid: 33604, tid: 33604
 
-stuck message:
+which is more space efficient than per hash list atomic or lock unless
+you have 1024 or more CPUs.
 
-watchdog: BUG: soft lockup - CPU#5 stuck for 26s! [curl:1929279]
-Modules linked in: veth pktgen bridge stp llc ip_set_hash_net nft_counter xt_set nft_compat nf_tables ip_set_hash_ip ip_set nfnetlink_cttimeout nfnetlink openvswitch nsh nf_conncount nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 tls binfmt_misc nls_iso8859_1 input_leds joydev serio_raw dm_multipath scsi_dh_rdac scsi_dh_emc scsi_dh_alua sch_fq_codel drm efi_pstore virtio_rng ip_tables x_tables autofs4 btrfs blake2b_generic zstd_compress raid10 raid456 async_raid6_recov async_memcpy async_pq async_xor async_tx xor raid6_pq libcrc32c raid1 raid0 multipath linear hid_generic usbhid hid crct10dif_pclmul crc32_pclmul ghash_clmulni_intel aesni_intel virtio_net ahci net_failover crypto_simd cryptd psmouse libahci virtio_blk failover
-CPU: 5 PID: 1929279 Comm: curl Not tainted 5.15.0-67-generic #74-Ubuntu
-Hardware name: OpenStack Foundation OpenStack Nova, BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-RIP: 0010:netdev_pick_tx+0xf1/0x320
-Code: 00 00 8d 48 ff 0f b7 c1 66 39 ca 0f 86 e9 01 00 00 45 0f b7 ff 41 39 c7 0f 87 5b 01 00 00 44 29 f8 41 39 c7 0f 87 4f 01 00 00 <eb> f2 0f 1f 44 00 00 49 8b 94 24 28 04 00 00 48 85 d2 0f 84 53 01
-RSP: 0018:ffffb78b40298820 EFLAGS: 00000246
-RAX: 0000000000000000 RBX: ffff9c8773adc2e0 RCX: 000000000000083f
-RDX: 0000000000000000 RSI: ffff9c8773adc2e0 RDI: ffff9c870a25e000
-RBP: ffffb78b40298858 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffff9c870a25e000
-R13: ffff9c870a25e000 R14: ffff9c87fe043480 R15: 0000000000000000
-FS:  00007f7b80008f00(0000) GS:ffff9c8e5f740000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7b80f6a0b0 CR3: 0000000329d66000 CR4: 0000000000350ee0
-Call Trace:
- <IRQ>
- netdev_core_pick_tx+0xa4/0xb0
- __dev_queue_xmit+0xf8/0x510
- ? __bpf_prog_exit+0x1e/0x30
- dev_queue_xmit+0x10/0x20
- ovs_vport_send+0xad/0x170 [openvswitch]
- do_output+0x59/0x180 [openvswitch]
- do_execute_actions+0xa80/0xaa0 [openvswitch]
- ? kfree+0x1/0x250
- ? kfree+0x1/0x250
- ? kprobe_perf_func+0x4f/0x2b0
- ? flow_lookup.constprop.0+0x5c/0x110 [openvswitch]
- ovs_execute_actions+0x4c/0x120 [openvswitch]
- ovs_dp_process_packet+0xa1/0x200 [openvswitch]
- ? ovs_ct_update_key.isra.0+0xa8/0x120 [openvswitch]
- ? ovs_ct_fill_key+0x1d/0x30 [openvswitch]
- ? ovs_flow_key_extract+0x2db/0x350 [openvswitch]
- ovs_vport_receive+0x77/0xd0 [openvswitch]
- ? __htab_map_lookup_elem+0x4e/0x60
- ? bpf_prog_680e8aff8547aec1_kfree+0x3b/0x714
- ? trace_call_bpf+0xc8/0x150
- ? kfree+0x1/0x250
- ? kfree+0x1/0x250
- ? kprobe_perf_func+0x4f/0x2b0
- ? kprobe_perf_func+0x4f/0x2b0
- ? __mod_memcg_lruvec_state+0x63/0xe0
- netdev_port_receive+0xc4/0x180 [openvswitch]
- ? netdev_port_receive+0x180/0x180 [openvswitch]
- netdev_frame_hook+0x1f/0x40 [openvswitch]
- __netif_receive_skb_core.constprop.0+0x23d/0xf00
- __netif_receive_skb_one_core+0x3f/0xa0
- __netif_receive_skb+0x15/0x60
- process_backlog+0x9e/0x170
- __napi_poll+0x33/0x180
- net_rx_action+0x126/0x280
- ? ttwu_do_activate+0x72/0xf0
- __do_softirq+0xd9/0x2e7
- ? rcu_report_exp_cpu_mult+0x1b0/0x1b0
- do_softirq+0x7d/0xb0
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0x54/0x60
- ip_finish_output2+0x191/0x460
- __ip_finish_output+0xb7/0x180
- ip_finish_output+0x2e/0xc0
- ip_output+0x78/0x100
- ? __ip_finish_output+0x180/0x180
- ip_local_out+0x5e/0x70
- __ip_queue_xmit+0x184/0x440
- ? tcp_syn_options+0x1f9/0x300
- ip_queue_xmit+0x15/0x20
- __tcp_transmit_skb+0x910/0x9c0
- ? __mod_memcg_state+0x44/0xa0
- tcp_connect+0x437/0x4e0
- ? ktime_get_with_offset+0x60/0xf0
- tcp_v4_connect+0x436/0x530
- __inet_stream_connect+0xd4/0x3a0
- ? kprobe_perf_func+0x4f/0x2b0
- ? aa_sk_perm+0x43/0x1c0
- inet_stream_connect+0x3b/0x60
- __sys_connect_file+0x63/0x70
- __sys_connect+0xa6/0xd0
- ? setfl+0x108/0x170
- ? do_fcntl+0xe8/0x5a0
- __x64_sys_connect+0x18/0x20
- do_syscall_64+0x5c/0xc0
- ? __x64_sys_fcntl+0xa9/0xd0
- ? exit_to_user_mode_prepare+0x37/0xb0
- ? syscall_exit_to_user_mode+0x27/0x50
- ? do_syscall_64+0x69/0xc0
- ? __sys_setsockopt+0xea/0x1e0
- ? exit_to_user_mode_prepare+0x37/0xb0
- ? syscall_exit_to_user_mode+0x27/0x50
- ? __x64_sys_setsockopt+0x1f/0x30
- ? do_syscall_64+0x69/0xc0
- ? irqentry_exit+0x1d/0x30
- ? exc_page_fault+0x89/0x170
- entry_SYSCALL_64_after_hwframe+0x61/0xcb
-RIP: 0033:0x7f7b8101c6a7
-Code: 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 2a 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 18 89 54 24 0c 48 89 34 24 89
-RSP: 002b:00007ffffd6b2198 EFLAGS: 00000246 ORIG_RAX: 000000000000002a
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f7b8101c6a7
-RDX: 0000000000000010 RSI: 00007ffffd6b2360 RDI: 0000000000000005
-RBP: 0000561f1370d560 R08: 00002795ad21d1ac R09: 0030312e302e302e
-R10: 00007ffffd73f080 R11: 0000000000000246 R12: 0000561f1370c410
-R13: 0000000000000000 R14: 0000000000000005 R15: 0000000000000000
- </TASK>
+Regards,
+Boqun
 
-Fixes: 7f8a436eaa2c ("openvswitch: Add conntrack action")
-Co-developed-by: Luca Czesla <luca.czesla@mail.schwarz>
-Signed-off-by: Luca Czesla <luca.czesla@mail.schwarz>
-Signed-off-by: Felix Huettner <felix.huettner@mail.schwarz>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/ZC0pBXBAgh7c76CA@kernel-bug-kernel-bug
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Carlos Soto <carlos.soto@broadcom.com>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
----
- net/core/dev.c            | 1 +
- net/openvswitch/actions.c | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index b75c9bebd5c6..d9fe65f14af5 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -2802,6 +2802,7 @@ static u16 skb_tx_hash(const struct net_device *dev,
- 	}
- 
- 	if (skb_rx_queue_recorded(skb)) {
-+		BUILD_BUG_ON_INVALID(qcount == 0);
- 		hash = skb_get_rx_queue(skb);
- 		if (hash >= qoffset)
- 			hash -= qoffset;
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index 7cef078304c3..aec20faadfcc 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -920,7 +920,7 @@ static void do_output(struct datapath *dp, struct sk_buff *skb, int out_port,
- {
- 	struct vport *vport = ovs_vport_rcu(dp, out_port);
- 
--	if (likely(vport)) {
-+	if (likely(vport && netif_carrier_ok(vport->dev))) {
- 		u16 mru = OVS_CB(skb)->mru;
- 		u32 cutlen = OVS_CB(skb)->cutlen;
- 
--- 
-2.34.1
-
+> > > Cheers,
+> > > Longman
+> 
