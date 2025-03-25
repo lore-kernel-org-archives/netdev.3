@@ -1,59 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ksmg01.maxima.ru (ksmg01.mt-integration.ru [81.200.124.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D3914293;
-	Tue, 25 Mar 2025 14:24:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131EF259C8E;
+	Tue, 25 Mar 2025 14:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742912669; cv=none; b=Lk4DjdXPrqZrIJUq9lUW2THqzguqyHgtdY1NBU8nFf7eoV6z+Vy0lKjvES7EmKyrOyFUgVfK5GReLZGH4f1R02opeboulubqBWax6i9SFSj9h2GmD9cOUY9GpkKibPyUqSy3hzqlsDi3tVut1TFZy+D78JoQryCIORHP0l1OHuQ=
+	t=1742912704; cv=none; b=BHjCisg/XcAt1dPlGiSmBjz7Eje6qHGEenj5NckiEMPr7zD5FPv3uVw/uQyGdpYwRM/CoC14k4mWu14ilsxFeqIZufxOqhMfjILBhIsFyjkyaxgrlabOI4oMCXt+7zIcGeICFCTV+UmLEfPcmyD87vQkortBtmYC+LVOgjSjzPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742912669; c=relaxed/simple;
-	bh=DX7yDbf1Ox7qVZrPSSz2HjPTH6USs1+MDOc8YwVoUoY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oXwPGWb2HOoyOU3VQXlw2n4FyBo5UzR5UIqbQ+ZcqBlutVV7bvXd4bhQPWw2usqrHk1TWqAeSoIL70QpJBqqPQzjQmvOQq9f2imrVRtg+U5BbE9J5/u9ivmCpoaoh1Twn61dI8H5N+QGSlXnGn91uTFR8Qjx6bS3BQG9oxwOxxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tTreOajM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742912704; c=relaxed/simple;
+	bh=fOt02q7aI4iR1SBSf8MwhkVxvKQIQh/ojaCpWHTGtHU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tHq5MEQxddTIyZcGn1t1prXj3ZtpxBxg6MT34DtFEzY1u+FyYLZfxEfTY0dQVNlgeMAH+asqlMSrRfWLteqvCQgrBLjgbHGty0wDiVPC4p9FL4AOBiJqQXWXDhBXOlHwn96+aJ5+Gd7Xx8HpqmM/9+BXNNnPFWVIvu3nM865kqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru; spf=pass smtp.mailfrom=mt-integration.ru; dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b=AVXQEc8C; arc=none smtp.client-ip=81.200.124.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt-integration.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tTreOajM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D652C4CEE4;
-	Tue, 25 Mar 2025 14:24:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742912668;
-	bh=DX7yDbf1Ox7qVZrPSSz2HjPTH6USs1+MDOc8YwVoUoY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tTreOajMRptfK41qXn49rLrpOXbNr9XtxMdz/zFtVW8z2BU99JeVCe7SnBjf2hMp5
-	 dGCzC9BvADdshcB/BkdUuLYQuhUMi31YaifctgD9Kk5W4/JsD81iqXqkDwDf39VKzU
-	 G3o0dY3bm0PRs0+JC5ANDH7HVHZMDgUWLCPM8gLuJExAkn/f1+/9hoNbVJU7Jk6Rdu
-	 V+B2XUXbyZDYEeaa6dWxPgMR6FgO4LSvl2uIZcinUd+2zN3wPWz559OR8M+rb8s+yS
-	 9pqtFFPK692X6sWzfKmvG6PVTrmu+qPpA6OfDVEU28TkdqLr8nnlAIjRnWKtowhiFB
-	 0mbcnWFcNG91g==
-Date: Tue, 25 Mar 2025 07:24:19 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Roger Quadros <rogerq@kernel.org>
-Cc: Siddharth Vadapalli <s-vadapalli@ti.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell
- King <linux@armlinux.org.uk>, danishanwar@ti.com, srk@ti.com,
- linux-omap@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 8/9] net: ethernet: ti: am65-cpsw: add network
- flow classification support
-Message-ID: <20250325072419.778810f3@kernel.org>
-In-Reply-To: <20250319-am65-cpsw-rx-class-v1-8-2bfded07490e@kernel.org>
-References: <20250319-am65-cpsw-rx-class-v1-0-2bfded07490e@kernel.org>
-	<20250319-am65-cpsw-rx-class-v1-8-2bfded07490e@kernel.org>
+	dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b="AVXQEc8C"
+Received: from ksmg01.maxima.ru (localhost [127.0.0.1])
+	by ksmg01.maxima.ru (Postfix) with ESMTP id 65CB4C0018;
+	Tue, 25 Mar 2025 17:18:39 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg01.maxima.ru 65CB4C0018
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt-integration.ru;
+	s=sl; t=1742912319; bh=fKTbCdR8RoY0Azgc4ltS0nUJfMNiLiqqosTYdtUpw/4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+	b=AVXQEc8CHwNpWH+GqnRD73k5nQ+LyWqC2z6fSUzzkRHA6imMUz/KbE/Usm3mXSOwl
+	 s8Bd8tQwLtJzhWLclDKTFv9SCMZV7T7IUU8XApuUZCJbZ+eFbzGqKvfGBgB30J+HX+
+	 RlccVe6rfFQKpvk72Nu9oRCxN5yGeajtmOPruWg0K46ggoENqzSorCJUenqicAy+Eu
+	 FslIwH2pnM9Xl3MBFwrS0r3FnnXOVql2LcfxiU0vbQ4uA0uVO9GECwsgyV/5tZ1SW5
+	 FcJi0cuD9cRGyKLJ5Hi5M0ByRbUxWwBb7ucExZaYa59Nm+SCIsM+1prURhmPQIqdVd
+	 3makicSeJdc2Q==
+Received: from ksmg01.maxima.ru (mail.maxima.ru [81.200.124.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
+	by ksmg01.maxima.ru (Postfix) with ESMTPS;
+	Tue, 25 Mar 2025 17:18:39 +0300 (MSK)
+Received: from db126-1-abramov-14-d-mosos.mti-lab.com (172.25.20.118) by
+ mmail-p-exch01.mt.ru (81.200.124.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Tue, 25 Mar 2025 17:18:37 +0300
+From: Ivan Abramov <i.abramov@mt-integration.ru>
+To: "David S. Miller" <davem@davemloft.net>
+CC: Ivan Abramov <i.abramov@mt-integration.ru>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>
+Subject: [PATCH net 1/4] ieee802154: Restore initial state on failed device_rename() in cfg802154_switch_netns()
+Date: Tue, 25 Mar 2025 17:17:20 +0300
+Message-ID: <20250325141723.499850-2-i.abramov@mt-integration.ru>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250325141723.499850-1-i.abramov@mt-integration.ru>
+References: <20250325141723.499850-1-i.abramov@mt-integration.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: mmail-p-exch02.mt.ru (81.200.124.62) To
+ mmail-p-exch01.mt.ru (81.200.124.61)
+X-KSMG-AntiPhishing: NotDetected
+X-KSMG-AntiSpam-Auth: dmarc=none header.from=mt-integration.ru;spf=none smtp.mailfrom=mt-integration.ru;dkim=none
+X-KSMG-AntiSpam-Envelope-From: i.abramov@mt-integration.ru
+X-KSMG-AntiSpam-Info: LuaCore: 51 0.3.51 68896fb0083a027476849bf400a331a2d5d94398, {rep_avail}, {Tracking_from_domain_doesnt_match_to}, mt-integration.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;81.200.124.61:7.1.2;ksmg01.maxima.ru:7.1.1;127.0.0.199:7.1.2, FromAlignment: s, ApMailHostAddress: 81.200.124.61
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 192091 [Mar 25 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.11
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/03/25 08:37:00 #27838357
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 7
 
-On Wed, 19 Mar 2025 15:38:34 +0200 Roger Quadros wrote:
-> +	if (fs->location == RX_CLS_LOC_ANY ||
-> +	    fs->location >= port->rxnfc_max)
-> +		return -EINVAL;
+Currently, the return value of device_rename() is not checked or acted
+upon. There is also a pointless WARN_ON() call in case of an allocation
+failure, since it only leads to useless splats caused by deliberate fault
+injections.
 
-Could you clarify in the commit message that the rules are evaluated 
-in strict order? And what the order is?
+Since it's possible to roll back the changes made before the
+device_rename() call in case of failure, do it.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 66e5c2672cd1 ("ieee802154: add netns support")
+Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+---
+ net/ieee802154/core.c | 44 +++++++++++++++++++++++--------------------
+ 1 file changed, 24 insertions(+), 20 deletions(-)
+
+diff --git a/net/ieee802154/core.c b/net/ieee802154/core.c
+index 88adb04e4072..f9865eb2c7cf 100644
+--- a/net/ieee802154/core.c
++++ b/net/ieee802154/core.c
+@@ -233,31 +233,35 @@ int cfg802154_switch_netns(struct cfg802154_registered_device *rdev,
+ 		wpan_dev->netdev->netns_local = true;
+ 	}
+ 
+-	if (err) {
+-		/* failed -- clean up to old netns */
+-		net = wpan_phy_net(&rdev->wpan_phy);
+-
+-		list_for_each_entry_continue_reverse(wpan_dev,
+-						     &rdev->wpan_dev_list,
+-						     list) {
+-			if (!wpan_dev->netdev)
+-				continue;
+-			wpan_dev->netdev->netns_local = false;
+-			err = dev_change_net_namespace(wpan_dev->netdev, net,
+-						       "wpan%d");
+-			WARN_ON(err);
+-			wpan_dev->netdev->netns_local = true;
+-		}
++	if (err)
++		goto errout;
+ 
+-		return err;
+-	}
++	err = device_rename(&rdev->wpan_phy.dev, dev_name(&rdev->wpan_phy.dev));
+ 
+-	wpan_phy_net_set(&rdev->wpan_phy, net);
++	if (err)
++		goto errout;
+ 
+-	err = device_rename(&rdev->wpan_phy.dev, dev_name(&rdev->wpan_phy.dev));
+-	WARN_ON(err);
++	wpan_phy_net_set(&rdev->wpan_phy, net);
+ 
+ 	return 0;
++
++errout:
++	/* failed -- clean up to old netns */
++	net = wpan_phy_net(&rdev->wpan_phy);
++
++	list_for_each_entry_continue_reverse(wpan_dev,
++					     &rdev->wpan_dev_list,
++					     list) {
++		if (!wpan_dev->netdev)
++			continue;
++		wpan_dev->netdev->netns_local = false;
++		err = dev_change_net_namespace(wpan_dev->netdev, net,
++					       "wpan%d");
++		WARN_ON(err);
++		wpan_dev->netdev->netns_local = true;
++	}
++
++	return err;
+ }
+ 
+ void cfg802154_dev_free(struct cfg802154_registered_device *rdev)
+-- 
+2.39.5
+
