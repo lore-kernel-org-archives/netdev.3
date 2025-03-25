@@ -1,147 +1,155 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2107725A640
-	for <netdev@vger.kernel.org>; Tue, 25 Mar 2025 14:47:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7334325A33A;
+	Tue, 25 Mar 2025 14:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742914065; cv=none; b=sL9M57Ew5UJdQBF6wVbIS0CaRhcL+axNCyaxpM7CQt5hWXZSyVBAJC5OAWXBI/Afc7M3rt86JiEzIVfkwaghQ3DDqL+VgdRKa5BsVBRB2+iWY+q8MOU/T8yTXl6/nMkNoSvF5r1T7n45Dfr49x0GHpNKYHPyv3VTLlSpCuP8Vog=
+	t=1742914167; cv=none; b=qdRpKXsc9sEO1spsGOnO1YnsKNIylXZ/gM2kXOy78pBIbTTDKGWSypjrNjRSfJXjyFpQIrdvD2nNI5zJD7nCYdIMhVtqLYZO5ecsoUmQMnljvN0BQDRVp83B+TTH7VM4h9Q7Eind8y87adrCxyZE+DzuQW5F+MXnSl6l+vnObWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742914065; c=relaxed/simple;
-	bh=6tCgdCxUoslKrQ/ImEbkLjcgZlfYHCZbXA2Xtm38wu0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fzMHvp5D9Ioja9nb/XZBMvxjP6nUeqsN8dlVvsqwK+mW0/mdnNnbRooT9fE3mGPGRbKzNcn6GkUtLqiiruK6s6Bmqr2tF6ISjWoPjw/CYdiiyKo/qPRrvcaiej/kah08JRaxNPeCCoQnhjhGY54UwnvgZRbumEflHd+rJxpU774=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=M0GQ80LD; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1742914167; c=relaxed/simple;
+	bh=BQI8r2tNSf/GBr8upXFWeT4J4zHpNsizwzERSQmTE/o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vl4oiu9Kw/VKEhMLZ/mUJ36IOrQYCKv3z0HBfBn/FsVaFG1jqhGDDxoyUbWHq3GtiIYi0JSzXo8ZW9wZj60bxV92SpEq23rajbvP5xCxjJ+NEOk95B64ZgXsz8uhQbqbgLHUDIuNiq4mqA5hbMoClK3ogG8K+kNO6Lupy64QUx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OClNU45o; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="M0GQ80LD"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1742914062;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8xwJEyFiNpZJx3SaGRoYy6EGc/eXAk39jTVoaj7Yj4Y=;
-	b=M0GQ80LDJ/lC/A+AKKrvato8INN3kffgFKiNBRLjChpIIGsxc7DiHprLhehJ9EqGT09p0r
-	YLB21lNJ+5YNljlYUWPCVbklaEtJ99QzTa/83GKAOWDov5fpwRaecIRPZFu71YMTJ9VtFy
-	PH/TIitAGXu1VoNfAMRTRi1BplbRJOc=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: netdev@vger.kernel.org,
-	edumazet@google.com
-Cc: linux-kernel@vger.kernel.org,
-	kuniyu@amazon.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	dsahern@kernel.org,
-	ncardwell@google.com,
-	mrpre@163.com,
-	Jiayuan Chen <jiayuan.chen@linux.dev>
-Subject: [PATCH net-next v3 2/2] tcp: add LINUX_MIB_PAWS_TW_REJECTED counter
-Date: Tue, 25 Mar 2025 22:47:04 +0800
-Message-ID: <20250325144704.14363-3-jiayuan.chen@linux.dev>
-In-Reply-To: <20250325144704.14363-1-jiayuan.chen@linux.dev>
-References: <20250325144704.14363-1-jiayuan.chen@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OClNU45o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66455C4CEE4;
+	Tue, 25 Mar 2025 14:49:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742914167;
+	bh=BQI8r2tNSf/GBr8upXFWeT4J4zHpNsizwzERSQmTE/o=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OClNU45o8k2Ffx8CtCqNfwzaT1lBkxRbTt4KtSaLSoeHwPMCKM4fg7/yq9NVfllrF
+	 ZjDZ6glQzMNEOF5OPTvLZjlcEztnVCi/+uhheu/ci8qDL7AUvb1rdRCtn+hmNwVXU8
+	 7GKViKBOp/nRReFJl6qYTbSSaj43uBBkhMlUfh0KOPtJYWW1vIsJ8wg0xrvaBb/GCF
+	 tMpP3LIybYsvTsaHoJ+OgDeoQTsEYzTez0sJtsoGEVbeAmx2mDWD+PiclgvfiNZbLX
+	 eaEIsn7ces7P34Z8JZ+MvXjPP4eQvkoOzCBtxt4UMcR5imz+A8jzhYEykbqLv/KgaI
+	 8Rw9Ox5KgWw5g==
+Message-ID: <75cccf77-7a4e-4ef0-9dca-2f1903c4a7ca@kernel.org>
+Date: Tue, 25 Mar 2025 15:49:21 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net-next] mptcp: pm: Fix undefined behavior in
+ mptcp_remove_anno_list_by_saddr()
+Content-Language: en-GB, fr-BE
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>
+References: <20250325110639.49399-2-thorsten.blum@linux.dev>
+ <7F685866-E146-4E99-A750-47154BDE44C6@linux.dev>
+ <20250325053058.412af7c5@kernel.org>
+ <7EEE7001-CCD4-4A5A-8723-3AAC3A88F6FF@linux.dev>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <7EEE7001-CCD4-4A5A-8723-3AAC3A88F6FF@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-When TCP is in TIME_WAIT state, PAWS verification uses
-LINUX_PAWSESTABREJECTED, which is ambiguous and cannot be distinguished
-from other PAWS verification processes.
+Hi Thorsten,
 
-Moreover, when PAWS occurs in TIME_WAIT, we typically need to pay special
-attention to upstream network devices, so we added a new counter, like the
-existing PAWS_OLD_ACK one.
+On 25/03/2025 13:51, Thorsten Blum wrote:
+> On 25. Mar 2025, at 13:30, Jakub Kicinski wrote:
+>> On Tue, 25 Mar 2025 12:33:11 +0100 Thorsten Blum wrote:
+>>> On 25. Mar 2025, at 12:06, Thorsten Blum wrote:
+>>>>
+>>>> Commit e4c28e3d5c090 ("mptcp: pm: move generic PM helpers to pm.c")
+>>>> removed a necessary if-check, leading to undefined behavior because
+>>>> the freed pointer is subsequently returned from the function.
+>>>>
+>>>> Reintroduce the if-check to fix this and add a local return variable to
+>>>> prevent further checkpatch warnings, which originally led to the removal
+>>>> of the if-check.
+>>>>
+>>>> Fixes: e4c28e3d5c090 ("mptcp: pm: move generic PM helpers to pm.c")
+>>>> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+>>>> ---  
+>>>
+>>> Never mind, technically it's not actually undefined behavior because of
+>>> the implicit bool conversion, but returning a freed pointer still seems
+>>> confusing.
+>>
+>> CCing the list back in.
+> 
+> Thanks!
+> 
+> The change imo still makes sense, but the commit message should be
+> updated.
 
-Also we update the doc with previously missing PAWS_OLD_ACK.
+Yes, I think it still makes sense, and I understand the confusion.
+Another reason to change that is to avoid future issues when kfree()
+will be able to set variables to NULL [1].
 
-usage:
-'''
-nstat -az | grep PAWSTimewait
-TcpExtPAWSTimewait              1                  0.0
-'''
+Instead of re-introducing the if-statement, why not assigning 'ret' to
+'entry'?
 
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- Documentation/networking/net_cachelines/snmp.rst | 2 ++
- include/net/dropreason-core.h                    | 1 +
- include/uapi/linux/snmp.h                        | 1 +
- net/ipv4/proc.c                                  | 1 +
- net/ipv4/tcp_minisocks.c                         | 2 +-
- 5 files changed, 6 insertions(+), 1 deletion(-)
+  entry = mptcp_pm_del_add_timer(...);
+  ret = entry; // or assign it at the previous line? ret = entry = (...)
+  kfree(entry);
 
-diff --git a/Documentation/networking/net_cachelines/snmp.rst b/Documentation/networking/net_cachelines/snmp.rst
-index bc96efc92cf5..bd44b3eebbef 100644
---- a/Documentation/networking/net_cachelines/snmp.rst
-+++ b/Documentation/networking/net_cachelines/snmp.rst
-@@ -37,6 +37,8 @@ unsigned_long  LINUX_MIB_TIMEWAITKILLED
- unsigned_long  LINUX_MIB_PAWSACTIVEREJECTED
- unsigned_long  LINUX_MIB_PAWSESTABREJECTED
- unsigned_long  LINUX_MIB_TSECR_REJECTED
-+unsigned_long  LINUX_MIB_PAWS_OLD_ACK
-+unsigned_long  LINUX_MIB_PAWS_TW_REJECTED
- unsigned_long  LINUX_MIB_DELAYEDACKLOST
- unsigned_long  LINUX_MIB_LISTENOVERFLOWS
- unsigned_long  LINUX_MIB_LISTENDROPS
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index 9701d7f936f6..bea77934a235 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -287,6 +287,7 @@ enum skb_drop_reason {
- 	/**
- 	 * @SKB_DROP_REASON_TCP_RFC7323_TW_PAWS: PAWS check, socket is in
- 	 * TIME_WAIT state.
-+	 * Corresponds to LINUX_MIB_PAWS_TW_REJECTED.
- 	 */
- 	SKB_DROP_REASON_TCP_RFC7323_TW_PAWS,
- 	/**
-diff --git a/include/uapi/linux/snmp.h b/include/uapi/linux/snmp.h
-index eb9fb776fdc3..cca7f7eb6e9c 100644
---- a/include/uapi/linux/snmp.h
-+++ b/include/uapi/linux/snmp.h
-@@ -188,6 +188,7 @@ enum
- 	LINUX_MIB_PAWSESTABREJECTED,		/* PAWSEstabRejected */
- 	LINUX_MIB_TSECRREJECTED,		/* TSEcrRejected */
- 	LINUX_MIB_PAWS_OLD_ACK,			/* PAWSOldAck */
-+	LINUX_MIB_PAWS_TW_REJECTED,		/* PAWSTimewait */
- 	LINUX_MIB_DELAYEDACKS,			/* DelayedACKs */
- 	LINUX_MIB_DELAYEDACKLOCKED,		/* DelayedACKLocked */
- 	LINUX_MIB_DELAYEDACKLOST,		/* DelayedACKLost */
-diff --git a/net/ipv4/proc.c b/net/ipv4/proc.c
-index 10cbeb76c274..ea2f01584379 100644
---- a/net/ipv4/proc.c
-+++ b/net/ipv4/proc.c
-@@ -191,6 +191,7 @@ static const struct snmp_mib snmp4_net_list[] = {
- 	SNMP_MIB_ITEM("PAWSEstab", LINUX_MIB_PAWSESTABREJECTED),
- 	SNMP_MIB_ITEM("TSEcrRejected", LINUX_MIB_TSECRREJECTED),
- 	SNMP_MIB_ITEM("PAWSOldAck", LINUX_MIB_PAWS_OLD_ACK),
-+	SNMP_MIB_ITEM("PAWSTimewait", LINUX_MIB_PAWS_TW_REJECTED),
- 	SNMP_MIB_ITEM("DelayedACKs", LINUX_MIB_DELAYEDACKS),
- 	SNMP_MIB_ITEM("DelayedACKLocked", LINUX_MIB_DELAYEDACKLOCKED),
- 	SNMP_MIB_ITEM("DelayedACKLost", LINUX_MIB_DELAYEDACKLOST),
-diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
-index 27511bf58c0f..43d7852ce07e 100644
---- a/net/ipv4/tcp_minisocks.c
-+++ b/net/ipv4/tcp_minisocks.c
-@@ -248,7 +248,7 @@ tcp_timewait_state_process(struct inet_timewait_sock *tw, struct sk_buff *skb,
- 
- 	if (paws_reject) {
- 		*drop_reason = SKB_DROP_REASON_TCP_RFC7323_TW_PAWS;
--		__NET_INC_STATS(twsk_net(tw), LINUX_MIB_PAWSESTABREJECTED);
-+		__NET_INC_STATS(twsk_net(tw), LINUX_MIB_PAWS_TW_REJECTED);
- 	}
- 
- 	if (!th->rst) {
+[1] https://lore.kernel.org/20250321202620.work.175-kees@kernel.org
+
+> I'll submit a new patch for after the merge window.
+Thank you!
+
+An alternative if you want to send it before is to rebase it on top of
+the MPTCP "export" branch, and to send it only to the MPTCP ML. I can
+apply the new version in our tree, and send it to Netdev later with
+other patches.
+
+Cheers,
+Matt
 -- 
-2.47.1
+Sponsored by the NGI0 Core fund.
 
