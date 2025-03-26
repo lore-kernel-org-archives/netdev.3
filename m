@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E981DDC2C;
-	Wed, 26 Mar 2025 11:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949AB1A5BB2;
+	Wed, 26 Mar 2025 11:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742989509; cv=none; b=CqlTS87KjnzBehcI3T4zaAgJQg1ljcNTJRp99nr3FB5fGcTAMMPN8sCK4QVXn2alFXimsVWhGELtOTWvX/aR0Mwx9PYiJNNaMPZhBUdbLMpxjNdwG5hxKsHNe/NLLMlWuRqO42aHSjbDbmMcCmjuKAU+2RFxS/l/2RGO/LuDn0E=
+	t=1742989637; cv=none; b=R2m3G5pyvC3KJ8sMokRjpinFdrCQSb34eeKuBFUcZp6/Fqw3TjqEfnmZZUzwciDyNccd/6EYKaLnvP3LEixDCu7aV1BfruT0U9fEml+APgJ1/SQdXDK9HK6Ny3Tz8TxqyKf3qYHabC3GEOLFRK20T/f78N0rqkb1WcqtnIsjb1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742989509; c=relaxed/simple;
-	bh=mN2/sZry5ObgSjPvAI0YAPvG+Q/yLfCuYPbOELw04VQ=;
+	s=arc-20240116; t=1742989637; c=relaxed/simple;
+	bh=rClQpO1VRgNQPQsQ9p9QTwr5wQ/XGwxgDzc7bxprHFI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CIZ1rgiRHOz8mXuLKrDkEhasOdclTP/nlARzJmPqVi0c1EFuEvy797zuZ8yi4E5mBl6YDd0cQsmUOMbyF63RO0rs76T16Rrw8QGdBK6sg8B+h81OGrk/JC0ZgLAgHWoyIbUm1ul+03nbG3sZfJmNsIZJ2nP6HYDaxjDv+bhv6kE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hmxnGNa/; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=APeYQSt1fkwPAZhGUCamWlblqdWcnTO4rf44c58CzHWcp1qWBcWYJP5gCuCu75U+9KcxjitTsHdYWTtpp+DY4cRl5YW8XtJ+DvjmL51niFuwjAomT1sCBRRG568gsLMc4w7HepB8BII1dgEXox8gXh7ElmVwFHhbj9ajs0JmmDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=crbU+3DR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hmxnGNa/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E49C4CEE2;
-	Wed, 26 Mar 2025 11:45:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="crbU+3DR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3475C4CEE2;
+	Wed, 26 Mar 2025 11:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742989509;
-	bh=mN2/sZry5ObgSjPvAI0YAPvG+Q/yLfCuYPbOELw04VQ=;
+	s=k20201202; t=1742989637;
+	bh=rClQpO1VRgNQPQsQ9p9QTwr5wQ/XGwxgDzc7bxprHFI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hmxnGNa/zznFeRBCtXfgYLetZcZ9IhjGT+N/TPCFBPLDepvMNKFeFoxnOKtmxZoyc
-	 QgGrl+fcU02e6MbIl0oAztwdeX5eFvNWjTwgCi13A3B7lMnYYLfP6goLjWT5m2MeeD
-	 GEMJdtBVu0oCd1ZYD/8oymwH8m6KDCWz652lNTWJ2OjlgHey8sq5yuvKS1ejRGLHwv
-	 Y606t7V0VlQb3JuiOWlmU3WTbgOB1pmFPa5JmjeSW1fWAoi/YyNmf4Ed+LMIgMhqti
-	 hZ+FAvXldyBPpfyXI92OZwnY+epdG3Vlzk1brFjvAarRl6tTyZkPlAdQX2hcLxzV7X
-	 IjrNGUNluQSEw==
-Date: Wed, 26 Mar 2025 04:45:08 -0700
+	b=crbU+3DRCaOGuaBmsfvzesmYbupMrCT/cmk1/q/jSE/v/4Ef/YX4Y+SOFLFX4UeiG
+	 1AupXC8PssF50O5qI6CwfD1PKqOpQC1Fe1cUCxH2cm64dSdhAzSpAKH6T9aNmDU+nc
+	 Wv0xR7vjEAYgOcX8hx4wPYtfr0UcpPTQ/k0bXTRmB3C73bkzX8WjIE0ncIZeML3puK
+	 T7pP/et2Codf5e8hbOON9Yqa6vJIHvKdpwYROPSFvNZdnFRVjRgiGRuoTmN+M0SzKX
+	 Ba8PIi3Zilr7z5Zqev7HVUinUh48Tf8Okm1L/yVjptfshQE6Klnu9nSBKxvd/tkHO4
+	 YhIpXcS4xM8Qg==
+Date: Wed, 26 Mar 2025 04:47:15 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: <xie.ludan@zte.com.cn>
-Cc: <davem@davemloft.net>, <gerhard@engleder-embedded.com>,
- <edumazet@google.com>, <pabeni@redhat.com>, <horms@kernel.org>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <xu.xin16@zte.com.cn>, <yang.yang29@zte.com.cn>, <ye.xingchen@zte.com.cn>
-Subject: Re: [PATCH linux-next v2] net: atm: use
- sysfs_emit()/sysfs_emit_at() instead of scnprintf().
-Message-ID: <20250326044508.30a9e5cb@kernel.org>
-In-Reply-To: <20250325102805210eUc7-ji7GineR0TUNA9Nn@zte.com.cn>
-References: <20250325102805210eUc7-ji7GineR0TUNA9Nn@zte.com.cn>
+To: Wang Liang <wangliang74@huawei.com>
+Cc: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
+ <pabeni@redhat.com>, <horms@kernel.org>, <cong.wang@bytedance.com>,
+ <kuniyu@amazon.com>, <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] ipv6: sit: fix skb_under_panic with overflowed
+ needed_headroom
+Message-ID: <20250326044715.6d071be3@kernel.org>
+In-Reply-To: <20250325095449.2594874-1-wangliang74@huawei.com>
+References: <20250325095449.2594874-1-wangliang74@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,24 +47,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 25 Mar 2025 10:28:05 +0800 (CST) xie.ludan@zte.com.cn wrote:
-> From: XieLudan <xie.ludan@zte.com.cn>
-> 
-> Follow the advice in Documentation/filesystems/sysfs.rst:
-> show() should only use sysfs_emit() or sysfs_emit_at() when formatting
-> the value to be returned to user space.
+On Tue, 25 Mar 2025 17:54:49 +0800 Wang Liang wrote:
+> When create ipip6 tunnel, if tunnel->parms.link is assigned to the previous
+> created tunnel device, the dev->needed_headroom will increase based on the
+> previous one.
 
-## Form letter - net-next-closed
-
-The merge window for v6.15 has begun and therefore net-next is closed for
-new drivers, features, code refactoring and optimizations. We are currently
-accepting bug fixes only.
-
-Please repost when net-next reopens after Apr 7th.
-
-RFC patches sent for review only are obviously welcome at any time.
-
-See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+Sorry for the inconvenience but could you repost this patch?
+Our CI was broken when you posted and we currently don't have
+a way to re-trigger it :(
 -- 
 pw-bot: defer
-pv-bot: closed
