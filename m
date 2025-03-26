@@ -1,72 +1,55 @@
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.166.228])
+Received: from ksmg01.maxima.ru (ksmg01.maxima.ru [81.200.124.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14CB1E5218;
-	Wed, 26 Mar 2025 16:08:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.166.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978B81DB933;
+	Wed, 26 Mar 2025 16:13:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743005284; cv=none; b=T52yBvZIPTfTpdSPithyCTL6gJVoHnoGWMQNzu56Im2G0nxt6Yhz8+r8Q404fbz+bbv4OeAhS7Qw1ZkjFgfKRsmWjmPiz5R69883oaFcDoUblMn8NvXwVBB9bIep+QOGCNk5OleL71d+vLEaF3MoTGOZbnC4Ab+w4RRXX2HnTWY=
+	t=1743005601; cv=none; b=X92R+DcENJIfgM2g8yE7YgcjoMVycRF2vkaClhzcbrcieS1GzZbBtwTicRLnc1hBQPNYCxi2JZw7L4nnSA+XqBMDMMl6V5FzLK9J+JZvjM5fLAckkJSKoGQppYzixGvIfM9Ac7GhyuNXK/UgZGJOdwRpnfhteg5ygEN7tawWse4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743005284; c=relaxed/simple;
-	bh=yEOuG5slLf2Bs5mYTsF93aba5cxTjjJSx2dwLNCgnkI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sPnhfzEc0ubWFzyKLWforctcaBh3Z4QzdTKNVs62gJgCv4CSBhMRvniR63YHXzgqbkygrlBLfx6MyK4m3YI/bNfkylcwBhs9+oQb5oESjllHmrrLVHuO4od4dkccrbcS9tGyGot0BCNsCEEedGiKneDgX3Eks/auKSZ8RLPcHmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=O5G6ouAo; arc=none smtp.client-ip=192.19.166.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1743005601; c=relaxed/simple;
+	bh=RS9rjV+oD4AQLsNqBufHGiDuQ/N96iUxTlgYBfA1elE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JvRsY/Wj+ehcSAbF5zHXfts+Q5XUVjCIok2PvfpCwnKBSVVZxNNsxLw7qxTU6F7FN127Q4IOgvoxWqLUIjLKz8UufjpbdWOm/RvkBdF3VLyCOqtIkgwgrWRpo+XNrLNpPwHZXNt/MWNfJRk6HI/Jo2MjErElZKqkA1jh4/nrdmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru; spf=pass smtp.mailfrom=mt-integration.ru; dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b=ThQ78nL8; arc=none smtp.client-ip=81.200.124.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt-integration.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="O5G6ouAo"
-Received: from mail-acc-it-01.broadcom.com (mail-acc-it-01.acc.broadcom.net [10.35.36.83])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 7BD73C000548;
-	Wed, 26 Mar 2025 08:58:46 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 7BD73C000548
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1743004726;
-	bh=yEOuG5slLf2Bs5mYTsF93aba5cxTjjJSx2dwLNCgnkI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=O5G6ouAorN9KBLqUaElb424mKCJiKtCtC1kKj8MMqqNlohakr+yAzT5Hi+JqPhwzb
-	 RAbx0EbKJRgdAEEmOdI4PHidmqOm3sa3Oujw5d5UMIZ7hamM2j3WSsXWu55gpHF+P3
-	 TsSqqwlReixwilrjEZFWjpW9Z6O0wC1OWsQoAUu0=
-Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-acc-it-01.broadcom.com (Postfix) with ESMTPSA id DCE8B4002F44;
-	Wed, 26 Mar 2025 11:58:43 -0400 (EDT)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: stable@vger.kernel.org
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Pravin B Shelar <pshelar@ovn.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <kafai@fb.com>,
-	Song Liu <songliubraving@fb.com>,
-	Yonghong Song <yhs@fb.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	Felix Huettner <felix.huettner@mail.schwarz>,
-	Yan Zhai <yan@cloudflare.com>,
-	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
-	Thomas Graf <tgraf@suug.ch>,
-	Justin Pettit <jpettit@nicira.com>,
-	Andy Zhou <azhou@nicira.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	Luca Czesla <luca.czesla@mail.schwarz>,
-	netdev@vger.kernel.org (open list:NETWORKING [GENERAL]),
-	linux-kernel@vger.kernel.org (open list),
-	dev@openvswitch.org (open list:OPENVSWITCH),
-	bpf@vger.kernel.org (open list:BPF (Safe dynamic programs and tools))
-Subject: [PATCH stable 5.10 v3 0/2] openvswitch port output fixes
-Date: Wed, 26 Mar 2025 08:58:39 -0700
-Message-Id: <20250326155841.4133945-1-florian.fainelli@broadcom.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b="ThQ78nL8"
+Received: from ksmg01.maxima.ru (localhost [127.0.0.1])
+	by ksmg01.maxima.ru (Postfix) with ESMTP id 4B75EC001B;
+	Wed, 26 Mar 2025 19:13:07 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg01.maxima.ru 4B75EC001B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt-integration.ru;
+	s=sl; t=1743005587; bh=K3OdXdhmP3j0/JrBtArhPTsRcZ9ars3xQ/jtxHeTYyk=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+	b=ThQ78nL884SDUKaXYETHgvOxEYNvA/3/QgcEsBhbnF+EmbhxAZBNofKbgvkBRs0zF
+	 qp130g/FXRKiyHWCOIJUahzm+sGVvPC5WkOVamHXNqGJDQiQ4SQGx6stYQv/X7RrlN
+	 IBxEIO70OctzNLlXa2FNnV0lLYiFJm3sEeK3gZiprj8N7XEoPUPuALnjVq0fAw6zWH
+	 TUU4atxbG7r+PV8zeNTDbbUzNFMqwPUNo8k2qX9YGB/oKGtTKPVyFvpzPCrPUvhmdG
+	 zKYR4CEWgqQhoy4O4h4A39iYADzFkIzcpX44XDUmMrSa7GpqExu9dMvO/nsojVTZpR
+	 d3hkAiyfb24mQ==
+Received: from ksmg01.maxima.ru (autodiscover.maxima.ru [81.200.124.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
+	by ksmg01.maxima.ru (Postfix) with ESMTPS;
+	Wed, 26 Mar 2025 19:13:07 +0300 (MSK)
+Received: from localhost.maximatelecom.ru (5.1.51.21) by mmail-p-exch01.mt.ru
+ (81.200.124.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1544.4; Wed, 26 Mar
+ 2025 19:13:05 +0300
+From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+CC: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>, Claudiu Manoil
+	<claudiu.manoil@nxp.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	<UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>
+Subject: [PATCH] net: dsa: felix: check felix_cpu_port_for_conduit() for failure
+Date: Wed, 26 Mar 2025 21:12:45 +0500
+Message-ID: <20250326161251.7233-1-v.shevtsov@mt-integration.ru>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,29 +57,81 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: mt-exch-01.mt.ru (91.220.120.210) To mmail-p-exch01.mt.ru
+ (81.200.124.61)
+X-KSMG-AntiPhishing: NotDetected
+X-KSMG-AntiSpam-Auth: dmarc=none header.from=mt-integration.ru;spf=none smtp.mailfrom=mt-integration.ru;dkim=none
+X-KSMG-AntiSpam-Envelope-From: v.shevtsov@mt-integration.ru
+X-KSMG-AntiSpam-Info: LuaCore: 51 0.3.51 68896fb0083a027476849bf400a331a2d5d94398, {rep_avail}, {Tracking_from_domain_doesnt_match_to}, 81.200.124.61:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;mt-integration.ru:7.1.1;127.0.0.199:7.1.2;ksmg01.maxima.ru:7.1.1, FromAlignment: s, ApMailHostAddress: 81.200.124.61
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 192128 [Mar 26 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.11
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/03/26 10:13:00 #27825781
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 7
 
-This patch series contains some missing openvswitch port output fixes
-for the stable 5.10 kernel.
+felix_cpu_port_for_conduit() can return a negative value in case of failure
+and then it will be used as a port index causing buffer underflow. This can
+happen if a bonding interface in 802.1Q mode has no ports. This is unlikely
+to happen because the underlying driver handles IFF_TEAM, IFF_MASTER,
+IFF_BONDING bits and ports populating correctly, it is still better to
+check this for correctness if somehow it fails.
 
-Changes in v3:
+Check if cpu_port is non-negative before using it as an index.
+Errors from change_conduit() are already handled and no additional changes
+are required.
 
-- correct SHA reference in the second patch
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Changes in v2:
+Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+---
+ drivers/net/dsa/ocelot/felix.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-- use BUILD_BUG_ON_INVALID rather than DEBUG_NET_WARN_ON_ONCE which does
-  not exist in Linux 5.10
-
-Felix Huettner (1):
-  net: openvswitch: fix race on port output
-
-Ilya Maximets (1):
-  openvswitch: fix lockup on tx to unregistering netdev with carrier
-
- net/core/dev.c            | 1 +
- net/openvswitch/actions.c | 4 +++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
-
+diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
+index 0a4e682a55ef..1495f8e21f90 100644
+--- a/drivers/net/dsa/ocelot/felix.c
++++ b/drivers/net/dsa/ocelot/felix.c
+@@ -523,6 +523,7 @@ static int felix_tag_npi_change_conduit(struct dsa_switch *ds, int port,
+ {
+ 	struct dsa_port *dp = dsa_to_port(ds, port), *other_dp;
+ 	struct ocelot *ocelot = ds->priv;
++	int cpu;
+ 
+ 	if (netif_is_lag_master(conduit)) {
+ 		NL_SET_ERR_MSG_MOD(extack,
+@@ -546,7 +547,12 @@ static int felix_tag_npi_change_conduit(struct dsa_switch *ds, int port,
+ 	}
+ 
+ 	felix_npi_port_deinit(ocelot, ocelot->npi);
+-	felix_npi_port_init(ocelot, felix_cpu_port_for_conduit(ds, conduit));
++	cpu = felix_cpu_port_for_conduit(ds, conduit);
++	if (cpu < 0) {
++		dev_err(ds->dev, "Cpu port for conduit not found\n");
++		return -EINVAL;
++	}
++	felix_npi_port_init(ocelot, cpu);
+ 
+ 	return 0;
+ }
+@@ -658,6 +664,11 @@ static int felix_tag_8021q_change_conduit(struct dsa_switch *ds, int port,
+ 	int cpu = felix_cpu_port_for_conduit(ds, conduit);
+ 	struct ocelot *ocelot = ds->priv;
+ 
++	if (cpu < 0) {
++		dev_err(ds->dev, "Cpu port for conduit not found\n");
++		return -EINVAL;
++	}
++
+ 	ocelot_port_unassign_dsa_8021q_cpu(ocelot, port);
+ 	ocelot_port_assign_dsa_8021q_cpu(ocelot, port, cpu);
+ 
 -- 
-2.34.1
+2.48.1
 
