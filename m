@@ -1,1240 +1,218 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EC1263F59;
-	Wed, 26 Mar 2025 23:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743032154; cv=none; b=u3hmijvFnUf88Wnd8CXDt76gLhoAeBtKipej1C+ruYBezOCitlK9H6Bb7pmzJPhkwY97VQkCy9NaSobOA9EUYAJbcsjjErHYYpyqtZi+jhh8/v3omTK7BwoxHuMnDZURpfymX9pKzEtqH+OY6V+4dKxXv8M5EyOdr8v2s19Wfck=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743032154; c=relaxed/simple;
-	bh=C7BpI3EDtoznX8tfGb2/Qz5VZfEaTl7B3Ig6nF06ckc=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ttAiYCg1Sin5bFhTQCZThtUdVvCLBc9loFRrZGwIUN/YIBxr+gxIOcIww+hS4rjwHFqOikiOHissNnM5+64Wfa+tCFPOGM2GEu+2MCYIaS1/Hn8Cgbsao/gzFkKsUcIbiJChjwOprdGe2mD5+/ShxdCX7ajUdR89nyze6NBfr7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J1oze/GD; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD1D12B94;
+	Wed, 26 Mar 2025 23:37:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743032266; cv=fail; b=u+oY5SlAfa+om/0F3LYNxVAkdk0H2tkOv855IkrvPBDCzqQopKI2k8xsncNJJld6Z3cqNDS+ndkj5XAHmEjWEkPpw1zTjeLxhiunqE3OIlI8pBKcMd6ZzNROL4HVb7DEhrnzqJtyikYgPYMsyaSGk9ssKipF9UHV16YVrE/AEDo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743032266; c=relaxed/simple;
+	bh=oCBXWuCpenOLpZFaIBozhzlnZQNiWYjcEvsygsc0acQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=bVryrpTKXRnACtYNiqQ3QMdZqHCsYSfMn/K2sElTyZhVsjbB/zYsqbiRSgtXKqFiRBecK06e3I7uwYkj6weDqJRr+6ZhqRl051mUBCDnVz2OGS4KzrDmvqNIQQz9cKjsMjTrl2jHlAvJXbd1Hj6+T3LQao3YxVMsIa3dcOgeA+E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=JGp+CJ1b; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=jf9LxuoP; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J1oze/GD"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3913d45a148so225216f8f.3;
-        Wed, 26 Mar 2025 16:35:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="JGp+CJ1b";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="jf9LxuoP"
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52QK0YRd032170;
+	Wed, 26 Mar 2025 23:37:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2023-11-20; bh=XawZhKEZ+jpVKt0efSYHPHrHwAmXITGKxtLi774rq9k=; b=
+	JGp+CJ1bR+axgHsEex/W765rb+10ikKLDUIMwSrWoI/fm/QaxAXJ/HIX2RrXUdr/
+	uR9fUDXKquVQ8SNhl1eH+43TnAKN8HYlTMEs5tP1hMrDj2Ku7nHhXWgVigEgxrsX
+	UwYolY3QyPy4kjREhRuSzseNz8JL6FbsW0bcCRvMXxblEjCNpInxzXtNut14+Aua
+	fjmhSCL1jHVFw5wPuCAL70VQIT4RKGgAXSx3ZchvDW+jsAyQi9aXDGA4SJVTrb2J
+	sgv5L78+orkTkEdNJ2lTKYcu/cMjsXyIFqNnF5JUgI/hwaHjI/JBD2PCDrG2e+hf
+	yggW/W1P2J2vReC22/lg2g==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45hnd6auy7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 26 Mar 2025 23:37:40 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 52QLv2QP028778;
+	Wed, 26 Mar 2025 23:37:39 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2046.outbound.protection.outlook.com [104.47.58.46])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 45jj6umvvp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 26 Mar 2025 23:37:39 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=P9QAXt1Ly/A5jnlwZaE8MF/c+I58Ruum8FCl8mj9QFlZJM6+Z7sgLgGy0R8wrPA+tcBiYCmnddc0k7jEk/RsB/d6HQGrpfGj+YbP5SzxKgo7P7DVlZW+gozBrIYZDTKeD9J4z/nrAY74o1pe6xXEuswCZUlpgIbB1vJ/ebpkpsfChpJ45dlg7j4121eNtTXVAJDE1EZPy9MThDc8W1uxGleLlJTIzlal2opawmfDAGpl49eFBHlWo7vhli2U7v1Js7TYwnUPPPZxU0QeaWjZhgANtg4Tli5452rlfbSKOMqde24/ec5p5jY36/XNi68v1ivBQhhVkfprzqsBIg3tDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XawZhKEZ+jpVKt0efSYHPHrHwAmXITGKxtLi774rq9k=;
+ b=rbXOCx8FWiKet1Rqzdx+M4zhsLOBlKw5UEQPKZ4TuBZk1EaPf+lDcXfLjTKCm2tqoGm1FwPNjejH0MdE9GlpDp8qcNa1Fttdhaprs4GPTIKy7g3PeNskRV3LaGtnT/Id1n67UfDwhysJoqNK/ZmWhJ2EHjw7itgIo0yumDFek3ZDNnVyWjJ3zqFw8saDqEvQb5amXaqRCiXBEceWZ6HdlEUGNm2RuzxjtzTrEvaffTRhB2C/NTeSYdaNc+2KFtVtF/JCGzXnavjK/r7901Wedbv5H/xHsqIsql6fPzaFlJaYzuXy52qbDtHiKWnDTapkZPt6W82Sp5w6y8Ca9tc0yw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743032150; x=1743636950; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cmESiHnaxZZknfX8WWyTiUAPvI/hvh27TbTbPs8K+y4=;
-        b=J1oze/GDVXKp7EKAOhthzRv2OvoNCNklmi4eZtz5K1DXisaSD6qzPys0uB5DOtUjdt
-         2B0vs6+VAMObLWO0Q93HSXjSlCYdSNqzm7tlQZBMYUEf8tmvU8rf2hTbCjK8oJglNk4e
-         gjF1TVXGa21rNIQGd73YtI6nJcwME2xyGaGu7ZwQ7Hi71+xYyXqiUcowgI3hsQBdBmeg
-         Ir71gfEnJX3OsKimPTAyiYld+MoszfGigy6PVS3OkGusXesFCJTkph6UpMMNF0WbrdsZ
-         Ny78lYKq1i0QGvfWxHCYm63FcHPsbp/49dQUgJjoyyROugePnCHbOZK2FBOlWntTafKQ
-         CS5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743032150; x=1743636950;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cmESiHnaxZZknfX8WWyTiUAPvI/hvh27TbTbPs8K+y4=;
-        b=UzfOp1rduW/4ZaAKNgRu/2Wv+gHs/QjKMWjVOQTNOQPKS9gDmhXQgDFmvWpFwkoS7R
-         wNDc6BOI8rGNFZn2Fcf/ljvnzsCf5H+K8DrJusjZIJh+7XnXHeGSHKI6bgTrmjqJsdmW
-         roibab4nYScsgJwwfCHGKnILbz5J1EMzj8LEMsOo/QfWrtPjmE+hNXBMOj5k7tqyaWWp
-         X6U9fRVfAtTtfI2+Ymloy3oOcgoC+SAqUl5Ucvgc1iUHCa0zB9ZU36IFBDAsaCzFigiN
-         bLhCDT5H2jtz0a2DWtluBrwvcIOWWZOQvzyyiuATjxB3kSbeAly5kjztZ5a8gF5a82BA
-         ZPyA==
-X-Forwarded-Encrypted: i=1; AJvYcCUb5zv9kY2HS938laLeiwGCeyPWIC5UHe8N2oOpsGQ8h9Jun3vtYbDp8JsuvfQ4qpmCx07sHzUK9vYCNO7a@vger.kernel.org, AJvYcCXKGo+YqDDq37awhU5MzldHu2a2QsM1GKOwn89tycHX6VuFnxqaC3e2wVQa5sBmzBJhv4f8Bjbb@vger.kernel.org, AJvYcCXMeJKFGFUSo4DjADSjE+gEt/nOuBIcwlWrHtW+SmREot4TTjybf2ahZ7e4PVG4qv0JUSb6ZE+svTJY@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIHu/5PfSBxxu4ypLMYAXSUvgv3lwBETv4dKj1uPXazoOVk1ez
-	6BPV605zOXYxds2LBwg9w8iLtrLUkQ4lkCOXGCLI7r0hc+IHRrju
-X-Gm-Gg: ASbGncuRx+W12EQVzm20s7kWBUwgyok3nrMIG+jkWzsB1s23L28HvfdM8KbdJ8/2fZ8
-	8NnPFGV3UBmy1yaGAcOUJRLEhWfrsC8YotUxzIPapQCrIge1LeRiNF5+L2NpFaXBL93CCDOPJ8X
-	uZvbyXxyj+i8/PQVzbCLUKmoXpXBNzO76EQyPsoIaK3X2LW3V8jrFJMmqyQJlY4yFM4kRwsK6e4
-	tkCKIay4uxmIrmPoWqrz7h/NVNHp079h75ZpDEmNY2PPaXSMxz1woYWUItcbD+DUBfxFUrFMEu6
-	fn/KXF9nRsZ4Qlvffz38r/4Eh7jydMX6oszzJx9s7E/NbNgz28OWWWEaWkI/zzI75HIC/SiTV8t
-	oivcNv/O6vsv3Ai4ju3ckqMTV
-X-Google-Smtp-Source: AGHT+IFjcKFFOGXvnIWsHL4hbWjnSGi2+zqQ/ek8XiuYFWDTgCmxa7KjZbRg8cKvqqcbmx9KXi06yw==
-X-Received: by 2002:a5d:6da1:0:b0:391:47d8:de25 with SMTP id ffacd0b85a97d-39ad175c047mr922562f8f.41.1743032149579;
-        Wed, 26 Mar 2025 16:35:49 -0700 (PDT)
-Received: from localhost.localdomain (93-34-88-225.ip49.fastwebnet.it. [93.34.88.225])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3997f99579bsm18390328f8f.19.2025.03.26.16.35.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Mar 2025 16:35:49 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [net-next RFC PATCH v3 3/4] net: phy: Add support for Aeonsemi AS21xxx PHYs
-Date: Thu, 27 Mar 2025 00:35:03 +0100
-Message-ID: <20250326233512.17153-4-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250326233512.17153-1-ansuelsmth@gmail.com>
-References: <20250326233512.17153-1-ansuelsmth@gmail.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XawZhKEZ+jpVKt0efSYHPHrHwAmXITGKxtLi774rq9k=;
+ b=jf9LxuoPyHfNqCVbB98mzzHhnmkcKWFmY2cZZTuqOIM7T1ZsNRFsd3car56UhdTQLw/Y4N8Q8VceJAeu1jFELhqMA6qFcrOk33Cb0FcA1QNqeiGLPxrRn6dgXIWg5J0nYSPNnmg3qC/uz4+ApRr660OS9v0GFo4VqUzWCi4kCAA=
+Received: from CY8PR10MB7243.namprd10.prod.outlook.com (2603:10b6:930:7c::10)
+ by IA1PR10MB6735.namprd10.prod.outlook.com (2603:10b6:208:42d::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Wed, 26 Mar
+ 2025 23:37:37 +0000
+Received: from CY8PR10MB7243.namprd10.prod.outlook.com
+ ([fe80::b779:d0be:9e3a:34f0]) by CY8PR10MB7243.namprd10.prod.outlook.com
+ ([fe80::b779:d0be:9e3a:34f0%4]) with mapi id 15.20.8534.043; Wed, 26 Mar 2025
+ 23:37:37 +0000
+Message-ID: <38b02ca5-59dd-4193-bea7-e15e4f5f426e@oracle.com>
+Date: Wed, 26 Mar 2025 18:37:35 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/10] vhost-scsi: cache log buffer in I/O queue
+ vhost_scsi_cmd
+To: Dongli Zhang <dongli.zhang@oracle.com>, virtualization@lists.linux.dev,
+        kvm@vger.kernel.org, netdev@vger.kernel.org
+Cc: mst@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
+        stefanha@redhat.com, eperezma@redhat.com, joao.m.martins@oracle.com,
+        joe.jin@oracle.com, si-wei.liu@oracle.com,
+        linux-kernel@vger.kernel.org
+References: <20250317235546.4546-1-dongli.zhang@oracle.com>
+ <20250317235546.4546-7-dongli.zhang@oracle.com>
+ <80a47281-d995-4499-a4c8-f251ca309450@oracle.com>
+Content-Language: en-US
+From: Mike Christie <michael.christie@oracle.com>
+In-Reply-To: <80a47281-d995-4499-a4c8-f251ca309450@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DS7PR03CA0003.namprd03.prod.outlook.com
+ (2603:10b6:5:3b8::8) To CY8PR10MB7243.namprd10.prod.outlook.com
+ (2603:10b6:930:7c::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY8PR10MB7243:EE_|IA1PR10MB6735:EE_
+X-MS-Office365-Filtering-Correlation-Id: eff9e151-4195-41f8-b012-08dd6cbf30ce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dzV6aG82ZTVVRk9QV0x4dG1BZFRtQ2VHeERQWWdqVnludDJweXNzWjhsVzQw?=
+ =?utf-8?B?QVZQeE5lK3JKNHFYV0tpT3VaNllhWFFMOUJxTU40VWxlemMvY2ZHQUhSN1V3?=
+ =?utf-8?B?UU94Sk1pc1dyWHJid3IzZEIvSGdEQXNub0ZrcXp2ZnFLd1NmWmRoQU5ZU3pV?=
+ =?utf-8?B?OTdGNk9Ka1dHUklaMGo3cUV1NlFPSkpPd2VQMU1xSG0zdGlQSnlrOG1RUTFn?=
+ =?utf-8?B?SmRaeVdodWVreEhmMk1PVERtWkI1R01VNkRLc3d5VlZqK0syWk5jWmZuQko5?=
+ =?utf-8?B?QzQwWXNOam16eklnNExLdTZvV2xlc1lyWTczeWZGdGwyL2lxeG1kZng5NlJi?=
+ =?utf-8?B?NFI4T2NCRlJvMHl1dGVFcTEvQjdXd2VRcStrY0IzeFYyd0U3Z1piNzhacW5S?=
+ =?utf-8?B?OXJoeUN2Ni9FS3VnbExoRnpWcnlaWHFqV3VYQ3UxbW5tVVRTTUlvQTNzS3Jn?=
+ =?utf-8?B?aWtEUTNqUlJpZWlENWVvMldIdEx4WHMwaVBtZGFMMVVLUHNMWlBNb2xMNmlG?=
+ =?utf-8?B?M25kaStLTnp2aTNlckxISHBkRm1xMnNUNkYwaHVIb056UWR2Y3BMa0QwOHRl?=
+ =?utf-8?B?RzE3S3ByTy82S1RpTnd0clJrMHdjTExwZzJUeVFXNmlIdU1ieW5jcFBoT1NM?=
+ =?utf-8?B?ZXBEdzFuUWtKaGdQbE51UzhGTTJJL3BUcm1oWFhoNFBZRUNqek1OOFBUQlUz?=
+ =?utf-8?B?MHhRNVVnenhLM3p3QjMzd1prcjJhNER2SEJsSFUzU3FvVSt5T1JoT3J5cTBP?=
+ =?utf-8?B?YTZaWmR5ZzIzTkNNcmFpdTZ4MUFCcTVVWGE4S2t5eHkwZDAzZGtsSnZOZW01?=
+ =?utf-8?B?UE9nbGhrUHhUaFJ4ckZzYTJUb3M0MlY5WE5DRzEzRGtueHh4T3laWU1pSUh6?=
+ =?utf-8?B?RDA3b3NHSnIrZTRuVDBsc29tT3hxNk9JWG1wajVEZ2prbXZqZks2N0VleXFr?=
+ =?utf-8?B?MDBlVjhYc05LNDZBdkM4UzJ1WGIyVkFPazR1Zk5pWnVqUnlOeVJGN0dXcWtV?=
+ =?utf-8?B?R0c2N0puK1VZM0libmtpQnZrR1FEMzYzK3FTbEorNUdWWW0xTGJGT1pTK1pq?=
+ =?utf-8?B?TU1QdnZwZm43QjlUVDZEVW1UTU8wdUlwbm5TMlFzZWNkT2FESkZVZFlqR0dw?=
+ =?utf-8?B?Q3V4bGFvcFZnTmdvLy9xTUl3UDJqcGxEY293YTFhYlRyMGNXWmtIODk0RTNX?=
+ =?utf-8?B?M2tYTHpNbVBBUnl0M2xZb2xQa3o2VFlDNmEwd3NydW5GYmRZSGlnK3d3TWxq?=
+ =?utf-8?B?anFNRDNtSEs2UVM5MUZDSGhoSkp2NUV2WVBQS2FBSWRZWEx4UlhiVWV1Nkhq?=
+ =?utf-8?B?blhUUTZ1RVZLMU5hQitpalJVWGNHYmdaczJ6ODEydWJ3cHlmUCtXNHUySEtY?=
+ =?utf-8?B?eG9WeGhabGtXRllhUk9HTm5sVDdzb2ZHcFh6cS9UeUk3Qmp6b1R4cGRqY2Vj?=
+ =?utf-8?B?N2p6bHNVVHZha2k2ZzQxS0dCdHo4QitFcnh2eFNtRnh1TDdOR21pQ2pGUFQ1?=
+ =?utf-8?B?Y0wxcjJjbW8vU2lQaFVwUnZhUHBuK2ZrTFFEaDV1MkhkTjd3YkpXNWhRWmlH?=
+ =?utf-8?B?T0ttUTFmeHpsT3lCQ3ZxZ2EwMnhadUxFSjAzVk42ekNoOTl2UW5lZTRYdjhS?=
+ =?utf-8?B?VFNxanlwcDJSNWxuUmFMRWF2YXZQQ2J3bzJHYXV5K2IyRVNtdERIa1hBajRk?=
+ =?utf-8?B?OUNGdGJ2M2lwTlI0YU4rZWF6L05tejcvSXM0UWorL1pvZGppK0ZmWTR1aTVB?=
+ =?utf-8?B?ejd1MlBQaFRJUnkvNkZycHNUQktRZWZLcmFxbWdyYm81T0JSYnBwbTlCL2Ja?=
+ =?utf-8?B?WGxxS1dUZUI3S2txWG81bUpPY3M0bjY0ZS9hc1hBMzg0c3JyUEZjM2xWblNl?=
+ =?utf-8?B?ai9XcDREdmhQTlN6S1huSEQ5UWxGUGhrdlhaYWMxU0hJamc9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR10MB7243.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VFR2djJ5WEJhRDBqaE1YNHhZN0VpUUZ3MnFtTDNrc3oyaUhUWWxTc1lxamlW?=
+ =?utf-8?B?YXBsMGQ1bVdQSmlPckVVNUs4WHlrR3VLcEpTR3cyN3dLWlM2TjdjTThCVWJI?=
+ =?utf-8?B?UW5udUlLa0t0eHdrVyt0MXZXbnRoaFR6dlIvTWtuMEhlbFI2Z28wMjg2YytC?=
+ =?utf-8?B?Qk1KU0hrOGFjRUFqVEhWNlh2VVNIQ1VkTWkxYXltcW92eU03TkppVFppeTgy?=
+ =?utf-8?B?QnhqZFBPOEtOTkZrQXdieUxPZnRsSXRDREdkTThSQXBLNDZvM0RuZEpRbUZj?=
+ =?utf-8?B?RmtDbHF6OUhyMElBUGx0dkFtbGtrK3ExemZBUWVPaVhVWVJIb0dIZzRHd0Va?=
+ =?utf-8?B?cmxxS0taSnpQbmtjTm1mS1pJY2crQVhiVVFPRHR3dUdURW85Q2Z6UzF4cito?=
+ =?utf-8?B?Q3YwSDNLQXRJYml6blo0REF1SGVjTDRhWUQ4eVkvQzhJb2dhdk0zS0J6RSsy?=
+ =?utf-8?B?MWtMSnhtQ0wwWmdCWGRzVVVIWVJuVjh1UU1GWFFNWDZOaHVCa2o5OEV6Q1Mx?=
+ =?utf-8?B?YVRFYU9LUlBDaTluQmsrQm9yeUJuVzArc2RvY2Y2TmRYVlBKMkpJWE13RW9w?=
+ =?utf-8?B?andnK0RJOFVSOFZGTEZmNHpZNHFoai9lb0Z0aEdSWFRGbDcxK2NRTUZkc3c3?=
+ =?utf-8?B?TEw2bmVtM0xNTnprQ3RUVzdJYVQzUTI5N3k3NXNLZW1idDc2U0JGTi84K01z?=
+ =?utf-8?B?ZXVoTmV3RUUyQXBmb0gxelJzY05aWHIzT3hjRHBGaDErZzA3aXNPNm40ZVB4?=
+ =?utf-8?B?US9IcnIzaUNCU2kzTTZHR0tQdlNLYU5pRVoySGFjU2xBQmJLemJnWjlkSXRh?=
+ =?utf-8?B?RGc2cmVYUWQ2MHMyYkxtQllPREhsTlVQS1dYbHNFckhOVVovMXdjbENncEwv?=
+ =?utf-8?B?Y3JkcFo2MmhSaWRzbDI4M1JuR1FnUm5GRk1mdWtLOUFKZkk1YVI1U09Md2p0?=
+ =?utf-8?B?czBmY2hsZTRleTg2QzNuVE1nbHZjOHk0L3VCYmd4eEVzRDBTQmI5QTFzcWt4?=
+ =?utf-8?B?dFFTT09GSzJ3WnVMZWY2V0pBYmtJblJOcGo4Y09wMmJmRWsraFZsT0JUcjNt?=
+ =?utf-8?B?SnppOWQ3R0tzY2RhRE93U0ErdzY1OVNkYTE1NFQvNGVVTGZWZjJXeW5KME4x?=
+ =?utf-8?B?MEFMSDRwUVc3SEVWV1poN2tuTUJLckFxbFlDbkI1RmZkTk9zM1NvazZJQlRP?=
+ =?utf-8?B?VGRKc201MVArNExyUStjQVV5emlCeStrN2lsWXlpSEN2MWZIbFRFcmRWVkFS?=
+ =?utf-8?B?dExLc25rY0I0Y1htRHR3UzQ0YVFMeXJ5WFRaOTR6enRzb0F5eVBsMXZtN0NI?=
+ =?utf-8?B?MXY2dG92L0ZWYmRZNHk3Vy80TldhbVF0SHB2OTMvQy8vN0RZRW9aVFFpeTBI?=
+ =?utf-8?B?Mkw3WG9qcTBPZGkxWFQ0aDFUd0tEempoeHg3bXpsemRsRlI4SUhSYnhwNmpa?=
+ =?utf-8?B?ZXVISWNvZUUvVWJwNDA1OUhYNU5oWEtJVHlOTUw5UFlRamM3NURSSi9ZNWlV?=
+ =?utf-8?B?SldWMU56ejVTcTErOE5iQkdYTU5SeTFYNWFPZmJNbFYwNERWRnBrQ3NPbURF?=
+ =?utf-8?B?YldaYUVNMys5SDI4aCtXVEd2ekREM0h0SzI4c3FjRzk1QVlidTNES0VGNnZZ?=
+ =?utf-8?B?UklNdUlkU3FvTFl0MXE5OWs2eVYxOERpa0VleXlpYVFOL2NqZ0pFdjl1UEp0?=
+ =?utf-8?B?SVZpY05LYWczbDdoZWRVVjJnajNXdnJ0S3FTSXFyUDhsKzVxenpnVEZYTTlE?=
+ =?utf-8?B?eU4zSWNvNE5lOFB6cUV3clNLREorRUNVQ09MMytBQy9EQWlXRzVxWFBYSjNQ?=
+ =?utf-8?B?S1RLbCtTQm9wWUloRmp3TlUvZVJYek11T0JRelhDVGcycnNiT25hUXNDU3RX?=
+ =?utf-8?B?NXVGLzNBSkMzL1daS1BwVk9CM01HZzNrcjZtYmNJZjk0ZmdOU2tmRFdxdFF0?=
+ =?utf-8?B?djJkcmd2SXlNWUNVS1ZqWUdXY1BiL05hSTZsNHZaMkkzUVJ5Z3pUYkNpQnpL?=
+ =?utf-8?B?UXFET0JFWlNYR0R0RVhjVjFkbEY3aWJXeTh1eG55V0RTV3h2eS9TMmk5YkRz?=
+ =?utf-8?B?Y2FvMUdtWGZ5QkNmN1prVllGdFg5bThlMEVhQld5Mld0c2RZYzVpMGV1UkxZ?=
+ =?utf-8?B?aVY5Q2VIWDdoVFdwaXJWR29JNVhYZXp3SWE2U3E2OSsrVTBMK3MwUUJCdWE2?=
+ =?utf-8?B?Znc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	u+n4pg7Qn73IcnTRdiGYv6TfZCNwuKXAj3ksaYpdId+E1RYxy14PqfKd1O5yrJ42UhgXXTgKERQ/SnzO4M5nDH8yL/rkUalFxLtxetu90GtxQPY9CCpwY0miyqgJEBxc3ZekvRifiT4U5X2fhmhPffU+vLJ+/SSSdFhMNSxRTD0si5ICkKecSRbeXT3qLKD7dWcBVS4P3GIOYL9vygVM/OhBuI/NoX7myO/rTJPZIugHsTkKS/8mNkBEh+YkDELwSptHM5ueQGKsjOUOri6z99fHyW6kIhCYqLasEkv92pjAZwgfcmmUs5R4kPCwGxX78rRkB0WMU2mtfT/JxwY3tzm08UBpfcpDPH7plm+x0QAeCamLnfI6yMSXKJCmqUM7OJiL0puXxbfMqnXZKrnQ4dzb4Ln441SGG8SBa39X47kQTu56RoEQqHuhhQeLh2vGyDrGuOLr1wsX7QeECPeucRHrVH1AZkJBPCUFbpaBXbhazerGVJ+6FejIjgv/8mlFdgRJ/LKsZ29LOlG9TMpVDTvhTm7NbnlQq2sET9CUhDiX9KVcbOXen1yzgRTodIEGEx4ZvsEsFuWeBP3bprX+vOdVpmQdF1DOgSh+MIqVw58=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eff9e151-4195-41f8-b012-08dd6cbf30ce
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR10MB7243.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2025 23:37:37.1457
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EmO1uhp7oF1vQw1DuY1giY9Qxl7ZeJ4kZUBdpA8DuIgr2F3ySNAW3QAZ/BqPInFgyGHimi2MTrf3wXSTHBM9+vzo7RvYNd5BQuxqROQoYjE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6735
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-26_09,2025-03-26_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 suspectscore=0
+ adultscore=0 malwarescore=0 spamscore=0 mlxlogscore=986 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502280000
+ definitions=main-2503260146
+X-Proofpoint-ORIG-GUID: fFh6r667__hc3xQUKhL3_BSQUyOhfzed
+X-Proofpoint-GUID: fFh6r667__hc3xQUKhL3_BSQUyOhfzed
 
-Add support for Aeonsemi AS21xxx 10G C45 PHYs. These PHYs integrate
-an IPC to setup some configuration and require special handling to
-sync with the parity bit. The parity bit is a way the IPC use to
-follow correct order of command sent.
+On 3/17/25 7:04 PM, Dongli Zhang wrote:
+> @@ -1390,6 +1424,24 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
+>  			goto err;
+>  		}
+> 
+> +		if (unlikely(vq_log && log_num)) {
+> +			if (!cmd->tvc_log)
+> +				cmd->tvc_log = kmalloc_array(vq->dev->iov_limit,
+> +							     sizeof(*cmd->tvc_log),
+> +							     GFP_KERNEL);
+> +
+> +			if (likely(cmd->tvc_log)) {
+> +				memcpy(cmd->tvc_log, vq->log,> +				       sizeof(*cmd->tvc_log) * log_num);
+> +				cmd->tvc_log_num = log_num;
 
-Supported PHYs AS21011JB1, AS21011PB1, AS21010JB1, AS21010PB1,
-AS21511JB1, AS21511PB1, AS21510JB1, AS21510PB1, AS21210JB1,
-AS21210PB1 that all register with the PHY ID 0x7500 0x7510
-before the firmware is loaded.
 
-They all support up to 5 LEDs with various HW mode supported.
+Hey Dongli, this approach seems ok.
 
-While implementing it was found some strange coincidence with using the
-same logic for implementing C22 in MMD regs in Broadcom PHYs.
-
-For reference here the AS21xxx PHY name logic:
-
-AS21x1xxB1
-    ^ ^^
-    | |J: Supports SyncE/PTP
-    | |P: No SyncE/PTP support
-    | 1: Supports 2nd Serdes
-    | 2: Not 2nd Serdes support
-    0: 10G, 5G, 2.5G
-    5: 5G, 2.5G
-    2: 2.5G
-
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- MAINTAINERS               |    6 +
- drivers/net/phy/Kconfig   |   12 +
- drivers/net/phy/Makefile  |    1 +
- drivers/net/phy/as21xxx.c | 1048 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 1067 insertions(+)
- create mode 100644 drivers/net/phy/as21xxx.c
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 873aa2cce4d7..9a2df6d221bd 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -645,6 +645,12 @@ F:	drivers/iio/accel/adxl380.h
- F:	drivers/iio/accel/adxl380_i2c.c
- F:	drivers/iio/accel/adxl380_spi.c
- 
-+AEONSEMI PHY DRIVER
-+M:	Christian Marangi <ansuelsmth@gmail.com>
-+L:	netdev@vger.kernel.org
-+S:	Maintained
-+F:	drivers/net/phy/as21xxx.c
-+
- AF8133J THREE-AXIS MAGNETOMETER DRIVER
- M:	Ondřej Jirman <megi@xff.cz>
- S:	Maintained
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 41c15a2c2037..0c745bbae6c0 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -119,6 +119,18 @@ config AMCC_QT2025_PHY
- 	help
- 	  Adds support for the Applied Micro Circuits Corporation QT2025 PHY.
- 
-+config AS21XXX_PHY
-+	tristate "Aeonsemi AS21xxx PHYs"
-+	help
-+	  Currently supports the Aeonsemi AS21xxx PHY.
-+
-+	  These are C45 PHYs 10G that require all a generic firmware.
-+
-+	  Supported PHYs AS21011JB1, AS21011PB1, AS21010JB1, AS21010PB1,
-+	  AS21511JB1, AS21511PB1, AS21510JB1, AS21510PB1, AS21210JB1,
-+	  AS21210PB1 that all register with the PHY ID 0x7500 0x7500
-+	  before the firmware is loaded.
-+
- source "drivers/net/phy/aquantia/Kconfig"
- 
- config AX88796B_PHY
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index c8dac6e92278..14156bf11267 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -39,6 +39,7 @@ obj-$(CONFIG_AIR_EN8811H_PHY)   += air_en8811h.o
- obj-$(CONFIG_AMD_PHY)		+= amd.o
- obj-$(CONFIG_AMCC_QT2025_PHY)	+= qt2025.o
- obj-$(CONFIG_AQUANTIA_PHY)	+= aquantia/
-+obj-$(CONFIG_AS21XXX_PHY)	+= as21xxx.o
- ifdef CONFIG_AX88796B_RUST_PHY
-   obj-$(CONFIG_AX88796B_PHY)	+= ax88796b_rust.o
- else
-diff --git a/drivers/net/phy/as21xxx.c b/drivers/net/phy/as21xxx.c
-new file mode 100644
-index 000000000000..7dcf33439a3e
---- /dev/null
-+++ b/drivers/net/phy/as21xxx.c
-@@ -0,0 +1,1048 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Aeonsemi AS21XXxX PHY Driver
-+ *
-+ * Author: Christian Marangi <ansuelsmth@gmail.com>
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/firmware.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/phy.h>
-+
-+#define VEND1_GLB_REG_CPU_RESET_ADDR_LO_BASEADDR 0x3
-+#define VEND1_GLB_REG_CPU_RESET_ADDR_HI_BASEADDR 0x4
-+
-+#define VEND1_GLB_REG_CPU_CTRL		0xe
-+#define   VEND1_GLB_CPU_CTRL_MASK	GENMASK(4, 0)
-+#define   VEND1_GLB_CPU_CTRL_LED_POLARITY_MASK GENMASK(12, 8)
-+#define   VEND1_GLB_CPU_CTRL_LED_POLARITY(_n) FIELD_PREP(VEND1_GLB_CPU_CTRL_LED_POLARITY_MASK, \
-+							 BIT(_n))
-+
-+#define VEND1_FW_START_ADDR		0x100
-+
-+#define VEND1_GLB_REG_MDIO_INDIRECT_ADDRCMD 0x101
-+#define VEND1_GLB_REG_MDIO_INDIRECT_LOAD 0x102
-+
-+#define VEND1_GLB_REG_MDIO_INDIRECT_STATUS 0x103
-+
-+#define VEND1_PTP_CLK			0x142
-+#define   VEND1_PTP_CLK_EN		BIT(6)
-+
-+/* 5 LED at step of 0x20
-+ * FE: Fast-Ethernet (10/100)
-+ * GE: Gigabit-Ethernet (1000)
-+ * NG: New-Generation (2500/5000/10000)
-+ */
-+#define VEND1_LED_REG(_n)		(0x1800 + ((_n) * 0x10))
-+#define   VEND1_LED_REG_A_EVENT		GENMASK(15, 11)
-+#define VEND1_LED_CONF			0x1881
-+#define   VEND1_LED_CONFG_BLINK		GENMASK(7, 0)
-+
-+#define VEND1_SPEED_STATUS		0x4002
-+#define   VEND1_SPEED_MASK		GENMASK(7, 0)
-+#define   VEND1_SPEED_10000		FIELD_PREP_CONST(VEND1_SPEED_MASK, 0x3)
-+#define   VEND1_SPEED_5000		FIELD_PREP_CONST(VEND1_SPEED_MASK, 0x5)
-+#define   VEND1_SPEED_2500		FIELD_PREP_CONST(VEND1_SPEED_MASK, 0x9)
-+#define   VEND1_SPEED_1000		FIELD_PREP_CONST(VEND1_SPEED_MASK, 0x10)
-+#define   VEND1_SPEED_100		FIELD_PREP_CONST(VEND1_SPEED_MASK, 0x20)
-+#define   VEND1_SPEED_10		FIELD_PREP_CONST(VEND1_SPEED_MASK, 0x0)
-+
-+#define VEND1_IPC_CMD			0x5801
-+#define   AEON_IPC_CMD_PARITY		BIT(15)
-+#define   AEON_IPC_CMD_SIZE		GENMASK(10, 6)
-+#define   AEON_IPC_CMD_OPCODE		GENMASK(5, 0)
-+
-+#define IPC_CMD_NOOP			0x0  /* Do nothing */
-+#define IPC_CMD_INFO			0x1  /* Get Firmware Version */
-+#define IPC_CMD_SYS_CPU			0x2  /* SYS_CPU */
-+#define IPC_CMD_BULK_DATA		0xa  /* Pass bulk data in ipc registers. */
-+#define IPC_CMD_BULK_WRITE		0xc  /* Write bulk data to memory */
-+#define IPC_CMD_CFG_PARAM		0x1a /* Write config parameters to memory */
-+#define IPC_CMD_NG_TESTMODE		0x1b /* Set NG test mode and tone */
-+#define IPC_CMD_TEMP_MON		0x15 /* Temperature monitoring function */
-+#define IPC_CMD_SET_LED			0x23 /* Set led */
-+
-+#define VEND1_IPC_STS			0x5802
-+#define   AEON_IPC_STS_PARITY		BIT(15)
-+#define   AEON_IPC_STS_SIZE		GENMASK(14, 10)
-+#define   AEON_IPC_STS_OPCODE		GENMASK(9, 4)
-+#define   AEON_IPC_STS_STATUS		GENMASK(3, 0)
-+#define   AEON_IPC_STS_STATUS_RCVD	FIELD_PREP_CONST(AEON_IPC_STS_STATUS, 0x1)
-+#define   AEON_IPC_STS_STATUS_PROCESS	FIELD_PREP_CONST(AEON_IPC_STS_STATUS, 0x2)
-+#define   AEON_IPC_STS_STATUS_SUCCESS	FIELD_PREP_CONST(AEON_IPC_STS_STATUS, 0x4)
-+#define   AEON_IPC_STS_STATUS_ERROR	FIELD_PREP_CONST(AEON_IPC_STS_STATUS, 0x8)
-+#define   AEON_IPC_STS_STATUS_BUSY	FIELD_PREP_CONST(AEON_IPC_STS_STATUS, 0xe)
-+#define   AEON_IPC_STS_STATUS_READY	FIELD_PREP_CONST(AEON_IPC_STS_STATUS, 0xf)
-+
-+#define VEND1_IPC_DATA0			0x5808
-+#define VEND1_IPC_DATA1			0x5809
-+#define VEND1_IPC_DATA2			0x580a
-+#define VEND1_IPC_DATA3			0x580b
-+#define VEND1_IPC_DATA4			0x580c
-+#define VEND1_IPC_DATA5			0x580d
-+#define VEND1_IPC_DATA6			0x580e
-+#define VEND1_IPC_DATA7			0x580f
-+#define VEND1_IPC_DATA(_n)		(VEND1_IPC_DATA0 + (_n))
-+
-+/* Sub command of CMD_INFO */
-+#define IPC_INFO_VERSION		0x1
-+
-+/* Sub command of CMD_SYS_CPU */
-+#define IPC_SYS_CPU_REBOOT		0x3
-+#define IPC_SYS_CPU_IMAGE_OFST		0x4
-+#define IPC_SYS_CPU_IMAGE_CHECK		0x5
-+#define IPC_SYS_CPU_PHY_ENABLE		0x6
-+
-+/* Sub command of CMD_CFG_PARAM */
-+#define IPC_CFG_PARAM_DIRECT		0x4
-+
-+/* CFG DIRECT sub command */
-+#define IPC_CFG_PARAM_DIRECT_NG_PHYCTRL	0x1
-+#define IPC_CFG_PARAM_DIRECT_CU_AN	0x2
-+#define IPC_CFG_PARAM_DIRECT_SDS_PCS	0x3
-+#define IPC_CFG_PARAM_DIRECT_AUTO_EEE	0x4
-+#define IPC_CFG_PARAM_DIRECT_SDS_PMA	0x5
-+#define IPC_CFG_PARAM_DIRECT_DPC_RA	0x6
-+#define IPC_CFG_PARAM_DIRECT_DPC_PKT_CHK 0x7
-+#define IPC_CFG_PARAM_DIRECT_DPC_SDS_WAIT_ETH 0x8
-+#define IPC_CFG_PARAM_DIRECT_WDT	0x9
-+#define IPC_CFG_PARAM_DIRECT_SDS_RESTART_AN 0x10
-+#define IPC_CFG_PARAM_DIRECT_TEMP_MON	0x11
-+#define IPC_CFG_PARAM_DIRECT_WOL	0x12
-+
-+/* Sub command of CMD_TEMP_MON */
-+#define IPC_CMD_TEMP_MON_GET		0x4
-+
-+#define AS21XXX_MDIO_AN_C22		0xffe0
-+
-+#define PHY_ID_AS21XXX			0x75009410
-+/* AS21xxx ID Legend
-+ * AS21x1xxB1
-+ *     ^ ^^
-+ *     | |J: Supports SyncE/PTP
-+ *     | |P: No SyncE/PTP support
-+ *     | 1: Supports 2nd Serdes
-+ *     | 2: Not 2nd Serdes support
-+ *     0: 10G, 5G, 2.5G
-+ *     5: 5G, 2.5G
-+ *     2: 2.5G
-+ */
-+#define PHY_ID_AS21011JB1		0x75009402
-+#define PHY_ID_AS21011PB1		0x75009412
-+#define PHY_ID_AS21010JB1		0x75009422
-+#define PHY_ID_AS21010PB1		0x75009432
-+#define PHY_ID_AS21511JB1		0x75009442
-+#define PHY_ID_AS21511PB1		0x75009452
-+#define PHY_ID_AS21510JB1		0x75009462
-+#define PHY_ID_AS21510PB1		0x75009472
-+#define PHY_ID_AS21210JB1		0x75009482
-+#define PHY_ID_AS21210PB1		0x75009492
-+#define PHY_VENDOR_AEONSEMI		0x75009400
-+
-+#define AEON_MAX_LDES			5
-+#define AEON_IPC_DELAY			10000
-+#define AEON_IPC_TIMEOUT		(AEON_IPC_DELAY * 100)
-+#define AEON_IPC_DATA_MAX		(8 * sizeof(u16))
-+
-+#define AEON_BOOT_ADDR			0x1000
-+#define AEON_CPU_BOOT_ADDR		0x2000
-+#define AEON_CPU_CTRL_FW_LOAD		(BIT(4) | BIT(2) | BIT(1) | BIT(0))
-+#define AEON_CPU_CTRL_FW_START		BIT(0)
-+
-+enum as21xxx_led_event {
-+	VEND1_LED_REG_A_EVENT_ON_10 = 0x0,
-+	VEND1_LED_REG_A_EVENT_ON_100,
-+	VEND1_LED_REG_A_EVENT_ON_1000,
-+	VEND1_LED_REG_A_EVENT_ON_2500,
-+	VEND1_LED_REG_A_EVENT_ON_5000,
-+	VEND1_LED_REG_A_EVENT_ON_10000,
-+	VEND1_LED_REG_A_EVENT_ON_FE_GE,
-+	VEND1_LED_REG_A_EVENT_ON_NG,
-+	VEND1_LED_REG_A_EVENT_ON_FULL_DUPLEX,
-+	VEND1_LED_REG_A_EVENT_ON_COLLISION,
-+	VEND1_LED_REG_A_EVENT_BLINK_TX,
-+	VEND1_LED_REG_A_EVENT_BLINK_RX,
-+	VEND1_LED_REG_A_EVENT_BLINK_ACT,
-+	VEND1_LED_REG_A_EVENT_ON_LINK,
-+	VEND1_LED_REG_A_EVENT_ON_LINK_BLINK_ACT,
-+	VEND1_LED_REG_A_EVENT_ON_LINK_BLINK_RX,
-+	VEND1_LED_REG_A_EVENT_ON_FE_GE_BLINK_ACT,
-+	VEND1_LED_REG_A_EVENT_ON_NG_BLINK_ACT,
-+	VEND1_LED_REG_A_EVENT_ON_NG_BLINK_FE_GE,
-+	VEND1_LED_REG_A_EVENT_ON_FD_BLINK_COLLISION,
-+	VEND1_LED_REG_A_EVENT_ON,
-+	VEND1_LED_REG_A_EVENT_OFF,
-+};
-+
-+struct as21xxx_led_pattern_info {
-+	unsigned int pattern;
-+	u16 val;
-+};
-+
-+struct as21xxx_priv {
-+	bool parity_status;
-+	/* Protect concurrent IPC access */
-+	struct mutex ipc_lock;
-+};
-+
-+static struct as21xxx_led_pattern_info as21xxx_led_supported_pattern[] = {
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_LINK_10),
-+		.val = VEND1_LED_REG_A_EVENT_ON_10
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_LINK_100),
-+		.val = VEND1_LED_REG_A_EVENT_ON_100
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_LINK_1000),
-+		.val = VEND1_LED_REG_A_EVENT_ON_1000
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_LINK_2500),
-+		.val = VEND1_LED_REG_A_EVENT_ON_2500
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_LINK_5000),
-+		.val = VEND1_LED_REG_A_EVENT_ON_5000
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_LINK_10000),
-+		.val = VEND1_LED_REG_A_EVENT_ON_10000
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_LINK),
-+		.val = VEND1_LED_REG_A_EVENT_ON_LINK
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_LINK_10) |
-+			   BIT(TRIGGER_NETDEV_LINK_100) |
-+			   BIT(TRIGGER_NETDEV_LINK_1000),
-+		.val = VEND1_LED_REG_A_EVENT_ON_FE_GE
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_LINK_2500) |
-+			   BIT(TRIGGER_NETDEV_LINK_5000) |
-+			   BIT(TRIGGER_NETDEV_LINK_10000),
-+		.val = VEND1_LED_REG_A_EVENT_ON_NG
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_FULL_DUPLEX),
-+		.val = VEND1_LED_REG_A_EVENT_ON_FULL_DUPLEX
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_TX),
-+		.val = VEND1_LED_REG_A_EVENT_BLINK_TX
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_RX),
-+		.val = VEND1_LED_REG_A_EVENT_BLINK_RX
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_TX) |
-+			   BIT(TRIGGER_NETDEV_RX),
-+		.val = VEND1_LED_REG_A_EVENT_BLINK_ACT
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_LINK_10) |
-+			   BIT(TRIGGER_NETDEV_LINK_100) |
-+			   BIT(TRIGGER_NETDEV_LINK_1000) |
-+			   BIT(TRIGGER_NETDEV_LINK_2500) |
-+			   BIT(TRIGGER_NETDEV_LINK_5000) |
-+			   BIT(TRIGGER_NETDEV_LINK_10000),
-+		.val = VEND1_LED_REG_A_EVENT_ON_LINK
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_LINK_10) |
-+			   BIT(TRIGGER_NETDEV_LINK_100) |
-+			   BIT(TRIGGER_NETDEV_LINK_1000) |
-+			   BIT(TRIGGER_NETDEV_LINK_2500) |
-+			   BIT(TRIGGER_NETDEV_LINK_5000) |
-+			   BIT(TRIGGER_NETDEV_LINK_10000) |
-+			   BIT(TRIGGER_NETDEV_TX) |
-+			   BIT(TRIGGER_NETDEV_RX),
-+		.val = VEND1_LED_REG_A_EVENT_ON_LINK_BLINK_ACT
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_LINK_10) |
-+			   BIT(TRIGGER_NETDEV_LINK_100) |
-+			   BIT(TRIGGER_NETDEV_LINK_1000) |
-+			   BIT(TRIGGER_NETDEV_LINK_2500) |
-+			   BIT(TRIGGER_NETDEV_LINK_5000) |
-+			   BIT(TRIGGER_NETDEV_LINK_10000) |
-+			   BIT(TRIGGER_NETDEV_RX),
-+		.val = VEND1_LED_REG_A_EVENT_ON_LINK_BLINK_RX
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_LINK_10) |
-+			   BIT(TRIGGER_NETDEV_LINK_100) |
-+			   BIT(TRIGGER_NETDEV_LINK_1000) |
-+			   BIT(TRIGGER_NETDEV_TX) |
-+			   BIT(TRIGGER_NETDEV_RX),
-+		.val = VEND1_LED_REG_A_EVENT_ON_FE_GE_BLINK_ACT
-+	},
-+	{
-+		.pattern = BIT(TRIGGER_NETDEV_LINK_2500) |
-+			   BIT(TRIGGER_NETDEV_LINK_5000) |
-+			   BIT(TRIGGER_NETDEV_LINK_10000) |
-+			   BIT(TRIGGER_NETDEV_TX) |
-+			   BIT(TRIGGER_NETDEV_RX),
-+		.val = VEND1_LED_REG_A_EVENT_ON_NG_BLINK_ACT
-+	}
-+};
-+
-+static int aeon_firmware_boot(struct phy_device *phydev, const u8 *data,
-+			      size_t size)
-+{
-+	int i, ret;
-+	u16 val;
-+
-+	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND1, VEND1_GLB_REG_CPU_CTRL,
-+			     VEND1_GLB_CPU_CTRL_MASK, AEON_CPU_CTRL_FW_LOAD);
-+	if (ret)
-+		return ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, VEND1_FW_START_ADDR,
-+			    AEON_BOOT_ADDR);
-+	if (ret)
-+		return ret;
-+
-+	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND1,
-+			     VEND1_GLB_REG_MDIO_INDIRECT_ADDRCMD,
-+			     0x3ffc, 0xc000);
-+	if (ret)
-+		return ret;
-+
-+	val = phy_read_mmd(phydev, MDIO_MMD_VEND1,
-+			   VEND1_GLB_REG_MDIO_INDIRECT_STATUS);
-+	if (val > 1) {
-+		phydev_err(phydev, "wrong origin mdio_indirect_status: %x\n", val);
-+		return -EINVAL;
-+	}
-+
-+	/* Firmware is always aligned to u16 */
-+	for (i = 0; i < size; i += 2) {
-+		val = data[i + 1] << 8 | data[i];
-+
-+		ret = phy_write_mmd(phydev, MDIO_MMD_VEND1,
-+				    VEND1_GLB_REG_MDIO_INDIRECT_LOAD, val);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1,
-+			    VEND1_GLB_REG_CPU_RESET_ADDR_LO_BASEADDR,
-+			    lower_16_bits(AEON_CPU_BOOT_ADDR));
-+	if (ret)
-+		return ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1,
-+			    VEND1_GLB_REG_CPU_RESET_ADDR_HI_BASEADDR,
-+			    upper_16_bits(AEON_CPU_BOOT_ADDR));
-+	if (ret)
-+		return ret;
-+
-+	return phy_modify_mmd(phydev, MDIO_MMD_VEND1, VEND1_GLB_REG_CPU_CTRL,
-+			      VEND1_GLB_CPU_CTRL_MASK, AEON_CPU_CTRL_FW_START);
-+}
-+
-+static int aeon_firmware_load(struct phy_device *phydev)
-+{
-+	struct device *dev = &phydev->mdio.dev;
-+	const struct firmware *fw;
-+	const char *fw_name;
-+	int ret;
-+
-+	ret = of_property_read_string(dev->of_node, "firmware-name",
-+				      &fw_name);
-+	if (ret)
-+		return ret;
-+
-+	ret = request_firmware(&fw, fw_name, dev);
-+	if (ret) {
-+		phydev_err(phydev, "failed to find FW file %s (%d)\n",
-+			   fw_name, ret);
-+		return ret;
-+	}
-+
-+	ret = aeon_firmware_boot(phydev, fw->data, fw->size);
-+
-+	release_firmware(fw);
-+
-+	return ret;
-+}
-+
-+static int aeon_ipcs_wait_cmd(struct phy_device *phydev, bool parity_status)
-+{
-+	u16 val;
-+
-+	/* Exit condition logic:
-+	 * - Wait for parity bit equal
-+	 * - Wait for status success, error OR ready
-+	 */
-+	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1, VEND1_IPC_STS, val,
-+					 FIELD_GET(AEON_IPC_STS_PARITY, val) == parity_status &&
-+					 (val & AEON_IPC_STS_STATUS) != AEON_IPC_STS_STATUS_RCVD &&
-+					 (val & AEON_IPC_STS_STATUS) != AEON_IPC_STS_STATUS_PROCESS &&
-+					 (val & AEON_IPC_STS_STATUS) != AEON_IPC_STS_STATUS_BUSY,
-+					 AEON_IPC_DELAY, AEON_IPC_TIMEOUT, false);
-+}
-+
-+static int aeon_ipc_send_cmd(struct phy_device *phydev,
-+			     struct as21xxx_priv *priv,
-+			     u32 cmd, u16 *ret_sts)
-+{
-+	bool curr_parity;
-+	int ret;
-+
-+	/* The IPC sync by using a single parity bit.
-+	 * Each CMD have alternately this bit set or clear
-+	 * to understand correct flow and packet order.
-+	 */
-+	curr_parity = priv->parity_status;
-+	if (priv->parity_status)
-+		cmd |= AEON_IPC_CMD_PARITY;
-+
-+	/* Always update parity for next packet */
-+	priv->parity_status = !priv->parity_status;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, VEND1_IPC_CMD, cmd);
-+	if (ret)
-+		return ret;
-+
-+	/* Wait for packet to be processed */
-+	usleep_range(AEON_IPC_DELAY, AEON_IPC_DELAY + 5000);
-+
-+	/* With no ret_sts, ignore waiting for packet completion
-+	 * (ipc parity bit sync)
-+	 */
-+	if (!ret_sts)
-+		return 0;
-+
-+	ret = aeon_ipcs_wait_cmd(phydev, curr_parity);
-+	if (ret)
-+		return ret;
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND1, VEND1_IPC_STS);
-+	if (ret < 0)
-+		return ret;
-+
-+	*ret_sts = ret;
-+	if ((*ret_sts & AEON_IPC_STS_STATUS) != AEON_IPC_STS_STATUS_SUCCESS)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static int aeon_ipc_send_msg(struct phy_device *phydev,
-+			     struct as21xxx_priv *priv,
-+			     u16 opcode, u16 *data, unsigned int data_len,
-+			     u16 *ret_sts)
-+{
-+	u32 cmd;
-+	int ret;
-+	int i;
-+
-+	/* IPC have a max of 8 register to transfer data,
-+	 * make sure we never exceed this.
-+	 */
-+	if (data_len > AEON_IPC_DATA_MAX)
-+		return -EINVAL;
-+
-+	mutex_lock(&priv->ipc_lock);
-+
-+	for (i = 0; i < data_len / sizeof(u16); i++)
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, VEND1_IPC_DATA(i),
-+			      data[i]);
-+
-+	cmd = FIELD_PREP(AEON_IPC_CMD_SIZE, data_len) |
-+	      FIELD_PREP(AEON_IPC_CMD_OPCODE, opcode);
-+	ret = aeon_ipc_send_cmd(phydev, priv, cmd, ret_sts);
-+	if (ret)
-+		phydev_err(phydev, "failed to send ipc msg for %x: %d\n",
-+			   opcode, ret);
-+
-+	mutex_unlock(&priv->ipc_lock);
-+
-+	return ret;
-+}
-+
-+static int aeon_ipc_rcv_msg(struct phy_device *phydev,
-+			    struct as21xxx_priv *priv,
-+			    u16 ret_sts, u16 *data)
-+{
-+	unsigned int size = FIELD_GET(AEON_IPC_STS_SIZE, ret_sts);
-+	int ret;
-+	int i;
-+
-+	if ((ret_sts & AEON_IPC_STS_STATUS) == AEON_IPC_STS_STATUS_ERROR)
-+		return -EINVAL;
-+
-+	/* Prevent IPC from stack smashing the kernel */
-+	if (size > AEON_IPC_DATA_MAX)
-+		return -EINVAL;
-+
-+	mutex_lock(&priv->ipc_lock);
-+
-+	for (i = 0; i < DIV_ROUND_UP(size, sizeof(u16)); i++) {
-+		ret = phy_read_mmd(phydev, MDIO_MMD_VEND1, VEND1_IPC_DATA(i));
-+		if (ret < 0) {
-+			size = ret;
-+			goto out;
-+		}
-+
-+		data[i] = ret;
-+	}
-+
-+out:
-+	mutex_unlock(&priv->ipc_lock);
-+
-+	return size;
-+}
-+
-+/* Logic to sync parity bit with IPC.
-+ * We send 2 NOP cmd with same partity and we wait for IPC
-+ * to handle the packet only for the second one. This way
-+ * we make sure we are sync for every next cmd.
-+ */
-+static int aeon_ipc_sync_parity(struct phy_device *phydev,
-+				struct as21xxx_priv *priv)
-+{
-+	u16 ret_sts;
-+	u32 cmd;
-+	int ret;
-+
-+	mutex_lock(&priv->ipc_lock);
-+
-+	/* Send NOP with no parity */
-+	cmd = FIELD_PREP(AEON_IPC_CMD_SIZE, 0) |
-+	      FIELD_PREP(AEON_IPC_CMD_OPCODE, IPC_CMD_NOOP);
-+	aeon_ipc_send_cmd(phydev, priv, cmd, NULL);
-+
-+	/* Reset packet parity */
-+	priv->parity_status = false;
-+
-+	/* Send second NOP with no parity */
-+	ret = aeon_ipc_send_cmd(phydev, priv, cmd, &ret_sts);
-+
-+	mutex_unlock(&priv->ipc_lock);
-+
-+	/* We expect to return -EINVAL */
-+	if (ret != -EINVAL)
-+		return ret;
-+
-+	if ((ret_sts & AEON_IPC_STS_STATUS) != AEON_IPC_STS_STATUS_READY) {
-+		phydev_err(phydev, "Invalid IPC status on sync parity: %x\n",
-+			   ret_sts);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int aeon_ipc_get_fw_version(struct phy_device *phydev,
-+				   struct as21xxx_priv *priv)
-+{
-+	u16 ret_data[8], data[1];
-+	u16 ret_sts;
-+	int ret;
-+
-+	data[0] = IPC_INFO_VERSION;
-+	ret = aeon_ipc_send_msg(phydev, priv, IPC_CMD_INFO, data,
-+				sizeof(data), &ret_sts);
-+	if (ret)
-+		return ret;
-+
-+	ret = aeon_ipc_rcv_msg(phydev, priv, ret_sts, ret_data);
-+	if (ret < 0)
-+		return ret;
-+
-+	phydev_info(phydev, "Firmware Version: %s\n", (char *)ret_data);
-+
-+	return 0;
-+}
-+
-+static int aeon_dpc_ra_enable(struct phy_device *phydev,
-+			      struct as21xxx_priv *priv)
-+{
-+	u16 data[2];
-+	u16 ret_sts;
-+
-+	data[0] = IPC_CFG_PARAM_DIRECT;
-+	data[1] = IPC_CFG_PARAM_DIRECT_DPC_RA;
-+
-+	return aeon_ipc_send_msg(phydev, priv, IPC_CMD_CFG_PARAM, data,
-+				 sizeof(data), &ret_sts);
-+}
-+
-+static int as21xxx_probe(struct phy_device *phydev)
-+{
-+	struct as21xxx_priv *priv;
-+	int ret;
-+
-+	priv = devm_kzalloc(&phydev->mdio.dev,
-+			    sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+	phydev->priv = priv;
-+
-+	ret = devm_mutex_init(&phydev->mdio.dev,
-+			      &priv->ipc_lock);
-+	if (ret)
-+		return ret;
-+
-+	ret = aeon_ipc_sync_parity(phydev, priv);
-+	if (ret)
-+		return ret;
-+
-+	return aeon_ipc_get_fw_version(phydev, priv);
-+}
-+
-+static int as21xxx_read_link(struct phy_device *phydev, int *bmcr)
-+{
-+	int status;
-+
-+	/* Normal C22 BMCR report inconsistent data, use
-+	 * the mapped C22 in C45 to have more consistent link info.
-+	 */
-+	*bmcr = phy_read_mmd(phydev, MDIO_MMD_AN,
-+			     AS21XXX_MDIO_AN_C22 + MII_BMCR);
-+	if (*bmcr < 0)
-+		return *bmcr;
-+
-+	/* Autoneg is being started, therefore disregard current
-+	 * link status and report link as down.
-+	 */
-+	if (*bmcr & BMCR_ANRESTART) {
-+		phydev->link = 0;
-+		return 0;
-+	}
-+
-+	status = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_STAT1);
-+	if (status < 0)
-+		return status;
-+
-+	phydev->link = !!(status & MDIO_STAT1_LSTATUS);
-+
-+	return 0;
-+}
-+
-+static int as21xxx_read_c22_lpa(struct phy_device *phydev)
-+{
-+	int lpagb;
-+
-+	/* MII_STAT1000 are only filled in the mapped C22
-+	 * in C45, use that to fill lpagb values and check.
-+	 */
-+	lpagb = phy_read_mmd(phydev, MDIO_MMD_AN,
-+			     AS21XXX_MDIO_AN_C22 + MII_STAT1000);
-+	if (lpagb < 0)
-+		return lpagb;
-+
-+	if (lpagb & LPA_1000MSFAIL) {
-+		int adv = phy_read_mmd(phydev, MDIO_MMD_AN,
-+				       AS21XXX_MDIO_AN_C22 + MII_CTRL1000);
-+
-+		if (adv < 0)
-+			return adv;
-+
-+		if (adv & CTL1000_ENABLE_MASTER)
-+			phydev_err(phydev, "Master/Slave resolution failed, maybe conflicting manual settings?\n");
-+		else
-+			phydev_err(phydev, "Master/Slave resolution failed\n");
-+		return -ENOLINK;
-+	}
-+
-+	mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising,
-+					lpagb);
-+
-+	return 0;
-+}
-+
-+static int as21xxx_read_status(struct phy_device *phydev)
-+{
-+	int bmcr, old_link = phydev->link;
-+	int ret;
-+
-+	ret = as21xxx_read_link(phydev, &bmcr);
-+	if (ret)
-+		return ret;
-+
-+	/* why bother the PHY if nothing can have changed */
-+	if (phydev->autoneg == AUTONEG_ENABLE && old_link && phydev->link)
-+		return 0;
-+
-+	phydev->speed = SPEED_UNKNOWN;
-+	phydev->duplex = DUPLEX_UNKNOWN;
-+	phydev->pause = 0;
-+	phydev->asym_pause = 0;
-+
-+	if (phydev->autoneg == AUTONEG_ENABLE) {
-+		ret = genphy_c45_read_lpa(phydev);
-+		if (ret)
-+			return ret;
-+
-+		ret = as21xxx_read_c22_lpa(phydev);
-+		if (ret)
-+			return ret;
-+
-+		phy_resolve_aneg_linkmode(phydev);
-+	} else {
-+		int speed;
-+
-+		linkmode_zero(phydev->lp_advertising);
-+
-+		speed = phy_read_mmd(phydev, MDIO_MMD_VEND1,
-+				     VEND1_SPEED_STATUS);
-+		if (speed < 0)
-+			return speed;
-+
-+		switch (speed & VEND1_SPEED_STATUS) {
-+		case VEND1_SPEED_10000:
-+			phydev->speed = SPEED_10000;
-+			phydev->duplex = DUPLEX_FULL;
-+			break;
-+		case VEND1_SPEED_5000:
-+			phydev->speed = SPEED_5000;
-+			phydev->duplex = DUPLEX_FULL;
-+			break;
-+		case VEND1_SPEED_2500:
-+			phydev->speed = SPEED_2500;
-+			phydev->duplex = DUPLEX_FULL;
-+			break;
-+		case VEND1_SPEED_1000:
-+			phydev->speed = SPEED_1000;
-+			if (bmcr & BMCR_FULLDPLX)
-+				phydev->duplex = DUPLEX_FULL;
-+			else
-+				phydev->duplex = DUPLEX_HALF;
-+			break;
-+		case VEND1_SPEED_100:
-+			phydev->speed = SPEED_100;
-+			phydev->duplex = DUPLEX_FULL;
-+			break;
-+		case VEND1_SPEED_10:
-+			phydev->speed = SPEED_10;
-+			phydev->duplex = DUPLEX_FULL;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int as21xxx_led_brightness_set(struct phy_device *phydev,
-+				      u8 index, enum led_brightness value)
-+{
-+	u16 val = VEND1_LED_REG_A_EVENT_OFF;
-+
-+	if (index > AEON_MAX_LDES)
-+		return -EINVAL;
-+
-+	if (value)
-+		val = VEND1_LED_REG_A_EVENT_ON;
-+
-+	return phy_modify_mmd(phydev, MDIO_MMD_VEND1,
-+			      VEND1_LED_REG(index),
-+			      VEND1_LED_REG_A_EVENT,
-+			      FIELD_PREP(VEND1_LED_REG_A_EVENT, val));
-+}
-+
-+static int as21xxx_led_hw_is_supported(struct phy_device *phydev, u8 index,
-+				       unsigned long rules)
-+{
-+	int i;
-+
-+	if (index > AEON_MAX_LDES)
-+		return -EINVAL;
-+
-+	for (i = 0; i < ARRAY_SIZE(as21xxx_led_supported_pattern); i++)
-+		if (rules == as21xxx_led_supported_pattern[i].pattern)
-+			return 0;
-+
-+	return -EOPNOTSUPP;
-+}
-+
-+static int as21xxx_led_hw_control_get(struct phy_device *phydev, u8 index,
-+				      unsigned long *rules)
-+{
-+	int i, val;
-+
-+	if (index > AEON_MAX_LDES)
-+		return -EINVAL;
-+
-+	val = phy_read_mmd(phydev, MDIO_MMD_VEND1, VEND1_LED_REG(index));
-+	if (val < 0)
-+		return val;
-+
-+	val = FIELD_GET(VEND1_LED_REG_A_EVENT, val);
-+	for (i = 0; i < ARRAY_SIZE(as21xxx_led_supported_pattern); i++)
-+		if (val == as21xxx_led_supported_pattern[i].val) {
-+			*rules = as21xxx_led_supported_pattern[i].pattern;
-+			return 0;
-+		}
-+
-+	/* Should be impossible */
-+	return -EINVAL;
-+}
-+
-+static int as21xxx_led_hw_control_set(struct phy_device *phydev, u8 index,
-+				      unsigned long rules)
-+{
-+	u16 val = 0;
-+	int i;
-+
-+	if (index > AEON_MAX_LDES)
-+		return -EINVAL;
-+
-+	for (i = 0; i < ARRAY_SIZE(as21xxx_led_supported_pattern); i++)
-+		if (rules == as21xxx_led_supported_pattern[i].pattern) {
-+			val = as21xxx_led_supported_pattern[i].val;
-+			break;
-+		}
-+
-+	return phy_modify_mmd(phydev, MDIO_MMD_VEND1,
-+			      VEND1_LED_REG(index),
-+			      VEND1_LED_REG_A_EVENT,
-+			      FIELD_PREP(VEND1_LED_REG_A_EVENT, val));
-+}
-+
-+static int as21xxx_led_polarity_set(struct phy_device *phydev, int index,
-+				    unsigned long modes)
-+{
-+	bool led_active_low = false;
-+	u16 mask, val = 0;
-+	u32 mode;
-+
-+	if (index > AEON_MAX_LDES)
-+		return -EINVAL;
-+
-+	for_each_set_bit(mode, &modes, __PHY_LED_MODES_NUM) {
-+		switch (mode) {
-+		case PHY_LED_ACTIVE_LOW:
-+			led_active_low = true;
-+			break;
-+		case PHY_LED_ACTIVE_HIGH: /* default mode */
-+			led_active_low = false;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+	}
-+
-+	mask = VEND1_GLB_CPU_CTRL_LED_POLARITY(index);
-+	if (led_active_low)
-+		val = VEND1_GLB_CPU_CTRL_LED_POLARITY(index);
-+
-+	return phy_modify_mmd(phydev, MDIO_MMD_VEND1,
-+			      VEND1_GLB_REG_CPU_CTRL,
-+			      mask, val);
-+}
-+
-+static int as21xxx_match_phy_device(struct phy_device *phydev,
-+				    const struct phy_driver *phydrv)
-+{
-+	struct as21xxx_priv *priv;
-+	u32 phy_id;
-+	int ret;
-+
-+	/* Skip PHY that are not AS21xxx or already have firmware loaded */
-+	if (phydev->c45_ids.device_ids[MDIO_MMD_PCS] != PHY_ID_AS21XXX)
-+		return phydev->phy_id == phydrv->phy_id;
-+
-+	/* Read PHY ID to handle firmware just loaded */
-+	ret = phy_read_mmd(phydev, MDIO_MMD_PCS, MII_PHYSID1);
-+	if (ret < 0)
-+		return ret;
-+	phy_id = ret << 16;
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_PCS, MII_PHYSID2);
-+	if (ret < 0)
-+		return ret;
-+	phy_id |= ret;
-+
-+	/* With PHY ID not the generic AS21xxx one assume
-+	 * the firmware just loaded
-+	 */
-+	if (phy_id != PHY_ID_AS21XXX)
-+		return phy_id == phydrv->phy_id;
-+
-+	/* Allocate temp priv and load the firmware */
-+	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	mutex_init(&priv->ipc_lock);
-+
-+	ret = aeon_firmware_load(phydev);
-+	if (ret)
-+		return ret;
-+
-+	ret = aeon_ipc_sync_parity(phydev, priv);
-+	if (ret)
-+		return ret;
-+
-+	/* Enable PTP clk if not already Enabled */
-+	ret = phy_set_bits_mmd(phydev, MDIO_MMD_VEND1, VEND1_PTP_CLK,
-+			       VEND1_PTP_CLK_EN);
-+	if (ret)
-+		return ret;
-+
-+	ret = aeon_dpc_ra_enable(phydev, priv);
-+	if (ret)
-+		return ret;
-+
-+	mutex_destroy(&priv->ipc_lock);
-+	kfree(priv);
-+
-+	/* Return not maching anyway as PHY ID will change after
-+	 * firmware is loaded.
-+	 */
-+	return 0;
-+}
-+
-+static struct phy_driver as21xxx_drivers[] = {
-+	{
-+		/* PHY expose in C45 as 0x7500 0x9410
-+		 * before firmware is loaded.
-+		 */
-+		PHY_ID_MATCH_EXACT(PHY_ID_AS21XXX),
-+		.name		= "Aeonsemi AS21xxx",
-+		.match_phy_device = as21xxx_match_phy_device,
-+	},
-+	{
-+		PHY_ID_MATCH_EXACT(PHY_ID_AS21011JB1),
-+		.name		= "Aeonsemi AS21011JB1",
-+		.probe		= as21xxx_probe,
-+		.match_phy_device = as21xxx_match_phy_device,
-+		.read_status	= as21xxx_read_status,
-+		.led_brightness_set = as21xxx_led_brightness_set,
-+		.led_hw_is_supported = as21xxx_led_hw_is_supported,
-+		.led_hw_control_set = as21xxx_led_hw_control_set,
-+		.led_hw_control_get = as21xxx_led_hw_control_get,
-+		.led_polarity_set = as21xxx_led_polarity_set,
-+	},
-+	{
-+		PHY_ID_MATCH_EXACT(PHY_ID_AS21011PB1),
-+		.name		= "Aeonsemi AS21011PB1",
-+		.probe		= as21xxx_probe,
-+		.match_phy_device = as21xxx_match_phy_device,
-+		.read_status	= as21xxx_read_status,
-+		.led_brightness_set = as21xxx_led_brightness_set,
-+		.led_hw_is_supported = as21xxx_led_hw_is_supported,
-+		.led_hw_control_set = as21xxx_led_hw_control_set,
-+		.led_hw_control_get = as21xxx_led_hw_control_get,
-+		.led_polarity_set = as21xxx_led_polarity_set,
-+	},
-+	{
-+		PHY_ID_MATCH_EXACT(PHY_ID_AS21010PB1),
-+		.name		= "Aeonsemi AS21010PB1",
-+		.probe		= as21xxx_probe,
-+		.match_phy_device = as21xxx_match_phy_device,
-+		.read_status	= as21xxx_read_status,
-+		.led_brightness_set = as21xxx_led_brightness_set,
-+		.led_hw_is_supported = as21xxx_led_hw_is_supported,
-+		.led_hw_control_set = as21xxx_led_hw_control_set,
-+		.led_hw_control_get = as21xxx_led_hw_control_get,
-+		.led_polarity_set = as21xxx_led_polarity_set,
-+	},
-+	{
-+		PHY_ID_MATCH_EXACT(PHY_ID_AS21010JB1),
-+		.name		= "Aeonsemi AS21010JB1",
-+		.probe		= as21xxx_probe,
-+		.match_phy_device = as21xxx_match_phy_device,
-+		.read_status	= as21xxx_read_status,
-+		.led_brightness_set = as21xxx_led_brightness_set,
-+		.led_hw_is_supported = as21xxx_led_hw_is_supported,
-+		.led_hw_control_set = as21xxx_led_hw_control_set,
-+		.led_hw_control_get = as21xxx_led_hw_control_get,
-+		.led_polarity_set = as21xxx_led_polarity_set,
-+	},
-+	{
-+		PHY_ID_MATCH_EXACT(PHY_ID_AS21210PB1),
-+		.name		= "Aeonsemi AS21210PB1",
-+		.probe		= as21xxx_probe,
-+		.match_phy_device = as21xxx_match_phy_device,
-+		.read_status	= as21xxx_read_status,
-+		.led_brightness_set = as21xxx_led_brightness_set,
-+		.led_hw_is_supported = as21xxx_led_hw_is_supported,
-+		.led_hw_control_set = as21xxx_led_hw_control_set,
-+		.led_hw_control_get = as21xxx_led_hw_control_get,
-+		.led_polarity_set = as21xxx_led_polarity_set,
-+	},
-+	{
-+		PHY_ID_MATCH_EXACT(PHY_ID_AS21510JB1),
-+		.name		= "Aeonsemi AS21510JB1",
-+		.probe		= as21xxx_probe,
-+		.match_phy_device = as21xxx_match_phy_device,
-+		.read_status	= as21xxx_read_status,
-+		.led_brightness_set = as21xxx_led_brightness_set,
-+		.led_hw_is_supported = as21xxx_led_hw_is_supported,
-+		.led_hw_control_set = as21xxx_led_hw_control_set,
-+		.led_hw_control_get = as21xxx_led_hw_control_get,
-+		.led_polarity_set = as21xxx_led_polarity_set,
-+	},
-+	{
-+		PHY_ID_MATCH_EXACT(PHY_ID_AS21510PB1),
-+		.name		= "Aeonsemi AS21510PB1",
-+		.probe		= as21xxx_probe,
-+		.match_phy_device = as21xxx_match_phy_device,
-+		.read_status	= as21xxx_read_status,
-+		.led_brightness_set = as21xxx_led_brightness_set,
-+		.led_hw_is_supported = as21xxx_led_hw_is_supported,
-+		.led_hw_control_set = as21xxx_led_hw_control_set,
-+		.led_hw_control_get = as21xxx_led_hw_control_get,
-+		.led_polarity_set = as21xxx_led_polarity_set,
-+	},
-+	{
-+		PHY_ID_MATCH_EXACT(PHY_ID_AS21511JB1),
-+		.name		= "Aeonsemi AS21511JB1",
-+		.probe		= as21xxx_probe,
-+		.match_phy_device = as21xxx_match_phy_device,
-+		.read_status	= as21xxx_read_status,
-+		.led_brightness_set = as21xxx_led_brightness_set,
-+		.led_hw_is_supported = as21xxx_led_hw_is_supported,
-+		.led_hw_control_set = as21xxx_led_hw_control_set,
-+		.led_hw_control_get = as21xxx_led_hw_control_get,
-+		.led_polarity_set = as21xxx_led_polarity_set,
-+	},
-+	{
-+		PHY_ID_MATCH_EXACT(PHY_ID_AS21210JB1),
-+		.name		= "Aeonsemi AS21210JB1",
-+		.probe		= as21xxx_probe,
-+		.match_phy_device = as21xxx_match_phy_device,
-+		.read_status	= as21xxx_read_status,
-+		.led_brightness_set = as21xxx_led_brightness_set,
-+		.led_hw_is_supported = as21xxx_led_hw_is_supported,
-+		.led_hw_control_set = as21xxx_led_hw_control_set,
-+		.led_hw_control_get = as21xxx_led_hw_control_get,
-+		.led_polarity_set = as21xxx_led_polarity_set,
-+	},
-+	{
-+		PHY_ID_MATCH_EXACT(PHY_ID_AS21511PB1),
-+		.name		= "Aeonsemi AS21511PB1",
-+		.probe		= as21xxx_probe,
-+		.match_phy_device = as21xxx_match_phy_device,
-+		.read_status	= as21xxx_read_status,
-+		.led_brightness_set = as21xxx_led_brightness_set,
-+		.led_hw_is_supported = as21xxx_led_hw_is_supported,
-+		.led_hw_control_set = as21xxx_led_hw_control_set,
-+		.led_hw_control_get = as21xxx_led_hw_control_get,
-+		.led_polarity_set = as21xxx_led_polarity_set,
-+	},
-+};
-+module_phy_driver(as21xxx_drivers);
-+
-+static struct mdio_device_id __maybe_unused as21xxx_tbl[] = {
-+	{ PHY_ID_MATCH_VENDOR(PHY_VENDOR_AEONSEMI) },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(mdio, as21xxx_tbl);
-+
-+MODULE_DESCRIPTION("Aeonsemi AS21xxx PHY driver");
-+MODULE_AUTHOR("Christian Marangi <ansuelsmth@gmail.com>");
-+MODULE_LICENSE("GPL");
--- 
-2.48.1
-
+Could you just move this to a function?
