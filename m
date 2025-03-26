@@ -1,158 +1,212 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADE321931F
-	for <netdev@vger.kernel.org>; Wed, 26 Mar 2025 17:36:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743010602; cv=none; b=RTJAMgb28fMBIC8dh2dLmkuTzKntYWmh37QdjIERk2/F2xqDD/t3Bdoftr8uOFSFhZVbG2FyTw73W+ZAXkzQBOhXITI1svjRsBSmLu/XlBuQjMR1Oa9Gr2LbqNCrYUqeoDSicNO+bjIHkFQw75SABmMnk/gDUhRGyPJaniuWqvk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743010602; c=relaxed/simple;
-	bh=1VrlRkek0WqK4HdrG8gRnbeBPzHFXN/BnW7I901OUcI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c6p4vnCDCCLS2UkrhptCczPAzV75jREOxUrfHs2Z8nVh77orMTjMBuUmG7yQBBUrWD5lf+YPtaBrBdefS+bBXKEPcoj/cZ3zk9oMB/sHSbFupVbFo9OoePiIM90FuzS6Qa8UTVo95FCOCblq9txpQ1bnIQD4eyvuM3i0PdlQkrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1txUfR-0000ck-SV; Wed, 26 Mar 2025 18:35:53 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1txUfO-001nHx-0b;
-	Wed, 26 Mar 2025 18:35:50 +0100
-Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id B6C7C3E7719;
-	Wed, 26 Mar 2025 17:35:49 +0000 (UTC)
-Date: Wed, 26 Mar 2025 18:35:47 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ming Yu <a0282524688@gmail.com>
-Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, 
-	brgl@bgdev.pl, andi.shyti@kernel.org, mailhol.vincent@wanadoo.fr, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
-	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-rtc@vger.kernel.org, 
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH v8 4/7] can: Add Nuvoton NCT6694 CANFD support
-Message-ID: <20250326-utopian-mega-scallop-5f6899-mkl@pengutronix.de>
-References: <20250225081644.3524915-1-a0282524688@gmail.com>
- <20250225081644.3524915-5-a0282524688@gmail.com>
- <20250317-outrageous-helpful-agama-39476f-mkl@pengutronix.de>
- <CAOoeyxVF9baa8UKJKWcbTLzvMo3Ma=GRCbdnBSoGOw0Lk5j4sA@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121A523C8CE
+	for <netdev@vger.kernel.org>; Wed, 26 Mar 2025 17:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743010603; cv=fail; b=mDWvpK4/E20qqkzGSW4fWO6cqDOrNHezmCHGgnicubMFE15/acjXvsO8AleWzRRpqmADLK45UAazNYZDRf3nTaPbnUutVICQAaAOj/as47gmu5MTMeZBUx+1fTYuVF447OhoS4SUR86/xI7uVHKBY1hiyXa8peSW9qvn1uRorbA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743010603; c=relaxed/simple;
+	bh=L28CvxnhcqfZQgT+LS+1eHJLDNd6DJvOXXdITzeCsHI=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=TaDBu9qj9Ap5mnhlOqEODfww35f3oEZQyQ9Ys5/vaXPnbgAEZHr/1aKSxYpB4+Ba4Hn+bWtFSk0aXdWdgJ4PxcQPvHBSEZb4tsKlXll3HZ+PhsfQbVFPRT/XLnFfpNvesO+MeHIRPZ5Nk7VZrsoTbJuAI8XejrdJNBTylHeW8wU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XD/MfWyQ; arc=fail smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XD/MfWyQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743010602; x=1774546602;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=L28CvxnhcqfZQgT+LS+1eHJLDNd6DJvOXXdITzeCsHI=;
+  b=XD/MfWyQRNwX/7lCP9lpmMi6YGbJGNaEVd2Esl2z80ICbVxYJlcKsiSb
+   l9buz5fQ59GA0v6n06R5YapAYC7sagum8eb069GM7ht8THFBX9drcdpg2
+   sZvwTwg08w2DIqX8cjdm4g7J8DqvANFzw4TSgekSI0dAEvwoMrDDcRYTK
+   IMo9VUiG8x1pVQ+h7+xeT5NY9tfNTyrGGwYomkoqwYrAWVHkmtwRF33xH
+   VXO89HazyrfPLqk4tfUqgrB51OOLrFX00zs165MBlesgxEWAj48jISgMn
+   mc/volx7/PxQih3YOZHLVgzQKUYCVcp/to0yAXJB9uZRok7bqmbWgL1LH
+   Q==;
+X-CSE-ConnectionGUID: xBKXIZe1TqK+iutTnuzgAQ==
+X-CSE-MsgGUID: wOFqc/ilRPKTj4s0JI9DGQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="44038045"
+X-IronPort-AV: E=Sophos;i="6.14,278,1736841600"; 
+   d="scan'208";a="44038045"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2025 10:36:41 -0700
+X-CSE-ConnectionGUID: e+7/9jpoQCOCLqvcvy6y4w==
+X-CSE-MsgGUID: 4R2PBEIWTMeBLvbAH52iVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,278,1736841600"; 
+   d="scan'208";a="129005313"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2025 10:36:41 -0700
+Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.1544.14; Wed, 26 Mar 2025 10:36:40 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Wed, 26 Mar 2025 10:36:40 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.176)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Wed, 26 Mar 2025 10:36:40 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AvnPCWhfSUvzdZntmuceohLihyUw528mPD55DJvIEAKlPql58MLqwDIBRyjfoB52iq07V6otCcxudWhcORiBQdqf7FDI3+neIYV89KEv0e2IPkSX0iwUoM0PXzlCmUF+2E041cCveWfmFe3xroP5A39E9rZ82j63hwWS4Q0anCZWwl7ECgaMa8CCXJm6MzPLDt31Pis841vAxsJ5C5BGnnJxuzCt0SV/NW2gzQFHRdXtJP4FVXJFOcFzk/bOgTWHLNUof5+eXuC4ZA+4lYIQEg9Xau7N9P07ko/5dtDaMF34ikgkQTP+NIYq+JJtd5siBG2T79WO9yghb5YmgvlkhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5LpdKJ5qcedp9d1IDxe0PMrFUB7smwUOgL8e2pWVavY=;
+ b=sYyKYrfG5KjVqMN5rkQqjWAteFPNcraROlWZvxdZSzUjdIzyGSoiJJgysrTsCPZbbi4fUEp45fhkoK6SS9PXoGgY2jqRNRKJD8ZQOo591sdijiAuflrirX/lMT3gyJntRQWtYIiRNg61Ms806lPYnnuMahpuH8z0WhEXpNb+7Yz6b7Jc9RFmuUGa7DxaL/7QNZ4KTTGCxrVhsGPlEVZg7GBF5UMLWJ4FoEdQYqRcsOuiNOeTZcHO9h7AdoLR9az6IezEwzDl/J0JEjRC8/Et7L1yUyLaqGVrqBtJBz3E6UEcr6MgT3zVn2D/EX3imgqp+39nFNTZzMd4RoUHZAoAVg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SN7PR11MB7420.namprd11.prod.outlook.com (2603:10b6:806:328::20)
+ by SN7PR11MB6851.namprd11.prod.outlook.com (2603:10b6:806:2a3::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Wed, 26 Mar
+ 2025 17:36:09 +0000
+Received: from SN7PR11MB7420.namprd11.prod.outlook.com
+ ([fe80::b8ba:be35:3903:118f]) by SN7PR11MB7420.namprd11.prod.outlook.com
+ ([fe80::b8ba:be35:3903:118f%5]) with mapi id 15.20.8534.042; Wed, 26 Mar 2025
+ 17:36:09 +0000
+Message-ID: <c5eede52-0d32-4677-bd2b-8e0f31dba857@intel.com>
+Date: Wed, 26 Mar 2025 11:36:01 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl-next 0/2] idpf: add flow steering
+ support
+To: Alexander Lobakin <aleksander.lobakin@intel.com>
+CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
+	<przemyslaw.kitszel@intel.com>, <anthony.l.nguyen@intel.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <almasrymina@google.com>,
+	<willemb@google.com>
+References: <20250324134939.253647-1-ahmed.zaki@intel.com>
+ <452e0969-9811-4853-86e0-ce1be0b848c9@intel.com>
+Content-Language: en-US
+From: Ahmed Zaki <ahmed.zaki@intel.com>
+In-Reply-To: <452e0969-9811-4853-86e0-ce1be0b848c9@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR04CA0115.namprd04.prod.outlook.com
+ (2603:10b6:303:83::30) To SN7PR11MB7420.namprd11.prod.outlook.com
+ (2603:10b6:806:328::20)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3fo4gps22dugmrwp"
-Content-Disposition: inline
-In-Reply-To: <CAOoeyxVF9baa8UKJKWcbTLzvMo3Ma=GRCbdnBSoGOw0Lk5j4sA@mail.gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR11MB7420:EE_|SN7PR11MB6851:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3f44976a-b07d-48f6-737a-08dd6c8cb1c2
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RjN4YVdKanBkTENkVkcrMzMxTk51TDhFajZwQkprRktRWnBRckZEQkozRUZT?=
+ =?utf-8?B?N0lhTGZ1RjlXVzJNY2o5WHQ1d2NWS2tmOVMzQ1N4ZVcwa3dkb0Fnc2E0QU9D?=
+ =?utf-8?B?YU1LWVRaSWhYUG8wdUpGWlhZcTdPNnloY3pBNTU0U3RtSW1tTjBYb1gyR3Iz?=
+ =?utf-8?B?VGVqQ1VValQ3Ry9CbnYxN21TdzVIcVh6dmVQZ0IzVk9GWEtkUFh1VmZ2SGI3?=
+ =?utf-8?B?VnhCc1lYUHkwT2s0M3pDOXJPbStJTHBocTR4aHRwY1kxM0ZXOFcxL0VNazl6?=
+ =?utf-8?B?bjRKa1FIQ0RDOUg3K3RaQzJsekJLbjhNWmxFbnZWdWloYmxFeWdBN3ZPbUhC?=
+ =?utf-8?B?cHBxMG41MU02eUpUa2FvTUpXWTJBdHcyRTlwSDNMYWRIS0RESE9hRDN2Mm5U?=
+ =?utf-8?B?WTNTQXlRbGdCQ2ozLzZkZ0pBd1c0YXhJNi9LMzZTYVFSNEExQmlYWmlrVjlB?=
+ =?utf-8?B?S2QvYS9TTnBiWWFNb1k2UXlsZktUaVBickV2Q1BrQzhCYjdnYWNkaHhUZjl4?=
+ =?utf-8?B?TVFra3VBblhQUFhDYTByNjZyOFoxWm1HVUpnVGNvMUx6eDJYOXB5UGVOMTJD?=
+ =?utf-8?B?eC9jY2IyN0p5Vm9MbllUNGFrdUJSdWp0ZEh5ZzlXTGZVcGZ1blJUNFMxN29F?=
+ =?utf-8?B?NHRFRHV3UkMvdHdJVkVKZG1kY043ajJ1dVJBV1hYdUp4aTYrVXBZZ2VXamVr?=
+ =?utf-8?B?ZzFrck1JUHNOZVh4c3VsVTN3MVIrcnE1c3NWeGdaSzlCd0FJbzZiT055TEFK?=
+ =?utf-8?B?djZjTjlNTS82eVd1WXp6d1JVTnR5UjZoME5YV0JrcEVMTmtYR0ZEdzlENDZY?=
+ =?utf-8?B?NWsxa3VhUVFwUml3V0Z5bHdCZXJSemk1cnUvaGZqYllxMGNVMkdyTWNBWGdF?=
+ =?utf-8?B?a040ditZWlEyTWFqdUhLSEo1eEtaRWpDL1BPbzNHaUR4WHpoSUxJd1gyVVly?=
+ =?utf-8?B?TVozR28veVhZbXY1VG1LZTJPclIrQ05tRTh4V0pqdG1jQnY3RXVkUzB2QTdY?=
+ =?utf-8?B?NWZJV0RaQzhvazI1NTkwajRXYTZOYkE0WW9oSFBkTnJoWm05dDI5TEJzQ2Na?=
+ =?utf-8?B?Yjg3MHJHQStsYmdQQmdNZy9JcHQ0SDBlZTRMckRjSGZSYUFwWjVsb2oyMFF6?=
+ =?utf-8?B?eFdjWHdrcWVSRFpQbkp2SFBlaXpJV2ZJZGxFZmN3L0FXM1N6SnFxOVd4MVJK?=
+ =?utf-8?B?ZGFNQWxwdlpMeDFVSGVPTm93QXRNc0lQYjlGMXVQbzI3K0V4ZUpVUHZsQUs0?=
+ =?utf-8?B?Vjk1RDVtRUg5TXZTbHV2REhWLzRXd3E0MDhvektFZGFKZ1YrZlpWSkpOa0to?=
+ =?utf-8?B?SUk5ZEVqZm5hbGRoNUlvUzUzTGdQc2J3RmprRUFOUHpNUThvUnR6cG9aTkVO?=
+ =?utf-8?B?c3orM2lDamRHVUpaVzZTS2VMWmRMTSszOHErYXBJc0Q3ODZBeVNxZjBBb0RF?=
+ =?utf-8?B?V3E2bW52RkVJWGRKcisvRm1UV3ovTjhhY1dZTkFDeDF0WVo4bmJZamlHTlN1?=
+ =?utf-8?B?MWt1NkJ1RDY3SFloaWtJTmdIKzlldWU0eXNSZGRSNWxvb2tCZytuUW5BVit5?=
+ =?utf-8?B?M0syTVNvaEc0VFV4UUFFUmJvMXhCNWFDWDNCdDAyQk1taGhEejBNZGllSVk4?=
+ =?utf-8?B?b1oyUnIzU2NqM2g3Z0FzQnlLUllENnRMNzJsNUFLZk1ZaXdJb1Z1RWdxU0Qv?=
+ =?utf-8?B?SFRuS3lNdDIrNTV1TWthSEdlTThrRHpIa3FnMEFPbnZsTzVPVFkwOFVLQzU5?=
+ =?utf-8?B?SnphNERuSVZCYjJoL0d6ZURzK1F6aXhJc3RpZXJ1SDlaNElZN0lKVHE4SDEr?=
+ =?utf-8?B?c1R0OHdsZDhvbDNjSlB2UVNvd3FGUGtyWkR3aTlBUHZFUXVrczNPd3U0Q3o3?=
+ =?utf-8?Q?Fha/76It5zMBc?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB7420.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SUVmbnY3a3pYTDBicUdqZ0pqVTBMY1NhQXpsUllZRHdZUzhIMXdBNDhqMHg5?=
+ =?utf-8?B?SmgyY2hncWlCQjdaY0ptaDlsdnd6ZXlVdk04dTlnNXJxLzJ5cm9yUEUrdUpL?=
+ =?utf-8?B?Yk5EYTM4NWp6c3Voa0dsL3BMQkdYSlVKRy9odEtSbXE3QUZ5UVZyQ2ovMTA5?=
+ =?utf-8?B?ZmxmM3htSFQxYThYd3AwTlV6MXdWYzlzSzJ2TFhOenpMOGJ3V1dIQndzcWJp?=
+ =?utf-8?B?enQ4S0pxcWFqa3lveEZKM3M5TGhKTlU0NElLZFZ5d1dWczNocnFibWZ5OXda?=
+ =?utf-8?B?bVkvS0YzWDhDK1VHKzM2V1JmdFI3dHRPQ1JWV2VjRFFONkJMQTh5cEtiRDQw?=
+ =?utf-8?B?MkgzaEx1TTc0dTByalVhMGZRSU5aV3VxOVdJUU5LUWs5MHdYeHUzSlFmZkRv?=
+ =?utf-8?B?WEhrYzROL2RaM29nRHZaSEhsazRGQ3B6YkV2YVd4UlF2SnRtTFljQUQ1Z1Fj?=
+ =?utf-8?B?NVBBckN4UkZSSlF1d21PRW83RlJQN1VVUjQ0U21DaDBJVDQzS0I0T0pXMERD?=
+ =?utf-8?B?aS9seWpVRWNjdHg2bTNrblZpYXhTbGZSSHc2cVZpcnVJMGhDYWJtcVVQZHJt?=
+ =?utf-8?B?YXZCR21hMlVQajZIamlSRS9kV1Bid0tvUHhRVDl5eW5jTEdHaE5nRmVHZ1Bt?=
+ =?utf-8?B?OHdGOUpOdFhFREFKZm9qcVhDelJhVW1XVWtEalY1eUhCQ1E2SVNaZXlKck5R?=
+ =?utf-8?B?Y2lMd1JIM3JiZ0RzcWJsSHpaQzd5anZSRUtuS3BDelJqcGNmbGF0UDkwSG5k?=
+ =?utf-8?B?RnNTYXppZGYwVzdlN0ZXTEx1YUNjeXVWZ0dZNzRia1AweXFJMk5YWldsb1o3?=
+ =?utf-8?B?c0FjbGpWd045YXJjdzFETkNNMjdYZ2FTN3lxd004QTlzTU5LL0VzMmJYZVB6?=
+ =?utf-8?B?TldEMzlmaEZSOXB1bGtLUzhhNUFnMWFlVk1xNUZNT2FkNkVvVEZVbEY1RXZH?=
+ =?utf-8?B?RFRuR0dJTkllT3d3YTJvNndwUU9OcnVYMFpxL2h6MlFxeWhlRzJmVm9FYWFo?=
+ =?utf-8?B?NkRNZEF4dlZCUThPbDNlY0lOR2VTK3FLdExhQ2RGV2JMa0R3SzYxNk04dHUw?=
+ =?utf-8?B?cEZTdnBUYzZTT3NXcHMvakljOUtrMkl4VzVoZWVxTCtPUml3T1prbmlmS2xT?=
+ =?utf-8?B?b2JhNVE0dTVDQjV4QTVDNi9zNjNlRnF2TE9Ec2J3TkNHZkJuK2dvcysyVFJW?=
+ =?utf-8?B?L2x0ZS9IcG5HdjdHVUhoMHY5Y2ZjMm1OUW1GanYrTjBnVURyeWtVQ24yWFRt?=
+ =?utf-8?B?K0RSVm53dS9JbTdvY0IvaFlMa082SVphWUhmbk1aOUYzdUZtUldpTGRidVBn?=
+ =?utf-8?B?enlSMmR5V1FKd3dYU24yUFg4RWQ3WHRUNzY5UHh3WWlQeDJyN0xlNlp0b1Bi?=
+ =?utf-8?B?cktiSlJuSjArMUVUUGV4Y0NjUE50Tm5SRGU5TGNneWN6aHhBMjg1YllFNEQv?=
+ =?utf-8?B?M2lZZ2RaWm5OZ2l1bkdKeGFpMCtrUTJVSURGd0hoclFDcjE0bTlVVUlQSnow?=
+ =?utf-8?B?L0VOd0gwZTVoUEhvNkFOVWo4UzgzRi9YVWtHZDVYVE5YSVdvM1dYMW9MREdU?=
+ =?utf-8?B?alQyR3ZiTUNleHNpeXF5Z1NnN2FtS3BmRTB4WHdhbUFuM3UwMWl1WEgySGRx?=
+ =?utf-8?B?VTcvYnh2NE1BOU5uaUtoNnp1d2xIYzdoQytlbDR4VHNOTVJDTFQwaFpCZGhD?=
+ =?utf-8?B?TUQ0ZXBkeHVBMEdrOGNEa2hxTzY1eGVEZ3BYcEZoSC81UVphL1FYSG81WkFT?=
+ =?utf-8?B?TE9PZGw2bzRkbHNlbVNQTEpneUFJSWVUSmVRV0U1dlJqSzBwMDRHQXdncU1N?=
+ =?utf-8?B?TXZjemw0ampaUU8zTTg4MmovRUJ3R1Zra3lhZ2lIeUltai9uaSthbDljUWt1?=
+ =?utf-8?B?VHpPNE02RTZiL1VYOU5VWEgzSFd1UFZDNy9HNVZmUWtnQ054OFVydGw1Z0JI?=
+ =?utf-8?B?Njk5NFp6ZzRJbWVMelFONURMM3hUZUZVTG5jUGJPdEZHQTNCU1lzbHh6YkFO?=
+ =?utf-8?B?cHFvR01BL1M3ZjFjM0luV3lnbS9tWlFqeXI5ZysxWTVoZ0p5UEd2K0kzNHVn?=
+ =?utf-8?B?MmFnRldRZjgxN01TTU1TWW1mZnhRWVJWaW04cnFrMWpadmlmQzdYWWtNdElZ?=
+ =?utf-8?Q?sFLqVFMwk6nWSDFe3XIpoEwTf?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3f44976a-b07d-48f6-737a-08dd6c8cb1c2
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB7420.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2025 17:36:09.2409
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YsRJeI73sMPY+w6ab3PWcoGt46gTSYIbYHpBiqQV6INx2Q7y1LrRZ66YuV1WnC4O35fLk5jXg8hW/WEZ0ofMdg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6851
+X-OriginatorOrg: intel.com
 
 
---3fo4gps22dugmrwp
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v8 4/7] can: Add Nuvoton NCT6694 CANFD support
-MIME-Version: 1.0
 
-On 26.03.2025 10:37:11, Ming Yu wrote:
-> Marc Kleine-Budde <mkl@pengutronix.de> =E6=96=BC 2025=E5=B9=B43=E6=9C=881=
-7=E6=97=A5 =E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=888:01=E5=AF=AB=E9=81=93=EF=
-=BC=9A
-> > > +static int nct6694_can_start(struct net_device *ndev)
-> > > +{
-> > > +     struct nct6694_can_priv *priv =3D netdev_priv(ndev);
-> > > +     const struct can_bittiming *d_bt =3D &priv->can.data_bittiming;
-> > > +     const struct can_bittiming *n_bt =3D &priv->can.bittiming;
-> > > +     struct nct6694_can_setting *setting __free(kfree) =3D NULL;
-> > > +     const struct nct6694_cmd_header cmd_hd =3D {
-> > > +             .mod =3D NCT6694_CAN_MOD,
-> > > +             .cmd =3D NCT6694_CAN_SETTING,
-> > > +             .sel =3D ndev->dev_port,
-> > > +             .len =3D cpu_to_le16(sizeof(*setting))
-> > > +     };
-> > > +     int ret;
-> > > +
-> > > +     setting =3D kzalloc(sizeof(*setting), GFP_KERNEL);
-> > > +     if (!setting)
-> > > +             return -ENOMEM;
-> > > +
-> > > +     setting->nbr =3D cpu_to_le32(n_bt->bitrate);
-> > > +     setting->dbr =3D cpu_to_le32(d_bt->bitrate);
-> >
-> > I just noticed one thing that needs clarification/documentation.
-> >
-> > You have nct6694_can_bittiming_nominal_const and
-> > nct6694_can_bittiming_data_const, but only pass the bit rates to your
-> > device.
-> >
-> > Do the bit timing const really reflect the HW limitations of your
-> > device?
-> >
-> > Are you sure your device uses the same algorithm as the kernel and
-> > calculates the same bit timing parameters as the kernel, so that the
-> > values given to the user space reflects the bit timing parameter chosen
-> > by your device?
-> >
->=20
-> Originally, I only intended to provide NBR and DBR for user
-> configuration. In the next patch, I will add code to configure
-> NBTP(Nominal Bit Timing Prescaler) and DBTP(Data Bit Timing Prescaler)
-> based on the setting of nct6694_can_bittiming_nominal_const and
-> nct6694_can_bittiming_data_const.
+On 2025-03-26 11:14 a.m., Alexander Lobakin wrote:
+> From: Ahmed Zaki <ahmed.zaki@intel.com>
+> Date: Mon, 24 Mar 2025 07:49:36 -0600
+> 
+>> Add basic flow steering. For now, we support IPv4 and TCP/UDP only.
+> 
+> 1. Very poor cover letter. I'd suggest describing a bit more here.
 
-Sounds good, but this doesn't answer my questions:
+I'd call it concise.  Let me know what is missing or needs clarification 
+  and I will add.
 
-You have nct6694_can_bittiming_nominal_const and
-nct6694_can_bittiming_data_const, but only pass the bit rates and the
-prescaler to your device.
+> 2. net-next is closed, so this is RFC at max.
 
-Do the bit timing const really reflect the HW limitations of your
-device?
+It was sent before net-next was closed.
 
-Are you sure your device uses the same algorithm as the kernel and
-calculates the same bit timing parameters as the kernel, so that the
-values given to the user space reflects the bit timing parameter chosen
-by your device?
 
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---3fo4gps22dugmrwp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmfkOvEACgkQDHRl3/mQ
-kZzpHQgAgGRAJKZUC90pxD/IpTMDutPBbTPEyhq69hM419fjym5rJ4HxuM6meZHF
-MCGE5zEy8fsC05K8QdtwmiAmvaGYg8b/Ky/4MTwj0R5AjFqfWFghJJ5hrypphQzB
-ZKiyvcnkIAxTgkEZlMg9MBQf+OdN5Q3Z/nHLPvfk0OHrsz44UqxPAfWuMI6HWoaN
-RTSbxLxlKoAWEDTzmyT6YAyehq42fVSdsC+FK82lQmloaAkq7dkQAUmaJn1pTEHL
-+ea6VayK34n+e3kzz2OkTDrOIvJwDSdX0lMrIT9A97ju+hgzdQSY839BL5xOvDEe
-9TFcEhv92TjknvV5PdmFfiwnNLDNHg==
-=T1kB
------END PGP SIGNATURE-----
-
---3fo4gps22dugmrwp--
