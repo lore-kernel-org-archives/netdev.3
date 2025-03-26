@@ -1,95 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5485821931F
-	for <netdev@vger.kernel.org>; Wed, 26 Mar 2025 17:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADE321931F
+	for <netdev@vger.kernel.org>; Wed, 26 Mar 2025 17:36:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743010598; cv=none; b=D9mLDb939qfNuzqYmvtmIqBk7ncksBBD6Jh19bxhuc41Wa7fUS5DvsdZdPfD2XHLGa8zj9N17GKjx9YVF4Z9OfX1zLeFD8p26Ok4MKLAuboIUOo5QMzSwFsTdeMXTZmbn/f1TyjCa6r2NZQoS5HdQ6vLkGY+nR7Le7r2lCTL4dk=
+	t=1743010602; cv=none; b=RTJAMgb28fMBIC8dh2dLmkuTzKntYWmh37QdjIERk2/F2xqDD/t3Bdoftr8uOFSFhZVbG2FyTw73W+ZAXkzQBOhXITI1svjRsBSmLu/XlBuQjMR1Oa9Gr2LbqNCrYUqeoDSicNO+bjIHkFQw75SABmMnk/gDUhRGyPJaniuWqvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743010598; c=relaxed/simple;
-	bh=vGIy/gqnHFyYw1zNLX74nL87hgxD+AOu8owi54326H8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P088VMxpGW4dL6lefTMmbtdQtP5erV9h9Lk83YNyb+FKFFCvMUHo3294Y5Kj2LybwuQCjmZBIWXAuYbxt/5uSFWJmjDHA2s3JZTqTr4jdl9nmcap2kA+dKiLpda6B8yQFh1Bldn7xz0bPw9ozUs8LlBGy89QwcX93NMymqeLSlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C/NwoluI; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C/NwoluI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286DCC4CEE8;
-	Wed, 26 Mar 2025 17:36:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743010597;
-	bh=vGIy/gqnHFyYw1zNLX74nL87hgxD+AOu8owi54326H8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=C/NwoluIw2uxtp/Q1bkhSy2FVK1ShaeROoMzw3K8a5EK0J09hDYm/SrlwjoMqKvuw
-	 wolrgDvX2Vyy4LP7q13KaijEuwFlFncB0Kh1Djlh6zP5Lj3juDs67GVDc8NgvlFqg/
-	 15qA9zu4E6rpBBBFhtrOa7sDg4BHW8nyCYnBndhwI5dE9PpQRR5y12kwFBoJUhIC0K
-	 rZm1r6bUTeV2hjq3oP8bb2pAYP3+utMMoKIZK3Gr4JA5BBul9dpOOzpbN2r2dQKNgX
-	 Qn2uO6jTHh7F2sMQFzjkXo8bKIWQdEdWkGekRx0KFSNRWEWN9YFCbcXi34xWdB83PF
-	 rrdk6GAg6t9TA==
-From: Antoine Tenart <atenart@kernel.org>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com
-Cc: Antoine Tenart <atenart@kernel.org>,
-	netdev@vger.kernel.org
-Subject: [PATCH net] net: decrease cached dst counters in dst_release
-Date: Wed, 26 Mar 2025 18:36:32 +0100
-Message-ID: <20250326173634.31096-1-atenart@kernel.org>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1743010602; c=relaxed/simple;
+	bh=1VrlRkek0WqK4HdrG8gRnbeBPzHFXN/BnW7I901OUcI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c6p4vnCDCCLS2UkrhptCczPAzV75jREOxUrfHs2Z8nVh77orMTjMBuUmG7yQBBUrWD5lf+YPtaBrBdefS+bBXKEPcoj/cZ3zk9oMB/sHSbFupVbFo9OoePiIM90FuzS6Qa8UTVo95FCOCblq9txpQ1bnIQD4eyvuM3i0PdlQkrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1txUfR-0000ck-SV; Wed, 26 Mar 2025 18:35:53 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1txUfO-001nHx-0b;
+	Wed, 26 Mar 2025 18:35:50 +0100
+Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id B6C7C3E7719;
+	Wed, 26 Mar 2025 17:35:49 +0000 (UTC)
+Date: Wed, 26 Mar 2025 18:35:47 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Ming Yu <a0282524688@gmail.com>
+Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, 
+	brgl@bgdev.pl, andi.shyti@kernel.org, mailhol.vincent@wanadoo.fr, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
+	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-rtc@vger.kernel.org, 
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH v8 4/7] can: Add Nuvoton NCT6694 CANFD support
+Message-ID: <20250326-utopian-mega-scallop-5f6899-mkl@pengutronix.de>
+References: <20250225081644.3524915-1-a0282524688@gmail.com>
+ <20250225081644.3524915-5-a0282524688@gmail.com>
+ <20250317-outrageous-helpful-agama-39476f-mkl@pengutronix.de>
+ <CAOoeyxVF9baa8UKJKWcbTLzvMo3Ma=GRCbdnBSoGOw0Lk5j4sA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="3fo4gps22dugmrwp"
+Content-Disposition: inline
+In-Reply-To: <CAOoeyxVF9baa8UKJKWcbTLzvMo3Ma=GRCbdnBSoGOw0Lk5j4sA@mail.gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Upstream fix ac888d58869b ("net: do not delay dst_entries_add() in
-dst_release()") moved decrementing the dst count from dst_destroy to
-dst_release to avoid accessing already freed data in case of netns
-dismantle. However in case CONFIG_DST_CACHE is enabled and OvS+tunnels
-are used, this fix is incomplete as the same issue will be seen for
-cached dsts:
 
-  Unable to handle kernel paging request at virtual address ffff5aabf6b5c000
-  Call trace:
-   percpu_counter_add_batch+0x3c/0x160 (P)
-   dst_release+0xec/0x108
-   dst_cache_destroy+0x68/0xd8
-   dst_destroy+0x13c/0x168
-   dst_destroy_rcu+0x1c/0xb0
-   rcu_do_batch+0x18c/0x7d0
-   rcu_core+0x174/0x378
-   rcu_core_si+0x18/0x30
+--3fo4gps22dugmrwp
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v8 4/7] can: Add Nuvoton NCT6694 CANFD support
+MIME-Version: 1.0
 
-Fix this by invalidating the cache, and thus decrementing cached dst
-counters, in dst_release too.
+On 26.03.2025 10:37:11, Ming Yu wrote:
+> Marc Kleine-Budde <mkl@pengutronix.de> =E6=96=BC 2025=E5=B9=B43=E6=9C=881=
+7=E6=97=A5 =E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=888:01=E5=AF=AB=E9=81=93=EF=
+=BC=9A
+> > > +static int nct6694_can_start(struct net_device *ndev)
+> > > +{
+> > > +     struct nct6694_can_priv *priv =3D netdev_priv(ndev);
+> > > +     const struct can_bittiming *d_bt =3D &priv->can.data_bittiming;
+> > > +     const struct can_bittiming *n_bt =3D &priv->can.bittiming;
+> > > +     struct nct6694_can_setting *setting __free(kfree) =3D NULL;
+> > > +     const struct nct6694_cmd_header cmd_hd =3D {
+> > > +             .mod =3D NCT6694_CAN_MOD,
+> > > +             .cmd =3D NCT6694_CAN_SETTING,
+> > > +             .sel =3D ndev->dev_port,
+> > > +             .len =3D cpu_to_le16(sizeof(*setting))
+> > > +     };
+> > > +     int ret;
+> > > +
+> > > +     setting =3D kzalloc(sizeof(*setting), GFP_KERNEL);
+> > > +     if (!setting)
+> > > +             return -ENOMEM;
+> > > +
+> > > +     setting->nbr =3D cpu_to_le32(n_bt->bitrate);
+> > > +     setting->dbr =3D cpu_to_le32(d_bt->bitrate);
+> >
+> > I just noticed one thing that needs clarification/documentation.
+> >
+> > You have nct6694_can_bittiming_nominal_const and
+> > nct6694_can_bittiming_data_const, but only pass the bit rates to your
+> > device.
+> >
+> > Do the bit timing const really reflect the HW limitations of your
+> > device?
+> >
+> > Are you sure your device uses the same algorithm as the kernel and
+> > calculates the same bit timing parameters as the kernel, so that the
+> > values given to the user space reflects the bit timing parameter chosen
+> > by your device?
+> >
+>=20
+> Originally, I only intended to provide NBR and DBR for user
+> configuration. In the next patch, I will add code to configure
+> NBTP(Nominal Bit Timing Prescaler) and DBTP(Data Bit Timing Prescaler)
+> based on the setting of nct6694_can_bittiming_nominal_const and
+> nct6694_can_bittiming_data_const.
 
-Fixes: d71785ffc7e7 ("net: add dst_cache to ovs vxlan lwtunnel")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
----
- net/core/dst.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Sounds good, but this doesn't answer my questions:
 
-diff --git a/net/core/dst.c b/net/core/dst.c
-index 9552a90d4772..6d76b799ce64 100644
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -165,6 +165,14 @@ static void dst_count_dec(struct dst_entry *dst)
- void dst_release(struct dst_entry *dst)
- {
- 	if (dst && rcuref_put(&dst->__rcuref)) {
-+#ifdef CONFIG_DST_CACHE
-+		if (dst->flags & DST_METADATA) {
-+			struct metadata_dst *md_dst = (struct metadata_dst *)dst;
-+
-+			if (md_dst->type == METADATA_IP_TUNNEL)
-+				dst_cache_reset_now(&md_dst->u.tun_info.dst_cache);
-+		}
-+#endif
- 		dst_count_dec(dst);
- 		call_rcu_hurry(&dst->rcu_head, dst_destroy_rcu);
- 	}
--- 
-2.49.0
+You have nct6694_can_bittiming_nominal_const and
+nct6694_can_bittiming_data_const, but only pass the bit rates and the
+prescaler to your device.
 
+Do the bit timing const really reflect the HW limitations of your
+device?
+
+Are you sure your device uses the same algorithm as the kernel and
+calculates the same bit timing parameters as the kernel, so that the
+values given to the user space reflects the bit timing parameter chosen
+by your device?
+
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--3fo4gps22dugmrwp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmfkOvEACgkQDHRl3/mQ
+kZzpHQgAgGRAJKZUC90pxD/IpTMDutPBbTPEyhq69hM419fjym5rJ4HxuM6meZHF
+MCGE5zEy8fsC05K8QdtwmiAmvaGYg8b/Ky/4MTwj0R5AjFqfWFghJJ5hrypphQzB
+ZKiyvcnkIAxTgkEZlMg9MBQf+OdN5Q3Z/nHLPvfk0OHrsz44UqxPAfWuMI6HWoaN
+RTSbxLxlKoAWEDTzmyT6YAyehq42fVSdsC+FK82lQmloaAkq7dkQAUmaJn1pTEHL
++ea6VayK34n+e3kzz2OkTDrOIvJwDSdX0lMrIT9A97ju+hgzdQSY839BL5xOvDEe
+9TFcEhv92TjknvV5PdmFfiwnNLDNHg==
+=T1kB
+-----END PGP SIGNATURE-----
+
+--3fo4gps22dugmrwp--
