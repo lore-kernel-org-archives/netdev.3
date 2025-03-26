@@ -1,63 +1,63 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09EF6253F26;
-	Wed, 26 Mar 2025 23:35:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5289264F8A;
+	Wed, 26 Mar 2025 23:35:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743032151; cv=none; b=EFILVedwkR9bLwHOxoQCUWhJQlnN909ptorJjt1UieSMWNfHdCyEjC1UpZ4Ti0Gqbyuc4Le/mS+6ZBB+P649pKrKPKmNhoPK9rQZypLfC0Gzm8yzkfQ3IJUHrIdJH35pZYJ8OV8tG2dnHvHwvIZMZoJuArw9+zaD4KNnESJB0y4=
+	t=1743032154; cv=none; b=pKG6gsy04geC/RdBAamn5pYaErF4qNgGZ+Pmnp/kqaz6a1Rx+k/evv3hXnMRpLVeBULvGrgX3u0b3xwhF1yihkTO91zjO6cjcAXrxwF54D4G9DAjGzYllOqtkrwIP8gaqC+FZ2kZKsgSbjMfp0F0P5zTvv3xkMqq91M0YV0UptI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743032151; c=relaxed/simple;
-	bh=lbW0dm9cpYRsI5fczkvr1PQPXs9w7fOCuPHKt6gm5io=;
+	s=arc-20240116; t=1743032154; c=relaxed/simple;
+	bh=aaP5jjL1QpF5Nj21o9Xb0lF9G3T0YoMhm8JsQ1WNWVU=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k3+Cv2ma7Z2e29NOlM8PeWhaTUUhGlYrm9u4OvPFa4/SScVMeRCTqLNFaxdob27hJXsqYnGbdRgjvuf7PFd0aeoPGP19OaCeBx50upQMg9OBfa8k6nbos9OubvJcf67c8mqvwBNORg9VD5l5o6jFcLUvbjMSK5WfUlXQAuRg+uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZWuqbUzH; arc=none smtp.client-ip=209.85.221.47
+	 MIME-Version; b=SebclYdcl/pMFL67SQ6S/J5OchrcYu5l6BkY53aBhejSfaISckB9bqhp5hC8Wa7y65psfOl8+JTDXmuP20KRWGMB2W6jHYioxy/ECzaSUo69qtUEBt1n61F2vUkEk5u5EWcqOQrF0SOnkyCo9ddLDJhVegb3lAM700Y5vButNy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c4gG70e9; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZWuqbUzH"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-39ac8e7688aso207478f8f.2;
-        Wed, 26 Mar 2025 16:35:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c4gG70e9"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3912d2c89ecso267930f8f.2;
+        Wed, 26 Mar 2025 16:35:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743032148; x=1743636948; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1743032151; x=1743636951; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SmtUYkrWbq//wEiBGA4Lmo6NUH8HS5BtMBEkrIN2VLo=;
-        b=ZWuqbUzHYcMleNbATzeCCi1/WTAUGRcsiQ/0ArdK0YZyw3LqNnwm8wpW1nzsoP6DQN
-         ttWEeoOYsviuw8rlyqdhAm1wRdHi5zMWBLRaXGyCfxs17AQJ0p0rOWMpHFje9k2KD3B8
-         dnIXboigz5V1sRm5XBQF4diGu34txUejHjP/rFSVeKWCIt3Hzr3+ymMItm0dW7Z+Aaej
-         u+iPOkNy2u6MlCKLMOGHsaVlwT9djpCu6qLquaNzLKg8qAoKZRPJPIU2yLAn6TFuEz8E
-         vstlAHFHkpwSD6ZyleHH1TSJiVx47Ki18zRJ6mYPJl0um5SCTogr3ZTvGsPB0dFHodm/
-         jqAA==
+        bh=7GVOqH2dtb9yz9XSZOrN5yDH4kiqYTHV4lLBUZDoMkU=;
+        b=c4gG70e9mqVteghtXEbd41WjIF91Kv+CutxcYqCSZibH/QMoCPIcH9AJd6K5taxRjA
+         9ayko0n8EzzFEjG4Ua+n9XbELAgXjjAHIWvmB2uH6xFDZQv23caYPOMrmBikc7gC9d5l
+         nenhowVJseTkzOMPFP3Eyi2JYnSVUiewo683VWyUdzj8z5fLb0SjM9ToGML6U9Btxg/l
+         XVe0EASzo6uAC2Z3PCc5XowXupAt0WQpz3LUSGsBMDYieZiHnS2TGSQ7QgXRT5XkaYXa
+         oGJgm1+8T3iPF3a2mfPgIDnggSXT1r4qD9wJoclfDWc7Q8JTeevnxX0f6FX2xcHwLkeS
+         bhwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743032148; x=1743636948;
+        d=1e100.net; s=20230601; t=1743032151; x=1743636951;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SmtUYkrWbq//wEiBGA4Lmo6NUH8HS5BtMBEkrIN2VLo=;
-        b=JtboJ9Eg2OmwsIdSc1+gU7+XMzlIh3Qp3cVNad3i6CZDo7FsrTMtUajiUlK6c7RyeB
-         e4SAr+rrh9cbAh+Ct0yIPvr/pPilCGTdxUEG+4zqAOH4EApWFxMe+xpwtbeM8aufZ7NN
-         YHQGzSEuBi1fa8qW3cfawjtHTg+wNO9cleRrikY7YhTyQ6p5Eg+vcsVq8tdM2k/dN2Me
-         Te4ZQ/UCL7G5V9FAhd58+Np2LEWkaalU1FoOoaT8O6UCO+cjRTTTJwLAwLszwbYN8uzm
-         nX+CwiSOaxvAH7vZf3saFYCwnfFAByUUkP2xZJ+g+Xx/prXY/UVN24/sVGXTaDkqobOh
-         xoDw==
-X-Forwarded-Encrypted: i=1; AJvYcCVijJVbMMhc3WDvs0jJ1v7q4v5UWkiSh7odo6iMhObp8c+4f122pWI1QVMPyEmIyqVD21B4hrq7qDCJ@vger.kernel.org, AJvYcCWDNlqTD6+avN4gqUeCwgUAQk0T1icTblNBkLgjDpwoSiqrc4GudZM+MUVVZ0ju40l2HSygGxWPFZTeEiIm@vger.kernel.org, AJvYcCXlyZlrJfyou/hhtdNbVcWPIpixaUht0/y0U0Hn9x4xT6o2f/uzUahS/tCV7f7QCokLvbsbonwR@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6WEhKeLoxl0q18r0oMrKnule5Z/lMuV53Q29wCc6lKt8EWuql
-	lst79jYPJKcvC2VS/5BrNZPexzt05bfetV+tu0e5wK5GnpZq1tHZ
-X-Gm-Gg: ASbGncsRASOaVy3VS/vyPmGUKdeZ/NFJurkJ+O/POtKw61SYNLJW5Iz/HJ1n44skCNJ
-	/R1oEP3GHG/XQIFFRcEKgbEckKdWBBhnBOQPGCpGXh6x97cZfqTpWl7nOE7Gowtu6FN+TACkF2Z
-	wGBiXKkeqG0a/+aXR7PaWe1545RqTTPCMkra5m1eOBp6ddjBDbk9CCXZuvzJTw03a7EUvDHJUO5
-	VDR+TnnoldhWMqlMz/Ds4+8fSjq/YtF0BO8jpcS6MRzGAKnU863GxttLGqTHIFyblMhOounJf1C
-	r6vD6Rvrtg2ORj8JzgIk2eGfmFLK+FXBGbo/RZKeHgzsCLC8uiL0nlZbUlVCO64oMfe5iR3sAK+
-	x7rg9QY8dPBXjdw==
-X-Google-Smtp-Source: AGHT+IHTpovy402t//M4l20qJxPXAvRaMi4gJ+XQdJ/gjTQ3OTcAUGORtSqMMLJTwZc0ZQLO8UNXCw==
-X-Received: by 2002:a05:6000:2a5:b0:391:1806:e23d with SMTP id ffacd0b85a97d-39ad1740291mr931734f8f.6.1743032148220;
-        Wed, 26 Mar 2025 16:35:48 -0700 (PDT)
+        bh=7GVOqH2dtb9yz9XSZOrN5yDH4kiqYTHV4lLBUZDoMkU=;
+        b=E29ZYJljNmc4dGUFjOJijmFzr2JbPhUE4ZVJRhdWumS1XvUENoju8bRpBK/0f9rLtv
+         3Aajxq4691ZOdgML9/CXUzoWdYH4tCnsOAThks3tjH+q1NkHb5bB8Y3If0WbvnUY4LQW
+         J2IAjbEpxO+IoFSdekzhlanuLseOg1gi5xKaAsKz25Y7JUg7DETVo0Gj2yIymGYKeN01
+         RnwiJTJM6O6uBo3jyldfXPZbTu7IKwMlcy9I6iOXKRxMwiJvuRDN9olCnb8sCE/NseJm
+         DsFOWoeGeYwEWZn1k5Q7Sb5xagXJZH7f5Npwd5oByJgaejfvgOx2igMVE4bKtCft8GxW
+         IGhA==
+X-Forwarded-Encrypted: i=1; AJvYcCU97o1lKmiF2bleZE+4Ko8zO/BF0VeR8L1JtBaxiLPNzH79j4TYNjSfpg69M4oYOy/9f0U5OjKO71kHe8G4@vger.kernel.org, AJvYcCVRzyEKVM02xYc3GhYlUytQf0mpskf0BdjBBAbbg+dmkIl+96Qa9UiycjqQ2C62nyOHeeoRVCwE@vger.kernel.org, AJvYcCXtAxdQhwYRstdy70on7BKEC7CoYAJVaunFLC9YwtasCx0AAet6u/uqc+mxvnrsLu8NH71e1Swgz3TQ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/3Do2qGHQKfta7Z+REnMipel3CQSQWogRafX7KbTz0f0nr71f
+	N+kmG7BVUaKhljnWB6vzQF2df1X/d5AiKtBk000cOgNhby0qK5NCBQ5UTg==
+X-Gm-Gg: ASbGnctQGA54uv+gBGBIUcPXOdgN9yZmUKP/dcyWCSVy8L8HHvuWoYYR3Ttpk70inJz
+	kpC3hZZB5Kz1Aw1DY/qTimp8Kz0XLnmA/ckKKZASvfrX3wbeFE+tuWtTCEk0j5P0y/I3tPbMyDb
+	GEv8U2sfjAKUaNIVHwlYTlEyDY88yf4wdySX/SqjwOVILdKfOjWLqb3Dbd5UVB3oE3C+byIE0q1
+	BrI+/WjIHk51SCl+EsibRm2t0DPdIGlmVOXsvj4fdS7cQHtXcXjsc/oLPmykIgNI9OrE2Veg3NW
+	opf/rx2Bbz7RTxUgBb1VGh1Gz5eyT3ybmkGNGLWjux8ZsPBjaHlU38tf39XyazxnO5TympyMH7x
+	w5VH59+VW4x58qQ==
+X-Google-Smtp-Source: AGHT+IFOa8WBGjFsJmHmRWSTbNPfcCi7DBXbnYepm+dNeI31EeMdbL+3WWzWWeVUU99LlcbWl2kQPQ==
+X-Received: by 2002:a05:6000:1ace:b0:391:29f:4f70 with SMTP id ffacd0b85a97d-39ad17544e8mr1002400f8f.3.1743032150980;
+        Wed, 26 Mar 2025 16:35:50 -0700 (PDT)
 Received: from localhost.localdomain (93-34-88-225.ip49.fastwebnet.it. [93.34.88.225])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3997f99579bsm18390328f8f.19.2025.03.26.16.35.47
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3997f99579bsm18390328f8f.19.2025.03.26.16.35.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Mar 2025 16:35:47 -0700 (PDT)
+        Wed, 26 Mar 2025 16:35:50 -0700 (PDT)
 From: Christian Marangi <ansuelsmth@gmail.com>
 To: Christian Marangi <ansuelsmth@gmail.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -78,9 +78,9 @@ To: Christian Marangi <ansuelsmth@gmail.com>,
 	netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [net-next RFC PATCH v3 2/4] net: phy: bcm87xx: simplify .match_phy_device OP
-Date: Thu, 27 Mar 2025 00:35:02 +0100
-Message-ID: <20250326233512.17153-3-ansuelsmth@gmail.com>
+Subject: [net-next RFC PATCH v3 4/4] dt-bindings: net: Document support for Aeonsemi PHYs
+Date: Thu, 27 Mar 2025 00:35:04 +0100
+Message-ID: <20250326233512.17153-5-ansuelsmth@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250326233512.17153-1-ansuelsmth@gmail.com>
 References: <20250326233512.17153-1-ansuelsmth@gmail.com>
@@ -92,55 +92,162 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Simplify .match_phy_device OP by using a generic function and using the
-new phy_id PHY driver info instead of hardcoding the matching PHY ID.
+Document support for Aeonsemi PHYs and the requirement of a firmware to
+correctly work. Also document the max number of LEDs supported and what
+PHY ID expose when no firmware is loaded.
+
+Supported PHYs AS21011JB1, AS21011PB1, AS21010JB1, AS21010PB1,
+AS21511JB1, AS21511PB1, AS21510JB1, AS21510PB1, AS21210JB1,
+AS21210PB1 that all register with the PHY ID 0x7500 0x9410 on C45
+registers before the firmware is loaded.
 
 Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 ---
- drivers/net/phy/bcm87xx.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ .../bindings/net/aeonsemi,as21xxx.yaml        | 122 ++++++++++++++++++
+ MAINTAINERS                                   |   1 +
+ 2 files changed, 123 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml
 
-diff --git a/drivers/net/phy/bcm87xx.c b/drivers/net/phy/bcm87xx.c
-index 1e1e2259fc2b..299f9a8f30f4 100644
---- a/drivers/net/phy/bcm87xx.c
-+++ b/drivers/net/phy/bcm87xx.c
-@@ -185,16 +185,10 @@ static irqreturn_t bcm87xx_handle_interrupt(struct phy_device *phydev)
- 	return IRQ_HANDLED;
- }
+diff --git a/Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml b/Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml
+new file mode 100644
+index 000000000000..69eb29dc4d7b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml
+@@ -0,0 +1,122 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/aeonsemi,as21xxx.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Aeonsemi AS21XXX Ethernet PHY
++
++maintainers:
++  - Christian Marangi <ansuelsmth@gmail.com>
++
++description: |
++  Aeonsemi AS21xxx Ethernet PHYs requires a firmware to be loaded to actually
++  work. The same firmware is compatible with various PHYs of the same family.
++
++  A PHY with not firmware loaded will be exposed on the MDIO bus with ID
++  0x7500 0x7500 or 0x7500 0x9410 on C45 registers.
++
++  This can be done and is implemented by OEM in 2 different way:
++    - Attached SPI flash directly to the PHY with the firmware. The PHY
++      will self load the firmware in the presence of this configuration.
++    - Manually provided firmware loaded from a file in the filesystem.
++
++  Each PHY can support up to 5 LEDs.
++
++  AS2xxx PHY Name logic:
++
++  AS21x1xxB1
++      ^ ^^
++      | |J: Supports SyncE/PTP
++      | |P: No SyncE/PTP support
++      | 1: Supports 2nd Serdes
++      | 2: Not 2nd Serdes support
++      0: 10G, 5G, 2.5G
++      5: 5G, 2.5G
++      2: 2.5G
++
++allOf:
++  - $ref: ethernet-phy.yaml#
++
++select:
++  properties:
++    compatible:
++      contains:
++        enum:
++          - ethernet-phy-id7500.9410
++          - ethernet-phy-id7500.9402
++          - ethernet-phy-id7500.9412
++          - ethernet-phy-id7500.9422
++          - ethernet-phy-id7500.9432
++          - ethernet-phy-id7500.9442
++          - ethernet-phy-id7500.9452
++          - ethernet-phy-id7500.9462
++          - ethernet-phy-id7500.9472
++          - ethernet-phy-id7500.9482
++          - ethernet-phy-id7500.9492
++  required:
++    - compatible
++
++properties:
++  reg:
++    maxItems: 1
++
++  firmware-name:
++    description: specify the name of PHY firmware to load
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++if:
++  properties:
++    compatible:
++      contains:
++        const: ethernet-phy-id7500.9410
++then:
++  required:
++    - firmware-name
++else:
++  properties:
++    firmware-name: false
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/leds/common.h>
++
++    mdio {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        ethernet-phy@1f {
++            compatible = "ethernet-phy-id7500.9410",
++                         "ethernet-phy-ieee802.3-c45";
++
++            reg = <31>;
++            firmware-name = "as21x1x_fw.bin";
++
++            leds {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                led@0 {
++                    reg = <0>;
++                    color = <LED_COLOR_ID_GREEN>;
++                    function = LED_FUNCTION_LAN;
++                    function-enumerator = <0>;
++                    default-state = "keep";
++                };
++
++                led@1 {
++                    reg = <1>;
++                    color = <LED_COLOR_ID_GREEN>;
++                    function = LED_FUNCTION_LAN;
++                    function-enumerator = <1>;
++                    default-state = "keep";
++                };
++            };
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9a2df6d221bd..59a863dd3b70 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -649,6 +649,7 @@ AEONSEMI PHY DRIVER
+ M:	Christian Marangi <ansuelsmth@gmail.com>
+ L:	netdev@vger.kernel.org
+ S:	Maintained
++F:	Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml
+ F:	drivers/net/phy/as21xxx.c
  
--static int bcm8706_match_phy_device(struct phy_device *phydev,
-+static int bcm87xx_match_phy_device(struct phy_device *phydev,
- 				    const struct phy_driver *phydrv)
- {
--	return phydev->c45_ids.device_ids[4] == PHY_ID_BCM8706;
--}
--
--static int bcm8727_match_phy_device(struct phy_device *phydev,
--				    const struct phy_driver *phydrv)
--{
--	return phydev->c45_ids.device_ids[4] == PHY_ID_BCM8727;
-+	return phydev->c45_ids.device_ids[4] == phydrv->phy_id;
- }
- 
- static struct phy_driver bcm87xx_driver[] = {
-@@ -208,7 +202,7 @@ static struct phy_driver bcm87xx_driver[] = {
- 	.read_status	= bcm87xx_read_status,
- 	.config_intr	= bcm87xx_config_intr,
- 	.handle_interrupt = bcm87xx_handle_interrupt,
--	.match_phy_device = bcm8706_match_phy_device,
-+	.match_phy_device = bcm87xx_match_phy_device,
- }, {
- 	.phy_id		= PHY_ID_BCM8727,
- 	.phy_id_mask	= 0xffffffff,
-@@ -219,7 +213,7 @@ static struct phy_driver bcm87xx_driver[] = {
- 	.read_status	= bcm87xx_read_status,
- 	.config_intr	= bcm87xx_config_intr,
- 	.handle_interrupt = bcm87xx_handle_interrupt,
--	.match_phy_device = bcm8727_match_phy_device,
-+	.match_phy_device = bcm87xx_match_phy_device,
- } };
- 
- module_phy_driver(bcm87xx_driver);
+ AF8133J THREE-AXIS MAGNETOMETER DRIVER
 -- 
 2.48.1
 
