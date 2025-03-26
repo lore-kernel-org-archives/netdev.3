@@ -1,206 +1,190 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2078.outbound.protection.outlook.com [40.107.244.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BE219D88B
-	for <netdev@vger.kernel.org>; Wed, 26 Mar 2025 20:57:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.78
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743022633; cv=fail; b=nYMoiPzX1LgK78QAk0TwCNfEGMsZoQ4IgIfBYDcW5RTlrr4cTZB+uO+CiCw0P7haGuXttFXTd00XOenQuPyzZIAR7LWPT7oM6q+IbPi0dCD6IcSkSLd3EV0LzYX2ZGh4/qGwCxc6Mtpb/dl5Xz4sXLsf/+gtF2fUYy/fSHu9OpI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743022633; c=relaxed/simple;
-	bh=TEm9a1zEDszXbzkZIEZUkQwQ0XnwP4kMb1bMdOaQ6pQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RnWpoCU3i8wzAvHjp6BWYuBkzeL8m8b5QRkulBofoX23rpsrchyun1eX5X2jZYvjmiKgXmESO0uwthk2d28fStGvUlpVZs87+iY3rlaZNJRm0krKkbvKdOKCLi/tvmfQhk13AgKchRNQm37AL+qYwLph2t3yeg5gyNyCqIX53us=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=soqioAh9; arc=fail smtp.client-ip=40.107.244.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB761A2541;
+	Wed, 26 Mar 2025 21:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743023390; cv=none; b=WT+nD1ukN41p79bD53LtqLTh5eSDNSkOWc8gYFO9HyGob9TQn4xRIaZvlHYNrgJUrsYUzpi40febhsOdJn5nxz+p41AvBKymZvXTyoaZNVdglMpeOuMexDBlaq8eSIZAKY1g1+7A0E8B1uRBfQbClDAKxSX1VCs9YPUcHGLv9Y4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743023390; c=relaxed/simple;
+	bh=BQgt5Ltn+t8rHqRB88UxwuNzrH2np5wAnn8t9PPkdVc=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=owfSWoULmk+rLXzQhDVsnXuuWrQ8VvbbmxwM4KqluYski4/1upLteRmscQubi6C3w10Mas1KCiJcgHkdq5oMY7I+7RCB1lWrNt3djqqGOHIk1QH6k0La7WkRhQon32SoIiYfr0Axy6/SrMGAT4iwayBSlQMTR3QnclzED4ifU30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JKHwJh3h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="soqioAh9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XncfWEHaBU8Pc4X4zSesLbQT3RrQGZhOJMU28gTAgc4OOKHXVfWT6DgGXaKntSg1KXZTNND3yl80TSSipcSi1J2aQcnOD1Dy6RgxYV5RqiGFKiNIcBNBmT+2t+3c2dM7u+Utfgt5zGs+JwRlncKOHP07f0L1eUbSfxifwf+BA+e71YYB7NkHXW1znU/4eGcJmCWNBUUCvg8BCs94z7ZnvkUlL8TVk2yQsaiR+nsDnAL8oSshbaYM/et8wFPOjUXh0fhcoblXjVxqc0jKfuW6AzdXiGJA6WQMJAgicd9zvpKQQBvOsT1SGT5aeyPDIOGpTVlCF3kGf86xpZf96Bg9Vw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TEm9a1zEDszXbzkZIEZUkQwQ0XnwP4kMb1bMdOaQ6pQ=;
- b=DIGqmVFDzGAcux9QI8EfJNKXuTpXMGWponRDxK51dzezhr4vSc2tRmWC2T+gKkWRUzjwWFkN9ONMGEkTvfGPRf2iEl8gPFSGKE3FlBd28xJolYYEgmzXNOfCseqNsTWntLSyWqsXipqxGeHP4qMYVoKXOOZHVDBtzNG0QN+30m6nHusTSVMU19p3JQmMXbtdHObLtT7MPXvftOKYa4ODWXWpdtZ8ncjDAcI5CG32uVn5PGq1bNFRu8SmPby/4KvLiT0fqqPfVF9S0AlZLRtrAgTGNsx1/t8+jpX59k5H6YZsJ0/yQptOT6mcyYxGFqCkLdcboOcGgsu6IR1EuhT7Jw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TEm9a1zEDszXbzkZIEZUkQwQ0XnwP4kMb1bMdOaQ6pQ=;
- b=soqioAh9L0pN5G6Ys85d7dP4FTrb8r4NsRIeZGCVaTYsi9M+OCdVTJSzTjNv7myb/asnke5wV2XcwV70Na1Jz88BFv4fpSmsWEE9AKswFVqkLW0tvhOAUMP1RM2kX9DMCbZSVuCtnUHWIlrWJb77H0nmJJfnMvqiDXinlavTtGroV8lk6xlQLrPJg8AGZymAlDXzRzSejQzO4CPy9dG3Ksq0ZZni7dlHXRWjq+iUgIrAL1BrNoHzhFcKDC1bPCwIy2PkjYhcsQDAt6f4M+YaSOt4so6ubVYfeH/A9dVz/ypnkiT7xw0wmw06LpBm1WMmFYIeelYV88OQ1H85mauTNQ==
-Received: from DS0PR12MB6560.namprd12.prod.outlook.com (2603:10b6:8:d0::22) by
- SJ5PPF1C7838BF6.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::98d) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Wed, 26 Mar
- 2025 20:57:09 +0000
-Received: from DS0PR12MB6560.namprd12.prod.outlook.com
- ([fe80::4c05:4274:b769:b8af]) by DS0PR12MB6560.namprd12.prod.outlook.com
- ([fe80::4c05:4274:b769:b8af%2]) with mapi id 15.20.8534.043; Wed, 26 Mar 2025
- 20:57:09 +0000
-From: Cosmin Ratiu <cratiu@nvidia.com>
-To: "stfomichev@gmail.com" <stfomichev@gmail.com>
-CC: "kuba@kernel.org" <kuba@kernel.org>, "edumazet@google.com"
-	<edumazet@google.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"davem@davemloft.net" <davem@davemloft.net>, "pabeni@redhat.com"
-	<pabeni@redhat.com>, "sdf@fomichev.me" <sdf@fomichev.me>
-Subject: Re: [PATCH net-next 2/9] net: hold instance lock during
- NETDEV_REGISTER/UP/UNREGISTER
-Thread-Topic: [PATCH net-next 2/9] net: hold instance lock during
- NETDEV_REGISTER/UP/UNREGISTER
-Thread-Index: AQHbnc04GLropLE/UEietC5IV/U+Q7OFhLuAgAAF24CAAAOvAIAAJRWAgAA0UIA=
-Date: Wed, 26 Mar 2025 20:57:08 +0000
-Message-ID: <e7cbdbf24019ba5deac18ccf5eea770d4c641455.camel@nvidia.com>
-References: <20250325213056.332902-1-sdf@fomichev.me>
-	 <20250325213056.332902-3-sdf@fomichev.me>
-	 <86b753c439badc25968a01d03ed59b734886ad9b.camel@nvidia.com>
-	 <Z-QcD5BXD5mY3BA_@mini-arch>
-	 <672305efd02d3d29520f49a1c18e2f4da6e90902.camel@nvidia.com>
-	 <Z-Q-QYvFvQG2usfv@mini-arch>
-In-Reply-To: <Z-Q-QYvFvQG2usfv@mini-arch>
-Reply-To: Cosmin Ratiu <cratiu@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS0PR12MB6560:EE_|SJ5PPF1C7838BF6:EE_
-x-ms-office365-filtering-correlation-id: 51221e1d-ad63-4d97-6713-08dd6ca8c5ee
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?b24vM3pMZ1RyQzFUUmlacVd5WjZOU3MxQ2xJQ1pmSldVU1V2VkNJTzFZZzFo?=
- =?utf-8?B?TDZNTmRjS05rVmFXYWdpN1JFMXNnM1pPQSt0K3g2TGJlZDNVbzJSS1J4d2l6?=
- =?utf-8?B?YTljRVRTK1dqT0Z3bWNDeWNNM21ydzA4V2xOUTlBMi8wbmdqa3FUbnNHMXZq?=
- =?utf-8?B?V21DcUtZQ3RuQ2ZsZHZ0YjlJbGc2T09tRlo0SHcvQ0o3Wlo3Sm5VRHdOaWhp?=
- =?utf-8?B?SkY5TkZFQ0dmM1VscUlibGtvNU84RzJMcHhlL0FmcG5PbGRpSnBGNGZGdDlm?=
- =?utf-8?B?eTlraUZwK0pUWmIzMnB0WkVEWWdWYk84OVNjc3g5TEFqL0JqeXNwdUFDaExk?=
- =?utf-8?B?WCtQbXhkNkh1N2ZVZWRiY29PK3A3SVJUMmh2SGhZcytHNUxQbklEM1JQbmx5?=
- =?utf-8?B?aUZ1ZUo2YTRFZ28vWTVtOVVYT1lkWldpd012SldYOGpVZERQL2FTK2FoT1o4?=
- =?utf-8?B?T0dRN1JmcFAyUXZrZWZMcFRaZ2FHUlJyZVo0bDVQK0UyZFhvOGJ6S2hseFps?=
- =?utf-8?B?K3J2TzljeU4zMWhiV2t0a1pBaXRxUERlVTVIazlRS2xFbk1VY1VpOEtmODJi?=
- =?utf-8?B?MG5ydlZ4Ry93eUIrWGRNZmpjQU5QWG5UYzg1cDJRSWRxZ2RrckhzZ1NzTXpu?=
- =?utf-8?B?SmhQeU00WVRaNzdBTTZNelliaUtLUnFTc0JZeVZJTTBZVVNGaUhsUUFaODd0?=
- =?utf-8?B?QjR0VGtFc1ZlZlBHN2Y5V3EwZlBqVTArK1I0aE5QNjJTR1FxRDljWld0dHFS?=
- =?utf-8?B?TzJCWXZST0NJVWJBRDJ3cTQxQkpKWjgxOWlHcU9UNUNPWDYwbTVNQmxCa1lu?=
- =?utf-8?B?ZE1ybk5wc1hjcHBQbDFKQkZiNWFqWXV0ckVqZDVMRlFIMy9wUC80eDZpNE1n?=
- =?utf-8?B?ZGpNWWZ1eVY3enRhM2V5RVhRbGc4ZXJzbk03VFp0NzBvL1hXSFJPeHVpNTU4?=
- =?utf-8?B?UDIrQ2Q3aEVHcDQrS0VyWEEvTTh6ZDh2WjdnOGZqQURWOEZkeSs1alpkTnFv?=
- =?utf-8?B?Q2x0Y1F3S2U3UTFoNWJHeFdOZ3o5ZWcxLzcwSWk5eGlhZ1c0Q1A3a1BhR3pz?=
- =?utf-8?B?Lzgvb1dXN0IyTkZGL0JDYnI0dlZTOVFkVE9GR0c5cVFnd1Rpd0NEQUdWamI3?=
- =?utf-8?B?RjVldlBObzNwZytGWEtuTDZJMW9OeVhmdUZJV2lXK3pESmxSR1FEc2dpcHVm?=
- =?utf-8?B?Mk4wVDNjZzBHRk5YM3VzTEptbi9CSUluUU9XNlk2WGMxaEdydlNzR1BtcnZi?=
- =?utf-8?B?ZUNqc1k0TlFKNWcvK1hiRDNLakpKakpWWk5LN2hHYmM3RE1XOGhMU2lFbTFx?=
- =?utf-8?B?L21aa1UvTTlLMWh4a2FMRWhHUHNtNzFNZGpTTVBhSythMCt0RjN3UGlvcGVU?=
- =?utf-8?B?ZkNraGdVd1BMNk9PYWlheGlUektiN2hWSkIrd1RjNzVpWFlEUWZWMXRjZkpm?=
- =?utf-8?B?VlNuZUdxYTM5TVZVZllXZklrMEZqVzE2WGJSRkppUVFSelZhbjZwSGZpNlc1?=
- =?utf-8?B?Uk1QVFhSTWdjaVIzSWlqVm95TWtsYjhwbm1iZzBWUnZGZ0JqWjIvVjh2c3o0?=
- =?utf-8?B?NFUzMTNNV0FCcnFkY3dXbmhLQzZ3Znh4eE9DdFhrdFFaRlROSlRUVVMvblNn?=
- =?utf-8?B?Uk9NajVxakFIbHhmWHg4VzRuL2EwblJZZllnZFpzUW4zZitidy9JaDBsTCtD?=
- =?utf-8?B?QTZ2M29qbGlaeDB4WTdXMjdNY2RRTHd1V3pIdG5HajRWUFc2Ry92alNjNS90?=
- =?utf-8?B?dERhVHdMUkZWTnNBbDRZZHVkenpqSm44cHkvVEZJU3k4MVVVQzJ5QkJlbUYx?=
- =?utf-8?B?MGZQZEpsRVMzc1M1V2Z1bjh4YUl3UG51K2VxNlNUUGlmdVErV3hsZU1qUTFV?=
- =?utf-8?B?SnBhSEhTWUhkN2lUeGNNbmx2TTNyT1BLVU5Ed3ZnaXpkWFovTldtR1dBTHl4?=
- =?utf-8?Q?e+vpSWFtFuWSzOeMVbozLu3JTHla6bAB?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6560.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?YnZLbFRPbnpZTjZEcFVhVWR2UVQyaUw5QzZZc3hNTkJKby9sWHZ3UWE3akhq?=
- =?utf-8?B?TXU5ZHVLTHN5aDEwUFhuOXo4azk4RkJobUxjQjNvMnc5NG1oVlNiTDNwUEhq?=
- =?utf-8?B?dys2N3pOZzdZazRjS2ZXbUcwSlA1c0Q1Qi9pMDlKdHJ2dHJOY0xaWk01bHBY?=
- =?utf-8?B?UWlnUFk5QS9xWCsyNk43RHVDVHZUcThXOEw0azc4bFdiUXU0M3FLY3VFalNC?=
- =?utf-8?B?TmxQYXdWZnJVNFVCYXBpUHM3M1JsUW53U1VsQU5wUHg2V0MvL0hBY2FjNGxX?=
- =?utf-8?B?OFl0WnI1aUlXbXFxMVdDT3c1MTEyZERNSFFNZkJBT2pCM0cxdFpXODBTWnhZ?=
- =?utf-8?B?N21KempObVNoY1p1NkRBZ25Ld0U1MHVUeTZvbkFBTy8vUzY4UnRNbEpPNnNI?=
- =?utf-8?B?U3JrN3VNZmplOXNjMTcrNnBvNlpURmFqV3ljN09MVkNOVlE4YlNEOTQ4RGNB?=
- =?utf-8?B?ZjVUYzljZk91RDhZR05wako0alRPMXl3RCtpdVlCaThWWGU0TEliS040bnND?=
- =?utf-8?B?YkRjZTlxS00rVU5jem9sS1dhREVaQlcwWVBBR2tIaXdmRzQ3akZqY09zN2VW?=
- =?utf-8?B?MUV5S3hobmxJUVNtbFQzVmhCM1BwK0lGWmk3NXZaYW5KTEt5THl3UTRpL1RM?=
- =?utf-8?B?VkhBUGNtSDJYSVczNW9va2RvdFJIakkxa3A0WWpKVFJGNURjTHgvZ2V1elFF?=
- =?utf-8?B?T05XbXJvem1SWENSYlQvbFJ5REdtV2o1MUlYcVh0cnRNQkpic1ppNlpKWWZx?=
- =?utf-8?B?SlZkZFQ2ZExqaEVUS1dYU1RsazJVbzFSYlVLVjRMYTJhZFRuRTFUUC80L0Vz?=
- =?utf-8?B?VzE2Vk84ZjhEcE85Rmc1Q3M5TCs1N2hHMW9iSUZqYmM1aWwyK21LMzRYeXJK?=
- =?utf-8?B?aEVvZjNJRVBtWDJKQmtPcGR6Z0Q0dUthM0k0eWs2Sk1lWnRRVFB4d2RKY2Fm?=
- =?utf-8?B?YjIzYnFvV2d5YU5lOWdCR1d1T3ZicHZMVVROM2MvNUJhaG01a2lqL1VjdTBp?=
- =?utf-8?B?azZhZ3VSZklUSTdnQkJwUG45bitkRkpVelJyYWtUSnVBWDlUL21TZjBibU1O?=
- =?utf-8?B?TEpyQWEvekcyQmsvZHo0K1grSjVkaStER0s1OWF2WWdWRnVLbEJhR0ZRRTBy?=
- =?utf-8?B?ZE8zQlYvQWNpVElLOEZjWWMvWlFmWEtJaGtnVCtxNjF0S05GSzVRWUljMWxo?=
- =?utf-8?B?YlAva2VKbDZFMStxR2E2ZVpaVlQzZ2F6TTZWSlhYbCtZRGR5UmJlVTJnaGpM?=
- =?utf-8?B?dnJtTnV0Y2p5QW8wbXowc2pNOFRGUHVDYlpnM0dkTkR1cjh6NVB0UW5HWGhT?=
- =?utf-8?B?aEt6TzgrWlpJTllJMzFuN25OaTRCUko4QXduUjBuLy9OSFpPM25JN3RoVkZ3?=
- =?utf-8?B?RWlUN2RDZFA5K1JmVTl4N2JVT1FxaitmZUpkL3BFa2QxakJlT0dTR0N2d3dm?=
- =?utf-8?B?ZHVLUExwK0p6RmdqOEwyOU13TDFpR3JxeTFMTFNGcytmSEdwSzk5elF1ZG1O?=
- =?utf-8?B?U29JNmhidElOSUxFUHFBdnZhUWNndXB5YWQ1TWtWOER6UHZTWmprSWVQWno4?=
- =?utf-8?B?Vm5ROE13cUMzOEZaTzVhMnBKMHZxWTY4Wm5oTWRmYThIcXFtZjNXc0JJRG83?=
- =?utf-8?B?OEFaUGM2cDg1N1Zmcm5kemprRnB1VlhHcE9EdGVRaHpYYmJBRGYvRlhiMXdT?=
- =?utf-8?B?Qy9XRWNCdllsSHlHZmUzaElpNWw3SVRCV0ttT0hRbTZaWm9FZnFQQmsvajhM?=
- =?utf-8?B?VGYzWHJEaGtzZldOaitMRm9IS2dDYUx2OUx6V1lXa3RpUWVONUl4dkZOd240?=
- =?utf-8?B?TnkvV1NJbHFWb25WbytPcWVPb2NMK28rM3RKRC95S3JqS1pYUXdQcitWZ0JP?=
- =?utf-8?B?UzE2bFJkZEk4MDVBQ2N6c251WTZ5VlNBOFFFK09aTE5jYTFiQmo4QXk3SFNk?=
- =?utf-8?B?ekhuZ3NQV1NnR0VaQ2l6MEZiUmVHdEhYWHN2azI1UVBPUlVnVjR0SmhVcDdH?=
- =?utf-8?B?Vy84Z0R6ZFdGR3h5ZlI2L0hONGc4QWdyRXRmSlozMG5YN0N3cDdOVlFSK0FB?=
- =?utf-8?B?cXlDaEplSHdiY3puTnlvOWtYRUd3Y1cwMkVuS1Q3US8rV2c2SkdaOWZCZVUw?=
- =?utf-8?Q?Ih8GNLeLu+2/rh30HZRY0ys9O?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <71C7D411F3CE2B4EB3441E94EDA9942E@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JKHwJh3h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB73C4CEE2;
+	Wed, 26 Mar 2025 21:09:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743023389;
+	bh=BQgt5Ltn+t8rHqRB88UxwuNzrH2np5wAnn8t9PPkdVc=;
+	h=Date:From:To:Subject:From;
+	b=JKHwJh3hQPRXiZiDUfEhhObVORzoXPf8RVB21E3IVOPQbELTYz3v89tAvkk8xd5DN
+	 E2GAzFZg5PuWpw4p3+YLehS81jFt9qpoxdW34oNx2NrJukRFlqLYvW/Euk28ZiMXcE
+	 GxvFVT8+QajPpn6s5suO/0/1jF4J4nnvsna8TbwxGwf0Re/Xj7rJNyupcT2Xl3DE3A
+	 W06LKnWWKlcRnnyikiJTaJ3GTL7otniEMK9EVvGJzOMF/gJX344X1KNZhmUobiA+6X
+	 8/9jnZgva0FR0NclsUnvq3Ltc4cKS81jpCHbI8n8xucTovF1FLZNyBV6wlYd9gyGoi
+	 DXgURt9TySdpg==
+Date: Wed, 26 Mar 2025 14:09:48 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: netdev@vger.kernel.org, netdev-driver-reviewers@vger.kernel.org
+Subject: [ANN] netdev development stats for 6.15
+Message-ID: <20250326140948.18a7da36@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6560.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51221e1d-ad63-4d97-6713-08dd6ca8c5ee
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Mar 2025 20:57:08.7074
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 7J5Xw6JMG08RER/hWkgNByD/MJL2DtWM97W75sIhYLVDPnIONG1+W169z6Af99ZanyB+rT0JgJvrLDsUuBJFsw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF1C7838BF6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-T24gV2VkLCAyMDI1LTAzLTI2IGF0IDEwOjQ5IC0wNzAwLCBTdGFuaXNsYXYgRm9taWNoZXYgd3Jv
-dGU6DQo+IE9uIDAzLzI2LCBDb3NtaW4gUmF0aXUgd3JvdGU6DQo+ID4gT24gV2VkLCAyMDI1LTAz
-LTI2IGF0IDA4OjIzIC0wNzAwLCBTdGFuaXNsYXYgRm9taWNoZXYgd3JvdGU6DQo+ID4gPiBAQCAt
-MjAyOCw3ICsyMDI4LDcgQEAgaW50IHVucmVnaXN0ZXJfbmV0ZGV2aWNlX25vdGlmaWVyKHN0cnVj
-dA0KPiA+ID4gbm90aWZpZXJfYmxvY2sgKm5iKQ0KPiA+ID4gwqANCj4gPiA+IMKgCWZvcl9lYWNo
-X25ldChuZXQpIHsNCj4gPiA+IMKgCQlfX3J0bmxfbmV0X2xvY2sobmV0KTsNCj4gPiA+IC0JCWNh
-bGxfbmV0ZGV2aWNlX3VucmVnaXN0ZXJfbmV0X25vdGlmaWVycyhuYiwgbmV0LA0KPiA+ID4gdHJ1
-ZSk7DQo+ID4gPiArCQljYWxsX25ldGRldmljZV91bnJlZ2lzdGVyX25ldF9ub3RpZmllcnMobmIs
-IG5ldCwNCj4gPiA+IE5VTEwpOw0KPiA+ID4gwqAJCV9fcnRubF9uZXRfdW5sb2NrKG5ldCk7DQo+
-ID4gPiDCoAl9DQo+ID4gDQo+ID4gSSB0ZXN0ZWQuIFRoZSBkZWFkbG9jayBpcyBiYWNrIG5vdywg
-YmVjYXVzZSBkZXYgIT0gTlVMTCBhbmQgaWYgdGhlDQo+ID4gbG9jaw0KPiA+IGlzIGhlbGQgKGxp
-a2UgaW4gdGhlIGJlbG93IHN0YWNrKSwgdGhlIG11dGV4X2xvY2sgd2lsbCBiZSBhdHRlbXB0ZWQN
-Cj4gPiBhZ2FpbjoNCj4gDQo+IEkgdGhpbmsgSSdtIG1pc3Npbmcgc29tZXRoaW5nLiBJbiB0aGlz
-IGNhc2UgSSdtIG5vdCBzdXJlIHdoeSB0aGUNCj4gb3JpZ2luYWwNCj4gImZpeCIgd29ya2VkLg0K
-DQpJIHdhcyBtaXNpbnRlcnByZXRpbmcgdGhlIHVucmVnaXN0ZXJfbmV0ZGV2aWNlX25vdGlmaWVy
-LCBpdCdzIG5vdA0KcmVhY2hlZCBmcm9tIG5ldGlmX2NoYW5nZV9uZXRfbmFtZXNwYWNlLiBTb3Jy
-eSBmb3IgdGhlIGNvbmZ1c2lvbi4NCg0KSXQgc2VlbXMgdGhpcyBpcyBub3QgYSBkZWFkbG9jayBi
-eSByZWVudHJhbmNlLCBqdXN0IGxvY2tkZXAgc2VlaW5nIGENCipwb3RlbnRpYWwqIGRlYWRsb2Nr
-IGJlY2F1c2UgdGhlIHR3byBsb2NrcyBoYXZlIHRoZSBzYW1lIGxvY2sgY2xhc3MuDQpBbmQgdGhl
-b3JldGljYWxseSwgeW91IGNhbiBkZWFkbG9jayBpZiB0d28gY29uY3VycmVudA0KbmV0aWZfY2hh
-bmdlX25ldF9uYW1lc3BhY2Ugb24gdHdvIGRpZmZlcmVudCBkZXZpY2VzIGF0dGVtcHQgdG8gbG9j
-aw0KdGhpbmdzIGluIHRoZSB3cm9uZyBvcmRlci4gQWgsIHRoZSBqb3lzIG9mIGdyYW51bGFyIGxv
-Y2tpbmcuLi4NCg0KQW0gSSBtaXNzaW5nIHNvbWUgbG9ja2luZyBhbm5vdGF0aW9uIHBhdGNoPyBB
-IHF1aWNrIHNlYXJjaCBpbiBuZXQtbmV4dA0KdHVybmVkIG91dCBub3RoaW5nLg0KDQo+IFlvdSwg
-cHJlc3VtYWJseSwgdXNlIG1seDU/IEFuZCB5b3UganVzdCBtb3ZlIHRoaXMgc2luZ2xlIGRldmlj
-ZSBpbnRvDQo+IGEgbmV3IG5ldG5zPyBPciB0aGVyZSBpcyBhIGNvdXBsZSBvZiBvdGhlciBtbHg1
-IGRldmljZXMgc3RpbGwgaGFuZ2luZw0KPiBpbg0KPiB0aGUgcm9vdCBuZXRucz8NCj4gDQo+IEkn
-bGwgdHJ5IHRvIHRha2UgYSBsb29rIG1vcmUgYXQgcmVnaXN0ZXJfbmV0ZGV2aWNlX25vdGlmaWVy
-X25ldCB1bmRlcg0KPiBtbHg1Li4NCg0KSSBzZWUgdGhlcmUgYXJlIHR3byBtbHg1LWV4Y2x1c2l2
-ZSBmdW5jdGlvbnMsDQpyZWdpc3Rlcl9uZXRkZXZpY2Vfbm90aWZpZXJfbmV0IGFuZA0KcmVnaXN0
-ZXJfbmV0ZGV2aWNlX25vdGlmaWVyX2Rldl9uZXQsIHdoaWNoIEknbSBub3QgeWV0IHRvbyBjbGVh
-ciBob3cNCmFyZSB1c2VkLCBidXQgdGhvc2UgZG9uJ3QgY29tZSBpbnRvIHBsYXkgaGVyZS4NCg0K
-Rm9yIG1vcmUgY29udGV4dDogSSdtIGFkZGluZyBzdXBwb3J0IGZvciB0aGUgbmV3IGxvY2tpbmcg
-YmVoYXZpb3IgaW4NCm1seDUsIGFuZCBydW5uaW5nIG11bHRpcGxlIHRlc3RzIHdoaWNoIGFkZCBW
-RnMgJiByZXByZXNlbnRvcnMgYW5kIHBsYXkNCndpdGggbmV0ZGV2cyAmIG5ldCBuYW1lc3BhY2Vz
-IGluIGdlbmVyYWwuDQoNCkNvc21pbi4NCg0K
+Intro
+-----
+
+As is tradition here are the development statistics based on mailing
+list traffic on netdev@vger.
+
+These stats are somewhat like LWN stats: https://lwn.net/Articles/1004998/
+but more focused on mailing list participation. And by participation
+we mean reviewing code more than producing patches.
+
+Previous 3 reports:
+ - for 6.11: https://lore.kernel.org/20240722142243.26b9457f@kernel.org
+ - for 6.12: https://lore.kernel.org/20240922190125.24697d06@kernel.org
+ - for 6.13: https://lore.kernel.org/20241119191608.514ea226@kernel.org
+ - for 6.14: https://lore.kernel.org/20250121200710.19126f7d@kernel.org
+
+General stats
+-------------
+
+The 6.14 cycle included the winter break so for general stats let's
+compare to 6.13. 6.15 merge window over all is +7.6% larger (total
+linux-next size) than 6.13. We merged 1443 commits, which is +9.4%
+compared to 6.13, and +1.7% if we discount the linux-next size growth.
+
+The number of "pure authors" on the list dropped from 392 to 309.
+The number of full participants (both submitting and commenting
+on other people's patches) remained around 170.
+
+Review coverage increased slightly (+0.4%). The number of revisions
+of each patch set decreased slightly.
+
+Testing
+-------
+
+Testing infra is stable, we have a regression in TDC due to iproute2
+changes but that's hopefully to be addressed soon.
+
+The major time investment in terms of testing this release was 
+the addition of the "HW branch stream". A stream of branches
+to be tested on HW setups, consisting only of patches which successfully
+passed SW testing, and at a lower rate (one every 8 hours).
+
+This has been in the plans for over a year, but the final push came
+from Collabora which prepared a runner for NVMe-over-TCP testing.
+HW testing is a bit more tricky than SW testing, as we can't expect
+all tests to pass on all setups. As such we track test cases, and
+only consider those which have passed in the past at least 15 times 
+in a row. We are now running all driver tests against virtio.
+
+https://netdev.bots.linux.dev/contest.html?pw-n=0&branch=net-next-hw-2025-03-26--16-00&pw-n=0&ld-cases=1
+
+None of this is impressive but it took a solid week of plumbing :)
+
+Contributions to selftests:
+   1 [ 31] Jakub Kicinski
+   2 [  7] Dmitry Safonov
+   3 [  4] Breno Leitao
+   4 [  4] Cong Wang
+   5 [  4] Willem de Bruijn
+   6 [  4] Ido Schimmel
+   7 [  4] Petr Machata
+   8 [  3] Gal Pressman
+   9 [  3] Hangbin Liu
+  10 [  3] Kevin Krakauer
+
+Developer rankings
+------------------
+
+Top reviewers (cs):                  Top reviewers (msg):                
+   1 (   ) [26] Jakub Kicinski          1 (   ) [59] Jakub Kicinski      
+   2 ( +1) [25] Simon Horman            2 ( +1) [55] Simon Horman        
+   3 ( -1) [17] Andrew Lunn             3 ( -1) [45] Andrew Lunn         
+   4 (   ) [12] Paolo Abeni             4 ( +6) [20] Willem de Bruijn    
+   5 (   ) [ 7] Eric Dumazet            5 ( +2) [19] Russell King        
+   6 ( +2) [ 6] Russell King            6 ( -1) [18] Paolo Abeni         
+   7 ( +8) [ 5] Kuniyuki Iwashima       7 ( -3) [18] Eric Dumazet        
+   8 (+11) [ 4] Stanislav Fomichev      8 (+10) [14] Kuniyuki Iwashima   
+   9 ( -3) [ 4] Michal Swiatkowski      9 ( -3) [12] Vladimir Oltean     
+  10 (   ) [ 4] Willem de Bruijn       10 (+12) [11] Stanislav Fomichev  
+  11 ( +2) [ 4] Joe Damato             11 ( +4) [11] Joe Damato          
+  12 (+13) [ 3] Rob Herring            12 (+14) [ 8] Rob Herring         
+  13 ( +3) [ 3] Jacob Keller           13 (+27) [ 8] Leon Romanovsky     
+  14 ( +3) [ 3] Ido Schimmel           14 ( +7) [ 8] Jason Wang          
+  15 ( -6) [ 3] Krzysztof Kozlowski    15 (***) [ 7] Nikolay Aleksandrov 
+
+The ranking comparison to 6.13 may also be clearer as much of the movement
+here is folks returning to their usual positions. Stanislav and Rob register
+the highest jump. Stanislav worked on netdev locking and ZC TCP, but also
+helped revive NIPA a few times. Rob is the device tree maintainer.
+Joe climbed in 6.13 and moves further up in 6.14.
+
+Thank you all very much for your invaluable work!
+
+Top authors (cs):                    Top authors (msg):                  
+   1 ( +1) [6] Jakub Kicinski           1 ( +4) [26] Jakub Kicinski      
+   2 ( -1) [5] Eric Dumazet             2 (***) [21] Stanislav Fomichev  
+   3 (   ) [4] Russell King             3 ( -2) [20] Russell King        
+   4 ( +2) [3] Heiner Kallweit          4 ( +8) [20] Eric Dumazet        
+   5 (   ) [3] Tariq Toukan             5 (***) [18] Maxime Chevallier   
+   6 ( +1) [2] Kuniyuki Iwashima        6 (***) [18] Lorenzo Bianconi    
+   7 (+36) [2] Breno Leitao             7 ( -5) [17] Antonio Quartulli   
+   8 ( +5) [2] Paolo Abeni              8 ( -4) [15] Tariq Toukan        
+   9 ( +2) [2] Matthieu Baerts          9 ( -6) [15] Kuniyuki Iwashima   
+  10 ( -1) [2] Dan Carpenter           10 (+27) [15] Jason Xing          
+
+Top scores (positive):               Top scores (negative):              
+   1 ( +2) [389] Simon Horman           1 (   ) [66] Antonio Quartulli   
+   2 ( -1) [341] Jakub Kicinski         2 (***) [64] Lorenzo Bianconi    
+   3 ( -1) [295] Andrew Lunn            3 (***) [59] Jedrzej Jagielski   
+   4 (   ) [146] Paolo Abeni            4 (***) [43] Eric Woudstra       
+   5 ( +4) [ 86] Willem de Bruijn       5 (***) [41] Faizal Rahim        
+   6 (+12) [ 57] Rob Herring            6 (***) [41] Maxime Chevallier   
+   7 ( +1) [ 52] Vladimir Oltean        7 ( +5) [40] Tian Xin            
+   8 ( -3) [ 45] Eric Dumazet           8 (***) [39] Peter Seiderer      
+   9 ( +1) [ 44] Krzysztof Kozlowski    9 ( -1) [37] Tony Nguyen         
+  10 ( -4) [ 43] Michal Swiatkowski    10 (***) [36] Danielle Ratson     
+
+Company rankings
+----------------
+
+Top reviewers (cs):                  Top reviewers (msg):                
+   1 ( +1) [38] RedHat                  1 ( +1) [98] RedHat              
+   2 ( -1) [31] Meta                    2 ( -1) [82] Meta                
+   3 (   ) [21] Intel                   3 (   ) [50] Intel               
+   4 (   ) [17] Andrew Lunn             4 ( +1) [46] Google              
+   5 (   ) [13] Google                  5 ( -1) [45] Andrew Lunn         
+   6 ( +2) [ 9] nVidia                  6 ( +2) [31] nVidia              
+   7 (   ) [ 8] Oracle                  7 (   ) [23] Oracle              
+
+Top authors (cs):                    Top authors (msg):                  
+   1 (   ) [11] RedHat                  1 (   ) [89] Intel               
+   2 ( +2) [11] Meta                    2 ( +1) [63] Meta                
+   3 ( -1) [10] Google                  3 ( -1) [58] RedHat              
+   4 ( -1) [ 9] Intel                   4 ( +1) [56] nVidia              
+   5 (   ) [ 8] nVidia                  5 ( +3) [41] Google              
+   6 (   ) [ 5] Oracle                  6 (+18) [28] Bootlin             
+   7 (   ) [ 3] Linaro                  7 ( -1) [25] Oracle                      
+
+Top scores (positive):               Top scores (negative):              
+   1 ( +2) [414] RedHat                 1 (+41) [75] Bootlin             
+   2 ( -1) [306] Meta                   2 (   ) [66] OpenVPN             
+   3 ( -1) [295] Andrew Lunn            3 (+31) [43] Parachute
+   4 ( +1) [108] Google                 4 ( +8) [40] Yunsilicon          
+   5 ( +1) [ 76] Linaro                 5 (***) [39] Peter Seiderer      
+   6 ( +6) [ 60] ARM                    6 (   ) [39] nVidia              
+   7 (***) [ 39] Oracle                 7 ( -4) [37] Pengutronix          
+-- 
+Code: https://github.com/kuba-moo/ml-stat
+Raw output: https://netdev.bots.linux.dev/static/nipa/stats-6.15/stdout
