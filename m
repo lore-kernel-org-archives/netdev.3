@@ -1,153 +1,170 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCF01F4179
-	for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 07:26:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E85C4A1A;
+	Thu, 27 Mar 2025 07:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743060365; cv=none; b=VhPPLuQG1kzG5q3shQIc1u09z/91s9ad1SBQVcHZUbn0k7u1fEVq+FQ/gTFqM0bR9dPbwjHIgbcKYgRAQv0/kES1ixQfHWMFhKq0MXrNj7u4czpJG8Jkp8EicSEPIntvJb/J3rq+d5+yD9Jd16ApT9HqsZsnSqMbgYyeTRuGzyQ=
+	t=1743061213; cv=none; b=T6+oM0ZEERCpT1uLBS343Zq18OiCk+epozLjgrr7/CMNSzhPqyP3q0pO6PGOtnSIYSGl1QckP1nVhFO7g8O04/t+FxutRLKLdiQo2JCPTscy2yLyWZNzTkeBrF+OzqhGWCIv6DWsiqkeEJrLBmr4h+yycosotsqBG/RZDJ9tQzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743060365; c=relaxed/simple;
-	bh=JSSGQS6tGG25ltA0Mvv5MyPkthwco/wCEhroPDJOdFE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aejvlKzSdLCU/NUcD6NQ4e7fwfMpje4JfSYfNnIPD/uVWjy2tLuQHeasF1+BmFtpU9yUhlPoaTPlD8f+uPBxI89dmK9J9XkozXLDrJbvfcpACRrOl6PrCaWkFVp+qGkUNR/5HlbYc3NIp0oRLGGfy7vsNB/h79fIgO20VEvGHVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1txhcD-0004yL-Vr; Thu, 27 Mar 2025 08:25:26 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1txhc9-001t0o-2e;
-	Thu, 27 Mar 2025 08:25:21 +0100
-Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id E00643E7BAF;
-	Thu, 27 Mar 2025 07:06:19 +0000 (UTC)
-Date: Thu, 27 Mar 2025 08:06:13 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ming Yu <a0282524688@gmail.com>
-Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, 
-	brgl@bgdev.pl, andi.shyti@kernel.org, mailhol.vincent@wanadoo.fr, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
-	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-rtc@vger.kernel.org, 
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH v8 4/7] can: Add Nuvoton NCT6694 CANFD support
-Message-ID: <20250327-awesome-mutant-cuscus-0f0314-mkl@pengutronix.de>
-References: <20250225081644.3524915-1-a0282524688@gmail.com>
- <20250225081644.3524915-5-a0282524688@gmail.com>
- <20250227-spicy-grebe-of-dignity-68c847-mkl@pengutronix.de>
- <CAOoeyxWSsy0Q0Y7iJE8-DZM5Yvcdto8mncFkM8X4BvVMEgfUiQ@mail.gmail.com>
- <20250317-cuttlefish-of-simple-champagne-ee666c-mkl@pengutronix.de>
- <CAOoeyxXSC3rjeB0g5BtHKvKy-Y9Dszd5X9WuHeBeH1bk39d_Eg@mail.gmail.com>
- <20250326-inventive-lavender-carp-1efca5-mkl@pengutronix.de>
- <CAOoeyxXw1x2HVXQYzxc1OuGimn7XPfCjj-aB=jAAfw733b_9OQ@mail.gmail.com>
+	s=arc-20240116; t=1743061213; c=relaxed/simple;
+	bh=xIzDxi++J3dCaLpdaxTc+W8/qa00RPqhhzN6FtJfE20=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=pY/FyQ7Tl2MYERCibOJiAb9OFv7KcKkl1Mq4fvx7HSaI2kLdXPMkseFKFpTKo7Hy0AkC5MmuEmc0VCMHjIKOFivjC7ERKVui3+1l7KQ6esNJQwWrOqJfz8itpWowgl+KJsaJlYTfOACIlF12U8AMjBZ5AZDbxK6wwqzVN7uj9Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4ZNb6R2k9Gz2TS0C;
+	Thu, 27 Mar 2025 15:35:27 +0800 (CST)
+Received: from kwepemg200005.china.huawei.com (unknown [7.202.181.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id DEFF71A016C;
+	Thu, 27 Mar 2025 15:40:07 +0800 (CST)
+Received: from [10.174.176.70] (10.174.176.70) by
+ kwepemg200005.china.huawei.com (7.202.181.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 27 Mar 2025 15:40:06 +0800
+Message-ID: <7b0e4957-623b-45ce-85e4-e4c08cbdb8b3@huawei.com>
+Date: Thu, 27 Mar 2025 15:40:06 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="c65ffbddv2wxsgu3"
-Content-Disposition: inline
-In-Reply-To: <CAOoeyxXw1x2HVXQYzxc1OuGimn7XPfCjj-aB=jAAfw733b_9OQ@mail.gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] ipv6: sit: fix skb_under_panic with overflowed
+ needed_headroom
+To: Eric Dumazet <edumazet@google.com>
+CC: <davem@davemloft.net>, <dsahern@kernel.org>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>, <kuniyu@amazon.com>,
+	<yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20250327015827.2729554-1-wangliang74@huawei.com>
+ <CANn89iJn5gARyEPHeYxZxERpERdNKMngMcP1BbKrW9ebxB-tRw@mail.gmail.com>
+ <df2d0ac0-c80e-4511-9303-3ee773c73a22@huawei.com>
+ <CANn89iJdThGoaVc3LbucK_QGe1akNzmd5YOhMqmshwh_RfOn+A@mail.gmail.com>
+From: Wang Liang <wangliang74@huawei.com>
+In-Reply-To: <CANn89iJdThGoaVc3LbucK_QGe1akNzmd5YOhMqmshwh_RfOn+A@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemg200005.china.huawei.com (7.202.181.32)
 
 
---c65ffbddv2wxsgu3
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v8 4/7] can: Add Nuvoton NCT6694 CANFD support
-MIME-Version: 1.0
+在 2025/3/27 14:39, Eric Dumazet 写道:
+> On Thu, Mar 27, 2025 at 7:33 AM Wang Liang <wangliang74@huawei.com> wrote:
+>>
+>>
+>> You can get the report in
+>> https://syzkaller.appspot.com/text?tag=CrashReport&x=106b6b34880000
+> Well, please provide the most accurate stack trace with symbols in
+> your patch then ?
+>
+> If you spent time reproducing the issue and providing your stack
+> trace, please add the symbols.
 
-On 27.03.2025 13:38:22, Ming Yu wrote:
-> Marc Kleine-Budde <mkl@pengutronix.de> =E6=96=BC 2025=E5=B9=B43=E6=9C=882=
-7=E6=97=A5 =E9=80=B1=E5=9B=9B =E4=B8=8A=E5=8D=881:41=E5=AF=AB=E9=81=93=EF=
-=BC=9A
-> >
-> > > > > > > +     priv->can.clock.freq =3D can_clk;
-> > > > > > > +     priv->can.bittiming_const =3D &nct6694_can_bittiming_no=
-minal_const;
-> > > > > > > +     priv->can.data_bittiming_const =3D &nct6694_can_bittimi=
-ng_data_const;
-> > > > > > > +     priv->can.do_set_mode =3D nct6694_can_set_mode;
-> > > > > > > +     priv->can.do_get_berr_counter =3D nct6694_can_get_berr_=
-counter;
-> > > > > > > +     priv->can.ctrlmode_supported =3D CAN_CTRLMODE_LOOPBACK |
-> > > > > > > +             CAN_CTRLMODE_LISTENONLY | CAN_CTRLMODE_BERR_REP=
-ORTING |
-> > > > > > > +             CAN_CTRLMODE_FD | CAN_CTRLMODE_FD_NON_ISO;
-> > > > > >
-> > > > > > Does your device run in CAN-FD mode all the time? If so, please=
- use
-> > > > > > can_set_static_ctrlmode() to set it after priv->can.ctrlmode_su=
-pported
-> > > > > > and remove CAN_CTRLMODE_FD from ctrlmode_supported.
-> > > > > >
-> > > > >
-> > > > > Our device is designed to allow users to dynamically switch betwe=
-en
-> > > > > Classical CAN and CAN-FD mode via ip link set ... fd on/off.
-> > > > > Therefore, CAN_CTRLMODE_FD needs to remain in ctrlmode_supported,=
- and
-> > > > > can_set_static_ctrlmode() is not suitable in this case.
-> > > > > Please let me know if you have any concerns about this approach.
-> > > >
-> > > > Where do you evaluate if the user has configured CAN_CTRLMODE_FD or=
- not?
-> > > >
-> > >
-> > > Sorry, I was previously confused about our device's control mode. I
-> > > will use can_set_static_ctrlmode() to set CAN_FD mode in the next
-> > > patch.
-> >
-> > Does your device support CAN-CC only mode? Does your device support to
-> > switch between CAN-CC only and CAN-FD mode?
-> >
->=20
-> Our device supports both CAN-CC and CAN-FD mode.
 
-This doesn't answer my question:
+Thank you for the reminder of decode_stacktrace.sh.
 
-Does your device support CAN-CC only mode?
+I just reproduce the issue, and first use decode_stacktrace.sh to get the
+stack trace below[1], please check it. I will update the stack trace in my
+patch later.
 
-Marc
+Thanks.
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
---c65ffbddv2wxsgu3
-Content-Type: application/pgp-signature; name="signature.asc"
+[1]
 
------BEGIN PGP SIGNATURE-----
+[  895.885034][T23587] ------------[ cut here ]------------
+[  895.885951][T23587] kernel BUG at net/core/skbuff.c:209!
+[  895.886889][T23587] Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+[  895.888037][T23587] CPU: 0 UID: 0 PID: 23587 Comm: test Tainted: 
+G        W          6.14.0-00624-g2f2d52945852-dirty #15
+[  895.889837][T23587] Tainted: [W]=WARN
+[  895.890469][T23587] Hardware name: QEMU Standard PC (i440FX + PIIX, 
+1996), BIOS 1.15.0-1 04/01/2014
+[895.891962][T23587] RIP: 0010:skb_panic (net/core/skbuff.c:209 
+(discriminator 4))
+[ 895.892786][T23587] Code: 0f b6 04 01 84 c0 74 04 3c 03 7e 20 8b 4b 70 
+41 56 45 89 e8 48 c7 c7 c0 0c 7e 8b 41 57 56 48 89 ee 52 4c 89 e2 e8 6a 
+40 6e f9 <0f> 0b 4c 89 4c 24 10 48 89 54 24 08 48 89 34 24 e8 b5 68 ec f9 4c
+[  895.895918][T23587] RSP: 0018:ffffc900000e6a18 EFLAGS: 00010282
+[  895.897396][T23587] RAX: 0000000000000088 RBX: ffff88809a0cd000 RCX: 
+ffffffff819352e9
+[  895.898695][T23587] RDX: 0000000000000000 RSI: ffffffff8193bd1d RDI: 
+0000000000000005
+[  895.899992][T23587] RBP: ffffffff8b7e2020 R08: 0000000000000000 R09: 
+fffffbfff1989a84
+[  895.901274][T23587] R10: 0000000000000200 R11: 000000000023df70 R12: 
+ffffffff88d9b291
+[  895.902561][T23587] R13: 0000000000000008 R14: ffff88805013e120 R15: 
+0000000000000180
+[  895.903863][T23587] FS:  00000000162863c0(0000) 
+GS:ffff8880b9400000(0000) knlGS:0000000000000000
+[  895.905307][T23587] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  895.906378][T23587] CR2: ffffffffff600400 CR3: 0000000094fcc000 CR4: 
+00000000000006f0
+[  895.907669][T23587] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 
+0000000000000000
+[  895.908960][T23587] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 
+0000000000000400
+[  895.910252][T23587] Call Trace:
+[  895.910798][T23587]  <TASK>
+[895.923567][T23587] skb_push (net/core/skbuff.c:2544)
+[895.924232][T23587] fou_build_udp (./include/linux/skbuff.h:3026 
+net/ipv4/fou_core.c:1041)
+[895.925001][T23587] gue_build_header (net/ipv4/fou_core.c:1085)
+[895.927586][T23587] ip_tunnel_xmit (./include/net/ip_tunnels.h:541 
+./include/net/ip_tunnels.h:525 net/ipv4/ip_tunnel.c:780)
+[895.931769][T23587] sit_tunnel_xmit__.isra.0 (net/ipv6/sit.c:1065)
+[895.932682][T23587] sit_tunnel_xmit (net/ipv6/sit.c:1076)
+[895.937147][T23587] dev_hard_start_xmit 
+(./include/linux/netdevice.h:5161 net/core/dev.c:3800 net/core/dev.c:3816)
+[895.937996][T23587] __dev_queue_xmit (net/core/dev.h:320 
+net/core/dev.c:4653)
+[895.945680][T23587] neigh_connected_output 
+(./include/linux/netdevice.h:3313 net/core/neighbour.c:1543)
+[895.946570][T23587] ip_finish_output2 (./include/net/neighbour.h:539 
+net/ipv4/ip_output.c:236)
+[895.948304][T23587] __ip_finish_output (net/ipv4/ip_output.c:314 
+net/ipv4/ip_output.c:296)
+[895.949152][T23587] ip_finish_output (net/ipv4/ip_output.c:324)
+[895.949945][T23587] ip_mc_output (./include/linux/netfilter.h:303 
+net/ipv4/ip_output.c:421)
+[895.951538][T23587] ip_send_skb (./include/net/dst.h:459 
+./include/net/dst.h:457 net/ipv4/ip_output.c:130 net/ipv4/ip_output.c:1502)
+[895.952279][T23587] udp_send_skb (net/ipv4/udp.c:1197)
+[895.953048][T23587] udp_sendmsg (net/ipv4/udp.c:1484)
+[895.962452][T23587] udpv6_sendmsg (net/ipv6/udp.c:1545 (discriminator 1))
+[895.976909][T23587] inet6_sendmsg (net/ipv6/af_inet6.c:659 
+(discriminator 4))
+[895.978530][T23587] ____sys_sendmsg (net/socket.c:718 net/socket.c:733 
+net/socket.c:2573)
+[895.982832][T23587] ___sys_sendmsg (net/socket.c:2629)
+[895.988814][T23587] __sys_sendmmsg (net/socket.c:2719)
+[895.994530][T23587] __x64_sys_sendmmsg (net/socket.c:2740)
+[895.996217][T23587] do_syscall_64 (arch/x86/entry/common.c:52 
+arch/x86/entry/common.c:83)
+[895.996965][T23587] entry_SYSCALL_64_after_hwframe 
+(arch/x86/entry/entry_64.S:130)
+[  895.997937][T23587] RIP: 0033:0x44a19d
+[ 895.998581][T23587] Code: c3 e8 37 1f 00 00 0f 1f 80 00 00 00 00 f3 0f 
+1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 
+08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+[  896.001683][T23587] RSP: 002b:00007fffc1b01a88 EFLAGS: 00000216 
+ORIG_RAX: 0000000000000133
+[  896.003032][T23587] RAX: ffffffffffffffda RBX: 0000000020000014 RCX: 
+000000000044a19d
+[  896.004311][T23587] RDX: 0000000000000001 RSI: 00000000200017c0 RDI: 
+0000000000000003
+[  896.005595][T23587] RBP: 00007fffc1b01ab0 R08: 0000000000000000 R09: 
+0000000000000000
+[  896.006891][T23587] R10: 0000000000000000 R11: 0000000000000216 R12: 
+0000000000000001
+[  896.008164][T23587] R13: 00007fffc1b01cf8 R14: 00000000004c4710 R15: 
+0000000000000001
+[  896.009454][T23587]  </TASK>
+[  896.009969][T23587] Modules linked in:
+[  896.010664][T23587] ---[ end trace 0000000000000000 ]---
 
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmfk+OIACgkQDHRl3/mQ
-kZyShwf/SEuLYWxNwEXPQAFmu0xkYcX51A4Mbmaf6/13N46iS6PA0obpQq4+AO3C
-b9PQ/S6ksgL4cA7wqXcakT/lI4Q8EAhieKHkpCD63j3S82fGjVACaE+USZLhDdWV
-Dv3+2yePBKFkyBQuI0LPTq0isnXsbZ2UPF/mA9amECwxoyUTFTGYLyjN5KfyLppD
-UNPdQWoRXLadDDSKKQGLVD58oUO1QYaWoY/ZdTZg3EnLFLJEccmkG1+gxCuhOenM
-GwjIagbJVdODncOGVoFPLa5diYu68IVwaKWPEomFwIzxi53uQKLHtGvtLTfa2pwf
-5SH3X1oM60OqPxr+EKluuxWTRgN9kg==
-=ctjr
------END PGP SIGNATURE-----
-
---c65ffbddv2wxsgu3--
