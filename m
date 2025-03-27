@@ -1,165 +1,131 @@
-Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26E02163BB
-	for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 14:09:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B24214A98;
+	Thu, 27 Mar 2025 14:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743084565; cv=none; b=a3Onx4cXEXM5VCh7wQZL9X2Wuasws6vDhT0PRqTavHwHJIXb4VZ2L+LpqaMzSossT+12FL2OxSm6h0ck0/tNRAQhZhJTrIO456khaA2CXV/SvVXEt97GwTdlEnTTMcVWKRqdp2k2+iignCIdPSZE+pUOkIEdwFwOfR9UtnGCZRg=
+	t=1743084951; cv=none; b=o2h2za0L6yVnytL2qgoN7Z8PUeMAoC/BBjbArdxl9hBJo4fiYYDxb1zGaEo9PMtVEG6UunVhdz+PL3W9cXLLdSIDZq46j2SrtoX7ErtWdxgAZauhLWTHHiy7cIqsFgJ2A7Gvu0/jt9PvQmQfLJxKSJ4FkVWLQTzmhb5kg1fc5k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743084565; c=relaxed/simple;
-	bh=RWuDuE5fgIAuTD9uggQMYp2kkWjsc7bWPvIMH0cW1/k=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=hcwcZGGYM2qDvsLWTdEN1Uc81Bze/R6xHJqU9ej61Rdkoo5exeYxmjV81lk6cKqyMUNga6xI6GwoZScwcG830WIagMyoWExSdVJ88khl0H6520Q73R3eQ6zz+zab9hYeIi9ZqCuobCoYu0ChXQS1IJVRSK2PHJoA64BnOtHqJJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-3d5a9e7dd5aso10865385ab.3
-        for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 07:09:23 -0700 (PDT)
+	s=arc-20240116; t=1743084951; c=relaxed/simple;
+	bh=M/9iLSgPAvBEvcRj/91c2/vxVJRa76X4X1+UONc6k7g=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LkFmekbhyEYqPmWY2xvyGC9hDWk0oFTLLw+rFDYHlQimF1OLRJL+KmrdX9kvQYyogOxtPSGmfU3N4zDHFi1w0QIcW0STcCOl/mXB9PRPY6hDNQhc9+CID5pY2mU0j98VmeD9H/X45zNm4ojnLAlE70yMh572cGXLOqcgjEhjvgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IjGJ7ec1; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IjGJ7ec1"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-39149bccb69so890405f8f.2;
+        Thu, 27 Mar 2025 07:15:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743084948; x=1743689748; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZsPfvFNFiYpWeexMGdkrslH41pW1FMvcmq+GTlkBH+w=;
+        b=IjGJ7ec1Bd6jvKPZoDNI0z8iixTInzQPjfLRUlSaQ8WIEkV9HP3aeKjVeJmRk2damj
+         jLUGovlLGrm7KCk+MgKQu6V3Kb0bA0I8gelhuVf9YB2vEz2nLM+UW8EN+/3bbSfZUXXB
+         qCzvVovmNWTHO6wzSON0LD8g4eb6oWqjl+MokQiUo6qGIP0JroPJQO5W8WbPUGZ/IbOV
+         fHpJwYL/exEdN3ATid0XTapvaLLAxIpW8g+R3YIQZx4Y9/h9FnxlLk2YmKW1I3KeD1EG
+         0U/IPpczx3LkLva9Ll30DhoL9TqUq7RjNShvu3HWZXLsBJr1exPlM0pbe42H2TIqs8I9
+         /FgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743084563; x=1743689363;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4LZ7mfR7Lc9EP1nYqKnYAem0aGcyUg3E8Ey9SapUJck=;
-        b=K/hkp+BA8iUXHy8ehSAEuGvZOdEBRgYy2cCZR25ZkNaeDAVxi77Nh2g65q90KUd0Lc
-         QZ3YXV+l/c96zoPiRLzg9CsT6Q2EysNJSAC/DoCJftibfz2IbjCyMKzIKycZsRV/N1rR
-         7BzkDDJF14MKJfVU8fl3lxgvKT2Qa6Mstg5nr2F2e1iu/aVm1WxhiafpLPS2fvHUQrLn
-         IQ9zA+VGyZUMm325pKupM8sbZ4Z7832lnWuo8CnNtc7Yihn2KJE1X3zYN5gVyRtiZrfF
-         8GBCmSmgZ+eADoQN0ElUsqg/4LGXpCsBd3+hwxssmPoVbUjw2Qo9moPdGy+zlznswp9Q
-         vq7g==
-X-Forwarded-Encrypted: i=1; AJvYcCXYUxTASIjI4zR8Gquf0uXZOOjbtipnSTHsJ8NYepIgvIfGHefIif6AscN0Mg0hW5NEkus0Ne0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnaffOe/ff28332jfAUHd1zIAPFtgWi1t+DxMqaVXZ2QFLiAu5
-	G6845KfjoULwCV0b1qHIuMpm8kp8StCN8LCoftN0tE1RLr6HpX/RfU1Qm63RfBhS2U0Wsja7QF3
-	TJ/8zfympsqJfxX5dakOIJuY1cHhHAgN+ZzqQ8JosAUfBNToJ+nwvJyk=
-X-Google-Smtp-Source: AGHT+IHk7J352EBXlhx0rbPbcAamqA3iw7XusQRXczqxctlKg7CPQNrPQ3m6wWsEyeYOTpxlfwAuYIYSU7wU0NKSuIyavxDwU4Cs
+        d=1e100.net; s=20230601; t=1743084948; x=1743689748;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZsPfvFNFiYpWeexMGdkrslH41pW1FMvcmq+GTlkBH+w=;
+        b=TyhKUPckJ+lHbDIhBRVjdOiTejXaH60qnqem6Ki2MEV2Z2ZBptDzxI5wf5POCetKpo
+         ufbSIdfhuhtax2/dKDj7p2TdXVo1l582Z4A7rlBG3wt+EMkk8WvFGn1MzVWjs0AOylw9
+         ocoS/GK0KBXweF7SER34XV1oP/n8u5kmBE7UgMNbqK7UvOp0nD087I18cFfjgv1v4G/s
+         qo9faOgqG5FQOPjbiSlRORhbl2KKrKX+K3nD5eKM4fKGP9LqVAgHYf1ELpQtaxKIhTBR
+         kDaIFrPQzjNWeZSyhapBFc2fVALwS+oqDdOSAYLFGNGungk+jtlvnyukOMceiydMoCU7
+         D01w==
+X-Forwarded-Encrypted: i=1; AJvYcCUhdZtq8o8G3YcbF2+HWHxzOnCeqisrHO0JDAc48ztfquNsLjp5pHDCRKJcSuGd+2SaaWh91eTkUbAB@vger.kernel.org, AJvYcCV3y62anG+Oy8TfnWrVltPU46M4Ke8DnJ/uErm0ZvHDrKinIAll4ns2gH9hbsotdMyxcRZBSciR+SfeBX/M@vger.kernel.org, AJvYcCWEL+QLTbXsZgErl+4fksctux8yKeKhF2NYB4a9/AF9RyOe1CVlXTg76Upbk7cIIfpxPPwCCGTX@vger.kernel.org
+X-Gm-Message-State: AOJu0YzX076B3+/FH0+yo71wgKWC95JWIHmrSI1xdffGm+fBEVc48XH4
+	IRNkkC6y1umBDxJSTJom+B5YocRwMCL0WvLGAH+FoddbL+2mTT3y
+X-Gm-Gg: ASbGncvUS+bZKmde3aOjVDw17iG53MhkFkyLCiEZnKiXKmBVZD7/lLgIEmjSQjYkxMA
+	qNE2BBMK+KqxfIEvZlBnebvHJbPzGl2PLWOGG+eTTNIBsgXrcLDPmrlbeHLuo65Z3SZJ4WDjru2
+	cny/47n5r78VjYEPx4sjxqeI/N3FcyTRkvvknypSH6HuxtMh4KNbPOp0Udh+HpFGzgOqjqn9y5Z
+	MCWb084ukCaLl3qUFGg5DLrUEXX0nueybieWy0by244jYdQjD/N3cV7rb37vFZQP07QQGheibX6
+	QbFtG51itzRgBgfXwK8qU2uzj/TRD2jfyNyJcs7pI6X/sd3hlJhlxw2ve0ycxk4BMchfobhIMWJ
+	8
+X-Google-Smtp-Source: AGHT+IGXejG6SSWE1qsqlV2SDFl6w1YGt8KTotTLV2mFe3yEQtSfi86doGIB0kaHG0uCeBfkHHrEAw==
+X-Received: by 2002:a05:6000:184b:b0:391:441b:baac with SMTP id ffacd0b85a97d-39ad1773e93mr2692945f8f.50.1743084947937;
+        Thu, 27 Mar 2025 07:15:47 -0700 (PDT)
+Received: from Ansuel-XPS. (93-34-88-225.ip49.fastwebnet.it. [93.34.88.225])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d82e83620sm38992435e9.12.2025.03.27.07.15.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Mar 2025 07:15:46 -0700 (PDT)
+Message-ID: <67e55d92.050a0220.2fa7e9.5d6b@mx.google.com>
+X-Google-Original-Message-ID: <Z-VdkOhLT-4q4NQb@Ansuel-XPS.>
+Date: Thu, 27 Mar 2025 15:15:44 +0100
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
+	Eric Woudstra <ericwouds@gmail.com>,
+	Daniel Golle <daniel@makrotopia.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [net-next RFC PATCH v3 1/4] net: phy: pass PHY driver to
+ .match_phy_device OP
+References: <20250326233512.17153-1-ansuelsmth@gmail.com>
+ <20250326233512.17153-2-ansuelsmth@gmail.com>
+ <Z-UxZMJR7-Hp_7d0@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a92:cd8e:0:b0:3d4:700f:67e2 with SMTP id
- e9e14a558f8ab-3d5ccdc95camr40598995ab.10.1743084562801; Thu, 27 Mar 2025
- 07:09:22 -0700 (PDT)
-Date: Thu, 27 Mar 2025 07:09:22 -0700
-In-Reply-To: <67cd611c.050a0220.14db68.0073.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67e55c12.050a0220.2f068f.002c.GAE@google.com>
-Subject: Re: [syzbot] [x25?] possible deadlock in lapbeth_device_event
-From: syzbot <syzbot+377b71db585c9c705f8e@syzkaller.appspotmail.com>
-To: andrew+netdev@lunn.ch, andrew@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, eric.dumazet@gmail.com, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-x25@vger.kernel.org, 
-	lkp@intel.com, llvm@lists.linux.dev, ms@dev.tdt.de, netdev@vger.kernel.org, 
-	oe-kbuild-all@lists.linux.dev, pabeni@redhat.com, sdf@fomichev.me, 
-	stfomichev@gmail.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z-UxZMJR7-Hp_7d0@shell.armlinux.org.uk>
 
-syzbot has found a reproducer for the following issue on:
+On Thu, Mar 27, 2025 at 11:07:16AM +0000, Russell King (Oracle) wrote:
+> On Thu, Mar 27, 2025 at 12:35:01AM +0100, Christian Marangi wrote:
+> > Pass PHY driver pointer to .match_phy_device OP in addition to phydev.
+> > Having access to the PHY driver struct might be useful to check the
+> > PHY ID of the driver is being matched for in case the PHY ID scanned in
+> > the phydev is not consistent.
+> > 
+> > A scenario for this is a PHY that change PHY ID after a firmware is
+> > loaded, in such case, the PHY ID stored in PHY device struct is not
+> > valid anymore and PHY will manually scan the ID in the match_phy_device
+> > function.
+> > 
+> > Having the PHY driver info is also useful for those PHY driver that
+> > implement multiple simple .match_phy_device OP to match specific MMD PHY
+> > ID. With this extra info if the parsing logic is the same, the matching
+> > function can be generalized by using the phy_id in the PHY driver
+> > instead of hardcoding.
+> > 
+> > Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
+> 
+> Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> 
+> Please also update the email address in the suggested-by to match the
+> one in my reviewed-by for the next resend.
+> 
+> Thanks!
+>
 
-HEAD commit:    1a9239bb4253 Merge tag 'net-next-6.15' of git://git.kernel..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=15503804580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=95c3bbe7ce8436a7
-dashboard link: https://syzkaller.appspot.com/bug?extid=377b71db585c9c705f8e
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=139a6bb0580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16974a4c580000
+kernel test robot made me aware that this cause error with
+nxp-c45-tja11xx. I was on an old net-next branch and didn't notice the
+""recent"" changes to macsec support. I'm updating this and keeping the
+reviewed-by tag, hope it's OK.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-1a9239bb.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/bd56e2f824c3/vmlinux-1a9239bb.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/19172b7f9497/bzImage-1a9239bb.xz
+Also adding the simplify commit as suggested that recive the
+match_phy_device.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+377b71db585c9c705f8e@syzkaller.appspotmail.com
-
-============================================
-WARNING: possible recursive locking detected
-6.14.0-syzkaller-05877-g1a9239bb4253 #0 Not tainted
---------------------------------------------
-dhcpcd/5649 is trying to acquire lock:
-ffff888023ad4d28 (&dev->lock){+.+.}-{4:4}, at: netdev_lock include/linux/netdevice.h:2751 [inline]
-ffff888023ad4d28 (&dev->lock){+.+.}-{4:4}, at: netif_napi_add_weight include/linux/netdevice.h:2783 [inline]
-ffff888023ad4d28 (&dev->lock){+.+.}-{4:4}, at: lapbeth_new_device drivers/net/wan/lapbether.c:415 [inline]
-ffff888023ad4d28 (&dev->lock){+.+.}-{4:4}, at: lapbeth_device_event+0x586/0xbe0 drivers/net/wan/lapbether.c:460
-
-but task is already holding lock:
-ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: netdev_lock include/linux/netdevice.h:2751 [inline]
-ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: netdev_lock_ops include/net/netdev_lock.h:42 [inline]
-ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: netdev_lock_ops include/net/netdev_lock.h:39 [inline]
-ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: dev_change_flags+0xa7/0x250 net/core/dev_api.c:67
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(&dev->lock);
-  lock(&dev->lock);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-2 locks held by dhcpcd/5649:
- #0: ffffffff900fb268 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_net_lock include/linux/rtnetlink.h:130 [inline]
- #0: ffffffff900fb268 (rtnl_mutex){+.+.}-{4:4}, at: devinet_ioctl+0x26d/0x1f50 net/ipv4/devinet.c:1121
- #1: ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: netdev_lock include/linux/netdevice.h:2751 [inline]
- #1: ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: netdev_lock_ops include/net/netdev_lock.h:42 [inline]
- #1: ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: netdev_lock_ops include/net/netdev_lock.h:39 [inline]
- #1: ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: dev_change_flags+0xa7/0x250 net/core/dev_api.c:67
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 5649 Comm: dhcpcd Not tainted 6.14.0-syzkaller-05877-g1a9239bb4253 #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_deadlock_bug+0x1e9/0x240 kernel/locking/lockdep.c:3042
- check_deadlock kernel/locking/lockdep.c:3094 [inline]
- validate_chain kernel/locking/lockdep.c:3896 [inline]
- __lock_acquire+0xff7/0x1ba0 kernel/locking/lockdep.c:5235
- lock_acquire kernel/locking/lockdep.c:5866 [inline]
- lock_acquire+0x179/0x350 kernel/locking/lockdep.c:5823
- __mutex_lock_common kernel/locking/mutex.c:587 [inline]
- __mutex_lock+0x19a/0xb00 kernel/locking/mutex.c:732
- netdev_lock include/linux/netdevice.h:2751 [inline]
- netif_napi_add_weight include/linux/netdevice.h:2783 [inline]
- lapbeth_new_device drivers/net/wan/lapbether.c:415 [inline]
- lapbeth_device_event+0x586/0xbe0 drivers/net/wan/lapbether.c:460
- notifier_call_chain+0xb9/0x410 kernel/notifier.c:85
- call_netdevice_notifiers_info+0xbe/0x140 net/core/dev.c:2180
- call_netdevice_notifiers_extack net/core/dev.c:2218 [inline]
- call_netdevice_notifiers net/core/dev.c:2232 [inline]
- __dev_notify_flags+0x12c/0x2e0 net/core/dev.c:9409
- netif_change_flags+0x108/0x160 net/core/dev.c:9438
- dev_change_flags+0xba/0x250 net/core/dev_api.c:68
- devinet_ioctl+0x11d5/0x1f50 net/ipv4/devinet.c:1200
- inet_ioctl+0x3a7/0x3f0 net/ipv4/af_inet.c:1001
- sock_do_ioctl+0x115/0x280 net/socket.c:1190
- sock_ioctl+0x227/0x6b0 net/socket.c:1311
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:906 [inline]
- __se_sys_ioctl fs/ioctl.c:892 [inline]
- __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7effd384cd49
-Code: 5c c3 48 8d 44 24 08 48 89 54 24 e0 48 89 44 24 c0 48 8d 44 24 d0 48 89 44 24 c8 b8 10 00 00 00 c7 44 24 b8 10 00 00 00 0f 05 <41> 89 c0 3d 00 f0 ff ff 76 10 48 8b 15 ae 60 0d 00 f7 d8 41 83 c8
-RSP: 002b:00007ffedd440088 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007effd377e6c0 RCX: 00007effd384cd49
-RDX: 00007ffedd450278 RSI: 0000000000008914 RDI: 000000000000001a
-RBP: 00007ffedd460438 R08: 00007ffedd450238 R09: 00007ffedd4501e8
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ffedd450278 R14: 0000000000000028 R15: 0000000000008914
- </TASK>
-
-
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+-- 
+	Ansuel
