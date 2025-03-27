@@ -1,117 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57C01DF75C
-	for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 22:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E44125B2
+	for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 22:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743114204; cv=none; b=RBgoitRXHTvAST2Lnq8NYzFStl1o9TYdR5FURfqox9/PCnEBfUSUFs+036jGEbwYUsChNLo1vtl0S4O2YXSBk1C1LyQ1sfWLY8eOgGgOh2UL2jod5jW/lsu4ShFVmr0FuxtXcW2z+N+ehR0akimztmR66q/6wwKF4TsTU2248kA=
+	t=1743115542; cv=none; b=cS08FOf0q7YT9yrf+aQty9myuxbXBkdagxxuUncBZBHdL1d2Ode6SrnpwK62gGjKkyWiYQhHoOCae5GvQS9E3lHISIbJ8k4ZtyOCNaCOUAq/Wgz8xfji3qOHMkdXoDInDX77wK8ztNrpWeoijb8rN4Jo+fbW5wbynV9xo/JP4+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743114204; c=relaxed/simple;
-	bh=zeicdEtx4xa3ZxYSJzfyGhAkDy8TJ8eztYnW5ZxEW3M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZXMM9p9Ni5HSzNWL6l+uczdCLgw8jupNve0AB0v3BUOaiC82bRiJnUfROkkimNJEcXuKeg50y7z2XKLaxdNJNEHwuEjSHk5MWeodc+ISbHABcsyeDDbG8S4Hovq+13AczFjHodekloh2oHRc/Z/MQccsj6G+CDHlBOPTCJPX0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vrol0NyG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743115542; c=relaxed/simple;
+	bh=rFD2038oSmfRL/o5UroxR35DdxxjZH24ChwRQngmNXA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EuSd4oYtxQ2ruRIuatYtv8uEQSK9aQs/JeX8UsZt2DLYnONhggHhg2YMhFQRkdae8g+i6X2K331cvMRnCB2aObWcQHVP1O1ojaeLJLYVVpH6AdByFLvjxdq1UE/O9jbyGyFTYhyBv5CWU2RxiSIautZhqLEgnWjpN6IIC7SKK84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b=wQyc2Qeg; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vrol0NyG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF2F3C4CEED;
-	Thu, 27 Mar 2025 22:23:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743114204;
-	bh=zeicdEtx4xa3ZxYSJzfyGhAkDy8TJ8eztYnW5ZxEW3M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vrol0NyGh6BaEAgyHgX1t7B6Qp7/xk0201d6x2UR7VHNY/Xa8YY6/Thyw2QK66XOx
-	 R8uSknaxhkSKWC/6yLhp6oeBWgK8oOLIly2ACF4g6Oo0aDgyrerhGcDa50mBo2s7Ju
-	 KWsWP0PO8Bg0DAgNHNmSk4oZzd4PqghJlVgjHX2Hcdx+QdyTYE6NqCqZpJEYGlVAXv
-	 nW56tFhK7ogAJBxQvJmVAyqRaQD7/i7L7JKLpoKMXVGfG6Ga78PbNjEaKgthFq+pQp
-	 +mCm+r403GcHYf0EXdzaWFfzWjA47duTZGlW2YvhvKmCj4lG1YFvM0XmDR6ZYKGVNp
-	 sp8F6Snv5t5+A==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	sdf@fomichev.me,
-	willemdebruijn.kernel@gmail.com,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net v3 3/3] selftests: net: use Path helpers in ping
-Date: Thu, 27 Mar 2025 15:23:15 -0700
-Message-ID: <20250327222315.1098596-4-kuba@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250327222315.1098596-1-kuba@kernel.org>
-References: <20250327222315.1098596-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b="wQyc2Qeg"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-aaecf50578eso260488566b.2
+        for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 15:45:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall-org.20230601.gappssmtp.com; s=20230601; t=1743115538; x=1743720338; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Tj6ciWOlt5kGG5xdV8VuXH1Me4APKwNx0YShqVsUWxk=;
+        b=wQyc2Qeg5PQMLOTidIrh6IGlxIgOgxEJh8Qr/yUgX2qRaTSJmYweH2kLECepw2hkOt
+         X7EL0f1qnWvjGH2nSEPR4smDOn1xoCe7PZNeUfMdtlPZ/ghp0j6f/o9ovhrmA3oUlJ+c
+         GTEkin5pbb4hwy+1dijzWML6xZH8eCZWXlgJa2nR4KJS3xn0L/LkJcQgQ2pO5iaTsuLJ
+         IVBTeKksR3o5eFuPaI+JFMobqNxcv7drJrgyaSAdl88szxd5wXyaON51SPEcUDpBnPLh
+         1dmx+VCD5a/mmZWqTU5VoFpBtoU9aO1L+4NBkj66UIu2e1dUYj7jY5bZqGAWEz/0I2KA
+         m+CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743115538; x=1743720338;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tj6ciWOlt5kGG5xdV8VuXH1Me4APKwNx0YShqVsUWxk=;
+        b=n7d1CoRKU9U1xurdcELovchN4h7me/rl/vMHv4uujZNYPxz4Lr81oW797mnYmFG3gm
+         ZkABtMi2olL7OzsA4lMwnPrVgiPQffuPJ1aLmoE2h/W37tDPWczLNeslTD7VxO+jp+iO
+         BID637jOjkb00uCSU18BpTeYrsXUuvTpQ5IWOrOJcqL9A7Xfu7vSwDa/dKPwA/6xqaaX
+         VyydPzeUnlijoah44URvDtaU0Kt9siKm3a+K/OvLehzBatMBVVldW+pvmzFzSpDhki1G
+         xeRYR0Xph4GVQlpyxz98t/a+srJQrxyOIPihIC++Wd5B1GcbNVqGJPc3px6vO7ySchRK
+         QctA==
+X-Gm-Message-State: AOJu0Yy0T40oL9ikjmhpzY7F41dcvXRgHNgdlOBm6CI3YTPI7MI5n437
+	ijKqWbf1Z2Zpaad6nYS6cD9HDcAJ2kPo/QejHbZeo/WeLKrDVLuus/BYl+kfVdc=
+X-Gm-Gg: ASbGncvDzMegeQi3ar9kGUaSduIHxOfHjCK8EW2VHvauCRKv3ZifMr23kL36K1NrUWq
+	3b3UW4UAm66WQbJANClUjdMHq/yT6ennjyjkU3qkfHjXWL2knqC4nuL/wmzsrCoi7orGdIV5WkM
+	covlJlpk66OISMWSVkbRQ8PI8ulC07XmxIndRDzRuJlgF5QLR9TwQzlQFkP3jj/mn7pJayNgGqw
+	6PtVsJrjtlQTMVBgtxT7oVgly/g1jDWVT9D3TG8/CHZ7cgygIYBam29/chpJlEe3HNg95Y2sTxE
+	4ElE46jIX0Riow0uRAKerFl8dvJhswemsXu1eiqx437z/hjQsh8=
+X-Google-Smtp-Source: AGHT+IHwTbd8wqwGflE+/l8QLV4zYq2nasQtO/eu8493RQYDi8+P7mGbK4Y9sngIRgO/EYydTV0feA==
+X-Received: by 2002:a17:907:7295:b0:ac3:b115:21b8 with SMTP id a640c23a62f3a-ac6fb13f5c0mr551708366b.47.1743115538218;
+        Thu, 27 Mar 2025 15:45:38 -0700 (PDT)
+Received: from [100.115.92.205] ([109.160.74.194])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac71922b965sm62396566b.20.2025.03.27.15.45.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Mar 2025 15:45:37 -0700 (PDT)
+Message-ID: <190cbaa8-1223-4e64-a583-daf9dfe608f5@blackwall.org>
+Date: Fri, 28 Mar 2025 00:45:25 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: bridge: set skb->protocol for 802.1Q VLAN packets
+To: inuc@qq.com, bridge@lists.linux.dev
+Cc: netdev@vger.kernel.org, roopa@nvidia.com
+References: <tencent_4B358ADB8A54F04A32CD9933114B8B383606@qq.com>
+Content-Language: en-US
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <tencent_4B358ADB8A54F04A32CD9933114B8B383606@qq.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Now that net and net-next have converged we can use the Path
-helpers in the ping test without conflicts.
+On 3/26/25 20:11, inuc@qq.com wrote:
+> From: Liu Jie <inuc@qq.com>
+> 
+> When bridging locally originated VLAN-tagged packets, we must ensure
+> skb->protocol is properly set to ETH_P_8021Q. Currently, if this field
+> remains unset, br_allowed_ingress() may incorrectly drop valid VLAN
+> packets during the bridge transmission path.
+> 
+> Fix this by explicitly checking eth_hdr(skb)->h_proto for VLAN tags when
+> handling locally generated packets.
+> 
+> Signed-off-by: Liu Jie <inuc@qq.com>
+> ---
+>   net/bridge/br_device.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
+> index 0ab4613aa..9094ba7e4 100644
+> --- a/net/bridge/br_device.c
+> +++ b/net/bridge/br_device.c
+> @@ -63,6 +63,9 @@ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
+>   	skb_reset_mac_header(skb);
+>   	skb_pull(skb, ETH_HLEN);
+>   
+> +	if (eth_hdr(skb)->h_proto == htons(ETH_P_8021Q))
+> +		skb->protocol = htons(ETH_P_8021Q);
+> +
+>   	if (!br_allowed_ingress(br, br_vlan_group_rcu(br), skb, &vid,
+>   				&state, &vlan))
+>   		goto out;
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- tools/testing/selftests/drivers/net/ping.py | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
-
-diff --git a/tools/testing/selftests/drivers/net/ping.py b/tools/testing/selftests/drivers/net/ping.py
-index 93120e86e102..4b6822866066 100755
---- a/tools/testing/selftests/drivers/net/ping.py
-+++ b/tools/testing/selftests/drivers/net/ping.py
-@@ -56,8 +56,7 @@ no_sleep=False
-         return
- 
- def _set_xdp_generic_sb_on(cfg) -> None:
--    test_dir = os.path.dirname(os.path.realpath(__file__))
--    prog = test_dir + "/../../net/lib/xdp_dummy.bpf.o"
-+    prog = cfg.net_lib_dir / "xdp_dummy.bpf.o"
-     cmd(f"ip link set dev {remote_ifname} mtu 1500", shell=True, host=cfg.remote)
-     cmd(f"ip link set dev {cfg.ifname} mtu 1500 xdpgeneric obj {prog} sec xdp", shell=True)
-     defer(cmd, f"ip link set dev {cfg.ifname} xdpgeneric off")
-@@ -66,8 +65,7 @@ no_sleep=False
-         time.sleep(10)
- 
- def _set_xdp_generic_mb_on(cfg) -> None:
--    test_dir = os.path.dirname(os.path.realpath(__file__))
--    prog = test_dir + "/../../net/lib/xdp_dummy.bpf.o"
-+    prog = cfg.net_lib_dir / "xdp_dummy.bpf.o"
-     cmd(f"ip link set dev {remote_ifname} mtu 9000", shell=True, host=cfg.remote)
-     defer(ip, f"link set dev {remote_ifname} mtu 1500", host=cfg.remote)
-     ip("link set dev %s mtu 9000 xdpgeneric obj %s sec xdp.frags" % (cfg.ifname, prog))
-@@ -77,8 +75,7 @@ no_sleep=False
-         time.sleep(10)
- 
- def _set_xdp_native_sb_on(cfg) -> None:
--    test_dir = os.path.dirname(os.path.realpath(__file__))
--    prog = test_dir + "/../../net/lib/xdp_dummy.bpf.o"
-+    prog = cfg.net_lib_dir / "xdp_dummy.bpf.o"
-     cmd(f"ip link set dev {remote_ifname} mtu 1500", shell=True, host=cfg.remote)
-     cmd(f"ip -j link set dev {cfg.ifname} mtu 1500 xdp obj {prog} sec xdp", shell=True)
-     defer(ip, f"link set dev {cfg.ifname} mtu 1500 xdp off")
-@@ -95,8 +92,7 @@ no_sleep=False
-         time.sleep(10)
- 
- def _set_xdp_native_mb_on(cfg) -> None:
--    test_dir = os.path.dirname(os.path.realpath(__file__))
--    prog = test_dir + "/../../net/lib/xdp_dummy.bpf.o"
-+    prog = cfg.net_lib_dir / "xdp_dummy.bpf.o"
-     cmd(f"ip link set dev {remote_ifname} mtu 9000", shell=True, host=cfg.remote)
-     defer(ip, f"link set dev {remote_ifname} mtu 1500", host=cfg.remote)
-     try:
-@@ -109,8 +105,7 @@ no_sleep=False
-         time.sleep(10)
- 
- def _set_xdp_offload_on(cfg) -> None:
--    test_dir = os.path.dirname(os.path.realpath(__file__))
--    prog = test_dir + "/../../net/lib/xdp_dummy.bpf.o"
-+    prog = cfg.net_lib_dir / "xdp_dummy.bpf.o"
-     cmd(f"ip link set dev {cfg.ifname} mtu 1500", shell=True)
-     try:
-         cmd(f"ip link set dev {cfg.ifname} xdpoffload obj {prog} sec xdp", shell=True)
--- 
-2.49.0
+Why do you think the protocol is incorrect? Did you see a problem with
+some particular setup?
 
