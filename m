@@ -1,137 +1,173 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9181ACEBE;
-	Thu, 27 Mar 2025 22:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931E81DC9AB
+	for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 22:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743113842; cv=none; b=JjAMGBYKi5unv9oPzb4F7gwlovTkne5jCCFeNi9+nnuUMURVt4vK0SvU/raTjAUd/wG7ETMUFlxqXheoIwNlaQbllpJUQsOBDm2fhtjXTawKBy0fTXha96KYd7Gy5oCwrB6j47ypDpA+CujVr93zdIgb8eJxKK6E2VHSm5B2Nsc=
+	t=1743114203; cv=none; b=HsjGrdK8IrSIA37a0CeYjef+xfQlAVKI+W7mv5X4mWesq5faKavhoujamZMGkowXh29Kxisyf0F2J62Tt7iqab+/JdpcMXKth2JUzOOKjnaR1AZPbGsRFcD9BP74GqJwdSf/Z6pmHCKCrGyAm1hVmcV5mCSrs2+7mCQL/Gbhig0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743113842; c=relaxed/simple;
-	bh=89psVsuhmLnpB0D1Kli4UHQLPn+imufHphtlmAmXIs0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yj1jiFYyPNoKQl+l+O+b07F1z86xYEMDAGueip+THKLPuwU85vKsUxH0oxueoiDnTWO/XfUV6VjTXd+EbMJgeTElPUnDAhNwoyIC+ZhiRge+GXJQEkZWqdADZ8GFqTU0feCecPqyzxNL8C0Xs6JKcrIiwXO6mqx+EPYVBwe2GEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=jic0rZP8; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1743114203; c=relaxed/simple;
+	bh=1J9jDLUdm+uyQyLly2UdXpzqRBADlJ68oaMqriBMqhY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Bd1xEWMqya2bGifPbVJxiV8v2hCvZCfI3GW7qaGHeq7LGo3pfKHFko90SIvQP7H9eJyR+godExwWDJxyNosn5tys8RGk9txw2+9IpY1Icl3yQjjk9adF1FB/bCgzjzeFdKF5jM1VqPTWkzVoVSBS+DMRMH5wyGX7zR2kbtNl6t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tMzLbU9E; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="jic0rZP8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1743113838; x=1743373038;
-	bh=pOr0DNwW22udl+QjNXdk6JXxuaFTQiZdJAYlJD9wBnM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=jic0rZP8jIRDUlYJVFn/WyH0SzSXhx/zI69q9kX7QeIHgrcfENJqk0J8WRHjnVLi8
-	 NYQ1OQjEs2l7GGNjObJEnLrPxDYndr08EDpfs5TYJPPr+lShwi3LeLeDuagfKMTX0v
-	 UXJnlwsDLJtsylUVLqPjRLZYRG8dDGGuGYSii/uS3sv0xX1IDXSgSC7+Wz31lLkvL2
-	 5BnTTLJTUPFluto7iYwREkzHvpTxJGSFCr0IhBxuyRScrQ9B5ClXkGkU0BdIv7WVEx
-	 65PCUwy1qRK0ngPc/CSLFvWJ2GfvoP8cmalbSSqimzg1t97SUicTxDSvJk0LsHlwll
-	 zekMJyBpIF4Pg==
-Date: Thu, 27 Mar 2025 22:17:13 +0000
-To: Tamir Duberstein <tamird@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, FUJITA Tomonori <fujita.tomonori@gmail.com>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v7 7/7] rust: enable `clippy::ref_as_ptr` lint
-Message-ID: <D8REA6VW7QFS.Y5195VX38USO@proton.me>
-In-Reply-To: <CAJ-ks9n3BdKkfCpMXhE8M8Sx4B5rASoNvbmA4zPU3rmPQwZCiQ@mail.gmail.com>
-References: <20250325-ptr-as-ptr-v7-0-87ab452147b9@gmail.com> <CAJ-ks9nKT2PUDm6=b4AB1QUWwwvcqPn7Vz60=c0B+uFMZrqPew@mail.gmail.com> <D8QDOBUM6NF0.CGJY7ZA5KD9S@proton.me> <CAJ-ks9ntTxBM=c5nUZWGv3MoRt-LveBchn-c1Xy-DGap7fLVRA@mail.gmail.com> <D8QI804Q3DAS.2BV4WSL81H52Z@proton.me> <CAJ-ks9mA5QDeZ3EvOD3THayFt4TtDysgm0jp2aiSF2mQCrhWiQ@mail.gmail.com> <D8QJMH5UR6VG.2OT5MXJJQU5QT@proton.me> <CAJ-ks9m96vf_HxttuopuC_UfNGJbHHNdEGS2er6nZZG38pe3HQ@mail.gmail.com> <CAJ-ks9n3BdKkfCpMXhE8M8Sx4B5rASoNvbmA4zPU3rmPQwZCiQ@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 82a53baabf13e0ce95fda485724e51f17f7c7368
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tMzLbU9E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4473C4CEEA;
+	Thu, 27 Mar 2025 22:23:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743114203;
+	bh=1J9jDLUdm+uyQyLly2UdXpzqRBADlJ68oaMqriBMqhY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tMzLbU9EcC1xQsJuNANiOxoSTESrhbpccL90+JA5UFGxjNzsvlSW4rhW4IbfVVu83
+	 k5znXLzjj/pC9CiOvjRH5c98axAceddmHEY1C8pCSGdfqnIJ0GFWe+bd04wiQRNyVM
+	 Eh2Yxdbtfk1O+wxiNcjdiVtxJHkaZ+NHVidcp2EqhqabUJQjYQUoznA+6SVuR0rs4y
+	 1tNkRUZ5aGriSjxiB9WULv58hhUJQEEx7mZiz0N+1Z0XAYJFZjp+92U3kVXhNy/jNm
+	 5ZF2GgrTQBtJ6meKJRFX+sKM9x4Gu86ykfBd8b/WgUXQ4lj24S09rbladxEKLOwTK6
+	 KJdqqDI7c839Q==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	sdf@fomichev.me,
+	willemdebruijn.kernel@gmail.com,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net v3 1/3] selftests: drv-net: replace the rpath helper with Path objects
+Date: Thu, 27 Mar 2025 15:23:13 -0700
+Message-ID: <20250327222315.1098596-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250327222315.1098596-1-kuba@kernel.org>
+References: <20250327222315.1098596-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu Mar 27, 2025 at 8:44 PM CET, Tamir Duberstein wrote:
-> On Thu, Mar 27, 2025 at 10:15=E2=80=AFAM Tamir Duberstein <tamird@gmail.c=
-om> wrote:
->> On Wed, Mar 26, 2025 at 6:15=E2=80=AFPM Benno Lossin <benno.lossin@proto=
-n.me> wrote:
->> > On Wed Mar 26, 2025 at 11:09 PM CET, Tamir Duberstein wrote:
->> > > On Wed, Mar 26, 2025 at 5:09=E2=80=AFPM Benno Lossin <benno.lossin@p=
-roton.me> wrote:
->> > >> On Wed Mar 26, 2025 at 8:06 PM CET, Tamir Duberstein wrote:
->> > >> > On Wed, Mar 26, 2025 at 1:36=E2=80=AFPM Benno Lossin <benno.lossi=
-n@proton.me> wrote:
->> > >> >> On Wed Mar 26, 2025 at 5:57 PM CET, Tamir Duberstein wrote:
->> > >> >> >
->> > >> >> > Yeah, we should do this - but again: not relevant in this disc=
-ussion.
->> > >> >>
->> > >> >> I think it's pretty relevant.
->> > >> >
->> > >> > It's not relevant because we're no longer talking about transmuti=
-ng
->> > >> > pointer to pointer. The two options are:
->> > >> > 1. transmute reference to reference.
->> > >> > 2. coerce reference to pointer, `as` cast pointer to pointer (tri=
-ggers
->> > >> > `ptr_as_ptr`), reborrow pointer to reference.
->> > >> >
->> > >> > If anyone can help me understand why (2) is better than (1), I'd
->> > >> > certainly appreciate it.
->> > >>
->> > >> I am very confident that (2) is correct. With (1) I'm not sure (see
->> > >> above), so that's why I mentioned it.
->> > >
->> > > Can you help me understand why you're confident about (2) but not (1=
-)?
->> >
->> > My explanation from above explains why I'm not confident about (1):
->> >
->> >     For ptr-to-int transmutes, I know that they will probably remove
->> >     provenance, hence I am a bit cautious about using them for ptr-to-=
-ptr or
->> >     ref-to-ref.
->> >
->> > The reason I'm confident about (2) is that that is the canonical way t=
-o
->> > cast the type of a reference pointing to an `!Sized` value.
->>
->> Do you have a citation, other than the transmute doc?
+The single letter + "path" helpers do not have many fans (see Link).
+Use a Path object with a better name. test_dir is the replacement
+for rpath(), net_lib_dir is a new path of the $ksft/net/lib directory.
 
-Not that I am aware of anything.
+The Path() class overloads the "/" operator and can be cast to string
+automatically, so to get a path to a file tests can do:
 
-> Turns out this appeases clippy:
->
-> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> index 80a9782b1c6e..7a6fc78fc314 100644
-> --- a/rust/kernel/uaccess.rs
-> +++ b/rust/kernel/uaccess.rs
-> @@ -240,9 +240,10 @@ pub fn read_raw(&mut self, out: &mut
-> [MaybeUninit<u8>]) -> Result {
->      /// Fails with [`EFAULT`] if the read happens on a bad address,
-> or if the read goes out of
->      /// bounds of this [`UserSliceReader`]. This call may modify
-> `out` even if it returns an error.
->      pub fn read_slice(&mut self, out: &mut [u8]) -> Result {
-> +        let out: *mut [u8] =3D out;
->          // SAFETY: The types are compatible and `read_raw` doesn't
-> write uninitialized bytes to
->          // `out`.
-> -        let out =3D unsafe { &mut *(out as *mut [u8] as *mut
-> [MaybeUninit<u8>]) };
-> +        let out =3D unsafe { &mut *(out as *mut [MaybeUninit<u8>]) };
->          self.read_raw(out)
->      }
+    path = env.test_dir / "binary"
 
-Seems like your email client auto-wrapped that :(
-
-> Benno, would that work for you? Same in str.rs, of course.
-
-For this specific case, I do have a `cast_slice_mut` function I
-mentioned in the other thread, but that is still stuck in the untrusted
-data series, I hope that it's ready tomorrow or maybe next week. I'd
-prefer if we use that (since its implementation also doesn't use `as`
-casts :). But if you can't wait, then the above is fine.
-
+Link: https://lore.kernel.org/CA+FuTSemTNVZ5MxXkq8T9P=DYm=nSXcJnL7CJBPZNAT_9UFisQ@mail.gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
-Cheers,
-Benno
+v3:
+ - change the approach to use Path
+v2: https://lore.kernel.org/20250306171158.1836674-1-kuba@kernel.org
+---
+ tools/testing/selftests/drivers/net/hds.py    |  2 +-
+ .../testing/selftests/drivers/net/hw/csum.py  |  2 +-
+ tools/testing/selftests/drivers/net/hw/irq.py |  2 +-
+ .../selftests/drivers/net/lib/py/env.py       | 21 +++++++------------
+ tools/testing/selftests/drivers/net/queues.py |  4 ++--
+ 5 files changed, 13 insertions(+), 18 deletions(-)
+
+diff --git a/tools/testing/selftests/drivers/net/hds.py b/tools/testing/selftests/drivers/net/hds.py
+index 7cc74faed743..8b7f6acad15f 100755
+--- a/tools/testing/selftests/drivers/net/hds.py
++++ b/tools/testing/selftests/drivers/net/hds.py
+@@ -20,7 +20,7 @@ from lib.py import defer, ethtool, ip
+ 
+ 
+ def _xdp_onoff(cfg):
+-    prog = cfg.rpath("../../net/lib/xdp_dummy.bpf.o")
++    prog = cfg.net_lib_dir / "xdp_dummy.bpf.o"
+     ip("link set dev %s xdp obj %s sec xdp" %
+        (cfg.ifname, prog))
+     ip("link set dev %s xdp off" % cfg.ifname)
+diff --git a/tools/testing/selftests/drivers/net/hw/csum.py b/tools/testing/selftests/drivers/net/hw/csum.py
+index 701aca1361e0..cd23af875317 100755
+--- a/tools/testing/selftests/drivers/net/hw/csum.py
++++ b/tools/testing/selftests/drivers/net/hw/csum.py
+@@ -88,7 +88,7 @@ from lib.py import bkg, cmd, wait_port_listen
+     with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
+         check_nic_features(cfg)
+ 
+-        cfg.bin_local = cfg.rpath("../../../net/lib/csum")
++        cfg.bin_local = cfg.net_lib_dir / "csum"
+         cfg.bin_remote = cfg.remote.deploy(cfg.bin_local)
+ 
+         cases = []
+diff --git a/tools/testing/selftests/drivers/net/hw/irq.py b/tools/testing/selftests/drivers/net/hw/irq.py
+index 42ab98370245..d772a18d8a1b 100755
+--- a/tools/testing/selftests/drivers/net/hw/irq.py
++++ b/tools/testing/selftests/drivers/net/hw/irq.py
+@@ -69,7 +69,7 @@ from lib.py import cmd, ip, defer
+ def check_reconfig_xdp(cfg) -> None:
+     def reconfig(cfg) -> None:
+         ip(f"link set dev %s xdp obj %s sec xdp" %
+-            (cfg.ifname, cfg.rpath("xdp_dummy.bpf.o")))
++           (cfg.ifname, cfg.test_dir / "xdp_dummy.bpf.o"))
+         ip(f"link set dev %s xdp off" % cfg.ifname)
+ 
+     _check_reconfig(cfg, reconfig)
+diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
+index fd4d674e6c72..ad5ff645183a 100644
+--- a/tools/testing/selftests/drivers/net/lib/py/env.py
++++ b/tools/testing/selftests/drivers/net/lib/py/env.py
+@@ -13,23 +13,18 @@ from .remote import Remote
+ class NetDrvEnvBase:
+     """
+     Base class for a NIC / host envirnoments
++
++    Attributes:
++      test_dir: Path to the source directory of the test
++      net_lib_dir: Path to the net/lib directory
+     """
+     def __init__(self, src_path):
+-        self.src_path = src_path
++        self.src_path = Path(src_path)
++        self.test_dir = self.src_path.parent.resolve()
++        self.net_lib_dir = (Path(__file__).parent / "../../../../net/lib").resolve()
++
+         self.env = self._load_env_file()
+ 
+-    def rpath(self, path):
+-        """
+-        Get an absolute path to a file based on a path relative to the directory
+-        containing the test which constructed env.
+-
+-        For example, if the test.py is in the same directory as
+-        a binary (built from helper.c), the test can use env.rpath("helper")
+-        to get the absolute path to the binary
+-        """
+-        src_dir = Path(self.src_path).parent.resolve()
+-        return (src_dir / path).as_posix()
+-
+     def _load_env_file(self):
+         env = os.environ.copy()
+ 
+diff --git a/tools/testing/selftests/drivers/net/queues.py b/tools/testing/selftests/drivers/net/queues.py
+index cae923f84f69..06abd3f233e1 100755
+--- a/tools/testing/selftests/drivers/net/queues.py
++++ b/tools/testing/selftests/drivers/net/queues.py
+@@ -26,13 +26,13 @@ import struct
+ 
+ def check_xsk(cfg, nl, xdp_queue_id=0) -> None:
+     # Probe for support
+-    xdp = cmd(cfg.rpath("xdp_helper") + ' - -', fail=False)
++    xdp = cmd(f'{cfg.test_dir / "xdp_helper"} - -', fail=False)
+     if xdp.ret == 255:
+         raise KsftSkipEx('AF_XDP unsupported')
+     elif xdp.ret > 0:
+         raise KsftFailEx('unable to create AF_XDP socket')
+ 
+-    with bkg(f'{cfg.rpath("xdp_helper")} {cfg.ifindex} {xdp_queue_id}',
++    with bkg(f'{cfg.test_dir / "xdp_helper"} {cfg.ifindex} {xdp_queue_id}',
+              ksft_wait=3):
+ 
+         rx = tx = False
+-- 
+2.49.0
 
