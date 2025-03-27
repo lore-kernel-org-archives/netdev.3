@@ -1,255 +1,155 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1551F3D54;
-	Thu, 27 Mar 2025 22:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D8F1B6D08;
+	Thu, 27 Mar 2025 22:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743115572; cv=none; b=uB68K4HAJUXfzodPJVj8++srq7EYyByyPFi3pibfz4RKWXfFPl26EtsM0l8tvKvRGPobjpiq3zXtLYadGqGfPtPBA11TzAXexrsHjLvyyuYrwWN8wy6KiNuMUx5YmpIsHa4FmBjAo+0/HZwmFbIA31hofURsVaQyIt7WDiRIqzI=
+	t=1743115804; cv=none; b=jgj+e9amiDPfQH52d65k5AMMN/pA/ItCl50W3USzJEzPR7C6j5B9vHsdDNLlWEdHDuC2EclT4/T1OQPcGjWu8ZwfumvAMYTDVziH87kfE7UlnkKQ00dHrAezSdcVhHDCGxWLZsXaFIQzKVkLT4U7+Hc1SmjFd/AUufe5/Q2ivQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743115572; c=relaxed/simple;
-	bh=3JAbx/6zHxDcZcVrqonGIc+yq6mzD6vU7qPwcQ3/KuQ=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZXPkkwq2Dw3GAHyPjf9kLG5yY/rQ4AS89D1H/f6V96h7N+dKfhYyRsVUb7HLQXotPRW98JimnJyyhldERFYXM85t/TVZgqWNG+FEP8LBY9z6B4N45tVkwFT4JgQKVVyRVNFR3koOMT8zplfkuhGT1kGCIok70P5v6O2pj+/xhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TX1i2Rkd; arc=none smtp.client-ip=209.85.221.45
+	s=arc-20240116; t=1743115804; c=relaxed/simple;
+	bh=aNgKSZOvnwquGNkjEd+Rl/oUTq2Kr+uyVduD5vXxrtk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dQ9ch8vr4dyw6g/5JeLGHs7dzyrcYXOOON5yGu659JaORl+pF4nrkF3RC3Gl1APzwVoLT8BXu0xnnDzm8FwZugujqDUFgYvAK/3ggCi4PHOMX0rhfasc29bY681cuCk4XHvwbOmiQMEgwiE45NB/1RkCJelcnffd9htDGOVnDPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ig9SoCK0; arc=none smtp.client-ip=209.85.219.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TX1i2Rkd"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-39ac9aea656so1249937f8f.3;
-        Thu, 27 Mar 2025 15:46:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ig9SoCK0"
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6e8f4c50a8fso12829406d6.1;
+        Thu, 27 Mar 2025 15:50:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743115569; x=1743720369; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XlCP40OPLX2TWKsloKBZ4s4PKxe95hK/BBiMij9W8Xc=;
-        b=TX1i2RkdHLrCn0Gmc4SoZMB+RLa3uqfolNrWcR02jpROC/QAcYF8QgnOTIiL2bOx8j
-         5OA5wTWsDf1lfG6S/ubV41b1Qo2pWNaun0YVf+bX7w2pp8K1Z978If1zze+7qYmWKHdF
-         9NpiDAADXOIBaskWxR+Dz1dsJMSZF+JY7tuXEdNO68rtaS+KruWbROE8DypiYAARMKoc
-         Ezjr6BFxcgS5ALwcNleMMSPXbqnvcnZOhumG6d6AGmoYsP77iDL2PPegKyqLDx2feEcR
-         5kuYyd2wft3ztMmuBhuZVNcVyTVmKyg40yRIhK6TojrV13uxMEfZawv6wEImdGV1kalt
-         53QQ==
+        d=gmail.com; s=20230601; t=1743115801; x=1743720601; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/lgInEmn9kAXfLfJ08wUUe6niWuQHdC4fBten3a0reo=;
+        b=Ig9SoCK0IqTVM9guRAxSuPCth9bBehAxhtT6Pn9VgPGtdbBguTUhQA+bvIGjqHHOvT
+         V39pdO3MTqzGt8mu8FoxAOBsAVO054auzS2vVOReLGIP19hRQhuM7PmZp2w/eAkSUTs8
+         ovSaitXgSSmkHZHOtou59Gjsy3uuMhxMFXR7WguYGwuUuj4wZZM5djnnwHuW3E5C2XvF
+         9HwpfD3unMXX05C6wKd9Lc7HrOJoypvhb1seyUB7T1WwRuk96RFeatCGApYBhm8+r5fh
+         RPwBoKpP+RvbcCs6jfSz2bL68b2RF3TsbOhTk5DxV9Rq6EnwQdfakudux+ir7BYsuKkP
+         a8mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743115569; x=1743720369;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XlCP40OPLX2TWKsloKBZ4s4PKxe95hK/BBiMij9W8Xc=;
-        b=NeKX0HDXjjw5E5UxcKaHM2UUruGffn2BT+N26DVrHMg0OADaewGJxCYt9LpNvlpQHo
-         3eO8nn+w+i6bzQqNoK8HYIeXU9RHgI1CeN/sbX+JJ80bUwSkIOZ2DIsi6MIrQYSrQ/rY
-         FplUjFQvp9Kh01GBz16cOXhSo2qpz2O2HWsEfiFByAx543cR6hALEQT2RqVJ+hGc9IT+
-         HDz9TkCV3crxmpN1HIbudKrMPf2kVHOQmgJCmqYQeFCoyyGXOWxWZXpqoFT7ngrTMTgg
-         dqPi/ib1BCEeZTaPOP7mONjZ2lDukE8mtWqYIamRbV1qu7WIOBkSAdD37AzD4Q93eOtG
-         DX+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUW20IBKLhLzZkJVxgG4atl9tvO3YCenxGGH2c3m/79VJhuBlN5DivYLM2NHB/EttQqydjesFMxYqYHkcqY@vger.kernel.org, AJvYcCUkg+7pXogMXT7t/6JjNey9JygYoxTd/05wnGPKuAwedFHqGbCazcAu+UVjkUMrAcMu8YaRWpPo@vger.kernel.org, AJvYcCWLOWg5fwRBNp84ZT5pGSHlVfaSwQpIjMo63zFfeP2zujsyKBPjh4aHMEbno6iED2veJ/mBiC7fn9x/@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEAyIxwdsLWonpQD8rZ81pRsTWlH3dXpfUXBRb/3O05R06yBCo
-	WigqbHPvryW9ifxjZTgbpKSxQfdTc0o6qdci2HnbYGjRogTwYCpE
-X-Gm-Gg: ASbGncuXfBJDJ9gzsOTABpqUM4J+hgC6GhiKC8Alg3fUOfH1baEzEi5MtC/0QkWwpTI
-	8/X6A9CRkLqlLyCM0Q8b8QQFCqqBy+AqX5EzHQIDoVsC2OZUZz4y+Fi/Axy1/OFCIHQfFDr4W7Y
-	YPqE1b6aKxVySZ7IPUf8OAVR/9+vECKClxHgOwaNL1AkmSCpKmvuAgkJz4NH7UieqrBEiXFP651
-	W9WYwiPCXvPaDtLFtBUmVEtN6WMhksZWydHRQQiiIXJ7oxqLVSBDy6BI8FWtnobb5qkRg3TiOuI
-	ayxyKCVKdQsYLIUaQ6NeAqEKvctTR31EawhHDvmHaxnXrAxpvhRMGFGB4YIB519cyxsmb1wA22V
-	A6nVPrik6Fc3VRw==
-X-Google-Smtp-Source: AGHT+IHUHmnpA4FH5YPF+VwL8jrJIx9pyRXvNp/0wMnPzueR/mR9Z/EEFGUZXXT99NmJKYaFy8Bz2Q==
-X-Received: by 2002:a05:6000:40e1:b0:391:3fa7:bf77 with SMTP id ffacd0b85a97d-39ad1773089mr5001980f8f.31.1743115569067;
-        Thu, 27 Mar 2025 15:46:09 -0700 (PDT)
-Received: from localhost.localdomain (93-34-88-225.ip49.fastwebnet.it. [93.34.88.225])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-39c0b6588dbsm789476f8f.2.2025.03.27.15.46.07
+        d=1e100.net; s=20230601; t=1743115801; x=1743720601;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/lgInEmn9kAXfLfJ08wUUe6niWuQHdC4fBten3a0reo=;
+        b=AAa8NutMwXWyIW8FpzVZ6fXfyL8/dzCDizbQQ7J7bfZupBOB9lzRucSL25Ssvor1it
+         3umJq8aaTzBkqPug/Sww/aeVpv1dhYwD2OurGrN1tXWRUFz639QF3ZVttQOhW7IeAsEM
+         +7ySFfSwWcBEjaXFOi8uGARVl3kUlm7OJHPDuMdvwmgGS5wkcmVLMv9pJZdHIqGzIVsF
+         PCKaFn3pTggLyNhLb1OLE1QGkgywO+/KRDrkgPadyq+VRxxqpKmAh7VqavnVoRozYZK6
+         xQRiH60oKwoIKUoUa+JWzseDF7BNhzKztWXe/2nP+fU1cdnGRMgzY1OiPvkeKJwGvm+j
+         EM1g==
+X-Forwarded-Encrypted: i=1; AJvYcCUjmxrrKnxCV6MUp1WmaVTppVAUilMXxO/B7MiZ2rvqla4kgCi9X3OmRSLfKMEmGgyAxLsc7Eor@vger.kernel.org, AJvYcCX0WxkaUsz/hFbb2J8FSEJD+Khz3v761GiSE9DBnFzZq4t05fa+/X2fb9S8Fhz9irSpHPI3k025wZovfz3u@vger.kernel.org, AJvYcCXa48VSkh9TRs3upUh7wSVyMwVdvrW9OKCuibueGP/yU09pvRqSyHQ9srqnloNNrQbIQcve8gnBhWOF@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgIZHzeEjyycT4fpgHtQwL07OBKJWZPpCOwqXR+oBYYmxcmXwL
+	4L2THW5A2/i+yHWekIpstIPSWVrmG4jDAzz9ZFYKymtIJmE68dVC
+X-Gm-Gg: ASbGncvijBbNCjZYxOpbX1aNsVB8FS/vMTMWCzMuIxi1bPqgs+tDMWhHlWjsZ4BQ1Ro
+	rGzzIwJSHswjc8pd8CPDRBw3MNrEnBhotmewnYCRSI4sYUzT9GyPy/f3eun85eNvY4T2tsAPw/n
+	neQVyIFSNcje4xGaKDUVsPNzOfjHPT6VoBui9h8G8VgZFryc6RO+WJYh5itQ4ER0NN7l79URJGl
+	RT6Ft59ZE2wzM/EuSjlaktAFcXNnND/Tq9ilZfLsCGdXxWS6Lvxy5D0Mh4Sg4MpxG0JO+/hj599
+	ZbjY6CcnDZ4l9dwV1QC+
+X-Google-Smtp-Source: AGHT+IFGejPOWFa2kBeHBJnYYEtxpzTLMl4bpzMZ4nBGvC5E46HMYYnjk1nRZveE5zQwgNH6S+BLxA==
+X-Received: by 2002:a05:6214:4002:b0:6e6:61a5:aa57 with SMTP id 6a1803df08f44-6ed23877f15mr84640566d6.14.1743115801133;
+        Thu, 27 Mar 2025 15:50:01 -0700 (PDT)
+Received: from localhost ([2001:da8:7001:11::cb])
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7c5f7682d9fsm41761185a.36.2025.03.27.15.50.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Mar 2025 15:46:08 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrei Botila <andrei.botila@oss.nxp.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [net-next RFC PATCH v4 6/6] dt-bindings: net: Document support for Aeonsemi PHYs
-Date: Thu, 27 Mar 2025 23:45:17 +0100
-Message-ID: <20250327224529.814-7-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250327224529.814-1-ansuelsmth@gmail.com>
-References: <20250327224529.814-1-ansuelsmth@gmail.com>
+        Thu, 27 Mar 2025 15:50:00 -0700 (PDT)
+Date: Fri, 28 Mar 2025 06:49:35 +0800
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Stephen Boyd <sboyd@kernel.org>, Chen Wang <unicorn_wang@outlook.com>, 
+	Conor Dooley <conor+dt@kernel.org>, Inochi Amaoto <inochiama@gmail.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Rob Herring <robh@kernel.org>
+Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+	sophgo@lists.linux.dev, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	Yixun Lan <dlan@gentoo.org>, Longbin Li <looong.bin@gmail.com>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v3 1/2] dt-bindings: clock: sophgo: add clock controller
+ for SG2044
+Message-ID: <an3mkqgwpq32bfab7i4bmbrwejluzbxnfiygjxt3rkxmow456v@5kz6qltekbia>
+References: <20250226232320.93791-2-inochiama@gmail.com>
+ <2c00c1fba1cd8115205efe265b7f1926.sboyd@kernel.org>
+ <epnv7fp3s3osyxbqa6tpgbuxdcowahda6wwvflnip65tjysjig@3at3yqp2o3vp>
+ <f1d5dc9b8f59b00fa21e8f9f2ac3794b.sboyd@kernel.org>
+ <x43v3wn5rp2mkhmmmyjvdo7aov4l7hnus34wjw7snd2zbtzrbh@r5wrvn3kxxwv>
+ <b816b3d1f11b4cc2ac3fa563fe5f4784.sboyd@kernel.org>
+ <nxvuxo7lsljsir24brvghblk2xlssxkb3mfgx6lbjahmgr4kep@fvpmciimfikg>
+ <f5228d559599f0670e6cbf26352bd1f1.sboyd@kernel.org>
+ <txuujicelz5kbcnn3qyihwaspqrdc42z4kmijpwftkxlbofg2w@jsqmwj4lz662>
+ <a9626bfa7a481cee3178f3aa80721520@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a9626bfa7a481cee3178f3aa80721520@kernel.org>
 
-Document support for Aeonsemi PHYs and the requirement of a firmware to
-correctly work. Also document the max number of LEDs supported and what
-PHY ID expose when no firmware is loaded.
+On Thu, Mar 27, 2025 at 02:21:55PM -0700, Stephen Boyd wrote:
+> Quoting Inochi Amaoto (2025-03-13 15:46:22)
+> > On Thu, Mar 13, 2025 at 01:22:28PM -0700, Stephen Boyd wrote:
+> > > Quoting Inochi Amaoto (2025-03-12 18:08:11)
+> > > > On Wed, Mar 12, 2025 at 04:43:51PM -0700, Stephen Boyd wrote:
+> > > > > Quoting Inochi Amaoto (2025-03-12 16:29:43)
+> > > > > > On Wed, Mar 12, 2025 at 04:14:37PM -0700, Stephen Boyd wrote:
+> > > > > > > Quoting Inochi Amaoto (2025-03-11 16:31:29)
+> > > > > > > > 
+> > > > > > > > > or if that syscon node should just have the #clock-cells property as
+> > > > > > > > > part of the node instead.
+> > > > > > > > 
+> > > > > > > > This is not match the hardware I think. The pll area is on the middle
+> > > > > > > > of the syscon and is hard to be separated as a subdevice of the syscon
+> > > > > > > > or just add  "#clock-cells" to the syscon device. It is better to handle
+> > > > > > > > them in one device/driver. So let the clock device reference it.
+> > > > > > > 
+> > > > > > > This happens all the time. We don't need a syscon for that unless the
+> > > > > > > registers for the pll are both inside the syscon and in the register
+> > > > > > > space 0x50002000. Is that the case? 
+> > > > > > 
+> > > > > > Yes, the clock has two areas, one in the clk controller and one in
+> > > > > > the syscon, the vendor said this design is a heritage from other SoC.
+> > > > > 
+> > > > > My question is more if the PLL clk_ops need to access both the syscon
+> > > > > register range and the clk controller register range. What part of the
+> > > > > PLL clk_ops needs to access the clk controller at 0x50002000?
+> > > > > 
+> > > > 
+> > > > The PLL clk_ops does nothing, but there is an implicit dependency:
+> > > > When the PLL change rate, the mux attached to it must switch to 
+> > > > another source to keep the output clock stable. This is the only
+> > > > thing it needed.
+> > > 
+> > > I haven't looked at the clk_ops in detail (surprise! :) but that sounds
+> > > a lot like the parent of the mux is the PLL and there's some "safe"
+> > > source that is needed temporarily while the PLL is reprogrammed for a
+> > > new rate. Is that right? I recall the notifier is in the driver so this
+> > > sounds like that sort of design.
+> > 
+> > You are right, this design is like what you say. And this design is 
+> > the reason that I prefer to just reference the syscon node but not
+> > setting the syscon with "#clock-cell".
+> > 
+> 
+> I don't see why a syscon phandle is preferred over #clock-cells. This
+> temporary parent is still a clk, right? 
 
-Supported PHYs AS21011JB1, AS21011PB1, AS21010JB1, AS21010PB1,
-AS21511JB1, AS21511PB1, AS21510JB1, AS21510PB1, AS21210JB1,
-AS21210PB1 that all register with the PHY ID 0x7500 0x9410 on C45
-registers before the firmware is loaded.
+Yeah, it is true.
 
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- .../bindings/net/aeonsemi,as21xxx.yaml        | 122 ++++++++++++++++++
- MAINTAINERS                                   |   1 +
- 2 files changed, 123 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml
+> In my opinion syscon should never be used. It signals that we lack a 
+> proper framework in the kernel to handle something. Even in the 
+> "miscellaneous" register range sort of design, we can say that this
+> grab bag of registers is exposing resources like clks or gpios, etc. 
+> as a one off sort of thing because it was too late to change other
+> hardware blocks.
 
-diff --git a/Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml b/Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml
-new file mode 100644
-index 000000000000..69eb29dc4d7b
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml
-@@ -0,0 +1,122 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/aeonsemi,as21xxx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Aeonsemi AS21XXX Ethernet PHY
-+
-+maintainers:
-+  - Christian Marangi <ansuelsmth@gmail.com>
-+
-+description: |
-+  Aeonsemi AS21xxx Ethernet PHYs requires a firmware to be loaded to actually
-+  work. The same firmware is compatible with various PHYs of the same family.
-+
-+  A PHY with not firmware loaded will be exposed on the MDIO bus with ID
-+  0x7500 0x7500 or 0x7500 0x9410 on C45 registers.
-+
-+  This can be done and is implemented by OEM in 2 different way:
-+    - Attached SPI flash directly to the PHY with the firmware. The PHY
-+      will self load the firmware in the presence of this configuration.
-+    - Manually provided firmware loaded from a file in the filesystem.
-+
-+  Each PHY can support up to 5 LEDs.
-+
-+  AS2xxx PHY Name logic:
-+
-+  AS21x1xxB1
-+      ^ ^^
-+      | |J: Supports SyncE/PTP
-+      | |P: No SyncE/PTP support
-+      | 1: Supports 2nd Serdes
-+      | 2: Not 2nd Serdes support
-+      0: 10G, 5G, 2.5G
-+      5: 5G, 2.5G
-+      2: 2.5G
-+
-+allOf:
-+  - $ref: ethernet-phy.yaml#
-+
-+select:
-+  properties:
-+    compatible:
-+      contains:
-+        enum:
-+          - ethernet-phy-id7500.9410
-+          - ethernet-phy-id7500.9402
-+          - ethernet-phy-id7500.9412
-+          - ethernet-phy-id7500.9422
-+          - ethernet-phy-id7500.9432
-+          - ethernet-phy-id7500.9442
-+          - ethernet-phy-id7500.9452
-+          - ethernet-phy-id7500.9462
-+          - ethernet-phy-id7500.9472
-+          - ethernet-phy-id7500.9482
-+          - ethernet-phy-id7500.9492
-+  required:
-+    - compatible
-+
-+properties:
-+  reg:
-+    maxItems: 1
-+
-+  firmware-name:
-+    description: specify the name of PHY firmware to load
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+if:
-+  properties:
-+    compatible:
-+      contains:
-+        const: ethernet-phy-id7500.9410
-+then:
-+  required:
-+    - firmware-name
-+else:
-+  properties:
-+    firmware-name: false
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/leds/common.h>
-+
-+    mdio {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        ethernet-phy@1f {
-+            compatible = "ethernet-phy-id7500.9410",
-+                         "ethernet-phy-ieee802.3-c45";
-+
-+            reg = <31>;
-+            firmware-name = "as21x1x_fw.bin";
-+
-+            leds {
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+
-+                led@0 {
-+                    reg = <0>;
-+                    color = <LED_COLOR_ID_GREEN>;
-+                    function = LED_FUNCTION_LAN;
-+                    function-enumerator = <0>;
-+                    default-state = "keep";
-+                };
-+
-+                led@1 {
-+                    reg = <1>;
-+                    color = <LED_COLOR_ID_GREEN>;
-+                    function = LED_FUNCTION_LAN;
-+                    function-enumerator = <1>;
-+                    default-state = "keep";
-+                };
-+            };
-+        };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 53ca93b0cc18..310530649a48 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -650,6 +650,7 @@ AEONSEMI PHY DRIVER
- M:	Christian Marangi <ansuelsmth@gmail.com>
- L:	netdev@vger.kernel.org
- S:	Maintained
-+F:	Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml
- F:	drivers/net/phy/as21xxx.c
- 
- AF8133J THREE-AXIS MAGNETOMETER DRIVER
--- 
-2.48.1
+This is right, the syscon is not very good to be added. And I found
+mfd framework is used in most case to provide multi-function. So I
+think I make a mistake in design. I will try your advice and submit
+a new version for it. Thanks for your kindly explanation.
 
+Regards,
+Inochi
