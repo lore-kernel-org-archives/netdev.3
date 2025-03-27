@@ -1,139 +1,214 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58ADE1ADFE3;
-	Thu, 27 Mar 2025 14:16:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752B120FAAD;
+	Thu, 27 Mar 2025 14:36:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743084979; cv=none; b=brJxQZl2lCAzto3UZ70op87v5FPEZP7V83tZ11IeuENUrMGMkHWYiheJY1o/xF8i2XpDWxA62fp8lAvW59rMbsHu0FNDgR5PaeZ5cMN8H8C1gkkhWBMQYoCT5PvjWMGV/WHNpsx4wUCwv/m0QTkNb5hmx0myTnor/n4fO11stYk=
+	t=1743086186; cv=none; b=Zccdl5t8IIGC1abcyRS9Q030/Vn8sdvnlFPC8X/I311HoOUNggj1Omya+lsEQR4vInk1H1Stt4kq9xcIzM8wUdgQswAhSa9aDCet4IDYy3ZjYwXPSqTsWJKbe4PYbHHPzwZ9SMzoaB1Z4jyA2fsR3UKyJ4ZQpVwhbQkJP9tER+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743084979; c=relaxed/simple;
-	bh=qmMBMM3UrIcbtHB3q5A5wIgeJbIGmGRCXOZxBsmVs9U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X61ZLOhzcRsCQwRU9N4BFWooocA0OFD0DJSdh2i5yTahy3qhJ4Bo1LpgAIenN7qhf3nOj7GG/ecgMdqFg0A57EuZmEfPPicVAVW9O+kp9H2h3r8g4aIlbYuef7MnFFiNfhrjArOPUrk6+hbkeYafnRy5cxfHNMLQbq/WlovauFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i5Q8h+WB; arc=none smtp.client-ip=209.85.208.169
+	s=arc-20240116; t=1743086186; c=relaxed/simple;
+	bh=aRSJEE4LF/DgyqNP78KuA37ILgQD4/DkDEBzOXdalYQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m3zHnfKVQ+8FUHNF8Pbw3yUGiALdn2nlXwTustj+9BfE1uzt+CHjSeJRn23sJNDPq8RqilZqkTbl5hvs2eapg61gLqgewvV1lDyXlBs26mCKEjtwAiXT/8XePtw0tWZueRbw9Uu2TdD2zG9zZ+aLpIY84HMKWURvBzLUplgBU9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B9imn3qo; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i5Q8h+WB"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30bf1d48843so9798081fa.2;
-        Thu, 27 Mar 2025 07:16:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B9imn3qo"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-227d6b530d8so21023035ad.3;
+        Thu, 27 Mar 2025 07:36:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743084974; x=1743689774; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i9M6C9E5diSoPsICencuKBeyAWQFDJEzmaVuf3K9CWQ=;
-        b=i5Q8h+WBi2CrTBt9UoyOI7KsCe5qbQzRRWq7WgFLzIGVyuSe1zpJiEIm5rfI5nyBHK
-         l5w9F2fLN82srXPQryp2cVyOXeUFPHl9FBvhQkEV7/gHrdpjzP6gAn0kB/84xB59JPBh
-         qiSS6F7MjSQ2TnJigNH3dqjMCm79LTCWNI9+biQKkxrsSIBWoU/iVu+XPf0dNsATA2e1
-         kfoa22ZHWw2pWzp6/o/rA5oXtXheE4vkhNaTBdlgg/9e9QGVokyLuDFVj5C2UZA9TSHI
-         TCkySEeVwFS+dd0Q+R74XYxTwynhG++tU4ThlexVjETx8eBQeMfiBp8oJ7lUwCBUWUrr
-         o3+w==
+        d=gmail.com; s=20230601; t=1743086184; x=1743690984; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wCmk4hmuZJ512kbCxwIcYRx/KVLFgt2B/Rg6XnWmpH0=;
+        b=B9imn3qofIk5gUlIvys2NL9TmacUxLEPIbhqOKVo5PcvlaCefmGJEBu9fgAu4Sex5a
+         rbbpMpx49ZSxIl2ctFl5HRdRxfaTbGwnz00Z4JwpJY/Rz4nhmglwikFersrDeFt9YdsY
+         eSNlPDCzFxRw0O/Nn/ehvmRI03Y0MfL7BeTh+UhCCuQxW/B6EsyUmecSTYMerQM9ED6D
+         7QSPDdRGqsQn1n22c54ZVH3XdXI/uh2rs31bGOB6wQyNBq35udLvUuLTwgBD947Qd6ti
+         /0K+Ztea2zKom8dAubCbV7CDu55lV3Jhg8t+nlbExMXDZ/jQAV8JP27ayGru4jybwxth
+         UBWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743084974; x=1743689774;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i9M6C9E5diSoPsICencuKBeyAWQFDJEzmaVuf3K9CWQ=;
-        b=lRJ2Tksdu5Mc0QktnmO2P2Lvuutv3+R86ont49YkG41slyk7l96bm0EG6cYkadqlhH
-         w3QJWmCaiNFU7NfcP5pdwqyylY575jzvIg6SJbc+fZiaTZxMQJP+xm4h9NHTd0VAnoBk
-         S0+Pnpr9zdzKYMeeV+bXpn+HI7IQesQd6g+Ihnyp9HIyPu+zao/qFWGbDe2ue96RuH3a
-         DwdtWpI8BoVlqmOcthGDNWJ0GuYhOazsyw4Gpko98z8XNytB2OmQNtsX/cXyuh3/HkU+
-         wP2fjcTDB3/Fq2bgRXXWjcsOwHqK59BLX4U7RyYx+HfQ77HO815pkLaM/a4LbvhVdQoD
-         3Ymw==
-X-Forwarded-Encrypted: i=1; AJvYcCUX12dXbZfxJJiDb0V2m3NyvNg79FJ5GSkyiiOfR25mtpSr9/9kvURtveQoZVbdCJ22wXwPd4PX+oVlyRBv@vger.kernel.org, AJvYcCUzzeJVTQJqtzGjK53OnRciNd21I7Uy/N7eW43dP1bHBx4+qGjhxWAzYrEFxIsYyuqtWNN5wV4Dh4cm@vger.kernel.org, AJvYcCViRl7gDISVFpVgAbJDgVg8aRqevAnx73BchE6VIjVMdNr2Y5nlCMkROcGH5tRDQT4KgdMwj7iD3y4+n/E=@vger.kernel.org, AJvYcCW26vhnp3IF7uV3PtsNPw+0gP+6ZneU4038tJ7A+Z8fb6xAdk8LwaEJZ4axTKz4+mCENt6M1SVn@vger.kernel.org, AJvYcCWG0iTbARWXbPtfbFIwYqwEjDPS4nmldNlmDuu2/sX+NfTWfOMDeQjxISm2+YbFF7vhGDToOoNciycbxX+s@vger.kernel.org, AJvYcCXGQL2UAWYEvTEhke6Pd6/1/tJy0wxF4P32G9zVJIxoKGd0vwr4EuBBtg03XqPXK3QKXkgtCjcPE3Ug@vger.kernel.org, AJvYcCXMrdEO9+Z9YG7WUuCpGXvNBI0SLVeRL045AppyyNlABWQ8TNsPmdWVDnzWKm29qIwjR//ulFuHhKBp7I8jtZIt@vger.kernel.org, AJvYcCXURuzVKYLHdsmNYUhcVNwf6wGZEIGI9zt97i1JFot/UAUCZdmHgfF2KHRRi9DQ7pO+bm232nrbNRW6/GfQAOo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgQd5D1q5x0dA2Nii+oePVw4aF+84Yx6NJDybvyAbb0vCFYy3X
-	eYCzln9bQZNWcBcHESPruzwouBK+W3FX13IImMysyDt2uoiZuGd99ceRzIE1l/IsWt0lOngVIqx
-	NKf4rK9IxRnduzPOIVsyxK1BePqE=
-X-Gm-Gg: ASbGnctXMURHwYIsvo2EqmjQ8OJ6C30vW6UXifkxeKkuUQTm3AKnogsHR+SiuX4ahJ0
-	vfwre+hTM8gCtykPevGTHePWh/EDkhXm91LLIXWpits1d6x+NrZDYgDa8aYShRVsFfLTgrw7kzY
-	bVkau9LFFNcEguMe/16W2t9AHFVNuLEZ+4K1bd8Hgg+UJNHpb5XNdS
-X-Google-Smtp-Source: AGHT+IHjppBBD1opK0cTIwYQL2MZ5xpzZ9akB5zDDLt1b7/nuVFx0XppIv3k3NpUnr+TUWw12KrQXCArIl36za09rHE=
-X-Received: by 2002:a2e:9997:0:b0:30c:460f:f56 with SMTP id
- 38308e7fff4ca-30dc5e5c919mr13153081fa.20.1743084973460; Thu, 27 Mar 2025
- 07:16:13 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1743086184; x=1743690984;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wCmk4hmuZJ512kbCxwIcYRx/KVLFgt2B/Rg6XnWmpH0=;
+        b=YA86lzX3o8qpdDFAG4koexsBOVJrTpx4lLSs2CZMxC7DSejpnUag2/GswMyVRE3MHj
+         LXyKZFpBWfsAzf0lkMcXoJUzXlH5/NALj4ygJnvCx+bsscgm+pfT8vhhqEwXPNBd+Xg9
+         zvQHNYJkNGw+6uIccSPnW4c2TDkdAvrm+W+OVgCcndhxtI3An/PIQaoA81198TKgoSkJ
+         q+Sa8Bguedch39VD3uBIaQd0SOnfihZRed+gjD1WudAXlh42yN/YcugVz8iXSGRqRFF2
+         cw4BiHfPzhbwylk2xIb/BfoiXiBKfJIM9kssGycbcxqZjoh8lo6mBM4lgav5GZJxi0FG
+         09yQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUbPi4XavMv1OMsr9qvIYAWd8qIZPOO2m7IwYirRuyQzTbZRodyXpAcDYb1FvCvJ2LfdDZ44X3h@vger.kernel.org, AJvYcCWx/inNPnxL06QeK/K/mXVLlo9Fn1Z/b/vNlyj0TkUcuqxDF8cFrck7VWzFTGc/TqmHgRv3RXSvg1IYapU=@vger.kernel.org, AJvYcCXEQjskpUB4/5wcONrkq6dt/enVWIwngUijT0FLq5dFQu+nMPZlpOplCuAXOBXKhPBfj0uF/+Ni3W8h@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBhubSu/iTZLCHa5t1jJ7AwPdJpa9jGo6RfomvYQUo1l9vppa6
+	p9Bdhn6nXZgSq7tR6rcO5v5F6BDPkHT/2jIUmRPZV8/3R4g3AJY=
+X-Gm-Gg: ASbGncsT00ArK39jCVnYlfsrPej23vh1Sh2iEUkP53EjEs45WAWGqmVU5H5Tu5wyDat
+	gvrnEVnjsFwPPo3+4vYqi5HYf0ks08IxMtjQssy6Eut9GFMSXxG5orjUhSlvgxkzs1aW4aLA4sv
+	lObgpq+F+JRsV3yTLDhFB1max/ZLxR7aagM3J7RgLKontZ3nGMeDls583qtmfvC5N58m/34ncGi
+	3scVPZtbB7jruQzSm0BPaPSK7vjRX8/2ycIplM9bHSmiQrKpdmfB7D7pE/ppB1ipaoisgSjpcTr
+	ecS5cCydLx/vvyxLe5Bltk0Bs5xH6fHPJvC0NvTuy8aX
+X-Google-Smtp-Source: AGHT+IGDGrmcXz0yo6x3fW0RJOxnKZihvpxzy9pmxAKnOwTngC++Wp2N8mMvV7YeUTAcRN/VCZxolA==
+X-Received: by 2002:a17:902:fc4f:b0:216:410d:4c53 with SMTP id d9443c01a7336-2280491aa7dmr60192305ad.41.1743086183439;
+        Thu, 27 Mar 2025 07:36:23 -0700 (PDT)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-2291eec73d6sm143915ad.42.2025.03.27.07.36.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Mar 2025 07:36:22 -0700 (PDT)
+Date: Thu, 27 Mar 2025 07:36:22 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: syzbot <syzbot+377b71db585c9c705f8e@syzkaller.appspotmail.com>
+Cc: andrew+netdev@lunn.ch, andrew@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, eric.dumazet@gmail.com, horms@kernel.org,
+	kuba@kernel.org, linux-kernel@vger.kernel.org,
+	linux-x25@vger.kernel.org, lkp@intel.com, llvm@lists.linux.dev,
+	ms@dev.tdt.de, netdev@vger.kernel.org,
+	oe-kbuild-all@lists.linux.dev, pabeni@redhat.com, sdf@fomichev.me,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [x25?] possible deadlock in lapbeth_device_event
+Message-ID: <Z-ViZoezAdjY8TC-@mini-arch>
+References: <67cd611c.050a0220.14db68.0073.GAE@google.com>
+ <67e55c12.050a0220.2f068f.002c.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250325-ptr-as-ptr-v7-0-87ab452147b9@gmail.com>
- <D8Q4MSXXZ7OI.1NC226MO02VSN@proton.me> <CAJ-ks9nHKpQPuSBypXTSATYhbAFkQTJzUq8jN0nu4t=Kw+0xxg@mail.gmail.com>
- <D8QCK3CQES3Y.3LTZ4MVO5B3KT@proton.me> <CAJ-ks9nKT2PUDm6=b4AB1QUWwwvcqPn7Vz60=c0B+uFMZrqPew@mail.gmail.com>
- <D8QDOBUM6NF0.CGJY7ZA5KD9S@proton.me> <CAJ-ks9ntTxBM=c5nUZWGv3MoRt-LveBchn-c1Xy-DGap7fLVRA@mail.gmail.com>
- <D8QI804Q3DAS.2BV4WSL81H52Z@proton.me> <CAJ-ks9mA5QDeZ3EvOD3THayFt4TtDysgm0jp2aiSF2mQCrhWiQ@mail.gmail.com>
- <D8QJMH5UR6VG.2OT5MXJJQU5QT@proton.me>
-In-Reply-To: <D8QJMH5UR6VG.2OT5MXJJQU5QT@proton.me>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 27 Mar 2025 10:15:36 -0400
-X-Gm-Features: AQ5f1JplRmZYTNFbnfGLzU2zYeyjxmbSnSHIdkKg-vmw1A2gTwR43LO2IWo4jk0
-Message-ID: <CAJ-ks9m96vf_HxttuopuC_UfNGJbHHNdEGS2er6nZZG38pe3HQ@mail.gmail.com>
-Subject: Re: [PATCH v7 7/7] rust: enable `clippy::ref_as_ptr` lint
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, 
-	devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <67e55c12.050a0220.2f068f.002c.GAE@google.com>
 
-On Wed, Mar 26, 2025 at 6:15=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> On Wed Mar 26, 2025 at 11:09 PM CET, Tamir Duberstein wrote:
-> > On Wed, Mar 26, 2025 at 5:09=E2=80=AFPM Benno Lossin <benno.lossin@prot=
-on.me> wrote:
-> >> On Wed Mar 26, 2025 at 8:06 PM CET, Tamir Duberstein wrote:
-> >> > On Wed, Mar 26, 2025 at 1:36=E2=80=AFPM Benno Lossin <benno.lossin@p=
-roton.me> wrote:
-> >> >> On Wed Mar 26, 2025 at 5:57 PM CET, Tamir Duberstein wrote:
-> >> >> >
-> >> >> > Yeah, we should do this - but again: not relevant in this discuss=
-ion.
-> >> >>
-> >> >> I think it's pretty relevant.
-> >> >
-> >> > It's not relevant because we're no longer talking about transmuting
-> >> > pointer to pointer. The two options are:
-> >> > 1. transmute reference to reference.
-> >> > 2. coerce reference to pointer, `as` cast pointer to pointer (trigge=
-rs
-> >> > `ptr_as_ptr`), reborrow pointer to reference.
-> >> >
-> >> > If anyone can help me understand why (2) is better than (1), I'd
-> >> > certainly appreciate it.
-> >>
-> >> I am very confident that (2) is correct. With (1) I'm not sure (see
-> >> above), so that's why I mentioned it.
-> >
-> > Can you help me understand why you're confident about (2) but not (1)?
->
-> My explanation from above explains why I'm not confident about (1):
->
->     For ptr-to-int transmutes, I know that they will probably remove
->     provenance, hence I am a bit cautious about using them for ptr-to-ptr=
- or
->     ref-to-ref.
->
-> The reason I'm confident about (2) is that that is the canonical way to
-> cast the type of a reference pointing to an `!Sized` value.
+On 03/27, syzbot wrote:
+> syzbot has found a reproducer for the following issue on:
+> 
+> HEAD commit:    1a9239bb4253 Merge tag 'net-next-6.15' of git://git.kernel..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=15503804580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=95c3bbe7ce8436a7
+> dashboard link: https://syzkaller.appspot.com/bug?extid=377b71db585c9c705f8e
+> compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=139a6bb0580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16974a4c580000
+> 
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-1a9239bb.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/bd56e2f824c3/vmlinux-1a9239bb.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/19172b7f9497/bzImage-1a9239bb.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+377b71db585c9c705f8e@syzkaller.appspotmail.com
+> 
+> ============================================
+> WARNING: possible recursive locking detected
+> 6.14.0-syzkaller-05877-g1a9239bb4253 #0 Not tainted
+> --------------------------------------------
+> dhcpcd/5649 is trying to acquire lock:
+> ffff888023ad4d28 (&dev->lock){+.+.}-{4:4}, at: netdev_lock include/linux/netdevice.h:2751 [inline]
+> ffff888023ad4d28 (&dev->lock){+.+.}-{4:4}, at: netif_napi_add_weight include/linux/netdevice.h:2783 [inline]
+> ffff888023ad4d28 (&dev->lock){+.+.}-{4:4}, at: lapbeth_new_device drivers/net/wan/lapbether.c:415 [inline]
+> ffff888023ad4d28 (&dev->lock){+.+.}-{4:4}, at: lapbeth_device_event+0x586/0xbe0 drivers/net/wan/lapbether.c:460
+> 
+> but task is already holding lock:
+> ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: netdev_lock include/linux/netdevice.h:2751 [inline]
+> ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: netdev_lock_ops include/net/netdev_lock.h:42 [inline]
+> ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: netdev_lock_ops include/net/netdev_lock.h:39 [inline]
+> ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: dev_change_flags+0xa7/0x250 net/core/dev_api.c:67
+> 
+> other info that might help us debug this:
+>  Possible unsafe locking scenario:
+> 
+>        CPU0
+>        ----
+>   lock(&dev->lock);
+>   lock(&dev->lock);
+> 
+>  *** DEADLOCK ***
+> 
+>  May be due to missing lock nesting notation
+> 
+> 2 locks held by dhcpcd/5649:
+>  #0: ffffffff900fb268 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_net_lock include/linux/rtnetlink.h:130 [inline]
+>  #0: ffffffff900fb268 (rtnl_mutex){+.+.}-{4:4}, at: devinet_ioctl+0x26d/0x1f50 net/ipv4/devinet.c:1121
+>  #1: ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: netdev_lock include/linux/netdevice.h:2751 [inline]
+>  #1: ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: netdev_lock_ops include/net/netdev_lock.h:42 [inline]
+>  #1: ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: netdev_lock_ops include/net/netdev_lock.h:39 [inline]
+>  #1: ffff888029940d28 (&dev->lock){+.+.}-{4:4}, at: dev_change_flags+0xa7/0x250 net/core/dev_api.c:67
+> 
+> stack backtrace:
+> CPU: 1 UID: 0 PID: 5649 Comm: dhcpcd Not tainted 6.14.0-syzkaller-05877-g1a9239bb4253 #0 PREEMPT(full) 
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+> Call Trace:
+>  <TASK>
+>  __dump_stack lib/dump_stack.c:94 [inline]
+>  dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+>  print_deadlock_bug+0x1e9/0x240 kernel/locking/lockdep.c:3042
+>  check_deadlock kernel/locking/lockdep.c:3094 [inline]
+>  validate_chain kernel/locking/lockdep.c:3896 [inline]
+>  __lock_acquire+0xff7/0x1ba0 kernel/locking/lockdep.c:5235
+>  lock_acquire kernel/locking/lockdep.c:5866 [inline]
+>  lock_acquire+0x179/0x350 kernel/locking/lockdep.c:5823
+>  __mutex_lock_common kernel/locking/mutex.c:587 [inline]
+>  __mutex_lock+0x19a/0xb00 kernel/locking/mutex.c:732
+>  netdev_lock include/linux/netdevice.h:2751 [inline]
+>  netif_napi_add_weight include/linux/netdevice.h:2783 [inline]
+>  lapbeth_new_device drivers/net/wan/lapbether.c:415 [inline]
+>  lapbeth_device_event+0x586/0xbe0 drivers/net/wan/lapbether.c:460
+>  notifier_call_chain+0xb9/0x410 kernel/notifier.c:85
+>  call_netdevice_notifiers_info+0xbe/0x140 net/core/dev.c:2180
+>  call_netdevice_notifiers_extack net/core/dev.c:2218 [inline]
+>  call_netdevice_notifiers net/core/dev.c:2232 [inline]
+>  __dev_notify_flags+0x12c/0x2e0 net/core/dev.c:9409
+>  netif_change_flags+0x108/0x160 net/core/dev.c:9438
+>  dev_change_flags+0xba/0x250 net/core/dev_api.c:68
+>  devinet_ioctl+0x11d5/0x1f50 net/ipv4/devinet.c:1200
+>  inet_ioctl+0x3a7/0x3f0 net/ipv4/af_inet.c:1001
+>  sock_do_ioctl+0x115/0x280 net/socket.c:1190
+>  sock_ioctl+0x227/0x6b0 net/socket.c:1311
+>  vfs_ioctl fs/ioctl.c:51 [inline]
+>  __do_sys_ioctl fs/ioctl.c:906 [inline]
+>  __se_sys_ioctl fs/ioctl.c:892 [inline]
+>  __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7effd384cd49
+> Code: 5c c3 48 8d 44 24 08 48 89 54 24 e0 48 89 44 24 c0 48 8d 44 24 d0 48 89 44 24 c8 b8 10 00 00 00 c7 44 24 b8 10 00 00 00 0f 05 <41> 89 c0 3d 00 f0 ff ff 76 10 48 8b 15 ae 60 0d 00 f7 d8 41 83 c8
+> RSP: 002b:00007ffedd440088 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+> RAX: ffffffffffffffda RBX: 00007effd377e6c0 RCX: 00007effd384cd49
+> RDX: 00007ffedd450278 RSI: 0000000000008914 RDI: 000000000000001a
+> RBP: 00007ffedd460438 R08: 00007ffedd450238 R09: 00007ffedd4501e8
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007ffedd450278 R14: 0000000000000028 R15: 0000000000008914
+>  </TASK>
+> 
+> 
+> ---
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
 
-Do you have a citation, other than the transmute doc?
+#syz test
+
+diff --git a/drivers/net/wan/lapbether.c b/drivers/net/wan/lapbether.c
+index 56326f38fe8a..a022e930bd8e 100644
+--- a/drivers/net/wan/lapbether.c
++++ b/drivers/net/wan/lapbether.c
+@@ -39,6 +39,7 @@
+ #include <linux/lapb.h>
+ #include <linux/init.h>
+ 
++#include <net/netdev_lock.h>
+ #include <net/x25device.h>
+ 
+ static const u8 bcast_addr[6] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+@@ -372,6 +373,7 @@ static void lapbeth_setup(struct net_device *dev)
+ 	dev->hard_header_len = 0;
+ 	dev->mtu             = 1000;
+ 	dev->addr_len        = 0;
++	netdev_lockdep_set_classes(netdev);
+ }
+ 
+ /*	Setup a new device.
+
