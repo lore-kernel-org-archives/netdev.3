@@ -1,72 +1,74 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696D113C8EA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEDA20E32A
 	for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 10:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743072278; cv=none; b=kYyH9ZqjgQV9UVkWikYVQB1RNEirAC833VxXoTh1+nLVW3gEiIBL7FdrKop8cGnHZnMzqQWHF5Sqr2sua9DlttT2esxcGvEFiqp4mpsScvaTYdlwOxE5r+1e4gRYfYhLATdhzciriwZK+E186wj58bR3vZfFWROSgo2o7nlu3QU=
+	t=1743072278; cv=none; b=TZM3LXd6D3L4QjIleWSDnBsctIglEqcxGptsSKXe/ZiPR/zI6bBOVNWknNHK5A9vFIrPYn4r5YovHYGx+SfUdY6UIgps6klHj1PvLPoGy92A6zs8gxVCrgNjWZhCw6P6JGSQCDf7YJGV6kPC7p0NmniDdLAfT8072pb4zFkpeNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1743072278; c=relaxed/simple;
-	bh=Z1z2oQX6GVOmFSouXE51dlABKEyLBAbiPyOzdqPu3W8=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DpfSo9J7hgPKmD9o33fXrZk6vpdcAESeg3IGUbJtSn9GjyJgL9lBA9pSrzg+rcTvPAifBRAOM8G+rghJ2vmBQDHd3/dgxweooL6/CT6TL78OLtXrHn2oC6uXq0fiRpXvtj07EP0vxtTZVSWScxswFJX8BUd4Qy5oPHbyUT/s90Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CSMGnTZ9; arc=none smtp.client-ip=170.10.133.124
+	bh=jU4n6IWZA16UVAMHXvziKTv++8RigMQc/gkO65H7mmc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=sBM9HNyYPi+mwmQqJDGsBu/7QA4u1ir0tLr29tMatYDv1Nn9eg8tTjONKuwGSOM8ZGEoo0PEpcbNGBZ92uHRrGM3kACQxvCnhLfwOJRWQgoQ6AnKRxODXXkHR8LI0Q6zbEjx3uEzEh5OxifMzjW09+5+Pvy/S1Lgx5cIuf9QT/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xc/A5T/A; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CSMGnTZ9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xc/A5T/A"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1743072275;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=WyWvRzluSiEXBBT2a7VCBlnyJ21GZtU6y+n9uBuHn7I=;
-	b=CSMGnTZ9VuyQ76IDRW7vUBrpvzB0h+6iV9Rrkr3vmJvZrGNS5X1mdfnpqCmCTcZs0q8lIU
-	QCmvAd0iRAniHsKi2c7bB2dMFCFWYXAYhPZ/jRXGMcTPCu2vuFc5TkqXcZ8AhuhcNoSOGF
-	HjS2z7GkF8jEL9zGrEAytN92pcA5nn0=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9t4W5dGLSES67cAKB6/mNTM9c41OeoyQ+4Jai1EE1rk=;
+	b=Xc/A5T/AyHYyqqSWETK7SKkQih0DBsWMD/RMNVlf/xB/sef9jeeavHkKWOvI9RvYV8lXJl
+	gmyaSAlnnFDtcEq6IXgLgdWgCVmxHvXgtAC5/NR4YTxN3d4EV9PjNh3jO49lJ3e0hOR5ct
+	M01k3FDabqqoQNiOfVUWNbtLwIWhKhQ=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-122-O-5xD0cYNgej9QemfvKoeg-1; Thu, 27 Mar 2025 06:44:34 -0400
-X-MC-Unique: O-5xD0cYNgej9QemfvKoeg-1
-X-Mimecast-MFC-AGG-ID: O-5xD0cYNgej9QemfvKoeg_1743072273
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-5e5d8a28de7so922481a12.2
-        for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 03:44:33 -0700 (PDT)
+ us-mta-524-EX2I2__KPIei2skcwyCHjQ-1; Thu, 27 Mar 2025 06:44:34 -0400
+X-MC-Unique: EX2I2__KPIei2skcwyCHjQ-1
+X-Mimecast-MFC-AGG-ID: EX2I2__KPIei2skcwyCHjQ_1743072273
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-ab68fbe53a4so87942766b.2
+        for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 03:44:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1743072273; x=1743677073;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WyWvRzluSiEXBBT2a7VCBlnyJ21GZtU6y+n9uBuHn7I=;
-        b=UcU6/N33rlKSyvHaBhbz3wbSRyCgh7TdcchQNKyV26WWLo8VT+2K7iLGOsgjwnhriv
-         eJku4iqEpSIt/lKSLprRn0tHCe4cK6j0MlXyst2/BFJDwyJ3cA1T2unjPHTNC35IjmXn
-         OnO50N8Dpm/Gdxo2Mr9jEWu5mcuGGHYmChe+urY8TyScl9sqdyxiZasOmVjrrwnBWJHi
-         FaXAs/Pa6BPGe9v23D65iSMjmS5+XqAo6d5OD7VsOx6GKsM9K312XGfRfougrpJ8+bF/
-         AMNCZUqhnIX3GKKD6/n5EBuaSuN6j267FWbd/mephS2ClwLfxca/PfNH50+wma2x1x/9
-         ycwg==
-X-Gm-Message-State: AOJu0YzUY81AGiB7bjDkazHUxWBMFent0rxAsKT1m+KyKstzdpWCVH5O
-	T9ar8GJXl3Or6PAIN25l+z5vD3iXD8q2yGQEDFmmLQUWKqmfhi8p3Ah+Lr5jUb3CGR/RoN6kwDp
-	5sY/Olo4OxGdPccfmdAJrPXqFJxaB9V/MkCkewQ2u9+K8zXuMKBMfjw==
-X-Gm-Gg: ASbGncsxfivQD5CTTEOQkV6RP74Rsfa9GQ3LdO4w1CSKgFHs6j5cmzVmc+eQ9om6SP3
-	D3Z2SG/pkzqcMFOrCyjcw7RPwHWy4YyeChqvd/wzKH0GCR0XUqAnWtTn83A094jK/3xcCwxYaxt
-	6PxX7Y7Ra0CHTjguGG9lxx9QP9daMTkQ3MyF4Z7+2CTOMVoRe0WCQgiPJYdY+wSxyIjOFu5la+2
-	a39AIsLVVECU4DpYqDVB3o1CCwNAj6A3EMhTj9jbkXa93XonMuQfANb6aDaweM8X28ttkOUacEX
-	bf8mGXdeH1CdyTzgJq0qSSr/7bWUxidWssS0/NvN
-X-Received: by 2002:a05:6402:430c:b0:5ec:cc90:b126 with SMTP id 4fb4d7f45d1cf-5ed8e5a5d7dmr2920434a12.19.1743072272758;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9t4W5dGLSES67cAKB6/mNTM9c41OeoyQ+4Jai1EE1rk=;
+        b=FImtPhE+OOvCMuoPuujpm1R9MihfVKQBiF5HmUamNc+mu5TLbOqd8rFJDr5N3hytMj
+         04hLRQ7x2TxQK55w2MIpUa+ec+91BXiTmoAFXg/xLrTGjem32SwXOXuZTB4pBaKfiHqS
+         gFgHXLdx6+AT0Xz4nnY3qGwkWxD15LJPxwk4xWkYMnNNpFe07b86k3qNNQR6eFTswiLt
+         0NqYZC9rG0JSBXo/9BWXbsZ7R6jjT1a3kZk6JkFGDP4mAboPwsfgu2jhAMGRb29KaFN6
+         9OsHUDOku69qxB1f6Gh9PVaJlmalwbPrQYyArialedEMwD0AGl5ZujR0621/d3BypcqN
+         EqVw==
+X-Gm-Message-State: AOJu0YyHfqnT4PvxXnTFLy+rd6nzvUBwjAfvcr/jOdYZxza/kXVd8g0x
+	k79Kt03INsQUvv/kTilK58sLF4mvTAA7dI3jg3jrpTgHzbRlB27s7530AAIO+DorCe4Y5tMzwMj
+	d1RkoId2nZHqScyW2twRDHkFjGNT2RRJyLrL7/VNXtI/TvZ5DIytB4A==
+X-Gm-Gg: ASbGnctnQm9MNucTmKGpB2sGitVc8YcR27DftOFxwnuvNbhkCUnpEHKTHOG5B86ZIp0
+	zndNN6lTCLb/14Ja1cZzlWSepN6WfKkmfHyIvNmFbxUftfwVs1ZFZbpH2iq9PgZSbSUI+opYrD/
+	8Fi5OzpnP144++876bB9StUdnvOyZ7WE5IbbkCXSkd2AoOP6fXyGVUJaDkbH5V/DkmdsVHo+uC7
+	7om5Jyf3o4d6BuIhIr0M5lioufTOMtK8LKx6KzosEbrfOFBdhocmYObW1gieket26f+YkFik6xI
+	d1MUVx8x1JWT
+X-Received: by 2002:a17:907:9445:b0:ac1:f5a4:6da5 with SMTP id a640c23a62f3a-ac6fb0fd646mr282330866b.37.1743072273063;
+        Thu, 27 Mar 2025 03:44:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF5W/lqNkHafWShe6vkN9vTaP1afnDzl/apRQY9StJ2QLIsUkjICNTeJVHXqSm6f8TF9xUcTw==
+X-Received: by 2002:a17:907:9445:b0:ac1:f5a4:6da5 with SMTP id a640c23a62f3a-ac6fb0fd646mr282327066b.37.1743072272623;
         Thu, 27 Mar 2025 03:44:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFxY9QVIO/VsgSyaKIBh62Jyrq8IaKt0cDmXoin9ToYvgK/LxQKcrJwZ0uLZmyq2x9mCaJPWQ==
-X-Received: by 2002:a05:6402:430c:b0:5ec:cc90:b126 with SMTP id 4fb4d7f45d1cf-5ed8e5a5d7dmr2920405a12.19.1743072272282;
-        Thu, 27 Mar 2025 03:44:32 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ebcce36d66sm10908646a12.0.2025.03.27.03.44.31
+Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3efd45594sm1193278166b.160.2025.03.27.03.44.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 27 Mar 2025 03:44:31 -0700 (PDT)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id AC5B618FCBF9; Thu, 27 Mar 2025 11:44:30 +0100 (CET)
+	id B20B918FCBFD; Thu, 27 Mar 2025 11:44:30 +0100 (CET)
 From: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Subject: [PATCH net-next v4 0/3] Fix late DMA unmap crash for page pool
-Date: Thu, 27 Mar 2025 11:44:10 +0100
-Message-Id: <20250327-page-pool-track-dma-v4-0-b380dc6706d0@redhat.com>
+Date: Thu, 27 Mar 2025 11:44:12 +0100
+Subject: [PATCH net-next v4 2/3] page_pool: Turn dma_sync into a full-width
+ bool field
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,11 +77,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAPor5WcC/23NQQ6CMBAF0KuYrq1pZ0pRV97DuKhlkEZpSWkIh
- nB3G+ICI8s/P//NxHqKjnp23k0s0uB6F3wOar9jtjH+QdxVOTMQUAiUgncm37oQXjxFY5+8ag0
- XiIAKjdKCWF52kWo3LuqVeUrc05jYLTeN61OI7+XdIJf+K6tNeZBccAsSqChNqSxcIlWNSQcb2
- gUcYIVAsY1ARqREult5UrrGPwTXiN5GMCNHUloJqUkY+4PM8/wBzpEw+UsBAAA=
-X-Change-ID: 20250310-page-pool-track-dma-0332343a460e
+Message-Id: <20250327-page-pool-track-dma-v4-2-b380dc6706d0@redhat.com>
+References: <20250327-page-pool-track-dma-v4-0-b380dc6706d0@redhat.com>
+In-Reply-To: <20250327-page-pool-track-dma-v4-0-b380dc6706d0@redhat.com>
 To: "David S. Miller" <davem@davemloft.net>, 
  Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
  Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
@@ -94,65 +94,54 @@ To: "David S. Miller" <davem@davemloft.net>,
  Matthew Wilcox <willy@infradead.org>
 Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, linux-rdma@vger.kernel.org, 
  linux-mm@kvack.org, 
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>, 
- Qiuling Ren <qren@redhat.com>, Yuying Ma <yuma@redhat.com>
+ =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
 X-Mailer: b4 0.14.2
 
-This series fixes the late dma_unmap crash for page pool first reported
-by Yonglong Liu in [0]. It is an alternative approach to the one
-submitted by Yunsheng Lin, most recently in [1]. The first two commits
-are small refactors of the page pool code, in preparation of the main
-change in patch 3. See the commit message of patch 3 for the details.
+Change the single-bit boolean for dma_sync into a full-width bool, so we
+can read it as volatile with READ_ONCE(). A subsequent patch will add
+writing with WRITE_ONCE() on teardown.
 
--Toke
-
-[0] https://lore.kernel.org/lkml/8067f204-1380-4d37-8ffd-007fc6f26738@kernel.org/T/
-[1] https://lore.kernel.org/r/20250307092356.638242-1-linyunsheng@huawei.com
-
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Tested-by: Yonglong Liu <liuyonglong@huawei.com>
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
 Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
 ---
-Changes in v4:
-- Rebase on net-next
-- Collect tags
-- Link to v3: https://lore.kernel.org/r/20250326-page-pool-track-dma-v3-0-8e464016e0ac@redhat.com
+ include/net/page_pool/types.h | 6 +++---
+ net/core/page_pool.c          | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-Changes in v3:
-- Use a full-width bool for pp->dma_sync instead of a full unsigned
-  long (in patch 2), and leave pp->dma_sync_cpu alone.
+diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
+index df0d3c1608929605224feb26173135ff37951ef8..d6c93150384fbc4579bb0d0afb357ebb26c564a3 100644
+--- a/include/net/page_pool/types.h
++++ b/include/net/page_pool/types.h
+@@ -173,10 +173,10 @@ struct page_pool {
+ 	int cpuid;
+ 	u32 pages_state_hold_cnt;
+ 
+-	bool has_init_callback:1;	/* slow::init_callback is set */
++	bool dma_sync;				/* Perform DMA sync for device */
++	bool dma_sync_for_cpu:1;		/* Perform DMA sync for cpu */
+ 	bool dma_map:1;			/* Perform DMA mapping */
+-	bool dma_sync:1;		/* Perform DMA sync for device */
+-	bool dma_sync_for_cpu:1;	/* Perform DMA sync for cpu */
++	bool has_init_callback:1;	/* slow::init_callback is set */
+ #ifdef CONFIG_PAGE_POOL_STATS
+ 	bool system:1;			/* This is a global percpu pool */
+ #endif
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 7745ad924ae2d801580a6760eba9393e1cf67b01..c75d2add42b887f9a3a74e3fb1b3b8dc34ea72b1 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -463,7 +463,7 @@ page_pool_dma_sync_for_device(const struct page_pool *pool,
+ 			      netmem_ref netmem,
+ 			      u32 dma_sync_size)
+ {
+-	if (pool->dma_sync && dma_dev_need_sync(pool->p.dev))
++	if (READ_ONCE(pool->dma_sync) && dma_dev_need_sync(pool->p.dev))
+ 		__page_pool_dma_sync_for_device(pool, netmem, dma_sync_size);
+ }
+ 
 
-- Link to v2: https://lore.kernel.org/r/20250325-page-pool-track-dma-v2-0-113ebc1946f3@redhat.com
-
-Changes in v2:
-- Always leave two bits at the top of pp_magic as zero, instead of one
-
-- Add an rcu_read_lock() around __page_pool_dma_sync_for_device()
-
-- Add a comment in poison.h with a reference to the bitmask definition
-
-- Add a longer description of the logic of the bitmask definitions to
-  the comment in types.h, and a summary of the security implications of
-  using the pp_magic field to the commit message of patch 3
-
-- Collect Mina's Reviewed-by and Yonglong's Tested-by tags
-
-- Link to v1: https://lore.kernel.org/r/20250314-page-pool-track-dma-v1-0-c212e57a74c2@redhat.com
-
----
-Toke Høiland-Jørgensen (3):
-      page_pool: Move pp_magic check into helper functions
-      page_pool: Turn dma_sync into a full-width bool field
-      page_pool: Track DMA-mapped pages and unmap them when destroying the pool
-
- drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c |  4 +-
- include/linux/poison.h                           |  4 ++
- include/net/page_pool/types.h                    | 65 ++++++++++++++++++-
- mm/page_alloc.c                                  |  9 +--
- net/core/netmem_priv.h                           | 33 +++++++++-
- net/core/page_pool.c                             | 81 ++++++++++++++++++++----
- net/core/skbuff.c                                | 16 +----
- net/core/xdp.c                                   |  4 +-
- 8 files changed, 176 insertions(+), 40 deletions(-)
----
-base-commit: 1a9239bb4253f9076b5b4b2a1a4e8d7defd77a95
-change-id: 20250310-page-pool-track-dma-0332343a460e
+-- 
+2.48.1
 
