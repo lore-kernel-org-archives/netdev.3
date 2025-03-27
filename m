@@ -1,49 +1,56 @@
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4899420CCC5
-	for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 13:43:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7D58BEC
+	for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 13:57:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743083037; cv=none; b=drdv/E6xWyR+UMMbKc3S3Q2S+rdn0ib97Ip1H6YH+h3Rb+TroybxtZd/siyAAl3Mm10hjOCkTBiK4Ka/+JgHtE3qTYUbLSZOXVCx+RkbR5K/+iuH+YKITuE0eIzvmECMDFnDNQMxc8GYDeBcgAepOO/Zx68rL3Bs9pFwfJYhP6I=
+	t=1743083824; cv=none; b=pYOUG0oVnXLQIS2KEsUZURk8hwV2QmYa3jzyxKkkdxfqJCJ63rew2/rJNux9N5DB4KkHQ2IUq2StuFUkHTz9P0vB7/LFvDTCS02RSl0P1JdQIsj86qHYIpaA+Lb326HybY34AYLnoy9jQy+MjpGzVVuNwuKIlNuxq8C7Auk1ztg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743083037; c=relaxed/simple;
-	bh=9AMtvw3nS69g7hxNbflJz2CtocyZRMh5pJ9kNRdrSj4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W9td5zBVkKAwqQ+xEB8/5X/lI1fu43nBQ2IaCABjUC9ll06oVl4NqbNOcLZHdVVhdb20HWi0OmetDZ7w/lgL9y7DAF4FGf+Ve1asRAQ4rSWW1Wi0rjQZpySZ6gZxJfdOzQZQ6gX0BvNQckKX9Ccniz2z2nLeZ8XS9j2Qg7Da3Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HGN/jeKe; arc=none smtp.client-ip=95.215.58.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HGN/jeKe"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1743083023;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=uOgBF8XHFaV92u3aPPoV9+GCkDsVe8HhK8jkJWca9bM=;
-	b=HGN/jeKeQv2DMu40CwU2DiYI8ELROdxkfr4p4tKRnXNL6yTJFrIOGXJ5H3enAYYHpCoe1K
-	J7EVo1CM3Sahr/d36OS2sd5zKT8mpGhgdxy7JehyZ3/qSGRG/beLxfFe6LmUq2dsBpmuId
-	+jPXjzAsIw36w3bryEmal+1KVymEr6c=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+	s=arc-20240116; t=1743083824; c=relaxed/simple;
+	bh=ue7ECn+lM6dU0O/6JNgmmhYeJ6BO5Xvv0EynQrzeIWg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qtbZxwSxbopQ0N8Jcpl8y52ORTqX8xrYSwrQ1FDUpYLE9oURFE3PQ4qpafavEJoIYDLJknnCauhNWg6ybJDsHke1+WNLNxWwQAMGMVxjcF7idb/my9rvb/8zrDt/qqnNuvfD6SXau1HyO2m5G6RjQQBTAvp7pzRuH5hlW3+Qtpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2239c066347so23718615ad.2
+        for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 06:57:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743083821; x=1743688621;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BkTfq5JYBzO4gUpnbWQujikRkVHUuTeRo4oB88b8HLs=;
+        b=Wgc4hspsvCwS+dFyY2upuBU7uETIy3vh/8y7+EM/yW2jANPv3dyhn3EFv6VKgtObpt
+         JAtd9cnhYjryy7uT8MqzCN55yMC38gRZNH0sIBz0EjaBhOMn07gScA3lclvvGQIsKRyH
+         wqT8eyBV1vzNdBnxIpdpDMVtl5Hj5U3MwAireXWNFGMNXELwRMhXb2NYI81nJ4jJcCe2
+         n6DkJlhfY8JXeoVzuxP0YtuUQvFwksuf9vUYqZZsARai/rjbnzxJwat9hW121DOjrEKS
+         m442KwYXF4kS8DruVicMka67R5xNiG66557xAYl7Gin6wTLln1Ojm+zBvZXIQz41vshL
+         1yng==
+X-Gm-Message-State: AOJu0YxNN/0UdIhCYLArV48Yh92jQFBS/Zg1EljtUc4DHlYdwut9/xs1
+	TW7JkTmVMg5FFpASGFqww0pHfyBjZbAQQ02/PSycoDNMEqMfSxnkMv4uI8zkJQ==
+X-Gm-Gg: ASbGncss7oYI5cx8/SrIt1SW4JZKoVEtDJnomJtFRFm11JBDV52F2N3GGabmr/wq9TF
+	XtDbFSSxh65+cxG7ZDdptVZ+LxZ1eaR5wFsyHQaSFc1iHfyy3kp+aVlh49ax4LNJLrKxJ5cXQXY
+	p9B3x3c6RfaAZM3nXfYXNVq3lQlX9tpvXsJG99BGh1W3mmmenXDh41X/eULcI1esFKhghj3w7MJ
+	meb0fBX8sdH+9meRoj/+daYTfAUcuoW9IIzEfT7QdazZxzTDCiRF0uyW93+MkLqe50v5yQccAzr
+	CQ3MxCu/WTi1GzejFprfuo2D5E+X0YRpkiIIVcn1myj9
+X-Google-Smtp-Source: AGHT+IGnr4NENGy/+N9D17CQr8WQrpRHnhh+cIkPM2KIcWQk7/UMSWGxxqxEwtVTKm2wowNVXictQw==
+X-Received: by 2002:a17:902:d551:b0:216:794f:6d7d with SMTP id d9443c01a7336-2280495aa5bmr64325025ad.48.1743083820503;
+        Thu, 27 Mar 2025 06:57:00 -0700 (PDT)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-227811d9f1bsm128674895ad.166.2025.03.27.06.56.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Mar 2025 06:57:00 -0700 (PDT)
+From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com,
-	jasowang@redhat.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
+Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	linux-kernel@vger.kernel.org,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	syzbot+0e6ddb1ef80986bdfe64@syzkaller.appspotmail.com
-Subject: [PATCH net v1] net: Fix tuntap uninitialized value
-Date: Thu, 27 Mar 2025 21:41:22 +0800
-Message-ID: <20250327134122.399874-1-jiayuan.chen@linux.dev>
+	pabeni@redhat.com
+Subject: [PATCH net v2 00/11] net: hold instance lock during NETDEV_UP/REGISTER/UNREGISTER
+Date: Thu, 27 Mar 2025 06:56:48 -0700
+Message-ID: <20250327135659.2057487-1-sdf@fomichev.me>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,46 +58,55 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Then tun/tap allocates an skb, it additionally allocates a prepad size
-(usually equal to NET_SKB_PAD) but leaves it uninitialized.
+Solving the issue reported by Cosmin in [0] requires consistent
+lock during NETDEV_UP/REGISTER/UNREGISTER notifiers. This series
+addresses that (along with some other fixes in net/ipv4/devinet.c
+and net/ipv6/addrconf.c) and appends the patches from Jakub
+that were conditional on locked NETDEV_UNREGISTER.
 
-bpf_xdp_adjust_head() may move skb->data forward, which may lead to an
-issue.
+0: https://lore.kernel.org/netdev/700fa36b94cbd57cfea2622029b087643c80cbc9.camel@nvidia.com/
 
-Since the linear address is likely to be allocated from kmem_cache, it's
-unlikely to trigger a KMSAN warning. We need some tricks, such as forcing
-kmem_cache_shrink in __do_kmalloc_node, to reproduce the issue and trigger
-a KMSAN warning.
+v2:
+- export netdev_get_by_index_lock
+- new patch: add netdev_lockdep_set_classes to mlx5
+- new patch: exercise notifiers in netdevsim
+- ignore specific locked netdev in call_netdevice_register_notifiers,
+  not all
 
-Reported-by: syzbot+0e6ddb1ef80986bdfe64@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/00000000000067f65105edbd295d@google.com/T/
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- drivers/net/tun.c | 2 ++
- 1 file changed, 2 insertions(+)
+Jakub Kicinski (3):
+  net: designate XSK pool pointers in queues as "ops protected"
+  netdev: add "ops compat locking" helpers
+  netdev: don't hold rtnl_lock over nl queue info get when possible
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index f75f912a0225..111f83668b5e 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -1463,6 +1463,7 @@ static struct sk_buff *tun_alloc_skb(struct tun_file *tfile,
- 	if (!skb)
- 		return ERR_PTR(err);
- 
-+	memset(skb->data, 0, prepad);
- 	skb_reserve(skb, prepad);
- 	skb_put(skb, linear);
- 	skb->data_len = len - linear;
-@@ -1621,6 +1622,7 @@ static struct sk_buff *tun_build_skb(struct tun_struct *tun,
- 		return ERR_PTR(-ENOMEM);
- 
- 	buf = (char *)page_address(alloc_frag->page) + alloc_frag->offset;
-+	memset(buf, 0, pad);
- 	copied = copy_page_from_iter(alloc_frag->page,
- 				     alloc_frag->offset + pad,
- 				     len, from);
+Stanislav Fomichev (8):
+  net: switch to netif_disable_lro in inetdev_init
+  net: hold instance lock during NETDEV_REGISTER/UP/UNREGISTER
+  net: use netif_disable_lro in ipv6_add_dev
+  net: release instance lock during NETDEV_UNREGISTER for bond/team
+  net/mlx5e: use netdev_lockdep_set_classes
+  netdevsim: add dummy device notifiers
+  net: dummy: request ops lock
+  docs: net: document netdev notifier expectations
+
+ Documentation/networking/netdevices.rst       |  18 +++
+ drivers/net/bonding/bond_main.c               |   2 +
+ drivers/net/dummy.c                           |   1 +
+ .../net/ethernet/mellanox/mlx5/core/en_main.c |   2 +
+ drivers/net/netdevsim/netdev.c                |  58 +++++++++
+ drivers/net/netdevsim/netdevsim.h             |   3 +
+ drivers/net/team/team_core.c                  |   2 +
+ include/linux/netdevice.h                     |   2 +
+ include/net/netdev_lock.h                     |  16 +++
+ include/net/netdev_rx_queue.h                 |   6 +-
+ net/core/dev.c                                | 117 ++++++++++++++----
+ net/core/dev.h                                |  16 ++-
+ net/core/netdev-genl.c                        |  18 ++-
+ net/ipv4/devinet.c                            |   2 +-
+ net/ipv6/addrconf.c                           |  17 ++-
+ net/xdp/xsk_buff_pool.c                       |   7 +-
+ 16 files changed, 245 insertions(+), 42 deletions(-)
+
 -- 
-2.47.1
+2.48.1
 
