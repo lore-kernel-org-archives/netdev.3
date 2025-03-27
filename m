@@ -1,326 +1,120 @@
-Received: from smtp-fw-80008.amazon.com (smtp-fw-80008.amazon.com [99.78.197.219])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C460D2914
-	for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 20:28:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A76F1D6DD8
+	for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 20:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743107332; cv=none; b=hLNxfnu8+P6AiB7c4sFkdygIuXInE9H89tcsRWeHbJy0wQw2UvYOmxiwwIe8KY1+ZG1ZkUEWGGn+X1EXURAVs4nWP3MWOW73Swgo5v9sHWHXt28RDwXuB3sTxRlYtZem2xUisGAaUrS2MnD1fpjCJpk4/kPRLSZ+D+SE/GWj1Bo=
+	t=1743109025; cv=none; b=iN/3DjSmZGnjkBjncRIKsLMTHMzdsJjgi7/w+wg9jMlcfFdmxDJ/3oUA/91IUjj4eb0MA/zSyRmkbRyv7VTHaEDY9O4u1jIwjm4v2l5LaeXawgc9pv0WDmKeIWROqlTl5+FGcpcHQ0HeSjJmqg+nnHWnptWz3DwTDR0G12Xzkgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743107332; c=relaxed/simple;
-	bh=G1OLOEE39MKVzPGpg3CXf7VfTAQCrVwnhGAN7/UU30c=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M9kzQd7Tu5+bL6XyLwf7HtXxu5N5Wn2OB92kbm58Q3K/e2ox6UwzAFDM0wgyGxyZJhbM6/iMV4L4wqCNcJ1kJAH+HtaDFnkRwG26R8pS3E/rcxxmSGxDujCCGJ7o22eHlYP1IBNrK600inM+Y4p6+/96uWBxf4ooaySKBiLo4Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=YZ3MpKwZ; arc=none smtp.client-ip=99.78.197.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1743109025; c=relaxed/simple;
+	bh=4u68GZqQFu8WD4E8Eqgs0VIXNT7ep4tbCk4n8I6rRrk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K3BXKaW2vm6zxd3jkz/hGY4al610ZBxPZubvQ6GTKccuCWE8kR+HulhAjZpL2sx/bo66j90F5YE7XMXgX1S7ZPSuMAKHt/ArwdTObg3sqRH4kYHCXmqAiPkn4dKnCDRgWtY9YHZAykWy3T3IlJkS5+RKHgMrHoblMwqZbo1m7o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SgrZjECp; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="YZ3MpKwZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SgrZjECp"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2260c915749so22667815ad.3
+        for <netdev@vger.kernel.org>; Thu, 27 Mar 2025 13:57:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1743107330; x=1774643330;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Y0Ulc7eRhzuLF4TaFCpqGftFh1A8O5RbYdYMQLc8h0Q=;
-  b=YZ3MpKwZDpMxn27Cr2U4mRxxtcz6u80FDavtTiRxfvb+o9KbzbPciaxy
-   P59JYDMIehrLi9rWH/6nAoBGSSptPMFOWrIHL2MwWc5a9BUog+zL67yqz
-   pWn1TSAItPhB/hx82LZ97H/qpm1YmkSKMcK9d/olF5sOflxy9LUF7YhpL
-   M=;
-X-IronPort-AV: E=Sophos;i="6.14,281,1736812800"; 
-   d="scan'208";a="182568490"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-80008.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2025 20:28:48 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:58646]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.47.60:2525] with esmtp (Farcaster)
- id dda27b90-74fd-4822-a09a-ea5e58eafee0; Thu, 27 Mar 2025 20:28:48 +0000 (UTC)
-X-Farcaster-Flow-ID: dda27b90-74fd-4822-a09a-ea5e58eafee0
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 27 Mar 2025 20:28:48 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.187.171.29) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 27 Mar 2025 20:28:45 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, "David S. Miller"
-	<davem@davemloft.net>, David Ahern <dsahern@kernel.org>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-CC: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v3 net 3/3] selftest: net: Check wraparounds for sk->sk_rmem_alloc.
-Date: Thu, 27 Mar 2025 13:26:55 -0700
-Message-ID: <20250327202722.63756-4-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250327202722.63756-1-kuniyu@amazon.com>
-References: <20250327202722.63756-1-kuniyu@amazon.com>
+        d=gmail.com; s=20230601; t=1743109023; x=1743713823; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vI5wkIVDrrbhm+l4aOzsb3x8R5aGDet9ULJatnFQM1w=;
+        b=SgrZjECpUGTWUy85Cn7mjAhWLbP2FO+M+xZioMdFkd/mcQFbkLRrBgEfOwRpegOoar
+         LnULNXDj+fUKyiTdVcF03fsk3fH9IJHTmdsQnVuMrodu9q06NGeA2za4MBfPpsQSCc09
+         6xqBv5xqbnc1vbet+tIKTzhufn2nSuKteEJMRZfGvD6izU17JU3oe0L+cC12/t0cv+X0
+         aTF9qLR9yWKhfILp+r5EUW2F4sgFwV2USP0/rj11UE9PLeblRl1JE7BwDd89F4fJ9VNG
+         f8bMLV5aRHt2kNzLZXEngRR+yUshKfvF1coKIQO1u2g8DB/MgsUhzyk5KWXKWeSgZ7SZ
+         bIWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743109023; x=1743713823;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vI5wkIVDrrbhm+l4aOzsb3x8R5aGDet9ULJatnFQM1w=;
+        b=HoF5TeNwMDAG8MsueZLsh/0ccsI6Pwb6w13ydgzD1XWiLvqS08Wl5enNhzjICE79mz
+         t3I6tqRflkKVQ/1LHs2OWGGIlzWQgZkggyqD0BwY7GKlw9KUpMW8vcXtct1vv7s6SGfL
+         dcR1IT050BVPnNSXG6YekNOahU4QRHFD/WfnKb0BNAalA/4QpgMC4Dw2zBZ0rA0YavyV
+         2tyv+RRZJ6pC9fidDIervAljO6QXV0uu57hQuylZGM5XV9cqC0UCSVX1tATsm2OyhweK
+         G/3d7TOq48dXM3dFLNVjVaUuRfuCs4wMQyR1Kze1tLRwl6upOB97ullcj6wTDZrKAxsO
+         6Zyw==
+X-Forwarded-Encrypted: i=1; AJvYcCUkuFKPecIzZ0DWK2Bg+XEj8CBOaO1mvi5EUTWl07XQl8667XiMhISbtYZMqcigpSAWZMrcz70=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrCrxahPe5IaH2PCsLefugNw3KEFlYJQGylJrSIBp/FUQGUj05
+	bVtCxLgJV+I0d1zqoyTTqSy/8NnpuqzAn5YDu/0uwRb4Je/FhDd8zFGFoHAJ7Q==
+X-Gm-Gg: ASbGncuxyVOEDqW0quprfQ2KWIDSVtr0OxDd65f4RgKkEENjcrPQbUNFJ2lFSqSkASc
+	LbWnz05hC538aMsRahQ1GLU1U/lct4d3raCGxWVQL3pjSFcPZVlOojIQDUmoQDr42Zxhg5Co2TD
+	TjQY7vwAgb7oMkQ32/+uPmpQRSqYAogoxNEWKFXjaw1bLrKesndY3Erm/N6vTm2IU3AtxsLPkum
+	F7OzD8blVwmxVdJ7UHeK/tgKT0IR+7rCpoLkDmxrOxnEwHd8GY9Qb7OB80dYzUQoBNZs2IMdmZo
+	lG2uyWfaKBuVUF+jR7WIRuh9fCIE6+KsN5/tGd/tk3YD
+X-Google-Smtp-Source: AGHT+IE3j+W+jk/u8ZquE9yKsEiWmztPX+XrfZmpzZnDNd8WJ7HYrJQCHe/tSnmC6mz25+GBXqeIyA==
+X-Received: by 2002:a05:6a21:33a2:b0:1f5:884a:7549 with SMTP id adf61e73a8af0-1fea2fe8434mr8818458637.41.1743109023194;
+        Thu, 27 Mar 2025 13:57:03 -0700 (PDT)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-af93b6a093bsm342197a12.28.2025.03.27.13.57.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Mar 2025 13:57:02 -0700 (PDT)
+Date: Thu, 27 Mar 2025 13:57:01 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com
+Subject: Re: [PATCH net v2 08/11] docs: net: document netdev notifier
+ expectations
+Message-ID: <Z-W7nfFdv8u-SZTY@mini-arch>
+References: <20250327135659.2057487-1-sdf@fomichev.me>
+ <20250327135659.2057487-9-sdf@fomichev.me>
+ <20250327121613.4d4f36ea@kernel.org>
+ <20250327123403.6147088d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D037UWB003.ant.amazon.com (10.13.138.115) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250327123403.6147088d@kernel.org>
 
-The test creates client and server sockets and sets INT_MAX to the
-server's SO_RCVBUFFORCE.
+On 03/27, Jakub Kicinski wrote:
+> On Thu, 27 Mar 2025 12:16:13 -0700 Jakub Kicinski wrote:
+> > > +* ``NETDEV_REGISTER``
+> > > +* ``NETDEV_UP``
+> > > +* ``NETDEV_UNREGISTER``  
+> > 
+> > Can I ask the obvious question - anything specific that's hard in also
+> > taking it in DOWN or just no time to investigate? Symmetry would be
+> > great.
 
-Then, the client floods packets to the server until the UDP memory
-usage reaches (INT_MAX + 1) >> PAGE_SHIFT.
+The latter: I added locks for DOWN, hit a dev_close somewhere, and
+decided no to go down the rabbit hole.
 
-Finally, both sockets are close()d, and the last assert makes sure
-that the memory usage drops to 0.
+> Looking at patch 4 maybe we should do the opposite. This was my
+> original commit msg for locking UNREGISTER:
+> 
+>     net: make NETDEV_UNREGISTER and instance lock more consistent
+>     
+>     The NETDEV_UNREGISTER notifier gets called under the ops lock
+>     when device changes namespace but not during real unregistration.
+>     Take it consistently, XSK tries to poke at netdev queue state
+>     from this notifier.
+> 
+> So if the only caller currently under the lock is netns change, and 
+> we already split that to release the lock - maybe we can make
+> UNREGISTER always unlocked instead?
 
-If needed, we can extend the test later for other protocols.
+That sounds very sensible, let me try it out and run the tests.
+I'll have to drop the lock twice, once for NETDEV_UNREGISTER
+and another time for move_netdevice_notifiers_dev_net, but since
+the device is unlisted, nothing should touch it (in theory)?
 
-Without patch 1:
+netif_change_net_namespace is already the first thing that happens
+in do_setlink, so I won't be converting it to dev_xxx (lmk if I
+miss something here).
 
-  # Starting 2 tests from 2 test cases.
-  #  RUN           so_rcvbuf.udp_ipv4.rmem_max ...
-  # so_rcvbuf.c:163:rmem_max:Expected pages (524800) <= *variant->max_pages (524288)
-  # rmem_max: Test terminated by assertion
-  #          FAIL  so_rcvbuf.udp_ipv4.rmem_max
-  not ok 1 so_rcvbuf.udp_ipv4.rmem_max
-
-Without patch 2:
-
-  #  RUN           so_rcvbuf.udp_ipv4.rmem_max ...
-  # so_rcvbuf.c:170:rmem_max:max_pages: 524288
-  # so_rcvbuf.c:178:rmem_max:Expected get_prot_pages(_metadata, variant) (524288) == 0 (0)
-  # rmem_max: Test terminated by assertion
-  #          FAIL  so_rcvbuf.udp_ipv4.rmem_max
-  not ok 1 so_rcvbuf.udp_ipv4.rmem_max
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
----
-v3: Rebase to the latest net.git
-v2: Add some comments (Note with 1000 loops it didn't fail at ASSERT_LE)
----
- tools/testing/selftests/net/.gitignore  |   3 +-
- tools/testing/selftests/net/Makefile    |   2 +-
- tools/testing/selftests/net/so_rcvbuf.c | 181 ++++++++++++++++++++++++
- 3 files changed, 184 insertions(+), 2 deletions(-)
- create mode 100644 tools/testing/selftests/net/so_rcvbuf.c
-
-diff --git a/tools/testing/selftests/net/.gitignore b/tools/testing/selftests/net/.gitignore
-index 679542f565a4..972fb07730d2 100644
---- a/tools/testing/selftests/net/.gitignore
-+++ b/tools/testing/selftests/net/.gitignore
-@@ -42,8 +42,9 @@ sk_so_peek_off
- socket
- so_incoming_cpu
- so_netns_cookie
--so_txtime
- so_rcv_listener
-+so_rcvbuf
-+so_txtime
- stress_reuseport_listen
- tap
- tcp_fastopen_backup_key
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 6d718b478ed8..393ffa1c417b 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -87,7 +87,7 @@ TEST_GEN_PROGS += sk_bind_sendto_listen
- TEST_GEN_PROGS += sk_connect_zero_addr
- TEST_GEN_PROGS += sk_so_peek_off
- TEST_PROGS += test_ingress_egress_chaining.sh
--TEST_GEN_PROGS += so_incoming_cpu
-+TEST_GEN_PROGS += so_incoming_cpu so_rcvbuf
- TEST_PROGS += sctp_vrf.sh
- TEST_GEN_FILES += sctp_hello
- TEST_GEN_FILES += ip_local_port_range
-diff --git a/tools/testing/selftests/net/so_rcvbuf.c b/tools/testing/selftests/net/so_rcvbuf.c
-new file mode 100644
-index 000000000000..79dfd41baaef
---- /dev/null
-+++ b/tools/testing/selftests/net/so_rcvbuf.c
-@@ -0,0 +1,181 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright Amazon.com Inc. or its affiliates. */
-+
-+#include <limits.h>
-+#include <netinet/in.h>
-+#include <sys/socket.h>
-+#include <unistd.h>
-+
-+#include "../kselftest_harness.h"
-+
-+static int udp_max_pages;
-+
-+static int udp_parse_pages(struct __test_metadata *_metadata,
-+			   char *line, int *pages)
-+{
-+	int ret, unused;
-+
-+	if (strncmp(line, "UDP:", 4))
-+		return -1;
-+
-+	ret = sscanf(line + 4, " inuse %d mem %d", &unused, pages);
-+	ASSERT_EQ(2, ret);
-+
-+	return 0;
-+}
-+
-+FIXTURE(so_rcvbuf)
-+{
-+	union {
-+		struct sockaddr addr;
-+		struct sockaddr_in addr4;
-+		struct sockaddr_in6 addr6;
-+	};
-+	socklen_t addrlen;
-+	int server;
-+	int client;
-+};
-+
-+FIXTURE_VARIANT(so_rcvbuf)
-+{
-+	int family;
-+	int type;
-+	int protocol;
-+	int *max_pages;
-+	int (*parse_pages)(struct __test_metadata *_metadata,
-+			   char *line, int *pages);
-+};
-+
-+FIXTURE_VARIANT_ADD(so_rcvbuf, udp_ipv4)
-+{
-+	.family = AF_INET,
-+	.type = SOCK_DGRAM,
-+	.protocol = 0,
-+	.max_pages = &udp_max_pages,
-+	.parse_pages = udp_parse_pages,
-+};
-+
-+FIXTURE_VARIANT_ADD(so_rcvbuf, udp_ipv6)
-+{
-+	.family = AF_INET6,
-+	.type = SOCK_DGRAM,
-+	.protocol = 0,
-+	.max_pages = &udp_max_pages,
-+	.parse_pages = udp_parse_pages,
-+};
-+
-+static int get_page_shift(void)
-+{
-+	int page_size = getpagesize();
-+	int page_shift = 0;
-+
-+	while (page_size > 1) {
-+		page_size >>= 1;
-+		page_shift++;
-+	}
-+
-+	return page_shift;
-+}
-+
-+FIXTURE_SETUP(so_rcvbuf)
-+{
-+	self->addr.sa_family = variant->family;
-+
-+	if (variant->family == AF_INET)
-+		self->addrlen = sizeof(struct sockaddr_in);
-+	else
-+		self->addrlen = sizeof(struct sockaddr_in6);
-+
-+	udp_max_pages = (INT_MAX + 1L) >> get_page_shift();
-+}
-+
-+FIXTURE_TEARDOWN(so_rcvbuf)
-+{
-+}
-+
-+static void create_socketpair(struct __test_metadata *_metadata,
-+			      FIXTURE_DATA(so_rcvbuf) *self,
-+			      const FIXTURE_VARIANT(so_rcvbuf) *variant)
-+{
-+	int ret;
-+
-+	self->server = socket(variant->family, variant->type, variant->protocol);
-+	ASSERT_NE(self->server, -1);
-+
-+	self->client = socket(variant->family, variant->type, variant->protocol);
-+	ASSERT_NE(self->client, -1);
-+
-+	ret = bind(self->server, &self->addr, self->addrlen);
-+	ASSERT_EQ(ret, 0);
-+
-+	ret = getsockname(self->server, &self->addr, &self->addrlen);
-+	ASSERT_EQ(ret, 0);
-+
-+	ret = connect(self->client, &self->addr, self->addrlen);
-+	ASSERT_EQ(ret, 0);
-+}
-+
-+static int get_prot_pages(struct __test_metadata *_metadata,
-+			  const FIXTURE_VARIANT(so_rcvbuf) *variant)
-+{
-+	char *line = NULL;
-+	size_t unused;
-+	int pages = 0;
-+	FILE *f;
-+
-+	f = fopen("/proc/net/sockstat", "r");
-+	ASSERT_NE(NULL, f);
-+
-+	while (getline(&line, &unused, f) != -1)
-+		if (!variant->parse_pages(_metadata, line, &pages))
-+			break;
-+
-+	free(line);
-+	fclose(f);
-+
-+	return pages;
-+}
-+
-+TEST_F(so_rcvbuf, rmem_max)
-+{
-+	char buf[16] = {};
-+	int ret, i;
-+
-+	create_socketpair(_metadata, self, variant);
-+
-+	ret = setsockopt(self->server, SOL_SOCKET, SO_RCVBUFFORCE,
-+			 &(int){INT_MAX}, sizeof(int));
-+	ASSERT_EQ(ret, 0);
-+
-+	ASSERT_EQ(get_prot_pages(_metadata, variant), 0);
-+
-+	for (i = 1; ; i++) {
-+		ret = send(self->client, buf, sizeof(buf), 0);
-+		ASSERT_EQ(ret, sizeof(buf));
-+
-+		/* Make sure we don't stop at pages == (INT_MAX >> PAGE_SHIFT)
-+		 * in case ASSERT_LE() should fail.
-+		 */
-+		if (i % 10000 == 0) {
-+			int pages = get_prot_pages(_metadata, variant);
-+
-+			/* sk_rmem_alloc wrapped around by >PAGE_SIZE ? */
-+			ASSERT_LE(pages, *variant->max_pages);
-+
-+			if (pages == *variant->max_pages)
-+				break;
-+		}
-+	}
-+
-+	TH_LOG("max_pages: %d", get_prot_pages(_metadata, variant));
-+
-+	close(self->client);
-+	close(self->server);
-+
-+	/* Give RCU a chance to call udp_destruct_common() */
-+	sleep(5);
-+
-+	ASSERT_EQ(get_prot_pages(_metadata, variant), 0);
-+}
-+
-+TEST_HARNESS_MAIN
--- 
-2.48.1
-
+If it goes well, I'll also hack your xsk patch to grab the ops lock
+in xsk_notifier:NETDEV_UNREGISTER, I think that's the only thing
+that needs changes. The ugly bonding and teaming unlock/locks
+will go away (which is a very nice side effect).
