@@ -1,219 +1,126 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out01.mta.xmission.com (out01.mta.xmission.com [166.70.13.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0651A0BF1
-	for <netdev@vger.kernel.org>; Fri, 28 Mar 2025 15:16:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61263171092;
+	Fri, 28 Mar 2025 15:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.70.13.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743175011; cv=none; b=oBkAgQ7CcDsyzWH3uaWuDLMExgnCKXPtJ9hpMu39celeQnVdfylrkPN/7mKIanGUPdQC4FqqfI+ufhUQO9LGHBX9Aam81eMjLwbpzgUX+l0M1HtnQeul2crjKcbUS9EYfPSyNCt9Q9OaqPrdZzMLeUxIe+RvZ9Wd337EC5RtJIQ=
+	t=1743175102; cv=none; b=pNqqQa4N4bVT2A+NeLIEpC9RMpZxwDE98UVjNbh+FJhTakIYQjJ94yZIaanXE0idZyny+fNSDNzlXZQVFuDBS2ZLKNkVlNqo/+nmISNSUbSUalAqBn/o6uVvyP15SPy2aTZIM01Clol9nmM0KM7LtFPolaFYrhwt/rvdT0QnJLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743175011; c=relaxed/simple;
-	bh=4SnwxLLBkWx0+ZCJqyNcxPhL2Bq9A/HVjU3Ps8/PtME=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IQ18qrvzfXB5vrVHBA3FSABwsY8xsFGKGgQo9vhqmn8p6/xfBVyseVutIXTjAO2kflK2IM/uiLsQqPZr0qWf7zpWgUQcb3yAknWTPpVHOSojSKEVNxJBDLfxkwgmSd+E42Ty+YWXGyFGdu/Pv7+Tljjp/F3KYEGd/Lv0/Nv7Z40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U4XEoKyv; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U4XEoKyv"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-223a7065ff8so7879255ad.0
-        for <netdev@vger.kernel.org>; Fri, 28 Mar 2025 08:16:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743175009; x=1743779809; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q1y+MZkpFmvZAsuIP1i/mAxNPe+4zrWSQdw12KSayMc=;
-        b=U4XEoKyv/Sfox8/qABfLaD0OeIMU9IMdP5f1SIJ+Ed+TvaDJLya8pQc0jozdAV+UWN
-         F+pc7QAhuCdoR+W+PtOV2Zxa9goCz+eErC1ifXdmzardbgsJWmh7b8lyq/Ozs8Zd+k5C
-         3o6Hb7QnCqGMo3bjPdj9ucXhi0avh37PHDyoybItlluG8Eujrs0J0Qk+qWy4Wt1jysCj
-         9LjKasG6Ay5ScWeyh0LqeRAOXlGfh7blyMjNCV2lgEylcm/z1QUHLxttE0tYT+T+L0AD
-         rtxF76C4TCHYeWrODyeTUiDkzgCc9uBppHujL8LPu9j0v/7iu/6SXz3l0jnEdQp5vct6
-         qdwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743175009; x=1743779809;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q1y+MZkpFmvZAsuIP1i/mAxNPe+4zrWSQdw12KSayMc=;
-        b=lEIqNgcdlzAlSfdkoM2qmQgQBONMF2M/ZspWiabAeE83S6jYmAENe3JOIO+5wiXv3b
-         11Pk6vBFikwpT1osEPt0I3YPpui47SelgGzVit0K9RLNau/7dKdA6zjZb2hIG+EJt8RK
-         If+FdEDFdNGFf/913mUUp8k7L7uskwNgW+54tgoJjH2DXWveTZ2pKHwdIDHejbR4UX9U
-         kr+nh6p0i7NdVwLm/vSF6yX/hduIJo2FsH7wX6VBVT4d884pZWwS5Rsm6Eev/iIM750L
-         oLOGFDTRhMpUi0ANV7ZXOSNcXaXdgfE8ynfNSkTlxzRoHmH1zt7DvGJcA3IEGBT2KxQg
-         qZ5w==
-X-Gm-Message-State: AOJu0Ywbnyuwny2Ya/FdFBeqLDjRdyyyYKczhtG3u9ZvcyJWqI13TQy6
-	5yEI4TqrrTZj9RNdmFDrWnLJ4gquEWp6M47xoioaXgEdlUxnDD2O
-X-Gm-Gg: ASbGncs6vNYqVmvsFwB4ZaXEVGZeLSGP6nzp509CWMasrMxoei9cWZVEsYXa1MlZHCr
-	/a0cxcwm84dd8+HyQ4mDpO7D43v7RYjsj0gFSG/Gc6VLvugg9saR3FCGjkltzAqhE8kJSrScuM3
-	1fHyx1ixU+u2OS7NTnRZVyjBcM3W4/0pjK8SyNOht6FqzrO1K7JQHmSDTY6YGhfYEPs8n8XYSs2
-	44/We2mvO5N3cmE4Unb1UrSxC5+TRrgR2rFHvq7Rwxr345k+P3jn3u4dA9taHGyCTHQ1i/Ez0Ft
-	9I90NpyKPI91sMQBRMO0fDogZG7ijvEC8ohOeR3P5U3wE5NZSesyOopU03bcKgLT8I79gZ2s5lL
-	nShcxECj1SM6YJCtllA==
-X-Google-Smtp-Source: AGHT+IEHgkxQQajYmbCDTPvdQEFPf/5P0CanfjMFYyisOCC2sBl7piRP/fho0YqQZqxuHrmFbobqJA==
-X-Received: by 2002:a05:6a21:496:b0:1ee:ef0b:7bf7 with SMTP id adf61e73a8af0-1fea2d9afa8mr14210244637.19.1743175008799;
-        Fri, 28 Mar 2025 08:16:48 -0700 (PDT)
-Received: from KERNELXING-MC1.tencent.com ([111.201.25.167])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7397109200csm1853985b3a.128.2025.03.28.08.16.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Mar 2025 08:16:48 -0700 (PDT)
-From: Jason Xing <kerneljasonxing@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	dsahern@kernel.org,
-	horms@kernel.org,
-	kuniyu@amazon.com,
-	ncardwell@google.com
-Cc: netdev@vger.kernel.org,
-	Jason Xing <kernelxing@tencent.com>
-Subject: [PATCH RFC net-next 2/2] tcp: introduce dynamic initcwnd adjustment
-Date: Fri, 28 Mar 2025 23:16:33 +0800
-Message-Id: <20250328151633.30007-3-kerneljasonxing@gmail.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20250328151633.30007-1-kerneljasonxing@gmail.com>
-References: <20250328151633.30007-1-kerneljasonxing@gmail.com>
+	s=arc-20240116; t=1743175102; c=relaxed/simple;
+	bh=I2diJ459zHAbnnXSfI/pe1+iVztBYA6fJv1PmJ0w2F0=;
+	h=From:To:Cc:References:Date:In-Reply-To:Message-ID:MIME-Version:
+	 Content-Type:Subject; b=jke+AZEUXe555Fm+FbJ5TdhIQOfyWDW9dqfMPjB0uo57teAVaIhuFO9ynq82tE2JKUZhyymuTw1l2kwhGFj2gqSN8LDrp0o7YDthE/+8jiYKWx2yeagHV/uyIN7Yj/EML5aGY4Tu5jqK8L4jRJw7tGj/7MngguOvwyFNvcFsTn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com; spf=pass smtp.mailfrom=xmission.com; arc=none smtp.client-ip=166.70.13.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xmission.com
+Received: from in02.mta.xmission.com ([166.70.13.52]:38962)
+	by out01.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1tyAXL-000vaD-9v; Fri, 28 Mar 2025 08:18:19 -0600
+Received: from ip72-198-198-28.om.om.cox.net ([72.198.198.28]:32850 helo=email.froward.int.ebiederm.org.xmission.com)
+	by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1tyAXK-00AuMC-5N; Fri, 28 Mar 2025 08:18:18 -0600
+From: "Eric W. Biederman" <ebiederm@xmission.com>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: <i.abramov@mt-integration.ru>,  <aleksander.lobakin@intel.com>,
+  <davem@davemloft.net>,  <edumazet@google.com>,  <horms@kernel.org>,
+  <jdamato@fastly.com>,  <kuba@kernel.org>,  <leitao@debian.org>,
+  <linux-kernel@vger.kernel.org>,  <lvc-project@linuxtesting.org>,
+  <netdev@vger.kernel.org>,  <pabeni@redhat.com>,
+  <syzbot+1df6ffa7a6274ae264db@syzkaller.appspotmail.com>
+References: <20250328011302.743860-1-i.abramov@mt-integration.ru>
+	<20250328022204.12804-1-kuniyu@amazon.com>
+Date: Fri, 28 Mar 2025 09:17:42 -0500
+In-Reply-To: <20250328022204.12804-1-kuniyu@amazon.com> (Kuniyuki Iwashima's
+	message of "Thu, 27 Mar 2025 19:15:00 -0700")
+Message-ID: <875xjtb5o9.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-XM-SPF: eid=1tyAXK-00AuMC-5N;;;mid=<875xjtb5o9.fsf@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=72.198.198.28;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX18L2PoLqjUlh8oy7IsTTArm4NLnXlSHfRs=
+X-Spam-Level: **
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	*  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+	*      [score: 0.4810]
+	*  0.7 XMSubLong Long Subject
+	*  1.0 XMSlimDrugH Weight loss drug headers
+	*  0.5 XMGappySubj_01 Very gappy subject
+	*  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+	* -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+	*      [sa07 1397; Body=1 Fuz1=1 Fuz2=1]
+	*  0.0 T_TooManySym_02 5+ unique symbols in subject
+	*  0.2 XM_B_SpammyWords One or more commonly used spammy words
+	*  0.0 T_TooManySym_03 6+ unique symbols in subject
+	*  0.0 T_TooManySym_01 4+ unique symbols in subject
+X-Spam-DCC: XMission; sa07 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: **;Kuniyuki Iwashima <kuniyu@amazon.com>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 411 ms - load_scoreonly_sql: 0.03 (0.0%),
+	signal_user_changed: 9 (2.2%), b_tie_ro: 8 (1.9%), parse: 0.89 (0.2%),
+	extract_message_metadata: 12 (3.0%), get_uri_detail_list: 1.35 (0.3%),
+	tests_pri_-2000: 24 (5.9%), tests_pri_-1000: 2.6 (0.6%),
+	tests_pri_-950: 1.26 (0.3%), tests_pri_-900: 1.01 (0.2%),
+	tests_pri_-90: 101 (24.5%), check_bayes: 99 (24.0%), b_tokenize: 7
+	(1.7%), b_tok_get_all: 7 (1.8%), b_comp_prob: 2.5 (0.6%),
+	b_tok_touch_all: 78 (18.9%), b_finish: 0.96 (0.2%), tests_pri_0: 245
+	(59.5%), check_dkim_signature: 0.75 (0.2%), check_dkim_adsp: 3.4
+	(0.8%), poll_dns_idle: 1.29 (0.3%), tests_pri_10: 2.1 (0.5%),
+	tests_pri_500: 9 (2.2%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH] net: Avoid calling WARN_ON() on -ENOMEM in
+ __dev_change_net_namespace()
+X-SA-Exim-Connect-IP: 166.70.13.52
+X-SA-Exim-Rcpt-To: syzbot+1df6ffa7a6274ae264db@syzkaller.appspotmail.com, pabeni@redhat.com, netdev@vger.kernel.org, lvc-project@linuxtesting.org, linux-kernel@vger.kernel.org, leitao@debian.org, kuba@kernel.org, jdamato@fastly.com, horms@kernel.org, edumazet@google.com, davem@davemloft.net, aleksander.lobakin@intel.com, i.abramov@mt-integration.ru, kuniyu@amazon.com
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-SA-Exim-Scanned: No (on out01.mta.xmission.com); SAEximRunCond expanded to false
 
-From: Jason Xing <kernelxing@tencent.com>
+Kuniyuki Iwashima <kuniyu@amazon.com> writes:
 
-More than one decade ago, Google published an important paper[1] that
-describes how different initcwnd values have different impacts. Three
-years later, initcwnd is set to 10 by default[2] for common use. But
-nowadays, more and more small features have been developed for certain
-particular cases instead of all the cases.
+>> Subject: [PATCH] net: Avoid calling WARN_ON() on -ENOMEM in __dev_change_net_namespace()
+>
+> s/__dev_change_net_namespace/netif_change_net_namespace/
+>
+> Also, please specify the target tree: [PATCH v2 net]
+>
+>
+> From: Ivan Abramov <i.abramov@mt-integration.ru>
+> Date: Fri, 28 Mar 2025 04:12:57 +0300
+>> It's pointless to call WARN_ON() in case of an allocation failure in
+>> device_rename(), since it only leads to useless splats caused by deliberate
+>> fault injections, so avoid it.
 
-As we may notice some CDN teams try to increase it even to more than 100
-for uncontrollable global network to speed up transmitting data in the slow
-start phase. In data center, we also need such a similar change to ramp up
-slow start especially for the case where application sometime tries to send
-a small amount of data, say, 50K at one time in the persistent connection.
-Asking users to tune by 'ip route' might not be that practical because 1)
-it may affect those unwanted flows, 2) too big global-wide value may cause
-burst for all kinds of flows.
+No.  It is not pointless.  The WARN_ON is there because the code can not
+rollback if device_rename fails in
+__dev_change_net_namespace/netif_change_net_namespace.
 
-This patch adds a dynamic adjustment feature for initcwnd in the slow start
-or slow start from idle phase so that it only accelerates the in first
-round trip time and doesn't affect too much for the massive data transfer
-case.
+If device_rename fails it means that the kernel's device tree
+are inconsistent with the actual network devices.
 
-Use 65535 as an upper bound to calculate the proper initcwnd. This number
-is derived from the case where an skb carries the 65535 window when sending
-syn ack at __tcp_transmit_skb(). Without it, the passive open side
-sending data is able to see a very big value from the last ack in 3-WHS,
-say, 2699776 which means it possibly generates a 1912 initcwnd that is
-too big.
+If anything we need a way to guarantee that the device_rename will
+succeed, so that all of the parts that may fail may be performed
+before we commit ourselves by notifying userspace that the device
+is being renamed.
 
-This patch can help the small data transfer case accelerate the speed. I
-tested transmitting 50k at one time and managed to see the time consumed
-decreased from 1400us to 80us. A 1750% delta!
+As for Breno Leitao <leitao@debian.org>'s question should we fail
+immediately.  That will put us in a far worse state.
 
-The idea behind this is I often see the small data transfer consumes
-more than 2 or 3 rtt because of limited snd_cwnd. In data center, we can
-afford the bandwidth if we choose to accelerate transmission.
+As I recall the WARN_ON exists there because someone at the last minute
+stuffed network devices into sysfs, and no one has taken the time to
+handle the practically impossible case of a device_rename failure.
 
-Why I chose the tp->max_window/tp->mss_cache? It's because cwnd is
-increased by per mss packet and max_window is the signal that the other
-side tries to tell us the max capacity it can bear. As we can see at
-tcp_set_skb_tso_segs(), tcp_gso_size is equal to mss.
+If you are going to do something with this logic please figure out how
+to handle a failure instead just shutting up the error message that
+let's you know something bad is wrong in the kernel.
 
-[1]: https://developers.google.com/speed/protocols/tcp_initcwnd_techreport.pdf
-[2]: https://datatracker.ietf.org/doc/html/rfc6928
-
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
----
-I'm not sure what the upper bound of this window should be. 65535 used
-as max window generates a 46 initcwnd with the 1412 mss in my vm.
----
- include/linux/tcp.h      |  3 ++-
- include/uapi/linux/tcp.h |  1 +
- net/ipv4/tcp.c           |  8 ++++++++
- net/ipv4/tcp_input.c     | 11 +++++++++--
- 4 files changed, 20 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/tcp.h b/include/linux/tcp.h
-index aba0a1fe0e36..445db706f3cd 100644
---- a/include/linux/tcp.h
-+++ b/include/linux/tcp.h
-@@ -385,7 +385,8 @@ struct tcp_sock {
- 		syn_fastopen:1,	/* SYN includes Fast Open option */
- 		syn_fastopen_exp:1,/* SYN includes Fast Open exp. option */
- 		syn_fastopen_ch:1, /* Active TFO re-enabling probe */
--		syn_data_acked:1;/* data in SYN is acked by SYN-ACK */
-+		syn_data_acked:1,/* data in SYN is acked by SYN-ACK */
-+		dynamic_initcwnd:1;  /* dynamic adjustment for initcwnd */
- 
- 	u8	keepalive_probes; /* num of allowed keep alive probes	*/
- 	u32	tcp_tx_delay;	/* delay (in usec) added to TX packets */
-diff --git a/include/uapi/linux/tcp.h b/include/uapi/linux/tcp.h
-index acf77114efed..7c63d0d0b5e1 100644
---- a/include/uapi/linux/tcp.h
-+++ b/include/uapi/linux/tcp.h
-@@ -143,6 +143,7 @@ enum {
- #define TCP_RTO_MIN_US		45	/* min rto time in us */
- #define TCP_DELACK_MAX_US	46	/* max delayed ack time in us */
- #define TCP_IW			47	/* initial congestion window */
-+#define TCP_IW_DYNAMIC         48      /* dynamic adjustment for initcwnd */
- 
- #define TCP_REPAIR_ON		1
- #define TCP_REPAIR_OFF		0
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 9da7ece57b20..3d419a714f2d 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3868,6 +3868,11 @@ int do_tcp_setsockopt(struct sock *sk, int level, int optname,
- 			return -EINVAL;
- 		tp->init_cwnd = val;
- 		return 0;
-+	case TCP_IW_DYNAMIC:
-+		if (val < 0 || val > 1)
-+			return -EINVAL;
-+		tp->dynamic_initcwnd = val;
-+		return 0;
- 	}
- 
- 	sockopt_lock_sock(sk);
-@@ -4716,6 +4721,9 @@ int do_tcp_getsockopt(struct sock *sk, int level,
- 	case TCP_IW:
- 		val = tp->init_cwnd;
- 		break;
-+	case TCP_IW_DYNAMIC:
-+		val = tp->dynamic_initcwnd;
-+		break;
- 	default:
- 		return -ENOPROTOOPT;
- 	}
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 00cbe8970a1b..05dbec734aa5 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -6341,10 +6341,17 @@ void tcp_init_transfer(struct sock *sk, int bpf_op, struct sk_buff *skb)
- 	 * initRTO, we only reset cwnd when more than 1 SYN/SYN-ACK
- 	 * retransmission has occurred.
- 	 */
--	if (tp->total_retrans > 1 && tp->undo_marker)
-+	if (tp->total_retrans > 1 && tp->undo_marker) {
- 		tcp_snd_cwnd_set(tp, 1);
--	else
-+	} else {
-+		if (tp->dynamic_initcwnd) {
-+			u32 win = min(tp->max_window, 65535);
-+
-+			tp->init_cwnd = max(win / tp->mss_cache, TCP_INIT_CWND);
-+		}
-+
- 		tcp_snd_cwnd_set(tp, tcp_init_cwnd(tp, __sk_dst_get(sk)));
-+	}
- 	tp->snd_cwnd_stamp = tcp_jiffies32;
- 
- 	bpf_skops_established(sk, bpf_op, skb);
--- 
-2.43.5
+Eric
 
