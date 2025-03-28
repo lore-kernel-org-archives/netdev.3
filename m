@@ -1,96 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5391B4F15;
-	Fri, 28 Mar 2025 14:28:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5ADA3C0C
+	for <netdev@vger.kernel.org>; Fri, 28 Mar 2025 15:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743172101; cv=none; b=MQiGUKdMprmTIKAhjO7pFMM8nAtbk/eQV6Tz810jiqX/Un3yKgA2D2EsDrz7Kp8blQUPPFemzzwRqplWd5HCGWUXU8rRPGeZ8p93+h/6anCqxwvIRlWNApz3SpoKE7Kw7eAvHIfKlTSnOGqzPIBzeQFr0uBB1KGzxEN9bYvvcTw=
+	t=1743174082; cv=none; b=b7cRhRvHJp7eJ4DW8UITHsPJU7EJ52Ljc+h+w1OxZo31Rrio4oXt0RPJWO14GF8buaaM0SGQuxI5Iu0VVnF2BEj1A0NI5HpVGH4bjp+oSiYIxzU7pbLPW7bh4/pn6wc63jfR+dRDRPkf21iXbmbQlfOYdGvP1T26c6fr3e6oRWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743172101; c=relaxed/simple;
-	bh=huDQ4vgkjBwI5c/TpdXiJlPetTIhi7oSTen6uASUw+U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KG1hPLDCnOu/maB5FuV7SWZjP5krDDYtgyg5AuQilmB4KK1jz3NsC4IYAmSLuyZaVzEglJH5IeE116sNkNo/iEvoiRTncBE4vYLxKrz2MRCOuGlYXfmuL7kUgL0am4qMtZXoHkikVIoX3vBJwg7Pt1JHlI5GkF4+cY1EvrDNueA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyzKF0JW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743174082; c=relaxed/simple;
+	bh=NUoPTKRFUmo9ZCoonOYtZ8VObhiW5ox/cQep5uAyo1I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d5cKQstSYXLv2cgjtsaBWeR58YP/X6b5MqBS3STC5cYidwsIB0I0404zNJ4SD/oREJDg9LieWylxHPkB2LAF4ZDA1DGDScoqCPkSKL+SMfzC/93HcoKAxlokrRsvEAvCbDNoL8vDmnN38gOPTYBD53BtjwRj5gUcJFQWxZnZ3R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AMq3E+cw; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyzKF0JW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E21C4CEE4;
-	Fri, 28 Mar 2025 14:28:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743172101;
-	bh=huDQ4vgkjBwI5c/TpdXiJlPetTIhi7oSTen6uASUw+U=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=dyzKF0JWikCnB7HKrZmFCk8Lt8Xl5jWowejSsDXyvTQY20oDL5WTHBrdr6Sft3Nce
-	 vJQ8XqJgTXlavz8pvc66yAv+1WcvrDPpYoFUuGETOCi9PFX19Z8oACMvCaqSup3bEl
-	 m1JTyXzxPybWHqGp3EABD2QOSGzb1m5IkhnqYLX2hv3wjz2K0XLAWKPcuxH5WKy4XZ
-	 ZGMpAVk6zSEc8fHzSZzygxipCE1N0/e7bym5RGsD0ZYvUCtu6k6R0ZXdWA5ef7tBf7
-	 kazpM5gowIeu6p79ZEheauedQjC5tKfFXbLLbx9yZ+p/MHTO0J08XqaBZ997eTSgZE
-	 Phed4UQc3x9aA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Fri, 28 Mar 2025 15:27:19 +0100
-Subject: [PATCH net 4/4] selftests: mptcp: ignore mptcp_diag binary
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AMq3E+cw"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-22928d629faso10284185ad.3
+        for <netdev@vger.kernel.org>; Fri, 28 Mar 2025 08:01:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743174080; x=1743778880; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=n/uacRGi4FRhwLfPaACi9AqyenwA2qOu6wyZ7omusq8=;
+        b=AMq3E+cwn63ekgZ7KLXlII+AgxrPtONBVtJ5X+IGI9zuC81h0+gX90SnTL6dh+4m8v
+         gGMZ55nt6IkvZMvC3HIxJMpHlGFmW1dYlcNoTukfBifNMiUxxZ6wT8z67I4tfjy/Cnr2
+         O77a1Zbf7kgC/MNmqecx4mRz3n6Uh1zSwZjlJCySg/tkyZWMd6pEpBTYhDSBDzTvdvVk
+         qL7NNmnykU14oJlUfRfrA0Dti65R7Ju/UdjI10JPS3ucpXldNxfhhk/4SYqzkx18oxXs
+         5/huxfSnkgfAQmDG+prxT3e1vFcdk71WmX01YRx/m9e45JPoy+LECd9xUxNLDCMlkIz5
+         yKVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743174080; x=1743778880;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n/uacRGi4FRhwLfPaACi9AqyenwA2qOu6wyZ7omusq8=;
+        b=uCu/5HGdmpbSYlTc2N8pauOZx5ozx+WJ7FMkDkqz74qZN9To9MrLp6juiDUD/Lg8Mw
+         UV2cELNopBPnpDj6wpQvBLoYJgUhIU8hdyKFST51D3r1iqP3vZy/Oxa6Q0YiwyJHlKzz
+         n2BARJq0hDwLYNAgjwjzX4xuPBxMXnvEV8yrc4SuPE7gGjXUdNbX/QZyS77X2N6Iux5+
+         qbI4lnYusUZbN1Aru8UIO6WPbYjoYCw7NDjOefkky7kESzGzZ4ski5uJSqCAIgR4xphr
+         5600P9QfGdNA/DIbmM76eRVi8Jarel5MCTJFQlGuWEnPrnzprd0BUl3nmOXhNM5oX7Hr
+         IE4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUdedZQGHk44Mz6IfAA5deS4xmZk3JSnP/glsOwaRZfyfoR5vl4VpGZvntgfxM5Qa/ReDYLrb4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLLNetCSSbq2QgZ0gjhu/5Tl7WMGhHCNlU4hKI+8/a20bBzjZj
+	61Ux852xIsxckr1c5JzPBIOomShtbHCEBhWOFZag6J+e9Bu26mA=
+X-Gm-Gg: ASbGncuT/zGw5LwNL+FWxHW62+fC70r9O8Pq+EMiuok2BBZY8grKFN2J2KvBJbjWFgg
+	+VKJ9KaMSA7xk/qF77f/xBpLGCm5+hFjrj7AYPpXQu80JDNFT4o64AduNoxXG+icCcR6eIEsTWp
+	CNh2fn0wrIqF4q1Y+XyyDODby614bxx7alCQao3fsG0cnWwIivQ9uSsQCIXfTyTVUywZEhc2YUK
+	K1zVlLiqUn6xaOLUYZxB6/+h+9QF4zhMVfVDkq8iX3uRoeUNtaL7jbuZbphUt9EcqbNvdEYkfrV
+	4Gpwp6WYO4qpJVhbm7uDXyGammznYDw9LajCpVplfWYN
+X-Google-Smtp-Source: AGHT+IGJ5TQ2rPvAvWAbG5twOdcnblkKje5J/DGfBx+xi7HeBb0f5ZY4U1Gj83jGE6UYXwr02TOy1g==
+X-Received: by 2002:a17:903:32c9:b0:224:1781:a950 with SMTP id d9443c01a7336-228048577e2mr120961575ad.14.1743174079041;
+        Fri, 28 Mar 2025 08:01:19 -0700 (PDT)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-2291eee2667sm18994705ad.92.2025.03.28.08.01.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Mar 2025 08:01:18 -0700 (PDT)
+Date: Fri, 28 Mar 2025 08:01:16 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	Cosmin Ratiu <cratiu@nvidia.com>
+Subject: Re: [PATCH net v2 01/11] net: switch to netif_disable_lro in
+ inetdev_init
+Message-ID: <Z-a5vH0QAbr4Q0MY@mini-arch>
+References: <20250327135659.2057487-1-sdf@fomichev.me>
+ <20250327135659.2057487-2-sdf@fomichev.me>
+ <20250327115921.3b16010a@kernel.org>
+ <Z-W-c8RyFxg30Ov5@mini-arch>
+ <20250327143623.62180058@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250328-net-mptcp-misc-fixes-6-15-v1-4-34161a482a7f@kernel.org>
-References: <20250328-net-mptcp-misc-fixes-6-15-v1-0-34161a482a7f@kernel.org>
-In-Reply-To: <20250328-net-mptcp-misc-fixes-6-15-v1-0-34161a482a7f@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Florian Westphal <fw@strlen.de>, Shuah Khan <shuah@kernel.org>, 
- Dmytro Shytyi <dmytro@shytyi.net>, Gang Yan <yangang@kylinos.cn>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=917; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=huDQ4vgkjBwI5c/TpdXiJlPetTIhi7oSTen6uASUw+U=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBn5rHsXJqxAQ434DU1KAL3sueAHT0ICgCs3bYA3
- 4HFIxsYT2iJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ+ax7AAKCRD2t4JPQmmg
- c+dSD/sFlsNkJp+W+2zDwXFLCWl+ajZ0L4vgRRzfGH2xBdnYTk5wYHDKGPwKDgiIDQRtIzoqL69
- cGJ6JAvyP27k5jQYPaqfUEULi94nLo1blElJ9O7DWdS3AN4I75VpnHQmjOBb37v4hIms9cswdoo
- Hj9mAtFZULR3xvit5tnogDmyV+XJmNA6J0JKjgum1vMyfoBp2VzP2CXZ0U/0HNZb3+hOYui+7Kc
- mZJkzAyja8QN1BEW/xaq1Mc1GkDqy1qPQjRl4LD4SnD3FEXcD+6DHekcNwAOX/R9ypfYAiVPcyy
- sV8cvcEWYurC8BJb1LEXd3tCEWPgCaVDpYx/qfLF824v1K2CqspFHnNkHLMazGjNH7Laaa7P+aF
- /YcCotYwoBECyxZpMfFxzWfw2FddEyyzkLidgk82ApL12fdH9gvTqGugW+LFtUprQKhZ6Snaar7
- rWgXeLhARzFW0B/sNKVr4fHQpLa6ntBQByS+3oIb4C31mJMi5Seu0E7RPiOReLSWDAUkc+M/guC
- dZpLz3fqFj84NbWg2bYkBsHmKA/cIenDiogJsFfnPYOCp8+GQnRweM8YsJ8S6LSRziNAIqD7rca
- FDgvd0FbrnIIBb/idFzImFsRGiIbS/juo2E/DJogiMHPtcNu4kcF1Ed31rBSyQqlRBRl4Hnlcad
- UwdOHwvmVmAkBCQ==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250327143623.62180058@kernel.org>
 
-A new binary is now generated by the MPTCP selftests: mptcp_diag.
+On 03/27, Jakub Kicinski wrote:
+> On Thu, 27 Mar 2025 14:09:07 -0700 Stanislav Fomichev wrote:
+> > On 03/27, Jakub Kicinski wrote:
+> > > On Thu, 27 Mar 2025 06:56:49 -0700 Stanislav Fomichev wrote:  
+> > > > +EXPORT_SYMBOL(netif_disable_lro);  
+> > > 
+> > > Actually EXPORT_IPV6_MOD() would do here, no?
+> > > We only need this export for V6?  
+> > 
+> > This patch is touching v4 net/ipv4/devinet.c, so both :-(
+> 
+> IPv4 can't be a module tho, we're talking about an export..
 
-Like the other binaries from this directory, there is no need to track
-this in Git, it should then be ignored.
-
-Fixes: 00f5e338cf7e ("selftests: mptcp: Add a tool to get specific msk_info")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- tools/testing/selftests/net/mptcp/.gitignore | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tools/testing/selftests/net/mptcp/.gitignore b/tools/testing/selftests/net/mptcp/.gitignore
-index 49daae73c41e6f86c6f0e47aa42426e5ad5c17e6..833279fb34e2dd74a27f16c26e44108029dd45e1 100644
---- a/tools/testing/selftests/net/mptcp/.gitignore
-+++ b/tools/testing/selftests/net/mptcp/.gitignore
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0-only
- mptcp_connect
-+mptcp_diag
- mptcp_inq
- mptcp_sockopt
- pm_nl_ctl
-
--- 
-2.48.1
-
+Ah, that's true!
