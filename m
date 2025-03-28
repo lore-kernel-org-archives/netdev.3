@@ -1,105 +1,103 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DD435958;
-	Fri, 28 Mar 2025 15:01:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1A835958
+	for <netdev@vger.kernel.org>; Fri, 28 Mar 2025 15:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743174083; cv=none; b=OhM+kMjrrKPIX0KPo4zvrR1UBHNdigsVvrZMEovfQyMhLxhj3j36mCnsPbd8XHqVh8L3iZNZdEBCT9c3hqdB5HvEgJNrESDti4dfke8NRKDIYEZ0kjVP2k8DENO0IdGym2BJcAPplHEim5Rh6Nc6flznRlQpJihmJ2eeVO4MNus=
+	t=1743174111; cv=none; b=dQG1Jh8mnNZrT/L36XfVcFBv6ZlT+8m/djKkfbvHZNs8cjsFBJuSW9DRRIOGza+GNbqRjSK8xHeCiJeMFGDtDUFZOrqdtEEzIsN1DBVbx3YPzEEqe1INd8DILT1hehvDQztWWWIkInIvE74CrMiWZchjinSUrp950EraOSiEXqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743174083; c=relaxed/simple;
-	bh=hWGRwXThMRAfJ9BxeTuCKZ6MOAIRdTzVOV/TwJD5icE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kG4Fd1rYYlA6UA3mGn42x3191WWKCbOjEDxGDhy6nNlulGMiwejFO+IszKZ5tj+Lt4HeMphi8rNS/XJmVvTxAPg2hYSR/PKemNSuyfFbVWnbPy+nqLfVM0nALGEzffynk/dmtB7OfSVl0C3G1zEOxLcBgV5+KYf07+tfBUAuIqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dkrvJNDt; arc=none smtp.client-ip=209.85.219.177
+	s=arc-20240116; t=1743174111; c=relaxed/simple;
+	bh=6LKiKcVaYJQcF3hBEEl/K+3a87jpgWux956OslFPr+0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cA8iPuk84/Ns7fzkPxSiwWxThIl2+JmAhIVyMBYZZam+UjFnOsjANZ2nA606lkZILyOTFO5M90hpvgZTeT417e7VIoFlapKyEQGQThnmXFx7TcrBFuekOBXek9TjIFsTlTwlQLUiMJ5rEj97ym+sbuiWUCVOtqSobDbhzJN2tow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bBFg1Ylc; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dkrvJNDt"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e589c258663so2099703276.1;
-        Fri, 28 Mar 2025 08:01:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bBFg1Ylc"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-226185948ffso47936935ad.0
+        for <netdev@vger.kernel.org>; Fri, 28 Mar 2025 08:01:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743174080; x=1743778880; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=70FUO1eVEV2+pR2LC9bPddI1as7LzjN+Yu6E72iZ2MY=;
-        b=dkrvJNDtbNLDp0rj0IrLx5Ls0paftrjqWuMg+Mq5q5deWaPe/uUDbkjCoX/xlT5Hf8
-         mbGZ1JMyJudOTcZl62PBDtnWcDn087YIIfe1/7e9PgT05czw6fa4T/sJ17HkZy1+hj5+
-         4VLWecvsQgQDRjVWMf1KNPXy9yFPXt6Rcl7BMcQXECDWM7ad7tozpmJTyAIonfWfLOnZ
-         eYMhn3KQJWPsHCTImYdVKxRZFaK7WXHLJ3GOv2DJEackXQPLj2YoqB2XRf1M+bMLeGth
-         P2dVrQSY+U8g5K5hKUVHnHyo+OzAIz0RDOWLrhFTxTq8m/HIs27K0sRBAClpARyOyIwn
-         h6tA==
+        d=gmail.com; s=20230601; t=1743174109; x=1743778909; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7M7SlhWvI4CjdGxBcSgKiVZs+aaGrYxk/bqnoM2A7Fk=;
+        b=bBFg1YlcXlkw/faoQAxjA7ATFXdNm0fwy987ZkyO/KgbmBDzCR1BhepzFFdENk7Yvy
+         6mGn73z0NdoBA0i1f/8BgNW9Bukx1g0fy9Kad1ij1TtJiuvBEBh1esiggX7nhm0/Q/Xk
+         +SQgsYRGGmhXKdrgtUH22gKN8I/XB6Tsc4Fdm/s/WrzrC7wBLD42FjPSrkLMNNDRhKHo
+         WSIQaDRyvvkiXqdNWU/JXbhhar55MNjUQ8/QXEgf0qnnmoyW0rsMUDn4+XxjMdW/uZuG
+         F3O3akRP5G2EibyJdfPH5ZNmW6E/TFbFUMTyR+fci+ua4m8+3eerr+XJhDsof6+7T+vb
+         tfCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743174080; x=1743778880;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=70FUO1eVEV2+pR2LC9bPddI1as7LzjN+Yu6E72iZ2MY=;
-        b=sQldFd5Lok06Kc6pyZCPk+gJzVSX3OEiC9ftsTj3foRlE7RXl2XWmF2kxRMbeGEwex
-         Cf6x+p2nveONhiyxVmGadMlBDR2lL08hFBnbmQ5qkGT8XqVfLBXEv6XkdWKzhQr3YDX0
-         r3id4YMFbro9sv+vFOIiLFP77rysOU6WhucwXt/8fOURr9HZzqpKfPt10UruKRXx2FbE
-         9epxvhVSVWy1vpY0UFzUO6DD2nRHoK+bZi+enipBtnNKhbh+zmwM0ZwMlwnz8o33FdAf
-         4HU6SDzhFTaTWacAWfJRGInjYdDNEL/I5XhiMyujNt3POkLHI2kjRHkICxqeovjC7l6w
-         k1eQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWntkw62uvWBbW0iEKcpj7oZhfovBGFTC4Bkom5ePHX8YCcQpFgJ++VPeUWlBbLpZfzCOOCY+Mc@vger.kernel.org, AJvYcCXWkV5oRYeHFTGAD4pnMvkGdPv95R6dB2KEatCx7Gk4VBI8IWm7AACU88F8sRzvRNduTohy3fmKRQzoDH0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMJ7iyrJK84tWy7n4qi7wP+95MnHSmm6Xt1AD4/blkWknaO8Bv
-	wYKEiENo9etS4ATOHgxMl+7xepT2Rwda1QdtpI3bm4AREGkkUuHO7OhztTR0+ly6+cpw2K6WqIL
-	OrZEGJE5D3LTxg6hJUcwZw7l9Ud5lMQ0=
-X-Gm-Gg: ASbGnctsF2DbHpQ0r3e0wbrqMuaSOdEFPjrZObMvbIk4PnvS/UunEcgyzHoZh6I36kA
-	2quw0m48YWT0G4tFf4EsJ2GXgEGej/RCdUSvNec43xJY5fmJ8CazFizYfky1QIcYPnEEcfD8uBc
-	k0U9fs5BGhLPIDOrTGOq932q+hpXMXCF8QK0q6/w==
-X-Google-Smtp-Source: AGHT+IGvwA/RTJS+QtL98iMmIp3tAxEYgifYL/wsi3XNR6OUOwcrpua5ZQHMa9+selmzbLu62OeZThXZL8vruS2oqCs=
-X-Received: by 2002:a05:6902:12cf:b0:e64:1002:f3a with SMTP id
- 3f1490d57ef6-e69435b9790mr11253843276.29.1743174080012; Fri, 28 Mar 2025
- 08:01:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1743174109; x=1743778909;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7M7SlhWvI4CjdGxBcSgKiVZs+aaGrYxk/bqnoM2A7Fk=;
+        b=Ul/j5fZ+rDxfDKk5+F4EtQUrHhK4ChXtAnIM9WEEYe71ubXknxuVxawOp81TiD9Dlf
+         2J8nOTYsk3bFrmPozGJo+iPpt+6Kpp7hsN9G0kPwgorolF0NHybDzZtYEaXOFCEzkDNN
+         /JMjMFs/9msF4VuBbTfSl33pHcr2eWt/kL68HfN2IdO13q+7tcf/run3xl2ic6wYrlh8
+         X+20ZL1HtZiXGC/7vWl8PtnnhXtdc1Ptq//SgkX4jLWzBqFuuUMeMowDgXZcSTMPOHdO
+         Vgu3QJ/vNvZUoV9jNfy3Qb6vaRJq7e4yFN0okr14QU6ZO7bbsrakYSH5pa16Jq+EWc+U
+         dpjg==
+X-Forwarded-Encrypted: i=1; AJvYcCWls588CMDaQOa5H4gAXORrmUeYZBwU3/hjpM9YIv6R2O5jcde9WxYtAD/xUvNzSY8mI3Fmk7w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxGT/fNsTRnRauB+wPoYpl9Xq2iPw5Scjxp8vih0+4I7pZzTt8
+	murOjy2HXCl54JKhLhuPC0NR31XX3HoFhm5AGV4rdVJhvgFZF8E=
+X-Gm-Gg: ASbGncsYcLEZZIKEjEj+O7g/G5/oVKsD5BFQ8E3pRtsneVIHlmSVxxQ/Zbf7vdbI2gA
+	YzMYzDeHep3MQW1H4ZJYyruzct6EFC9zKt2nnLhaXAPiwsR0LNQYjl9y2dOQ/c1cPHg248LbHcW
+	5xvzvDXvmp7Fx24WGkF5IAJHBAOB4cemR/r5MoTdeFNtpdK1gqga38X6h7tIEeLv3AD0XaIHgVM
+	7ZTrbKtVVI5ElLjz50o5M5MVzRCFnisdHpu+ciojcAl44EW5iKyu0bK2oXUMjcbBhNdhv2yQbMB
+	Gw+PMwjWXr66ObTuj8jZBORZ5hbp0911w11Sf27nOCBa20f9BZtd0ys=
+X-Google-Smtp-Source: AGHT+IGDhriNgLCTK2+eyJYX8KY0O4/auIkfxsLW8OSOiPDXE5bpWp92NEeVAqOgHq9hHcVSoF1d/Q==
+X-Received: by 2002:a05:6a21:e89:b0:1ee:e655:97ea with SMTP id adf61e73a8af0-1fea2ff70ffmr14082906637.41.1743174108727;
+        Fri, 28 Mar 2025 08:01:48 -0700 (PDT)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-739710dd0f8sm1890690b3a.178.2025.03.28.08.01.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Mar 2025 08:01:47 -0700 (PDT)
+Date: Fri, 28 Mar 2025 08:01:47 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	Cosmin Ratiu <cratiu@nvidia.com>
+Subject: Re: [PATCH net v2 03/11] net: use netif_disable_lro in ipv6_add_dev
+Message-ID: <Z-a523ukeu0uz27l@mini-arch>
+References: <20250327135659.2057487-1-sdf@fomichev.me>
+ <20250327135659.2057487-4-sdf@fomichev.me>
+ <20250327120225.7efd7c42@kernel.org>
+ <Z-W945lsWMmZtisy@mini-arch>
+ <20250327143741.3851f943@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250313093615.8037-1-rsalvaterra@gmail.com> <2710245b-5c2d-4c1f-93ef-937788c3c21b@intel.com>
-In-Reply-To: <2710245b-5c2d-4c1f-93ef-937788c3c21b@intel.com>
-From: Rui Salvaterra <rsalvaterra@gmail.com>
-Date: Fri, 28 Mar 2025 15:01:09 +0000
-X-Gm-Features: AQ5f1Jq0wkfbfqjfCLs6fqF5zSz9oYz4p65HD7XEeRTa9E45Onxu1B4ZkjoHV74
-Message-ID: <CALjTZvZYFEqSGZvSfthsTC5sOkVixAFyPg0Jj7eXZ0tac4QS8w@mail.gmail.com>
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next] igc: enable HW vlan tag
- insertion/stripping by default
-To: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, 
-	edumazet@google.com, kuba@kernel.org, intel-wired-lan@lists.osuosl.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250327143741.3851f943@kernel.org>
 
-Hi again, everyone,
+On 03/27, Jakub Kicinski wrote:
+> On Thu, 27 Mar 2025 14:06:43 -0700 Stanislav Fomichev wrote:
+> > On 03/27, Jakub Kicinski wrote:
+> > > On Thu, 27 Mar 2025 06:56:51 -0700 Stanislav Fomichev wrote:  
+> > > > @@ -3151,11 +3153,12 @@ int addrconf_add_ifaddr(struct net *net, void __user *arg)
+> > > >  	cfg.plen = ireq.ifr6_prefixlen;
+> > > >  
+> > > >  	rtnl_net_lock(net);
+> > > > -	dev = __dev_get_by_index(net, ireq.ifr6_ifindex);
+> > > > +	dev = netdev_get_by_index_lock(net, ireq.ifr6_ifindex);  
+> > > 
+> > > I think you want ops locking here, no?
+> > > netdev_get_by_index_lock() will also lock devs which didn't opt in.  
+> > 
+> > New netdev_get_by_index_lock_ops? I felt like we already have too many
+> > xxxdev_get_by, but agreed that it should be safer, will do!
+> 
+> I think we're holding rtnl_lock here, so we don't need an 
+> "atomic get and lock", we can stick to __dev_get_by_index()
+> and then lock it separately?
 
-Just a quick question: this is scheduled for 6.16, it's too late for
-6.15, correct?
-
-Kind regards,
-Rui Salvaterra
-
-
-On Thu, 27 Mar 2025 at 12:54, Mor Bar-Gabay <morx.bar.gabay@intel.com> wrote:
->
-> On 13/03/2025 11:35, Rui Salvaterra wrote:
-> > This is enabled by default in other Intel drivers I've checked (e1000, e1000e,
-> > iavf, igb and ice). Fixes an out-of-the-box performance issue when running
-> > OpenWrt on typical mini-PCs with igc-supported Ethernet controllers and 802.1Q
-> > VLAN configurations, as ethtool isn't part of the default packages and sane
-> > defaults are expected.
-> >
-> > In my specific case, with an Intel N100-based machine with four I226-V Ethernet
-> > controllers, my upload performance increased from under 30 Mb/s to the expected
-> > ~1 Gb/s.
-> >
-> > Signed-off-by: Rui Salvaterra <rsalvaterra@gmail.com>
-> > Reviewed-by: Simon Horman <horms@kernel.org>
-> > Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-> > Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
-> > ---
-> >   drivers/net/ethernet/intel/igc/igc_main.c | 3 +++
-> >   1 file changed, 3 insertions(+)
-> >
-> Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Sounds good, that should do it, thanks!
