@@ -1,41 +1,69 @@
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749142AE8E;
-	Sat, 29 Mar 2025 18:33:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB681BF58;
+	Sat, 29 Mar 2025 18:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743273224; cv=none; b=CmAX8sbMqVwseTi8IKxFNCDP8Wv4BobGVQIP5iMKRQCBseOxDrJLGWaJL337bfB0L3SvBKwbiRbVAkSQxFTVK41+cgj24JVIzmJSMO67QTGXhFAWLbnEdIfelqCVGMpnd6ZoOxFWuC1g6cSNzua3zSYN/ZbNJnMbCn1N+oHRyw0=
+	t=1743274404; cv=none; b=QLS5XxYRWIymDMr75mVPX6XZV8hmkFY4FDfMf1KLTzyAODzEXEdELZrMzuYaAQfUDmuBSnCm5+acevYbt74bbpV75f9PjA0Pz77sPY2Ls+9GLsnJPUh5hvl2wlPUBy/DQ2RE2pVM4MwHTDO+VYspbRrTBMPk+kfjiou1t/Ru8k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743273224; c=relaxed/simple;
-	bh=N0Bu789B+gdjMhkE5nvBLyPmkVSv0quQvGRlrjO9+28=;
+	s=arc-20240116; t=1743274404; c=relaxed/simple;
+	bh=/unm9wPXKMPXsDJfs4AAPZDeDhmCaqHAxiaM6PnHmjU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XsozICA+AN9R9g+aOQhuxULd79HS3n25N+HofRx6FaIHT42gglKyFOLSphIOZ+bCizWibC3FotAD/gO/EUWJQ3ivpSFi4Vy3+StMQRTF6Fb3EM2CCeDpO/PxbPGBcWdJzusiyoAsE26z1I+YuoDjcR6Ae0I8KkGdI487vZFs8d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id AB1B9300034D8;
-	Sat, 29 Mar 2025 19:23:35 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 9633C11B31C; Sat, 29 Mar 2025 19:23:35 +0100 (CET)
-Date: Sat, 29 Mar 2025 19:23:35 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Moshe Shemesh <moshe@mellanox.com>, Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
-	linux-rdma@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@nvidia.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH net-next v2 09/16] net/mlx5: Handle sync reset now event
-Message-ID: <Z-g6pzpZu_TU0-nA@wunner.de>
-References: <1602050457-21700-1-git-send-email-moshe@mellanox.com>
- <1602050457-21700-10-git-send-email-moshe@mellanox.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=i+f4Pr1G22m4knm2+5MGW7ugPCPPX1Kuceuk9OlpQE6Dd5SQiXecgFFnTNYHN59zuQPVl83Mt7iS/AvPWTueAY9415zFdZDNydjqT8w4gK7vf3aH5mNcG5P9z0ibqcRDwwIbxTnsK/IoN2UzhV3B1QzkkhkyT7GagFxWiJ3+OrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AWJiILj9; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AWJiILj9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743274403; x=1774810403;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/unm9wPXKMPXsDJfs4AAPZDeDhmCaqHAxiaM6PnHmjU=;
+  b=AWJiILj9n50XIRtsT334YSqwvsFxsO7au8BP2M/U1X6y1yyRL1Jeuoru
+   AHBOjt/WzYFR/cDP5lPLmBnmlOmIpAbPDobR/1Az7zGFoUyIuGqdW1kYA
+   i5dHak3mX4xHBj36WV300FQ3GaJ34v/R20UHmaaU7ylhnCcaCe+0iys1B
+   5jzFl9CqZ6NqkKrq3cYwjXc/4zZogZkTc/QBa90kVNg54rx2nv97BcPA6
+   dMdZ2k7YXJQyfV8S3T90QvTxbx2pTne29J5H56IlAt0j6TapE4JtOX5Zq
+   ARK++0QwXU2Td9/Im8K31c+/rkBlL3EC51e0P0/rRk+rf8oP6VJXGEeXw
+   A==;
+X-CSE-ConnectionGUID: 9ZzXevnuTg6C9+JXQGN+Lw==
+X-CSE-MsgGUID: 5i873txqTbulN0zxShTN5w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11388"; a="44498996"
+X-IronPort-AV: E=Sophos;i="6.14,286,1736841600"; 
+   d="scan'208";a="44498996"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2025 11:53:22 -0700
+X-CSE-ConnectionGUID: Cu+QujXWRCCqGMGpip+qMg==
+X-CSE-MsgGUID: dpiqVix1Qq+ihM7rXO0Jmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,286,1736841600"; 
+   d="scan'208";a="148902244"
+Received: from lkp-server02.sh.intel.com (HELO e98e3655d6d2) ([10.239.97.151])
+  by fmviesa002.fm.intel.com with ESMTP; 29 Mar 2025 11:53:18 -0700
+Received: from kbuild by e98e3655d6d2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tybHo-0008Is-1J;
+	Sat, 29 Mar 2025 18:52:32 +0000
+Date: Sun, 30 Mar 2025 02:51:41 +0800
+From: kernel test robot <lkp@intel.com>
+To: Christian Marangi <ansuelsmth@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org
+Subject: Re: [net-next PATCH 1/2] net: phy: Add support for new Aeonsemi PHYs
+Message-ID: <202503300205.g0FCozVG-lkp@intel.com>
+References: <20250323225439.32400-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,86 +72,111 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1602050457-21700-10-git-send-email-moshe@mellanox.com>
+In-Reply-To: <20250323225439.32400-1-ansuelsmth@gmail.com>
 
-The following was applied as commit eabe8e5e88f5 ("net/mlx5: Handle
-sync reset now event").
+Hi Christian,
 
-It does some questionable things (from a PCI perspective), so allow
-me to ask for details:
+kernel test robot noticed the following build warnings:
 
-On Wed, Oct 07, 2020 at 09:00:50AM +0300, Moshe Shemesh wrote:
-> On sync_reset_now event the driver does reload and PCI link toggle to
-> activate firmware upgrade reset. When the firmware sends this event it
-> syncs the event on all PFs, so all PFs will do PCI link toggle at once.
-> To do PCI link toggle, the driver ensures that no other device ID under
-> the same bridge by checking that all the PF functions under the same PCI
-> bridge have same device ID. If no other device it uses PCI bridge link
-> control to turn link down and up.
-[...]
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-> @@ -156,6 +157,120 @@ static void mlx5_sync_reset_request_event(struct work_struct *work)
->  		mlx5_core_warn(dev, "PCI Sync FW Update Reset Ack. Device reset is expected.\n");
->  }
->  
-> +#define MLX5_PCI_LINK_UP_TIMEOUT 2000
-> +
-> +static int mlx5_pci_link_toggle(struct mlx5_core_dev *dev)
-> +{
-> +	struct pci_bus *bridge_bus = dev->pdev->bus;
-> +	struct pci_dev *bridge = bridge_bus->self;
-> +	u16 reg16, dev_id, sdev_id;
-> +	unsigned long timeout;
-> +	struct pci_dev *sdev;
-> +	int cap, err;
-> +	u32 reg32;
-> +
-> +	/* Check that all functions under the pci bridge are PFs of
-> +	 * this device otherwise fail this function.
-> +	 */
-> +	err = pci_read_config_word(dev->pdev, PCI_DEVICE_ID, &dev_id);
-> +	if (err)
-> +		return err;
-> +	list_for_each_entry(sdev, &bridge_bus->devices, bus_list) {
-> +		err = pci_read_config_word(sdev, PCI_DEVICE_ID, &sdev_id);
-> +		if (err)
-> +			return err;
-> +		if (sdev_id != dev_id)
-> +			return -EPERM;
-> +	}
-> +
-> +	cap = pci_find_capability(bridge, PCI_CAP_ID_EXP);
-> +	if (!cap)
-> +		return -EOPNOTSUPP;
-> +
-> +	list_for_each_entry(sdev, &bridge_bus->devices, bus_list) {
-> +		pci_save_state(sdev);
-> +		pci_cfg_access_lock(sdev);
-> +	}
-> +	/* PCI link toggle */
-> +	err = pci_read_config_word(bridge, cap + PCI_EXP_LNKCTL, &reg16);
-> +	if (err)
-> +		return err;
-> +	reg16 |= PCI_EXP_LNKCTL_LD;
-> +	err = pci_write_config_word(bridge, cap + PCI_EXP_LNKCTL, reg16);
-> +	if (err)
-> +		return err;
-> +	msleep(500);
-> +	reg16 &= ~PCI_EXP_LNKCTL_LD;
-> +	err = pci_write_config_word(bridge, cap + PCI_EXP_LNKCTL, reg16);
-> +	if (err)
-> +		return err;
+[auto build test WARNING on net-next/main]
 
-The commit message doesn't state the reason why you're toggling
-the Link Disable bit.
+url:    https://github.com/intel-lab-lkp/linux/commits/Christian-Marangi/dt-bindings-net-Document-support-for-Aeonsemi-PHYs/20250324-065920
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20250323225439.32400-1-ansuelsmth%40gmail.com
+patch subject: [net-next PATCH 1/2] net: phy: Add support for new Aeonsemi PHYs
+config: riscv-randconfig-r072-20250329 (https://download.01.org/0day-ci/archive/20250330/202503300205.g0FCozVG-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
 
-It propagates a Hot Reset down the hierarchy, so perhaps that's
-the reason you're doing this?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503300205.g0FCozVG-lkp@intel.com/
 
-If it is, why didn't you just use one of the existing library calls
-such as pci_reset_bus(bridge)?
+smatch warnings:
+drivers/net/phy/as21xxx.c:744 as21xxx_led_hw_control_get() warn: unsigned 'val' is never less than zero.
+drivers/net/phy/as21xxx.c:775 as21xxx_led_hw_control_set() error: uninitialized symbol 'val'.
+drivers/net/phy/as21xxx.c:802 as21xxx_led_polarity_set() error: uninitialized symbol 'led_active_low'.
 
-Thanks,
+vim +/val +744 drivers/net/phy/as21xxx.c
 
-Lukas
+   733	
+   734	static int as21xxx_led_hw_control_get(struct phy_device *phydev, u8 index,
+   735					      unsigned long *rules)
+   736	{
+   737		u16 val;
+   738		int i;
+   739	
+   740		if (index > AEON_MAX_LDES)
+   741			return -EINVAL;
+   742	
+   743		val = phy_read_mmd(phydev, MDIO_MMD_VEND1, VEND1_LED_REG(index));
+ > 744		if (val < 0)
+   745			return val;
+   746	
+   747		val &= VEND1_LED_REG_A_EVENT;
+   748		for (i = 0; i < ARRAY_SIZE(as21xxx_led_supported_pattern); i++)
+   749			if (val == as21xxx_led_supported_pattern[i].val) {
+   750				*rules = as21xxx_led_supported_pattern[i].pattern;
+   751				return 0;
+   752			}
+   753	
+   754		/* Should be impossible */
+   755		return -EINVAL;
+   756	}
+   757	
+   758	static int as21xxx_led_hw_control_set(struct phy_device *phydev, u8 index,
+   759					      unsigned long rules)
+   760	{
+   761		u16 val;
+   762		int i;
+   763	
+   764		if (index > AEON_MAX_LDES)
+   765			return -EINVAL;
+   766	
+   767		for (i = 0; i < ARRAY_SIZE(as21xxx_led_supported_pattern); i++)
+   768			if (rules == as21xxx_led_supported_pattern[i].pattern) {
+   769				val = as21xxx_led_supported_pattern[i].val;
+   770				break;
+   771			}
+   772	
+   773		return phy_modify_mmd(phydev, MDIO_MMD_VEND1,
+   774				      VEND1_LED_REG(index),
+ > 775				      VEND1_LED_REG_A_EVENT, val);
+   776	}
+   777	
+   778	static int as21xxx_led_polarity_set(struct phy_device *phydev, int index,
+   779					    unsigned long modes)
+   780	{
+   781		bool led_active_low;
+   782		u16 mask, val = 0;
+   783		u32 mode;
+   784	
+   785		if (index > AEON_MAX_LDES)
+   786			return -EINVAL;
+   787	
+   788		for_each_set_bit(mode, &modes, __PHY_LED_MODES_NUM) {
+   789			switch (mode) {
+   790			case PHY_LED_ACTIVE_LOW:
+   791				led_active_low = true;
+   792				break;
+   793			case PHY_LED_ACTIVE_HIGH: /* default mode */
+   794				led_active_low = false;
+   795				break;
+   796			default:
+   797				return -EINVAL;
+   798			}
+   799		}
+   800	
+   801		mask = VEND1_GLB_CPU_CTRL_LED_POLARITY(index);
+ > 802		if (led_active_low)
+   803			val = VEND1_GLB_CPU_CTRL_LED_POLARITY(index);
+   804	
+   805		return phy_modify_mmd(phydev, MDIO_MMD_VEND1,
+   806				      VEND1_GLB_REG_CPU_CTRL,
+   807				      mask, val);
+   808	}
+   809	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
