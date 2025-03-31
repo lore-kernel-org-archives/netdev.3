@@ -1,156 +1,218 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-yb1-f196.google.com (mail-yb1-f196.google.com [209.85.219.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A68218585
-	for <netdev@vger.kernel.org>; Mon, 31 Mar 2025 19:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A830B21507C;
+	Mon, 31 Mar 2025 20:11:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743451006; cv=none; b=Uww07w1+FZmuNAhNJbRqDQTcoPDYNW+xjPnHTCx5U6/ed9v2CmAZsA5TCxTvOrgAuc+JyMV5iIiI9cwJIB/i5pcjMEEqfJSJD6BUiMjsN9zwA5o6sg9Ln8BLMJQHXXtP9TFmLC4XJCTmJYgdrqgIS2Q+77hjyGhmU5Sy23fSCt0=
+	t=1743451915; cv=none; b=Zm1pX6//h0nks5tGkmcrJTf1WCOY+ASFsvlA9bG/mT0OZZQ7Y3YQpe2MeFLolf0a62/VttI9imDKCbmI2Awo81syZRwksb6RJYhp/BAIqR1haQPM6vHjzxDDZnC8ujE+kh3sSTVcu7fBkZrDpkW/QHO6q1Drd1ehJq+8ia9qmZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743451006; c=relaxed/simple;
-	bh=vAxCqO8D+zzqb/qZNB5/FCTsdHivJpMM4FMnnmj32U8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WoOXSXQnVIQQwQXDF3UfsJiLfnXrb3TKtQGqOXOXaKwAzYtx0KDYbCWShELEGwq1RaH5O9rm0mQXt/COQaKVXOXz4SQt4Jwu/vL/+GdT9qEA/VlXL54NQxyNXbdC1LuxNbLECLCZoE3ClXoyDHSvlf1pFOYVkx5lwYAv+VDglnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=wQfNtAoa; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1743451915; c=relaxed/simple;
+	bh=OBzbiRgekCpil9D7mX+5gJrMZSeLnL5vGhu0E44lgKQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hV6X5lDQR93EqO4c9Nl2qpR5+N/6llGAWbtXsBBDwjvXF9ufAW7jqUcmLR2jzKkAI8rD5SSRls9/qikOaBHOgIUS856JQFe6yIHWn/ansCKCG4T4A0gwGuw1HlVWXSI8xxlUPcMp2pe8VY6kLjFbAWGvAP/OD8PAfcE0EzG5bNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IprQjvxa; arc=none smtp.client-ip=209.85.219.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="wQfNtAoa"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-223fd89d036so102402885ad.1
-        for <netdev@vger.kernel.org>; Mon, 31 Mar 2025 12:56:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IprQjvxa"
+Received: by mail-yb1-f196.google.com with SMTP id 3f1490d57ef6-e6cea43bb31so444981276.0;
+        Mon, 31 Mar 2025 13:11:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1743451003; x=1744055803; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AzqSa6qdLoYyh4MHGFR7tGBhWMYj3VcZWbyxOBNFEgk=;
-        b=wQfNtAoaOTDHACeqKolF4hex7jcF2MtR0IXe8aOTrPmPKl+i4PZsYiY5ZiBCyPe0O8
-         biyyGGStZ7YLhpArvX7dAPP2s6Vw4ol4yjVoBLmLMy8ZNBGcSje55I0ZYxJ0ADUBv/CR
-         QZAkPBy2ZrSvZgIjMsRSW5CVFAONkd66D/U5/EKvVsju/36x2IXaD46GraGR+/HS3aKV
-         2glsO1EFZo4uFjS4X41oq5uvivVRGxQ0LXiprr6I+3NwWtGdWMlyG5IyNV2pOOaTczj5
-         ODs6Y+OXVosnLKksBj3XZNceha19Wr12Y8fZWp8XmIOA4IqdIoSw5MVaIiGwPdJlERqz
-         JWvg==
+        d=gmail.com; s=20230601; t=1743451911; x=1744056711; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LR1OgG1N7YtLAYw3VdmcuwXI0YdDXSMCdXCbozGI5l8=;
+        b=IprQjvxat1qAyqLiHmxeaRZyzVXqYEMHMMqw4EnSj8ST4VyX0fXotXr+PfDkWih1x6
+         joQotgVIE/UHQT22gunaLiCVjSC17JElah1LiH7nJtW39Pyqs1crXW1sLrp1mU4TZ4SC
+         JEZBV+R+0OVf0VYZZURkNJJCvDVB7AFNkgMOkwm4gqf7JzBAVwuHQPILkUgp4HMsz/Zw
+         +kPA+gFgPklS4GDqVeJFz97VejRuDtDs6AhlPDDOe01o6S6Old6VpRi55w3WB1WZyikG
+         aaQEICKZACdfP8y4MglHlfM6kHi0liIIcUpUAmhu2yihOsmcAFX+Vx6o/MLOpdSf2Sko
+         65Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743451003; x=1744055803;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AzqSa6qdLoYyh4MHGFR7tGBhWMYj3VcZWbyxOBNFEgk=;
-        b=WEU+OkMPoNSLzyUlEHwoExRsvaq8tJFg6QrPetzKwH8BmBqfGMlo+aGQ/w25+sePg+
-         tcJD8tQWjPy54j0k2BBaSHWaHbE31BRa537rjtgpLJ+lERwbCAfi9j5TXVceV5u0kZ29
-         5Oun22lnD1PJlVkIgD9m0Arg21ZuKUZrFPG7zXK7d7IyHHh08N16laAhopmfoCZQFIt/
-         z53xdG5DoCEqEPQZHyUBtr13RjFizrEKxJVWk23a7/vfJZwCzY1AORLHkkpzuA9VANbQ
-         gRcEPCRpy9TL4GBwYXnLDN8lKil6bxuxvwi+y/gE/BXcsENg6gSdqt2Fi3Z+woGHTA2o
-         J+mQ==
-X-Gm-Message-State: AOJu0YyEf5rAZ3M8B7J3EBHaXF9z6YgaDblLW95iuU2/NxxmAn09o+7n
-	as18OoapLdc0ewTZ+2DqIYYNmeehs+8siLRTeoPtiOe8vlIoTBoRNyA6s5zRioU5xt416NHkCTg
-	=
-X-Gm-Gg: ASbGncv+UZx5Mca65k0QcXvzuS6rAQQnQZtqQ+vv8YkGq3OggB2j507urQewgqZUqi+
-	4wzV1k31yDGLUT3zlvDDkX0xMTWpvymqE+xipcR+v7z6wvd9dEBfgkyiRMPzNtcor2v+neZ01Yz
-	5C/Odb7YWVSKUfPRZjPutuRKToCP1aVtItInmx5Cts8qaGJ504cnyqEW3URYSdOv7XeFylfwbUa
-	5ms1hvAdNvOmd8fnILO/qxYbFj/34CMWXaZV3ucBW6q4AwGLrnOICaPMV+Iu1iKr5RzaDQIhkhk
-	TbIQeH5kMLdrdsIqDYMR7exORG9pJDWx48lJvsls+jok9ScXlSzoCqLbKwMrj6H2zG+7
-X-Google-Smtp-Source: AGHT+IEpEnY4rZKG+/LUO41TSZFdr+jiBWbL1y7GD4aLnGkKhbPHZ+UMnU43ZPvQuWmZC/hfP1zMgw==
-X-Received: by 2002:a05:6a00:3901:b0:736:54c9:df2c with SMTP id d2e1a72fcca58-73980415eafmr12174016b3a.15.1743451002841;
-        Mon, 31 Mar 2025 12:56:42 -0700 (PDT)
-Received: from rogue-one.tail33bf8.ts.net ([179.218.14.134])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73970deee97sm7313082b3a.25.2025.03.31.12.56.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Mar 2025 12:56:42 -0700 (PDT)
-From: Pedro Tammela <pctammela@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: jhs@mojatatu.com,
-	xiyou.wangcong@gmail.com,
-	jiri@resnulli.us,
-	shuah@kernel.org,
-	pctammela@mojatatu.com,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net] selftests: tc-testing: fix nat regex matching
-Date: Mon, 31 Mar 2025 16:56:18 -0300
-Message-ID: <20250331195618.535992-1-pctammela@mojatatu.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1743451911; x=1744056711;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LR1OgG1N7YtLAYw3VdmcuwXI0YdDXSMCdXCbozGI5l8=;
+        b=UOuzQ9be2uQsXKpr2cFtPku2ny6u/tbPlz0JIY5gO8ATCvqN/Td9XiGtvj+2FIHtCV
+         YwEM60J7swQeU0RQd9LHKzRUxIVezYf6W+46SmsnmYtY/AzW2r8+v3bsUc2Jp4JjPO8N
+         slHKxdZnm1fE2W+NoydxbYVqTuyrbxqE6LGucbrVSnn7mUyn2PAaIVPYCcQY+sRv9JpD
+         VJTsnV7kINH4mKbBRnOyKpZ6e6uSSQycG7E+9LZ2At+jtqEQueSeOKVAu2EIpYlxRikM
+         gSjYaT5/kv6moZzFAZ3BaA0/zSqjeIc6NI8k0B59qrPFzl58FuwytEovn9ZB/W79O6cn
+         EGbg==
+X-Forwarded-Encrypted: i=1; AJvYcCUc8BYzrnAvt0D2ccjPKoE4ePXzeQf9E00XKv0vSdR66GhGvs7L6rANt4kAcVa0M+NVoDid9swNQypB6QE=@vger.kernel.org, AJvYcCWHIk+gCrgSfJ291q1J4JxTy07t/P+cq9gn0niJSaCE5FHn/EdXLAElpnxr/m01cMgX9RRMTTP8@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxNQ9oJ7Om4xTOukit7RQU2u5NZQQS0TX8XWkPePOUsRk0+34P
+	HCfF5ydfzphhWvnmzMQlyUCyNNDOXr0muXW3dWixK/tDp6oy302G
+X-Gm-Gg: ASbGncuTjx1dssVVpudKajJ14sZn2fQ7Tjun1QYXVupOCv4eSW5tLsdrDm3uObaSd/6
+	rns6xuw+pEa+YW5yToeA09QMa56ndqgNUnn9ygQ0jerBpefc2+1mb6Oi0qfOCr0biUaMjrCA4mj
+	1u7bjrEMBpcFGZF3k5cPVjkVWvtGbLF23rA+WiiLUn/ZukrEzyz8Wau2QUG1lQRL52qhs5s7/JD
+	QkqXmVhWsyX26kKKmFd4aofyYRT5fyOrkFHzW0gyKGpRvsI3LqsZamhPPjidsfCo49FYAr+2NNV
+	hxqeb1Vr99nMJ12Ld32JQbwbQ9x8hC9V+u6LNxNIeiJc2DDtEqjm+9CLhi3mwS+5//k=
+X-Google-Smtp-Source: AGHT+IH766RK/hwM7mkPwql2PqHI7sNoGHRERLD30OsqqydvJaXG//mcrrrJ8IvYqM/qPgbCxFEohQ==
+X-Received: by 2002:a05:690c:6f90:b0:6ef:94db:b208 with SMTP id 00721157ae682-702572ffee4mr138081477b3.24.1743451911527;
+        Mon, 31 Mar 2025 13:11:51 -0700 (PDT)
+Received: from [10.102.6.66] ([208.97.243.82])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7023a341a69sm23270557b3.25.2025.03.31.13.11.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Mar 2025 13:11:51 -0700 (PDT)
+Message-ID: <5d93f576-1d27-4d3f-8b37-0b2127260cca@gmail.com>
+Date: Mon, 31 Mar 2025 16:11:50 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch net-next 2/3] net: bridge: mcast: Notify on offload flag
+ change
+To: Nikolay Aleksandrov <razor@blackwall.org>,
+ Joseph Huang <Joseph.Huang@garmin.com>, netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Roopa Prabhu <roopa@nvidia.com>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org, bridge@lists.linux.dev
+References: <20250318224255.143683-1-Joseph.Huang@garmin.com>
+ <20250318224255.143683-3-Joseph.Huang@garmin.com>
+ <d9a8d030-7cac-4f5f-b422-1bae7f08c74f@blackwall.org>
+Content-Language: en-US
+From: Joseph Huang <joseph.huang.2024@gmail.com>
+In-Reply-To: <d9a8d030-7cac-4f5f-b422-1bae7f08c74f@blackwall.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-In iproute 6.14, the nat ip mask logic was fixed to remove a undefined
-behaviour. So now instead of reporting '0.0.0.0/32' on x86 and potentially
-'0.0.0.0/0' in other platforms, it reports '0.0.0.0/0' in all platforms.
+On 3/21/2025 4:47 AM, Nikolay Aleksandrov wrote:
+>> diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
+>> index 68dccc2ff7b1..5b09cfcdf3f3 100644
+>> --- a/net/bridge/br_switchdev.c
+>> +++ b/net/bridge/br_switchdev.c
+>> @@ -504,20 +504,41 @@ static void br_switchdev_mdb_complete(struct net_device *dev, int err, void *pri
+>>   	struct net_bridge_mdb_entry *mp;
+>>   	struct net_bridge_port *port = data->port;
+>>   	struct net_bridge *br = port->br;
+>> +	bool offload_changed = false;
+>> +	bool failed_changed = false;
+>> +	u8 notify;
+>>   
+>>   	spin_lock_bh(&br->multicast_lock);
+>>   	mp = br_mdb_ip_get(br, &data->ip);
+>>   	if (!mp)
+>>   		goto out;
+>> +
+>> +	notify = br->multicast_ctx.multicast_mdb_notify_on_flag_change;
+> 
+> let's not waste cycles if there was an error and notify == 0, please keep the original
+> code path and avoid walking over the group ports.
 
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
----
- .../selftests/tc-testing/tc-tests/actions/nat.json | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+But we do want to keep the error flag so that the error shows up in 
+'bridge mdb show', right? Notify should only affect the real-time 
+notifications, and not the error status itself.
 
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/actions/nat.json b/tools/testing/selftests/tc-testing/tc-tests/actions/nat.json
-index ee2792998c89..4f21aeb8a3fb 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/actions/nat.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/actions/nat.json
-@@ -305,7 +305,7 @@
-         "cmdUnderTest": "$TC actions add action nat ingress default 10.10.10.1 index 12",
-         "expExitCode": "0",
-         "verifyCmd": "$TC actions get action nat index 12",
--        "matchPattern": "action order [0-9]+:  nat ingress 0.0.0.0/32 10.10.10.1 pass.*index 12 ref",
-+        "matchPattern": "action order [0-9]+:  nat ingress 0.0.0.0/0 10.10.10.1 pass.*index 12 ref",
-         "matchCount": "1",
-         "teardown": [
-             "$TC actions flush action nat"
-@@ -332,7 +332,7 @@
-         "cmdUnderTest": "$TC actions add action nat ingress any 10.10.10.1 index 12",
-         "expExitCode": "0",
-         "verifyCmd": "$TC actions get action nat index 12",
--        "matchPattern": "action order [0-9]+:  nat ingress 0.0.0.0/32 10.10.10.1 pass.*index 12 ref",
-+        "matchPattern": "action order [0-9]+:  nat ingress 0.0.0.0/0 10.10.10.1 pass.*index 12 ref",
-         "matchCount": "1",
-         "teardown": [
-             "$TC actions flush action nat"
-@@ -359,7 +359,7 @@
-         "cmdUnderTest": "$TC actions add action nat ingress all 10.10.10.1 index 12",
-         "expExitCode": "0",
-         "verifyCmd": "$TC actions get action nat index 12",
--        "matchPattern": "action order [0-9]+:  nat ingress 0.0.0.0/32 10.10.10.1 pass.*index 12 ref",
-+        "matchPattern": "action order [0-9]+:  nat ingress 0.0.0.0/0 10.10.10.1 pass.*index 12 ref",
-         "matchCount": "1",
-         "teardown": [
-             "$TC actions flush action nat"
-@@ -548,7 +548,7 @@
-         "cmdUnderTest": "$TC actions add action nat egress default 20.20.20.1 pipe index 10",
-         "expExitCode": "0",
-         "verifyCmd": "$TC actions get action nat index 10",
--        "matchPattern": "action order [0-9]+:  nat egress 0.0.0.0/32 20.20.20.1 pipe.*index 10 ref",
-+        "matchPattern": "action order [0-9]+:  nat egress 0.0.0.0/0 20.20.20.1 pipe.*index 10 ref",
-         "matchCount": "1",
-         "teardown": [
-             "$TC actions flush action nat"
-@@ -575,7 +575,7 @@
-         "cmdUnderTest": "$TC actions add action nat egress any 20.20.20.1 pipe index 10",
-         "expExitCode": "0",
-         "verifyCmd": "$TC actions get action nat index 10",
--        "matchPattern": "action order [0-9]+:  nat egress 0.0.0.0/32 20.20.20.1 pipe.*index 10 ref",
-+        "matchPattern": "action order [0-9]+:  nat egress 0.0.0.0/0 20.20.20.1 pipe.*index 10 ref",
-         "matchCount": "1",
-         "teardown": [
-             "$TC actions flush action nat"
-@@ -602,7 +602,7 @@
-         "cmdUnderTest": "$TC actions add action nat egress all 20.20.20.1 pipe index 10",
-         "expExitCode": "0",
-         "verifyCmd": "$TC actions get action nat index 10",
--        "matchPattern": "action order [0-9]+:  nat egress 0.0.0.0/32 20.20.20.1 pipe.*index 10 ref",
-+        "matchPattern": "action order [0-9]+:  nat egress 0.0.0.0/0 20.20.20.1 pipe.*index 10 ref",
-         "matchCount": "1",
-         "teardown": [
-             "$TC actions flush action nat"
-@@ -629,7 +629,7 @@
-         "cmdUnderTest": "$TC actions add action nat egress all 20.20.20.1 pipe index 10 cookie aa1bc2d3eeff112233445566778800a1",
-         "expExitCode": "0",
-         "verifyCmd": "$TC actions get action nat index 10",
--        "matchPattern": "action order [0-9]+:  nat egress 0.0.0.0/32 20.20.20.1 pipe.*index 10 ref.*cookie aa1bc2d3eeff112233445566778800a1",
-+        "matchPattern": "action order [0-9]+:  nat egress 0.0.0.0/0 20.20.20.1 pipe.*index 10 ref.*cookie aa1bc2d3eeff112233445566778800a1",
-         "matchCount": "1",
-         "teardown": [
-             "$TC actions flush action nat"
--- 
-2.43.0
+> 
+>> +
+>>   	for (pp = &mp->ports; (p = mlock_dereference(*pp, br)) != NULL;
+>>   	     pp = &p->next) {
+>>   		if (p->key.port != port)
+>>   			continue;
+>>   
+>> -		if (err)
+>> +		if (err) {
+>> +			if (!(p->flags & MDB_PG_FLAGS_OFFLOAD_FAILED))
+>> +				failed_changed = true;
+>>   			p->flags |= MDB_PG_FLAGS_OFFLOAD_FAILED;
+>> -		else
+>> +		} else {
+>> +			if (!(p->flags & MDB_PG_FLAGS_OFFLOAD))
+>> +				offload_changed = true;
+>>   			p->flags |= MDB_PG_FLAGS_OFFLOAD;
+>> +		}
+>> +
+>> +		if (notify == MDB_NOTIFY_ON_FLAG_CHANGE_DISABLE ||
+>> +		    (!offload_changed && !failed_changed))
+>> +			continue;
+>> +
+>> +		if (notify == MDB_NOTIFY_ON_FLAG_CHANGE_FAIL_ONLY &&
+>> +		    !failed_changed)
+>> +			continue;
+>> +
+>> +		br_mdb_flag_change_notify(br->dev, mp, p);
+> 
+> This looks like a mess.. First you need to manage these flags properly as I wrote in my
+> other reply, they must be mutually exclusive and you can do this in a helper. Also
+> please read the old flags in the beginning, then check what flags changed, make a mask
+> what flags are for notifications (again can come from a helper, it can be generated when
+> the option changes so you don't compute it every time) and decide what to do if any of
+> those flags changed.
+> Note you have to keep proper flags state regardless of the notify option.
+> 
+>>   	}
+>>   out:
+>>   	spin_unlock_bh(&br->multicast_lock);
+> 
 
+How does this look:
+
+--- a/net/bridge/br_switchdev.c
++++ b/net/bridge/br_switchdev.c
+@@ -496,6 +496,21 @@ struct br_switchdev_mdb_complete_info {
+         struct br_ip ip;
+  };
+
++static void br_multicast_set_pg_offload_flags(int err,
++                                             struct 
+net_bridge_port_group *p)
++{
++       p->flags &= ~(MDB_PG_FLAGS_OFFLOAD | MDB_PG_FLAGS_OFFLOAD_FAILED);
++       p->flags |= (err ? MDB_PG_FLAGS_OFFLOAD_FAILED : 
+MDB_PG_FLAGS_OFFLOAD);
++}
++
++static bool br_multicast_should_notify(struct net_bridge *br,
++                                      u8 old_flags, u8 new_flags)
++{
++       return (br_boolopt_get(br, 
+BR_BOOLOPT_FAILED_OFFLOAD_NOTIFICATION) &&
++               ((old_flags & MDB_PG_FLAGS_OFFLOAD_FAILED) !=
++               (new_flags & MDB_PG_FLAGS_OFFLOAD_FAILED)));
++}
++
+  static void br_switchdev_mdb_complete(struct net_device *dev, int err, 
+void *priv)
+  {
+         struct br_switchdev_mdb_complete_info *data = priv;
+@@ -504,23 +519,25 @@ static void br_switchdev_mdb_complete(struct 
+net_device *dev, int err, void *pri
+         struct net_bridge_mdb_entry *mp;
+         struct net_bridge_port *port = data->port;
+         struct net_bridge *br = port->br;
+-
+-       if (err)
+-               goto err;
++       u8 old_flags;
+
+         spin_lock_bh(&br->multicast_lock);
+         mp = br_mdb_ip_get(br, &data->ip);
+         if (!mp)
+                 goto out;
+         for (pp = &mp->ports; (p = mlock_dereference(*pp, br)) != NULL;
+              pp = &p->next) {
+                 if (p->key.port != port)
+                         continue;
+-               p->flags |= MDB_PG_FLAGS_OFFLOAD;
++
++               old_flags = p->flags;
++               br_multicast_set_pg_offload_flags(err, p);
++               if (br_multicast_should_notify(br, old_flags, p->flags))
++                       br_mdb_flag_change_notify(br->dev, mp, p);
+         }
+  out:
+         spin_unlock_bh(&br->multicast_lock);
+-err:
+         kfree(priv);
+  }
+
+Thanks,
+Joseph
