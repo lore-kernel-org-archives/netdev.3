@@ -1,62 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2645C1E32A3
-	for <netdev@vger.kernel.org>; Mon, 31 Mar 2025 12:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CEF21018F;
+	Mon, 31 Mar 2025 12:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743425062; cv=none; b=tKtvJErPAbA3EtTJOBIIaEe0ZRRRMncoRsCXh48MviaVWCkfdHNF8YzOZSTgTeAQwsKGy2YzyuYD/WDtafr1pm4UPy4J5mHAjcBXrQ3HF0qgNq6BjevhawUoRjtnMLs2tGEJw3eVDZiTbnIC7/COizwzCgxNmIxODowAPMmUKY4=
+	t=1743425397; cv=none; b=PDn293XhyPzfgyAGRVhkw7BT2UcBq/3CUcuOhCTu2iHSXjTAyXWg3Ozo3UL7CYJ/PzNoyTuHWSCuerUgroxFb40c47QFHlA/JtZemU1uwOY/9bWlM+bLFGIyymSc9sKnEXahktWKTFbdoLLA7HeoE3eIRti25ruVVeJQC7SfSCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743425062; c=relaxed/simple;
-	bh=aWKuAcjkPK09JdPcFjyNkwxjOob7bYo2Ezmy79mpceI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s7cD2vlkiVtl30QPag0u6Tcojui9lHqFvCCnXOnjUYSK3vMMtdwd4YptM6G85y8SUHTNBqPMPV0oproq4wtTRmIMtGMFjnG5mwpAwzhNKeO6VUqKkPR0B3euGjiYnwYjdU/cnr4EO5hsxnC4n6FWxHZWjqo4gEx7k4eaZdz+GTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z0hm7OUA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743425397; c=relaxed/simple;
+	bh=/3b13lnPo/VYYO5b8/DZBpSBqhUe8AUyzzqrPS115y4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=dW1RljuyHjK0VAKw1EN/Ohcmbi9kGzM9duQqU285qlxj6TjNusRHkdLkMUivSgesRilmNf8CpEKfo878B+ROxXGS/Hopbi0l5D5s8EgnUgrBRfg7cJFwFzUBYeqJ0jaRBQZQIIoq3S7SK9wlrnMFqVTaRHeMogHYNCUwXxUQtrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RDVvCj5/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z0hm7OUA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B21C4CEE3;
-	Mon, 31 Mar 2025 12:44:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDVvCj5/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 932D3C4CEE3;
+	Mon, 31 Mar 2025 12:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743425061;
-	bh=aWKuAcjkPK09JdPcFjyNkwxjOob7bYo2Ezmy79mpceI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z0hm7OUAeDeIi8eEDtMPNIFr4ScWb2ZLf96Xcnjx850/pzOaY/AzdTHxPf/PI27bt
-	 DU0pB9+1hUrQJ9O/UijUkzOLAphq1P6aV2KpATW1VW8MchkacV3rurMJdnOvIStNCn
-	 Gh6yv/vvm5HeA8nJDyhQ0+ZFIvuSTGDsH67g3kpCPXpm5nXmz/fJXxKRHJJgFUa0Va
-	 1fB9O4JJINqI8hDVEpcu0jYzs6Hkte7gIc3CUFAEg3CotrGQ1lJP9FlD/vP3lnfeb3
-	 ZviGP1xwWrujPubASZ045KYuguYYWVFI9uO8AHUMBEKOAvEhhOW+1WKiMyphFOp8YS
-	 1QaZOFalabIFg==
-Date: Mon, 31 Mar 2025 13:44:17 +0100
-From: Simon Horman <horms@kernel.org>
-To: Taehee Yoo <ap420073@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-	edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
-	jdamato@fastly.com, sdf@fomichev.me, almasrymina@google.com,
-	xuanzhuo@linux.alibaba.com
-Subject: Re: [PATCH net] net: fix use-after-free in the
- netdev_nl_sock_priv_destroy()
-Message-ID: <20250331124417.GB185681@horms.kernel.org>
-References: <20250328062237.3746875-1-ap420073@gmail.com>
+	s=k20201202; t=1743425396;
+	bh=/3b13lnPo/VYYO5b8/DZBpSBqhUe8AUyzzqrPS115y4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=RDVvCj5/xkXv1t1Ca4h1QZRQILbJUXwrVvcO23QaHASjf8gIwRJlc3etiQ5PhjKmZ
+	 o5up2sndbFopyAA73otGTA7LPrN8lcwa4Wzj2xlyrAk4pmSepuD4CItmPJCoVl9zh7
+	 3uvy1D5eG3WvxI9NePoW97NelfDkECWRXzI/hLwfzQTnUkvtCG6KV8kGeJOREcsR56
+	 EF5kzhaD0NXtANtazcIvyoMAxn9VuHroFMHbdSfBjQ4J5axIlQx7+rFopdvQpqTgSq
+	 hkUi9hOZ6GEHrBRKRRLIVjSw8NzDkwUOuKZHSFB2GLMGMab4M9H3UrU1cJZTl452eo
+	 4wLnXQaiLaGtQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70C98380AA7A;
+	Mon, 31 Mar 2025 12:50:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250328062237.3746875-1-ap420073@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [v4,net] net: phy: broadcom: Correct BCM5221 PHY model detection
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174342543327.4138497.3469603996591738687.git-patchwork-notify@kernel.org>
+Date: Mon, 31 Mar 2025 12:50:33 +0000
+References: <20250327062942.3597402-1-JJLIU0@nuvoton.com>
+In-Reply-To: <20250327062942.3597402-1-JJLIU0@nuvoton.com>
+To: Jim Liu <jim.t90615@gmail.com>
+Cc: JJLIU0@nuvoton.com, florian.fainelli@broadcom.com, andrew@lunn.ch,
+ hkallweit1@gmail.com, kuba@kernel.org, linux@armlinux.org.uk,
+ edumazet@google.com, pabeni@redhat.com, netdev@vger.kernel.org,
+ giulio.benetti+tekvox@benettiengineering.com,
+ bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org,
+ michal.swiatkowski@linux.intel.com
 
-On Fri, Mar 28, 2025 at 06:22:37AM +0000, Taehee Yoo wrote:
-> In the netdev_nl_sock_priv_destroy(), an instance lock is acquired
-> before calling net_devmem_unbind_dmabuf(), then releasing an instance
-> lock(netdev_unlock(binding->dev)).
-> However, a binding is freed in the net_devmem_unbind_dmabuf().
-> So using a binding after net_devmem_unbind_dmabuf() occurs UAF.
-> To fix this UAF, it needs to use temporary variable.
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
+
+On Thu, 27 Mar 2025 14:29:42 +0800 you wrote:
+> Correct detect condition is applied to the entire 5221 family of PHYs.
 > 
-> Fixes: ba6f418fbf64 ("net: bubble up taking netdev instance lock to callers of net_devmem_unbind_dmabuf()")
-> Signed-off-by: Taehee Yoo <ap420073@gmail.com>
+> Fixes: 3abbd0699b67 ("net: phy: broadcom: add support for BCM5221 phy")
+> Signed-off-by: Jim Liu <jim.t90615@gmail.com>
+> Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+> ---
+> v4:
+>    modify detect condition
+> 
+> [...]
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Here is the summary with links:
+  - [v4,net] net: phy: broadcom: Correct BCM5221 PHY model detection
+    https://git.kernel.org/netdev/net/c/4f1eaabb4b66
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
