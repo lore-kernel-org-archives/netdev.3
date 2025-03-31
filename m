@@ -1,143 +1,102 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24881D5147
-	for <netdev@vger.kernel.org>; Mon, 31 Mar 2025 08:07:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538771CEEB2;
+	Mon, 31 Mar 2025 08:12:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743408462; cv=none; b=lburgDlYCmhP6RRCp0SHufU2vFiyNNdlYN9qwwgVTflSKdNygd3xltszEjktRP0GyjwLpbYrT6RX2Fq9Horr5iGkcz1y4YcKYetZ2WG7IjsIY40wyES6lrBJcyJINEueBLvNF5i3J0dc60oy5GiH1GMamo5goXlECxs4giD1GY0=
+	t=1743408730; cv=none; b=TkdQShL/hteOE9J7o9lMQiVshYCPpFOgNEkhqwd2F1D+g7PcWCcBjzH5b+/QK9NPcJv+jgn+yxXjvnpx/saLgyphcbD0x0eTrF1k05M7MAs+iN72Zix6dKV81m16Khy4HkkW64ch/TRxMvkX48oRobi5gXgj+v2p69GOwL7A6eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743408462; c=relaxed/simple;
-	bh=tK0Nf+/j4sX/azCF0BZOjpnoPy7MtYBQTn/ET7rMTmQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=W+kHtyX0LhMMD/ai5igAajlwwej34NGelF3Ajen16Td6keXGi9opvbJxnKafo3j9VjKwn6MzVDJJCQWQauqwDsfD7w4YZ66ZdHydWQXnZezSU5P3LShS0Ls7Eb0d/ltiIw6hlEPdm1OqBsSSTEXUnj1I4uCSZK3s0Q40POtcKgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZiHfU8zC; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1743408730; c=relaxed/simple;
+	bh=8wvK2lZFm0fGGFDsuIRwI/95qNiqyB3uLA5ZiOSh614=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F0Oqkv/aidvl2fCEvHQubEebqgno5+2dq2/diCRU2jMrLSvuEzEvaqvGKnAfzYXS7KmUdzkIxfYlqtfJdIFloUC/jHNhpHrR7pcao7IIe+yxCiYYz2g2lHCKCScyJ055yq6hmPKdRQiBKnwukDMk5RxMdGwxWOmCjgpYIB95/Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MgC+uJyn; arc=none smtp.client-ip=217.70.178.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZiHfU8zC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743408459;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MgC+uJyn"
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+	by mslow3.mail.gandi.net (Postfix) with ESMTP id 7E237585AC5;
+	Mon, 31 Mar 2025 07:35:40 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C55F44434E;
+	Mon, 31 Mar 2025 07:35:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1743406532;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GeMg7uSOXE8clYR81AEgLtw/7BbQwXhU7PExYJZ2pRw=;
-	b=ZiHfU8zC+N+JZkSscdpCLRZhcpzACQEGxibMQ/CTseuWFanY9WzzkGlf4jlQmqdsc0XPkz
-	J85wVkLuB6UiwLYTuDH7ieWA303aO427tzEsa7F6/gb8xpLytm/z5ZS4wZWP3aBUdHUJHe
-	VOuhGSP7YriYcdi8buhFAfX7bqAWkFA=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-604-IrnzHWSCO8W47ckzfU1qLw-1; Mon, 31 Mar 2025 04:07:36 -0400
-X-MC-Unique: IrnzHWSCO8W47ckzfU1qLw-1
-X-Mimecast-MFC-AGG-ID: IrnzHWSCO8W47ckzfU1qLw_1743408455
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3912d5f6689so2481839f8f.1
-        for <netdev@vger.kernel.org>; Mon, 31 Mar 2025 01:07:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743408455; x=1744013255;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GeMg7uSOXE8clYR81AEgLtw/7BbQwXhU7PExYJZ2pRw=;
-        b=vFig83/9bV3P9uQiOe0vdjKhVlOOExUvi51TIsR/Uv2Slr/kxJmSJNMJhA7j1rCGND
-         jM/fR3voUYQLOnvelouvxt4rqDwH6zyOQVnQ81RC/4s1FKm823B9riiQekM8KJ06mCsY
-         1xxu6a/8o43UfUMaIWi9pysHEkBLNJTl+lw8Qa14jT/tOhva7ZhFemdJM1GBbVLYv3wG
-         MtekUPJmTgR271qg5YdV6S0H6lqT2U4+3EtaEJcZf60X/v5M/8speQVJjIpKLE8a7njB
-         Z6pg7YqdxYoBweaxhSNucllTH0mYEITj4g+WsXddpYXPE/UjvUMajeE5iqwqGNWcv1kE
-         2ABQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWAWFWoh5ojeXriFdlXnqWrN6qNpL/f73GT6rC9bJc7ehEY6EudfQvrom1JQHuLbaT25gZVwKo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAWfXQolmjvWAcoskU4XZVr8qkVFeVls7oR/43f8ujt7NG+qig
-	sP9EJlnaL2wO0vf+9RbxG+2qD9se3+O578zuyQxy5hElrJbBmjb2LFpeWUAYXrTUSvBub3IPYkx
-	4v67yrPiC6umB0OSuBUwYN9GWcQ+24iVitsoe40hqydGhBtcoxyz6JA==
-X-Gm-Gg: ASbGncvoycJXH/M8wLsxZ384akB2JsfiKnadCi2j48gAgYZVg4JdvXSRv9KnPnIu+8Y
-	R+xvGTpwO0XfjmCxf7lmqvVuSNMR1GXFHChpFTGgDmp7/wqcQvnJT/S9sCCQsqSs3rs8OUyx1r1
-	hGUvDWVMs+npNE/hhS+LCVm7nfdUWqAAk0v2Vaw+DijbL9lygBhFR+yi951R4+TZco/hDLTJ0jp
-	dVdjBiGoLwv/NMtHQhVPqhq8EonPqkl8ToWAgwy0pp4bMgwuatmxeKyoSYkr+EAp3VoYMFdTPkS
-	HMpE0ZlU/SkKfHQXX8Yabtf1jofFSxsF+LKL4fplMrWghg==
-X-Received: by 2002:a05:6000:381:b0:39c:1ef5:ff8b with SMTP id ffacd0b85a97d-39c1ef5ffa2mr697668f8f.48.1743408454739;
-        Mon, 31 Mar 2025 01:07:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGjfkooZdZCSF/EGrMLJ2JOyUMzq7CJPT42yrIBpk7KVfpc9QrFJRgYND6PboReL52CFj3zJg==
-X-Received: by 2002:a05:6000:381:b0:39c:1ef5:ff8b with SMTP id ffacd0b85a97d-39c1ef5ffa2mr697638f8f.48.1743408454366;
-        Mon, 31 Mar 2025 01:07:34 -0700 (PDT)
-Received: from [192.168.88.253] (146-241-68-231.dyn.eolo.it. [146.241.68.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d84632ffcsm154028585e9.31.2025.03.31.01.07.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Mar 2025 01:07:33 -0700 (PDT)
-Message-ID: <647c3886-72fd-4e49-bdd0-4512f0319e8c@redhat.com>
-Date: Mon, 31 Mar 2025 10:07:32 +0200
+	bh=nK/rPYXUAHUT4uoXiMNPICT+GOUkYGU1OH2yZB0mR28=;
+	b=MgC+uJyn3gloX9rqiUq/9KMmzLSHt5FrcP4zp3geP+4DnaZD9eWbb0CcC3FHYfb9jSQ8FS
+	PJ/mo4bdz+tgTZezU/8SctkK7UAwd62JFn3++0iMedgvPzWAYJsW6u7G0hYBUeRUHTFXeB
+	dsq0S51OS+l1gAfLvppXBBKfjpOWROwT5rlyIwCc/MCFwTJppIfRdYMHv04xSUqA7t3SQ5
+	0goR2J1wItC6ATei8eEYlpj4EBte1XooEndWOaWrinANRI3duC1SgrsFrETq8FcnZcTY41
+	NW3YekLIWq1ErrTeD/mvV5qjZQBv3prWEt7Qk5xZT0j59rV+/CehWQ5yGfahmQ==
+Date: Mon, 31 Mar 2025 09:35:27 +0200
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Alexander Duyck <alexander.duyck@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, davem@davemloft.net, Jakub Kicinski
+ <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>, Heiner Kallweit
+ <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+ linux-arm-kernel@lists.infradead.org, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, =?UTF-8?B?S8O2cnk=?= Maincent
+ <kory.maincent@bootlin.com>, Oleksij Rempel <o.rempel@pengutronix.de>,
+ Simon Horman <horms@kernel.org>, Romain Gantois
+ <romain.gantois@bootlin.com>
+Subject: Re: [PATCH net-next v5 09/13] net: phylink: Use phy_caps_lookup for
+ fixed-link configuration
+Message-ID: <20250331093527.0267fc53@fedora.home>
+In-Reply-To: <CAKgT0UcZRi1Eg2PbBnx0pDG_pCSV8tfELinNoJ-WH4g3CJOh2A@mail.gmail.com>
+References: <20250307173611.129125-1-maxime.chevallier@bootlin.com>
+	<20250307173611.129125-10-maxime.chevallier@bootlin.com>
+	<8d3a9c9bb76b1c6bc27d2bd01f4831b2cac83f7f.camel@gmail.com>
+	<20250328090621.2d0b3665@fedora-2.home>
+	<CAKgT0Ue_JzmJAPKBhe6XaMkDCy+YNNg5_5VvzOR6CCbqcaQg3Q@mail.gmail.com>
+	<12e3b86d-27aa-420b-8676-97b603abb760@lunn.ch>
+	<CAKgT0UcZRi1Eg2PbBnx0pDG_pCSV8tfELinNoJ-WH4g3CJOh2A@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: new splat
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- bpf <bpf@vger.kernel.org>, Network Development <netdev@vger.kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Justin Iurman <justin.iurman@uliege.be>
-References: <CAADnVQJFWn3dBFJtY+ci6oN1pDFL=TzCmNbRgey7MdYxt_AP2g@mail.gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <CAADnVQJFWn3dBFJtY+ci6oN1pDFL=TzCmNbRgey7MdYxt_AP2g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddujeelfeefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeevledtvdevueehhfevhfelhfekveeftdfgiedufeffieeltddtgfefuefhueeknecukfhppedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjedphhgvlhhopehfvgguohhrrgdrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddtpdhrtghpthhtoheprghlvgigrghnuggvrhdrughuhigtkhesghhmrghilhdrtghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtp
+ dhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhm
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-Adding Justin.
+On Fri, 28 Mar 2025 16:26:04 -0700
+Alexander Duyck <alexander.duyck@gmail.com> wrote:
 
-On 3/31/25 1:28 AM, Alexei Starovoitov wrote:
-> After bpf fast forward we see this new failure:
+
+> The general idea I had in mind for upstreaming the support for fbnic
+> was to initially bring it up as a fixed-link setup using
+> PHY_INTERFACE_MODE_INTERNAL as that is essentially what we have now
+> and I can get rid of the extraneous 40G stuff that we aren't using.
+> Then we pivot into enabling additional PHY interface modes and
+> QSFP+/28 support in the kernel. Then I would add a mailbox based i2c
+> and gpio to enable SFP/QSPF on fbnic. After that we could switch fbnic
+> back to the inband setup with support for the higher speed interfaces.
 > 
-> [  138.359852] BUG: using __this_cpu_read() in preemptible [00000000]
-> code: test_progs/9368
-> [  138.362686] caller is lwtunnel_xmit+0x1c/0x2e0
-> [  138.364363] CPU: 9 UID: 0 PID: 9368 Comm: test_progs Tainted: G
->       O        6.14.0-10767-g8be3a12f9f26 #1092 PREEMPT
-> [  138.364366] Tainted: [O]=OOT_MODULE
-> [  138.364366] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-> BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-> [  138.364368] Call Trace:
-> [  138.364370]  <TASK>
-> [  138.364375]  dump_stack_lvl+0x80/0x90
-> [  138.364381]  check_preemption_disabled+0xc6/0xe0
-> [  138.364385]  lwtunnel_xmit+0x1c/0x2e0
-> [  138.364387]  ip_finish_output2+0x2f9/0x850
-> [  138.364391]  ? __ip_finish_output+0xa0/0x320
-> [  138.364394]  ip_send_skb+0x3f/0x90
-> [  138.364397]  udp_send_skb+0x1a6/0x3d0
-> [  138.364402]  udp_sendmsg+0x87b/0x1000
-> [  138.364404]  ? ip_frag_init+0x60/0x60
-> [  138.364406]  ? reacquire_held_locks+0xcd/0x1f0
-> [  138.364414]  ? copy_process+0x2ae0/0x2fa0
-> [  138.364418]  ? inet_autobind+0x41/0x60
-> [  138.364420]  ? __local_bh_enable_ip+0x79/0xe0
-> [  138.364422]  ? inet_autobind+0x41/0x60
-> [  138.364424]  ? inet_send_prepare+0xe7/0x1e0
-> [  138.364428]  __sock_sendmsg+0x38/0x70
-> [  138.364432]  ____sys_sendmsg+0x1c9/0x200
-> [  138.364437]  ___sys_sendmsg+0x73/0xa0
-> [  138.364444]  ? __fget_files+0xb9/0x180
-> [  138.364447]  ? lock_release+0x131/0x280
-> [  138.364450]  ? __fget_files+0xc3/0x180
-> [  138.364453]  __sys_sendmsg+0x5a/0xa0
+> One option I would be open to is to have me take on addressing the
+> issue in net-next instead of net since I would need to sort it out to
+> enable my patches anyway.
 
-Possibly a decoded stack trace could help.
+If that's OK for you and the proposed patch fixes your problem, I'd
+still like for the patch to get in, as right now fixed links will
+not work at all for >10G links.
 
-I think a possible suspect is:
+Then we can get better linkmodes reporting for your usecase ?
 
-commit 986ffb3a57c5650fb8bf6d59a8f0f07046abfeb6
-Author: Justin Iurman <justin.iurman@uliege.be>
-Date:   Fri Mar 14 13:00:46 2025 +0100
-
-    net: lwtunnel: fix recursion loops
-
-with dev_xmit_recursion() in lwtunnel_xmit() being called in preemptible
-scope.
-
-@Justin, could you please have a look?
-
-Thanks,
-
-Paolo
+Maxime
 
