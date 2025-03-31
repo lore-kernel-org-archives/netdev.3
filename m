@@ -1,102 +1,66 @@
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538771CEEB2;
-	Mon, 31 Mar 2025 08:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCD91D9346;
+	Mon, 31 Mar 2025 08:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743408730; cv=none; b=TkdQShL/hteOE9J7o9lMQiVshYCPpFOgNEkhqwd2F1D+g7PcWCcBjzH5b+/QK9NPcJv+jgn+yxXjvnpx/saLgyphcbD0x0eTrF1k05M7MAs+iN72Zix6dKV81m16Khy4HkkW64ch/TRxMvkX48oRobi5gXgj+v2p69GOwL7A6eQ=
+	t=1743408928; cv=none; b=l7dLpPvwzij4jm5E03ycl5pUn6PI+IqOdpgl5vi15QHIxiZ7zBtQzmNkyTGwmfR8lt5VDXYD8ZNysIqsZFBIvaORsdYbge39v/wEyxVIVHVYLjnD/FUi0Woq1gN9kn+YpkxA9pHita++JIP5EXHRkbPZL4ftIRVHoyZpYiD+iqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743408730; c=relaxed/simple;
-	bh=8wvK2lZFm0fGGFDsuIRwI/95qNiqyB3uLA5ZiOSh614=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F0Oqkv/aidvl2fCEvHQubEebqgno5+2dq2/diCRU2jMrLSvuEzEvaqvGKnAfzYXS7KmUdzkIxfYlqtfJdIFloUC/jHNhpHrR7pcao7IIe+yxCiYYz2g2lHCKCScyJ055yq6hmPKdRQiBKnwukDMk5RxMdGwxWOmCjgpYIB95/Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MgC+uJyn; arc=none smtp.client-ip=217.70.178.249
+	s=arc-20240116; t=1743408928; c=relaxed/simple;
+	bh=xzbSJmbHVYXKp1qf2mYjMMKjNPel1AyBFnmhuaRVVU0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=MGChyhsn3IP/7oWGbItiaRh9GAhbR/GIGQB7v7vy+bo3EMpgDopwy63ir0a1lFO5IyoVA8NidUVMFS/xPvmbBl4cYySpSa0Dde2QljTBgeMof4etrOm5VVcvDLBEss99KgFVeHrDE0wsly7QplJLsrHT6QpleuBxH2T68JLbxq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YWyfjeQn; arc=none smtp.client-ip=217.70.183.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MgC+uJyn"
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id 7E237585AC5;
-	Mon, 31 Mar 2025 07:35:40 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C55F44434E;
-	Mon, 31 Mar 2025 07:35:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YWyfjeQn"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 16BCB2047D;
+	Mon, 31 Mar 2025 08:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1743406532;
+	t=1743408919;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nK/rPYXUAHUT4uoXiMNPICT+GOUkYGU1OH2yZB0mR28=;
-	b=MgC+uJyn3gloX9rqiUq/9KMmzLSHt5FrcP4zp3geP+4DnaZD9eWbb0CcC3FHYfb9jSQ8FS
-	PJ/mo4bdz+tgTZezU/8SctkK7UAwd62JFn3++0iMedgvPzWAYJsW6u7G0hYBUeRUHTFXeB
-	dsq0S51OS+l1gAfLvppXBBKfjpOWROwT5rlyIwCc/MCFwTJppIfRdYMHv04xSUqA7t3SQ5
-	0goR2J1wItC6ATei8eEYlpj4EBte1XooEndWOaWrinANRI3duC1SgrsFrETq8FcnZcTY41
-	NW3YekLIWq1ErrTeD/mvV5qjZQBv3prWEt7Qk5xZT0j59rV+/CehWQ5yGfahmQ==
-Date: Mon, 31 Mar 2025 09:35:27 +0200
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Alexander Duyck <alexander.duyck@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, davem@davemloft.net, Jakub Kicinski
- <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>, Heiner Kallweit
- <hkallweit1@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
- linux-arm-kernel@lists.infradead.org, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
- Florian Fainelli <f.fainelli@gmail.com>, Vladimir Oltean
- <vladimir.oltean@nxp.com>, =?UTF-8?B?S8O2cnk=?= Maincent
- <kory.maincent@bootlin.com>, Oleksij Rempel <o.rempel@pengutronix.de>,
- Simon Horman <horms@kernel.org>, Romain Gantois
- <romain.gantois@bootlin.com>
-Subject: Re: [PATCH net-next v5 09/13] net: phylink: Use phy_caps_lookup for
- fixed-link configuration
-Message-ID: <20250331093527.0267fc53@fedora.home>
-In-Reply-To: <CAKgT0UcZRi1Eg2PbBnx0pDG_pCSV8tfELinNoJ-WH4g3CJOh2A@mail.gmail.com>
-References: <20250307173611.129125-1-maxime.chevallier@bootlin.com>
-	<20250307173611.129125-10-maxime.chevallier@bootlin.com>
-	<8d3a9c9bb76b1c6bc27d2bd01f4831b2cac83f7f.camel@gmail.com>
-	<20250328090621.2d0b3665@fedora-2.home>
-	<CAKgT0Ue_JzmJAPKBhe6XaMkDCy+YNNg5_5VvzOR6CCbqcaQg3Q@mail.gmail.com>
-	<12e3b86d-27aa-420b-8676-97b603abb760@lunn.ch>
-	<CAKgT0UcZRi1Eg2PbBnx0pDG_pCSV8tfELinNoJ-WH4g3CJOh2A@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	bh=xzbSJmbHVYXKp1qf2mYjMMKjNPel1AyBFnmhuaRVVU0=;
+	b=YWyfjeQnegVXG+txds2vC2URQ2KLVLenBDymSpEYGduB/CfYHUzsXhUFEa5JUlOh0Qi5Iw
+	XExwAoAV8kpeKKCRUqRv8Ge4l+p4CTdW50v3tNDA6hovGjiyFcu5PdcErpvIv+BK+Vabv1
+	97T+ige/o7SLOT+gl9TB7wlSIjLUMWGviVpLlGE7qTZnCiuHroBWlqQepHWU9F5zSp7Up3
+	GKcH3N/t8WCfCjfO68PHgbOxtaQnrI9WhLf8YF2hJiU8soizKQvQ3T8ycKcUJPNFViRVr3
+	B5+ete52oh89LiQ6g61hcaQrU/l5olBkNHsoH7Bu89tuZcOrGlJrOs/Z/5+ijg==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Ramon Fontes <ramonreisfontes@gmail.com>
+Cc: davem@davemloft.net,  kuba@kernel.org,  pabeni@redhat.com,
+  linux-wpan@vger.kernel.org,  alex.aring@gmail.com,
+  netdev@vger.kernel.org
+Subject: Re: [PATCH] mac802154_hwsim: define perm_extended_addr initialization
+In-Reply-To: <20250329142010.17389-1-ramonreisfontes@gmail.com> (Ramon
+	Fontes's message of "Sat, 29 Mar 2025 11:20:10 -0300")
+References: <20250329142010.17389-1-ramonreisfontes@gmail.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Mon, 31 Mar 2025 10:15:18 +0200
+Message-ID: <87bjthwr8p.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddujeelfeefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeevledtvdevueehhfevhfelhfekveeftdfgiedufeffieeltddtgfefuefhueeknecukfhppedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjedphhgvlhhopehfvgguohhrrgdrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddtpdhrtghpthhtoheprghlvgigrghnuggvrhdrughuhigtkhesghhmrghilhdrtghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtp
- dhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhm
-X-GND-Sasl: maxime.chevallier@bootlin.com
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddujeelgeduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufgjfhgffffkgggtsehttdertddtredtnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhephfelkedvveffleeuhfeigfdvvefhgfejgffghfeiteegteeiudegfedtjeehkeefnecukfhppeelvddrudekgedruddutddruddvfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeelvddrudekgedruddutddruddvfedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepjedprhgtphhtthhopehrrghmohhnrhgvihhsfhhonhhtvghssehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehlihhnuhigqdifphgrnhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhop
+ egrlhgvgidrrghrihhnghesghhmrghilhdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Fri, 28 Mar 2025 16:26:04 -0700
-Alexander Duyck <alexander.duyck@gmail.com> wrote:
+On 29/03/2025 at 11:20:10 -03, Ramon Fontes <ramonreisfontes@gmail.com> wrote:
 
+> This establishes an initialization method for perm_extended_addr,
+> aligning it with the approach used in mac80211_hwsim.
+>
+> Signed-off-by: Ramon Fontes <ramonreisfontes@gmail.com>
 
-> The general idea I had in mind for upstreaming the support for fbnic
-> was to initially bring it up as a fixed-link setup using
-> PHY_INTERFACE_MODE_INTERNAL as that is essentially what we have now
-> and I can get rid of the extraneous 40G stuff that we aren't using.
-> Then we pivot into enabling additional PHY interface modes and
-> QSFP+/28 support in the kernel. Then I would add a mailbox based i2c
-> and gpio to enable SFP/QSPF on fbnic. After that we could switch fbnic
-> back to the inband setup with support for the higher speed interfaces.
-> 
-> One option I would be open to is to have me take on addressing the
-> issue in net-next instead of net since I would need to sort it out to
-> enable my patches anyway.
+Yeah, that's simpler, thanks Alex.
 
-If that's OK for you and the proposed patch fixes your problem, I'd
-still like for the patch to get in, as right now fixed links will
-not work at all for >10G links.
-
-Then we can get better linkmodes reporting for your usecase ?
-
-Maxime
-
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
