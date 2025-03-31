@@ -1,231 +1,208 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8475214A96;
-	Mon, 31 Mar 2025 16:35:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743438952; cv=fail; b=nBIJriQjXgoDPSunnnVoZL7PLdt3IkQsvpKTKJi67E8oh0K+G8qqTBGMvgSL3D5As7d/l48uqCvjaQ8KKqtpPybfroiOtZuSSrWnTKfaMRfapexdUE6TlyEErwTsSCJTO8a9ufa+IO36QeTMolzcy0nrLnmWXdIYxFqIbyLkDJk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743438952; c=relaxed/simple;
-	bh=eE2EAiFIzTEgWOgo1Hb8EKpGYmi/hGqygNrKHMUP9m8=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=j35RnZ/0h9tAo0uVC0v2OhJ77f2scGU1sIcvy71MeAQkrI1FbzAfIk8ofURJxGdysq8qMnf4oiNO704N78irNvZlLC5Uwkh+f0cdU7BfAkc9HnM2N6+JrZyOu8SXxtG/HBbllidTuQVk9RHR+gdH/JGLIuaBn4wbXj1RBn/W9zo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dphqu1I3; arc=fail smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11B7212FB0;
+	Mon, 31 Mar 2025 16:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743439154; cv=none; b=d7f0bFJUEeimVvOCayRyw3IzxR7YWC8lKbp/s+UHf/SEMGR10Wx///5oFOta+hzmkbeXabYiRhpOsh533zRBi7yv0/51LrnUs+e3J6yVYPIkQFg0yHRTWIisFdABGJzHgIRvwlY/m6r1mZGWyFelyNI5U55SqH9p0VkwIYuntlE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743439154; c=relaxed/simple;
+	bh=Z8d4g9wEquUrOEcli/D/aANZ3jmocVZYpI2mvNFSYRA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XrlzI+SjyPOFHbrBC78+69IMTTGxPKrLcp7ltifl7Ezff57jaxBeYnfoT7k5erzm3IpDWyHO+4TAgU/G+F2al4z6hbEwMANyZOVaxnhTDAJ7RSMbjhsgXwEs1Q5LG8IC+zo0sTJW6T0yFOpntJmYqmCXHLByJOqr0LL+D1Nyil8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=epM8scgQ; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dphqu1I3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743438951; x=1774974951;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=eE2EAiFIzTEgWOgo1Hb8EKpGYmi/hGqygNrKHMUP9m8=;
-  b=Dphqu1I3quK16jfMhX5vw+zf5axh0NjqUnthyEvBjMcqyJ6VQZ7j/GHT
-   /AgP2jjOQ6+c9P7CPDn8ySORFyyIgOkh2oKWWCGk00F62/VN2C8vwaKWW
-   ajsgAkT5t2PVJoHpdxyVehHD1c5V8kpwoL2VNCxeurrfe48sYZ2AOcewY
-   a97ZPhfdj7VMHNefb3J+V0+7HP3Vx3bMZks6AGzeXBm4Z7H4CZJMuHDVE
-   cryxI6Au0bkvQVca48frPrD8V6p6OvecxznuJPkFfe1XVSbAOcaN5V83f
-   YKU+jHsNF/VFqvN2vVBJu44or4t3bzlkugGkz801J9AFWY2Bn4Yr+ksrm
-   A==;
-X-CSE-ConnectionGUID: iy5R5ZMhSYiwbc5nwffzxA==
-X-CSE-MsgGUID: VEAptkhDSNO8ZxdRjRYQIA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="44744875"
-X-IronPort-AV: E=Sophos;i="6.14,291,1736841600"; 
-   d="scan'208";a="44744875"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2025 09:35:50 -0700
-X-CSE-ConnectionGUID: dfPKLSQzQXqssOgO3POtTQ==
-X-CSE-MsgGUID: z4ESekVqTjGUsIy/KOJIog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,291,1736841600"; 
-   d="scan'208";a="127047356"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 31 Mar 2025 09:35:50 -0700
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Mon, 31 Mar 2025 09:35:49 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Mon, 31 Mar 2025 09:35:49 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.171)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Mon, 31 Mar 2025 09:35:48 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I0lZKoAnao+BBTKgPKjSgiUw8etTrq4AWwgsgcYvjH24K4blUtfL+B6xrERR2alN7rUjMn3KsLCQcNlzw4kOrT0OxJsosegKe+yq07ZiAnI4H/DvDLarcIRt+RIQrV1cx1jD3TOFVwctgbfAUZpBhrGfQbHiUf4NH2Y66W0htwkoLJx6blkd/KtE+oG4NoJ/QSNxpMeXwCE3n6WQkA5P5Bk9PgS0DHdsVtAvy1OXkcm0/Liens5z+pxfIWA5tLBZksiGMIEQKoqN/H1pC9izZItRPaiHkkvt+7Odq/YOa28viUpQearGlOs/yXLsrU0hnGfBlwzDRgGR3228p8Vupg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uD2vEFiT69eJ5Nj6kYCqrRQZjVVMRxZH8/RboJdT3uo=;
- b=x/DR8OrUZLazEpqcYUsNwi9pAjgCaMLMr7mvm+CiprROZD+HkJvHKeSH9jqFU+bFzHS4y0ogQuLmzCxnS1fDtpsrNwKS36LgGQW4RUePs9ikzE+KF0ocr9dy5/400GlijL1e6Xr3IkYMYK2mc+3g+2ah0NrPYp2OgfdwPf7lkdsatGdCMn51wS8yPGTXf+TC8O+EighgfB0/RhFZg4AM0aimlUh5TuQalOZk1f8PhKsS/b11aAFsdFElzBZ6LselFSGlkpi2wYkgImTYLlGaNGtAhjRS8zonsBNK+l4F8EpWkS876R4qivR3apFx0cgaYdK/l52wb5B3BfrALhEVyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
- by SN7PR11MB7091.namprd11.prod.outlook.com (2603:10b6:806:29a::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Mon, 31 Mar
- 2025 16:35:43 +0000
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::4b3b:9dbe:f68c:d808]) by DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::4b3b:9dbe:f68c:d808%5]) with mapi id 15.20.8534.048; Mon, 31 Mar 2025
- 16:35:43 +0000
-Message-ID: <aaf31c50-9b57-40b7-bbd7-e19171370563@intel.com>
-Date: Mon, 31 Mar 2025 18:35:37 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 2/2] page_pool: Track DMA-mapped pages and
- unmap them when destroying the pool
-To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-CC: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, "Andrew
- Lunn" <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	"Simon Horman" <horms@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-	"Mina Almasry" <almasrymina@google.com>, Yonglong Liu
-	<liuyonglong@huawei.com>, Yunsheng Lin <linyunsheng@huawei.com>, Pavel
- Begunkov <asml.silence@gmail.com>, Matthew Wilcox <willy@infradead.org>,
-	<netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <linux-mm@kvack.org>, Qiuling Ren
-	<qren@redhat.com>, Yuying Ma <yuma@redhat.com>
-References: <20250328-page-pool-track-dma-v5-0-55002af683ad@redhat.com>
- <20250328-page-pool-track-dma-v5-2-55002af683ad@redhat.com>
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-Content-Language: en-US
-In-Reply-To: <20250328-page-pool-track-dma-v5-2-55002af683ad@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: DUZPR01CA0119.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4bc::19) To DS0PR11MB8718.namprd11.prod.outlook.com
- (2603:10b6:8:1b9::20)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="epM8scgQ"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43cfecdd8b2so37112595e9.2;
+        Mon, 31 Mar 2025 09:39:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743439151; x=1744043951; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z8d4g9wEquUrOEcli/D/aANZ3jmocVZYpI2mvNFSYRA=;
+        b=epM8scgQmmLkOdNUxSTX/j2O9GeYjo1zReheYU2tLtieFX0jmytKD4FBBOvEhOMHyy
+         jhkka8vHTRjETFuJB+3F+u06E30cUPhkDnmjDLG7qdrQCfJQ1t2xO0fd0IZeAmPvCZIC
+         D4pBesJIoD0i0uuRv2F0TfjBWMjw5U9uQ0kFEAbKmRL6sRPflGs8fXYl3+zka2lQBeAV
+         jXReMlQDtcBhJzXgVhh9qgHZE2Qa/iqejrHxotX9qj8E/rWpaWEKN/YHnULms1el1AVq
+         XjLbyO6M2T5fWQRL4QGECN6vb1qdjXsIuzFmxwiKUPPvc56Q0FgZpbEj9ws8SdfVb1H2
+         1pxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743439151; x=1744043951;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z8d4g9wEquUrOEcli/D/aANZ3jmocVZYpI2mvNFSYRA=;
+        b=Tke1GEcYhVas7RsinNNyr+yBg6QpemcQYmowWrDWXACf/haeFuH1be7FAJq3RuZjz+
+         eZ7ch66CHj5YcH0fnkSl1RvRPAt77ga4mvo3XU3YSsbu28/GJxkwVxMOcIUV5upxyWWH
+         3u2exA4G5T2M8GquZx3qbRrZM7IJsitpwNsMTqumxJixZtcAfZ2yh6DCL2nW1gTW41rx
+         SvbpgZm7i2qnetvIQlzkCmFNqiNs41KpPe3Wf2l8sN7sYF+8DO1MnNCfwSsOUEfqinky
+         MaxQ9qmDi6eMXDGK/jF0DHN4frroJA3HNr9NOcQGvbUxGUQ26owOGrptc2zLZcmz4lmC
+         jj+g==
+X-Forwarded-Encrypted: i=1; AJvYcCXqlNw33K0d9tJKYk1mPeK3U4+qY/x/JGIfMcjl+OfwwNoHTgGmT1mB1CiUuIczgNBfmDuJFLkU@vger.kernel.org, AJvYcCXwOj3hdFxPMuS4NWX67EBmsS9IdZfyj/jNNcEIbKc4rmOImKL88SPwqq58eUQ+pYMLTAAi4KeI1gIygIo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPd+F08/77rHXM2qDmqRRsLQWemOymgnCYXwxKSoGQZm5JHDpX
+	kVItjNsbhdMQQ4clzTeY6vGKRFC7RMQPLxWuU0wLU4CGau2B1YuiWiqqZYE9VevouPiJIuF/dIq
+	PK3+LbUU5YnKfDoRYcdICIk5xvRI=
+X-Gm-Gg: ASbGncusJdipuwxYJ4oUshOGuCpzVIG4z4vQK7m2DiImDJqqzWj/WgrwEqYnFzNHYqN
+	6z5Kt0Ef9vXnHEmlA0ViMlN0tFuQPD5WmxyBYVv9RE1O/CCkze4VIP5yt3PJO8jux0O8SVeOIBa
+	uy/GrDRss6U+qz6kFBTTooexbrSJqLA0ldIAVDItJ8D/oQ6X6c5L1HVoj6nWw=
+X-Google-Smtp-Source: AGHT+IHZzXLpgViYZ4N1izMamI668R2BU8hGvXjTj9xo36k3cDMT/lFyo33eVfGT780WUYBHXlsgJZJWvr5rEwj0YiM=
+X-Received: by 2002:a05:600c:5489:b0:43c:fda5:41e9 with SMTP id
+ 5b1f17b1804b1-43dbc419540mr92229645e9.31.1743439150876; Mon, 31 Mar 2025
+ 09:39:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|SN7PR11MB7091:EE_
-X-MS-Office365-Filtering-Correlation-Id: d8ae434c-b576-4422-9474-08dd707214c8
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?c09LNS9yYmw4MlozdDdDOTQzU3ZZMHNmQzFwYVdmK0d1ZjRUWjB2SG1kRW5W?=
- =?utf-8?B?QmpGd0J1YklXL0c3bkhVNElkWWwvRWpGWDQ2NkIrUXNIZFJnOTNRT3pxL0NG?=
- =?utf-8?B?RVU5cnJ0NW93UzVPckViTUE4ME9yejJ5Y0NJZzVuZmx2NW52NFlsMldNWEJk?=
- =?utf-8?B?SlFNMzJJNGNBWHJZNERQdUJpejFyNjZaSUVydkhOWWhEMkhyakxwUDRUNXdD?=
- =?utf-8?B?ZlZzWTJuSnY4U3oxYjlWRG1NQmxqMy9IUlBrWU1OdytmanpKeWlBYko2cXhU?=
- =?utf-8?B?Qk02T1pPSEt4d2t3dlpMM2V1elJMd0dQUzF4clkzNVdOUEw5cWJMVGNLN3JJ?=
- =?utf-8?B?d0EzTXJSelprS0ZyM0N5MlVFVTVsZkFDWEVvZTRXSmQzUjNYS1pSS3d1RlhG?=
- =?utf-8?B?SU5yK0lWREFsK1REaWx2bk1oNkFCOWs3WVpROWxtY3NPREJJaVpVT2Z0bTBt?=
- =?utf-8?B?YkVISnhoZUFxM2hxaDNkVjZPQnZhYzh2UVhQTytFOFlKdktGQWhPZC90ZFpo?=
- =?utf-8?B?N05IbHNHMUNmc3NMdHo2VnJPdVMyNzQ2bjNnVldqOUhtZUJlRThLSGkxUzZE?=
- =?utf-8?B?a2FFbVNIV1B0by8vdEFPamF2SUtOZHd0VGVZWEluQi9DWDBsMjBlYmZ0TU1q?=
- =?utf-8?B?aHFvNDB0Y1lzeUYrSFkxbUJqdVgxQnZ1eUh2WitGNjRaNmdzcFE4SXdUUHIr?=
- =?utf-8?B?UDU3VW5hYTBjOHVRcnJaNmVmbTdpSGNtTVY0MzVLZkNxd1k3ZUx2VmdMSXpY?=
- =?utf-8?B?amo5dnRTd0dtM1pqRFMwRkNZdjh2U1dZRXphL1ZTT2F6RUErd1VhZ3R2dUdI?=
- =?utf-8?B?TTBtZU9JVVNhSmNJZ2ZrN0VYeGxiSmpPaVdCLytTTUV2cGZJRm5WajRIcVUx?=
- =?utf-8?B?YmUzVWZudmtOVVBBdDRSR2p5YUwzNFlHNEk1TFVDRkt0UDJreU02T3oyVVln?=
- =?utf-8?B?c3oxaGxqV1B1elhWSGxPbGNBdldnbEhDNnBuanJhU3l6cXovbWd1UUlHSUg1?=
- =?utf-8?B?R0I1Q1ppUnZ0WExLbUQyb2NmazJoVU5hMlhQR1NIcC9GNUZsa0R3elFsVmU4?=
- =?utf-8?B?bHJFQ2lhR28zcmZ1alpPS1h0Q0JQRmY4WWkxS0FPOWFVc1dBdXBkQlRMOFpz?=
- =?utf-8?B?YkkxcVlHNXVsUlNGd2lxa2VyT2I0T2p0cS9WaVFLTThkUkVkRGJvR1RHZnNX?=
- =?utf-8?B?dmtLSERzckU4dE9wK3p5RjBIK0hOeEhhZG5uZ1UwcG9nUHZvNXArbmI4MkJV?=
- =?utf-8?B?a1FmemM2eGtxdjcyTkxvQ0ZIUHhnbXFBbGJ1blhnSTZTWWk1YklrUkZrSENO?=
- =?utf-8?B?TXF6U1ZVRjBLTkFicXhmRGNWZGhWSU1TZk1STWt6OThmUkwwWmlmdjBoZENO?=
- =?utf-8?B?UG4vdEZ0aXVrT0VWWCtoMVRyeVpMZ0pBNGZpQVFRLzRIZ3p6clZqeEFWdTg5?=
- =?utf-8?B?WURIUFQ0TUxDU0IyMTRwR0VOM1FEMWxKMEN2ZzUzVjd2N05uaElMOG1CeTNm?=
- =?utf-8?B?Qk9YSVY0dzVMY3ErTEVEU01MVU10bzJhVklFVk9UZmJBRlVJYTVJY1ZKbUpa?=
- =?utf-8?B?d0UzMG45ZUtac0ozWHdyZXRRdkp6c0Zidm5ZTFNKOXpVSGpXWDhIR2YxNVNT?=
- =?utf-8?B?cjV1b1p0UU4vbFJsOXNsYzhvR1UvVDQ0ci9qQ0s2Tk5oc2poT2pwMk1EMmVq?=
- =?utf-8?B?V3Nzb2pXQzFGMENicnA2THNVZFpDU1REZU5nM0NuUVVvVEZmam1MMmxQOWlV?=
- =?utf-8?B?TVBwTnFxdmowejd1YU54Mkx4Q2x3YXBQTmVlT2M4aW9FNVp5SHEvczUxMm4x?=
- =?utf-8?B?Z3cwdk9Da1BxbjBhYllOWlZsaEhic0d2Q0lhdEEyWG1CWXVXWGRXVERUSGla?=
- =?utf-8?Q?6yX/XjoW03aV+?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?elc3Z0ZUNHFsQ05HUDBGY3llWWd4Z1FJb2dBeFlzd01pN3FjQTdINFp3MENC?=
- =?utf-8?B?akVwekRiSk9DWnBZelYrQVZzTkw4aVR1a0k3UTVzclNzaVZTNk1ibXpBYnFy?=
- =?utf-8?B?bDFKNjdEZzVkbFdxRGRYTGd0R044WTRpRUhNMFg3clJ1MWpqRWhNVWFhNXdo?=
- =?utf-8?B?Z0FtWDRzSjRSLzlNSUFGazI2K2pDUGR0K2toN2pBTVVhTkJOWms5T0I2NjNM?=
- =?utf-8?B?QklwMnk2K0tUbE9RT1BLeXBsSXpIS2lxZ1BteE9VM0NsLzRuelA4cDI5V2hh?=
- =?utf-8?B?TGhhRzI2cXZrSDBVbE52OWloTGh1VnFuS0FJdkwxZnZMcVlyWmNDd0U5T3p4?=
- =?utf-8?B?YUJNaWxKTGkwRW1SOUxxRHI2MDRKYUtDYlovV1BnR0FuODk3VnNFb2JFclJw?=
- =?utf-8?B?MXVOVjZwajhoZm9CdG5EQ3lqZzIxZ2ZNdU1pSkEyZVdtTUdrV0I4VFRGRWxM?=
- =?utf-8?B?N0FleUQ3M0YyQTlIUXZiaDN2ZjV0MVc1cy83R2ZlcUdwQnc2ajVLdm5pc1ZI?=
- =?utf-8?B?WXdOK0NrSVBEQm1oNlU2cEFYSmxBcVNGbTBpYXZqbWN3VTZWYWswWDdTY1dG?=
- =?utf-8?B?Z2dXcDVnQ3BnU3owNHdxaW1WMFp4MS8wOXlYcTZWZEpIMTZ3cmhWYlZzcE5F?=
- =?utf-8?B?SzhQTTlyR3hMVUdMN0NXSFBXNGdXODZWazlCWmVaSGZDdlc4VTEzVUNWNlFw?=
- =?utf-8?B?VnRzWXYwbGxCLzBTa3A4UDk0WjdSQWNFb2NmYXVrRTZGUEYrM2w4QzEzMzh1?=
- =?utf-8?B?ei9oTUdvdVR3bFRCWk1RODRLTEF1cUtJeEdJVGNkYWpxZ0d0RDN3WEdnQ3lj?=
- =?utf-8?B?MnZTMWVrN1c2all3MWJVOC85Wmt5N2VSZlJKaUpBVDJIOUxneVhBQVFOT21L?=
- =?utf-8?B?cWVYdDJWem5HY3VnTVFocjhIcUdpQkprVTI1OU1rNElxSUVhOHpGdXdOMm5a?=
- =?utf-8?B?RDlDcjdPc0VZQWlLMU1zY2kvNFNpd0c1NjF6ektxNlBNY2xvNmwzekhGQ1pQ?=
- =?utf-8?B?aXJtZVZ0NzZ4N1lRbVRxQ3ZMS3I1Nnc3VkFtSVRwNjF1WWw3dFViU2E4M2to?=
- =?utf-8?B?Qmw3V2RFWGJkTUFvQlhsMUtQR0VrREorQkNhSTZhZEl3Mmp2TnRaczNPTHhh?=
- =?utf-8?B?NHpzTlpyTVB0T0dreWpxZ2pMdFpzMGtnWlRUWFNVNHJiM0M3dktpZWloTk5M?=
- =?utf-8?B?ZGhFY09UWE9iTnZ1RlZUQ09XUU01aXJYUjRkWHdkbG9UY2pjNm1pazk2YXdw?=
- =?utf-8?B?MFdzaTlFS1RPZTFUZnFnZGNFbTdmOVhxQTdLYjQ2TFdhaUk1YUN6T0ZOZEo5?=
- =?utf-8?B?S3pZVnJva0VqanRjdHEwTmx3Rlo3d3BMVjFzcms5czlnT1dFV05IU3Rkek9s?=
- =?utf-8?B?cXJUZ1NPSURoMk13Tmd6Y2QyU2Rjd2RmelUxRW44bDhtajVmTUxLTkp4VEFX?=
- =?utf-8?B?OGZQVVQraDVRTXpoMHVQaFk0Yk9DQ3VPcEF0TmJxMk9ObGpmQVFnK09jRVZ3?=
- =?utf-8?B?RmhtNEdhNGN2d2QvK2pnM0JyL0xrTC9INitESlNzR24weFF2UEc3WFNQeFQx?=
- =?utf-8?B?YldtSXJCaFEzeFpMU05nNk15c01xY2puR1Rxc1lXODFJdEtueEp2c0gwYjV6?=
- =?utf-8?B?VzNyeVpoWG9scHpJV0NxQWlRdFhKR2Z3bkk2L253Vmoyckg4SHBJbUJiZmR2?=
- =?utf-8?B?eWkwbUNyZlRJa3ozcFpRSU4ydnBqQ0FJOHRNSXZUcXlPOFdBazNNZUpob01V?=
- =?utf-8?B?cll4RmFZYUhGOUdYMHllejZtb2tWeDQ4b2huY3NJaHZTY1FXR1ZjSEFxRmYy?=
- =?utf-8?B?aEtUdVpuSmxLSnFlZVVlZ01jL1FVNVE0dUlhR1pmM1Q1U0VkY1B2eFliZC9S?=
- =?utf-8?B?U0syOXA3Q0pjMHNPSFViTm40SEhpSVlaUk95emd6dE1XYzVYVUdPSG5HajBS?=
- =?utf-8?B?T2k0ellRdUdmVlNQSkRRZ0h4My9jRW5PQS9MamxvaTlOck8vd2cyanBtM0hU?=
- =?utf-8?B?Y1FkaEhHSjVsdHlzTlFCK2dmZXFvNTRFTHE5V3Y0SnQzMWdGYW9RZ1hqeERl?=
- =?utf-8?B?MVFsYlV6R3JkSmhid3VsYUFPMmVMaGpveG02aFRiOUd5ZUxaYXJxaUZyYnRC?=
- =?utf-8?B?dEhzbUxsMEdQMGZta1lMQmJuMkpKVGJNZmthTFVkdzFmRCtEclNCZkR4bHRO?=
- =?utf-8?B?Rmc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8ae434c-b576-4422-9474-08dd707214c8
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2025 16:35:43.7409
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mr6+NXJDaRXh97d1oMdnFyjae0wX1571zqE8ptOBNAAmfYMDuCYUyNi45AhYpluPzcx4T+22EkJaz7XjK5UfLmuSdbaqdTMRZKGsHvDv0hk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7091
-X-OriginatorOrg: intel.com
+References: <20250307173611.129125-1-maxime.chevallier@bootlin.com>
+ <20250307173611.129125-10-maxime.chevallier@bootlin.com> <8d3a9c9bb76b1c6bc27d2bd01f4831b2cac83f7f.camel@gmail.com>
+ <20250328090621.2d0b3665@fedora-2.home> <CAKgT0Ue_JzmJAPKBhe6XaMkDCy+YNNg5_5VvzOR6CCbqcaQg3Q@mail.gmail.com>
+ <12e3b86d-27aa-420b-8676-97b603abb760@lunn.ch> <CAKgT0UcZRi1Eg2PbBnx0pDG_pCSV8tfELinNoJ-WH4g3CJOh2A@mail.gmail.com>
+ <02c401a4-d255-4f1b-beaf-51a43cc087c5@lunn.ch> <Z-qsnN4umaz0QrG0@shell.armlinux.org.uk>
+ <20250331182000.0d94902a@fedora.home>
+In-Reply-To: <20250331182000.0d94902a@fedora.home>
+From: Alexander Duyck <alexander.duyck@gmail.com>
+Date: Mon, 31 Mar 2025 09:38:34 -0700
+X-Gm-Features: AQ5f1Jo4H2kJVBl3bUTBM3aQvZN8Nc6GirQhFLcIGY7KsXCNVmJ2NznhupG4LQQ
+Message-ID: <CAKgT0UdJHkGRh5S4hHg0V=Abd7UizH49F+V2QJJQxguHvCYhMg@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 09/13] net: phylink: Use phy_caps_lookup for
+ fixed-link configuration
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, davem@davemloft.net, 
+	Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>, 
+	Florian Fainelli <f.fainelli@gmail.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, 
+	=?UTF-8?Q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>, 
+	Oleksij Rempel <o.rempel@pengutronix.de>, Simon Horman <horms@kernel.org>, 
+	Romain Gantois <romain.gantois@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
-Date: Fri, 28 Mar 2025 13:19:09 +0100
+On Mon, Mar 31, 2025 at 9:20=E2=80=AFAM Maxime Chevallier
+<maxime.chevallier@bootlin.com> wrote:
+>
+> On Mon, 31 Mar 2025 15:54:20 +0100
+> "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+>
+> > On Mon, Mar 31, 2025 at 04:17:02PM +0200, Andrew Lunn wrote:
+> > > On Fri, Mar 28, 2025 at 04:26:04PM -0700, Alexander Duyck wrote:
+> > > > A serdes PHY is part of it, but not a traditional twisted pair PHY =
+as
+> > > > we are talking about 25R, 50R(50GAUI & LAUI), and 100P interfaces. =
+I
+> > > > agree it is a different beast, but are we saying that the fixed-lin=
+k
+> > > > is supposed to be a twisted pair PHY only?
+> > >
+> > > With phylink, the PCS enumerates its capabilities, the PHY enumerates
+> > > its capabilities, and the MAC enumerates it capabilities. phylink the=
+n
+> > > finds the subset which all support.
+> > >
+> > > As i said, historically, fixed_link was used in place of a PHY, since
+> > > it emulated a PHY. phylinks implementation of fixed_link is however
+> > > different. Can it be used in place of both a PCS and a PHY? I don't
+> > > know.
+> >
+> > In fixed-link mode, phylink will use a PCS if the MAC driver says there
+> > is one, but it will not look for a PHY.
 
-> When enabling DMA mapping in page_pool, pages are kept DMA mapped until
-> they are released from the pool, to avoid the overhead of re-mapping the
-> pages every time they are used. This causes resource leaks and/or
-> crashes when there are pages still outstanding while the device is torn
-> down, because page_pool will attempt an unmap through a non-existent DMA
-> device on the subsequent page return.
+Admittedly the documentation does reference much lower speeds as being
+the use case. I was a bit of an eager beaver and started assembling
+things without really reading the directions. I just kind of assumed
+what I could or couldn't get away with within the interface.
 
-[...]
+> > > You are pushing the envelope here, and maybe we need to take a step
+> > > back and consider what is a fixed link, how does it fit into the MAC,
+> > > PCS, PHY model of enumeration? Maybe fixed link should only represent
+> > > the PHY and we need a second sort of fixed_link object to represent
+> > > the PCS? I don't know?
+> >
+> > As I previously wrote today in response to an earlier email, the
+> > link modes that phylink used were the first-match from the old
+> > settings[] array in phylib which is now gone. This would only ever
+> > return _one_ link mode, which invariably was a baseT link mode for
+> > the slower speeds.
+> >
+> > Maxime's first approach at adapting this to his new system was to
+> > set every single link mode that corresponded with the speed. I
+> > objected to that, because it quickly gets rediculous when we end
+> > up with lots of link modes being indicated for e.g. 10, 100M, 1G
+> > but the emulated PHY for these speeds only indicates baseT. That's
+> > just back-compatibility but... in principle changing the link modes
+> > that are reported to userspace for a fixed link is something we
+> > should not be doing - we don't know if userspace tooling has come
+> > to rely on that.
+> >
+> > Yes, it's a bit weird to be reporting 1000baseT for a 1000BASE-X
+> > interface mode, but that's what we've always done in the past and
+> > phylink was coded to maintain that (following the principle that
+> > we shouldn't do gratuitous changes to the information exposed to
+> > userspace.)
+> >
+> > Maxime's replacement approach is to just expose baseT, which
+> > means that for the speeds which do not have a baseT mode, we go
+> > from supporting it but with a weird link mode (mostly baseCR*)
+> > based on first-match in the settings[] table, to not supporting the
+> > speed.
+>
+> I very wrongfully considered that there was no >10G fixed-link users, I
+> plan to fix that with something like the proposed patch in the
+> discussion, that reports all linkmodes for speeds above 10G (looks less
+> like a randomly selected mode, you can kind-of see what's going on as
+> you get all the linkmodes) but is a change in what we expose to
+> userspace.
 
-> @@ -173,10 +212,10 @@ struct page_pool {
->  	int cpuid;
->  	u32 pages_state_hold_cnt;
->  
-> -	bool has_init_callback:1;	/* slow::init_callback is set */
-> +	bool dma_sync;			/* Perform DMA sync for device */
+I am not sure if there are any >10G users. I haven't landed anything
+in the kernel yet and like I said what I was doing was more of a hack
+to enable backwards compatibility on older kernels w/ the correct
+supported and advertised modes. If I have to patch one kernel to make
+it work for me that would be manageable.
 
-Have you seen my comment under v3 (sorry but I missed that there was v4
-already)? Can't we just test the bit atomically?
+One thing I was thinking about that it looks like this code might
+prevent would be reinterpreting the meaning of duplex. Currently we
+only have 3 values for it 0 (half), 1 (Full), and ~0 (Unknown). One
+thought I had is that once we are over 1G we don't really care about
+that anymore as everything is Full duplex and instead care about
+lanes. As it turns out the duplex values currently used would work
+well to be extended out to lanes. Essentially 0 would still be half, 1
+would be 1 lane full duplex, 2-8 could be the number of full duplex
+lanes the interface is using, and unknown lane count would still be ~0
+since it is unlikely we will end up with anything other than a power
+of 2 number of lanes anyway. With that you could greatly sort out a
+number of modes in your setup. We would then have to do some cleanups
+here and there to do something like "duplex =3D=3D DUPLEX_UNKNOWN ? duplex
+: !!duplex" to clean up any cases where the legacy values are
+expected.
 
->  	bool dma_map:1;			/* Perform DMA mapping */
-> -	bool dma_sync:1;		/* Perform DMA sync for device */
->  	bool dma_sync_for_cpu:1;	/* Perform DMA sync for cpu */
-> +	bool has_init_callback:1;	/* slow::init_callback is set */
+Likewise if you were to look at adding the port type that might allow
+for further division and cleanup. With that someone could specify the
+speed, duplex, and port type and they would be able to pretty
+precisely pick out a specific fixed mode.
+
+> Or maybe simpler, I could extend the list of compat fixed-link linkmodes
+> to all speeds with the previous arbitrary values that Russell listed in
+> the other mail (that way, no user-visible changes :) )
+>
+> I was hoping Alexander could give option 1 a try, but let me know if
+> you think we should instead adopt option 2, which is probably the safer
+> on.
+
+I can try to get to it, but I have a number of meetings today so I may
+not be able to get to it until tomorrow morning.
+
+Also I suspect this may have an impact outside of just the fixed link
+setup. I will have to try some other spots to see if I see anything
+odd pop up as I suspect that I will have issues with 50R2/50R running
+over top of each other after these changes.
 
 Thanks,
-Olek
+
+- Alex
