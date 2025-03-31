@@ -1,140 +1,138 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CFD1BEF77;
-	Mon, 31 Mar 2025 11:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962241C5D7D
+	for <netdev@vger.kernel.org>; Mon, 31 Mar 2025 11:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743421543; cv=none; b=WJryaOHO9Y8f+2iParmhcDAtkDJRh8tKSnOTy+CQdY71K1bamsjTdMe7/Hp78q1EDii1dSURxWlsyB+uy2BaLWQzzSO3Dj4b2UxEHTeddISP0v5UwTLEiQ3n5rEVKROIt85Vxux6vD+5IFA5R4yCjN/wmm1Bgx06Inc+NgIFLsM=
+	t=1743421661; cv=none; b=jMlkLsgNkCnax+v6eH3ZKst6kw0N6ZB3GlTnQg+w4c1RYb2Aw0+qIiQVGAcmJtMdyB3zWw/dedKoYE7Yge9TBynARVsj/M+bBDYzj/fvB5serkhDf01yXL7cdSuddadP/J82SJ6ffxKRLd3fsfWglJx99C8DFCht3GdcECfuPng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743421543; c=relaxed/simple;
-	bh=YjNj7isjZpaoY8aE2SSd4iBQGLVI1ommFerJ/LMFluU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QM4Rbp4CCESu1bgkXf8YMv0itzVJwpUGxf5+eelJD24v4cfYJhpGgWSZ36a/Em1g5V/UrmsFIrRDZmlh/lYPZDvzFHjFqLykNAR11/ADOi6p8p4a8Y1UOEG9UuxRFec54/4JXTg9CMzd+9aYUwjXL0OgPyuhWUlSoz2j2LGbwuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+	s=arc-20240116; t=1743421661; c=relaxed/simple;
+	bh=50/sugDP3rqvTsu/rsB4NNiI6YaQxq7IY+lqc7wetr8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YTkuhJDw4ih9Hi7daCyDCtEXtgi3OS2lsJk5+1tRlLWwsR8GdwQMN2ryjIlUGrsktuNFdm+K+G+6ukoTBROrOYy1XJMjlqDON86zqZP7580je5CmyoioOSqGo8/XhhdbdvrUWWO2sg0iiS4oRJRxeH5pHTpfNLoCsMcS1Ecgmyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YLl7euxS; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-abbb12bea54so885859766b.0;
-        Mon, 31 Mar 2025 04:45:41 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YLl7euxS"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2239c066347so96256835ad.2
+        for <netdev@vger.kernel.org>; Mon, 31 Mar 2025 04:47:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743421659; x=1744026459; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ot4ljXVdHLU7FPl6qC+yZNIZwtv0vKcDvGytdVqXOIM=;
+        b=YLl7euxSMopdjPtURLvSgIDafa6a14mJj45Y+y+5clVo7NDa0CNaHuLqu/JA28Pnm5
+         qpMVGGVFQ+JJFv7RDZM9rs3mHDGt5MMhKa33RgK8uEU3jZNptK3GF7EPJPmdxhxs6b4f
+         TszqVJNNkuM3j80pJ5D4tQHGmvyrXlRQPTJGjb7g8Kj8Us9InnLDARUABRtjzxhA82wH
+         JtOYJeI9vNMSETt02qs73AcWWiBj9/BJbn0ZYpdIUA/dmI900TEOlMdgBuckkmgDusRd
+         Jzp1GL/e26R+zyyFJfl6zjW/VXwGsM9H8Bzt/KlGCFnlAvPNkC2w8QNk8U1bVEGqMca8
+         YYaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743421540; x=1744026340;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WHaecyGu9k64BRqziBdIUjaEI9K4+K7PFPpeWvnnAAY=;
-        b=iDbsSm4VsZz8KG59mWFnsApPVSYbryXaOVy1GeWGvScfHB9DaTEvyXBS74tcbHr6Gr
-         1AuCIWSpSgM/neE9VQe8+YzQDQYeqMpBy01/iKPFP6De50Itjwium+t6QcD4z+JvDjro
-         DY/UiBKzxr2yQgrWFkoVE7Rrn1BVqBx6SWLGO2nHbOxNpDngvYn8yI3vlv9q1FQgN427
-         G8y6sk847Qsqgn/byYI2qevLxCyLQymB0pYnck8Bzc+Ppk7DAdkbmViXopGwGOg0U8+z
-         wx12TmY1o54WL0xH60wWYYMvP9ih9vNERoCvKb3TuoH6XYdp/xXTp0/Xg/aTCsX2gLR9
-         TITA==
-X-Forwarded-Encrypted: i=1; AJvYcCU7maDtqbYXbM391mhySrBbp377A2iWHPs4jwXNGYYG/JxPVFvEW7Z9ltwG4AgWi+Z0Sh/o0jEWmKjoRi0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAzEX/vnfbKNwnYxPOGiL6lAu9rD14jc119F1MQwBlciy1/6Xk
-	Am9R4dhC8qTvg2N7MH2JhPfMuIj54H47hFA7cVpFxVv4nqDfYMaq
-X-Gm-Gg: ASbGncuEOJgwIShMGz75t9N1u4RWDPMMDx3iaympnIw/MqnhN5ZDzl6cWlB27559W5H
-	9ALOTdeGLywOU5C0BSCLzNojc03MyKYrueEpr/o2wEB+QExWHlw6GTmUKYEWfQ2vil9EqcwIrUe
-	7PbPSUC3dRZzq6PKyDZDHqkvXLIX6FBJvcN9+ivmGcjoDZaYd3Jjh3+x61vHXMfkygY2YiMDzBT
-	etMZMZz5f02r2kU8BaeZhATv26GMLDqOoxDZv1i3aj4CYqgwKGrPompu4YtXV3nss0u0bO0G2KF
-	QfHmHy7gd+xmXzOGFE4mkaCakIZIuVl0+BLc
-X-Google-Smtp-Source: AGHT+IGBfH/XydCwbmLY8AYbkte/eSWnT9LoOEEI5ZVy6jIgtM7/Z/Y3vkPvuqLZQ9NNC9XMQl/grg==
-X-Received: by 2002:a17:906:7313:b0:ac6:d7d2:3221 with SMTP id a640c23a62f3a-ac738ae929bmr714290066b.24.1743421539939;
-        Mon, 31 Mar 2025 04:45:39 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:73::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac71927b143sm617996766b.58.2025.03.31.04.45.38
+        d=1e100.net; s=20230601; t=1743421659; x=1744026459;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ot4ljXVdHLU7FPl6qC+yZNIZwtv0vKcDvGytdVqXOIM=;
+        b=JrneBBufV5TzeY8ckJFes/ITrxgWcROYEVbblwpc7QsYxLubI+1aEj+Xbsz7VNRJfM
+         SvQBziNVvCA+jOaV/D033IQMsQwRV0FNrgjW19YWDAqUvewy0NpRkHxha7CpxA+DUJyB
+         o2yyj/YBc3ID6Gdh3Jq031TG9iV5RnK6nwanZPh/wwq2SMGPF95WzbLGIvu8ueNyqqQo
+         kTB92v5EZH5X9coMW8dSReW0efgV+uY+ipqadSPYiCgraHLKDR39XBoSOaRX4Uv/NK9A
+         5Dgs5ucduuHTxXytBGDeshJH/zO+8YHCFAg7W+4b6/zdKXKMnReF00jY0/qLsqBujFEc
+         HN3w==
+X-Forwarded-Encrypted: i=1; AJvYcCUv6GthQqtsI5TB+9ZP09S82thddIRSIVW1rDq01utWNkTh3ed6Ej8KH8i2OGoBkJgyRXNwFXs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjtrC7iOFXpC1HtiyzrrR9GQCzC7MKlHxST77UEJEZ5l/EgQwF
+	wE1Ryv7Z+We5+0ruouQTZOMOQdQk5JOeeEllXxengxYUhN6swqd+
+X-Gm-Gg: ASbGncsEi/wBuoCLp3r1LuipVX/v7moCeZC93GDoTDNxwGx/nXBtR3M3EODJAHH1z3O
+	u/pytrgWvLMjo1m3/DkOyhDt3OEJl7EpEzsdC99cLfw7krJgfJaRi2SBD9NsXaDFAbcWb2Lw3aE
+	r3EuGNDpoYkAULndvxl9V51dXeucokL80M2eVuoXBSYnzR5wX6rC5pn6kX6o614wBdw5ONg4+l9
+	ffOkBUZO2m8Yka22F/hrKBVKTwHUvrd4hrWv8ekXELGliaNLhCiAedhRU72fWwT8rJymZERRDwz
+	qwl9Is6wa4fD033PFLAp8QuN9Ff8b+K7JA==
+X-Google-Smtp-Source: AGHT+IGbiYtf61hBERFnUg82bwlIr4ZnPWsHkIREAVYUa9YRLuaadzGifikxCgvFo8U90tWdBVKTLw==
+X-Received: by 2002:a17:903:2350:b0:223:628c:199 with SMTP id d9443c01a7336-2292fa1adeemr109541295ad.52.1743421658888;
+        Mon, 31 Mar 2025 04:47:38 -0700 (PDT)
+Received: from ap.. ([182.213.254.91])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73970e222f4sm6724881b3a.41.2025.03.31.04.47.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Mar 2025 04:45:39 -0700 (PDT)
-Date: Mon, 31 Mar 2025 04:45:37 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Stanislav Fomichev <sdf@fomichev.me>, kuniyu@amazon.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org,
-	michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
-	andrew+netdev@lunn.ch, Taehee Yoo <ap420073@gmail.com>
-Subject: Re: [PATCH net] bnxt_en: bring back rtnl lock in bnxt_shutdown
-Message-ID: <Z+qAYXmGY08pQKKb@gmail.com>
-References: <20250328174216.3513079-1-sdf@fomichev.me>
+        Mon, 31 Mar 2025 04:47:38 -0700 (PDT)
+From: Taehee Yoo <ap420073@gmail.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	ilias.apalodimas@linaro.org,
+	dw@davidwei.uk,
+	netdev@vger.kernel.org
+Cc: ap420073@gmail.com,
+	kuniyu@amazon.com,
+	sdf@fomichev.me,
+	aleksander.lobakin@intel.com
+Subject: [RFC net-next 0/2]eth: bnxt: Implement rx-side device memory
+Date: Mon, 31 Mar 2025 11:47:27 +0000
+Message-Id: <20250331114729.594603-1-ap420073@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250328174216.3513079-1-sdf@fomichev.me>
+Content-Transfer-Encoding: 8bit
 
-Hello Stanislav,
+This patchset implements device memory TCP using netmem API instead of
+page API.
+The bnxt_en driver already satisfies the requirements of devmem TCP. The
+only change required for devmem TCP is to switch from the page API to
+the netmem API.
 
-On Fri, Mar 28, 2025 at 10:42:16AM -0700, Stanislav Fomichev wrote:
-> Taehee reports missing rtnl from bnxt_shutdown path:
-> 
-> inetdev_event (./include/linux/inetdevice.h:256 net/ipv4/devinet.c:1585)
-> notifier_call_chain (kernel/notifier.c:85)
-> __dev_close_many (net/core/dev.c:1732 (discriminator 3))
-> kernel/locking/mutex.c:713 kernel/locking/mutex.c:732)
-> dev_close_many (net/core/dev.c:1786)
-> netif_close (./include/linux/list.h:124 ./include/linux/list.h:215
-> bnxt_shutdown (drivers/net/ethernet/broadcom/bnxt/bnxt.c:16707) bnxt_en
-> pci_device_shutdown (drivers/pci/pci-driver.c:511)
-> device_shutdown (drivers/base/core.c:4820)
-> kernel_restart (kernel/reboot.c:271 kernel/reboot.c:285)
+The first patch refactors bnxt_en drivers.
+The main purpose of this is to make the bnxt_en driver use page_pool dma
+sync API instead of raw DMA sync API.
+page_pool_dma_sync_for_{cpu | device}() doesn't support virtual address
+handling, so it requires to switch from handling virtual address to
+page.
+It switches from virtual address to page in the struct bnxt_sw_rx_bd.
+By this change, the struct bnxt_sw_rx_bd becomes the same structure with
+bnxt_sw_rx_agg_bd.
+So it makes code much simpler.
 
-I've got this issue as well.
+The second patch switches apply netmem API.
+This patch adds PP_FLAG_ALLOW_UNREADABLE_NETMEM flags to page_pool
+parameter.
+This flag indicates if the user enabled netmem, page_pool will be
+initialized to support unreadable-netmem.
 
-> 
-> Bring back the rtnl lock.
-> 
-> Link: https://lore.kernel.org/netdev/CAMArcTV4P8PFsc6O2tSgzRno050DzafgqkLA2b7t=Fv_SY=brw@mail.gmail.com/
-> Fixes: 004b5008016a ("eth: bnxt: remove most dependencies on RTNL")
-> Reported-by: Taehee Yoo <ap420073@gmail.com>
-> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+By this patchset, bnxt_en driver supports rx-side device memory TCP.
+But Only Thor+ NICs support it and recent firmware is also required.
+We can test device memory TCP with
+tools/testing/selftests/drivers/net/hw/ncdevmem.c
 
-Tested-by: Breno Leitao <leitao@debian.org>
+This is tested with BCM57504-N425G and firmware version 232.0.155.8/pkg
+232.1.132.8.
 
-> ---
->  drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index 934ba9425857..1a70605fad38 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -16698,6 +16698,7 @@ static void bnxt_shutdown(struct pci_dev *pdev)
->  	if (!dev)
->  		return;
->  
-> +	rtnl_lock();
->  	netdev_lock(dev);
+David Wei tested this patch on the io_uring side.
+Thank you for testing, David.
 
-can't we leverage the `struct net_device->lock` for the shutdown.
-Basically we have the lock the single device we are turning it down.
+Taehee Yoo (2):
+  eth: bnxt: refactor buffer descriptor
+  eth: bnxt: add support rx side device memory TCP
 
-I am wondering if we really need the big RTNL lock. This is my
-understanding of what is happening:
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 520 ++++++++++--------
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  35 +-
+ .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |   2 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c |  41 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.h |   4 +-
+ include/linux/netdevice.h                     |   1 +
+ include/net/page_pool/helpers.h               |   6 +
+ include/net/page_pool/types.h                 |   4 +-
+ net/core/dev.c                                |   6 +
+ net/core/page_pool.c                          |  23 +-
+ 10 files changed, 344 insertions(+), 298 deletions(-)
 
-pci_device_shutdown() is called for a single device
- - netdev_lock(dev)
- - netif_close(dev);
-    - dev_close_many(&single, true);
-      - __dev_close_many()
-        - ASSERT_RTNL();
+-- 
+2.34.1
 
-Basically we ware only closing one device, and the net_device->lock
-is already held. Shouldn't it be enough?
-
-Can we do something like this (from my naive point of view):
-
-	 static void __dev_close_many(struct list_head *head)
-	  {
-		  struct net_device *dev;
-
-	-         ASSERT_RTNL();
-		  might_sleep();
-
-		  list_for_each_entry(dev, head, close_list) {
-	+	  	ASSERT_RTNL_NET(dev);
-			...
-		  }
-
-Thanks
---breno
