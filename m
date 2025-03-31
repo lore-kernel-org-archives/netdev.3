@@ -1,201 +1,126 @@
-Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FA17083C
-	for <netdev@vger.kernel.org>; Mon, 31 Mar 2025 07:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506BD7083C;
+	Mon, 31 Mar 2025 07:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743407996; cv=none; b=D7uMgAM7YhLuNobDWCP6kPDZWBj5tcMOQTn9PGgGAv2wEf+V7xYM9491x5pWAKl9dxyUZyQTeKe5GrSYLa0XCIjEbot+4fYjiWJYx38j31u/ecvRWA0fP/YBb7JVsdcz37eg6NRDlcRXV2Y/nIe1pvMxQgFu4lQY1C2bYyNehgc=
+	t=1743408000; cv=none; b=iTbn/GBW5d5dhO5K4rmMW1GSQAFz/8/sJ+Q9k6T4niVcbS4UwuTnRvE1ObUjJnS/AYi1h2AnWI27IfaJ+PF/vNRIW/GNY02R2hToRQ9mZT94MXHDS2aqKaY3dmHEyd5tvKNLns09cFt8c83H2lBlCm5RU/flUeQkbpjQbOwkn8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743407996; c=relaxed/simple;
-	bh=Zk5zm2C3bg0Ci1xNcIXMleySnerXShrcl/JW3f6P4wo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=GOwZ5rNV6EXJ2BujG5Fjj/BCYMiLOozGfeAnLkdE7NlCc6S1fqpXTznOma85K6hjp8OxD7AT83OjPzHOteoqUBNL93Y0+XJXz1FMj+RQuJGr5jGBhZ0k2sZ2kvw34qDI/FCKCF+YU84jFXYdrHcGyN/x34+8G9BJ6qxLkHxpTts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g3qY9BXL; arc=none smtp.client-ip=209.85.160.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g3qY9BXL"
-Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-4769273691dso79387851cf.1
-        for <netdev@vger.kernel.org>; Mon, 31 Mar 2025 00:59:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1743407991; x=1744012791; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=pSaHw7+7pp4TGXvaWxerphGGl9LOneJTVXKMOlHKAyM=;
-        b=g3qY9BXL13ZUpcMXRRawlNGPm6GPbMaNzRaziNL164EEnEPNr4eEPNshL0ccMTBvm2
-         5Vh5NeK1cwvacyyD16ttIUun9lX76NbfGsk+0mqaJRqErnduMgRwCeNyZj+faKSLSz/g
-         0vgPtvdTS7ldYVVzboGOQn0tX72/q93ymh1pgnYTRnlBl9kmjBo6LFZjBL0NVCoJ9d5P
-         ICtvHW5C6tJ4EoPaaNRUb1S60JW9LNCpWbDw/v6FWBBcdQOwXF17ndciK0KD06NkUr6K
-         Z6+wiMUSR1znir2VfxrSGRrViM2q+qIF4JZ2z+q24wFCGE2G13tjhpIZnIuIlglTqhmG
-         Hhhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743407991; x=1744012791;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pSaHw7+7pp4TGXvaWxerphGGl9LOneJTVXKMOlHKAyM=;
-        b=bmgmQ9IDVyfRRkhh3FBPTgKJftx74ZMzN0Eo1bV8X4PjGob/a4yy1VRU8zjxpqR5ow
-         LgfJtTqcJ4ZoTtbPH8dBCNREnZK8LhqeIBNCEkMC4jKHKv6tb+YkbigLHQjiTF0GiB9P
-         hAxRbGzxaO2V1PEHF6GbalYus/ZJJ4YLgYgofca3llkTxDW2HOoXqCkI4LwhZkK1kwRr
-         YkGPNcLMIkmhPJEV398lbxFJLZgHmgRjt7+2X4/yo+fk3oR/cAnu7JVGywAB1OWxaJzV
-         cDOfE0xPbn7J5cDIsk89/zU5vk+Co6HcG9/JKnOof3j7x2/+H0kg3EfIfFTb4xJd1UZu
-         3i1A==
-X-Forwarded-Encrypted: i=1; AJvYcCXYwMOChaOGPB0r9WYt1//2eBMH8tzK83JJ/TE1hfA8kIQuOXlFj0piARG/Gw+kzqbSUCd1ceE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmNSqCHM3Inul7/z6fYLhnpvcDpBTZT2BF47ZqAEwIGC4ACuDt
-	DBS6rJg4MXq3oLOfG/pus6yZhUAJm/y9bvU+msFGk/CMuv2KQC5je820N1M52JE+PlOCGw2QsAa
-	+NjsSoZsGrQ==
-X-Google-Smtp-Source: AGHT+IHMJRKNTM5kfVhRn4RblysqB5zEQIunU7dsps7ZXL8apK6+c1uwRRG1ClX4BOAFvIA20P5pKy90iAqMdA==
-X-Received: from qtbhg20.prod.google.com ([2002:a05:622a:6114:b0:476:7b50:740])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:ac8:7d44:0:b0:476:b7e2:385c with SMTP id d75a77b69052e-477e4b1e81cmr100827071cf.2.1743407991376;
- Mon, 31 Mar 2025 00:59:51 -0700 (PDT)
-Date: Mon, 31 Mar 2025 07:59:46 +0000
+	s=arc-20240116; t=1743408000; c=relaxed/simple;
+	bh=eQLxR96AEH+hQX8sCpZ8ht3V4w2BaVTTbv926vjsZbo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jL9Ml66oFm0xIwnE1wOk/6tmMYqybm4IcLxrUUaeaCBBYqPyaAriLGs3n7Hemg0HFn2mOT2lntwqVZtgLou4+oWvqaIe/swNox1JvQqDIbrQ8SA8jqAU3+4WJoFIlDDyM+GX7CsawXOwU0X+Ho43mIbmyynwHRHMOOD+H71j8eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4ZR3TR5XL8z27hPF;
+	Mon, 31 Mar 2025 16:00:27 +0800 (CST)
+Received: from kwepemg200005.china.huawei.com (unknown [7.202.181.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 16F971A0188;
+	Mon, 31 Mar 2025 15:59:49 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by kwepemg200005.china.huawei.com
+ (7.202.181.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 31 Mar
+ 2025 15:59:47 +0800
+From: Wang Liang <wangliang74@huawei.com>
+To: <wenjia@linux.ibm.com>, <jaka@linux.ibm.com>, <alibuda@linux.alibaba.com>,
+	<tonylu@linux.alibaba.com>, <guwen@linux.alibaba.com>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <ubraun@linux.vnet.ibm.com>
+CC: <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
+	<wangliang74@huawei.com>, <linux-rdma@vger.kernel.org>,
+	<linux-s390@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH net] net/smc: fix general protection fault in __smc_diag_dump
+Date: Mon, 31 Mar 2025 16:10:03 +0800
+Message-ID: <20250331081003.1503211-1-wangliang74@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.49.0.472.ge94155a9ec-goog
-Message-ID: <20250331075946.31960-1-edumazet@google.com>
-Subject: [PATCH net] Revert "tcp: avoid atomic operations on sk->sk_rmem_alloc"
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@amazon.com>, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemg200005.china.huawei.com (7.202.181.32)
 
-This reverts commit 0de2a5c4b824da2205658ebebb99a55c43cdf60f.
+Syzbot reported a general protection fault:
 
-I forgot that a TCP socket could receive messages in its error queue.
+  CPU: 0 UID: 0 PID: 5830 Comm: syz-executor600 Not tainted 6.14.0-rc4-syzkaller-00090-gdd83757f6e68 #0
+  RIP: 0010:smc_diag_msg_common_fill net/smc/smc_diag.c:44 [inline]
+  RIP: 0010:__smc_diag_dump.constprop.0+0x3de/0x23d0 net/smc/smc_diag.c:89
+  Call Trace:
+   <TASK>
+   smc_diag_dump_proto+0x26d/0x420 net/smc/smc_diag.c:217
+   smc_diag_dump+0x84/0x90 net/smc/smc_diag.c:236
+   netlink_dump+0x53c/0xd00 net/netlink/af_netlink.c:2318
+   __netlink_dump_start+0x6ca/0x970 net/netlink/af_netlink.c:2433
+   netlink_dump_start include/linux/netlink.h:340 [inline]
+   smc_diag_handler_dump+0x1fb/0x240 net/smc/smc_diag.c:251
+   __sock_diag_cmd net/core/sock_diag.c:249 [inline]
+   sock_diag_rcv_msg+0x437/0x790 net/core/sock_diag.c:287
+   netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2543
+   netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+   netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1348
+   netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1892
+   sock_sendmsg_nosec net/socket.c:718 [inline]
+   __sock_sendmsg net/socket.c:733 [inline]
+   ____sys_sendmsg+0xaaf/0xc90 net/socket.c:2573
+   ___sys_sendmsg+0x135/0x1e0 net/socket.c:2627
+   __sys_sendmsg+0x16e/0x220 net/socket.c:2659
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
 
-sock_queue_err_skb() can be called without socket lock being held,
-and changes sk->sk_rmem_alloc.
+When create smc socket, smc_inet_init_sock() first add sk to the smc_hash
+by smc_hash_sk(), then create smc->clcsock. it is possible that, after
+smc_diag_dump_proto() traverses the smc_hash, smc->clcsock is not created
+when the function visit it.
 
-The fact that skbs in error queue are limited by sk->sk_rcvbuf
-means that error messages can be dropped if socket receive
-queues are full, which is an orthogonal issue.
+The process like this:
 
-In future kernels, we could use a separate sk->sk_error_mem_alloc
-counter specifically for the error queue.
+  (CPU1)                         | (CPU2)
+  inet6_create()                 |
+    smc_inet_init_sock()         |
+      smc_sk_init()              |
+        smc_hash_sk()            |
+          head = &smc_hash->ht;  |
+          sk_add_node(sk, head); |
+                                 | smc_diag_dump_proto
+                                 |   head = &smc_hash->ht;
+                                 |     sk_for_each(sk, head)
+                                 |       __smc_diag_dump()
+                                 |         visit smc->clcsock
+      smc_create_clcsk()         |
+          set smc->clcsock       |
 
-Fixes: 0de2a5c4b824 ("tcp: avoid atomic operations on sk->sk_rmem_alloc")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Fix this by initialize smc->clcsock to NULL before add sk to smc_hash in
+smc_sk_init().
+
+Reported-by: syzbot+271fed3ed6f24600c364@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=271fed3ed6f24600c364
+Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
 ---
- include/net/tcp.h       | 15 ---------------
- net/ipv4/tcp.c          | 18 ++----------------
- net/ipv4/tcp_fastopen.c |  2 +-
- net/ipv4/tcp_input.c    |  6 +++---
- 4 files changed, 6 insertions(+), 35 deletions(-)
+ net/smc/af_smc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index df04dc09c519d850579e22a17f49eeec7d22c607..4450c384ef178e860bd76c23653e9ce9d7a7289b 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -779,7 +779,6 @@ static inline int tcp_bound_to_half_wnd(struct tcp_sock *tp, int pktsize)
- 
- /* tcp.c */
- void tcp_get_info(struct sock *, struct tcp_info *);
--void tcp_sock_rfree(struct sk_buff *skb);
- 
- /* Read 'sendfile()'-style from a TCP socket */
- int tcp_read_sock(struct sock *sk, read_descriptor_t *desc,
-@@ -2899,18 +2898,4 @@ enum skb_drop_reason tcp_inbound_hash(struct sock *sk,
- 		const void *saddr, const void *daddr,
- 		int family, int dif, int sdif);
- 
--/* version of skb_set_owner_r() avoiding one atomic_add() */
--static inline void tcp_skb_set_owner_r(struct sk_buff *skb, struct sock *sk)
--{
--	skb_orphan(skb);
--	skb->sk = sk;
--	skb->destructor = tcp_sock_rfree;
--
--	sock_owned_by_me(sk);
--	atomic_set(&sk->sk_rmem_alloc,
--		   atomic_read(&sk->sk_rmem_alloc) + skb->truesize);
--
--	sk_forward_alloc_add(sk, -skb->truesize);
--}
--
- #endif	/* _TCP_H */
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index ea8de00f669d059d97766529e3b8c53d5040456d..6edc441b37023de48281aa810aa7a36199fd8bc3 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -1525,25 +1525,11 @@ void tcp_cleanup_rbuf(struct sock *sk, int copied)
- 	__tcp_cleanup_rbuf(sk, copied);
- }
- 
--/* private version of sock_rfree() avoiding one atomic_sub() */
--void tcp_sock_rfree(struct sk_buff *skb)
--{
--	struct sock *sk = skb->sk;
--	unsigned int len = skb->truesize;
--
--	sock_owned_by_me(sk);
--	atomic_set(&sk->sk_rmem_alloc,
--		   atomic_read(&sk->sk_rmem_alloc) - len);
--
--	sk_forward_alloc_add(sk, len);
--	sk_mem_reclaim(sk);
--}
--
- static void tcp_eat_recv_skb(struct sock *sk, struct sk_buff *skb)
- {
- 	__skb_unlink(skb, &sk->sk_receive_queue);
--	if (likely(skb->destructor == tcp_sock_rfree)) {
--		tcp_sock_rfree(skb);
-+	if (likely(skb->destructor == sock_rfree)) {
-+		sock_rfree(skb);
- 		skb->destructor = NULL;
- 		skb->sk = NULL;
- 		return skb_attempt_defer_free(skb);
-diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
-index ca40665145c692ce0de518886bb366406606f7ac..1a6b1bc5424514e27a99cbb2fcedf001afd51d98 100644
---- a/net/ipv4/tcp_fastopen.c
-+++ b/net/ipv4/tcp_fastopen.c
-@@ -189,7 +189,7 @@ void tcp_fastopen_add_skb(struct sock *sk, struct sk_buff *skb)
- 	tcp_segs_in(tp, skb);
- 	__skb_pull(skb, tcp_hdrlen(skb));
- 	sk_forced_mem_schedule(sk, skb->truesize);
--	tcp_skb_set_owner_r(skb, sk);
-+	skb_set_owner_r(skb, sk);
- 
- 	TCP_SKB_CB(skb)->seq++;
- 	TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_SYN;
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index e1f952fbac48dfdc4f4f75a50a85b4904b93bbe2..a35018e2d0ba27b14d0b59d3728f7181b1a51161 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5171,7 +5171,7 @@ static void tcp_data_queue_ofo(struct sock *sk, struct sk_buff *skb)
- 		if (tcp_is_sack(tp))
- 			tcp_grow_window(sk, skb, false);
- 		skb_condense(skb);
--		tcp_skb_set_owner_r(skb, sk);
-+		skb_set_owner_r(skb, sk);
- 	}
- }
- 
-@@ -5187,7 +5187,7 @@ static int __must_check tcp_queue_rcv(struct sock *sk, struct sk_buff *skb,
- 	tcp_rcv_nxt_update(tcp_sk(sk), TCP_SKB_CB(skb)->end_seq);
- 	if (!eaten) {
- 		tcp_add_receive_queue(sk, skb);
--		tcp_skb_set_owner_r(skb, sk);
-+		skb_set_owner_r(skb, sk);
- 	}
- 	return eaten;
- }
-@@ -5504,7 +5504,7 @@ tcp_collapse(struct sock *sk, struct sk_buff_head *list, struct rb_root *root,
- 			__skb_queue_before(list, skb, nskb);
- 		else
- 			__skb_queue_tail(&tmp, nskb); /* defer rbtree insertion */
--		tcp_skb_set_owner_r(nskb, sk);
-+		skb_set_owner_r(nskb, sk);
- 		mptcp_skb_ext_move(nskb, skb);
- 
- 		/* Copy data, releasing collapsed skbs. */
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 3e6cb35baf25..454801188514 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -371,6 +371,7 @@ void smc_sk_init(struct net *net, struct sock *sk, int protocol)
+ 	sk->sk_protocol = protocol;
+ 	WRITE_ONCE(sk->sk_sndbuf, 2 * READ_ONCE(net->smc.sysctl_wmem));
+ 	WRITE_ONCE(sk->sk_rcvbuf, 2 * READ_ONCE(net->smc.sysctl_rmem));
++	smc->clcsock = NULL;
+ 	INIT_WORK(&smc->tcp_listen_work, smc_tcp_listen_work);
+ 	INIT_WORK(&smc->connect_work, smc_connect_work);
+ 	INIT_DELAYED_WORK(&smc->conn.tx_work, smc_tx_work);
 -- 
-2.49.0.472.ge94155a9ec-goog
+2.34.1
 
