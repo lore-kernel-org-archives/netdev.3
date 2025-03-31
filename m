@@ -1,111 +1,165 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF5D1E32B9
-	for <netdev@vger.kernel.org>; Mon, 31 Mar 2025 12:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAA51E32B9;
+	Mon, 31 Mar 2025 12:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743425420; cv=none; b=RHqkX7s2zun9oeq0jmNM/f2DFBN8oH4Jh8CMqMw3l6ok7RwEdiYbfvM+5S+kS1a/UWtJ9V+qEWMntitB/stEYxMYZwS/rpSBsz+QdWo0lusNtwQxskgcyZMNmVA+AW6nH/avDv9dqFL6k/FO+u3axoFjtEaMdJw6wT4aeOr0ffc=
+	t=1743425485; cv=none; b=f2G9tnvHaZxoHDXv+yAt1K/wAng/Cgo9J+nYponemOdVfA9Mro1WCxT2ZNGI1NNJ/aLg0PknXoh+RsXOv3NshvKYB6MTSKRazw/jg1zNm2Bobroz5S52urrh8ctqvjHKPKAFQoT0GbLAFHcIizmRIGQnNw40BkEHhb7nbXpUXJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743425420; c=relaxed/simple;
-	bh=SW3ONDZMYya4KBy0oEZkmBYKj2pWTuwXv08rG2NsZo0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=PX52DQRiQeaV9u3eRuTHiH08pCUOkCU3rZ0GtxUHDSDJhA7v6vImqfoI1OuDiosv4YJ3cPyCjRfwVFiZ9SumsIPMmnZUbBUjmfqzpEGCtW+tF+ASa6urdK9cnNc9VB4LCRIaauvJ+6uv+EliqvDI2WUFsgYDSJsowpo/9zmkD0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R7VWA6y6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1743425485; c=relaxed/simple;
+	bh=o7BfxZztujt/cO63wRvOavseqgC5ImSFqXNneLm+NqM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Am4AlFsLpuv6SzUUSAykk9ctBjMOpykEYpVuXA/MJKFCY+xeVeVW07+/B4Tilj9MHJ053lNuzp/1SLhy9GBZitK9GNKzPJkewOdGTzTC/VjeBPRY/uQtNOLZZGnmlsM7AhA53SMo2t7mG+c6wFn4+ZHPJIWjVZehL9lpeXifDBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=IlzP0CH4; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R7VWA6y6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743425415;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SW3ONDZMYya4KBy0oEZkmBYKj2pWTuwXv08rG2NsZo0=;
-	b=R7VWA6y6fm2mVykhDyYaaNhUcrmiVZOQeNlJnxRrInJUYR71iNLHOua7UPgYh9269ZLEfh
-	lO/yi3pe/WdQi3Vl0jNzHn+ubjyodwsM5XMcROpOpWdkfI+Adj9+w8QePpFsLlnMK4zNgt
-	KPdM/plNLfRhHEDM7hR8PxbJY8N3ddI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-43-ZRrQJD0COBWsF_znMV3BhQ-1; Mon,
- 31 Mar 2025 08:50:11 -0400
-X-MC-Unique: ZRrQJD0COBWsF_znMV3BhQ-1
-X-Mimecast-MFC-AGG-ID: ZRrQJD0COBWsF_znMV3BhQ_1743425410
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7158B19560A2;
-	Mon, 31 Mar 2025 12:50:10 +0000 (UTC)
-Received: from RHTRH0061144 (unknown [10.22.89.226])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9C6B8180B489;
-	Mon, 31 Mar 2025 12:50:07 +0000 (UTC)
-From: Aaron Conole <aconole@redhat.com>
-To: Guillaume Nault <gnault@redhat.com>
-Cc: David Miller <davem@davemloft.net>,  Jakub Kicinski <kuba@kernel.org>,
-  Paolo Abeni <pabeni@redhat.com>,  Eric Dumazet <edumazet@google.com>,
-  netdev@vger.kernel.org,  Simon Horman <horms@kernel.org>,  David Ahern
- <dsahern@kernel.org>,  Pravin B Shelar <pshelar@ovn.org>,  Eelco Chaudron
- <echaudro@redhat.com>,  Stefano Brivio <sbrivio@redhat.com>,
-  dev@openvswitch.org
-Subject: Re: [PATCH net] tunnels: Accept PACKET_HOST in
- skb_tunnel_check_pmtu().
-In-Reply-To: <eac941652b86fddf8909df9b3bf0d97bc9444793.1743208264.git.gnault@redhat.com>
-	(Guillaume Nault's message of "Sat, 29 Mar 2025 01:33:44 +0100")
-References: <eac941652b86fddf8909df9b3bf0d97bc9444793.1743208264.git.gnault@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-Date: Mon, 31 Mar 2025 08:50:05 -0400
-Message-ID: <f7tr02dnz42.fsf@redhat.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="IlzP0CH4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=2eMi5/lczQNiBiqshlbN0fbzw9ejRfgeqUAlYl9qpIg=; b=IlzP0CH4jRpFhrxHnDsiF5VoSv
+	TEHTcyEhjYgMq81+mdn0a/0q3NmQ/Y6q9+k1h8H99zGPsY/x1csGV3hxdrujioo8ZbqnMZKvJGGkw
+	bBWMQH71eKnnTtsa67hVb83aolECGaKaU2ooRJsivkEqZZ4sweufF9HId3jlSbgHC++npXBxrO1pZ
+	WVXa4d8tfsdtIEA2WiIgfYRMxsiHJfoAskGXYEcs0Z+iCAgEDTqv+nLCmHFsvnoiLT42YSPdRjx5A
+	VTddXBrFHl0ivIoRDR3hiL0uqXZ7xQxb0hNDMLznNSOcPf2Xm3mAZhis/falAlUcHyltw2H9iRdx2
+	RfSghQqg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51288)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tzEbZ-0003zS-2D;
+	Mon, 31 Mar 2025 13:51:05 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tzEbT-0001gK-2Q;
+	Mon, 31 Mar 2025 13:50:59 +0100
+Date: Mon, 31 Mar 2025 13:50:59 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Alexander H Duyck <alexander.duyck@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, davem@davemloft.net,
+	Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+	linux-arm-kernel@lists.infradead.org,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Simon Horman <horms@kernel.org>,
+	Romain Gantois <romain.gantois@bootlin.com>
+Subject: Re: [PATCH net-next v5 09/13] net: phylink: Use phy_caps_lookup for
+ fixed-link configuration
+Message-ID: <Z-qPs7y8C09xh5_b@shell.armlinux.org.uk>
+References: <20250307173611.129125-1-maxime.chevallier@bootlin.com>
+ <20250307173611.129125-10-maxime.chevallier@bootlin.com>
+ <8d3a9c9bb76b1c6bc27d2bd01f4831b2cac83f7f.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8d3a9c9bb76b1c6bc27d2bd01f4831b2cac83f7f.camel@gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Guillaume Nault <gnault@redhat.com> writes:
+On Thu, Mar 27, 2025 at 06:16:00PM -0700, Alexander H Duyck wrote:
+> On Fri, 2025-03-07 at 18:36 +0100, Maxime Chevallier wrote:
+> > When phylink creates a fixed-link configuration, it finds a matching
+> > linkmode to set as the advertised, lp_advertising and supported modes
+> > based on the speed and duplex of the fixed link.
+> > 
+> > Use the newly introduced phy_caps_lookup to get these modes instead of
+> > phy_lookup_settings(). This has the side effect that the matched
+> > settings and configured linkmodes may now contain several linkmodes (the
+> > intersection of supported linkmodes from the phylink settings and the
+> > linkmodes that match speed/duplex) instead of the one from
+> > phy_lookup_settings().
+> > 
+> > Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> > ---
+> >  drivers/net/phy/phylink.c | 44 +++++++++++++++++++++++++++------------
+> >  1 file changed, 31 insertions(+), 13 deletions(-)
+> > 
+> > diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+> > index cf9f019382ad..8e2b7d647a92 100644
+> > --- a/drivers/net/phy/phylink.c
+> > +++ b/drivers/net/phy/phylink.c
+> > @@ -802,12 +802,26 @@ static int phylink_validate(struct phylink *pl, unsigned long *supported,
+> >  	return phylink_validate_mac_and_pcs(pl, supported, state);
+> >  }
+> >  
+> > +static void phylink_fill_fixedlink_supported(unsigned long *supported)
+> > +{
+> > +	linkmode_set_bit(ETHTOOL_LINK_MODE_10baseT_Half_BIT, supported);
+> > +	linkmode_set_bit(ETHTOOL_LINK_MODE_10baseT_Full_BIT, supported);
+> > +	linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT, supported);
+> > +	linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Full_BIT, supported);
+> > +	linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseT_Half_BIT, supported);
+> > +	linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT, supported);
+> > +	linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, supported);
+> > +	linkmode_set_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT, supported);
+> > +	linkmode_set_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT, supported);
+> > +}
+> > +
+> 
+> Any chance we can go with a different route here than just locking
+> fixed mode to being only for BaseT configurations?
+> 
+> I am currently working on getting the fbnic driver up and running and I
+> am using fixed-link mode as a crutch until I can finish up enabling
+> QSFP module support for phylink and this just knocked out the supported
+> link modes as I was using 25CR, 50CR, 50CR2, and 100CR2.
+> 
+> Seems like this should really be something handled by some sort of
+> validation function rather than just forcing all devices using fixed
+> link to assume that they are BaseT. I know in our direct attached
+> copper case we aren't running autoneg so that plan was to use fixed
+> link until we can add more flexibility by getting QSFP support going.
 
-> Because skb_tunnel_check_pmtu() doesn't handle PACKET_HOST packets,
-> commit 30a92c9e3d6b ("openvswitch: Set the skbuff pkt_type for proper
-> pmtud support.") forced skb->pkt_type to PACKET_OUTGOING for
-> openvswitch packets that are sent using the OVS_ACTION_ATTR_OUTPUT
-> action. This allowed such packets to invoke the
-> iptunnel_pmtud_check_icmp() or iptunnel_pmtud_check_icmpv6() helpers
-> and thus trigger PMTU update on the input device.
->
-> However, this also broke other parts of PMTU discovery. Since these
-> packets don't have the PACKET_HOST type anymore, they won't trigger the
-> sending of ICMP Fragmentation Needed or Packet Too Big messages to
-> remote hosts when oversized (see the skb_in->pkt_type condition in
-> __icmp_send() for example).
->
-> These two skb->pkt_type checks are therefore incompatible as one
-> requires skb->pkt_type to be PACKET_HOST, while the other requires it
-> to be anything but PACKET_HOST.
->
-> It makes sense to not trigger ICMP messages for non-PACKET_HOST packets
-> as these messages should be generated only for incoming l2-unicast
-> packets. However there doesn't seem to be any reason for
-> skb_tunnel_check_pmtu() to ignore PACKET_HOST packets.
->
-> Allow both cases to work by allowing skb_tunnel_check_pmtu() to work on
-> PACKET_HOST packets and not overriding skb->pkt_type in openvswitch
-> anymore.
->
-> Fixes: 30a92c9e3d6b ("openvswitch: Set the skbuff pkt_type for proper pmtud support.")
-> Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
-> Signed-off-by: Guillaume Nault <gnault@redhat.com>
-> ---
+Please look back at phylink's historical behaviour. Phylink used to
+use phy_lookup_setting() to locate the linkmode for the speed and
+duplex. That is the behaviour that we should be aiming to preserve.
 
-Thanks, Guillaume.
+We were getting:
 
-Reviewed-by: Aaron Conole <aconole@redhat.com>
+speed	duplex	linkmode
+10M	Half	10baseT_Half
+10M	Full	10baseT_Full
+100M	Half	100baseT_Half
+100M	Full	100baseT_Full
+1G	Half	1000baseT_Half
+1G	Full	1000baseT_Full (this changed over time)
+2.5G	Full	2500baseT_Full
+5G	Full	5000baseT_Full
 
-I did manage to test this with two hosts over the weekend, and it
-appears to work for at least one forwarding case that I encountered.
+At this point, things get weird because of the way linkmodes were
+added, as we return the _first_ match. Before commit 3c6b59d6f07c
+("net: phy: Add more link modes to the settings table"):
 
-Tested-by: Aaron Conole <aconole@redhat.com>
+10G	Full	10000baseKR_Full
+Faster speeds not supported
 
+After the commit:
+10G	Full	10000baseCR_Full
+20G	Full	20000baseKR2_Full
+25G	Full	25000baseCR_Full
+40G	Full	40000baseCR4_Full
+50G	Full	50000baseCR2_Full
+56G	Full	56000baseCR4_Full
+100G	Full	100000baseCR4_Full
+
+It's all a bit random. :(
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
