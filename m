@@ -1,126 +1,286 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535511C7006
-	for <netdev@vger.kernel.org>; Tue,  1 Apr 2025 09:27:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151F91EE00D
+	for <netdev@vger.kernel.org>; Tue,  1 Apr 2025 09:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743499622; cv=none; b=Y4ZqMxKtz1s1hPtjaiN+Ru6+HuR4Ass52RBlxswDsldqQX4elub6qeQurDRANQHCmYgcP/LlIwfZPNdDXcMOOUZVHJ9uEK+KW1kWdKKZlFbXVm4hiz9025HTsOT0k1mig/6gOK7sVsp6qSrSLyAo1tCS+EHvOWl2DIIDCtRFWXM=
+	t=1743499653; cv=none; b=iJlfG0r6TWtYiUnZbGi3Njqyc6d61pvud89L8aw+/bGrb+8GuSAF2+tcqIY2CbpKQiV2YJvR5vMZqo3p8Slg5mtIlHKFUDoLZh6VIg7nj88V1QsBZmm4Q3y1t9njW+uHPWfaUXJwotSPvmGr/8q25wzxx1Fa2oAT372ec1Z4LAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743499622; c=relaxed/simple;
-	bh=RGDowPCAGuj867zdN5U68AnSEqQazuLOkGo5GI4oCYs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L3r6u8qnIau1EYplyTyS8EgFRx1eYq0/5WmPxunU35/v9l+Vt1yInD4MtXFxMwP0FctoCqICJ1KzAmXw9B0xw/mjDzguWidTLiAzJfQwjLsGC4TAed7cvVaWbL4B8edssRyFqxaKf6L4u+rx2Zu7dv3pYp+0el9hsvxTeXIiJ80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FPdcnHQZ; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1743499653; c=relaxed/simple;
+	bh=tBaUVOmuwlUC0F0gAM0GQcCY9DRAAjxRSbfYpkziV60=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=S1qHlJPRKkDrOeFplh0V0meJCVhJUsCmicwLEYCkoyhsmGl6ENcdl5XT54ovSZ9ZexYM5TVh4f73RcHpzymFbsWvPIVJ3wA20IHaeyY2wS8ZzbBgmawbZWcOjFO1ko+5QKamoDoozjSiaZKQSj8d/h/ix4mSIO4IHFJI6mOteU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Mvw3YLdx; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FPdcnHQZ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Mvw3YLdx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743499620;
+	s=mimecast20190719; t=1743499650;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rv7jpfmifiJSCwlwKmjavmbnONcngGxU5yqNRTT6nzM=;
-	b=FPdcnHQZRqE5cXwfx+HpFRSwvzuhFLMYR6SJO/+FQ4ZUyOcPZpcVDaGtrAVIFfKgUDUDZQ
-	2pl4rkigLa5JbJ6tbtLwZXCr4nwRxOxu44wY34N5P4bxiAkZoXaK//XSPmO0flYQNJ5sMp
-	WRl9vbKzkGMVq7jvDovvub4WB5yHmOY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=DD6/BKzSTAkniyKROx0SYrtrdsrFKedUxdUETO2d2g0=;
+	b=Mvw3YLdxVA9OyWATfhe1/eleCBwOSyBLrZMmfgpCdjOULMzuh7q1s5vLpT+57+Uht1W4mg
+	brDoTSkISEBls0sZMM/yhYxXQTNGQHdee6UwA5nIdkqdJNwx30LjgPnBhrLl3gOWxrbWZ6
+	HVZS+jCtv9+zf3S14kcXW4pc7GAV7oM=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-74--6dXuXEnPiq6_EkXdfhtmg-1; Tue, 01 Apr 2025 05:26:59 -0400
-X-MC-Unique: -6dXuXEnPiq6_EkXdfhtmg-1
-X-Mimecast-MFC-AGG-ID: -6dXuXEnPiq6_EkXdfhtmg_1743499618
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43cf44b66f7so38818385e9.1
-        for <netdev@vger.kernel.org>; Tue, 01 Apr 2025 02:26:58 -0700 (PDT)
+ us-mta-541-z8coLnohNX-rhLZx9eT1jw-1; Tue, 01 Apr 2025 05:27:29 -0400
+X-MC-Unique: z8coLnohNX-rhLZx9eT1jw-1
+X-Mimecast-MFC-AGG-ID: z8coLnohNX-rhLZx9eT1jw_1743499649
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-abb9b2831b7so596984766b.1
+        for <netdev@vger.kernel.org>; Tue, 01 Apr 2025 02:27:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743499618; x=1744104418;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rv7jpfmifiJSCwlwKmjavmbnONcngGxU5yqNRTT6nzM=;
-        b=U28elXHTAMzHGnXwACNDnILOy/97V1T2Hr+4XnA0mqz3emYT0otzsAEMfoDLvdAUH0
-         tjgu9cQlGTKi9EPBLiXbMGyoEBamJW+SCgN9U8ug16r7GWeZ8CqyPbruPErgPaDCmAR7
-         GGOt03ltKOxDSnSMTqQvDy6pacnetxosZF07ZOynqia48uyCq7wYSydOdCuQL+i9ShLt
-         yvglgD0PW/kxFESVlGGv6tMqNM+wNmYNCNB70mThBMM84IoF/kfgVgnAmKMDolTjEFSK
-         5dfUkacsP8Fil0xu69hJgluXa2ghMwHzgXkkmGxqx0ZneVTMzlrcyFgc//Z8srgjfNCV
-         +Jmg==
-X-Forwarded-Encrypted: i=1; AJvYcCXGHv+t6YHbopUgh8fig4ctcFyuM0A5ElFcl+GJpCjFugRZTJQAtCCko4JeRp+yQzgVPP8hU5o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHkVIX0iBhizrIpqcCzTmXLYNJKJorxRR1XMGmzwQ3gixpZxzg
-	ykTZsKUIE+stNJVtTs8kB0sRdc6YoOQpa+JhcatoKi/C8g3QvfAuESoVlHQtVC2qPnBQSKd/e9A
-	O4MBjg7wwtFqCY0vuHEsr5FpgRAPrajinDj79RijGEa2r7dDpEi1Mkg==
-X-Gm-Gg: ASbGncvCBKd036fu3qYLj48bRFtICNYNZLSXwQ4uRwA0nmtxW+Q+yntnbpi3PTWdtrB
-	K+nYCSMbdH+fvnEZ/qsIdxYhABKG3N4KNrfOm4W5GsBCtURBOb0V5A7RiOa6NNw1HZ6ywYTCNd0
-	AGg+JNatvqidqlmW9netHDagm8Wml2v7SMCthYtAeUTBTRXHBy8yXiHvt9wpJg8fNuWo1ybJXE1
-	eZ/GmOQzIs+aihUOE7VrB6qb4VjaK8C2FjPtV6O1qjpUFfL+8uVKYl23/chYBBjZra6ybZvm+Is
-	G7Bbt4MOv29Df4P7xLRUNvp+4xeT1KisyQi0oIw6LFKHPQ==
-X-Received: by 2002:a05:600c:3d8e:b0:43d:5ec:b2f4 with SMTP id 5b1f17b1804b1-43db6228293mr125405355e9.10.1743499617774;
-        Tue, 01 Apr 2025 02:26:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEK/gJwnwUGeCgqE+r9MWZUBTdjxnbDuFOZNWFHvltqYEKrV2WwlMUD+8wRfy3qo0w27wcgfQ==
-X-Received: by 2002:a05:600c:3d8e:b0:43d:5ec:b2f4 with SMTP id 5b1f17b1804b1-43db6228293mr125405005e9.10.1743499617238;
-        Tue, 01 Apr 2025 02:26:57 -0700 (PDT)
-Received: from [192.168.88.253] (146-241-68-231.dyn.eolo.it. [146.241.68.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b663860sm13774077f8f.39.2025.04.01.02.26.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Apr 2025 02:26:56 -0700 (PDT)
-Message-ID: <5f493420-d7ff-43ab-827f-30e66b7df2c9@redhat.com>
-Date: Tue, 1 Apr 2025 11:26:55 +0200
+        d=1e100.net; s=20230601; t=1743499648; x=1744104448;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DD6/BKzSTAkniyKROx0SYrtrdsrFKedUxdUETO2d2g0=;
+        b=tUqd83wLUzdyQzAyOkk1ZyBJfDIvskw/+6JTPiAjxFY5wy9+yKEOO1NjBD2uKbXEio
+         R7DdVh0sYRbxEhrg1g+7wBvDsGCajK+kNRZYka3zwh6KjEruepXvP421W7zTqsFqb9cc
+         ymJtqZKD9B3/GxTUmRlXugeOzUFymZ1s+3mavwQHxYzO1o3PaQ/ACGQR5SE/erbsAuQ6
+         jMs0Goy+goh/PYVaZ2kzdYrKUT6dHH+j2si5aR0TJ5NmxE1fakw7iQ9PCtHMFfxI3FsB
+         KwKvwJDU40yx+Ka3ppSlcu0TDaixTj2jf+4iv3RlY5k8BE9BJg1umBtODxeG5CkSFv59
+         nhaA==
+X-Gm-Message-State: AOJu0Yx8ZX0MjkjskiPNoL088TmFPuJX9pcONFAnhlnthq/rdS/q4pfm
+	595nl1DCVyPRkkWgU6tMiuAeQD99cCjKg8V2tfptbED9haHTTb1EcGfbkPVvtfJ5FSnhDBmbDWK
+	jqhld23r2Q/Q8Qfvzh/TALdMOeliJCjy9cglD6/oK9LLg/kklBube9w==
+X-Gm-Gg: ASbGncu3HmavFEqJZ9LIW4vvO03Ujr4zd5oJT9RXWi5CijFZCcsbTzsd6i73eNYBhLc
+	pdVNIsnq9PKJGDeySywPvzphYDpFBNg3SdfV8SeSR6y+NbOy/413LVjObJbkfEQYSxI9/AqwXvv
+	scKMRzdTGyZVGC56xKrNEfXnQZYkTRCB7KpMqrZZpYjcQP72b9oIaRS9+Hrjw6S03mto5IxSlvZ
+	IOBr98OFC6MT20CcnUVMZvM5tH6ffmRQ/ZwbzeMxX0uYVjZs6v+Y8fGXY4cWNP0vrS4/qy+yJhd
+	twJx7wEp0PhzjPPuc7wcUDVDzgYKrikwBJJ0MVE4
+X-Received: by 2002:a17:906:c155:b0:ac7:3028:6d67 with SMTP id a640c23a62f3a-ac73681fcd8mr1141183266b.16.1743499648526;
+        Tue, 01 Apr 2025 02:27:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFrOYPNeSxQLyXxsP5j/BwzEGjjbGLErMD6rGLT5p4OaReguQc12bEx3/JNXtoHEWBebbAVKg==
+X-Received: by 2002:a17:906:c155:b0:ac7:3028:6d67 with SMTP id a640c23a62f3a-ac73681fcd8mr1141179266b.16.1743499648091;
+        Tue, 01 Apr 2025 02:27:28 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac71927b190sm734107966b.45.2025.04.01.02.27.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Apr 2025 02:27:27 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 85E0F18FD269; Tue, 01 Apr 2025 11:27:26 +0200 (CEST)
+From: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Date: Tue, 01 Apr 2025 11:27:18 +0200
+Subject: [PATCH net-next v6 1/2] page_pool: Move pp_magic check into helper
+ functions
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/3] net_sched: sch_sfq: use a temporary work area for
- validating configuration
-To: Cong Wang <xiyou.wangcong@gmail.com>, Octavian Purdila <tavip@google.com>
-Cc: jhs@mojatatu.com, jiri@resnulli.us, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, horms@kernel.org, shuah@kernel.org,
- netdev@vger.kernel.org
-References: <20250328201634.3876474-1-tavip@google.com>
- <20250328201634.3876474-2-tavip@google.com>
- <Z+nYlgveEBukySzX@pop-os.localdomain>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <Z+nYlgveEBukySzX@pop-os.localdomain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250401-page-pool-track-dma-v6-1-8b83474870d4@redhat.com>
+References: <20250401-page-pool-track-dma-v6-0-8b83474870d4@redhat.com>
+In-Reply-To: <20250401-page-pool-track-dma-v6-0-8b83474870d4@redhat.com>
+To: "David S. Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+ Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+ Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+ Simon Horman <horms@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ Mina Almasry <almasrymina@google.com>, 
+ Yonglong Liu <liuyonglong@huawei.com>, 
+ Yunsheng Lin <linyunsheng@huawei.com>, 
+ Pavel Begunkov <asml.silence@gmail.com>, 
+ Matthew Wilcox <willy@infradead.org>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, linux-rdma@vger.kernel.org, 
+ linux-mm@kvack.org, 
+ =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+X-Mailer: b4 0.14.2
 
-On 3/31/25 1:49 AM, Cong Wang wrote:
-> On Fri, Mar 28, 2025 at 01:16:32PM -0700, Octavian Purdila wrote:
->> diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
->> index 65d5b59da583..027a3fde2139 100644
->> --- a/net/sched/sch_sfq.c
->> +++ b/net/sched/sch_sfq.c
->> @@ -631,6 +631,18 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
->>  	struct red_parms *p = NULL;
->>  	struct sk_buff *to_free = NULL;
->>  	struct sk_buff *tail = NULL;
->> +	/* work area for validating changes before committing them */
->> +	struct {
->> +		int limit;
->> +		unsigned int divisor;
->> +		unsigned int maxflows;
->> +		int perturb_period;
->> +		unsigned int quantum;
->> +		u8 headdrop;
->> +		u8 maxdepth;
->> +		u8 flags;
->> +	} tmp;
-> 
-> Thanks for your patch. It reminds me again about the lacking of complete
-> RCU support in TC. ;-)
-> 
-> Instead of using a temporary struct, how about introducing a new one
-> called struct sfq_sched_opt and putting it inside struct sfq_sched_data?
-> It looks more elegant to me.
+Since we are about to stash some more information into the pp_magic
+field, let's move the magic signature checks into a pair of helper
+functions so it can be changed in one place.
 
-I agree with that. It should also make the code more compact. @Octavian,
-please update the patch as per Cong's suggestion.
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Tested-by: Yonglong Liu <liuyonglong@huawei.com>
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c |  4 ++--
+ include/net/page_pool/types.h                    | 18 ++++++++++++++++++
+ mm/page_alloc.c                                  |  9 +++------
+ net/core/netmem_priv.h                           |  5 +++++
+ net/core/skbuff.c                                | 16 ++--------------
+ net/core/xdp.c                                   |  4 ++--
+ 6 files changed, 32 insertions(+), 24 deletions(-)
 
-Thanks,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+index f803e1c93590068d3a7829b0683be4af019266d1..5ce1b463b7a8dd7969e391618658d66f6e836cc1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+@@ -707,8 +707,8 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
+ 				xdpi = mlx5e_xdpi_fifo_pop(xdpi_fifo);
+ 				page = xdpi.page.page;
+ 
+-				/* No need to check ((page->pp_magic & ~0x3UL) == PP_SIGNATURE)
+-				 * as we know this is a page_pool page.
++				/* No need to check page_pool_page_is_pp() as we
++				 * know this is a page_pool page.
+ 				 */
+ 				page_pool_recycle_direct(page->pp, page);
+ 			} while (++n < num);
+diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
+index 36eb57d73abc6cfc601e700ca08be20fb8281055..df0d3c1608929605224feb26173135ff37951ef8 100644
+--- a/include/net/page_pool/types.h
++++ b/include/net/page_pool/types.h
+@@ -54,6 +54,14 @@ struct pp_alloc_cache {
+ 	netmem_ref cache[PP_ALLOC_CACHE_SIZE];
+ };
+ 
++/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
++ * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
++ * the head page of compound page and bit 1 for pfmemalloc page.
++ * page_is_pfmemalloc() is checked in __page_pool_put_page() to avoid recycling
++ * the pfmemalloc page.
++ */
++#define PP_MAGIC_MASK ~0x3UL
++
+ /**
+  * struct page_pool_params - page pool parameters
+  * @fast:	params accessed frequently on hotpath
+@@ -264,6 +272,11 @@ void page_pool_destroy(struct page_pool *pool);
+ void page_pool_use_xdp_mem(struct page_pool *pool, void (*disconnect)(void *),
+ 			   const struct xdp_mem_info *mem);
+ void page_pool_put_netmem_bulk(netmem_ref *data, u32 count);
++
++static inline bool page_pool_page_is_pp(struct page *page)
++{
++	return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
++}
+ #else
+ static inline void page_pool_destroy(struct page_pool *pool)
+ {
+@@ -278,6 +291,11 @@ static inline void page_pool_use_xdp_mem(struct page_pool *pool,
+ static inline void page_pool_put_netmem_bulk(netmem_ref *data, u32 count)
+ {
+ }
++
++static inline bool page_pool_page_is_pp(struct page *page)
++{
++	return false;
++}
+ #endif
+ 
+ void page_pool_put_unrefed_netmem(struct page_pool *pool, netmem_ref netmem,
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 542d25f77be80304b731411ffd29b276ee13be0c..3535ee76afe946cbb042ecbce603bdbedc9233b9 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -55,6 +55,7 @@
+ #include <linux/delayacct.h>
+ #include <linux/cacheinfo.h>
+ #include <linux/pgalloc_tag.h>
++#include <net/page_pool/types.h>
+ #include <asm/div64.h>
+ #include "internal.h"
+ #include "shuffle.h"
+@@ -872,9 +873,7 @@ static inline bool page_expected_state(struct page *page,
+ #ifdef CONFIG_MEMCG
+ 			page->memcg_data |
+ #endif
+-#ifdef CONFIG_PAGE_POOL
+-			((page->pp_magic & ~0x3UL) == PP_SIGNATURE) |
+-#endif
++			page_pool_page_is_pp(page) |
+ 			(page->flags & check_flags)))
+ 		return false;
+ 
+@@ -901,10 +900,8 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
+ 	if (unlikely(page->memcg_data))
+ 		bad_reason = "page still charged to cgroup";
+ #endif
+-#ifdef CONFIG_PAGE_POOL
+-	if (unlikely((page->pp_magic & ~0x3UL) == PP_SIGNATURE))
++	if (unlikely(page_pool_page_is_pp(page)))
+ 		bad_reason = "page_pool leak";
+-#endif
+ 	return bad_reason;
+ }
+ 
+diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
+index 7eadb8393e002fd1cc2cef8a313d2ea7df76f301..f33162fd281c23e109273ba09950c5d0a2829bc9 100644
+--- a/net/core/netmem_priv.h
++++ b/net/core/netmem_priv.h
+@@ -18,6 +18,11 @@ static inline void netmem_clear_pp_magic(netmem_ref netmem)
+ 	__netmem_clear_lsb(netmem)->pp_magic = 0;
+ }
+ 
++static inline bool netmem_is_pp(netmem_ref netmem)
++{
++	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
++}
++
+ static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
+ {
+ 	__netmem_clear_lsb(netmem)->pp = pool;
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 6cbf77bc61fce74c934628fd74b3a2cb7809e464..74a2d886a35b518d55b6d3cafcb8442212f9beee 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -893,11 +893,6 @@ static void skb_clone_fraglist(struct sk_buff *skb)
+ 		skb_get(list);
+ }
+ 
+-static bool is_pp_netmem(netmem_ref netmem)
+-{
+-	return (netmem_get_pp_magic(netmem) & ~0x3UL) == PP_SIGNATURE;
+-}
+-
+ int skb_pp_cow_data(struct page_pool *pool, struct sk_buff **pskb,
+ 		    unsigned int headroom)
+ {
+@@ -995,14 +990,7 @@ bool napi_pp_put_page(netmem_ref netmem)
+ {
+ 	netmem = netmem_compound_head(netmem);
+ 
+-	/* page->pp_magic is OR'ed with PP_SIGNATURE after the allocation
+-	 * in order to preserve any existing bits, such as bit 0 for the
+-	 * head page of compound page and bit 1 for pfmemalloc page, so
+-	 * mask those bits for freeing side when doing below checking,
+-	 * and page_is_pfmemalloc() is checked in __page_pool_put_page()
+-	 * to avoid recycling the pfmemalloc page.
+-	 */
+-	if (unlikely(!is_pp_netmem(netmem)))
++	if (unlikely(!netmem_is_pp(netmem)))
+ 		return false;
+ 
+ 	page_pool_put_full_netmem(netmem_get_pp(netmem), netmem, false);
+@@ -1042,7 +1030,7 @@ static int skb_pp_frag_ref(struct sk_buff *skb)
+ 
+ 	for (i = 0; i < shinfo->nr_frags; i++) {
+ 		head_netmem = netmem_compound_head(shinfo->frags[i].netmem);
+-		if (likely(is_pp_netmem(head_netmem)))
++		if (likely(netmem_is_pp(head_netmem)))
+ 			page_pool_ref_netmem(head_netmem);
+ 		else
+ 			page_ref_inc(netmem_to_page(head_netmem));
+diff --git a/net/core/xdp.c b/net/core/xdp.c
+index f86eedad586a77eb63a96a85aa6d068d3e94f077..0ba73943c6eed873b3d1c681b3b9a802b590f2d9 100644
+--- a/net/core/xdp.c
++++ b/net/core/xdp.c
+@@ -437,8 +437,8 @@ void __xdp_return(netmem_ref netmem, enum xdp_mem_type mem_type,
+ 		netmem = netmem_compound_head(netmem);
+ 		if (napi_direct && xdp_return_frame_no_direct())
+ 			napi_direct = false;
+-		/* No need to check ((page->pp_magic & ~0x3UL) == PP_SIGNATURE)
+-		 * as mem->type knows this a page_pool page
++		/* No need to check netmem_is_pp() as mem->type knows this a
++		 * page_pool page
+ 		 */
+ 		page_pool_put_full_netmem(netmem_get_pp(netmem), netmem,
+ 					  napi_direct);
 
-Paolo
+-- 
+2.48.1
 
