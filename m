@@ -1,133 +1,101 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5551EB5FC;
-	Tue,  1 Apr 2025 08:57:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E2B2E3398
+	for <netdev@vger.kernel.org>; Tue,  1 Apr 2025 09:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743497868; cv=none; b=GmHPJS8dh6o0satYc9eQ6N+X/NjlCedAx8Y8z7RBrkYRVAuA7Wx6R7VKZvetIfre553IMNrjvWDPwEmAZkUOQuwggKopGxqRJ+YukXOpipu5m5N0dwbvUi4wkAy8QU/grS7vSbv2C8IKg7RCSPNEVUlvj4CxWnoz7JfET82nqPg=
+	t=1743498116; cv=none; b=b/a60a+TOHrFhFpKurFWzDrgNpi73kah0OQ6f+T5lrdp54zjtGg43zUSVEZ+JnP+nmOr4/Td2U9As0fN5I9Cic15eSRGGYK6cokPASztusSpEx7/M9qKAqk+tjynd+pTg/95Z0HozVVYYR1pBVQprN6P0+XOtsoP5Xqc52CLBik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743497868; c=relaxed/simple;
-	bh=d78V2SRfd+yrCnP+CSQdEt2iDe09S12xQHysnYKYb54=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bXJIuzF7tnEP72F8BwKHuA7YiZiO21EesHicz59rszdwwQYe7XZMBvqrlsJnuAUYzUp8sTvvtMZ8d7goMVA/93mp1bck8hm0Ch/Aj/fwMXDiWPpOEHb2n1OyNtxSu46ncusBhpHJQKduM9f/9dBgcQqnhy/WgGz0mR4xdaqsz7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=ECK0v/CU; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	s=arc-20240116; t=1743498116; c=relaxed/simple;
+	bh=Alm/NQeAVgEcuh4ciLphCWPGTw4jKXnaMg0KD3XqiG0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fbXycEy2frh38lYZiV+DTEKAMJxdiP19gdsNLA7fGgzRz48gyCjLV3ZAZBnlMnhgJZCxgjLDvoDe41xbSB4T548/4Ya8cnvlSWUUZ5APdevHzsluf8/G2ZuHWJSOG8Z2OdFg6R6Dztl8Q9T6Q1hw5JmcTpVO6V0P7EtjNBO4xYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=FC47UPsP; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="ECK0v/CU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1743497344;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WL4H1/n+KU4vDHV20Jk9Fts6NmwKIU67Olt2xVADMKQ=;
-	b=ECK0v/CUv5HYRLgRT7DeRHtoMrKwucrsQs2muDt0Obk5vr7SY/cKmt4bHi8EwKH/q85qbt
-	fUhcG6kxBrmOcGnQKl88z/WlbIjL8Zrz6gPGvmEmeawsmNKCG1lt7o1TsCV9me/frKXqK4
-	j/gQq9Bb/OBzjPpc4dkI6SGFs+j20pY=
-From: Sven Eckelmann <sven@narfation.org>
-To: mareklindner@neomailbox.ch, sw@simonwunderlich.de, a@unstable.cc,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, Wentao Liang <vulab@iscas.ac.cn>
-Cc: b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Wentao Liang <vulab@iscas.ac.cn>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] batman-adv: batman-adv: handle tvlv unicast send errors
-Date: Tue, 01 Apr 2025 10:48:59 +0200
-Message-ID: <22646445.EfDdHjke4D@ripper>
-In-Reply-To: <20250401083901.2261-1-vulab@iscas.ac.cn>
-References: <20250401083901.2261-1-vulab@iscas.ac.cn>
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="FC47UPsP"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43690d4605dso35882615e9.0
+        for <netdev@vger.kernel.org>; Tue, 01 Apr 2025 02:01:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1743498111; x=1744102911; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=n46xaXN7gcanzSsfM8jO0yQceE6z1/lxfQvp5svqoQ0=;
+        b=FC47UPsP1GD68VpPMrHCBGo7l3jyAbIpfdLNJxDHe5XmhgHcLTCQMfEWEgkCU+ZOuy
+         HcWeHRptHSuu37UuC/IzrCovnGSeMb/PdKAvBVCljenjxbn/S6H/KcDeaqTVMhtEl+EJ
+         0SVxlwRjZx+CAN7I8VO24MMj61CZ1RLl0k0nLoNn+pE4qe6tFBEbWyniwYgeaqJ5jxOs
+         sck+2oco3FrWDYrq62j7Hofr9yxCU4Il3KZxrjRHoTeF3ZKUmrMlmV0tQb1J8n3ZDiAg
+         i+n9AY5M0PD0d5Vrroj+N6m4nnm7kppfhbsvuULUdr8LDV+C5W2Ep6yUOYxtz0gPDgLw
+         Ck2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743498111; x=1744102911;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n46xaXN7gcanzSsfM8jO0yQceE6z1/lxfQvp5svqoQ0=;
+        b=stpiIDy0Hqyhgy4HcyKjya82ZpFR+QfVHjiSJ0zh/tR+S7s3WU5jbOsEKgdSzKIX7t
+         1L/I9BpBsjB5zI8OnHUTZailVRYyKHLp8HFzIyNX9A2SiBdTJ29qPNXAmjmpKHShRtCM
+         X6rCBUDo19cMpq1V+i9iBHdk6YgUjDFWm/Trrvay2fnsHwU4b5tscXJN7KiqFufrgr+j
+         yLvqPZbMPzQQeJJ52l3ja0VkV6Z8MP+0oCPL8BkKh9jpY2aSNqReBeMt9/e7Rw+PxjC8
+         klSQzAqOArmiDk6cz0hcSuD9MGajnZ/o8aut5QTarNBOCTp6o+b+Js+nT1OQCedPerkQ
+         geXA==
+X-Gm-Message-State: AOJu0YwLHYfWAUs8170PePCq3aoYDnPKoLwDl2uXuBSUKzrPNtEAJrjy
+	Nr2ncixdAJt0q1ZfhPXKEtfG6AEVyLgksudA+QCaW+tX8ZfrK7X/HGNGFyIiI+A=
+X-Gm-Gg: ASbGncueYErGWByQBlJ0izsrdHWjkJ9eXKBxN4OYI5ITT4ofzmnIyRSJ88Zw16wsBPP
+	hb1DoJvg13Dp36y9MxqppSWCWx3ih72ozbZzPNl100x7u4dnK3NfPGH5/tVC+dWT7/RmUGfGePb
+	EnimvF8EhIXoWVyvzNce8W/akc2lucZxBf0RtOD51UC0weTjvUMnTt1lclvf88xGqKNmCIK/JaD
+	uQ7+VG0etYb5GAxJKexBH2rYb4rtTw1XF7TRk4oV+6B7Bcmu7fqi8dsEWwD277LItXXLYO93KGW
+	YJ0jg+7TQoFo17Vqpgh4BfF6ZggONYnTyQ/a9GwAr+Qka1Pv7TSuahC1TGKZpfGQld7okZhglON
+	BtxGHcO4GUp4=
+X-Google-Smtp-Source: AGHT+IE1pFZ2aeS5F5KYmjpz6vDu8iHwL34YVovaKWqffWU7tAc7e0gqKeEeofXyr3+FSdvuytsgWg==
+X-Received: by 2002:a05:6000:43d5:b0:391:29c0:83f5 with SMTP id ffacd0b85a97d-39c12114dbemr7535395f8f.44.1743498111310;
+        Tue, 01 Apr 2025 02:01:51 -0700 (PDT)
+Received: from jiri-mlt.client.nvidia.com ([193.47.165.251])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b66a9d2sm13540606f8f.43.2025.04.01.02.01.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Apr 2025 02:01:50 -0700 (PDT)
+Date: Tue, 1 Apr 2025 11:01:44 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, 
+	andrew+netdev@lunn.ch, horms@kernel.org, donald.hunter@gmail.com, parav@nvidia.com
+Subject: Re: [PATCH net-next v2 2/4] net/mlx5: Expose serial numbers in
+ devlink info
+Message-ID: <qt22pagi3weqc2mazctajndd5sej6zmvr3q4sq25r2ioe2qaow@parw3mavhvji>
+References: <20250320085947.103419-1-jiri@resnulli.us>
+ <20250320085947.103419-3-jiri@resnulli.us>
+ <20250325044653.52fea697@kernel.org>
+ <6mrfruwwp35efgzjjvgqkvjzahsvki6b3sw6uozapl7o5nf6mu@z6t7s7qp6e76>
+ <20250331092226.589edb9a@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart7787093.EvYhyI6sBW";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250331092226.589edb9a@kernel.org>
 
---nextPart7787093.EvYhyI6sBW
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-Date: Tue, 01 Apr 2025 10:48:59 +0200
-Message-ID: <22646445.EfDdHjke4D@ripper>
-In-Reply-To: <20250401083901.2261-1-vulab@iscas.ac.cn>
-References: <20250401083901.2261-1-vulab@iscas.ac.cn>
-MIME-Version: 1.0
+Mon, Mar 31, 2025 at 06:22:26PM +0200, kuba@kernel.org wrote:
+>On Mon, 31 Mar 2025 15:06:18 +0200 Jiri Pirko wrote:
+>> >I suppose you only expect one of the fields to be populated but 
+>> >the code as is doesn't express that.  
+>> 
+>> Nope. none or all could be populated, depends on what device exposes.
+>
+>Then you override the err in case first put fails.
 
-On Tuesday, 1 April 2025 10:39:00 CEST Wentao Liang wrote:
-> In batadv_tvlv_unicast_send(), the return value of
-> batadv_send_skb_to_orig() is ignored. This could silently
-> drop send failures, making it difficult to detect connectivity
-> issues.
-> 
-> Add error checking for batadv_send_skb_to_orig() and log failures
-> via batadv_dbg() to improve error visibility.
-
-This looks more like patch you've added for printk-debugging and nothing for 
-stable. And you ignore that it can also return things like -EINPROGRESS. Which 
-is not an error.
-
-You can also see that this was just for printk-debugging because the error 
-class and message has nothing to do with the actual code.
-
-> 
-> Fixes: 1ad5bcb2a032 ("batman-adv: Consume skb in batadv_send_skb_to_orig")
-> Cc: stable@vger.kernel.org # 4.10+
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->  net/batman-adv/tvlv.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-> index 2a583215d439..f081136cc5b7 100644
-> --- a/net/batman-adv/tvlv.c
-> +++ b/net/batman-adv/tvlv.c
-> @@ -625,6 +625,7 @@ void batadv_tvlv_unicast_send(struct batadv_priv 
-*bat_priv, const u8 *src,
->  	unsigned char *tvlv_buff;
->  	unsigned int tvlv_len;
->  	ssize_t hdr_len = sizeof(*unicast_tvlv_packet);
-> +	int r;
->  
->  	orig_node = batadv_orig_hash_find(bat_priv, dst);
->  	if (!orig_node)
-> @@ -657,7 +658,10 @@ void batadv_tvlv_unicast_send(struct batadv_priv 
-*bat_priv, const u8 *src,
->  	tvlv_buff += sizeof(*tvlv_hdr);
->  	memcpy(tvlv_buff, tvlv_value, tvlv_value_len);
->  
-> -	batadv_send_skb_to_orig(skb, orig_node, NULL);
-> +	r = batadv_send_skb_to_orig(skb, orig_node, NULL);
-> +	if (r != NET_XMIT_SUCCESS)
-> +		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
-> +			   "Fail to send the ack.");
-
-No, this is definitely the wrong error class. And why do you think that it is 
-an ack?
->  out:
->  	batadv_orig_node_put(orig_node);
->  }
-> 
-
-Kind regards,
-	Sven
-
---nextPart7787093.EvYhyI6sBW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCZ+uoewAKCRBND3cr0xT1
-y2qlAP9WnQgyuTR1ObdOwnfoccPeZM0k100Xsm1CijZC5WAcyAD+NywbzgD5+yMk
-e/XenInlVjSxcxl696zJLzJxWyD3cws=
-=d3Hb
------END PGP SIGNATURE-----
-
---nextPart7787093.EvYhyI6sBW--
+Correct, will fix.
 
 
+>But also having two serial numbers makes no sense.
 
+They are serial number for different entity:
+  serial_number e4397f872caeed218000846daa7d2f49
+  board.serial_number MT2314XZ00YA
+
+Why it does not make sense?
