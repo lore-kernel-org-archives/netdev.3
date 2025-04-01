@@ -1,105 +1,211 @@
-Received: from mail.crpt.ru (mail1.crpt.ru [91.236.205.1])
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50D44690;
-	Tue,  1 Apr 2025 06:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.236.205.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7D5155382;
+	Tue,  1 Apr 2025 06:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743488199; cv=none; b=pnAXOzD7wP2n1tb8y4Eyc31xzImojNiPxwa/9vxECZCo2IiEZWIMIb5IGOW2nYrruzrtmLG31JIvCaVuKpw/ueRZMTi2AI/PvpcBiROCJ1bqY7eqIZf1MDllN7eOrxXaf+7m2daSic0tZjqYWVPuKbCLW79Ei66pqEzLK8lPrEQ=
+	t=1743489949; cv=none; b=YZrfYgMttH5Q38Ur5S0A2KrOMLpTunujzgmTd5Ncds0JjE25OS5vfm2B5Ve9FZU9ReOtIVmNSMT3/dlP+K3YSWJbDfpz7kdU4XX8CLcWhfALpEUhV2qxJSyRrdwZnplytWTqyhI+n76tKCkJUHWGQbB12KbzX623Nz7UWz0fyt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743488199; c=relaxed/simple;
-	bh=Z8NqerlcGoOG+aaVto1jZC3JJTU9M/lUypli3aT8rjg=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=GRRnCQSpwRuPCnEgxNhZc+PquolynGTiDn6VfA8i/cU/Jgnzh/1crcGoSpuRCcXuToQAvOK3EORciMjqR7nFNWZ1Joonhb/EA50/KPPihzynE1zeah0TNS9jCKi4UdXJmhIH6EvzL2Qm9ta2vv0aYWWM1BvCilJdGaeQCLgXpn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru; spf=pass smtp.mailfrom=crpt.ru; dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b=kBJe710r; arc=none smtp.client-ip=91.236.205.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crpt.ru
+	s=arc-20240116; t=1743489949; c=relaxed/simple;
+	bh=/yzplqdAPDSpRgvysGBcyb70oiqT6p+pK2C0nxnbMGo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bskyiv63FgqVQ3S9to+wiypDY+BhXZMez/28Oq5YIo/k7+UTr4u0CYGW2lt39YhLCAjgo+2rvHAVCUu7igeoSP3tUdXX9NxUhXY1Em4PDifSkVjToNtz85dcKPaB1qvmZ4WuD8y4ZzyAzijUWmIhGRhb254ZEKhMfa2ISEGwLFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ob65MilM; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b="kBJe710r"
-Received: from mail.crpt.ru ([192.168.60.3])
-	by mail.crpt.ru  with ESMTP id 5316FqG3023749-5316FqG5023749
-	(version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=OK);
-	Tue, 1 Apr 2025 09:15:52 +0300
-Received: from EX2.crpt.local (192.168.60.4) by ex1.crpt.local (192.168.60.3)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Tue, 1 Apr
- 2025 09:15:53 +0300
-Received: from EX2.crpt.local ([192.168.60.4]) by EX2.crpt.local
- ([192.168.60.4]) with mapi id 15.01.2507.044; Tue, 1 Apr 2025 09:15:53 +0300
-From: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>
-To: Tariq Toukan <tariqt@nvidia.com>
-CC: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
-Subject: [PATCH] net/mlx4_en: Remove the redundant NULL check for the 'my_ets'
- object
-Thread-Topic: [PATCH] net/mlx4_en: Remove the redundant NULL check for the
- 'my_ets' object
-Thread-Index: AQHbos2F9RohqMpRK0mdORQAbVJ5/g==
-Date: Tue, 1 Apr 2025 06:15:52 +0000
-Message-ID: <20250401061439.9978-1-a.vatoropin@crpt.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-kse-serverinfo: EX1.crpt.local, 9
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: Clean, bases: 2/17/2025 9:52:00 AM
-x-kse-attachment-filter-triggered-rules: Clean
-x-kse-attachment-filter-triggered-filters: Clean
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ob65MilM"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BD8ED443CF;
+	Tue,  1 Apr 2025 06:45:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1743489943;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/yzplqdAPDSpRgvysGBcyb70oiqT6p+pK2C0nxnbMGo=;
+	b=Ob65MilMRjUX+n6NZqEAUTKZafOYUIEGrdrF2QgtWmsQhjAChUtmi+qwu6Qd7yudVc0ZzG
+	ieCZTzcZ7L5KPcdp8mAH/0SGAaYGVn/4M+OOq9k3K+mcCHuNcw+4YlkrC4PKo4DeKs8SQQ
+	+iO1vJ2BAjuKe40dFoj10+PhpEZip5WOLdfkgCA86/DoRXLansw9fqJWppkCxsIXYG+ES/
+	c5P2miWICh4PQTVvhtBAZIt4YurWWcygZfxKmAbF8gL48S9InRf/3KxQUU66CKTGgTnXQH
+	BrzyOy02d0aC/XPgo5cAIAvBIKFXPI5Ipq3mWH+0xYqgTEVphDXX4L0+/lleqA==
+Date: Tue, 1 Apr 2025 09:41:53 +0200
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Alexander Duyck <alexander.duyck@gmail.com>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, Andrew Lunn
+ <andrew@lunn.ch>, davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Heiner
+ Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+ linux-arm-kernel@lists.infradead.org, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, =?UTF-8?B?S8O2cnk=?= Maincent
+ <kory.maincent@bootlin.com>, Oleksij Rempel <o.rempel@pengutronix.de>,
+ Simon Horman <horms@kernel.org>, Romain Gantois
+ <romain.gantois@bootlin.com>
+Subject: Re: [PATCH net-next v5 09/13] net: phylink: Use phy_caps_lookup for
+ fixed-link configuration
+Message-ID: <20250401094153.43974af2@fedora.home>
+In-Reply-To: <CAKgT0UdJHkGRh5S4hHg0V=Abd7UizH49F+V2QJJQxguHvCYhMg@mail.gmail.com>
+References: <20250307173611.129125-1-maxime.chevallier@bootlin.com>
+	<20250307173611.129125-10-maxime.chevallier@bootlin.com>
+	<8d3a9c9bb76b1c6bc27d2bd01f4831b2cac83f7f.camel@gmail.com>
+	<20250328090621.2d0b3665@fedora-2.home>
+	<CAKgT0Ue_JzmJAPKBhe6XaMkDCy+YNNg5_5VvzOR6CCbqcaQg3Q@mail.gmail.com>
+	<12e3b86d-27aa-420b-8676-97b603abb760@lunn.ch>
+	<CAKgT0UcZRi1Eg2PbBnx0pDG_pCSV8tfELinNoJ-WH4g3CJOh2A@mail.gmail.com>
+	<02c401a4-d255-4f1b-beaf-51a43cc087c5@lunn.ch>
+	<Z-qsnN4umaz0QrG0@shell.armlinux.org.uk>
+	<20250331182000.0d94902a@fedora.home>
+	<CAKgT0UdJHkGRh5S4hHg0V=Abd7UizH49F+V2QJJQxguHvCYhMg@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-FEAS-Client-IP: 192.168.60.3
-X-FE-Policy-ID: 2:4:0:SYSTEM
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=crpt.ru; s=crpt.ru; c=relaxed/relaxed;
- h=from:to:cc:subject:date:message-id:content-type:mime-version;
- bh=X+FeLn4yQ3EuUGa91ttWBxCVvRzj24Ap0XyairhLOG8=;
- b=kBJe710rNp6XE77GRLslW/h5oCWwYT963XzfEx3vzgnEw0c/ycheVu3EiX6DEredBQEOw9xgJ231
-	H8GOsKetqxvVxXGh2lmh9S6zUorJUiLzQ8nbT8rVSuSoUwKuRJIiV8+NC8Rb9vt6QbSs7iT2mpMI
-	ONI0tht/5K77fDn0AprIdI6Bjp5VWYxVSvbBLYR4q9VfFSB5qZPxp+Clp4aucl3O/jVQfV1uuILu
-	ZBr/UwxQ03jA+0K1zzAEEfPFb1lsqV72HAsKeXE8SVSC/soRAWvNQ2tAPJnNTR274d18ABlmOlkB
-	jkJWqY3grNBhAXZy8GhG1ZDSq3EnOFzhQ58AtA==
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddukedvudduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtqhertdertdejnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeehgeeijeekteffhfelheetffeghfffhfeufeeifeffjeeftefhveduteduueeunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvtddprhgtphhtthhopegrlhgvgigrnhguvghrrdguuhihtghksehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdpr
+ hgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomh
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+On Mon, 31 Mar 2025 09:38:34 -0700
+Alexander Duyck <alexander.duyck@gmail.com> wrote:
 
-Static analysis shows that pointer "my_ets" cannot be NULL because it=20
-points to the object "struct ieee_ets".
+> On Mon, Mar 31, 2025 at 9:20=E2=80=AFAM Maxime Chevallier
+> <maxime.chevallier@bootlin.com> wrote:
+> >
+> > On Mon, 31 Mar 2025 15:54:20 +0100
+> > "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+> > =20
+> > > On Mon, Mar 31, 2025 at 04:17:02PM +0200, Andrew Lunn wrote: =20
+> > > > On Fri, Mar 28, 2025 at 04:26:04PM -0700, Alexander Duyck wrote: =20
+> > > > > A serdes PHY is part of it, but not a traditional twisted pair PH=
+Y as
+> > > > > we are talking about 25R, 50R(50GAUI & LAUI), and 100P interfaces=
+. I
+> > > > > agree it is a different beast, but are we saying that the fixed-l=
+ink
+> > > > > is supposed to be a twisted pair PHY only? =20
+> > > >
+> > > > With phylink, the PCS enumerates its capabilities, the PHY enumerat=
+es
+> > > > its capabilities, and the MAC enumerates it capabilities. phylink t=
+hen
+> > > > finds the subset which all support.
+> > > >
+> > > > As i said, historically, fixed_link was used in place of a PHY, sin=
+ce
+> > > > it emulated a PHY. phylinks implementation of fixed_link is however
+> > > > different. Can it be used in place of both a PCS and a PHY? I don't
+> > > > know. =20
+> > >
+> > > In fixed-link mode, phylink will use a PCS if the MAC driver says the=
+re
+> > > is one, but it will not look for a PHY. =20
+>=20
+> Admittedly the documentation does reference much lower speeds as being
+> the use case. I was a bit of an eager beaver and started assembling
+> things without really reading the directions. I just kind of assumed
+> what I could or couldn't get away with within the interface.
+>=20
+> > > > You are pushing the envelope here, and maybe we need to take a step
+> > > > back and consider what is a fixed link, how does it fit into the MA=
+C,
+> > > > PCS, PHY model of enumeration? Maybe fixed link should only represe=
+nt
+> > > > the PHY and we need a second sort of fixed_link object to represent
+> > > > the PCS? I don't know? =20
+> > >
+> > > As I previously wrote today in response to an earlier email, the
+> > > link modes that phylink used were the first-match from the old
+> > > settings[] array in phylib which is now gone. This would only ever
+> > > return _one_ link mode, which invariably was a baseT link mode for
+> > > the slower speeds.
+> > >
+> > > Maxime's first approach at adapting this to his new system was to
+> > > set every single link mode that corresponded with the speed. I
+> > > objected to that, because it quickly gets rediculous when we end
+> > > up with lots of link modes being indicated for e.g. 10, 100M, 1G
+> > > but the emulated PHY for these speeds only indicates baseT. That's
+> > > just back-compatibility but... in principle changing the link modes
+> > > that are reported to userspace for a fixed link is something we
+> > > should not be doing - we don't know if userspace tooling has come
+> > > to rely on that.
+> > >
+> > > Yes, it's a bit weird to be reporting 1000baseT for a 1000BASE-X
+> > > interface mode, but that's what we've always done in the past and
+> > > phylink was coded to maintain that (following the principle that
+> > > we shouldn't do gratuitous changes to the information exposed to
+> > > userspace.)
+> > >
+> > > Maxime's replacement approach is to just expose baseT, which
+> > > means that for the speeds which do not have a baseT mode, we go
+> > > from supporting it but with a weird link mode (mostly baseCR*)
+> > > based on first-match in the settings[] table, to not supporting the
+> > > speed. =20
+> >
+> > I very wrongfully considered that there was no >10G fixed-link users, I
+> > plan to fix that with something like the proposed patch in the
+> > discussion, that reports all linkmodes for speeds above 10G (looks less
+> > like a randomly selected mode, you can kind-of see what's going on as
+> > you get all the linkmodes) but is a change in what we expose to
+> > userspace. =20
+>=20
+> I am not sure if there are any >10G users. I haven't landed anything
+> in the kernel yet and like I said what I was doing was more of a hack
+> to enable backwards compatibility on older kernels w/ the correct
+> supported and advertised modes. If I have to patch one kernel to make
+> it work for me that would be manageable.
+>=20
+> One thing I was thinking about that it looks like this code might
+> prevent would be reinterpreting the meaning of duplex. Currently we
+> only have 3 values for it 0 (half), 1 (Full), and ~0 (Unknown). One
+> thought I had is that once we are over 1G we don't really care about
+> that anymore as everything is Full duplex and instead care about
+> lanes. As it turns out the duplex values currently used would work
+> well to be extended out to lanes. Essentially 0 would still be half, 1
+> would be 1 lane full duplex, 2-8 could be the number of full duplex
+> lanes the interface is using, and unknown lane count would still be ~0
+> since it is unlikely we will end up with anything other than a power
+> of 2 number of lanes anyway. With that you could greatly sort out a
+> number of modes in your setup. We would then have to do some cleanups
+> here and there to do something like "duplex =3D=3D DUPLEX_UNKNOWN ? duplex
+> : !!duplex" to clean up any cases where the legacy values are
+> expected.
 
-Remove the extra NULL check. It is meaningless and harms the readability
-of the code.
+Funny you say that, the phy_port work I was referring to with the
+mediums introduction also tracks the lanes for a given port=20
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+previous outdated iteration here
+: https://lore.kernel.org/netdev/20250213101606.1154014-4-maxime.chevallier=
+@bootlin.com/
 
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
----
- drivers/net/ethernet/mellanox/mlx4/en_dcb_nl.c | 3 ---
- 1 file changed, 3 deletions(-)
+The idea is to represent physical interfaces to a NIC, as NICs can have
+multiple ports for different types of connectors. Ports would be driven
+by either a PHY, a NIC directly or an SFP.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_dcb_nl.c b/drivers/net/e=
-thernet/mellanox/mlx4/en_dcb_nl.c
-index 752a72499b4f..be80da03a594 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_dcb_nl.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_dcb_nl.c
-@@ -290,9 +290,6 @@ static int mlx4_en_dcbnl_ieee_getets(struct net_device =
-*dev,
- 	struct mlx4_en_priv *priv =3D netdev_priv(dev);
- 	struct ieee_ets *my_ets =3D &priv->ets;
-=20
--	if (!my_ets)
--		return -EINVAL;
--
- 	ets->ets_cap =3D IEEE_8021QAZ_MAX_TCS;
- 	ets->cbs =3D my_ets->cbs;
- 	memcpy(ets->tc_tx_bw, my_ets->tc_tx_bw, sizeof(ets->tc_tx_bw));
---=20
-2.43.0
+The port contains, among other things, speed, duplex, n_lanes, and the
+medium (with more granularity than just TP/Backplane/Fiber, as we list
+the 802.3 media : BaseS / BaseC / BaseK / BaseT ...)
+
+We already have information about whickh linkmode uses how many lanes,
+but we don't do much with that information besides reporting it to
+userspace.
+
+I'll revamp the whole thing for the next iteration, however I really
+only have a deep-ish understanding of embedded usecases, and I lack
+insights on other classes of devices such as what your working on.
+
+I'll be very happy to get your feedback on it, I plan to send that when
+net-next reopens.
+
+Maxime
+
