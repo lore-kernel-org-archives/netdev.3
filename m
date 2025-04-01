@@ -1,71 +1,72 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A871E5B78;
-	Tue,  1 Apr 2025 08:28:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADAE31E47B3
+	for <netdev@vger.kernel.org>; Tue,  1 Apr 2025 08:28:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743496120; cv=none; b=c2TJ5JP7FRxKnhVMoBEvYbKf6ijsULfc6OHgzQSR8mrXCEHKTEMXE12wUy7FnUOA5EdqswpLlhwNheCJh48WwalDyHzurBNMBgv62HnQh+Q9K11fhRzYXZsHaj6G51f/+7Caddr9Hqu6WDC9rL7LPIz4vKwvs04xzZmvxZT4yPk=
+	t=1743496121; cv=none; b=fXWrrySnA0qmyatF5zHsxX6NAa66dM6e1ZtwVKnWSdrBZp053Mq2aALs1n+8NiKr5vvIyb/QwuABzJjzA5yB6vhdjLVqlBGfub5v5kfnK5u5tO0KJLZVQ2+7HfYrA7ze5dXh0JAQPyiVtxAkamEv0LGts3oOfHMJBrIVYCzq1Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743496120; c=relaxed/simple;
-	bh=FIQRNqALScV1BSz3+stZ9gXajjKm+lKccjTA9d7LlrU=;
+	s=arc-20240116; t=1743496121; c=relaxed/simple;
+	bh=2TEgE2Gh5l/esd2JjsKB39oXFx7MFG2tU8DRfLx4nrk=;
 	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=KJj6jAqYnczkKQTO635wnUgTGUKxzqcMUOqetQBSyOgICJKbqL3brd3mgavwPMOacH7ZbPACrIAMQjRxH/I7DwyCY6a+ySEK0bO1KDInYQKSy69hZTg9EzZhIcoI7UIDnXnJx1QFkoNlMGgK0sxyWhor9SPQdCvlWIQyxg06XXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V3y6K5FF; arc=none smtp.client-ip=209.85.221.49
+	 MIME-Version:Content-Type; b=qxGzCVlKeMJpyP7Ht4VEEBJQmKXQkPsJodvh/xN7IOkcHL/znxyKMTyLgMGNtAv+F69QC+CDx43nl5opvEn9e9KIDzMJzObZXtqBKJBVQuPaE2rlO6EBv/saQ4J8FsghkxOj1vlRyQDjUKzLw0HDy3GEkFQtlmFSfZTgFVCw/kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WvgiQBtQ; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V3y6K5FF"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-39bf44be22fso2664068f8f.0;
-        Tue, 01 Apr 2025 01:28:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WvgiQBtQ"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43948f77f1aso36676245e9.0
+        for <netdev@vger.kernel.org>; Tue, 01 Apr 2025 01:28:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743496116; x=1744100916; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1743496118; x=1744100918; darn=vger.kernel.org;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ooc6+DVp9r7uPavCnUFRGj00nf3JAwQAzWilPBr2i+o=;
-        b=V3y6K5FFyg5ldAyBMFfmvMWsTHrrbX2j0rRmhKHqTEKzzsJPxeUv/uQFx12e/A3Ty/
-         8zdKoAVHDFva4b4GDx2qmkLQuRiQUBJmymt3lsolb3Sny8yViAjcHwRncsYaOaQnUkXc
-         ouKQv+DF/Q1GFFzMQClisJEvuUh23xl2Gr9z6BogsM82Rt/n0hGG4F39lmdh+2xbZ6NT
-         nso9BrSTUHO1MEBL4AoCGPgfZD6uhsqbie4gnQuDPhXlpZJq9onPHS6u6+ql7vcVq1Xp
-         V+gQRaEgaGAKCO74v5pKBNKFAE+Zidx2JoWWPAxy3+v6WNoWm6J3eKGcbRblsMi6jrNP
-         3KOg==
+        bh=m3NjyvvecvcpSpvcJ8ewc7DM5ZorTog+O/HqraBhzZ8=;
+        b=WvgiQBtQPjNchslTca0qYWoz8x48xQUMQqroi4RDxUbC+RNa9K6/KVS/emDo9filW4
+         wH5MTlVYxarknK5+Cn4kl76eGs4UdtwJGBm6odkQLZwEZm2RGGH0BYO92wxOo3ui5vE0
+         XZXVMMvGcpXMLlymixdaG3WMiLQNJ/T51+an4S/PdYr9N8NQo9TEssErzP9a8+yBpV3G
+         DhyQTsuPmfiSZeuWnUpFdrbO0kvwCfTy5JKLB7MBAIaDs1T9Ws8QvN2YW4ObHbiYB6BY
+         7ZRJxsGLbtJnannUhy1ZkHO9xSy48lXvz0cy+lwb6t9uWRrbNErcy4nJwdqJB/lGK+wX
+         QtEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743496116; x=1744100916;
+        d=1e100.net; s=20230601; t=1743496118; x=1744100918;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ooc6+DVp9r7uPavCnUFRGj00nf3JAwQAzWilPBr2i+o=;
-        b=eYwSu3f469Nw2mghTRJV1wAw7I7plBfVi88im34le9GEs15ppqCt4ezNN351vMqpZg
-         Jy8QfvNgcfUDYVTcOk9cEMzF5sfAxLxJTtVczqjEaMDRORosLPblUkP93WKRwnkNemsb
-         KC9melXOrRmPqcqSmKnn7oiP8XGLdfVnGOmSjiIkWOMXnINQdu+4oY/uoTsqhY7wlCAh
-         NKKcEBeFIpKXXiNShwxvC1nqVyVTDhID9dWuZPo/zbjdgypXnpBwzKUPur5u6YhK8Kj/
-         juE3xYvWVQ2BI1vqLeIntl9Rcnyla/HzyREMKD1nRgF1sh0ZOdtRq+WR7fOJMzK0lwj9
-         VuTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX6b1LIoeCwjG3adFeUQroTtE2K9ZvZgbqmwH3nGATH2B2P4ehPuDPBy4C3WvYpV6N4rCOmoQdDOSA3SffQGI0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzX2arWEaRru5eYu3yUDspAW3HNE5HmAunpAwNbai+tmIeSzN7w
-	gRO7x2Jjh/tfM6xqMPBCxwpjwi4PJORbTpggfRbxdkmESnSp6peLtBdEdg==
-X-Gm-Gg: ASbGncuj0CqQ+1P1V4JeN8aL5JR8Jn67xqFQYwShJhINVwmq4lzRZbyFVLMsQmn1NcF
-	HHDvK8stscIca9rnFLtmvuDTbXLVOK7D9VezHzpwuF0ACw47mRzm1Qkf0L2uV0CIPU2nmFIK2pR
-	H1bv+2vvJUdwAQA3vRtTo2x0/UJL3eWvTMULJXL3JUFEpOlcr9rWR0SX37DcrVkoDreDP1m8aWg
-	EkZIXw8ihL+LbMBXHtNedhEsoa3PSAk7scj6flL/lqGokoDYsgVl1JcGDd6Cz3r3NN/J7pjVAAj
-	BNxLl00N0qSKIHz94JsgEQ8d0otSW7XlDJ5gunHrGPwrt9wwfRJKS8fBWQ==
-X-Google-Smtp-Source: AGHT+IFlADYGu9ICOy4oPXjYef5zwTnWdLYJSejuZX6zIuMPuQyc+Ja2ETKwKDkCwW23gvk1OmNaRg==
-X-Received: by 2002:a5d:47c7:0:b0:39a:ca0c:fc90 with SMTP id ffacd0b85a97d-39c120de403mr8997314f8f.14.1743496116177;
-        Tue, 01 Apr 2025 01:28:36 -0700 (PDT)
+        bh=m3NjyvvecvcpSpvcJ8ewc7DM5ZorTog+O/HqraBhzZ8=;
+        b=rrDZKyIRCzSbGM3mVgjHR0tx07FAsDwq0XgF2Gm2ztvToI6qjqOmcrNO+QlG4JSNuj
+         LFTUTFbLpcIZWs3zMFEv29cm/71a5yo4CgGxY9S0ct+PkDEod7HSuuNkEJwoD6tZsGWU
+         rhM+tg9lTrszZYHMaZNCN7gi8I75KC+dqkJqh9fEPQkpxeQB5Kbq5xN7Iufu7epwjUnd
+         NfmkCWPrH21Sr1ywT0Q8FdbbVDIiLVyA6PZNAB6Gug57ZfWLhCww7M+VxEwz7dUMqLPY
+         yRZtAts+eBiT8CoDnTwJKbSaiB35808gUJUs+VtD/PFituaT3G71vIneMYQDUQk6iZTz
+         J2YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUmwi96eaSYQvxDVdfBgII+zEQHG16wbjYv6J/2DGMiE+gmY93+7Bdggt1R56q955T2eB3aGOk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1nh0yFkjke41lG8ysjYJ7B472PDvMe1ktoY8h7brXuqo5sH1u
+	uU2/Lzl5Hj1Iwz6M68JNQFNFUYoqrc/XLYMR6IOe5XbfWwn9Zttd
+X-Gm-Gg: ASbGnctPTJKfsVgDp3oK9DachDwenSjmjxx9aHf+X0HnyxhhOuravlxGGdJN3pPM2Pe
+	lAXDLrFQ/8uxGHaVlWRAwB/vXTNuCMNfQiyW3LT6tWzuRXiY2MjSHdl8SrlWR+kvdmzgZz8JjWn
+	HKwnoYyJ7/9avnbbhnFikgLU28rWq6NCpSvKNccScbMAt2kmgLBDnCpXbL+OsjbcpAxTB8faRUl
+	GomO8fsYzC+gKl7MiwS/KdTDMpF1s8defutZrFxjeOaDwUjnZ6lW6nqUfh2RtLYqJ7V1uSA66uf
+	mAkIrHVhz8qB2emBdy7oHOXX0gRuVfzFRPvdotSJKNWlpwvxwrcR1SVAk0q5KqcOr8Vi
+X-Google-Smtp-Source: AGHT+IGSSsJ2uaoAFr57mIV3I9zTlIs7G7pBWSePUCC5JrvteLiXIohHqI5a5A6ULL01I6AUn/BgHg==
+X-Received: by 2002:a05:600c:510c:b0:43d:10a:1b90 with SMTP id 5b1f17b1804b1-43db6248f5cmr105815445e9.16.1743496117793;
+        Tue, 01 Apr 2025 01:28:37 -0700 (PDT)
 Received: from imac ([2a02:8010:60a0:0:d018:a09f:82bc:eb27])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b6656afsm13320225f8f.40.2025.04.01.01.28.35
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b662bf9sm13087089f8f.29.2025.04.01.01.28.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 01:28:35 -0700 (PDT)
+        Tue, 01 Apr 2025 01:28:37 -0700 (PDT)
 From: Donald Hunter <donald.hunter@gmail.com>
-To: Florian Westphal <fw@strlen.de>
-Cc: <netdev@vger.kernel.org>,  <netfilter-devel@vger.kernel.org>
-Subject: Re: [PATCH v2 net-next] netlink: specs: add conntrack dump and
- stats dump support
-In-Reply-To: <20250210152159.41077-1-fw@strlen.de> (Florian Westphal's message
-	of "Mon, 10 Feb 2025 16:21:52 +0100")
-Date: Tue, 11 Feb 2025 11:11:13 +0000
-Message-ID: <m2cyfoohwu.fsf@gmail.com>
-References: <20250210152159.41077-1-fw@strlen.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
+  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
+  yuyanghuang@google.com,  jacob.e.keller@intel.com
+Subject: Re: [PATCH net] netlink: specs: fix schema of rt_addr
+In-Reply-To: <20250401012939.2116915-1-kuba@kernel.org> (Jakub Kicinski's
+	message of "Mon, 31 Mar 2025 18:29:39 -0700")
+Date: Tue, 01 Apr 2025 09:28:10 +0100
+Message-ID: <m2msd0i8v9.fsf@gmail.com>
+References: <20250401012939.2116915-1-kuba@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -75,78 +76,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Florian Westphal <fw@strlen.de> writes:
+Jakub Kicinski <kuba@kernel.org> writes:
 
-> This adds support to dump the connection tracking table
-> ("conntrack -L") and the conntrack statistics, ("conntrack -S").
+> The spec is mis-formatted, schema validation says:
 >
-> Example conntrack dump:
-> tools/net/ynl/pyynl/cli.py --spec Documentation/netlink/specs/conntrack.yaml --dump get
+>   Failed validating 'type' in schema['properties']['operations']['properties']['list']['items']['properties']['dump']['properties']['request']['properties']['value']:
+>     {'minimum': 0, 'type': 'integer'}
+>
+>   On instance['operations']['list'][3]['dump']['request']['value']:
+>     '58 - ifa-family'
+>
+> The ifa-family clearly wants to be part of an attribute list.
+>
+> Fixes: dfb0f7d9d979 ("doc/netlink: Add spec for rt addr messages")
 
-Hi Florian,
+The fixes tag looks wrong. I think it should be:
 
-Updates all look good, with one minor new point below.
+Fixes: 4f280376e531 ("selftests/net: Add selftest for IPv4 RTM_GETMULTICAST support")
 
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+I wonder if the op name should be changed from getmaddrs to getmaddr,
+removing the plural to be consistent with do/dump conventions, or to
+getmulticast to be consistent with RTM_GETMULTICAST.
 
-> +operations:
-> +  enum-model: directional
-> +  list:
-> +    -
-> +      name: get
-> +      doc: get / dump entries
-> +      attribute-set: conntrack-attrs
-> +      fixed-header: nfgenmsg
-> +      do:
-> +        request:
-> +          value: 0x101
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: donald.hunter@gmail.com
+> CC: yuyanghuang@google.com
+> CC: jacob.e.keller@intel.com
+> ---
+>  Documentation/netlink/specs/rt_addr.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/Documentation/netlink/specs/rt_addr.yaml b/Documentation/netlink/specs/rt_addr.yaml
+> index 5dd5469044c7..3bc9b6f9087e 100644
+> --- a/Documentation/netlink/specs/rt_addr.yaml
+> +++ b/Documentation/netlink/specs/rt_addr.yaml
+> @@ -187,6 +187,7 @@ protonum: 0
+>        dump:
+>          request:
+>            value: 58
 > +          attributes:
-> +            - tuple-orig
-> +            - tuple-reply
-> +            - zone
-> +        reply:
-> +          value: 0x100
-> +          attributes:
-
-To avoid duplicating the attribute list in the dump reply, you can
-reference this definition:
-
-@@ -565,7 +565,7 @@ operations:
-             - zone
-         reply:
-           value: 0x100
--          attributes:
-+          attributes: &entries-attrs
-             - tuple-orig
-             - tuple-reply
-             - status
-@@ -598,28 +598,7 @@ operations:
-             - zone
-         reply:
-           value: 0x100
--          attributes:
--            - tuple-orig
--            - tuple-reply
--            - status
--            - protoinfo
--            - help
--            - nat-src
--            - nat-dst
--            - timeout
--            - mark
--            - counter-orig
--            - counter-reply
--            - use
--            - id
--            - nat-dst
--            - tuple-master
--            - seq-adj-orig
--            - seq-adj-reply
--            - zone
--            - secctx
--            - labels
--            - synproxy
-+          attributes: *entries-attrs
-     -
-       name: get-stats
-       doc: dump pcpu conntrack stats
+>              - ifa-family
+>          reply:
+>            value: 58
