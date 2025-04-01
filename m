@@ -1,211 +1,153 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7D5155382;
-	Tue,  1 Apr 2025 06:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A016B1DF261
+	for <netdev@vger.kernel.org>; Tue,  1 Apr 2025 06:48:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743489949; cv=none; b=YZrfYgMttH5Q38Ur5S0A2KrOMLpTunujzgmTd5Ncds0JjE25OS5vfm2B5Ve9FZU9ReOtIVmNSMT3/dlP+K3YSWJbDfpz7kdU4XX8CLcWhfALpEUhV2qxJSyRrdwZnplytWTqyhI+n76tKCkJUHWGQbB12KbzX623Nz7UWz0fyt0=
+	t=1743490106; cv=none; b=KUxrT1xtwx56lcMCmfLTodV3IFE8R7RsLlw4iwzKbrTDNyOyrnKQC+USbGlEvOcvXWe3uj5WFy5nYb5ow6IdnGhx3h+pKvpKCGoPnywdLlU3pD5mlARKQ7IsWTqYgBig2BlPebcti3Fhkyd+ch4qRKsnDsdfsMLVvMCnkTCoS8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743489949; c=relaxed/simple;
-	bh=/yzplqdAPDSpRgvysGBcyb70oiqT6p+pK2C0nxnbMGo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bskyiv63FgqVQ3S9to+wiypDY+BhXZMez/28Oq5YIo/k7+UTr4u0CYGW2lt39YhLCAjgo+2rvHAVCUu7igeoSP3tUdXX9NxUhXY1Em4PDifSkVjToNtz85dcKPaB1qvmZ4WuD8y4ZzyAzijUWmIhGRhb254ZEKhMfa2ISEGwLFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ob65MilM; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1743490106; c=relaxed/simple;
+	bh=aWTMd0n/WGt5QHM3Y3BeRPkvR+LKpzjED4zv2rp+2z8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YqKJf536nF/XO6s4XSVj5S45MGBUnKNtRJFi71MOTldmuYZI54dk/m31fIp56LqCDeqQvHaKz1bp2g14q+NpVMwv7Y+9JgeM2z32V1thoM4zQgkz2wF1h7/ktrsNFj/DSy5pQxQ9kVHRvBTct2zkxw243W95nFKmpiYBbIfcVfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KX8ZUeUS; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ob65MilM"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BD8ED443CF;
-	Tue,  1 Apr 2025 06:45:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1743489943;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/yzplqdAPDSpRgvysGBcyb70oiqT6p+pK2C0nxnbMGo=;
-	b=Ob65MilMRjUX+n6NZqEAUTKZafOYUIEGrdrF2QgtWmsQhjAChUtmi+qwu6Qd7yudVc0ZzG
-	ieCZTzcZ7L5KPcdp8mAH/0SGAaYGVn/4M+OOq9k3K+mcCHuNcw+4YlkrC4PKo4DeKs8SQQ
-	+iO1vJ2BAjuKe40dFoj10+PhpEZip5WOLdfkgCA86/DoRXLansw9fqJWppkCxsIXYG+ES/
-	c5P2miWICh4PQTVvhtBAZIt4YurWWcygZfxKmAbF8gL48S9InRf/3KxQUU66CKTGgTnXQH
-	BrzyOy02d0aC/XPgo5cAIAvBIKFXPI5Ipq3mWH+0xYqgTEVphDXX4L0+/lleqA==
-Date: Tue, 1 Apr 2025 09:41:53 +0200
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Alexander Duyck <alexander.duyck@gmail.com>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, Andrew Lunn
- <andrew@lunn.ch>, davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Heiner
- Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
- linux-arm-kernel@lists.infradead.org, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
- Florian Fainelli <f.fainelli@gmail.com>, Vladimir Oltean
- <vladimir.oltean@nxp.com>, =?UTF-8?B?S8O2cnk=?= Maincent
- <kory.maincent@bootlin.com>, Oleksij Rempel <o.rempel@pengutronix.de>,
- Simon Horman <horms@kernel.org>, Romain Gantois
- <romain.gantois@bootlin.com>
-Subject: Re: [PATCH net-next v5 09/13] net: phylink: Use phy_caps_lookup for
- fixed-link configuration
-Message-ID: <20250401094153.43974af2@fedora.home>
-In-Reply-To: <CAKgT0UdJHkGRh5S4hHg0V=Abd7UizH49F+V2QJJQxguHvCYhMg@mail.gmail.com>
-References: <20250307173611.129125-1-maxime.chevallier@bootlin.com>
-	<20250307173611.129125-10-maxime.chevallier@bootlin.com>
-	<8d3a9c9bb76b1c6bc27d2bd01f4831b2cac83f7f.camel@gmail.com>
-	<20250328090621.2d0b3665@fedora-2.home>
-	<CAKgT0Ue_JzmJAPKBhe6XaMkDCy+YNNg5_5VvzOR6CCbqcaQg3Q@mail.gmail.com>
-	<12e3b86d-27aa-420b-8676-97b603abb760@lunn.ch>
-	<CAKgT0UcZRi1Eg2PbBnx0pDG_pCSV8tfELinNoJ-WH4g3CJOh2A@mail.gmail.com>
-	<02c401a4-d255-4f1b-beaf-51a43cc087c5@lunn.ch>
-	<Z-qsnN4umaz0QrG0@shell.armlinux.org.uk>
-	<20250331182000.0d94902a@fedora.home>
-	<CAKgT0UdJHkGRh5S4hHg0V=Abd7UizH49F+V2QJJQxguHvCYhMg@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KX8ZUeUS"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5efe8d9ebdfso2953987a12.3
+        for <netdev@vger.kernel.org>; Mon, 31 Mar 2025 23:48:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743490103; x=1744094903; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ttfHQMhkIn+oSS1IOHBwzHwIzCdKvXbxdgLxXrmA4ZM=;
+        b=KX8ZUeUSN43JsTB6kXj8LyChisESEmgJ4B3lD94rtz0ZcyaIO/9f/U4BIe+kFWzU4E
+         8BfiK5Rmuw72q+zH0vjJZwfelMliX19N283lfTWc+hJkUfe0EE/GhaUi3ew+yqiio4Jg
+         ekmg77raa+QzFvD1BpYXnkvRdToNRCUpjwhGSEaFC0wEKdFChy28ZdN7Q+wbskMlYmOu
+         CzIazPacG5MAygGocRM+uh/WvBOk4NM3LvnU77SBLKx0s7QLMxq5v3GYOGnSncnhEXP7
+         1YfNNZj+OQSFUTR7xRva6dfjIpGSVjziQ+xP8qDn0ex67Jy0nwEgCeihz2+0VUXbvNlW
+         mP7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743490103; x=1744094903;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ttfHQMhkIn+oSS1IOHBwzHwIzCdKvXbxdgLxXrmA4ZM=;
+        b=G/64noGnOjHZUV3ej4e4nSgdytivQODC+9h53taan5fxakwEDv466njSM1XB+f235n
+         ryASgI1r9b9Duyyv0h1GN1M/ba7As3DlGUZ83fzTNB3D1cDJvu5nKvng76rJhIUlOXPd
+         nUEg/UC2D928R7h6g1GgZYWcLQVBJOse0RONnm2ozzXcu8nV9yJo3izngog7uNkkyxe1
+         krCcbPIv7VVG3SsV8dUuMwPVsAAv7P8fPuD01MAph8dVbdIKtuBbhrUQKC1WIyScJyMl
+         uX08rWHxFgs/ALORvrgQno0nYXBZSdH9sX0NXb7mQTB+PKE+Ba0ZURpypADdMsaSWep7
+         i+6A==
+X-Forwarded-Encrypted: i=1; AJvYcCWHEFA6TUC7krXLDvUCoKgmaL/jXVhv0oVKMN0pKTft10vMvqa15zhqjwJSnVIVvQL54yrLfWk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5daQd2UGClXsLzzWkVZORjra50hFxfcen1pAzkB2eKiIKtOxn
+	2kqNL7n8vZFa31QMOKEluCm36NngUmxxzvlgprrNP+vuD8lObSrYOa2JfBsEjhq4xEZBc7Lhm5/
+	CK3gZxGb20cJmyiIj3GSyG1RNEHU=
+X-Gm-Gg: ASbGncvnB2vY2yetFGFH1juNUdtMVF8VCUxkDtJ9ppl/KU+aScaLD2iLjP+nZA2KWO3
+	BcsGx8qOruCkF83HPn0p02B1bs2W11Bwv6PtVdCwjZB/YUZEwcDf3aveWAKzuYaTZsBiHf61ibf
+	7tiiWdGRiJt8VOyvxKrriPZD34FkO3
+X-Google-Smtp-Source: AGHT+IEB6HdhgIFT+acktUH3yJ0tlpGqfL4v8YLv56HLTC9NILraErhCPjqlwi6UibzZen2nLqy50xBUUtaSoq9eu9M=
+X-Received: by 2002:a05:6402:210e:b0:5de:aa54:dc30 with SMTP id
+ 4fb4d7f45d1cf-5edfcc04b36mr9010860a12.5.1743490102716; Mon, 31 Mar 2025
+ 23:48:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20250331114729.594603-1-ap420073@gmail.com> <20250331114729.594603-2-ap420073@gmail.com>
+ <20250331103416.7b76c83c@kernel.org>
+In-Reply-To: <20250331103416.7b76c83c@kernel.org>
+From: Taehee Yoo <ap420073@gmail.com>
+Date: Tue, 1 Apr 2025 15:48:11 +0900
+X-Gm-Features: AQ5f1Jr7M1aS7CTQQ2IRS5FEZcpWMkH-1PKs1vQ6UWMSHcWrXTYemPxvUnq53FI
+Message-ID: <CAMArcTVRQnxrLnXPQp4D+F1TMS7SeQLtWTsxaLt8vJ7Gdqfj=Q@mail.gmail.com>
+Subject: Re: [RFC net-next 1/2] eth: bnxt: refactor buffer descriptor
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com, 
+	andrew+netdev@lunn.ch, horms@kernel.org, michael.chan@broadcom.com, 
+	pavan.chebbi@broadcom.com, ilias.apalodimas@linaro.org, dw@davidwei.uk, 
+	netdev@vger.kernel.org, kuniyu@amazon.com, sdf@fomichev.me, 
+	aleksander.lobakin@intel.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddukedvudduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtqhertdertdejnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeehgeeijeekteffhfelheetffeghfffhfeufeeifeffjeeftefhveduteduueeunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvtddprhgtphhtthhopegrlhgvgigrnhguvghrrdguuhihtghksehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdpr
- hgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomh
-X-GND-Sasl: maxime.chevallier@bootlin.com
 
-On Mon, 31 Mar 2025 09:38:34 -0700
-Alexander Duyck <alexander.duyck@gmail.com> wrote:
+On Tue, Apr 1, 2025 at 2:34=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wro=
+te:
+>
 
-> On Mon, Mar 31, 2025 at 9:20=E2=80=AFAM Maxime Chevallier
-> <maxime.chevallier@bootlin.com> wrote:
+Hi Jakub,
+Thanks a lot for the review!
+
+> On Mon, 31 Mar 2025 11:47:28 +0000 Taehee Yoo wrote:
+> > There are two kinds of buffer descriptors in bnxt, struct
+> > bnxt_sw_rx_bd and struct bnxt_sw_rx_agg_bd.(+ struct bnxt_tpa_info).
+> > The bnxt_sw_rx_bd is the bd for ring buffer, the bnxt_sw_rx_agg_bd is
+> > the bd for the aggregation ring buffer. The purpose of these bd are the
+> > same, but the structure is a little bit different.
 > >
-> > On Mon, 31 Mar 2025 15:54:20 +0100
-> > "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
-> > =20
-> > > On Mon, Mar 31, 2025 at 04:17:02PM +0200, Andrew Lunn wrote: =20
-> > > > On Fri, Mar 28, 2025 at 04:26:04PM -0700, Alexander Duyck wrote: =20
-> > > > > A serdes PHY is part of it, but not a traditional twisted pair PH=
-Y as
-> > > > > we are talking about 25R, 50R(50GAUI & LAUI), and 100P interfaces=
-. I
-> > > > > agree it is a different beast, but are we saying that the fixed-l=
-ink
-> > > > > is supposed to be a twisted pair PHY only? =20
-> > > >
-> > > > With phylink, the PCS enumerates its capabilities, the PHY enumerat=
-es
-> > > > its capabilities, and the MAC enumerates it capabilities. phylink t=
-hen
-> > > > finds the subset which all support.
-> > > >
-> > > > As i said, historically, fixed_link was used in place of a PHY, sin=
-ce
-> > > > it emulated a PHY. phylinks implementation of fixed_link is however
-> > > > different. Can it be used in place of both a PCS and a PHY? I don't
-> > > > know. =20
-> > >
-> > > In fixed-link mode, phylink will use a PCS if the MAC driver says the=
-re
-> > > is one, but it will not look for a PHY. =20
->=20
-> Admittedly the documentation does reference much lower speeds as being
-> the use case. I was a bit of an eager beaver and started assembling
-> things without really reading the directions. I just kind of assumed
-> what I could or couldn't get away with within the interface.
->=20
-> > > > You are pushing the envelope here, and maybe we need to take a step
-> > > > back and consider what is a fixed link, how does it fit into the MA=
-C,
-> > > > PCS, PHY model of enumeration? Maybe fixed link should only represe=
-nt
-> > > > the PHY and we need a second sort of fixed_link object to represent
-> > > > the PCS? I don't know? =20
-> > >
-> > > As I previously wrote today in response to an earlier email, the
-> > > link modes that phylink used were the first-match from the old
-> > > settings[] array in phylib which is now gone. This would only ever
-> > > return _one_ link mode, which invariably was a baseT link mode for
-> > > the slower speeds.
-> > >
-> > > Maxime's first approach at adapting this to his new system was to
-> > > set every single link mode that corresponded with the speed. I
-> > > objected to that, because it quickly gets rediculous when we end
-> > > up with lots of link modes being indicated for e.g. 10, 100M, 1G
-> > > but the emulated PHY for these speeds only indicates baseT. That's
-> > > just back-compatibility but... in principle changing the link modes
-> > > that are reported to userspace for a fixed link is something we
-> > > should not be doing - we don't know if userspace tooling has come
-> > > to rely on that.
-> > >
-> > > Yes, it's a bit weird to be reporting 1000baseT for a 1000BASE-X
-> > > interface mode, but that's what we've always done in the past and
-> > > phylink was coded to maintain that (following the principle that
-> > > we shouldn't do gratuitous changes to the information exposed to
-> > > userspace.)
-> > >
-> > > Maxime's replacement approach is to just expose baseT, which
-> > > means that for the speeds which do not have a baseT mode, we go
-> > > from supporting it but with a weird link mode (mostly baseCR*)
-> > > based on first-match in the settings[] table, to not supporting the
-> > > speed. =20
+> > struct bnxt_sw_rx_bd {
+> >         void *data;
+> >         u8 *data_ptr;
+> >         dma_addr_t mapping;
+> > };
 > >
-> > I very wrongfully considered that there was no >10G fixed-link users, I
-> > plan to fix that with something like the proposed patch in the
-> > discussion, that reports all linkmodes for speeds above 10G (looks less
-> > like a randomly selected mode, you can kind-of see what's going on as
-> > you get all the linkmodes) but is a change in what we expose to
-> > userspace. =20
->=20
-> I am not sure if there are any >10G users. I haven't landed anything
-> in the kernel yet and like I said what I was doing was more of a hack
-> to enable backwards compatibility on older kernels w/ the correct
-> supported and advertised modes. If I have to patch one kernel to make
-> it work for me that would be manageable.
->=20
-> One thing I was thinking about that it looks like this code might
-> prevent would be reinterpreting the meaning of duplex. Currently we
-> only have 3 values for it 0 (half), 1 (Full), and ~0 (Unknown). One
-> thought I had is that once we are over 1G we don't really care about
-> that anymore as everything is Full duplex and instead care about
-> lanes. As it turns out the duplex values currently used would work
-> well to be extended out to lanes. Essentially 0 would still be half, 1
-> would be 1 lane full duplex, 2-8 could be the number of full duplex
-> lanes the interface is using, and unknown lane count would still be ~0
-> since it is unlikely we will end up with anything other than a power
-> of 2 number of lanes anyway. With that you could greatly sort out a
-> number of modes in your setup. We would then have to do some cleanups
-> here and there to do something like "duplex =3D=3D DUPLEX_UNKNOWN ? duplex
-> : !!duplex" to clean up any cases where the legacy values are
-> expected.
+> > struct bnxt_sw_rx_agg_bd {
+> >         struct page *page;
+> >         unsigned int offset;
+> >         dma_addr_t mapping;
+> > }
+> >
+> > bnxt_sw_rx_bd->data would be either page pointer or page_address(page) =
++
+> > offset. Under page mode(xdp is set), data indicates page pointer,
+> > if not, it indicates virtual address.
+> > Before the recent head_pool work from Jakub, bnxt_sw_rx_bd->data was
+> > allocated by kmalloc().
+> > But after Jakub's work, bnxt_sw_rx_bd->data is allocated by page_pool.
+> > So, there is no reason to still keep handling virtual address anymore.
+> > The goal of this patch is to make bnxt_sw_rx_bd the same as
+> > the bnxt_sw_rx_agg_bd.
+> > By this change, we can easily use page_pool API like
+> > page_pool_dma_sync_for_{cpu | device}()
+> > Also, we can convert from page to the netmem very smoothly by this chan=
+ge.
+>
+> LGTM, could you split this into two patches, tho?
+> One for the BD change and one for the syncing changes?
 
-Funny you say that, the phy_port work I was referring to with the
-mediums introduction also tracks the lanes for a given port=20
+Okay, I will split this patch.
 
-previous outdated iteration here
-: https://lore.kernel.org/netdev/20250213101606.1154014-4-maxime.chevallier=
-@bootlin.com/
+>
+> > -     dma_sync_single_for_device(&pdev->dev, mapping, bp->rx_copybreak,
+> > -                                bp->rx_dir);
+> > -
+> > +     page_pool_dma_sync_for_device(rxr->head_pool, page_to_netmem(page=
+),
+> > +                                   bp->rx_dma_offset, bp->rx_copybreak=
+);
+>
+> I think we should add a separate helper for this instead of extending
+> the existing page_pool_dma_sync_for_device(). Let's call it
+> page_pool_dma_sync_for_device_frag() ?
 
-The idea is to represent physical interfaces to a NIC, as NICs can have
-multiple ports for different types of connectors. Ports would be driven
-by either a PHY, a NIC directly or an SFP.
+Thanks. I will add a separate helper,
+the page_pool_dma_sync_for_device_frag().
 
-The port contains, among other things, speed, duplex, n_lanes, and the
-medium (with more granularity than just TP/Backplane/Fiber, as we list
-the 802.3 media : BaseS / BaseC / BaseK / BaseT ...)
+>
+> The use case here is that the driver recycles a frag directly, rather
+> than following the normal PP recycling path.
 
-We already have information about whickh linkmode uses how many lanes,
-but we don't do much with that information besides reporting it to
-userspace.
+I'm not sure that I understand this use case correctly.
+I think it's like when a packet is dropped or fully
+copied by rx-copy-break, a driver can reuse frag directly.
+To reuse a frag in a driver directly, a driver can use
+page_pool_dma_sync_for_device_frag() before setting ring buffer.
+If I misunderstand, please let me know.
 
-I'll revamp the whole thing for the next iteration, however I really
-only have a deep-ish understanding of embedded usecases, and I lack
-insights on other classes of devices such as what your working on.
-
-I'll be very happy to get your feedback on it, I plan to send that when
-net-next reopens.
-
-Maxime
-
+Thanks a lot!
+Taehee Yoo
