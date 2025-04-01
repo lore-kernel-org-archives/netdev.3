@@ -1,149 +1,131 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723A51EB184;
-	Tue,  1 Apr 2025 09:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85F91514F6
+	for <netdev@vger.kernel.org>; Tue,  1 Apr 2025 09:16:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743498403; cv=none; b=IvC3EnsRgFprDabgUgP2MdgxLTNqBzs29/ARFvERYZgm6a9FU5THxEP0bTB5pk66Kj6IIaLZ6qDa79LO7VAvHEWDQXZoXFBb9sOJlMwVQIgu/Ffgsk14jlCSrm/TNXo/s6wJOAwenADSekhKXc8C4RJz/Kv02FWfj65rt7eWHX8=
+	t=1743498979; cv=none; b=sn1N5X3UnsEePoPc7u0qO4sqTCTGxxqDeEaolbNHj2RpqWPiGswKCnPASjN63OpWfODxWt5FCqL5y8KBlF6YeBwSFrwqqrwtf7IiQoIoppAwifiu54FvY5eFBhduwJBw2HrXE32dMYw9jVirxGL+vMPB9IFLjKgBWvzvCg5q21M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743498403; c=relaxed/simple;
-	bh=bBVMwoBL8LR8zOwYGi5TeDtaPBOUxSmU0D75RDFB+V4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MJImIZjaZM83/yyTizPZUuGClO3CUVP4YOO2BYbs6OV2S4tMl+Hxbj2m6mzUM3xa/1HH5KwpJ9h7RcxsqivwwJRqHaceLK4Q3rkjkEKO9AP7564ITdHWFRAx4cMpqWKV+fFq2s1I+dt7CYEz38OWeonnx1YwmJUCzNavI5Owq5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NVwlp5Q2; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1743498979; c=relaxed/simple;
+	bh=jb0s6sNJzrZn4grn/a6EZGNfWQ7GxhBT54eAJVswL70=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gJgvQfEdhKwG7L0yWcspqJF322ee4TEIDuW1kkzMI1DHTb3v8fZ1/Q4/urlikCWAM2d+dHxTerPe9JBXAZiLy76ELdSPEd9gKE57iaHSOVSXoSeykNrcpA4iK4qAYtfuux5h6EfWAD1H6qzUowm44oEgaji244VLwlfESveOnmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TCa92KmI; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NVwlp5Q2"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-227cf12df27so74929875ad.0;
-        Tue, 01 Apr 2025 02:06:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743498401; x=1744103201; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lZeibnPf6F/j2ao9xre27sq9y+syyRAsUdBCPrAKj20=;
-        b=NVwlp5Q22qhtVgAgEZAfoGpcYNEeReK0Xk/CTEORkV67rS1r61/Xh8pUrh3yDPPvNp
-         JeTRLLe9lM7sBLzSPW+llZ1DJtLnAN9OvSFFXEd2q6HtKrOwLlBAsEV0ss90fmgfhCfG
-         Q6Tp2H+mSFoiY1/h83lWLGM7RMdRwlJH+JtxglruSqCaqMG2DZF9/40CHhOKtAMtw4SA
-         PjmimfdPj27V3iODODFcG4X28/lZEwuyt1m6W8QvQ/rXMe//v7kDuhIzhm0/uVMWjivg
-         ou5R5cNFnJwy5FoBCbj/r5ft36hpNcLvHkHnwvpE789jhnS6gA4NTXJPs0nZ2rrFg7e6
-         4waA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TCa92KmI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1743498974;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yg/PyeyR/PrHoTgfmAqCZFQYAX+5NdthsibcNQ2zsRU=;
+	b=TCa92KmIxrMkYT5+kUvH8Q5sYpKt4VgZs01SGdu/LQMRU/KS8K/L1o2YTmHeA1pSI1fnwX
+	TJFUX6BfzvJ+bj6qmQp5Bd+aZLz6vh91izsGTYKNritpn0EcO8Y1YSejgX1LXTXAoDXNmb
+	+VUL/e8z8UDLgGgDrgUyUYdaPQrXO8s=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-684-AufD4w2KP4WA53Pd4UzmiA-1; Tue, 01 Apr 2025 05:16:12 -0400
+X-MC-Unique: AufD4w2KP4WA53Pd4UzmiA-1
+X-Mimecast-MFC-AGG-ID: AufD4w2KP4WA53Pd4UzmiA_1743498971
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-391345e3aa3so3021957f8f.0
+        for <netdev@vger.kernel.org>; Tue, 01 Apr 2025 02:16:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743498401; x=1744103201;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lZeibnPf6F/j2ao9xre27sq9y+syyRAsUdBCPrAKj20=;
-        b=AKmP61SnhwckoP5Z3C43NhTCH9GSZRABNaVqBOqrc/SkV1UVFA0tAr1l0s4ZHya0X2
-         4W56qOCpQ+WkFelSPf0/CCPShk6nAslqWdWptcyZxPhhtLCFeWk5Shhcir58bCJNbcRL
-         j7rrYSY8Qyjg5CpUiR7t+81MNJn6CDZ386WJdusZeaky6Vuk9iDET7Tnmz2tkpnEv5Y3
-         53n5q6L4vMHlCDQe42BiK/a+DnvmF46gsCT39rCzDGAQQ+fx9LXuP8w2fDG7TDolGlM9
-         er6RU13GRwoVbpgHmMcr8/YuGK2hBSBWagD7nFvIJ0OBNSkYvmPCAZBgO/9Ow0ou9V29
-         J9Fw==
-X-Forwarded-Encrypted: i=1; AJvYcCWUmMf3OKYc/MI+Cy5Fne6/MXUJ5mhy8qkaFwQYfSBPXEcyS6SYXB0y48qS4ZiF19QBrjixU50xQCiNM4g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxluH4BftDIcy10yZ+mgmZoFA8Bf//BJqKlTaW75ymjFovN/VqE
-	sC0G14fp5zmG1UnQV/2poKqiRNrzg8zp/+y7Q4sjC4QeVarmRq40hewq+KEI8is=
-X-Gm-Gg: ASbGncvpHlYy/E5E3Ljd0jkygWubxdvavRVNgHHRi4UzQEMpfCEkNq4vRxzZR7LSIh1
-	2QF49h3PBHu7SCTFilzGrUW9Q3YMs4TYc0RLw1HA8paOW61rhfwsYS/uqny4YP29rgEh8ujHcN5
-	NPkcEhCNsyt1Gd/X2zV9rzKJeZZFXutaD7RJUnC8g7vE68npyq/yrvbo+b6j0sDanpGuPtADs/2
-	ure/0kBRMEvtwFbi2H9Bdy7iHKwIrLAtcgSewOd66xxqjs8FOiJ71azhWZHJLDe13AYGx6GJ4xQ
-	oEAt1etN6UO2redPitwsd1Wj99SSUur0MU6CuTWjhuTPtcsG1f3SkdMztnauNIoamh36x4zKDyQ
-	=
-X-Google-Smtp-Source: AGHT+IG0bnk3kuG045+To5X7Apkw1uxbIVmYAPpm8jfEhLoa/xUxQ6HYwKkOQY476h55fgBRW3mzWg==
-X-Received: by 2002:a17:902:f545:b0:215:ba2b:cd55 with SMTP id d9443c01a7336-2292ec073d0mr205536655ad.2.1743498401286;
-        Tue, 01 Apr 2025 02:06:41 -0700 (PDT)
-Received: from fedora.dns.podman ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291f1f7cc2sm82791875ad.258.2025.04.01.02.06.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 02:06:40 -0700 (PDT)
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Simon Horman <horms@kernel.org>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	Hangbin Liu <liuhangbin@gmail.com>
-Subject: [PATCHv2 net] bonding: use permanent address for MAC swapping if device address is same
-Date: Tue,  1 Apr 2025 09:06:31 +0000
-Message-ID: <20250401090631.8103-1-liuhangbin@gmail.com>
-X-Mailer: git-send-email 2.46.0
+        d=1e100.net; s=20230601; t=1743498971; x=1744103771;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yg/PyeyR/PrHoTgfmAqCZFQYAX+5NdthsibcNQ2zsRU=;
+        b=NeIYXgGYuD46j9JFOsxxgIC7xQTZqOdriXuU7rU1I7X+aflf5YqhlxA226V5LSbEKK
+         LId8rMBzoiaCUgn8Jxfywhqmk9CjSCcWp5PgHSJmbRPoUfgLUnWaZ+UeAD9e9jFCCvMN
+         gOGW611kZKbQ17nAduoy8JWThrDNa4BUEYd4mb/wz7n4jggdsWCSBpcxXa91I05lzXNz
+         vNuIgQ5UNEGzVhh+MCHx9cxK0fs6eguGajfHbwFFEuYiZuss6XW/zBPeqec5enDdNPFT
+         HtgkUjvPKLVcxjOBBEWWdcipLL2ORrGK0fmEIhUOOLVn4yH+9mjBnk/dP8CK2lpsbFwn
+         E+SA==
+X-Forwarded-Encrypted: i=1; AJvYcCXcacmDtQFVZhiYBEjXjzJff1tYznCx3j3oqg1SXEfH5POH9yZbQDvUef5a3NviiUjbLlGFHA4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxloE3c6QrVlVY7lLFm4r5Sc43JZS9hecD3U6lgHVY7rdxhoGws
+	1J4h2pnDZQRJ6Y3+OjWBFH/TaTmLlPhN3QknF0COjqCgvgDgvAD22oibDkj1khUuMX4UyMcHdL/
+	UzWImQ1Yr0meU9FpnYiSWG+kxTeFY64+V7LY5vvkWZVgx4km22Hlgsg==
+X-Gm-Gg: ASbGncvROEZkoJKIPpJ/inhydj7pljdVzhOIeRcrZAkpq144+Sr6UnYeIFCrw40CaEI
+	CzoOT8ka2Rvy4ci03Mx18772fIXyev6bbcB/8+sHEWRnCHS7P1ns4xwr7EoC3waeeB2hyqbMYZy
+	ZnCT7EOrQp0vT0z78oELWaKBUoDe6YVUYAbiiabAckOshSpVp90oWoL8K2g8pz5A6RZjmVdITPC
+	jzUrQKDEcX4h2D50H4QNt1HL8BaooYH9fAFaLVWSGutCRyUeC/MvvaMfgst5N1WRf95V+Zh39O6
+	1iM7lQp2kKt6nuzxfDX3ByLkv3tqI0jHTAI4REr37BWKyw==
+X-Received: by 2002:a05:6000:2484:b0:39c:13fa:3eb with SMTP id ffacd0b85a97d-39c13fa059emr9082599f8f.39.1743498971045;
+        Tue, 01 Apr 2025 02:16:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEEQN2Qx3JwnrEVxh3+dB2sk9rOX5XR5+HsV2PApSAl1hhYUeGvXSX9PSYeef8etGLvbbQjlQ==
+X-Received: by 2002:a05:6000:2484:b0:39c:13fa:3eb with SMTP id ffacd0b85a97d-39c13fa059emr9082587f8f.39.1743498970716;
+        Tue, 01 Apr 2025 02:16:10 -0700 (PDT)
+Received: from [192.168.88.253] (146-241-68-231.dyn.eolo.it. [146.241.68.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b79e0d1sm13566397f8f.70.2025.04.01.02.16.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Apr 2025 02:16:10 -0700 (PDT)
+Message-ID: <05c4da9d-6701-48ef-b80b-a28646940be3@redhat.com>
+Date: Tue, 1 Apr 2025 11:16:09 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net-next] net: hsr: sync hw addr of slave2 according to
+ slave1 hw addr on PRP
+To: Fernando Fernandez Mancera <ffmancera@riseup.net>, netdev@vger.kernel.org
+Cc: lukma@denx.de, wojciech.drewek@intel.com, m-karicheri2@ti.com
+References: <20250328160642.3595-1-ffmancera@riseup.net>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250328160642.3595-1-ffmancera@riseup.net>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Similar with a951bc1e6ba5 ("bonding: correct the MAC address for "follow"
-fail_over_mac policy"). The fail_over_mac follow mode requires the formerly
-active slave to swap MAC addresses with the newly active slave during
-failover. However, the slave's MAC address can be same under certain
-conditions:
+On 3/28/25 5:06 PM, Fernando Fernandez Mancera wrote:
+> In order to work properly PRP requires slave1 and slave2 to share the
+> same MAC address. To ease the configuration process on userspace tools,
+> sync the slave2 MAC address with slave1.
+> 
+> Signed-off-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
+> ---
+> NOTE: I am not sure the call_netdevice_notifiers() are needed here.
+> I am wondering, if this change makes sense in HSR too.
+> Feedback is welcome.
+> v2: specified the target tree
 
-1) ip link set eth0 master bond0
-   bond0 adopts eth0's MAC address (MAC0).
+Please respect the 24h grace period before reposting:
 
-1) ip link set eth1 master bond0
-   eth1 is added as a backup with its own MAC (MAC1).
+https://elixir.bootlin.com/linux/v6.14-rc6/source/Documentation/process/maintainer-netdev.rst#L15
 
-3) ip link set eth0 nomaster
-   eth0 is released and restores its MAC (MAC0).
-   eth1 becomes the active slave, and bond0 assigns MAC0 to eth1.
+Also please note that net-next is currently closed for new features due
+to the merge window. Please resent after Apr 7th.
 
-4) ip link set eth0 master bond0
-   eth0 is re-added to bond0, but both eth0 and eth1 now have MAC0,
-   breaking the follow policy.
+> ---
+>  net/hsr/hsr_device.c | 2 ++
+>  net/hsr/hsr_main.c   | 9 +++++++++
+>  2 files changed, 11 insertions(+)
+> 
+> diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+> index 439cfb7ad5d1..f971eb321655 100644
+> --- a/net/hsr/hsr_device.c
+> +++ b/net/hsr/hsr_device.c
+> @@ -706,6 +706,8 @@ int hsr_dev_finalize(struct net_device *hsr_dev, struct net_device *slave[2],
+>  		 */
+>  		hsr->net_id = PRP_LAN_ID << 1;
+>  		hsr->proto_ops = &prp_ops;
+> +		eth_hw_addr_set(slave[1], slave[0]->dev_addr);
 
-To resolve this issue, we need to swap the new active slave’s permanent
-MAC address with the old one. The new active slave then uses the old
-dev_addr, ensuring that it matches the bond address. After the fix:
+I'm unsure about this. It will have 'destructive' effect on slave[1],
+i.e. the original mac address will be permanently chaneged and will be
+up to the user-space restore it when/if removing from hsr.
 
-5) ip link set bond0 type bond active_slave eth0
-   dev_addr is the same, swap old active eth1's MAC (MAC0) with eth0.
-   Swap new active eth0's permanent MAC (MAC0) to eth1.
-   MAC addresses remain unchanged.
+I think it would be better to additionally store the original mac
+address at hsr creation time and restore it at link removal time.
 
-6) ip link set bond0 type bond active_slave eth1
-   dev_addr is the same, swap the old active eth0's MAC (MAC0) with eth1.
-   Swap new active eth1's permanent MAC (MAC1) to eth0.
-   The MAC addresses are now correctly differentiated.
+Thanks,
 
-Fixes: 3915c1e8634a ("bonding: Add "follow" option to fail_over_mac")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
----
-v2: use memcmp directly instead of adding a redundant helper (Jakub Kicinski)
----
- drivers/net/bonding/bond_main.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index e45bba240cbc..1e343d8fafa0 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1107,8 +1107,13 @@ static void bond_do_fail_over_mac(struct bonding *bond,
- 			old_active = bond_get_old_active(bond, new_active);
- 
- 		if (old_active) {
--			bond_hw_addr_copy(tmp_mac, new_active->dev->dev_addr,
--					  new_active->dev->addr_len);
-+			if (memcmp(old_active->dev->dev_addr, new_active->dev->dev_addr,
-+				   new_active->dev->addr_len) == 0)
-+				bond_hw_addr_copy(tmp_mac, new_active->perm_hwaddr,
-+						  new_active->dev->addr_len);
-+			else
-+				bond_hw_addr_copy(tmp_mac, new_active->dev->dev_addr,
-+						  new_active->dev->addr_len);
- 			bond_hw_addr_copy(ss.__data,
- 					  old_active->dev->dev_addr,
- 					  old_active->dev->addr_len);
--- 
-2.46.0
+Paolo
 
