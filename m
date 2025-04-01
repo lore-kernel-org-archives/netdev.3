@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAD7126C03;
-	Tue,  1 Apr 2025 00:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E59D14375C
+	for <netdev@vger.kernel.org>; Tue,  1 Apr 2025 00:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743466218; cv=none; b=ddchGjU58t5Nl/AeEszFruzrbAaDLHNUoh2q96o0X0NIx/608xKR1BaiSsfMPvbY6hP3GOSMiGBJaCmUwW6bdrciyYdMcrSeUoUvIJgIUy9D/rwjf+2ZZd3Kxdlf2ilph9ceKS/7VaG6dlUZLIiA4CBeJWP3OBpbK7jeif7HblU=
+	t=1743466219; cv=none; b=EH05saMwSqPjtEcVYzmxps8uVxsHfinW0Gs99AGbim9gOewne2go++aeiTH6vALhAfgUgNWkoBBN5OTrfdHLXN0LnPMcBmgIEgDe75qOTXiMBYKvMnv4pvcgVG6Nt2uQHT6iWhR1OydnCqBv5fHewtIuwTW6fVmUBudzWAaKU0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743466218; c=relaxed/simple;
-	bh=5QRTI9bWZpF773xhoyYYNn0i3blXsXsmrnbBr/YFvH0=;
+	s=arc-20240116; t=1743466219; c=relaxed/simple;
+	bh=peYxA5IarDal1SqcCZfcSFb6BhaDKnBG2wKBscym9TU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=CrlmVBXAFG+jm4sj6S6irs34d6lUCzKyoHpatMIuGSF+UL4Mh4S+2HwXJEqXlrmmPurFs8IqQnceejZUoKefQ+VeVQqJjCTqPLqbDWQSG/bWqvoCjzFsWAkNZOKfd0+0/IcbsSdlk7b8H8nIM2WHoJLkuQDt3jrkoiSWscVd62c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o59W/nnN; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=k0lCFZ4/gezqLHo1LBbUXGT2IAS66LQxtsiSvL+n+rTfw3hdXu0ffQtnmCb0oPCwqD9xuU7gWe5uedjoaeY7xkKm0j2WMR4t7pEjNuZ1cwHnbP2Jhk/kKUl7PHii8jve0dhztfxMuiJkctcKycXeGJIgect4IwlfCRfzRL6nJe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AYOOuLRz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o59W/nnN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4291FC4CEE3;
-	Tue,  1 Apr 2025 00:10:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AYOOuLRz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF77C4CEEA;
+	Tue,  1 Apr 2025 00:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743466218;
-	bh=5QRTI9bWZpF773xhoyYYNn0i3blXsXsmrnbBr/YFvH0=;
+	s=k20201202; t=1743466216;
+	bh=peYxA5IarDal1SqcCZfcSFb6BhaDKnBG2wKBscym9TU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=o59W/nnNNK7k07yN+C8ku2/+LBfxtfV2k4ze4LjmpuwsUY0wFQf0cohNMJyC1oMl9
-	 ogoRdXXAIl/DNVJECw/+d3iK66ClBYD/ScdJljTA4K9R2otPBetPzjnPZVfPC2wn0o
-	 KyZGCMZT1Qa7fWH5h4XcA3rsyqwIc/+QVClGE35wOoHg3Ai/qLNfFS8dUYeXZztuly
-	 vI1qgXjnXAty919QgV0XxfeDmtYNF8qzVg48PhnzmE1QtfsEKvMQ5t+xAnvhl+hcxM
-	 9s7UrJR6wVagwaQxcD8dJlZwhW8/7fEToGfhgdDViwFpJ15bHnktaeJaoNBYgRI4mw
-	 0Wk7875CQCQHA==
+	b=AYOOuLRz6sjL8s8abm0La70XM0MJs3LOC0u4aO19gbFASTEjye+ac+vAW4A+dMVp5
+	 3Ju6yxQ+jOBPoCr6hcLLBR9T6mWEXKQZTzkWSIdU1r5ci+YMpFRByLSUUueXhCHciM
+	 sBsBJ2IapZ5kYY+WIC6yjHr8R1LU6/qbk7b1r6nfy2Iq0hTiQvues/0LgiVAlVNIr1
+	 ZtsD+j5fwVk543guD10wXaJE18jhmfWxtB85Zf4IX/hvF9RtFNK4UmHpitjjdzwrEh
+	 3fbjcx3YF1C3jjCISyQw8c/kq2s6GQrr0HyQQy5A/bmRRUqELyfD8JRWPKexXUo6Gn
+	 FuRtyrYuACpvg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33DE8380AA7A;
-	Tue,  1 Apr 2025 00:10:56 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE0C7380AA7A;
+	Tue,  1 Apr 2025 00:10:54 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,44 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/4] mptcp: misc. fixes for 6.15-rc0
+Subject: Re: [PATCH net] net: fix use-after-free in the
+ netdev_nl_sock_priv_destroy()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174346625474.178192.14379060520127760494.git-patchwork-notify@kernel.org>
-Date: Tue, 01 Apr 2025 00:10:54 +0000
-References: <20250328-net-mptcp-misc-fixes-6-15-v1-0-34161a482a7f@kernel.org>
-In-Reply-To: <20250328-net-mptcp-misc-fixes-6-15-v1-0-34161a482a7f@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, fw@strlen.de, shuah@kernel.org, dmytro@shytyi.net,
- yangang@kylinos.cn, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org, liucong2@kylinos.cn
+ <174346625325.178192.3318310238239193156.git-patchwork-notify@kernel.org>
+Date: Tue, 01 Apr 2025 00:10:53 +0000
+References: <20250328062237.3746875-1-ap420073@gmail.com>
+In-Reply-To: <20250328062237.3746875-1-ap420073@gmail.com>
+To: Taehee Yoo <ap420073@gmail.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ netdev@vger.kernel.org, jdamato@fastly.com, sdf@fomichev.me,
+ almasrymina@google.com, xuanzhuo@linux.alibaba.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 28 Mar 2025 15:27:15 +0100 you wrote:
-> Here are 4 unrelated patches:
-> 
-> - Patch 1: fix a NULL pointer when two SYN-ACK for the same request are
->   handled in parallel. A fix for up to v5.9.
-> 
-> - Patch 2: selftests: fix check for the wrong FD. A fix for up to v5.17.
+On Fri, 28 Mar 2025 06:22:37 +0000 you wrote:
+> In the netdev_nl_sock_priv_destroy(), an instance lock is acquired
+> before calling net_devmem_unbind_dmabuf(), then releasing an instance
+> lock(netdev_unlock(binding->dev)).
+> However, a binding is freed in the net_devmem_unbind_dmabuf().
+> So using a binding after net_devmem_unbind_dmabuf() occurs UAF.
+> To fix this UAF, it needs to use temporary variable.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/4] mptcp: fix NULL pointer in can_accept_new_subflow
-    https://git.kernel.org/netdev/net/c/443041deb5ef
-  - [net,2/4] selftests: mptcp: fix incorrect fd checks in main_loop
-    https://git.kernel.org/netdev/net/c/7335d4ac8129
-  - [net,3/4] selftests: mptcp: close fd_in before returning in main_loop
-    https://git.kernel.org/netdev/net/c/c183165f87a4
-  - [net,4/4] selftests: mptcp: ignore mptcp_diag binary
-    https://git.kernel.org/netdev/net/c/b44a4c28228f
+  - [net] net: fix use-after-free in the netdev_nl_sock_priv_destroy()
+    https://git.kernel.org/netdev/net/c/42f342387841
 
 You are awesome, thank you!
 -- 
