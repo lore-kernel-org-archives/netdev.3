@@ -1,125 +1,123 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from serv108.segi.ulg.ac.be (serv108.segi.ulg.ac.be [139.165.32.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0BB1EA7E6;
+	Tue,  1 Apr 2025 08:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.165.32.111
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743497398; cv=none; b=N4taodFtUDedbDKYzhCOfpKZkSe+NZ1a+LWrJRqo0Pq34x4/ZG/Vn5oOhIHl1rQylgJ+gCPOqWtRwdqUtvOdM+Wo/0e/3eauskq+WiJ+IL6ijS5TYVfmusZinHl5JeMmra+a0II1NR4gT8C4EZSIvO2euWssJLvDdE7odWyWvtw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743497398; c=relaxed/simple;
+	bh=8Wpy81kT7TAdW80xAypJxb8zwA8ToD3dhvNI1DF5/tY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=MDHZ3AKxXOuDJKf89q7rDqsJt9T+lIbNuJRiNttcWEF4qhPrGNEmR4ebzYAFedNJrwLjtZpDcdpGeTVsOHJyURUcwAF0dx9OcLlEVIdvHZwWYNtRj3iBEHqhtV4MtLqQMD0JYWJarKeaE/bdqS2hoqXtQSlxKyhd/No8BN/ju20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=T7/MJBWl; arc=none smtp.client-ip=139.165.32.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uliege.be
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="T7/MJBWl"
+Received: from [192.168.1.58] (220.24-245-81.adsl-dyn.isp.belgacom.be [81.245.24.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CB01EB5CD
-	for <netdev@vger.kernel.org>; Tue,  1 Apr 2025 08:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743497288; cv=none; b=gcI27d8/bFERYEp0N7MSvOcXMAquOibY6umF/VcgIJkFZ5tK2Oh419lesQjj4U6VNK/Iu+PK5BXjfSn1sKy+NI9fdRuxCZSxfnSZlQCGdFZGPHihBnaPLSU2Cno+lIER36jAnQdVNo0zxis+VaNk6aco1Lq6atLa3OMPLPOIHrc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743497288; c=relaxed/simple;
-	bh=cpTAyHqjQvWCmMiwfjUNvv7XfUupoy/wYj/US+dD7QE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=izNpL/UI5g7CpoQzoRGmTLeWzSdTF287MlSBBMVGUK9CSHJDraLSZyZCAgFGhl2ty5n/laOCitfSQ65VamjGZZWWXehYfLRDtcDSTAilnBygKWfaqxO8SV56Usddv1eMmJvYDQvi8/ykh6NGS75bYYW8K8Al9DVKz69wLXkOQSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=fvT8JSmi; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=fvT8JSmi; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="fvT8JSmi";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="fvT8JSmi"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D4CC41F391;
-	Tue,  1 Apr 2025 08:47:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1743497271; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nvbVPKtcp5y3ocnBZksieUB/EW50VUkcDueS+Szze4U=;
-	b=fvT8JSmis1o7Y5brA92zgGX8BFH8orUBN/ow49L6aCz42GHh7n15ojtXQX1AO0wK/9P7UE
-	pI6U7Wovvfg6JapH2CyGagQCxbl5jBxYHs+g6E0Sla2npHVenzuLNjSssmFo9QoQMcw46U
-	8e7/dqSLmeaGYWS2DXYQjeG/yWU5XEw=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1743497271; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nvbVPKtcp5y3ocnBZksieUB/EW50VUkcDueS+Szze4U=;
-	b=fvT8JSmis1o7Y5brA92zgGX8BFH8orUBN/ow49L6aCz42GHh7n15ojtXQX1AO0wK/9P7UE
-	pI6U7Wovvfg6JapH2CyGagQCxbl5jBxYHs+g6E0Sla2npHVenzuLNjSssmFo9QoQMcw46U
-	8e7/dqSLmeaGYWS2DXYQjeG/yWU5XEw=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9F9BE13691;
-	Tue,  1 Apr 2025 08:47:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id mAHhJTeo62cRcQAAD6G6ig
-	(envelope-from <oneukum@suse.com>); Tue, 01 Apr 2025 08:47:51 +0000
-From: Oliver Neukum <oneukum@suse.com>
-To: gregkh@linuxfoundation.org,
-	bjorn@mork.no,
-	loic.poulain@linaro.org,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Oliver Neukum <oneukum@suse.com>
-Subject: [PATCHv2 4/4] USB: wdm: add annotation
-Date: Tue,  1 Apr 2025 10:45:41 +0200
-Message-ID: <20250401084749.175246-5-oneukum@suse.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250401084749.175246-1-oneukum@suse.com>
-References: <20250401084749.175246-1-oneukum@suse.com>
+	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id C26F12022C81;
+	Tue,  1 Apr 2025 10:44:23 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be C26F12022C81
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uliege.be;
+	s=ulg20190529; t=1743497063;
+	bh=NMSewLCZVUlqvdalC/wCq7Jj67bLVDUUghgF0Nt7r8c=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=T7/MJBWlQgQ9eXP1jb+DAibnpmulCgGaRuhoxYXSKesrBxHk1XLhjfIONyOGvQ0Su
+	 NS7B071ZfjwKB6JXUZIdCfafnFNzJPy3DfK45usDGUvWb+6RtlaqMYqUb4YHrDWbqv
+	 uC4MToKCoetoKmiRp/7lr0PSQYvxT/lUW9WMJSESH+5qvqxcHvffVqy/YcY/s12s8G
+	 IK7Z+BWHM7HBhUbvnEW5XJuUgwCKhqIeL1Tap9bUrZEmQB8XClZ4gBokPo+i1ZE7u4
+	 kczS0N2Zgel3MF2GvwC30lPwMGtmFNyxKJmR9lLEw6dmEGboK966XVNAmqt/bVWKCT
+	 xC7ciQ6Okvq5g==
+Message-ID: <d24ea1cc-4d32-44f9-9051-0c874f73f1c5@uliege.be>
+Date: Tue, 1 Apr 2025 10:44:23 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-6.80 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_HAS_DN(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	R_RATELIMIT(0.00)[to_ip_from(RLikj1p7yq1njapebq4rcw7c5p)];
-	TO_DN_SOME(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -6.80
-X-Spam-Flag: NO
+User-Agent: Mozilla Thunderbird
+Subject: Re: new splat
+To: Paolo Abeni <pabeni@redhat.com>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf
+ <bpf@vger.kernel.org>, Network Development <netdev@vger.kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>
+References: <CAADnVQJFWn3dBFJtY+ci6oN1pDFL=TzCmNbRgey7MdYxt_AP2g@mail.gmail.com>
+ <647c3886-72fd-4e49-bdd0-4512f0319e8c@redhat.com>
+Content-Language: en-US
+From: Justin Iurman <justin.iurman@uliege.be>
+In-Reply-To: <647c3886-72fd-4e49-bdd0-4512f0319e8c@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This is not understandable without a comment on endianness
+On 3/31/25 10:07, Paolo Abeni wrote:
+> Adding Justin.
+> 
+> On 3/31/25 1:28 AM, Alexei Starovoitov wrote:
+>> After bpf fast forward we see this new failure:
+>>
+>> [  138.359852] BUG: using __this_cpu_read() in preemptible [00000000]
+>> code: test_progs/9368
+>> [  138.362686] caller is lwtunnel_xmit+0x1c/0x2e0
+>> [  138.364363] CPU: 9 UID: 0 PID: 9368 Comm: test_progs Tainted: G
+>>        O        6.14.0-10767-g8be3a12f9f26 #1092 PREEMPT
+>> [  138.364366] Tainted: [O]=OOT_MODULE
+>> [  138.364366] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+>> BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+>> [  138.364368] Call Trace:
+>> [  138.364370]  <TASK>
+>> [  138.364375]  dump_stack_lvl+0x80/0x90
+>> [  138.364381]  check_preemption_disabled+0xc6/0xe0
+>> [  138.364385]  lwtunnel_xmit+0x1c/0x2e0
+>> [  138.364387]  ip_finish_output2+0x2f9/0x850
+>> [  138.364391]  ? __ip_finish_output+0xa0/0x320
+>> [  138.364394]  ip_send_skb+0x3f/0x90
+>> [  138.364397]  udp_send_skb+0x1a6/0x3d0
+>> [  138.364402]  udp_sendmsg+0x87b/0x1000
+>> [  138.364404]  ? ip_frag_init+0x60/0x60
+>> [  138.364406]  ? reacquire_held_locks+0xcd/0x1f0
+>> [  138.364414]  ? copy_process+0x2ae0/0x2fa0
+>> [  138.364418]  ? inet_autobind+0x41/0x60
+>> [  138.364420]  ? __local_bh_enable_ip+0x79/0xe0
+>> [  138.364422]  ? inet_autobind+0x41/0x60
+>> [  138.364424]  ? inet_send_prepare+0xe7/0x1e0
+>> [  138.364428]  __sock_sendmsg+0x38/0x70
+>> [  138.364432]  ____sys_sendmsg+0x1c9/0x200
+>> [  138.364437]  ___sys_sendmsg+0x73/0xa0
+>> [  138.364444]  ? __fget_files+0xb9/0x180
+>> [  138.364447]  ? lock_release+0x131/0x280
+>> [  138.364450]  ? __fget_files+0xc3/0x180
+>> [  138.364453]  __sys_sendmsg+0x5a/0xa0
+> 
+> Possibly a decoded stack trace could help.
+> 
+> I think a possible suspect is:
+> 
+> commit 986ffb3a57c5650fb8bf6d59a8f0f07046abfeb6
+> Author: Justin Iurman <justin.iurman@uliege.be>
+> Date:   Fri Mar 14 13:00:46 2025 +0100
+> 
+>      net: lwtunnel: fix recursion loops
+> 
+> with dev_xmit_recursion() in lwtunnel_xmit() being called in preemptible
+> scope.
 
-Fixes: afba937e540c9 ("USB: CDC WDM driver")
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
----
- drivers/usb/class/cdc-wdm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Correct, I came to the same conclusion based on that trace. However, I 
+can't reproduce it with a PREEMPT kernel. It goes through without 
+problem and the output is (as expected), i.e., "lwtunnel_xmit(): 
+recursion limit reached on datapath".
 
-diff --git a/drivers/usb/class/cdc-wdm.c b/drivers/usb/class/cdc-wdm.c
-index 8b99db506b71..840cf45b791e 100644
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -911,7 +911,7 @@ static int wdm_wwan_port_tx(struct wwan_port *port, struct sk_buff *skb)
- 	req->bRequestType = (USB_DIR_OUT | USB_TYPE_CLASS | USB_RECIP_INTERFACE);
- 	req->bRequest = USB_CDC_SEND_ENCAPSULATED_COMMAND;
- 	req->wValue = 0;
--	req->wIndex = desc->inum;
-+	req->wIndex = desc->inum; /* already converted */
- 	req->wLength = cpu_to_le16(skb->len);
- 
- 	skb_shinfo(skb)->destructor_arg = desc;
--- 
-2.49.0
+> @Justin, could you please have a look?
 
+I guess that using preempt_{disable|enable}() would not be enough here, 
+so we may s/rcu_read_{lock|unlock}()/rcu_read_{lock|unlock}_bh()/g and 
+move the call to rcu_read_lock_bh() before dev_xmit_recursion(). Thoughts?
+
+> Thanks,
+> 
+> Paolo
+> 
