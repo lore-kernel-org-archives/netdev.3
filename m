@@ -1,39 +1,70 @@
-Received: from serv108.segi.ulg.ac.be (serv108.segi.ulg.ac.be [139.165.32.111])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0BB1EA7E6;
-	Tue,  1 Apr 2025 08:49:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.165.32.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371BC1EB5F0
+	for <netdev@vger.kernel.org>; Tue,  1 Apr 2025 08:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743497398; cv=none; b=N4taodFtUDedbDKYzhCOfpKZkSe+NZ1a+LWrJRqo0Pq34x4/ZG/Vn5oOhIHl1rQylgJ+gCPOqWtRwdqUtvOdM+Wo/0e/3eauskq+WiJ+IL6ijS5TYVfmusZinHl5JeMmra+a0II1NR4gT8C4EZSIvO2euWssJLvDdE7odWyWvtw=
+	t=1743497545; cv=none; b=Xxk4Qomu2VNa1+7HOKdS7I/30hsB4wXIGAZXZ/fASd2lOK7S9YZ3NR+Wu7HdPln/k5kCx4//rDCUYObs8C7P6WI8XHl2kKuHlBNmI6sOL2cqRH65atn9w61+N/RWCtniC5JSou9zO8Kkwpz50xxjsJmUSY1BC7rG9eJixwKykXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743497398; c=relaxed/simple;
-	bh=8Wpy81kT7TAdW80xAypJxb8zwA8ToD3dhvNI1DF5/tY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=MDHZ3AKxXOuDJKf89q7rDqsJt9T+lIbNuJRiNttcWEF4qhPrGNEmR4ebzYAFedNJrwLjtZpDcdpGeTVsOHJyURUcwAF0dx9OcLlEVIdvHZwWYNtRj3iBEHqhtV4MtLqQMD0JYWJarKeaE/bdqS2hoqXtQSlxKyhd/No8BN/ju20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=T7/MJBWl; arc=none smtp.client-ip=139.165.32.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uliege.be
+	s=arc-20240116; t=1743497545; c=relaxed/simple;
+	bh=fNkQvYlNaa3cqbrVMNrNNj9EdtzcFO71fUGvPTgiinQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZG3hBZeNbH9sx/i6fs2CiE5h8zg1wJQhcZF3ATuecnTcxy8oj5YfxFabWMDAxZgCoawg62av/l1a309WxPb1sPCd6QkrrZ2PQ0pQLOdgzAfy05r5l3eA0JGAh014Qjd9BqMBE1DHnATFvooB6Yv0qfywEMgnSkzgbckSQV+Xbfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YUojYi8Z; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="T7/MJBWl"
-Received: from [192.168.1.58] (220.24-245-81.adsl-dyn.isp.belgacom.be [81.245.24.220])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id C26F12022C81;
-	Tue,  1 Apr 2025 10:44:23 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be C26F12022C81
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uliege.be;
-	s=ulg20190529; t=1743497063;
-	bh=NMSewLCZVUlqvdalC/wCq7Jj67bLVDUUghgF0Nt7r8c=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=T7/MJBWlQgQ9eXP1jb+DAibnpmulCgGaRuhoxYXSKesrBxHk1XLhjfIONyOGvQ0Su
-	 NS7B071ZfjwKB6JXUZIdCfafnFNzJPy3DfK45usDGUvWb+6RtlaqMYqUb4YHrDWbqv
-	 uC4MToKCoetoKmiRp/7lr0PSQYvxT/lUW9WMJSESH+5qvqxcHvffVqy/YcY/s12s8G
-	 IK7Z+BWHM7HBhUbvnEW5XJuUgwCKhqIeL1Tap9bUrZEmQB8XClZ4gBokPo+i1ZE7u4
-	 kczS0N2Zgel3MF2GvwC30lPwMGtmFNyxKJmR9lLEw6dmEGboK966XVNAmqt/bVWKCT
-	 xC7ciQ6Okvq5g==
-Message-ID: <d24ea1cc-4d32-44f9-9051-0c874f73f1c5@uliege.be>
-Date: Tue, 1 Apr 2025 10:44:23 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YUojYi8Z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1743497542;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iTrzmKHOhipGTrVn6hOCwktriFPfHqZi1ySNcTDYp58=;
+	b=YUojYi8ZAMeXoo/HxJ0x0B/DNZk3CljCNCrB/uYtvSkTGDMptoyt/IAVmTS1K3kecys3JU
+	akTUhE9MxJdzeznuoxLNwPpQowFoKlkOZ7LZSqBUmA/uL0GnSPqQDI9nfJODc1w8RoiMHH
+	AqL1zoGvoiK5VXNNnjhA4xECPLUVH40=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-376-AG5roXmJPBSX-7vL_XraNg-1; Tue, 01 Apr 2025 04:52:21 -0400
+X-MC-Unique: AG5roXmJPBSX-7vL_XraNg-1
+X-Mimecast-MFC-AGG-ID: AG5roXmJPBSX-7vL_XraNg_1743497540
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43ceb011ea5so37412135e9.2
+        for <netdev@vger.kernel.org>; Tue, 01 Apr 2025 01:52:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743497540; x=1744102340;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iTrzmKHOhipGTrVn6hOCwktriFPfHqZi1ySNcTDYp58=;
+        b=LWa3kdhxz5qZ5PRlXaKZ/k1VJkuaayTPxm8RVBtRSqIO5aoWZXIjIB7ICMSu2Cfy6M
+         TRWrZbLxTwTcvec9xpjFZY39GO1ehuDn//5IObAhPwVckFrx0UEqbgIZbQSFp/CBwGeR
+         v+CUBtOuL3kpdmDEPIURLIqq07GDmS7V68DZDgTDOfEAyPYBwoIz5uvLEyRR6lhk9n/1
+         l+4Ipv/4iKTZ36eBFn7SXKJ8nNjghM3FCdgWlAXrmZKbhicEKGfwyJLSgEe3O6kqTmt1
+         xx9WzjZs5iNqUYwf8ro0v+YbwN3zsdqku4Skf/q75LKJkJ9aBuxQDuqrkgjdI8CWHSQF
+         7T7g==
+X-Gm-Message-State: AOJu0Yx3WWBgf6Lq1FkKtgcorI1Rfav4K7U//gZgkQbtf9J6FGmUkT9+
+	x6olUOgjTw6PoX8K18oVFDjaoXstAT8yIvHJTWDgrIQzHINEWhU1Cw/U5dsUhHOalfep3R47I9E
+	8E4B0uYkzIq///ViEH8JzbmEg9XWMl5nT4wAeKNY3B/LQq47Xxfj/JA==
+X-Gm-Gg: ASbGnctzK6T4vAzGwdVJbDB9oQb76/CTs/rWCelUhifOhh1myQ8StcbAdi4P3fKxqHp
+	p9QoNY/3hJnN04p/xzgaJl8e2/NDSdZxKCWvh0bxOX3M2ZTGLesMoYhcHlUXvMKEdAsEteDA0pO
+	NGA6KChYCV6TKK0eUqmN5Eu8QcBA7RZT2oaqokpegrID5vVuJK77Y+zWah9Y5E+Z+OnlUTiqBHa
+	FTCO/skZLwsABlwpATfMVZDrpJVNA33dcv+uRX1KOSBY0lBOna1GIbY1HfG5dMxXuAVq7Tu6b8m
+	oewdnMziFgNeD1d7PX5SBpepKPuEABuZLFcrwCcclyLxdg==
+X-Received: by 2002:a5d:6daf:0:b0:391:1222:b444 with SMTP id ffacd0b85a97d-39c120db3f4mr8036376f8f.20.1743497539713;
+        Tue, 01 Apr 2025 01:52:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEFIwIsFXgnFgUnvUf7GiB0Qo92O2pFQl8WkobeyI6QhVmQ5/bHplaSDVAbQLHpuaV2qU/iLQ==
+X-Received: by 2002:a5d:6daf:0:b0:391:1222:b444 with SMTP id ffacd0b85a97d-39c120db3f4mr8036337f8f.20.1743497539288;
+        Tue, 01 Apr 2025 01:52:19 -0700 (PDT)
+Received: from [192.168.88.253] (146-241-68-231.dyn.eolo.it. [146.241.68.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b7a4351sm13751264f8f.98.2025.04.01.01.52.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Apr 2025 01:52:18 -0700 (PDT)
+Message-ID: <38b9af46-0d03-424d-8ecc-461b7daf216c@redhat.com>
+Date: Tue, 1 Apr 2025 10:52:17 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,83 +72,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: new splat
-To: Paolo Abeni <pabeni@redhat.com>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf
- <bpf@vger.kernel.org>, Network Development <netdev@vger.kernel.org>,
- Jakub Kicinski <kuba@kernel.org>
-References: <CAADnVQJFWn3dBFJtY+ci6oN1pDFL=TzCmNbRgey7MdYxt_AP2g@mail.gmail.com>
- <647c3886-72fd-4e49-bdd0-4512f0319e8c@redhat.com>
+Subject: Re: [PATCH net-next v5 2/2] page_pool: Track DMA-mapped pages and
+ unmap them when destroying the pool
+To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, Saeed Mahameed
+ <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Eric Dumazet <edumazet@google.com>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Simon Horman <horms@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Mina Almasry <almasrymina@google.com>, Yonglong Liu
+ <liuyonglong@huawei.com>, Yunsheng Lin <linyunsheng@huawei.com>,
+ Pavel Begunkov <asml.silence@gmail.com>, Matthew Wilcox <willy@infradead.org>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-mm@kvack.org, Qiuling Ren <qren@redhat.com>,
+ Yuying Ma <yuma@redhat.com>
+References: <20250328-page-pool-track-dma-v5-0-55002af683ad@redhat.com>
+ <20250328-page-pool-track-dma-v5-2-55002af683ad@redhat.com>
 Content-Language: en-US
-From: Justin Iurman <justin.iurman@uliege.be>
-In-Reply-To: <647c3886-72fd-4e49-bdd0-4512f0319e8c@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250328-page-pool-track-dma-v5-2-55002af683ad@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 3/31/25 10:07, Paolo Abeni wrote:
-> Adding Justin.
-> 
-> On 3/31/25 1:28 AM, Alexei Starovoitov wrote:
->> After bpf fast forward we see this new failure:
->>
->> [  138.359852] BUG: using __this_cpu_read() in preemptible [00000000]
->> code: test_progs/9368
->> [  138.362686] caller is lwtunnel_xmit+0x1c/0x2e0
->> [  138.364363] CPU: 9 UID: 0 PID: 9368 Comm: test_progs Tainted: G
->>        O        6.14.0-10767-g8be3a12f9f26 #1092 PREEMPT
->> [  138.364366] Tainted: [O]=OOT_MODULE
->> [  138.364366] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
->> BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
->> [  138.364368] Call Trace:
->> [  138.364370]  <TASK>
->> [  138.364375]  dump_stack_lvl+0x80/0x90
->> [  138.364381]  check_preemption_disabled+0xc6/0xe0
->> [  138.364385]  lwtunnel_xmit+0x1c/0x2e0
->> [  138.364387]  ip_finish_output2+0x2f9/0x850
->> [  138.364391]  ? __ip_finish_output+0xa0/0x320
->> [  138.364394]  ip_send_skb+0x3f/0x90
->> [  138.364397]  udp_send_skb+0x1a6/0x3d0
->> [  138.364402]  udp_sendmsg+0x87b/0x1000
->> [  138.364404]  ? ip_frag_init+0x60/0x60
->> [  138.364406]  ? reacquire_held_locks+0xcd/0x1f0
->> [  138.364414]  ? copy_process+0x2ae0/0x2fa0
->> [  138.364418]  ? inet_autobind+0x41/0x60
->> [  138.364420]  ? __local_bh_enable_ip+0x79/0xe0
->> [  138.364422]  ? inet_autobind+0x41/0x60
->> [  138.364424]  ? inet_send_prepare+0xe7/0x1e0
->> [  138.364428]  __sock_sendmsg+0x38/0x70
->> [  138.364432]  ____sys_sendmsg+0x1c9/0x200
->> [  138.364437]  ___sys_sendmsg+0x73/0xa0
->> [  138.364444]  ? __fget_files+0xb9/0x180
->> [  138.364447]  ? lock_release+0x131/0x280
->> [  138.364450]  ? __fget_files+0xc3/0x180
->> [  138.364453]  __sys_sendmsg+0x5a/0xa0
-> 
-> Possibly a decoded stack trace could help.
-> 
-> I think a possible suspect is:
-> 
-> commit 986ffb3a57c5650fb8bf6d59a8f0f07046abfeb6
-> Author: Justin Iurman <justin.iurman@uliege.be>
-> Date:   Fri Mar 14 13:00:46 2025 +0100
-> 
->      net: lwtunnel: fix recursion loops
-> 
-> with dev_xmit_recursion() in lwtunnel_xmit() being called in preemptible
-> scope.
+On 3/28/25 1:19 PM, Toke Høiland-Jørgensen wrote:
+> @@ -463,13 +462,21 @@ page_pool_dma_sync_for_device(const struct page_pool *pool,
+>  			      netmem_ref netmem,
+>  			      u32 dma_sync_size)
+>  {
+> -	if (pool->dma_sync && dma_dev_need_sync(pool->p.dev))
+> -		__page_pool_dma_sync_for_device(pool, netmem, dma_sync_size);
+> +	if (pool->dma_sync && dma_dev_need_sync(pool->p.dev)) {
 
-Correct, I came to the same conclusion based on that trace. However, I 
-can't reproduce it with a PREEMPT kernel. It goes through without 
-problem and the output is (as expected), i.e., "lwtunnel_xmit(): 
-recursion limit reached on datapath".
+Lacking a READ_ONCE() here, I think it's within compiler's right do some
+unexpected optimization between this read and the next one. Also it will
+make the double read more explicit.
 
-> @Justin, could you please have a look?
+Thanks,
 
-I guess that using preempt_{disable|enable}() would not be enough here, 
-so we may s/rcu_read_{lock|unlock}()/rcu_read_{lock|unlock}_bh()/g and 
-move the call to rcu_read_lock_bh() before dev_xmit_recursion(). Thoughts?
+Paolo
 
-> Thanks,
-> 
-> Paolo
-> 
