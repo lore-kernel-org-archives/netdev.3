@@ -1,57 +1,57 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCC31EB1AF
-	for <netdev@vger.kernel.org>; Tue,  1 Apr 2025 08:47:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347271EBA0C
+	for <netdev@vger.kernel.org>; Tue,  1 Apr 2025 08:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743497274; cv=none; b=cg2NLiRJWNB5AsF1zYoPVy6UXb3RJ8p6BvfpN6ait6ILPEcIQiYxpnGkqw3Q9qFQRACDx88Fbnn1NqGwoiPWP3b9FyLMyyCbL97DCfrzAnYU7uxIoJ0mWXoHaRULfk2Js8TLVMVnnx2PzdTiiSA/XZCWgS6pW1CFPA0xnZOjP2A=
+	t=1743497280; cv=none; b=Z/jPGxHTO802rL1cCzPkLSOUKjqtBuHUxeyGPrvn2GQqhT3opUGxFgNTgb5ZxeM2oxTDNowov+fqOtYGufsCgI+/RmEsJjNHcFzTMIOYroVinbOdKIPuBDLnM/BnmmgsGpfmKTDfxsGqVNeaytpjd+PTxpVXMviVzKnRjePayzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743497274; c=relaxed/simple;
-	bh=aU3au+otIKSxltUYnJ8K39yl1EqCoQKcIiDbdQBsWEc=;
+	s=arc-20240116; t=1743497280; c=relaxed/simple;
+	bh=YGcbHkt9eFpSEQOn+JlWmpSRXYfydlDZmE8XHbwBf3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQuKuzq4Vwdd2w+tFAyyGG1FKYI1oXuovZLEncFI+NmPKi3dTqeburSfszDBQol8yxwmamp6/k3ERsUF1P2Mfl4dXtb2rcXoRx9WsJwyQ/u29we3eA8tarc7WDhMfphfiAVuZ9VYCNcE8p4NUxVXBNg43QibDa5keI44cQfK7qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=asUcIdFW; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=asUcIdFW; arc=none smtp.client-ip=195.135.223.131
+	 MIME-Version; b=d/R4ubfR06mZdW0QmN2Jx7TN6RU3VNAw2+sepvlHCz//0xdjtyRP1UutaZkBbbJLcmTdA/FZURcLl/9pqLaB2wO3jU0VirEc5YXnIk2zHIOXyc5n4VlDWbxKL59ZfJx3Ci27NLjr8TQZZ9innlnuUdw/7gQ3a3AUby8quykd48g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=k37MAJKZ; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=k37MAJKZ; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="asUcIdFW";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="asUcIdFW"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="k37MAJKZ";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="k37MAJKZ"
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3A1DB1F38D;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9A892211E8;
 	Tue,  1 Apr 2025 08:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
 	t=1743497271; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PAWzvUvIce3uGPLV0zmT3epi+cTKOT1jtdNwIQTSGNE=;
-	b=asUcIdFWXuRZY/jfB+paOJV5NCPHdwX4aBxnvTYQhn/nv98h76KCXGw1HHEQq5NSmJp1aS
-	i9gc73k/WAkFUAQhr3Tcjhnbe0z94HsOfgwm+tq0ZwpwjV0u4MkzSK9WKYEHKchR8Tlt9/
-	Iw1lVKzqDiQMo9K5E/uVtDY8qCLM9SY=
-Authentication-Results: smtp-out2.suse.de;
+	bh=vojwZpSclVawxe5kq+1eROdzfpvhdcPhUWVb2RnGyOU=;
+	b=k37MAJKZ+dFnP2uOPfvM6EdsWx4N7JQ9/M39bCdN0Jmk+iqnZlTMJI8WsjFpxBg24C0HW4
+	IzEUVLX9XL72WIoAl1ZijAA6wj0kV/yfP3DlNbvOEgNQ86rl9jhtxWlP3gknUVqpHjJ+Qz
+	+FDmoXyq+B99aN9gqMpDb/Tl3XClq1o=
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
 	t=1743497271; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PAWzvUvIce3uGPLV0zmT3epi+cTKOT1jtdNwIQTSGNE=;
-	b=asUcIdFWXuRZY/jfB+paOJV5NCPHdwX4aBxnvTYQhn/nv98h76KCXGw1HHEQq5NSmJp1aS
-	i9gc73k/WAkFUAQhr3Tcjhnbe0z94HsOfgwm+tq0ZwpwjV0u4MkzSK9WKYEHKchR8Tlt9/
-	Iw1lVKzqDiQMo9K5E/uVtDY8qCLM9SY=
+	bh=vojwZpSclVawxe5kq+1eROdzfpvhdcPhUWVb2RnGyOU=;
+	b=k37MAJKZ+dFnP2uOPfvM6EdsWx4N7JQ9/M39bCdN0Jmk+iqnZlTMJI8WsjFpxBg24C0HW4
+	IzEUVLX9XL72WIoAl1ZijAA6wj0kV/yfP3DlNbvOEgNQ86rl9jhtxWlP3gknUVqpHjJ+Qz
+	+FDmoXyq+B99aN9gqMpDb/Tl3XClq1o=
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0C7B913A50;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7071713A50;
 	Tue,  1 Apr 2025 08:47:51 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id SCTsATeo62cRcQAAD6G6ig
+	id oHVNGjeo62cRcQAAD6G6ig
 	(envelope-from <oneukum@suse.com>); Tue, 01 Apr 2025 08:47:51 +0000
 From: Oliver Neukum <oneukum@suse.com>
 To: gregkh@linuxfoundation.org,
@@ -60,9 +60,9 @@ To: gregkh@linuxfoundation.org,
 	linux-usb@vger.kernel.org,
 	netdev@vger.kernel.org
 Cc: Oliver Neukum <oneukum@suse.com>
-Subject: [PATCHv2 1/4] USB: wdm: handle IO errors in wdm_wwan_port_start
-Date: Tue,  1 Apr 2025 10:45:38 +0200
-Message-ID: <20250401084749.175246-2-oneukum@suse.com>
+Subject: [PATCHv2 3/4] USB: wdm: wdm_wwan_port_tx_complete mutex in atomic context
+Date: Tue,  1 Apr 2025 10:45:40 +0200
+Message-ID: <20250401084749.175246-4-oneukum@suse.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250401084749.175246-1-oneukum@suse.com>
 References: <20250401084749.175246-1-oneukum@suse.com>
@@ -98,44 +98,30 @@ X-Spamd-Result: default: False [-6.80 / 50.00];
 X-Spam-Flag: NO
 X-Spam-Level: 
 
-In case submitting the URB fails we must undo
-what we've done so far.
+wdm_wwan_port_tx_complete is called from a completion
+handler with irqs disabled and possible in IRQ context
+usb_autopm_put_interface can take a mutex.
+Hence usb_autopm_put_interface_async must be used.
 
 Fixes: cac6fb015f71 ("usb: class: cdc-wdm: WWAN framework integration")
 Signed-off-by: Oliver Neukum <oneukum@suse.com>
 ---
- drivers/usb/class/cdc-wdm.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/usb/class/cdc-wdm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/usb/class/cdc-wdm.c b/drivers/usb/class/cdc-wdm.c
-index 856488a7cb6b..12038aa43942 100644
+index 355627982343..8b99db506b71 100644
 --- a/drivers/usb/class/cdc-wdm.c
 +++ b/drivers/usb/class/cdc-wdm.c
-@@ -831,6 +831,7 @@ static struct usb_class_driver wdm_class = {
- static int wdm_wwan_port_start(struct wwan_port *port)
- {
- 	struct wdm_device *desc = wwan_port_get_drvdata(port);
-+	int rv;
+@@ -881,7 +881,7 @@ static void wdm_wwan_port_tx_complete(struct urb *urb)
+ 	struct sk_buff *skb = urb->context;
+ 	struct wdm_device *desc = skb_shinfo(skb)->destructor_arg;
  
- 	/* The interface is both exposed via the WWAN framework and as a
- 	 * legacy usbmisc chardev. If chardev is already open, just fail
-@@ -850,7 +851,15 @@ static int wdm_wwan_port_start(struct wwan_port *port)
- 	wwan_port_txon(port);
- 
- 	/* Start getting events */
--	return usb_submit_urb(desc->validity, GFP_KERNEL);
-+	rv = usb_submit_urb(desc->validity, GFP_KERNEL);
-+	if (rv < 0) {
-+		wwan_port_txoff(port);
-+		desc->manage_power(desc->intf, 0);
-+		/* this must be last lest we race with chardev open */
-+		clear_bit(WDM_WWAN_IN_USE, &desc->flags);
-+	}
-+
-+	return rv;
+-	usb_autopm_put_interface(desc->intf);
++	usb_autopm_put_interface_async(desc->intf);
+ 	wwan_port_txon(desc->wwanp);
+ 	kfree_skb(skb);
  }
- 
- static void wdm_wwan_port_stop(struct wwan_port *port)
 -- 
 2.49.0
 
