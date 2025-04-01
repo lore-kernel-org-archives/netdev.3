@@ -1,103 +1,94 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CF71EDA35
-	for <netdev@vger.kernel.org>; Tue,  1 Apr 2025 10:27:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B55E1E5739
+	for <netdev@vger.kernel.org>; Tue,  1 Apr 2025 10:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743503250; cv=none; b=ZZi0xmaeTUUi3InfTMSBPN1ZAQTBwCXH47BeAOwxCHp9oxY243ufjLySa+PVSjeMG1St/dHwOgmKQl5oBKkyMy9mlqlUZnMhPK6FN8oUomIcSkGVZ3wb4lys1fIfIHQGgjS/8UucF2teryE2YHX/V/JXJbtWqzb+MAsIkb5btvw=
+	t=1743503470; cv=none; b=Fn0wKs/L87dT/im0O6GKLUxY3+DBXFG35M/LIrIn2OgVIcnI5PN/23SmMtowA6auhnuC+EwM0qywVlKBJ6CXZLRXOSzxmIs6p0NxBuWNhW/GCIZtlFKJqL0rA2wuZlaBgCQXBaXyzdwGj22i3XnEtigr2uVwNEIsWayNozLoUpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743503250; c=relaxed/simple;
-	bh=i65bli/LUjeAzAEjbdZeFArLOirreOB4o5/lk4mXqsg=;
+	s=arc-20240116; t=1743503470; c=relaxed/simple;
+	bh=k0jkI16LBZstDPKU8dQCTQj4mV4+r8DEKIbB6+W6U9Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mPTM8MPIFI/oP/2JfseIsPfQQbAy1bR0rZfWfgnlm3dbTgpgqdjjYbnorTL5JKiBCDdcl2m+3hin9k9YOw8W3NyOfS6wj32H8mZx5Yi3J6u/XK6Ev2idz0CkZE820gDMBiBcZZLV9NBfcgG43pA3DJmJzIIxva4hM/HUO6zPvvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E7/B1RWO; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=WRkQItDd9VSD8UI8xP8tWQH5eLj5GHg5UlAzSHD8MFnxfEyCNyRCdpXmIee8kXsuBURT2lUcDtz9bCevqyKaO6bDDZ+KdI67R+K9PJACh94mVWb0vFt+7WHRM8O/P7ySBL9oTsFVmQ1z4G9gInLxd5UO5D8G8ntfRDmbxivxj4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=oEEYVXpB; arc=none smtp.client-ip=198.252.153.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riseup.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E7/B1RWO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743503247;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lCMlwQTPbF+tcTXJk5vNlRndQ5yW7K0i3e1xn78wccs=;
-	b=E7/B1RWO9YRw+XlsdaQz1uOtrnDZLpyoKOG11CxPhCeMp5UGrtS733X3+v6UifpkXJ5Bq9
-	X/Dp8STJVLGVzJsoLXEE4Ejq1PbQpXjidc+a0rhVxxXWeQM/Tox1t2X/I6FkAO/1w1exsi
-	cXg5W060iZWuUI3D/IVeoejnn57Cwew=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-685-3Pk9jkexOVu9YZbaAtBziQ-1; Tue, 01 Apr 2025 06:27:26 -0400
-X-MC-Unique: 3Pk9jkexOVu9YZbaAtBziQ-1
-X-Mimecast-MFC-AGG-ID: 3Pk9jkexOVu9YZbaAtBziQ_1743503245
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-39130f02631so1800639f8f.2
-        for <netdev@vger.kernel.org>; Tue, 01 Apr 2025 03:27:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743503245; x=1744108045;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lCMlwQTPbF+tcTXJk5vNlRndQ5yW7K0i3e1xn78wccs=;
-        b=KEE24ZmpewlOFcAVPdf3gobk4CoUnB+bKBCplKVLLNS7jLoBCsmCAFL/G134EGLkMv
-         AZomHb1N+jv4McVpxjoy8z+ui69zU5rr25ncbewwbJrrDay0Npvv507qYFaXVhhyEIjm
-         PXRwf7posm6q22PAkDvRAQ6RSTZsC2Jcmg0/s2X+7SD/JNdC9NSULiiu1OwfNK7t8aI+
-         s5DDoaWhAIkkK5X2A/cqQPfYOCbWqlFXt+jHYnSYk4ro5ygWJnSWqtWgaEfLmM8KWcjv
-         5PMuQTzOWXcsTwNWuNLclqpI9eAYtL3K/Sa1UYoMpQiHKbZV2s3OwQy0xfM3YeYByPU1
-         BY8A==
-X-Forwarded-Encrypted: i=1; AJvYcCVtefMZdVz/LiYugZggrAnlEoi3jXXvX2f5q00q0UT57tK4IQ3aPCwhC4b2oi8Rp0ZYxcAmFKk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz97VtSXWTo9hX49F3dlWwNo8PzRfnt/DxYOIfz9mJ7rY5Nr3dR
-	fldCHvWdJFCXfzl7DwhYjoVtcukPzz1IQ/b08+D459bnvNoc5H+ObrXhY/RFiVSdgYSwFxx0zrU
-	jrkyGKnkj8xhx9BNlHHyZ+Ok/f2YhJVqd+wJM8kPSiOiHsswY2i9ikA==
-X-Gm-Gg: ASbGncscTspTFPeJjSNzTwOSnf/C5zNjxbggvnUdRCNh+W7EsqX6xSPsyvg02tEPFKZ
-	lZLeYzpkb7zpSrHpAgTPknV+/Up4W464AEFio5cEOmjVBeq0WAg30etUhi3yLGy42vvujBDCq3s
-	2uBVNvjAskc0hL3alRw55LcZiBzH6WW1ojeqRx3J9Y3KrXN9wBgW4fqu72nZWXEknue/8YPRjdK
-	2ly0cA+kmqvu/ySMoswYsRY9n5pIO0UFdMghspGl4jAVSHwnNy+ZmkW+alXSCfjsz0RwlVjS7MF
-	k5URR25ngozOpMpx/oL0FgnlQI/hYVBeeMzSHR3N0Z+ykA==
-X-Received: by 2002:a5d:6da1:0:b0:391:13ef:1b1b with SMTP id ffacd0b85a97d-39c236500aamr1960634f8f.30.1743503244341;
-        Tue, 01 Apr 2025 03:27:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IErywGUsB1jww0h7aRyVpVwYFuo7TtXzQBsO1rG5ZLjGsVlSSuop7KaYODnx/bHOTtheyZ/BA==
-X-Received: by 2002:a5d:6da1:0:b0:391:13ef:1b1b with SMTP id ffacd0b85a97d-39c236500aamr1960614f8f.30.1743503244004;
-        Tue, 01 Apr 2025 03:27:24 -0700 (PDT)
-Received: from [192.168.88.253] (146-241-68-231.dyn.eolo.it. [146.241.68.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b7a420bsm13526035f8f.82.2025.04.01.03.27.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Apr 2025 03:27:23 -0700 (PDT)
-Message-ID: <6859da28-6e54-49a1-ad12-759fb85537d8@redhat.com>
-Date: Tue, 1 Apr 2025 12:27:22 +0200
+	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="oEEYVXpB"
+Received: from fews02-sea.riseup.net (fews02-sea-pn.riseup.net [10.0.1.112])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx0.riseup.net (Postfix) with ESMTPS id 4ZRkmq4qxWz9vRD;
+	Tue,  1 Apr 2025 10:31:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
+	t=1743503467; bh=k0jkI16LBZstDPKU8dQCTQj4mV4+r8DEKIbB6+W6U9Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oEEYVXpB66jMv6tXdpY0dVCe/rqP/JRtCZejLXCoeIjwqcN0l+S5Zl6zcMzyv0jk1
+	 gpLZt43MReeeEVnQPn+R/zaKec+r8TXEtTxEb92hhvXeOxDnzPY3M6JH8TQhuw2qRs
+	 sHLGSjpDalPn1KqwquSkOMghauLA/scjd19DqRzA=
+X-Riseup-User-ID: 20374179322ACA9CEE10313516DFBDABA90DC67AF1AFE9F7BBBCD68D2832DCA5
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	 by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4ZRkmp2tg0zFx14;
+	Tue,  1 Apr 2025 10:31:05 +0000 (UTC)
+Message-ID: <f3bca6aa-eac9-4ffc-9f2a-f8672c2a6df0@riseup.net>
+Date: Tue, 1 Apr 2025 12:31:02 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch net 0/2] net_sched: skbprio: Remove overly strict queue
- assertions
-To: Cong Wang <xiyou.wangcong@gmail.com>, netdev@vger.kernel.org
-Cc: jhs@mojatatu.com, jiri@resnulli.us
-References: <20250329222536.696204-1-xiyou.wangcong@gmail.com>
+Subject: Re: [PATCH net] ipv6: fix omitted netlink attributes when using
+ RTEXT_FILTER_SKIP_STATS
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, sowmini.varadhan@oracle.com
+References: <20250331163651.9282-1-ffmancera@riseup.net>
+ <20250401094246.GB214849@horms.kernel.org>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250329222536.696204-1-xiyou.wangcong@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+From: "Fernando F. Mancera" <ffmancera@riseup.net>
+In-Reply-To: <20250401094246.GB214849@horms.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 3/29/25 11:25 PM, Cong Wang wrote:
-> This patchset contains a bug fix and its test case. Please see each
-> patch description for more details.
+
+
+On 01/04/2025 11:42, Simon Horman wrote:
+> On Mon, Mar 31, 2025 at 06:36:51PM +0200, Fernando Fernandez Mancera wrote:
+>> Using RTEXT_FILTER_SKIP_STATS should not skip non-statistics IPv6
+>> netlink attributes. Move the filling of IFLA_INET6_STATS and
+>> IFLA_INET6_ICMP6STATS to a helper function to avoid hitting the same
+>> situation in the future.
+>>
+>> Fixes: d5566fd72ec1 ("rtnetlink: RTEXT_FILTER_SKIP_STATS support to avoid dumping inet/inet6 stats")
+>> Signed-off-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
 > 
-> ---
-> Cong Wang (2):
->   net_sched: skbprio: Remove overly strict queue assertions
->   selftests: tc-testing: Add TBF with SKBPRIO queue length corner case
->     test
+> Hi Fernando,
 > 
->  net/sched/sch_skbprio.c                       |  3 --
->  .../tc-testing/tc-tests/infra/qdiscs.json     | 34 ++++++++++++++++++-
->  2 files changed, 33 insertions(+), 4 deletions(-)
+> I think that it would be good to describe what problem the user experiences
+> without this change - yes, I can see which attributes aren't dumped,
+> but what problem does that cause? Doubly so as this is marked as a bug fix.
 > 
 
-Acked-by: Paolo Abeni <pabeni@redhat.com>
+Hi Simons,
+
+In essence userspace tools use RTEXT_FILTER_SKIP_STATS to skip the IPV6 
+stats when dumping the link. As this is also skipping 
+IFLA_INET6_ADDR_GEN_MODE, IFLA_INET6_TOKEN and IFLA_INET6_RA_MTU, 
+usespace tools are missing non-stats information when trying to skip the 
+stats only so they cannot use this mechanism properly.
+
+E.g iproute is not rendering address generation mode after they started 
+to use the filter flag or NetworkManager not able to use the filter flag 
+because it would break the internal tracking of the other properties.
+
+I will leave more time for comments and will send a V2 adjusting the 
+commit message.
+
+Thanks!
+Fernando.
+
+> Thanks!
+> 
 
