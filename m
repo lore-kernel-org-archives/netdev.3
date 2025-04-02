@@ -1,402 +1,219 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F80198E75
-	for <netdev@vger.kernel.org>; Wed,  2 Apr 2025 16:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F669192B75;
+	Wed,  2 Apr 2025 16:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743611309; cv=none; b=m5W7j2MeFsND93A3+pd9hb/BCob2DqzlEVhDayF+uAaR1LKRs/AGjbxVh40yPgaB/Exv1llUXwKc8o0ZuYcXUYbYe5oDumlm9RLwvcvSOuMv01vwdT1l4I4dl7CJCYnLcV5as1Oc9OwVPPa61sDKH/V6v1PP++Jc0imIR9BUEW4=
+	t=1743611367; cv=none; b=ilxYQ9x+EIoOII1tpQrGIwHtwc5n4q9TmslWmQnZO2uwN1KzO+7+SzY5XoPhW4Cn6p5Tkn2MdbA8TkWVS20PqyhdPUeGYieHeXOZ83hvsuqiPQX50OrEd+5f3FZ5uGbpLFeknj8Bl/UOZDbf6wz3bs1nzrWkKZZ9CgNBP2DA7LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743611309; c=relaxed/simple;
-	bh=ASGfdhX3k9dJLmVK1k3GHGI9EXnD92JevJJhXYn3e9U=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Rv5ySxDLYFpDjiyocN8Pgn90DVDKdYYexWW6DSxOYT95auj4HeP8Wlty+8LBnwgNHB0Nls+fCQ0W3rijXGkQ74r5J6CcK+zX/yQIZaSWaI5FHZfFl8Z9rl84ojdgCSceYs+/NCbpJMq1pI78cO2ThZjXt92qa7C9spF4RH3aI6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chharry.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KNJ98kdl; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chharry.bounces.google.com
+	s=arc-20240116; t=1743611367; c=relaxed/simple;
+	bh=hpNglcGCD/ImR4MbnHVfaGtof3Zs/Gn5mxoDcxHVy5M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DMTLhK2IkGubVE2Cw5iB9YB1a1nZrTfnHXEpIptXds39VsK7YwreRNLqXf7TwzdhfbQBxSHuOPs2c2GIginwaH2SjWK01E1dwgd++Isd5CtWSUhGXdok5iQVucM3kxEfGiAIri1GlftO/pJRZgFNL41u941WBp8OqlmKzvUmD5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EKNP9K5O; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KNJ98kdl"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2240a7aceeaso515165ad.0
-        for <netdev@vger.kernel.org>; Wed, 02 Apr 2025 09:28:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EKNP9K5O"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7c546334bdeso513844785a.2;
+        Wed, 02 Apr 2025 09:29:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1743611307; x=1744216107; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=11c1kNcqbP6MqoCK7+Gzq8Uhztec/eqhGAQKiMTpHok=;
-        b=KNJ98kdlVckmj9UDWLgOgXRUrplBhUuOFWEhCE/1fO5v2e1YGa0hzBfqEAltgAlmrR
-         kJv4+3+URgOORJ+aDPvFNpQ5y1iR5TWJfMf1idj78g1ArFSCX/okpvZbQ0Zfhq9fPaes
-         8EuhugzZsp21hfBzPlaks80Y+dV1G3ymY2Z9jfbRQN89yZKwoXaE1sx8lFxfzRyIkgTI
-         /Idw1kMME2mwGcUgTq5jI85iYGoIeSUo9vPk0lYhex+D+K6zw4AyMYzmBy7H8a2CawM7
-         8+87+Cxv3tcvkbKD2/1YqbA+OtsCjTV9RCZpf/jfc5/Ku8YFwK9qlauBl3HRqawQMcMq
-         RUYA==
+        d=gmail.com; s=20230601; t=1743611364; x=1744216164; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FNud7VaCUDeA+FyZPSt2bHJdSWzIBv4EDqJHrTjrcSI=;
+        b=EKNP9K5O2o3ZWV1AtLjwedC37+zomjYHxZqt/6WfqY7fLtfHyZ0RPqMO5zVBUGFOal
+         JZBegA5LDj5SLnzbCa42TU7igPjUbalYoVNQAYQbdrdGouussVRaFBi7TPr9DGWCBayi
+         i9fQoJwKb4cJh++P5lOOdP6p2og1LHs0ro4KMRfKNxtEtiSkGRcpbuw+4xN4geX/0Sza
+         WUO3B95LvvOEK34bhHP1zKJ+WmKSCjkNP8gAUNQ0+hLICTLExIgLRpnCQYj91ooelrpm
+         vBoxg3WEEM/6g/y13IiydpQcyMOPJJyGI/FhpzmiL09FfI6pGD7ylgaqSLFMNz/zZxvb
+         wv1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743611307; x=1744216107;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=11c1kNcqbP6MqoCK7+Gzq8Uhztec/eqhGAQKiMTpHok=;
-        b=Cu0dw7m06zcM5uKYlPk4PR5GJwR3GkshwF7lK5criIRxbtRkNvmijlBnNHrAfrtQR7
-         sD1r2GtVEic6knhNIgJuVS4X+UY8M0ZWgcEm4dvATT/QC2qn9Z+P3w/pH0ss2mGEb7y5
-         xxsIFlGxLncn73235b0urA/ag9X9bjAp0fc4n/L/xETbKSX6AUWBjrV9mOhhbCbLMdO3
-         FXcFHHrKhpLxiybfPdiNMD3mSurWOHelyMujDjwxfxhSINqe+0MXvVg0FaOwKM3h2KHg
-         UalauThSRU0q7uhXGSUrHffjqxySmQg744DMo1BozJe3MDsD1YHXFluqnsdehxKmhnjn
-         o7Ow==
-X-Forwarded-Encrypted: i=1; AJvYcCXaszXD+QprTrYxwYAGEQfzAHOKVklB5B7YwFq/b4nQD7PzcoYzsjizWAV0sM6m5w73hT2Ql44=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDGOVj+vP7AYrQ2/LvxRetNZwl7wSq0qNQll5qiucm7Kcyk3Zr
-	RkBD8jihirceNQQApsymouLiiQHG8HUZqU864bcydEhmLnzsb/Azmrp19VX1EgeR3sGofP9dhM+
-	Rq/LplA==
-X-Google-Smtp-Source: AGHT+IFWEVM26nWhKTmcRs27xc4x5P78/M0Gu8fFWKjc9MeSe72cY4HBNTUq235I7EmfHmHQKlBZ98YyeSEj
-X-Received: from plpl14.prod.google.com ([2002:a17:903:3dce:b0:223:4c5f:3494])
- (user=chharry job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2350:b0:223:628c:199
- with SMTP id d9443c01a7336-2292fa1adeemr222285535ad.52.1743611306858; Wed, 02
- Apr 2025 09:28:26 -0700 (PDT)
-Date: Thu,  3 Apr 2025 00:26:34 +0800
+        d=1e100.net; s=20230601; t=1743611364; x=1744216164;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FNud7VaCUDeA+FyZPSt2bHJdSWzIBv4EDqJHrTjrcSI=;
+        b=kD+VSykTy1piL9jmLa38D2DPe/EAl2lMwPUyO5JhskZ6jXBwmq8GUdHEEO7cbwHs0y
+         yjwbeRzyke31q8XLgyUlQVm/N7btlUGlpIt+0qu0RS0wOnO0NWUq4FzqkVsAk84EpQDY
+         ri/fJqZeqnJ6QYV74bFad3XghQGMtfME+Ewa4Riw2/UgHzx4SUKhszfwuoAAWBrEv5JD
+         tXb+1dkXdocyFrfy1BgGx05YYB5S+zbMkPzN9uMyjZVfDKEIjSlZ34cEyVWr0ipFsy+2
+         nOFNX75lAtghdZZAyvto6HLDySPHF8TQqWb/xutVburXiydCKwGjasnisLdGCCuVPk3a
+         XSkA==
+X-Forwarded-Encrypted: i=1; AJvYcCV9aXEUyv7GLYPuoc+Aa4sP9jF0q/OUnf23Knk+o5pmV0ot1PH+paAIgwYlHykHTpDTIWkmH1yvt27EQs4=@vger.kernel.org, AJvYcCVjy6VaHiWWN1pnIGSxY0ECR0JawoBfdP2xcm/ESFw0AvEig+qZErVIvQDvx7NybzqvfHBR/ePOuUhzhAdBuXc=@vger.kernel.org, AJvYcCWMyPc40PGAtT/FmZCkv4RaY4dwNrdi3b0j/Fmr3wpzFbXihI8GYJWuqIk103lzSNW9G/0ViTp3@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzk+XMBIgeDjEReFYHwjpIXfFnWFm2aVT63SAMikI3EHAPcz6lQ
+	9XEXyNDt+n2DMAjgConlU3zh+jVWb44E7iJ/ptxZxi2ymW9AM3vk
+X-Gm-Gg: ASbGnctud2EjVlZ4tN/0IBJrM5Tx8pGgTYYXdCFDGRt5Pp9/0jx+sIDgA9GoNMcVzyB
+	ggTSMKMDcVFwNI9/YxU0Mmrgs2lWbZI8v1C64INECsRyLcbEaboSYGijePdvydgU/8551Ya4dET
+	N0s5T0f/K9mNWzRfVfY3XOJbWewc72N6//RZJgTAfmTjNfJC1onuddvCCJObjRBQUKbgq6LRGdj
+	xyzdZtuULN/idJK9WGaKzzu+3bjS9u3OegLOyt8kzQWT30P0CD/5ZhH3yqj8gZxPyMiX9NE3rE/
+	NjE2g2R7W3Aiyn88XoyaIdvmrDI+58u/LnYsWx/HFSZSCh54vOrg4bPvXoDor3HxUjlbtqMG7Fo
+	Q+CwEuU1vjNNXbweuzItgmTVKQgy36ZPMB4M=
+X-Google-Smtp-Source: AGHT+IEp0HORSr1/7mlmiTWemxCFPiCAqmQppHiDsaiqEfJoplVhG4xWytAzoUDxpOw1aGDKv6oBhg==
+X-Received: by 2002:a05:620a:c51:b0:7c5:b90a:54a6 with SMTP id af79cd13be357-7c6865ecef4mr2469143785a.13.1743611364038;
+        Wed, 02 Apr 2025 09:29:24 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c5f7682e57sm805481085a.39.2025.04.02.09.29.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Apr 2025 09:29:23 -0700 (PDT)
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id AA1F41200043;
+	Wed,  2 Apr 2025 12:29:22 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Wed, 02 Apr 2025 12:29:22 -0400
+X-ME-Sender: <xms:4mXtZ8woKWkRmc6VaQ-rIcgyTGESwQvikWY8xkJYUxOR4tmoFHdDZg>
+    <xme:4mXtZwTDM43jX0f8oRqX0xR8iAFLgOgLpE0XaWm7m-XV6ArMWhyuYHKVf5D_DYxvZ
+    9Am9SzkPOFdQnQbKQ>
+X-ME-Received: <xmr:4mXtZ-X4T9elYX3BYdy0dkbtAx6frPy3TW91RgUMNG6dZINpxoZ-ed1Cobk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddukeeiudegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpedvgeeifeehtddtffehffffvdfgjedtieek
+    heefgedtteeluddvheefjefgffejteenucffohhmrghinheprhhushhtqdhfohhrqdhlih
+    hnuhigrdgtohhmpdhgihhthhhusgdrtghomhdpudeirdihohhunecuvehluhhsthgvrhfu
+    ihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprg
+    huthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsgho
+    qhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprh
+    gtphhtthhopeefgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepfhhujhhithgr
+    rdhtohhmohhnohhrihesghhmrghilhdrtghomhdprhgtphhtthhopegrrdhhihhnuggsoh
+    hrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhi
+    gidruggvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrd
+    horhhgpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohephhhk
+    rghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtohepthhmghhrohhsshesuh
+    hmihgthhdrvgguuh
+X-ME-Proxy: <xmx:4mXtZ6gjqtRfsx2orknyTbTJ0tqj1-ho7s1qgQvsr4Kdf26SgtDtdQ>
+    <xmx:4mXtZ-DinTPeuo_LSa-tRxhcFC-wuMEc-z35r74kGpFsITa8OKc6gg>
+    <xmx:4mXtZ7J1dbuACXpbSA72vqOv_A39r_I_YOhLDRkBIt9OVQJXK0PAhw>
+    <xmx:4mXtZ1CadqeRsHajfSSAt9OrlDIUWmeb81E5EwE0NDH6XaE5OPa26A>
+    <xmx:4mXtZ-xglIbgDySJhM9CoXucF1DHhWWVtaS8LMrLnjXd_wMNcantbHkG>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 2 Apr 2025 12:29:22 -0400 (EDT)
+Date: Wed, 2 Apr 2025 09:29:18 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: a.hindborg@kernel.org, tglx@linutronix.de, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org,
+	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	anna-maria@linutronix.de, frederic@kernel.org, arnd@arndb.de,
+	jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
+	peterz@infradead.org, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+	vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev,
+	david.laight.linux@gmail.com
+Subject: Re: [PATCH v11 6/8] MAINTAINERS: rust: Add new sections for
+ DELAY/SLEEP and TIMEKEEPING API
+Message-ID: <Z-1l3mgsOi4y4N_c@boqun-archlinux>
+References: <Z96zstZIiPsP4mSF@Mac.home>
+ <871puoelnj.fsf@kernel.org>
+ <Z-qgo5gl6Qly-Wur@Mac.home>
+ <20250402.231627.270393242231849699.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.49.0.504.g3bcea36a83-goog
-Message-ID: <20250402162737.3271704-1-chharry@google.com>
-Subject: [PATCH] Bluetooth: Introduce HCI Driver Packet
-From: Hsin-chen Chuang <chharry@google.com>
-To: luiz.dentz@gmail.com
-Cc: Hsin-chen Chuang <chharry@chromium.org>, chromeos-bluetooth-upstreaming@chromium.org, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Johan Hedberg <johan.hedberg@gmail.com>, 
-	Marcel Holtmann <marcel@holtmann.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Ying Hsu <yinghsu@chromium.org>, linux-bluetooth@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250402.231627.270393242231849699.fujita.tomonori@gmail.com>
 
-From: Hsin-chen Chuang <chharry@chromium.org>
+On Wed, Apr 02, 2025 at 11:16:27PM +0900, FUJITA Tomonori wrote:
+> On Mon, 31 Mar 2025 07:03:15 -0700
+> Boqun Feng <boqun.feng@gmail.com> wrote:
+> 
+> >> My recommendation would be to take all of `rust/kernel/time` under one
+> >> entry for now. I suggest the following, folding in the hrtimer entry as
+> >> well:
+> >> 
+> >> DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]
+> >> M:	Andreas Hindborg <a.hindborg@kernel.org>
+> > 
+> > Given you're the one who would handle the patches, I think this make
+> > more sense.
+> > 
+> >> R:	Boqun Feng <boqun.feng@gmail.com>
+> >> R:	FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > 
+> > Tomo, does this look good to you?
+> 
+> Fine by me.
+> 
+> So a single entry for all the Rust time stuff, which isn't aligned
+> with C's MAINTAINERS entries. It's just for now?
+> 
 
-Although commit 75ddcd5ad40e ("Bluetooth: btusb: Configure altsetting
-for HCI_USER_CHANNEL") has enabled the HCI_USER_CHANNEL user to send out
-SCO data through USB Bluetooth chips, it's observed that with the patch
-HFP is flaky on most of the existing USB Bluetooth controllers: Intel
-chips sometimes send out no packet for Transparent codec; MTK chips may
-generate SCO data with a wrong handle for CVSD codec; RTK could split
-the data with a wrong packet size for Transparent codec; ... etc.
+Given Andreas is the one who's going to handle the PRs, and he will put
+all the things in one branch. I think it's fine even for long term, and
+we got all relevant reviewers covered. If the Rust timekeeping + hrtimer
+community expands in the future, we can also add more entries. We don't
+necessarily need to copy all maintainer structures from C ;-)
 
-To address the issue above one needs to reset the altsetting back to
-zero when there is no active SCO connection, which is the same as the
-BlueZ behavior, and another benefit is the bus doesn't need to reserve
-bandwidth when no SCO connection.
+> 
+> >> R:	Lyude Paul <lyude@redhat.com>
+> >> R:	Frederic Weisbecker <frederic@kernel.org>
+> >> R:	Thomas Gleixner <tglx@linutronix.de>
+> >> R:	Anna-Maria Behnsen <anna-maria@linutronix.de>
+> >> R:	John Stultz <jstultz@google.com>
+> > 
+> > We should add:
+> > 
+> > R:      Stephen Boyd <sboyd@kernel.org>
+> > 
+> > If Stephen is not against it.
+> > 
+> >> L:	rust-for-linux@vger.kernel.org
+> >> S:	Supported
+> >> W:	https://rust-for-linux.com
+> >> B:	https://github.com/Rust-for-Linux/linux/issues
+> >> T:	git https://github.com/Rust-for-Linux/linux.git rust-timekeeping-next
+> >> F:	rust/kernel/time.rs
+> >> F:	rust/kernel/time/
+> >> 
+> >> If that is acceptable to everyone, it is very likely that I can pick 2-6
+> >> for v6.16.
+> >> 
+> > 
+> > You will need to fix something because patch 2-6 removes `Ktime` ;-)
+> 
+> I'll take care of it in the next version.
+> 
 
-This patch introduces a fundamental solution that lets the user space
-program to configure the altsetting freely:
-- Define the new packet type HCI_DRV_PKT which is specifically used for
-  communication between the user space program and the Bluetooth drviers
-- Define the btusb driver command HCI_DRV_OP_SWITCH_ALT_SETTING which
-  indicates the expected altsetting from the user space program
-- btusb intercepts the command and adjusts the Isoc endpoint
-  correspondingly
+Thanks!
 
-This patch is tested on ChromeOS devices. The USB Bluetooth models
-(CVSD, TRANS alt3, and TRANS alt6) could pass the stress HFP test narrow
-band speech and wide band speech.
+> >> I assume patch 1 will go through the sched/core tree, and then Miguel
+> >> can pick 7.
+> >> 
+> > 
+> > Patch 1 & 7 probably should go together, but we can decide it later.
+> 
+> Since nothing has moved forward for quite a while, maybe it's time to
+> drop patch 1.
 
-Cc: chromeos-bluetooth-upstreaming@chromium.org
-Fixes: b16b327edb4d ("Bluetooth: btusb: add sysfs attribute to control USB alt setting")
-Signed-off-by: Hsin-chen Chuang <chharry@chromium.org>
----
+No, I think we should keep it. Because otherwise we will use a macro
+version of read_poll_timeout(), which is strictly worse. I'm happy to
+collect patch #1 and the cpu_relax() patch of patch #7, and send an PR
+to tip. Could you split them a bit:
 
- drivers/bluetooth/btusb.c       | 112 ++++++++++++++++++++++++++++++++
- drivers/bluetooth/hci_drv_pkt.h |  62 ++++++++++++++++++
- include/net/bluetooth/hci.h     |   1 +
- include/net/bluetooth/hci_mon.h |   2 +
- net/bluetooth/hci_core.c        |   2 +
- net/bluetooth/hci_sock.c        |  12 +++-
- 6 files changed, 189 insertions(+), 2 deletions(-)
- create mode 100644 drivers/bluetooth/hci_drv_pkt.h
+* Move the Rust might_sleep() in patch #7 to patch #1 and put it at
+  kernel::task, also if we EXPORT_SYMBOL(__might_sleep_precision), we
+  don't need the rust_helper for it.
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 5012b5ff92c8..644a0f13f8ee 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -26,6 +26,7 @@
- #include "btbcm.h"
- #include "btrtl.h"
- #include "btmtk.h"
-+#include "hci_drv_pkt.h"
- 
- #define VERSION "0.8"
- 
-@@ -2151,6 +2152,111 @@ static int submit_or_queue_tx_urb(struct hci_dev *hdev, struct urb *urb)
- 	return 0;
- }
- 
-+static int btusb_switch_alt_setting(struct hci_dev *hdev, int new_alts);
-+
-+static int btusb_drv_process_cmd(struct hci_dev *hdev, struct sk_buff *cmd_skb)
-+{
-+	struct hci_drv_cmd_hdr *hdr;
-+	u16 opcode, cmd_len;
-+
-+	hdr = skb_pull_data(cmd_skb, sizeof(*hdr));
-+	if (!hdr)
-+		return -EILSEQ;
-+
-+	opcode = le16_to_cpu(hdr->opcode);
-+	cmd_len = le16_to_cpu(hdr->len);
-+	if (cmd_len != cmd_skb->len)
-+		return -EILSEQ;
-+
-+	switch (opcode) {
-+	case HCI_DRV_OP_READ_SUPPORTED_DRIVER_COMMANDS: {
-+		struct hci_drv_resp_read_supported_driver_commands *resp;
-+		struct sk_buff *resp_skb;
-+		struct btusb_data *data = hci_get_drvdata(hdev);
-+		int ret;
-+		u16 num_commands = 1; /* SUPPORTED_DRIVER_COMMANDS */
-+
-+		if (data->isoc)
-+			num_commands++; /* SWITCH_ALT_SETTING */
-+
-+		resp_skb = hci_drv_skb_alloc(
-+			opcode, sizeof(*resp) + num_commands * sizeof(__le16),
-+			GFP_KERNEL);
-+		if (!resp_skb)
-+			return -ENOMEM;
-+
-+		resp = skb_put(resp_skb,
-+			       sizeof(*resp) + num_commands * sizeof(__le16));
-+		resp->status = HCI_DRV_STATUS_SUCCESS;
-+		resp->num_commands = cpu_to_le16(num_commands);
-+		resp->commands[0] =
-+			cpu_to_le16(HCI_DRV_OP_READ_SUPPORTED_DRIVER_COMMANDS);
-+
-+		if (data->isoc)
-+			resp->commands[1] =
-+				cpu_to_le16(HCI_DRV_OP_SWITCH_ALT_SETTING);
-+
-+		ret = hci_recv_frame(hdev, resp_skb);
-+		if (ret)
-+			return ret;
-+
-+		kfree_skb(cmd_skb);
-+		return 0;
-+	}
-+	case HCI_DRV_OP_SWITCH_ALT_SETTING: {
-+		struct hci_drv_cmd_switch_alt_setting *cmd;
-+		struct hci_drv_resp_status *resp;
-+		struct sk_buff *resp_skb;
-+		int ret;
-+		u8 status;
-+
-+		resp_skb = hci_drv_skb_alloc(opcode, sizeof(*resp), GFP_KERNEL);
-+		if (!resp_skb)
-+			return -ENOMEM;
-+
-+		cmd = skb_pull_data(cmd_skb, sizeof(*cmd));
-+		if (!cmd || cmd_skb->len || cmd->new_alt > 6) {
-+			status = HCI_DRV_STATUS_INVALID_PARAMETERS;
-+		} else {
-+			ret = btusb_switch_alt_setting(hdev, cmd->new_alt);
-+			if (ret)
-+				status = HCI_DRV_STATUS_UNSPECIFIED_ERROR;
-+			else
-+				status = HCI_DRV_STATUS_SUCCESS;
-+		}
-+
-+		resp = skb_put(resp_skb, sizeof(*resp));
-+		resp->status = status;
-+
-+		ret = hci_recv_frame(hdev, resp_skb);
-+		if (ret)
-+			return ret;
-+
-+		kfree_skb(cmd_skb);
-+		return 0;
-+	}
-+	default: {
-+		struct hci_drv_resp_status *resp;
-+		struct sk_buff *resp_skb;
-+		int ret;
-+
-+		resp_skb = hci_drv_skb_alloc(opcode, sizeof(*resp), GFP_KERNEL);
-+		if (!resp_skb)
-+			return -ENOMEM;
-+
-+		resp = skb_put(resp_skb, sizeof(*resp));
-+		resp->status = HCI_DRV_STATUS_UNKNOWN_COMMAND;
-+
-+		ret = hci_recv_frame(hdev, resp_skb);
-+		if (ret)
-+			return ret;
-+
-+		kfree_skb(cmd_skb);
-+		return 0;
-+	}
-+	}
-+}
-+
- static int btusb_send_frame(struct hci_dev *hdev, struct sk_buff *skb)
- {
- 	struct urb *urb;
-@@ -2192,6 +2298,9 @@ static int btusb_send_frame(struct hci_dev *hdev, struct sk_buff *skb)
- 			return PTR_ERR(urb);
- 
- 		return submit_or_queue_tx_urb(hdev, urb);
-+
-+	case HCI_DRV_PKT:
-+		return btusb_drv_process_cmd(hdev, skb);
- 	}
- 
- 	return -EILSEQ;
-@@ -2669,6 +2778,9 @@ static int btusb_send_frame_intel(struct hci_dev *hdev, struct sk_buff *skb)
- 			return PTR_ERR(urb);
- 
- 		return submit_or_queue_tx_urb(hdev, urb);
-+
-+	case HCI_DRV_PKT:
-+		return btusb_drv_process_cmd(hdev, skb);
- 	}
- 
- 	return -EILSEQ;
-diff --git a/drivers/bluetooth/hci_drv_pkt.h b/drivers/bluetooth/hci_drv_pkt.h
-new file mode 100644
-index 000000000000..800e0090f816
---- /dev/null
-+++ b/drivers/bluetooth/hci_drv_pkt.h
-@@ -0,0 +1,62 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (C) 2025 Google Corporation
-+ */
-+
-+#include <net/bluetooth/bluetooth.h>
-+#include <net/bluetooth/hci.h>
-+
-+struct hci_drv_cmd_hdr {
-+	__le16	opcode;
-+	__le16	len;
-+} __packed;
-+
-+struct hci_drv_resp_hdr {
-+	__le16	opcode;
-+	__le16	len;
-+} __packed;
-+
-+struct hci_drv_resp_status {
-+	__u8	status;
-+} __packed;
-+
-+#define HCI_DRV_STATUS_SUCCESS			0x00
-+#define HCI_DRV_STATUS_UNSPECIFIED_ERROR	0x01
-+#define HCI_DRV_STATUS_UNKNOWN_COMMAND		0x02
-+#define HCI_DRV_STATUS_INVALID_PARAMETERS	0x03
-+
-+/* Common commands that make sense on all drivers start from 0x0000. */
-+
-+#define HCI_DRV_OP_READ_SUPPORTED_DRIVER_COMMANDS	0x0000
-+struct hci_drv_resp_read_supported_driver_commands {
-+	__u8	status;
-+	__le16	num_commands;
-+	__le16	commands[];
-+} __packed;
-+
-+/* btusb specific commands start from 0x1135.
-+ * No particular reason - It's my lucky number.
-+ */
-+
-+#define HCI_DRV_OP_SWITCH_ALT_SETTING	0x1135
-+struct hci_drv_cmd_switch_alt_setting {
-+	__u8	new_alt;
-+} __packed;
-+
-+static inline struct sk_buff *hci_drv_skb_alloc(u16 opcode, u16 plen, gfp_t how)
-+{
-+	struct hci_drv_resp_hdr *hdr;
-+	struct sk_buff *skb;
-+
-+	skb = bt_skb_alloc(sizeof(*hdr) + plen, how);
-+	if (!skb)
-+		return NULL;
-+
-+	hdr = skb_put(skb, sizeof(*hdr));
-+	hdr->opcode = __cpu_to_le16(opcode);
-+	hdr->len = __cpu_to_le16(plen);
-+
-+	hci_skb_pkt_type(skb) = HCI_DRV_PKT;
-+
-+	return skb;
-+}
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index a8586c3058c7..e297b312d2b7 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -494,6 +494,7 @@ enum {
- #define HCI_EVENT_PKT		0x04
- #define HCI_ISODATA_PKT		0x05
- #define HCI_DIAG_PKT		0xf0
-+#define HCI_DRV_PKT		0xf1
- #define HCI_VENDOR_PKT		0xff
- 
- /* HCI packet types */
-diff --git a/include/net/bluetooth/hci_mon.h b/include/net/bluetooth/hci_mon.h
-index 082f89531b88..bbd752494ef9 100644
---- a/include/net/bluetooth/hci_mon.h
-+++ b/include/net/bluetooth/hci_mon.h
-@@ -51,6 +51,8 @@ struct hci_mon_hdr {
- #define HCI_MON_CTRL_EVENT	17
- #define HCI_MON_ISO_TX_PKT	18
- #define HCI_MON_ISO_RX_PKT	19
-+#define HCI_MON_DRV_TX_PKT	20
-+#define HCI_MON_DRV_RX_PKT	21
- 
- struct hci_mon_new_index {
- 	__u8		type;
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 5eb0600bbd03..bb4e1721edc2 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -2911,6 +2911,8 @@ int hci_recv_frame(struct hci_dev *hdev, struct sk_buff *skb)
- 		break;
- 	case HCI_ISODATA_PKT:
- 		break;
-+	case HCI_DRV_PKT:
-+		break;
- 	default:
- 		kfree_skb(skb);
- 		return -EINVAL;
-diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
-index 022b86797acd..428ee5c7de7e 100644
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -234,7 +234,8 @@ void hci_send_to_sock(struct hci_dev *hdev, struct sk_buff *skb)
- 			if (hci_skb_pkt_type(skb) != HCI_EVENT_PKT &&
- 			    hci_skb_pkt_type(skb) != HCI_ACLDATA_PKT &&
- 			    hci_skb_pkt_type(skb) != HCI_SCODATA_PKT &&
--			    hci_skb_pkt_type(skb) != HCI_ISODATA_PKT)
-+			    hci_skb_pkt_type(skb) != HCI_ISODATA_PKT &&
-+			    hci_skb_pkt_type(skb) != HCI_DRV_PKT)
- 				continue;
- 		} else {
- 			/* Don't send frame to other channel types */
-@@ -391,6 +392,12 @@ void hci_send_to_monitor(struct hci_dev *hdev, struct sk_buff *skb)
- 		else
- 			opcode = cpu_to_le16(HCI_MON_ISO_TX_PKT);
- 		break;
-+	case HCI_DRV_PKT:
-+		if (bt_cb(skb)->incoming)
-+			opcode = cpu_to_le16(HCI_MON_DRV_RX_PKT);
-+		else
-+			opcode = cpu_to_le16(HCI_MON_DRV_TX_PKT);
-+		break;
- 	case HCI_DIAG_PKT:
- 		opcode = cpu_to_le16(HCI_MON_VENDOR_DIAG);
- 		break;
-@@ -1860,7 +1867,8 @@ static int hci_sock_sendmsg(struct socket *sock, struct msghdr *msg,
- 		if (hci_skb_pkt_type(skb) != HCI_COMMAND_PKT &&
- 		    hci_skb_pkt_type(skb) != HCI_ACLDATA_PKT &&
- 		    hci_skb_pkt_type(skb) != HCI_SCODATA_PKT &&
--		    hci_skb_pkt_type(skb) != HCI_ISODATA_PKT) {
-+		    hci_skb_pkt_type(skb) != HCI_ISODATA_PKT &&
-+		    hci_skb_pkt_type(skb) != HCI_DRV_PKT) {
- 			err = -EINVAL;
- 			goto drop;
- 		}
--- 
-2.49.0.504.g3bcea36a83-goog
+* Have a separate containing the cpu_relax() bit.
 
+* Also you may want to put #[inline] at cpu_relax() and might_resched().
+
+and we can start from there. Sounds good?
+
+Regards,
+Boqun
