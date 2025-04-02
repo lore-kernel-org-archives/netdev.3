@@ -1,79 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFD113C81B
-	for <netdev@vger.kernel.org>; Wed,  2 Apr 2025 16:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01B2192D97
+	for <netdev@vger.kernel.org>; Wed,  2 Apr 2025 16:28:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743611027; cv=none; b=mE2H5PE0bt/BPAJRSVikoLz5R4GNcd7cSOPVCkoswhrcNv+ITj/9+GtZIH+Hzn32wI/3MNKFygbOtTzU8CRWXH0m1TKct7j5iaAJupJFRGVp9U9wGis4tpE0Ph9plu43/XZosnmPgImGvq+JG46Nm78yOZ6DNN+bB09op7dIWYk=
+	t=1743611283; cv=none; b=omynIW2RtB/qQ1G63Yepv7J2f+YgBGaLFDXY2Jh6f0dmqxa6NAFKYwPa+Q4mC4TbDrvKk6tOyoaGvxAPMz4q47GSrPECmdl/wH1vcxwhFWNBh7V/QbkW5NPEBGX6w83zEUzflpeeVkmFNAC9wF8z5tUolDa+N6zJsnH0HjFcLrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743611027; c=relaxed/simple;
-	bh=dmrKGzqUd1GVFzy4It40DCXnIT6NJijDToqqOeuvvUM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AGZ7eHR6nKUlXowDqXXO3zWGqaFutd2tcGcs085QBquOJxRBprYG4LpJPbTCizU4o6vnAtoCPfdcVKxc81d74JTBcPsO1M2zqOmuIsgdiCxm/PsKhRxRTt7BuP7WneUwHZhQ+DwjYuiF5ocQFukvd/T6iSVRRjCJQYsaVrRQKJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pw1mwMrB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743611283; c=relaxed/simple;
+	bh=NabCfKEk+jDtCUqo51dY+Fm7DrJgCp/z6lc/7I1imf8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=f0Wx3SibAps+p+0JowFXFIXoxepNUEi8k7KGwR4aGrUDe7aJT+y5BFnTGorNl/cgWqBhmrzPgS9ED1riQidrqnY6DkBCCrssMwFnjv8h/pAO4lW1DGRqDEGnkeAP3vNHjSoyxfBppYf+xnYXzcXwscU07mEJ8QLz+Nfo42+GeNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lX+/e6Fl; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pw1mwMrB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A53C4CEDD;
-	Wed,  2 Apr 2025 16:23:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743611026;
-	bh=dmrKGzqUd1GVFzy4It40DCXnIT6NJijDToqqOeuvvUM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Pw1mwMrBV6zyGiJmhdIzGAmb9tWWEQrstOpZvF4ASzG/Gaz+scl5yPTGB/ifLdLHE
-	 12qfv+b90q5duPv4h92sLXXACeIktca/FWNJJ+VbBsc3qEGGvY5dnUR5GcaOFB0a9z
-	 JxmGk63Ddo5kTg5ligk5b/vkovtjSU5LVQLkACTlVc7UFaM8OMHAb2MV55UnT4oU0R
-	 rv8lsrM/cu76h4ltkws13F8D/yRB/ovgzIBwKP2kL1u3hx58GoL7fVENhI4kkA7JkB
-	 Qw7tRbpLhX8wRX8uOvlXvBC67xuoPcslKLx/zwJ+TSBbbpSyXmfBlf6XNICP4oBZQ8
-	 R090twtn609pw==
-Date: Wed, 2 Apr 2025 09:23:44 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, David Arinzon <darinzon@amazon.com>, David
- Miller <davem@davemloft.net>, netdev@vger.kernel.org, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Richard Cochran <richardcochran@gmail.com>, "Woodhouse,
- David" <dwmw@amazon.com>, "Machulsky, Zorik" <zorik@amazon.com>,
- "Matushevsky, Alexander" <matua@amazon.com>, Saeed Bshara
- <saeedb@amazon.com>, "Wilson, Matt" <msw@amazon.com>, "Liguori, Anthony"
- <aliguori@amazon.com>, "Bshara, Nafea" <nafea@amazon.com>, "Schmeilin,
- Evgeny" <evgenys@amazon.com>, "Belgazal, Netanel" <netanel@amazon.com>,
- "Saidi, Ali" <alisaidi@amazon.com>, "Herrenschmidt, Benjamin"
- <benh@amazon.com>, "Kiyanovski, Arthur" <akiyano@amazon.com>, "Dagan, Noam"
- <ndagan@amazon.com>, "Bernstein, Amit" <amitbern@amazon.com>, "Agroskin,
- Shay" <shayagr@amazon.com>, "Ostrovsky, Evgeny" <evostrov@amazon.com>,
- "Tabachnik, Ofir" <ofirt@amazon.com>, "Machnikowski, Maciek"
- <maciek@machnikowski.net>, Rahul Rameshbabu <rrameshbabu@nvidia.com>, Gal
- Pressman <gal@nvidia.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: Re: [PATCH v8 net-next 5/5] net: ena: Add PHC documentation
-Message-ID: <20250402092344.5a12a26a@kernel.org>
-In-Reply-To: <dc253b7be5082d5623ae8865d5d75eb3df788516.camel@infradead.org>
-References: <20250304190504.3743-1-darinzon@amazon.com>
-	<20250304190504.3743-6-darinzon@amazon.com>
-	<aecb8d12-805b-4592-94f3-4dbfcdcd5cff@lunn.ch>
-	<55f9df6241d052a91dfde950af04c70969ea28b2.camel@infradead.org>
-	<dc253b7be5082d5623ae8865d5d75eb3df788516.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lX+/e6Fl"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2254bdd4982so539465ad.1
+        for <netdev@vger.kernel.org>; Wed, 02 Apr 2025 09:28:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1743611281; x=1744216081; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vmK0n2b7Tm5fxdi1s6oVPnEt2drqi+8AVF7hNrZG3UU=;
+        b=lX+/e6FlanyoaThYUp+LqhtTIlyL723eCRFZ8utRLZBQF21oFhOML/y+IsKhi9LX7W
+         Woa9FE/K2+fh+lyEVpdjUtw05VWcDM+YmPaIW3EY5ZXyGg9ck6RFekeCB31p7IqQ5RZh
+         Qk9GN8nobTvmJWF0/0yTxIzAtLWcZy8crTp1Tr2MlH0RxuaBa/KpKZeukkCvJvvWTNt+
+         PlUzavB2jtrp/73qWYjelfkO4tH2hXbOgzNzKCdgHroXCLM8O324Aw9qcW9eTqUSamEu
+         QwxA1N9utFPqPJWztvYUJx56FCoUWkAZR2YBoThV+m/M9gS7qsCFmvGrQGtns2Si/iiz
+         Qntg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743611281; x=1744216081;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vmK0n2b7Tm5fxdi1s6oVPnEt2drqi+8AVF7hNrZG3UU=;
+        b=CGbnE4Fb7vLf78eZf5Slx58rQyX9y9gc62Mc1F8hEpF44kA6HvZ/XFkAkm3XvEguEV
+         Hjy8XCThEAmCNzLaunQ8pu0CuJcgvYt+TLZycaZHSroEe65CCkFilZ6ckYp9higrSpk8
+         z75+DC1r4XrkygKk6sGbevLZj/sZFvkuOKjxTjddZGTyRxCqGHIE+RfjQLM40XTLbsq4
+         w5Z3CPNcgU1ny9zjK/LAejAbCNta9d1PWT6G2EpJdd5XGiIP4nfMxhLNQxeo4eMojfB7
+         tPmg1ALYEV+eA/YafGE06zWGpqMGHA1N47v+qCTBVPYP08Ux12weTIAC8GnxVuJCv/QA
+         DztA==
+X-Forwarded-Encrypted: i=1; AJvYcCXFTme48YIR/ckNK4VSN/LPB/EXyLOHuE4oEPIUC8tj9YvQ/3C6nNt+L8q+qEIb6np/T0LVYOQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTnT7AfGIhZKwgeY7cN7r9aPA6QT771vMIQWtC9hcwFHpETgNG
+	hIzlF52GwVplYHX132tWAPH1+NBbH1uHPruocs24vq2+P0h0E376AKrEIp/+utJuIOHJV3oFvw=
+	=
+X-Google-Smtp-Source: AGHT+IHLvt7nxcJ4ahi2vlxqr61OfzG5gLVSEtv7MZd6BSH4snd0Cp+zSqgbzYNXIqWeP7SBw9Kg/GimCQ==
+X-Received: from pfgs27.prod.google.com ([2002:a05:6a00:179b:b0:736:39fa:2251])
+ (user=tavip job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ce0d:b0:21f:52e:939e
+ with SMTP id d9443c01a7336-2296c688433mr48505845ad.28.1743611281096; Wed, 02
+ Apr 2025 09:28:01 -0700 (PDT)
+Date: Wed,  2 Apr 2025 09:27:47 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.49.0.472.ge94155a9ec-goog
+Message-ID: <20250402162750.1671155-1-tavip@google.com>
+Subject: [PATCH net v2 0/3] net_sched: sch_sfq: reject a derived limit of 1
+From: Octavian Purdila <tavip@google.com>
+To: jhs@mojatatu.com, xiyou.wangcong@gmail.com, jiri@resnulli.us
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, netdev@vger.kernel.org, 
+	Octavian Purdila <tavip@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 01 Apr 2025 09:46:35 +0100 David Woodhouse wrote:
-> On Tue, 2025-04-01 at 09:02 +0100, David Woodhouse wrote:
-> > 
-> > I think the sysfs control is the best option here.  
-> 
-> Actually, it occurs to me that the best option is probably a module
-> parameter. If you have to take the network down and up to change the
-> mode, why not just unload and reload the module?
+Because sfq parameters can influence each other there can be
+situations where although the user sets a limit of 2 it can be lowered
+to 1:
 
-We have something called devlink params, which support "configuration
-modes" (= what level of reset is required to activate the new setting).
-Maybe devlink param with cmode of "driver init" would be the best fit?
+$ tc qdisc add dev dummy0 handle 1: root sfq limit 2 flows 1 depth 1
+$ tc qdisc show dev dummy0
+qdisc sfq 1: dev dummy0 root refcnt 2 limit 1p quantum 1514b depth 1 divisor 1024
 
-Module params are annoying because they are scoped to code / module not
-instances of the device.
+$ tc qdisc add dev dummy0 handle 1: root sfq limit 2 flows 10 depth 1 divisor 1
+$ tc qdisc show dev dummy0
+qdisc sfq 2: root refcnt 2 limit 1p quantum 1514b depth 1 divisor 1
+
+As a limit of 1 is invalid, this patch series moves the limit
+validation to after all configuration changes have been done. To do
+so, the configuration is done in a temporary work area then applied to
+the internal state.
+
+The patch series also adds new test cases.
+
+Changes in v2:
+ - remove tmp struct and directly use local variables
+
+v1: https://lore.kernel.org/all/20250328201634.3876474-1-tavip@google.com/
+
+
+Octavian Purdila (3):
+  net_sched: sch_sfq: use a temporary work area for validating
+    configuration
+  net_sched: sch_sfq: move the limit validation
+  selftests/tc-testing: sfq: check that a derived limit of 1 is rejected
+
+ net/sched/sch_sfq.c                           | 68 ++++++++++++++-----
+ .../tc-testing/tc-tests/qdiscs/sfq.json       | 36 ++++++++++
+ 2 files changed, 88 insertions(+), 16 deletions(-)
+
+-- 
+2.49.0.472.ge94155a9ec-goog
+
