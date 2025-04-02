@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2909E1F8725
-	for <netdev@vger.kernel.org>; Wed,  2 Apr 2025 23:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBFD1F8725
+	for <netdev@vger.kernel.org>; Wed,  2 Apr 2025 23:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743637205; cv=none; b=Yopi/9eeyNpKb2SuUXvgXcM7pc25m30tXtN+YDBCZ7D1kfCJ9/e7TrSW2qzsUmuEw/4tQd1rCanaKhkRTid/pOZnQXo5gqQBT/ow6SmNkySPxfVx+iWpRTlhby6OHmHHwStEusZNttz9SJYDCH4ewYYbjwyPyJs9XGDIkZ3ugwo=
+	t=1743637207; cv=none; b=NUMu+stXV9IiuHkojeUT/wikeb90H1WJVZMUENk58n6HhNrHAjHJAsfF27QeJC0awoRIo8wuj7B+joCT1FxN3Qo27JdcfAJSP3cHWUXTaHPsswUTpVfQMBm8h1GnL4RKbhp0eK+37juO8nu04mlbkyFCjnhB9MSndTWfq1sAt9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743637205; c=relaxed/simple;
-	bh=zAmMwzFxqTlBJ1o+nbHozCL71L3PaWKgrvnw4T0F69U=;
+	s=arc-20240116; t=1743637207; c=relaxed/simple;
+	bh=Bt2+ylCDCULSGt5nLv1shq3mwylcM3/US0MV5+Bai3s=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Z8PvMXFMdevHbQifm133RdGfqKly9VLAUwACUZWFJHCUOTgXQ01TCg8w0d/qeTEFKjBG6AOpp9d2N/Tw8PYoDdLv40pcPTkm66EoixaqfEmJtpzijh+a6T5TbzYVvSHmXD9KmPv3ZGBYorpJVkzRGnlIYL0dlGe//8iclWI1Tr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DfSbx01P; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=UECkeKzWtbvRW8p7ePMdPZ8PQPZnYG8faOYFTdt5VNUg+lth8kgiyKvrizLiZI4Nqjq/P1YmJqe5WNKVO0D1JMiCqKQGf+VhsHUj/oqe03YgqYNd5myu8oqzp131JhUFgJtg0ZKp0E8Dw/ir11eEZAw7Hjiu0/1VmTTWny6GCbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NvLOcdmE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DfSbx01P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975FAC4CEDD;
-	Wed,  2 Apr 2025 23:40:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NvLOcdmE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E755C4CEE9;
+	Wed,  2 Apr 2025 23:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743637204;
-	bh=zAmMwzFxqTlBJ1o+nbHozCL71L3PaWKgrvnw4T0F69U=;
+	s=k20201202; t=1743637206;
+	bh=Bt2+ylCDCULSGt5nLv1shq3mwylcM3/US0MV5+Bai3s=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=DfSbx01PGBNPSaCHQYBr3LeJ4ooNG0XJ2EqhJjwNmOcYeBtSol1bkTIFHKwups+eV
-	 g2E4zWuQ19NEAx+cvSC31D1q/CJhQTLTxQUNNMNM6yEpyrIuuDG4TMN0xYtwasrpRm
-	 hsrhM5y/KDfv3/k3xRPN0evsyt64sMJkuAs1fbxdzJkGG/435l9N9vzfeJ8Didj6Bb
-	 ifoz2Oitm6Zkv5fJJwn+4XfuGFRJUJz5gMaDeR7KHcWE0mbsKxcp2CESeaoXfPTO4N
-	 zUU8Q0uYGr+e2RFPFeaDcQ31aE3SIqPKdKSD66I3i1RwreGAOy6jvzEQBmQ45D1I4T
-	 FhT+FzC8vA8EA==
+	b=NvLOcdmE4l2qunB8uuJ67ncdOG2IEdK1AwwNhnWxwLXiqL94NF+4TigyAPrOZy1YT
+	 vDJ3LbOECt9UgC8XXj5OvqBe0fcCZQm31/xokCwbvm3sAGteCFu0zIiDPqDM/rR1M2
+	 v/4LZTTy4Mb88mCNliHqFch2PmGR+caOGMBrNwGP7EoGz3XgeV9ml3YgP+3KSoFoD9
+	 dFR8w7ugtKdqGbrOZqN9CzANKTsVaMgI5HthfVlnpg7dDH3pd+rk9DUau5/xeHIweV
+	 G90Hz8FJOGqrNDDXMW1S5yKGvixVSYrS+vTy3W6icjUTxF1BJqaSyXU6hCkEFEtaD/
+	 515vir6l/KUqQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD9B380CEE3;
-	Wed,  2 Apr 2025 23:40:42 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33B76380CEE3;
+	Wed,  2 Apr 2025 23:40:44 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: airoha: Fix ETS priomap validation
+Subject: Re: [PATCH net] net: airoha: Fix qid report in
+ airoha_tc_get_htb_get_leaf_queue()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174363724124.1716091.3922737593747248975.git-patchwork-notify@kernel.org>
-Date: Wed, 02 Apr 2025 23:40:41 +0000
-References: <20250331-airoha-ets-validate-priomap-v1-1-60a524488672@kernel.org>
-In-Reply-To: <20250331-airoha-ets-validate-priomap-v1-1-60a524488672@kernel.org>
+ <174363724274.1716091.6235443928429080409.git-patchwork-notify@kernel.org>
+Date: Wed, 02 Apr 2025 23:40:42 +0000
+References: <20250331-airoha-htb-qdisc-offload-del-fix-v1-1-4ea429c2c968@kernel.org>
+In-Reply-To: <20250331-airoha-htb-qdisc-offload-del-fix-v1-1-4ea429c2c968@kernel.org>
 To: Lorenzo Bianconi <lorenzo@kernel.org>
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, dcaratti@redhat.com,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- netdev@vger.kernel.org
+ kuba@kernel.org, pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 31 Mar 2025 18:17:31 +0200 you wrote:
-> ETS Qdisc schedules SP bands in a priority order assigning band-0 the
-> highest priority (band-0 > band-1 > .. > band-n) while EN7581 arranges
-> SP bands in a priority order assigning band-7 the highest priority
-> (band-7 > band-6, .. > band-n).
-> Fix priomap check in airoha_qdma_set_tx_ets_sched routine in order to
-> align ETS Qdisc and airoha_eth driver SP priority ordering.
+On Mon, 31 Mar 2025 08:52:53 +0200 you wrote:
+> Fix the following kernel warning deleting HTB offloaded leafs and/or root
+> HTB qdisc in airoha_eth driver properly reporting qid in
+> airoha_tc_get_htb_get_leaf_queue routine.
+> 
+> $tc qdisc replace dev eth1 root handle 10: htb offload
+> $tc class add dev eth1 arent 10: classid 10:4 htb rate 100mbit ceil 100mbit
+> $tc qdisc replace dev eth1 parent 10:4 handle 4: ets bands 8 \
+>  quanta 1514 3028 4542 6056 7570 9084 10598 12112
+> $tc qdisc del dev eth1 root
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: airoha: Fix ETS priomap validation
-    https://git.kernel.org/netdev/net/c/367579274f60
+  - [net] net: airoha: Fix qid report in airoha_tc_get_htb_get_leaf_queue()
+    https://git.kernel.org/netdev/net/c/57b290d97c61
 
 You are awesome, thank you!
 -- 
