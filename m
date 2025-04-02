@@ -1,78 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB252356DF;
-	Wed,  2 Apr 2025 12:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3557820E01D;
+	Wed,  2 Apr 2025 12:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743596023; cv=none; b=JiS+CNvDkZDrhIaU0jOjHCCyUymkPmjOdHqJ9gW0akGs+AROlQEkCLNi2nZUt6APXNhhdv7yVMKIMhn96XB2dVDhGZZTAeZRtKexizcAExtMtIuxhpASvs4Vgx7gabJDZlUdcH0ekc25ZlXD9xYC8BIyy3kFTBYc7yT1DYdHOeA=
+	t=1743596187; cv=none; b=dNlE3rwFXSK34LPAAcKW8Ja2sIn2DMVpm8vcBrbtNPa8g3RptKZbm5hRaQ+7+RAQrrAJbPL0F7EMfv4fCKCz4prXMZl6MsY3VsiJmFMfb/bB6qTqB83LlAxMMHUgG4WrAvlGnUl5RBGYoMA03/uuvrH0wPxlaNXIwapbuVMpwAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743596023; c=relaxed/simple;
-	bh=O7oesmgNvnpeMIG+T0CoO9IemBq179dATBp4McwmeYY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KEihw0jJGM0RPGgG3zukZVDF2IetefjFU0tNUtFbaf2+ae1fwE+sVDnQJmssDO4lAeoGmlqaDEzm+fYTbcRx9fQEGffYiuhm/1GJ/ryCZoybq6bJfL25JfDLNFT9rqY3Io9WLNJwsKC43elCzomR+Hg9j8mIyiTnPcVq/RXPy6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q7Om3u2q; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q7Om3u2q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D08C4CEDD;
-	Wed,  2 Apr 2025 12:13:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743596022;
-	bh=O7oesmgNvnpeMIG+T0CoO9IemBq179dATBp4McwmeYY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q7Om3u2qOXHzmCKvzl9SNmhsvqIglkLX1PkahL07EHm7zSQpi6dW1zTwhYqk8ZHmM
-	 x6DNred9+HEQYWmXIYOHr57SFmRQtzrdjLXlJc2Y3ZF7XTyZzR9fQ8Qr0nVyjZSudi
-	 fIYtm0cRR3ac/1lGXMvT4+Dshb55UoAuLZCuQMD5IN6CoQhxVkZdoasZNNKrhhVVsB
-	 ZHIGSvVXXRDIeNPo9ID0pIV9QF7ileqKyQh6PgZR+QkfI2Fl0tDeLupw7WGa1hpfs4
-	 vYMgEh7qRm0ABFLDbep4yM9YdaC4sztiHoTMtcO+9omJ9MSyuODqGXQk54fyvoG0BV
-	 m8KO/ji5p/lVA==
-Message-ID: <a6f3b75c-2781-4d77-a5fb-ebf5d4a36c4a@kernel.org>
-Date: Wed, 2 Apr 2025 15:13:35 +0300
+	s=arc-20240116; t=1743596187; c=relaxed/simple;
+	bh=wMzkNwLUkTDB2rGAA3d36B+dNkQV51SXRAiylkF+XTw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iD2w7CZCNFy5AenwICrGhGXrHFk22bJ0rKF7vI96zD/Qq76TGb2ePEJ/Eu9Zr/fNNAKGF1oexsV6Pa+zF7U5q/ZsjzA1MsJqbFvnUQxnXeAcKqfLNelP340sYFyhjBuckRvWByUuIfwBa/3HFlQWNfZlKIYn2ckNxGhxVDx1BM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4ZSNz83psWzvWq0;
+	Wed,  2 Apr 2025 20:12:20 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6CB9C14010D;
+	Wed,  2 Apr 2025 20:16:20 +0800 (CST)
+Received: from localhost.localdomain (10.90.30.45) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 2 Apr 2025 20:16:19 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
+	<liuyonglong@huawei.com>, <chenhao418@huawei.com>,
+	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
+	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
+Subject: [PATCH net 3/3] net: hns3: store rx VLAN tag offload state for VF
+Date: Wed, 2 Apr 2025 20:10:01 +0800
+Message-ID: <20250402121001.663431-4-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20250402121001.663431-1-shaojijie@huawei.com>
+References: <20250402121001.663431-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 1/3] net: ti: icssg-prueth: Fix kernel warning
- while bringing down network interface
-To: Meghana Malladi <m-malladi@ti.com>, dan.carpenter@linaro.org,
- pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
- davem@davemloft.net, andrew+netdev@lunn.ch
-Cc: bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- namcao@linutronix.de, javier.carrasco.cruz@gmail.com, diogo.ivo@siemens.com,
- horms@kernel.org, jacob.e.keller@intel.com, john.fastabend@gmail.com,
- hawk@kernel.org, daniel@iogearbox.net, ast@kernel.org, srk@ti.com,
- Vignesh Raghavendra <vigneshr@ti.com>, danishanwar@ti.com
-References: <20250328102403.2626974-1-m-malladi@ti.com>
- <20250328102403.2626974-2-m-malladi@ti.com>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20250328102403.2626974-2-m-malladi@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
+From: Jian Shen <shenjian15@huawei.com>
 
+The VF driver missed to store the rx VLAN tag strip state when
+user change the rx VLAN tag offload state. And it will default
+to enable the rx vlan tag strip when re-init VF device after
+reset. So if user disable rx VLAN tag offload, and trig reset,
+then the HW will still strip the VLAN tag from packet nad fill
+into RX BD, but the VF driver will ignore it for rx VLAN tag
+offload disabled. It may cause the rx VLAN tag dropped.
 
-On 28/03/2025 12:24, Meghana Malladi wrote:
-> During network interface initialization, the NIC driver needs to register
-> its Rx queue with the XDP, to ensure the incoming XDP buffer carries a
-> pointer reference to this info and is stored inside xdp_rxq_info.
-> 
-> While this struct isn't tied to XDP prog, if there are any changes in
-> Rx queue, the NIC driver needs to stop the Rx queue by unregistering
-> with XDP before purging and reallocating memory. Drop page_pool destroy
-> during Rx channel reset as this is already handled by XDP during
-> xdp_rxq_info_unreg (Rx queue unregister), failing to do will cause the
-> following warning:
-> 
-> warning logs: https://gist.github.com/MeghanaMalladiTI/eb627e5dc8de24e42d7d46572c13e576
-> 
-> Fixes: 46eeb90f03e0 ("net: ti: icssg-prueth: Use page_pool API for RX buffer allocation")
-> Signed-off-by: Meghana Malladi <m-malladi@ti.com>
-> Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: b2641e2ad456 ("net: hns3: Add support of hardware rx-vlan-offload to HNS3 VF driver")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ .../hisilicon/hns3/hns3vf/hclgevf_main.c      | 25 ++++++++++++++-----
+ .../hisilicon/hns3/hns3vf/hclgevf_main.h      |  3 ++-
+ 2 files changed, 21 insertions(+), 7 deletions(-)
 
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index 9ba767740a04..dada42e7e0ec 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -1292,9 +1292,8 @@ static void hclgevf_sync_vlan_filter(struct hclgevf_dev *hdev)
+ 	rtnl_unlock();
+ }
+ 
+-static int hclgevf_en_hw_strip_rxvtag(struct hnae3_handle *handle, bool enable)
++static int hclgevf_en_hw_strip_rxvtag_cmd(struct hclgevf_dev *hdev, bool enable)
+ {
+-	struct hclgevf_dev *hdev = hclgevf_ae_get_hdev(handle);
+ 	struct hclge_vf_to_pf_msg send_msg;
+ 
+ 	hclgevf_build_send_msg(&send_msg, HCLGE_MBX_SET_VLAN,
+@@ -1303,6 +1302,19 @@ static int hclgevf_en_hw_strip_rxvtag(struct hnae3_handle *handle, bool enable)
+ 	return hclgevf_send_mbx_msg(hdev, &send_msg, false, NULL, 0);
+ }
+ 
++static int hclgevf_en_hw_strip_rxvtag(struct hnae3_handle *handle, bool enable)
++{
++	struct hclgevf_dev *hdev = hclgevf_ae_get_hdev(handle);
++	int ret;
++
++	ret = hclgevf_en_hw_strip_rxvtag_cmd(hdev, enable);
++	if (ret)
++		return ret;
++
++	hdev->rxvtag_strip_en = enable;
++	return 0;
++}
++
+ static int hclgevf_reset_tqp(struct hnae3_handle *handle)
+ {
+ #define HCLGEVF_RESET_ALL_QUEUE_DONE	1U
+@@ -2204,12 +2216,13 @@ static int hclgevf_rss_init_hw(struct hclgevf_dev *hdev)
+ 					  tc_valid, tc_size);
+ }
+ 
+-static int hclgevf_init_vlan_config(struct hclgevf_dev *hdev)
++static int hclgevf_init_vlan_config(struct hclgevf_dev *hdev,
++				    bool rxvtag_strip_en)
+ {
+ 	struct hnae3_handle *nic = &hdev->nic;
+ 	int ret;
+ 
+-	ret = hclgevf_en_hw_strip_rxvtag(nic, true);
++	ret = hclgevf_en_hw_strip_rxvtag(nic, rxvtag_strip_en);
+ 	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed to enable rx vlan offload, ret = %d\n", ret);
+@@ -2879,7 +2892,7 @@ static int hclgevf_reset_hdev(struct hclgevf_dev *hdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = hclgevf_init_vlan_config(hdev);
++	ret = hclgevf_init_vlan_config(hdev, hdev->rxvtag_strip_en);
+ 	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed(%d) to initialize VLAN config\n", ret);
+@@ -2994,7 +3007,7 @@ static int hclgevf_init_hdev(struct hclgevf_dev *hdev)
+ 		goto err_config;
+ 	}
+ 
+-	ret = hclgevf_init_vlan_config(hdev);
++	ret = hclgevf_init_vlan_config(hdev, true);
+ 	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed(%d) to initialize VLAN config\n", ret);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
+index cccef3228461..1e452b14b04e 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
+@@ -252,7 +252,8 @@ struct hclgevf_dev {
+ 	u16 *vector_status;
+ 	int *vector_irq;
+ 
+-	bool gro_en;
++	u32 gro_en :1;
++	u32 rxvtag_strip_en :1;
+ 
+ 	unsigned long vlan_del_fail_bmap[BITS_TO_LONGS(VLAN_N_VID)];
+ 
+-- 
+2.33.0
 
