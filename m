@@ -1,29 +1,29 @@
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDDD1482E8;
-	Wed,  2 Apr 2025 13:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E544D23A9BF;
+	Wed,  2 Apr 2025 13:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743601569; cv=none; b=GjMpeuMHEUIvd4cWJNtUf7nMabaAX+x8ClhDBYpsekaA34lxkSnW0Guxi9bLNuUqiQfBOfsJ1yooZcXAaa8xrPXGNDMIbPEZ4RLZY3yAZaPwDHFecT5T323AtC1ZlJm5y+JcObwWnaPTHG9vnU/J0zvGmFsscdXzXFuGHi2Sq64=
+	t=1743601569; cv=none; b=adXaUsiDDV7ajQur2eeY/OC4HZq6f4xaJGoxbFjmxOXTendwJeL0+XPVggTmna+bMiF6kbPe54CTbPuok8b6IiNCObzpPkDGzOOuN46tYUdNoOZfJz49W+M4mJtflH2XKssQIN0serisCviBSryeNl4OKxP3Cv9j2Wvm34tmk/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1743601569; c=relaxed/simple;
-	bh=w92eSDKM73sWTnHEyRsM0ea9+L+OfX552mUSpVxogjk=;
+	bh=ayi+2RtNbz1gR7WcrLFw26ZRxnOL8sFaE3V8IoKYwbo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t8Nb0RrKPc3vGYQgrdypW+Td4p7xMJAeDv5+p4O4JvJtQguvXTjp31eUGD+QmVDXmQf+8cX1Zk1TyzERRogcjsESC5rnOr6VI35b9aCgv5V+Wa7m/Hx3Jpukn1AXb7ebSwLZ2maB959GZU90smXaLavqWbTq1JJKNnisCZXYhdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+	 MIME-Version:Content-Type; b=Ny3IycAhhQKUUbzlWq67lM73KDLM0zcFfrKS+OQzr2pykam/b1Qt6oMHnGth8lKhuiOypHUYP99fEgqPxMQtThLeoYZUq4TCYB6jbDgAic3X9b3LwMcthBP7rNd1eGrf0RY0akOzP8jyOO32EZG8s80Y3b3G0cdq8CTYJ+pNEPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4ZSR423SDbz27hJ0;
-	Wed,  2 Apr 2025 21:46:42 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4ZSQz21bxDzWfd2;
+	Wed,  2 Apr 2025 21:42:22 +0800 (CST)
 Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 583A01A016C;
-	Wed,  2 Apr 2025 21:46:03 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 566691800E4;
+	Wed,  2 Apr 2025 21:46:04 +0800 (CST)
 Received: from localhost.localdomain (10.90.30.45) by
  kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 2 Apr 2025 21:46:02 +0800
+ 15.2.1544.11; Wed, 2 Apr 2025 21:46:03 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
@@ -32,9 +32,9 @@ CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
 	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
 	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
-Subject: [PATCH net 4/7] net: hibmcge: fix wrong mtu log issue
-Date: Wed, 2 Apr 2025 21:39:02 +0800
-Message-ID: <20250402133905.895421-5-shaojijie@huawei.com>
+Subject: [PATCH net 6/7] net: hibmcge: fix not restore rx pause mac addr after reset issue
+Date: Wed, 2 Apr 2025 21:39:04 +0800
+Message-ID: <20250402133905.895421-7-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20250402133905.895421-1-shaojijie@huawei.com>
 References: <20250402133905.895421-1-shaojijie@huawei.com>
@@ -49,41 +49,44 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
  kwepemk100013.china.huawei.com (7.202.194.61)
 
-A dbg log is generated when the driver modifies the MTU,
-which is expected to trace the change of the MTU.
+In normal cases, the driver must ensure that the value
+of rx pause mac addr is the same as the MAC address of
+the network port. This ensures that the driver can
+receive pause frames whose destination address is
+the MAC address of the network port.
 
-However, the log is recorded after WRITE_ONCE().
-At this time, netdev->mtu has been changed to the new value.
-As a result, netdev->mtu is the same as new_mtu.
+Currently, the rx pause addr does not restored after reset.
 
-This patch modifies the log location and records logs before WRITE_ONCE().
+The index of the MAC address of the host is always 0.
+Therefore, this patch sets rx pause addr to
+the MAC address with index 0.
 
-Fixes: ff4edac6e9bd ("net: hibmcge: Implement some .ndo functions")
+Fixes: 3f5a61f6d504 ("net: hibmcge: Add reset supported in this module")
 Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 ---
- drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-index e5c961ad4b9b..2e64dc1ab355 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-@@ -203,12 +203,12 @@ static int hbg_net_change_mtu(struct net_device *netdev, int new_mtu)
- 	if (netif_running(netdev))
- 		return -EBUSY;
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
+index 4e8cb66f601c..a0bcfb5a713d 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
+@@ -26,12 +26,15 @@ static void hbg_restore_mac_table(struct hbg_priv *priv)
  
--	hbg_hw_set_mtu(priv, new_mtu);
--	WRITE_ONCE(netdev->mtu, new_mtu);
--
- 	dev_dbg(&priv->pdev->dev,
- 		"change mtu from %u to %u\n", netdev->mtu, new_mtu);
+ static void hbg_restore_user_def_settings(struct hbg_priv *priv)
+ {
++	/* The index of host mac is always 0. */
++	u64 rx_pause_addr = ether_addr_to_u64(priv->filter.mac_table[0].addr);
+ 	struct ethtool_pauseparam *pause_param = &priv->user_def.pause_param;
  
-+	hbg_hw_set_mtu(priv, new_mtu);
-+	WRITE_ONCE(netdev->mtu, new_mtu);
-+
- 	return 0;
+ 	hbg_restore_mac_table(priv);
+ 	hbg_hw_set_mtu(priv, priv->netdev->mtu);
+ 	hbg_hw_set_pause_enable(priv, pause_param->tx_pause,
+ 				pause_param->rx_pause);
++	hbg_hw_set_rx_pause_mac_addr(priv, rx_pause_addr);
  }
  
+ int hbg_rebuild(struct hbg_priv *priv)
 -- 
 2.33.0
 
