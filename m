@@ -1,40 +1,47 @@
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BB323906A;
-	Wed,  2 Apr 2025 12:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8883D218E81
+	for <netdev@vger.kernel.org>; Wed,  2 Apr 2025 12:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743596190; cv=none; b=DcbBaLSWQH8clNZ4lmKN7kntk1DWMr+cVsT+LtiLm8a9bANENfzd4RFo0CVWeuqF0wyZ0B2D45s9+W38jKcfm5xDimSoc7RH4hTBzbeOP5gYtOZ1t3ROAx6IY2aflARpfoSqCvajLpcVpacH/J1zHf2imXiTgUiI2ey61uiHORQ=
+	t=1743596302; cv=none; b=NE7mYYfMb64HV9ndtUNa1Wuy1HZk1dSCbliWT+W8XiUuJC9KoY1DzTxU13mG/DXvhcQQe3hDJARiHyoBJjW9qi8pX2R7SAPYgK4g2cy0pqPWsus+aaT18kju//LgI9QntTTNtQ3oO7HC6tb7gl7t6KJ0zUySqQ4f70KE+eBYo2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743596190; c=relaxed/simple;
-	bh=fWgDe162ymGW0UVRpoazuwJcXWLWtrwI5CNZvgR4upU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Qv7xYzAKFMjryshAJMK6d7l5F5gQN6usbXEH25AurM+XI8CrMlS/CLhNAQT1Y/Wa2FBor1KvwQdzwDR70du9gdFNjn1ApFBBN0gnfKpmG7wN/Qd8/1S3EmbPf3FZnL7xcbClJQzLm71iEVqI4m8PYKoC5H9I3CRH2QfJ/Cy7MMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4ZSP1c2w3xz1R7ZV;
-	Wed,  2 Apr 2025 20:14:28 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id D50161402A5;
-	Wed,  2 Apr 2025 20:16:18 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 2 Apr 2025 20:16:18 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
-CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
-	<liuyonglong@huawei.com>, <chenhao418@huawei.com>,
-	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
-	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
-Subject: [PATCH net 0/3] There are some bugfix for the HNS3 ethernet driver
-Date: Wed, 2 Apr 2025 20:09:58 +0800
-Message-ID: <20250402121001.663431-1-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.30.0
+	s=arc-20240116; t=1743596302; c=relaxed/simple;
+	bh=3RvIs8KGtoBGE/0ZTTj0g3xwcNwFRTEbtiwWO4T6DR0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CTX53Ng1086sIGlRt+IrR3rej8+y/WvSiI1Po8G6KC03rxCTaxeOL33mr/wzUrniPKODLqo4S0E+WlWyoEPWdplEIWJIRzPy7dwgvw8VHzaUkm0Kh77eeCmWR2NmcqzTjkFlCn8GsyHo8UyjdYVITO8rvMO3sWYPnGz1GK/+d88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=dayXI9yg; arc=none smtp.client-ip=198.252.153.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riseup.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="dayXI9yg"
+Received: from fews02-sea.riseup.net (fews02-sea-pn.riseup.net [10.0.1.112])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx0.riseup.net (Postfix) with ESMTPS id 4ZSP5y03Yqz9tl1;
+	Wed,  2 Apr 2025 12:18:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
+	t=1743596294; bh=3RvIs8KGtoBGE/0ZTTj0g3xwcNwFRTEbtiwWO4T6DR0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=dayXI9ygnchTtsktGP/lzRpz6hMQmYk6oDOiNx5fAK2tLbucTitEBlsWofpl7nnEB
+	 PB7b8yJjvCrpUGd78gyZV/TPc+EMiV4/JDwR+gANwhpsN24aT98z8qp1OLB1Js2bT/
+	 YObulfmAy35pQ/piqLtfTiqiFE96wsGzp1i9k1nQ=
+X-Riseup-User-ID: 479EF4C1E8FE06D2417D38C1FA208CE885ACD1FD11453EFF0A262BC2749D62D4
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	 by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4ZSP5w03BczFtYj;
+	Wed,  2 Apr 2025 12:18:11 +0000 (UTC)
+From: Fernando Fernandez Mancera <ffmancera@riseup.net>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	Fernando Fernandez Mancera <ffmancera@riseup.net>
+Subject: [PATCH net v2] ipv6: fix omitted netlink attributes when using RTEXT_FILTER_SKIP_STATS
+Date: Wed,  2 Apr 2025 14:17:51 +0200
+Message-ID: <20250402121751.3108-1-ffmancera@riseup.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,27 +49,77 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemk100013.china.huawei.com (7.202.194.61)
 
-There are some bugfix for the HNS3 ethernet driver
+Using RTEXT_FILTER_SKIP_STATS is incorrectly skipping non-stats IPv6
+netlink attributes on link dump. This causes issues on userspace tools,
+e.g iproute2 is not rendering address generation mode as it should due
+to missing netlink attribute.
 
-Hao Lan (1):
-  net: hns3: fix spelling mistake "reg_um" -> "reg_num"
+Move the filling of IFLA_INET6_STATS and IFLA_INET6_ICMP6STATS to a
+helper function guarded by a flag check to avoid hitting the same
+situation in the future.
 
-Jian Shen (1):
-  net: hns3: store rx VLAN tag offload state for VF
+Fixes: d5566fd72ec1 ("rtnetlink: RTEXT_FILTER_SKIP_STATS support to avoid dumping inet/inet6 stats")
+Signed-off-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
+---
+ net/ipv6/addrconf.c | 37 +++++++++++++++++++++++++------------
+ 1 file changed, 25 insertions(+), 12 deletions(-)
 
-Yonglong Liu (1):
-  net: hns3: fix a use of uninitialized variable problem
-
- .../hisilicon/hns3/hns3pf/hclge_main.c        |  2 +-
- .../hisilicon/hns3/hns3vf/hclgevf_main.c      | 25 ++++++++++++-----
- .../hisilicon/hns3/hns3vf/hclgevf_main.h      |  3 ++-
- .../hisilicon/hns3/hns3vf/hclgevf_regs.c      | 27 ++++++++++---------
- 4 files changed, 36 insertions(+), 21 deletions(-)
-
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index ac8cc1076536..54a8ea004da2 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -5784,6 +5784,27 @@ static void snmp6_fill_stats(u64 *stats, struct inet6_dev *idev, int attrtype,
+ 	}
+ }
+ 
++static int inet6_fill_ifla6_stats_attrs(struct sk_buff *skb,
++					struct inet6_dev *idev)
++{
++	struct nlattr *nla;
++
++	nla = nla_reserve(skb, IFLA_INET6_STATS, IPSTATS_MIB_MAX * sizeof(u64));
++	if (!nla)
++		goto nla_put_failure;
++	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_STATS, nla_len(nla));
++
++	nla = nla_reserve(skb, IFLA_INET6_ICMP6STATS, ICMP6_MIB_MAX * sizeof(u64));
++	if (!nla)
++		goto nla_put_failure;
++	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_ICMP6STATS, nla_len(nla));
++
++	return 0;
++
++nla_put_failure:
++	return -EMSGSIZE;
++}
++
+ static int inet6_fill_ifla6_attrs(struct sk_buff *skb, struct inet6_dev *idev,
+ 				  u32 ext_filter_mask)
+ {
+@@ -5806,18 +5827,10 @@ static int inet6_fill_ifla6_attrs(struct sk_buff *skb, struct inet6_dev *idev,
+ 
+ 	/* XXX - MC not implemented */
+ 
+-	if (ext_filter_mask & RTEXT_FILTER_SKIP_STATS)
+-		return 0;
+-
+-	nla = nla_reserve(skb, IFLA_INET6_STATS, IPSTATS_MIB_MAX * sizeof(u64));
+-	if (!nla)
+-		goto nla_put_failure;
+-	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_STATS, nla_len(nla));
+-
+-	nla = nla_reserve(skb, IFLA_INET6_ICMP6STATS, ICMP6_MIB_MAX * sizeof(u64));
+-	if (!nla)
+-		goto nla_put_failure;
+-	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_ICMP6STATS, nla_len(nla));
++	if (!(ext_filter_mask & RTEXT_FILTER_SKIP_STATS)) {
++		if (inet6_fill_ifla6_stats_attrs(skb, idev) < 0)
++			goto nla_put_failure;
++	}
+ 
+ 	nla = nla_reserve(skb, IFLA_INET6_TOKEN, sizeof(struct in6_addr));
+ 	if (!nla)
 -- 
-2.33.0
+2.49.0
 
