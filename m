@@ -1,133 +1,150 @@
-Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net (zg8tmja5ljk3lje4ms43mwaa.icoremail.net [209.97.181.73])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D816333993;
-	Wed,  2 Apr 2025 17:01:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.97.181.73
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2BB19A28D
+	for <netdev@vger.kernel.org>; Wed,  2 Apr 2025 17:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743613271; cv=none; b=lqMMgNu0PmrjkrTmUwofaqXjfHn/1ubKuXyVq0f+PzR496NNbzUjK2BCer0seN8vqmmtsXV5XoT88kL5F+UsXVlciXC1xwizaSHkXPWQ9BreTj3K6v6FUMrTscgJVJ1M4IhFpTtARANvN1BCNpNt7wbE0gIrETJMQETCBWRX1ns=
+	t=1743613340; cv=none; b=innjV7Lj/ETGFqZoR6VgpG+/U/wAETZ+f+yNnMIH3gt4a2fUgMVAFDZ05JFxfuWF/zchhg7rGzBwJQI2In5SadhZDI1ft6IDQOHEQVIvdj4+q88FKZ/8ntspJNWs5g1FRN0FBFBvQA5NGVpAoCHHqQHVBIFdl1pTjqnrzG4Taaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743613271; c=relaxed/simple;
-	bh=Mw1X+1hu+47rrKXTu8ZK6ZH36IWcj4glSHoD8EYem8E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ofa4HcT9X2npYt6P/m0943UR06UxyDXK3ckDr3twABN4krR74KFs7eKiDerT1piYTOnq3lRxQxI/hwlRhI2NLIzfb39dquSRFtmX21YPBDKbacWlmhbJpB/2kyR5ABL3REZFyZWU4lbyeaY3kLq2VyGBno+Q5tl3tdGP63L2P3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=209.97.181.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [10.193.154.185])
-	by mtasvr (Coremail) with SMTP id _____wBHG5A0be1ndbUtAQ--.43S3;
-	Thu, 03 Apr 2025 01:00:36 +0800 (CST)
-Received: from localhost (unknown [10.193.154.185])
-	by mail-app3 (Coremail) with SMTP id zS_KCgAHInQzbe1nucEaAQ--.64538S2;
-	Thu, 03 Apr 2025 01:00:35 +0800 (CST)
-From: Lin Ma <linma@zju.edu.cn>
-To: pablo@netfilter.org,
-	kadlec@netfilter.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	lucien.xin@gmail.com,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org
-Cc: Lin Ma <linma@zju.edu.cn>
-Subject: [PATCH net] netfilter: nft_tunnel: fix geneve_opt type confusion addition
-Date: Thu,  3 Apr 2025 01:00:26 +0800
-Message-Id: <20250402170026.9696-1-linma@zju.edu.cn>
-X-Mailer: git-send-email 2.39.0
+	s=arc-20240116; t=1743613340; c=relaxed/simple;
+	bh=U7nGPWhznSJJshLcgPP3rxrOguZGpWuN7J34i3nO9yU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cqmA9PcP110RYdsn2i7bfaCO4QK3uz/HLxiprL1ZioXXTpKFGHHh8EJ6oAIt/9+k8a3bhOC1Vv4lo8cMMrR42cKEEqX/AIllLhFmkjxoCxZf6pSXAwtHuwTOZBNkSAztnVJ30D3JZN4HWDbajjiOz/jcLIVFPPk/Nl8t22u4WxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=NYef/jus; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="NYef/jus"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=0pw8Fy8YqVSg6jRY5P9k4xRL+vea0CWDVg+v/OcYwcc=; b=NYef/jusGDxLoCWon9jx4Zgslg
+	GLzp9wsLH+7qFGkTk3FJWwE86BzNEhQ0Vcq6jJWBUbAIeLRNDO5ng1DbgkScrofhR8FkrTQj2dbtp
+	5XwyvSjS8NUVzuvfB56VKrscv6SEwxrEAhL87WIthCxWGQd47cvCAL2uqS45BB6UZVHObVN2pwgYN
+	4Vm4JLZvkuT5BR6Djny+w2Tjp0zxIe0FKGcTzzx8invefIf0n/FsIyGDir94WSuNbSFf2kuhoeU8+
+	bsj8oW840wbDKraUSc9Nld7L6pFcDbPrMVdVCkZ0/NDz5zxfVg8ne4JOEd4usBQPLoZJ1UMrzXSzJ
+	bdIJj3+g==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41948)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1u01TZ-0007vT-2z;
+	Wed, 02 Apr 2025 18:02:06 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1u01TV-0003rm-2i;
+	Wed, 02 Apr 2025 18:02:01 +0100
+Date: Wed, 2 Apr 2025 18:02:01 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Wei Fang <wei.fang@nxp.com>
+Subject: Re: [PATCH v2 net 2/2] net: phy: allow MDIO bus PM ops to start/stop
+ state machine for phylink-controlled PHY
+Message-ID: <Z-1tiW9zjcoFkhwc@shell.armlinux.org.uk>
+References: <20250402150859.1365568-1-vladimir.oltean@nxp.com>
+ <20250402150859.1365568-2-vladimir.oltean@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zS_KCgAHInQzbe1nucEaAQ--.64538S2
-X-CM-SenderInfo: qtrwiiyqvtljo62m3hxhgxhubq/
-X-CM-DELIVERINFO: =?B?ctDmNAXKKxbFmtjJiESix3B1w3tPqcowV1L23Bze5QtIr9Db75bEBiiEybVhThS0pI
-	APHkyPSxI2Xdeyd3ul0ToYuuaa6ydc/d9u26TTikvtWydc2/+aUjRNbJE+cEEqqrcdbOD6
-	kGcEq7bRdzEG7BBmbwCE69bPlRaDnS6o/Is3qDBX
-X-Coremail-Antispam: 1Uk129KBj93XoWxWFyfur4xurW3Kw4kJF43Arc_yoW5uFWUpr
-	Z8K3ySkr48Kryktr18tF18AFyUJryqyF1xGr93GrW8t3W5Xw1UGay8KrWjgFn3CrWDZrW3
-	trn8ta12qrn8G3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26r1j6r4UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
-	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE
-	14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjcxG0xvY0x
-	0EwIxGrVCF72vEw4AK0wACI402YVCY1x02628vn2kIc2xKxwCF04k20xvY0x0EwIxGrwCF
-	x2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14
-	v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY
-	67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2
-	IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07URlksUUUUU=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250402150859.1365568-2-vladimir.oltean@nxp.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-When handling multiple NFTA_TUNNEL_KEY_OPTS_GENEVE attributes, the
-parsing logic should place every geneve_opt structure one by one
-compactly. Hence, when deciding the next geneve_opt position, the
-pointer addition should be in units of char *.
+On Wed, Apr 02, 2025 at 06:08:59PM +0300, Vladimir Oltean wrote:
+> DSA has 2 kinds of drivers:
+> 
+> 1. Those who call dsa_switch_suspend() and dsa_switch_resume() from
+>    their device PM ops: qca8k-8xxx, bcm_sf2, microchip ksz
+> 2. Those who don't: all others. The above methods should be optional.
+> 
+> For type 1, dsa_switch_suspend() calls dsa_user_suspend() -> phylink_stop(),
+> and dsa_switch_resume() calls dsa_user_resume() -> phylink_start().
+> These seem good candidates for setting mac_managed_pm = true because
+> that is essentially its definition, but that does not seem to be the
+> biggest problem for now, and is not what this change focuses on.
+> 
+> Talking strictly about the 2nd category of drivers here, I have noticed
+> that these also trigger the
+> 
+> 	WARN_ON(phydev->state != PHY_HALTED && phydev->state != PHY_READY &&
+> 		phydev->state != PHY_UP);
+> 
+> from mdio_bus_phy_resume(), because the PHY state machine is running.
+> 
+> It's running as a result of a previous dsa_user_open() -> ... ->
+> phylink_start() -> phy_start(), and AFAICS, mdio_bus_phy_suspend() was
+> supposed to have called phy_stop_machine(), but it didn't. So this is
+> why the PHY is in state PHY_NOLINK by the time mdio_bus_phy_resume()
+> runs.
+> 
+> mdio_bus_phy_suspend() did not call phy_stop_machine() because for
+> phylink, the phydev->adjust_link function pointer is NULL. This seems a
+> technicality introduced by commit fddd91016d16 ("phylib: fix PAL state
+> machine restart on resume"). That commit was written before phylink
+> existed, and was intended to avoid crashing with consumer drivers which
+> don't use the PHY state machine - phylink does.
 
-However, the current implementation erroneously does type conversion
-before the addition, which will lead to heap out-of-bounds write.
+I think this is a historical bug (as I believe I previously mentioned,
+suspend/resume support wasn't tested with phylink as none of the
+platforms it was developed against had suspend/resume support.)
 
-[    6.989857] ==================================================================
-[    6.990293] BUG: KASAN: slab-out-of-bounds in nft_tunnel_obj_init+0x977/0xa70
-[    6.990725] Write of size 124 at addr ffff888005f18974 by task poc/178
-[    6.991162]
-[    6.991259] CPU: 0 PID: 178 Comm: poc-oob-write Not tainted 6.1.132 #1
-[    6.991655] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-[    6.992281] Call Trace:
-[    6.992423]  <TASK>
-[    6.992586]  dump_stack_lvl+0x44/0x5c
-[    6.992801]  print_report+0x184/0x4be
-[    6.993790]  kasan_report+0xc5/0x100
-[    6.994252]  kasan_check_range+0xf3/0x1a0
-[    6.994486]  memcpy+0x38/0x60
-[    6.994692]  nft_tunnel_obj_init+0x977/0xa70
-[    6.995677]  nft_obj_init+0x10c/0x1b0
-[    6.995891]  nf_tables_newobj+0x585/0x950
-[    6.996922]  nfnetlink_rcv_batch+0xdf9/0x1020
-[    6.998997]  nfnetlink_rcv+0x1df/0x220
-[    6.999537]  netlink_unicast+0x395/0x530
-[    7.000771]  netlink_sendmsg+0x3d0/0x6d0
-[    7.001462]  __sock_sendmsg+0x99/0xa0
-[    7.001707]  ____sys_sendmsg+0x409/0x450
-[    7.002391]  ___sys_sendmsg+0xfd/0x170
-[    7.003145]  __sys_sendmsg+0xea/0x170
-[    7.004359]  do_syscall_64+0x5e/0x90
-[    7.005817]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[    7.006127] RIP: 0033:0x7ec756d4e407
-[    7.006339] Code: 48 89 fa 4c 89 df e8 38 aa 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 faf
-[    7.007364] RSP: 002b:00007ffed5d46760 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
-[    7.007827] RAX: ffffffffffffffda RBX: 00007ec756cc4740 RCX: 00007ec756d4e407
-[    7.008223] RDX: 0000000000000000 RSI: 00007ffed5d467f0 RDI: 0000000000000003
-[    7.008620] RBP: 00007ffed5d468a0 R08: 0000000000000000 R09: 0000000000000000
-[    7.009039] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-[    7.009429] R13: 00007ffed5d478b0 R14: 00007ec756ee5000 R15: 00005cbd4e655cb8
+phylink should be no differnet from a MAC that uses phylib and supplies
+an adjust_link function. The exception is when mac_managed_pm has been
+set.
 
-Fix this bug with correct pointer addition and conversion.
+Reading commit fba863b81604 ("net: phy: make PHY PM ops a no-op if MAC
+driver manages PHY PM") which introduced mac_managed_pm, this flag
+should be set whenever a MAC driver causes phy_start() to be called
+via its resume path. That means for a phylink using MAC driver calling
+either phylink_start() or phylink_resume() from its resume method.
 
-Fixes: 925d844696d9 ("netfilter: nft_tunnel: add support for geneve opts")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
----
- net/netfilter/nft_tunnel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Setting that flag will have the effect that, in those cases,
+mdio_bus_phy_suspend() and mdio_bus_phy_resume() become no-ops.
 
-diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
-index 681301b46aa4..2df4b2a02f27 100644
---- a/net/netfilter/nft_tunnel.c
-+++ b/net/netfilter/nft_tunnel.c
-@@ -341,7 +341,7 @@ static const struct nla_policy nft_tunnel_opts_geneve_policy[NFTA_TUNNEL_KEY_GEN
- static int nft_tunnel_obj_geneve_init(const struct nlattr *attr,
- 				      struct nft_tunnel_opts *opts)
- {
--	struct geneve_opt *opt = (struct geneve_opt *)opts->u.data + opts->len;
-+	struct geneve_opt *opt = (struct geneve_opt *)(opts->u.data + opts->len);
- 	struct nlattr *tb[NFTA_TUNNEL_KEY_GENEVE_MAX + 1];
- 	int err, data_len;
- 
+Now, if the MAC driver does not call either of those two phylink
+functions, then mac_managed_pm should not be set, and the mdio bus
+PHY suspend/resume should happen in full - because a phylink driver
+should be no different from a phylib driver that's supplied an
+adjust_link callback.
+
+So yes, I think the principle of your patch is correct, and I agree
+that this is needed (just coming to the same conclusion from a
+different direction.)
+
+> +static bool phy_uses_state_machine(struct phy_device *phydev)
+> +{
+> +	if (phydev->phy_link_change == phy_link_change)
+> +		return phydev->attached_dev && phydev->adjust_link;
+> +
+> +	return phydev->phy_link_change;
+
+I think this can be simplified to:
+
+	return phydev->phy_link_change != phy_link_change ||
+	       (phydev->attached_dev && phydev->adjust_link);
+
+since phydev->phy_link_change should never be NULL (the hook exists
+specifically for phylink's usage, and is either set to phy_link_change
+or phylink_phy_change.)
+
+If it were to be NULL, then anything which calls phy_link_(up|down)
+will oops the kernel - not just the state machine, but cable testing,
+loopback, and changing EEE settings.
+
 -- 
-2.17.1
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
