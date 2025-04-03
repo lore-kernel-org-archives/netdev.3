@@ -1,80 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944D8142624
-	for <netdev@vger.kernel.org>; Thu,  3 Apr 2025 01:34:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B60E13D503;
+	Thu,  3 Apr 2025 01:34:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743644052; cv=none; b=l176f0NCpRcfwHBRUouId294WAolxcokY+Anw4NI9dauQpRQuCUJ1GaB5hez+7i0vjobzxMEHTk+pn2tNv/815d9L2U/uO6dlVi+cMXErQRRTKcyd4QO+XeJOMF5H+OWbee/sVMe4ZCZS+cKYkrmIBuMPO81yPtaoGDMuEohrTY=
+	t=1743644055; cv=none; b=nihSLT3atD9BZq29zH1JYR53GxHQVuYo4c2BinqSSW3hhMKbPlAAkMMyvFDWg3/vaSFPYcv67OUSsvPoUMOtl9bLt3Gc3ltFthjeqk/4RBkduKBo3H1fOgvyVbfRsyw8fPF1Wy5UOjSGHrGDNmh01PzNPMV6xxsrQiCNvnm9/hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743644052; c=relaxed/simple;
-	bh=iq6Bdq7BMi4z9XE7UTw95bE2toDbAzIBrC5SjLKkXaM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sr6B84e+EvBUz4D14zAxxNw1bxFHJ3oWHFguChmumJ2VI64nJUUeeQuV141ZcaiAmmmL1ihdEa88oOefFsgZW2UKsMhdAbfb8Re/nEjDsU+oULeYR3UO516oUjbZ9IiXgrOpcy7MBnbYCWZgoI6Hme2JX7tA3TI8Dv6hBCduJPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZoRm6Fpf; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZoRm6Fpf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95538C4CEDD;
-	Thu,  3 Apr 2025 01:34:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743644051;
-	bh=iq6Bdq7BMi4z9XE7UTw95bE2toDbAzIBrC5SjLKkXaM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ZoRm6FpfBQLcWVi/e9mE+F3dNVpnAVH/UvitvPDdnfqG+Yz8ML1AfXf335pvgQEHk
-	 meRBkSW3GYSohKgsCdxtBSi8efDIXlzKzCc25qBAe7y4zLlq2cbb8lexwKHVF3LPVP
-	 0hEZ4Yfq8KZqiqQklyJHb5Nk3U+ubRpAGmrnWray0R8aRwZyR03gI4Hf22Lfoyz0bW
-	 ySUW38IHftFpVqO9LebHEtFZvUbjOQTfkrK3qkT87xDEBmuqM/2+OcNrsjik5NIVMg
-	 W90MjfA0tmf+SiNmMi/kzbid33AC+eRElCS9sQDXj1gHVokEMMz7lWbUDntKbhGQzU
-	 c4OQEP4RmZ3lQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	ap420073@gmail.com,
-	almasrymina@google.com,
-	asml.silence@gmail.com,
-	dw@davidwei.uk,
-	sdf@fomichev.me,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net v2 0/2] net: make memory provider install / close paths more common
-Date: Wed,  2 Apr 2025 18:34:03 -0700
-Message-ID: <20250403013405.2827250-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1743644055; c=relaxed/simple;
+	bh=BqmQv2Bb2GUtEz8m3NrTfutbOAskOytXYSYECJC/8bk=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=ZN1QUlemYlFxFy6qJyDTrsSl+I0m1kI3grW4scP+aFnk5zCYPCvJLQuPlaCXN5DuF4zzfXMWTn6JTWhNbBazRkFc+CZh03kQOfWfB8Dy/di4aZqg40n2kwzPXKCt0ouxCvawp91DhhYaGH46z2KtuHAQz/UqgG7vKgMS24zFSYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4ZSkhR5dLdzHrJr;
+	Thu,  3 Apr 2025 09:30:47 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 621351400CF;
+	Thu,  3 Apr 2025 09:34:08 +0800 (CST)
+Received: from [10.67.120.192] (10.67.120.192) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 3 Apr 2025 09:34:07 +0800
+Message-ID: <816331a8-d6f9-4fb2-b9d7-3d51da303fe8@huawei.com>
+Date: Thu, 3 Apr 2025 09:34:06 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+CC: <shaojijie@huawei.com>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
+	<shenjian15@huawei.com>, <wangpeiyang1@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <jonathan.cameron@huawei.com>,
+	<shameerali.kolothum.thodi@huawei.com>, <salil.mehta@huawei.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net 1/7] net: hibmcge: fix incorrect pause frame
+ statistics issue
+To: Simon Horman <horms@kernel.org>
+References: <20250402133905.895421-1-shaojijie@huawei.com>
+ <20250402133905.895421-2-shaojijie@huawei.com>
+ <20250402185604.GU214849@horms.kernel.org>
+From: Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <20250402185604.GU214849@horms.kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-We seem to be fixing bugs in config path for devmem which also exist
-in the io_uring ZC path. Let's try to make the two paths more common,
-otherwise this is bound to keep happening.
 
-Found by code inspection and compile tested only.
+on 2025/4/3 2:56, Simon Horman wrote:
+> On Wed, Apr 02, 2025 at 09:38:59PM +0800, Jijie Shao wrote:
+>> The driver supports pause frames,
+>> but does not pass pause frames based on rx pause enable configuration,
+>> resulting in incorrect pause frame statistics.
+> I think it would be worth explaining why pause frames need
+> to be passed through in order for statistics to be correct.
+> I.e. which entity is passing them through to which other
+> entity that counts them.
 
-v2:
- - [patch 1] add to commit msg
- - [patch 1] fix arg naming in the header
- - [patch 2] don't split the registration check, it may cause a race
-   if we just bail on the registration state and not on the MP being
-   present, as we drop and re-take the instance lock after setting
-   reg_state
-v1: https://lore.kernel.org/20250331194201.2026422-1-kuba@kernel.org
+Yeah，This is the behavior of the MAC controller.
+I'll describe it in v2
 
-Jakub Kicinski (2):
-  net: move mp dev config validation to __net_mp_open_rxq()
-  net: avoid false positive warnings in __net_mp_close_rxq()
+Thank you.
+Jijie Shao
 
- include/net/page_pool/memory_provider.h |  6 +++
- net/core/devmem.c                       | 64 +++++++------------------
- net/core/netdev-genl.c                  |  6 ---
- net/core/netdev_rx_queue.c              | 53 +++++++++++++++-----
- 4 files changed, 63 insertions(+), 66 deletions(-)
-
--- 
-2.49.0
-
+>
+>> This patch fixes this problem.
+>>
+>> Fixes: 3a03763f3876 ("net: hibmcge: Add pauseparam supported in this module")
+>> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+> ...
+>
