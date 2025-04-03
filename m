@@ -1,52 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7887268FD7;
-	Thu,  3 Apr 2025 19:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DD32571C7;
+	Thu,  3 Apr 2025 19:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707155; cv=none; b=DbxZICA5vGp9kH2hM5gn1gFK/uBlKe2O1HVm1TcC2tZQE6JD154dz/Nu/vjrAIhts8fSTPk+BHu4FG5awvLbZXKFw25HbAOY20LQw22+mW16Ib21yR5vzMRRfDJeGYgJ/k6ahZVLMxcLQMYP8Ah/2zPbE2CQ1K5hrWBB0a7KQFQ=
+	t=1743707177; cv=none; b=r5IL1wftESZSRA8Iyn7MO6Khgz9xsoPmMZJ4MESU9WHtEqD8cvQW1Fw5mhWMcFbdn1VXtUcY41F9SF4JsmS1A+aCQ3B/Pc3anUHELFDPJ/hZ7V6TBWG4zrLatxF9pD37Z64XwN86UPhq3LyyISG8LVno/Vy8CQBvh+9g62UHvV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707155; c=relaxed/simple;
-	bh=pbn86FTWVBRDEjw1khVpontfVhI57wkmC0bHWaQKsv4=;
+	s=arc-20240116; t=1743707177; c=relaxed/simple;
+	bh=1CcKXbqfhtHVfxqUZK34l1DDHU0gxjtEXW3/+5xuIMc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kHX7w9+H1/dEtjPVKoeWMk45RdeYV8tok1vj2UhcE0vZOBL7GsqzVEA8NR93JdH2llhKPZt4V3kZ5iBgQuvhZUfW2qiCWanJwJf7a7dhUINRSBo3o/E4FW09HvvivbDmMMBldilS1juJ6Rcclr3eB+MVKtwhnRKuKdbtoiEEZWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EE6KPY94; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=iz+mpEpU3Nl5QKl/EXxOIzDl5Tk7GgwDJYB4yv+uEwCDSIAlkcn7UDTCllOEfHx4uM9uCa9YHzojIosYEzobQO7HhX+VKXzZNGRxPLnSMt2mbBYlQ3aCLa4JqemaJ5010tU3+jelVqrsEaWYs4/Zl8Esd4zF9Yq6/tnl7f1lgk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fRjg6VEL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EE6KPY94"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42E0C4CEE3;
-	Thu,  3 Apr 2025 19:05:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fRjg6VEL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A44C4CEE8;
+	Thu,  3 Apr 2025 19:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707154;
-	bh=pbn86FTWVBRDEjw1khVpontfVhI57wkmC0bHWaQKsv4=;
+	s=k20201202; t=1743707177;
+	bh=1CcKXbqfhtHVfxqUZK34l1DDHU0gxjtEXW3/+5xuIMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EE6KPY94/dkiny3KBso8Fo+CZ/Ke3maDYFWrY1y1uhbdm2IAeeegjs2B1j7RHsSug
-	 1PTwrP1Tbu29daxZZw8gl61V/MWStsVoJfl3qvK+4U1fdqRF8zN3JM7GVyvXu+QUyX
-	 TZLE6+FJnCjHbGOapMiACBNRuQMTXM1ku9O1yGJXi5znfsxSPYnim73QoTdz0DsVJR
-	 gIs/glnA30YU74iH1GsOt/OuaULBOhBbvwWdKDzG/Nt6Cms7OEdKm7ufossvGa33lI
-	 WE2/LnWl36D5yzhMdbO6LY1B9qSTXxgIofL5o3agPUssaKH/NayJgiDzenxpaedmEH
-	 P+Gut0oF337Lg==
+	b=fRjg6VELJuARNP64DEOqTR3ZB4+xaamqmXSNGPIIaFI8D8QIbyGUM5fBEL+9sShhj
+	 Znk/epr4Gr25Ml/Tm5a54YbAA0HXrNYk2aT5neuDsGcphVR5xm9nu8US/FyVJ7FDzm
+	 VwhqzDddsUHbjceErpwssZqKWQz8MCmfAgr4/rwLqtRpYjSBJcSVcp9jsUUQpa2ek0
+	 CPDuiZ0nqr5mVJT83v+Vp3uFE3Lay68nEfw4hkfP1OHeDfYc1Iub9UQvM6DUx5UAGi
+	 haloumLDWEvS3UqUn+4nWIprKZbWhs3XfsKMeVYfeH0iO/Aw1tw0k0clA0dWBba5fE
+	 fsKKZJPllotOw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Pedro Nishiyama <nishiyama.pedro@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+Cc: Pavel Begunkov <asml.silence@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
+	David Wei <dw@davidwei.uk>,
 	Sasha Levin <sashal@kernel.org>,
-	marcel@holtmann.org,
-	johan.hedberg@gmail.com,
-	luiz.dentz@gmail.com,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	linux-bluetooth@vger.kernel.org,
+	sjordhani@gmail.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 49/49] Bluetooth: Add quirk for broken READ_PAGE_SCAN_TYPE
-Date: Thu,  3 Apr 2025 15:04:08 -0400
-Message-Id: <20250403190408.2676344-49-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 08/47] net: page_pool: don't cast mp param to devmem
+Date: Thu,  3 Apr 2025 15:05:16 -0400
+Message-Id: <20250403190555.2677001-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250403190408.2676344-1-sashal@kernel.org>
-References: <20250403190408.2676344-1-sashal@kernel.org>
+In-Reply-To: <20250403190555.2677001-1-sashal@kernel.org>
+References: <20250403190555.2677001-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,57 +53,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.13.9
+X-stable-base: Linux 6.12.21
 Content-Transfer-Encoding: 8bit
 
-From: Pedro Nishiyama <nishiyama.pedro@gmail.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 127881334eaad639e0a19a399ee8c91d6c9dc982 ]
+[ Upstream commit 8d522566ae9cb3f0609ddb2a6ce3f4f39988043c ]
 
-Some fake controllers cannot be initialized because they return a smaller
-report than expected for READ_PAGE_SCAN_TYPE.
+page_pool_check_memory_provider() is a generic path and shouldn't assume
+anything about the actual type of the memory provider argument. It's
+fine while devmem is the only provider, but cast away the devmem
+specific binding types to avoid confusion.
 
-Signed-off-by: Pedro Nishiyama <nishiyama.pedro@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: David Wei <dw@davidwei.uk>
+Link: https://patch.msgid.link/20250204215622.695511-2-dw@davidwei.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci.h | 8 ++++++++
- net/bluetooth/hci_sync.c    | 3 ++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ net/core/page_pool_user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index 6f06d20093a7a..8d4c5cb1496c9 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -362,6 +362,14 @@ enum {
- 	 * This quirk must be set before hci_register_dev is called.
- 	 */
- 	HCI_QUIRK_BROKEN_READ_VOICE_SETTING,
-+
-+	/* When this quirk is set, the HCI_OP_READ_PAGE_SCAN_TYPE command is
-+	 * skipped. This is required for a subset of the CSR controller clones
-+	 * which erroneously claim to support it.
-+	 *
-+	 * This quirk must be set before hci_register_dev is called.
-+	 */
-+	HCI_QUIRK_BROKEN_READ_PAGE_SCAN_TYPE,
- };
+diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
+index 48335766c1bfd..8d31c71bea1a3 100644
+--- a/net/core/page_pool_user.c
++++ b/net/core/page_pool_user.c
+@@ -353,7 +353,7 @@ void page_pool_unlist(struct page_pool *pool)
+ int page_pool_check_memory_provider(struct net_device *dev,
+ 				    struct netdev_rx_queue *rxq)
+ {
+-	struct net_devmem_dmabuf_binding *binding = rxq->mp_params.mp_priv;
++	void *binding = rxq->mp_params.mp_priv;
+ 	struct page_pool *pool;
+ 	struct hlist_node *n;
  
- /* HCI device flags */
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index bb455e96a715a..cb4d47ae129e8 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -4156,7 +4156,8 @@ static int hci_read_page_scan_type_sync(struct hci_dev *hdev)
- 	 * support the Read Page Scan Type command. Check support for
- 	 * this command in the bit mask of supported commands.
- 	 */
--	if (!(hdev->commands[13] & 0x01))
-+	if (!(hdev->commands[13] & 0x01) ||
-+	    test_bit(HCI_QUIRK_BROKEN_READ_PAGE_SCAN_TYPE, &hdev->quirks))
- 		return 0;
- 
- 	return __hci_cmd_sync_status(hdev, HCI_OP_READ_PAGE_SCAN_TYPE,
 -- 
 2.39.5
 
