@@ -1,110 +1,329 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6097A1FECBA;
-	Thu,  3 Apr 2025 20:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3441FC7F5;
+	Thu,  3 Apr 2025 20:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743712525; cv=none; b=NBoXhQkMW1zWsSs2qVT7wTW1pdAHsO1ocIUSli9D6VcHLf0PWXldggkcR1/U7HgsYqGRuf0jvi/o9hOBIaBHcWMSgyBbZqcckcvmzJv/4n82w7x1uolTNnKH/7/6xJyCmlJcWL5ZHfV5rHCpa1PA+XT2/T7RLw8Z9PrP+ewibQ8=
+	t=1743712600; cv=none; b=Yv9MUYcLaYlZcLYrHVFREzznXdFVkGonVjjAs0vW2CH2uYYqZQQHdbit8ks2tVYjPRZyGazz1dksJWeLZ3eC2jQQcz+5GkTrcQH2Ai5dofAA8X21IsxQkxksKkg4+zIxw9Ver8DJx1EoTUKtIEmls++tV5mOoJ4YJRJrRlPS9p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743712525; c=relaxed/simple;
-	bh=/Wr+De8aYTAPyPrxtzWeHutGqhqMA3Y8gKZr6gv9Nyk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PzLmIUzPraS4LkqtiY1DeirhXUIz+q2BDh7tnymMM0bsRWPWYTI6bZNLzG8/kRAbgjlH7DEBQisPjbtr/6h1ksb7jfIN/VcO07ivjrSd9m3Fj/nSFUjj4lxKpEQHYflALAXySXvTURDl0+66fRb3W5B8abOiKuHbWiQvQBz6B+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OS2Df7Ja; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1743712600; c=relaxed/simple;
+	bh=LYguklh7/FTQndVMb7nXN4zHtXXlb5/+VZFGAptF10Y=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Gx3foTexExoEpg2oeOE2376lZpmomxRG2CCmK2sowtTzqNUhmWgUpoxcqSInJMnq2Cfvzco2Ez2Ajk5WgExnsXmtldB+0G5kmEYrtBLilRsKCWVTZ43KRMwD8X2GvfIZXoyWdFLr3L4+JBVMZ7Or7T3dNPai1ifTxuVMiVAmPgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=iW/dsmlu; arc=none smtp.client-ip=52.95.49.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OS2Df7Ja"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43cebe06e9eso8640165e9.3;
-        Thu, 03 Apr 2025 13:35:23 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="iW/dsmlu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743712521; x=1744317321; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/Wr+De8aYTAPyPrxtzWeHutGqhqMA3Y8gKZr6gv9Nyk=;
-        b=OS2Df7JajUg7XB3wpMMyYZWCYzFxK1TFTeew1CsOlefwdjQFc0vjiNXf3rUBjoVPQU
-         jCi8J+nne1iADvo0TYwgKREbWRTI0a8RqyJu3D5lYV2UyEIM06VemIPsrkGVtxcRZ+JL
-         b9YQ1ItC5oc9nkwjcq8f34Hq19ejKGWfsW4PUOjR78ks7F96454yQ9XxCNciRxSbY24R
-         L8HfYZJ6w4acy5k7o1IZrqJNlyIgu5JQf2+eNmIeK/VNlu+xRoWKohQkaqgt3wa+FFwH
-         d7SVKrsyhP2bC2KZDpMiCWrnb5Px7MgmFGfam/Y5lnHSAoTz+PNxkop5s81LBYrEWeIA
-         i+8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743712521; x=1744317321;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/Wr+De8aYTAPyPrxtzWeHutGqhqMA3Y8gKZr6gv9Nyk=;
-        b=IV/QVBVH5qdPbHMS2rDxv07XGU4cXyjmw8P5LyEftcEaerfCzxMj/+hKoCzbJW4Jl0
-         JfC0pglHrtw5oc/FMs+HNW+5Ft4X3VCFTmILA2ZZ3CuzWUzVO0ed1IROeo66Wpd1oOO0
-         IUEwSGTw3U6jVIhDphkccvdC6jCeRlavIgDe6FE7Zxc0MtZsZJQwkMXfRXIjUHlU591N
-         hPBXFjtD2qZBBwgzEaqB0owVTrXb30DUVPFVwzQGiwWYxfh46u46wjIWpry/he7gU+ck
-         t2jfdsgNL3K8OhpkPsJP+LmChcVSFc+QINxrDGPeVUPtEhc/rJcUZFvtBvTIaY+km4Ms
-         wlfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUuA+xTKaufsRtRInInPQ3zdlbuCO27xxmXQmawGqmQquwD17Fh292GvEiC/tDn2+Jkn3I=@vger.kernel.org, AJvYcCXxtVR7WFsKnEL+iJq98WF2iM18v02DS8k7QXCSB5KRJ7ENdLgiykxjt7olMNBybZ2R7x8t+FOd@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyd0Tisb3U4oKxAVzwOVkbFcn5jPvFagpHSXoTSutEZ/5ddsllf
-	deDYpEXHDE1JlhP0WSfNIdwRxPXruYi1KH6N9ITiRvcvliRNHOIC4jZJt5sXPq9+tCOmqWPSbAY
-	cqsSs5Q3Nsz21DE+XiUal2WQMIsc=
-X-Gm-Gg: ASbGncvxlFdnpKoWEbRKfWnl/zchN1ccvVPUBDjtblRzxtkmbbdhHEOenccPnxQnF3V
-	WBuuLAApsvp4mXZEw7tyr9Dagp23qAp3VA2M9CJ8q/oUxjQ+Nh9K6zM+YHpFPHsUdQk1ePAtDxv
-	XZgBdbKDdY2bxmCFQPDDhp5MjVp8ytWtzwvCcoe5nQmQ==
-X-Google-Smtp-Source: AGHT+IEIo0arv2FrOFFQjtalHYTnun5hmCjMio+8gW+CtIMdtp5L+XkccqOdcnnjtpmS3LegJ67paXSeq1yD3j5e0/M=
-X-Received: by 2002:a05:600c:1d86:b0:43d:934:ea97 with SMTP id
- 5b1f17b1804b1-43ecfa35fd6mr3783355e9.27.1743712521511; Thu, 03 Apr 2025
- 13:35:21 -0700 (PDT)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1743712598; x=1775248598;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=u/jgukwXzq9Co4C3qOn6+gBIC7wl7NomhTgtGOV5Aac=;
+  b=iW/dsmlup9GKZrNVV+DxbGQG1p4OZQ/7o0GNOrv0QQmBZDzp/dIrY0DJ
+   mn5MeR7WhfeqlDSNA9b/TQVFKnVL2pNPErmA4J6OnPWT3BSwMiXQQOcsB
+   7HqIzw8a3jvS4rYEDPOHW4Yy0H5G45hVeufCz4lUWll6H2y6NynCuSBXw
+   Q=;
+X-IronPort-AV: E=Sophos;i="6.15,186,1739836800"; 
+   d="scan'208";a="486443504"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2025 20:36:34 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.21.151:27335]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.51.140:2525] with esmtp (Farcaster)
+ id 7b306e10-cff1-430f-98f7-45b1d8438067; Thu, 3 Apr 2025 20:36:34 +0000 (UTC)
+X-Farcaster-Flow-ID: 7b306e10-cff1-430f-98f7-45b1d8438067
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Thu, 3 Apr 2025 20:36:33 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.106.101.41) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Thu, 3 Apr 2025 20:36:29 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>
+CC: Simon Horman <horms@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+	Steve French <sfrench@samba.org>, Enzo Matsumiya <ematsumiya@suse.de>, "Wang
+ Zhaolong" <wangzhaolong1@huawei.com>, Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, <netdev@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v2 net] net: Fix null-ptr-deref by sock_lock_init_class_and_name() and rmmod.
+Date: Thu, 3 Apr 2025 13:34:31 -0700
+Message-ID: <20250403203619.36648-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250403083956.13946-1-justin.iurman@uliege.be>
- <Z-62MSCyMsqtMW1N@mini-arch> <cb0df409-ebbf-4970-b10c-4ea9f863ff00@uliege.be>
-In-Reply-To: <cb0df409-ebbf-4970-b10c-4ea9f863ff00@uliege.be>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Thu, 3 Apr 2025 13:35:10 -0700
-X-Gm-Features: ATxdqUFfG_KTUPwWMYOrHRjOO3sypxV6hn2k5bGj-_5jN1n54OV_NlNnc2Y-uVI
-Message-ID: <CAADnVQLiM5MA3Xyrkqmubku6751ZPrDk6v-HmC1jnOaL47=t+g@mail.gmail.com>
-Subject: Re: [PATCH net] net: lwtunnel: disable preemption when required
-To: Justin Iurman <justin.iurman@uliege.be>, Sebastian Sewior <bigeasy@linutronix.de>
-Cc: Stanislav Fomichev <stfomichev@gmail.com>, Network Development <netdev@vger.kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@amazon.com>, bpf <bpf@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D043UWA001.ant.amazon.com (10.13.139.45) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On Thu, Apr 3, 2025 at 12:08=E2=80=AFPM Justin Iurman <justin.iurman@uliege=
-.be> wrote:
->
-> On 4/3/25 18:24, Stanislav Fomichev wrote:
-> > On 04/03, Justin Iurman wrote:
-> >> In lwtunnel_{input|output|xmit}(), dev_xmit_recursion() may be called =
-in
-> >> preemptible scope for PREEMPT kernels. This patch disables preemption
-> >> before calling dev_xmit_recursion(). Preemption is re-enabled only at
-> >> the end, since we must ensure the same CPU is used for both
-> >> dev_xmit_recursion_inc() and dev_xmit_recursion_dec() (and any other
-> >> recursion levels in some cases) in order to maintain valid per-cpu
-> >> counters.
-> >
-> > Dummy question: CONFIG_PREEMPT_RT uses current->net_xmit.recursion to
-> > track the recursion. Any reason not to do it in the generic PREEMPT cas=
-e?
->
-> I'd say PREEMPT_RT is a different beast. IMO, softirqs can be
-> preempted/migrated in RT kernels, which is not true for non-RT kernels.
-> Maybe RT kernels could use __this_cpu_* instead of "current" though, but
-> it would be less trivial. For example, see commit ecefbc09e8ee ("net:
-> softnet_data: Make xmit per task.") on why it makes sense to use
-> "current" in RT kernels. I guess the opposite as you suggest (i.e.,
-> non-RT kernels using "current") would be technically possible, but there
-> must be a reason it is defined the way it is... so probably incorrect or
-> inefficient?
+When I ran the repro [0] and waited a few seconds, I observed two
+LOCKDEP splats: a warning immediately followed by a null-ptr-deref. [1]
 
-Stating the obvious...
-Sebastian did a lot of work removing preempt_disable from the networking
-stack.
-We're certainly not adding them back.
-This patch is no go.
+Reproduction Steps:
+
+  1) Mount CIFS
+  2) Add an iptables rule to drop incoming FIN packets for CIFS
+  3) Unmount CIFS
+  4) Unload the CIFS module
+  5) Remove the iptables rule
+
+At step 3), the CIFS module calls sock_release() for the underlying
+TCP socket, and it returns quickly.  However, the socket remains in
+FIN_WAIT_1 because incoming FIN packets are dropped.
+
+At this point, the module's refcnt is 0 while the socket is still
+alive, so the following rmmod command succeeds.
+
+  # ss -tan
+  State      Recv-Q Send-Q Local Address:Port  Peer Address:Port
+  FIN-WAIT-1 0      477        10.0.2.15:51062   10.0.0.137:445
+
+  # lsmod | grep cifs
+  cifs                 1159168  0
+
+This highlights a discrepancy between the lifetime of the CIFS module
+and the underlying TCP socket.  Even after CIFS calls sock_release()
+and it returns, the TCP socket does not die immediately in order to
+close the connection gracefully.
+
+While this is generally fine, it causes an issue with LOCKDEP because
+CIFS assigns a different lock class to the TCP socket's sk->sk_lock
+using sock_lock_init_class_and_name().
+
+Once an incoming packet is processed for the socket or a timer fires,
+sk->sk_lock is acquired.
+
+Then, LOCKDEP checks the lock context in check_wait_context(), where
+hlock_class() is called to retrieve the lock class.  However, since
+the module has already been unloaded, hlock_class() logs a warning
+and returns NULL, triggering the null-ptr-deref.
+
+If LOCKDEP is enabled, we must ensure that a module calling
+sock_lock_init_class_and_name() (CIFS, NFS, etc) cannot be unloaded
+while such a socket is still alive to prevent this issue.
+
+Let's hold the module reference in sock_lock_init_class_and_name()
+and release it when the socket is freed in __sk_destruct().
+
+Note that sock_lock_init() clears sk->sk_owner for svc_create_socket()
+that calls sock_lock_init_class_and_name() for a listening socket,
+which clones a socket by sk_clone_lock() without GFP_ZERO.
+
+[0]:
+CIFS_SERVER="10.0.0.137"
+CIFS_PATH="//${CIFS_SERVER}/Users/Administrator/Desktop/CIFS_TEST"
+DEV="enp0s3"
+CRED="/root/WindowsCredential.txt"
+
+MNT=$(mktemp -d /tmp/XXXXXX)
+mount -t cifs ${CIFS_PATH} ${MNT} -o vers=3.0,credentials=${CRED},cache=none,echo_interval=1
+
+iptables -A INPUT -s ${CIFS_SERVER} -j DROP
+
+for i in $(seq 10);
+do
+    umount ${MNT}
+    rmmod cifs
+    sleep 1
+done
+
+rm -r ${MNT}
+
+iptables -D INPUT -s ${CIFS_SERVER} -j DROP
+
+[1]:
+DEBUG_LOCKS_WARN_ON(1)
+WARNING: CPU: 10 PID: 0 at kernel/locking/lockdep.c:234 hlock_class (kernel/locking/lockdep.c:234 kernel/locking/lockdep.c:223)
+Modules linked in: cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded: cifs]
+CPU: 10 UID: 0 PID: 0 Comm: swapper/10 Not tainted 6.14.0 #36
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:hlock_class (kernel/locking/lockdep.c:234 kernel/locking/lockdep.c:223)
+...
+Call Trace:
+ <IRQ>
+ __lock_acquire (kernel/locking/lockdep.c:4853 kernel/locking/lockdep.c:5178)
+ lock_acquire (kernel/locking/lockdep.c:469 kernel/locking/lockdep.c:5853 kernel/locking/lockdep.c:5816)
+ _raw_spin_lock_nested (kernel/locking/spinlock.c:379)
+ tcp_v4_rcv (./include/linux/skbuff.h:1678 ./include/net/tcp.h:2547 net/ipv4/tcp_ipv4.c:2350)
+...
+
+BUG: kernel NULL pointer dereference, address: 00000000000000c4
+ PF: supervisor read access in kernel mode
+ PF: error_code(0x0000) - not-present page
+PGD 0
+Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 10 UID: 0 PID: 0 Comm: swapper/10 Tainted: G        W          6.14.0 #36
+Tainted: [W]=WARN
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:__lock_acquire (kernel/locking/lockdep.c:4852 kernel/locking/lockdep.c:5178)
+Code: 15 41 09 c7 41 8b 44 24 20 25 ff 1f 00 00 41 09 c7 8b 84 24 a0 00 00 00 45 89 7c 24 20 41 89 44 24 24 e8 e1 bc ff ff 4c 89 e7 <44> 0f b6 b8 c4 00 00 00 e8 d1 bc ff ff 0f b6 80 c5 00 00 00 88 44
+RSP: 0018:ffa0000000468a10 EFLAGS: 00010046
+RAX: 0000000000000000 RBX: ff1100010091cc38 RCX: 0000000000000027
+RDX: ff1100081f09ca48 RSI: 0000000000000001 RDI: ff1100010091cc88
+RBP: ff1100010091c200 R08: ff1100083fe6e228 R09: 00000000ffffbfff
+R10: ff1100081eca0000 R11: ff1100083fe10dc0 R12: ff1100010091cc88
+R13: 0000000000000001 R14: 0000000000000000 R15: 00000000000424b1
+FS:  0000000000000000(0000) GS:ff1100081f080000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000000000c4 CR3: 0000000002c4a003 CR4: 0000000000771ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <IRQ>
+ lock_acquire (kernel/locking/lockdep.c:469 kernel/locking/lockdep.c:5853 kernel/locking/lockdep.c:5816)
+ _raw_spin_lock_nested (kernel/locking/spinlock.c:379)
+ tcp_v4_rcv (./include/linux/skbuff.h:1678 ./include/net/tcp.h:2547 net/ipv4/tcp_ipv4.c:2350)
+ ip_protocol_deliver_rcu (net/ipv4/ip_input.c:205 (discriminator 1))
+ ip_local_deliver_finish (./include/linux/rcupdate.h:878 net/ipv4/ip_input.c:234)
+ ip_sublist_rcv_finish (net/ipv4/ip_input.c:576)
+ ip_list_rcv_finish (net/ipv4/ip_input.c:628)
+ ip_list_rcv (net/ipv4/ip_input.c:670)
+ __netif_receive_skb_list_core (net/core/dev.c:5939 net/core/dev.c:5986)
+ netif_receive_skb_list_internal (net/core/dev.c:6040 net/core/dev.c:6129)
+ napi_complete_done (./include/linux/list.h:37 ./include/net/gro.h:519 ./include/net/gro.h:514 net/core/dev.c:6496)
+ e1000_clean (drivers/net/ethernet/intel/e1000/e1000_main.c:3815)
+ __napi_poll.constprop.0 (net/core/dev.c:7191)
+ net_rx_action (net/core/dev.c:7262 net/core/dev.c:7382)
+ handle_softirqs (kernel/softirq.c:561)
+ __irq_exit_rcu (kernel/softirq.c:596 kernel/softirq.c:435 kernel/softirq.c:662)
+ irq_exit_rcu (kernel/softirq.c:680)
+ common_interrupt (arch/x86/kernel/irq.c:280 (discriminator 14))
+  </IRQ>
+ <TASK>
+ asm_common_interrupt (./arch/x86/include/asm/idtentry.h:693)
+RIP: 0010:default_idle (./arch/x86/include/asm/irqflags.h:37 ./arch/x86/include/asm/irqflags.h:92 arch/x86/kernel/process.c:744)
+Code: 4c 01 c7 4c 29 c2 e9 72 ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa eb 07 0f 00 2d c3 2b 15 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90
+RSP: 0018:ffa00000000ffee8 EFLAGS: 00000202
+RAX: 000000000000640b RBX: ff1100010091c200 RCX: 0000000000061aa4
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff812f30c5
+RBP: 000000000000000a R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000002 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ ? do_idle (kernel/sched/idle.c:186 kernel/sched/idle.c:325)
+ default_idle_call (./include/linux/cpuidle.h:143 kernel/sched/idle.c:118)
+ do_idle (kernel/sched/idle.c:186 kernel/sched/idle.c:325)
+ cpu_startup_entry (kernel/sched/idle.c:422 (discriminator 1))
+ start_secondary (arch/x86/kernel/smpboot.c:315)
+ common_startup_64 (arch/x86/kernel/head_64.S:421)
+ </TASK>
+Modules linked in: cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded: cifs]
+CR2: 00000000000000c4
+
+Fixes: ed07536ed673 ("[PATCH] lockdep: annotate nfs/nfsd in-kernel sockets")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: stable@vger.kernel.org
+---
+v2:
+  * Clear sk_owner in sock_lock_init()
+  * Define helper under the same #if guard
+  * Remove redundant null check before module_put()
+
+v1: https://lore.kernel.org/netdev/20250403020837.51664-1-kuniyu@amazon.com/
+---
+ include/net/sock.h | 38 ++++++++++++++++++++++++++++++++++++--
+ net/core/sock.c    |  4 ++++
+ 2 files changed, 40 insertions(+), 2 deletions(-)
+
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 8daf1b3b12c6..4216d7d86150 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -547,6 +547,10 @@ struct sock {
+ 	struct rcu_head		sk_rcu;
+ 	netns_tracker		ns_tracker;
+ 	struct xarray		sk_user_frags;
++
++#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
++	struct module		*sk_owner;
++#endif
+ };
+ 
+ struct sock_bh_locked {
+@@ -1583,6 +1587,35 @@ static inline void sk_mem_uncharge(struct sock *sk, int size)
+ 	sk_mem_reclaim(sk);
+ }
+ 
++#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
++static inline void sk_owner_set(struct sock *sk, struct module *owner)
++{
++	__module_get(owner);
++	sk->sk_owner = owner;
++}
++
++static inline void sk_owner_clear(struct sock *sk)
++{
++	sk->sk_owner = NULL;
++}
++
++static inline void sk_owner_put(struct sock *sk)
++{
++	module_put(sk->sk_owner);
++}
++#else
++static inline void sk_owner_set(struct sock *sk, struct module *owner)
++{
++}
++
++static inline void sk_owner_clear(struct sock *sk)
++{
++}
++
++static inline void sk_owner_put(struct sock *sk)
++{
++}
++#endif
+ /*
+  * Macro so as to not evaluate some arguments when
+  * lockdep is not enabled.
+@@ -1592,13 +1625,14 @@ static inline void sk_mem_uncharge(struct sock *sk, int size)
+  */
+ #define sock_lock_init_class_and_name(sk, sname, skey, name, key)	\
+ do {									\
++	sk_owner_set(sk, THIS_MODULE);					\
+ 	sk->sk_lock.owned = 0;						\
+ 	init_waitqueue_head(&sk->sk_lock.wq);				\
+ 	spin_lock_init(&(sk)->sk_lock.slock);				\
+ 	debug_check_no_locks_freed((void *)&(sk)->sk_lock,		\
+-			sizeof((sk)->sk_lock));				\
++				   sizeof((sk)->sk_lock));		\
+ 	lockdep_set_class_and_name(&(sk)->sk_lock.slock,		\
+-				(skey), (sname));				\
++				   (skey), (sname));			\
+ 	lockdep_init_map(&(sk)->sk_lock.dep_map, (name), (key), 0);	\
+ } while (0)
+ 
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 323892066def..d426c5f8e20f 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2130,6 +2130,8 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
+  */
+ static inline void sock_lock_init(struct sock *sk)
+ {
++	sk_owner_clear(sk);
++
+ 	if (sk->sk_kern_sock)
+ 		sock_lock_init_class_and_name(
+ 			sk,
+@@ -2324,6 +2326,8 @@ static void __sk_destruct(struct rcu_head *head)
+ 		__netns_tracker_free(net, &sk->ns_tracker, false);
+ 		net_passive_dec(net);
+ 	}
++
++	sk_owner_put(sk);
+ 	sk_prot_free(sk->sk_prot_creator, sk);
+ }
+ 
+-- 
+2.48.1
+
