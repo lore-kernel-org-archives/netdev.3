@@ -1,95 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC35261361;
-	Thu,  3 Apr 2025 19:04:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B7925FA3B
+	for <netdev@vger.kernel.org>; Thu,  3 Apr 2025 19:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707067; cv=none; b=W6KWkfQEvez7yAujGfYBRh6go3Vm1rmw4xQDyCFveUbAZ2ry8qjnlb3UgO3ccmErFCzKtV2+Lor9Xj9zlZj/twxPA6zgxn6hnNv944iZkdrhjn/dPU08A+LSrzH2F4rY9lY5rcnc/tdAxnBbwFGnOFyqVSHyVnRDsLw2oY2LV6c=
+	t=1743707067; cv=none; b=TqgUP/Fglmqxql7pc/ueyIBn9m5ovDIG4n1+tQ0kyuElu8FNP942mko36YKVyA0nwuMwOhEFxVfNkm7t6MP8BYXRws8W4IlIQX57irTyHFCzIKROdLhbR9+pQuOkkAPOhI/R4suPOPVCs5tN3TRVGZKa1Z65Ec4JT+dVIPqybmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1743707067; c=relaxed/simple;
-	bh=eFB6fsPsXp9xhVhM7YxjbxdKgahOf8vjLvHyf7iWNiI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qRE0kCirRudkKgwCYvn7lEFO4hrfrqo78qtGkm1kV59xprb8eLEvNWHNbs59fITJA+T4QY3aSEOw1bszRu14mhCd+mAx4GsQj3ofwsICUsxg7Je3YkZB/PgBotKyF3z7iGyNW7CiN/GxfdHTpLuPYT5y//TSHPoKj9km8Bxqzp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XvIst5IJ; arc=none smtp.client-ip=10.30.226.201
+	bh=iuOOwB3RhF2+wmWM3TB/6mKD+N4PJ/l0AgT6T28qZdc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gR2wmvM6NWs8n9bj2ZML09DrN3osVSECmXZZT3L4h02b0//nmZpKMjp0ZaZuNu+5V2QNuv6e4IEEuhWtu2ZE3fF16LPHyBq0J4LItajT6phKXFHL/zIOsfd8n9PMsmqupNq/vc3smKhzi0sm8tpZa/Lym6WHScGjh7xx5uIy4ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Jn7Fb+Ug; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XvIst5IJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880C6C4CEE3;
-	Thu,  3 Apr 2025 19:04:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707066;
-	bh=eFB6fsPsXp9xhVhM7YxjbxdKgahOf8vjLvHyf7iWNiI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvIst5IJHjZsld9luTFlo7lLAetcdVYsahJy55b5hRBbLYiVs90AcZdIQTVj+j8Gk
-	 vrC+Q7jjMk0CVe/uZibGG+SU1Wi3a1s7lqTbtmRLlq18AYf9suX39GQapaWh59a8lS
-	 pFzr+aRJ2S+VumNZnB3EmltT6/PDRDY+xCL2dIGFV07ht4q3mawfyndEG+0n/iqy37
-	 BP7fpcV6zgwxVBoIUQxfBvbfbzUPqn9b4wtTcnUpFHpSRoklHXEhIa3Uev3JJ6P3Uf
-	 O10f4gPsz8VdGGdjJuYp3O3nZiWLgLn/wg6XEZepUY4ud66lUMT+zcxzUyd1Qw5efK
-	 Z4zOYL0JAYssg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Pavel Begunkov <asml.silence@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Mina Almasry <almasrymina@google.com>,
-	David Wei <dw@davidwei.uk>,
-	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	willemb@google.com,
-	sjordhani@gmail.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 08/49] net: page_pool: don't cast mp param to devmem
-Date: Thu,  3 Apr 2025 15:03:27 -0400
-Message-Id: <20250403190408.2676344-8-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250403190408.2676344-1-sashal@kernel.org>
-References: <20250403190408.2676344-1-sashal@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Jn7Fb+Ug"
+Message-ID: <0eb36d4f-ab6c-4bb3-aad0-99c09bcd56ec@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1743707053;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OR6tAQCdTqWMdGnoueGRPKReRRRQNdIbvhVIHJWD5vI=;
+	b=Jn7Fb+UgY/OlS/fnuFJSgz2OVlcdAmgKv8H1oVFoc46n/wT4ubopRD4mJlVLWxZMgP1Wnu
+	05Q7iiyh/mwHPQ6Dw+H10z3jRi2jjgr8S6+WImf8VczgxbWlw9h7NRIvnmN38tQ9ge6NVM
+	kpjzXJKKqFnlUwXJb1TnwDaYvPaqCNs=
+Date: Thu, 3 Apr 2025 15:04:08 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.13.9
+Subject: Re: [RFC net-next PATCH 11/13] of: property: Add device link support
+ for PCS
+To: Saravana Kannan <saravanak@google.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
+ Christian Marangi <ansuelsmth@gmail.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, linux-kernel@vger.kernel.org,
+ upstream@airoha.com, Rob Herring <robh@kernel.org>,
+ devicetree@vger.kernel.org
+References: <20250403181907.1947517-1-sean.anderson@linux.dev>
+ <20250403182758.1948569-1-sean.anderson@linux.dev>
+ <CAGETcx9v610XhvU705R=Mjth=iAbCU04rqNnQPhQua37Jc4TRQ@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+In-Reply-To: <CAGETcx9v610XhvU705R=Mjth=iAbCU04rqNnQPhQua37Jc4TRQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+On 4/3/25 14:32, Saravana Kannan wrote:
+> On Thu, Apr 3, 2025 at 11:28 AM Sean Anderson <sean.anderson@linux.dev> wrote:
+>>
+>> This adds device link support for PCS devices, providing
+>> better probe ordering.
+>>
+>> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+>> ---
+>>
+>>  drivers/of/property.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/of/property.c b/drivers/of/property.c
+>> index c1feb631e383..f3e0c390ddba 100644
+>> --- a/drivers/of/property.c
+>> +++ b/drivers/of/property.c
+>> @@ -1379,6 +1379,7 @@ DEFINE_SIMPLE_PROP(pses, "pses", "#pse-cells")
+>>  DEFINE_SIMPLE_PROP(power_supplies, "power-supplies", NULL)
+>>  DEFINE_SUFFIX_PROP(regulators, "-supply", NULL)
+>>  DEFINE_SUFFIX_PROP(gpio, "-gpio", "#gpio-cells")
+>> +DEFINE_SIMPLE_PROP(pcs_handle, "pcs-handle", NULL)
+>>
+>>  static struct device_node *parse_gpios(struct device_node *np,
+>>                                        const char *prop_name, int index)
+>> @@ -1535,6 +1536,7 @@ static const struct supplier_bindings of_supplier_bindings[] = {
+>>                 .parse_prop = parse_post_init_providers,
+>>                 .fwlink_flags = FWLINK_FLAG_IGNORE,
+>>         },
+>> +       { .parse_prop = parse_pcs_handle, },
+> 
+> Can you add this in the right order please? All the simple ones come
+> before the SUFFIX ones so that it's less expensive/fewer comparisons
+> before you parse the simple properties.
 
-[ Upstream commit 8d522566ae9cb3f0609ddb2a6ce3f4f39988043c ]
+Ah, I couldn't figure out what the intended order was so I just stuck
+it at the end.
 
-page_pool_check_memory_provider() is a generic path and shouldn't assume
-anything about the actual type of the memory provider argument. It's
-fine while devmem is the only provider, but cast away the devmem
-specific binding types to avoid confusion.
-
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: David Wei <dw@davidwei.uk>
-Link: https://patch.msgid.link/20250204215622.695511-2-dw@davidwei.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/core/page_pool_user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
-index 6677e0c2e2565..d5e214c30c310 100644
---- a/net/core/page_pool_user.c
-+++ b/net/core/page_pool_user.c
-@@ -356,7 +356,7 @@ void page_pool_unlist(struct page_pool *pool)
- int page_pool_check_memory_provider(struct net_device *dev,
- 				    struct netdev_rx_queue *rxq)
- {
--	struct net_devmem_dmabuf_binding *binding = rxq->mp_params.mp_priv;
-+	void *binding = rxq->mp_params.mp_priv;
- 	struct page_pool *pool;
- 	struct hlist_node *n;
- 
--- 
-2.39.5
-
+--Sean
