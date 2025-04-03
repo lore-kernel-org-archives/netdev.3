@@ -1,96 +1,117 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B7925FA3B
-	for <netdev@vger.kernel.org>; Thu,  3 Apr 2025 19:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A79253B69;
+	Thu,  3 Apr 2025 19:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707067; cv=none; b=TqgUP/Fglmqxql7pc/ueyIBn9m5ovDIG4n1+tQ0kyuElu8FNP942mko36YKVyA0nwuMwOhEFxVfNkm7t6MP8BYXRws8W4IlIQX57irTyHFCzIKROdLhbR9+pQuOkkAPOhI/R4suPOPVCs5tN3TRVGZKa1Z65Ec4JT+dVIPqybmM=
+	t=1743707075; cv=none; b=HP8Tto12ZrdpwvnKdX/lrF2wBaow/JazIKuD8kdcZ/XdrJoDshYikWP1/mNPjHNwedZQCCF3qJE9OegRFvVSo4bPcjnKOaaiYW2ZLL4c7FY8wImpikTcgJ4u+7N0zpBfWeJaE8NAHjvupKw5KS7ivfE5ziciD3DJLdLUnvYXCnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707067; c=relaxed/simple;
-	bh=iuOOwB3RhF2+wmWM3TB/6mKD+N4PJ/l0AgT6T28qZdc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gR2wmvM6NWs8n9bj2ZML09DrN3osVSECmXZZT3L4h02b0//nmZpKMjp0ZaZuNu+5V2QNuv6e4IEEuhWtu2ZE3fF16LPHyBq0J4LItajT6phKXFHL/zIOsfd8n9PMsmqupNq/vc3smKhzi0sm8tpZa/Lym6WHScGjh7xx5uIy4ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Jn7Fb+Ug; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1743707075; c=relaxed/simple;
+	bh=kJ2jEXmnju3HLRFGJ99O6SI8AOeIJq7v6im4cDEw3pY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=qdWt3ILZzQVNiSToTzQVq0zOA9c7riYXvymg3/hB2iCPhBK2Ewd++ojboVqh8d7swJjYYY5sVwJ0hTcUGO38KB6q3Nn7SOWEkY/e0tbETuI56gF6JKP3u7kNsW1FVqQ8G/pthCS5HUBvxct2ZwHoH8k0UAePDEg70p1BTdDeTu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eSpHyGYs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Jn7Fb+Ug"
-Message-ID: <0eb36d4f-ab6c-4bb3-aad0-99c09bcd56ec@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1743707053;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OR6tAQCdTqWMdGnoueGRPKReRRRQNdIbvhVIHJWD5vI=;
-	b=Jn7Fb+UgY/OlS/fnuFJSgz2OVlcdAmgKv8H1oVFoc46n/wT4ubopRD4mJlVLWxZMgP1Wnu
-	05Q7iiyh/mwHPQ6Dw+H10z3jRi2jjgr8S6+WImf8VczgxbWlw9h7NRIvnmN38tQ9ge6NVM
-	kpjzXJKKqFnlUwXJb1TnwDaYvPaqCNs=
-Date: Thu, 3 Apr 2025 15:04:08 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eSpHyGYs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A66C4CEE8;
+	Thu,  3 Apr 2025 19:04:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743707075;
+	bh=kJ2jEXmnju3HLRFGJ99O6SI8AOeIJq7v6im4cDEw3pY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eSpHyGYslNXBeV3hWHSdYjA3jLUyHagxTePmAu77wN8V/p/Q5LuHVobg//0h4FciG
+	 qcPsxft0CbcKxnlhiIn8bDfap8cIk/szbvHsbmgL5eguaU5qkGBtHIsIlK896ejMVg
+	 aWZczMzcJWwH3DawvRSWuSTGxMkGzdbkUBTR6tj0PgBcCAd5OkMdTVHZtj2OBCQIq1
+	 LG9LZaIzgMg5My199N3qJGLn17U6nW8jIYYdwrxDRKsbpvop9PfDweqAJK0laP3IgO
+	 FAiE72ersSbAmIVsVpu7EPwdfzvcxL3Vh/8BkxosMWTBqNKzxD1KBloqCQkQiqAAy6
+	 O7OQxvf0zQ4Xg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Max Schulze <max.schulze@online.de>,
+	David Hollis <dhollis@davehollis.com>,
+	Sven Kreiensen <s.kreiensen@lyconsys.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	shannon.nelson@amd.com,
+	sd@queasysnail.net,
+	jacob.e.keller@intel.com,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 13/49] net: usb: asix_devices: add FiberGecko DeviceID
+Date: Thu,  3 Apr 2025 15:03:32 -0400
+Message-Id: <20250403190408.2676344-13-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250403190408.2676344-1-sashal@kernel.org>
+References: <20250403190408.2676344-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [RFC net-next PATCH 11/13] of: property: Add device link support
- for PCS
-To: Saravana Kannan <saravanak@google.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
- Christian Marangi <ansuelsmth@gmail.com>,
- Heiner Kallweit <hkallweit1@gmail.com>, linux-kernel@vger.kernel.org,
- upstream@airoha.com, Rob Herring <robh@kernel.org>,
- devicetree@vger.kernel.org
-References: <20250403181907.1947517-1-sean.anderson@linux.dev>
- <20250403182758.1948569-1-sean.anderson@linux.dev>
- <CAGETcx9v610XhvU705R=Mjth=iAbCU04rqNnQPhQua37Jc4TRQ@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <CAGETcx9v610XhvU705R=Mjth=iAbCU04rqNnQPhQua37Jc4TRQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.13.9
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-On 4/3/25 14:32, Saravana Kannan wrote:
-> On Thu, Apr 3, 2025 at 11:28 AM Sean Anderson <sean.anderson@linux.dev> wrote:
->>
->> This adds device link support for PCS devices, providing
->> better probe ordering.
->>
->> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
->> ---
->>
->>  drivers/of/property.c | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/drivers/of/property.c b/drivers/of/property.c
->> index c1feb631e383..f3e0c390ddba 100644
->> --- a/drivers/of/property.c
->> +++ b/drivers/of/property.c
->> @@ -1379,6 +1379,7 @@ DEFINE_SIMPLE_PROP(pses, "pses", "#pse-cells")
->>  DEFINE_SIMPLE_PROP(power_supplies, "power-supplies", NULL)
->>  DEFINE_SUFFIX_PROP(regulators, "-supply", NULL)
->>  DEFINE_SUFFIX_PROP(gpio, "-gpio", "#gpio-cells")
->> +DEFINE_SIMPLE_PROP(pcs_handle, "pcs-handle", NULL)
->>
->>  static struct device_node *parse_gpios(struct device_node *np,
->>                                        const char *prop_name, int index)
->> @@ -1535,6 +1536,7 @@ static const struct supplier_bindings of_supplier_bindings[] = {
->>                 .parse_prop = parse_post_init_providers,
->>                 .fwlink_flags = FWLINK_FLAG_IGNORE,
->>         },
->> +       { .parse_prop = parse_pcs_handle, },
-> 
-> Can you add this in the right order please? All the simple ones come
-> before the SUFFIX ones so that it's less expensive/fewer comparisons
-> before you parse the simple properties.
+From: Max Schulze <max.schulze@online.de>
 
-Ah, I couldn't figure out what the intended order was so I just stuck
-it at the end.
+[ Upstream commit 4079918ae720e842ed7dff65fedeb9980b374995 ]
 
---Sean
+The FiberGecko is a small USB module that connects a 100 Mbit/s SFP
+
+Signed-off-by: Max Schulze <max.schulze@online.de>
+Tested-by: Max Schulze <max.schulze@online.de>
+Suggested-by: David Hollis <dhollis@davehollis.com>
+Reported-by: Sven Kreiensen <s.kreiensen@lyconsys.com>
+Link: https://patch.msgid.link/20250212150957.43900-2-max.schulze@online.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/usb/asix_devices.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index 57d6e5abc30e8..da24941a6e444 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -1421,6 +1421,19 @@ static const struct driver_info hg20f9_info = {
+ 	.data = FLAG_EEPROM_MAC,
+ };
+ 
++static const struct driver_info lyconsys_fibergecko100_info = {
++	.description = "LyconSys FiberGecko 100 USB 2.0 to SFP Adapter",
++	.bind = ax88178_bind,
++	.status = asix_status,
++	.link_reset = ax88178_link_reset,
++	.reset = ax88178_link_reset,
++	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
++		 FLAG_MULTI_PACKET,
++	.rx_fixup = asix_rx_fixup_common,
++	.tx_fixup = asix_tx_fixup,
++	.data = 0x20061201,
++};
++
+ static const struct usb_device_id	products [] = {
+ {
+ 	// Linksys USB200M
+@@ -1578,6 +1591,10 @@ static const struct usb_device_id	products [] = {
+ 	// Linux Automation GmbH USB 10Base-T1L
+ 	USB_DEVICE(0x33f7, 0x0004),
+ 	.driver_info = (unsigned long) &lxausb_t1l_info,
++}, {
++	/* LyconSys FiberGecko 100 */
++	USB_DEVICE(0x1d2a, 0x0801),
++	.driver_info = (unsigned long) &lyconsys_fibergecko100_info,
+ },
+ 	{ },		// END
+ };
+-- 
+2.39.5
+
