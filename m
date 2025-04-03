@@ -1,71 +1,65 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68709433D1
-	for <netdev@vger.kernel.org>; Thu,  3 Apr 2025 14:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894C1134CF;
+	Thu,  3 Apr 2025 14:03:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743688964; cv=none; b=V9k4LLLg4BZJLeBbeun9uHnQDtwCRLIMkmHXhNmh3VNJ+NQ/tlqVmmQ8MY57Lds6x5I+OMccWEn/SlxyEbePCTt7KWBB4b6uPkV/hJsskRaGVr1L4ZZhA1blBNoSOeUU2Olp6CYgeOSxIjiY98fdQaICV9wzfaA/fMpe2o11vAU=
+	t=1743688994; cv=none; b=s3Vx6Zmkj5ko77GvVeIZublmr80w19ej8TtPQMaIvgvMT6Ixpkk+ygnaqRujGs3/Cg7/02EKTSmKWZ1sBNDvSgKZmm9zrNIlyQlAUTqfM2u4hWGe28hgru00XOkz/9u17d6ngv5o1e1+E3a063sl1atwlK4WBmpgCuYK1ktETwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743688964; c=relaxed/simple;
-	bh=S2I5uMGMmzaswrHxMNr8vYNfkMq3kEcFyspItbcpvic=;
+	s=arc-20240116; t=1743688994; c=relaxed/simple;
+	bh=QLW4F+GbLFXGMNGtOghcIQjJ+dG5UU8FxWvxshVfG+c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uqmucMEjukyCXsLbTnZ9ywWuvP377+HsUtfg4El0h5Im7dqjs8fSvgxZGdG/amANw5SmzT4rk8WF/zw9/z/I10Dl+OoTR26S+h05fKGYIk+uu0unZqG2lDnUVJ1xQzemwryHO7ArE7B6866bG4Qxq2bNEqPqjf4CacAQ9WtvLIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O169bmn9; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=IzBsneevSb8s+O9oQTXZ7Y/KT8waqNrJSjFiKG80HVvnQxvL6H6/9EHkWc7eFugdCTxgB3uZ4D6upSWAbaNwp7XcfFXhvqEMYLyO5uSrIfPKl94uCOvXHPMppTP+Ml/7245pkqd1CtyTy61FjFwoG0nrd9INHl4cFrACWlnUAVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L4LZbYjc; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O169bmn9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743688961;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3kWqXe38cLRXw8rlot99ne3jbC4BOsP79Qw7Xj1goMU=;
-	b=O169bmn9WDd1eI+syv3gii335dHdmeatx75fCdAhPxn135p7WbKOa6CYwEHsJfGE+1Znlv
-	JR8nM7J7DSrMcOlGFbFGxX6v85SZ92OVDDPsG6DySbIYVAzv/Oa+Jk0U/l5NCeTApaEn4H
-	uKWsykX9fglGCsI4dB5TcY4cOsiV6vY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-451-bsODjmkjMMyFfbl-rkS3oQ-1; Thu, 03 Apr 2025 10:02:40 -0400
-X-MC-Unique: bsODjmkjMMyFfbl-rkS3oQ-1
-X-Mimecast-MFC-AGG-ID: bsODjmkjMMyFfbl-rkS3oQ_1743688956
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43ce245c5acso11135875e9.2
-        for <netdev@vger.kernel.org>; Thu, 03 Apr 2025 07:02:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L4LZbYjc"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43cf848528aso7034065e9.2;
+        Thu, 03 Apr 2025 07:03:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743688990; x=1744293790; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2b/4SGMPaDzgoq6vXPcXF69oy6ff324UOzskeW/a6I8=;
+        b=L4LZbYjc5XHgXlFlb7aFkWQ3+OuXsLAXBc1mU/NThLSjZom4AcXtQnQ+JZfia8MjAH
+         FqfkroHE2khqUtT6x7S+ZD5N011o/tBtBGI0/+q5rB3mmS0Ix6yodt5bt0rDpxslArI+
+         dRrvSUr4QmsZSIuVyaiJ/UQxF9/Yh4FYXc9/QzdmXKISKbSpzrE5P1BpmnGmwiAMLLxw
+         Bu1FzXo8T1briARzM1XYluu8giHkqpSUUS2/3anikV7PG8Yc7qqEDmbC+JoGvzrkNccC
+         OgsdPwb5oJkKj4hRUu4bGk/z7gwl45J153USf96J7p0tN8Z/Q+yb2JQoT6N/w60568lj
+         pwrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743688956; x=1744293756;
+        d=1e100.net; s=20230601; t=1743688990; x=1744293790;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3kWqXe38cLRXw8rlot99ne3jbC4BOsP79Qw7Xj1goMU=;
-        b=RmbQxuqoSFSwRlmTyfKp8NImhbJH9SYviCRUvhXE6F6PvbNzz3ohuGH900wCKscuPP
-         boZefxDVvSc5J0NIzcKNXwZwJZTivWTmNn3MgPkouHOOEPMkCtAcnulXH5OPAYGaEh9C
-         JBQ0ViNOHNWzgnSBVurUGCrTW10sCGv87iT/LAVke9mEaK5Qgfc+ZvXoLsVnOYqcam62
-         3wNJBxFZxYxwXN7qUETWqq/ALXO3Ir0P+TPpVGMiJcP0z77YdXS4vTQomaOZHblRrC5T
-         TT9SO1w5zFQ5ygVQ2PjNYluLSUAhBL+aj5k34Jlti7PcTZXMYY4fBf1FoBaasuDMHbjg
-         EX8w==
-X-Forwarded-Encrypted: i=1; AJvYcCX5hhU5CI1zeGPbY8JOmZ6t/q8ilPe8a3nToGJbyW9J7nKO6UDn06rqijuN7y+kZjdiBM5d7Nc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuBGyTZxMw+pJ48Tkhw6zpZHoxNIWAnCM0K6k7/um2luByftVP
-	dhIFhELTXZ5HhRf5O4AhyKoH8bXrwaiH0GIzw26R305zVDwgvCe/HIlm6x/ryJpdu1UuN9kprqQ
-	8rMgZCOhXNFftkgFyfp156+Lmfbof6+1tk+ilFXIsP9WII02qykinxQ==
-X-Gm-Gg: ASbGncsX1PqeyUUfpcWhdlNvNWKj94pPmlbWBbW7FYbmDy/MGfIZtsxZIn0ut4V+oOl
-	teL+Mrx5bbCfiuBzsuotuFhNF8YlfowhpPDHSxAlDfmh9ksAU6fLIWtskfKFXy4FKD2XrLqKA1Q
-	EORqmKcWsQJpjM2pDllHYEmUqJ84HLFC9Ik8Y2odWkX/GZBjucIfLUSPAx2AuiZWscR4GEj2DNL
-	UVVrfh+2r5esioYy2fh+E8yTzb7Vzl3wTTweRVF9C8ba0G3WaB9kz1p/IlvCeEwGZAYromN9TF2
-	h9J2ghiI+TizZYsrm6ZXMFKXI9RJ7AoNjwtYZRKkB33cww==
-X-Received: by 2002:a05:600c:1e0d:b0:43d:2313:7b54 with SMTP id 5b1f17b1804b1-43db61d78c9mr209456395e9.3.1743688956067;
-        Thu, 03 Apr 2025 07:02:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHEcH3URdYpyXxENBkWaOZCl6SCATd9gstr45DnynhqDGmUUru1LNLrjf8EszoAacInIZ8pkg==
-X-Received: by 2002:a05:600c:1e0d:b0:43d:2313:7b54 with SMTP id 5b1f17b1804b1-43db61d78c9mr209455765e9.3.1743688955644;
-        Thu, 03 Apr 2025 07:02:35 -0700 (PDT)
-Received: from [192.168.88.253] (146-241-68-231.dyn.eolo.it. [146.241.68.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ea978378esm51169005e9.1.2025.04.03.07.02.34
+        bh=2b/4SGMPaDzgoq6vXPcXF69oy6ff324UOzskeW/a6I8=;
+        b=TpzU9bAw9Ov61Oz1jARGjPnAF+D5AEJEMsGwgm7t5XSoXsBGSkEsDil1T7xx+lsb+H
+         nQrF2BOKUSBX/CN7xHt8xEFv/pait3quuXQecVo7+bPNnfaDHfdPOdbwlnmkLbjUUTKF
+         MJK4026QgXdL93Ff6qj+jZ0ZGGulexEaMWHfWaHl7nbt53ts57IwoZxe6RC+w3w27g/Z
+         PHQufurCt+Aaz6qzuJw57oUz58WTEuUDIVYhczD+YV+aqwywLpEiXTig+EfWTDT/4X7z
+         RGmiHv62OwVY28zH6ZzVnXxKysEfeyP9f4+5wSji5IN9PD0PHKoldv5eH3BxgkJLcQJM
+         OzvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUE32HmS/zhyMRoni0x8WYWHeCM/ewoX2XUQT4vb88cuYZ8GAdUYq7qnfTbWWfIUITGefYW69mWsqxF38Y=@vger.kernel.org, AJvYcCV/OARPoCX1cbubQIFAMDDsqUYE46bE0xogeZcMKmJMoHNLhvcDEHL21T7n+vR4DbzoamsLpmNX4rFzHQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxf9mG/Hu9bcCZsb8MvBx5XNp8kTmpvpkPuhtkJbJoJ+WWJBWvs
+	Gk2VuW05eR2E9T+6QfoiWLelB0tagtGraRLSGvvwnExwplUTMqKd
+X-Gm-Gg: ASbGncv8+i0a9LYQQyhhuv3LKq+6vOVS9qUF9WYKzTnoVrCH+AvUavJHNNGfjNI9o9e
+	m22l6h4mnzkuRl1t+bGfo2IdY374aR2HMbBvaopGys7jjP5PaZWt+h53lkl80xTTncKBvhHniFf
+	NRrtiu0qjhIhg4WG5INgzRyXjktZfqqUzo48pP+xe/K7JY7dIyr669YJpOXY3PlpGNduz30NGbu
+	YKHrly4FPHlwY9fU0ob10zEO0StNy/GDYD7GCO2XhgozwLMAfAkxY/XEFT/owtQVFjBLvnM0BQb
+	xYule1LNlfgjzp3f21W9PyH8qZvp6xD4tVAcK/oGMNhxXtDBHs324JKTdWelEcd4Zys/wuojGta
+	d
+X-Google-Smtp-Source: AGHT+IG2htx9pVU9WR+nsKfD/U9REodWqnHBAE2wZMug1j8tBHoBQsU0NkpWfxwYI/FiHoXhYGiIIw==
+X-Received: by 2002:a05:600c:42c2:b0:43d:1824:aadc with SMTP id 5b1f17b1804b1-43ebcb90409mr28235755e9.29.1743688988746;
+        Thu, 03 Apr 2025 07:03:08 -0700 (PDT)
+Received: from [172.27.62.155] ([193.47.165.251])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec342a153sm20249905e9.2.2025.04.03.07.03.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Apr 2025 07:02:35 -0700 (PDT)
-Message-ID: <d99b52d7-bdd7-4c67-9be5-f5c48edc8afa@redhat.com>
-Date: Thu, 3 Apr 2025 16:02:33 +0200
+        Thu, 03 Apr 2025 07:03:08 -0700 (PDT)
+Message-ID: <a23ccc3b-bb4d-4352-bd7e-ab0f3ef82585@gmail.com>
+Date: Thu, 3 Apr 2025 17:03:04 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,50 +67,116 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] bonding: use permanent address for MAC swapping if
- device address is same
-To: Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org
-Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>,
- Simon Horman <horms@kernel.org>, Cosmin Ratiu <cratiu@nvidia.com>,
- linux-kernel@vger.kernel.org, Liang Li <liali@redhat.com>
-References: <20250319080947.2001-1-liuhangbin@gmail.com>
+Subject: Re: [PATCH] net/mlx5: fix potential null dereference when enable
+ shared FDB
+To: =?UTF-8?B?Q2hhcmxlcyBIYW4o6Z+p5pil6LaFKQ==?= <hanchunchao@inspur.com>,
+ "przemyslaw.kitszel@intel.com" <przemyslaw.kitszel@intel.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "saeedm@nvidia.com" <saeedm@nvidia.com>, "leon@kernel.org"
+ <leon@kernel.org>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
+ <pabeni@redhat.com>, "markzhang@nvidia.com" <markzhang@nvidia.com>,
+ "mbloch@nvidia.com" <mbloch@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
+References: <526e6240c8964fefa80b4bc759c44c04@inspur.com>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250319080947.2001-1-liuhangbin@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Tariq Toukan <ttoukan.linux@gmail.com>
+In-Reply-To: <526e6240c8964fefa80b4bc759c44c04@inspur.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 3/19/25 9:09 AM, Hangbin Liu wrote:
-> Similar with a951bc1e6ba5 ("bonding: correct the MAC address for "follow"
-> fail_over_mac policy"). The fail_over_mac follow mode requires the formerly
-> active slave to swap MAC addresses with the newly active slave during
-> failover. However, the slave's MAC address can be same under certain
-> conditions:
+
+
+On 03/04/2025 12:52, Charles Han(韩春超) wrote:
+> -ENXIO indicates "No such device or address". I've found that in mlx5/core, if mlx5_get_flow_namespace() returns null, it basically returns -EOPNOTSUPP.
 > 
-> 1) ip link set eth0 master bond0
->    bond0 adopts eth0's MAC address (MAC0).
+
+Please do not top-post.
+
++1.
+If namespace is not found it's due to lack of support.
+
+
+> -----邮件原件-----
+> 发件人: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> 发送时间: 2025年4月2日 19:02
+> 收件人: Charles Han(韩春超) <hanchunchao@inspur.com>
+> 抄送: netdev@vger.kernel.org; linux-rdma@vger.kernel.org; linux-kernel@vger.kernel.org; saeedm@nvidia.com; leon@kernel.org; tariqt@nvidia.com; andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com; kuba@kernel.org; pabeni@redhat.com; markzhang@nvidia.com; mbloch@nvidia.com
+> 主题: Re: [PATCH] net/mlx5: fix potential null dereference when enable shared FDB
 > 
-> 1) ip link set eth1 master bond0
->    eth1 is added as a backup with its own MAC (MAC1).
+> On 4/2/25 11:43, Charles Han wrote:
+>> mlx5_get_flow_namespace() may return a NULL pointer, dereferencing it
+>> without NULL check may lead to NULL dereference.
+>> Add a NULL check for ns.
+>>
+>> Fixes: db202995f503 ("net/mlx5: E-Switch, add logic to enable shared
+>> FDB")
+>> Signed-off-by: Charles Han <hanchunchao@inspur.com>
+
+Acked-by: Tariq Toukan <tariqt@nvidia.com>
+
+>> ---
+>>    .../net/ethernet/mellanox/mlx5/core/eswitch_offloads.c | 10 ++++++++++
+>>    drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c       |  5 +++++
+>>    2 files changed, 15 insertions(+)
+>>
+>> diff --git
+>> a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+>> b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+>> index a6a8eea5980c..dc58e4c2d786 100644
+>> --- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+>> @@ -2667,6 +2667,11 @@ static int esw_set_slave_root_fdb(struct mlx5_core_dev *master,
+>>    	if (master) {
+>>    		ns = mlx5_get_flow_namespace(master,
+>>    					     MLX5_FLOW_NAMESPACE_FDB);
+>> +		if (!ns) {
+>> +			mlx5_core_warn(master, "Failed to get flow namespace\n");
+>> +			return -EOPNOTSUPP;
 > 
-> 3) ip link set eth0 nomaster
->    eth0 is released and restores its MAC (MAC0).
->    eth1 becomes the active slave, and bond0 assigns MAC0 to eth1.
-
-It was not immediately clear to me that the mac-dance in the code below
-happens only at failover time.
-
-I second Jakub's doubt, I think it would be better to change eth0 mac
-address here (possibly to permanent eth1 mac, to preserve some consistency?)
-
-Doing that in ndo_del_slave() should allow bonding to change the mac
-while still owning the old slave and avoid races with user-space.
-
-WDYT?
-
-Thanks,
-
-Paolo
+> I would return -ENXIO in such cases, you were searching and not found that.
+> 
+> IOW it is obvious that dereferencing a null ptr is not supported.
+> 
+> If you agree, please apply the same comment for your other patch:
+> https://lore.kernel.org/netdev/20250402093221.3253-1-hanchunchao@inspur.com/T/#u
+> 
+>> +		}
+>> +
+>>    		root = find_root(&ns->node);
+>>    		mutex_lock(&root->chain_lock);
+>>    		MLX5_SET(set_flow_table_root_in, in, @@ -2679,6 +2684,11 @@ static
+>> int esw_set_slave_root_fdb(struct mlx5_core_dev *master,
+>>    	} else {
+>>    		ns = mlx5_get_flow_namespace(slave,
+>>    					     MLX5_FLOW_NAMESPACE_FDB);
+>> +		if (!ns) {
+>> +			mlx5_core_warn(slave, "Failed to get flow namespace\n");
+>> +			return -EOPNOTSUPP;
+>> +		}
+>> +
+>>    		root = find_root(&ns->node);
+>>    		mutex_lock(&root->chain_lock);
+>>    		MLX5_SET(set_flow_table_root_in, in, table_id, diff --git
+>> a/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
+>> b/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
+>> index a47c29571f64..18e59f6a0f2d 100644
+>> --- a/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
+>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
+>> @@ -186,6 +186,11 @@ static int mlx5_cmd_set_slave_root_fdb(struct mlx5_core_dev *master,
+>>    	} else {
+>>    		ns = mlx5_get_flow_namespace(slave,
+>>    					     MLX5_FLOW_NAMESPACE_FDB);
+>> +		if (!ns) {
+>> +			mlx5_core_warn(slave, "Failed to get flow namespace\n");
+>> +			return -EOPNOTSUPP;
+>> +		}
+>> +
+>>    		root = find_root(&ns->node);
+>>    		MLX5_SET(set_flow_table_root_in, in, table_id,
+>>    			 root->root_ft->id);
+> 
 
