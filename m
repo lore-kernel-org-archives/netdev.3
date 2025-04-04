@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE961EB1A9;
-	Fri,  4 Apr 2025 14:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76A21F0E36
+	for <netdev@vger.kernel.org>; Fri,  4 Apr 2025 14:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743777010; cv=none; b=Xa/SmWP1zhBZNCsaq6z919Km4hyGK0ZU9PMJn02h0LOP9n+70RihDrP2OfEVgkax7kUnx/WTrjg7yRa88sg1X1tjMywY6WHojCaCfYry2u0Ujwk8Hc4Ran++iPMAm/Ds7CcanOiyOF5VFjB+115FQ9Z5tno5Xnpnx6f7JhsoR1c=
+	t=1743777598; cv=none; b=lUqaZaxGIlCetFsusrUMHnfCl7Krv3pYZoeLBMDmO+LpcYvsEuzFm3H/TkM1oiKlqpb+GqKk+plbK4Ni3Ok0oLkwDuB5Gfls9XVOauWbywK0wwBENiBEKs8NRF/3uTJgLQYjuuFMXJHpWvjOwCC2n/W+LaueXgBN/pfP33sYdbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743777010; c=relaxed/simple;
-	bh=wTP+D4IXKBwvsj7zTnOsBaG/zgIJXbKgSf+ZGdl7G00=;
+	s=arc-20240116; t=1743777598; c=relaxed/simple;
+	bh=MvoES9PMJoM0jwCVYoCEaD1ChB+7N0NjlUyVI4qUBLU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=oZg5cYlIm/Vm8hyPyP9aBgr8eVMY9gn4gBGkeCZjVA/+xN54v0DUjd2kC85vUVY1ZqKC42TH2VPef4pdxi4X4pS7hCCV65cPeDKqRV6cPC8jfuM9iBzb7COKha8rqbEPPCSEA+NPNQITkKKZtp/EcZ93ARDYlzSgxBEvkjTlbAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b6dNVx3t; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Si83xIw4NLlAaHJZinb8FxabaGEI5yRWtenHtAjxtGvbI6Vs/nnCdYxQsJ1AnddARF/3fOJWtjbBFuo0cHpnX7ECX3csQJPVHq8tJHREyXcxxLkJAr4AR2cJP6HD9e7fy8r394zy4Zfkwe+HGgeWIcSUnadXUK+AE/9Cz8fx1Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qk/3pWgD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b6dNVx3t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB42C4CEEC;
-	Fri,  4 Apr 2025 14:30:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qk/3pWgD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E07B7C4CEDD;
+	Fri,  4 Apr 2025 14:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743777010;
-	bh=wTP+D4IXKBwvsj7zTnOsBaG/zgIJXbKgSf+ZGdl7G00=;
+	s=k20201202; t=1743777595;
+	bh=MvoES9PMJoM0jwCVYoCEaD1ChB+7N0NjlUyVI4qUBLU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=b6dNVx3teeL8lUgEUSRmHqYqUzXA1JtIg5ncxTL3o9kYORzEQ+2/xb9SkZwPL8lmM
-	 /H4DcE9hggLrCueV82UC7YjQYRDUbSLe4JLk4XneDUE7GUHjtUjTpV/jHYJmIm/sv8
-	 enFLih/8RqAwFUGKPZC/jvbS+B5+gQuvXEs2zRH4+z1a7Q/FNTD8Ze7d4kXNYAHC7a
-	 SbIYkNwwLpNDS6YQ4V+Vm92Fsa7iGY6P5O44rhYrsU3bYWU+YTtrRjk54Ltd1JFvpe
-	 do+w9mqG1B9FHxSdc1QUkK2St8wjK9sy/2SuNzyMcop1jBKwqeSf2yz4lC28Q5scwT
-	 Md6DyU4DasLPQ==
+	b=Qk/3pWgD4TH97SCoebSsE+chd06UbyLTCKZf3P8dWFBKqBw7rrCdt2HXVOd9Lwdb+
+	 kFFbcXljhhsVvjDRcnl5BVsF0iIgvoPNay6MRi3ydorYI8LYh84OzfPPu6g8pWmoVa
+	 Q8gkkD8gWjv1lbDVw3uKqYHOoAX77lX923nnG+/0QehfEyGFy9sTuC2B9WWrBMkow8
+	 gEvoL1VHeqH4RszwtpAgdlo0tRn5LYV3MEvdifqm4qDorQZjalpwauAHjqroQ0mpa+
+	 13Z7ivusKRne9t8XTrw5LO64fypNihsucRAy+GjCzzHm5K2UA7Y5b1L/OEEieoT2YK
+	 41epbmS60bNhw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33FC93822D28;
-	Fri,  4 Apr 2025 14:30:48 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33FE03822D28;
+	Fri,  4 Apr 2025 14:40:34 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v4 0/1] usbnet:fix NPE during rx_complete
+Subject: Re: [PATCH net 0/2] ipv6: Multipath routing fixes
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174377704699.3279917.8004013265274717921.git-patchwork-notify@kernel.org>
-Date: Fri, 04 Apr 2025 14:30:46 +0000
-References: <cover.1743584159.git.luying1@xiaomi.com>
-In-Reply-To: <cover.1743584159.git.luying1@xiaomi.com>
-To: Ying Lu <luying526@gmail.com>
-Cc: oneukum@suse.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org, luying1@xiaomi.com
+ <174377763303.3283451.9282505899516359075.git-patchwork-notify@kernel.org>
+Date: Fri, 04 Apr 2025 14:40:33 +0000
+References: <20250402114224.293392-1-idosch@nvidia.com>
+In-Reply-To: <20250402114224.293392-1-idosch@nvidia.com>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, pabeni@redhat.com,
+ edumazet@google.com, dsahern@kernel.org, horms@kernel.org, gnault@redhat.com,
+ stfomichev@gmail.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  2 Apr 2025 16:58:58 +0800 you wrote:
-> From: Ying Lu <luying1@xiaomi.com>
+On Wed, 2 Apr 2025 14:42:22 +0300 you wrote:
+> This patchset contains two fixes for IPv6 multipath routing. See the
+> commit messages for more details.
 > 
-> The patchset fix the issue caused by the following modifications:
-> commit 04e906839a053f092ef53f4fb2d610983412b904
-> (usbnet: fix cyclical race on disconnect with work queue)
-> 
-> The issue:
-> The usb_submit_urb function lacks a usbnet_going_away validation,
-> whereas __usbnet_queue_skb includes this check. This inconsistency
-> creates a race condition where: A URB request may succeed, but
-> the corresponding SKB data fails to be queued.
+> Ido Schimmel (2):
+>   ipv6: Start path selection from the first nexthop
+>   ipv6: Do not consider link down nexthops in path selection
 > 
 > [...]
 
 Here is the summary with links:
-  - [v4,1/1] usbnet:fix NPE during rx_complete
-    https://git.kernel.org/netdev/net/c/51de36000934
+  - [net,1/2] ipv6: Start path selection from the first nexthop
+    https://git.kernel.org/netdev/net/c/4d0ab3a6885e
+  - [net,2/2] ipv6: Do not consider link down nexthops in path selection
+    https://git.kernel.org/netdev/net/c/8b8e0dd35716
 
 You are awesome, thank you!
 -- 
