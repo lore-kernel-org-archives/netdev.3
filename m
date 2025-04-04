@@ -1,205 +1,129 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89A21B21B4
-	for <netdev@vger.kernel.org>; Fri,  4 Apr 2025 10:29:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE6F1EA7C7
+	for <netdev@vger.kernel.org>; Fri,  4 Apr 2025 10:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743762580; cv=none; b=uKrudeSRu1pBuz2bs2A/MVX6Js162+tvHEiBGidoaUKjLXN2S1OQfhv1R1xWgJXMgNdmpoCUI6d95ADw873aCBvobTJiNx+2FCO7ae9JWGcPhv0B/5uqToMJG9E05hiTeTWs85y0mxNocftff6k5i2w5p8MJQ2GouMmkZdaXVko=
+	t=1743762586; cv=none; b=gUPimwXvR0A6E9aoRWDrMBAw+63C9EiLWfo4YR7aECw75LIl4xa/QiWIZ2qgUE54Z6zH92qkwGKaq5hJplK3n1CQx8OyeI6ogwa6sFpEl42vSb6utNclhLwKCuBnHmBvCooUmhssfpUB9KgOWculyLHHv6NoMQOcFmdUNnKNBa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743762580; c=relaxed/simple;
-	bh=mLcDru8eInjU0uOo91bIFQt4AIpvVW2OtKNAkdmIfV8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RGCxAUNIFBM14ggdHhXnMmHcUcD+OommENFsPe3Pbz4af7Rqae48qIpKhE2ptLQYPWTvrqjp7k0m0ZANgeu+6mKhbGVIsUKVf6i71AogOikvcNv7OfKBy9ZNzo5/Ujc9+TGL3mYe5an0ShkL33tyKa+cSVZHLExul+jFE8kMGfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b=qPPXEGtH; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1743762586; c=relaxed/simple;
+	bh=NW3OBKs3WPyCL79JIJvILc4MYb4J04/cCYCmFvTX3qU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=TK9sgnoZx418MdFKdcgjHZcPKQfVKIbdj5mnc9JtfQUWm0NVHuETPDIX441Q4wCuKm4XlhhhfXC9RShgfdNGow8qYK0wQRrYgVzIzoPcO3MhE73NhqZILdPjX5/17sfgvUSFJuryZ0XVKSFvrfzn9UBdVOwzkPjkATglzZ2qbTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K0QlFeTA; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b="qPPXEGtH"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43948021a45so17425475e9.1
-        for <netdev@vger.kernel.org>; Fri, 04 Apr 2025 03:29:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall-org.20230601.gappssmtp.com; s=20230601; t=1743762577; x=1744367377; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4D5zlP7j1AtzmdD+fdYHZGrIA+c23RJYKMOt2bRJjqs=;
-        b=qPPXEGtHxrTS76JuycV1G2jNK4SiFQ+ocBJbfgVpdOGp3gAiIEb5mvVJQ6IPyBTuTt
-         hXZHMB2NXCXqeKmH6k20SVcXLyGDE3KdosWpnbAj8TWbudnesnLKK2qWZZ0Cn29zIO43
-         uYQ1nAp4IVKXyDK2x5KWZJrxW1xLF5jmto3ETasN0bGbliTLjZ4dxxFvMCNP4cZBYeK8
-         TGxEMhPlVn93W2hKHsdorKITagDbIQYFQUjCTmUjfw25TVplvju+YMtbXOC/ycr+c9YS
-         R/OogwrDyb9fbbFnbCd9blqXGeXCWS+ZCwrkngYavXBmTncuWCdYdmpbypqfmFZpFCxX
-         c3Dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743762577; x=1744367377;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4D5zlP7j1AtzmdD+fdYHZGrIA+c23RJYKMOt2bRJjqs=;
-        b=jO1tSZ5cxKwkwRx0Vm1V2Pwn58/B32fy9gAeuaQsedV2omJFhGpbpArvTOBmDlYOCp
-         GSDkOrLyoSeMcN1IyF6aSJw1EA1X2ZFDZiTcWwBtG79z91V4nSEZrabTRbxaZI2YUlZs
-         8ehbsYKr0+jRruWt7Y/nOPF4WG688a67YA/aCGxUZhcUuwf4celroRaG/ZYqnlcANByj
-         AdCzVHlj57ex8zODbD7A2aj8qKTJcfwr+6ukkTLJKAplld6yQks+MOkKsLAr53nN/9Vc
-         juDttxAjEMO+fdi36q9DjUOu9qXlMos+kNkSD8l905I197zlCDHoGNovTUV0XU+6wga1
-         g8bg==
-X-Forwarded-Encrypted: i=1; AJvYcCXGSuRpPc84zNIKl8SyG7jmr/p8jfdAtUUWPm1xWPnnGN18xJrHaClhJHE+GV7TiRHeEoDeofA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIJvMTg2HiLhJ37kXzYEvylbrY/W13jho4RAmf6liyU7GP9u5Z
-	sT+abGGuxnkCk/jlaGvv6lg+kDACRz672qRZ7k4evJpBoBfRUvqLr3ukzy9La7Q=
-X-Gm-Gg: ASbGncu9ikLD0mmmP6dyc9ih1dDGS8f0FHl01GUv/xxD5WkNui2SM8aCOfPKDaXr+fW
-	oa3li54zwFeTZCbkr3qdgyf6uGag8w0hoQe3wvAFJWcLI2BIImAhI5Lfc2yzTpvOs7PVX9EX84y
-	QJYiUCmxZUgL/qm9cNJB1rQXRq9WwpGk8fef0CJmeR893RABOIrU6Nuoe+sUFjqHvFv5QvK/9dy
-	SgqdFUm2VZZpSOTWoyTbU7SyemHQUUNLYGKxdZPYrDVKp/0i/HA6QkstWclL9EG+4D1grdIB+eE
-	qAi4Yjy+gDm2cL63M0hHfV19CNw3mOcmgScV3non/1IuZwROJYKumxomsZX4depXmZWppmiXCdm
-	B
-X-Google-Smtp-Source: AGHT+IEZYWLp5+FLqhn6UpFvGJp4isiBgQ145JbwTaagvs7RNoWX3qphA42f4gPmOqeyRlDNvtcuXQ==
-X-Received: by 2002:a05:600c:1994:b0:43c:ebc4:36a5 with SMTP id 5b1f17b1804b1-43ed0b4816dmr14529555e9.7.1743762576664;
-        Fri, 04 Apr 2025 03:29:36 -0700 (PDT)
-Received: from [192.168.0.205] (78-154-15-142.ip.btc-net.bg. [78.154.15.142])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec34a895fsm42197425e9.13.2025.04.04.03.29.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Apr 2025 03:29:36 -0700 (PDT)
-Message-ID: <36c7286d-b410-4695-b069-f79605feade4@blackwall.org>
-Date: Fri, 4 Apr 2025 13:29:35 +0300
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K0QlFeTA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743762584; x=1775298584;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=NW3OBKs3WPyCL79JIJvILc4MYb4J04/cCYCmFvTX3qU=;
+  b=K0QlFeTARUDa2M6xFBp/kjJ03r/2X9fZGI4bV+wBaSbZKVDVuNkc3KTs
+   1oTgkUqMg89K5Kp+27ciGZfkhqAJ9ARKfidYn/TFyVP5/zbjsIn0zsNLL
+   IO1k6K3/Yzcvh0ooopnG6Nir8GoYL2MUcgNFTp5mfvTV8vAd/Og8ZrevP
+   RiRWezV/+wYPPjseigL4J4LBdtCRNK0J+gYr/mv+HdHw5jcrXR3MhEMNW
+   setB6PDC+5P0Qa3I+j184FIgWRrkVhyz2vEvJp9DCBG1C7rzefTe1aGzE
+   aBp6V2K/ILFN31fkJ5gyg0J06T695AGpLI8iKmRRniDkofm0ci5JSnF/B
+   A==;
+X-CSE-ConnectionGUID: W4cnwIEURl2baAN3fbZJRw==
+X-CSE-MsgGUID: Sf14pXuMQNuWQRI1OASK7g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11393"; a="48992430"
+X-IronPort-AV: E=Sophos;i="6.15,188,1739865600"; 
+   d="scan'208";a="48992430"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2025 03:29:43 -0700
+X-CSE-ConnectionGUID: NnJR/y/7TrG1X2gTytrqMQ==
+X-CSE-MsgGUID: g0qWmz3eTmSxqKp3E4ZJ2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,188,1739865600"; 
+   d="scan'208";a="164485290"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by orviesa001.jf.intel.com with ESMTP; 04 Apr 2025 03:29:41 -0700
+Received: from vecna.igk.intel.com (vecna.igk.intel.com [10.123.220.17])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 2B4DA33E9C;
+	Fri,  4 Apr 2025 11:29:40 +0100 (IST)
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+To: intel-wired-lan@lists.osuosl.org,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: netdev@vger.kernel.org,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Stefan Assmann <sassmann@kpanic.de>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH iwl-net 1/6] iavf: iavf_suspend(): take RTNL before netdev_lock()
+Date: Fri,  4 Apr 2025 12:23:16 +0200
+Message-Id: <20250404102321.25846-2-przemyslaw.kitszel@intel.com>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20250404102321.25846-1-przemyslaw.kitszel@intel.com>
+References: <20250404102321.25846-1-przemyslaw.kitszel@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2 net-next 3/3] net: bridge: mcast: Notify on mdb offload
- failure
-To: Joseph Huang <Joseph.Huang@garmin.com>, netdev@vger.kernel.org
-Cc: Joseph Huang <joseph.huang.2024@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Roopa Prabhu <roopa@nvidia.com>, Simon Horman <horms@kernel.org>,
- linux-kernel@vger.kernel.org, bridge@lists.linux.dev
-References: <20250403234412.1531714-1-Joseph.Huang@garmin.com>
- <20250403234412.1531714-4-Joseph.Huang@garmin.com>
-Content-Language: en-US
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20250403234412.1531714-4-Joseph.Huang@garmin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 4/4/25 02:44, Joseph Huang wrote:
-> Notify user space on mdb offload failure if mdb_offload_fail_notification
-> is set.
-> 
-> Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
-> ---
->  net/bridge/br_mdb.c       | 26 +++++++++++++++++++++-----
->  net/bridge/br_private.h   |  9 +++++++++
->  net/bridge/br_switchdev.c |  4 ++++
->  3 files changed, 34 insertions(+), 5 deletions(-)
-> 
+Fix an obvious violation of lock ordering.
+Jakub's [1] added netdev_lock() call that is wrong ordered wrt RTNL,
+but the Fixes tag points to crit_lock being wrongly placed (by lockdep
+standards).
 
-The patch looks good, but one question - it seems we'll mark mdb entries with
-"offload failed" when we get -EOPNOTSUPP as an error as well. Is that intended?
+Actual reason we got it wrong is dated back to critical section managed by
+pure flag checks, which is with us since the very beginning.
 
-That is, if the option is enabled and we have mixed bridge ports, we'll mark mdbs
-to the non-switch ports as offload failed, but it is not due to a switch offload
-error.
+[1] afc664987ab3 ("eth: iavf: extend the netdev_lock usage")
+Fixes: 5ac49f3c2702 ("iavf: use mutexes for locking of critical sections")
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+---
+CC: Stefan Assmann <sassmann@kpanic.de>
+CC: Jakub Kicinski <kuba@kernel.org>
+---
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-> diff --git a/net/bridge/br_mdb.c b/net/bridge/br_mdb.c
-> index 0639691cd19b..5f53f387d251 100644
-> --- a/net/bridge/br_mdb.c
-> +++ b/net/bridge/br_mdb.c
-> @@ -519,16 +519,17 @@ static size_t rtnl_mdb_nlmsg_size(const struct net_bridge_port_group *pg)
->  	       rtnl_mdb_nlmsg_pg_size(pg);
->  }
->  
-> -void br_mdb_notify(struct net_device *dev,
-> -		   struct net_bridge_mdb_entry *mp,
-> -		   struct net_bridge_port_group *pg,
-> -		   int type)
-> +static void __br_mdb_notify(struct net_device *dev,
-> +			    struct net_bridge_mdb_entry *mp,
-> +			    struct net_bridge_port_group *pg,
-> +			    int type, bool notify_switchdev)
->  {
->  	struct net *net = dev_net(dev);
->  	struct sk_buff *skb;
->  	int err = -ENOBUFS;
->  
-> -	br_switchdev_mdb_notify(dev, mp, pg, type);
-> +	if (notify_switchdev)
-> +		br_switchdev_mdb_notify(dev, mp, pg, type);
->  
->  	skb = nlmsg_new(rtnl_mdb_nlmsg_size(pg), GFP_ATOMIC);
->  	if (!skb)
-> @@ -546,6 +547,21 @@ void br_mdb_notify(struct net_device *dev,
->  	rtnl_set_sk_err(net, RTNLGRP_MDB, err);
->  }
->  
-> +void br_mdb_notify(struct net_device *dev,
-> +		   struct net_bridge_mdb_entry *mp,
-> +		   struct net_bridge_port_group *pg,
-> +		   int type)
-> +{
-> +	__br_mdb_notify(dev, mp, pg, type, true);
-> +}
-> +
-> +void br_mdb_flag_change_notify(struct net_device *dev,
-> +			       struct net_bridge_mdb_entry *mp,
-> +			       struct net_bridge_port_group *pg)
-> +{
-> +	__br_mdb_notify(dev, mp, pg, RTM_NEWMDB, false);
-> +}
-> +
->  static int nlmsg_populate_rtr_fill(struct sk_buff *skb,
->  				   struct net_device *dev,
->  				   int ifindex, u16 vid, u32 pid,
-> diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-> index 02188b7ff8e6..fc43ccc06ccb 100644
-> --- a/net/bridge/br_private.h
-> +++ b/net/bridge/br_private.h
-> @@ -1005,6 +1005,8 @@ int br_mdb_hash_init(struct net_bridge *br);
->  void br_mdb_hash_fini(struct net_bridge *br);
->  void br_mdb_notify(struct net_device *dev, struct net_bridge_mdb_entry *mp,
->  		   struct net_bridge_port_group *pg, int type);
-> +void br_mdb_flag_change_notify(struct net_device *dev, struct net_bridge_mdb_entry *mp,
-> +			       struct net_bridge_port_group *pg);
->  void br_rtr_notify(struct net_device *dev, struct net_bridge_mcast_port *pmctx,
->  		   int type);
->  void br_multicast_del_pg(struct net_bridge_mdb_entry *mp,
-> @@ -1354,6 +1356,13 @@ br_multicast_set_pg_offload_flags(struct net_bridge_port_group *p,
->  	p->flags |= (offloaded ? MDB_PG_FLAGS_OFFLOAD :
->  		MDB_PG_FLAGS_OFFLOAD_FAILED);
->  }
-> +
-> +static inline bool
-> +br_mdb_should_notify(const struct net_bridge *br, u8 changed_flags)
-> +{
-> +	return br_opt_get(br, BROPT_MDB_OFFLOAD_FAIL_NOTIFICATION) &&
-> +		(changed_flags & MDB_PG_FLAGS_OFFLOAD_FAILED);
-> +}
->  #else
->  static inline int br_multicast_rcv(struct net_bridge_mcast **brmctx,
->  				   struct net_bridge_mcast_port **pmctx,
-> diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
-> index 40f0b16e4df8..9b5005d0742a 100644
-> --- a/net/bridge/br_switchdev.c
-> +++ b/net/bridge/br_switchdev.c
-> @@ -504,6 +504,7 @@ static void br_switchdev_mdb_complete(struct net_device *dev, int err, void *pri
->  	struct net_bridge_mdb_entry *mp;
->  	struct net_bridge_port *port = data->port;
->  	struct net_bridge *br = port->br;
-> +	u8 old_flags;
->  
->  	spin_lock_bh(&br->multicast_lock);
->  	mp = br_mdb_ip_get(br, &data->ip);
-> @@ -514,7 +515,10 @@ static void br_switchdev_mdb_complete(struct net_device *dev, int err, void *pri
->  		if (p->key.port != port)
->  			continue;
->  
-> +		old_flags = p->flags;
->  		br_multicast_set_pg_offload_flags(p, !err);
-> +		if (br_mdb_should_notify(br, old_flags ^ p->flags))
-> +			br_mdb_flag_change_notify(br->dev, mp, p);
->  	}
->  out:
->  	spin_unlock_bh(&br->multicast_lock);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 6d7ba4d67a19..a77c72643528 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -5596,22 +5596,27 @@ static int iavf_suspend(struct device *dev_d)
+ {
+ 	struct net_device *netdev = dev_get_drvdata(dev_d);
+ 	struct iavf_adapter *adapter = netdev_priv(netdev);
++	bool running;
+ 
+ 	netif_device_detach(netdev);
+ 
++	running = netif_running(netdev);
++	if (running)
++		rtnl_lock();
++
+ 	netdev_lock(netdev);
+ 	mutex_lock(&adapter->crit_lock);
+ 
+-	if (netif_running(netdev)) {
+-		rtnl_lock();
++	if (running)
+ 		iavf_down(adapter);
+-		rtnl_unlock();
+-	}
++
+ 	iavf_free_misc_irq(adapter);
+ 	iavf_reset_interrupt_capability(adapter);
+ 
+ 	mutex_unlock(&adapter->crit_lock);
+ 	netdev_unlock(netdev);
++	if (running)
++		rtnl_unlock();
+ 
+ 	return 0;
+ }
+-- 
+2.39.3
 
