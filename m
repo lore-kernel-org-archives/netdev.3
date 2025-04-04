@@ -1,154 +1,286 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2053.outbound.protection.outlook.com [40.107.243.53])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CD61624C9
-	for <netdev@vger.kernel.org>; Fri,  4 Apr 2025 10:12:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743761563; cv=fail; b=r8XpQ8L8bNgUrj+ENBGPDxXmnEstmLGSKXEgAr2n32X7EqjdpW4nn+4FYL0R2JuTwD4C20uNw1l7YOS2kbtBIEYyk4Yr/simWyvJ7K3OiO4QDUfrcsWs0uGWmzoXizTPZu/mw1/XPTBUmXawJEr/roVyYfV/D+mA/HKA9cG3Clc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743761563; c=relaxed/simple;
-	bh=F8TvsJx9TiFwmDMKaPJ5Ok/tqa+BCGhNa1Ouuawpp7Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 Content-Type:MIME-Version; b=S5tYFqJv4umxOpWY5DOImqAP2XLUoB3GClFQkmZBL4lVGZWdAlgKpNWz+IYq0rBwo8EtU9h1idr5TY9HBjuNqn6Cfl7t6uvAbBaXa76cMN1O/5Q1oBUaQBo6WO7rAhQe1hemUtBMzvzVdcRhtKt3bdpJSsT6wRGysCTryXVVcig=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ktG/eGSw; arc=fail smtp.client-ip=40.107.243.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FF819D8B7
+	for <netdev@vger.kernel.org>; Fri,  4 Apr 2025 10:18:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743761933; cv=none; b=Jqqsn6O9eOdDTQeGAo0BM6YYuhH0v4fS+T/XYAAKghANjCgWL+lc7i+0PvckA4fr7fjiL+Frpi08n/p3ohvnDHF1xbWEVQ5vDSkIHL1RAlhXZ9OA+x3tyxquuLjvdO57j+RtX3gxB+cFUuBWT8adQdAM3ZGphrEAZDAXGVBt3/o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743761933; c=relaxed/simple;
+	bh=jspAozAj/vLMyyrCfFfRZENjLAVy9g9t8428u5MiFyY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=O7FTLU+TDflfvJ4qMQgubngcL/UTRXNEHmBlMZquC5gHqfiGqgxKsKCyoW751AEXzDFGxwuPI/owyvYiv7l6gBlu8hmn10KMxnXJKXNrEziFyRbuMUhC4ygJTeBttKUptY6gCdSCUy6VwxGygIj3D0cKxL/aDyUDoBYPlyWWWio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eAhmHIgw; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ktG/eGSw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SdYU6Pg6o5ueEGWdtrl/k3dg6P6Iw4hBezLe34SbsllCJJbnwJPnA4/ysnwGtcPqsQ8hU/nw9sPx8361607oQiA5+hMjbA3+KhfMRH3iZUGP0as8X/ANqKcmaNza9JIaFxitsuAebAgxiNllskRNIhuw5N8jFjYRyGIdjvybikVutl44E/CGVvFVBrTJ8/sluYKI7mESB12R/C4/FjPuTcYwDJP+OYLLIZBhZn2YHL1k+gpc9arwWNJLp1ZWRe0pDf7mCk0JDsApKtqcsss3cnA515x11TXrG332P9SurE5UGpGLubCSYzFPfTcaK9D+RtzaOxJLLpVBRq+3sFLoGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F8TvsJx9TiFwmDMKaPJ5Ok/tqa+BCGhNa1Ouuawpp7Q=;
- b=L4l/tf8tlohGGdUBGZxUnVImGCa1+EXNJj+cEa+oP5ocQTQ+Hy4xrzmdi1GlQD7qBcRNK3FGD3PAp96Hx4kcifgOlAYb1+dtjhMeS1eRa7BdaWRI7XpoiUrfiyZXhDWRhGZ0wCeutIhwFXYYuSsnB4LaEPTRjZfwyo/DoeJUbxfvb/Oug0XxNsmnLfaA+ZN5mNL4NHBIaZUCtKaXX1krwdfNO5ZjN/YfbMSNS9JyeEJwz0Hioi2e1g5SrmPwLcaGbl1nMvE5uGCkRGlOKQsgZyjwVWZA/cgcgx4t8ESSwJfRL2I5bDd9VYSpMOTfynSNUg4uclXSAeqgpDEq5bohjg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F8TvsJx9TiFwmDMKaPJ5Ok/tqa+BCGhNa1Ouuawpp7Q=;
- b=ktG/eGSwJmDw+6l+/oVZqxe7vU5YjIO0pRMq4BcdKOehuiFVs6eFP1kJlUOW3dIKxeFwyWo6fohXOZRLvaGhSAOkEfxBsEXcCLDHywJexdKfz3g56olbpTv4GCKXnkhqtO886/hdwcsRFY60i9NTWJvuEHAPNpJ0PL0kyJd9JOFLGQ4a0wCZWIGtrTOqq4gs5EhEqeGSpTo6nv8B7xPQbyFz3UA4atglBwhm4cg1yQbkNsnCSvLTO3M8h/Zs9oRcJ2KVhsFXyJO7K9wmYq97ASG+Y98gUqY79W2J41UwaucHtILUmtlGAvzA9k3P/NZiKjueHIISL8dO4dL6my4F/w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SJ2PR12MB8943.namprd12.prod.outlook.com (2603:10b6:a03:547::17)
- by IA1PR12MB6601.namprd12.prod.outlook.com (2603:10b6:208:3a3::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Fri, 4 Apr
- 2025 10:12:39 +0000
-Received: from SJ2PR12MB8943.namprd12.prod.outlook.com
- ([fe80::7577:f32f:798c:87cc]) by SJ2PR12MB8943.namprd12.prod.outlook.com
- ([fe80::7577:f32f:798c:87cc%5]) with mapi id 15.20.8606.027; Fri, 4 Apr 2025
- 10:12:38 +0000
-From: Aurelien Aptel <aaptel@nvidia.com>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Simon Horman <horms@kernel.org>, kuba@kernel.org,
- linux-nvme@lists.infradead.org, netdev@vger.kernel.org, sagi@grimberg.me,
- hch@lst.de, kbusch@kernel.org, axboe@fb.com, chaitanyak@nvidia.com,
- davem@davemloft.net, aurelien.aptel@gmail.com, smalin@nvidia.com,
- malin1024@gmail.com, ogerlitz@nvidia.com, yorayz@nvidia.com,
- borisp@nvidia.com, galshalom@nvidia.com, mgurtovoy@nvidia.com,
- tariqt@nvidia.com
-Subject: Re: [PATCH v27 15/20] net/mlx5e: NVMEoTCP, use KLM UMRs for buffer
- registration
-In-Reply-To: <20250403044320.GA22803@lst.de>
-References: <20250303095304.1534-1-aaptel@nvidia.com>
- <20250303095304.1534-16-aaptel@nvidia.com>
- <20250304174510.GI3666230@kernel.org> <253jz8cyqst.fsf@nvidia.com>
- <20250403044320.GA22803@lst.de>
-Date: Fri, 04 Apr 2025 13:12:35 +0300
-Message-ID: <253h634z14c.fsf@nvidia.com>
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0387.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f7::12) To SJ2PR12MB8943.namprd12.prod.outlook.com
- (2603:10b6:a03:547::17)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eAhmHIgw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1743761930;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B4+5hsM5ZBTs5xBrEabWDCLK+Od0ba/LsqZmsY1szhM=;
+	b=eAhmHIgwK2+1/nkZ9HX++GfK3MhQaDNlDYW7Do6x++aiuc/4rSLrZziRW1da6/PiISePxo
+	ZBbLXg3xJEqZAXB9TT0doVwt/tHZiqqfMaut2vrd9T+7BBNpCDHr0RLxc65NcbqXRjKKKD
+	2G2PB32ddfuN7C15KuAwbaxLrJMi5V4=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-659-s2MuB5BgMe23hQd3kxCs5A-1; Fri, 04 Apr 2025 06:18:49 -0400
+X-MC-Unique: s2MuB5BgMe23hQd3kxCs5A-1
+X-Mimecast-MFC-AGG-ID: s2MuB5BgMe23hQd3kxCs5A_1743761928
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-30bf554ea7bso9616731fa.1
+        for <netdev@vger.kernel.org>; Fri, 04 Apr 2025 03:18:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743761927; x=1744366727;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=B4+5hsM5ZBTs5xBrEabWDCLK+Od0ba/LsqZmsY1szhM=;
+        b=lIYM03g//OOw4tCA3QqUJs/m3vGcd5oHOInUG4+2Z960sCpjrlPBkJD05jIBispWxT
+         Q1Qgm4hilR8t2vftnwDIfcXkHblH3gYMsKXkb+kOceorbYRkowpdn4sYXCat0pBh/j4P
+         zDhtulmdqtDpLFh+GJ04y+b2BA61Qih0CnuN8+bZo4T6XQBdtG4zyE+sEm9wRSXLy7pr
+         FiAwbp+UhqMMM2ilc97G5DI2WvqwoQnL1Pkn5c+w1yVJrSXXoN6m7O36HP8z1THxerSy
+         pXi6GknTMKyE+Fsu1lMsCFTlNfh0QyBXTFwZu7/YBCYMpf7c5UubOJCFH9MUZgVgRLRk
+         UlQg==
+X-Gm-Message-State: AOJu0Yzn6tQuLqMrVTq+5G75tlLlhjJfU/L1Mb7qHXCFp58jYtP1ASeV
+	zVOWR+MZlRAnlxetRlXDqGgDvPFLrR9rHsjnytmcz1Na/yUiOfEB77Wf6oxG5qadapzjd1bx8m1
+	nJAtzaP5DudqD/ZsbGHFmSltF88SFWTZB9Wy9YuNgTCCtCJjxAlHmUUOjjl6LBQ==
+X-Gm-Gg: ASbGnctMm4PYfV7QKgX0CKxdRyYS08KKwqlXCWWJ1qIMtKgNLonJdHJqWC1KAR2u0fh
+	26SiW9DbZAx/6eeceHPexxcv/WKndwEa6r/LE8t2/LrBq6Fi3ZzDRxG6kSiMIFWtNYhK06HJXCE
+	xRNIH5XQw6HQM46jf8zgwdGLveYM5E01zdbJAybkBys1tFCNnCkrrTTgEEoaPRbCJQiu4yunTYm
+	jTczLQmriPuL2ZtO6athtkM7kvThk9u9Tn4S1u7poANqF/A0dIdxOflrQUMLJiTWbbvFEqNdzbr
+	5cZt1/sATVZJ4c3E+9S5byLBqGVw9yawiYS39Klz
+X-Received: by 2002:a2e:bd02:0:b0:30b:f0da:3ae7 with SMTP id 38308e7fff4ca-30f0a70e09dmr8549031fa.14.1743761927077;
+        Fri, 04 Apr 2025 03:18:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEi8FvjFb2phTAUuS/o5yj005VkalTxf39MNnqr7MnG0ADfb0rXyNWNd9MypI2JLw6h1MTyaw==
+X-Received: by 2002:a2e:bd02:0:b0:30b:f0da:3ae7 with SMTP id 38308e7fff4ca-30f0a70e09dmr8548781fa.14.1743761926662;
+        Fri, 04 Apr 2025 03:18:46 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30f0314b908sm5149931fa.55.2025.04.04.03.18.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Apr 2025 03:18:45 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 902D618FD727; Fri, 04 Apr 2025 12:18:44 +0200 (CEST)
+From: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Date: Fri, 04 Apr 2025 12:18:35 +0200
+Subject: [PATCH net-next v7 1/2] page_pool: Move pp_magic check into helper
+ functions
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8943:EE_|IA1PR12MB6601:EE_
-X-MS-Office365-Filtering-Correlation-Id: c53afb40-ea03-437c-f934-08dd73613a83
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+8KKebxInSjNG+DCX9ysReZjcutV1Lohd7he9f4iV9rNyKHNGewUnwCWQeC3?=
- =?us-ascii?Q?jxE9jDmzaWA2P0x5VNFDBrjRr6ind9gMxS/Ar5IFVXKK66elj4lHgQcQA/Cx?=
- =?us-ascii?Q?7zntboPZztr03NVXN8Z0mUcdGKXhU6WClXCj1EdZsGi3X0MUbtH7qZONhXsu?=
- =?us-ascii?Q?dkR90gg4Yy18u6B+IAKK9ZjzidgDVvYcCzhqW12dwl1Qp68/iRk4rEOTaEtW?=
- =?us-ascii?Q?s4ECnfpljz5P8NE+pACQqCREItzlnX9BO15z1juTIJfceHSsD9u8tz+sJUjL?=
- =?us-ascii?Q?s8+VyKPtXBppO5JRlH+v3OISayoUGT5I8aL+dTTDcFfmbaHbKXYoONjo+1hR?=
- =?us-ascii?Q?DtL4O78bEoxt/DR+vVBLGo/D4uGml3N02LnKJe2WFXrXkagzHZx0crOrSf4K?=
- =?us-ascii?Q?QXNjY/pJhbunXmeiEN6lwfu9ENcKzdrUEsjVwrKcbiLZ85iOTfuPoSBTo1wz?=
- =?us-ascii?Q?xuE0xOGtLYFnicgzD+bA9BvX6hitGjECdzrKj5TTJtGXhOVzGbYDH006hQGj?=
- =?us-ascii?Q?RTaw2+6Dee0G9rnvU2Wh2gHLokwQItaoq/Z/JJdHTJ+tcKqhKaV/P5NZ6+wu?=
- =?us-ascii?Q?O90WURkJLs3bJI3oOcBdAQmplKfiNlsrOBYtLqQWH/ygsxvWaK86IZJkPduf?=
- =?us-ascii?Q?pNE46ku3BH1kMfZkSsdgHGTBAdGODhKi94K26rVEfF1dMVsDevwl6fj4XmYl?=
- =?us-ascii?Q?tI5xe/9FTiVT95gDZtnyWp25/Oglkku4l7pLQhaXqHIl1L2kHIOHP+69NGQO?=
- =?us-ascii?Q?EbAJKDYNBUU5LDIRsegc06gVAzfB2GhHQriq9u2h1AsFigW1P0H/CZmYj8tf?=
- =?us-ascii?Q?DuFeV4DUXtvOZt9hhsP1FGkkCTws7M4F5W7gK8ZeQGp0SO46n8pKod2/+4sD?=
- =?us-ascii?Q?50lGoQNsOY9FmiIMrhOVdckWhifGZ8lvMJWPf8TkLz8u+gQwk9uWjRzrJnjq?=
- =?us-ascii?Q?15G1dJDFrPYnYRZH2GSPlT0PpPeEuTxV/hZscfGttutgKyu5VPPH6SLvoLNK?=
- =?us-ascii?Q?NPUGOWI2BYL4h3vBVCJj2RL7GieuhUMwDmnIUkr/sQsoFwUjgkJNz7NtBhoR?=
- =?us-ascii?Q?yFoO0A5XHKhhlfXYmimG5t/3WSVlR2TPRrR+k/yau5VxguNY6TzBD6mzOgqZ?=
- =?us-ascii?Q?AWIVG5dGIoO1aV1t9tEOiesSTMHEU6+Y8NhU00qajZwGeP9x6poRWlk/Je3R?=
- =?us-ascii?Q?w4xOQZZcCg2crv0xXouVHxeG3sg7CnOYJyYPQIVCgbYvXkTtoacZjwUTcjqu?=
- =?us-ascii?Q?L6dF7OvpOEjNXcYx75Ls7/AktZpnw/bfzIPbR+X4g+uNYZfXMbQWQn2A0PV9?=
- =?us-ascii?Q?d4WY6SmImFivMonO8XIsNxa+6R3dlcH2TI6XAJX0Skf9htGawtyZE7hOAz4K?=
- =?us-ascii?Q?bNUqCoAPpNmCQfFxaQ33XhjSgur5SNWGbdUPMgUYWLqWjS3KagTJyP0k0uhO?=
- =?us-ascii?Q?LHUlqtWzQGE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8943.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zb3c+v9l0r2xOcg3GVa1diLEXlbVHyFUTcbfaiNES86Tl40cxIOF/OxZTYdE?=
- =?us-ascii?Q?7xHRe1mJBkHXsXx6RoY1vSBB8bs5TPaWw51PVvFiMD3IncFNot6mKftsdVxT?=
- =?us-ascii?Q?i1lRqavMkWksO+ZX7EAGHy+3tLbe6Qo8peJDyB/24r5J/vFRFHsogCUyFgXq?=
- =?us-ascii?Q?zx6vfv7G+77nacLvrFZ++n/EuJaYr3yRxq0hoO4FFj4M7PkWc+FuEyHHWowP?=
- =?us-ascii?Q?2Wcafthxj+CzmtzB7lemxQumpvr33aQ2zJ/HxJsZaJaH8EpOVL6oXV88oUve?=
- =?us-ascii?Q?S5+jqSFCglRyTiP+eGkSxaqRClHpqpX2kq7xVKh2j3XrzHqoag3yTj0NE+JY?=
- =?us-ascii?Q?5kRWLZHnLrIBZSfMIcPVV+yOl5105tgz+KIsEBeNRYpDZeAcf0RU0UrBS0MR?=
- =?us-ascii?Q?o21rdOOyZjNhnnjzxoOESdPVK/ISyuCKEsp/6/fKn1mZk9NlUUfNxKaTjdpy?=
- =?us-ascii?Q?YBqe0xQ/zLK4bZet3rIShfrCkmLC1O6Ozv3ZruxveAttSyxH1OwAerG2q+w/?=
- =?us-ascii?Q?NkMbXveeUYRGxl3RarsID1Q+YKrVRmVmG82On2ms0BI7FNao7WEwnV5h9yNl?=
- =?us-ascii?Q?JNEw/Sty8aJYlW9E9xfXh4Xtkh72cta5+0h12kZlV4YFAmcujXBh34wd22eR?=
- =?us-ascii?Q?jockr3Yl5uNRanO1OqGsAmevizAVbiAlJwoX/YNyf+Od6HEEEHzpc30SDIkf?=
- =?us-ascii?Q?0+j5yXkrv1WAzYXDcv/7/bjRG3fa6zy2CM8chTwXcx+2XD1RYWzVxO9hjCSh?=
- =?us-ascii?Q?dLPr0ZjIspVfBgJz3MLJwHBm6B4K3mGmxNB5x6jMeoPtTS3RM+OLfQ48J55q?=
- =?us-ascii?Q?sKnPQ3LGDRefochLkY1YkAazv67iV0DhKoEeD6P1UZ6rzcx1uqfkms3wN+kB?=
- =?us-ascii?Q?79eCbmBAeVIjkJ89a1sNsiH3O+tm7FYVqp76CvWnKTRnNkcnsLuaECquYbY1?=
- =?us-ascii?Q?kYf/G6k+WlemtB6KGSuwpCYJEqTDzz3Mil7hTasIBrjpRguEgGiCRg9zxYzK?=
- =?us-ascii?Q?pI4z3puZvYMRP6/V6kJOvfVbCXtlX3Da7DU4hBXlihgE4fpg5feRp6PIVho7?=
- =?us-ascii?Q?/NDpE6v6IOvKS3qgz/bwPRBwz4u3NSjYAdZqHR5eALQN2ujUX9tFypwBbmxP?=
- =?us-ascii?Q?EHvl6IxU9Yv1h6dbehq6/nS9P0ykmtfEhrN1/r+uklODBqVRHWTaShGjX8Vy?=
- =?us-ascii?Q?215xBq0fLMTiTIypBZQ87HUHzDjhhpL8EtKWLDwkYlrhrqUZRmGD+hUPbY0O?=
- =?us-ascii?Q?TnRnlFxj4NS0RyCLDjnzdfovTARitf4KB1IT4a+z47VgUm7sY1+t6XEOZ71C?=
- =?us-ascii?Q?+3iLfe0TYqdhTwUyDWR6Sxb5xRN5qt0J97kP/1PvGxV9tfsSoEqqPbHt54XW?=
- =?us-ascii?Q?pKMCWWUUd4oUqVU4Au97s34bz8fmhMXJdgJTUhGLtszPj4YVjpYhzkz31oKr?=
- =?us-ascii?Q?GTaz59JJdJT70tjH1DWllr9IvXoGwLu0jvsgH9mrb5e1ydM0fH1AhirX2d+8?=
- =?us-ascii?Q?PI2S1esY4QXF/HWNUQelLSKifkt9gK/Ba/MX4hVeJLa/fca9ziPZfuFFLG1P?=
- =?us-ascii?Q?jLWX7TL7XKCSX2aWLmwcvYApwGfYME2eRzNh9d+I?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c53afb40-ea03-437c-f934-08dd73613a83
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8943.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2025 10:12:38.8842
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /FD33ujnXb1k1rnI70yGBs4KUzUQJWdGeEclAbnoGeAcjwM4Jq+wYiCaJi8SFZLvFzkOMgIxE3WYt1QbtDds7A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6601
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250404-page-pool-track-dma-v7-1-ad34f069bc18@redhat.com>
+References: <20250404-page-pool-track-dma-v7-0-ad34f069bc18@redhat.com>
+In-Reply-To: <20250404-page-pool-track-dma-v7-0-ad34f069bc18@redhat.com>
+To: "David S. Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+ Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+ Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+ Simon Horman <horms@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ Mina Almasry <almasrymina@google.com>, 
+ Yonglong Liu <liuyonglong@huawei.com>, 
+ Yunsheng Lin <linyunsheng@huawei.com>, 
+ Pavel Begunkov <asml.silence@gmail.com>, 
+ Matthew Wilcox <willy@infradead.org>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, linux-rdma@vger.kernel.org, 
+ linux-mm@kvack.org, 
+ =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+X-Mailer: b4 0.14.2
 
-> Btw, just as a reminder nvme code has to go through the nvme tree, and
-> there is absolutely no consesnsus on this feature yet.
+Since we are about to stash some more information into the pp_magic
+field, let's move the magic signature checks into a pair of helper
+functions so it can be changed in one place.
 
-The series was acked by Sagi, and the discussion with Jakub is about the
-CI (which was just resolved from our side), not about the feature.
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Tested-by: Yonglong Liu <liuyonglong@huawei.com>
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c |  4 ++--
+ include/net/page_pool/types.h                    | 18 ++++++++++++++++++
+ mm/page_alloc.c                                  |  9 +++------
+ net/core/netmem_priv.h                           |  5 +++++
+ net/core/skbuff.c                                | 16 ++--------------
+ net/core/xdp.c                                   |  4 ++--
+ 6 files changed, 32 insertions(+), 24 deletions(-)
 
-Can you please help us to understand the concerns?
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+index f803e1c93590068d3a7829b0683be4af019266d1..5ce1b463b7a8dd7969e391618658d66f6e836cc1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+@@ -707,8 +707,8 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
+ 				xdpi = mlx5e_xdpi_fifo_pop(xdpi_fifo);
+ 				page = xdpi.page.page;
+ 
+-				/* No need to check ((page->pp_magic & ~0x3UL) == PP_SIGNATURE)
+-				 * as we know this is a page_pool page.
++				/* No need to check page_pool_page_is_pp() as we
++				 * know this is a page_pool page.
+ 				 */
+ 				page_pool_recycle_direct(page->pp, page);
+ 			} while (++n < num);
+diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
+index 36eb57d73abc6cfc601e700ca08be20fb8281055..df0d3c1608929605224feb26173135ff37951ef8 100644
+--- a/include/net/page_pool/types.h
++++ b/include/net/page_pool/types.h
+@@ -54,6 +54,14 @@ struct pp_alloc_cache {
+ 	netmem_ref cache[PP_ALLOC_CACHE_SIZE];
+ };
+ 
++/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
++ * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
++ * the head page of compound page and bit 1 for pfmemalloc page.
++ * page_is_pfmemalloc() is checked in __page_pool_put_page() to avoid recycling
++ * the pfmemalloc page.
++ */
++#define PP_MAGIC_MASK ~0x3UL
++
+ /**
+  * struct page_pool_params - page pool parameters
+  * @fast:	params accessed frequently on hotpath
+@@ -264,6 +272,11 @@ void page_pool_destroy(struct page_pool *pool);
+ void page_pool_use_xdp_mem(struct page_pool *pool, void (*disconnect)(void *),
+ 			   const struct xdp_mem_info *mem);
+ void page_pool_put_netmem_bulk(netmem_ref *data, u32 count);
++
++static inline bool page_pool_page_is_pp(struct page *page)
++{
++	return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
++}
+ #else
+ static inline void page_pool_destroy(struct page_pool *pool)
+ {
+@@ -278,6 +291,11 @@ static inline void page_pool_use_xdp_mem(struct page_pool *pool,
+ static inline void page_pool_put_netmem_bulk(netmem_ref *data, u32 count)
+ {
+ }
++
++static inline bool page_pool_page_is_pp(struct page *page)
++{
++	return false;
++}
+ #endif
+ 
+ void page_pool_put_unrefed_netmem(struct page_pool *pool, netmem_ref netmem,
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index f51aa6051a99867d2d7d8c70aa7c30e523629951..347a3cc2c188f4a9ced85e0d198947be7c503526 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -55,6 +55,7 @@
+ #include <linux/delayacct.h>
+ #include <linux/cacheinfo.h>
+ #include <linux/pgalloc_tag.h>
++#include <net/page_pool/types.h>
+ #include <asm/div64.h>
+ #include "internal.h"
+ #include "shuffle.h"
+@@ -897,9 +898,7 @@ static inline bool page_expected_state(struct page *page,
+ #ifdef CONFIG_MEMCG
+ 			page->memcg_data |
+ #endif
+-#ifdef CONFIG_PAGE_POOL
+-			((page->pp_magic & ~0x3UL) == PP_SIGNATURE) |
+-#endif
++			page_pool_page_is_pp(page) |
+ 			(page->flags & check_flags)))
+ 		return false;
+ 
+@@ -926,10 +925,8 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
+ 	if (unlikely(page->memcg_data))
+ 		bad_reason = "page still charged to cgroup";
+ #endif
+-#ifdef CONFIG_PAGE_POOL
+-	if (unlikely((page->pp_magic & ~0x3UL) == PP_SIGNATURE))
++	if (unlikely(page_pool_page_is_pp(page)))
+ 		bad_reason = "page_pool leak";
+-#endif
+ 	return bad_reason;
+ }
+ 
+diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
+index 7eadb8393e002fd1cc2cef8a313d2ea7df76f301..f33162fd281c23e109273ba09950c5d0a2829bc9 100644
+--- a/net/core/netmem_priv.h
++++ b/net/core/netmem_priv.h
+@@ -18,6 +18,11 @@ static inline void netmem_clear_pp_magic(netmem_ref netmem)
+ 	__netmem_clear_lsb(netmem)->pp_magic = 0;
+ }
+ 
++static inline bool netmem_is_pp(netmem_ref netmem)
++{
++	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
++}
++
+ static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
+ {
+ 	__netmem_clear_lsb(netmem)->pp = pool;
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 6cbf77bc61fce74c934628fd74b3a2cb7809e464..74a2d886a35b518d55b6d3cafcb8442212f9beee 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -893,11 +893,6 @@ static void skb_clone_fraglist(struct sk_buff *skb)
+ 		skb_get(list);
+ }
+ 
+-static bool is_pp_netmem(netmem_ref netmem)
+-{
+-	return (netmem_get_pp_magic(netmem) & ~0x3UL) == PP_SIGNATURE;
+-}
+-
+ int skb_pp_cow_data(struct page_pool *pool, struct sk_buff **pskb,
+ 		    unsigned int headroom)
+ {
+@@ -995,14 +990,7 @@ bool napi_pp_put_page(netmem_ref netmem)
+ {
+ 	netmem = netmem_compound_head(netmem);
+ 
+-	/* page->pp_magic is OR'ed with PP_SIGNATURE after the allocation
+-	 * in order to preserve any existing bits, such as bit 0 for the
+-	 * head page of compound page and bit 1 for pfmemalloc page, so
+-	 * mask those bits for freeing side when doing below checking,
+-	 * and page_is_pfmemalloc() is checked in __page_pool_put_page()
+-	 * to avoid recycling the pfmemalloc page.
+-	 */
+-	if (unlikely(!is_pp_netmem(netmem)))
++	if (unlikely(!netmem_is_pp(netmem)))
+ 		return false;
+ 
+ 	page_pool_put_full_netmem(netmem_get_pp(netmem), netmem, false);
+@@ -1042,7 +1030,7 @@ static int skb_pp_frag_ref(struct sk_buff *skb)
+ 
+ 	for (i = 0; i < shinfo->nr_frags; i++) {
+ 		head_netmem = netmem_compound_head(shinfo->frags[i].netmem);
+-		if (likely(is_pp_netmem(head_netmem)))
++		if (likely(netmem_is_pp(head_netmem)))
+ 			page_pool_ref_netmem(head_netmem);
+ 		else
+ 			page_ref_inc(netmem_to_page(head_netmem));
+diff --git a/net/core/xdp.c b/net/core/xdp.c
+index f86eedad586a77eb63a96a85aa6d068d3e94f077..0ba73943c6eed873b3d1c681b3b9a802b590f2d9 100644
+--- a/net/core/xdp.c
++++ b/net/core/xdp.c
+@@ -437,8 +437,8 @@ void __xdp_return(netmem_ref netmem, enum xdp_mem_type mem_type,
+ 		netmem = netmem_compound_head(netmem);
+ 		if (napi_direct && xdp_return_frame_no_direct())
+ 			napi_direct = false;
+-		/* No need to check ((page->pp_magic & ~0x3UL) == PP_SIGNATURE)
+-		 * as mem->type knows this a page_pool page
++		/* No need to check netmem_is_pp() as mem->type knows this a
++		 * page_pool page
+ 		 */
+ 		page_pool_put_full_netmem(netmem_get_pp(netmem), netmem,
+ 					  napi_direct);
+
+-- 
+2.48.1
+
