@@ -1,232 +1,251 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F8A15990C;
-	Fri,  4 Apr 2025 05:26:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.156.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743744421; cv=fail; b=jk+6Uh6r0/D5xw/T4mdzYgHjUAkHDr6wO0fK7o9Xu404wLAyjxqfMFflREA5nm7fvKG85oJ2aiQZBG4ojoPboGr1Lj693CsVEPV9/JopSaNKFxrX33KbiHzrLQOwglvV6kjFtfz58LrNYC+KdHVxnYvyLhN/yDaMVaDOnHY+gqM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743744421; c=relaxed/simple;
-	bh=g0x3kfJI+mNn+MRRd4LSl41QrSmzfmdN5xWbE1o/HC8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=q/un+K4jBpHRacPrhPYWSX/xR7CIgJn5xmWiN1NTsPr6KyAEGoCY5iGkp4lBpCGz085FjvVKkXYTVSs7UsfIbjsPLFh6NHdG8l6CeJtiPfCbWCXNc/kOTk+LHMgIXwfwsC5dQSYs/mIwum+4JhWYyHNzDL6sKQY4z+uyebnrFXI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b=W0pI6xZo; arc=fail smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36972E62C0
+	for <netdev@vger.kernel.org>; Fri,  4 Apr 2025 05:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743745095; cv=none; b=pQW1REsqAt4pnkJh2LlKsp3WTPURUMz+ks62DVI922TQ1IqD61AWKrvaeg/Nfam4//tUxKJxq5Swki+7lOt/q3rZYT+bwZJvw3AxYih2NUdjFuqfr+8BLYBVTL19hsg/XUGlmBYFD/l7IyHjAsIZul3SwH7K1C9VGggQ0cOjuLA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743745095; c=relaxed/simple;
+	bh=bUWd7xCg056Sy9z/tW+OrUOp3iWjHzxnGOqnESFpaQY=;
+	h=Message-ID:Subject:From:To:Date:References:Content-Type:
+	 MIME-Version; b=QBixVFhDEEVsb9CeRDHTtE0Bw7P7rBcMhakLk/Y0Pi8dMfJnPCTCKtLW19vMyzkg6xS+YRVVbJpCgg9eF4Pra6EBE+OFTwWu0wCfS92GiqvIU7nkb0AXoX5dUjzLYvjA/W4dsbE1KagpA7AIMPwuRCtbzAXL4dOFtL7IjNjbEVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hazent.com; spf=pass smtp.mailfrom=hazent.com; dkim=pass (2048-bit key) header.d=hazent-com.20230601.gappssmtp.com header.i=@hazent-com.20230601.gappssmtp.com header.b=PwUx4SRV; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hazent.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hazent.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b="W0pI6xZo"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5345FZT0030869;
-	Thu, 3 Apr 2025 22:22:19 -0700
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2046.outbound.protection.outlook.com [104.47.70.46])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 45t94b008m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Apr 2025 22:22:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aqZOstez8yfpCL4tHVnzssYMuHLGCTc23obLrI0/u+KRF39fHs21YfFtE8mbFAwywv9g956vBBo52nDFTxBtv6QpHmI5DpBS4fv8KRYcFWVe3qJDz1gGVQa0fu8CLVn1G0aE7PtlGEhQ/d4SPxmq2d9MaB9MdV8iUkTEyVCfC75TwaduoNXthVO3l+1pbcVm6s6ohkw6f/yIibcTp3ECIGqPlUTdOB6hswIvHXplI/OKK+bATYv90BY61j/X7X6HVEuju4r+9XP19dnZhWVioz81RZ9EZgSqY2/EOFrFmWpiGxJYpbjBLCh7xdqKyo+UDD+bFCwCw17jI6QjvKeuig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DLPgVA7hl8aZVxM/ul7Yd+FBBgmF8GcWUsaXRARiYzs=;
- b=mnT6/pxeI8K1F2JtrfiADCwaDPgnbp/CcTAWnHd0GKkhSe0r1EKJ419px0KZpRCGnfo/gRk02UWyTiDsXNy0pH784iqgNOLIXz3Zuh1Be4H8UeCkum4QA03rU5Ot9ORzf7ePmDf672NbOslIXDPn/7bR2KYMoxMEH1McyCsLaxUlzGFEDZUvqdmF/j2ZqvsiU50/+CpmzWqYPtZvP32S4EnGlNngxAae+Y+v7tDI148ifdws7sLUGx5RWPad5zJiyZLb9Ky7HVM4XKDHbRQJLmrcLAa/DZ2wT/YKc4701VN1hzB5XX80wKzxGGcDukaPWritT21Sah4xBets/IkiwA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
- dkim=pass header.d=marvell.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DLPgVA7hl8aZVxM/ul7Yd+FBBgmF8GcWUsaXRARiYzs=;
- b=W0pI6xZoKAKMc+L3TBbdXP6R6qnGVH4rqgNp0k59gkwo8zB0gwYW0sFhNRqbHnmONwjenuynfx7+Cj8z1Fr9ZlaNpkWjrV/7JvmIRpnzj98zXHHZO/uLHIFtkXvHiU5MnzGXvGPG911XwVPj57/ivclLElim5O6y9NZrzt8C1Hw=
-Received: from CO1PR18MB4666.namprd18.prod.outlook.com (2603:10b6:303:e5::24)
- by SN7PR18MB3901.namprd18.prod.outlook.com (2603:10b6:806:10f::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.50; Fri, 4 Apr
- 2025 05:22:16 +0000
-Received: from CO1PR18MB4666.namprd18.prod.outlook.com
- ([fe80::b3e1:2252:a09b:a64e]) by CO1PR18MB4666.namprd18.prod.outlook.com
- ([fe80::b3e1:2252:a09b:a64e%7]) with mapi id 15.20.8583.043; Fri, 4 Apr 2025
- 05:22:16 +0000
-From: Subbaraya Sundeep Bhatta <sbhatta@marvell.com>
-To: Wentao Liang <vulab@iscas.ac.cn>,
-        Sunil Kovvuri Goutham
-	<sgoutham@marvell.com>,
-        Geethasowjanya Akula <gakula@marvell.com>,
-        Hariprasad
- Kelam <hkelam@marvell.com>,
-        "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com"
-	<edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] octeontx2-pf:  Add error handling for
- cn10k_map_unmap_rq_policer().
-Thread-Topic: [PATCH] octeontx2-pf:  Add error handling for
- cn10k_map_unmap_rq_policer().
-Thread-Index: AQHbpSGH0QCd+ErTRUiwi0AjsSnhjw==
-Date: Fri, 4 Apr 2025 05:22:16 +0000
-Message-ID:
- <CO1PR18MB4666D076ED0162018D4256B2A1A92@CO1PR18MB4666.namprd18.prod.outlook.com>
-References: <20250403151303.2280-1-vulab@iscas.ac.cn>
-In-Reply-To: <20250403151303.2280-1-vulab@iscas.ac.cn>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CO1PR18MB4666:EE_|SN7PR18MB3901:EE_
-x-ms-office365-filtering-correlation-id: 995ca811-ae7c-4591-05f5-08dd7338a9df
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?3iBL+Wy0swqEG181Qq8IftXF3ag4NhtyGq16+3lCnlcb33ppzd4me8OMRgph?=
- =?us-ascii?Q?TFsccOBY9/RC2uYeIniCgy+m+wcbNUMPnldsSFzBaYAL7APE9BVL3LZt9ED1?=
- =?us-ascii?Q?fHPUe2Vu2g8AB55SzYz7ZUpjzoeR8uOYtI0o4AhjSnLfGShTvRjfnRr2iHtR?=
- =?us-ascii?Q?+UzAyKtVjV8SIxCeh5lcKE5cYyV8+rNS8i/IJd+6Z+4NQHUTlUsh6Wfcv7cm?=
- =?us-ascii?Q?gMl2cytIDNO9qwUw1+hEBBZYDUC+QOXfEI6I7ZeavEFCyYAUnGfZn8ZhfzdH?=
- =?us-ascii?Q?H4U0GB86FcAzFM7QbBM2n1vKMNrbJBLWCYAawgsZKp1M86mhlpakxL1JGWH2?=
- =?us-ascii?Q?vwWf/GsR9nzhCc4pxMQjj51kpHs3Tlt+3VO5ldAMmROgbQb6Pxhi5JOYHxYB?=
- =?us-ascii?Q?MBFKqFch4RF9fXvzXjvYUXsecdm8QFeLrnNZRT5Hfvc1EYS35DDzJTq6lXv0?=
- =?us-ascii?Q?1g9ZKpuyML2nAAcpKdkD38OXxiw1fefRZcKmng7Vf4qkLdUWGuLTi8pZvI42?=
- =?us-ascii?Q?Llro53kbLiNPYdlA9okB+lojp6gZp8V3uJie0DbhSWjeS6Knz81IqIIHgRTJ?=
- =?us-ascii?Q?qgxT3ccMt46D5AEEF/2cM/VMnSjSSHjMZ6N1e3iBRnICnohHQC51wci8QuN4?=
- =?us-ascii?Q?Qw6D7kvJnbaS3u2FZgNdPMSBpQcKnoQ1gHVUasHSHpPyJJWAIX/sMynP5uK5?=
- =?us-ascii?Q?cOCNbn9d2JAUDvOAfG6FDyiUUzns4E8F0zHraW1zzm31Lqg2WeqN8lxtguNR?=
- =?us-ascii?Q?QonH0dCIGluPQwNSXI7F+Jt36Vi3K+n8ds978avG9Tmf6glrJmXjvjd4mBgW?=
- =?us-ascii?Q?EMeFG1AWQ8fiEhomg0BTRGm/DqhWGox5S6ihiQfYQUzEvU/LbTTFwW/lolYn?=
- =?us-ascii?Q?moqZIKEzNsXcxSrWhz0l3Mzum/egg9lcEHFp7DOgbw2ksNr2ykBvNN83zcRz?=
- =?us-ascii?Q?VVc0c9GN7uwHtCGF7cQN5AzS1NXILUJiGO5MI9MYlhKTrd9BQVSM2YXVmnVa?=
- =?us-ascii?Q?8/9arwqDqEl4maO1eQUIreqhKqMmon1YIiudxYNulCZ/u0rl/7KnDXER8vZd?=
- =?us-ascii?Q?hviw73cpePTwlf76GnDrPJoHwt5HqncUL8a79eZjxBheURzalm2GnEGrzOae?=
- =?us-ascii?Q?uhl6YP9pS7MFw96b6gMEJKzTk5QgFV8xYtSYJYwgmmyC5R27qt6FP5clUUNR?=
- =?us-ascii?Q?2055/gVKge1Vn+XMzZuSWyrgCSyYfuCMDKSARLoIkBP0umBa9ruO15PFy06s?=
- =?us-ascii?Q?ZvDCYBdoEQPjPpb9KaelmlOhczVmwD2uZY7C0vcWaBrIpukq30U9E1kcfPpy?=
- =?us-ascii?Q?ALjZug7lM/TsJgIMaxEivLjvdi1UO28OcR/4Q5THfmY591PCdqXdUcCWSV6G?=
- =?us-ascii?Q?J85fwXXCN5UBe+C3F20GnlOkrvcUN84/zBJS3NB9K/4o6PPlyVpje2ROk/RB?=
- =?us-ascii?Q?9ERRbmI9P5ca5v4QhFv2WSLYUKzAdJn7?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR18MB4666.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?pYSjEqN3k3JpN23QyGrejNSRkbbee31vsLLa4s/LSZiN/03SGFQeeJb427sE?=
- =?us-ascii?Q?8cJrNfhMOgAe9OY5BkTjmo4wKQhgHsaq3D2dGpgVCtJi1DWbgKCu+8xHo4k/?=
- =?us-ascii?Q?AoHN4iWx8RCCxabuiZZtmtQh9ntZfBrh8fXSmMi/u2dpW3t/85lJoGer6LyU?=
- =?us-ascii?Q?+d8AXPTOQNDERIx88scANzDI5IdYisyGA6/0ymbNBB5g/tterdi0dgMqvmHt?=
- =?us-ascii?Q?2zmGEGPRjgFenbsrn7/tIYqi8Vr8QewOD8tr64shFjZiytEO1qOKZI4pNvrf?=
- =?us-ascii?Q?8grTcUtBom/JKXnD5qfMHQg9yVgJVTHoBXR6pHcdtsLqyHUqqxd4+0ON/fPM?=
- =?us-ascii?Q?hTSyEl2xJFsQoe8wPch9Y/zz3tWacwdnnAlPI2aiPLU0iIJS+mXj/PLui5By?=
- =?us-ascii?Q?7UG30emxh8SfzpZvecJ6UDmxBhzS/2vhxNPG2Miq3+QGb8OLPWOxZ6wZmuig?=
- =?us-ascii?Q?arxd3Y0uVihK4ocPl83VgDDLDDS0Q6IFoRW2q8gHBg6+B7h0eLQPon0oxedh?=
- =?us-ascii?Q?l/cJHqgLzItQI9Cq8Ir28Awit/bo2Sg/kkx4V+FF997qamGvvFCu8iv4K+fl?=
- =?us-ascii?Q?uyyvZI4CIhzn8siikbVet9VF5mf2LdIJF/KIzQihDWOXW9S2AySfCPVP834E?=
- =?us-ascii?Q?Zijxf9ZVz0ZPETrGGoJlDjNEd4r6Ajn3oJ43pA7UPvI06Z/PRGYlLToRVDBW?=
- =?us-ascii?Q?oB81LXWmZgWrDqvHLmu/tvo8HYuJYDTGgxbiun7AK7hnxmGhGhkrbV8P9QNc?=
- =?us-ascii?Q?x11y1dEeP4TfdbHg0D6j7SvUkH7tHp2E0LmaOg2jy0Dxy9/XSDF3Bm3/xe6q?=
- =?us-ascii?Q?PEyEYkr7NzwTKthaWH7qhiSPLtdlc62x96Oj3tJS2TbNaN770HzTesR1rlQH?=
- =?us-ascii?Q?APydtnZDZilFJfFlSDJbmLj666o7YisItIVlN57PUJc4H0xKdinb6IJWYbZy?=
- =?us-ascii?Q?L8RFfjKRrkm2V7mhfRhnhPm0js5O1eKHr4YOTH7uscfR4bER9vnQkmbcdiJK?=
- =?us-ascii?Q?JrYzYIn9mVVlt2bkd5DfdT2XPvzs/Gn990beeYsErAX6yOwxstkJ5m1cjjE0?=
- =?us-ascii?Q?WTK+yPMSfysSxgk6OmI5q+N9t8DMbzItZN41+ezakOzXDYUbAJ1vStgbMs5b?=
- =?us-ascii?Q?cclzpEZhPE5+Gt3TVB7L9k5KJVPP/XB2OPjfD1OJGQ+PfT4r0tM4Qe35K4fr?=
- =?us-ascii?Q?aRH89rIhsP6ilotbZxPSDlqx7GeABHluQ+fhnOSarqV9u11dPtKfTjf/twIt?=
- =?us-ascii?Q?qaWgPH0Rt4uH4LdQcZPbfhrgX+KqJh855ol8FjEgkLZh0lYoRCeo8EcOaf8Q?=
- =?us-ascii?Q?1syTGJTIGi6oqBNjIAY2lTAGKB6uhhVrumsUwd9InULl+RMNYfakiY+PFpEy?=
- =?us-ascii?Q?VMuu/EWhxoEvw3AaSkxrc7CSo85rfD0EDWSQ3IibezdxrqEPm1d3qrSGKZoe?=
- =?us-ascii?Q?kV2qk/79XU9o2phGeOp9GKAemZuAcM2B9JonCxFZsQbmpDEcOBoBqXqe8ksa?=
- =?us-ascii?Q?mTfYRlOajCMu3i9hpMp6dAXx+FhJBfqrDbLOA0v/ygAT5BXF4uOeSTWs0mYR?=
- =?us-ascii?Q?fn2DIHHD9IqLCUw9CpXwgSNfsli6cRupsRTqNgsT?=
-Content-Type: text/plain; charset="us-ascii"
+	dkim=pass (2048-bit key) header.d=hazent-com.20230601.gappssmtp.com header.i=@hazent-com.20230601.gappssmtp.com header.b="PwUx4SRV"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-39c266c1389so1084438f8f.1
+        for <netdev@vger.kernel.org>; Thu, 03 Apr 2025 22:38:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=hazent-com.20230601.gappssmtp.com; s=20230601; t=1743745091; x=1744349891; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references:date
+         :to:from:subject:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rxUJeQ/M4IrY8FL/vOcMQiOKK+o3pje6beF8kdDLlWU=;
+        b=PwUx4SRVzogPkdWAwB0ln+CorvaqFXEVqphk23SRaafhsZ591Y+InNkFwscT6uXoR2
+         /HuzQ1KZEaPdRcQgv9kE3j1KIk/hpfoo+27AVQmTBTnzG8xusrsasQU/cD2jKItisxhB
+         e9vxSUK7E1/5Gswi/ifKgg6J1gGEa1Ywdtvu2iM9w0LvLLdr+V51wcamA0GVVVUHN+aF
+         EQ6uNXLzLx61keNlAeEumfKOQ8qlyZTBQDJkkRPI/XzZ8ftm7fYdPjRlClNVAfLXXVyj
+         GMC7wYQBfN3YZzbrlEaqY9f0BD/dsrb+V94XEV4Kpt6ZketW1Z1nhCvcM45hpbHu/zMg
+         uikw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743745091; x=1744349891;
+        h=mime-version:user-agent:content-transfer-encoding:references:date
+         :to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=rxUJeQ/M4IrY8FL/vOcMQiOKK+o3pje6beF8kdDLlWU=;
+        b=QqlfPq4ESE4mt/+zgN4n2boKaiCGQbaQObQKdkguYEg1C+6mYBR4AnwQDwkLDQyxJj
+         afmifoV+ame+TsaoPB5xe9bivW+jHADdKAcpV2kUVHq3gIrULUqaqJzNE/XuJd0GnX4K
+         l8FzXwP6J5T6X676skMAC2R+7R9MwRxrtxoyD1TP8oVcdlQfzfcH5VE9r7EtA2JmOvyZ
+         9H6czvFJjnJhbI89i6cPNvIztF9zU48YZ4apysO8NSyDrip4WvOU2TNnVJR4FyS1hIh5
+         pJMXZ6Ec6ePdWCMBgss875Tcs/zDOhZF1KYG6Mo4H8kRnxheAPQZA5a8v2mQLK1pexy8
+         ZDDA==
+X-Gm-Message-State: AOJu0YxS35cnt94TTbyV0DYX/wJbHWpoaIX37VYvlpo3gy5/PxBJZRUb
+	d9OXufXppCVsjKkZjTTsIuFUfOzh9Mu7HRZ9fc0oLV/QoODcwUUgSs5YSCa7iKpyk5VqjCU8t2g
+	drg==
+X-Gm-Gg: ASbGncuLml4LZsm0KiNu/rE+RV5Ex9lTqAAMKMtL97FzQSzFgdKUoM3Wpy1oAVkLNJq
+	gzrz+F2HNkTJxyYCaXFOF2gJ5yHc/41c+faCNqe/FplSMQVJX2+wI8MpUzbp0rIoPcMjRr+dZYF
+	2nfpgQN+4tanORI1sCDzcHuaKtshn1Tqa7yF6C8L0rifSjuf29RoqWe9vcGroowSpGmMa5RnJym
+	iRBhd6jgETBh0mGygnPCBFBN4FYZc2UCivi7I7TkoZFVN+2MBSeNRhJIo4UVVd1z3WytpblPFU/
+	BVt/IGTi0HC5x64jDCG7g5JvdEXDzhiq0PrSBoRQX++Hf6NiPkBj
+X-Google-Smtp-Source: AGHT+IG7w3/pxPhwuQTumDr+KGzqWxQ45Gr+jnXzY57hmrQCbZu/d5JEf5E/oGpJMWCEMwfusB1q2g==
+X-Received: by 2002:a5d:64cd:0:b0:390:eebc:6f32 with SMTP id ffacd0b85a97d-39d1466220fmr841271f8f.48.1743745090503;
+        Thu, 03 Apr 2025 22:38:10 -0700 (PDT)
+Received: from [192.168.2.3] ([109.227.147.74])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c30226b39sm3383738f8f.85.2025.04.03.22.38.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Apr 2025 22:38:10 -0700 (PDT)
+Message-ID: <4909677fbf94dcbe5949a2a88292439302109920.camel@hazent.com>
+Subject: Fwd: Re: Issue with AMD Xilinx AXI Ethernet (xilinx_axienet) on
+ MicroBlaze: Packets only received after some buffer is full
+From: =?ISO-8859-1?Q?=C1lvaro?= "G. M." <alvaro.gamez@hazent.com>
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Jakub Kicinski
+	 <kuba@kernel.org>, "Pandey, Radhey Shyam" <radhey.shyam.pandey@amd.com>
+Date: Fri, 04 Apr 2025 07:38:09 +0200
+References: <c9861f0b98ecd199873585e188099b6fa877cc56.camel@hazent.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.0-1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: marvell.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR18MB4666.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 995ca811-ae7c-4591-05f5-08dd7338a9df
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Apr 2025 05:22:16.1367
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rm9VXfMnfkMLvpSI9D3Fk0v/CE92TsVjVSdgZF8o3NxCF9xe864Tr3bSod1+vOSaSIZRSyvT43wDG3FkMoXwIQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR18MB3901
-X-Proofpoint-GUID: HvSCv489tYzWINwYD2FEHJZn8ymAHtYX
-X-Proofpoint-ORIG-GUID: HvSCv489tYzWINwYD2FEHJZn8ymAHtYX
-X-Authority-Analysis: v=2.4 cv=CO4qXQrD c=1 sm=1 tr=0 ts=67ef6c8b cx=c_pps a=IwUfk5KXFkOzJxXNjnChew==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=XR8D0OoHHMoA:10 a=-AAbraWEqlQA:10 a=M5GUcnROAAAA:8 a=J1Y8HTJGAAAA:8 a=1XWaLZrsAAAA:8 a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8 a=zB_nYMf46UciNYmz8joA:9 a=CjuIK1q_8ugA:10 a=OBjm3rFKGHvpk9ecZwUJ:22 a=y1Q9-5lHfBjTkpIzbSAN:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-04_01,2025-04-03_03,2024-11-22_01
 
-Hi,
+Sorry, I'm resending this email in text-only mode, I sent HTML version and =
+got rejected by the list.
 
-From: Wentao Liang <vulab@iscas.ac.cn>=20
-Sent: Thursday, April 3, 2025 8:43 PM
-To: Sunil Kovvuri Goutham <sgoutham@marvell.com>; Geethasowjanya Akula <gak=
-ula@marvell.com>; Subbaraya Sundeep Bhatta <sbhatta@marvell.com>; Hariprasa=
-d Kelam <hkelam@marvell.com>; andrew+netdev@lunn.ch; davem@davemloft.net; e=
-dumazet@google.com; kuba@kernel.org; pabeni@redhat.com
-Cc: netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Wentao Liang <vul=
-ab@iscas.ac.cn>
-Subject: [PATCH] octeontx2-pf: Add error handling for cn10k_map_unmap_rq_po=
-licer().
+Hi Suraj,
 
-The cn10k_free_matchall_ipolicer() calls the cn10k_map_unmap_rq_policer()
-for each queue in a for loop without checking for any errors. A proper
-implementation can be found in cn10k_set_matchall_ipolicer_rate().
+On Thu, 2025-04-03 at 13:58 +0000, Gupta, Suraj wrote:
+> >=20
+> > If I remove "dmas" entry and provide a "axistream-connected" one, thing=
+s get a little
+> > better (but see at the end for some DTS notes). In this mode, in which =
+dmaengine is
+> > not used but legacy DMA code inside axienet itself, tcpdump -vv shows p=
+ackets
+> > incoming at a normal rate. However, the system is not answering to ARP =
+requests:
+> >=20
+> Could you please check ifconfig for any packet drop/error?
 
-Check the return value of the cn10k_map_unmap_rq_policer() function during
-each loop. Jump to unlock function and return the error code if the
-funciton fails to unmap policer.
+In all three cases (using old dma style, using dmaengine with default value=
+s and using dmaengine with buffers set to 128)
+the behavior is the same:
 
-Fixes: 2ca89a2c3752 ("octeontx2-pf: TC_MATCHALL ingress ratelimiting offloa=
-d")
-Signed-off-by: Wentao Liang <mailto:vulab@iscas.ac.cn>
----
- drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+After a few udp packets:
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c b/drivers/n=
-et/ethernet/marvell/octeontx2/nic/cn10k.c
-index a15cc86635d6..ce58ad61198e 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
-@@ -353,11 +353,13 @@ int cn10k_free_matchall_ipolicer(struct otx2_nic *pfv=
-f)
-=20
- 	/* Remove RQ's policer mapping */
- 	for (qidx =3D 0; qidx < hw->rx_queues; qidx++)
--		cn10k_map_unmap_rq_policer(pfvf, qidx,
--					   hw->matchall_ipolicer, false);
-+		rc =3D cn10k_map_unmap_rq_policer(pfvf, qidx, hw->matchall_ipolicer, fal=
-se);
-+		if (rc)
-+			goto out;
-=20
-Intentionally we do not bail out when unmapping one of the queues is failed=
-. The reason is during teardown if one of the queues is failed then
-we end up not tearing down rest of the queues and those queues cannot be us=
-ed later which is bad. So leave whatever queues have failed and proceed
-with tearing down the rest. Hence all we can do is print an error for the f=
-ailed queue and continue.
+eth0      Link encap:Ethernet  HWaddr 06:00:0A:BC:8C:02 =20
+          inet addr:10.188.140.2  Bcast:10.188.143.255  Mask:255.255.248.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:213 errors:0 dropped:81 overruns:0 frame:0
+          TX packets:17 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000=20
+          RX bytes:95233 (93.0 KiB)  TX bytes:738 (738.0 B)
 
-Thanks,
-Sundeep
+After manually adding =C2=A0ARP entries and running a short run of iperf3:
 
- 	rc =3D cn10k_free_leaf_profile(pfvf, hw->matchall_ipolicer);
-=20
-+out:
- 	mutex_unlock(&pfvf->mbox.lock);
- 	return rc;
- }
---=20
-2.42.0.windows.2
+# iperf3 -c 10.188.139.1
+Connecting to host 10.188.139.1, port 5201
+[  5] local 10.188.140.2 port 54004 connected to 10.188.139.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.01   sec  3.38 MBytes  28.2 Mbits/sec    0    133 KBytes    =
+  =20
+[  5]   1.01-2.00   sec  3.75 MBytes  31.5 Mbits/sec    0    133 KBytes    =
+  =20
+[  5]   2.00-3.01   sec  3.75 MBytes  31.4 Mbits/sec    0    133 KBytes    =
+  =20
+[  5]   3.01-4.01   sec  3.63 MBytes  30.4 Mbits/sec    0    133 KBytes    =
+  =20
+[  5]   4.01-5.00   sec  3.75 MBytes  31.6 Mbits/sec    0    133 KBytes    =
+  =20
+[  5]   5.00-6.00   sec  3.63 MBytes  30.4 Mbits/sec    0    133 KBytes    =
+  =20
+[  5]   6.00-7.00   sec  3.75 MBytes  31.5 Mbits/sec    0    133 KBytes    =
+  =20
+[  5]   7.00-8.01   sec  3.63 MBytes  30.2 Mbits/sec    0    133 KBytes    =
+  =20
+[  5]   8.01-9.01   sec  3.63 MBytes  30.4 Mbits/sec    0    133 KBytes    =
+  =20
+
+^C[  5]   9.01-46.69  sec  4.50 MBytes  1.00 Mbits/sec    0    133 KBytes  =
+    =20
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-46.69  sec  37.5 MBytes  6.74 Mbits/sec    0            sender
+[  5]   0.00-46.69  sec  0.00 Bytes  0.00 bits/sec                  receive=
+r
+iperf3: interrupt - the client has terminated
+# ifconfig=20
+eth0      Link encap:Ethernet  HWaddr 06:00:0A:BC:8C:02 =20
+          inet addr:10.188.140.2  Bcast:10.188.143.255  Mask:255.255.248.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:14121 errors:0 dropped:106 overruns:0 frame:0
+          TX packets:27360 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000=20
+          RX bytes:1015380 (991.5 KiB)  TX bytes:41127297 (39.2 MiB)
+
+The number of RX and dropped packets (81/213 vs 106/14121) doesn't seem pro=
+portional to the number of received packets.
+
+I've been able to gather that dropped packets increase by 1 with each arpin=
+g that I send to the microblaze, but
+*only* if tcpdump is *not* running.
+
+So, I can run tcpdump -vv, send quite a lot of arping, I see them all on sc=
+reen and dropped number of packets do not increase.
+Once I stop tcpdump, I send a single arping and tx dropped packets increase=
+ by 1, every time.
+
+
+> > On the other hand, and since I don't know how to debug this ARP issue, =
+I went back
+> > to see if I could diagnose what's happening in DMA Engine mode, so I pe=
+eked at the
+> > code and I saw an asymmetry between RX and TX, which sounded good given=
+ that
+> > in dmaengine mode TX works perfectly (or so it seems) and RX is heavily=
+ buffered.
+> > This asymmetry lies precisely on the number of SG blocks and number of =
+skb
+> > buffers.
+> >=20
+
+> > I couldn't see what was wrong with new code, so I just went and replace=
+d the
+> > RX_BD_NUM_DEFAULT value from 1024 down to 128, so it's now the same siz=
+e as
+> > its TX counterpart, but the kernel segfaulted again when trying to meas=
+ure
+> > throughput. Sadly, my kernel debugging abilities are not much stronger =
+than this, so
+> > I'm stuck at this point but firmly believe there's something wrong here=
+, although I
+> > can't see what it is.
+> >=20
+> > Any help will be greatly appreciated.
+> >=20
+> This doesn't looks like be the reason as driver doesn't uses lp->rx_bd_nu=
+m  and lp->tx_bd_num to traverse skb ring in DMAengine flow. It uses axiene=
+t_get_rx_desc() and axienet_get_tx_desc() respectively, which uses same siz=
+e as allocated.
+> Only difference between working and non-working I can see is increasing R=
+x skb ring size. But later you mentioned you tried to bring it down to 128,=
+ could you please confirm small size transfer still works?
+
+Setting this number to a low value seems to solve the buffering issue, but =
+not the thing about missed ARP packets.
+
+
+> FYI, basic ping and iperf both works for us in DMAengine flow for AXI eth=
+ernet 1G designs. We tested for full-duplex mode. But I can see half duplex=
+ in your case, could you please confirm if that is expected and correct?
+
+Our connection is via a fiber SFP =C2=A0(should've mentioned that earlier, =
+sorry) or with an cabled SFP
+(which I am using right now), through dp83620, which in this mode does not =
+support autonegotiation
+but as far as I know init should support full duplex, I'll check it out and=
+ reach back.
+
+Now that you noticed this, I can tell you that kernel 4.4.43 reported full =
+duplex, and kernel 6.13
+reports full duplex only in dmaengine mode, in old dma mode it reports half=
+ duplex.
+
+Old kernel:
+# ethtool eth0
+Settings for eth0:
+        Supported ports: [ TP MII ]
+        Supported link modes:   10baseT/Half 10baseT/Full=20
+                                100baseT/Half 100baseT/Full=20
+        Supported pause frame use: No
+        Supports auto-negotiation: Yes
+        Advertised link modes:  100baseT/Full=20
+        Advertised pause frame use: No
+        Advertised auto-negotiation: No
+        Speed: 100Mb/s
+        Duplex: Full
+        Port: MII
+        PHYAD: 1
+        Transceiver: external
+        Auto-negotiation: off
+        Link detected: yes
+
+
+Configuring network: xilinx_axienet 40c00000.ethernet eth0: PHY [axienet-40=
+c00000:01] driver [TI DP83620 10/100 Mbps PHY] (irq=3DPOLL)
+xilinx_axienet 40c00000.ethernet eth0: configuring for phy/mii link mode
+xilinx_axienet 40c00000.ethernet eth0: Link is Up - 100Mbps/Full - flow con=
+trol off
+
+
+Thanks, best regards,
+
+--=C2=A0
+=C3=81lvaro G. M.
 
