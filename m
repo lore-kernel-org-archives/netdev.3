@@ -1,60 +1,64 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221B81EB187
-	for <netdev@vger.kernel.org>; Fri,  4 Apr 2025 10:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860671EB5D4
+	for <netdev@vger.kernel.org>; Fri,  4 Apr 2025 10:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743762586; cv=none; b=RVyLhWAYQouozmPTaelzKFEhAQj2ZeDcENxkJHhkF6IYsdeLGuPeK8boVWdGjD7SkulTbnP5sJS5j0xVQrULNhS9VgaRUONVfy+ZGrmuWXO8irwKnIw89zx0bl1dAyuuRpz3oXZ1GzSXOEGIroiOz2U0/SrKjAUh1PRowquNY/I=
+	t=1743762587; cv=none; b=YLDSY4oDXi/7K7Z982E+6/nl3+fV9rmC7ARpzFvs+PfQ0vDHKZ1Iy2ib8TRvAG4uHhFVmBAv/DL5qaCaYej3vnB6qmx8TVaERrlBCQSzhuYZuaaA/zkSAMOAf7SfsIWulawiMtF23I2I0SYzm84EH8Qjwms9UUbbMDurS8B4STQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743762586; c=relaxed/simple;
-	bh=RG93Fpdngz5z7PSj8asDmrw/ZjfV29C/fDhTOXzFCEk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uLELGpFspB7Ss8YEUXYOL/LZVpYqioYamARZfTATmso9+QBxYKVX9899BTpli948yDr2wOioXRq+OgbspiZDod1OYw8vuDMyUl5fHiRJwNfYhpuv6R/35fYxi8OPiQrkf4cBK3ncIGks8RFv2kPb9c9MWUdWLArVvXRKVNj3EBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RP+KdNma; arc=none smtp.client-ip=198.175.65.14
+	s=arc-20240116; t=1743762587; c=relaxed/simple;
+	bh=VkEEqZoT+jeMa9GotZTRzDkqWqwz9IyyHoKvT76o4CE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ltbdY6cTOnvQ/rTJHBtIYdt2qqZEx80iNUuKjxK7rtK7+rHvdjqtw65qzLyWdN0SWEyEqNiiK2XCgPRxwO95RIzS1JhPHQNoP/E4mHOT11RxUANHD32Pndk0CwMRxLK5YCoFmh0/FyrwhXk+eEYQZ9Ldbf1bLeaKuhyzN5Qm4zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c/VrM/Cz; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RP+KdNma"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c/VrM/Cz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743762584; x=1775298584;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=RG93Fpdngz5z7PSj8asDmrw/ZjfV29C/fDhTOXzFCEk=;
-  b=RP+KdNmad5IdJugailw3ANMamwlsjIBER0YY9kkUzs5H9Bc1cydLikUa
-   3MZGgknVzYtODHW+b+eCuVjfkViL41fGyEMUTJQIpU1DdLxgiNXoC+82m
-   f4osxpxospKuCFjFB60R5GDbeqvjpbYOwYFc7lo3XP252OvCek4/ajYF0
-   3oe00c3vjg235UY0R/1OSp3SYOUUV0R28DYJLhEGkU50AZv/SFRD/T2mi
-   RIsDShiqy40Yj/PDt9xorq2OwwMLzolnM7GSjC68DJUMON4Fbb/Uq7OIL
-   iyx+Z13AXengmWL1uYEUF++KbjeO5MiQq1EJg5QNHixMr9SE1q5BMqULX
-   w==;
-X-CSE-ConnectionGUID: QuCQuW6GQ2+p6eT/T+RoUQ==
-X-CSE-MsgGUID: m1X81jwGRfOjcC2iyqvD0g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11393"; a="48992428"
+  t=1743762585; x=1775298585;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=VkEEqZoT+jeMa9GotZTRzDkqWqwz9IyyHoKvT76o4CE=;
+  b=c/VrM/CzbA2qzZI+id+cqDzl60JeBm18UokkGpFKx0BBNU5Dwfr3kh4g
+   szy2tckwCA7EhOLL4yL3f/Q52GNZatqcz5A8Wf8p1HUAnCf/5XlQYwgVs
+   hsMHg+mr/wPnu9fjwDIwK86IJxcUdd/1VrBrDBEnZ5r2Zh0v+ASZktKEJ
+   2NGzahKIO3mJsUaiJ3YdFjhLmRPowlRVQombbsrxYgsB2zqsjrJ33iw20
+   LPWjrslF2G57iNivTmpp2FVGmWtlvx2PDSX9DajUVVCv++EjDnGU+BiPl
+   ptaWzZBha9twmrM4cyqFjPp57LcSZeMUmvsbVWCBrkkJOBEnWUlUeWSdK
+   g==;
+X-CSE-ConnectionGUID: nXOqBt45RauoVIj4nKNG9Q==
+X-CSE-MsgGUID: eCtbsS9vToaM/ySv93OeCg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11393"; a="48992437"
 X-IronPort-AV: E=Sophos;i="6.15,188,1739865600"; 
-   d="scan'208";a="48992428"
+   d="scan'208";a="48992437"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2025 03:29:42 -0700
-X-CSE-ConnectionGUID: VD45QYLXSnSyIchbUbXj8w==
-X-CSE-MsgGUID: 7fELeSEDTnS66HAbkDlthg==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2025 03:29:44 -0700
+X-CSE-ConnectionGUID: l3xjuoMqR52Tsf9q/CJhDw==
+X-CSE-MsgGUID: 77+ilO6ySjWh290+btyAUA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,188,1739865600"; 
-   d="scan'208";a="164485283"
+   d="scan'208";a="164485296"
 Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by orviesa001.jf.intel.com with ESMTP; 04 Apr 2025 03:29:40 -0700
+  by orviesa001.jf.intel.com with ESMTP; 04 Apr 2025 03:29:42 -0700
 Received: from vecna.igk.intel.com (vecna.igk.intel.com [10.123.220.17])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id AED4133E99;
-	Fri,  4 Apr 2025 11:29:39 +0100 (IST)
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 563E633EA6;
+	Fri,  4 Apr 2025 11:29:41 +0100 (IST)
 From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 To: intel-wired-lan@lists.osuosl.org,
 	Tony Nguyen <anthony.l.nguyen@intel.com>
 Cc: netdev@vger.kernel.org,
 	Stanislav Fomichev <sdf@fomichev.me>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH iwl-net 0/6] undeadlock iavf
-Date: Fri,  4 Apr 2025 12:23:15 +0200
-Message-Id: <20250404102321.25846-1-przemyslaw.kitszel@intel.com>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>
+Subject: [PATCH iwl-net 3/6] iavf: simplify watchdog_task in terms of adminq task scheduling
+Date: Fri,  4 Apr 2025 12:23:18 +0200
+Message-Id: <20250404102321.25846-4-przemyslaw.kitszel@intel.com>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20250404102321.25846-1-przemyslaw.kitszel@intel.com>
+References: <20250404102321.25846-1-przemyslaw.kitszel@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,37 +67,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix some deadlocks in iavf, and make it less error prone for the future.
+Simplify the decision whether to schedule adminq task. The condition is
+the same, but it is executed in more scenarios.
 
-Patch 1 is simple and independed from the rest.
-Patches 2, 3, 4 are strictly a refactor, but it enables the last patch
-	to be much smaller.
-	(Technically Jake given his RB tags not knowing I will send it to -net).
-Patch 5 just adds annotations, this also helps prove last patch to be correct.
-Patch 6 removes the crit lock, with its unusual try_lock()s.
+Note that movement of watchdog_done label makes this commit a bit
+surprising. (Hence not squashing it to anything bigger).
 
-I have more refactoring for scheduling done for -next, to be sent soon.
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+---
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-There is a simple test:
- add VF; decrease number of queueus; remove VF
-that was way too hard to pass without this series :)
-
-Testing hints for VAL:
-whole regression set, both against ice and i40e.
-
-Przemek Kitszel (6):
-  iavf: iavf_suspend(): take RTNL before netdev_lock()
-  iavf: centralize watchdog requeueing itself
-  iavf: simplify watchdog_task in terms of adminq task scheduling
-  iavf: extract iavf_watchdog_step() out of iavf_watchdog_task()
-  iavf: sprinkle netdev_assert_locked() annotations
-  iavf: get rid of the crit lock
-
- drivers/net/ethernet/intel/iavf/iavf.h        |   1 -
- .../net/ethernet/intel/iavf/iavf_ethtool.c    |  29 +-
- drivers/net/ethernet/intel/iavf/iavf_main.c   | 289 ++++++------------
- 3 files changed, 96 insertions(+), 223 deletions(-)
-
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 2c6e033c7341..5efe44724d11 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -2934,6 +2934,7 @@ static void iavf_watchdog_task(struct work_struct *work)
+ 			return;
+ 		}
+ 
++		msec_delay = 20;
+ 		goto restart_watchdog;
+ 	}
+ 
+@@ -3053,26 +3054,20 @@ static void iavf_watchdog_task(struct work_struct *work)
+ 		adapter->current_op = VIRTCHNL_OP_UNKNOWN;
+ 		dev_err(&adapter->pdev->dev, "Hardware reset detected\n");
+ 		iavf_schedule_reset(adapter, IAVF_FLAG_RESET_PENDING);
+-		msec_delay = 2000;
+-		goto watchdog_done;
+ 	}
++	if (adapter->aq_required)
++		msec_delay = 20;
++	else
++		msec_delay = 2000;
+ 
++watchdog_done:
+ 	mutex_unlock(&adapter->crit_lock);
+ restart_watchdog:
+ 	netdev_unlock(netdev);
+ 
+ 	/* note that we schedule a different task */
+ 	if (adapter->state >= __IAVF_DOWN)
+ 		queue_work(adapter->wq, &adapter->adminq_task);
+-	if (adapter->aq_required)
+-		msec_delay = 20;
+-	else
+-		msec_delay = 2000;
+-	goto skip_unlock;
+-watchdog_done:
+-	mutex_unlock(&adapter->crit_lock);
+-	netdev_unlock(netdev);
+-skip_unlock:
+ 
+ 	if (msec_delay != IAVF_NO_RESCHED)
+ 		queue_delayed_work(adapter->wq, &adapter->watchdog_task,
 -- 
 2.39.3
 
