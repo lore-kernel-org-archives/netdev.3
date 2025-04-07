@@ -1,50 +1,48 @@
-Received: from plesk.hostmyservers.fr (plesk.hostmyservers.fr [45.145.164.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070902BAF4;
-	Mon,  7 Apr 2025 14:15:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.164.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6251D54EF;
+	Mon,  7 Apr 2025 14:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744035319; cv=none; b=BAuB/pUhUgIx1UM7hbQxcVuVb/+WpQu6XZvCAy6i5H/S7E8/6WqiUKG4dOd9QBFPC5RAvFyasuhzeaRlnu3FygQWPp/rUM48oVWmWIXFeUUzWkfvo/K6/EravLn/Z8regOydYc2v3Ez+Ullj9i04Lxvu+mRHD5Iie2m60BPUQ28=
+	t=1744035325; cv=none; b=IZOlFdeVlKMKf9Csi4BH+bCujrnwruFz9r8uK99PzYh5Ra3My5Bs0nvY8KAcYtj1F4BOn0jBaIV6LFBuBXf9Zx1xrrhlQ+CUNQp1idFVsRkttWD/pvi3XhcQOQrJP2ccB8WKOQskMAeRyqQKfkLzRpUT7LXzEmxJuRvvAt2Gj4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744035319; c=relaxed/simple;
-	bh=jmRe4AEApQULrs3bNjFMB9TRFmOHumBSMwnhP64rRyQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=doCQrLOjZEixfoiQU5/avB6wY4mlVpeEGwa4lQmPltzunP1HG1YUnELG/99FtuPZr24uZTwKBfrxYC/4QuFMVHK4zGDdtbc4xTrQlFIi8o05twRz7FJvNPDZo7cL6X7oJFlpe5A9wEcV+PkCxFfGaRl+EG/6j6qzEdaIulmTFtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com; spf=pass smtp.mailfrom=arnaud-lcm.com; arc=none smtp.client-ip=45.145.164.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arnaud-lcm.com
-Received: from arnaudlcm-X570-UD.. (unknown [IPv6:2a01:e0a:3e8:c0d0:3b93:9152:d50e:6d45])
-	by plesk.hostmyservers.fr (Postfix) with ESMTPSA id DE86E479B8;
-	Mon,  7 Apr 2025 14:06:09 +0000 (UTC)
-Authentication-Results: Plesk;
-	spf=pass (sender IP is 2a01:e0a:3e8:c0d0:3b93:9152:d50e:6d45) smtp.mailfrom=contact@arnaud-lcm.com smtp.helo=arnaudlcm-X570-UD..
-Received-SPF: pass (Plesk: connection is authenticated)
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
-To: syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-ppp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot]
-Date: Mon,  7 Apr 2025 16:06:03 +0200
-Message-ID: <20250407140603.91155-1-contact@arnaud-lcm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <67ae3912.050a0220.21dd3.0021.GAE@google.com>
-References: <67ae3912.050a0220.21dd3.0021.GAE@google.com>
+	s=arc-20240116; t=1744035325; c=relaxed/simple;
+	bh=QpeiK2sRkZo2IkL69SEukYBewbXtcL/h1uTz1zaXmac=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=uHilDS62O3ZGzXksoNmx00GwJ7ZsONCIplbkdOSRaKsYHmk0YhbhEFCyJlfDrpFd59Pxnuv63V6CxeaGHmcKt1mmG0iCgfKQ1fMXemXPappBIq13sy+eqE/U0ICoBZ3LuDVUtyeRK4GgxvSTnuBX7jdY0cYEgJWevwzTxjzjqVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P5mAmMPO; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P5mAmMPO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D54C4CEDD;
+	Mon,  7 Apr 2025 14:15:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744035324;
+	bh=QpeiK2sRkZo2IkL69SEukYBewbXtcL/h1uTz1zaXmac=;
+	h=Date:From:To:Subject:From;
+	b=P5mAmMPOzb4oLNj1hdduZ/m0wZfxhs/f2P4S4kxoKqY1j93zCYpz6QefGdX9Y8vrq
+	 1j57YZ8Yi/4Zq7dQTcoNsVikHvJp6E0mGGaF/EqF6o5lgwRlqOxou4keK44FbrcJna
+	 7jBPD74LE1bLSHsTdegGpne/RofcOc2L9DCgHmfNK18zX11cE5uRY0fWnWIsWzZ0QF
+	 v1v2qrpNJnKlwQXmExb3bQQyhwHCe07Obio4Nbap9uIOuYxGyZe3WcPeKPfuYqY+a+
+	 jNIt6lqLf/OrC/sPaA4bIWuoyKcflrrhwiEX2SLx2LAZ9sPKUBYBmTDtPcwqEFSvWA
+	 q/OAfCDfSO8Lw==
+Date: Mon, 7 Apr 2025 07:15:23 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: netdev@vger.kernel.org, netdev-driver-reviewers@vger.kernel.org
+Subject: [ANN] netdev call - Apr 8th
+Message-ID: <20250407071523.216102e5@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <174403477041.13227.827809552128555155@Plesk>
-X-PPP-Vhost: arnaud-lcm.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-#syz test: https://github.com/ArnaudLcm/linux bounds-checking-txmung
+Hi!
+
+The bi-weekly call is scheduled for tomorrow at 8:30 am (PT) / 
+5:30 pm (~EU), at https://bbb.lwn.net/rooms/ldm-chf-zxx-we7/join
+
+I'm not aware of any topics so please share some, if nobody
+does we'll cancel.
