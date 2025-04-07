@@ -1,147 +1,101 @@
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427633AC1C
-	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 21:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317EF16F8F5;
+	Mon,  7 Apr 2025 22:12:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744063026; cv=none; b=PtQeh8mGYskOCvB2JGcFQ48zAF3WBu6hcVK2MTkQtPZUk1stNAk/3H5BtGmAjl91ncBtkvxtDVEuoE4wMe6uA97PjkxNqqsES9TeA/3KX0GZ4FVQfnsqgSNzC5sxPB1Nv4UyCl2YDTqMfwIkR44+1mcxmdtGqYuMOu00EBclSv4=
+	t=1744063931; cv=none; b=uCl6vDxRkVULo7Tu2+KjiDEYtYe/BS9OaTQwpEJZ2eqlGS+ZERnrznztiTtM15NTzcwhzT4oT4dX5sDpUVy7B1WAXcUVzCuyEoeZy87NNJTL4iqqKfJKG1McnnKAM7jKAvFM1hNoGcuxskNTVkp5PugDqFhKob6djZObKGRBY9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744063026; c=relaxed/simple;
-	bh=CXUbkgdb+eusHq7P3yexbWwGbiubwHu070X1U3C8AjE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h+UOmVZRRwC8VM8O+42YxTh2iz0vfAdtbkmCDyhghzUXV9jpSarT8T6iK7LU/3/+UO1pWLvfTGiYepAr9yCLf5NEfE2eZk2mepDKjPcFWiyOLaFtMd1ImD6JUig5CabkVxkhPHwbwBx5IZsL+4mmbsGDDNLwZJEa/nFAn2eJiww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vmstxYt+; arc=none smtp.client-ip=91.218.175.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1744063931; c=relaxed/simple;
+	bh=+KO5FDR9NB3gjHpmBOa8QAjj0hR5oW3JHAtOLCvZUOk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hgIbI8FbFsuKhH4OYss0PVYnY42fQ3dkTW75LajORhZcul1V6OHctr907bcu5L3Wp7NMRGlmd8Zux+eX9GlEnzYoGZ4eOgCCW1vZnc7tejSCIf4vhi8ijSP0Zi21rOAL2P44osVd/+Fmeo6cyLtD6NiYIUbYe8+oNkGxeQI++3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HzE1iM4q; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vmstxYt+"
-Message-ID: <58bfc722-5dc4-4119-9c5c-49fb6b3da6cd@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1744063020;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8FSvbn3NUduRNn7N60McM+103mzS7lUNeC9xApBCbjI=;
-	b=vmstxYt+fi0rwIR2KrnBgXKcNg51M2lgRaLXPQnSQQEhRPRjKZhnmqH/rrsiXl8b8Y8O3b
-	A4PezGM35aUDehoj+xg5Es8XOsjlBDXIfwQOI4iiNpXmWR8SpHMSmTGJJ/OQXAe6gdO2ZC
-	wrN/fyPvXQqB3rKOSgcNzx81BmgfVas=
-Date: Mon, 7 Apr 2025 14:56:54 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HzE1iM4q"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2255003f4c6so43715045ad.0;
+        Mon, 07 Apr 2025 15:12:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744063929; x=1744668729; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=+KO5FDR9NB3gjHpmBOa8QAjj0hR5oW3JHAtOLCvZUOk=;
+        b=HzE1iM4qxJ0O8Cj6hufFRBxkgGDfuvi83oyhtkuCYMeH2nTgI7bjHO6eRyP/I7gyj5
+         LBJO+dZPWOBiTQPTK6/sdVrGbG1Py6AunvHQ9MGufGAnYfJ8hRVX274nGXxcoex3Nlsb
+         3Ja/7GPhKtfVhhQjGcC2viBLelN/opxIVlMWhDmzF8oGKsWRs+QIXh4PaeD8otxJtSbI
+         K6LmgM7sF0y06fVie2ZdUrCyc7t0wK+1540wFfR8/kaHp7AoxSFyvA0M8KX8No6eej8J
+         CKKXC1xy+jsR2QKBD6aL7wREYDVsG95E3IYzqA5njKx/rDnvemJSj03F1h+7RxJbaLmA
+         pCZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744063929; x=1744668729;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+KO5FDR9NB3gjHpmBOa8QAjj0hR5oW3JHAtOLCvZUOk=;
+        b=uxLdB/qi5r7lX1DFiGwhcYe9fq5KOhKMA9tCdGN8qP6Gn22w89MiFc5bD0rY8lBIju
+         ETXgu6WZlqC+4mJII3aieXDltSTrZwYeErjgm5EiSkDULqmUdEHouvqWGw2Y/mfruayZ
+         fTHX/uLlyhXl9XJa8FPIb2b+XreOW5hIX0P5QvcM8zh/vZs3/ULP8+laBEXavcnRiMR4
+         GSyvPK2sIh9x+0lDz5gCCoO8rSmDiB5+wxyxl/6fXv7+EvYgRoG2TohBh9OxFN20v+OI
+         mRvlnlWtTUs7ONtuOhzfyYdu8N8VagxVXbfZVQrW+xVk42x0zMySZbm1CHUEaRoTYPHb
+         s1fw==
+X-Forwarded-Encrypted: i=1; AJvYcCUrst8ZeGTGwCUoxH4igWhM7vZpsoq18yYJBwPMfia1kNCJ4lSszZ8CdwqUclUBYfI62VouiX4vX2/XoT8=@vger.kernel.org, AJvYcCVW6sJSouL9lDn7ZyOGGydmfFGi4P84tX0eMKbffQlf4/0oqfS2PNicTOTyyWjQBtmwZqTXCdsg@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZXwkry1mx2PwdQhDBQtNxtQ7nFgAOHcD5guyZp007v7AtET7f
+	D5MaDZwYb+1otl2e7QDkshHE+kjSVLLdT3pgP96d9q2/PKzRAInU
+X-Gm-Gg: ASbGncueJIo1w2m4Jtiw5cV++sbi9PpAtkeyZKCElKaJHPtJg2rhWmaoPxAnf1m1Pea
+	qS7/Sh++LQdHU0JNEdzNSlPJdyyfqWg2mvrHadNxh8zsduYhGVN2bKEhmDEd6ehQbRCAB0f9Lto
+	k26oei2wD1/EeAzpmE/SwR4BU5BWSK+New14zonk8VMzrGtrUmhO+jrF6+MRuChPCcz5nneoGV9
+	/SHq8D2mHihS0K8g7sxTPCWyBVc1yTt5Dyt4aXfJanuNplPHN/mw/+iaJupJb0MkozTy84p5bLg
+	+HNTyWVfiFFnhmIGyMPDme0rQPe218MfEhJOkk3sehM=
+X-Google-Smtp-Source: AGHT+IEvjikd/I77m2fm22oAI4Ks5ABnEUbcCmTxIM1VAO9N8vzwrz5hN/axnWQLVcFkyCGKsBihsA==
+X-Received: by 2002:a17:902:f646:b0:229:1717:8826 with SMTP id d9443c01a7336-22a8a06d686mr210345955ad.28.1744063929357;
+        Mon, 07 Apr 2025 15:12:09 -0700 (PDT)
+Received: from mythos-cloud ([125.138.201.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-229785ad9a0sm86483995ad.39.2025.04.07.15.12.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Apr 2025 15:12:08 -0700 (PDT)
+Date: Tue, 8 Apr 2025 07:12:04 +0900
+From: Moon Yeounsu <yyyynoom@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v6] net: dlink: add support for reporting stats
+ via `ethtool -S` and `ip -s -s link show`
+Message-ID: <Z_RNtOY5PPS5A9v4@mythos-cloud>
+References: <20250407134930.124307-1-yyyynoom@gmail.com>
+ <122f35a6-a8b6-446a-a76d-9b761c716dfe@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [RFC PATCH bpf-next 2/3] bpf: udp: Avoid socket skips and repeats
- during iteration
-To: Jordan Rife <jordan@jrife.io>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
- Aditi Ghag <aditi.ghag@isovalent.com>, Daniel Borkmann
- <daniel@iogearbox.net>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-References: <20250404220221.1665428-1-jordan@jrife.io>
- <20250404220221.1665428-3-jordan@jrife.io>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-In-Reply-To: <20250404220221.1665428-3-jordan@jrife.io>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <122f35a6-a8b6-446a-a76d-9b761c716dfe@lunn.ch>
 
-On 4/4/25 3:02 PM, Jordan Rife wrote:
-> +static struct sock *bpf_iter_udp_resume(struct sock *first_sk,
-> +					union bpf_udp_iter_batch_item *cookies,
-> +					int n_cookies)
-> +{
-> +	struct sock *sk = NULL;
-> +	int i = 0;
-> +
-> +	for (; i < n_cookies; i++) {
-> +		sk = first_sk;
-> +		udp_portaddr_for_each_entry_from(sk)
-> +			if (cookies[i].cookie == atomic64_read(&sk->sk_cookie))
-> +				goto done;
-> +	}
-> +done:
-> +	return sk;
-> +}
-> +
->   static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
->   {
->   	struct bpf_udp_iter_state *iter = seq->private;
->   	struct udp_iter_state *state = &iter->state;
-> +	unsigned int find_cookie, end_cookie = 0;
->   	struct net *net = seq_file_net(seq);
-> -	int resume_bucket, resume_offset;
->   	struct udp_table *udptable;
->   	unsigned int batch_sks = 0;
->   	bool resized = false;
-> +	int resume_bucket;
->   	struct sock *sk;
->   
->   	resume_bucket = state->bucket;
-> -	resume_offset = iter->offset;
->   
->   	/* The current batch is done, so advance the bucket. */
->   	if (iter->st_bucket_done)
-> @@ -3428,6 +3446,8 @@ static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
->   	 * before releasing the bucket lock. This allows BPF programs that are
->   	 * called in seq_show to acquire the bucket lock if needed.
->   	 */
-> +	find_cookie = iter->cur_sk;
-> +	end_cookie = iter->end_sk;
->   	iter->cur_sk = 0;
->   	iter->end_sk = 0;
->   	iter->st_bucket_done = false;
-> @@ -3439,18 +3459,26 @@ static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
->   		if (hlist_empty(&hslot2->head))
->   			continue;
->   
-> -		iter->offset = 0;
->   		spin_lock_bh(&hslot2->lock);
-> -		udp_portaddr_for_each_entry(sk, &hslot2->head) {
-> +		/* Initialize sk to the first socket in hslot2. */
-> +		udp_portaddr_for_each_entry(sk, &hslot2->head)
-> +			break;
+On Mon, Apr 07, 2025 at 10:43:41PM +0200, Andrew Lunn wrote:
 
-nit. It is to get the first entry? May be directly do
-hlist_entry_safe(hslot2->head.first, ... ) instead.
+> That is an odd way of doing it. It would be better to repeat the
+> static const struct dlink_stats.
 
-> +		/* Resume from the first (in iteration order) unseen socket from
-> +		 * the last batch that still exists in resume_bucket. Most of
-> +		 * the time this will just be where the last iteration left off
-> +		 * in resume_bucket unless that socket disappeared between
-> +		 * reads.
-> +		 *
-> +		 * Skip this if end_cookie isn't set; this is the first
-> +		 * batch, we're on bucket zero, and we want to start from the
-> +		 * beginning.
-> +		 */
-> +		if (state->bucket == resume_bucket && end_cookie)
-> +			sk = bpf_iter_udp_resume(sk,
-> +						 &iter->batch[find_cookie],
-> +						 end_cookie - find_cookie);
-> +		udp_portaddr_for_each_entry_from(sk) {
->   			if (seq_sk_match(seq, sk)) {
-> -				/* Resume from the last iterated socket at the
-> -				 * offset in the bucket before iterator was stopped.
-> -				 */
-> -				if (state->bucket == resume_bucket &&
-> -				    iter->offset < resume_offset) {
-> -					++iter->offset;
-> -					continue;
-> -				}
->   				if (iter->end_sk < iter->max_sk) {
->   					sock_hold(sk);
->   					iter->batch[iter->end_sk++].sock = sk;
+Oh, I see — sorry about that. I wasn’t aware it might be considered an odd approach.
+If you don’t mind, could you please explain a bit more about why it seems problematic to you?
 
-I looked at the details for these two functions. The approach looks good to me. 
-Thanks for trying it.
+Let me briefly share my reasoning behind the current design:
+Each ethtool stats function (e.g., get_ethtool_XXX) gathers a specific group of related statistics.
+You can see this grouping in action in my patch.
+So, I thought managing each stat group in that way would make the code more intuitive,
+and help simplify the logic for developers who use or extend it.
 
-This should stop the potential duplicates during stop() and then re-start().
+I'm still new to kernel development, so there are many things I don't fully understand yet.
+I'd appreciate it if you could feel free to point out anything.
 
-My understanding is that it may or may not batch something newer than the last 
-stop(). This behavior should be similar to the current offset approach also. I 
-think it is fine. The similar situation is true for the next bucket anyway.
+Thank you for reviewing my patch!
