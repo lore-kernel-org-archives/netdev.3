@@ -1,103 +1,162 @@
-Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78B923AE67;
-	Mon,  7 Apr 2025 11:27:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E4F23C8C8
+	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 11:29:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744025262; cv=none; b=tAdWzusgffsSUtTJu33vZPZLyR2JknmLCeKVSWQwX/SXmZDx0FI/lNoiOtn+xwKXadJXz4CoN4fx1uAW5xLyiF5YUyZk6EnfNvdCvXLGiLniViYxc8qpZSTF+ZEMIYmrQFBm0YQA3ufRcY0HNr9wBP4e1GrqOffdbGI3ZPr2XME=
+	t=1744025390; cv=none; b=qtGRw4O+aOYgUI6kw1s+4VqZi7Tu6bY+jxFguLEvR6AwA7Sc+Jvl+pRAMQp7xq7jZ9GeLzJe+fNzWZyKk7rs6pmiATkb85dsg4uaThuACzBFIc9SJPbb3IVZUKFvra1d+w4Eq5KcmrpyqAXaHn+eDilnuJxwz3+YKvFIjbXRkno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744025262; c=relaxed/simple;
-	bh=093rrwsmRiqMHVzVRyHSZKXYoLgYn1XFtxsIr38PXd8=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=mjm8Zs+acq+l7o1gvXJumB1BAZqlMfp6sR4JWKf5WalNyAdLehi+7TuNZmkknhvTFjRWvn7vkRCl/0kyVJsa1fAdylryInrn9kXoj2KGHH9P+xpzniBenBYitvrJsfz8Q8EDZIBvAEgQSg7pg6C8CTHfjiCmkX23MKtVE3AhbEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=ARcF3FHg; arc=none smtp.client-ip=162.62.58.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1744025390; c=relaxed/simple;
+	bh=2jWtLUj/ovkSW6SE8BdRexouF1Lh1m6+gWggFThLjb0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eIL1k5+FkC0iwjz2M9jyvjSAIQMQcIKplTxf8e3BLoTyWDnrrbLZIAxInGMEbYpkaqXD3KfkVlVDfmd2rzoiGBMvAltUgvvLUDto0LOU6SEzLsPSXTuWMU6uXYApa0vy0ceK7YBU99LUiAdFRaFHE6hcV/0Ijuf4PSKbSF7izkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CNB4tcL7; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="ARcF3FHg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1744024951; bh=OIMPWzh9MNaYKe51Y4PxWwdbK6/caOHyB47lalq/Giw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ARcF3FHgac1cBtfU/xYwkXL9sRUEHtpKKFu1SwGHfMFM/QRLFQ5gHU5IhfB1De/yU
-	 gEokIErEQBTYGWlxXs+PF/BBYDnEAZmb/xJlVO21REJZskg7QRdl1Bq3BQKPZmWxYv
-	 8AKz6I+IHd5gb6w6cjZN+gVWSDtrp1evFxEs3VJE=
-Received: from pek-lxu-l1.wrs.com ([114.244.57.157])
-	by newxmesmtplogicsvrszb21-0.qq.com (NewEsmtp) with SMTP
-	id 59C84251; Mon, 07 Apr 2025 19:22:28 +0800
-X-QQ-mid: xmsmtpt1744024948t3yx4n6wg
-Message-ID: <tencent_ABAECE4C9727C606CDD2D6C67209852EC406@qq.com>
-X-QQ-XMAILINFO: ORuEwgb9eurkQv1vLgVvgl69FjKBMdrYxy4FNZvmCEmHg27T/Qt3YjNmYaxJCz
-	 EmeEHAn0bWMiidYxwb8uBTCGf77qeavPqlUbh373Ti+gH4f3vcVTQg6r+tFbCyaXoXebRuYHbv67
-	 ooRCp0tGHMjPDdx5lf1s1PxVg6E5fiBlLK8en79VewN+Uy9qeuEd1XypyjiKjDr9VKLeA3k61HxE
-	 74MfASVN8dnz1KFTT8/Y5NakDvF0p+zHrJI9Lx28Zj/GM08ed6kyMkLCMJMPmPhHO9VvjA5qybiT
-	 pIWBq4mt2WbvqZ03A570oNGPllStNRhy7Pt4wHQa0cfO4wd+i3/8Hx7HsI1fWCHeeUalIm3/vHef
-	 6Ya55BJLY3ZT7UziimXrOfvDMQLkkn2LbQu3YbI+q54jNiUEkcXI+JIvOTRR9IsbcAopvtg+v0cd
-	 S84v1jmz+vScCFWP7SvIPlauKhy+8JarHrXJpToUh6Vb/KVCMOI/pGZzvbrh+5MLTpWc37uDgXUI
-	 MAEgftHz7zXyAHTnAwD92NvJGwKSvSaToNiHyFpsTSBhAsc0Crd32xRLxWI6S40I6GZOMqsH+EQd
-	 ePyD/rQCJGAqaA+X2MrN2dI8/dk592lChh3b6M8zh95B7K/sfIlMSirCuFkK5RXhqU8d6tBVdwZK
-	 OgwcZiHBRT2v4Fn419jGgFNLSoblBVZYkrFxPg74LMMSi0srrRhyY+lkwiTvQjEIDmd0XpRGCYJg
-	 wEW98q+KN70YzCGsonglchzP4/vfcghxTKUVqnZao/+A/Bx0NtcZ4yaV9jNXRKDJB/CwbbeT0m6R
-	 rawwkZPzrxlLme59uGvC5haohOv8/7duDZrZOSMrPkdpZSpgdAe1iP+cBKI0lefztxA7QZjJ6MIg
-	 yCTFR45TnerQg3o2MzO9TB3+tkWjMEAl2Dyzzsm1Tv
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
-From: Edward Adam Davis <eadavis@qq.com>
-To: syzbot+10d145ea96fc91185445@syzkaller.appspotmail.com
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	kuniyu@amazon.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	sdf@fomichev.me,
-	syzkaller-bugs@googlegroups.com
-Subject: [PATCH] net: get ops lock under dev valid
-Date: Mon,  7 Apr 2025 19:22:27 +0800
-X-OQ-MSGID: <20250407112226.570082-2-eadavis@qq.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CNB4tcL7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744025387;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=S47uxvMBsLxSdhSuqk28KOUPEUMIfPAKz3tmaljnDSI=;
+	b=CNB4tcL7IbqgXafoFv+m2oA6GxbyQVDXaU6vCy/GYJedQHEsV9+bXdb47kwI6mI4BknEJH
+	ukiwRBaaGqddDOCO9FohoAkBdXeWApXpyMFlnkdabgauAZtXsOandittSkUOOWD6tCtNzJ
+	jQ87gfjjYefNsTMIDTb75NMnawtBRbE=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-66-N_b808kqNauv2wvlPCyvPQ-1; Mon, 07 Apr 2025 07:29:46 -0400
+X-MC-Unique: N_b808kqNauv2wvlPCyvPQ-1
+X-Mimecast-MFC-AGG-ID: N_b808kqNauv2wvlPCyvPQ_1744025385
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-ac3df3f1193so336156266b.2
+        for <netdev@vger.kernel.org>; Mon, 07 Apr 2025 04:29:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744025385; x=1744630185;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=S47uxvMBsLxSdhSuqk28KOUPEUMIfPAKz3tmaljnDSI=;
+        b=T7w24sBPP6x5yKN7trGAdeK8T66ci0bxEh1vh8DrjBNw6wFR8YYyFxsC99SqI5mAM0
+         hl20d7hMjvE9XRRCeMNsgmvrI7ODOlTIPpwfjqur21Od8QYn7rRiDf2edt5SOXtG8Hu7
+         VaPC5rwvk+AVpsuKa/zQiFfrtFEXtn9TVPNPKbKKEdqmM0U92WQId7mb2kMHCWrYWB6M
+         BldmZi8fLTA07inhf8DpLyFDJXSZU97q/kLKkzLXy83G+dyHXIC/aPt10inMOJhearpV
+         Ji5b+4BBKL6Jk0r9WdFTQVfIBL6kpMmRq499rhPtyjGZ7lqYFXFcsU5sFhmoEbBD6wz9
+         2VdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUh7ScbVC6HvE52rwLDS6mgSzX5BjwiQ3UNaaqhVozsh51X/Kx2+OxpVoxYsK38HqT2grY8t9w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywc0u05C4EamzD+JjuJ+PTTAOODi9znV+kW596JKf3zdOSKOc/D
+	ByPyQNOxtMKGiAXpI3HTEzT+X/YRCyVDkzdcLz1QxiN6L7SyMKjrA/hoXK9SZy7ZbvTsDm9TByl
+	4WDXDenL+3rKm7iBahympYSfW54lLZZYAWQwiiWF9OiwfhyQgwHSAYQ==
+X-Gm-Gg: ASbGncte0uOBeujkoF4prB7+n7AOHhDZxkNGdLuMX5Aq2LTYv7rijdPnb367BRJvzl4
+	ICmeRkNRmKI+MIwLeBGa9pgTcPkMs1aULJEjtSJQuLSwwZ5V6v4yNtciZMi2m7HyaI+2uT3XWDO
+	W8sl4PW+vLQ9NyZImcbnPCGY+wcBpxKUxLqU4BcH3+WqdAh0LpyjeV2SMAj/KjP3JqbXFRBUEFE
+	JrdXzlH0j9l4ByGZUKtsKMYlbA7cufTOqEWag2fXoInFatHkUXCkC5EqdQJYp9iRSy7TkQoc41l
+	yhrZfshLyWiuDx3hzp7M7TlWh5kkxvw0I1aRWCel
+X-Received: by 2002:a17:907:2cc2:b0:ac3:898a:f36d with SMTP id a640c23a62f3a-ac7d6d598d8mr1023232766b.30.1744025384866;
+        Mon, 07 Apr 2025 04:29:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEbTDXIwypIOOYSjOxLORhnbWyUEOHrZ4qkpaCB7MbMb2+Pzvk97ne8tm+FeRkc8RZ8qOhO+Q==
+X-Received: by 2002:a17:907:2cc2:b0:ac3:898a:f36d with SMTP id a640c23a62f3a-ac7d6d598d8mr1023230366b.30.1744025384376;
+        Mon, 07 Apr 2025 04:29:44 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac7c0186a03sm728372466b.125.2025.04.07.04.29.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Apr 2025 04:29:43 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id C26C91991884; Mon, 07 Apr 2025 13:29:42 +0200 (CEST)
+From: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiri Pirko <jiri@resnulli.us>
+Cc: Ilya Maximets <i.maximets@redhat.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org
+Subject: [RFC PATCH net] tc: Return an error if filters try to attach too many actions
+Date: Mon,  7 Apr 2025 13:29:23 +0200
+Message-ID: <20250407112923.20029-1-toke@redhat.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <67f36908.050a0220.0a13.027f.GAE@google.com>
-References: <67f36908.050a0220.0a13.027f.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Make sure that dev is not NULL before locking ops. 
+While developing the fix for the buffer sizing issue in [0], I noticed
+that the kernel will happily accept a long list of actions for a filter,
+and then just silently truncate that list down to a maximum of 32
+actions.
 
-Fixes: 8965c160b8f7 ("net: use netif_disable_lro in ipv6_add_dev")
-Reported-by: syzbot+10d145ea96fc91185445@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+That seems less than ideal, so this patch changes the action parsing to
+return an error message and refuse to create the filter in this case.
+This results in an error like:
+
+ # ip link add type veth
+ # tc qdisc replace dev veth0 root handle 1: fq_codel
+ # tc -echo filter add dev veth0 parent 1: u32 match u32 0 0 $(for i in $(seq 33); do echo action pedit munge ip dport set 22; done)
+Error: Only 32 actions supported per filter.
+We have an error talking to the kernel
+
+Instead of just creating a filter with 32 actions and dropping the last
+one.
+
+Sending as an RFC as this is obviously a change in UAPI. But seeing as
+creating more than 32 filters has never actually *worked*, it could be
+argued that the change is not likely to break any existing workflows.
+But, well, OTOH: https://xkcd.com/1172/
+
+So what do people think? Worth the risk for saner behaviour?
+
+[0] https://lore.kernel.org/r/20250407105542.16601-1-toke@redhat.com
+
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
 ---
- net/ipv6/addrconf.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/sched/act_api.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 2cffb8f4a2bc..5d9fd01e6265 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -3154,12 +3154,13 @@ int addrconf_add_ifaddr(struct net *net, void __user *arg)
+diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+index 839790043256..057e20cef375 100644
+--- a/net/sched/act_api.c
++++ b/net/sched/act_api.c
+@@ -1461,17 +1461,29 @@ int tcf_action_init(struct net *net, struct tcf_proto *tp, struct nlattr *nla,
+ 		    struct netlink_ext_ack *extack)
+ {
+ 	struct tc_action_ops *ops[TCA_ACT_MAX_PRIO] = {};
+-	struct nlattr *tb[TCA_ACT_MAX_PRIO + 1];
++	struct nlattr *tb[TCA_ACT_MAX_PRIO + 2];
+ 	struct tc_action *act;
+ 	size_t sz = 0;
+ 	int err;
+ 	int i;
  
- 	rtnl_net_lock(net);
- 	dev = __dev_get_by_index(net, ireq.ifr6_ifindex);
--	netdev_lock_ops(dev);
--	if (dev)
-+	if (dev) {
-+		netdev_lock_ops(dev);
- 		err = inet6_addr_add(net, dev, &cfg, 0, 0, NULL);
-+		netdev_unlock_ops(dev);
+-	err = nla_parse_nested_deprecated(tb, TCA_ACT_MAX_PRIO, nla, NULL,
++	err = nla_parse_nested_deprecated(tb, TCA_ACT_MAX_PRIO + 1, nla, NULL,
+ 					  extack);
+ 	if (err < 0)
+ 		return err;
+ 
++	/* The nested attributes are parsed as types, but they are really an
++	 * array of actions. So we parse one more than we can handle, and return
++	 * an error if the last one is set (as that indicates that the request
++	 * contained more than the maximum number of actions).
++	 */
++	if (tb[TCA_ACT_MAX_PRIO + 1]) {
++		NL_SET_ERR_MSG_FMT(extack,
++				   "Only %d actions supported per filter",
++				   TCA_ACT_MAX_PRIO);
++		return -EINVAL;
 +	}
- 	else
- 		err = -ENODEV;
--	netdev_unlock_ops(dev);
- 	rtnl_net_unlock(net);
- 	return err;
- }
++
+ 	for (i = 1; i <= TCA_ACT_MAX_PRIO && tb[i]; i++) {
+ 		struct tc_action_ops *a_o;
+ 
 -- 
-2.43.0
+2.49.0
 
