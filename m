@@ -1,83 +1,77 @@
-Received: from sg-1-13.ptr.blmpb.com (sg-1-13.ptr.blmpb.com [118.26.132.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from unicom146.biz-email.net (unicom146.biz-email.net [210.51.26.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1F0225403
-	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 07:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2643F22DF8C;
+	Mon,  7 Apr 2025 07:21:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.51.26.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744009819; cv=none; b=BcbTITjZW9/iTxf/hUAkNo2k6Q7Sz9vgbdS+I1BfCRM8IHjQmcAct7xvxlg8gFepWBjbB5USScL5frFGZRroBMaBI//vZFwwUiFNU5VG9AXxnxFQDjdvL5JRLFxIqzh2w2ca6f8oFXMXvbwf8kfJD6YdEb0alMvyWIPfrAGsqtM=
+	t=1744010519; cv=none; b=tZ8DY7lVW0kLl11RWyAfMFTReleH7X97pNB93pp6vA0ws1iyGG3c46TBQDb1cExwICWx0Yc4j9u7lWJZXK07/ulcyHQ5D0Ii3CQZON5hTKelBWpGTWhxIw2kPKtb7/57rQa/yfPbnrG9tsST3Hm5+e9zY1cvuim3SiZGyxw/FWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744009819; c=relaxed/simple;
-	bh=nfpPY1X5tmnzcqw/MzHCKftk1OWFRNZ+dd8GLUhKi8s=;
-	h=Cc:Date:In-Reply-To:References:To:Subject:Message-Id:From:
-	 Mime-Version:Content-Type; b=UGIM+XgffU1f8ICBZeZnvBdmp3fYbz4NeJnj1DBQQy3psHM2e0Fg18Ng62/bTQVWRdp1uujzRddRAzhqeYaB9FllE4JYnjpqpa96T2gjP5T1DczPcZHcjCkKb3hVnBfOyl0IwcbmJcA1z3+0N3AHPlz1UYaQPNvGa/fY9kqGWSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=fxZJWd3T; arc=none smtp.client-ip=118.26.132.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="fxZJWd3T"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1744008992; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=4AVdVkQRZeWLwL0m28ODgoKJTO+xC3dHgFx/UIT1gcI=;
- b=fxZJWd3TqRG4ENWj/d58sf6bnWb5T88izPgHldsIC8aMrujvelS4PKJXSe5DxCOz5zeCcP
- TT9rfUyj3FJSc9J+kSa6kfENsKIkE3303czKhaXY5MUcePPtcjCzMxcKcZwlmKcDat5aNl
- p54fCKlxJPBK0GzkAU2y5LmpGbQZ2l2GkJHCUJq4iMJx57C//BfcVT6BX4jPKDGlmRuBzn
- Wa16PPC7R4WeKmZWjuNOJI+ZMdnM6Lz+kmu87O3PM9MeA5UfUTdyJDPvrkOzxRst0vPw1B
- PPTm5obbCivOeTcMfRhAFyDqwvPsv0YIk1qb2yQF75cG7K9TrkdBEzjYCor1Yw==
-X-Original-From: Xin Tian <tianx@yunsilicon.com>
-Cc: <netdev@vger.kernel.org>, <leon@kernel.org>, <andrew+netdev@lunn.ch>, 
-	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
-	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
-	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <jacky@yunsilicon.com>, 
-	<horms@kernel.org>, <parthiban.veerasooran@microchip.com>, 
-	<masahiroy@kernel.org>, <kalesh-anakkur.purayil@broadcom.com>, 
-	<geert+renesas@glider.be>, <geert@linux-m68k.org>
-Date: Mon, 7 Apr 2025 14:56:34 +0800
-In-Reply-To: <20250325051150.65c02e32@kernel.org>
-References: <20250318151449.1376756-1-tianx@yunsilicon.com> <20250318151459.1376756-6-tianx@yunsilicon.com> <20250325051150.65c02e32@kernel.org>
-To: "Jakub Kicinski" <kuba@kernel.org>
-Subject: Re: [PATCH net-next v9 05/14] xsc: Add eq and alloc
-Message-Id: <8b64c52d-38bd-46ed-b327-59f5ca5ada52@yunsilicon.com>
-Content-Transfer-Encoding: quoted-printable
-X-Lms-Return-Path: <lba+267f3771e+1d5011+vger.kernel.org+tianx@yunsilicon.com>
-User-Agent: Mozilla Thunderbird
-From: "Xin Tian" <tianx@yunsilicon.com>
+	s=arc-20240116; t=1744010519; c=relaxed/simple;
+	bh=gwlbrJ4E+kM2LfDpPto20YwjkS8MNLC7fHkGVJptOIQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Dur0eitt8nXMqTjgO8lFz/DqVNjhhkhkws37IvXv2Rl75r5ikSDk5AvHH1mRi4mSmTUULU2Rc+28hgb5jip5AX6FBhJsCBqDXxlpBzUxd8lqGS9H7Nde/so0FmzO8RGx875wQSxi4f8tXhuWeSIoI7BJqBJctrZHiDZ1Er93ISk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com; spf=pass smtp.mailfrom=inspur.com; arc=none smtp.client-ip=210.51.26.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inspur.com
+Received: from jtjnmail201606.home.langchao.com
+        by unicom146.biz-email.net ((D)) with ASMTP (SSL) id 202504071520345929;
+        Mon, 07 Apr 2025 15:20:34 +0800
+Received: from locahost.localdomain.com (10.94.5.217) by
+ jtjnmail201606.home.langchao.com (10.100.2.6) with Microsoft SMTP Server id
+ 15.1.2507.39; Mon, 7 Apr 2025 15:20:34 +0800
+From: Charles Han <hanchunchao@inspur.com>
+To: <saeedm@nvidia.com>, <tariqt@nvidia.com>, <leon@kernel.org>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <lariel@nvidia.com>,
+	<paulb@nvidia.com>, <maord@nvidia.com>
+CC: <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Charles Han <hanchunchao@inspur.com>
+Subject: [PATCH V2] net/mlx5e: fix potential null dereference in mlx5e_tc_nic_create_miss_table
+Date: Mon, 7 Apr 2025 15:20:31 +0800
+Message-ID: <20250407072032.5232-1-hanchunchao@inspur.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <0e08292e-9280-4ef6-baf7-e9f642d33177@gmail.com>
+References: <0e08292e-9280-4ef6-baf7-e9f642d33177@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Received: from [127.0.0.1] ([116.231.163.61]) by smtp.feishu.cn with ESMTPS; Mon, 07 Apr 2025 14:56:29 +0800
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+tUid: 2025407152034ba30f3d455ddc3e2cb5a8f6e9b48885a
+X-Abuse-Reports-To: service@corp-email.com
+Abuse-Reports-To: service@corp-email.com
+X-Complaints-To: service@corp-email.com
+X-Report-Abuse-To: service@corp-email.com
 
-On 2025/3/25 20:11, Jakub Kicinski wrote:
-> On Tue, 18 Mar 2025 23:15:00 +0800 Xin Tian wrote:
->> +		for (i =3D 0; i < buf->nbufs; i++) {
->> +			buf->page_list[i].buf =3D
->> +				dma_alloc_coherent(&xdev->pdev->dev, PAGE_SIZE,
->> +						   &t, GFP_KERNEL | __GFP_ZERO);
-> DMA allocations are always zeroed, no need for GFP_ZERO.
-OK=EF=BC=8C will remove that.
->
->> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.h b/drivers/n=
-et/ethernet/yunsilicon/xsc/pci/alloc.h
->> new file mode 100644
->> index 000000000..a1c4b92a5
->> --- /dev/null
->> +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.h
->> @@ -0,0 +1,17 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
->> + * All rights reserved.
->> + */
->> +
->> +#ifndef __ALLOC_H
->> +#define __ALLOC_H
-> Please use less generic names for header guards.
+mlx5_get_flow_namespace() may return a NULL pointer, dereferencing it
+without NULL check may lead to NULL dereference.
+Add a NULL check for ns.
 
-I'll add "XSC_" prefix in next version.
+Fixes: 66cb64e292d2 ("net/mlx5e: TC NIC mode, fix tc chains miss table")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Thanks
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+index 9ba99609999f..c2f23ac95c3d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+@@ -5216,6 +5216,10 @@ static int mlx5e_tc_nic_create_miss_table(struct mlx5e_priv *priv)
+ 	ft_attr.level = MLX5E_TC_MISS_LEVEL;
+ 	ft_attr.prio = 0;
+ 	ns = mlx5_get_flow_namespace(priv->mdev, MLX5_FLOW_NAMESPACE_KERNEL);
++	if (!ns) {
++		netdev_err(priv->mdev, "Failed to get flow namespace\n");
++		return -EOPNOTSUPP;
++	}
+ 
+ 	*ft = mlx5_create_auto_grouped_flow_table(ns, &ft_attr);
+ 	if (IS_ERR(*ft)) {
+-- 
+2.43.0
+
