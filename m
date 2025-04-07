@@ -1,123 +1,83 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sg-1-13.ptr.blmpb.com (sg-1-13.ptr.blmpb.com [118.26.132.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EEC218ADC;
-	Mon,  7 Apr 2025 07:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1F0225403
+	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 07:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744009454; cv=none; b=U3zcQ3H7O9jj4BCirLR4Wxo46P0CwxsbiDQHyxOpr/i1/aW8uqbw86VVaJkKnhlkejc4zLeuhHAYGyUM2+UniHxY7ukBnLBKmLH5P3o/GyqzXyKkN1IP6gZRsdimQ3iPcnO8FPN2eHUlBySLz/zp9It5kpG/UhFlBM6yqKh/BTU=
+	t=1744009819; cv=none; b=BcbTITjZW9/iTxf/hUAkNo2k6Q7Sz9vgbdS+I1BfCRM8IHjQmcAct7xvxlg8gFepWBjbB5USScL5frFGZRroBMaBI//vZFwwUiFNU5VG9AXxnxFQDjdvL5JRLFxIqzh2w2ca6f8oFXMXvbwf8kfJD6YdEb0alMvyWIPfrAGsqtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744009454; c=relaxed/simple;
-	bh=63hCsI7D4OsJ+8xqEVbujyRPsdm/RcjkVGWNADKmzJ8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=t+icdGjf74ZiBqtPePIB8TnnKrjvB/xLs4ywzKN6eQCkTKdlH6mChT8n/DS46KAVFQf8ERe1kG41JEDtQsLwuz/CSGbspevD5O64o5z3EdWVLWrXraXunHOYVgODIB9Lc6h29mMNDk3JCR9Cg93LdzdiWENbYHs1z7Bsnp6jBH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=T/EQHLxD; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1744009819; c=relaxed/simple;
+	bh=nfpPY1X5tmnzcqw/MzHCKftk1OWFRNZ+dd8GLUhKi8s=;
+	h=Cc:Date:In-Reply-To:References:To:Subject:Message-Id:From:
+	 Mime-Version:Content-Type; b=UGIM+XgffU1f8ICBZeZnvBdmp3fYbz4NeJnj1DBQQy3psHM2e0Fg18Ng62/bTQVWRdp1uujzRddRAzhqeYaB9FllE4JYnjpqpa96T2gjP5T1DczPcZHcjCkKb3hVnBfOyl0IwcbmJcA1z3+0N3AHPlz1UYaQPNvGa/fY9kqGWSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=fxZJWd3T; arc=none smtp.client-ip=118.26.132.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="T/EQHLxD"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5372oDsE001707;
-	Mon, 7 Apr 2025 00:04:00 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=i/2qzHRAmu7K3gRU9dmtnPl
-	/DCrifDSer7QneKYGT/Q=; b=T/EQHLxDZTHFE988VGOuEZjJPjXdZTOdEACmG9j
-	Tr1XAmyFyJt/jL4ME4/GQrXKR7rjUaGVu/wWa+Nr1mUZMNbyjB5RY++15Ltnu19H
-	7bovwEuQYC8wy8BSAvNwb19jdi2sa/QuoEfa1wZqq6nmrNT/ZJOOjmtK24GOpIL5
-	P60Ey+jPCJVq9R+4naWYMftaf1/qvRED+W6fIoxfD8ooqFT3SQk5+6g1J3dM6c29
-	3C1rzBkDjKeB473iMTKlSZSPKWj6kYQ6QDX4eijKjYvqrBYnx7Pc2F5Ocbo/L1Hd
-	r+YCCfAeFtBku4fEMe/mhMIR/UdRiHoR3DAjaasaA48rThg==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 45un99shtx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Apr 2025 00:04:00 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Mon, 7 Apr 2025 00:03:58 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Mon, 7 Apr 2025 00:03:58 -0700
-Received: from test-OptiPlex-Tower-Plus-7010.marvell.com (unknown [10.29.37.157])
-	by maili.marvell.com (Postfix) with ESMTP id 089155E689E;
-	Mon,  7 Apr 2025 00:03:54 -0700 (PDT)
-From: Hariprasad Kelam <hkelam@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Hariprasad Kelam <hkelam@marvell.com>,
-        Sunil Goutham
-	<sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        "Subbaraya
- Sundeep" <sbhatta@marvell.com>,
-        Bharat Bhushan <bbhushan2@marvell.com>,
-        "Andrew Lunn" <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Naveen Mamindlapalli
-	<naveenm@marvell.com>
-Subject: [net PATCH] octeontx2-pf: qos: fix VF root node parent queue index
-Date: Mon, 7 Apr 2025 12:33:41 +0530
-Message-ID: <20250407070341.2765426-1-hkelam@marvell.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="fxZJWd3T"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2403070942; d=yunsilicon.com; t=1744008992; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=4AVdVkQRZeWLwL0m28ODgoKJTO+xC3dHgFx/UIT1gcI=;
+ b=fxZJWd3TqRG4ENWj/d58sf6bnWb5T88izPgHldsIC8aMrujvelS4PKJXSe5DxCOz5zeCcP
+ TT9rfUyj3FJSc9J+kSa6kfENsKIkE3303czKhaXY5MUcePPtcjCzMxcKcZwlmKcDat5aNl
+ p54fCKlxJPBK0GzkAU2y5LmpGbQZ2l2GkJHCUJq4iMJx57C//BfcVT6BX4jPKDGlmRuBzn
+ Wa16PPC7R4WeKmZWjuNOJI+ZMdnM6Lz+kmu87O3PM9MeA5UfUTdyJDPvrkOzxRst0vPw1B
+ PPTm5obbCivOeTcMfRhAFyDqwvPsv0YIk1qb2yQF75cG7K9TrkdBEzjYCor1Yw==
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+Cc: <netdev@vger.kernel.org>, <leon@kernel.org>, <andrew+netdev@lunn.ch>, 
+	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
+	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
+	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <jacky@yunsilicon.com>, 
+	<horms@kernel.org>, <parthiban.veerasooran@microchip.com>, 
+	<masahiroy@kernel.org>, <kalesh-anakkur.purayil@broadcom.com>, 
+	<geert+renesas@glider.be>, <geert@linux-m68k.org>
+Date: Mon, 7 Apr 2025 14:56:34 +0800
+In-Reply-To: <20250325051150.65c02e32@kernel.org>
+References: <20250318151449.1376756-1-tianx@yunsilicon.com> <20250318151459.1376756-6-tianx@yunsilicon.com> <20250325051150.65c02e32@kernel.org>
+To: "Jakub Kicinski" <kuba@kernel.org>
+Subject: Re: [PATCH net-next v9 05/14] xsc: Add eq and alloc
+Message-Id: <8b64c52d-38bd-46ed-b327-59f5ca5ada52@yunsilicon.com>
+Content-Transfer-Encoding: quoted-printable
+X-Lms-Return-Path: <lba+267f3771e+1d5011+vger.kernel.org+tianx@yunsilicon.com>
+User-Agent: Mozilla Thunderbird
+From: "Xin Tian" <tianx@yunsilicon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=I/JlRMgg c=1 sm=1 tr=0 ts=67f378e0 cx=c_pps a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17 a=XR8D0OoHHMoA:10 a=M5GUcnROAAAA:8 a=RI5rwOQ5OLZ3BBTcUwgA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: 5dnN9VO_owPMUbQB8nmQR9P-obmrIhhF
-X-Proofpoint-ORIG-GUID: 5dnN9VO_owPMUbQB8nmQR9P-obmrIhhF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-07_02,2025-04-03_03,2024-11-22_01
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Received: from [127.0.0.1] ([116.231.163.61]) by smtp.feishu.cn with ESMTPS; Mon, 07 Apr 2025 14:56:29 +0800
 
-The current code configures the Physical Function (PF) root node at TL1
-and the Virtual Function (VF) root node at TL2.
+On 2025/3/25 20:11, Jakub Kicinski wrote:
+> On Tue, 18 Mar 2025 23:15:00 +0800 Xin Tian wrote:
+>> +		for (i =3D 0; i < buf->nbufs; i++) {
+>> +			buf->page_list[i].buf =3D
+>> +				dma_alloc_coherent(&xdev->pdev->dev, PAGE_SIZE,
+>> +						   &t, GFP_KERNEL | __GFP_ZERO);
+> DMA allocations are always zeroed, no need for GFP_ZERO.
+OK=EF=BC=8C will remove that.
+>
+>> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.h b/drivers/n=
+et/ethernet/yunsilicon/xsc/pci/alloc.h
+>> new file mode 100644
+>> index 000000000..a1c4b92a5
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.h
+>> @@ -0,0 +1,17 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
+>> + * All rights reserved.
+>> + */
+>> +
+>> +#ifndef __ALLOC_H
+>> +#define __ALLOC_H
+> Please use less generic names for header guards.
 
-This ensure at any given point of time PF traffic gets more priority.
+I'll add "XSC_" prefix in next version.
 
-                    PF root node
-                      TL1
-                     /  \
-                    TL2  TL2 VF root node
-                    /     \
-                   TL3    TL3
-                   /       \
-                  TL4      TL4
-                  /         \
-                 SMQ        SMQ
-
-Due to a bug in the current code, the TL2 parent queue index on the
-VF interface is not being configured, leading to 'SMQ Flush' errors
-
-Fixes: 5e6808b4c68d ("octeontx2-pf: Add support for HTB offload")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
----
- drivers/net/ethernet/marvell/octeontx2/nic/qos.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-index 0f844c14485a..35acc07bd964 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-@@ -165,6 +165,11 @@ static void __otx2_qos_txschq_cfg(struct otx2_nic *pfvf,
- 
- 		otx2_config_sched_shaping(pfvf, node, cfg, &num_regs);
- 	} else if (level == NIX_TXSCH_LVL_TL2) {
-+		/* configure parent txschq */
-+		cfg->reg[num_regs] = NIX_AF_TL2X_PARENT(node->schq);
-+		cfg->regval[num_regs] = (u64)hw->tx_link << 16;
-+		num_regs++;
-+
- 		/* configure link cfg */
- 		if (level == pfvf->qos.link_cfg_lvl) {
- 			cfg->reg[num_regs] = NIX_AF_TL3_TL2X_LINKX_CFG(node->schq, hw->tx_link);
--- 
-2.34.1
-
+Thanks
