@@ -1,117 +1,85 @@
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7ABC227E86;
-	Mon,  7 Apr 2025 08:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FA782D91;
+	Mon,  7 Apr 2025 08:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744013906; cv=none; b=ZU0aPWMfd3658jbPXMTSVcdGZThhknkTiaiZBhQfYI/zq5PiumZ89EbWXCwlBTek+xkcGu0XdoxlWZ+wMYy014aUmIc15PXQOBRzMX9Iu1nngG1WD95dJ+hs62wc39q1NEixGXvbcUDsncbUgsgbZLNFmKqNbSxx24uRFN3nYBk=
+	t=1744014410; cv=none; b=JHi+UUxDIfsAHjKBazcGjdo6ju8Bd/pJZBn8Pn245f2ofFR4px4EO72Qe3mRIoM84HxZHQdYZo3UHeeqqBa19/S4mC+T7vZjpXPnmjJAHnjY2Cbs+5SP7Zpd4v08d0jB3HinxJ3p6wdO2NWrmfPlq9sZlNwTMSBWdVE3uaAuHs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744013906; c=relaxed/simple;
-	bh=RSCsB9LyBZKImdCS3CO3v6PdojzJl9JVl7oocdENeNE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=j7R4qlUEZFXX3KpdTt8gr6ULQZb5pDc0BeV/Qf4zwNt0kyORjdqGqZkvkNxeEN3leESxd/6JjF9CePlRNackkAhvS60jcVOGui4i86k4ofmk5CY+jyDJ04a99nl1gAxWRirWE4Lu6KseQLx2U0Jf+MAW1I0wKgWSywkNeZnECQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=hKV9wWN3; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+	s=arc-20240116; t=1744014410; c=relaxed/simple;
+	bh=GjRACRzoPs2ECBqi/Pxsk9ZC9XNfvclhRF5E5PgPgMw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZzjOvFRkqnSPRIZmLJ+VhpRduoHzkTc6JSku96faRPaocyLukyJS+ldaw2NIyMNc8wgM1FoSfQkHME/C7d0ZEjo3J0aQasx/VGdRJMSm4+X6tp418HFs/VGoGoLLONhcbrR68PFlcD3CqmjZJgjZROpHKMr2Al88TW5RxDtYbvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rhY0RuyA; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="hKV9wWN3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Type:MIME-Version:Message-ID:Date:References:
-	In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=QLfWDAfI2AnhA5OmyBMH2GN+AZpLJ7m9IQNoTTz/1Q4=; b=hKV9wWN32qu+WchUIFvT0Y/SjM
-	2jWOqCMP8azbf0L91SpOxo+jsmyFsk7lkPVPctusn8AFPs+uDq3cXumQ8vwCDqJb37TPEiAKa9bne
-	RbbZxzRlPl0klHLLP90DXY7loMrOTto9cmul4NyOA2xrH3CUjNgiBDwKv3Yr2l9GnMefHeXwxxlQv
-	ltnzBYGSKj5GRTbbRU+qux7UPNP2AGeKxkMA9Js8C8lFn9OvtxS6X8IqDKekKor8QQdM2E0h+TWb8
-	GuzUWCPrSvf0NS6FQ9ojvlb2cFTRyFkE/izVHQN0aBdPIWJ72lnKmNNErX/pewmwHs7Pa7RwoOGht
-	Cpjw6ing==;
-Received: from 79.red-83-60-111.dynamicip.rima-tde.net ([83.60.111.79] helo=localhost)
-	by fanzine2.igalia.com with utf8esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1u1h3B-00CmbI-HY; Mon, 07 Apr 2025 09:37:45 +0200
-From: Ricardo =?utf-8?Q?Ca=C3=B1uelo?= Navarro <rcn@igalia.com>
-To: Xin Long <lucien.xin@gmail.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, kernel-dev@igalia.com, linux-sctp@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] sctp: check transport existence before processing a
- send primitive
-In-Reply-To: <CADvbK_evR93rj1ZT_bzLKFqNQLPQ2BM0mzKnriGGsO5t07GAHQ@mail.gmail.com>
-References: <20250402-kasan_slab-use-after-free_read_in_sctp_outq_select_transport-v1-1-da6f5f00f286@igalia.com>
- <CADvbK_dTX3c9wgMa8bDW-Hg-5gGJ7sJzN5s8xtGwwYW9FE=rcg@mail.gmail.com>
- <87tt75efdj.fsf@igalia.com>
- <CADvbK_c69AoVyFDX2YduebF9DG8YyZM7aP7aMrMyqJi7vMmiSA@mail.gmail.com>
- <CADvbK_d+vr-t7D1GZJ86gG6oS+Nzy7MDVh_+7Je6hqCdez4Axw@mail.gmail.com>
- <87r028dyye.fsf@igalia.com>
- <CADvbK_evR93rj1ZT_bzLKFqNQLPQ2BM0mzKnriGGsO5t07GAHQ@mail.gmail.com>
-Date: Mon, 07 Apr 2025 09:37:44 +0200
-Message-ID: <87o6x8e81j.fsf@igalia.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rhY0RuyA"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1744014396;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=MACaU6zyr/5e+Nu+H0DPsJB7R5X63fr/DGu9+T8ZsdU=;
+	b=rhY0RuyAEfsY6Ggyru+cSPojXHDw+CzU+p+npS3WA8s6OPoFCrqgc4j45q9MkOoPNc8Mbh
+	luovehhKGMHN/maW2WbyE22VVQmggkCO7bC3oMHXGKkZFLAW+nA4C8bAQoDd0HQ6BQ3ojl
+	qa3o5vPv4x7GMQvhrDe+LQ2hfJ+9X4U=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Thomas Sailer <t.sailer@alumni.ethz.ch>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	linux-hams@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] hamradio: Remove unnecessary strscpy_pad() size arguments
+Date: Mon,  7 Apr 2025 10:26:07 +0200
+Message-ID: <20250407082607.741919-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, Apr 04 2025 at 10:22:38, Xin Long <lucien.xin@gmail.com> wrote:
+If the destination buffer has a fixed length, strscpy_pad()
+automatically determines its size using sizeof() when the argument is
+omitted. This makes the explicit sizeof() calls unnecessary - remove
+them.
 
->> Something like this:
->>
->> @@ -9225,7 +9227,9 @@ static int sctp_wait_for_sndbuf(struct sctp_association *asoc, long *timeo_p,
->>         pr_debug("%s: asoc:%p, timeo:%ld, msg_len:%zu\n", __func__, asoc,
->>                  *timeo_p, msg_len);
->>
->> -       /* Increment the association's refcnt.  */
->> +       /* Increment the transport and association's refcnt. */
->> +       if (transport)
->> +               sctp_transport_hold(transport);
->>         sctp_association_hold(asoc);
->>
->>         /* Wait on the association specific sndbuf space. */
->> @@ -9252,6 +9256,8 @@ static int sctp_wait_for_sndbuf(struct sctp_association *asoc, long *timeo_p,
->>                 lock_sock(sk);
->>                 if (sk != asoc->base.sk)
->>                         goto do_error;
->> +               if (transport && transport->dead)
->> +                       goto do_nonblock;
->>
->>                 *timeo_p = current_timeo;
->>         }
->> @@ -9259,7 +9265,9 @@ static int sctp_wait_for_sndbuf(struct sctp_association *asoc, long *timeo_p,
->>  out:
->>         finish_wait(&asoc->wait, &wait);
->>
->> -       /* Release the association's refcnt.  */
->> +       /* Release the transport and association's refcnt. */
->> +       if (transport)
->> +               sctp_transport_put(transport);
->>         sctp_association_put(asoc);
->>
->>         return err;
->>
->>
->> So by the time the sending thread re-claims the socket lock it can tell
->> whether someone else removed the transport by checking transport->dead
->> (set in sctp_transport_free()) and there's a guarantee that the
->> transport hasn't been freed yet because we hold a reference to it.
->>
->> If the whole receive path through sctp_assoc_rm_peer() is protected by
->> the same socket lock, as you said, this should be safe. The tests I ran
->> seem to work fine. If you're ok with it I'll send another patch to
->> supersede this one.
->>
-> LGTM.
+No functional changes intended.
 
-Good, thanks! I submitted a patch that supersedes this one:
-https://lore.kernel.org/linux-sctp/20250404-kasan_slab-use-after-free_read_in_sctp_outq_select_transport__20250404-v1-1-5ce4a0b78ef2@igalia.com
-so we can drop this.
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+---
+ drivers/net/hamradio/baycom_epp.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Cheers,
-Ricardo
+diff --git a/drivers/net/hamradio/baycom_epp.c b/drivers/net/hamradio/baycom_epp.c
+index 9e366f275406..5fda7a0fcce0 100644
+--- a/drivers/net/hamradio/baycom_epp.c
++++ b/drivers/net/hamradio/baycom_epp.c
+@@ -1074,7 +1074,7 @@ static int baycom_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
+ 		return 0;
+ 
+ 	case HDLCDRVCTL_DRIVERNAME:
+-		strscpy_pad(hi.data.drivername, "baycom_epp", sizeof(hi.data.drivername));
++		strscpy_pad(hi.data.drivername, "baycom_epp");
+ 		break;
+ 		
+ 	case HDLCDRVCTL_GETMODE:
+@@ -1091,8 +1091,7 @@ static int baycom_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
+ 		return baycom_setmode(bc, hi.data.modename);
+ 
+ 	case HDLCDRVCTL_MODELIST:
+-		strscpy_pad(hi.data.modename, "intclk,extclk,intmodem,extmodem,divider=x",
+-			sizeof(hi.data.modename));
++		strscpy_pad(hi.data.modename, "intclk,extclk,intmodem,extmodem,divider=x");
+ 		break;
+ 
+ 	case HDLCDRVCTL_MODEMPARMASK:
