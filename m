@@ -1,185 +1,149 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B951A8F60
-	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 16:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BEE4879B
+	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 16:57:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744044929; cv=none; b=sOGCFjxNbksIirLKWkEKMOi2uVHPSGLQUq1FARzFukeIMQfWrAN3Gr9Jml/VMUdJ5YXfw8NviJlKtXZvO90nAT+7eahqIV2Frkl7nxEENcpQ/8e988yNlM/JKRiwo3Co6cyxjL7g1nILMWIhPfVKFnPzaawgNQReRSs92VDK8oY=
+	t=1744045044; cv=none; b=sdBnNzzxBfNtsesTkKrNeDFMICpu+ONlrL2Sp6PLtRuAT9wGA6dxTp+bX4ZLsNz52Mn2LHoysmyzpRAoxch3QBb27fwjb3Vv78/5ChfDA0G/Df53c1k7wS3Ss82rR5LM+Dp4ApIwfAr0EprpDdnEwMrOLjEd2lgQIwQruuzlSxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744044929; c=relaxed/simple;
-	bh=jcM1KJ+oTG6JfJgmjgcHeZbwHhXSOTSj3tWy8VIS6b4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=AuwqKnai/QZfzJrM5I33X74Umb2nNs5CSt3enLc3J+LHqTd2rTaKXkwLovG58wsI7zwWOZQ56My40ckeqElGk3XS03ocgfshbFfc3An/F+1Xv1fSINLkNyPAkWcXzM4XjyeWl4OB8mZ8AuO/FfYjM8EHCz4c46YnSkanovG4KZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X2rswZQw; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1744045044; c=relaxed/simple;
+	bh=xavmz/HAokZzT87/ICDfarP0MdbzGAYxW789N0zQSwo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eos6uEnRXfNZxV/LU0bpoiU8Y+sGivS3s3QSyitw1+Ui449+hz1GZ2caSjQGVtevrc7jZc/NmPpm6D7jYg/4OVIhBP7xDHh8NB0vT0SCzxC1pN9Z+mjWd+PV5PygQPyAulw3XdAKa9RpppenJuJUwxwyuujmDlnAep241it2esM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j7nJZdcM; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X2rswZQw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744044926;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=qYhbBJcaD1ygP+VeRMfirZ7ESTAhBwWp2EEunASyCrc=;
-	b=X2rswZQwqEcj0tmmbL3yspqo5EJBX/NeDHEwYnuaNC0AYyGJj/+f11KqYFAxnrYUNj6QO6
-	n8E0SBFbtUf7wBa4qqS6WZIKMgAGhpIhwvqLNmAmJVDbUdapR+UrFmZ9wI/UpY8m628kwN
-	Chh3CE2sfEwY90hq45VWEf1yNLoB+9s=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-307-8CT4TjsUNK2CnFUgvoBRZA-1; Mon, 07 Apr 2025 12:55:24 -0400
-X-MC-Unique: 8CT4TjsUNK2CnFUgvoBRZA-1
-X-Mimecast-MFC-AGG-ID: 8CT4TjsUNK2CnFUgvoBRZA_1744044922
-Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-5498b25aae9so2295855e87.2
-        for <netdev@vger.kernel.org>; Mon, 07 Apr 2025 09:55:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j7nJZdcM"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-223f4c06e9fso41715305ad.1
+        for <netdev@vger.kernel.org>; Mon, 07 Apr 2025 09:57:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744045042; x=1744649842; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OjN3AtqnRZmTtL8CjWIY99mZuRYU5a+XRqA80N2gGrM=;
+        b=j7nJZdcMJi86P8S/oyxD8vUnCzYvF3mVV6+OXy4xl3WvSSuL5kBI1iFbclwTlw6Jb1
+         33jtbx/vw2PEMY26cTUNZjqBA/F/LLrIird5NYavi28fQtufXtX8jJPL64lMfcS+YKvI
+         spgA4d4C8zeXtNQ0LwNvJvpk2S81Qn5TcuZPww2esiF3CDDPLv0lO/u36VQDudi75yUo
+         NgDO9FjRm05dqG4vZASSFxkCDsRHUB+fVDZoThdGcN0jY1TKhwVnLjl3c8Fd890DHHu5
+         wUhbM2Om7GH2JDxXoFCkxg81rY/UWCvZWFjG6zEL8RX1/SmQhX3SR6eFkoyiN36G9Yu5
+         cKWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744044922; x=1744649722;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qYhbBJcaD1ygP+VeRMfirZ7ESTAhBwWp2EEunASyCrc=;
-        b=RM8ngy4m/4f+V8LVMu3281QIM35SlGaDTnhI6Lz9y3anPgivUxYZasx1C4e/me7XQ0
-         GlmD76LGHJxHlLiV0jlRST8SDSuzdM3L6sJywQBe1JvoT/O2Uu09CNOsdsAkiqu0z0Y+
-         lJZE/0xSDdtpN+573sF3J+eo++2NxeUTGrM0jf01hFTTMnhjZ4CWHO+O3//Y0GyxM3Td
-         PL6nq0kDob1UTIXeXxtdY+jrblBqxWOZHsv2UAtZBt7u2D5u624SnFK42b7AeEKtTmEp
-         NaLEwurPLYo+SK5rpPq6ObpC3YEXHVabVjSCY85cK28K9E59+MeaKFQcB/LmPli5JLc4
-         Qeuw==
-X-Gm-Message-State: AOJu0Yye+vVje4FxmQcim5fu+k5Ya+qaavZpFmUQo27LMAJj0cEQGr8T
-	lHfAKDU5qX5waQ/0kmDKznZWkMsZyy/JOYMegikSMBzFPHWixmLoJAWkeU4jqF2gP1J+3a76YFd
-	3RAsj8KV/4wLVekNChgVD+WwI8ArTCAnEzrLmVEy9j6r1UaT32hDRYA==
-X-Gm-Gg: ASbGncujrXaF40/YLSH8c9oZC5EKDTc4y/w1vfsM3LV7NsaqK2BuA6u+VjdMY5xIiAO
-	xFAwSL608Ytd0xNVC5Gzj6B7IaSMmf3IZx8iO8uiEnFwu2OIUq45yFJW3wZhGXRVNYr9/KqywLE
-	3ju1i0Wh44SutH5pmdJXpWfp6ojd2rN7g1mkAOMNseNfndcS66AwFAJ7AWjpx8QAhMIMTCW8Wyn
-	NvTIeSoibHVixclmaMO6rrt+lqP2/+XheothtNijY98cmq8Y9hyTvWrEiyi5uIBGvoTcF5r17hV
-	wrPkARIP3p9f
-X-Received: by 2002:a05:6512:108a:b0:549:8ed4:fb4c with SMTP id 2adb3069b0e04-54c297d170cmr2857127e87.24.1744044921939;
-        Mon, 07 Apr 2025 09:55:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFvNfOjhckEBLi3/as3JzwcR8acC1aLA6tON5wKoCSB+e2g7g/r0YG+F8AMVZXdzdvP+sGGxQ==
-X-Received: by 2002:a05:6512:108a:b0:549:8ed4:fb4c with SMTP id 2adb3069b0e04-54c297d170cmr2857106e87.24.1744044921502;
-        Mon, 07 Apr 2025 09:55:21 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54c1e5ab48bsm1342106e87.33.2025.04.07.09.55.20
+        d=1e100.net; s=20230601; t=1744045042; x=1744649842;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OjN3AtqnRZmTtL8CjWIY99mZuRYU5a+XRqA80N2gGrM=;
+        b=kKJj5hl4bNP0mycm7hSRMwiAoyX3lVj4hXnT+OC57LPZ3AsvkbhAXk4NKuG3+va3A5
+         MoVXqCUETcGg6tf7Va4ph7fmYMnrWtEoJnLgMO/VJljpNteXUO4ZzhxZJrq0pOm7NqAA
+         0sOTG6W1EPxP419Htiky1QOHa9d7uq8m24hf/vPJk4pMx7vo6Mq0G79PORVXgTGsVTRT
+         98pXTiaKTT0GBDBQBH3WSzsV4QVniHOpHWzOcQDOfk5VUputdo4XYhoXgtlobY1pOWml
+         eTpqeFUjP86wSpsuCZ3rTJuP94j8ceSxxwDgjCvUOh22X9s3UljuF0qK/CW+rtbnukYT
+         o8Kw==
+X-Forwarded-Encrypted: i=1; AJvYcCX9w0Hvvop7Jugzj8cwsqtuQDRQgfOj4D5x93djBA90I9sYm05WooPM354feVbYkHO/wb6JvIk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJSAdQw1vOQGOJsfyh16ozUgmbp/zvmgBXNoHG+ZKqkoclD+DI
+	TdLc+n72zuZ45c8dsURsZa+z4dxIcv7a8Bkj0tdKMixR2tdjbFQ=
+X-Gm-Gg: ASbGncuY7Vu6q8xWm9EAHDJ8+pK+dER1loxHpy1zCfENKfFvCQ3JBBBIjKWK8UGucPW
+	o0PTCmyK5Ygq2mqMsaJ5UzPw7WcAd4fJcB0PTIjZ0d7T5nKvCcSk/VpsFfmvxiyLfx9OfTbPuFP
+	1CFAg70ryL2MgoB9GHbUfW9oZd54JcgL/e71TmI8Nzjop32y32/AhOTU6HFhE2qOuLShBz5hzgQ
+	E7vmRsPlE3mSJKRtq7tGLFb9XXgt/4W67Q+Lw50IyN1SxWPca5Is4sKI4/y/OO2pgcl19X0SS5C
+	eg6x8+WRECx+s29Yj3qHQxxFq5zsuTMMZ+ouJkaYOhyV
+X-Google-Smtp-Source: AGHT+IEXHuh4nUJQHvgcnTBT5ZfLB5zHUwrruKt4E+2QQo2ck+e1uxd+zA60zlTOv4yqoe5vBwHN3g==
+X-Received: by 2002:a17:902:f686:b0:21f:1348:10e6 with SMTP id d9443c01a7336-22ab5e377e0mr2700745ad.13.1744045042123;
+        Mon, 07 Apr 2025 09:57:22 -0700 (PDT)
+Received: from localhost ([2601:646:9e00:f56e:2844:3d8f:bf3e:12cc])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-229787728cfsm83641225ad.228.2025.04.07.09.57.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Apr 2025 09:55:20 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 49D3119918D8; Mon, 07 Apr 2025 18:55:19 +0200 (CEST)
-From: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Subject: [PATCH net-next v8 0/2] Fix late DMA unmap crash for page pool
-Date: Mon, 07 Apr 2025 18:53:27 +0200
-Message-Id: <20250407-page-pool-track-dma-v8-0-da9500d4ba21@redhat.com>
+        Mon, 07 Apr 2025 09:57:21 -0700 (PDT)
+Date: Mon, 7 Apr 2025 09:57:20 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
+	syzbot+45016fe295243a7882d3@syzkaller.appspotmail.com
+Subject: Re: [PATCH v1 net] rtnetlink: Fix bad unlock balance in do_setlink().
+Message-ID: <Z_QD8CX_M1ISSC0b@mini-arch>
+References: <20250407164229.24414-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAgD9GcC/3XRzU7EIBAH8FfZcBYzMMPHevI9jAcKU7fRbRvaN
- Gs2fXexMbGmePwzmR8McxcT544n8XS6i8xLN3VDX4J/OIl4Cf0byy6VLDRoA6hAjqGcjcPwIec
- c4rtM1yABUSNhIAssSueYue1um/oiep5lz7dZvJbKpZvmIX9u1y1qq//IVJUXJUFGrTQbFxxF/
- Zw5XcL8GIfrBi56h2hTR3RBlEJuojqTbfGA4B6xdQQL4pksgbIMIR4Q2iOujlBBGvSQonVgExw
- Qs0d8HTEFMQZAh9Z6DOmA2F+kvLaO2O9xGo/kyDtIdEDcHvlnO64gISG1YM/lc/0fZF3XL52Y9
- KpfAgAA
-X-Change-ID: 20250310-page-pool-track-dma-0332343a460e
-To: "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
- Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
- Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
- Simon Horman <horms@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
- Mina Almasry <almasrymina@google.com>, 
- Yonglong Liu <liuyonglong@huawei.com>, 
- Yunsheng Lin <linyunsheng@huawei.com>, 
- Pavel Begunkov <asml.silence@gmail.com>, 
- Matthew Wilcox <willy@infradead.org>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, linux-rdma@vger.kernel.org, 
- linux-mm@kvack.org, 
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>, 
- Qiuling Ren <qren@redhat.com>, Yuying Ma <yuma@redhat.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250407164229.24414-1-kuniyu@amazon.com>
 
-This series fixes the late dma_unmap crash for page pool first reported
-by Yonglong Liu in [0]. It is an alternative approach to the one
-submitted by Yunsheng Lin, most recently in [1]. The first commit just
-wraps some tests in a helper function, in preparation of the main change
-in patch 2. See the commit message of patch 2 for the details.
+On 04/07, Kuniyuki Iwashima wrote:
+> When validate_linkmsg() fails in do_setlink(), we jump to the errout
+> label and calls netdev_unlock_ops() even though we have not called
+> netdev_lock_ops() as reported by syzbot.  [0]
+> 
+> Let's return an error directly in such a case.
+> 
+> [0]
+> WARNING: bad unlock balance detected!
+> 6.14.0-syzkaller-12504-g8bc251e5d874 #0 Not tainted
+> 
+> syz-executor814/5834 is trying to release lock (&dev_instance_lock_key) at:
+> [<ffffffff89f41f56>] netdev_unlock include/linux/netdevice.h:2756 [inline]
+> [<ffffffff89f41f56>] netdev_unlock_ops include/net/netdev_lock.h:48 [inline]
+> [<ffffffff89f41f56>] do_setlink+0xc26/0x43a0 net/core/rtnetlink.c:3406
+> but there are no more locks to release!
+> 
+> other info that might help us debug this:
+> 1 lock held by syz-executor814/5834:
+>  #0: ffffffff900fc408 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
+>  #0: ffffffff900fc408 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_nets_lock net/core/rtnetlink.c:341 [inline]
+>  #0: ffffffff900fc408 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_newlink+0xd68/0x1fe0 net/core/rtnetlink.c:4064
+> 
+> stack backtrace:
+> CPU: 0 UID: 0 PID: 5834 Comm: syz-executor814 Not tainted 6.14.0-syzkaller-12504-g8bc251e5d874 #0 PREEMPT(full)
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+> Call Trace:
+>  <TASK>
+>  __dump_stack lib/dump_stack.c:94 [inline]
+>  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+>  print_unlock_imbalance_bug+0x185/0x1a0 kernel/locking/lockdep.c:5296
+>  __lock_release kernel/locking/lockdep.c:5535 [inline]
+>  lock_release+0x1ed/0x3e0 kernel/locking/lockdep.c:5887
+>  __mutex_unlock_slowpath+0xee/0x800 kernel/locking/mutex.c:907
+>  netdev_unlock include/linux/netdevice.h:2756 [inline]
+>  netdev_unlock_ops include/net/netdev_lock.h:48 [inline]
+>  do_setlink+0xc26/0x43a0 net/core/rtnetlink.c:3406
+>  rtnl_group_changelink net/core/rtnetlink.c:3783 [inline]
+>  __rtnl_newlink net/core/rtnetlink.c:3937 [inline]
+>  rtnl_newlink+0x1619/0x1fe0 net/core/rtnetlink.c:4065
+>  rtnetlink_rcv_msg+0x80f/0xd70 net/core/rtnetlink.c:6955
+>  netlink_rcv_skb+0x208/0x480 net/netlink/af_netlink.c:2534
+>  netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
+>  netlink_unicast+0x7f8/0x9a0 net/netlink/af_netlink.c:1339
+>  netlink_sendmsg+0x8c3/0xcd0 net/netlink/af_netlink.c:1883
+>  sock_sendmsg_nosec net/socket.c:712 [inline]
+>  __sock_sendmsg+0x221/0x270 net/socket.c:727
+>  ____sys_sendmsg+0x523/0x860 net/socket.c:2566
+>  ___sys_sendmsg net/socket.c:2620 [inline]
+>  __sys_sendmsg+0x271/0x360 net/socket.c:2652
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0xf3/0x230 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7f8427b614a9
+> Code: 48 83 c4 28 c3 e8 37 17 00 00 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007fff9b59f3a8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+> RAX: ffffffffffffffda RBX: 00007fff9b59f578 RCX: 00007f8427b614a9
+> RDX: 0000000000000000 RSI: 0000200000000300 RDI: 0000000000000004
+> RBP: 00007f8427bd4610 R08: 000000000000000c R09: 00007fff9b59f578
+> R10: 000000000000001b R11: 0000000000000246 R12: 0000000000000001
+> R13:
+> 
+> Fixes: 4c975fd70002 ("net: hold instance lock during NETDEV_REGISTER/UP")
+> Reported-by: syzbot+45016fe295243a7882d3@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=45016fe295243a7882d3
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 
--Toke
-
-[0] https://lore.kernel.org/lkml/8067f204-1380-4d37-8ffd-007fc6f26738@kernel.org/T/
-[1] https://lore.kernel.org/r/20250307092356.638242-1-linyunsheng@huawei.com
-
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
----
-Changes in v8:
-- Move defines to mm.h
-- Keep pp->dma_sync as 1-bit wide
-- Unset pp->dma_addr on id alloc failure
-- Rebase on -rc1
-- Link to v7: https://lore.kernel.org/r/20250404-page-pool-track-dma-v7-0-ad34f069bc18@redhat.com
-
-Changes in v7:
-- Change WARN_ON logic if xarray alloc fails
-- Don't leak xarray ID if page_pool_set_dma_addr_netmem() fails
-- Unconditionally init xarray in page_pool_init()
-- Rebase on current net-next
-- Link to v6: https://lore.kernel.org/r/20250401-page-pool-track-dma-v6-0-8b83474870d4@redhat.com
-
-Changes in v6:
-- Add READ_ONCE() around both reads of pp->dma_sync
-- Link to v5: https://lore.kernel.org/r/20250328-page-pool-track-dma-v5-0-55002af683ad@redhat.com
-
-Changes in v5:
-- Dereferencing pp->p.dev if pp->pma_sync is unset could lead to a
-  crash, so make sure we don't do that.
-- With the change above, patch 2 was just changing a single field, so
-  squash it into patch 3
-- Link to v4: https://lore.kernel.org/r/20250327-page-pool-track-dma-v4-0-b380dc6706d0@redhat.com
-
-Changes in v4:
-- Rebase on net-next
-- Collect tags
-- Link to v3: https://lore.kernel.org/r/20250326-page-pool-track-dma-v3-0-8e464016e0ac@redhat.com
-
-Changes in v3:
-- Use a full-width bool for pp->dma_sync instead of a full unsigned
-  long (in patch 2), and leave pp->dma_sync_cpu alone.
-
-- Link to v2: https://lore.kernel.org/r/20250325-page-pool-track-dma-v2-0-113ebc1946f3@redhat.com
-
-Changes in v2:
-- Always leave two bits at the top of pp_magic as zero, instead of one
-
-- Add an rcu_read_lock() around __page_pool_dma_sync_for_device()
-
-- Add a comment in poison.h with a reference to the bitmask definition
-
-- Add a longer description of the logic of the bitmask definitions to
-  the comment in types.h, and a summary of the security implications of
-  using the pp_magic field to the commit message of patch 3
-
-- Collect Mina's Reviewed-by and Yonglong's Tested-by tags
-
-- Link to v1: https://lore.kernel.org/r/20250314-page-pool-track-dma-v1-0-c212e57a74c2@redhat.com
-
----
-Toke Høiland-Jørgensen (2):
-      page_pool: Move pp_magic check into helper functions
-      page_pool: Track DMA-mapped pages and unmap them when destroying the pool
-
- drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c |  4 +-
- include/linux/mm.h                               | 59 +++++++++++++++++
- include/linux/poison.h                           |  4 ++
- include/net/page_pool/types.h                    |  7 ++
- mm/page_alloc.c                                  |  8 +--
- net/core/netmem_priv.h                           | 33 +++++++++-
- net/core/page_pool.c                             | 81 ++++++++++++++++++++----
- net/core/skbuff.c                                | 16 +----
- net/core/xdp.c                                   |  4 +-
- 9 files changed, 178 insertions(+), 38 deletions(-)
----
-base-commit: 61f96e684edd28ca40555ec49ea1555df31ba619
-change-id: 20250310-page-pool-track-dma-0332343a460e
-
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
