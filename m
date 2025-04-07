@@ -1,153 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B754325C71D
-	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 19:01:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBFB254851;
+	Mon,  7 Apr 2025 19:02:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744052481; cv=none; b=KwxcQBFhVHp3axZZ9Oy18QmlaRUWNXeeVSdtsU1ZaY1msLMsQKDE/ZhS2W8swDM9ip7iJdTFCG5Xd5TjYeWBpSLkPTTk4jpPG5Bq2witdMyIkMxnA354KaG0yxLaXrDyUvZ9E9B2K/uj6lR3xw8aUD9zRLnah4MyO9iBb6OiIhI=
+	t=1744052550; cv=none; b=rZ49V1jcVeSM/yyUDXk9bMbhapUVDqd1b3PQDbTnbvzP/FScJTlgdqQXyAxJa7aGmURh3a1VoKhgVllOqa53b8zgOWoxDgJ8njF3v51o2a5bN+yjT2NuJHZYPTPrs6Wws/SU97R3oRJrqOwt8cCfUZ0rqzZ4T8hX0U/2wrUCV2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744052481; c=relaxed/simple;
-	bh=bnY6roFw4wBUzLkKqV/QhjP+bqrrZdZbcwFS3O6/h/k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QGlUwYsbvHo8aD/JBFn0aVLrCsmWZ3mR6j02H5LPoUqzi+cKBgwvHUpDPnoL+SHiGFyPy0IxHhOfRpVTAYgiVF/eErmoOWBjbFK3A2bwfOVLqeTeyKQ+ZnQoGGCSVTmX+6nI8sRnhJtvP2ZcTp7bJh69I5qW0eBnbs0SlaRCxM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qc2/5blT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744052550; c=relaxed/simple;
+	bh=yC6QZ/8jVM9KGam6L49RetYOUxCetakx6TQbeX39JKc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VNMReDrugZb030ydyausKPYeNsCPWRRRQHX3q5rJMj9sEBKOLFFaCovQN1yiYsy3zff8tMEo96ugX62aeylFQ4qDV4NEFeHIyPO0q85JFWe7LJVqURPGWwYuP6oISQVHW2c+sVZtvs4yui4tgyIXxuBwsXZ7p8HOz7fyMJbc8tM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=KDfXqTAF; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qc2/5blT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541F5C4CEE7;
-	Mon,  7 Apr 2025 19:01:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744052481;
-	bh=bnY6roFw4wBUzLkKqV/QhjP+bqrrZdZbcwFS3O6/h/k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qc2/5blTCBjjRh72/eH3YyZhK1PFCKj9QFo/Zknbxf9s5vBwFLRvfEO0brjuj/S4A
-	 XD71V9SOL715qvkCF+0nwEQ6mdmg7ZGG4ViCP2bJkk1scPHy6258esbE5NgTJQBM0Y
-	 ONKqqcVKzr9duJsA2nEZtLW418HCQnBX9eNSJRAD8AhYg7j23rvHLSXV+7jkuA5QBW
-	 qNwl9FT+XHLcmfPNoqL2PGCZG/gf8i7YzXPX4ZbYv1JOfdADayHj61nBETlaBKvdzH
-	 HudCktPjFAFrD9n5r7Dt5nH/WgTzyNLTnZoDNoejNus8kpKmdEzI5s3YNiW9grAOBv
-	 mSR2+pJxYNTkQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	sdf@fomichev.me,
-	hramamurthy@google.com,
-	kuniyu@amazon.com,
-	jdamato@fastly.com
-Subject: [PATCH net-next 8/8] netdev: depend on netdev->lock for qstats in ops locked drivers
-Date: Mon,  7 Apr 2025 12:01:17 -0700
-Message-ID: <20250407190117.16528-9-kuba@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250407190117.16528-1-kuba@kernel.org>
-References: <20250407190117.16528-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="KDfXqTAF"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1u1rjh-00Cluc-P9; Mon, 07 Apr 2025 21:02:21 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Subject:Date:From;
+	bh=KVp3ZQyloTuaLdQygQMAf/QKWBZdcAiGhMuu41ke8zs=; b=KDfXqTAFYtd1CycSD/yrGuxMFd
+	6keGPaUtFoWvl1mnGl64rwW2xmdVb7Jjvilc4nYtxokgHygmeNSsPOTcmRdTf0Q3+4ZvG0zOWixBt
+	4+bPlFYCbLfJiC7cKpQzmxVgaf4Ga0DBvwGTRb0zltTq14WNLfjYlxWGhTjCDs9LYFyC0ncsUSwiz
+	M4OoB89KuKrIpIxQrQKMut4BklWnSAEAhl1RHHIm8GZpikTon2f3hc1PtMcfZlZivfCxIOyqNUG9x
+	sRnGtJPf53QrRA44sjiKqF8jRKXhvRU9W5uJ0XGJldRL+doLZdtkLsPKHdTwEKrQgG2ged0FR8JWH
+	61quWWHw==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1u1rjg-0001CO-MP; Mon, 07 Apr 2025 21:02:20 +0200
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1u1rjN-009Ivh-O1; Mon, 07 Apr 2025 21:02:01 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Date: Mon, 07 Apr 2025 21:01:02 +0200
+Subject: [PATCH net-next] net: Drop unused @sk of
+ __skb_try_recv_from_queue()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250407-cleanup-drop-param-sk-v1-1-cd076979afac@rbox.co>
+X-B4-Tracking: v=1; b=H4sIAO0g9GcC/x3MQQqDMBBA0avIrDuQhkTQq5QuQjLq0DqGiZaAe
+ PcGl2/x/wmFlKnA2J2g9OPCmzQ8Hx3EJchMyKkZrLHeONNj/FKQI2PSLWMOGlYsHxyi9a53yQ/
+ RQ2uz0sT1/r5AaEehusP7uv69hwFQcQAAAA==
+X-Change-ID: 20250406-cleanup-drop-param-sk-9c25464d59c5
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ David Ahern <dsahern@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-We mostly needed rtnl_lock in qstat to make sure the queue count
-is stable while we work. For "ops locked" drivers the instance
-lock protects the queue count, so we don't have to take rtnl_lock.
+__skb_try_recv_from_queue() deals with a queue, @sk is never used.
+Remove sk from function parameters, adapt callers.
 
-For currently ops-locked drivers: netdevsim and bnxt need
-the protection from netdev going down while we dump, which
-instance lock provides. gve doesn't care.
+No functional change intended.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- Documentation/networking/netdevices.rst |  6 +++++
- include/net/netdev_queues.h             |  4 +++-
- net/core/netdev-genl.c                  | 29 +++++++++++++++----------
- 3 files changed, 26 insertions(+), 13 deletions(-)
+ include/linux/skbuff.h | 3 +--
+ net/core/datagram.c    | 5 ++---
+ net/ipv4/udp.c         | 8 ++++----
+ 3 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/Documentation/networking/netdevices.rst b/Documentation/networking/netdevices.rst
-index 0cfff56b436e..ec9d9a2cefe7 100644
---- a/Documentation/networking/netdevices.rst
-+++ b/Documentation/networking/netdevices.rst
-@@ -356,6 +356,12 @@ Similarly to ``ndos`` the instance lock is only held for select drivers.
- For "ops locked" drivers all ethtool ops without an exception should
- be called under the instance lock.
- 
-+struct netdev_stat_ops
-+----------------------
-+
-+"qstat" ops are invoked under the instance lock for "ops locked" drivers,
-+and under rtnl_lock for all other drivers.
-+
- struct net_shaper_ops
- ---------------------
- 
-diff --git a/include/net/netdev_queues.h b/include/net/netdev_queues.h
-index 825141d675e5..ea709b59d827 100644
---- a/include/net/netdev_queues.h
-+++ b/include/net/netdev_queues.h
-@@ -85,9 +85,11 @@ struct netdev_queue_stats_tx {
-  * for some of the events is not maintained, and reliable "total" cannot
-  * be provided).
-  *
-+ * Ops are called under the instance lock if netdev_need_ops_lock()
-+ * returns true, otherwise under rtnl_lock.
-  * Device drivers can assume that when collecting total device stats,
-  * the @get_base_stats and subsequent per-queue calls are performed
-- * "atomically" (without releasing the rtnl_lock).
-+ * "atomically" (without releasing the relevant lock).
-  *
-  * Device drivers are encouraged to reset the per-queue statistics when
-  * number of queues change. This is because the primary use case for
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index 8c58261de969..b64c614a00c4 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -795,26 +795,31 @@ int netdev_nl_qstats_get_dumpit(struct sk_buff *skb,
- 	if (info->attrs[NETDEV_A_QSTATS_IFINDEX])
- 		ifindex = nla_get_u32(info->attrs[NETDEV_A_QSTATS_IFINDEX]);
- 
--	rtnl_lock();
- 	if (ifindex) {
--		netdev = __dev_get_by_index(net, ifindex);
--		if (netdev && netdev->stat_ops) {
-+		netdev = netdev_get_by_index_lock_ops_compat(net, ifindex);
-+		if (!netdev) {
-+			NL_SET_BAD_ATTR(info->extack,
-+					info->attrs[NETDEV_A_QSTATS_IFINDEX]);
-+			return -ENODEV;
-+		}
-+		if (netdev->stat_ops) {
- 			err = netdev_nl_qstats_get_dump_one(netdev, scope, skb,
- 							    info, ctx);
- 		} else {
- 			NL_SET_BAD_ATTR(info->extack,
- 					info->attrs[NETDEV_A_QSTATS_IFINDEX]);
--			err = netdev ? -EOPNOTSUPP : -ENODEV;
--		}
--	} else {
--		for_each_netdev_dump(net, netdev, ctx->ifindex) {
--			err = netdev_nl_qstats_get_dump_one(netdev, scope, skb,
--							    info, ctx);
--			if (err < 0)
--				break;
-+			err = -EOPNOTSUPP;
- 		}
-+		netdev_unlock_ops_compat(netdev);
-+		return err;
-+	}
-+
-+	for_each_netdev_lock_ops_compat_scoped(net, netdev, ctx->ifindex) {
-+		err = netdev_nl_qstats_get_dump_one(netdev, scope, skb,
-+						    info, ctx);
-+		if (err < 0)
-+			break;
- 	}
--	rtnl_unlock();
- 
- 	return err;
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index b974a277975a8a7b6f40c362542e9e8522539009..f1381aff0f896220b2b6bc706aaca17b8f28fd8b 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -4105,8 +4105,7 @@ static inline void skb_frag_list_init(struct sk_buff *skb)
+ int __skb_wait_for_more_packets(struct sock *sk, struct sk_buff_head *queue,
+ 				int *err, long *timeo_p,
+ 				const struct sk_buff *skb);
+-struct sk_buff *__skb_try_recv_from_queue(struct sock *sk,
+-					  struct sk_buff_head *queue,
++struct sk_buff *__skb_try_recv_from_queue(struct sk_buff_head *queue,
+ 					  unsigned int flags,
+ 					  int *off, int *err,
+ 					  struct sk_buff **last);
+diff --git a/net/core/datagram.c b/net/core/datagram.c
+index f0693707aece46bb5ffd2143a0773d54c234999c..f0634f0cb8346d69923f65183dbdf000b6993cf9 100644
+--- a/net/core/datagram.c
++++ b/net/core/datagram.c
+@@ -163,8 +163,7 @@ static struct sk_buff *skb_set_peeked(struct sk_buff *skb)
+ 	return skb;
  }
+ 
+-struct sk_buff *__skb_try_recv_from_queue(struct sock *sk,
+-					  struct sk_buff_head *queue,
++struct sk_buff *__skb_try_recv_from_queue(struct sk_buff_head *queue,
+ 					  unsigned int flags,
+ 					  int *off, int *err,
+ 					  struct sk_buff **last)
+@@ -261,7 +260,7 @@ struct sk_buff *__skb_try_recv_datagram(struct sock *sk,
+ 		 * However, this function was correct in any case. 8)
+ 		 */
+ 		spin_lock_irqsave(&queue->lock, cpu_flags);
+-		skb = __skb_try_recv_from_queue(sk, queue, flags, off, &error,
++		skb = __skb_try_recv_from_queue(queue, flags, off, &error,
+ 						last);
+ 		spin_unlock_irqrestore(&queue->lock, cpu_flags);
+ 		if (error)
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 2742cc7602bb58535e8ef217d9ffc3fea7ff9297..1696cc5a2dcdc4f9c40c65b4d61c722a1cd9ca9a 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1942,8 +1942,8 @@ struct sk_buff *__skb_recv_udp(struct sock *sk, unsigned int flags,
+ 		error = -EAGAIN;
+ 		do {
+ 			spin_lock_bh(&queue->lock);
+-			skb = __skb_try_recv_from_queue(sk, queue, flags, off,
+-							err, &last);
++			skb = __skb_try_recv_from_queue(queue, flags, off, err,
++							&last);
+ 			if (skb) {
+ 				if (!(flags & MSG_PEEK))
+ 					udp_skb_destructor(sk, skb);
+@@ -1964,8 +1964,8 @@ struct sk_buff *__skb_recv_udp(struct sock *sk, unsigned int flags,
+ 			spin_lock(&sk_queue->lock);
+ 			skb_queue_splice_tail_init(sk_queue, queue);
+ 
+-			skb = __skb_try_recv_from_queue(sk, queue, flags, off,
+-							err, &last);
++			skb = __skb_try_recv_from_queue(queue, flags, off, err,
++							&last);
+ 			if (skb && !(flags & MSG_PEEK))
+ 				udp_skb_dtor_locked(sk, skb);
+ 			spin_unlock(&sk_queue->lock);
+
+---
+base-commit: 61f96e684edd28ca40555ec49ea1555df31ba619
+change-id: 20250406-cleanup-drop-param-sk-9c25464d59c5
+
+Best regards,
 -- 
-2.49.0
+Michal Luczaj <mhal@rbox.co>
 
