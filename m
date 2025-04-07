@@ -1,241 +1,118 @@
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+Received: from plesk.hostmyservers.fr (plesk.hostmyservers.fr [45.145.164.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8791FCFDF
-	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 15:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352461FCFE5;
+	Mon,  7 Apr 2025 15:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.164.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744038824; cv=none; b=J9q0PrVmtx2ldXNJcsk65MLtqQ5X8omhbgHBWf7VuKEw2bkzmDeOFELYz8WbMIIKdKpPJTIDTUEhaV5p/b+H+8yL16SqIkIwcy3V5C8EsB/4TdxgBo6eanlPt3g7/6ycoYcenLHAU9X6X2AGKRj5UW+oXQQHrj3Hstxdqhz0uEw=
+	t=1744039592; cv=none; b=Mbl3p4NUyyLuWMVUBMxgjSsM+9zVHEoPEOK3TFb1FwRjRKt6iDvXD0onVeFuwsY5UDOZ3civE4jULd5ToeJLDXm8b8r+y9xupycMWen3XdJFeUApLa/pMqYsXzh4Dm2ToFzrvATp72ri1nYhfXuI77Nw4SWEGdmJ3iAC/iV3yNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744038824; c=relaxed/simple;
-	bh=lsN2EyijP3HY1AxRbBlStJJZbqh6xNqIM2SpDyt96Ms=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=tzNATa18W7Xz6Cefjo8TSyxFN1KiTmAO2GmHw4ph/nXbqm+w9jix3teDKjsBXCqozoSR8ue0gFa4DVINcdRRI+Sr08UCC0+Rq+s95NKo543ORRD/TXNNWlNanrUMEg7NiAmSSK5ShXMmYV9KXIu4HqSgJRk/WE4Imh/UJinFeQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=permerror (0-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pfuotEMN; arc=none smtp.client-ip=103.168.172.150; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; arc=none smtp.client-ip=209.85.161.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pfuotEMN"
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-6044db4b55cso69362eaf.2
-        for <netdev@vger.kernel.org>; Mon, 07 Apr 2025 08:13:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744038822; x=1744643622;
-        h=content-disposition:mime-version:list-unsubscribe:list-subscribe
-         :list-id:precedence:feedback-id:dkim-signature:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=StRwAH3c5JQCYa2goJM8UKgAcNvBV16cvxplwCXxZt8=;
-        b=kCfLQLmWfXHG9OgquOy2jjG+K09l3BaqEP7Es2fGZCq57L2ONFraTn4bnH6sJNcWfX
-         iPCy1uLeUbUxYIKSQ2foxAuxEKVmP9h4bGx4re16lsTSs08DaxIT6ORtITGSUjXeWFo3
-         fLDvfgfJpVUhx8Hk6RfVCgl9RJHLzhTA9mfmpEnVOKAWqK52XEBT1ZTXwYc1HnPDZSiE
-         g3KqZYXlJulgmObwRaLJbJsYMYuSXh9r59X6ERIgq+KV9+EtzXGIZ+cIH39/lXOoqeNY
-         sDd8PoSUQoFjT4sehOA+G7TLp6HVmnZ6GalEARJz75UVOE7M3VdeskTFeN29ar1eof58
-         Df6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXvFe2v6O6JjJlA85jsRmBSOBqKnUG458Z3M4a7B+d2OiuXoV6kEnKG4H9tVp4J3YQc6tlYbc0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpIXqjRARzjcqNO9HsbM4a96oV/k6Uyk36Yh7nP0+ibBiP0oAH
-	2PUYBhL0Mxeq0Mx/OtEldp0rgv2b4C0WVnCAyFTvojL78eDPmB244G1noudcJKkFFlGO/39gQnm
-	FrxQ9HUCKuj9jTf0nYEOl0B3bCqkm4K0+ntWVsOL6wak=
-X-Gm-Gg: ASbGncvgwjEmU3D8od9XrB2SX8YRA9dUUudqdbJ6ijs8p3CxeGsd2cI5kjh+MUQodFa
-	N+DV6anuCFJRDUaDKBiOtE6O/k2iD8TgGyWXOAw6/4K6szPJwxu77UXxwTVWIkLMdRs/ILLgEN9
-	tewIjEGxOBteWpiZG/++QK0EUjZkzEyHArfG+bV5kCuSoow9ytL5s75fKMTIlxrPInt6qFXXSGn
-	LmETt/8/apra7gk2PG3bZXq8cMJVintJMI7Bq4LxtTza25Xg+qdymxGy65b1JMg55PTwDjxwRL9
-	7CVRS5Vpu6I0BFLrs+8Vt906cPxlqYi2ekoSa1F1DTMXlv2y/Pd40Cg8c0Tj/h9e89WoL64ehH+
-	/7VCMBxbpqn0RJLQ7SABS0WiZ8SFMQtBk+g==
-X-Google-Smtp-Source: AGHT+IENy1PaEbjydVQw2hFrYJaoXxcnR0VygJ8u5NhF43vHUzkquVOFwMqpKSaLQd1mMJnVPKnETg==
-X-Received: by 2002:a4a:e913:0:b0:603:f973:1b6 with SMTP id 006d021491bc7-6041660fab0mr6271811eaf.5.1744038822076;
-        Mon, 07 Apr 2025 08:13:42 -0700 (PDT)
-Received: from localhost.localdomain ([192.19.224.250])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6040c5ac538sm1785927eaf.33.2025.04.07.08.13.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Apr 2025 08:13:41 -0700 (PDT)
-From: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
-To: damodharam.ammepalli@broadcom.com,
-	Michael Chan <michael.chan@broadcom.com>
-Cc: Ido Schimmel <idosch@idosch.org>,
-	davem@davemloft.net,
-	netdev@vger.kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew@lunn.ch,
-	horms@kernel.org,
-	danieller@nvidia.com,
-	andrew.gospodarek@broadcom.com,
-	petrm@nvidia.com
-Subject: Re: [PATCH net 2/2] ethtool: cmis: use u16 for calculated read_write_len_ext
-Date: Mon,  7 Apr 2025 08:09:56 -0700
-Message-ID: <Z-6jN7aA8ZnYRH6j@shredder>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250402183123.321036-3-michael.chan@broadcom.com>
-References: <20250402183123.321036-1-michael.chan@broadcom.com> <20250402183123.321036-3-michael.chan@broadcom.com>
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150]) (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits)) (No client certificate requested) by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28A2288A2 for <netdev@vger.kernel.org>; Thu,  3 Apr 2025 15:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45]) by mailfout.phl.internal (Postfix) with ESMTP id B3A8D13801B6; Thu,  3 Apr 2025 11:03:23 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162]) by phl-compute-05.internal (MEProxy); Thu, 03 Apr 2025 11:03:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d= messagingengine.com; h=cc:cc:content-type:content-type:date:date :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to :message-id:mime-version:references:reply-to:subject:subject:to :to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t= 1743692603; x=1743779003; bh=EQFvJwkP6VeAQja9Q6v64hTg45t1biUr7d2 vxNGzNus=; b=pfuotEMNiDFwq0qdiALf8JTr/HTzDzLyI72TSysdqQREpFNKA5W jrWWxDNzQzl8N5O7M/ap1v8hvGyLJrbRX069ltT0GQG6rqaLsrQ0MD43iCfR1ymN 6jT9oDUj4WUTg4ogGptt/wudw5URNDe+faTojWMd0M2X28K36hMwywLs6r2pCri7 k5HrQX4WWbdy2gneQ4aRVSzMgFsX2Gmuc0/zpPXBj5Gp55KjgviTTsmdFApcz85c CfToR5wLgZZMH+DagiLBfzeIr0M8xTD3QxYJf+SrxNNUuJzemA5gVpE87wyPzUeW K4kffi+TQ78I4iezsT+qK9AJFY66Eop94nQ==
-X-ME-Sender: <xms:O6PuZ1FqrycCE-lF3qv9SmObciP5RUAYRZwxsyqcNmwXMaBLYNA2tA> <xme:O6PuZ6Um1wchPOP68A7a-IqywYYD7weAbYhfCC4MTzSXazI1u0tx_U-WUhJWU7KkQ Rd-VeXnqRfNgcU>
-X-ME-Received: <xmr:O6PuZ3IK0FDXCeqljg7U6GVSCSMu1r5KVvIcYohyeXAgYcan-RA9-_X5qJr9>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddukeekkeejucetufdoteggodetrf
- dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
- pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
- gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
- vdenucfhrhhomhepkfguohcuufgthhhimhhmvghluceoihguohhstghhsehiughoshgthh
- drohhrgheqnecuggftrfgrthhtvghrnhepvddufeevkeehueegfedtvdevfefgudeifedu
- ieefgfelkeehgeelgeejjeeggefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
- hmpehmrghilhhfrhhomhepihguohhstghhsehiughoshgthhdrohhrghdpnhgspghrtghp
- thhtohepuddvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmihgthhgrvghlrd
- gthhgrnhessghrohgruggtohhmrdgtohhmpdhrtghpthhtohepuggrvhgvmhesuggrvhgv
- mhhlohhfthdrnhgvthdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlh
- drohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghp
- thhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrh
- gvughhrghtrdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghp
- thhtohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhhivghllh gvrhesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:O6PuZ7FK8hP9bH9MQIyyZwyT465H_ezYg35iqoRRrf_lV1BGsWdygw> <xmx:O6PuZ7WXtMKDlwZ0SOnOa4nyy6IYxzPG42OJpsXw9I3yTh8k0g1J8Q> <xmx:O6PuZ2PS83jp7ilnToox4ph7Hklq8axxydnElKa8XJ6BACVqE9eMRg> <xmx:O6PuZ60Xt851v2eQeSjoIozLYxunN72p5UQaBnfqhLYd6P09oS5NKw> <xmx:O6PuZ1s3yB1fqXEYeTFr0yuGLJ2byCN7MfowyFWafhw5nvEqIapokFfi>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu, 3 Apr 2025 11:03:22 -0400 (EDT)
-Precedence: bulk
+	s=arc-20240116; t=1744039592; c=relaxed/simple;
+	bh=8rmoI+MLumkyOH9sGcP/FhAE5tgXLwAl3apFYQe0AAY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Nl8WaM/WL6zz/z7Zqtjn3vI7zj6sfiJD3w73emnGsYfBQDpLC/yHh8MGdH3+kVZk209v5+iAcef9NFnlaxOFEKsYpzMPat5yu9gxKPCwo71x7cCZcGzCFMopRGQnNeDwK5PgcjNebS8iFnHcrx5qgLymsFEGj0TjqMX1BhMNTZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com; spf=pass smtp.mailfrom=arnaud-lcm.com; arc=none smtp.client-ip=45.145.164.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arnaud-lcm.com
+Received: from [127.0.1.1] (unknown [IPv6:2a01:e0a:3e8:c0d0:3b93:9152:d50e:6d45])
+	by plesk.hostmyservers.fr (Postfix) with ESMTPSA id 77E85479E0;
+	Mon,  7 Apr 2025 15:26:26 +0000 (UTC)
+Authentication-Results: Plesk;
+        spf=pass (sender IP is 2a01:e0a:3e8:c0d0:3b93:9152:d50e:6d45) smtp.mailfrom=contact@arnaud-lcm.com smtp.helo=[127.0.1.1]
+Received-SPF: pass (Plesk: connection is authenticated)
+From: Arnaud Lecomte <contact@arnaud-lcm.com>
+Date: Mon, 07 Apr 2025 17:26:21 +0200
+Subject: [PATCH] net: ppp: Add bound checking for skb d on ppp_sync_txmung
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Disposition: inline
-Message-ID: <20250407150956.VkZ--9OJPVAiAixXIt3VkXNXAvO_0vxLFHgZUak7Q7U@z>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: 
+ <20250407-bound-checking-ppp_txmung-v1-1-cfcd2efe39e3@arnaud-lcm.com>
+X-B4-Tracking: v=1; b=H4sIAJzu82cC/x2MQQqAIBAAvxJ7TrBQkr4SEaWbLZGJZgTh35NuM
+ 4eZFyIGwgh99ULAmyKdrkhTV6C32VlkZIpDy1vJBZdsOZMzTG+od3KWee+n6zlSQaF4p5UUaJS
+ E0vuAKz3/exhz/gAF42cZawAAAA==
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-ppp@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, contact@arnaud-lcm.com,
+ skhan@linuxfoundation.org,
+ syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1744039586; l=1904;
+ i=contact@arnaud-lcm.com; s=20250405; h=from:subject:message-id;
+ bh=8rmoI+MLumkyOH9sGcP/FhAE5tgXLwAl3apFYQe0AAY=;
+ b=M6469qTLfHJ5l/l/pfI2SwTDPs62ZlfhL9gHLufnvBlbu+ZSXJi5pvv87oofaVyVgE7IflGke
+ WLJrJ1oDwCkB4ruypAKnkFkUh1eA9WvqskTQEjyP69bw9cnYSq9jhJ2
+X-Developer-Key: i=contact@arnaud-lcm.com; a=ed25519;
+ pk=Ct5pwYkf/5qSRyUpocKOdGc2XBlQoMYODwgtlFsDk7o=
+X-PPP-Message-ID: <174403958690.22797.5110854261377796838@Plesk>
+X-PPP-Vhost: arnaud-lcm.com
 
-From: Ido Schimmel <idosch@idosch.org>
+Ensure we have enough data in linear buffer from skb before accessing
+initial bytes. This prevents potential out-of-bounds accesses
+when processing short packets.
 
-Adding Petr given Danielle is away
+When ppp_sync_txmung receives an incoming package with an empty
+payload:
+(remote) gef➤  p *(struct pppoe_hdr *) (skb->head + skb->network_header)
+$18 = {
+	type = 0x1,
+	ver = 0x1,
+	code = 0x0,
+	sid = 0x2,
+        length = 0x0,
+	tag = 0xffff8880371cdb96
+}
 
-On Wed, Apr 02, 2025 at 11:31:23AM -0700, Michael Chan wrote:
-> From: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
-> 
-> For EPL (Extended Payload), the maximum calculated size returned by
-> ethtool_cmis_get_max_epl_size() is 2048, so the read_write_len_ext
-> field in struct ethtool_cmis_cdb_cmd_args needs to be changed to u16
-> to hold the value.
-> 
-> To avoid confusion with other u8 read_write_len_ext fields defined
-> by the CMIS spec, change the field name to calc_read_write_len_ext.
-> 
-> Without this change, module flashing can fail:
-> 
-> Transceiver module firmware flashing started for device enp177s0np0
-> Transceiver module firmware flashing in progress for device enp177s0np0
-> Progress: 0%
-> Transceiver module firmware flashing encountered an error for device enp177s0np0
-> Status message: Write FW block EPL command failed, LPL length is longer
-> 	than CDB read write length extension allows.
-> 
-> Fixes: a39c84d79625 ("ethtool: cmis_cdb: Add a layer for supporting CDB commands)
-> Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-> Signed-off-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
-> Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-> ---
->  net/ethtool/cmis.h     | 7 ++++---
->  net/ethtool/cmis_cdb.c | 8 ++++----
->  2 files changed, 8 insertions(+), 7 deletions(-)
-> 
-> diff --git a/net/ethtool/cmis.h b/net/ethtool/cmis.h
-> index 1e790413db0e..51f5d5439e2a 100644
-> --- a/net/ethtool/cmis.h
-> +++ b/net/ethtool/cmis.h
-> @@ -63,8 +63,9 @@ struct ethtool_cmis_cdb_request {
->   * struct ethtool_cmis_cdb_cmd_args - CDB commands execution arguments
->   * @req: CDB command fields as described in the CMIS standard.
->   * @max_duration: Maximum duration time for command completion in msec.
-> - * @read_write_len_ext: Allowable additional number of byte octets to the LPL
-> - *			in a READ or a WRITE commands.
-> + * @calc_read_write_len_ext: Calculated allowable additional number of byte
-> + *			     octets to the LPL or EPL in a READ or WRITE CDB
-> + *			     command.
->   * @msleep_pre_rpl: Waiting time before checking reply in msec.
->   * @rpl_exp_len: Expected reply length in bytes.
->   * @flags: Validation flags for CDB commands.
-> @@ -73,7 +74,7 @@ struct ethtool_cmis_cdb_request {
->  struct ethtool_cmis_cdb_cmd_args {
->  	struct ethtool_cmis_cdb_request req;
->  	u16				max_duration;
-> -	u8				read_write_len_ext;
-> +	u16				calc_read_write_len_ext;
->  	u8				msleep_pre_rpl;
->  	u8                              rpl_exp_len;
->  	u8				flags;
-> diff --git a/net/ethtool/cmis_cdb.c b/net/ethtool/cmis_cdb.c
-> index dba3aa909a95..1f487e1a6347 100644
-> --- a/net/ethtool/cmis_cdb.c
-> +++ b/net/ethtool/cmis_cdb.c
-> @@ -35,13 +35,13 @@ void ethtool_cmis_cdb_compose_args(struct ethtool_cmis_cdb_cmd_args *args,
->  	args->req.lpl_len = lpl_len;
->  	if (lpl) {
->  		memcpy(args->req.payload, lpl, args->req.lpl_len);
-> -		args->read_write_len_ext =
-> +		args->calc_read_write_len_ext =
->  			ethtool_cmis_get_max_lpl_size(read_write_len_ext);
->  	}
->  	if (epl) {
->  		args->req.epl_len = cpu_to_be16(epl_len);
->  		args->req.epl = epl;
-> -		args->read_write_len_ext =
-> +		args->calc_read_write_len_ext =
->  			ethtool_cmis_get_max_epl_size(read_write_len_ext);
+from the skb struct (trimmed)
+      tail = 0x16,
+      end = 0x140,
+      head = 0xffff88803346f400 "4",
+      data = 0xffff88803346f416 ":\377",
+      truesize = 0x380,
+      len = 0x0,
+      data_len = 0x0,
+      mac_len = 0xe,
+      hdr_len = 0x0,
 
-AFAIU, a size larger than a page (128 bytes) is only useful when auto
-paging is supported which is something the kernel doesn't currently
-support. Therefore, I think it's misleading to initialize this field to
-a value larger than 128.
+it is not safe to access data[2].
 
-How about deleting ethtool_cmis_get_max_epl_size() and moving the
-initialization of 'args->read_write_len_ext' outside of the if block as
-it was before 9a3b0d078bd82?
+Reported-by: syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=29fc8991b0ecb186cf40
+Tested-by: syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
+Fixes: 9946eaf552b1 ("Merge tag 'hardening-v6.14-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux")
+Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
+---
+ drivers/net/ppp/ppp_synctty.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
->  	}
->  
-> @@ -590,7 +590,7 @@ ethtool_cmis_cdb_execute_epl_cmd(struct net_device *dev,
->  			space_left = CMIS_CDB_EPL_FW_BLOCK_OFFSET_END - offset + 1;
->  			bytes_to_write = min_t(u16, bytes_left,
->  					       min_t(u16, space_left,
-> -						     args->read_write_len_ext));
-> +						     args->calc_read_write_len_ext));
->  
->  			err = __ethtool_cmis_cdb_execute_cmd(dev, page_data,
->  							     page, offset,
-> @@ -631,7 +631,7 @@ int ethtool_cmis_cdb_execute_cmd(struct net_device *dev,
->  				       offsetof(struct ethtool_cmis_cdb_request,
->  						epl));
->  
-> -	if (args->req.lpl_len > args->read_write_len_ext) {
-> +	if (args->req.lpl_len > args->calc_read_write_len_ext) {
->  		args->err_msg = "LPL length is longer than CDB read write length extension allows";
->  		return -EINVAL;
->  	}
-> -- 
-> 2.30.1
-> 
-> 
+diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
+index 644e99fc3623..520d895acc60 100644
+--- a/drivers/net/ppp/ppp_synctty.c
++++ b/drivers/net/ppp/ppp_synctty.c
+@@ -506,6 +506,11 @@ ppp_sync_txmunge(struct syncppp *ap, struct sk_buff *skb)
+ 	unsigned char *data;
+ 	int islcp;
+ 
++	/* Ensure we can safely access protocol field and LCP code */
++	if (!skb || !pskb_may_pull(skb, 3)) {
++		kfree_skb(skb);
++		return NULL;
++	}
+ 	data  = skb->data;
+ 	proto = get_unaligned_be16(data);
+ 
 
-This module supports AutoPaging, 255 read_write_len_ext and EPL write mechanism.
-This advertised 0xff (byte2) calculates the args->read_write_len_ext
-to 2048B, which needs u16.
-Hexdump: cmis_cdb_advert_rpl
-Off 0x00 :77 ff 1f 80
+---
+base-commit: 9946eaf552b194bb352c2945b54ff98c8193b3f1
+change-id: 20250405-bound-checking-ppp_txmung-4807c854ed85
 
-With your suggested change, ethtool_cmis_cdb_execute_epl_cmd() is skipped
-since args->req.epl_len is set to zero and download fails.
-
-
+Best regards,
 -- 
-This electronic communication and the information and any files transmitted 
-with it, or attached to it, are confidential and are intended solely for 
-the use of the individual or entity to whom it is addressed and may contain 
-information that is confidential, legally privileged, protected by privacy 
-laws, or otherwise restricted from disclosure to anyone else. If you are 
-not the intended recipient or the person responsible for delivering the 
-e-mail to the intended recipient, you are hereby notified that any use, 
-copying, distributing, dissemination, forwarding, printing, or copying of 
-this e-mail is strictly prohibited. If you received this e-mail in error, 
-please return the e-mail to the sender, delete it from your computer, and 
-destroy any printed copy of it.
+Arnaud Lecomte <contact@arnaud-lcm.com>
+
