@@ -1,181 +1,192 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D8E24501E
-	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 11:49:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB9422B8AD
+	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 11:53:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744026547; cv=none; b=RlQiTW3Z0cswbucaNT0nR+b5AO/ROp4dTARgf+LvskXRFi0MuSo42rOR7mIH+kRXf58F92DSnsxWD6dldyGSnyS/pnAIdVAfpt5yOkez0MyeAbYL56ySgUk5Rh6W9Fyao67mdoWtrmip0TaT1zsRWFsCqg8JfPP2puw5ODRaVSk=
+	t=1744026811; cv=none; b=LqTSW/no4KJjkNRO049Qck42FB66lgD/IrZRb/R7mywwbCHshLhI0V4hpQOKc8qZKCR8MBaHcuYFMnm9PLAssLoNR1AJwGrpkdNo+h2Xwm12GeYFsjKcctOOS5reyPmLOroBjujuMtVUTEYKBelfWCUz5bUnZRPYybsWNTwq5Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744026547; c=relaxed/simple;
-	bh=wgVJYy1rEwB53P9pbmWyY7fpKJ+zxw00/Y9QE8ZKGd8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=FSV8B7Y/xkc58IuvuzHFKWncPKziNX/LCROfh7mCvfOJxDPxzfyVHIOmi3LOVKqJ8dgG7U6ROtcIsDHLLC0PEhpoZCD45732AUl1LXYxtbjEGmRs2/rQmC5bAlrKplUNWMBoshD3yT1RtPGnVcFwEtw+/DuVYw4Q5aPKnrDt3+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IP/PNmva; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IP/PNmva"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744026544;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TLDIfHFc0cnuUtNn3wFV1KRo7sfcAABFYKPb/EFAlBY=;
-	b=IP/PNmvaqx/mw6kEleDTTBNxh16C8fMpVDEUVst1v7yQi+R+uAEmimmCG3KwkVwKGEJqo/
-	crCiXboenx3Rk+eiuYv8rtTg8p3n2jORUp0OuC+MnhlEOuFm0SioNbU6KdgfN5CqXKlS+/
-	L7nq6kd+wl8pHSE2DRnaDN6luGgpU3M=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-681-LHhlMwfLMeGok8EQeCXBkA-1; Mon, 07 Apr 2025 07:49:03 -0400
-X-MC-Unique: LHhlMwfLMeGok8EQeCXBkA-1
-X-Mimecast-MFC-AGG-ID: LHhlMwfLMeGok8EQeCXBkA_1744026542
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-30be985454aso20640161fa.2
-        for <netdev@vger.kernel.org>; Mon, 07 Apr 2025 04:49:03 -0700 (PDT)
+	s=arc-20240116; t=1744026811; c=relaxed/simple;
+	bh=NCCctF/X0MoUzCs4K/uT98GCQBx106uFZXE9qPzQapA=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=addd5lJHUCEo0CF1/lXWYrX1DEHnUOismEolHsHdL/ZulkFKDRulNSZNJeuaoEaHSgqVMpu3VHRUXB+LcvBu24fxf2ofgjOD92H5EwIjHXUQ7epyokA/JKQG/aJ/P8IghnmKfhZxRr5WdR3FcNMeNPdtyLdq8h92F3hJ1Eu1lo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3d458e61faaso44062585ab.0
+        for <netdev@vger.kernel.org>; Mon, 07 Apr 2025 04:53:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744026542; x=1744631342;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TLDIfHFc0cnuUtNn3wFV1KRo7sfcAABFYKPb/EFAlBY=;
-        b=CJAKoOZGolmCHqAMzx325INUFHuv8NgSjvvpwm4ZKor1LZDEC6jrdkgE0wSwhRLIDM
-         E40o0Th4CPQT/xATe3tCsS9dYdU7XMvsdjrIPImNk3klS1WA80D10vS3ktUJRjgx4TQ2
-         MfilPQ2YacTGrVOrhdgCpTXv+wFv9wR2wl861q3WXFGejYXPQnftOGgBCfPg0s0o1++l
-         IBv7tpE7b2GjZKCb97eVrQLFmJZSegpCGlpsTnvmlZCPybEKNCJoAdSbipBAmnvLRiW0
-         IBhYK9cv24GkmNnpAZ/l1+wopBYmhMkWVPGG+pyCQTsNFsi08cxJKqGaXOIlbraZcpxg
-         t81A==
-X-Forwarded-Encrypted: i=1; AJvYcCXEjF4CKhotbFlwrgoKIIurNQupoI8Ws43EUrnWxFSbk7vS1ZsDaT4y4hR9t6XLpQ6NVWWK4Fw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQ5pZfHb3qQkSc97gJPn4sbJGZKmbW66IyGfJs7VUgLaQmbzyU
-	IOaAlcME7U9qR+KdMgi69rz507ae1VkyXrOIGwXhE/nWHfYFwPDpVLY34RHycHQhQDOB5FL9C5y
-	OkdhZ40DD2Zj6WaCb7868piHlS9EaZf6DHoIgQJ6tnMVOCBGMjDAZkg==
-X-Gm-Gg: ASbGncsHFH6nuq1dFag+oHgn3eLcJJ5zdEoO/Z50NNwCFMew6LO3LvKJ/U/Qs/0ClSq
-	uIdh7JHV/hGblZ15h17729fCNubDBKKpUwuy9qjQeAf+/CjhpotZHSGveRQdEfFJXt/LqTHovSq
-	Ouk8Xwz0idh0yeIdXOuBuaibJFE6m1rOlh/zy3dU6x7+4Jj2KAvI+cOtELS4L5R6agZNgpas0eK
-	PuS4Sy7Niqg9R3poBLI9n3PYKY1qsOOF0rrjBaI+KRjb5EpeQSaCB5WpIDTlDXCdqijZprIKeyP
-	GhRFMfD1/MCs
-X-Received: by 2002:a05:6512:230c:b0:549:38d2:f630 with SMTP id 2adb3069b0e04-54c232e27abmr3822834e87.24.1744026542003;
-        Mon, 07 Apr 2025 04:49:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJhH9DwjR+yY0lREbz+MbPKUBDZMsEOgHBc/onNClHx1Rv9EuZnA4xWzVH0KsBqxu+8cjt9A==
-X-Received: by 2002:a05:6512:230c:b0:549:38d2:f630 with SMTP id 2adb3069b0e04-54c232e27abmr3822825e87.24.1744026541557;
-        Mon, 07 Apr 2025 04:49:01 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54c1e672c38sm1216538e87.254.2025.04.07.04.49.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Apr 2025 04:49:00 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 0B7A4199188E; Mon, 07 Apr 2025 13:49:00 +0200 (CEST)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Yunsheng Lin <linyunsheng@huawei.com>, Alexander Lobakin
- <aleksander.lobakin@intel.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
- <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, Saeed
- Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq
- Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Ilias
- Apalodimas <ilias.apalodimas@linaro.org>, Simon Horman <horms@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Mina Almasry
- <almasrymina@google.com>, Yonglong Liu <liuyonglong@huawei.com>, Pavel
- Begunkov <asml.silence@gmail.com>, Matthew Wilcox <willy@infradead.org>,
- netdev@vger.kernel.org, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-mm@kvack.org, Qiuling Ren <qren@redhat.com>, Yuying Ma
- <yuma@redhat.com>
-Subject: Re: [PATCH net-next v7 2/2] page_pool: Track DMA-mapped pages and
- unmap them when destroying the pool
-In-Reply-To: <f8bbfe7e-9935-4f4d-a9e8-b3547ed58112@huawei.com>
-References: <20250404-page-pool-track-dma-v7-0-ad34f069bc18@redhat.com>
- <20250404-page-pool-track-dma-v7-2-ad34f069bc18@redhat.com>
- <3b933890-7ff2-4aaf-aea5-06e5889ca087@intel.com>
- <d7780007-6df7-45f0-9a08-2e6acf589a6f@intel.com> <87jz7yhix3.fsf@toke.dk>
- <f8bbfe7e-9935-4f4d-a9e8-b3547ed58112@huawei.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Mon, 07 Apr 2025 13:49:00 +0200
-Message-ID: <871pu4xkcz.fsf@toke.dk>
+        d=1e100.net; s=20230601; t=1744026808; x=1744631608;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6SWVqjL//hcLnAkvxJwkPgBqne5zgY402Ha3DCDbu50=;
+        b=V5pqFdmfQF7eB2nqG6UfD/aQ1McSSi3JP+95OYsiQwG07F5S4smGVxv7GEC99K3/19
+         7nLrDT3dl++5SsSgHFWMzPCSRIFU3w+aglmifypL49SHE+zvDFFa88kGeWddGsqm45t7
+         SUkV06sNHWTjYv3pBDcP3bYaTgHdgh9aMGmJNSNJVRAvehmbJXJ0xvq/fjvlrRPGwm6z
+         +DfRHzz2RklJItpwMmyBPfIrHIEgCv2OJw9T8ZXm/1HZodMI+4E9omH8LNMpj7rMjRt4
+         Ler+jsuifTOODqu+arR5gvRuK8CyNKA0moCU/i7KIfamOTeSMpfjkC2jYWgLibcLGsso
+         2RZw==
+X-Forwarded-Encrypted: i=1; AJvYcCWMgBaTOHaU4SM/BdTbKziogY+hmtIHYLttpFwWP92Lqnz8WbKcRZzezqBuBbpIZ3Um5yGglgI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7i9C/tsNsOsuaedzGigNaKbjOZ7GABi+/5cHqSHalRmOxntnc
+	4aqotBLtsxc1ro0Po67bdWg5opW7/czg+bhVbURZo1V8SHOpHWhjNqZfS1wuU6tYMYpvqlfUfdX
+	22jLt8H3IgxnQFE6tNZMyKsdjIxskh61H+5WKhiG1RSJPiSIxrMcc4iM=
+X-Google-Smtp-Source: AGHT+IH3clogijSCrNF7bvPd9TVvbxN5RUhNGMjweeIVh1CqIfB+DtByVQY4zAhKK1rMjOk4j6SFO2nhMLZnpRnwVpkSFzwHJ3q9
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Received: by 2002:a05:6e02:2182:b0:3d4:2acc:81fa with SMTP id
+ e9e14a558f8ab-3d6e3f89b8fmr118877825ab.2.1744026808507; Mon, 07 Apr 2025
+ 04:53:28 -0700 (PDT)
+Date: Mon, 07 Apr 2025 04:53:28 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67f3bcb8.050a0220.34461.0102.GAE@google.com>
+Subject: [syzbot] [sctp?] WARNING: refcount bug in sctp_generate_timeout_event
+From: syzbot <syzbot+c7dd9f1bd1d2ad0e5637@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	lucien.xin@gmail.com, marcelo.leitner@gmail.com, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Yunsheng Lin <linyunsheng@huawei.com> writes:
+Hello,
 
-> On 2025/4/5 20:50, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> Alexander Lobakin <aleksander.lobakin@intel.com> writes:
->>=20
->>> From: Alexander Lobakin <aleksander.lobakin@intel.com>
->>> Date: Fri, 4 Apr 2025 17:55:43 +0200
->>>
->>>> From: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
->>>> Date: Fri, 04 Apr 2025 12:18:36 +0200
->>>>
->>>>> When enabling DMA mapping in page_pool, pages are kept DMA mapped unt=
-il
->>>>> they are released from the pool, to avoid the overhead of re-mapping =
-the
->>>>> pages every time they are used. This causes resource leaks and/or
->>>>> crashes when there are pages still outstanding while the device is to=
-rn
->>>>> down, because page_pool will attempt an unmap through a non-existent =
-DMA
->>>>> device on the subsequent page return.
->>>>
->>>> [...]
->>>>
->>>>> -#define PP_MAGIC_MASK ~0x3UL
->>>>> +#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
->>>>>=20=20
->>>>>  /**
->>>>>   * struct page_pool_params - page pool parameters
->>>>> @@ -173,10 +212,10 @@ struct page_pool {
->>>>>  	int cpuid;
->>>>>  	u32 pages_state_hold_cnt;
->>>>>=20=20
->>>>> -	bool has_init_callback:1;	/* slow::init_callback is set */
->>>>> +	bool dma_sync;			/* Perform DMA sync for device */
->>>>
->>>> Yunsheng said this change to a full bool is redundant in the v6 thread
->>>> =C2=AF\_(=E3=83=84)_/=C2=AF
->>=20
->> AFAIU, the comment was that the second READ_ONCE() when reading the
->> field was redundant, because of the rcu_read_lock(). Which may be the
->> case, but I think keeping it makes the intent of the code clearer. And
->> in any case, it has nothing to do with changing the type of the field...
->
-> For changing the type of the field part, there are only two outcomes here
-> when using bit field here:
-> 1. The reading returns a correct value.
-> 2. The reading returns a incorrect value.
->
-> So the question seems to be what would possibly go wrong when the reading
-> return an incorrect value when there is an additional reading under the r=
-cu
-> read lock and there is a rcu sync after clearing pool->dma_sync? Consider=
-ing
-> we only need to ensure there is no dma sync API called after rcu sync.
+syzbot found the following issue on:
 
-Okay, so your argument is basically that the barrier in rcu_read_lock()
-should prevent the compiler from coalescing the two reads of the
-pp->dma_sync field in page_pool_dma_sync_for_device()? And that
-READ/WRITE_ONCE() are not needed for the same reason?
+HEAD commit:    9bae8f4f2168 selftests/bpf: Make res_spin_lock test less v..
+git tree:       bpf
+console output: https://syzkaller.appspot.com/x/log.txt?x=14ed9fb0580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f2054704dd53fb80
+dashboard link: https://syzkaller.appspot.com/bug?extid=c7dd9f1bd1d2ad0e5637
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
 
-> And it seems data_race() can be used to mark the above reading so that KC=
-SAN
-> will not complain.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Where would you suggest to add those? Not sure such annotations would
-improve readability relative to the current use of READ/WRITE_ONCE()?
-The latter is more clear in communicating intent, I would say...
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/20830627571a/disk-9bae8f4f.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/7f2da93cab39/vmlinux-9bae8f4f.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/0719a55401d0/bzImage-9bae8f4f.xz
 
-> IOW, changing the type of the field part isn't that necessary as my
-> understanding.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c7dd9f1bd1d2ad0e5637@syzkaller.appspotmail.com
 
-Since changing the field doesn't change the size of the structure, I
-would be inclined to keep the change for readability reasons, cf the
-above.
+------------[ cut here ]------------
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 0 PID: 6783 at lib/refcount.c:25 refcount_warn_saturate+0x13a/0x1d0 lib/refcount.c:25
+Modules linked in:
+CPU: 0 UID: 0 PID: 6783 Comm: syz.2.263 Not tainted 6.14.0-syzkaller-g9bae8f4f2168 #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+RIP: 0010:refcount_warn_saturate+0x13a/0x1d0 lib/refcount.c:25
+Code: 00 6a a1 8c e8 07 88 7d fc 90 0f 0b 90 90 eb b9 e8 cb 67 be fc c6 05 3a e3 44 0b 01 90 48 c7 c7 60 6a a1 8c e8 e7 87 7d fc 90 <0f> 0b 90 90 eb 99 e8 ab 67 be fc c6 05 1b e3 44 0b 01 90 48 c7 c7
+RSP: 0018:ffffc90000007b28 EFLAGS: 00010246
+RAX: f4de809b98aa7600 RBX: ffff8880738bc004 RCX: ffff88802665da00
+RDX: 0000000000000100 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000002 R08: ffffffff81827a12 R09: fffffbfff1d7a978
+R10: dffffc0000000000 R11: fffffbfff1d7a978 R12: dffffc0000000000
+R13: 0000000000000002 R14: ffff88802a051440 R15: ffff8880738bc000
+FS:  00007f7af0ba46c0(0000) GS:ffff888124f96000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00002000000000c0 CR3: 000000007c37c000 CR4: 00000000003526f0
+DR0: 0000200000000300 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000600
+Call Trace:
+ <IRQ>
+ sctp_generate_timeout_event+0x1ca/0x360 net/sctp/sm_sideeffect.c:284
+ call_timer_fn+0x189/0x650 kernel/time/timer.c:1789
+ expire_timers kernel/time/timer.c:1840 [inline]
+ __run_timers kernel/time/timer.c:2414 [inline]
+ __run_timer_base+0x66e/0x8e0 kernel/time/timer.c:2426
+ run_timer_base kernel/time/timer.c:2435 [inline]
+ run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2445
+ handle_softirqs+0x2d6/0x9b0 kernel/softirq.c:579
+ __do_softirq kernel/softirq.c:613 [inline]
+ invoke_softirq kernel/softirq.c:453 [inline]
+ __irq_exit_rcu+0xfb/0x220 kernel/softirq.c:680
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:696
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 [inline]
+ sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1049
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+RIP: 0010:arch_check_zapped_pte+0x3a/0xb0 arch/x86/mm/pgtable.c:890
+Code: 7c c6 53 00 48 83 c3 20 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df 80 3c 08 00 74 08 48 89 df e8 c9 ef bd 00 4c 8b 3b <48> bb 00 00 00 00 20 00 00 00 48 89 de 4c 21 fe 31 ff e8 1f cb 53
+RSP: 0018:ffffc9000306f240 EFLAGS: 00000246
+RAX: 1ffff110066e0804 RBX: ffff888033704020 RCX: dffffc0000000000
+RDX: ffffc9000ccc4000 RSI: 000000000007ffff RDI: 0000000000080000
+RBP: ffffc9000306f610 R08: ffffffff8211d084 R09: 1ffffd4000394330
+R10: dffffc0000000000 R11: fffff94000394331 R12: ffffea0001ca1980
+R13: dffffc0000000000 R14: 8000000072866007 R15: 00000000180400fb
+ zap_present_folio_ptes mm/memory.c:1518 [inline]
+ zap_present_ptes mm/memory.c:1586 [inline]
+ do_zap_pte_range mm/memory.c:1687 [inline]
+ zap_pte_range mm/memory.c:1731 [inline]
+ zap_pmd_range mm/memory.c:1823 [inline]
+ zap_pud_range mm/memory.c:1852 [inline]
+ zap_p4d_range mm/memory.c:1873 [inline]
+ unmap_page_range+0x20d7/0x44d0 mm/memory.c:1894
+ unmap_vmas+0x3ce/0x5f0 mm/memory.c:1984
+ exit_mmap+0x2bc/0xde0 mm/mmap.c:1284
+ __mmput+0x115/0x420 kernel/fork.c:1379
+ copy_process+0x2891/0x3d10 kernel/fork.c:2693
+ kernel_clone+0x242/0x930 kernel/fork.c:2844
+ __do_sys_clone kernel/fork.c:2987 [inline]
+ __se_sys_clone kernel/fork.c:2971 [inline]
+ __x64_sys_clone+0x268/0x2e0 kernel/fork.c:2971
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f7aefd8d169
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f7af0ba3fe8 EFLAGS: 00000206 ORIG_RAX: 0000000000000038
+RAX: ffffffffffffffda RBX: 00007f7aeffa5fa0 RCX: 00007f7aefd8d169
+RDX: 00002000000000c0 RSI: 0000000000000000 RDI: 0000000082001000
+RBP: 00007f7aefe0e2a0 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007f7aeffa5fa0 R15: 00007ffe033b7728
+ </TASK>
+----------------
+Code disassembly (best guess), 4 bytes skipped:
+   0:	48 83 c3 20          	add    $0x20,%rbx
+   4:	48 89 d8             	mov    %rbx,%rax
+   7:	48 c1 e8 03          	shr    $0x3,%rax
+   b:	48 b9 00 00 00 00 00 	movabs $0xdffffc0000000000,%rcx
+  12:	fc ff df
+  15:	80 3c 08 00          	cmpb   $0x0,(%rax,%rcx,1)
+  19:	74 08                	je     0x23
+  1b:	48 89 df             	mov    %rbx,%rdi
+  1e:	e8 c9 ef bd 00       	call   0xbdefec
+  23:	4c 8b 3b             	mov    (%rbx),%r15
+* 26:	48 bb 00 00 00 00 20 	movabs $0x2000000000,%rbx <-- trapping instruction
+  2d:	00 00 00
+  30:	48 89 de             	mov    %rbx,%rsi
+  33:	4c 21 fe             	and    %r15,%rsi
+  36:	31 ff                	xor    %edi,%edi
+  38:	e8                   	.byte 0xe8
+  39:	1f                   	(bad)
+  3a:	cb                   	lret
+  3b:	53                   	push   %rbx
 
--Toke
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
