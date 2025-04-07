@@ -1,94 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BEC255E38;
-	Mon,  7 Apr 2025 18:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1C12580EE
+	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 18:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049760; cv=none; b=ase8k9UCAwGeOPw+GD15bLKz3NocJWDAfD/ofHUDAqsuDcmxJzZMjpVEUQl56YQhXC1XxnFYG6Kod8yyUuwDpXJuBADhxdv1Y+4y1A9RwcxNZkdmM6ufmhFI0tgfrQgO3W9pxLcWgXmUJjq/PIATT71CycjBikU8Jut3FRswqUY=
+	t=1744049995; cv=none; b=lUdLUxGg3gwc8PpnuFrkOOCKdGr9nBR6voHCjFH4EIT90xtPs6bjdCSABqhlJb8vQd7drESokAJglwTEqL3nRWZKkphqQsQG6dnInQTSVxU1TMTFxkVdAIG3YJznP80R0QIM3KKpnWi9rh+ex9GfIyw/apHHAuNYoV/VK7csnCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049760; c=relaxed/simple;
-	bh=k13xiQCaT/GS6dWcuXlaBInjqnzPmqms2Dv69by3/rE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FPjWI8ABFE98cOk2y/9n28yLvfk1w0Q5fNxHLyscjvgAWSLz+6fzvD3zGTuMm9WEx1xC5uh353j83D9D4zVkij64u+ddw6YOzTIEtneIw7pe6PlMP5CPQovJJPyhFmjGTj4eW9a3MylTc1sRKpiQtnQHuWql5NuLoLWpfbkGyjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uhHBcldp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744049995; c=relaxed/simple;
+	bh=nOtUH7kovfwgg06yUNsNxTZGWgaoyv1F+qWWuCFGn7I=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=EI5LD6QQmGcnReAQ1U5OZGcqvtOHpCpXY9EEp/A6HfG3HrVXCdM75OCSRymJMmEaQbsY8klyYJnXJSO7iZ79rkmUmqIqoxjO0EvV+xH9RZMSmW2CVfJE5PhwaG3cp/xgwSY98kO4+cxfkAC2RimMLEbfe6d9fFlBH7CYU4jcotM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Is4OfOcI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uhHBcldp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B4FC4CEDD;
-	Mon,  7 Apr 2025 18:15:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Is4OfOcI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FF5C4CEE7;
+	Mon,  7 Apr 2025 18:19:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049759;
-	bh=k13xiQCaT/GS6dWcuXlaBInjqnzPmqms2Dv69by3/rE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhHBcldpetwj+Px1tlBUuWitjT07SZP+IoP3R9vvpPEOWbLi8eKgSyPqXXjDd99d5
-	 SD1kdDcqxtHEt8+TKorNtwYKWKztXuIBgxmfJqtKWgTtNO6n6a+r+uFOgtZr4k8hHP
-	 V5vGz/SdpNfX2wGjsQAdADsYL/nk+5uACGIOqYngshyIEhWoJXKRrCjiMYHyqmic2X
-	 AcbNGhrZNhRjnp4ErPrGyD2eZSEJzynZRWYb3hYkrapgqx0foxf7BffNp5cETvDIzZ
-	 Lo6AEiw378Xfb7aX22M1HJocqeS37bitc6+d6P22TXh33hd+BPQFuq2oWqwqYJLFDn
-	 EM3urwhIEDsOA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Chenyuan Yang <chenyuan0y@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	joel@jms.id.au,
-	andrew@codeconstruct.com.au,
-	richardcochran@gmail.com,
-	linux-usb@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-aspeed@lists.ozlabs.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 3/3] usb: gadget: aspeed: Add NULL pointer check in ast_vhub_init_dev()
-Date: Mon,  7 Apr 2025 14:15:48 -0400
-Message-Id: <20250407181550.3184047-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250407181550.3184047-1-sashal@kernel.org>
-References: <20250407181550.3184047-1-sashal@kernel.org>
+	s=k20201202; t=1744049995;
+	bh=nOtUH7kovfwgg06yUNsNxTZGWgaoyv1F+qWWuCFGn7I=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Is4OfOcIGMN14wQAx05bbgxRJP3KLRYsY+eO5NPhZNfFT68/M4D9UG1ZKClg4dHxG
+	 eZlusOSp9LhQGIY7qFK2Qz3/7Wknh7Y4ZQAhtIDWExoZkIbt435bDO06+bexFlpvy1
+	 n0f5/5cwKfCrJduky/oDafoRj8aeGvQLdxzbX8Nih+M4zEux8g0u2KG4lN1DvRQ+Op
+	 C7XPdaK6smloAap9RxJZonr5FIcSyu9e0YfaxPvA1mzxIPHVDgrGLFcsBDjJD1Klx/
+	 k2XiskZODsEtxTqBALoqRBvC0H6o5Ni3R4WrvHm5brXbfjwo7KWbPS+yrPKm2PJ87V
+	 UD/+AmxdBHLYQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE073380CEEF;
+	Mon,  7 Apr 2025 18:20:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.291
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH iproute2] MAINTAINERS: update bridge entry
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174405003250.1220282.3145051055620556802.git-patchwork-notify@kernel.org>
+Date: Mon, 07 Apr 2025 18:20:32 +0000
+References: <20250405102504.219970-1-razor@blackwall.org>
+In-Reply-To: <20250405102504.219970-1-razor@blackwall.org>
+To: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: netdev@vger.kernel.org, bridge@lists.linux-foundation.org,
+ roopa@nvidia.com, idosch@nvidia.com, stephen@networkplumber.org,
+ dsahern@kernel.org
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+Hello:
 
-[ Upstream commit 8c75f3e6a433d92084ad4e78b029ae680865420f ]
+This patch was applied to iproute2/iproute2.git (main)
+by Stephen Hemminger <stephen@networkplumber.org>:
 
-The variable d->name, returned by devm_kasprintf(), could be NULL.
-A pointer check is added to prevent potential NULL pointer dereference.
-This is similar to the fix in commit 3027e7b15b02
-("ice: Fix some null pointer dereference issues in ice_ptp.c").
+On Sat,  5 Apr 2025 13:25:04 +0300 you wrote:
+> Sync with the kernel and update the bridge entry with the current bridge
+> maintainers. Roopa decided to withdraw and Ido has agreed to step in.
+> 
+> Link: https://lore.kernel.org/netdev/20250314100631.40999-1-razor@blackwall.org/
+> CC: Roopa Prabhu <roopa@nvidia.com>
+> CC: Ido Schimmel <idosch@nvidia.com>
+> CC: Stephen Hemminger <stephen@networkplumber.org>
+> CC: David Ahern <dsahern@kernel.org>
+> Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+> 
+> [...]
 
-This issue is found by our static analysis tool
+Here is the summary with links:
+  - [iproute2] MAINTAINERS: update bridge entry
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=c498efe79ba9
 
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://lore.kernel.org/r/20250311012705.1233829-1-chenyuan0y@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/usb/gadget/udc/aspeed-vhub/dev.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/usb/gadget/udc/aspeed-vhub/dev.c b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-index 4008e7a511889..89d7d3b24718d 100644
---- a/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-+++ b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-@@ -542,6 +542,9 @@ int ast_vhub_init_dev(struct ast_vhub *vhub, unsigned int idx)
- 	d->vhub = vhub;
- 	d->index = idx;
- 	d->name = devm_kasprintf(parent, GFP_KERNEL, "port%d", idx+1);
-+	if (!d->name)
-+		return -ENOMEM;
-+
- 	d->regs = vhub->regs + 0x100 + 0x10 * idx;
- 
- 	ast_vhub_init_ep0(vhub, &d->ep0, d);
+You are awesome, thank you!
 -- 
-2.39.5
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
