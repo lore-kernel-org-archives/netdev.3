@@ -1,244 +1,117 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40829229B18
-	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 08:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7ABC227E86;
+	Mon,  7 Apr 2025 08:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744013836; cv=none; b=WY7DtGGPqVWlmwm465O6CvCa72RWZweULMtsV9YFAZIrP2MPfYE45WPClrFoSyoVw6hzuBfv7E/VpwMpKCo5CK1blWlG/YgUIjGtxX96+Q2OK/4zhe5CykH02Di+s37xdOy4sKPewupSTEgWZKNjRBveXKFoHwXOP2pR/2dG2AM=
+	t=1744013906; cv=none; b=ZU0aPWMfd3658jbPXMTSVcdGZThhknkTiaiZBhQfYI/zq5PiumZ89EbWXCwlBTek+xkcGu0XdoxlWZ+wMYy014aUmIc15PXQOBRzMX9Iu1nngG1WD95dJ+hs62wc39q1NEixGXvbcUDsncbUgsgbZLNFmKqNbSxx24uRFN3nYBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744013836; c=relaxed/simple;
-	bh=mSjUh8N/O5w5UJDg+QA0tXXjTVKD7/6jJkNLyw45Ceo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FACHDRBS5bD2ufzdWtHukvjQmS4rDu+UQ5DTzO9IeMDwgl1zBqaby8DVViEo8HEupEpKPyX92UidIwQARlRvRDnRvJuEDi1oeyDDdlwnFmeAMcX7PUMgKybTOWHL1Wzfbce+jBQrysnVefHuUy6PPH4tgdIoHaOsKFfSRc++sWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KPGqhr4N; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1744013906; c=relaxed/simple;
+	bh=RSCsB9LyBZKImdCS3CO3v6PdojzJl9JVl7oocdENeNE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=j7R4qlUEZFXX3KpdTt8gr6ULQZb5pDc0BeV/Qf4zwNt0kyORjdqGqZkvkNxeEN3leESxd/6JjF9CePlRNackkAhvS60jcVOGui4i86k4ofmk5CY+jyDJ04a99nl1gAxWRirWE4Lu6KseQLx2U0Jf+MAW1I0wKgWSywkNeZnECQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=hKV9wWN3; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KPGqhr4N"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744013833;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/NXeUmz6sFdPq3LVWzGbgGpd+TscgMz224LBsRMb8cc=;
-	b=KPGqhr4Nm6FWa5DisL2S1XxlYiaqlaCTHBi+5OUihHKpCVZjPHKSfk0kgMBkP23GiVNHfP
-	uwmSsDBJ3Kr96V7yXLegsg6fxq6Fk4hx+yFSgYEwnGgXNF+kLMY7wjNj4yd57ftIb1gSl6
-	nDT+ppHYx2pDt3/5A2G732inqJ/uWFU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-227-hyaicLffNEeJ3dOLJEaaKA-1; Mon, 07 Apr 2025 04:17:11 -0400
-X-MC-Unique: hyaicLffNEeJ3dOLJEaaKA-1
-X-Mimecast-MFC-AGG-ID: hyaicLffNEeJ3dOLJEaaKA_1744013831
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3914bc0cc4aso2090143f8f.3
-        for <netdev@vger.kernel.org>; Mon, 07 Apr 2025 01:17:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744013830; x=1744618630;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/NXeUmz6sFdPq3LVWzGbgGpd+TscgMz224LBsRMb8cc=;
-        b=uRHj2AxphHJis+5syUmtSfQfEi3ErkffTzicXzNK2b7h1MIjq9sDQ+uEkZnV146z0U
-         R6XcoYb4s/o880Zh/fnKX+rHrKm1j00f7qTaaucf/yYi3MZi1a3JO+Rzy3Y4kSsN1Y2n
-         bnRpN9NNlk9qy7KEgq5e513TgpkC/mjhmYLyvQuIhXQqguGbUDsFpoWk5tkQuK7e/A5O
-         clq/AZN0vrmgO/5ZTMYdNnXhT+e1hnTD30AvszvRebHF72Gfqv1g8Bf4gF2BTmllu5SI
-         ZeRdmy4B5a/PVyKd92plEFJfYyWgQyNx9xmzX81wh7sFrvFpr1XozhdUf/ppCkEUOdMN
-         Oyyg==
-X-Forwarded-Encrypted: i=1; AJvYcCVjwvAiB/arZ/RWcU6im+UE/vgYpfqliuWSxzqY8Pq2/PfsiM+cdVfPkNAEXDs2en50IgvQP0Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaUi4a1259MbesZrc9P7Z+tIA6GFZ7qLQmTN7PcldCgSEBJQP5
-	rGecNWq04gxodPrVlkPsFj735FGcoWnHdGEYONn6+r9c49aYfl08cGwQEG9qaWkEw25T3XFPkXF
-	xktK0aHQeAauL9fYzVPIWmGp2GyVI5BTvr1RBfd08a9HJ1H8Y7Zc0Kw==
-X-Gm-Gg: ASbGncsaoTARqbGm651fXedhVPvnXeI013tpQWUYmMF74y2SBbaa9w1iuV6Ga4p1JQO
-	qYzno9A1SgIXlLh1QCoDQ667W6RnTNAYnROdsXwxXOEganUw4gpMt4OXK3xj4UZ/DWkvqSHqlqq
-	JcC/aoyK1ImiBVJO3JDwzQbgt4BR1DZyiqLkfqPyO+MHhVxY3VA1LOLk1EZVwD0eMH8OW79jt6K
-	uA2sFV6VEwudR4PiguJTMJwX7XL5RKOkQiRtPrAZ8ryqIkZhbxUbDUQRHyM67w3PL07UWmowqsg
-	aVKRc9m0kg==
-X-Received: by 2002:a05:6000:2505:b0:39a:c8a8:4fdc with SMTP id ffacd0b85a97d-39d0de12ccdmr8771258f8f.16.1744013830506;
-        Mon, 07 Apr 2025 01:17:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEwOTqjbMc9o3iiqXoVsN5aZIAS84q095cDwnrD0zTHjtFAU1Yzf7ek1qUTjNU8khKKwtAHAA==
-X-Received: by 2002:a05:6000:2505:b0:39a:c8a8:4fdc with SMTP id ffacd0b85a97d-39d0de12ccdmr8771226f8f.16.1744013830045;
-        Mon, 07 Apr 2025 01:17:10 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c300968cfsm11484116f8f.16.2025.04.07.01.17.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Apr 2025 01:17:09 -0700 (PDT)
-Date: Mon, 7 Apr 2025 04:17:06 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Cindy Lu <lulu@redhat.com>
-Cc: jasowang@redhat.com, michael.christie@oracle.com, sgarzare@redhat.com,
-	linux-kernel@vger.kernel.org,
-	virtualization@lists.linux-foundation.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v8 4/8] vhost: Introduce vhost_worker_ops in vhost_worker
-Message-ID: <20250407041540-mutt-send-email-mst@kernel.org>
-References: <20250328100359.1306072-1-lulu@redhat.com>
- <20250328100359.1306072-5-lulu@redhat.com>
+	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="hKV9wWN3"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Type:MIME-Version:Message-ID:Date:References:
+	In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=QLfWDAfI2AnhA5OmyBMH2GN+AZpLJ7m9IQNoTTz/1Q4=; b=hKV9wWN32qu+WchUIFvT0Y/SjM
+	2jWOqCMP8azbf0L91SpOxo+jsmyFsk7lkPVPctusn8AFPs+uDq3cXumQ8vwCDqJb37TPEiAKa9bne
+	RbbZxzRlPl0klHLLP90DXY7loMrOTto9cmul4NyOA2xrH3CUjNgiBDwKv3Yr2l9GnMefHeXwxxlQv
+	ltnzBYGSKj5GRTbbRU+qux7UPNP2AGeKxkMA9Js8C8lFn9OvtxS6X8IqDKekKor8QQdM2E0h+TWb8
+	GuzUWCPrSvf0NS6FQ9ojvlb2cFTRyFkE/izVHQN0aBdPIWJ72lnKmNNErX/pewmwHs7Pa7RwoOGht
+	Cpjw6ing==;
+Received: from 79.red-83-60-111.dynamicip.rima-tde.net ([83.60.111.79] helo=localhost)
+	by fanzine2.igalia.com with utf8esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1u1h3B-00CmbI-HY; Mon, 07 Apr 2025 09:37:45 +0200
+From: Ricardo =?utf-8?Q?Ca=C3=B1uelo?= Navarro <rcn@igalia.com>
+To: Xin Long <lucien.xin@gmail.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, kernel-dev@igalia.com, linux-sctp@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] sctp: check transport existence before processing a
+ send primitive
+In-Reply-To: <CADvbK_evR93rj1ZT_bzLKFqNQLPQ2BM0mzKnriGGsO5t07GAHQ@mail.gmail.com>
+References: <20250402-kasan_slab-use-after-free_read_in_sctp_outq_select_transport-v1-1-da6f5f00f286@igalia.com>
+ <CADvbK_dTX3c9wgMa8bDW-Hg-5gGJ7sJzN5s8xtGwwYW9FE=rcg@mail.gmail.com>
+ <87tt75efdj.fsf@igalia.com>
+ <CADvbK_c69AoVyFDX2YduebF9DG8YyZM7aP7aMrMyqJi7vMmiSA@mail.gmail.com>
+ <CADvbK_d+vr-t7D1GZJ86gG6oS+Nzy7MDVh_+7Je6hqCdez4Axw@mail.gmail.com>
+ <87r028dyye.fsf@igalia.com>
+ <CADvbK_evR93rj1ZT_bzLKFqNQLPQ2BM0mzKnriGGsO5t07GAHQ@mail.gmail.com>
+Date: Mon, 07 Apr 2025 09:37:44 +0200
+Message-ID: <87o6x8e81j.fsf@igalia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250328100359.1306072-5-lulu@redhat.com>
+Content-Type: text/plain
 
-On Fri, Mar 28, 2025 at 06:02:48PM +0800, Cindy Lu wrote:
-> Abstract vhost worker operations (create/stop/wakeup) into an ops
-> structure to prepare for kthread mode support.
-> 
-> Signed-off-by: Cindy Lu <lulu@redhat.com>
+On Fri, Apr 04 2025 at 10:22:38, Xin Long <lucien.xin@gmail.com> wrote:
 
-I worry about the overhead of indirect calls here.
+>> Something like this:
+>>
+>> @@ -9225,7 +9227,9 @@ static int sctp_wait_for_sndbuf(struct sctp_association *asoc, long *timeo_p,
+>>         pr_debug("%s: asoc:%p, timeo:%ld, msg_len:%zu\n", __func__, asoc,
+>>                  *timeo_p, msg_len);
+>>
+>> -       /* Increment the association's refcnt.  */
+>> +       /* Increment the transport and association's refcnt. */
+>> +       if (transport)
+>> +               sctp_transport_hold(transport);
+>>         sctp_association_hold(asoc);
+>>
+>>         /* Wait on the association specific sndbuf space. */
+>> @@ -9252,6 +9256,8 @@ static int sctp_wait_for_sndbuf(struct sctp_association *asoc, long *timeo_p,
+>>                 lock_sock(sk);
+>>                 if (sk != asoc->base.sk)
+>>                         goto do_error;
+>> +               if (transport && transport->dead)
+>> +                       goto do_nonblock;
+>>
+>>                 *timeo_p = current_timeo;
+>>         }
+>> @@ -9259,7 +9265,9 @@ static int sctp_wait_for_sndbuf(struct sctp_association *asoc, long *timeo_p,
+>>  out:
+>>         finish_wait(&asoc->wait, &wait);
+>>
+>> -       /* Release the association's refcnt.  */
+>> +       /* Release the transport and association's refcnt. */
+>> +       if (transport)
+>> +               sctp_transport_put(transport);
+>>         sctp_association_put(asoc);
+>>
+>>         return err;
+>>
+>>
+>> So by the time the sending thread re-claims the socket lock it can tell
+>> whether someone else removed the transport by checking transport->dead
+>> (set in sctp_transport_free()) and there's a guarantee that the
+>> transport hasn't been freed yet because we hold a reference to it.
+>>
+>> If the whole receive path through sctp_assoc_rm_peer() is protected by
+>> the same socket lock, as you said, this should be safe. The tests I ran
+>> seem to work fine. If you're ok with it I'll send another patch to
+>> supersede this one.
+>>
+> LGTM.
 
-We have the wrappers, and only two options,
-why did you decide to add it like this,
-with ops?
+Good, thanks! I submitted a patch that supersedes this one:
+https://lore.kernel.org/linux-sctp/20250404-kasan_slab-use-after-free_read_in_sctp_outq_select_transport__20250404-v1-1-5ce4a0b78ef2@igalia.com
+so we can drop this.
 
-
-
-> ---
->  drivers/vhost/vhost.c | 63 ++++++++++++++++++++++++++++++-------------
->  drivers/vhost/vhost.h | 11 ++++++++
->  2 files changed, 56 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> index 20571bd6f7bd..c162ad772f8f 100644
-> --- a/drivers/vhost/vhost.c
-> +++ b/drivers/vhost/vhost.c
-> @@ -243,7 +243,7 @@ static void vhost_worker_queue(struct vhost_worker *worker,
->  		 * test_and_set_bit() implies a memory barrier.
->  		 */
->  		llist_add(&work->node, &worker->work_list);
-> -		vhost_task_wake(worker->vtsk);
-> +		worker->ops->wakeup(worker);
->  	}
->  }
->  
-> @@ -706,7 +706,7 @@ static void vhost_worker_destroy(struct vhost_dev *dev,
->  
->  	WARN_ON(!llist_empty(&worker->work_list));
->  	xa_erase(&dev->worker_xa, worker->id);
-> -	vhost_task_stop(worker->vtsk);
-> +	worker->ops->stop(worker);
->  	kfree(worker);
->  }
->  
-> @@ -729,42 +729,69 @@ static void vhost_workers_free(struct vhost_dev *dev)
->  	xa_destroy(&dev->worker_xa);
->  }
->  
-> +static void vhost_task_wakeup(struct vhost_worker *worker)
-> +{
-> +	return vhost_task_wake(worker->vtsk);
-> +}
-> +
-> +static void vhost_task_do_stop(struct vhost_worker *worker)
-> +{
-> +	return vhost_task_stop(worker->vtsk);
-> +}
-> +
-> +static int vhost_task_worker_create(struct vhost_worker *worker,
-> +				    struct vhost_dev *dev, const char *name)
-> +{
-> +	struct vhost_task *vtsk;
-> +	u32 id;
-> +	int ret;
-> +
-> +	vtsk = vhost_task_create(vhost_run_work_list, vhost_worker_killed,
-> +				 worker, name);
-> +	if (IS_ERR(vtsk))
-> +		return PTR_ERR(vtsk);
-> +
-> +	worker->vtsk = vtsk;
-> +	vhost_task_start(vtsk);
-> +	ret = xa_alloc(&dev->worker_xa, &id, worker, xa_limit_32b, GFP_KERNEL);
-> +	if (ret < 0) {
-> +		vhost_task_do_stop(worker);
-> +		return ret;
-> +	}
-> +	worker->id = id;
-> +	return 0;
-> +}
-> +
-> +static const struct vhost_worker_ops vhost_task_ops = {
-> +	.create = vhost_task_worker_create,
-> +	.stop = vhost_task_do_stop,
-> +	.wakeup = vhost_task_wakeup,
-> +};
-> +
->  static struct vhost_worker *vhost_worker_create(struct vhost_dev *dev)
->  {
->  	struct vhost_worker *worker;
-> -	struct vhost_task *vtsk;
->  	char name[TASK_COMM_LEN];
->  	int ret;
-> -	u32 id;
-> +	const struct vhost_worker_ops *ops = &vhost_task_ops;
->  
->  	worker = kzalloc(sizeof(*worker), GFP_KERNEL_ACCOUNT);
->  	if (!worker)
->  		return NULL;
->  
->  	worker->dev = dev;
-> +	worker->ops = ops;
->  	snprintf(name, sizeof(name), "vhost-%d", current->pid);
->  
-> -	vtsk = vhost_task_create(vhost_run_work_list, vhost_worker_killed,
-> -				 worker, name);
-> -	if (IS_ERR(vtsk))
-> -		goto free_worker;
-> -
->  	mutex_init(&worker->mutex);
->  	init_llist_head(&worker->work_list);
->  	worker->kcov_handle = kcov_common_handle();
-> -	worker->vtsk = vtsk;
-> -
-> -	vhost_task_start(vtsk);
-> -
-> -	ret = xa_alloc(&dev->worker_xa, &id, worker, xa_limit_32b, GFP_KERNEL);
-> +	ret = ops->create(worker, dev, name);
->  	if (ret < 0)
-> -		goto stop_worker;
-> -	worker->id = id;
-> +		goto free_worker;
->  
->  	return worker;
->  
-> -stop_worker:
-> -	vhost_task_stop(vtsk);
->  free_worker:
->  	kfree(worker);
->  	return NULL;
-> diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
-> index 19bb94922a0e..98895e299efa 100644
-> --- a/drivers/vhost/vhost.h
-> +++ b/drivers/vhost/vhost.h
-> @@ -26,6 +26,16 @@ struct vhost_work {
->  	unsigned long		flags;
->  };
->  
-> +struct vhost_worker;
-> +struct vhost_dev;
-> +
-> +struct vhost_worker_ops {
-> +	int (*create)(struct vhost_worker *worker, struct vhost_dev *dev,
-> +		      const char *name);
-> +	void (*stop)(struct vhost_worker *worker);
-> +	void (*wakeup)(struct vhost_worker *worker);
-> +};
-> +
->  struct vhost_worker {
->  	struct vhost_task	*vtsk;
->  	struct vhost_dev	*dev;
-> @@ -36,6 +46,7 @@ struct vhost_worker {
->  	u32			id;
->  	int			attachment_cnt;
->  	bool			killed;
-> +	const struct vhost_worker_ops *ops;
->  };
->  
->  /* Poll a file (eventfd or socket) */
-> -- 
-> 2.45.0
-
+Cheers,
+Ricardo
