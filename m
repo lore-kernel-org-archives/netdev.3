@@ -1,105 +1,138 @@
-Received: from mail-yb1-f196.google.com (mail-yb1-f196.google.com [209.85.219.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77ED82550D1;
-	Mon,  7 Apr 2025 18:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3B2219302
+	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 18:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744051238; cv=none; b=Lup4f+hRuKBCw3nSTIHKHyVO4Km3UrjwKdm6atRqpCQd028Pz3WhNf+SxPevUPbnAMSamba+bO3ZbdqcMxhsWHbrXABPTN6EccbxVCtixFd5PSu+X3Ni2mBS2R50lU25AUQbXi7C3h7BoICAMExg4JlzkvgUQPRr1+y8P/W8yQ0=
+	t=1744051347; cv=none; b=mPTAGgtOzQUKHFnKPx8skgPEpgyjGNpYw725+Xnt6BhQK3yB7nsfYrQWp4wimsqDYIO8BtW15AkReUGGUZWWRnPK3OQIXAaVt+WRjwHE5NoY7Gvb2oQ4jVd9RL+78xW0LLaeXBS6BWzqDk2WfgB8wcxbfCA3QyjgLCpFmT/cwQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744051238; c=relaxed/simple;
-	bh=KVvTyyF0VkafWFfOugua/YDD0iLrXHMzMWGuCOsrYSY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RQugTYZ7unLP0YaJTqRdajapxPq4wEvXhffo5AKHvu7vkfS0TS+hQryhSyP1fi6rR0zX4AjZ8z9FLvpNUQEG9TEho4iwBgdgbluNg8hG6bs22k0JGnlpIL+jhpEmEt/yxuImaM6BCngF7BkdiNjYWpaseRr1cfmSckO4sj8I4bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dDe7pOnG; arc=none smtp.client-ip=209.85.219.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744051347; c=relaxed/simple;
+	bh=66/2ZeAPmkg9fyE8w4hJm69H4r9Q5lXU+AnHbNWGddg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=KU9wW1KtkFI8uHK74Zds/1zRl9AsGO0EkOMoCyU9SR7vVN1VTLs4nvGxmugQ4iUjIVH2vYVdbhIVCJOQAKQKz9Anb+38TKe1ylWHKygEZytAmGugJkeOkmE/19p0SUm56U7AcLmw1u2w1u237rmbEjIAFardX8hK2ndmKRSzUT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=MkNl/SjG; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dDe7pOnG"
-Received: by mail-yb1-f196.google.com with SMTP id 3f1490d57ef6-e6df32ad351so3867835276.2;
-        Mon, 07 Apr 2025 11:40:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744051235; x=1744656035; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/KJ1Yxh0RTA5B17N4EwbA//OrbDLUv7EVB4eL3fHgUo=;
-        b=dDe7pOnGefynPP4DrcE7D5MGivvfnvbWok0qT64HCzgLODhPBiyp0z7Lds5tYJjayf
-         n1U8GnruNI9s+9eKDq15Dvhkn2Zn5E9i8vNRbydtkMDFvwKMiZSEXx35TKOqLTn9qAEz
-         6eq8qrhtG8V8PvvrrOPeB/c0/mb0Ly2rdRjmudYZfFGSYl8xJEeFU/CXOghvU028R2Gb
-         VgZ8OIhMDypQsrBdVwKPbH1i7ZWlWD+QZAg+exz/maz6m2A3OsdhFMqWUiPvWr9hsdRA
-         QKepbqiEl+Bev0fvI2HQOgsY6x3DMrNgbEzoj3DWaFfA5gQwLenZWa6aSU8HJ6t7+7Bo
-         omqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744051235; x=1744656035;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/KJ1Yxh0RTA5B17N4EwbA//OrbDLUv7EVB4eL3fHgUo=;
-        b=S304U+/NT8+nPnsXy8RrIdAaMVgZIxm/tcCMXwDGk5oPWhu2l+fHy6h5uNHPaROAZU
-         Y2JZRcqVugCvcT0MOQl7GTOBdYVVEYP7KvtYD7uorJfRhTu8ow7Ufw1AqwviUuoC2+xf
-         9ULCfPJxjdmtLkxJRnYEcZIKwbHWw8H1k+vVeLoT+gxIxQ0kDTZfiSLzbmuOVNxLIQco
-         ft5u5xyrv3x/stnLh4D11e+qm2s7ycpkQg9M/9bPJPZ9jboSj/TIZRxaMtFPe1UinLeH
-         jFqQfP6r86FsdJPVX6HN0Z1XMOsbgaF/acczgFEBxLrzt7B3q4anzruZyWXk8fe/hkcE
-         TocA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+n60672H/G6yOf6i0/u8rRKhoY/Idmf92nR3gb1r55COnV+XyY8MncDLGy356CXZGQaQGFWxe@vger.kernel.org, AJvYcCWQqVeaiyX9IgoLHSU8c3smjlxuOPdolXb1ShMu43Uhylkm2GlkiWbQJ2C8BXegxT3+JJrnERP0xSfqY2Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTmK9KbRt0P1SBcv+h59qfc1SES93M2lmGgDAv+IyKfzsC4AoC
-	qpkOw10OyRqlsIupXhwe1L0lr/D9TmyigzbGgZxMUG9WiAliSGwMn4LwkZsy
-X-Gm-Gg: ASbGnct14TjN0QdEQ/Bi40N1w8V8PVlTvEI2J3vwcKoPH2NVuoa6cvn1hSXI77KRwoQ
-	x2Uv61qxR3xRNKt7vGvGVbOupfUyhzpl+XTcFR/5WUDImwbmGKv6uG3hVr3xOsLle2c5WCk13U9
-	byONA+utmECFMxBCI/dgtmaoYoiVrlCKEznDnPomm8m1pthW199kGuZe4+30A0lMrHU5dv6WfCw
-	MahqvvBhWo6JTA9ATKr/kWeFdD43d3oaJXGGTbQlIKkwaY5phLXTLH6OYehS+H6V+DnVf9N7bkJ
-	70kW+jO5DUwDUtzP0X0RcG7e+9KgFC2Sk3vsEO74++Nqx9UWNt3W7FMI6TvAX6MmyIg=
-X-Google-Smtp-Source: AGHT+IEA/4VSGPViRd6mU6bh7fnFDXSOD8VnOzbhsOivdiFta/wUWZmqwIG46N9Ui62wNQSHOr70hA==
-X-Received: by 2002:a05:6902:a86:b0:e6d:ddb7:357c with SMTP id 3f1490d57ef6-e6e1c457da3mr23929156276.48.1744051235400;
-        Mon, 07 Apr 2025 11:40:35 -0700 (PDT)
-Received: from [10.102.6.66] ([208.97.243.82])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e6e1c22c23csm2145425276.42.2025.04.07.11.40.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Apr 2025 11:40:35 -0700 (PDT)
-Message-ID: <70d1fca7-5549-4b3f-b376-38443ca3a171@gmail.com>
-Date: Mon, 7 Apr 2025 14:40:34 -0400
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="MkNl/SjG"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1u1rQF-00Cpa1-0J; Mon, 07 Apr 2025 20:42:15 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=xBudmVevJFsZ3uAgbV+lQgDpPPKHbTZb+0QykClR98Q=; b=MkNl/SjGGlHH/cWhJjha3cmo0q
+	TXDBfQns2rj1o7sm3zUj9ZYtmshxjgAVSYe//uV0NnJYwddSP0pra6a9710OfIRl+wIfIj4CGpHVO
+	ifKOlHB1bKTf2XJ7AxIL1IX0bLeTVZmXvI5KxTRToTiimeqL6nZ5OhcTSfbgAMxn2uklmiHJ/Vzdv
+	/ANUykAt6P3gMW+gpvjpUlqPm9G0PMJMyvG4Xl9w0XmC+wEZRhnbb5gc/xwu7a0ziwG1/uHLqQvbX
+	KqJaVYCVxzqCUfxmQ6nrUB3y22N5yO2zmGgX+EqQjkThDG97FlpwI+XdDT3Y13OJRRG72SQANa6ii
+	kORyQohg==;
+Received: from [10.9.9.74] (helo=submission03.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1u1rQE-0007v8-Lu; Mon, 07 Apr 2025 20:42:14 +0200
+Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1u1rQ0-008fhd-Kz; Mon, 07 Apr 2025 20:42:00 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Date: Mon, 07 Apr 2025 20:41:44 +0200
+Subject: [PATCH net-next 2/2] vsock/test: Expand linger test to ensure
+ close() does not misbehave
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v3 net-next 0/3] Add support for mdb offload failure
- notification
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Joseph Huang <Joseph.Huang@garmin.com>, netdev@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Roopa Prabhu <roopa@nvidia.com>,
- Nikolay Aleksandrov <razor@blackwall.org>, Simon Horman <horms@kernel.org>,
- linux-kernel@vger.kernel.org, bridge@lists.linux.dev
-References: <20250404212940.1837879-1-Joseph.Huang@garmin.com>
- <20250407102941.4331a41e@kernel.org>
- <af01e665-08bb-4b60-ba0b-1784dd8a5ce3@gmail.com>
- <20250407113758.2fee3e4a@kernel.org>
-Content-Language: en-US
-From: Joseph Huang <joseph.huang.2024@gmail.com>
-In-Reply-To: <20250407113758.2fee3e4a@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250407-vsock-linger-v1-2-1458038e3492@rbox.co>
+References: <20250407-vsock-linger-v1-0-1458038e3492@rbox.co>
+In-Reply-To: <20250407-vsock-linger-v1-0-1458038e3492@rbox.co>
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+ Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-On 4/7/2025 2:37 PM, Jakub Kicinski wrote:
-> On Mon, 7 Apr 2025 14:15:31 -0400 Joseph Huang wrote:
->> - Should the re-post be v3 (no change) or v4 (bump)?
-> 
-> Doesn't matter much, but probably v4 is less confusing.
-> 
->> - Do I re-post after 6.15 is released? Around what time frame (so that I
->> can set a reminder)?
-> 
-> No, no, I mean very soon. Like tomorrow. The merge window is when
-> maintainers merge their tress up, rather than when we merge code
-> from contributors. It's a bit confusing. Merge window open ==
-> normal contribution closed, and vice versa.
+Add a check to alert on close() lingering when it should not.
 
-Got it. Thanks for the clarification. Will re-post tomorrow.
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ tools/testing/vsock/vsock_test.c | 30 +++++++++++++++++++++++++++---
+ 1 file changed, 27 insertions(+), 3 deletions(-)
 
-Thanks,
-Joseph
+diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+index d0f6d253ac72d08a957cb81a3c38fcc72bec5a53..82d0bc20dfa75041f04eada1b4310be2f7c3a0c1 100644
+--- a/tools/testing/vsock/vsock_test.c
++++ b/tools/testing/vsock/vsock_test.c
+@@ -1788,13 +1788,16 @@ static void test_stream_connect_retry_server(const struct test_opts *opts)
+ 	close(fd);
+ }
+ 
++#define	LINGER_TIMEOUT	1	/* seconds */
++
+ static void test_stream_linger_client(const struct test_opts *opts)
+ {
+ 	struct linger optval = {
+ 		.l_onoff = 1,
+-		.l_linger = 1
++		.l_linger = LINGER_TIMEOUT
+ 	};
+-	int fd;
++	int bytes_unsent, fd;
++	time_t ts;
+ 
+ 	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
+ 	if (fd < 0) {
+@@ -1807,7 +1810,28 @@ static void test_stream_linger_client(const struct test_opts *opts)
+ 		exit(EXIT_FAILURE);
+ 	}
+ 
++	/* Byte left unread to expose any incorrect behaviour. */
++	send_byte(fd, 1, 0);
++
++	/* Reuse LINGER_TIMEOUT to wait for bytes_unsent == 0. */
++	timeout_begin(LINGER_TIMEOUT);
++	do {
++		if (ioctl(fd, SIOCOUTQ, &bytes_unsent) < 0) {
++			perror("ioctl(SIOCOUTQ)");
++			exit(EXIT_FAILURE);
++		}
++		timeout_check("ioctl(SIOCOUTQ) == 0");
++	} while (bytes_unsent != 0);
++	timeout_end();
++
++	ts = current_nsec();
+ 	close(fd);
++	if ((current_nsec() - ts) / NSEC_PER_SEC > 0) {
++		fprintf(stderr, "Unexpected lingering on close()\n");
++		exit(EXIT_FAILURE);
++	}
++
++	control_writeln("DONE");
+ }
+ 
+ static void test_stream_linger_server(const struct test_opts *opts)
+@@ -1820,7 +1844,7 @@ static void test_stream_linger_server(const struct test_opts *opts)
+ 		exit(EXIT_FAILURE);
+ 	}
+ 
+-	vsock_wait_remote_close(fd);
++	control_expectln("DONE");
+ 	close(fd);
+ }
+ 
+
+-- 
+2.49.0
+
