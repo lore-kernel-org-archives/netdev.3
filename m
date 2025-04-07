@@ -1,86 +1,74 @@
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B3F21ADC7;
-	Mon,  7 Apr 2025 18:28:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.83
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744050514; cv=pass; b=k6jB1rQlyzJmnvxaej8eBHxNaVE4mp6awlDbXCqDW8IqHCVfsLz2eyg6yfLauHgINOJpefm8B8nNwivogLf7rJkfXydQcVvX3MO8Y0M9OsfYSxwXO5wqdfwdzJwcaRtCFQBU7dovNVKnUK+Viq/nlzWt5XAAZfcsNlOUFbtq/Nc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744050514; c=relaxed/simple;
-	bh=EZzj8GfhRs6Y/tesFsPnu/VT+y24dgG6LsFxA2u6yE4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WWnlSb0Oy/614u+Rpx3Ab15EY3Cfo5QqcpFm7DdZyqArO2AFCuhaueDlZKpZPM6GL6gBJYCIFl0pw1degqOaWetv1ZIdIImiNCZ6S3ECoPWTBe3GLnZEKNXI7SDiaucQ0jjbu7kVVt6kialtiPcLSgGbIU9XLJpefriF0OMKZf8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fossekall.de; spf=pass smtp.mailfrom=a98shuttle.de; dkim=pass (2048-bit key) header.d=fossekall.de header.i=@fossekall.de header.b=mzIasaPF; dkim=permerror (0-bit key) header.d=fossekall.de header.i=@fossekall.de header.b=iFnOqnCz; arc=pass smtp.client-ip=85.215.255.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fossekall.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=a98shuttle.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155C4253B61
+	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 18:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744050670; cv=none; b=IG8nKrqVKBqYZ7dIEoRmJFfNakL+KPP/h4D1CM4VMxymNilepZ3V11QaxDuQMaHkiXtdZ+MzXTKoYPeSuODbvOz2VatVJTKEAGBRWlMMilyACL22Mv2rMawdO5+cSr9/wQkfGRHjpV6DNJzx9vHxjsMA7dLV5qmZ5J4RrL+TNp4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744050670; c=relaxed/simple;
+	bh=CxC8lM6vEnJ81VYdUD7FZJLMDi6KW5OylQzkmiEQeg4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lyat6ee2qQL40erorRayegSk4csJxU3fNaAMwh5mFcivbpN2wYB8d3wWmAo2KrPuCqGOFO4cMS41IV72VFgGN7+zWIZ2jtcu4BMJOIL2uzsLiB4lvWGlW7jg4bBtkMFHEI21+pv04SeUvb2Fzvv6gq4SPdp0aaKYmt5aCYVRJsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=caqttTO6; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fossekall.de header.i=@fossekall.de header.b="mzIasaPF";
-	dkim=permerror (0-bit key) header.d=fossekall.de header.i=@fossekall.de header.b="iFnOqnCz"
-ARC-Seal: i=1; a=rsa-sha256; t=1744050146; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=LwjfKUrCTR/Fcjo/lU1bbGqOwEwlC5AV15VUnae6+42bhL9TvkRH8CJ7JsFYA3/FWf
-    LGYeNLx6SjPL1LMJJO1Qse/FApn3aeo/YVoZ9pkpQFamWRVtUouOneAbe7fML+XTGdHn
-    HqYiUxggL+UC+PdT9ufC1JSlG2xKOODDweK656DU7sjcQ57X+zmmeon8Lpk8Ah8osXIh
-    PhZkDxpfkLslVJTAD0GLrmYo0tTTBfjQevtM9eNrMoypYkyqVg6MPfyq90lAvF/Crz1f
-    /5e1fdF27wTDD9fqb2XsrOhlTFSmw28D/Bqjj5oLQcLsNYPA1ZAtQukuCJOrSfPx1koH
-    v1hw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1744050146;
-    s=strato-dkim-0002; d=strato.com;
-    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=pFmcDmSQKkM+CI9mfKoKWcBh+gkKTmyRWMx+39HmNqk=;
-    b=hokXuCPCOtSP5fQ1XMPh4SiGxtEBhijJzvC4WG0jilTqD4Bfzq2u38guB0Tbn+SpNf
-    JzVZSL/XY3US+K61QMA/zHAl+mzxA1307eLtpJqj93P3HaHR7M4c9znqi5YrJnQ1Zsj3
-    1n9d0hbR2fxO5PQcKVwav1JZQ1gJqGklk6jk4Ra9sUPe7hfaOQ3L9pVfSf8DPCeY/wDs
-    gHrq6LPk0iArcIs3G3aLJ1y+ky5oQELig1dGovP3yr8iFZuvoukFdDTVEr9DcUTwi7/N
-    YDbT0ikw1qhohcl3Y0ZEz/et/8r1PiIA9E2Xrk9twGTAZHj+O3YKrYDbbcw9/KbRpCAk
-    tJxg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1744050146;
-    s=strato-dkim-0002; d=fossekall.de;
-    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=pFmcDmSQKkM+CI9mfKoKWcBh+gkKTmyRWMx+39HmNqk=;
-    b=mzIasaPFbqz86bcyWDskLkYhzrEhmww6nELJcxxE7vnwDa8Za5aJBHwTkyNQw0N0nn
-    EHOQUYCQWZtYL5uNFuGIScSjuqRsQY84BYTI9Ce+5YElORujJjP7Su22QR8Mw+WMaVVR
-    JXc5XtYCVUofgGjArUjOQad3qbsqJHCrKxB1L86eR98sapLec1ban9rnGmQtq54AfHO4
-    XFzMN0hNcQJJm0cEBJPC71KCy9qyFRI+dyYsQkeFI3accVoax3gQcVUSv0EevKHxXlRZ
-    jBqcmSITMXrKwfcP72NpWveZmi4S50S0RuBYmerjGgN0hN9S/2tkeRzg9xtN4WTP+gop
-    1rZg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1744050146;
-    s=strato-dkim-0003; d=fossekall.de;
-    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=pFmcDmSQKkM+CI9mfKoKWcBh+gkKTmyRWMx+39HmNqk=;
-    b=iFnOqnCzgFJYkqRFYF2Hajo3SaNW07a6LniQLxxDUUsSYhlJVQvpCtmZvD+3xZPtJS
-    dzmBhvGjf+P8ZSLoMvDA==
-X-RZG-AUTH: ":O2kGeEG7b/pS1EzgE2y7nF0STYsSLflpbjNKxx7cGrBdao6FTL4AJcMdm+lap4JEHkzok9eyEg=="
-Received: from aerfugl
-    by smtp.strato.de (RZmta 51.3.0 AUTH)
-    with ESMTPSA id f28b35137IMQyOr
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Mon, 7 Apr 2025 20:22:26 +0200 (CEST)
-Received: from koltrast.home ([192.168.1.27] helo=a98shuttle.de)
-	by aerfugl with smtp (Exim 4.96)
-	(envelope-from <michael@a98shuttle.de>)
-	id 1u1r73-0003yQ-05;
-	Mon, 07 Apr 2025 20:22:25 +0200
-Received: (nullmailer pid 15065 invoked by uid 502);
-	Mon, 07 Apr 2025 18:22:24 -0000
-From: Michael Klein <michael@fossekall.de>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Michael Klein <michael@fossekall.de>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [RESEND net-next v5 3/4] net: phy: realtek: use __set_bit() in rtl8211f_led_hw_control_get()
-Date: Mon,  7 Apr 2025 20:21:42 +0200
-Message-Id: <20250407182155.14925-4-michael@fossekall.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250407182155.14925-1-michael@fossekall.de>
-References: <20250407182155.14925-1-michael@fossekall.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="caqttTO6"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43edb40f357so23033615e9.0
+        for <netdev@vger.kernel.org>; Mon, 07 Apr 2025 11:31:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744050667; x=1744655467; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=I/2q9Qpv6P3mzb6KZLuIOqkm3rWI7ZxLFwbSGgZgMMc=;
+        b=caqttTO6nRNpf2wwhz80zVvm8Sdhgk03E87ynYUQRA+jj1SSHDUrrDX3t11GoZDMiF
+         fvVX9JF5yig19OT/x8asdLuboRP5R6V3qE44OX9qRGIZw7J0cHi8rERnJDQYFH76XSvE
+         O1MJPg85TU9g59PInnPogNQpVzKBur6WsnV50l4zQfezaP9oo0Ks4/LiJWULYNMYjv4a
+         f8g7VNgQj+nbkuZIWP08Yohv55Jsgmsbw93nJmcY8JHHrtsqcbP41otWdjzO4d63Ndfn
+         X044ql2IPLBxLJWN0Ll0vaTagomuYkWwOZjD+l0avqBtaPf6ErT/GD1pQ2pFUZdeUht5
+         Dkpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744050667; x=1744655467;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=I/2q9Qpv6P3mzb6KZLuIOqkm3rWI7ZxLFwbSGgZgMMc=;
+        b=A0oH7iC4KdI4eldsXHV/0tBBXCPwxY8X+9lajOBY1L1fd4GbpQwRxrYWXD3b86uAfX
+         XDm9qhS2zANHm7CHpp8xddlCijyOUdgaURknwJ7uq4BopkJWnMHk3qX0cOmsc3iuC29u
+         YAdkwrO0F54rcdDCsQrdf1XHnxyX2rWHJasAkDv3k/WfeOKoxXQ4WU/DNIVSvfLmym8/
+         F6Q8V77t7QrHZeMA+qqTtiT0HrTnfKqP6og73MA2FI4r2fNPsPryokK5GGDqS3WX+k1T
+         e009YBKDkaVuU9rhTkIcBDuCQek8sNYQ4Rq5z1ZGq9ZQ1FkGPlde19+teTITyOXC7IIZ
+         RkQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUuvFtgJiW4ft0ASQwaEiwYK9HkoiOZhv9t+x5oI/z9oxvdJZJg+yBD1ifCvOpr1FQDMBm+MXQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZ0mPQXB3SUfuUu4A39ALCSRDYS9vsdKk11M/ZzHm/rHYVOkd9
+	HUoTh/4CXCkSAF9Plk6d8Tq3XHqCBDnIOF6sKJzUkul5OF/1AW6L
+X-Gm-Gg: ASbGncuGjvM4/u0sLilq9POmYW4lBlwaXaJhGTcEYbkCHa/B3/vROVtWS0yjFKPJ+q2
+	sA0cMJxro9fhxLoHOzSYFntvTl2O4x7EW6D+BLnhixHPPQuAQG+tbLcpgITn63/0FfLYmVp6/0w
+	raaNDLEFyfGBZaC5T4X0YD8nK3qJ7Jinz/ziofVN7XXZ9JC2kgF3Om0dHbWCCotqKFLTmIuwLv2
+	F/hfsMIeAjc5Lnopsq05o+zSMVx97Uo4Xp2QwJnEEE+rP7q/njQ4JlJBdlr9ZGzK2dkpsytnfMt
+	mnYMEmTsU2IuAaENpVNpNiDwE3btihZUso2epEuMh/0yzvBXMQAZyHQKulE=
+X-Google-Smtp-Source: AGHT+IEBQBTUZukT8NQNYa8jEn6F/ieubLZi1PrX5Xx7e2NajFdd9fBfpRy5XzgmC5J8ZUNxSX16Ug==
+X-Received: by 2002:a5d:6d8a:0:b0:39a:cc34:2f9b with SMTP id ffacd0b85a97d-39d6fc291b3mr7896942f8f.16.1744050667157;
+        Mon, 07 Apr 2025 11:31:07 -0700 (PDT)
+Received: from localhost.localdomain ([78.170.183.130])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec364ec90sm137729995e9.27.2025.04.07.11.31.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Apr 2025 11:31:06 -0700 (PDT)
+From: Baris Can Goral <goralbaris@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
+	allison.henderson@oracle.com,
+	skhan@linuxfoundation.org,
+	Baris Can Goral <goralbaris@gmail.com>
+Subject: [PATCH] net: rds transform strncpy to strscpy
+Date: Mon,  7 Apr 2025 21:30:53 +0300
+Message-Id: <20250407183052.8763-1-goralbaris@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,44 +76,54 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
 
-rtl8211f_led_hw_control_get() does not need atomic bit operations,
-replace set_bit() by __set_bit().
+Hi,
+The strncpy() function is actively dangerous to use since it may not
+NULL-terminate the destination string,resulting in potential memory
+content exposures, unbounded reads, or crashes.
+Link:https://github.com/KSPP/linux/issues/90
 
-Signed-off-by: Michael Klein <michael@fossekall.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Baris Can Goral <goralbaris@gmail.com>
 ---
- drivers/net/phy/realtek/realtek_main.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/rds/connection.c | 4 ++--
+ net/rds/stats.c      | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-index e60c18551a4e..0fcc57ad777f 100644
---- a/drivers/net/phy/realtek/realtek_main.c
-+++ b/drivers/net/phy/realtek/realtek_main.c
-@@ -577,17 +577,17 @@ static int rtl8211f_led_hw_control_get(struct phy_device *phydev, u8 index,
- 	val &= RTL8211F_LEDCR_MASK;
+diff --git a/net/rds/connection.c b/net/rds/connection.c
+index c749c5525b40..fb2f14a1279a 100644
+--- a/net/rds/connection.c
++++ b/net/rds/connection.c
+@@ -749,7 +749,7 @@ static int rds_conn_info_visitor(struct rds_conn_path *cp, void *buffer)
+ 	cinfo->laddr = conn->c_laddr.s6_addr32[3];
+ 	cinfo->faddr = conn->c_faddr.s6_addr32[3];
+ 	cinfo->tos = conn->c_tos;
+-	strncpy(cinfo->transport, conn->c_trans->t_name,
++	strscpy(cinfo->transport, conn->c_trans->t_name,
+ 		sizeof(cinfo->transport));
+ 	cinfo->flags = 0;
  
- 	if (val & RTL8211F_LEDCR_LINK_10)
--		set_bit(TRIGGER_NETDEV_LINK_10, rules);
-+		__set_bit(TRIGGER_NETDEV_LINK_10, rules);
+@@ -775,7 +775,7 @@ static int rds6_conn_info_visitor(struct rds_conn_path *cp, void *buffer)
+ 	cinfo6->next_rx_seq = cp->cp_next_rx_seq;
+ 	cinfo6->laddr = conn->c_laddr;
+ 	cinfo6->faddr = conn->c_faddr;
+-	strncpy(cinfo6->transport, conn->c_trans->t_name,
++	strscpy(cinfo6->transport, conn->c_trans->t_name,
+ 		sizeof(cinfo6->transport));
+ 	cinfo6->flags = 0;
  
- 	if (val & RTL8211F_LEDCR_LINK_100)
--		set_bit(TRIGGER_NETDEV_LINK_100, rules);
-+		__set_bit(TRIGGER_NETDEV_LINK_100, rules);
+diff --git a/net/rds/stats.c b/net/rds/stats.c
+index 9e87da43c004..63c34dbdf97f 100644
+--- a/net/rds/stats.c
++++ b/net/rds/stats.c
+@@ -89,7 +89,7 @@ void rds_stats_info_copy(struct rds_info_iterator *iter,
  
- 	if (val & RTL8211F_LEDCR_LINK_1000)
--		set_bit(TRIGGER_NETDEV_LINK_1000, rules);
-+		__set_bit(TRIGGER_NETDEV_LINK_1000, rules);
+ 	for (i = 0; i < nr; i++) {
+ 		BUG_ON(strlen(names[i]) >= sizeof(ctr.name));
+-		strncpy(ctr.name, names[i], sizeof(ctr.name) - 1);
++		strscpy(ctr.name, names[i], sizeof(ctr.name) - 1);
+ 		ctr.name[sizeof(ctr.name) - 1] = '\0';
+ 		ctr.value = values[i];
  
- 	if (val & RTL8211F_LEDCR_ACT_TXRX) {
--		set_bit(TRIGGER_NETDEV_RX, rules);
--		set_bit(TRIGGER_NETDEV_TX, rules);
-+		__set_bit(TRIGGER_NETDEV_RX, rules);
-+		__set_bit(TRIGGER_NETDEV_TX, rules);
- 	}
- 
- 	return 0;
 -- 
-2.39.5
+2.34.1
 
