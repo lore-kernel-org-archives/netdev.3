@@ -1,198 +1,91 @@
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5454A3594A;
-	Mon,  7 Apr 2025 01:06:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B781A1FBEA8
+	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 01:11:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743988022; cv=none; b=B/iydmU6ApZLjvS9hcYUAgsloHauYGYmbbE8fGi686oITdB5cuhbkImkv6vjJSDtGJD1fokkGFCfbTp3qwf4MDX+ogw4po4QLBdLdlWENvakNPyuKM2kS34VK01t37NHayNNQWEjk0BbHVXyN5xaaajfXI/7CiOEF8r7njZULDc=
+	t=1743988305; cv=none; b=pcosmqZ7e0E7ASEVUcEJAcKfA5ps2nv7vpTSs3iroV0ngl6nNBZNv0ReXznMQOJ3AkeW8XNMCtGGW1scwJXhSDAsntyUJ6ePLNyPtC5GhEHksgxtwcqB5c/TfyIQm93yhdBylLhe6BDhnZtV/w8zXaOLcEEwlEypueBAWJJcWX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743988022; c=relaxed/simple;
-	bh=ch6lvxNheDI1ivTt0ioTzc9Ny+4ood1tqZFhk88N0lc=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=Gz6eDqnVnFSKBTXH0Y7RZgiy1E0VDWMiNeIEvnV/fbhrzq8fQq4xZ59rIfK0glQkQxGOt+EhlmeNv1xHi53yYWUXFBSEFSmHo6O8/XQz/2N48/plE0URj1LftX2iA4rSrDAJtiLmCDx3OGmOnh1oYkts87eCMXp8yKY/DfiuIM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=gKU3beZn; arc=none smtp.client-ip=115.124.30.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1743988305; c=relaxed/simple;
+	bh=6b5C0yS82GnVrznvolAwn8l1b8H/CRxMsq+36B/ssdk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=INeTklUsdYkAEJmgnxj6OxExtkI4sVMuPOymSGjmIuv1K2mAWkZr/LlBz/sgznA7uOKYOL1E/DYv1KocciZpE3dnAuu9x/4Fu7mLjYD+/13P7R08vCapewaHFkax/XsSejaTCUpIwQ/DIEl7G7kL6e//MqLpzySKUSUniZE+Fsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IGCtePT9; arc=none smtp.client-ip=209.85.166.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="gKU3beZn"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1743988009; h=Message-ID:Subject:Date:From:To;
-	bh=RQsGAvlcouaF8GQ6e4VtQjlTST+z+xj3ljx+lelKUrw=;
-	b=gKU3beZnczj9WNOm+nAW+U1d5iOtOoTJHHx6hij0RZQgo55Gl4xuIwcVfBzVJV4k4+CEzHkvROx1y7r/xBHBnlvjfvRiT/QHsouXicx3tPfq8RnJRNJ5M89X7kFUGDbP8fA7LlwjMz6vArf+KCkrdKMa0/EQSQxC1ZPosH55eoU=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WVj13AP_1743988008 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 07 Apr 2025 09:06:48 +0800
-Message-ID: <1743987836.9938157-1-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH] virtio-net: disable delayed refill when pausing rx
-Date: Mon, 7 Apr 2025 09:03:56 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- "David S . Miller" <davem@davemloft.net>,
- netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org,
- Bui Quang Minh <minhquangbui99@gmail.com>,
- virtualization@lists.linux.dev
-References: <20250404093903.37416-1-minhquangbui99@gmail.com>
-In-Reply-To: <20250404093903.37416-1-minhquangbui99@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IGCtePT9"
+Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-3d5eb0ec2bdso11015375ab.2
+        for <netdev@vger.kernel.org>; Sun, 06 Apr 2025 18:11:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743988303; x=1744593103; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6b5C0yS82GnVrznvolAwn8l1b8H/CRxMsq+36B/ssdk=;
+        b=IGCtePT97s1kY5FGIe0DsMpyDbc3kfkeZW7N0x8vyFxU6ssv/5oXW1/p0bs6+GZjiA
+         lIxEyDQsj0CeodLCPbBEHejxuShVhKf3oYJHCgotb1KbjPHQ0M2nxETFQ/NSUh06jJz8
+         VhoaLnc4bfYt6k83htgmBv5/b31MpEi6KgDUgba9bqUb3jR8Bz6YtQe1vhNMyCY8kptw
+         BOWZdaFDJAf5TBbFJH56pwUKh3YJPk6nEUaDTKHj8ZkDLKS8WkkdC+SAI1mG8RUV8tJm
+         54hlvUmwPOh9s/NDJ9Gi1WXbDJ3SANsgq4GBlPcbMkW5NH8DCokptKvMEV2n5bfG1PMP
+         yXHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743988303; x=1744593103;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6b5C0yS82GnVrznvolAwn8l1b8H/CRxMsq+36B/ssdk=;
+        b=KLvvT+5hhdoJ4Ei8W3EQp0IXW/L5sSoH2/6H9EiBNN03Y8yBBXThJJFT8Xc32Q0aQC
+         CRq0iDaSzuqiAa23NkyavNlgQjZAy1wtgXu503ddot5+PRaHYGV7wL4+SrWDUyekAg33
+         LC0rjaswlyw2EWKzOdn/FR+2DJCZVXqqiYHvMPa1oPaiVyKmKJ6H2iaPDRLixf9l2Mm/
+         MlgzD5jaBx0BjeJL8o2RlQ7MxqVlu9bbuOjjmW9uTl3OnsoihFd4/KwiX5tKZ0TeH6Tv
+         /8B2dD1W8kifNq5/MWJdfX49AlSIaGvO9Rge4FjcFs8G79hrS+Re5r/OuJFo23GP1Q65
+         FBVA==
+X-Gm-Message-State: AOJu0YxtBuURbFOIgZIxiag7u0FHTqJ7lFa8K5D7x/K/QrGSq9VPv3Bg
+	8XMgErY9eILe2CSjB+SMtjXv8LHKHfbSYm8ySwBDIygWLJpmTts0Dvg8s1OM8lH7Zf1gFWzqNHq
+	w7TgkZJUg3fiMwiQs76Y2o3iSJP8=
+X-Gm-Gg: ASbGncsTMYOkmv7cuCnrPcuSx5z9spK3xwu5OUyKTrgClCL7sWbG0OcMBFh1x7CV0Ek
+	okK2T2mUKf5oMr5qpskHxsOWr+Jdjt+9QJ+2l4bBXNT4/xORSXwqUn3nMFJQN7aq6RgjSmto/K/
+	4YMSPcqd21QuJvT4kJZ7wkw0TRlA==
+X-Google-Smtp-Source: AGHT+IFbr6IHWfNfD2dnWRlL3NC0HtIs+BZPyo1aq1zhbz/lEZaLGA0VyKwJt0cucREhrtKbRt9cbIe+u/FLvXXy5YE=
+X-Received: by 2002:a05:6e02:2785:b0:3d3:d965:62c4 with SMTP id
+ e9e14a558f8ab-3d6e5329212mr97347755ab.10.1743988302733; Sun, 06 Apr 2025
+ 18:11:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20250328151633.30007-1-kerneljasonxing@gmail.com>
+In-Reply-To: <20250328151633.30007-1-kerneljasonxing@gmail.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Mon, 7 Apr 2025 09:11:06 +0800
+X-Gm-Features: ATxdqUGc4tZWfoyemMVd3b4_7ZDWu2L3MdMynXf5IsuC-uC1tC4ujqMgseYY2Rs
+Message-ID: <CAL+tcoBhuKj5QBNdfA-vHYydUAxLmwL6f7zGwADNhgBWKeCY7g@mail.gmail.com>
+Subject: Re: [PATCH RFC net-next 0/2] tcp: support initcwnd adjustment
+To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, dsahern@kernel.org, horms@kernel.org, kuniyu@amazon.com, 
+	ncardwell@google.com
+Cc: netdev@vger.kernel.org, Jason Xing <kernelxing@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri,  4 Apr 2025 16:39:03 +0700, Bui Quang Minh <minhquangbui99@gmail.com> wrote:
-> When pausing rx (e.g. set up xdp, xsk pool, rx resize), we call
-> napi_disable() on the receive queue's napi. In delayed refill_work, it
-> also calls napi_disable() on the receive queue's napi. This can leads to
-> deadlock when napi_disable() is called on an already disabled napi. This
-> scenario can be reproducible by binding a XDP socket to virtio-net
-> interface without setting up the fill ring. As a result, try_fill_recv
-> will fail until the fill ring is set up and refill_work is scheduled.
+On Fri, Mar 28, 2025 at 11:16=E2=80=AFPM Jason Xing <kerneljasonxing@gmail.=
+com> wrote:
+>
+> From: Jason Xing <kernelxing@tencent.com>
+>
+> Patch 1 introduces a normal set/getsockopt for initcwnd.
+>
+> Patch 2 introduces a dynamic adjustment for initcwnd to contribute to
+> small data transfer in data center.
 
+After having a few rounds of discussion in IETF, I think I will
+postpone resending this series probably a few months later, because I
+will keep collecting enough numbers in production and then consider
+this small data acceleration feature more comprehensively :)
 
-So, what is the problem? The refill_work is waiting? As I know, that thread
-will sleep some time, so the cpu can do other work.
-
-Thanks.
-
->
-> This commit adds virtnet_rx_(pause/resume)_all helpers and fixes up the
-> virtnet_rx_resume to disable future and cancel all inflights delayed
-> refill_work before calling napi_disable() to pause the rx.
->
-> Fixes: 6a4763e26803 ("virtio_net: support rx queue resize")
-> Fixes: 4941d472bf95 ("virtio-net: do not reset during XDP set")
-> Fixes: 09d2b3182c8e ("virtio_net: xsk: bind/unbind xsk for rx")
-> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-> ---
->  drivers/net/virtio_net.c | 60 ++++++++++++++++++++++++++++++++++------
->  1 file changed, 51 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index 7e4617216a4b..4361b91ccc64 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -3342,10 +3342,53 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
->  	return NETDEV_TX_OK;
->  }
->
-> +static void virtnet_rx_pause_all(struct virtnet_info *vi)
-> +{
-> +	bool running = netif_running(vi->dev);
-> +
-> +	/*
-> +	 * Make sure refill_work does not run concurrently to
-> +	 * avoid napi_disable race which leads to deadlock.
-> +	 */
-> +	disable_delayed_refill(vi);
-> +	cancel_delayed_work_sync(&vi->refill);
-> +	if (running) {
-> +		int i;
-> +
-> +		for (i = 0; i < vi->max_queue_pairs; i++) {
-> +			virtnet_napi_disable(&vi->rq[i]);
-> +			virtnet_cancel_dim(vi, &vi->rq[i].dim);
-> +		}
-> +	}
-> +}
-> +
-> +static void virtnet_rx_resume_all(struct virtnet_info *vi)
-> +{
-> +	bool running = netif_running(vi->dev);
-> +	int i;
-> +
-> +	enable_delayed_refill(vi);
-> +	for (i = 0; i < vi->max_queue_pairs; i++) {
-> +		if (i < vi->curr_queue_pairs) {
-> +			if (!try_fill_recv(vi, &vi->rq[i], GFP_KERNEL))
-> +				schedule_delayed_work(&vi->refill, 0);
-> +		}
-> +
-> +		if (running)
-> +			virtnet_napi_enable(&vi->rq[i]);
-> +	}
-> +}
-> +
->  static void virtnet_rx_pause(struct virtnet_info *vi, struct receive_queue *rq)
->  {
->  	bool running = netif_running(vi->dev);
->
-> +	/*
-> +	 * Make sure refill_work does not run concurrently to
-> +	 * avoid napi_disable race which leads to deadlock.
-> +	 */
-> +	disable_delayed_refill(vi);
-> +	cancel_delayed_work_sync(&vi->refill);
->  	if (running) {
->  		virtnet_napi_disable(rq);
->  		virtnet_cancel_dim(vi, &rq->dim);
-> @@ -3356,6 +3399,7 @@ static void virtnet_rx_resume(struct virtnet_info *vi, struct receive_queue *rq)
->  {
->  	bool running = netif_running(vi->dev);
->
-> +	enable_delayed_refill(vi);
->  	if (!try_fill_recv(vi, rq, GFP_KERNEL))
->  		schedule_delayed_work(&vi->refill, 0);
->
-> @@ -5959,12 +6003,12 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
->  	if (prog)
->  		bpf_prog_add(prog, vi->max_queue_pairs - 1);
->
-> +	virtnet_rx_pause_all(vi);
-> +
->  	/* Make sure NAPI is not using any XDP TX queues for RX. */
->  	if (netif_running(dev)) {
-> -		for (i = 0; i < vi->max_queue_pairs; i++) {
-> -			virtnet_napi_disable(&vi->rq[i]);
-> +		for (i = 0; i < vi->max_queue_pairs; i++)
->  			virtnet_napi_tx_disable(&vi->sq[i]);
-> -		}
->  	}
->
->  	if (!prog) {
-> @@ -5996,13 +6040,12 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
->  		vi->xdp_enabled = false;
->  	}
->
-> +	virtnet_rx_resume_all(vi);
->  	for (i = 0; i < vi->max_queue_pairs; i++) {
->  		if (old_prog)
->  			bpf_prog_put(old_prog);
-> -		if (netif_running(dev)) {
-> -			virtnet_napi_enable(&vi->rq[i]);
-> +		if (netif_running(dev))
->  			virtnet_napi_tx_enable(&vi->sq[i]);
-> -		}
->  	}
->
->  	return 0;
-> @@ -6014,11 +6057,10 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
->  			rcu_assign_pointer(vi->rq[i].xdp_prog, old_prog);
->  	}
->
-> +	virtnet_rx_resume_all(vi);
->  	if (netif_running(dev)) {
-> -		for (i = 0; i < vi->max_queue_pairs; i++) {
-> -			virtnet_napi_enable(&vi->rq[i]);
-> +		for (i = 0; i < vi->max_queue_pairs; i++)
->  			virtnet_napi_tx_enable(&vi->sq[i]);
-> -		}
->  	}
->  	if (prog)
->  		bpf_prog_sub(prog, vi->max_queue_pairs - 1);
-> --
-> 2.43.0
->
+Thanks,
+Jason
