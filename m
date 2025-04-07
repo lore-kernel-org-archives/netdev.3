@@ -1,97 +1,93 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540DA259C90
-	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 18:59:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15DF1FF5F7
+	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 19:01:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744052393; cv=none; b=svtBqn68Gh7KcP6rt+fc4PzIDDNrmJyrQ/JgkNfOMid3VLMLBV3ce0JJyDrRlLb0mMawjSiweZ7DzHQQ5TfldqIco0kfrLdEYNVtC1YkTPpNfqDGb/VR5fcwfoBRvl63JIuTZ9j0rbn17J/6q07NAYhDB3zs3UUCqSwk8hVSjqM=
+	t=1744052478; cv=none; b=I+htq92lb1kGwa8m6LSgaJqj5+Jml06gHS7+31bZ8nuvK7l45C2wRJk3fXHHmRdJVRsyK7bqHwsyNkvkEoUHIBMb+WDwNjuvtyYzYgpQM4kQrsd1U0ynUj5h2hxCwHJyzYUqJXX4aNx+Nh44aehzYlUoRg2igjkMoyRjCpogE7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744052393; c=relaxed/simple;
-	bh=kLCnRssc8WmKeFbm7JpTO/wcG5Hc89ZUj5kVl6Gn6s4=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=Hmt7H584fDa0GRVcBpqD53SNEIm2mN0y7oZwNYuOeAs4G4Tip9QW4OqraIknbuSvQr5MwxPVbrZBKfy8aXZstbNc0fbGenbKbLb3npNCNvkFtY2CtFLvBF+UxRtJKsjYd/hb9nDD7RV6xDbh1eEHtPcezerhUHPDZtxsgJPzYeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=aSGIamiJ; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1744052478; c=relaxed/simple;
+	bh=H7RO+tBlbH/rY9ZVTsrsvfbmIr3dWDkrkv5REdmbfCA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pP12xD/SvG4w1mUfM5w6xNzec9aOv1PzS4WXcBU4g0Q2i1xLT7I6cjU048KaF01MtDTOM35WtQJH6TgasJHsEXJeCRj9aPOlb6Qk+t+1F8yEa03LBKWlWpU40EjDzZLUiQ/R8CkG3I7GTS+H3skTWlxaFTPLgBqA5Lab6Ajpyug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H4GOZ7EX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="aSGIamiJ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=g+gTqjr9DCh74fm5MrIN8IfG63yVQfUMTpEsACnoz9g=; b=aSGIamiJukybih316LqvTsGTCU
-	VJrvt/A8Zi349runxTQ69QaQi0QPBl4R2XSxcE7aIP+xD5O1s5Rwajkxo+EHErgJM5Iy63s2KUKmM
-	9bDd2+WP3srjq7mU2Lmxi9a57c6tQropXqxKy76NXPvRL4GWDKng97FpnMbZ7fhDeaAJq1se6+7AJ
-	xLIYV42W3RV4xvEaXvdVpUyrEa8vs4MRHegTVntemDmTkXCAlwFRivqysD9KDJ7VYU6FL0Bkj8GzR
-	WE0lGLkhEiq80lGjbyDZWRpTr+viXLhmvkbpZGECYwfVcH7+IpUBBjLMVT0C4ZCm9Rm/k+Ssudqnc
-	F8zRG/Cw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:43020 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1u1rh9-0006AU-1k;
-	Mon, 07 Apr 2025 19:59:43 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1u1rgd-0013h1-Fz; Mon, 07 Apr 2025 19:59:11 +0100
-In-Reply-To: <Z_QgOTC1hOSkIdur@shell.armlinux.org.uk>
-References: <Z_QgOTC1hOSkIdur@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH net-next 5/5] net: stmmac: remove GMAC_1US_TIC_COUNTER
- definition
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H4GOZ7EX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF1BC4CEDD;
+	Mon,  7 Apr 2025 19:01:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744052478;
+	bh=H7RO+tBlbH/rY9ZVTsrsvfbmIr3dWDkrkv5REdmbfCA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=H4GOZ7EX5GsFEyN7Y1X06BMOiq+6kPsf7bmhAp4IUcBOMAh24MMPVRbJIBzbm+C3p
+	 1LClcXWn6M1qt259BQc5oxd6teqosVWtKCk8gucoo5Tt/gebvc2KltCRCyOSSm4AyQ
+	 6sAD71/2ajC1+1s6c8pq9cZ6k5ejRAbB8/AqYfWSiaexSDNG6NKtDu4CwMfPmEik4j
+	 G8hEPyDwrAlqFAyMC0Ik1E8u26e6/ULk02cN3FW3AyKR50Sr/+u1bs41KfRCkZ9KRb
+	 LWhKhVoGtbkbANYcyFNQXCTKOO1BIDhVMJJ0BFGs1gBq5Gmh1CqPBRCKVx47Ht4cIC
+	 MPmIFesbU/nUQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	sdf@fomichev.me,
+	hramamurthy@google.com,
+	kuniyu@amazon.com,
+	jdamato@fastly.com
+Subject: [PATCH net-next 0/8] net: depend on instance lock for queue related netlink ops
+Date: Mon,  7 Apr 2025 12:01:09 -0700
+Message-ID: <20250407190117.16528-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1u1rgd-0013h1-Fz@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Mon, 07 Apr 2025 19:59:11 +0100
 
-GMAC_1US_TIC_COUNTER is now no longer used, so remove the definition.
-This was duplicated by GMAC4_MAC_ONEUS_TIC_COUNTER further down in the
-same file.
+netdev-genl used to be protected by rtnl_lock. In previous release
+we already switched the queue management ops (for Rx zero-copy) to
+the instance lock. This series converts other ops to depend on the
+instance lock when possible.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac4.h | 1 -
- 1 file changed, 1 deletion(-)
+Unfortunately queue related state is hard to lock (unlike NAPI)
+as the process of switching the number of queues usually involves
+a large reconfiguration of the driver. The reconfig process has
+historically been under rtnl_lock, but for drivers which opt into
+ops locking it is also under the instance lock. Leverage that
+and conditionally take rtnl_lock or instance lock depending
+on the device capabilities.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
-index 42fe29a4e300..5f387ec27c8c 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
-@@ -31,7 +31,6 @@
- #define GMAC_RXQ_CTRL3			0x000000ac
- #define GMAC_INT_STATUS			0x000000b0
- #define GMAC_INT_EN			0x000000b4
--#define GMAC_1US_TIC_COUNTER		0x000000dc
- #define GMAC_PCS_BASE			0x000000e0
- #define GMAC_PHYIF_CONTROL_STATUS	0x000000f8
- #define GMAC_PMT			0x000000c0
+Jakub Kicinski (8):
+  net: avoid potential race between netdev_get_by_index_lock() and netns
+    switch
+  net: designate XSK pool pointers in queues as "ops protected"
+  netdev: add "ops compat locking" helpers
+  netdev: don't hold rtnl_lock over nl queue info get when possible
+  xdp: double protect netdev->xdp_flags with netdev->lock
+  netdev: depend on netdev->lock for xdp features
+  docs: netdev: break down the instance locking info per ops struct
+  netdev: depend on netdev->lock for qstats in ops locked drivers
+
+ Documentation/networking/netdevices.rst    | 61 +++++++++++++----
+ include/linux/netdevice.h                  |  7 +-
+ include/net/netdev_lock.h                  | 16 +++++
+ include/net/netdev_queues.h                |  4 +-
+ include/net/netdev_rx_queue.h              |  6 +-
+ include/net/xdp.h                          |  1 +
+ net/core/dev.h                             | 17 ++++-
+ drivers/net/ethernet/google/gve/gve_main.c |  2 +-
+ net/core/dev.c                             | 76 ++++++++++++++++++++--
+ net/core/lock_debug.c                      |  2 +-
+ net/core/netdev-genl.c                     | 73 ++++++++++-----------
+ net/core/xdp.c                             | 12 +++-
+ net/xdp/xsk.c                              |  2 +
+ net/xdp/xsk_buff_pool.c                    |  7 +-
+ 14 files changed, 220 insertions(+), 66 deletions(-)
+
 -- 
-2.30.2
+2.49.0
 
