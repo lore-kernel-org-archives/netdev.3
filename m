@@ -1,120 +1,83 @@
-Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5272B204694;
-	Mon,  7 Apr 2025 15:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3C01FF612;
+	Mon,  7 Apr 2025 16:02:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744041143; cv=none; b=u3CC5K5vQRDbjuo+QGmWvQzd+RER8lu+syPOmNjtXLRBKOp4xNjsaJDc99aTd0/USc5bTmN2yQkOtJhsIB9qpjwOeUeAIt+lYIH8sRNi68SulNpuNpTOqIxraj2/UYSsJrYy+BklYRc6NePDQzX+whjr22RjgccHOFjs0dif+eA=
+	t=1744041765; cv=none; b=u/DooVRgpZpwMedJgo2NdOushXS6yOJhsxrzv/G2vrI1Mc1wd+yeWuoTKLquA/FdP5xu6qSxnmySpYrFAZaU1LqOJGVJspiKZ9UcwzaQ8oKYK9xxnbPcQGU/TpqLic2336X0QT5X7SghtdUQlXzwF8U33pkVGI9KQCvUOVE+kg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744041143; c=relaxed/simple;
-	bh=RO9vA3rEiMpXY2A/myUPJ8wWD9WvtX3M47OGtLYdyvk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZmQyoscEK62h7NMukfvE7w9wbAUfe2TEmG2+U9q1ZF2xO0EAXU1fpn2ikzKj12fQ+8rIrw7kB0tTN0pgNmZnfNE+SQgWx6sAd27tUHMCU5+2XprD+dtA+t1+xClYkdFltxlyLqWrh2gPFVTGHpTKtDpYb8qnUlEwPRNdFR3A4Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=U2EGV97b; arc=none smtp.client-ip=99.78.197.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1744041765; c=relaxed/simple;
+	bh=hiJ3fT1ox825yzWnFcIhZ9Yu7DI+fIxJr/WKZ2bpIDY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CCTvwtIWIRjdWvKXz37CrnygqEDQ7+wKqyctiew6IIUAAZ49F9qIcP9DmkN9IbZn8vegou/IZ4Z0Vxq2bA//Fp/nhaAtHYrOPW82+ehIPC6nEsPaxDwIht+ECAH/SGFBBvEkwoEfPilsy9s+E31FvuAtIM1/Ed7qKlNCM3pd+B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Y7brdNK4; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="U2EGV97b"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1744041139; x=1775577139;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3kLBT+4Y+IiY2wVdsPc5x6Fuj1savLAG8Rp99+8Cz/Y=;
-  b=U2EGV97bamTA5gVvu2Km6Ei228VXQkqFFk3C9/09GOMhPxAOhYs5bFpG
-   I2bB1MAKh46DA8RJroibOJUv6fjyusCj4SzaGqcsKjPSpqkGjzYPFs0Ha
-   dovr8gxr+YkBm7lWF1FhZHNygXRjQ3oaje6+V58iSjMPdwkTaCoulLu9h
-   s=;
-X-IronPort-AV: E=Sophos;i="6.15,194,1739836800"; 
-   d="scan'208";a="188970982"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 15:52:17 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.7.35:46015]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.43.57:2525] with esmtp (Farcaster)
- id f69cf136-479c-4502-a43c-d0c57a16572b; Mon, 7 Apr 2025 15:52:16 +0000 (UTC)
-X-Farcaster-Flow-ID: f69cf136-479c-4502-a43c-d0c57a16572b
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Mon, 7 Apr 2025 15:52:16 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.106.101.45) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Mon, 7 Apr 2025 15:52:12 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <edumazet@google.com>
-CC: <davem@davemloft.net>, <ematsumiya@suse.de>, <horms@kernel.org>,
-	<kuba@kernel.org>, <kuni1840@gmail.com>, <kuniyu@amazon.com>,
-	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <peterz@infradead.org>,
-	<sfrench@samba.org>, <stable@vger.kernel.org>, <wangzhaolong1@huawei.com>,
-	<willemb@google.com>
-Subject: Re: [PATCH v2 net] net: Fix null-ptr-deref by sock_lock_init_class_and_name() and rmmod.
-Date: Mon, 7 Apr 2025 08:52:02 -0700
-Message-ID: <20250407155204.16501-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <CANn89iKc_7RNordD-YcZv9DPw8CNubnDVkhgYGma20q4cxgAdw@mail.gmail.com>
-References: <CANn89iKc_7RNordD-YcZv9DPw8CNubnDVkhgYGma20q4cxgAdw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Y7brdNK4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=P8u7FBm5bMOio2OYhUxH103ncbBvCJ9P9eGnDVqb34o=; b=Y7brdNK4ulsORgCtQ3i41lVgCr
+	Fk62Yedh9QBxkjhGpeYQN7ELL2hAX7+PiMAiNAd08/3bi+Cd6J8x4vMoHjAdRy3kJL3dedfTHitZC
+	u+YTSi+WQgjuJXU08S2LmbXvw86hWqd2eqTK1kOGMyq7wEvMhlf6S+Yb2ozxVi8O95YJPyGRPczqm
+	dEgJPAB35s4j3r/0XH0O/eeNNo7XWn+cK2YsbmVJJEyYQreoNdGKu435TwvMP/kXsPK6KcFUTXM8M
+	MOYXKG57CjJYWyr1ozEwqKb1/7sHwlwnDmYhtnWWteDN7AE4wsbNBeHQlYEq0cNEY1+KWmP3R6of5
+	scNRrd6g==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:36256)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1u1ovf-0005co-1p;
+	Mon, 07 Apr 2025 17:02:31 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1u1ovc-0000Vv-26;
+	Mon, 07 Apr 2025 17:02:28 +0100
+Date: Mon, 7 Apr 2025 17:02:28 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v2 0/2] Add Marvell PHY PTP support
+Message-ID: <Z_P3FKEhv1s0y4d7@shell.armlinux.org.uk>
+References: <20250407-feature_marvell_ptp-v2-0-a297d3214846@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D039UWA003.ant.amazon.com (10.13.139.49) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250407-feature_marvell_ptp-v2-0-a297d3214846@bootlin.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 7 Apr 2025 13:21:11 +0200
-> > diff --git a/net/core/sock.c b/net/core/sock.c
-> > index 323892066def..d426c5f8e20f 100644
-> > --- a/net/core/sock.c
-> > +++ b/net/core/sock.c
-> > @@ -2130,6 +2130,8 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
-> >   */
-> >  static inline void sock_lock_init(struct sock *sk)
-> >  {
-> > +       sk_owner_clear(sk);
-> > +
-> >         if (sk->sk_kern_sock)
-> >                 sock_lock_init_class_and_name(
-> >                         sk,
-> > @@ -2324,6 +2326,8 @@ static void __sk_destruct(struct rcu_head *head)
-> >                 __netns_tracker_free(net, &sk->ns_tracker, false);
-> >                 net_passive_dec(net);
-> >         }
-> > +
-> > +       sk_owner_put(sk);
+On Mon, Apr 07, 2025 at 04:02:59PM +0200, Kory Maincent wrote:
+> Add PTP basic support for Marvell 88E151x PHYs.
 > 
-> I am not convinced that the socket lock can be used after this point,
-> now or in the future.
-> 
-> >         sk_prot_free(sk->sk_prot_creator, sk);
-> >  }
-> 
-> Maybe move this in sk_prot_free() instead ?
+> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 
-Makes sense.
-Will move sk_owner_put() to sk_prot_free() in v3.
+Is the PTP selection stuff actually sorted now? Last time I tested it
+after it having been merged into the kernel for a while, it didn't work,
+and I reported that fact. You haven't told me that you now expect it to
+work.
 
-Thanks!
+I don't want this merged until such time that we can be sure that MVPP2
+platforms can continue using the MVPP2 PTP support, which to me means
+that the PTP selection between a MAC and PHY needs to work.
 
-
-> 
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> index 323892066def..9ab149d1584c 100644
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -2226,6 +2226,9 @@ static void sk_prot_free(struct proto *prot,
-> struct sock *sk)
->         cgroup_sk_free(&sk->sk_cgrp_data);
->         mem_cgroup_sk_free(sk);
->         security_sk_free(sk);
-> +
-> +       sk_owner_put(sk);
-> +
->         if (slab != NULL)
->                 kmem_cache_free(slab, sk);
->         else
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
