@@ -1,193 +1,166 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sg-1-21.ptr.blmpb.com (sg-1-21.ptr.blmpb.com [118.26.132.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9304B22FDE4
-	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 09:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A3223716B
+	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 09:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744017375; cv=none; b=s3CiOD44qGUOHZiFLRwws65zfABVOYUsATrypbr8G5vIGB7DpzZh4aF57vjvB/rBbBbRtPuwjj2LaSEzUBraoPxPM0b5IjIwQm/qr9Qh30bgKBWBy6m9OicqHnSLHA9IKM1VYzAbEmaiNIX4rXTtMKJYD8Es7Ld7b37uWRofT1I=
+	t=1744017558; cv=none; b=qA+1ZQtUC0fwwM3iLRqVdkMUtuGthqOKvoNvcgYoztCir4s+1hfPIkq0HPRwk7aV+4cMWBnP3VilVMl8d2yBC1Qi/NgY0WnYcdbSm+HL7HJakt4fac8xFK3dC+jbioWK1U+HzRzKLNL4P6gXn0f0BpBPFhg+8PLsk6QPYw6oXts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744017375; c=relaxed/simple;
-	bh=31vqYQwn/J2VYn5vPyEE1407XeQoddh8cnodS3c1KD8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nttlYO/46oxAKFOMzKwSRVSqgo+Fh4LN0ZdH2wNk1A6KnTcuV7V4CmsksfCG9uzyQd5aoiNIc3mSVozXL7JhL75jxALS0kb6K2MlCOWidGuja2z5EYt+ed9aSbWM5c+AWY+QDvbKA71vUOoz/lQbt2gWWP92FEr6te42KYzWFBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bofbeNc7; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1744017558; c=relaxed/simple;
+	bh=WZhYQVmEzS37DSYHB8fg82yBli+uIkHpjxt3EmTTNGw=;
+	h=Subject:Mime-Version:Content-Type:In-Reply-To:To:Cc:From:Date:
+	 Message-Id:References; b=AOp+2yzOM+a/zU7ZtDAmfPiU0uM1huR/fjRsQsqG1X51ye9b5yrh9R/q/BRFLknA2Rh9w5WZewVwKwatj1Rf+5brTApigBmpvovZ4BmzqCH6a69xTFtvqd392TysUMDcuOZJx2d6XzFQKxANwNeOLTDIrcq5/naibSLpxuSB5qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=JzV5Q958; arc=none smtp.client-ip=118.26.132.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bofbeNc7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744017372;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V+GN2gS8lk8pQaqDs/K8fd6AI38wy4xbJjG61joXzQc=;
-	b=bofbeNc7ul4fP3PQUiFFvJP1LyeNw84qiZKVa/IfCWAYicEUe16AKCY4oHBO9+rDaBQGeL
-	x7yxeHI6UBHl4/+i8NY+4UstLDFzxztrkxPvJho3y4GPwcVVISeE+VAJoaK0FW6Y15pKb7
-	nDQ81G8ooABZjVP02vMEWF3cdkt4nNE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-202-SCyC-SVZMZ2RqwRGG68A2g-1; Mon,
- 07 Apr 2025 05:16:06 -0400
-X-MC-Unique: SCyC-SVZMZ2RqwRGG68A2g-1
-X-Mimecast-MFC-AGG-ID: SCyC-SVZMZ2RqwRGG68A2g_1744017363
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9A0F1180AF52;
-	Mon,  7 Apr 2025 09:16:03 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.40])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3A378192C7C3;
-	Mon,  7 Apr 2025 09:16:00 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	linux-afs@lists.infradead.org,
-	openafs-devel@openafs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 12/12] rxrpc: rxperf: Add test RxGK server keys
-Date: Mon,  7 Apr 2025 10:14:43 +0100
-Message-ID: <20250407091451.1174056-13-dhowells@redhat.com>
-In-Reply-To: <20250407091451.1174056-1-dhowells@redhat.com>
-References: <20250407091451.1174056-1-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="JzV5Q958"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2403070942; d=yunsilicon.com; t=1744017410; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=V0qnB1MJxRXWqNSZ5w1A1IzePmv/WCb7nczJ3vOV/sU=;
+ b=JzV5Q958ZRsAU/klCwRYxKdr3ZY08Z4btI8p1ed/RqND4djHnGXqADk4gWs/TxCAvgWRIO
+ h61v9uK8CEwmBLnsb8hvICmLZYMBR0LyO2b4VQ29hMofeoffknYYxVV47xGYou0/Cy7uUz
+ b2o1P5eomEOetJjay5mnp5v9nuM8uRBbP29teTUhhnFd5najGBtOlLjpVuxvGQu6PwWgZV
+ lYNCgLxGVVGAZxEJc2ybOPS6aldnCcrT1mN+HGkOtm6CvyOJgolO9vQRtLxQsK09MDf7dA
+ 4fF+3CVVqqadE/TwK8O5nRsge8Sft9dP4AlGvI7rwTfuUwoAXYALdQGvAEqnYw==
+Subject: Re: [PATCH net-next v9 09/14] xsc: Init net device
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Received: from [127.0.0.1] ([116.231.163.61]) by smtp.feishu.cn with ESMTPS; Mon, 07 Apr 2025 17:16:48 +0800
+In-Reply-To: <20250325051934.002db3cd@kernel.org>
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+To: "Jakub Kicinski" <kuba@kernel.org>
+Cc: <netdev@vger.kernel.org>, <leon@kernel.org>, <andrew+netdev@lunn.ch>, 
+	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
+	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
+	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <jacky@yunsilicon.com>, 
+	<horms@kernel.org>, <parthiban.veerasooran@microchip.com>, 
+	<masahiroy@kernel.org>, <kalesh-anakkur.purayil@broadcom.com>, 
+	<geert+renesas@glider.be>, <geert@linux-m68k.org>
+From: "Xin Tian" <tianx@yunsilicon.com>
+Date: Mon, 7 Apr 2025 17:16:53 +0800
+Message-Id: <941d54c4-15d5-43b7-a7af-4eb913448492@yunsilicon.com>
+User-Agent: Mozilla Thunderbird
+Content-Transfer-Encoding: quoted-printable
+References: <20250318151449.1376756-1-tianx@yunsilicon.com> <20250318151510.1376756-10-tianx@yunsilicon.com> <20250325051934.002db3cd@kernel.org>
+X-Lms-Return-Path: <lba+267f39801+35753b+vger.kernel.org+tianx@yunsilicon.com>
 
-Add RxGK server keys of bytes containing { 0, 1, 2, 3, 4, ... } to the
-server keyring for the rxperf test server.  This allows the rxperf test
-client to connect to it.
+On 2025/3/25 20:19, Jakub Kicinski wrote:
+> On Tue, 18 Mar 2025 23:15:11 +0800 Xin Tian wrote:
+>> +static int xsc_eth_set_hw_mtu(struct xsc_core_device *xdev,
+>> +			      u16 mtu, u16 rx_buf_sz)
+>> +{
+>> +	struct xsc_set_mtu_mbox_out out;
+>> +	struct xsc_set_mtu_mbox_in in;
+>> +	int ret;
+>> +
+>> +	memset(&in, 0, sizeof(struct xsc_set_mtu_mbox_in));
+>> +	memset(&out, 0, sizeof(struct xsc_set_mtu_mbox_out));
+>> +
+>> +	in.hdr.opcode =3D cpu_to_be16(XSC_CMD_OP_SET_MTU);
+>> +	in.mtu =3D cpu_to_be16(mtu);
+>> +	in.rx_buf_sz_min =3D cpu_to_be16(rx_buf_sz);
+>> +	in.mac_port =3D xdev->mac_port;
+>> +
+>> +	ret =3D xsc_cmd_exec(xdev, &in, sizeof(struct xsc_set_mtu_mbox_in), &o=
+ut,
+>> +			   sizeof(struct xsc_set_mtu_mbox_out));
+>> +	if (ret || out.hdr.status) {
+>> +		netdev_err(((struct xsc_adapter *)xdev->eth_priv)->netdev,
+> Please use temporary variable or define a local print macro.
+> The cast is too ugly.
+OK=EF=BC=8Cwill use temporary variable here
+>
+>> +			   "failed to set hw_mtu=3D%u rx_buf_sz=3D%u, err=3D%d, status=3D%d\=
+n",
+>> +			   mtu, rx_buf_sz, ret, out.hdr.status);
+>> +		ret =3D -ENOEXEC;
+> Why are you overwriting the ret code from xsc_cmd_exec() ?
+> And why with such an unusual errno ?
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
----
- net/rxrpc/rxperf.c | 68 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 65 insertions(+), 3 deletions(-)
 
-diff --git a/net/rxrpc/rxperf.c b/net/rxrpc/rxperf.c
-index c76fbccfbb91..0377301156b0 100644
---- a/net/rxrpc/rxperf.c
-+++ b/net/rxrpc/rxperf.c
-@@ -8,6 +8,7 @@
- #define pr_fmt(fmt) "rxperf: " fmt
- #include <linux/module.h>
- #include <linux/slab.h>
-+#include <crypto/krb5.h>
- #include <net/sock.h>
- #include <net/af_rxrpc.h>
- #define RXRPC_TRACE_ONLY_DEFINE_ENUMS
-@@ -550,9 +551,9 @@ static int rxperf_process_call(struct rxperf_call *call)
- }
- 
- /*
-- * Add a key to the security keyring.
-+ * Add an rxkad key to the security keyring.
-  */
--static int rxperf_add_key(struct key *keyring)
-+static int rxperf_add_rxkad_key(struct key *keyring)
- {
- 	key_ref_t kref;
- 	int ret;
-@@ -578,6 +579,47 @@ static int rxperf_add_key(struct key *keyring)
- 	return ret;
- }
- 
-+#ifdef CONFIG_RXGK
-+/*
-+ * Add a yfs-rxgk key to the security keyring.
-+ */
-+static int rxperf_add_yfs_rxgk_key(struct key *keyring, u32 enctype)
-+{
-+	const struct krb5_enctype *krb5 = crypto_krb5_find_enctype(enctype);
-+	key_ref_t kref;
-+	char name[64];
-+	int ret;
-+	u8 key[32];
-+
-+	if (!krb5 || krb5->key_len > sizeof(key))
-+		return 0;
-+
-+	/* The key is just { 0, 1, 2, 3, 4, ... } */
-+	for (int i = 0; i < krb5->key_len; i++)
-+		key[i] = i;
-+
-+	sprintf(name, "%u:6:1:%u", RX_PERF_SERVICE, enctype);
-+
-+	kref = key_create_or_update(make_key_ref(keyring, true),
-+				    "rxrpc_s", name,
-+				    key, krb5->key_len,
-+				    KEY_POS_VIEW | KEY_POS_READ | KEY_POS_SEARCH |
-+				    KEY_USR_VIEW,
-+				    KEY_ALLOC_NOT_IN_QUOTA);
-+
-+	if (IS_ERR(kref)) {
-+		pr_err("Can't allocate rxperf server key: %ld\n", PTR_ERR(kref));
-+		return PTR_ERR(kref);
-+	}
-+
-+	ret = key_link(keyring, key_ref_to_ptr(kref));
-+	if (ret < 0)
-+		pr_err("Can't link rxperf server key: %d\n", ret);
-+	key_ref_put(kref);
-+	return ret;
-+}
-+#endif
-+
- /*
-  * Initialise the rxperf server.
-  */
-@@ -607,9 +649,29 @@ static int __init rxperf_init(void)
- 		goto error_keyring;
- 	}
- 	rxperf_sec_keyring = keyring;
--	ret = rxperf_add_key(keyring);
-+	ret = rxperf_add_rxkad_key(keyring);
-+	if (ret < 0)
-+		goto error_key;
-+#ifdef CONFIG_RXGK
-+	ret = rxperf_add_yfs_rxgk_key(keyring, KRB5_ENCTYPE_AES128_CTS_HMAC_SHA1_96);
-+	if (ret < 0)
-+		goto error_key;
-+	ret = rxperf_add_yfs_rxgk_key(keyring, KRB5_ENCTYPE_AES256_CTS_HMAC_SHA1_96);
-+	if (ret < 0)
-+		goto error_key;
-+	ret = rxperf_add_yfs_rxgk_key(keyring, KRB5_ENCTYPE_AES128_CTS_HMAC_SHA256_128);
-+	if (ret < 0)
-+		goto error_key;
-+	ret = rxperf_add_yfs_rxgk_key(keyring, KRB5_ENCTYPE_AES256_CTS_HMAC_SHA384_192);
-+	if (ret < 0)
-+		goto error_key;
-+	ret = rxperf_add_yfs_rxgk_key(keyring, KRB5_ENCTYPE_CAMELLIA128_CTS_CMAC);
-+	if (ret < 0)
-+		goto error_key;
-+	ret = rxperf_add_yfs_rxgk_key(keyring, KRB5_ENCTYPE_CAMELLIA256_CTS_CMAC);
- 	if (ret < 0)
- 		goto error_key;
-+#endif
- 
- 	ret = rxperf_open_socket();
- 	if (ret < 0)
+Thanks for pointing this out =E2=80=94 it's a mistake.
 
+
+In our old implementation, there were two return values:
+
+the return value of xsc_cmd_exec indicated whether the message was=20
+properly transmitted through CMDQ,
+
+while out.status reflected the result of the command execution in the=20
+firmware.
+
+So we chose -ENOEXEC to cover both types of errors.
+
+
+But now the return value of xsc_cmd_exec already reflects the result of=20
+out.status,
+
+and -ENOEXEC seems not an appropriate return value here.
+
+
+I'll fix this and return the result of xsc_cmd_exec directly.
+
+
+>
+>> +static int xsc_eth_get_mac(struct xsc_core_device *xdev, char *mac)
+>> +{
+>> +	struct xsc_query_eth_mac_mbox_out *out;
+>> +	struct xsc_query_eth_mac_mbox_in in;
+>> +	int err =3D 0;
+>> +
+>> +	out =3D kzalloc(sizeof(*out), GFP_KERNEL);
+>> +	if (!out)
+>> +		return -ENOMEM;
+>> +
+>> +	memset(&in, 0, sizeof(in));
+>> +	in.hdr.opcode =3D cpu_to_be16(XSC_CMD_OP_QUERY_ETH_MAC);
+>> +
+>> +	err =3D xsc_cmd_exec(xdev, &in, sizeof(in), out, sizeof(*out));
+>> +	if (err || out->hdr.status) {
+>> +		netdev_err(((struct xsc_adapter *)xdev->eth_priv)->netdev,
+>> +			   "get mac failed! err=3D%d, out.status=3D%u\n",
+>> +			   err, out->hdr.status);
+>> +		err =3D -ENOEXEC;
+>> +		goto err_free;
+>> +	}
+>> +
+>> +	memcpy(mac, out->mac, 6);
+> 6 -> ETH_ALEN or ether_addr_copy()
+Ack
+>
+>> +
+>> +err_free:
+>> +	kfree(out);
+>> +	return err;
+>> +}
+>> +
+>> +static void xsc_eth_l2_addr_init(struct xsc_adapter *adapter)
+>> +{
+>> +	struct net_device *netdev =3D adapter->netdev;
+>> +	char mac[6] =3D {0};
+>> +	int ret =3D 0;
+>> +
+>> +	ret =3D xsc_eth_get_mac(adapter->xdev, mac);
+>> +	if (ret) {
+>> +		netdev_err(netdev, "get mac failed %d, generate random mac...",
+>> +			   ret);
+>> +		eth_random_addr(mac);
+> eth_hw_addr_random()
+OK, no need for set now. Will change.
+>
+>> +	}
+>> +	dev_addr_mod(netdev, 0, mac, 6);
+> Why not dev_addr_set() ?!
+
+OK=EF=BC=8Cdev_addr_set() is more suitable
+
+Thanks
