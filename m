@@ -1,65 +1,61 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016DC210F59
-	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 16:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F7D2066F9;
+	Mon,  7 Apr 2025 16:13:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744042370; cv=none; b=PcS6C3IEVBatul01cDMobciQqYYm9eXr/K1rvaUdbkkyLu2mo5nODyUCBWXpoMVImebQx+na2aNK1sDTs4Fb6IetdWVbnnSJSjuhDtvxy5DrRW7p5x/azXdZgLRLSfUOT7P5P/CElIDf40Fw1UtIC0lO/QxheczMNwDK7ocHz6Q=
+	t=1744042405; cv=none; b=Hbs99KXQ/GWGAzbj3qzqZdsJhMLRQcvcavdwFBCQEVgd7ehhnNEyvQr40KnCYT/Nt0w55dkHZg+AkfaIweK4lrA/A49EuNYX4/6LxreSYk0BfBr2xU5ffvUGniiSz4sXSFlSo91E8GgeEJ3lPgSFQbDAJLPz4/mKmY6aVlWRn4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744042370; c=relaxed/simple;
-	bh=31vqYQwn/J2VYn5vPyEE1407XeQoddh8cnodS3c1KD8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RPFpQa9GPgp1vLrjkgf0ZahmVrwfDDOGvyKIkallB60hdElw9zNNNODBWQNwLV2ZrVNlzxbCqizF1VtJYS2Xy0GFfTMN+EiVMDL0LXpEapC+h/zgWl/xaUlSOQ55BFjdFycNBg+LPb8y3aZ4Zi7VgbUvuX+UOEkV33J4V54UDRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GnknYWTN; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1744042405; c=relaxed/simple;
+	bh=2KFVeKdPLKXBfR5EWHDbvkaoyV0vRqU2QFbIw5uPBQU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a0q2HiDestloDoEdACMyxpOyshNDncMCG7xctqBL7Dm9XQlcl48WA4yPI+1GsUP3laYFj/kJEZjIZpQapKkGzkt7a2MxKHOgO1fHdw/26GiAspDBrAJabmXJutP1/sp6C4hxCFtUCg/lo55XYv+7a+B56qp0+yryqZ0Ag/kBvLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=dOL6fL8L; arc=none smtp.client-ip=99.78.197.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GnknYWTN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744042367;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V+GN2gS8lk8pQaqDs/K8fd6AI38wy4xbJjG61joXzQc=;
-	b=GnknYWTNP6XcBMB/Zq7X4TweYdAxEsU5i4prWzBv+ycQUUrRph+cVdVKyENnDiFoBswfvV
-	TGQBKgLGrdvWFGa50ck584HRnjFF2pSWCd4dSanizVw+3SVeVRpZws5DmbLYQgTTNG+QmT
-	c8pYZyY5gK59mhQs3eAQSWm9pe3as54=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-267-yym-QkhWNcG3NDV6VRRqsg-1; Mon,
- 07 Apr 2025 12:12:44 -0400
-X-MC-Unique: yym-QkhWNcG3NDV6VRRqsg-1
-X-Mimecast-MFC-AGG-ID: yym-QkhWNcG3NDV6VRRqsg_1744042362
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7EA55180034D;
-	Mon,  7 Apr 2025 16:12:42 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.40])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7F1251828AA4;
-	Mon,  7 Apr 2025 16:12:39 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 13/13] rxrpc: rxperf: Add test RxGK server keys
-Date: Mon,  7 Apr 2025 17:11:26 +0100
-Message-ID: <20250407161130.1349147-14-dhowells@redhat.com>
-In-Reply-To: <20250407161130.1349147-1-dhowells@redhat.com>
-References: <20250407161130.1349147-1-dhowells@redhat.com>
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="dOL6fL8L"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1744042404; x=1775578404;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Ax3m+iIFkyYPhqmuuHtqTChmLOMPFAoAyAVCrfKI3uI=;
+  b=dOL6fL8L8q3YIwxqQp/gFi4Mb4HOy9r7hHbjMlraGA07jE9LCsua4pkU
+   bm0irU0Agfnuc5pNm94Mkgi3Qqnrv426N4FSnT+MHSjeOl0GiUQBxlV7s
+   mmt2FPcnMzQ36jiII2FCPcuf4A8IVhOYTEkLBlFjV4C9Tv+RqK6sRYK9i
+   o=;
+X-IronPort-AV: E=Sophos;i="6.15,194,1739836800"; 
+   d="scan'208";a="38499040"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 16:13:21 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.21.151:1061]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.49.222:2525] with esmtp (Farcaster)
+ id 4e4911d2-5cb4-4150-b7fb-bb7ce2a6281e; Mon, 7 Apr 2025 16:13:21 +0000 (UTC)
+X-Farcaster-Flow-ID: 4e4911d2-5cb4-4150-b7fb-bb7ce2a6281e
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Mon, 7 Apr 2025 16:13:20 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.106.101.45) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Mon, 7 Apr 2025 16:13:16 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <stfomichev@gmail.com>
+CC: <andrew@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<horms@kernel.org>, <kuba@kernel.org>, <kuniyu@amazon.com>,
+	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<pabeni@redhat.com>, <sdf@fomichev.me>,
+	<syzbot+45016fe295243a7882d3@syzkaller.appspotmail.com>,
+	<syzkaller-bugs@googlegroups.com>
+Subject: Re: [syzbot] [net?] WARNING: bad unlock balance in do_setlink
+Date: Mon, 7 Apr 2025 09:12:37 -0700
+Message-ID: <20250407161308.19286-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <Z_PfCosPB7GS4DJl@mini-arch>
+References: <Z_PfCosPB7GS4DJl@mini-arch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,126 +63,25 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D046UWA002.ant.amazon.com (10.13.139.39) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-Add RxGK server keys of bytes containing { 0, 1, 2, 3, 4, ... } to the
-server keyring for the rxperf test server.  This allows the rxperf test
-client to connect to it.
+From: Stanislav Fomichev <stfomichev@gmail.com>
+Date: Mon, 7 Apr 2025 07:19:54 -0700
+> On 04/07, syzbot wrote:
+> > Hello,
+> > 
+> > syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+> > unregister_netdevice: waiting for DEV to become free
+> > 
+> > unregister_netdevice: waiting for batadv0 to become free. Usage count = 3
+> 
+> So it does fix the lock unbalance issue, but now there is a hang?
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
----
- net/rxrpc/rxperf.c | 68 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 65 insertions(+), 3 deletions(-)
+I think this is an orthogonal issue.
 
-diff --git a/net/rxrpc/rxperf.c b/net/rxrpc/rxperf.c
-index c76fbccfbb91..0377301156b0 100644
---- a/net/rxrpc/rxperf.c
-+++ b/net/rxrpc/rxperf.c
-@@ -8,6 +8,7 @@
- #define pr_fmt(fmt) "rxperf: " fmt
- #include <linux/module.h>
- #include <linux/slab.h>
-+#include <crypto/krb5.h>
- #include <net/sock.h>
- #include <net/af_rxrpc.h>
- #define RXRPC_TRACE_ONLY_DEFINE_ENUMS
-@@ -550,9 +551,9 @@ static int rxperf_process_call(struct rxperf_call *call)
- }
- 
- /*
-- * Add a key to the security keyring.
-+ * Add an rxkad key to the security keyring.
-  */
--static int rxperf_add_key(struct key *keyring)
-+static int rxperf_add_rxkad_key(struct key *keyring)
- {
- 	key_ref_t kref;
- 	int ret;
-@@ -578,6 +579,47 @@ static int rxperf_add_key(struct key *keyring)
- 	return ret;
- }
- 
-+#ifdef CONFIG_RXGK
-+/*
-+ * Add a yfs-rxgk key to the security keyring.
-+ */
-+static int rxperf_add_yfs_rxgk_key(struct key *keyring, u32 enctype)
-+{
-+	const struct krb5_enctype *krb5 = crypto_krb5_find_enctype(enctype);
-+	key_ref_t kref;
-+	char name[64];
-+	int ret;
-+	u8 key[32];
-+
-+	if (!krb5 || krb5->key_len > sizeof(key))
-+		return 0;
-+
-+	/* The key is just { 0, 1, 2, 3, 4, ... } */
-+	for (int i = 0; i < krb5->key_len; i++)
-+		key[i] = i;
-+
-+	sprintf(name, "%u:6:1:%u", RX_PERF_SERVICE, enctype);
-+
-+	kref = key_create_or_update(make_key_ref(keyring, true),
-+				    "rxrpc_s", name,
-+				    key, krb5->key_len,
-+				    KEY_POS_VIEW | KEY_POS_READ | KEY_POS_SEARCH |
-+				    KEY_USR_VIEW,
-+				    KEY_ALLOC_NOT_IN_QUOTA);
-+
-+	if (IS_ERR(kref)) {
-+		pr_err("Can't allocate rxperf server key: %ld\n", PTR_ERR(kref));
-+		return PTR_ERR(kref);
-+	}
-+
-+	ret = key_link(keyring, key_ref_to_ptr(kref));
-+	if (ret < 0)
-+		pr_err("Can't link rxperf server key: %d\n", ret);
-+	key_ref_put(kref);
-+	return ret;
-+}
-+#endif
-+
- /*
-  * Initialise the rxperf server.
-  */
-@@ -607,9 +649,29 @@ static int __init rxperf_init(void)
- 		goto error_keyring;
- 	}
- 	rxperf_sec_keyring = keyring;
--	ret = rxperf_add_key(keyring);
-+	ret = rxperf_add_rxkad_key(keyring);
-+	if (ret < 0)
-+		goto error_key;
-+#ifdef CONFIG_RXGK
-+	ret = rxperf_add_yfs_rxgk_key(keyring, KRB5_ENCTYPE_AES128_CTS_HMAC_SHA1_96);
-+	if (ret < 0)
-+		goto error_key;
-+	ret = rxperf_add_yfs_rxgk_key(keyring, KRB5_ENCTYPE_AES256_CTS_HMAC_SHA1_96);
-+	if (ret < 0)
-+		goto error_key;
-+	ret = rxperf_add_yfs_rxgk_key(keyring, KRB5_ENCTYPE_AES128_CTS_HMAC_SHA256_128);
-+	if (ret < 0)
-+		goto error_key;
-+	ret = rxperf_add_yfs_rxgk_key(keyring, KRB5_ENCTYPE_AES256_CTS_HMAC_SHA384_192);
-+	if (ret < 0)
-+		goto error_key;
-+	ret = rxperf_add_yfs_rxgk_key(keyring, KRB5_ENCTYPE_CAMELLIA128_CTS_CMAC);
-+	if (ret < 0)
-+		goto error_key;
-+	ret = rxperf_add_yfs_rxgk_key(keyring, KRB5_ENCTYPE_CAMELLIA256_CTS_CMAC);
- 	if (ret < 0)
- 		goto error_key;
-+#endif
- 
- 	ret = rxperf_open_socket();
- 	if (ret < 0)
+I saw this in another report as well.
+https://lore.kernel.org/netdev/67f208ea.050a0220.0a13.025b.GAE@google.com/
 
+syzbot may want to find a better way to filter this kind of noise.
