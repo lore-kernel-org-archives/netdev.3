@@ -1,64 +1,55 @@
-Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8A2228C9D
-	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 23:20:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.48.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9496A21E098
+	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 23:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744068036; cv=none; b=IXWput8u9Wt18zRiL5YAN1GC91kzHfc549e/bk4cFq9reYJuryxzWJ/9dLiTe8ThfSDjGts6hAmMrM+ZKXFo2XT5jRInPaWN08mAU+qX0+0H9sycVNjN9MlnAzzdkxn5QMVutoF85S9z5OnyuB8LN4PGcuqlv4+E9t80ZpRuh0U=
+	t=1744068069; cv=none; b=oV9JwrCKFe/dpopNQaaYGs3Jwq1m+FhCoG7ODvrWUKMoiph4YjpGu28PHsczJuRw7EoqzafhMEfYCxB7i+mWksOHI5pxmvoj9M4Vjxexk1HEMKkbGalPaxSSKvTbqI0pnRRDFVRdJ6CFIBeJ+/BupKho5uJenFJ8AvSqC7m0tyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744068036; c=relaxed/simple;
-	bh=UTHOU6FvZCvdEOVscb+H7yuFkr/ZaO3QdX7tlAWUZ1c=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hq501oDzwmLq3FPy7YiGLj5OGbfgXszmiNQuSALJNtnZ/tieYs2NgPdE2Y/p15JNlH77v9AAIdgtI/jWHju6TgSS+BIggzdmpY8GeT5FDu4DII6ms7BKbwGLywX3hLMtDeLA/YYLII4u0bwUpICfYzFK4KM12Dh/ntp8N3wUMVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=E37lk2uo; arc=none smtp.client-ip=52.95.48.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1744068069; c=relaxed/simple;
+	bh=GNknNSg9k4OWme+Fjmp9amYJnm0rSpYrQI66em8bK8E=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=CdjMy1ztfcUGnjah1SBOBKwpgq7r8ajtQ7eB9xCTKaKOAVNtowO3m0VyQeO7eJkT+s8Gms+GRnBEhCao6b6JzvZMM1JzSUa9KSqoltH/6TzJsoMoN5zanbKO9Q4Vbs2cMSn9MNw5LBL4/udxiWWE9xQHGU/AcHMNSrCuqyE5rlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AXt01SOt; arc=none smtp.client-ip=91.218.175.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="E37lk2uo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1744068034; x=1775604034;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=cEL/fosG45zCgb3W25r17REqNjLwqdT1tGCUOXorE4g=;
-  b=E37lk2uozGfj226Hyl3kqPTGKsWWAez3ZzIBbItmTlPkjcscMGdQ/SUw
-   vAQA75I7LVzYa/P4ZMbJpxjFWc9lUwMXRmNvg/glpXF0uQBBoIGFTAGob
-   LybMd/XhPfaXTRunljjhsLwtR9ZpCDM6i9UgTYxr1lyV7DEIa3M83OFXQ
-   A=;
-X-IronPort-AV: E=Sophos;i="6.15,196,1739836800"; 
-   d="scan'208";a="478344750"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
-  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 23:20:30 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [10.0.7.35:56701]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.8.63:2525] with esmtp (Farcaster)
- id 764b1b6b-7a40-4bf9-9e15-1550d42f33cd; Mon, 7 Apr 2025 23:20:28 +0000 (UTC)
-X-Farcaster-Flow-ID: 764b1b6b-7a40-4bf9-9e15-1550d42f33cd
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Mon, 7 Apr 2025 23:20:28 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.106.101.45) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Mon, 7 Apr 2025 23:20:24 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-CC: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, "Neal
- Cardwell" <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>,
-	"Pablo Neira Ayuso" <pablo@netfilter.org>, Jozsef Kadlecsik
-	<kadlec@netfilter.org>, Paul Moore <paul@paul-moore.com>, James Morris
-	<jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Kuniyuki Iwashima
-	<kuniyu@amazon.com>, "Kuniyuki Iwashima" <kuni1840@gmail.com>,
-	<netdev@vger.kernel.org>
-Subject: [PATCH v1 net-next 4/4] tcp: Rename tcp_or_dccp_get_hashinfo().
-Date: Mon, 7 Apr 2025 16:17:51 -0700
-Message-ID: <20250407231823.95927-5-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250407231823.95927-1-kuniyu@amazon.com>
-References: <20250407231823.95927-1-kuniyu@amazon.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AXt01SOt"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1744068064;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fQtnU5VvQKmBKR5FQX/PqgLk+92YYJoISTlXuvfIkC0=;
+	b=AXt01SOtmZ4o9XTZvJssxHxElF0kX/HOu/XrCF8zq6tXXV1UIksOKzVKWcXNvt+YFJpNIq
+	O85Uq66yL1FyWBsZCHmFvpcvf2hDlYHbh7vuiWuzKdYk38tBRYQPwwEqN01MLB3Mp6uZLW
+	4TmYMEBSP0BbdF7JOVgD8FBRUzHBSSI=
+From: Sean Anderson <sean.anderson@linux.dev>
+To: netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	upstream@airoha.com,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	Michal Simek <michal.simek@amd.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Robert Hancock <robert.hancock@calian.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Sean Anderson <sean.anderson@linux.dev>
+Subject: [net-next PATCH v2 11/14] net: axienet: Convert to use PCS subsystem
+Date: Mon,  7 Apr 2025 19:20:58 -0400
+Message-Id: <20250407232058.2317056-1-sean.anderson@linux.dev>
+In-Reply-To: <20250407231746.2316518-1-sean.anderson@linux.dev>
+References: <20250407231746.2316518-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,141 +57,221 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D037UWB002.ant.amazon.com (10.13.138.121) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+X-Migadu-Flow: FLOW_OUT
 
-DCCP was removed, so tcp_or_dccp_get_hashinfo() should be renamed.
+Convert the AXI Ethernet driver to use the PCS subsystem, including the
+new Xilinx PCA/PMA driver. Unfortunately, we must use a helper to work
+with bare MDIO nodes without a compatible.
 
-Let's rename it to tcp_get_hashinfo().
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
 ---
- include/net/inet_hashtables.h   |  3 +--
- net/ipv4/inet_connection_sock.c |  9 +++++----
- net/ipv4/inet_hashtables.c      | 14 +++++++-------
- 3 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
-index d172b64a6320..4564b5d348b1 100644
---- a/include/net/inet_hashtables.h
-+++ b/include/net/inet_hashtables.h
-@@ -175,9 +175,8 @@ struct inet_hashinfo {
- 	bool				pernet;
- } ____cacheline_aligned_in_smp;
+(no changes since v1)
+
+ drivers/net/ethernet/xilinx/Kconfig           |   1 +
+ drivers/net/ethernet/xilinx/xilinx_axienet.h  |   4 +-
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 104 ++++--------------
+ drivers/net/pcs/Kconfig                       |   1 -
+ 4 files changed, 22 insertions(+), 88 deletions(-)
+
+diff --git a/drivers/net/ethernet/xilinx/Kconfig b/drivers/net/ethernet/xilinx/Kconfig
+index 7502214cc7d5..2eab64cf1646 100644
+--- a/drivers/net/ethernet/xilinx/Kconfig
++++ b/drivers/net/ethernet/xilinx/Kconfig
+@@ -27,6 +27,7 @@ config XILINX_AXI_EMAC
+ 	tristate "Xilinx 10/100/1000 AXI Ethernet support"
+ 	depends on HAS_IOMEM
+ 	depends on XILINX_DMA
++	select OF_DYNAMIC if PCS_XILINX
+ 	select PHYLINK
+ 	select DIMLIB
+ 	help
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+index 5ff742103beb..f46e862245eb 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+@@ -473,7 +473,6 @@ struct skbuf_dma_descriptor {
+  * @dev:	Pointer to device structure
+  * @phylink:	Pointer to phylink instance
+  * @phylink_config: phylink configuration settings
+- * @pcs_phy:	Reference to PCS/PMA PHY if used
+  * @pcs:	phylink pcs structure for PCS PHY
+  * @switch_x_sgmii: Whether switchable 1000BaseX/SGMII mode is enabled in the core
+  * @axi_clk:	AXI4-Lite bus clock
+@@ -553,8 +552,7 @@ struct axienet_local {
+ 	struct phylink *phylink;
+ 	struct phylink_config phylink_config;
  
--static inline struct inet_hashinfo *tcp_or_dccp_get_hashinfo(const struct sock *sk)
-+static inline struct inet_hashinfo *tcp_get_hashinfo(const struct sock *sk)
+-	struct mdio_device *pcs_phy;
+-	struct phylink_pcs pcs;
++	struct phylink_pcs *pcs;
+ 
+ 	bool switch_x_sgmii;
+ 
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 054abf283ab3..07487c4b2141 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -35,6 +35,8 @@
+ #include <linux/platform_device.h>
+ #include <linux/skbuff.h>
+ #include <linux/math64.h>
++#include <linux/pcs.h>
++#include <linux/pcs-xilinx.h>
+ #include <linux/phy.h>
+ #include <linux/mii.h>
+ #include <linux/ethtool.h>
+@@ -2519,63 +2521,6 @@ static const struct ethtool_ops axienet_ethtool_ops = {
+ 	.get_rmon_stats = axienet_ethtool_get_rmon_stats,
+ };
+ 
+-static struct axienet_local *pcs_to_axienet_local(struct phylink_pcs *pcs)
+-{
+-	return container_of(pcs, struct axienet_local, pcs);
+-}
+-
+-static void axienet_pcs_get_state(struct phylink_pcs *pcs,
+-				  unsigned int neg_mode,
+-				  struct phylink_link_state *state)
+-{
+-	struct mdio_device *pcs_phy = pcs_to_axienet_local(pcs)->pcs_phy;
+-
+-	phylink_mii_c22_pcs_get_state(pcs_phy, neg_mode, state);
+-}
+-
+-static void axienet_pcs_an_restart(struct phylink_pcs *pcs)
+-{
+-	struct mdio_device *pcs_phy = pcs_to_axienet_local(pcs)->pcs_phy;
+-
+-	phylink_mii_c22_pcs_an_restart(pcs_phy);
+-}
+-
+-static int axienet_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+-			      phy_interface_t interface,
+-			      const unsigned long *advertising,
+-			      bool permit_pause_to_mac)
+-{
+-	struct mdio_device *pcs_phy = pcs_to_axienet_local(pcs)->pcs_phy;
+-	struct net_device *ndev = pcs_to_axienet_local(pcs)->ndev;
+-	struct axienet_local *lp = netdev_priv(ndev);
+-	int ret;
+-
+-	if (lp->switch_x_sgmii) {
+-		ret = mdiodev_write(pcs_phy, XLNX_MII_STD_SELECT_REG,
+-				    interface == PHY_INTERFACE_MODE_SGMII ?
+-					XLNX_MII_STD_SELECT_SGMII : 0);
+-		if (ret < 0) {
+-			netdev_warn(ndev,
+-				    "Failed to switch PHY interface: %d\n",
+-				    ret);
+-			return ret;
+-		}
+-	}
+-
+-	ret = phylink_mii_c22_pcs_config(pcs_phy, interface, advertising,
+-					 neg_mode);
+-	if (ret < 0)
+-		netdev_warn(ndev, "Failed to configure PCS: %d\n", ret);
+-
+-	return ret;
+-}
+-
+-static const struct phylink_pcs_ops axienet_pcs_ops = {
+-	.pcs_get_state = axienet_pcs_get_state,
+-	.pcs_config = axienet_pcs_config,
+-	.pcs_an_restart = axienet_pcs_an_restart,
+-};
+-
+ static struct phylink_pcs *axienet_mac_select_pcs(struct phylink_config *config,
+ 						  phy_interface_t interface)
  {
--	/* TODO: rename function */
- 	return sock_net(sk)->ipv4.tcp_death_row.hashinfo;
+@@ -2583,8 +2528,8 @@ static struct phylink_pcs *axienet_mac_select_pcs(struct phylink_config *config,
+ 	struct axienet_local *lp = netdev_priv(ndev);
+ 
+ 	if (interface == PHY_INTERFACE_MODE_1000BASEX ||
+-	    interface ==  PHY_INTERFACE_MODE_SGMII)
+-		return &lp->pcs;
++	    interface == PHY_INTERFACE_MODE_SGMII)
++		return lp->pcs;
+ 
+ 	return NULL;
  }
+@@ -3056,28 +3001,23 @@ static int axienet_probe(struct platform_device *pdev)
  
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index a195203e7eef..20915895bdaa 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -330,7 +330,7 @@ inet_csk_find_open_port(const struct sock *sk, struct inet_bind_bucket **tb_ret,
- 			struct inet_bind2_bucket **tb2_ret,
- 			struct inet_bind_hashbucket **head2_ret, int *port_ret)
- {
--	struct inet_hashinfo *hinfo = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *hinfo = tcp_get_hashinfo(sk);
- 	int i, low, high, attempt_half, port, l3mdev;
- 	struct inet_bind_hashbucket *head, *head2;
- 	struct net *net = sock_net(sk);
-@@ -512,10 +512,10 @@ void inet_csk_update_fastreuse(struct inet_bind_bucket *tb,
-  */
- int inet_csk_get_port(struct sock *sk, unsigned short snum)
- {
--	struct inet_hashinfo *hinfo = tcp_or_dccp_get_hashinfo(sk);
- 	bool reuse = sk->sk_reuse && sk->sk_state != TCP_LISTEN;
- 	bool found_port = false, check_bind_conflict = true;
- 	bool bhash_created = false, bhash2_created = false;
-+	struct inet_hashinfo *hinfo = tcp_get_hashinfo(sk);
- 	int ret = -EADDRINUSE, port = snum, l3mdev;
- 	struct inet_bind_hashbucket *head, *head2;
- 	struct inet_bind2_bucket *tb2 = NULL;
-@@ -1022,9 +1022,10 @@ static bool reqsk_queue_unlink(struct request_sock *req)
- 	bool found = false;
+ 	if (lp->phy_mode == PHY_INTERFACE_MODE_SGMII ||
+ 	    lp->phy_mode == PHY_INTERFACE_MODE_1000BASEX) {
+-		np = of_parse_phandle(pdev->dev.of_node, "pcs-handle", 0);
+-		if (!np) {
+-			/* Deprecated: Always use "pcs-handle" for pcs_phy.
+-			 * Falling back to "phy-handle" here is only for
+-			 * backward compatibility with old device trees.
+-			 */
+-			np = of_parse_phandle(pdev->dev.of_node, "phy-handle", 0);
+-		}
+-		if (!np) {
+-			dev_err(&pdev->dev, "pcs-handle (preferred) or phy-handle required for 1000BaseX/SGMII\n");
+-			ret = -EINVAL;
+-			goto cleanup_mdio;
+-		}
+-		lp->pcs_phy = of_mdio_find_device(np);
+-		if (!lp->pcs_phy) {
+-			ret = -EPROBE_DEFER;
+-			of_node_put(np);
++		DECLARE_PHY_INTERFACE_MASK(interfaces);
++
++		phy_interface_zero(interfaces);
++		if (lp->switch_x_sgmii ||
++		    lp->phy_mode == PHY_INTERFACE_MODE_SGMII)
++			__set_bit(PHY_INTERFACE_MODE_SGMII, interfaces);
++		if (lp->switch_x_sgmii ||
++		    lp->phy_mode == PHY_INTERFACE_MODE_1000BASEX)
++			__set_bit(PHY_INTERFACE_MODE_1000BASEX, interfaces);
++
++		lp->pcs = axienet_xilinx_pcs_get(&pdev->dev, interfaces);
++		if (IS_ERR(lp->pcs)) {
++			ret = PTR_ERR(lp->pcs);
++			dev_err_probe(&pdev->dev, ret,
++				      "could not get PCS for 1000BASE-X/SGMII\n");
+ 			goto cleanup_mdio;
+ 		}
+-		of_node_put(np);
+-		lp->pcs.ops = &axienet_pcs_ops;
+-		lp->pcs.poll = true;
+ 	}
  
- 	if (sk_hashed(sk)) {
--		struct inet_hashinfo *hashinfo = tcp_or_dccp_get_hashinfo(sk);
--		spinlock_t *lock = inet_ehash_lockp(hashinfo, req->rsk_hash);
-+		struct inet_hashinfo *hashinfo = tcp_get_hashinfo(sk);
-+		spinlock_t *lock;
+ 	lp->phylink_config.dev = &ndev->dev;
+@@ -3115,8 +3055,6 @@ static int axienet_probe(struct platform_device *pdev)
+ 	phylink_destroy(lp->phylink);
  
-+		lock = inet_ehash_lockp(hashinfo, req->rsk_hash);
- 		spin_lock(lock);
- 		found = __sk_nulls_del_node_init_rcu(sk);
- 		spin_unlock(lock);
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index d1960701a3b4..da85cc30e382 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -176,7 +176,7 @@ void inet_bind_hash(struct sock *sk, struct inet_bind_bucket *tb,
-  */
- static void __inet_put_port(struct sock *sk)
- {
--	struct inet_hashinfo *hashinfo = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *hashinfo = tcp_get_hashinfo(sk);
- 	struct inet_bind_hashbucket *head, *head2;
- 	struct net *net = sock_net(sk);
- 	struct inet_bind_bucket *tb;
-@@ -215,7 +215,7 @@ EXPORT_SYMBOL(inet_put_port);
+ cleanup_mdio:
+-	if (lp->pcs_phy)
+-		put_device(&lp->pcs_phy->dev);
+ 	if (lp->mii_bus)
+ 		axienet_mdio_teardown(lp);
+ cleanup_clk:
+@@ -3139,9 +3077,7 @@ static void axienet_remove(struct platform_device *pdev)
+ 	if (lp->phylink)
+ 		phylink_destroy(lp->phylink);
  
- int __inet_inherit_port(const struct sock *sk, struct sock *child)
- {
--	struct inet_hashinfo *table = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *table = tcp_get_hashinfo(sk);
- 	unsigned short port = inet_sk(child)->inet_num;
- 	struct inet_bind_hashbucket *head, *head2;
- 	bool created_inet_bind_bucket = false;
-@@ -668,7 +668,7 @@ static bool inet_ehash_lookup_by_sk(struct sock *sk,
-  */
- bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
- {
--	struct inet_hashinfo *hashinfo = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *hashinfo = tcp_get_hashinfo(sk);
- 	struct inet_ehash_bucket *head;
- 	struct hlist_nulls_head *list;
- 	spinlock_t *lock;
-@@ -740,7 +740,7 @@ static int inet_reuseport_add_sock(struct sock *sk,
+-	if (lp->pcs_phy)
+-		put_device(&lp->pcs_phy->dev);
+-
++	pcs_put(&pdev->dev, lp->pcs);
+ 	axienet_mdio_teardown(lp);
  
- int __inet_hash(struct sock *sk, struct sock *osk)
- {
--	struct inet_hashinfo *hashinfo = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *hashinfo = tcp_get_hashinfo(sk);
- 	struct inet_listen_hashbucket *ilb2;
- 	int err = 0;
- 
-@@ -785,7 +785,7 @@ int inet_hash(struct sock *sk)
- 
- void inet_unhash(struct sock *sk)
- {
--	struct inet_hashinfo *hashinfo = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *hashinfo = tcp_get_hashinfo(sk);
- 
- 	if (sk_unhashed(sk))
- 		return;
-@@ -873,7 +873,7 @@ inet_bind2_bucket_find(const struct inet_bind_hashbucket *head, const struct net
- struct inet_bind_hashbucket *
- inet_bhash2_addr_any_hashbucket(const struct sock *sk, const struct net *net, int port)
- {
--	struct inet_hashinfo *hinfo = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *hinfo = tcp_get_hashinfo(sk);
- 	u32 hash;
- 
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -901,7 +901,7 @@ static void inet_update_saddr(struct sock *sk, void *saddr, int family)
- 
- static int __inet_bhash2_update_saddr(struct sock *sk, void *saddr, int family, bool reset)
- {
--	struct inet_hashinfo *hinfo = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *hinfo = tcp_get_hashinfo(sk);
- 	struct inet_bind_hashbucket *head, *head2;
- 	struct inet_bind2_bucket *tb2, *new_tb2;
- 	int l3mdev = inet_sk_bound_l3mdev(sk);
+ 	clk_bulk_disable_unprepare(XAE_NUM_MISC_CLOCKS, lp->misc_clks);
+diff --git a/drivers/net/pcs/Kconfig b/drivers/net/pcs/Kconfig
+index 261d2fd29fc7..90ca0002600b 100644
+--- a/drivers/net/pcs/Kconfig
++++ b/drivers/net/pcs/Kconfig
+@@ -57,7 +57,6 @@ config PCS_XILINX
+ 	depends on PCS
+ 	select MDIO_DEVICE
+ 	select PHYLINK
+-	default XILINX_AXI_EMAC
+ 	tristate "Xilinx PCS driver"
+ 	help
+ 	  PCS driver for the Xilinx 1G/2.5G Ethernet PCS/PMA or SGMII device.
 -- 
-2.48.1
+2.35.1.1320.gc452695387.dirty
 
