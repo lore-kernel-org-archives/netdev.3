@@ -1,133 +1,208 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10FEC227B8C
-	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 23:02:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639BA188734;
+	Mon,  7 Apr 2025 23:17:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744066949; cv=none; b=AtHnrPj5b3lbbK1a7elbzauKEUrTOHbgSzj6d/LcwrPnoQY+9fGutHzuUj56zNYQXa+PH82oVA+cS0hwYKlVOTQ5F1NiTgDjuzZHuXBTZYJ9iqgJXlkKujRmT32DJsp5nLmv41THkwYNz6FrUIwNuKHQTQ36qlcvBsYW5d3ImnA=
+	t=1744067881; cv=none; b=ldkhhiZ/4H4tPE8M0ayLHPJpT1D9jMi3M87axiXvwcrzyTm4SDR2mWOsCse+sjBWBB4oztw5qsT530OVrsOohIrVRhdNGTaDRE7ZX02XfbeyMTm+X/NE+9rMrgiH6Xc1gcckxAPAv2kqfp8dEecfzEuJng3aTJoGnBecrO1cdXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744066949; c=relaxed/simple;
-	bh=tRKmYXG085Ydf1hurTGiNS15VKWDla/lnKDL3Zfn/ok=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YfRX6YqhMoy5eqgwHNYZiek9/aRuiHE1idSMzJMbDBGsTw0vOgg18D4QBedy2NdFDaiaatDkUOruQkJ35NcUxfeoHI7toCgXrlgkNPcpfT8/1VYiZfouwlyDYdL1bR3AEUgeuTukSitn/i+XIOwiW63WO4Hf7FbGVFGJfkznWnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kbv6vzWk; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744067881; c=relaxed/simple;
+	bh=JUHh/Q1K2H6IVhkGJ++Y1Nf2RdLOp/6C/r7XnLzqc8U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qwtD0QHd/eOgH52fU2HIi1+qxUDCJ3VIobX+gFfrSG2QeNq2IcqwghqmhpT6K0NIX0SFKI7lx/GUJqpYkPmD/s3OQVYlkbfoaD7gAFz6N1HPeqo3WabtD6EFUxNbqhi9WKbdFCcTmpgx7/DvvRJgz2cba9ZQa3CRE8KUO0FeVak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SgnrJsFA; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kbv6vzWk"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43edb40f357so24538575e9.0
-        for <netdev@vger.kernel.org>; Mon, 07 Apr 2025 16:02:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744066946; x=1744671746; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tRKmYXG085Ydf1hurTGiNS15VKWDla/lnKDL3Zfn/ok=;
-        b=Kbv6vzWkHBWbBtVK2HGY05vdyedAF+xOrD6zrSS1kBKwRZ3ouew3rJ/9vQpTZO8ioV
-         qNwbFVUlT2QWW+ZKgw7hahMKXCs6yQGlF0mTnlCq0yPgle5K3Xg8JzraM7UWz2BlDUnK
-         VikzApFOUqDuy3Z4VnbZVB1a2QrbF6IAdnz3A/MCNU27NBjVRQL0Vask8HJ2RgZcO1CT
-         k8worXKSfPUXyd/ZUvgxJh4G4KUEtqJuTP7SsxxBIXj2+YwnGTO1ePsZa59VQAd4xps4
-         fH1kHR3mDjuSxKAaYrfeoVrgH6Cxvx1dM1HP3IzGal15jptocxDlkxROIrglfyIy4E8p
-         6D0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744066946; x=1744671746;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tRKmYXG085Ydf1hurTGiNS15VKWDla/lnKDL3Zfn/ok=;
-        b=f6Q4nzTjVvoVnfUVgDcEZ0AmmvC4fDvxuhj7X2riC/9HJySmX4JPSWtyxcrviIARrf
-         LGsjHJn0wQHZJdk1ZnVETZoVan9JoDVRO5OWNE1b+SR7M/Cqy9sPkTOMvZqIsU3L0wJA
-         78DQvWoNq72UNy54KOp3HjBx/6QHGxV8PgwyJHoCc++kwNk+in/ko03m9I2mSANqRet6
-         pJjFGsL1feS5zp7/I8vVuxXCF2hCGRKdj2kivftx9NMrr7fAVEZ911NLD+cMDW2xltzC
-         r7yqgXCZAG0qv7Np9xZQxZ39skPoT32Uc9A4dlLyVWbdt6oA+K1HDE+mnQjQCE8Goyky
-         C6BA==
-X-Forwarded-Encrypted: i=1; AJvYcCWa+oVfNopE5VEIAtSJFC7rYPmAGLRasZOsxLuhBYt/pnsqi2cbVCh3cMYD4iSNO0oMQW2GoQw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwESoRTXZmrKHAqgQBTaJeLY4o5LGgIin8vrJOpW0B3QE2D+iPq
-	ry1n8Ky8bmPTV09sITt97ShvOrZIVrwBQuVtDPmHc/P4YNdBCZsfkDHtAHf5JJUULo4m7Ijjf/N
-	yB3+u2jvje8XEcus/poeT0k0gwnY=
-X-Gm-Gg: ASbGncueAmXhor4WTV+ZWuHPmNu8rB8JcJSpN+TqQH6FgT0blEa5Nq2GGOSPn1ZpkAR
-	M11/OK96wqSIunXRrpJKumsnF6M8aqg3TymKuNO127er7EQ8/jhMojJrnf81C995wDesPzujkUp
-	r/fHjkJB+9EXi50qzftsULjHuDpciQVqMpPzzlqIbKw9e88mvXlboG32A6z4s=
-X-Google-Smtp-Source: AGHT+IEaCnYdW4hzybc1hdiQwGPZ/0w0lMKxZBib8gTdNtEjh0xIi+WUW+dbz+OT1oVbEE+02jHNnpMOnDcjFZHSFO0=
-X-Received: by 2002:a05:600c:4fd4:b0:43c:e7ae:4bcf with SMTP id
- 5b1f17b1804b1-43ee047e935mr94240415e9.0.1744066946082; Mon, 07 Apr 2025
- 16:02:26 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SgnrJsFA"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1744067875;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=cWonVcXX3jqcfNp/b9lgu6z0q2BXOtRBQGBmf1D4SVQ=;
+	b=SgnrJsFAJgNi9WQ+rl1nhgeJ8/jKFu0Z1ceqFZKXJFSOU0aFCGLqqAQNIakS5vh508pWuH
+	ZXTig3Oqa7Hl5tBUgAKuqZbCvXp0LPqoN1GgiGYAELr0mPP34Yh3WnW7wh65Ig2gKNQlrd
+	Omk115Z2psF0DR9mJ9RfqEV0eWNXxQs=
+From: Sean Anderson <sean.anderson@linux.dev>
+To: netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>
+Cc: linux-kernel@vger.kernel.org,
+	upstream@airoha.com,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Claudiu Beznea <claudiu.beznea@microchip.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Joyce Ooi <joyce.ooi@intel.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Madalin Bucur <madalin.bucur@nxp.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Robert Hancock <robert.hancock@calian.com>,
+	Saravana Kannan <saravanak@google.com>,
+	UNGLinuxDriver@microchip.com,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: [net-next PATCH v2 00/14] Add PCS core support
+Date: Mon,  7 Apr 2025 19:17:31 -0400
+Message-Id: <20250407231746.2316518-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <Z-6hcQGI8tgshtMP@shell.armlinux.org.uk> <20250403172953.5da50762@fedora.home>
- <de19e9f1-4ae3-4193-981c-e366c243352d@lunn.ch> <CAKgT0UdhTT=g+ODpzR5uoTEOkC8u+cfCp7H-8718Zphd=24buw@mail.gmail.com>
- <Z-8ZFzlAl1zys63e@shell.armlinux.org.uk> <8acfd058-5baf-4a34-9868-a698f877ea08@lunn.ch>
- <Z--HZCOqBvyQcmd9@shell.armlinux.org.uk> <CAKgT0UeJvSSCybrqUwgfXxva6oBq0n9rxM=-97DQZQR1kbL8SQ@mail.gmail.com>
- <20250407100138.160f5cb7@kernel.org> <CAKgT0UdaeXS=7YTnTSdRO4hyNrSbxuM3pDdmE=1JCvkizUYrZA@mail.gmail.com>
- <b8a7138d-7e7c-49df-b9b5-9e39f02d0aaa@lunn.ch>
-In-Reply-To: <b8a7138d-7e7c-49df-b9b5-9e39f02d0aaa@lunn.ch>
-From: Alexander Duyck <alexander.duyck@gmail.com>
-Date: Mon, 7 Apr 2025 16:01:49 -0700
-X-Gm-Features: ATxdqUEjH0CL3H4Rini52AYy21ty4gcbdsHSYA3jpkw0cqByonJh8PBfGBO3U44
-Message-ID: <CAKgT0UeA3Nv3w52YTt-FaFA5GQcx4wrUY+CXH6-OJmWAMo7WWQ@mail.gmail.com>
-Subject: Re: [net PATCH 1/2] net: phy: Cleanup handling of recent changes to phy_lookup_setting
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Jakub Kicinski <kuba@kernel.org>, "Russell King (Oracle)" <linux@armlinux.org.uk>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org, 
-	hkallweit1@gmail.com, davem@davemloft.net, pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, Apr 7, 2025 at 12:34=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> > Arguably understanding this code, both phylink and our own MAC/PCS/PMD
-> > code, has been a real grind but I think I am getting there. If I am
-> > not mistaken the argument is that we aren't "fixed-link" as we have
-> > control over what the PCS/PMA configuration is. We are essentially
-> > managing things top down, whereas the expectation for "fixed-link" is
-> > more of a bottom up.
->
-> Fixed link is there to emulate something which does not
-> exist. Typically you have a MAC connected to a PHY, or a MAC connected
-> to an SFP. The PHY or the SFP tell you how to configure the MAC so the
-> chain MAC/PHY/Media works.
->
-> However, there are use cases where you connect one MAC directly to
-> another MAC. E.G you connect a NIC MAC to the MAC port of a switch.
->
-> Fixed link allows you to emulate the missing PHY, so that the MAC has
-> no idea the PHY is missing. The end result is that the MAC gets
-> configured to make the MAC-MAC link work, without the MAC even knowing
-> it is connected to another MAC.
->
-> When talking about top down vs bottom up, i think you mean MAC towards
-> the media, vs media towards the MAC. Because of Base-T autoneg, etc,
-> phylink configures stuff upwards from the media. It needs to wait for
-> the PHY to determine what the media is going to do. The PHY will then
-> decided what its host side needs, SGMII, 2500BaseX, 10Gbase etc. That
-> then allows phylink to configure the PCS to output that. And then you
-> need to configure the MAC to feed the PCSs at the correct speed. I
-> don't think SFPs are so different. The SFP will probably indicate what
-> its maximum bandwidth is. You configure that in the PCS and let is
-> negotiate with the link partner PCS to determine the speed, pause
-> etc. You can then configure the MAC with the results of that
-> negotiation.
+This series adds support for creating PCSs as devices on a bus with a
+driver (patch 3). As initial users,
 
-That isn't really true for phylink though. We have to specify a
-phy_interface_t before autoneg is even an option. In our case that
-will probably be doable since we just have to press the FW to give us
-the value. If we don't have an SFP cage you aren't changing that
-interface type either.
+- The Lynx PCS (and all of its users) is converted to this system (patch 5)
+- The Xilinx PCS is broken out from the AXI Ethernet driver (patches 6-8)
+- The Cadence MACB driver is converted to support external PCSs (namely
+  the Xilinx PCS) (patches 9-10).
 
-> So fixed-link is not really bottom up, the whole configuration chain
-> is media towards the MAC, and it makes no difference if the PHY is
-> being emulated via a fixed-link because it does not exist.
+The last few patches add device links for pcs-handle to improve boot times,
+and add compatibles for all Lynx PCSs.
 
-I'm not sure what you are talking about. When I refer to the bottom I
-am referring to the media. That is how it is depicted in all the IEEE
-drawings. I think we are actually agreeing, but I am not sure.
+This series depends on [1,2], and they have been included at the
+beginning so CI will run. However, I expect them to be reviewed/applied
+outside the net-next tree.
 
-What I was saying is that in our case we end up with the userspace or
-FW providing a link setting and we push it down to the PMD from the
-MAC side of things. Whereas for something like fixed-link you are
-essentially faking the autoneg and making it work from the bottom up.
+Care has been taken to ensure backwards-compatibility. The main source
+of this is that many PCS devices lack compatibles and get detected as
+PHYs. To address this, pcs_get_by_fwnode_compat allows drivers to edit
+the devicetree to add appropriate compatibles.
+
+There is another series [3] with the same goal by Christian Marangi. In
+comparison, I believe this series
+
+- Implements a simpler and more-robust method of PCS access.
+- Provides a more-direct upgrade path for existing MAC and PCS drivers.
+
+Due to popular demand, I have added support for #pcs-cells with this
+revision.
+
+[1] https://lore.kernel.org/all/20250407222134.2280553-1-sean.anderson@linux.dev/
+[2] https://lore.kernel.org/all/20250407223714.2287202-1-sean.anderson@linux.dev/
+[3] https://lore.kernel.org/netdev/20250406221423.9723-1-ansuelsmth@gmail.com/
+
+Changes in v2:
+- Add fallbacks for pcs_get* and pcs_put
+- Add support for #pcs-cells
+- Change base compatible to just xlnx,pcs
+- Change compatible to just xlnx,pcs
+- Defer devicetree updates for another series
+- Drop #clock-cells description
+- Drop PCS_ALTERA_TSE which was accidentally added while rebasing
+- Move #clock-cells after compatible
+- Move update to macb_pcs_get_state to previous patch
+- Remove outdated comment
+- Remove second example
+- Remove unused variable
+- Remove unused variable lynx_properties
+- Rename pcs-modes to xlnx,pcs-modes
+- Reorder pcs_handle to come before suffix props
+- Reword commit message
+- Rework xilinx_pcs_validate to just clear out half-duplex modes instead
+  of constraining modes based on the interface.
+
+Sean Anderson (13):
+  dt-bindings: net: Add Xilinx PCS
+  device property: Add optional nargs_prop for get_reference_args
+  device property: Add fwnode_property_get_reference_optional_args
+  scripts: kernel-doc: fix parsing function-like typedefs (again)
+  net: phylink: Support setting PCS link change callbacks
+  net: pcs: Add subsystem
+  net: pcs: lynx: Convert to an MDIO driver
+  net: phy: Export some functions
+  net: pcs: Add Xilinx PCS driver
+  net: axienet: Convert to use PCS subsystem
+  net: macb: Move most of mac_config to mac_prepare
+  net: macb: Support external PCSs
+  of: property: Add device link support for PCS
+
+Vladimir Oltean (1):
+  net: dsa: ocelot: suppress PHY device scanning on the internal MDIO
+    bus
+
+ .../devicetree/bindings/net/xilinx,pcs.yaml   | 115 +++
+ Documentation/networking/index.rst            |   1 +
+ Documentation/networking/kapi.rst             |   4 +
+ Documentation/networking/pcs.rst              | 107 +++
+ MAINTAINERS                                   |   8 +
+ drivers/base/property.c                       |  50 +-
+ drivers/base/swnode.c                         |  13 +-
+ drivers/net/dsa/ocelot/Kconfig                |   4 +
+ drivers/net/dsa/ocelot/felix_vsc9959.c        |  15 +-
+ drivers/net/dsa/ocelot/seville_vsc9953.c      |  16 +-
+ drivers/net/ethernet/altera/Kconfig           |   2 +
+ drivers/net/ethernet/altera/altera_tse_main.c |   7 +-
+ drivers/net/ethernet/cadence/macb.h           |   1 +
+ drivers/net/ethernet/cadence/macb_main.c      | 229 +++--
+ drivers/net/ethernet/freescale/dpaa/Kconfig   |   2 +-
+ drivers/net/ethernet/freescale/dpaa2/Kconfig  |   3 +
+ .../net/ethernet/freescale/dpaa2/dpaa2-mac.c  |  11 +-
+ drivers/net/ethernet/freescale/enetc/Kconfig  |   2 +
+ .../net/ethernet/freescale/enetc/enetc_pf.c   |   8 +-
+ .../net/ethernet/freescale/enetc/enetc_pf.h   |   1 -
+ .../freescale/enetc/enetc_pf_common.c         |   4 +-
+ drivers/net/ethernet/freescale/fman/Kconfig   |   4 +-
+ .../net/ethernet/freescale/fman/fman_memac.c  |  27 +-
+ drivers/net/ethernet/stmicro/stmmac/Kconfig   |   3 +
+ .../ethernet/stmicro/stmmac/dwmac-socfpga.c   |   6 +-
+ drivers/net/ethernet/xilinx/Kconfig           |   1 +
+ drivers/net/ethernet/xilinx/xilinx_axienet.h  |   4 +-
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 104 +--
+ drivers/net/pcs/Kconfig                       |  45 +-
+ drivers/net/pcs/Makefile                      |   4 +
+ drivers/net/pcs/core.c                        | 782 ++++++++++++++++++
+ drivers/net/pcs/pcs-lynx.c                    | 110 +--
+ drivers/net/pcs/pcs-xilinx.c                  | 479 +++++++++++
+ drivers/net/phy/mdio_device.c                 |   1 +
+ drivers/net/phy/phy_device.c                  |   3 +-
+ drivers/net/phy/phylink.c                     |  24 +-
+ drivers/of/property.c                         |  12 +-
+ include/linux/fwnode.h                        |   2 +-
+ include/linux/pcs-lynx.h                      |  13 +-
+ include/linux/pcs-xilinx.h                    |  36 +
+ include/linux/pcs.h                           | 195 +++++
+ include/linux/phy.h                           |   1 +
+ include/linux/phylink.h                       |  27 +-
+ include/linux/property.h                      |   4 +
+ scripts/kernel-doc                            |   2 +-
+ 45 files changed, 2181 insertions(+), 311 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/xilinx,pcs.yaml
+ create mode 100644 Documentation/networking/pcs.rst
+ create mode 100644 drivers/net/pcs/core.c
+ create mode 100644 drivers/net/pcs/pcs-xilinx.c
+ create mode 100644 include/linux/pcs-xilinx.h
+ create mode 100644 include/linux/pcs.h
+
+-- 
+2.35.1.1320.gc452695387.dirty
+
