@@ -1,94 +1,102 @@
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39634226D1E
-	for <netdev@vger.kernel.org>; Mon,  7 Apr 2025 08:30:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F73225388;
+	Mon,  7 Apr 2025 08:34:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744014615; cv=none; b=u9HjASYEPD2nPXVjYjcfgl1zyGERQldp8oETZIb9VNFKkE9B02fn/fSPKORdPENPVBgYgZ7mRBVx8vE5xTuDWbOoVIDbZu7uwwSN2Mmax1x4uCR5vLKLW0YHkD33vdcLoq1oeWMWYdIWYbCyVRfLGM9KpoAFWz/m5nBnMBqdZs0=
+	t=1744014867; cv=none; b=KkKZRbAY4hRa0dplPO1IFvnvy2aT8XmeJS5mc4xz76oEQmG2hhCgMqdFG/B+dKie1ITjGPuXisMQ+OoqKcygFheGv5bbGnUWm86Kej4cNjnilVuku5lzDbKzdbqZye+qrdRuAMTM42/d1DN4IpY+QKOQwH0Iv0G9LSG5o1pKurI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744014615; c=relaxed/simple;
-	bh=NdxrZpkoAS5JiWYgZz3H6UVBi+3AhclDMA55q0fjY8c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S8iUC9Dg5dMWV0kA7ek6B+xEc5KsEhcuGWMPio2kDsohyaunvRmK5gVJnMtSZv3HnHjyS4n8F/9sXF+5KAyK828jUIPAMh97jDt1k/N1SJ1Tq7mJ28dfe08qlX0yDt3MElxue94FnaVVPeNVIOyGZHGFE5FaGdBvu4fQvWSd40k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=RPbgpXco; arc=none smtp.client-ip=103.168.172.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
+	s=arc-20240116; t=1744014867; c=relaxed/simple;
+	bh=Vhw4ZA9Ps2+xZXL2K1IJGg3PZdoZzGEMNfgJtyFl5LU=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=MxAcq8xoOlsrUHxHrCEG0wGrKjJVuhC8FBw3rYAWjaynl/6QYgonnE1lhlFb1CXURyUtrzyJ2WUKyxIi2R3VlpuMvTIaoGvWRWYJwMO7yqt0KwtLw2eqFXJtoKwaiiUxDbO/cH5UJmXISZ1maJ6t9Un3Tr24LRKD8TFb31HDL40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=qmXG5bxb; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="RPbgpXco"
-Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
-	by mailfout.phl.internal (Postfix) with ESMTP id 342A91380228;
-	Mon,  7 Apr 2025 04:30:13 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-07.internal (MEProxy); Mon, 07 Apr 2025 04:30:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1744014613; x=1744101013; bh=SyWehjHb8zpXeJ45viskigR9BtioaZba5Zg
-	A+Lsdhxg=; b=RPbgpXcoQMgTtWqOiV//r6KxMBrhuOw3Cslw11T89Cicmfsl5m+
-	l723C5GdJlMN3CMAXQQAml/xR2wWtigHeoGCoAgSkCfB/nrkR/gRpv7DkVM1007i
-	CDS8criM0ojxh7rQJAFX9oaJA6+uCv7oKdT5YbH+GenTbfRForm0Hkbkx8OA7t9g
-	a/TKOEGNYDDNOrlIOoUljOLzdcY1x1sPWJj5GnexixoRGsOPuCM5lJOvLa4kK+Dh
-	7XjajbyUIn6AJt1PJ4E63BSCj6DtKKeG/FAkKPRHyKJBmSE23LE1gktq23/AF/hT
-	vXdgOWVSy1n0Q1GoE/Qe8E3zPMntJWSJv0w==
-X-ME-Sender: <xms:FI3zZ18U1Ke5vixfd1ZgttVZ_6Z7IPbeKc6lPoVA54VS7JVjAyc3rg>
-    <xme:FI3zZ5siJHF_bZ0tqdPsJz9FyegM4afHnvlYWYwNcbbhfl_G3OZG-NtHpE9sSjCNI
-    Ntoosjf1ehGOVg>
-X-ME-Received: <xmr:FI3zZzBWvuuIkiM_IcbYzmS2jkI_R9yG5kPOoLuozCiljOhclP2p-z-6YUya>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduleeljeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepkfguohcuufgthhhimhhmvghluceoihguohhstghhsehiughoshgthh
-    drohhrgheqnecuggftrfgrthhtvghrnhephefhtdejvdeiffefudduvdffgeetieeigeeu
-    gfduffdvffdtfeehieejtdfhjeeknecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehiughoshgt
-    hhesihguohhstghhrdhorhhgpdhnsggprhgtphhtthhopeejpdhmohguvgepshhmthhpoh
-    huthdprhgtphhtthhopehrrgiiohhrsegslhgrtghkfigrlhhlrdhorhhgpdhrtghpthht
-    ohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghrih
-    gughgvsehlihhsthhsrdhlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphht
-    thhopehrohhophgrsehnvhhiughirgdrtghomhdprhgtphhtthhopehiughoshgthhesnh
-    hvihguihgrrdgtohhmpdhrtghpthhtohepshhtvghphhgvnhesnhgvthifohhrkhhplhhu
-    mhgsvghrrdhorhhgpdhrtghpthhtohepughsrghhvghrnheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:FI3zZ5c-nbqP8GJ2V7xC96KeEyKj0nBYfONH3D0AB_jQWiesWLci0w>
-    <xmx:FI3zZ6MUp5yPeUR2hzj2S_ignBk8rwR_JLkMMouNp2c-L7rgpQ4Emg>
-    <xmx:FI3zZ7nX2LCavDzzcUTh4F94_T8lDd0H_CKVQpdjm6KRw0rSgYWMiA>
-    <xmx:FI3zZ0uhTd1Yqp-0zfCfyea35WUkQI1-MeJoP6vo6_hm4mZp-dewgw>
-    <xmx:FY3zZ1O-3RE8nTU9Um103Lb92qmzGra_ZhwjtgOldYXjcQIAp45k_Cu2>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 7 Apr 2025 04:30:11 -0400 (EDT)
-Date: Mon, 7 Apr 2025 11:30:10 +0300
-From: Ido Schimmel <idosch@idosch.org>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: netdev@vger.kernel.org, bridge@lists.linux-foundation.org,
-	Roopa Prabhu <roopa@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	David Ahern <dsahern@kernel.org>
-Subject: Re: [PATCH iproute2] MAINTAINERS: update bridge entry
-Message-ID: <Z_ONEvPRjiAgRRY9@shredder>
-References: <20250405102504.219970-1-razor@blackwall.org>
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="qmXG5bxb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1744014852; x=1744619652; i=markus.elfring@web.de;
+	bh=Dg+LGVaxeCMjrxNASaMRgp1m7d5it9SLyoZVjKU62jc=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=qmXG5bxbKO7ypkQJt1m69ZkaibGHfDtDrfBsZkbKAPVRch/M25tf+hcOY37/XaNe
+	 wa+eNmegJZKqeZLKiPvnKHrYgqSdAtwN8VmXxhZN0N2BQovO9ZwY4pgI5W9cz0+US
+	 2uH7V57MvngGrwpQnc3jMZ1nH3F+8p4cTHieJ4J94OAmQQfK+DhXmA7jS5RJlI+5F
+	 gUq2KU4UV9iKr2YZrvkd3uXpfPRpu9pNr5b+MctVKVA4pVKbXIrKdMuy85ZUsbzPz
+	 3xN1kfghklWH174ii4wMRaciboFrCornfBqJgkN7FLKk6GZ/8bTCtH7f+U8fpoiz8
+	 Fi/tKheFUy4FxauFdA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.93.4]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MQ8ao-1tfnMp3iBE-00V9MC; Mon, 07
+ Apr 2025 10:34:11 +0200
+Message-ID: <0d6e4dcc-2646-4694-9961-70049a71e7c1@web.de>
+Date: Mon, 7 Apr 2025 10:34:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250405102504.219970-1-razor@blackwall.org>
+User-Agent: Mozilla Thunderbird
+To: Henry Martin <bsdhenrymartin@gmail.com>, linux-rdma@vger.kernel.org,
+ netdev@vger.kernel.org
+Cc: LKML <linux-kernel@vger.kernel.org>, Amir Tzin <amirtz@nvidia.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Aya Levin <ayal@nvidia.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Simon Horman <horms@kernel.org>, Tariq Toukan <tariqt@nvidia.com>
+References: <20250405100017.77498-1-bsdhenrymartin@gmail.com>
+Subject: Re: [PATCH] net/mlx5: Fix null-ptr-deref in
+ mlx5_create_inner_ttc_table()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250405100017.77498-1-bsdhenrymartin@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:vgSH9jAK64S+GlMEqzoxCCM8UxsPHwh7N4T7u/tAoAQtYmLNIpy
+ f2ifI6mm5og7E5nuypepEbcvk70nFvzNeyjFVpOftRzBdoTyobTtYPdjAKzZ1eotnTHh/K7
+ xkQOBcLWVci1r/x+FtgJvGuM2nzCJsoe6Al+Ug8u8GYgN4hQc0hz8IhuJyqwNCokEM+uvZj
+ 8XAeDOEeZr9FLwhxY9deA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:JwUTb7aw1zw=;ebFimREAd4AzF8Qlft3eYkX4n87
+ S7IEpwvP0PkAm/7psp69QlWYonf1n5Bilzqxc7IP6TGSHeOZBJHJDnhrZhTbRISlvQIbyaYB7
+ S8nqTEb6azesLdGbOY6jmfZeKCt69CYkTl+hGakREm3V33Kg5BcPF8MVwS7k60wngzIJhZOg9
+ yO6jJe8/QN7IzVxVzLpD/vxX+4rhIcpriF2tIxHStVZe/Sc1w7vs5pxgzVJQgJrDjMKtWhbkY
+ UHUS4zLDBb91dtVSv0zdC779kjwiHs8AIcZYG+DbxuKB6XYCGl88SfytL6hSo2Iv953mWrask
+ 5M7tz7no7JvAkOQD2JlGftiYVQpBUSYCHViNuVbJeY1yEDkmwmDj7fe7YYDNOkUiW4X1WBO9K
+ S5+bHShmblrAxm74Op8g6He+8WtZYWQdm4khyfJ/hJ8vFkTuiAAKmCYGxqfxMJ8cqdF429BlX
+ NR6n/bfCULwrj2Y4EgS1KgZ87hdkqwkI37gdtTOfsds4Pp6d0BtP69NPpcLCDd64yUtOedl31
+ NkvvsDuBWWDfjXJTgISXao08G98IzwwvlyihA3eV/rLETCiaixjFwUVM9o5aEYEyM3neDgrBF
+ DClNdoYkkh7kJ8AAqfGE7KxhO2ggIo7uaukB5e75bX7zmT+Ul4HsKdnQ89hNIGX7kXmuvZZTj
+ EEoKp9rtjbcneyk1JdtJxc8qEqPUwvqUMXJTcxo6Z0Z6Q/y+OUCDdkxkLzF0oVjvCvFv4yQIf
+ FIUlUniRMxT66h1wyeX3AGABU6JSVoVllX+V/V4j2wy3M9+E4ALhFM9ZdG6/9rp8uR3H7VP/d
+ kwgFWi99iv0Sp/WH2wm/MYTAU4O7BRnNOYWdNug3GcGr0vYd1YQ6iko9e3HZAD7iKNrXl4FGY
+ 5MBaany6Wl8UdQ7lB22b22rd4xJCaoS6nlQ13AqLhbYuR1wXBrbVX7qnKHX4XSbgVoVADRhsL
+ M3+8g/8KZE24CP/J1VamdpkzlRugpoJb3H8aX7yQMk0OsRcnjdl4Y17yqBkDYwav/DfW5kXgy
+ fl3FJAHYzdvcCXXeA7Xmi7PJX+hgL5zp4B5RIQhch9PuYLWNfk26n1EvaSlPnciFJ1QXh2KaZ
+ aBG9sO9QAFPIxpYBWgm1GLakGy0UAnPGiJ9qcQ6KlQb0iQfOhbR5AY4aqgUW4OT52SjGAZpKB
+ pnZi1k4hnJIkP3ojy7Fqe97nPuCbcz9tAZHKtDlRfYVQx379F5pZwUhgWO5eXYMcpH8CitXzH
+ 7fhT9V5X1A8Q+Ry2O3PkwPsKxUTF131U24rpv27jonTfnX2ZapHteUMzo1wVSnQ4MMWo5qdkl
+ V5pXH0n0zUbYfVD4y52JjVIO4qj+WzZGyfii4EC5vxmc5YFzYRcDSfaC5QZeqPH+otvpRqP5d
+ w91xsC1tnpF16mmWJGGfhtfDneEMvWz81DT1JC/eemBLV9v5LN8kWJtp53l4oM0hJetbzIq/k
+ ndz/PIiTe785u/qD1u9NvQxLS8TMRIOtmHcZKWPKN0qWNnng23g3RG3eVBIhGDO9D1YEAiQ==
 
-On Sat, Apr 05, 2025 at 01:25:04PM +0300, Nikolay Aleksandrov wrote:
-> Sync with the kernel and update the bridge entry with the current bridge
-> maintainers. Roopa decided to withdraw and Ido has agreed to step in.
-> 
-> Link: https://lore.kernel.org/netdev/20250314100631.40999-1-razor@blackwall.org/
-> CC: Roopa Prabhu <roopa@nvidia.com>
-> CC: Ido Schimmel <idosch@nvidia.com>
-> CC: Stephen Hemminger <stephen@networkplumber.org>
-> CC: David Ahern <dsahern@kernel.org>
-> Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+> Add NULL check for mlx5_get_flow_namespace() returns in
+> mlx5_create_inner_ttc_table() to prevent NULL pointer dereference.
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+* You would like to adjust the error handling in some function implementations
+  from a common subdirectory.
+  How do you think about to offer such changes in a corresponding patch series?
+
+* Can any other summary phrase variant become more desirable accordingly?
+
+* Would any blank lines become also desirable after added statements?
+
+
+Regards,
+Markus
