@@ -1,153 +1,119 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D37D26A0D9
-	for <netdev@vger.kernel.org>; Tue,  8 Apr 2025 11:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF792269885
+	for <netdev@vger.kernel.org>; Tue,  8 Apr 2025 11:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113377; cv=none; b=jpzvsejeekA1sp4D+Ir56AseAGNVXGxTDmMvaVP42qTpIm0c3JYFdVDi7Z0AH9xB0s4AudVCBcIEfF04omTJTxoZ3Kf8qLHOXYbEjqgDkDN4FJVQvM9TcPCcnLctK0p4ysLiX2x2hQAqRqjq4o7r6DpZdAVU1IlZEOfcHbTE9vQ=
+	t=1744113456; cv=none; b=YXEipjsmPrQLehgHVx+ccqbGWciL198q7nlztq4gvoWzw7eXouTN5v+DeMddeNL4x6uKg5MbPxw53Ri7WnlOpjJVCKUQufFlcuFoXcowImsWQKJSyqoHv27tBvY4HXzPxyHlvRzpcT/+pfbakCden0w+aZNabN8OVfTYjukUgZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113377; c=relaxed/simple;
-	bh=wYW1XvzQSniRNKIaNun7g4wBLkN0tc7NLsGQ8V1kHkc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I0oev8KWcLDh3jJgFsTXMveeU+oZalte9JeyfaFpH3rYPsD0lQQdZGRx4PGJmeTSvOcHBsk45r9L7pJi/tU7JWhEgP4/gLM7Cev8aEQW6Xnqa955KT2leCsBbiu5Tdtyujqkfk83WO1ETLYyN56s4Yhd2Mu6nSKa8cxDln+9nuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cI0jjt7G; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1744113456; c=relaxed/simple;
+	bh=QvLcxX6yWCKbIIyEBBiQhqEM3Z9K4VTDnwN+pMqwPsA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pxPNaeogaLWXJTq1lUXHd9UwNSmJBni+d3IzJJWcXsGSSBwLYFfbQAGJ+OfWtCokK2XxipSk5ZWhdr7LRRTJ7mr48b78vPNX4d2ADEk35bn7nAhIqMoFyIEbYkc9NHpIuVTMla2sMUfTMCV2hYQG7mcKfrwLzGC9xqN9o/kc1rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XtNwu0kl; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cI0jjt7G"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XtNwu0kl"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744113374;
+	s=mimecast20190719; t=1744113453;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=c8NmMOJUiBDf2Mnm/32fYSinOOAarf9NGUqN9KbURsM=;
-	b=cI0jjt7GnZo3QPB/VTHMSBmY35fOOh8PvlPuAFRlXJebQEP66LlHN4l1X8mUoYGxU2d2kf
-	DPPfOOO9D1ME9JO7eeBE4+7ZgoxZfrd9OevZIzD1/7k3qguqv298Jo9fJsGFl2LP1XXwlI
-	Lr3krpbAZ4g/Itsf889e9Y5MXnDLAq8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=wBvpiZeAl58ooIRNvYADzEYhfHJSYfAIRoqxnjfSxT8=;
+	b=XtNwu0klU5/gOE0WuKvAiCKHa+cHFpHmO5VrJDgl0kgwidkYHD/NpAiHj7c4wrTBODV1VD
+	v1cd2Iww6RQEszb0f2JdvKpjEMYXFfmvkN2p4ew8wqFbPDCY62lvZyURjv5WgQrdiYezVq
+	pBMI9/Ru36uwIbhrb2/cCvMwFTSoySs=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-369-BCf56JucPAaP_iwr3QpMMQ-1; Tue, 08 Apr 2025 07:56:13 -0400
-X-MC-Unique: BCf56JucPAaP_iwr3QpMMQ-1
-X-Mimecast-MFC-AGG-ID: BCf56JucPAaP_iwr3QpMMQ_1744113372
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-391345e3aa3so3117812f8f.0
-        for <netdev@vger.kernel.org>; Tue, 08 Apr 2025 04:56:12 -0700 (PDT)
+ us-mta-175-A0gcGfeqN3CrcsLOcbeVIA-1; Tue, 08 Apr 2025 07:57:32 -0400
+X-MC-Unique: A0gcGfeqN3CrcsLOcbeVIA-1
+X-Mimecast-MFC-AGG-ID: A0gcGfeqN3CrcsLOcbeVIA_1744113451
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3912d9848a7so3182762f8f.0
+        for <netdev@vger.kernel.org>; Tue, 08 Apr 2025 04:57:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744113372; x=1744718172;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c8NmMOJUiBDf2Mnm/32fYSinOOAarf9NGUqN9KbURsM=;
-        b=Xpu6YruNCCKLqJvNgjBdOL8b/fm7R7N5eODJsO/oTET6qJ85ztjRrVg6Ctjoo4wB0W
-         JBwelm0NgrvAwIRS8AaX1wG51WcDE2rEo4Y6hGbONMylZLpx4yuZEpKOBvoHNHhkx2vi
-         f8GC3NZlgsrj8AYXZeRg24zhnOMBLz1B1TzSqVscNYUx4lLX7L9Q7145vcBrw2SQ0xyy
-         8kyq52J6ApQJ3GiIHhFuEVDMb8b/kVbn2GWv0Ts26UzwrnSLurt9P4YynnZS//zW9+zD
-         ytZ8Etmxj+U/XxsFAIYjE7siuFWbdFk82MO210U9J7xqLqE4oKsSAiCwMTfgrCpyfWHR
-         CEjg==
-X-Forwarded-Encrypted: i=1; AJvYcCW+QmdNBAs5D5chomtqnS2CTGK0w8ZUAYUvB6R8ZmYMl8f0zqbXF6PZrM1jFyyPcqGh+tRVbvY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaFGvx98qSzMfCcxagvraDW1Z5WodL+EdRg9p41iY0Sor1ZaxG
-	Jn7VWKn9kbMyYcrGONvS2qRFuFeaVW5uhKbHIV7vJ2sDBvsd0KZAB3rz/qLIegrOq7lQW4lrtc+
-	f2lITgmN7eX6kiPWab7osaLrORfajSQ7uaBISibsAlqIi4KBTpeFI9A==
-X-Gm-Gg: ASbGncsBk0xOLoOCFz+AEa7WyH3/m67j0v5tL8BveR/8ybL5cyDUBB+3HZTTkpgmYoI
-	voopYRhSBBY8jEZ6bjsXealqh62ZOjhsncIT6wxlbLdTEhVXH6jo6iPYoT1ASKhlW3CkDQ+5P+W
-	YKWKTpgzVgwHPUnWieRf5U4l2oBm+3ClcYjswnwp6MFLsUiqhcfQ3/ayhxEB0SoHmJmG8mGdoYO
-	ErOoVz0doVZGfXZ7sojiWdjs0gYQjYbdyDC4h1hkZaowTuQoYkTPFZLexFLVAYsSiBV8Y3Wp9yq
-	rJusLlIr2w==
-X-Received: by 2002:a05:6000:2484:b0:391:31c8:ba59 with SMTP id ffacd0b85a97d-39d6fc0c110mr8562980f8f.4.1744113371953;
-        Tue, 08 Apr 2025 04:56:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHcMsSZ5Gam/fQOpaIuoaRMdI4T7XugacA1lPSXA8mE0sG1MgVGLtGvlHpdN41g6650CZaIhQ==
-X-Received: by 2002:a05:6000:2484:b0:391:31c8:ba59 with SMTP id ffacd0b85a97d-39d6fc0c110mr8562957f8f.4.1744113371519;
-        Tue, 08 Apr 2025 04:56:11 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c301a9da1sm14440447f8f.22.2025.04.08.04.56.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Apr 2025 04:56:10 -0700 (PDT)
-Date: Tue, 8 Apr 2025 07:56:08 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Cindy Lu <lulu@redhat.com>
-Cc: jasowang@redhat.com, michael.christie@oracle.com, sgarzare@redhat.com,
-	linux-kernel@vger.kernel.org,
-	virtualization@lists.linux-foundation.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v8 8/8] vhost: Add a KConfig knob to enable IOCTL
- VHOST_FORK_FROM_OWNER
-Message-ID: <20250408075426-mutt-send-email-mst@kernel.org>
-References: <20250328100359.1306072-1-lulu@redhat.com>
- <20250328100359.1306072-9-lulu@redhat.com>
+        d=1e100.net; s=20230601; t=1744113451; x=1744718251;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wBvpiZeAl58ooIRNvYADzEYhfHJSYfAIRoqxnjfSxT8=;
+        b=bwSQyQM37ZTJiW99wBLpfqxnwJT5egP4/ws9GFrdgwOgtaahgqhULJAxJzyfWVWf+M
+         gw/s5dCgZiDwe90LFoSzNpjUIB5x+Lo56EJ4CjYRRZsOXB/5jfJxTLaz+axFOI0oZI5S
+         NwXzoLeZAKyvXwCbf8USXxD+QSMOBxVl9lROgbFy8UMMkWhbrOm+30yCozoNGS0xpG1w
+         +OuNCwUeaBOH4J7KBHdwh4GHckhNKHJYiHe5Jx2hYtR4KyDEJcUAYFM7T6ZF+4OhnEIv
+         bCaEhxp+hEX0fZ5cRp2XeUQcCPmMLZD12tGdAbRCAA1Mmv6c+RT9h7XoP+yVrkJI3r0S
+         TBPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUtTa7V1YZ8wkpi5NnXL6klIbedOv6MH8S5XyuNl3Fzg4HJjhwR75f1q9yhBAth/NpRFVvPdvo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzkVPVVxOBk98QYiubzNak5K0xFG84Z9MvCthRsuWtO2hFoX4B6
+	WZ4tM2nhY3HJzZyXfNIFwTAYaDleFCPFbJxMpdDAnjg8Jr/woDU5DhkSB6JE5LfMI62b+Un2eyT
+	hngPW6AsBBEGEU1UQpoixwI3gfRyZ5wbUg40k2UZiYBPhDDJ7wUC9IQ==
+X-Gm-Gg: ASbGncvsD4xUJI2eR26y3JsH657sQkrY4GILn3ZLa79duMNaD9EgHx4Afe/ezV8w/Yo
+	lzcbMr5Z9cYgitJU8lQ67dNGKVaZBsnqwqkZG8Mx993fGI6b9kMT8cNvDK5JWJZjF4qqlEm+blp
+	quybCiKDoNHx91bKBM6DYLgnhBshKDvBwc22zmtqMLRdfUul1Iv2lkFnMhQMx4ydWe3bIfOYCT6
+	kSloaFeoHys3+OU2yBViIpDixSN263IlH5ETrTGRsjncJcfJco6FTP0EX4FgRviGqFBcT/5zzVj
+	8HygpF70bHkkrApISyJfcMpEUgOZeKphuQmlRKTT5d0=
+X-Received: by 2002:a05:6000:2cc:b0:391:952:c74a with SMTP id ffacd0b85a97d-39d820aca79mr2682902f8f.8.1744113451212;
+        Tue, 08 Apr 2025 04:57:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEBGwI8+I+ikQqr9EBAiBMmMVZ65FGBOy3vL+rQixNlh1yzT6KQhdff9n0JVUKlOIIIf1LfaQ==
+X-Received: by 2002:a05:6000:2cc:b0:391:952:c74a with SMTP id ffacd0b85a97d-39d820aca79mr2682882f8f.8.1744113450827;
+        Tue, 08 Apr 2025 04:57:30 -0700 (PDT)
+Received: from [192.168.88.253] (146-241-84-24.dyn.eolo.it. [146.241.84.24])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c3020d938sm14864864f8f.65.2025.04.08.04.57.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Apr 2025 04:57:30 -0700 (PDT)
+Message-ID: <126fa7e1-dbe0-48ff-9cb5-31c1d4dea964@redhat.com>
+Date: Tue, 8 Apr 2025 13:57:29 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250328100359.1306072-9-lulu@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] tc: Ensure we have enough buffer space when sending
+ filter netlink notifications
+To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+ Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>,
+ Jiri Pirko <jiri@resnulli.us>
+Cc: Ilya Maximets <i.maximets@redhat.com>,
+ Frode Nordahl <frode.nordahl@canonical.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org
+References: <20250407105542.16601-1-toke@redhat.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250407105542.16601-1-toke@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 28, 2025 at 06:02:52PM +0800, Cindy Lu wrote:
-> Introduce a new config knob `CONFIG_VHOST_ENABLE_FORK_OWNER_IOCTL`,
-> to control the availability of the `VHOST_FORK_FROM_OWNER` ioctl.
-> When CONFIG_VHOST_ENABLE_FORK_OWNER_IOCTL is set to n, the ioctl
-> is disabled, and any attempt to use it will result in failure.
+On 4/7/25 12:55 PM, Toke Høiland-Jørgensen wrote:
+> To trigger this, run the following commands:
 > 
-> Signed-off-by: Cindy Lu <lulu@redhat.com>
-> ---
->  drivers/vhost/Kconfig | 15 +++++++++++++++
->  drivers/vhost/vhost.c |  3 +++
->  2 files changed, 18 insertions(+)
+>  # ip link add type veth
+>  # tc qdisc replace dev veth0 root handle 1: fq_codel
+>  # tc -echo filter add dev veth0 parent 1: u32 match u32 0 0 $(for i in $(seq 32); do echo action pedit munge ip dport set 22; done)
 > 
-> diff --git a/drivers/vhost/Kconfig b/drivers/vhost/Kconfig
-> index b455d9ab6f3d..e5b9dcbf31b6 100644
-> --- a/drivers/vhost/Kconfig
-> +++ b/drivers/vhost/Kconfig
-> @@ -95,3 +95,18 @@ config VHOST_CROSS_ENDIAN_LEGACY
->  	  If unsure, say "N".
->  
->  endif
-> +
-> +config VHOST_ENABLE_FORK_OWNER_IOCTL
-> +	bool "Enable IOCTL VHOST_FORK_FROM_OWNER"
-> +	default n
-> +	help
-> +	  This option enables the IOCTL VHOST_FORK_FROM_OWNER, which allows
-> +	  userspace applications to modify the thread mode for vhost devices.
+> Before this fix, tc just returns:
+> 
+> Not a filter(cmd 2)
+> 
+> After the fix, we get the correct echo:
+> 
+> added filter dev veth0 parent 1: protocol all pref 49152 u32 chain 0 fh 800::800 order 2048 key ht 800 bkt 0 terminal flowid not_in_hw
+>   match 00000000/00000000 at 0
+> 	action order 1:  pedit action pass keys 1
+>  	index 1 ref 1 bind 1
+> 	key #0  at 20: val 00000016 mask ffff0000
+> [repeated 32 times]
 
-ok
+I think it would be great if you could follow-up capturing the above in
+a self-test.
 
-> +          By default, `CONFIG_VHOST_ENABLE_FORK_OWNER_IOCTL` is set to `n`,
-> +          meaning the ioctl is disabled and any operation using this ioctl
-> +          will fail.
-> +          When the configuration is enabled (y), the ioctl becomes
-> +          available, allowing users to set the mode if needed.
+Thanks!
 
-no need to be so verbose - the disabled beavious belongs in commit log
-not here.
-
-Also either ioctl or IOCTL but not both.
-
-> +
-> +	  If unsure, say "N".
-> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> index fb0c7fb43f78..568e43cb54a9 100644
-> --- a/drivers/vhost/vhost.c
-> +++ b/drivers/vhost/vhost.c
-> @@ -2294,6 +2294,8 @@ long vhost_dev_ioctl(struct vhost_dev *d, unsigned int ioctl, void __user *argp)
->  		r = vhost_dev_set_owner(d);
->  		goto done;
->  	}
-> +
-> +#ifdef CONFIG_VHOST_ENABLE_FORK_OWNER_IOCTL
->  	if (ioctl == VHOST_FORK_FROM_OWNER) {
->  		u8 inherit_owner;
->  		/*inherit_owner can only be modified before owner is set*/
-> @@ -2313,6 +2315,7 @@ long vhost_dev_ioctl(struct vhost_dev *d, unsigned int ioctl, void __user *argp)
->  		r = 0;
->  		goto done;
->  	}
-> +#endif
->  	/* You must be the owner to do anything else */
->  	r = vhost_dev_check_owner(d);
->  	if (r)
-> -- 
-> 2.45.0
+Paolo
 
