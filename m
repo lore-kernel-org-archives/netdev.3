@@ -1,120 +1,129 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A011D61A2;
-	Tue,  8 Apr 2025 17:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0468256D;
+	Tue,  8 Apr 2025 17:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744133269; cv=none; b=ut938Oe27ztIxgCAOgc0v+A+/P3byz7VY4yxU/Hy6m1T8p93Ywoslsv2atA/uy9SaI52d17pKGHrMvp2kRyUTdzBgm3NrqsctrzYzcf3uGh264uNIpE+cfge8qFjTist+WkcwT25q2XRHbTNbwMuqjV7pc5WujQyM+tbLKedPx0=
+	t=1744133538; cv=none; b=jZ5oTrRs5XI52s+hovMImNt90gBLQMuPFRzb8wxNLDWwEGJ33MmXAlwLA3/rY5URxxTg/wtBeO7Pu0tx+aDryKO6jZvC/lRyFbqnYIDBZ+nGVvovvDpzIO+7MEjvFWaQSTuuxpcrsgW+fIgG2QdFCxMLdY42uZI4KCr7d9/VJfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744133269; c=relaxed/simple;
-	bh=iGs2ZZHWszBkgjha1A2dY+//qUbJ939WmeteH4R9VoY=;
+	s=arc-20240116; t=1744133538; c=relaxed/simple;
+	bh=Uyw8/u91k97AhlT5M27wvbEtOCXoh20ebT5Esp49rco=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cGide0u/aBZ/dtQPqBxkI4et503S5P78DbZYfBr/GbiNy0XdNNhKnDKXbadb+Lun0kUqIQbScDhK8MyjJ+vqMDkUEsIaywjEr072CrYjEoi78j6CCVPjo7laX5UI2byCC1rYNSpsCGsqdzxU01TfQ1Kq/f2z8Evo9W/gCBbRQWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Gug+5dJk; arc=none smtp.client-ip=78.32.30.218
+	 Content-Type:Content-Disposition:In-Reply-To; b=bzD+VeUFm6lOqTYBChkbDuRk/cyqFDvk0AIHsp/MR6yZ4uITD93t4WO2/MotArkh5n2ECPobHJ16YB+a1k9K/s/NVA643Z1VcMSRCgqth23YPbSKi74/yqFzkhd0IW7kvlVVePtqxiOdugOjQRkxRcWNx8IH2Cpfv1YSd1RA4ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=0VghUhm3; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Gug+5dJk"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="0VghUhm3"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Y8RWM2V6ZnehV9xCG2Wi7D3YFpwSdHlPKuNFJkQ/bqQ=; b=Gug+5dJkFQ2rbCZ5IXZX4osrkc
-	z4jCLXuY8M+Deo7TGvO4X3azXzNOY81Pym6BE1wRVtlX0j1A55PWe5bI2sC3crPMPxHw1CeStLy2o
-	/V0QKXahJUMiiC0QA75pZ0B71CSfo3v561yu0Dz00hSkJbrLJPo2YlqRoNq7PJUrXxcRgH84YKKRU
-	OmVjnaBReXWpYspNTe4XnqnxjIhTFm+dq6EUTbPorz00lCBHEMhGAjD6JCR7I3D0tHI4klOBUjGmX
-	WZfuxE+cKAVpE7S62ePuI4c2mcHsgReKBCz99EZlrG7OMoPEVQAv2csuoYJ61Ua+C90ZhC8XailZA
-	nZx7znGQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51470)
+	bh=tBdgPAyWzfn5h5XGQGb9kQsMmLdGue7/1/u7FpE2qlU=; b=0VghUhm3Hp3VKlWFP2PTk4EowP
+	55lJnsT84HpB0kSZ6ecsTUsVTxyi2SlYsBPQMLvuEJCQDsR6xE+fOmXVna+YE6lQu1s/nzvoTbF4/
+	MaCom23bYcWDmgVCmsmegXnPhGoPaIvn8ut4ZNfrvjQxtK4lsxWB5bODqM6mcyEZ/oPRuld30xSdW
+	8DLynfqD+8CesWVghVKBKxrRuqU5rmkYAvQdIVFocSvKT7TrlbJjegmqsRJdlLCbQWY4lbUw+k8Au
+	7h/NvBbxlThTMqzX10qYYWFUK5acF3LYa6UfINrCWjJhCqtHOJbP8uw/IpOjSxyrelTXXPnYlccdu
+	TG93l36A==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41056)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <linux@armlinux.org.uk>)
-	id 1u2Cjb-0007pu-0I;
-	Tue, 08 Apr 2025 18:27:39 +0100
+	id 1u2Cnu-0007qs-2h;
+	Tue, 08 Apr 2025 18:32:07 +0100
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
 	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1u2CjV-0001bg-19;
-	Tue, 08 Apr 2025 18:27:33 +0100
-Date: Tue, 8 Apr 2025 18:27:33 +0100
+	id 1u2Cns-0001bp-25;
+	Tue, 08 Apr 2025 18:32:04 +0100
+Date: Tue, 8 Apr 2025 18:32:04 +0100
 From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Sean Anderson <sean.anderson@linux.dev>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org, upstream@airoha.com,
-	Christian Marangi <ansuelsmth@gmail.com>,
+To: Simon Horman <horms@kernel.org>
+Cc: Kory Maincent <kory.maincent@bootlin.com>, Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Claudiu Beznea <claudiu.beznea@microchip.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Jonathan Corbet <corbet@lwn.net>, Joyce Ooi <joyce.ooi@intel.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Madalin Bucur <madalin.bucur@nxp.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Rob Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>,
-	Robert Hancock <robert.hancock@calian.com>,
-	Saravana Kannan <saravanak@google.com>,
-	UNGLinuxDriver@microchip.com,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [net-next PATCH v2 00/14] Add PCS core support
-Message-ID: <Z_VchfzoKOTvy5TQ@shell.armlinux.org.uk>
-References: <20250407231746.2316518-1-sean.anderson@linux.dev>
- <20250408075047.69d031a9@kernel.org>
- <08c0e1eb-2de6-45bf-95a4-e817008209ab@linux.dev>
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v2 2/2] net: phy: Add Marvell PHY PTP support
+Message-ID: <Z_VdlGVJjdtQuIW0@shell.armlinux.org.uk>
+References: <20250407-feature_marvell_ptp-v2-0-a297d3214846@bootlin.com>
+ <20250407-feature_marvell_ptp-v2-2-a297d3214846@bootlin.com>
+ <20250408154934.GZ395307@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <08c0e1eb-2de6-45bf-95a4-e817008209ab@linux.dev>
+In-Reply-To: <20250408154934.GZ395307@horms.kernel.org>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Apr 08, 2025 at 11:30:43AM -0400, Sean Anderson wrote:
-> On 4/8/25 10:50, Jakub Kicinski wrote:
-> > On Mon,  7 Apr 2025 19:17:31 -0400 Sean Anderson wrote:
-> >> This series depends on [1,2], and they have been included at the
-> >> beginning so CI will run. However, I expect them to be reviewed/applied
-> >> outside the net-next tree.
+On Tue, Apr 08, 2025 at 04:49:34PM +0100, Simon Horman wrote:
+> On Mon, Apr 07, 2025 at 04:03:01PM +0200, Kory Maincent wrote:
+> > From: Russell King <rmk+kernel@armlinux.org.uk>
 > > 
-> > These appear to break the build:
+> > From: Russell King <rmk+kernel@armlinux.org.uk>
 > > 
-> > drivers/acpi/property.c:1669:39: error: initialization of ‘int (*)(const struct fwnode_handle *, const char *, const char *, int,  unsigned int,  struct fwnode_reference_args *)’ from incompatible pointer type ‘int (*)(const struct fwnode_handle *, const char *, const char *, unsigned int,  unsigned int,  struct fwnode_reference_args *)’ [-Wincompatible-pointer-types]
-> >  1669 |                 .get_reference_args = acpi_fwnode_get_reference_args,   \
+> > Add PTP basic support for Marvell 88E151x PHYs. These PHYs support
+> > timestamping the egress and ingress of packets, but does not support
+> > any packet modification.
 > > 
-> > Could you post as RFC until we can actually merge this? I'm worried 
-> > some sleep deprived maintainer may miss the note in the cover letter
-> > and just apply it all to net-next..
+> > The PHYs support hardware pins for providing an external clock for the
+> > TAI counter, and a separate pin that can be used for event capture or
+> > generation of a trigger (either a pulse or periodic).  This code does
+> > not support either of these modes.
+> > 
+> > The driver takes inspiration from the Marvell 88E6xxx DSA and DP83640
+> > drivers.  The hardware is very similar to the implementation found in
+> > the 88E6xxx DSA driver, but the access methods are very different,
+> > although it may be possible to create a library that both can use
+> > along with accessor functions.
+> > 
+> > Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
+> > 
+> > Add support for interruption.
+> > Fix L2 PTP encapsulation frame detection.
+> > Fix first PTP timestamp being dropped.
+> > Fix Kconfig to depends on MARVELL_PHY.
+> > Update comments to use kdoc.
+> > 
+> > Co-developed-by: Kory Maincent <kory.maincent@bootlin.com>
+> > Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 > 
-> I would really like to keep RFC off the titles since some reviewers don't
-> pay attention to RFC series.
+> Hi Kory,
 > 
-> Would [DO NOT MERGE] in the subject be OK?
+> Some minor feedback from my side.
+> 
+> > ---
+> > 
+> > Russell I don't know which email I should use, so I keep your old SOB.
+> 
+> Russell's SOB seems to be missing.
 
-I'd bet that those who have decided "RFC means the patch series is not
-ready" will take such a notice to also mean the same, and ignore it.
+... and anyway, I haven't dropped my patches, I'm waiting for the
+fundamental issue with merging Marvell PHY PTP support destroying the
+ability to use MVPP2 PTP support to be solved, and then I will post
+my patches.
 
-I think there needs to be some kind of push-back against these
-maintainers who explicitly state that they ignore RFC series - making
-it basically anti-social behaviour in the kernel community.
+They aren't dead, I'm just waiting for the issues I reported years ago
+with the PTP infrastructure to be resolved - and to be tested as
+resolved.
+
+I'm still not convinced that they have been given Kory's responses to
+me (some of which I honestly don't understand), but I will get around
+to doing further testing to see whether enabling Marvell PHY PTP
+support results in MVPP2 support becoming unusable.
+
+Kory's lack of communication with me has been rather frustrating.
 
 -- 
 RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
