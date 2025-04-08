@@ -1,367 +1,181 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2069.outbound.protection.outlook.com [40.107.92.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6851C3BEB
-	for <netdev@vger.kernel.org>; Tue,  8 Apr 2025 15:43:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744127010; cv=fail; b=mGGjUt9d8SMCmOVq7/tdtDY4yt15uDPgkGtRrIIyT/2k2PzVg0YejxUkbkB08WN0JmyLZ09Zmqwz1FFNPRDPytxDSP0uRo9Rs6afOYrSgISGw04M611V0ACCTVGgmOsLt7Md9N5V2GrsbGwd+PtYU3RFIXh3M8WPLoK5cTP+Xaw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744127010; c=relaxed/simple;
-	bh=DinMjHVpJUwy5/mEaNF2anzgdTLViLt30HkQVK+pKDo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JCvvFy14NCF2VKPXykTSLrtwPy0l+aiSbHqZhTOv9nA8SmIO+m2M9icoAJeotrRKzeSP3zebJmWAuePFU9mEgIl2RIQ7YDByxCoApotZWHEgRJZ2s9zIr5imLJA5rwoJ2qLlet26zKxsSibe9zxv91PXwSFgFEpLOMIKjvWPL9o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pnKQ67vh; arc=fail smtp.client-ip=40.107.92.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E16288CC;
+	Tue,  8 Apr 2025 15:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744127275; cv=none; b=P8Y/cCfAbLL24oNgfQWSbFMAP9XPLcuw8nqaBrM5T/yUh3io38JytXtwxYJq0w7slBiqAxYoJSHJ6GMgGn8urU2srU/PnAFaRwrj5UESehj1x2oqdLtgbo/09CLzSOhASGtZ2Mjk0p9/dr39QQaenL9TuzT2WjfxPEfmpBDN0ec=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744127275; c=relaxed/simple;
+	bh=9pXd1fjsd/UkXlXloKHgwO8078MP0tBnXdk5SpFcPao=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qor+QGXseoJM4zrh+lfpJYCyzcOOKVnBbM4rfg8wTLoqhFN6oZrOUTaGjQIVb4cqJ7efoSjvBlohpG9ZKQ/LY6IuaklEsKNU8csbPQwVbpjih3j7PPjIY5FcBamOkDkXbraxPvBrlXi1QzCFl+C1xFY4cYUEvKUHDyyJ9EfAG8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IrHdCO6d; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pnKQ67vh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zLJnOv9goN+BP2t2M2VBQ0v91mVAAD1D2S58/CEPtTrkvoKK0iSs56x+J7ERgKt3RtcF+x+yghWR7eE/QjzGRX9lDtQnaEySua+O4Fn2pEL3DdmUgZpplxAkKKaFMLQ9Ra23R04RpjfyJoQK6bZAvV8F57y4SH58EaCTBXCNfjf7bVrmEbvwn3sFv8+79KLjetFXFaHoL4wBHXwhZGWISR/GkvGtsrGvx0LFHqit9eo/LaonOXIE1ICNMUr/ejQyWWrS39mxT+x+6cP6Rjv4Pullr32bH3BIxNV/o6eQjI6vNOFuxSGqbGy1SN96T25RdMqw4RG/fZOPHmTevTWqFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wH/1Xbrdpx9XRHa25eZvdq49ZEIGht2surVaHjOxxtU=;
- b=wABwNqIZ3wA0xGceuTfz5BKdle4zmmVvuzRAY71BKHW56I/AQu/pMHvV3h0oAZ4IG+mJ9+ZnZlSvpeRtJz/OY7wG0IvF5UQRpntEgMnDrlpvaL93tyrffivWufpieVbSwUjxxGbiz0bWBCcyJVfsxXhbJxj6M9oCM39sz7BkpDfDJtBruSV7zWkTPdikr5jOJBxp5tURCxRFc466MKdIQcCD5NDGOpPDyvndDbbcFjO0NDm6BB+vABSSaA0oS19pZJi+sA5tkP7QbUBovEX5PINpObUQUae49AyySNHE7l3bNbt2gNYwO9/5RHjlNj2jTJGXO6XiO+hp37YU2RVPZg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wH/1Xbrdpx9XRHa25eZvdq49ZEIGht2surVaHjOxxtU=;
- b=pnKQ67vh90VqcBsoGTFEWsJ3HSwvcif5RBVqdx0gRVvXjsXscEnB65RKecu4pe/TZfrXyXKdP8KVqLR04UVZtsPMryODT5IOpfJZvR4PS2OAgYUIq98VOnmF3pfz3mhbpKRD9uKehgjk1e+k3mD77O3puQey96AwyBY8SMk2M0dcq6FxCRTVb9nvBnTHdGUPlDMoUcjykPHvqlSyVtRqlNbxKH3LyRE3XKmUK0fzGGa0V8dIGzvQ7MVybJkOqxWUyKFLdUW2ZvYYF/QfoUwWuOJ/MbrzCdc7lt1soKE7Y9UZiANNhVWATLx8/JvXttR1q+Ms+kSTm+S7dE0ZBpfahQ==
-Received: from BL1PR13CA0285.namprd13.prod.outlook.com (2603:10b6:208:2bc::20)
- by CYYPR12MB8870.namprd12.prod.outlook.com (2603:10b6:930:bb::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.27; Tue, 8 Apr
- 2025 15:43:22 +0000
-Received: from BL02EPF0001A100.namprd03.prod.outlook.com
- (2603:10b6:208:2bc:cafe::53) by BL1PR13CA0285.outlook.office365.com
- (2603:10b6:208:2bc::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8632.10 via Frontend Transport; Tue,
- 8 Apr 2025 15:43:21 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BL02EPF0001A100.mail.protection.outlook.com (10.167.242.107) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8606.22 via Frontend Transport; Tue, 8 Apr 2025 15:43:20 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 8 Apr 2025
- 08:43:03 -0700
-Received: from localhost.localdomain (10.126.231.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 8 Apr
- 2025 08:42:58 -0700
-From: Petr Machata <petrm@nvidia.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	<netdev@vger.kernel.org>
-CC: Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel
-	<idosch@nvidia.com>, <bridge@lists.linux.dev>, Petr Machata
-	<petrm@nvidia.com>, <mlxsw@nvidia.com>, Amit Cohen <amcohen@nvidia.com>
-Subject: [PATCH net-next 2/2] selftests: test_bridge_neigh_suppress: Test unicast ARP/NS with suppression
-Date: Tue, 8 Apr 2025 17:40:24 +0200
-Message-ID: <dc240b9649b31278295189f412223f320432c5f2.1744123493.git.petrm@nvidia.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <cover.1744123493.git.petrm@nvidia.com>
-References: <cover.1744123493.git.petrm@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IrHdCO6d"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-39c1ef4acf2so3499334f8f.0;
+        Tue, 08 Apr 2025 08:47:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744127272; x=1744732072; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OF2R80/I/m+psYaKl8m4E9ok2YDgHfmbWkmqjc0ZhBU=;
+        b=IrHdCO6dsJuXbQ+9T1LAEPB66iq+K4g8DxCzSc53yrTRdRvVQJi+BFBMYYBxX1mTcs
+         9O4EpCVrhn/VWsc0/6bKd+nYUEfdVIE9GKZpWH4sSDJ5HXNzxLrvjWe9mkoYsUWRxZNL
+         aHF7slWl94kvDFLnWzOYbhTmr1JlwD8rKy+dcogmMbP0iIEqfYTIW3Rt+HlSg4UH0Dop
+         m9qhu1NbcJ7KGRi5mGfV3r/xt1GaxYfM5OW16ptj4h+OcpJH8MBM+gcCYKWQYjmUie0i
+         HG3tJwvKqRgpPD25qTtm1pe34hkuZGL5WFGgSUQalyTjc2siHQ+6ySC70xw8e026TvBz
+         7CqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744127272; x=1744732072;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OF2R80/I/m+psYaKl8m4E9ok2YDgHfmbWkmqjc0ZhBU=;
+        b=Eb8KdbtRMtf4h/c+FbmQr5XbITCvdOLN7v/ELqowg6sHn0QrInuHkZ2b+LLAGSI7Nc
+         uTTYIK+ruNUkmgzA13nHkv9I3j34808X5QHNtWdAI2dBW+p6SFBFtDJehJ//vVZXHlgJ
+         0H8o/NR28/f3XWc5cRPYk65jiJXmtZE6g8gJMEF/a+CgK0aUD6iLCUVXqXjiGYo+ePtK
+         Mp8zSoT8foKZeoEwxl0Vojxpi9TmUDoEyNedhGHjqlZ2tede62YkJZY/uLfdfXKy3njT
+         u3eCRs19YfnRd3g76RdR8roYMVobA91dOFGGDfORe8AT45m3wMFLoqUozJrwfRAslEHo
+         WIAw==
+X-Forwarded-Encrypted: i=1; AJvYcCXvcwU0pAsDhfyv5AQkujMSoNnbhISXDcW55ga6ygJd7EFvRDRod4D1eoDT8DYnmtACeceFvDQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxySqBXutycfoe1bimX4r45e/lrFoqcgK3HAiTguL6VJojlsaRE
+	9To8aAz+fIrRgGyp0beBBfm5z+0h4/tfvz/ytCnzMZUaI3UcPomU+GDIgA==
+X-Gm-Gg: ASbGncswmvI0cpM0PxkAjWNewE57g62jsAvILWUR0hf/tcv+tzBEuO685PquFftL2zi
+	0cLaiaOk046/B+WZhQ0iURwtRD/Zz7CGzVnvX2J7qajhmZoLdZ1z5XZYkEw9WKM/aTW9DzC/mKq
+	VEkXgQby2mlGx7fctLdgdQn9YfZPInQkY79YvN542S923/fLjFlBsRgawrj07I/UQ60OF3a5uPC
+	6JLMTqvhhM8U0PvHQWpvsyo7SvZy4mxrGVp+FwP1XZiu8Zgvn1z5VZ7i95NZhrHl2DtL/xxBrEK
+	pmwHlDxzF8IKYXFLMJz0HiOppMB7aY17IZVEDRkO6UFxkJo=
+X-Google-Smtp-Source: AGHT+IHHKKolUgiYT3qqV6HCjxg/O5o7+cUUHQwntnVd+b0iAtxfpJm9hR+s2B9Kdo9ACQp5mD6+kg==
+X-Received: by 2002:a05:6000:1849:b0:391:ba6:c066 with SMTP id ffacd0b85a97d-39d0de3e88dmr14995337f8f.35.1744127271425;
+        Tue, 08 Apr 2025 08:47:51 -0700 (PDT)
+Received: from [10.0.0.4] ([37.165.172.123])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c301b760bsm15366907f8f.55.2025.04.08.08.47.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Apr 2025 08:47:51 -0700 (PDT)
+Message-ID: <1ad134d3-4173-4d43-b2ad-0b2c5165bbc1@gmail.com>
+Date: Tue, 8 Apr 2025 17:47:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A100:EE_|CYYPR12MB8870:EE_
-X-MS-Office365-Filtering-Correlation-Id: e5bb7882-709e-4f7a-ca1d-08dd76b416d5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?UXFR+3lf+uTuH8gSMehGNILkwZNlZVCfYGr8gWZiRXv+tpz/l54KCZbuctGa?=
- =?us-ascii?Q?m8WtX/vUPThQT/BseqVdxg68SZE6uhzWvXFgIvv6Fgenwf7Poe46uKtNqFlf?=
- =?us-ascii?Q?lkf1zRP9rOwYyBv7VQhK+ARZzyivT2Tf6xnuMcshFY9UDMNt5mztIogQuqT3?=
- =?us-ascii?Q?MWcKB+hsDi6zZ/cfGGXscXeABB9jfSqja3IY64ywudXr2xUYxRh6CrotMCa7?=
- =?us-ascii?Q?9WkBNfYp5ETJRQ5Rturtz7j/F1vCZF/QhL/okTxSseIouzulCJti+UnTjKV0?=
- =?us-ascii?Q?jfUekFFoNglPuEfHgensIziWydwMUU0AqxGYibj/1yT3AvloumxiQ/SZhgHZ?=
- =?us-ascii?Q?rupDMXwL305P3rb/7uKnf2o9NPwnp3oIZWlfZZjlYGrkjOvYK5VcEuwK+t4j?=
- =?us-ascii?Q?VbC6ju9o7xNWfwN5TTUtpDC9vX10GeKE6roY7zXbjl4oKVL1SMQYq1ssIQU7?=
- =?us-ascii?Q?P9TojmI+aumy9rzaRp0FD5BWv3/QgIpSupPTzcro72sDP7c9ZIPBeaI1kkXF?=
- =?us-ascii?Q?LTE7PhwfwNs4vwl1JVOflqyj34h9c1CF7pRXnhOK1r21r17o9pkyCmJJhAS9?=
- =?us-ascii?Q?7Q4adaEhYTnXynIXAvPaqeMMRDxEEGdOPX0VfFYmzEiIGA8djizVwMMuH/kB?=
- =?us-ascii?Q?jB/XctGR304UdjH4wgG4hi9TLPA1X2FVYF2yZmp4qb5JzgKYL+mt2e5/SZte?=
- =?us-ascii?Q?QQmeCUG6Cn4xLK0TBGoUstN8CjUOdmkOxBnvShBRftBCasxaKrgk/9z8P9aE?=
- =?us-ascii?Q?ah3wp5VW804rz4ajeqyVKlUVCrQwSwnKuUCI4cizMvAsDPRj3mHPCdvN4O24?=
- =?us-ascii?Q?LO+MuDATqXFSSOH513gMLNKOvUenq1uPrGRHJiUkn3TMLK4U3qnuFDAMBL6/?=
- =?us-ascii?Q?+ZyUw8cAhKuDPaKi6UoZ3tKjcXY6OTOYOxl3CK4RmDn2V5jj0C/iWmKdmPet?=
- =?us-ascii?Q?ugsCtAmuqrX0Ax6F/wggHWXPgJCC3m/lOUy+xNWcKM/GgsjCMwZXO0X5WlUz?=
- =?us-ascii?Q?IP3MMClQqhXtKqgq6lI0J5qtALx6uuTs30IbNoRwGNN0StFfuiTjSfCikp9f?=
- =?us-ascii?Q?8phrLIf/Yeug2GjgZcBkaA9pABi7OljTxeczxVtptxcbd2EkHC6Q4BF3c9fu?=
- =?us-ascii?Q?D25ZwuTHDraHfynJEp+6kMIWp2lAzWItR5LhsHt/xGW3tmJi1mE+akX1lpxL?=
- =?us-ascii?Q?drS7jc2eqptelMsTKC9F/CxrEKYRJPRLvopXbV2Ax2I6mB9kZogI8KLaUQTs?=
- =?us-ascii?Q?2E8L+gssM9rCConHJJ/R1hwPPTvg6XxEAtiL1XhLDL3jB8B3iPlr9VzzQ5Nu?=
- =?us-ascii?Q?tVLOsuJhm+ShjLWJsbI9CG8bvt9YXS+1ixIjAT1jDTTQMGfVUin0rltXZec5?=
- =?us-ascii?Q?n58/o4nX7imC+kbdleO8jvY466wBvjioyt59uTkul+SbpABRPH5qLovR5N0V?=
- =?us-ascii?Q?/MXXcMv6kiAYgtcKq9lraBz0gPQYE7Hux3oLNWXgE7RZRs5J9axb1A=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2025 15:43:20.3903
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e5bb7882-709e-4f7a-ca1d-08dd76b416d5
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A100.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8870
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next V2 2/2] net: sched: generalize check for no-op
+ qdisc
+To: Jesper Dangaard Brouer <hawk@kernel.org>, netdev@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>, edumazet@google.com
+Cc: bpf@vger.kernel.org, tom@herbertland.com,
+ "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+ dsahern@kernel.org, makita.toshiaki@lab.ntt.co.jp, kernel-team@cloudflare.com
+References: <174412623473.3702169.4235683143719614624.stgit@firesoul>
+ <174412628464.3702169.81132659219041209.stgit@firesoul>
+Content-Language: en-US
+From: Eric Dumazet <eric.dumazet@gmail.com>
+In-Reply-To: <174412628464.3702169.81132659219041209.stgit@firesoul>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Amit Cohen <amcohen@nvidia.com>
 
-Add test cases to check that unicast ARP/NS packets are replied once, even
-if ARP/ND suppression is enabled.
+On 4/8/25 5:31 PM, Jesper Dangaard Brouer wrote:
+> Several drivers (e.g., veth, vrf) contain open-coded checks to determine
+> whether a TX queue has a real qdisc attached - typically by testing if
+> qdisc->enqueue is non-NULL.
+>
+> These checks are functionally equivalent to comparing the queue's qdisc
+> pointer against &noop_qdisc (qdisc named "noqueue"). This equivalence
+> stems from noqueue_init(), which explicitly clears the enqueue pointer
+> for the "noqueue" qdisc. As a result, __dev_queue_xmit() treats the qdisc
+> as a no-op only when enqueue == NULL.
+>
+> This patch introduces a common helper, qdisc_txq_is_noop() to standardize
+> this check. The helper is added in sch_generic.h and replaces open-coded
+> logic in both the veth and vrf drivers.
+>
+> This is a non-functional change.
+>
+> Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+> ---
+>   drivers/net/veth.c        |   14 +-------------
+>   drivers/net/vrf.c         |    3 +--
+>   include/net/sch_generic.h |    7 ++++++-
+>   3 files changed, 8 insertions(+), 16 deletions(-)
+>
+> diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+> index f29a0db2ba36..83c7758534da 100644
+> --- a/drivers/net/veth.c
+> +++ b/drivers/net/veth.c
+> @@ -341,18 +341,6 @@ static bool veth_skb_is_eligible_for_gro(const struct net_device *dev,
+>   		 rcv->features & (NETIF_F_GRO_FRAGLIST | NETIF_F_GRO_UDP_FWD));
+>   }
+>   
+> -/* Does specific txq have a real qdisc attached? - see noqueue_init() */
+> -static inline bool txq_has_qdisc(struct netdev_queue *txq)
+> -{
+> -	struct Qdisc *q;
+> -
+> -	q = rcu_dereference(txq->qdisc);
+> -	if (q->enqueue)
+> -		return true;
+> -	else
+> -		return false;
+> -}
+> -
+>   static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
+>   {
+>   	struct veth_priv *rcv_priv, *priv = netdev_priv(dev);
+> @@ -399,7 +387,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
+>   		 */
+>   		txq = netdev_get_tx_queue(dev, rxq);
+>   
+> -		if (!txq_has_qdisc(txq)) {
+> +		if (qdisc_txq_is_noop(txq)) {
+>   			dev_kfree_skb_any(skb);
+>   			goto drop;
+>   		}
+> diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
+> index 7168b33adadb..d4fe36c55f29 100644
+> --- a/drivers/net/vrf.c
+> +++ b/drivers/net/vrf.c
+> @@ -349,9 +349,8 @@ static bool qdisc_tx_is_default(const struct net_device *dev)
+>   		return false;
+>   
+>   	txq = netdev_get_tx_queue(dev, 0);
+> -	qdisc = rcu_access_pointer(txq->qdisc);
+>   
+> -	return !qdisc->enqueue;
+> +	return qdisc_txq_is_noop(txq);
+>   }
+>   
+>   /* Local traffic destined to local address. Reinsert the packet to rx
+> diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+> index d48c657191cd..eb90d5103371 100644
+> --- a/include/net/sch_generic.h
+> +++ b/include/net/sch_generic.h
+> @@ -803,6 +803,11 @@ static inline bool qdisc_tx_changing(const struct net_device *dev)
+>   	return false;
+>   }
+>   
+> +static inline bool qdisc_txq_is_noop(const struct netdev_queue *txq)
+> +{
+> +	return (rcu_access_pointer(txq->qdisc) == &noop_qdisc);
 
-Without the previous patch:
-$ ./test_bridge_neigh_suppress.sh
-...
-Unicast ARP, per-port ARP suppression - VLAN 10
------------------------------------------------
-TEST: "neigh_suppress" is on                                        [ OK ]
-TEST: Unicast ARP, suppression on, h1 filter                        [FAIL]
-TEST: Unicast ARP, suppression on, h2 filter                        [ OK ]
 
-Unicast ARP, per-port ARP suppression - VLAN 20
------------------------------------------------
-TEST: "neigh_suppress" is on                                        [ OK ]
-TEST: Unicast ARP, suppression on, h1 filter                        [FAIL]
-TEST: Unicast ARP, suppression on, h2 filter                        [ OK ]
-...
-Unicast NS, per-port NS suppression - VLAN 10
----------------------------------------------
-TEST: "neigh_suppress" is on                                        [ OK ]
-TEST: Unicast NS, suppression on, h1 filter                         [FAIL]
-TEST: Unicast NS, suppression on, h2 filter                         [ OK ]
+return (expression);
 
-Unicast NS, per-port NS suppression - VLAN 20
----------------------------------------------
-TEST: "neigh_suppress" is on                                        [ OK ]
-TEST: Unicast NS, suppression on, h1 filter                         [FAIL]
-TEST: Unicast NS, suppression on, h2 filter                         [ OK ]
-...
-Tests passed: 156
-Tests failed:   4
+->
 
-With the previous patch:
-$ ./test_bridge_neigh_suppress.sh
-...
-Unicast ARP, per-port ARP suppression - VLAN 10
------------------------------------------------
-TEST: "neigh_suppress" is on                                        [ OK ]
-TEST: Unicast ARP, suppression on, h1 filter                        [ OK ]
-TEST: Unicast ARP, suppression on, h2 filter                        [ OK ]
+return expression;
 
-Unicast ARP, per-port ARP suppression - VLAN 20
------------------------------------------------
-TEST: "neigh_suppress" is on                                        [ OK ]
-TEST: Unicast ARP, suppression on, h1 filter                        [ OK ]
-TEST: Unicast ARP, suppression on, h2 filter                        [ OK ]
-...
-Unicast NS, per-port NS suppression - VLAN 10
----------------------------------------------
-TEST: "neigh_suppress" is on                                        [ OK ]
-TEST: Unicast NS, suppression on, h1 filter                         [ OK ]
-TEST: Unicast NS, suppression on, h2 filter                         [ OK ]
 
-Unicast NS, per-port NS suppression - VLAN 20
----------------------------------------------
-TEST: "neigh_suppress" is on                                        [ OK ]
-TEST: Unicast NS, suppression on, h1 filter                         [ OK ]
-TEST: Unicast NS, suppression on, h2 filter                         [ OK ]
-...
-Tests passed: 160
-Tests failed:   0
+return rcu_access_pointer(txq->qdisc) == &noop_qdisc;
 
-Signed-off-by: Amit Cohen <amcohen@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
----
- .../net/test_bridge_neigh_suppress.sh         | 125 ++++++++++++++++++
- 1 file changed, 125 insertions(+)
+I also feel this patch should come first in the series ?
 
-diff --git a/tools/testing/selftests/net/test_bridge_neigh_suppress.sh b/tools/testing/selftests/net/test_bridge_neigh_suppress.sh
-index 02b986c9c247..9067197c9055 100755
---- a/tools/testing/selftests/net/test_bridge_neigh_suppress.sh
-+++ b/tools/testing/selftests/net/test_bridge_neigh_suppress.sh
-@@ -51,7 +51,9 @@ ret=0
- # All tests in this script. Can be overridden with -t option.
- TESTS="
- 	neigh_suppress_arp
-+	neigh_suppress_uc_arp
- 	neigh_suppress_ns
-+	neigh_suppress_uc_ns
- 	neigh_vlan_suppress_arp
- 	neigh_vlan_suppress_ns
- "
-@@ -388,6 +390,52 @@ neigh_suppress_arp()
- 	neigh_suppress_arp_common $vid $sip $tip
- }
- 
-+neigh_suppress_uc_arp_common()
-+{
-+	local vid=$1; shift
-+	local sip=$1; shift
-+	local tip=$1; shift
-+	local tmac
-+
-+	echo
-+	echo "Unicast ARP, per-port ARP suppression - VLAN $vid"
-+	echo "-----------------------------------------------"
-+
-+	run_cmd "bridge -n $sw1 link set dev vx0 neigh_suppress on"
-+	run_cmd "bridge -n $sw1 -d link show dev vx0 | grep \"neigh_suppress on\""
-+	log_test $? 0 "\"neigh_suppress\" is on"
-+
-+	tmac=$(ip -n $h2 -j -p link show eth0.$vid | jq -r '.[]["address"]')
-+	run_cmd "bridge -n $sw1 fdb replace $tmac dev vx0 master static vlan $vid"
-+	run_cmd "ip -n $sw1 neigh replace $tip lladdr $tmac nud permanent dev br0.$vid"
-+
-+	run_cmd "tc -n $h1 qdisc replace dev eth0.$vid clsact"
-+	run_cmd "tc -n $h1 filter replace dev eth0.$vid ingress pref 1 handle 101 proto arp flower arp_sip $tip arp_op reply action pass"
-+
-+	run_cmd "tc -n $h2 qdisc replace dev eth0.$vid clsact"
-+	run_cmd "tc -n $h2 filter replace dev eth0.$vid egress pref 1 handle 101 proto arp flower arp_tip $sip arp_op reply action pass"
-+
-+	run_cmd "ip netns exec $h1 mausezahn eth0.$vid -c 1 -a own -b $tmac -t arp 'request sip=$sip, tip=$tip, tmac=$tmac' -q"
-+	tc_check_packets $h1 "dev eth0.$vid ingress" 101 1
-+	log_test $? 0 "Unicast ARP, suppression on, h1 filter"
-+	tc_check_packets $h2 "dev eth0.$vid egress" 101 1
-+	log_test $? 0 "Unicast ARP, suppression on, h2 filter"
-+}
-+
-+neigh_suppress_uc_arp()
-+{
-+	local vid=10
-+	local sip=192.0.2.1
-+	local tip=192.0.2.2
-+
-+	neigh_suppress_uc_arp_common $vid $sip $tip
-+
-+	vid=20
-+	sip=192.0.2.17
-+	tip=192.0.2.18
-+	neigh_suppress_uc_arp_common $vid $sip $tip
-+}
-+
- neigh_suppress_ns_common()
- {
- 	local vid=$1; shift
-@@ -494,6 +542,78 @@ neigh_suppress_ns()
- 	neigh_suppress_ns_common $vid $saddr $daddr $maddr
- }
- 
-+icmpv6_header_get()
-+{
-+	local csum=$1; shift
-+	local tip=$1; shift
-+	local type
-+	local p
-+
-+	# Type 135 (Neighbor Solicitation), hex format
-+	type="87"
-+	p=$(:
-+		)"$type:"$(                     : ICMPv6.type
-+		)"00:"$(                        : ICMPv6.code
-+		)"$csum:"$(                     : ICMPv6.checksum
-+		)"00:00:00:00:"$(               : Reserved
-+	        )"$tip:"$(	                : Target Address
-+		)
-+	echo $p
-+}
-+
-+neigh_suppress_uc_ns_common()
-+{
-+	local vid=$1; shift
-+	local sip=$1; shift
-+	local dip=$1; shift
-+	local full_dip=$1; shift
-+	local csum=$1; shift
-+	local tmac
-+
-+	echo
-+	echo "Unicast NS, per-port NS suppression - VLAN $vid"
-+	echo "---------------------------------------------"
-+
-+	run_cmd "bridge -n $sw1 link set dev vx0 neigh_suppress on"
-+	run_cmd "bridge -n $sw1 -d link show dev vx0 | grep \"neigh_suppress on\""
-+	log_test $? 0 "\"neigh_suppress\" is on"
-+
-+	tmac=$(ip -n $h2 -j -p link show eth0.$vid | jq -r '.[]["address"]')
-+	run_cmd "bridge -n $sw1 fdb replace $tmac dev vx0 master static vlan $vid"
-+	run_cmd "ip -n $sw1 -6 neigh replace $dip lladdr $tmac nud permanent dev br0.$vid"
-+
-+	run_cmd "tc -n $h1 qdisc replace dev eth0.$vid clsact"
-+	run_cmd "tc -n $h1 filter replace dev eth0.$vid ingress pref 1 handle 101 proto ipv6 flower ip_proto icmpv6 src_ip $dip type 136 code 0 action pass"
-+
-+	run_cmd "tc -n $h2 qdisc replace dev eth0.$vid clsact"
-+	run_cmd "tc -n $h2 filter replace dev eth0.$vid egress pref 1 handle 101 proto ipv6 flower ip_proto icmpv6 dst_ip $sip type 136 code 0 action pass"
-+
-+	run_cmd "ip netns exec $h1 mausezahn -6 eth0.$vid -c 1 -a own -b $tmac -A $sip -B $dip -t ip hop=255,next=58,payload=$(icmpv6_header_get $csum $full_dip) -q"
-+	tc_check_packets $h1 "dev eth0.$vid ingress" 101 1
-+	log_test $? 0 "Unicast NS, suppression on, h1 filter"
-+	tc_check_packets $h2 "dev eth0.$vid egress" 101 1
-+	log_test $? 0 "Unicast NS, suppression on, h2 filter"
-+}
-+
-+neigh_suppress_uc_ns()
-+{
-+	local vid=10
-+	local saddr=2001:db8:1::1
-+	local daddr=2001:db8:1::2
-+	local full_daddr=20:01:0d:b8:00:01:00:00:00:00:00:00:00:00:00:02
-+	local csum="ef:79"
-+
-+	neigh_suppress_uc_ns_common $vid $saddr $daddr $full_daddr $csum
-+
-+	vid=20
-+	saddr=2001:db8:2::1
-+	daddr=2001:db8:2::2
-+	full_daddr=20:01:0d:b8:00:02:00:00:00:00:00:00:00:00:00:02
-+	csum="ef:76"
-+
-+	neigh_suppress_uc_ns_common $vid $saddr $daddr $full_daddr $csum
-+}
-+
- neigh_vlan_suppress_arp()
- {
- 	local vid1=10
-@@ -825,6 +945,11 @@ if [ ! -x "$(command -v jq)" ]; then
- 	exit $ksft_skip
- fi
- 
-+if [ ! -x "$(command -v mausezahn)" ]; then
-+	echo "SKIP: Could not run test without mausezahn tool"
-+	exit $ksft_skip
-+fi
-+
- bridge link help 2>&1 | grep -q "neigh_vlan_suppress"
- if [ $? -ne 0 ]; then
-    echo "SKIP: iproute2 bridge too old, missing per-VLAN neighbor suppression support"
--- 
-2.47.0
 
