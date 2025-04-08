@@ -1,79 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64C326562E
-	for <netdev@vger.kernel.org>; Tue,  8 Apr 2025 09:49:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D943525FA28;
+	Tue,  8 Apr 2025 09:51:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744105796; cv=none; b=MSGrfWLff4qxdyQ7ZMUjWFISKIXGS7kh3fbuDymSsAvR79Z6ZrXWPPn4F1MYdMCHmk23NYT4JXlxVpLjmLEmliOdpDrDxWTQTI9YSf+zsq+HaW/DSXaFXFDM+UAFk1QxrutOiT7UvoKnvZmehmQK/kFOa4138t2KNlwMhsKV5iE=
+	t=1744105884; cv=none; b=RsVPzsmAccuBLw9ce3geFX/o1mEC2ibv9wyxYcJXecvOjpC5A+76zMOgvF0uQ0YhWAjO4mNAwAubSdo74YB8jARE8xDjEQEBJfvBMBxOPOXdXfm7haTGy4gD98Y6y+A/XstPqZhbs6d3TxxW0mSFCdb9zqUNvAepwdA9WWjk91g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744105796; c=relaxed/simple;
-	bh=yGUx7Tx9lAjDgovv8cKhp2cV6UwZT0CcgwcSzSMB6ig=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BWFcO71k17v9EmqTImqNmOJpWIf6BJ5EVbGjSslaaAKzTiz5MuuEHwk8BpLJuxsitOqgPK3eiX1LE5LneQWpkZpmBAVAsEUBS3ixuMeEwpQf+8e+L02ktbhOP8txk8HeCVEI4xfXwZczwqGfKQ9RFSRjuV6JWpR2ipwQcL8+ecE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LJXBMCE8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744105884; c=relaxed/simple;
+	bh=MdhhuR8u+f2L8BEApKaP9yJB+uq9wXeBIyQyuHw/GDM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ERo4akuItUS2eTd4LtnNzod9P8xMIRdqkh44/IUlzypdzmJ/3SQEfCL8O7SK3J6GKnikLGgYp39HcZKeTcd/Mq4r3CcT/BY4gt4E00UUs1YiY9VpmXCVmz2PNYrZ8QHDZrbQ+YeR9lYzsukWMlTMhwwj+ZZx0prG+8KQ5mN8aY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=TLNIO8NI; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LJXBMCE8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C322C4CEE5;
-	Tue,  8 Apr 2025 09:49:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744105795;
-	bh=yGUx7Tx9lAjDgovv8cKhp2cV6UwZT0CcgwcSzSMB6ig=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=LJXBMCE8pg3OwEiFe6CZ9bPiin48G1PKEISLLDucf7UFXS/uAjBTdSehKLULoFCss
-	 urPvD9jT9DHSY2CzdlVpr6BxIJ+Ejc0qeTk0Fe7CGm1Ndk784wlAMK9S3r5ze4rjCm
-	 jh+hiiNOCBbyCwgdQeOnuE/ww3bwVztRS/I9BBZ9StqTdDsE/7PeIdRu/UuOALuF0w
-	 Hz9YZPwFsHpAfrDx2C7YfEhan/702eq3g3rrsZ/qpQHTKeW+IrPSl1IXbRA1P33dLL
-	 GS3VttjnyItGcFv5APZqzvovgiH4GVlr0swYweQ4q793ahSBU+GpWwfzpEneT+kljW
-	 Si0WoIjaQN2lg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAEC738111D4;
-	Tue,  8 Apr 2025 09:50:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="TLNIO8NI"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ESiiW9LM+nOg1COvw8+IqrZlBUEJUPwPm3jfljatJPA=; b=TLNIO8NI/VPs2Uj48PZi4GSgXw
+	Af5qcZ9XMj/7wycoyyV+/OwM8V3e9RJEn0VmfAtyUsoD3oMCftyWSMt7rtzPVkn/iyM8lzxtzj5E3
+	myfwNRDcs2IKx/+G//t2x4LNRtiRy5NCZqbHk8KKBxYnvrGiMWm77SCD3WD8+sA+QYv+6YaDYxVsT
+	QnQ8ELbI970wp+9VdvQOa9uBFTA32nyggWOvXZNa/WaYymijdPD2ot5SvrvvU6Go2wepyQCBFtqQD
+	62+fx0KkCV/I3V7F9cROj5o53HIYA/IXkh8iVatWp1WCvHctV02C36gYR7CUYDB9K9mgrbVwx2n35
+	UxEy0IZA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54152)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1u25bp-00075n-1P;
+	Tue, 08 Apr 2025 10:51:09 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1u25bn-0001KC-1T;
+	Tue, 08 Apr 2025 10:51:07 +0100
+Date: Tue, 8 Apr 2025 10:51:07 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: dimitri.fedrau@liebherr.com
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Dimitri Fedrau <dima.fedrau@gmail.com>
+Subject: Re: [PATCH net-next v2 2/3] net: phy: Add helper for getting MAC
+ termination resistance
+Message-ID: <Z_Txi9sdQh2BF0bk@shell.armlinux.org.uk>
+References: <20250408-dp83822-mac-impedance-v2-0-fefeba4a9804@liebherr.com>
+ <20250408-dp83822-mac-impedance-v2-2-fefeba4a9804@liebherr.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/2] net: tls: explicitly disallow disconnect
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174410583280.1846628.16756253256143568898.git-patchwork-notify@kernel.org>
-Date: Tue, 08 Apr 2025 09:50:32 +0000
-References: <20250404180334.3224206-1-kuba@kernel.org>
-In-Reply-To: <20250404180334.3224206-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- borisp@nvidia.com, john.fastabend@gmail.com, sd@queasysnail.net,
- syzbot+b4cd76826045a1eb93c1@syzkaller.appspotmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250408-dp83822-mac-impedance-v2-2-fefeba4a9804@liebherr.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Fri,  4 Apr 2025 11:03:33 -0700 you wrote:
-> syzbot discovered that it can disconnect a TLS socket and then
-> run into all sort of unexpected corner cases. I have a vague
-> recollection of Eric pointing this out to us a long time ago.
-> Supporting disconnect is really hard, for one thing if offload
-> is enabled we'd need to wait for all packets to be _acked_.
-> Disconnect is not commonly used, disallow it.
+On Tue, Apr 08, 2025 at 09:45:33AM +0200, Dimitri Fedrau via B4 Relay wrote:
+> From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 > 
-> [...]
+> Add helper which returns the MAC termination resistance value. Modifying
+> the resistance to an appropriate value can reduce signal reflections and
+> therefore improve signal quality.
+> 
+> Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 
-Here is the summary with links:
-  - [net,1/2] net: tls: explicitly disallow disconnect
-    https://git.kernel.org/netdev/net/c/5071a1e606b3
-  - [net,2/2] selftests: tls: check that disconnect does nothing
-    https://git.kernel.org/netdev/net/c/a1328a671e1c
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-You are awesome, thank you!
+Thanks!
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
