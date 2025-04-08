@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E664A254845
-	for <netdev@vger.kernel.org>; Tue,  8 Apr 2025 20:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0442248B8
+	for <netdev@vger.kernel.org>; Tue,  8 Apr 2025 20:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744142411; cv=none; b=XJ1falVdj9Fs04CZvsPEy84x9bwmAz5ZwAg+mWMbbEH+lPHImU5WJQKSKyT4Vj34YL5uRPit+gaxyHRIKEjmDqdb1bj4NRCx14Jx7pCS9GFsAYF73zYomlHcJkUPopJsguhLAMCCm8NCBoT65tgrUK9F/J285IoRdQh3jhdb7oI=
+	t=1744142411; cv=none; b=tm6NCZhs2jS0QaKngZc1zMeYxKnTUi0O1a/PAcPoZj0ruHYgoff38FFH2rqHgN/BzCGdBibr3H6tR4KYtIjd7N+TmyJqSFZQGt+bUAddPc9BdwVRM4KRL/QZmZ4k3lqgTx/+Bd01+O+VfmserVas8ZOtXfj+8CDGBdPw5Lqe7gQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744142411; c=relaxed/simple;
-	bh=bI98lH6G0wD1RBqGxiGp5G2OYxzCRimyMFf9QAxCaIs=;
+	bh=Sug8dyIolpfe1jOcS2JBf9BP/HtpHhM+fhUNcwNVJcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPpk0womvEkQX3W0sWmpyFYKJD+sTw2rejY6oPxaGmkNpTgdz9bqoF4YvyA8TOJxpBdaMpwtmdx6XQ1XAuTTqzJkl2n61u5qgqmshjjA/s+0y1QG5Rj6onaxikuvtjK2qp0oJxVdhtLumKfjdBHyjffVOxNpRcy13eXsM85AtZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rqTJQ2X3; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=k1/iXklWw9o/E/6xpKvwOaHR4UchNhHXeQF+NaoCz197bWTc0P5oHJ0J2VGKtgCR4jqtFwfGdgbhrHjxBO0zYnBjMX7MZ1FqSftmAS/dQCRxpq60Eqyg30onntp3jvqGc0rl+J/+LCXrv1g4XRrNmSYO9NJ7+Zli47apwOJ1tfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ee8VsmxT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rqTJQ2X3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1E1C4CEE9;
-	Tue,  8 Apr 2025 20:00:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ee8VsmxT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C97C4CEF1;
+	Tue,  8 Apr 2025 20:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744142409;
-	bh=bI98lH6G0wD1RBqGxiGp5G2OYxzCRimyMFf9QAxCaIs=;
+	s=k20201202; t=1744142410;
+	bh=Sug8dyIolpfe1jOcS2JBf9BP/HtpHhM+fhUNcwNVJcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rqTJQ2X32CjdaqEjJA3+OKne/jjm969hWm3MMviykgQWzVyh61zxvDIIKPGgY0psc
-	 yxFfPulb2wFtMI3/3Y/tdjjmAQGwGlWHhSLBc5c80pGe3J7QwL6kSBA2N00qno1hxV
-	 HDFcbw+70Q9eK+UYiOB9HWf9VqLmU5PCmaame1gO7SwEVl2BlGSIbl47cT91/BJwEn
-	 DEwIyLI9jGCwzpzZPNyi0pLWG5dGTeXRXNO02wjCw9YKLtVwkKa/p302nNhgcbC0sS
-	 7+L9uQe7vNQKclU8Xy529fIzsXIdAEigaHvDp6lxMbMvgWBjaQpoaK79PTok95LlzI
-	 F3G5THAY64mDA==
+	b=Ee8VsmxTUd8FANIo+6EQFnW5PhpTHAataOvC+1mnid6UzIFYAAVMq/TGlvwa9XTe6
+	 LL/n3NFRWadS7lK9ukv9k79oOgi0rHspt0+zn+5aWBkD2ddQdpj19c9ct5paprEczY
+	 aT36jPdCg2eWSW/j5XOU4jeSTsiYigFmzVseDee68FM+FBMS9qAALD+sZhtzEAoXxa
+	 oFpK0+gJ1161mkTnqKJ5Dv00TJDo2bwozv+QaL/1ZMuF6tsFbAspmENKcaTSSt2+Lt
+	 KDpdYfYVxIvUHyBAtWq5glYAsfmkLxe4/mLACKZmKSlxn857YFvCJQI9MUrLB48kJY
+	 plsg4Eqe6aUJg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -38,9 +38,9 @@ Cc: netdev@vger.kernel.org,
 	kuniyu@amazon.com,
 	jdamato@fastly.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 4/8] netdev: don't hold rtnl_lock over nl queue info get when possible
-Date: Tue,  8 Apr 2025 12:59:51 -0700
-Message-ID: <20250408195956.412733-5-kuba@kernel.org>
+Subject: [PATCH net-next v2 6/8] netdev: depend on netdev->lock for xdp features
+Date: Tue,  8 Apr 2025 12:59:53 -0700
+Message-ID: <20250408195956.412733-7-kuba@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408195956.412733-1-kuba@kernel.org>
 References: <20250408195956.412733-1-kuba@kernel.org>
@@ -52,73 +52,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Netdev queue dump accesses: NAPI, memory providers, XSk pointers.
-All three are "ops protected" now, switch to the op compat locking.
-rtnl lock does not have to be taken for "ops locked" devices.
+Writes to XDP features are now protected by netdev->lock.
+Other things we report are based on ops which don't change
+once device has been registered. It is safe to stop taking
+rtnl_lock, and depend on netdev->lock instead.
 
 Reviewed-by: Joe Damato <jdamato@fastly.com>
 Acked-by: Stanislav Fomichev <sdf@fomichev.me>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- net/core/netdev-genl.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ net/core/netdev-genl.c | 26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
 diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index 5d7af50fe702..7ef9b0191936 100644
+index 7ef9b0191936..8c58261de969 100644
 --- a/net/core/netdev-genl.c
 +++ b/net/core/netdev-genl.c
-@@ -481,18 +481,15 @@ int netdev_nl_queue_get_doit(struct sk_buff *skb, struct genl_info *info)
+@@ -38,6 +38,8 @@ netdev_nl_dev_fill(struct net_device *netdev, struct sk_buff *rsp,
+ 	u64 xdp_rx_meta = 0;
+ 	void *hdr;
+ 
++	netdev_assert_locked(netdev); /* note: rtnl_lock may not be held! */
++
+ 	hdr = genlmsg_iput(rsp, info);
+ 	if (!hdr)
+ 		return -EMSGSIZE;
+@@ -122,15 +124,14 @@ int netdev_nl_dev_get_doit(struct sk_buff *skb, struct genl_info *info)
  	if (!rsp)
  		return -ENOMEM;
  
 -	rtnl_lock();
 -
--	netdev = netdev_get_by_index_lock(genl_info_net(info), ifindex);
-+	netdev = netdev_get_by_index_lock_ops_compat(genl_info_net(info),
-+						     ifindex);
- 	if (netdev) {
- 		err = netdev_nl_queue_fill(rsp, netdev, q_id, q_type, info);
--		netdev_unlock(netdev);
-+		netdev_unlock_ops_compat(netdev);
- 	} else {
+-	netdev = __dev_get_by_index(genl_info_net(info), ifindex);
+-	if (netdev)
+-		err = netdev_nl_dev_fill(netdev, rsp, info);
+-	else
++	netdev = netdev_get_by_index_lock(genl_info_net(info), ifindex);
++	if (!netdev) {
  		err = -ENODEV;
- 	}
++		goto err_free_msg;
++	}
  
 -	rtnl_unlock();
--
++	err = netdev_nl_dev_fill(netdev, rsp, info);
++	netdev_unlock(netdev);
+ 
  	if (err)
  		goto err_free_msg;
- 
-@@ -541,17 +538,17 @@ int netdev_nl_queue_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
- 	if (info->attrs[NETDEV_A_QUEUE_IFINDEX])
- 		ifindex = nla_get_u32(info->attrs[NETDEV_A_QUEUE_IFINDEX]);
+@@ -146,18 +147,15 @@ int netdev_nl_dev_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+ {
+ 	struct netdev_nl_dump_ctx *ctx = netdev_dump_ctx(cb);
+ 	struct net *net = sock_net(skb->sk);
+-	struct net_device *netdev;
+-	int err = 0;
++	int err;
  
 -	rtnl_lock();
- 	if (ifindex) {
--		netdev = netdev_get_by_index_lock(net, ifindex);
-+		netdev = netdev_get_by_index_lock_ops_compat(net, ifindex);
- 		if (netdev) {
- 			err = netdev_nl_queue_dump_one(netdev, skb, info, ctx);
--			netdev_unlock(netdev);
-+			netdev_unlock_ops_compat(netdev);
- 		} else {
- 			err = -ENODEV;
- 		}
- 	} else {
--		for_each_netdev_lock_scoped(net, netdev, ctx->ifindex) {
-+		for_each_netdev_lock_ops_compat_scoped(net, netdev,
-+						       ctx->ifindex) {
- 			err = netdev_nl_queue_dump_one(netdev, skb, info, ctx);
- 			if (err < 0)
- 				break;
-@@ -559,7 +556,6 @@ int netdev_nl_queue_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
- 			ctx->txq_idx = 0;
- 		}
+-	for_each_netdev_dump(net, netdev, ctx->ifindex) {
++	for_each_netdev_lock_scoped(net, netdev, ctx->ifindex) {
+ 		err = netdev_nl_dev_fill(netdev, skb, genl_info_dump(cb));
+ 		if (err < 0)
+-			break;
++			return err;
  	}
 -	rtnl_unlock();
  
- 	return err;
+-	return err;
++	return 0;
  }
+ 
+ static int
 -- 
 2.49.0
 
