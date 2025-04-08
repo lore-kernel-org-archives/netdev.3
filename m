@@ -1,35 +1,50 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6682594
-	for <netdev@vger.kernel.org>; Tue,  8 Apr 2025 08:19:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6E610E5;
+	Tue,  8 Apr 2025 08:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744100398; cv=none; b=W6kLOLmM+uFfhJJLbidyk/MmpocbcVDnPujae9Mn0h71GMX3I17OK2rVBs0J6OnEw4Ktqg8WeglWFHsLUV1q2V079wkfng8b4MLBJ9hIYPUPlCaH0CSDOD/q2orb0svMotrGXjp9w8bhxYEv49giJufnxqcqM/JAEsQJRlFT5Hc=
+	t=1744101587; cv=none; b=JrjHtCxYYptGLhQWqn20Ub2MSS4dtjzDFVJQiutvL3kJXuz9IYiRunaY/c4NFQC3zMINn16RNmNMcgSFwFnWP3to/DLB7tJ/ERQuLNRGjqa6Z+X51fy/XFXiVBfPvmEOeV6ihwjHZmNAoUaMXWUO4YW+QnGP5pdDLgESvF12IWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744100398; c=relaxed/simple;
-	bh=b5OAQmbLJ7VnJvfAaJBBQriQpTl5GUEPjznNGdJlXi8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=TALD5B8aMOPTJzEl1WubSBR+AqHVRrPePsORrLzouV6oOXpJI/LJHYuK3OtyJIAkuI6zIOIqr+WkJ9UQD/wxhV9WExU1JvA9ZxqXr4KP+oQIHtAN3uhKPBjiLEIhIe2zFLmT2ugnZe7S2pLzPqSjNpP6XhUGRmlA13960Rq+F28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VgKpIZ+V; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744101587; c=relaxed/simple;
+	bh=LSP5b+YQcQrSZ1ZT5Br4ItsP+yNHZF/MSCM72QEEbJk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nQQ/LNV5MtjnsGIffLHiFNoa7enlfqgUq58NfUQVBZRNoDkS5Y3uU8HthsGq8FRoUdUi3uKoyNWQkssB2XDBpQrnPkbe5pE2saGAoa31VGA7s2uZ70fQ45lkA1S3Hf2E2sH9h8zL5jH9SwjqNzXcqRnak6Q5sHa4T2Fv7GuXHvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=XxekwzBA; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VgKpIZ+V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E84C4CEE5;
-	Tue,  8 Apr 2025 08:19:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744100397;
-	bh=b5OAQmbLJ7VnJvfAaJBBQriQpTl5GUEPjznNGdJlXi8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=VgKpIZ+VBTl3pRt0iSNOcvBmaJS9fWAarXs+EC6BydvN+1jQOUFaPqFqMXYX35NWa
-	 9ljeOIqYXnVBO2LsF2HfLIpJ9G6a//3qGE0FGPtouafyKNRLJbSkX5nKNkn8zwjI5+
-	 eSbLYjfPL98QoMpvtn4aYCM5kcNHv8u79+0XOerY8GUzrqNBbv0XkpqWbLHVhuXUVF
-	 ajo05PmP3sKpmxD4V9lt6yrkHz66PUYA/84lpB9OMxYjPzWg6uDu/PMN0cGzDbG7Q9
-	 /SMaPesfGCSUzcB9mE7aq/2EiQAHsHi5PFjajq87aVl87H6+xcv0AosJYv4oX2Mc8Y
-	 L4/tHaoF38D6w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB10938111D4;
-	Tue,  8 Apr 2025 08:20:35 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="XxekwzBA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=LSP5b
+	+YQcQrSZ1ZT5Br4ItsP+yNHZF/MSCM72QEEbJk=; b=XxekwzBA8CSWe2P/AsH+I
+	VcX1avYR9vhMs33rNzh9pcy4zUJZcQC7hY778eUx+H+eZaBjSHXmIZTMhyA97G+B
+	ZfcGjIGeXt5mPDjFy1nbKCP07ng+R8hQ0y8tSnCbKL8Zd5ynBz3v+ECVr87zCVZu
+	tvJeJQPAhEaHLS/nC6M134=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDXz3ue4PRn2VDzEw--.53339S4;
+	Tue, 08 Apr 2025 16:38:55 +0800 (CST)
+From: lvxiafei <xiafei_xupt@163.com>
+To: ej@inai.de
+Cc: coreteam@netfilter.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	fw@strlen.de,
+	horms@kernel.org,
+	kadlec@netfilter.org,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvxiafei@sensetime.com,
+	netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	pabeni@redhat.com,
+	pablo@netfilter.org,
+	xiafei_xupt@163.com
+Subject: Re: [PATCH] netfilter: netns nf_conntrack: per-netns net.netfilter.nf_conntrack_max sysctl
+Date: Tue,  8 Apr 2025 16:38:53 +0800
+Message-Id: <20250408083853.59199-1-xiafei_xupt@163.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <66ror6q2-7pq2-os23-rq8r-8426ppr6pnps@vanv.qr>
+References: <66ror6q2-7pq2-os23-rq8r-8426ppr6pnps@vanv.qr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,39 +52,27 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] tipc: fix memory leak in tipc_link_xmit
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174410043476.1814045.4887693638217026540.git-patchwork-notify@kernel.org>
-Date: Tue, 08 Apr 2025 08:20:34 +0000
-References: <20250403092431.514063-1-tung.quang.nguyen@est.tech>
-In-Reply-To: <20250403092431.514063-1-tung.quang.nguyen@est.tech>
-To: Tung Nguyen <tung.quang.nguyen@est.tech>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, jmaloy@redhat.com
+X-CM-TRANSID:_____wDXz3ue4PRn2VDzEw--.53339S4
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Gr4DGw1kAr13Jr47uw47XFb_yoWfCrb_ZF
+	ZrXFnFkw1jvrs7Jry5ta1xZa93KFW8Ar1UA3yrtwsIkr1fXw15GFn2grW3ZF4UGr4ruF15
+	u3WSgw4kurWfujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7VUU9NVDUUUUU==
+X-CM-SenderInfo: x0ldwvplb031rw6rljoofrz/1tbiEBgpU2f03D9+pwAAsb
 
-Hello:
+On Mon, 7 Apr 2025 12:56:33 Jan Engelhardt <ej@inai.de> wrote:
+> By inheriting an implicit limit from the parent namespace somehow.
+> For example, even if you set the kernel.pid_max sysctl in the initial
+> namespace to something like 9999, subordinate namespace have
+> kernel.pid_max=4million again, but nevertheless are unable to use
+> more than 9999 PIDs. Or so documentation the documentation
+> from commit d385c8bceb14665e935419334aa3d3fac2f10456 tells me
+> (I did not try to create so many processes by myself).
+>
+> A similar logic would have to be applied for netfilter sysctls
+> if they are made modifiable in subordinate namespaces.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Thu,  3 Apr 2025 09:24:31 +0000 you wrote:
-> In case the backlog transmit queue for system-importance messages is overloaded,
-> tipc_link_xmit() returns -ENOBUFS but the skb list is not purged. This leads to
-> memory leak and failure when a skb is allocated.
-> 
-> This commit fixes this issue by purging the skb list before tipc_link_xmit()
-> returns.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] tipc: fix memory leak in tipc_link_xmit
-    https://git.kernel.org/netdev/net/c/69ae94725f4f
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+The patch is to use nf_conntrack_max to more flexibly limit the
+ct_count in different netns, which may be greater than the parent
+namespace, belonging to the global (ancestral) limit, and there
+is no implicit limit inherited from the parent namespace
 
