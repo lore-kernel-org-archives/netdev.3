@@ -1,112 +1,121 @@
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA4425F987
-	for <netdev@vger.kernel.org>; Tue,  8 Apr 2025 07:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB6725F97B
+	for <netdev@vger.kernel.org>; Tue,  8 Apr 2025 08:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744098927; cv=none; b=nhLdLL+dqr/NX+/9vnzITIxfI0XFQjFTzNk5JHNm7JKkc+aL4pF/tX4UPCU0//6JGpcWH4tgAZn++u2PF21kWfXgE+AEF1QIfarQ+4xWMwCFnJpqcuAHdh+JjHKvctauE/6rnosdRu2Ym7nvWUZqHCzOEvJF61iMQqegqbZ3X6w=
+	t=1744099535; cv=none; b=IDlpamD3RAU8CN7V+navdHIOMh12SjzfltaU6JePvW3457wTQ/lhCL1nDynSoCfKIq6hMG39/NE4dQL10xo9XIOqtEJ5Uo7PTAnXgJaN1l8eyYwaf5kQhDh7LvaEMWar1tCAhyOzwjEQ/xM2R9CUGP6+vU71mShqZOgAng+/k+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744098927; c=relaxed/simple;
-	bh=3zv+IUQBHZtpunbaw5YqTM1cCGLzo+qdCT3k8yc3Woo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=H14Cr4q1WZ51WPYepjlvGpNAl5JkZu0l1Dlsay/fdiaqCVqH45xM8vWu28mrnK0VdYdifbvSOV7yCgef5amAOVpcNCXsMZftHZUwRz65XqAbvMZHg0Y6b1vN0wOKVPDqjO6hGiCpUreSNxhSC0zl5bTJFllvWePgXU68FZ46OpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: izesmtpsz19t1744098849t627298
-X-QQ-Originating-IP: BxeaNbB3jwPVZdDrhP9TmTqIG/KhpaI87NnWGbmuDw0=
-Received: from wxdbg.localdomain.com ( [183.159.168.74])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 08 Apr 2025 15:54:00 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 6104756855174649655
-EX-QQ-RecipientCnt: 9
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org
-Cc: mengyuanlou@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net] net: txgbe: Update module description
-Date: Tue,  8 Apr 2025 16:19:58 +0800
-Message-Id: <20250408081958.289773-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.27.0
+	s=arc-20240116; t=1744099535; c=relaxed/simple;
+	bh=kl49m4jY94i6JweyNHtuHdyGKHC41ju8aE47HU8+Wx0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RUIIQ7+/nyXDt/aKicpu1O5tDfmTRMt8sfcNMtiZQYxdr2V8aYfKxJyiH5CICLI/OzMNG3Ulgah7ebprSlaj1Tn57HVRo7waYQWeKegsSSV5BEYFPPKtsCyaGdf5N0Ef7xH+hZ6zAJptr26c3jqo2/62AsjUefHTmlUIDrmsQIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hu+C8uR8; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hu+C8uR8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744099532;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LJWmN0ibsu4tQTyghfK7yZm3Bp44GAS3lqX86jPaL5U=;
+	b=hu+C8uR8JGuDO57NYpHKHCLHmztHMGF+q/8jzqhtRJoixXd9OCXAqgxRLedFEPvBlGcYPe
+	pu1NgKrSkc4Pt+XpbY756nrv1n3LUxPy/bEs5URXIAVdo3x0XpLjpLWhg0nIJR6PXbAPUB
+	FtDeDyFn6lWx62SiodYA/EJLgLgOed0=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-344-OrOCIKfXMHGC-hhVGGOB7g-1; Tue, 08 Apr 2025 04:05:30 -0400
+X-MC-Unique: OrOCIKfXMHGC-hhVGGOB7g-1
+X-Mimecast-MFC-AGG-ID: OrOCIKfXMHGC-hhVGGOB7g_1744099529
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-227ea16b03dso75297565ad.3
+        for <netdev@vger.kernel.org>; Tue, 08 Apr 2025 01:05:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744099529; x=1744704329;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LJWmN0ibsu4tQTyghfK7yZm3Bp44GAS3lqX86jPaL5U=;
+        b=pT0A3p2w58OrNDb0G7P8BOJq4E5Daiif89bRA1tdEJRBsmVmuZnskqHsQ5ni04TZn4
+         5CbSPexTIke1Ucj1vPhY3+KDrwEGgHqJQ/3CRg8Ip5TH/kWQLqIakwk+o6c/PvXiF6A8
+         QWJgR7TgKe8LLAJ6KMJmx6Nk2bmEDDZXDjMIKeFjxvprZ7C4nsZneMnEZaMYsbZjottJ
+         cinw+5nH9vkyQXNPvQJGWWfWuNnndafRrocRTjwHBfcmU+81sWGE1Pjoz7EM0xGw9MZq
+         X1q7/TlHkaomNjtFSlQpl1c/qtK8DH9yBcM6EfL9LblwQtoE4iK7aep8CgYPj1vMFoTi
+         tYkA==
+X-Forwarded-Encrypted: i=1; AJvYcCVsN0qfSpKUbBwyY12zyOQjb9rsc8XoevZ+TzApUROBGB6VQJPbDmBjLkht62YMsPNVRAEBZmw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVJz0eReTY2KB1wbK9TrjbCzWS08FbWEF1ohQSZEvXBy6Hy5Al
+	YuOj2Br+X8/aPb87q9RPTefgAZ2RMjQhKbEarAYPG91ELAyHZ5EgN2Ly3wmOjAtB2J0SEG+a7Eo
+	qmaVscplIda3TCv1hW20NXzqyqt5OswRAT76zTQdAOJU4f2zYt2WmtzvNattXB6xSR9txdjSoz4
+	I/HxCny0/J+5NJbfrwwMoidQtzL9AC
+X-Gm-Gg: ASbGncstyyVFm+Pbgh1KXjz5GjXp7AlXSKNLXd6df+qYj7CCkhOdeFuappSEMa5OI69
+	9EtHygIh8HASDk6iNu/AJR7w7FLX2ubCdH09KIGqnGApiJBLU7wtF21myQ2Opg846Rr2zp5NCZF
+	RQkD9HAKAyKrWJ2XdT6c+2+GicxQXs
+X-Received: by 2002:a17:902:ef46:b0:224:1acc:14db with SMTP id d9443c01a7336-22a8a065a92mr216812255ad.29.1744099528583;
+        Tue, 08 Apr 2025 01:05:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHxt6JXSAKwtzMhURmlwXUeHTpsebb4IGewHFs0bIb9p2YTTOJJynYQGNzCWOOkQfdVElwjfxkR47pQbpLQyHc=
+X-Received: by 2002:a17:902:ef46:b0:224:1acc:14db with SMTP id
+ d9443c01a7336-22a8a065a92mr216812095ad.29.1744099528326; Tue, 08 Apr 2025
+ 01:05:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: izesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: OGvgEoGelOUdgZ2B1WRiYkCtnFwwQLuCUE4AZijQT5MaZU0foNzOY/yv
-	LLFjVtmsB8OUmdJMVv872F0K8KntR3ZSH04QfJWBZobCgzoQByEijpE6V2unFIO8HJoMLxd
-	NnFBDhzHkbmqICBMIg/E3J6wUxZHJyaInFKX2K572jEgARCWY7By8hU7Vhn3rt3s0p6sO/j
-	3sD5h0wpA+OZdZlTleahHRX1TimJD4y/Urnhtk0EaDRlHnL03UA57SGD9Av9jYWFl1NEc/8
-	fXTA+xxxNDv+0cEShN20nzV0/f2mpZnQV+xYugwfR4naaXAyXnd6cgdPzN2zWOoZ+u+FMT0
-	hegRVZO/p6N1wAniXE03Deyg75nNqMaDxANVPXc/p1jBAycSmZEp3U7fsgql+DtyI2t6kfq
-	UMgB7nSjrHsHVrw3Vu4hfNa7E1VMUnZgzKRsboSgJAuEzETwAzSxyj8b8nCSY3m61olwPuZ
-	xsyMxZyxQ70gL4ub/9pGvuOUIH4kSMxCcX7pDXJa1JaYOLX22TJnjlifithEtAChf/NsLLH
-	Muc95igmBCU2K6dqLVtt5bId9gzHYTsi/aZqojuLiH7PZTtza3WxGsN99xTAkz8y6tieVF7
-	fJFY+1Noh9k0zfNYwcmfcmULl0FAkkptalE+p8wylwfWNJGH+KcUhGQHsAAStkp2iSHkcIu
-	K6yEJ2XGHoS5CpuWF71Ms+K1vGqp1ty848IpWotP7HUKoVqRglY2kS+VnAQ2jhgHHgdAaXa
-	18mg/1QrDksmxRFml9cTSgpoL49Tl/+EPGzZwmuf+jN6LyDETk6YrkvzRP1ax4oBu5EUl8E
-	xOkASVFu6UjRnaDtijB7mQUsKTSjNr4vdPdVIWLU+5fZ83t4Ux4CzjVCzp4d3ArAowxoVID
-	re5odV4+32lf3Qxej8W7mLmgH7ckaTzxbYSj8RQl4zBDcuPAGRiWZGkDw8t2suAGnUODfng
-	3zx/NFG9CHOucKyUewmbtdnAOSP8QA4IWNKzbTnvcdoQal8ErsMyQmhUIsHYtpuzyDezRWt
-	C4ARIosZhv2w9QQvW/ZjMgVcEMLA0=
-X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
-X-QQ-RECHKSPAM: 0
+References: <20250407-airoha-hw-rx-ratelimit-v1-1-917d092d56fd@kernel.org>
+In-Reply-To: <20250407-airoha-hw-rx-ratelimit-v1-1-917d092d56fd@kernel.org>
+From: Davide Caratti <dcaratti@redhat.com>
+Date: Tue, 8 Apr 2025 10:05:17 +0200
+X-Gm-Features: ATxdqUEwnkKiKF8g-PFRZFZFOa_vl1d4t-NasxHHhEMxF0J2LDMD5D2Hq6aL9t8
+Message-ID: <CAKa-r6tNa+Ltxb61g6E3h66pxW0XTDb76T6Wc2XMJCu8xuAvPg@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: airoha: Add matchall filter offload support
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Because of the addition of support for 40G/25G devices, update the module
-description.
+hello Lorenzo, thanks for this patch!
 
-Fixes: 2e5af6b2ae85 ("net: txgbe: Add basic support for new AML devices")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/Kconfig            | 4 ++--
- drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+On Mon, Apr 7, 2025 at 10:04=E2=80=AFPM Lorenzo Bianconi <lorenzo@kernel.or=
+g> wrote:
+>
+> Introduce tc matchall filter offload support in airoha_eth driver.
+> Matchall hw filter is used to implement hw rate policing via tc action
+> police:
+>
+> $tc qdisc add dev eth0 handle ffff: ingress
+> $tc filter add dev eth0 parent ffff: matchall action police \
+>  rate 100mbit burst 1000k drop
+>
+> Curennet implementation supports just drop/accept as exceed/notexceed
+> actions. Moreover, rate and burst are the only supported configuration
+> parameters.
+>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-diff --git a/drivers/net/ethernet/wangxun/Kconfig b/drivers/net/ethernet/wangxun/Kconfig
-index 47e3e8434b9e..2428f045d513 100644
---- a/drivers/net/ethernet/wangxun/Kconfig
-+++ b/drivers/net/ethernet/wangxun/Kconfig
-@@ -40,7 +40,7 @@ config NGBE
- 	  will be called ngbe.
- 
- config TXGBE
--	tristate "Wangxun(R) 10GbE PCI Express adapters support"
-+	tristate "Wangxun(R) 40/25/10GbE PCI Express adapters support"
- 	depends on PCI
- 	depends on COMMON_CLK
- 	depends on I2C_DESIGNWARE_PLATFORM
-@@ -55,7 +55,7 @@ config TXGBE
- 	select PCS_XPCS
- 	select LIBWX
- 	help
--	  This driver supports Wangxun(R) 10GbE PCI Express family of
-+	  This driver supports Wangxun(R) 40/25/10GbE PCI Express family of
- 	  adapters.
- 
- 	  More specific information on configuring the driver is in
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index a2e245e3b016..6a09728b9871 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -822,5 +822,5 @@ module_pci_driver(txgbe_driver);
- 
- MODULE_DEVICE_TABLE(pci, txgbe_pci_tbl);
- MODULE_AUTHOR("Beijing WangXun Technology Co., Ltd, <software@trustnetic.com>");
--MODULE_DESCRIPTION("WangXun(R) 10 Gigabit PCI Express Network Driver");
-+MODULE_DESCRIPTION("WangXun(R) 40/25/10 Gigabit PCI Express Network Driver");
- MODULE_LICENSE("GPL");
--- 
-2.27.0
+[...]
+
+> +
+> +       if (act->police.peakrate_bytes_ps || act->police.avrate ||
+> +           act->police.overhead) {
+> +               NL_SET_ERR_MSG_MOD(f->common.extack,
+> +                                  "peakrate/avrate/overhead not supporte=
+d");
+> +               return -EOPNOTSUPP;
+> +       }
+
+I think the driver should also validate the so-called "mtu policing"
+parameter. E.g, configuring it in the hardware if it has non-zero
+value in act->police, or alternatively reject offloading of police
+rules where act->police.mtu is non-zero (like done in the hunk above).
+WDYT?
+--=20
+davide
 
