@@ -1,87 +1,77 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDB3268685;
-	Tue,  8 Apr 2025 11:45:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A7F268C43
+	for <netdev@vger.kernel.org>; Tue,  8 Apr 2025 11:49:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112730; cv=none; b=UsL11N7umtPnhsSbTTFJLfLAte4JVv5JOEtYsyvs+nB+3Ra/RNwKjMy4BbDCbDakmODrzbpH9zaFVtl5XvevtffWYikjrVmeM79i/0Rr/ELu31FVfFgPhkKtgCratD6mfOdYrGdYnLrWent9xUgDYgtMlaeURkwfXmagHCmHctI=
+	t=1744112996; cv=none; b=lpFwyWyOQmEgoRhkOKgGONXmhDng7/6hab2MnZ83n1b1C73SZ3E/2BtBG49kvXhFnC6C8ozdCdbljzF8jwAQZX7QA7Ca1yHAApQlsYUm9NG4PTxn7nAqf++L6wMX0mMVxEMKdOYY+SDmUG6M96iVItIkKju+G50Q28EdcJpqHxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112730; c=relaxed/simple;
-	bh=UfAGAq1uM73HfrpCl5Vj+aGnQLcoqXUA1Vjstvd9R34=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n7gs6kT/HwZoTab7NO5xx7SvZEc/9PuLT9Sdt4Pm1pYCy1ONSy8kx7xxhL2cWF/cjwNdK3X8nB7Mzs+frc1j5CZz6tRBRnHWFLk9VjA24o6xk2Ix0SYILBcRYCXMl9aPnsGZLUm7YwRf4tBqQeOb8DjRlX51jr4o+qAVMUzkfNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Pm7SXfXd; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1744112996; c=relaxed/simple;
+	bh=xTwx/TB2S7O0m8g7C+71A8fWVg9FmQpnWuIIveb45Oo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=HNk2tXRfk9dR9cmVFR0DXbL0xZSEzYMy6H1Iv8jx7crT6tkwzY536DhsSr01Z+u1L1Kz98Fx5BCQYgJGVn4JFIeL6DzADlcHHqk7Q6CAE1Sb1bLu03zFST8NEGFrt7AEflQuzfUT4LLccRNnAxsoXIKYfUPy7nz5F1IYXAfpfEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W3e/n2TK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Pm7SXfXd"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B637F44264;
-	Tue,  8 Apr 2025 11:45:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1744112725;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t64EARht6TK5Jq+Wml7aUmb8e8pNkBosWFXWFTuYQv8=;
-	b=Pm7SXfXdOajDa3e15aaOh51BZPbAyj+UW/BW5B2Tn+E6UnRcN+I2TpFCv5X631TbWbDL8j
-	TI+dR53k0FNkxkneBEG2UHVNBxkgGfE/C+/72RtdKd4CmYVdqE+gHMqSKkHAr7iNO4b+yP
-	Gfm5MEUtuC8dHkhwf0Y5CAsZs+jbLOHUYoMAwWASg6XNhnEvXxl9SapB3ONzpcBkPJdYM3
-	vVfxZygEa1Jw2GyzxR0iBlJNygwNp8CIsNuB4MedBUmUpFl2CKUIxQdrB1qqLs7AxgJN4D
-	LZ/afSoUlCuaQt+MJ8x9zl8QX+MAXljA72YJe8fJIESc7TefgSBUiELr1labwA==
-Date: Tue, 8 Apr 2025 13:45:20 +0200
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Vladimir Oltean <olteanv@gmail.com>, Srinivas
- Kandagatla <srinivas.kandagatla@linaro.org>, Heiner Kallweit
- <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "Chester A.
- Unal" <chester.a.unal@arinc9.com>, Daniel Golle <daniel@makrotopia.org>,
- DENG Qingfang <dqfext@gmail.com>, Sean Wang <sean.wang@mediatek.com>, Simon
- Horman <horms@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, upstream@airoha.com
-Subject: Re: [net-next PATCH v14 06/16] net: mdio: regmap: prepare support
- for multiple valid addr
-Message-ID: <20250408134520.2fb42343@fedora.home>
-In-Reply-To: <20250408095139.51659-7-ansuelsmth@gmail.com>
-References: <20250408095139.51659-1-ansuelsmth@gmail.com>
-	<20250408095139.51659-7-ansuelsmth@gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W3e/n2TK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC85C4CEE5;
+	Tue,  8 Apr 2025 11:49:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744112996;
+	bh=xTwx/TB2S7O0m8g7C+71A8fWVg9FmQpnWuIIveb45Oo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=W3e/n2TKbm0uwO4hATWvN77A/yu1RPFAWriDZ8Acn3RSVNkasHIYQUbFi5lfChZb1
+	 Wnr0yz0+FWk8WmpbHhA8d3kWOjyXlLGAXzVl8K24eoOFAm8obo/FD49R/kiqBgCtFC
+	 ekcpf7Svwu8yv8Kq9GYmHcwH4zVrrkV/9IudedlkqpV0FvYHui+F8kewXU8v9+9oBp
+	 1q3wLEMOGBEX2teIG2gjvc9LJlSihzffcf9FbkbKP1/zuaObhhd7/LPPplwVZsRQu2
+	 IBfTq30MIMc45V3OZpJLGyUwSnpRuis1akx84qetcU0h7vCTiv+9XCztAsO0xgBZ8V
+	 tv1skjKkxbB8A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33CBA38111D4;
+	Tue,  8 Apr 2025 11:50:35 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdeftddtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeevledtvdevueehhfevhfelhfekveeftdfgiedufeffieeltddtgfefuefhueeknecukfhppedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjedphhgvlhhopehfvgguohhrrgdrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvdejpdhrtghpthhtoheprghnshhuvghlshhmthhhsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhgvvgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkr
- hiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrvgifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomh
-X-GND-Sasl: maxime.chevallier@bootlin.com
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: libwx: Fix the wrong Rx descriptor field
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174411303400.1891756.16097597715825250008.git-patchwork-notify@kernel.org>
+Date: Tue, 08 Apr 2025 11:50:34 +0000
+References: <20250407103322.273241-1-jiawenwu@trustnetic.com>
+In-Reply-To: <20250407103322.273241-1-jiawenwu@trustnetic.com>
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ mengyuanlou@net-swift.com, duanqiangwen@net-swift.com
 
-Hi Christian,
+Hello:
 
-On Tue,  8 Apr 2025 11:51:13 +0200
-Christian Marangi <ansuelsmth@gmail.com> wrote:
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-> Rework the valid_addr and convert it to a mask in preparation for mdio
-> regmap to support multiple valid addr in the case the regmap can support
-> it.
+On Mon,  7 Apr 2025 18:33:22 +0800 you wrote:
+> WX_RXD_IPV6EX was incorrectly defined in Rx ring descriptor. In fact, this
+> field stores the 802.1ad ID from which the packet was received. The wrong
+> definition caused the statistics rx_csum_offload_errors to fail to grow
+> when receiving the 802.1ad packet with incorrect checksum.
+> 
+> Fixes: ef4f3c19f912 ("net: wangxun: libwx add rx offload functions")
+> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> 
+> [...]
 
-Nice to see more users for this !
+Here is the summary with links:
+  - [net] net: libwx: Fix the wrong Rx descriptor field
+    https://git.kernel.org/netdev/net/c/13e7d7240a43
 
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-Maxime
