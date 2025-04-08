@@ -1,237 +1,86 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09B417E00E
-	for <netdev@vger.kernel.org>; Tue,  8 Apr 2025 13:53:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F94819995B;
+	Tue,  8 Apr 2025 14:01:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744120423; cv=none; b=hpn0xxg3rKSN/IBItSZR/cu0vGtVXbBLPAC8ztIQ0BuGQlctlohdE7ggH87Z2paitYKXwpBjX98v/zJlGgdXlpkTxe8QN+S3mZuLpv9lNViP6DtVqKPOpYhRMCX3mu/Gx5rw75BUvcqv6d/EwTne+2ivTAumOjuqdmaTjGE6G2I=
+	t=1744120884; cv=none; b=XPiEYCVhcymhPpVKUuAAoExDAsZQzsrv2IqLQQB+gSDCTCNWeAlnvPlA3grA79d3rRgLXQX5nrZTffQGrjOLK5IOXQo8XNZD3aBNtJakS+FxHiYSBLwKkmLXDvvCtdHTWBCFt6Hq6Fw0I2+v1xFqnW+ZHheLnyK5UM41yjIVw4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744120423; c=relaxed/simple;
-	bh=9kJQEmwg7BwiR45UOUurChqkBrRv10mRNt4JqfqNZyI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DnA5f/WsRiA9HFCa2Zi4x5Ce4a05OwjpN43dWjl13GFTI2mSgmm6uFbmwd8Nbfx4qND2nS+mSNvTEmrTlF+sEocQtIUYHKznri3opPtT/OBFkmg03JGFFzGrj59pobOckpvEVwN1/rCxXK2gMzv8qMyG2ohOhvzxzn2KApwD6Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UAKNwVwg; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UAKNwVwg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744120422; x=1775656422;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=9kJQEmwg7BwiR45UOUurChqkBrRv10mRNt4JqfqNZyI=;
-  b=UAKNwVwgWEzoetzJ55krm3llIpSkBTRcC8mOXcCQdJDABZj0RSEBWSWX
-   26GenPJpo2MLca+eLKq+oG/ceoZQRhDz2kvXjUs9+MmOwt3RVwLupxxwM
-   tY2JbgmP6p6D05VZeJp1cwXm33QZhaI7Yk1gTlYyFRWqVkOvrHs7bel8m
-   cO0iAS6JNLlOzqMghBdTVqgq0iq8Aj1PFSv21YiM5m2gac9Yap2edyjsq
-   IF/fLw+UHmtbnS05Eg+KhOs5o2MzKzyv4oGy47Z7lvbIANesHb9l33aq2
-   wHaQ8ulhbjIi/a/lNZj4sY7wY9XlCzWm4bbr8NRtMclZFP27MGfexbLvT
-   w==;
-X-CSE-ConnectionGUID: pQhDW1Z+T6Syf1tBoSbjXQ==
-X-CSE-MsgGUID: v0aE7raRQs+NKeB8sHvW2g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="45688322"
-X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; 
-   d="scan'208";a="45688322"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 06:53:41 -0700
-X-CSE-ConnectionGUID: ljPQh8IHTx6RKzXEqSY2HQ==
-X-CSE-MsgGUID: TVwXtcvzRaeSMZGj47v8TA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; 
-   d="scan'208";a="128796695"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by orviesa007.jf.intel.com with ESMTP; 08 Apr 2025 06:53:37 -0700
-Received: from vecna.igk.intel.com (vecna.igk.intel.com [10.123.220.17])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 958BA3432C;
-	Tue,  8 Apr 2025 14:53:35 +0100 (IST)
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-To: intel-wired-lan@lists.osuosl.org,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: netdev@vger.kernel.org,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Karol Kolacinski <karol.kolacinski@intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Sergey Temerkhanov <sergey.temerkhanov@intel.com>,
-	Michal Kubiak <michal.kubiak@intel.com>
-Subject: [PATCH iwl-net v3] ice: use DSN instead of PCI BDF for ice_adapter index
-Date: Tue,  8 Apr 2025 15:46:55 +0200
-Message-Id: <20250408134655.4287-1-przemyslaw.kitszel@intel.com>
-X-Mailer: git-send-email 2.39.3
+	s=arc-20240116; t=1744120884; c=relaxed/simple;
+	bh=BlQXhUm5QQ1RBHJaTTWH1U3t6ByEHH4f1QwLeQYAGbk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VqeL6V8QvfjAFLEhhbWrfSxt6NGmoWdAW4oYJZHZVlPy7yJrtK7efdLQ1o5thFNaqyDV/Y9q0sZuF5NgsxQKgm/BqN8wheEAga6txCY15wYVcMMrG/kWHzIUV7TN8rosBTjIs5m3GKqyoOpevKLPhDnZAp6gWJHzq91qZOeopWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: from fw by Chamillionaire.breakpoint.cc with local (Exim 4.92)
+	(envelope-from <fw@strlen.de>)
+	id 1u290Y-0002Nj-GD; Tue, 08 Apr 2025 15:28:54 +0200
+Date: Tue, 8 Apr 2025 15:28:54 +0200
+From: Florian Westphal <fw@strlen.de>
+To: lvxiafei <xiafei_xupt@163.com>
+Cc: fw@strlen.de, coreteam@netfilter.org, davem@davemloft.net,
+	edumazet@google.com, horms@kernel.org, kadlec@netfilter.org,
+	kuba@kernel.org, linux-kernel@vger.kernel.org,
+	lvxiafei@sensetime.com, netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org, pabeni@redhat.com,
+	pablo@netfilter.org
+Subject: Re: [PATCH V2] netfilter: netns nf_conntrack: per-netns
+ net.netfilter.nf_conntrack_max sysctl
+Message-ID: <20250408132854.GA5425@breakpoint.cc>
+References: <20250408095854.GB536@breakpoint.cc>
+ <20250408123908.3608-1-xiafei_xupt@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250408123908.3608-1-xiafei_xupt@163.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-Use Device Serial Number instead of PCI bus/device/function for
-index of struct ice_adapter.
-Functions on the same physical device should point to the very same
-ice_adapter instance.
+lvxiafei <xiafei_xupt@163.com> wrote:
+> This modification can make nf_conntrack_max support
+> the netns level to set the size of the connection
+> tracking table, and more flexibly limit the connection
+> tracking of each netns. For example, the initial user ns
+> has a default value (=max_factor*nf_conntrack_htable_size).
+> The nf_conntrack_max when netns 1 and netns 2 are created
+> is the same as the nf_conntrack_max in the initial user ns.
+> You can set it to netns 1 1k and netns 2 2k without
+> affecting each other.
 
-This is not only simplification, but also fixes things up when PF
-is passed to VM (and thus has a random BDF).
+Netns 2 can also set it to 2**31 and cause machine go OOM.
 
-Suggested-by: Jacob Keller <jacob.e.keller@intel.com>
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Suggested-by: Jiri Pirko <jiri@resnulli.us>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
----
-CC: Karol Kolacinski <karol.kolacinski@intel.com>
-CC: Grzegorz Nitka <grzegorz.nitka@intel.com>
-CC: Michal Schmidt <mschmidt@redhat.com>
-CC: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
-CC: Michal Kubiak <michal.kubiak@intel.com>
+> If you are worried that different netns may exceed the
+> initial user limit and memory limit when setting,
+> apply max = min(init_net->max, net->max), the value in
+> netns is not greater than init_net->max, and the new
+> maximum memory consumption <= the original maximum memory
+> consumption, which limits memory consumption to a certain
+> extent.
 
-v3:
- - Add fixes tag (Michal K)
- - add missing braces (lkp bot), turns out it's hard to purge C++ from your mind
- - (no changes in the collision handling on 32bit systems)
+That was one of the suggestions that I see how one could have
+tunable pernet variable without allowing netns2 go haywire.
 
-v2:
-https://lore.kernel.org/intel-wired-lan/20250407112005.85468-1-przemyslaw.kitszel@intel.com/
- - target to -net (Jiri)
- - mix both halves of u64 DSN on 32bit systems (Jiri)
- - (no changes in terms of fallbacks for pre-prod HW)
- - warn when there is DSN collision after reducing to 32bit
+> However, this will bring several problems:
+> 
+> 1. Do not allow nf_conntrack_max in other netns to be greater
+> than nf_conntrack_max of the initial user. For example, when
+> other netns carry north-south traffic, the actual number of
+> connection tracking is greater than that of the initial user.
 
-v1:
-https://lore.kernel.org/netdev/20250306211159.3697-2-przemyslaw.kitszel@intel.com
----
- drivers/net/ethernet/intel/ice/ice_adapter.h |  6 ++-
- drivers/net/ethernet/intel/ice/ice_adapter.c | 43 ++++++++------------
- 2 files changed, 20 insertions(+), 29 deletions(-)
+Sure.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.h b/drivers/net/ethernet/intel/ice/ice_adapter.h
-index e233225848b3..ac15c0d2bc1a 100644
---- a/drivers/net/ethernet/intel/ice/ice_adapter.h
-+++ b/drivers/net/ethernet/intel/ice/ice_adapter.h
-@@ -32,17 +32,19 @@ struct ice_port_list {
-  * @refcount: Reference count. struct ice_pf objects hold the references.
-  * @ctrl_pf: Control PF of the adapter
-  * @ports: Ports list
-+ * @device_serial_number: DSN cached for collision detection on 32bit systems
-  */
- struct ice_adapter {
- 	refcount_t refcount;
- 	/* For access to the GLTSYN_TIME register */
- 	spinlock_t ptp_gltsyn_time_lock;
- 
- 	struct ice_pf *ctrl_pf;
- 	struct ice_port_list ports;
-+	u64 device_serial_number;
- };
- 
--struct ice_adapter *ice_adapter_get(const struct pci_dev *pdev);
--void ice_adapter_put(const struct pci_dev *pdev);
-+struct ice_adapter *ice_adapter_get(struct pci_dev *pdev);
-+void ice_adapter_put(struct pci_dev *pdev);
- 
- #endif /* _ICE_ADAPTER_H */
-diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.c b/drivers/net/ethernet/intel/ice/ice_adapter.c
-index 01a08cfd0090..95a1ba04e610 100644
---- a/drivers/net/ethernet/intel/ice/ice_adapter.c
-+++ b/drivers/net/ethernet/intel/ice/ice_adapter.c
-@@ -1,7 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- // SPDX-FileCopyrightText: Copyright Red Hat
- 
--#include <linux/bitfield.h>
- #include <linux/cleanup.h>
- #include <linux/mutex.h>
- #include <linux/pci.h>
-@@ -14,29 +13,13 @@
- static DEFINE_XARRAY(ice_adapters);
- static DEFINE_MUTEX(ice_adapters_mutex);
- 
--/* PCI bus number is 8 bits. Slot is 5 bits. Domain can have the rest. */
--#define INDEX_FIELD_DOMAIN GENMASK(BITS_PER_LONG - 1, 13)
--#define INDEX_FIELD_DEV    GENMASK(31, 16)
--#define INDEX_FIELD_BUS    GENMASK(12, 5)
--#define INDEX_FIELD_SLOT   GENMASK(4, 0)
--
--static unsigned long ice_adapter_index(const struct pci_dev *pdev)
-+static unsigned long ice_adapter_index(u64 dsn)
- {
--	unsigned int domain = pci_domain_nr(pdev->bus);
--
--	WARN_ON(domain > FIELD_MAX(INDEX_FIELD_DOMAIN));
--
--	switch (pdev->device) {
--	case ICE_DEV_ID_E825C_BACKPLANE:
--	case ICE_DEV_ID_E825C_QSFP:
--	case ICE_DEV_ID_E825C_SFP:
--	case ICE_DEV_ID_E825C_SGMII:
--		return FIELD_PREP(INDEX_FIELD_DEV, pdev->device);
--	default:
--		return FIELD_PREP(INDEX_FIELD_DOMAIN, domain) |
--		       FIELD_PREP(INDEX_FIELD_BUS,    pdev->bus->number) |
--		       FIELD_PREP(INDEX_FIELD_SLOT,   PCI_SLOT(pdev->devfn));
--	}
-+#if BITS_PER_LONG == 64
-+	return dsn;
-+#else
-+	return (u32)dsn ^ (u32)(dsn >> 32);
-+#endif
- }
- 
- static struct ice_adapter *ice_adapter_new(void)
-@@ -77,25 +60,29 @@ static void ice_adapter_free(struct ice_adapter *adapter)
-  * Return:  Pointer to ice_adapter on success.
-  *          ERR_PTR() on error. -ENOMEM is the only possible error.
-  */
--struct ice_adapter *ice_adapter_get(const struct pci_dev *pdev)
-+struct ice_adapter *ice_adapter_get(struct pci_dev *pdev)
- {
--	unsigned long index = ice_adapter_index(pdev);
-+	u64 dsn = pci_get_dsn(pdev);
- 	struct ice_adapter *adapter;
-+	unsigned long index;
- 	int err;
- 
-+	index = ice_adapter_index(dsn);
- 	scoped_guard(mutex, &ice_adapters_mutex) {
- 		err = xa_insert(&ice_adapters, index, NULL, GFP_KERNEL);
- 		if (err == -EBUSY) {
- 			adapter = xa_load(&ice_adapters, index);
- 			refcount_inc(&adapter->refcount);
-+			WARN_ON_ONCE(adapter->device_serial_number != dsn);
- 			return adapter;
- 		}
- 		if (err)
- 			return ERR_PTR(err);
- 
- 		adapter = ice_adapter_new();
- 		if (!adapter)
- 			return ERR_PTR(-ENOMEM);
-+		adapter->device_serial_number = dsn;
- 		xa_store(&ice_adapters, index, adapter, GFP_KERNEL);
- 	}
- 	return adapter;
-@@ -110,11 +97,13 @@ struct ice_adapter *ice_adapter_get(const struct pci_dev *pdev)
-  *
-  * Context: Process, may sleep.
-  */
--void ice_adapter_put(const struct pci_dev *pdev)
-+void ice_adapter_put(struct pci_dev *pdev)
- {
--	unsigned long index = ice_adapter_index(pdev);
-+	u64 dsn = pci_get_dsn(pdev);
- 	struct ice_adapter *adapter;
-+	unsigned long index;
- 
-+	index = ice_adapter_index(dsn);
- 	scoped_guard(mutex, &ice_adapters_mutex) {
- 		adapter = xa_load(&ice_adapters, index);
- 		if (WARN_ON(!adapter))
--- 
-2.39.3
+> 2. If nf_conntrack_max of the initial user is increased, the
+> maximum memory consumption will inevitably increase by n copies
 
+How is that different to current state of affairs?
+
+> 3. If nf_conntrack_max of the initial user is reduced, will
+> the existing connections in other netns be affected?
+
+No, but new ones will be blocked until its below init_net limit again.
