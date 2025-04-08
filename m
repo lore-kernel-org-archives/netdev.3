@@ -1,205 +1,142 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A8B26561D
-	for <netdev@vger.kernel.org>; Tue,  8 Apr 2025 09:27:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A9A264F9F
+	for <netdev@vger.kernel.org>; Tue,  8 Apr 2025 09:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744104422; cv=none; b=aqLDy0RGIV9RIs8zU6eKPlf8De7EzODrkw3t4GJcdn3Y+sm0kCLQC1ClD7XBtC+ghLONo5376yW45pvv39mBG3umeRgbmeXt/jyyy2Y/vZtB3esu9mLtYLbWzhQ639vIKMRG9uvboCVTMlNoVQH/5AoFQ9rCO5wPI0A+fvpH3FY=
+	t=1744104542; cv=none; b=BUBzlpZnD2qkNl4lnwJGscC3MZqbYqwQHkzdYUOQJ4YhurDZ1GkFCg5GAEKM0odjtajMHQuBMxFG5/9l4YwUVn2Yxum/EHiz/6gFNIeAYDjVRs02mC/oNsVHyR82aB0EpUU6cTWuW1HddGj75VfWUcFpWq2gFDlfzHZNv8foInc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744104422; c=relaxed/simple;
-	bh=dsXVE/P3ksamdr9lbNLawroyXEXQ82KK9ihSJD9xwBI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=kKscWDatTIoqAK7QtdrnOPZnNZyGdmyNoO4w8q+HZC6OqokDxfOsYXCh3GtS2juSfmXAcz0u0Nh0IG4y/Hd/HhwyLX/CjdDr655UeYeGfOSGNXwjwdTk468dqvYrF4C/MJ/feWVYoYHwrM2gWKeCL5MKCBuqOSv+yOFXTWIh2I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IPUJPrmn; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1744104542; c=relaxed/simple;
+	bh=6GXjoR9+j3K5oqC5DbXewEtoWag0AaWHJyjmg134Js8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZU+K9HWGH1sujrdxpEeAyg/FajzIJJT/U2nhjkCrUy7/2d7LSc6Qlx0Fp7+3vbc2S9d0J3gF47mxzu0ElK29F9zKfBGuPNnGYYDYUOYXbzihkP14LboUMJU4LR0D5grFVy9l3P4EYVCOHk2wUHpGSuKUUELGkABdDXnQGtyp0Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AjFf/ewd; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IPUJPrmn"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-548409cd2a8so6323944e87.3
-        for <netdev@vger.kernel.org>; Tue, 08 Apr 2025 02:27:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744104419; x=1744709219; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qo02R4WgRsXISq9TxS5rUrIYyAJDxJLE4WNWVwbz01s=;
-        b=IPUJPrmn/b0sRsLfmVfRvD0bi1lb2sNaLRhl4Vf9OdzWI4MeYxtrwGKdy5d6w3vn2e
-         yJyeievz6Sq5GUFwRSs57DnmjRaLZtjFjEIjfRcVN3YfFRSH8PIIftnNY9ctCvqMQnm3
-         ueheSHDjyv0EgABATUahtwW4fuXwGGPCwst4hSE6flMVC49uLzex9/x11U8vOL+UNRMX
-         vLy40wxq+sSwjM237/2OmRQkTXn+B+gUnznqVWtIDMdN61ARobs9RcbnoaQ9NnM59Tii
-         Fh5ID8lB8YwxHV3BsQ/9VqTnCho1kRzHpd7k15alrSGtnMKbctss1aPwBg8mUT7yo3Y6
-         me9A==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AjFf/ewd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744104539;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5kFJkKUSX4bPqKPH1LRnxjH0+XkR8hOBduchqaJy8g8=;
+	b=AjFf/ewdlHHT0pmbgyMqtX2TkSZVxkm1qzBrWkeTmYiNcYF0gD0pvOp3tbR8L0mDkUbFn4
+	3R4HtoMxPzpNSkRWByoOgVivYK8rbSZNgf7CMPFFTbyywp59JScdM1fFBW6quxCjjg/YWc
+	H2HQqTs3Ctwhc38C4pdqBuYg8QTMNAk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-480-DRELgfFoO3GWgMb9qvkEIg-1; Tue, 08 Apr 2025 05:28:58 -0400
+X-MC-Unique: DRELgfFoO3GWgMb9qvkEIg-1
+X-Mimecast-MFC-AGG-ID: DRELgfFoO3GWgMb9qvkEIg_1744104537
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43e9b0fd00cso26565215e9.0
+        for <netdev@vger.kernel.org>; Tue, 08 Apr 2025 02:28:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744104419; x=1744709219;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Qo02R4WgRsXISq9TxS5rUrIYyAJDxJLE4WNWVwbz01s=;
-        b=ff7Dld/s0qYzQ1Kwg4zXDDSSvnXSUvfaYac+/2BGuGh2sRzYBB4YXSztgtB8LLXiL7
-         OgGEvGyKx26pdZX6kdQa/64U/dML/uEyJ9EgsYyFx1hp+TylvWdOfWmH7XrfaGKJJewL
-         2kh6aHf0fdvMHe5n3Ws/PdC/c6AdCJxtMtsAfuTZfxaePuPqp7dJfra9sURviDa/KMqI
-         0xIZ23elccg3ScWBrc/Y9rGlc8Uc+8Q/ucFJ4aMXSipbGKWMquWW8L40G7EzbMJDCGcQ
-         QqqSxYM7EexcEic1o0VXdgcAw9jGaVXUPh76v7+mHBIDpqC9mE9nob0aMNNgdoTMNNrz
-         DE2g==
-X-Gm-Message-State: AOJu0YwuGUc9M0d1ToALbhM7AYNcJ8O7w1QAXLpvzDSt8gHwk68l5tcl
-	EaAVL5zaQ4LpNqCoUCtV6Qvg2RB+9+4IzECx+hI2OIR8yYKjNIghIB+9HmwLTsQ=
-X-Gm-Gg: ASbGnctKza31Dggn3ZJa7iRdsSUTZK7IVIyHQQyL6RHsJWt87VKUnCMHoO3ytgzXBDC
-	dh5iP3ab34JvFRYfG/j9XGNUoR8Pxc/8kCGhWmHEQUxSo5K/zZ5hyQdaPApbFgj6gzTxNGOQXx6
-	2GkybKGwQn2jbbdqFDAfBRITfIJbreM+7SnZUSqZSzFhrR9Vwn2dtOUGZGJRWOixHvKd3XhrJcu
-	GEgyCdk6iQ9AMbIkYZ3ye8AYP6jfwtpzMhUMxNjC5pR0yq4EdyO2cV0SQMlkxg3IG8zA6wIZoTl
-	/9G+Hx2LQytVfo4ARiHbkKSuK/HtmT7G7Zdhv2kkTcljbCm9XdIWERY=
-X-Google-Smtp-Source: AGHT+IHmEQ8w1c6W5W4fDQsU0nArOA4MbcNJLSwg7SGZjHM0afgA1GwW0LHyT1Xr8qLQzPF4q1qE6Q==
-X-Received: by 2002:a05:6512:1189:b0:545:e2e:8425 with SMTP id 2adb3069b0e04-54c227dc7ecmr3981606e87.39.1744104418533;
-        Tue, 08 Apr 2025 02:26:58 -0700 (PDT)
-Received: from [192.168.1.140] ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54c1e672e7csm1469926e87.256.2025.04.08.02.26.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Apr 2025 02:26:58 -0700 (PDT)
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 08 Apr 2025 11:26:58 +0200
-Subject: [PATCH] net: ethernet: cortina: Use TOE/TSO on all TCP
+        d=1e100.net; s=20230601; t=1744104537; x=1744709337;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5kFJkKUSX4bPqKPH1LRnxjH0+XkR8hOBduchqaJy8g8=;
+        b=MgNn0D5ocSUbFqDNx+uTAuv7Ii9OZf80lDY1apeU8e666FxCnYxUUxIUmXaNX388Or
+         eX99SrgjZG4eyMdgHHqfjCsLuYS1YJGdpu7c1G43S3Bl8YWEBaQrs+INtFDPNLokf1k0
+         izvmagB3UMvoYN5Po5WhyLMmG72up1I10uB25Ny6UDB+WY/VnCa//kt1gyiWhajxm2Fw
+         TSH1yzjppym4M/8F7NAVXUckD+rGnUvCr+SIAX6t5K+4W9em3fc+tuphteipDAeBY20/
+         EXSQLRn1sGdoT94QhD+Ffw6xF8Vu1jLejivSsUfFsLU27wyR07QQV+6p6+4eLxLmnVLt
+         w++w==
+X-Forwarded-Encrypted: i=1; AJvYcCUXrtWaiNldPUcuyJbLmFLI1tii+4zX3j04KmVMwHUUsC4No5uYFHxKJ2ICb4ggbOxij1jPkHw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvIodf+sYEdGuMlRG/NaVOu1w6h0iaSnkwXeo/5YWgY17aG1ez
+	hapGzpVxWkyoOxfr3e86Lbq27rGItQ/7q50TpPOdlHHSPYkb/zZ6+J2tqVKEJW4wv0APyjp4XVR
+	3g8UP8vAlMzfBTK/GM5TEzeaTe90rTu0h1VzMQy/UBSCyDVgCBd/psg==
+X-Gm-Gg: ASbGnct324Ct8cU98FvtHIeQegdeeJXBBuz4XY3Ok3PT9b6/mHXzwqTuOYBClSngaCD
+	l/XFeS4IiA5xvxlpUVojaPD7Y3SBOkru3kjovM3R8oYee7NZaCPbgsivpTb5hA7di4+/OZBmK6T
+	oV4jGV9RThS3ch+P+bq/Jmyz4kcUZjonYB7bIfh4v+prISz0UxUcTXLQIvpCln/aJY/1HOz1KXG
+	Q5wT7okF0RWN35LXx42yk6AlJABlvj1Pd6gUyKGek7jXtdQuPJtg2YX27EwLXWVJpGZ+xzyPjN/
+	h10rLqLbbOs7vYo5WQEtsUKGtABoZLp1FYXYuUA394Y=
+X-Received: by 2002:a05:600c:4fcf:b0:439:8878:5029 with SMTP id 5b1f17b1804b1-43f0e559b59mr17275505e9.2.1744104537136;
+        Tue, 08 Apr 2025 02:28:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGhpOS2RXvhgff3wksFzuaqSdXSfMzYI4OqpbYjwZCmgj2nkzJ65yFcKEppTsA1r/gQVzTICQ==
+X-Received: by 2002:a05:600c:4fcf:b0:439:8878:5029 with SMTP id 5b1f17b1804b1-43f0e559b59mr17275315e9.2.1744104536739;
+        Tue, 08 Apr 2025 02:28:56 -0700 (PDT)
+Received: from [192.168.88.253] (146-241-84-24.dyn.eolo.it. [146.241.84.24])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec1660eb3sm159792645e9.11.2025.04.08.02.28.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Apr 2025 02:28:56 -0700 (PDT)
+Message-ID: <1b78c63b-7c07-4d25-8785-bfb0e28c71ad@redhat.com>
+Date: Tue, 8 Apr 2025 11:28:54 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250408-gemini-ethernet-tso-always-v1-1-e669f932359c@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAOHr9GcC/x3MTQqDMBAG0KvIrDsQY1rbXkVcBPuZDGgsmdAfx
- Ls3dPk2bydFFijdm50yXqKypYr21NAUfQpgeVSTNdaZi3EcsEoSRonICYWLbuyXt/8q33p7bq+
- +n6fOUQ2eGbN8/vkwHscPkHo9bGwAAAA=
-X-Change-ID: 20240604-gemini-ethernet-tso-always-972518a7fc34
-To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>
-X-Mailer: b4 0.14.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] virtio-net: disable delayed refill when pausing rx
+To: Jason Wang <jasowang@redhat.com>,
+ Bui Quang Minh <minhquangbui99@gmail.com>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ virtualization@lists.linux.dev
+References: <20250404093903.37416-1-minhquangbui99@gmail.com>
+ <1743987836.9938157-1-xuanzhuo@linux.alibaba.com>
+ <30419bd6-13b1-4426-9f93-b38b66ef7c3a@gmail.com>
+ <CACGkMEs7O7D5sztwJVn45c+1pap20Oi5f=02Sy_qxFjbeHuYiQ@mail.gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CACGkMEs7O7D5sztwJVn45c+1pap20Oi5f=02Sy_qxFjbeHuYiQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-It is desireable to push the hardware accelerator to also
-process non-segmented TCP frames: we pass the skb->len
-to the "TOE/TSO" offloader and it will handle them.
+On 4/8/25 9:34 AM, Jason Wang wrote:
+> On Mon, Apr 7, 2025 at 10:27 AM Bui Quang Minh <minhquangbui99@gmail.com> wrote:
+>> On 4/7/25 08:03, Xuan Zhuo wrote:
+>>> On Fri,  4 Apr 2025 16:39:03 +0700, Bui Quang Minh <minhquangbui99@gmail.com> wrote:
+>>>> When pausing rx (e.g. set up xdp, xsk pool, rx resize), we call
+>>>> napi_disable() on the receive queue's napi. In delayed refill_work, it
+>>>> also calls napi_disable() on the receive queue's napi. This can leads to
+>>>> deadlock when napi_disable() is called on an already disabled napi. This
+>>>> scenario can be reproducible by binding a XDP socket to virtio-net
+>>>> interface without setting up the fill ring. As a result, try_fill_recv
+>>>> will fail until the fill ring is set up and refill_work is scheduled.
+>>>
+>>> So, what is the problem? The refill_work is waiting? As I know, that thread
+>>> will sleep some time, so the cpu can do other work.
+>>
+>> When napi_disable is called on an already disabled napi, it will sleep
+>> in napi_disable_locked while still holding the netdev_lock. As a result,
+>> later napi_enable gets stuck too as it cannot acquire the netdev_lock.
+>> This leads to refill_work and the pause-then-resume tx are stuck altogether.
+> 
+> This needs to be added to the chagelog. And it looks like this is a fix for
+> 
+> commit 413f0271f3966e0c73d4937963f19335af19e628
+> Author: Jakub Kicinski <kuba@kernel.org>
+> Date:   Tue Jan 14 19:53:14 2025 -0800
+> 
+>     net: protect NAPI enablement with netdev_lock()
+> 
+> ?
+> 
+> I wonder if it's simpler to just hold the netdev lock in resize or xsk
+> binding instead of this.
 
-Without this quirk the driver becomes unstable and lock
-up and and crash.
+Setting:
 
-I do not know exactly why, but it is probably due to the
-TOE (TCP offload engine) feature that is coupled with the
-segmentation feature - it is not possible to turn one
-part off and not the other, either both TOE and TSO are
-active, or neither of them.
+	dev->request_ops_lock = true;
 
-Not having the TOE part active seems detrimental, as if
-that hardware feature is not really supposed to be turned
-off.
+in virtnet_probe() before calling register_netdevice() should achieve
+the above. Could you please have a try?
 
-The datasheet says:
+Thanks,
 
-  "Based on packet parsing and TCP connection/NAT table
-   lookup results, the NetEngine puts the packets
-   belonging to the same TCP connection to the same queue
-   for the software to process. The NetEngine puts
-   incoming packets to the buffer or series of buffers
-   for a jumbo packet. With this hardware acceleration,
-   IP/TCP header parsing, checksum validation and
-   connection lookup are offloaded from the software
-   processing."
-
-After numerous tests with the hardware locking up after
-something between minutes and hours depending on load
-using iperf3 I have concluded this is necessary to stabilize
-the hardware.
-
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/net/ethernet/cortina/gemini.c | 37 +++++++++++++++++++++++++++--------
- 1 file changed, 29 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 517a15904fb08536251616fc2ba9b4fca3da3592..6a2004bbe87f9362645845ea09aaf3f7b82d1f13 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1144,6 +1144,7 @@ static int gmac_map_tx_bufs(struct net_device *netdev, struct sk_buff *skb,
- 	struct gmac_txdesc *txd;
- 	skb_frag_t *skb_frag;
- 	dma_addr_t mapping;
-+	bool tcp = false;
- 	void *buffer;
- 	u16 mss;
- 	int ret;
-@@ -1151,6 +1152,13 @@ static int gmac_map_tx_bufs(struct net_device *netdev, struct sk_buff *skb,
- 	word1 = skb->len;
- 	word3 = SOF_BIT;
- 
-+	/* Determine if we are doing TCP */
-+	if (skb->protocol == htons(ETH_P_IP))
-+		tcp = (ip_hdr(skb)->protocol == IPPROTO_TCP);
-+	else
-+		/* IPv6 */
-+		tcp = (ipv6_hdr(skb)->nexthdr == IPPROTO_TCP);
-+
- 	mss = skb_shinfo(skb)->gso_size;
- 	if (mss) {
- 		/* This means we are dealing with TCP and skb->len is the
-@@ -1163,8 +1171,26 @@ static int gmac_map_tx_bufs(struct net_device *netdev, struct sk_buff *skb,
- 			   mss, skb->len);
- 		word1 |= TSS_MTU_ENABLE_BIT;
- 		word3 |= mss;
-+	} else if (tcp) {
-+		/* Even if we are not using TSO, use the hardware offloader
-+		 * for transferring the TCP frame: this hardware has partial
-+		 * TCP awareness (called TOE - TCP Offload Engine) and will
-+		 * according to the datasheet put packets belonging to the
-+		 * same TCP connection in the same queue for the TOE/TSO
-+		 * engine to process. The engine will deal with chopping
-+		 * up frames that exceed ETH_DATA_LEN which the
-+		 * checksumming engine cannot handle (see below) into
-+		 * manageable chunks. It flawlessly deals with quite big
-+		 * frames and frames containing custom DSA EtherTypes.
-+		 */
-+		mss = netdev->mtu + skb_tcp_all_headers(skb);
-+		mss = min(mss, skb->len);
-+		netdev_dbg(netdev, "TOE/TSO len %04x mtu %04x mss %04x\n",
-+			   skb->len, netdev->mtu, mss);
-+		word1 |= TSS_MTU_ENABLE_BIT;
-+		word3 |= mss;
- 	} else if (skb->len >= ETH_FRAME_LEN) {
--		/* Hardware offloaded checksumming isn't working on frames
-+		/* Hardware offloaded checksumming isn't working on non-TCP frames
- 		 * bigger than 1514 bytes. A hypothesis about this is that the
- 		 * checksum buffer is only 1518 bytes, so when the frames get
- 		 * bigger they get truncated, or the last few bytes get
-@@ -1181,21 +1207,16 @@ static int gmac_map_tx_bufs(struct net_device *netdev, struct sk_buff *skb,
- 	}
- 
- 	if (skb->ip_summed == CHECKSUM_PARTIAL) {
--		int tcp = 0;
--
- 		/* We do not switch off the checksumming on non TCP/UDP
- 		 * frames: as is shown from tests, the checksumming engine
- 		 * is smart enough to see that a frame is not actually TCP
- 		 * or UDP and then just pass it through without any changes
- 		 * to the frame.
- 		 */
--		if (skb->protocol == htons(ETH_P_IP)) {
-+		if (skb->protocol == htons(ETH_P_IP))
- 			word1 |= TSS_IP_CHKSUM_BIT;
--			tcp = ip_hdr(skb)->protocol == IPPROTO_TCP;
--		} else { /* IPv6 */
-+		else
- 			word1 |= TSS_IPV6_ENABLE_BIT;
--			tcp = ipv6_hdr(skb)->nexthdr == IPPROTO_TCP;
--		}
- 
- 		word1 |= tcp ? TSS_TCP_CHKSUM_BIT : TSS_UDP_CHKSUM_BIT;
- 	}
-
----
-base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
-change-id: 20240604-gemini-ethernet-tso-always-972518a7fc34
-
-Best regards,
--- 
-Linus Walleij <linus.walleij@linaro.org>
+Paolo
 
