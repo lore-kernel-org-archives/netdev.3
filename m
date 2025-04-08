@@ -1,125 +1,138 @@
-Received: from plesk.hostmyservers.fr (plesk.hostmyservers.fr [45.145.164.37])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9402A23BD0E;
-	Tue,  8 Apr 2025 15:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.164.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70ECC22D7AE;
+	Tue,  8 Apr 2025 15:56:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744127731; cv=none; b=Dvg/wegI4NZ60OnFsasi9nowm9AygfQfSOkOHVin+ekp1Sd42SErR+C8P9ZNpDFlL49PVxh7gdJTZ7fFrMo9zwBpjxpJXMAIXygkHLDx4Kq07iFCUSSPkTuCkVCmXufj5XNDW1+wlOpu+/Dhe1rDbQ9THxoAGTMxaS2J09mdqkc=
+	t=1744127802; cv=none; b=cW4pkVN3boZRfco55QWvAA1gm0KQEXgW6Qa+OAwMNfZHZOTiOSyXZQ/kThCCRWFWnKznYRt8ElY+//BCeli7QCkZaUhSnLGi9Cs9lhXTtT198Zjq4AfkhnF2+uGCQJuCUuiyyMcRGstMaqt4q09xP3PKWyCEoMt00kaj/ocigWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744127731; c=relaxed/simple;
-	bh=J7epX/UdilumfA3U27hHk3T8ih71De8kfSzGxe+PO3k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=my9rGBJh+hddFL95KgkTWLYFniJ7uU4YrJyxyFObptzPsqKycaEf9GmWHsegs+TUk+HhoHZFDlaJn5dcdNg0i4jYfMDhv2I1WzsL1jvbpLovVBF2J6T7DQWvj/gq5vlhrkLez2Zaltrlc/tAbQGR5Jhz/V/xCj261T/qtPVyYrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com; spf=pass smtp.mailfrom=arnaud-lcm.com; arc=none smtp.client-ip=45.145.164.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arnaud-lcm.com
-Received: from [127.0.1.1] (unknown [IPv6:2a01:e0a:3e8:c0d0:9059:1ccf:a15c:f330])
-	by plesk.hostmyservers.fr (Postfix) with ESMTPSA id A2C0C371F23;
-	Tue,  8 Apr 2025 15:55:21 +0000 (UTC)
-Authentication-Results: Plesk;
-        spf=pass (sender IP is 2a01:e0a:3e8:c0d0:9059:1ccf:a15c:f330) smtp.mailfrom=contact@arnaud-lcm.com smtp.helo=[127.0.1.1]
-Received-SPF: pass (Plesk: connection is authenticated)
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
-Date: Tue, 08 Apr 2025 17:55:08 +0200
-Subject: [PATCH v2] net: ppp: Add bound checking for skb d on
- ppp_sync_txmung
+	s=arc-20240116; t=1744127802; c=relaxed/simple;
+	bh=NuCi+nDF9crUQoMi5wM+LePlLWUwiPgvZOlIzO5vlCc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZI2nax/q/cmyVrbOvIjSoFtqedWzivThEYi5+yZPlyoeuWHlZsmUOcpW2mKWrfoNec9cOSyQ17hDDxEPpaT5Xzaqp44g8w1TQRaKEQ4r/OGXJZkuawfS1TzCrPg65tIJXOLtsvGws2AihFOFt6bI/eH8gE/M9ClTf23PlFNnrXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xonx/cjf; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xonx/cjf"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2295d78b45cso76244375ad.0;
+        Tue, 08 Apr 2025 08:56:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744127800; x=1744732600; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=affzJlfeuyLH/afrS0PgLg2pJtDzPDL4GjLq78Ev2zs=;
+        b=Xonx/cjfJj77hfmjxpdNTTxPi6OOYU3xr1OO4ToV5MhpnhhrvsYpNm3ZFZ0LGTQ2c1
+         jfCw71L1ZqgB8YHcrfme71aal2dMGpJyyrzVmUE1r+RoqjemKA4yv3TdVIvqJ3ACBcIJ
+         SQSvL2250anGyhBCT/UXqVGWSbaP8vvKsph2gUVMiJwskxyF3nt2VE5x0MJrR/eM7e81
+         CW3J8h5qCP6F88OLwJb5jhIRYsZPnqy+eYdtUvB8TbGn+d9uLXpOsawT4Hv+IHMaSiNt
+         047i12bRtHOfpg2+zS+uRNgnukptZBEu/3caZX1rBxe5IbSEu7hs1rJVksORE1hJpFjc
+         nkEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744127800; x=1744732600;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=affzJlfeuyLH/afrS0PgLg2pJtDzPDL4GjLq78Ev2zs=;
+        b=ARbkrP77+AtA3+zOCvgkbonRuZ5/SYqBvirbUNhqvHRnFM9i0pjTXeHwEbTGp3mYNv
+         wt92Y+STnaE9i1a83ud0oYAVkepoXGYq3cE8gNK3CYArvYeyBJ52KOmSsGpoKUerS9ee
+         Vy3zeuvrGzVos4ySlF0OUXnkCGJ+bRSO1RWyqFFm+2FWRHrsIDe27zPYGo8ITBk0+3bR
+         k4LDtJ095lrRK1oOriaLnl8iyTWPeBzoddx5FXwvXzEQX2EnZ2ed+39RvTdAax0+Q4kb
+         84bpjPcVNMaCvufL0O5DRgT3A8GKdgdrBT5+O+lyiOhGM3bnrM9C4afOeqLat4UfB9cC
+         EYNA==
+X-Forwarded-Encrypted: i=1; AJvYcCVopc7wfXawUki8BBIu7VvN+X03CllL7Ox93754viRyqQnTbeim+fQtWBS8bI9VnztvE5WSN4tY@vger.kernel.org, AJvYcCWr+tuUkN8oWsSIfW2lK6ZT4R+jnf29EFf153FSzjP4XvuUdy5ISNzWEkA5HPqNcoYF7CaC0H8jevS6uio=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWWNICuBr5CAkWjk2TGv5tSotSM9VE92hA/E8nsntBINhXHVd6
+	OZGIdTXLZMB0mg6R2olTbmhIyyn9Ur3lQcxTz0Btn8KDtmEWem8=
+X-Gm-Gg: ASbGncuI8737nwIq4iU1In56HPRpP46Tyl+TNDPBvOAckamWOzeVRZglhVL8xfSRriu
+	3LMwOWv+WIvg90xmSwR1nQOShz7SDS27uWTyFA3+IobBeujwHpxBohCt7MpRntcscMzM00X/Xxy
+	Tq0prACpEB47XbjLCOtSh3bpmyfjQqDs+gQ2kJ62/XKo9rl9swy+jM5/hQe/m75e5RR0MOmeMSX
+	nQfjlk4KjAYpKOmWoyzl0GLmDBrdRpvFMLZaoWAVCKVdJHY//ILAr0FUFtEdgR5I6YIBZd3HUEa
+	VEQrDkvRf3n/eukv36wF/FYukYMinTDqtcFBCbkwIW+g
+X-Google-Smtp-Source: AGHT+IG0zZw727VjBHQVHWXJeTmxJ3mhCgj6F2p95LiwEhiwGMKetvFsZh6wJSLG0xQ8S40XBA0ttw==
+X-Received: by 2002:a17:902:db09:b0:224:255b:c92e with SMTP id d9443c01a7336-22a8a0431ffmr193175125ad.3.1744127799574;
+        Tue, 08 Apr 2025 08:56:39 -0700 (PDT)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-2297866e4c2sm101866535ad.199.2025.04.08.08.56.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Apr 2025 08:56:39 -0700 (PDT)
+Date: Tue, 8 Apr 2025 08:56:38 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: syzbot <syzbot+48c14f61594bdfadb086@syzkaller.appspotmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+	kuba@kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, pabeni@redhat.com,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [net?] WARNING in __linkwatch_sync_dev
+Message-ID: <Z_VHNtNQ5hqZx33v@mini-arch>
+References: <67f4d325.050a0220.396535.0558.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: 
- <20250408-bound-checking-ppp_txmung-v2-1-94bb6e1b92d0@arnaud-lcm.com>
-X-B4-Tracking: v=1; b=H4sIANtG9WcC/32NwQ6CMBBEf8Xs2TWl0ICe/A9DDG4XaJS2aYFgC
- P9uJfHqbd4k82aFyMFwhMthhcCzicbZBPJ4AOob2zEanRikkEoUQuHDTVYj9UxPYzv03t/HZZh
- SLCpRUqUK1pWCtPeBW7Ps7luduDdxdOG9X83Zt/1Zyz/WOcMMqSUtueX8zPm1CbaZNL5oOJEbo
- N627QP7NiDHxwAAAA==
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-ppp@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, contact@arnaud-lcm.com,
- skhan@linuxfoundation.org,
- syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744127721; l=2087;
- i=contact@arnaud-lcm.com; s=20250405; h=from:subject:message-id;
- bh=J7epX/UdilumfA3U27hHk3T8ih71De8kfSzGxe+PO3k=;
- b=AJA3Cy6DjlQbZQe1vxWvNIhkINO0dAJqsOoeJ/QTKbJJq9in5/ju+7sF5kB1RMMPoZHHAblWp
- xoHCr2csKzvC/tIHr/n9k1Yf+fkuk+p/Q5eSw3Shi8LbEKPZidsXtsd
-X-Developer-Key: i=contact@arnaud-lcm.com; a=ed25519;
- pk=Ct5pwYkf/5qSRyUpocKOdGc2XBlQoMYODwgtlFsDk7o=
-X-PPP-Message-ID: <174412772207.7158.8026498672365097069@Plesk>
-X-PPP-Vhost: arnaud-lcm.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <67f4d325.050a0220.396535.0558.GAE@google.com>
 
-Ensure we have enough data in linear buffer from skb before accessing
-initial bytes. This prevents potential out-of-bounds accesses
-when processing short packets.
+On 04/08, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    7702d0130dc0 Add linux-next specific files for 20250408
+> git tree:       linux-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=15fe8070580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=91edf513888f57d7
+> dashboard link: https://syzkaller.appspot.com/bug?extid=48c14f61594bdfadb086
+> compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+> 
+> Unfortunately, I don't have any reproducer for this issue yet.
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/0603dd3556b9/disk-7702d013.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/d384baaee881/vmlinux-7702d013.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/1ac172735b6c/bzImage-7702d013.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+48c14f61594bdfadb086@syzkaller.appspotmail.com
+> 
+> ------------[ cut here ]------------
+> RTNL: assertion failed at ./include/net/netdev_lock.h (56)
+> WARNING: CPU: 1 PID: 2971 at ./include/net/netdev_lock.h:56 netdev_ops_assert_locked include/net/netdev_lock.h:56 [inline]
+> WARNING: CPU: 1 PID: 2971 at ./include/net/netdev_lock.h:56 __linkwatch_sync_dev+0x30d/0x360 net/core/link_watch.c:279
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 2971 Comm: kworker/u8:8 Not tainted 6.15.0-rc1-next-20250408-syzkaller #0 PREEMPT(full) 
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+> Workqueue: bond0 bond_mii_monitor
+> RIP: 0010:netdev_ops_assert_locked include/net/netdev_lock.h:56 [inline]
+> RIP: 0010:__linkwatch_sync_dev+0x30d/0x360 net/core/link_watch.c:279
+> Code: 7c fe ff ff e8 f4 63 cc f7 c6 05 83 28 53 06 01 90 48 c7 c7 60 5c 51 8d 48 c7 c6 8a 9b 67 8e ba 38 00 00 00 e8 04 6b 8b f7 90 <0f> 0b 90 90 e9 4d fe ff ff 89 d9 80 e1 07 38 c1 0f 8c 19 fd ff ff
+> RSP: 0018:ffffc9000b767710 EFLAGS: 00010246
+> RAX: bb6ea754fa006300 RBX: 0000000000000000 RCX: ffff888030979e00
+> RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+> RBP: 0000000000000000 R08: ffffffff81824ed2 R09: 1ffffffff20c01c6
+> R10: dffffc0000000000 R11: fffffbfff20c01c7 R12: 0000000000000000
+> R13: dffffc0000000000 R14: ffff88805d768008 R15: ffff88805d768000
+> FS:  0000000000000000(0000) GS:ffff888125089000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f85e8c4df98 CR3: 000000006a050000 CR4: 00000000003526f0
+> DR0: 0000000000000099 DR1: 0000000000000000 DR2: 000000000000000b
+> DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
+> Call Trace:
+>  <TASK>
+>  ethtool_op_get_link+0x15/0x60 net/ethtool/ioctl.c:63
+>  bond_check_dev_link+0x1fb/0x4b0 drivers/net/bonding/bond_main.c:864
+>  bond_miimon_inspect drivers/net/bonding/bond_main.c:2734 [inline]
+>  bond_mii_monitor+0x49d/0x3170 drivers/net/bonding/bond_main.c:2956
+>  process_one_work kernel/workqueue.c:3238 [inline]
+>  process_scheduled_works+0xac3/0x18e0 kernel/workqueue.c:3319
+>  worker_thread+0x870/0xd50 kernel/workqueue.c:3400
+>  kthread+0x7b7/0x940 kernel/kthread.c:464
+>  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:153
+>  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>  </TASK>
 
-When ppp_sync_txmung receives an incoming package with an empty
-payload:
-(remote) gef➤  p *(struct pppoe_hdr *) (skb->head + skb->network_header)
-$18 = {
-	type = 0x1,
-	ver = 0x1,
-	code = 0x0,
-	sid = 0x2,
-        length = 0x0,
-	tag = 0xffff8880371cdb96
-}
-
-from the skb struct (trimmed)
-      tail = 0x16,
-      end = 0x140,
-      head = 0xffff88803346f400 "4",
-      data = 0xffff88803346f416 ":\377",
-      truesize = 0x380,
-      len = 0x0,
-      data_len = 0x0,
-      mac_len = 0xe,
-      hdr_len = 0x0,
-
-it is not safe to access data[2].
-
-Reported-by: syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=29fc8991b0ecb186cf40
-Tested-by: syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
----
-Changes in v2:
-- Fixed the Fixes: tag to refer to initial commit instead of merge commit (1da177e4c3f4)
-- Remove the skb check as it can not be null
-- Link to v1: https://lore.kernel.org/r/20250407-bound-checking-ppp_txmung-v1-1-cfcd2efe39e3@arnaud-lcm.com
----
- drivers/net/ppp/ppp_synctty.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
-index 644e99fc3623..9c4932198931 100644
---- a/drivers/net/ppp/ppp_synctty.c
-+++ b/drivers/net/ppp/ppp_synctty.c
-@@ -506,6 +506,11 @@ ppp_sync_txmunge(struct syncppp *ap, struct sk_buff *skb)
- 	unsigned char *data;
- 	int islcp;
- 
-+	/* Ensure we can safely access protocol field and LCP code */
-+	if (!pskb_may_pull(skb, 3)) {
-+		kfree_skb(skb);
-+		return NULL;
-+	}
- 	data  = skb->data;
- 	proto = get_unaligned_be16(data);
- 
-
----
-base-commit: 9946eaf552b194bb352c2945b54ff98c8193b3f1
-change-id: 20250405-bound-checking-ppp_txmung-4807c854ed85
-
-Best regards,
--- 
-Arnaud Lecomte <contact@arnaud-lcm.com>
-
+This needs ops lock/unlock around get_link in bond_check_dev_link, will
+follow up.
