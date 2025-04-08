@@ -1,247 +1,196 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00701402.pphosted.com (mx07-00701402.pphosted.com [66.159.233.223])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B0F22A4CD;
-	Tue,  8 Apr 2025 15:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744124529; cv=none; b=aQ3H5W2N3o+YlbHTobP8N0we7SYmMMaWlolAmypzpVr143SPSdpaPXpOii/JT9tlsmQRDdIkCwHSvDB0H04rUf8tKiltvpKszxVUZIPeF1u/WANVgaVDMs1t+AYa+VALcLoxFCUHJCEQ6Lh+su5+0eiQH4a5Gp9SUki6vlSBGtQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744124529; c=relaxed/simple;
-	bh=1V5LM9FxXrHI2YXdgpBEILLpN6lC29GjKLDmdnWD7xg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WMrPq6x/f12wzRy7j6tUT4GJO1zD4+zTKPP5lvQ4ZKPRAd8vrHW71KzTPSpBzPkXtx0Sr4hkjMovTPviC8c+qrd7KqCSRppoHktJN2BRnhX3fHnSWRfA/NyPZPvbGZkQBKUareW4ErycMOBYjRB4HGyve9gpfbYEddjVVF4nLpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f3qLX6E1; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07828221DB0;
+	Tue,  8 Apr 2025 15:07:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=66.159.233.223
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744124860; cv=fail; b=hxIgRjnMph2NqvTZipBGXMpL3zaLvWqEVoChvbM7O9wZnkHunwluZsisP5G6wMUMdoA1KKtHrXhLsCMTGUTtbg3MI/zqu3eeZOfJ5OZLx+1Mqi+zQHjRwjQF6y9tCAxo8K9MBgdCrBSgeNVzQpDQPJWj2l9xQKj1JA67jzIHM8g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744124860; c=relaxed/simple;
+	bh=sfEBUlY86JF9mQRt0M81iMqVAXdHMfXStCjm37SkNso=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=YE1x73mxrMOwdVXCdHLc2qEBKWxiBJjR3YPEkQkA0icFuPPYVucp9NwSZpDYAc3ZklJ/YyDrIHyu9XsaFi4vuDkDdqc1761MSPCpTWn0Xm3A7HrSB7ZtxUWDvWJMQ0WHhC/qK+viw/qs8S0iGzqrHyvL3giAnQN5BfzOnej/Paw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=liebherr.com; spf=pass smtp.mailfrom=liebherr.com; dkim=pass (1024-bit key) header.d=liebherr.com header.i=@liebherr.com header.b=BdvQKJoJ; arc=fail smtp.client-ip=66.159.233.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=liebherr.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=liebherr.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f3qLX6E1"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-224341bbc1dso50523355ad.3;
-        Tue, 08 Apr 2025 08:02:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744124527; x=1744729327; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lanYKRHOAVQmad7jWC9R3BwXl4xuzrXPK59buSE8nEg=;
-        b=f3qLX6E1QGYZCsp88hOUx9ZT+pi0JQx8Uldqk/iEhVZkdTt114ZED5vJBVvi53Opbl
-         GZjRGZO0z11moHP7NuXTAlu8xCa3YNUO8GSLVieyQIFpiU2/CNQWRrFl1dOhHB3x56qz
-         tHC3q6wbmpkOKWTUektsCpvl25A/XU4iWCK2jG7dcyCd4F2r7x742iYKGJu2rCrwbtLj
-         ib8Dy6kiszifQAPa32hmeNyEn5PIp2ha/mCbASjV1+AiuiojgXxtDcg4ccN1ihBBNSQo
-         n4u+WiUySDmMpRlbC7pbBx9sQCZDMJ9AlWK8kXrZKA7gsbKqmgC2inxFrEqYQdght2Rc
-         j2uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744124527; x=1744729327;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lanYKRHOAVQmad7jWC9R3BwXl4xuzrXPK59buSE8nEg=;
-        b=jj0v82aZL/oPO3l+bsJPeoMSOdGgCHlMq0K/Zszu31RetOAN57Eg4OMD2HOckHkQzV
-         4FZGlTne+fDXFtesaW1NzrkBEpL0UJaNoWQalz6M/93RMnPkiaGBC2PLv9uzjVy5xshj
-         NIz2fQD/b2f+th4aNVq8GYJne/mj+CKmN+dMmOHGrThavPknKlBhMy+FD6Rkn4G9bM1Q
-         Wlv8IM3urTpbuRZdzUN3R2tbbsF0plw/LEYlzuEW932DtSkt7FRFIvhhCdn9WpRv8LNG
-         TF3hPwJeDDkFdPOjBkmKO9AW/+sww17d/BYHi6FZfncnX/M4woOewYvAUWLVm4NEJT3J
-         8vxg==
-X-Forwarded-Encrypted: i=1; AJvYcCW5VDq/5C2FR7ZBP3QauTj8lGKFTEtw/+QyeW8unVFxnVCMt30pzgkVFX4AvrnTffNepiLt7ejAdwaWs2Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOYeZ8VmDmM8YKjNQ/sR7pXpgUOrrFL19b4mW+Ztjxs8b76azg
-	lCEs1xNWZtCGMW6EdtE5Kmlh+cezLJB4Q0TmHAUaJuHVvX1lizOOx64cpUA=
-X-Gm-Gg: ASbGncum6nYFC+Xs0tUfKTh7BKPNI8HuPUXYo0ZoC5Mv81HT3mhEz/tcxHrS3YfLwOA
-	DfSo6tqtAFetD2hbRpYhknXPCqcuoWr9gyrNbRDg0sVHsZqVYnF+QAO/dJORJTRkl6gXUFkUaw7
-	64CG8/uhIcwTLn9NqeI3a43GptOCxVqOW0pSUH8vjgHbMRLzuFJMYPHiokyDAPy1/zhm5kppU1j
-	VlKdbP08KHljtWxtbU/g6n5sfBrxd3o9u7VmcuR5hur26uGnDT7FCx+N2xCqVfDLdZGv0gOK8hz
-	X4X2NVQml5uTMdU5bn705g6OgAPk29AtIsK6hXmEmjs9U5NOWZqTgEhSwqaJFRbAgUi+XKSAwlS
-	rd7Bq40dLTmDeXxIEvT8zdZjemN3hBsdXwcRR2g==
-X-Google-Smtp-Source: AGHT+IFimZU9V8rdI+tpXInlH/fG10dMMdd9u4/e8prqHcREMC6o2Lmc33zvP2/ddotsXlYb4KuXmg==
-X-Received: by 2002:a17:902:d485:b0:223:3bf6:7e6a with SMTP id d9443c01a7336-22a95529550mr210976505ad.12.1744124526610;
-        Tue, 08 Apr 2025 08:02:06 -0700 (PDT)
-Received: from localhost.localdomain (124-218-201-66.cm.dynamic.apol.com.tw. [124.218.201.66])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22978777259sm101092365ad.251.2025.04.08.08.02.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Apr 2025 08:02:06 -0700 (PDT)
-From: "Lucien.Jheng" <lucienx123@gmail.com>
-To: linux-clk@vger.kernel.org,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	daniel@makrotopia.org,
-	ericwouds@gmail.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	joseph.lin@airoha.com,
-	wenshin.chung@airoha.com,
-	lucien.jheng@airoha.com,
-	"Lucien.Jheng" <lucienx123@gmail.com>
-Subject: [PATCH v7 net-next PATCH 1/1] net: phy: air_en8811h: Add clk provider for CKO pin
-Date: Tue,  8 Apr 2025 23:01:18 +0800
-Message-Id: <20250408150118.54478-1-lucienx123@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=liebherr.com header.i=@liebherr.com header.b="BdvQKJoJ"
+Received: from pps.filterd (m0408740.ppops.net [127.0.0.1])
+	by mx07-00701402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53851dPq021852;
+	Tue, 8 Apr 2025 15:01:27 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=liebherr.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=key1; bh=0XFgY
+	/6we8ATOVhFTkBVvTnO0daERQHKDuW4I3lBqbk=; b=BdvQKJoJv5j8aE3h7oHyI
+	e/d3WjLVjyM/qh2eKKQMY4kgxFjo86FAOlli2N2hSMZJWa9Hr1ui/U/Gshe4+Zz3
+	fMAXK0PhOOy0+JKL03cdFtcsMFCZFznavN7QTR/KTz2fWdoVE56tLJ2S7gQFE6oq
+	rpiBG/U8wGo8GvR1VDNP5c=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KyiVrtvDGiIl/gn07hgnMvAW4WyTr0kNbp7A/0XHhw579CXdL2nZGAdeyUPH9tSpWbDQ39WTa2TUV8U45zjoTXiMfSyUVyPJEiSAc7NqNqRKXqxlMbJxn86NoFczhcodn40Gl8f4jyjLFfPo9TWbHcHB4kddOsH2yV1hZGY49+xAi1sBe2Ei5btfX5ivLUaGiO4naLFOMlwOxYiwYA1v4R3C5WduNQDg4hO+gbfc+c7wurLSVjILrGtgz/q/F7VaqjnNZHJJhZH1VMvOX3EuybUrCmZEPpdmt0mwzGSGNaEckJxLaeq3SgHW7IpTvKA+6Sh2/YCTaBiyQh47a9ZFfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0XFgY/6we8ATOVhFTkBVvTnO0daERQHKDuW4I3lBqbk=;
+ b=prUG1kJwbvjbLpPL+qLulmxBPSphbZ/6kjt3f4oAmK74zN1xDrAM4JlT1HDgBD5wFXcikRTRNTm/l8iKb9F0+QW1h8P6LHjFnGHk47Y0TKIoZX/cAOMzgw1Z3wGSW0Qna2326NZMhNr1dA+vTA+PLuyorh6OTUKaFMxiuQF011CiAxixg8v6n5pDlY0iOgS1y2bdvMoxLLZPRlgXG0XLwVLqwXyGFIQtJEeb4qkQW1ryopd1XqLz5ifwaTcFmobsPxAZCWbdXgclhEXakEWzOOfrm7gCvA/xlhEWtjON3PaYopsg6YWMJuqlrKiMz9UP7qKGCykNfEa97WANkBOysg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=liebherr.com; dmarc=pass action=none header.from=liebherr.com;
+ dkim=pass header.d=liebherr.com; arc=none
+From: "Fedrau Dimitri (LED)" <Dimitri.Fedrau@liebherr.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King
+	<linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Florian Fainelli
+	<f.fainelli@gmail.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Dimitri Fedrau
+	<dima.fedrau@gmail.com>
+Subject: AW: [PATCH net-next v2 3/3] net: phy: dp83822: Add support for
+ changing the MAC termination
+Thread-Topic: [PATCH net-next v2 3/3] net: phy: dp83822: Add support for
+ changing the MAC termination
+Thread-Index: AQHbqFo9IjrBTn5E3kmWTGlaedQyF7OZt/mAgAADDKA=
+Date: Tue, 8 Apr 2025 13:01:17 +0000
+Message-ID:
+ <DB8P192MB0838E18B78149B3EC1E0F168F3B52@DB8P192MB0838.EURP192.PROD.OUTLOOK.COM>
+References: <20250408-dp83822-mac-impedance-v2-0-fefeba4a9804@liebherr.com>
+ <20250408-dp83822-mac-impedance-v2-3-fefeba4a9804@liebherr.com>
+ <7dbf8923-ac78-47b8-8b9c-8f511a40dfa3@lunn.ch>
+In-Reply-To: <7dbf8923-ac78-47b8-8b9c-8f511a40dfa3@lunn.ch>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DB8P192MB0838:EE_|AS8P192MB2209:EE_
+x-ms-office365-filtering-correlation-id: de4eb448-f883-433f-31ba-08dd769d735b
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700018;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?JHm9EjMTpgya9JeJvTgyv7duaCXnvV9x+xUkZsG25TI1WtMBNLkScTFQdD?=
+ =?iso-8859-1?Q?OGsm1xEIwXvQBht9PuBg9aZHijHt85QcjXlLam++GCnqBXfGCgFLdl9PT5?=
+ =?iso-8859-1?Q?WyJDlSTbX5lwKjzfCA4oeoxtPwMqPbEQHH2+8286yzyM1bEaMFtT0Moljv?=
+ =?iso-8859-1?Q?RgmDeqIORXTUmH6WcIYCDjHSu0aX/9003a8bLKiQkqGNP0Yw9umZ/0krlI?=
+ =?iso-8859-1?Q?7hStkm7bdef9aW97+zSVZ4IdkNOisgmqdHLR863n1mjI9WY73GVp639jMq?=
+ =?iso-8859-1?Q?UxupClN/2rZfdRVR1taJyMIi2QvO1JsN0wWj1On1E3fc6xR9C804T2PX0H?=
+ =?iso-8859-1?Q?O91Js99IXbier08DDked0WSMk2RIaT898NdLjVYdVL9sf79HsswBzoycZ9?=
+ =?iso-8859-1?Q?Bzg3PS1hK6ozDYJaoDE0BYdtd8W3ofi0+CWsrTDTTm5Qdh4yPPkLxTOIlX?=
+ =?iso-8859-1?Q?7wdDxS+XG/8b1Uz5Fs3vCkMExMaqdiTQSsn0ZSZIrCpDuVhn3rayRCai1b?=
+ =?iso-8859-1?Q?b/mmE4OEuVk05dMVNy9X7kALQ72m5NBSVkOB0uBYXBE+40HJtYKD6MrPUy?=
+ =?iso-8859-1?Q?6ox89ZoLBfqQKEL6y2xYgxWf+diqfWRJBjzMcIeI/jv4Iq1M0yWXTHq93c?=
+ =?iso-8859-1?Q?R/hWHIuYi/jS9jZ5aIzbbRErPVsRMxgYDkKj5/3l2OvieC6ZCKl5WWijGB?=
+ =?iso-8859-1?Q?IQW2brn9/g9akzY37PkDWc8IdtL92Nqx8auLRIV2gZDjAf1psoPAi1Jx8J?=
+ =?iso-8859-1?Q?tRK7J8gM3MOnebb3aoKB+Sy6plGQj7C05Nq8SVymHX+K9GYnVlsiQZAYUC?=
+ =?iso-8859-1?Q?DUJOnPWN06J9DIfW9+gAQd4SZCQ1dn17miE9cOuUxlzeY5nEgNA0qg/ix/?=
+ =?iso-8859-1?Q?TqSCULyPQiZ7PZi4PGbt460kU0q43DVn6Ahjag2ggLLunlWfxOSpsIJ0UW?=
+ =?iso-8859-1?Q?/X6oxha8D8MYV7LjMfYWNDnMh30esz19nalgc9iSQUjvCxza35ExD3MZBo?=
+ =?iso-8859-1?Q?QRd05xtccd5rep3PHfhSxD3J4Ae9uqfg2Cb/zMLze560+nVgTBlb47fHJc?=
+ =?iso-8859-1?Q?8YnL7g57JX3u2kvENZ6BXruqUT6lNEAnOZzuTVH07/4jEbXzYg9/ZSjXKM?=
+ =?iso-8859-1?Q?6WuYaC8mRv3yiNqarg52Mav99UG2wl4+q412Il3LqY36st7u3q7/931bbl?=
+ =?iso-8859-1?Q?bhFte92JuIEITeBVYl6pP+fhJSYHXHQyOsFCgUKeUIiLmA+IeVTlTde8c2?=
+ =?iso-8859-1?Q?M+C1qZsclB5lrTulg53PugYTukn9z7NXiqXWurAgSN33pW4Rp6+pzmMu3c?=
+ =?iso-8859-1?Q?+5TuRkuFcYKMxGJ7cK7NFvUsaLnoCpHxw9NN7Gi1RxyIqA0iFjIEtHYB1t?=
+ =?iso-8859-1?Q?NZgQNlYEsHdaLPjcUGuWdIVjKZHW0vVoVbiOZH/bDt4IajYUqMueTGlxvW?=
+ =?iso-8859-1?Q?MnM0ETgKQebsC81lD9L/OeH4mlqMzt6XIYBa/gL9hQRctEZ9jdhUYS8AJc?=
+ =?iso-8859-1?Q?UouB82GO9bMg43A9oifM8A?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8P192MB0838.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?yiKRZxDr9M3ahJAHaxZILHEHrXixuNEyd35B1DIN+ApKf4mbxU06goPGGD?=
+ =?iso-8859-1?Q?qgph34nxDCrBhjuo2zOqapBEqepjraeBlvShv7iGMh+G4g2tgYDo7MIWXq?=
+ =?iso-8859-1?Q?sOufuSKymap/Oxa9Xswk0zCjVY8ixa9qKTa7lMoQZreIK7OzcLYce0CF/a?=
+ =?iso-8859-1?Q?mr+AN+IoTdq2xB66r5uLiYvD4PvPBQXHGZiG4SQAVH+x7Vqk+rdxjKPd/o?=
+ =?iso-8859-1?Q?XMNvXhBriwu5RzGncXT89hxO0UXzNqIDhSR+f/BOc31wU/MeGWGZJqefaN?=
+ =?iso-8859-1?Q?TR6i1HAt6INU9DCHplqlEXFi54IU+8DAyPaXWhKEC4RL5dNcP+AqBAHRx7?=
+ =?iso-8859-1?Q?lbyyHl4JAAENi2hTg1vyRUtotyILlmXxtqTFzukbpDcrpHlOY7Y92206vd?=
+ =?iso-8859-1?Q?qAww4M6vrMVlfsWJt9QRM3lpVuj/4U57mTPtpy++qx4wiZw27QWA4rubFE?=
+ =?iso-8859-1?Q?c1X3woARuogJMBYTbqQYsSvvAxWJMliokKqwBfKhJJJLlGiG7wfognsea2?=
+ =?iso-8859-1?Q?IdsecKbmRoGnAFSA68hMrzQpetoM9RapUbCWkWub6AhY06u74zYQ79StXQ?=
+ =?iso-8859-1?Q?PBYBbwgCSss1r5Pb9bYxlckWvvozMDlcceZrE/xvt9pr+tQSzrBepvBrBR?=
+ =?iso-8859-1?Q?qHKSGSd0v8dmy1hPm2AuOR0LIPX/H1h+2YGf17DcVDhnJz/9WO6383MA/R?=
+ =?iso-8859-1?Q?727o2djZwriBZaKzn7bYUsyi87AsK2tPyJvejYZkzEMCOqgT2zJ/9AkXP6?=
+ =?iso-8859-1?Q?0bF/Oq6IytudofqfpK3x3cBzxpm1WL2h7I7hBEWct2O0ggugeC3F24mwcs?=
+ =?iso-8859-1?Q?beC5Io5UPG8fBFlFmhy7fMUNk+h/mNQMzP+h3IYQR5Ej0FdUEWEWT/8TR7?=
+ =?iso-8859-1?Q?1Hv5inRcAEJJ5XmQYDytVNg0mEmUrhiUSmddyqsuoC5g8nY2fDwokyrbpc?=
+ =?iso-8859-1?Q?A+78pMGt8HjKo2ILm+KDZ1BEIqKH8PScoN3efe8Q5mmISaGTB+4c+GCJMK?=
+ =?iso-8859-1?Q?nqK7rLoeoTjQv8Oj0hYm+KWcK8+ClkW5toEEFmlWvFvv/ctaPrGo49br9v?=
+ =?iso-8859-1?Q?SEsO5QJouAEql2CAw8CZyrgbwWbxcul2j6xPwwcpIxNF78VkXW0/VTR2Nk?=
+ =?iso-8859-1?Q?5De/8tKtYLHM79PqJsPMhtE6qXCnMcNeviYObPQsbTnrXu6lIX3xufmRnt?=
+ =?iso-8859-1?Q?9gR+hD2zBkFHCzBQp/WqbAFFAGkgTBm0wC2Zl6ifzTyRPrXUJPA4/7sHsV?=
+ =?iso-8859-1?Q?HVCz2JEMtWTOKZ9mAMAMSzW169IjYQrd5qE1OxcIcbWDcjbI5HwfEGwOKz?=
+ =?iso-8859-1?Q?muEjDCg68TTO0ULG8gKDBm3ra41aWK9t1SYE8+IcnkOppBHO3iQD1OIRoR?=
+ =?iso-8859-1?Q?wKlBUtOEA68ICG6m4rbQyMDUAlYttsePIxSYnh/owInU7HYAUSaF4OnT3C?=
+ =?iso-8859-1?Q?mdOfvP5SMvej8HkRLboxWAx5FnQKBEj0a4z184Dcfsr7HaF6lOWEmK+saP?=
+ =?iso-8859-1?Q?IGsKs5on2yh1IbJTwdN/gRJFGSCCDlI5Q/3/AH1AfQSUpZgN/dU8O013cp?=
+ =?iso-8859-1?Q?sVNC2gviUIJg+v6YhG59miDQz0gcZ/2xxvXm1SFT59hcKPcOQKG+0F3f9L?=
+ =?iso-8859-1?Q?LNoPoQdHvIMF4XNb3HvfcGmE1pPykf8+065OyAeEn8knPI+BPYTQkhug?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	apMmuZNksdIPje5EvawRa4S+XLZi4Glu8vpDV1Qxe7nTdcwINXoGcGT27y/5lISzMFteFiL+ebQGt4vCewV8iycWJo0Y01FH7V6uxC29EHVxkfO2GH/Mblwy/kBodPTxCTkAFBgwY0Cs4Qv/v9ahBXpPKIhBDThh0FRovijV4p358FWkOQ+j15MoNNEXN+wJuNfpmkzc6u44JSLBL9DNHCuqZFUQtTdj0KV+lsPY726QFkHeUNiuS6bwLwzFnTvIwSMdvJo+fr8Ix6zAdbbXphbpeahsjdco5bObq70BHg8SQTobnKeQB8brZYAui68subA575ARpJJUU2FOl8wG90MJ4BBe6AoYyxnl/9vZ+U+KbZTK0YBzyGdZ8jJR0jd6vSo/R4qedvYeL8EosaZDb0J4R1OVxmOzZ2ArrLKVQYTkeuEKgqIfImwy+ICktjE3Un9crwELakdvYRGFWTEfZNlYupVUCs3iY3fJOmssxfzCGymVrI8+Jnch6IduKz2Yig/6WLtY8k+UXr3LKHeo++RYzKkcX37zMgF90YVMOW0U1taht0AGmO+VMkmiozDAIOxPo/kSa+CR6zzcbXI5CPuWVsKpyT3l7akK7CAr8O946qXnXAq7HQ4eY0RzGyRYyi7SXsmYzoLHXtxFSAniQw==
+X-OriginatorOrg: liebherr.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB8P192MB0838.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: de4eb448-f883-433f-31ba-08dd769d735b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Apr 2025 13:01:17.3647
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3336d6b0-b132-47ee-a49b-3ab470a5336e
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: CG7K5ZRA/V/vQXpjsYISWB/D7R9P7hpEUUtmWJKfAVLgCNifs2362YURL8b8fcYN6lppaiyO/FTkL8ZfZyh1mi/xuZk4A0ptNzPwmd8QfD0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8P192MB2209
+X-Authority-Analysis: v=2.4 cv=RsjFLDmK c=1 sm=1 tr=0 ts=67f51e27 cx=c_pps a=ow5/roAxt+uy2znxgqYcZQ==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
+ a=XR8D0OoHHMoA:10 a=k-H-GU2PAAAA:8 a=pGLkceISAAAA:8 a=PHq6YzTAAAAA:8 a=J1Y8HTJGAAAA:8 a=1XWaLZrsAAAA:8 a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8 a=dNtzZPA4tSo3ZyHCessA:9 a=wPNLvfGTeEIA:10 a=OlpMY7MLeOwsGCYq90Np:22 a=ZKzU8r6zoKMcqsNulkmm:22
+ a=y1Q9-5lHfBjTkpIzbSAN:22
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
+ malwarescore=0 impostorscore=0 clxscore=1015 bulkscore=0 mlxlogscore=999
+ lowpriorityscore=0 spamscore=0 phishscore=0 priorityscore=1501
+ suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
+ definitions=main-2504080092
 
-EN8811H outputs 25MHz or 50MHz clocks on CKO, selected by GPIO3.
-CKO clock operates continuously from power-up through md32 loading.
-Implement clk provider driver so we can disable the clock output in case
-it isn't needed, which also helps to reduce EMF noise
+-----Urspr=FCngliche Nachricht-----
+Von: Andrew Lunn <andrew@lunn.ch>=20
+Gesendet: Dienstag, 8. April 2025 14:47
+An: Fedrau Dimitri (LED) <dimitri.fedrau@liebherr.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>; Russell King <linux@armlinux.or=
+g.uk>; David S. Miller <davem@davemloft.net>; Eric Dumazet <edumazet@google=
+.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; R=
+ob Herring <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>; Con=
+or Dooley <conor+dt@kernel.org>; Florian Fainelli <f.fainelli@gmail.com>; n=
+etdev@vger.kernel.org; devicetree@vger.kernel.org; linux-kernel@vger.kernel=
+.org; Dimitri Fedrau <dima.fedrau@gmail.com>
+Betreff: Re: [PATCH net-next v2 3/3] net: phy: dp83822: Add support for cha=
+nging the MAC termination
 
-Signed-off-by: Lucien.Jheng <lucienx123@gmail.com>
----
-Change in PATCH v7:
-air_en8811h.c:
- * Fix: Correct various code style inconsistencies and remove unnecessary initialization.
+> > +static const u32 mac_termination[] =3D {
+> > +	99, 91, 84, 78, 73, 69, 65, 61, 58, 55, 53, 50, 48, 46, 44, 43,
+>=20
+> Please add this list to the binding.
 
- drivers/net/phy/air_en8811h.c | 103 +++++++++++++++++++++++++++++++++-
- 1 file changed, 100 insertions(+), 3 deletions(-)
+Add this list to "ti,dp83822.yaml" ?
 
-diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
-index e9fd24cb7270..4eebc6e24ce5 100644
---- a/drivers/net/phy/air_en8811h.c
-+++ b/drivers/net/phy/air_en8811h.c
-@@ -16,6 +16,7 @@
- #include <linux/property.h>
- #include <linux/wordpart.h>
- #include <linux/unaligned.h>
-+#include <linux/clk-provider.h>
-
- #define EN8811H_PHY_ID		0x03a2a411
-
-@@ -112,6 +113,11 @@
- #define   EN8811H_POLARITY_TX_NORMAL		BIT(0)
- #define   EN8811H_POLARITY_RX_REVERSE		BIT(1)
-
-+#define EN8811H_CLK_CGM		0xcf958
-+#define   EN8811H_CLK_CGM_CKO		BIT(26)
-+#define EN8811H_HWTRAP1		0xcf914
-+#define   EN8811H_HWTRAP1_CKO		BIT(12)
-+
- #define EN8811H_GPIO_OUTPUT		0xcf8b8
- #define   EN8811H_GPIO_OUTPUT_345		(BIT(3) | BIT(4) | BIT(5))
-
-@@ -142,10 +148,15 @@ struct led {
- 	unsigned long state;
- };
-
-+#define clk_hw_to_en8811h_priv(_hw)			\
-+	container_of(_hw, struct en8811h_priv, hw)
-+
- struct en8811h_priv {
--	u32		firmware_version;
--	bool		mcu_needs_restart;
--	struct led	led[EN8811H_LED_COUNT];
-+	u32			firmware_version;
-+	bool			mcu_needs_restart;
-+	struct led		led[EN8811H_LED_COUNT];
-+	struct clk_hw		hw;
-+	struct phy_device	*phydev;
- };
-
- enum {
-@@ -806,6 +817,86 @@ static int en8811h_led_hw_is_supported(struct phy_device *phydev, u8 index,
- 	return 0;
- };
-
-+static unsigned long en8811h_clk_recalc_rate(struct clk_hw *hw,
-+					     unsigned long parent)
-+{
-+	struct en8811h_priv *priv = clk_hw_to_en8811h_priv(hw);
-+	struct phy_device *phydev = priv->phydev;
-+	u32 pbus_value;
-+	int ret;
-+
-+	ret = air_buckpbus_reg_read(phydev, EN8811H_HWTRAP1, &pbus_value);
-+	if (ret < 0)
-+		return ret;
-+
-+	return (pbus_value & EN8811H_HWTRAP1_CKO) ? 50000000 : 25000000;
-+}
-+
-+static int en8811h_clk_enable(struct clk_hw *hw)
-+{
-+	struct en8811h_priv *priv = clk_hw_to_en8811h_priv(hw);
-+	struct phy_device *phydev = priv->phydev;
-+
-+	return air_buckpbus_reg_modify(phydev, EN8811H_CLK_CGM,
-+				       EN8811H_CLK_CGM_CKO,
-+				       EN8811H_CLK_CGM_CKO);
-+}
-+
-+static void en8811h_clk_disable(struct clk_hw *hw)
-+{
-+	struct en8811h_priv *priv = clk_hw_to_en8811h_priv(hw);
-+	struct phy_device *phydev = priv->phydev;
-+
-+	air_buckpbus_reg_modify(phydev, EN8811H_CLK_CGM,
-+				EN8811H_CLK_CGM_CKO, 0);
-+}
-+
-+static int en8811h_clk_is_enabled(struct clk_hw *hw)
-+{
-+	struct en8811h_priv *priv = clk_hw_to_en8811h_priv(hw);
-+	struct phy_device *phydev = priv->phydev;
-+	int ret;
-+	u32 pbus_value;
-+
-+	ret = air_buckpbus_reg_read(phydev, EN8811H_CLK_CGM, &pbus_value);
-+	if (ret < 0)
-+		return ret;
-+
-+	return (pbus_value & EN8811H_CLK_CGM_CKO);
-+}
-+
-+static const struct clk_ops en8811h_clk_ops = {
-+	.recalc_rate	= en8811h_clk_recalc_rate,
-+	.enable		= en8811h_clk_enable,
-+	.disable	= en8811h_clk_disable,
-+	.is_enabled	= en8811h_clk_is_enabled,
-+};
-+
-+static int en8811h_clk_provider_setup(struct device *dev, struct clk_hw *hw)
-+{
-+	struct clk_init_data init;
-+	int ret;
-+
-+	if (!IS_ENABLED(CONFIG_COMMON_CLK))
-+		return 0;
-+
-+	init.name = devm_kasprintf(dev, GFP_KERNEL, "%s-cko",
-+				   fwnode_get_name(dev_fwnode(dev)));
-+	if (!init.name)
-+		return -ENOMEM;
-+
-+	init.ops = &en8811h_clk_ops;
-+	init.flags = 0;
-+	init.num_parents = 0;
-+	hw->init = &init;
-+
-+	ret = devm_clk_hw_register(dev, hw);
-+	if (ret)
-+		return ret;
-+
-+	return devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, hw);
-+}
-+
- static int en8811h_probe(struct phy_device *phydev)
- {
- 	struct en8811h_priv *priv;
-@@ -838,6 +929,12 @@ static int en8811h_probe(struct phy_device *phydev)
- 		return ret;
- 	}
-
-+	priv->phydev = phydev;
-+	/* Co-Clock Output */
-+	ret = en8811h_clk_provider_setup(&phydev->mdio.dev, &priv->hw);
-+	if (ret)
-+		return ret;
-+
- 	/* Configure led gpio pins as output */
- 	ret = air_buckpbus_reg_modify(phydev, EN8811H_GPIO_OUTPUT,
- 				      EN8811H_GPIO_OUTPUT_345,
---
-2.34.1
-
+Best regards,
+Dimitri Fedrau
