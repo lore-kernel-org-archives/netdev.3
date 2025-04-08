@@ -1,83 +1,119 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FC71A8F68;
-	Tue,  8 Apr 2025 13:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8A8EADC
+	for <netdev@vger.kernel.org>; Tue,  8 Apr 2025 13:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744118924; cv=none; b=Ztj3WgUbXX2jE1WJLwhyoMPU6qeNH2QJrC8Jk85xqTNEaXrRB9MMTtQhf/2MnnkiLaf4zzesw1PcXaXRMySyxjg/5eJ4M3Uthm1wpf4CPWeodyt4QEipFVNPewT57DwWuhFLV+1u+SVY+7SHdYuAfkOX9+Gpc9KuzX7bXydwBpE=
+	t=1744118963; cv=none; b=nAXe9ZLcgLmUMFNwY1WfrEist6g6cquJy6SEA0dCgRYUc0FoaZeykYNu7pSgN6SexsIWEDw531zzkM9/FFxh0pVSNUoMWMn1EAz8C8FWwXwMSia3dZEkGFMbH+dq7MnJ2Xlg2xh1Jk2bMncf/IJJGu++lZry4Q7kzBDPqwb92Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744118924; c=relaxed/simple;
-	bh=FOEfsdtggZpueu42qCVL9YDUw6hhgAGwnCwWUW7mVy0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MNifqsn362BuzP77i0XCZfOpap26OlOsivY4AYMPK5TTMINOtYCiFmQugHxXrqDKbk0TyEg0CYFlN529edjw8+ffAIkZdPvs4Z67/ccbyCuHQtlwmCnMGup3QOlRMX2+pl36ZiyTlMPGvTslTsb/oi47jx8z7Y/jWYFj82TqgaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=WvQYQVXL; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1744118963; c=relaxed/simple;
+	bh=3pOUYj6JIOLbe1ljngk//BXwsbh+xpYpSEW8R94B+kw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uZhwUvh2Y69UB73JG9Mv2pDX4puLlgSM7FlhLr7JoIaxXcROmL8ar5ttYgDAxiNASQKXYExerlbtkUKVZ5OeXGevWZ/mPSKFF3Czlup8P8/rRQuuVBtBihXB01HXb1sIrPyKPRv349bwrQDogdwAz8+PXFsQw34crngWDoSCy38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fchfh7Cx; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="WvQYQVXL"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=yNmt2P/R29qfDB07hCARjvDDMhO5YVvydaAbFo0JqDg=; b=Wv
-	QYQVXLRHxunB2Wazfuj140N86KF8BZBODgTOJjxE95LZDjvstKOVF9lzmS30P1Z1gxWvZfud2U7Cx
-	QyMjyd8YdmT1xnuDHf4d07XXh60+FLrB3hhvHWOMN8pp2vIawMbJjwgioRT86VbFI/fND9zfWTJ5e
-	Lr+F0lWVy8EGDCA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1u290C-008OZj-MU; Tue, 08 Apr 2025 15:28:32 +0200
-Date: Tue, 8 Apr 2025 15:28:32 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Fedrau Dimitri (LED)" <Dimitri.Fedrau@liebherr.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Dimitri Fedrau <dima.fedrau@gmail.com>
-Subject: Re: [PATCH net-next v2 3/3] net: phy: dp83822: Add support for
- changing the MAC termination
-Message-ID: <04dc2856-f717-4d27-9e5c-5374bb01a322@lunn.ch>
-References: <20250408-dp83822-mac-impedance-v2-0-fefeba4a9804@liebherr.com>
- <20250408-dp83822-mac-impedance-v2-3-fefeba4a9804@liebherr.com>
- <7dbf8923-ac78-47b8-8b9c-8f511a40dfa3@lunn.ch>
- <DB8P192MB0838E18B78149B3EC1E0F168F3B52@DB8P192MB0838.EURP192.PROD.OUTLOOK.COM>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fchfh7Cx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744118959;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uBHxE4o+poP6p/ofYoEMxQF6RNUpC2hi/3SExaAVHuA=;
+	b=Fchfh7CxL4BW5G00aZPhmFSqEEYWKO9uO2ME6OGUCP9VAyEFtZNxH9z6eOM+vTEab/bbj1
+	cPSPg1IYmE8gy9nVhccca9+WJPepGXwXvrN9ER0qL8qE7uTLd4GSxceQ89D8roc+5mNVMp
+	ldv8bL3ZNHen3rJfRooroMqTpRcmszI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-499-y3paXQi2N7mVmRsz8TR5vA-1; Tue, 08 Apr 2025 09:29:18 -0400
+X-MC-Unique: y3paXQi2N7mVmRsz8TR5vA-1
+X-Mimecast-MFC-AGG-ID: y3paXQi2N7mVmRsz8TR5vA_1744118957
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3913aaf1e32so3323047f8f.0
+        for <netdev@vger.kernel.org>; Tue, 08 Apr 2025 06:29:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744118957; x=1744723757;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uBHxE4o+poP6p/ofYoEMxQF6RNUpC2hi/3SExaAVHuA=;
+        b=rzPaF7h7xtmy2tiyuGkL68nkMgRjFihrIhnpgjVxoN5a2YN2++rnHavAQ4x1U44MND
+         ypQAHN/xn6nyfNHOlRA4fLhZmIfs8dwxFQ3i2IC2ceKEMNVQwDVtRjYS3xyuEmgN94Lf
+         8D4mocDCGOziV+y8jS6nqBWYTUbVcU6QXr7/O12+bDojoiDhtUslsU4v+W1v3UTpIiBq
+         VX4LbmIoO11KiXscKpiK3LY7fKoTFEG5Tw2GIUS8Wx6HZV2l88j4UDnI1FuuBizEabhX
+         HUbBhRWTCspbUN+DJJ9fpL+T29WGvfIG0+f5QebMS7zVy/AGxSY/FCJqEVwIBH6DMlvi
+         UPVw==
+X-Forwarded-Encrypted: i=1; AJvYcCUdLszQHbV6lOLJJ4w7wiwcRxtJ6KXwSht+JZ5naB3t2X5GlTREVQAV/7PXeW8zHECOxSW0eDA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBfUzuHgh5G8AshFnsHhmyw0GMye2PXfKJ66/Jy6UpTI95jvqD
+	RqDOBKlDE+6nnvbGjcitZCv0ybGhvsJC++ooXtijyI1NmN8BwuwTKRg7XJ6e0RsFX7TzPIiwHdG
+	pvfBc7M6MInfQDu7W8OMv5LjQ5YIpyPLpqnbJcRwNJAKC25JKAXlqkLvNr91pcw==
+X-Gm-Gg: ASbGncukFD7hc0TPQuTQ8ushGQSgbtmxvXDpoPBy6TwnaMttgqGTlYsEyAXufsqiM1A
+	3VmV6o/Rvfb7ZnqAfAlfCiMu5kSGJI1SNHPltUriIhFXLVdRau8xXTKE1zwwor6k/y5ZAJ/xfuE
+	gJTSzrNp2B+pfb7//WyPrqCNIQk1FJMgRfQIBthNhXIMbKsuHEKBNbE/FgyvTSMNbM86Ee2ORGp
+	ZogUUt9VuL1iJRGM00dl6zgP3buX8ZW9Wt2aeBfjdgJtNW2bNWVJsvLuZgS7QHpLhun2hUqG/pg
+	kCgXC/95PDL3Uy1phtNHJ4fp/WBxMikdQbNC8gLeUa0=
+X-Received: by 2002:a05:6000:1a8d:b0:39c:1f10:d294 with SMTP id ffacd0b85a97d-39d0de28a44mr13769254f8f.26.1744118956984;
+        Tue, 08 Apr 2025 06:29:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH1HpRnEm/6M6CXH6msdauscTzQ/uB3jUvfgXW4D2EwTpNq9WLAloBhZWMlPFT2ix4Lmb7tOg==
+X-Received: by 2002:a05:6000:1a8d:b0:39c:1f10:d294 with SMTP id ffacd0b85a97d-39d0de28a44mr13769230f8f.26.1744118956594;
+        Tue, 08 Apr 2025 06:29:16 -0700 (PDT)
+Received: from [192.168.88.253] (146-241-84-24.dyn.eolo.it. [146.241.84.24])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f0e5e8dfasm26993845e9.27.2025.04.08.06.29.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Apr 2025 06:29:16 -0700 (PDT)
+Message-ID: <d5e03a72-bff3-4df1-91ed-6916abaaa0ec@redhat.com>
+Date: Tue, 8 Apr 2025 15:29:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH REPOST] usbnet: asix: leave the carrier control to phylink
+To: =?UTF-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>,
+ netdev <netdev@vger.kernel.org>
+Cc: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+ Ming Lei <ming.lei@redhat.com>, Oleksij Rempel <o.rempel@pengutronix.de>
+References: <m35xjgdvih.fsf@t19.piap.pl>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <m35xjgdvih.fsf@t19.piap.pl>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <DB8P192MB0838E18B78149B3EC1E0F168F3B52@DB8P192MB0838.EURP192.PROD.OUTLOOK.COM>
 
-On Tue, Apr 08, 2025 at 01:01:17PM +0000, Fedrau Dimitri (LED) wrote:
-> -----Urspr�ngliche Nachricht-----
-> Von: Andrew Lunn <andrew@lunn.ch> 
-> Gesendet: Dienstag, 8. April 2025 14:47
-> An: Fedrau Dimitri (LED) <dimitri.fedrau@liebherr.com>
-> Cc: Heiner Kallweit <hkallweit1@gmail.com>; Russell King <linux@armlinux.org.uk>; David S. Miller <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Florian Fainelli <f.fainelli@gmail.com>; netdev@vger.kernel.org; devicetree@vger.kernel.org; linux-kernel@vger.kernel.org; Dimitri Fedrau <dima.fedrau@gmail.com>
-> Betreff: Re: [PATCH net-next v2 3/3] net: phy: dp83822: Add support for changing the MAC termination
+On 4/7/25 2:08 PM, Krzysztof Hałasa wrote:
+> [added Oleksij - the author of the phylink code for this driver]
 > 
-> > > +static const u32 mac_termination[] = {
-> > > +	99, 91, 84, 78, 73, 69, 65, 61, 58, 55, 53, 50, 48, 46, 44, 43,
-> > 
-> > Please add this list to the binding.
+> ASIX AX88772B based USB 10/100 Ethernet adapter doesn't come
+> up ("carrier off"), despite the built-in 100BASE-FX PHY positive link
+> indication. The internal PHY is configured (using EEPROM) in fixed
+> 100 Mbps full duplex mode.
 > 
-> Add this list to "ti,dp83822.yaml" ?
+> The primary problem appears to be using carrier_netif_{on,off}() while,
+> at the same time, delegating carrier management to phylink. Use only the
+> latter and remove "manual control" in the asix driver.
+> 
+> I don't have any other AX88772 board here, but the problem doesn't seem
+> specific to a particular board or settings - it's probably
+> timing-dependent.
+> 
+> Signed-off-by: Krzysztof Hałasa <khalasa@piap.pl>
 
-Yes please. Ideally we want the DT validation tools to pick up invalid
-values before they reach the kernel.
+Does not build:
 
-    Andrew
+../drivers/net/usb/asix_devices.c:1396:19: error: ‘asix_status’
+undeclared here (not in a function); did you mean ‘si_status’?
+ 1396 |         .status = asix_status,
+      |                   ^~~~~~~~~~~
+      |                   si_status
+
+/P
+
