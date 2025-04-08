@@ -1,111 +1,131 @@
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02C02620CD;
-	Tue,  8 Apr 2025 07:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B506B26461D
+	for <netdev@vger.kernel.org>; Tue,  8 Apr 2025 07:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744098069; cv=none; b=OhVvMH7H8qt6I8sGUkc5gAlfPqA55q0t2m13GwJaGFQJkLkYryyL+d3vpUZyQKZUvklecopDwXYC00+ExnCjoSdIzDYZinpFLkxb0903r980y7fvQm5bZz7pyl8KhrYM3r2b0QD6R155uuQcrWftfi6cOSWbn7F04vEkt/B9oog=
+	t=1744098088; cv=none; b=udPLtNjExqS4USPY4puxyG8XF+NJkq2ZLEZI4+U3x8p7z9ESz509WcLGUKy43oQ+jaSxSqQz2RMGFs8evmVngGRETparl/5DlHyi8Gx9a2/ibvJFwd3e3xo6V2MemcM5qahCNJdIQKFYxgT6J9ZuGfQF/FiEbtata/cKmBkBa3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744098069; c=relaxed/simple;
-	bh=VmrdJVDpTY1Y3BF9QzGsEsk2pkeTQKYXt41LsIyEfyM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nU6dQWWxVXG6nBWU1sBK4QBJrSJ73ZEEvkS67otGiJdmOq8qi5sFixBFVxep7WjnqZUV9bvRUoXhbZAxEU5lmRiomXwrJfFpXwoMUvc77bVOEQDDTwwX8kfc2QpFvv6UZpFSqmwfgI+M0Zj0gTWJrjihqL6MtExQcauJcH8JzYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=BKLZSlXi; arc=none smtp.client-ip=54.207.22.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="BKLZSlXi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1744098047;
-	bh=CwKUleQf27cGcf66047RnWHjOqMcyIi/LBBDO1qSzAM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=BKLZSlXiwOS0ObJ8zdUczG1rUS1ZL2dEPFY1urmf19WwO2hi1pyfZKZz17LsAyV9B
-	 f/u/M4HoLlv9WY6YV8EssNEPQyRxdGH2d2AF+mcduMmLOKtqs3HNv0BLLAFSpzjh/w
-	 8oDqoRKsctdG9NWWKeWP9IoFCTPlXglH4CIVhfN4=
-X-QQ-mid: bizesmtpsz4t1744098041tb64312
-X-QQ-Originating-IP: YLpLnDErj1dtfcCfWuO3BojoYWQCqOM0zq8eEbVCJxE=
-Received: from localhost.localdomain ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 08 Apr 2025 15:40:39 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 8994852775391133971
-EX-QQ-RecipientCnt: 14
-From: Chen Linxuan <chenlinxuan@uniontech.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	Chen Linxuan <chenlinxuan@uniontech.com>,
-	netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 nf-next] docs: tproxy: fix formatting for nft code block
-Date: Tue,  8 Apr 2025 15:35:50 +0800
-Message-ID: <E25F951CDC9F22B2+20250408073550.3319892-2-chenlinxuan@uniontech.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1744098088; c=relaxed/simple;
+	bh=c7DCdLXbOqDr50W9/qA7Md2fmFxz0hPGsDzruBo5d3U=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Awh9bam9rkgD2u62ozElskXD0txOO2EsS3UJHIByiWKpND/pY/pP3ZLFpRjnsxg+SOIrU5tFAIy62UY3WSsWXtPSV97Tom2a+fIYWXfYW42jcfHTMOsZOZKOghJGb2lnnT3MQ/ni3ejOfshWNskZBnrBz3P5HD7GoNQxl4qSX5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3d44ba1c2b5so57446305ab.2
+        for <netdev@vger.kernel.org>; Tue, 08 Apr 2025 00:41:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744098086; x=1744702886;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D9nvmIGS/pjAS2D5FId0VkYzyKtpxKn9WhfgUHy7ueM=;
+        b=DihE8KlD15aptsMkxvgksvss5rUQQL03mn///aLoiJHlBEOuNpWZfToOFtKWN1lhvn
+         LjTvKl1G3czFNWYwYDK3/R//sh3+dF2oV2pKV3IRiYC4YWG6BPIBStX3+lQUhq4ZgnSt
+         36EqVc+AXu4uvkU74lZvjtOWRijRebf5FcTy05XWEyKL0vpi6LV7N2rSWz63iaETikps
+         P9i0gdGebKLcahgwk/qT4mzS/aOzxyoECwf+tNOHEb86xuzeNYaB0i+rTZO+7GT3E7Ds
+         i7UX/NAUELTMP5ujcO+x+F07Emvuy2bpL1zfJO064PrzUdH8jX3T/UCmO91pIgoULIrm
+         dY6A==
+X-Forwarded-Encrypted: i=1; AJvYcCX2qyhELp4zxC7Zy3FHWPbT+urAziS+Q26eBzwJb+H3yBqI30BVe7KCr8x41gzZE0NxcXRHzvU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAizvk/BWEOrKDQ/4loCjxqJCo+zHRYfaFSnUdyABBfVswesl8
+	sBNi48jieJQ0+b1+zC6WTkve8rL1fUjZ8nlw4iYPI9UHW2RCQqkHoAmWAFlQ0jxGiR2RrrnKiWp
+	CRmXPN/4nuI3Wl8HEgiN75H6MvD7CjN5ar8DIfzf7NM6dE8SrmyVI+7g=
+X-Google-Smtp-Source: AGHT+IFZ2eHvFY/2Wu1GWjf1i7Xo7TQNwvjqzZ1pDdaqmGpIuMTl8L+5R8VHp4cPz1mlzRR1Q3tpXamKc3qegXbFgf9LLqtrtjyb
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5a-1
-X-QQ-XMAILINFO: MMREUZv4wJ7/uOrne6X5SSbeT+Yka9zVShie8oIcWhB2JdLJ5WW4MiZr
-	EcNaNn5OQy4bG0OswoJSKhKIxzRSTx8Ji7+YbJzGszsZ8swRuLITYCvaV75cop7PcdiT53B
-	Tv7gyq+M57NR8SB4wgCAM9Za1FVwoE7GLC2D0d7uJ5/eASbI4KET6cJJwKrNoBONKOPt6ZK
-	zhgULO6RkpBxK639RfIcrXaO5fmMxhpCoTi11CT8ViQimX2togtb6AC4vPfm5lsDzJ2wi54
-	Xk8ruXvnMBGOZzFyMTewDewcl4hSax4NknF/qpnG879YSKMRYWopOklFOisHVy+IDv3kfyc
-	E5FP+wSmH7Mh8Yv3mCk4id7pYXqxnFtE0ICnSUgPJBbPVpSodbLh5+DWNKtdQ6TILvQLkby
-	kVxVC1glPfD0e4hLg1A/1F37cqJZJxtKJR/X3UiC8SQCwJ6ObNth0QFb5MF+04L9GxMp28i
-	YN/+VoGG0SwWME66wZWCXhtYVYvMiTLTjbNhVPwaQa6MDjt2sL8jIKVPS8cJe8pnugeVdwn
-	f3vaUEbY8GHZwM4SE8loBmWQeZQAPGRAQNiannu2ZUsw5bNHtOWjrE0GMbnuLL6bGJ9KBbM
-	4MH1SqsuSL/aR/LlDtSWShsx1UyNy3kEiQu3cK3LXzPKw+iuipmLOgAB5LbkGFXa78aMa08
-	XcZR8u+ljZtIKTsbyeaMZW3RgG73Gf8TqBiOKW1CI02vsvznzkiiZ8K0CJ4CkuXapzUyzqs
-	U/CHkHFGQkyocjPZYxkajOOuOqs5NfWIyg8hSALnrQ+jk+wviR46TfyiGyn3NzOc/be4v2T
-	bpGsWOh6JyvHKz2flezWYgXJb09DfHzt1aBj7F8gdtaNjetsLUsxUKKku3/JO78xazNwsXK
-	o9cJriTCtnByBjDEIf54djXIGwmsKc4l8lC9GevAYyN9l9CAG9UXQzY/og/IBFV7FM+H76L
-	vxK9Dvm1Xl55Uj/pE1lX3+QYIOJcuIiVwZ7+o4MtD7qmun35OMrdZaGam
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
-X-QQ-RECHKSPAM: 0
+X-Received: by 2002:a05:6e02:2602:b0:3d3:fa0a:7242 with SMTP id
+ e9e14a558f8ab-3d6e53473acmr150443345ab.9.1744098085699; Tue, 08 Apr 2025
+ 00:41:25 -0700 (PDT)
+Date: Tue, 08 Apr 2025 00:41:25 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67f4d325.050a0220.396535.0558.GAE@google.com>
+Subject: [syzbot] [net?] WARNING in __linkwatch_sync_dev
+From: syzbot <syzbot+48c14f61594bdfadb086@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-The nft command snippet for redirecting traffic isn't formatted
-in a literal code block like the rest of snippets.
-Fix the formatting inconsistency.
+Hello,
 
-Signed-off-by: Chen Linxuan <chenlinxuan@uniontech.com>
+syzbot found the following issue on:
+
+HEAD commit:    7702d0130dc0 Add linux-next specific files for 20250408
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=15fe8070580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=91edf513888f57d7
+dashboard link: https://syzkaller.appspot.com/bug?extid=48c14f61594bdfadb086
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/0603dd3556b9/disk-7702d013.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/d384baaee881/vmlinux-7702d013.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/1ac172735b6c/bzImage-7702d013.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+48c14f61594bdfadb086@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+RTNL: assertion failed at ./include/net/netdev_lock.h (56)
+WARNING: CPU: 1 PID: 2971 at ./include/net/netdev_lock.h:56 netdev_ops_assert_locked include/net/netdev_lock.h:56 [inline]
+WARNING: CPU: 1 PID: 2971 at ./include/net/netdev_lock.h:56 __linkwatch_sync_dev+0x30d/0x360 net/core/link_watch.c:279
+Modules linked in:
+CPU: 1 UID: 0 PID: 2971 Comm: kworker/u8:8 Not tainted 6.15.0-rc1-next-20250408-syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+Workqueue: bond0 bond_mii_monitor
+RIP: 0010:netdev_ops_assert_locked include/net/netdev_lock.h:56 [inline]
+RIP: 0010:__linkwatch_sync_dev+0x30d/0x360 net/core/link_watch.c:279
+Code: 7c fe ff ff e8 f4 63 cc f7 c6 05 83 28 53 06 01 90 48 c7 c7 60 5c 51 8d 48 c7 c6 8a 9b 67 8e ba 38 00 00 00 e8 04 6b 8b f7 90 <0f> 0b 90 90 e9 4d fe ff ff 89 d9 80 e1 07 38 c1 0f 8c 19 fd ff ff
+RSP: 0018:ffffc9000b767710 EFLAGS: 00010246
+RAX: bb6ea754fa006300 RBX: 0000000000000000 RCX: ffff888030979e00
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: 0000000000000000 R08: ffffffff81824ed2 R09: 1ffffffff20c01c6
+R10: dffffc0000000000 R11: fffffbfff20c01c7 R12: 0000000000000000
+R13: dffffc0000000000 R14: ffff88805d768008 R15: ffff88805d768000
+FS:  0000000000000000(0000) GS:ffff888125089000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f85e8c4df98 CR3: 000000006a050000 CR4: 00000000003526f0
+DR0: 0000000000000099 DR1: 0000000000000000 DR2: 000000000000000b
+DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ethtool_op_get_link+0x15/0x60 net/ethtool/ioctl.c:63
+ bond_check_dev_link+0x1fb/0x4b0 drivers/net/bonding/bond_main.c:864
+ bond_miimon_inspect drivers/net/bonding/bond_main.c:2734 [inline]
+ bond_mii_monitor+0x49d/0x3170 drivers/net/bonding/bond_main.c:2956
+ process_one_work kernel/workqueue.c:3238 [inline]
+ process_scheduled_works+0xac3/0x18e0 kernel/workqueue.c:3319
+ worker_thread+0x870/0xd50 kernel/workqueue.c:3400
+ kthread+0x7b7/0x940 kernel/kthread.c:464
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:153
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+
 ---
-v2:
-  - Update commit message according to suggestion from Bagas
-v1: https://lore.kernel.org/all/CFD0AAF9D7040B1E+20250407031727.1615941-1-chenlinxuan@uniontech.com/
----
- Documentation/networking/tproxy.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/Documentation/networking/tproxy.rst b/Documentation/networking/tproxy.rst
-index 7f7c1ff6f159..75e4990cc3db 100644
---- a/Documentation/networking/tproxy.rst
-+++ b/Documentation/networking/tproxy.rst
-@@ -69,9 +69,9 @@ add rules like this to the iptables ruleset above::
-     # iptables -t mangle -A PREROUTING -p tcp --dport 80 -j TPROXY \
-       --tproxy-mark 0x1/0x1 --on-port 50080
- 
--Or the following rule to nft:
-+Or the following rule to nft::
- 
--# nft add rule filter divert tcp dport 80 tproxy to :50080 meta mark set 1 accept
-+    # nft add rule filter divert tcp dport 80 tproxy to :50080 meta mark set 1 accept
- 
- Note that for this to work you'll have to modify the proxy to enable (SOL_IP,
- IP_TRANSPARENT) for the listening socket.
--- 
-2.48.1
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
