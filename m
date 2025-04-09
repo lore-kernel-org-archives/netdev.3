@@ -1,63 +1,116 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BB625D908;
-	Wed,  9 Apr 2025 15:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DD91482F5;
+	Wed,  9 Apr 2025 15:31:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744212528; cv=none; b=TLDpdAHuYHutCrPzAqUC3k8HUx4krtz7nRTbx/LCJaFsNUM+bAAJvN1JF3Xw/xyjIUvg9+RNkeFFg4O2BQri5oor23BVejwi+/lGpHDkCkt0TSmNTUefyy4p8Km1r/xNCt42stvGdoxYAAMr/vxgtgcGj5R8hO2e68zLNCSzUxw=
+	t=1744212715; cv=none; b=pQq38+D9FuToA11ZH6FV+WEtzcTHqsqrSZ12WvkRrRCSZA4PWRk7D+S+n1MjTd3k5xUu4ngB6CW52wII5Z/2JMmBGfP83WxqbdmNavfrsFviWwmWis/bvM19n5DgOlcJQGqTyo796RWqeCWyZ45Vy2hkenu6aQTb8K1Yrge327Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744212528; c=relaxed/simple;
-	bh=9e4D7tu8NpiZEjh0zjN7AOEJmEjmxGVQQpxC3EDMjGA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XVYy66bWBOvbhe/C0a1RU0t4WbDbE/8eGkXIjZwPFMMaW1D/vF2DGRJwD3bDQ5ysMdqBbrlHYa4FOREDve47fjpWFK/I6SH8CzbkmmsgT/rVvL6z8RcD9iydDYKrLhkUhbBvVNVgv06Oy/uJuYhrlD3zqYiY6Z9AXqr8KjkS1kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qGJ+Qcgd; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1744212715; c=relaxed/simple;
+	bh=0x1dvjO2FZF9lCAIOsZJnj7gZRIyKdsq/t4wPmc2CzQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=msuFjLNYIY9B/3aJRRBPplceOIdNkx3K+xTXvCFtyG5dtToiV5DwqfS0/gIzrUIe926UGUqqLsk98TD8JolGH2NdAdsP0C8lqu0G4pLrXasrhdlLu7dUb1PCv/2kbI6QFWP0N1FRUkEvzRcfV+6bbbCUHsjQH0F9mipFBRNetuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BewS2i+k; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qGJ+Qcgd"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=GVms8sZy6YVwer8huqwdL535e2d50tSk6udp7SjsHpk=; b=qGJ+QcgdKd4LJA67qLXYZsIQBD
-	ymHrSKgC+FhlSm3H9jhw1TJt/JTJElPeI3AVMc2zG+VNsbQzSKkaDwa2hs7YnBLzYddTM2061/aKq
-	rdCKx0uxpXOpAJkRD3yKX9Zo7s/MJalDZK3D6GFtrEe+e2aIRJKTKklWlHdwbnIZ+iCo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1u2XLs-008Z3N-Sg; Wed, 09 Apr 2025 17:28:32 +0200
-Date: Wed, 9 Apr 2025 17:28:32 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Lucien.Jheng" <lucienx123@gmail.com>
-Cc: linux-clk@vger.kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
-	pabeni@redhat.com, daniel@makrotopia.org, ericwouds@gmail.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	joseph.lin@airoha.com, wenshin.chung@airoha.com,
-	lucien.jheng@airoha.com
-Subject: Re: [PATCH v8 net-next PATCH 1/1] net: phy: air_en8811h: Add clk
- provider for CKO pin
-Message-ID: <b8f9732e-bc33-4e73-b7bb-8513d8343983@lunn.ch>
-References: <20250409150902.3596-1-lucienx123@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BewS2i+k"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744212714; x=1775748714;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0x1dvjO2FZF9lCAIOsZJnj7gZRIyKdsq/t4wPmc2CzQ=;
+  b=BewS2i+k3PSEnIf0L9Ppy3rfZqSIvzV6OVvPllXyGd6hPIQ6TseaH4Vd
+   xJ8uEzY8EqbAQzWXNKvCgj+8EmjZSFVFls1dlOoBJc8UY7UxEsja9/DBW
+   IH1TPTxqUdPtL7CSh54C9qjl8n/t2vJgANk7tl0MKceLf16a3tcenlaMo
+   XXeoSW5Xb4wlEWNnF09W1v/bXNwnB6NwJoR1d1WuU1yklwzitx4guRNnh
+   Ly5zpThdc5Jf53lWSRSljr8EysKPKt6o9e25fX5IWUSTymbvzf2FrL+ct
+   SQizg0gciGxaD/S5tBUmpZiNP+PKiEggHzQN9GhEGdV4IWH8nJ48LC2//
+   A==;
+X-CSE-ConnectionGUID: PSOSY5XIRwu6ZUr/o8AnuQ==
+X-CSE-MsgGUID: VC8UV+IXTKWGwAmHDMDleg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="71072082"
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
+   d="scan'208";a="71072082"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 08:31:53 -0700
+X-CSE-ConnectionGUID: 31pjvctNTSOH6O3KCL536Q==
+X-CSE-MsgGUID: qgtNr2MDS+6UjXITr6JEmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
+   d="scan'208";a="151795982"
+Received: from amlin-018-114.igk.intel.com ([10.102.18.114])
+  by fmviesa002.fm.intel.com with ESMTP; 09 Apr 2025 08:31:49 -0700
+From: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+To: donald.hunter@gmail.com,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	vadim.fedorenko@linux.dev,
+	jiri@resnulli.us,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	jonathan.lemon@gmail.com,
+	richardcochran@gmail.com,
+	aleksandr.loktionov@intel.com,
+	milena.olech@intel.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	linux-rdma@vger.kernel.org,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Subject: [PATCH net-next v1 0/4] dpll: add all inputs phase offset monitor
+Date: Wed,  9 Apr 2025 17:25:54 +0200
+Message-Id: <20250409152558.1007335-1-arkadiusz.kubalewski@intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250409150902.3596-1-lucienx123@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 09, 2025 at 11:09:02PM +0800, Lucien.Jheng wrote:
-> EN8811H outputs 25MHz or 50MHz clocks on CKO, selected by GPIO3.
-> CKO clock operates continuously from power-up through md32 loading.
-> Implement clk provider driver so we can disable the clock output in case
-> it isn't needed, which also helps to reduce EMF noise
-> 
-> Signed-off-by: Lucien.Jheng <lucienx123@gmail.com>
+Add simple dpll device level feature and capabilities infrastructure over
+netlink dpll interface.
+Using new infrastructure add new feature: ALL_INPUTS_PHASE_OFFSET_MONITOR.
+Allow users control with two new attributes:
+- DPLL_A_CAPABILITIES - for checking if dpll device is capable,
+- DPLL_A_FEATURES - for enable/disable a features.
+Implement feature in ice driver for dpll-enabled devices.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Arkadiusz Kubalewski (4):
+  dpll: add features and capabilities to dpll device spec
+  dpll: pass capabilities on device register
+  dpll: features_get/set callbacks
+  ice: add phase offset monitor for all PPS dpll inputs
 
-    Andrew
+ Documentation/netlink/specs/dpll.yaml         |  25 +++
+ drivers/dpll/dpll_core.c                      |   5 +-
+ drivers/dpll/dpll_core.h                      |   2 +
+ drivers/dpll/dpll_netlink.c                   |  78 +++++++-
+ drivers/dpll/dpll_nl.c                        |   5 +-
+ .../net/ethernet/intel/ice/ice_adminq_cmd.h   |  20 ++
+ drivers/net/ethernet/intel/ice/ice_common.c   |  26 +++
+ drivers/net/ethernet/intel/ice/ice_common.h   |   3 +
+ drivers/net/ethernet/intel/ice/ice_dpll.c     | 188 +++++++++++++++++-
+ drivers/net/ethernet/intel/ice/ice_dpll.h     |   6 +
+ drivers/net/ethernet/intel/ice/ice_main.c     |   4 +
+ .../net/ethernet/mellanox/mlx5/core/dpll.c    |   2 +-
+ drivers/ptp/ptp_ocp.c                         |   2 +-
+ include/linux/dpll.h                          |   7 +-
+ include/uapi/linux/dpll.h                     |  13 ++
+ 15 files changed, 374 insertions(+), 12 deletions(-)
+
+
+base-commit: 420aabef3ab5fa743afb4d3d391f03ef0e777ca8
+-- 
+2.38.1
+
