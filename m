@@ -1,259 +1,171 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12B727701B;
-	Wed,  9 Apr 2025 18:15:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557B9270EC0
+	for <netdev@vger.kernel.org>; Wed,  9 Apr 2025 18:22:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744222544; cv=none; b=lrhEH6YqLYBgcoDBFgbCQnIWfarYFCuQ2N62hdXXZkRGPh9pCzRID5El8s8gL5KPJDDU+uRdoGKRmuOHbcnX/wRrrcibvgJvFOKwjRMwPB8OyY/b2ULPEd2SB9oqsq6ldHxfcSOco2UOfFQxy1vFrxDMCNE70jf9j8nBhP7dOUk=
+	t=1744222965; cv=none; b=SDu4154zoy5uDiO0cIAHBfcmJkvyDFXsxp5uljfE+BZknFGmRiUySAh1gXwvGOboxIXhGXEz19cShCUiOeDfhigQa1bPbinTk+yleGXBNFIDP90j1XFrYcD6piAOb1cl4j5FiNTXLGUmju18xLPT95xyjLprUZUW7hHCx4f7COY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744222544; c=relaxed/simple;
-	bh=pTz8SR4y0nQIQ5L+V5YgaAfc7gRHs7i1nUyqBg3Fr+s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cckh4+d0z6eFBKSCcSpC3+98SIumoP7dmjjJs1z88qVPR4mRm23ko/cR8JumVp92scKd9pAvB5qJSi+qFhdV9vRfMf5lgUjsk1xAEr05SXRHG5LSUI3paS6rWT/J57OaNwkk9UabK+t9xdFdogBns+0zIls7vfbbfNpzbBFFT+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NWP2D2py; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744222965; c=relaxed/simple;
+	bh=wEHFPVdrORgpLcGZ+GvRrXkyZBaib+TRXKwG8iJEyPg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NrOvaOLHIgWnmxsJxV76HsyDGzndMNwlfq7J8kymDNkfD+7FXIWE18dPBZDXeU9wjSKDRpjPzNnaNJ4cE6/YaVjZ6oNI9f+/hySjUKzkOy+yDKIH4BU6NHW9CKnSKAWBlQllnOxJ8sODfzotefpaJMdwxgvsryUjPAG8BOfmkNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io; spf=none smtp.mailfrom=jrife.io; dkim=pass (2048-bit key) header.d=jrife-io.20230601.gappssmtp.com header.i=@jrife-io.20230601.gappssmtp.com header.b=OFdQJYCS; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=jrife.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NWP2D2py"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-72d3b48d2ffso7644136b3a.2;
-        Wed, 09 Apr 2025 11:15:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=jrife-io.20230601.gappssmtp.com header.i=@jrife-io.20230601.gappssmtp.com header.b="OFdQJYCS"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2240ff0bd6eso7391955ad.0
+        for <netdev@vger.kernel.org>; Wed, 09 Apr 2025 11:22:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744222542; x=1744827342; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RLlYeHtvUctAB5rHW2z6orExJGooSjFURuTNigxPPWQ=;
-        b=NWP2D2pyY7g+/TMwqNiz80RIJWfH9MHzMLnkYGloZlV56l1rewjQmU1xWoxdUxFONt
-         VnQ1X9aXQfqNFCVTLgbFWIVU3CDBVRwLDpy3/6FssyWloNwiulE5RLzI5WObGeyo5d6Z
-         ksFrmwGm6fhmMnOWWj4kRD0GqeY22M/hv4uC8h8jYEHOjQKkeBhVRz95IhdWVrNKOBdp
-         JR1LhAkcITCfvZykR0TNOoM5osd04GAY0RUcbVrQfpy4OIuRkrEvwTnIxSPuzD1vMfbK
-         ffXMFlKIN3RrkFcT0CZMQDvXXdnuVkgkOJjS2fKU+jDKv80JqOpGNfkyOUFEcd3pzYf0
-         sSaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744222542; x=1744827342;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=jrife-io.20230601.gappssmtp.com; s=20230601; t=1744222963; x=1744827763; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RLlYeHtvUctAB5rHW2z6orExJGooSjFURuTNigxPPWQ=;
-        b=Mtu1LXVWCO9zcyxBizkmLJ+Zkaq9pa24yXu4bQ4CMCDdguDVrIfMkiHIxLuTS2I54p
-         vwHiJqBqkSe6g8pO3XoF6kUR3yLDS5KLu4iElbejt0ellApj/0nmxVbpTaEuqCJSdXcI
-         hw1RsaaUMAM+fFXyvwFOGBcBCRWvV5ZFP7LY5V/IsxCaoBSAaKfe6armNMjMztcUsWV3
-         WNk439eo0KecJjAniFx3rZMh7b879Tbf38rVp4gE00KkSRZ1QWXUBi59dbCuEFH9GD9l
-         Juq7YbhV1274nLY8AqdFOCxrSpsF+klbUK1PYEV+xRgKtuPDsMf2Akp8SPxLUy1+QkxD
-         2aeg==
-X-Forwarded-Encrypted: i=1; AJvYcCUE+hTMb8HLUBXjBoh2OT3Hex5rKmBtKHFN4NiXHqFsmSF0Vgya0W1VWbiJ/o7fDygRFZu5VJltrKDtRIw=@vger.kernel.org, AJvYcCUZJKhUUQJc13ljj7v1IanoddUscch+LTKQ3APsyCY0dWzVt4vNw3PEKDeS41M4qrnk5D0+smju@vger.kernel.org, AJvYcCUmhPod1qS23qYLhp7ogp0UYNm1N2JUfqoFIcP/HP97lHMQMMx14OrjNdRT6SZvidr0r6ygbxKpRuKmvfo=@vger.kernel.org, AJvYcCUxIL6zCBugICFKVz5dX4NmMZsJGaDTmphTXb6QkpQ7/9QJI0cmhJbC8H6TYyFVNpHfBw3fP8+3ArpcNbQ=@vger.kernel.org, AJvYcCW0Je4Q8wiWihe+yo+F83wZ89GYAkfxQxhGLL+faCX7fq4wv3MWcrlXXJC6lh3Wnzrdv12SVO3tOIyDNzizZsE=@vger.kernel.org, AJvYcCWEEEhFSH+3qqPXASGrE8e2AL8InU8wHCZHLF7AQrYkzxNWmtXL1Xj8gZU3Nb88QsEpXrU=@vger.kernel.org, AJvYcCWR/NGZc0NSYHCyNkVnEE077g4MWNF7GNmGk3WAjd7news77Dd7YAR7gm3tXFEdpSQPurzN5LA61Jj50UJX@vger.kernel.org, AJvYcCWlLOlKfXdYfhx7yUwwjG0r8L3NSeK8PmpNPWR6lQdP4MkDP8XVCcl9PbogBqAWDe8CmtdZ0cWwREgkOgIC@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYX8DgMsC7lilTdGvxOnFZy6mNvlRxpU3iB9pCMiTvvBDY/Hea
-	/W/7khxkecK+IRnJdzVS29pfFqzj8iT9FOK5bFkboAO+i0x1XNFp
-X-Gm-Gg: ASbGnctVfuInBtXg0rYT7h9gNeR4BD7AwAQVtXvMtX1TSbzWwdzL4hivoj+DCmjzt7U
-	ta2MVX1K1gEPbzH+dVuYl9dAPLlxtFP9bQ2/NFeWYa1U3rpcbvLeGmJaiqkM5FPp4T9bddy/LzL
-	Kf+XPc3/cGtgVuZuWFS2HfZOLJ4c4l7tbiTDkKK25MGecOqcrTVabYHn8fCc2LSWaeCnCSLekqJ
-	/FlEOOhJmCim8lpYGlC4QvjnXCbBmpqhZ7mM3YbCoEJQ3+BMN+CLdm8LeB6puErmCIz9LyqkFnj
-	j0hugpFPDooP17MdFPJC+VR1XaDNJR9MteTwf/NsRa1T8iLJRdAnHe7b4EtDVfXyyAAY
-X-Google-Smtp-Source: AGHT+IGEA9hhRRBDeyzG4WkKt+49d7gFcuvCU6+XKMxeG2gY6BreZ4BlmPPM+Kdczsk2MzNQJdHAMw==
-X-Received: by 2002:a05:6a00:4606:b0:736:9fa2:bcbb with SMTP id d2e1a72fcca58-73bafd708c5mr4555757b3a.24.1744222541802;
-        Wed, 09 Apr 2025 11:15:41 -0700 (PDT)
-Received: from visitorckw-System-Product-Name ([140.113.216.168])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bb1d2ae8dsm1728722b3a.18.2025.04.09.11.15.32
+        bh=DntxylgD/bFAuSnepybtNVZWTfXmXLq0Ys2Pz9lSxJ8=;
+        b=OFdQJYCStxyB1Sykn2pOT0CnwPOy+Fa303JVx2mmyeqqvw6+0h3AL7LrzEvGj3LLP9
+         AUfoqm8lOx8NMEadjPfmGwjZ8tVAM5LcIGT9kZwgbBe6qqk+fFmg60/401oXqkUnc8K2
+         3DbaFbZbhnQOlY7yoyXCcoptvgN7hRHoxtVQcM8B/RCJEN4ebP4uGAQE2uLFUUZU1G0T
+         xVn+QJgkjqkWCX9UMr9ih0x+ZwJXfHhYl6E+CIqcAvXUbmesfgr7FOkcNqOehG3f/9DN
+         B3jMI2J5jhs0yI+QB9Aa2n/yTm/Yrrkcaw63wIxvpoIPId6SzR4vFbvRCbHi9R0MPQlz
+         KfLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744222963; x=1744827763;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DntxylgD/bFAuSnepybtNVZWTfXmXLq0Ys2Pz9lSxJ8=;
+        b=jgRfUoTQWp+hyvaUQnwhLPZLoWapheS+h1sw5FhxTfvt87Z0aCMrRTZf9iV/k6RnKT
+         fWSX4mXJovJgzeNeHTgyOU4q0CgCoy6Fw7mGFUYvnNNyRLC+nKxlvTPoQnQ9tWt7ict3
+         UOjJ2bWSLjvovwv8DHk52dyEgzUiw2NyYb+cBSA5WIlJUIOn2jPqP+ly4Aw/ivh17XUS
+         Nbcez1QhNRq6DnLUIGH8vQ+/fxd6DP/ONO54c+PiosfB9pJJMcn0Fy9S9uR29F0sNU48
+         ukQ4F0J6tRL6mxA2yksz2779FTLxQ1Jwh26h333PEFloLqPYtjRqwC9kwV/n2lhugWcs
+         KsdA==
+X-Gm-Message-State: AOJu0YyxwNk+jWUo/zg901KPb0Zr7LVdG6BXeFaYtXUnwjI/eyx3Phmo
+	m9aiAf1Ogj1Z+9aAZxAKf4xaStKvSiLL7gS2EolkWTCP2LII/LMDwxn0u7jfoqk2vxclEpUuD1u
+	GRG8=
+X-Gm-Gg: ASbGncuCin7H86UtL8DMrZN2N+E73u64uOMRharBzyzqA3GrRYpj4tVOYqMWKKThYOi
+	9TGnPC9UtbgdvrYdkyxyiggn3CBh04x7psi5GV5JEfTV8IHt6v+V/JG1ZTi8fTWaAph/pKE4CZi
+	9RtO0+OwqdYq3yVBJfwHkr+XYgZCL4o/BuRAnY7pjRgqt622wVWtTXLMsVKwNrbaD0yj3tx7aIM
+	XB+9B3whDHSzEicOprIOeYjvSsDxW6Z+eDU88KVc4WbqZiMMpR9Rm362btejUQ5o/x/7NVGifCJ
+	y67AxZhc/BNqxvu/+F/ccDB48ejPyUHCID6vy+1y
+X-Google-Smtp-Source: AGHT+IHRVgJw3NYOgckrFBmUcQqoYpSp6TZXaA/bl5F+NRrvKmI0aks6nLltvSzd1NloBpdjcmwp+A==
+X-Received: by 2002:a17:902:f60f:b0:223:5696:44d6 with SMTP id d9443c01a7336-22ac2c2f69amr23547465ad.12.1744222963301;
+        Wed, 09 Apr 2025 11:22:43 -0700 (PDT)
+Received: from t14.. ([2001:5a8:4528:b100:2f6b:1a9a:d8b7:a414])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bb1d2ae5fsm1673021b3a.20.2025.04.09.11.22.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Apr 2025 11:15:41 -0700 (PDT)
-Date: Thu, 10 Apr 2025 02:15:30 +0800
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, jk@ozlabs.org,
-	joel@jms.id.au, eajames@linux.ibm.com, andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org, rfoss@kernel.org,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
-	dmitry.torokhov@gmail.com, mchehab@kernel.org,
-	awalls@md.metrocast.net, hverkuil@xs4all.nl,
-	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-	louis.peens@corigine.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
-	johannes@sipsolutions.net, gregkh@linuxfoundation.org,
-	jirislaby@kernel.org, akpm@linux-foundation.org, jdelvare@suse.com,
-	linux@roeck-us.net, alexandre.belloni@bootlin.com, pgaj@cadence.com,
-	hpa@zytor.com, alistair@popple.id.au, linux@rasmusvillemoes.dk,
-	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
-	jernej.skrabec@gmail.com, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
-	dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
-	oss-drivers@corigine.com, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
-	bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw, Frank.Li@nxp.com,
-	linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
-	david.laight.linux@gmail.com, andrew.cooper3@citrix.com,
-	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: Re: [PATCH v4 00/13] Introduce parity_odd() and refactor redundant
- parity code
-Message-ID: <Z/a5Qh/OeLT8JBS4@visitorckw-System-Product-Name>
-References: <20250409154356.423512-1-visitorckw@gmail.com>
- <Z_amQp3gK5Dm8Qz3@yury>
+        Wed, 09 Apr 2025 11:22:43 -0700 (PDT)
+From: Jordan Rife <jordan@jrife.io>
+To: netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: Jordan Rife <jordan@jrife.io>,
+	Aditi Ghag <aditi.ghag@isovalent.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>
+Subject: [PATCH v1 bpf-next 1/5] bpf: udp: Use bpf_udp_iter_batch_item for bpf_udp_iter_state batch items
+Date: Wed,  9 Apr 2025 11:22:30 -0700
+Message-ID: <20250409182237.441532-2-jordan@jrife.io>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250409182237.441532-1-jordan@jrife.io>
+References: <20250409182237.441532-1-jordan@jrife.io>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z_amQp3gK5Dm8Qz3@yury>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 09, 2025 at 12:54:35PM -0400, Yury Norov wrote:
-> On Wed, Apr 09, 2025 at 11:43:43PM +0800, Kuan-Wei Chiu wrote:
-> > Several parts of the kernel contain open-coded and redundant
-> > implementations of parity calculation. This patch series introduces
-> > a unified helper, parity_odd(), to simplify and standardize these
-> > cases.
-> > 
-> > The first patch renames parity8() to parity_odd(), changes its argument
-> 
-> Alright, if it's an extension of the area of applicability, it should be
-> renamed to just parity(). I already shared a table that summarized the
-> drivers authors' view on that, and they clearly prefer not to add the
-> suffix - 13 vs 2. The __builtin_parity() doesn't care of suffix as well. 
-> 
-> https://lore.kernel.org/all/Z9GtcNJie8TRKywZ@thinkpad/
-> 
-> Yes, the argument that boolean function should explain itself sounds
-> correct, but in this case, comment on top of the function looks enough
-> to me.
-> 
-> The existing codebase doesn't care about the suffix as well. If no
-> strong preference, let's just pick a short and sweet name?
-> 
-I don't have a strong preference for the name, but if I had to guess
-the return value from the function prototype, I would intuitively
-expect an int to return "0 for even and 1 for odd," and a bool to
-return "true for even, false for odd." I recall Jiri and Jacob shared
-similar thoughts, which is why I felt adding _odd could provide better
-clarity.
+Prepare for the next commit that tracks cookies between iterations by
+converting struct sock **batch to union bpf_udp_iter_batch_item *batch
+inside struct bpf_udp_iter_state.
 
-However, I agree that if the kernel doc comment is clear, it might not
-be a big issue. But David previously mentioned that he doesn't want to
-rely on checking the function's documentation every time while reading
-the code.
+Signed-off-by: Jordan Rife <jordan@jrife.io>
+---
+ net/ipv4/udp.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-Regardless, I'm flexible as long as we all reach a consensus on the
-naming.
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index d0bffcfa56d8..59c3281962b9 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -3384,13 +3384,17 @@ struct bpf_iter__udp {
+ 	int bucket __aligned(8);
+ };
+ 
++union bpf_udp_iter_batch_item {
++	struct sock *sock;
++};
++
+ struct bpf_udp_iter_state {
+ 	struct udp_iter_state state;
+ 	unsigned int cur_sk;
+ 	unsigned int end_sk;
+ 	unsigned int max_sk;
+ 	int offset;
+-	struct sock **batch;
++	union bpf_udp_iter_batch_item *batch;
+ 	bool st_bucket_done;
+ };
+ 
+@@ -3449,7 +3453,7 @@ static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
+ 				}
+ 				if (iter->end_sk < iter->max_sk) {
+ 					sock_hold(sk);
+-					iter->batch[iter->end_sk++] = sk;
++					iter->batch[iter->end_sk++].sock = sk;
+ 				}
+ 				batch_sks++;
+ 			}
+@@ -3479,7 +3483,7 @@ static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
+ 		goto again;
+ 	}
+ done:
+-	return iter->batch[0];
++	return iter->batch[0].sock;
+ }
+ 
+ static void *bpf_iter_udp_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+@@ -3491,7 +3495,7 @@ static void *bpf_iter_udp_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ 	 * done with seq_show(), so unref the iter->cur_sk.
+ 	 */
+ 	if (iter->cur_sk < iter->end_sk) {
+-		sock_put(iter->batch[iter->cur_sk++]);
++		sock_put(iter->batch[iter->cur_sk++].sock);
+ 		++iter->offset;
+ 	}
+ 
+@@ -3499,7 +3503,7 @@ static void *bpf_iter_udp_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ 	 * available in the current bucket batch.
+ 	 */
+ 	if (iter->cur_sk < iter->end_sk)
+-		sk = iter->batch[iter->cur_sk];
++		sk = iter->batch[iter->cur_sk].sock;
+ 	else
+ 		/* Prepare a new batch. */
+ 		sk = bpf_iter_udp_batch(seq);
+@@ -3564,7 +3568,7 @@ static int bpf_iter_udp_seq_show(struct seq_file *seq, void *v)
+ static void bpf_iter_udp_put_batch(struct bpf_udp_iter_state *iter)
+ {
+ 	while (iter->cur_sk < iter->end_sk)
+-		sock_put(iter->batch[iter->cur_sk++]);
++		sock_put(iter->batch[iter->cur_sk++].sock);
+ }
+ 
+ static void bpf_iter_udp_seq_stop(struct seq_file *seq, void *v)
+@@ -3827,7 +3831,7 @@ DEFINE_BPF_ITER_FUNC(udp, struct bpf_iter_meta *meta,
+ static int bpf_iter_udp_realloc_batch(struct bpf_udp_iter_state *iter,
+ 				      unsigned int new_batch_sz)
+ {
+-	struct sock **new_batch;
++	union bpf_udp_iter_batch_item *new_batch;
+ 
+ 	new_batch = kvmalloc_array(new_batch_sz, sizeof(*new_batch),
+ 				   GFP_USER | __GFP_NOWARN);
+-- 
+2.43.0
 
-> > type from u8 to u64 for broader applicability, and updates its return
-> > type from int to bool to make its usage and return semantics more
-> > intuitive-returning true for odd parity and false for even parity. It
-> > also adds __attribute_const__ to enable compiler optimizations.
-> 
-> That's correct and nice, but can you support it with a bloat-o-meter's
-> before/after and/or asm snippets? I also think it worth to be a separate
-> patch, preferably the last patch in the series.
-> 
-I quickly tested it with the x86 defconfig, and it appears that the
-generated code doesn't change. I forgot who requested the addition
-during the review process, but I initially thought it would either
-improve the generated code or leave it unchanged without significantly
-increasing the source code size.
-
-However, if there's no actual difference in the generated code, maybe
-let's just remove it?
-
-Regards,
-Kuan-Wei
-
-> > While more efficient implementations may exist, further optimization is
-> > postponed until a use case in performance-critical paths arises.
-> > 
-> > Subsequent patches refactor various kernel components to replace
-> > open-coded parity logic with the new helper, reducing code duplication
-> > and improving consistency.
-> > 
-> > Co-developed-by: Yu-Chun Lin <eleanor15x@gmail.com>
-> > Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-> > Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-> > ---
-> > 
-> > To H. Peter:
-> > I understand your preference for a parity8/16/32/64() style interface,
-> > and I agree that such a design would better accommodate potential
-> > arch-specific implementations. However, I suspect there are very few,
-> > if any, users who care about the performance of parity calculations
-> > enough to warrant such optimizations. So my inclination is to defer any
-> > arch-specific or optimized implementations until we see parity_odd()
-> > being used in hot paths.
-> > 
-> > Changes in v4:
-> > - Rename parity8() to parity_odd().
-> > - Change the argument type from u8 to u64.
-> > - Use a single parity_odd() function.
-> > 
-> > Changes in v3:
-> > - Avoid using __builtin_parity.
-> > - Change return type to bool.
-> > - Drop parity() macro.
-> > - Change parityXX() << y to !!parityXX() << y.
-> > 
-> > Changes in v2:
-> > - Provide fallback functions for __builtin_parity() when the compiler
-> >   decides not to inline it
-> > - Use __builtin_parity() when no architecture-specific implementation
-> >   is available
-> > - Optimize for constant folding when val is a compile-time constant
-> > - Add a generic parity() macro
-> > - Drop the x86 bootflag conversion patch since it has been merged into
-> >   the tip tree
-> > 
-> > v3: https://lore.kernel.org/lkml/20250306162541.2633025-1-visitorckw@gmail.com/
-> > v1: https://lore.kernel.org/lkml/20250223164217.2139331-1-visitorckw@gmail.com/
-> > v2: https://lore.kernel.org/lkml/20250301142409.2513835-1-visitorckw@gmail.com/
-> > 
-> > Kuan-Wei Chiu (13):
-> >   bitops: Change parity8() to parity_odd() with u64 input and bool
-> >     return type
-> >   media: media/test_drivers: Replace open-coded parity calculation with
-> >     parity_odd()
-> >   media: pci: cx18-av-vbi: Replace open-coded parity calculation with
-> >     parity_odd()
-> >   media: saa7115: Replace open-coded parity calculation with
-> >     parity_odd()
-> >   serial: max3100: Replace open-coded parity calculation with
-> >     parity_odd()
-> >   lib/bch: Replace open-coded parity calculation with parity_odd()
-> >   Input: joystick - Replace open-coded parity calculation with
-> >     parity_odd()
-> >   net: ethernet: oa_tc6: Replace open-coded parity calculation with
-> >     parity_odd()
-> >   wifi: brcm80211: Replace open-coded parity calculation with
-> >     parity_odd()
-> >   drm/bridge: dw-hdmi: Replace open-coded parity calculation with
-> >     parity_odd()
-> >   mtd: ssfdc: Replace open-coded parity calculation with parity_odd()
-> >   fsi: i2cr: Replace open-coded parity calculation with parity_odd()
-> >   nfp: bpf: Replace open-coded parity calculation with parity_odd()
-> > 
-> >  arch/x86/kernel/bootflag.c                    |  4 +--
-> >  drivers/fsi/fsi-master-i2cr.c                 | 20 +++------------
-> >  .../drm/bridge/synopsys/dw-hdmi-ahb-audio.c   |  8 ++----
-> >  drivers/hwmon/spd5118.c                       |  2 +-
-> >  drivers/i3c/master/dw-i3c-master.c            |  2 +-
-> >  drivers/i3c/master/i3c-master-cdns.c          |  2 +-
-> >  drivers/i3c/master/mipi-i3c-hci/dat_v1.c      |  2 +-
-> >  drivers/input/joystick/grip_mp.c              | 17 ++-----------
-> >  drivers/input/joystick/sidewinder.c           | 25 ++++---------------
-> >  drivers/media/i2c/saa7115.c                   | 12 ++-------
-> >  drivers/media/pci/cx18/cx18-av-vbi.c          | 12 ++-------
-> >  .../media/test-drivers/vivid/vivid-vbi-gen.c  |  8 ++----
-> >  drivers/mtd/ssfdc.c                           | 20 +++------------
-> >  drivers/net/ethernet/netronome/nfp/nfp_asm.c  |  7 +-----
-> >  drivers/net/ethernet/oa_tc6.c                 | 19 +++-----------
-> >  .../broadcom/brcm80211/brcmsmac/dma.c         | 18 ++-----------
-> >  drivers/tty/serial/max3100.c                  |  3 ++-
-> >  include/linux/bitops.h                        | 19 ++++++++------
-> >  lib/bch.c                                     | 14 +----------
-> >  19 files changed, 49 insertions(+), 165 deletions(-)
-> 
-> OK, now it looks like a nice consolidation and simplification of code
-> base. Thanks for the work.
-> 
-> Thanks,
-> Yury
