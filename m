@@ -1,215 +1,230 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06348263C78
-	for <netdev@vger.kernel.org>; Wed,  9 Apr 2025 12:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744203143; cv=none; b=Wc6FN7sZ0O8iD4m1cqGQgDVf145ffCdNJSvCuCKDDzNrzQRwH4yk5Z/7mtPCOE956/v1czj0EnGd3R8eZBqDyZ4U+CG8KiHqzayojG+Q6ldscb7GqiOkycK1BSvRz4bmcr/BBB8mP0atAFYtB+U1vpADQiDig6UygjoJM2lOxqM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744203143; c=relaxed/simple;
-	bh=VRVdHQosnpdghOkblzY+Q6O7G0A0ldhMteIRbIkzuHY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 References; b=LoiMhBUyMNIULzo4iyzbE0uB4oxO9h1cG3R6HM+NMhShgb6sG2Wnq7+qIMW7DOmyK2V5HCjMKwmYQvNmF48jV4cxYJ+tuNH41yqHGGPcZfYtcbNxXSkA/v8sfKzH1ltTmeE2Dpc8aX77ZzGXXaKyeEFkbRrIsaG17qpEReojvt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=partner.samsung.com; spf=pass smtp.mailfrom=partner.samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=bijmABSU; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=partner.samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=partner.samsung.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D3D25DCE9
+	for <netdev@vger.kernel.org>; Wed,  9 Apr 2025 12:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744203383; cv=fail; b=FbEsKY7kuz85c3XTBqMxVriLs+EHX3Y1aJ5/A2LAoTkmcBSO1Q/fnNDiJZXgqUgvreoVg+YgXxcYRGc2PjHm0pqXs878D/IQKFReW2keVuYIYW8r+vW0911XPTIpzSStWCEvOm98JThDK9D9SXVz2PduRGzZ9Owsw1prV3mzZag=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744203383; c=relaxed/simple;
+	bh=+SO5PypOzvfu4OzSZ3H8qkRuKm/cXwu+lJfLmp6mHcQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Vz4aRryvHJ+qo0PtFuNi9k3kiRUTeCdTPwM0AFzEfvw/sGAeMm/71ceSztPmOx0oLg9YZDkFPCSBp1SoKICz/c7hvwS7ahBnOKWDw0MKERvu3NjtA1OgWL30LkcMQTyrLaVxouruv8ek+b2TgkPnLl8en9SQvAhUCenJ405zg/U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ItSssF9I; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="bijmABSU"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250409125216euoutp02eea09b511faec6adf44bc306aed1e8ef~0p4MLFJ9X2353723537euoutp02W
-	for <netdev@vger.kernel.org>; Wed,  9 Apr 2025 12:52:16 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250409125216euoutp02eea09b511faec6adf44bc306aed1e8ef~0p4MLFJ9X2353723537euoutp02W
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1744203137;
-	bh=d4Y7SWFI4qVzd8NlSNxlD8Ff/ZD2SwDfY5q3CblmY7g=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=bijmABSUltROHCz0+LgBRXSBu6ooK+6V9Mfi0Y6T6YQg2ukPCjjX3JI+/JQcW9o5/
-	 ttLfd8MJEtizuMnzT3rjazezu4zvbzHGmp1AIVPMGEgk0+X+0KBjB2BKes7D6/Frhx
-	 lXL6lonKnJJa+ir9cqnqXff3BBN9+bYyATM2XtH0=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-	20250409125216eucas1p1453b5f9e90636a05728dcc6173dc4531~0p4L8PL5M1939619396eucas1p1i;
-	Wed,  9 Apr 2025 12:52:16 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-	eusmges3new.samsung.com (EUCPMTA) with SMTP id FB.22.20397.08D66F76; Wed,  9
-	Apr 2025 13:52:16 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250409125216eucas1p150b189cd13807197a233718302103a02~0p4Leaiy90659606596eucas1p1V;
-	Wed,  9 Apr 2025 12:52:16 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20250409125216eusmtrp11e8b63b62e7462829208962a12713787~0p4LdzomC0724607246eusmtrp1j;
-	Wed,  9 Apr 2025 12:52:16 +0000 (GMT)
-X-AuditID: cbfec7f5-e59c770000004fad-53-67f66d8050f5
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-	eusmgms2.samsung.com (EUCPMTA) with SMTP id ED.1D.19654.08D66F76; Wed,  9
-	Apr 2025 13:52:16 +0100 (BST)
-Received: from localhost.localdomain (unknown [106.210.135.126]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250409125215eusmtip26ea0b30a2e1e7930bd611bbc1d4e540d~0p4LCrRvT2770527705eusmtip2u;
-	Wed,  9 Apr 2025 12:52:15 +0000 (GMT)
-From: "e.kubanski" <e.kubanski@partner.samsung.com>
-To: linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Cc: bjorn@kernel.org, magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com, jonathan.lemon@gmail.com, "e.kubanski"
-	<e.kubanski@partner.samsung.com>
-Subject: [PATCH] xsk: Fix race condition in AF_XDP generic RX path
-Date: Wed,  9 Apr 2025 14:49:50 +0200
-Message-Id: <20250409124950.58819-1-e.kubanski@partner.samsung.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ItSssF9I"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744203381; x=1775739381;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=+SO5PypOzvfu4OzSZ3H8qkRuKm/cXwu+lJfLmp6mHcQ=;
+  b=ItSssF9IPmcKJb6851kvlm/r6ag0o9b8X/9e1OyrmVbmt8H1bya7SgUA
+   Cs1P+kC2NuyFDH9VNtgQI779g7ieby1quWX0HE55DbrF4x5iQdX2sJSc3
+   1Fa2qbrgltpSdPmO7dPdAa5K8chmW/NWHZv/nIhp0m7OTnm+x4LMhvcr9
+   AtWMqGeptrGaZFfev8fF/2Rp6XTVUifa2/L5y/OmQ5lTH9acKNihmA5CT
+   rQ9B2Re4P+uf70jkNOnO8k0YgJnot59r3TnLEx9KeZYsG7qPA8/E5xsTt
+   nRktRzPeeSygk0/+thvO60Pp1QYAenzsX/MNP97oa+Y0W9ZMMwdbGkRUt
+   Q==;
+X-CSE-ConnectionGUID: dLebx4soSFGX3gt9+J4NCw==
+X-CSE-MsgGUID: vDNu0hqGTtuDsSHVs4vOHQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="45688802"
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
+   d="scan'208";a="45688802"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 05:56:02 -0700
+X-CSE-ConnectionGUID: D1GlX/jARa+RL667FyIGlA==
+X-CSE-MsgGUID: LffeP6oNQb+P/JxMLVi8BA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
+   d="scan'208";a="133788228"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 05:56:01 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Wed, 9 Apr 2025 05:56:01 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Wed, 9 Apr 2025 05:56:01 -0700
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.42) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Wed, 9 Apr 2025 05:56:01 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w1cZW4YTGUj/bDy1O/C6Oupi+xUYfg7JO6tZ7v0OlgieFCKjj5FId+ouUOZ/0bQLl7PgSCD3zIbJh23NmChR4o3vu5+amNZF2fjBbOBX/xPPhqFlKXgLeYex+uyNNx/P45k5sXIgKVFIGwfcpvcK7VcFAqLTFqXgFzuuX1n7v2hblMs3bxvuaDgr/EXS74dnOQhEDakmcBdT6HAyeZc9k5QzJQ4vkoZ6dK5SMfMVAwQH99aEfnrQUYK4MtHamqlj9w/5+0S4Gk3V71Xrt11JQizKKDlCmyZ6AHq1lf9qAzDYK44p3FB49RYJwniMYCvn9JzwXbj0Fov5V8YBbTK6SQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tP322QtpNWVtZ8oDaDfiCulPOD567erHGDc9omsITjk=;
+ b=aKoAdTvVhVz/aeAW6MZZ5v6R0oAR1W8J4SX4BMKYgScvvAfVMZ77cD6hND6CbrIjds6nY1+wunUqrk0MgG82Q4fBCwg6fNSF34jwUERYTBjH/832MT7FgBAs2DHXLQB4/oeCOIbOsjBoOgJHDmnaX3CuVne6r0lJZYTiVoVQnyU8ysv2EPgwwUlfcuVWna42MM/hiaGAWgVnU0v4qFvUqGvJ6s+qMwJ3AN/31HprMdrjgKunN8Ik3Mmuv5V+sxlDn8h+s3D4cKP3JY8zf3XRC6PkJO+r8iB42U4D6DzX5x1zqP5/tR+qBzkyigqR4+JBXhhHl2CnrWOgJdwrgUFv+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MW4PR11MB5889.namprd11.prod.outlook.com (2603:10b6:303:168::10)
+ by CY5PR11MB6163.namprd11.prod.outlook.com (2603:10b6:930:28::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.36; Wed, 9 Apr
+ 2025 12:55:58 +0000
+Received: from MW4PR11MB5889.namprd11.prod.outlook.com
+ ([fe80::89d6:5ccc:1dcc:3073]) by MW4PR11MB5889.namprd11.prod.outlook.com
+ ([fe80::89d6:5ccc:1dcc:3073%3]) with mapi id 15.20.8632.017; Wed, 9 Apr 2025
+ 12:55:58 +0000
+From: "Olech, Milena" <milena.olech@intel.com>
+To: "Keller, Jacob E" <jacob.e.keller@intel.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Willem de Bruijn <willemb@google.com>, "Mina
+ Almasry" <almasrymina@google.com>, "Salin, Samuel" <samuel.salin@intel.com>
+Subject: RE: [Intel-wired-lan] [PATCH v10 iwl-next 05/11] idpf: negotiate PTP
+ capabilities and get PTP clock
+Thread-Topic: [Intel-wired-lan] [PATCH v10 iwl-next 05/11] idpf: negotiate PTP
+ capabilities and get PTP clock
+Thread-Index: AQHbqHMGVy06SOBcdUKcRiBP1lgo17OaRcWAgAEBF8A=
+Date: Wed, 9 Apr 2025 12:55:58 +0000
+Message-ID: <MW4PR11MB588927730666406EEDA9B5A58EB42@MW4PR11MB5889.namprd11.prod.outlook.com>
+References: <20250408103240.30287-2-milena.olech@intel.com>
+ <20250408103240.30287-13-milena.olech@intel.com>
+ <fd2098e1-c5c5-4cf8-b34e-ebe0bd288248@intel.com>
+In-Reply-To: <fd2098e1-c5c5-4cf8-b34e-ebe0bd288248@intel.com>
+Accept-Language: en-US, pl-PL
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MW4PR11MB5889:EE_|CY5PR11MB6163:EE_
+x-ms-office365-filtering-correlation-id: ae19db89-2276-4796-fd97-08dd7765dfcb
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?qGUhzW1L94bdLm7xiz/jn1cpXRj87/7iTV92kkjVHvAYTeSqEtf77IqiXLMD?=
+ =?us-ascii?Q?kLPer783zJ13YlRN+D/v2EjSk0LOPuXCOs18esoqc3PNmsjDlGv5AoLxUsKW?=
+ =?us-ascii?Q?7AlUn8eFKoC8GvnyqYZOHawl4pSDSWeu72a1v19j4LLofQUfdNa/OvuCxtoF?=
+ =?us-ascii?Q?iCxSC0cmp4qqkh9SsMxcpyyFnn6hG75AUi2o81qnqETrVYw6tA0qbXM18Hum?=
+ =?us-ascii?Q?xI2o500IW9dEyHX3MhF1Br2mTuqmPPiS3COBGrlbRAIZFgCpjcYQmuSZoOWX?=
+ =?us-ascii?Q?2501y7HYiLxxy4SectgLZz+6vxiWhRlcpdhPlNAH2XOf5oCvFq6VksTC6uib?=
+ =?us-ascii?Q?FNG9JAVVOsm+lO5pjc6dg5KlxK6yoXRx+D7ncWAxOW/xhRoKwfXpOLV3Z9dw?=
+ =?us-ascii?Q?L69B1u6PA+EYh++1mHnX4PBuPHHxwk6IuzwFB9Znrtm929vvZn41g462P1MQ?=
+ =?us-ascii?Q?XRaQJUNdqTrPTJnkDBqWyRP/GyaFXvdM9iik7H1ZSSSJJL741QKDHmyzVkEL?=
+ =?us-ascii?Q?wb0H14VbV9sRytPxc/zOk9I1TgYpHZN+FK+nZ1Nd82w5gYSr2LAbCuV6+Sdx?=
+ =?us-ascii?Q?nzMJu9OMom2uUm/2O1nTZyymhSQPezikNbLYj1bipbfTNovStO133Yf21O8m?=
+ =?us-ascii?Q?d34B3wR8RmrDWNTHQdUC0+l8En1VE6G/T0u39fjO03OhgNU2P/gfp1+cEFGK?=
+ =?us-ascii?Q?O1npfYfgd4MvwE57LLF5HU7CdXJDzgnb1u1Ins9YkeEUSjqzyptmavT0jBBJ?=
+ =?us-ascii?Q?CIPgknVEf1mhPJIGS6BByawKNNh5GMn7p9zjAJzRFhaSydvSxDHMy1kDEiEr?=
+ =?us-ascii?Q?7SMPquumlxQdrlvBil5wfqDneD4qJClelCi2UrMU2KircCG6X54XaYPfLYHc?=
+ =?us-ascii?Q?ckWyOT3lfZ0ZktHx7nHrieilyXJqOP9nCNKTmTvG1i7Z7JpDwzgyrVtAVS1n?=
+ =?us-ascii?Q?YSE3t5NSeFi5i2xJyK1bATnnuFY8GjQoPnlDSB20bn+D3Ddl5IO9WKmuhLmo?=
+ =?us-ascii?Q?SsBkdkOplAX+xOA0oudxH4oJTke7uSQlO7IkOUj3jLKyxvPWNLMvK9/qBIO9?=
+ =?us-ascii?Q?PP7gw8tBPw9Lf+m5JoBrN5eQumOPwGiuHfBRcZoL54eI2LGLR7rMWpv+zaFU?=
+ =?us-ascii?Q?M8kb7HwPhBV4kp9MzAlxMf6oWGv/THBTU/3gLDbI0saGKeJKHpKccP7Z4d8z?=
+ =?us-ascii?Q?vvDvwGSlL+NVAQjEYlvEo5P2Wi0B/CyobEMy8tIjP+Ko5gMVE3ECzx2UMqVS?=
+ =?us-ascii?Q?Eo00z+AOXmGsE3+zsnZ3on6OzBTqEE0kBzh0irtBw3rbiWxgw8+tqxVvUf0K?=
+ =?us-ascii?Q?2IyHZhkzGEFaBPwqhG7uIAayhQ+O6B4A/L/rG/fhm/qI5Fj8ecYBg1g2alzd?=
+ =?us-ascii?Q?ziNfdqsDsymXA0W/930yNqE4T3glqiJF8+1ZgDfSyyHUTZUHVyepnpo7hGHq?=
+ =?us-ascii?Q?h59y2bv0r+pToB5OtX0NKXZ2YS3GrBru?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5889.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?rvjSnE2wVzjxY2nIMVC4uXeseJZpVWZrtkOSyh6b5hKFUbADyG5cgLF3Z1Xv?=
+ =?us-ascii?Q?UMnwE/vG+5bgcl73WEQEB0RCADLco1UKt4twpL5Oli+oRUBwhEWI4DJthfmR?=
+ =?us-ascii?Q?2DRMAtE8AWCfznqF5g7616+0ffxr4IWzvpjGIGIj9GK7WQZl2NysbnmGh9Wr?=
+ =?us-ascii?Q?ZT/IkrxxJwYWfyeQAy+buU58p7BV/hIeGdoYVpKhN3vf4adE1FXAE6Xb3kBO?=
+ =?us-ascii?Q?MGp8xqMZE1gG2mDkWl0Yl0zoGnosSAsowYpiLrnXspijnJRocQ4FkJBAs2/e?=
+ =?us-ascii?Q?hec1yQiwxgVVMPWeVJXfZ0ZUlLF7kCRiuvPNXU7FdDQsnaMkDPbAJUOgmFUJ?=
+ =?us-ascii?Q?khxTgR4K7mtujVm07JxqhjImeJwhT3DpbMufmUcU79dh0GeH6IGGwY8P4j0q?=
+ =?us-ascii?Q?5JgmNhveW/IMqNMZKflJxhOiI8pcQi+c2XZ/VRUvlFBkGwjI+J7qRmZMH6FX?=
+ =?us-ascii?Q?YmOo7W9v6/nQnCsBOfwNv0jwTYOfOPX9ZxQEUz8EXguznN5pfH4auhud0Fkk?=
+ =?us-ascii?Q?C/HMSBwZ7uwM2eL1QhZuzPcyxuTBGMCvEnebTasJhexDktWcPt5fSqo0XWza?=
+ =?us-ascii?Q?5gZpXUNqJABZp09vnHD+wEadSeifyZgUFA/H9N2dMS6VkhYmbFZEKCFtAvpq?=
+ =?us-ascii?Q?OTnLY2JAcjXlF2KDoMCI3EYd8QGA7UYVDtBNCfK1S7GNYoLCV7WTuK/Cu2/W?=
+ =?us-ascii?Q?ZbPEZg2USxv9AWVvwg6I5/wU334QqMMv/YXLX69eez14Je1+IkfUKhq0pLmA?=
+ =?us-ascii?Q?kmVENOSeDPcIIPY2SjaE3flwmBBwpL3YKl9e+MH+WyZokISd53/69DESALON?=
+ =?us-ascii?Q?oYGQn+LHWdgI2aw5YEkYqdpUcdqbAAuTnD6rlSmtiRPRvUaJUmVX9U5OlX08?=
+ =?us-ascii?Q?2U86zigBUjWucsusLUYMX93c/o5yv1Nd6q5wXgWu1QVTdUASkoLdwVuLByTi?=
+ =?us-ascii?Q?pJ3MgRRreLu5bsItVYnu+5qmyc34n7gGZTwruT/nJ3G5Jx50ZlNj5ntmIs1T?=
+ =?us-ascii?Q?JFJmGmCjf3+AUjVgSwMu7g3zCVELUmNKj4CHxBsefHevHTROtbp43bpv4vKe?=
+ =?us-ascii?Q?+V/ZFRuE5UqXId3NNCqniago9o0EdCnrocwyrRnB0iQVfttdF5PyCRQ6Q9oB?=
+ =?us-ascii?Q?ZEX1sqgcYLtnfla7RnzerC6FrAqfnhM97A1/jcnfxj6yUOc+pE5ii/4SXUpD?=
+ =?us-ascii?Q?DLxeAesr2HVhzNq/BbU7CVpX1s9F1CLcgn44xadBB+Eye7xTaRfAN/rHqbel?=
+ =?us-ascii?Q?4nJOsnZPc6ecv/hagdIIYgAjSAJ2pTmFcc2pAosA3jlbzcijvSMeiiWhCWzO?=
+ =?us-ascii?Q?mLZ7Rfk4aUvUHcaj2vImKoGfCjSPPSbkdz6TK+OUM57YxnRZpobH0cNHfWm0?=
+ =?us-ascii?Q?KZvyrxD2HV2LCMWX/PimLVC/fQERUmx7Jd3ABHL2I5mPuZCYRkFl8/iqNVR7?=
+ =?us-ascii?Q?ck+jO5FsYoG61VFebSWH0tqFB35NopFUuvGKsKJprykiv2fAOR8GI5rMNfnh?=
+ =?us-ascii?Q?4wkjdPH4Hjhi69lPDfVBDxonXhawZ95g2qjNggqH2Te6NbtAkMkwJJ8i3Pd1?=
+ =?us-ascii?Q?D7hU4UEcuhi+A4TemxDCigxFfNwVeT20nJL5D8+F?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprIKsWRmVeSWpSXmKPExsWy7djP87oNud/SDa60qVpsfb+KxeLB7KXM
-	FrvWzWS2uLxrDpvFzePPWSxWHDrBbnFsgZgDu8fOWXfZPRbvecnksWlVJ5vHwXd7mDw+b5IL
-	YI3isklJzcksSy3St0vgypj07AZbwWPpip7dF9gaGL+LdTFyckgImEh0Pf3E3MXIxSEksIJR
-	Yv2j74wQzhdGiUsLPzOCVAkJfGaU2LSXB6Zj/8XFrBBFyxklTm78BdX+lVHiwLPbLCBVbALG
-	Ek3f94PZIgIWEpsWfQPrYBaYxSixZM8usISwgJPEwpV/2EFsFgFVib8n74LZvALOEgdvLWCE
-	WCcvsf/gWWaIuKDEyZlPwHqZgeLNW2eDbZYQmMsh8XnSFTaIBheJ/imbWCBsYYlXx7ewQ9gy
-	Eqcn97BANDQzSsya2ckO4fQwSqy5egVoHQeQYy2x9qQtiMksoCmxfpc+RK+jxNFZD9khKvgk
-	brwVhLiBT2LStunMEGFeiY42IYhqHYkbF59DbZWS+D5zM9Q1HhJbT+5gg4RorERn1wKWCYwK
-	s5B8NgvJZ7MQbljAyLyKUTy1tDg3PbXYOC+1XK84Mbe4NC9dLzk/dxMjMNWc/nf86w7GFa8+
-	6h1iZOJgPMQowcGsJML7duKXdCHelMTKqtSi/Pii0pzU4kOM0hwsSuK8i/a3pgsJpCeWpGan
-	phakFsFkmTg4pRqYhLQ4FqZMSeS9Piv8QuexfZvKNWOWaLMdzk1tCbdds+7VYcv/8wKqfjoq
-	fTaV4nKwOvPStul020T+q8ahP5IMt+vf3DVxUcF7Nc7KDYY3tR32WK5aFqp+/mhTkpVlxP7u
-	c/0KZ76yRWVNqj584MAtH5kl34JzT23ZfdPjW59btPb2k++byg60Z0tN1crxMFynWlE/Z84j
-	yZYlO+vuqJ1n4XQ5L3z42E0m5syXOquyJ61V5axPvZN5t1zl4spCDo+gnYXXMjsCPf80mKRl
-	eKSZr+8vNq98tHBOzOEMx91ng/Z736lgcOL8LPRI3K3Hfr5rS6h2uNq5335pnbx38nZ97UsN
-	N3z57XF1sGr9mZNKLMUZiYZazEXFiQBV1rXYpAMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrBLMWRmVeSWpSXmKPExsVy+t/xe7oNud/SDaZ8ZbHY+n4Vi8WD2UuZ
-	LXatm8lscXnXHDaLm8efs1isOHSC3eLYAjEHdo+ds+6yeyze85LJY9OqTjaPg+/2MHl83iQX
-	wBqlZ1OUX1qSqpCRX1xiqxRtaGGkZ2hpoWdkYqlnaGwea2VkqqRvZ5OSmpNZllqkb5eglzHp
-	2Q22gsfSFT27L7A1MH4X62Lk5JAQMJHYf3ExaxcjF4eQwFJGiV9fZzFCJKQk/qz7wwxhC0v8
-	udbFBlH0mVHi+5QudpAEm4CxRNP3/SwgtoiAlcSD2/+YQYqYBeYxSszZtZ4VJCEs4CSxcOUf
-	sAYWAVWJvyfvgtm8As4SB28tgNomL7H/4FlmiLigxMmZT8CGMgPFm7fOZp7AyDcLSWoWktQC
-	RqZVjCKppcW56bnFRnrFibnFpXnpesn5uZsYgUG+7djPLTsYV776qHeIkYmD8RCjBAezkgjv
-	24lf0oV4UxIrq1KL8uOLSnNSiw8xmgLdN5FZSjQ5HxhneSXxhmYGpoYmZpYGppZmxkrivGxX
-	zqcJCaQnlqRmp6YWpBbB9DFxcEo1MHFV926sZDTeJxUsrPHggY3Ckr3qvSFrs9J3ni6XvVpc
-	6Z1Qmhw5MXFx78/0k+v3nRSouyJ7U/Kj1pNpUl9KasRM1PhNju2ZeuqTRO8q60mH59V2H2d5
-	lcH1p3DNyx/z8ufXl57LTwcC7/9pFRLLJxq0m3xkYFkpufbfZ5+/pR9K29LKrk5LvrShTYfx
-	Oe+KbbNn3uA8sr3CTKUq7stRc8u7Oqdtr83J1WG9WDG9yp1N4HSeGb+iSO7HKntR2+fKl8JZ
-	754UiLeLDLVZHGiW5Px19+xLOxls97FtmSNo+OxzpMd2lke8O77eDF5fJR/s3BXioF79e1ed
-	67H2jrU/UvMrlnesrxZ/pVO700uJpTgj0VCLuag4EQBCJHS2+wIAAA==
-X-CMS-MailID: 20250409125216eucas1p150b189cd13807197a233718302103a02
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250409125216eucas1p150b189cd13807197a233718302103a02
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20250409125216eucas1p150b189cd13807197a233718302103a02
-References: <CGME20250409125216eucas1p150b189cd13807197a233718302103a02@eucas1p1.samsung.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5889.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ae19db89-2276-4796-fd97-08dd7765dfcb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2025 12:55:58.6366
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 6FJhwFfmnz9xHF7lh251LCWyU/b1M8doV9whlmFBh54V1gR8qLjgglOobZVdXt6Mfr+fGmG2k88Dv8AZDyIvmw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6163
+X-OriginatorOrg: intel.com
 
-rx_lock moved from xsk_socket to xsk_buff_pool.
-Previous synchronization didn't take care of
-shared umem mode in generic RX path where sockets
-share the same xsk_buff_pool.
+On 4/8/2025 11:15 PM, Jacob Keller wrote:
 
-RX queue is exclusive to xsk_socket, while FILL
-queue can be shared between multiple sockets.
-This could result in race condition where two
-CPU cores access RX path of two different sockets
-sharing the same umem.
+>On 4/8/2025 3:30 AM, Milena Olech wrote:
+>> +static u64 idpf_ptp_read_src_clk_reg_direct(struct idpf_adapter *adapte=
+r,
+>> +					    struct ptp_system_timestamp *sts)
+>> +{
+>> +	struct idpf_ptp *ptp =3D adapter->ptp;
+>> +	u32 hi, lo;
+>> +
+>> +	spin_lock(&ptp->read_dev_clk_lock);
+>> +
+>> +	/* Read the system timestamp pre PHC read */
+>> +	ptp_read_system_prets(sts);
+>> +
+>> +	idpf_ptp_enable_shtime(adapter);
+>> +
+>> +	/* Read the system timestamp post PHC read */
+>> +	ptp_read_system_postts(sts);
+>> +
+>> +	lo =3D readl(ptp->dev_clk_regs.dev_clk_ns_l);
+>> +	hi =3D readl(ptp->dev_clk_regs.dev_clk_ns_h);
+>> +
+>> +	spin_unlock(&ptp->read_dev_clk_lock);
+>> +
+>> +	return ((u64)hi << 32) | lo;
+>> +}
+>v9 had comments regarding the latching of the registers for direct
+>access. Can you confirm whether this is known to be safe, or if you need
+>to implement a 3-part read like we do in ice and other hardware? Even
+>with a spinlock there could be issues with rollover in the hardware I thin=
+k?
+>
 
-Now both queues are protected by acquiring spinlock
-in shared xsk_buff_pool.
+So in this model we have shadow registers and we trigger HW - by writes
+executed in idpf_ptp_enable_shtime - to latch the value. I've made some
+experiments, where I removed this function call, and values in hi/lo
+registers are constantly the same.
 
-Lock contention may be minimized in the future by some
-per-thread FQ buffering.
+In other words, it is safe to read values from hi/lo registers until
+the next latch.
 
-It's safe and necessary to move spin_lock_bh(rx_lock)
-after xsk_rcv_check():
-* xs->pool and spinlock_init is synchronized by
-  xsk_bind() -> xsk_is_bound() memory barriers.
-* xsk_rcv_check() may return true at the moment
-  of xsk_release() or xsk_unbind_dev(),
-  however this will not cause any data races or
-  race conditions. xsk_unbind_dev() removes xdp
-  socket from all maps and waits for completion
-  of all outstanding rx operations. Packets in
-  RX path will either complete safely or drop.
+To my best knowledge, ice does not have any HW support, that's why all
+these actions are required.
 
-Signed-off-by: Eryk Kubanski <e.kubanski@partner.samsung.com>
----
- include/net/xdp_sock.h      | 3 ---
- include/net/xsk_buff_pool.h | 2 ++
- net/xdp/xsk.c               | 6 +++---
- net/xdp/xsk_buff_pool.c     | 1 +
- 4 files changed, 6 insertions(+), 6 deletions(-)
+Milena
 
-diff --git a/include/net/xdp_sock.h b/include/net/xdp_sock.h
-index bfe625b55d55..df3f5f07bc7c 100644
---- a/include/net/xdp_sock.h
-+++ b/include/net/xdp_sock.h
-@@ -71,9 +71,6 @@ struct xdp_sock {
- 	 */
- 	u32 tx_budget_spent;
- 
--	/* Protects generic receive. */
--	spinlock_t rx_lock;
--
- 	/* Statistics */
- 	u64 rx_dropped;
- 	u64 rx_queue_full;
-diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
-index 50779406bc2d..7f0a75d6563d 100644
---- a/include/net/xsk_buff_pool.h
-+++ b/include/net/xsk_buff_pool.h
-@@ -53,6 +53,8 @@ struct xsk_buff_pool {
- 	refcount_t users;
- 	struct xdp_umem *umem;
- 	struct work_struct work;
-+	/* Protects generic receive in shared and non-shared umem mode. */
-+	spinlock_t rx_lock;
- 	struct list_head free_list;
- 	struct list_head xskb_list;
- 	u32 heads_cnt;
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 89d2bef96469..e2a75f3be237 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -337,13 +337,14 @@ int xsk_generic_rcv(struct xdp_sock *xs, struct xdp_buff *xdp)
- 	u32 len = xdp_get_buff_len(xdp);
- 	int err;
- 
--	spin_lock_bh(&xs->rx_lock);
- 	err = xsk_rcv_check(xs, xdp, len);
- 	if (!err) {
-+		spin_lock_bh(&xs->pool->rx_lock);
- 		err = __xsk_rcv(xs, xdp, len);
- 		xsk_flush(xs);
-+		spin_unlock_bh(&xs->pool->rx_lock);
- 	}
--	spin_unlock_bh(&xs->rx_lock);
-+
- 	return err;
- }
- 
-@@ -1724,7 +1725,6 @@ static int xsk_create(struct net *net, struct socket *sock, int protocol,
- 	xs = xdp_sk(sk);
- 	xs->state = XSK_READY;
- 	mutex_init(&xs->mutex);
--	spin_lock_init(&xs->rx_lock);
- 
- 	INIT_LIST_HEAD(&xs->map_list);
- 	spin_lock_init(&xs->map_list_lock);
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index 1f7975b49657..3a5f16f53178 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -87,6 +87,7 @@ struct xsk_buff_pool *xp_create_and_assign_umem(struct xdp_sock *xs,
- 	pool->addrs = umem->addrs;
- 	pool->tx_metadata_len = umem->tx_metadata_len;
- 	pool->tx_sw_csum = umem->flags & XDP_UMEM_TX_SW_CSUM;
-+	spin_lock_init(&pool->rx_lock);
- 	INIT_LIST_HEAD(&pool->free_list);
- 	INIT_LIST_HEAD(&pool->xskb_list);
- 	INIT_LIST_HEAD(&pool->xsk_tx_list);
--- 
-2.34.1
-
+>Thanks,
+>Jake
+>
