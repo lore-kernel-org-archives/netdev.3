@@ -1,64 +1,64 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFC326FA7D
-	for <netdev@vger.kernel.org>; Wed,  9 Apr 2025 19:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69877277030
+	for <netdev@vger.kernel.org>; Wed,  9 Apr 2025 19:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744225494; cv=none; b=nNetP9Vfd3hYCFokKjwP6M0tEXgmhiVFtvE6zkntGaS2A7vRKvmxrpFdwYw146Tc6Knlo1yeNT0YuJ3k4BRz65iie3PjBE2FO+v9k9Ro5SiwV9cXQH5mQQw3UDL4srgs7zoYHpPEAngKiX5BbumZkh3Z3WFXEXVYYqSRPWmsDFg=
+	t=1744226045; cv=none; b=kJq0PyLoZfqaKGVlnSeCwMvX2lr7QD3dimWuAtqLTKQL7C4vvy6WU6gCOQLeoM5wYCBRnot7e4EopdQNEcDjkJOHchiPu3vrsKAK7qPljL/4WE4T6TFR3HAYI5TrpnoCT/MjRzjzh3FcK8Og+ijEV8IBPbJw03UZpntJRa2WWy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744225494; c=relaxed/simple;
-	bh=//q1LS5WEdOilDT6wEnyL33+dds4nyrqCEah+xpaSOs=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=hcz/h4A5cMfBdf0FGS2AtVhZ3i1KxQ7Oc/Tx47iXwEGzHoTGjTL0SwJ11YMnPOY1KTbXpNmElulxu64BLqANTifUEv50gqSFsFKbcYR+CG2zfMyNxA7piD2WvpP67pyWyHSZzIgGxkQdjtaCv23oCPXM749iXho+RvTHbB1b0zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EFfetcDU; arc=none smtp.client-ip=209.85.221.47
+	s=arc-20240116; t=1744226045; c=relaxed/simple;
+	bh=eG1StsHue3tIhDRcS6zsgs2j1rethZ77VLlGM2qY54I=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=NBatseswX31zntwFUjCDXNWkE7zsfrPGpeLOhw5srWHDJ6z5AM4cQwMGe/Ew5eqUX+vhxR9CDI2ao7XbCF9VRkAnSaThymzGHwq3Gm0CU5V+xW37BozPjR0fzzz+gS+Rq81cA+Qz/t7dwChvymzjI0L2v1sPj6mOMfLUawk/KhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=URXS0ZIr; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EFfetcDU"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-39c2688619bso4499785f8f.1
-        for <netdev@vger.kernel.org>; Wed, 09 Apr 2025 12:04:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="URXS0ZIr"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43cfe574976so480675e9.1
+        for <netdev@vger.kernel.org>; Wed, 09 Apr 2025 12:14:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744225491; x=1744830291; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744226041; x=1744830841; darn=vger.kernel.org;
         h=content-transfer-encoding:autocrypt:content-language:cc:to:subject
          :from:user-agent:mime-version:date:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=luu8YWj9y19iF4SSN+1kuvaQmQlQs97ej6hpEWaXKPk=;
-        b=EFfetcDUmM4it1UBrDnTJlUPk6EzJmyHhweqzFoq0O3xOQIUGNV/50b1LoIA8IbF57
-         mvLIAoa9oP3K9ctX80QJxJV93wtGHgcXVkAVELOzHdHKRT2Zed9pKjdMPxcDi+3zSG4X
-         smNPIxIKdUxNYID+6hA9kAotTApoOyRf0447gUL2CjG4ChGuLvcbEJb7XmwvLXB7uC5z
-         XWfJWTXDwWFkzqGPqTToyybvrOt8GyTeOmyW1pVrK4xMtEAT574N2kC6XHOTidK1/6h0
-         D2tS5eTFRLf7Cc3KRBZBXUdWHCsNOPBq6otagxGx0KxmwhdaFcF59Wk5T6irqOCr0ZJA
-         g1xA==
+        bh=ivQ+hIhrdCswlwgMehZOoS7QxuUmjoXxy0hZgiwuP6A=;
+        b=URXS0ZIrQYMX2X3MG1LYsnh2TuOl68jwTGv6DZf2HsNwDpyyDNbttBW8FYw6pLOOCN
+         l/a+ha2cKSrWfu0YclaCNYbYK6JAkvgycxpW81YcwWtusPwQW1DJlcjmY0sDOjXzg2yl
+         CLb8VPm+/E+PLj+zn/FMACsUMMMjyHh/UIEzU1qd0kKQssQ4uWiNGvW5DGRGb+Gf6y1j
+         avGccn6q/e9gecOdPR7byuBwKqO4QrhYvVnzmrHAc9MYHykrFosqcTxVY8B5YE8r9dVH
+         WJ/ilXMZ8gcDN+0OwgoQlbxczGXLjC6klZfy9HhG38nPpLnvsSGz3ZSOmPBajVd/1vJM
+         RtJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744225491; x=1744830291;
+        d=1e100.net; s=20230601; t=1744226041; x=1744830841;
         h=content-transfer-encoding:autocrypt:content-language:cc:to:subject
          :from:user-agent:mime-version:date:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=luu8YWj9y19iF4SSN+1kuvaQmQlQs97ej6hpEWaXKPk=;
-        b=F794OUQGpjY39ZpIZm24wdTTCYj06prnxsko5TyA2jA8bHWAh1crZYSiJMnD2vG6M/
-         305ovBgK4bTtuS5rP2XhQ+q/mxITQ1gmtsavWeL9tw1iFHY4fgUIhubIdACRANO979K7
-         1oKOxgXMRxdjaKRTO8NrYbovro4g00bJq5ioPruZyucrMMQIa6dj6OC5jUTw6thnv546
-         S+JAga8GqhPbiKXZx7+msSsUQ5zB7a5JZa5q44XQSBS7DhTeVhVoAxEY70BaKlhOpB1b
-         v2WD1gnZGBJ1XjGSD6nkHSm9sHM1w2HkgzXdig8a206W7JvTUyhQupzMU0Y+BRzohTJu
-         L3Ng==
-X-Gm-Message-State: AOJu0YxSfAa4RR1Fl1pk2V0mv3IszVo6l3Iu2uuMl4Biwm+L+pY2jvF9
-	jjPbHViZ93/VyS3cDfuYzuGctEecC0+UDrDhxv8wdzKbi3NsdjTt
-X-Gm-Gg: ASbGncu8RN7CU3fP14iFxhIvRCB4IVaLgQA1YCdsS+wn8d7o9nUwJRK1HV0AtdQ4pEf
-	5efCJAFWVpWkgQ36ik5r+Wmf/EaKynZbfdYyLTRZ96PzRNmK3tRwUCFWgNRpTZ0lfyE3tsGVZiR
-	f/aV0njyp6c+9aIW8q95ROxxoIzbHmWwQgV6lB0oEsdZRvNazVdH1rCQptzEuw8mgfsQcfPYkoW
-	R2EiGcsOCimNfB/Yd8K/LLwGV+4lQ0n5mG2hREo5Ic7g6NaUMpUkaxqhFlJdeC5HEH6/DiTTarJ
-	XIR7TsfEGhlDX7eEBma37szxBzOmap//EoyxKB5K3OHCnZ8AK/nm3QfSLr7PoXakml5jy2DxF5b
-	7TJT40eMiqG+pRU20kTsaTZoVL2MUx1ZakEeZNwZomwLKdJx144+N0BiBp6cExv/WN6M/b6G4Rm
-	2sOTHFs8nTtQQfT+43bfWSFSOT120tzKY7
-X-Google-Smtp-Source: AGHT+IEnTo3YuhHbREU/S6fYVgQ0R1TH9bkOu7znU0c7NHYqfqn/wG0zkG0mJ18zJy07X09SZz9SEw==
-X-Received: by 2002:a05:6000:400b:b0:39c:2688:72a0 with SMTP id ffacd0b85a97d-39d87aa89afmr3805697f8f.6.1744225490668;
-        Wed, 09 Apr 2025 12:04:50 -0700 (PDT)
+        bh=ivQ+hIhrdCswlwgMehZOoS7QxuUmjoXxy0hZgiwuP6A=;
+        b=L/2seMsTzCnT+G+ItaqwBeIAIz7jAAggLpYdpxWd9Jh93YaltIdcvbV1GBTGG0q/e6
+         LkNCvwiOkC0u81TfQPvDlkwd293VyZTzE2yzZSQNS3ZBTLiCHLuRXhPFA5+VaE+EHYlA
+         brnl+qsoX46miMjt7PoIYayStgQ9FeT0TqRG640bbfcof49J0P4+5BRCAxcTpROQVzwM
+         k6wjZAXIKa6x5QICs5PtqPJZZ5WanoC9N9OvgMjs0WndE7hXhJZQzmpCJ4D7Wwp1bq8M
+         7qlO83JG4OD7e/RhlEYtrIkvPUqqw81i2KOh8yKx1R6TR7dHQ6Vsas5dQM9nDCSk46nz
+         rBWg==
+X-Gm-Message-State: AOJu0YzJvjIusgBONbYmeemUryLKUzHWX+dvsOyIi6CfCY43LbB6Qkzh
+	1P5MlsyRp+jCdfRQisLsX63EbhsXfN7yMWLvmcTjIWodwlXEvNro
+X-Gm-Gg: ASbGnctPXDqgVv3J8gPkQOKq1NGZiX0sBgJ1rGJMiqRpbDuDnE5FD2/i6k/S27fsWqe
+	ADF5fspOAX2sWyG8fLPdvTFZmijx3DwObwoaWeDXHlJyQ9kx/oTGtbBw7OqGReWUQtNGjwO2Hia
+	jTD3YwJQ6SoonNMwpJCJ+t2WsuGgH1ZcEnlyGM4th/xyx62kqWBc+5ZeKMe6q9HzMeY9AsCMahk
+	kY5cV3Nzt2soWs+6s0dicqlYsJ1DvWk1q/AAXHAR9wQwUvCfdm9PScegg0hJbUdnJe71DAxPv3u
+	hPAEQhBrtCZJ9DR9EmD4uSP0Wc5056RkXr5hq/VeY4LK+3YhAF5J8pxn7V3VqyY5i9rU7YwBkp8
+	94vCIxpB32h78Mvtq4eD8O0jfBQKSc6ZJsCHOuyOGwm9xtcBud9lcn/9rVTPA/G/NZGXMw0AY9m
+	UzWV+BTFl0KMWvGM0/iJnRYUos4CXam4+V
+X-Google-Smtp-Source: AGHT+IF7xirumE3PB74GKEutaOiLu6n3Gz7z9ZV8sj9Z4Gc+zC/iQ+UK41YRaLLyRZcDf2RnLdRQCA==
+X-Received: by 2002:a05:6000:1a8a:b0:391:454:5eb8 with SMTP id ffacd0b85a97d-39d87ce26acmr3998496f8f.48.1744226041366;
+        Wed, 09 Apr 2025 12:14:01 -0700 (PDT)
 Received: from ?IPV6:2a02:3100:9c75:6000:2d50:87f4:9992:caad? (dynamic-2a02-3100-9c75-6000-2d50-87f4-9992-caad.310.pool.telefonica.de. [2a02:3100:9c75:6000:2d50:87f4:9992:caad])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-43f233c817dsm24612045e9.23.2025.04.09.12.04.49
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-43f233c7a75sm25264145e9.18.2025.04.09.12.14.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Apr 2025 12:04:50 -0700 (PDT)
-Message-ID: <b368fd91-57d7-4cb5-9342-98b4d8fe9aea@gmail.com>
-Date: Wed, 9 Apr 2025 21:05:37 +0200
+        Wed, 09 Apr 2025 12:14:00 -0700 (PDT)
+Message-ID: <847b7356-12d6-441b-ade9-4b6e1539b84a@gmail.com>
+Date: Wed, 9 Apr 2025 21:14:47 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,8 +67,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH net-next] r8169: add helper rtl_csi_mod for accessing extended
- config space
+Subject: [PATCH net-next] r8169: add helper rtl8125_phy_param
 To: Realtek linux nic maintainers <nic_swsd@realtek.com>,
  Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
  Jakub Kicinski <kuba@kernel.org>, David Miller <davem@davemloft.net>,
@@ -121,76 +120,83 @@ Autocrypt: addr=hkallweit1@gmail.com; keydata=
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Add a helper for the Realtek-specific mechanism for accessing extended
-config space if native access isn't possible.
-This avoids code duplication.
+The integrated PHY's of RTL8125/8126 have an own mechanism to access
+PHY parameters, similar to what r8168g_phy_param does on earlier PHY
+versions. Add helper rtl8125_phy_param to simplify the code.
 
 Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 26 ++++++++++++++---------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ .../net/ethernet/realtek/r8169_phy_config.c   | 36 +++++++++----------
+ 1 file changed, 16 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 4eebd9cb4..8e62b1095 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -2852,10 +2852,23 @@ static u32 rtl_csi_read(struct rtl8169_private *tp, int addr)
- 		RTL_R32(tp, CSIDR) : ~0;
+diff --git a/drivers/net/ethernet/realtek/r8169_phy_config.c b/drivers/net/ethernet/realtek/r8169_phy_config.c
+index cf95e579c..685610d7b 100644
+--- a/drivers/net/ethernet/realtek/r8169_phy_config.c
++++ b/drivers/net/ethernet/realtek/r8169_phy_config.c
+@@ -50,6 +50,15 @@ static void r8168g_phy_param(struct phy_device *phydev, u16 parm,
+ 	phy_restore_page(phydev, oldpage, 0);
  }
  
-+static void rtl_csi_mod(struct rtl8169_private *tp, int addr,
-+			u32 mask, u32 set)
++static void rtl8125_phy_param(struct phy_device *phydev, u16 parm,
++			      u16 mask, u16 val)
 +{
-+	u32 val;
-+
-+	WARN(addr % 4, "Invalid CSI address %#x\n", addr);
-+
-+	netdev_notice_once(tp->dev,
-+		"No native access to PCI extended config space, falling back to CSI\n");
-+
-+	val = rtl_csi_read(tp, addr);
-+	rtl_csi_write(tp, addr, (val & ~mask) | set);
++	phy_lock_mdio_bus(phydev);
++	__phy_write_mmd(phydev, MDIO_MMD_VEND2, 0xb87c, parm);
++	__phy_modify_mmd(phydev, MDIO_MMD_VEND2, 0xb87e, mask, val);
++	phy_unlock_mdio_bus(phydev);
 +}
 +
- static void rtl_disable_zrxdc_timeout(struct rtl8169_private *tp)
- {
- 	struct pci_dev *pdev = tp->pci_dev;
--	u32 csi;
- 	int rc;
- 	u8 val;
+ struct phy_reg {
+ 	u16 reg;
+ 	u16 val;
+@@ -1004,12 +1013,8 @@ static void rtl8125a_2_hw_phy_config(struct rtl8169_private *tp,
+ 	phy_write_paged(phydev, 0xac5, 0x16, 0x01ff);
+ 	phy_modify_paged(phydev, 0xac8, 0x15, 0x00f0, 0x0030);
  
-@@ -2872,16 +2885,12 @@ static void rtl_disable_zrxdc_timeout(struct rtl8169_private *tp)
- 		}
- 	}
+-	phy_write(phydev, 0x1f, 0x0b87);
+-	phy_write(phydev, 0x16, 0x80a2);
+-	phy_write(phydev, 0x17, 0x0153);
+-	phy_write(phydev, 0x16, 0x809c);
+-	phy_write(phydev, 0x17, 0x0153);
+-	phy_write(phydev, 0x1f, 0x0000);
++	rtl8125_phy_param(phydev, 0x80a2, 0xffff, 0x0153);
++	rtl8125_phy_param(phydev, 0x809c, 0xffff, 0x0153);
  
--	netdev_notice_once(tp->dev,
--		"No native access to PCI extended config space, falling back to CSI\n");
--	csi = rtl_csi_read(tp, RTL_GEN3_RELATED_OFF);
--	rtl_csi_write(tp, RTL_GEN3_RELATED_OFF, csi & ~RTL_GEN3_ZRXDC_NONCOMPL);
-+	rtl_csi_mod(tp, RTL_GEN3_RELATED_OFF, RTL_GEN3_ZRXDC_NONCOMPL, 0);
- }
+ 	phy_write(phydev, 0x1f, 0x0a43);
+ 	phy_write(phydev, 0x13, 0x81B3);
+@@ -1061,14 +1066,9 @@ static void rtl8125b_hw_phy_config(struct rtl8169_private *tp,
+ 	phy_modify_paged(phydev, 0xac4, 0x13, 0x00f0, 0x0090);
+ 	phy_modify_paged(phydev, 0xad3, 0x10, 0x0003, 0x0001);
  
- static void rtl_set_aspm_entry_latency(struct rtl8169_private *tp, u8 val)
- {
- 	struct pci_dev *pdev = tp->pci_dev;
--	u32 csi;
+-	phy_write(phydev, 0x1f, 0x0b87);
+-	phy_write(phydev, 0x16, 0x80f5);
+-	phy_write(phydev, 0x17, 0x760e);
+-	phy_write(phydev, 0x16, 0x8107);
+-	phy_write(phydev, 0x17, 0x360e);
+-	phy_write(phydev, 0x16, 0x8551);
+-	phy_modify(phydev, 0x17, 0xff00, 0x0800);
+-	phy_write(phydev, 0x1f, 0x0000);
++	rtl8125_phy_param(phydev, 0x80f5, 0xffff, 0x760e);
++	rtl8125_phy_param(phydev, 0x8107, 0xffff, 0x360e);
++	rtl8125_phy_param(phydev, 0x8551, 0xff00, 0x0800);
  
- 	/* According to Realtek the value at config space address 0x070f
- 	 * controls the L0s/L1 entrance latency. We try standard ECAM access
-@@ -2893,10 +2902,7 @@ static void rtl_set_aspm_entry_latency(struct rtl8169_private *tp, u8 val)
- 	    pci_write_config_byte(pdev, 0x070f, val) == PCIBIOS_SUCCESSFUL)
- 		return;
+ 	phy_modify_paged(phydev, 0xbf0, 0x10, 0xe000, 0xa000);
+ 	phy_modify_paged(phydev, 0xbf4, 0x13, 0x0f00, 0x0300);
+@@ -1110,12 +1110,8 @@ static void rtl8125bp_hw_phy_config(struct rtl8169_private *tp,
  
--	netdev_notice_once(tp->dev,
--		"No native access to PCI extended config space, falling back to CSI\n");
--	csi = rtl_csi_read(tp, 0x070c) & 0x00ffffff;
--	rtl_csi_write(tp, 0x070c, csi | val << 24);
-+	rtl_csi_mod(tp, 0x070c, 0xff000000, val << 24);
- }
+ 	r8168g_phy_param(phydev, 0x8010, 0x0800, 0x0000);
  
- static void rtl_set_def_aspm_entry_latency(struct rtl8169_private *tp)
+-	phy_write(phydev, 0x1f, 0x0b87);
+-	phy_write(phydev, 0x16, 0x8088);
+-	phy_modify(phydev, 0x17, 0xff00, 0x9000);
+-	phy_write(phydev, 0x16, 0x808f);
+-	phy_modify(phydev, 0x17, 0xff00, 0x9000);
+-	phy_write(phydev, 0x1f, 0x0000);
++	rtl8125_phy_param(phydev, 0x8088, 0xff00, 0x9000);
++	rtl8125_phy_param(phydev, 0x808f, 0xff00, 0x9000);
+ 
+ 	r8168g_phy_param(phydev, 0x8174, 0x2000, 0x1800);
+ 
 -- 
 2.49.0
-
-
 
