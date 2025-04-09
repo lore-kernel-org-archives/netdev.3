@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5D05464E
-	for <netdev@vger.kernel.org>; Wed,  9 Apr 2025 00:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A5A6F305
+	for <netdev@vger.kernel.org>; Wed,  9 Apr 2025 00:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744157070; cv=none; b=QuPF4G4t6lh+1XaJhhfi1Pm0FD2hixpNyxaOetu23ye+SvYOSPdAC7p6C6VEV1BmSSWMI4PglXpiMdolUxo8RWU2csGWXnWND+RUoaWr4mU77XLW0KMnZA3b8nK4XC2BkEvUiXDzLinzAp9wMDQFEFvxQhi70RQ8/I5AS9dXbIM=
+	t=1744157070; cv=none; b=QrPAZr/R/ge0652IeLnEC8QgiHM81P5tHVWPwk4vTFw5LoOX9rP5oro2iSX/HxmrO4H33VzeArzK6uXBzyFOqUNkjdBP1+EZKefAyKC0ZeDOEAZ5xmOCzOG1YsUkiqeL9G4SGgms95aM3EiWr3/EI7WKLXNHH3Ist/rqQa3mvbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744157070; c=relaxed/simple;
-	bh=YLEgglGjzIFUoh6DToizvydwHhhfPXLxH56ZctPPFJg=;
+	bh=NqkWdvZYizdpf4a6+3a6mmJwSrEipCzNUFfKJC0GVUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=paNGQej2y0GUyrSD8IzRqfP7H65S3FhiZqP3lP6DLzKS4/m8W7TdD+UvTqdN0SyAHaPpDqkGY2avUwYO7QyfVcEDikGNzfvgxlb/OcHGNoYOem6xRUrC2bH8vkOti0gxi55oQX+2GpBdbnUqUEkEz3/b1PD5fA/W6BDLWNzUc3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GT8tRoaS; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=jbju1xBiVBSuPWK1DBaEoujqxtN4gkcNflPkv3HV34ha0TocxrD9Eb0mklDFmGz4M5srkruZWyd00M9SRcHXktlhCWHDKu0YGdC0Nu0u7EBMPdR/jDQTL7pVsMbs/J+0Mm1/ylJi2TJtkwnywlwHbM73utwIAavghuuDKwMuaPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PpqSak1P; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GT8tRoaS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BE6C4CEE5;
-	Wed,  9 Apr 2025 00:04:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PpqSak1P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC24FC4CEE9;
+	Wed,  9 Apr 2025 00:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744157069;
-	bh=YLEgglGjzIFUoh6DToizvydwHhhfPXLxH56ZctPPFJg=;
+	s=k20201202; t=1744157070;
+	bh=NqkWdvZYizdpf4a6+3a6mmJwSrEipCzNUFfKJC0GVUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GT8tRoaSGET/E6W/NAKdgvXsfhmpAhIJYczVeAixusvREzjUFdb8GYzapr3GEbfE1
-	 8ccATwmRmc8exdmxfhUahqol3psJOZ2phhm7A/L9PTuZYAL1huoCF96pzfVmY3iQV7
-	 XhriMmWRPQdARkdIBq1PotBXvNg5TmaxvdYuiYc6NQBhruI2P/5FgCd5dbIqymyS2o
-	 unO4BAyN+9iShb5YJOvaofCO5SG7ZouNQZmWKVx7na7NcfbwoUz9Mz0P4VzvrCTFiV
-	 VyMv0IlXaALc217/p5FH+rubTqpmsL7BviSZHaG/DxqqP7J5l76uG9hyMocNof47aD
-	 yAP3Qt1IcUcPw==
+	b=PpqSak1PvNUNvPH56rh8am5eVtfm7Hff266N9Onl0UCMG6VJYopTadB/EVtewITZz
+	 m/R3BHOVXnXK3oMOY/+Fd8BErkXdJcYcBc9Nm+k4x4s51aWkf82drV1Pvb46VWkInd
+	 yWP8V4OyvPLxraNRqmIPz2hznc9w+oKiDNv1tQdoZw1uIhnoAr2PhjnUj/SxAKwOmL
+	 x4y7sOX0NCQJFgJDH087sjPluog4LZD3bQ54uumQxiK5PASRKblTcowiCaGPfzSYM1
+	 ZQHGi4XjgqNt8Pa704nyXu4SJxkubdehSFgclAqKHdNjVuXVNS0SsFBv9PwlsgluFq
+	 Pqxbf5sUmYPmw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -41,9 +41,9 @@ Cc: netdev@vger.kernel.org,
 	nicolas.dichtel@6wind.com,
 	petrm@nvidia.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 10/13] tools: ynl-gen: consider dump ops without a do "type-consistent"
-Date: Tue,  8 Apr 2025 17:03:57 -0700
-Message-ID: <20250409000400.492371-11-kuba@kernel.org>
+Subject: [PATCH net-next 11/13] tools: ynl-gen: use family c-name in notifications
+Date: Tue,  8 Apr 2025 17:03:58 -0700
+Message-ID: <20250409000400.492371-12-kuba@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250409000400.492371-1-kuba@kernel.org>
 References: <20250409000400.492371-1-kuba@kernel.org>
@@ -55,77 +55,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If the type for the response to do and dump are the same we don't
-generate it twice. This is called "type_consistent" in the generator.
-Consider operations which only have dump to also be consistent.
-This removes unnecessary "_dump" from the names. There's a number
-of GET ops in classic Netlink which only have dump handlers.
+Family names may include dashes. Fix notification handling
+code gen to the c-compatible name.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ tools/net/ynl/pyynl/ynl_gen_c.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index b0b47a493a86..c97cda43a604 100755
+index c97cda43a604..5fa1db3d5cf3 100755
 --- a/tools/net/ynl/pyynl/ynl_gen_c.py
 +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -1212,6 +1212,7 @@ from lib import SpecFamily, SpecAttrSet, SpecAttr, SpecOperation, SpecEnumSet, S
+@@ -2726,7 +2726,7 @@ _C_KW = {
+         return
  
-         # 'do' and 'dump' response parsing is identical
-         self.type_consistent = True
-+        self.type_onside = False
-         if op_mode != 'do' and 'dump' in op:
-             if 'do' in op:
-                 if ('reply' in op['do']) != ('reply' in op["dump"]):
-@@ -1219,7 +1220,8 @@ from lib import SpecFamily, SpecAttrSet, SpecAttr, SpecOperation, SpecEnumSet, S
-                 elif 'reply' in op['do'] and op["do"]["reply"] != op["dump"]["reply"]:
-                     self.type_consistent = False
-             else:
--                self.type_consistent = False
-+                self.type_consistent = True
-+                self.type_onside = True
- 
-         self.attr_set = attr_set
-         if not self.attr_set:
-@@ -1516,7 +1518,9 @@ _C_KW = {
-         suffix += f"{direction_to_suffix[direction]}"
+     if family.ntfs:
+-        cw.block_start(line=f"static const struct ynl_ntf_info {family['name']}_ntf_info[] = ")
++        cw.block_start(line=f"static const struct ynl_ntf_info {family.c_name}_ntf_info[] = ")
+         for ntf_op_name, ntf_op in family.ntfs.items():
+             if 'notify' in ntf_op:
+                 op = family.ops[ntf_op['notify']]
+@@ -2756,8 +2756,8 @@ _C_KW = {
      else:
-         if direction == 'request':
--            suffix += '_req_dump'
-+            suffix += '_req'
-+            if not ri.type_onside:
-+                suffix += '_dump'
-         else:
-             if ri.type_consistent:
-                 if deref:
-@@ -1995,7 +1999,7 @@ _C_KW = {
-     if not direction and ri.type_name_conflict:
-         suffix += '_'
+         cw.p('.hdr_len\t= sizeof(struct genlmsghdr),')
+     if family.ntfs:
+-        cw.p(f".ntf_info\t= {family['name']}_ntf_info,")
+-        cw.p(f".ntf_info_size\t= YNL_ARRAY_SIZE({family['name']}_ntf_info),")
++        cw.p(f".ntf_info\t= {family.c_name}_ntf_info,")
++        cw.p(f".ntf_info_size\t= YNL_ARRAY_SIZE({family.c_name}_ntf_info),")
+     cw.block_end(line=';')
  
--    if ri.op_mode == 'dump':
-+    if ri.op_mode == 'dump' and not ri.type_onside:
-         suffix += '_dump'
  
-     ri.cw.block_start(line=f"struct {ri.family.c_name}{suffix}")
-@@ -2979,7 +2983,7 @@ _C_KW = {
-                     ri = RenderInfo(cw, parsed, args.mode, op, 'dump')
-                     print_req_type(ri)
-                     print_req_type_helpers(ri)
--                    if not ri.type_consistent:
-+                    if not ri.type_consistent or ri.type_onside:
-                         print_rsp_type(ri)
-                     print_wrapped_type(ri)
-                     print_dump_prototype(ri)
-@@ -3057,7 +3061,7 @@ _C_KW = {
-                 if 'dump' in op:
-                     cw.p(f"/* {op.enum_name} - dump */")
-                     ri = RenderInfo(cw, parsed, args.mode, op, "dump")
--                    if not ri.type_consistent:
-+                    if not ri.type_consistent or ri.type_onside:
-                         parse_rsp_msg(ri, deref=True)
-                     print_req_free(ri)
-                     print_dump_type_free(ri)
 -- 
 2.49.0
 
