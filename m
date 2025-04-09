@@ -1,103 +1,63 @@
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0834265631;
-	Wed,  9 Apr 2025 15:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BB625D908;
+	Wed,  9 Apr 2025 15:28:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744212242; cv=none; b=t7H8azMflwksrSbCMvsSnuY1QiD14VgkYRietEHNmYnA2Yw02+/j4zv+1kg9ze4AdwHb4AkyiZCm/sF7igsJ4vFnUftnL5yGBjy0xAnwbedzrnmlHoFWIjg47AMuYXzT022fBSahpt/XlqniAjPWb9LCqbnBtLAIsURSjG4/J1A=
+	t=1744212528; cv=none; b=TLDpdAHuYHutCrPzAqUC3k8HUx4krtz7nRTbx/LCJaFsNUM+bAAJvN1JF3Xw/xyjIUvg9+RNkeFFg4O2BQri5oor23BVejwi+/lGpHDkCkt0TSmNTUefyy4p8Km1r/xNCt42stvGdoxYAAMr/vxgtgcGj5R8hO2e68zLNCSzUxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744212242; c=relaxed/simple;
-	bh=UIKs6oiDDGVT6GBVwmjJhm9dBlDygaMvkduIBBllUMc=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=nkCBAGLlW3Wo5ZaQgRNDPP3elD/ZJ0eN9eg3yW8LDy60dCFgaDIVmCyWzUzaI6TepsZs4oREWfs4TicD0RX5wmcBinPPCkJoYgixWwzvwY80SVveJpiaNzA8gyTdSlzg5lVnvPUfT3vwaX9ENOHNtIpvlMdmsPxAIwLKi9EW0HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=HyWfPfGx; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1744212528; c=relaxed/simple;
+	bh=9e4D7tu8NpiZEjh0zjN7AOEJmEjmxGVQQpxC3EDMjGA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XVYy66bWBOvbhe/C0a1RU0t4WbDbE/8eGkXIjZwPFMMaW1D/vF2DGRJwD3bDQ5ysMdqBbrlHYa4FOREDve47fjpWFK/I6SH8CzbkmmsgT/rVvL6z8RcD9iydDYKrLhkUhbBvVNVgv06Oy/uJuYhrlD3zqYiY6Z9AXqr8KjkS1kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qGJ+Qcgd; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="HyWfPfGx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1744212226; x=1744817026; i=markus.elfring@web.de;
-	bh=UIKs6oiDDGVT6GBVwmjJhm9dBlDygaMvkduIBBllUMc=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=HyWfPfGxJSbZ1tb0BFrEoFRldCHcbGpoxSGgyZZclxRW/bTdVkI1bKHG15q+7a4V
-	 dJGxA6bLhL/qx26KmfqT5d83+gYxDxQrjr7/d13WBM5xEsoaS6QzZa64zZ8CVmpLS
-	 0aQksS1k5SZDgDN1Rmsv5hwMEw/OXbp/remPfYugH4G1TdGZV7TsNIT7Fs5emdKPk
-	 Z9W6XdDJwp9SrOERb6dNPLyi/iHvhVJ7TytDkGn9SE1lcVLUmm2EpvH39qa3mQdyU
-	 FtMJ5AX3M5P+ypaR0LHwFvYI/3pyHoAsGPyl/peCGlN3co8xoSIpOucSvM3cmy5Mk
-	 ixphjsTEzCXYyRoIuQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.70.27]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MLRUV-1tkjRZ1VFj-00T2Wt; Wed, 09
- Apr 2025 17:23:46 +0200
-Message-ID: <7ff3877b-1a76-45a1-ad03-922582679397@web.de>
-Date: Wed, 9 Apr 2025 17:23:39 +0200
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qGJ+Qcgd"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=GVms8sZy6YVwer8huqwdL535e2d50tSk6udp7SjsHpk=; b=qGJ+QcgdKd4LJA67qLXYZsIQBD
+	ymHrSKgC+FhlSm3H9jhw1TJt/JTJElPeI3AVMc2zG+VNsbQzSKkaDwa2hs7YnBLzYddTM2061/aKq
+	rdCKx0uxpXOpAJkRD3yKX9Zo7s/MJalDZK3D6GFtrEe+e2aIRJKTKklWlHdwbnIZ+iCo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1u2XLs-008Z3N-Sg; Wed, 09 Apr 2025 17:28:32 +0200
+Date: Wed, 9 Apr 2025 17:28:32 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: "Lucien.Jheng" <lucienx123@gmail.com>
+Cc: linux-clk@vger.kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
+	kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+	pabeni@redhat.com, daniel@makrotopia.org, ericwouds@gmail.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	joseph.lin@airoha.com, wenshin.chung@airoha.com,
+	lucien.jheng@airoha.com
+Subject: Re: [PATCH v8 net-next PATCH 1/1] net: phy: air_en8811h: Add clk
+ provider for CKO pin
+Message-ID: <b8f9732e-bc33-4e73-b7bb-8513d8343983@lunn.ch>
+References: <20250409150902.3596-1-lucienx123@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Abdun Nihaal <abdun.nihaal@gmail.com>, netdev@vger.kernel.org
-Cc: LKML <linux-kernel@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Edward Cree
- <ecree.xilinx@gmail.com>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Jiawen Wu <jiawenwu@trustnetic.com>,
- Mengyuan Lou <mengyuanlou@net-swift.com>, Paolo Abeni <pabeni@redhat.com>,
- Sai Krishna <saikrishnag@marvell.com>, Simon Horman <horms@kernel.org>
-References: <20250409053804.47855-1-abdun.nihaal@gmail.com>
-Subject: Re: [PATCH net-next] net: ngbe: fix memory leak in ngbe_probe() error
- path
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250409053804.47855-1-abdun.nihaal@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:g3j450taXfQDtq/hsbrkfVMU6HlxQxRNqP+/E+1gL0IhaFGw6H3
- 4KVSAAva7cQCQZ/QIKxeGEbpmLjntZ7GDS+8bqmgZuCjT1vuAEfYHIyA2PIkBZUjgPiDcuB
- gb6DsZEE0HzJA6aWNyRNN8WqNHQsmKMs19dYe+l0srf3QcZmwltaIJHsj8hSHQ7YH4c+Gii
- b8gtPuuJRVtzzMpMqdGcA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:GULwdO+BOtQ=;ud4alpcL+R5jhs1ZPcYUz3bBZdZ
- VuZ04wqRjVtS/clCaoIDYocqQut0UHvns3jDz+BxJzDr4r2vzTDTdqQlEm43Pp79zm0Z4MqJ6
- O716d491EY+zAui4StKy5Jm+JkBRVuV0EHwktZrIujmyC1reEFQ7wcZde1xf/FijCOZnXE9UM
- rozcpGqYYiT0mD1SoIMz/1AJPm8cJoQnvw3L0usI11rsmrWWvEG+NARmCNntXwlmaM+ZqFWb0
- R576hAot8naCAdjAOejHBZGXinIiwjZVIUTf/O8haB+aiWxjWp2m5QjnRAvkkyv2X7NtYKtYX
- +ry5m0ykYaPmjwT2rfcbdNBu9IvG6DOiQa0XtHQPQlnLNm8c1KXqJRZMIEmky9TSFrPuYZI6i
- J0dhiNV6lcjJxkmkBJOM2qLscN13O2EZd2jZnl64u9qa1ut/fM5YWIw4MP0CcTLlPkt/ZKyGA
- OkoQadjXI/KNNrXYdFYiR2amP5gsLqJoRx2CpnXQ9RgxF4PKoh3xSiiX1bwDQvD/8gyCQBVAO
- SvNygbhGXRGx0zsYFc+5aJyA3AQIJurADT9guo+YcHsF2cSA33o1s62oiYaYjaPKAUR/qCSmg
- aYD7LGyo6DUl9k6ATxgp/hU/tVOMvaT/lzRcpoCaevAwDpGIWk3bxPZqenmNViRMsC2c9jQr/
- OXcrGB4de/XygFwnOmc6icuA90iazpccrLP7uppX4xxPrpQXVC8U0C1od0wDq5EdTqHBqM3ZP
- hH+vfL6bety+nKlaB09nf/Gj0aknxMljB0hvwIc37bVnvNOmvO5ykgFXZI3S0AG2GItvJu8vP
- Zl3nEiSE6r5s2PwGLBfedFo/mcOPslZoF9eoIxA6F1UusCSAmTI7IXwdkLqJUEtmPXNkH8yI0
- XseRIXUCY23ydxJCcUzQ3xbeOHB4+YRc4YQCgwoAgNVtwSq9X7pu6iCY//YLzpy/ob+Lhnx1I
- aZOQ5UMrB4No2A3l6cg2OFNvxmTd4usfVVcmldvObjyyj8lpgpaXD55bbtrKN2GgjyaLH330p
- /ae1ypuCjuAb2sXoVctPdrDwxB9t7q/YSoWsTgFWS473rq4/tKkWhTQrXwQv5es/Ad4kL/hZU
- CM44Scg3xr+mGhG2JfmFxN7nCb15wsLz6HLjTqUulykhrNkz0waQ1Xs75vhZXisJMQgPTSQjT
- BalyTYciQITa9yyzABb9xIYGnOXQSYhy3LsIlbzRc/CPcdkZGRRTv4YfRg/ZVEzpj09VgZZCn
- fcdC1u+5m+j0rsiJI0Le9MVGP0KcvU1aQEJPQMsrXS3ujGZO/ozvV80rh23EgoqfotTsCA5KY
- ya+Kl5B5/PrKygPfhBJYnArYZ09n1oTHPEOrB25WEmPbmLg97PRVdWNjKnGisTmrhz453ZMha
- A0eOM2lSyg1DmdHIW0R57ebaXrgqu53vS7lpRnXOXADBL7qqrrQLmR9vQLWPoZjjQG5SAhifs
- l32/FgtQArPfY1Rgcvt6PE6CjkOE7s2IKrMU/URHk3f3069HC7Mr1r4I/C8V5Qqk6G5dRCA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250409150902.3596-1-lucienx123@gmail.com>
 
-> When ngbe_sw_init() is called, memory is allocated for wx->rss_key
-> in wx_init_rss_key(). However, in ngbe_probe() function, the subsequent
-> error paths after ngbe_sw_init() don't free the rss_key. Fix that by
-> freeing it in error path along with wx->mac_table.
->
-> Also change the label to which execution jumps when ngbe_sw_init()
-> fails, because otherwise, it could lead to a double free for rss_key,
-> when the mac_table allocation fails in wx_sw_init().
+On Wed, Apr 09, 2025 at 11:09:02PM +0800, Lucien.Jheng wrote:
+> EN8811H outputs 25MHz or 50MHz clocks on CKO, selected by GPIO3.
+> CKO clock operates continuously from power-up through md32 loading.
+> Implement clk provider driver so we can disable the clock output in case
+> it isn't needed, which also helps to reduce EMF noise
+> 
+> Signed-off-by: Lucien.Jheng <lucienx123@gmail.com>
 
-How do you think about to add any tags (like =E2=80=9CFixes=E2=80=9D and =
-=E2=80=9CCc=E2=80=9D) accordingly?
-https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
-e/Documentation/process/submitting-patches.rst?h=3Dv6.15-rc1#n145
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Regards,
-Markus
+    Andrew
