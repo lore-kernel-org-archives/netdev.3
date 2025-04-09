@@ -1,178 +1,183 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8191829A2;
-	Wed,  9 Apr 2025 03:27:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6D3524F;
+	Wed,  9 Apr 2025 03:34:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744169231; cv=none; b=m8hligKEENJq7pbQYkaNwor8ZTOxZdY8ddTuO76R/YwO5EusZU5g/qDxvGGDHC5aUVY1bcOtxMFho5iwF0Rxu9wFcTo0zXrNKZy9ihGsAMdVPuoVLvozGbxOXyEI3XMmxQYJEiETRef8L47RJyErmtistbkUq5rTCHGdTIIF9H8=
+	t=1744169680; cv=none; b=j82csWbpyI1whYxBWj7fbbfLd4zMstPvK4BR/HopSOmE89HxjXzOYb6HfHObftuHbD4uCkVs7xX8r+kutx9vtkA3nVfV2pRSOa4g98DswH+C0rDLWfDedOXisfg/LIDJnck+OZ3mdL+CYl3TdqF6rfkZBcEjbGeQIi5achLC73E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744169231; c=relaxed/simple;
-	bh=D6EvTL4iYuuHIjtGTY4AYogyqtGWNblNDT64LnMhFrE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=p1oCx08Sd8gWB5wyWUraCEe4j2Zxv2GkvPiscLunCeGvZluBHvgqOjxydlUX+BxG0jI2o9AdYe6AVwPfV2N0/PBHXynGQyBXgcoirM2PueKefUfTncXmV4kypKOniatJ2ckVDqIbcfVug1UPjikk/uvQ3ljxIEP3cGAJI7u+B9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l/B9LyYZ; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744169680; c=relaxed/simple;
+	bh=b6zV8GOspPN/yp1UaoSQi7HmMP0SFPNWk+enfaKC0e0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=Q0SLfrQ8gbpJxAyEGrIfsOibMnZgmEevN9Exgpqvf87lSYUuXdCOZpoTledwP/Ml7LqNU0OkuZvBXou8gTX0Ax8K92BkI3CZRN7woMOpv5whaj3RKeVq1JgGbmMXDHapOAldVqwCmvAfyPv1f8KkXYSUx3ey6Q2sf8jYLfpO8co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dxuuu.xyz; spf=pass smtp.mailfrom=dxuuu.xyz; dkim=pass (2048-bit key) header.d=dxuuu.xyz header.i=@dxuuu.xyz header.b=JU3QQPb/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ljlxsW4z; arc=none smtp.client-ip=103.168.172.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dxuuu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dxuuu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l/B9LyYZ"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7359aca7ef2so8914583b3a.2;
-        Tue, 08 Apr 2025 20:27:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744169229; x=1744774029; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=a4jAE1elJcepr1tdiADTCAGlm7zbKPiv/FbJVtT5R04=;
-        b=l/B9LyYZybwpSd2FUh5V/YCWwOI2WPV7JTAaYbKRl4whDLoIQEvnQ8FoUYpSToSpVR
-         7hnRip1znXetKdM3P0BmWx8xTFfwRh1yVZ5mfX700msuA0HB7ZMG2EkHLhukXLKy4czS
-         9VCPrwoei2e/QpRhJXTlpmcczU9GILlOGH1QujF2QOS8gsont6Y3bwT51+P0eaKj1TrX
-         O1BDXBWGCQlQrtOuoVf9r7Gq69ZviW+gidesCT80GbYXCxLRqz2WrGRfoKdUYJzn1pFA
-         P1kr1QHP1Rt/OaCyVN3VXLOst2SiR3CI2zmSLAlLrI7cqZYk/HaVRxcFLuNU4L/ritbA
-         RToA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744169229; x=1744774029;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a4jAE1elJcepr1tdiADTCAGlm7zbKPiv/FbJVtT5R04=;
-        b=ugPEAxeteTWYPjUm8Mo1H8GRC9rDar4tVZCSlK/aBBXMZ2BD3MPsBQVN5CUgp3ZopA
-         ggsXzBR5eZed1mfveKdff4UwTtE/P9/HcE4PIbbc/Aj0UK3/xGCJuIZ0Y4mvYFnDanen
-         fT6HNsXvy1mgDvFfB94NzD3S4g8KUritfQ2xHoCGjYv8WJqD3HLDIcTlKJNhNk8vbdaO
-         A7K2DYDxhhPTjyX60cnQ+zAppRl+QAZ2HC0tE74sl+RORYc3IA58T9F5I6id6L5eb6JR
-         xpnMobwr9OXmWhVaYWuKQ7zSu76Vgnui5aLzj4ry5oeOQVVLLZakWry50Gy9GIlB+HyG
-         9bQw==
-X-Forwarded-Encrypted: i=1; AJvYcCVDl+9u2LwV7p2kSbhA6ZlTg7jhRcDlUJxuy2z5wnm4dKlpcycZF6oNJ/TLdcc/kY4IwXin6xo3@vger.kernel.org, AJvYcCWUjfr/CXhMh/GeiRJPx5s2i379XhwRSwqPAV+YYA3J5FZxVQyqpxTEfKRnnI1NCwCw/0SKYwqR45BZDWM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFfyJia8ttb/J799eBKOH6hFXY7nn6/DoViQ9cC/K9iTIM+bXS
-	NBQneGUaeeejrBT617d0F5Mu47XqD46YH2iRCk/GLWna+G9H9go=
-X-Gm-Gg: ASbGncslBxVQYM6BXZNdGlQimk7lx5LAHjqIqB+Cfy3/Y/mkHbGvpX9lsk3TXB+gnIX
-	VN05AyS97llyhvXWEI3HtL2pXPjIZcLf9tnxpw03IxJ20B84v+ImF0ReyJzU5pSsv2sJIa6Azne
-	v0F4FiZL2nOeGVWrP1YbGCnc8Y8sfRBft4y8YR0+pZ/ah8wdEpAfbpQ+s2oXgNi9CxtbGJidbJc
-	2gVGvycxJ4SCz00kaiggJDZk9xm4EL72rqc10HVs4bP63foGtHQjmSh908mIFaB+TnE9wCIfJzK
-	C/Ju4rQiSQOuIWxZ6sYi8B0gqeXgYEbDCZzhMoz0L5jj9dDni+mpwtyg3Tyyw0oauSwd+pjrK5i
-	hqKl7RMDQJL26XOuagbsv
-X-Google-Smtp-Source: AGHT+IFluP2lajffl9SoWcBd2FkHmaeG3wkjggTtla8rF5wyu2rM+lF5RAbLROcd8TQorKRJsHANww==
-X-Received: by 2002:a05:6a21:99a6:b0:1f5:8b9b:ab6a with SMTP id adf61e73a8af0-201591956c0mr1731310637.18.1744169228551;
-        Tue, 08 Apr 2025 20:27:08 -0700 (PDT)
-Received: from ?IPV6:2a03:83e0:115c:1:f94c:8e92:7ff5:32bf? ([2620:10d:c090:500::4:98ff])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b02a11d2c1dsm192043a12.38.2025.04.08.20.27.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Apr 2025 20:27:08 -0700 (PDT)
-Message-ID: <6d2abc68-ad40-4cfb-b6aa-bd724023f998@gmail.com>
-Date: Tue, 8 Apr 2025 20:27:06 -0700
+	dkim=pass (2048-bit key) header.d=dxuuu.xyz header.i=@dxuuu.xyz header.b="JU3QQPb/";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ljlxsW4z"
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 4DAFF11401EC;
+	Tue,  8 Apr 2025 23:34:35 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Tue, 08 Apr 2025 23:34:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dxuuu.xyz; h=cc
+	:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm1; t=1744169675; x=1744256075; bh=KgpeIAFHyGKVpKQfj8mF9
+	93N7YtyGNtKnt7Z58kWdLQ=; b=JU3QQPb/wN6HqjxOlGWZqrnhmlvF1faE0Zgdz
+	3CFe2Q+Cxm2IZn2E0vXdVcJ8wNhu75Au/Y/ExoZt6tTDJNbPNzrfOnL/yDC9v4nc
+	i1hCDGfw50sOnp+RmV8ALPhXNCwT/lnV+vfbxk/70Sgbu8vv4Ci1/sWUnB1iLg3y
+	4Fv7FjQQ+7Awl9PaumIjQ+qwEBedBaaBnVrFiSzbEc9Z4MqSzyEhwHiDdV9xRTHJ
+	+CF1Ab/I30CNq1BeNUpI6fQzI1bbs/66SPDg28hs/VpurNEZ/9a5LQ3RkdLRnlLH
+	6IHCz1FUX6b9MuQhPj5IEGYmMpgdDQvOJE8PLw98EAGuKTDQw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:content-transfer-encoding:content-type
+	:date:date:feedback-id:feedback-id:from:from:in-reply-to
+	:message-id:mime-version:reply-to:subject:subject:to:to
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1744169675; x=1744256075; bh=KgpeIAFHyGKVpKQfj8mF993N7YtyGNtKnt7
+	Z58kWdLQ=; b=ljlxsW4zn2160lMrJTz+xXf8n8+EGpRB6HnSg9hVs8sJYIkOu+1
+	O3BKQ9A9XLS1dnYfxo42SMGSCc3vtmXj9EtsrifKGvtB1CfYJoG21Vm871O9M2/h
+	0DYuVp42/N8s9160n7BKZ7DYtykNDFrd3jWE7brW/yIcZldr/Pslqy0yO4GeEHwO
+	4crMURsOxvbJvQ5d1qj1pV+CWyGv2W7NIc0AvCwF2F4tGjSy9f4I9upViBcvvA8O
+	jLu2w7HYJx6lBGPgrKJnFGwyjdJVDCI9E0pO4lscn5CztpS5i0/jOT0LT5bAKwSk
+	a/DQFKrHFgM+hPBePNFwTmWfzdgwcTrev9A==
+X-ME-Sender: <xms:yur1ZyVdybc6G347olxo2AXEEYyK0_KETXUNYG2f5jQITFj_ay3d2g>
+    <xme:yur1Z-kCfmbzJvGo2hWJSkeeOusu31alVtVjEuNus85ayo6fpJ-ewTyNl_hIVPLKp
+    1ao1l08jXbxli8AXQ>
+X-ME-Received: <xmr:yur1Z2brcI4yuxbQCzXIsr1I-TajeI1pvOQuexI-BfLE2dWY3PSJ_F6z2b97RjwnrTWXOaeIdEQD4EIzVINPeY9Wwx5oOqd-AZ1Z_BxD85d8uVa7Z2cm>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdegledvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffuc
+    dlvdefmdenogfuohhrthgvugftvggtihhpvdculdegtddmnecujfgurhephffvufffkffo
+    ggfgsedtkeertdertddtnecuhfhrohhmpeffrghnihgvlhcuighuuceougiguhesugiguh
+    huuhdrgiihiieqnecuggftrfgrthhtvghrnhephfeijeelueeuveekjeejteeitdegieff
+    gfeguefhjeeljedtiefgvdejkedtfeelnecuffhomhgrihhnpehkvghrnhgvlhdrohhrgh
+    dpghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehm
+    rghilhhfrhhomhepugiguhesugiguhhuuhdrgiihiidpnhgspghrtghpthhtohepuddtpd
+    hmohguvgepshhmthhpohhuthdprhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqthhrrggtvgdqkh
+    gvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidq
+    phgvrhhfqdhushgvrhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplh
+    hinhhugidqkhhsvghlfhhtvghsthesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehnvghtfhhilhhtvghrqdguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepsghpfhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegt
+    ohhrvghtvggrmhesnhgvthhfihhlthgvrhdrohhrghdprhgtphhtthhopehlihhnuhigqd
+    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhig
+    qdhmvgguihgrsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:yur1Z5VKfdRnYV8i1TP-pNPD1hrrL4sDGE-uCU85kLjBqhXmeSGR-w>
+    <xmx:yur1Z8lj-j2S7pjQSdGbsOrX6betNOzEBXMmmyt-g_NluETEaFR74w>
+    <xmx:yur1Z-eudSUkuoxHlgCxyQm1envt8p4mI6Yf092RXw0eSvzGFAJePQ>
+    <xmx:yur1Z-GT0K-nfjfwuCknjUdWg-t1nGIg7jv9sjwnTEI957PzSviVNw>
+    <xmx:y-r1Z414n0pfTsw7uFuGS0gmgPBVKLECLJf69UAINXf9nxfcOeJSIIAA>
+Feedback-ID: i6a694271:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 8 Apr 2025 23:34:33 -0400 (EDT)
+From: Daniel Xu <dxu@dxuuu.xyz>
+To: linux-fsdevel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	coreteam@netfilter.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [RFC bpf-next 00/13] bpf: Introduce modular verifier
+Date: Tue,  8 Apr 2025 21:33:55 -0600
+Message-ID: <cover.1744169424.git.dxu@dxuuu.xyz>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 0/2] GCPS Spec Compliance Patch Set
-From: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
-To: Paul Fertser <fercerpav@gmail.com>
-Cc: Sam Mendoza-Jonas <sam@mendozajonas.com>, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, npeacock@meta.com,
- akozlov@meta.com
-References: <cover.1744048182.git.kalavakunta.hari.prasad@gmail.com>
- <ee5feee4-e74a-4dc6-ad8e-42cf9c81cb3c@mendozajonas.com>
- <b1abcf84-e187-468f-a05e-e634e825210c@gmail.com>
- <Z/VqQVGI6oP5oEzB@home.paul.comp>
- <1d570fb8-1da0-4aa6-99f5-052adf559091@gmail.com>
- <Z/V2pCKe8N6Uxa0O@home.paul.comp>
- <b1d373d7-77e5-4341-a685-07a617935db5@gmail.com>
- <Z/WkmPcCJ0e2go97@home.paul.comp>
- <93ac7481-43c0-4207-8965-2d793c90263c@gmail.com>
-Content-Language: en-US
-In-Reply-To: <93ac7481-43c0-4207-8965-2d793c90263c@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 4/8/2025 4:23 PM, Hari Kalavakunta wrote:
-> On 4/8/2025 3:35 PM, Paul Fertser wrote:
->> On Tue, Apr 08, 2025 at 03:02:14PM -0700, Hari Kalavakunta wrote:
->>> On 4/8/2025 12:19 PM, Paul Fertser wrote:
->>>
->>>> In other words, you're testing your code only with simulated data so
->>>> there's no way to guarantee it's going to work on any real life
->>>> hardware (as we know hardware doesn't always exactly match the specs)?
->>>> That's unsettling. Please do mention it in the commit log, it's an
->>>> essential point. Better yet, consider going a bit off-centre after the
->>>> regular verification and do a control run on real hardware.
->>>>
->>>> After all, that's what the code is for so if it all possible it's
->>>> better to know if it does the actual job before merging (to avoid
->>>> noise from follow-up patches like yours which fix something that never
->>>> worked because it was never tested).
->>>
->>> I would like to request a week's time to integrate a real hardware
->>> interface, which will enable me to test and demonstrate end-to-end 
->>> results.
->>> This will also allow me to identify and address any additional issues 
->>> that
->>> may arise during the testing process. Thank you for the feedback.
->>
->> Thank you for doing the right thing! Looking forward to your updated
->> patch (please do not forget to consider __be64 for the fields).
-> 
-> I had not previously considered using __be64 for the struct 
-> ncsi_rsp_gcps_pkt, as it is an interface structure. I would like to seek 
-> your input on whether it is a good idea to use __be64 for interface 
-> messages. In my experience, I haven't come across implementations that 
-> utilize __be64. I am unsure about the portability of this approach, 
-> particularly with regards to the Management Controller (MC).
+This patchset adds the base infrastructure for modular BPF verifier.
+The motivation remains unchanged from the LSFMMBPF25 proposal [0].
 
-Here are the results from a real hardware test, which validates the patch.
+However, the design has diverged. Rather than immediately going for the
+facade described in [0], we instead make a stop first at the continously
+exported copies of the verifier in an out-of-tree repository, with a
+separate copy for each kernel release. Each copy will receive as many
+verifier backports as possible within the "boundary" of the modular
+portions.
 
+For example, a patch that changes the verifier at the same time as one
+of the kernel symbols it depends on cannot be applied, as at runtime
+only the verifier portion can be updated. However, a patch that only
+changes verifier.c can be applied, as it's within the boundary.  Rough
+analysis of past data shows that most verifier changes fall within the
+latter category. The jupyter notebook for this can be found here [1].
 
-a. Initiate GCPS command to the NIC-2
-root@bmc:~# ./ncsi-cmd -i 3 -p 0 -c 0 raw 0x18
-<7> Command: type 0x18, payload 0 bytes:
-<7> Send Command, CHANNEL : 0x0 , PACKAGE : 0x0, INTERFACE: 0x008cd598
-<7> Response 228 bytes: 00 01 00 3b 98 00 00 cc 00 00 00 00 00 00 00 00 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 2b e5 fc e0 c0 00 00 00 00 
-65 70 d5 54 00 00 00 00 09 50 66 56 00 00 00 00 03 08 a8 79 00 00 00 00 
-00 3d 5c 44 00 00 00 00 00 79 38 23 00 00 00 00 00 02 fe 06 00 00 00 00 
-00 00 02 be 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-00 00 00 00 00 00 00 00 00 00 00 00 00 b8 21 5f 03 8f da af 00 d8 6d 36 
-00 73 a3 e7 00 17 20 70 00 00 00 00 00 00 d8 8a 00 00 0e 9c 00 56 4f 83 
-00 10 17 e2 00 01 5b 76 00 13 6e a3 00 00 f8 cd 00 00 00 00 00 00 00 00 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 2c 20 55 f5
+From here, we'll gradually enlarge the "boundary" to enable backports of
+more and more patches, with the north star being the facade as described
+in the proposal. Ideally, completion of the facade will render the
+out-of-tree repository useless.
 
-b. tcpdump capture of the GCPS
-GCPS Command Capture:
-         0x0000:  0001 003b 1800 0000 0000 0000 0000 0000
-         0x0010:  ffff e7c4 0000 0000 0000 0000 0000 0000
-         0x0020:  0000 0000 0000 0000 0000 0000 0000
+[0]: https://lore.kernel.org/bpf/nahst74z46ov7ii3vmriyhk25zo6tkf2f3hsulzjzselvobbbu@pqn6wfdibwqb/
+[1]: https://github.com/danobi/verifier-analysis/blob/master/analysis.ipynb
 
-GCPS Response
-         0x0000:  0001 003b 9800 00cc 0000 0000 0000 0000
-         0x0010:  0000 0000 0000 0000 0000 0000 0000 002b
-         0x0020:  e5fc e0c0 0000 0000 6570 d554 0000 0000
-         0x0030:  0950 6656 0000 0000 0308 a879 0000 0000
-         0x0040:  003d 5c44 0000 0000 0079 3823 0000 0000
-         0x0050:  0002 fe06 0000 0000 0000 02be 0000 0000
-         0x0060:  0000 0000 0000 0000 0000 0000 0000 0000
-         0x0070:  0000 0000 0000 0000 0000 0000 0000 0000
-         0x0080:  0000 0000 0000 0000 0000 0000 0000 0000
-         0x0090:  0000 0000 00b8 215f 038f daaf 00d8 6d36
-         0x00a0:  0073 a3e7 0017 2070 0000 0000 0000 d88a
-         0x00b0:  0000 0e9c 0056 4f83 0010 17e2 0001 5b76
-         0x00c0:  0013 6ea3 0000 f8cd 0000 0000 0000 0000
-         0x00d0:  0000 0000 0000 0000 0000 0000 0000 0000
-         0x00e0:  2c20 55f5
+Daniel Xu (13):
+  bpf: Move bpf_prog_ctx_arg_info_init() body into header
+  bpf: Move BTF related globals out of verifier.c
+  bpf: Move percpu memory allocator definition into core
+  bpf: Move bpf_check_attach_target() to core
+  bpf: Remove map_set_for_each_callback_args callback for maps
+  bpf: Move kfunc definitions out of verifier.c
+  bpf: Make bpf_free_kfunc_btf_tab() static in core
+  selftests: bpf: Avoid attaching to bpf_check()
+  perf: Export perf_snapshot_branch_stack static key
+  bpf: verifier: Add indirection to kallsyms_lookup_name()
+  treewide: bpf: Export symbols used by verifier
+  bpf: verifier: Make verifier loadable
+  bpf: Supporting building verifier.ko out-of-tree
 
-c. dmesg log (Debug purpose only) to demonstrate correct value read.
-[ 1350.369741] ncsi_rsp_handler_gcps ENTRY
-[ 1350.369768] ncs->hnc_rx_bytes = 188542148800 (0x2be5fce0c0)
+ arch/x86/net/bpf_jit_comp.c                   |   2 +
+ drivers/media/rc/bpf-lirc.c                   |   1 +
+ fs/bpf_fs_kfuncs.c                            |   4 +
+ include/linux/bpf.h                           |  82 ++-
+ include/linux/bpf_verifier.h                  |   7 -
+ include/linux/btf.h                           |   4 +
+ kernel/bpf/Kbuild                             |   8 +
+ kernel/bpf/Kconfig                            |  12 +
+ kernel/bpf/Makefile                           |   3 +-
+ kernel/bpf/arraymap.c                         |   2 -
+ kernel/bpf/bpf_iter.c                         |   1 +
+ kernel/bpf/bpf_lsm.c                          |   5 +
+ kernel/bpf/bpf_struct_ops.c                   |   2 +
+ kernel/bpf/btf.c                              |  61 +-
+ kernel/bpf/cgroup.c                           |   4 +
+ kernel/bpf/core.c                             | 463 ++++++++++++++++
+ kernel/bpf/disasm.c                           |   4 +
+ kernel/bpf/hashtab.c                          |   4 -
+ kernel/bpf/helpers.c                          |   2 +
+ kernel/bpf/local_storage.c                    |   2 +
+ kernel/bpf/log.c                              |  12 +
+ kernel/bpf/map_iter.c                         |   1 +
+ kernel/bpf/memalloc.c                         |   3 +
+ kernel/bpf/offload.c                          |  10 +
+ kernel/bpf/syscall.c                          |  52 +-
+ kernel/bpf/tnum.c                             |  20 +
+ kernel/bpf/token.c                            |   1 +
+ kernel/bpf/trampoline.c                       |   5 +
+ kernel/bpf/verifier.c                         | 521 ++----------------
+ kernel/events/callchain.c                     |   3 +
+ kernel/events/core.c                          |   1 +
+ kernel/trace/bpf_trace.c                      |   9 +
+ lib/error-inject.c                            |   2 +
+ net/core/filter.c                             |  26 +
+ net/core/xdp.c                                |   2 +
+ net/netfilter/nf_bpf_link.c                   |   1 +
+ .../selftests/bpf/progs/exceptions_assert.c   |   2 +-
+ .../selftests/bpf/progs/exceptions_fail.c     |   4 +-
+ 38 files changed, 834 insertions(+), 514 deletions(-)
+ create mode 100644 kernel/bpf/Kbuild
 
+-- 
+2.47.1
 
-Let us examine the "Total Bytes Received" statistic. Specifically, we'll 
-look at offset 28..35 (0x1c..0x24), bytes read - '0000 002b e5fc e0c0'. 
-NCSI now correctly collects this value into it's internal structure.
-
-
-I just noticed a warning regarding line length in the patch submission, 
-I will address this issue in version 2 of the patch. Let me know if we 
-need additional information.
