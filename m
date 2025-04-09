@@ -1,122 +1,94 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC561264A9E
-	for <netdev@vger.kernel.org>; Wed,  9 Apr 2025 12:28:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E44265618;
+	Wed,  9 Apr 2025 12:28:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744201738; cv=none; b=jzyTjw5TSM93aaA+MzHdt4J37ViUK5wCzgdNLY8NmVgrKfDSlhWrH98LcrpAK6MKZeEN7W+W+wEV/VhEhZgTZJM8DacoD0CTJVd6U5knhrrFnD8prTIWUhNV3n2TuH7yFUI3v9YTQJp5jKKi2RApmgULMv9nLuLVwysWvu+EHZU=
+	t=1744201740; cv=none; b=K1fdB/n+6BaFHGUt6BrvdNCgWAZy6GGY2My3nCqdfY5Sq1+hcb7ATJAx1LoelD74BUPVkfjzznaQBWSvxzAYVlLQl1oImzjPDiwhgKXTIk5bBJ5WNpq9yWAWieSWZfc+nxC/PBCIc5wlnCQOrBKA8kG+zvMPzxeu4oANs47+GAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744201738; c=relaxed/simple;
-	bh=/z3KG0gSRlAlpSy32kmAEF897k/Bnm29uGvceUQ/wqM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EL30YuNGJHr/H53VhxupzRTPb7iZkpyaOEOYptu3Kq3QGu37zDsD4ExFYOz9uHjey88eGBgp6boimycKxHngQ903fncEwZ85Wzj/ZL56+vI7ae8mv9HUbHGUIZLlkLTaw8bk+BTaIlCaULz8uw7Gp/HqCipS4Te0bpspTCsCJUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TW64eG/j; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1744201740; c=relaxed/simple;
+	bh=wtupdBKCKrsUK/6yLonOTlHqsvrp3OSZjPjDOieysM8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B1SXQfo+w/HlduaoR5Io9oFtTGG6wr5taoBMHAjRBdIJpTF24qSBPCrFYiiU9AMJbG33AluAMYyPVvc/RVqXP2LGyO3IFM04160S1e13rggg3+vwG3MqnwCOE6TLysEpMOPlIYs2J6M4GVxZiO8C9fv02TAxg5S00D6yCXwvOKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oiAt4ZzI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TW64eG/j"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744201737; x=1775737737;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=/z3KG0gSRlAlpSy32kmAEF897k/Bnm29uGvceUQ/wqM=;
-  b=TW64eG/jabGYriZDRAFEb9oMMOpMQ3a1Kd6+ynRWODmNpQ+BvRJ+Tpde
-   u8GgdI67hKLGUEdrEEkXeiaN0570xLLQetci0Iq/ZFG9dRAhebKFjKjVP
-   +fRLxgnuh5M0mnAA0Wt7QC72Fd75DpVFK35yoxCiKSZVUUVQSASi9EwsV
-   tNoasAlQdfFjq0qYsVDi3Bv6rfO4gYibLumigJ24ZG75boLs95Ivv5jfM
-   eT1BVkvNrA8TVd2eSPKagWHTcXU2Ash/kg+0klmi5iwUZeZYh5je/xeW1
-   9ai3xmstlXlDhT1qdhTidmPRoRN56algrOtgk1/EpqDotWdezhB8kmsfk
-   A==;
-X-CSE-ConnectionGUID: LyQqf5b2TZiFyxXQ4fwAuw==
-X-CSE-MsgGUID: b5GN6eh6TeWI4DVMj3go1w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="56655715"
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
-   d="scan'208";a="56655715"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 05:28:56 -0700
-X-CSE-ConnectionGUID: wkrdT8sVRRaXAk2YkyxmzQ==
-X-CSE-MsgGUID: bUGzOL3ZSFahsTJeT82YQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
-   d="scan'208";a="133557262"
-Received: from kkolacin-desk1.ger.corp.intel.com (HELO kkolacin-desk1.igk.intel.com) ([10.217.160.155])
-  by orviesa004.jf.intel.com with ESMTP; 09 Apr 2025 05:28:55 -0700
-From: Karol Kolacinski <karol.kolacinski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Karol Kolacinski <karol.kolacinski@intel.com>,
-	Milena Olech <milena.olech@intel.com>
-Subject: [PATCH v2 iwl-next 08/10] ice: wait before enabling TSPLL
-Date: Wed,  9 Apr 2025 14:25:05 +0200
-Message-ID: <20250409122830.1977644-20-karol.kolacinski@intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250409122830.1977644-12-karol.kolacinski@intel.com>
-References: <20250409122830.1977644-12-karol.kolacinski@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oiAt4ZzI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AEAFC4CEE3;
+	Wed,  9 Apr 2025 12:28:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744201739;
+	bh=wtupdBKCKrsUK/6yLonOTlHqsvrp3OSZjPjDOieysM8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oiAt4ZzI0ge1UviUR5vYKMvOh1APL+QvIBXs4FuOaWv68jJtua/7H93an4tjTEBKZ
+	 TJ8f9t1aGLIRAq3vN5XBl2YPrTWM02HaIpvm1uH7oosvpGNLrc+nrfMMKsYPoh7ePK
+	 jonWBx+/1z/R2Eqz8yIOIv/C2xPROQdYfb4q5zlRc2EeJbqAaYPkA1R7tOkIoL0fwe
+	 j1ZfcTZu4ytHiLPocPdRnRMt658lOJ5dS6L6R2WSBhi+0aN8X2UmkPYIwUF+aUA1BU
+	 bmUvd2/GI3jMc6zqksr6xd0Y7q/pFRwvSHGoHsta/W8yCM8TrA08JVdax74h8IT354
+	 5lz4nMrsb8EtQ==
+Date: Wed, 9 Apr 2025 15:28:52 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Konstantin Taranov <kotaranov@linux.microsoft.com>
+Cc: kotaranov@microsoft.com, pabeni@redhat.com, haiyangz@microsoft.com,
+	kys@microsoft.com, edumazet@google.com, kuba@kernel.org,
+	davem@davemloft.net, decui@microsoft.com, wei.liu@kernel.org,
+	longli@microsoft.com, jgg@ziepe.ca, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH rdma-next 1/3] RDMA/mana_ib: Access remote atomic for MRs
+Message-ID: <20250409122852.GL199604@unreal>
+References: <1743777955-2316-1-git-send-email-kotaranov@linux.microsoft.com>
+ <1743777955-2316-2-git-send-email-kotaranov@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1743777955-2316-2-git-send-email-kotaranov@linux.microsoft.com>
 
-To ensure proper operation, wait for 10 to 20 microseconds before
-enabling TSPLL.
+On Fri, Apr 04, 2025 at 07:45:53AM -0700, Konstantin Taranov wrote:
+> From: Konstantin Taranov <kotaranov@microsoft.com>
+> 
+> Add IB_ACCESS_REMOTE_ATOMIC to the valid flags for MRs and use
+> the corresponding flag bit during MR creation in the HW.
+> 
+> Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
+> ---
+>  drivers/infiniband/hw/mana/mr.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/infiniband/hw/mana/mr.c b/drivers/infiniband/hw/mana/mr.c
+> index f99557e..e4a9f53 100644
+> --- a/drivers/infiniband/hw/mana/mr.c
+> +++ b/drivers/infiniband/hw/mana/mr.c
+> @@ -5,8 +5,8 @@
+>  
+>  #include "mana_ib.h"
+>  
+> -#define VALID_MR_FLAGS                                                         \
+> -	(IB_ACCESS_LOCAL_WRITE | IB_ACCESS_REMOTE_WRITE | IB_ACCESS_REMOTE_READ)
+> +#define VALID_MR_FLAGS (IB_ACCESS_LOCAL_WRITE | IB_ACCESS_REMOTE_WRITE | IB_ACCESS_REMOTE_READ |\
+> +			IB_ACCESS_REMOTE_ATOMIC)
+>  
+>  #define VALID_DMA_MR_FLAGS (IB_ACCESS_LOCAL_WRITE)
+>  
+> @@ -24,6 +24,9 @@ mana_ib_verbs_to_gdma_access_flags(int access_flags)
+>  	if (access_flags & IB_ACCESS_REMOTE_READ)
+>  		flags |= GDMA_ACCESS_FLAG_REMOTE_READ;
+>  
+> +	if (access_flags & IB_ACCESS_REMOTE_ATOMIC)
+> +		flags |= GDMA_ACCESS_FLAG_REMOTE_ATOMIC;
 
-Adjust wait time after enabling TSPLL from 1-5 ms to 1-2 ms.
+Can you enable this flag unconditionally without relation to running RW?
 
-Those values are empirical and tested on multiple HW configurations.
+Thanks
 
-Reviewed-by: Milena Olech <milena.olech@intel.com>
-Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_tspll.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_tspll.c b/drivers/net/ethernet/intel/ice/ice_tspll.c
-index a05fe0da553a..25a805fa0bdd 100644
---- a/drivers/net/ethernet/intel/ice/ice_tspll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_tspll.c
-@@ -226,12 +226,15 @@ static int ice_tspll_cfg_e82x(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
- 	r24 |= FIELD_PREP(ICE_CGU_R23_R24_TIME_REF_SEL, clk_src);
- 	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R24, r24);
- 
-+	/* Wait to ensure everything is stable */
-+	usleep_range(10, 20);
-+
- 	/* Finally, enable the PLL */
- 	r24 |= ICE_CGU_R23_R24_TSPLL_ENABLE;
- 	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R24, r24);
- 
--	/* Wait to verify if the PLL locks */
--	usleep_range(1000, 5000);
-+	/* Wait at least 1 ms to verify if the PLL locks */
-+	usleep_range(USEC_PER_MSEC, 2 * USEC_PER_MSEC);
- 
- 	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_RO_BWM_LF, &val);
- 	if (!(val & ICE_CGU_RO_BWM_LF_TRUE_LOCK)) {
-@@ -352,12 +355,15 @@ static int ice_tspll_cfg_e825c(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
- 	/* Clear the R24 register. */
- 	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R24, 0);
- 
-+	/* Wait to ensure everything is stable */
-+	usleep_range(10, 20);
-+
- 	/* Finally, enable the PLL */
- 	r23 |= ICE_CGU_R23_R24_TSPLL_ENABLE;
- 	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R23, r23);
- 
--	/* Wait to verify if the PLL locks */
--	usleep_range(1000, 5000);
-+	/* Wait at least 1 ms to verify if the PLL locks */
-+	usleep_range(USEC_PER_MSEC, 2 * USEC_PER_MSEC);
- 
- 	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_RO_LOCK, &val);
- 	if (!(val & ICE_CGU_RO_LOCK_TRUE_LOCK)) {
--- 
-2.49.0
-
+> +
+>  	return flags;
+>  }
+>  
+> -- 
+> 2.43.0
+> 
