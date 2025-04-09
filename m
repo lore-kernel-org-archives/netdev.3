@@ -1,48 +1,65 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B005125E478;
-	Wed,  9 Apr 2025 12:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2F125E815;
+	Wed,  9 Apr 2025 12:16:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744200689; cv=none; b=nri36556H9k+wmSAoJuh9X8wJRsLZ6Z4u3QWmw1NehRpsTQhKY6denwyEVwH9rkp0mW9YYZIGklOqii3dftPO8fvepNwgcG59abV5PVCvO9rT0xRBQafq80OHmRsPYuEtLZvTvqTbXaOQNqxBonB2ackbU24ZI4e1sXwy1QOLT8=
+	t=1744200990; cv=none; b=or5zq6Q+fjAO5WJO0uD7a48fh9+YXLBJyAlcbChlPRwQOsKpGX0QRJfoySWp0zBU94VKv1/sNTk5GMDnrzOFnF6dyHU6yzcQOIxaaeJqQ8WoEYBOL1SWCM5Upp01OZSh5xQ5YQqmPIzra/+a7XEOA5XbgiFmYKlpCpfOFPNLO14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744200689; c=relaxed/simple;
-	bh=KLkilOFKphTG8GxrVVGT0sc7EkGHKSwqaU/iaMs8KFE=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sdMBzSZWllw1md0yJ7KErK2RwpI5TRwLxJc/+2FX5l2C+cgj/ELiZWNYN981o04U0yv/IUPWNU5mQLQdwRSkHNCcdBaXIlScI+mtTIMCZg295u8gg5PQt3dncDw2uEnqMcqsN7EPW1ZHu3EZJhGViZpWidPouJr4B37axbY9rD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=aGIjfjn3; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1744200990; c=relaxed/simple;
+	bh=3VK9kXxXL1AtEOIE0bOBSoH2noYy+SCsFISB2Y5a5UY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tnIj1+OZKeTMxNp5JHLeLsCBe7jrshstobY/3W8Z/RCB/XssqshJmouFVrJuDuXbYvYiGlB/ir7WI+L7vxFZ76AT4wOo0g9Wpac6i/J7mSsp7vMT1RCle1w/wes7SeRkwyisdjYO8hPIrp+zIql1NwCbM2Gc6THqYu5/pELnMVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=wXcsvVyx; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="aGIjfjn3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:To:From:Date:From:Sender:Reply-To:Subject:Date:
-	Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=SwQ+6WD97tage8nC5az+Ng5lCMDKmy/g4EcXjscUpEE=; b=aGIjfjn3R6ScS9Q5FdZiUvq6Wf
-	Ur7mm5wUpuUgaJ06zoiCZLOGQnr/NcIAL1nrk+XU+n6t464bkXcNeCesT8foGREwviTVk+t5pzZaB
-	P3gMdQgNFfSlOOOYtfUUDOEmChaGOB2v3HQLOs0i1TIjijdehy32n91vN5Xpnm5DiLrs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1u2UGv-008X8R-4I; Wed, 09 Apr 2025 14:11:13 +0200
-Date: Wed, 9 Apr 2025 14:11:13 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	linux-renesas-soc@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="wXcsvVyx"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=nDH4pXLr5tMfpXqCIsvmy68bH6ccGDCzZhZerL82B2c=; b=wXcsvVyxUQ1hGxHZMGu/J/Mspn
+	w13kyD6WyGZSNyg7h4GZnIzibhHEnyhKWMdgD+28cwXJxBO2BO6YWdfYSFuQwH6DOZZxSLmFp1OsB
+	SKDxuSIEwEyWLSHCtZgLnWA9V5OnukyONAO3N45NWjzSYg5CyZ1P6DHr5jAhFTEBfkAW6M2aNfG4O
+	uYTz9R3iAS4Rkiqj1B44WySdrlK5JbbgYZPYvyaY5C5N35V0+Ch7rJruk7Uwe3IZAOVzE73dYRehl
+	xgK+AdsI9/Wfj5hsw7b/S1LdDF2S+VBaxUo+KN9e1TLbIG/Bcjv++pD7SHI2PG9K0Wms/Tti0ggxH
+	FlxdxUVQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53428)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1u2ULo-0000SX-04;
+	Wed, 09 Apr 2025 13:16:16 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1u2ULk-0002Z8-0b;
+	Wed, 09 Apr 2025 13:16:12 +0100
+Date: Wed, 9 Apr 2025 13:16:12 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: Re: [RFC PATCH net-next] net: phy: marvell: support DT
- configurations with only two LEDs
-Message-ID: <0fe35fe3-b63c-478b-9674-a2522f582167@lunn.ch>
-References: <20250408063136.5463-2-wsa+renesas@sang-engineering.com>
- <7f706127-aa48-4385-a7b8-f016e0ba52b7@lunn.ch>
- <Z_YZ3NiXb15wgDuY@shikoro>
+	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v2 2/2] net: phy: Add Marvell PHY PTP support
+Message-ID: <Z_ZlDLzvu_Y2JWM8@shell.armlinux.org.uk>
+References: <20250407-feature_marvell_ptp-v2-0-a297d3214846@bootlin.com>
+ <20250407-feature_marvell_ptp-v2-2-a297d3214846@bootlin.com>
+ <20250408154934.GZ395307@horms.kernel.org>
+ <Z_VdlGVJjdtQuIW0@shell.armlinux.org.uk>
+ <20250409101808.43d5a17d@kmaincent-XPS-13-7390>
+ <Z_YwxYZc7IHkTx_C@shell.armlinux.org.uk>
+ <20250409104858.2758e68e@kmaincent-XPS-13-7390>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,75 +68,124 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z_YZ3NiXb15wgDuY@shikoro>
+In-Reply-To: <20250409104858.2758e68e@kmaincent-XPS-13-7390>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Wed, Apr 09, 2025 at 08:55:24AM +0200, Wolfram Sang wrote:
-> Hi Andrew,
+On Wed, Apr 09, 2025 at 10:48:58AM +0200, Kory Maincent wrote:
+> On Wed, 9 Apr 2025 09:33:09 +0100
+> "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
 > 
-> > Please make use of the LED binding:
+> > On Wed, Apr 09, 2025 at 10:18:08AM +0200, Kory Maincent wrote:
+> > > On Tue, 8 Apr 2025 18:32:04 +0100
+> > > "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+> > >   
+> > > > On Tue, Apr 08, 2025 at 04:49:34PM +0100, Simon Horman wrote:  
+> >  [...]  
+> >  [...]  
+> >  [...]  
+> >  [...]  
+> >  [...]  
+> > > > 
+> > > > ... and anyway, I haven't dropped my patches, I'm waiting for the
+> > > > fundamental issue with merging Marvell PHY PTP support destroying the
+> > > > ability to use MVPP2 PTP support to be solved, and then I will post
+> > > > my patches.
+> > > > 
+> > > > They aren't dead, I'm just waiting for the issues I reported years ago
+> > > > with the PTP infrastructure to be resolved - and to be tested as
+> > > > resolved.
+> > > > 
+> > > > I'm still not convinced that they have been given Kory's responses to
+> > > > me (some of which I honestly don't understand), but I will get around
+> > > > to doing further testing to see whether enabling Marvell PHY PTP
+> > > > support results in MVPP2 support becoming unusable.
+> > > > 
+> > > > Kory's lack of communication with me has been rather frustrating.  
+> > > 
+> > > You were in CC in all the series I sent and there was not a lot of review
+> > > and testing on your side. I know you seemed a lot busy at that time but I
+> > > don't understand what communication is missing here?   
 > > 
-> > &mdio {
-> >         pinctrl-0 = <&mdio_pins>;
-> >         pinctrl-names = "default";
-> >         phy0: ethernet-phy@0 {
-> >                 reg = <0>;
-> >                 leds {
-> >                         #address-cells = <1>;
-> >                         #size-cells = <0>;
+> > I don't spend much time at the physical location where the hardware that
+> > I need to test your long awaited code is anymore. That means the
+> > opportunities to test it are *rare*.
 > > 
-> >                         led@0 {
-> >                                 reg = <0>;
-> >                                 color = <LED_COLOR_ID_WHITE>;
-> >                                 function = LED_FUNCTION_WAN;
-> >                                 default-state = "keep";
-> >                         };
-> >                 };
-> >         };
+> > So far, each time I've tested your code, it's been broken. This really
+> > doesn't help.
 > > 
-> > Just list the two LEDs you have connected.
+> > If you want me to do anything more in a timely manner, like test fixes,
+> > you need to get them to me by the end of this week, otherwise I won't
+> > again be able to test them for a while.
 > 
-> Been there, didn't work. This is what I had:
-> 
-> 	mdio {
-> 		#address-cells = <1>;
-> 		#size-cells = <0>;
-> 		compatible = "snps,dwmac-mdio";
-> 
-> 		phy_mii0: ethernet-phy@8 {
-> 			reg = <8>;
-> 			leds {
-> 				#address-cells = <1>;
-> 				#size-cells = <0>;
-> 				led@0 {
-> 					reg = <0>;
-> 					color = <LED_COLOR_ID_GREEN>;
-> 					function = LED_FUNCTION_LAN;
-> 					default-state = "keep";
-> 				};
-> 
-> 				led@1 {
-> 					reg = <1>;
-> 					color = <LED_COLOR_ID_AMBER>;
-> 					function = LED_FUNCTION_ACTIVITY;
-> 					default-state = "keep";
-> 				};
-> 			};
-> 		};
-> 	};
-> 
-> I played around with LED_FUNCTION_* values.
+> You could try again with Vlad patch adding support to ndo_hwtstamp_get/set to
+> the mvpp2 drivers.
+> https://github.com/vladimiroltean/linux/commit/5bde95816f19cf2872367ecdbef1efe476e4f833
 
+Well, I'm not sure PTP is working correctly.
 
-Function is just to do with naming. What you want is to add
+On one machine (SolidRun Hummingboard 2), I'm running ptpd v2:
 
-linux,default-trigger = "netdev";
+2025-04-09 11:34:19.590032 ptpd2[7284].startup (info)      (___) Configuration OK
+2025-04-09 11:34:19.594624 ptpd2[7284].startup (info)      (___) Successfully acquired lock on /var/run/ptpd2.lock
+2025-04-09 11:34:19.596099 ptpd2[7284].startup (notice)    (___) PTPDv2 started successfully on end0 using "masteronly" preset (PID 7284)
+2025-04-09 11:34:19.596347 ptpd2[7284].startup (info)      (___) TimingService.PTP0: PTP service init
+# Timestamp, State, Clock ID, One Way Delay, Offset From Master, Slave to Master, Master to Slave, Observed Drift, Last packet Received, One Way Delay Mean, One Way Delay Std Dev, Offset From Master Mean, Offset From Master Std Dev, Observed Drift Mean, Observed Drift Std Dev, raw delayMS, raw delaySM
+2025-04-09 11:34:19.596685, init,
+2025-04-09 11:34:19.699787 ptpd2[7284].end0 (notice)    (lstn_init) Now in state: PTP_LISTENING
+2025-04-09 11:34:19.699915, lstn_init,  1
+2025-04-09 11:34:29.596621 ptpd2[7284].end0 (notice)    (lstn_init) TimingService.PTP0: elected best TimingService
+2025-04-09 11:34:29.596758 ptpd2[7284].end0 (info)      (lstn_init) TimingService.PTP0: acquired clock control
+2025-04-09 11:34:31.701104 ptpd2[7284].end0 (notice)    (mst) Now in state: PTP_MASTER, Best master: d063b4fffe0243c3(unknown)/1 (self)
+2025-04-09 11:34:31.701369, mst, d063b4fffe0243c3(unknown)/1
 
-and ensure you have drivers/leds/trigger/ledtrig-netdev.c in your
-kernel.
+with this configuration:
 
-You should then find that you gain an LED directory per LED in sysfs,
-trigger has [netdev] and there are additional files you can use to
-configure when the LED lights/blinks for different link speeds, RX and
-TX etc.
+ptpengine:interface=end0
+ptpengine:preset=masteronly
+ptpengine:multicast_ttl=1
+clock:no_adjust=y
+clock:no_reset=y
 
-	Andrew
+On the test machine (Macchiatobin), I'm running linuxptp ptp4l:
+
+# ./ptp4l -i eth2 -m -s -l 7
+...
+ptp4l[2701.638]: master offset     -30111 s2 freq  -91915 path delay     63039
+ptp4l[2701.725]: port 1: delay timeout
+ptp4l[2701.726]: delay   filtered      63039   raw      40846
+ptp4l[2702.253]: port 1: delay timeout
+ptp4l[2702.254]: delay   filtered      63039   raw      43806
+ptp4l[2702.638]: master offset      29689 s2 freq  -41148 path delay     63039
+ptp4l[2703.638]: master offset     -14050 s2 freq  -75981 path delay     63039
+ptp4l[2703.993]: port 1: delay timeout
+ptp4l[2703.993]: delay   filtered      62371   raw      48094
+ptp4l[2704.255]: port 1: delay timeout
+ptp4l[2704.255]: delay   filtered      61726   raw      49767
+ptp4l[2704.638]: master offset      16434 s2 freq  -49712 path delay     61726
+ptp4l[2705.570]: port 1: delay timeout
+ptp4l[2705.571]: delay   filtered      61726   raw      68302
+ptp4l[2705.638]: master offset     -33159 s2 freq  -94374 path delay     61726
+ptp4l[2706.638]: master offset      28762 s2 freq  -42401 path delay     61726
+ptp4l[2707.254]: port 1: delay timeout
+
+The "delay timeout" and random master offsets doesn't look like PTP is
+working correctly.
+
+tcpdump on the Macchiatobin shows:
+
+13:08:34.701122 d0:63:b4:02:43:c3 > 01:00:5e:00:01:81, ethertype IPv4 (0x0800), length 86: 192.168.0.240.319 > 224.0.1.129.319: PTPv2, v1 compat : no, msg type : sync msg, length : 44, domain : 0, reserved1 : 0, Flags [two step], NS correction : 0, sub NS correction : 0, reserved2 : 0, clock identity : 0xd063b4fffe0243c3, port id : 1, seq id : 5642, control : 0 (Sync), log message interval : 0, originTimeStamp : 1744200514 seconds, 700022395 nanoseconds
+13:08:34.701123 d0:63:b4:02:43:c3 > 01:00:5e:00:01:81, ethertype IPv4 (0x0800), length 86: 192.168.0.240.320 > 224.0.1.129.320: PTPv2, v1 compat : no, msg type : follow up msg, length : 44, domain : 0, reserved1 : 0, Flags [none], NS correction : 0, sub NS correction : 0, reserved2 : 0, clock identity : 0xd063b4fffe0243c3, port id : 1, seq id : 5642, control : 2 (Follow_Up), log message interval : 0, preciseOriginTimeStamp : 1744200514 seconds, 700078731 nanoseconds
+13:08:35.146133 00:51:82:11:33:02 > 01:00:5e:00:01:81, ethertype IPv4 (0x0800), length 86: 192.168.1.96.319 > 224.0.1.129.319: PTPv2, v1 compat : no, msg type : delay req msg, length : 44, domain : 0, reserved1 : 0, Flags [none], NS correction : 0, sub NS correction : 0, reserved2 : 0, clock identity : 0x5182fffe113302, port id : 1, seq id : 13, control : 1 (Delay_Req), log message interval : 127, originTimeStamp : 0 seconds, 0 nanoseconds
+13:08:35.146529 d0:63:b4:02:43:c3 > 01:00:5e:00:01:81, ethertype IPv4 (0x0800), length 96: 192.168.0.240.320 > 224.0.1.129.320: PTPv2, v1 compat : no, msg type : delay resp msg, length : 54, domain : 0, reserved1 : 0, Flags [none], NS correction : 0, sub NS correction : 0, reserved2 : 0, clock identity : 0xd063b4fffe0243c3, port id : 1, seq id : 13, control : 3 (Delay_Resp), log message interval : 0, receiveTimeStamp : 1744200515 seconds, 145324449 nanoseconds, port identity : 0x5182fffe113302, port id : 1
+13:08:35.701268 d0:63:b4:02:43:c3 > 01:00:5e:00:01:81, ethertype IPv4 (0x0800), length 106: 192.168.0.240.320 > 224.0.1.129.320: PTPv2, v1 compat : no, msg type : announce msg, length : 64, domain : 0, reserved1 : 0, Flags [none], NS correction : 0, sub NS correction : 0, reserved2 : 0, clock identity : 0xd063b4fffe0243c3, port id : 1, seq id : 2821, control : 5 (Other), log message interval : 1, originTimeStamp : 0 seconds 0 nanoseconds, origin cur utc :0, rsvd : 130, gm priority_1 : 128, gm clock class : 13, gm clock accuracy : 254, gm clock variance : 65535, gm priority_2 : 128, gm clock id : 0xd063b4fffe0243c3, steps removed : 0, time source : 0xa0
+13:08:35.701268 d0:63:b4:02:43:c3 > 01:00:5e:00:01:81, ethertype IPv4 (0x0800), length 86: 192.168.0.240.319 > 224.0.1.129.319: PTPv2, v1 compat : no, msg type : sync msg, length : 44, domain : 0, reserved1 : 0, Flags [two step], NS correction : 0, sub NS correction : 0, reserved2 : 0, clock identity : 0xd063b4fffe0243c3, port id : 1, seq id : 5643, control : 0 (Sync), log message interval : 0, originTimeStamp : 1744200515 seconds, 700230163 nanoseconds
+
+So we can see that ptpdv2 is responding to the delay requests, but it
+seems that ptp4l doesn't see them, but it is seeing the other messages
+from the HB2 running in master mode. I don't have time to investigate
+any further until later today, and then again not until tomorrow
+evening.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
