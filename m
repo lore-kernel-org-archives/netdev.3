@@ -1,121 +1,163 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mail.universe-factory.net (osgiliath.universe-factory.net [141.95.161.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C52817A319;
-	Wed,  9 Apr 2025 15:43:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC3525DCE2;
+	Wed,  9 Apr 2025 15:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.95.161.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744213406; cv=none; b=rxgMlwb3mpJUmn2rG9GEzwdtrRdk2fLnLAsoSaTKSfvCBMSG8jFRDTvZZeh+9LZaEhhIkFqSHo2nBB4DpWsdT79wZqv6+lVBVVthQY46m1I+b2XQQiT6O08WtjUq0xWBbetH3yJZrbt4o6KpNqfnj2BWwmbRZP8Pr8SI5O5CGL8=
+	t=1744213450; cv=none; b=r9NrrpUJ20NdK1i7s5aAK4UeoqgpSS4aHjMhz+Ng345u5lDgW2lJdCdt5eiep77hNxLmCHcgDNCBdP4GRLYyul6xiT+ExjDIikaY3xM1GS8pHOKi6Rh/b0xL4570lVDoPfxUiQ+BYGK08wrvxO/mVa0rfL5tF9Wp04keyQVahpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744213406; c=relaxed/simple;
-	bh=y9uebcKW8YvKkKHt4Ltu6yUEyYoT0rCBCLeMKwit3eM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e1LHJc0mICJSmKfo4rRy03rLUeDkSCraxXHHSCDrZ293tWHedFgMcyStL98ZAr1XpVCSX/QPSt/Ov46Qt2PSBOkIQFS/nWoL68SCmfVPGRv7P+FPCEw+2AhhnO0kPr/EqQujgtrHIDDmspd6fKLzXf/VovaxXCGR21W46AqYoGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: z09WTXwoSD6gInyYwOsg3w==
-X-CSE-MsgGUID: qBZiBJvZShqOzDg+fyM8rg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="56330918"
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
-   d="scan'208";a="56330918"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 08:43:23 -0700
-X-CSE-ConnectionGUID: jBz6NS4OR62aMwAXaezCtA==
-X-CSE-MsgGUID: Ckj9YI5xSyu3GY5GKOussQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
-   d="scan'208";a="128540658"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 08:43:19 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andy@kernel.org>)
-	id 1u2Xa8-0000000AmY0-3UpM;
-	Wed, 09 Apr 2025 18:43:16 +0300
-Date: Wed, 9 Apr 2025 18:43:16 +0300
-From: Andy Shevchenko <andy@kernel.org>
-To: Ivan Vecera <ivecera@redhat.com>
-Cc: netdev@vger.kernel.org, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Prathosh Satish <Prathosh.Satish@microchip.com>,
-	Lee Jones <lee@kernel.org>, Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Schmidt <mschmidt@redhat.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2 03/14] mfd: Add Microchip ZL3073x support
-Message-ID: <Z_aVlIiT07ZDE2Kf@smile.fi.intel.com>
-References: <20250409144250.206590-1-ivecera@redhat.com>
- <20250409144250.206590-4-ivecera@redhat.com>
+	s=arc-20240116; t=1744213450; c=relaxed/simple;
+	bh=ByunKrilyL48d/c5MjnZJh9souP+RihV9Ah6M47bueA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jr9UutlP/6qmfsIEGvF5S2yGmAyO+rfAvS2+MzQHvm/pZBzcziDU/dv1Js87L9xu0PlBurwfS0wRlH2kJRrPlLOOO0HRwwkm6SzDTF7deC18B+KJvrhwoqQBK4LAz4Uzt3L8vHszCs0pIuCFqRC8P3Kbu6KJIlreGuCMPpHxLsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=universe-factory.net; spf=pass smtp.mailfrom=universe-factory.net; dkim=pass (2048-bit key) header.d=universe-factory.net header.i=@universe-factory.net header.b=Aafp1mcA; arc=none smtp.client-ip=141.95.161.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=universe-factory.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=universe-factory.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=universe-factory.net header.i=@universe-factory.net header.b="Aafp1mcA"
+Message-ID: <3615fa6f-a837-4b4d-a987-52245710d84e@universe-factory.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=universe-factory.net;
+	s=dkim; t=1744213443;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ByunKrilyL48d/c5MjnZJh9souP+RihV9Ah6M47bueA=;
+	b=Aafp1mcAiZH8DXqq0kdvvMDJv8NFT22AjB8NsPBEnvZADRi2tSeY4Enyq2XH9UJyrQLknZ
+	2kf2xqN1Flc9CKMmrI6Yh2sl5aUGLb+uQDHLsBrsBkLflX+6fk1bayRUjV++iEK14OVkVK
+	nwrLpa5DFraGh3nafaK/k+3QpQttUQkboHxm0Agt9x+i7WZ7JJ1abptJnIzMk+v5Gh5ydI
+	EzdrKKwIElEwsqu5TXbRTsArPxydkKbAMQgZ8wIq/F094d0mBFlgciSg0WBz8KvKEhfhxd
+	eRatMIdeFfsQgZqQC3aKxotH8tgUdbK9lRySvz6dT1GcST9KmRhNF2lOwfIhUA==
+Authentication-Results: mail.universe-factory.net;
+	auth=pass smtp.mailfrom=mschiffer@universe-factory.net
+Date: Wed, 9 Apr 2025 17:44:02 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250409144250.206590-4-ivecera@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Subject: Re: [PATCH net-next] net: batman-adv: constify and move broadcast
+ addr definition
+Content-Language: en-US-large
+To: Sven Eckelmann <sven@narfation.org>,
+ Marek Lindner <marek.lindner@mailbox.org>,
+ Simon Wunderlich <sw@simonwunderlich.de>,
+ Antonio Quartulli <antonio@mandelbit.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <c5f3e04813ff92aca8dddc7e1966fe45fca63e56.1744127239.git.mschiffer@universe-factory.net>
+ <2789676.Lt9SDvczpP@ripper>
+From: Matthias Schiffer <mschiffer@universe-factory.net>
+Autocrypt: addr=mschiffer@universe-factory.net; keydata=
+ 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
+ cQqe8eRmcdNdqWSiJQ8VLoI=
+In-Reply-To: <2789676.Lt9SDvczpP@ripper>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------60iJOc5p1wrpyh3HgNkqvD71"
+X-Spamd-Bar: ----
 
-On Wed, Apr 09, 2025 at 04:42:39PM +0200, Ivan Vecera wrote:
-> Add base MFD driver for Microchip Azurite ZL3073x chip family.
-> These chips provide DPLL and PHC (PTP) functionality and they can
-> be connected over I2C or SPI bus.
-> 
-> The MFD driver provide basic communication and synchronization
-> over the bus and common functionality that are used by the DPLL
-> driver (later in this series) and by the PTP driver (will be
-> added later).
-> 
-> The chip family is characterized by following properties:
-> * 2 separate DPLL units (channels)
-> * 5 synthesizers
-> * 10 input pins (references)
-> * 10 outputs
-> * 20 output pins (output pin pair shares one output)
-> * Each reference and output can act in differential or single-ended
->   mode (reference or output in differential mode consumes 2 pins)
-> * Each output is connected to one of the synthesizers
-> * Each synthesizer is driven by one of the DPLL unit
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------60iJOc5p1wrpyh3HgNkqvD71
+Content-Type: multipart/mixed; boundary="------------so68tEQeyh9weA1bi63OW1xD";
+ protected-headers="v1"
+From: Matthias Schiffer <mschiffer@universe-factory.net>
+To: Sven Eckelmann <sven@narfation.org>,
+ Marek Lindner <marek.lindner@mailbox.org>,
+ Simon Wunderlich <sw@simonwunderlich.de>,
+ Antonio Quartulli <antonio@mandelbit.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-ID: <3615fa6f-a837-4b4d-a987-52245710d84e@universe-factory.net>
+Subject: Re: [PATCH net-next] net: batman-adv: constify and move broadcast
+ addr definition
+References: <c5f3e04813ff92aca8dddc7e1966fe45fca63e56.1744127239.git.mschiffer@universe-factory.net>
+ <2789676.Lt9SDvczpP@ripper>
+In-Reply-To: <2789676.Lt9SDvczpP@ripper>
 
-...
+--------------so68tEQeyh9weA1bi63OW1xD
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-> +/*
-> + * Regmap ranges
-> + */
-> +#define ZL3073x_PAGE_SIZE	128
-> +#define ZL3073x_NUM_PAGES	16
-> +#define ZL3073x_PAGE_SEL	0x7F
-> +
-> +/*
-> + * Regmap range configuration
-> + *
-> + * The device uses 7-bit addressing and has 16 register pages with
-> + * range 0x00-0x7f. The register 0x7f in each page acts as page
-> + * selector where bits 0-3 contains currently selected page.
-> + */
-> +static const struct regmap_range_cfg zl3073x_regmap_ranges[] = {
-> +	{
-> +		.range_min	= 0,
+T24gMDkvMDQvMjAyNSAxMDoxMCwgU3ZlbiBFY2tlbG1hbm4gd3JvdGU6DQo+IE9uIFR1ZXNk
+YXksIDggQXByaWwgMjAyNSAxNzo1MzozNiBDRVNUIE1hdHRoaWFzIFNjaGlmZmVyIHdyb3Rl
+Og0KPj4gKyAgICAgICBjb25zdCB1OCBicm9hZGNhc3RfYWRkcltdID0gezB4ZmYsIDB4ZmYs
+IDB4ZmYsIDB4ZmYsIDB4ZmYsIDB4ZmZ9Ow0KPiANCj4gU2hvdWxkIG1vc3QgbGlrZWx5IGJl
+ICJzdGF0aWMgY29uc3QgdTggLi4uIg0KPiANCj4gKGNoZWNrcGF0Y2ggU1RBVElDX0NPTlNU
+X0NIQVJfQVJSQVkpDQo+IA0KPiBLaW5kIHJlZ2FyZHMsDQo+IAlTdmVuDQoNClRoYW5rcywg
+d2lsbCBzZW5kIGEgdjIuIFRoZSBjaGVja3BhdGNoIGNoZWNrIG9ubHkgbG9va3MgZm9yIHN0
+cmluZ3MsIG5vdCANCmFycmF5cyBkZWZpbmVkIHdpdGggeyB9LCBzbyBpdCBkaWRuJ3QgdHJp
+Z2dlciBmb3IgbWUuDQoNCkJlc3QsDQpNYXR0aGlhcw0K
 
-This still has the same issue, you haven't given a chance to me to reply
-in v1 thread. I'm not going to review this as it's not settled down yet.
-Let's first discuss the questions you have in v1.
+--------------so68tEQeyh9weA1bi63OW1xD--
 
-> +		.range_max	= ZL3073x_NUM_PAGES * ZL3073x_PAGE_SIZE,
-> +		.selector_reg	= ZL3073x_PAGE_SEL,
-> +		.selector_mask	= GENMASK(3, 0),
-> +		.selector_shift	= 0,
-> +		.window_start	= 0,
-> +		.window_len	= ZL3073x_PAGE_SIZE,
-> +	},
-> +};
+--------------60iJOc5p1wrpyh3HgNkqvD71
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
--- 
-With Best Regards,
-Andy Shevchenko
+-----BEGIN PGP SIGNATURE-----
 
+wsF5BAABCAAjFiEEZmTnvaa2aYgexS51Fu8/ZMsgHZwFAmf2lcIFAwAAAAAACgkQFu8/ZMsgHZxu
+fRAA02x0QMxxvLVurZGGbh1sjKGPgMeRcQwSoO6e516iXhjjlhali0f3Z+xVxSpPw9Hjg4OX/vs3
+tupMNvLjFTizfw11jyTjQirrID8J813n1yRc+hJEayjEvhbrv5+nUGDUANiasAoASuikE7ah34jY
+WIOrt4qD38EHEvbwRVFz0YUZqfGFDrJ/l3t+/wm24VFVFMHXLVLVcn8qJmfoCdAKmKP2Qh1HMqVG
+OLNwiwMo5CBUYx0yhN/RzdU5F0660Q+CUT2ws1GN/MejfcqLUvwl4ol3RpM3heewLhPU2ArRJy+2
+QBaN+mVZJK4LL3P+wtgeL+0FUxiJelIfDFaLrBg0fcuUnfgenkKPcwaHc4lzBqNPcdJJ20sCP4Go
+In0Vz4WpgtV4HIAz4659tqxo3YkDrHSMiyE2p903AoTxTUn8hT+TpK8VacfaOjqcyMUKtkXHwSze
+FGS09DJlQMiYCxbIRUzKNM6MkvCbBQaB5CuG+sJX5RDl6rDsZTXMX/PjvmTzKPPvwDMEln9QO+xz
+l9bhOGi3FBQ3/OsXOwuCyenPtwRGfh/ZLkAwOIB9LPEmqq0HXO5EgcuuAomHfuiFw1Kd9gov6wcN
+L7Phl4l0HrHLKGcIXQtZkfdqnbNJ1MTeVBBjkaiq1UqLQXbEJL6q1nll8QrFNVXcRXkAnw+U7GQa
+IV8=
+=xF61
+-----END PGP SIGNATURE-----
 
+--------------60iJOc5p1wrpyh3HgNkqvD71--
