@@ -1,156 +1,121 @@
-Received: from spam.asrmicro.com (asrmicro.com [210.13.118.86])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF2925A637;
-	Wed,  9 Apr 2025 08:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.13.118.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813641DE2CE
+	for <netdev@vger.kernel.org>; Wed,  9 Apr 2025 08:03:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744185715; cv=none; b=DXk7vBpBhze0hsk/jF6jd20fdnguriXyoxX+UQN7c62K0xcCVgj1q9SCIjjkZKVXdlJ/Mdv3/OsVpMPw6/JJdfKIPwY4AlxP6YzANBK1feuwyi4z4Q+xPS2Jt9GuUBHI8I0Dytw4VZwHoFSl6DVAZD2UqzWkDishpJYfAmUdob4=
+	t=1744185784; cv=none; b=M0z4R0GJEXV+Uj4ZV7C5CnAppeH2V2EKo3DHsh00UYj0XXTysswQELBHh3814tE9G3VuPrT97XQyYu2MtiijttdUi7hBYAZAvXniY08qSbjMZcQn2O/WUIIYPXAVmg+9JXInGH3Bm0c+Dk/1OgY7QiBFQ1YxjvRlXfIhePFtzD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744185715; c=relaxed/simple;
-	bh=uB80WfCPadHDQNF1Ma8F2Btk9k5iSpMqhcGgLwl8MCg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iPWN4A7Q9xgVpIdNtQwWX/5Szoqw7PxSVFsWmod49G6W256dCSu/W/n1Vjxopy9GwkjaezYifwlXExXMEA5/CLmb8C+6ohOz/x3LJPFMyQOPDadxNvXimnjqjYXLfJnEwUvG5Y/DpplDGlsNXHRTQcaV1GP9M3TpnqWalxOrBOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=asrmicro.com; spf=pass smtp.mailfrom=asrmicro.com; arc=none smtp.client-ip=210.13.118.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=asrmicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asrmicro.com
-Received: from spam.asrmicro.com (localhost [127.0.0.2] (may be forged))
-	by spam.asrmicro.com with ESMTP id 5397YsQT003323;
-	Wed, 9 Apr 2025 15:34:54 +0800 (GMT-8)
-	(envelope-from huajianyang@asrmicro.com)
-Received: from exch03.asrmicro.com (exch03.asrmicro.com [10.1.24.118])
-	by spam.asrmicro.com with ESMTPS id 5397Xk2e002977
-	(version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=FAIL);
-	Wed, 9 Apr 2025 15:33:46 +0800 (GMT-8)
-	(envelope-from huajianyang@asrmicro.com)
-Received: from localhost (10.26.128.141) by exch03.asrmicro.com (10.1.24.118)
- with Microsoft SMTP Server (TLS) id 15.0.847.32; Wed, 9 Apr 2025 15:33:49
- +0800
-From: Huajian Yang <huajianyang@asrmicro.com>
-To: <pablo@netfilter.org>
-CC: <kadlec@netfilter.org>, <razor@blackwall.org>, <idosch@nvidia.com>,
-        <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
-        <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
-        <bridge@lists.linux.dev>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Huajian Yang <huajianyang@asrmicro.com>
-Subject: [PATCH] net: Expand headroom to send fragmented packets in bridge fragment forward
-Date: Wed, 9 Apr 2025 15:33:36 +0800
-Message-ID: <20250409073336.31996-1-huajianyang@asrmicro.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1744185784; c=relaxed/simple;
+	bh=xguabqRsduqHwmlMXbbrUsNrBk9VlNIZeV8bIjsx6+Y=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=FVOOYa/SjyVUf1So/5JJzMfTrDdwrksgxGBUueu6cTknh4LOX4Qm5mrpnguX8Uj7Y4+RwTBieByH0b4bbwyGRflLLlXWEQNezoiY6mHkW/kZ66S0z1H2ypdF+cOQkYc6a2lobfnaEFwPIUNAI3yX2Szip7AUQt694Qpq51E6BUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=dQpPFdfh; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="dQpPFdfh"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=+6nvcOJ++NOB/Y9LYXH1TIQKqdDOujyb+N4hlkpNcJ4=; b=dQpPFdfhbTOOkVqVQwaKv8AQmf
+	BXG7XsHG1p8sgePhIRkqhafUnFjSTbQWugzIxEREYTJ16OTWqZE8yA5PhCJLU7fKHUWfowkjACkbs
+	vT2cWXTOjcbiniyqm6Dj2dNJRgSi2tpCrEtAgi8mvWDvGlKw7WhRVl56+TSZpePyOaGhDuF+lWASV
+	YIiGEvEyeIcR8qcCmtSdv+ZIOiH/cKJ0hlDA0i1HPZfzfB7xFw6lHl0kD9HKVIETE5M735VS8RtvS
+	YStAAqNHHYQl3c/bm76lA5UFL7q+kcUx3L99qj4Cnzev13TMdJgGggrWfVSoMD/JJ8qPvD7BJVHAK
+	CagUnSjA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:39190 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1u2QOa-0000Cd-1j;
+	Wed, 09 Apr 2025 09:02:52 +0100
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1u2QO4-001Rp2-Dy; Wed, 09 Apr 2025 09:02:20 +0100
+In-Reply-To: <Z_Yn3dJjzcOi32uU@shell.armlinux.org.uk>
+References: <Z_Yn3dJjzcOi32uU@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Prabhakar <prabhakar.csengg@gmail.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH net-next v2 1/2] net: stmmac: provide stmmac_pltfr_find_clk()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: exch03.asrmicro.com (10.1.24.118) To exch03.asrmicro.com
- (10.1.24.118)
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL:spam.asrmicro.com 5397YsQT003323
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1u2QO4-001Rp2-Dy@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Wed, 09 Apr 2025 09:02:20 +0100
 
-The config NF_CONNTRACK_BRIDGE will change the way fragments are processed.
-Bridge does not know that it is a fragmented packet and forwards it
-directly, after NF_CONNTRACK_BRIDGE is enabled, function nf_br_ip_fragment
-will check and fraglist this packet.
+Provide a generic way to find a clock in the bulk data.
 
-Some network devices that would not able to ping large packet under bridge,
-but large packet ping is successful if not enable NF_CONNTRACK_BRIDGE.
-
-In function nf_br_ip_fragment, checking the headroom before sending is
-undoubted, but it is unreasonable to directly drop skb with insufficient
-headroom.
-
-Using skb_copy_expand to expand the headroom of skb instead of dropping
-it.
-
-Signed-off-by: Huajian Yang <huajianyang@asrmicro.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- net/bridge/netfilter/nf_conntrack_bridge.c | 14 ++++++++++++--
- net/ipv6/netfilter.c                       | 14 ++++++++++++--
- 2 files changed, 24 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 11 +++++++++++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h |  3 +++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
-index 816bb0fde718..b8fb81a49377 100644
---- a/net/bridge/netfilter/nf_conntrack_bridge.c
-+++ b/net/bridge/netfilter/nf_conntrack_bridge.c
-@@ -62,7 +62,7 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index c73eff6a56b8..43c869f64c39 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -709,6 +709,17 @@ devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ #endif /* CONFIG_OF */
+ EXPORT_SYMBOL_GPL(devm_stmmac_probe_config_dt);
  
- 		if (first_len - hlen > mtu ||
- 		    skb_headroom(skb) < ll_rs)
--			goto blackhole;
-+			goto expand_headroom;
- 
- 		if (skb_cloned(skb))
- 			goto slow_path;
-@@ -70,7 +70,7 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
- 		skb_walk_frags(skb, frag) {
- 			if (frag->len > mtu ||
- 			    skb_headroom(frag) < hlen + ll_rs)
--				goto blackhole;
-+				goto expand_headroom;
- 
- 			if (skb_shared(frag))
- 				goto slow_path;
-@@ -97,6 +97,16 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
- 
- 		return err;
- 	}
++struct clk *stmmac_pltfr_find_clk(struct plat_stmmacenet_data *plat_dat,
++				  const char *name)
++{
++	for (int i = 0; i < plat_dat->num_clks; i++)
++		if (strcmp(plat_dat->clks[i].id, name) == 0)
++			return plat_dat->clks[i].clk;
 +
-+expand_headroom:
-+	struct sk_buff *expand_skb;
++	return NULL;
++}
++EXPORT_SYMBOL_GPL(stmmac_pltfr_find_clk);
 +
-+	expand_skb = skb_copy_expand(skb, ll_rs, skb_tailroom(skb), GFP_ATOMIC);
-+	if (unlikely(!expand_skb))
-+		goto blackhole;
-+	kfree_skb(skb);
-+	skb = expand_skb;
-+
- slow_path:
- 	/* This is a linearized skbuff, the original geometry is lost for us.
- 	 * This may also be a clone skbuff, we could preserve the geometry for
-diff --git a/net/ipv6/netfilter.c b/net/ipv6/netfilter.c
-index 581ce055bf52..619d4b97581b 100644
---- a/net/ipv6/netfilter.c
-+++ b/net/ipv6/netfilter.c
-@@ -166,7 +166,7 @@ int br_ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ int stmmac_get_platform_resources(struct platform_device *pdev,
+ 				  struct stmmac_resources *stmmac_res)
+ {
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
+index 72dc1a32e46d..6e6561e29d6e 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
+@@ -14,6 +14,9 @@
+ struct plat_stmmacenet_data *
+ devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac);
  
- 		if (first_len - hlen > mtu ||
- 		    skb_headroom(skb) < (hroom + sizeof(struct frag_hdr)))
--			goto blackhole;
-+			goto expand_headroom;
++struct clk *stmmac_pltfr_find_clk(struct plat_stmmacenet_data *plat_dat,
++				  const char *name);
++
+ int stmmac_get_platform_resources(struct platform_device *pdev,
+ 				  struct stmmac_resources *stmmac_res);
  
- 		if (skb_cloned(skb))
- 			goto slow_path;
-@@ -174,7 +174,7 @@ int br_ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 		skb_walk_frags(skb, frag2) {
- 			if (frag2->len > mtu ||
- 			    skb_headroom(frag2) < (hlen + hroom + sizeof(struct frag_hdr)))
--				goto blackhole;
-+				goto expand_headroom;
- 
- 			/* Partially cloned skb? */
- 			if (skb_shared(frag2))
-@@ -208,6 +208,16 @@ int br_ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 		kfree_skb_list(iter.frag);
- 		return err;
- 	}
-+
-+expand_headroom:
-+	struct sk_buff *expand_skb;
-+
-+	expand_skb = skb_copy_expand(skb, ll_rs, skb_tailroom(skb), GFP_ATOMIC);
-+	if (unlikely(!expand_skb))
-+		goto blackhole;
-+	kfree_skb(skb);
-+	skb = expand_skb;
-+
- slow_path:
- 	/* This is a linearized skbuff, the original geometry is lost for us.
- 	 * This may also be a clone skbuff, we could preserve the geometry for
 -- 
-2.48.1
+2.30.2
 
