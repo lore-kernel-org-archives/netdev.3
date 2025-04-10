@@ -1,309 +1,238 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CEF28A408;
-	Thu, 10 Apr 2025 13:06:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744290387; cv=fail; b=et5pHliA+6iRdM5oeXquomkLXMq2jws1W6VVq46oABWRFNRlIs6RmxNedTCO366c93vQcEeYv+hhddczixRoi7nLMwDJq/f0KT0cg53iTfNjcpTJz9KoiCtWyq+K/UvI7IO5yHJFkfRm89XP0blPpVXdT8+qBeTodrM2i3whNkM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744290387; c=relaxed/simple;
-	bh=u3ZLje6ThfTkBRLLQYowS7iXG0lbQ7/cuY5NoM5llJA=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=raCzMHHkoY5wxZNp32oePG1AboDugAFNtY1kf8Y1IcXN3PtbuGaitkhT+vrxWgNTAjVyXplWGj7HJraQd9O/ncEqcLzuKXmUZ9cjJQQlnx9aLapfqefDqkjgkpBcYZrL1UDHA6wgOkesS6bymKPwOGLv2vtXZ01sYejQvtjrG2w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X0HEeiO4; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBABA28A3F3;
+	Thu, 10 Apr 2025 13:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744290485; cv=none; b=q78GnftyPTsEMMIb3AqKNIMNuIP9avx0IbXjGyYiBOmDUctTVPZC6cl2dWMerXkjDHTBnZLws3hV9dAyj6YiYIARbx5MFmB4CPUIz7iVGgOVwSK6rPWwAPw1SWEWxNJM+Kh+KwacZQdUsy1Q6zdvXXvQC+O5i9gwLJM8st4sF/Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744290485; c=relaxed/simple;
+	bh=e6f1iOApfDGrKvCN5ntQooMxdjd9ucImghEkU3zlR8k=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MwNn0T3LGxL3uTLSIsF5KxWQQxS/voKmSk7GwS4JG6bnGhv1j0pChQY0OxiYOJ8J7LnVeAcLuvQ2eYlEGf3Uvr3DOuFqzr9+z1UShAobfADkU2mgBi5i5HPpVHDS6kq8INOyEv+9bhakl7kp2yVJJcal/FL1hHx7Y/IEpo4+v74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H0YkXFUJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X0HEeiO4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744290384; x=1775826384;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=u3ZLje6ThfTkBRLLQYowS7iXG0lbQ7/cuY5NoM5llJA=;
-  b=X0HEeiO4U09DMoLuor/tvECRtbA01WaULZLYlQVhOujdbXMs/VDlvZfh
-   MohAiYDIVbU19UM4VNZtiTnKNlU+pa5vW+HwEHoHPk7JyLu8Cfh6nGT9i
-   OYwk3uFLMY/9+Q3ygzzKR2oGfx0wHfdtgRJAsVabJXKGqVAgxk+G8KgC6
-   aIoLMv8j10K07CnUZw6snQhrC4Q6FgqAQO4d6m1E1/U6yDiUfkzSvdllA
-   Q0h34moOWtQrXskk5eQb7Xvhpglz+jB3GcWKUK2XIedDxh4Yq5VhSJtMU
-   0x96N3Yf8fZC6AHQGxsUAjz9044c+TzDZVqzyuj+plksEiak4v9LfhmW/
-   Q==;
-X-CSE-ConnectionGUID: VlMGgUlqSXS08Ey+dUQEew==
-X-CSE-MsgGUID: 0/cuukU6TXuX4so/wguo2Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="63352586"
-X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; 
-   d="scan'208";a="63352586"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 06:06:09 -0700
-X-CSE-ConnectionGUID: IpQaao8CQzCAn5HGW+enBQ==
-X-CSE-MsgGUID: EqLrTjGdQKqsZgMQm00Mvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; 
-   d="scan'208";a="129744731"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 06:06:02 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Thu, 10 Apr 2025 06:06:01 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Thu, 10 Apr 2025 06:06:01 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.176)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Thu, 10 Apr 2025 06:05:59 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZuhkvXr2odbJW81QXxWLQ2Cjnn4XD982+3/TRWc+zdDru1GPBn3YAP+usqjbj2/RSWbLFDSsCf/lOUccU4s0c33cWQ/sxLpiVcsEYE8H5mKEieVq7dzuUeXWNlvUfl1oBmJdqhzj85q/R9rb1BN1oSEp9FzaNhRIzvBgkg2xRXcYLRpU90ahwdDzO0ggq3eNdiJGjB2lhtzxaMwfRlmCCqdyw8toiumzNwvTKQ4yAA+EyVKX9sasXeHdvqRXfjnC3azftp8KRDo6zjPUWitxtVTBxsMae/ET+T9wZeNAu94yA0B1VjZNyAyGUX/DxVA/iSV3xpcbVUcvtSq4Srl5ng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fc66596yFrw6quDUlXTsHorM/6cF/GHNvHbJ8O7aMe4=;
- b=hKiROgaY175cn7gRD9hp5f1+ax1bKaIr32r0Z1ojxYmnz7lVmgku6Ue4INb8WLbsRRQA+cb7z9mn+MQ61cFg4YMq1i38vz3twu0DQT4wa/5CrHykRi5uC2qhhOTVu/ZDy1YnbmmewLXhuIqKEVMEaWw16C0hi4snKfXCACL+2YiKseLvE5kSK8PouPVKqyO+doZZ7qshHLYAQRLTL8KZiCjgTviIDK49/cwGSHXnnvP0dD+d5rIQdXx7Zep+b2nRaP3Phnnx5n21rRXr0V3+/r2aJtBqNMC+uB2DZUMueXE9BBte4ViwgDCfxgJkUCq5wTbZns/Peqhhz9kg8bwFMA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
- by PH0PR11MB5207.namprd11.prod.outlook.com (2603:10b6:510:32::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.21; Thu, 10 Apr
- 2025 13:05:28 +0000
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::4b3b:9dbe:f68c:d808]) by DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::4b3b:9dbe:f68c:d808%5]) with mapi id 15.20.8632.017; Thu, 10 Apr 2025
- 13:05:28 +0000
-Message-ID: <c1ff0342-4fe9-44ec-a212-9f547e333a5e@intel.com>
-Date: Thu, 10 Apr 2025 15:05:19 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-next 05/14] libeth: add control queue support
-To: Leon Romanovsky <leon@kernel.org>, Larysa Zaremba
-	<larysa.zaremba@intel.com>
-CC: <intel-wired-lan@lists.osuosl.org>, Tony Nguyen
-	<anthony.l.nguyen@intel.com>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, Jiri Pirko
-	<jiri@resnulli.us>, Tatyana Nikolova <tatyana.e.nikolova@intel.com>, "Andrew
- Lunn" <andrew+netdev@lunn.ch>, Michael Ellerman <mpe@ellerman.id.au>, "Maciej
- Fijalkowski" <maciej.fijalkowski@intel.com>, Lee Trager <lee@trager.us>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Sridhar Samudrala
-	<sridhar.samudrala@intel.com>, Jacob Keller <jacob.e.keller@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>, Mateusz Polchlopek
-	<mateusz.polchlopek@intel.com>, Ahmed Zaki <ahmed.zaki@intel.com>,
-	<netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, "Karlsson, Magnus"
-	<magnus.karlsson@intel.com>, Emil Tantilov <emil.s.tantilov@intel.com>,
-	"Madhu Chittim" <madhu.chittim@intel.com>, Josh Hay <joshua.a.hay@intel.com>,
-	"Milena Olech" <milena.olech@intel.com>, <pavan.kumar.linga@intel.com>,
-	"Singhai, Anjali" <anjali.singhai@intel.com>, Phani R Burra
-	<phani.r.burra@intel.com>
-References: <20250408124816.11584-1-larysa.zaremba@intel.com>
- <20250408124816.11584-6-larysa.zaremba@intel.com>
- <20250410082137.GO199604@unreal>
- <Z_ehEXmlEBREQWQM@soc-5CG4396X81.clients.intel.com>
- <20250410112349.GP199604@unreal>
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-Content-Language: en-US
-In-Reply-To: <20250410112349.GP199604@unreal>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H0YkXFUJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D51BC4CEDD;
+	Thu, 10 Apr 2025 13:08:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744290485;
+	bh=e6f1iOApfDGrKvCN5ntQooMxdjd9ucImghEkU3zlR8k=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=H0YkXFUJQNHLD+gQPMffK2jhwSNvxIZ5/tXKP3FtkO7EnSA2KR4iXG8WW7W5tiys6
+	 1HPlMA7aBAfZ4GvjCgGQJ5ELuJGoCAdEBQLArvp9R7tpYlJZsWXu+gUYKeymWQEAfG
+	 9SB5sQy8Z/wcCvD0fm6/UzF0wDe3A3iULhEkgCeajYoW1wr9qDFMdiFoa+AXY2Xzo5
+	 UBo8jvPHCzDLz6ZjOo72L35uKf0hVZoPoTOv/F7Yki9uXsiIAZslVs8tfsjAB5qJLm
+	 0gyHgmjB1Xzt//Zg/Pc9Oi2pQEckJ0ivNCWqWASDd4tQJ+Ik2Yn4HFMb4A3MS3ClFc
+	 ldTLSO8MNcHAA==
+Message-ID: <91d6d3c60ef5d4ed90418f8a06228767be8a5b1b.camel@kernel.org>
+Subject: Re: [PATCH v2 2/2] net: add debugfs files for showing netns
+ refcount tracking info
+From: Jeff Layton <jlayton@kernel.org>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski	 <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman	 <horms@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, 	netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 10 Apr 2025 09:08:03 -0400
+In-Reply-To: <1e717326-8551-419e-b185-5cfb20573b4f@lunn.ch>
+References: <20250408-netns-debugfs-v2-0-ca267f51461e@kernel.org>
+	 <20250408-netns-debugfs-v2-2-ca267f51461e@kernel.org>
+	 <1e717326-8551-419e-b185-5cfb20573b4f@lunn.ch>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=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
+ QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ZRAP278CA0014.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:10::24) To DS0PR11MB8718.namprd11.prod.outlook.com
- (2603:10b6:8:1b9::20)
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|PH0PR11MB5207:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7f36188c-4e61-4579-d12d-08dd78305d63
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Sk91b1hHcGdBMysyOE1YVERhWTd5QVlHT1graGM5eHlZY0hqQ3dvdURyU3FW?=
- =?utf-8?B?SHY5Y05iVFdRU3NWYUxUSHljNW91ZUhtNTZ0aHFGTDJhclRHRUlWcXlNV0Fu?=
- =?utf-8?B?NWtMY09hODNHU2dtOS8yYjdBK3FNWkUzLy81TlVQUXE0Qzg5UTFDQW9EeEhK?=
- =?utf-8?B?MG4vMkpOZUtWS0ZtS2MxbUJzYjdDWk1PUDQ3UVFhWW1qVVBFVWNGMFVnMHd3?=
- =?utf-8?B?V3BmV3JNWFJ2R2Z4SDh6ZUtmcjhNdG1iV29qVVRISG5aQVRLRFBaRWE3Q1lW?=
- =?utf-8?B?eWIxNzY2aDA2NVpoRDR1WXFpa3UxMmxpQytqVHQ0U1loL0JJM0xxcnpKeXNE?=
- =?utf-8?B?c29NNGNTWWd2UDc1MzRNSmY4dGt4Q3gyU3E5UFJSQmxDR01rOUsrR3hLbzRh?=
- =?utf-8?B?MkNxekxYRFo2ZUJ2R2dUZDlXWmpsOVZ2ZUx1MlB1RnpHNVpDREV3UXFwN1BM?=
- =?utf-8?B?ZHk1aHFER1ZvTTJoMTFtQnhuQnZyeU5PU2YyYXllZVFUc1BHYTNhaEJLamVj?=
- =?utf-8?B?M1I5QmxtSVF6bzNwOVdkeVRjQXZDamtjaS93YXoybUJpR293aGJTRUJsMy91?=
- =?utf-8?B?QXB4YjV3bjFCc3REeHN0QjVtNEVxeUh0cmRLTlZ5NzhiTUFGdjZ5YU92akQy?=
- =?utf-8?B?L2FOR3VQMFFYZ3d5VEY2eVFlSzl6THFybG41aUNYVkpUUzBwNHp6QVhVclYy?=
- =?utf-8?B?dnFoRnM5SnBvOGhCRmdGU3VnaXRENW5IckszakR3V2Rmc3IrTUsrQmlDUWdp?=
- =?utf-8?B?czkrZjVCSFBNaWRzWTN6ZnMxUHp1SFZrb2E2Q21Mb0dWR0JBcVpzeGt3c1c1?=
- =?utf-8?B?a0lGcTlLYUFmc0tlc1NPODRzdE45WGQrcFBuRXV4UHBPeWY5NkdMSTVWT1gz?=
- =?utf-8?B?SmJyNWJIcUhYK0lrRkUzM0dGeHBFeWd0WjJ3ME1tanZFZmlaVEdxRTEwTUww?=
- =?utf-8?B?WmtNd0FqMmdSNkJqNkxUU3h2aWxQcXNqV0h0aGxpd1UrNWtQNFdyVXNFSFFl?=
- =?utf-8?B?VVhGcGtOK2hpNmU5azJ5cW1aQmxOZTZoYk5GL1Nrd2RoeDFPZkFxZXdrR1hQ?=
- =?utf-8?B?eWZyNDR5VnFZUHVMUXFab2xJdU8rSTl0ZlpzU0FIN0JRRWt1Z1d3SlN5UjV6?=
- =?utf-8?B?TE45TWphL2FaUXMranJhNDgzVkhsRFVmQUp6YnA2QXlOMHJlSjFML3VUc0k3?=
- =?utf-8?B?Qnl5VFRFRUNyekhkSzhhaTJBQzFGb1NWci9kUFBZRUt2ZWY4endwam92Ni8x?=
- =?utf-8?B?MndYUno3Q2pEL25ZSWJFR3FmUlZsLzJRa2hsRlBKTWU2TXZzcG9CcldlakQ3?=
- =?utf-8?B?UnVMZUNIbUhtWTZvWGk3Z0lIZUVhS1JKQS9ZMm93RGc5WHhqWm5nbVFlUEI2?=
- =?utf-8?B?SEw1Zmt5R0NKeXVDZmh0WmJzRXlTY3hUc1pGdit6R3pOYVBtazF2ZUFkcE82?=
- =?utf-8?B?Wk82WlgxUlI3SVpzdGkwNmlJUTk1MUE1VUN4TWpYMHBOdWhUWmYvWUVLMGRp?=
- =?utf-8?B?RGk1blVyZlA0VGpyWkpQOVN2NWVHeUN2VmNISWd5ZHFLazA5ZSszdW9oSkcz?=
- =?utf-8?B?SnZyVENLZFAveWhNaTkrZjJXcmVHQ3pTajBEYkE2d2tTU05qV241Mk9sRDBU?=
- =?utf-8?B?U1k4VjFPWlhUZDRlODBTQU5KTW1iM2YwU2RSVTF6SGsvelJuUUMwNUswbHVx?=
- =?utf-8?B?RW1LUnNLUlp0WVFVQmF2VmYwMkt3YTBVdWdKZnFGTGdEOXFjSEFWbjBwTllm?=
- =?utf-8?B?VnRvc05RdzM0YitDeFI3azlCRnhCUVdGNE1PYjFKMTFqNmdGVXplSkFVRVc5?=
- =?utf-8?B?clliTk03cm5iYi8vRHNlcWNuUDZvdlNlQ0pqRVlxaDhGK0xlbURRNkhZbHpZ?=
- =?utf-8?Q?bLpy/XMGDh8tI?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Zk11NUhQRzFlaThrdEtMWityYk9wYXFKb1FhRU5pVjU0N1gwaVFhaWE2ejNO?=
- =?utf-8?B?QVpCejBlUzUwb0d3NlpYZThIbUYvYVhqT3dYamtSM1VhbjNUN2J0TGQyR2Ja?=
- =?utf-8?B?b2p2cHN2a3BMbFpTRUk5YlByZ2VMeGpnNlpCK2tWRmhPR3daZmdVYUpHeVJP?=
- =?utf-8?B?biszSUxENUs4N3ExNXJoVzlEdnlIY2NqazI2bE9sS0QzYUJ6WW1xY0ZBOGpa?=
- =?utf-8?B?S0ZmOTFWdzRTYS9mVUxDMDlLV01JUU4wam13Q3FHbjBwcGJnSEdzZFk3TVp4?=
- =?utf-8?B?Q3dMSm9FelpVQko3YnROaFoxUEl2WmJVdjRJZWVUV05HampuNjdHbWZ2dGpP?=
- =?utf-8?B?LzVkYjh4MDhnNTg3VWdMVjVzd1VaTE5zVmhmdDUzY1QzOXE0RWgyaEt0ZEt0?=
- =?utf-8?B?bjR6M0J0S1lZZGJPVWRjR3FxaWpnQ01WWkxBUzg3cEhEajJNTU5SMXBFSnc0?=
- =?utf-8?B?UUJCZGpVcVJKdUxJWlRoY2hZMnduUFI1NUgzQWMwMWhJUlJCWDdOZEFRdmdU?=
- =?utf-8?B?UTg0MFUvMTdqUlFoZXVCVGtnT2h4aTI5RU5pY2hpZVJNRWlNU2dZdXVsL3Vh?=
- =?utf-8?B?QTEzNUhnNTNMZDlFSjdzU3JEaFJkV1IxTUd6b1NUMk9pcWZrTWlJTGNvMFdE?=
- =?utf-8?B?a1pDZE0zNDB1emh5a3cvSW1IUU5FbCsrbWNYMldSOVphd0JJeVcxT0NjSnhU?=
- =?utf-8?B?K1ErYWUwenFqdGkwdDhvSkhYdWRCVVhDT3JiYXVqd2V0K2FXTUhBek5heHJL?=
- =?utf-8?B?dGVJMUozY2RiU2ZpaUVnQnBoSjUyM0tmMlhza3JDWFlQL3Mya1ZCWkdSRlUy?=
- =?utf-8?B?ME9uNGI1RDVLOHh3TlZFQ1lFMzlSZVd4NUlzTWxraXVEa2ZNQmUzUW8xWnRH?=
- =?utf-8?B?K3UrbnN6V21YNDYxZjBrQVV6OHl5cWF2c1dNVGxJc25ramFNRlhxVTVEWnc3?=
- =?utf-8?B?UnBlN25TMlhpNXdHRzFIQ3lsZnRXUnRKYk4yTnVDNCsrN2w1QVBhQmY0VkJE?=
- =?utf-8?B?bFA1VThqRHcyMXVqMnF5Ry9wUXBkb3FvOFpTVlZDKzlXQUVwaXV2amJqaVJq?=
- =?utf-8?B?Z2hjaVBzRE00R0NPYjY1eXY0QURsU3ZhYUVvUTNMNmg0NDhaSFdLMWplTXBv?=
- =?utf-8?B?eXNxQUJDKzc1OURkRzlUTlh4U09nNy82bTU3TlF6cTlEc3lxdGdRSU04TUlY?=
- =?utf-8?B?aURzWEZ0K09xUUdpWDREbXJxYlovSmxmK0lpZ256cDl0N011SnYwdnFvRDF1?=
- =?utf-8?B?bHh2N29xZ05TM2VDWWszSzI3VUVnWlU3TjUrU0x5R2hrNlFsU2J1ekFLangz?=
- =?utf-8?B?dWZEWTJzOFFjNjhtTFM5OFBpNnpXcXlQWFE4enkzWTBmaVhHTUtxdVZ4dXMy?=
- =?utf-8?B?WHFmcGVzb1RHQW5wZlc1WURyZnAzcFVDTnZvV0crWXZZVUFXenQzL0lGZERY?=
- =?utf-8?B?dzZnOUs2cFkrblg1NkpEdTgxN3Y5OS95OU15MmJCNzFpelBOYlN2Z1BaOTgr?=
- =?utf-8?B?eFlvdjBEYUhwSEM0SVFhUnBPSVRYemJnZXNBNVhrWXc4Q3QzRndBenJRbUdM?=
- =?utf-8?B?VDNoL0pTR0JOVkZnbGh1a0hDWkFKb3ZRVStiZXJacmRJSVJtRURjUXlMaFE0?=
- =?utf-8?B?UEttbVdpRENJN1NJRVBDWUtqQStxVEs2bmpwSUpIbnVVV0Jad3B2dklUUzZj?=
- =?utf-8?B?NUNlNVJNSEtsOHFaYklhaDhQQ0xBbmp1aGFycUpDNTdTYWViME96L0RoZkto?=
- =?utf-8?B?K1NnYk04NkZ4cU1vcEFhaFM5SjVJL1hXNXhzcVA1VnlFOVhSUUZMQ0pUd1Q2?=
- =?utf-8?B?bCs1UnR0TzVNYkgzdjVqQm92aWcrei9UZ3M2cThYRDREbFBrWGtWOHJuS0Z4?=
- =?utf-8?B?ektDUTJEWUJGeUVUNnlmbGN5alJyZWUySUc5enZ0YkFpWjE5eVdJS3J3WEJn?=
- =?utf-8?B?MmpoelJTK3RQMVRXc0FGNWdnSzVZMjFBZitjT0QzVFhLNFJ0a0lBb3pSZjlI?=
- =?utf-8?B?R0Y5SEQ1dEo5OEo0Yzl5TEVPUGNZd3d5akk5eTRvVjE3NDMrVVlvbEtKSFBQ?=
- =?utf-8?B?RW9IaUZ4ek44akpka3RYNmlKa0sxZWhyc1BJMUU1Qm82dUdCQUhLTjQ1VmRz?=
- =?utf-8?B?dWtEZzZNS3QwTFpzUEgyRUpBN1JVbHFhOWNZWlhqbmxlS2hjTkFSdWZsZTg3?=
- =?utf-8?B?WVE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f36188c-4e61-4579-d12d-08dd78305d63
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2025 13:05:27.9886
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MEN81KI/dLI2cPbNO2vvlVJ0cLCg5VuaKQfqUl/mjXTWoeHjHB2pDcousKFs3aWSZRzcDCWAqRLsCTL6BGzdWIIqF7wi59PCoyCGs3KGjFM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5207
-X-OriginatorOrg: intel.com
 
-From: Leon Romanovsky <leon@kernel.org>
-Date: Thu, 10 Apr 2025 14:23:49 +0300
+On Thu, 2025-04-10 at 14:36 +0200, Andrew Lunn wrote:
+> On Tue, Apr 08, 2025 at 09:36:38AM -0400, Jeff Layton wrote:
+> > CONFIG_NET_NS_REFCNT_TRACKER currently has no convenient way to display
+> > its tracking info. Add a new net_ns directory under the debugfs
+> > ref_tracker directory. Create a directory in there for every netns, wit=
+h
+> > refcnt and notrefcnt files that show the currently tracked active and
+> > passive references.
+>=20
+> I think most if not all of this should be moved into the tracker
+> sources, there is very little which is netdev specific.=20
+>=20
 
-> On Thu, Apr 10, 2025 at 12:44:33PM +0200, Larysa Zaremba wrote:
->> On Thu, Apr 10, 2025 at 11:21:37AM +0300, Leon Romanovsky wrote:
->>> On Tue, Apr 08, 2025 at 02:47:51PM +0200, Larysa Zaremba wrote:
->>>> From: Phani R Burra <phani.r.burra@intel.com>
->>>>
->>>> Libeth will now support control queue setup and configuration APIs.
->>>> These are mainly used for mailbox communication between drivers and
->>>> control plane.
->>>>
->>>> Make use of the page pool support for managing controlq buffers.
->>>
->>> <...>
->>>
->>>>  libeth-y			:= rx.o
->>>>  
->>>> +obj-$(CONFIG_LIBETH_CP)		+= libeth_cp.o
->>>> +
->>>> +libeth_cp-y			:= controlq.o
->>>
->>> So why did you create separate module for it?
->>> Now you have pci -> libeth -> libeth_cp -> ixd, with the potential races between ixd and libeth, am I right?
->>>
->>
->> I am not sure what kind of races do you mean, all libeth modules themselves are 
->> stateless and will stay this way [0], all used data is owned by drivers.
-> 
-> Somehow such separation doesn't truly work. There are multiple syzkaller
-> reports per-cycle where module A tries to access module C, which already
-> doesn't exist because it was proxied through module B.
-> 
->>
->> As for the module separation, I think there is no harm in keeping it modular. 
-> 
-> Syzkaller reports disagree with you. 
+Fair enough. I can move most of this into helpers in ref_tracker.c.
 
-Zero proofs.
+> >=20
+> > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > ---
+> >  net/core/net_namespace.c | 151 +++++++++++++++++++++++++++++++++++++++=
+++++++++
+> >  1 file changed, 151 insertions(+)
+> >=20
+> > diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+> > index 4303f2a4926243e2c0ff0c0387383cd8e0658019..7e9dc487f46d656ee4ae3d6=
+d18d35bb2aba2b176 100644
+> > --- a/net/core/net_namespace.c
+> > +++ b/net/core/net_namespace.c
+> > @@ -1512,3 +1512,154 @@ const struct proc_ns_operations netns_operation=
+s =3D {
+> >  	.owner		=3D netns_owner,
+> >  };
+> >  #endif
+> > +
+> > +#ifdef CONFIG_DEBUG_FS
+> > +#ifdef CONFIG_NET_NS_REFCNT_TRACKER
+> > +
+> > +#include <linux/debugfs.h>
+> > +
+> > +static struct dentry *ns_ref_tracker_dir;
+> > +static unsigned int ns_debug_net_id;
+> > +
+> > +struct ns_debug_net {
+> > +	struct dentry *netdir;
+> > +	struct dentry *refcnt;
+> > +	struct dentry *notrefcnt;
+> > +};
+> > +
+> > +#define MAX_NS_DEBUG_BUFSIZE	(32 * PAGE_SIZE)
+> > +
+> > +static int
+> > +ns_debug_tracker_show(struct seq_file *f, void *v)
+> > +{
+> > +	struct ref_tracker_dir *tracker =3D f->private;
+> > +	int len, bufsize =3D PAGE_SIZE;
+> > +	char *buf;
+> > +
+> > +	for (;;) {
+> > +		buf =3D kvmalloc(bufsize, GFP_KERNEL);
+> > +		if (!buf)
+> > +			return -ENOMEM;
+> > +
+> > +		len =3D ref_tracker_dir_snprint(tracker, buf, bufsize);
+> > +		if (len < bufsize)
+> > +			break;
+> > +
+> > +		kvfree(buf);
+> > +		bufsize *=3D 2;
+> > +		if (bufsize > MAX_NS_DEBUG_BUFSIZE)
+> > +			return -ENOBUFS;
+>=20
+> Maybe consider storing bufsize between calls to dump the tracker? I
+> guess you then have about the correct size for most calls, and from
+> looking at len, you can decide to downsize it if needed.
+>=20
 
-Kernel loads modules under mutex, patches relocs etc. Circular deps are
-not supported. I've no idea how that possible what you describe.
+Eric had a proposed change to make ref_tracker_dir_snprint() not sit
+with hard IRQs disabled for so long. That involved passing back a
+needed size, so I might rather integrate this into that change.
 
-> 
->> We intend to use basic libeth (libeth_rx) in drivers that for sure have no use 
->> for libeth_cp. libeth_pci and libeth_cp separation is more arbitral, as we have 
->> no plans for now to use them separately.
-> 
-> So let's not over-engineer it.
+> > +static int
+> > +ns_debug_init_net(struct net *net)
+> > +{
+> > +	struct ns_debug_net *dnet =3D net_generic(net, ns_debug_net_id);
+> > +	char name[11]; /* 10 decimal digits + NULL term */
+> > +	int len;
+> > +
+> > +	len =3D snprintf(name, sizeof(name), "%u", net->ns.inum);
+> > +	if (len >=3D sizeof(name))
+> > +		return -EOVERFLOW;
+> > +
+> > +	dnet->netdir =3D debugfs_create_dir(name, ns_ref_tracker_dir);
+> > +	if (IS_ERR(dnet->netdir))
+> > +		return PTR_ERR(dnet->netdir);
+>=20
+> As i pointed out before, the tracker already has a name. Is that name
+> useless? Not specific enough? Rather than having two names, maybe
+> change the name to make it useful. Once it has a usable name, you
+> should be able to push more code into the core.
+>=20
 
-Let's not over-engineer Netfilter then and compile it into one module?
+I don't understand which name you mean.
 
-I don't want to load _pci/_cp when I load something different than idpf
-or ixd, it makes no sense.
-Moreover, libeth and libeth_xdp are still generic and can be reused by
-any vendor. _pci/_cp are not and won't ever be, they are in the same
-folder as generic libeth only to not create more folders. I don't want
-to link everything together.
+This patch creates a ref_tracker/net_ns dir and then creates
+directories under that that have names that match the net namespace
+inode numbers as displayed in /proc/<pid>/ns/net symlink. Those
+directories hold two files "refcnt" and "notrefcnt" that display the
+different trackers.
 
-> 
->>
->> Module dependencies are as follows:
->>
->> libeth_rx and libeth_pci do not depend on other modules.
->> libeth_cp depends on both libeth_rx and libeth_pci.
->> idpf directly uses libeth_pci, libeth_rx and libeth_cp.
->> ixd directly uses libeth_cp and libeth_pci.
-> 
-> You can do whatever module architecture for netdev devices, but if you
-> plan to expose it to RDMA devices, I will vote against any deep layered
-> module architecture for the drivers.
-
-No plans for RDMA there.
-
-Maybe link the whole kernel to one vmlinux then?
-
-> 
-> BTW, please add some Intel prefix to the modules names, they shouldn't
-> be called in generic names like libeth, e.t.c
-
-Two modules with the same name can't exist within the kernel. libeth was
-available and I haven't seen anyone wanting to take it. It's not common
-at all to name a module starting with "lib".
-
-I don't want to send huge patches which would only change the prefixes.
-Nobody disagreed I can take this name back when libeth was taken.
-
-+ above, anyone can reuse the lib, it's pretty generic, except for ixd
-stuff which is isolated. What if someone takes it tomorrow, send one
-more big patch which will revert the suffixes?
-
-+ no offense, but I noted several times during reviews of mlx5 stuff
-that lots of functions within the module are not prefixed anyhow and may
-conflict anytime with some generic symbol.
-
-Thanks,
-Olek
+It's not clear to me what you'd like to see changed in that scheme.
+--=20
+Jeff Layton <jlayton@kernel.org>
