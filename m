@@ -1,119 +1,67 @@
-Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BE3204F80;
-	Thu, 10 Apr 2025 12:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40F01F0E39;
+	Thu, 10 Apr 2025 12:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744286517; cv=none; b=RslGfJIw8MKCbfS/NWNY1BCIdIlVHqgu6l6pRDCzHSq01wc0jAb4FOyjmxm7IqPwgG7r0/nI6A+Y21WqhgcvvCf2/sTWYmP22XXj8+sQRzYNtRilQzsMsqesfyR7K/8VkVmp5Q5ulS0KtdEvsxEwVs34qQk0hane+arbY0kh/Bs=
+	t=1744286726; cv=none; b=N59MMpwBwn9yxEO/C69UJs10fQy3rd0teRCYVhlfdCNCf3ztAodzrBLcJruHjUdLZzejuE+0PV1dnt8G2WX/ZPgR2+739cwa1hHEbn653X6xtNNdGB7eVBqoudQ0fnbB78vM4DWHD1k78sIvctJs9fwHMS+clu5ejN4HqaeK1P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744286517; c=relaxed/simple;
-	bh=gl9oaGaRIsYt/WyBdN7UO9fsD1iIFpw+hRE7Ip3gDTM=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=lC32WcmvF6gnoFOm6SyYpfmdJG+efXWksk34eNmb2SqsZzcUZ3AxCWv287z10elZokkeR3nSgjgOdwvdFPO9IRt/Ymq49JYvjxggbu37WeQJT7oiPZNMUZhX1kbHKPvFcyjgYzAw0y2DNA+sAHMjLojTHz6IhD1olHsdkhL1yOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=dfg+YRcn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=r8Zp9VEO; arc=none smtp.client-ip=202.12.124.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1744286726; c=relaxed/simple;
+	bh=oguydQqh/i9zo//Wwmv3tgLeJsKX94cIvC8JLfiN8wc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fVROOaZJMEd/zdPzM9WNsvv+rC1ptJwICWUqO0S5oTM1FHfpW4iFcjYVwBWFDd/cU318eh6fNAcHXyK4xrHJZCbS6mekSwYDtezOXjmxdsrx4Jlw/fJ+GMlEUjQO5v+VtzDHENOYr6ScAmKmYGoultkTLFiXMaXbP3H68LwGmJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4PHxi+mx; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="dfg+YRcn";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="r8Zp9VEO"
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 8903511400E8;
-	Thu, 10 Apr 2025 08:01:53 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-05.internal (MEProxy); Thu, 10 Apr 2025 08:01:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1744286513;
-	 x=1744372913; bh=gl9oaGaRIsYt/WyBdN7UO9fsD1iIFpw+hRE7Ip3gDTM=; b=
-	dfg+YRcn27ujd2Kv89PNH28iSsx/7J18F2jg5wmmBRf8pCwvQaPjV1o7P8x/kROs
-	vvkaEZGKh4Yqj/RLXvclFPtu4fPBMK93Enw9GPRzzd22JO5qVvYm0yiIY2OM+VUY
-	LDtnq75Oz7w9eYYD91Bign6GT4zSA/4zm6MROyaMlWAFiKWre29U84VLxU2FSPkE
-	NT8uPtszkU/yY7WEuAAw1X0JSKFJVmEtqK9qOtv7PpM0LtNOCaMPhVbAQg2Wt2kj
-	ehPfW65hcdqzweofIQJwcG/YCyhN2fBlCluT87167OUV386sVeQu/JcMKerWhegc
-	iyUPtZcAywhDc6RVXB7nUg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1744286513; x=
-	1744372913; bh=gl9oaGaRIsYt/WyBdN7UO9fsD1iIFpw+hRE7Ip3gDTM=; b=r
-	8Zp9VEODKfutsmRAEbgUnrmBP3s0vdxVjQ8hpakmL3zjajt6qqTpVw916454vjfD
-	MYCRUzOEQP66c9+jX4v3aRjSpzYdR3Pn2o6ABlec/Jb5b5J0FuSN3zDzgEJncxJG
-	mr3wzL6l/A6SV4p+IF4pP1V3cyE2ZJRzIm2kkXP9GowfJB2Gkb15nmC3EMZTHmhu
-	EvaIZiuyGZoiFUksZ6ewc3NIgmf17tWIdAfOXtj2hf/Yh/2erVvJqYsgVmYyw70p
-	WL9b1Dpt3dH/1I6j59XUt7MntbL0AAiWiX/QrDcuw9gI8Sh+Gq2BMb8rn81QmirA
-	MEVWkzxStZrSeZgYJBRtA==
-X-ME-Sender: <xms:MLP3Z3ZzkHrptGtQOUk4WRvDyC57tPhsZw9eTxDP4-DVo3giJ-5fBg>
-    <xme:MLP3Z2ZJ-wOZhDIeQ-61FKaOu6linY8MUS3ia6cJ4zjA8_UAANbvmqWCqELvg8xO-
-    G4GclEPSZT2KHJX96Y>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdekkeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
-    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
-    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
-    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgepudenucfrrghrrg
-    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
-    udelpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinh
-    hugidrohhrghdruhhkpdhrtghpthhtoheprghnghgvlhhoghhiohgrtggthhhinhhordgu
-    vghlrhgvghhnohestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhopegurghvvghmse
-    gurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtoheprghnshhuvghlshhmthhhsehgmhgr
-    ihhlrdgtohhmpdhrtghpthhtohepughqfhgvgihtsehgmhgrihhlrdgtohhmpdhrtghpth
-    htohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtohepmhgrthht
-    hhhirghsrdgsghhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepvgguuhhmrgiivghtse
-    hgohhoghhlvgdrtghomhdprhgtphhtthhopehrughunhhlrghpsehinhhfrhgruggvrggu
-    rdhorhhg
-X-ME-Proxy: <xmx:MLP3Z588WIt1trNXStRldSHp7GGw67WcEJeidMURVp7sO9bDhwqc0Q>
-    <xmx:MLP3Z9oVgKRh86jQsy2Z2YvyqQrLhGfsSpuomX5U0Ip0M10L_vEhqg>
-    <xmx:MLP3ZyruZoteQa0f9aj6BpwIy6D1WAEC9Mg7V3M4simfzGzh1FZ-wA>
-    <xmx:MLP3ZzTAa1BWV4e7XYPfF-qLN-dK0NxTmJItaIgjsgO8qeTPamDZjw>
-    <xmx:MbP3Z_j0t2xgFRutTCp2TfvmslhP_6FnsCjYr9_pkLwdxVg5p1L3TQFr>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 2B1352220073; Thu, 10 Apr 2025 08:01:52 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4PHxi+mx"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=f8M2BZ6xWTPUrPE3k+Q7QJWWCG/1qH6NB4Nh6wNhTjo=; b=4PHxi+mxxKgnmRyr2mruYk2HhR
+	GIOS9Ec7jjcHxaG8ZHG+vNr77uOzmwWbBmX62xD6swA4Hg1VffcrA7SR76ZPaJpuYtHZeCDjEbDYh
+	giH9m7aoNW1W3PNi8iY3dDUyjWgkl2hi4tdcl/ASjtRSXu6gHCk7LwQPdIaTk6VFM7yw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1u2qed-008fvG-R5; Thu, 10 Apr 2025 14:05:11 +0200
+Date: Thu, 10 Apr 2025 14:05:11 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] ref_tracker: add a top level debugfs directory
+ for ref_tracker
+Message-ID: <732485c6-b4ec-44cc-8627-c00ce2143b89@lunn.ch>
+References: <20250408-netns-debugfs-v2-0-ca267f51461e@kernel.org>
+ <20250408-netns-debugfs-v2-1-ca267f51461e@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: T2340d8c52bdbc82d
-Date: Thu, 10 Apr 2025 14:01:31 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Christian Marangi" <ansuelsmth@gmail.com>
-Cc: "Andrew Lunn" <andrew@lunn.ch>, "Heiner Kallweit" <hkallweit1@gmail.com>,
- "Russell King" <linux@armlinux.org.uk>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Daniel Golle" <daniel@makrotopia.org>,
- "Qingfang Deng" <dqfext@gmail.com>,
- "SkyLake Huang" <SkyLake.Huang@mediatek.com>,
- "Matthias Brugger" <matthias.bgg@gmail.com>,
- "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>,
- "Randy Dunlap" <rdunlap@infradead.org>, "Simon Horman" <horms@kernel.org>,
- Netdev <netdev@vger.kernel.org>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Message-Id: <0b5c6443-f50f-47a1-b5f5-900d70b69e06@app.fastmail.com>
-In-Reply-To: <67f7a119.050a0220.b15d0.3df3@mx.google.com>
-References: <20250410100410.348-1-ansuelsmth@gmail.com>
- <c108aee9-f668-4cd7-b276-d5e0a266eaa4@app.fastmail.com>
- <67f7a015.df0a0220.287b40.53b2@mx.google.com>
- <67f7a119.050a0220.b15d0.3df3@mx.google.com>
-Subject: Re: [net-next PATCH v2 1/2] net: phy: mediatek: permit to compile test GE SOC
- PHY driver
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250408-netns-debugfs-v2-1-ca267f51461e@kernel.org>
 
-On Thu, Apr 10, 2025, at 12:44, Christian Marangi wrote:
-> On Thu, Apr 10, 2025 at 12:40:15PM +0200, Christian Marangi wrote:
->
-> Also 99% I could be wrong but from what I can see in NVMEM kconfig,
-> NVMEM is not tristate but only bool? So NVMEM=m is not a thing?
+> +static int __init ref_tracker_debug_init(void)
+> +{
+> +	ref_tracker_debug_dir = debugfs_create_dir("ref_tracker", NULL);
+> +	if (IS_ERR(ref_tracker_debug_dir))
+> +		return PTR_ERR(ref_tracker_debug_dir);
+> +	return 0;
 
-Ah, I missed that. In this case your patches are both fine.
+With debugfs you are not supposed to check the return codes. It is
+debug, it does not matter if it fails, same way it does not matter if
+it is not even part of the kernel. If it does fail, operations which
+add to the directory as safe, they will not opps because of a previous
+failure.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+	Andrew
