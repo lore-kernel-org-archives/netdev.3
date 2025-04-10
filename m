@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022A828540D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0419428540E
 	for <netdev@vger.kernel.org>; Thu, 10 Apr 2025 11:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744286001; cv=none; b=osBRlumtkid3YMTMhKB+rcLOvNl3t2xJES+fhXAI8JNCpmY6mlUhid3GJ3v375sM6bKXzrpFg6QYl3p8/MeJKRPjyStWlyeQHxMvE9jZ/twm+R7ouguiXZEUpw5FREKihvbEfhGQYBa5HgeQAZ/MAgGmGvg4sEhlMVe8K/c/5Bg=
+	t=1744286001; cv=none; b=rrqkpBSCLgpQcBxY578k2DLmz3khGlDyz+CUmDz9sm/Oaw5K6ZvbFHIy0iJwzdewhWIoKwmesUzuPasVGWbLQlAh8UyUrcw8o9gw39q9YpzE2RttL4X4IRWWJE9UMM525ttwhyNhVPigLe0mjOqb+SjX9HfgshlqYp/1qKTQ7f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744286001; c=relaxed/simple;
-	bh=HV+uwtlab0erbFyFEmVTUOqbS+plOLLJFi/5t/DtZyY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ef6sctKxcyOBDBwXU6q/nlkiE+I+gZazosqq1EkVlHI5jFrav2hwL6a/qYpXbSe5OX0t9tvTW9s50MD+u6Ied9izas5acUpyY1wSWvD08YFsgeDIRv/gREl/webhsN808+8K/51gqiqu6OPkUaW4cHr0AL0kmksm5JI+r2XuAYw=
+	bh=Q0Mvhai2To5XWXiLGg+QWiS8JSPcUg0mYYM3/fwWzig=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=YZO6hXyC2a3mR5lqGgydNFHBu3mYzgjJkSg5X4SacG06hUGzb9A/rV9rJrul5zybB2L/kuu5MC0dH+QCxI8eJUd+qRu5Mpxtf4Y0wll2NbfeCSrkem7Nv2C8wzLZCTDVARKluzbitU0/ZWOKMkZvhMU4VKF3Aw2osJAGrWHyQLA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,17 +18,17 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u2qSw-0002xr-Pt; Thu, 10 Apr 2025 13:53:06 +0200
+	id 1u2qSw-0002xz-Px; Thu, 10 Apr 2025 13:53:06 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u2qSt-004GKw-31;
-	Thu, 10 Apr 2025 13:53:03 +0200
+	id 1u2qSu-004GLA-0R;
+	Thu, 10 Apr 2025 13:53:04 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u2qSt-00AkeR-2i;
-	Thu, 10 Apr 2025 13:53:03 +0200
+	id 1u2qSu-00Akg0-04;
+	Thu, 10 Apr 2025 13:53:04 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -39,17 +40,19 @@ To: "David S. Miller" <davem@davemloft.net>,
 	Thangaraj Samynathan <Thangaraj.S@microchip.com>,
 	Rengarajan Sundararajan <Rengarajan.S@microchip.com>
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com,
 	Phil Elwell <phil@raspberrypi.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next v6 00/12] Convert LAN78xx to PHYLINK
-Date: Thu, 10 Apr 2025 13:52:50 +0200
-Message-Id: <20250410115302.2562562-1-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v6 09/12] net: usb: lan78xx: Use ethtool_op_get_link to reflect current link status
+Date: Thu, 10 Apr 2025 13:52:59 +0200
+Message-Id: <20250410115302.2562562-10-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250410115302.2562562-1-o.rempel@pengutronix.de>
+References: <20250410115302.2562562-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,55 +65,48 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-This patch series refactors the LAN78xx USB Ethernet driver to use the
-PHYLINK framework for MAC and PHY management.
+Replace the custom lan78xx_get_link implementation with the standard
+ethtool_op_get_link helper, which uses netif_carrier_ok to reflect
+the current link status accurately.
 
-In the process, various improvements were made to structure the code and
-separate concerns such as:
-- Refactoring PHY detection and MAC-side interface setup
-- Consolidating USB and flow control configuration into helpers
-- Dropping legacy EEE and pause handling in favor of PHYLINK equivalents
-- Simplifying the suspend/resume flow with proper phylink_suspend/resume
-- Removing unused fields and outdated workarounds
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ drivers/net/usb/lan78xx.c | 14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
 
-changes v6:
-- Move unrelated logic out of the main PHYLINK conversion patch:
-  - EEE handling, USB config, flow control, LED config, etc., now split
-    into separate commits
-- Remove obsolete members from struct lan78xx_net earlier, in the patch
-  where they're no longer needed
-
-changes v5:
-- merge ethtool pause configuration patch with PHYlink patch
-- merge some other small cleanup to a single patch
-
-changes v4:
-- split "Improve error handling in PHY initialization" patch and move
-  some parts before PHYlink porting to address some of compile warning
-  as early as possible.
-- add cleanup patch to remove unused struct members
-
-Oleksij Rempel (12):
-  net: usb: lan78xx: Improve error handling in PHY initialization
-  net: usb: lan78xx: remove explicit check for missing PHY driver
-  net: usb: lan78xx: refactor PHY init to separate detection and MAC
-    configuration
-  net: usb: lan78xx: move LED DT configuration to helper
-  net: usb: lan78xx: Extract PHY interrupt acknowledgment to helper
-  net: usb: lan78xx: Refactor USB link power configuration into helper
-  net: usb: lan78xx: Extract flow control configuration to helper
-  net: usb: lan78xx: Convert to PHYLINK for improved PHY and MAC
-    management
-  net: usb: lan78xx: Use ethtool_op_get_link to reflect current link
-    status
-  net: usb: lan78xx: port link settings to phylink API
-  net: usb: lan78xx: Integrate EEE support with phylink LPI API
-  net: usb: lan78xx: remove unused struct members
-
- drivers/net/usb/Kconfig   |    3 +-
- drivers/net/usb/lan78xx.c | 1114 +++++++++++++++++++++----------------
- 2 files changed, 646 insertions(+), 471 deletions(-)
-
---
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 03d8102026f1..ee01f021fa3a 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1839,18 +1839,6 @@ static int lan78xx_set_eee(struct net_device *net, struct ethtool_keee *edata)
+ 	return ret;
+ }
+ 
+-static u32 lan78xx_get_link(struct net_device *net)
+-{
+-	u32 link;
+-
+-	mutex_lock(&net->phydev->lock);
+-	phy_read_status(net->phydev);
+-	link = net->phydev->link;
+-	mutex_unlock(&net->phydev->lock);
+-
+-	return link;
+-}
+-
+ static void lan78xx_get_drvinfo(struct net_device *net,
+ 				struct ethtool_drvinfo *info)
+ {
+@@ -1970,7 +1958,7 @@ lan78xx_get_regs(struct net_device *netdev, struct ethtool_regs *regs,
+ }
+ 
+ static const struct ethtool_ops lan78xx_ethtool_ops = {
+-	.get_link	= lan78xx_get_link,
++	.get_link	= ethtool_op_get_link,
+ 	.nway_reset	= phy_ethtool_nway_reset,
+ 	.get_drvinfo	= lan78xx_get_drvinfo,
+ 	.get_msglevel	= lan78xx_get_msglevel,
+-- 
 2.39.5
 
