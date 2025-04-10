@@ -1,187 +1,239 @@
-Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589961E25F2;
-	Thu, 10 Apr 2025 02:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8C01E285A;
+	Thu, 10 Apr 2025 02:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744252808; cv=none; b=cqGl4+QnuMWi2na/jIfGyC/5EuEU6S0HbdmHTwmXoiBqmwPW5SV9USCjZN4KwmAU93HhsS9u9O+FXSEjYQUkjOWkXjevArPS8Oxc8YV3sgpExZSEimeVk2UCT+CEp/yslizIEtw5AIbikxB5VvzkJgRnmgaC/zTwxuHC8bUJ5zA=
+	t=1744252848; cv=none; b=KjMWkFOWHwwza7b/Dcy+x6KJfgVzMs7XMMKZVsvXSN/9eTAk+n1O4W3OM5aSqnthQYgssSFXeTxjCliOAXZzUiwTHW101D48d0TxH2VciNLmwTO60b7knii8tGVH1pGmtOzIpGSQnrXYvPhRIksQ1hgTPEmccsOIKSecoipZg8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744252808; c=relaxed/simple;
-	bh=bEWGK5P4YQz95vX7AoQGlfaMHxq3D2mWzsHRG9wcBG8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lOjFloI/00WsyDSLLZtg9GQzuMbdKpLb6GEYIepcAukfvvbbgGVrqcajfgtuKevOYYZfxG8bJo7PSPz52aK/QsUVgHIXHApvsbX0eXX5eprAa+34Io9aiAQROgiR3pj0/J98tUsDmryXVv6wOn0xmp51vPPazkl3pE106wkIWo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=dr6otVxP; arc=none smtp.client-ip=52.119.213.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1744252848; c=relaxed/simple;
+	bh=3/tfsE5WqQ4jsxy0JOcV1bgcuEhi9GuIovCCra7x0/o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lkGTpujUKNo+MCc1M6Qri/+WoGuoExfrJUiEqZmfnTHMdLwn5ILvoTWFDQE3k4sbhW+JTDspJBCuGVyLUzRNKSLj/4YnjdDX7YWld9UwHtpRDEoXzG8G5I9BEibjLbMrpWavPDuJXxYLE7MqmnW8tAbE47oJCCvjM1zxuIl+sjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ep0VsQTf; arc=none smtp.client-ip=209.85.219.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="dr6otVxP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ep0VsQTf"
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e6dee579f38so243005276.0;
+        Wed, 09 Apr 2025 19:40:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1744252806; x=1775788806;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lJMHaKMJAQ79N46BBPYPRkB0Djr/kL1pa5NBC9LuzZM=;
-  b=dr6otVxPt2X7BmC9Itwbp3TNivrvTUvDd/1gQ1qk40yGPjJK93rHhMl+
-   /C6QH9C9nr6wH2SiCJlErbtSxAPSic1QNi2wRVmxWB7ZOTxvsS8maDAdf
-   ACqlncXsxpOO9QrIYgYylVqt2zwVk2MnD7f+a58bRC90LPSkoLoolkKcp
-   c=;
-X-IronPort-AV: E=Sophos;i="6.15,201,1739836800"; 
-   d="scan'208";a="287191780"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
-  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 02:40:00 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.21.151:24913]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.25.120:2525] with esmtp (Farcaster)
- id 200848f1-8117-4b6e-96d1-5deba887df3d; Thu, 10 Apr 2025 02:40:00 +0000 (UTC)
-X-Farcaster-Flow-ID: 200848f1-8117-4b6e-96d1-5deba887df3d
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 10 Apr 2025 02:39:59 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.187.170.41) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 10 Apr 2025 02:39:56 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-CC: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, "Neal
- Cardwell" <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>,
-	"Pablo Neira Ayuso" <pablo@netfilter.org>, Jozsef Kadlecsik
-	<kadlec@netfilter.org>, Paul Moore <paul@paul-moore.com>, James Morris
-	<jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Casey Schaufler
-	<casey@schaufler-ca.com>, Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki
- Iwashima <kuni1840@gmail.com>, <netdev@vger.kernel.org>,
-	<selinux@vger.kernel.org>, <linux-security-module@vger.kernel.org>
-Subject: [PATCH v3 net-next 1/4] selftest: net: Remove DCCP bits.
-Date: Wed, 9 Apr 2025 19:36:44 -0700
-Message-ID: <20250410023921.11307-2-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250410023921.11307-1-kuniyu@amazon.com>
-References: <20250410023921.11307-1-kuniyu@amazon.com>
+        d=gmail.com; s=20230601; t=1744252846; x=1744857646; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KcuOTVyHU6jhzBy0xZ293tFvt3BaYYRswaEJVrukAHE=;
+        b=Ep0VsQTf5v+ZELQRtqkzYH1/5DRHxxQ7gVeHZZm8UGBURjtGsxEnpFFhn7ePBIwDDL
+         v6hcMA6CgADw5yrJ/GjhoOGOYxdpqpSl43oQyk9wQxDmOyEzNZJc+odEmA3gtEojxS+D
+         OfiGzdUd/9pXUFfTOJDdfWcRdYEeWb29wW/ruVbVtuHjHFmhA8BrsZfarbnZaxSrjUaa
+         knQM3UMtZZ8WjaDbJt4+XctOxuwy2cKbIYFzlhHx1KlM85DqTbg4+URg/ohTx09c3ahL
+         elXao5WpDk2vG5nUneDiMtodRJzAUl0/nG5gS6gjyNuuY+ubdotV7Gko7RFlLzYz0zR1
+         ebxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744252846; x=1744857646;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KcuOTVyHU6jhzBy0xZ293tFvt3BaYYRswaEJVrukAHE=;
+        b=h8tMtq5rnnHdhOGbQBoSkvUbbyd5M1R+L9JrC/9030IDqKo3w7sfd0D00lOLv1oQzf
+         GGk3pjQSrtSk3TU/ECS9VA53rndRSVR98qwNodH3WHH53CByim47WnB3vcZP24CVwSni
+         fuWNJBiSviN0KHq29t/qcOIcU7ISIGE3zd58CRgyL+HSbhw4Gx0OSE0ZEhpbNsAjS7Oi
+         t25g7WiipkrA229BIA2LQ3ZlMx/UpP2bXT78ck8pJxyBomd4TIJWkr+JXEZhdYKKBuF/
+         GZ1eEo1ukX5P40akrr9P3+kZtmbxwonvidL9LD2gs6HxxezXpI6YhRIvKBiP89lASuQS
+         J9CQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUKAqzRv/TCfnZSzQAk0asjIuuEAcomNxNFNQWAWLph3tWh9j9amoWecIcjZbuQbkM4DC8LLhmIQnJV@vger.kernel.org, AJvYcCUX/lL3I2k4hWFy4WBySQ2q8Z+KlOyaeysfpVvE3U2GoqzFTMFcoIisXawrdZ4jG+FcB/h/bHh7FUA=@vger.kernel.org, AJvYcCVPE+AW2wGJybhPvGOteNXTYA8v9Jwq5C7eAAvkHubY3csjd8VBlhArqzSSvZZgvjFIvuhDQ7No0Gj8voGEZ/4=@vger.kernel.org, AJvYcCVWvLo0tRWLyhCLa5+zfkUO+0gHQoO0kCPaAdzPbP/0I7zMzFezhWTurSTAqWKUFMRw2ovJPKjsbyl1ZQ==@vger.kernel.org, AJvYcCWF2sivcCMa7hDhWF0cJvWPKvLDse0ktPWCadLWU9KC0Gk3EAUTskxHGrv8r/mBgkd18IAV0r+EAfhJ+Kjl@vger.kernel.org, AJvYcCWKaQtfSZVOVbTGZqYeOJmocKAU7Hn+U6c5R0ODGbhJBQ2bIRnyVeT/8VkqT5U4kb5miraUNVbAcHMLtr0=@vger.kernel.org, AJvYcCWOW21NxHoYlEdaS5zIiQrrJfIt+d5hlfMYX5RS7R8WiPa3woE0LlEXqagDhxIa6sG4uHHk9v2l@vger.kernel.org, AJvYcCXbINYZP7Hl7NA5/cotrHn07tD0uGLpE5+3DhGNAP7z3jtZa1q0IvQAfo2Y1J7PDUnEOJ1DujKndV4H@vger.kernel.org, AJvYcCXqkHV9/RgtBZVlDYXRELfjF+olewpO9rnVcUpYLV6EDTT4w9u6G7E7FYoe5LPZMzAcceTdKLbV8x1z@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAM4Z5i3kEcp3hdZcLGcG0JdLhORFsUy9pryxhizVi8vi412cy
+	mPlm4JlXY4aLpBn/QgUXro3mZ2XNbBCcu0i1GkKz4GQ1SYQHxKJVtLVm4zB27k9nfJPQatD8e9G
+	44GSl50kEeaXIbnu76XuK89TpHKA=
+X-Gm-Gg: ASbGncvXPDy0zgDGCJ75jBA1I3XIM957a7Jbf7IBoCP5RJFm0RLLLOkZ1IfnMtwt5vI
+	HrL3VHism/4rsvyC6WbccSnQIODa6lhOgnbwuu5gc2QNEAtZfFbdqsNACo86JnnvBPG4siKS6RH
+	4yKzASJhJJZt6oeoUd03CIvAzMGEnFNGxfw8tAAYXJW1eQQabPLIJ40YXc
+X-Google-Smtp-Source: AGHT+IF3IaahFFEt95p88L2E+DMS5YlqS8f6R+jKEhaHG6PmdCAg0utj1GK9fsdr5gTPdjPGEMMC0Hqk+ak++gS3uUU=
+X-Received: by 2002:a05:6902:981:b0:e6d:f0a6:4cc5 with SMTP id
+ 3f1490d57ef6-e703e0dce41mr1936544276.1.1744252845873; Wed, 09 Apr 2025
+ 19:40:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D042UWA001.ant.amazon.com (10.13.139.92) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+References: <20250409082752.3697532-1-tmyu0@nuvoton.com> <20250409082752.3697532-5-tmyu0@nuvoton.com>
+ <20250409-cooperative-elastic-pillbug-672a03-mkl@pengutronix.de>
+In-Reply-To: <20250409-cooperative-elastic-pillbug-672a03-mkl@pengutronix.de>
+From: Ming Yu <a0282524688@gmail.com>
+Date: Thu, 10 Apr 2025 10:40:34 +0800
+X-Gm-Features: ATxdqUHWhDl-xyLqC0glS-YG8IxmYyFFtwBiJ5M-DMW7Jb2-OYIl3qY47lOEkyg
+Message-ID: <CAOoeyxULns52vAwzsLoXB+BwT+CN+VGBwqrg61pjKJH8bTD5bw@mail.gmail.com>
+Subject: Re: [PATCH v9 4/7] can: Add Nuvoton NCT6694 CANFD support
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: lee@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl, 
+	andi.shyti@kernel.org, mailhol.vincent@wanadoo.fr, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
+	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-can@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	linux-rtc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	Ming Yu <tmyu0@nuvoton.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-We will remove DCCP.
+Dear Marc,
 
-Let's remove DCCP bits from selftest.
+Thank you for reviewing.
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
----
- tools/testing/selftests/net/config            |  1 -
- .../selftests/net/reuseport_addr_any.c        | 36 +------------------
- 2 files changed, 1 insertion(+), 36 deletions(-)
+Marc Kleine-Budde <mkl@pengutronix.de> =E6=96=BC 2025=E5=B9=B44=E6=9C=889=
+=E6=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=886:21=E5=AF=AB=E9=81=93=EF=BC=
+=9A
+...
+> > +static void nct6694_canfd_handle_state_change(struct net_device *ndev,=
+ u8 status)
+> > +{
+> > +     struct nct6694_canfd_priv *priv =3D netdev_priv(ndev);
+> > +     enum can_state new_state, rx_state, tx_state;
+> > +     struct can_berr_counter bec;
+> > +     struct can_frame *cf;
+> > +     struct sk_buff *skb;
+> > +
+> > +     nct6694_canfd_get_berr_counter(ndev, &bec);
+> > +     can_state_get_by_berr_counter(ndev, &bec, &tx_state, &rx_state);
+> > +
+> > +     new_state =3D max(tx_state, rx_state);
+> > +
+> > +     /* state hasn't changed */
+> > +     if (new_state =3D=3D priv->can.state)
+> > +             return;
+> > +
+> > +     skb =3D alloc_can_err_skb(ndev, &cf);
+> > +
+> > +     can_change_state(ndev, cf, tx_state, rx_state);
+> > +
+> > +     if (new_state =3D=3D CAN_STATE_BUS_OFF) {
+> > +             can_bus_off(ndev);
+>
+> What does your device do when it goes into bus off? Does it recover itsel=
+f?
+>
 
-diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-index 130d532b7e67..3cfef5153823 100644
---- a/tools/testing/selftests/net/config
-+++ b/tools/testing/selftests/net/config
-@@ -33,7 +33,6 @@ CONFIG_NETFILTER_ADVANCED=y
- CONFIG_NF_CONNTRACK=m
- CONFIG_IPV6_MROUTE=y
- CONFIG_IPV6_SIT=y
--CONFIG_IP_DCCP=m
- CONFIG_NF_NAT=m
- CONFIG_IP6_NF_IPTABLES=m
- CONFIG_IP_NF_IPTABLES=m
-diff --git a/tools/testing/selftests/net/reuseport_addr_any.c b/tools/testing/selftests/net/reuseport_addr_any.c
-index b8475cb29be7..1c43401a1c80 100644
---- a/tools/testing/selftests/net/reuseport_addr_any.c
-+++ b/tools/testing/selftests/net/reuseport_addr_any.c
-@@ -9,7 +9,6 @@
- #include <arpa/inet.h>
- #include <errno.h>
- #include <error.h>
--#include <linux/dccp.h>
- #include <linux/in.h>
- #include <linux/unistd.h>
- #include <stdbool.h>
-@@ -21,10 +20,6 @@
- #include <sys/socket.h>
- #include <unistd.h>
- 
--#ifndef SOL_DCCP
--#define SOL_DCCP 269
--#endif
--
- static const char *IP4_ADDR = "127.0.0.1";
- static const char *IP6_ADDR = "::1";
- static const char *IP4_MAPPED6 = "::ffff:127.0.0.1";
-@@ -86,15 +81,6 @@ static void build_rcv_fd(int family, int proto, int *rcv_fds, int count,
- 
- 		if (proto == SOCK_STREAM && listen(rcv_fds[i], 10))
- 			error(1, errno, "tcp: failed to listen on receive port");
--		else if (proto == SOCK_DCCP) {
--			if (setsockopt(rcv_fds[i], SOL_DCCP,
--					DCCP_SOCKOPT_SERVICE,
--					&(int) {htonl(42)}, sizeof(int)))
--				error(1, errno, "failed to setsockopt");
--
--			if (listen(rcv_fds[i], 10))
--				error(1, errno, "dccp: failed to listen on receive port");
--		}
- 	}
- }
- 
-@@ -148,11 +134,6 @@ static int connect_and_send(int family, int proto)
- 	if (fd < 0)
- 		error(1, errno, "failed to create send socket");
- 
--	if (proto == SOCK_DCCP &&
--		setsockopt(fd, SOL_DCCP, DCCP_SOCKOPT_SERVICE,
--				&(int){htonl(42)}, sizeof(int)))
--		error(1, errno, "failed to setsockopt");
--
- 	if (bind(fd, saddr, sz))
- 		error(1, errno, "failed to bind send socket");
- 
-@@ -175,7 +156,7 @@ static int receive_once(int epfd, int proto)
- 	if (i < 0)
- 		error(1, errno, "epoll_wait failed");
- 
--	if (proto == SOCK_STREAM || proto == SOCK_DCCP) {
-+	if (proto == SOCK_STREAM) {
- 		fd = accept(ev.data.fd, NULL, NULL);
- 		if (fd < 0)
- 			error(1, errno, "failed to accept");
-@@ -243,20 +224,6 @@ static void run_one_test(int fam_send, int fam_rcv, int proto,
- 
- static void test_proto(int proto, const char *proto_str)
- {
--	if (proto == SOCK_DCCP) {
--		int test_fd;
--
--		test_fd = socket(AF_INET, proto, 0);
--		if (test_fd < 0) {
--			if (errno == ESOCKTNOSUPPORT) {
--				fprintf(stderr, "DCCP not supported: skipping DCCP tests\n");
--				return;
--			} else
--				error(1, errno, "failed to create a DCCP socket");
--		}
--		close(test_fd);
--	}
--
- 	fprintf(stderr, "%s IPv4 ... ", proto_str);
- 	run_one_test(AF_INET, AF_INET, proto, IP4_ADDR);
- 
-@@ -271,7 +238,6 @@ int main(void)
- {
- 	test_proto(SOCK_DGRAM, "UDP");
- 	test_proto(SOCK_STREAM, "TCP");
--	test_proto(SOCK_DCCP, "DCCP");
- 
- 	fprintf(stderr, "SUCCESS\n");
- 	return 0;
--- 
-2.49.0
+No, the device does not support automatic bus-off recovery. It
+requires an explicit CAN Setting and Initialization(CMD0) command to
+re-initialize the controller after entering bus-off state.
 
+> > +     } else if (cf) {
+> > +             cf->can_id |=3D CAN_ERR_CNT;
+> > +             cf->data[6] =3D bec.txerr;
+> > +             cf->data[7] =3D bec.rxerr;
+> > +     }
+> > +
+> > +     if (skb)
+> > +             nct6694_canfd_rx_offload(&priv->offload, skb);
+> > +}
+> > +
+> > +static void nct6694_canfd_handle_bus_err(struct net_device *ndev, u8 b=
+us_err)
+> > +{
+> > +     struct nct6694_canfd_priv *priv =3D netdev_priv(ndev);
+> > +     struct can_frame *cf;
+> > +     struct sk_buff *skb;
+> > +
+> > +     if (bus_err =3D=3D NCT6694_CANFD_EVT_ERR_NO_ERROR)
+> > +             return;
+>
+> I think this has already been checked nct6694_canfd_irq()
+>
+
+Drop it in v10.
+
+> > +
+...
+> > +static int nct6694_canfd_start(struct net_device *ndev)
+> > +{
+> > +     struct nct6694_canfd_priv *priv =3D netdev_priv(ndev);
+> > +     const struct can_bittiming *d_bt =3D &priv->can.data_bittiming;
+> > +     const struct can_bittiming *n_bt =3D &priv->can.bittiming;
+> > +     struct nct6694_canfd_setting *setting __free(kfree) =3D NULL;
+> > +     const struct nct6694_cmd_header cmd_hd =3D {
+> > +             .mod =3D NCT6694_CANFD_MOD,
+> > +             .cmd =3D NCT6694_CANFD_SETTING,
+> > +             .sel =3D ndev->dev_port,
+> > +             .len =3D cpu_to_le16(sizeof(*setting))
+> > +     };
+> > +     int ret;
+> > +
+> > +     setting =3D kzalloc(sizeof(*setting), GFP_KERNEL);
+> > +     if (!setting)
+> > +             return -ENOMEM;
+> > +
+> > +     setting->nbr =3D cpu_to_le32(n_bt->bitrate);
+> > +     setting->dbr =3D cpu_to_le32(d_bt->bitrate);
+> > +
+> > +     if (priv->can.ctrlmode & CAN_CTRLMODE_LISTENONLY)
+> > +             setting->ctrl1 |=3D cpu_to_le16(NCT6694_CANFD_SETTING_CTR=
+L1_MON);
+> > +
+> > +     if (priv->can.ctrlmode & CAN_CTRLMODE_FD_NON_ISO)
+> > +             setting->ctrl1 |=3D cpu_to_le16(NCT6694_CANFD_SETTING_CTR=
+L1_NISO);
+> > +
+> > +     if (priv->can.ctrlmode & CAN_CTRLMODE_LOOPBACK)
+> > +             setting->ctrl1 |=3D cpu_to_le16(NCT6694_CANFD_SETTING_CTR=
+L1_LBCK);
+> > +
+> > +     setting->nbtp =3D cpu_to_le32(FIELD_PREP(NCT6694_CANFD_SETTING_NB=
+TP_NSJW,
+> > +                                            n_bt->sjw - 1) |
+> > +                                 FIELD_PREP(NCT6694_CANFD_SETTING_NBTP=
+_NBRP,
+> > +                                            n_bt->brp - 1) |
+> > +                                 FIELD_PREP(NCT6694_CANFD_SETTING_NBTP=
+_NTSEG2,
+> > +                                            n_bt->phase_seg2 - 1) |
+> > +                                 FIELD_PREP(NCT6694_CANFD_SETTING_NBTP=
+_NTSEG1,
+> > +                                            n_bt->prop_seg + n_bt->pha=
+se_seg1 - 1));
+> > +
+> > +     setting->dbtp =3D cpu_to_le32(FIELD_PREP(NCT6694_CANFD_SETTING_DB=
+TP_DSJW,
+> > +                                            d_bt->sjw - 1) |
+> > +                                 FIELD_PREP(NCT6694_CANFD_SETTING_DBTP=
+_DBRP,
+> > +                                            d_bt->brp - 1) |
+> > +                                 FIELD_PREP(NCT6694_CANFD_SETTING_DBTP=
+_DTSEG2,
+> > +                                            d_bt->phase_seg2 - 1) |
+> > +                                 FIELD_PREP(NCT6694_CANFD_SETTING_DBTP=
+_DTSEG1,
+> > +                                            d_bt->prop_seg + d_bt->pha=
+se_seg1 - 1));
+>
+> What does your device do, if you set the bitrates _and_ the bit timing
+> parameters? They are redundant.
+>
+
+The firmware calculates the default bit timing parameters when it
+receives the bitrates, and then overwrites them if it later receives
+explicit bit timing parameters.
+
+To avoid confusion and ensure consistent behavior, I will remove the
+bitrate setting logic in next patch. Instead, the bit timing will be
+determined solely based on the provided bit timing parameters.
+
+> > +     setting->active =3D NCT6694_CANFD_SETTING_ACTIVE_CTRL1 |
+> > +                       NCT6694_CANFD_SETTING_ACTIVE_NBTP_DBTP;
+> > +
+> > +     ret =3D nct6694_write_msg(priv->nct6694, &cmd_hd, setting);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     priv->can.state =3D CAN_STATE_ERROR_ACTIVE;
+> > +
+> > +     return 0;
+> > +}
+>
+
+Best regards,
+Ming
