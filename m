@@ -1,121 +1,265 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6B020B1F9;
-	Thu, 10 Apr 2025 07:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55931CEEB2
+	for <netdev@vger.kernel.org>; Thu, 10 Apr 2025 07:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744269567; cv=none; b=Vs9K28SgkRJhQ3qNf0vKzHdwZ9o2/Fz1a1DWiDYo+MEXl0gJuziOiS7e11ArqF3antjq9kEbe5PtgTKncTgcABeRo00k6Jh/P+ZwcPwIa98+2AgjpjGQcpBFALqY6KHRk0G5sPpYSF8s2T4TyPINuFKDtsoP3w34YupIIX0O/0s=
+	t=1744269601; cv=none; b=W7t0CdSiIoDG+rwu/hgg6MbgHLgt+ccBAmyb8ZvWyI0+Ea9sCtYKrrV7QYOtxCdC9p/JsFWihcp8dbazrMbJEJEKK0unmmvMrVqPOH/Fws0aZhK05A9TkWI1an/w3+L3Hcw0SIVCUJT7z8Yxg/rP/41jnZVQ6nh4gHIDihDV+zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744269567; c=relaxed/simple;
-	bh=rxXXSqIXZBNHJqmd1FTQtUGE3vJtbMGUdcrgc/5WTk4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sfK82DhG2eltDoqYBNz0TDdU30+Rtgp+fSYrlpuJPSpWd7hgX7TF6H4KtNutmnnlI91dpNIAGbYUjYMV9hh8H6Pu9047Cdu7LedtMz0lRdThrTR/EjosUWUg1sXUH+ErANLvngrbhuuVja1ayKkPU5zZTIpypoDyXXSoFYkm5oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nFy0I/VY; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nFy0I/VY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 343D2C4CEDD;
-	Thu, 10 Apr 2025 07:19:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744269567;
-	bh=rxXXSqIXZBNHJqmd1FTQtUGE3vJtbMGUdcrgc/5WTk4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nFy0I/VYUAx3DHquq6OWyhRyPFgZp8Iua8C8ZsF+Cpxm1tNxA7E2v1kvk3O/zXqY6
-	 zcyjSmOC4H707LDj9n4cgI/xVxR04JZ0Ut0oHvImRGLWPM1D2dhBj+vm5O092iOYjr
-	 LOFegqbv9iwRBD1M+FB2bnwsAaR7bw9rO7K5Qo3634Y3bd+XryD+rWJwiET/AxHh49
-	 QfexVaRsCDeH4Nx0f29nm/O81UC0LSoMjuu9Lp1uOHctlnx86Hr5dsGblfNrnjz31k
-	 c7xHnunsTj8mtVbYHd8Ap2qvR0iJLZYcPJ992AaKVx8NixNYpZV3N0GsMEArXBN/zb
-	 noSPbbJfwbidA==
-Message-ID: <eecfb843-e9cd-4d07-bb72-15cf84a25706@kernel.org>
-Date: Thu, 10 Apr 2025 09:19:21 +0200
+	s=arc-20240116; t=1744269601; c=relaxed/simple;
+	bh=kTmE58ndy6K/bnlmL9jUzW6r76Cx/e1DVn1Feuzz0kE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=aXTTDO0qQbt+ru2En3qbZ1QtfNESPLIqDGFuz7R3W5gdyM4MY2BIqxuH8inCeI7mXY0ayhgeVIK2Bq20Kz3sEhxmpJZgj7JSyTBM6rUVwfYYL/a9GAKqDgWr7ugTq0wvoFdXF1Q2N+CTcomjzYN0RtMsin4JXqCzGpVcKcSGXE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.16.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: bizesmtp25t1744269561tcba7ca4
+X-QQ-Originating-IP: MoPuc4KUxsoYlga7mdOcPTi6WA5Jz0Ry11j+tgc6ci8=
+Received: from wxdbg.localdomain.com ( [220.184.249.159])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 10 Apr 2025 15:19:19 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 593996941820147345
+EX-QQ-RecipientCnt: 16
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	dlemoal@kernel.org,
+	jdamato@fastly.com,
+	saikrishnag@marvell.com,
+	vadim.fedorenko@linux.dev,
+	przemyslaw.kitszel@intel.com,
+	ecree.xilinx@gmail.com,
+	rmk+kernel@armlinux.org.uk
+Cc: mengyuanlou@net-swift.com,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next 1/2] net: txgbe: Support to set UDP tunnel port
+Date: Thu, 10 Apr 2025 15:44:55 +0800
+Message-Id: <20250410074456.321847-2-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20250410074456.321847-1-jiawenwu@trustnetic.com>
+References: <20250410074456.321847-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/14] mfd: Add Microchip ZL3073x support
-To: Andy Shevchenko <andy@kernel.org>, Ivan Vecera <ivecera@redhat.com>
-Cc: netdev@vger.kernel.org, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Prathosh Satish <Prathosh.Satish@microchip.com>,
- Lee Jones <lee@kernel.org>, Kees Cook <kees@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Michal Schmidt <mschmidt@redhat.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <20250409144250.206590-1-ivecera@redhat.com>
- <20250409144250.206590-4-ivecera@redhat.com>
- <Z_aVlIiT07ZDE2Kf@smile.fi.intel.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <Z_aVlIiT07ZDE2Kf@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: ND42uzdxTIzr/c/Lyc+oOqI8jYSgj8FHiquEpnNVyCVWguPvKm1z2cB6
+	v6D3fo9+7gB1y/DRN0C8zp0eymS6EaY6l90btd8dQ5fw8rGVzsX768X8rsMtgX51CKEUr79
+	rOAQl0RjHy1eHg+Q9oM9TYQ58ZjQI0Xamm42o1/q0i1cRkJkMZBlsSpgwElWsqgBNABkHYP
+	zGI7pdrw9IPFFI4EeIvAyvGTLeduqCxLgFA3u1ymfUWWLLzfUaZ2c6qwoeeNSgMWdl2UYDa
+	T+zp36BiSUEgtBmN/4qwkXj8dFg4L3lSlcHdjC8rOF9XdVnoC/lAUTX1PyL9lo5O43RMb61
+	jxzgnAg1A+aK2/XiICY4ZXLCWj/oZmu1ah/EyagP6tbbVveBaxprgEHEK/lKpk4bEkeuRrz
+	vlt3ZCl1F54pZB8cXOPk+R/4hKf3QYk5p9zdT/JHWH3yV1j239XMCiyteULaLGaKwqfKAOb
+	M/yDIOvxNx2ZZ/4Zdjph+dLKPmREXXXXioBWdIF55Go/nMs+XD2MvJ3Sq9RkwXgoKCrjI37
+	43iw0gwxXMt0QrcgIvhW/bWYnZRr+IaOlpcpENRZ9vkH2vae1HwtV83dRshf75MqK8s0PyA
+	f2ZQQs2rTWL6/sNOBjhR3S0ZE59lpAUMnGGhS9uowFiWlCRyDwpAzGcLqJesirLWjt01sEm
+	HszYK5gDWi0/PopU5HSoozqlRwoylFwnyv4QVE5lZv4XM8C7O5Qee6i+1D5G5jY4EANBmwj
+	KXQFnNZo3Y/LGU89VXGAnNg0HyKbrjU7Y/fxZ0FaXDvPHMvJURJqfAOx4tvmCpIqWPjofa5
+	syXIYQZAzrdGs6Rh9MMX0SFG8q2qmPmI6VhYXCEjj74hzmMZHB8Xy+ARFusphF7WuSlNu3h
+	JP+nSZoNYNmwvTY+j2mwWAylZjXx7R3j/4XeN0RqWsBif/0Q9YtOvhkppGTLFSGxAG/7JnT
+	hC07jHwRIhYQkZrQO+0DMCD5duSJy1HD8gidDPhICOmyH5hhl7hUF7cpb
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+X-QQ-RECHKSPAM: 0
 
-On 09/04/2025 17:43, Andy Shevchenko wrote:
->> +/*
->> + * Regmap range configuration
->> + *
->> + * The device uses 7-bit addressing and has 16 register pages with
->> + * range 0x00-0x7f. The register 0x7f in each page acts as page
->> + * selector where bits 0-3 contains currently selected page.
->> + */
->> +static const struct regmap_range_cfg zl3073x_regmap_ranges[] = {
->> +	{
->> +		.range_min	= 0,
-> 
-> This still has the same issue, you haven't given a chance to me to reply
-> in v1 thread. I'm not going to review this as it's not settled down yet.
-> Let's first discuss the questions you have in v1.
-> 
-I already started reviewing v2, so now we have simultaneous discussions
-in v1 and v2...
+Tunnel types VXLAN/VXLAN_GPE/GENEVE are supported for txgbe devices. The
+hardware supports to set only one port for each tunnel type.
 
-Best regards,
-Krzysztof
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   | 113 ++++++++++++++++++
+ .../net/ethernet/wangxun/txgbe/txgbe_type.h   |   8 ++
+ 2 files changed, 121 insertions(+)
+
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index 6d9134a3ce4d..c984745504b4 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -8,6 +8,7 @@
+ #include <linux/string.h>
+ #include <linux/etherdevice.h>
+ #include <linux/phylink.h>
++#include <net/udp_tunnel.h>
+ #include <net/ip.h>
+ #include <linux/if_vlan.h>
+ 
+@@ -392,6 +393,8 @@ static int txgbe_open(struct net_device *netdev)
+ 
+ 	txgbe_up_complete(wx);
+ 
++	udp_tunnel_nic_reset_ntf(netdev);
++
+ 	return 0;
+ 
+ err_free_irq:
+@@ -537,6 +540,114 @@ void txgbe_do_reset(struct net_device *netdev)
+ 		txgbe_reset(wx);
+ }
+ 
++static int txgbe_udp_tunnel_set(struct net_device *dev, unsigned int table,
++				unsigned int entry, struct udp_tunnel_info *ti)
++{
++	struct wx *wx = netdev_priv(dev);
++	struct txgbe *txgbe = wx->priv;
++
++	switch (ti->type) {
++	case UDP_TUNNEL_TYPE_VXLAN:
++		if (txgbe->vxlan_port == ti->port)
++			break;
++
++		if (txgbe->vxlan_port) {
++			wx_err(wx, "VXLAN port %d set, not adding port %d\n",
++			       txgbe->vxlan_port, ti->port);
++			return -EINVAL;
++		}
++
++		txgbe->vxlan_port = ti->port;
++		wr32(wx, TXGBE_CFG_VXLAN, ntohs(ti->port));
++		break;
++	case UDP_TUNNEL_TYPE_VXLAN_GPE:
++		if (txgbe->vxlan_gpe_port == ti->port)
++			break;
++
++		if (txgbe->vxlan_gpe_port) {
++			wx_err(wx, "VXLAN-GPE port %d set, not adding port %d\n",
++			       txgbe->vxlan_gpe_port, ti->port);
++			return -EINVAL;
++		}
++
++		txgbe->vxlan_gpe_port = ti->port;
++		wr32(wx, TXGBE_CFG_VXLAN_GPE, ntohs(ti->port));
++		break;
++	case UDP_TUNNEL_TYPE_GENEVE:
++		if (txgbe->geneve_port == ti->port)
++			break;
++
++		if (txgbe->geneve_port) {
++			wx_err(wx, "GENEVE port %d set, not adding port %d\n",
++			       txgbe->geneve_port, ti->port);
++			return -EINVAL;
++		}
++
++		txgbe->geneve_port = ti->port;
++		wr32(wx, TXGBE_CFG_GENEVE, ntohs(ti->port));
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int txgbe_udp_tunnel_unset(struct net_device *dev,
++				  unsigned int table, unsigned int entry,
++				  struct udp_tunnel_info *ti)
++{
++	struct wx *wx = netdev_priv(dev);
++	struct txgbe *txgbe = wx->priv;
++
++	if (ti->type != UDP_TUNNEL_TYPE_VXLAN &&
++	    ti->type != UDP_TUNNEL_TYPE_VXLAN_GPE &&
++	    ti->type != UDP_TUNNEL_TYPE_GENEVE)
++		return -EINVAL;
++
++	switch (ti->type) {
++	case UDP_TUNNEL_TYPE_VXLAN:
++		if (txgbe->vxlan_port != ti->port) {
++			wx_err(wx, "VXLAN port %d not found\n", ti->port);
++			return -EINVAL;
++		}
++
++		txgbe->vxlan_port = 0;
++		break;
++	case UDP_TUNNEL_TYPE_VXLAN_GPE:
++		if (txgbe->vxlan_gpe_port != ti->port) {
++			wx_err(wx, "VXLAN-GPE port %d not found\n", ti->port);
++			return -EINVAL;
++		}
++
++		txgbe->vxlan_gpe_port = 0;
++		break;
++	case UDP_TUNNEL_TYPE_GENEVE:
++		if (txgbe->geneve_port != ti->port) {
++			wx_err(wx, "GENEVE port %d not found\n", ti->port);
++			return -EINVAL;
++		}
++
++		txgbe->geneve_port = 0;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static const struct udp_tunnel_nic_info txgbe_udp_tunnels = {
++	.set_port	= txgbe_udp_tunnel_set,
++	.unset_port	= txgbe_udp_tunnel_unset,
++	.flags		= UDP_TUNNEL_NIC_INFO_MAY_SLEEP,
++	.tables		= {
++		{ .n_entries = 1, .tunnel_types = UDP_TUNNEL_TYPE_VXLAN, },
++		{ .n_entries = 1, .tunnel_types = UDP_TUNNEL_TYPE_VXLAN_GPE, },
++		{ .n_entries = 1, .tunnel_types = UDP_TUNNEL_TYPE_GENEVE, },
++	},
++};
++
+ static const struct net_device_ops txgbe_netdev_ops = {
+ 	.ndo_open               = txgbe_open,
+ 	.ndo_stop               = txgbe_close,
+@@ -632,6 +743,7 @@ static int txgbe_probe(struct pci_dev *pdev,
+ 	wx->driver_name = txgbe_driver_name;
+ 	txgbe_set_ethtool_ops(netdev);
+ 	netdev->netdev_ops = &txgbe_netdev_ops;
++	netdev->udp_tunnel_nic_info = &txgbe_udp_tunnels;
+ 
+ 	/* setup the private structure */
+ 	err = txgbe_sw_init(wx);
+@@ -677,6 +789,7 @@ static int txgbe_probe(struct pci_dev *pdev,
+ 	netdev->features |= NETIF_F_HIGHDMA;
+ 	netdev->hw_features |= NETIF_F_GRO;
+ 	netdev->features |= NETIF_F_GRO;
++	netdev->features |= NETIF_F_RX_UDP_TUNNEL_PORT;
+ 
+ 	netdev->priv_flags |= IFF_UNICAST_FLT;
+ 	netdev->priv_flags |= IFF_SUPP_NOFCS;
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+index 5937cbc6bd05..67ea81dfe786 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+@@ -88,6 +88,9 @@
+ /* Port cfg registers */
+ #define TXGBE_CFG_PORT_ST                       0x14404
+ #define TXGBE_CFG_PORT_ST_LINK_UP               BIT(0)
++#define TXGBE_CFG_VXLAN                         0x14410
++#define TXGBE_CFG_VXLAN_GPE                     0x14414
++#define TXGBE_CFG_GENEVE                        0x14418
+ 
+ /* I2C registers */
+ #define TXGBE_I2C_BASE                          0x14900
+@@ -359,6 +362,11 @@ struct txgbe {
+ 	union txgbe_atr_input fdir_mask;
+ 	int fdir_filter_count;
+ 	spinlock_t fdir_perfect_lock; /* spinlock for FDIR */
++
++	/* tunnel port */
++	__be16 vxlan_port;
++	__be16 geneve_port;
++	__be16 vxlan_gpe_port;
+ };
+ 
+ #endif /* _TXGBE_TYPE_H_ */
+-- 
+2.27.0
+
