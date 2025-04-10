@@ -1,127 +1,105 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B5C280CC6
-	for <netdev@vger.kernel.org>; Thu, 10 Apr 2025 10:21:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C212165E9
+	for <netdev@vger.kernel.org>; Thu, 10 Apr 2025 10:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744280468; cv=none; b=YYBY73RS3YEXctz8NRTAbHIyiD2byQK+Z+NWPMnY5m91XE7U5NS/VgyPDxB9Xz7y1SJBFlSAUa5R0S2cGP07YRXOFnmeJyY2mSyvpgCcNk2efg0Uxfa94Ovj0fvH2Jr0NV2BiDpVLFlHymH7wyHuXiKgGgK9wvxBsvaJ/r8Angg=
+	t=1744280627; cv=none; b=UfNoKA+iEMWNzmHu0g6B8TKov5jAXg8l7SHfg2eTe+TQtVBIgtE3obLUP/4tTZX8wZW6zEVc506Tte3ucB8gtJJMm6QWpg1Q28ejlUwuNzKdPWgC0gQKlDdlgCh/jNnJw1NaZsE4JM3W0035FG+OVDUGmK4eoveaZZeszvoH8so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744280468; c=relaxed/simple;
-	bh=92JUKxqvz4DOLXtgZ9JCA4V7OtLOo0pA+kZxODRygU8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=dUt26/sxOvW2TAqgLGOUnKcmNB6HVSitmxa57dnbUU7RdMOaWQn8tORrmF8EDPdLAimWlrWRordaWdV0sd5H+lporPpw+fcIJsuCUDQzD9UANOZu+mPkjl0Xcmooxt1SWK66YRG4suSyPH/v1OaoMoOIGIfb3BDFllLte1Ysm6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X2HEP5S7; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1744280627; c=relaxed/simple;
+	bh=OfuCOFKjvMskfnz1F4XFE/u3fByc20wvO3rC2eyS2l8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tdAB0H5ftB6fjoJ+QulY/h93pNA26okxbIZG9Meg323nFh7O89dFFHGxASKTPfOUcLFQlOqIGU7H4Hrb86rvYbwJEnRHt0te6hGxTWttZKhKK1lHWq+AgYgi6A3oiY0tSjLUB/VppqEmZsCm3gZlje17v44bheVds5smFZRBV+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LNJOCEez; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X2HEP5S7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LNJOCEez"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744280465;
+	s=mimecast20190719; t=1744280624;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gj0ddO5JcHA3x6pElFgDxfTHr6tMQmqLYvn6SHOTRag=;
-	b=X2HEP5S79mRFkizkDG1skujBBxafhGjqJB/7fFaDShefDDRv84NoScd0ynDHT5t3v9dXze
-	DvyZBPesdKZBl9EL8NwNQZcZtPMtiqdJrEeeZ2YoXE0VsooKmxSk52/4bVMLXxcdZIKR7H
-	bsg3wUW5HKSUZqhP/Xt/DtW6CpCl98A=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=OfuCOFKjvMskfnz1F4XFE/u3fByc20wvO3rC2eyS2l8=;
+	b=LNJOCEezNXPLIHVGgBo3jzS5/MEgDnHHfCMarbzwLI0XldBQ4rj/Bdl3aATEZzXHIoIZ89
+	pb8BHk2bUV1kSJ7iFobyakc3IbVmfW5aRNaKNYLMTIo4LFgRW3t8/pSupvXO2Np1krgsoT
+	ywPERax/Axk73A8WbnGYKY8JY/T6Pnk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-278-6WPgqYB6PGKGOMNFuSacwQ-1; Thu, 10 Apr 2025 06:21:04 -0400
-X-MC-Unique: 6WPgqYB6PGKGOMNFuSacwQ-1
-X-Mimecast-MFC-AGG-ID: 6WPgqYB6PGKGOMNFuSacwQ_1744280463
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-30bf4297559so5243041fa.2
-        for <netdev@vger.kernel.org>; Thu, 10 Apr 2025 03:21:04 -0700 (PDT)
+ us-mta-49-NV5K0G5tPIOC0XwBJHywVw-1; Thu, 10 Apr 2025 06:23:43 -0400
+X-MC-Unique: NV5K0G5tPIOC0XwBJHywVw-1
+X-Mimecast-MFC-AGG-ID: NV5K0G5tPIOC0XwBJHywVw_1744280622
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-39d917b105bso232297f8f.2
+        for <netdev@vger.kernel.org>; Thu, 10 Apr 2025 03:23:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744280463; x=1744885263;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gj0ddO5JcHA3x6pElFgDxfTHr6tMQmqLYvn6SHOTRag=;
-        b=AUI5uZ7t/xXBd8SbTBtbGQeT6yRYFulx9IFeqsQ5Jz7NAbZllLTqPGvt52U0bpjhwg
-         g9d0SiqOJVM6uwkfmxipy4NjAh89ckjMV4O05I2/sYzfKAIPTyr8X788KwYCyC6Y2GZf
-         QTpGB5/RU2HoazxDdwJxQF4yM9P1xX78/AeQusAntdQIG5GgiciFK4y18e+F4jfDWGOz
-         fW1j+V4lsxM5jXc5qf1e/Ad4ouzJwJeDDCiazD4sViGlQIf8Pb6sWhhXTFCRG1vZ07xm
-         yrny8sQnm7Bam2UJxJ/0nWMsm+c2JIFXOx5NOghyatf+NrjuRMpVn3TnRSsfuwu0kOlX
-         0ljQ==
-X-Gm-Message-State: AOJu0YysOwD4hltIRHIjOBS4LXXAatkh0GtQcXT44kULFuuPubgjAJ4O
-	hzMny1Vh8sZY+Y4Splkgl97VWbcNBR/aU9qLpCm5hfNMYA0f2pipi8jqM1kzVhE9Hz3Vf97VgjT
-	7Y1nlu/AWfwO2PejYq6zSaPDMzM4Rkl+DAjzepIS4Tju/0DVjIXjjqA==
-X-Gm-Gg: ASbGncvHbiA3nJvsVDMv+0gehS0INktTG+ZNZ/oKI1abD+SvczH9PS0NbuCUltuwihq
-	poO7ukHbKKU3DTPUpBBUuzc1zCR/NZHcpgi9vwH/I0bahQH4XICJQINLX9rfc8kD9+dTpUj4qgc
-	PznwKFoB9nTi8cKOPtGYRXsObyPVmA6xIIFkXM0sqlY8p/86B5G+de0YN0TQEwXxEa/2x1fgtX7
-	jZCCvxM2ec88yoyL6Yf1UNJ73kXSuh9eYo24BGs+4MHSkLAr96huBHCyTckkew5ebjfjmm1nRXJ
-	MnCi3jFDQi0bDRLxg3YNSuofuGBNyYb3hoaR
-X-Received: by 2002:a05:651c:1515:b0:30b:9813:b004 with SMTP id 38308e7fff4ca-3103ed4f35dmr5955621fa.34.1744280462771;
-        Thu, 10 Apr 2025 03:21:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE17WxZoyH3rbLK0N6NfIbsSGtSK/hr9dYY0iDg1GJ6hNCoga/XB9dPSda2f4ZShTnw6cWIwg==
-X-Received: by 2002:a05:651c:1515:b0:30b:9813:b004 with SMTP id 38308e7fff4ca-3103ed4f35dmr5955491fa.34.1744280462404;
-        Thu, 10 Apr 2025 03:21:02 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30f46623c2bsm4318581fa.111.2025.04.10.03.21.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Apr 2025 03:21:01 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 7F5E21992272; Thu, 10 Apr 2025 12:21:00 +0200 (CEST)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Zi Yan <ziy@nvidia.com>, "David S. Miller" <davem@davemloft.net>, Jakub
- Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>,
- Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Ilias
- Apalodimas <ilias.apalodimas@linaro.org>, Simon Horman <horms@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Mina Almasry
- <almasrymina@google.com>, Yonglong Liu <liuyonglong@huawei.com>, Yunsheng
- Lin <linyunsheng@huawei.com>, Pavel Begunkov <asml.silence@gmail.com>,
- Matthew Wilcox <willy@infradead.org>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH net-next v9 1/2] page_pool: Move pp_magic check into
- helper functions
-In-Reply-To: <D92K7SAU1A06.1APBVXB2AK2HW@nvidia.com>
-References: <20250409-page-pool-track-dma-v9-0-6a9ef2e0cba8@redhat.com>
- <20250409-page-pool-track-dma-v9-1-6a9ef2e0cba8@redhat.com>
- <D92K7SAU1A06.1APBVXB2AK2HW@nvidia.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Thu, 10 Apr 2025 12:21:00 +0200
-Message-ID: <877c3suxkj.fsf@toke.dk>
+        d=1e100.net; s=20230601; t=1744280622; x=1744885422;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OfuCOFKjvMskfnz1F4XFE/u3fByc20wvO3rC2eyS2l8=;
+        b=qpS1vA4CKHWBMOqgfjakuW4gVjcUrWUtQ30DpHCr+JKwEB9qCxH4dnxGk2fYgDU06m
+         hvqc0T7JjsyhKt+nNoIuU99Ap5wxXJ6htuk9CCncyTz+b72vmE0WFvudMygYO78y8KRr
+         XwdPEue/ZPaZGA2q43nQgqezxRG2zn3LIKlAgCidTAKZAFWm7R2iC2s8K19rcVTwzFLd
+         i0w36FW3X2/MzDFDj8u6RoHdHNwEnpWkZj+JayNTxkq8zA9ZFgNmRX1e/PYcoBzoMhn1
+         BSoxIAOFSk795WGdHNdF2K/Cq5EeF6pCr9FUnSJQR9moPHzfgiLKa1uyhpcvllq/n5wR
+         CJ8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXbXi99F3DNMFtnBj+Vp2Z6OhrO3Qwvt/gTFvnwfOaVHdHIRGfv0C69NWgzEAFkd/oxCLksZLs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsfN45MrjDUQY+qQon2NOTbO8XDiwu9/ASlj1TH8tB2DgQvYuU
+	UpfxAfO9hu6CgaLNPbuAQRYjXq7PYVEsvFnXEbfd9+qIluCKJwyK+qNByQeIYRrnPoQ25XWgIyN
+	WcrpJz/DnWiGnhPBZWXkwjOsOm33uuc5KpFTmzkJHc/wdu9cGeljz/w==
+X-Gm-Gg: ASbGncsXpdc6dYxCNA3Umxxc7Vbx/5sb5HYQQGvGPKxzh8X2eW4Vh1gpuQdMxqDaM1p
+	2XlW+U3I0mk65HY/mU+MsfQmNy/xAym68vBYOuJCyCyptXwaPmb6FvDpAi9JY95P7XzLo+gSHKy
+	gIAg2pEGlvVSuNvAYr6us/xy1WvV85YREeT/iRT3ui8G9VEnHGPNJVIugpu8uKme2G18NuO62MI
+	FMmKnw0pXxIfMU6RzjniP/kxVt+D1A5mpkYZRzBp7jXKlEYsqqwApd/XuZCGsHcqUjFfzwqX+er
+	xjrj4F16GBUzIkNwbZpHg5XnbfrbIDtb+OZC6cM=
+X-Received: by 2002:a5d:59a4:0:b0:399:6dd9:9f40 with SMTP id ffacd0b85a97d-39d8f271ff3mr1349576f8f.9.1744280622406;
+        Thu, 10 Apr 2025 03:23:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHlGK+RDA8sZsXCeD/oZHDHITnRrGJZDpmPkdubQYhIgKQAR+h2AH1WJpCXG8zaPEaVZ56PZA==
+X-Received: by 2002:a5d:59a4:0:b0:399:6dd9:9f40 with SMTP id ffacd0b85a97d-39d8f271ff3mr1349564f8f.9.1744280622098;
+        Thu, 10 Apr 2025 03:23:42 -0700 (PDT)
+Received: from [192.168.88.253] (146-241-84-24.dyn.eolo.it. [146.241.84.24])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f233a2c46sm46370505e9.13.2025.04.10.03.23.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Apr 2025 03:23:41 -0700 (PDT)
+Message-ID: <2c779583-bac7-43fe-80db-0dc0bca2e0d2@redhat.com>
+Date: Thu, 10 Apr 2025 12:23:40 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] ptp: ocp: add irig and dcf NULL-check in
+ __handle_signal functions
+To: Sagi Maimon <maimon.sagi@gmail.com>, jonathan.lemon@gmail.com,
+ vadim.fedorenko@linux.dev, richardcochran@gmail.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+References: <20250409092446.64202-1-maimon.sagi@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250409092446.64202-1-maimon.sagi@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-"Zi Yan" <ziy@nvidia.com> writes:
+On 4/9/25 11:24 AM, Sagi Maimon wrote:
+> In __handle_signal_outputs and __handle_signal_inputs add
+> irig and dcf NULL-check
 
-> On Wed Apr 9, 2025 at 6:41 AM EDT, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> Since we are about to stash some more information into the pp_magic
->> field, let's move the magic signature checks into a pair of helper
->> functions so it can be changed in one place.
->>
->> Reviewed-by: Mina Almasry <almasrymina@google.com>
->> Tested-by: Yonglong Liu <liuyonglong@huawei.com>
->> Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
->> Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
->> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
->> ---
->>  drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c |  4 ++--
->>  include/linux/mm.h                               | 20 +++++++++++++++++=
-+++
->>  mm/page_alloc.c                                  |  8 ++------
->>  net/core/netmem_priv.h                           |  5 +++++
->>  net/core/skbuff.c                                | 16 ++--------------
->>  net/core/xdp.c                                   |  4 ++--
->>  6 files changed, 33 insertions(+), 24 deletions(-)
->>
->
-> LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
+You need to expand a little the commit message. Is the NULL ptr
+dereference actually possible? How? or this is just defensive programming?
 
-Great, thanks!
+If there is a real NULL ptr dereference this need a suitable Fixes tag.
 
--Toke
+And you should specify the target tree in the subj prefix.
+
+You can retain the collected ack when resubmitting.
+
+Thanks,
+
+Paolo
 
