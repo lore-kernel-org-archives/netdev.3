@@ -1,59 +1,35 @@
-Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636711A2390
-	for <netdev@vger.kernel.org>; Thu, 10 Apr 2025 02:25:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCB31A2390;
+	Thu, 10 Apr 2025 02:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744251958; cv=none; b=XDQ1yItM+JgBNIk8dRWQyzFI7mNyRM2ROueNIf5B0mraYygytUZn8oh9csZTJZ3WHFmjOkaznW2rZZyK8b41C1lsPo+R4aagudkSEBQmvQCw4BO9kuXK+YlHbKXOvRXPeW4Ur5Nofc8hDYx1UCQ/Kdd6QU/PRpoPzj9BZDhcCoo=
+	t=1744252196; cv=none; b=udtEs+jXs8dc1QuXU565Lq+lxKYbBonGf92ZhVllrPnoZeACShgRWzy1fM34Ul6Ce3lWzH3jv0N4A1K5OYEhqDIwiNjHg+pKsUmdCcT0a36X7QzECA7KosxQMBR9lFNu+wOSdENq8hOrUpx5bBnQz1QDrLKik3yobQxdkV0vNDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744251958; c=relaxed/simple;
-	bh=LRQEvRg0y0SEfJAyNppJIV+1/ld/RrSkFrCRpb7defw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tz/YKZcYAd5GMI2Cg7mLQO2WWiFAarcjDz+YuyY6BOHDl58ZlK30iTc+TKJSYZYG05nZ3enn+1D+8UpzLJ/zdC6ypyP/Q5gnqU6o2MeNlMbAfWs/Si72ArICRkGeMKv/MlPOZBpQPN4S/dC5ZfrSqLIhuQiytqDDjpIHEwf7yiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=lMea0/L5; arc=none smtp.client-ip=99.78.197.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1744252196; c=relaxed/simple;
+	bh=E7Des7EK+sUgtkY+WWs2fRdo6Bd/TmZZDDYF1r+l6Bk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=uu16V3PkGuDADFjwojPxplbTMqHzdwFnPP23ccjNPmpFQWQb9VVJ+ydhdepi/rdXg84DRLFK4hHVmbrVxy+sgjwuzCIs8En/368xhA+GLmCN9Fr5CfQCRU9NAZD0QzlN+6WRtuaLCnySEozVB/pp6lODnrAVXJilb/V2dr/LM/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PkMau/40; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="lMea0/L5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1744251958; x=1775787958;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Ztp4KIY3RbH9bovRqRbjrWStusJZh+fAD+9Yp+vaEQ0=;
-  b=lMea0/L56bKhE3HLn4stnj3TdLkdnIcqDGra0YbSSWUwN+/fXRhAoeYf
-   NJQiU6FIRpVY0Rw+MUO6oS/rcVvwe4yx/K90gmON2+DqEfCU7RVXnu+Wo
-   kJioJ5RcnqRAxi5/egM4oQEhrdQWQnaFzphKM2mmsw3EVnE0YVs90PmfP
-   4=;
-X-IronPort-AV: E=Sophos;i="6.15,201,1739836800"; 
-   d="scan'208";a="39349928"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 02:25:57 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.7.35:6856]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.49.222:2525] with esmtp (Farcaster)
- id 779b1b0d-ee1d-493b-94f2-310ff2c23cde; Thu, 10 Apr 2025 02:25:56 +0000 (UTC)
-X-Farcaster-Flow-ID: 779b1b0d-ee1d-493b-94f2-310ff2c23cde
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 10 Apr 2025 02:25:56 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.187.170.41) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 10 Apr 2025 02:25:53 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-CC: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v1 net-next 14/14] net: Remove ->exit_batch_rtnl().
-Date: Wed, 9 Apr 2025 19:19:35 -0700
-Message-ID: <20250410022004.8668-15-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250410022004.8668-1-kuniyu@amazon.com>
-References: <20250410022004.8668-1-kuniyu@amazon.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PkMau/40"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45822C4CEE2;
+	Thu, 10 Apr 2025 02:29:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744252196;
+	bh=E7Des7EK+sUgtkY+WWs2fRdo6Bd/TmZZDDYF1r+l6Bk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=PkMau/40iG7yghU/12Wz+qD1NdYequg4GpOWJX2XoM9VW32GB2fhJZVeasFTZFPuU
+	 XUwAyZ5WnChtpQY6XUjb8gTlyKEKoD4xCG4dQg0VUy1WUL8Z6fiDQGLIoB1qAO5c7Q
+	 VcYm163376I29iejxAYjVuU+yKrEtm08M8YLl7hEFuOT6Ipg2FshA7Hmw2+G/yJUF/
+	 ZCMHY/4jhTlH2FsJ2C4ueEsPwvUZh5xuFABJdPvA/Eaq+uwvABhJPv2C0gA21P21J3
+	 MrY4Vk7FWcF+YPIsKpeWNJ1LJVsd9XMqiyGB6AiOemvUHKWFr+thFgXpHI4TXF4Jeb
+	 0uKJNSN2UiWjQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB23438111DC;
+	Thu, 10 Apr 2025 02:30:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,59 +37,48 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D043UWC001.ant.amazon.com (10.13.139.202) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+Subject: Re: [PATCH net-next 0/2] bridge: Prevent unicast ARP/NS packets from
+ being suppressed by bridge
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174425223377.3120264.13308441300773749640.git-patchwork-notify@kernel.org>
+Date: Thu, 10 Apr 2025 02:30:33 +0000
+References: <cover.1744123493.git.petrm@nvidia.com>
+In-Reply-To: <cover.1744123493.git.petrm@nvidia.com>
+To: Petr Machata <petrm@nvidia.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ razor@blackwall.org, idosch@nvidia.com, bridge@lists.linux.dev,
+ mlxsw@nvidia.com
 
-There are no ->exit_batch_rtnl() users remaining.
+Hello:
 
-Let's remove the hook.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
----
- include/net/net_namespace.h | 2 --
- net/core/net_namespace.c    | 8 +-------
- 2 files changed, 1 insertion(+), 9 deletions(-)
+On Tue, 8 Apr 2025 17:40:22 +0200 you wrote:
+> From: Amit Cohen <amcohen@nvidia.com>
+> 
+> Currently, unicast ARP requests/NS packets are replied by bridge when
+> suppression is enabled, then they are also forwarded, which results two
+> replicas of ARP reply/NA - one from the bridge and second from the target.
+> 
+> The purpose of ARP/ND suppression is to reduce flooding in the broadcast
+> domain, which is not relevant for unicast packets. In addition, the use
+> case of unicast ARP/NS is to poll a specific host, so it does not make
+> sense to have the switch answer on behalf of the host.
+> 
+> [...]
 
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index b071e6eed9d5..025a7574b275 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -477,8 +477,6 @@ struct pernet_operations {
- 	/* Following method is called with RTNL held. */
- 	void (*exit_rtnl)(struct net *net,
- 			  struct list_head *dev_kill_list);
--	void (*exit_batch_rtnl)(struct list_head *net_exit_list,
--				struct list_head *dev_kill_list);
- 	unsigned int * const id;
- 	const size_t size;
- };
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index 7ea818342721..9ab3ba930d76 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -185,12 +185,6 @@ static void ops_exit_rtnl_list(const struct list_head *ops_list,
- 		__rtnl_net_unlock(net);
- 	}
- 
--	ops = saved_ops;
--	list_for_each_entry_continue_reverse(ops, ops_list, list) {
--		if (ops->exit_batch_rtnl)
--			ops->exit_batch_rtnl(net_exit_list, &dev_kill_list);
--	}
--
- 	unregister_netdevice_many(&dev_kill_list);
- 
- 	rtnl_unlock();
-@@ -263,7 +257,7 @@ static void ops_undo_list(const struct list_head *ops_list,
- static void ops_undo_single(struct pernet_operations *ops,
- 			    struct list_head *net_exit_list)
- {
--	bool hold_rtnl = ops->exit_rtnl || ops->exit_batch_rtnl;
-+	bool hold_rtnl = !!ops->exit_rtnl;
- 	LIST_HEAD(ops_list);
- 
- 	list_add(&ops->list, &ops_list);
+Here is the summary with links:
+  - [net-next,1/2] net: bridge: Prevent unicast ARP/NS packets from being suppressed by bridge
+    https://git.kernel.org/netdev/net-next/c/827b2ac8e796
+  - [net-next,2/2] selftests: test_bridge_neigh_suppress: Test unicast ARP/NS with suppression
+    https://git.kernel.org/netdev/net-next/c/0ffb594212a0
+
+You are awesome, thank you!
 -- 
-2.49.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
