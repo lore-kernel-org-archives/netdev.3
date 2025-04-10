@@ -1,109 +1,115 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7C11E9B38;
-	Thu, 10 Apr 2025 17:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90521A3BD7
+	for <netdev@vger.kernel.org>; Thu, 10 Apr 2025 18:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744307672; cv=none; b=TgE0Ybt8VB3BwycCKdR9d1k3TOKF5VXOy6WqreCLEPgXKrODnA3zcBFZSHMBuXP+jWapLGL7bsQvs1Dl9wIXfRgfLmaAlqOMhv4uKbVmH3tKbh4EuupZQP6ynar6EpOPRkdrelIB82FD/ypPVNU0TNXWVLgcTNX6L9hgJRQ+m+Y=
+	t=1744308850; cv=none; b=P8g+VjqMJxhDXsj96o+Nr3IraEKBnP9d29lhrZO6D9z7Q/oeQvoPsk9sG5Wr5xE7XeDuzMY6Brj7odtBWV5mzYpqsNxYPiU61oqfRuGAUhxsLy2y935EiLZPdY+rjX0p0nB0w7tQ3vG48DTLuTBQ+5m3dLtswBMfAg1H56te5HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744307672; c=relaxed/simple;
-	bh=Pw/dJ+4Y5FkoPfIBpwwqEtEWe8AU90hgV2bIMaMLP00=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CATnG6Fg72M/EmYZOs6HCrWd9d88/o6AZFwovx2R5viq4Ee0XLYdSmty/JN56Z6Vj0P3sBko4fe6fZQkJ/OOKfXMAl70yxb7PoYZkHzmRy3gVjVXxOuq+cV6gw3rDI9IoC28wuWa2fSCvB6+vBQ+lYCroHIbEhxJr3V1VEfbO9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F466lyYW; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744308850; c=relaxed/simple;
+	bh=mh8IoFcusFGSw+JNDQTgbWfOeyGjRHhF8WynZnAoDR4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tRMffmI0KXHvkb4DReSvxSQU3ysuczszzLaQ0UH94IwRJnPdAbKp1vt7Q89WHxsMG6tlsHLH6GmK8QDZbNXvVHQtYMIfGcNhEpQOilGGmN3rEbjbkST2ZY2w+8Etd3s+t0f25THTAPmV4ThA0qPpSIB0Lm659VfuXw6rd33EqPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IBqZo0D6; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F466lyYW"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ac2a9a74d9cso208007066b.1;
-        Thu, 10 Apr 2025 10:54:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744307669; x=1744912469; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5Q5k58HJPb9pkGfYBHMl8erz1pohoAN5Zh0An/lVPHk=;
-        b=F466lyYWBPmzIRgHdzUs2+IKV5uab5E8lPSvjwqz70mCGZt2FOm9ShMGzJJ6gZhmYd
-         TsmM/1p68/wY+KO2IDteEKOwS1IEF1B2ejqJqswkjtdFxCYdPfhZsASyyaXVIQg4gK8Y
-         fWGjH9IA8N29Gi3N/ofyTlKF4jQO5oesPmePzsF19u0+B18ng+J8rIFft8ZLRhIWoxMD
-         y0NziFOLHbJ1yArpOoZffcW67kInKimpC6TMwsk477K8KrN3aTCyGlqmm6XS4NbIxwJb
-         wd8M92jPcA6XMC7eMRkA/kMkYlgeMjlXzH+0XZYbpl4cpBK9t6sqI3KbnfLYTcIWz4ZU
-         mzUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744307669; x=1744912469;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5Q5k58HJPb9pkGfYBHMl8erz1pohoAN5Zh0An/lVPHk=;
-        b=aphzToihHDmn8SLvmiOArAy6u/9as78KeJWKBajc2fuTIwBquRsGmN4AcCUfMEqJ3b
-         PrK/CO258MYbFqtFlXGU+J+9QRzYnxUJylDEpQPHAH/HjZuwYHacQxVVM3qEEWuUJLWa
-         hM0TwzaENucc8WX/cvYHw4mOvJKsESvCsWI1zE/htBzlSLDfa89R/snxsoloaUFsA8FO
-         Tth0uqaHCIrY/ZRDpQIBin8u1gikAYGAh7Pfw+Z2HJeUzyFq2Rn3C8wwHmT6ovj9qLvl
-         YBLu1SzA5G/jByMDtmv1+bch9weQCk/MSRLrAsWjd4vXeq80xTXxKXpmP6eNrVl6o1o2
-         BaHw==
-X-Forwarded-Encrypted: i=1; AJvYcCVByLFNCXFbPuaqPn6beRy7tk5/Na5SMjor6a/0f8dn+QR0PSMwO9MjurrKbHG5BikvdI0Zz9SK@vger.kernel.org, AJvYcCWrON+/17lpkoCk7h0n+3HL2ObQYcPyVMI2c+XF3ckhuiL5suywsWsQhwfyrqJoKu/tn5WGUGebRh/Y@vger.kernel.org, AJvYcCX6D/i7g+1BXF6VWzJbxtDTConvl4E6yUusePfK1J0r0y7eZ1w8f/KAWyL9mtkF+xr7Z1vyOP4pibqeaaHW@vger.kernel.org, AJvYcCXmvoFyK468r//piqFDus8d8Ud5qNDT/AxhlT58ydK3buGd/zVdRnfH1sQBHug9vPgYU0z6bPEtL+/Q4t8JMezw@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxSOV4Z8rPo7IFpkSrC4z6ppRz3VxH/EjDt0EJfrKlIvuMdhYa
-	SbkZkfF0zSSbLgKiMeGnFFr4XwrYzFpXjfYf/88QQxjcZnCPKi6EoX5omXmhtkwNEXvkH+CdVTS
-	NdiNaM3KsS/EYrinuVQpRu9N9J0Y=
-X-Gm-Gg: ASbGncuwd+hgtah1yVb11YQwD+HJgwg2XvCiGieQMtWAVvduepJxB7RDXB06ueSzRLt
-	Qho5ZZF+4TCEvE80q5RHnF5eSmD3gtKUJx6IapiaC+QOjKHjXyFywWWFwbVb1a0x07UCuAC20F8
-	KP7IcmlQLb80KIEeC3ObI+1w==
-X-Google-Smtp-Source: AGHT+IFk57BaGI8RexVkNm+rOx5JzRlSl388aEL8hPkRZ3mtB/W+jjolkJ5nyPy44lQVI1rq5r2tU030TeCa7PM2WVs=
-X-Received: by 2002:a17:906:c156:b0:ac6:f4c1:b797 with SMTP id
- a640c23a62f3a-acabd195902mr425726166b.19.1744307669164; Thu, 10 Apr 2025
- 10:54:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IBqZo0D6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744308849; x=1775844849;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=mh8IoFcusFGSw+JNDQTgbWfOeyGjRHhF8WynZnAoDR4=;
+  b=IBqZo0D62EA4YEifMkCCv4GKjlHf0MGozpCiPqmZ5M8ZJkTbjuqIto+r
+   YzVzhUBd6W9foLcbu+tPdesjYsz5m99Z/xp/92oAaDo361EoPFEOqFRA2
+   ezP+uEvbsksHmnCPvZVf2YO3EOkctHvr5IkarwWZnE1rFPvklwGcUgvkt
+   4W9p28D2rX8qwt+bgw5UmmgEmgDx1VyyeMfrFsTYA++IE9cfXAaPQBdLf
+   ofsKXfmBLP6T8eZVqmnx8kbGWbQ8Nd/d7ejKm8XvOhyPuQE+YRzMpPHpt
+   5t6SgxRWey6+c43NxD1sraaaD1UuqasZSOjs23m7LIvEdV2XlBYSl9eOL
+   Q==;
+X-CSE-ConnectionGUID: Pu2TvjVzR5Wot4QdFR5m1A==
+X-CSE-MsgGUID: dJf1tCfpSP+LbOVhMjeBew==
+X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="45745467"
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; 
+   d="scan'208";a="45745467"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 11:14:08 -0700
+X-CSE-ConnectionGUID: 3Q5Z7TFeSGae9q+jImrf4Q==
+X-CSE-MsgGUID: OIYOgn+KRHWZ2kJnS6gIqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; 
+   d="scan'208";a="152157380"
+Received: from jekeller-desk.jf.intel.com ([10.166.241.15])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 11:14:08 -0700
+From: Jacob Keller <jacob.e.keller@intel.com>
+Date: Thu, 10 Apr 2025 11:13:52 -0700
+Subject: [PATCH net] ice: fix vf->num_mac count with port representors
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250409144250.206590-1-ivecera@redhat.com> <20250409144250.206590-7-ivecera@redhat.com>
- <3e12b213-db36-4a76-9a58-c62dc8b1b2ce@kernel.org> <b73e1103-a670-43da-8f1a-b9c99cd1a90d@redhat.com>
-In-Reply-To: <b73e1103-a670-43da-8f1a-b9c99cd1a90d@redhat.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 10 Apr 2025 20:53:51 +0300
-X-Gm-Features: ATxdqUEHCMWU8odrtfeCV4-CCxyAM1De6Fsa0no8YCkrp_fO_UC5x5S5KURglVQ
-Message-ID: <CAHp75VfR_6gQdcBU6YDTvtX0A2NDjto4LXyjTteGLmp-u1t2qA@mail.gmail.com>
-Subject: Re: [PATCH v2 06/14] mfd: zl3073x: Add macros for device registers access
-To: Ivan Vecera <ivecera@redhat.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, netdev@vger.kernel.org, 
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, Jiri Pirko <jiri@resnulli.us>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Prathosh Satish <Prathosh.Satish@microchip.com>, Lee Jones <lee@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Michal Schmidt <mschmidt@redhat.com>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250410-jk-fix-v-num-mac-count-v1-1-19b3bf8fe55a@intel.com>
+X-B4-Tracking: v=1; b=H4sIAF8K+GcC/x2M0QpAQBAAf0X7bOvucpJfkYdzFkuW7pCSf3d5n
+ JqZByIFpgh19kCgiyNvkkDnGfjJyUjIfWIwylhVaIXzggPfeKGcK67Oo99OOdBa53tdVbo0HaR
+ 4D5S0f9yA0AHt+37yV8gQbQAAAA==
+X-Change-ID: 20250410-jk-fix-v-num-mac-count-55acd188162b
+To: Anthony Nguyen <anthony.l.nguyen@intel.com>, 
+ Intel Wired LAN <intel-wired-lan@lists.osuosl.org>, 
+ netdev <netdev@vger.kernel.org>
+Cc: Jacob Keller <jacob.e.keller@intel.com>
+X-Mailer: b4 0.14.2
 
-On Thu, Apr 10, 2025 at 11:21=E2=80=AFAM Ivan Vecera <ivecera@redhat.com> w=
-rote:
-> On 10. 04. 25 9:17 dop., Krzysztof Kozlowski wrote:
-> > On 09/04/2025 16:42, Ivan Vecera wrote:
+The ice_vc_repr_add_mac() function indicates that it does not store the MAC
+address filters in the firmware. However, it still increments vf->num_mac.
+This is incorrect, as vf->num_mac should represent the number of MAC
+filters currently programmed to firmware.
 
-...
+Indeed, we only perform this increment if the requested filter is a unicast
+address that doesn't match the existing vf->hw_lan_addr. In addition,
+ice_vc_repr_del_mac() does not decrement the vf->num_mac counter. This
+results in the counter becoming out of sync with the actual count.
 
-> >> +    WARN_ON(idx >=3D (_num));                                        =
- \
-> >
-> > No need to cause panic reboots. Either review your code so this does no=
-t
-> > happen or properly handle.
->
-> Ack, will replace by
->
-> if (idx >=3D (_num))
->         return -EINVAL
+As it turns out, vf->num_mac is currently only used in legacy made without
+port representors. The single place where the value is checked is for
+enforcing a filter limit on untrusted VFs.
 
-If these functions are called under regmap_read() / regmap_write() the
-above is a dead code. Otherwise you need to configure regmap correctly
-(in accordance with the HW registers layout and their abilities to be
-written or read or reserved or special combinations).
+Upcoming patches to support VF Live Migration will use this value when
+determining the size of the TLV for MAC address filters. Fix the
+representor mode function to stop incrementing the counter incorrectly.
 
---=20
-With Best Regards,
-Andy Shevchenko
+Fixes: ac19e03ef780 ("ice: allow process VF opcodes in different ways")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+---
+I am not certain if there is currently a way to trigger a bug from
+userspace due to this incorrect count, but I think it still warrants a net
+fix.
+---
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+index 7c3006eb68dd071ab76e62d8715dc2729610586a..6446d0fcc0528656054e506c9208880ce1e417ea 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -4275,7 +4275,6 @@ static int ice_vc_repr_add_mac(struct ice_vf *vf, u8 *msg)
+ 		}
+ 
+ 		ice_vfhw_mac_add(vf, &al->list[i]);
+-		vf->num_mac++;
+ 		break;
+ 	}
+ 
+
+---
+base-commit: a9843689e2de1a3727d58b4225e4f8664937aefd
+change-id: 20250410-jk-fix-v-num-mac-count-55acd188162b
+
+Best regards,
+-- 
+Jacob Keller <jacob.e.keller@intel.com>
+
