@@ -1,35 +1,41 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D4815624D;
-	Thu, 10 Apr 2025 02:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC9815624D;
+	Thu, 10 Apr 2025 02:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744251595; cv=none; b=CPK1wpuujmnb3pZMKCAcppQ2fRmerLNf/fRMVVRDaK4P8QJpMWTU6ATeqs9zhSBImUOLE6nYbVNC1i7OEcIzrd8997es7quIo4N0F2y0IEb8HQ8POxLEYC5k3fm+Mzify4Ej4tL0aPdq2/uvp9d/4rZal3Hr0mNUVwyS34OOLZI=
+	t=1744251602; cv=none; b=Cfd+qLYQNGE80yrcLAH0L9tM1JM041gY1qRxo9DCOTFTrNWksinPqF6b0HlHDjNLn9v60029O+FoIsAaSoCHJJzMv3Bf4FE7tmuBccr0qNTx98auPZrfvdRi/aLnSPSt8Dl8KI5abr6EJ6bpoyuLs012wkmyRGR4MGy1XqeNd+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744251595; c=relaxed/simple;
-	bh=SD+ghgUp24CKe30QbZqObPCHvc9jxW+a+P0BVX6tKsg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=H1ebfgflFxJLlACQXYd2b85jg2//Qf+9MiwXTFHSpm/UgSbFir2ss0ebbgULTtPgdHgP1yHFgWGYkHLblwmKCgoFVsX8WlBQ8+0DieGkW+dKjEiDsbEo701s7M197s8ya/QBtYN6pnaGkicnlla1zXbo97hUOvU/oLhtSLWjQm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jtDKrZEV; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jtDKrZEV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C34C4CEE2;
-	Thu, 10 Apr 2025 02:19:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744251594;
-	bh=SD+ghgUp24CKe30QbZqObPCHvc9jxW+a+P0BVX6tKsg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=jtDKrZEVBOvx5MuEyBaDBjwteABkOie1i1sFdH0F+f0MwqQAM8v/+Vqk6Q+6hglCz
-	 fA6dYWgnlzj1f4EpvQE8zGjg4YFVe658EigWhhw1xfgZMzaJ9FGvbn3xlP8tkDuS25
-	 hajYLWIjyi+ASy4Txa340zI9MdJJfrBdZ+so4yZ1pWLA9BribrPNyBGV8tRSEOmuqP
-	 MUQmWQt/KhoJSkBuCctrL30Aa8DbOJjYmMQMU07BOthddKwJWxCwrH8aejmb5TU56T
-	 1+27tOVlyVtx1HeDmeHA96KGGvwZUMFpakZX2sWQP4Y3ksP63C3ZhuuSrUvw9tT9rP
-	 BfnLuVRTI7oZw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70E7438111DC;
-	Thu, 10 Apr 2025 02:20:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1744251602; c=relaxed/simple;
+	bh=1klD8Y7z2hJ9GGeD0Xcot7B/BqnqJoDYxKvvJ1xL8e0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=k/+FahWNyXn4mUiSBjgBi38F2Bimjr7/4uB0EFNzu7MovXfzeOvMdPu2zZSyo5OdfvW2q1rvHvxwZWnEoEpCXlwZJwoA+17ogqMfXACrx0qo3vCcKEL4fYiSqvWhAlCkNOqPCG/gAEekl2BUn+XU6bCrrYHC0xz50vNrr73Q0YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4ZY3Sk140Mz27hVH;
+	Thu, 10 Apr 2025 10:20:38 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8A087140230;
+	Thu, 10 Apr 2025 10:19:57 +0800 (CST)
+Received: from localhost.localdomain (10.90.30.45) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 10 Apr 2025 10:19:56 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
+	<liuyonglong@huawei.com>, <chenhao418@huawei.com>, <sudongming1@huawei.com>,
+	<xujunsheng@huawei.com>, <shiyongbang@huawei.com>, <libaihan@huawei.com>,
+	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
+	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
+Subject: [PATCH net v3 0/7] There are some bugfix for hibmcge driver
+Date: Thu, 10 Apr 2025 10:13:20 +0800
+Message-ID: <20250410021327.590362-1-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,47 +43,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 net] net: Fix null-ptr-deref by
- sock_lock_init_class_and_name() and rmmod.
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174425163226.3117389.4180817468978308602.git-patchwork-notify@kernel.org>
-Date: Thu, 10 Apr 2025 02:20:32 +0000
-References: <20250407163313.22682-1-kuniyu@amazon.com>
-In-Reply-To: <20250407163313.22682-1-kuniyu@amazon.com>
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, willemb@google.com, horms@kernel.org,
- peterz@infradead.org, sfrench@samba.org, ematsumiya@suse.de,
- wangzhaolong1@huawei.com, kuni1840@gmail.com, netdev@vger.kernel.org,
- stable@vger.kernel.org
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-Hello:
+There are some bugfix for hibmcge driver
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+---
+ChangeLog:
+v2 -> v3:
+  - Add more details in commit log for patch6, suggested by Jakub.
+  v2: https://lore.kernel.org/all/20250403135311.545633-7-shaojijie@huawei.com/
+v1 -> v2:
+  - Add more details in commit log for patch1, suggested by Simon Horman.
+  v1: https://lore.kernel.org/all/20250402133905.895421-1-shaojijie@huawei.com/
+---
 
-On Mon, 7 Apr 2025 09:33:11 -0700 you wrote:
-> When I ran the repro [0] and waited a few seconds, I observed two
-> LOCKDEP splats: a warning immediately followed by a null-ptr-deref. [1]
-> 
-> Reproduction Steps:
-> 
->   1) Mount CIFS
->   2) Add an iptables rule to drop incoming FIN packets for CIFS
->   3) Unmount CIFS
->   4) Unload the CIFS module
->   5) Remove the iptables rule
-> 
-> [...]
+Jijie Shao (7):
+  net: hibmcge: fix incorrect pause frame statistics issue
+  net: hibmcge: fix incorrect multicast filtering issue
+  net: hibmcge: fix the share of irq statistics among different network
+    ports issue
+  net: hibmcge: fix wrong mtu log issue
+  net: hibmcge: fix the incorrect np_link fail state issue.
+  net: hibmcge: fix not restore rx pause mac addr after reset issue
+  net: hibmcge: fix multiple phy_stop() issue
 
-Here is the summary with links:
-  - [v3,net] net: Fix null-ptr-deref by sock_lock_init_class_and_name() and rmmod.
-    https://git.kernel.org/netdev/net/c/0bb2f7a1ad1f
+ .../ethernet/hisilicon/hibmcge/hbg_common.h   |  8 ++++---
+ .../ethernet/hisilicon/hibmcge/hbg_debugfs.c  | 11 +++++----
+ .../ethernet/hisilicon/hibmcge/hbg_diagnose.c |  2 +-
+ .../net/ethernet/hisilicon/hibmcge/hbg_err.c  |  3 +++
+ .../net/ethernet/hisilicon/hibmcge/hbg_hw.c   |  7 ++++++
+ .../net/ethernet/hisilicon/hibmcge/hbg_irq.c  | 24 ++++++++++++-------
+ .../net/ethernet/hisilicon/hibmcge/hbg_main.c |  8 +++----
+ .../net/ethernet/hisilicon/hibmcge/hbg_mdio.c | 11 ++++++++-
+ .../net/ethernet/hisilicon/hibmcge/hbg_reg.h  |  3 +++
+ 9 files changed, 55 insertions(+), 22 deletions(-)
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.33.0
 
