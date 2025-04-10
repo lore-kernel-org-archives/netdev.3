@@ -1,91 +1,124 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F77D1E5734
-	for <netdev@vger.kernel.org>; Thu, 10 Apr 2025 03:53:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66D54A04;
+	Thu, 10 Apr 2025 04:01:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744257236; cv=none; b=TmhhVd5x7ynKTCq4TQp0q1VCAUr0D2mhiKt5FZIchSalfFx0+s0P3fxG1ELIlYeD2VukiKK3rFyMQIJOKth7X2HqN7nt5y76nqDOJbzLpvq5BhqMJAx+LwCGJNXt95ytUGV+sEIG35napKOD89QncTHB/J90uJ3NNazg2AgG8eY=
+	t=1744257662; cv=none; b=hqO3G3zcViZhSnETPFPrfZgva7LeRUWTjx4gl+yZrjPc2PYInWt8G2kf53cfgjmyj7qwODIr3lKcmxftct32dyLEF65rpK3uRa2Ss//w4h9jJbuz/sAJGUIJhQJFA+TeMEzUE3zK7X3FRjxGQtI+YYy3wwMObvg2yqpQ+khhu7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744257236; c=relaxed/simple;
-	bh=CU5MCPkXa2yqFbSriKG60zWvrUrMajHUhDAsuIO7u2I=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EfMLyWOLj6WcVlSAfVf2LwYyy8H37FRr8Mwd6qrG6ImDpkzD6HqpfznP6thBnR7X3XHCE03u7km6g/U5xi1dQ30RpLMFbDdIxS5XTSGJWn1j4uGeMz5k4Ajzc5cQnXK/bizPWLegh0Np4B0PhtxGiIvwF/GwbEtU60b5Yja9dF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=S2/s9RzP; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1744257662; c=relaxed/simple;
+	bh=18pdtt5fs99KJ9QicksFmYejw3j6l4JDHi7+23rM2wY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ggJca/eOwbaa7xy7oRD7rlgyROoSvAvLqnQsjEGhAF4rY18c9m+2G1zXcQccUSzjK+Vxnviu91KhCb/X90Upor9LFqYa07lrKRAvxiZggy120D1EjuYxktwlt9XAPp8T10UnqAgmhoGF9HDaz2FZmQXGr1zf8q72kaMBKmZl6N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gelP1Yn3; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="S2/s9RzP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1744257225;
-	bh=2uqj/6xaiiAzficmKx6oRmf4/bzarQ7WTSUwETnTF3c=;
-	h=From:Date:Subject:To:Cc;
-	b=S2/s9RzPsUKgbS6+VxvBe60qhhpvGZvP29X8H6RMVd6k+czdZWQfnInlU0aSdJRuU
-	 iJTweraXlDWOjVa3/T8J+YoiMC2tsojo+CQTnWx5TNrdxT9Emo4/S+cQUHEn2PkNe3
-	 q2yCP4PTACgKnI19UV+G2XT0cVl1yxmR3lDqL+EfrdZUMfAtWvBsTg4Q9fyh7HNGky
-	 mmVDDULgz7jWiU/0jX3/ub+Jjr+2tKGji37Vr30Fam2omcNrNka8F6e572IIm+Y06K
-	 WPB08DfFYhfG7aRDXZsx6qssLdRu7hgmyrQ1ynprZPfb3XAdNwjTrE0PJAox8Gh7r3
-	 5h79keceGVpYw==
-Received: by codeconstruct.com.au (Postfix, from userid 10001)
-	id 336BD7D3CF; Thu, 10 Apr 2025 11:53:45 +0800 (AWST)
-From: Matt Johnston <matt@codeconstruct.com.au>
-Date: Thu, 10 Apr 2025 11:53:19 +0800
-Subject: [PATCH net] net: mctp: Set SOCK_RCU_FREE
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gelP1Yn3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744257661; x=1775793661;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=18pdtt5fs99KJ9QicksFmYejw3j6l4JDHi7+23rM2wY=;
+  b=gelP1Yn3tz8vQIc4Q2ugec/fnKTb1UTHHJIODIoCHX0Zt6/cp/kD8TIU
+   ZvOeOGyK3V4+SGgBq/4HclOY8tAE6kmbNUoUXkiAG/tp45ssrEnH4KfkS
+   HAJQ+Ji9AFE1YwhFm3y1sgSVZuo6nd6ip0PrtntnWvGLZmbpTbm5EpIPe
+   8yzj0PaanDvZ3gmrfpoIztZpb5AAIm63LdRo0JrqglK6EyYnXJZsDdoxU
+   /0GYnu/VF/IFuAhWmzay56OQhP0dogtzg59l2GLDh5Lb4N4F21lMESbdR
+   tE/hJGjeh9jwXzdlys+IgFR/wCsDvmia9cw4gHw/UxyfMlh6uiXOuVfkF
+   g==;
+X-CSE-ConnectionGUID: p8l/m+5qTXCmqk0AX+h3OQ==
+X-CSE-MsgGUID: LU572m4RScW0lpicTvmKEg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="33365741"
+X-IronPort-AV: E=Sophos;i="6.15,201,1739865600"; 
+   d="scan'208";a="33365741"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 21:01:00 -0700
+X-CSE-ConnectionGUID: BFy7tdapRh+f4erHTC5plA==
+X-CSE-MsgGUID: c3NAGAkNRsehu+OFzJZZLQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,201,1739865600"; 
+   d="scan'208";a="159744143"
+Received: from brc05.iind.intel.com (HELO brc05..) ([10.190.162.156])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 21:00:56 -0700
+From: Tushar Vyavahare <tushar.vyavahare@intel.com>
+To: bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	bjorn@kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	jonathan.lemon@gmail.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	tirthendu.sarkar@intel.com,
+	tushar.vyavahare@intel.com
+Subject: [PATCH bpf-next v4 0/2] selftests/xsk: Add tests for XDP tail adjustment in AF_XDP
+Date: Thu, 10 Apr 2025 03:31:14 +0000
+Message-Id: <20250410033116.173617-1-tushar.vyavahare@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250410-mctp-rcu-sock-v1-1-872de9fdc877@codeconstruct.com.au>
-X-B4-Tracking: v=1; b=H4sIAK5A92cC/x3MQQqAIBBA0avErBvQKMquEi1KxxoiC7UIwrsnL
- d/i/xcCeaYAffGCp5sDHy5DlgXodXILIZtsqETViFoK3HU80esLw6E3FFa2zWxUrdoOcnN6svz
- 8vwEcRRhT+gDoRajpZAAAAA==
-X-Change-ID: 20250410-mctp-rcu-sock-0f175bd94978
-To: Jeremy Kerr <jk@codeconstruct.com.au>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, Matt Johnston <matt@codeconstruct.com.au>
-X-Mailer: b4 0.15-dev-cbbb4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744257224; l=991;
- i=matt@codeconstruct.com.au; s=20241018; h=from:subject:message-id;
- bh=CU5MCPkXa2yqFbSriKG60zWvrUrMajHUhDAsuIO7u2I=;
- b=qr4+E+IpcVrKbb4lKeRCnRCDNWo+QmaI2CsLULTxv6ICEW6krFhedAjG5/lwNGsh3q8pNIxVJ
- 1wZ3F+IYaODD3FB1hfhdhMkisWlBzo1ZLjrFkJGhM3M/4hYISj25V2I
-X-Developer-Key: i=matt@codeconstruct.com.au; a=ed25519;
- pk=exersTcCYD/pEBOzXGO6HkLd6kKXRuWxHhj+LXn3DYE=
+Content-Transfer-Encoding: 8bit
 
-Bind lookup runs under RCU, so ensure that a socket doesn't go away in
-the middle of a lookup.
+This patch series adds tests to validate the XDP tail adjustment
+functionality, focusing on its use within the AF_XDP context. The tests
+verify dynamic packet size manipulation using the bpf_xdp_adjust_tail()
+helper function, covering both single and multi-buffer scenarios.
 
-Fixes: 833ef3b91de6 ("mctp: Populate socket implementation")
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
----
- net/mctp/af_mctp.c | 3 +++
- 1 file changed, 3 insertions(+)
+v1 -> v2:
+1. Retain and extend stream replacement: Keep `pkt_stream_replace`
+   unchanged. Add `pkt_stream_replace_ifobject` for targeted ifobject
+   handling.
 
-diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-index f6de136008f6f9b029e7dacc2e75dce1cd7fd075..57850d4dac5db946420120f8b15c82704c1044e7 100644
---- a/net/mctp/af_mctp.c
-+++ b/net/mctp/af_mctp.c
-@@ -630,6 +630,9 @@ static int mctp_sk_hash(struct sock *sk)
- {
- 	struct net *net = sock_net(sk);
- 
-+	/* Bind lookup runs under RCU, remain live during that. */
-+	sock_set_flag(sk, SOCK_RCU_FREE);
-+
- 	mutex_lock(&net->mctp.bind_lock);
- 	sk_add_node_rcu(sk, &net->mctp.binds);
- 	mutex_unlock(&net->mctp.bind_lock);
+2. Consolidate patches: Merge patches 2 to 6 for tail adjustment tests and
+   check.
+
+v2 -> v3:
+1. Introduce `adjust_value` to replace `count` for clearer communication
+   with userspace.
+
+v3 -> v4:
+1. Remove `testapp_adjust_tail_common()`. [Maciej]
+
+2. Add comments and modify code for buffer resizing logic in test cases
+   (shrink/grow by specific byte sizes for testing purposes). [Maciej]
 
 ---
-base-commit: 0bb2f7a1ad1f11d861f58e5ee5051c8974ff9569
-change-id: 20250410-mctp-rcu-sock-0f175bd94978
+Patch Summary:
 
-Best regards,
+1. Packet stream replacement: Add `pkt_stream_replace_ifobject` to manage
+   packet streams efficiently.
+
+2. Tail adjustment tests and support check: Implement dynamic packet
+   resizing in xskxceiver by adding `xsk_xdp_adjust_tail` and extend this
+   functionality to userspace with `testapp_xdp_adjust_tail` for
+   validation. Ensure support by adding `is_adjust_tail_supported` to
+   verify the availability of `bpf_xdp_adjust_tail()`. Introduce tests for
+   shrinking and growing packets using `bpf_xdp_adjust_tail()`, covering
+   both single and multi-buffer scenarios when used with AF_XDP.
+---
+
+Tushar Vyavahare (2):
+  selftests/xsk: Add packet stream replacement function
+  selftests/xsk: Add tail adjustment tests and support check
+
+Signed-off-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+
+ .../selftests/bpf/progs/xsk_xdp_progs.c       |  50 ++++++++
+ tools/testing/selftests/bpf/xsk_xdp_common.h  |   1 +
+ tools/testing/selftests/bpf/xskxceiver.c      | 118 ++++++++++++++++--
+ tools/testing/selftests/bpf/xskxceiver.h      |   2 +
+ 4 files changed, 163 insertions(+), 8 deletions(-)
+
 -- 
-Matt Johnston <matt@codeconstruct.com.au>
+2.34.1
 
