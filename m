@@ -1,207 +1,220 @@
-Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062731E5B66;
-	Thu, 10 Apr 2025 02:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52C91E9B12;
+	Thu, 10 Apr 2025 02:45:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744252881; cv=none; b=cAkJoGyoaxVOq4UfiFFvKbpCoUXO6BjJbrdq4f4m1lcbgSmiP00qBcRbz4eYT63tGbwxrr6XibtiHGPqLWrFZF+KGo11tWBxo+OlGPNTDCJVJtmZvTwhpH2HDdVi9GftIE91Qtn3HB7odQXzW8AVRp1BaaQBkeSXWc2B7GuK8Vs=
+	t=1744253143; cv=none; b=nHjQM66NMMz3ztN6RkBOBt58nDiNU0OYnVAs10Zq+18yi2Kitg8A2kZKaw0ckLWCnnp6NNC8p5Kv2MLgLbfrTOQixlpgFrkTNw2OJXVQ3nyE1wdeov5Kj0WBsLv/idXiMXD9TYWATUZEoAxZcR/MJiyDgzc+GVFJbdUg4Ncm6rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744252881; c=relaxed/simple;
-	bh=Wjo7zaf/2eJQlNtPQf299lx7i2pW1ib1d6Jua15gID0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fMV+jh9yZ2OcD0Dy1zMdE6qIc3vh76tK1TeP/Fkx8FX53Ii+lOe041KEXYSAABcJiim4E2qQYOupr2TvjegzoBBiajr30YjGdVWAhH098ZMv3sofuSmdqZnWdJAsysQ7lJv48w09a7W6Ex5L6hQYZCXkYnNhO5ICewnLce/h9Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=NPtOwwEU; arc=none smtp.client-ip=207.171.184.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1744253143; c=relaxed/simple;
+	bh=KQEZ6JB9t3IyUQNsiOrY7AJyXfw3Qo1A9Jq0dntRkQs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q79gRVRc1y/aR9ZKqAhbRTG1Pu8uE13nltyLslq9CsdWzW/Zo8GelH85JN3TdYzR/quCe/zMkk+NnGu6mLN2e1M1NFlGkzLF0SUYEt0YYfXigGilkdGsWja1q0HimXQWiDQiSpyEejre1/XYs2e5KcxMmoGHoGOZt4RgE4tX4mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nmidTwk5; arc=none smtp.client-ip=209.85.219.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="NPtOwwEU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nmidTwk5"
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e643f235a34so245437276.1;
+        Wed, 09 Apr 2025 19:45:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1744252880; x=1775788880;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=LBEMm5OooTEDmVd7oh39SDGI97foq73Nnmjcv8TLzPw=;
-  b=NPtOwwEUieLX67BTZraf4n3eqhHtY6AUeY1TYNvXHAcC8NIEVBq/Q3LK
-   DC6qJhAM8GaahOrz1UqVxA5kmGoLdH+OpxeB3eesab4MM/10IXTwK01V9
-   POOb4GX1hqRTRfeUUngMkYgz69br23F4eRCsy1HMj5YfChRVzIAXd3024
-   g=;
-X-IronPort-AV: E=Sophos;i="6.15,201,1739836800"; 
-   d="scan'208";a="510312527"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 02:41:19 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.38.20:16071]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.14.132:2525] with esmtp (Farcaster)
- id 3d3aebe2-8aa0-4119-8ed4-686d8467639b; Thu, 10 Apr 2025 02:41:19 +0000 (UTC)
-X-Farcaster-Flow-ID: 3d3aebe2-8aa0-4119-8ed4-686d8467639b
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 10 Apr 2025 02:41:17 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.187.170.41) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 10 Apr 2025 02:41:12 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-CC: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, "Neal
- Cardwell" <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>,
-	"Pablo Neira Ayuso" <pablo@netfilter.org>, Jozsef Kadlecsik
-	<kadlec@netfilter.org>, Paul Moore <paul@paul-moore.com>, James Morris
-	<jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Casey Schaufler
-	<casey@schaufler-ca.com>, Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki
- Iwashima <kuni1840@gmail.com>, <netdev@vger.kernel.org>,
-	<selinux@vger.kernel.org>, <linux-security-module@vger.kernel.org>
-Subject: [PATCH v3 net-next 4/4] tcp: Rename tcp_or_dccp_get_hashinfo().
-Date: Wed, 9 Apr 2025 19:36:47 -0700
-Message-ID: <20250410023921.11307-5-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250410023921.11307-1-kuniyu@amazon.com>
-References: <20250410023921.11307-1-kuniyu@amazon.com>
+        d=gmail.com; s=20230601; t=1744253140; x=1744857940; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0znVcofdMZqSyY8rQG7+aec/wD05C2MOziJfKOlp+SY=;
+        b=nmidTwk560GLmGFg2K40a/+bFqQ8E5tLP8c1xw+sA1WoI6ognbi+0DJdU8tcIZ0Ehv
+         bRj8BIsiTxP0bB4RFlO1jEqR/Lv35zliMCm8zQ/kEQSsllDYQ96s+Dm9Ge6a3LLYW6Vr
+         HslVQsuKPDkeUENTYQfCkw/iUMKGgpCu5KZqcHT7CXi2uzRXJ+ZfgUbReqTNuBz+qztR
+         ozCah6jcBLwayHQ2MwOzN3aCgwM3blod7iks79UdJyx+JqqOc03iGssbs5T6AYnsBxHY
+         ZOdcd8Dwe1o+BsNwdiUT3MvJko0dYWorRZK0jIuNh2HFv/W4DAtKygh21C52X027G6S3
+         mJog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744253140; x=1744857940;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0znVcofdMZqSyY8rQG7+aec/wD05C2MOziJfKOlp+SY=;
+        b=XKr7gIvibpLRWvZVHHHghhe43MUNqIOW65c63D4T+WQZoSOfdmxzXYd3oOeMH5CL1E
+         3WQNE86hXZtOJHHaEM+QnP6Ln/DsPeTM+SwZtDMwifGP4SH6eFIjSyMmhtqvvnXb/Z8I
+         fW/Ngq41sE+bQlsRDEIWdL9jcAGZWH8oZzaWd4wHIqgCdUoDnSF1yW6VkQZd5z+CqaS7
+         vd9lJbWged/WWKjQKXf5xW7lwCx164MqXefrUSqYxKPsnlHhcAdHwWDswScCzoXvVr+X
+         3CA1478p/Y2UwrszjMbz/X+iZ4IwSl/f/P9llyF1ztp8W3KX7WVJ+NxbUDfAYqy+fLXv
+         A5fQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU8yPY2krDaIEGwCCqJgYgghggiKx4cVXKvEpNhoRG8AyNF6F0e+vxwvi/RZejIasKbwexgdLH935qa@vger.kernel.org, AJvYcCUGOOiTbxsqJHI9ISmlu0D8+HAFyXr58U1n7UlCmldGCfWRnhmS15iwOitPKndNY+86voWjEFeRdtsGHYQ=@vger.kernel.org, AJvYcCUhpVQ/F1a9qgnPVIWTuSwWHZN3yX8l92EdEDvygXRXRjEcmIfzarz/nXpzN2cl2k2uCW0Bhp/v+1tHe/g50Ec=@vger.kernel.org, AJvYcCUrsFBhU1OO5+PljPdEQ7okjpYFWn9VvsWxo6gIjRRIIt8WQf7An/O1TSXZQNL3/q/+zV0wBdh+256HEy8f@vger.kernel.org, AJvYcCV6jubxqhTke9bmkte5duvKmbgMlKvjWyn8u7zDLNzgPxhGA4cKv9sft2r/Q+rqoTzSYYrenyC6b58Xmg==@vger.kernel.org, AJvYcCVd8A/6MR/rtcZbPCFJTBgDvMbcpErNah6DvLXqOtpiG/LVbXSbqvdw722JRm5w+rX17pabABGHYZNS@vger.kernel.org, AJvYcCVsz4Af2fWwLxmXi69nTEiwZAbhIOh+Qwpc4ag0XX7qCemJcnu5lwC0EaeIBkr7KgxGY7/P3am8BcI=@vger.kernel.org, AJvYcCXlyPrqWPU3/ogI/h2HZ6qyOUB43dkHRCZaDK581rrWN5QXYD6Fg7BzSilZ6kpbS8BbHTFzhvaCSEeh@vger.kernel.org, AJvYcCXvt7OGFyztPZ6kEbGQ8Dgt9YKsz5FdnTN2vhmaDM0ynG2X6KOpe/PzugcDL7jolwblimWAJ65Q@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGyq8yXog+Mxja3B62XE510IaihgcCYC+bE27JAm/bbhHLEKxP
+	VKt1h/SGrSI5GHfa+5Asg2RIMiZZa12GwJ7cnLnDP73uXjGkNcTOKbUIU2dhtTBJuZDra9HO7/d
+	9NkD2y2v/8hFB7/s6E+tpuJF446Y=
+X-Gm-Gg: ASbGncslzyd+DvcB0Cma93sLR7pOiZMBgsKltTP0+VMpQQteBemMyoy14e3iiiEakZT
+	omGtXGR41P6VwiCLXRV7VYg/3+vOXEqeYQuH0zugEwyG5Xvz5Nh7Dh64rWylwwrQUL6YtMP+pmQ
+	9QeUZKAB/M3z1hzehPDVvfEFH8U0vtuFfj4MTI5L8Xv7IYtH9R2tjrn2B3
+X-Google-Smtp-Source: AGHT+IETiR/1KKEvz2i91Lzay52EaRmEEzm9KCbaz7jAfvh7zeS7SKPtkYiHbWjyz5dZb3/vI/JCYJ/mC4Z8SvrnQbw=
+X-Received: by 2002:a05:6902:2503:b0:e5b:1b55:1325 with SMTP id
+ 3f1490d57ef6-e703e15f292mr1852380276.25.1744253140506; Wed, 09 Apr 2025
+ 19:45:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D040UWA002.ant.amazon.com (10.13.139.113) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+References: <20250409082752.3697532-1-tmyu0@nuvoton.com> <20250409082752.3697532-3-tmyu0@nuvoton.com>
+ <CAMRc=Meb9wbhd_wH0OBGAivgUA3-3_+-E5neE+b32T54zQkQjg@mail.gmail.com>
+In-Reply-To: <CAMRc=Meb9wbhd_wH0OBGAivgUA3-3_+-E5neE+b32T54zQkQjg@mail.gmail.com>
+From: Ming Yu <a0282524688@gmail.com>
+Date: Thu, 10 Apr 2025 10:45:29 +0800
+X-Gm-Features: ATxdqUHvPStCEjIlmPeYzUqkG4uY8NTbLVYUUSUQKfLVy60efJKv3B8SbaTKJeo
+Message-ID: <CAOoeyxV3WajFf+YCAP6y5pzEmQdcNHrU2yFqU9LGgO1e8Faq5g@mail.gmail.com>
+Subject: Re: [PATCH v9 2/7] gpio: Add Nuvoton NCT6694 GPIO support
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: lee@kernel.org, linus.walleij@linaro.org, andi.shyti@kernel.org, 
+	mkl@pengutronix.de, mailhol.vincent@wanadoo.fr, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
+	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-can@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	linux-rtc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	Ming Yu <tmyu0@nuvoton.com>, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-DCCP was removed, so tcp_or_dccp_get_hashinfo() should be renamed.
+Dear Bartosz,
 
-Let's rename it to tcp_get_hashinfo().
+Thank you for reviewing.
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
----
- include/net/inet_hashtables.h   |  3 +--
- net/ipv4/inet_connection_sock.c |  9 +++++----
- net/ipv4/inet_hashtables.c      | 14 +++++++-------
- 3 files changed, 13 insertions(+), 13 deletions(-)
+Bartosz Golaszewski <brgl@bgdev.pl> =E6=96=BC 2025=E5=B9=B44=E6=9C=889=E6=
+=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=887:39=E5=AF=AB=E9=81=93=EF=BC=9A
+>
+...
+> > +static int nct6694_gpio_probe(struct platform_device *pdev)
+> > +{
+> > +       const struct mfd_cell *cell =3D mfd_get_cell(pdev);
+> > +       struct device *dev =3D &pdev->dev;
+> > +       struct nct6694 *nct6694 =3D dev_get_drvdata(pdev->dev.parent);
+> > +       struct nct6694_gpio_data *data;
+> > +       struct gpio_irq_chip *girq;
+> > +       int ret, irq, i;
+> > +       char **names;
+> > +
+> > +       irq =3D irq_create_mapping(nct6694->domain,
+> > +                                NCT6694_IRQ_GPIO0 + cell->id);
+> > +       if (!irq)
+> > +               return -EINVAL;
+> > +
+> > +       data =3D devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
+> > +       if (!data) {
+> > +               ret =3D -ENOMEM;
+> > +               goto dispose_irq;
+> > +       }
+> > +
+> > +       names =3D devm_kcalloc(dev, NCT6694_NR_GPIO, sizeof(char *),
+> > +                            GFP_KERNEL);
+> > +       if (!names) {
+> > +               ret =3D -ENOMEM;
+> > +               goto dispose_irq;
+> > +       }
+> > +
+> > +       for (i =3D 0; i < NCT6694_NR_GPIO; i++) {
+> > +               names[i] =3D devm_kasprintf(dev, GFP_KERNEL, "GPIO%X%d"=
+,
+> > +                                         cell->id, i);
+> > +               if (!names[i]) {
+> > +                       ret =3D -ENOMEM;
+> > +                       goto dispose_irq;
+> > +               }
+> > +       }
+> > +
+> > +       data->irq =3D irq;
+> > +       data->nct6694 =3D nct6694;
+> > +       data->group =3D cell->id;
+> > +
+> > +       data->gpio.names                =3D (const char * const*)names;
+> > +       data->gpio.label                =3D pdev->name;
+> > +       data->gpio.direction_input      =3D nct6694_direction_input;
+> > +       data->gpio.get                  =3D nct6694_get_value;
+> > +       data->gpio.direction_output     =3D nct6694_direction_output;
+> > +       data->gpio.set                  =3D nct6694_set_value;
+>
+> Please use the set_rv variant, regular set is deprecated now.
+>
 
-diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
-index d172b64a6320..4564b5d348b1 100644
---- a/include/net/inet_hashtables.h
-+++ b/include/net/inet_hashtables.h
-@@ -175,9 +175,8 @@ struct inet_hashinfo {
- 	bool				pernet;
- } ____cacheline_aligned_in_smp;
- 
--static inline struct inet_hashinfo *tcp_or_dccp_get_hashinfo(const struct sock *sk)
-+static inline struct inet_hashinfo *tcp_get_hashinfo(const struct sock *sk)
- {
--	/* TODO: rename function */
- 	return sock_net(sk)->ipv4.tcp_death_row.hashinfo;
- }
- 
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index a195203e7eef..20915895bdaa 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -330,7 +330,7 @@ inet_csk_find_open_port(const struct sock *sk, struct inet_bind_bucket **tb_ret,
- 			struct inet_bind2_bucket **tb2_ret,
- 			struct inet_bind_hashbucket **head2_ret, int *port_ret)
- {
--	struct inet_hashinfo *hinfo = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *hinfo = tcp_get_hashinfo(sk);
- 	int i, low, high, attempt_half, port, l3mdev;
- 	struct inet_bind_hashbucket *head, *head2;
- 	struct net *net = sock_net(sk);
-@@ -512,10 +512,10 @@ void inet_csk_update_fastreuse(struct inet_bind_bucket *tb,
-  */
- int inet_csk_get_port(struct sock *sk, unsigned short snum)
- {
--	struct inet_hashinfo *hinfo = tcp_or_dccp_get_hashinfo(sk);
- 	bool reuse = sk->sk_reuse && sk->sk_state != TCP_LISTEN;
- 	bool found_port = false, check_bind_conflict = true;
- 	bool bhash_created = false, bhash2_created = false;
-+	struct inet_hashinfo *hinfo = tcp_get_hashinfo(sk);
- 	int ret = -EADDRINUSE, port = snum, l3mdev;
- 	struct inet_bind_hashbucket *head, *head2;
- 	struct inet_bind2_bucket *tb2 = NULL;
-@@ -1022,9 +1022,10 @@ static bool reqsk_queue_unlink(struct request_sock *req)
- 	bool found = false;
- 
- 	if (sk_hashed(sk)) {
--		struct inet_hashinfo *hashinfo = tcp_or_dccp_get_hashinfo(sk);
--		spinlock_t *lock = inet_ehash_lockp(hashinfo, req->rsk_hash);
-+		struct inet_hashinfo *hashinfo = tcp_get_hashinfo(sk);
-+		spinlock_t *lock;
- 
-+		lock = inet_ehash_lockp(hashinfo, req->rsk_hash);
- 		spin_lock(lock);
- 		found = __sk_nulls_del_node_init_rcu(sk);
- 		spin_unlock(lock);
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index d1960701a3b4..da85cc30e382 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -176,7 +176,7 @@ void inet_bind_hash(struct sock *sk, struct inet_bind_bucket *tb,
-  */
- static void __inet_put_port(struct sock *sk)
- {
--	struct inet_hashinfo *hashinfo = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *hashinfo = tcp_get_hashinfo(sk);
- 	struct inet_bind_hashbucket *head, *head2;
- 	struct net *net = sock_net(sk);
- 	struct inet_bind_bucket *tb;
-@@ -215,7 +215,7 @@ EXPORT_SYMBOL(inet_put_port);
- 
- int __inet_inherit_port(const struct sock *sk, struct sock *child)
- {
--	struct inet_hashinfo *table = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *table = tcp_get_hashinfo(sk);
- 	unsigned short port = inet_sk(child)->inet_num;
- 	struct inet_bind_hashbucket *head, *head2;
- 	bool created_inet_bind_bucket = false;
-@@ -668,7 +668,7 @@ static bool inet_ehash_lookup_by_sk(struct sock *sk,
-  */
- bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
- {
--	struct inet_hashinfo *hashinfo = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *hashinfo = tcp_get_hashinfo(sk);
- 	struct inet_ehash_bucket *head;
- 	struct hlist_nulls_head *list;
- 	spinlock_t *lock;
-@@ -740,7 +740,7 @@ static int inet_reuseport_add_sock(struct sock *sk,
- 
- int __inet_hash(struct sock *sk, struct sock *osk)
- {
--	struct inet_hashinfo *hashinfo = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *hashinfo = tcp_get_hashinfo(sk);
- 	struct inet_listen_hashbucket *ilb2;
- 	int err = 0;
- 
-@@ -785,7 +785,7 @@ int inet_hash(struct sock *sk)
- 
- void inet_unhash(struct sock *sk)
- {
--	struct inet_hashinfo *hashinfo = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *hashinfo = tcp_get_hashinfo(sk);
- 
- 	if (sk_unhashed(sk))
- 		return;
-@@ -873,7 +873,7 @@ inet_bind2_bucket_find(const struct inet_bind_hashbucket *head, const struct net
- struct inet_bind_hashbucket *
- inet_bhash2_addr_any_hashbucket(const struct sock *sk, const struct net *net, int port)
- {
--	struct inet_hashinfo *hinfo = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *hinfo = tcp_get_hashinfo(sk);
- 	u32 hash;
- 
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -901,7 +901,7 @@ static void inet_update_saddr(struct sock *sk, void *saddr, int family)
- 
- static int __inet_bhash2_update_saddr(struct sock *sk, void *saddr, int family, bool reset)
- {
--	struct inet_hashinfo *hinfo = tcp_or_dccp_get_hashinfo(sk);
-+	struct inet_hashinfo *hinfo = tcp_get_hashinfo(sk);
- 	struct inet_bind_hashbucket *head, *head2;
- 	struct inet_bind2_bucket *tb2, *new_tb2;
- 	int l3mdev = inet_sk_bound_l3mdev(sk);
--- 
-2.49.0
+Understood. Fix it in v10.
 
+> > +       data->gpio.get_direction        =3D nct6694_get_direction;
+> > +       data->gpio.set_config           =3D nct6694_set_config;
+> > +       data->gpio.init_valid_mask      =3D nct6694_init_valid_mask;
+> > +       data->gpio.base                 =3D -1;
+> > +       data->gpio.can_sleep            =3D false;
+> > +       data->gpio.owner                =3D THIS_MODULE;
+> > +       data->gpio.ngpio                =3D NCT6694_NR_GPIO;
+> > +
+> > +       platform_set_drvdata(pdev, data);
+> > +
+> > +       ret =3D devm_mutex_init(dev, &data->lock);
+> > +       if (ret)
+> > +               goto dispose_irq;
+> > +
+> > +       ret =3D devm_mutex_init(dev, &data->irq_lock);
+> > +       if (ret)
+> > +               goto dispose_irq;
+> > +
+> > +       ret =3D nct6694_get_irq_trig(data);
+> > +       if (ret) {
+> > +               dev_err_probe(dev, ret, "Failed to get irq trigger type=
+\n");
+> > +               goto dispose_irq;
+> > +       }
+> > +
+> > +       girq =3D &data->gpio.irq;
+> > +       gpio_irq_chip_set_chip(girq, &nct6694_irq_chip);
+> > +       girq->parent_handler =3D NULL;
+> > +       girq->num_parents =3D 0;
+> > +       girq->parents =3D NULL;
+> > +       girq->default_type =3D IRQ_TYPE_NONE;
+> > +       girq->handler =3D handle_level_irq;
+> > +       girq->threaded =3D true;
+> > +
+> > +       ret =3D devm_request_threaded_irq(dev, irq, NULL, nct6694_irq_h=
+andler,
+> > +                                       IRQF_ONESHOT | IRQF_SHARED,
+> > +                                       "gpio-nct6694", data);
+> > +       if (ret) {
+> > +               dev_err_probe(dev, ret, "Failed to request irq\n");
+> > +               goto dispose_irq;
+> > +       }
+> > +
+> > +       ret =3D devm_gpiochip_add_data(dev, &data->gpio, data);
+> > +       if (ret)
+> > +               goto dispose_irq;
+> > +
+> > +       return 0;
+> > +
+> > +dispose_irq:
+> > +       irq_dispose_mapping(irq);
+> > +       return ret;
+> > +}
+> > +
+> > +static void nct6694_gpio_remove(struct platform_device *pdev)
+> > +{
+> > +       struct nct6694_gpio_data *data =3D platform_get_drvdata(pdev);
+> > +
+> > +       devm_free_irq(&pdev->dev, data->irq, data);
+>
+> That's definitely not right. If you need to use the devm_free variant
+> in remove(), then you're doing something wrong. Most likely you can
+> rely on the devres release path here...
+>
+> > +       irq_dispose_mapping(data->irq);
+>
+> ... and schedule this as a custom devm action.
+>
+
+Okay, I will add the devm_add_action_or_reset() to call
+irq_dispose_mapping() in the next patch.
+
+
+Best regards,
+Ming
