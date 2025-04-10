@@ -1,26 +1,27 @@
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4307A205AA5
-	for <netdev@vger.kernel.org>; Thu, 10 Apr 2025 07:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889A820C490
+	for <netdev@vger.kernel.org>; Thu, 10 Apr 2025 07:19:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744269604; cv=none; b=LW9lm0ClCjfV55I5mX5/ksbuxIJGbdzrCvLb/wl2qNc72flaERvXowvnl+tCudX64xbLQVBIidwQ9pJyDABa2wPVczxbSbNDrLaSS50TrJtzbUbMGUWELTn5EutZyJUNSryYyh5aZ12IL1tHb1tZVMR9CF60edkg8CvidaKlXTk=
+	t=1744269604; cv=none; b=CjUjmVBW0Avd/Y8tKy/MNU514Ah0tqE0kcGCAECIraZJL/WIPCt0yMskqw77aIIceyokbKaYEeXQs7fxXnFCwO5plG25fZ/9fGSDDQcOZ8VNTZKYlG2YWJMTkEx/adK7JWRVVtWKdOTIRIrNTzAmBj6ckYCkP4/GFdfNmBJ2QZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744269604; c=relaxed/simple;
-	bh=FyPVmCCJ2zMShyEJWdQUh/nX1BUS/D8dWaEQDYe3db4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WvNjDjpCOZzFkmMVbHlA/VqYYB6yvIpmwf53s79XVduy9gPCwoukHfnekZc4IRsj0a0mwx6UffZPNdfsG0VckfB4qneKVlknFqOP1VDOrK/GSIS5ySctKBg7jm/Jfq4zqqg7gSuVm0vfqIonj1M5c5MyA7+qbr4HPf9Ygkk2Vbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.243.244.52
+	bh=St7/BpFDPhZxrzxDDMFK+2EdbsTAi16LvLLVprbQ8ow=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=p/ZJQqChJg0l6GQvziN5yJwWjmFi7XNAq21yoOBWe7SvA9EhV68I+U2Iomxhp9D1Pufbp7w2+40XJr9wAZcxyEDDGaeCfGeEIK7kSzN/St8z1jG0h91Z1zf7N2rR2OdqH+8TybVX4TLG4aWAo4AVSLCdz1+UNoF2DVShwvaaql0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.22.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: bizesmtp25t1744269558t2d65ba0
-X-QQ-Originating-IP: FIibLGqFLx6cBSnPwK1DxleL6Y9ghllemPI2decv8KY=
+X-QQ-mid: bizesmtp25t1744269563tcab450c
+X-QQ-Originating-IP: vmTzg8RGk1gnd5v/wmI5VliyzIzyFRbHWZwzGjTVj0A=
 Received: from wxdbg.localdomain.com ( [220.184.249.159])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 10 Apr 2025 15:19:08 +0800 (CST)
-X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 2750494174517785146
+	id ; Thu, 10 Apr 2025 15:19:22 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 12800924943129427438
 EX-QQ-RecipientCnt: 16
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org,
@@ -39,10 +40,12 @@ To: netdev@vger.kernel.org,
 	rmk+kernel@armlinux.org.uk
 Cc: mengyuanlou@net-swift.com,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next 0/2] Implement udp tunnel port for txgbe
-Date: Thu, 10 Apr 2025 15:44:54 +0800
-Message-Id: <20250410074456.321847-1-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next 2/2] net: wangxun: restrict feature flags for tunnel packets
+Date: Thu, 10 Apr 2025 15:44:56 +0800
+Message-Id: <20250410074456.321847-3-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20250410074456.321847-1-jiawenwu@trustnetic.com>
+References: <20250410074456.321847-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,39 +55,112 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: bizesmtp:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MwqrwaLzgdebL3VjnAP60fyWpZe8ah2KUFrtW5vLrPaXkgpydxZ5MdQY
-	Ya45t+4vuu2D5x2J+TtxvoW8ivoz5vE3KuKhDV/8Mb2+9fZ2sNVyfXrdDsfMYdxS58eBUaJ
-	9vKWjup2xg5fBycdFFlirQbuZe4lRct1jQ0JT3UX1U3ZPlSD/zYSCqS0U5SjzF/Iyy8f9qo
-	E9GUoCdexb7CgkI5YYI1xzAUl/iq5BStb4+Ic/bL6TXULUpk4FcreptKfdhOtpeseIeXxJN
-	1sYdtvfCkgczeZ3EodlY2Xt6QOQJKEiqRhM8/7ltuQwELKEpOJl2G9DvzmqjIswmP42WbcU
-	NnKtWZiT7U1veMkGwkHi7pHxgWfidPHYhS84jas3SGfcpU9mtvqmeTMGkobtLKnoVBXwN5Z
-	M4RNzaFBlXkqjuvTL2BFAH6OE1rpazMZ9tyLD2e1mttTUkb5QR/qVjTlZSDK2v4sj9DZV+H
-	viItyAyEBvxKgJCSImZjZCnPW0HHrQ7N1tp0vvX/m7CXP+ncg6B+hYz5hjHAQs4iSOQz6fz
-	0d1rk2lweyTB71qrUGGIlfSbVcNLTAVEf7HmRF+hzMb9g4PIDQiR7AgqhEguO4/PZAyMW2b
-	gvyE4D7HBK/DupBYCzA9ZhwuiX3VteQBGMxC13LJT55Cr4RLvQDJvsqNEflchDiJEzRjiya
-	MnFjfqdPtrgUv3UoTrO2zxsi3uGVg0qiqDRS5WQ7uAWuiH65MiYC2G9Swtz3GgIyviz+oTP
-	rjup8+GlLMQnGclyUqo6LCmjjF6QF7jQ1hoJOp7q6gR5v6n1A0MF7HExx60SzXpoGNZk6J1
-	G7zeGQdCbVvTSmwruSlXLxMl+jA0KPur75kQ8yCzOcTW79U3+BNS/EFmNMoSDdqYlqonQn1
-	9OCbG80/g+bwucqLDqkVn2RPg17t/w77yHeZqaUExmvPK0S1TkME0Q8a7OiMpDZkNQlh9up
-	d/p9oqJWKUrXcYZnglF2paZUGE1PgFp5GFAFm7epznVdVwrEnEFL6+c0AmXfVqB79RySddK
-	4Zk2KGryXYFV9Da6KrLPw0loI48g8djdHHEIL4pJ6T5cpEcvGJjqjDyzqvdN0=
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+X-QQ-XMAILINFO: MMKL56urm3zQCu8/kULort6YEOykZa6CbEY/5xWn8qw8xnS2cx7tvVtv
+	jV2kTac2CF9F3HFjKUGS7H/P6XneIeUnkkEbmhskVbK97L8GHWYo5YnjSLGR2kUNELW8fJJ
+	pRbppAEIsx5xrQK5WO8a7eKn4I+hm+O4usr6TBqyZHSGJ2nRT/QZ3tOFQ+GZsvo2UMkpN1j
+	l7ZvwaLRGDlKORFDRZbZxZkDY+1Z684uNmGsoTXrtXy6DpoNAUbDg4BN02VF7yu5zIrOe6D
+	gaWyWtw5rE3ZufVRL+QaPug/YxYWhVpDFAafhjYhVJfNTWSBohVn00CneNNFlxnPsG4SZF+
+	dVEtlUlkNIvndAMhjUmivB3+Ww8oVgwXhu0OZb1J2UM/mXClMprvxChMnsxw7/mC8wpg0+h
+	fiaG6OV07HdD1/YAlTPGPU8+AnP6fkOYaTmp5OlQxIUPuy8OKozwlh2ite31+RTg2Hln3rn
+	w0BRX0nUX+6FJ/tbsI1o6oziahwQ3jq+9ZnI+E2q1lE3CrSQjqvTkU8BiSKMeFYoosUWeHz
+	zb+2wEFSTV3oFlYoRmEdw/A6ixWSoywNCsLVMT+ME44eXzAoejxs2w1U+OrA3RPtSAI9rbT
+	oKJDsRrbW8DjplX8ZxI+VMlWqKX5sPdNO9bOuMYkSNzt2RtPEc2y1Od7FpLMG6OozH+vgRZ
+	dFIFHjcV5SLgzjGBD+FUHRCiZx9W7FsTltQS1/pfvSoXqsbVViA+wzyaRnfqip51smja6ja
+	QGEcm3NcwsD4s5x+Jq/ulV9ZHgS3RODBwj35xWmf+nTF6+H0MHrKe2rcG8Y2uD/r0l5dBpS
+	FLuG/D1sFJGp/juyfDD7I3nrr1C63QQZuCeowK2QHvo5LieLcK7Ry0h5R1zse6gztIkvmI4
+	SHciInsGZdDRPPhAlevCfi9HYC/oCDkSK7ws0U/SeKHGG7PL94mD6qjh+d5n1vu82B8qYKA
+	+MstOKbY4NY2e6NwYju/YPLCwVpE0AlCqBL9lgvltrsFlGR0RVLie1mxpvB9zdMrNip9FCO
+	CTXNZA3A==
+X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
 X-QQ-RECHKSPAM: 0
 
-Setting UDP tunnel port is supported on TXGBE devices, to implement
-hardware offload for various tunnel packets.
+Implement ndo_features_check to restrict Tx checksum offload flags, since
+there are some inner layer length and protocols unsupported.
 
-Jiawen Wu (2):
-  net: txgbe: Support to set UDP tunnel port
-  net: wangxun: restrict feature flags for tunnel packets
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c   | 27 +++++++++++++++++++
+ drivers/net/ethernet/wangxun/libwx/wx_lib.h   |  3 +++
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  1 +
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  1 +
+ 4 files changed, 32 insertions(+)
 
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  27 +++++
- drivers/net/ethernet/wangxun/libwx/wx_lib.h   |   3 +
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |   1 +
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   | 114 ++++++++++++++++++
- .../net/ethernet/wangxun/txgbe/txgbe_type.h   |   8 ++
- 5 files changed, 153 insertions(+)
-
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index 59d904f23764..a1f9d2287fdc 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -2998,6 +2998,33 @@ netdev_features_t wx_fix_features(struct net_device *netdev,
+ }
+ EXPORT_SYMBOL(wx_fix_features);
+ 
++#define WX_MAX_TUNNEL_HDR_LEN	80
++netdev_features_t wx_features_check(struct sk_buff *skb,
++				    struct net_device *netdev,
++				    netdev_features_t features)
++{
++	struct wx *wx = netdev_priv(netdev);
++
++	if (!skb->encapsulation)
++		return features;
++
++	if (wx->mac.type == wx_mac_em)
++		return features & ~NETIF_F_CSUM_MASK;
++
++	if (unlikely(skb_inner_mac_header(skb) - skb_transport_header(skb) >
++		     WX_MAX_TUNNEL_HDR_LEN))
++		return features & ~NETIF_F_CSUM_MASK;
++
++	if (skb->inner_protocol_type == ENCAP_TYPE_ETHER &&
++	    skb->inner_protocol != htons(ETH_P_IP) &&
++	    skb->inner_protocol != htons(ETH_P_IPV6) &&
++	    skb->inner_protocol != htons(ETH_P_TEB))
++		return features & ~(NETIF_F_CSUM_MASK | NETIF_F_GSO_MASK);
++
++	return features;
++}
++EXPORT_SYMBOL(wx_features_check);
++
+ void wx_set_ring(struct wx *wx, u32 new_tx_count,
+ 		 u32 new_rx_count, struct wx_ring *temp_ring)
+ {
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.h b/drivers/net/ethernet/wangxun/libwx/wx_lib.h
+index fdeb0c315b75..919f49999308 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.h
+@@ -33,6 +33,9 @@ void wx_get_stats64(struct net_device *netdev,
+ int wx_set_features(struct net_device *netdev, netdev_features_t features);
+ netdev_features_t wx_fix_features(struct net_device *netdev,
+ 				  netdev_features_t features);
++netdev_features_t wx_features_check(struct sk_buff *skb,
++				    struct net_device *netdev,
++				    netdev_features_t features);
+ void wx_set_ring(struct wx *wx, u32 new_tx_count,
+ 		 u32 new_rx_count, struct wx_ring *temp_ring);
+ 
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index fd102078f5c9..82e27b9cfc9c 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -587,6 +587,7 @@ static const struct net_device_ops ngbe_netdev_ops = {
+ 	.ndo_set_rx_mode        = wx_set_rx_mode,
+ 	.ndo_set_features       = wx_set_features,
+ 	.ndo_fix_features       = wx_fix_features,
++	.ndo_features_check     = wx_features_check,
+ 	.ndo_validate_addr      = eth_validate_addr,
+ 	.ndo_set_mac_address    = wx_set_mac,
+ 	.ndo_get_stats64        = wx_get_stats64,
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index c984745504b4..0c5d0914e830 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -656,6 +656,7 @@ static const struct net_device_ops txgbe_netdev_ops = {
+ 	.ndo_set_rx_mode        = wx_set_rx_mode,
+ 	.ndo_set_features       = wx_set_features,
+ 	.ndo_fix_features       = wx_fix_features,
++	.ndo_features_check     = wx_features_check,
+ 	.ndo_validate_addr      = eth_validate_addr,
+ 	.ndo_set_mac_address    = wx_set_mac,
+ 	.ndo_get_stats64        = wx_get_stats64,
 -- 
 2.27.0
 
