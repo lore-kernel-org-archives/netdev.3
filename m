@@ -1,36 +1,37 @@
 Received: from serv108.segi.ulg.ac.be (serv108.segi.ulg.ac.be [139.165.32.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846381E3DFE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8457813AC1
 	for <netdev@vger.kernel.org>; Thu, 10 Apr 2025 15:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.165.32.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744298701; cv=none; b=J1tnXHTGq7NW+hlUshmMgDJ3cQJKyD+dNtmCrkRPNbKuHrmeeGXWnyVn5T+zl7GGIWHbNvgUDvCCFABnH9Anvql0KfraJ/eu3/0BmXB9b+RP64Exr48fKh/eKUseGgFkbpyWpJxMXFYebqXX84rCjkAM5rVFGi0GQWJvMJylKI0=
+	t=1744298701; cv=none; b=o5VrDXuUW4RJV3LFzglGL6uNoKkf1o06bR/9OPG1NauqWqZEQcn2RkLff4mjPI8d5PydyshS9+A8dN+zVc5TSvnsfQ0Rda+Ig1yHfwamuHDWWbx+MYiKXpL77xiSj5CNV8mMCdyf2WRCySc5QmFmx7xwfrlFjdavPcrgUSX0jDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744298701; c=relaxed/simple;
-	bh=OoV04jMkqCepD3dnZqtdd1K5UbeqvwPhreWVJClPm4M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bAdDYZkvVRovOUuCmGhFPfkYyIU3CNuatqlgLQraXRGEWsD2xQ90kMfcf246pzvP8iJpYGQMLX7MQNHpsrMuRyS0Bf4qolCI23+bRD8oFO6RjU2374HrXuSSnZ7SoiV8LWuWOGOV4xQo5ICG/eVTD1Y/l7WdmTrMYP9n5zAjxZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=nBkPypzi; arc=none smtp.client-ip=139.165.32.111
+	bh=xL4lrdKnf7v8YdwMgwhe3cVE9HVZrqtKaYldLbnM0BQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=alTLmqwBYYMGJhLNq/ouxHB+1CStxztRuW6Db4INMYs3eDI7LuOF08S9XOo4RmUdkhfJ3KbE5SPAtx2a6KDUwP3jcuEQETUNUKORUFX3apNIKKN6dVIMeHl3ejZUWje4EjPbdhsqG1El8E6d+d6rYeisAUcoD8y7fWzA8AKVHxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=c6OMN6b4; arc=none smtp.client-ip=139.165.32.111
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uliege.be
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="nBkPypzi"
+	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="c6OMN6b4"
 Received: from localhost.localdomain (220.24-245-81.adsl-dyn.isp.belgacom.be [81.245.24.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id 9824F200A8C0;
+	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id EBFBC200A8AD;
 	Thu, 10 Apr 2025 17:24:50 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be 9824F200A8C0
+DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be EBFBC200A8AD
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uliege.be;
-	s=ulg20190529; t=1744298690;
-	bh=Tsm0v27J7SFwZ4hv4Vw8KTGXPsTq8PtGkQ1UmvwYGLA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=nBkPypzig5ARknhtnaotEsOlmuNhLIv4hb/M8RWKIPDUCiqF9zEdnzvKhdQ3qyYmM
-	 YUpgm0TQTMX3clz95KqPtHwqiYvdNaSClSZMrmuExbqzolBh340OPDoSucNiUQVNbD
-	 2V16tGStNz+7fBZLVuFhKCRWpwj8A5Of9rnfwBe1iZc3xTAvH8DwM7oBgvFYOkQb/2
-	 MDfFWeY69sMCrFDd5ux5F9nS4t2EI3Jr4sFlYI0vEL1MbbhylKP7hBlbnxLb8HfYPv
-	 hsnYkH8CdvoG+Yw46QNTnmfSeKU3RK7RtejnUz5D9JA/aVo0/ODNC7UUo2u29CFwmq
-	 ye+iL3s1Mq1FA==
+	s=ulg20190529; t=1744298691;
+	bh=nM7xAQgv/18jqNyVkGW27+B26z8lC/AgVfkBuaOm7V8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=c6OMN6b46XwFHDLVhnaSOaTCnal1yvRkMTHa4cyGO+W/gJng8dNhlLmN5Lomaqx9D
+	 whkwSn0h3PEWdB9Tj8wGyCIvLQ8aR9Px+WBg7PPwuUb06wZMKR42TDElXa+feDeY0O
+	 NdU5BggMdaVjfyLV06jpv6FfszYnQaXBYn2VwJ2gDgqK6/DISqhZX/UDqzLMdmgQhO
+	 Jxl8m5W7uYmeBGZaaaO4LNvHmtXRCduYKQ6Zq5KmrpGdKYGmjGyJlnfoAcU6ZVdaIY
+	 VI77y5xyDnKDkS3bcb4g/RyUlZLcXrgLsLEciQGM9mUKaKQyxGNuK23wslhC+oPBpK
+	 d9mbaJggqeeDQ==
 From: Justin Iurman <justin.iurman@uliege.be>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -39,10 +40,12 @@ Cc: davem@davemloft.net,
 	pabeni@redhat.com,
 	horms@kernel.org,
 	justin.iurman@uliege.be
-Subject: [PATCH net-next 0/2] Mitigate double allocations in ioam6_iptunnel
-Date: Thu, 10 Apr 2025 17:24:30 +0200
-Message-Id: <20250410152432.30246-1-justin.iurman@uliege.be>
+Subject: [PATCH net-next 2/2] net: ipv6: ioam6: fix double reallocation
+Date: Thu, 10 Apr 2025 17:24:32 +0200
+Message-Id: <20250410152432.30246-3-justin.iurman@uliege.be>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250410152432.30246-1-justin.iurman@uliege.be>
+References: <20250410152432.30246-1-justin.iurman@uliege.be>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,23 +54,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit dce525185bc9 ("net: ipv6: ioam6_iptunnel: mitigate 2-realloc
-issue") fixed the double allocation issue in ioam6_iptunnel. However,
-since commit 92191dd10730 ("net: ipv6: fix dst ref loops in rpl, seg6
-and ioam6 lwtunnels"), the fix was left incomplete. Because the cache is
-now empty when the dst_entry is the same post transformation in order to
-avoid a reference loop, the double reallocation is back for such cases
-(e.g., inline mode) which are valid for IOAM. This patch provides a way
-to detect such cases without having a reference loop in the cache, and
-so to avoid the double reallocation issue for all cases again.
+If the dst_entry is the same post transformation (which is a valid use
+case for IOAM), we don't add it to the cache to avoid a reference loop.
+Instead, we use a "fake" dst_entry and add it to the cache as a signal.
+When we read the cache, we compare it with our "fake" dst_entry and
+therefore detect if we're in the special case.
 
-Justin Iurman (2):
-  net: ipv6: ioam6: use consistent dst names
-  net: ipv6: ioam6: fix double reallocation
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+---
+ net/ipv6/ioam6_iptunnel.c | 40 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 38 insertions(+), 2 deletions(-)
 
- net/ipv6/ioam6_iptunnel.c | 73 +++++++++++++++++++++++++++++----------
- 1 file changed, 55 insertions(+), 18 deletions(-)
-
+diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
+index 57200b9991a1..bbfb7dd7fa61 100644
+--- a/net/ipv6/ioam6_iptunnel.c
++++ b/net/ipv6/ioam6_iptunnel.c
+@@ -38,6 +38,7 @@ struct ioam6_lwt_freq {
+ };
+ 
+ struct ioam6_lwt {
++	struct dst_entry null_dst;
+ 	struct dst_cache cache;
+ 	struct ioam6_lwt_freq freq;
+ 	atomic_t pkt_cnt;
+@@ -177,6 +178,16 @@ static int ioam6_build_state(struct net *net, struct nlattr *nla,
+ 	if (err)
+ 		goto free_lwt;
+ 
++	/* We set DST_NOCOUNT, even though this "fake" dst_entry will be stored
++	 * in a dst_cache, which will call dst_hold() and dst_release() on it.
++	 * These functions don't check for DST_NOCOUNT and modify the reference
++	 * count anyway. This is not really a problem, as long as we make sure
++	 * that dst_destroy() won't be called (which is the case since the
++	 * initial refcount is 1, then +1 to store it in the cache, and then
++	 * +1/-1 each time we read the cache and release it).
++	 */
++	dst_init(&ilwt->null_dst, NULL, NULL, DST_OBSOLETE_NONE, DST_NOCOUNT);
++
+ 	atomic_set(&ilwt->pkt_cnt, 0);
+ 	ilwt->freq.k = freq_k;
+ 	ilwt->freq.n = freq_n;
+@@ -356,6 +367,17 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	dst = dst_cache_get(&ilwt->cache);
+ 	local_bh_enable();
+ 
++	/* This is how we notify that the destination does not change after
++	 * transformation and that we need to use orig_dst instead of the cache
++	 */
++	if (dst == &ilwt->null_dst) {
++		dst_release(dst);
++
++		dst = orig_dst;
++		/* keep refcount balance: dst_release() is called at the end */
++		dst_hold(dst);
++	}
++
+ 	switch (ilwt->mode) {
+ 	case IOAM6_IPTUNNEL_MODE_INLINE:
+ do_inline:
+@@ -408,8 +430,18 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 		}
+ 
+-		/* cache only if we don't create a dst reference loop */
+-		if (orig_dst->lwtstate != dst->lwtstate) {
++		/* If the destination is the same after transformation (which is
++		 * a valid use case for IOAM), then we don't want to add it to
++		 * the cache in order to avoid a reference loop. Instead, we add
++		 * our fake dst_entry to the cache as a way to detect this case.
++		 * Otherwise, we add the resolved destination to the cache.
++		 */
++		if (orig_dst->lwtstate == dst->lwtstate) {
++			local_bh_disable();
++			dst_cache_set_ip6(&ilwt->cache,
++					  &ilwt->null_dst, &fl6.saddr);
++			local_bh_enable();
++		} else {
+ 			local_bh_disable();
+ 			dst_cache_set_ip6(&ilwt->cache, dst, &fl6.saddr);
+ 			local_bh_enable();
+@@ -439,6 +471,10 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 
+ static void ioam6_destroy_state(struct lwtunnel_state *lwt)
+ {
++	/* Since the refcount of per-cpu dst_entry caches will never be 0 (see
++	 * why above) when our "fake" dst_entry is used, it is not necessary to
++	 * remove them before calling dst_cache_destroy()
++	 */
+ 	dst_cache_destroy(&ioam6_lwt_state(lwt)->cache);
+ }
+ 
 -- 
 2.34.1
 
