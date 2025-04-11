@@ -1,110 +1,122 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF8C1F2377
-	for <netdev@vger.kernel.org>; Fri, 11 Apr 2025 14:10:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C676726AD9;
+	Fri, 11 Apr 2025 14:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744380656; cv=none; b=i9iidXyQPDiLKCOi34Mq0HFnU90zGjjw0dIP3QDRyVBTAFDvuDjP9c9Bp7vOogDp4dXey305rwqYipLT5bWEUa2DRguDzPbDPvpsY8mGR3q1EmRBaUvN/cMCc6oyp87hyzwGd7bsde8y4rzFjhU/7h2WPSqHR4k+zI5uy88fla4=
+	t=1744380875; cv=none; b=BDla/6SYY4tamK2WPg6c6w784u7TgJsOC9Zf6scOyrsMorlmQ4Uap/0Gm3V8wcbI/92yeFkQqnfbs4s3P6+QjYouPaT7b5a8YonLyB2C/sbmlOZciyPDhzi5GMzLbqnFoW8nvTf+UXaaIdTbLZ6QzUeRRieSKzDIKEBcKsHaxo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744380656; c=relaxed/simple;
-	bh=LOZVICoDpVRUGMiPGNo9j09ggtn/7RVKBLctzLaQ18c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ugA+Zfk3yRDymcl6IE4nDuODg32e8g7jfwVGe3qBVfO8jdBMBBHFEVISdje5pT/eWlJ/AYSyyFEn9jPpgNw44v1TtdcoZ+CZLVgqKaUAgtD6AwQyq/ZTT/GvYy/zSJO6PemZjpm3lpTWCylq/vEZ1sEY3EL8xqR4BMMnTEw3lao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UyJYnF/t; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744380875; c=relaxed/simple;
+	bh=U3OTrdd7E2WfYEtaGGB2vQ72NUHYGUz4BHNai+8xQIU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k85XsWBVnSOP+reZblGjWD0/6uaaKmFqAlWMPw2ttNmIj693mkZWrDd5NQm9HM6c210LgUGZp0CbPc9RAcaCzVjLkxFrL8KdMrNduH4limXs8VfVIGE9EiG6TQ5GspdphCtuKE90upcr/IyECAViPD55xmAGsM2wAV/LEZeM4wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f4TLZsKf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UyJYnF/t"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ac2963dc379so332589366b.2
-        for <netdev@vger.kernel.org>; Fri, 11 Apr 2025 07:10:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744380651; x=1744985451; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=QvbQBGoVupZutbGHyp/6EiFt+ARmDpJwhBTl8DJtS0o=;
-        b=UyJYnF/tknpYzwNUVsGCA1TYRpgWW4S7cDmrPmNq1tpMDfLUNHmxPJc3doahGYUiMZ
-         I8OYP7IYRNolbYooMLxfLE0ZfdVtwoMHGGj3w4BSy96QX9xhtAifPwhdwvBKGRxVOSFX
-         9A7n2HWJFWuujf+1FEy4BsGhiRFLF/xlSGrAeuMlF8U1MykBBQ0WaRuzLYcxg2IBeh9F
-         PZqN8QIlOjpeGFmZnBorhf8J9TCELFeoLyI9HSEzCobHMNbu6hnZmCx9HIP67WWhEdel
-         4xJygoOdA0OPcXUEQiqkWyMkcvguTPnRCzwXP4SOrksKcz4vhp8zpn46qZQnWLnKdmvH
-         IqxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744380651; x=1744985451;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QvbQBGoVupZutbGHyp/6EiFt+ARmDpJwhBTl8DJtS0o=;
-        b=UfjLK5JOmN9Yq3krOaZ+TX8lfJFTmc9YlE7shA+DuBsmOd4wpB7YWTCQ2KdpP/w975
-         kSVRCfyjYvCeCAYQqa/zAuBXNhIu/rnOzKF87/hbK2Bm5H/Ox2/COv4wfeb4WFE+lkto
-         rs6FG9v0ZD+F4eId8nVg2M7Qgvo0yztFzIp2vv03gvN13jgQ2TR26k13+/ksqTKanew+
-         SwlbdGn3pe2mGZVObuXK3ssJ660bOjBoKx7tohu2SDigJqfZjjeJ+N8zmkQBEsOk9t0W
-         X46a5PeruMPnDAUTc4bxGFckdg6JkS1MeOfAfodhA9VdtfNWTQZdKOd8n3aPfgMKZdk1
-         slvQ==
-X-Gm-Message-State: AOJu0Yy4nmToWs4JnqL0b/wl8U7mIvTUBzHR4m+z/7KzNCJ19URaSde3
-	cjq53CgFDYe84XZK32O0D0T68dc9hQ6aiKnr5i/Y1HNQaDSq6Hr8
-X-Gm-Gg: ASbGncsUtGSVqnMgyOLF5/4ja7ZumGKXGr11AXXr7bzBT7p8deQiI4gl3hFKcXyB22q
-	Z4Oj2lIfgLUvAPYceC9czXRIAq61xhW18kdqZGjOh7sEvCHsU7l/SEaRJOKDrVm7NlFv/rE+ews
-	C1k5YjFl6J0LsueW4ZAIsi1EVdspFnkXX0FrOKSjB4iFr/QSRz4ZLZXPrwNOJBIfbzfmIVofN8W
-	cuFuSFIYohemDuaITf21oinBH9R/xhHr9TuMDIyWvuH4XJ4sWGrdhP3qB81qLpvBCShWfG+snev
-	xAWukHhWkEHoNBz59dB7sUH/75b/8xS67ZMKApPc588CGTPyS6WXh+AyVp9GKWvudj1SODttRHL
-	n27b/vr02
-X-Google-Smtp-Source: AGHT+IHwQQGfG4/Eyleo0ti89GOUGJ4Y1AsBO3UwXiMg1vY7jcee14CklzbA2pZ3qyKYPU8SOb7rKA==
-X-Received: by 2002:a17:907:97cd:b0:ac7:391b:e684 with SMTP id a640c23a62f3a-acad36d9208mr245114966b.58.1744380650239;
-        Fri, 11 Apr 2025 07:10:50 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acaa1bb3d8fsm444248266b.22.2025.04.11.07.10.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Apr 2025 07:10:49 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id AA3F1BE2DE0; Fri, 11 Apr 2025 16:10:48 +0200 (CEST)
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Michal Kubecek <mkubecek@suse.cz>
-Cc: netdev@vger.kernel.org,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	asciiwolf@seznam.cz,
-	Petter Reinholdtsen <pere@hungry.com>
-Subject: [PATCH ethtool] Set type property to console-application for provided AppStream metainfo XML
-Date: Fri, 11 Apr 2025 16:10:24 +0200
-Message-ID: <20250411141023.14356-2-carnil@debian.org>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f4TLZsKf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA383C4CEE2;
+	Fri, 11 Apr 2025 14:14:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744380875;
+	bh=U3OTrdd7E2WfYEtaGGB2vQ72NUHYGUz4BHNai+8xQIU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=f4TLZsKfG5Fs5GE+9PSOyy4buJ9DRog30G0akJCxjAsFnvuslrVO/LkElZmmBREFj
+	 ZLSGF9dYGrvKpZg1BWT/i3lAaECh7vNb8X+P/p9S6F1PjwCz3CUSDtf++09IuXsju5
+	 wBSV2LrJoqRQucRi9k91qewJxdgVfwBDQ+cIxHGykSRP/EXMEG1+6UwjQNrhrPS8hg
+	 333TbA7L67i5TgEJaRjItkE+C8i7Ix+bgH1WRZ20tqhJvk187oXUquMZf2v1hN92nA
+	 69nD6XwiB1tf4idEcp/LjmAeIZrW8xOB5leP5FBUKcf+ghCGF09LVjOAcElZtfLKyF
+	 Nj1u/luNQclVQ==
+Message-ID: <f4ff4f5d-637f-4f82-9936-4c2553861eda@kernel.org>
+Date: Fri, 11 Apr 2025 16:14:29 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net-next 2/8] mptcp: sched: split validation part
+Content-Language: en-GB, fr-BE
+To: Geliang Tang <geliang@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, mptcp@lists.linux.dev,
+ Mat Martineau <martineau@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+References: <20250411-net-next-mptcp-sched-mib-sft-misc-v1-0-85ac8c6654c3@kernel.org>
+ <20250411-net-next-mptcp-sched-mib-sft-misc-v1-2-85ac8c6654c3@kernel.org>
+ <1fb5a9e97e97b86c8b0d6008eee579a0bebea708.camel@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <1fb5a9e97e97b86c8b0d6008eee579a0bebea708.camel@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-As pointed out in the Debian downstream report, as ethtool is a
-command-line tool the XML root myst have the type property set to
-console-application.
+Hi Geliang,
 
-Additionally with the type propety set to desktop, ethtool is user
-uninstallable via GUI (such as GNOME Software or KDE Discover).
+On 11/04/2025 15:57, Geliang Tang wrote:
+> Hi Matt,
+> 
+> On Fri, 2025-04-11 at 13:04 +0200, Matthieu Baerts (NGI0) wrote:
+>> From: Geliang Tang <geliang@kernel.org>
+> 
+> Please update my email as "Geliang Tang <tanggeliang@kylinos.cn>" here
+> and in patch 7, otherwise, CI will complain that the email address
+> after "From: " is different from that after "Signed-off-by: ".
 
-Fixes: 02d505bba6fe ("Add AppStream metainfo XML with modalias documented supported hardware.")
-Reported-by: asciiwolf@seznam.cz
-Cc: Petter Reinholdtsen <pere@hungry.com>
-Link: https://bugs.debian.org/1102647
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2359069
-Link: https://freedesktop.org/software/appstream/docs/sect-Metadata-ConsoleApplication.html
-Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
----
- org.kernel.software.network.ethtool.metainfo.xml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Arf, sorry, I sent these patches from a new dev environment, and I
+forgot to apply fixes for b4 [1][2], not in a stable version yet. I will
+re-send these patches later on with these fixes.
 
-diff --git a/org.kernel.software.network.ethtool.metainfo.xml b/org.kernel.software.network.ethtool.metainfo.xml
-index efe84c17e4cd..c31cae4bede6 100644
---- a/org.kernel.software.network.ethtool.metainfo.xml
-+++ b/org.kernel.software.network.ethtool.metainfo.xml
-@@ -1,5 +1,5 @@
- <?xml version="1.0" encoding="UTF-8"?>
--<component type="desktop">
-+<component type="console-application">
-   <id>org.kernel.software.network.ethtool</id>
-   <metadata_license>MIT</metadata_license>
-   <name>ethtool</name>
+[1] https://git.kernel.org/pub/scm/utils/b4/b4.git/commit/?id=8438e306d9
+[2] https://git.kernel.org/pub/scm/utils/b4/b4.git/commit/?id=42535902a4
+
+Cheers,
+Matt
 -- 
-2.49.0
+Sponsored by the NGI0 Core fund.
 
