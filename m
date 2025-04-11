@@ -1,101 +1,81 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ADC29B20D
-	for <netdev@vger.kernel.org>; Fri, 11 Apr 2025 21:29:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB61429C357;
+	Fri, 11 Apr 2025 21:29:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744406993; cv=none; b=EQ8e7Q4c+/ftAL+pWZAwpBeys0d/RUukOZ7urJw3fRyd58UJiV03xmK42coiYooTSKA7JMy9X02+P0G42r98XW9+YHYP7JXHxn7nLugW3/dX/znnhdSaXMhtAJbmGHXPwJxa+bjkiqrW3g+567Cq6DbWPicBuSqRjZrfidrWm1M=
+	t=1744406995; cv=none; b=NdS7IUoeEx2gVRR+nsT6DYZTeJ7R1eHLNCxhhjfbUYgyTcOUc6Flz4l3qBn9R9KEZXKFl4pc4ePMU3+jbGCfT8cGX5Asl1In8QtpUxcsY8yr81X878NOb+Et9OJt992FAnbpkorHJaGQLKXat8FZuXjlTGh8NG7FzAzQBsXUOs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744406993; c=relaxed/simple;
-	bh=xGlmk+WcSn/rBCIknjQR4+iAPzxuubI4s2uuH8po28s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cszJs4kZWMFSC8by87WqN5G11XHh2B/MeTQ94HognP5dxmzNWgLQSQb2+HzgLJHnByK1w/cOU09QSZOqmxH47Up0WLjN8RxZAi3fvVwZhl+FltGMSUBd6lFFiz2uJwQJcYf7ihpjo5OvKAwi9wnhIgYjScypdQqYBjXHe0GWMAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=fiXwQ/R4; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1744406995; c=relaxed/simple;
+	bh=+ChOOLxL7cFGhKxXGQdKLkWWQdy6VsFX3CQDM1wx2fM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=KGJ7e34PcL1nunNhfo+gs7tm7ozTHJssugGq3TiTmeqnsnE40mX6Xvz/Vb6GZ8vQCldp+ZLCEHoYMYMuNrP2CHKauRHXsQ3c+xAwEuUFn8UZ8upPxlRv/mIcs58rZ+FcH2lHePR0Dz0Sf8JSD4KT0K+odXbsB62zDy8TaCblA7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lYxJQbql; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="fiXwQ/R4"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=CGBJ6J9Ke4YhWqBt6NYgRofc9jx/kLx5Q4eLTh5q0D0=; b=fiXwQ/R4IIrqpeJ2q6+P3utjMy
-	aqm8WtpK6zZ/jadpoOLKRgh3zZHb5pP0BME7hLOcrezdrfhu03AuKrAj2ahwZGrOsIoSyjFDkLGyt
-	Rj0mj6T7A29X9GckDCvQoUYLdi3m3oCyoIXtFpFsDKDKxLddWgAr8bFfEJDCC0zZ5wMcWNTLXMufY
-	E9utEORg1Ir+JJwyCaLEN2HS2tt3+JhvvilkSsFC8cn4JFACu9I/qaIDNNQgItj19L0S+4AVzW2er
-	RBa7aN9+y9uzLQi+N3oWUJlqPDplY6Q5O9vKdKxhy8DKx/mQfEcckX5/o4AOqTF2dx/2YK6jP7CZG
-	4p0W8dXg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54796)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1u3LwY-0003sn-0v;
-	Fri, 11 Apr 2025 22:29:47 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1u3LwW-0004x6-0C;
-	Fri, 11 Apr 2025 22:29:44 +0100
-Date: Fri, 11 Apr 2025 22:29:43 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Marcin Wojtas <marcin.s.wojtas@gmail.com>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH RFC net-next 1/5] net: mvpp2: add support for hardware
- timestamps
-Message-ID: <Z_mJx1qqpYVngnTb@shell.armlinux.org.uk>
-References: <Z_mI94gkKkBslWmv@shell.armlinux.org.uk>
- <E1u3LtP-000COv-Ut@rmk-PC.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lYxJQbql"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20594C4CEE2;
+	Fri, 11 Apr 2025 21:29:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744406995;
+	bh=+ChOOLxL7cFGhKxXGQdKLkWWQdy6VsFX3CQDM1wx2fM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=lYxJQbqlhw/sRFLZu2o5Ivliss7ugOFi+6xfm/5uPzF3Iuiu2lgfVH8QUA2EU9J0Y
+	 rw8PxEi17SzRkoz2u3ScGHAe7aIjHvPj1cbqRRlUqYNvNeLtwSf5JBpPeXi+g9ya6D
+	 PEeoeJGx0pQC+mwAY4eUHdp4S/kD15H2mUFUKcMta8D6xhwnT2ghKe8ncwNwhFYze+
+	 b1soZRI6rUN8oVoB0jKbgBKn5H/mlOuFHgFUSq9r/j5PZ1n15sHw9jCweDlTaVVffr
+	 +moWQuyusKPV3e1kmlq2Sx2rmBJV4pz1cvBarEjfmMVvteedmCU5Ho63K9Ydv/QQKC
+	 WJbZQBrWrLj8g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAE8B38111E2;
+	Fri, 11 Apr 2025 21:30:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E1u3LtP-000COv-Ut@rmk-PC.armlinux.org.uk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v1 net] smc: Fix lockdep false-positive for IPPROTO_SMC.
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174440703276.491439.12735611254481125457.git-patchwork-notify@kernel.org>
+Date: Fri, 11 Apr 2025 21:30:32 +0000
+References: <20250407170332.26959-1-kuniyu@amazon.com>
+In-Reply-To: <20250407170332.26959-1-kuniyu@amazon.com>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: wenjia@linux.ibm.com, jaka@linux.ibm.com, alibuda@linux.alibaba.com,
+ tonylu@linux.alibaba.com, guwen@linux.alibaba.com, dust.li@linux.alibaba.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, kuni1840@gmail.com, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+ syzbot+be6f4b383534d88989f7@syzkaller.appspotmail.com
 
-On Fri, Apr 11, 2025 at 10:26:31PM +0100, Russell King wrote:
-> Add support for hardware timestamps in (e.g.) the PHY by calling
-> skb_tx_timestamp() as close as reasonably possible to the point that
-> the hardware is instructed to send the queued packets.
-> 
-> Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
+Hello:
 
-This patch dates from prior to me joining Oracle, and is unchanged
-apart from normal rebasing.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> ---
->  drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 2 ++
->  1 file changed, 2 insertions(+)
+On Mon, 7 Apr 2025 10:03:17 -0700 you wrote:
+> SMC consists of two sockets: smc_sock and kernel TCP socket.
 > 
-> diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-> index 416a926a8281..e3f8aa139d1e 100644
-> --- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-> +++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-> @@ -4439,6 +4439,8 @@ static netdev_tx_t mvpp2_tx(struct sk_buff *skb, struct net_device *dev)
->  		txq_pcpu->count += frags;
->  		aggr_txq->count += frags;
->  
-> +		skb_tx_timestamp(skb);
-> +
->  		/* Enable transmit */
->  		wmb();
->  		mvpp2_aggr_txq_pend_desc_add(port, frags);
-> -- 
-> 2.30.2
+> Currently, there are two ways of creating the sockets, and syzbot reported
+> a lockdep splat [0] for the newer way introduced by commit d25a92ccae6b
+> ("net/smc: Introduce IPPROTO_SMC").
 > 
+>   socket(AF_SMC             , SOCK_STREAM, SMCPROTO_SMC or SMCPROTO_SMC6)
+>   socket(AF_INET or AF_INET6, SOCK_STREAM, IPPROTO_SMC)
 > 
+> [...]
 
+Here is the summary with links:
+  - [v1,net] smc: Fix lockdep false-positive for IPPROTO_SMC.
+    https://git.kernel.org/netdev/net/c/752e2217d789
+
+You are awesome, thank you!
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
