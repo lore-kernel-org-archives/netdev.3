@@ -1,135 +1,332 @@
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E3F1865EE;
-	Fri, 11 Apr 2025 14:06:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E58219D8BE;
+	Fri, 11 Apr 2025 14:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744380384; cv=none; b=ZoVJp9FRLnPSYAD0UM47x89vaAqT+/o6H4GHb2dXYFR4RJidL58fRI6TkWdfs2Qgmexn4BWE5zVqmraX5z1+LAErBYagWQJ+aJHMip9BOaWF1UrNVSfJWFCtMDMGe3+V/bJzJVVRhsYaLbXCAgteMlzUAIbNKAObcV++c3lB5fs=
+	t=1744380639; cv=none; b=d7F+55wk33il2JfB2rRuAMqxCygKdkIgwg9mD85KCiT1XY2qRCJk2aKclSBcocOpCFKL+vh/9iWvLTUnKAYucqOqFxwa+seXaCThf5H4NSa83B9tuRpSRY3gO3a8jwhpoGTmTjXHuDeEkw9JVh5D+OKh7xD7YotdutAWVO2JgYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744380384; c=relaxed/simple;
-	bh=9cqZdTdGMUBt7Rph2nfcNpf4nK9yVw+u1OjWgO7NIUw=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=Nj/kA+Y30DCk2eam4F1Ut/vOMK+FClUCGQqzCNNayjTRBWPPqFSpohibZYIftc216gs1Ka3AIAinWLkpQwdPThbIB1Wchpv8ORIFrOsE7nA6eEwOF+LBwOpLmZ/C3qluaQAY57jPXAyDt+DDYjyQ8NmTwzXjVD9sPiMqu4zw94M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=hvdO1zan; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1744380639; c=relaxed/simple;
+	bh=BajGVn2g2TEzF8e9b1EXNxTobPqKvrjj3Iq6YkO1MNM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QHQTJDrBdkHdayv13i0Qtom+4dxB0uqZQ1CLFVo6BKMufwcQnHXsL7rUUDGiAwuCrI16MiWSR0PSSOeMaXEfVvDWhbYAY46JT1n50j6lR2s1xAZzXNC4PSdLVQU3AAI9K1KEPjxAKkvPGjk0ED266YD28cMQ+xfluThsQtdbtss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=P69RrHQ+; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="hvdO1zan"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1744380378; x=1744985178; i=markus.elfring@web.de;
-	bh=9cqZdTdGMUBt7Rph2nfcNpf4nK9yVw+u1OjWgO7NIUw=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=hvdO1zanezD/o2IjYg06dbe7NAY9cFu9Cp2PvTKntTnK5o9Q/kKNhflcpquE3SX8
-	 Mg0plsgQbRoaIYTbNO3zlE/BzX3ZKoZ3VkWMNM7JMBnMyW1t0Q8zzsgUjvKzEzkw7
-	 Qa/B+wZXJ1VfUHuDeTfHkMyX7xMaO7lo9SjNouM3AjjS1x0zmeXSj9Vwf89y6sqd4
-	 KHAaNpwTHVdzXiWUYgYdH01eCoNtJ3DyM/BlS3ZWuhf85egUlUvOxpBwOdgYoxF34
-	 ItstO0Wj/dGVb1z+jsdhw510CxNm28Up5DfLC9sMKxcQGazlqXR+w7PTzZxCY2Z9q
-	 4w+q8UJdlC2D9c1R4Q==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.70.66]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mt8kN-1tABON04FN-00wl8s; Fri, 11
- Apr 2025 16:06:18 +0200
-Message-ID: <1784cc08-918c-4745-bc7d-22a0217fea45@web.de>
-Date: Fri, 11 Apr 2025 16:06:16 +0200
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="P69RrHQ+"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4ZYz9P26k0z9snv;
+	Fri, 11 Apr 2025 16:10:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1744380633; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KRhJW5jicPYJ3BT6+JTiDRHAzS7z/btQ3Ka6vbAdHmw=;
+	b=P69RrHQ+i34M14yVUZLq7X7ujch5aOr81j3uSNqO8Y8XtZ+M0yzgk7RK2Mw/oJRCRNC+2c
+	eQqlfEx+utW6E4KPuBZC+3fr/3LzB9ThFNKSfcFhj7PvqkIZ7rFZqRPKIAql9UCC6zLvT+
+	tw4ULLBNqv2s5MndRfv5LyCG4QKae77nvvVx0mQH+TVOdqwktldtYNha4+N5fKoyzhj0Ys
+	5dBkzuadgSwzaZFhGmT+KGS3l3rUjPQLae0IaAnSxyQjabIGAKuN6BDAOLKnbNFWB+sMk1
+	BqKtJqwl9f2OeZhxdpxffv+GLUhMNbYZuSSQTPOyJuTV3kFrQC1ccuwjFzXXUw==
+Message-ID: <1127db242503055b2e5e8d07db3aeae46cfb7a24.camel@mailbox.org>
+Subject: Re: [PATCH 1/3] drm/nouveau: Prevent signaled fences in pending list
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, 
+	phasta@kernel.org, Lyude Paul <lyude@redhat.com>, Danilo Krummrich
+	 <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
+	 <simona@ffwll.ch>, Sabrina Dubroca <sd@queasysnail.net>, Sumit Semwal
+	 <sumit.semwal@linaro.org>
+Cc: dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
+	stable@vger.kernel.org
+Date: Fri, 11 Apr 2025 16:10:29 +0200
+In-Reply-To: <45d66ca4-5390-42e9-869a-f5f9125d05b6@amd.com>
+References: <20250410092418.135258-2-phasta@kernel.org>
+	 <20250410092418.135258-3-phasta@kernel.org>
+	 <8583665a-6886-4245-be49-fd8839cfe212@amd.com>
+	 <c737c89c7ce9174e349c61ab4e5712eee8946f13.camel@mailbox.org>
+	 <50c9530d-e274-4f89-8620-16afe0981239@amd.com>
+	 <1a73e5fe4350d6ee4b7d807612264eb637c4f2a9.camel@mailbox.org>
+	 <d3dee321cd6b70d6ca98768fbcf6f1e6134c43a1.camel@mailbox.org>
+	 <81a70ba6-94b1-4bb3-a0b2-9e8890f90b33@amd.com>
+	 <aca00cb25b813da4fd2f215829f02337f05642f3.camel@mailbox.org>
+	 <45d66ca4-5390-42e9-869a-f5f9125d05b6@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Henry Martin <bsdhenrymartin@gmail.com>, linux-rdma@vger.kernel.org,
- netdev@vger.kernel.org
-Cc: LKML <linux-kernel@vger.kernel.org>, Amir Tzin <amirtz@nvidia.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Aya Levin <ayal@nvidia.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Leon Romanovsky <leon@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Tariq Toukan <tariqt@nvidia.com>
-References: <20250411131431.46537-2-bsdhenrymartin@gmail.com>
-Subject: Re: [PATCH v4] net/mlx5: Fix null-ptr-deref in
- mlx5_create_{inner_,}ttc_table()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250411131431.46537-2-bsdhenrymartin@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:hwKkeL4ea4YlMxXKdVeEjUCvOe87wC43IxzlfSr4ys29JlOCp+U
- mk1U751DCZk3Gdh6CQsxzqdF3s6Xu7ENmHufromhgsY0gXxpyaq4DxwcICTvS17yoRBYbgv
- V/jbqc2u7Tltk/ZiY3gIeE/3g+PUhmQvYmmfhs0oLqW3ncmgerJUgBd+U4iVclT33bpTXMo
- B5TEB/z8wVlQeJkbcwkBw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:xGRtdU2csCM=;7C0jJlyxH+/Py2yhnU6zHSgSDZ8
- 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
+X-MBO-RS-META: c9c4ztxjf4myurkd7ymjqraayr6dm8uq
+X-MBO-RS-ID: 57e74fcf47f15cb7df3
 
-> Add NULL check for mlx5_get_flow_namespace() returns in
-> mlx5_create_inner_ttc_table() and mlx5_create_ttc_table() to prevent
-> NULL pointer dereference.
+On Fri, 2025-04-11 at 15:06 +0200, Christian K=C3=B6nig wrote:
+> Am 11.04.25 um 14:44 schrieb Philipp Stanner:
+> > On Fri, 2025-04-11 at 13:05 +0200, Christian K=C3=B6nig wrote:
+> > > =C2=A0Am 11.04.25 um 11:29 schrieb Philipp Stanner:
+> > > =C2=A0
+> > > > [SNIP]
+> > > > =C2=A0
+> > > > It could be, however, that at the same moment
+> > > > nouveau_fence_signal() is
+> > > > removing that entry, holding the appropriate lock.
+> > > >=20
+> > > > So we have a race. Again.
+> > > > =C2=A0
+> > > =C2=A0
+> > > =C2=A0Ah, yes of course. If signaled is called with or without the
+> > > lock is
+> > > actually undetermined.
+> > > =C2=A0
+> > > =C2=A0
+> > > > =C2=A0
+> > > > You see, fixing things in Nouveau is difficult :)
+> > > > It gets more difficult if you want to clean it up "properly",
+> > > > so it
+> > > > conforms to rules such as those from dma_fence.
+> > > >=20
+> > > > I have now provided two fixes that both work, but you are not
+> > > > satisfied
+> > > > with from the dma_fence-maintainer's perspective. I understand
+> > > > that,
+> > > > but please also understand that it's actually not my primary
+> > > > task
+> > > > to
+> > > > work on Nouveau. I just have to fix this bug to move on with my
+> > > > scheduler work.
+> > > > =C2=A0
+> > > =C2=A0
+> > > =C2=A0Well I'm happy with whatever solution as long as it works, but
+> > > as
+> > > far as I can see the approach with the callback simply doesn't.
+> > > =C2=A0
+> > > =C2=A0You just can't drop the fence reference for the list from the
+> > > callback.
+> > > =C2=A0
+> > > =C2=A0
+> > > > =C2=A0
+> > > > So if you have another idea, feel free to share it. But I'd
+> > > > like to
+> > > > know how we can go on here.
+> > > > =C2=A0
+> > > =C2=A0
+> > > =C2=A0Well the fence code actually works, doesn't it? The problem is
+> > > rather that setting the error throws a warning because it doesn't
+> > > expect signaled fences on the pending list.
+> > > =C2=A0
+> > > =C2=A0Maybe we should fix that instead.
+> > The fence code works as the author intended, but I would be happy
+> > if it
+> > were more explicitly documented.
+> >=20
+> > Regarding the WARN_ON: It occurs in dma_fence_set_error() because
+> > there
+> > is an attempt to set an error code on a signaled fence. I don't
+> > think
+> > that should be "fixed", it works as intended: You must not set an
+> > error
+> > code of a fence that was already signaled.
+> >=20
+> > The reason seems to be that once a fence is signaled, a third party
+> > might evaluate the error code.
+>=20
+> Yeah, more or less correct. The idea is you can't declare an
+> operation as having an error after the operation has already
+> completed.
+>=20
+> Because everyone will just wait for the completion and nobody checks
+> the status again after that.
+>=20
+> >=20
+> > But I think this wasn't wat you meant with "fix".
+>=20
+> The idea was to avoid calling dma_fence_set_error() on already
+> signaled fences. Something like this:
+>=20
+> @@ -90,7 +90,7 @@ nouveau_fence_context_kill(struct
+> nouveau_fence_chan *fctx, int error)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 while (!list_empty(&fctx->pend=
+ing)) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 fence =3D list_entry(fctx->pending.next,
+> typeof(*fence), head);
+> =C2=A0
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 if (error)
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 if (error & !dma_fence_is_signaled_locked(&fence-
+> >base))
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dma_fenc=
+e_set_error(&fence->base, error);
+> =C2=A0
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 if (nouveau_fence_signal(fence))
+>=20
+> That would also improve the handling quite a bit since we now don't
+> set errors on fences which are already completed even if we haven't
+> realized that they are already completed yet.
+>=20
+> > In any case, there must not be signaled fences in nouveau's
+> > pending-
+> > list. They must be removed immediately once they signal, and this
+> > must
+> > not race.
+>=20
+> Why actually? As far as I can see the pending list is not for the
+> unsignaled fences, but rather the pending interrupt processing.
 
-Can any other summary phrase variants become more desirable accordingly?
+That's a list of fences that are "in the air", i.e., whose jobs are
+currently being processed by the hardware. Once a job is done, its
+fence must be removed.
+
+>=20
+> So having signaled fences on the pending list is perfectly possible.
+
+It is possible, and that is a bug. The list is used by
+nouveau_fence_context_kill() to kill still pending jobs. It shall not
+try to kill and set error codes for fences that are already signaled.
 
 
-=E2=80=A6
-> ---
-> V3 -> V4: Fix potential memory leak.
 
-* Do you propose to complete the error handling for more function implemen=
-tations?
+Anyways, forget about the "remove callbacks solution" it actually
+causes a MASSIVE performance regression. No idea why, AFAICS the fast
+path is only ever evaluated in nouveau_fence_done(), but maybe I missed
+something.
 
-* Please avoid duplicate source code.
-
-* Can an other enumeration style become nicer for version numbers?
+Will re-iterate next week=E2=80=A6
 
 
-> V2 -> V3: No functional changes, just gathering the patches in a series.
+P.
 
-Would you usually expect more than one update step then?
 
-Regards,
-Markus
+>=20
+> Regards,
+> Christian.
+>=20
+> >=20
+> > > =C2=A0
+> > > =C2=A0
+> > > > =C2=A0
+> > > > I'm running out of ideas. What I'm wondering if we couldn't
+> > > > just
+> > > > remove
+> > > > performance hacky fastpath functions such as
+> > > > nouveau_fence_is_signaled() completely. It seems redundant to
+> > > > me.
+> > > > =C2=A0
+> > > =C2=A0
+> > > =C2=A0That would work for me as well.
+> > I'll test this approach. Seems a bit like the nuclear approach, but
+> > if
+> > it works we'd at least clean up a lot of this mess.
+> >=20
+> >=20
+> > P.
+> >=20
+> >=20
+> > > =C2=A0
+> > > =C2=A0
+> > > > =C2=A0
+> > > >=20
+> > > > Or we might add locking to it, but IDK what was achieved with
+> > > > RCU
+> > > > here.
+> > > > In any case it's definitely bad that Nouveau has so many
+> > > > redundant
+> > > > and
+> > > > half-redundant mechanisms.
+> > > > =C2=A0
+> > > =C2=A0
+> > > =C2=A0Yeah, agree messing with the locks even more won't help us here=
+.
+> > > =C2=A0
+> > > =C2=A0Regards,
+> > > =C2=A0Christian.
+> > > =C2=A0
+> > > =C2=A0
+> > > > =C2=A0
+> > > >=20
+> > > >=20
+> > > > P.
+> > > >=20
+> > > > =C2=A0
+> > > > > =C2=A0
+> > > > >=20
+> > > > > P.
+> > > > >=20
+> > > > > =C2=A0
+> > > > > > =C2=A0
+> > > > > > Regards,
+> > > > > > Christian.
+> > > > > >=20
+> > > > > > =C2=A0
+> > > > > > > =C2=A0
+> > > > > > > P.
+> > > > > > >=20
+> > > > > > >=20
+> > > > > > >=20
+> > > > > > > =C2=A0
+> > > > > > > > =C2=A0
+> > > > > > > > Regards,
+> > > > > > > > Christian.
+> > > > > > > >=20
+> > > > > > > > =C2=A0
+> > > > > > > > > =C2=A0
+> > > > > > > > > Replace the call to dma_fence_is_signaled() with
+> > > > > > > > > nouveau_fence_base_is_signaled().
+> > > > > > > > >=20
+> > > > > > > > > Cc: <stable@vger.kernel.org> # 4.10+, precise commit
+> > > > > > > > > not
+> > > > > > > > > to
+> > > > > > > > > be
+> > > > > > > > > determined
+> > > > > > > > > Signed-off-by: Philipp Stanner <phasta@kernel.org>
+> > > > > > > > > ---
+> > > > > > > > > =C2=A0drivers/gpu/drm/nouveau/nouveau_fence.c | 2 +-
+> > > > > > > > > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> > > > > > > > >=20
+> > > > > > > > > diff --git a/drivers/gpu/drm/nouveau/nouveau_fence.c
+> > > > > > > > > b/drivers/gpu/drm/nouveau/nouveau_fence.c
+> > > > > > > > > index 7cc84472cece..33535987d8ed 100644
+> > > > > > > > > --- a/drivers/gpu/drm/nouveau/nouveau_fence.c
+> > > > > > > > > +++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
+> > > > > > > > > @@ -274,7 +274,7 @@ nouveau_fence_done(struct
+> > > > > > > > > nouveau_fence
+> > > > > > > > > *fence)
+> > > > > > > > > =C2=A0			nvif_event_block(&fctx-
+> > > > > > > > > >event);
+> > > > > > > > > =C2=A0		spin_unlock_irqrestore(&fctx->lock,
+> > > > > > > > > flags);
+> > > > > > > > > =C2=A0	}
+> > > > > > > > > -	return dma_fence_is_signaled(&fence->base);
+> > > > > > > > > +	return test_bit(DMA_FENCE_FLAG_SIGNALED_BIT,
+> > > > > > > > > &fence-
+> > > > > > > > > =C2=A0
+> > > > > > > > > > =C2=A0
+> > > > > > > > > > base.flags);
+> > > > > > > > > > =C2=A0
+> > > > > > > > > =C2=A0
+> > > > > > > > > =C2=A0}
+> > > > > > > > > =C2=A0
+> > > > > > > > > =C2=A0static long
+> > > > > > > > > =C2=A0
+> > > > > > > > =C2=A0
+> > > > > > > =C2=A0
+> > > > > > =C2=A0
+> > > > > =C2=A0=C2=A0
+> > > > =C2=A0=C2=A0
+> > > =C2=A0
+> > > =C2=A0
+>=20
+
