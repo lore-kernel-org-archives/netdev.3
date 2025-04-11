@@ -1,206 +1,121 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A8D236453
-	for <netdev@vger.kernel.org>; Fri, 11 Apr 2025 20:18:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10E578F45
+	for <netdev@vger.kernel.org>; Fri, 11 Apr 2025 20:44:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744402731; cv=none; b=jm/aA0LnIRHy3hDrzcuJCWmOFupbc7nnPuEFhifocy94P6R1TFIp5A4YKgikpgUmM+jeNFJr9y08cibeAW2CdnaJdkNh5UkeG3HsFxd7/lRGBSnokRq/bEEAf3RWa+mZFWlYUi7Wlk+BnYxGNCqmwZLMHxeB7xFl432BcRLY064=
+	t=1744404249; cv=none; b=TZjdefK6+TK5duKTpeiTcfYPKDRqhgoDxUQ6ejIDjKKgyqDSHb2/dpwue1eEM6wItLUILsgxSMgy77EfqnwnfnfXIz8fEuyJ87H7CLhf4gZVvDIfTIwOKP1ArDOuP5IsfsMWmL4gueePMvKQPiaoQdsa6ydvt9TQTAFq6RhpImY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744402731; c=relaxed/simple;
-	bh=LMwmw+mwxkaGTvA/SOrtYKwoR7+K+OzMX5llrFCPE/g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c2pdJOKeK0ShCqy002+MZoigy2Y8w7+bqJLGe75iH3jJ4/gqa0gnYG+ZGX0sxsTotdVLruJjLllt2rfdDdcZ5T0MorQHI0jl/4pOWqvSZgIvXZqx6v79e3X9lXvIqEbWdjY98aBUNILv9Qb5HwiF9A9789iO7S8Oho0lN9QP9is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=asciiwolf.com; spf=none smtp.mailfrom=asciiwolf.com; dkim=pass (2048-bit key) header.d=asciiwolf-com.20230601.gappssmtp.com header.i=@asciiwolf-com.20230601.gappssmtp.com header.b=p3lfWRmI; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=asciiwolf.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=asciiwolf.com
+	s=arc-20240116; t=1744404249; c=relaxed/simple;
+	bh=0Y4JSU4xu8NjaqzAb4QJdqHMSLtMFXNN8v96e4mgTrU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LEaGHr2nJboSlcvyIhMtfMS6gjsB9UKZTPC7U2SptrEgeSUUpSek+dv3coNoe0yho3sPH1nS0sPz8MSLqnQCIARhFjxsnbwAQ3TmAXgWqONJHTGzmC3YzFa90G77y3fMPgLnxyjYdt4rRRT0F1tG03GIUhLNL2Xl972GW/5iEA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e3gx7keJ; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asciiwolf-com.20230601.gappssmtp.com header.i=@asciiwolf-com.20230601.gappssmtp.com header.b="p3lfWRmI"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ac2963dc379so393918666b.2
-        for <netdev@vger.kernel.org>; Fri, 11 Apr 2025 13:18:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asciiwolf-com.20230601.gappssmtp.com; s=20230601; t=1744402728; x=1745007528; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=sug/o/Z05+bDPu/S3g1RxtrnjkoSl9YAJhgZRvUHNr8=;
-        b=p3lfWRmIQSrv6wSbIG2uklzq+tj2OPI48kdKsHXCChXxOrO8BnwLAS3I3iyrTs76Dn
-         QHdxA3DtjobrqqxUnMMGNkD578qnVUv3Ob2Z+hggkV/+juZD2wEvpJabiI2TdFJ0aK2c
-         ySSeTPLCQp330SM4CMYL/htXHhRZHRiP6/EresiCDAtg8qvDasoUsVAOqjtH9cDfRHbC
-         nSfPO4iYiC76xha9dXaF9Ns1fmXaPC17v76bqr6ZtvDmewCgFVmQwg3w3YwY16WP3A5I
-         82Rr8gUh4VW949zEIBhg+IcbfPpOslBuHVl3CpVeIaTVRLN/VKA1EPQLlsYe7ifz2s+u
-         8zsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744402728; x=1745007528;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sug/o/Z05+bDPu/S3g1RxtrnjkoSl9YAJhgZRvUHNr8=;
-        b=l/AJECu/ScvfQvYX1QdsD/8q/GJnC5QtCTkbiF0lBkkMcDarnz93NY8nhtWHVDFfsO
-         nWczZ4g6fGy7dBXL8UAMwQ8Ztd/RseYc7EK3GBQIadyXVraehPj8aww3dWsKZLuuuDcM
-         rOkE5kVlVdCUBFoiGqAYziDP1rvJk2l9WVJzeSeDnXO/oiwqmqohVLjz3g1LrVuNIIh3
-         yKfH1zBy45N2AK5oFeqMf/an7Fs/pM9btWALnQLaYwplwyU6O2Dx8Jd5F3CI3KbAtmSh
-         g3zIGbkfiZOJgMyUZ704vlliWCN4CJJO+EhqOp3+3IvUETkLS2c/WoW70TrJtnNhRcbM
-         1v8w==
-X-Forwarded-Encrypted: i=1; AJvYcCVAsvGu+CMDy/pMYG3awqIpTqJw18AAS/Z+c966jsfWr1UKxoHPlhmLUNs2eRnLlt3T3Wgah7c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzou5T4ZWkP0m7eMIybMVOIOa48fQ5SPGcBZ/7FdHrTEiwvwogJ
-	y6f76qSY3TtLExy0VDu5ykuRUfXloF06OzcjZj0GcN/FNw8ZYJf2tmmUyrzoxGy9Wo8zWIBLeM5
-	8GNsg3yMzzSc6x25BtaR4QXfOqqE6uvn0WUM=
-X-Gm-Gg: ASbGnctXr5Q1G4RFCYvp6A4fhe2+VkRrvvdGgJGm0LTMsi5FZlIqymYAnyOQ2BeSnRe
-	FwOIKGP9uJspHc0AyvgpSvKx/IEAhzaqPJiFTsqkyQViYorob0QQhN21h9UHlGnvZ2EqQcJWs7I
-	ML3AnnCu+nkXbxD8E3ril70JVcUK6zlYeqnngfUcV+6/9hGoXbKfNLiCA=
-X-Google-Smtp-Source: AGHT+IHkd3AljMKmY0VNwj3PKjc7jkp69De1gJa7n6VF4Vl2VTQnZkLmP/Epf+6ZLbqXWZKcvtiZDfW8SrnILWPrNR0=
-X-Received: by 2002:a17:907:cd0e:b0:ac3:4373:e8bf with SMTP id
- a640c23a62f3a-acad3439f51mr359557966b.10.1744402727675; Fri, 11 Apr 2025
- 13:18:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e3gx7keJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744404248; x=1775940248;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=0Y4JSU4xu8NjaqzAb4QJdqHMSLtMFXNN8v96e4mgTrU=;
+  b=e3gx7keJKY+Eqcw5f24rcKr554nMeaetKnLAakQn5qOK0Q4RA7cJkLKL
+   LfT29brAE3KDQ1hIJcnvQ3EG7pDZUvS4D6zr4Hbxozwn5ZCg1x1QzGfs7
+   ZGTCFEQyQ3/kUnjtAr+Umn1qt/nCdSXopJyty5gpCdVksZjbKM/IbHpSW
+   XhTJlDQrq4vlyW+VM9RwQfX80zhx/G7JXM4U2JpNQDz3KVhKyAta4g/1L
+   MUVXEUITtn78upuFmWpJTvQExveYoXhrJDU7rnzPpqHQsFjNcYfo0jCP8
+   0wByWnQG7Bm7Q4P6BHjKLh8GDSogfMo8oc/L7hyeRwnrCcHCVLeSG5UGC
+   w==;
+X-CSE-ConnectionGUID: EQWPjnSXTEy2cAh5W1hzdQ==
+X-CSE-MsgGUID: eVRK8XpES8+864POCA8ypQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11401"; a="45103843"
+X-IronPort-AV: E=Sophos;i="6.15,206,1739865600"; 
+   d="scan'208";a="45103843"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2025 13:44:06 -0700
+X-CSE-ConnectionGUID: oWDPxzIoS9WoDWrdnGY4Dg==
+X-CSE-MsgGUID: UpbRRnC2SZClY6NL0d+XMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,206,1739865600"; 
+   d="scan'208";a="129241794"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by orviesa010.jf.intel.com with ESMTP; 11 Apr 2025 13:44:05 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Mateusz Pacuszka <mateuszx.pacuszka@intel.com>,
+	anthony.l.nguyen@intel.com,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>
+Subject: [PATCH net-next 01/15] ice: fix check for existing switch rule
+Date: Fri, 11 Apr 2025 13:43:42 -0700
+Message-ID: <20250411204401.3271306-2-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250411204401.3271306-1-anthony.l.nguyen@intel.com>
+References: <20250411204401.3271306-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <p3e5khlw5gcofvjnx7whj7y64bwmjy2t7ogu3xnbhlzw7scbl4@3rceiook7pwu> <CAB-mu-QjxGvBHGzaVmwBpq-0UXALzdSpzcvVQPvyXjFAnxZkqA@mail.gmail.com>
-In-Reply-To: <CAB-mu-QjxGvBHGzaVmwBpq-0UXALzdSpzcvVQPvyXjFAnxZkqA@mail.gmail.com>
-From: AsciiWolf <mail@asciiwolf.com>
-Date: Fri, 11 Apr 2025 22:18:36 +0200
-X-Gm-Features: ATxdqUEuwa8Zyad6PdXtqVcoPVVel22F3RYas430uBqwBmCwTNOy9DEdwBJhmt4
-Message-ID: <CAB-mu-TgZ5ewRzn45Q5LrGtEKWGhrafP39enmV0DAYvTkU5mwQ@mail.gmail.com>
-Subject: Re: [mail@asciiwolf.com: Re: ethtool: Incorrect component type in
- AppStream metainfo causes issues and possible breakages]
-To: Michal Kubecek <mkubecek@suse.cz>
-Cc: Petter Reinholdtsen <pere@debian.org>, netdev@vger.kernel.org, 
-	Robert Scheck <fedora@robert-scheck.de>
-Content-Type: multipart/mixed; boundary="000000000000ee581006328668e7"
+Content-Transfer-Encoding: 8bit
 
---000000000000ee581006328668e7
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Mateusz Pacuszka <mateuszx.pacuszka@intel.com>
 
-Here is the proposed fix. It is validated using appstreamcli validate
-and should work without issues.
+In case the rule already exists and another VSI wants to subscribe to it
+new VSI list is being created and both VSIs are moved to it.
+Currently, the check for already existing VSI with the same rule is done
+based on fdw_id.hw_vsi_id, which applies only to LOOKUP_RX flag.
+Change it to vsi_handle. This is software VSI ID, but it can be applied
+here, because vsi_map itself is also based on it.
 
---- org.kernel.software.network.ethtool.metainfo.xml_orig
-2025-03-31 00:46:03.000000000 +0200
-+++ org.kernel.software.network.ethtool.metainfo.xml    2025-04-11
-22:14:11.634355310 +0200
-@@ -1,5 +1,5 @@
- <?xml version=3D"1.0" encoding=3D"UTF-8"?>
--<component type=3D"desktop">
-+<component type=3D"console-application">
-   <id>org.kernel.software.network.ethtool</id>
-   <metadata_license>MIT</metadata_license>
-   <name>ethtool</name>
-@@ -11,6 +11,7 @@
-   </description>
-   <url type=3D"homepage">https://www.kernel.org/pub/software/network/ethto=
-ol/</url>
-   <provides>
-+    <binary>ethtool</binary>
-     <modalias>pci:v*d*sv*sd*bc02sc80i*</modalias>
-   </provides>
- </component>
+Additionally change return status in case the VSI already exists in the
+VSI map to "Already exists". Such case should be handled by the caller.
 
-Regards,
-Daniel Rusek
+Signed-off-by: Mateusz Pacuszka <mateuszx.pacuszka@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice_switch.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
+index 4a91e0aaf0a5..9d9a7edd3618 100644
+--- a/drivers/net/ethernet/intel/ice/ice_switch.c
++++ b/drivers/net/ethernet/intel/ice/ice_switch.c
+@@ -3146,7 +3146,7 @@ ice_add_update_vsi_list(struct ice_hw *hw,
+ 		u16 vsi_handle_arr[2];
+ 
+ 		/* A rule already exists with the new VSI being added */
+-		if (cur_fltr->fwd_id.hw_vsi_id == new_fltr->fwd_id.hw_vsi_id)
++		if (cur_fltr->vsi_handle == new_fltr->vsi_handle)
+ 			return -EEXIST;
+ 
+ 		vsi_handle_arr[0] = cur_fltr->vsi_handle;
+@@ -5978,7 +5978,7 @@ ice_adv_add_update_vsi_list(struct ice_hw *hw,
+ 
+ 		/* A rule already exists with the new VSI being added */
+ 		if (test_bit(vsi_handle, m_entry->vsi_list_info->vsi_map))
+-			return 0;
++			return -EEXIST;
+ 
+ 		/* Update the previously created VSI list set with
+ 		 * the new VSI ID passed in
+-- 
+2.47.1
 
-p=C3=A1 11. 4. 2025 v 15:50 odes=C3=ADlatel AsciiWolf <mail@asciiwolf.com> =
-napsal:
->
-> Sure,
->
-> I will take a look at this later today.
->
-> Regards,
-> Daniel
->
-> Dne p=C3=A1 11. 4. 2025 15:47 u=C5=BEivatel Michal Kubecek <mkubecek@suse=
-.cz> napsal:
->>
->> Hello,
->>
->> I got this report (and one more where you are already in Cc) but I'm not
->> familiar with the AppStream stuff at all. Can you take a look, please?
->>
->> Michal
->>
->> > Date: Fri, 11 Apr 2025 15:16:28 +0200
->> > From: AsciiWolf <mail@asciiwolf.com>
->> > To: Michal Kubecek <mkubecek@suse.cz>
->> > Subject: Re: ethtool: Incorrect component type in AppStream metainfo c=
-auses
->> >  issues and possible breakages
->> >
->> > This probably also needs to be fixed:
->> >
->> > https://freedesktop.org/software/appstream/docs/
->> > sect-Metadata-ConsoleApplication.html#tag-consoleapp-provides
->> >
->> > Regards,
->> > Daniel
->> >
->> > p=C3=A1 11. 4. 2025 v 15:06 odes=C3=ADlatel AsciiWolf <mail@asciiwolf.=
-com> napsal:
->> >
->> >     Hello Michal,
->> >
->> >     ethtool is user uninstallable via GUI (such as GNOME Software or K=
-DE
->> >     Discover) since 6.14. This is not correct since it is a (in many
->> >     configurations pre-installed) system tool, not user app, and unins=
-talling
->> >     it can also uninstall other critical system packages.
->> >
->> >     The main problem is the "desktop" component type in AppStream meta=
-data:
->> >
->> >     $ head org.kernel.software.network.ethtool.metainfo.xml
->> >     <?xml version=3D"1.0" encoding=3D"UTF-8"?>
->> >     <component type=3D"desktop">
->> >       <id>org.kernel.software.network.ethtool</id>
->> >       <metadata_license>MIT</metadata_license>
->> >       <name>ethtool</name>
->> >       <summary>display or change Ethernet device settings</summary>
->> >       <description>
->> >         <p>ethtool can be used to query and change settings such as sp=
-eed,
->> >         auto- negotiation and checksum offload on many network devices=
-,
->> >         especially Ethernet devices.</p>
->> >
->> >     The correct component type should be "console-application".[1]
->> >
->> >     Alternative solution would be removing the whole metainfo file.
->> >
->> >     Please see our (Fedora) downstream ticket for more information:
->> >     https://bugzilla.redhat.com/show_bug.cgi?id=3D2359069
->> >
->> >     Regards,
->> >     Daniel Rusek
->> >
->> >     [1] https://freedesktop.org/software/appstream/docs/
->> >     sect-Metadata-ConsoleApplication.html or https://freedesktop.org/s=
-oftware/
->> >     appstream/docs/chap-Metadata.html#sect-Metadata-GenericComponent
-
---000000000000ee581006328668e7
-Content-Type: text/xml; charset="US-ASCII"; 
-	name="org.kernel.software.network.ethtool.metainfo.xml"
-Content-Disposition: attachment; 
-	filename="org.kernel.software.network.ethtool.metainfo.xml"
-Content-Transfer-Encoding: base64
-Content-ID: <f_m9d8bikp0>
-X-Attachment-Id: f_m9d8bikp0
-
-PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPGNvbXBvbmVudCB0eXBlPSJj
-b25zb2xlLWFwcGxpY2F0aW9uIj4KICA8aWQ+b3JnLmtlcm5lbC5zb2Z0d2FyZS5uZXR3b3JrLmV0
-aHRvb2w8L2lkPgogIDxtZXRhZGF0YV9saWNlbnNlPk1JVDwvbWV0YWRhdGFfbGljZW5zZT4KICA8
-bmFtZT5ldGh0b29sPC9uYW1lPgogIDxzdW1tYXJ5PmRpc3BsYXkgb3IgY2hhbmdlIEV0aGVybmV0
-IGRldmljZSBzZXR0aW5nczwvc3VtbWFyeT4KICA8ZGVzY3JpcHRpb24+CiAgICA8cD5ldGh0b29s
-IGNhbiBiZSB1c2VkIHRvIHF1ZXJ5IGFuZCBjaGFuZ2Ugc2V0dGluZ3Mgc3VjaCBhcyBzcGVlZCwK
-ICAgIGF1dG8tIG5lZ290aWF0aW9uIGFuZCBjaGVja3N1bSBvZmZsb2FkIG9uIG1hbnkgbmV0d29y
-ayBkZXZpY2VzLAogICAgZXNwZWNpYWxseSBFdGhlcm5ldCBkZXZpY2VzLjwvcD4KICA8L2Rlc2Ny
-aXB0aW9uPgogIDx1cmwgdHlwZT0iaG9tZXBhZ2UiPmh0dHBzOi8vd3d3Lmtlcm5lbC5vcmcvcHVi
-L3NvZnR3YXJlL25ldHdvcmsvZXRodG9vbC88L3VybD4KICA8cHJvdmlkZXM+CiAgICA8YmluYXJ5
-PmV0aHRvb2w8L2JpbmFyeT4KICAgIDxtb2RhbGlhcz5wY2k6dipkKnN2KnNkKmJjMDJzYzgwaSo8
-L21vZGFsaWFzPgogIDwvcHJvdmlkZXM+CjwvY29tcG9uZW50Pgo=
---000000000000ee581006328668e7--
