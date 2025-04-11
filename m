@@ -1,142 +1,126 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE50B203716
-	for <netdev@vger.kernel.org>; Fri, 11 Apr 2025 11:19:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C705238C08;
+	Fri, 11 Apr 2025 11:23:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744370394; cv=none; b=jyPyskc8In99s1IHDU/OqKSPWFNHX3sLPQ9rsq6xAY4p3t8HN8q/dPBSBVkNnSAVZFeeDAuPujM27DfQ6FyZGHDk7ekCB0CYbm+JvOtYTnKyW3rRXNkFi/GiGDxIJ58Xjjrcl4DwTjMANezWAYyPYvqycDRifvT7Hay1BDB0Xvg=
+	t=1744370587; cv=none; b=TWcahHpqsgLBQhHrXUwjywal64Pm3sNOTm9d5cIovAbww7HPMxXxjWM6NRGke87pmCnvS3a1Id/Vbf72zOBHoy+dR4Cia0aoXNcUS/mk0LaCXy0G7vgez/ywRj56dRGFb9YgIIK7NrlytUGu8YVuw6zYIJg8I9fEGt9t65Q8q7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744370394; c=relaxed/simple;
-	bh=0r0XdZLQZTKCfWrlvdr3kIJq4bXiXhg9OZrf3YuzUpo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iXWX6mtG/08xVEOjD5MzdqXGUZGlfXqxSxgzXIo64DmiCIRPgJU8vvloKhTHpmJLWEEKdqYTi4K+kvkWd72Oi8H8tLiNA+hEQK6Uxeyk5CkcP7hZ64q/NT1DUNN1pGYxa7cenLqin9pa28sMa5ouYm7B02iW1tD1XZipCkX16z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a2lkDOXj; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1744370587; c=relaxed/simple;
+	bh=cLaRCpsuY1Y9GibZumfX7daXsbuLN+zkYfh+d2mvyUg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bSCsrOX8uxMx5I5faYmbCSPsbiqNPusMvN9yTr2RNgJNJefTlJh4DDOO+ZveB29MzHQ98pFymVuWVESWWunyw5dheKgDeWI6rjAI6kcBQU1bsRV1RIqGqsggEP0ss4F5tkFOOyJNPlpsXhxFY2/aI/KZZUTzxlce9oHPAoDDOjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OGRo+LKC; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a2lkDOXj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744370391;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wzPWtVMosS8yz6213SvlQbIOghMt7zjrea3KyihzWNI=;
-	b=a2lkDOXj0AFt4P9dE18K3g9OlS+7zq1JhtU6ZbWPHIPtcvHMNYxLn2bX7KzrfveOdL+NQp
-	HaRZ6F6ftIXcWuBjW5y+Zti90jZXV5nmNq25EFamt/Z+JOvPIqZbHamo+3AerZMVdmt/nP
-	IgmiRBZUERwz/1o1QxW0WNNkLA3+lYI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-321-afkO1osCNiOUWDbyswIf-A-1; Fri,
- 11 Apr 2025 07:19:48 -0400
-X-MC-Unique: afkO1osCNiOUWDbyswIf-A-1
-X-Mimecast-MFC-AGG-ID: afkO1osCNiOUWDbyswIf-A_1744370386
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1DC2F1800257;
-	Fri, 11 Apr 2025 11:19:46 +0000 (UTC)
-Received: from [10.45.225.124] (unknown [10.45.225.124])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 68B621801A69;
-	Fri, 11 Apr 2025 11:19:40 +0000 (UTC)
-Message-ID: <b7e223bd-d43b-4cdd-9d48-4a1f80a482e8@redhat.com>
-Date: Fri, 11 Apr 2025 13:19:39 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OGRo+LKC"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-54acc0cd458so2097384e87.0;
+        Fri, 11 Apr 2025 04:23:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744370583; x=1744975383; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HT7r3fDuEL1KH751TSC5LDiGn90lVSNqfi4tD94lhmw=;
+        b=OGRo+LKCool8TVJzf6DyiMzR8OuevxHhF13CBdfLlKH+pnw70269xYoie5GzKzWQCq
+         3OjtfJl8ZVpcE/9OsDQAXcaXKqXS85bbhyd7ExU2WpkKsKFWTN1wg3QHYuN8UxIcVKDr
+         /9lbDgY3RuY41MEfqKqrTYgxVl5PUM+57jPFcZVp2GbgqpMSWXMkhU6m3u5ZHXbEGVDc
+         xWHAVlMP6DhHlZreOeUBCxcRyyPbDlC4o68eZN3uqcsAD2jPP6d9WQ11DBxgniAA2KDS
+         qTPHFiSOCYISMEpSjpyfz2LIx7d2Etwh9VFQLBrb/oMXthD8vopGB3szZNxeUn/IGe27
+         DsFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744370583; x=1744975383;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HT7r3fDuEL1KH751TSC5LDiGn90lVSNqfi4tD94lhmw=;
+        b=MfoIjbaLhlEbDEcmBXZId+1+5Ny+4xx6HyfMJXQJ1eydT204FG+EvB3yRo49BqjhBR
+         4tO1x0HpnVDpIif6i+vqbw4+AR9dHNFVK8SpVZo4W/nVOHw72bvMFRJgW8Kl4XcC6dxx
+         jw+U6ulasK0GNpcn2/stD7LeANODI1JtrMAhqyXcGp0Uaz0WtzyOh65AXbiXU3lzXZ7S
+         yf5dbZWAT5DO6fo5yNd9KuFaoFo+6jMXmMkGYP0slpnjfIxoD0Qi+knsXp2tDQFqsZ/s
+         MFlH/5yeeeI/fjgiY06QkYb6GhKndJl+8WVy0tlF3PwuB0s/6ySnF7bNgF9JYNd+qzuT
+         1RhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVKsZ9LwnD4ocrZdD9WigOePz2Sp3YEe4C/c9Vc9agdsapXRh8wMaju8wZViC6HKxZSF4yFQHeu7lseopo=@vger.kernel.org, AJvYcCXd+5exI22wiO+pT+IUFJzKVd7J9EEMcbst//m3ZDnOznhKQcUA45nSQ9mvmX5ObsAx2SlXbht3@vger.kernel.org
+X-Gm-Message-State: AOJu0YzA9PyHSAsYsO5wSbtMvC31a3bWBY4Ab5hsruTMwzOuu1Lgzutd
+	ZPk0KTFwP+i95kbtzWdDWDlwBRU/V/91+c7uCH4yl6ARnU86907Q
+X-Gm-Gg: ASbGncvn1A1ULJgCTt7SSFyY/81ebbRySWY7nEG62akvNDGoc4PU/b7NqdpBsFlskXO
+	ZXj+Z951AcRuHrexDRwWihhoQ+bxs419FcJzp+Qx6BZn8vqVRPiLDhpaYeGbQKjB1wFqG6ww32G
+	WpGSHJONGV5E0306eYcFBwuvAtVmrLfJipk80NZL39TVQSGguBaQzMFGlAp3nrBs3H1FxGxz0zq
+	kWGdmI1fTuwXLNcNH6fMUxNsDhK59KHt1dCSEOD8by6bOGKmPyoE3nOmTFYOqvY//J4vZlLtw3I
+	RPYSutr7JlwK8c/7pC7N+liK2DpEjntFm1e02PzgYM2WICB5BHvR1lY=
+X-Google-Smtp-Source: AGHT+IGYU2dQ+mYo0a/xjnGmMYdyBFO3HCLYch5FmyWp7AJ0fIZL0TPs0HDRDiXOqnfVRTNveTGXrg==
+X-Received: by 2002:a05:6512:4006:b0:549:59d2:9ac0 with SMTP id 2adb3069b0e04-54d452e13d9mr759462e87.47.1744370582988;
+        Fri, 11 Apr 2025 04:23:02 -0700 (PDT)
+Received: from home.paul.comp (paulfertser.info. [2001:470:26:54b:226:9eff:fe70:80c2])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54d3d123469sm407200e87.24.2025.04.11.04.23.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Apr 2025 04:23:02 -0700 (PDT)
+Received: from home.paul.comp (home.paul.comp [IPv6:0:0:0:0:0:0:0:1])
+	by home.paul.comp (8.15.2/8.15.2/Debian-22+deb11u3) with ESMTP id 53BBMx6g006990;
+	Fri, 11 Apr 2025 14:23:00 +0300
+Received: (from paul@localhost)
+	by home.paul.comp (8.15.2/8.15.2/Submit) id 53BBMvM3006989;
+	Fri, 11 Apr 2025 14:22:57 +0300
+Date: Fri, 11 Apr 2025 14:22:57 +0300
+From: Paul Fertser <fercerpav@gmail.com>
+To: kalavakunta.hari.prasad@gmail.com
+Cc: sam@mendozajonas.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        npeacock@meta.com, akozlov@meta.com, hkalavakunta@meta.com
+Subject: Re: [PATCH net-next v3] net: ncsi: Fix GCPS 64-bit member variables
+Message-ID: <Z/j7kdhvMTIt2jgt@home.paul.comp>
+References: <20250410172247.1932-1-kalavakunta.hari.prasad@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/14] mfd: zl3073x: Add components versions register
- defs
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: netdev@vger.kernel.org, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Prathosh Satish <Prathosh.Satish@microchip.com>,
- Lee Jones <lee@kernel.org>, Kees Cook <kees@kernel.org>,
- Andy Shevchenko <andy@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Michal Schmidt <mschmidt@redhat.com>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-References: <20250409144250.206590-1-ivecera@redhat.com>
- <20250409144250.206590-8-ivecera@redhat.com>
- <CAHp75Ve4LO5rB3HLDV5XXMd4SihOQbPZBEZC8i1VY_Nz0E9tig@mail.gmail.com>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <CAHp75Ve4LO5rB3HLDV5XXMd4SihOQbPZBEZC8i1VY_Nz0E9tig@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250410172247.1932-1-kalavakunta.hari.prasad@gmail.com>
 
+Hello Hari,
 
-
-On 10. 04. 25 7:50 odp., Andy Shevchenko wrote:
-> On Wed, Apr 9, 2025 at 5:43 PM Ivan Vecera <ivecera@redhat.com> wrote:
->>
->> Add register definitions for components versions and report them
->> during probe.
+On Thu, Apr 10, 2025 at 10:22:47AM -0700, kalavakunta.hari.prasad@gmail.com wrote:
+> From: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
 > 
-> JFYI: disabling regmap lock (independently of having an additional one
-> or not) is not recommended. With that you actually disable the useful
-> debugging feature of regmap, your device will not be present in the
-> (regmap) debugfs after that.
+> Correct Get Controller Packet Statistics (GCPS) 64-bit wide member
+> variables, as per DSP0222 v1.0.0 and forward specs. The Driver currently
+> collects these stats, but they are yet to be exposed to the user.
+> Therefore, no user impact.
 > 
+> Statistics fixes:
+> Total Bytes Received (byte range 28..35)
+> Total Bytes Transmitted (byte range 36..43)
+> Total Unicast Packets Received (byte range 44..51)
+> Total Multicast Packets Received (byte range 52..59)
+> Total Broadcast Packets Received (byte range 60..67)
+> Total Unicast Packets Transmitted (byte range 68..75)
+> Total Multicast Packets Transmitted (byte range 76..83)
+> Total Broadcast Packets Transmitted (byte range 84..91)
+> Valid Bytes Received (byte range 204..11)
+> 
+> v2:
+> - __be64 for all 64 bit GCPS counters
+> 
+> v3:
+> - be64_to_cpup() instead of be64_to_cpu()
 
-I will follow Andrew's recommendation:
+Usually the changelog should go after --- so it's not included in the
+final commit message when merged. I hope in this case the maintainers
+will take care of this manually so no need to resend unless they ask
+to.
 
-1st regmap for direct registers (pages 0-9) with config like:
+Other than that,
 
-regmap_config {
-	...
-	.lock = mutex_lock,
-	.unlock = mutex_unlock,
-	.lock_arg = &zl3073x_dev->lock
-	...
-};
+Reviewed-by: Paul Fertser <fercerpav@gmail.com>
 
-2nd regmap for indirect registers (mailboxes) (pages 10-15) with 
-disabled locking:
+Thank you for working on this. I'll be looking forward to your next
+patch where response validation is added.
 
-regmap_config {
-	...
-	.disable_lock = true,
-	...
-};
-
-For direct registers the lock will be handled automatically by regmap 1.
-For indirect registers the lock will be managed explicitly by the driver 
-to ensure atomic access to mailbox.
-
-The range for regmap 1: (registers 0x000-0x4FF)
-regmap_range_cfg {
-	.range_min = 0,
-	.range_max = 10 * 128 - 1, /* 10 pages, 128 registers each */
-	.selector_reg = 0x7f,      /* page selector at each page */
-	.selector_shift = 0,       /* no shift in page selector */
-	.selector_mask = GENMASK(3, 0),	/* 4 bits for page sel */
-	.window_start = 0,         /* 128 regs from 0x00-0x7f */
-	.window_len = 128,
-};
-
-The range for regmap 2: (registers 0x500-0x77F)
-regmap_range_cfg {
-	.range_min = 10 * 128,
-	.range_max = 15 * 128 - 1, /* 5 pages, 128 registers each */
-	.selector_reg = 0x7f,      /* page selector at each page */
-	.selector_shift = 0,       /* no shift in page selector */
-	.selector_mask = GENMASK(3, 0),	/* 4 bits for page sel */
-	.window_start = 0,         /* 128 regs from 0x00-0x7f */
-	.window_len = 128,
-};
-
-Is it now OK?
-
-Thanks,
-Ivan
-
+BTW, have you already discussed how exactly you plan to expose the
+statistics to the userspace, is that something that should end up
+visible via e.g. `ethtool -S eth0 --groups nc-si` ?
