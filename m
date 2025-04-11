@@ -1,61 +1,137 @@
-Received: from vuizook.err.no (vuizook.err.no [178.255.151.162])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1004027450
-	for <netdev@vger.kernel.org>; Fri, 11 Apr 2025 14:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.255.151.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BFD1F4168
+	for <netdev@vger.kernel.org>; Fri, 11 Apr 2025 14:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744382252; cv=none; b=t7s8bEncm3xRewBQnfexpN29TgvAIl6oSK3Tq3ransOhd4BSCMv71AqYscooiBcSY93IkCCUDf343uifr4awzRNMZQAjfYpMYHu2DOPoxJHpz9Thzgg1vPi7UrUJ0Ts+Z0hgFtVg3oSZ+eNUo5O3UgvPu3QVliVnnMWASdW1qOY=
+	t=1744382339; cv=none; b=Gtf3QslrLbJehwZw2dxZRipjsKTuNPN2zKlUv0pnSwzEQHqOrTNSYdM4dT+IAgC65lQt+I/BBmh2ZXc7runDgDJFN3LaHFC9lXeUs/T00geDcLnsiJUagdSkBIrKOsUJu7fV6VlgOwcgy239TtIyRolMbauMMJ+JOEqt8TE3CuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744382252; c=relaxed/simple;
-	bh=kANKDkRH8Ld7qfR36oZEthE/EaflR+xeNMOx1e/3CC8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GqPQuUcdrf7RX5dr7IlLuIaDvKUvzQESWC1yEhEc+/RA9k2nEQ3EJoLK4NgLkcD4kiGq9TkJgzbvQXpOgwPBm3uDMHt+sBi+6kSj5oQDdS+6BZXNrrTsX2IbMjKPCtXOUY2Ab4rzqFbzoAxdS6eIWSa//CF2STsqCAuNLZDIboc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hungry.com; spf=none smtp.mailfrom=hungry.com; arc=none smtp.client-ip=178.255.151.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hungry.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=hungry.com
-Received: from [2a02:fe1:180:7c00:3cca:aff:fe28:58e0] (helo=hjemme.reinholdtsen.name)
-	by vuizook.err.no with smtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <pere@hungry.com>)
-	id 1u3F2p-00C7Iy-1Z;
-	Fri, 11 Apr 2025 14:07:52 +0000
-Received: (nullmailer pid 1173647 invoked by uid 10001);
-	Fri, 11 Apr 2025 14:07:42 -0000
-From: Petter Reinholdtsen <pere@hungry.com>
-To: AsciiWolf <mail@asciiwolf.com>, Michal Kubecek <mkubecek@suse.cz>
-Cc: netdev@vger.kernel.org, Robert Scheck <fedora@robert-scheck.de>
-Subject: Re: ethtool: Incorrect component type in AppStream metainfo causes
- issues and possible breakages
-In-Reply-To: <CAB-mu-QjxGvBHGzaVmwBpq-0UXALzdSpzcvVQPvyXjFAnxZkqA@mail.gmail.com>
-References: <p3e5khlw5gcofvjnx7whj7y64bwmjy2t7ogu3xnbhlzw7scbl4@3rceiook7pwu>
- <CAB-mu-QjxGvBHGzaVmwBpq-0UXALzdSpzcvVQPvyXjFAnxZkqA@mail.gmail.com>
-Date: Fri, 11 Apr 2025 16:07:41 +0200
-Message-ID: <sa6semeokpe.fsf@hjemme.reinholdtsen.name>
+	s=arc-20240116; t=1744382339; c=relaxed/simple;
+	bh=ohJk3QsHM1JB9lq0IkFIUIWyxmERIi01XFrnAZY3zGs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gqdkIMlm4lOb+PRkBgOlF5Qy9M7G53BwalwouwlfkNIZevQvnqdtRlCFz+Tb3GDWu7SMjWb81Nsox8OleOZXfKAW3ZxWwU2/8APYiSVxLZ5EAlG4+1smYaXaDJf0nbp/0rrJJ6diXX80beuAtTCzl+3nHtDxIn/IhwiubGzjwzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Rb3rTVU7; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Rb3rTVU7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744382336;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8/gT2LiqvF91XS1z32OuHsw8JByYyLEcktwoMVwoN8s=;
+	b=Rb3rTVU7STJLhM5KSDm4WmUlWmoJk1/Fzxm6j1W6c6TNI4w354m6XMNWuFksMkFreb/ky2
+	pvVN2V/aN+CyMmm59quw2C43lZaV0kviSoGmn8F6xMxksCkhznu7GIYaWxjdYTykhSsul6
+	e3k4DeL/EvDZ8Sa8kSsFyqZepcmK+lk=
+Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com
+ [209.85.160.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-644-7OF1EW7dPgGAVVhwMZDjRA-1; Fri, 11 Apr 2025 10:38:55 -0400
+X-MC-Unique: 7OF1EW7dPgGAVVhwMZDjRA-1
+X-Mimecast-MFC-AGG-ID: 7OF1EW7dPgGAVVhwMZDjRA_1744382335
+Received: by mail-oa1-f71.google.com with SMTP id 586e51a60fabf-2c233ba182cso603283fac.0
+        for <netdev@vger.kernel.org>; Fri, 11 Apr 2025 07:38:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744382334; x=1744987134;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8/gT2LiqvF91XS1z32OuHsw8JByYyLEcktwoMVwoN8s=;
+        b=vRohPxhtE0XahFajjHxfXPob8hjRBVLSj/QBZCum39SXK9ldMZlKDVpMsU7Hei+x/p
+         x9chdwf9XZFvkqlT1E6W90dmLmVMQBw3jTBiFM9D9G+qm1ilEny7X+lJo6tbCwt9AByu
+         WWXGbC9PzS5HBJuVzb5KEM1IcmwBiwYk+QGN0pDqvyOaU7W6KcF8Ry3fbm7B5PjIN70G
+         dtnIEFZx+t4hyIhsMniXue6/Sb9hRAq63nAFKgchQMJS9X5UleyDxYxdorFS9z44B+ZI
+         p/OR8UyaIYoe6DqENDx4+VJ3AGu/6ouY1A9xCd6CzMQq8liCpYaVGy+3eJcrR70UNTXn
+         Bv2A==
+X-Forwarded-Encrypted: i=1; AJvYcCXoEHQRTc9HydX+XSCtF+JcFy1M7bW4cKJvlL4FQ5G9tCJaKqICZ87/8DS4pWEiiBDt07VWYz0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJeLo95CxB9CUTGiAeOaPbmIJ8acZ9O3CBuywtMDQRBPuALCLU
+	d1wQHgL8/AOqyrZjnj4NBurOZ5p7jVWycX4ucz2c+ySjNFNLOtaO28mqz7Cqn8UC7L0ocQIGoM6
+	er/bwSHTTewR1v+4AcYTQio6f62TIUJM18knWFXj8nqOQ9R7CVlnIbTlWfSnp/iE9Ws+CwVVCao
+	8VRy6BvTLtk+kaShxE45ccdCwLWgjNqBicitH+
+X-Gm-Gg: ASbGncsMHJWbVcUUfhueb8rQLLs9AwVmIW1oKgQcTTdjMebEKWg2C4zpBI19a7I685U
+	iE+06KDgaD33WT6SCCshr0Tt1W2zH7fXQhjoSvdvjyC8fkKKO9r0JMVMkiZbRhT8Jc5E=
+X-Received: by 2002:a05:6871:7420:b0:297:276e:7095 with SMTP id 586e51a60fabf-2d0d5f8c00amr688033fac.11.1744382333820;
+        Fri, 11 Apr 2025 07:38:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGZ40FSxApw5yS1+TbnTIpuzdl8qJ1ag6yfohHYzJ0JscM4meYKAlkqxF6dxd7SQMlRn7hemIvUqcEzCGQm9QA=
+X-Received: by 2002:a05:6871:7420:b0:297:276e:7095 with SMTP id
+ 586e51a60fabf-2d0d5f8c00amr688018fac.11.1744382333556; Fri, 11 Apr 2025
+ 07:38:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250409144250.206590-1-ivecera@redhat.com> <20250411072616.GU372032@google.com>
+ <CADEbmW1XBDT39Cs5WcAP_GHJ+4_CTdgFA4yoyiTTnJfC7M2YVQ@mail.gmail.com>
+In-Reply-To: <CADEbmW1XBDT39Cs5WcAP_GHJ+4_CTdgFA4yoyiTTnJfC7M2YVQ@mail.gmail.com>
+From: Michal Schmidt <mschmidt@redhat.com>
+Date: Fri, 11 Apr 2025 16:38:41 +0200
+X-Gm-Features: ATxdqUE1g8MGxUwcCJZuvbWj2uUxcIOOQXjW4BwHw2sCBCCuDYcjVEft3WRWQUo
+Message-ID: <CADEbmW0CTTCXjasu2yGJt_Qe2=wH5-Vp+TtbUxxDNaCN49Ev9g@mail.gmail.com>
+Subject: Re: [PATCH v2 00/14] Add Microchip ZL3073x support (part 1)
+To: Lee Jones <lee@kernel.org>
+Cc: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org, 
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, Jiri Pirko <jiri@resnulli.us>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Prathosh Satish <Prathosh.Satish@microchip.com>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[AsciiWolf]
-> Sure,
+On Fri, Apr 11, 2025 at 4:27=E2=80=AFPM Michal Schmidt <mschmidt@redhat.com=
+> wrote:
+> On Fri, Apr 11, 2025 at 9:26=E2=80=AFAM Lee Jones <lee@kernel.org> wrote:
+> > On Wed, 09 Apr 2025, Ivan Vecera wrote:
+> > > Add support for Microchip Azurite DPLL/PTP/SyncE chip family that
+> > > provides DPLL and PTP functionality. This series bring first part
+> > > that adds the common MFD driver that provides an access to the bus
+> > > that can be either I2C or SPI.
+> > > [...]
+> >
+> > Not only are all of the added abstractions and ugly MACROs hard to read
+> > and troublesome to maintain, they're also completely unnecessary at thi=
+s
+> > (driver) level.  Nicely authored, easy to read / maintain code wins ove=
+r
+> > clever code 95% of the time.
 >
-> I will take a look at this later today.
+> Hello Lee,
+>
+> IMHO defining the registers with the ZL3073X_REG*_DEF macros is both
+> clever and easy to read / maintain. On one line I can see the register
+> name, size and address. For the indexed registers also their count and
+> the stride. It's almost like looking at a datasheet. And the
+> type-checking for accessing the registers using the correct size is
+> nice. I even liked the paranoid WARN_ON for checking the index
+> overflows.
+>
+> The weak point is the non-obvious usage in call sites. Seeing:
+>   rc =3D zl3073x_read_id(zldev, &id);
+> can be confusing. One will not find the function with cscope or grep.
+> Nothing immediately suggests that there's macro magic behind it.
+> What if usage had to be just slightly more explicit?:
+>   rc =3D ZL3073X_READ(id, zldev, &id);
+>
+> I could immediately see that ZL3073X_READ is a macro. Its definition
+> would be near the definitions of the ZL3073X_REG*_DEF macros, so I
+> could correctly guess these things are related.
+> The 1st argument of the ZL3073X_READ macro is the register name.
+> (There would be a ZL3073X_READ_IDX with one more argument for indexed
+> registers.)
+> In vim, having the cursor on the 1st argument (id) and pressing gD
+> takes me to the corresponding ZL3073X_REG16_DEF line.
+>
+> Would it still be too ugly in your view?
 
-This is my cut-n-paste error.  The reporter is absolutely correct that
-the component type should not be desktop as there is no .destop file
-associated with the package.
+And if having "id" as both the register name and the local variable
+name is irritating, the registers can get a prefix, e.g. the register
+name could be defined as REG_id.
 
-The quick and actually working fix is to replace '<component
-type="desktop">' with '<component>'.  A more correct entry would be to
-use '<component type="console-application">', but at least on Debian
-these two are equivalent.
+Michal
 
-I am terribly sorry for not noticing when I sent the original patch.
-
--- 
-Happy hacking
-Petter Reinholdtsen
