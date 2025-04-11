@@ -1,91 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D36F1CA84
-	for <netdev@vger.kernel.org>; Fri, 11 Apr 2025 02:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06BC27932A
+	for <netdev@vger.kernel.org>; Fri, 11 Apr 2025 02:17:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744337430; cv=none; b=rlaGW5kHlcDEHN503Jy+T8fMw8L+nirSxnr2NmfzDtu7rPt0u99gpEozZRSKTCp2gUPO5qvvjoFmPxL7HTVzEA4vdIlGOpVtcPiFDMm8YUuilejIPp7pCfFASl1wVVDrIv+HXXaSrFoqaST0Dfki7RjyWJZhGTHAWsSxzoK/2WQ=
+	t=1744337860; cv=none; b=ucaenQsoSlIWg/leTUel7VNK8mlCb57suLuwW02BdzNDVwi7sD2jYFmu+Q/rt9llQ8YzXr6vl4QPilJ99WfK9SfkckDgcqHIEbYNVMl6mRq8Aofx2EDNgvf4X7c/M5OU8MmqFAN4QHo4oEbRvwhq6upDC411rKqL2n6R3YubQG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744337430; c=relaxed/simple;
-	bh=cOqmthV/8ltgapeI+DoVZm6PBvaFbwmX5CsNCLwJRHo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iOli8Fg8gPEOLBEaYPlWWNpvZqWfi/WSA5tE58m9ADfsgJn9yAAY1J9wIv5JaMElspv7Ra9bW4haYlBljEGbRvCqW1uVV9bfHGXCntVdeF7V7IsbREYHyVQcVJ18Bfuk8rMs37ZV8mTH+KYydxJW086UM/LhxsFvqz552vLMKUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rUxnZM9l; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rUxnZM9l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6DEC4CEDD;
-	Fri, 11 Apr 2025 02:10:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744337429;
-	bh=cOqmthV/8ltgapeI+DoVZm6PBvaFbwmX5CsNCLwJRHo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rUxnZM9lpcTYLxs2raRJa6gyz0g085MwtyjFOecevyNgkbuABxWO3xuLqPx4Bz/ys
-	 i0ghT6TRj5r9GnvPYvNEP0vzfNoGgmH4s0cML4ITvmIYTU6GcXfQl8cgotVloOamTc
-	 l+a0vVuyxd/FODQut77Y+A14wKDt1g5VXmRjWmh8NoLGoPzqQpKjFASc1PsDG4Ghd0
-	 F3IhKmuLNRiWXPdF19/RcXRdzRuMkkqh6SA455EYyZf9agojWN6c1C6E6r9xHUB6H/
-	 Uz7rpLObcdXgtjBcGzyoELCNuYKZ5wOyFaFvAavsfJu/UL1ygx9KXhSNj8iuUXD7HG
-	 12/URaSZyZnWQ==
-Date: Thu, 10 Apr 2025 19:10:28 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
- <horms@kernel.org>, <hramamurthy@google.com>, <jdamato@fastly.com>,
- <netdev@vger.kernel.org>, <pabeni@redhat.com>, <sdf@fomichev.me>
-Subject: Re: [PATCH net-next v2 6/8] netdev: depend on netdev->lock for xdp
- features
-Message-ID: <20250410191028.31a0eaf2@kernel.org>
-In-Reply-To: <20250410171019.62128-1-kuniyu@amazon.com>
-References: <20250408195956.412733-7-kuba@kernel.org>
-	<20250410171019.62128-1-kuniyu@amazon.com>
+	s=arc-20240116; t=1744337860; c=relaxed/simple;
+	bh=rCwNUhMjQO4zSOp8eCZR5c1yD2ffSdot1jqUoKHbfp4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i1Wo+ugLapzQEySYYnYYF0fb6RUmAnevZ95LxV3OhLO680y1PZC0gArw9/EAp8uRy6WV5oRUbq/6BEXH7mALGMAAM/MSrkgDBXX9OPgsacQIL64UPIMyi+wuU4nx36kxjjh4gJT0QpePYBdU7r2y6FBSpWmOQ1nYdakgZXyuSVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=15.184.224.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: bizesmtpsz7t1744337780tbfb407
+X-QQ-Originating-IP: H+ByFVKiVrppbXyKOIlmKLpL3WrGzdfQij9dS8vhY8Q=
+Received: from wxdbg.localdomain.com ( [220.184.249.159])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 11 Apr 2025 10:16:12 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 5105452606245489037
+EX-QQ-RecipientCnt: 9
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org
+Cc: mengyuanlou@net-swift.com,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v2] net: txgbe: Update module description
+Date: Fri, 11 Apr 2025 10:42:05 +0800
+Message-Id: <20250411024205.332613-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.27.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: ONeCszOCk2GV9GfJLl88X2e6YZeh5IXmY+fM8WZx4031JKTfcF6djCeC
+	/GCxdivWuGXC1CWe8kjmSMdiDnuPCc/QuRBqoTqgbz4XoLA+AEnfNC2w5UcuomXyvw6XtFA
+	VO94WwUJUreY9IVZ3UTd/qqjgXjzXIfJ8rT8+p3ZTVkfGOOwpzON0TYcamDQHcn8LCGR+aB
+	duw7IdTjjH8q67wEKkSxrReMhUr9t+DfqlhjOJHq/SBWBd6AKP7fdUukbqpCZvttUcfsrfT
+	63p8yBZLbWRlNIBFodTBnSJCv72rMB5mdOTKRBq83ny4c78kRJZ2uZrHcpn9on0yAA9JEuc
+	pSsD6VuEEH42euLdMstlo1OEiR2r9AF1XosS5Hgbg6EPTWhNXaHHyKHawZc202LySBUMztg
+	J5Ap82xu2HhOAPBGUW464u+b3fzB/sTVAEuBjccPQ39I9ncqytMIt19Zn5zNDTcHBeERjLO
+	xsBRmQoB0aZuCmGGxrpGEmzEqZlUTtf7B0cLsnkeZswajX2OQceXeqkYuPH6LjB5MHEON8E
+	KESdz5Jl/LoRxS5+IdnMnCwmB0ShlNyKRdOPUJPg2oEPFqw/4Py7srjDo6wUEvEW8dvj9D8
+	m0BMhX2Kj6MCO7BPuCru9LC1fpVIYmCq2SmYZ1LOwzNn+yzScLDjDkSN99JI0vpZtWeG1vb
+	yxFTkm/KV98eRm73vNR1WWOg7+4SDUj8vzd43lbNVYLUimDbe50ib+nRe9v6L+wTaqPOpEA
+	a8vuIUt6wQ2WtdKv7mTQf5YpwZsELug2RWvmKAJX6Zzu8LAb9o3ujYaXSKTpbVizLM42N4C
+	ij9oodMg9gMwFS9rLFKo/w0hHaFsQ2Mpi7VI++brucQ11tbSUaqdRgVkOEAuWrWzwS8MIkx
+	S4aMHiLRerGC4TLJaxXv2/sHn8y9D3TLCPzYoNaBlByvAb347b3rloNpqBbNWP3pSTBHRLN
+	UQU+6isp15cphmWE90iN69Qejm6pze36TsilvoNpp0i4uNSzTeNcNuc/b5Db/v5CBAtkv6w
+	tOW1Yq7qZEikJr0stO
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
+X-QQ-RECHKSPAM: 0
 
-On Thu, 10 Apr 2025 10:10:01 -0700 Kuniyuki Iwashima wrote:
-> syzkaller reported splats in register_netdevice() and
-> unregister_netdevice_many_notify().
-> 
-> In register_netdevice(), some devices cannot use
-> netdev_assert_locked().
-> 
-> In unregister_netdevice_many_notify(), maybe we need to
-> hold ops lock in UNREGISTER as you initially suggested.
-> Now do_setlink() deadlock does not happen.
+Because of the addition of support for 25G/40G devices, update the module
+description.
 
-Ah...  Thank you.
+Fixes: 2e5af6b2ae85 ("net: txgbe: Add basic support for new AML devices")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+v2:
+ - post for net-next
+ - sort device speeds from the slowest
+---
+ drivers/net/ethernet/wangxun/Kconfig            | 4 ++--
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-Do you have a reference to use as Reported-by, or its from a
-non-public instance ?
-
-I'll test this shortly:
-
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index b64c614a00c4..891e2f60922f 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -38,7 +38,8 @@ netdev_nl_dev_fill(struct net_device *netdev, struct sk_buff *rsp,
-        u64 xdp_rx_meta = 0;
-        void *hdr;
+diff --git a/drivers/net/ethernet/wangxun/Kconfig b/drivers/net/ethernet/wangxun/Kconfig
+index 47e3e8434b9e..e5fc942c28cc 100644
+--- a/drivers/net/ethernet/wangxun/Kconfig
++++ b/drivers/net/ethernet/wangxun/Kconfig
+@@ -40,7 +40,7 @@ config NGBE
+ 	  will be called ngbe.
  
--       netdev_assert_locked(netdev); /* note: rtnl_lock may not be held! */
-+       /* note: rtnl_lock may or may not be held! */
-+       netdev_assert_locked_or_invisible(netdev);
+ config TXGBE
+-	tristate "Wangxun(R) 10GbE PCI Express adapters support"
++	tristate "Wangxun(R) 10/25/40GbE PCI Express adapters support"
+ 	depends on PCI
+ 	depends on COMMON_CLK
+ 	depends on I2C_DESIGNWARE_PLATFORM
+@@ -55,7 +55,7 @@ config TXGBE
+ 	select PCS_XPCS
+ 	select LIBWX
+ 	help
+-	  This driver supports Wangxun(R) 10GbE PCI Express family of
++	  This driver supports Wangxun(R) 10/25/40GbE PCI Express family of
+ 	  adapters.
  
-        hdr = genlmsg_iput(rsp, info);
-        if (!hdr)
-@@ -966,7 +967,9 @@ static int netdev_genl_netdevice_event(struct notifier_block *nb,
-                netdev_genl_dev_notify(netdev, NETDEV_CMD_DEV_ADD_NTF);
-                break;
-        case NETDEV_UNREGISTER:
-+               netdev_lock(netdev);
-                netdev_genl_dev_notify(netdev, NETDEV_CMD_DEV_DEL_NTF);
-+               netdev_unlock(netdev);
-                break;
-        case NETDEV_XDP_FEAT_CHANGE:
-                netdev_genl_dev_notify(netdev, NETDEV_CMD_DEV_CHANGE_NTF);
+ 	  More specific information on configuring the driver is in
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index 6d9134a3ce4d..db5166a6db2c 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -849,5 +849,5 @@ module_pci_driver(txgbe_driver);
+ 
+ MODULE_DEVICE_TABLE(pci, txgbe_pci_tbl);
+ MODULE_AUTHOR("Beijing WangXun Technology Co., Ltd, <software@trustnetic.com>");
+-MODULE_DESCRIPTION("WangXun(R) 10 Gigabit PCI Express Network Driver");
++MODULE_DESCRIPTION("WangXun(R) 10/25/40 Gigabit PCI Express Network Driver");
+ MODULE_LICENSE("GPL");
+-- 
+2.27.0
+
