@@ -1,41 +1,35 @@
-Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06BC27932A
-	for <netdev@vger.kernel.org>; Fri, 11 Apr 2025 02:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4216979FE;
+	Fri, 11 Apr 2025 02:19:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744337860; cv=none; b=ucaenQsoSlIWg/leTUel7VNK8mlCb57suLuwW02BdzNDVwi7sD2jYFmu+Q/rt9llQ8YzXr6vl4QPilJ99WfK9SfkckDgcqHIEbYNVMl6mRq8Aofx2EDNgvf4X7c/M5OU8MmqFAN4QHo4oEbRvwhq6upDC411rKqL2n6R3YubQG4=
+	t=1744337996; cv=none; b=MCiW6yImMKty7sEiA30tGxNL5IjSPUSBFmacu6M4odjHeNOhcF+KHYx8yixS8GseWFFn4NLMC0vPGzbPwr8tKUYcjNg7Xc7rdgqHvyvX9y6APoNWPjcKrDhXggQvdQoxSc1vfOof5BWuRMGvDcTIKb1UVA6JZCg2uUlLLy+CDwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744337860; c=relaxed/simple;
-	bh=rCwNUhMjQO4zSOp8eCZR5c1yD2ffSdot1jqUoKHbfp4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i1Wo+ugLapzQEySYYnYYF0fb6RUmAnevZ95LxV3OhLO680y1PZC0gArw9/EAp8uRy6WV5oRUbq/6BEXH7mALGMAAM/MSrkgDBXX9OPgsacQIL64UPIMyi+wuU4nx36kxjjh4gJT0QpePYBdU7r2y6FBSpWmOQ1nYdakgZXyuSVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=15.184.224.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: bizesmtpsz7t1744337780tbfb407
-X-QQ-Originating-IP: H+ByFVKiVrppbXyKOIlmKLpL3WrGzdfQij9dS8vhY8Q=
-Received: from wxdbg.localdomain.com ( [220.184.249.159])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 11 Apr 2025 10:16:12 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 5105452606245489037
-EX-QQ-RecipientCnt: 9
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org
-Cc: mengyuanlou@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v2] net: txgbe: Update module description
-Date: Fri, 11 Apr 2025 10:42:05 +0800
-Message-Id: <20250411024205.332613-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.27.0
+	s=arc-20240116; t=1744337996; c=relaxed/simple;
+	bh=KUwvqFhp8mTd/YitduDkeSaDNuxw+0O2a8gk+MMEFsg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=OMo0j81o53Xa2aG/rSCN/SddO47XBLQnVnKGQPRfoHl16VbBum56YmGLQLg+gzS4LAD2TRtT/rZ18M4VG1jtWuvGCA6e9BG4uysM+pSAfx3nGwgaU3jfDZM1RqCMWOHr42LR/ISxBFmjFkDa1gaAgAV14oiggUKj29io0ZZmhPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C50kw5k7; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C50kw5k7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E357C4CEDD;
+	Fri, 11 Apr 2025 02:19:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744337995;
+	bh=KUwvqFhp8mTd/YitduDkeSaDNuxw+0O2a8gk+MMEFsg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=C50kw5k7czirudNsT+k50a43aC9yLL1IXhVw1z57zlEw4P7HgFW7AUglydT1+EH/6
+	 1S2c7wy78dXrxYOEkrkbx0ljskOanbaEfX6jTB6o/t2/gWlzZWaO0cq2E7CzIv8DoI
+	 cUMlCfYuBRLV8aR7xvGYUFaQx8YmKBFaCam/gXR1/ks3wM8FW43SK6hg86qdVUs3d/
+	 7NAEls28S8Rjw9n3XBfGmWwEpw4r7WCZLwp7lgdMAc4Qqwc7h45ffvizF5Hvj2oFyN
+	 DJ4TaZe3yWFPHo4L3KbTPjq4P/cfCJrhSO+kAqKq8c+Pc1rRTGGTWv7pgvy/1Ti8Ac
+	 LIKeghmg/bfFw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70ED3380CEF4;
+	Fri, 11 Apr 2025 02:20:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,74 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: ONeCszOCk2GV9GfJLl88X2e6YZeh5IXmY+fM8WZx4031JKTfcF6djCeC
-	/GCxdivWuGXC1CWe8kjmSMdiDnuPCc/QuRBqoTqgbz4XoLA+AEnfNC2w5UcuomXyvw6XtFA
-	VO94WwUJUreY9IVZ3UTd/qqjgXjzXIfJ8rT8+p3ZTVkfGOOwpzON0TYcamDQHcn8LCGR+aB
-	duw7IdTjjH8q67wEKkSxrReMhUr9t+DfqlhjOJHq/SBWBd6AKP7fdUukbqpCZvttUcfsrfT
-	63p8yBZLbWRlNIBFodTBnSJCv72rMB5mdOTKRBq83ny4c78kRJZ2uZrHcpn9on0yAA9JEuc
-	pSsD6VuEEH42euLdMstlo1OEiR2r9AF1XosS5Hgbg6EPTWhNXaHHyKHawZc202LySBUMztg
-	J5Ap82xu2HhOAPBGUW464u+b3fzB/sTVAEuBjccPQ39I9ncqytMIt19Zn5zNDTcHBeERjLO
-	xsBRmQoB0aZuCmGGxrpGEmzEqZlUTtf7B0cLsnkeZswajX2OQceXeqkYuPH6LjB5MHEON8E
-	KESdz5Jl/LoRxS5+IdnMnCwmB0ShlNyKRdOPUJPg2oEPFqw/4Py7srjDo6wUEvEW8dvj9D8
-	m0BMhX2Kj6MCO7BPuCru9LC1fpVIYmCq2SmYZ1LOwzNn+yzScLDjDkSN99JI0vpZtWeG1vb
-	yxFTkm/KV98eRm73vNR1WWOg7+4SDUj8vzd43lbNVYLUimDbe50ib+nRe9v6L+wTaqPOpEA
-	a8vuIUt6wQ2WtdKv7mTQf5YpwZsELug2RWvmKAJX6Zzu8LAb9o3ujYaXSKTpbVizLM42N4C
-	ij9oodMg9gMwFS9rLFKo/w0hHaFsQ2Mpi7VI++brucQ11tbSUaqdRgVkOEAuWrWzwS8MIkx
-	S4aMHiLRerGC4TLJaxXv2/sHn8y9D3TLCPzYoNaBlByvAb347b3rloNpqBbNWP3pSTBHRLN
-	UQU+6isp15cphmWE90iN69Qejm6pze36TsilvoNpp0i4uNSzTeNcNuc/b5Db/v5CBAtkv6w
-	tOW1Yq7qZEikJr0stO
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
-X-QQ-RECHKSPAM: 0
+Subject: Re: [PATCH v2] usbnet: asix AX88772: leave the carrier control to phylink
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174433803326.3928161.3907087956360057086.git-patchwork-notify@kernel.org>
+Date: Fri, 11 Apr 2025 02:20:33 +0000
+References: <m3plhmdfte.fsf_-_@t19.piap.pl>
+In-Reply-To: <m3plhmdfte.fsf_-_@t19.piap.pl>
+To: =?utf-8?q?Krzysztof_Ha=C5=82asa_=3Ckhalasa=40piap=2Epl=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: o.rempel@pengutronix.de, netdev@vger.kernel.org, oneukum@suse.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, jtornosm@redhat.com, ming.lei@redhat.com
 
-Because of the addition of support for 25G/40G devices, update the module
-description.
+Hello:
 
-Fixes: 2e5af6b2ae85 ("net: txgbe: Add basic support for new AML devices")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
-v2:
- - post for net-next
- - sort device speeds from the slowest
----
- drivers/net/ethernet/wangxun/Kconfig            | 4 ++--
- drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-diff --git a/drivers/net/ethernet/wangxun/Kconfig b/drivers/net/ethernet/wangxun/Kconfig
-index 47e3e8434b9e..e5fc942c28cc 100644
---- a/drivers/net/ethernet/wangxun/Kconfig
-+++ b/drivers/net/ethernet/wangxun/Kconfig
-@@ -40,7 +40,7 @@ config NGBE
- 	  will be called ngbe.
- 
- config TXGBE
--	tristate "Wangxun(R) 10GbE PCI Express adapters support"
-+	tristate "Wangxun(R) 10/25/40GbE PCI Express adapters support"
- 	depends on PCI
- 	depends on COMMON_CLK
- 	depends on I2C_DESIGNWARE_PLATFORM
-@@ -55,7 +55,7 @@ config TXGBE
- 	select PCS_XPCS
- 	select LIBWX
- 	help
--	  This driver supports Wangxun(R) 10GbE PCI Express family of
-+	  This driver supports Wangxun(R) 10/25/40GbE PCI Express family of
- 	  adapters.
- 
- 	  More specific information on configuring the driver is in
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index 6d9134a3ce4d..db5166a6db2c 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -849,5 +849,5 @@ module_pci_driver(txgbe_driver);
- 
- MODULE_DEVICE_TABLE(pci, txgbe_pci_tbl);
- MODULE_AUTHOR("Beijing WangXun Technology Co., Ltd, <software@trustnetic.com>");
--MODULE_DESCRIPTION("WangXun(R) 10 Gigabit PCI Express Network Driver");
-+MODULE_DESCRIPTION("WangXun(R) 10/25/40 Gigabit PCI Express Network Driver");
- MODULE_LICENSE("GPL");
+On Tue, 08 Apr 2025 13:59:41 +0200 you wrote:
+> ASIX AX88772B based USB 10/100 Ethernet adapter doesn't come
+> up ("carrier off"), despite the built-in 100BASE-FX PHY positive link
+> indication. The internal PHY is configured (using EEPROM) in fixed
+> 100 Mbps full duplex mode.
+> 
+> The primary problem appears to be using carrier_netif_{on,off}() while,
+> at the same time, delegating carrier management to phylink. Use only the
+> latter and remove "manual control" in the asix driver.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v2] usbnet: asix AX88772: leave the carrier control to phylink
+    https://git.kernel.org/netdev/net-next/c/4145f00227ee
+
+You are awesome, thank you!
 -- 
-2.27.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
