@@ -1,136 +1,97 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923AA33F6;
-	Sat, 12 Apr 2025 09:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCED1F92E
+	for <netdev@vger.kernel.org>; Sat, 12 Apr 2025 09:35:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744449790; cv=none; b=cch1jz5km5oIv5h4HdhM67/+RP1dUi84za7mVR8p61YEL2/1k6G1Em7cFuhOCJ/GM4fFXRgisGWC/dvO+AHA2KWbxg9z1+Iiy/sdUUP4avjahrv4yHdM0VIrOMSNLTpde0MBdgarJjUjVhk0Yqdqx/YM61GtHgg7chQ4QPgl0D0=
+	t=1744450512; cv=none; b=V7iY8qV7CfS0tlccaFGoA8t7gfoC5kEWWLzFA5nTJnWd6nkuiPf8+JM30Mge9Sf5SvmbvFIA/Bv2sQHTr1c55Gnzzmlz4dnQidVDMi6TWQxERB/91jgz3itBq8bnaiy+GV8fnp3dvXl8lRkb9eXLx0zj/j6rAhAA+Q/A8tRaLqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744449790; c=relaxed/simple;
-	bh=PyHtxqdvzJpDkiGKGKlbzxVr6AnLaJq1JdOhGC2eDGY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NxzCLDJTgt/B/So/Vj7RcrvCBCijzWUjQmI0o/AVXtMfaneBXK+bp0FbUu7UPP6dNOsSXYe++hWWyrxEC8d2XWbuNXiW14LLHWyH3Rp/sg5SsdxmTKurA4gT/Q2bqPcMmD3nsz/GJJ+1UWs3LXxUPeBIiZ3wFY+FFBwgAlIOpk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VGo/G8Ik; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744450512; c=relaxed/simple;
+	bh=KRM94i2mjkyw8ENn/r/OgWcerfbDk88X+dglh2v8jpM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=tfngYs3Hi+z7ZqPEQYl7o0dngJ/u8QAXLkfY5lIn4shyXzvT0RusfSj8NLHShCuevZHqyG8ze1ZKmhbPSgn9+9sAwVKAqTBG0Jdol6OF/O2/kVsebeSJRZ1i7kT5TtiD1XDM93pEoESqam2nqFT1AkopxgLBNoJ2L8l3w+47WSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=k0KAIMTn; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VGo/G8Ik"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43cf3192f3bso28108155e9.1;
-        Sat, 12 Apr 2025 02:23:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744449787; x=1745054587; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vP8+nS29EeEt4QYMObmQEzs8JougkVOmBsA4oHck4vI=;
-        b=VGo/G8IkHRVNRqcDqtjJnIH2zBxwUEtPtz9/wenB+Gs89/zRdCGNY7U8UXJn9Pyh1R
-         JCb+maQKXVF1H/79giNmQokIWwm9LRz2Ui8deTWP95tH7UcpmB7ojnEa/+4V818sX73a
-         y/1ZLpq7WeRub7f6l+pCE0s3xH8CKDEy0c5T5B9QGa2YPylRfwZgzkwymtfGuQFkLxHQ
-         lngKOrWSNy+j2/di+w13j+eKt8igWjcmFSvSW0UJ6qRqbmxXwKFGYaOKLD7Qd6sl0Jyy
-         1zqaNKnYUVOovmOfMuiBGFwwziUcFs4aK3NJIU2EaQy6YKnT+AUsVxTJnslitby4BUZt
-         2vFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744449787; x=1745054587;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vP8+nS29EeEt4QYMObmQEzs8JougkVOmBsA4oHck4vI=;
-        b=o7XmZX/elIe9S37cjTf+kT4FbB2ZqBVA70qqNttbFYws/yOuu0inD9sHthedKAJ+6n
-         eD8jF8uzYsjizoGEXoG2IXyHIVUhfJPgbbStJhIDgClNoti5BW6QPLWgjvbJN4JBXxxn
-         xFNBTgvwY3POaQDvXi6gAUgmBzAVUR2mte1VJYrvugPi9T/CXX15a5XO6sY3NDkWqfEJ
-         sPum6z4XGgsspDgpNkes7PeJhgYeY3ASupQpDR+k7SNKK8MKx5zw3PwbPE8XZmmxq4pM
-         VkFXLoaRiWH51VEd6+fdad2TVZz4uRr5UUKhipDD713We2+sjC7hBhhRgMcJ8b/dOhFu
-         G/Ig==
-X-Forwarded-Encrypted: i=1; AJvYcCXP/XwYMM9xUdjEgTDrDju1QRD3AvthwtdUPB/MtFWPtSCSSA4XBdK9RrLMD5G68H85CdLHVuyW@vger.kernel.org, AJvYcCXrnMU5qjeIVaZvUz389cOr4ZUUULStBASBhnmU2NavRolL4KEDZCpBJcHHnbI46/4T5j5DalvV7RtLYRs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJR5ow4/dGoGuFV/UxqEd1Q5JIIEzxzMnktyyE8ElhACwb4rHf
-	hxmnwDZA0LKhFQrvHshG+IvSK0BWGxIVX5LrDzdCgDj4f2H5zqkU
-X-Gm-Gg: ASbGncvG9i80GR5XYhtnV8PyBwGOP6jlo5UCA2k40R8g1VYkb6XVbakHPAdAk6QQdVu
-	JaWQeRhqfsAgmx4PB4lQYqgPgb39d0HyRPOu71LJ7OFgNa/R35rcXgIpvbzQhKtT1Rr9fL4Yzzf
-	PhW+zFo7a/oUYCVeo2XmQZaBx63bsJ4Dl+RWvgCSCT72nxMjXV9u8B/Zqqrc7h2j5b2QmDvn1dp
-	xbWq34CQakcwekpIQyXx08BMJfjdpbbMBHbE0WrbQ0/Pyy4XeKrwY82IacXWRBEEQB6C3VvDaJX
-	jGOOYhpdsrWLJfrfDnpm1hnJzbbHL5H+Z88XXCb0K7ro0NVtekK2erelS5lV3rc9c/tPcwIGbGD
-	b4X4=
-X-Google-Smtp-Source: AGHT+IEdvyQBBmM+g9GNjxWlarB7rYN6lH8hVFAsGG/oIntQEo2K2905CeEol3l2b14ckD4up/jsKw==
-X-Received: by 2002:a05:600c:1d93:b0:43c:e8a5:87a with SMTP id 5b1f17b1804b1-43f3a95bcfbmr61779245e9.16.1744449786503;
-        Sat, 12 Apr 2025 02:23:06 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f233c7a68sm108921695e9.19.2025.04.12.02.23.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Apr 2025 02:23:05 -0700 (PDT)
-Date: Sat, 12 Apr 2025 10:23:04 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Paul Fertser <fercerpav@gmail.com>
-Cc: kalavakunta.hari.prasad@gmail.com, sam@mendozajonas.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, npeacock@meta.com, akozlov@meta.com,
- hkalavakunta@meta.com
-Subject: Re: [PATCH net-next v2] net: ncsi: Fix GCPS 64-bit member variables
-Message-ID: <20250412102304.3f74738c@pumpkin>
-In-Reply-To: <Z/eiki2mlBiAeBrc@home.paul.comp>
-References: <20250410012309.1343-1-kalavakunta.hari.prasad@gmail.com>
-	<Z/eiki2mlBiAeBrc@home.paul.comp>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="k0KAIMTn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=73zpcZNzKe8FYfTe+3EaL4lfP342rNv4xALU1Mdg9ZI=; b=k0KAIMTnhYWnkciA3DJxXWVNqJ
+	8cAMrVPgalWOqaiY5qYM13rKcaMn3IzWJrGZG72VO8QuZL3YZVzjY2h4nTp0diSeYT14aEvWxjdAK
+	TaansuIYENUC6QqjdfHH4SAIbndzr1jDW3wtghGXt8bNpZk3zGYt/CG7/fuHgNUryHrk0LM+5Agl5
+	/RdGzml4jqvR+tW+xi8qb/HnyGeMdq9tkHgmptIiqynbMJJx0qMphLii7hHpnarZCzpAXMmsyrByR
+	0ghvTQZSlp1QGZozy6iG38tJBEJYFwzTq1H8cUm1TuVK2VzPU4PNRj+pJgpPwni4AJ9S0HMNwQZR6
+	cj4Mdd8g==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43880)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1u3XGM-0004QK-0B;
+	Sat, 12 Apr 2025 10:34:58 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1u3XGG-0005Yi-1k;
+	Sat, 12 Apr 2025 10:34:52 +0100
+Date: Sat, 12 Apr 2025 10:34:52 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Jon Hunter <jonathanh@nvidia.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH net-next 0/3] net: stmmac: fix setting RE and TE
+ inappropriately
+Message-ID: <Z/ozvMMoWGH9o6on@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu, 10 Apr 2025 13:50:58 +0300
-Paul Fertser <fercerpav@gmail.com> wrote:
+Hi,
 
-> Hello Hari,
-> 
-> Thank you for the patch, it looks really clean. However I have one
-> more question now.
-> 
-> On Wed, Apr 09, 2025 at 06:23:08PM -0700, kalavakunta.hari.prasad@gmail.com wrote:
-> > @@ -290,11 +289,11 @@ struct ncsi_rsp_gcps_pkt {
-> >  	__be32                  tx_1023_frames; /* Tx 512-1023 bytes frames   */
-> >  	__be32                  tx_1522_frames; /* Tx 1024-1522 bytes frames  */
-> >  	__be32                  tx_9022_frames; /* Tx 1523-9022 bytes frames  */
-> > -	__be32                  rx_valid_bytes; /* Rx valid bytes             */
-> > +	__be64                  rx_valid_bytes; /* Rx valid bytes             */
-> >  	__be32                  rx_runt_pkts;   /* Rx error runt packets      */
-> >  	__be32                  rx_jabber_pkts; /* Rx error jabber packets    */
-> >  	__be32                  checksum;       /* Checksum                   */
-> > -};
-> > +}  __packed __aligned(4);  
-> 
-> This made me check the Specification and indeed somehow it happened
-> that they have forgotten to ensure natural alignment for 64-bit fields
-> (at least they cared enough to do it for 32-bit values). [0] is the
-> relevant read.
-> 
-> > +	ncs->hnc_cnt            = be64_to_cpu(rsp->cnt);  
+This series addresses inappropriate setting of the receive and transmit
+enables in the GMAC control register identified back in
+https://lore.kernel.org/r/Z8BboX9RxZBSXRr1@shell.armlinux.org.uk
 
-Doesn't look related to the structure above.
+The databook is clear for the receive enable, that this should not be
+set until the initialisation of the MAC and DMA has been completed.
+The previous RFC patch series ("net: stmmac: fix resume failures due to
+RX clock") which moves phylink_resume() solves that, but we are left
+with these enables being set when the link is down. This is not correct.
 
-> 
-> This means that while it works fine on common BMCs now (since they run
-> in 32-bit mode) the access will be trappped as unaligned on 64-bit
-> Arms which one day will be common (Aspeed AST2700, Nuvoton NPCM8XX).
-> 
-> So I guess you should be doing `be64_to_cpup(&rsp->cnt)` there.
+Sadly, when XDP support was added, new calls to netif_carrier_on() and
+netif_carrier_off() were added, which are incorrect in drivers that
+make use of phylink - by doing so, the driver has no guarantee that
+the .mac_link_up() and .mac_link_down() methods will be called in
+sequence anymore. This is fixed in patch 1.
 
-That is is the one that fails - the compiler is likely to warn about
-taking the address of a member of a packed structure.
+We remove manipulation of the RE and TE bits from the start_tx(),
+stop_tx(), start_rx() and stop_rx() methods for each core.
 
-If the compiler knows the value might be misaligned (eg if the structure
-is __packed) then it will do multiple reads and shifts.
+Finally, we remove the stmmac_mac_set() call from stmmac_hw_setup().
 
-IIRC it is enough to mark the member rx_valid_bytes __packed.
-That removes the padding before it and the compiler will then assume
-it is 4-byte aligned.
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c   |  8 --------
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c | 12 ------------
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  | 17 ++++++-----------
+ 3 files changed, 6 insertions(+), 31 deletions(-)
 
-	David
-
-> 
-> [0] https://www.catb.org/esr/structure-packing/
-> 
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
