@@ -1,44 +1,42 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7CD186E54
-	for <netdev@vger.kernel.org>; Sat, 12 Apr 2025 14:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96345186E54
+	for <netdev@vger.kernel.org>; Sat, 12 Apr 2025 14:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744467477; cv=none; b=dZB9x03XqoiMnaP9hFCl90/vIK96PEDnY27YmP5xCAfMzasFs7yXT+uyzbMV7h788+qHIVBkCo5yBuR8R3pT06YMcAIVN78PKy4VzwAqJ9GqfeVmOFlChH9ZsC907JB7kdAFgu/4mlb84PuB8J6444ADP/+Wa/fFeF50RDUhd3g=
+	t=1744467497; cv=none; b=pSfszRuTWOi7S1a9r2Q50ziGlyCGhjv+Noq/mg9m5b6Gt2BGlBurAJXhl06WQGLOwhLPxuAPLEkBJs0X56nmTjthHS9bwQPisX4ISQkA+a4ZEgMXWXCKNa18uySrq5Ef0sJ4BogkLpxygfBezuyiQd5Sa6hGkTH7UigAk8hh5kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744467477; c=relaxed/simple;
-	bh=0n1hg9447+MgoXSpdrcpo1L9Pkr59ocyCB3zCZKNKyI=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=KBBtULAQDBHLE1sY14L0LX1tW5fnq077J1n4NlzomBxg2HchlAOQg5RW/sxPeP7vmuG7US5jeBOp8qsyxWRZ46DTHHbQ/oGWv56tEBa4Ol9pZsTg9lKHjbRuqdCJ45Ltk4v0miAp9uLPF7tE5pG2aQNyGuM5ViTR2ZlWfFGP9Bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=mW5fhlfd; arc=none smtp.client-ip=78.32.30.218
+	s=arc-20240116; t=1744467497; c=relaxed/simple;
+	bh=JR6tyXY1gvpl41cRWbqroRS7xCj4V4ElwNXBpV0ykRg=;
+	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
+	 Message-Id:Date; b=rTuIWS/ZmY1MqbaI4NH739FhrLVMAaR3uGfqmHD5w0xMXnwVkf98WZqay8WhdB2TGQCNR16dWvMPA6iQSvw5HNPGU/Gy1n1pDSQWwu/iMnI36ryxpeRX6snVtdPgfgKfYnDBXjTN+T6SckGEAyiS+x1+8I1Q+J/L2QHsfyUtwUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Ry9twFid; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="mW5fhlfd"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Ry9twFid"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=PRH5oh1QX3s2+jHLBPnvV1CmrUbx5sVHTAOGvwTjYkg=; b=mW5fhlfdh7UKr3dxkZPwaozsLP
-	2ZqHku6BZBa6k2qgLhoEYGOlWQB00oGi/7ZmlzaxMHgUduhYmX++kl9o7fpIs2SV/4OEC8xzbRTaz
-	RyWjrCHRUe9bZR1rVHadPSKex9os7+PTCbomKbS96vPOI8ihDbQuWuraxIDnHYLsbxsJJuZ+uKACC
-	osGJ+nomAW2PSaP/cd0Hxs/LWNpMj+gdpdyuHa3M82eqMNFLvy9BATcJxM/g1Mxo+31AU0ZzbozXp
-	tphp5SFNZsVHyJLkKFjXIyyS/JO9st971tD78FTdvSVBgdG18i78kGn02JzR7CeVTqBxBrUPiToHi
-	HZRpafZw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:33250 helo=rmk-PC.armlinux.org.uk)
+	bh=+J4kgIiOlyNlscSmyi+M0ndzlA6RBERVMIHPWwh9j+o=; b=Ry9twFidwSXnbS6fXWRxRsLBZB
+	PUPEgc0BboLgzsr6LszdT47ZcKA9kQqcK3YA6nhBDBDaBQb5D0WUNVgnNCb1dCO8XE1MITHTuQtVa
+	mLrnFaWh2NU7DTLo6htzPaiNd56p/HPjRqT7H1brXYrO4ZznO61ton3ZBwFbE/KmvWU0NFbk5A4YI
+	QyTOjmYoH3K64IpH1JdwUywLJk6e/MrHgtvxos9qABZ7RMZ4TgQLZHaNBvoHwVUUrUV9JRnwX+RFL
+	7pIx6i8Z5B8jDZixdEKmzTM1BeFkXxBdzYtR26u+MWIs+sqVAj3kLy7es1NjAAHtPCaVQGSoN/85c
+	ISHIv8fg==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:41112 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1u3bg6-0004co-00;
-	Sat, 12 Apr 2025 15:17:50 +0100
+	id 1u3bgN-0004d8-30;
+	Sat, 12 Apr 2025 15:18:07 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1u3bfU-000Em3-Mh; Sat, 12 Apr 2025 15:17:12 +0100
-In-Reply-To: <Z_p16taXJ1sOo4Ws@shell.armlinux.org.uk>
-References: <Z_p16taXJ1sOo4Ws@shell.armlinux.org.uk>
+	id 1u3bfm-000Enq-MC; Sat, 12 Apr 2025 15:17:30 +0100
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>
@@ -46,14 +44,18 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev,
 	Jakub Kicinski <kuba@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
 	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 4/4] net: stmmac: anarion: use
- devm_stmmac_pltfr_probe()
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH net-next] net: stmmac: imx: use stmmac_pltfr_probe()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,39 +65,54 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1u3bfU-000Em3-Mh@rmk-PC.armlinux.org.uk>
+Message-Id: <E1u3bfm-000Enq-MC@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Sat, 12 Apr 2025 15:17:12 +0100
+Date: Sat, 12 Apr 2025 15:17:30 +0100
 
-Convert anarion to use devm_stmmac_pltfr_probe() which allows the
-removal of an explicit call to stmmac_pltfr_remove().
+Using stmmac_pltfr_probe() simplifies the probe function. This will not
+only call plat_dat->init (imx_dwmac_init), but also plat_dat->exit
+(imx_dwmac_exit) appropriately if stmmac_dvr_probe() fails. This
+results in an overall simplification of the glue driver.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-anarion.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-anarion.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-anarion.c
-index 8bbedf32d512..84072c8ed741 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-anarion.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-anarion.c
-@@ -113,7 +113,7 @@ static int anarion_dwmac_probe(struct platform_device *pdev)
- 	plat_dat->exit = anarion_gmac_exit;
- 	plat_dat->bsp_priv = gmac;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+index 5d279fa54b3e..b07d6f85ea90 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+@@ -379,10 +379,6 @@ static int imx_dwmac_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
  
--	return stmmac_pltfr_probe(&pdev->dev, plat_dat, &stmmac_res);
-+	return devm_stmmac_pltfr_probe(pdev, plat_dat, &stmmac_res);
+-	ret = imx_dwmac_init(pdev, dwmac);
+-	if (ret)
+-		goto err_dwmac_init;
+-
+ 	if (dwmac->ops->fix_mac_speed) {
+ 		plat_dat->fix_mac_speed = dwmac->ops->fix_mac_speed;
+ 	} else if (!dwmac->ops->mac_rgmii_txclk_auto_adj) {
+@@ -392,16 +388,10 @@ static int imx_dwmac_probe(struct platform_device *pdev)
+ 
+ 	dwmac->plat_dat->fix_soc_reset = dwmac->ops->fix_soc_reset;
+ 
+-	ret = stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
++	ret = stmmac_pltfr_probe(&pdev->dev, plat_dat, &stmmac_res);
+ 	if (ret)
+-		goto err_drv_probe;
+-
+-	return 0;
++		imx_dwmac_clks_config(dwmac, false);
+ 
+-err_drv_probe:
+-	imx_dwmac_exit(pdev, plat_dat->bsp_priv);
+-err_dwmac_init:
+-	imx_dwmac_clks_config(dwmac, false);
+ 	return ret;
  }
  
- static const struct of_device_id anarion_dwmac_match[] = {
-@@ -124,7 +124,6 @@ MODULE_DEVICE_TABLE(of, anarion_dwmac_match);
- 
- static struct platform_driver anarion_dwmac_driver = {
- 	.probe  = anarion_dwmac_probe,
--	.remove = stmmac_pltfr_remove,
- 	.driver = {
- 		.name           = "anarion-dwmac",
- 		.pm		= &stmmac_pltfr_pm_ops,
 -- 
 2.30.2
 
