@@ -1,112 +1,85 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAC31E835C;
-	Sat, 12 Apr 2025 14:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63FC1804A
+	for <netdev@vger.kernel.org>; Sat, 12 Apr 2025 14:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744467048; cv=none; b=d1OkeyATil23lXj5ejzqjZesI2qPRG/8zFWmL3GAqWGLjygeN4sDT5/C3XbVJmZJr694UfSDLO/bu5h4mpskZNgE/oHBhdSj6/BAl8Eil42yga29RFrlNxg9Nu6y/1qDoWFAlwdfuOAp8WIJ+wit+dJCm+ukVBX8SNoWLxS30os=
+	t=1744467445; cv=none; b=DGWHx3fzB4y3Cp5vy4riMGbJCs5zt5jmaQJTXWggtcvmeBdM+9i88uuoh95M2Y4PxBDu8ZF2cZy6vVUvtgN9tL1Sijkf6kDDwLbCO5oRUfGw4n+uXrwS8yLjAuPjw2Ki5udwrfCDqFhYcHr9hbdT1rdIXjexu22gah3l2l/eJMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744467048; c=relaxed/simple;
-	bh=Zuh6rjYqHv/udRISGAo+nGTrjAsjQpYiiu+wvf1BIA4=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=SZrc0sM9GihFLZ1d+q3uHhI5sZ6TgjymlLdioMZGGesoKsDMlkzlR3ESFWzhe/rWZ+LVcuhNbq5sBlfJ8s8P4OoXztQdDXX1O4olAliCnN7Bh+Jy2UOnBEj25xafQmSTU+iVf1IvucNyoxdjYLBAvppAGe+XEs5yNzvHNwLR+A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=W7pGDeRs; arc=none smtp.client-ip=78.32.30.218
+	s=arc-20240116; t=1744467445; c=relaxed/simple;
+	bh=EZKCGa5fX1t/sn4OYoSIu2gMzIrcqFPcEKYd0UQS1qQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=O2wCkOeUZXLB1FsDYoODEkMH8lbEEAxE08xhmpUvYi86IluCfuzZ8IMLDm/pTFt8enw+DI5ScKQDv5y6NkNpZ0v+fVfVUtgIUm1m70gS4/WQxQQ8ko4av+kwy5Kh7PUxpw0HI0z+rAy2alCwD9zMAd0t6J+2+DiSKZqlfuYxlTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=oLiq7EDT; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="W7pGDeRs"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="oLiq7EDT"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=AjpPx4diUTD55faBtP4P4XYjVA7r8a4pIDQt1k+4gFo=; b=W7pGDeRsVYz/bLC54KhffjdXao
-	qUE9VUc2SW30decX6bDS+huRGHympzQaT3nviRrKPfsk44bET76kjQxbG8G7gDrG+qBqIRmZfn5Gx
-	0302N+RzkVlzUSraDNkrL1JaxkVfjSNT+c6KlnB65appcts3xDojgF4RuTRskmX47OWKZS0FBp9bf
-	amIXzlSnEqCdxyzOO3gUIQ8Pf75uxLoLrKq3pZDKYgmAxHdQFtOUHCoYqUIq46nD8rK7Ot9Iyzk5b
-	1t7/NSKRES7BJfIoh8y7kyi/n43T3/iJX0myCxCyiipkbeDsuze3Vy69/ye+hOYuWtpvyEQoVyd+3
-	L2vw1wHQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:43894 helo=rmk-PC.armlinux.org.uk)
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=OtjDlLbUztiJngJj615sfGvrPHCmRzt+Ij9++qW0iv0=; b=oLiq7EDTmcuh7vV+BKaStrDDI+
+	6KczhnhqWmmOl5mf0KDMGjzKiKUtbq6DniZR4ZHsk3imdeKIZ4qyHXQpnJTTr0SxSs3zOrefBVFmH
+	1evwFHWCYpVkMaySIeGh+t4E3+h+KSzbQvIdgMLc4f/uE6oMnkJnSSYq2hfXDFXfqzPxqZlxwKZ8B
+	8a0YtQjCUzmQIIlZzszOvVt+MfG96xjdGMGOC03CyuUwBeS4AxUXSn4n1goYb+T5Mtryjxn09UE+h
+	PQSicZcI2r1ZVR+we6ejQU+YvUn46F2h9yRv/QYbIj2pDhcf7bf5pfdZkIsqxtdPaUz1qMT8PJRPB
+	FrR/K1vA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:44230)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1u3bZB-0004az-2M;
-	Sat, 12 Apr 2025 15:10:41 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1u3bYa-000EcW-H1; Sat, 12 Apr 2025 15:10:04 +0100
-In-Reply-To: <Z_p0LzY2_HFupWK0@shell.armlinux.org.uk>
-References: <Z_p0LzY2_HFupWK0@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1u3bfY-0004bl-34;
+	Sat, 12 Apr 2025 15:17:17 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1u3bfW-0005jD-2S;
+	Sat, 12 Apr 2025 15:17:14 +0100
+Date: Sat, 12 Apr 2025 15:17:14 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
 Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH net-next 4/4] net: stmmac: qcom-ethqos: remove
- speed_mode_2500() method
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next 0/4] net: stmmac: anarion: cleanups
+Message-ID: <Z_p16taXJ1sOo4Ws@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1u3bYa-000EcW-H1@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Sat, 12 Apr 2025 15:10:04 +0100
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-qcom-ethqos doesn't need to implement the speed_mode_2500() method as
-it is only setting priv->plat->phy_interface to 2500BASE-X, which is
-already a pre-condition for assigning speed_mode_2500 in
-qcom_ethqos_probe(). So, qcom_ethqos_speed_mode_2500() has no effect.
-Remove it.
+A series of cleanups to the anarion glue driver.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 9 ---------
- 1 file changed, 9 deletions(-)
+Clean up anarion_config_dt() error handling, printing a human readable
+error rather than the numeric errno, and use ERR_CAST().
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index e8d4925be21c..e30bdf72331a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -672,13 +672,6 @@ static int ethqos_configure_sgmii(struct qcom_ethqos *ethqos, int speed)
- 	return val;
- }
- 
--static void qcom_ethqos_speed_mode_2500(struct net_device *ndev, void *data)
--{
--	struct stmmac_priv *priv = netdev_priv(ndev);
--
--	priv->plat->phy_interface = PHY_INTERFACE_MODE_2500BASEX;
--}
--
- static int ethqos_configure(struct qcom_ethqos *ethqos, int speed)
- {
- 	return ethqos->configure_func(ethqos, speed);
-@@ -800,8 +793,6 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
- 		ethqos->configure_func = ethqos_configure_rgmii;
- 		break;
- 	case PHY_INTERFACE_MODE_2500BASEX:
--		plat_dat->speed_mode_2500 = qcom_ethqos_speed_mode_2500;
--		fallthrough;
- 	case PHY_INTERFACE_MODE_SGMII:
- 		ethqos->configure_func = ethqos_configure_sgmii;
- 		break;
+Using a switch statement with incorrect "fallthrough;" for RGMII vs
+non-RGMII is unnecessary when we have phy_interface_mode_is_rgmii().
+Convert to use the helper.
+
+Use stmmac_pltfr_probe() rahter than open-coding the call to the
+init function (which stmmac_pltfr_probe() will do for us.)
+
+Finally, convert to use devm_stmmac_pltfr_probe() which allows the
+removal of the .remove initialiser in the driver structure.
+
+ .../net/ethernet/stmicro/stmmac/dwmac-anarion.c    | 25 +++++++---------------
+ 1 file changed, 8 insertions(+), 17 deletions(-)
+
 -- 
-2.30.2
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
