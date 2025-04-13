@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404F51E5711;
-	Sun, 13 Apr 2025 21:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3094C2629D
+	for <netdev@vger.kernel.org>; Sun, 13 Apr 2025 21:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744578477; cv=none; b=PUA442r8cMh/ACdrYZHouCTv70y0fVWDCQ+hY9Pwxs/rQuS11uIPKuhYiDAxux+CYqBTHzkzWVxPGqAQWaut7KNdTMhCNSdWvuPKFn8+fHXR1aqiIXER+X2pibubad7Yt2Y7lwgcFwxjvdeH8uxAdGS+quyJD1EDWmR/gemKe14=
+	t=1744578526; cv=none; b=cCZak2ON97qCsuXS+lyTd1Zl0/t/dl53OpI8RxI2F95kEDqN/jLHQOPSbHb4eKs7dCvNipc7B0POWb/9QmaJuNYgVU8g0XJQMjk7GktdwjiabPhb347rCGvzBg2RpbzZpLyn0tXvbygxqXM6fW1KnDmQh5nVj45avQxScbOV4Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744578477; c=relaxed/simple;
-	bh=W4M8m5TuctMEIWtjjgloWPV5ALrGcVQoDZoKjtMcero=;
+	s=arc-20240116; t=1744578526; c=relaxed/simple;
+	bh=UwcCzTZYeYtBSgzDF05O+kHKklzMPlgXGxXChxcjOgA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SvxsK6FtEjzSf+11DCoEoDMMJ4luA6j9muMW0uFaaCtKhwxIDfxKnNhuc9tK51osnqPlBkzaGj6wA8mFm1hYvPcmXlvvK9/JkObvWg+X3a4jCkkrHQkpvIkg9V2TjKbHp5xvImnO7flpbZgSIhYU8PdRiFlv4CkIoe+A2W7boQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=HbxVu7op; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=f8eD9YcDgk/s9E5qKiMAzvvuhI28G3e3jLHAve/o8nTj0USQBPy4QkiXgO6E50cNg0vqIp7KyL1hHmmucuyOVXyNpQSzmfLoFw90FVhJfuT8WADjT3AXccqOyC2gzkkHq0aCdkguxXN0VhlAG93IkfwYInv2NXPQGfYExuCUZIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=XxvNdeTv; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="HbxVu7op"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="XxvNdeTv"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=fLQJM6ERhkCMHtQZ6mtLOBHjWODKm8YrfDgknSKdTe8=; b=HbxVu7op+iMZef01zHEWtTlLoc
-	vkxskzULTOzdYdM3wl9lP+CARJK2/7DrS5W2i5jrGSIeHjt0Dy3X17vU+yeQB8bfqGtKb1AxVfnlB
-	t4YcYdQaXOyEblnmu19EQSPl3MojSyjBneWn+ujnq3yAnF4N5cCxTQBt/EWfIBrjpbD0=;
+	bh=NUe/akxxdd5c7PreeaH46gc38+PUPMPsy9pqhCZI6so=; b=XxvNdeTv0zle75/6+fVO5MC2AX
+	+LnDFJJ19t83kFQgIb3uubrraNDj4uRjPP/Q3ay62kUaZiiwwnHe9Uk50IP9Pa2j5C07dtuuwgH6p
+	b+h8ClD2GXRAEXGMG+pwNigS77R8KcJjqUEBWvr9xrX+932WKFypTgZaWmqArXa2Sjes=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1u44YP-0096JL-9z; Sun, 13 Apr 2025 23:07:49 +0200
-Date: Sun, 13 Apr 2025 23:07:49 +0200
+	id 1u44ZB-0096Kj-0r; Sun, 13 Apr 2025 23:08:37 +0200
+Date: Sun, 13 Apr 2025 23:08:37 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 Cc: Heiner Kallweit <hkallweit1@gmail.com>,
@@ -36,15 +36,15 @@ Cc: Heiner Kallweit <hkallweit1@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH net-next 4/4] net: stmmac: qcom-ethqos: remove
- speed_mode_2500() method
-Message-ID: <9987dc3b-8ec4-4c13-8054-73b2b52020e5@lunn.ch>
-References: <Z_p0LzY2_HFupWK0@shell.armlinux.org.uk>
- <E1u3bYa-000EcW-H1@rmk-PC.armlinux.org.uk>
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next 1/4] net: stmmac: anarion: clean up
+ anarion_config_dt() error handling
+Message-ID: <ad4d5a18-c89f-408b-b668-82fd83098c6b@lunn.ch>
+References: <Z_p16taXJ1sOo4Ws@shell.armlinux.org.uk>
+ <E1u3bfF-000Eli-C5@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,14 +53,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1u3bYa-000EcW-H1@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1u3bfF-000Eli-C5@rmk-PC.armlinux.org.uk>
 
-On Sat, Apr 12, 2025 at 03:10:04PM +0100, Russell King (Oracle) wrote:
-> qcom-ethqos doesn't need to implement the speed_mode_2500() method as
-> it is only setting priv->plat->phy_interface to 2500BASE-X, which is
-> already a pre-condition for assigning speed_mode_2500 in
-> qcom_ethqos_probe(). So, qcom_ethqos_speed_mode_2500() has no effect.
-> Remove it.
+On Sat, Apr 12, 2025 at 03:16:57PM +0100, Russell King (Oracle) wrote:
+> When enabled, print a user friendly description of the error when
+> failing to ioremap() the control resource, and use ERR_CAST() when
+> propagating the error. This allows us to get rid of the "err" local
+> variable in anarion_config_dt().
 > 
 > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
