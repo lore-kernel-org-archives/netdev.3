@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523F512B94
-	for <netdev@vger.kernel.org>; Sun, 13 Apr 2025 21:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC8512B94
+	for <netdev@vger.kernel.org>; Sun, 13 Apr 2025 21:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744578609; cv=none; b=XrE6stOPJAtMK3aYgy8K+PAf6uq0wZjJLDOZl2ML/lrRvdrcKCuy9oBsMzuAkkKn6xPHvtdRi3c108wJku/I9rl+FlXDQwXYprbZ+IcyYcxqX3AhIM97Srd9ZU4anOkaJ7aEH2TRQf9aiaabV3QfhSIGzap83xhn617tgnII958=
+	t=1744578634; cv=none; b=R+t8T7CENsLaeMB/XUp0Taf9shefI9qmRDzHtAg8xHXijGt9xhJfIyF4qrYe+OYlmTvRvEGs/0MIf1bMJctCVCv6YNd5vni+33l5/oP+jB/DDMvaRAcX82uWFsGzFDv/lV3FAEKXEF0EfMcV68JSwjFkbvKx48D4GUtLBKp9YyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744578609; c=relaxed/simple;
-	bh=KlCSdJfkvtJmym+5ju/Q5878gbX93ioip8SZExAWXso=;
+	s=arc-20240116; t=1744578634; c=relaxed/simple;
+	bh=Q97+TtzUeXh2Y9j3wcKOKQxiU0ak6LXaoNjg21svgI0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HgHA2mjBMC4LwSGkRTgo8FiXISm4ZxITCQNdWG7yzfiR4dZt5lClb8b+f7qdFHCah8K4BZFw798b+SggaNbV+SE6aeMT6C+TP59IALAFcqj5NFN+99A0SotvbsKaI6E9gX7VC09d5VLUNfhzgh9b0ArTY2e9prgDTvFXZnYQUiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=FRSxE84e; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=dJYKLWRJIgDLW0pVWgcUbi/VgJmIYv53zUAn0icpnANmvY3630rdEMV3R3s62KA+IORHBqPr2DKD999i34iYOL8UiM/MZznziQo8OnWwncFld1ZAIl27BE3M8li/TQdv+6jY/pMLZatEW5uPEub3xGYjUyPJdA3VgDPUL3yroXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rjIWPxJe; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="FRSxE84e"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rjIWPxJe"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=IXdTX5kNhB8Djet/lPdjXM/642r9m5weD6j19yKVYFA=; b=FRSxE84ew4LfwgbmZReX+x79zc
-	rz3klM8nhxyD49snBpcJ853XwqQKmr5P37dt0cZ/vV4jYkdOQki1lpZ40kUndBgU9EqVdioAi5lx3
-	3b87SH9EH/vOZF4Pfb3oHExIl1dQnVKj2BucLqiW0avubRdQCGdoOvp45Yv5Ec3Fq0m4=;
+	bh=kYQPdO0zzHv8R4sjKJkwdjp3Oz2SICXW1PKdW6fjF2Q=; b=rjIWPxJeD6xvm78cU1Lgp2JXxs
+	vB/Z39UEidtoqwhYJ53+gRx+Nan2R80vtTR5OM+d3VsBJqpbDSbiq6dpN/H2R/6jzYQMQpxjBiN06
+	Ihtf2xpZ20Wa6r2cEvo4QgiEhQ6pzs+ohEBgFHMSoaX2+nwS+vKqIV+rncDXFX9w6+EI=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1u44aW-0096N2-0t; Sun, 13 Apr 2025 23:10:00 +0200
-Date: Sun, 13 Apr 2025 23:10:00 +0200
+	id 1u44au-0096Nz-Ho; Sun, 13 Apr 2025 23:10:24 +0200
+Date: Sun, 13 Apr 2025 23:10:24 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 Cc: Heiner Kallweit <hkallweit1@gmail.com>,
@@ -40,11 +40,11 @@ Cc: Heiner Kallweit <hkallweit1@gmail.com>,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next 3/4] net: stmmac: anarion: use
- stmmac_pltfr_probe()
-Message-ID: <0828d7ed-3ba5-4678-9f1e-9bbab07cfdee@lunn.ch>
+Subject: Re: [PATCH net-next 4/4] net: stmmac: anarion: use
+ devm_stmmac_pltfr_probe()
+Message-ID: <acd537c9-51f2-4d5c-a07d-032ea628d241@lunn.ch>
 References: <Z_p16taXJ1sOo4Ws@shell.armlinux.org.uk>
- <E1u3bfP-000Elx-JE@rmk-PC.armlinux.org.uk>
+ <E1u3bfU-000Em3-Mh@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,13 +53,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1u3bfP-000Elx-JE@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1u3bfU-000Em3-Mh@rmk-PC.armlinux.org.uk>
 
-On Sat, Apr 12, 2025 at 03:17:07PM +0100, Russell King (Oracle) wrote:
-> Rather than open-coding the call to anarion_gmac_init() and then
-> stmmac_dvr_probe(), omitting the cleanup of calling
-> anarion_gmac_exit(), use stmmac_pltfr_probe() which will handle this
-> for us.
+On Sat, Apr 12, 2025 at 03:17:12PM +0100, Russell King (Oracle) wrote:
+> Convert anarion to use devm_stmmac_pltfr_probe() which allows the
+> removal of an explicit call to stmmac_pltfr_remove().
 > 
 > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
