@@ -1,47 +1,48 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CF5269D1D;
-	Mon, 14 Apr 2025 08:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E4A76034
+	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 08:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744620237; cv=none; b=oIkGMggqNIrvDkweZFPh72RuZ1wQ/Jso0ofWP375YV5GAVO4jODxgAcTICo9PCazVYj0D0QDXh1OI/BKSpeo4MJVcF6E3WuywwOjVmQiMentV0dhZxqjuF7O3LzAmKzI+HoJvcWb6xERnd2wf15t+b5ca2ecPDAjJdsC/wMORQQ=
+	t=1744620332; cv=none; b=rQoZvyODshWvXlQSHiN1BL14pmHtaajdKzrenkHJzhAhQ1Qw+za1aqvWPOdNRon21OCxbgs1ozDHWmxns4AkBaK+6dzzana++HYwsnoV8s3lwDiBFXtL23WX2oJeFfICNguhYUDQRjl0AJOVc++/VobvGTs6gQVAVcUVKAfajw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744620237; c=relaxed/simple;
-	bh=eUd5GxwszVXXzpuC1+ozLa4oZQpxUDf8OIF6/2qk9Ho=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CWYPXfubCNqbOaXOYU3I+1fucp2jWJ22hs5CmHn/QbBMm2jui+MHsgonEDakEuJ2u/5zVa3twrkp4mZrfav2YzA2heTKpqSldbKKZe26LvNKz2aqLH4Tg+FXnjimmAF444VTn7WJAcH636w95my/3slWGpWrkIdHj9a60xskKs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JMaaZInp; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JMaaZInp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0BEC4CEEC;
-	Mon, 14 Apr 2025 08:43:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744620236;
-	bh=eUd5GxwszVXXzpuC1+ozLa4oZQpxUDf8OIF6/2qk9Ho=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JMaaZInpYv91Z0K+UTSGxHcfCYpKA001Mh0LT58uFmgEBS7yNsE8y0wmXIakIm8qh
-	 A2FpWGTbbqX7VYBXIdHQhK5+ctAt7oVFygD5USlZSXL9RAQQwgp94Nos2jZr5bUfi2
-	 Z8Cc1YrDv6oFiHHVQ26a1DvpKVVSwZ2+S+YgOTsppjKiUwVfDKrOC8sTIsmggmRaly
-	 Y8Iv9FNtlTuZ+LWOKkRLxApeYCS2pWB/Mond34KJS3Ui+lNjq75E5zjZ4VSB73KjmI
-	 o77fpA+FWsNRMtOn3j/44u74tyOWZjzg0uCjCjIPmKA+PMHgh46b04gVjVoZpRNUyF
-	 r49Pc8F1Nhi9w==
-From: Michael Walle <mwalle@kernel.org>
-To: Saravana Kannan <saravanak@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michael Walle <mwalle@kernel.org>
-Subject: [PATCH net-next v2 2/2] net: ethernet: ti: am65-cpsw: handle -EPROBE_DEFER
-Date: Mon, 14 Apr 2025 10:43:36 +0200
-Message-Id: <20250414084336.4017237-3-mwalle@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250414084336.4017237-1-mwalle@kernel.org>
-References: <20250414084336.4017237-1-mwalle@kernel.org>
+	s=arc-20240116; t=1744620332; c=relaxed/simple;
+	bh=d5FHXmCede1zH9H5B9HdkWAKMjLvzlpb/T254D9Ow78=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=h4DtFrY68qIdwjaSZXM6MSNHJmUefY1oJxFpZ9/CAOalRFkM/DfQ/LduEjaq2/q78ZyXst+YuamZcLtXo0haAc8CpADfsd2TjE9mveqIsjPQolMH97ZAMuSkhun69o3tGQ0fsPK97B9joMqgDE5pTdsCXOc8i4R51Obe/dDiryw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.243.244.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: izesmtp25t1744620289t36ba5566
+X-QQ-Originating-IP: 59YUwYE+nOTeNVHjrTSAlFUExHYJoz3/gB71FGatqRs=
+Received: from wxdbg.localdomain.com ( [36.20.107.143])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 14 Apr 2025 16:44:41 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 12153390173393797489
+EX-QQ-RecipientCnt: 16
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	dlemoal@kernel.org,
+	jdamato@fastly.com,
+	saikrishnag@marvell.com,
+	vadim.fedorenko@linux.dev,
+	przemyslaw.kitszel@intel.com,
+	ecree.xilinx@gmail.com,
+	rmk+kernel@armlinux.org.uk
+Cc: mengyuanlou@net-swift.com,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v2 0/2] Implement udp tunnel port for txgbe
+Date: Mon, 14 Apr 2025 17:10:20 +0800
+Message-Id: <20250414091022.383328-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.27.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,76 +50,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: izesmtp:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: ODmRr9XAsEUImkTk1Qt1p/pl0HFQXtargB74D2+26pTrks4bqa/UPmm3
+	qfwr9xSQk5LYN8fbFm9+H9lCAXg8oz44hQ+NQ3A1rsBlNrSNfAvCuNC8wax+M9wbcwy7aY/
+	09gAHj1dXcrzlALoIJZ3J4SD1aDw3I0fw14tcwiBJ08+eARYAnJLliXsxsT9bNtfyiKLDju
+	7WbP8QZsw9f+EdZerF9e5CpKIQKcE07A/dzwq3xqN8nUSR6Lthl6s14nDJvp0eTOP0OUt6c
+	RQu96katXoiavm7WmHvLfkWK3SXr4+51Z5t/Usj069H3Iv2EjhHEymqEwk68x8G4rri7lQS
+	LXDNVCBiPNBkVgWMUMj2V0luecgJW8XC95YJ37t6EkKFKRTXUA8gst8hJKQBYnj8S7520te
+	AHh4ikDjGWZp3J5uzNsnuZK22dDwEM0xL7FIct2ZL85NYfHjAAjAatgFLF7qTZBgUH4j3D+
+	V894IpCrfUBaPuKAKju3c34ro7pO4pTxydVpQg+uU8KH2RHG9oxsQ+zVD9if/KFfd4Dmmec
+	X0vcoPBg1RGpMztFVX9UwKLXQ8B/Yx6OvYQs2ZYoe/ZlxqsmPti+sGGPIvVLfUcV+yLIszI
+	uNLPQCSDLs3R7U8B6n5OAiYFCYjdu84n1svAsleDIEjTcO+kVw7hZp3121M4dg7u+SzkYfe
+	TWjHtxw3YzAueF2LviqouM0bUZ+N3urjn9I/zB5x/kpggkyCOWlicLTeFUmxCqf2LPU5dSX
+	QpqMPrQVCh/n9Q1NTc/pCIB9OEJZ/qxln7p+s9R2RqEPDhTnNqsNniVsPKb2O/wUtDG2KFv
+	yamtHJ5JGErmeft2WpTJRv4oISkMc9eiAb5JaUFhUUD3Y7fRJoh4Ua8MYBSde9EsadFEtum
+	4y5Bsu0WLmGmb0tzg/TNhe14kOQQDLGfkfk/M/d7tRUbo6kjRTuqIz1oQtXzX5cfKqHP30w
+	l8i+ZES6eC8mV9TB4K2hAuzTMF67aQpT0IF/h6htN1kqtx/bMyYryrtJBtfLI3RfJizaROq
+	17hCUIog==
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+X-QQ-RECHKSPAM: 0
 
-of_get_mac_address() might fetch the MAC address from NVMEM and that
-driver might not have been loaded. In that case, -EPROBE_DEFER is
-returned. Right now, this will trigger an immediate fallback to
-am65_cpsw_am654_get_efuse_macid() possibly resulting in a random MAC
-address although the MAC address is stored in the referenced NVMEM.
-
-Fix it by handling the -EPROBE_DEFER return code correctly. This also
-means that the creation of the MDIO device has to be moved to a later
-stage as -EPROBE_DEFER must not be returned after child devices are
-created.
-
-Signed-off-by: Michael Walle <mwalle@kernel.org>
----
+Setting UDP tunnel port is supported on TXGBE devices, to implement
+hardware offload for various tunnel packets.
 
 v2:
- - none
+ - Link to v1: https://lore.kernel.org/all/20250410074456.321847-1-jiawenwu@trustnetic.com/
+ - Remove pointless checks
+ - Adjust definition order
 
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+Jiawen Wu (2):
+  net: txgbe: Support to set UDP tunnel port
+  net: wangxun: restrict feature flags for tunnel packets
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 55a0c37da54c..988ce9119306 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2679,7 +2679,9 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
- 			goto of_node_put;
- 
- 		ret = of_get_mac_address(port_np, port->slave.mac_addr);
--		if (ret) {
-+		if (ret == -EPROBE_DEFER) {
-+			goto of_node_put;
-+		} else if (ret) {
- 			am65_cpsw_am654_get_efuse_macid(port_np,
- 							port->port_id,
- 							port->slave.mac_addr);
-@@ -3561,6 +3563,16 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	am65_cpsw_nuss_get_ver(common);
-+
-+	ret = am65_cpsw_nuss_init_host_p(common);
-+	if (ret)
-+		goto err_pm_clear;
-+
-+	ret = am65_cpsw_nuss_init_slave_ports(common);
-+	if (ret)
-+		goto err_pm_clear;
-+
- 	node = of_get_child_by_name(dev->of_node, "mdio");
- 	if (!node) {
- 		dev_warn(dev, "MDIO node not found\n");
-@@ -3577,16 +3589,6 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
- 	}
- 	of_node_put(node);
- 
--	am65_cpsw_nuss_get_ver(common);
--
--	ret = am65_cpsw_nuss_init_host_p(common);
--	if (ret)
--		goto err_of_clear;
--
--	ret = am65_cpsw_nuss_init_slave_ports(common);
--	if (ret)
--		goto err_of_clear;
--
- 	/* init common data */
- 	ale_params.dev = dev;
- 	ale_params.ale_ageout = AM65_CPSW_ALE_AGEOUT_DEFAULT;
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c   | 27 ++++++
+ drivers/net/ethernet/wangxun/libwx/wx_lib.h   |  3 +
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  1 +
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   | 87 +++++++++++++++++++
+ .../net/ethernet/wangxun/txgbe/txgbe_type.h   |  8 ++
+ 5 files changed, 126 insertions(+)
+
 -- 
-2.39.5
+2.27.0
 
