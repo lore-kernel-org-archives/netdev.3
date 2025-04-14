@@ -1,142 +1,175 @@
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E2F296D25;
-	Mon, 14 Apr 2025 13:29:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00BEB29E069;
+	Mon, 14 Apr 2025 13:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637342; cv=none; b=L0n/02mzwdSJJvZPZ3qXtDCUhhzWyJbfvx3LyzJAtz5DMJkzFj8E1Voi2VEqu9nFZohubHk9lx4O/jrBp+vhsIUz56W5A6qJmc+CZmH/ErAYBgWFlOLHxSpQEUa/N1FCIxwaqIWFi2OsPKhcbCZiitmHw6oLBqoiKEbwRXE9tAo=
+	t=1744637385; cv=none; b=e+u4Vuo5Yp/riuwBxFucR8O3Pi1NfodLgal30rvhho8luztRX7AOM9GqbF1u7HSQ+HaL/yF1n0gG4P1X4cqKaq/h5BFit5cH/w8Gq7VPC+kIuaa0DGjDKXZMjINfElI6tett3/1c/+nZTPRT7Cd5dQrYN99FpNSx5mfiV4OP/mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637342; c=relaxed/simple;
-	bh=w+GaCOk0unonkO298r/VvlKxdoXSTagPlOGL8b+c4pg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H4DsU0TLBOgbqSDJyhoYHvBvoqi7+BrJQM/JarNERWhaqQ3FbuT9W8SZxNkAAAVxi+nljDMiEtb+u5nCIAK6m1IeUAtR96nzT+rsyBmeXjDhzhmJk9CEwvpI+3AqzA5eJxkmdSF1w2X9rWHt8kJ2Rv4d/HgycqAxyoKD1mYBchw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=J9UCMz5C; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VsF2XSoZ; arc=none smtp.client-ip=202.12.124.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invisiblethingslab.com
+	s=arc-20240116; t=1744637385; c=relaxed/simple;
+	bh=DDLp9F3hw0/j5DNaV3tFyRMhvyjy0IKOIaq0JQaile8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=s1Nu1kTxKVJw/O/L/CQdQU/gdDWROxP2t0IM1dyt6i7wctI1J25e5mCjy9wHRjhzYK9kDYsRGCF0j/4+AUMpfuEpb8cczZHN5HcllBW+V5qVBZeb6qQvdBenY9n+ZOJZyio1QVuDb5alCQ8RR7qK/tjnAtP+6iXLwdLTGsGItSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PPtBqQgN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="J9UCMz5C";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VsF2XSoZ"
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 797D72540329;
-	Mon, 14 Apr 2025 09:28:59 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Mon, 14 Apr 2025 09:28:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1744637339;
-	 x=1744723739; bh=iMO9IccfCm2xvSWEFUJlubmfDh1c2iU+/IvUT7403yc=; b=
-	J9UCMz5Ci/JXc2kD5UMu7YzqaxsTMyjl6YcPNGo4zkLwlg72sb6Znubb4OOYgr9F
-	LW3OQI6++RNwHFWZjJvOAJvOUKoHj5lq9z7I1ru9xPX5a13ir8RQP3iSJy4/KeJ3
-	c3Y7dxgjIWb0zrrsQf6YOfmpEA9IG/EjQvGvnNOHemSlaufNjTSXoam1Xp2Ncc46
-	quAFqH3NPhFSjg6Rwhsdq4d+oRrnWR8+BgKsxaui5MGUGyju2p/rFHVXoYCKM2xC
-	G0rJXk1hUrfZjGZerZlvtBrWuDSMKPLheX6i2+K+qkjT1D7xEWOsgleZOnaWjb/q
-	7SuFHhJpnq4A4h4TcVXGaA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1744637339; x=1744723739; bh=iMO9IccfCm2xvSWEFUJlubmfDh1c2iU+/Iv
-	UT7403yc=; b=VsF2XSoZvg+Fvp5WmnhCdfMmDw/+gqKQxfg5pNWOIyJi8ph5tvV
-	Raw+fXzYWPJ2aJ5NOTpvMvhhOrTtGMy900o40Apqe/naae/u/4oMqL3PJwod+Kui
-	w1knbc10IWj95mfYA3VycRivJ6BtSqynV4B+0upwk6j79qGn4Y5vA+3R0llLoZ33
-	+r8ErlMADjqULs0P9Pzw9B61G581fidI/MH9Fr9POSr1njzZO21FBJtvrtgA8gtc
-	8PPHehIrL475SGX2w2NCGha9tCpYvDKDnDkM+NWFC9t9k135QXnK6sBZ+r3c25PG
-	2IqjngAc92qeNYQLvwPIgJ8HQuHpWFBtDog==
-X-ME-Sender: <xms:mg39Z6MO2uCp0gPH6tNK2EulZ3-WKc4wVrDOE1tewMT6SPRQCSnPDA>
-    <xme:mg39Z4_JOMYHM42kmKKE5-WkTFGasCoMFbqBzeJ0RmptqzraSq2Guw7gaoKUJzAzJ
-    decGJTNhFsMPA>
-X-ME-Received: <xmr:mg39ZxSkeDTyuzKz_HqtNGVtjNP0K9UWHbEXIK-7Qn5QqNQiYbMGhyQ9_M9LdT570peAE_eRcw-T32ih2s6teSFqC9IvtsO8Ww>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvddtieejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesghdtreertddt
-    jeenucfhrhhomhepofgrrhgvkhcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuc
-    eomhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecu
-    ggftrfgrthhtvghrnhepgfduleetfeevhfefheeiteeliefhjefhleduveetteekveettd
-    dvgeeuteefjedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
-    rhhomhepmhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
-    dpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhhi
-    thgrlhihrdhlihhfshhhihhtshesihhnthgvlhdrtghomhdprhgtphhtthhopehjvghssh
-    gvrdgsrhgrnhguvggsuhhrghesihhnthgvlhdrtghomhdprhgtphhtthhopegrnhhthhho
-    nhihrdhlrdhnghhuhigvnhesihhnthgvlhdrtghomhdprhgtphhtthhopehnvghtuggvvh
-    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehinhhtvghlqdifihhrvggu
-    qdhlrghnsehlihhsthhsrdhoshhuohhslhdrohhrghdprhgtphhtthhopehrvghgrhgvsh
-    hsihhonhhssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepshhtrggslhgv
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgrshhhrghlsehkvghrnh
-    gvlhdrohhrgh
-X-ME-Proxy: <xmx:mg39Z6tAG5q_-mlN7TbVkEKknpZDzoH-FH1TfLkoAo_sGOMEnYA-0w>
-    <xmx:mg39Zyfvmz1sVnPqkWaxWLP7aezRpvNvHDkwoah6fsBuRa6uaAKEtQ>
-    <xmx:mg39Z-15HB_I08LrNCQSPUSSHFHWa2sRowet8gXQxWyzwyklTgo9Og>
-    <xmx:mg39Z29pxDP62hoQfrq-pErrAo3uOVL0Jh6m9Wg3DmnfcPlZujxFmw>
-    <xmx:mw39Z4T_dWr6aU2pDmSsaOokywZ5Op15EXF5ZCggmlMoh-IzJ01dpaRp>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 14 Apr 2025 09:28:57 -0400 (EDT)
-Date: Mon, 14 Apr 2025 15:28:54 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
-Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>, netdev@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org, regressions@lists.linux.dev,
-	stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: Re: [REGRESSION] e1000e heavy packet loss on Meteor Lake - 6.14.2
-Message-ID: <Z_0Nl1yD4n__oWiO@mail-itl>
-References: <Z_z9EjcKtwHCQcZR@mail-itl>
- <b1f5e997-033c-33ed-5e3b-6fe2632bf718@intel.com>
- <Z_0GYR8jR-5NWZ9K@mail-itl>
- <50da66d0-fe66-0563-4d34-7bd2e25695a4@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PPtBqQgN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39998C4CEE9;
+	Mon, 14 Apr 2025 13:29:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744637384;
+	bh=DDLp9F3hw0/j5DNaV3tFyRMhvyjy0IKOIaq0JQaile8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PPtBqQgNUpuhqJW4Z1zBQHKuU6NXJGmH+tkDm5LjpRM13T6RBw8BkNAwVabmfNWEl
+	 yqcB0hAIR1Mwcuq3+LA5POzBRBcz1mV/dsRdKh4y+NongAXj/ZK9CSjTN22BZ+okSk
+	 DhRc9lR6jB9/47eVKA7mOt5wYq4l4ed2QlmyTPQ40fXTamc1Mox3fewnKNyGUPL4/a
+	 y4RwSw5u3ALxortLVnhWLhuj/5BTqbPD8onwWUF2o78J2dNL+/GRh4XvH7zsUodr7T
+	 EQCsGlKDCYBsxmj3ablEiqymxgagOj2FCkOrJrIyvpxzSASnLOACHI369oqpzOeGA2
+	 uhFHdq+OsuuNw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Octavian Purdila <tavip@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 24/30] net_sched: sch_sfq: use a temporary work area for validating configuration
+Date: Mon, 14 Apr 2025 09:28:41 -0400
+Message-Id: <20250414132848.679855-24-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250414132848.679855-1-sashal@kernel.org>
+References: <20250414132848.679855-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="IB2IGAFxKW/DJnLD"
-Content-Disposition: inline
-In-Reply-To: <50da66d0-fe66-0563-4d34-7bd2e25695a4@intel.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.23
+Content-Transfer-Encoding: 8bit
 
+From: Octavian Purdila <tavip@google.com>
 
---IB2IGAFxKW/DJnLD
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 14 Apr 2025 15:28:54 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
-Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>, netdev@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org, regressions@lists.linux.dev,
-	stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: Re: [REGRESSION] e1000e heavy packet loss on Meteor Lake - 6.14.2
+[ Upstream commit 8c0cea59d40cf6dd13c2950437631dd614fbade6 ]
 
-On Mon, Apr 14, 2025 at 04:04:51PM +0300, Lifshits, Vitaly wrote:
-> Do you have mei modules running? Can you try if disabling them make things
-> better?
+Many configuration parameters have influence on others (e.g. divisor
+-> flows -> limit, depth -> limit) and so it is difficult to correctly
+do all of the validation before applying the configuration. And if a
+validation error is detected late it is difficult to roll back a
+partially applied configuration.
 
-I do, disabling them (via module_blacklist=3Dmei) doesn't help.
+To avoid these issues use a temporary work area to update and validate
+the configuration and only then apply the configuration to the
+internal state.
 
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
+Signed-off-by: Octavian Purdila <tavip@google.com>
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/sched/sch_sfq.c | 56 +++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 44 insertions(+), 12 deletions(-)
 
---IB2IGAFxKW/DJnLD
-Content-Type: application/pgp-signature; name=signature.asc
+diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
+index 65d5b59da5830..7714ae94e0521 100644
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -631,6 +631,15 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
+ 	struct red_parms *p = NULL;
+ 	struct sk_buff *to_free = NULL;
+ 	struct sk_buff *tail = NULL;
++	unsigned int maxflows;
++	unsigned int quantum;
++	unsigned int divisor;
++	int perturb_period;
++	u8 headdrop;
++	u8 maxdepth;
++	int limit;
++	u8 flags;
++
+ 
+ 	if (opt->nla_len < nla_attr_size(sizeof(*ctl)))
+ 		return -EINVAL;
+@@ -656,36 +665,59 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
+ 		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
+ 		return -EINVAL;
+ 	}
++
+ 	sch_tree_lock(sch);
++
++	limit = q->limit;
++	divisor = q->divisor;
++	headdrop = q->headdrop;
++	maxdepth = q->maxdepth;
++	maxflows = q->maxflows;
++	perturb_period = q->perturb_period;
++	quantum = q->quantum;
++	flags = q->flags;
++
++	/* update and validate configuration */
+ 	if (ctl->quantum)
+-		q->quantum = ctl->quantum;
+-	WRITE_ONCE(q->perturb_period, ctl->perturb_period * HZ);
++		quantum = ctl->quantum;
++	perturb_period = ctl->perturb_period * HZ;
+ 	if (ctl->flows)
+-		q->maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
++		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
+ 	if (ctl->divisor) {
+-		q->divisor = ctl->divisor;
+-		q->maxflows = min_t(u32, q->maxflows, q->divisor);
++		divisor = ctl->divisor;
++		maxflows = min_t(u32, maxflows, divisor);
+ 	}
+ 	if (ctl_v1) {
+ 		if (ctl_v1->depth)
+-			q->maxdepth = min_t(u32, ctl_v1->depth, SFQ_MAX_DEPTH);
++			maxdepth = min_t(u32, ctl_v1->depth, SFQ_MAX_DEPTH);
+ 		if (p) {
+-			swap(q->red_parms, p);
+-			red_set_parms(q->red_parms,
++			red_set_parms(p,
+ 				      ctl_v1->qth_min, ctl_v1->qth_max,
+ 				      ctl_v1->Wlog,
+ 				      ctl_v1->Plog, ctl_v1->Scell_log,
+ 				      NULL,
+ 				      ctl_v1->max_P);
+ 		}
+-		q->flags = ctl_v1->flags;
+-		q->headdrop = ctl_v1->headdrop;
++		flags = ctl_v1->flags;
++		headdrop = ctl_v1->headdrop;
+ 	}
+ 	if (ctl->limit) {
+-		q->limit = min_t(u32, ctl->limit, q->maxdepth * q->maxflows);
+-		q->maxflows = min_t(u32, q->maxflows, q->limit);
++		limit = min_t(u32, ctl->limit, maxdepth * maxflows);
++		maxflows = min_t(u32, maxflows, limit);
+ 	}
+ 
++	/* commit configuration */
++	q->limit = limit;
++	q->divisor = divisor;
++	q->headdrop = headdrop;
++	q->maxdepth = maxdepth;
++	q->maxflows = maxflows;
++	WRITE_ONCE(q->perturb_period, perturb_period);
++	q->quantum = quantum;
++	q->flags = flags;
++	if (p)
++		swap(q->red_parms, p);
++
+ 	qlen = sch->q.qlen;
+ 	while (sch->q.qlen > q->limit) {
+ 		dropped += sfq_drop(sch, &to_free);
+-- 
+2.39.5
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmf9DZcACgkQ24/THMrX
-1yyNbwf+ORoBWsb6q5Fjli64YiXuY/22Zvq/ugiuZv9CrpfLnRxkgLbkxdb9h2wv
-n/YiAPxVIi/Prn8ihpS3UiMCLv9jEfMVIY8STpWr+O+gutyIaU0g43ZUECxpbyRW
-cZWssO2ylXx2n83BzOEpJDFVcgZhWLQu/qjERf4Ub9BtQT6WsfkdoZ3muSK3TyuA
-hTNDMAVcOa70nGwg6J9ksV3WrEHRHoD96HRwgS3IRmH8SRf2yvCQm4OWyUJqTE2A
-XUzY2g1JQeWMdELJoxfFi6WlqWbIeCxXc2heLSC+NfQOAxCBmhVDK9b37Wj/Gwkk
-0+SUrOc9A7ImL6/4SQivifiZRz1S0g==
-=OV6S
------END PGP SIGNATURE-----
-
---IB2IGAFxKW/DJnLD--
