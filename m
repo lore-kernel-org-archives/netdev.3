@@ -1,46 +1,46 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012046.outbound.protection.outlook.com [52.101.66.46])
+Received: from AS8PR03CU001.outbound.protection.outlook.com (mail-westeuropeazon11012053.outbound.protection.outlook.com [52.101.71.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426F517555
-	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 21:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6AA15575C
+	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 21:29:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.71.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744666167; cv=fail; b=Y+r9SGzWq4q/m111xsP60/NCsJgNRs2PcLSIjm70zVkMBMhMxmE5uB1NZznCXQHk8s56sdlO7hTDWgbaK6bMbdlYsuRlmRu8xNS1ugXr6w4WYR18z0WoB4ro7/uZIq0rIKJXbPPJVp9agKQvb68OOhGgIUVhhWoEdmlIodhbePA=
+	t=1744666187; cv=fail; b=PN4hGIirxm0jgxy7eYwIJeiWsFlsNP97EOmus4GEQH/VDEhJa7qEkckXpvrzhcAsfJIUtlmXRtr6UJbxNXVxRfEExFNMFTmlAVMmVBulTEzW3FGSJxpihqDBeKvF7yqh1DsEttlTo3M00o0WMmgAk921qwnOe7qPYicWFEcaNZs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744666167; c=relaxed/simple;
-	bh=Ci6FtpM4IjO1r+LRn4FiSIiH99QXb4g4dz8FCK+YEEQ=;
+	s=arc-20240116; t=1744666187; c=relaxed/simple;
+	bh=igqHUgrozZkZRV+excMhY9NQsYNgeme43+ShcgkfhvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PjCf3PgqkcF9TfLYNX19rUmx/OXLQagBMtalAfEFyTAfBlqNNXpXXsV4tzB90skGWhIP7yPV9D5NLBu2j5JDFMlm8EMG6fMBxzSLE4eeU9pqou07g8U2+SvZyh7ShSJkEqdWe5lZv97peKv1NPVGT4oz2G3LEQiyfm9aW6T8V30=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=W+sd9bWm; arc=fail smtp.client-ip=52.101.66.46
+	 Content-Type:MIME-Version; b=tP0SBkElgOuWvPa4GrKjzCvZdb+S3zsMk/M9ZqlDktCH7NddPD6x9AHThzhmYz+vvUOiDd7ZDJYPUBkqJD3ABMz/CDs8goayahdc+zqpVnDlO8tEpnDXU1QAkBZNYoU6EykDtyTsVu8vlUuMD6jo1Pr55bjKFPTHr3b56lAvRe0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=cpJ3tHV0; arc=fail smtp.client-ip=52.101.71.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="W+sd9bWm"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="cpJ3tHV0"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vJF2XaKh5Sj8SRd5xWoURonVili9DoIeh/CUcb1SMblIzgpMnDqL/IEZvvszVVnDDP+X0no0K7O3CWRx/DImaswWj7LOmYoL7Pyyu+N7ESQhNzZnTDvjHtibjNxyU7DBFYkqS/2Uq+NVItdBAy1NlwzMTNTERkqNLQ2GeP4rb99qOT3hjIZSNEC80T3LehHSnGJ+DBPk3mAVJS3PvDQO5NLQImVpQPyvybpNRhLQ8zgTX+Bt/BTz+Xjg2xUa7GSZXvXjhsexBZ1q95YRNdsCH4uIWewbleoHu+wyl9aYauAyvsib4wzOqcdWINEQf9prjm+iSfd33x2zx/qgF4j+Rg==
+ b=VDbJB+Jl6e0l3x0IbEkSzh3PN2Dksxjrwr7S02hCj+4Vnd1ggTpc3oK3l5k08Bh5MkrABmBoK4mGLTqy7yUzmKP2ZHzzw0qgMOxm27wNWctMmKuKvzY5fsMB/Osdttp6rB4igs5hM+oQ10d5Sk1Tnr+fj2WNubNqCmQpY9i4CkYO2CdlrSBeoGYaeilfnl07HmOntX+27axdozHaFEqL9mTBwg9nL+tJX/L95sjGvqkX6ezAFW44r5TUsOfvy/gAnF8S/Jz4MO+bgqINFh90Z3KFzXQ/OBublRXXcV69PKWwxSdkSerWLBNrLJsK8L0Wa1z/rz5KZrNdHnqwCkVUGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=s8MQVRCn8Un0/z08lpKpNB2JWgwZBnluL4+dZ2xFk2w=;
- b=kxZy1uaUaYjZGGCkKuISWhVAOUFTSGXwG/SwdWOc72iXfGh9iudkjqoXe1m6ODcLeeynRIHCQ09DYKSXIHwzodXxcCESXSQPfD11K51OvU16EkK/Ipz+I6KPmJJdW0ul87aNw4OMDgu1GVafTAmqU2QpM8r30OI+fzMU3T/iDs94NJkJ7BkZ88Ydr8bMCNWTY2ISuIFhD+SAske+3Ed80NutwEdxDh34URDOCYeAYu+NOPWzo3XQP2EH54FxEN354D7Htr5OP0PUF8hV4nuh8nwFDg6VwmbEFxaerIJRCyS2mPVZsrKj4D9FRfIb1NP18icPt9KLvabMOdA4/mj9Hg==
+ bh=hi+K8sJlktUeXkcftRXU5ABPacaDk68JQqyPmwyPzBo=;
+ b=BjasqxEO8NkcYftrZFXUOh/LbfNU4ozo8kUibjsZeOncP9xQ/lW7eScFy8BWB2sHiPlpaqQCX7OblH2fxXPhmAErmx8udcIt0m+BCSNqL1NHpJuZPMhDjSQ6eD6GjyYmrwbcD0ShDyohyh1bDzNq4wR7XB3UpnKvwBu/kSGMJHEkqbrnx0glNbwwmWboHfy44m2GXOfWAYB5+mZJ3NWI6/vbK3upLxVnXgh/L0Ya+ysbDeDSfzvoZERn71ciH1+c+YhO1CynK62KF7+AOz+QjR+YUHr7Z8Q8NG+rpiQrgzt8QUnrrT6atze9qQUc+9rvDvCEAlN8FNlsUvaz+b0Dnw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=s8MQVRCn8Un0/z08lpKpNB2JWgwZBnluL4+dZ2xFk2w=;
- b=W+sd9bWmgeCbtrfpEWNnewADNve0Em0od3QaPdB9z073SPJ4DcKVaf/DZazZ9u6cne+G2/hLbXWolhPK+DSYNO3vQQIwUAEl3YfnFVV/ZLioIRc4n1waf3XsWQaNQvx9EHcW9pyJt5kYYm9bADavakoStII5u9AkJY8zQt/8iHaNmu8GdRFERqvBhW8ZAd+RttSBOp3Hto2J36qp3CZ3+KUeF6kfrF3ApNtRqjHRi1tUQk5deOFvdE/Q6p0Sxzotf2MByTuDoudkeV78fFvezojypOQfSgAWn2X3qoUi1UbRJSQL3Fj8khCLukhs5i5vHV3aJ7fJUoumyzr41JLkHg==
+ bh=hi+K8sJlktUeXkcftRXU5ABPacaDk68JQqyPmwyPzBo=;
+ b=cpJ3tHV013vmUOPtbpn2//tXhy2OgCr4SCKb7v3uzLZQi7oema8hjOwp8p+aT4jkEAgdgMNDnZIO0Ln/ow4FB7Z2A+h6H1UBXauf3tVTOLxwaoGsQeImRCQxzmyTaR+zNpJYy5+wDSQ1LAB3829e9vyILcocYj9WqSFmGyp5CFk5DeqodPMoN+z1hYj+k+EpeJHLB5rS8Gzkjbpm4cbgWRzc83cfMUqq09dqTVbR/4giyeB24JbQBuc9ngvWU69/svHJKrF26jlc1y4AfTVxsEJJhYnUgaqsOhWsrJsilAr3cBTOqBPE7vbRZqXOe9pLZV82vAbVkV+dgXKZ+uY6Pw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
  by AS4PR04MB9506.eurprd04.prod.outlook.com (2603:10a6:20b:4c9::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.34; Mon, 14 Apr
- 2025 21:29:23 +0000
+ 2025 21:29:41 +0000
 Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
  ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
  ([fe80::7417:d17f:8d97:44d2%4]) with mapi id 15.20.8632.035; Mon, 14 Apr 2025
- 21:29:22 +0000
+ 21:29:41 +0000
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 To: netdev@vger.kernel.org
 Cc: Andrew Lunn <andrew@lunn.ch>,
@@ -51,16 +51,16 @@ Cc: Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>
-Subject: [PATCH net 2/5] net: dsa: mv88e6xxx: fix -ENOENT when deleting VLANs and MST is unsupported
-Date: Tue, 15 Apr 2025 00:29:13 +0300
-Message-ID: <20250414212913.2955253-1-vladimir.oltean@nxp.com>
+Subject: [PATCH net 3/5] net: dsa: clean up FDB, MDB, VLAN entries on unbind
+Date: Tue, 15 Apr 2025 00:29:30 +0300
+Message-ID: <20250414212930.2956310-1-vladimir.oltean@nxp.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250414212708.2948164-1-vladimir.oltean@nxp.com>
 References: <20250414212708.2948164-1-vladimir.oltean@nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: VI1PR09CA0177.eurprd09.prod.outlook.com
- (2603:10a6:800:120::31) To AM8PR04MB7779.eurprd04.prod.outlook.com
+X-ClientProxiedBy: VI1PR06CA0100.eurprd06.prod.outlook.com
+ (2603:10a6:803:8c::29) To AM8PR04MB7779.eurprd04.prod.outlook.com
  (2603:10a6:20b:24b::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -70,160 +70,183 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|AS4PR04MB9506:EE_
-X-MS-Office365-Filtering-Correlation-Id: f85b5d0c-cf3d-49de-9c8d-08dd7b9b6c82
+X-MS-Office365-Filtering-Correlation-Id: ea1c0fdf-6b59-49e0-759f-08dd7b9b7742
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?SnWC9QYPvw316GEVRZhENvvfMOSksqNTHnEalNY5JBg4aLopGwvk9qSqBYM1?=
- =?us-ascii?Q?r6laBUXfC/gnrsZ6aSKis0hQ1XhirsCjn1WihmcmguZUHvrrh9idfAhGw1Ze?=
- =?us-ascii?Q?gXRNafzZ4LMU6Cj7M/vJCoHEm0ysR7crus/zWGEG2KJpPjmAtfde6fwp3aXE?=
- =?us-ascii?Q?1kVj9qeMIzAXdJ4smntrlazBII3qgBB0t7D+PkQCXGCu5fHhmOl+yVWDHkBI?=
- =?us-ascii?Q?pbT/MXZPyGPGgdn7gNRiwXEk/UOG9ZglW5QfcrqcCCoE99FmaVX/8JtF1YHG?=
- =?us-ascii?Q?8A6S9v7YYAvaQMfeqLncIbULa/gbl3C7dP64Ky3/n69WZGNmpRGELi/xFKoA?=
- =?us-ascii?Q?L1vGXe0LoXF3C8qOKz+MA6FU0aoPsayICVF8Hj+UHT/7ESKJ/jQhxTOqXGhV?=
- =?us-ascii?Q?GRm3+ZUecUozapnL8kNQdi1AchNVpIv45lAAgtGFCeef8bmL2P8uoM8U8duH?=
- =?us-ascii?Q?fQSlqLRq+LNuaxmmHljUEWhNDTEsjr3ArMH1N3MWmBIDoGVmWQLriGxqmy+V?=
- =?us-ascii?Q?K5ip9VLjaIpTdc7Quk170bHB6f4DwqK9KtLfFBBv7y2EjIodwy9isZ4jIqf8?=
- =?us-ascii?Q?2bRefQ9SD9stJyPPBEthW0ZStoL86Jbt0OjIV9eS9CrDoYS7zYC8gtgPayQ5?=
- =?us-ascii?Q?jEVHKfnU1vO2QVo7rN20zM6yA5XqbgZjR/eI5khiGg1qOMTrpu3EXmdUN2HA?=
- =?us-ascii?Q?eIwtHDoSk6RiEZ77etjxTgQ91T4ytEaOo+bQEAIu9i0SV7UoZN3lRj2e7D85?=
- =?us-ascii?Q?H410Vsg5dty/yE/KvMKPfGLArcGFS1vJD84ExkyHKYS7nVnCKS/7akHSXnjk?=
- =?us-ascii?Q?b5i+Mh8vBMtolLlJ/qz+tV4mdsd4pPnYiGv7ClA0mPTH/5jPI64c8dq04EBY?=
- =?us-ascii?Q?wGpoxdLIIxiVcDK5lNtWOyRdYMIOFwGDXgphH8T6Qz1ZASMHtUeA91EAKA+K?=
- =?us-ascii?Q?lR/NUEn3x2Q0x241dPUJBnci79tWTkRUOPshX9OKzctiln+FX+ChtMeGAMiz?=
- =?us-ascii?Q?lzsZ9fsVj3RygBmjwCkWDf0yCqWLMsSTZ1lHN/m9r4IlhPFZoWXvwOSBWWEA?=
- =?us-ascii?Q?Hy6uw8UU9556mCY2/YqdjOI/etGr3XsNj5uWHcm1DlKUMWKmCqAtmMaebYfg?=
- =?us-ascii?Q?EnHzYvQ2I1/fDj1mxyJ/Dy/a2Fz+28Mz6n10HvP8a/aczQHg7n6GUrPYhEkU?=
- =?us-ascii?Q?gd8pINxfS2nQ8xgVmmIrFGaY/18ZiDThWwNDGTAJt4dSwKeXFa1ikvjfOK2R?=
- =?us-ascii?Q?gjksMpSFJUIXD/Plz8HEu7XI+diKEoUCz8rctRhSkgPo7Q0LrjdHxukFO0Uu?=
- =?us-ascii?Q?ssHAZdIzvODHa85DVRFgUUVDxPobJnSCBYNdCQnQxj8X1u/2xPbCAw6l5fv1?=
- =?us-ascii?Q?HojSmLk/lIDZe88ica6eri7w482BECB96wcr7k27j8uk3RnpFoLt2VII0kDs?=
- =?us-ascii?Q?JOvycqx0kp/XLsF0VHOGq1cBbDzl1KJGGOk8PAekuuSWsoS/xCwePJ4oQt85?=
- =?us-ascii?Q?7cGlXalES4Z4BpU=3D?=
+	=?us-ascii?Q?uhcz0AGFWA96DWsFgOUz4xrbTuPzar/8F826oB+kpajrWYzEDQy+3APRVG+S?=
+ =?us-ascii?Q?5D2At2u4jpqNJrsMFlozTYOPAzjlPQ0a8P/rT44bGFUUUW1e4w2mHVPvdYJa?=
+ =?us-ascii?Q?4sycc4P/fr71SyaNEYA6gzfA9Avfhx95EqRB8ekyazYn4L637OuHmYmpjZIE?=
+ =?us-ascii?Q?2t8bgRYTy4pXi4V1XsuzFf1sZNVCtaucQwFyGABx6WmXLh3cOwJjDiKJ74Hg?=
+ =?us-ascii?Q?ZiooGllvVj45V250qicDo9G/xTFywbjCMe6PHWdYKB87XqWQu60i0AVMp001?=
+ =?us-ascii?Q?fGkAs5M9+ZCNTC7iQwpC4VcOFyNpK4qDidKkWA6xMO8ixW24XPKkugTI4zHU?=
+ =?us-ascii?Q?d5OpHgidEBAbOG/5H+5CB+Z3jbl8D6H9HPT7bwzo6LSAAgE5bkppRiY5/s6x?=
+ =?us-ascii?Q?fjIhK7E+fUu33vwtItZ6Hoa9rYk2rlGEYaqoLwc+srAGnMgbqkMFNIQ2S9gp?=
+ =?us-ascii?Q?DuM22LMnQ2SRMtnvuPumVlUB7YgCJcLJi5z3Dyaq5hNyElc1RcqE674thhOT?=
+ =?us-ascii?Q?SUnBeJ4gBUsqxilCSHwaKQLJ4Trywo6ikkx60XdS4LcUCk++3QRvWQxwjx8U?=
+ =?us-ascii?Q?1LEk2rEsLf7K5Yu8fUnoCOaGNTygGau+VAULXz8MrcGQMhwshO/HPSM+88dm?=
+ =?us-ascii?Q?YZjVPUvDBD8dgcIMIenySUgtVpfHuvul5opja2ETB4RwmbfE+gQhijKpEOLm?=
+ =?us-ascii?Q?IlKb1OslpGCAyyhdi5Zlo7Jx7CZ+nlXVY3GP1ZxJxdZHCMYOTwh7BHxgPjtw?=
+ =?us-ascii?Q?7jgXWiYwGSSH3Bgo3ouuKdSzuqKHQ6qK0XYFoWrk0JxNXM1CsVPx6XpiY1Zb?=
+ =?us-ascii?Q?SbywLLvWrPdt2i4fevU/bRzxNt1Dp/bLbOBK0QGR71PphhovIvzGEF5+4qF9?=
+ =?us-ascii?Q?86RMTtraKGiax5ayR58Xea+KNpJVA0i/etQ/JwMrZLDaLNL0iPslgLsv50aU?=
+ =?us-ascii?Q?7Ypqno7v5aHL0GBvYTb8VdBxUiLHmcu/8LPP2jKLlhJ53W1RS4nzrb2oscff?=
+ =?us-ascii?Q?E59FpDuMca7yECkjrcNRtzR4G2IFpVLU9J7xahwnV/LU8VWgp7Ah2GlOsjEk?=
+ =?us-ascii?Q?d4eNZsIMz3SD7Y4S7kIgvm/nubgYc0BjYvGXHnKwCjeMdukNZn7ml7ll6Mpc?=
+ =?us-ascii?Q?0vAaO4DHNof5Gek6qXyqbiHOYifpnxxC+UV25B5FzBfEC9wyl0PDIaPO7G++?=
+ =?us-ascii?Q?KL1dCZPaQdbUJxbwsswipKnCAjVDq4ZV8cEnHBy3UZIVJEtHHOYNe8+l0N1z?=
+ =?us-ascii?Q?ndZyd9q/vjnEbO5JTM5ofyjgpUqK7GkSzLDaEuSamiXTv2iP3DNxz1u3DiwV?=
+ =?us-ascii?Q?CMBfyzCAljQaPuB5l0MVYFdHxGVS60muRJpBE+aj6hLyh6dmNSOgzR5hRgOy?=
+ =?us-ascii?Q?fhYaIpNaKnN1JIPr9jK7Kl5EuiaYFz/rg+J2WQ/+mFOYfpt3hxdn6obGfz6h?=
+ =?us-ascii?Q?ytTX2Vzx1KiucBVMB4CTLrllFB/2bvS8?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WXW7j3vDt1akLksf/NYMWQwaV+JF+0O4a84F2716UEa1wlQ95E1IwxDxdJTB?=
- =?us-ascii?Q?SD5MEUN+7KaNj6xbRQbjc5WjEc/1NkKkGEVSGMEfyMeTGdp3Idabp1b7C/dY?=
- =?us-ascii?Q?u98hHn3i1fScCpRdtSi0X2Lrp/dJdHm68MAWelZx8V322OygPd6kN7U9UfRq?=
- =?us-ascii?Q?Rs1xL4PPAQVbghtsXM8cnEg1IkI7I/0P66uCzQtGYGroesYH1GwlQcSkBTht?=
- =?us-ascii?Q?mTBDe5V8WJFS5HSsmY01CoA8cZ5f+fJk/YJEtOf8NzOF+3XAYHKYZTyjJIWM?=
- =?us-ascii?Q?ran+9aODb5capdbtWEx09fC6xMQhwWRZjfu8Advp3smg5EPbJ2c+6/uxPZZ6?=
- =?us-ascii?Q?3fjOGiuTXLm6N+0BgiH74vxy5/aXVX21RAgr2J7Y9a5TlHZo2VwXqqq9tgvU?=
- =?us-ascii?Q?hE7gRKFGxaRY30tpFyBeUY23wLab6BO6Pw2PHmMU7lq9+9VTnBLBJjqK5UNn?=
- =?us-ascii?Q?yEGiqKPIxvvm6ZoQ7Jvoynm3FpzOeDksDYL416YuRlgzEPfGWiNeTIxljxq1?=
- =?us-ascii?Q?Z6aTHzGH1487Q72r5RUfV6VUHw4Lvd7aeMV8cvRSpENmbknW8iccsbzraKns?=
- =?us-ascii?Q?mlTYsQ2y6hQ6gdqO2MiNOtkUVENp0HsuU39OXddoWcMy41FfqY2L77yqZyCv?=
- =?us-ascii?Q?esr3dWlGIThWmKQhuZeFeSGxdU24OQygC0fNWGsKDTYxYDCfoRVKGA++oGsY?=
- =?us-ascii?Q?iky39fWmgo0s3z7IVSANOlfXUPgKZRpMBoM4mGQeCsvxxX5ujQIeH6T+uiEn?=
- =?us-ascii?Q?L7wE63sdI0u3ARwSTI+CYawUHpabelqbI/XbR/AmaDyAWupJ3OXvU/pt4RkY?=
- =?us-ascii?Q?HvEaL8QArze0kMB7WHX0Ge0VHWUUyZ6cNnMEzAV2fitGhWS5FQxNZKNPZeJK?=
- =?us-ascii?Q?b3Dab292BW2eOu53/iSRw6y9naUQa72cPR50zXP2lE1blVt6ujm59DrBC+AZ?=
- =?us-ascii?Q?h5gonLISw/dKJ33Ec4GvfiRp4aweII2i8E+BdunUfBUAlEi3xbG2zFmQpuaS?=
- =?us-ascii?Q?/34S4Ioh1q4rY5wPjIwfLG51NgHxkBnpLLl8HFZ97SLhi7GYEPfsxBbIMZxz?=
- =?us-ascii?Q?tmuMIhuelZcZrk9r9qE3Xo+UNtE25UEiyuCgtAXoKpIX5B9kn8Wp7C2K/WmC?=
- =?us-ascii?Q?3Mu4+90vcOftVagsKLIn4F+7NZlLV6zRGvRURkceJX76RaTibsIQgObeiHaH?=
- =?us-ascii?Q?a57pE6P3WZ+3LOdogfTFDDE9FZ6MMrSjY/XeIsCPS6kjRCa/ulsIS9K7KMmb?=
- =?us-ascii?Q?gspZH8rMOG2jTuNYKu2USCF5mZyWl6GYZmD8LCfZKKpqHuJnoKRbnwGKqesi?=
- =?us-ascii?Q?aLEa1NzAdhe5GoXDUqbu1oK+DG4aHhp4dhyItvjmCMSKiJlDoedRab995JPR?=
- =?us-ascii?Q?X19PKflPFk6a+k5Oky10FDiE/PimmnSkOFu9aDJ85VTrdH6M5hIJl7kw3+7G?=
- =?us-ascii?Q?7DwTx9HzcqkhZ6f3GRegJ3OZM5Xv4RMwP+OXuFBI0bAUrKIXitTCgkhU0V+K?=
- =?us-ascii?Q?MdmdE/hDMpFbJaGEhnSUNKf2YqILtlg5vxTdKMo5WhAy040irLUB4HBKrFBh?=
- =?us-ascii?Q?rEq8db5ueq/rKaC57i0FDWIWx0+NkofFGSOPwmcEUSJ+CWMBmrNLoMghOxFS?=
- =?us-ascii?Q?Hg=3D=3D?=
+	=?us-ascii?Q?OmKH0NoUEjYinxq9gdc1z83k67pm2YPUd5l/XGCtYFt8XLRRlSM8ZtwR9Or9?=
+ =?us-ascii?Q?c01a38WiLd7IvDaHWXue8z9J8is7gPb1hamjbNp3VczTG2xqCMupDUwMkq6p?=
+ =?us-ascii?Q?79kQFLtygfXHXS/b7Ttx8C9xo2FC4pJ8YUVrDt5IlCJmb9+N4dm8sjeNWkm7?=
+ =?us-ascii?Q?yMRQYtMoVL9InK9cOV4PXzubn2FfuINzISWxwamCo21EODCiPLfomSJMRy1K?=
+ =?us-ascii?Q?u/oLuBiNQfq9QawVZQXfQxdppSxGanLXX5ybe/FfEWN9fqz7+XIXDrd67x4D?=
+ =?us-ascii?Q?DRUJpfL2OUuEApDxbvyHKFtXij5lP6LpedawdbpVZNev7Z8eRzBvTCOTSfhN?=
+ =?us-ascii?Q?2vt55j0SioxjTV7ZNhGByKnM9tQtshfOQA0GI8eTohb6kGOkmwB2fVX5/QAT?=
+ =?us-ascii?Q?BuxXV5jrnAk5LG+AGBKwExYZuqkuyCh8XIUBxlEOXHxY5jIW+Km8zprWOtwx?=
+ =?us-ascii?Q?2R++z82idFgLGiewjD6DJlvKofLSWEaF2ZBCVQ/5BCmt8qhYbHWrIc+ppkqr?=
+ =?us-ascii?Q?NKX8kSpTMOuRHs8AXUbEm6vios4/wLgULjTjrVPDYzmNYbKJE5vrSr8ZxiWt?=
+ =?us-ascii?Q?mRHykgqhwTSOA+TG5+hzIMYfiZmrIgdmgFxiUspKCOfX1VbjMZc4aa+HnuO4?=
+ =?us-ascii?Q?piC4QI+2DqjMvkebDiO76B0rd6f9KmhlvL5gKcUsuYaKq6wJVTGOV3sp9EWv?=
+ =?us-ascii?Q?8zUo2wf4GSxtlj4QP4h/MXbaGD//O0g2uHbbwbH+yK1pcPJQJp+lwmp91/oG?=
+ =?us-ascii?Q?Hf+YNeqoC1PDhgNr9zRFrS8AopqXk+zPXKRKeXE1TCt+iq2MuRpv+zL+yBUo?=
+ =?us-ascii?Q?ihCQXUBvG1NRmJpQvT9Nwj8mvFV2HYLTzYqkKO/A5sQDJ3UpRLTzoWtVaz1j?=
+ =?us-ascii?Q?qKUARG1cIwleOzo/JHYZolobPJTgIiRwmcBUSoMKpQ0MyqG/sJwItTmpmI7s?=
+ =?us-ascii?Q?e8XoIIk6CXiO29kUj+EVfpKF4Jh5p+en4g1aBWLMBsLJCjhj8BKJUfiVxoDh?=
+ =?us-ascii?Q?8fQlAltKi/POdjRKpD7ws+1axwePjkpBPIPlkm9XLD0AG4mvd92lmrdwa5mb?=
+ =?us-ascii?Q?RxCeaBxyHptpYnK4b7bEY/SpzmEl5iDHQtmjTdvl5FXMqlAL7LHpJkHzkKK5?=
+ =?us-ascii?Q?u+3dbEtwp/GS+yXV1+9p5fIL/rlr3kNAFyVYoyxMIaWvTx/wmo9p+Wpjq5vH?=
+ =?us-ascii?Q?N/d+ehYdKcBriT2R5lxrFMj/Jg7PQA7Q/MEUo0zQ2X2w3NlQe4InDKi07cXv?=
+ =?us-ascii?Q?/++y5IYeX6p2UeKFOk59a3JJXrFd/VrW8wYN94hIY1cS5HGuYVsBzHrwsDVq?=
+ =?us-ascii?Q?4wPQ8DGJD8zyOy/zyff/czivebgUd4haKakj/YErns1KuDPfGgknGY9gYLW6?=
+ =?us-ascii?Q?1VsX2keC+CztIFwo7EN7AqaTctDmYzcFrRjxKvsLhuxjt2mSV/h586nNRU/q?=
+ =?us-ascii?Q?XYQlA7KdfqzzYG5PR0RxwBYf0iK7IxkP9C2zlTVvynh9o8OxGGzh6jzZ2wNX?=
+ =?us-ascii?Q?Q4JbuqWl5C2j9fhZJMfPkUxIyhdXMi2K43qyremn/uQEVWHTDfA420j5GbQI?=
+ =?us-ascii?Q?ZkgOkkUMXcTfAIa9KY4wm4Sh7Xlb6QRj0zsn6YV72tyoSeKuJWi6n7Hzxwwf?=
+ =?us-ascii?Q?Ig=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f85b5d0c-cf3d-49de-9c8d-08dd7b9b6c82
+X-MS-Exchange-CrossTenant-Network-Message-Id: ea1c0fdf-6b59-49e0-759f-08dd7b9b7742
 X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2025 21:29:22.9197
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2025 21:29:40.9657
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RDXBvPM5/K7hkPzVlU3iRpTwrW0NaC2xzd6fWTfLpqdm8r8lpetxF1/TyFsAQL2mkzDBrxX1cUhCIaHy4t6J5A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: zNIyUGCgEbw19u/367oPZxzvnwVI0H9k3FQphfeD/gI1ZeivRFOQOtjZz+2NiudxL42GM3dmoHrH+d0i09lK1w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9506
 
-Russell King reports that on the ZII dev rev B, deleting a bridge VLAN
-from a user port fails with -ENOENT:
-https://lore.kernel.org/netdev/Z_lQXNP0s5-IiJzd@shell.armlinux.org.uk/
+As explained in many places such as commit b117e1e8a86d ("net: dsa:
+delete dsa_legacy_fdb_add and dsa_legacy_fdb_del"), DSA is written given
+the assumption that higher layers have balanced additions/deletions.
+As such, it only makes sense to be extremely vocal when those
+assumptions are violated and the driver unbinds with entries still
+present.
 
-This comes from mv88e6xxx_port_vlan_leave() -> mv88e6xxx_mst_put(),
-which tries to find an MST entry in &chip->msts associated with the SID,
-but fails and returns -ENOENT as such.
+But Ido Schimmel points out a very simple situation where that is wrong:
+https://lore.kernel.org/netdev/ZDazSM5UsPPjQuKr@shredder/
+(also briefly discussed by me in the aforementioned commit).
 
-But we know that this chip does not support MST at all, so that is not
-surprising. The question is why does the guard in mv88e6xxx_mst_put()
-not exit early:
+Basically, while the bridge bypass operations are not something that DSA
+explicitly documents, and for the majority of DSA drivers this API
+simply causes them to go to promiscuous mode, that isn't the case for
+all drivers. Some have the necessary requirements for bridge bypass
+operations to do something useful - see dsa_switch_supports_uc_filtering().
 
-	if (!sid)
-		return 0;
+Although in tools/testing/selftests/net/forwarding/local_termination.sh,
+we made an effort to popularize better mechanisms to manage address
+filters on DSA interfaces from user space - namely macvlan for unicast,
+and setsockopt(IP_ADD_MEMBERSHIP) - through mtools - for multicast, the
+fact is that 'bridge fdb add ... self static local' also exists as
+kernel UAPI, and might be useful to someone, even if only for a quick
+hack.
 
-And the answer seems to be simple: the sid comes from vlan.sid which
-supposedly was previously populated by mv88e6xxx_vtu_get().
-But some chip->info->ops->vtu_getnext() implementations do not populate
-vlan.sid, for example see mv88e6185_g1_vtu_getnext(). In that case,
-later in mv88e6xxx_port_vlan_leave() we are using a garbage sid which is
-just residual stack memory.
+It seems counter-productive to block that path by implementing shim
+.ndo_fdb_add and .ndo_fdb_del operations which just return -EOPNOTSUPP
+in order to prevent the ndo_dflt_fdb_add() and ndo_dflt_fdb_del() from
+running, although we could do that.
 
-Testing for sid == 0 covers all cases of a non-bridge VLAN or a bridge
-VLAN mapped to the default MSTI. For some chips, SID 0 is valid and
-installed by mv88e6xxx_stu_setup(). A chip which does not support the
-STU would implicitly only support mapping all VLANs to the default MSTI,
-so although SID 0 is not valid, it would be sufficient, if we were to
-zero-initialize the vlan structure, to fix the bug, due to the
-coincidence that a test for vlan.sid == 0 already exists and leads to
-the same (correct) behavior.
+Accepting that cleanup is necessary seems to be the only option.
+Especially since we appear to be coming back at this from a different
+angle as well. Russell King is noticing that the WARN_ON() triggers even
+for VLANs:
+https://lore.kernel.org/netdev/Z_li8Bj8bD4-BYKQ@shell.armlinux.org.uk/
 
-Another option which would be sufficient would be to add a test for
-mv88e6xxx_has_stu() inside mv88e6xxx_mst_put(), symmetric to the one
-which already exists in mv88e6xxx_mst_get(). But that placement means
-the caller will have to dereference vlan.sid, which means it will access
-uninitialized memory, which is not nice even if it ignores it later.
+What happens in the bug report above is that dsa_port_do_vlan_del() fails,
+then the VLAN entry lingers on, and then we warn on unbind and leak it.
 
-So we end up making both modifications, in order to not rely just on the
-sid == 0 coincidence, but also to avoid having uninitialized structure
-fields which might get temporarily accessed.
+This is not a straight revert of the blamed commit, but we now add an
+informational print to the kernel log (to still have a way to see
+that bugs exist), and some extra comments gathered from past years'
+experience, to justify the logic.
 
-Fixes: acaf4d2e36b3 ("net: dsa: mv88e6xxx: MST Offloading")
+Fixes: 0832cd9f1f02 ("net: dsa: warn if port lists aren't empty in dsa_port_teardown")
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ net/dsa/dsa.c | 38 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 35 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 29a89ab4b789..08db846cda8d 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -1852,6 +1852,8 @@ static int mv88e6xxx_vtu_get(struct mv88e6xxx_chip *chip, u16 vid,
- 	if (!chip->info->ops->vtu_getnext)
- 		return -EOPNOTSUPP;
+diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
+index e827775baf2e..e7e32956070a 100644
+--- a/net/dsa/dsa.c
++++ b/net/dsa/dsa.c
+@@ -1478,12 +1478,44 @@ static int dsa_switch_parse(struct dsa_switch *ds, struct dsa_chip_data *cd)
  
-+	memset(entry, 0, sizeof(*entry));
+ static void dsa_switch_release_ports(struct dsa_switch *ds)
+ {
++	struct dsa_mac_addr *a, *tmp;
+ 	struct dsa_port *dp, *next;
++	struct dsa_vlan *v, *n;
+ 
+ 	dsa_switch_for_each_port_safe(dp, next, ds) {
+-		WARN_ON(!list_empty(&dp->fdbs));
+-		WARN_ON(!list_empty(&dp->mdbs));
+-		WARN_ON(!list_empty(&dp->vlans));
++		/* These are either entries that upper layers lost track of
++		 * (probably due to bugs), or installed through interfaces
++		 * where one does not necessarily have to remove them, like
++		 * ndo_dflt_fdb_add().
++		 */
++		list_for_each_entry_safe(a, tmp, &dp->fdbs, list) {
++			dev_info(ds->dev,
++				 "Cleaning up unicast address %pM vid %u from port %d\n",
++				 a->addr, a->vid, dp->index);
++			list_del(&a->list);
++			kfree(a);
++		}
 +
- 	entry->vid = vid ? vid - 1 : mv88e6xxx_max_vid(chip);
- 	entry->valid = false;
- 
-@@ -1960,7 +1962,16 @@ static int mv88e6xxx_mst_put(struct mv88e6xxx_chip *chip, u8 sid)
- 	struct mv88e6xxx_mst *mst, *tmp;
- 	int err;
- 
--	if (!sid)
-+	/* If the SID is zero, it is for a VLAN mapped to the default MSTI,
-+	 * and mv88e6xxx_stu_setup() made sure it is always present, and thus,
-+	 * should not be removed here.
-+	 *
-+	 * If the chip lacks STU support, numerically the "sid" variable will
-+	 * happen to also be zero, but we don't want to rely on that fact, so
-+	 * we explicitly test that first. In that case, there is also nothing
-+	 * to do here.
-+	 */
-+	if (!mv88e6xxx_has_stu(chip) || !sid)
- 		return 0;
- 
- 	list_for_each_entry_safe(mst, tmp, &chip->msts, node) {
++		list_for_each_entry_safe(a, tmp, &dp->mdbs, list) {
++			dev_info(ds->dev,
++				 "Cleaning up multicast address %pM vid %u from port %d\n",
++				 a->addr, a->vid, dp->index);
++			list_del(&a->list);
++			kfree(a);
++		}
++
++		/* These are entries that upper layers have lost track of,
++		 * probably due to bugs, but also due to dsa_port_do_vlan_del()
++		 * having failed and the VLAN entry still lingering on.
++		 */
++		list_for_each_entry_safe(v, n, &dp->vlans, list) {
++			dev_info(ds->dev,
++				 "Cleaning up vid %u from port %d\n",
++				 v->vid, dp->index);
++			list_del(&v->list);
++			kfree(v);
++		}
++
+ 		list_del(&dp->list);
+ 		kfree(dp);
+ 	}
 -- 
 2.43.0
 
