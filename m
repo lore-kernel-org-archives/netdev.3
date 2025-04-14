@@ -1,22 +1,22 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B14284670
-	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 16:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F94288C90;
+	Mon, 14 Apr 2025 16:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744646899; cv=none; b=GbUW4623cxU+wK6YUGVwFwezJTfk3w0Vu6dfS84DRHd9SoB/yffjAMjUUkSEzjzFDLH9ytCvuRPrBWoJX1DXJW95DjAZOvv6+r6L1K6W0Nmsxfjj7xyE5/2OV6q9PGjENP2v/I3ZOLj5NZR78kAx5gVWAwOLtKJINBZeJKXkS0w=
+	t=1744646899; cv=none; b=Ktv8T5T6q36NjZzAQ6bWswdwiOEY4iNf0KvuIp47JxGWiphYSH3QUY42zu5mi+5ZYD5D0OlY946uqEiyy0Pkt5RiX0J4Robc1JG8X3GOzHzA7u+8Qg82KLkmTGe3z6fgD9vet+WMWj5f/t0C5gyC6fjRIQJNizta9OFjDelbYko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744646899; c=relaxed/simple;
-	bh=psMK5D/Ej6r9TOHK0/N777uNZ7fI4FJf9tekZNqyEP4=;
+	bh=jOJA68RRCsFupoKbIXpdPkdpTgYXhITPGS5zLjDwJlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIlX3EP0DOOYG/bbkASrPlm/lfMWzXsl+ElrqhU73/JohD7PVioCRRelJfSimJrdaeAXJyaRlpeogtnMT3CrUuw5/+molWf4cfvfkVKiUn/KvmeL/8TRcLL2oc2r8JseMgp3s/SOOPLblszRAP4qlpDU3qkCwCngdwY8r5vL12k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UweF2BbX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xlUvTn8O; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version; b=R2PsH6HbkxadnC5O/rAcHac61Ni04n2v+eKxonI2O4vaux0xHuJZOUe/5UyXQUp8xbWRGOX16HADD3K69B4GiSyYNowGTa8/e/4vw2q1FRvogCH61FyuwQvy2rVFLroOhK3Duerqmhity/Y/raP2ORLn435QDlVHZRq8ROvrDaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0a49cijR; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zCl+R/vs; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UweF2BbX";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xlUvTn8O"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0a49cijR";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zCl+R/vs"
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1744646894;
@@ -24,21 +24,21 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=g9V0amf8yCnsZjanHGDleuk2ou6MuA9/QgqDODlZotE=;
-	b=UweF2BbXcEz4vcWWIeBB4PO+6elYVD4F1vDlQY80Ogf2DrYxj7JYBa0TGNtjld/k0FAIiU
-	Z3QM5xf1cFxIMytPlL96UQhVves5TcRjDwAk2YWMrIL6OhrIU7FWZeahofmXEGF1sv62t7
-	FupN8WNK9tBKKMT97wZwtJ7DzqGSxfCNucwtvG2Xxv82CQXrDl3WfJU65W6NXApBNzjWBF
-	+8dHuGndj+X3IoAn5YX0eHN1uR+vCbsEZq2OFPidMLm/4DxEG3kpt8k1HC6vJWROZ7F6/F
-	zqYSt4emBIUnLbyuaVajV1XPo9b8uAosCo7aqxjeMl7kmSLLf/p+IbTineNqKA==
+	bh=QW4ASRASgx99S0FnlTl8xeHoYCpECC/wdaoXtQZvpSA=;
+	b=0a49cijRWl5eLWk6JoQda21CqwPgmTBuS8G6lw+VKdT7cLuPguL05v0I3TFlsyVck5z27r
+	BRw4bUwO9BiP+McfpHBoCd0GNSaExDisOB6Wp3teqw8SXFQn4IQ+C5ms17JERKs8C05CnU
+	o0hPE6cexH8F1yb7ahY/wSSKGJqcsWQICwU9LQ6BpJEc9T99vMR56Y5qRnJXqpLiPeMZGq
+	oF0sGEN3yCNCb0luwb9PrB4kXI8lV19mCBreEgKHSm241RpvMdlI49BrMPjXXOgGsWzEbe
+	XJ/Y2fPmroZSH+JKvVMaQbSzFqFZLo82a4XjXfdDZNdhaRNFlajwkETar7qINQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1744646894;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=g9V0amf8yCnsZjanHGDleuk2ou6MuA9/QgqDODlZotE=;
-	b=xlUvTn8OtwmKyqUsih+ilHZhjUDM4doduM5Q1XmSuyO7iFbT9Ivj9pzFZfAcXyXF0ByMVi
-	DcuxW5su2W0wa1DA==
+	bh=QW4ASRASgx99S0FnlTl8xeHoYCpECC/wdaoXtQZvpSA=;
+	b=zCl+R/vsl1GZ1kyFbN31QTqwrWfUjazZW+akVYZ9S/VoQ3DYyWQvJrtW/pDO72NNaQhplI
+	VB9LU3KHg2tTtBDg==
 To: netdev@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -48,12 +48,11 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Simon Horman <horms@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jiri Pirko <jiri@resnulli.us>
-Subject: [PATCH net-next v2 14/18] net/sched: Use nested-BH locking for sch_frag_data_storage
-Date: Mon, 14 Apr 2025 18:07:50 +0200
-Message-ID: <20250414160754.503321-15-bigeasy@linutronix.de>
+	Allison Henderson <allison.henderson@oracle.com>,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH net-next v2 16/18] rds: Disable only bottom halves in rds_page_remainder_alloc()
+Date: Mon, 14 Apr 2025 18:07:52 +0200
+Message-ID: <20250414160754.503321-17-bigeasy@linutronix.de>
 In-Reply-To: <20250414160754.503321-1-bigeasy@linutronix.de>
 References: <20250414160754.503321-1-bigeasy@linutronix.de>
 Precedence: bulk
@@ -64,80 +63,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 
-sch_frag_data_storage is a per-CPU variable and relies on disabled BH
-for its locking. Without per-CPU locking in local_bh_disable() on
-PREEMPT_RT this data structure requires explicit locking.
+rds_page_remainder_alloc() is invoked from a preemptible context or a
+tasklet. There is no need to disable interrupts for locking.
 
-Add local_lock_t to the struct and use local_lock_nested_bh() for locking.
-This change adds only lockdep coverage and does not alter the functional
-behaviour for !PREEMPT_RT.
+Use local_bh_disable() instead of local_irq_save() for locking.
 
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: Jiri Pirko <jiri@resnulli.us>
+Cc: Allison Henderson <allison.henderson@oracle.com>
+Cc: linux-rdma@vger.kernel.org
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- net/sched/sch_frag.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/rds/page.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/sch_frag.c b/net/sched/sch_frag.c
-index ce63414185fd6..d1d87dce7f3f7 100644
---- a/net/sched/sch_frag.c
-+++ b/net/sched/sch_frag.c
-@@ -16,14 +16,18 @@ struct sch_frag_data {
- 	unsigned int l2_len;
- 	u8 l2_data[VLAN_ETH_HLEN];
- 	int (*xmit)(struct sk_buff *skb);
-+	local_lock_t bh_lock;
- };
-=20
--static DEFINE_PER_CPU(struct sch_frag_data, sch_frag_data_storage);
-+static DEFINE_PER_CPU(struct sch_frag_data, sch_frag_data_storage) =3D {
-+	.bh_lock =3D INIT_LOCAL_LOCK(bh_lock),
-+};
-=20
- static int sch_frag_xmit(struct net *net, struct sock *sk, struct sk_buff =
-*skb)
+diff --git a/net/rds/page.c b/net/rds/page.c
+index 7cc57e098ddb9..e0dd4f62ea47a 100644
+--- a/net/rds/page.c
++++ b/net/rds/page.c
+@@ -69,7 +69,6 @@ int rds_page_remainder_alloc(struct scatterlist *scat, un=
+signed long bytes,
+ 			     gfp_t gfp)
  {
- 	struct sch_frag_data *data =3D this_cpu_ptr(&sch_frag_data_storage);
+ 	struct rds_page_remainder *rem;
+-	unsigned long flags;
+ 	struct page *page;
+ 	int ret;
 =20
-+	lockdep_assert_held(&data->bh_lock);
- 	if (skb_cow_head(skb, data->l2_len) < 0) {
- 		kfree_skb(skb);
- 		return -ENOMEM;
-@@ -95,6 +99,7 @@ static int sch_fragment(struct net *net, struct sk_buff *=
-skb,
- 		struct rtable sch_frag_rt =3D { 0 };
- 		unsigned long orig_dst;
+@@ -88,7 +87,7 @@ int rds_page_remainder_alloc(struct scatterlist *scat, un=
+signed long bytes,
+ 	}
 =20
-+		local_lock_nested_bh(&sch_frag_data_storage.bh_lock);
- 		sch_frag_prepare_frag(skb, xmit);
- 		dst_init(&sch_frag_rt.dst, &sch_frag_dst_ops, NULL,
- 			 DST_OBSOLETE_NONE, DST_NOCOUNT);
-@@ -105,11 +110,13 @@ static int sch_fragment(struct net *net, struct sk_bu=
-ff *skb,
- 		IPCB(skb)->frag_max_size =3D mru;
+ 	rem =3D &per_cpu(rds_page_remainders, get_cpu());
+-	local_irq_save(flags);
++	local_bh_disable();
 =20
- 		ret =3D ip_do_fragment(net, skb->sk, skb, sch_frag_xmit);
-+		local_unlock_nested_bh(&sch_frag_data_storage.bh_lock);
- 		refdst_drop(orig_dst);
- 	} else if (skb_protocol(skb, true) =3D=3D htons(ETH_P_IPV6)) {
- 		unsigned long orig_dst;
- 		struct rt6_info sch_frag_rt;
+ 	while (1) {
+ 		/* avoid a tiny region getting stuck by tossing it */
+@@ -116,13 +115,13 @@ int rds_page_remainder_alloc(struct scatterlist *scat=
+, unsigned long bytes,
+ 		}
 =20
-+		local_lock_nested_bh(&sch_frag_data_storage.bh_lock);
- 		sch_frag_prepare_frag(skb, xmit);
- 		memset(&sch_frag_rt, 0, sizeof(sch_frag_rt));
- 		dst_init(&sch_frag_rt.dst, &sch_frag_dst_ops, NULL,
-@@ -122,6 +129,7 @@ static int sch_fragment(struct net *net, struct sk_buff=
- *skb,
+ 		/* alloc if there is nothing for us to use */
+-		local_irq_restore(flags);
++		local_bh_enable();
+ 		put_cpu();
 =20
- 		ret =3D ipv6_stub->ipv6_fragment(net, skb->sk, skb,
- 					       sch_frag_xmit);
-+		local_unlock_nested_bh(&sch_frag_data_storage.bh_lock);
- 		refdst_drop(orig_dst);
- 	} else {
- 		net_warn_ratelimited("Fail frag %s: eth=3D%x, MRU=3D%d, MTU=3D%d\n",
+ 		page =3D alloc_page(gfp);
+=20
+ 		rem =3D &per_cpu(rds_page_remainders, get_cpu());
+-		local_irq_save(flags);
++		local_bh_disable();
+=20
+ 		if (!page) {
+ 			ret =3D -ENOMEM;
+@@ -140,7 +139,7 @@ int rds_page_remainder_alloc(struct scatterlist *scat, =
+unsigned long bytes,
+ 		rem->r_offset =3D 0;
+ 	}
+=20
+-	local_irq_restore(flags);
++	local_bh_enable();
+ 	put_cpu();
+ out:
+ 	rdsdebug("bytes %lu ret %d %p %u %u\n", bytes, ret,
 --=20
 2.49.0
 
