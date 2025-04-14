@@ -1,89 +1,226 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0F428466C;
-	Mon, 14 Apr 2025 18:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9875288C80
+	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 18:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744654538; cv=none; b=YdwZhEj0LowFLKNiPmJuUTwSTb+XGhAYcB3FjGEpoNt9PQBwpSjXUQmOeYEK2vwRs76LpJj60Uu1tM+9zUscVd5F47zsC4zj1omuFsm3/rKqGZCODL+RdxRrVqzGb6CWAuEpxM6NMsuLzguUPJMTO5qs0ydXH/HDd0FbUyQvXK8=
+	t=1744654561; cv=none; b=fheYL7810ge9VBzzx66ZXMNtIMn3Sdnl23e6m9FKBKaSntX2i5GdpCMl4xBziJ4tfp13Rbrmpr6/okIa3yDqXDu3WlucRlLZ3iGonZsX9r46P/MCdm2BfUuwdmL4K+N9+ala8w34cvIu3MZTSafU7YKSLyw07C2nlzNeXyG6qvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744654538; c=relaxed/simple;
-	bh=PAL6Fdin15ZsYYISJz3KRiYem+ZfqDMCAM39+28DJTo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t7Tky3D9P1XpOaCHgfy3EMDH/2eSBynIw8OjoY+dpdXwS1hsiNr1C0X8OCaHYBCv77Grv/w6opL3fKBH6fqJ/t4Bpkfl/1/Ahx7svLoARafNmG4AErBeCDw3PRGzQihvvBCd97Ve/Qz9RZPbILJdsY/CLlESmGP5gAHrC+TV2vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fGO+gefx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744654561; c=relaxed/simple;
+	bh=Q5BuxLP1hQ4Dn+ODfuytzpT/5ZBb16f078B3iaKOtRs=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fRpAIx2hJm9ycNmu0PkNDoKeqkPqWE1bOaHdUJxiFdKZulsnc4gnK0oUnbn36RMIzJ6FpetbxqvdoNClz7hBlKL5AhsL5iDLTsRayNohFsFxt6D9ZI41v0J9HcVFRqamJ/fJ3DujzuQH9yO6RrxXiBt2/EXm1LYtPdIZGUkV0XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=k0UcFdCF; arc=none smtp.client-ip=207.171.184.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fGO+gefx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA19C4CEE5;
-	Mon, 14 Apr 2025 18:15:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744654538;
-	bh=PAL6Fdin15ZsYYISJz3KRiYem+ZfqDMCAM39+28DJTo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fGO+gefxTykAXxVmbAHAthGqtbgISn4JDy/pM0b8+8AyL3wLnIhk2GD1mIZlQm63f
-	 dqZmW8HUF2e0w+jLqKhYMx0JbmmMVMbRgcG2Lp3mitSKf6m+PU0ZQswcTaa/zIViMt
-	 EZXpUTpbafzYFQ7yaSS/UcUliHk40EdzjrjBsd5+kRPG5e3jmh0QacAngkkQsdWry8
-	 6eA2F9LlY9+KFnLpIlytULgk8ERUdndF08myN9I1Gag1TNHA7Sfaek7nphUqu3XT53
-	 Lhd3yF7zdPH5ujaFL0m7lTCu5pueZzHD090IcCaba1xiIwrACtlZ50b5KmwKvKS8cn
-	 3nlTnx8u5Fjtg==
-Date: Mon, 14 Apr 2025 11:15:36 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: <cratiu@nvidia.com>, <davem@davemloft.net>, <edumazet@google.com>,
- <horms@kernel.org>, <linux-kernel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <pabeni@redhat.com>, <sdf@fomichev.me>,
- <syzbot+de1c7d68a10e3f123bdd@syzkaller.appspotmail.com>,
- <syzkaller-bugs@googlegroups.com>
-Subject: Re: [syzbot] [net?] general protection fault in rtnl_create_link
-Message-ID: <20250414111536.6d6493f1@kernel.org>
-In-Reply-To: <20250414180257.24176-1-kuniyu@amazon.com>
-References: <20250414103727.0ea92049@kernel.org>
-	<20250414180257.24176-1-kuniyu@amazon.com>
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="k0UcFdCF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1744654560; x=1776190560;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=hPbRbtLgIxCkNs98TrfCt0j9RyfSl2bY+7Nza60JEYk=;
+  b=k0UcFdCFmSwBwdeYb+LhjtHJYl2unBg1OOCMKQ0cTTUXZIZkNtYESfVr
+   o8Xe1O8Zw+jWCYbj4JRtA77g6tG+aO+SzyFJH+zZk/2Li09Wk8iXaMTpt
+   UGj09stxTNl7WwZQMfroqAP/n5Sc/2r3MpMKolIUzF0YqKDjkk55kilni
+   4=;
+X-IronPort-AV: E=Sophos;i="6.15,212,1739836800"; 
+   d="scan'208";a="511439392"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 18:15:55 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:22573]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.47.226:2525] with esmtp (Farcaster)
+ id 71743708-11c9-4587-8585-85e35b5c0b2e; Mon, 14 Apr 2025 18:15:53 +0000 (UTC)
+X-Farcaster-Flow-ID: 71743708-11c9-4587-8585-85e35b5c0b2e
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Mon, 14 Apr 2025 18:15:53 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.187.170.39) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Mon, 14 Apr 2025 18:15:50 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>
+CC: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, <netdev@vger.kernel.org>
+Subject: [PATCH RESEND v2 net-next 01/14] ipv6: Validate RTA_GATEWAY of RTA_MULTIPATH in rtm_to_fib6_config().
+Date: Mon, 14 Apr 2025 11:14:49 -0700
+Message-ID: <20250414181516.28391-2-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250414181516.28391-1-kuniyu@amazon.com>
+References: <20250414181516.28391-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D046UWB004.ant.amazon.com (10.13.139.164) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On Mon, 14 Apr 2025 11:01:59 -0700 Kuniyuki Iwashima wrote:
-> From: Jakub Kicinski <kuba@kernel.org>
-> Date: Mon, 14 Apr 2025 10:37:27 -0700
-> > On Sun, 13 Apr 2025 19:30:46 -0700 Kuniyuki Iwashima wrote:  
-> > > diff --git a/include/net/netdev_lock.h b/include/net/netdev_lock.h
-> > > index 5706835a660c..270e157a4a79 100644
-> > > --- a/include/net/netdev_lock.h
-> > > +++ b/include/net/netdev_lock.h
-> > > @@ -30,7 +30,8 @@ static inline bool netdev_need_ops_lock(const struct net_device *dev)
-> > >  	bool ret = dev->request_ops_lock || !!dev->queue_mgmt_ops;
-> > >  
-> > >  #if IS_ENABLED(CONFIG_NET_SHAPER)
-> > > -	ret |= !!dev->netdev_ops->net_shaper_ops;
-> > > +	if (dev->netdev_ops)
-> > > +		ret |= !!dev->netdev_ops->net_shaper_ops;
-> > >  #endif  
-> > 
-> > This is a bit surprising, we pretty much never validate if dev has ops.
-> > 
-> > I think we're guaranteed that IFF_UP will not be set if we just
-> > allocated the device, so we can remove the locks in rtnl_create_link()
-> > and to double confirm add a netdev_ops_assert_locked_or_invisible() 
-> > in netif_state_change() ?  
-> 
-> Removing the lock from NEWLINK makes sense, but my concern
-> was NETDEV_CHANGE, which will requires more caution ?
-> 
-> commit 04efcee6ef8d0f01eef495db047e7216d6e6e38f
-> Author: Stanislav Fomichev <sdf@fomichev.me>
-> Date:   Fri Apr 4 09:11:22 2025 -0700
-> 
->     net: hold instance lock during NETDEV_CHANGE
+We will perform RTM_NEWROUTE and RTM_DELROUTE under RCU, and then
+we want to perform some validation out of the RCU scope.
 
-How could we fire a notifier for a device that hasn't been initialized,
-let alone registered?
+When creating / removing an IPv6 route with RTA_MULTIPATH,
+inet6_rtm_newroute() / inet6_rtm_delroute() validates RTA_GATEWAY
+in each multipath entry.
 
-I'm hoping that the _or_invisible assert in my suggestion will flag to
-future developers trying to change netif_state_change() that the device
-here may not be fully constructed.
+Let's do that in rtm_to_fib6_config().
+
+Note that now RTM_DELROUTE returns an error for RTA_MULTIPATH with
+0 entries, which was accepted but should result in -EINVAL as
+RTM_NEWROUTE.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+---
+ net/ipv6/route.c | 82 +++++++++++++++++++++++++-----------------------
+ 1 file changed, 43 insertions(+), 39 deletions(-)
+
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 210b84cecc24..237e31f64a4a 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -5050,6 +5050,44 @@ static const struct nla_policy rtm_ipv6_policy[RTA_MAX+1] = {
+ 	[RTA_FLOWLABEL]		= { .type = NLA_BE32 },
+ };
+ 
++static int rtm_to_fib6_multipath_config(struct fib6_config *cfg,
++					struct netlink_ext_ack *extack)
++{
++	struct rtnexthop *rtnh;
++	int remaining;
++
++	remaining = cfg->fc_mp_len;
++	rtnh = (struct rtnexthop *)cfg->fc_mp;
++
++	if (!rtnh_ok(rtnh, remaining)) {
++		NL_SET_ERR_MSG(extack, "Invalid nexthop configuration - no valid nexthops");
++		return -EINVAL;
++	}
++
++	do {
++		int attrlen = rtnh_attrlen(rtnh);
++
++		if (attrlen > 0) {
++			struct nlattr *nla, *attrs;
++
++			attrs = rtnh_attrs(rtnh);
++			nla = nla_find(attrs, attrlen, RTA_GATEWAY);
++			if (nla) {
++				if (nla_len(nla) < sizeof(cfg->fc_gateway)) {
++					NL_SET_ERR_MSG(extack,
++						       "Invalid IPv6 address in RTA_GATEWAY");
++					return -EINVAL;
++				}
++			}
++		}
++
++		rtnh = rtnh_next(rtnh, &remaining);
++	} while (rtnh_ok(rtnh, remaining));
++
++	return lwtunnel_valid_encap_type_attr(cfg->fc_mp, cfg->fc_mp_len,
++					      extack, true);
++}
++
+ static int rtm_to_fib6_config(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			      struct fib6_config *cfg,
+ 			      struct netlink_ext_ack *extack)
+@@ -5164,9 +5202,7 @@ static int rtm_to_fib6_config(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		cfg->fc_mp = nla_data(tb[RTA_MULTIPATH]);
+ 		cfg->fc_mp_len = nla_len(tb[RTA_MULTIPATH]);
+ 
+-		err = lwtunnel_valid_encap_type_attr(cfg->fc_mp,
+-						     cfg->fc_mp_len,
+-						     extack, true);
++		err = rtm_to_fib6_multipath_config(cfg, extack);
+ 		if (err < 0)
+ 			goto errout;
+ 	}
+@@ -5286,19 +5322,6 @@ static bool ip6_route_mpath_should_notify(const struct fib6_info *rt)
+ 	return should_notify;
+ }
+ 
+-static int fib6_gw_from_attr(struct in6_addr *gw, struct nlattr *nla,
+-			     struct netlink_ext_ack *extack)
+-{
+-	if (nla_len(nla) < sizeof(*gw)) {
+-		NL_SET_ERR_MSG(extack, "Invalid IPv6 address in RTA_GATEWAY");
+-		return -EINVAL;
+-	}
+-
+-	*gw = nla_get_in6_addr(nla);
+-
+-	return 0;
+-}
+-
+ static int ip6_route_multipath_add(struct fib6_config *cfg,
+ 				   struct netlink_ext_ack *extack)
+ {
+@@ -5339,18 +5362,11 @@ static int ip6_route_multipath_add(struct fib6_config *cfg,
+ 
+ 			nla = nla_find(attrs, attrlen, RTA_GATEWAY);
+ 			if (nla) {
+-				err = fib6_gw_from_attr(&r_cfg.fc_gateway, nla,
+-							extack);
+-				if (err)
+-					goto cleanup;
+-
++				r_cfg.fc_gateway = nla_get_in6_addr(nla);
+ 				r_cfg.fc_flags |= RTF_GATEWAY;
+ 			}
+-			r_cfg.fc_encap = nla_find(attrs, attrlen, RTA_ENCAP);
+ 
+-			/* RTA_ENCAP_TYPE length checked in
+-			 * lwtunnel_valid_encap_type_attr
+-			 */
++			r_cfg.fc_encap = nla_find(attrs, attrlen, RTA_ENCAP);
+ 			nla = nla_find(attrs, attrlen, RTA_ENCAP_TYPE);
+ 			if (nla)
+ 				r_cfg.fc_encap_type = nla_get_u16(nla);
+@@ -5383,12 +5399,6 @@ static int ip6_route_multipath_add(struct fib6_config *cfg,
+ 		rtnh = rtnh_next(rtnh, &remaining);
+ 	}
+ 
+-	if (list_empty(&rt6_nh_list)) {
+-		NL_SET_ERR_MSG(extack,
+-			       "Invalid nexthop configuration - no valid nexthops");
+-		return -EINVAL;
+-	}
+-
+ 	/* for add and replace send one notification with all nexthops.
+ 	 * Skip the notification in fib6_add_rt2node and send one with
+ 	 * the full route when done
+@@ -5510,21 +5520,15 @@ static int ip6_route_multipath_del(struct fib6_config *cfg,
+ 
+ 			nla = nla_find(attrs, attrlen, RTA_GATEWAY);
+ 			if (nla) {
+-				err = fib6_gw_from_attr(&r_cfg.fc_gateway, nla,
+-							extack);
+-				if (err) {
+-					last_err = err;
+-					goto next_rtnh;
+-				}
+-
++				r_cfg.fc_gateway = nla_get_in6_addr(nla);
+ 				r_cfg.fc_flags |= RTF_GATEWAY;
+ 			}
+ 		}
++
+ 		err = ip6_route_del(&r_cfg, extack);
+ 		if (err)
+ 			last_err = err;
+ 
+-next_rtnh:
+ 		rtnh = rtnh_next(rtnh, &remaining);
+ 	}
+ 
+-- 
+2.49.0
+
