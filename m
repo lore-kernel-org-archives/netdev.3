@@ -1,193 +1,134 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2049.outbound.protection.outlook.com [40.107.104.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201412E62AF;
-	Mon, 14 Apr 2025 13:19:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744636803; cv=fail; b=Ge182M3VNqxjDlMDMIFrqh5+qS63jjzl4lmBsh7OuNoLJYaFaWoQXx4U/lOBU0lcKXp6tslzvJZ6QHk1H5Advbeb3/isrXOeN+l2gy0QUn3+NGqJFSHeQzWSchQt/tLZRbo6fAxeKGwGM89sngClOF4b/atLnfkEuphnx5KigYw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744636803; c=relaxed/simple;
-	bh=PYyCXUuKVKRWlC5fYTcacULQXbuy70otEK62ZKgXQqA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jbEdfXm/Arai6GydInZFiZlyvxswWtoGj/I9TYURnMT5HNB6Hee2MtOeIHEk5BlRn0uV4TkeQcegtbMPtvbtmW9/JReSSIMQkdkbybUR8ByLn8dkGv+PAkLm5IqAjXYpm8+FZzBoRBsvzowVVGnirSknfoe8Rp273QE0y7JTLow=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=JrWKNQkd; arc=fail smtp.client-ip=40.107.104.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="JrWKNQkd"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=saZT2daRW1V9u2CVwnxUCz1O9eWm/aJ09yFVFzzodjqgrdT1tPGcxst8q8jbOe6hNbUIHAYQrQWekafXouTxLi8akT4lCLdvQv7+hdZJzKB+Mp8X7+TDwiUhoGax5n+fnEVT6NhNK467MPAcvBrWqZlbmQE0Ra1yNwV/ktXKzuGddnofd9e4cBqu5Vv98YqW3hhfcHUk7UUCMdiiGq7Mo2RyqnsEFLmv7eQE1k0IPCPb6yhz+8FLSIRT2RUTrI/gSHjqTzLwwEinwHUgHR4gYLgKNRb9juwKNu58sak6nNbnFbMvJwMFYUE9AvOMmlj8li/76E/7J6/KxsHR96Virg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Jbp9mDaGjGTen8BidXf0OT4su1XnPFAKk8A8EBFXEZQ=;
- b=yEFVFKN8ThLo5Ycg8ISHMYLynpxeQ5dnWTIGEd5UTr+3DI68ZGDOg/CdDGWpKv7GYI+hYTlCfS4DByo0NrQamietTDBnJ7fvVT+OrTeLehMiOKGRgX0HGwGyjBFxfsaRGkx8VaxLsVzlOJStA61ZiSythwTodI1mR8NrkfbELumwVFeCNIeABB9A2ojBGh0z1G0OKnpmGBkKIu/NgooMRrMJJbmNKWkXUp0rONDd5lc5suwfDCmyrcarCMk8RgqbxvVtJHCcAOjM80Lk7NBD1Bfe78CnA7N8tNzA1xk78jXLy5Z/at1YzhAoxQ+2fW2OiSUTwhyb84XGb7PKXfOkDQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 131.228.2.20) smtp.rcpttodomain=apple.com smtp.mailfrom=nokia-bell-labs.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nokia-bell-labs.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Jbp9mDaGjGTen8BidXf0OT4su1XnPFAKk8A8EBFXEZQ=;
- b=JrWKNQkdnmjbPXndC8N1DHDCs9qtBRwxNJbenhbREANWbPcGoaPEekuRLHcSee9FCoqGxIXJIBNHRcw7+T+aU5tJmBTruBoh7yde182N/OZd+DOaVcjzZ27T/xJaTdxM4UAElwG7jJYrXcajuC5q46/tNskkiY9Om7zIXfEL9zRMkLqhvasI4SGmEJdENsu4Qs2e+YSgu1oiOy0BgNFBB3RMLbuIYjzFKkbD+gFgTnj6y522duwym9er9ljLgL4+n6JyjJVK/CHOiNgGjQY5/RjMbciaJz4nVjIV2IXo5GNMBGyqMfHmVPTYVI/RAcsBw792+noKfDntEHET8llY1g==
-Received: from DU2PR04CA0043.eurprd04.prod.outlook.com (2603:10a6:10:234::18)
- by PAXPR07MB8699.eurprd07.prod.outlook.com (2603:10a6:102:245::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.32; Mon, 14 Apr
- 2025 13:19:53 +0000
-Received: from DU6PEPF0000A7E2.eurprd02.prod.outlook.com
- (2603:10a6:10:234:cafe::8) by DU2PR04CA0043.outlook.office365.com
- (2603:10a6:10:234::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8632.34 via Frontend Transport; Mon,
- 14 Apr 2025 13:19:53 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 131.228.2.20)
- smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
-Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
- designates 131.228.2.20 as permitted sender) receiver=protection.outlook.com;
- client-ip=131.228.2.20; helo=fihe3nok0734.emea.nsn-net.net; pr=C
-Received: from fihe3nok0734.emea.nsn-net.net (131.228.2.20) by
- DU6PEPF0000A7E2.mail.protection.outlook.com (10.167.8.42) with Microsoft SMTP
- Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.12 via
- Frontend Transport; Mon, 14 Apr 2025 13:19:53 +0000
-Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
-	by fihe3nok0734.emea.nsn-net.net (Postfix) with ESMTP id 80A0C4EE4A;
-	Mon, 14 Apr 2025 16:00:06 +0300 (EEST)
-From: chia-yu.chang@nokia-bell-labs.com
-To: netdev@vger.kernel.org,
-	dave.taht@gmail.com,
-	pabeni@redhat.com,
-	jhs@mojatatu.com,
-	kuba@kernel.org,
-	stephen@networkplumber.org,
-	xiyou.wangcong@gmail.com,
-	jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	andrew+netdev@lunn.ch,
-	donald.hunter@gmail.com,
-	ast@fiberby.net,
-	liuhangbin@gmail.com,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	ij@kernel.org,
-	ncardwell@google.com,
-	koen.de_schepper@nokia-bell-labs.com,
-	g.white@cablelabs.com,
-	ingemar.s.johansson@ericsson.com,
-	mirja.kuehlewind@ericsson.com,
-	cheshire@apple.com,
-	rs.ietf@gmx.at,
-	Jason_Livingood@comcast.com,
-	vidhi_goel@apple.com
-Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Subject: [PATCH v3 net-next 01/15] tcp: reorganize SYN ECN code
-Date: Mon, 14 Apr 2025 14:59:30 +0200
-Message-Id: <20250414125944.97350-2-chia-yu.chang@nokia-bell-labs.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250414125944.97350-1-chia-yu.chang@nokia-bell-labs.com>
-References: <20250414125944.97350-1-chia-yu.chang@nokia-bell-labs.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D1D23D2BC;
+	Mon, 14 Apr 2025 13:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744637076; cv=none; b=FM5pe+u5UpFPo9bzoHNUwlGLCUc5F7xBMGkfhNQ71qBHMg1ZcmujmC0fLaxXM2n7KAPtGnV1XL+KMCC7djc9j8FIdGvKkkbo1uli9BgBosgvIGFCu+/vvF3xX6sb6erdubb3f2a8pRu2RCHhg/bR3miZidWhF/TukhniBE3yh7Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744637076; c=relaxed/simple;
+	bh=uP6edEq7t633Nn/6CTGhpfDqtsCprN7gaqMik/FbLAM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Tls90WvIKE1GFnMUpmqqgB3R3Z64qMbAUiUA9/A2pijSY4yUlHMCwU7b3nYcPSPHdTWP1mTNi0HuKOjaM41YWq+RpOw0ND6j+OriP38JAU5wodgp/+JYQ7DSsiYEkIup+EW8PdVmI12L3Hs72Nng9sh4n0Jw1zReRmUq+aRTWII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5e66407963fso7987998a12.2;
+        Mon, 14 Apr 2025 06:24:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744637073; x=1745241873;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JAxtJefrjwh5IULoa1zF489O5jbehHY+6Lx6oX0IOlo=;
+        b=W2pD/ewv9coAR4PHQpbRWb5RdD6K0/w93cS0+Rl/vrM3lr6HLkSKCfIWUcG3MBoHpm
+         +OeVQT5frqxgjUDr8COOjMWyXu2WZZuzMEkSmLNwBHDC63YXFZWUOAelPApZsUAgk7+R
+         uBQdKUc/A6pe7x1vYuzV6eAfFLvB7t4QdJqR4hKT86XnzPklNTa6a6/nop6P30Pk52qk
+         X6Z2dC0tQ0QGOGZJDObsMTU0tGn1QNgg8XYjW1QxRg/0n/jJ7+Uafk4+wcUystYTvc9u
+         9U9x0yPvgWRPUek3iTkFoehABS6Nl8pghIgzt9b5vrgrTxqHH67owtiu9wMB6b1ZuEnp
+         BwMg==
+X-Forwarded-Encrypted: i=1; AJvYcCWlgZwjgWa7J5HohNoxu6ryv2ue6dMhWNFROQ4PG+yitViczMk7ZYPbL54JLSN/I6d0rNWxo0a0SHAef5o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNWMDbjbVf6/h5kuJCFscG4KTLuq6ON4bMNjZBLhk3jUPhgFfC
+	GyPJorzVAPJswVFCRhNaPlMEx8TrTawLJLS6jQr8nMN2C1kA3ORp
+X-Gm-Gg: ASbGnctK4Xqhi/NyhSTWnKpTHXiTMWp9io1o8O+jLLA3WhBU2byd3wPQldGYn3hy1la
+	a6hGtnTVP+T5iviqF98oUVsZcInOXDsGXwPbB7lMWmHkpmWaqrgsvsrPKXsYtwYQhB7ecGTmKJw
+	TXK/uhVF+KynskF/KTDwMXJX6SXexPctoCRQBJFQEe3gEK6onL6LNCRKB/Qwv5qvQ8magmEW3ii
+	GeqymqheCMEgi4zp1FLS6k5xw73W3uMwK/WLTxICc1eFuYrrsRhS96ZnafW2Yaml9VpN5TVx+Jf
+	iQ/il1i13DQsBFClEi61synGO3fgy/LI
+X-Google-Smtp-Source: AGHT+IGca2oW0Wv3ciaboHXoM9P471sCFeqEbO7M5x6+WVhS89iTsosJPKIF//IYhQqrVUXazI69NA==
+X-Received: by 2002:a17:907:7d8b:b0:ac7:2f8b:6844 with SMTP id a640c23a62f3a-acad349a0aamr916033266b.23.1744637072508;
+        Mon, 14 Apr 2025 06:24:32 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:72::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acaa1ccc3a3sm907370966b.139.2025.04.14.06.24.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Apr 2025 06:24:31 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH net-next v2 00/10] net: Introduce nlmsg_payload helper
+Date: Mon, 14 Apr 2025 06:24:06 -0700
+Message-Id: <20250414-nlmsg-v2-0-3d90cb42c6af@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU6PEPF0000A7E2:EE_|PAXPR07MB8699:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4fbbe64b-cb65-44cd-1f71-08dd7b570b19
-X-LD-Processed: 5d471751-9675-428d-917b-70f44f9630b0,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|82310400026|36860700013|7416014|376014|1800799024|921020;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?bUxESDdNZXRNYU16WENIYjlDUExpdytKSldqNHJNQkl6SUhhWDl1bWZvaDVz?=
- =?utf-8?B?K2l3MlJ3UjczbCtyWXFFTDNtT3prOXJ1Mkc0ZjJuWGxJTFNjbnorbVNSZnBB?=
- =?utf-8?B?dXdTTTljd2ZGVUY0OVoxZzd6bG9PNFhETFhwemM0d3NxZVlKNVpjZkI5ekpM?=
- =?utf-8?B?b0QyTldwNk5BZ3dsUlBLeDlzY2RhaHQwRUJzb1pqVFBnS2RFT2RWZVZKTEN4?=
- =?utf-8?B?eW1UWFhaemZ3T2dmQk43dHVnM2J4QlNlMS9ncUlJVUl3bGJTRlUwbWdCeDhK?=
- =?utf-8?B?bkVRK1ZhTjBoOVpBQVBDcC9ERUlCNUp0ZnlreGFZTmJRbGk0eTJqQy9RZ0FM?=
- =?utf-8?B?WDJnSVZKbHJwUTZOTyt6citEMFlqa0hxbTlwbEhIWmxIS3d2TnltYU9vMWd1?=
- =?utf-8?B?VGpFRVU3S3J4QmpuUHNOdk9pbkl1WVlJQW1Id2hGTllTZCtOQmJIRU04czZO?=
- =?utf-8?B?SXJKdVc3VGFyT0dVclptd1VwbERkcHJQYmh1dEhBa0NCWkpRV0JTdUxQb0ZC?=
- =?utf-8?B?bDFzYTNlWjlERThGeEMzdHBpMEQ3TWtDb2c5OUdZTUkxOHhmQ1NjOVcySW1X?=
- =?utf-8?B?TGJBM0VSZU9Ed2d5SjdYM0JqZlBQcDZJQnhjOU41MnQ5djZnaFFuOE9uV2c5?=
- =?utf-8?B?SVVnQ3JmZkIvczF1ZDJvYjMyYUR2SVk5ZzZWN2VSdDJ1aThscFJHYTRaY0VO?=
- =?utf-8?B?L1dQZk50U1UzeGMzbWdiYjIrRTBpOVRsWWdLVnhMQzQ0eXpwVW1lMHdOM0NJ?=
- =?utf-8?B?WUs5OHA0aWdjeGI3ejJCWWtTWU5rZzF1TVdaMk13R0Y2OVB4RG9RL2NxKys5?=
- =?utf-8?B?ZWtFWDVVUG9OemkxQXZwZXBySFUwY2loV3BsZTZqaVFWWld5Ymx0dmIzQzAz?=
- =?utf-8?B?dDdVUENrbGgzeW5MWnZHNUlhRHMrVng4U3Y3Z0VZWjhsa0h6ejU3cHdDMzM5?=
- =?utf-8?B?UTB2WmlPbEZzTXNTV3BtN0R0VW8rNVE1TkZIUzhFSnlLVWNnOGpVV3FXZGw4?=
- =?utf-8?B?SUVpQlNaSXYzaGVkRFk5Y1dDRmZ6QS9pZXdETlFNeFh2d1F5cHkyNzlQSHBu?=
- =?utf-8?B?Znh4dytsYWlDYTdqOVlmM0F0QkMzNXhFQ1ZjdUM5SW1GUTNKcDNLRU50eUsv?=
- =?utf-8?B?b0VHUG5DQXYvMGsyQXV5cUtMUHpuRkkvNEtEaE5IMGRhTHptdmZzaDNZWGda?=
- =?utf-8?B?MWpyQXlYL09PbkhmalZtM3lEVGo1Nzh5ZFZsdW5VLzk2U0kvRnpnUVZ0VG4v?=
- =?utf-8?B?Q2x3OXJBRjdwU0NCNC9LV1FLN2FIZTBZU3NlRCtuZDZjdkVrTUZWMGVjdWtZ?=
- =?utf-8?B?K3lGbDVlK09YUmpLUDhTcWJ4SlAxTC91NHFJV0FSTlhnMDMrR0JsQmJOMVV5?=
- =?utf-8?B?VG5FR1VZeGsxRC9EVUVNb2pSN3YxcjVRT2JwdDJJWW90ZjFxbm9rTXJUWWRY?=
- =?utf-8?B?aGpjMjltbWVNN3ZwdEM2c0NQakVoNkk1ei9nUFlXaGdoUi9ENE05MW9aR1h4?=
- =?utf-8?B?dy9ZRmI3cEJxWDR4TFhtMEdZL2VuZFlRUFFDVTVIQlZRbTlGYjBLYmtBNjBj?=
- =?utf-8?B?bEhCU1ZqT2hmaXVPUFpoOUMyb2p1Zk13MGozM1FJdHgwOXI3RlZZNmpscEJP?=
- =?utf-8?B?TWtQMldESURaWkxNcGpjRm1EbXpuTjdqOGtEVnJpZVE0THRKL3BPdUFlNEN6?=
- =?utf-8?B?d2JicVlXdVE5TEE1Slg4Zzgzc0tOMDl5ckNOK0JhdU9vTzkyNnZnSFdXNDZz?=
- =?utf-8?B?Zk16ZmdIeVJqSDJaY2dzMHRWaWhsdXdVVTFBTXNLZzFnaVcwZndpbWR6L1BT?=
- =?utf-8?B?YXBPeWdPWm9GTXBoRGE2VjZ4TmkzRE40dGVwc0k1RjhYQUV0R09vVDlqMjFF?=
- =?utf-8?B?V1ZJLzBUak1ibTBsQ28rUEhOVE1VYVdEZExFdHJtMU0vaC9KbzlZMEhwZ3dQ?=
- =?utf-8?B?cDlqMGdzWXdvalhFNEYwc1BEcmdIME1mclR4NDY1TVhzYWNoV2FCYitwblRD?=
- =?utf-8?B?S0w1ckNTQjVtdEdjRVJuaUl3YmJHcXVHWFpTbm1RTzV5R0RWVWt5THN3dE5v?=
- =?utf-8?B?OEJEOVlpc1JBU3FoSUZRSzB4aEpXM2QwNmtMdz09?=
-X-Forefront-Antispam-Report:
- CIP:131.228.2.20;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fihe3nok0734.emea.nsn-net.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(7416014)(376014)(1800799024)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: nokia-bell-labs.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2025 13:19:53.3482
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4fbbe64b-cb65-44cd-1f71-08dd7b570b19
-X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.20];Helo=[fihe3nok0734.emea.nsn-net.net]
-X-MS-Exchange-CrossTenant-AuthSource: DU6PEPF0000A7E2.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR07MB8699
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHYM/WcC/13NQQqDMBBG4auEf21KEk0prnqP4iJmpjrQxpKIW
+ CR3L7js+sH3DhTOwgW9OpB5kyJLQq9coxDnkCbWQugVnHHedNbq9HqXSTuiW2zNGFof0Sh8Mj9
+ lP50HEq868b5iaBRmKeuSv+dgs2f/szarjSaijs3Vx9H6O/EoIV2WPGGotf4A5nkumaUAAAA=
+X-Change-ID: 20250411-nlmsg-2dd8c30ba35c
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ David Ahern <dsahern@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>, kernel-team@meta.com, 
+ Kuniyuki Iwashima <kuniyu@amazon.com>
+X-Mailer: b4 0.15-dev-42535
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2076; i=leitao@debian.org;
+ h=from:subject:message-id; bh=uP6edEq7t633Nn/6CTGhpfDqtsCprN7gaqMik/FbLAM=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBn/QyOJzlnlvKeT1y5rPAUfW5jI5HIFSlcAqv1O
+ kxuE38BpO2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCZ/0MjgAKCRA1o5Of/Hh3
+ bewrD/oDHcgqNkNEe2RemYyIjCuGP6ATFc0eM3LUB/hJyQEbn1MVdBIGOky+4lR+tbQ+4kernxi
+ NCsJSvQuUGMMmTptUuN7TWD1E8uWnIkpNHM82FZ7U3GTJXpnGCNYu2I2iATJYU9AxoLIqac8Wg7
+ FieopxyNmdlwkgV3zoHTtBfp6X3P2n6XCix6p77j755bETk19BucCZE09UeoSbJ8ME4nSOO5IHR
+ YJmG+Xo0XLuo4R7ieXqeiPS0bMZWwzzVAqkRqe8P9f9mj8OdV7p/NsN1HxlIvHaS4Yrmb4rojPs
+ 1yP8wXvTpb5IoxlDOdCCL7lorgP9sCPhilAZPuUj5DVzxwzJ/0eaCEEjWjG3ZGOhlR2BoUT9HCX
+ Pzrt+oJshM/XueFg/iBBWoEfnSsrqT84DpADxL9FF9Lr2FmioHXZEQ05rnW/kKRicnckHvRpmoj
+ CRIx8T27J+A5cL62dTJ9UIOzLTdAx/j1ddEdVqDYEZ6dvv13sWZwYMqnuraPPQuzcqF9fwQxBmv
+ la+qpW0YbciwCOvrLndmFlFcWT+BzryYIHEGeEKG1HrD9w58CShUS5JH15VgfFzJ8ui3AZB+W1l
+ U+wssIeY9i/vUsh892YjBQ8F/9IAwCeBuufUvi25dGozaaGtB40Kqzq24eO2kTif6MUFUf2oRmq
+ 3F02lIJobNnhoLA==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-From: Ilpo Järvinen <ij@kernel.org>
+In the current codebase, there are multiple instances where the
+structure size is checked before assigning it to a Netlink message. This
+check is crucial for ensuring that the structure is correctly mapped
+onto the Netlink message, providing a layer of security.
 
-Prepare for AccECN that needs to have access here on IP ECN
-field value which is only available after INET_ECN_xmit().
+To streamline this process, Jakub Kicinski suggested creating a helper
+function, `nlmsg_payload`, which verifies if the structure fits within
+the message. If it does, the function returns the data; otherwise, it
+returns NULL. This approach simplifies the code and reduces redundancy.
 
-No functional changes.
+This patchset introduces the `nlmsg_payload` helper and updates several
+parts of the code to use it. Further updates will follow in subsequent
+patchsets.
 
-Signed-off-by: Ilpo Järvinen <ij@kernel.org>
-Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- net/ipv4/tcp_output.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Changes in v2:
+- Add the "Return" kdoc entry for nlmsg_payload() (Jakub)
+- Use the same function in some other places (Kuniyuki Iwashima)
+- Link to v1: https://lore.kernel.org/r/20250411-nlmsg-v1-0-ddd4e065cb15@debian.org
 
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 13295a59d22e..9a1ab946ff62 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -350,10 +350,11 @@ static void tcp_ecn_send_syn(struct sock *sk, struct sk_buff *skb)
- 	tp->ecn_flags = 0;
- 
- 	if (use_ecn) {
--		TCP_SKB_CB(skb)->tcp_flags |= TCPHDR_ECE | TCPHDR_CWR;
--		tcp_ecn_mode_set(tp, TCP_ECN_MODE_RFC3168);
- 		if (tcp_ca_needs_ecn(sk) || bpf_needs_ecn)
- 			INET_ECN_xmit(sk);
-+
-+		TCP_SKB_CB(skb)->tcp_flags |= TCPHDR_ECE | TCPHDR_CWR;
-+		tcp_ecn_mode_set(tp, TCP_ECN_MODE_RFC3168);
- 	}
- }
- 
+---
+Breno Leitao (10):
+      netlink: Introduce nlmsg_payload helper
+      neighbour: Use nlmsg_payload in neightbl_valid_dump_info
+      neighbour: Use nlmsg_payload in neigh_valid_get_req
+      rtnetlink: Use nlmsg_payload in valid_fdb_dump_strict
+      mpls: Use nlmsg_payload in mpls_valid_fib_dump_req
+      ipv6: Use nlmsg_payload in inet6_valid_dump_ifaddr_req
+      ipv6: Use nlmsg_payload in inet6_rtm_valid_getaddr_req
+      mpls: Use nlmsg_payload in mpls_valid_getroute_req
+      net: fib_rules: Use nlmsg_payload in fib_valid_dumprule_req
+      net: fib_rules: Use nlmsg_payload in fib_{new,del}rule()
+
+ include/net/netlink.h | 16 ++++++++++++++++
+ net/core/fib_rules.c  | 14 ++++++++------
+ net/core/neighbour.c  |  8 ++++----
+ net/core/rtnetlink.c  |  4 ++--
+ net/ipv6/addrconf.c   |  8 ++++----
+ net/mpls/af_mpls.c    |  8 ++++----
+ 6 files changed, 38 insertions(+), 20 deletions(-)
+---
+base-commit: 6a325aed130bb68790e765f923e76ec5669d2da7
+change-id: 20250411-nlmsg-2dd8c30ba35c
+
+Best regards,
 -- 
-2.34.1
+Breno Leitao <leitao@debian.org>
 
