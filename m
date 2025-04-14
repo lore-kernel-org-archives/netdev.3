@@ -1,45 +1,57 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E2719A
-	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 15:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7761914B945
+	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 15:51:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744645775; cv=none; b=m04MkyuARrtQN6Eac+H5p0iMegit6asn4jfe5qA1h6kMJkJv8V2NsF707+OR5Y0w+d+4ldPh0qeX4fNxffFpscG7/VR7X1FJWKEIdUJjFiSyGkiwF3/zeZdvLvD/jXtXaLXrVpG79S778zZI+QD8yjInGArgbV1KtaERAhdmuoo=
+	t=1744645896; cv=none; b=n5MDyFT/4T6wDkpyRSLgQuJhxOPOamQGGKu195bVOy36SOik3XzghMdDoQgfnjtYD51BhPNdr9BNkEyCjZr8ynKyNCukP0wV52CFBiMiF8ASAWHSV/02PdijxkDVd2/7QkUlldpNthSmkNSWeG6eiOXNUAPdPxJo6ZwJWOKNmwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744645775; c=relaxed/simple;
-	bh=0OlpI8A8o3k0NMv+HqSy0AS0cRdyO/+tn5fykeOZP7M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PCbAxbXsdw+x6N2yqTDkSTXrecwUyNSyGGZXfkTqT6ol/yz1xL+on0fA+p6/huIl/rD/KKktV+hN2EnyBLiGtVX+YlDJ2YjiNvLuC9YZHP1Nzq7w8oe1pI0pfUNVfDGx10XaPbJsgwyoEbJUuuNTWqNKY68RhuGErOysth4MVd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a7Dfn27v; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744645896; c=relaxed/simple;
+	bh=J1ajjji685NK+fXFimQZxDabOoRmU/cD77vTN7SlJrc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=aSX/lyreRrIL6qZZ8AuvaY+rghYPWK4kuv3vkrL2yV+kqIY3tvBITwdXsoXZl2ARj4mR036dIVsUqml8Lpi6PAdPaEuyaK2EFg9OO0aNdHZzReS8atI5EX7irUlA8hLzgTOxArI5tnoUkKPlYBue0lxM+9wtPrfV1UyyKqLjjXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=PcXZCXdb; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a7Dfn27v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A9FC4CEEB;
-	Mon, 14 Apr 2025 15:49:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744645775;
-	bh=0OlpI8A8o3k0NMv+HqSy0AS0cRdyO/+tn5fykeOZP7M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a7Dfn27v2z9ZYmy0BaU3Q/yhi7InElazHQbj4WEnKg/E8+xjMDxQj75Ocy4CAujAD
-	 cTTFE0mMPKjwFvgLVjQNK3KZG+wUXT3oYuoqWs6NR4ZUpCo5fmm/bYSZH62yM67h8k
-	 fBksYdPnntidj7W9Sw6E8crMJWCOkfjhbbbF/tpvG319NLX5Ad35iRuJvMW6DWkb44
-	 eZKXIMntYOv4gjlwPFzlRrSqhvgVTLN459PNe4jMWtq09WmEgrdldKGth+7UEqAwqd
-	 yG61IBJHmyiyaEIDBozSik5zC/IWCYP3C5PF9BDCSpJ2knidaqT6qnqpTL9xXiP0GP
-	 MPnffgRyhJkww==
-Date: Mon, 14 Apr 2025 16:49:30 +0100
-From: Simon Horman <horms@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="PcXZCXdb"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=DOjKltCz1QNVwOIoEShbQiGKzqPC0dP5/3g+O8TKjp0=; b=PcXZCXdbGGiG4woiG67mKrNeg6
+	SIYWqpQjaE7qfLvDSK+hNYZDmZwySIWvwbbRvvxoA7+5bVHE3A6H/Ncgg8XtnnxjOuZxDFGDxugX0
+	Dpr2I2T6V5Hu05lFmPP32g2UmEFhgpn3SsjDdFw2UrnzyRZpUR2lW4EH4iuhCdf3nirJb+FT+XIZ2
+	5QKA41xIB1Yo6WOAUuLrSG0eV9oo55BQ93gq/WxjidY5u3pyTalFwrcMW0vb6oza8fN01+OO7vC+X
+	Ermi3eIhqanEdJYrjKZHETEtiBKnyi7hR5+ivf7QPyhxhpGkIcb/6A8JtuL4g7dHbV9ddcQLSYPsB
+	3z59kyYA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34436)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1u4M5j-0006nt-2b;
+	Mon, 14 Apr 2025 16:51:23 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1u4M5e-0007sk-10;
+	Mon, 14 Apr 2025 16:51:18 +0100
+Date: Mon, 14 Apr 2025 16:51:18 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-	Davide Caratti <dcaratti@redhat.com>
-Subject: Re: [PATCH net-next v3] net: airoha: Add matchall filter offload
- support
-Message-ID: <20250414154930.GU395307@horms.kernel.org>
-References: <20250410-airoha-hw-rx-ratelimit-v3-1-5ec2a244925e@kernel.org>
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next 0/2] net: stmmac: ingenic: cleanups
+Message-ID: <Z_0u9pA0Ziop-BuU@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,31 +60,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250410-airoha-hw-rx-ratelimit-v3-1-5ec2a244925e@kernel.org>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu, Apr 10, 2025 at 05:25:37PM +0200, Lorenzo Bianconi wrote:
-> Introduce tc matchall filter offload support in airoha_eth driver.
-> Matchall hw filter is used to implement hw rate policing via tc action
-> police:
-> 
-> $tc qdisc add dev eth0 handle ffff: ingress
-> $tc filter add dev eth0 parent ffff: matchall action police \
->  rate 100mbit burst 1000k drop
-> 
-> The current implementation supports just drop/accept as exceed/notexceed
-> actions. Moreover, rate and burst are the only supported configuration
-> parameters.
-> 
-> Reviewed-by: Davide Caratti <dcaratti@redhat.com>
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
-> Changes in v3:
-> - remove duplicated entries configuring REG_PPE_DFT_CPORT0() regs
-> - Link to v2: https://lore.kernel.org/r/20250409-airoha-hw-rx-ratelimit-v2-1-694e4fda5c91@kernel.org
-> 
-> Changes in v2:
-> - Validate act police mtu parameter
-> - Link to v1: https://lore.kernel.org/r/20250407-airoha-hw-rx-ratelimit-v1-1-917d092d56fd@kernel.org
+Hi,
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Another series for another stmmac glue platform.
 
+Convert Ingenic to use the stmmac platform PM ops and the
+devm_stmmac_pltfr_probe() helper.
+
+ .../net/ethernet/stmicro/stmmac/dwmac-ingenic.c    | 46 ++++------------------
+ 1 file changed, 8 insertions(+), 38 deletions(-)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
