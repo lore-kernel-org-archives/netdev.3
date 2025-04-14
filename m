@@ -1,538 +1,252 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2076.outbound.protection.outlook.com [40.107.21.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CB71DDC18;
-	Tue, 15 Apr 2025 08:52:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744707125; cv=none; b=WXdW8DB5ek1qiZIK3xfbRkQ2rX+4GpbJlq2WqsB4BD5iq2wxVX3l+NwKB7QIUFQz0xAtIEkeJAhqSUxv+IgcrVGMyu+vAfCVCvq0DSjd5QZAgygfxfQlk4hmiOBWO5SVl4gOf37aoX8iez0Z6hRFZuyRqYtLyphTcA4A1d5Km+I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744707125; c=relaxed/simple;
-	bh=ftkaAuGCRjpsO4mqkauYH8ETLmjWiU1yTg6k8COK4uc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DaIiUpDLvovZRd0NPQpKxeOllBKUv0lo8kdJpjZC5GSTJqlvsIpEjbhVnrK4hDcqGuVPgVfHqVuTr+1m4b4wyQBymqvgJgQKiPGfH9/Z2wRPFQ/Y5HjNYSpRj49hlA4gPe5PpatQwIQw+NzPGpR+euBl9xQy0PJpDUnFODzG934=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IkhkRHik; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BCC27587B;
+	Tue, 15 Apr 2025 08:58:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744707487; cv=fail; b=dpOKgoaYB+AAFte/qtJn0IuaJc3NjfLG7vK0Xjy68e+0ZwuOQg211ksAhPJ0sjgxuZJoqD5hYCFjn6afMPSD14joEpAZzofVSXK6Ip5MWoq0vZnv21SysbXsOsWSA7brskjUJuP2VEu1X3VxL9QBcX/HP5owW1wHOdT8ahNEbLw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744707487; c=relaxed/simple;
+	bh=bz0uIeWpSGSuIQvh66yhCx2wBEBZLK1Uhj3GCh55+fI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iyIXS/k9pXVX8/OkgGbgK2NKSXkqswvtZcpCuESyWoIGiJESaL7cYWAPA1zOWbOo//Q4bEadnReNK4dA9N6+eYyVOagrTykQ8PVswix1PuG01PAnHkuVzlCXI6MuPLlieR2CEUKXuhgt17rWsy/k5vH3gluufsaCgVpLubyB9Iw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=eDkOcew+; arc=fail smtp.client-ip=40.107.21.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IkhkRHik"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 93FD7432F9;
-	Tue, 15 Apr 2025 08:51:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1744707120;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CL4VDDzYo+gIiDyrhm09oNU2W4rD91r8p0855Qcob/Y=;
-	b=IkhkRHikiINIcguI107lZVBvRJLSRvJeEYzQirsoXMKHSpW0g3fDOSv7zHgi8h02xZHWo2
-	S2URt6wwt7ejiiixeYsqqvvc7n55wzcQoBRHxkjlYLSs23jIPrLq5uYOOQs5CfUq3cjU7p
-	6mB96PfCGbV7ukXaKY6bSzaBL87+dWnoGIAc6IvxIyZdXiW+QO3FdSk9ciGG8uFjjJ47jA
-	fyahCviPUBksHml/45jcHQyTI0+hFzWoAizjVHKMd/K4pe8YbRxLXLBmtkvQvyYGRCo7qW
-	x7Hd1/0cCrPc15m95R6CJMiiRv52vX2kvUVXmhN/9c6vefyAYWIP4uDEMAT+8w==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: davem@davemloft.net,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com,
-	linux-arm-kernel@lists.infradead.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Simon Horman <horms@kernel.org>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Piergiorgio Beruto <piergiorgio.beruto@gmail.com>
-Subject: [PATCH net-next v6 2/2] net: ethtool: phy: Convert the PHY_GET command to generic phy dump
-Date: Tue, 15 Apr 2025 10:51:54 +0200
-Message-ID: <20250415085155.132963-3-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250415085155.132963-1-maxime.chevallier@bootlin.com>
-References: <20250415085155.132963-1-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="eDkOcew+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=snYQ7OhUk6CP8JtjDrgt0Q2iltJgMH1DOvixkNXOAC25G8CBecbD4GMWl+Y0gu+fW5yKEYqQ1IfeSqs0RxeXp6Tb789jWhiUze1ARhri3mq8KKf/o6t4oy6GsHr7AUUQ0UOVwaEBR0NQcj4yfua+RJhuLnqwi+Z39LFV8DQ4Bdnx/twvgy8wMPkOXYe/o4SGFzNymQtCMWoUDR9y8HiH8bhn1jm7G9n7JekfcynIgZkUmmK4NjP7tvvPdhw/wwjZqQdCwvCfYDqJ2doqUK16Fyr0QCQfGof3J8ZYu2b+XluQuwayWNR9Y62jyl4VKm7GjeDvxDqH1eYvBsaMRjeI/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xY4cSgz9DD+izQ5CHXWWIiWN/HVvG4kiITK+k1h7IUY=;
+ b=xuMGm8ai44dROUnzrS8TB8lZTZXY/P8POgG07NDi8i/vx35gS3jQKAHol3AVDrhO/A8MSbpFzA29/kM9Guc9LUMWGsWlfcqFenZ7/TvJNozPikiL+kA8wLscpW77NeVLpRQepTsDVglWQ6TfnarUuVt6BAwfuqrEJq19N5N24NCWGFzzlBB7NH/ENmL1HIUx219LFZaKt7kVADJohqsP0PUq0tdvsvDPGXU7hcHnyIGRXUSsb18xpkJfHrThgZwvT5rbMQEAxch0zdifd/OaqMibHVJJF+xLsWrqOad3MgeiVmszFeCJjupFi5iDP+pVxD/Txurv+tDwWEiUCElTyA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 131.228.2.20) smtp.rcpttodomain=apple.com smtp.mailfrom=nokia-bell-labs.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nokia-bell-labs.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xY4cSgz9DD+izQ5CHXWWIiWN/HVvG4kiITK+k1h7IUY=;
+ b=eDkOcew+pYHn1BmRrRaklTFT8XIcB04HH1XbgYRjaT25fklfAdYGxfRyZqnxaTLF1TSSggT2+fA4eMZkzGpcj9+cYvnYvj9KhdAcE7azVqG1cgAwydoQDv4wDrJyiGNWf51cAPedFojjeDiLnZTy/3V+K3yxegim9SrgsMFs9rZertzNf2f68H9E3u6bms9oEJ6NeY++cYHYActJ4QWR4z6OMu+ivVWGwK5NNjI2vJkuRT5kVEfpIgsN7BbPCcKwOPbNX8gkk+ulfIqXYAph2970nY7NfFpdxeaMDQa6ISzIWeFal197OgpgO1adzepKW6TJodcQU/atSMPNpcTOwg==
+Received: from AS4P189CA0051.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:659::16)
+ by DU0PR07MB8907.eurprd07.prod.outlook.com (2603:10a6:10:323::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.32; Tue, 15 Apr
+ 2025 08:58:00 +0000
+Received: from AM3PEPF0000A79C.eurprd04.prod.outlook.com
+ (2603:10a6:20b:659:cafe::c5) by AS4P189CA0051.outlook.office365.com
+ (2603:10a6:20b:659::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8632.35 via Frontend Transport; Tue,
+ 15 Apr 2025 08:58:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 131.228.2.20)
+ smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
+Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
+ designates 131.228.2.20 as permitted sender) receiver=protection.outlook.com;
+ client-ip=131.228.2.20; helo=fihe3nok0734.emea.nsn-net.net; pr=C
+Received: from fihe3nok0734.emea.nsn-net.net (131.228.2.20) by
+ AM3PEPF0000A79C.mail.protection.outlook.com (10.167.16.107) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.12
+ via Frontend Transport; Tue, 15 Apr 2025 08:58:00 +0000
+Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
+	by fihe3nok0734.emea.nsn-net.net (Postfix) with ESMTP id 9844B4EE7A;
+	Mon, 14 Apr 2025 16:00:11 +0300 (EEST)
+From: chia-yu.chang@nokia-bell-labs.com
+To: netdev@vger.kernel.org,
+	dave.taht@gmail.com,
+	pabeni@redhat.com,
+	jhs@mojatatu.com,
+	kuba@kernel.org,
+	stephen@networkplumber.org,
+	xiyou.wangcong@gmail.com,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	andrew+netdev@lunn.ch,
+	donald.hunter@gmail.com,
+	ast@fiberby.net,
+	liuhangbin@gmail.com,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	ij@kernel.org,
+	ncardwell@google.com,
+	koen.de_schepper@nokia-bell-labs.com,
+	g.white@cablelabs.com,
+	ingemar.s.johansson@ericsson.com,
+	mirja.kuehlewind@ericsson.com,
+	cheshire@apple.com,
+	rs.ietf@gmx.at,
+	Jason_Livingood@comcast.com,
+	vidhi_goel@apple.com
+Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Subject: [PATCH v3 net-next 06/15] tcp: accecn: AccECN needs to know delivered bytes
+Date: Mon, 14 Apr 2025 14:59:35 +0200
+Message-Id: <20250414125944.97350-7-chia-yu.chang@nokia-bell-labs.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250414125944.97350-1-chia-yu.chang@nokia-bell-labs.com>
+References: <20250414125944.97350-1-chia-yu.chang@nokia-bell-labs.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvdeftdegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvddtueefvdfhiefgieelfeeggeefiedvueevkedttddvffekleeujedtjeeuteehnecuffhomhgrihhnpegsrghsvgdruggvvhenucfkphepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvuddprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepkhhusggrsehkvghrnhgvl
- hdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomhdprhgtphhtthhopehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-GND-Sasl: maxime.chevallier@bootlin.com
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM3PEPF0000A79C:EE_|DU0PR07MB8907:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9ab65cb8-1e7f-4cee-68f7-08dd7bfb9fe7
+X-LD-Processed: 5d471751-9675-428d-917b-70f44f9630b0,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|82310400026|1800799024|376014|7416014|36860700013|921020;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?Rm5XRDVaTTlaaUpTdGtXc3B6SXVWVEU4cW8wUkJtcjNlVGpmOHFJbERNOFdm?=
+ =?utf-8?B?dS9ZYzZ2OWMvbXhxRjVKVFN1d1hGRWFQZEFsejEwNVI0MEFSa2kwVjJIRTd2?=
+ =?utf-8?B?c1JrS0tXWWtyK29DaEtkL3hZZ2RoMFJ0OHlNZFNkZkpsc2MxS2hneFdMS05P?=
+ =?utf-8?B?SDZWd1pFcGZQWlRtMThTcUROYlBtQm80Mm9oSXJ0MnNxdXpJM3I2YWs4TXdE?=
+ =?utf-8?B?cDZMRDRSd0c5cXhKem0rSVNqbmVzaXJleGc2Z2YvUjVhWC9xV0RUZDNYK2xL?=
+ =?utf-8?B?OXRUcWwxKzAwelF2RGgwdTI5MXQyTm10SFp2ZWoyYmViamNMbTlQTVlzRmhN?=
+ =?utf-8?B?VzFZTVRqQ3c2Zkw3L3lpQ0ZMaUJ6QkxYR0t0VHZncGI4RGFTZ01md2sxQmhO?=
+ =?utf-8?B?MTN4MXhiOHFIeGZxbURsR3k1bVhZR0RiWUtvK00wa202MUJPUEdKYmRpZ25v?=
+ =?utf-8?B?bHFpVENQWU02NDNvV1huckxVQ1hsWXFlbkJOMEtqdUF5ZGFUOENydGZJWDM1?=
+ =?utf-8?B?VEszWnJ3aDc4Z2lNRHl6SDkyNFJ3TXZjdUp2V2tDZUtqL2F4TXo0di9ZRTk4?=
+ =?utf-8?B?cktwcWlrMVdIdmlLL0FmSG5NWTBWbDIzSk1RWlFlYVQxRnlDRHJBWWVyaVFy?=
+ =?utf-8?B?VUk2cEFBZFdTb1RHQUUvRm9ITmxMU29TdUVrWGNNNmR1L3RoRHR0K3R4Z0hD?=
+ =?utf-8?B?ZVo0bDFYOFQ3VGNWanNqVWVJZ3d0OWRjSStXakZJL3Y2bUwwQVloUm8rYmU4?=
+ =?utf-8?B?SUw4c09VbE9LeCtmZHBtUmdaQjBtWUtiZUJwaUZOamVPWTFPd3FUN25RUS95?=
+ =?utf-8?B?ZWhEN0RITHZYdk9UMHN0TUJVcTFHeXh0UC8rall1KzZJQ0dWSU83dG1MRGdJ?=
+ =?utf-8?B?T3JmR296TnhGa3kyaG5kM2J6QmxqK0ovMXZjcjg1UEhzOTlHcjgxYU96NERD?=
+ =?utf-8?B?Zmk1UnJTd3phOGdvSUxxMlJkM1ZMbUQ3WUl4RTR2WlRuS1o5TlBzTFhhdnNj?=
+ =?utf-8?B?U0ZFSk04UUJIR0NZSTZnVSt6T2huSGpiZzI3OGY3ZDdrM1VuVUNPWUtiZUZB?=
+ =?utf-8?B?U2ZIV3hOdUNqaWw4T2VDNzYxbjRDRVhXS0tBSnFzOXI2NlBSMTlIUUlLS2NG?=
+ =?utf-8?B?Zjgyc1h0S1RBSnd1TDZjZGpYVHBBRUcwTDF0c3dDa3BTUzNGbmFaMTdibU1Z?=
+ =?utf-8?B?NU1EeEhCand2Ly9DZW5EZEREbkJGQU8wZHQ2dysycFhVUktXb2pPWDllWFhT?=
+ =?utf-8?B?N0JzQ01IQ3JQL1UrOXRHdVR6V0NKR0hDQURkYXB3TWhIV3NqYlkxVDF5TVYz?=
+ =?utf-8?B?QkxzYVpmcmxpWkFSb0VKK1p1TUNibEhkbFZZbXNiTUtEYnJ4K0ZOL3h6VnpB?=
+ =?utf-8?B?QXBCVnhQeUVWeUYxazJhUkcxTkFYUDl6QzQxRjJlWUdlY3JyTEsveWZPdE4r?=
+ =?utf-8?B?M2hPTWpVSkJDS1N1UzN2ZlpxOHhVOXhObGVST0NPdlllbkpZeGpFZXluSXUx?=
+ =?utf-8?B?cUdjcVFiVSt2T1pzVkl6RGp0SHI1Y1hpajNoTGpYYnNTRnRQQm5uUXhJYzli?=
+ =?utf-8?B?WlBZVkhNRjRZUmRYYjJDU2ZvNlRyYnBDNU0wR0l2aUh1MzFDY2dCNGg3REpx?=
+ =?utf-8?B?OG13SitjQ3RwVVAzT1FMMmhueTZDSTUxSnlWTHpyb2d5ZnNPK1pNWHFJdFMv?=
+ =?utf-8?B?dGNwK0wrZUt5NmhWNVJ3Y2VBczQwcFNSWkVYeW1LQ2wrYmIvclM3cHNKT2Nj?=
+ =?utf-8?B?Qkt5UGwrWjZ6RlpYbGFqV1hVRzc1NW14Q1JMQ0RLZ0g1bFZTOTlEc2JsT3A2?=
+ =?utf-8?B?SkhuNU94S1pzSTNtaytjbU5MZGtWQnFycXBteDY5VTFRRUNSWWViZDRXSXp0?=
+ =?utf-8?B?Z1ViUnBQWWVROUtnTnYvUHJ3Smx5MXFiclFJV0cvNXZEUHd6TWtwYkhpOUUw?=
+ =?utf-8?B?ZkRQbmlueVlieGpKLzNHR21jc3pYU1orTDJUdlJ1djBUdk5pY2NLVHQvc2Uz?=
+ =?utf-8?B?bmQyYW9FREpyT0ZZbXJYelgxM0taV0dFdXpsSTVZczE2ZnhLSElORnAxTG50?=
+ =?utf-8?B?YkVCaXp1UUNuNUdEcEJ4OHhzQ082M05ZVGlJQT09?=
+X-Forefront-Antispam-Report:
+ CIP:131.228.2.20;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fihe3nok0734.emea.nsn-net.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(7416014)(36860700013)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: nokia-bell-labs.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2025 08:58:00.5291
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9ab65cb8-1e7f-4cee-68f7-08dd7bfb9fe7
+X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.20];Helo=[fihe3nok0734.emea.nsn-net.net]
+X-MS-Exchange-CrossTenant-AuthSource: AM3PEPF0000A79C.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR07MB8907
 
-Now that we have an infrastructure in ethnl for perphy DUMPs, we can get
-rid of the custom ->doit and ->dumpit to deal with PHY listing commands.
+From: Ilpo Järvinen <ij@kernel.org>
 
-As most of the code was custom, this basically means re-writing how we
-deal with PHY listing.
+AccECN byte counter estimation requires delivered bytes
+which can be calculated while processing SACK blocks and
+cumulative ACK. The delivered bytes will be used to estimate
+the byte counters between AccECN option (on ACKs w/o the
+option).
 
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Non-SACK calculation is quite annoying, inaccurate, and
+likely bogus.
+
+Signed-off-by: Ilpo Järvinen <ij@kernel.org>
+Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 ---
-V6: No changes
+ net/ipv4/tcp_input.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
- net/ethtool/netlink.c |   9 +-
- net/ethtool/netlink.h |   4 -
- net/ethtool/phy.c     | 342 ++++++++++++------------------------------
- 3 files changed, 101 insertions(+), 254 deletions(-)
-
-diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
-index afb609ed515a..db0c1acf116b 100644
---- a/net/ethtool/netlink.c
-+++ b/net/ethtool/netlink.c
-@@ -410,6 +410,7 @@ ethnl_default_requests[__ETHTOOL_MSG_USER_CNT] = {
- 	[ETHTOOL_MSG_MM_SET]		= &ethnl_mm_request_ops,
- 	[ETHTOOL_MSG_TSCONFIG_GET]	= &ethnl_tsconfig_request_ops,
- 	[ETHTOOL_MSG_TSCONFIG_SET]	= &ethnl_tsconfig_request_ops,
-+	[ETHTOOL_MSG_PHY_GET]		= &ethnl_phy_request_ops,
- };
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index c017e342f092..5bd7fc9bcf66 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -1170,6 +1170,7 @@ struct tcp_sacktag_state {
+ 	u64	last_sackt;
+ 	u32	reord;
+ 	u32	sack_delivered;
++	u32	delivered_bytes;
+ 	int	flag;
+ 	unsigned int mss_now;
+ 	struct rate_sample *rate;
+@@ -1531,7 +1532,7 @@ static int tcp_match_skb_to_sack(struct sock *sk, struct sk_buff *skb,
+ static u8 tcp_sacktag_one(struct sock *sk,
+ 			  struct tcp_sacktag_state *state, u8 sacked,
+ 			  u32 start_seq, u32 end_seq,
+-			  int dup_sack, int pcount,
++			  int dup_sack, int pcount, u32 plen,
+ 			  u64 xmit_time)
+ {
+ 	struct tcp_sock *tp = tcp_sk(sk);
+@@ -1591,6 +1592,7 @@ static u8 tcp_sacktag_one(struct sock *sk,
+ 		tp->sacked_out += pcount;
+ 		/* Out-of-order packets delivered */
+ 		state->sack_delivered += pcount;
++		state->delivered_bytes += plen;
  
- static struct ethnl_dump_ctx *ethnl_dump_context(struct netlink_callback *cb)
-@@ -1433,10 +1434,10 @@ static const struct genl_ops ethtool_genl_ops[] = {
- 	},
- 	{
- 		.cmd	= ETHTOOL_MSG_PHY_GET,
--		.doit	= ethnl_phy_doit,
--		.start	= ethnl_phy_start,
--		.dumpit	= ethnl_phy_dumpit,
--		.done	= ethnl_phy_done,
-+		.doit	= ethnl_default_doit,
-+		.start	= ethnl_perphy_start,
-+		.dumpit	= ethnl_perphy_dumpit,
-+		.done	= ethnl_perphy_done,
- 		.policy = ethnl_phy_get_policy,
- 		.maxattr = ARRAY_SIZE(ethnl_phy_get_policy) - 1,
- 	},
-diff --git a/net/ethtool/netlink.h b/net/ethtool/netlink.h
-index ec6ab5443a6f..91b953924af3 100644
---- a/net/ethtool/netlink.h
-+++ b/net/ethtool/netlink.h
-@@ -499,10 +499,6 @@ int ethnl_tunnel_info_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
- int ethnl_act_module_fw_flash(struct sk_buff *skb, struct genl_info *info);
- int ethnl_rss_dump_start(struct netlink_callback *cb);
- int ethnl_rss_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
--int ethnl_phy_start(struct netlink_callback *cb);
--int ethnl_phy_doit(struct sk_buff *skb, struct genl_info *info);
--int ethnl_phy_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
--int ethnl_phy_done(struct netlink_callback *cb);
- int ethnl_tsinfo_start(struct netlink_callback *cb);
- int ethnl_tsinfo_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
- int ethnl_tsinfo_done(struct netlink_callback *cb);
-diff --git a/net/ethtool/phy.c b/net/ethtool/phy.c
-index 1f590e8d75ed..68372bef4b2f 100644
---- a/net/ethtool/phy.c
-+++ b/net/ethtool/phy.c
-@@ -12,304 +12,154 @@
- #include <net/netdev_lock.h>
+ 		/* Lost marker hint past SACKed? Tweak RFC3517 cnt */
+ 		if (tp->lost_skb_hint &&
+@@ -1632,7 +1634,7 @@ static bool tcp_shifted_skb(struct sock *sk, struct sk_buff *prev,
+ 	 * tcp_highest_sack_seq() when skb is highest_sack.
+ 	 */
+ 	tcp_sacktag_one(sk, state, TCP_SKB_CB(skb)->sacked,
+-			start_seq, end_seq, dup_sack, pcount,
++			start_seq, end_seq, dup_sack, pcount, skb->len,
+ 			tcp_skb_timestamp_us(skb));
+ 	tcp_rate_skb_delivered(sk, skb, state->rate);
  
- struct phy_req_info {
--	struct ethnl_req_info		base;
--	struct phy_device_node		*pdn;
-+	struct ethnl_req_info base;
- };
+@@ -1924,6 +1926,7 @@ static struct sk_buff *tcp_sacktag_walk(struct sk_buff *skb, struct sock *sk,
+ 						TCP_SKB_CB(skb)->end_seq,
+ 						dup_sack,
+ 						tcp_skb_pcount(skb),
++						skb->len,
+ 						tcp_skb_timestamp_us(skb));
+ 			tcp_rate_skb_delivered(sk, skb, state->rate);
+ 			if (TCP_SKB_CB(skb)->sacked & TCPCB_SACKED_ACKED)
+@@ -3540,6 +3543,8 @@ static int tcp_clean_rtx_queue(struct sock *sk, const struct sk_buff *ack_skb,
  
--#define PHY_REQINFO(__req_base) \
--	container_of(__req_base, struct phy_req_info, base)
-+struct phy_reply_data {
-+	struct ethnl_reply_data	base;
-+	u32 phyindex;
-+	char *drvname;
-+	char *name;
-+	unsigned int upstream_type;
-+	char *upstream_sfp_name;
-+	unsigned int upstream_index;
-+	char *downstream_sfp_name;
-+};
+ 		if (sacked & TCPCB_SACKED_ACKED) {
+ 			tp->sacked_out -= acked_pcount;
++			/* snd_una delta covers these skbs */
++			sack->delivered_bytes -= skb->len;
+ 		} else if (tcp_is_sack(tp)) {
+ 			tcp_count_delivered(tp, acked_pcount, ece_ack);
+ 			if (!tcp_skb_spurious_retrans(tp, skb))
+@@ -3643,6 +3648,10 @@ static int tcp_clean_rtx_queue(struct sock *sk, const struct sk_buff *ack_skb,
+ 			delta = prior_sacked - tp->sacked_out;
+ 			tp->lost_cnt_hint -= min(tp->lost_cnt_hint, delta);
+ 		}
 +
-+#define PHY_REPDATA(__reply_base) \
-+	container_of(__reply_base, struct phy_reply_data, base)
++		sack->delivered_bytes = (skb ?
++					 TCP_SKB_CB(skb)->seq : tp->snd_una) -
++					 prior_snd_una;
+ 	} else if (skb && rtt_update && sack_rtt_us >= 0 &&
+ 		   sack_rtt_us > tcp_stamp_us_delta(tp->tcp_mstamp,
+ 						    tcp_skb_timestamp_us(skb))) {
+@@ -4097,6 +4106,7 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
+ 	sack_state.first_sackt = 0;
+ 	sack_state.rate = &rs;
+ 	sack_state.sack_delivered = 0;
++	sack_state.delivered_bytes = 0;
  
- const struct nla_policy ethnl_phy_get_policy[ETHTOOL_A_PHY_HEADER + 1] = {
- 	[ETHTOOL_A_PHY_HEADER] = NLA_POLICY_NESTED(ethnl_header_policy),
- };
- 
--/* Caller holds rtnl */
--static ssize_t
--ethnl_phy_reply_size(const struct ethnl_req_info *req_base,
--		     struct netlink_ext_ack *extack)
-+static int phy_reply_size(const struct ethnl_req_info *req_info,
-+			  const struct ethnl_reply_data *reply_data)
- {
--	struct phy_req_info *req_info = PHY_REQINFO(req_base);
--	struct phy_device_node *pdn = req_info->pdn;
--	struct phy_device *phydev = pdn->phy;
-+	struct phy_reply_data *rep_data = PHY_REPDATA(reply_data);
- 	size_t size = 0;
- 
--	ASSERT_RTNL();
--
- 	/* ETHTOOL_A_PHY_INDEX */
- 	size += nla_total_size(sizeof(u32));
- 
- 	/* ETHTOOL_A_DRVNAME */
--	if (phydev->drv)
--		size += nla_total_size(strlen(phydev->drv->name) + 1);
-+	if (rep_data->drvname)
-+		size += nla_total_size(strlen(rep_data->drvname) + 1);
- 
- 	/* ETHTOOL_A_NAME */
--	size += nla_total_size(strlen(dev_name(&phydev->mdio.dev)) + 1);
-+	size += nla_total_size(strlen(rep_data->name) + 1);
- 
- 	/* ETHTOOL_A_PHY_UPSTREAM_TYPE */
- 	size += nla_total_size(sizeof(u32));
- 
--	if (phy_on_sfp(phydev)) {
--		const char *upstream_sfp_name = sfp_get_name(pdn->parent_sfp_bus);
--
--		/* ETHTOOL_A_PHY_UPSTREAM_SFP_NAME */
--		if (upstream_sfp_name)
--			size += nla_total_size(strlen(upstream_sfp_name) + 1);
-+	/* ETHTOOL_A_PHY_UPSTREAM_SFP_NAME */
-+	if (rep_data->upstream_sfp_name)
-+		size += nla_total_size(strlen(rep_data->upstream_sfp_name) + 1);
- 
--		/* ETHTOOL_A_PHY_UPSTREAM_INDEX */
-+	/* ETHTOOL_A_PHY_UPSTREAM_INDEX */
-+	if (rep_data->upstream_index)
- 		size += nla_total_size(sizeof(u32));
--	}
- 
- 	/* ETHTOOL_A_PHY_DOWNSTREAM_SFP_NAME */
--	if (phydev->sfp_bus) {
--		const char *sfp_name = sfp_get_name(phydev->sfp_bus);
--
--		if (sfp_name)
--			size += nla_total_size(strlen(sfp_name) + 1);
--	}
-+	if (rep_data->downstream_sfp_name)
-+		size += nla_total_size(strlen(rep_data->downstream_sfp_name) + 1);
- 
- 	return size;
- }
- 
--static int
--ethnl_phy_fill_reply(const struct ethnl_req_info *req_base, struct sk_buff *skb)
-+static int phy_prepare_data(const struct ethnl_req_info *req_info,
-+			    struct ethnl_reply_data *reply_data,
-+			    const struct genl_info *info)
- {
--	struct phy_req_info *req_info = PHY_REQINFO(req_base);
--	struct phy_device_node *pdn = req_info->pdn;
--	struct phy_device *phydev = pdn->phy;
--	enum phy_upstream ptype;
-+	struct phy_link_topology *topo = reply_data->dev->link_topo;
-+	struct phy_reply_data *rep_data = PHY_REPDATA(reply_data);
-+	struct nlattr **tb = info->attrs;
-+	struct phy_device_node *pdn;
-+	struct phy_device *phydev;
- 
--	ptype = pdn->upstream_type;
-+	/* RTNL is held by the caller */
-+	phydev = ethnl_req_get_phydev(req_info, tb, ETHTOOL_A_PHY_HEADER,
-+				      info->extack);
-+	if (IS_ERR_OR_NULL(phydev))
-+		return -EOPNOTSUPP;
- 
--	if (nla_put_u32(skb, ETHTOOL_A_PHY_INDEX, phydev->phyindex) ||
--	    nla_put_string(skb, ETHTOOL_A_PHY_NAME, dev_name(&phydev->mdio.dev)) ||
--	    nla_put_u32(skb, ETHTOOL_A_PHY_UPSTREAM_TYPE, ptype))
--		return -EMSGSIZE;
-+	pdn = xa_load(&topo->phys, phydev->phyindex);
-+	if (!pdn)
-+		return -EOPNOTSUPP;
- 
--	if (phydev->drv &&
--	    nla_put_string(skb, ETHTOOL_A_PHY_DRVNAME, phydev->drv->name))
--		return -EMSGSIZE;
-+	rep_data->phyindex = phydev->phyindex;
-+	rep_data->name = kstrdup(dev_name(&phydev->mdio.dev), GFP_KERNEL);
-+	rep_data->drvname = kstrdup(phydev->drv->name, GFP_KERNEL);
-+	rep_data->upstream_type = pdn->upstream_type;
- 
--	if (ptype == PHY_UPSTREAM_PHY) {
-+	if (pdn->upstream_type == PHY_UPSTREAM_PHY) {
- 		struct phy_device *upstream = pdn->upstream.phydev;
--		const char *sfp_upstream_name;
--
--		/* Parent index */
--		if (nla_put_u32(skb, ETHTOOL_A_PHY_UPSTREAM_INDEX, upstream->phyindex))
--			return -EMSGSIZE;
--
--		if (pdn->parent_sfp_bus) {
--			sfp_upstream_name = sfp_get_name(pdn->parent_sfp_bus);
--			if (sfp_upstream_name &&
--			    nla_put_string(skb, ETHTOOL_A_PHY_UPSTREAM_SFP_NAME,
--					   sfp_upstream_name))
--				return -EMSGSIZE;
--		}
--	}
--
--	if (phydev->sfp_bus) {
--		const char *sfp_name = sfp_get_name(phydev->sfp_bus);
--
--		if (sfp_name &&
--		    nla_put_string(skb, ETHTOOL_A_PHY_DOWNSTREAM_SFP_NAME,
--				   sfp_name))
--			return -EMSGSIZE;
-+		rep_data->upstream_index = upstream->phyindex;
- 	}
- 
--	return 0;
--}
--
--static int ethnl_phy_parse_request(struct ethnl_req_info *req_base,
--				   struct nlattr **tb,
--				   struct netlink_ext_ack *extack)
--{
--	struct phy_link_topology *topo = req_base->dev->link_topo;
--	struct phy_req_info *req_info = PHY_REQINFO(req_base);
--	struct phy_device *phydev;
-+	if (pdn->parent_sfp_bus)
-+		rep_data->upstream_sfp_name = kstrdup(sfp_get_name(pdn->parent_sfp_bus),
-+						      GFP_KERNEL);
- 
--	phydev = ethnl_req_get_phydev(req_base, tb, ETHTOOL_A_PHY_HEADER,
--				      extack);
--	if (!phydev)
--		return 0;
--
--	if (IS_ERR(phydev))
--		return PTR_ERR(phydev);
--
--	if (!topo)
--		return 0;
--
--	req_info->pdn = xa_load(&topo->phys, phydev->phyindex);
-+	if (phydev->sfp_bus)
-+		rep_data->downstream_sfp_name = kstrdup(sfp_get_name(phydev->sfp_bus),
-+							GFP_KERNEL);
- 
- 	return 0;
- }
- 
--int ethnl_phy_doit(struct sk_buff *skb, struct genl_info *info)
-+static int phy_fill_reply(struct sk_buff *skb,
-+			  const struct ethnl_req_info *req_info,
-+			  const struct ethnl_reply_data *reply_data)
- {
--	struct phy_req_info req_info = {};
--	struct nlattr **tb = info->attrs;
--	struct sk_buff *rskb;
--	void *reply_payload;
--	int reply_len;
--	int ret;
--
--	ret = ethnl_parse_header_dev_get(&req_info.base,
--					 tb[ETHTOOL_A_PHY_HEADER],
--					 genl_info_net(info), info->extack,
--					 true);
--	if (ret < 0)
--		return ret;
--
--	rtnl_lock();
--	netdev_lock_ops(req_info.base.dev);
--
--	ret = ethnl_phy_parse_request(&req_info.base, tb, info->extack);
--	if (ret < 0)
--		goto err_unlock;
--
--	/* No PHY, return early */
--	if (!req_info.pdn)
--		goto err_unlock;
--
--	ret = ethnl_phy_reply_size(&req_info.base, info->extack);
--	if (ret < 0)
--		goto err_unlock;
--	reply_len = ret + ethnl_reply_header_size();
--
--	rskb = ethnl_reply_init(reply_len, req_info.base.dev,
--				ETHTOOL_MSG_PHY_GET_REPLY,
--				ETHTOOL_A_PHY_HEADER,
--				info, &reply_payload);
--	if (!rskb) {
--		ret = -ENOMEM;
--		goto err_unlock;
--	}
--
--	ret = ethnl_phy_fill_reply(&req_info.base, rskb);
--	if (ret)
--		goto err_free_msg;
-+	struct phy_reply_data *rep_data = PHY_REPDATA(reply_data);
- 
--	netdev_unlock_ops(req_info.base.dev);
--	rtnl_unlock();
--	ethnl_parse_header_dev_put(&req_info.base);
--	genlmsg_end(rskb, reply_payload);
--
--	return genlmsg_reply(rskb, info);
--
--err_free_msg:
--	nlmsg_free(rskb);
--err_unlock:
--	netdev_unlock_ops(req_info.base.dev);
--	rtnl_unlock();
--	ethnl_parse_header_dev_put(&req_info.base);
--	return ret;
--}
--
--struct ethnl_phy_dump_ctx {
--	struct phy_req_info	*phy_req_info;
--	unsigned long ifindex;
--	unsigned long phy_index;
--};
--
--int ethnl_phy_start(struct netlink_callback *cb)
--{
--	const struct genl_info *info = genl_info_dump(cb);
--	struct ethnl_phy_dump_ctx *ctx = (void *)cb->ctx;
--	int ret;
--
--	BUILD_BUG_ON(sizeof(*ctx) > sizeof(cb->ctx));
--
--	ctx->phy_req_info = kzalloc(sizeof(*ctx->phy_req_info), GFP_KERNEL);
--	if (!ctx->phy_req_info)
--		return -ENOMEM;
--
--	ret = ethnl_parse_header_dev_get(&ctx->phy_req_info->base,
--					 info->attrs[ETHTOOL_A_PHY_HEADER],
--					 sock_net(cb->skb->sk), cb->extack,
--					 false);
--	ctx->ifindex = 0;
--	ctx->phy_index = 0;
--
--	if (ret)
--		kfree(ctx->phy_req_info);
-+	if (nla_put_u32(skb, ETHTOOL_A_PHY_INDEX, rep_data->phyindex) ||
-+	    nla_put_string(skb, ETHTOOL_A_PHY_NAME, rep_data->name) ||
-+	    nla_put_u32(skb, ETHTOOL_A_PHY_UPSTREAM_TYPE, rep_data->upstream_type))
-+		return -EMSGSIZE;
- 
--	return ret;
--}
-+	if (rep_data->drvname &&
-+	    nla_put_string(skb, ETHTOOL_A_PHY_DRVNAME, rep_data->drvname))
-+		return -EMSGSIZE;
- 
--int ethnl_phy_done(struct netlink_callback *cb)
--{
--	struct ethnl_phy_dump_ctx *ctx = (void *)cb->ctx;
-+	if (rep_data->upstream_index &&
-+	    nla_put_u32(skb, ETHTOOL_A_PHY_UPSTREAM_INDEX,
-+			rep_data->upstream_index))
-+		return -EMSGSIZE;
- 
--	if (ctx->phy_req_info->base.dev)
--		ethnl_parse_header_dev_put(&ctx->phy_req_info->base);
-+	if (rep_data->upstream_sfp_name &&
-+	    nla_put_string(skb, ETHTOOL_A_PHY_UPSTREAM_SFP_NAME,
-+			   rep_data->upstream_sfp_name))
-+		return -EMSGSIZE;
- 
--	kfree(ctx->phy_req_info);
-+	if (rep_data->downstream_sfp_name &&
-+	    nla_put_string(skb, ETHTOOL_A_PHY_DOWNSTREAM_SFP_NAME,
-+			   rep_data->downstream_sfp_name))
-+		return -EMSGSIZE;
- 
- 	return 0;
- }
- 
--static int ethnl_phy_dump_one_dev(struct sk_buff *skb, struct net_device *dev,
--				  struct netlink_callback *cb)
-+static void phy_cleanup_data(struct ethnl_reply_data *reply_data)
- {
--	struct ethnl_phy_dump_ctx *ctx = (void *)cb->ctx;
--	struct phy_req_info *pri = ctx->phy_req_info;
--	struct phy_device_node *pdn;
--	int ret = 0;
--	void *ehdr;
--
--	if (!dev->link_topo)
--		return 0;
--
--	xa_for_each_start(&dev->link_topo->phys, ctx->phy_index, pdn, ctx->phy_index) {
--		ehdr = ethnl_dump_put(skb, cb, ETHTOOL_MSG_PHY_GET_REPLY);
--		if (!ehdr) {
--			ret = -EMSGSIZE;
--			break;
--		}
--
--		ret = ethnl_fill_reply_header(skb, dev, ETHTOOL_A_PHY_HEADER);
--		if (ret < 0) {
--			genlmsg_cancel(skb, ehdr);
--			break;
--		}
--
--		pri->pdn = pdn;
--		ret = ethnl_phy_fill_reply(&pri->base, skb);
--		if (ret < 0) {
--			genlmsg_cancel(skb, ehdr);
--			break;
--		}
--
--		genlmsg_end(skb, ehdr);
--	}
-+	struct phy_reply_data *rep_data = PHY_REPDATA(reply_data);
- 
--	return ret;
-+	kfree(rep_data->drvname);
-+	kfree(rep_data->name);
-+	kfree(rep_data->upstream_sfp_name);
-+	kfree(rep_data->downstream_sfp_name);
- }
- 
--int ethnl_phy_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
--{
--	struct ethnl_phy_dump_ctx *ctx = (void *)cb->ctx;
--	struct net *net = sock_net(skb->sk);
--	struct net_device *dev;
--	int ret = 0;
--
--	rtnl_lock();
--
--	if (ctx->phy_req_info->base.dev) {
--		dev = ctx->phy_req_info->base.dev;
--		netdev_lock_ops(dev);
--		ret = ethnl_phy_dump_one_dev(skb, dev, cb);
--		netdev_unlock_ops(dev);
--	} else {
--		for_each_netdev_dump(net, dev, ctx->ifindex) {
--			netdev_lock_ops(dev);
--			ret = ethnl_phy_dump_one_dev(skb, dev, cb);
--			netdev_unlock_ops(dev);
--			if (ret)
--				break;
--
--			ctx->phy_index = 0;
--		}
--	}
--	rtnl_unlock();
--
--	return ret;
--}
-+const struct ethnl_request_ops ethnl_phy_request_ops = {
-+	.request_cmd		= ETHTOOL_MSG_PHY_GET,
-+	.reply_cmd		= ETHTOOL_MSG_PHY_GET_REPLY,
-+	.hdr_attr		= ETHTOOL_A_PHY_HEADER,
-+	.req_info_size		= sizeof(struct phy_req_info),
-+	.reply_data_size	= sizeof(struct phy_reply_data),
-+
-+	.prepare_data		= phy_prepare_data,
-+	.reply_size		= phy_reply_size,
-+	.fill_reply		= phy_fill_reply,
-+	.cleanup_data		= phy_cleanup_data,
-+};
+ 	/* We very likely will need to access rtx queue. */
+ 	prefetch(sk->tcp_rtx_queue.rb_node);
 -- 
-2.49.0
+2.34.1
 
