@@ -1,395 +1,181 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazolkn19011038.outbound.protection.outlook.com [52.103.43.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248071F3BA8
-	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 10:55:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744628141; cv=none; b=fMPnT+M83WxAVG6sVe5z2MkOkVaIh9FtFMW6aQo/fiFPBcj/A/YAeBE42ez2OwEcn/mzJQ0Fozf2P0GJJtWtZKF+0rLt3+PemudPfDLVJm1leR850C6Ye+xycH9+jfA42knbACTO5gTy7BZCf6X4VEkNioDyGfMleiT5nbxcApY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744628141; c=relaxed/simple;
-	bh=M+1ZqX0IsGptnDdColfBXH8Pgv16F3ISQ26twKIHh1w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cpk2Ftr9VkvRn9rkcjtTiukh38lM4P9kydWOvM/7v4nDX7Wp3X0uTWnnvipBFmk2mXl+Xtjo57fSCOIIMrnCWK8hKkfcEeCfnMToTBWkq+rnsEAIBGLgg51bt9nEOrVMhdYjjqd7qHN4Mc8uhk9UhPsWr6SCmo/emdP5H7CXMSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PhHRfT+d; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C5727D774;
+	Mon, 14 Apr 2025 10:56:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.38
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744628183; cv=fail; b=MMwKuBSW+kAhac3CCq47Hcn732LzUZwyRZe1p8K2xZDetekNUNRROKPqTX1SOXiZP0FSeZZQ0xYG3vZjZrqQyvFpMcaMVkql2EHPQ40SJkdGkR+5ibA3+VzjL/JOsr0BIZOWrvTvw/8aeeARbB8R8eEF7GMKF8/NeGQgluw3n6c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744628183; c=relaxed/simple;
+	bh=PacMVHLy3VNRqqpG239cDaTJgM/56zMo2ncSMRJLu9c=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=CO/mBPauaS88BfTlcw/dOVeC1YRAPX9MrsO4Oao6sZ1OcaaT0gBIuqL5gAnlr+VS/wPyttkzLojqLOjvIDKisERymzGvZWn8XM/unEVFPyKTKSE067K1tw83Btkebx41iwW0EpM2WXOvFn7PmawyZ1G9GP+n6uIRKGXEDO5oSzc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=BptUTXwK; arc=fail smtp.client-ip=52.103.43.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PhHRfT+d"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744628140; x=1776164140;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=M+1ZqX0IsGptnDdColfBXH8Pgv16F3ISQ26twKIHh1w=;
-  b=PhHRfT+dqQLeLj4fQzDRG6nrvy/pRLdRfLxTg3ZGKC3ShEVzMEfULKjj
-   DCk20xWNebYmyMvKiTs2cxEjVf6JkA8vQEGa9es51Xdw4gDmtMv+9scsM
-   ZkckCsJ+J3WbP6E3lxlobg2kfbkiaKEXkjP5/vBqx5kiDqr89u5yOaH00
-   eSvupxV8l9T7GhLB1G6ZQaWFiW7bw44NLJia5tUOYjJ4Ie0d1tGG0eiM6
-   LlylcmdNl/nuAUUyQkmT5hKvBV5jvSei/PivXpSizixfZmp2bmvdkAEP+
-   3HFQteF3opTL9+TnYtxpLqDX8+Yw7vXbZmr29aBPywlgy3u13h8/qP2UW
-   w==;
-X-CSE-ConnectionGUID: 2vjC1+9cSmeTKf4wjdzFXQ==
-X-CSE-MsgGUID: AdiZPcKmSiarm+wKHUTBTQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="68581446"
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
-   d="scan'208";a="68581446"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 03:55:39 -0700
-X-CSE-ConnectionGUID: rAJK7/g3TIaHKv0xYjAO3w==
-X-CSE-MsgGUID: W3Bno60QSeWZvA0Qx6c5hQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
-   d="scan'208";a="160740920"
-Received: from gklab-003-014.igk.intel.com ([10.211.116.96])
-  by orviesa002.jf.intel.com with ESMTP; 14 Apr 2025 03:55:36 -0700
-From: Milena Olech <milena.olech@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Milena Olech <milena.olech@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>
-Subject: [PATCH v11 iwl-next 07/11] idpf: add cross timestamping
-Date: Mon, 14 Apr 2025 12:45:20 +0200
-Message-ID: <20250414104658.14706-16-milena.olech@intel.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250414104658.14706-1-milena.olech@intel.com>
-References: <20250414104658.14706-1-milena.olech@intel.com>
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="BptUTXwK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=m0W8pM3Gqp+n5+4fSi8Y1wTzjQAjXETESZhcoOuWvIchnInHQnBVPHVR8tYc41RVa5utgbYGmwBygl/tSgPbccFR6oVasG9577dYc2r2gY5Yio2uz7XiY/eapyk2vfikl5e42yESEHc/k337fp5hlLJgDYUjdRYj3iJNObdP5HbZnkUjI+qMzMP1EQfF8Rl0hyY5qy1ogXbj5uTD8i5MLb07IQYRn7cxzY+yWbxagEn1CNWJ2lsabQGlMDhtxgLUvAyV8MPTBW/D7VI+pVkJ0VWV9NAXmTbdLEQHocTMBXF17SBsF+kib+/I4QNZr0OLS9lnXYCzZ2buxkkWJ2T1Vg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zoxi1tatPdJRb6kxphS1Zx5K/5VHNaRYx1a9QYgl6y0=;
+ b=HU/PYpz511f1cCM1HE4OQ3lbqLKcqQhebYqYDt4IEgPNVMbTkYaQidJbdx7xq06VfUB7iD1xVzaR3R4qCDluqvmFyrFarns6dA7EUct32HTniBrorSZDOtbuM3QxObiG9mNVNxns5jaRxLp8v38Ec1jDbB++rFJz19USP3UR5AZJI5blyYEQZPbD4qAWMPAg5g6Jq601+Sljv0xJj4A0qcof/tknA0h67fOhVyvRWsSvF390YycfD4rEd4MW2fK9IdfJnHs2yYkKCrMebv0P6KtHiIS25J1AS2r91g4h1mmU1v4H7wtbNMoqUBxrVPO1Nwqq900EyPOfLOv7/UQKEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zoxi1tatPdJRb6kxphS1Zx5K/5VHNaRYx1a9QYgl6y0=;
+ b=BptUTXwKxs/OUa/KaGxRFfBLviFGy0BtSvYq3UQ8eX67pa9mJbsS2c8jsHWC+cBjCT+LvjECn0iqbEXdPr6OCCGbSOZJY9K6H8Zj7YvjQyn5Bj1JYgz/iaonz0kTH2Kai1n3U95bV8pojwImelaOydKUK2BYAsBPfSaAjj6rUHnis8KzPUTaZKkhCqp3bwFy2PDiZDBwReGEOXjnvL2NNJd9U9vU/lEU/I4AaXGZlDawEzVkIn2pHzbUY6XEQdeqKkw7OeeGBptv/o7lFbSPHwN2T9SaKy9T7FQFug0a19BG5KIfXvIF1Mx1z4M3hdvX0aDsD6n+O+GILib+p9MSwQ==
+Received: from OSZPR01MB8434.jpnprd01.prod.outlook.com (2603:1096:604:183::12)
+ by TY4PR01MB14482.jpnprd01.prod.outlook.com (2603:1096:405:238::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.34; Mon, 14 Apr
+ 2025 10:56:11 +0000
+Received: from OSZPR01MB8434.jpnprd01.prod.outlook.com
+ ([fe80::7c3f:73bc:3c62:fe7]) by OSZPR01MB8434.jpnprd01.prod.outlook.com
+ ([fe80::7c3f:73bc:3c62:fe7%5]) with mapi id 15.20.8632.030; Mon, 14 Apr 2025
+ 10:56:11 +0000
+From: Shengyu Qu <wiagn233@outlook.com>
+To: razor@blackwall.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	bridge@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Shengyu Qu <wiagn233@outlook.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH net-next v3] net: bridge: locally receive all multicast packets if IFF_ALLMULTI is set
+Date: Mon, 14 Apr 2025 18:56:01 +0800
+Message-ID:
+ <OSZPR01MB8434308370ACAFA90A22980798B32@OSZPR01MB8434.jpnprd01.prod.outlook.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2P153CA0013.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:140::12) To OSZPR01MB8434.jpnprd01.prod.outlook.com
+ (2603:1096:604:183::12)
+X-Microsoft-Original-Message-ID: <20250414105601.8083-1-wiagn233@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: OSZPR01MB8434:EE_|TY4PR01MB14482:EE_
+X-MS-Office365-Filtering-Correlation-Id: ed9acf4e-685b-4c88-638e-08dd7b42f7c9
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|461199028|5062599005|8060799006|19110799003|5072599009|15080799006|7092599003|3412199025|440099028|10035399004|26104999006|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?INfcNy6T6DA3DOZimRW/E3KDWjQ+qvj+M+CROdsFM+7N/+Dk/kG3qE81gcPL?=
+ =?us-ascii?Q?tuhKqpLQ3ugtWRX7DfFvSFFIlJCLMXxw0Z+YoB8wmJ0R4+je6JT8QSzFVtpM?=
+ =?us-ascii?Q?swTMzyfje/XE+27r8wZoNv02eowNildcq84HZfobul1NOqBQdCH4yhjHAmeZ?=
+ =?us-ascii?Q?duifkn5BWF/Ys98O5xw4Kmh5ogmbrKt8s7vbcTzJt4qDBKoyWSXfy1JFERJG?=
+ =?us-ascii?Q?q0BVtptHc4JFUMRXZxt63efeMODtxSkdgtUzaEE1O3tkArdBF2A0ESyfxDgj?=
+ =?us-ascii?Q?gaHBKE4s08IUYfmTx4FRrcTJnviMHjx9DUUAb324iad3seUmCL7hXj4HPfgh?=
+ =?us-ascii?Q?ZqR+n9f7nAQVg68LNf9pD4pA9RAWRFekGmpRe2myPz55MD5WZ33XiS9Dk+MY?=
+ =?us-ascii?Q?g2S4RthbwOdCQViVr/xfgCCPj4g/xzpms7HqOqP+VEqDs358bqcKMsucgND/?=
+ =?us-ascii?Q?WhRPAV4YhpIBwDdxutjFcKgYMWQsaP3LbnQZq/iI/nBOVppCp7Nus5oH1bIN?=
+ =?us-ascii?Q?pZVAKnmbEOykKVzM8mKTxexkFjowHiHmS4PVmYDymLvs9kDv81BqraEA0fe+?=
+ =?us-ascii?Q?nqjkXJVkImg8a51p9OAlTHdRu9LhIJOT41UfYHniVRWSTVBD7wK1JUfCMzT8?=
+ =?us-ascii?Q?EBFQLWJUSGIXflH0AXZOJ6i0eVIpLgzJALS0Ppd+dvx9RVjZO1ts/Rzi9tMM?=
+ =?us-ascii?Q?/hmGnZhD6WFYglM3WLBw8v4ZvE0Fn5Gw0jSLdMNc1FC/gcruRDkGNDCTasEA?=
+ =?us-ascii?Q?4bdq3PGcm8/1cuVXCo48cVOGMgOJ5TVkT/h2BAE51MwHaUj2Ff8LO/VlXvMQ?=
+ =?us-ascii?Q?nmAryEc570lhwtWGZU8/rRquElSlrwcAHTta1TY5Rv3TbdEZSW6OedHbjXzi?=
+ =?us-ascii?Q?SVXjbZOHQkvmOkuJ/OHNerY4EQa9f1Dv4thjjWWEsok0qJijIMTU7oVZMv3n?=
+ =?us-ascii?Q?b5p8Xg3UaaZCft6nlZiyG3UuZTaiYMCYyutl6IgA84BPXW0lFRXM4eN2L05L?=
+ =?us-ascii?Q?ZAfof/+zFAOj10bH4KvdZoqL9hv2zYVO78LZTzLGC0gjmtoIDdSgADxP/nK3?=
+ =?us-ascii?Q?bwX3j3gX7ZTmVoseyuF1uJsVQKJceaLjXhxuagDq2b306uG7GexP66xeOIr4?=
+ =?us-ascii?Q?qTPttALJAeDapiEYmn+crqH5Exlf1FQOEU+2acEnk2IXOS5z+O0kfBMAIskS?=
+ =?us-ascii?Q?sMFtkuPQOJdMFLAGMcpI5321cy33lm+bJw2QsCZTLUfVsXbQlTY7YbreDLwo?=
+ =?us-ascii?Q?p2Kddz4HZGMz+y059dLE?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?42rBFRDdHoUVduO3OUcQa7joMibNIBS/oEJJJMA6PIuSl1ZHsKTldrwf/QBv?=
+ =?us-ascii?Q?5cboPtHiOK9fJZoXXGmLPrYGfsOCDMgAPBLuFwj+7jB2EhLiN0a/pK77kjhm?=
+ =?us-ascii?Q?Plq/NpURHyZDmYcR0fFAZ7Cc/KvxEbohtWcPLC0dS5ABi4FEpMw4O+fwcc79?=
+ =?us-ascii?Q?hBtRugPrQ1kCDOuhAsFdgXnjaQ6SfwM9vNQoUIr+LcF/RM5AeqRAoc2cmm0I?=
+ =?us-ascii?Q?DdWG4X+OeRrm6HdyVCydYUkW7AwuN5T86vOe+TKk8pcRxdqqLGGfMAc3ysET?=
+ =?us-ascii?Q?XJxuGKBFZQYj8YwbhrJtlQfhtNi6IKrvd5Ng2RgAS4Q4jUwVQeZw4n8Q8VoH?=
+ =?us-ascii?Q?t3YncS//TuOllCp3bqctqfInFgQ30uNT2CMEJsg9NF6DSPcS65t0ZwgcOWYy?=
+ =?us-ascii?Q?X/j5QtVdrfHb4zYbwSYYWOdjSJpeUaAIJNKHHzoSomTt73262KMk57Hg1MkF?=
+ =?us-ascii?Q?tlvzBcVL2Ka4qVf1L6SH7XHqMMGzdYS2WNxAnMWF3LOMHJmFnm/BWKWmJeVV?=
+ =?us-ascii?Q?dNYD2e5IEqKxL+/hxK9RE7jqGLijdQT2FYP3UAiXax3UoryWxDArsX/hCb09?=
+ =?us-ascii?Q?LIyUFywMsnHW5y7KT688h9bDwWk+84DHPIQ5jYVhMenhtOmc+3atU0CUEaDa?=
+ =?us-ascii?Q?nV0oUY+kzrM4z1e9H/ebwwZHatpaTteCjrqRtqTFk11jKJPnHmlgs+Zswu6C?=
+ =?us-ascii?Q?v0bezXD25ue3RlrqF5Cvm5/KoiTg6rLISgEBswBRVRn9FALd4KuYu0GBIrq0?=
+ =?us-ascii?Q?JyNADeJYCWmmhu9evz00BdZ3ibrt1xUMTiH8CeMV/fjQu33WRlx28wa8nVAX?=
+ =?us-ascii?Q?kRu3oURwGLP7d4Ny+otb8ukcxvbCfKNkymSCH5mh1T5G5V6wZqJ62j9W+uRP?=
+ =?us-ascii?Q?4Iqb/7BC96Ac+ODMOsVwZavsT0678hLlbNzK+Qh3kPlgW41j/KXggfQSjBPO?=
+ =?us-ascii?Q?7Y+vaOkzwjXC4lF4KswJJ7hLRp4YuqE3VdnpyZeDTic29STmIsRbsFYFXSaO?=
+ =?us-ascii?Q?R7P+CbO/lnoYaTsiz4oWpgbrscd3TVRLLOG+g8KgLsF+a9kXHiIlsCSD4deo?=
+ =?us-ascii?Q?wcsjYoGmBqMwmobC5qX+lEMFZTp6jWM9ePkHVk7eNTgd5xkLqa5rZuspui2u?=
+ =?us-ascii?Q?A1ufMFWzIUyaya4vvUnaQJE6AdMszndgiwZwQ0xcrkg1lFoz9X6BVNG3rKoY?=
+ =?us-ascii?Q?s5VQTzKKj37XslUBf/qeulVHyNrp13XIynnFISPtx/xET/78cf6X5/4vSKKV?=
+ =?us-ascii?Q?zHdZZg6zSYk5ViYDhnzbBmmiyS38AKBnLVFtEUwkZr8o2DV7C1AjwJIERGF0?=
+ =?us-ascii?Q?ZmU=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed9acf4e-685b-4c88-638e-08dd7b42f7c9
+X-MS-Exchange-CrossTenant-AuthSource: OSZPR01MB8434.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2025 10:56:11.3783
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY4PR01MB14482
 
-Add cross timestamp support through virtchnl mailbox messages and directly,
-through PCIe BAR registers. Cross timestamping assumes that both system
-time and device clock time values are cached simultaneously, what is
-triggered by HW. Feature is enabled for both ARM and x86 archs.
+If multicast snooping is enabled, multicast packets may not always end up
+on the local bridge interface, if the host is not a member of the multicast
+group. Similar to how IFF_PROMISC allows all packets to be received
+locally, let IFF_ALLMULTI allow all multicast packets to be received.
 
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Milena Olech <milena.olech@intel.com>
+OpenWrt uses a user space daemon for DHCPv6/RA/NDP handling, and in relay
+mode it sets the ALLMULTI flag in order to receive all relevant queries on
+the network.
+
+This works for normal network interfaces and non-snooping bridges, but not
+snooping bridges (unless multicast routing is enabled).
+
+Reported-by: Felix Fietkau <nbd@nbd.name>
+Closes:https://github.com/openwrt/openwrt/issues/15857#issuecomment-2662851243
+Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
 ---
-v9 -> v10: add a separate patch for cross timestamping
+Changes since v1:
+ - Move to net-next
+ - Changed code according to Nikolay's advice
 
- drivers/net/ethernet/intel/idpf/idpf_ptp.c    | 139 ++++++++++++++++++
- drivers/net/ethernet/intel/idpf/idpf_ptp.h    |  18 ++-
- .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   |  55 ++++++-
- 3 files changed, 210 insertions(+), 2 deletions(-)
+Changes since v2:
+ - Fix alignment
+ - Remove redundant parenthesis
+ - Add more infomation in commit message
+---
+ net/bridge/br_input.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-index 5ea9d672a159..c00f0a03ccab 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-@@ -41,6 +41,13 @@ void idpf_ptp_get_features_access(const struct idpf_adapter *adapter)
- 	ptp->get_dev_clk_time_access = idpf_ptp_get_access(adapter,
- 							   direct,
- 							   mailbox);
-+
-+	/* Get the cross timestamp */
-+	direct = VIRTCHNL2_CAP_PTP_GET_CROSS_TIME;
-+	mailbox = VIRTCHNL2_CAP_PTP_GET_CROSS_TIME_MB;
-+	ptp->get_cross_tstamp_access = idpf_ptp_get_access(adapter,
-+							   direct,
-+							   mailbox);
- }
- 
- /**
-@@ -150,6 +157,129 @@ static int idpf_ptp_read_src_clk_reg(struct idpf_adapter *adapter, u64 *src_clk,
- 	return 0;
- }
- 
-+#if IS_ENABLED(CONFIG_ARM_ARCH_TIMER) || IS_ENABLED(CONFIG_X86)
-+/**
-+ * idpf_ptp_get_sync_device_time_direct - Get the cross time stamp values
-+ *					  directly
-+ * @adapter: Driver specific private structure
-+ * @dev_time: 64bit main timer value
-+ * @sys_time: 64bit system time value
-+ */
-+static void idpf_ptp_get_sync_device_time_direct(struct idpf_adapter *adapter,
-+						 u64 *dev_time, u64 *sys_time)
-+{
-+	u32 dev_time_lo, dev_time_hi, sys_time_lo, sys_time_hi;
-+	struct idpf_ptp *ptp = adapter->ptp;
-+
-+	spin_lock(&ptp->read_dev_clk_lock);
-+
-+	idpf_ptp_enable_shtime(adapter);
-+
-+	dev_time_lo = readl(ptp->dev_clk_regs.dev_clk_ns_l);
-+	dev_time_hi = readl(ptp->dev_clk_regs.dev_clk_ns_h);
-+
-+	sys_time_lo = readl(ptp->dev_clk_regs.sys_time_ns_l);
-+	sys_time_hi = readl(ptp->dev_clk_regs.sys_time_ns_h);
-+
-+	*dev_time = ((u64)dev_time_hi << 32) | dev_time_lo;
-+	*sys_time = ((u64)sys_time_hi << 32) | sys_time_lo;
-+
-+	spin_unlock(&ptp->read_dev_clk_lock);
-+}
-+
-+/**
-+ * idpf_ptp_get_sync_device_time_mailbox - Get the cross time stamp values
-+ *					   through mailbox
-+ * @adapter: Driver specific private structure
-+ * @dev_time: 64bit main timer value expressed in nanoseconds
-+ * @sys_time: 64bit system time value expressed in nanoseconds
-+ *
-+ * Return: a pair of cross timestamp values on success, -errno otherwise.
-+ */
-+static int idpf_ptp_get_sync_device_time_mailbox(struct idpf_adapter *adapter,
-+						 u64 *dev_time, u64 *sys_time)
-+{
-+	struct idpf_ptp_dev_timers cross_time;
-+	int err;
-+
-+	err = idpf_ptp_get_cross_time(adapter, &cross_time);
-+	if (err)
-+		return err;
-+
-+	*dev_time = cross_time.dev_clk_time_ns;
-+	*sys_time = cross_time.sys_time_ns;
-+
-+	return err;
-+}
-+
-+/**
-+ * idpf_ptp_get_sync_device_time - Get the cross time stamp info
-+ * @device: Current device time
-+ * @system: System counter value read synchronously with device time
-+ * @ctx: Context provided by timekeeping code
-+ *
-+ * Return: the device and the system clocks time read simultaneously on success,
-+ * -errno otherwise.
-+ */
-+static int idpf_ptp_get_sync_device_time(ktime_t *device,
-+					 struct system_counterval_t *system,
-+					 void *ctx)
-+{
-+	struct idpf_adapter *adapter = ctx;
-+	u64 ns_time_dev, ns_time_sys;
-+	int err;
-+
-+	switch (adapter->ptp->get_cross_tstamp_access) {
-+	case IDPF_PTP_NONE:
-+		return -EOPNOTSUPP;
-+	case IDPF_PTP_DIRECT:
-+		idpf_ptp_get_sync_device_time_direct(adapter, &ns_time_dev,
-+						     &ns_time_sys);
-+		break;
-+	case IDPF_PTP_MAILBOX:
-+		err =  idpf_ptp_get_sync_device_time_mailbox(adapter,
-+							     &ns_time_dev,
-+							     &ns_time_sys);
-+		if (err)
-+			return err;
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	*device = ns_to_ktime(ns_time_dev);
-+
-+#if IS_ENABLED(CONFIG_X86)
-+	system->cs_id = CSID_X86_ART;
-+#else
-+	system->cs_id = CSID_ARM_ARCH_COUNTER;
-+#endif /* CONFIG_X86 */
-+	system->cycles = ns_time_sys;
-+	system->use_nsecs = true;
-+
-+	return 0;
-+}
-+
-+/**
-+ * idpf_ptp_get_crosststamp - Capture a device cross timestamp
-+ * @info: the driver's PTP info structure
-+ * @cts: The memory to fill the cross timestamp info
-+ *
-+ * Capture a cross timestamp between the system time and the device PTP hardware
-+ * clock.
-+ *
-+ * Return: cross timestamp value on success, -errno on failure.
-+ */
-+static int idpf_ptp_get_crosststamp(struct ptp_clock_info *info,
-+				    struct system_device_crosststamp *cts)
-+{
-+	struct idpf_adapter *adapter = idpf_ptp_info_to_adapter(info);
-+
-+	return get_device_system_crosststamp(idpf_ptp_get_sync_device_time,
-+					     adapter, NULL, cts);
-+}
-+#endif /* CONFIG_ARM_ARCH_TIMER || CONFIG_X86 */
-+
- /**
-  * idpf_ptp_gettimex64 - Get the time of the clock
-  * @info: the driver's PTP info structure
-@@ -192,6 +322,15 @@ static void idpf_ptp_set_caps(const struct idpf_adapter *adapter)
- 
- 	info->owner = THIS_MODULE;
- 	info->gettimex64 = idpf_ptp_gettimex64;
-+
-+#if IS_ENABLED(CONFIG_ARM_ARCH_TIMER)
-+	info->getcrosststamp = idpf_ptp_get_crosststamp;
-+#elif IS_ENABLED(CONFIG_X86)
-+	if (pcie_ptm_enabled(adapter->pdev) &&
-+	    boot_cpu_has(X86_FEATURE_ART) &&
-+	    boot_cpu_has(X86_FEATURE_TSC_KNOWN_FREQ))
-+		info->getcrosststamp = idpf_ptp_get_crosststamp;
-+#endif /* CONFIG_ARM_ARCH_TIMER */
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.h b/drivers/net/ethernet/intel/idpf/idpf_ptp.h
-index b536c1cdbb2e..b605e779f922 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ptp.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.h
-@@ -21,6 +21,8 @@ struct idpf_ptp_cmd {
-  * @dev_clk_ns_h: high part of the device clock register
-  * @phy_clk_ns_l: low part of the PHY clock register
-  * @phy_clk_ns_h: high part of the PHY clock register
-+ * @sys_time_ns_l: low part of the system time register
-+ * @sys_time_ns_h: high part of the system time register
-  * @cmd: PTP command register
-  * @phy_cmd: PHY command register
-  * @cmd_sync: PTP command synchronization register
-@@ -34,6 +36,10 @@ struct idpf_ptp_dev_clk_regs {
- 	void __iomem *phy_clk_ns_l;
- 	void __iomem *phy_clk_ns_h;
- 
-+	/* System time */
-+	void __iomem *sys_time_ns_l;
-+	void __iomem *sys_time_ns_h;
-+
- 	/* Command */
- 	void __iomem *cmd;
- 	void __iomem *phy_cmd;
-@@ -74,6 +80,7 @@ struct idpf_ptp_secondary_mbx {
-  * @dev_clk_regs: the set of registers to access the device clock
-  * @caps: PTP capabilities negotiated with the Control Plane
-  * @get_dev_clk_time_access: access type for getting the device clock time
-+ * @get_cross_tstamp_access: access type for the cross timestamping
-  * @rsv: reserved bits
-  * @secondary_mbx: parameters for using dedicated PTP mailbox
-  * @read_dev_clk_lock: spinlock protecting access to the device clock read
-@@ -87,7 +94,8 @@ struct idpf_ptp {
- 	struct idpf_ptp_dev_clk_regs dev_clk_regs;
- 	u32 caps;
- 	enum idpf_ptp_access get_dev_clk_time_access:2;
--	u32 rsv:30;
-+	enum idpf_ptp_access get_cross_tstamp_access:2;
-+	u32 rsv:28;
- 	struct idpf_ptp_secondary_mbx secondary_mbx;
- 	spinlock_t read_dev_clk_lock;
- };
-@@ -123,6 +131,8 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter);
- void idpf_ptp_get_features_access(const struct idpf_adapter *adapter);
- int idpf_ptp_get_dev_clk_time(struct idpf_adapter *adapter,
- 			      struct idpf_ptp_dev_timers *dev_clk_time);
-+int idpf_ptp_get_cross_time(struct idpf_adapter *adapter,
-+			    struct idpf_ptp_dev_timers *cross_time);
- #else /* CONFIG_PTP_1588_CLOCK */
- static inline int idpf_ptp_init(struct idpf_adapter *adapter)
- {
-@@ -146,5 +156,11 @@ idpf_ptp_get_dev_clk_time(struct idpf_adapter *adapter,
- 	return -EOPNOTSUPP;
- }
- 
-+static inline int
-+idpf_ptp_get_cross_time(struct idpf_adapter *adapter,
-+			struct idpf_ptp_dev_timers *cross_time)
-+{
-+	return -EOPNOTSUPP;
-+}
- #endif /* CONFIG_PTP_1588_CLOCK */
- #endif /* _IDPF_PTP_H */
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
-index 79bd2585703b..e51fa16d13cd 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
-@@ -28,6 +28,7 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
- 		.send_buf.iov_len = sizeof(send_ptp_caps_msg),
- 		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
- 	};
-+	struct virtchnl2_ptp_cross_time_reg_offsets cross_tstamp_offsets;
- 	struct virtchnl2_ptp_clk_reg_offsets clock_offsets;
- 	struct idpf_ptp_secondary_mbx *scnd_mbx;
- 	struct idpf_ptp *ptp = adapter->ptp;
-@@ -66,7 +67,7 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
- 
- 	access_type = ptp->get_dev_clk_time_access;
- 	if (access_type != IDPF_PTP_DIRECT)
--		return 0;
-+		goto cross_tstamp;
- 
- 	clock_offsets = recv_ptp_caps_msg->clk_offsets;
- 
-@@ -85,6 +86,22 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
- 	temp_offset = le32_to_cpu(clock_offsets.cmd_sync_trigger);
- 	ptp->dev_clk_regs.cmd_sync = idpf_get_reg_addr(adapter, temp_offset);
- 
-+cross_tstamp:
-+	access_type = ptp->get_cross_tstamp_access;
-+	if (access_type != IDPF_PTP_DIRECT)
-+		return 0;
-+
-+	cross_tstamp_offsets = recv_ptp_caps_msg->cross_time_offsets;
-+
-+	temp_offset = le32_to_cpu(cross_tstamp_offsets.sys_time_ns_l);
-+	ptp->dev_clk_regs.sys_time_ns_l = idpf_get_reg_addr(adapter,
-+							    temp_offset);
-+	temp_offset = le32_to_cpu(cross_tstamp_offsets.sys_time_ns_h);
-+	ptp->dev_clk_regs.sys_time_ns_h = idpf_get_reg_addr(adapter,
-+							    temp_offset);
-+	temp_offset = le32_to_cpu(cross_tstamp_offsets.cmd_sync_trigger);
-+	ptp->dev_clk_regs.cmd_sync = idpf_get_reg_addr(adapter, temp_offset);
-+
- 	return 0;
- }
- 
-@@ -123,3 +140,39 @@ int idpf_ptp_get_dev_clk_time(struct idpf_adapter *adapter,
- 
- 	return 0;
- }
-+
-+/**
-+ * idpf_ptp_get_cross_time - Send virtchnl get cross time message
-+ * @adapter: Driver specific private structure
-+ * @cross_time: Pointer to the device clock structure where the value is set
-+ *
-+ * Send virtchnl get cross time message to get the time of the clock and the
-+ * system time.
-+ *
-+ * Return: 0 on success, -errno otherwise.
-+ */
-+int idpf_ptp_get_cross_time(struct idpf_adapter *adapter,
-+			    struct idpf_ptp_dev_timers *cross_time)
-+{
-+	struct virtchnl2_ptp_get_cross_time cross_time_msg;
-+	struct idpf_vc_xn_params xn_params = {
-+		.vc_op = VIRTCHNL2_OP_PTP_GET_CROSS_TIME,
-+		.send_buf.iov_base = &cross_time_msg,
-+		.send_buf.iov_len = sizeof(cross_time_msg),
-+		.recv_buf.iov_base = &cross_time_msg,
-+		.recv_buf.iov_len = sizeof(cross_time_msg),
-+		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
-+	};
-+	int reply_sz;
-+
-+	reply_sz = idpf_vc_xn_exec(adapter, &xn_params);
-+	if (reply_sz < 0)
-+		return reply_sz;
-+	if (reply_sz != sizeof(cross_time_msg))
-+		return -EIO;
-+
-+	cross_time->dev_clk_time_ns = le64_to_cpu(cross_time_msg.dev_time_ns);
-+	cross_time->sys_time_ns = le64_to_cpu(cross_time_msg.sys_time_ns);
-+
-+	return 0;
-+}
+diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
+index 232133a0fd21..5f6ac9bf1527 100644
+--- a/net/bridge/br_input.c
++++ b/net/bridge/br_input.c
+@@ -189,7 +189,8 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
+ 		if ((mdst || BR_INPUT_SKB_CB_MROUTERS_ONLY(skb)) &&
+ 		    br_multicast_querier_exists(brmctx, eth_hdr(skb), mdst)) {
+ 			if ((mdst && mdst->host_joined) ||
+-			    br_multicast_is_router(brmctx, skb)) {
++			    br_multicast_is_router(brmctx, skb) ||
++			    br->dev->flags & IFF_ALLMULTI) {
+ 				local_rcv = true;
+ 				DEV_STATS_INC(br->dev, multicast);
+ 			}
 -- 
-2.43.5
+2.43.0
 
