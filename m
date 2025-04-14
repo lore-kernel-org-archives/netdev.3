@@ -1,28 +1,66 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658D52820BB
-	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 17:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E1D18B47D
+	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 17:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744650990; cv=none; b=sm9tkmHegENZaFxELLpgDTOioStNKsO117j8iHJYfdOOyJJWBtHnoWt66QBCZLvdlAwfJXw/qGOSJtdrVl8R7zpBUHhnAd91FHLvf+2Bk4arJ8kW7MhkK7Qubz7qIQZm4LykwuzJnSl8NdqDpSXq2FjBEiCE96ndUzV2QhHd4Ug=
+	t=1744651044; cv=none; b=NXjfwX9dhuHaVwsJvST7dNnOYUZFR1zBGzw2VE6rPaRNspynGB+OjBnUVvoUfNRu2dnQpoM2xZWRsfDkxmaRMHEutqA/SZ18OCBKzzOL7fXBamJmokvklqxZ+waV71NQDCHTcyLQkfja89eGzUmLtnLuiQMzLpW6j0MW+XzhmXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744650990; c=relaxed/simple;
-	bh=OJcs/XVthOpv6Q27QIk83Dxn+e3WU8k80K16H2ugiB8=;
+	s=arc-20240116; t=1744651044; c=relaxed/simple;
+	bh=dOVE2lvwfv6ZURL3vl3+D6cw4pA0nTkjEuLd0ycTl3k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N6jk5jsR9zHA2As17MVXUrTdTz63Sw8i/63enK1GCG1jEcoGr9fEYzD/IpiDs5yUaTx1N7JPPE3MsIS6FqWYbCh0RQY03rZQ9nRXG+GVkctDeumEtb5Uog8vtSF8LsC6vV0cJBfIR2+IQ2UOUW2tkfYskWQMLLABrHQnR+SGCo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.220.43] (g43.guest.molgen.mpg.de [141.14.220.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id D72EF61E647A7;
-	Mon, 14 Apr 2025 19:15:51 +0200 (CEST)
-Message-ID: <559a9953-cd51-42ce-b2a5-83bd185cf008@molgen.mpg.de>
-Date: Mon, 14 Apr 2025 19:15:51 +0200
+	 In-Reply-To:Content-Type; b=UWXWk9S+FYwgANKxTrMafNnWj5cV4rMoaZKcE/wX9RMUcgkYFxieIGmE7w5E8y4NIA80FOb0OnuAhe04TF+9N+8FU4IzgYe5mNUl9HOKhuw5Ty9jingUUb7oA7LCChaOJPSWZnWRj61CUzg7vgWZJbXZY6Mtqrf15zh0FNWXJTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=GBhTsk2X; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="GBhTsk2X"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-af6a315b491so4114390a12.1
+        for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 10:17:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1744651041; x=1745255841; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+IiVcz8w5QC/SqdYZAR5indEiKIlwFVAEigNqwbn9wM=;
+        b=GBhTsk2XcaWzOzYOWUPmibbsILbHfBtN8qr0SV3CxTMGp2s2S6UhiXtX3LrmN8RqXz
+         3OzdtpnsR+lE5+EVUpfD2kqKJkMG0KNeS8jYF6lw8/ff1K8X7dx4Auv3K0LevWJc9zVk
+         RrYi037dei4GOlmPTviOjNhhrLK430Osf88u6mdkOLdmPL271p9T37vXsGNAahB/O/mX
+         2gv49FIPIAygBW9vpOnGasCa9UtlHTVd74y6jmMLvqpcOIFNpKKXyyqehc5+QuutaWYm
+         CKW0jnRtvLOaAx7W06q+T8LCNSxUp9NP+4Szq3llEurlRDcHmms5LwamTo38aBMmz8Jw
+         SmZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744651041; x=1745255841;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+IiVcz8w5QC/SqdYZAR5indEiKIlwFVAEigNqwbn9wM=;
+        b=KjmRnFb8gdRO9G7XqY/UCJ0VByyFCDZrIwHKjUfIYkYXLD5yX2JPVeL4dU22PqmTxx
+         sZ4ApTedS8BBjoS2wyG+hxRpIlmCUKaDsDIfhH6b/fUne3aC1Gp7nrhKsuLbbR18e2G+
+         LhWTXWFxPs2rkxn8o+kc7l9QFbyELReSUyv15r/bLrsp7KDndMalUAqET9+1Y87CV9Lp
+         H+x04gRg7R5Bi3ru/9gYobfQ4C11U0T5pvrvUR6vYkU1BplJ3ZuKzvzBNlNT+220agSq
+         fqapHQnuPqSdKGydjUtU1uw4SBLi+XpQwvF8Jm9Qo68qucmBDXo3BCWD8NrjcsfZ9/vl
+         R0Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCVET9rjDBjoXQkc1BfnSj50V1U2k6atgHQm4Vf5LBkJfDDdfEhFgvEe2CJGrohYAijdn1gxwGc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKi3UqBwdYskfaAA900w+zWrdZmTIvlyGJxLh5GeZ6HiGxDjnl
+	pWhpm2AOd8trOsleFQdqHLCJ16fahiSDIAkU4yG/2VFguhmGKTXWwpuSvhK5l5IIhcLSsnxHpoc
+	=
+X-Gm-Gg: ASbGncsWC4pqx1VMwcvb0CV2uFc94r6uTCYsg4ghUVZ9QGbvIRwNQgSdJGIdvibK9ek
+	n+ria+wvm2IFcxhmqs4v4uccqC85Ktw1S+nd/LmlYlNUPX0OTd2Wq7LYgWloKW1Fa08f4akx0Ec
+	ihWL/ieZ/a1vwnVgvdhdAlnsWYP+hO6vIyLuslzvVNFOJRz4j8F3mRsfTFXmv6EJJNTno9r6kFP
+	hykOTolj6OpvF4dDEgmDcQSFxYCgqiBSxEhn8iLj/EJZ32fLWdSLWftll+7CE/+hYfhMkQXcix8
+	DZiHSHwZRvpNMcCpczCgRPpUAgTadi+zp+Vse4CRknyYymBpyXhnaRuUM7O9y7QEZYlMutJPLMx
+	MkbFA2k8mvvs5k6/HTCE+8Q==
+X-Google-Smtp-Source: AGHT+IFtgep/PE9PM5dQsv4dTQeGeTo04V6YwqoZCjhYxdyP3gY0aM7tBUL1dQdsQ/VWpXtBo4xTmw==
+X-Received: by 2002:a17:90b:5643:b0:2f2:a664:df20 with SMTP id 98e67ed59e1d1-30823633ed2mr20258116a91.7.1744651040935;
+        Mon, 14 Apr 2025 10:17:20 -0700 (PDT)
+Received: from ?IPV6:2804:7f1:e2c3:dc7b:da12:1e53:d800:3508? ([2804:7f1:e2c3:dc7b:da12:1e53:d800:3508])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-306dd2fe1a4sm6755597a91.0.2025.04.14.10.17.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Apr 2025 10:17:20 -0700 (PDT)
+Message-ID: <fde1319f-6669-44b1-b525-44e2bc48f9a1@mojatatu.com>
+Date: Mon, 14 Apr 2025 14:17:16 -0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -30,73 +68,90 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] Increased memory usage on NUMA nodes with ICE
- driver after upgrade to 6.13.y (regression in commit 492a044508ad)
-To: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemyslaw Kitszel <przemyslaw.kitszel@intel.com>
-Cc: jdamato@fastly.com, intel-wired-lan@lists.osuosl.org,
- netdev@vger.kernel.org, Igor Raits <igor@gooddata.com>,
- Daniel Secik <daniel.secik@gooddata.com>,
- Zdenek Pesek <zdenek.pesek@gooddata.com>, regressions@lists.linux.dev
-References: <CAK8fFZ4hY6GUJNENz3wY9jaYLZXGfpr7dnZxzGMYoE44caRbgw@mail.gmail.com>
+Subject: Re: [BUG] net/sched: netem: UAF due to duplication routine
+To: "Tai, Gerrard" <gerrard.tai@starlabs.sg>, netdev@vger.kernel.org
+Cc: Willy Tarreau <w@1wt.eu>, Stephen Hemminger <stephen@networkplumber.org>,
+ Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>,
+ jiri@resnulli.us, Pedro Tammela <pctammela@mojatatu.com>
+References: <CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com>
 Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <CAK8fFZ4hY6GUJNENz3wY9jaYLZXGfpr7dnZxzGMYoE44caRbgw@mail.gmail.com>
+From: Victor Nogueira <victor@mojatatu.com>
+In-Reply-To: <CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-#regzbot ^introduced: 492a044508ad13a490a24c66f311339bf891cb5f
+On 4/14/25 02:33, Tai, Gerrard wrote:
+> Hi,
+> 
+> I found a bug in the netem qdisc's packet duplication logic. This can
+> lead to UAF in classful parents.
+> [...]
+> Unfortunately, I don't have any great ideas regarding a patch.
 
-Am 14.04.25 um 18:29 schrieb Jaroslav Pulchart:
-> Hello,
-> 
-> While investigating increased memory usage after upgrading our
-> host/hypervisor servers from Linux kernel 6.12.y to 6.13.y, I observed
-> a regression in available memory per NUMA node. Our servers allocate
-> 60GB of each NUMA node’s 64GB of RAM to HugePages for VMs, leaving 4GB
-> for the host OS.
-> 
-> After the upgrade, we noticed approximately 500MB less free RAM on
-> NUMA nodes 0 and 2 compared to 6.12.y, even with no VMs running (just
-> the host OS after reboot). These nodes host Intel 810-XXV NICs. Here's
-> a snapshot of the NUMA stats on vanilla 6.13.y:
-> 
->       NUMA nodes:  0     1     2     3     4     5     6     7     8     9    10    11    12    13    14    15
->       HPFreeGiB:   60    60    60    60    60    60    60    60    60    60   60    60    60    60    60    60
->       MemTotal:    64989 65470 65470 65470 65470 65470 65470 65453 65470 65470 65470 65470 65470 65470 65470 65462
->       MemFree:     2793  3559  3150  3438  3616  3722  3520  3547  3547  3536  3506  3452  3440  3489  3607  3729
-> 
-> We traced the issue to commit 492a044508ad13a490a24c66f311339bf891cb5f
-> "ice: Add support for persistent NAPI config".
-> 
-> We limit the number of channels on the NICs to match local NUMA cores
-> or less if unused interface (from ridiculous 96 default), for example:
->     ethtool -L em1 combined 6       # active port; from 96
->     ethtool -L p3p2 combined 2      # unused port; from 96
-> 
-> This typically aligns memory use with local CPUs and keeps NUMA-local
-> memory usage within expected limits. However, starting with kernel
-> 6.13.y and this commit, the high memory usage by the ICE driver
-> persists regardless of reduced channel configuration.
-> 
-> Reverting the commit restores expected memory availability on nodes 0
-> and 2. Below are stats from 6.13.y with the commit reverted:
->      NUMA nodes:  0     1     2     3     4     5     6     7     8     9    10    11    12    13    14    15
->      HPFreeGiB:   60    60    60    60    60    60    60    60    60    60   60    60    60    60    60    60
->      MemTotal:    64989 65470 65470 65470 65470 65470 65470 65453 65470 65470 65470 65470 65470 65470 65470 65462
->      MemFree:     3208  3765  3668  3507  3811  3727  3812  3546  3676  3596 ...
-> 
-> This brings nodes 0 and 2 back to ~3.5GB free RAM, similar to kernel
-> 6.12.y, and avoids swap pressure and memory exhaustion when running
-> services and VMs.
-> 
-> I also do not see any practical benefit in persisting the channel
-> memory allocation. After a fresh server reboot, channels are not
-> explicitly configured, and the system will not automatically resize
-> them back to a higher count unless manually set again. Therefore,
-> retaining the previous memory footprint appears unnecessary and
-> potentially harmful in memory-constrained environments
-> 
-> Best regards,
-> Jaroslav Pulchart
+Hi,
+
+I was thinking about this and thought maybe we can try and store
+the initialisation state as a variable in the class structure
+so that we can detect this recursive use case. I created the
+diff below and tested it with your repro. It seems to have
+solved it, but I might be missing something.
+
+  net/sched/sch_hfsc.c | 8 +++++---
+  1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index b368ac0595d5..9662df5dd77e 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -160,6 +160,7 @@ struct hfsc_class {
+         struct runtime_sc cl_ulimit;    /* upperlimit curve */
+
+         u8              cl_flags;       /* which curves are valid */
++       u8              cl_initialised; /* Is cl initialised? */
+         u32             cl_vtperiod;    /* vt period sequence number */
+         u32             cl_parentperiod;/* parent's vt period sequence 
+number*/
+         u32             cl_nactive;     /* number of active children */
+@@ -1548,8 +1549,8 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc 
+*sch, struct sk_buff **to_free)
+  {
+         unsigned int len = qdisc_pkt_len(skb);
+         struct hfsc_class *cl;
++       bool is_empty;
+         int err;
+-       bool first;
+
+         cl = hfsc_classify(skb, sch, &err);
+         if (cl == NULL) {
+@@ -1559,7 +1560,7 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc 
+*sch, struct sk_buff **to_free)
+                 return err;
+         }
+
+-       first = !cl->qdisc->q.qlen;
++       is_empty = !cl->qdisc->q.qlen;
+         err = qdisc_enqueue(skb, cl->qdisc, to_free);
+         if (unlikely(err != NET_XMIT_SUCCESS)) {
+                 if (net_xmit_drop_count(err)) {
+@@ -1569,7 +1570,7 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc 
+*sch, struct sk_buff **to_free)
+                 return err;
+         }
+
+-       if (first) {
++       if (is_empty && !cl->cl_initialised) {
+                 if (cl->cl_flags & HFSC_RSC)
+                         init_ed(cl, len);
+                 if (cl->cl_flags & HFSC_FSC)
+@@ -1582,6 +1583,7 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc 
+*sch, struct sk_buff **to_free)
+                 if (cl->cl_flags & HFSC_RSC)
+                         cl->qdisc->ops->peek(cl->qdisc);
+
++               cl->cl_initialised = 1;
+         }
+
+         sch->qstats.backlog += len;
+
+cheers,
+Victor
