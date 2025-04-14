@@ -1,198 +1,467 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2131.outbound.protection.outlook.com [40.107.21.131])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B084F1A8401;
-	Mon, 14 Apr 2025 09:15:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.131
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744622142; cv=fail; b=gM/371Xp79vCEsAoN5TAAxjjQX3q745bKQ7yuAvwexmlJw3lpnM+skmZtF3wXfoj9RdLLUnLlmeF9fiXS8g3fW9YCxUZcu18Y1gNbWcRNFUFAfccB2/UbWHU9OIElMdTyqST7X7ZByQdoYppb0+/QKJ73mU5FsprPg/NfsWSG4Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744622142; c=relaxed/simple;
-	bh=QzEJqVv34hZJyk9kWZlN6BP6RFEoiCI/pEMz3nUguF0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=VfSqDxp/5w+A8Qz133tSVsK0oJWi+iZFi/2GKBvHkWR0/72GFKcMa5W67nEQshk/xUvhzFMmoDWGlq9xyIViQiFMv2or9N3/zwdjElFhyyvixJ6jIZ33cdvPLyW9ODc+6mnCfmY14sS3GtYSKsVXi8h/66wKMuvQVFXay9DlxJU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=LvL51nKZ; arc=fail smtp.client-ip=40.107.21.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C9D1CD2C;
+	Mon, 14 Apr 2025 09:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744622364; cv=none; b=Uy0MW26OrVcUr/dn79F1oRlTubJtagjr/D927VO2ce1Cj+LOPa3/e66CS86tqKy0DbXURfoErD+Lj+X3qnhs/gbgp14yrCmrH1bdMFOVbU2tXR6Sa29CLN4aSt3k9fpFSD0LfOfGQlsPDQP+lDVBxoUOSrNvwHHYRWTIQMWsOr4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744622364; c=relaxed/simple;
+	bh=TifcQAl4aS6K7rhrSCZWDyDsKVK9v6YUR2Ji4L2XBXQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=lm5IK7xJPkLmbhF3ipnJKEZwVQvtlN6ZT/o+b+CxpyALN8j8rgE9jsO9yQ0RgquLXjaqtRSWK5jAI3Z94lG53/Ckkn34DolKgiZT3EYk9aeCHlHUJLnl6/I3VH6tLY8h9JS8B1C73Fd6gs1wCLwGGzR9jjbRzdtBgNs/jfeREoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=WU/zIyYe; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="LvL51nKZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hIYW0NTfh5GpT3fzjPpSKSwSA7GkBlb6Nc9nuxfbjNAMBF5dAdhtGN4HwU/Ejv+jOwUwNrUfGBxrQT8vI9Gf9nZsEN+99EPUlVgN32DroD+SeIzDiHz2O+25Pd4M/1Lc9X+Wc+sMCMHPTGc3vnuQPee+ebk4J0AJP1ZPzgDYqydzI3mZq7ekWBl0F8Imsh8OFJEzXZa5/hCfs2j6oRBi+AEVGFVeoWAxs5VBDa+e7S6vZWuqEcFQSL2nf85rc0P1qoITWHD/f1fndpZsMudlo5YDDYPpgCCncwIxsO+hgjHNt5AbJzE1wkUrpWT3q/ol+L0IZC6bdYD13tdBOhupew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QzEJqVv34hZJyk9kWZlN6BP6RFEoiCI/pEMz3nUguF0=;
- b=BddgF0oIrAHlvW3gf0kuse5VGDW/RnB7u8BgncOBPc5WxqzO8GIwsz3OceP7fVc2QZPyIX17rKxt7jJZ1OjXL/+1b3pdKxNwEvBB0Y02MLb8NW3t5mBDxuZtRB5mmW0esHpkLX8A4IMaZDQ11z2TlslqFIlKRVDheeZiQsK/UR3snUFVjUzu6NUPTcHL2xSNy1EOgAQ8d1r7V9jyoYW7jliLtmWBxLhPArcsEUZtnqG+ZQK2sacqTsVRCF1g6tDSFR3To7dvmZ1a+hj7e75dO6Rrj/h0G01qpb2+6Vajh8Di2seC0n2gBHMKl8a5HdqppEat7FqI0Kj1cvGPRBvSEA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QzEJqVv34hZJyk9kWZlN6BP6RFEoiCI/pEMz3nUguF0=;
- b=LvL51nKZcPHfaYNx0UbIgBOPgkrw0wpBTmjR3/oWCZi43h452xXvDkAb5v/IS9b51xEsjjjUreQ6JCZZ16GBTrBrQ/qk3YUpTkwQiDOni4RDlaNEwbSiTP7xi9LOpEdxvqw3Do5Nm1kLvLahVYUnRvL49F87mA6+0beOd8D0jcs=
-Received: from PA1PR83MB0662.EURPRD83.prod.outlook.com (2603:10a6:102:44c::19)
- by PA1PR83MB0728.EURPRD83.prod.outlook.com (2603:10a6:102:48c::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.14; Mon, 14 Apr
- 2025 09:15:37 +0000
-Received: from PA1PR83MB0662.EURPRD83.prod.outlook.com
- ([fe80::3c3d:5eeb:9d38:3fa4]) by PA1PR83MB0662.EURPRD83.prod.outlook.com
- ([fe80::3c3d:5eeb:9d38:3fa4%6]) with mapi id 15.20.8678.002; Mon, 14 Apr 2025
- 09:15:37 +0000
-From: Konstantin Taranov <kotaranov@microsoft.com>
-To: Leon Romanovsky <leon@kernel.org>
-CC: Konstantin Taranov <kotaranov@linux.microsoft.com>, "pabeni@redhat.com"
-	<pabeni@redhat.com>, Haiyang Zhang <haiyangz@microsoft.com>, KY Srinivasan
-	<kys@microsoft.com>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "davem@davemloft.net"
-	<davem@davemloft.net>, Dexuan Cui <decui@microsoft.com>, "wei.liu@kernel.org"
-	<wei.liu@kernel.org>, Long Li <longli@microsoft.com>, "jgg@ziepe.ca"
-	<jgg@ziepe.ca>, "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [EXTERNAL] Re: [PATCH rdma-next 1/3] RDMA/mana_ib: Access remote
- atomic for MRs
-Thread-Topic: [EXTERNAL] Re: [PATCH rdma-next 1/3] RDMA/mana_ib: Access remote
- atomic for MRs
-Thread-Index: AQHbpXBNINhh0Kyq2kyjM0FKnySZg7ObSwYAgAGktFCAAAWTAIAF+kog
-Date: Mon, 14 Apr 2025 09:15:36 +0000
-Message-ID:
- <PA1PR83MB0662DF877BC5277C04A06CD7B4B32@PA1PR83MB0662.EURPRD83.prod.outlook.com>
-References: <1743777955-2316-1-git-send-email-kotaranov@linux.microsoft.com>
- <1743777955-2316-2-git-send-email-kotaranov@linux.microsoft.com>
- <20250409122852.GL199604@unreal>
- <PA1PR83MB0662535F57D8F09C1C99DDDAB4B72@PA1PR83MB0662.EURPRD83.prod.outlook.com>
- <20250410135434.GT199604@unreal>
-In-Reply-To: <20250410135434.GT199604@unreal>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=935948f0-14e6-4590-8ceb-79b35f257289;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2025-04-14T09:11:41Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
- 3, 0, 1;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PA1PR83MB0662:EE_|PA1PR83MB0728:EE_
-x-ms-office365-filtering-correlation-id: d9ae266e-fbbe-4d1c-db04-08dd7b34eb0e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?MFhsTkpaSlMycjRNMGd5eVlEVjhFdldCVHNFcFY2Y05xQVNZZjBKcU9nblJF?=
- =?utf-8?B?VCszY3hJbWlHWmlHMUJ2aTlrMjRSLzZlWjFuN2d4MjJBOUJaRFQ3L054alg1?=
- =?utf-8?B?WEhaUnJXV3dRZjdhSWxkV01Eck1yWUphbGt3b0dSajdRYWhUMDFYMWZ1TFlm?=
- =?utf-8?B?WjVrNnN6TDZmVGZ3azFZQjcwOFJQSW11WXJQZWZwbkFVZkNrc1JYVzdydnh2?=
- =?utf-8?B?TzZ6SWFxRXFoUFcySG5sZEl3eGIreTZMZlJWUUJmWXZGbm5BV24vdUFGOUVv?=
- =?utf-8?B?dmloRDFpSXRRRTBPWW1MeFZIY1R3T0VmM2Mxa1BrNnA0Z2NTMTZYOTZsNStn?=
- =?utf-8?B?NDRSMVA1TVd0N1BqMGlUckVmbHEzN1hTMENJRW1wZncrcllleGZ5NWNma2Fj?=
- =?utf-8?B?aUpIcllobmxWdEVpK3VBSnVUR1RXZ2NibzJCYU5TN2hKb1JNeU9ETUUwWHhy?=
- =?utf-8?B?MWFEZmJKSlRPbnA3dloyWi9TV3NzdmZWdURCK3F3azNVQ0FhTk51MkhhRTd6?=
- =?utf-8?B?d3JUVllaT1ZaVXNweEpyazVzQ24xMDJPOVlPdGRKQUxCZlZnZkhibkU5YTVQ?=
- =?utf-8?B?RXVoZGZFLzlYU240eFVIc3IwRjJyNmcxeU9wK08vRTlJeXBxc2RhcWRsVkVJ?=
- =?utf-8?B?c3dxT2R4UE4wcTUrK2hHNmg4WkRqVkYwelN5U3orRllraFFhK2dkQWxiemMv?=
- =?utf-8?B?K2VzVUVPSHdSeC8zc1kvdVNCczVJaEFVM3ppelBxeEU2QmREdVhmQzBtMkUx?=
- =?utf-8?B?YWYvTStFd2VoNmRQdUlmcjZqWnJiVTF5WWtlSWJYblhVSWl6eTIvS3d4NUc3?=
- =?utf-8?B?bFE0NENzNnBTQ05NQXhPUXYwaDdlRnJTazFtQWpTUkI3ME1JL08wN3krdlBw?=
- =?utf-8?B?elFQQkZmc3o2Z2JURk84NlozamJMbXduR0RWRUw3clVqV1puem5BcHlQUnQ1?=
- =?utf-8?B?U1hXNlk2RnNENExVbU9YUVFya2pZZHcxdXpVd1dOU2pmNWZ6bDVET3ZZMWNL?=
- =?utf-8?B?NEkrdXc3Y1luRldsVDBWRVlWbVdZbnRSTmJnTC8vM0dtbE12ejJySUJPNXRx?=
- =?utf-8?B?SkZNM0dJQVBQeStadHVYaUdaZ1YrWVVPWHNZMUxyMkVGMmFBOC9vTS9iVUo2?=
- =?utf-8?B?ajVFZTF4WXhuWUdTWlQ5TkpaSFZLR1dTaDlGQmIzQkZrME5QYzZDbHo3SmdY?=
- =?utf-8?B?L05LeDR3b2ZrUzhpOFk2Q0JUdUgvdGZlMzJ4VkIzU1NieHhkKzR5aUo0ZFFy?=
- =?utf-8?B?c1dkak5Ud3lkYnRjcjVrRkV1MUxicmlsWGt6cnAwcVBrYnZDdlNuUTJWYmcr?=
- =?utf-8?B?WWc1UlZ5bFVSTXI4Ny9KRUptWEc4aEI2SUIyd2dKZzhIOTVwc2wwVndmM0pu?=
- =?utf-8?B?RUdaSGxGRTZEMVhMcHJndU5WRXdaWU03RjFRd3k3amtKbGRnbWFOakpEei9x?=
- =?utf-8?B?Wk5GT1Q5N3hGcG9IMWplc0dRSVVEOGNmQ2d3UU5ZeWtFVFA5ZXVvQXJaTVlI?=
- =?utf-8?B?OFBQaDFhV0VFRkpBZWFubVhjYm1VUGxQd011bS9tN3RxU2tPQ3RCOEV3Q3la?=
- =?utf-8?B?U2ptZHBPZzJ6Z1h2OGV0YW11cE5rZTdDUDU3Ym11TnhnUEFkQmwwZENycjlu?=
- =?utf-8?B?akhUNFFRK3pvMTI2NUh2aEN6MlRlSmpEWmJEeVpsOVQwSHpYdEtobW1RMUp0?=
- =?utf-8?B?VWxPU1A1Y2JTSFpTL05SK2pNTjJuQW1tM21WN21jOVQxajIrRHByRGlWbkVz?=
- =?utf-8?B?ZUdIU3hpL1hURFl0WmV0K0RHTDI5MTNHbVZpUG80RTZmcythT1FUWkxKYWlB?=
- =?utf-8?B?QUt3a2FoOHMvdDZnekxzcW93OGlUWDVkcEhTUUE4MmU1UnkzL0JjS2cxSmJn?=
- =?utf-8?B?b0YrdjZtRWxzUGljclMwWEFJbUtZL3UvbXVGZU1Yd2VRR0JINWFqd2xPckRr?=
- =?utf-8?B?N1lkQmJBcWdkOTV4MWJMSThpR3dSbWpoRkxnUlRxNzJCeDdzNnJMQzJxbHI1?=
- =?utf-8?B?dlEzVXRjc053PT0=?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA1PR83MB0662.EURPRD83.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?Z2lFYk1Sd0IvUFkxWUVCZ1F6cFY1bDlFNGkyT3dhU1VNYk9RRFR4dWRtZysz?=
- =?utf-8?B?OEdUMVprMlAreXhRZGRidzUwMjd1YnBYUzdoM2dPSVEvUTJRQXZqdkhLZ0sw?=
- =?utf-8?B?T3MyQTRFNDVwTThNcitFelhYdmh6T1g4NzhLV0Fhem1lSE9zc25nL0o3Z2dq?=
- =?utf-8?B?UjlaUUpMd0Focktkd3JDKzZRUVZCaWxsSTVISWhMNUxpOFJTTVBBK2tieExX?=
- =?utf-8?B?RmpiVlJTbWd0aFJLaGlzbmhkZEtvRFJydG1hMHNDdTg1cW91WUk2LytkSVg2?=
- =?utf-8?B?czVzd1d2ZkVoRStTUENxbC9nMmkwOHp4MjVYa3ZNalgwY3pTeE1XY2xYczND?=
- =?utf-8?B?ZHFjNmtENDRnc3RjQWd0UE9DQ3lmUkM4aDdPcDNaZWw3bXdTbk0rYWk3T0Vy?=
- =?utf-8?B?MzdkU3R0MktLTldCcUZaY3F0TmQ4czhVR2dtUXhXdVpDZ1VTeXZxdExBeGRz?=
- =?utf-8?B?M3Vhc0syWnR6cUM1aFRtdlRZSklTVm9WU0t4Q1dlYTN2VFlvTmc3bVBjZm5L?=
- =?utf-8?B?TkMrQ0ZkcDFtanEycXlodE9Rc1o4cTM3ZTFZY0RCRm5RYnBScHBBUDAvUmpo?=
- =?utf-8?B?U1JMdmlnYnd1YTdwTkd4SXdSWHRtVEdPZWhFeWpBSmZHa3Q5VnVhbHRkVFgv?=
- =?utf-8?B?V3JqekRzSnN1UzVQSHAxOXF6UVFTcytJYzBZY2ZEeWJzOHNZV3JsbS80Z3ZR?=
- =?utf-8?B?aWFSSmZCVHhzRGtkQ29qVnMrQTRIdEZWb1JYM1V2bmVnVjFqVmZzSitKbkVP?=
- =?utf-8?B?eWQ0c1V2NjZJcnN6dUMwd1M3cFd0bUJnanFBSllua08rS0poY3ByM2Fwd2c1?=
- =?utf-8?B?Y3UrZ3I0TG9LcmtlTlFwTzV0VUc3ek5pTEZBTHF5QnhQQStXcXRyaldmRG9L?=
- =?utf-8?B?ZiswdXRpbnA0dzhlM2dacjdNTGNwTGlvN1U1cVdXY1IzSENRckoydDErMXJG?=
- =?utf-8?B?V3JBNHJGOG9zQ2hieDl1VzFMVnViZ3hYK29FVFJ6WjRLY3M4ZUx0VzNEaXpw?=
- =?utf-8?B?SkhDaVVpdWcxSVNJZmlxUHJ5TThtdXpNWVgrK09qTE9sSFB6eDg0SnpGMGpm?=
- =?utf-8?B?eldDTmQ1Tisyb09ZNU5hdzFQQzNoR214ZmxZL2tJa2Z5WUxndVFLNFJKT1hl?=
- =?utf-8?B?Z3RiN1VDeUk2V2doYjlueEJsanNzdEo3cTBoOVZuU2FOWlJHMTZhNzhxTG1l?=
- =?utf-8?B?Ykw4N25GNHRmNlFYdXN2a2FraHlDZGxjVVYrSFhQVFJKd3Q5QTV4YXRpV2l1?=
- =?utf-8?B?bWQ3ZlRoMTRaVEVNYlBaV011cmhobzJUaDc2QzlXZldxQ1ZxRVgwemlxejBW?=
- =?utf-8?B?NlpubjhhL2RwUU1xRGtqR1F5UzF1cmtNQ3Q2Y0NlUUNtWjM0dzZtZ2MzVlIw?=
- =?utf-8?B?dFlVWE0yTWQrSjJNd2tidFp5akJWUGZ0S2pMdDdkUHIvdXdhN1FMdEc4ZWtv?=
- =?utf-8?B?NzhoL0lEazdYaXZDSjdsOU1CaUFDRm9iYUdWS1RJSEJUcllCVEhkeXhvdkM4?=
- =?utf-8?B?TSt0Z1FROENGYndYeDRVQUxFTFJEOFpvdnBBQlM3YmFwNnM4Z3ZJL1Q4TjNO?=
- =?utf-8?B?UFRNNkxSYndHM05tVlpvOVR3SE95SllIYmg1Zm0vK2ptLzVaQmlsdC80WjBC?=
- =?utf-8?B?dTZnNy9YWEV0S2lvTi9LYzRNK0hGM2ZxQ05rMFZpWlltVDY3ZXBwK0VMY2d1?=
- =?utf-8?B?Z3ROOW90VEVXYVBRNHJJVlA1LzBwTzRFRTBvbWlYVHVaTVJiQUxnZFlUR0xa?=
- =?utf-8?B?RHIwWUM0dDgvUWx1Z2cvNksxRWN6Tlp3Nm4rQjJycnM5UG85akMrWkY0QXdF?=
- =?utf-8?B?RllJRDNpWjhVbjY0N092eTZ4YXovSWRmeFJaY09BdU15UWRjNEhsblA0VFhw?=
- =?utf-8?B?RTNaVW9CZjFGN2d3RHVrMFF2MG5XZ21JTGR6WWxES2RiT2M4ODB1RXhBYnRV?=
- =?utf-8?B?ZzZzN0UxdEtSTEJCdngzdlF1aHhIOTAveDJ3Z3NpVjhtb2ZpS0lDQXBuY3Jq?=
- =?utf-8?B?TWV3T1B4VWxFSmRCZ0ZybmYzaG5kUWFIaU44TzBuekpnZTgzdGpQcDRYR1h4?=
- =?utf-8?Q?yMxK07?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="WU/zIyYe"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4ZbhYy4WFqz9tLg;
+	Mon, 14 Apr 2025 11:19:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1744622358; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IJsigFcfz58hJJS0Uu3EBhrbgTwACfaSGvrpf/wE+IY=;
+	b=WU/zIyYePT57G3RcGtgcCCwqI3cRxahJH88uuop+NVU3jsrmDwQyIg8KPoDCw5MLHCbZy4
+	irc7LzyQiaFfe7e9niuyF+7uzdcyQdC0pKxyuilzQ8ZZuJ3AW5Gd9ulcgjGcB+smJACbps
+	qsZZGunfJU6pD6ifnpiOUqme3JXom7RXSYzn9kV0v4qCF1gLLJ7cFdnZYfm0/3xLyahNFL
+	eX96HxyLyi6Smb+hsCaNQ0zY78+vT07nnHpHUmKf0DJxrrY3tsTJN+iqsQEYoJ6YaenL6H
+	m/TAdKktCNaoIOfi68AKBpqCeHkbM0GpXGIQNj1ni2IkdGN7q/vCmdage9i8ow==
+Message-ID: <37b8ec86b98706984019b418bc20f0d0883ed555.camel@mailbox.org>
+Subject: Re: [PATCH net-next v4 01/14] yt6801: Add support for a pci table
+ in this module
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Frank Sae <Frank.Sae@motor-comm.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew@lunn.ch>, Heiner
+ Kallweit <hkallweit1@gmail.com>,  Russell King <linux@armlinux.org.uk>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, netdev@vger.kernel.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>, 
+ Parthiban.Veerasooran@microchip.com, linux-kernel@vger.kernel.org, 
+ "andrew+netdev @ lunn . ch" <andrew+netdev@lunn.ch>, lee@trager.us,
+ horms@kernel.org,  linux-doc@vger.kernel.org, corbet@lwn.net,
+ geert+renesas@glider.be,  xiaogang.fan@motor-comm.com,
+ fei.zhang@motor-comm.com, hua.sun@motor-comm.com
+Date: Mon, 14 Apr 2025 11:19:11 +0200
+In-Reply-To: <20250408092835.3952-2-Frank.Sae@motor-comm.com>
+References: <20250408092835.3952-1-Frank.Sae@motor-comm.com>
+	 <20250408092835.3952-2-Frank.Sae@motor-comm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PA1PR83MB0662.EURPRD83.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9ae266e-fbbe-4d1c-db04-08dd7b34eb0e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Apr 2025 09:15:36.8457
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xD/+qo2HJLMfiddqbRfOZgLqSBEMMjgCO/TUIGfNDlWkn7ker+ucvoi0U+a2ubUlT0s7Qkovn4X6id3olYHXuA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR83MB0728
+X-MBO-RS-META: 96ryrkux9bx13h3yao3hs7wc7boh1ear
+X-MBO-RS-ID: 906e233922f47e34ffa
 
-PiBPbiBUaHUsIEFwciAxMCwgMjAyNSBhdCAwMTozNzowMFBNICswMDAwLCBLb25zdGFudGluIFRh
-cmFub3Ygd3JvdGU6DQo+ID4gPiA+IEBAIC0yNCw2ICsyNCw5IEBAIG1hbmFfaWJfdmVyYnNfdG9f
-Z2RtYV9hY2Nlc3NfZmxhZ3MoaW50DQo+ID4gPiBhY2Nlc3NfZmxhZ3MpDQo+ID4gPiA+ICAJaWYg
-KGFjY2Vzc19mbGFncyAmIElCX0FDQ0VTU19SRU1PVEVfUkVBRCkNCj4gPiA+ID4gIAkJZmxhZ3Mg
-fD0gR0RNQV9BQ0NFU1NfRkxBR19SRU1PVEVfUkVBRDsNCj4gPiA+ID4NCj4gPiA+ID4gKwlpZiAo
-YWNjZXNzX2ZsYWdzICYgSUJfQUNDRVNTX1JFTU9URV9BVE9NSUMpDQo+ID4gPiA+ICsJCWZsYWdz
-IHw9IEdETUFfQUNDRVNTX0ZMQUdfUkVNT1RFX0FUT01JQzsNCj4gPiA+DQo+ID4gPiBDYW4geW91
-IGVuYWJsZSB0aGlzIGZsYWcgdW5jb25kaXRpb25hbGx5IHdpdGhvdXQgcmVsYXRpb24gdG8gcnVu
-bmluZyBSVz8NCj4gPg0KPiA+IFllcywgQVRPTUlDIGFjY2VzcyBkb2VzIG5vdCBkZXBlbmQgb24g
-UmVtb3RlIFJlYWQgYW5kIFJlbW90ZSBXcml0ZS4NCj4gDQo+IFRoZSBxdWVzdGlvbiBpcyAiZG8g
-eW91IGhhdmUgRlcgd2hpY2ggZG9lc24ndCBzdXBwb3J0DQo+IEdETUFfQUNDRVNTX0ZMQUdfUkVN
-T1RFX0FUT01JQz8gYW5kIHdoYXQgd2lsbCBoYXBwZW4gaWYgc3VjaCBmbGFnDQo+IHVzZWQgZm9y
-IHN1Y2ggRlc/Ig0KDQpBcyBmYXIgYXMgSSBhbSBhd2FyZSwgYWxsIEZXIHN1cHBvcnQgdGhpcyBm
-bGFnLg0KTm9uZXRoZWxlc3MsIGlmIEZXIGRvZXMgbm90IHN1cHBvcnQgaXQsIHRoZSBIVyByZXF1
-ZXN0IHRvIGNyZWF0ZSBNUiB3aWxsIGZhaWwuDQoNCj4gDQo+ID4gSSBhbHNvIGRvIG5vdCBzZWUg
-YW55IGNvbmRpdGlvbnMgaW4gb3RoZXIgZHJpdmVycy4NCj4gDQo+IEF0IGxlYXN0IGZvciBtbHg1
-LCB3ZSBhcmUgY2hlY2tpbmcgRlcgY2FwYWJpbGl0eSBpZiBpdCBpcyBzdXBwb3J0ZWQuDQo+IFNl
-ZSBnZXRfdW5jaGFuZ2VhYmxlX2FjY2Vzc19mbGFncygpLg0KPiANCj4gPg0KPiA+IC0gS29uc3Rh
-bnRpbg0KPiA+DQo+ID4gPg0KPiA+ID4gVGhhbmtzDQo+ID4gPg0KPiA+ID4gPiArDQo+ID4gPiA+
-ICAJcmV0dXJuIGZsYWdzOw0KPiA+ID4gPiAgfQ0KPiA+ID4gPg0KPiA+ID4gPiAtLQ0KPiA+ID4g
-PiAyLjQzLjANCj4gPiA+ID4NCg==
+On Tue, 2025-04-08 at 17:28 +0800, Frank Sae wrote:
+> Add support for a pci table in this module, and implement pci_driver
+> =C2=A0function to initialize this driver, remove this driver or shutdown
+> this
+> =C2=A0driver.
+> Implement the fxgmac_drv_probe function to init interrupts, register
+> mdio
+> =C2=A0and netdev.
+>=20
+> Signed-off-by: Frank Sae <Frank.Sae@motor-comm.com>
+> ---
+> =C2=A0.../ethernet/motorcomm/yt6801/yt6801_main.c=C2=A0=C2=A0 | 194
+> ++++++++++++++++++
+> =C2=A0.../ethernet/motorcomm/yt6801/yt6801_type.h=C2=A0=C2=A0 | 114 +++++=
++++++
+> =C2=A02 files changed, 308 insertions(+)
+> =C2=A0create mode 100644
+> drivers/net/ethernet/motorcomm/yt6801/yt6801_main.c
+> =C2=A0create mode 100644
+> drivers/net/ethernet/motorcomm/yt6801/yt6801_type.h
+>=20
+> diff --git a/drivers/net/ethernet/motorcomm/yt6801/yt6801_main.c
+> b/drivers/net/ethernet/motorcomm/yt6801/yt6801_main.c
+> new file mode 100644
+> index 000000000..10d63a8ed
+> --- /dev/null
+> +++ b/drivers/net/ethernet/motorcomm/yt6801/yt6801_main.c
+> @@ -0,0 +1,194 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/* Copyright (c) 2022 - 2024 Motorcomm Electronic Technology
+> Co.,Ltd.
+> + *
+> + * Below is a simplified block diagram of YT6801 chip and its
+> relevant
+> + * interfaces.
+> + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ||
+> + *=C2=A0 ********************++**********************
+> + *=C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 | PCIE Endpoint |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 *
+> + *=C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 +---------------+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 *
+> + *=C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | GMAC |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *
+> + *=C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +--++--+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *
+> + *=C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |**|=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 *
+> + *=C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 GMII --> |**|=
+ <-- MDIO=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *
+> + *=C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +-++--+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *
+> + *=C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 | Integrated PHY |=C2=A0 YT8531S=C2=A0=C2=A0 *
+> + *=C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +-++-+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 *
+> + *=C2=A0 ********************||******************* **
+> + */
+> +
+> +#include <linux/module.h>
+> +#include "yt6801_type.h"
+> +
+> +static void fxgmac_phy_release(struct fxgmac_pdata *priv)
+> +{
+> +	fxgmac_io_wr_bits(priv, EPHY_CTRL, EPHY_CTRL_RESET, 1);
+> +	fsleep(100);
+> +
+> +static void fxgmac_phy_reset(struct fxgmac_pdata *priv)
+> +{
+> +	fxgmac_io_wr_bits(priv, EPHY_CTRL, EPHY_CTRL_RESET, 0);
+> +	fsleep(1500);
+> +}
+> +
+> +static void fxgmac_init_interrupt_scheme(struct fxgmac_pdata *priv)
+> +{
+> +	struct pci_dev *pdev =3D to_pci_dev(priv->dev);
+> +	int req_vectors =3D FXGMAC_MAX_DMA_CHANNELS;
+> +
+> +	/* Since we have FXGMAC_MAX_DMA_CHANNELS channels, we must
+> ensure the
+> +	 * number of cpu core is ok. otherwise, just roll back to
+> legacy.
+> +	 */
+> +	if (num_online_cpus() < FXGMAC_MAX_DMA_CHANNELS - 1)
+> +		goto enable_msi_interrupt;
+> +
+> +	priv->msix_entries =3D
+> +		kcalloc(req_vectors, sizeof(struct msix_entry),
+> GFP_KERNEL);
+> +	if (!priv->msix_entries)
+> +		goto enable_msi_interrupt;
+> +
+> +	for (u32 i =3D 0; i < req_vectors; i++)
+> +		priv->msix_entries[i].entry =3D i;
+> +
+> +	if (pci_enable_msix_exact(pdev, priv->msix_entries,
+> req_vectors) < 0) {
+> +		/* Roll back to msi */
+> +		kfree(priv->msix_entries);
+> +		priv->msix_entries =3D NULL;
+> +		dev_err(priv->dev, "Enable MSIx failed, clear msix
+> entries.\n");
+> +		goto enable_msi_interrupt;
+> +	}
+> +
+> +	priv->int_flag &=3D ~INT_FLAG_INTERRUPT;
+> +	priv->int_flag |=3D INT_FLAG_MSIX;
+> +	priv->per_channel_irq =3D 1;
+> +	return;
+> +
+> +enable_msi_interrupt:
+> +	priv->int_flag &=3D ~INT_FLAG_INTERRUPT;
+> +	if (pci_enable_msi(pdev) < 0) {
+> +		priv->int_flag |=3D INT_FLAG_LEGACY;
+> +		dev_err(priv->dev, "rollback to LEGACY.\n");
+> +	} else {
+> +		priv->int_flag |=3D INT_FLAG_MSI;
+> +		dev_err(priv->dev, "rollback to MSI.\n");
+> +		priv->dev_irq =3D pdev->irq;
+> +	}
+> +}
+> +
+> +static int fxgmac_drv_probe(struct device *dev, struct
+> fxgmac_resources *res)
+> +{
+> +	struct fxgmac_pdata *priv;
+> +	struct net_device *ndev;
+> +	int ret;
+> +
+> +	ndev =3D alloc_etherdev_mq(sizeof(struct fxgmac_pdata),
+> +				 FXGMAC_MAX_DMA_RX_CHANNELS);
+> +	if (!ndev)
+> +		return -ENOMEM;
+> +
+> +	SET_NETDEV_DEV(ndev, dev);
+> +	priv =3D netdev_priv(ndev);
+> +
+> +	priv->dev =3D dev;
+> +	priv->ndev =3D ndev;
+> +	priv->dev_irq =3D res->irq;
+> +	priv->hw_addr =3D res->addr;
+> +	priv->msg_enable =3D NETIF_MSG_DRV;
+> +	priv->dev_state =3D FXGMAC_DEV_PROBE;
+> +
+> +	/* Default to legacy interrupt */
+> +	priv->int_flag &=3D ~INT_FLAG_INTERRUPT;
+> +	priv->int_flag |=3D INT_FLAG_LEGACY;
+> +
+> +	pci_set_drvdata(to_pci_dev(priv->dev), priv);
+> +
+> +	if (IS_ENABLED(CONFIG_PCI_MSI))
+> +		fxgmac_init_interrupt_scheme(priv);
+> +
+> +	ret =3D fxgmac_init(priv, true);
+> +	if (ret < 0) {
+> +		dev_err(dev, "fxgmac init failed:%d\n", ret);
+> +		goto err_free_netdev;
+> +	}
+> +
+> +	fxgmac_phy_reset(priv);
+> +	fxgmac_phy_release(priv);
+> +	ret =3D fxgmac_mdio_register(priv);
+> +	if (ret < 0) {
+> +		dev_err(dev, "Register fxgmac mdio failed:%d\n",
+> ret);
+> +		goto err_free_netdev;
+> +	}
+> +
+> +	netif_carrier_off(ndev);
+> +	ret =3D register_netdev(ndev);
+> +	if (ret) {
+> +		dev_err(dev, "Register ndev failed:%d\n", ret);
+> +		goto err_free_netdev;
+> +	}
+> +
+> +	return 0;
+> +
+> +err_free_netdev:
+> +	free_netdev(ndev);
+> +	return ret;
+> +}
+> +
+> +static int fxgmac_probe(struct pci_dev *pcidev, const struct
+> pci_device_id *id)
+> +{
+> +	struct fxgmac_resources res;
+> +	int err;
+> +
+> +	err =3D pcim_enable_device(pcidev);
+> +	if (err)
+> +		return err;
+> +
+> +	memset(&res, 0, sizeof(res));
+> +	res.irq =3D pcidev->irq;
+> +	res.addr=C2=A0 =3D pcim_iomap_region(pcidev, 0, pci_name(pcidev));
+
+This is actually a slight misuse: the "name" parameter should be your
+driver's name, not the PCI device's name.
+
+That string gets printed in case of a request collision regarding that
+device, and the print is only useful if it says who stole the region,
+not on which device sth was stolen.
+
+(pcim_iomap_region() doesn't copy the string, so be careful to put it
+in the TEXT segment or sth like that)
+
+Regards
+P.
+
+
+> +	err =3D PTR_ERR_OR_ZERO(res.addr);
+> +	if (err)
+> +		return err;
+> +
+> +	pci_set_master(pcidev);
+> +	return fxgmac_drv_probe(&pcidev->dev, &res);
+> +}
+> +
+> +static void fxgmac_remove(struct pci_dev *pcidev)
+> +{
+> +	struct fxgmac_pdata *priv =3D dev_get_drvdata(&pcidev->dev);
+> +	struct net_device *ndev =3D priv->ndev;
+> +
+> +	unregister_netdev(ndev);
+> +	fxgmac_phy_reset(priv);
+> +	free_netdev(ndev);
+> +
+> +	if (IS_ENABLED(CONFIG_PCI_MSI) &&
+> +	=C2=A0=C2=A0=C2=A0 FIELD_GET(INT_FLAG_MSIX, priv->int_flag)) {
+> +		pci_disable_msix(pcidev);
+> +		kfree(priv->msix_entries);
+> +		priv->msix_entries =3D NULL;
+> +	}
+> +}
+> +
+> +#define MOTORCOMM_PCI_ID			0x1f0a
+> +#define YT6801_PCI_DEVICE_ID			0x6801
+> +
+> +static const struct pci_device_id fxgmac_pci_tbl[] =3D {
+> +	{ PCI_DEVICE(MOTORCOMM_PCI_ID, YT6801_PCI_DEVICE_ID) },
+> +	{ 0 }
+> +};
+> +
+> +MODULE_DEVICE_TABLE(pci, fxgmac_pci_tbl);
+> +
+> +static struct pci_driver fxgmac_pci_driver =3D {
+> +	.name		=3D FXGMAC_DRV_NAME,
+> +	.id_table	=3D fxgmac_pci_tbl,
+> +	.probe		=3D fxgmac_probe,
+> +	.remove		=3D fxgmac_remove,
+> +};
+> +
+> +module_pci_driver(fxgmac_pci_driver);
+> +
+> +MODULE_AUTHOR("Motorcomm Electronic Tech. Co., Ltd.");
+> +MODULE_DESCRIPTION(FXGMAC_DRV_DESC);
+> +MODULE_LICENSE("GPL");
+> diff --git a/drivers/net/ethernet/motorcomm/yt6801/yt6801_type.h
+> b/drivers/net/ethernet/motorcomm/yt6801/yt6801_type.h
+> new file mode 100644
+> index 000000000..bb6c2640a
+> --- /dev/null
+> +++ b/drivers/net/ethernet/motorcomm/yt6801/yt6801_type.h
+> @@ -0,0 +1,114 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +/* Copyright (c) 2022 - 2024 Motorcomm Electronic Technology
+> Co.,Ltd. */
+> +
+> +#ifndef YT6801_TYPE_H
+> +#define YT6801_TYPE_H
+> +
+> +#include <linux/netdevice.h>
+> +#include <linux/types.h>
+> +#include <linux/pci.h>
+> +
+> +#define FXGMAC_DRV_NAME		"yt6801"
+> +#define FXGMAC_DRV_DESC		"Motorcomm Gigabit Ethernet
+> Driver"
+> +
+> +#define FXGMAC_RX_BUF_ALIGN	64
+> +#define FXGMAC_TX_MAX_BUF_SIZE	(0x3fff & ~(FXGMAC_RX_BUF_ALIGN -
+> 1))
+> +#define FXGMAC_RX_MIN_BUF_SIZE	(ETH_FRAME_LEN + ETH_FCS_LEN +
+> VLAN_HLEN)
+> +
+> +/* Descriptors required for maximum contiguous TSO/GSO packet */
+> +#define FXGMAC_TX_MAX_SPLIT	((GSO_MAX_SIZE /
+> FXGMAC_TX_MAX_BUF_SIZE) + 1)
+> +
+> +/* Maximum possible descriptors needed for a SKB */
+> +#define FXGMAC_TX_MAX_DESC_NR	(MAX_SKB_FRAGS + FXGMAC_TX_MAX_SPLIT
+> + 2)
+> +
+> +#define FXGMAC_DMA_STOP_TIMEOUT		5
+> +#define FXGMAC_JUMBO_PACKET_MTU		9014
+> +#define FXGMAC_MAX_DMA_RX_CHANNELS	4
+> +#define FXGMAC_MAX_DMA_TX_CHANNELS	1
+> +#define
+> FXGMAC_MAX_DMA_CHANNELS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+> +	(FXGMAC_MAX_DMA_RX_CHANNELS + FXGMAC_MAX_DMA_TX_CHANNELS)
+> +
+> +#define EPHY_CTRL				0x1004
+> +#define EPHY_CTRL_RESET				BIT(0)
+> +#define EPHY_CTRL_STA_LINKUP			BIT(1)
+> +#define EPHY_CTRL_STA_DUPLEX			BIT(2)
+> +#define EPHY_CTRL_STA_SPEED			GENMASK(4, 3)
+> +
+> +struct fxgmac_resources {
+> +	void __iomem *addr;
+> +	int irq;
+> +};
+> +
+> +enum fxgmac_dev_state {
+> +	FXGMAC_DEV_OPEN		=3D 0x0,
+> +	FXGMAC_DEV_CLOSE	=3D 0x1,
+> +	FXGMAC_DEV_STOP		=3D 0x2,
+> +	FXGMAC_DEV_START	=3D 0x3,
+> +	FXGMAC_DEV_SUSPEND	=3D 0x4,
+> +	FXGMAC_DEV_RESUME	=3D 0x5,
+> +	FXGMAC_DEV_PROBE	=3D 0xFF,
+> +};
+> +
+> +struct fxgmac_pdata {
+> +	struct net_device *ndev;
+> +	struct device *dev;
+> +	struct phy_device *phydev;
+> +
+> +	void __iomem *hw_addr;			/* Registers base */
+> +
+> +	/* Device interrupt */
+> +	int dev_irq;
+> +	unsigned int per_channel_irq;
+> +	u32 channel_irq[FXGMAC_MAX_DMA_CHANNELS];
+> +	struct msix_entry *msix_entries;
+> +#define INT_FLAG_INTERRUPT		GENMASK(4, 0)
+> +#define INT_FLAG_MSI			BIT(1)
+> +#define INT_FLAG_MSIX			BIT(3)
+> +#define INT_FLAG_LEGACY			BIT(4)
+> +#define INT_FLAG_RX0_NAPI		BIT(18)
+> +#define INT_FLAG_RX1_NAPI		BIT(19)
+> +#define INT_FLAG_RX2_NAPI		BIT(20)
+> +#define INT_FLAG_RX3_NAPI		BIT(21)
+> +#define INT_FLAG_RX0_IRQ		BIT(22)
+> +#define INT_FLAG_RX1_IRQ		BIT(23)
+> +#define INT_FLAG_RX2_IRQ		BIT(24)
+> +#define INT_FLAG_RX3_IRQ		BIT(25)
+> +#define INT_FLAG_TX_NAPI		BIT(26)
+> +#define INT_FLAG_TX_IRQ			BIT(27)
+> +#define INT_FLAG_LEGACY_NAPI		BIT(30)
+> +#define INT_FLAG_LEGACY_IRQ		BIT(31)
+> +	u32 int_flag;		/* interrupt flag */
+> +
+> +	u32 msg_enable;
+> +	enum fxgmac_dev_state dev_state;
+> +};
+> +
+> +static inline u32 fxgmac_io_rd(struct fxgmac_pdata *priv, u32 reg)
+> +{
+> +	return ioread32(priv->hw_addr + reg);
+> +}
+> +
+> +static inline u32
+> +fxgmac_io_rd_bits(struct fxgmac_pdata *priv, u32 reg, u32 mask)
+> +{
+> +	u32 cfg =3D fxgmac_io_rd(priv, reg);
+> +
+> +	return FIELD_GET(mask, cfg);
+> +}
+> +
+> +static inline void fxgmac_io_wr(struct fxgmac_pdata *priv, u32 reg,
+> u32 set)
+> +{
+> +	iowrite32(set, priv->hw_addr + reg);
+> +}
+> +
+> +static inline void
+> +fxgmac_io_wr_bits(struct fxgmac_pdata *priv, u32 reg, u32 mask, u32
+> set)
+> +{
+> +	u32 cfg =3D fxgmac_io_rd(priv, reg);
+> +
+> +	cfg &=3D ~mask;
+> +	cfg |=3D FIELD_PREP(mask, set);
+> +	fxgmac_io_wr(priv, reg, cfg);
+> +}
+> +
+> +#endif /* YT6801_TYPE_H */
+
