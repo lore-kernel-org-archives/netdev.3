@@ -1,52 +1,52 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CF92E336E;
-	Mon, 14 Apr 2025 13:24:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456AF247289;
+	Mon, 14 Apr 2025 13:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637081; cv=none; b=jgn241ViGhEBaZdx+5hTsIWbidMCWGRTa0e1QH76GEDfhSS2UOo00dAiXidJAdDDjKfP9P6fXJZ5ll8zxWVhhdxgqnCfgPDvCAZuPwYNcaCs43dByPD5y0Ttbcr2dLcP78qhmI3wsBxWdS4mjTXjg993UmR6HENfEWocQQL8PO0=
+	t=1744637085; cv=none; b=AOvxTQdHJRiCAY4YdTmrztbHnrqIK2tJMk7n12f4vsq/iIs432Hi1U2ogI3hH6GY7uONE9VszvwmmK3i7sJOsY6vNxIH6/IKKPa3a/SkS6+7ulrL6IowPuwISm8l43T89WiBlkeM1W01FWf+A4malFelyIUAiQRenLLI75KkTvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637081; c=relaxed/simple;
-	bh=en1ltXMO9RVI8XlPeqM8dFi0KjiLZRuKlNQuAxNZcOE=;
+	s=arc-20240116; t=1744637085; c=relaxed/simple;
+	bh=BeHZLdzECqUINxpRH3TbRKrvymamvWqDpttGTBLG8kk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KIWawIYAlY58J4pYKmp7cSifQQxCzDMK4/uv/v7vmQv1urGiaXCme/cv35ys0dUlaPxXPtpHc3duw/ZavZAnUg2su420DeJdhx/Q8THsIZVbK8uAbBzUtxGgpcng1TobO4TDss9aD8mP4wIkKGdHZe/5ccYKec3XsulyzhmCt60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.52
+	 In-Reply-To:To:Cc; b=AZjIfZqI/+nyr5+u1aRa6Y5fWU5VLN4IDmuppFeGFHfpvggg3wf8qcc1z9CZakSsYAukW7jhlGqGuJ7fvFc6CjBinvECsxFR2tpa4jKh0ZOMEbfgx5xiOcI4ZAql171jcwUFmciXbdKP3fuAa8VQDU68bjvN7bPHITcYUOzh/SE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ac2bb7ca40bso828096566b.3;
-        Mon, 14 Apr 2025 06:24:39 -0700 (PDT)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e5cd420781so8558155a12.2;
+        Mon, 14 Apr 2025 06:24:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744637078; x=1745241878;
+        d=1e100.net; s=20230601; t=1744637081; x=1745241881;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LlKFK33sa7P2jc3BqHF+WpGafwhDJ+3yR9vD3sCH0gg=;
-        b=UYHf0nJCOLby1IZeq1EUMFPGhoU6v1Tng00YgAuEBbWlSuAuRozhgC4sVx+Gw09lQt
-         eyKLemWm2MsDCK4/0S9eZ7qTUXzjWrEEFka+MQVyHZIIEr8tufz3Q0zTDkhdcl8nwEjR
-         C1Weqrix3x2Js2k9fKJTEp9RjKtjLc9/EuUyoNABsOmlKqo3RCT7FMtdLRlMpSdEPEhv
-         ybm49NR3pdOqpy7dEvFhCcBoneHB8lCGUQHyOhhgEI3l0ccrTS/TxwtAegVrnvLZ8qu/
-         3+6qO9j8b3/fYxbW/W/wxoS72nrwqUTTEadL9ziSVnBavZ8Y67W8OkJ+bUKTDRWGdMdD
-         A8wA==
-X-Forwarded-Encrypted: i=1; AJvYcCX0GUpSXPuMbZDBMI6HDGM5TCJ4oMv9tlm3/N22xvdZU0xe3O2RrZ6337dQCZT9h4R//WeTSOW1t7O7gHs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbGnQ1ls06SdUJfWBMiSx9Ivq9kdA9I5LV3k/6yDCOVhdNuHJf
-	Zrv/pC9VrG/MtzgiuIyr7v3gH+wLOhYqDnOCKGABuKIAyknz5yQa
-X-Gm-Gg: ASbGnctAkU/f/P7pEgB3RCWNIWx+pT1b03YBLnqfwGA+WPWplrN8DqO8NnyMc33xZ5X
-	bevjMzgzSVEX++6EeOLvb8L7AG4u17wKDZqRfFVzXayzLiwJct5fWElpJboXLZyYmXJDL4pFQ7Z
-	T6gmMkQeiQjZpbOeU20nWmE6p2jXRYJ4TT67FBVzmL95Xs3gDaBMUyQ58DjuMFPo5aYWraYdXBb
-	kxlQ/eqjKithIBCnfDKY9H9lxuIh/vyatANR7TOeW4JQAvYwfTDYMdwx2wgvka7GLcQfsE4UcFX
-	Qb+uhw9q/zmYVhTLkE5IAFdhGEeyN0AZ
-X-Google-Smtp-Source: AGHT+IGlim1qfSoItyCErMnd5JVewMxaT7SNIga4O5+vSR/9onzllsWLwh0YUn5+jMeTxmAE87948g==
-X-Received: by 2002:a17:907:3da1:b0:ac8:16fb:7c85 with SMTP id a640c23a62f3a-acad36a5b13mr1256050066b.41.1744637078331;
-        Mon, 14 Apr 2025 06:24:38 -0700 (PDT)
+        bh=uEkPNAzwNjB8l3D6JqgcGTPbVionTGNe1sx+qPQk13g=;
+        b=NqMi0XHvJPWuzCS7/mY/FukPmR968b0Z697fuJK7U4LIB/4Eu4UVomsZ035XWxWAv9
+         Dd9EyoulahJp7wkO4eLbSWVnLbscPVNDEnfzpzt7hPmweNJdnvAHUAFvmRSAx4ExBmRG
+         wchin+h0o5vxow4XwS+BbyBQhvIlM5feuOX3Wo9dPSvkXQT8nJ6sFZAiz0Z0cz6RWTID
+         tvxtI9MnjrVW6jOZ97XYf01h7oBZFZ/B3FIa3dHa0ZboQlxmdV9LIENkpPF23mW0bQTf
+         dANlSghGKgGKGQvH0a2I8t8gUb6BrGk/ZAmh31Xaqn64Epw04/sDFPyUtm9sUFgB6/A4
+         kY3A==
+X-Forwarded-Encrypted: i=1; AJvYcCUvB9IpwlHmJsqaSkYVSgcpnW9dRJvrcNEosYu1c6M3anX3rMiVsd6hWW14BhywOuLntjdtXy/6JM/HZbo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7A9ajItU8RL/8ChS0voMkquT9Ivy7png7daW+lrksu9fSL6nV
+	rRuHNy+9T8qduIPCfp1d3Ocii1r8rFh0SJ4KFRV0rtg44ArZTqIA
+X-Gm-Gg: ASbGncu4XY+6kbdvbH5Zgpq1U8RoE63PnOcLcjNG941Yne1IVdy+hcSH5VO7hkjMHGH
+	vdNtFVtcVhkU5ojOpxFqlXaBxVEy8g1mX96AJYyWHYNrJxmjLIXVEMGhbIF3V7wR9MRTu4+UhzI
+	qCcKVgNQstGTxaJiYmIQMoTrE0mVV31qdXyZHJe0mBY1fqn0m4k3BHjKYBWOkt//EQi9DpREZFB
+	44x0QUqOR7efQbXCdh1rRtD6IlbR6u/z2EOVsljQMex1o4V1Ft0jAr8MSAMCQxR14apzF7QqGlI
+	pnOxkll8GLeqM5eTi9286AmO9kXSfaR+
+X-Google-Smtp-Source: AGHT+IFQQNlHXBQncGv93dqH0UDQzDTmNKlSKlaC4dGQwbHvfWdmCHZCAoDKQ3q3Q163bNzxbswVZg==
+X-Received: by 2002:a17:907:d92:b0:ac2:c1e:dff0 with SMTP id a640c23a62f3a-acad3491ec9mr1108522766b.19.1744637081342;
+        Mon, 14 Apr 2025 06:24:41 -0700 (PDT)
 Received: from localhost ([2a03:2880:30ff:71::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acaa1be9c0dsm916297566b.61.2025.04.14.06.24.37
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acaa1bb3159sm911015966b.37.2025.04.14.06.24.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Apr 2025 06:24:37 -0700 (PDT)
+        Mon, 14 Apr 2025 06:24:40 -0700 (PDT)
 From: Breno Leitao <leitao@debian.org>
-Date: Mon, 14 Apr 2025 06:24:10 -0700
-Subject: [PATCH net-next v2 04/10] rtnetlink: Use nlmsg_payload in
- valid_fdb_dump_strict
+Date: Mon, 14 Apr 2025 06:24:12 -0700
+Subject: [PATCH net-next v2 06/10] ipv6: Use nlmsg_payload in
+ inet6_valid_dump_ifaddr_req
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250414-nlmsg-v2-4-3d90cb42c6af@debian.org>
+Message-Id: <20250414-nlmsg-v2-6-3d90cb42c6af@debian.org>
 References: <20250414-nlmsg-v2-0-3d90cb42c6af@debian.org>
 In-Reply-To: <20250414-nlmsg-v2-0-3d90cb42c6af@debian.org>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -66,20 +66,20 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Breno Leitao <leitao@debian.org>, kernel-team@meta.com, 
  Kuniyuki Iwashima <kuniyu@amazon.com>
 X-Mailer: b4 0.15-dev-42535
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1015; i=leitao@debian.org;
- h=from:subject:message-id; bh=en1ltXMO9RVI8XlPeqM8dFi0KjiLZRuKlNQuAxNZcOE=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBn/QyO+waCUv4HYcPoIC+bv90HmwDsIMg8/Hyhw
- Kai6JjKWYqJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCZ/0MjgAKCRA1o5Of/Hh3
- bUmJD/9KzZ5qUtgcXIVwZVPK5oDkKuKoMGHVGbzIR3TwTuWfpHslkvs5qVNrIU43359gHnyzRto
- /579qTtmQPja+kTGwVDlgh9/SOR0LgWbN6OER11DPg8ysHxFGBb8PxA8HcWYjeMBWeOLX+PBN78
- ZoUlJPHNrgk6HRe80D1JYBSgsDF19IjL5jOMx0d+yqKU7Rv82UxyCOnFXSh2eKO6HLXOuQIe/Sz
- AnfuGESz0ZEuRbRO6nyqT8kKDClHKTKnIR/QbYZRXdvZW0tIuzfvqrfDb2twOZykerWuq/iFN06
- 0XFL26QAXnLrkUCelbzWMnU4rAO2Xkq36R8Xkshhz/C7lHSUlAZAi19DBulIs1niSYckXpeZsz8
- mynZBrE5JYyx8aok1BBp25qUnW/sL7Bb1/UvLvGvXe6m1rCTuJ49HtpfcoFdMyMfayD7M7j68Sy
- AD7O5rXdzEHdT88risOmTVRjnUb334rLaOEfiiWbdkpAWMeEzNMCfVv1J7B7NfNl95AKFi7+4FS
- DLC1yLe9wGWBMLjDtI5TqYdHEFG+kriQKSvaCBt6107aAOjL38N5vcj09rvpdvz5kv+cljWLAse
- I8/LaW+RweXZeB76OrCbD55w1BEfh0KK8VYYzvOS41WOF6YrIv/EsUXb7iICIMAZZkOY6pb8mi2
- FHpDdfLWZJHddUg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1018; i=leitao@debian.org;
+ h=from:subject:message-id; bh=BeHZLdzECqUINxpRH3TbRKrvymamvWqDpttGTBLG8kk=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBn/QyOji0lpgZoo31f34mvxasPoBxU5JVqNNHC8
+ OHcWOO0PpuJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCZ/0MjgAKCRA1o5Of/Hh3
+ bSefEACCuaZmLpa3vZYziuz8MJ9l+gc8cojb6qsv7y4MhPuwHEcdkbRRFWLhdytpfm5AIZlEFAk
+ RqqJqNgHEyDCWDW6J3m98EJhUJTvbqUxe4KrKcZd7Ocfefr8aF2JIyP9K22G3HuW8SaQxtvDDN8
+ xCsJTXkF3yktiyLIVlASiYLWc1tcYpX1k6IDFJ785t8Vn16+p//LCHDCslX5u5PylrWcf9BMkkw
+ gO8AGHgEMTj+GCYcUwLxWDjnqXF0oyPb4NGK9mkFNUHOneRqazNEARiMTOl2g3hI0Zo+7WxTr2Q
+ aStaVWUCdlS84VU7FZCLiFj4C8npRr/hc8IZ17G2fvUfZsOn9iNJ7p3OAWTHs5vSvFc4YoWakn0
+ nd8NjKwuJRq/YumHJnOxMYTiIUo/1HHausszjy3Z/lKXU4hdi9wFwlDXo8wVBVwz9ziBBcguTfi
+ +TDn8NKOrW1DL1j2XZB8kyP+JIj4sGvYlhe+Jj+RnlN4a10981v8/GSKRM24JNXiBDuWGCL1HzN
+ tdyWjjnNPX25fXDtk0ofz/+GkW9PBQq4DvG0MxJ3FaE/TfRRSdeyfNYdvz4hpFTgwC/DuQ/EZcy
+ i+TMlQdGyl+7oyH5zS3y2cCH6GwXk+Syin23B5t9X5UVowHO2PEZ9dsOGYJh6ROsuuV6pZmC6Hk
+ I4US/JpEQZ374sw==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
@@ -89,28 +89,28 @@ size and then reading the nlmsg data.
 Signed-off-by: Breno Leitao <leitao@debian.org>
 Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 ---
- net/core/rtnetlink.c | 4 ++--
+ net/ipv6/addrconf.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 39a5b72e861f6..31addd26b5570 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -4886,12 +4886,12 @@ static int valid_fdb_dump_strict(const struct nlmsghdr *nlh,
- 	struct ndmsg *ndm;
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 9ba83f0c99283..a9aeb949d9c8e 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -5346,12 +5346,12 @@ static int inet6_valid_dump_ifaddr_req(const struct nlmsghdr *nlh,
+ 	struct ifaddrmsg *ifm;
  	int err, i;
  
--	if (nlh->nlmsg_len < nlmsg_msg_size(sizeof(*ndm))) {
-+	ndm = nlmsg_payload(nlh, sizeof(*ndm));
-+	if (!ndm) {
- 		NL_SET_ERR_MSG(extack, "Invalid header for fdb dump request");
+-	if (nlh->nlmsg_len < nlmsg_msg_size(sizeof(*ifm))) {
++	ifm = nlmsg_payload(nlh, sizeof(*ifm));
++	if (!ifm) {
+ 		NL_SET_ERR_MSG_MOD(extack, "Invalid header for address dump request");
  		return -EINVAL;
  	}
  
--	ndm = nlmsg_data(nlh);
- 	if (ndm->ndm_pad1  || ndm->ndm_pad2  || ndm->ndm_state ||
- 	    ndm->ndm_flags || ndm->ndm_type) {
- 		NL_SET_ERR_MSG(extack, "Invalid values in header for fdb dump request");
+-	ifm = nlmsg_data(nlh);
+ 	if (ifm->ifa_prefixlen || ifm->ifa_flags || ifm->ifa_scope) {
+ 		NL_SET_ERR_MSG_MOD(extack, "Invalid values in header for address dump request");
+ 		return -EINVAL;
 
 -- 
 2.47.1
