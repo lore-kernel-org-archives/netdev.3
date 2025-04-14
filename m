@@ -1,109 +1,85 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA2F253938
-	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 15:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BC11F3D54;
+	Mon, 14 Apr 2025 15:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744645912; cv=none; b=jYRyM+reWE0aHtnwyc3PKAMjkiHJxkdToqGCoVnRjI2BPyXJr072Ae0L3u0JoFCBvW/erewnnaNN3RpPizMlk/4TGbMN+e3mXeHvuqcG/oUdZLPZVNJxSjVZITdwgC8NY/ukFAmikzbedqlZX/NucxFULMOx5zDWQ/c5JJKDk0Q=
+	t=1744646092; cv=none; b=oHoyOff6idIp7L9hVJ6cyLQz4Z+LhjqHTW/9RTd0YGSFEZhOq09mk9Eqdg324+c/dXhgEFgu6J3gIZL1MFuTmtnzC8S5CRki9JcozAva1WueAomnXrMSr7Y1CQlL4vwmREjycoaHvhXMEJsn4cCFavop+OugjXSkMIz9ZWNpHcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744645912; c=relaxed/simple;
-	bh=GVmgyE4Vbzi9knYGLrIXCjSqCsshNxkBt5vGwKTRyBE=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=eUGv9zJyEW4FQvIeZohOavS/vjj1+RdoKK2S3lSls3hOkh4tDt5HVDz3zcEJIy2/YupQSIRJWJ/BkngzlR8FozQza8W1x9BS6JZGAjhgshgiv7MOxBOHEjwFJI4mNfTt2mAp1B3N4hXrF42tj2P/ivfjF0e1KqApsJSR483jFek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Wbl8gfon; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1744646092; c=relaxed/simple;
+	bh=C9knOfhyNn7pBqhOZDqaRgO9Pi2Kzqbu/2YzRbqiu0E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=SQeMww6rrT5/szVev2md2JuY8GTc8zaI8FEt5EOqLWgPiNiC0KfJr7gJezOmXTrlaoyOwcxTm7iHLxRZLZNFWzn9R6Fg5dOSsnKb5XXSUqBGUEVRJB3A7p23K0QoYRTqbwOmQ1aqB/Y+bz+GKaL8iP4W0g7mJqPhrXD0i0oEMek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=o+W4stEl; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Wbl8gfon"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=HhFzwgkdtFig+wSBVpbiTQ6PyiK1BHIb2bxLfvyCxnQ=; b=Wbl8gfonUQZznefGkRxyfoZSbu
-	XayvzADa8sqk88ah+QtUcvFL0yjtwd9Uh8eyEICwpjndetOBUPoDA0JBnK4iKMsdfOhNmM+un+VDJ
-	IxpfD2jYyC/FI2WoAOJVh46fjXy0oCffACU1we/+Fc78LhkyzpI/YHsuDjM+AqUpKACcVGUWQ8tgD
-	N4LUjaBK5Xnyzdk8qCA0j9ZrXYWNTiZ9bziBUdzLxlHi+KNKjTE7BgH4RoB7bPogmnEaVwts6pamj
-	SzCmSR5Q/qUUg7d997Ieid+JzBHU29ho1a8znibPA4M16MD3jsL40Hn1ZrMrrLBftNeY6oP769Aqs
-	vLI5vW+g==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:47062 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1u4M63-0006oO-2G;
-	Mon, 14 Apr 2025 16:51:43 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1u4M5S-000YGJ-9K; Mon, 14 Apr 2025 16:51:06 +0100
-In-Reply-To: <Z_0u9pA0Ziop-BuU@shell.armlinux.org.uk>
-References: <Z_0u9pA0Ziop-BuU@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 2/2] net: stmmac: ingenic: convert to
- devm_stmmac_pltfr_probe()
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="o+W4stEl"
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 763B141062
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1744646090; bh=hpXdb6ga9QdFOjNmzZyes+BogiP51Z4H4avHqOOc2i0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=o+W4stElfcWSaIsG2fkOGPdkvRWbKtrjS3xMLkrkSsqNdMYrTmm8omoCCGkrIdChn
+	 JWqmRtK15fPWtPS4BYNX3hIr0Ro94Ny5UDNI6OxxG8PxJROccm9Be0aFKx23Mki93f
+	 Y4ngrXPYtGkq4rLzlViGycDlg2i99Rfq0FcQcSrZnOSyeVPnqZ8Q+zMSnaG7KXJK7z
+	 BdjIEEmebgi1SybqtRA7KwlxD1/xd8uiKrGIFUc39Xjg3pvZBk6ZYjMq5nP4N80she
+	 vVpVMBO59y53/VYCOUast+Hk3ZA/J6nwPulzWcFethQRQP6sHqy6KPuqnyncIoxIVw
+	 nqwnhe69SxdYw==
+Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 763B141062;
+	Mon, 14 Apr 2025 15:54:50 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Linux Doc Mailing
+ List <linux-doc@vger.kernel.org>, linux-kernel@vger.kernel.org, "Gustavo
+ A. R. Silva" <gustavoars@kernel.org>, Kees Cook <kees@kernel.org>, Russell
+ King <linux@armlinux.org.uk>, linux-hardening@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH v3 00/33] Implement kernel-doc in Python
+In-Reply-To: <87mscibwm8.fsf@trenco.lwn.net>
+References: <cover.1744106241.git.mchehab+huawei@kernel.org>
+ <871pu1193r.fsf@trenco.lwn.net> <Z_zYXAJcTD-c3xTe@black.fi.intel.com>
+ <87mscibwm8.fsf@trenco.lwn.net>
+Date: Mon, 14 Apr 2025 09:54:49 -0600
+Message-ID: <87ecxubuwm.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1u4M5S-000YGJ-9K@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Mon, 14 Apr 2025 16:51:06 +0100
+Content-Type: text/plain
 
-As Ingenic now uses the stmmac platform PM ops, convert it to use
-devm_stmmac_pltfr_probe() which will call the plat_dat->init() method
-before stmmac_drv_probe() and appropriately cleaning up via the
-->exit() method, thus simplifying the code. Using the devm_*()
-variant also allows removal of the explicit call to
-stmmac_pltfr_remove().
+> Andy Shevchenko <andriy.shevchenko@intel.com> writes:
+>
+>> On Wed, Apr 09, 2025 at 12:30:00PM -0600, Jonathan Corbet wrote:
+>>> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
+>>> 
+>>> > This changeset contains the kernel-doc.py script to replace the verable
+>>> > kernel-doc originally written in Perl. It replaces the first version and the
+>>> > second series I sent on the top of it.
+>>> 
+>>> OK, I've applied it, looked at the (minimal) changes in output, and
+>>> concluded that it's good - all this stuff is now in docs-next.  Many
+>>> thanks for doing this!
+>>> 
+>>> I'm going to hold off on other documentation patches for a day or two
+>>> just in case anything turns up.  But it looks awfully good.
+>>
+>> This started well, until it becomes a scripts/lib/kdoc.
+>> So, it makes the `make O=...` builds dirty *). Please make sure this doesn't leave
+>> "disgusting turd" )as said by Linus) in the clean tree.
+>>
+>> *) it creates that __pycache__ disaster. And no, .gitignore IS NOT a solution.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-ingenic.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+Actually, I find myself unable to reproduce this; can you tell me how
+you get Python to create that directory on your system?  Which version
+of Python?
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-ingenic.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-ingenic.c
-index 607e467324a4..15abe214131f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-ingenic.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-ingenic.c
-@@ -290,11 +290,7 @@ static int ingenic_mac_probe(struct platform_device *pdev)
- 	plat_dat->bsp_priv = mac;
- 	plat_dat->init = ingenic_mac_init;
- 
--	ret = ingenic_mac_init(pdev, mac);
--	if (ret)
--		return ret;
--
--	return stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
-+	return devm_stmmac_pltfr_probe(pdev, plat_dat, &stmmac_res);
- }
- 
- static struct ingenic_soc_info jz4775_soc_info = {
-@@ -345,7 +341,6 @@ MODULE_DEVICE_TABLE(of, ingenic_mac_of_matches);
- 
- static struct platform_driver ingenic_mac_driver = {
- 	.probe		= ingenic_mac_probe,
--	.remove		= stmmac_pltfr_remove,
- 	.driver		= {
- 		.name	= "ingenic-mac",
- 		.pm		= &stmmac_pltfr_pm_ops,
--- 
-2.30.2
+Thanks,
 
+jon
