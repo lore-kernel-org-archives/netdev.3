@@ -1,117 +1,328 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4EF266EF3;
-	Mon, 14 Apr 2025 10:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9524926770E
+	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 10:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744627772; cv=none; b=gPLPHetTovTPXCooG4KzI56BxwwrErUtNaYK3o3eT3XsSjwyrRp4qwuZlNLO4XIk5nlB2N3rXRY+KWW0dluxUqOFNJVXrcw/IX2TGape3/tniq4C+LeBQpSM56xrk5B4uEB/FjQpvzPwpBm+uBr64Kpoi3EcyRdER1M2L0o6vx8=
+	t=1744627820; cv=none; b=C3OsPtPTjTWiVn6v5Y57GNmHUhgPVEucxXBiI7Ix0kQyVzjISo9GI6pqrXzHcWSdv3oQMwxY9P4r44HoTnMILSGj86gEawdQkHGf3JL9S9OIJUpJ+7ipcOo8k/SuVnczvTNtlsIdbG9eLZbcqJf9y18k0xnN7buCasROwm06kDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744627772; c=relaxed/simple;
-	bh=nej5Rxx/hhW9hddTky4aUeyep3bqcgBIkysf/UdzfYY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E2id7Vj2I+wj/lk1DUizaV+7FCC65LNgnUPDVTKEVYdvs8gpC5XPq9v3Oy1YoQ0swmgAPnX4Xm2YreHdHbLnffgLdm6sBplde3zSjYPT8O2e+/XioWrVIwo87FLkNPvm3NY7eBYqyKmQnRzMWVKk0/ZV8hHUI67Nki9OfM1xioI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JAfQUQ95; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744627820; c=relaxed/simple;
+	bh=Mh15SUu2LZ8jZIlky5ADtXGzzK1gk5GfGZNexwm+YuU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mbqnfEyVNYT1BqHVKdBPFanpae18cB58IvNRl63gZ9+T6hS8cTU/Yk0YsPUJI22QNpJU6Uk84txLciGs7/py57qH82dn6VOui2lXdySN9Xp6ZGBPPNT6nqkh+V8CEBydouD0MRegeGPs76OQl/CCe8z5h9pBePun4XFePc9/Qgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QCrMWcQu; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JAfQUQ95"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-39c266c1389so2791706f8f.1;
-        Mon, 14 Apr 2025 03:49:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744627769; x=1745232569; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xtsqEiOso+3ySVEpPpnY9tocZGrAQf6OsnV8IcNWh6c=;
-        b=JAfQUQ95ZBinhpz2U9zyX1AQly7CMGuiKRcgWlH3z4eq30KdxvXVbIZbjlzW9QpVHy
-         Tccpp+UdRPPavUGYSlWLypgIBGzle50IqBZiiG+EdvrwoGw+MjbG9cHuTCHoShs4GquV
-         wTfjAsfLkVOBxNOA3IrksADszkXPkyJ8T8M8zvLdRKd6ELwmlreEdJ28O8jixWv6AAGC
-         VBj3HMq4pS+3kkK9nfhObup6NXZQWSeP0f/YybJi4iJDDHBbllRQJxjsV0YWxWs7SEzo
-         TqEyx8p3XgXdOPAaSzs+lE0AHad8/HBwOHwMIOMUKplSA2hByUvxGTyt4tuH4690DPX7
-         MTFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744627769; x=1745232569;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xtsqEiOso+3ySVEpPpnY9tocZGrAQf6OsnV8IcNWh6c=;
-        b=caOOC0YjwoXZCgT8fCnBdJ8zHTirfYLxuEo0yCM2fyexsvwN9Xs6tEQuRBeqAIjiek
-         6hMDBNPbQTgJqQNukeGXu1KkRxAohoy8nNB/q8ARNrXTMN4yhmGayj5sGOLa023OSoQF
-         +SMcKu4k5A4UNntUNF/M4LUFyHx27iVkRNnyz9kk3jn+xL1k3aUUBL2odaLcqze/eMsL
-         W+O9jnC0mvVGvU9pFCjFCmFbkUkrjTA/D0C1G9OfTO4Y0pAA4TzNf7iZST0/0LTlsqwH
-         CWqelPYO9HDL0WPm0GqLrxsiqVpjSeZDGwWiqMUAPjOSRdC1nktAg/kcyTEQnD+TWuQU
-         1MYw==
-X-Forwarded-Encrypted: i=1; AJvYcCV1V+Vp+y+J51MMPYQ5eI/aScRqz54WPSVg8OZoU9ECig7itzo2Za26XC54KPX5sGbcI4Tx4M2GTaJIfrJV9Mg=@vger.kernel.org, AJvYcCV85zKzfYEGVRucjPiaWAJ1g11GsBcDgaE/8Utvf0XxLM1oRVM11++xRy9KLrvKlYidihUNRwvGvFuRKA==@vger.kernel.org, AJvYcCVnoodXbhPDLCjLDqkeAdRUwe5y9FBHQ/na9IrvjCRRHGrKEmPSHi/OA0P63JjYjbmJlAG6W6wA4iR0aeg=@vger.kernel.org, AJvYcCXOzKyB8ElX7lm5buQ1qESI/s31CVwac/IyoRvRJAzSSCA5bkjFOB6B5gvUFkik9WYroBm4cEzZ@vger.kernel.org
-X-Gm-Message-State: AOJu0YwaPcVLun0cX0u4yoj5apVnN1eEGQFPRwPv5+cy9UgPNJLar+5i
-	FrTcXrlGW22rrAlrAQdf+fOvAuQdD10V1SsBLptB9+zZTt2OVUW/
-X-Gm-Gg: ASbGnctUYzbQmJjSU7JvqHUoD/pIEIEPcEcCLuj3cQYO/0Sbr4CzmUDrClKFH1n94SH
-	SUoElKPWv6teurKjDxkLIg0Kjk5S4Nw+zlPVOh/3PhdWQON4RrzGjGSfFwOL3XZ07OsZlTbGWis
-	iEDL9uDg5XeD880mZlH8IFr272WBHRvrmel+rFdhNAMPRtCz8yyadC7CzB/mPivlr6iuOlrLeZV
-	N2j/NznjXeMhX+U+ygMyETj5Ti6Tb1LsQCLV+/ym4EaWls4lPkTNlM08p2VCVF3wwmSCGxjgWFy
-	x13B3NFg/+oaPncisIjnRwUBTl2BZqu/09EQv9OpQNzYN+CZ3F1PvEgGkY9/
-X-Google-Smtp-Source: AGHT+IH1pMW+2VKVzwJ49w6Ztlv9YMJUN6W45Wwpzz8L92YImh1YeiCHahCGMNa6e6rsSObu5WtiCQ==
-X-Received: by 2002:a5d:6da8:0:b0:39c:1424:3246 with SMTP id ffacd0b85a97d-39ea51d3527mr8524313f8f.2.1744627768500;
-        Mon, 14 Apr 2025 03:49:28 -0700 (PDT)
-Received: from [10.158.37.53] ([193.47.165.251])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eaf445772sm10695726f8f.91.2025.04.14.03.49.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Apr 2025 03:49:28 -0700 (PDT)
-Message-ID: <f4a406e2-af98-4762-af44-9089440c0a7f@gmail.com>
-Date: Mon, 14 Apr 2025 13:49:24 +0300
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QCrMWcQu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744627818; x=1776163818;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Mh15SUu2LZ8jZIlky5ADtXGzzK1gk5GfGZNexwm+YuU=;
+  b=QCrMWcQuVP34GBca08bqA3lANKOPP8VVcBGiIvPX/CxfCQLLT7SPx8UM
+   ezcq+/g5GSVTNmO9rIjTV+zRfg92X+dH3+sIfmjRvlk5XJaBRJH+aBUIG
+   hNn0gwKay1j2TNz+5k0ChPE03o4IzORiY1hh/VxPEIenTfPJ3jDxCU3Vm
+   t9SJbSy+wwsLnnNLZF/c35AAFHzuLri8833/8liNyl5GPF6h0T7Pr007L
+   Ou78gl1+0HBSeXKA87EgsWEsxSaWmxItx1f3UPnfkXy6x6mpJLX7dXqBg
+   ahno+Rvpb4Hac4pLUaJFkI+XugSslHiu0rBn17bG+zLsTmJX7MiK8CUHH
+   w==;
+X-CSE-ConnectionGUID: 1p6N+46ITWKX1kW79IHHBg==
+X-CSE-MsgGUID: ZQMQKDPSTmquAn9HCEUP6Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="71478204"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
+   d="scan'208";a="71478204"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 03:50:16 -0700
+X-CSE-ConnectionGUID: 1DxoRgrXRgu238hkqIZeJQ==
+X-CSE-MsgGUID: YejsLq4ZQ0KGVUVlsY4qGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
+   d="scan'208";a="160739959"
+Received: from gklab-003-014.igk.intel.com ([10.211.116.96])
+  by orviesa002.jf.intel.com with ESMTP; 14 Apr 2025 03:50:14 -0700
+From: Milena Olech <milena.olech@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	Milena Olech <milena.olech@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Willem de Bruijn <willemb@google.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Samuel Salin <Samuel.salin@intel.com>
+Subject: [PATCH v11 iwl-next 02/11] idpf: add initial PTP support
+Date: Mon, 14 Apr 2025 12:45:10 +0200
+Message-ID: <20250414104658.14706-6-milena.olech@intel.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250414104658.14706-1-milena.olech@intel.com>
+References: <20250414104658.14706-1-milena.olech@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 7/7] net/mlx5: Don't use %pK through tracepoints
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Jeff Johnson <jjohnson@kernel.org>, Loic Poulain <loic.poulain@linaro.org>,
- Brian Norris <briannorris@chromium.org>,
- Francesco Dolcini <francesco@dolcini.it>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>
-Cc: ath10k@lists.infradead.org, linux-kernel@vger.kernel.org,
- ath11k@lists.infradead.org, ath12k@lists.infradead.org,
- wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org
-References: <20250414-restricted-pointers-net-v1-0-12af0ce46cdd@linutronix.de>
- <20250414-restricted-pointers-net-v1-7-12af0ce46cdd@linutronix.de>
-Content-Language: en-US
-From: Tariq Toukan <ttoukan.linux@gmail.com>
-In-Reply-To: <20250414-restricted-pointers-net-v1-7-12af0ce46cdd@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+PTP feature is supported if the VIRTCHNL2_CAP_PTP is negotiated during the
+capabilities recognition. Initial PTP support includes PTP initialization
+and registration of the clock.
 
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Milena Olech <milena.olech@intel.com>
+Tested-by: Mina Almasry <almasrymina@google.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+---
+ drivers/net/ethernet/intel/idpf/Kconfig       |  1 +
+ drivers/net/ethernet/intel/idpf/Makefile      |  1 +
+ drivers/net/ethernet/intel/idpf/idpf.h        |  3 +
+ drivers/net/ethernet/intel/idpf/idpf_main.c   |  4 +
+ drivers/net/ethernet/intel/idpf/idpf_ptp.c    | 89 +++++++++++++++++++
+ drivers/net/ethernet/intel/idpf/idpf_ptp.h    | 32 +++++++
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   |  9 +-
+ 7 files changed, 138 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/intel/idpf/idpf_ptp.c
+ create mode 100644 drivers/net/ethernet/intel/idpf/idpf_ptp.h
 
-On 14/04/2025 11:26, Thomas Weißschuh wrote:
-> In the past %pK was preferable to %p as it would not leak raw pointer
-> values into the kernel log.
-> Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
-> the regular %p has been improved to avoid this issue.
-> Furthermore, restricted pointers ("%pK") were never meant to be used
-> through tracepoints. They can still unintentionally leak raw pointers or
-> acquire sleeping looks in atomic contexts.
-> 
-> Switch to the regular pointer formatting which is safer and
-> easier to reason about.
-> There are still a few users of %pK left, but these use it through seq_file,
-> for which its usage is safe.
-> 
-> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-> ---
->   drivers/net/ethernet/mellanox/mlx5/core/sf/dev/diag/dev_tracepoint.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+diff --git a/drivers/net/ethernet/intel/idpf/Kconfig b/drivers/net/ethernet/intel/idpf/Kconfig
+index 1addd663acad..2c359a8551c7 100644
+--- a/drivers/net/ethernet/intel/idpf/Kconfig
++++ b/drivers/net/ethernet/intel/idpf/Kconfig
+@@ -4,6 +4,7 @@
+ config IDPF
+ 	tristate "Intel(R) Infrastructure Data Path Function Support"
+ 	depends on PCI_MSI
++	depends on PTP_1588_CLOCK_OPTIONAL
+ 	select DIMLIB
+ 	select LIBETH
+ 	help
+diff --git a/drivers/net/ethernet/intel/idpf/Makefile b/drivers/net/ethernet/intel/idpf/Makefile
+index 2ce01a0b5898..1f38a9d7125c 100644
+--- a/drivers/net/ethernet/intel/idpf/Makefile
++++ b/drivers/net/ethernet/intel/idpf/Makefile
+@@ -17,3 +17,4 @@ idpf-y := \
+ 	idpf_vf_dev.o
+ 
+ idpf-$(CONFIG_IDPF_SINGLEQ)	+= idpf_singleq_txrx.o
++idpf-$(CONFIG_PTP_1588_CLOCK)	+= idpf_ptp.o
+diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
+index 5f73a4cf5161..5ad18bc3f386 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf.h
++++ b/drivers/net/ethernet/intel/idpf/idpf.h
+@@ -530,6 +530,7 @@ struct idpf_vc_xn_manager;
+  * @vector_lock: Lock to protect vector distribution
+  * @queue_lock: Lock to protect queue distribution
+  * @vc_buf_lock: Lock to protect virtchnl buffer
++ * @ptp: Storage for PTP-related data
+  */
+ struct idpf_adapter {
+ 	struct pci_dev *pdev;
+@@ -587,6 +588,8 @@ struct idpf_adapter {
+ 	struct mutex vector_lock;
+ 	struct mutex queue_lock;
+ 	struct mutex vc_buf_lock;
++
++	struct idpf_ptp *ptp;
+ };
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
+index 1284ab2adaf1..b9874c59db0a 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_main.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
+@@ -167,6 +167,10 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		goto err_free;
+ 	}
+ 
++	err = pci_enable_ptm(pdev, NULL);
++	if (err)
++		pci_dbg(pdev, "PCIe PTM is not supported by PCIe bus/controller\n");
++
+ 	/* set up for high or low dma */
+ 	err = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
+ 	if (err) {
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+new file mode 100644
+index 000000000000..1ac6367f5989
+--- /dev/null
++++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+@@ -0,0 +1,89 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright (C) 2024 Intel Corporation */
++
++#include "idpf.h"
++#include "idpf_ptp.h"
++
++/**
++ * idpf_ptp_create_clock - Create PTP clock device for userspace
++ * @adapter: Driver specific private structure
++ *
++ * This function creates a new PTP clock device.
++ *
++ * Return: 0 on success, -errno otherwise.
++ */
++static int idpf_ptp_create_clock(const struct idpf_adapter *adapter)
++{
++	struct ptp_clock *clock;
++
++	/* Attempt to register the clock before enabling the hardware. */
++	clock = ptp_clock_register(&adapter->ptp->info,
++				   &adapter->pdev->dev);
++	if (IS_ERR(clock)) {
++		pci_err(adapter->pdev, "PTP clock creation failed: %pe\n", clock);
++		return PTR_ERR(clock);
++	}
++
++	adapter->ptp->clock = clock;
++
++	return 0;
++}
++
++/**
++ * idpf_ptp_init - Initialize PTP hardware clock support
++ * @adapter: Driver specific private structure
++ *
++ * Set up the device for interacting with the PTP hardware clock for all
++ * functions. Function will allocate and register a ptp_clock with the
++ * PTP_1588_CLOCK infrastructure.
++ *
++ * Return: 0 on success, -errno otherwise.
++ */
++int idpf_ptp_init(struct idpf_adapter *adapter)
++{
++	int err;
++
++	if (!idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS, VIRTCHNL2_CAP_PTP)) {
++		pci_dbg(adapter->pdev, "PTP capability is not detected\n");
++		return -EOPNOTSUPP;
++	}
++
++	adapter->ptp = kzalloc(sizeof(*adapter->ptp), GFP_KERNEL);
++	if (!adapter->ptp)
++		return -ENOMEM;
++
++	/* add a back pointer to adapter */
++	adapter->ptp->adapter = adapter;
++
++	err = idpf_ptp_create_clock(adapter);
++	if (err)
++		goto free_ptp;
++
++	pci_dbg(adapter->pdev, "PTP init successful\n");
++
++	return 0;
++
++free_ptp:
++	kfree(adapter->ptp);
++	adapter->ptp = NULL;
++
++	return err;
++}
++
++/**
++ * idpf_ptp_release - Clear PTP hardware clock support
++ * @adapter: Driver specific private structure
++ */
++void idpf_ptp_release(struct idpf_adapter *adapter)
++{
++	struct idpf_ptp *ptp = adapter->ptp;
++
++	if (!ptp)
++		return;
++
++	if (ptp->clock)
++		ptp_clock_unregister(ptp->clock);
++
++	kfree(ptp);
++	adapter->ptp = NULL;
++}
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.h b/drivers/net/ethernet/intel/idpf/idpf_ptp.h
+new file mode 100644
+index 000000000000..d009417bf947
+--- /dev/null
++++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.h
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Copyright (C) 2024 Intel Corporation */
++
++#ifndef _IDPF_PTP_H
++#define _IDPF_PTP_H
++
++#include <linux/ptp_clock_kernel.h>
++
++/**
++ * struct idpf_ptp - PTP parameters
++ * @info: structure defining PTP hardware capabilities
++ * @clock: pointer to registered PTP clock device
++ * @adapter: back pointer to the adapter
++ */
++struct idpf_ptp {
++	struct ptp_clock_info info;
++	struct ptp_clock *clock;
++	struct idpf_adapter *adapter;
++};
++
++#if IS_ENABLED(CONFIG_PTP_1588_CLOCK)
++int idpf_ptp_init(struct idpf_adapter *adapter);
++void idpf_ptp_release(struct idpf_adapter *adapter);
++#else /* CONFIG_PTP_1588_CLOCK */
++static inline int idpf_ptp_init(struct idpf_adapter *adapter)
++{
++	return 0;
++}
++
++static inline void idpf_ptp_release(struct idpf_adapter *adapter) { }
++#endif /* CONFIG_PTP_1588_CLOCK */
++#endif /* _IDPF_PTP_H */
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 3d2413b8684f..7004289b974c 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -5,6 +5,7 @@
+ 
+ #include "idpf.h"
+ #include "idpf_virtchnl.h"
++#include "idpf_ptp.h"
+ 
+ #define IDPF_VC_XN_MIN_TIMEOUT_MSEC	2000
+ #define IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC	(60 * 1000)
+@@ -900,7 +901,8 @@ static int idpf_send_get_caps_msg(struct idpf_adapter *adapter)
+ 			    VIRTCHNL2_CAP_MACFILTER		|
+ 			    VIRTCHNL2_CAP_SPLITQ_QSCHED		|
+ 			    VIRTCHNL2_CAP_PROMISC		|
+-			    VIRTCHNL2_CAP_LOOPBACK);
++			    VIRTCHNL2_CAP_LOOPBACK		|
++			    VIRTCHNL2_CAP_PTP);
+ 
+ 	xn_params.vc_op = VIRTCHNL2_OP_GET_CAPS;
+ 	xn_params.send_buf.iov_base = &caps;
+@@ -3029,6 +3031,10 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
+ 		goto err_intr_req;
+ 	}
+ 
++	err = idpf_ptp_init(adapter);
++	if (err)
++		pci_err(adapter->pdev, "PTP init failed, err=%pe\n", ERR_PTR(err));
++
+ 	idpf_init_avail_queues(adapter);
+ 
+ 	/* Skew the delay for init tasks for each function based on fn number
+@@ -3091,6 +3097,7 @@ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
+ 	if (!remove_in_prog)
+ 		idpf_vc_xn_shutdown(adapter->vcxn_mngr);
+ 
++	idpf_ptp_release(adapter);
+ 	idpf_deinit_task(adapter);
+ 	idpf_intr_rel(adapter);
+ 
+-- 
+2.43.5
 
