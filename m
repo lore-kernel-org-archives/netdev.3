@@ -1,85 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55440433CB
-	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 13:00:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67296433CB
+	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 13:01:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744635660; cv=none; b=MvNM5i9Bm5fw92S+uO3n7LiqYQ5OfhB/53D2hR3GytOLwCzIdyfZBvg6ndOyvbHnjHF3v2SquVJG1lZlgzqBWybFl4yfBhMQYgbJfjXmz8EAHVmfbI5E4tTiHOyBbMcpPcxKf+eoB42Y7mpDBFRYuYchRwTrTOZka7wMBQulo4k=
+	t=1744635702; cv=none; b=hqVr/SV05ECqsgf92QLOEChJ253Oa4oB0DTmGqgy9vIQm4IscykAd27/8SzCv4QpbeJwpXx05gChhFK9ihdCKxU/sDc7nYo3X2BFQFRKusoQfngsvmsK9aFB+2aPIxkNOYCJ9XFKdwzmGvPGhY7bzFndzttcPRS/vVMaV7iymls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744635660; c=relaxed/simple;
-	bh=jynLSUFv14kvafwgTIampPYuFvfpvKX+LRxo1UjOTfQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pxc0e2ovxGOYQY1gej4bv0J2RltOynmC79qwYWgYlbuBPECryS08UVYmsbD54P0j/kpQzAo5bdB6k4sbyX6SxNr1A2m1VG3anxlsYLtd2dPzvOXuY75957rBUvnaNPEre0EPBtSCzPcBhQCkvmIc3jbtIOVKs6afb8DMriWx3J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QsN2dFpy; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1744635702; c=relaxed/simple;
+	bh=cQpYBJT1BS6d2aNLlx3jhhLQ73c+7Qwy83avSo07Uaw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HlAGZrO4mGw8vCAkX3l5CyvXV48mMUOz2NZGqMkAMfE/Lq6B/iUN+fZ9YvIjXzC7l3vmCgfArGEkg9eTzKOpjya6i1IebTsdAuu+BQH6K49vwotPz1KBOu+6S0xa+DaygO+9J5KbHbx8tJ+Sb1EutpbXmkiCVMD0RYTfTi1zqG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CZLYlnOY; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QsN2dFpy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744635658; x=1776171658;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=jynLSUFv14kvafwgTIampPYuFvfpvKX+LRxo1UjOTfQ=;
-  b=QsN2dFpyb3OEPbrJJGNijsTV4bd4AaRqSr7TKP/nlRGrNdUyVKT3nDKh
-   6kARKQ6CcZYjWT0YxAEdUDwlNpmN8Pns0+vf4FUsUlOdiJezHRsV5g7OG
-   Yqx7ZefRcG4FehfzH3jmymHXqZbp2r3Bx6CHvhbDWilQA63lBnOQVW28n
-   TQcSkCH4fRigFXQRtZe1qbHtu0+aqm1LObjH5JTWxizHwLd779Pg3tInx
-   DwuuLtv42MOOWIGafktLZBvh0lG9pWEdf2ZdXpR7AL/bDJXlTUvQoA53C
-   GbNUA/9VzxD3guHEWWE7+juxYv8vKfp2cAdqoEmSKlLORGH7tZw/rlKiB
-   Q==;
-X-CSE-ConnectionGUID: 1WiQzgMCS4eNvuxCZpxR1Q==
-X-CSE-MsgGUID: Wa+6QaW9QlKhMkgSbvNMKw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="57468659"
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
-   d="scan'208";a="57468659"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 06:00:56 -0700
-X-CSE-ConnectionGUID: 4Y6frGfARFKnR03FsSV5Nw==
-X-CSE-MsgGUID: gn3Q8UEoTHesO8TcNV/tUQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
-   d="scan'208";a="134966814"
-Received: from enterprise.igk.intel.com ([10.102.20.175])
-  by orviesa005.jf.intel.com with ESMTP; 14 Apr 2025 06:00:55 -0700
-From: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
-Subject: [PATCH iwl-next v2 0/2] Add link_down_events counters to ixgbe and ice drivers
-Date: Mon, 14 Apr 2025 15:00:06 +0200
-Message-ID: <20250414130007.366132-2-martyna.szapar-mudlaw@linux.intel.com>
-X-Mailer: git-send-email 2.47.0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CZLYlnOY"
+Message-ID: <39839bcb-90e9-4886-913d-311c75c92ad8@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1744635698;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=92Ns63mKqKSi1Gpjb4z8VtgowBHrPaaCCaojmxVMIOU=;
+	b=CZLYlnOYrK7MvKRVU8lfgTrDdE9WR+TaY23koug0t86L9mHPPxPReugOzKI/avqRADBrEP
+	l1rh9yUYnwwH6MUjUlkwEIVzw/MtG/qio10CHcHluDYUrWOa8I5EeitQgXkwqiFc09hZbI
+	pWiu0eZ2YwR7/QeNH7Rxvfdf4WWyjKs=
+Date: Mon, 14 Apr 2025 14:01:35 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH v1] ptp: ocp: fix NULL deref in _signal_summary_show
+To: Sagi Maimon <maimon.sagi@gmail.com>
+Cc: jonathan.lemon@gmail.com, richardcochran@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20250414085412.117120-1-maimon.sagi@gmail.com>
+ <b6aea926-ebb6-48fe-a1be-6f428a648eae@linux.dev>
+ <CAMuE1bG_+qj++Q0OXfBe3Z_aA-zFj3nmzr9CHCuKJ_Jr19oWEg@mail.gmail.com>
+ <aa9a1485-0a0b-442b-b126-a00ee5d4801c@linux.dev>
+ <CAMuE1bETL1+sGo9wq46O=Ad-_aa8xNLK0kWC63Mm5rTFdebp=w@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <CAMuE1bETL1+sGo9wq46O=Ad-_aa8xNLK0kWC63Mm5rTFdebp=w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-This series introduces link_down_events counters to the ixgbe and ice drivers.
-The counters are incremented each time the link transitions from up to down,
-allowing better diagnosis of link stability issues such as port flapping or
-unexpected link drops.
+On 14/04/2025 12:38, Sagi Maimon wrote:
+> On Mon, Apr 14, 2025 at 2:09 PM Vadim Fedorenko
+> <vadim.fedorenko@linux.dev> wrote:
+>>
+>> On 14/04/2025 11:56, Sagi Maimon wrote:
+>>> On Mon, Apr 14, 2025 at 12:37 PM Vadim Fedorenko
+>>> <vadim.fedorenko@linux.dev> wrote:
+>>>>
+>>>> On 14/04/2025 09:54, Sagi Maimon wrote:
+>>>>> Sysfs signal show operations can invoke _signal_summary_show before
+>>>>> signal_out array elements are initialized, causing a NULL pointer
+>>>>> dereference. Add NULL checks for signal_out elements to prevent kernel
+>>>>> crashes.
+>>>>>
+>>>>> Fixes: b325af3cfab9 ("ptp: ocp: Add signal generators and update sysfs nodes")
+>>>>> Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
+>>>>> ---
+>>>>>     drivers/ptp/ptp_ocp.c | 3 +++
+>>>>>     1 file changed, 3 insertions(+)
+>>>>>
+>>>>> diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+>>>>> index 7945c6be1f7c..4c7893539cec 100644
+>>>>> --- a/drivers/ptp/ptp_ocp.c
+>>>>> +++ b/drivers/ptp/ptp_ocp.c
+>>>>> @@ -3963,6 +3963,9 @@ _signal_summary_show(struct seq_file *s, struct ptp_ocp *bp, int nr)
+>>>>>         bool on;
+>>>>>         u32 val;
+>>>>>
+>>>>> +     if (!bp->signal_out[nr])
+>>>>> +             return;
+>>>>> +
+>>>>>         on = signal->running;
+>>>>>         sprintf(label, "GEN%d", nr + 1);
+>>>>>         seq_printf(s, "%7s: %s, period:%llu duty:%d%% phase:%llu pol:%d",
+>>>>
+>>>> That's not correct, the dereference of bp->signal_out[nr] happens before
+>>>> the check. But I just wonder how can that even happen?
+>>>>
+>>> The scenario (our case): on ptp_ocp_adva_board_init we
+>>> initiate only signals 0 and 1 so 2 and 3 are NULL.
+>>> Later ptp_ocp_summary_show runs on all 4 signals and calls _signal_summary_show
+>>> when calling signal 2 or 3  the dereference occurs.
+>>> can you please explain: " the dereference of bp->signal_out[nr] happens before
+>>> the check", where exactly? do you mean in those lines:
+>>> struct signal_reg __iomem *reg = bp->signal_out[nr]->mem;
+>>      ^^^
+>> yes, this is the line which dereferences the pointer.
+>>
+>> but in case you have only 2 pins to configure, why the driver exposes 4
+>> SMAs? You can simply adjust the attributes (adva_timecard_attrs).
+>>
+> I can (and will) expose only 2 sma in adva_timecard_attrs, but still
+> ptp_ocp_summary_show runs
+> on all 4 signals and not only on the on that exposed, is it not a bug?
 
-The values are exposed via ethtool using the get_link_ext_stats() interface.
+Yeah, it's a bug, but different one, and we have to fix it other way.
 
-Martyna Szapar-Mudlaw (2):
-  ice: add link_down_events statistic
-  ixgbe: add link_down_events statistic
-
-v2 -> v1:
-used ethtool get_link_ext_stats() interface to expose counters
-
- drivers/net/ethernet/intel/ice/ice.h             |  1 +
- drivers/net/ethernet/intel/ice/ice_ethtool.c     | 10 ++++++++++
- drivers/net/ethernet/intel/ice/ice_main.c        |  3 +++
- drivers/net/ethernet/intel/ixgbe/ixgbe.h         |  1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c |  9 +++++++++
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c    |  2 ++
- 6 files changed, 26 insertions(+)
-
--- 
-2.47.0
+>>> struct ptp_ocp_signal *signal = &bp->signal[nr];
+>>>> I believe the proper fix is to move ptp_ocp_attr_group_add() closer to
+>>>> the end of ptp_ocp_adva_board_init() like it's done for other boards.
+>>>>
+>>>> --
+>>>> pw-bot: cr
+>>
 
