@@ -1,85 +1,96 @@
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BC11F3D54;
-	Mon, 14 Apr 2025 15:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4A218DB26
+	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 16:08:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744646092; cv=none; b=oHoyOff6idIp7L9hVJ6cyLQz4Z+LhjqHTW/9RTd0YGSFEZhOq09mk9Eqdg324+c/dXhgEFgu6J3gIZL1MFuTmtnzC8S5CRki9JcozAva1WueAomnXrMSr7Y1CQlL4vwmREjycoaHvhXMEJsn4cCFavop+OugjXSkMIz9ZWNpHcY=
+	t=1744646892; cv=none; b=TlGLbxGHPtpiF6kijmftkgkzwWdD+7j9lUbWNsw2rBPdpT7JXrhLMg6PxQn+7jayORPQ9/9wNIusg6N+KhCeIgAkyfmCZ7aJnUnYkwZ054ycexZvfwdas3Cd2mGJdBQeyvW7FCnHdGSRRrwJfIw/nSMrTI4elNZ/CcjP9juLZ8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744646092; c=relaxed/simple;
-	bh=C9knOfhyNn7pBqhOZDqaRgO9Pi2Kzqbu/2YzRbqiu0E=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SQeMww6rrT5/szVev2md2JuY8GTc8zaI8FEt5EOqLWgPiNiC0KfJr7gJezOmXTrlaoyOwcxTm7iHLxRZLZNFWzn9R6Fg5dOSsnKb5XXSUqBGUEVRJB3A7p23K0QoYRTqbwOmQ1aqB/Y+bz+GKaL8iP4W0g7mJqPhrXD0i0oEMek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=o+W4stEl; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+	s=arc-20240116; t=1744646892; c=relaxed/simple;
+	bh=HHiVQTH+atgT4xOQAN37uuJt5UAHAio4xUM9Rqa92CU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Jl3A9QuGd7UkCaWskTZrBqkFCGP8mGvp82j2qK6YJzNoJtJS2863tRCtBy1ypa35z8cQde0NmynPLMWxSq1qbXBZzP7gIU7rNgjYirmWUouPVFEPygq4eF5HRV94hpWjmjkSi8LVrqaqsXHWAkzkmzWESbYT6yel6/e7HHSffig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3dpH8Au+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZywAtazY; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="o+W4stEl"
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 763B141062
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1744646090; bh=hpXdb6ga9QdFOjNmzZyes+BogiP51Z4H4avHqOOc2i0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=o+W4stElfcWSaIsG2fkOGPdkvRWbKtrjS3xMLkrkSsqNdMYrTmm8omoCCGkrIdChn
-	 JWqmRtK15fPWtPS4BYNX3hIr0Ro94Ny5UDNI6OxxG8PxJROccm9Be0aFKx23Mki93f
-	 Y4ngrXPYtGkq4rLzlViGycDlg2i99Rfq0FcQcSrZnOSyeVPnqZ8Q+zMSnaG7KXJK7z
-	 BdjIEEmebgi1SybqtRA7KwlxD1/xd8uiKrGIFUc39Xjg3pvZBk6ZYjMq5nP4N80she
-	 vVpVMBO59y53/VYCOUast+Hk3ZA/J6nwPulzWcFethQRQP6sHqy6KPuqnyncIoxIVw
-	 nqwnhe69SxdYw==
-Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 763B141062;
-	Mon, 14 Apr 2025 15:54:50 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Linux Doc Mailing
- List <linux-doc@vger.kernel.org>, linux-kernel@vger.kernel.org, "Gustavo
- A. R. Silva" <gustavoars@kernel.org>, Kees Cook <kees@kernel.org>, Russell
- King <linux@armlinux.org.uk>, linux-hardening@vger.kernel.org,
- netdev@vger.kernel.org
-Subject: Re: [PATCH v3 00/33] Implement kernel-doc in Python
-In-Reply-To: <87mscibwm8.fsf@trenco.lwn.net>
-References: <cover.1744106241.git.mchehab+huawei@kernel.org>
- <871pu1193r.fsf@trenco.lwn.net> <Z_zYXAJcTD-c3xTe@black.fi.intel.com>
- <87mscibwm8.fsf@trenco.lwn.net>
-Date: Mon, 14 Apr 2025 09:54:49 -0600
-Message-ID: <87ecxubuwm.fsf@trenco.lwn.net>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3dpH8Au+";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZywAtazY"
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1744646888;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Aht/WxYRxsU2RswlJxtNzoWOPHgqB8qiJPYiwhb18pU=;
+	b=3dpH8Au+ToIfW9BIFnc7AaITX1XQPlwXoRZyvL2x2AJE/jahNFOKxt4kc5+sTKTuRgdiqU
+	vwzYx0X+0CNxlnPO34mLIntKHvyfRWRD68Bx95IpUvGXdgeLTgg5ci7aKjxV03qt0IirzC
+	6h2DPUcjiEPgQJxvOwwSLZcU7LUQvhHMub80IYZUwTS/dJ7SxZBLxpbdy1MPwADNrZNPEW
+	0YVb+WW7SKc8ivxKEjygSnHXQUhVgIx5FCvH4gtNPAXtLLJlBBYseOvPMdkrEh7kX26unN
+	8Jm3C7Ncd9uAKI0GKNZ515C8cuUWCUkgWfqRUF2urRxijKzTZiD3YScx4WIvOg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1744646888;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Aht/WxYRxsU2RswlJxtNzoWOPHgqB8qiJPYiwhb18pU=;
+	b=ZywAtazYo1ouehJF936eyFEGqF9KuC3ZxBLPIJ4P4kfQiDBe/CWqEg6ywAhYQ57qydzM3O
+	c1G6mhxYBjRDv5CA==
+To: netdev@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Subject: [PATCH net-next v2 01/18] net: page_pool: Don't recycle into cache on PREEMPT_RT
+Date: Mon, 14 Apr 2025 18:07:37 +0200
+Message-ID: <20250414160754.503321-2-bigeasy@linutronix.de>
+In-Reply-To: <20250414160754.503321-1-bigeasy@linutronix.de>
+References: <20250414160754.503321-1-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-> Andy Shevchenko <andriy.shevchenko@intel.com> writes:
->
->> On Wed, Apr 09, 2025 at 12:30:00PM -0600, Jonathan Corbet wrote:
->>> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
->>> 
->>> > This changeset contains the kernel-doc.py script to replace the verable
->>> > kernel-doc originally written in Perl. It replaces the first version and the
->>> > second series I sent on the top of it.
->>> 
->>> OK, I've applied it, looked at the (minimal) changes in output, and
->>> concluded that it's good - all this stuff is now in docs-next.  Many
->>> thanks for doing this!
->>> 
->>> I'm going to hold off on other documentation patches for a day or two
->>> just in case anything turns up.  But it looks awfully good.
->>
->> This started well, until it becomes a scripts/lib/kdoc.
->> So, it makes the `make O=...` builds dirty *). Please make sure this doesn't leave
->> "disgusting turd" )as said by Linus) in the clean tree.
->>
->> *) it creates that __pycache__ disaster. And no, .gitignore IS NOT a solution.
+With preemptible softirq and no per-CPU locking in local_bh_disable() on
+PREEMPT_RT the consumer can be preempted while a skb is returned.
 
-Actually, I find myself unable to reproduce this; can you tell me how
-you get Python to create that directory on your system?  Which version
-of Python?
+Avoid the race by disabling the recycle into the cache on PREEMPT_RT.
 
-Thanks,
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ net/core/page_pool.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-jon
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 7745ad924ae2d..ba8803c2c0b20 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -805,6 +805,10 @@ static bool page_pool_napi_local(const struct page_poo=
+l *pool)
+ 	const struct napi_struct *napi;
+ 	u32 cpuid;
+=20
++	/* On PREEMPT_RT the softirq can be preempted by the consumer */
++	if (IS_ENABLED(CONFIG_PREEMPT_RT))
++		return false;
++
+ 	if (unlikely(!in_softirq()))
+ 		return false;
+=20
+--=20
+2.49.0
+
