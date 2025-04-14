@@ -1,82 +1,295 @@
-Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C38226F45A;
-	Mon, 14 Apr 2025 10:53:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A1527CB13
+	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 10:53:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744627985; cv=none; b=skdeS685h4Jq5TajnOOUYNbKZ2DIy1p3mS7gLb3i35/FXMTjXGM3LNRAi5jWmRPkVm+0hivkJnWyqz75b+0A1366b9XuTCBHWd3TXKegPCmlas7rEhAzgzb5JCuTS0j/kQ8LQ+vmz4H30R/iclZ4zdCSHkeu2GPOtIbGEh2sz9c=
+	t=1744627989; cv=none; b=hBNHievFOllb6jgyqVJ1I6UJOZnVtj0L7frc338JuQCGDOdQfnL9CKj8aGEQYyqLmkrjo2RvBZaemWMN9j/6aFavwky5rP4viUTZeMC15VRTV8DKGlTUFjHx1gYe2L8PyQEksw8re7+PpyIrwonT7ortDuYD53s3GWhLwMjSO8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744627985; c=relaxed/simple;
-	bh=hp/iT9vRY4WLbkXBJM0HMTKnmsgkT83gkCn0+xI8TDs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eVSsLVle+Eqrwi2jkzqKu/Y264w1iWBuPS3FBaMrSu0osjmk50ZvzeSHdwcUOEQZNAYKql2VQZobq5Bh3Q7HrblB53MNtfp4PcVabXhz4C3Nlr1oH4jQydaF0WmDkrfHuLA45jIEnsqoozYRjzvI6KbxVULNUD5Xfl+83tHz6vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=BegFfWdY; arc=none smtp.client-ip=79.135.106.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1744627989; c=relaxed/simple;
+	bh=Z0HPZyy/SKXE7YqVTtHJw67Cr1z7DUKG3wC/9UwRWwI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qSKXqI044pULRjloGwufrk9hEhilQHuYMcaW9WKDO9/YmxBrCgaq5qZ5ykRwIVrnZ6AIc/ByAdVwuYL00IVmPegdoSaPkzijMdnbAGxIRtcGFRZ488tWLWwYzHmljVrshnXUY0JktWAhwKT6XveDU5brtZyPlIkFLoXi6SBrX1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hpe0Li/I; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="BegFfWdY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=xkpzb5yfxnf2jeuzp7tothlcbe.protonmail; t=1744627980; x=1744887180;
-	bh=cGneafMdb7E/5GcVD98UZZZtBXjzJsDf2In9bf3AS80=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=BegFfWdYH4OhAyD9Vvv7x2GV3KDqo1ZdIa4E1vDwLL1zYU+n0iu7x/BeBvqz8KItD
-	 GDOj/qovBvhDYAgxwurvOPV4B5kaKfgzdIJK90kxmeSI/vZ9nc4wMn2yrjl83TNmRV
-	 aUtOAtPUFwMQ4obXOllmUTSJ1Hb4ggZEdjnCh2xk3po2dfCSfYaV5Fyjns7UdfevHL
-	 TpQNAPlce1lLPOQTB7WtXA13fie3Bytsq41rfbB3b5pSrw6cFQMzsIoPAxgH4iCGnJ
-	 PiyPMQARv9EXxWlP0kBJ4X5NI1T61eWT7rjmyhWhDFsYvfDDkxZgDbb0NKHMbDUr0R
-	 j3CebiM1XQJVw==
-Date: Mon, 14 Apr 2025 10:52:54 +0000
-To: Tamir Duberstein <tamird@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, FUJITA Tomonori <fujita.tomonori@gmail.com>, Nicolas Schier <nicolas.schier@linux.dev>, Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v8 6/6] rust: enable `clippy::ref_as_ptr` lint
-Message-ID: <D96B00U9SS2Q.1YHLNBOIEWSNE@proton.me>
-In-Reply-To: <20250409-ptr-as-ptr-v8-6-3738061534ef@gmail.com>
-References: <20250409-ptr-as-ptr-v8-0-3738061534ef@gmail.com> <20250409-ptr-as-ptr-v8-6-3738061534ef@gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 192a33aecbd50a9b6c4225576203521e98318959
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hpe0Li/I"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744627987; x=1776163987;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Z0HPZyy/SKXE7YqVTtHJw67Cr1z7DUKG3wC/9UwRWwI=;
+  b=Hpe0Li/IfvT8L+E1MUJQW9n57H9dqH5ZbEHLUD5JPclGh8PFj6UxK/hl
+   XhSxiQLuUma1vRdOdRNd53w2TAZ0sUMUurRS7lDvzbmjuwfP891VmSAA3
+   LGH8OBWgBgDYYuFqob92XFWzaa3b4EGJHG630T3oErNDcFKSB6ewU/JZr
+   Tq47JHXWTRPS9Qs/ltjMJMM6q4WPIcW7oOKoFu8mXUYr4dml8ZGSJcdmS
+   m1A8g/J/NDGJIEIWSFXejtybkMTLB7z4Bcz/QHLjYxi3sYj3Kyy51cvBg
+   45Ociuynnbh57V4aSgv2l/Vd4pzKlxFi9++h5yGIWbaCZuffD2rpUBqjy
+   A==;
+X-CSE-ConnectionGUID: A3vTGv6pSDKq7cDt7x5xHA==
+X-CSE-MsgGUID: gL03QsltRzWa5y3uS7iPqw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="71478416"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
+   d="scan'208";a="71478416"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 03:53:06 -0700
+X-CSE-ConnectionGUID: ROOkAZSOQSOzxCFEJuhovw==
+X-CSE-MsgGUID: 07VGrradR7+VVpwXGsVrPA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
+   d="scan'208";a="160740171"
+Received: from gklab-003-014.igk.intel.com ([10.211.116.96])
+  by orviesa002.jf.intel.com with ESMTP; 14 Apr 2025 03:53:04 -0700
+From: Milena Olech <milena.olech@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	Milena Olech <milena.olech@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Samuel Salin <Samuel.salin@intel.com>
+Subject: [PATCH v11 iwl-next 04/11] idpf: move virtchnl structures to the header file
+Date: Mon, 14 Apr 2025 12:45:14 +0200
+Message-ID: <20250414104658.14706-10-milena.olech@intel.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250414104658.14706-1-milena.olech@intel.com>
+References: <20250414104658.14706-1-milena.olech@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed Apr 9, 2025 at 4:47 PM CEST, Tamir Duberstein wrote:
-> In Rust 1.78.0, Clippy introduced the `ref_as_ptr` lint [1]:
->
->> Using `as` casts may result in silently changing mutability or type.
->
-> While this doesn't eliminate unchecked `as` conversions, it makes such
-> conversions easier to scrutinize.  It also has the slight benefit of
-> removing a degree of freedom on which to bikeshed. Thus apply the
-> changes and enable the lint -- no functional change intended.
->
-> Link: https://rust-lang.github.io/rust-clippy/master/index.html#ref_as_pt=
-r [1]
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://lore.kernel.org/all/D8PGG7NTWB6U.3SS3A5LN4XWMN@proton.me/
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Move virtchnl structures to the header file to expose them for the PTP
+virtchnl file.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Milena Olech <milena.olech@intel.com>
+Tested-by: Mina Almasry <almasrymina@google.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
 ---
-Cheers,
-Benno
+v1 -> v2: fix commit message title
 
-> ---
->  Makefile                 |  1 +
->  rust/bindings/lib.rs     |  1 +
->  rust/kernel/device_id.rs |  3 ++-
->  rust/kernel/fs/file.rs   |  3 ++-
->  rust/kernel/str.rs       |  6 ++++--
->  rust/kernel/uaccess.rs   | 10 ++++------
->  rust/uapi/lib.rs         |  1 +
->  7 files changed, 15 insertions(+), 10 deletions(-)
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 86 +------------------
+ .../net/ethernet/intel/idpf/idpf_virtchnl.h   | 84 ++++++++++++++++++
+ 2 files changed, 86 insertions(+), 84 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 7004289b974c..a55ff20895ed 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -7,88 +7,6 @@
+ #include "idpf_virtchnl.h"
+ #include "idpf_ptp.h"
+ 
+-#define IDPF_VC_XN_MIN_TIMEOUT_MSEC	2000
+-#define IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC	(60 * 1000)
+-#define IDPF_VC_XN_IDX_M		GENMASK(7, 0)
+-#define IDPF_VC_XN_SALT_M		GENMASK(15, 8)
+-#define IDPF_VC_XN_RING_LEN		U8_MAX
+-
+-/**
+- * enum idpf_vc_xn_state - Virtchnl transaction status
+- * @IDPF_VC_XN_IDLE: not expecting a reply, ready to be used
+- * @IDPF_VC_XN_WAITING: expecting a reply, not yet received
+- * @IDPF_VC_XN_COMPLETED_SUCCESS: a reply was expected and received,
+- *				  buffer updated
+- * @IDPF_VC_XN_COMPLETED_FAILED: a reply was expected and received, but there
+- *				 was an error, buffer not updated
+- * @IDPF_VC_XN_SHUTDOWN: transaction object cannot be used, VC torn down
+- * @IDPF_VC_XN_ASYNC: transaction sent asynchronously and doesn't have the
+- *		      return context; a callback may be provided to handle
+- *		      return
+- */
+-enum idpf_vc_xn_state {
+-	IDPF_VC_XN_IDLE = 1,
+-	IDPF_VC_XN_WAITING,
+-	IDPF_VC_XN_COMPLETED_SUCCESS,
+-	IDPF_VC_XN_COMPLETED_FAILED,
+-	IDPF_VC_XN_SHUTDOWN,
+-	IDPF_VC_XN_ASYNC,
+-};
+-
+-struct idpf_vc_xn;
+-/* Callback for asynchronous messages */
+-typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
+-			    const struct idpf_ctlq_msg *);
+-
+-/**
+- * struct idpf_vc_xn - Data structure representing virtchnl transactions
+- * @completed: virtchnl event loop uses that to signal when a reply is
+- *	       available, uses kernel completion API
+- * @state: virtchnl event loop stores the data below, protected by the
+- *	   completion's lock.
+- * @reply_sz: Original size of reply, may be > reply_buf.iov_len; it will be
+- *	      truncated on its way to the receiver thread according to
+- *	      reply_buf.iov_len.
+- * @reply: Reference to the buffer(s) where the reply data should be written
+- *	   to. May be 0-length (then NULL address permitted) if the reply data
+- *	   should be ignored.
+- * @async_handler: if sent asynchronously, a callback can be provided to handle
+- *		   the reply when it's received
+- * @vc_op: corresponding opcode sent with this transaction
+- * @idx: index used as retrieval on reply receive, used for cookie
+- * @salt: changed every message to make unique, used for cookie
+- */
+-struct idpf_vc_xn {
+-	struct completion completed;
+-	enum idpf_vc_xn_state state;
+-	size_t reply_sz;
+-	struct kvec reply;
+-	async_vc_cb async_handler;
+-	u32 vc_op;
+-	u8 idx;
+-	u8 salt;
+-};
+-
+-/**
+- * struct idpf_vc_xn_params - Parameters for executing transaction
+- * @send_buf: kvec for send buffer
+- * @recv_buf: kvec for recv buffer, may be NULL, must then have zero length
+- * @timeout_ms: timeout to wait for reply
+- * @async: send message asynchronously, will not wait on completion
+- * @async_handler: If sent asynchronously, optional callback handler. The user
+- *		   must be careful when using async handlers as the memory for
+- *		   the recv_buf _cannot_ be on stack if this is async.
+- * @vc_op: virtchnl op to send
+- */
+-struct idpf_vc_xn_params {
+-	struct kvec send_buf;
+-	struct kvec recv_buf;
+-	int timeout_ms;
+-	bool async;
+-	async_vc_cb async_handler;
+-	u32 vc_op;
+-};
+-
+ /**
+  * struct idpf_vc_xn_manager - Manager for tracking transactions
+  * @ring: backing and lookup for transactions
+@@ -450,8 +368,8 @@ static void idpf_vc_xn_push_free(struct idpf_vc_xn_manager *vcxn_mngr,
+  * >= @recv_buf.iov_len, but we never overflow @@recv_buf_iov_base). < 0 for
+  * error.
+  */
+-static ssize_t idpf_vc_xn_exec(struct idpf_adapter *adapter,
+-			       const struct idpf_vc_xn_params *params)
++ssize_t idpf_vc_xn_exec(struct idpf_adapter *adapter,
++			const struct idpf_vc_xn_params *params)
+ {
+ 	const struct kvec *send_buf = &params->send_buf;
+ 	struct idpf_vc_xn *xn;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+index 83da5d8da56b..3522c1238ea2 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+@@ -4,6 +4,88 @@
+ #ifndef _IDPF_VIRTCHNL_H_
+ #define _IDPF_VIRTCHNL_H_
+ 
++#define IDPF_VC_XN_MIN_TIMEOUT_MSEC	2000
++#define IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC	(60 * 1000)
++#define IDPF_VC_XN_IDX_M		GENMASK(7, 0)
++#define IDPF_VC_XN_SALT_M		GENMASK(15, 8)
++#define IDPF_VC_XN_RING_LEN		U8_MAX
++
++/**
++ * enum idpf_vc_xn_state - Virtchnl transaction status
++ * @IDPF_VC_XN_IDLE: not expecting a reply, ready to be used
++ * @IDPF_VC_XN_WAITING: expecting a reply, not yet received
++ * @IDPF_VC_XN_COMPLETED_SUCCESS: a reply was expected and received, buffer
++ *				  updated
++ * @IDPF_VC_XN_COMPLETED_FAILED: a reply was expected and received, but there
++ *				 was an error, buffer not updated
++ * @IDPF_VC_XN_SHUTDOWN: transaction object cannot be used, VC torn down
++ * @IDPF_VC_XN_ASYNC: transaction sent asynchronously and doesn't have the
++ *		      return context; a callback may be provided to handle
++ *		      return
++ */
++enum idpf_vc_xn_state {
++	IDPF_VC_XN_IDLE = 1,
++	IDPF_VC_XN_WAITING,
++	IDPF_VC_XN_COMPLETED_SUCCESS,
++	IDPF_VC_XN_COMPLETED_FAILED,
++	IDPF_VC_XN_SHUTDOWN,
++	IDPF_VC_XN_ASYNC,
++};
++
++struct idpf_vc_xn;
++/* Callback for asynchronous messages */
++typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
++			    const struct idpf_ctlq_msg *);
++
++/**
++ * struct idpf_vc_xn - Data structure representing virtchnl transactions
++ * @completed: virtchnl event loop uses that to signal when a reply is
++ *	       available, uses kernel completion API
++ * @state: virtchnl event loop stores the data below, protected by the
++ *	   completion's lock.
++ * @reply_sz: Original size of reply, may be > reply_buf.iov_len; it will be
++ *	      truncated on its way to the receiver thread according to
++ *	      reply_buf.iov_len.
++ * @reply: Reference to the buffer(s) where the reply data should be written
++ *	   to. May be 0-length (then NULL address permitted) if the reply data
++ *	   should be ignored.
++ * @async_handler: if sent asynchronously, a callback can be provided to handle
++ *		   the reply when it's received
++ * @vc_op: corresponding opcode sent with this transaction
++ * @idx: index used as retrieval on reply receive, used for cookie
++ * @salt: changed every message to make unique, used for cookie
++ */
++struct idpf_vc_xn {
++	struct completion completed;
++	enum idpf_vc_xn_state state;
++	size_t reply_sz;
++	struct kvec reply;
++	async_vc_cb async_handler;
++	u32 vc_op;
++	u8 idx;
++	u8 salt;
++};
++
++/**
++ * struct idpf_vc_xn_params - Parameters for executing transaction
++ * @send_buf: kvec for send buffer
++ * @recv_buf: kvec for recv buffer, may be NULL, must then have zero length
++ * @timeout_ms: timeout to wait for reply
++ * @async: send message asynchronously, will not wait on completion
++ * @async_handler: If sent asynchronously, optional callback handler. The user
++ *		   must be careful when using async handlers as the memory for
++ *		   the recv_buf _cannot_ be on stack if this is async.
++ * @vc_op: virtchnl op to send
++ */
++struct idpf_vc_xn_params {
++	struct kvec send_buf;
++	struct kvec recv_buf;
++	int timeout_ms;
++	bool async;
++	async_vc_cb async_handler;
++	u32 vc_op;
++};
++
+ struct idpf_adapter;
+ struct idpf_netdev_priv;
+ struct idpf_vec_regs;
+@@ -11,6 +93,8 @@ struct idpf_vport;
+ struct idpf_vport_max_q;
+ struct idpf_vport_user_config_data;
+ 
++ssize_t idpf_vc_xn_exec(struct idpf_adapter *adapter,
++			const struct idpf_vc_xn_params *params);
+ int idpf_init_dflt_mbx(struct idpf_adapter *adapter);
+ void idpf_deinit_dflt_mbx(struct idpf_adapter *adapter);
+ int idpf_vc_core_init(struct idpf_adapter *adapter);
+-- 
+2.43.5
 
