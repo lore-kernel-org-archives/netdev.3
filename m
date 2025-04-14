@@ -1,77 +1,55 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from a3.inai.de (a3.inai.de [144.76.212.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1F51DDA2D
-	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 20:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C299155C82;
+	Mon, 14 Apr 2025 20:25:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.212.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744661492; cv=none; b=FidmOx2RKdXDZX2hn3x85mOUYWtcp9fnX6RPM740/NO+ECpzqsEqMkAbTU8HOqYrOqhS8ha0jysq00X9tg5OB0W49NLCWGkC296BZdLBZF2nh48/pHwLUlsIksqqAGyw/LGXCXTxsQBMB9VffIxD8Se0xsS5bbbecAYJmwrKAtk=
+	t=1744662333; cv=none; b=ZIFnq90vq6/ldZt3ZyB7AuKt4IfdIFyOm0ivkFe49rGC9t2V9T40YgGgAutkvIB9YTZwxGLXBHVzYvkg6Kyv6h5asihKSWi0K8L8ymzQ359ZUnK7OQgdlUGCejrxSl7wFxaj+Kn9aHXIJ4wFvc5JjjqauaUx2ZMJw1vQrJCwWV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744661492; c=relaxed/simple;
-	bh=VEs9DpuTUMML3FoZ1Xp6HNR8FbDMkLKE/5JCRvx0KjA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=lRiaeZlwCKdUSebZNpHXk6jKr7j09fVyAsarJk7OER8kgyylBNPE0RUIEowhzRtnGHB3Qg3jXnP75/4rw1QCEGycds6Xy0sNtm7oaXGc4sc8pmkLl+ok16/b+NBd99NIobRBGYMu2mQ1uA+fYKmxs1siFKmtcuYAK4EGg7xrdNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QsrnUEHY; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QsrnUEHY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16AABC4CEE2;
-	Mon, 14 Apr 2025 20:11:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744661492;
-	bh=VEs9DpuTUMML3FoZ1Xp6HNR8FbDMkLKE/5JCRvx0KjA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=QsrnUEHY4OfSCI0A9T8a8BBVoYK4JaJqujR0JRgRjBkMh57/xz7FnAsewYsiXOIdp
-	 SP5odTRXdyfQaHPvzTcsUUcHfCg7C7PFe9jhR6eIK4Obm0r3f6vvn6xJLOXWYz9U3p
-	 agdFL20CLOtXoYnYYdtvm3bhxRGPROEJhsjDIZJuQaMFGejAMf7mUU8zp3JadSbhUU
-	 ByxjArnl+8kVpKJ/M0R/X3lrKHH1E7z3KG/dDTRo5yTOP8PdPDJtoFHQ4x35LeqQBA
-	 Awv4YfE2/B4HfZUQI+4nk5Sk+unbAmaGHnM/CrGLeu6HPAA1tjcJVTsv+oHHXZLvib
-	 juSnCnMjLsZYQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33D4E3822D1A;
-	Mon, 14 Apr 2025 20:12:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1744662333; c=relaxed/simple;
+	bh=+Lu3Z0OL0BVUmWIf0Pri3bFzjpW5AwkxBgE5ROWu3QE=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=qAOpUiXVM5uiu8+CYmoZdVgXeNZ2kJcjfvETxDJmqZGV+9gAEuad3pp4Seu/c8/aoHdAV/EEfIDCPCOOYyLng1+78mZV9WbXflREF2gdaohNVuOCjwo0vFr2MiBtir/dpZ5GB+raLloWAwk7xgW3RNunx2sFeCl7JLWsuZR+iHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inai.de; spf=pass smtp.mailfrom=inai.de; arc=none smtp.client-ip=144.76.212.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inai.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inai.de
+Received: by a3.inai.de (Postfix, from userid 25121)
+	id A69471003A830F; Mon, 14 Apr 2025 22:19:48 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by a3.inai.de (Postfix) with ESMTP id A4BE71100952B9;
+	Mon, 14 Apr 2025 22:19:48 +0200 (CEST)
+Date: Mon, 14 Apr 2025 22:19:48 +0200 (CEST)
+From: Jan Engelhardt <ej@inai.de>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+cc: netfilter-devel@vger.kernel.org, netfilter@vger.kernel.org, 
+    netfilter-announce@lists.netfilter.org, lwn@lwn.net, 
+    netdev@vger.kernel.org
+Subject: Re: [ANNOUNCE] nftables 1.1.2 release
+In-Reply-To: <Z_1KxMUDT0D8e6wH@calendula>
+Message-ID: <oo77o28s-265o-8pn2-q790-9p64522on819@vanv.qr>
+References: <Z_1KxMUDT0D8e6wH@calendula>
+User-Agent: Alpine 2.26 (LSU 649 2022-06-02)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: don't mix device locking in dev_close_many() calls
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174466153001.2024730.15950175413577520889.git-patchwork-notify@kernel.org>
-Date: Mon, 14 Apr 2025 20:12:10 +0000
-References: <20250412233011.309762-1-kuba@kernel.org>
-In-Reply-To: <20250412233011.309762-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- syzbot+6f588c78bf765b62b450@syzkaller.appspotmail.com, sdf@fomichev.me
-
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sat, 12 Apr 2025 16:30:11 -0700 you wrote:
-> Lockdep found the following dependency:
-> 
->   &dev_instance_lock_key#3 -->
->      &rdev->wiphy.mtx -->
->         &net->xdp.lock -->
-> 	   &xs->mutex -->
-> 	      &dev_instance_lock_key#3
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] net: don't mix device locking in dev_close_many() calls
-    https://git.kernel.org/netdev/net/c/f0433eea4688
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Content-Type: text/plain; charset=US-ASCII
 
 
+On Monday 2025-04-14 19:49, Pablo Neira Ayuso wrote:
+>You can download this new release from:
+>https://www.netfilter.org/pub/nftables/
+>[ NOTE: We have switched to .tar.xz files for releases. ]
+
+$ tar -tf nftables-1.1.2.tar.xz|grep main.nf
+nftables-1.1.2/files/nftables/main.nft
+
+This file I do not see it in the git repo.
+main.nft is not autogenerated when running the usual
+autoreconf/configure procedure from the git repo either.
+
+main.nft was part of my earlier patch about adding a systemd unit,
+but that was not applied yet either.
