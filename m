@@ -1,44 +1,44 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858C5284681
-	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 16:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD58C28467B
+	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 16:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744646898; cv=none; b=kt+8IVEHoq68laSkxVTS67bZfKjg9IogfnIIWEWTjI2CEXrjJI0f+YTwkcBotfnSC5koZyFEHkBfdkdyKewMtWfPmSQaAjr2l6vEAX88aT+QovBIyr1lJKUsCEW6S4i+tSSkOcZ39vF1W5zVha1kfK3ZqoPFu2oSeHmJMNDfIzw=
+	t=1744646897; cv=none; b=f8W47TIFqnz9ug03NG8LSFTWrjkcLdyE/cEDJlDKDls4N6PUZ0BShsnbF7vjBi8S5PRNp7fmsdxHYlmalVRJhHvwt1LH1rmZAXq/a8n5EdmKDwfSppv+kXRAPU9oivOQW8jvxbxTIrpHRC6dLheyMEdEGgIfr3a6IoHcqW2G8Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744646898; c=relaxed/simple;
-	bh=BzPUhbmNkCopiV7ExEaARyd19Lxmn+Cz6wHFBLAR19M=;
+	s=arc-20240116; t=1744646897; c=relaxed/simple;
+	bh=v7RhFSgBHl6do2PHZE0SEWhANodHdljHrklA3+bg+Eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqwWGraro8s3WqNpPcqE4zHaScyeQfI23LxTY1aUdZK/+AZz9C1G/bD59ARkTkaFWjS1XMJSZQnenhLrFAgHtYJdDmPAkOoF3qAOgANRsnBlBwR9Et61JeLj5Syu52x6jIAt/szJ5ZCGJr9DTVrhxAGwZ1XV2jebKcEPI1CkMd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xznkeN2B; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ieAmgZar; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version; b=VvalJX8WwXPstQ3/A6aUvvNhBVBFfPDtfUPwNNolJRzjTFb5e2J75bfWEDiEYB7I1AbSWEAT6Ofrhgq5zT96rfEQwkQ9bJZrz4sifDVoJxlPJZy7t/lOvFEnhDUXjDyS0WZRBMHlzk/8dh+ggQo224jDfPCpOoJr2mnzbA6LrD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tV2MyPBV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=78I64WgA; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xznkeN2B";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ieAmgZar"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tV2MyPBV";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="78I64WgA"
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744646891;
+	s=2020; t=1744646890;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L/AroQXHgTdz77aroNbjmTlYg1DO9N7CgHo394BpLss=;
-	b=xznkeN2B3XUXg5nweocrSXjym30+WfhTKOmM8uHFxF7N1LH3pa0+772EsAY2fhjMc5CdT7
-	PH6sMTCxn1Al2Ia1uV8T5lOIlyFSp25Qn/NnR3B2NX8fZ+3XFmRXDStBTC3S5cts29YUqt
-	MGxXjPPDi4LFqmvx0o9cF66RlbVW+0jAaupZWA2pg1Rvy9DmOif4Vx103DawXlnOugK/uj
-	WHiCm6nF4/WLJZk9EbLIPuDKc+m76UVvxAC+KY48AClTJAnKbwmpMxqqiXHamaNBhEU+Ds
-	vjLTZL00FBSTx8b+366o6qkQonTOg2GuDnogDb5tYrsP8ersxKEJsJUUb77WdQ==
+	bh=PTWtiRmXKkzkgrYkJD95bvxmjzGpxsORrajFE2DMp84=;
+	b=tV2MyPBVEp52JCDnk2ANIWxNOIZLqKp4yGJeLpxgujPcbujwnVIUNTVwtaB5ND+9eTxaR9
+	Ef/KnolcQo+YiS3iUslev2Fc4P6Cx9f2fC+ondyxPKDZYScvljZXuLCMQnVAVf6m2h98Oe
+	HlIn4QmGFlYr0bJUR5VcrJdvkXahlZmWfamGGkg7Ko/6n9zkSe6i7fF6WzdPTsg1lHfFlc
+	QOJ8GCHhYrYFC3NzgZ5op6WXrXKcPHDaw1Sll0wkk5yPYExTkr/hr7RG9sdjCZPZg1WF+Y
+	JvgvvLiahUNH82qgpBYLsnAbVwSGUsqUOog0hi2bHcoZOOtI8f2dVluAL8/dsw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744646891;
+	s=2020e; t=1744646890;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L/AroQXHgTdz77aroNbjmTlYg1DO9N7CgHo394BpLss=;
-	b=ieAmgZarw0KXWrrRlhqJB/XN1eVwVNpHuBbi/ojp/YRn7LgxNLQywS5APxYLGrb/UnMDHh
-	aV9iwtEj40yXVhCA==
+	bh=PTWtiRmXKkzkgrYkJD95bvxmjzGpxsORrajFE2DMp84=;
+	b=78I64WgAkUXOdliZ0OOwj0iI14MJ64Z67qYju7YeIMVXbyWoF9eQjsZ5H5fSFNTTmIU9Rb
+	7ppY9yWPuPQKuiBg==
 To: netdev@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -48,11 +48,20 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Simon Horman <horms@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH net-next v2 09/18] xfrm: Use nested-BH locking for nat_keepalive_sk_ipv[46]
-Date: Mon, 14 Apr 2025 18:07:45 +0200
-Message-ID: <20250414160754.503321-10-bigeasy@linutronix.de>
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>
+Subject: [PATCH net-next v2 06/18] netfilter: nf_dup{4, 6}: Move duplication check to task_struct
+Date: Mon, 14 Apr 2025 18:07:42 +0200
+Message-ID: <20250414160754.503321-7-bigeasy@linutronix.de>
 In-Reply-To: <20250414160754.503321-1-bigeasy@linutronix.de>
 References: <20250414160754.503321-1-bigeasy@linutronix.de>
 Precedence: bulk
@@ -63,114 +72,170 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 
-nat_keepalive_sk_ipv[46] is a per-CPU variable and relies on disabled BH
-for its locking. Without per-CPU locking in local_bh_disable() on
-PREEMPT_RT this data structure requires explicit locking.
+nf_skb_duplicated is a per-CPU variable and relies on disabled BH for its
+locking. Without per-CPU locking in local_bh_disable() on PREEMPT_RT
+this data structure requires explicit locking.
 
-Use sock_bh_locked which has a sock pointer and a local_lock_t. Use
-local_lock_nested_bh() for locking. This change adds only lockdep
-coverage and does not alter the functional behaviour for !PREEMPT_RT.
+Due to the recursion involved, the simplest change is to make it a
+per-task variable.
 
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Move the per-CPU variable nf_skb_duplicated to task_struct and name it
+in_nf_duplicate. Add it to the existing bitfield so it doesn't use
+additional memory.
+
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Jozsef Kadlecsik <kadlec@netfilter.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Ben Segall <bsegall@google.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Valentin Schneider <vschneid@redhat.com>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- net/xfrm/xfrm_nat_keepalive.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ include/linux/netfilter.h        | 11 -----------
+ include/linux/sched.h            |  1 +
+ net/ipv4/netfilter/ip_tables.c   |  2 +-
+ net/ipv4/netfilter/nf_dup_ipv4.c |  6 +++---
+ net/ipv6/netfilter/ip6_tables.c  |  2 +-
+ net/ipv6/netfilter/nf_dup_ipv6.c |  6 +++---
+ net/netfilter/core.c             |  3 ---
+ 7 files changed, 9 insertions(+), 22 deletions(-)
 
-diff --git a/net/xfrm/xfrm_nat_keepalive.c b/net/xfrm/xfrm_nat_keepalive.c
-index 82f0a301683f0..ebf95d48e86c1 100644
---- a/net/xfrm/xfrm_nat_keepalive.c
-+++ b/net/xfrm/xfrm_nat_keepalive.c
-@@ -9,9 +9,13 @@
- #include <net/ip6_checksum.h>
- #include <net/xfrm.h>
+diff --git a/include/linux/netfilter.h b/include/linux/netfilter.h
+index 2b8aac2c70ada..892d12823ed4b 100644
+--- a/include/linux/netfilter.h
++++ b/include/linux/netfilter.h
+@@ -497,17 +497,6 @@ struct nf_defrag_hook {
+ extern const struct nf_defrag_hook __rcu *nf_defrag_v4_hook;
+ extern const struct nf_defrag_hook __rcu *nf_defrag_v6_hook;
 =20
--static DEFINE_PER_CPU(struct sock *, nat_keepalive_sk_ipv4);
-+static DEFINE_PER_CPU(struct sock_bh_locked, nat_keepalive_sk_ipv4) =3D {
-+	.bh_lock =3D INIT_LOCAL_LOCK(bh_lock),
-+};
- #if IS_ENABLED(CONFIG_IPV6)
--static DEFINE_PER_CPU(struct sock *, nat_keepalive_sk_ipv6);
-+static DEFINE_PER_CPU(struct sock_bh_locked, nat_keepalive_sk_ipv6) =3D {
-+	.bh_lock =3D INIT_LOCAL_LOCK(bh_lock),
-+};
+-/*
+- * nf_skb_duplicated - TEE target has sent a packet
+- *
+- * When a xtables target sends a packet, the OUTPUT and POSTROUTING
+- * hooks are traversed again, i.e. nft and xtables are invoked recursively.
+- *
+- * This is used by xtables TEE target to prevent the duplicated skb from
+- * being duplicated again.
+- */
+-DECLARE_PER_CPU(bool, nf_skb_duplicated);
+-
+ /*
+  * Contains bitmask of ctnetlink event subscribers, if any.
+  * Can't be pernet due to NETLINK_LISTEN_ALL_NSID setsockopt flag.
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index f96ac19828934..52d9c52dc8f27 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1044,6 +1044,7 @@ struct task_struct {
+ 	/* delay due to memory thrashing */
+ 	unsigned                        in_thrashing:1;
  #endif
-=20
- struct nat_keepalive {
-@@ -56,10 +60,12 @@ static int nat_keepalive_send_ipv4(struct sk_buff *skb,
-=20
- 	skb_dst_set(skb, &rt->dst);
-=20
--	sk =3D *this_cpu_ptr(&nat_keepalive_sk_ipv4);
-+	local_lock_nested_bh(&nat_keepalive_sk_ipv4.bh_lock);
-+	sk =3D this_cpu_read(nat_keepalive_sk_ipv4.sock);
- 	sock_net_set(sk, net);
- 	err =3D ip_build_and_send_pkt(skb, sk, fl4.saddr, fl4.daddr, NULL, tos);
- 	sock_net_set(sk, &init_net);
-+	local_unlock_nested_bh(&nat_keepalive_sk_ipv4.bh_lock);
- 	return err;
- }
-=20
-@@ -89,15 +95,19 @@ static int nat_keepalive_send_ipv6(struct sk_buff *skb,
- 	fl6.fl6_sport =3D ka->encap_sport;
- 	fl6.fl6_dport =3D ka->encap_dport;
-=20
--	sk =3D *this_cpu_ptr(&nat_keepalive_sk_ipv6);
-+	local_lock_nested_bh(&nat_keepalive_sk_ipv6.bh_lock);
-+	sk =3D this_cpu_read(nat_keepalive_sk_ipv6.sock);
- 	sock_net_set(sk, net);
- 	dst =3D ipv6_stub->ipv6_dst_lookup_flow(net, sk, &fl6, NULL);
--	if (IS_ERR(dst))
-+	if (IS_ERR(dst)) {
-+		local_unlock_nested_bh(&nat_keepalive_sk_ipv6.bh_lock);
- 		return PTR_ERR(dst);
-+	}
-=20
- 	skb_dst_set(skb, dst);
- 	err =3D ipv6_stub->ip6_xmit(sk, skb, &fl6, skb->mark, NULL, 0, 0);
- 	sock_net_set(sk, &init_net);
-+	local_unlock_nested_bh(&nat_keepalive_sk_ipv6.bh_lock);
- 	return err;
- }
++	unsigned			in_nf_duplicate:1;
+ #ifdef CONFIG_PREEMPT_RT
+ 	struct netdev_xmit		net_xmit;
  #endif
-@@ -202,7 +212,7 @@ static void nat_keepalive_work(struct work_struct *work)
- 				      (ctx.next_run - ctx.now) * HZ);
- }
+diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
+index 3d101613f27fa..23c8deff8095a 100644
+--- a/net/ipv4/netfilter/ip_tables.c
++++ b/net/ipv4/netfilter/ip_tables.c
+@@ -270,7 +270,7 @@ ipt_do_table(void *priv,
+ 	 * but it is no problem since absolute verdict is issued by these.
+ 	 */
+ 	if (static_key_false(&xt_tee_enabled))
+-		jumpstack +=3D private->stacksize * __this_cpu_read(nf_skb_duplicated);
++		jumpstack +=3D private->stacksize * current->in_nf_duplicate;
 =20
--static int nat_keepalive_sk_init(struct sock * __percpu *socks,
-+static int nat_keepalive_sk_init(struct sock_bh_locked __percpu *socks,
- 				 unsigned short family)
- {
- 	struct sock *sk;
-@@ -214,22 +224,22 @@ static int nat_keepalive_sk_init(struct sock * __perc=
-pu *socks,
- 		if (err < 0)
- 			goto err;
+ 	e =3D get_entry(table_base, private->hook_entry[hook]);
 =20
--		*per_cpu_ptr(socks, i) =3D sk;
-+		per_cpu_ptr(socks, i)->sock =3D sk;
+diff --git a/net/ipv4/netfilter/nf_dup_ipv4.c b/net/ipv4/netfilter/nf_dup_i=
+pv4.c
+index 25e1e8eb18dd5..ed08fb78cfa8c 100644
+--- a/net/ipv4/netfilter/nf_dup_ipv4.c
++++ b/net/ipv4/netfilter/nf_dup_ipv4.c
+@@ -54,7 +54,7 @@ void nf_dup_ipv4(struct net *net, struct sk_buff *skb, un=
+signed int hooknum,
+ 	struct iphdr *iph;
+=20
+ 	local_bh_disable();
+-	if (this_cpu_read(nf_skb_duplicated))
++	if (current->in_nf_duplicate)
+ 		goto out;
+ 	/*
+ 	 * Copy the skb, and route the copy. Will later return %XT_CONTINUE for
+@@ -86,9 +86,9 @@ void nf_dup_ipv4(struct net *net, struct sk_buff *skb, un=
+signed int hooknum,
+ 		--iph->ttl;
+=20
+ 	if (nf_dup_ipv4_route(net, skb, gw, oif)) {
+-		__this_cpu_write(nf_skb_duplicated, true);
++		current->in_nf_duplicate =3D true;
+ 		ip_local_out(net, skb->sk, skb);
+-		__this_cpu_write(nf_skb_duplicated, false);
++		current->in_nf_duplicate =3D false;
+ 	} else {
+ 		kfree_skb(skb);
  	}
+diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_table=
+s.c
+index 7d5602950ae72..d585ac3c11133 100644
+--- a/net/ipv6/netfilter/ip6_tables.c
++++ b/net/ipv6/netfilter/ip6_tables.c
+@@ -292,7 +292,7 @@ ip6t_do_table(void *priv, struct sk_buff *skb,
+ 	 * but it is no problem since absolute verdict is issued by these.
+ 	 */
+ 	if (static_key_false(&xt_tee_enabled))
+-		jumpstack +=3D private->stacksize * __this_cpu_read(nf_skb_duplicated);
++		jumpstack +=3D private->stacksize * current->in_nf_duplicate;
 =20
- 	return 0;
- err:
- 	for_each_possible_cpu(i)
--		inet_ctl_sock_destroy(*per_cpu_ptr(socks, i));
-+		inet_ctl_sock_destroy(per_cpu_ptr(socks, i)->sock);
- 	return err;
- }
+ 	e =3D get_entry(table_base, private->hook_entry[hook]);
 =20
--static void nat_keepalive_sk_fini(struct sock * __percpu *socks)
-+static void nat_keepalive_sk_fini(struct sock_bh_locked __percpu *socks)
+diff --git a/net/ipv6/netfilter/nf_dup_ipv6.c b/net/ipv6/netfilter/nf_dup_i=
+pv6.c
+index 0c39c77fe8a8a..b903c62c00c9e 100644
+--- a/net/ipv6/netfilter/nf_dup_ipv6.c
++++ b/net/ipv6/netfilter/nf_dup_ipv6.c
+@@ -48,7 +48,7 @@ void nf_dup_ipv6(struct net *net, struct sk_buff *skb, un=
+signed int hooknum,
+ 		 const struct in6_addr *gw, int oif)
  {
- 	int i;
+ 	local_bh_disable();
+-	if (this_cpu_read(nf_skb_duplicated))
++	if (current->in_nf_duplicate)
+ 		goto out;
+ 	skb =3D pskb_copy(skb, GFP_ATOMIC);
+ 	if (skb =3D=3D NULL)
+@@ -64,9 +64,9 @@ void nf_dup_ipv6(struct net *net, struct sk_buff *skb, un=
+signed int hooknum,
+ 		--iph->hop_limit;
+ 	}
+ 	if (nf_dup_ipv6_route(net, skb, gw, oif)) {
+-		__this_cpu_write(nf_skb_duplicated, true);
++		current->in_nf_duplicate =3D true;
+ 		ip6_local_out(net, skb->sk, skb);
+-		__this_cpu_write(nf_skb_duplicated, false);
++		current->in_nf_duplicate =3D false;
+ 	} else {
+ 		kfree_skb(skb);
+ 	}
+diff --git a/net/netfilter/core.c b/net/netfilter/core.c
+index b9f551f02c813..11a702065bab5 100644
+--- a/net/netfilter/core.c
++++ b/net/netfilter/core.c
+@@ -31,9 +31,6 @@
+ const struct nf_ipv6_ops __rcu *nf_ipv6_ops __read_mostly;
+ EXPORT_SYMBOL_GPL(nf_ipv6_ops);
 =20
- 	for_each_possible_cpu(i)
--		inet_ctl_sock_destroy(*per_cpu_ptr(socks, i));
-+		inet_ctl_sock_destroy(per_cpu_ptr(socks, i)->sock);
- }
-=20
- void xfrm_nat_keepalive_state_updated(struct xfrm_state *x)
+-DEFINE_PER_CPU(bool, nf_skb_duplicated);
+-EXPORT_SYMBOL_GPL(nf_skb_duplicated);
+-
+ #ifdef CONFIG_JUMP_LABEL
+ struct static_key nf_hooks_needed[NFPROTO_NUMPROTO][NF_MAX_HOOKS];
+ EXPORT_SYMBOL(nf_hooks_needed);
 --=20
 2.49.0
 
