@@ -1,168 +1,112 @@
-Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEB125DAFD
-	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 08:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E1BDF42;
+	Mon, 14 Apr 2025 08:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744620352; cv=none; b=U+eRgWVKzdwRrcgmLAsim/jOGjK/RveMCETImS57RP/Uyo5r205hsFXqy3Zt4XejHzqwoVO/DBLuaOZJ6VNov5w8hoWJmjpIWseoxiB40IN+06rBpZ513lUlginVT+gvoj25/SaGVcnOUPCA5fhlE23UW/hm+wfG94X0igtlGLk=
+	t=1744620752; cv=none; b=G++C6qUDOcsXqB+LT0fs6Y1MRaHilEgAR9QA7mZo9XdbpPZ6CwEfgx0sE6YVRmCJ95AESuRpexuJMewMqpT/Hv4KMUt+SbA4KerpqfDiSApwp/ZZ+eshgshIz5KxIr5mFDPmNFyICRjCYkb8cFNl5xegHC6f45Qnl/AaTSea+i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744620352; c=relaxed/simple;
-	bh=p/TA1OYYyLmyYh+1BOWJD/YmsnVrwWqX560OexUaeEs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=B+CaYD7hfngINulR3lsPiUzhCXoLk7vI6mfDtk71tpgLh/IovLLq0IoyI/9yOq385pcCKbN/Q/wH2d59hAgyMvlZw1EQQR9JdsqxrMhzkKKqSq8Sdo2ARGQhY3lmoMum29DXfJPHps8epeQrK/87T6pPRlhBVgnlTmL1+k4keoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.34.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: izesmtp25t1744620295t9a3c904f
-X-QQ-Originating-IP: LdnE4VcaLj5frFG2u8YoEYETo8Umxu7hE75sG+KW/z4=
-Received: from wxdbg.localdomain.com ( [36.20.107.143])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 14 Apr 2025 16:44:54 +0800 (CST)
-X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 13594933487445962241
-EX-QQ-RecipientCnt: 17
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	dlemoal@kernel.org,
-	jdamato@fastly.com,
-	saikrishnag@marvell.com,
-	vadim.fedorenko@linux.dev,
-	przemyslaw.kitszel@intel.com,
-	ecree.xilinx@gmail.com,
-	rmk+kernel@armlinux.org.uk
-Cc: mengyuanlou@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Michal Kubiak <michal.kubiak@intel.com>
-Subject: [PATCH net-next v2 2/2] net: wangxun: restrict feature flags for tunnel packets
-Date: Mon, 14 Apr 2025 17:10:22 +0800
-Message-Id: <20250414091022.383328-3-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20250414091022.383328-1-jiawenwu@trustnetic.com>
-References: <20250414091022.383328-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1744620752; c=relaxed/simple;
+	bh=njlJ6wOPTfgXbiVOtvyAn8VB29ZgxhG14ZDHCkhqO1c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UXF6RVylfc12feN5NuMHwn82mQ+16mAKDSCyMVZm858QrcQs2zOx7rR4QU7yt26Uf4yphIhPaWpwMywANjm/XdVU2Vys/oGa8Bf9i3znHMx394i5/J/5EXdTX6HBgxuDmmp2SpwmhLido0Om88xCVlrEmPbBcQATXnubWjt9CCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AW6qmC5I; arc=none smtp.client-ip=209.85.221.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AW6qmC5I"
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-52413efd0d3so1707430e0c.2;
+        Mon, 14 Apr 2025 01:52:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744620749; x=1745225549; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RK1FjQCAv98Eay4SPuOitMP3sY6he/myS3klmD5dY54=;
+        b=AW6qmC5IPbxz4Os6/GQ7QlrGXje+Ynhqgf5gEeZhCfvhwfoY+s1JApLJKoX0agIs68
+         mFIiLXV+X3RrIiAm2ZWw3gaXrpgGXGZ0BMmu2QHjTHJfx6g8GFL+XNFczrnMeMQlDZ+E
+         teubzc4eUzcU26cwt4XPo75NGxdZ5PXX/ID+h+iv9mXt8PA2XIBiL3TxDlOzE1nqWnjo
+         5D1eZbkBJKwpwep9tCZEGCIefLCKCmOETbE23aPuC8qpMiKDoZr+VhrNnZRrtmnxDHSH
+         7ijwP0Zla/F1WxMl4KXYksd9cJeEsOvNfmxy3cmR0ok4fmYsaYZTPgciEC03F2XYmazv
+         Qoig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744620749; x=1745225549;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RK1FjQCAv98Eay4SPuOitMP3sY6he/myS3klmD5dY54=;
+        b=UZ0a60jdoRjP104cvqr1fYY+Zh4VJAEGCB2PgjqXmJzdAZKGBhfjPS6RM8ZsFUJ5cp
+         utyeaWrm/XJrakW8eKNKsxk2KSeMGUMgr1ApsWNV/4ln9+po7y0L9vm9JH0hADg+fjm+
+         /qH/ip2xtC5s7UQ3rRnbYwRCZ3v6OYwEQPTmNg53ePjFGWiDB6jlU2ZzJqa2RgY+G57X
+         1nfgvJUaEh9+Z4O5rzwhNrnXP4TzS1XRC8BTKNdfDxGsR1cV6OE521bjtbjn1jSLpKq3
+         shQQSA3+KGZ0gQjFDUhffQfKMUBOFcVapS6uqMGMZ8VDwBdbtjQb9tOiNjM8S8I2wGBM
+         WnJw==
+X-Forwarded-Encrypted: i=1; AJvYcCViPkdkEpqHoQRQhU1ru8YG0UHobQYTDrwIzS3x7wYv4FbBjprD0TZlKMehzxKRyhJ/+5Nkmv5y@vger.kernel.org, AJvYcCWGqQ7bWB965qkivPnNMl1hJQc4wTCEdHt8JQtv2U3JtjEGLtGJRyKetjZ8uxauogV1GuuLZxA6dFyg85L1@vger.kernel.org, AJvYcCXAC1ssdgWYd6UpdG3eAfiVcz/q7aJfB/3C2nx3BErNcIhGZpbUwGLPP8fv8didMrxl6Nxo9vlJ+OHa@vger.kernel.org, AJvYcCXkUgiZn4aU0KdtWRP1scEEjpkhNLMOy4VtQlJWeZta9mabVlRtJS543si52LvY1kGNVl7Lg2I9vdGJScWlCJLgyKs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOnGsHLfZLig6LCa0xDjKJMHtqj0bRtCF1quwzsv/H93cc0Mfc
+	xt7/yU6LzHMyrLBxMmTFl/Ame81zTL/BhXqjpowr2cKtTq5ca7Ha9rb2/a83lsSmijoCmH6nU5I
+	BrG8Q00cG5JmJQ9X6MzONdlEQL8o=
+X-Gm-Gg: ASbGnctjPh6TC4Xiu4WOWvudlsaUOgm8yaKYroliU9MNnDXPuIoRLxs8yor3qeHGdka
+	pzB4NT50QksGBWevm/gSOA5pp6exVQV8JbRQvS4kKSl9n7Ca5iyjMoetHlyBoXGFZoY2vUbQyC5
+	fMjUaUhc1Apoy4jaWfsQAxtA==
+X-Google-Smtp-Source: AGHT+IHDQYAJXdFj/iNG0npq557KpIZpBxXkLL2l+9hPwfBOs75fehWJLdCe6um+3vhYJFwWD4BbKD7nZni0VXc/gQE=
+X-Received: by 2002:a05:6122:319d:b0:527:67da:74ee with SMTP id
+ 71dfb90a1353d-527c34d1fd1mr7094050e0c.5.1744620749318; Mon, 14 Apr 2025
+ 01:52:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: izesmtp:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MmIUUz9KGMMdrMMMYqkpWXJiH7aRwW3+R2HXQAkdA9lQq1cb6wWPJb9f
-	hfTCriRVbQgFjmWHkQYIYb2tgIUiX0QxCPZnu36P8ydVqIEiQzOsHxz/QBjQRH8r9BqjshD
-	qw1PPj8bSGuTByjQb6omm3/+TZbmBFtg0ZakKrYJNPpe0aPeg0SDGuoFgfuq3nbngV6KDht
-	GXa8q6uyn7lPlcMsvuYyG8Gev9y+fwLAjUbfiqSF8FbJVGpvGEc2Rc3SfZMX6ntcbIydQA6
-	PjiwB+hfGwKLncRuxHm8r7PSPc0NObJCuIyHUZ7JlZBv6nSisP/LUQQvzHMKALhddFlYXhv
-	pCM5TjH9wKTN90mkOqsydJUk0u0u0Gduv1ag3II18ypP/eect5pbDozhLEqBgUMoWPq+mjk
-	oD4lKwp7xvMkD2MzIOglQ5WBPIe8ugHoZenOoGYjABym9VJvgFuRXPhVO9n69TOkICBCKpQ
-	1EzPS4hLuxQ9MXDuPwwuCK+fvKEB0iRdr6azKhQ0K7InhTPD/yk8NKAaexkQq4Vv651Z1Oe
-	q/PcVEMNsY8UpmFkDaQcczl1ypJeNiU2pDa6MHSwrEnDXqm3JDsBDP4+KXFDrli0Ozgv+o9
-	EyEAWqAlo7e1O/KuOf6r/C91/7AsPJcAUzeKOt1Qm98KF4Vvb+rMyaiX3L8Y1GLdgwkTN2q
-	Rm2MUZcz9DTJB+H31uRz0USmWRfdLvmjp8bu2GlvEPhUjsR3Q4WsIvi1SZTsnSVfJWU1d46
-	AbjienBt9O1jWPs9QD5WLxlvtCvHoOMa9qUcAuzHzhJJ9hCK8BkB6dBZKLhnCqK0OhjJH0U
-	MNEM6qcBNGPLPVrziIk9SjIbIZj4POG4gX2QqogKUEq/ed4nRWl3dUGqmFXecDqnHt+pB1N
-	ZxIyTucmHWO0WSSJ8c/YeMQqS6nk8+hUBNW2afHVCj9dkdy7pJapC+OSddSnjxt47EWagsd
-	1xCyvrN3FzRHBWNYOefMysKKf1xmcaooJ035WkCPDU36p5S57D95eMjtWrnAW5UaavUJZUu
-	yzF0mAzL3OYw/QcV2ir9JoKrElAV9NGNLecbGL0A==
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
-X-QQ-RECHKSPAM: 0
+References: <20250407120317.127056-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <20250407104447.072449cd@kernel.org>
+In-Reply-To: <20250407104447.072449cd@kernel.org>
+From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Date: Mon, 14 Apr 2025 09:52:03 +0100
+X-Gm-Features: ATxdqUEHxcklYN6PVPbrfMER-iWYYX-JiIMzDYloXSJi2mPCrezqGIzibq2L6CY
+Message-ID: <CA+V-a8uqkG+u_ZXztPe7R0BNV6BA46KgGRHRW-G3axBt566pEQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 0/3] Add GBETH glue layer driver for Renesas
+ RZ/V2H(P) SoC
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
+	Biju Das <biju.das.jz@bp.renesas.com>, 
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Implement ndo_features_check to restrict Tx checksum offload flags, since
-there are some inner layer length and protocols unsupported.
+Hi Jakub,
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   | 27 +++++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_lib.h   |  3 +++
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  1 +
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  1 +
- 4 files changed, 32 insertions(+)
+On Mon, Apr 7, 2025 at 6:44=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
+te:
+>
+> On Mon,  7 Apr 2025 13:03:14 +0100 Prabhakar wrote:
+> > This patch series adds support for the GBETH (Gigabit Ethernet) glue la=
+yer
+> > driver for the Renesas RZ/V2H(P) SoC. The GBETH IP is integrated with
+> > the Synopsys DesignWare MAC (version 5.20). The changes include updatin=
+g
+> > the device tree bindings, documenting the GBETH bindings, and adding th=
+e
+> > DWMAC glue layer for the Renesas GBETH.
+>
+> This was posted prior to the "net-next is OPEN" announcement:
+> https://lore.kernel.org/all/20250407055403.7a8f40df@kernel.org/
+>
+> In the interest of fairness towards those who correctly wait
+> for the tree to be open I will ask you to repost this again,
+> in a couple of days.
+>
+Are you ok for me to now respin this series?
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index 18422b940dbe..2a808afeb414 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -3000,6 +3000,33 @@ netdev_features_t wx_fix_features(struct net_device *netdev,
- }
- EXPORT_SYMBOL(wx_fix_features);
- 
-+#define WX_MAX_TUNNEL_HDR_LEN	80
-+netdev_features_t wx_features_check(struct sk_buff *skb,
-+				    struct net_device *netdev,
-+				    netdev_features_t features)
-+{
-+	struct wx *wx = netdev_priv(netdev);
-+
-+	if (!skb->encapsulation)
-+		return features;
-+
-+	if (wx->mac.type == wx_mac_em)
-+		return features & ~NETIF_F_CSUM_MASK;
-+
-+	if (unlikely(skb_inner_mac_header(skb) - skb_transport_header(skb) >
-+		     WX_MAX_TUNNEL_HDR_LEN))
-+		return features & ~NETIF_F_CSUM_MASK;
-+
-+	if (skb->inner_protocol_type == ENCAP_TYPE_ETHER &&
-+	    skb->inner_protocol != htons(ETH_P_IP) &&
-+	    skb->inner_protocol != htons(ETH_P_IPV6) &&
-+	    skb->inner_protocol != htons(ETH_P_TEB))
-+		return features & ~(NETIF_F_CSUM_MASK | NETIF_F_GSO_MASK);
-+
-+	return features;
-+}
-+EXPORT_SYMBOL(wx_features_check);
-+
- void wx_set_ring(struct wx *wx, u32 new_tx_count,
- 		 u32 new_rx_count, struct wx_ring *temp_ring)
- {
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.h b/drivers/net/ethernet/wangxun/libwx/wx_lib.h
-index fdeb0c315b75..919f49999308 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.h
-@@ -33,6 +33,9 @@ void wx_get_stats64(struct net_device *netdev,
- int wx_set_features(struct net_device *netdev, netdev_features_t features);
- netdev_features_t wx_fix_features(struct net_device *netdev,
- 				  netdev_features_t features);
-+netdev_features_t wx_features_check(struct sk_buff *skb,
-+				    struct net_device *netdev,
-+				    netdev_features_t features);
- void wx_set_ring(struct wx *wx, u32 new_tx_count,
- 		 u32 new_rx_count, struct wx_ring *temp_ring);
- 
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index fd102078f5c9..82e27b9cfc9c 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -587,6 +587,7 @@ static const struct net_device_ops ngbe_netdev_ops = {
- 	.ndo_set_rx_mode        = wx_set_rx_mode,
- 	.ndo_set_features       = wx_set_features,
- 	.ndo_fix_features       = wx_fix_features,
-+	.ndo_features_check     = wx_features_check,
- 	.ndo_validate_addr      = eth_validate_addr,
- 	.ndo_set_mac_address    = wx_set_mac,
- 	.ndo_get_stats64        = wx_get_stats64,
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index c3b0f15099db..259062b8f990 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -629,6 +629,7 @@ static const struct net_device_ops txgbe_netdev_ops = {
- 	.ndo_set_rx_mode        = wx_set_rx_mode,
- 	.ndo_set_features       = wx_set_features,
- 	.ndo_fix_features       = wx_fix_features,
-+	.ndo_features_check     = wx_features_check,
- 	.ndo_validate_addr      = eth_validate_addr,
- 	.ndo_set_mac_address    = wx_set_mac,
- 	.ndo_get_stats64        = wx_get_stats64,
--- 
-2.27.0
-
+Cheers,
+Prabhakar
