@@ -1,198 +1,236 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011064.outbound.protection.outlook.com [40.107.130.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A68146447;
-	Mon, 14 Apr 2025 13:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744636419; cv=fail; b=A0Zzk6XYFPyLiSRzDmyW8jxNTDK5mNsyFQYosmfZ6+ehxFT9nPsLe/AkromP057bL/MqmsOPGL7adsYnfH8qxLtk1CABoCIOH0JNrGlYcaT4OihQnIC6L6PiVV7yALfppefukY4VowIA4ePqN1A0XBLS1tXejNT10RmDnGsXN9U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744636419; c=relaxed/simple;
-	bh=IYDVG7Bsz4Dzau0WyEiLZTe6exBbiIkKys0xrrjlHYM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Nej+I9GT99eRJGm9F6L1JrzMTOzcQ4jANHnSG+VRLt0vvjqLxXGY2i5Rpsh9hpMuZU6A6twrok+lvNkzxEwr9me0Uaa1h5aNnt4sxkWnDSqbpzQkVLOeyAHJ7ZjTvLYODgSjSEWYOrPnEnaSbL8LT8Dh183Liqg6cxKA3UjoxnY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=jSiXWvMf; arc=fail smtp.client-ip=40.107.130.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="jSiXWvMf"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kPuAkpnZoi197XVOuMTb8JsKJxJLD5CYquWsBf7hM59T3daHfGiSSmnJCXjeAGJw0OXx6NZEKYSGYp3zK2KIRoF5jbdMWtTPxpbpcfGsgZqidr9T0C8YUwyW71jJN8jNEbpjois9IBjSB/nhJ4zgzY6p8/DeMQQnIoGzKvoYs7EuTaBkkj2H7ISQKweHBx4i7S11LjY2mhbA8wot8SFPMV/Bn6MmEmdsCkuJYIH+KtuX7YUYIL/a1hwgEqVxXiGAtkRuFq4ahjysmE9lR01tVX5WogLYcjP6IImb1+9WjlquQXzu6R7PslDypOCv5QpvY/yXxzGyYKeFWwQg4bUOAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bVfNtaoj6l3ceB8QOIPPbdsRvQwI8Ihl6TR0rjSwNL4=;
- b=sHIvEMi/0s/KbUepg+QjVerqLlS8kYJp/ZcCRe9sOYzf+UhyLlYL4vwilcBk52KEI+QCQ+f0IIKhWRfDORtC3wjJ0eSsDUaNuAbPYnMNXBbajPVhwg1wIE9DYhHIdDqcdZMR4wrgRI0B4DGa4dLp586UkwxEnITtyJ2Bb8o1UmtZ2pTBNIsX40l6f7EbjvvQfN1vJHaYu9q9ublKH+nLxPzUkzCr89HE6WQIMX6rEshNa05h7hAsnHUsYgCCFSdFTm+fA1c0joLo8K4e4ZJMeKLoUo/vHbVbhssUmJKsu7QxAvo4g0IX1S6O2VJMObr1TJssxZH423FexD9o6EHEmw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 131.228.6.101) smtp.rcpttodomain=nokia-bell-labs.com
- smtp.mailfrom=nokia-bell-labs.com; dmarc=pass (p=reject sp=reject pct=100)
- action=none header.from=nokia-bell-labs.com; dkim=none (message not signed);
- arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bVfNtaoj6l3ceB8QOIPPbdsRvQwI8Ihl6TR0rjSwNL4=;
- b=jSiXWvMfn0T3qIMbh2LKQNkVBXPUWWotSb3K3Vptqvk9DfNke50AVK7+4/LyTI/MWq/pH5j5DibYX2L1eQ901hCHnWEr8AY9oEmrPFqxLYaNouV8EjutU2ON1q6UbalQyy9KSSvtZmzXGfKiynNXmHo/DK7jIBnLDwGPe84o+Ui6Jp9y7Q1cbTKl2X/G/F3hugQFBITNu7MKJH3aVvzLnORCaKc5ckMc+Y2paLbes59p2sw2/NiJui7a8VR8cBh4+Rp+n2Z2zGnFB77Wsf2Vfz5Q9z2gOMv+RjlnMBHh47FbHpzCvz9QlUneRmW5V+gd53xpb4bD7ep5wiclq0pfMg==
-Received: from AS4P189CA0035.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:5dd::14)
- by AS8PR07MB8373.eurprd07.prod.outlook.com (2603:10a6:20b:444::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.33; Mon, 14 Apr
- 2025 13:13:29 +0000
-Received: from AM3PEPF0000A79A.eurprd04.prod.outlook.com
- (2603:10a6:20b:5dd:cafe::4) by AS4P189CA0035.outlook.office365.com
- (2603:10a6:20b:5dd::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8632.35 via Frontend Transport; Mon,
- 14 Apr 2025 13:13:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 131.228.6.101)
- smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
-Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
- designates 131.228.6.101 as permitted sender)
- receiver=protection.outlook.com; client-ip=131.228.6.101;
- helo=fr712usmtp1.zeu.alcatel-lucent.com; pr=C
-Received: from fr712usmtp1.zeu.alcatel-lucent.com (131.228.6.101) by
- AM3PEPF0000A79A.mail.protection.outlook.com (10.167.16.105) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8655.12 via Frontend Transport; Mon, 14 Apr 2025 13:13:28 +0000
-Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
-	by fr712usmtp1.zeu.alcatel-lucent.com (GMO) with ESMTP id 53EDDQBB009623;
-	Mon, 14 Apr 2025 13:13:26 GMT
-From: chia-yu.chang@nokia-bell-labs.com
-To: netdev@vger.kernel.org, dave.taht@gmail.com, pabeni@redhat.com,
-        jhs@mojatatu.com, kuba@kernel.org, stephen@networkplumber.org,
-        xiyou.wangcong@gmail.com, jiri@resnulli.us, davem@davemloft.net,
-        edumazet@google.com, horms@kernel.org, andrew+netdev@lunn.ch,
-        donald.hunter@gmail.com, ast@fiberby.net, liuhangbin@gmail.com,
-        shuah@kernel.org, linux-kselftest@vger.kernel.org, ij@kernel.org,
-        ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com,
-        g.white@cablelabs.com, ingemar.s.johansson@ericsson.com,
-        mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at,
-        Jason_Livingood@comcast.com, vidhi_goel@apple.com
-Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Subject: [PATCH v3 net-next 00/15] AccECN protocol patch series
-Date: Mon, 14 Apr 2025 15:13:00 +0200
-Message-Id: <20250414131315.97456-1-chia-yu.chang@nokia-bell-labs.com>
-X-Mailer: git-send-email 2.34.1
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029902BEC2D;
+	Mon, 14 Apr 2025 13:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744636436; cv=none; b=QybrmnmpWoFVCJVbZndD5PTDEqd6RrBO0UFMP5K9ZsVvlhSfnME80LNyPQg7QSZbjvbEhHIWcr3zc4TpUeKq+DSaIReVLwG7Ui2cmwo3CY10b7zTaBDbi3sbHG5rA4SclvNv3lXj9GqpQp80huHrwSLt1NsQbVBt9vvl6Q3W17k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744636436; c=relaxed/simple;
+	bh=1lQ7JQW5S4G+/LBdiOzM9bdyiUOGo93ut2ZCIvpNqNo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BxwiZ9j1eSeV1eQAd6T8C8nlJY4JTmcYzLxfLFKm6JdhUib5spHQQRDAXGfJNaSSrlDm7Aue1eluvcvnk/qZz9BKGiW0UkKQmGSEaA5d7/+EBX454cO6ToRYw1G4b1eqGlVH3chfcd6tXBE7LgQo14Zg8gqx++gJuSq7/9Tw854=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+X-CSE-ConnectionGUID: Q88s0WCoTpy8kQw+Z7mjWQ==
+X-CSE-MsgGUID: BdcF5JAqRmKL37V0LnFwwQ==
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie5.idc.renesas.com with ESMTP; 14 Apr 2025 22:13:47 +0900
+Received: from [10.226.92.218] (unknown [10.226.92.218])
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 71E9041C595F;
+	Mon, 14 Apr 2025 22:13:39 +0900 (JST)
+Message-ID: <f20e6589-37d9-458b-af82-92fb1ed0db18@bp.renesas.com>
+Date: Mon, 14 Apr 2025 14:13:37 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 3/3] net: stmmac: Add DWMAC glue layer for
+ Renesas GBETH
+To: Prabhakar <prabhakar.csengg@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ Jose Abreu <joabreu@synopsys.com>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
+ Biju Das <biju.das.jz@bp.renesas.com>,
+ Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+References: <20250407120317.127056-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20250407120317.127056-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Content-Language: en-GB
+From: Paul Barker <paul.barker.ct@bp.renesas.com>
+In-Reply-To: <20250407120317.127056-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------5XZcBvmkaTabxuEc9swqfILM"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------5XZcBvmkaTabxuEc9swqfILM
+Content-Type: multipart/mixed; boundary="------------ueneKmR1e1Faq6614lRwIjUE";
+ protected-headers="v1"
+From: Paul Barker <paul.barker.ct@bp.renesas.com>
+To: Prabhakar <prabhakar.csengg@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ Jose Abreu <joabreu@synopsys.com>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
+ Biju Das <biju.das.jz@bp.renesas.com>,
+ Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Message-ID: <f20e6589-37d9-458b-af82-92fb1ed0db18@bp.renesas.com>
+Subject: Re: [PATCH net-next v5 3/3] net: stmmac: Add DWMAC glue layer for
+ Renesas GBETH
+References: <20250407120317.127056-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20250407120317.127056-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: <20250407120317.127056-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
+
+--------------ueneKmR1e1Faq6614lRwIjUE
+Content-Type: multipart/mixed; boundary="------------Zc6ku6fXf3RcrzFBSscMfX9c"
+
+--------------Zc6ku6fXf3RcrzFBSscMfX9c
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM3PEPF0000A79A:EE_|AS8PR07MB8373:EE_
-X-MS-Office365-Filtering-Correlation-Id: deb00961-d236-4421-0d8c-08dd7b5625d4
-X-LD-Processed: 5d471751-9675-428d-917b-70f44f9630b0,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|82310400026|36860700013|376014|7416014|1800799024|921020|13003099007;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?cmdLMkZSYUo3ZFpaenZqZzNNZUhseUdyT3Z2L2krUlh2dzlpTjZZVjM0NERG?=
- =?utf-8?B?ZmR1TWs5aTdFZnUwRUVwVUlLNFdMR1B6S0hGUDcyaFMvNTJ5NmJPUlVUemlJ?=
- =?utf-8?B?Q2J6UGZHT0FGa2xiM1BpUU9xRFdmMGg2dmtwNlRiL0QwS1JvY2NSdk8yd1ZB?=
- =?utf-8?B?Tk5lUFE0U2NrdDRrRFhxa25nMEtkVHRrWnpFS0tOZ2tETm0xMi84RzFqaENI?=
- =?utf-8?B?dDBHRHppOHV2TFY4bjAxMVBhY1ViNzE3K0xuMkYva0NpWWdpdjNqZW1UVVFQ?=
- =?utf-8?B?ME9BeWtJZjRwT1kydW5vYWJEUGtQaDZJSWpWeUhyOFMrQ0dBV21GN3RzQWFL?=
- =?utf-8?B?SU5JY1BZQXhKb003TnhiM1REVDJZbEdrbUtMMjQyRUVkOEwwWjB6TDF1Sk9m?=
- =?utf-8?B?U29vY1JUOTVoell1cVNFOW1TbSs3SmRGa2FxaW14SFVlZlhIRlhIaUlWZ0NT?=
- =?utf-8?B?MnV0YjJrclZiODhTcW9tUEIxNGVVSjdDZzRPWmMzRTV1SWF1ZWhiKzIzR0Ri?=
- =?utf-8?B?Q2R1bEtHVFVVcTlvVlg2cDR5NnMwWVhmbUd0YzQyZkVGNm9rVjRnK1NKMENl?=
- =?utf-8?B?MkJmRlI1eXVwNTI0Q0V0WWprbG5xbUNsdUtoWkFVTjJvT3FMMk5KVVM1NWw4?=
- =?utf-8?B?SjM1VExRZFBMMWhETnhUNmRyWnJZbWlER0lqcnZVczhIL3J1ejFNZ2k4bjJO?=
- =?utf-8?B?OUlpRGtRT2lqbE01cjB1alB0TC9kS3JIdEtESEVaeVR3OW5XYTd3R1V5dDc2?=
- =?utf-8?B?dmhNdnBwRC9tSU5vbzROZGIrUVNIeEhBWi9FN0hDaG1UMzkvN2I3ckhkZ0Nl?=
- =?utf-8?B?S2NrZWtkSmM1b290WC83NjYwYUtZdVBVdXU2UmpUczVCdFV5dW5qai92RSt1?=
- =?utf-8?B?UFg5N1lUTzZTdnY5VjBjb3RFenNzMkx6Y25WelNSYXBoY3BWUlZJbkJJcHdG?=
- =?utf-8?B?L2l6RFhzM1RVdUE1MzkyU0gyazJrUzVHbXhMU211RHA5U2ZubVJjS0FZeEFw?=
- =?utf-8?B?WG1YcEVUSFE2T2lYNXV2bHdsTTBTSTNLemFsZEhwYkNBNVQxNnd5emQxQjJs?=
- =?utf-8?B?dm1mRHVzSFlpK3psMHFzbnlLRG91ZFMzeGJGb1NuMFQ0a1k5TCtHb2sxbjBt?=
- =?utf-8?B?bXVIZ0lqMktxanFCUmxLU2dlbjk5K1pPVjlWYzg5bHBZV1pXZlkzOVRLMFpk?=
- =?utf-8?B?UVJqbjd1OTZHVlVWeGhCN05WSWFHNzF3djNiM1B6REgxT296NDNPMmE5WWhO?=
- =?utf-8?B?MWFkV2dOR1gzTnRsUUJHT3QvcVYyUzhwd2JtSXdHM3NIV0U2cTNLYjEvT3Yx?=
- =?utf-8?B?RDhQUXRkTmRJOWNRYlB6dW1TS0ZOd2RyUXhHYmhUdXcwdkwwUXpRL2ZKdk5P?=
- =?utf-8?B?bU5PaFowOTBEdDJva1lYd3Rrb056Y2dkVUI4SnpPNGVSWU5kbllINkVWRTFr?=
- =?utf-8?B?cEFuVFhkZ3B6dXZ4b0ozZmJCTytNL2RzRkZDc3ZzUzBmTG9hMUsyU3V2czcx?=
- =?utf-8?B?ejNrQ282Q0hPMXd0ZGRLc2NEcjdSREF6S1pMVGdRT0xianRwQVp2b1dXYTEy?=
- =?utf-8?B?Z3RuY215YVBnZ29NOVdjVmFDNjRHWFNhSXFDSjZLOHZGUGY4Y3VLS0MwS1ox?=
- =?utf-8?B?d2V0akljTGsxOGZDVzJTdEdXMXN4azJPTDB0L2RHTDJwVnpMSGl1eDgyV1gy?=
- =?utf-8?B?VEhaQWk0L0V6UHBna3lJbkVaczAvVmZMMUIyVUhjR1MxdmRub0NXRGxiRmxE?=
- =?utf-8?B?Ujk3TUQrdUludkVNVXJNYmNqRHJxUWY2RTdxVXpvZnEzQWs5V3FIcUlDT1Ay?=
- =?utf-8?B?Q2pvVGt1bzdXajE1YUdGa3orY081Z1lxOXFPbmVKZytQUlppVUJEWFdqSkww?=
- =?utf-8?B?RGt6ajZCWkNlN2VQT3ZkRE9xdStzTHZIM3lGdzFNNW1rWkxGK2U5T1M2c0x4?=
- =?utf-8?B?UkhZZmJnWGtMOGhKTE5uRzdZNnFSMHVocElWRDUzdVFzN1pOYUp6OURFMDdV?=
- =?utf-8?B?bFJ3L2dVaDBQL2J6cFdBemhEaWZlL1pNUldPRGV5bG56a3hqWTFMejE1Wkp4?=
- =?utf-8?B?Q1pPRzRJQmM1a3hDV3VqeFhwb056blloREJQUT09?=
-X-Forefront-Antispam-Report:
- CIP:131.228.6.101;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fr712usmtp1.zeu.alcatel-lucent.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(7416014)(1800799024)(921020)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: nokia-bell-labs.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2025 13:13:28.7598
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: deb00961-d236-4421-0d8c-08dd7b5625d4
-X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.6.101];Helo=[fr712usmtp1.zeu.alcatel-lucent.com]
-X-MS-Exchange-CrossTenant-AuthSource: AM3PEPF0000A79A.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR07MB8373
+Content-Transfer-Encoding: quoted-printable
 
-From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Hi Prabhakar,
 
-Hello,
+On 07/04/2025 13:03, Prabhakar wrote:
+> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+>=20
+> Add the DWMAC glue layer for the GBETH IP found in the Renesas RZ/V2H(P=
+)
+> SoC.
+>=20
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-Plese find the v3:
+[snip]
 
-v3(14-Apr-2025)
-- Fix patch apply issue in v2 (Jakub Kicinski <kuba@kernel.org>)
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c =
+b/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
+> new file mode 100644
+> index 000000000000..a0f7cacea810
+> --- /dev/null
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
+> @@ -0,0 +1,165 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * dwmac-renesas-gbeth.c - DWMAC Specific Glue layer for Renesas GBETH=
 
-v2 (18-Mar-2025)
-- Add one missing patch from previous AccECN protocol preparation patch series to this patch series
+> + *
+> + * The Rx and Tx clocks are supplied as follows for the GBETH IP.
+> + *
+> + *                         Rx / Tx
+> + *   -------+------------- on / off -------
+> + *          |
+> + *          |            Rx-180 / Tx-180
+> + *          +---- not ---- on / off -------
+> + *
+> + * Copyright (C) 2025 Renesas Electronics Corporation
+> + */
+> +
+> +#include <linux/clk.h>
+> +#include <linux/device.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/reset.h>
+> +
+> +#include "dwmac4.h"
 
-The full patch series can be found in
-https://github.com/L4STeam/linux-net-next/commits/upstream_l4steam/
+I'm looking at this while working on RZ/T2H Ethernet support, clangd
+says inclusion of dwmac4.h is not needed here and compilation succeeds
+with the include removed.
 
-The Accurate ECN draft can be found in
-https://datatracker.ietf.org/doc/html/draft-ietf-tcpm-accurate-ecn-28
+Thanks,
 
-Best regards,
-Chia-Yu
+--=20
+Paul Barker
+--------------Zc6ku6fXf3RcrzFBSscMfX9c
+Content-Type: application/pgp-keys; name="OpenPGP_0x27F4B3459F002257.asc"
+Content-Disposition: attachment; filename="OpenPGP_0x27F4B3459F002257.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
-Chia-Yu Chang (1):
-  tcp: accecn: AccECN option failure handling
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-Ilpo Järvinen (14):
-  tcp: reorganize SYN ECN code
-  tcp: fast path functions later
-  tcp: AccECN core
-  tcp: accecn: AccECN negotiation
-  tcp: accecn: add AccECN rx byte counters
-  tcp: accecn: AccECN needs to know delivered bytes
-  tcp: allow embedding leftover into option padding
-  tcp: sack option handling improvements
-  tcp: accecn: AccECN option
-  tcp: accecn: AccECN option send control
-  tcp: accecn: AccECN option ceb/cep heuristic
-  tcp: accecn: AccECN ACE field multi-wrap heuristic
-  tcp: accecn: try to fit AccECN option with SACK
-  tcp: try to avoid safer when ACKs are thinned
+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3D
+=3DsIIN
+-----END PGP PUBLIC KEY BLOCK-----
 
- include/linux/tcp.h        |  27 +-
- include/net/netns/ipv4.h   |   2 +
- include/net/tcp.h          | 198 +++++++++++--
- include/uapi/linux/tcp.h   |   7 +
- net/ipv4/syncookies.c      |   3 +
- net/ipv4/sysctl_net_ipv4.c |  19 ++
- net/ipv4/tcp.c             |  26 +-
- net/ipv4/tcp_input.c       | 591 +++++++++++++++++++++++++++++++++++--
- net/ipv4/tcp_ipv4.c        |   5 +-
- net/ipv4/tcp_minisocks.c   |  92 +++++-
- net/ipv4/tcp_output.c      | 302 +++++++++++++++++--
- net/ipv6/syncookies.c      |   1 +
- net/ipv6/tcp_ipv6.c        |   1 +
- 13 files changed, 1178 insertions(+), 96 deletions(-)
+--------------Zc6ku6fXf3RcrzFBSscMfX9c--
 
--- 
-2.34.1
+--------------ueneKmR1e1Faq6614lRwIjUE--
 
+--------------5XZcBvmkaTabxuEc9swqfILM
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wnsEABYIACMWIQSiu8gv1Xr0fIw/aoLbaV4Vf/JGvQUCZ/0KAQUDAAAAAAAKCRDbaV4Vf/JGvVy9
+AQC8bBQR7l5ED4UfiLb0EhysVsbVdBOhfqkFNise9GXRIAD+OwNb0RGxiJZGo/+yeHP1gGhfWVRI
++rBlwKWwdQaQ6A4=
+=dLCZ
+-----END PGP SIGNATURE-----
+
+--------------5XZcBvmkaTabxuEc9swqfILM--
