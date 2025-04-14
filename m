@@ -1,100 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1EF27604D
-	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 10:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4EF266EF3;
+	Mon, 14 Apr 2025 10:49:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744627709; cv=none; b=huTxpi5tvpQZVGqVSNEeB+DzKAwXAuZFSBbhwNj+KbKlSuRX9o3VvRZsNJfyEj2auIdtH7Wpc5p5NFtjRy/IEo75ynWR72dySkhmE/encBvSdpOfayjOtPJZVFUpXkqxyIYTiY4gz2yys/qMge9zM57uLetA+59Jx+2hHqtDmnY=
+	t=1744627772; cv=none; b=gPLPHetTovTPXCooG4KzI56BxwwrErUtNaYK3o3eT3XsSjwyrRp4qwuZlNLO4XIk5nlB2N3rXRY+KWW0dluxUqOFNJVXrcw/IX2TGape3/tniq4C+LeBQpSM56xrk5B4uEB/FjQpvzPwpBm+uBr64Kpoi3EcyRdER1M2L0o6vx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744627709; c=relaxed/simple;
-	bh=9IwVWgo5udn4b2yOTlk4DNHB+R6yGbvF8aZSC4ElHzo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgs+i2pI2mz5AMQpO41zlmao37Uo4OdKRSvcLGisNZocA8R6dyQJ0POuwlyhDfHDy0XhlpaM61tCZ1NkvjKv9fVhp5AynpLacp6qjkWxXK4T+sfEK64I4+Iaqi90lKeWzFxmRm6huE2amkOhUgQMuvKFLQBSPwARnUSgoSsPMNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KQD17jsl; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1744627772; c=relaxed/simple;
+	bh=nej5Rxx/hhW9hddTky4aUeyep3bqcgBIkysf/UdzfYY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E2id7Vj2I+wj/lk1DUizaV+7FCC65LNgnUPDVTKEVYdvs8gpC5XPq9v3Oy1YoQ0swmgAPnX4Xm2YreHdHbLnffgLdm6sBplde3zSjYPT8O2e+/XioWrVIwo87FLkNPvm3NY7eBYqyKmQnRzMWVKk0/ZV8hHUI67Nki9OfM1xioI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JAfQUQ95; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KQD17jsl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744627707; x=1776163707;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=9IwVWgo5udn4b2yOTlk4DNHB+R6yGbvF8aZSC4ElHzo=;
-  b=KQD17jslLAu1S39IZIJT9bIUf/SjptakfuNm0i+xSh7aBRO+XP8+t/7W
-   obCe7t5zEIge0hYRUvtqHhMNhIZqM7QOR1UXxMveY2EfPDDQe04ftD+//
-   U34u1XZqJKL0OjU6jeWq7eKp1gNHoTJaW5fjTN4E+t0Nie7X7nnUhE5+Y
-   /vKN6aClXhrZ0pNK13Tn/Tr/nYx9zK/aiVkTFz0K2W9dwFBEF+15+aTzQ
-   02VI59c3IMGdty5Xe8HsOCrh6MTOYPq5o2gtwtaPCE1nAHMF6bmCkdAQb
-   70Wf21aY+I/EIDRt6AmetPN2p/WN+BIcCO/KNDHgnEt3gZ0BcinPipDso
-   Q==;
-X-CSE-ConnectionGUID: xuBuEIklSGmhtkhODB9vwQ==
-X-CSE-MsgGUID: nZeSElfzSVStnFgSOTKIUA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="71478048"
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
-   d="scan'208";a="71478048"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 03:48:26 -0700
-X-CSE-ConnectionGUID: YIeEAv/kQ8GnErhcsDF3+A==
-X-CSE-MsgGUID: LfwY9bZkRQS7RzzfXtWmnw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
-   d="scan'208";a="160739772"
-Received: from gklab-003-014.igk.intel.com ([10.211.116.96])
-  by orviesa002.jf.intel.com with ESMTP; 14 Apr 2025 03:48:25 -0700
-From: Milena Olech <milena.olech@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Milena Olech <milena.olech@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>
-Subject: [PATCH v11 iwl-next 01/11] idpf: change the method for mailbox workqueue allocation
-Date: Mon, 14 Apr 2025 12:45:07 +0200
-Message-ID: <20250414104658.14706-3-milena.olech@intel.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250414104658.14706-1-milena.olech@intel.com>
-References: <20250414104658.14706-1-milena.olech@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JAfQUQ95"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-39c266c1389so2791706f8f.1;
+        Mon, 14 Apr 2025 03:49:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744627769; x=1745232569; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xtsqEiOso+3ySVEpPpnY9tocZGrAQf6OsnV8IcNWh6c=;
+        b=JAfQUQ95ZBinhpz2U9zyX1AQly7CMGuiKRcgWlH3z4eq30KdxvXVbIZbjlzW9QpVHy
+         Tccpp+UdRPPavUGYSlWLypgIBGzle50IqBZiiG+EdvrwoGw+MjbG9cHuTCHoShs4GquV
+         wTfjAsfLkVOBxNOA3IrksADszkXPkyJ8T8M8zvLdRKd6ELwmlreEdJ28O8jixWv6AAGC
+         VBj3HMq4pS+3kkK9nfhObup6NXZQWSeP0f/YybJi4iJDDHBbllRQJxjsV0YWxWs7SEzo
+         TqEyx8p3XgXdOPAaSzs+lE0AHad8/HBwOHwMIOMUKplSA2hByUvxGTyt4tuH4690DPX7
+         MTFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744627769; x=1745232569;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xtsqEiOso+3ySVEpPpnY9tocZGrAQf6OsnV8IcNWh6c=;
+        b=caOOC0YjwoXZCgT8fCnBdJ8zHTirfYLxuEo0yCM2fyexsvwN9Xs6tEQuRBeqAIjiek
+         6hMDBNPbQTgJqQNukeGXu1KkRxAohoy8nNB/q8ARNrXTMN4yhmGayj5sGOLa023OSoQF
+         +SMcKu4k5A4UNntUNF/M4LUFyHx27iVkRNnyz9kk3jn+xL1k3aUUBL2odaLcqze/eMsL
+         W+O9jnC0mvVGvU9pFCjFCmFbkUkrjTA/D0C1G9OfTO4Y0pAA4TzNf7iZST0/0LTlsqwH
+         CWqelPYO9HDL0WPm0GqLrxsiqVpjSeZDGwWiqMUAPjOSRdC1nktAg/kcyTEQnD+TWuQU
+         1MYw==
+X-Forwarded-Encrypted: i=1; AJvYcCV1V+Vp+y+J51MMPYQ5eI/aScRqz54WPSVg8OZoU9ECig7itzo2Za26XC54KPX5sGbcI4Tx4M2GTaJIfrJV9Mg=@vger.kernel.org, AJvYcCV85zKzfYEGVRucjPiaWAJ1g11GsBcDgaE/8Utvf0XxLM1oRVM11++xRy9KLrvKlYidihUNRwvGvFuRKA==@vger.kernel.org, AJvYcCVnoodXbhPDLCjLDqkeAdRUwe5y9FBHQ/na9IrvjCRRHGrKEmPSHi/OA0P63JjYjbmJlAG6W6wA4iR0aeg=@vger.kernel.org, AJvYcCXOzKyB8ElX7lm5buQ1qESI/s31CVwac/IyoRvRJAzSSCA5bkjFOB6B5gvUFkik9WYroBm4cEzZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaPcVLun0cX0u4yoj5apVnN1eEGQFPRwPv5+cy9UgPNJLar+5i
+	FrTcXrlGW22rrAlrAQdf+fOvAuQdD10V1SsBLptB9+zZTt2OVUW/
+X-Gm-Gg: ASbGnctUYzbQmJjSU7JvqHUoD/pIEIEPcEcCLuj3cQYO/0Sbr4CzmUDrClKFH1n94SH
+	SUoElKPWv6teurKjDxkLIg0Kjk5S4Nw+zlPVOh/3PhdWQON4RrzGjGSfFwOL3XZ07OsZlTbGWis
+	iEDL9uDg5XeD880mZlH8IFr272WBHRvrmel+rFdhNAMPRtCz8yyadC7CzB/mPivlr6iuOlrLeZV
+	N2j/NznjXeMhX+U+ygMyETj5Ti6Tb1LsQCLV+/ym4EaWls4lPkTNlM08p2VCVF3wwmSCGxjgWFy
+	x13B3NFg/+oaPncisIjnRwUBTl2BZqu/09EQv9OpQNzYN+CZ3F1PvEgGkY9/
+X-Google-Smtp-Source: AGHT+IH1pMW+2VKVzwJ49w6Ztlv9YMJUN6W45Wwpzz8L92YImh1YeiCHahCGMNa6e6rsSObu5WtiCQ==
+X-Received: by 2002:a5d:6da8:0:b0:39c:1424:3246 with SMTP id ffacd0b85a97d-39ea51d3527mr8524313f8f.2.1744627768500;
+        Mon, 14 Apr 2025 03:49:28 -0700 (PDT)
+Received: from [10.158.37.53] ([193.47.165.251])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eaf445772sm10695726f8f.91.2025.04.14.03.49.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Apr 2025 03:49:28 -0700 (PDT)
+Message-ID: <f4a406e2-af98-4762-af44-9089440c0a7f@gmail.com>
+Date: Mon, 14 Apr 2025 13:49:24 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 7/7] net/mlx5: Don't use %pK through tracepoints
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Jeff Johnson <jjohnson@kernel.org>, Loic Poulain <loic.poulain@linaro.org>,
+ Brian Norris <briannorris@chromium.org>,
+ Francesco Dolcini <francesco@dolcini.it>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Tariq Toukan <tariqt@nvidia.com>
+Cc: ath10k@lists.infradead.org, linux-kernel@vger.kernel.org,
+ ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+ wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org
+References: <20250414-restricted-pointers-net-v1-0-12af0ce46cdd@linutronix.de>
+ <20250414-restricted-pointers-net-v1-7-12af0ce46cdd@linutronix.de>
+Content-Language: en-US
+From: Tariq Toukan <ttoukan.linux@gmail.com>
+In-Reply-To: <20250414-restricted-pointers-net-v1-7-12af0ce46cdd@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Since workqueues are created per CPU, the works scheduled to this
-workqueues are run on the CPU they were assigned. It may result in
-overloaded CPU that is not able to handle virtchnl messages in
-relatively short time. Allocating workqueue with WQ_UNBOUND and
-WQ_HIGHPRI flags allows scheduler to queue virtchl messages on less loaded
-CPUs, what eliminates delays.
 
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Milena Olech <milena.olech@intel.com>
----
- drivers/net/ethernet/intel/idpf/idpf_main.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-index bec4a02c5373..1284ab2adaf1 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-@@ -198,9 +198,8 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err_serv_wq_alloc;
- 	}
- 
--	adapter->mbx_wq = alloc_workqueue("%s-%s-mbx",
--					  WQ_UNBOUND | WQ_MEM_RECLAIM, 0,
--					  dev_driver_string(dev),
-+	adapter->mbx_wq = alloc_workqueue("%s-%s-mbx", WQ_UNBOUND | WQ_HIGHPRI,
-+					  0, dev_driver_string(dev),
- 					  dev_name(dev));
- 	if (!adapter->mbx_wq) {
- 		dev_err(dev, "Failed to allocate mailbox workqueue\n");
--- 
-2.43.5
+On 14/04/2025 11:26, Thomas Weißschuh wrote:
+> In the past %pK was preferable to %p as it would not leak raw pointer
+> values into the kernel log.
+> Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
+> the regular %p has been improved to avoid this issue.
+> Furthermore, restricted pointers ("%pK") were never meant to be used
+> through tracepoints. They can still unintentionally leak raw pointers or
+> acquire sleeping looks in atomic contexts.
+> 
+> Switch to the regular pointer formatting which is safer and
+> easier to reason about.
+> There are still a few users of %pK left, but these use it through seq_file,
+> for which its usage is safe.
+> 
+> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> ---
+>   drivers/net/ethernet/mellanox/mlx5/core/sf/dev/diag/dev_tracepoint.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
 
