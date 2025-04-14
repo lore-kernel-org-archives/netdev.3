@@ -1,1113 +1,291 @@
-Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EAA5789D;
-	Mon, 14 Apr 2025 13:04:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.238.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744635853; cv=none; b=NUUu7t6pN1Eg6SsbBgMiiKSDYO+eAfjxqGNu+KnVSscebUyJD0TE8PeHNTIZkXP/Z6dzwUcXqK+oKjC5y9BXq6jY9I73VbDLHfv+LbqMIW0EyvwezaZK/T87EAmK4FZ4thHfFiTfSr5zAnhI0dLRZ1N5Yz/+G8p2xlx6FGIhKkQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744635853; c=relaxed/simple;
-	bh=9CPk0R/wMgTr7lzow0VWm00oql+CWePxp6GZUYPBoIw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=COnNO5WUVwA2zh+aL6G2vuAr0fsnO2Nj1OB1tm1M4xReGYl25fl+vwCFXubQh4vfcr7JMuxtX0DRLs8jwDpQPZTHXYwNxzaact5ReDvWPCWKpnup8Ww17g/cfQhgzLlu+tcWErq8+/x+vTA/OSAdXoManIuF/Qq8LrRc8TSHA0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=UFTIxHSd; arc=none smtp.client-ip=162.240.238.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B322A5789D;
+	Mon, 14 Apr 2025 13:05:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744635907; cv=fail; b=OGGK67x47EwuqlO6GerrI3Cma10EYZ+YANcXhHymFvwuCH0VHuyeUVz3hhN7Lc08NR5QU+l55V+VB6puuiiDAT6wP74eNHhSW4Wu0+uL2wfIYgRw310U12uDM38vxOKBHJ3rMvbIpZCLQH8/YgPJgepaX4piL5vzMotrF5jrrlQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744635907; c=relaxed/simple;
+	bh=hYi+UylaL2usAQnzCV2LfFBbXi0HNPl4Hq6/MjxA688=;
+	h=Subject:To:CC:References:From:Message-ID:Date:In-Reply-To:
+	 Content-Type:MIME-Version; b=cDXna0ctKlyu4aplejJe25q6Vd/jPa6toZf+cK0DhQHYkeoUp5Hjk1o/zGXbUkjTOQuT4fVo2JIwcpBfQlqM8ilRbYhaSks/gWTYziZrtR9iZ67hOFssSolPfztorJ0xpI4eGAJyT6vtJwI4mYj04NhLNi+8hImTv/3OvEBL8e4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JSLgjMkG; arc=fail smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="UFTIxHSd"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=SGzWtaMpL7x/u9y66VulbC8eMoF2UpZ9gPx7vCPOUdQ=; b=UFTIxHSdHhyoJ7LU2VKSbEPT+t
-	BM0WtZbF0cx7QiktMmykgHn2rj2KfCCVaiwccVwA9oLESfX7A1pdY9jDVFVomQ+9yLUKuK3VS8nsD
-	EDGl1MTyJ5WeZXdANDuEnvaIYvRY4cr/NTFi3V0q5mIjH7C/Ar9TgjqMCMfuhmt1U9ERdinXRGf+x
-	ItJQkXQSi9tAn/lxDxXL9YrWvdduDvbTun9v83BBnStMIM1ewjLctWXC+h7nPtF63aZaLwhxiawHy
-	ve+6uAcFQYexxzsxiD7pSYlwojS9v4iI+0pW4MQxxHVIhiZLxUUKTe88UvFI5SF00xMImxpUxAGJE
-	Z5d28sww==;
-Received: from [122.175.9.182] (port=25366 helo=cypher.couthit.local)
-	by server.wki.vra.mybluehostin.me with esmtpa (Exim 4.98.1)
-	(envelope-from <parvathi@couthit.com>)
-	id 1u4JTn-00000000238-351U;
-	Mon, 14 Apr 2025 18:34:04 +0530
-From: Parvathi Pudi <parvathi@couthit.com>
-To: danishanwar@ti.com,
-	rogerq@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	nm@ti.com,
-	ssantosh@kernel.org,
-	tony@atomide.com,
-	richardcochran@gmail.com,
-	glaroque@baylibre.com,
-	schnelle@linux.ibm.com,
-	m-karicheri2@ti.com,
-	s.hauer@pengutronix.de,
-	rdunlap@infradead.org,
-	diogo.ivo@siemens.com,
-	basharath@couthit.com,
-	parvathi@couthit.com,
-	horms@kernel.org,
-	jacob.e.keller@intel.com,
-	m-malladi@ti.com,
-	javier.carrasco.cruz@gmail.com,
-	afd@ti.com,
-	s-anna@ti.com
-Cc: linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	pratheesh@ti.com,
-	prajith@ti.com,
-	vigneshr@ti.com,
-	praneeth@ti.com,
-	srk@ti.com,
-	rogerq@ti.com,
-	krishna@couthit.com,
-	pmohan@couthit.com,
-	mohan@couthit.com
-Subject: [PATCH net-next v5 07/11] net: ti: prueth: Adds support for network filters for traffic control supported by PRU-ICSS
-Date: Mon, 14 Apr 2025 18:32:33 +0530
-Message-Id: <20250414130237.1915448-8-parvathi@couthit.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250414113458.1913823-1-parvathi@couthit.com>
-References: <20250414113458.1913823-1-parvathi@couthit.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JSLgjMkG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744635905; x=1776171905;
+  h=subject:to:cc:references:from:message-id:date:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=hYi+UylaL2usAQnzCV2LfFBbXi0HNPl4Hq6/MjxA688=;
+  b=JSLgjMkGQuRPD5N4kXUy1mvTImHQ0anqfV5mGc6dLNwLIKhi1JBTYJ33
+   PjRVPCZwXDcebVvPnExljXOzFS4eGCGzlS8PYdGliiUY5HxeImWdh7TVH
+   S79uCCggE/eGJnN6OK8Ou+ECbzX10TsWD39DfRJoTYrYGF/c8Vm/idSzT
+   yuHO9K+CYct6dmbOTGUqHXDIU+UW2zEF1EXV7Ky5r0602dkTakwd0faue
+   TXCymTj/HBgkzpdwOseQaWheW+nq8ehwKKshT7ZboLxyh1dyk6pRSO415
+   zPl6FonopPqexkhgh7bi1UO8d7CvrkgBVzzEK9Jxt/vqlEJsUxDlsjwf4
+   A==;
+X-CSE-ConnectionGUID: ZJO+mz4zQwyb6IaMA7IBtQ==
+X-CSE-MsgGUID: dU+e5IzKSsCM/VeuF54m/A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="45239954"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
+   d="scan'208";a="45239954"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 06:05:04 -0700
+X-CSE-ConnectionGUID: ENvS4Vq7SPWUC0EkiIMr5Q==
+X-CSE-MsgGUID: Shpc332nQ6iWRe4K1iS6jw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
+   d="scan'208";a="134968353"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 06:05:04 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Mon, 14 Apr 2025 06:05:03 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Mon, 14 Apr 2025 06:05:03 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.48) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Mon, 14 Apr 2025 06:05:02 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vwSitTLn1vem9uRQ4zbPNfmADSh7xEeFjxk7eGycvrh2j2lBDlNldXTc81qpMDuMPvORHe5FlLpiKba1jusGXEIHCGyzCz7yLCW08yff0CkoNCU6TOPpgoEpVqB4+lc4nt/bgKEYFEioFUT/xNYK0lGt5uDxaeMHnztlxteCpzsLPqVANHgT58cniGo+GelhXpjyORaLjtpRYQH6F/5tpFxIcqBS+jV1YCgb4ekyJNPRgAwcGE/zQRK0GxAwdR74hnBRgTlExrfOZXOhZxKORb8tHzpvw/iafMX4lXXDRqpRMTrK5u4Xs9R0CRbwydUS+pXJ4rsLa3b/0QA365cDQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nlT5mtFuhC+6+0LTKMt4hhfvi6UFf0ICXbh2TwayMcc=;
+ b=GnMi4rw9oybD538qOs/bDaoS7HT70nxFoYQUAKO/VjaH3ppIfMJKS8AwdVmAnrHijuMSC1yIcOQp2UnMNMtC0yDRO4+wgGmRs9whzpewqOzxnakXw3IRd37aLa4QnNieXk7Hq3yxjVG4mYq3+UmrqFon5coM/Basw6WD265M5E83RRL9y0HQ+h0gPhxQEdytjB5zO9rSv+u6nukoTN+fQNtenzINRXewo5gHOluZrh553vMQ5VZcVywRG95Bg1qys3QplS97S1q17tTB3GQbmy9258ktIlcCMSImKyRqhZIp9ZeErxYVI45E/QDbP6wnMSxLKqbYlsdvDiQu76vL8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MW4PR11MB5934.namprd11.prod.outlook.com (2603:10b6:303:189::7)
+ by SJ0PR11MB4782.namprd11.prod.outlook.com (2603:10b6:a03:2df::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.34; Mon, 14 Apr
+ 2025 13:04:57 +0000
+Received: from MW4PR11MB5934.namprd11.prod.outlook.com
+ ([fe80::96ae:ce0:2a38:7408]) by MW4PR11MB5934.namprd11.prod.outlook.com
+ ([fe80::96ae:ce0:2a38:7408%5]) with mapi id 15.20.8606.033; Mon, 14 Apr 2025
+ 13:04:57 +0000
+Subject: Re: [REGRESSION] e1000e heavy packet loss on Meteor Lake - 6.14.2
+To: =?UTF-8?Q?Marek_Marczykowski-G=c3=b3recki?=
+	<marmarek@invisiblethingslab.com>
+CC: Jesse Brandeburg <jesse.brandeburg@intel.com>, Tony Nguyen
+	<anthony.l.nguyen@intel.com>, <netdev@vger.kernel.org>,
+	<intel-wired-lan@lists.osuosl.org>, <regressions@lists.linux.dev>,
+	<stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>
+References: <Z_z9EjcKtwHCQcZR@mail-itl>
+ <b1f5e997-033c-33ed-5e3b-6fe2632bf718@intel.com> <Z_0GYR8jR-5NWZ9K@mail-itl>
+From: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
+Message-ID: <50da66d0-fe66-0563-4d34-7bd2e25695a4@intel.com>
+Date: Mon, 14 Apr 2025 16:04:51 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
+In-Reply-To: <Z_0GYR8jR-5NWZ9K@mail-itl>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: TL0P290CA0003.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:5::18) To MW4PR11MB5934.namprd11.prod.outlook.com
+ (2603:10b6:303:189::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.wki.vra.mybluehostin.me
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.wki.vra.mybluehostin.me: authenticated_id: parvathi@couthit.com
-X-Authenticated-Sender: server.wki.vra.mybluehostin.me: parvathi@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR11MB5934:EE_|SJ0PR11MB4782:EE_
+X-MS-Office365-Filtering-Correlation-Id: 89881ee5-fb8a-48d3-20ca-08dd7b54f4d8
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?YW04WU13Y0dXMEc4NlM5bzZmTTFKWCtlQjlPQ0l2RWpXZkFiYXlSdDhDNkg4?=
+ =?utf-8?B?ZENjaG5Hc2VkckhhNHVrMmxPU0MrZEV1L3g2YmEvZzF3TVJSemNPbFYxOTAx?=
+ =?utf-8?B?c0gwSkxOa2tLR0FDUEFuYjdONHVsb2ZOTmZYUDNQdVNRV1RRQ2YvbFZOcG14?=
+ =?utf-8?B?MVUzOWN4elB1eGVLeEpzdFNZM3hPZEFSOTM4QU5TMFU1Z1ZsQm5Zbm55dlpL?=
+ =?utf-8?B?dmsyNDJNRDN5cENSUUJDWGVoYUFwb0REUXhkdERSWFk0bUJmSG1SVUN3V2Ni?=
+ =?utf-8?B?Q2JVYkFJOFQzd2xiZ2k5YWNqY1c4d0daSU9rS3d6c0dWRXBTYUVKcTcwamF3?=
+ =?utf-8?B?NUlLcjFkd0FaaWtpSHNYYnYyckRybW5Ga204ejlqQmVGY0NpZGFBR1JsU1R3?=
+ =?utf-8?B?RVJKY3RxZkt4eXNaNGRFallKeTJ2TXd5TG1KR2E4NDNmZGo5Q2cvZk51YWpL?=
+ =?utf-8?B?MHBidFBSYXFpeWtXMXEycUhxOGpWdnhnTFg1bWx1OFRLRjZHSzJqUnBXbWt0?=
+ =?utf-8?B?UVliN0c3dTl5bUhkdUU2NDNEdnZBVVREdVVXbDRJUElkaFJUVDVFT1QzZ3Bw?=
+ =?utf-8?B?cVlVOHhzcHdkUDVKY3Z4SUtCdU4yT3B4STZvTXE4L3hBWjhEdXZiWUJFZ2xY?=
+ =?utf-8?B?cHdlVmxaWkFncVMzdStoa2JqSVAvMjh4QjlqNzlZR1ZWSmpFZ0VIaGl0L1dS?=
+ =?utf-8?B?YW5xTFF5cHEyUEk1MVlpWG5OOExkTnZCYUpLZDNuUk1wL3RzRDgvbkQwb2dL?=
+ =?utf-8?B?a05XREs4OWdaMXhESHF2VnBmd2NrNE0xYnFBemZsbFdBSytEbTZNdUZ0Nkl3?=
+ =?utf-8?B?bUNXcWcvaTdJbUUxWmZHYldZeUJqWFBXOVVCNkRaV1pHNnh5T0l0MVlLVDNK?=
+ =?utf-8?B?L0JIUGZhMXoxV1ljQVg4T0FLa3QyOWlROEdhbkthZVVuZEZzK2ZVelNJWTdB?=
+ =?utf-8?B?QThCSjJVazY1YjVFL3phTTAyT1JDQzUzK0wzbTBZOWplTzBuNVB0M2V6YTE4?=
+ =?utf-8?B?RWFEZlhGWk9TMDV3K3RsSHI5QVlCbU5HZTFnYkNuYXR3U0xOTlQvdTR3ZmJv?=
+ =?utf-8?B?eDVVa0tHc1NYSSt6bkJWVGsybHh4eXpEaVd5VzNSZDZ5bE53K21LNEVWYjZF?=
+ =?utf-8?B?OWhoUzVMYWtwajBobE01SHljcXczQnhrNFZuSWJycnp2R2J1cm1TTjlOOGQz?=
+ =?utf-8?B?SW41TjhUWG9EbkxsNkJnOFhnbkplN3BPWE9pT2p3cDlURHJuQ0kyUXVLVU16?=
+ =?utf-8?B?bmwyOUs3TUVGY0Y1R1BQUDdXc1M5cEUzU2dvNUZPY0NUV3BuQWsyc1hTbHE2?=
+ =?utf-8?B?cGlnQzNaZWUrWlN6ekRtdzdqTnhXQ2o5UW5xeWdyOVo2NzE0TGxkOGtzY0l6?=
+ =?utf-8?B?NXQ4dG12NjFydWYxaHZweXlXS3JaOGxxYTUyVkNYZTh5UGpwSGp2TXZMR3Fu?=
+ =?utf-8?B?OUNEMnF2eXloRE1pbWFFcUdQSExiaWZ0Ynh4WitmM3Y1YXUwNWcxKzBlY1Zj?=
+ =?utf-8?B?SllYakdZTEUxclpMbkZ2MC82MTkxNGZsKzA0OHd1V1JMRE11TFNFeDBnd0NR?=
+ =?utf-8?B?YVdMcWhlNCtaZHVVRk5xWENUMVFZSHhGYVptYTcxMitMTzdMSkNiL3g4aE5U?=
+ =?utf-8?B?WjlKQXBza3BrVUxqWktBMEZ6bjZxQ0p5eWkzeG1sYzBGNzlJdWluck1oL255?=
+ =?utf-8?B?anU3SEZEQjhETnRDc2ptWk9KWjRVQTIySngxaERNeVdOODQxNXFTdnh5Ky9z?=
+ =?utf-8?B?RmZ2MDhhT0JUOG5tQnducWljN2xBN3VqaTQvQkV5TThnNE9aenFWcWtCcmUx?=
+ =?utf-8?B?V0dGc09EeWZ1OGNkTlJXUWt5dGN5Q3RNTHBjb3p6cEl2NmNxZjdjNGxua2Z1?=
+ =?utf-8?B?Z01IWWRnQzkrKzh0Q0xsMXdyekxGcmwrUTVJMXF3YkEwSnhKMWxaSzM4NFA5?=
+ =?utf-8?Q?vWbSS0/q6/8=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5934.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?c2dHRXlRcmd3aXBldFQ1bldZWEZ0S1ZWd1IyWjcxZUUyOWJNNWNzZ1loMVl0?=
+ =?utf-8?B?TUUwNEo5UkxieGFmcTNldVViVzMycUFHeG5kTDhpZk13cXVWR2c1Y093SXlx?=
+ =?utf-8?B?L1RxUE5LTUZ1ajF3UzV0QUFiZmxhWkhrcGhVam9JZG5CM1BWZ0FQcnRYbVN1?=
+ =?utf-8?B?YlJRamN6TWZqcThmb0Ruc0ZrUDVHVHg1eHM1VndxYWIzUGd1STY3ZXBRNVB6?=
+ =?utf-8?B?OW5aUUh4TVFreWFlSnk0bDZMSzFranRvazJSLzFTbGhMa215aDRYbGxsTHR3?=
+ =?utf-8?B?eGx4LzZnSDBoMEZwaWdoV1hKem9CMGlQT3hRblNIUHhPTFpkS293VlVqWGVo?=
+ =?utf-8?B?OG8vTDhwbkZxNHFicVJmd2JhTi95STA2eGtWeEwwN29ScGExd3ZiZCtJdDU0?=
+ =?utf-8?B?OERjdjNoSlZ4QTQ0azBtaEpLdGY2RHJqVzcxYWQ1UlRhOUk4MlVZc0dRdFc0?=
+ =?utf-8?B?Tk5LSjdMVE1uL2xFUnZOdlZ2YXlUYTZ3c0l3SmRoTjFnNDh5L0krMkowUzdU?=
+ =?utf-8?B?MFU0NW1PZCtlNHQ2cVh5YTA2NHcvL01EYURvUmZXeWdST3RMUUV5d3p2ZDdv?=
+ =?utf-8?B?TTdpMjRxV2F0NXBKRXBIeGYyWGIyK0ZHOEExTnJLcEJWZXVQZWN2dGo4eU1G?=
+ =?utf-8?B?cjB3SlU2WGpRN3hYS3FNUjc5U2xJRUFrMlArZjNDUlpUWVRWM3BJditwZ0wv?=
+ =?utf-8?B?MHdFcmpKMXNkZXFJQVcvV250aE1wSFZsRnpRa2liTHlmS2ovWjhRLytNakRY?=
+ =?utf-8?B?RzVNdzF5RjN4VlVqRFgxTnBPMFV3Y09ZV05kZC9FUWduajkrOWthVUxHNi9J?=
+ =?utf-8?B?cFVRd2FqNDVhalZBb2xjMG1jVTdhZjVCQ2NyeGR0Zlk1dnQ4cXdSa0VoTTYy?=
+ =?utf-8?B?RGlURWQ4Y0pXQng2OFZiYndQMzN1djBJWkdIeUQzUS82ZEFXM09PKzJsTEVn?=
+ =?utf-8?B?NkJrdysxN3EzbXJBS3pHWnhjb3RsLzJ3Qlpib1I4aHdYYUpVR1h2OVMwNVB4?=
+ =?utf-8?B?MkMreXZqUmsxMGtSdUFHYWVHMElnTDY0QUU4OURhb09KR1RxdG5JM3BWK3FL?=
+ =?utf-8?B?N3UzeEJKZmxZc3ZqL3Q5QkI5ZE51UGhsRXhySmlZU21jVHIraCs5R1g4N3Z5?=
+ =?utf-8?B?eGJLbVpXa1lleFl2NlhHRGQwYXVHOEY1ZUFBd1I3a0QwZFFXWXo5akl2WEdQ?=
+ =?utf-8?B?Zi9KbUt0c3YyZVFhZ2JORFZzU3M0cnlPOXRZZDh6RzNRWW5XS1NiOUZQUUZs?=
+ =?utf-8?B?L0RpZWxlSi9iQ2J2VTJ0aVJEazFhcHJJUkRjYSt1cDVVY096dWR1eHFSZHls?=
+ =?utf-8?B?THRIdlhJa1BFK1UxbkpTRkxWRmx1TDY1YmkxdDdhQk9vTTgveTRQTHhqMzlJ?=
+ =?utf-8?B?cmhxSk1JOXRLd0RqZzhPYUxFa0JoOXQxcEw5cjRodUZmeER6LzZ3c0hjN3BY?=
+ =?utf-8?B?RS9MM3p3VmEvRG96SU5HRzFzc05HcHM1WUlDeXcwbDJSTWtEdUM1YmE5dS8y?=
+ =?utf-8?B?UGFHRy9HSnBjZE5RcTVncEZLTkFmV2pidjV1R29TZDdlQnBqV0ZmcThPbVpC?=
+ =?utf-8?B?bFBWaFMxRUdLcFJnNUxSc1YxV0tqZ0VPQVlRM1AzK1FUdHpCM1NYR3JGOW8z?=
+ =?utf-8?B?TlJMMlVMZFdPVTIrSGZUbUUxL3hBRVRPcTB0VTl0Q0hQRnN0UWk5WSswUmdG?=
+ =?utf-8?B?MCtpcGRqNXVqMWRDcW5DMnd4Vit5dFVBelNwS2lEdGJNU0prVm0rcFZmbTZv?=
+ =?utf-8?B?QWVFdGhGdTFxNURiYlJvRXpEajJBaGsvS1JsbjB4MzkvcVJvWTdORWF1eDNi?=
+ =?utf-8?B?d0szYTQweDAweSt2TThZL2VISUc5cytPMmw5N2V1QUlVM21HRWtOU0NGWnNT?=
+ =?utf-8?B?L1lvRUtuYnB0eFF0Q0tzYVNpd2J0aGdUSjJNUWxFUnJNTEU4Qk56TUFpdUht?=
+ =?utf-8?B?KzJFSSszU25oS0s0SEN6RkREMktjWHpCVkhaTXFnakliMm9QMTVsNEtSSkpL?=
+ =?utf-8?B?Z0FPTXg4NUFOdVUzOVRWSFRCVkZHaGhSTXBBQVN4N1preG5MOEk4S0FxZUVs?=
+ =?utf-8?B?ZnF3ZnkyMlJIbEt5UFhubnY3aUZ3T1dzbTVWRHBIT1FxWS9OMjFXTUJzOEdw?=
+ =?utf-8?B?RUpuK2lvUTVsTjJSTTBhSzM0blJqZGdEZnFGZDRjNXpUckxrNXhYSjVrRUdn?=
+ =?utf-8?B?d2c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 89881ee5-fb8a-48d3-20ca-08dd7b54f4d8
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5934.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2025 13:04:57.4565
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0jlJZVUhFVLuOz9YUi4VKcV9Q+xuTt16VQFLU3EOWpfNQ7WAbicaxQAfEa7T2eg7SQ9aoLN+d+quAmgk++0rxl4WSzfQN7S3x9OT4m9SuRA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4782
+X-OriginatorOrg: intel.com
 
-From: Roger Quadros <rogerq@ti.com>
 
-Driver updates to enable/disable network filters and traffic control
-features supported by the firmware running on PRU-ICSS.
 
-Control of the following features are now supported:
-1. Promiscuous mode
-2. Network Storm prevention
-3. Multicast filtering and
-4. VLAN filtering
+On 4/14/2025 3:58 PM, Marek Marczykowski-Górecki wrote:
+> On Mon, Apr 14, 2025 at 03:38:39PM +0300, Lifshits, Vitaly wrote:
+>> Do you see the high packet loss without the virtualization?
+> 
+> I can't check that easily right now, will try later.
+> 
+>> Can you please share the lspci output?
+> 
+> Sure:
+> 
+> 00:07.0 Ethernet controller [0200]: Intel Corporation Device [8086:550a] (rev 20)
+> 	Subsystem: CLEVO/KAPOK Computer Device [1558:a743]
+> 	Physical Slot: 7
+> 	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+> 	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+> 	Latency: 64
+> 	Interrupt: pin D routed to IRQ 69
+> 	Region 0: Memory at f2000000 (32-bit, non-prefetchable) [size=128K]
+> 	Capabilities: [c8] Power Management version 3
+> 		Flags: PMEClk- DSI+ D1- D2- AuxCurrent=0mA PME(D0-,D1-,D2-,D3hot-,D3cold-)
+> 		Status: D0 NoSoftRst+ PME-Enable- DSel=0 DScale=1 PME-
+> 	Capabilities: [d0] MSI: Enable+ Count=1/1 Maskable- 64bit+
+> 		Address: 00000000fee00000  Data: 0000
+> 	Kernel driver in use: e1000e
+> 	Kernel modules: e1000e
+> 
 
-Firmware running on PRU-ICSS will go through all these filter checks
-prior to sending the rx packets to the host.
 
-Ethtool or dev ioctl can be used to enable/disable these features from
-the user space.
+Do you have mei modules running? Can you try if disabling them make 
+things better?
 
-Signed-off-by: Roger Quadros <rogerq@ti.com>
-Signed-off-by: Andrew F. Davis <afd@ti.com>
-Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
-Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
----
- drivers/net/ethernet/ti/Makefile              |   2 +-
- drivers/net/ethernet/ti/icssm/icssm_ethtool.c |  39 +++
- drivers/net/ethernet/ti/icssm/icssm_prueth.c  | 310 +++++++++++++++++-
- drivers/net/ethernet/ti/icssm/icssm_prueth.h  |  49 ++-
- .../net/ethernet/ti/icssm/icssm_prueth_dos.c  | 225 +++++++++++++
- drivers/net/ethernet/ti/icssm/icssm_switch.h  |   5 +
- .../ti/icssm/icssm_vlan_mcast_filter_mmap.h   | 120 +++++++
- 7 files changed, 747 insertions(+), 3 deletions(-)
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_dos.c
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_vlan_mcast_filter_mmap.h
-
-diff --git a/drivers/net/ethernet/ti/Makefile b/drivers/net/ethernet/ti/Makefile
-index f21dd11118ab..852640ce2b15 100644
---- a/drivers/net/ethernet/ti/Makefile
-+++ b/drivers/net/ethernet/ti/Makefile
-@@ -4,7 +4,7 @@
- #
- 
- obj-$(CONFIG_TI_PRUETH) += icssm-prueth.o
--icssm-prueth-y := icssm/icssm_prueth.o icssm/icssm_ethtool.o
-+icssm-prueth-y := icssm/icssm_prueth.o icssm/icssm_ethtool.o icssm/icssm_prueth_dos.o
- 
- obj-$(CONFIG_TI_CPSW) += cpsw-common.o
- obj-$(CONFIG_TI_DAVINCI_EMAC) += cpsw-common.o
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_ethtool.c b/drivers/net/ethernet/ti/icssm/icssm_ethtool.c
-index cf6c75d48073..c9f2136d902f 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_ethtool.c
-+++ b/drivers/net/ethernet/ti/icssm/icssm_ethtool.c
-@@ -8,6 +8,7 @@
- #include <linux/if_bridge.h>
- #include <linux/if_vlan.h>
- #include "icssm_prueth.h"
-+#include "icssm_vlan_mcast_filter_mmap.h"
- #include "../icssg/icss_iep.h"
- 
- /* set PRU firmware statistics */
-@@ -18,6 +19,11 @@ void icssm_emac_set_stats(struct prueth_emac *emac,
- 
- 	dram = emac->prueth->mem[emac->dram].va;
- 	memcpy_toio(dram + STATISTICS_OFFSET, pstats, STAT_SIZE);
-+
-+	writel(pstats->vlan_dropped, dram +
-+			ICSS_EMAC_FW_VLAN_FILTER_DROP_CNT_OFFSET);
-+	writel(pstats->multicast_dropped, dram +
-+			ICSS_EMAC_FW_MULTICAST_FILTER_DROP_CNT_OFFSET);
- }
- 
- /* get statistics maintained by the PRU firmware into @pstats */
-@@ -28,6 +34,11 @@ void icssm_emac_get_stats(struct prueth_emac *emac,
- 
- 	dram = emac->prueth->mem[emac->dram].va;
- 	memcpy_fromio(pstats, dram + STATISTICS_OFFSET, STAT_SIZE);
-+
-+	pstats->vlan_dropped =
-+		readl(dram + ICSS_EMAC_FW_VLAN_FILTER_DROP_CNT_OFFSET);
-+	pstats->multicast_dropped =
-+		readl(dram + ICSS_EMAC_FW_MULTICAST_FILTER_DROP_CNT_OFFSET);
- }
- 
- /**
-@@ -182,13 +193,40 @@ static void icssm_emac_get_ethtool_stats(struct net_device *ndev,
- 	}
- }
- 
-+static int icssm_emac_get_regs_len(struct net_device *ndev)
-+{
-+	struct prueth_emac *emac = netdev_priv(ndev);
-+	struct prueth *prueth = emac->prueth;
-+
-+	/* VLAN Table at the end of the memory map, after MultiCast
-+	 * filter region. So VLAN table base +
-+	 * size will give the entire size of reg dump in case of
-+	 * Dual-EMAC firmware.
-+	 */
-+	if (PRUETH_IS_EMAC(prueth)) {
-+		return ICSS_EMAC_FW_VLAN_FLTR_TBL_BASE_ADDR +
-+		       ICSS_EMAC_FW_VLAN_FILTER_TABLE_SIZE_BYTES;
-+	}
-+
-+	return 0;
-+}
-+
- static void icssm_emac_get_regs(struct net_device *ndev,
- 				struct ethtool_regs *regs, void *p)
- {
- 	struct prueth_emac *emac = netdev_priv(ndev);
- 	struct prueth *prueth = emac->prueth;
-+	void __iomem *ram;
-+	u8 *reg = p;
- 
- 	regs->version = PRUETH_REG_DUMP_GET_VER(prueth);
-+
-+	/* Dump firmware's VLAN and MC tables */
-+	if (PRUETH_IS_EMAC(prueth)) {
-+		ram = prueth->mem[emac->dram].va;
-+		memcpy_fromio(reg, ram, icssm_emac_get_regs_len(ndev));
-+		return;
-+	}
- }
- 
- static const struct ethtool_rmon_hist_range icssm_emac_rmon_ranges[] = {
-@@ -272,6 +310,7 @@ const struct ethtool_ops emac_ethtool_ops = {
- 	.get_sset_count = icssm_emac_get_sset_count,
- 	.get_strings = icssm_emac_get_strings,
- 	.get_ethtool_stats = icssm_emac_get_ethtool_stats,
-+	.get_regs_len = icssm_emac_get_regs_len,
- 	.get_regs = icssm_emac_get_regs,
- 	.get_rmon_stats = icssm_emac_get_rmon_stats,
- 	.get_eth_mac_stats = icssm_emac_get_eth_mac_stats,
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-index b3f2982ec4d7..39ca83c6614f 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-@@ -29,6 +29,7 @@
- #include <net/pkt_cls.h>
- 
- #include "icssm_prueth.h"
-+#include "icssm_vlan_mcast_filter_mmap.h"
- #include "../icssg/icssg_mii_rt.h"
- #include "../icssg/icss_iep.h"
- 
-@@ -37,6 +38,26 @@
- #define TX_START_DELAY		0x40
- #define TX_CLK_DELAY_100M	0x6
- 
-+static struct prueth_fw_offsets fw_offsets_v2_1;
-+
-+static void icssm_prueth_set_fw_offsets(struct prueth *prueth)
-+{
-+	/* Set VLAN/Multicast filter control and table offsets */
-+	if (PRUETH_IS_EMAC(prueth)) {
-+		prueth->fw_offsets->vlan_ctrl_byte  =
-+			ICSS_EMAC_FW_VLAN_FILTER_CTRL_BITMAP_OFFSET;
-+		prueth->fw_offsets->vlan_filter_tbl =
-+			ICSS_EMAC_FW_VLAN_FLTR_TBL_BASE_ADDR;
-+
-+		prueth->fw_offsets->mc_ctrl_byte  =
-+			ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_OFFSET;
-+		prueth->fw_offsets->mc_filter_mask =
-+			ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OFFSET;
-+		prueth->fw_offsets->mc_filter_tbl =
-+			ICSS_EMAC_FW_MULTICAST_FILTER_TABLE;
-+	}
-+}
-+
- static inline void icssm_prueth_write_reg(struct prueth *prueth,
- 					  enum prueth_mem region,
- 					  unsigned int reg, u32 val)
-@@ -343,18 +364,25 @@ static void icssm_prueth_hostinit(struct prueth *prueth)
-  */
- static void icssm_prueth_init_ethernet_mode(struct prueth *prueth)
- {
-+	icssm_prueth_set_fw_offsets(prueth);
- 	icssm_prueth_hostinit(prueth);
- }
- 
- static void icssm_prueth_port_enable(struct prueth_emac *emac, bool enable)
- {
- 	struct prueth *prueth = emac->prueth;
--	void __iomem *port_ctrl;
-+	void __iomem *port_ctrl, *vlan_ctrl;
-+	u32 vlan_ctrl_offset;
- 	void __iomem *ram;
- 
-+	vlan_ctrl_offset = prueth->fw_offsets->vlan_ctrl_byte;
-+
- 	ram = prueth->mem[emac->dram].va;
- 	port_ctrl = ram + PORT_CONTROL_ADDR;
- 	writeb(!!enable, port_ctrl);
-+
-+	vlan_ctrl = ram + vlan_ctrl_offset;
-+	writeb(!!enable, vlan_ctrl);
- }
- 
- static int icssm_prueth_emac_config(struct prueth_emac *emac)
-@@ -1422,6 +1450,174 @@ static void icssm_emac_ndo_get_stats64(struct net_device *ndev,
- 	stats->rx_length_errors = ndev->stats.rx_length_errors;
- }
- 
-+/* enable/disable MC filter */
-+static void icssm_emac_mc_filter_ctrl(struct prueth_emac *emac, bool enable)
-+{
-+	struct prueth *prueth = emac->prueth;
-+	void __iomem *mc_filter_ctrl;
-+	void __iomem *ram;
-+	u32 mc_ctrl_byte;
-+	u32 reg;
-+
-+	ram = prueth->mem[emac->dram].va;
-+	mc_ctrl_byte = prueth->fw_offsets->mc_ctrl_byte;
-+	mc_filter_ctrl = ram + mc_ctrl_byte;
-+
-+	if (enable)
-+		reg = ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_ENABLED;
-+	else
-+		reg = ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_DISABLED;
-+
-+	writeb(reg, mc_filter_ctrl);
-+}
-+
-+/* reset MC filter bins */
-+static void icssm_emac_mc_filter_reset(struct prueth_emac *emac)
-+{
-+	struct prueth *prueth = emac->prueth;
-+	void __iomem *mc_filter_tbl;
-+	u32 mc_filter_tbl_base;
-+	void __iomem *ram;
-+
-+	ram = prueth->mem[emac->dram].va;
-+	mc_filter_tbl_base = prueth->fw_offsets->mc_filter_tbl;
-+
-+	mc_filter_tbl = ram + mc_filter_tbl_base;
-+	memset_io(mc_filter_tbl, 0, ICSS_EMAC_FW_MULTICAST_TABLE_SIZE_BYTES);
-+}
-+
-+/* set MC filter hashmask */
-+static void icssm_emac_mc_filter_hashmask
-+		(struct prueth_emac *emac,
-+		 u8 mask[ICSS_EMAC_FW_MULTICAST_FILTER_MASK_SIZE_BYTES])
-+{
-+	struct prueth *prueth = emac->prueth;
-+	void __iomem *mc_filter_mask;
-+	u32 mc_filter_mask_base;
-+	void __iomem *ram;
-+
-+	ram = prueth->mem[emac->dram].va;
-+	mc_filter_mask_base = prueth->fw_offsets->mc_filter_mask;
-+
-+	mc_filter_mask = ram + mc_filter_mask_base;
-+	memcpy_toio(mc_filter_mask, mask,
-+		    ICSS_EMAC_FW_MULTICAST_FILTER_MASK_SIZE_BYTES);
-+}
-+
-+static void icssm_emac_mc_filter_bin_update(struct prueth_emac *emac, u8 hash,
-+					    u8 val)
-+{
-+	struct prueth *prueth = emac->prueth;
-+	void __iomem *mc_filter_tbl;
-+	u32 mc_filter_tbl_base;
-+	void __iomem *ram;
-+
-+	ram = prueth->mem[emac->dram].va;
-+	mc_filter_tbl_base = prueth->fw_offsets->mc_filter_tbl;
-+
-+	mc_filter_tbl = ram + mc_filter_tbl_base;
-+	writeb(val, mc_filter_tbl + hash);
-+}
-+
-+void icssm_emac_mc_filter_bin_allow(struct prueth_emac *emac, u8 hash)
-+{
-+	icssm_emac_mc_filter_bin_update
-+		(emac, hash,
-+		 ICSS_EMAC_FW_MULTICAST_FILTER_HOST_RCV_ALLOWED);
-+}
-+
-+void icssm_emac_mc_filter_bin_disallow(struct prueth_emac *emac, u8 hash)
-+{
-+	icssm_emac_mc_filter_bin_update
-+		(emac, hash,
-+		 ICSS_EMAC_FW_MULTICAST_FILTER_HOST_RCV_NOT_ALLOWED);
-+}
-+
-+u8 icssm_emac_get_mc_hash(u8 *mac, u8 *mask)
-+{
-+	u8 hash;
-+	int j;
-+
-+	for (j = 0, hash = 0; j < ETH_ALEN; j++)
-+		hash ^= (mac[j] & mask[j]);
-+
-+	return hash;
-+}
-+
-+/**
-+ * icssm_emac_ndo_set_rx_mode - EMAC set receive mode function
-+ * @ndev: The EMAC network adapter
-+ *
-+ * Called when system wants to set the receive mode of the device.
-+ *
-+ */
-+static void icssm_emac_ndo_set_rx_mode(struct net_device *ndev)
-+{
-+	struct prueth_emac *emac = netdev_priv(ndev);
-+	bool promisc = ndev->flags & IFF_PROMISC;
-+	struct netdev_hw_addr *ha;
-+	struct prueth *prueth;
-+	unsigned long flags;
-+	void __iomem *sram;
-+	u32 mask, reg;
-+	u8 hash;
-+
-+	prueth = emac->prueth;
-+	sram = prueth->mem[PRUETH_MEM_SHARED_RAM].va;
-+	reg = readl(sram + EMAC_PROMISCUOUS_MODE_OFFSET);
-+
-+	/* for LRE, it is a shared table. So lock the access */
-+	spin_lock_irqsave(&emac->addr_lock, flags);
-+
-+	/* Disable and reset multicast filter, allows allmulti */
-+	icssm_emac_mc_filter_ctrl(emac, false);
-+	icssm_emac_mc_filter_reset(emac);
-+	icssm_emac_mc_filter_hashmask(emac, emac->mc_filter_mask);
-+
-+	if (PRUETH_IS_EMAC(prueth)) {
-+		switch (emac->port_id) {
-+		case PRUETH_PORT_MII0:
-+			mask = EMAC_P1_PROMISCUOUS_BIT;
-+			break;
-+		case PRUETH_PORT_MII1:
-+			mask = EMAC_P2_PROMISCUOUS_BIT;
-+			break;
-+		default:
-+			netdev_err(ndev, "%s: invalid port\n", __func__);
-+			goto unlock;
-+		}
-+
-+		if (promisc) {
-+			/* Enable promiscuous mode */
-+			reg |= mask;
-+		} else {
-+			/* Disable promiscuous mode */
-+			reg &= ~mask;
-+		}
-+
-+		writel(reg, sram + EMAC_PROMISCUOUS_MODE_OFFSET);
-+
-+		if (promisc)
-+			goto unlock;
-+	}
-+
-+	if (ndev->flags & IFF_ALLMULTI && !PRUETH_IS_SWITCH(prueth))
-+		goto unlock;
-+
-+	icssm_emac_mc_filter_ctrl(emac, true);	/* all multicast blocked */
-+
-+	if (netdev_mc_empty(ndev))
-+		goto unlock;
-+
-+	netdev_for_each_mc_addr(ha, ndev) {
-+		hash = icssm_emac_get_mc_hash(ha->addr, emac->mc_filter_mask);
-+		icssm_emac_mc_filter_bin_allow(emac, hash);
-+	}
-+
-+unlock:
-+	spin_unlock_irqrestore(&emac->addr_lock, flags);
-+}
-+
- static int icssm_emac_hwtstamp_config_set(struct net_device *ndev,
- 					  struct ifreq *ifr)
- {
-@@ -1495,13 +1691,115 @@ static int icssm_emac_ndo_ioctl(struct net_device *ndev, struct ifreq *ifr,
- 	return phy_do_ioctl(ndev, ifr, cmd);
- }
- 
-+int icssm_emac_add_del_vid(struct prueth_emac *emac,
-+			   bool add, __be16 proto, u16 vid)
-+{
-+	struct prueth *prueth = emac->prueth;
-+	u32 vlan_filter_tbl;
-+	unsigned long flags;
-+	void __iomem *ram;
-+	u8 bit_index, val;
-+	u16 byte_index;
-+
-+	vlan_filter_tbl = prueth->fw_offsets->vlan_filter_tbl;
-+	ram = prueth->mem[emac->dram].va;
-+
-+	if (proto != htons(ETH_P_8021Q))
-+		return -EINVAL;
-+
-+	if (vid >= ICSS_EMAC_FW_VLAN_FILTER_VID_MAX)
-+		return -EINVAL;
-+
-+	/* By default, VLAN ID 0 (priority tagged packets) is routed to
-+	 * host, so nothing to be done if vid = 0
-+	 */
-+	if (!vid)
-+		return 0;
-+
-+	/* for LRE, it is a shared table. So lock the access */
-+	spin_lock_irqsave(&emac->addr_lock, flags);
-+
-+	/* VLAN filter table is 512 bytes (4096 bit) bitmap.
-+	 * Each bit controls enabling or disabling corresponding
-+	 * VID. Therefore byte index that controls a given VID is
-+	 * can calculated as vid / 8 and the bit within that byte
-+	 * that controls VID is given by vid % 8. Allow untagged
-+	 * frames to host by default.
-+	 */
-+	byte_index = vid / BITS_PER_BYTE;
-+	bit_index = vid % BITS_PER_BYTE;
-+	val = readb(ram + vlan_filter_tbl + byte_index);
-+	if (add)
-+		val |= BIT(bit_index);
-+	else
-+		val &= ~BIT(bit_index);
-+	writeb(val, ram + vlan_filter_tbl + byte_index);
-+
-+	spin_unlock_irqrestore(&emac->addr_lock, flags);
-+
-+	netdev_dbg(emac->ndev, "%s VID bit at index %d and bit %d\n",
-+		   add ? "Setting" : "Clearing", byte_index, bit_index);
-+
-+	return 0;
-+}
-+
-+static int icssm_emac_ndo_vlan_rx_add_vid(struct net_device *dev,
-+					  __be16 proto, u16 vid)
-+{
-+	struct prueth_emac *emac = netdev_priv(dev);
-+
-+	return icssm_emac_add_del_vid(emac, true, proto, vid);
-+}
-+
-+static int icssm_emac_ndo_vlan_rx_kill_vid(struct net_device *dev,
-+					   __be16 proto, u16 vid)
-+{
-+	struct prueth_emac *emac = netdev_priv(dev);
-+
-+	return icssm_emac_add_del_vid(emac, false, proto, vid);
-+}
-+
-+static int icssm_emac_get_port_parent_id(struct net_device *dev,
-+					 struct netdev_phys_item_id *ppid)
-+{
-+	struct prueth_emac *emac = netdev_priv(dev);
-+	struct prueth *prueth = emac->prueth;
-+
-+	ppid->id_len = sizeof(prueth->base_mac);
-+	memcpy(&ppid->id, &prueth->base_mac, ppid->id_len);
-+
-+	return 0;
-+}
-+
-+static int icssm_emac_ndo_get_phys_port_name(struct net_device *ndev,
-+					     char *name, size_t len)
-+{
-+	struct prueth_emac *emac = netdev_priv(ndev);
-+	int err;
-+
-+	err = snprintf(name, len, "p%d", emac->port_id);
-+
-+	if (err >= len)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
- static const struct net_device_ops emac_netdev_ops = {
- 	.ndo_open = icssm_emac_ndo_open,
- 	.ndo_stop = icssm_emac_ndo_stop,
- 	.ndo_start_xmit = icssm_emac_ndo_start_xmit,
-+	.ndo_set_mac_address = eth_mac_addr,
-+	.ndo_validate_addr = eth_validate_addr,
- 	.ndo_tx_timeout = icssm_emac_ndo_tx_timeout,
- 	.ndo_get_stats64 = icssm_emac_ndo_get_stats64,
-+	.ndo_set_rx_mode = icssm_emac_ndo_set_rx_mode,
- 	.ndo_eth_ioctl = icssm_emac_ndo_ioctl,
-+	.ndo_vlan_rx_add_vid = icssm_emac_ndo_vlan_rx_add_vid,
-+	.ndo_vlan_rx_kill_vid = icssm_emac_ndo_vlan_rx_kill_vid,
-+	.ndo_setup_tc = icssm_emac_ndo_setup_tc,
-+	.ndo_get_port_parent_id = icssm_emac_get_port_parent_id,
-+	.ndo_get_phys_port_name = icssm_emac_ndo_get_phys_port_name,
- };
- 
- /* get emac_port corresponding to eth_node name */
-@@ -1567,6 +1865,7 @@ static int icssm_prueth_netdev_init(struct prueth *prueth,
- 	emac->prueth = prueth;
- 	emac->ndev = ndev;
- 	emac->port_id = port;
-+	memset(&emac->mc_filter_mask[0], 0xff, ETH_ALEN); /* default mask */
- 
- 	/* by default eth_type is EMAC */
- 	switch (port) {
-@@ -1608,7 +1907,9 @@ static int icssm_prueth_netdev_init(struct prueth *prueth,
- 		dev_err(prueth->dev, "could not get ptp tx irq. Skipping PTP support\n");
- 	}
- 
-+	spin_lock_init(&emac->lock);
- 	spin_lock_init(&emac->ptp_skb_lock);
-+	spin_lock_init(&emac->addr_lock);
- 
- 	/* get mac address from DT and set private and netdev addr */
- 	ret = of_get_ethdev_address(eth_node, ndev);
-@@ -1637,6 +1938,10 @@ static int icssm_prueth_netdev_init(struct prueth *prueth,
- 	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_Pause_BIT);
- 	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_Asym_Pause_BIT);
- 
-+	ndev->features |= NETIF_F_HW_VLAN_CTAG_FILTER | NETIF_F_HW_TC;
-+
-+	ndev->hw_features |= NETIF_F_HW_VLAN_CTAG_FILTER;
-+
- 	ndev->netdev_ops = &emac_netdev_ops;
- 	ndev->ethtool_ops = &emac_ethtool_ops;
- 
-@@ -1689,6 +1994,7 @@ static int icssm_prueth_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, prueth);
- 	prueth->dev = dev;
- 	prueth->fw_data = device_get_match_data(dev);
-+	prueth->fw_offsets = &fw_offsets_v2_1;
- 
- 	eth_ports_node = of_get_child_by_name(np, "ethernet-ports");
- 	if (!eth_ports_node)
-@@ -1880,6 +2186,8 @@ static int icssm_prueth_probe(struct platform_device *pdev)
- 			prueth->emac[PRUETH_MAC1]->ndev;
- 	}
- 
-+	eth_random_addr(prueth->base_mac);
-+
- 	dev_info(dev, "TI PRU ethernet driver initialized: %s EMAC mode\n",
- 		 (!eth0_node || !eth1_node) ? "single" : "dual");
- 
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.h b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-index 1709b3b6c2be..8a5f1647466a 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-@@ -28,6 +28,9 @@
- #define EMAC_MAX_FRM_SUPPORT (ETH_HLEN + VLAN_HLEN + ETH_DATA_LEN + \
- 			      ICSSM_LRE_TAG_SIZE)
- 
-+/* default timer for NSP and HSR/PRP */
-+#define PRUETH_NSP_TIMER_MS	(100) /* Refresh NSP counters every 100ms */
-+
- #define PRUETH_REG_DUMP_VER		1
- 
- /* Encoding: 32-16: Reserved, 16-8: Reg dump version, 8-0: Ethertype  */
-@@ -293,6 +296,29 @@ enum prueth_mem {
- 	PRUETH_MEM_MAX,
- };
- 
-+/* Firmware offsets/size information */
-+struct prueth_fw_offsets {
-+	u32 index_array_offset;
-+	u32 bin_array_offset;
-+	u32 nt_array_offset;
-+	u32 index_array_loc;
-+	u32 bin_array_loc;
-+	u32 nt_array_loc;
-+	u32 index_array_max_entries;
-+	u32 bin_array_max_entries;
-+	u32 nt_array_max_entries;
-+	u32 vlan_ctrl_byte;
-+	u32 vlan_filter_tbl;
-+	u32 mc_ctrl_byte;
-+	u32 mc_filter_mask;
-+	u32 mc_filter_tbl;
-+	/* IEP wrap is used in the rx packet ordering logic and
-+	 * is different for ICSSM v1.0 vs 2.1
-+	 */
-+	u32 iep_wrap;
-+	u16 hash_mask;
-+};
-+
- enum pruss_device {
- 	PRUSS_AM57XX = 0,
- 	PRUSS_AM43XX,
-@@ -314,6 +340,11 @@ struct prueth_private_data {
- 	bool support_switch;
- };
- 
-+struct nsp_counter {
-+	unsigned long cookie;
-+	u16 credit;
-+};
-+
- /* data for each emac port */
- struct prueth_emac {
- 	struct prueth *prueth;
-@@ -338,8 +369,16 @@ struct prueth_emac {
- 	const char *phy_id;
- 	u32 msg_enable;
- 	u8 mac_addr[6];
-+	unsigned char mc_filter_mask[ETH_ALEN];	/* for multicast filtering */
- 	phy_interface_t phy_if;
-+
- 	spinlock_t lock;	/* serialize access */
-+	spinlock_t addr_lock;	/* serialize access to VLAN/MC filter table */
-+
-+	struct nsp_counter nsp_bc;
-+	struct nsp_counter nsp_mc;
-+	struct nsp_counter nsp_uc;
-+	bool nsp_enabled;
- 
- 	struct sk_buff *ptp_skb[PRUETH_PTP_TS_EVENTS];
- 	spinlock_t ptp_skb_lock;	/* serialize access */
-@@ -367,19 +406,27 @@ struct prueth {
- 	unsigned int eth_type;
- 	size_t ocmc_ram_size;
- 	u8 emac_configured;
-+	u8 base_mac[ETH_ALEN];
- };
- 
- extern const struct ethtool_ops emac_ethtool_ops;
- 
-+int icssm_emac_ndo_setup_tc(struct net_device *dev, enum tc_setup_type type,
-+			    void *type_data);
- void icssm_parse_packet_info(struct prueth *prueth, u32 buffer_descriptor,
- 			     struct prueth_packet_info *pkt_info);
- int icssm_emac_rx_packet(struct prueth_emac *emac, u16 *bd_rd_ptr,
- 			 struct prueth_packet_info *pkt_info,
- 			 const struct prueth_queue_info *rxqueue);
--
-+int icssm_emac_add_del_vid(struct prueth_emac *emac,
-+			   bool add, __be16 proto, u16 vid);
- irqreturn_t icssm_prueth_ptp_tx_irq_handle(int irq, void *dev);
- irqreturn_t icssm_prueth_ptp_tx_irq_work(int irq, void *dev);
- 
-+void icssm_emac_mc_filter_bin_allow(struct prueth_emac *emac, u8 hash);
-+void icssm_emac_mc_filter_bin_disallow(struct prueth_emac *emac, u8 hash);
-+u8 icssm_emac_get_mc_hash(u8 *mac, u8 *mask);
-+
- void icssm_emac_set_stats(struct prueth_emac *emac,
- 			  struct port_statistics *pstats);
- void icssm_emac_get_stats(struct prueth_emac *emac,
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth_dos.c b/drivers/net/ethernet/ti/icssm/icssm_prueth_dos.c
-new file mode 100644
-index 000000000000..8382bd8cab7c
---- /dev/null
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth_dos.c
-@@ -0,0 +1,225 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (C) 2020-2021 Texas Instruments Incorporated - https://www.ti.com
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/remoteproc/pruss.h>
-+#include <linux/regmap.h>
-+#include <linux/remoteproc.h>
-+#include <net/pkt_cls.h>
-+
-+#include "../icssg/icssg_mii_rt.h"
-+#include "icssm_vlan_mcast_filter_mmap.h"
-+#include "icssm_prueth.h"
-+
-+static void icssm_emac_nsp_enable(void __iomem *counter, u16 credit)
-+{
-+	writel((credit << PRUETH_NSP_CREDIT_SHIFT) | PRUETH_NSP_ENABLE,
-+	       counter);
-+}
-+
-+/**
-+ * icssm_prueth_enable_nsp - enable nsp
-+ *
-+ * @emac: EMAC data structure
-+ *
-+ */
-+static void icssm_prueth_enable_nsp(struct prueth_emac *emac)
-+{
-+	struct prueth *prueth = emac->prueth;
-+	void __iomem *dram;
-+
-+	dram = prueth->mem[emac->dram].va;
-+
-+	if (emac->nsp_bc.cookie)
-+		icssm_emac_nsp_enable(dram + STORM_PREVENTION_OFFSET_BC,
-+				      emac->nsp_bc.credit);
-+	if (emac->nsp_mc.cookie)
-+		icssm_emac_nsp_enable(dram + STORM_PREVENTION_OFFSET_MC,
-+				      emac->nsp_mc.credit);
-+	if (emac->nsp_uc.cookie)
-+		icssm_emac_nsp_enable(dram + STORM_PREVENTION_OFFSET_UC,
-+				      emac->nsp_uc.credit);
-+}
-+
-+static int icssm_emac_flower_parse_policer(struct prueth_emac *emac,
-+					   struct netlink_ext_ack *extack,
-+					   struct flow_cls_offload *cls,
-+					   u64 rate_bytes_per_sec)
-+{
-+	struct flow_rule *rule = flow_cls_offload_flow_rule(cls);
-+	struct flow_dissector *dissector = rule->match.dissector;
-+	u8 null_mac[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-+	u8 bc_mac[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-+	u8 mc_mac[] = {0x01, 0x00, 0x00, 0x00, 0x00, 0x00};
-+	struct flow_match_eth_addrs match;
-+	struct nsp_counter *nsp = NULL;
-+	char *str;
-+	u32 pps;
-+
-+	if (dissector->used_keys &
-+	    ~(BIT(FLOW_DISSECTOR_KEY_BASIC) |
-+	      BIT(FLOW_DISSECTOR_KEY_CONTROL) |
-+	      BIT(FLOW_DISSECTOR_KEY_ETH_ADDRS))) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Unsupported keys used");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (!flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_ETH_ADDRS)) {
-+		NL_SET_ERR_MSG_MOD(extack, "Not matching on eth address");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	flow_rule_match_eth_addrs(rule, &match);
-+
-+	if (!ether_addr_equal_masked(match.key->src, null_mac,
-+				     match.mask->src)) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Matching on source MAC not supported");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (ether_addr_equal(match.key->dst, bc_mac)) {
-+		if (!emac->nsp_bc.cookie ||
-+		    emac->nsp_bc.cookie == cls->cookie)
-+			nsp = &emac->nsp_bc;
-+		else
-+			NL_SET_ERR_MSG_MOD(extack, "BC Filter already set");
-+		str = "Broad";
-+	} else if (ether_addr_equal_masked(match.key->dst, mc_mac, mc_mac)) {
-+		if (!emac->nsp_mc.cookie ||
-+		    emac->nsp_mc.cookie == cls->cookie)
-+			nsp = &emac->nsp_mc;
-+		else
-+			NL_SET_ERR_MSG_MOD(extack, "MC Filter already set");
-+		str = "Multi";
-+	} else {
-+		if (!emac->nsp_uc.cookie ||
-+		    emac->nsp_uc.cookie == cls->cookie)
-+			nsp = &emac->nsp_uc;
-+		else
-+			NL_SET_ERR_MSG_MOD(extack, "UC Filter already set");
-+		str = "Uni";
-+	}
-+
-+	if (!nsp)
-+		return -EOPNOTSUPP;
-+
-+	/* Calculate number of packets per second for given bps
-+	 * assuming min ethernet packet size
-+	 */
-+	pps = div_u64(rate_bytes_per_sec, ETH_ZLEN);
-+	/* Convert that to packets per 100ms */
-+	pps /= MSEC_PER_SEC / PRUETH_NSP_TIMER_MS;
-+
-+	nsp->cookie = cls->cookie;
-+	nsp->credit = pps;
-+	emac->nsp_enabled = emac->nsp_bc.cookie | emac->nsp_mc.cookie |
-+			    emac->nsp_uc.cookie;
-+
-+	icssm_prueth_enable_nsp(emac);
-+
-+	netdev_dbg(emac->ndev,
-+		   "%scast filter set to %d packets per %dms\n", str,
-+		   nsp->credit, PRUETH_NSP_TIMER_MS);
-+
-+	return 0;
-+}
-+
-+static int icssm_emac_configure_clsflower(struct prueth_emac *emac,
-+					  struct flow_cls_offload *cls)
-+{
-+	struct flow_rule *rule = flow_cls_offload_flow_rule(cls);
-+	struct netlink_ext_ack *extack = cls->common.extack;
-+	const struct flow_action_entry *act;
-+	int i;
-+
-+	flow_action_for_each(i, act, &rule->action) {
-+		switch (act->id) {
-+		case FLOW_ACTION_POLICE:
-+			return icssm_emac_flower_parse_policer
-+				(emac, extack, cls,
-+				 act->police.rate_bytes_ps);
-+		default:
-+			NL_SET_ERR_MSG_MOD(extack,
-+					   "Action not supported");
-+			return -EOPNOTSUPP;
-+		}
-+	}
-+	return -EOPNOTSUPP;
-+}
-+
-+static int icssm_emac_delete_clsflower(struct prueth_emac *emac,
-+				       struct flow_cls_offload *cls)
-+{
-+	struct prueth *prueth = emac->prueth;
-+	void __iomem *dram;
-+
-+	dram = prueth->mem[emac->dram].va;
-+
-+	if (cls->cookie == emac->nsp_bc.cookie) {
-+		emac->nsp_bc.cookie = 0;
-+		emac->nsp_bc.credit = 0;
-+		writel(0, dram + STORM_PREVENTION_OFFSET_BC);
-+	} else if (cls->cookie == emac->nsp_mc.cookie) {
-+		emac->nsp_mc.cookie = 0;
-+		emac->nsp_mc.credit = 0;
-+		writel(0, dram + STORM_PREVENTION_OFFSET_MC);
-+	} else if (cls->cookie == emac->nsp_uc.cookie) {
-+		emac->nsp_uc.cookie = 0;
-+		emac->nsp_uc.credit = 0;
-+		writel(0, dram + STORM_PREVENTION_OFFSET_UC);
-+	}
-+
-+	emac->nsp_enabled = emac->nsp_bc.cookie | emac->nsp_mc.cookie |
-+			    emac->nsp_uc.cookie;
-+
-+	return 0;
-+}
-+
-+static int icssm_emac_setup_tc_cls_flower(struct prueth_emac *emac,
-+					  struct flow_cls_offload *cls_flower)
-+{
-+	switch (cls_flower->command) {
-+	case FLOW_CLS_REPLACE:
-+		return icssm_emac_configure_clsflower(emac, cls_flower);
-+	case FLOW_CLS_DESTROY:
-+		return icssm_emac_delete_clsflower(emac, cls_flower);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static int icssm_emac_setup_tc_block_cb(enum tc_setup_type type,
-+					void *type_data, void *cb_priv)
-+{
-+	struct prueth_emac *emac = cb_priv;
-+
-+	if (!tc_cls_can_offload_and_chain0(emac->ndev, type_data))
-+		return -EOPNOTSUPP;
-+
-+	switch (type) {
-+	case TC_SETUP_CLSFLOWER:
-+		return icssm_emac_setup_tc_cls_flower(emac, type_data);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static LIST_HEAD(emac_block_cb_list);
-+
-+int icssm_emac_ndo_setup_tc(struct net_device *dev, enum tc_setup_type type,
-+			    void *type_data)
-+{
-+	struct prueth_emac *emac = netdev_priv(dev);
-+
-+	if (type == TC_SETUP_BLOCK) {
-+		return flow_block_cb_setup_simple(type_data,
-+						  &emac_block_cb_list,
-+						  icssm_emac_setup_tc_block_cb,
-+						  emac, emac, true);
-+	}
-+
-+	return -EOPNOTSUPP;
-+}
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_switch.h b/drivers/net/ethernet/ti/icssm/icssm_switch.h
-index b13e0706ccec..0053191380b7 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_switch.h
-+++ b/drivers/net/ethernet/ti/icssm/icssm_switch.h
-@@ -146,6 +146,11 @@
- /* 4 bytes ? */
- #define STP_INVALID_STATE_OFFSET	(STATISTICS_OFFSET + STAT_SIZE + 33)
- 
-+/* Shared RAM Offsets for Switch */
-+/* NSP (Network Storm Prevention) timer re-uses NT timer */
-+#define PRUETH_NSP_CREDIT_SHIFT       8
-+#define PRUETH_NSP_ENABLE            BIT(0)
-+
- /* DRAM Offsets for EMAC
-  * Present on Both DRAM0 and DRAM1
-  */
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_vlan_mcast_filter_mmap.h b/drivers/net/ethernet/ti/icssm/icssm_vlan_mcast_filter_mmap.h
-new file mode 100644
-index 000000000000..32b5c228c5fb
---- /dev/null
-+++ b/drivers/net/ethernet/ti/icssm/icssm_vlan_mcast_filter_mmap.h
-@@ -0,0 +1,120 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+/* Copyright (C) 2015-2021 Texas Instruments Incorporated - https://www.ti.com
-+ *
-+ * This file contains VLAN/Multicast filtering feature memory map
-+ *
-+ */
-+
-+#ifndef ICSS_VLAN_MULTICAST_FILTER_MM_H
-+#define ICSS_VLAN_MULTICAST_FILTER_MM_H
-+
-+/*  VLAN/Multicast filter defines & offsets,
-+ *  present on both PRU0 and PRU1 DRAM
-+ */
-+
-+/* Feature enable/disable values for multicast filtering */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_DISABLED		0x00
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_ENABLED		0x01
-+
-+/* Feature enable/disable values  for VLAN filtering */
-+#define ICSS_EMAC_FW_VLAN_FILTER_CTRL_DISABLED			0x00
-+#define ICSS_EMAC_FW_VLAN_FILTER_CTRL_ENABLED			0x01
-+
-+/* Add/remove multicast mac id for filtering bin */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_HOST_RCV_ALLOWED		0x01
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_HOST_RCV_NOT_ALLOWED	0x00
-+
-+/* Default HASH value for the multicast filtering Mask */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_INIT_VAL			0xFF
-+
-+/* Size requirements for Multicast filtering feature */
-+#define ICSS_EMAC_FW_MULTICAST_TABLE_SIZE_BYTES			       256
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_MASK_SIZE_BYTES			 6
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_SIZE_BYTES			 1
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OVERRIDE_STATUS_SIZE_BYTES	 1
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_DROP_CNT_SIZE_BYTES		 4
-+
-+/* Size requirements for VLAN filtering feature : 4096 bits = 512 bytes */
-+#define ICSS_EMAC_FW_VLAN_FILTER_TABLE_SIZE_BYTES		       512
-+#define ICSS_EMAC_FW_VLAN_FILTER_CTRL_SIZE_BYTES			 1
-+#define ICSS_EMAC_FW_VLAN_FILTER_DROP_CNT_SIZE_BYTES			 4
-+
-+/* Mask override set status */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OVERRIDE_SET			 1
-+/* Mask override not set status */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OVERRIDE_NOT_SET		 0
-+/* 6 bytes HASH Mask for the MAC */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OFFSET	  0xF4
-+/* 0 -> multicast filtering disabled | 1 -> multicast filtering enabled */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_OFFSET	\
-+	(ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OFFSET +	\
-+	 ICSS_EMAC_FW_MULTICAST_FILTER_MASK_SIZE_BYTES)
-+/* Status indicating if the HASH override is done or not: 0: no, 1: yes */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_OVERRIDE_STATUS	\
-+	(ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_OFFSET +	\
-+	 ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_SIZE_BYTES)
-+/* Multicast drop statistics */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_DROP_CNT_OFFSET	\
-+	(ICSS_EMAC_FW_MULTICAST_FILTER_OVERRIDE_STATUS +\
-+	 ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OVERRIDE_STATUS_SIZE_BYTES)
-+/* Multicast table */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_TABLE		\
-+	(ICSS_EMAC_FW_MULTICAST_FILTER_DROP_CNT_OFFSET +\
-+	 ICSS_EMAC_FW_MULTICAST_FILTER_DROP_CNT_SIZE_BYTES)
-+
-+/* Multicast filter defines & offsets for LRE
-+ */
-+#define ICSS_LRE_FW_MULTICAST_TABLE_SEARCH_OP_CONTROL_BIT	0xE0
-+/* one byte field :
-+ * 0 -> multicast filtering disabled
-+ * 1 -> multicast filtering enabled
-+ */
-+#define ICSS_LRE_FW_MULTICAST_FILTER_MASK			 0xE4
-+#define ICSS_LRE_FW_MULTICAST_FILTER_TABLE			 0x100
-+
-+/* VLAN table Offsets */
-+#define ICSS_EMAC_FW_VLAN_FLTR_TBL_BASE_ADDR		 0x200
-+#define ICSS_EMAC_FW_VLAN_FILTER_CTRL_BITMAP_OFFSET	 0xEF
-+#define ICSS_EMAC_FW_VLAN_FILTER_DROP_CNT_OFFSET	\
-+	(ICSS_EMAC_FW_VLAN_FILTER_CTRL_BITMAP_OFFSET +	\
-+	 ICSS_EMAC_FW_VLAN_FILTER_CTRL_SIZE_BYTES)
-+
-+/* VLAN filter Control Bit maps */
-+/* one bit field, bit 0: | 0 : VLAN filter disabled (default),
-+ * 1: VLAN filter enabled
-+ */
-+#define ICSS_EMAC_FW_VLAN_FILTER_CTRL_ENABLE_BIT		       0
-+/* one bit field, bit 1: | 0 : untagged host rcv allowed (default),
-+ * 1: untagged host rcv not allowed
-+ */
-+#define ICSS_EMAC_FW_VLAN_FILTER_UNTAG_HOST_RCV_ALLOW_CTRL_BIT	       1
-+/* one bit field, bit 1: | 0 : priotag host rcv allowed (default),
-+ * 1: priotag host rcv not allowed
-+ */
-+#define ICSS_EMAC_FW_VLAN_FILTER_PRIOTAG_HOST_RCV_ALLOW_CTRL_BIT       2
-+/* one bit field, bit 1: | 0 : skip sv vlan flow
-+ * :1 : take sv vlan flow  (not applicable for dual emac )
-+ */
-+#define ICSS_EMAC_FW_VLAN_FILTER_SV_VLAN_FLOW_HOST_RCV_ALLOW_CTRL_BIT  3
-+
-+/* VLAN IDs */
-+#define ICSS_EMAC_FW_VLAN_FILTER_PRIOTAG_VID			       0
-+#define ICSS_EMAC_FW_VLAN_FILTER_VID_MIN			       0x0000
-+#define ICSS_EMAC_FW_VLAN_FILTER_VID_MAX			       0x0FFF
-+
-+/* VLAN Filtering Commands */
-+#define ICSS_EMAC_FW_VLAN_FILTER_ADD_VLAN_VID_CMD		       0x00
-+#define ICSS_EMAC_FW_VLAN_FILTER_REMOVE_VLAN_VID_CMD		       0x01
-+
-+/* Switch defines for VLAN/MC filtering */
-+/* SRAM
-+ * VLAN filter defines & offsets
-+ */
-+#define ICSS_LRE_FW_VLAN_FLTR_CTRL_BYTE				 0x1FE
-+/* one bit field | 0 : VLAN filter disabled
-+ *		 | 1 : VLAN filter enabled
-+ */
-+#define ICSS_LRE_FW_VLAN_FLTR_TBL_BASE_ADDR			 0x200
-+
-+#endif /* ICSS_MULTICAST_FILTER_MM_H */
--- 
-2.34.1
-
+> 
+> 
+>> Does your switch/link partner support flow control? if it is configurable
+>> can you try to enable it?
+> 
+> It does support it. Enabling it makes things much worse...
+> 
+>> Do you see any errors in dmesg related to the e1000e driver?
+> 
+> Not really.
+> dmesg | grep 'e1000e\|ens7':
+> 
+> [    3.088489] e1000e: Intel(R) PRO/1000 Network Driver
+> [    3.088512] e1000e: Copyright(c) 1999 - 2015 Intel Corporation.
+> [    3.093256] e1000e 0000:00:07.0: Interrupt Throttling Rate (ints/sec) set to dynamic conservative mode
+> [    3.343378] e1000e 0000:00:07.0 0000:00:07.0 (uninitialized): registered PHC clock
+> [    3.718946] e1000e 0000:00:07.0 eth0: (PCI Express:2.5GT/s:Width x1) d4:93:90:3e:0d:bb
+> [    3.718966] e1000e 0000:00:07.0 eth0: Intel(R) PRO/1000 Network Connection
+> [    3.719101] e1000e 0000:00:07.0 eth0: MAC: 16, PHY: 12, PBA No: FFFFFF-0FF
+> [    3.759444] e1000e 0000:00:07.0 ens7: renamed from eth0
+> [    8.632317] e1000e 0000:00:07.0 ens7: NIC Link is Up 1000 Mbps Full Duplex, Flow Control: None
+> [  239.458205] e1000e 0000:00:07.0 ens7: NIC Link is Down
+> [  242.485869] e1000e 0000:00:07.0 ens7: NIC Link is Up 1000 Mbps Full Duplex, Flow Control: Rx/Tx
+> 
+> (you can also see a test with flow control above)
+> 
+> 
+> And also ethtool output if useful:
+> Settings for ens7:
+> 	Supported ports: [ TP ]
+> 	Supported link modes:   10baseT/Half 10baseT/Full
+> 	                        100baseT/Half 100baseT/Full
+> 	                        1000baseT/Full
+> 	Supported pause frame use: Symmetric Receive-only
+> 	Supports auto-negotiation: Yes
+> 	Supported FEC modes: Not reported
+> 	Advertised link modes:  10baseT/Half 10baseT/Full
+> 	                        100baseT/Half 100baseT/Full
+> 	                        1000baseT/Full
+> 	Advertised pause frame use: Symmetric Receive-only
+> 	Advertised auto-negotiation: Yes
+> 	Advertised FEC modes: Not reported
+> 	Link partner advertised link modes:  10baseT/Half 10baseT/Full
+> 	                                     100baseT/Half 100baseT/Full
+> 	                                     1000baseT/Full
+> 	Link partner advertised pause frame use: No
+> 	Link partner advertised auto-negotiation: Yes
+> 	Link partner advertised FEC modes: Not reported
+> 	Speed: 1000Mb/s
+> 	Duplex: Full
+> 	Auto-negotiation: on
+> 	Port: Twisted Pair
+> 	PHYAD: 1
+> 	Transceiver: internal
+> 	MDI-X: on (auto)
+> 	Supports Wake-on: d
+> 	Wake-on: d
+>          Current message level: 0x00000007 (7)
+>                                 drv probe link
+> 	Link detected: yes
+> 
+> 
