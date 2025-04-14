@@ -1,77 +1,122 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B56A139B
-	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 00:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17142182;
+	Mon, 14 Apr 2025 00:06:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744588939; cv=none; b=GiUXHIlFTO1gTfImwu477gSPrzESCiJcsW6VKxEgL684VYmml+0ooq1/r7eeESIUa8FjsXSJS6frxOVQd99qihIB6Jd/wqEvGuSLWCZKmKjCC03NEZscIhK5qXT1TSTD/oUkoGSoVq3QLpDJSYSIaFwWmmzO9tzlw8slmZ8y9cU=
+	t=1744589184; cv=none; b=hZj0SD504V+/2KlGk9VKkIuJWaqjWaRTJuGigvYZC6NoLhBaEQpSSbbBnTc3iD4V551abX/HspdR0uaseZR+suxgKk8ePcStE3lFkVGhWAZ9d2WGUPpzrp7ssTL28DzazFMknCO7vNgQ+s03oQpiNgO0dCE+gPMlQJ/mzlcM3no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744588939; c=relaxed/simple;
-	bh=4Oqkr+rpv7H6kt3IBhANjW0bZ7rBvBjcskA+y6OqtEs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mawDw2RbdpO/CjR/RuFMJ96vq1EKa66fr1wAdDtu1+W7uIWrBmVwqTLX2ewzhwgCpAt6nq5H7thmXHoQ0RvpX2aLyC+Ri1iAlK/rQHUuQkrGOGXD5kNOiawND85rKSaRClGmOmgk5ObNIN1YfQ9DF8FMfW1WI0QCYUcQl+iKKws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io; spf=none smtp.mailfrom=jrife.io; dkim=pass (2048-bit key) header.d=jrife-io.20230601.gappssmtp.com header.i=@jrife-io.20230601.gappssmtp.com header.b=t6GWOy2B; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=jrife.io
+	s=arc-20240116; t=1744589184; c=relaxed/simple;
+	bh=nRZeEP6TMumsNzd2qlMpyDrzJQev2tDNunTeczL0w/U=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AsLCOJsR1qE0aOY5eFTkGUHFT5gVzlzkwktrMm4DeszbQZacB6woDYIkpiU3TFfbBsaq1NGZyRphuz5RjCV0GRoh9JvVvaVghG35rIIkVy6g15cLhwD9lRL4403C0cX7HS9xgMPps9ZnZTixB2xe74xDA1Dhc+gM7QNqGv8yiaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PRTer9PW; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jrife-io.20230601.gappssmtp.com header.i=@jrife-io.20230601.gappssmtp.com header.b="t6GWOy2B"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7393eab4a75so261284b3a.2
-        for <netdev@vger.kernel.org>; Sun, 13 Apr 2025 17:02:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PRTer9PW"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-476b4c9faa2so47436261cf.3;
+        Sun, 13 Apr 2025 17:06:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jrife-io.20230601.gappssmtp.com; s=20230601; t=1744588937; x=1745193737; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1pBqpLJXRxqlQHWXQGJzDZjxbJdMmmwZFwpMlsJTNtM=;
-        b=t6GWOy2BNlDBXP9E8Ur0wyB5+OfBkAIxUAPe3yBNQe4bDqVt3/+PCO2H4jiQ51CM+3
-         vgjMmz67rifd4KIzIrWZpwyDoy0xtukwQJmybPgvis9GXL9ld0rOLixytohyxyzI56FG
-         MfiHe4sQyBzDn5wopQUYeLZHFH29jfo1seaEaK0Y9+8OkaoMF6BmWeunRY1KyYLGEkuT
-         QGX+KSuv9o3O2ypqxVDfgTGOK6To36YUa+AkUlsnwlVEPPEcS5LSo4Os5tkiTea0lP3u
-         YloNisojNyvqeN2w8PjSTDBC97VLDBufAnB7B0bH43lQPrgx2VyteqmZav8JDrMt9vBT
-         a0NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744588937; x=1745193737;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1744589181; x=1745193981; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:feedback-id:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1pBqpLJXRxqlQHWXQGJzDZjxbJdMmmwZFwpMlsJTNtM=;
-        b=V7G/A8Bzp+uNzFVj8WTJQUKM3qGJ8oF4P1SWraaRZqORkDDU/pkHeQ8wQdZ5j9hofA
-         p2z3uRJeANOcrXu1b3gzW8umqU/hUOi6J2jk/QOtOLxGUcaZQ3BHHdKbMrWssQX0xfzq
-         cj++A29VLcXchX0Lgtez+Cr/9mDRajf24t6jwSb21S7FfEOKZNZUsQBs0a221j/TPpNy
-         TfZMAF4fMvIHyG/GArj1eFcRMI5jULy7u6iYOIsYO7dyEC4f1njrJm9Zaq4RXjGdfXRf
-         fv35FjCub6GSumO1tdfoiYdSJUa2DSvUhQNbJ/RXvyTd111EfjeF30cuSKU+vnvUo7pY
-         Hxfg==
-X-Forwarded-Encrypted: i=1; AJvYcCUquMnd/l0aqcWvU6uXxizZXESslFq68IKE6teQB6yNXy6wOn6U7SqcmZd63Gb7fpWGKX1iaqk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7ByWvSDx4OrwATn5slvVMnsaeOJiPXK/HHDuAwoXDzW514Tps
-	yp3HBOBW6qse56Oy+pZzx3pWEeLq+otIO7EJcPhf6Gt+4U87xzO0Vff7WWQyjg8=
-X-Gm-Gg: ASbGncvTMrfkrPyjCVC+Wsfp9zrgYKhWPm7yC8z1NOd8neuGUKaGfKck6ia4WZtpEru
-	SHZPtjxmBeqqNuIkmkq9uToKdcUqE9kGYeWOZqfYeL6PbHc1YesPVSgCbpyLhlTsnkHw8wdCTcI
-	M29LCSI7VO0fa1FxMYKIBGDHdrRm7u9uovsL0aQHDcMuCWF51gXpBCP8o4DRBtSrYfV1fv1HCDh
-	CitycCvUBrXj7CHjD+hzzKXncHehFtObgoO8/+LcuyJSVBhV6IYGJeEzpjDrvRx054GXZ+h2nQ+
-	nSDB6XuaRAxuTJ3Iq6+5rwa2
-X-Google-Smtp-Source: AGHT+IEwTQ8n/oq4WA0TVwMdQlA7DuR7NSHWr2cz0ehvbqPQNZ2jrjdjgyjx7z4YfsFctHmdzgEMSQ==
-X-Received: by 2002:a05:6a00:3a0c:b0:730:9989:d2d4 with SMTP id d2e1a72fcca58-73bd126b0f0mr5430376b3a.3.1744588936403;
-        Sun, 13 Apr 2025 17:02:16 -0700 (PDT)
-Received: from t14 ([2601:643:8b00:2360:f92:4f6:9504:a65a])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd233554asm5490923b3a.180.2025.04.13.17.02.15
+        bh=4C8xcXg1NpLb+plLT5ehdSAMxz+OEN1QsPQStjI01OU=;
+        b=PRTer9PWnSCAiSQo/9ThWI7Z3CuGRwuT0EyIygSZk0ckvnNhOdpVRtsxzln3Nvx3G4
+         XskgfT4EZh3TpDB/Bht6VpkMWQgSN2MGM4w8oSHWcEe16kEAfft2j4vMz3dtOtlSiS4+
+         euT0LW/KMgcl0wA7TnKEKTFHdVdTRUZZwc4My53pkERSvMBS3NK4TN6pVFhiLnKcCRxc
+         +1LgqfpXdymCeavXOm/EcX5KhW/7IOhf/RTvq/wNeUNQNtq+Zj8nFEiH4BzNrETNClfa
+         yBGkGPJXZg+z51P5t0xzPuw45WY2Ft8ZG917cw6QNuwzjW5KKibZn3M1vr7KZmQsn1yC
+         dg8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744589181; x=1745193981;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4C8xcXg1NpLb+plLT5ehdSAMxz+OEN1QsPQStjI01OU=;
+        b=wMtxZjU5GWnZTTNADh9h0gJJGTQQtzhwUyS6sQG5DsBDITMWMPj+0xezGPOYoPXcgF
+         l06JG2M/EQkKrKbRkwnxpsYDAXOM7x1akQ5IF6uT+LyahfpQAIRltgLOJzgTGyVCMjSY
+         4PTJJg6niODLhhtqQqxn2JOPyZlSn05NlmjrL1lY0porNX/mxkikNp030S2Qrnw9zZGw
+         kNuIdxyYL0j+8RDUO7c0Ny3MGNIX6YoNKbW2Ul8vJ+AAOibYfaG07UgDQ3mVr7tAm5Rp
+         6LLg8mg28DtoyIXkzxfgsrARwGD1sz4ViByXyktFUZWveyzuIWQyMr0D4YPohwn5pqRw
+         Z4hA==
+X-Forwarded-Encrypted: i=1; AJvYcCW01piImpp+ltz9xK65UvBE0PDWBNm/tmYkIGHijibLlV5YVPRzlU169s22hLJx5L2/9Bc1sCP2ifcW8O0=@vger.kernel.org, AJvYcCWDTFOom0Zkf+eCT8RaYLt33FrMNe+4ESWK4snClxtJ3tRawnXPxgtcI4CtnDOrZqS5JMvT4FMV@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMy92AxNHXyeMO3+TMM5nz7WKEWVF00l29WCXs9h6hyhYrF1iI
+	p+a2GOjTiB/ehkvT0LZfenRJalRYN8h9tDcbEe4t/CWw8Fd7nOMJ
+X-Gm-Gg: ASbGnct4dmZmybrjIPQALvAgnxlqFWrn6HFJMS4Np/0nB9OW/TSR9fpZXVm3hRlNsm1
+	0meYH5Wgw/+HjycT8Uwevh6RSQCO5JmS7Kg2xq3Kt8lJT6OJQusYtkTJUIttu6GD+puehg+6E29
+	DLCtsB2o2B+Xn/TzBVWjA60Fs4XZp6CEKN0K7rRwlXrjKnq9uAfIMGPvA7TdBbONUQZE0JzC1OP
+	Z43X0eZdLOhwP9AxvRIADYM0GkT/byreevXYMjjkk+oFfdGyeGgqlV2Ec6VAyyTj9/6J9ImG4qs
+	39sIaWTZV21C93GKVM5wW4gNgai2Kjzw99MQ/+GeSuocxCW30+2O7M70gaF00gMcchNqDlFj2fZ
+	uXXdv6PWruiFh3zehv9MHlN7ORyPoe+o=
+X-Google-Smtp-Source: AGHT+IFwCbN4ZT1DJ9RQAyQzjQJYVN33ZAs5lsoHUiBQzlqkd3qDExB6DW7eCbQ1fNjMQawjwJkzzA==
+X-Received: by 2002:ac8:5fd2:0:b0:476:71d2:61e6 with SMTP id d75a77b69052e-479775e2b1fmr149686371cf.45.1744589180697;
+        Sun, 13 Apr 2025 17:06:20 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4796eb15c24sm64035891cf.21.2025.04.13.17.06.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Apr 2025 17:02:16 -0700 (PDT)
-Date: Sun, 13 Apr 2025 17:02:14 -0700
-From: Jordan Rife <jordan@jrife.io>
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Aditi Ghag <aditi.ghag@isovalent.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v2 bpf-next 2/5] bpf: udp: Propagate ENOMEM up from
- bpf_iter_udp_batch
-Message-ID: <Z_xQhm4aLW9UBykJ@t14>
-References: <20250411173551.772577-1-jordan@jrife.io>
- <20250411173551.772577-3-jordan@jrife.io>
- <7ed28273-a716-4638-912d-f86f965e54bb@linux.dev>
- <CABi4-ojQVb=8SKGNubpy=bG4pg1o=tNaz9UspYDTbGTPZTu8gQ@mail.gmail.com>
- <daa3f02a-c982-4a7a-afcd-41f5e9b2f79c@linux.dev>
+        Sun, 13 Apr 2025 17:06:19 -0700 (PDT)
+Message-ID: <67fc517b.050a0220.301460.dfe7@mx.google.com>
+X-Google-Original-Message-ID: <Z_xRdyoukN8wkmNM@winterfell.>
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C00801200043;
+	Sun, 13 Apr 2025 20:06:18 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Sun, 13 Apr 2025 20:06:18 -0400
+X-ME-Sender: <xms:elH8Z9r1-P3tjUh0yf1ZdvTSBMvzr52cibP-MepNpnSDJsfTwrhy1A>
+    <xme:elH8Z_ql0Mgj6PC1OAI9ilkdBk2CXGEplLSD3ldoEd-XbKnoFRJqee6Wi-FyU5-JV
+    oDWt6f-EGGMiJK61A>
+X-ME-Received: <xmr:elH8Z6OfzbvCRJcQkqtd9ArWNWjerAVPezgQmWmCMFxngam_3PzyTjKF1w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvudeltdejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedv
+    teehuddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
+    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
+    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
+    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
+    nhgrmhgvpdhnsggprhgtphhtthhopeefhedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htohepfhhujhhithgrrdhtohhmohhnohhrihesghhmrghilhdrtghomhdprhgtphhtthho
+    pehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopehmvgeskhhlohgv
+    nhhkrdguvghvpdhrtghpthhtohepuggrnhhivghlrdgrlhhmvghiuggrsegtohhllhgrsg
+    horhgrrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopegrnhgurhgvfieslhhunhhnrdgthh
+X-ME-Proxy: <xmx:elH8Z47WIH1AhHHmWD-Ol5kyhgfBxigOKvYXd43PeSjXi1hwlynS9Q>
+    <xmx:elH8Z86y6vIyZX1ljU-3DAiNcjqeI67f0TESDze_QWwv-SdJ9ZvDuw>
+    <xmx:elH8ZwjSYUWhQp4W-VQ879WH1fnkCbNJVacTUExRAYtGBzStSxOvPA>
+    <xmx:elH8Z-4uV28d0pwGixJH1qcDdDR9qk9e0wOAvmWhtZAuExViAgvJ-Q>
+    <xmx:elH8ZzKcYWw6d8mhrg6tE2qIbaRG_f4t9CnpD6Ri9QyGXrCITBlS36z5>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 13 Apr 2025 20:06:18 -0400 (EDT)
+Date: Sun, 13 Apr 2025 17:06:15 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Gary Guo <gary@garyguo.net>,
+	Fiona Behrens <me@kloenk.dev>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
+	ojeda@kernel.org, alex.gaynor@gmail.com, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
+	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com,
+	sboyd@kernel.org, mingo@redhat.com, peterz@infradead.org,
+	juri.lelli@redhat.com, vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+	mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com,
+	david.laight.linux@gmail.com
+Subject: Re: [PATCH v13 3/5] rust: time: Introduce Instant type
+References: <20250413104310.162045-1-fujita.tomonori@gmail.com>
+ <20250413104310.162045-4-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,114 +125,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <daa3f02a-c982-4a7a-afcd-41f5e9b2f79c@linux.dev>
+In-Reply-To: <20250413104310.162045-4-fujita.tomonori@gmail.com>
 
-> static void *bpf_iter_udp_seq_next(struct seq_file *seq, void *v, loff_t *pos)
-> {
->         if (iter->cur_sk < iter->end_sk) {
->                 u64 cookie;
->
->                 cookie = iter->st_bucket_done ?
->                         0 : __sock_gen_cookie(iter->batch[iter->cur_sk].sock);
->                 sock_put(iter->batch[iter->cur_sk].sock);
->                 iter->batch[iter->cur_sk++].cookie = cookie;
->         }
->
->         /* ... */
-> }
->
-> In bpf_iter_udp_resume(), if it cannot find the first sk from find_cookie to
-> end_cookie, then it searches backward from find_cookie to 0. If nothing found,
-> then it should start from the beginning of the resume_bucket. Would it work?
+On Sun, Apr 13, 2025 at 07:43:08PM +0900, FUJITA Tomonori wrote:
+> Introduce a type representing a specific point in time. We could use
+> the Ktime type but C's ktime_t is used for both timestamp and
+> timedelta. To avoid confusion, introduce a new Instant type for
+> timestamp.
+> 
+> Rename Ktime to Instant and modify their methods for timestamp.
+> 
+> Implement the subtraction operator for Instant:
+> 
+> Delta = Instant A - Instant B
+> 
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
-It seems like the intent here is to avoid repeating sockets that we've
-already visited?
+I probably need to drop my Reviewed-by because of something below:
 
-This would work if you need to process a bucket in two batches or less,
-but it would still be possible to repeat a socket if you have to process
-a bucket in more than two batches: during the transition from batch two
-to batch three you don't have any context about what you saw in batch
-one, so in the worst case where all the cookies we remembered from batch
-two are not found, we restart from the beginning of the list where we
-might revisit sockets from batch one. I guess you can say this reduces
-the probability of repeats but doesn't eliminate it.
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Reviewed-by: Fiona Behrens <me@kloenk.dev>
+> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+[...]
+> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+> index ce53f8579d18..27243eaaf8ed 100644
+> --- a/rust/kernel/time/hrtimer.rs
+> +++ b/rust/kernel/time/hrtimer.rs
+> @@ -68,7 +68,7 @@
+>  //! `start` operation.
+>  
+>  use super::ClockId;
+> -use crate::{prelude::*, time::Ktime, types::Opaque};
+> +use crate::{prelude::*, time::Instant, types::Opaque};
+>  use core::marker::PhantomData;
+>  use pin_init::PinInit;
+>  
+> @@ -189,7 +189,7 @@ pub trait HrTimerPointer: Sync + Sized {
+>  
+>      /// Start the timer with expiry after `expires` time units. If the timer was
+>      /// already running, it is restarted with the new expiry time.
+> -    fn start(self, expires: Ktime) -> Self::TimerHandle;
+> +    fn start(self, expires: Instant) -> Self::TimerHandle;
 
-e.g.: socket A gets repeated in batch three after two consecutive calls
-      to bpf_iter_udp_batch() hit the resized == true case due to heavy
-      churn in the current bucket.
+We should be able to use what I suggested:
 
-|               Thread 1            Thread 2   Batch State    List State
-|  -------------------------------  ---------  ------------   ----------
-|                                              [_]            A->B
-|  bpf_iter_udp_batch()                        "              "
-|    spin_lock_bh(&hslot2->lock)               "              "
-|    ...                                       [A]            "
-|    spin_unlock_bh(&hslot2->lock)             "              "
-|                                   add C,D    "              A->B->C->D
-|    bpf_iter_udp_realloc_batch(3)             "              "
-|    spin_lock_bh(&hslot2->lock)               [A,_,_]        "
-|    ...                                       [A,B,C]        "
-|    spin_unlock_bh(&hslot2->lock)             "              "
-|    resized == true                           "              "
-|    return A                                  "              "
-|                                   del B,C    "              A->D
-|                                   add E,F,G  "              A->D->E->
-t                                                             F->G
-i  bpf_iter_udp_batch()                        "              "
-m    spin_lock_bh(&hslot2->lock)               "              "
-e    ...                                       [D,E,F]        "
-|    spin_unlock_bh(&hslot2->lock)             "              "
-|                                   add H,I,J  "              A->D->E->
-|                                                             F->G->H->
-|                                                             I->J
-|    bpf_iter_udp_realloc_batch(6)             [D,E,F,_,_,_]  "
-|    spin_lock_bh(&hslot2->lock)               "              "
-|    ...                                       [D,E,F,G,H,I]  "
-|    spin_unlock_bh(&hslot2->lock)             "              "
-|    resized == true                           "              "
-|    return D                                  "              "
-|                                   del D,E,   "              A->J
-|                                       F,G,                   
-|                                       H,I,                   
-|  bpf_iter_udp_batch()                        "              "
-|    spin_lock_bh(&hslot2->lock)               "              "
-|    ...                                       [A,J,_,_,_,_]  "
-|                         !!! A IS REPEATED !!! ^
-|    spin_unlock_bh(&hslot2->lock)             "              "
-|    return A                                  "              "
-v
+	https://lore.kernel.org/rust-for-linux/Z_ALZsnwN53ZPBrB@boqun-archlinux/	
 
-There's a fundamental limitation where if we have to process a bucket in
-more than two batches, we can lose context about what we've visited
-before, so there's always some edge case like this. The choice is
-basically:
+to make different timer modes (rel or abs) choose different expire type.
 
-(1) Make a best-effort attempt to avoid repeating sockets, and accept
-    that repeats can still happen in rare cases. Maybe the chances are
-    close enough to zero to never actually happen, although it's hard to
-    say; it may be more probable in some scenarios.
+I don't think we can merge this patch as it is, unfortunately, because
+it doesn't make sense for a relative timer to take an Instant as expires
+value.
 
-or
+Regards,
+Boqun
 
-(2) Guarantee that repeats can't happen by requiring that a bucket
-    completely fits into one (or two?) batches: either error out in the
-    resized == true case or prevent it altogether by holding onto the
-    lock across reallocs with GFP_ATOMIC to prevent races.
-
-All things being equal, (2) is a nice guarantee to have, but I sense
-some hesitance to hold onto hslot2->lock any longer than we already are.
-Is there a high performance cost I'm not seeing there? I guess there's a
-higher chance of lock contention, and with GFP_ATOMIC allocation is more
-likely to fail, but reallocs should be fairly rare? Maybe we could
-reduce the chance of reallocs during iteration by "right-sizing" the
-batch from the start, e.g. on iterator init, allocate the batch size to
-be 3/2 * the maximum list length currently in the UDP table, since you
-know you'll eventually need it to be that size anyway. Of course, lists
-might grow after that point requiring a realloc somewhere along the way,
-but it would avoid any reallocs in cases where the lengths are mostly
-stable. I'm fine with (1) if that's the only viable option, but I just
-wanted to make sure I'm accurately understanding the constraints here.
-
-Thanks!
-
--Jordan
+>  }
+>  
+[...]
