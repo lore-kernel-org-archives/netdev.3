@@ -1,496 +1,331 @@
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2065.outbound.protection.outlook.com [40.107.243.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B8818A6A9;
-	Mon, 14 Apr 2025 12:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744632903; cv=none; b=mJWPPgjajJspBsTXHLqdvkrmuDu3lN5+lZ2V9kQrE5swyNYOsmd9INWb+61465hOk4bRLSfYT7zlJnQ/uVSO0OY1p3yjsgNXMR/x93gDDQCvhBzVhQx9tLQO6mSQnz+NnIcUz5PaKli/5DxiKtIIu85Fbou1OBnOAijsytY+njk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744632903; c=relaxed/simple;
-	bh=Vh1XYNk1Pgd7/7fao+EL3a14mR2DGRdB6cj8+UPIOGo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=G4uKOiLzo4yqERVkdYJ0lVShA+qJsmQimRBLHjF1RhhF3r73sbgDmM5VRAbWDgbX9IRXJEkrF/U8ChGQCpWvr4Z3cnTJWrbcvNd4mW8u9B704mFWOlTSpsRlWsQVytLCquKVhADzoAwzHatNZydj+re0SYIKXc9KmgDpRyum0CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4ZbmTN4kPBz27hSp;
-	Mon, 14 Apr 2025 20:15:36 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3309B140257;
-	Mon, 14 Apr 2025 20:14:55 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 14 Apr 2025 20:14:54 +0800
-From: Yunsheng Lin <linyunsheng@huawei.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Yishai Hadas
-	<yishaih@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Shameer Kolothum
-	<shameerali.kolothum.thodi@huawei.com>, Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>, Chris Mason <clm@fb.com>, Josef
- Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>, Gao Xiang
-	<xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
-	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>,
-	Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, Neil
- Brown <neilb@suse.de>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo
-	<Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, Steven Rostedt
-	<rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Alexei Starovoitov
-	<ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
-	<andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Eduard
- Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, Yonghong Song
-	<yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, KP
- Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo
-	<haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, Jesper Dangaard Brouer
-	<hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Trond Myklebust <trondmy@kernel.org>, Anna Schumaker
-	<anna@kernel.org>
-CC: Yunsheng Lin <linyunsheng@huawei.com>, Luiz Capitulino
-	<luizcap@redhat.com>, Mel Gorman <mgorman@techsingularity.net>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<virtualization@lists.linux.dev>, <linux-btrfs@vger.kernel.org>,
-	<linux-erofs@lists.ozlabs.org>, <linux-mm@kvack.org>,
-	<linux-nfs@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
-	<bpf@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: [PATCH v3] mm: alloc_pages_bulk: support both simple and full-featured API
-Date: Mon, 14 Apr 2025 20:08:11 +0800
-Message-ID: <20250414120819.3053967-1-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.30.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C920280B;
+	Mon, 14 Apr 2025 12:16:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744632988; cv=fail; b=uEyf51MAgDG0v3OyjVRDGROcBfZkkLK8vXpiVF3rEsyDt0kcZEyE5AcU6j3ijwiUQM1ZXXa+evV9E/RoEWCIAgucoc17bMySKwNx9O1FUKJ7M+EUeL2wNHDHnkO0YtX9slLBZNag8XdRsxJ70si5Vmy5FrCwOWQ5dHBZJk5ck8w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744632988; c=relaxed/simple;
+	bh=/FPt+bO7mkyaDrFWqEBNSSKvByVKU4jBa0cjhrvH3iQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=IxO9kbpAZVutI+q50wTT1mA2q7w6lJYl6qxIxYOj8tvfbKENfwUKxR//FiBHPCvD1gJErMuzo6Qp1ebwfeMBZjkL5Br1axxgrvU2mdLoJkJGMiDt1z0qdJNBWNdm+09FXY9GnbillY+W+ZzHT7SlYhnk0hgcjx+nOekQTvJaHhE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Ym/R0Z0T; arc=fail smtp.client-ip=40.107.243.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Ym/R0Z0T"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tZNHydYL8KK+LL0cZaNd+PsbCdNRlbJdhYti8iyMLtfjj9FpymgzPBVi/OO9THYJgEDTRxyUrHIOJTP4H94aguFtXW5JBUKYNcCcFpnPX/4mWgngBVVR0zCQZZvpmJ+Q5fw7YmRvh1ec9ZpSHXOxcELFjXJVPPLYyRTG4vstOQwgN/rJkqXm2ILaBQas2s2nlAqsr4/mOffIxV7/aNC3uOp4EdrCPN1RR+TXlsRsISqSDET1OjbPftS3cl9WUThPXaLQSG0ThzilUJaIhKCjZy6mvSJA+eFsU0tvmdY3uP9W0Jq9Y0Ez7+21yEsd3L6cm5T2W9SVsLradD559rwaag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qQRBcXkKCFAh0oIgCLJuwXs2tXwOMYtGsUWeYK5YAgg=;
+ b=mpF7ewTQsc+DLhIHTxo2hlLmiad5xe0FpPW0NCjHA1RnrD2Lni0Zpxv2gf3oqCroWjXqBEiKNzQ5zpZbipSeulgTi7q2s7NUoG8dOECpnTmltAWTxT1OlihBZT2kxuwBgotQslF+RlC5kpGxT1uAzsJBxQPRJDtybwj3Nm53q6qkFbLaKbYQOdbWID4nOIkTkXE4hJZ68hX3iu76jarsy9I+JQmVpM2BsxR3OeFM2okBfbKoKOfPIrqGSnscX+3I+kJ/RoHEQe6klBUF0q0gjb7647C6jZuubXKf+OydJq7BRQ7Kdtkxdav2buSUUsnWLclOWl5Zik9mLAiGQRsG5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qQRBcXkKCFAh0oIgCLJuwXs2tXwOMYtGsUWeYK5YAgg=;
+ b=Ym/R0Z0Tst8pkACZsij2GVmbocFf/gxgFAJ1v6ckZttZco0CNk0sQnN/qLarrIbSV4uogQ8Mm3b94/XrM6Mq7xWA4oZ8Tmd76MCjk95OS6kl92/BouQOwupUNSPbXSiWCOX0PwRf+bEzRSVDOPKVOmJ/EPQiaf0+T9IScQ0vqCI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB6395.namprd12.prod.outlook.com (2603:10b6:510:1fd::14)
+ by DM6PR12MB4435.namprd12.prod.outlook.com (2603:10b6:5:2a6::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.33; Mon, 14 Apr
+ 2025 12:16:24 +0000
+Received: from PH7PR12MB6395.namprd12.prod.outlook.com
+ ([fe80::5a9e:cee7:496:6421]) by PH7PR12MB6395.namprd12.prod.outlook.com
+ ([fe80::5a9e:cee7:496:6421%6]) with mapi id 15.20.8632.030; Mon, 14 Apr 2025
+ 12:16:23 +0000
+Message-ID: <17513b72-35cb-48d7-87ff-fa9cc639d61d@amd.com>
+Date: Mon, 14 Apr 2025 17:46:16 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 3/5] amd-xgbe: add support for new XPCS routines
+To: Larysa Zaremba <larysa.zaremba@intel.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Shyam-sundar.S-k@amd.com
+References: <20250408182001.4072954-1-Raju.Rangoju@amd.com>
+ <20250408182001.4072954-4-Raju.Rangoju@amd.com>
+ <Z_jsW6Y4n_NwhlnP@soc-5CG4396X81.clients.intel.com>
+Content-Language: en-US
+From: "Rangoju, Raju" <raju.rangoju@amd.com>
+In-Reply-To: <Z_jsW6Y4n_NwhlnP@soc-5CG4396X81.clients.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN4P287CA0062.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:267::11) To PH7PR12MB6395.namprd12.prod.outlook.com
+ (2603:10b6:510:1fd::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB6395:EE_|DM6PR12MB4435:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3d1e5878-49fa-45cf-c755-08dd7b4e2c1b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VUc4SlU1N2h2VVg5bnczbTBKQUZ6NVZiS01JYy9UWDIvdkNUOVJ1aCtlZkVM?=
+ =?utf-8?B?dGFvNWEwaXV0VDZxV2NOd0FnWHZ3NnB1cCt1c0NKa1I0YVdyeHQwRDN0UXdj?=
+ =?utf-8?B?ZHNodEl3K05YQ1AycVNUUE4raGExdGdYY294TlY1S1p0SFNZeHFENUFYS3Vi?=
+ =?utf-8?B?UGcyNGJMZ093ckRHdTQ2V1VGSDd4QTEwWkRGMUo2Q21YVy9pMlY5ZGVCdkgv?=
+ =?utf-8?B?MmFJcHpRYXpRVEc5d3R0MEJsU1JvOEJDUDlwZTkxMitYb291QktBSFJVbjVS?=
+ =?utf-8?B?dTlSa2FCNEFaUkp6djJRM3hYMVRTVXZ6ZGh3OWNqTm0zaUt3QUpTVE1QNmk5?=
+ =?utf-8?B?RUkwOVBMRDM1SlVXRkRQWXdQa1dTdjRoeDdsVmZyUzhCWW84UUhMeWhmZWZ2?=
+ =?utf-8?B?YXI3TzB4VTNWbkVHVkoyRTBaY2piaWFKbEZiZ2F4QkZuc0g3bEp2UTIvSDFE?=
+ =?utf-8?B?TFRWdit1cXlKSSt5ZjJ4clB0SnhyUGFEdE1VVENCN0MvUnVDcENKS0p4Y2sv?=
+ =?utf-8?B?cS80OGxDbmRhRFRXU1h6YXFUL3hKY21WQ1c2UWR6Y1pPSFcrOTJRNDdIaURR?=
+ =?utf-8?B?NnZzZDFnVzdPTDdVbjd0NXhseGN1QlV6WFBjdUZoOXgza2Q4M3B2dENhdUVt?=
+ =?utf-8?B?QStDUmgwS2dmT1k2WE00R2tZaGZnbW5Ua1daaEJuZkhFdVVHQnlPK0ZQNDJt?=
+ =?utf-8?B?ZGd5NmhuWVRNUXYvNXMwcFV5Q1hhQUNPck5yWGQ5ZExBRmh0aWg3SjRnekNi?=
+ =?utf-8?B?L2tIMGF2RkIwNElsQnBWZHVyVXJ4cjlwd1ZwT3ByWlJEa3A2c0pQNVRrQ014?=
+ =?utf-8?B?NzM1SVVUYWd2SzZxSnpobUxSTVBUTjdYb2VTcjM3SmxyS01GMW1udVRCazR3?=
+ =?utf-8?B?RDhkQjdvUlZlMllJVlVoMlBmelZFZGs5elZuOU1IRDMxSTFsRmx5aUt0RzFP?=
+ =?utf-8?B?eHZyVFNOazRLWXExZ00vbitJK3RiSC8rYU1wQllRbGJ5L0wwNVVqVUM5RXE5?=
+ =?utf-8?B?QzJTRy9TVVJ0aXZ2QXhlT0g0Q2UwMjBrVXNyUTViMnloV25YRk02cUdMRHJa?=
+ =?utf-8?B?Q0ZMK1plajlqRG8rUUJjbVA2VG5IVFNoRDJaZGt5bkxTQVJjRUpXYW5wWW01?=
+ =?utf-8?B?KzErUFd2b0FQWVZIdUpkaFBVZzZOUlR4NzhDaEk5YUN1dFptVUlybjB6U1NG?=
+ =?utf-8?B?dnhSVGdMd094Q3pTYUJ1TWErQ2dOTUl6dDZZQjhkYy9kaC84NEQzN2NoMXZw?=
+ =?utf-8?B?WGVTMlNIVXlrTEw1YU9wcytBY09nR1hLMVlEVy9FWDZ2YWpuYXhHd1BnNHJF?=
+ =?utf-8?B?eEdXbWNJUlk2RnpuUE1id1hPWjE4Y0Z1VlRMaFFPZ3RyMnVVeWx6VzFDakpa?=
+ =?utf-8?B?cklabFk4TUZaTWRXWFVMOGlQczZKYk00YzNtV2ZuNS9oL084LzRSNTE1dkNJ?=
+ =?utf-8?B?d3JUTzFVSytHamkyeDJQRUdkMHQvOFZqem9rU0VSS2RwR1poSk83NG5pVDlT?=
+ =?utf-8?B?cGJwdUZBTlV3UXV6eUVyaUlsaUdVZkFJL1l3UWg5a0JzcURWRG1VZndnYzkv?=
+ =?utf-8?B?bUZOSGVDbzFwRFR5cVhZb3ZwdmVCT3hjbzFwSGEwNlRhYU9FSGFuQkdveXB6?=
+ =?utf-8?B?TXl0NTYyOFdTejlEZFFWbDNaUHdyMGFLR0Q2bU9nVE02WFdKN0J1Q0hBRGI4?=
+ =?utf-8?B?Q2tncUhqa3lydVIyUHNoRzVSOWRzZHRldy9BdDFoVVF2N3d6WnIxSjhSbjYw?=
+ =?utf-8?B?RGFWZk1jN2JQbUFrUkpVeWFoZzZlWm9jNWNQeGhDWU1IeERCSEdaa2ZNUUlo?=
+ =?utf-8?B?dTRJZ2FYQjlqYmtVUStkNktWeHI0Q1NOVmp4bzhrbHJSS3hmM1FNY1REOFlx?=
+ =?utf-8?B?NzVuV2Fuc1RYRytYN3hreHRlSDF1Yk81eVNJWHkzaVFYcUh1eEhweXpXNmIy?=
+ =?utf-8?Q?OTB+AhOthsI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB6395.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Sk01bXhLREN2bHZwSGx2SmQ3K2hLcDY1NGtGblVMZ0c5QzNiZ0lVSWpKeVMv?=
+ =?utf-8?B?MVJ3dmM3NVl1TE93NjlzTDRaUWNIenlKMjMzNVgycWx6OWRuZXI4MEU0NVI5?=
+ =?utf-8?B?N3B1MUxuVlRWU2FVVWJwRnVOUnM0U2pHMExwOXY1TElxQy81SS8zYzFQMXNF?=
+ =?utf-8?B?b2pUcHk2aTVSTy9RN1Ayc0IyT3Jna050alFaYkRVVThpTDlSdWk3aE9Pb3lS?=
+ =?utf-8?B?RUxXalA3UzYvcGZNblVKekE0dWJ5OStZS25kRXNNaTd1ZUJtUEZ4YVlMSGxH?=
+ =?utf-8?B?VmVaNGhQMHVkcXc4NllYcjVPdjRCcHlOZHZvK09qYTJ2U3F6ZmVWN3prbW1E?=
+ =?utf-8?B?SThWYTdPUUJpN0h2VEowSEtJV3NsMmdrMllJbmVRd1BOc0t5RTdxaWc5NjNq?=
+ =?utf-8?B?T2c0czd2d0ErK2ZlaWx1RTRLTnpibDY1cXZhSm92R3Yzc0NwNG9hWTVPVFNp?=
+ =?utf-8?B?THVDbkRGQmVyTXUzVTlFcGRCWEhYK1VwM2h6akM0bklNWWhSNlY3RWtac0pT?=
+ =?utf-8?B?YWpXSVZyUy8vWkxtVTdZK0QxTnBpTVI1TEJOWDhhQmYraHZrWGJhR2ptNEtX?=
+ =?utf-8?B?RFpSaWNZS0dkWjJubnU0REtzQXdMbVp6RkRHREgreDJXZ0RURUd2MmwrZHBi?=
+ =?utf-8?B?WWJyRXdXaFRNdkRuL1pTZmY3Y0dTRkhVNlBlREh0OGJBQU5VK1hDUE8zMWFM?=
+ =?utf-8?B?ZDFDK2hGZ1puZUl4UkxPZU40RVhZSWJPbEZUYkpRd2FwTDRKdXc4aUIxSU5P?=
+ =?utf-8?B?emxYRS9YbklSa0JhVGVZRldGUUZ2RjBwSGZBYVlFVU9jcnlQV2VTWFBDV2hJ?=
+ =?utf-8?B?WHpQT2pzV01VdjVTdkszTDBRdndBWjQ0bmxVWEpkamU1VWJucDlhT3RWQVo0?=
+ =?utf-8?B?Y3ZldFY2aHFJTDNIRk0vOGNWNi9tT29FQWd0WGR4eDZEd2dmQmprcXVnYUg0?=
+ =?utf-8?B?MkFHTWtZODVHVzY3NnAyeXZUZ09QeWRFbmVBelBybVNqM1lwL2JUZlBDZzBQ?=
+ =?utf-8?B?NWNaYVJZUjZWL0hxNVlkWERxNEVacjVCOEc0bWlzd3hUR1BwWS91OG54aFc5?=
+ =?utf-8?B?NVljaHVoK1krTUtmM243UWZ3RkZPSkQ3dXRIWExrTzVjd1pTQnpzZ0RlRExu?=
+ =?utf-8?B?T3ZyYTl3RE52eHl3YW55dXB1TUdtU2VIOFNQTFlxRFE0Zzhtei9aS0RINHR3?=
+ =?utf-8?B?d3VYa2ZEUEk5VXNNNUdSUWJWK0ZlZDFnTFpPWHFrNjRLbUtmRVE3VzJyaHFR?=
+ =?utf-8?B?bzg2Y1JSVnN2Q3NnWjlES1VQZko5c3JOZVQ0ZmR5L1czelVJTnFJRmVZaDRR?=
+ =?utf-8?B?Z3VKejc1eTBob2NjNU02SEE4dFV5N1dkR0pqdzhReGJUMFVmS3ljaUwwQ2ZT?=
+ =?utf-8?B?cDlUM3FnZFhqbHJFL3l2Um16Ri8rcFJubE1OSWpGOUdEV3Rpb1FtbkcxSCsy?=
+ =?utf-8?B?eHpSWSthTForcjI2VW9GNFEwb3ZBWXdxWVJXd1BlbGg2ZnR2M2tJbVBsTyt5?=
+ =?utf-8?B?Yi9IVFhvOXhMN1V6dlpoMEZkTThCbVhWemdEWmRRMVcrTW9iR1JRdklncGxy?=
+ =?utf-8?B?Z3QvdDJ3d0hyV3VLYng1T29FdThIcTN0ZDdEa2ZWaHVieGxsZGhIV0V5TDVQ?=
+ =?utf-8?B?REVRRmFGcFdZcmZ0UjV4QlhuZ1RvWjJBdEw3VzBmVXdUaXhDMTdWTGQvYnV2?=
+ =?utf-8?B?TWNNYmptMnd5emZuT1lheDNvU0lmUjNxc1hCNks5OVY2b0NtQW5vdEJpdlRE?=
+ =?utf-8?B?cXdnWTJpeFJuMkJUZjVVRXZaN2dRRG1jYlZFT1cyZFF6bmNuYXIxemI0SnNt?=
+ =?utf-8?B?b0twL3lVaUUzWHZkQ25uNXdIWmp4bGZQd1ZMeHF6b3poa2QrcjcrK1hXc1d2?=
+ =?utf-8?B?MmNmRDBFWUVFd0tpRXZXMkJVZGRpQXNFd250Yks3TzZTeXlaaHNRaUM4cGlY?=
+ =?utf-8?B?b0k5M3AxK3N4a2ZrL2NlMEZoRGhXSEFSNEhCcGdHYUFCNm9HWVo3WGgvNXZu?=
+ =?utf-8?B?eExjRTA5a1JxcWI1YjBtN2xXMVFMYTA1MElXQmZXYjFIWnI5YUFnQ0lZMVJZ?=
+ =?utf-8?B?Q3RmUzRQdnNPY1I2TEdVRGdJckFJNWs2Rlp6TmkrTmM1bjlHbGZycE5DYTMv?=
+ =?utf-8?Q?lDL8N9neHv6h7g4mulAIkofBK?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d1e5878-49fa-45cf-c755-08dd7b4e2c1b
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6395.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2025 12:16:23.8116
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gDOuQe9DxMBiEi2hi4mrdTW/1Ba1oXwajEiP4Y5PbWXH63fPM+0+kHItHkfUWcnUd1qDUeZLY7oXhw53mBSW3w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4435
 
-As mentioned in [1], it seems odd to check NULL elements in
-the middle of page bulk allocating, and it seems caller can
-do a better job of bulk allocating pages into a whole array
-sequentially without checking NULL elements first before
-doing the page bulk allocation for most of existing users
-by passing 'page_array + allocated' and 'nr_pages - allocated'
-when calling subsequent page bulk alloc API so that NULL
-checking can be avoided, see the pattern in mm/mempolicy.c.
 
-Through analyzing of existing bulk allocation API users, it
-seems only the fs users are depending on the assumption of
-populating only NULL elements, see:
-commit 91d6ac1d62c3 ("btrfs: allocate page arrays using bulk page allocator")
-commit d6db47e571dc ("erofs: do not use pagepool in z_erofs_gbuf_growsize()")
-commit f6e70aab9dfe ("SUNRPC: refresh rq_pages using a bulk page allocator")
-commit 88e4d41a264d ("SUNRPC: Use __alloc_bulk_pages() in svc_init_buffer()")
 
-The current API adds a mental burden for most users. For most
-users, their code would be much cleaner if the interface accepts
-an uninitialised array with length, and were told how many pages
-had been stored in that array, so support one simple and one
-full-featured to meet the above different use cases as below:
-- alloc_pages_bulk() would be given an uninitialised array of page
-  pointers and a required count and would return the number of
-  pages that were allocated.
-- alloc_pages_bulk_refill() would be given an initialised array
-  of page pointers some of which might be NULL. It would attempt
-  to allocate pages for the non-NULL pointers, return 0 if all
-  pages are allocated, -EAGAIN if at least one page allocated,
-  ok to try again immediately or -ENOMEM if don't bother trying
-  again soon, which provides a more consistent semantics than the
-  current API as mentioned in [2], at the cost of the pages might
-  be getting re-ordered to make the implementation simpler.
+On 4/11/2025 3:48 PM, Larysa Zaremba wrote:
+> On Tue, Apr 08, 2025 at 11:49:59PM +0530, Raju Rangoju wrote:
+>> Add the necessary support to enable Crater ethernet device. Since the
+>> BAR1 address cannot be used to access the XPCS registers on Crater, use
+>> the smn functions.
+>>
+>> Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+>> ---
+>>   drivers/net/ethernet/amd/xgbe/xgbe-dev.c | 79 ++++++++++++++++++++++++
+>>   drivers/net/ethernet/amd/xgbe/xgbe.h     |  6 ++
+>>   2 files changed, 85 insertions(+)
+>>
+>> diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-dev.c b/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
+>> index ae82dc3ac460..d75cf8df272f 100644
+>> --- a/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
+>> +++ b/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
+>> @@ -11,6 +11,7 @@
+>>   #include <linux/bitrev.h>
+>>   #include <linux/crc32.h>
+>>   #include <linux/crc32poly.h>
+>> +#include <linux/pci.h>
+>>   
+>>   #include "xgbe.h"
+>>   #include "xgbe-common.h"
+>> @@ -1066,6 +1067,78 @@ static void get_pcs_index_and_offset(struct xgbe_prv_data *pdata,
+>>   	*offset = pdata->xpcs_window + (mmd_address & pdata->xpcs_window_mask);
+>>   }
+>>   
+>> +static int xgbe_read_mmd_regs_v3(struct xgbe_prv_data *pdata, int prtad,
+>> +				 int mmd_reg)
+>> +{
+>> +	unsigned int mmd_address, index, offset;
+>> +	struct pci_dev *rdev;
+>> +	unsigned long flags;
+>> +	int mmd_data;
+>> +
+>> +	rdev = pci_get_domain_bus_and_slot(0, 0, PCI_DEVFN(0, 0));
+>> +	if (!rdev)
+>> +		return 0;
+> 
+> Why do you operate on the root device's config space? Is this SoC-specific,
+> like in ixgbe_x550em_a_has_mii()? If so, would be nice to have a comment or at
+> least something in the commit message.
 
-Change the existing fs users to use the full-featured API, except
-for the one for svc_init_buffer() in net/sunrpc/svc.c. Other
-existing callers can use the simple API as they seems to be passing
-all NULL elements via memset, kzalloc, etc, only remove unnecessary
-memset for existing users calling the simple API in this patch.
+Yes. We have additional patches in development that follow this path, 
+and I'll ensure that future patches include relevant comments to clarify 
+this.
 
-The test result for xfstests full test:
-Before this patch:
-btrfs/default: 1061 tests, 3 failures, 290 skipped, 13152 seconds
-  Failures: btrfs/012 btrfs/226
-  Flaky: generic/301: 60% (3/5)
-Totals: 1073 tests, 290 skipped, 13 failures, 0 errors, 12540s
-
-nfs/loopback: 530 tests, 3 failures, 392 skipped, 3942 seconds
-  Failures: generic/464 generic/551
-  Flaky: generic/650: 40% (2/5)
-Totals: 542 tests, 392 skipped, 12 failures, 0 errors, 3799s
-
-After this patch:
-btrfs/default: 1061 tests, 2 failures, 290 skipped, 13446 seconds
-  Failures: btrfs/012 btrfs/226
-Totals: 1069 tests, 290 skipped, 10 failures, 0 errors, 12853s
-
-nfs/loopback: 530 tests, 3 failures, 392 skipped, 4103 seconds
-  Failures: generic/464 generic/551
-  Flaky: generic/650: 60% (3/5)
-Totals: 542 tests, 392 skipped, 13 failures, 0 errors, 3933s
-
-The stress test also suggest there is no regression for the erofs
-too.
-
-Using the simple API also enable the caller to not zero the array
-before calling the page bulk allocating API, which has about 1~2 ns
-performance improvement for time_bench_page_pool03_slow() test case
-of page_pool in a x86 vm system, this reduces some performance impact
-of fixing the DMA API misuse problem in [3], performance improves
-from 87.886 ns to 86.429 ns.
-
-Also a temporary patch to enable the using of full-featured API in
-page_pool suggests that the new full-featured API doesn't seem to have
-noticeable performance impact for the existing users, like SUNRPC, btrfs
-and erofs.
-
-1. https://lore.kernel.org/all/bd8c2f5c-464d-44ab-b607-390a87ea4cd5@huawei.com/
-2. https://lore.kernel.org/all/180818a1-b906-4a0b-89d3-34cb71cc26c9@huawei.com/
-3. https://lore.kernel.org/all/20250212092552.1779679-1-linyunsheng@huawei.com/
-CC: Jesper Dangaard Brouer <hawk@kernel.org>
-CC: Luiz Capitulino <luizcap@redhat.com>
-CC: Mel Gorman <mgorman@techsingularity.net>
-Suggested-by: Neil Brown <neilb@suse.de>
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
----
-V3:
-1. Provide both simple and full-featured API as suggested by NeilBrown.
-2. Do the fs testing as suggested in V2.
-
-V2:
-1. Drop RFC tag.
-2. Fix a compile error for xfs.
-3. Defragmemt the page_array for SUNRPC and btrfs.
----
- drivers/vfio/pci/mlx5/cmd.c       |  2 --
- drivers/vfio/pci/virtio/migrate.c |  2 --
- fs/btrfs/extent_io.c              | 21 +++++++++---------
- fs/erofs/zutil.c                  | 11 +++++----
- include/linux/gfp.h               | 37 +++++++++++++++++++++++++++++++
- include/trace/events/sunrpc.h     | 12 +++++-----
- kernel/bpf/arena.c                |  1 -
- mm/page_alloc.c                   | 32 +++++---------------------
- net/core/page_pool.c              |  3 ---
- net/sunrpc/svc_xprt.c             | 12 ++++++----
- 10 files changed, 72 insertions(+), 61 deletions(-)
-
-diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
-index 11eda6b207f1..fb094527715f 100644
---- a/drivers/vfio/pci/mlx5/cmd.c
-+++ b/drivers/vfio/pci/mlx5/cmd.c
-@@ -446,8 +446,6 @@ static int mlx5vf_add_migration_pages(struct mlx5_vhca_data_buffer *buf,
- 		if (ret)
- 			goto err_append;
- 		buf->allocated_length += filled * PAGE_SIZE;
--		/* clean input for another bulk allocation */
--		memset(page_list, 0, filled * sizeof(*page_list));
- 		to_fill = min_t(unsigned int, to_alloc,
- 				PAGE_SIZE / sizeof(*page_list));
- 	} while (to_alloc > 0);
-diff --git a/drivers/vfio/pci/virtio/migrate.c b/drivers/vfio/pci/virtio/migrate.c
-index ba92bb4e9af9..9f003a237dec 100644
---- a/drivers/vfio/pci/virtio/migrate.c
-+++ b/drivers/vfio/pci/virtio/migrate.c
-@@ -91,8 +91,6 @@ static int virtiovf_add_migration_pages(struct virtiovf_data_buffer *buf,
- 		if (ret)
- 			goto err_append;
- 		buf->allocated_length += filled * PAGE_SIZE;
--		/* clean input for another bulk allocation */
--		memset(page_list, 0, filled * sizeof(*page_list));
- 		to_fill = min_t(unsigned int, to_alloc,
- 				PAGE_SIZE / sizeof(*page_list));
- 	} while (to_alloc > 0);
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 197f5e51c474..51ef15703900 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -623,21 +623,22 @@ int btrfs_alloc_page_array(unsigned int nr_pages, struct page **page_array,
- 			   bool nofail)
- {
- 	const gfp_t gfp = nofail ? (GFP_NOFS | __GFP_NOFAIL) : GFP_NOFS;
--	unsigned int allocated;
--
--	for (allocated = 0; allocated < nr_pages;) {
--		unsigned int last = allocated;
-+	int ret;
- 
--		allocated = alloc_pages_bulk(gfp, nr_pages, page_array);
--		if (unlikely(allocated == last)) {
-+	do {
-+		ret = alloc_pages_bulk_refill(gfp, nr_pages, page_array);
-+		if (unlikely(ret == -ENOMEM)) {
- 			/* No progress, fail and do cleanup. */
--			for (int i = 0; i < allocated; i++) {
--				__free_page(page_array[i]);
--				page_array[i] = NULL;
-+			for (int i = 0; i < nr_pages; i++) {
-+				if (page_array[i]) {
-+					__free_page(page_array[i]);
-+					page_array[i] = NULL;
-+				}
- 			}
- 			return -ENOMEM;
- 		}
--	}
-+	} while (ret == -EAGAIN);
-+
- 	return 0;
- }
- 
-diff --git a/fs/erofs/zutil.c b/fs/erofs/zutil.c
-index 55ff2ab5128e..6ce11a8a261c 100644
---- a/fs/erofs/zutil.c
-+++ b/fs/erofs/zutil.c
-@@ -68,7 +68,7 @@ int z_erofs_gbuf_growsize(unsigned int nrpages)
- 	struct page **tmp_pages = NULL;
- 	struct z_erofs_gbuf *gbuf;
- 	void *ptr, *old_ptr;
--	int last, i, j;
-+	int ret, i, j;
- 
- 	mutex_lock(&gbuf_resize_mutex);
- 	/* avoid shrinking gbufs, since no idea how many fses rely on */
-@@ -86,12 +86,11 @@ int z_erofs_gbuf_growsize(unsigned int nrpages)
- 		for (j = 0; j < gbuf->nrpages; ++j)
- 			tmp_pages[j] = gbuf->pages[j];
- 		do {
--			last = j;
--			j = alloc_pages_bulk(GFP_KERNEL, nrpages,
--					     tmp_pages);
--			if (last == j)
-+			ret = alloc_pages_bulk_refill(GFP_KERNEL, nrpages,
-+						      tmp_pages);
-+			if (ret == -ENOMEM)
- 				goto out;
--		} while (j != nrpages);
-+		} while (ret == -EAGAIN);
- 
- 		ptr = vmap(tmp_pages, nrpages, VM_MAP, PAGE_KERNEL);
- 		if (!ptr)
-diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-index c9fa6309c903..cf6100981fd6 100644
---- a/include/linux/gfp.h
-+++ b/include/linux/gfp.h
-@@ -244,6 +244,43 @@ unsigned long alloc_pages_bulk_mempolicy_noprof(gfp_t gfp,
- #define alloc_pages_bulk(_gfp, _nr_pages, _page_array)		\
- 	__alloc_pages_bulk(_gfp, numa_mem_id(), NULL, _nr_pages, _page_array)
- 
-+/*
-+ * alloc_pages_bulk_refill_noprof - Refill order-0 pages to an array
-+ * @gfp: GFP flags for the allocation when refilling
-+ * @nr_pages: The size of refilling array
-+ * @page_array: The array to refill order-0 pages
-+ *
-+ * Note that only NULL elements are populated with pages and the pages might
-+ * get re-ordered.
-+ *
-+ * Return 0 if all pages are refilled, -EAGAIN if at least one page is refilled,
-+ * ok to try again immediately or -ENOMEM if no page is refilled and don't
-+ * bother trying again soon.
-+ */
-+static inline int alloc_pages_bulk_refill_noprof(gfp_t gfp, int nr_pages,
-+						 struct page **page_array)
-+{
-+	int allocated = 0, i;
-+
-+	for (i = 0; i < nr_pages; i++) {
-+		if (page_array[i]) {
-+			swap(page_array[allocated], page_array[i]);
-+			allocated++;
-+		}
-+	}
-+
-+	i = alloc_pages_bulk_noprof(gfp, numa_mem_id(), NULL,
-+				    nr_pages - allocated,
-+				    page_array + allocated);
-+	if (likely(allocated + i == nr_pages))
-+		return 0;
-+
-+	return i ? -EAGAIN : -ENOMEM;
-+}
-+
-+#define alloc_pages_bulk_refill(...)				\
-+	alloc_hooks(alloc_pages_bulk_refill_noprof(__VA_ARGS__))
-+
- static inline unsigned long
- alloc_pages_bulk_node_noprof(gfp_t gfp, int nid, unsigned long nr_pages,
- 				   struct page **page_array)
-diff --git a/include/trace/events/sunrpc.h b/include/trace/events/sunrpc.h
-index 5d331383047b..cb8899f1cbdc 100644
---- a/include/trace/events/sunrpc.h
-+++ b/include/trace/events/sunrpc.h
-@@ -2143,23 +2143,23 @@ TRACE_EVENT(svc_wake_up,
- TRACE_EVENT(svc_alloc_arg_err,
- 	TP_PROTO(
- 		unsigned int requested,
--		unsigned int allocated
-+		int ret
- 	),
- 
--	TP_ARGS(requested, allocated),
-+	TP_ARGS(requested, ret),
- 
- 	TP_STRUCT__entry(
- 		__field(unsigned int, requested)
--		__field(unsigned int, allocated)
-+		__field(int, ret)
- 	),
- 
- 	TP_fast_assign(
- 		__entry->requested = requested;
--		__entry->allocated = allocated;
-+		__entry->ret = ret;
- 	),
- 
--	TP_printk("requested=%u allocated=%u",
--		__entry->requested, __entry->allocated)
-+	TP_printk("requested=%u ret=%d",
-+		__entry->requested, __entry->ret)
- );
- 
- DECLARE_EVENT_CLASS(svc_deferred_event,
-diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
-index 0d56cea71602..9022c4440814 100644
---- a/kernel/bpf/arena.c
-+++ b/kernel/bpf/arena.c
-@@ -445,7 +445,6 @@ static long arena_alloc_pages(struct bpf_arena *arena, long uaddr, long page_cnt
- 			return 0;
- 	}
- 
--	/* zeroing is needed, since alloc_pages_bulk() only fills in non-zero entries */
- 	pages = kvcalloc(page_cnt, sizeof(struct page *), GFP_KERNEL);
- 	if (!pages)
- 		return 0;
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index d7cfcfa2b077..59a4fe23e62a 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4784,9 +4784,6 @@ static inline bool prepare_alloc_pages(gfp_t gfp_mask, unsigned int order,
-  * This is a batched version of the page allocator that attempts to
-  * allocate nr_pages quickly. Pages are added to the page_array.
-  *
-- * Note that only NULL elements are populated with pages and nr_pages
-- * is the maximum number of pages that will be stored in the array.
-- *
-  * Returns the number of pages in the array.
-  */
- unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
-@@ -4802,29 +4799,18 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 	struct alloc_context ac;
- 	gfp_t alloc_gfp;
- 	unsigned int alloc_flags = ALLOC_WMARK_LOW;
--	int nr_populated = 0, nr_account = 0;
--
--	/*
--	 * Skip populated array elements to determine if any pages need
--	 * to be allocated before disabling IRQs.
--	 */
--	while (nr_populated < nr_pages && page_array[nr_populated])
--		nr_populated++;
-+	int nr_populated = 0;
- 
- 	/* No pages requested? */
- 	if (unlikely(nr_pages <= 0))
- 		goto out;
- 
--	/* Already populated array? */
--	if (unlikely(nr_pages - nr_populated == 0))
--		goto out;
--
- 	/* Bulk allocator does not support memcg accounting. */
- 	if (memcg_kmem_online() && (gfp & __GFP_ACCOUNT))
- 		goto failed;
- 
- 	/* Use the single page allocator for one page. */
--	if (nr_pages - nr_populated == 1)
-+	if (nr_pages == 1)
- 		goto failed;
- 
- #ifdef CONFIG_PAGE_OWNER
-@@ -4896,24 +4882,16 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 	/* Attempt the batch allocation */
- 	pcp_list = &pcp->lists[order_to_pindex(ac.migratetype, 0)];
- 	while (nr_populated < nr_pages) {
--
--		/* Skip existing pages */
--		if (page_array[nr_populated]) {
--			nr_populated++;
--			continue;
--		}
--
- 		page = __rmqueue_pcplist(zone, 0, ac.migratetype, alloc_flags,
- 								pcp, pcp_list);
- 		if (unlikely(!page)) {
- 			/* Try and allocate at least one page */
--			if (!nr_account) {
-+			if (!nr_populated) {
- 				pcp_spin_unlock(pcp);
- 				goto failed_irq;
- 			}
- 			break;
- 		}
--		nr_account++;
- 
- 		prep_new_page(page, 0, gfp, 0);
- 		set_page_refcounted(page);
-@@ -4923,8 +4901,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 	pcp_spin_unlock(pcp);
- 	pcp_trylock_finish(UP_flags);
- 
--	__count_zid_vm_events(PGALLOC, zone_idx(zone), nr_account);
--	zone_statistics(zonelist_zone(ac.preferred_zoneref), zone, nr_account);
-+	__count_zid_vm_events(PGALLOC, zone_idx(zone), nr_populated);
-+	zone_statistics(zonelist_zone(ac.preferred_zoneref), zone, nr_populated);
- 
- out:
- 	return nr_populated;
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 7745ad924ae2..2431d2f6d610 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -541,9 +541,6 @@ static noinline netmem_ref __page_pool_alloc_pages_slow(struct page_pool *pool,
- 	if (unlikely(pool->alloc.count > 0))
- 		return pool->alloc.cache[--pool->alloc.count];
- 
--	/* Mark empty alloc.cache slots "empty" for alloc_pages_bulk */
--	memset(&pool->alloc.cache, 0, sizeof(void *) * bulk);
--
- 	nr_pages = alloc_pages_bulk_node(gfp, pool->p.nid, bulk,
- 					 (struct page **)pool->alloc.cache);
- 	if (unlikely(!nr_pages))
-diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
-index ae25405d8bd2..1191686fc0af 100644
---- a/net/sunrpc/svc_xprt.c
-+++ b/net/sunrpc/svc_xprt.c
-@@ -653,7 +653,8 @@ static bool svc_alloc_arg(struct svc_rqst *rqstp)
- {
- 	struct svc_serv *serv = rqstp->rq_server;
- 	struct xdr_buf *arg = &rqstp->rq_arg;
--	unsigned long pages, filled, ret;
-+	unsigned long pages;
-+	int ret;
- 
- 	pages = (serv->sv_max_mesg + 2 * PAGE_SIZE) >> PAGE_SHIFT;
- 	if (pages > RPCSVC_MAXPAGES) {
-@@ -663,9 +664,12 @@ static bool svc_alloc_arg(struct svc_rqst *rqstp)
- 		pages = RPCSVC_MAXPAGES;
- 	}
- 
--	for (filled = 0; filled < pages; filled = ret) {
--		ret = alloc_pages_bulk(GFP_KERNEL, pages, rqstp->rq_pages);
--		if (ret > filled)
-+	while (true) {
-+		ret = alloc_pages_bulk_refill(GFP_KERNEL, pages, rqstp->rq_pages);
-+		if (!ret)
-+			break;
-+
-+		if (ret == -EAGAIN)
- 			/* Made progress, don't sleep yet */
- 			continue;
- 
--- 
-2.33.0
+> 
+>> +
+>> +	mmd_address = get_mmd_address(pdata, mmd_reg);
+>> +
+>> +	get_pcs_index_and_offset(pdata, mmd_address, &index, &offset);
+>> +
+>> +	spin_lock_irqsave(&pdata->xpcs_lock, flags);
+>> +	pci_write_config_dword(rdev, 0x60, (pdata->xphy_base + pdata->xpcs_window_sel_reg));
+>> +	pci_write_config_dword(rdev, 0x64, index);
+>> +	pci_write_config_dword(rdev, 0x60, pdata->xphy_base + offset);
+>> +	pci_read_config_dword(rdev, 0x64, &mmd_data);
+>> +	mmd_data = (offset % 4) ? FIELD_GET(XGBE_GEN_HI_MASK, mmd_data) :
+>> +				  FIELD_GET(XGBE_GEN_LO_MASK, mmd_data);
+>> +
+>> +	pci_dev_put(rdev);
+>> +	spin_unlock_irqrestore(&pdata->xpcs_lock, flags);
+>> +
+>> +	return mmd_data;
+>> +}
+>> +
+>> +static void xgbe_write_mmd_regs_v3(struct xgbe_prv_data *pdata, int prtad,
+>> +				   int mmd_reg, int mmd_data)
+>> +{
+>> +	unsigned int pci_mmd_data, hi_mask, lo_mask;
+>> +	unsigned int mmd_address, index, offset;
+>> +	struct pci_dev *rdev;
+>> +	unsigned long flags;
+>> +
+>> +	rdev = pci_get_domain_bus_and_slot(0, 0, PCI_DEVFN(0, 0));
+>> +	if (!rdev)
+>> +		return;
+>> +
+>> +	mmd_address = get_mmd_address(pdata, mmd_reg);
+>> +
+>> +	get_pcs_index_and_offset(pdata, mmd_address, &index, &offset);
+>> +
+>> +	spin_lock_irqsave(&pdata->xpcs_lock, flags);
+>> +	pci_write_config_dword(rdev, 0x60, (pdata->xphy_base + pdata->xpcs_window_sel_reg));
+>> +	pci_write_config_dword(rdev, 0x64, index);
+>> +	pci_write_config_dword(rdev, 0x60, pdata->xphy_base + offset);
+>> +	pci_read_config_dword(rdev, 0x64, &pci_mmd_data);
+>> +
+>> +	if (offset % 4) {
+>> +		hi_mask = FIELD_PREP(XGBE_GEN_HI_MASK, mmd_data);
+>> +		lo_mask = FIELD_GET(XGBE_GEN_LO_MASK, pci_mmd_data);
+>> +	} else {
+>> +		hi_mask = FIELD_PREP(XGBE_GEN_HI_MASK,
+>> +				     FIELD_GET(XGBE_GEN_HI_MASK, pci_mmd_data));
+>> +		lo_mask = FIELD_GET(XGBE_GEN_LO_MASK, mmd_data);
+>> +	}
+>> +
+>> +	pci_mmd_data = hi_mask | lo_mask;
+>> +
+>> +	pci_write_config_dword(rdev, 0x60, (pdata->xphy_base + pdata->xpcs_window_sel_reg));
+>> +	pci_write_config_dword(rdev, 0x64, index);
+>> +	pci_write_config_dword(rdev, 0x60, (pdata->xphy_base + offset));
+>> +	pci_write_config_dword(rdev, 0x64, pci_mmd_data);
+>> +	pci_dev_put(rdev);
+>> +
+>> +	spin_unlock_irqrestore(&pdata->xpcs_lock, flags);
+>> +}
+>> +
+>>   static int xgbe_read_mmd_regs_v2(struct xgbe_prv_data *pdata, int prtad,
+>>   				 int mmd_reg)
+>>   {
+>> @@ -1160,6 +1233,9 @@ static int xgbe_read_mmd_regs(struct xgbe_prv_data *pdata, int prtad,
+>>   	case XGBE_XPCS_ACCESS_V2:
+>>   	default:
+>>   		return xgbe_read_mmd_regs_v2(pdata, prtad, mmd_reg);
+>> +
+>> +	case XGBE_XPCS_ACCESS_V3:
+>> +		return xgbe_read_mmd_regs_v3(pdata, prtad, mmd_reg);
+>>   	}
+>>   }
+>>   
+>> @@ -1173,6 +1249,9 @@ static void xgbe_write_mmd_regs(struct xgbe_prv_data *pdata, int prtad,
+>>   	case XGBE_XPCS_ACCESS_V2:
+>>   	default:
+>>   		return xgbe_write_mmd_regs_v2(pdata, prtad, mmd_reg, mmd_data);
+>> +
+>> +	case XGBE_XPCS_ACCESS_V3:
+>> +		return xgbe_write_mmd_regs_v3(pdata, prtad, mmd_reg, mmd_data);
+>>   	}
+>>   }
+>>   
+>> diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
+>> index 2e9b3be44ff8..6c49bf19e537 100644
+>> --- a/drivers/net/ethernet/amd/xgbe/xgbe.h
+>> +++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
+>> @@ -242,6 +242,10 @@
+>>   #define XGBE_RV_PCI_DEVICE_ID	0x15d0
+>>   #define XGBE_YC_PCI_DEVICE_ID	0x14b5
+>>   
+>> + /* Generic low and high masks */
+>> +#define XGBE_GEN_HI_MASK	GENMASK(31, 16)
+>> +#define XGBE_GEN_LO_MASK	GENMASK(15, 0)
+>> +
+>>   struct xgbe_prv_data;
+>>   
+>>   struct xgbe_packet_data {
+>> @@ -460,6 +464,7 @@ enum xgbe_speed {
+>>   enum xgbe_xpcs_access {
+>>   	XGBE_XPCS_ACCESS_V1 = 0,
+>>   	XGBE_XPCS_ACCESS_V2,
+>> +	XGBE_XPCS_ACCESS_V3,
+>>   };
+>>   
+>>   enum xgbe_an_mode {
+>> @@ -951,6 +956,7 @@ struct xgbe_prv_data {
+>>   	struct device *dev;
+>>   	struct platform_device *phy_platdev;
+>>   	struct device *phy_dev;
+>> +	unsigned int xphy_base;
+>>   
+>>   	/* Version related data */
+>>   	struct xgbe_version_data *vdata;
+>> -- 
+>> 2.34.1
+>>
+>>
 
