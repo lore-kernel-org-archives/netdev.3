@@ -1,135 +1,93 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408E627F73B;
-	Mon, 14 Apr 2025 16:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E9D25E813
+	for <netdev@vger.kernel.org>; Mon, 14 Apr 2025 16:27:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744647684; cv=none; b=OW+kflmsTiWv1gZI10/IIU5D1ljqXEwEHxVZWR/mftU2/WXKQbGqE5upTtfU6tKC1LFwCiNw3eL5FdKZh/URwhc/YlWe5eyOqaq2Hr0cHbSRAi6fwuxkgEsujy0Jn6DfwzNKAWP4IWSB4s70b5QvOKnPbFf1ltqR+4mFhR8gaYE=
+	t=1744648022; cv=none; b=nweK8TfYyLRBDN1IIMT6dRzzFlQECaBcBAl+X65jYMdsUkLhQdpfXaJcdF59ONV4/c38whR306cuYWPs5rAFO2bVu55yU5wu9CbxQCP8kirRu8kaDYDLxoes/2a/iDEsqgdNhkYhImsTeuE4S1Qwet79mYFo+Ofjg0Ry4mK4jFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744647684; c=relaxed/simple;
-	bh=qRF+pfwYj6kETHQRodo3O/1RpBYbS5HpUN20HQPLn78=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=GpgkA7obgKZ8gFjV+BwPTvt/ifEm03liLZNuRD9cpDcDpoVWsvYFo7G+wf/d/Fv5cDMMcQBAQFm313jyAqAD2Xzbbrwm8HRaNzHi/C09IKAzI8zYlqrLEdaNg2lgLaUKM2TTODcL5KQVeW1wf5kcYejj8b1zLemEUotHysfkn/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=INWn65hJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=I7pBzCM8; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1744648022; c=relaxed/simple;
+	bh=ZaYKAjJdQmxjzYrffS9KwgAW2DzLB47X+LtCrL0RnQw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mffduaj/nqXLbut288eTQQ+UlQzwQSZApk6Z0oILeY1dPGfKTJFUbpMIoBUJ2weOQOrePM6BlfMXnkQGzWB50Urk0zvCTHLFE8PYwrJ5B2+YDdMAaWjCaN2rcHQmdYxdcKt0IUaimwScdSkS98350T6iRQQVnVEGofgBPIuOeNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f/RoK1KO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="INWn65hJ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="I7pBzCM8"
-Date: Mon, 14 Apr 2025 18:21:20 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744647681;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=s5XmoymLjfpV+yjct381cZITXuVhuoSqQggfPGZ/6EA=;
-	b=INWn65hJIypRHFv4doRTwj/lJ0oA/T/caDKhQWHhr2y0GsAKIeR95NmatAHqklKrXP8E3o
-	e1IAGdn3LInnzHDYSk90Hsfc8UP+bIdf/BPr552/hX0w60r7kM/2+UtLse6sCBoJVht5KD
-	Llw7KAtuw9AItRO0qLKFqutv7RXkJYXU1BrcaA4WxIiEYFm+ep8QJAUVWXxNDNEtg2cHjR
-	POFcyeaSbvbuNg8Ce/NULIKYNkD7l+GSRn38WKkGKxKkuwjeFhv2NUQl7gUhvXch+lMgpj
-	3J5XM9nXtTbCJwtmoGWYWNfH9UtZoUwE2VWbGqB5Vdh3oAmJxMDzb6uPWe3Y0A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744647681;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=s5XmoymLjfpV+yjct381cZITXuVhuoSqQggfPGZ/6EA=;
-	b=I7pBzCM8/RuiD0W5wNL+1VdJ+299PeNdQfc3FdiNaMEEoOjYfyHOEsxGK0hRoaEQ0sfyAa
-	evg/FkLuns7/D0CA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: stable@vger.kernel.org
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
-	Ricardo =?utf-8?Q?Ca=C3=B1uelo?= Navarro <rcn@igalia.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
-Subject: [PATCH stable] xdp: Reset bpf_redirect_info before running a xdp's
- BPF prog.
-Message-ID: <20250414162120.U-UFSLv8@linutronix.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f/RoK1KO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76FBC4CEEA;
+	Mon, 14 Apr 2025 16:27:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744648021;
+	bh=ZaYKAjJdQmxjzYrffS9KwgAW2DzLB47X+LtCrL0RnQw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=f/RoK1KOJvBcXG92R8TtsudI7iiOZ4oYxt79b04VhSCdMLhRWUARRyXfkAyLd+U8V
+	 k48U9o0mLe7rnSRw73Q7c0K17KC+19iAIRM8gZdkhrchYaHAb6xvnhCgVx4RzGQkqW
+	 /QXLCHOq7bGKzSdCEiIjhEaJBxTHu1Wpev4LlRnm3aDBJWv6C4knjDYmgJWwm2YseC
+	 aIGcZqDK+TuPJ0xxOcURIcESsh83hgpFBZcVqRZQSQqaG1I9KgaGx5KGmgtgJJuucK
+	 lAXeV3YGguBRbIugL7rHuqqDt8YdKjQEEP74YwWG9yLIwF5PbZrZXc4DmNe0v+td+W
+	 1cDu9dlxzhrFw==
+Date: Mon, 14 Apr 2025 09:27:00 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Carolina Jubran <cjubran@nvidia.com>
+Cc: Cosmin Ratiu <cratiu@nvidia.com>, "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>, "horms@kernel.org" <horms@kernel.org>,
+ "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+ <davem@davemloft.net>, Tariq Toukan <tariqt@nvidia.com>, Gal Pressman
+ <gal@nvidia.com>, "jiri@resnulli.us" <jiri@resnulli.us>,
+ "edumazet@google.com" <edumazet@google.com>, Saeed Mahameed
+ <saeedm@nvidia.com>, "pabeni@redhat.com" <pabeni@redhat.com>
+Subject: Re: net-shapers plan
+Message-ID: <20250414092700.5965984a@kernel.org>
+In-Reply-To: <9768e1e0-3a76-47af-b0f5-17793721bb0a@nvidia.com>
+References: <d9831d0c940a7b77419abe7c7330e822bbfd1cfb.camel@nvidia.com>
+	<20250328051350.5055efe9@kernel.org>
+	<a3e8c008-384f-413e-bfa0-6e4568770213@nvidia.com>
+	<20250401075045.1fa012f5@kernel.org>
+	<1fc5aaa2-1c3d-48cc-99a8-523ed82b4cf9@nvidia.com>
+	<20250409150639.30a4c041@kernel.org>
+	<2f747aac-767c-4631-b1db-436b11b83015@nvidia.com>
+	<20250410161611.5321eb9f@kernel.org>
+	<9768e1e0-3a76-47af-b0f5-17793721bb0a@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-Ricardo reported a KASAN discovered use after free in v6.6-stable.
-
-The syzbot starts a BPF program via xdp_test_run_batch() which assigns
-ri->tgt_value via dev_hash_map_redirect() and the return code isn't
-XDP_REDIRECT it looks like nonsense. So the output in
-bpf_warn_invalid_xdp_action() appears once.
-Then the TUN driver runs another BPF program (on the same CPU) which
-returns XDP_REDIRECT without setting ri->tgt_value first. It invokes
-bpf_trace_printk() to print four characters and obtain the required
-return value. This is enough to get xdp_do_redirect() invoked which
-then accesses the pointer in tgt_value which might have been already
-deallocated.
-
-This problem does not affect upstream because since commit
-	401cb7dae8130 ("net: Reference bpf_redirect_info via task_struct on PREEMP=
-T_RT.")
-
-the per-CPU variable is referenced via task's task_struct and exists on
-the stack during NAPI callback. Therefore it is cleared once before the
-first invocation and remains valid within the RCU section of the NAPI
-callback.
-
-Instead of performing the huge backport of the commit (plus its fix ups)
-here is an alternative version which only resets the variable in
-question prior invoking the BPF program.
-
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@kernel.org>
-Reported-by: Ricardo Ca=C3=B1uelo Navarro <rcn@igalia.com>
-Closes: https://lore.kernel.org/all/20250226-20250204-kasan-slab-use-after-=
-free-read-in-dev_map_enqueue__submit-v3-0-360efec441ba@igalia.com/
-Fixes: 97f91a7cf04ff ("bpf: add bpf_redirect_map helper routine")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
----
-
-I discussed this with Toke, thread starts at
-	https://lore.kernel.org/all/20250313183911.SPAmGLyw@linutronix.de/
-
-The commit, which this by accident, is part of v6.11-rc1.
-I added the commit introducing map redirects as the origin of the
-problem which is v4.14-rc1. The code is a bit different there but it
-seems to work similar.
-Affected kernels would be from v4.14 to v6.10.
-
- include/net/xdp.h | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/include/net/xdp.h b/include/net/xdp.h
-index de08c8e0d1348..b39ac83618a55 100644
---- a/include/net/xdp.h
-+++ b/include/net/xdp.h
-@@ -486,7 +486,14 @@ static __always_inline u32 bpf_prog_run_xdp(const stru=
-ct bpf_prog *prog,
- 	 * under local_bh_disable(), which provides the needed RCU protection
- 	 * for accessing map entries.
- 	 */
--	u32 act =3D __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
-+	struct bpf_redirect_info *ri =3D this_cpu_ptr(&bpf_redirect_info);
-+	u32 act;
-+
-+	if (ri->map_id || ri->map_type) {
-+		ri->map_id =3D 0;
-+		ri->map_type =3D BPF_MAP_TYPE_UNSPEC;
-+	}
-+	act =3D __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
+On Mon, 14 Apr 2025 11:27:00 +0300 Carolina Jubran wrote:
+> > I hope you understand my concern, tho. Since you're providing the first
+> > implementation, if the users can grow dependent on such behavior we'd
+> > be in no position to explain later that it's just a quirk of mlx5 and
+> > not how the API is intended to operate. =20
+>=20
+> Thanks for bringing this up. I want to make it clear that traffic=20
+> classes must be properly matched to queues. We don=E2=80=99t rely on the=
 =20
- 	if (static_branch_unlikely(&bpf_master_redirect_enabled_key)) {
- 		if (act =3D=3D XDP_TX && netif_is_bond_slave(xdp->rxq->dev))
---=20
-2.49.0
+> hardware fallback behavior in mlx5. If the driver or firmware isn=E2=80=
+=99t=20
+> configured correctly, traffic class bandwidth control won=E2=80=99t work =
+as=20
+> expected =E2=80=94 the user will suffer from constant switching of the TX=
+ queue=20
+> between scheduling queues and head-of-line blocking. As a result, users=20
+> shouldn=E2=80=99t expect reliable performance or correct bandwidth alloca=
+tion.
+> We don=E2=80=99t encourage configuring this without proper TX queue mappi=
+ng, so=20
+> users won=E2=80=99t grow dependent on behavior that only happens to work =
+without it.
+> We tried to highlight this in the plan section discussing queue=20
+> selection and head-of-line blocking: To make traffic class shaping work,=
+=20
+> we must keep traffic classes separate for each transmit queue.
 
+Right, my concern is more that there is no requirement for explicit
+configuration of the queues, as long as traffic arrives silo'ed WRT
+DSCP markings. As long as a VF sorts the traffic it does not have
+to explicitly say (or even know) that queue A will land in TC N.
+
+BTW the classification is before all rewrites? IOW flower or any other
+forwarding rules cannot affect scheduling?
