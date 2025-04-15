@@ -1,268 +1,129 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FC22DFA25;
-	Tue, 15 Apr 2025 09:38:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6060329291C
+	for <netdev@vger.kernel.org>; Tue, 15 Apr 2025 09:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744709895; cv=none; b=kJ50x1s68Gigv0q8OyB423/LOYXfL8aMeHqn4p8q0knYvjhMuz6tTy+PE6YxtM3A5md3WbdufdINvLDQWKULe0tFKJkyyS6eAsYUCoRGaOW96SLRejEY74lemkKRkVRVOHqQHUKQADGAUYzPvMzlF7ZeS/VF891VNBo2PjAPHrg=
+	t=1744710005; cv=none; b=ftym4dyVQ7vwJ/Te+/6MCuTh+g9OIt7130Q3znTB2gUOJNPIZuo0hvLPOGcchWJjir+T1+DaExc+tnJ17ubXDM1vXhlOywTHuCTYlQE/2YjI4J2azfbN+/88ab4K7M6S6geLww+VofsI37wJgPI4edTADkHS3WBBC1LatSMw+oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744709895; c=relaxed/simple;
-	bh=xaKHJsfs6nDATUx2MH5SuPS0TmTLbKrzGTS6XpSqG8Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bfMHUze/zHtg99pvsPAubU7IzU43TEEBN3ANpGr278ewVVDKUqnye4wzDpwD+XltfBlaE9P2Uz7+PCYKbeGAje017LI1c+mRzSP84d53+uKg+vlRJGz6IC5fQ59GH7+xhH5igwQLUmX/oVRgW5bOQlDuSmGbhXYa7e3fX6Yg6ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=r1K1693H; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1744710005; c=relaxed/simple;
+	bh=zuT+UrwO92mBo3PFOJ4dtbbO5SqyhaBWwQA8C7tLxqM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SuJOH+IsIWw+THwow4U/1i0mrsxQo2uZw6CY3Js1gsj5lRruzZnMFHBIr85j8MXG2VnMsfeBnuNpths/QpOQFldbLOX3IfokOBbJmdPZj+9+y0OU5FZtCRMHti/bln9AI6BhG25U2shDyTnnbxW6+3iJ7MUPzZIAac/omDA4j5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b=HjiPiKLZ; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="r1K1693H"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=OUv7GPstaYvfaSEXD1p7wo00AwrEb1fxvB3QnVCrHGw=; b=r1K1693HPgufRTVCkWEGhRIU0M
-	SVqG8LtVLO8RdI7fHYcV+rD+4uPY9/wlUmKuGM1CzWANwVxiTC3y9hYnw3F8QT6VetuDW+gqHgH9+
-	Vx4csp1GDasgfRzSBGIBfsBpWfAhcBNyoo008jVn5gkp21eGLhMhobAjtvjP2UvPp6SADriGR0Tqo
-	KqBqMHyWoknySNIeuL8NN6LVx1nIdufGpTL9J1myrpAC/CNcs00Lw1aRFDQMw8EkVPSzqL50obhfl
-	KcUiLXjjM0TkBpLpcjlwDvMtLjfgNjLGZzHIRq+fSQ5eccScLvFiABhBuail28KKlR/rk3GqGtFU9
-	TK9vHRKw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58620)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1u4cjr-0007rA-0B;
-	Tue, 15 Apr 2025 10:37:55 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1u4cjl-0000FC-0l;
-	Tue, 15 Apr 2025 10:37:49 +0100
-Date: Tue, 15 Apr 2025 10:37:49 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
-	Andrei Botila <andrei.botila@oss.nxp.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	Daniel Golle <daniel@makrotopia.org>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.or
-Subject: Re: [net-next PATCH v7 5/6] net: phy: Add support for Aeonsemi
- AS21xxx PHYs
-Message-ID: <Z_4o7SBGxHBdjWFZ@shell.armlinux.org.uk>
-References: <20250410095443.30848-1-ansuelsmth@gmail.com>
- <20250410095443.30848-6-ansuelsmth@gmail.com>
+	dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b="HjiPiKLZ"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43ed8d32a95so44773375e9.3
+        for <netdev@vger.kernel.org>; Tue, 15 Apr 2025 02:40:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall-org.20230601.gappssmtp.com; s=20230601; t=1744710001; x=1745314801; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OmZOs8Rz2SRsBXQDEu0M9cDNyzZUv/bQ4RbErsr9sHY=;
+        b=HjiPiKLZkwf6zK62xpzE/BHjLc17KsQLkb11QXuRGGD3aVYDGvIMOw/SCm0P92gBKa
+         fZ7HQglzImY6+sKBz5BKRO7S2U2Ic344A2OUnodo6ZAfjg1GJ8ikvmZjwFez81kaeBC0
+         b91cGKAoCUr5ch0nz3t+iyZFAu1TTPfVtqTJYIj3N/Pi34cHGghuAisD4b51x8jfQc2+
+         HfH5jukfAkCdNNW2vVstSb0TN8VI/FflEKJ2bYRJIFbycMtgqKprj3lQhIoVcsHnmuLK
+         Ho6IvOx6nadEtmgFWlrjY3BQs5v9f5kmC4JL3s5DEabClDH5x/4cVbp4cNa6ENRdvuLl
+         QqCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744710001; x=1745314801;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OmZOs8Rz2SRsBXQDEu0M9cDNyzZUv/bQ4RbErsr9sHY=;
+        b=oCy4/LSxQJWAweN5gAMdtH12MUfDO2n30ovOKuWGIwo1/BbwyLLVbf09z+qJwEJGGP
+         4lyfUF5DqqwA4ZazlLHLmUEESB2d1cuitXEWjuGzGO9NbZ2+oiRD4++1KA54wSGxjbME
+         id5/eXdJmqIzPaw9nC7w1PWTnSFUf7gNvlaYm4gv1N+eTHgsZbxmY0ShDibQrci4Jfju
+         +fp8v66BB4Q5P/Z2t3LvZHHDTlTsm3L00FJsO/FT3w2MZmslBUTMFlv/4/R75iWcDhj+
+         p7IBbi1/Bldv7tj3V/hma/+PmNShmdfZCi4dfyfyi/hqupy7FXGdBJgQwxCPfN47amTk
+         fG8A==
+X-Forwarded-Encrypted: i=1; AJvYcCWBRhWKJuodOiNzecuUPeUTkfZSJMGM2akCXRiFTzapyj5w129JpOUehrSEuguF4T+9Z7SvHk4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxksKoTN8mYdcKDHTP2z9OdKBuolK6I1zD1Ln+qDSP0BMDfq5ro
+	nR+1a2+BjAXr48AR4lZtgbHIUk+XdGiYWInE4xQAfdf41kK3eI9P3oLK3hGCoSs=
+X-Gm-Gg: ASbGnctT7ZPxIc8lpRvsp0nW5Z1x5hdpucR3MhiWI0fptH7BPvscY3B8ZMvWS9wqufN
+	+U5LSDc6J0yzaRg87Ab6rVRS1UjCATM0EVL7++3J9SpYrsi4V0tE2oWYlCk7I+6lcXxmYh9WSy8
+	qNK4n5ljJADBpxc44V8qTnL3td9jh+IgXvDjyKQlstoHIJU4+lfGbM3GpDBLulrN2jhYYYfKmhB
+	QJAOYbiVfKa0tjBbpmjLpyVM0NXJPDvs0u/81cQ38KIqI32AtkPyhSSfhlPpjz3HsMAhZUOiXsS
+	Sc1Pfo3BeegvIvAubCPlV6u1R+IqxSjrY67wToTZ+MmPIdiLj98HgILcZ5hMNvjYyqx+rS2uD8Y
+	gZaCGVT0=
+X-Google-Smtp-Source: AGHT+IHF2FagMNaFNbqP/pP/Mm5s2FMwRszKIuGZ4NXlyxggm0m0+ymsT1EDLfxfWhc/bLYDwM86og==
+X-Received: by 2002:a05:600c:1f94:b0:43c:fe90:1282 with SMTP id 5b1f17b1804b1-43f3a925eb1mr132089105e9.7.1744710000434;
+        Tue, 15 Apr 2025 02:40:00 -0700 (PDT)
+Received: from [192.168.0.205] (78-154-15-142.ip.btc-net.bg. [78.154.15.142])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f2066d109sm207839905e9.20.2025.04.15.02.39.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Apr 2025 02:39:59 -0700 (PDT)
+Message-ID: <8b338c8b-9514-43e4-b1b8-3240b3bde798@blackwall.org>
+Date: Tue, 15 Apr 2025 12:39:58 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250410095443.30848-6-ansuelsmth@gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3] net: bridge: locally receive all multicast
+ packets if IFF_ALLMULTI is set
+To: Shengyu Qu <wiagn233@outlook.com>, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, bridge@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Felix Fietkau <nbd@nbd.name>
+References: <OSZPR01MB8434308370ACAFA90A22980798B32@OSZPR01MB8434.jpnprd01.prod.outlook.com>
+Content-Language: en-US
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <OSZPR01MB8434308370ACAFA90A22980798B32@OSZPR01MB8434.jpnprd01.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 10, 2025 at 11:53:35AM +0200, Christian Marangi wrote:
-> +#define VEND1_IPC_DATA0			0x5808
-> +#define VEND1_IPC_DATA1			0x5809
-> +#define VEND1_IPC_DATA2			0x580a
-> +#define VEND1_IPC_DATA3			0x580b
-> +#define VEND1_IPC_DATA4			0x580c
-> +#define VEND1_IPC_DATA5			0x580d
-> +#define VEND1_IPC_DATA6			0x580e
-> +#define VEND1_IPC_DATA7			0x580f
+On 4/14/25 13:56, Shengyu Qu wrote:
+> If multicast snooping is enabled, multicast packets may not always end up
+> on the local bridge interface, if the host is not a member of the multicast
+> group. Similar to how IFF_PROMISC allows all packets to be received
+> locally, let IFF_ALLMULTI allow all multicast packets to be received.
+> 
+> OpenWrt uses a user space daemon for DHCPv6/RA/NDP handling, and in relay
+> mode it sets the ALLMULTI flag in order to receive all relevant queries on
+> the network.
+> 
+> This works for normal network interfaces and non-snooping bridges, but not
+> snooping bridges (unless multicast routing is enabled).
+> 
+> Reported-by: Felix Fietkau <nbd@nbd.name>
+> Closes:https://github.com/openwrt/openwrt/issues/15857#issuecomment-2662851243
+> Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
+> ---
+> Changes since v1:
+>  - Move to net-next
+>  - Changed code according to Nikolay's advice
+> 
+> Changes since v2:
+>  - Fix alignment
+>  - Remove redundant parenthesis
+>  - Add more infomation in commit message
+> ---
+>  net/bridge/br_input.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
+> index 232133a0fd21..5f6ac9bf1527 100644
+> --- a/net/bridge/br_input.c
+> +++ b/net/bridge/br_input.c
+> @@ -189,7 +189,8 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
+>  		if ((mdst || BR_INPUT_SKB_CB_MROUTERS_ONLY(skb)) &&
+>  		    br_multicast_querier_exists(brmctx, eth_hdr(skb), mdst)) {
+>  			if ((mdst && mdst->host_joined) ||
+> -			    br_multicast_is_router(brmctx, skb)) {
+> +			    br_multicast_is_router(brmctx, skb) ||
+> +			    br->dev->flags & IFF_ALLMULTI) {
+>  				local_rcv = true;
+>  				DEV_STATS_INC(br->dev, multicast);
+>  			}
 
-Do you use any of these other than the first? If not, please remove
-them, maybe adding a comment before the first stating that there are
-8 registers.
-
-> +static int aeon_ipcs_wait_cmd(struct phy_device *phydev, bool parity_status)
-> +{
-> +	u16 val;
-> +
-> +	/* Exit condition logic:
-> +	 * - Wait for parity bit equal
-> +	 * - Wait for status success, error OR ready
-> +	 */
-> +	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1, VEND1_IPC_STS, val,
-> +					 FIELD_GET(AEON_IPC_STS_PARITY, val) == parity_status &&
-> +					 (val & AEON_IPC_STS_STATUS) != AEON_IPC_STS_STATUS_RCVD &&
-> +					 (val & AEON_IPC_STS_STATUS) != AEON_IPC_STS_STATUS_PROCESS &&
-> +					 (val & AEON_IPC_STS_STATUS) != AEON_IPC_STS_STATUS_BUSY,
-> +					 AEON_IPC_DELAY, AEON_IPC_TIMEOUT, false);
-
-Hmm. I'm wondering whether:
-
-static bool aeon_ipc_ready(u16 val, bool parity_status)
-{
-	u16 status;
-
-	if (FIELD_GET(AEON_IPC_STS_PARITY, val) != parity_status)
-		return false;
-
-	status = val & AEON_IPC_STS_STATUS;
-
-	return status != AEON_IPC_STS_STATUS_RCVD &&
-	       status != AEON_IPC_STS_STATUS_PROCESS &&
-	       status != AEON_IPC_STS_STATUS_BUSY;
-}
-
-would be better, and then maybe you can fit the code into less than 80
-columns. I'm not a fan of FIELD_PREP_CONST() when it causes differing
-usage patterns like the above (FIELD_GET(AEON_IPC_STS_STATUS, val)
-would match the coding style, and probably makes no difference to the
-code emitted.)
-
-> +}
-> +
-> +static int aeon_ipc_send_cmd(struct phy_device *phydev,
-> +			     struct as21xxx_priv *priv,
-> +			     u16 cmd, u16 *ret_sts)
-> +{
-> +	bool curr_parity;
-> +	int ret;
-> +
-> +	/* The IPC sync by using a single parity bit.
-> +	 * Each CMD have alternately this bit set or clear
-> +	 * to understand correct flow and packet order.
-> +	 */
-> +	curr_parity = priv->parity_status;
-> +	if (priv->parity_status)
-> +		cmd |= AEON_IPC_CMD_PARITY;
-> +
-> +	/* Always update parity for next packet */
-> +	priv->parity_status = !priv->parity_status;
-> +
-> +	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, VEND1_IPC_CMD, cmd);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Wait for packet to be processed */
-> +	usleep_range(AEON_IPC_DELAY, AEON_IPC_DELAY + 5000);
-> +
-> +	/* With no ret_sts, ignore waiting for packet completion
-> +	 * (ipc parity bit sync)
-> +	 */
-> +	if (!ret_sts)
-> +		return 0;
-> +
-> +	ret = aeon_ipcs_wait_cmd(phydev, curr_parity);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = phy_read_mmd(phydev, MDIO_MMD_VEND1, VEND1_IPC_STS);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	*ret_sts = ret;
-> +	if ((*ret_sts & AEON_IPC_STS_STATUS) != AEON_IPC_STS_STATUS_SUCCESS)
-> +		return -EINVAL;
-> +
-> +	return 0;
-> +}
-> +
-> +static int aeon_ipc_send_msg(struct phy_device *phydev,
-> +			     u16 opcode, u16 *data, unsigned int data_len,
-> +			     u16 *ret_sts)
-> +{
-> +	struct as21xxx_priv *priv = phydev->priv;
-> +	u16 cmd;
-> +	int ret;
-> +	int i;
-> +
-> +	/* IPC have a max of 8 register to transfer data,
-> +	 * make sure we never exceed this.
-> +	 */
-> +	if (data_len > AEON_IPC_DATA_MAX)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&priv->ipc_lock);
-> +
-> +	for (i = 0; i < data_len / sizeof(u16); i++)
-> +		phy_write_mmd(phydev, MDIO_MMD_VEND1, VEND1_IPC_DATA(i),
-> +			      data[i]);
-> +
-> +	cmd = FIELD_PREP(AEON_IPC_CMD_SIZE, data_len) |
-> +	      FIELD_PREP(AEON_IPC_CMD_OPCODE, opcode);
-> +	ret = aeon_ipc_send_cmd(phydev, priv, cmd, ret_sts);
-> +	if (ret)
-> +		phydev_err(phydev, "failed to send ipc msg for %x: %d\n",
-> +			   opcode, ret);
-> +
-> +	mutex_unlock(&priv->ipc_lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static int aeon_ipc_rcv_msg(struct phy_device *phydev,
-> +			    u16 ret_sts, u16 *data)
-> +{
-> +	struct as21xxx_priv *priv = phydev->priv;
-> +	unsigned int size;
-> +	int ret;
-> +	int i;
-> +
-> +	if ((ret_sts & AEON_IPC_STS_STATUS) == AEON_IPC_STS_STATUS_ERROR)
-> +		return -EINVAL;
-> +
-> +	/* Prevent IPC from stack smashing the kernel */
-> +	size = FIELD_GET(AEON_IPC_STS_SIZE, ret_sts);
-> +	if (size > AEON_IPC_DATA_MAX)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&priv->ipc_lock);
-> +
-> +	for (i = 0; i < DIV_ROUND_UP(size, sizeof(u16)); i++) {
-> +		ret = phy_read_mmd(phydev, MDIO_MMD_VEND1, VEND1_IPC_DATA(i));
-> +		if (ret < 0) {
-> +			size = ret;
-> +			goto out;
-> +		}
-> +
-> +		data[i] = ret;
-> +	}
-> +
-> +out:
-> +	mutex_unlock(&priv->ipc_lock);
-
-I think the locking here is suspicious.
-
-aeon_ipc_send_msg() takes the lock, writes the registers, and waits for
-the success signal, returning the status, and then drops the lock.
-
-Time passes.
-
-aeon_ipc_rcv_msg() is then called, which extracts the number of bytes to
-be read from the returned status, takes the lock, reads the registers,
-and then drops the lock.
-
-So, what can happen is:
-
-	Thread 1			Thread 2
-	aeon_ipc_send_msg()
-					aeon_ipc_send_msg()
-	aeon_ipc_rcv_msg()
-					aeon_ipc_rcv_msg()
-
-Which means thread 1 reads the reply from thread 2's message.
-
-So, this lock does nothing to really protect against the IPC mechanism
-against races.
-
-I think you need to combine both into a single function that takes the
-lock once and releases it once.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Thanks,
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
