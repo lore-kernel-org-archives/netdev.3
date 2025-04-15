@@ -1,74 +1,61 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0140A1DF994;
-	Tue, 15 Apr 2025 09:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5120528B4EF
+	for <netdev@vger.kernel.org>; Tue, 15 Apr 2025 09:54:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744710874; cv=none; b=EnmKdTH2cNctl9FSt16ZYnP+c8md/SvcwY/LIBnCDFH6Y4VljbXvco8nVvl0WDoE18X3DrwsviGes/OGy59+tJMMJDlI3erRIeWPbvNGoAKKmAegHj2fSa++RyHpWrqwmEp8WPV40LQaYhYV3cfFCQNW/b2xVxlcUgtnAbwRkuQ=
+	t=1744710899; cv=none; b=b2QUFFp+Swb0d+Jibh9bfpDWiRoM3NY0AI/O9JLA2Uk2GGpWOogGqAkazpFVsLlqEVlrIChkLeElbHKrH/nT9Gwl8uqHKZbH4SNcc6nia652/k0qC5M/+QOCAOcj9aKLNp9jrsR0gPIWK82nuhCdbaQxVEPtvCNm203YAxchBOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744710874; c=relaxed/simple;
-	bh=L6ZBp9B5ub+vR6BAf7feLXCkVJt33r176fqAi+yE76o=;
+	s=arc-20240116; t=1744710899; c=relaxed/simple;
+	bh=PWfkR1IMEWyh+66SdLABy34quqLCyIaPRMm/I2wKjIM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G5VAYa+TgbwGBqHjjT8mEuzff2dfSQFkSDcrtMuWOma28QQ/z18Eob+G8xX8o0vY1/LVEXuRn7NRLJ1i+UAtOzornhCdOu6H/csEs9Zd0nTfl7Ivi0luS6Z0vM4uZ4oS6+0IzgKOoUtHRwhY02Jr6jNfRseuYjOQeJ+7nqfVJnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XcwIkZAM; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=XnWDyqyRQmginyGtpHILbe8HgYpVQoeRPNYAxhDPNR91iTBnZ3UJYPnW5AxxzPEbgvmpIj5i3QRzRnRSwalF1EKGjGm0Z1VuEsrS2FyGM/D36ddceZWYbasn/cmUu0RLtLjUKIufsgpZ2v4TKdS0xAbkzvPladzTRTCnBP2OfIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=fuWdPx6G; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XcwIkZAM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744710873; x=1776246873;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=L6ZBp9B5ub+vR6BAf7feLXCkVJt33r176fqAi+yE76o=;
-  b=XcwIkZAMkiI603RHjAyxII9TBV15NQeM7uTJYnfScAPeIZnbhWgb9zI8
-   2kC7pFspRgUMw+xaAKFyTpqRpHTXfM8NHuK829W/0eD3meG9Vzs8tYe08
-   2PktSr2xp+Ot8N8tGODfU3h30xxhn0txukkSmoePdmRoGkgiTvztQ//77
-   CO19bG7FFW9lWhUsJAlix+lq14Cv9vFEF19OYI5bUIyILmszR4WbRk1J9
-   5KiWvx9wIn0Rt8JGHY86W3yvzF/Wj/2Jh17TmcjEneAnN2fgm+CEpGo1n
-   WoC/qpn0xZOiFl5et/LkhiHXpdb/oPYggGzzOFglhIogDTQsWS40n1pd/
-   w==;
-X-CSE-ConnectionGUID: m0gbZTTUR1O6c6/5sXKJcQ==
-X-CSE-MsgGUID: E8f1mHLdQV+uum7k6eRfQQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="63613698"
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; 
-   d="scan'208";a="63613698"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2025 02:53:26 -0700
-X-CSE-ConnectionGUID: t9YJsE8KQGCAlc11/WLcEQ==
-X-CSE-MsgGUID: aSNYI1kSTlSjvvGelplNCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; 
-   d="scan'208";a="131053763"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2025 02:53:23 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1u4cym-0000000CVcP-2KCZ;
-	Tue, 15 Apr 2025 12:53:20 +0300
-Date: Tue, 15 Apr 2025 12:53:20 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-	linux-kernel@vger.kernel.org,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Kees Cook <kees@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	linux-hardening@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 00/33] Implement kernel-doc in Python
-Message-ID: <Z_4skKaqR6NuwOx-@smile.fi.intel.com>
-References: <871pu1193r.fsf@trenco.lwn.net>
- <Z_zYXAJcTD-c3xTe@black.fi.intel.com>
- <87mscibwm8.fsf@trenco.lwn.net>
- <Z_4EL2bLm5Jva8Mq@smile.fi.intel.com>
- <Z_4E0y07kUdgrGQZ@smile.fi.intel.com>
- <87v7r5sw3a.fsf@intel.com>
- <Z_4WCDkAhfwF6WND@smile.fi.intel.com>
- <Z_4Wjv0hmORIwC_Z@smile.fi.intel.com>
- <20250415164014.575c0892@sal.lan>
- <20250415165102.44551ada@sal.lan>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="fuWdPx6G"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=IFDH9vhWaq+ALllkPSDHzLJE41HD2vsjtjk4qA/e2mQ=; b=fuWdPx6GZN1eNf0cArwoAmpK7d
+	AayMLXQzTkfKlcEaqCqvLpA3jxERKs/fV8rnhvBlzf5Hex5N2M46GK4CNyS9N6URjHzNh5jFkkjJf
+	0k4DVFyPXYIvBHzf7mdbkfDqQXO0MY2Ejn/tYnh+JVgpnjeTxjl14JjYRkKDF4vB3kbt7mUPWmxd7
+	Dt1s5UC+j+n/vxB/mAjRGu2mBfX4TEf3LRlpvtmR5rVFiRXO0iOQO2/6Z7Kyn88ayyoK9Oxgag4xf
+	potupcaQeCqqy/np+DQiz3sOqB7O82bFLup289XuWs9fZo/Fl6aNC4pqTYG+mpkKvgw+49DQ29ReN
+	0Ao8BGPw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58114)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1u4d0B-0007sy-2L;
+	Tue, 15 Apr 2025 10:54:47 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1u4d08-0000GI-1a;
+	Tue, 15 Apr 2025 10:54:44 +0100
+Date: Tue, 15 Apr 2025 10:54:44 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next 1/3] net: stmmac: call phylink_start() and
+ phylink_stop() in XDP functions
+Message-ID: <Z_4s5DmCPKB8SUJv@shell.armlinux.org.uk>
+References: <Z/ozvMMoWGH9o6on@shell.armlinux.org.uk>
+ <E1u3XG6-000EJg-V8@rmk-PC.armlinux.org.uk>
+ <20250414174342.67fe4b1d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,160 +64,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250415165102.44551ada@sal.lan>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20250414174342.67fe4b1d@kernel.org>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Apr 15, 2025 at 04:51:02PM +0800, Mauro Carvalho Chehab wrote:
-> Em Tue, 15 Apr 2025 16:40:34 +0800
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> escreveu:
-> > Em Tue, 15 Apr 2025 11:19:26 +0300
-> > Andy Shevchenko <andriy.shevchenko@intel.com> escreveu:
-> > > On Tue, Apr 15, 2025 at 11:17:12AM +0300, Andy Shevchenko wrote:  
-> > > > On Tue, Apr 15, 2025 at 10:49:29AM +0300, Jani Nikula wrote:    
-> > > > > On Tue, 15 Apr 2025, Andy Shevchenko <andriy.shevchenko@intel.com> wrote:    
-> > > > > > On Tue, Apr 15, 2025 at 10:01:04AM +0300, Andy Shevchenko wrote:    
-> > > > > >> On Mon, Apr 14, 2025 at 09:17:51AM -0600, Jonathan Corbet wrote:    
-> > > > > >> > Andy Shevchenko <andriy.shevchenko@intel.com> writes:    
-> > > > > >> > > On Wed, Apr 09, 2025 at 12:30:00PM -0600, Jonathan Corbet wrote:    
-> > > > > >> > >> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
-> > > > > >> > >>     
-> > > > > >> > >> > This changeset contains the kernel-doc.py script to replace the verable
-> > > > > >> > >> > kernel-doc originally written in Perl. It replaces the first version and the
-> > > > > >> > >> > second series I sent on the top of it.    
-> > > > > >> > >> 
-> > > > > >> > >> OK, I've applied it, looked at the (minimal) changes in output, and
-> > > > > >> > >> concluded that it's good - all this stuff is now in docs-next.  Many
-> > > > > >> > >> thanks for doing this!
-> > > > > >> > >> 
-> > > > > >> > >> I'm going to hold off on other documentation patches for a day or two
-> > > > > >> > >> just in case anything turns up.  But it looks awfully good.    
-> > > > > >> > >
-> > > > > >> > > This started well, until it becomes a scripts/lib/kdoc.
-> > > > > >> > > So, it makes the `make O=...` builds dirty *). Please make sure this doesn't leave
-> > > > > >> > > "disgusting turd" )as said by Linus) in the clean tree.
-> > > > > >> > >
-> > > > > >> > > *) it creates that __pycache__ disaster. And no, .gitignore IS NOT a solution.    
-> > > > > >> > 
-> > > > > >> > If nothing else, "make cleandocs" should clean it up, certainly.
-> > > > > >> > 
-> > > > > >> > We can also tell CPython to not create that directory at all.  I'll run
-> > > > > >> > some tests to see what the effect is on the documentation build times;
-> > > > > >> > I'm guessing it will not be huge...    
-> > > > > >> 
-> > > > > >> I do not build documentation at all, it's just a regular code build that leaves
-> > > > > >> tree dirty.
-> > > > > >> 
-> > > > > >> $ python3 --version
-> > > > > >> Python 3.13.2
-> > > > > >> 
-> > > > > >> It's standard Debian testing distribution, no customisation in the code.
-> > > > > >> 
-> > > > > >> To reproduce.
-> > > > > >> 1) I have just done a new build to reduce the churn, so, running make again does nothing;
-> > > > > >> 2) The following snippet in shell shows the issue
-> > > > > >> 
-> > > > > >> $ git clean -xdf
-> > > > > >> $ git status --ignored
-> > > > > >> On branch ...
-> > > > > >> nothing to commit, working tree clean
-> > > > > >> 
-> > > > > >> $ make LLVM=-19 O=.../out W=1 C=1 CF=-D__CHECK_ENDIAN__ -j64
-> > > > > >> make[1]: Entering directory '...'
-> > > > > >>   GEN     Makefile
-> > > > > >>   DESCEND objtool
-> > > > > >>   CALL    .../scripts/checksyscalls.sh
-> > > > > >>   INSTALL libsubcmd_headers
-> > > > > >> .pylintrc: warning: ignored by one of the .gitignore files
-> > > > > >> Kernel: arch/x86/boot/bzImage is ready  (#23)
-> > > > > >> make[1]: Leaving directory '...'
-> > > > > >> 
-> > > > > >> $ touch drivers/gpio/gpiolib-acpi.c
-> > > > > >> 
-> > > > > >> $ make LLVM=-19 O=.../out W=1 C=1 CF=-D__CHECK_ENDIAN__ -j64
-> > > > > >> make[1]: Entering directory '...'
-> > > > > >>   GEN     Makefile
-> > > > > >>   DESCEND objtool
-> > > > > >>   CALL    .../scripts/checksyscalls.sh
-> > > > > >>   INSTALL libsubcmd_headers
-> > > > > >> ...
-> > > > > >>   OBJCOPY arch/x86/boot/setup.bin
-> > > > > >>   BUILD   arch/x86/boot/bzImage
-> > > > > >> Kernel: arch/x86/boot/bzImage is ready  (#24)
-> > > > > >> make[1]: Leaving directory '...'
-> > > > > >> 
-> > > > > >> $ git status --ignored
-> > > > > >> On branch ...
-> > > > > >> Untracked files:
-> > > > > >>   (use "git add <file>..." to include in what will be committed)
-> > > > > >> 	scripts/lib/kdoc/__pycache__/
-> > > > > >> 
-> > > > > >> nothing added to commit but untracked files present (use "git add" to track)    
-> > > > > >
-> > > > > > FWIW, I repeated this with removing the O=.../out folder completely, so it's
-> > > > > > fully clean build. Still the same issue.
-> > > > > >
-> > > > > > And it appears at the very beginning of the build. You don't need to wait to
-> > > > > > have the kernel to be built actually.    
-> > > > > 
-> > > > > kernel-doc gets run on source files for W=1 builds. See Makefile.build.    
-> > > > 
-> > > > Thanks for the clarification, so we know that it runs and we know that it has
-> > > > an issue.    
-> > > 
-> > > Ideal solution what would I expect is that the cache folder should respect
-> > > the given O=... argument, or disabled at all (but I don't think the latter
-> > > is what we want as it may slow down the build).  
+On Mon, Apr 14, 2025 at 05:43:42PM -0700, Jakub Kicinski wrote:
+> On Sat, 12 Apr 2025 10:34:42 +0100 Russell King (Oracle) wrote:
+> > Phylink does not permit drivers to mess with the netif carrier, as
+> > this will de-synchronise phylink with the MAC driver. Moreover,
+> > setting and clearing the TE and RE bits via stmmac_mac_set() in this
+> > path is also wrong as the link may not be up.
 > > 
-> > From:
-> > 	https://github.com/python/cpython/commit/b193fa996a746111252156f11fb14c12fd6267e6
-> > and:
-> > 	https://peps.python.org/pep-3147/
+> > Replace the netif_carrier_on(), netif_carrier_off() and
+> > stmmac_mac_set() calls with the appropriate phylink_start() and
+> > phylink_stop() calls, thereby allowing phylink to manage the netif
+> > carrier and TE/RE bits through the .mac_link_up() and .mac_link_down()
+> > methods.
 > > 
-> > It sounds that Python 3.8 and above have a way to specify the cache
-> > location, via PYTHONPYCACHEPREFIX env var, and via "-X pycache_prefix=path".
-> > 
-> > As the current minimal Python version is 3.9, we can safely use it.
-> > 
-> > So, maybe this would work:
-> > 
-> > 	make O="../out" PYTHONPYCACHEPREFIX="../out"
-> > 
-> > or a variant of it:
-> > 
-> > 	PYTHONPYCACHEPREFIX="../out" make O="../out" 
-> > 
-> > If this works, we can adjust the building system to fill PYTHONPYCACHEPREFIX
-> > env var when O= is used.
+> > Note that RE should only be set after the DMA is ready to avoid the
+> > receive FIFO between the MAC and DMA blocks overflowing, so
+> > phylink_start() needs to be placed after DMA has been started.
 > 
-> That's interesting... Sphinx is already called with PYTHONDONTWRITEBYTECODE.
-> From Documentation/Makefile:
-> 
-> 	quiet_cmd_sphinx = SPHINX  $@ --> file://$(abspath $(BUILDDIR)/$3/$4)
-> 	      cmd_sphinx = $(MAKE) BUILDDIR=$(abspath $(BUILDDIR)) $(build)=Documentation/userspace-api/media $2 && \
-> 	        PYTHONDONTWRITEBYTECODE=1 \
-> 	...
-> 
-> It seems that the issue happens only when W=1 is used and kernel-doc
-> is called outside Sphinx.
-> 
-> Anyway, IMHO, the best would be to change the above to:
-> 
-> 	PYTHONPYCACHEPREFIX=$(abspath $(BUILDDIR))
-> 
-> And do the same for the other places where kernel-doc is called:
-> 
-> 	include/drm/Makefile:           $(srctree)/scripts/kernel-doc -none $(if $(CONFIG_WERROR)$(CONFIG_DRM_WERROR),-Werror) $<; \
-> 	scripts/Makefile.build:  cmd_checkdoc = $(srctree)/scripts/kernel-doc -none $(KDOCFLAGS) \
-> 	scripts/find-unused-docs.sh:    str=$(scripts/kernel-doc -export "$file" 2>/dev/null)
-> 
-> Comments?
+> IIUC this will case a link loss when XDP is installed, if not disregard
+> the reset of the email.
 
-I would like that, but it should be properly formed, because somewhere we drop
-the path in the source tree and if $O is used as is, it becomes _the_ pycache
-folder!
+It will, because the author who added XDP support to stmmac decided it
+was easier to tear everything down and rebuild, which meant (presumably)
+that it was necessary to use netif_carrier_off() to stop the net layer
+queueing packets to the driver. I'm just guessing - I know nothing
+about XDP, and never knowingly used it.
+
+> Any idea why it's necessary to mess with the link for XDP changes?
+
+Depends what you mean by "link". If you're asking why it messes with
+netif_carrier_foo(), my best guess is as above. However, phylink
+drivers are not allowed to mess with the netif_carrier state (as the
+commit message states.) This is not a new requirement, it's always
+been this way with phylink, and this pre-dates the addition of XDP
+to this driver.
+
+As long as the code requires the netif_carrier to be turned off, the
+only way to guarantee that in a phylink using driver is as per this
+patch.
+
+I'm guessing that the reason it does this is because it completely
+takes down the MAC and tx/rx rings to reprogram everything from
+scratch, and thus any interference from a packet coming in to be
+transmitted is going to cause problems.
+
+> I think we should mention in the commit message that the side effect is
+> link loss on XDP on / off. I don't know of any other driver which would
+> need this, stmmac is a real gift..
+
+I'll add that. However, it would be nice to find a different solution
+for XDP on this driver.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
