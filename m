@@ -1,114 +1,128 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A9320F09A
-	for <netdev@vger.kernel.org>; Tue, 15 Apr 2025 16:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3D7946F;
+	Tue, 15 Apr 2025 16:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744734616; cv=none; b=ZzH3CWkJ05FKL0jcoIQTur7enEWZjWdAhfrJyoee0VZZh32xtLqPl/4l6piUMcKtGbz5ExfE/7QUihm10f6sGdxO1gIFTx0/ResR/BHB4KJ7mmxTn80Yf6zqmjFO83BGyAhr0nDcBI7HCaDudO4xWCyutpuIYrnb2DrduyaHG8o=
+	t=1744734644; cv=none; b=vFSXtwcBb+Z+hK38zlonMdOOIaeSYLAYtT85BXcRWzz2NAv7y4zspH1Q/7jY4ji8Dp2QBMOAdfXTh80cDYmhhSIcxV0ErImcAoMpjq57oem5/BvPjI7HQYr1v6iPCmNB/f7s7Rl6A9UNHtDtYvR8guqS1/mC86Q9vH7zWl8UTDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744734616; c=relaxed/simple;
-	bh=7kS7j2UoMPldh5RxE2gZ8yJobR7eorxkTxTfYGQqbYI=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=iTr9e1rQcvblPDEBxeqgqBDimxh4DUdg6Do9X13jNjcWkhVgDnnozWi1T9aJNK4mRIgtTrSKJXylr4VTSplmBlbRW/q+FEXTuhKUB94M7lT9D10fv4xpNXKCSzB9yEkR9J3P1yaw+ABKj5sq6+EE+VoNp+CCss4WRxRviiH6WeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=kzCjuU/B; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1744734644; c=relaxed/simple;
+	bh=weFLulQd64Nt8wSZqx8JH29VMOiyErt5HVf/jr1Jwis=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y7bo50L0am4sZipl/gX9cnjzc1pASFsHoax7UKErX41NkMfi5vco83xuvG37WdfJvHbl4NmP9qdgBo5bCT7E4iOsiaTk1gIcjzSv6dRrz5TPoHzJpFZvWPzEs482qNmfE+Y4eOeLptire1hi01toJYm0qJzDrroWdS9Svlrj9Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFN3xWrF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="kzCjuU/B"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=OSNFXUitTBQmBWJf8ItL/iUtTikNWM/6SKlHYshO2Eo=; b=kzCjuU/B23MPb3sv40S02ftkml
-	7OwG1tLDmV/hKnUsmNKynV3BEisSYlOWnS6rJs/4MbUiOXcNHIv9ZxDP1h+zetgB4J/AXcdzwOtYu
-	gVQgunW/21kD+KYsjND/tarMIVCjHVm5J74WBIxAlAhn9XZutV8Uww5tzTZPsQlQ90iEy8OUv7I5k
-	jvnnRtmT/lIlo9YPCUULADz4Hnta5jFAnrsnE2EVZCEJOBSXboS4kPy69UVBQO4fDZbsFZInOc4/m
-	PI2edD1IA+OhzIu+iy6XCTfn542/bmE+aQzorpBayt47Yoo4AkC8HCpvPdu4x0HOe6unBXLt2oSO2
-	RS3SG5sg==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:54230 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1u4jAj-0008UJ-0a;
-	Tue, 15 Apr 2025 17:30:05 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1u4jA7-000r1h-5I; Tue, 15 Apr 2025 17:29:27 +0100
-In-Reply-To: <Z_6JaPBiGu_RB4xN@shell.armlinux.org.uk>
-References: <Z_6JaPBiGu_RB4xN@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 5/5] net: stmmac: socfpga: convert to
- devm_stmmac_pltfr_probe()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFN3xWrF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39342C4CEEB;
+	Tue, 15 Apr 2025 16:30:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744734643;
+	bh=weFLulQd64Nt8wSZqx8JH29VMOiyErt5HVf/jr1Jwis=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=JFN3xWrFVTdxpPrfi7cXgOlUtYWAdqvI481ubvKvsdOizS7JomWgFGpl2+12Oshwn
+	 5h598+LtreCcO9iIK3DuomULfVKJu0mQzjtedtTcL+n+gD9tduCC/YjA/zA1VTTKFV
+	 tI8rsh1xksUtIABS4AhaDhzy1+WX5RscTdXqLPQNlAW5ycK2ImdSP4qrHDhu1GaFzI
+	 IAtCM+ZodyWa7+A4/qgSrvSov6DXtZ4vyxjByIBZC+rHO5JAOHSZDHh6e4Fe2AecW1
+	 fxCINsp6qCnQzts3iPpoMzLv9r93UHArtxtXFRp+qB/qdny1l8msQu79Z9A65kZa6A
+	 0k3WKQ3N0p/FQ==
+Message-ID: <a9af244c-37c5-460a-9128-c020173c591d@kernel.org>
+Date: Tue, 15 Apr 2025 18:30:38 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1u4jA7-000r1h-5I@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Tue, 15 Apr 2025 17:29:27 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next V4 1/2] net: sched: generalize check for no-queue
+ qdisc on TX queue
+To: David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: bpf@vger.kernel.org, tom@herbertland.com,
+ Eric Dumazet <eric.dumazet@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+ makita.toshiaki@lab.ntt.co.jp, kernel-team@cloudflare.com, phil@nwl.cc
+References: <174472463778.274639.12670590457453196991.stgit@firesoul>
+ <174472469906.274639.14909448343817900822.stgit@firesoul>
+ <f448fcb8-6330-4517-863f-4bf0a2242313@kernel.org>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <f448fcb8-6330-4517-863f-4bf0a2242313@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Convert socfpga to use devm_stmmac_pltfr_probe() to further simplify
-the probe function, wrapping the call to the set_phy_mode() method
-into socfpga_dwmac_init() which can be called from the plat_dat->init()
-method. Also call this from socfpga_dwmac_resume() thereby simplifying
-that function.
 
-Using the devm variant also means we can remove the call to
-stmmac_pltfr_remove().
 
-Unfortunately, we can't also convert to stmmac_pltfr_pm_ops as there is
-extra work done in socfpga_dwmac_resume().
+On 15/04/2025 17.43, David Ahern wrote:
+> On 4/15/25 7:44 AM, Jesper Dangaard Brouer wrote:
+>> The "noqueue" qdisc can either be directly attached, or get default
+>> attached if net_device priv_flags has IFF_NO_QUEUE. In both cases, the
+>> allocated Qdisc structure gets it's enqueue function pointer reset to
+>> NULL by noqueue_init() via noqueue_qdisc_ops.
+>>
+>> This is a common case for software virtual net_devices. For these devices
+>> with no-queue, the transmission path in __dev_queue_xmit() will bypass
+>> the qdisc layer. Directly invoking device drivers ndo_start_xmit (via
+>> dev_hard_start_xmit).  In this mode the device driver is not allowed to
+>> ask for packets to be queued (either via returning NETDEV_TX_BUSY or
+>> stopping the TXQ).
+>>
+>> The simplest and most reliable way to identify this no-queue case is by
+>> checking if enqueue == NULL.
+>>
+>> The vrf driver currently open-codes this check (!qdisc->enqueue). While
+>> functionally correct, this low-level detail is better encapsulated in a
+>> dedicated helper for clarity and long-term maintainability.
+>>
+>> To make this behavior more explicit and reusable, this patch introduce a
+>> new helper: qdisc_txq_has_no_queue(). Helper will also be used by the
+>> veth driver in the next patch, which introduces optional qdisc-based
+>> backpressure.
+>>
+>> This is a non-functional change.
+>>
+>> Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+>> ---
+>>   drivers/net/vrf.c         |    4 +---
+>>   include/net/sch_generic.h |    8 ++++++++
+>>   2 files changed, 9 insertions(+), 3 deletions(-)
+>>
+> 
+> 
+>>   /* Local traffic destined to local address. Reinsert the packet to rx
+>> diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+>> index d48c657191cd..b6c177f7141c 100644
+>> --- a/include/net/sch_generic.h
+>> +++ b/include/net/sch_generic.h
+>> @@ -803,6 +803,14 @@ static inline bool qdisc_tx_changing(const struct net_device *dev)
+>>   	return false;
+>>   }
+>>   
+>> +/* "noqueue" qdisc identified by not having any enqueue, see noqueue_init() */
+>> +static inline bool qdisc_txq_has_no_queue(const struct netdev_queue *txq)
+>> +{
+>> +	struct Qdisc *qdisc = rcu_access_pointer(txq->qdisc);
+>> +
+>> +	return qdisc->enqueue == NULL;
+> 
+> Did checkpatch not complain that this should be '!qdisc->enqueue' ?
+> 
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+Nope:
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-index 251d8b72bed5..8e6d780669b9 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-@@ -501,11 +501,7 @@ static int socfpga_dwmac_probe(struct platform_device *pdev)
- 
- 	plat_dat->riwt_off = 1;
- 
--	ret = socfpga_dwmac_init(pdev, dwmac);
--	if (ret)
--		return ret;
--
--	return stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
-+	return devm_stmmac_pltfr_probe(pdev, plat_dat, &stmmac_res);
- }
- 
- static const struct socfpga_dwmac_ops socfpga_gen5_ops = {
-@@ -525,7 +521,6 @@ MODULE_DEVICE_TABLE(of, socfpga_dwmac_match);
- 
- static struct platform_driver socfpga_dwmac_driver = {
- 	.probe  = socfpga_dwmac_probe,
--	.remove = stmmac_pltfr_remove,
- 	.driver = {
- 		.name           = "socfpga-dwmac",
- 		.pm		= &stmmac_pltfr_pm_ops,
--- 
-2.30.2
+./scripts/checkpatch.pl 
+patches-veth_pushback_to_qdisc03/01-0001-net-sched-generalize-noop.patch
+total: 0 errors, 0 warnings, 30 lines checked
+
+patches-veth_pushback_to_qdisc03/01-0001-net-sched-generalize-noop.patch 
+has no obvious style problems and is ready for submission.
+
+> 
+> Reviewed-by: David Ahern <dsahern@kernel.org>
+
+Thx for review :-)
+
+--Jesper
 
