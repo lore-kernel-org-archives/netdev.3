@@ -1,88 +1,72 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D135336D;
-	Tue, 15 Apr 2025 13:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25172DFA2F;
+	Tue, 15 Apr 2025 13:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744723404; cv=none; b=oqFXeXMK7hquQGiEjJZC6MC/L10Hh3NFMF3XO1EvENUsiFTqj7SLJBFfVGc48kdNyliK73YCgzfmRWSzZiQ/1hEeG/F/PiOQNvIbR1mwbQR+oBu64xRXdVOrh9Ek6vIVdNC5WL8q8vAPwbk0HACem/gasBaJE1dX+cA2MDTnW64=
+	t=1744723504; cv=none; b=JmReVqSjUZe3pbhX2L8Zat8kTrK1ocrXnyTetUCr+xQToFwm/Ebw0lKjd1igeUpDdYHBxUA6Txp4cBBKPxQgRdQmWIK6ihuZPWN1Ted9aVzUMzwD7B1Z3WsFCtUH5ZQmuK4OZgqjDsGv69U1WvGxSm1MMNZB9lqtepDfgLyBg2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744723404; c=relaxed/simple;
-	bh=tGhV1+X+h+9xmi8FQ1Hg9Ap2MDTPanUK8M9CHefKtMw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nQPmlz/YsCRTIcxVkhXYYU0vQ5hj+LH43C6T7yNdWCZaIIaEWYkz0lH7B9DMb8L/ZR5mJzriS+LXtp7lzXllnpVqVOfISjw+975601XqQ+/foFwC4/qJtpos9w01d9rMGd34dIfpQjpj8N3f0d7nYMgVNvKxtMRFST4XgNV6LkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinsec.com.cn; spf=none smtp.mailfrom=kylinsec.com.cn; arc=none smtp.client-ip=54.206.16.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinsec.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kylinsec.com.cn
-X-QQ-mid: zesmtpsz4t1744723266td17108ae
-X-QQ-Originating-IP: gJ58oqPD7nr+sDT0pA7ndfED1kWY/XOLCuHIBbtbgNw=
-Received: from localhost.localdomain ( [175.9.43.233])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 15 Apr 2025 21:21:04 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 6911282797750824797
-From: zhoubowen <zhoubowen@kylinsec.com.cn>
-To: "David S . Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1744723504; c=relaxed/simple;
+	bh=lilh6DgEHFAJBHveNzZ1DXag1L6JWH5M/of03MZ64Sg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oscUYVrbtPt2Sz/ountxNt6M/T7UA0W4ana6ZeblIdbmFiuaCWZKX+ifpndUCYiDCCKONQZXGok6820jSqkbLgAqLUXMaHQAK+upr05c/GxXbuNyYU3gE5w31hMiuKg4F+Bbs47AIkrAnt211yPXeBLP0xrV4cu+VkA81oGktpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kdfgPC0f; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kdfgPC0f"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=U3ryYnUUuWttb8wAZUQ51mckx1LM5d+Eo8htRMGH8FA=; b=kdfgPC0fvU1og3EXc20ZYPD++8
+	Kvdf22c88XfQwT9AOhEo2ZDiGysNx7CCJGeS0TkwLWCMcliWy5sdwXlUdy7oFEA8iieoQ+I5XwC9Q
+	+xKqi+FxES1keawD/gWowr/PDtVadghvBxB/P913eZWbDCqbIsKwT6nu3FMPySScpUs4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1u4gHU-009Rwi-Q0; Tue, 15 Apr 2025 15:24:52 +0200
+Date: Tue, 15 Apr 2025 15:24:52 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Fiona Klute <fiona.klute@gmx.de>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Thangaraj Samynathan <Thangaraj.S@microchip.com>,
+	Rengarajan Sundararajan <Rengarajan.S@microchip.com>,
+	UNGLinuxDriver@microchip.com,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] amd-xgbe: Add device IDs for Hygon 10Gb ethernet controller
-Date: Tue, 15 Apr 2025 21:20:06 +0800
-Message-Id: <20250415132006.11268-1-zhoubowen@kylinsec.com.cn>
-X-Mailer: git-send-email 2.27.0
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-list@raspberrypi.com
+Subject: Re: [PATCH net] net: phy: microchip: force IRQ polling mode for
+ lan88xx
+Message-ID: <d0c0af22-6825-48de-8485-ef294c840f6d@lunn.ch>
+References: <20250414152634.2786447-1-fiona.klute@gmx.de>
+ <24541282-0564-4fb6-8bd1-430f6b1390b0@lunn.ch>
+ <db6b47a1-1a6c-476e-a679-aac3e5117c68@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:kylinsec.com.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: OQWRW3+3Aar3mhOYzJoo0Ygmexa+2vZZlgm4qFeLztENtD1zbzQ4zWY5
-	K9I99Br6gaC+0UJS6120/jgIAWFwqSU2kSXgdZAdde+1i//DDEYsozy+7z0dHHXM4UFj+D9
-	I8ozPyfKlXjGUIsvQ4OkIx6kaaZAq+FVo03ec6wcxhAHYXQsvrftHdVFLCKsBrn0rzxEeUm
-	UIPxg0qcznoZw95O4Y5KdyGWeFCtnoSND08ZIGY1wuztRxWHERHXtQK8F0w43oliH+UsmBr
-	OCH62+jSenCNKYY7E2LvrP3wUFJ1eLGI98s0VCr5NBE/DxCQOAdnNQ8w6l4SlPTEq4NPQ5x
-	luXUTIRsjUKTKcd17lDhkeeXDFpQ3MzhJl7N4iMEZLCteAVClFKjdpv/3SBKoGecDPXnD9p
-	jAtUYksTPzvO3JGfBhUHT5PM8H9/EWotR+v3V0dv+1imXAdwazRO9N9gGtAEjsR6Cj3K4es
-	eOv7VcQqQqfIJmlOQlecrDm5VktzM4eo7pVpu8+LVGBpLjGBWweNZrK1UnzsUAyW78vNQBx
-	2Gy6NZ7j9B8DCf9mEDWWqsxiIbTFJe/9TB0U7rsEVV1z9tNmtNdomkrHfPnTBEDhEXdcwj1
-	zwXUUnc6uFTV65rUVHhvmhvMWBXdW2YG3oLsiEKStqR3+TJKqKnxuJIWHCemzzPCButsTL3
-	nsC3jgcFMSzm4pUbEb24vEhR9r+sPmRPSA4RtSIDMbw/xpzq+woajJcMIzOr6UPfTo5B/94
-	B+FUbGGf58wuy4yiSBIvFgjuH6qxRXzunUvPnfJZ7Nus3s6QrWUI9EbvqKNEwnNeHLbo7rD
-	k7F3PLPxExSoBntSlc3zUml5Em2zoNkLa+3v9jv7kwitfqKjmwdRgOlFRqyt3jjiNSf5d5B
-	iuS7BLJ1Po+/asBQ26OA4WWvRoooM3HmVjrNThIewHZo5DUcry5zIPZfA+WKMLvv0RH5i0C
-	IwTXw5MYl7Wa0mxRfxm79qB31xjDyRo8e3+gtnutkK2t4pUQkLqNmtk9FxOB6SVTUPKioN/
-	KTOicIeJ+H2Jx/z3ZID0mUn+6XAxGiEOYx0XGmNRfCvxfBO4/m
-X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <db6b47a1-1a6c-476e-a679-aac3e5117c68@gmx.de>
 
-Add device IDs for Hygon 10Gb Ethernet controller.
+> > Thanks for submitting this. Two nit picks:
+> > 
+> > It needed a Fixes: tag. Probably:
+> > 
+> > Fixes: 792aec47d59d ("add microchip LAN88xx phy driver")
+> Sure, will add that (and a comment) and resend. I wasn't sure if I
+> should add it if I can't pinpoint exactly where the problem was
+> introduced, and it looks like the interrupt handling was changed a bit
+> after.
 
-Signed-off-by: zhoubowen <zhoubowen@kylinsec.com.cn>
----
- drivers/net/ethernet/amd/xgbe/xgbe-pci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+If you can prove interrupt handling did actually work to start with,
+maybe a later commit could be referenced. But i'm not sure it is worth
+the effort.
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-pci.c b/drivers/net/ethernet/amd/xgbe/xgbe-pci.c
-index f409d7bd1f1e..206ff2e9e3cb 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-pci.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-pci.c
-@@ -510,6 +510,10 @@ static const struct pci_device_id xgbe_pci_table[] = {
- 	  .driver_data = (kernel_ulong_t)&xgbe_v2a },
- 	{ PCI_VDEVICE(AMD, 0x1459),
- 	  .driver_data = (kernel_ulong_t)&xgbe_v2b },
-+	{ PCI_VDEVICE(HYGON, 0x1458),
-+	  .driver_data = (kernel_ulong_t)&xgbe_v2a },
-+	{ PCI_VDEVICE(HYGON, 0x1459),
-+	  .driver_data = (kernel_ulong_t)&xgbe_v2b },
- 	/* Last entry must be zero */
- 	{ 0, }
- };
--- 
-2.27.0
-
+	Andrew
