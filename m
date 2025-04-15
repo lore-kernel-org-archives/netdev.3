@@ -1,39 +1,71 @@
-Received: from serv108.segi.ulg.ac.be (serv108.segi.ulg.ac.be [139.165.32.111])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07E51624CE;
-	Tue, 15 Apr 2025 09:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.165.32.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A440027466A
+	for <netdev@vger.kernel.org>; Tue, 15 Apr 2025 09:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744708213; cv=none; b=U6rL9J/luxsZK1G2rf+G+py1CBb1g3NqvVtTyrlCqWObPiJsHEX3Tyf0Y4CZ0DxbmBa1OBs6A7e2LbOAU8xkrJKmm6s1Q8Bo1eu7EMp4Xds9tU9qkNdYdOM7WDrx6uPS76XN6PHVzxYI24sLFtQErAZoS9qjUT8MccwS9Oa+ab0=
+	t=1744708496; cv=none; b=iNLyY3/VhvcHZ/N1YcpX5yXDQ7wfHCeckN5o7jU9ds79SdpRzUhI0CatAJowoyFfozeRRykosD77CYALDyLdP7JuaV8erwCEZBBu4+tUlh6hrOiCmZkR+BZfJqDsUSPWTP1ymBLH0A+vHfDt+oawA7G4LSCsKsvHMyNkfpNE5Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744708213; c=relaxed/simple;
-	bh=h2ArVH3qZFGXjdMX8JG6QGs7L/Tfo41LxNCQU2OMTBs=;
+	s=arc-20240116; t=1744708496; c=relaxed/simple;
+	bh=0eUTeZWOvy/sEdBDw2DnwA5spT7b3OSAoKHMZ2s8vQM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QkO4c7ly+QemX53s724CAgcLryZDoFDR4Q/k2nmIx8XLEPFWEc8DzDaRIjquZPc+EgbBu/5coAQDfQhmsBgasr7rC+2yAePKW22vQrY3t+vyHQz6BwxdLGCUFLg0w8++dMH1Srx7GSpCCxDuXCqwZk9LRdcXoqGtIKSwqhsSsDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=FdYpkC8r; arc=none smtp.client-ip=139.165.32.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uliege.be
+	 In-Reply-To:Content-Type; b=frdJ0m8S4UHweuwsywWv6L17jwrdYlCEHPsy5lgew8IAjj+2QZq6pIIcEE5yccjnxVZdFaKtRTAjRQ9fAnsTTFUezRDIziQ0Xz1CBwLwDSCuwIroFQQhP4rL2snbSyNpmW8liB5SG5SQnRbflHwfAwVHiQuoszO9R5vMaQ6yCxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dPm9sD18; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="FdYpkC8r"
-Received: from [192.168.1.58] (220.24-245-81.adsl-dyn.isp.belgacom.be [81.245.24.220])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id C9DDF200CCEB;
-	Tue, 15 Apr 2025 11:10:01 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be C9DDF200CCEB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uliege.be;
-	s=ulg20190529; t=1744708202;
-	bh=eQufNntKfiHJqzsIZr8O0/rtd7FT0xn0S2YrcLl34kI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FdYpkC8rMJkBVj1bXwAPxx4JiDcZ6DpAMA0O8lNf+yg8ZnnBcpMcPO5nM4ByYUXeF
-	 bc+p22UWjqM+En1zCAuPgelRf5tHX8ejJRDzMZppiDsDpd+b+SgcZ5c1dbiXL1dCzV
-	 Bl3dagddNHjIcPmrWXmlg8yGo9tC/HetcpDJ10L/WOJ0JThpfYpZ98UsAeLIyQy5Nh
-	 bzkYvijjW8WxwFUyAWctwMe9KK8ul6LHoCQqJxVXMSl8FrmZq60qhb4Y/8T51eaTky
-	 t6NMTw95FwCMwKnxNakpBQeZ7XPpZI4g2KF0BZo78Nc333/aEwez7aXFCbl5b6Sr/f
-	 7HETdTlM25kXA==
-Message-ID: <3cee5141-c525-4e83-830e-bf21828aed51@uliege.be>
-Date: Tue, 15 Apr 2025 11:10:01 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dPm9sD18"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744708493;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0xBj6wYND6XkoPsEsHNHqa6He4rhHss1QsFv4wuPqUQ=;
+	b=dPm9sD182yGClriC0lxt74jgBaKlm5/tw+lhh8YIWBAg0I0AhZjfFPCw2gOFNS6H0LbQGR
+	2pRBIxPIjy5JLzQmQEiERhNxEdEO+RbHxR9RdQAhrVCGRLFxTW7+n0gMnS+EjFyK4w4UB7
+	hac9QiezRVmKZfONljw0S+Nqr1eTm3A=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-445-td_cKLYRO1O7H2Jfc8Kj_Q-1; Tue, 15 Apr 2025 05:14:49 -0400
+X-MC-Unique: td_cKLYRO1O7H2Jfc8Kj_Q-1
+X-Mimecast-MFC-AGG-ID: td_cKLYRO1O7H2Jfc8Kj_Q_1744708489
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43d0a037f97so32836845e9.2
+        for <netdev@vger.kernel.org>; Tue, 15 Apr 2025 02:14:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744708489; x=1745313289;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0xBj6wYND6XkoPsEsHNHqa6He4rhHss1QsFv4wuPqUQ=;
+        b=lJiXM+e34PxpVCV6g1BEbB5Ildtc7pQpgD+r/z+dAvtA2rkPnoVGmiO1DoCeu+PQ9j
+         7n3l1KU7LV9UEMKiJO09GhXteAfD5KApW6NdX+WdBjVMR5OXFqtb3lUaO2z9lDEeH0f/
+         ISkgXU7k69Y0hkCVWmVIHuQIEWhzda/H64hzuNGxpdOx0FxmiGR2C0PmcvKRwOc3gulR
+         L7qBjYOVCRF1ShraEGOnC/N5OGs5p+rN/BlTRHQEYLMLddOqfBSxN4pnWF18T0TaNH7W
+         rw64hS8qbJL/ps3DmBZhvlZXjmcalSYO2pENHtNma/FLLmTsfgn807sNgHr2xBaXmqEc
+         Mqcg==
+X-Forwarded-Encrypted: i=1; AJvYcCX2Y0NXYnO1CQm3PRoHOFj41uM+qMd4La1QbsNJmMvUTHHBnAVG0rIPYn5nLfFsPV17wALKrAw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7UEGLaAOS0TjCeW0+UbqTwxFZa8UQ1E72JtpjazFvnh6niMgP
+	wzBd9o1/AxLhFNdirjTAGnigtwE9II9e3yyRRwOqrQiJ/J6wr11KITM6kB+4bhPdTdVTu/5QEOV
+	clsqSGifK+I62q82iSpRzKVPXQ6u3ret8x8c4SXyqYIxbi3YCBS1URw==
+X-Gm-Gg: ASbGncv2QzK7yM+zc2TF3TE9D2066Y4WxV4ERDoxygr2dg+krgyKuOLRSTmv5n5Mrxb
+	plpp7t6d3xaSVKia5UFsJuGmGLVMXeWNHUYIXXVYsk6KnNGPPDPb6oa5Iow+eqZd/DRKU+Fzu0d
+	AEz6ak+skiFsyblPG5sAbVQo9Pgi1gAIXrzT1l3XsjwBMJn69gvcdRK+QZsQAIU9hjwQbOUA/1A
+	bKAUyqN/LO3ZnIKk1nYUsCzGj2oWuz5x/dWAhOvxgdEcta0U63aut1jPieJdzlA4+Pi7yPKX0ta
+	/4vr9oeLsMfEwNAyXCLug2N5rODRHXJ6gWE8niY=
+X-Received: by 2002:a05:600c:4704:b0:43b:d0fe:b8ac with SMTP id 5b1f17b1804b1-43f3a9af837mr161581185e9.30.1744708488734;
+        Tue, 15 Apr 2025 02:14:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHfovw9rzSF7/UhE9C8ntddanjESFbdGIFJq3+2VnKz80vs7HYJjirXobBVEqXPkTQJgbF6JA==
+X-Received: by 2002:a05:600c:4704:b0:43b:d0fe:b8ac with SMTP id 5b1f17b1804b1-43f3a9af837mr161580875e9.30.1744708488359;
+        Tue, 15 Apr 2025 02:14:48 -0700 (PDT)
+Received: from [192.168.88.253] (146-241-34-52.dyn.eolo.it. [146.241.34.52])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eae9797aasm13673088f8f.56.2025.04.15.02.14.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Apr 2025 02:14:47 -0700 (PDT)
+Message-ID: <6851d6b8-109c-4de0-89a8-a56659c87cf4@redhat.com>
+Date: Tue, 15 Apr 2025 11:14:46 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,124 +73,70 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: lwtunnel: disable preemption when required
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Sebastian Sewior <bigeasy@linutronix.de>,
- Stanislav Fomichev <stfomichev@gmail.com>,
- Network Development <netdev@vger.kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>,
- bpf <bpf@vger.kernel.org>, Stefano Salsano <stefano.salsano@uniroma2.it>,
- Paolo Lungaroni <paolo.lungaroni@uniroma2.it>
-References: <20250403083956.13946-1-justin.iurman@uliege.be>
- <Z-62MSCyMsqtMW1N@mini-arch> <cb0df409-ebbf-4970-b10c-4ea9f863ff00@uliege.be>
- <CAADnVQLiM5MA3Xyrkqmubku6751ZPrDk6v-HmC1jnOaL47=t+g@mail.gmail.com>
- <20250404141955.7Rcvv7nB@linutronix.de>
- <85eefdd9-ec5d-4113-8a50-5d9ea11c8bf5@uliege.be>
- <CAADnVQK7vNPbMS7T9TUOW7s6HNbfr4H8CWbjPgVXW7xa+ybPsw@mail.gmail.com>
- <d326726d-7050-4e88-b950-f49cf5901d34@uliege.be>
- <20250415025416.0273812f0322a6b1728d9c7b@uniroma2.it>
+Subject: Re: [net-next v1] net: stmmac: starfive: Add serdes PHY init/deinit
+ function
+To: Minda Chen <minda.chen@starfivetech.com>,
+ Emil Renner Berthing <kernel@esmil.dk>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+References: <20250410070453.61178-1-minda.chen@starfivetech.com>
 Content-Language: en-US
-From: Justin Iurman <justin.iurman@uliege.be>
-In-Reply-To: <20250415025416.0273812f0322a6b1728d9c7b@uniroma2.it>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250410070453.61178-1-minda.chen@starfivetech.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/15/25 02:54, Andrea Mayer wrote:> I have been looking into the 
-behavior of the lwtunnel_xmit() function in both
-> task and softirq contexts. To facilitate this investigation, I have written a
-> simple eBPF program that only prints messages to the trace pipe. This program
-> is attached to the LWT BPF XMIT hook by configuring a route (on my test node)
-> with a destination address (DA) pointing to an external node, referred to as
-> x.x.x.x, within my testbed network.
+On 4/10/25 9:04 AM, Minda Chen wrote:
+> To support SGMII interface, add internal serdes PHY powerup/
+> powerdown function.
 > 
-> To trigger that LWT BPF XMIT instance from a softirq context, it is sufficient
-> to receive (on the test node) a packet with a DA matching x.x.x.x. This packet
-> is then processed through the forwarding path, eventually leading to the
-> ip_output() function. Processing ends with a call to ip_finish_output2(), which
-> then calls lwtunnel_xmit().
+> Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
+> ---
+>  .../ethernet/stmicro/stmmac/dwmac-starfive.c  | 33 +++++++++++++++++++
+>  1 file changed, 33 insertions(+)
 > 
-> Below is the stack trace from my testing machine, highlighting the key
-> functions involved in this processing path:
-> 
->   ============================================
->    <IRQ>
->    ...
->    lwtunnel_xmit+0x18/0x3f0
->    ip_finish_output2+0x45a/0xcc0
->    ip_output+0xe2/0x380
->    NF_HOOK.constprop.0+0x7e/0x2f0
->    ip_rcv+0x4bf/0x4d0
->    __netif_receive_skb_one_core+0x11c/0x130
->    process_backlog+0x277/0x980
->    __napi_poll.constprop.0+0x58/0x260
->    net_rx_action+0x396/0x6e0
->    handle_softirqs+0x116/0x640
->    do_softirq+0xa9/0xe0
->    </IRQ>
->   ============================================
-> 
-> Conversely, to trigger lwtunnel_xmit() from the task context, simply ping
-> x.x.x.x on the same testing node. Below is the corresponding stack trace:
-> 
->   ============================================
->    <TASK>
->    ...
->    lwtunnel_xmit+0x18/0x3f0
->    ip_finish_output2+0x45a/0xcc0
->    ip_output+0xe2/0x380
->    ip_push_pending_frames+0x17a/0x200
->    raw_sendmsg+0x9fa/0x1060
->    __sys_sendto+0x294/0x2e0
->    __x64_sys_sendto+0x6d/0x80
->    do_syscall_64+0x64/0x140
->    entry_SYSCALL_64_after_hwframe+0x76/0x7e
->    </TASK>
->   ============================================
-> 
-> So also for the lwtunnel_xmit(), we need to make sure that the functions
-> dev_xmit_recursion{_inc/dec}() and the necessary logic to avoid lwt recursion
-> are protected, i.e. inside a local_bh_{disable/enable} block.
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
+> index 2013d7477eb7..f5923f847100 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
+> @@ -9,6 +9,8 @@
+>  
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/phy.h>
+> +#include <linux/phy/phy.h>
+>  #include <linux/property.h>
+>  #include <linux/mfd/syscon.h>
+>  #include <linux/regmap.h>
+> @@ -28,6 +30,7 @@ struct starfive_dwmac_data {
+>  struct starfive_dwmac {
+>  	struct device *dev;
+>  	const struct starfive_dwmac_data *data;
+> +	struct phy *serdes_phy;
+>  };
+>  
+>  static int starfive_dwmac_set_mode(struct plat_stmmacenet_data *plat_dat)
+> @@ -80,6 +83,26 @@ static int starfive_dwmac_set_mode(struct plat_stmmacenet_data *plat_dat)
+>  	return 0;
+>  }
+>  
+> +static int starfive_dwmac_serdes_powerup(struct net_device *ndev, void *priv)
+> +{
+> +	struct starfive_dwmac *dwmac = priv;
+> +	int ret;
+> +
+> +	ret = phy_init(dwmac->serdes_phy);
+> +	if (ret)
+> +		return ret;
 
-That's correct, and I ended up with the same conclusion as yours on the 
-possible paths for lwtunnel_xmit() depending on the context (task vs 
-irq). Based on your description, we're using a similar approach with 
-eBPF :-) Note that paths are similar for lwtunnel_output() (see below).
+This is called also in case of PM suspend/resume. Do you need to keep
+the init here, or should that moved at probe time only? Similar question
+for phy_exit() below.
 
-> In a non-preemptible real-time environment (i.e., when !PREEMPT_RT), the
-> in_softirq() expands to softirq_count(), which in turn uses the preempt_count()
-> function. On my x86 architecture, preempt_count() accesses the per-CPU
-> __preempt_count variable.
-> 
-> If in_softirq() returns 0, it indicates that no softirqs are currently being
-> processed on the local CPU and BH are not disabled. Therefore, following the
-> logic above, we disable bottom halves (BH) on that particular CPU.
-> 
-> However, there is my opinion an issue that can occur: between the check on
-> in_softirq() and the call to local_bh_disable(), the task may be scheduled on
-> another CPU. As a result, the check on in_softirq() becomes ineffective because
-> we may end up disabling BH on a CPU that is not the one we just checked (with
-> if (in_softirq()) { ... }).
+Thanks!
 
-Hmm, I think it's correct... good catch. I went for this solution to (i) 
-avoid useless nested BHs disable calls; and (ii) avoid ending up with a 
-spaghetti graph of possible paths with or without BHs disabled (i.e., 
-with single entry points, namely lwtunnel_xmit() and lwtunnel_output()), 
-which otherwise makes it hard to maintain the code IMO.
+Paolo
 
-So, if we want to follow what Alexei suggests (see his last response), 
-we'd need to disable BHs in both ip_local_out() and ip6_local_out(). 
-These are the common functions which are closest in depth, and so for 
-both lwtunnel_xmit() and lwtunnel_output(). But... at the "cost" of 
-disabling BHs even when it may not be required. Indeed, ip_local_out() 
-and ip6_local_out() both call dst_output(), which one is usually not 
-lwtunnel_output() (and there may not even be a lwtunnel_xmit() to call 
-either).
-
-The other solution is to always call local_bh_disable() in both 
-lwtunnel_xmit() and lwtunnel_output(), at the cost of disabling BHs when 
-they were already. Which was basically -v1 and received a NACK from Alexei.
-
-At the moment, I'm not sure what's best.
