@@ -1,103 +1,84 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847AF1E1DE9
-	for <netdev@vger.kernel.org>; Tue, 15 Apr 2025 16:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029CB29B76C
+	for <netdev@vger.kernel.org>; Tue, 15 Apr 2025 16:42:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744735319; cv=none; b=TeJWfINRS1CRzfrakQBTV5mehwElDjYt4B4h10sDzQmJDhJvZH+YJUIp/1RzQCPSuLcQSRHfnNMWMSoi6yUx0Lw/d7nm0kt5AmTynjOrHyQlSL7n/eJg+fe2V7v2XwnApkxOw21kdliynL0oDyb9j1PsR/scZoNclnZSnvCfaYs=
+	t=1744735371; cv=none; b=LcWWDRrpbfWdGLS03CBLMdSl1+y2DarbNNr0Ztg3kLXkTAXTGvyKnLNfKXWYGA/6GwFHiN3T0IiVavmoK9VBK6z3zA+GaHpJJG1Aq+4l/592ZMGYXTAOCOymNtHk86ahceZZABdP/RI+v7F1l+mYXMf0LlHbVcztHnlVT3yFZuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744735319; c=relaxed/simple;
-	bh=6X08oSjHVxg0ay21RO4FYzf8ovK9mj9m6qaYm1Wh5Xg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eUCPLf343ktiVQaGAnFNSCjPlpr8gZG3olWe3cQ5bF71g0LgvP7O+dJHjN45RLHDZ75LYvPpf3mE8WLIzZuPxBM5B5pZA64W3MkKk2JASDv0s5kpCdsFJk2X/AIpNzuqvvtOKPpoiBwT9sU5XrKO9lElW8OVSfsfQDs3Rgw2SXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=T5TbKE6b; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1744735371; c=relaxed/simple;
+	bh=2Ayr8VIkdEKY+1ZB78PZRxVClNeUvC840qH2MzO9wLE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=TMHPZDsAgBFAMy7/ys23J6YuYSIZ1ni6TtJzz5wwaz6zZDV89kMnjIepUdXhjiW9fIQ8Dw16EC4ay96BBsKjSipMXp+4Swos5tzvQzY3fNzjE0aMFM5RlpRPgE08G4eqW5M4s48MjyYnQa7A1HIJ7UiWpxlIHYIn7QClvsTP5XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=m2W1M6XJ; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="T5TbKE6b"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4394a823036so57955635e9.0
-        for <netdev@vger.kernel.org>; Tue, 15 Apr 2025 09:41:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1744735312; x=1745340112; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Cs0vOMD0XLH3qHqhiDlgbAj78QDdnIWArNDzFriW1/s=;
-        b=T5TbKE6bKYwsIyVqPasi3I84MTOMrs6iPLgWDHzf0wDASDcfCk/G/uy67WdyFGc3HO
-         frxJU2EfU21A39BGTNu3dF9E216JsoDik6yF6R/oXkhJRmzn6c+2CFSaAlUECKeK0bKW
-         dBXKYB8Ygzn0jIY37zddt78yXtlPvwO628rsAbQr9oyF96eXMr37Ai5Sdo4Eyr7kSy+t
-         t3Zm9yBlqUdDsfHjVcitmIoDTCPPPB82b8Ym276iqLs6tBouEKfanAiY1AHxp+3DLYvM
-         F6r2hxJyZ1cRN9A2XM7oPwgjPP2NwOfIg3FHY6LgOglWxxbNdW5KY/KGDUScrHuIiBLA
-         wYBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744735312; x=1745340112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cs0vOMD0XLH3qHqhiDlgbAj78QDdnIWArNDzFriW1/s=;
-        b=pgUrg2NgOcQXfh22U4C/pHRYsJkcX5c+D84kA8f8RrfYOGhAynqP98sCNc9MZ/YUH3
-         dbl4Zys2LC93NpocqKmTljKWso2D/dBVprQakjVYTLXQ9OsD5ssgbGLbvkO6nKd8FMEn
-         ac035HvzWSzV76ijpSUrx9ucOS3HdLvNfRoktolnBDCnMpTXQCcZ2YrSXqGm4EfyZgbf
-         zxuvFLwEo5J3hTR6r6FHuABxWu4vBenqvElmgKngH8Kv/PAAc2fkiO1YnK0cXPF9SeUC
-         0dyyyD+nS0cr31B3aze9ajPGXmk9qSM0ZPKafIDK4EVK9WAE5yluAG2AXPP2EoRktLvN
-         Rb2w==
-X-Gm-Message-State: AOJu0YwGEhbvyVgoJU4IAfptfC8vae503L+jSVAVmQvT3EZuLUZ5zFPC
-	FYgO77NtpsftOdAFUBZVyfvLWVv8SZv2Fj5REMhcgIo6SapOnlWc6bDTrPFb928=
-X-Gm-Gg: ASbGncsXZ/NjoarYSSNJmEiS7nu8AcITjAb7duy68PIxKrjBABcK5rWWYdwqESAou5j
-	eJ4Idfcz5Q45epUo+s1cH7CP1/8PfYg6o0xrrMtoEf0P5kPVTY6S66dSGs+ySVjF07oS8+T/bgQ
-	EOUAutZfAeJOxvXDXrUlJTjiYM/sdfp07blCon1xqHYJsW9UMsIbBEmBlrrn4+/i2qlyXTWvkkg
-	XbdBinL0b/oWfCiCjCUr3uVZC5paDU9YHQp7IY7QoQ15J9iuZS5ZsOvyP8oAnF7w1sts0I80mWF
-	SlVUbkXEH+8qQtqih4QjRGeMenne1JkMiX/NmZ1sFwfaG790+Ory7Oiwb0g=
-X-Google-Smtp-Source: AGHT+IH8lIwCquZ3x8twjDlLrk5VOW4PH8Mwi0Py5RmPDbQcRRaTguKXREVGfgIVQhgZwE6E3UO78A==
-X-Received: by 2002:a05:6000:1847:b0:39c:1424:1cb3 with SMTP id ffacd0b85a97d-39ee27374f5mr172133f8f.5.1744735312552;
-        Tue, 15 Apr 2025 09:41:52 -0700 (PDT)
-Received: from jiri-mlt ([193.47.165.251])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f2338db0dsm220067355e9.7.2025.04.15.09.41.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Apr 2025 09:41:52 -0700 (PDT)
-Date: Tue, 15 Apr 2025 18:41:45 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Edward Cree <ecree.xilinx@gmail.com>
-Cc: netdev@vger.kernel.org
-Subject: Re: [RFG] sfc: nvlog and devlink health
-Message-ID: <e3acvyonpwd6eejk6ka2vmkorggtnohc6vfagzix5xkx4jru6o@kf3q3hvasgtx>
-References: <7ec94666-791a-39b2-fffd-eed8b23a869a@gmail.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="m2W1M6XJ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=k5sn0c6EnK9MQwe7/DFbVJ/3yq40vsmcM6FfsWqie5M=; b=m2W1M6XJOPCYLAtdn5g6aK359J
+	RlC0Ip1UHsog4S2oa/AZA0jnCbVWilrDXYZDfYbLvfNabQM9rBnvY6DtnH8/mElHn42/yxo0eyQVI
+	IO/QpL/cYgBaPZPF9xZq6piwT1CM34R2Pim9+5WogOPDC+VeiM7GSFQx7mirZMk7+PXhj+LRkv/W3
+	Dr4GeQt40Kefw4YhUZyrayEBbhuv7Lg+enVZykW+zV1/8EeA7mX5qQdKsIVLap/i4qmdhUukX+OgJ
+	hsq3QslBcvX22lapOZ2jdVMCsmpzbErIHBO5b5pk60BOOoxgqWGrPjfoFnbEtaBydBQTAp6WTXmz4
+	AYPr3gpA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56610)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1u4jMv-0008Vb-2y;
+	Tue, 15 Apr 2025 17:42:42 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1u4jMt-0000X2-0r;
+	Tue, 15 Apr 2025 17:42:39 +0100
+Date: Tue, 15 Apr 2025 17:42:39 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next 0/3] net: stmmac: sti cleanups
+Message-ID: <Z_6Mfx_SrionoU-e@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7ec94666-791a-39b2-fffd-eed8b23a869a@gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Tue, Apr 15, 2025 at 04:51:39PM +0200, ecree.xilinx@gmail.com wrote:
->Solarflare NICs have a flash partition to which the MCPU logs various
-> errors, warnings, and other diagnostic info.  We want to expose this
-> 'nvlog' data, and the best fit we've found so far is devlink health.
->Reading it is simple enough — plan is to have a reporter whose diagnose
-> method reads the partition and returns the contents (could potentially
-> use dump instead but the extra layer of triggering and saving seems
-> unnecessary).
->The problem is how to clear it (since it fills up after comparatively
-> few boots, so when debugging field issues you'll usually need to clear
-> it first and then reproduce the issue).
-> DEVLINK_CMD_HEALTH_REPORTER_DUMP_CLEAR is no use here, because it only
-> clears the kernel-saved copy; it doesn't call any driver method.
+Clean up the STI platform glue code.
 
-Can't it be extended to actually call an optional driver method?
-That would sound fine to me and will solve your problem.
+- IS_PHY_IF_MODE_RGMII() is just a duplicate for
+  phy_interface_mode_is_rgmii(), so use the generic version that we
+  already have.
 
+- add init/exit functions that call clk_prepare_enable(),
+  sti_dwmac_set_mode() and clk_disable_unprepare() as appropriate,
+  converting to devm_stmmac_pltfr_probe().
 
->The code we've developed internally, that I'm now preparing to submit
-> upstream, handles this by having *two* reporters, 'nvlog' and
-> 'nvlog-clear'; both read the flash in their diagnose method but
-> nvlog-clear additionally clears it afterwards.  It works, but it
-> doesn't feel very clean.
->Is this approach acceptable?  Is there a better way?
->
->-ed
->
+- the custom suspend/resume ops do basically what the generic ones
+  do with init/exit functions populated, but also add runtime and
+  noirq ops. Update STI to use the generic ops.
+
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c | 88 ++++++++-----------------
+ 1 file changed, 29 insertions(+), 59 deletions(-)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
