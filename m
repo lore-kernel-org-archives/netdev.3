@@ -1,121 +1,114 @@
-Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677881DFD96;
-	Tue, 15 Apr 2025 11:40:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.35.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9F128BABB;
+	Tue, 15 Apr 2025 11:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744717236; cv=none; b=MdNb7tDwv/r78j+OfHK1kDACJ97cHfroJwP8LA4IZ166Ik+7cSJYz+6inlkKhjJZ6R/9z92wsCWKobLlXcZCRIVDtquPIbaQ2Y1cDt5J3Fh4UxHn5UIp0ihFGm5ArmFz0+1gHZrZG2Ynu07aBJ3Ed3w3HEBpiy+eiGs3y4OpWwA=
+	t=1744717272; cv=none; b=i13PiC2CHXp2dfdp1jyQ6pBj0m0AtZtlr74vGZgUupkZfEmKHMRoSpNM39qEjBTzfS7KvBrBaRyHVTTEI2/BXGdvdkXERr4LRi9cOvO2PXPGLvMYR7XPtY2bmRCz07pbsADq+fWGL6T12dPoCRPdNtZ3710Gjyljc1g9nKdKFnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744717236; c=relaxed/simple;
-	bh=crUzhLZR6kohcn8ctKDzFw/yNkNnOwRO4xA4Ob5DDd0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CrfhVHDx3/l7ozKfBgaDv6aoN9EsyQ4Ile6XCcmSnADPIoQOQ2nqQw84sHMmuybInrqFyDy2nR4LIFdLWSfUu/jeVNDmmpwPPO6rGBCJE7t7H9t+E7lXYjhHCUC4XFyblC2uRRPsR4IZfOs3leuYglumbLMQRLZioogukI4rCcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=B0eR0mUn; arc=none smtp.client-ip=51.81.35.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+	s=arc-20240116; t=1744717272; c=relaxed/simple;
+	bh=g3hn0yGJMo7DDiRSHoTwt5wFttVxHTxAvkwjmrqrWco=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kI0J4/P2+I3cItqJGPaJPLtgUtu2SmETxjAHTLGRhoghGQos/WoMqAfd7ToGlaUWBfxgzlS8YtcXTQ03JVzjJL4UvZ+Rd0ruCYrEAap6xpRzoUcioWLjRK9V6br95zjc3jKjwbYbgrBrxTSnHy9NLpOHRl9xY24OOuij5TzH0Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IFtj4Kom; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="B0eR0mUn"
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
-	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id 3F9D12142D;
-	Tue, 15 Apr 2025 11:34:44 +0000 (UTC)
-Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [151.80.165.199])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id AA34B2005F;
-	Tue, 15 Apr 2025 11:34:35 +0000 (UTC)
-Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
-	by relay2.mymailcheap.com (Postfix) with ESMTPS id 39FE73E886;
-	Tue, 15 Apr 2025 11:34:28 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 9FE7C40009;
-	Tue, 15 Apr 2025 11:34:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1744716867; bh=crUzhLZR6kohcn8ctKDzFw/yNkNnOwRO4xA4Ob5DDd0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=B0eR0mUn2B/U7VU0hYTXDvhfRcvzrd4/36BaXkysrHdIZVCxbCsA12ZShTGhWBs0J
-	 I/Ld0LOoH0iCHs5+PEW6wgbq/G8PUMkENw7CMlAeAnqcmMyDMKNfsgAJBtJOvjwZzu
-	 /NZ9YPS5IHzo0+sgtxy1HyKUMzuBXOUyjys+jpq0=
-Received: from [50.50.1.183] (unknown [58.246.137.130])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id F34364082E;
-	Tue, 15 Apr 2025 11:34:21 +0000 (UTC)
-Message-ID: <d82b174f-60a7-41e1-8987-c56155c60630@aosc.io>
-Date: Tue, 15 Apr 2025 19:34:17 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IFtj4Kom"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-54b166fa41bso6362957e87.0;
+        Tue, 15 Apr 2025 04:41:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744717269; x=1745322069; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WgLwTxTesNXhvi5z13KJSwx0wnAaoY7RDa9n3Jg4iDE=;
+        b=IFtj4Kom/F0fNbWof0XQmXY5+13t9BYi7jH+Z7zxZafEs9FyQDH3fLTJCQ0gUX2tSA
+         RmP7HhxD2cNic+6DLJOIvVKc0M1MTBl38Gh2KcqlPk0bPA0p4GIPRD7FjJ8ZVEWUa0J5
+         OzuifTtaQGe3TEROG2Zj2DR5t5ygTbjydVxBxWWRf2m7MGPnKTZ9ANHWQIRvtrXzFZY0
+         BTom7vrzLqz6CiucYyhlM99VBCXRcDB8VZsUnRVZwVETZ2dBLO13Dqi6hKr9yiMZ8t6f
+         yu/hhFSMtHpXWJ+2snyUA4OQsORQyu9Xa1CkcbtSG5TSmkpTCSkF0L17jev+Oud9ZBkp
+         SDkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744717269; x=1745322069;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WgLwTxTesNXhvi5z13KJSwx0wnAaoY7RDa9n3Jg4iDE=;
+        b=O5CcVWWLqs5GYsXeCI0FAoKMuVXxvU+1FiWCMMTeGV0FKbly85HnByPm+G6WztAy/z
+         +n5k35FQGJOsDNQShajkbg5blzjGFVndis6ZWq1OikBmQ7zqaKnUhfDu6XJnV9rXBmEy
+         MLYoVL0cMgEsR62cBSqHTbIoGKsFQ6k61jXtlD0GCYFtw6HVskXlRKhVrMDS2kokg2A2
+         FJ6FA1c+07VTn0rUAwEpYOQ/MJcVyomu5uZSvahHTB/6wohej1kGi6lfAQkFXLLr8vPk
+         2OC1fIE5POeWn4qOCjqDV82dVtZd3c1CqxS2flNhDooeR5isUirWW8/GDd1Urdr1nzY3
+         Na9g==
+X-Forwarded-Encrypted: i=1; AJvYcCVkSflHSdl/jC/AtatQ/WtpgN/Capoo6Kd/7mQ3xselrJx1XvPvT0RF1h9ZTGdmZGR0h4s+0RRK@vger.kernel.org, AJvYcCXLVXV1iTLS139WVKDBsIjfdrlQ6fth7ZfAoGINp7MqR10v82MjL6xmEw1rPu+NBQnzsOWePM8WEQLpJ/c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjFNYbJlZcMOKzM4bOeWFdc2XxpF6b4jbB9+GNM0SDPsD6btap
+	K2RqzMkD8oBuEJqgU6y4i7p5xE9Ib/lgwKpcZmxOWxy67DSichWs
+X-Gm-Gg: ASbGnctFx/P+zJJ1EZlJJFA2JpyHIuE3pDoSveYy9SaRxUtw9/DN1+PXlxQO42WnIMP
+	HrqBjFz9vkr4Lhd+GHJaXDRIOedecm3DE2aslu0iKo2G0kHddISj2kqSGGWMcRi8RfUVYBdnRnH
+	cLLWEOa7xdXZnlVGUW6tBbl4LUiDry8gT8uIpuomiOQZ4z1L3+6+hmm8X8PlZbt1EILbfK1ZJW4
+	d480AQnph8xmb2zt1nCpLG5nTn4hqfarCemIrl5Oi41A1PaGnHOOnXqru1Jviz61nHe2oTtf9mY
+	dXSnUe/pWwc1mkBXHFk8R6heYY6qBNrODJlOTS08gt/rxM79xTYFH4E=
+X-Google-Smtp-Source: AGHT+IHV+K8qXT7IR0FR10Mxo2JrlNWFRM/MZldNhPuRhi4cHdWhibmxpGQXnMajrdq3ZLJL1H7Ktw==
+X-Received: by 2002:a05:6512:3e12:b0:545:f1d:6f2c with SMTP id 2adb3069b0e04-54d452965b5mr4581312e87.18.1744717268913;
+        Tue, 15 Apr 2025 04:41:08 -0700 (PDT)
+Received: from home.paul.comp (paulfertser.info. [2001:470:26:54b:226:9eff:fe70:80c2])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54d3d123663sm1407642e87.25.2025.04.15.04.41.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Apr 2025 04:41:08 -0700 (PDT)
+Received: from home.paul.comp (home.paul.comp [IPv6:0:0:0:0:0:0:0:1])
+	by home.paul.comp (8.15.2/8.15.2/Debian-22+deb11u3) with ESMTP id 53FBf4mG029154;
+	Tue, 15 Apr 2025 14:41:06 +0300
+Received: (from paul@localhost)
+	by home.paul.comp (8.15.2/8.15.2/Submit) id 53FBf38t029153;
+	Tue, 15 Apr 2025 14:41:03 +0300
+Date: Tue, 15 Apr 2025 14:41:03 +0300
+From: Paul Fertser <fercerpav@gmail.com>
+To: kalavakunta.hari.prasad@gmail.com
+Cc: sam@mendozajonas.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        npeacock@meta.com, akozlov@meta.com, hkalavakunta@meta.com
+Subject: Re: [PATCH net-next v2] net: ncsi: Fix GCPS 64-bit member variables
+Message-ID: <Z/5FzySnQ2y3stpj@home.paul.comp>
+References: <20250410012309.1343-1-kalavakunta.hari.prasad@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 0/3] net: stmmac: dwmac-loongson: Add
- Loongson-2K3000 support
-To: Huacai Chen <chenhuacai@loongson.cn>, Huacai Chen
- <chenhuacai@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Yanteng Si <si.yanteng@linux.dev>,
- Feiyang Chen <chris.chenfeiyang@gmail.com>, loongarch@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Biao Dong <dongbiao@loongson.cn>, Baoqi Zhang <zhangbaoqi@loongson.cn>,
- Mingcong Bai <jeffbai@aosc.io>
-References: <20250415071128.3774235-1-chenhuacai@loongson.cn>
-Content-Language: en-US
-From: Henry Chen <chenx97@aosc.io>
-In-Reply-To: <20250415071128.3774235-1-chenhuacai@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9FE7C40009
-X-Rspamd-Server: nf1.mymailcheap.com
-X-Spamd-Result: default: False [1.40 / 10.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[netdev];
-	MID_RHS_MATCH_FROM(0.00)[];
-	SPFBL_URIBL_EMAIL_FAIL(0.00)[chenx97.aosc.io:server fail,chenhuacai.loongson.cn:server fail,dongbiao.loongson.cn:server fail,zhangbaoqi.loongson.cn:server fail];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[linux.dev,gmail.com,lists.linux.dev,vger.kernel.org,loongson.cn,aosc.io];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250410012309.1343-1-kalavakunta.hari.prasad@gmail.com>
 
-On 4/15/25 15:11, Huacai Chen wrote:
-> This series add stmmac driver support for Loongson-2K3000/Loongson-3B6000M,
-> which introduces a new CORE ID (0x12) and a new PCI device ID (0x7a23). The
-> new core reduces channel numbers from 8 to 4, but checksum is supported for
-> all channels.
-> 
-> Huacai Chen (3):
->    net: stmmac: dwmac-loongson: Move queue number init to common function
->    net: stmmac: dwmac-loongson: Add new multi-chan IP core support
->    net: stmmac: dwmac-loongson: Add new GMAC's PCI device ID support
-> 
-> Tested-by: Biao Dong <dongbiao@loongson.cn>
-> Signed-off-by: Baoqi Zhang <zhangbaoqi@loongson.cn>
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> ---
->   .../net/ethernet/stmicro/stmmac/dwmac-loongson.c   | 105 ++++++++++-----------
->   1 file changed, 49 insertions(+), 56 deletions(-)
-> ---
-> 2.27.0
-> 
-> 
+Hello,
 
-I have tested This patch series on my Loongson-3A5000-HV-7A2000-1w-V0.1-
-EVB. The onboard STMMAC ethernet works as expected.
+On Wed, Apr 09, 2025 at 06:23:08PM -0700, kalavakunta.hari.prasad@gmail.com wrote:
+> From: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
+> 
+> Correct Get Controller Packet Statistics (GCPS) 64-bit wide member
+> variables, as per DSP0222 v1.0.0 and forward specs. The Driver currently
+> collects these stats, but they are yet to be exposed to the user.
+> Therefore, no user impact.
+> 
+> Statistics fixes:
+> Total Bytes Received (byte range 28..35)
+> Total Bytes Transmitted (byte range 36..43)
+> Total Unicast Packets Received (byte range 44..51)
+> Total Multicast Packets Received (byte range 52..59)
+> Total Broadcast Packets Received (byte range 60..67)
+> Total Unicast Packets Transmitted (byte range 68..75)
+> Total Multicast Packets Transmitted (byte range 76..83)
+> Total Broadcast Packets Transmitted (byte range 84..91)
+> Valid Bytes Received (byte range 204..11)
+> 
+> v2:
+> - __be64 for all 64 bit GCPS counters
+> 
+> Signed-off-by: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
 
-Tested-by: Henry Chen <chenx97@aosc.io>
+This version looks correct to me (other than the changelog being
+before ---) so
 
-      Henry
+Reviewed-by: Paul Fertser <fercerpav@gmail.com>
