@@ -1,155 +1,98 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D31B23372C
-	for <netdev@vger.kernel.org>; Tue, 15 Apr 2025 15:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281A22951C5;
+	Tue, 15 Apr 2025 15:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744731602; cv=none; b=ayvBnzACzV/dEVC3d9cvCRc68sl9oCaKhnNSpii0jyYIvvGxodGh2/xR5SeeE7M1zczde4CYV17eDqNFQqRsefwG59ByfJZ0ZX7dh8rJ2bbEBalx5wlI55t/YfNWaSbVhqo8FX7weyMrYRGte3UnGQMO5irMIOD2RtvELwL1Wx4=
+	t=1744731603; cv=none; b=jFuDgg+BGUyLKpw3Sv/dzZUsfYyKfr+mTddxL1kVYBmOCnCc5lkKRuh3dN6ATN8RvY9vS3HpR/inWgrQHZ8wB2pB15qVEJDEUTQt7RMNNV9Dh+PVEbgLEwxfvL/DX9TwRzBBc4lbLebEHwpd6iLynbc4mIWMMzC1D6kXIwRuSW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744731602; c=relaxed/simple;
-	bh=qg4wAivsMP8RywXlKYTJ+PIR8bbeDUpnSp0qyvD0CmM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PWrUA82hMw887z3RfmKywQ2Caty3HOkv0Xmg2Q3gZRjGDJ9TtCdXvWclplko++5PbGC8nzQXULn72SKvmb/s0wC2LdB8PLlbLOI/eFBpI/5i8Oaz4HjCxdy2C3m8/uoaQl3Mzd8tH8B5yyJanLXH39EKk8M2901cIWyhSiMYnW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kbnes0bU; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1744731603; c=relaxed/simple;
+	bh=9dL+7sxEBn0HqmNk1zwuk8hfwZcm127WopxwN7xJ5nY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=eC831wEi+V4dBoC5lgQTL649j/RbpekYCnRJ2Sxkzky0IcRsGpDgbIuQl1kGazsbWCd/9HZ+qmwJZW+mY9pk2FvyxQMdka4yctyrgKJqV33mT6y79ZhcYXS+Q5vnW2tayA7NFAstK5RLG5NI9HBEaydPHNQFk+halsw8fLO/eQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cgLeyOsN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kbnes0bU"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2240aad70f2so271275ad.0
-        for <netdev@vger.kernel.org>; Tue, 15 Apr 2025 08:40:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744731600; x=1745336400; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OeIb/X6LUJd0puJOYgEpsyhyK4cnQAwP4cBidqFaUFw=;
-        b=kbnes0bUaqMuFMP/9c3EW5sQRho/oNPuDffvvVO/DHeCOTEtXp3gDs2enSfuDV2wxb
-         FHtlZ8JK0Urjk6Bp7fvh/3FR1ARIw/3NCCbJDAQB+9A7AjZ/kgPfz5ujk/RYsHd5lTUo
-         TSBohTMsY0US/yyIVUjC5LYLIkGsd6ZBvFLpZAzG/JnceQRDV2Aoxukiyvn2UNRjRcVg
-         3w4HE35Bmjr7wvbnD6dCbJREHvj5CyffiSe9GYYRo8Ib7cNjgmNjlfBR4dmK5HyFjBE1
-         fZD+VxVU9V26QR7/xdpiP5dEua0TUdcWTBOeBuKyeVcLXyevH2y5SCdjSTTkJP9AZhzT
-         zOXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744731600; x=1745336400;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OeIb/X6LUJd0puJOYgEpsyhyK4cnQAwP4cBidqFaUFw=;
-        b=H6gRAfNzl2fAJBlTc5UKssprtU0dmy5haLoFmaEvNTs5Bkc3CGzCltjsuuC9+awNXh
-         /xbFs3cLlinnLjdnBaHafh4h211AWceMLP0DP2lgKLWy/Ojpe5xFnKgBea7+vII5s0Ck
-         6sXd77kqjZvkxhESSNGCcSiJqN/7TACur/bp8RhiAIcHoTgZgYQFQ7hm2kLw05rVh3sT
-         D9PaRh8NzhMyQ0n1+q+PfMyHIfVNnChA7j82E5RxJG2vV1XNQn3K7XHFaBlfJFCL4prC
-         NUjGxBFBjOsD4SQ0yMbE0++1aWZi5i/N8qtCfWUn25lHz2dCszdEbbUG1BdBoUAT7zZ/
-         DFTA==
-X-Forwarded-Encrypted: i=1; AJvYcCUiP50sAy3N2LA/Z35fF3hxxNySyodiAT3UGpUOEdKb+1u57ZUDW+vv8fD2nhWFZRymGQbTzZg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9MEatGjlIXhT/zms3WGt6F0PI4ZBE97IJO4RoZ7cpFO0tdUOH
-	x2cYZ4J/Y9zJV0l2m7EjTWv0cD7lCf1G9c2kvwtXaRc5/xzJc69BXGDYdVhvjMxr0Dq4v9CeJat
-	9tZKlDLKRzk7w6dY+39vEqgroSMndN22xhof6gnJ3iwCR0crVnwCp4ho=
-X-Gm-Gg: ASbGncu3ar1OojnvzTGYd0vBlJNko77RsafsuOoQs8MCK3EiIdMPLUG8SkkyqK5+F8G
-	homJU4mziEitfoq1NXOl2bCDNgreC3mosb0ob74UA65RyFokIZkKp0UYyHYRnKWQ8O/+YSvXYT/
-	ow1UcJ4yjnw4v4e6hLUWDs710=
-X-Google-Smtp-Source: AGHT+IFLhlUUvSgNVTxL04KKX3RG9sx072ZCun2lap9939vdMyJNLUBNnSRPH2j0J6W4S7CVvCvpIa6UIVdzBlU5+P0=
-X-Received: by 2002:a17:902:ef47:b0:21f:40e8:6398 with SMTP id
- d9443c01a7336-22c259d7af2mr3024275ad.26.1744731600188; Tue, 15 Apr 2025
- 08:40:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cgLeyOsN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A6EC4CEEB;
+	Tue, 15 Apr 2025 15:40:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744731602;
+	bh=9dL+7sxEBn0HqmNk1zwuk8hfwZcm127WopxwN7xJ5nY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=cgLeyOsNuL77AcAcQet4LtelmuE1kxrOn1myljxz/MDL7oI3tEbNlVGujF4V4fKQQ
+	 udQGvZR/carvEm35xXz7hmwgOS5hxmnwM9+ciRK9BgV8loOGRF+QANLq0mjho8cq6Q
+	 4YGfevOcO/slXg+ibjogEttJ0Adc0a0H4axXxFwtTCXB0bSpZs6V8GPH8tdjIMYb4G
+	 kX9V5uAtE9P2fgFNPdfK0KLl7ZP5/qrNDL7S9DpomdygKnBjFllfzd/LsCSQASvmPl
+	 tnA1WyB/kBidYdb1YVT2elTo4MoZBJuoqsnEw1rzepX5dQRBSc9l6E+LqUtY+PUvfL
+	 2kQm0qGIbQjSw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADC543822D55;
+	Tue, 15 Apr 2025 15:40:41 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250414013627.GA9161@system.software.com>
-In-Reply-To: <20250414013627.GA9161@system.software.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Tue, 15 Apr 2025 08:39:47 -0700
-X-Gm-Features: ATxdqUEEAYYuf9kY0rmh0iT4BhHq7nirTrK82B1hkM9j1bmivYLkzqZcnzQa_eo
-Message-ID: <CAHS8izO_9gXzj2sUubyNSQjp-a3h_332pQNRPBtW6bLOXS-XoA@mail.gmail.com>
-Subject: Re: [RFC] shrinking struct page (part of page pool)
-To: Byungchul Park <byungchul@sk.com>, Jesper Dangaard Brouer <hawk@kernel.org>, netdev <netdev@vger.kernel.org>
-Cc: willy@infradead.org, ilias.apalodimas@linaro.org, kernel_team@skhynix.com, 
-	42.hyeyoo@gmail.com, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2 00/10] net: Introduce nlmsg_payload helper
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174473164049.2680773.4741397198265025853.git-patchwork-notify@kernel.org>
+Date: Tue, 15 Apr 2025 15:40:40 +0000
+References: <20250414-nlmsg-v2-0-3d90cb42c6af@debian.org>
+In-Reply-To: <20250414-nlmsg-v2-0-3d90cb42c6af@debian.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ kuniyu@amazon.com
 
-On Sun, Apr 13, 2025 at 6:36=E2=80=AFPM Byungchul Park <byungchul@sk.com> w=
-rote:
->
-> Hi guys,
->
-> I'm looking at network's page pool code to help 'shrinking struct page'
-> project by Matthew Wilcox.  See the following link:
->
->    https://kernelnewbies.org/MatthewWilcox/Memdescs/Path
->
-> My first goal is to remove fields for page pool from struct page like:
->
+Hello:
 
-Remove them, but put them where? The page above specificies "Split the
-pagepool bump allocator out of struct page, as has been done for, eg,
-slab and ptdesc.", but I'm not familiar what happened with slab and
-ptdesc. Are these fields moving to a different location? Or being
-somehow removed entirely?
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
->    struct {     /* page_pool used by netstack */
->         /**
->          * @pp_magic: magic value to avoid recycling non
->          * page_pool allocated pages.
->          */
->         unsigned long pp_magic;
->         struct page_pool *pp;
->         unsigned long _pp_mapping_pad;
->         unsigned long dma_addr;
->         atomic_long_t pp_ref_count;
->    };
->
-> Fortunately, many prerequisite works have been done by Mina but I guess
-> he or she has done it for other purpose than 'shrinking struct page'.
->
+On Mon, 14 Apr 2025 06:24:06 -0700 you wrote:
+> In the current codebase, there are multiple instances where the
+> structure size is checked before assigning it to a Netlink message. This
+> check is crucial for ensuring that the structure is correctly mapped
+> onto the Netlink message, providing a layer of security.
+> 
+> To streamline this process, Jakub Kicinski suggested creating a helper
+> function, `nlmsg_payload`, which verifies if the structure fits within
+> the message. If it does, the function returns the data; otherwise, it
+> returns NULL. This approach simplifies the code and reduces redundancy.
+> 
+> [...]
 
-Yeah, we did it to support non-page memory in the net stack, which is
-quite orthogonal to what you're trying to do AFAICT so far. Looks like
-maybe some implementation details are shared by luck?
+Here is the summary with links:
+  - [net-next,v2,01/10] netlink: Introduce nlmsg_payload helper
+    https://git.kernel.org/netdev/net-next/c/95d06e92a401
+  - [net-next,v2,02/10] neighbour: Use nlmsg_payload in neightbl_valid_dump_info
+    https://git.kernel.org/netdev/net-next/c/7527efe8a416
+  - [net-next,v2,03/10] neighbour: Use nlmsg_payload in neigh_valid_get_req
+    https://git.kernel.org/netdev/net-next/c/2d1f827f0642
+  - [net-next,v2,04/10] rtnetlink: Use nlmsg_payload in valid_fdb_dump_strict
+    https://git.kernel.org/netdev/net-next/c/77d02290366f
+  - [net-next,v2,05/10] mpls: Use nlmsg_payload in mpls_valid_fib_dump_req
+    https://git.kernel.org/netdev/net-next/c/72be72bea9dc
+  - [net-next,v2,06/10] ipv6: Use nlmsg_payload in inet6_valid_dump_ifaddr_req
+    https://git.kernel.org/netdev/net-next/c/e87187dfbb9f
+  - [net-next,v2,07/10] ipv6: Use nlmsg_payload in inet6_rtm_valid_getaddr_req
+    https://git.kernel.org/netdev/net-next/c/8cf1e30907de
+  - [net-next,v2,08/10] mpls: Use nlmsg_payload in mpls_valid_getroute_req
+    https://git.kernel.org/netdev/net-next/c/69a1ecfe47f0
+  - [net-next,v2,09/10] net: fib_rules: Use nlmsg_payload in fib_valid_dumprule_req
+    https://git.kernel.org/netdev/net-next/c/4c113c803fdc
+  - [net-next,v2,10/10] net: fib_rules: Use nlmsg_payload in fib_{new,del}rule()
+    https://git.kernel.org/netdev/net-next/c/8ff953036110
 
-> I'd like to just finalize the work so that the fields above can be
-> removed from struct page.  However, I need to resolve a curiousity
-> before starting.
->
->    Network guys already introduced a sperate strcut, struct net_iov,
->    to overlay the interesting fields.  However, another separate struct
->    for system memory might be also needed e.g. struct bump so that
->    struct net_iov and struct bump can be overlayed depending on the
->    source:
->
->    struct bump {
->         unsigned long _page_flags;
->         unsigned long bump_magic;
->         struct page_pool *bump_pp;
->         unsigned long _pp_mapping_pad;
->         unsigned long dma_addr;
->         atomic_long_t bump_ref_count;
->         unsigned int _page_type;
->         atomic_t _refcount;
->    };
->
-> To netwrok guys, any thoughts on it?
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Need more details. What does struct bump represent? If it's meant to
-replace the fields used by the page_pool referenced above, then it
-should not have _page_flags, bump_ref_count should be pp_ref_count,
-and should not have _page_type or _refcount.
 
-> To Willy, do I understand correctly your direction?
->
-> Plus, it's a quite another issue but I'm curious, that is, what do you
-> guys think about moving the bump allocator(=3D page pool) code from
-> network to mm?  I'd like to start on the work once gathering opinion
-> from both Willy and network guys.
->
-
-What is the terminology "bump"? Are you wanting to rename page_pool to
-"bump"? What does the new name mean?
-
---=20
-Thanks,
-Mina
