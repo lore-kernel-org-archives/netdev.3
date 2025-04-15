@@ -1,28 +1,28 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2084.outbound.protection.outlook.com [40.107.244.84])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2069.outbound.protection.outlook.com [40.107.94.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9771C2951B7
-	for <netdev@vger.kernel.org>; Tue, 15 Apr 2025 12:12:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CEB2951AA
+	for <netdev@vger.kernel.org>; Tue, 15 Apr 2025 12:12:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.69
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744719165; cv=fail; b=spXhkZDmXLF5znsVSsN+50BZFf8Oa8IbNxvYhftL7qhlMIo0R/bscafqJO6eMp7g0jFkILdMohAXWwkX08vS0It4Z82Uv+v/3Gjmfv96yAkjz0+jZDzBJp1Is333jVm1V7QPnJRxfw4KCnmvDR2CO6j85ySSXMElyUYPw1aSYmE=
+	t=1744719171; cv=fail; b=Afcc9Hw/LnY8XnqjotowTVQVEiPElniw58Vpx8XRT+GPn1An3zOTQuypWj17tH97yVvrezuO3OISZ05dAcsnyPsrQbde4W0uaYSNjkoDU6teWxwjmzKMySSqd3F1byAq/fBue2UrvRYiyfVUqAVRWYi93oDDKSeiBk8JVHKTJnQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744719165; c=relaxed/simple;
-	bh=eYjdM4Kp4cAhXM7Xc/uOz4BiPcw+KlmolpXRSxpTxqk=;
+	s=arc-20240116; t=1744719171; c=relaxed/simple;
+	bh=3Pbpi/1W3gO9E9iCbwz47BTZhfna+AtkhqBALdORMts=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DEmLCX47bebIWp4+Q4CuTO9iINr9RwrOUW25d5F31O7QIIti0lZbtWD/TQ8fC3NK+99buAzK567elv0tdU/crBFkItCwx5UFHUUaY3IsJDUZ/LNNQBCVUql9LLl7ldG4XfdN5Re827TrErWhx3nDQQp8kAGNWGTfGwn1XuaTEqc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FknleMQd; arc=fail smtp.client-ip=40.107.244.84
+	 MIME-Version:Content-Type; b=GxvXX1dd1qmTN1R2nMl3SlwfNfkYOLuDY+5qfgC0/SC8h3uBoyj1ihkhWhUbAUoDJ9Rwztj/KOX6dXcSIYusSNNmD+OTR4W55N8iC9dUIaG+34h1dxpXxPW9/1VB4/+RuFNL6QIrCDZRKmWm9cHxHY3tBePKswzf987BseP+xAg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Y4Vr+1/A; arc=fail smtp.client-ip=40.107.94.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FknleMQd"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Y4Vr+1/A"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yJxR911DpmiN/plgEPQiuDrS+3YFfezVXWuKavTPfCiNeC+BaeBoJEMhJPpfkBo6IGOioarvtdyg1jRYD/EmBRtSIfNDxiPbcb9EVVyxgEIJn3YESda5PerLRSvvrFqzIvZWq8llYTmbUSrXY9VCKzkbmKrJTyTvUz3kn0J+S7wc3lPB2x9TOj7g+fnoHI8jDJsPhfNL5x611hW8WKtn+WV2jVveLTV8PUbbuxI/321mFWUHVgu8mB+wp1B8Gptd/ygXXk0U/GfE/Nk1Eofw+KzM3T9ol5aQApUdWlgrXkUEX8qV3KQCF8+UEpsXhUys4rlyX6NJBjOmmN59CwPpUw==
+ b=HE4NM9zKdXc41B/APYYwjdN+kcrX3WzZL6CkCjSCkgG144GLKpNZ9f+oYvv1eKXqsJzOdYugq/C3PhmYcjz+M8ikj0muf/F2CrvPWbVrBpLTeiatbg+QrDxv38taqB1qQYHd6R+CgqAKRXOiDGKs/p9jZXTyNhLqkq8N4DfTbqSkS1b0xowGG46EQPP2jiIywDIem6A8UrnDvh+Qtman9BeiAqdu0q1kBSQf7UpeANjQ4gEGG4o/nFlJjhW1/HUBSzRl82oHyMHf5A43mAdoHsWVVLw/aDtIP2f77lfwyIGvhYOhd4WYI9UW5+AAJTWnZdQbgUhdOpn224lV53n9JA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bfYjXlWg7uqJUj1T0oskiPG4biAhZm9KaIWX57Vt+S8=;
- b=tOTIvl2AJtM4dldFcbvw7kCYLsdnmbUPuSElrLKsFODeQh+w0sd8GYdLy3plptzLqcIkWQHrrW8XFUZZrh/5MTj9KwGl2isrWmoAP4GiNFAQ7oyl8To5/QN28pWFOCXj8oVhGSVGjwhHuzr/z3DqOvaoPL5mcVxrud/vcJ8VfaGC9ODNenBv3WsXMtzqh9zDeOAy9u2rsCeZeNvYo3XE4hfCGuaMAJ4ho7LEt9PQWOKiliib5Z71OLThg0Hcze6kOmjED4k9mt/fDoDZR9mV6jxrPyTVRAo3vzeEUllh6/hOsoZ0DOrNlTMK7HB/xsiKraPD0HhfyXB93FRqzHJhKg==
+ bh=DieetaDohmAZgFza4+jwcu7hk/qd1wEFzMTlz4HR/+0=;
+ b=jRotvoqoEC6GFKDvWV+qBXfbWni9L89ZPRXHvosepERXIyrYVXvT7CbTUSOJp6SMLPlnpVx0Pa6lIDl0vLBQ+YSMkIIKgNRoBkqy7TUEcZS6xJFxyRjGXhUw+j++GUrzsKC7hqk5FwbncXNn/EE6KkoOHjPyKPHAv0j3zx4CxqNe1LMLNxfyhT7u8NMsG/2inp4vAaAGBNOwdm5D9iN8Smtmnrz6aevg75KuGi8R1gyxy714PHYkzWNkM+t44GTQhhXxt0TZkPHH1d+ienzAnkAit+aaHpQtVMsTRPxuOQ5a9E+FPEYmAM/yjv/YBkrxHzLNOIxnj7UtPhVDUaIuuA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -30,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bfYjXlWg7uqJUj1T0oskiPG4biAhZm9KaIWX57Vt+S8=;
- b=FknleMQdmgYtoJwGmQRtFwjraQvfuuT8XRlOFXgCcFp3CNdOas0p0w+/PaEahPbJor5Q9dkTkB4ObLp7/2/G8qIKcUztP2B3hpL96ok7KuqjjCnXxIROt1Mkexyqo3iljy82cCnFDQ8+jDYz1VMl+4IbhS0FDA9Hpq/t/gIhopRwiv2jaWeymUISgSo1LsK7HvqS6evi8PlbHLy7HbEz0Hz+iGVbVkmbyIwlYReHLrgqIZGbW+zuvowh4rJzd78jQUYO3XQHBwSX6Mkp5r4LpMv/f6MCQY9b0dKvXvvVnyJoW+ENrg6KC0HKbxTZ28GHyAeHDTg5h/fWNyXV2NRJqQ==
-Received: from BN9PR03CA0599.namprd03.prod.outlook.com (2603:10b6:408:10d::34)
- by IA1PR12MB6116.namprd12.prod.outlook.com (2603:10b6:208:3e8::12) with
+ bh=DieetaDohmAZgFza4+jwcu7hk/qd1wEFzMTlz4HR/+0=;
+ b=Y4Vr+1/AHZ7s/NM9hsI7++xgb6CmH7lgDxiWPfJr/Aqn3XmVRGQBcWAM1NG42+TRDpysMRlNs9czJ5jjFSMtP/lQxkmFaXlF4DbWE+/2ejORUM7mUIdqBL71kN0QUDO1lJpn6wWBXcYJ+6Tuyd+d+YLY39rbY2/TkCZhJui2x9Surh6mLKvd1b8H9sX+AKJUbmHYEL4zAXpWxkwRznDkklNBjudStQKcdTrVVq3gQzgQ+FotyUFnJp9eucDkUnwbX4TYmHcltnLIRMI0IycSCzbG1H+BlcCCdxATT7+3uYH1rSEnrIymx63pPKSuPvwNtfoe5mBZUseypW9v+Cingw==
+Received: from BN9PR03CA0226.namprd03.prod.outlook.com (2603:10b6:408:f8::21)
+ by IA1PR12MB6529.namprd12.prod.outlook.com (2603:10b6:208:3a6::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.32; Tue, 15 Apr
- 2025 12:12:37 +0000
-Received: from BL02EPF0001A0FA.namprd03.prod.outlook.com
- (2603:10b6:408:10d:cafe::43) by BN9PR03CA0599.outlook.office365.com
- (2603:10b6:408:10d::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.18 via Frontend Transport; Tue,
- 15 Apr 2025 12:12:36 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.21; Tue, 15 Apr
+ 2025 12:12:42 +0000
+Received: from BL02EPF0001A0FB.namprd03.prod.outlook.com
+ (2603:10b6:408:f8:cafe::44) by BN9PR03CA0226.outlook.office365.com
+ (2603:10b6:408:f8::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8632.34 via Frontend Transport; Tue,
+ 15 Apr 2025 12:12:42 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -49,25 +49,25 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.160 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.160) by
- BL02EPF0001A0FA.mail.protection.outlook.com (10.167.242.101) with Microsoft
+ BL02EPF0001A0FB.mail.protection.outlook.com (10.167.242.102) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8655.12 via Frontend Transport; Tue, 15 Apr 2025 12:12:36 +0000
+ 15.20.8655.12 via Frontend Transport; Tue, 15 Apr 2025 12:12:42 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 15 Apr
- 2025 05:12:23 -0700
+ 2025 05:12:30 -0700
 Received: from shredder.lan (10.126.231.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 15 Apr
- 2025 05:12:19 -0700
+ 2025 05:12:26 -0700
 From: Ido Schimmel <idosch@nvidia.com>
 To: <netdev@vger.kernel.org>
 CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
 	<edumazet@google.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
 	<petrm@nvidia.com>, <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH net-next 06/15] vxlan: Use a single lock to protect the FDB table
-Date: Tue, 15 Apr 2025 15:11:34 +0300
-Message-ID: <20250415121143.345227-7-idosch@nvidia.com>
+Subject: [PATCH net-next 08/15] vxlan: Use linked list to traverse FDB entries
+Date: Tue, 15 Apr 2025 15:11:36 +0300
+Message-ID: <20250415121143.345227-9-idosch@nvidia.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250415121143.345227-1-idosch@nvidia.com>
 References: <20250415121143.345227-1-idosch@nvidia.com>
@@ -83,447 +83,316 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FA:EE_|IA1PR12MB6116:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5cb2e5df-2973-472a-cdb7-08dd7c16cf86
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FB:EE_|IA1PR12MB6529:EE_
+X-MS-Office365-Filtering-Correlation-Id: e6ed1a83-d281-4d05-6b6a-08dd7c16d2be
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|82310400026|36860700013;
+	BCL:0;ARA:13230040|36860700013|1800799024|376014|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+UYoiyJBZV43RMoF00BaxmrW4OKP5VqoWhWIPjhjyjDleJT0mpl95I3pNLXV?=
- =?us-ascii?Q?5onuIjzPxFFtL9n2AKW6IlzI87c9V3YOQuulhyJJ6tBj2lZFy6uK4jraRoHY?=
- =?us-ascii?Q?GLhLZOLnNtyabX4fxXb4+RMg4qcm7FQJjllDinNsFpU7mm2wv5QbKCrpGIr5?=
- =?us-ascii?Q?5tu9yNlKjHf2Nz5ansVglCE2krA9tUZGH/L8w4MAd/LdPQ6i9Od0ADfSTsdm?=
- =?us-ascii?Q?//x1HnvMK/41W6mzzv4+pMLTbYYi6J30ENyPn16VpYNwfGQleCFTZcZzRNOy?=
- =?us-ascii?Q?BN/SavFzdSY/uEYyuoqFJmf/jJh609X1wU8ZqEglIm5GnZ0FpmVgQpJGySmT?=
- =?us-ascii?Q?k+s/drAi837OtdmG8ghFMKA9tYeu/uzQZQ9B/c3eUnZ7lAls1vP3S/1MdUuc?=
- =?us-ascii?Q?JbADoPxy5zX4xpfKjptwO++x7FPzNjahKBbqSHiw3F25v/foNYUxEf2E735t?=
- =?us-ascii?Q?apVOeiwcNzIyOYg+m5h0MnHNxiDpM6CS2rj++fo7yl51YQmyTOla2zldxLST?=
- =?us-ascii?Q?ZSLOEbdwlP6XT2ww8blHhZSVROlZXMXRElgr1FOLG8mI2q43I1nLAxCf8mHH?=
- =?us-ascii?Q?ZuZP5eGNvr8uWlea9CmPYVkvOielKzpG0wtBo6EHm68TQ928rs0txLkJUHik?=
- =?us-ascii?Q?zjySYsi9QWNOHRHKf4xlGgXXlImvpUzziDMoOqBQxNiVW7GN3hO1c1KZ+uzY?=
- =?us-ascii?Q?pz51EFZiE2LAHqBHEcRZOKYAzX47UAJ/J1xYNmFp00CH3iYUOyTtL0FzM/Ht?=
- =?us-ascii?Q?l10HHGiOadD0xb+VIL14EPBP2+dizT2Dsdb7d84iyLvVgrXb97vFFoadJrQv?=
- =?us-ascii?Q?4NKN9Afxh79x0yBpaZjSKfvx+95LbompbMIUGq9CeAKb7W/cPO/2h34iRzH2?=
- =?us-ascii?Q?7ji5884MnzfV6+zjODzTQfgObtRpyvb2PfA6x3Z2Z1qNejCF789dBmr/zGdz?=
- =?us-ascii?Q?OfSNpGXasTkAQZWgzwBPMk1+5vC921uGl8by2X1jXCpfIZRZBAkHBMPODNpu?=
- =?us-ascii?Q?EmQ7/KQaBmb4yelP4okdbJTNdBitcrw+d2D6NDHjIfO6M1azf03eO1KkWRjE?=
- =?us-ascii?Q?+q5J8M853TdGXbUDaO4NlZLcE0pNSXlVcwFR/8RQGOfQTl1svjDP4CJv1DLo?=
- =?us-ascii?Q?x+o2jmcPQPotr/ur47+dKiF8wBIJhFtSZOBJRxdtl8gBm4L6+Dp6ginOkQCe?=
- =?us-ascii?Q?KfJZYXWAsyFbhv698wAcGwag5nJVLlca2We+eYcsBQ9QBVw1Iap2mnrjwZ2Q?=
- =?us-ascii?Q?Npp67ve96Yt2MobFRIEek06flVjYNa2vRPpRYYiQGZlTUNmSrwnLMRA2tKNu?=
- =?us-ascii?Q?ZzxaRZ1tXCsg4/JDySL1wXI3tBOTAOeE4gQVS47+ROEK6Pp465g85deqiyP1?=
- =?us-ascii?Q?2gK2JF+K7Wt395JUhHpN5eN+yvNCs+dm51vo5BjbNxh0r+ZENYPiiWU1IcQ/?=
- =?us-ascii?Q?sWcKMMPAfCiQTUXv/5cqKMGVBwdjx1H0n6Yn4OuQs2sUaaMVI/XYOcSIQxzw?=
- =?us-ascii?Q?a9gJmtaSFUyqNBQsG4nJ2Lf1AQyGlAg7wCwv?=
+	=?us-ascii?Q?m8xXqMf2096aACmFb6isHT2IuCzDTSsJaRiLjktgQSaO5iqElwFoeB7Agut8?=
+ =?us-ascii?Q?S60cvBhzMK9/56t1Y5+D4A+xZ/a+A8haOsNIQ3sGYoQlthO2vY4U2sq0x9Ar?=
+ =?us-ascii?Q?hB1nl1NpW26mJPFT+76cNjYBIrqqpKJxrW/S/14t6wVFAL8Hn0zsZdPFhKTK?=
+ =?us-ascii?Q?HmSKj9iLsSk5YSb1NxcKburxpou92p6h+hh6BN9Ay2g8LHWh39j+/X9T+not?=
+ =?us-ascii?Q?CkM8MYN4md4LI+Uhs2aQCyHIvVF2CjThvq3Dm1f3UDsptrJPbObBEkIIbEa5?=
+ =?us-ascii?Q?e5Lb3mw9hYTR4gVo1tvs9C6NBP3hfEOkV4WxM0zfHcYLVPhgnCeRP2KqXfsI?=
+ =?us-ascii?Q?e8ucYmCWEugfbS/8MnIgo1U/iw4kYP834McykO27zYpfHH7a/U68COoQtpyp?=
+ =?us-ascii?Q?DFSYZkXGIlIhbzwSBkKZFb0cPtMzsvFQDc62LSJI7RZYdXwMYDkd15LpfVSk?=
+ =?us-ascii?Q?DSTlQymY3rR3WsqNudipx+7PQDkN8jsU3SXMwVnTZgrXq3nye4ZxskltrGZy?=
+ =?us-ascii?Q?uCPxCBW5YTtxL/wIao7lCI1hUcd8R/zzpvb2MsNNelqjBolz46aRcUsBp40i?=
+ =?us-ascii?Q?5hehW261fQDKsTGcRmQ59q/lQ0cSsb+Qtz9i2/+Rwr6fseNMqV3pQpJkJhLL?=
+ =?us-ascii?Q?NGeWwac/94M6HfSfAYb5ztmj6KRORzpTP6LjgBFsI3O4w8zUM1E7Pr3rIiN/?=
+ =?us-ascii?Q?KfSRM56xkCEvahFVciICJfaFTDryHIdrLMM6cQq+TRkbXXliVpb+2sJ23slr?=
+ =?us-ascii?Q?v82wkZA1bqM4u62AJ2im/ofEz1bLyAVkCFtpMMij4AFL91LOSpDy0qOKc/n8?=
+ =?us-ascii?Q?cKZsZ8gwsvoE5S0oJP6VJ1q4QhxYYI5aoE/KkrYJzJZ30gAYtxhb1jOxRCRp?=
+ =?us-ascii?Q?HbyYXP8uiWEuJk7Z1S0IWbUgrs5NQer+b2dO+WTsSxYDwPTA6yE9l6R7wJDW?=
+ =?us-ascii?Q?iCs6Bjd0UXn+TqHHeSLGcXAGnxZbu1Rffqqifls2Pe2HnC5SkG5nUfqV+F4O?=
+ =?us-ascii?Q?HoOAq0dc5aXkEoY1xH1vhPfYCTBBl09tLg8rCXXxFr7OtYCKPkEKnbtvRAbc?=
+ =?us-ascii?Q?t1MTSPpYTdB5DOrjkNCQyPQRMA3mVQ/569dWfT0Ml6Q5VQ/OeSc40/b7ZhLT?=
+ =?us-ascii?Q?dnYEhdt03imez+2fc/PdV8Id61U2QODqGpaY1u78f6zeJKLgDidebbG9jfRE?=
+ =?us-ascii?Q?ybbWKlNNwHTKXdC9xnpj+GUlfnB5OaAjypkMW4iaaIpD87/T1Ga+Ex9n08sp?=
+ =?us-ascii?Q?DRtvfops/MWMMk7+OFFj7BR0//ZKHMJZ0WJJo3n/qs8wM5eYx1NkW7mpT8Tc?=
+ =?us-ascii?Q?dsN/qm9D+mQrVyxBW825aNTCp5HDayV35XmKN2YqnoGT/h7xS+aMLLUvBPiQ?=
+ =?us-ascii?Q?UQGZ4x09LIhoAZDSs8bTscUHY/Avjhpg0B2Y94m432iUj28Gm90wHYYc/7EZ?=
+ =?us-ascii?Q?g/aAamJChJI0nD3DzEF212qaJd7zYKXms0iRJ+oqZ6DFy0UlSTa+ir7jz2wD?=
+ =?us-ascii?Q?NH/cjo33rDey4dJySe4a1v7jJPIF1XICSTs6?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2025 12:12:36.7446
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2025 12:12:42.1266
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5cb2e5df-2973-472a-cdb7-08dd7c16cf86
+X-MS-Exchange-CrossTenant-Network-Message-Id: e6ed1a83-d281-4d05-6b6a-08dd7c16d2be
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A0FA.namprd03.prod.outlook.com
+	BL02EPF0001A0FB.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6116
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6529
 
-Currently, the VXLAN driver stores FDB entries in a hash table with a
-fixed number of buckets (256). Subsequent patches are going to convert
-this table to rhashtable with a linked list for entry traversal, as
-rhashtable is more scalable.
+In preparation for removing the fixed size hash table, convert FDB entry
+traversal to use the newly added FDB linked list.
 
-In preparation for this conversion, move from a per-bucket spin lock to
-a single spin lock that protects the entire FDB table.
-
-The per-bucket spin locks were introduced by commit fe1e0713bbe8
-("vxlan: Use FDB_HASH_SIZE hash_locks to reduce contention") citing
-"huge contention when inserting/deleting vxlan_fdbs into the fdb_head".
-
-It is not clear from the commit message which code path was holding the
-spin lock for long periods of time, but the obvious suspect is the FDB
-cleanup routine (vxlan_cleanup()) that periodically traverses the entire
-table in order to delete aged-out entries.
-
-This will be solved by subsequent patches that will convert the FDB
-cleanup routine to traverse the linked list of FDB entries using RCU,
-only acquiring the spin lock when deleting an aged-out entry.
-
-The change reduces the size of the VXLAN device structure from 3600
-bytes to 2576 bytes.
+No functional changes intended.
 
 Reviewed-by: Petr Machata <petrm@nvidia.com>
 Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 ---
- drivers/net/vxlan/vxlan_core.c      | 82 +++++++++++------------------
- drivers/net/vxlan/vxlan_vnifilter.c |  8 ++-
- include/net/vxlan.h                 |  2 +-
- 3 files changed, 34 insertions(+), 58 deletions(-)
+ drivers/net/vxlan/vxlan_core.c | 172 ++++++++++++++-------------------
+ 1 file changed, 75 insertions(+), 97 deletions(-)
 
 diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index d45b63180714..b8edd8afda28 100644
+index 511c24e29d45..f9840a4b6e44 100644
 --- a/drivers/net/vxlan/vxlan_core.c
 +++ b/drivers/net/vxlan/vxlan_core.c
-@@ -524,8 +524,8 @@ int vxlan_fdb_replay(const struct net_device *dev, __be32 vni,
- 		return -EINVAL;
+@@ -517,7 +517,6 @@ int vxlan_fdb_replay(const struct net_device *dev, __be32 vni,
+ 	struct vxlan_dev *vxlan;
+ 	struct vxlan_rdst *rdst;
+ 	struct vxlan_fdb *f;
+-	unsigned int h;
+ 	int rc = 0;
+ 
+ 	if (!netif_is_vxlan(dev))
+@@ -525,16 +524,13 @@ int vxlan_fdb_replay(const struct net_device *dev, __be32 vni,
  	vxlan = netdev_priv(dev);
  
-+	spin_lock_bh(&vxlan->hash_lock);
- 	for (h = 0; h < FDB_HASH_SIZE; ++h) {
--		spin_lock_bh(&vxlan->hash_lock[h]);
- 		hlist_for_each_entry(f, &vxlan->fdb_head[h], hlist) {
- 			if (f->vni == vni) {
- 				list_for_each_entry(rdst, &f->remotes, list) {
-@@ -537,12 +537,12 @@ int vxlan_fdb_replay(const struct net_device *dev, __be32 vni,
- 				}
+ 	spin_lock_bh(&vxlan->hash_lock);
+-	for (h = 0; h < FDB_HASH_SIZE; ++h) {
+-		hlist_for_each_entry(f, &vxlan->fdb_head[h], hlist) {
+-			if (f->vni == vni) {
+-				list_for_each_entry(rdst, &f->remotes, list) {
+-					rc = vxlan_fdb_notify_one(nb, vxlan,
+-								  f, rdst,
+-								  extack);
+-					if (rc)
+-						goto unlock;
+-				}
++	hlist_for_each_entry(f, &vxlan->fdb_list, fdb_node) {
++		if (f->vni == vni) {
++			list_for_each_entry(rdst, &f->remotes, list) {
++				rc = vxlan_fdb_notify_one(nb, vxlan, f, rdst,
++							  extack);
++				if (rc)
++					goto unlock;
  			}
  		}
--		spin_unlock_bh(&vxlan->hash_lock[h]);
  	}
-+	spin_unlock_bh(&vxlan->hash_lock);
- 	return 0;
+@@ -552,18 +548,17 @@ void vxlan_fdb_clear_offload(const struct net_device *dev, __be32 vni)
+ 	struct vxlan_dev *vxlan;
+ 	struct vxlan_rdst *rdst;
+ 	struct vxlan_fdb *f;
+-	unsigned int h;
  
- unlock:
--	spin_unlock_bh(&vxlan->hash_lock[h]);
-+	spin_unlock_bh(&vxlan->hash_lock);
- 	return rc;
- }
- EXPORT_SYMBOL_GPL(vxlan_fdb_replay);
-@@ -558,14 +558,14 @@ void vxlan_fdb_clear_offload(const struct net_device *dev, __be32 vni)
+ 	if (!netif_is_vxlan(dev))
  		return;
  	vxlan = netdev_priv(dev);
  
-+	spin_lock_bh(&vxlan->hash_lock);
- 	for (h = 0; h < FDB_HASH_SIZE; ++h) {
--		spin_lock_bh(&vxlan->hash_lock[h]);
- 		hlist_for_each_entry(f, &vxlan->fdb_head[h], hlist)
- 			if (f->vni == vni)
- 				list_for_each_entry(rdst, &f->remotes, list)
- 					rdst->offloaded = false;
--		spin_unlock_bh(&vxlan->hash_lock[h]);
+ 	spin_lock_bh(&vxlan->hash_lock);
+-	for (h = 0; h < FDB_HASH_SIZE; ++h) {
+-		hlist_for_each_entry(f, &vxlan->fdb_head[h], hlist)
+-			if (f->vni == vni)
+-				list_for_each_entry(rdst, &f->remotes, list)
+-					rdst->offloaded = false;
++	hlist_for_each_entry(f, &vxlan->fdb_list, fdb_node) {
++		if (f->vni == vni) {
++			list_for_each_entry(rdst, &f->remotes, list)
++				rdst->offloaded = false;
++		}
  	}
-+	spin_unlock_bh(&vxlan->hash_lock);
+ 	spin_unlock_bh(&vxlan->hash_lock);
  
- }
- EXPORT_SYMBOL_GPL(vxlan_fdb_clear_offload);
-@@ -1248,7 +1248,6 @@ static int vxlan_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
- 	__be16 port;
- 	__be32 src_vni, vni;
- 	u32 ifindex, nhid;
--	u32 hash_index;
- 	int err;
+@@ -1351,52 +1346,46 @@ static int vxlan_fdb_dump(struct sk_buff *skb, struct netlink_callback *cb,
+ {
+ 	struct ndo_fdb_dump_context *ctx = (void *)cb->ctx;
+ 	struct vxlan_dev *vxlan = netdev_priv(dev);
+-	unsigned int h;
++	struct vxlan_fdb *f;
+ 	int err = 0;
  
- 	if (!(ndm->ndm_state & (NUD_PERMANENT|NUD_REACHABLE))) {
-@@ -1268,13 +1267,12 @@ static int vxlan_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
- 	if (vxlan->default_dst.remote_ip.sa.sa_family != ip.sa.sa_family)
- 		return -EAFNOSUPPORT;
- 
--	hash_index = fdb_head_index(vxlan, addr, src_vni);
--	spin_lock_bh(&vxlan->hash_lock[hash_index]);
-+	spin_lock_bh(&vxlan->hash_lock);
- 	err = vxlan_fdb_update(vxlan, addr, &ip, ndm->ndm_state, flags,
- 			       port, src_vni, vni, ifindex,
- 			       ndm->ndm_flags | NTF_VXLAN_ADDED_BY_USER,
- 			       nhid, true, extack);
--	spin_unlock_bh(&vxlan->hash_lock[hash_index]);
-+	spin_unlock_bh(&vxlan->hash_lock);
- 
- 	if (!err)
- 		*notified = true;
-@@ -1325,7 +1323,6 @@ static int vxlan_fdb_delete(struct ndmsg *ndm, struct nlattr *tb[],
- 	union vxlan_addr ip;
- 	__be32 src_vni, vni;
- 	u32 ifindex, nhid;
--	u32 hash_index;
- 	__be16 port;
- 	int err;
- 
-@@ -1334,11 +1331,10 @@ static int vxlan_fdb_delete(struct ndmsg *ndm, struct nlattr *tb[],
- 	if (err)
- 		return err;
- 
--	hash_index = fdb_head_index(vxlan, addr, src_vni);
--	spin_lock_bh(&vxlan->hash_lock[hash_index]);
-+	spin_lock_bh(&vxlan->hash_lock);
- 	err = __vxlan_fdb_delete(vxlan, addr, ip, port, src_vni, vni, ifindex,
- 				 true);
--	spin_unlock_bh(&vxlan->hash_lock[hash_index]);
-+	spin_unlock_bh(&vxlan->hash_lock);
- 
- 	if (!err)
- 		*notified = true;
-@@ -1486,10 +1482,8 @@ static enum skb_drop_reason vxlan_snoop(struct net_device *dev,
- 		rdst->remote_ip = *src_ip;
- 		vxlan_fdb_notify(vxlan, f, rdst, RTM_NEWNEIGH, true, NULL);
- 	} else {
--		u32 hash_index = fdb_head_index(vxlan, src_mac, vni);
+-	for (h = 0; h < FDB_HASH_SIZE; ++h) {
+-		struct vxlan_fdb *f;
 -
- 		/* learned new entry */
--		spin_lock(&vxlan->hash_lock[hash_index]);
-+		spin_lock(&vxlan->hash_lock);
+-		rcu_read_lock();
+-		hlist_for_each_entry_rcu(f, &vxlan->fdb_head[h], hlist) {
+-			struct vxlan_rdst *rd;
+-
+-			if (rcu_access_pointer(f->nh)) {
+-				if (*idx < ctx->fdb_idx)
+-					goto skip_nh;
+-				err = vxlan_fdb_info(skb, vxlan, f,
+-						     NETLINK_CB(cb->skb).portid,
+-						     cb->nlh->nlmsg_seq,
+-						     RTM_NEWNEIGH,
+-						     NLM_F_MULTI, NULL);
+-				if (err < 0) {
+-					rcu_read_unlock();
+-					goto out;
+-				}
+-skip_nh:
+-				*idx += 1;
+-				continue;
++	rcu_read_lock();
++	hlist_for_each_entry_rcu(f, &vxlan->fdb_list, fdb_node) {
++		struct vxlan_rdst *rd;
++
++		if (rcu_access_pointer(f->nh)) {
++			if (*idx < ctx->fdb_idx)
++				goto skip_nh;
++			err = vxlan_fdb_info(skb, vxlan, f,
++					     NETLINK_CB(cb->skb).portid,
++					     cb->nlh->nlmsg_seq,
++					     RTM_NEWNEIGH, NLM_F_MULTI, NULL);
++			if (err < 0) {
++				rcu_read_unlock();
++				goto out;
+ 			}
++skip_nh:
++			*idx += 1;
++			continue;
++		}
  
- 		/* close off race between vxlan_flush and incoming packets */
- 		if (netif_running(dev))
-@@ -1500,7 +1494,7 @@ static enum skb_drop_reason vxlan_snoop(struct net_device *dev,
- 					 vni,
- 					 vxlan->default_dst.remote_vni,
- 					 ifindex, NTF_SELF, 0, true, NULL);
--		spin_unlock(&vxlan->hash_lock[hash_index]);
-+		spin_unlock(&vxlan->hash_lock);
+-			list_for_each_entry_rcu(rd, &f->remotes, list) {
+-				if (*idx < ctx->fdb_idx)
+-					goto skip;
+-
+-				err = vxlan_fdb_info(skb, vxlan, f,
+-						     NETLINK_CB(cb->skb).portid,
+-						     cb->nlh->nlmsg_seq,
+-						     RTM_NEWNEIGH,
+-						     NLM_F_MULTI, rd);
+-				if (err < 0) {
+-					rcu_read_unlock();
+-					goto out;
+-				}
+-skip:
+-				*idx += 1;
++		list_for_each_entry_rcu(rd, &f->remotes, list) {
++			if (*idx < ctx->fdb_idx)
++				goto skip;
++
++			err = vxlan_fdb_info(skb, vxlan, f,
++					     NETLINK_CB(cb->skb).portid,
++					     cb->nlh->nlmsg_seq,
++					     RTM_NEWNEIGH, NLM_F_MULTI, rd);
++			if (err < 0) {
++				rcu_read_unlock();
++				goto out;
+ 			}
++skip:
++			*idx += 1;
+ 		}
+-		rcu_read_unlock();
  	}
++	rcu_read_unlock();
+ out:
+ 	return err;
+ }
+@@ -2830,35 +2819,30 @@ static void vxlan_cleanup(struct timer_list *t)
+ {
+ 	struct vxlan_dev *vxlan = from_timer(vxlan, t, age_timer);
+ 	unsigned long next_timer = jiffies + FDB_AGE_INTERVAL;
+-	unsigned int h;
++	struct hlist_node *n;
++	struct vxlan_fdb *f;
  
- 	return SKB_NOT_DROPPED_YET;
-@@ -2839,10 +2833,10 @@ static void vxlan_cleanup(struct timer_list *t)
  	if (!netif_running(vxlan->dev))
  		return;
  
-+	spin_lock(&vxlan->hash_lock);
- 	for (h = 0; h < FDB_HASH_SIZE; ++h) {
- 		struct hlist_node *p, *n;
- 
--		spin_lock(&vxlan->hash_lock[h]);
- 		hlist_for_each_safe(p, n, &vxlan->fdb_head[h]) {
- 			struct vxlan_fdb *f
- 				= container_of(p, struct vxlan_fdb, hlist);
-@@ -2864,8 +2858,8 @@ static void vxlan_cleanup(struct timer_list *t)
- 			} else if (time_before(timeout, next_timer))
- 				next_timer = timeout;
- 		}
--		spin_unlock(&vxlan->hash_lock[h]);
- 	}
-+	spin_unlock(&vxlan->hash_lock);
- 
- 	mod_timer(&vxlan->age_timer, next_timer);
- }
-@@ -3056,10 +3050,10 @@ static void vxlan_flush(struct vxlan_dev *vxlan,
- 	bool match_remotes = vxlan_fdb_flush_should_match_remotes(desc);
- 	unsigned int h;
- 
-+	spin_lock_bh(&vxlan->hash_lock);
- 	for (h = 0; h < FDB_HASH_SIZE; ++h) {
- 		struct hlist_node *p, *n;
- 
--		spin_lock_bh(&vxlan->hash_lock[h]);
- 		hlist_for_each_safe(p, n, &vxlan->fdb_head[h]) {
- 			struct vxlan_fdb *f
- 				= container_of(p, struct vxlan_fdb, hlist);
-@@ -3079,8 +3073,8 @@ static void vxlan_flush(struct vxlan_dev *vxlan,
- 
- 			vxlan_fdb_destroy(vxlan, f, true, true);
- 		}
--		spin_unlock_bh(&vxlan->hash_lock[h]);
- 	}
-+	spin_unlock_bh(&vxlan->hash_lock);
- }
- 
- static const struct nla_policy vxlan_del_bulk_policy[NDA_MAX + 1] = {
-@@ -3358,15 +3352,14 @@ static void vxlan_setup(struct net_device *dev)
- 
- 	dev->pcpu_stat_type = NETDEV_PCPU_STAT_DSTATS;
- 	INIT_LIST_HEAD(&vxlan->next);
-+	spin_lock_init(&vxlan->hash_lock);
- 
- 	timer_setup(&vxlan->age_timer, vxlan_cleanup, TIMER_DEFERRABLE);
- 
- 	vxlan->dev = dev;
- 
+ 	spin_lock(&vxlan->hash_lock);
 -	for (h = 0; h < FDB_HASH_SIZE; ++h) {
--		spin_lock_init(&vxlan->hash_lock[h]);
-+	for (h = 0; h < FDB_HASH_SIZE; ++h)
- 		INIT_HLIST_HEAD(&vxlan->fdb_head[h]);
--	}
- }
- 
- static void vxlan_ether_setup(struct net_device *dev)
-@@ -3977,10 +3970,7 @@ static int __vxlan_dev_create(struct net *net, struct net_device *dev,
- 
- 	/* create an fdb entry for a valid default destination */
- 	if (!vxlan_addr_any(&dst->remote_ip)) {
--		u32 hash_index = fdb_head_index(vxlan, all_zeros_mac,
--						dst->remote_vni);
+-		struct hlist_node *p, *n;
 -
--		spin_lock_bh(&vxlan->hash_lock[hash_index]);
-+		spin_lock_bh(&vxlan->hash_lock);
- 		err = vxlan_fdb_update(vxlan, all_zeros_mac,
- 				       &dst->remote_ip,
- 				       NUD_REACHABLE | NUD_PERMANENT,
-@@ -3990,7 +3980,7 @@ static int __vxlan_dev_create(struct net *net, struct net_device *dev,
- 				       dst->remote_vni,
- 				       dst->remote_ifindex,
- 				       NTF_SELF, 0, true, extack);
--		spin_unlock_bh(&vxlan->hash_lock[hash_index]);
-+		spin_unlock_bh(&vxlan->hash_lock);
- 		if (err)
- 			goto unlink;
+-		hlist_for_each_safe(p, n, &vxlan->fdb_head[h]) {
+-			struct vxlan_fdb *f
+-				= container_of(p, struct vxlan_fdb, hlist);
+-			unsigned long timeout;
++	hlist_for_each_entry_safe(f, n, &vxlan->fdb_list, fdb_node) {
++		unsigned long timeout;
+ 
+-			if (f->state & (NUD_PERMANENT | NUD_NOARP))
+-				continue;
++		if (f->state & (NUD_PERMANENT | NUD_NOARP))
++			continue;
+ 
+-			if (f->flags & NTF_EXT_LEARNED)
+-				continue;
++		if (f->flags & NTF_EXT_LEARNED)
++			continue;
+ 
+-			timeout = READ_ONCE(f->updated) + vxlan->cfg.age_interval * HZ;
+-			if (time_before_eq(timeout, jiffies)) {
+-				netdev_dbg(vxlan->dev,
+-					   "garbage collect %pM\n",
+-					   f->eth_addr);
+-				f->state = NUD_STALE;
+-				vxlan_fdb_destroy(vxlan, f, true, true);
+-			} else if (time_before(timeout, next_timer))
+-				next_timer = timeout;
++		timeout = READ_ONCE(f->updated) + vxlan->cfg.age_interval * HZ;
++		if (time_before_eq(timeout, jiffies)) {
++			netdev_dbg(vxlan->dev, "garbage collect %pM\n",
++				   f->eth_addr);
++			f->state = NUD_STALE;
++			vxlan_fdb_destroy(vxlan, f, true, true);
++		} else if (time_before(timeout, next_timer)) {
++			next_timer = timeout;
+ 		}
  	}
-@@ -4420,9 +4410,7 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	spin_unlock(&vxlan->hash_lock);
+@@ -3050,31 +3034,25 @@ static void vxlan_flush(struct vxlan_dev *vxlan,
+ 			const struct vxlan_fdb_flush_desc *desc)
+ {
+ 	bool match_remotes = vxlan_fdb_flush_should_match_remotes(desc);
+-	unsigned int h;
++	struct hlist_node *n;
++	struct vxlan_fdb *f;
  
- 	/* handle default dst entry */
- 	if (rem_ip_changed) {
--		u32 hash_index = fdb_head_index(vxlan, all_zeros_mac, conf.vni);
+ 	spin_lock_bh(&vxlan->hash_lock);
+-	for (h = 0; h < FDB_HASH_SIZE; ++h) {
+-		struct hlist_node *p, *n;
 -
--		spin_lock_bh(&vxlan->hash_lock[hash_index]);
-+		spin_lock_bh(&vxlan->hash_lock);
- 		if (!vxlan_addr_any(&conf.remote_ip)) {
- 			err = vxlan_fdb_update(vxlan, all_zeros_mac,
- 					       &conf.remote_ip,
-@@ -4433,7 +4421,7 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
- 					       conf.remote_ifindex,
- 					       NTF_SELF, 0, true, extack);
- 			if (err) {
--				spin_unlock_bh(&vxlan->hash_lock[hash_index]);
-+				spin_unlock_bh(&vxlan->hash_lock);
- 				netdev_adjacent_change_abort(dst->remote_dev,
- 							     lowerdev, dev);
- 				return err;
-@@ -4447,7 +4435,7 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
- 					   dst->remote_vni,
- 					   dst->remote_ifindex,
- 					   true);
--		spin_unlock_bh(&vxlan->hash_lock[hash_index]);
-+		spin_unlock_bh(&vxlan->hash_lock);
- 
- 		/* If vni filtering device, also update fdb entries of
- 		 * all vnis that were using default remote ip
-@@ -4747,11 +4735,8 @@ vxlan_fdb_offloaded_set(struct net_device *dev,
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
- 	struct vxlan_rdst *rdst;
- 	struct vxlan_fdb *f;
--	u32 hash_index;
+-		hlist_for_each_safe(p, n, &vxlan->fdb_head[h]) {
+-			struct vxlan_fdb *f
+-				= container_of(p, struct vxlan_fdb, hlist);
 -
--	hash_index = fdb_head_index(vxlan, fdb_info->eth_addr, fdb_info->vni);
+-			if (!vxlan_fdb_flush_matches(f, vxlan, desc))
+-				continue;
+-
+-			if (match_remotes) {
+-				bool destroy_fdb = false;
++	hlist_for_each_entry_safe(f, n, &vxlan->fdb_list, fdb_node) {
++		if (!vxlan_fdb_flush_matches(f, vxlan, desc))
++			continue;
  
--	spin_lock_bh(&vxlan->hash_lock[hash_index]);
-+	spin_lock_bh(&vxlan->hash_lock);
+-				vxlan_fdb_flush_match_remotes(f, vxlan, desc,
+-							      &destroy_fdb);
++		if (match_remotes) {
++			bool destroy_fdb = false;
  
- 	f = __vxlan_find_mac(vxlan, fdb_info->eth_addr, fdb_info->vni);
- 	if (!f)
-@@ -4767,7 +4752,7 @@ vxlan_fdb_offloaded_set(struct net_device *dev,
- 	rdst->offloaded = fdb_info->offloaded;
+-				if (!destroy_fdb)
+-					continue;
+-			}
++			vxlan_fdb_flush_match_remotes(f, vxlan, desc,
++						      &destroy_fdb);
  
- out:
--	spin_unlock_bh(&vxlan->hash_lock[hash_index]);
-+	spin_unlock_bh(&vxlan->hash_lock);
+-			vxlan_fdb_destroy(vxlan, f, true, true);
++			if (!destroy_fdb)
++				continue;
+ 		}
++
++		vxlan_fdb_destroy(vxlan, f, true, true);
+ 	}
+ 	spin_unlock_bh(&vxlan->hash_lock);
  }
- 
- static int
-@@ -4776,13 +4761,11 @@ vxlan_fdb_external_learn_add(struct net_device *dev,
- {
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
- 	struct netlink_ext_ack *extack;
--	u32 hash_index;
- 	int err;
- 
--	hash_index = fdb_head_index(vxlan, fdb_info->eth_addr, fdb_info->vni);
- 	extack = switchdev_notifier_info_to_extack(&fdb_info->info);
- 
--	spin_lock_bh(&vxlan->hash_lock[hash_index]);
-+	spin_lock_bh(&vxlan->hash_lock);
- 	err = vxlan_fdb_update(vxlan, fdb_info->eth_addr, &fdb_info->remote_ip,
- 			       NUD_REACHABLE,
- 			       NLM_F_CREATE | NLM_F_REPLACE,
-@@ -4792,7 +4775,7 @@ vxlan_fdb_external_learn_add(struct net_device *dev,
- 			       fdb_info->remote_ifindex,
- 			       NTF_USE | NTF_SELF | NTF_EXT_LEARNED,
- 			       0, false, extack);
--	spin_unlock_bh(&vxlan->hash_lock[hash_index]);
-+	spin_unlock_bh(&vxlan->hash_lock);
- 
- 	return err;
- }
-@@ -4803,11 +4786,9 @@ vxlan_fdb_external_learn_del(struct net_device *dev,
- {
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
- 	struct vxlan_fdb *f;
--	u32 hash_index;
- 	int err = 0;
- 
--	hash_index = fdb_head_index(vxlan, fdb_info->eth_addr, fdb_info->vni);
--	spin_lock_bh(&vxlan->hash_lock[hash_index]);
-+	spin_lock_bh(&vxlan->hash_lock);
- 
- 	f = __vxlan_find_mac(vxlan, fdb_info->eth_addr, fdb_info->vni);
- 	if (!f)
-@@ -4821,7 +4802,7 @@ vxlan_fdb_external_learn_del(struct net_device *dev,
- 					 fdb_info->remote_ifindex,
- 					 false);
- 
--	spin_unlock_bh(&vxlan->hash_lock[hash_index]);
-+	spin_unlock_bh(&vxlan->hash_lock);
- 
- 	return err;
- }
-@@ -4870,18 +4851,15 @@ static void vxlan_fdb_nh_flush(struct nexthop *nh)
- {
- 	struct vxlan_fdb *fdb;
- 	struct vxlan_dev *vxlan;
--	u32 hash_index;
- 
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(fdb, &nh->fdb_list, nh_list) {
+@@ -4860,7 +4838,7 @@ static void vxlan_fdb_nh_flush(struct nexthop *nh)
  		vxlan = rcu_dereference(fdb->vdev);
  		WARN_ON(!vxlan);
--		hash_index = fdb_head_index(vxlan, fdb->eth_addr,
--					    vxlan->default_dst.remote_vni);
--		spin_lock_bh(&vxlan->hash_lock[hash_index]);
-+		spin_lock_bh(&vxlan->hash_lock);
- 		if (!hlist_unhashed(&fdb->hlist))
+ 		spin_lock_bh(&vxlan->hash_lock);
+-		if (!hlist_unhashed(&fdb->hlist))
++		if (!hlist_unhashed(&fdb->fdb_node))
  			vxlan_fdb_destroy(vxlan, fdb, false, false);
--		spin_unlock_bh(&vxlan->hash_lock[hash_index]);
-+		spin_unlock_bh(&vxlan->hash_lock);
+ 		spin_unlock_bh(&vxlan->hash_lock);
  	}
- 	rcu_read_unlock();
- }
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index 6e6e9f05509a..e137c5bb4478 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -483,11 +483,9 @@ static int vxlan_update_default_fdb_entry(struct vxlan_dev *vxlan, __be32 vni,
- 					  struct netlink_ext_ack *extack)
- {
- 	struct vxlan_rdst *dst = &vxlan->default_dst;
--	u32 hash_index;
- 	int err = 0;
- 
--	hash_index = fdb_head_index(vxlan, all_zeros_mac, vni);
--	spin_lock_bh(&vxlan->hash_lock[hash_index]);
-+	spin_lock_bh(&vxlan->hash_lock);
- 	if (remote_ip && !vxlan_addr_any(remote_ip)) {
- 		err = vxlan_fdb_update(vxlan, all_zeros_mac,
- 				       remote_ip,
-@@ -499,7 +497,7 @@ static int vxlan_update_default_fdb_entry(struct vxlan_dev *vxlan, __be32 vni,
- 				       dst->remote_ifindex,
- 				       NTF_SELF, 0, true, extack);
- 		if (err) {
--			spin_unlock_bh(&vxlan->hash_lock[hash_index]);
-+			spin_unlock_bh(&vxlan->hash_lock);
- 			return err;
- 		}
- 	}
-@@ -512,7 +510,7 @@ static int vxlan_update_default_fdb_entry(struct vxlan_dev *vxlan, __be32 vni,
- 				   dst->remote_ifindex,
- 				   true);
- 	}
--	spin_unlock_bh(&vxlan->hash_lock[hash_index]);
-+	spin_unlock_bh(&vxlan->hash_lock);
- 
- 	return err;
- }
-diff --git a/include/net/vxlan.h b/include/net/vxlan.h
-index 2dd23ee2bacd..272e11708a33 100644
---- a/include/net/vxlan.h
-+++ b/include/net/vxlan.h
-@@ -296,7 +296,7 @@ struct vxlan_dev {
- 	struct vxlan_rdst default_dst;	/* default destination */
- 
- 	struct timer_list age_timer;
--	spinlock_t	  hash_lock[FDB_HASH_SIZE];
-+	spinlock_t	  hash_lock;
- 	unsigned int	  addrcnt;
- 	struct gro_cells  gro_cells;
- 
 -- 
 2.49.0
 
