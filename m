@@ -1,140 +1,114 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46872957BB
-	for <netdev@vger.kernel.org>; Tue, 15 Apr 2025 11:30:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B080C1CD213;
+	Tue, 15 Apr 2025 11:37:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744716623; cv=none; b=mFqHvQjphlpJCwZOx5V2sUxdY/RMgVjzw0rdlPDa0gf9wM6lU1OkDtW4XXC3oz+maxltMjum8GOjnhN/8ULdbSNRIQv+mFC5q+KFgVau+/iKMhzSS/YQoIHIKpHYIUxBNv0tMYunetc6mNbq3atSUONUVlKzJPMIwbkSwaFFNig=
+	t=1744717058; cv=none; b=axmg4optlk5eZJnj6eRiSBCoFOEu2Th7VNCkt1SBD+K5EXAWtzCM+Haxu1jmcnQUeSaCTNX/gqrK+6frzZA1SQjI92KTmQJTfmKI8Nm0QPyBAJjfwd1h83FtWBwcEakCQIlOcwtjPL81+H1rY003I4TpPJPCckLTQtSA3JOiEbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744716623; c=relaxed/simple;
-	bh=ho+BIZkkHCNPFh5mOIzlN9sX0n4qGaVKCx7gnc8eyF4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sa68AEfpt6lQX6uUX483TM9YaFG1PzETN5GEikWdWh6+kWIyc3/d/xvV1jm1tk6xZUrkjtyijCH/xcpcnqH4Mufeu/LjDw9cFXB8yfNNqV9+JaVzEnF1H32wOZtOxhfe7BecP8YhSLBPD3NF2r6AwI0f/hhDST+SzLaOjEMN2mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iPG9uy8k; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1744717058; c=relaxed/simple;
+	bh=A2TSmsOW/blYb3WpryncuCWD9dGMjOMZAggqPa01g4o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=APFxj66CAQtuIvvBtd4P6NXbPLcWJntgcJou0XW6tBrJAR4+of8dH+b0NFMt/uakN0/Ychl8epq/pOppsU9LnsdWkL8AsxgE1TUWnSq8hQbQzSWktjoMnK49Tnvut719Q5d+UVdRBO0UFf0obW+8OkNVSBs8pNPkG6qMk19n8co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=P2ZwlbJA; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iPG9uy8k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744716620;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WL9NlzbUnGnzvSoEyfdI3sGtjP4UhtYp1pIkY1wcER4=;
-	b=iPG9uy8k+xEkozCXTGgj6nPsosdAHIESTYEkHKe9INeAOGPnpAqifpf01CAg0qc5o2UPI6
-	tX51+5LAUh50NiB+Pr29XsoXy2Mqqi0BVS/TPecOKhsem+kEh6PdZI+pV1JIIoyWPJBJ21
-	In9ToWGPKR1Zk75ODKYXLedtz24UNvg=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-424-S4LrtPCcNli_dQHPZa9fDg-1; Tue, 15 Apr 2025 07:30:18 -0400
-X-MC-Unique: S4LrtPCcNli_dQHPZa9fDg-1
-X-Mimecast-MFC-AGG-ID: S4LrtPCcNli_dQHPZa9fDg_1744716617
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43d4d15058dso42346445e9.0
-        for <netdev@vger.kernel.org>; Tue, 15 Apr 2025 04:30:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744716617; x=1745321417;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WL9NlzbUnGnzvSoEyfdI3sGtjP4UhtYp1pIkY1wcER4=;
-        b=u3aau54CWvXxOK8XDLNuv4q6jeR+ezBfjispy3zBA8bEBY9Gzl9yptLLzuaOjZhoca
-         chrESmd/P/Qlm9xtjI8fe72lFq3OOE/ZT02fHQXP6pEsuJEnnM8RqOOIra+tVJMzQfT3
-         H6dqnT1d8HujLZkbn5obhNugJr1skElxkEUZhQUoIbOlKburSJxEIwkG4XuJCyXcCU36
-         0V7tbOy7CcAAxCnlymV6XScGNX6nZw2tTUHiPU79fbG/ox3pha3AIZRCFQIVPORwPAMq
-         YxHiwHr4GlRlYwb4mgCCXSL7XJdu2aQq6QgQaLZDSj8+o7pHQqbMfNtnIWR+mKueAtGH
-         oKFw==
-X-Forwarded-Encrypted: i=1; AJvYcCXWPt+j7PffEIanXdhkh4e0DnnTHJygCQ8ekHL0SOMj7AZSjt/4rytY4zkSZeZUSlwOBQ5g8hs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuaRCCCW0nsLQkYsToegktKL+SyUM7NjGmE5Xo0O7z8wqizhdy
-	wMIcESx4pti4T3C/UI9/fTuiQbi9/HobMm/e5RC4qdqK/2NKq2RKdQXMtXI88BbbuMsK1QyDQC/
-	pAv+cuXfk69nlKCyFGiRYNAVZdsNFaQdgJtisrUnrNa1u73zNRglt4Q==
-X-Gm-Gg: ASbGnctFPznk5f9wNMY6kX3p72rR+OlY1u1scv2nAuxwcsIUril+PBWuxgHwQCfHT6K
-	lHiiqp5NLPFozJy2B1VxuAv6pnEjrEIwogab4C9lv5RK1yiZGleTQjWKVzCcAmo9maPMKR5do0p
-	HysiIOLOFJ3O2I5WSg7MRBRIVdU8z78VIGGZ8iYA1PIrUJJ0K4Bpcl7WWqeQVKnSFPdtRWunuHs
-	APjg55LirJ6fsmFIFTtu+tLBkcr5UX9o+OgECjSc6EtXYKFeMN/rgpcZaMNTxmylGVtU+fjl2Qa
-	XrOBIt4C5c86Ks0GmIamfORJvPWkOGOmbtqGoAU=
-X-Received: by 2002:a05:600c:1d88:b0:43d:7588:6688 with SMTP id 5b1f17b1804b1-43f3a94c5a0mr152192765e9.12.1744716617247;
-        Tue, 15 Apr 2025 04:30:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHHTty5zldCcVKBl8bs1qCQdERVonAOGxKe+N9IX3VziaHsTcIq127AQOONK9qhEgPTFMAq+g==
-X-Received: by 2002:a05:600c:1d88:b0:43d:7588:6688 with SMTP id 5b1f17b1804b1-43f3a94c5a0mr152192445e9.12.1744716616861;
-        Tue, 15 Apr 2025 04:30:16 -0700 (PDT)
-Received: from [192.168.88.253] (146-241-34-52.dyn.eolo.it. [146.241.34.52])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f206332d9sm206447235e9.13.2025.04.15.04.30.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Apr 2025 04:30:16 -0700 (PDT)
-Message-ID: <d44f79b3-6b3e-4c20-abdf-3e7da73e932f@redhat.com>
-Date: Tue, 15 Apr 2025 13:30:15 +0200
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="P2ZwlbJA"
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfout.phl.internal (Postfix) with ESMTP id B137B1380185;
+	Tue, 15 Apr 2025 07:37:35 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Tue, 15 Apr 2025 07:37:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1744717055; x=1744803455; bh=xYpBnhlfvA1MSL6hBNxfqsWMQtyi8h9iLjN
+	/6UqIjuc=; b=P2ZwlbJAvO+q01o0NnriO2vpssIqaGkTSwEVM4VBJl4Y2VCR0Yh
+	QxftKmA3ulAfQYUIVyCLuZn1J1QzKFbWlCQf0LkE9eisUklzOg25A+6fL4F6ga/d
+	4+AZcSeRBgbkP5mwcUlxR1qjfSuYVsJmymKQCA0ohNuIpMhjROXixzxaiPLOsno2
+	tLkofpj8Xc2l/qKWVVk6UlBAeipvgNoknHsyyaksj2WhWQ3h/Ji6TmNP/kbK0G48
+	1S65epLN1hSHct3r2bqs2z4ws3AEDTHkmRPeIium4UZeKyJceCRdKjXb70AxrWAo
+	WWkuLZxWnJk0VGMxUlDvb+8v9exnI01F8pQ==
+X-ME-Sender: <xms:_0T-Z_OWVxCe6TMOtPdrJWeZkZZuNFBcsX95ugJlGqHjdovh448uJg>
+    <xme:_0T-Z5-z49DJRsa_oOH8pcNtrcvFa6gYpUza-Qrv6iOFlcNdXOntL3PBea0Kzg1NI
+    MUjwlMjQ7aN4Ag>
+X-ME-Received: <xmr:_0T-Z-SsSPSAWILwvIXSCjl-aCZ362LXzlXLklmooj1RyMcLV4Hsw_7tycWV>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvdeffeelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepkfguohcuufgthhhimhhmvghluceoihguohhstghhsehiughoshgthh
+    drohhrgheqnecuggftrfgrthhtvghrnhepvddufeevkeehueegfedtvdevfefgudeifedu
+    ieefgfelkeehgeelgeejjeeggefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepihguohhstghhsehiughoshgthhdrohhrghdpnhgspghrtghp
+    thhtohepuddupdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrlhhokhdrrgdrth
+    hifigrrhhisehorhgrtghlvgdrtghomhdprhgtphhtthhopegurghvvghmsegurghvvghm
+    lhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomh
+    dprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggv
+    nhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
+    ihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    hnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:_0T-ZzvhWa1gTpiTtePZxTjJeV3v4eqkL1fYhwsiDdo1P0qnLQNWRA>
+    <xmx:_0T-Z3esR5gkU77DdKuj2sm7h-S9bugfxm8JRyfOcKzMc6Yh_uHGSw>
+    <xmx:_0T-Z_30Eezv0rE63jg5fDZYjX7RMM-1d5UAO0ptftLIMVSxOnVrMA>
+    <xmx:_0T-Zz8vmlciHaf6lrabGvkd-5CvN4QH9XwPnPk0giU20DzRlQdB5g>
+    <xmx:_0T-Z8CHlxxvXW_59mtLXknaULys4hIj3QC3LNt7EDfOsSS2XKm7eIPe>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 15 Apr 2025 07:37:34 -0400 (EDT)
+Date: Tue, 15 Apr 2025 14:37:31 +0300
+From: Ido Schimmel <idosch@idosch.org>
+To: Alok Tiwari <alok.a.tiwari@oracle.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, darren.kenny@oracle.com
+Subject: Re: [PATCH] selftests: rtnetlink: Fix bridge_parent_id failure on
+ interface state
+Message-ID: <Z_5E-wuE6b3HyHRU@shredder>
+References: <20250414172549.1691612-1-alok.a.tiwari@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] tcp: tcp_acceptable_seq select SND.UNA when SND.WND
- is 0
-To: Luiz Carvalho <luizcmpc@gmail.com>, netdev@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>
-References: <20250410175140.10805-3-luizcmpc@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250410175140.10805-3-luizcmpc@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250414172549.1691612-1-alok.a.tiwari@oracle.com>
 
+On Mon, Apr 14, 2025 at 10:25:33AM -0700, Alok Tiwari wrote:
+> The selftest "kci_test_bridge_parent_id" fails with the error:
+> "Device can not be enslaved while up" when trying to attach interfaces
+> (`eni10np1`, `eni20np1`) to a bonding device (`test-bond0`) while the
+> interfaces are in the UP state.
 
+Why are they up? The test creates the interfaces and never brings them
+up.
 
-On 4/10/25 7:50 PM, Luiz Carvalho wrote:
-> The current tcp_acceptable_seq() returns SND.NXT when the available
-> window shrinks to less then one scaling factor. This works fine for most
-> cases, and seemed to not be a problem until a slight behavior change to
-> how tcp_select_window() handles ZeroWindow cases.
-> 
-> Before commit 8c670bdfa58e ("tcp: correct handling of extreme memory squeeze"),
-> a zero window would only be announced when data failed to be consumed,
-> and following packets would have non-zero windows despite the receiver
-> still not having any available space. After the commit, however, the
-> zero window is stored in the socket and the advertised window will be
-> zero until the receiver frees up space.
-> 
-> For tcp_acceptable_seq(), a zero window case will result in SND.NXT
-> being sent, but the problem now arises when the receptor validates the
-> sequence number in tcp_sequence():
-> 
-> static enum skb_drop_reason tcp_sequence(const struct tcp_sock *tp,
-> 					 u32 seq, u32 end_seq)
-> {
-> 	// ...
-> 	if (after(seq, tp->rcv_nxt + tcp_receive_window(tp)))
-> 		return SKB_DROP_REASON_TCP_INVALID_SEQUENCE;
-> 	// ...
-> }
-> 
-> Because RCV.WND is now stored in the socket as zero, using SND.NXT will fail
-> the INVALID_SEQUENCE check: SEG.SEQ <= RCV.NXT + RCV.WND. A valid ACK is
-> dropped by the receiver, correctly, as RFC793 mentions:
-> 
-> 	There are four cases for the acceptability test for an incoming
->         segment:
-> 
-> 	Segment Receive  Test
->         Length  Window
->         ------- -------  -------------------------------------------
-> 
->            0       0     SEG.SEQ = RCV.NXT
-> 
-> The ACK will be ignored until tcp_write_wakeup() sends SND.UNA again,
-> and the connection continues. If the receptor announces ZeroWindow
-> again, the stall could be very long, as was in my case. Found this out
-> while giving a shot at bug #213827.
+It's most likely caused by some interface manager in your user space. I
+suggest fixing that instead.
 
-The dropped ack causing the stall is a zero window probe from the sender
-right?
-Could you please describe the relevant scenario with a pktdrill test?
+> 
+> Failure log:
+> COMMAND: ip link set dev eni10np1 master test-bond0
+>     Error: Device can not be enslaved while up.
+> COMMAND: ip link set dev eni20np1 master test-bond0
+>     Error: Device can not be enslaved while up.
+> FAIL: bridge_parent_id
+> 
+> This behavior aligns with bonding driver requirements, where a slave
+> interface must be in the DOWN state before being enslaved. This was
+> reinforced in upstream commit: 'ec4ffd100ffb ("Revert 'net: rtnetlink:
+> Enslave device before bringing it up'")'.
+> 
+> This patch updates the test to bring interfaces down explicitly before
+> adding them to the bonding device:
 
-Thanks!
-
-Paolo
-
+I don't see why the test needs to bring them down when it never brought
+them up to begin with.
