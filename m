@@ -1,100 +1,104 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49D321D3F4
-	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 09:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04ED42260C
+	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 09:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744795419; cv=none; b=azg15L7/9xF7TshYP8s2kF2sqavq0QY0jAUGz9C4RerR+yVrMEQHkggLQcljdWAH2N2qG+JKketOiO6wzut0JB7zvNSTRI/im5nvggKXLXcClFSnoTs5t3EBFBo8oG2T2VXSMPd3zPDTLbDzRRbUW373bWShvKKafOZc6w9m2Gw=
+	t=1744795921; cv=none; b=Ou3rOhnlB+yqFw/IaSxtChVVZvi63cCYf9ow0M740KOoKT7W5hgm7k2GPOemMzW7VK4Z+o3LxlJuOEZ3eG9aT6grQf+y+wGT7aQ7B/baRhVzp49Tgd2J+d6+TyKJoFvUk8tjPdLm92fED/NJ546s5pSPRHRcQBMOsv2M/VTfjhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744795419; c=relaxed/simple;
-	bh=aQARw0r5jwsZxnY/PcJzIvLUU2cVyj4CIAvdit1QmGU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r8z6BKAogFrWrTb/etqOTxTASOUsWps3P+dfo8k2mwbNzgQ8qZUstFtur+zToNR5fnxk8jU4UbRr9ZQDfSNABpUKgYEmp6cweXSXyjaxeecp3UZDlsRMoUCmx/Hhoe2RWtvddYo64Rb0AfrlLW+UfzGRHzCq64atSVKSwrtKZUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XlSxPNTp; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1744795921; c=relaxed/simple;
+	bh=5paRVicrWd71oiRR5Cc8caylxl2j+fSDbbeYtNvIGlE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=kz1cqWyCDQrUwFUTTdrZY89/A/gP/+X4nNUsVbeQZkTcNJ+BOMqn9JtVu/77lxU3wUWKlRFEdtPx0FFKb1jVZKWtfrGPoQw4WaOe6ez0gLkGUJgCFnqH/y184jSMWz/oIBTCsbdEfQckm8Bf1Y0vS9ujenkzzGnO1l8ILIWl7dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=fqDJ91iq; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XlSxPNTp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744795416;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QAqvI/C2fuFiXzVmzEC2R1KgB3LYPmYKQDzm57373Xc=;
-	b=XlSxPNTpsbPFoy8IQLkT/dYlw0cnmTzgzNSRYeykIRBfA59ebFDvRXYkTR/nw9A+U6kPZO
-	lPO5ieZJdBkPjuyxaRZsKhKezej3JbpFXn5ERZLxLzfDJXJJUnt0JW6yuYUR28rjQmHrKY
-	zq25zYX+QQtS3Q82HJQl8SHS1kWoLJo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-456-L29dVo8COta4PYBF4ZCPpQ-1; Wed, 16 Apr 2025 05:23:35 -0400
-X-MC-Unique: L29dVo8COta4PYBF4ZCPpQ-1
-X-Mimecast-MFC-AGG-ID: L29dVo8COta4PYBF4ZCPpQ_1744795414
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43cf172ffe1so51845545e9.3
-        for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 02:23:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744795414; x=1745400214;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QAqvI/C2fuFiXzVmzEC2R1KgB3LYPmYKQDzm57373Xc=;
-        b=dzJzpqUU85KK7XtTkKPbdYyg+hG9M1A/a8hu9roKbKfEkfbCF54xCiP7H9RXa/agGY
-         2vFEdOYf41LBk0Aqgdq7RUpaXWaMQ9zhljw4tgwUa+HmAxzokrd4SeEVvv3fKmAK5Ls+
-         FRU1Baupqq9TFrckD08VtwZWKycGFW8H03rFgYh8WKJk3O8uLo8Rav9KtVYMtt15nFyN
-         c96Wq8yOCJwjPjzEeLv90hBoBis6ZDerbbjgrtH6FfuP10qe6mUVDOAYMLnk7C8xntnG
-         qR3/gBmjmUkdzwBpd5Vm3uY81P3GddzsDpz+7NtsL3H22qyTJ9W+/IVTCCuHuqcfEVeJ
-         2yLw==
-X-Forwarded-Encrypted: i=1; AJvYcCVmfKQvP196UjlpGKgQ42CnVKg6zDGPktszg1VeR7p8jgqZSljoBtvMeMpdsh9yIZn+Ti8czQA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyO+FZ4WbJharWcn+2XK/T+bTmGxkNkwKXhXgYdUPgRKCdTYh//
-	U+KlvZ803NzAhEXsCsecwenVLDtuxarhtpOdmvpa64daGLVfgZQJYheKNDtYAuq2uXk5P56VZ5q
-	rJ+pi7mjB9QSsLJHR6o/Okd6C5YvS/SiJiDg73a4tid699cHEd+kxyQ==
-X-Gm-Gg: ASbGnctFYC752x9eAWcN6ixLDQgTfFy3ZLZuxpIBb25rsM0+cI7siZGj8rc5UmEULn+
-	HYN7iTUC/UVCVgfBVXnHSg/T6qj4ptfjelDVtCaydYlK6HNDrgc5QIdAk891uiFOo0JY4LW9WVu
-	mWSgprSfp/Yngx9LzzM/RwJ2f4YWs8gmLZJ5H1htmr+wDVTU1x4xuuAoZHZ2PNIwtXshU19pbO8
-	i5Z1zwD7dlJeWIyV74fdMyYaH41l9qHI+6SZPZBRJJpned7XZsHeCXxKSHo7R0xkpFaFndic5ln
-	Bqni7FxTX9mEbm3wtIBiImgk9Ix09H3wwF1v3Q0=
-X-Received: by 2002:a05:600c:c07:b0:43d:fa59:be39 with SMTP id 5b1f17b1804b1-4405d6bfd5bmr9354565e9.33.1744795414127;
-        Wed, 16 Apr 2025 02:23:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE3HKPRsmzIW7RTPhj1CUzbI3RkTRupJ0Crfwa5nDETw8xZ2UxgXhmInSnalWsyilLxEMw7vw==
-X-Received: by 2002:a05:600c:c07:b0:43d:fa59:be39 with SMTP id 5b1f17b1804b1-4405d6bfd5bmr9354315e9.33.1744795413687;
-        Wed, 16 Apr 2025 02:23:33 -0700 (PDT)
-Received: from [192.168.88.253] (146-241-34-52.dyn.eolo.it. [146.241.34.52])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eae96c123sm17127510f8f.36.2025.04.16.02.23.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Apr 2025 02:23:33 -0700 (PDT)
-Message-ID: <917877cc-414f-48c5-a9b3-0cda1fca09da@redhat.com>
-Date: Wed, 16 Apr 2025 11:23:32 +0200
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="fqDJ91iq"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=xHYaOtwx99ZZgi8ahq47uLXju4A9RCSm3k3c98E5wYI=; b=fqDJ91iq7sXU6lG5+Xaf6CZH6A
+	xRTvrrlxNWtyH0c+78YyIh/ZgKdsGwXDqxKcb62dNl3rpa2u4PVOMq44XrMNxeDq0BAS5sewyupBv
+	QJHCLn6hJC3+UWthihjjaKMeue6noJDORmBJEoYkQo5gaZiKl88jLHNh6oEq8x2rqjKtc2HIaLMQx
+	Fw8oHP5hUrolWoM1aZJxm78UJTsWTRa/vbdH4bDsazspygcmU3wajRCkaRZ+afPLHv9QHgdRmjVBE
+	1uDMeXdD34KCS1xv4qsQDw19plgleDEDZC+VGKwlGbTHuUANj80pifhtN258zEqqhaMqf3gbmTonP
+	k+uTnleQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58106)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1u4z7V-0000yH-0c;
+	Wed, 16 Apr 2025 10:31:49 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1u4z7Q-0001Hh-0x;
+	Wed, 16 Apr 2025 10:31:44 +0100
+Date: Wed, 16 Apr 2025 10:31:44 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next v2 0/5] net: stmmac: socfpga: fix init ordering and
+ cleanups
+Message-ID: <Z_95AM64tt_4ri1j@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v2 net-next 07/14] ipv6: Preallocate
- rt->fib6_nh->rt6i_pcpu in ip6_route_info_create().
-To: Kuniyuki Iwashima <kuniyu@amazon.com>,
- "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
- netdev@vger.kernel.org
-References: <20250414181516.28391-1-kuniyu@amazon.com>
- <20250414181516.28391-8-kuniyu@amazon.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250414181516.28391-8-kuniyu@amazon.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 4/14/25 8:14 PM, Kuniyuki Iwashima wrote:
-> ip6_route_info_create_nh() will be called under RCU.
-> 
-> Then, fib6_nh_init() is also under RCU, but per-cpu memory allocation
-> is very likely to fail with GFP_ATOMIC while bluk-adding IPv6 routes
+Hi,
 
-oops, I forgot a very minor nit:               ^^^^ bulk
+This series fixes the init ordering of the socfpga probe function.
+The standard rule is to do all setup before publishing any device,
+and socfpga violates that. I can see no reason for this, but these
+patches have not been tested on hardware.
 
-/P
+Address this by moving the initialisation of dwmac->stmmac_rst
+along with all the other dwmac initialisers - there's no reason
+for this to be late as plat_dat->stmmac_rst has already been
+populated.
 
+Next, replace the call to ops->set_phy_mode() with an init function
+socfpga_dwmac_init() which will then be linked in to plat_dat->init.
+
+Then, add this to plat_dat->init, and switch to stmmac_pltfr_pm_ops
+from the private ops. The runtime suspend/resume socfpga implementations
+are identical to the platform ones, but misses the noirq versions
+which this will add.
+
+Before we swap the order of socfpga_dwmac_init() and
+stmmac_dvr_probe(), we need to change the way the interface is
+obtained, as that uses driver data and the struct net_device which
+haven't been initialised. Save a pointer to plat_dat in the socfpga
+private data, and use that to get the interface mode. We can then swap
+the order of the init and probe functions.
+
+Finally, convert to devm_stmmac_pltfr_probe() by moving the call
+to ops->set_phy_mode() into an init function appropriately populating
+plat_dat->init.
+
+v2: fix oops when calling set_phy_mode() early.
+
+ .../net/ethernet/stmicro/stmmac/dwmac-socfpga.c    | 79 +++++-----------------
+ 1 file changed, 16 insertions(+), 63 deletions(-)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
