@@ -1,202 +1,120 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEF71FF1C7;
-	Wed, 16 Apr 2025 14:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F771B042E
+	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 14:00:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744812006; cv=none; b=TdoVWMcuLu528EeDdCJ8CKom1XNOIfi9ATt5X1ll+GFHbj9IoVs530BKR76yS5FaBezRUolrk8mK+lnzi+2FbltNFkNVtKXGGQYJ8OKJ4IQO7revJ3RxOy3BOL771Qjpr8maSGiaNLCcU7K4e4lZHozO7Roe+E1Flp0n95sodT4=
+	t=1744812051; cv=none; b=lgTalcTZlnWsK0k2MDuVAnPZv/cdlSjXr+R2L7cSD8bw07y/WU6LNxhaps2ooLDbnYQm1s3vYY34hN/3HPLSU/MP4x9INljcqGu/AE8hNF5/Uk8dn7Yn5rs6aHJANfhEj+6eTKNYBlKb7fGkwVve9GDXh2gMEREksrfF502oKPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744812006; c=relaxed/simple;
-	bh=luuZwnA57py/IT0wbmPZ1ZWYUmQInFWtDeYolOtf3Do=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NnOOq9qrPizMPl4MgpDNadxUi+ktoCMRe6Mqmi4PKO/yvI+VKQhUUfues+o1ogb8YGO0VnIGobhYMw8bDwijmdbHHHrj2sT9ADAGsUt19ZZLr3k4L82Uq8sP1ziCiQMZNV5uj6XEJ0K/EZJ9goO+yF835RiALMxNZOZttmTm12c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AZdym7W6; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744812051; c=relaxed/simple;
+	bh=oraib7zOH3boZOyNP2NfBNntBUxMqQyjHvBjd3k1yD8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tW63iyPfBtYGPVnL6jnEi64YiUSjIn25oqmwG3ted3ivKUPZbySAc9LiK+/f6ROZeVg9+3wgFWr20iS1oF7kQNfrJnkBra59IF3pzrAjwnCdtv1Z+Ip9K7wv88TrK/kODpuDXgPhdec83ktUeowrajiNxBPrGNElfJc8aMJ2SK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=w1gCc6/U; arc=none smtp.client-ip=209.85.161.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AZdym7W6"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5e6f4b3ebe5so11825691a12.0;
-        Wed, 16 Apr 2025 07:00:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="w1gCc6/U"
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-60208b7a6d6so1803400eaf.1
+        for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 07:00:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744812002; x=1745416802; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IUgvm+DiPpmDjC2mORrvt+5jPl+d2nrcr0fpozEFS0o=;
-        b=AZdym7W6Je0cYSGQ5CDVv9gjbcqfNwb/w8VNxxPhsYpi8o9t68xIDw5ya2xFpCcw8v
-         llUEMIweqKhqAVNr47RQkOxhuCokp0UwOu8Z3EdffpsVbgK3Xb0scaQHHkAqVQ9YkCkM
-         ESY70AxFIRJwns4HorI9ju8GYoalH0+ytjNfQP5FVZEwrAR0fok9fEeiOWbG6GsXzw4l
-         eQB92/2P2AtlkY/h6z3OCKrrduOo24nEN/UVHhYldnDBvTzMswym2TeWy2Hi1z1zG6NY
-         frBKlBf8uhAjiUfsdctssdk1Db+3LsqayXhpiZzbNBWyHxezp+VSsIuoKSTFBJdCrE3T
-         iZrA==
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1744812048; x=1745416848; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5Q+VK6lwMdiK2HjCiZaR6gJ7FPBmf+K3pu4U+CKGrnE=;
+        b=w1gCc6/U2h/yrWWJRHTJ6Z2ks8qcNTTcblhULrxT7c5wizXcgLpSt9Tdb2PqrZ6RQd
+         cHVc9VBDkiFF61iRYlUIcOhIaHL5vrFmxiENNiDHZOtNUbix9kSI0uBuhBcPnPSMBdNj
+         6Ois+PEvSPyjCf1JCpou+jwGgD5C9CKEk6ecbmJBGsiGCFQaiMVkQmXzLu01hJ2ImGN7
+         49gDtHOCnNy4ANo+fuWBFoKad9HFv+gYsPOTK2ERabEiRIyeiICidml6RjpEMzlgx9hH
+         vx5myo8GOwvi/wIO6a2yBIuQ/cywYZiVeG9gRWghgbLGpUAV0+GkEdrfhVYY6E8Ik5/+
+         ZR6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744812002; x=1745416802;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IUgvm+DiPpmDjC2mORrvt+5jPl+d2nrcr0fpozEFS0o=;
-        b=vu/lJQaPJOTbyfm58LEImWy5aNDNU6JjpZO/MIIA5g+lcb2yK71i6NjCEgHc/+0P1v
-         SdCZnuSnGpBKA1GIdnaFCyZY8vemotwlfdtFlK9YkFZpY/S4FyBVRyxEOb2uAHGXGuV8
-         VtOjLYUHHKRcE/SyyRpxz2JyJXwPakqjMW1UQI02EqWAI8OG9RkF3vIFH1wM5cC7OqTk
-         wY8KOc3nNG4AFDzZb2LafOAvXmrttyz7nTqLWL5mUAiCNX3xYxaIiaZVNll/33dlxVFB
-         lGtIL6fb6u7Im2xJ/Yc6WpEi2jdfdDaQ1CJ+tdTNX/I4AacyxHYWr9m0bKLdWayB+J4a
-         9nAw==
-X-Forwarded-Encrypted: i=1; AJvYcCUdvaObVQB8qbqUIw5i6LvOncKL6XGZ2ApkuzVcHimIM6OIBryF1vSNkm4y22vShEmWR9NxkSHn@vger.kernel.org, AJvYcCXgCmqk3hjNM6nxJ30QnfyYhJgN97pUwy9yewOCepTMxZuwCs1YnLTWbrRRgSoIdO6s8j8j1ooo50bubeM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyISnh+pJEdNWqukeapcxHT8pRqLtO71jkDoDIS4IEUjwolIvjS
-	Oeg2cwlu9+tk7igpsjfMM+NJp1QNtbG9qSFWx5UCwRzSOUBO428GB24P9TDp/SHDAYKCTSbSr69
-	p4+JMapfqHlSIeuetNW2eatYoUIs=
-X-Gm-Gg: ASbGncv5Rg2aNzOlD6RV5d76hVhQ2tTUNlWpICmd0EexmmA+sONxQAM9NivzZ/wRfHW
-	IQvFkiH2Wr1McwYGepGAf+zm3usgCKnheidCTsm3AJ78CcSPp00xTqT/Xjoa/bgZKRbMEJhNWkV
-	Fi7I8KVjDfGwwVmxXoS2HA
-X-Google-Smtp-Source: AGHT+IFybF67oGA69tGhjx227ggX9ZUR73/3iBTjwBDtuR4eg/2zNDJZjb1T1t5XXyD0pv+unM3x1++ujHfZ4rHc6yY=
-X-Received: by 2002:a17:907:7b87:b0:ac7:f2b9:ec3b with SMTP id
- a640c23a62f3a-acb428748d0mr160511966b.4.1744812002038; Wed, 16 Apr 2025
- 07:00:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744812048; x=1745416848;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5Q+VK6lwMdiK2HjCiZaR6gJ7FPBmf+K3pu4U+CKGrnE=;
+        b=TrTyvt85dMSjDaebyQSqJVknCP/sVdVnB32Klw7E0F2wFboOYGG9u0I9jKMsNrJ0uX
+         xblk79Ea9fQ5oQCAEXNHoLmBtJXJCK3O55pcJmx031Vc0USUM1yFKzsEZ4CEVCqh/QpF
+         J/gku5IKCfY90faryqSe7mOhH1QcUcpCTaQkpCAgty6imw9rVkcE7Wra1s8txcJtfJeD
+         akEJyGo/4t3pBZS7hNZzQpQ34EotC0ShLZmj1k1MFV0CwNQnzWWa0fhHFJ4jXbzUH2TX
+         9GGQATwvUdnEQ3k6DbX6u1PfOWJg4DkvwE9FulFEWntqGkudi9Iwmk2VQg6uFtLKYPtY
+         xbrw==
+X-Forwarded-Encrypted: i=1; AJvYcCXsl6VueikOYqjxfZO7cXecOQhEnd5q4odCAqqUNSZnx4nozlY3K1RKOA87+wgqgbRJcvHLMdI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBD9POEK0TCULUcod+sRyspOicpvBJzPmwEL3PRt7LlfIslmfW
+	g6NRLUgzTfpYyTR7FldaIYRXHmAlRT5Co0yyg4gxL8fFHhfUC7ZTz4rCNejMiEkLcBmZr8e60U4
+	6qw==
+X-Gm-Gg: ASbGncuCTKJx7QIUXR7BF9EndJl2Sj55rwFE5eirvyAJkz2VtSVXQlkH2cddtf8vQj2
+	qgrxrqNcY2sVhcZtxeU5bLPJyuyhd8eJM28ju6edkIcSOtpkX9yI/n5VbEb1mrHvCEswWbWQJU1
+	VD/rVtEd4sVY8EHrqzycdqfzzjHlnr0krDIkzOtOlsLE2umlB1qTcbcRTRJBJCutDolNzQrLLAu
+	ki8DoL9Pss84i1b++R0Qemc1AtzZvd9tNbN4BYETv4AdosKoCQ8LZe/uy1/xcEA+2i8BOApCqDZ
+	E3hPtGyklWEn8E5VbUqfYfizi84U2VtOOPUIIwPowcOS5obvh7ck0iYp1uCWAVQuOYX/wrqkC0D
+	IT18eMp+RnLM=
+X-Google-Smtp-Source: AGHT+IFQ3LNuBEeENP6A6Anhn9u1qTz/q6X7tw3M5Uh4kB5k5N0rlo6OPU1WKAj+SEWvfKT946CJJw==
+X-Received: by 2002:a05:6820:c90:b0:603:f1b5:ca02 with SMTP id 006d021491bc7-604a92b004cmr1088895eaf.6.1744812046420;
+        Wed, 16 Apr 2025 07:00:46 -0700 (PDT)
+Received: from ?IPV6:2804:7f1:e2c3:dc7b:da12:1e53:d800:3508? ([2804:7f1:e2c3:dc7b:da12:1e53:d800:3508])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-604a5b6379dsm347281eaf.2.2025.04.16.07.00.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Apr 2025 07:00:45 -0700 (PDT)
+Message-ID: <8272f999-fe55-4afb-894a-57a7cc161473@mojatatu.com>
+Date: Wed, 16 Apr 2025 11:00:35 -0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250414085412.117120-1-maimon.sagi@gmail.com>
- <b6aea926-ebb6-48fe-a1be-6f428a648eae@linux.dev> <CAMuE1bG_+qj++Q0OXfBe3Z_aA-zFj3nmzr9CHCuKJ_Jr19oWEg@mail.gmail.com>
- <aa9a1485-0a0b-442b-b126-a00ee5d4801c@linux.dev> <CAMuE1bETL1+sGo9wq46O=Ad-_aa8xNLK0kWC63Mm5rTFdebp=w@mail.gmail.com>
- <39839bcb-90e9-4886-913d-311c75c92ad8@linux.dev> <CAMuE1bHsPeaokc-_qR4Ai8o=b3Qpbosv6MiR5_XufyRTtE4QFQ@mail.gmail.com>
- <44b67f86-ed27-49e8-9e15-917fa2b75a60@linux.dev> <CAMuE1bFk=LFTWfu8RFJeSoPtjO8ieJDdEHhHpKYr4QxqB-7BBg@mail.gmail.com>
- <507eb775-d7df-4dd2-a7d1-626d5a51c1de@linux.dev>
-In-Reply-To: <507eb775-d7df-4dd2-a7d1-626d5a51c1de@linux.dev>
-From: Sagi Maimon <maimon.sagi@gmail.com>
-Date: Wed, 16 Apr 2025 16:59:33 +0300
-X-Gm-Features: ATxdqUFIjnpeuKHyLdCEt5PwV7Ym-YP21Nq8a5H3aqMI-LdF0ngvFWyHmxIZvzM
-Message-ID: <CAMuE1bFLB24ELFOSG=v+0hxJ+a+KGNWc8=Z3=kbXOs03PtLFOA@mail.gmail.com>
-Subject: Re: [PATCH v1] ptp: ocp: fix NULL deref in _signal_summary_show
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: jonathan.lemon@gmail.com, richardcochran@gmail.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 net-next 2/5] selftests/tc-testing: Add selftests for
+ qdisc DualPI2
+To: Jakub Kicinski <kuba@kernel.org>, chia-yu.chang@nokia-bell-labs.com
+Cc: xandfury@gmail.com, netdev@vger.kernel.org, dave.taht@gmail.com,
+ pabeni@redhat.com, jhs@mojatatu.com, stephen@networkplumber.org,
+ xiyou.wangcong@gmail.com, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@google.com, horms@kernel.org, andrew+netdev@lunn.ch,
+ donald.hunter@gmail.com, ast@fiberby.net, liuhangbin@gmail.com,
+ shuah@kernel.org, linux-kselftest@vger.kernel.org, ij@kernel.org,
+ ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com,
+ g.white@cablelabs.com, ingemar.s.johansson@ericsson.com,
+ mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at,
+ Jason_Livingood@comcast.com, vidhi_goel@apple.com
+References: <20250415124317.11561-1-chia-yu.chang@nokia-bell-labs.com>
+ <20250415124317.11561-3-chia-yu.chang@nokia-bell-labs.com>
+ <20250416065223.4e4c4379@kernel.org>
+Content-Language: en-US
+From: Victor Nogueira <victor@mojatatu.com>
+In-Reply-To: <20250416065223.4e4c4379@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 16, 2025 at 1:35=E2=80=AFPM Vadim Fedorenko
-<vadim.fedorenko@linux.dev> wrote:
->
-> On 16/04/2025 07:33, Sagi Maimon wrote:
-> > On Mon, Apr 14, 2025 at 4:55=E2=80=AFPM Vadim Fedorenko
-> > <vadim.fedorenko@linux.dev> wrote:
-> >>
-> >> On 14/04/2025 14:43, Sagi Maimon wrote:
-> >>> On Mon, Apr 14, 2025 at 4:01=E2=80=AFPM Vadim Fedorenko
-> >>> <vadim.fedorenko@linux.dev> wrote:
-> >>>>
-> >>>> On 14/04/2025 12:38, Sagi Maimon wrote:
-> >>>>> On Mon, Apr 14, 2025 at 2:09=E2=80=AFPM Vadim Fedorenko
-> >>>>> <vadim.fedorenko@linux.dev> wrote:
-> >>>>>>
-> >>>>>> On 14/04/2025 11:56, Sagi Maimon wrote:
-> >>>>>>> On Mon, Apr 14, 2025 at 12:37=E2=80=AFPM Vadim Fedorenko
-> >>>>>>> <vadim.fedorenko@linux.dev> wrote:
-> >>>>>>>>
-> >>>>>>>> On 14/04/2025 09:54, Sagi Maimon wrote:
-> >>>>>>>>> Sysfs signal show operations can invoke _signal_summary_show be=
-fore
-> >>>>>>>>> signal_out array elements are initialized, causing a NULL point=
-er
-> >>>>>>>>> dereference. Add NULL checks for signal_out elements to prevent=
- kernel
-> >>>>>>>>> crashes.
-> >>>>>>>>>
-> >>>>>>>>> Fixes: b325af3cfab9 ("ptp: ocp: Add signal generators and updat=
-e sysfs nodes")
-> >>>>>>>>> Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
-> >>>>>>>>> ---
-> >>>>>>>>>       drivers/ptp/ptp_ocp.c | 3 +++
-> >>>>>>>>>       1 file changed, 3 insertions(+)
-> >>>>>>>>>
-> >>>>>>>>> diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-> >>>>>>>>> index 7945c6be1f7c..4c7893539cec 100644
-> >>>>>>>>> --- a/drivers/ptp/ptp_ocp.c
-> >>>>>>>>> +++ b/drivers/ptp/ptp_ocp.c
-> >>>>>>>>> @@ -3963,6 +3963,9 @@ _signal_summary_show(struct seq_file *s, =
-struct ptp_ocp *bp, int nr)
-> >>>>>>>>>           bool on;
-> >>>>>>>>>           u32 val;
-> >>>>>>>>>
-> >>>>>>>>> +     if (!bp->signal_out[nr])
-> >>>>>>>>> +             return;
-> >>>>>>>>> +
-> >>>>>>>>>           on =3D signal->running;
-> >>>>>>>>>           sprintf(label, "GEN%d", nr + 1);
-> >>>>>>>>>           seq_printf(s, "%7s: %s, period:%llu duty:%d%% phase:%=
-llu pol:%d",
-> >>>>>>>>
-> >>>>>>>> That's not correct, the dereference of bp->signal_out[nr] happen=
-s before
-> >>>>>>>> the check. But I just wonder how can that even happen?
-> >>>>>>>>
-> >>>>>>> The scenario (our case): on ptp_ocp_adva_board_init we
-> >>>>>>> initiate only signals 0 and 1 so 2 and 3 are NULL.
-> >>>>>>> Later ptp_ocp_summary_show runs on all 4 signals and calls _signa=
-l_summary_show
-> >>>>>>> when calling signal 2 or 3  the dereference occurs.
-> >>>>>>> can you please explain: " the dereference of bp->signal_out[nr] h=
-appens before
-> >>>>>>> the check", where exactly? do you mean in those lines:
-> >>>>>>> struct signal_reg __iomem *reg =3D bp->signal_out[nr]->mem;
-> >>>>>>        ^^^
-> >>>>>> yes, this is the line which dereferences the pointer.
-> >>>>>>
-> >>>>>> but in case you have only 2 pins to configure, why the driver expo=
-ses 4
-> >>>>>> SMAs? You can simply adjust the attributes (adva_timecard_attrs).
-> >>>>>>
-> >>>>> I can (and will) expose only 2 sma in adva_timecard_attrs, but stil=
-l
-> >>>>> ptp_ocp_summary_show runs
-> >>>>> on all 4 signals and not only on the on that exposed, is it not a b=
-ug?
-> >>>>
-> >>>> Yeah, it's a bug, but different one, and we have to fix it other way=
-.
-> >>>>
-> >>> Do you want to instruct me how to fix it , or will you fix it?
-> >>
-> >> well, the original device structure was not designed to have the amoun=
-t
-> >> of SMAs less than 4. We have to introduce another field to store actua=
-l
-> >> amount of SMAs to work with, and adjust the code to check the value. T=
-he
-> >> best solution would be to keep maximum amount of 4 SMAs in the structu=
-re
-> >> but create a helper which will init new field and will have
-> >> BUILD_BUG_ON() to prevent having more SMAs than fixed size array for
-> >> them. That will solve your problem, but I will need to check it on the
-> >> HW we run.
-> >>
-> > just to be clear you will write the fix and test it on your HW, so you
-> > don't want me to write the fix?
->
-> Well, it would be great if you can write the code which will make SMA
-> functions flexible to the amount of pin the HW has. All our HW has fixed
-> amount of 4 pins that's why the driver was coded with constants. Now
-> your hardware has slightly different amount of pins, so it needs
-> adjustments to the driver to work properly. I just want to be sure that
-> any adjustments will not break my HW - that's what I meant saying I'll
-> test it.
->
-Just to be clear (correct me please if I am wrong):
-I will write the code, then create a patch and upstream to the vanilla
-you will test my change on your HW and only then approve the patch
-> >>>>>>> struct ptp_ocp_signal *signal =3D &bp->signal[nr];
-> >>>>>>>> I believe the proper fix is to move ptp_ocp_attr_group_add() clo=
-ser to
-> >>>>>>>> the end of ptp_ocp_adva_board_init() like it's done for other bo=
-ards.
-> >>>>>>>>
-> >>>>>>>> --
-> >>>>>>>> pw-bot: cr
-> >>>>>>
-> >>>>
-> >>
->
+On 4/16/25 10:52, Jakub Kicinski wrote:
+> On Tue, 15 Apr 2025 14:43:14 +0200 chia-yu.chang@nokia-bell-labs.com
+> wrote:
+>> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+>>
+>> Update configuration of tc-tests and preload DualPI2 module for self-tests,
+>> and add folloiwng self-test cases for DualPI2:
+>>
+>>    Test a4c7: Create DualPI2 with default setting
+>>    Test 2130: Create DualPI2 with typical_rtt and max_rtt
+>>    Test 90c1: Create DualPI2 with max_rtt
+>>    Test 7b3c: Create DualPI2 with any_ect option
+>>    Test 49a3: Create DualPI2 with overflow option
+>>    Test d0a1: Create DualPI2 with drop_enqueue option
+>>    Test f051: Create DualPI2 with no_split_gso option
+> 
+> it appears applying this causes the tdc test runner to break,
+> could you take a look?
+> 
+> https://github.com/p4tc-dev/tc-executor/blob/storage/artifacts/79725/1-tdc-sh/stdout
+
+It seems like the breakage happens because the iproute2 patch
+is not in yet. I applied the iproute2 patch locally and the
+tests succeeded. The next iteration should run with it applied
+so the breakage should stop.
+
+cheers,
+Victor
