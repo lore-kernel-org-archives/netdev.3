@@ -1,453 +1,173 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793C02475C7
-	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 12:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D3B34CF5
+	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 12:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744805607; cv=none; b=H+ssi3plfru1eVcLMmbjaRltA40FTVDy6iOVo46WoLKdvLF6z+j7swPxgc3yzZYaOEE9gxR4/TVuH289po88khO5vtLIhW8PT4iec92wOdB6iaf+jwtROKYCLsGkEBTjnUCOh0oS7lnCFP5WM5b3cxuO2AbUxeC5VmTlejYR5Ws=
+	t=1744806124; cv=none; b=KQF7ekx65tTJJ5PQwnKV84vGJayplQWOmwjPWfiVsSAlA7anoi0QMZjFs/yOjWk2tHBk+Av7Uebus0Kw2aUIUMh59rqbCV2BgmHyV+6Qj+Jvq+Bze49A6tWlYYRkqKGVM9E6uPNaK9FXAsJ3apFyVt1E0FH2QARZAydLMmHkn9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744805607; c=relaxed/simple;
-	bh=8ekij44n0ojk4AKTakk0+QuaH9omk+Xao10XFtumOik=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Uf/A+TqSlyPszBcFVjM0sEYswNVHWo8wU7XZJrNwUjXXaqTyPKvvaSrQASJKaMWa15qGWCjWkNyxfO5CfJF9ODXai5YEid1oao3E1GVYsQesBnJWuPd9FEpnrPjT4uAqYp46r3vb+vxuA94ubc3I7BuHYlsdgHPWmYZyoXb3nuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=MRdwkacy; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1744806124; c=relaxed/simple;
+	bh=EFnc0WRzEf4Z9yc61d/RyuErKOJdh7/lCVhtPeNIyP4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TF/G83UMf2Vr2Sl/JWsYtP3gTI1Ts7R7ud2QalBZxDP4nZJSM49F0ssu773BweymG51c5VLzYDAvfnLVpdO5iB81lZWKtQOwMF/ri1dYfcG6n+RLhjbGr7B+YOHsyzqiw5DiDIWNvXJwdPXm1Z9x4qEh1Hz9BEEyaYR81sALtEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=m2FT9p5S; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="MRdwkacy"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43cf034d4abso72227795e9.3
-        for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 05:13:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="m2FT9p5S"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-736aa9d0f2aso7437260b3a.0
+        for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 05:22:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1744805604; x=1745410404; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=khDxZ6hWpBjUwpTjRFaeiC6oOjWONkPAJ6IHeIYL/8o=;
-        b=MRdwkacyCi2VwfH6IhAR5QiKmGv8EFDoUfoVj8lLN0dWg06v5/88LUTDcEpOntju6z
-         TmnU9w48oDwQPGQ1S3gOcfN+2fX3Z822Q1LO9enppKc/GGvsrco84c4LlN+hgZ9KL81g
-         xZRQIy/MigLECYP5xjcrYzSkekSTv7xt7RLBrDEkK/F53YwfWdyYNt7PdWzfyBvVG7bl
-         n5yKq/T+4vaLF/OEfA9sbZYQQK403OK+zZaTZXkPh1Zk86F+xLU2zg1jOM139VqT+Sii
-         ucsMSksuRCAVOAqTRd5vz3IX/tvlXVl6XmGIA8TM0YN0ycS8LpmDZ/fimQCAIXVTi+AN
-         AnUw==
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1744806122; x=1745410922; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8+WVF0vgix7mkFpfvJCcnuLkknP11Yltc17yhUbYhWE=;
+        b=m2FT9p5SMyOk2QGktkchCS4jhGeqdKKKRBBOMT26kuUOefFGjGg6abxZLxUSK5umKj
+         VgOHfnRgm/vZnMLQ30bFwv4UnL/kocF+CkaVNHkKehfr19VSrnd/15Pi8Y71CTsoj22c
+         dsyApoOiqYWMB66XVkqFb7totcFsM1NBXrFyTeGtQ4/Pzj4fEIFxpWMt04zN0X+qD/x/
+         LuEgln4kGtndtbvIRIqpHUN9XWx8pdcTQwNgDITt15D1/YE+Khx/qKkO3JZy23WVu7uv
+         iYEyBG4I+m/yX2Ir2wcz5Tc6uaJMtx2IfP6AqQHnTPyG/vXzjhMPd88inIV9vt1qf63o
+         /KKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744805604; x=1745410404;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=khDxZ6hWpBjUwpTjRFaeiC6oOjWONkPAJ6IHeIYL/8o=;
-        b=nLk6SRPnLT+qyrU85ZC8Jdj2wDBZuTXFne5YJYD3SUlZLVAYJxnRWWmypkloTW4EEL
-         2HPOSRvJECUXjmlSLzsvFzE6kA3yIBdsCBJHjdqYClt/8Cqfu+SdrzyBG9oK9lWvnOEt
-         wcef6pXtg/81FNRC1CMhbK/wKAixJRlthPcqiEzNlS3B/84K3/+FGQdxk1L1q5/kVS8V
-         +AVtFTMlnnWlGlrfQ8vOsQNNL2PBLV6hkm3cZ3MoBYzc9GYw9Jbh+jS6OLGnoNlxu29X
-         JFE8MRbyOwGApa0xkO5wEaInZtUzTfycsdgCSzhe8d7aqD0edq/FrqD/gR6fWcWDeuKA
-         4aWA==
-X-Forwarded-Encrypted: i=1; AJvYcCUn6A5XTNrh07u+X0RZzxJ2ciWwy/lcWWCAblZstmV7xKisWiboGfIvueQNwDFKUsvdr/iiWnI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNVXt5b2dvt5vco6zcjFvyOytqsGlu1hesbwyaVyQg/lmUHo+H
-	J4iHTLYHgQ+aZXgk9yTqZzS30a+DMfjFGB6sNRPzN9T75/hmrl20YwMGmSNX8PY=
-X-Gm-Gg: ASbGnctm7POnAwckgW738+mXHS0kINjzOAzouXy8wvo79bTWKP7y+Kkofph9MObvUt5
-	P8cOroxADcoUxTNH6Vvygv+VyVV1kH68VXAoeaBj7HEWtvZ7eSyWRvemMzXuRnR/WGoEwixKOTY
-	y5hlVkhfwBpXPwkSoli2Q5hNCK98EDO/1uU6w2DnKoUn5zYit+dY0d87itmUOZdiqU4KyNTQLXx
-	aPgGnGVvfAMXonaWJBlqzELvuk1Mg5birXPdpvQN/XEmDiMw5LtrvMcK1CxnxS9gvVSRa9U5Iqn
-	jb1wmV6uhcqwsNdPuZcZNNYA72bKPEGl6p3yReQy2QNbLTiJ
-X-Google-Smtp-Source: AGHT+IEMRDe/WIR+fGXC8+rp39ruc19oZu24CB13YFuAre/xl9HbSQRf4cPza9AIeJF5IWD2Vn1IOg==
-X-Received: by 2002:a05:600c:350c:b0:43d:300f:fa1d with SMTP id 5b1f17b1804b1-4405d6ce926mr18485225e9.31.1744805603444;
-        Wed, 16 Apr 2025 05:13:23 -0700 (PDT)
-Received: from jiri-mlt ([193.47.165.251])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4405b53f29fsm19159505e9.37.2025.04.16.05.13.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Apr 2025 05:13:23 -0700 (PDT)
-Date: Wed, 16 Apr 2025 14:13:12 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Cc: donald.hunter@gmail.com, kuba@kernel.org, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, horms@kernel.org, vadim.fedorenko@linux.dev, 
-	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, 
-	saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, jonathan.lemon@gmail.com, 
-	richardcochran@gmail.com, aleksandr.loktionov@intel.com, milena.olech@intel.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
-	linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/4] dpll: use struct dpll_device_info for
- dpll registration
-Message-ID: <zurfm4rox22l3dnffbfloax5mu6csiycqqfoyh5nrcsd4ada6h@wmeh5ks4gli6>
-References: <20250415181543.1072342-1-arkadiusz.kubalewski@intel.com>
- <20250415181543.1072342-2-arkadiusz.kubalewski@intel.com>
+        d=1e100.net; s=20230601; t=1744806122; x=1745410922;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8+WVF0vgix7mkFpfvJCcnuLkknP11Yltc17yhUbYhWE=;
+        b=nEKYneaqoxcwXwVfxIf1yD3PCvx29yeGCPS8C1LFzvVWWxRoQ+KNbXGeeXp+469zIz
+         2/WyHYGqxd/KSZnsqroi2OpbjoucQXBGxxST1w4FM3n/c2ukeLfDYngdmEm38LoDHirC
+         Am6T/8CWHNruK6R0xaSGZhkfwvWGwBB7FCil8rSQfAj/gHP6kaMV8IROVC1caW1I9FU5
+         iA+lbdRC9nkeA3Xo+Vf+xGGDDkoFrZF9OQfwv89+Ab3xBGe+ZniokkFSvhsDZgc7qXtu
+         ZnszpiHW87RedeZgPoNFcw0Znq1h5LpdF9tbdt80DWz3vLmzSnJMsZihNsP84HjDOm60
+         8ekA==
+X-Forwarded-Encrypted: i=1; AJvYcCV/BCJeIr5Uv0PJwWfWXp31VrqN6X0H/v0poqTYhj+hPsB5KPj6/pnYQclasrEhQK5mxM320bw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyr+0NYpr7absWmPrJTMiCfw1CHlM4w8aWJdzhgM5fTXvOKtzUx
+	WYhJRHsQ/B0AXhzJBbAz93q/lEDlDXXVlRSKFNtoCMgQWnWYMzcrxUadhbwrsQ==
+X-Gm-Gg: ASbGncta8vCvU8zbFcqbv0AaLEEg/x8PhUaurUohAwmQV8TxbCA2izFUeZ3HnnqtbiP
+	mMJl3Ff/JTbEBK8DkhVp0DgxzBm/HLEtliz6cZXPiL+dWM3/G20BK/bbaenhL6itqAjfXf8Z8Xi
+	lHXYhcKacocViIWYrINRXZEkJD1g4Z6wi+NbrBAJYCOoQ4hHBlo1kcXQ14V/KmZqPSTWHykkIPn
+	/8P4ks0bMOvb5XMxofK6XOW151t8HXM+pqWswxgTyuAcsvbcgwfSUA0PXIVaSASnUUjzBwZ3AA6
+	r7PshxpXbo/78jnGHltW1gdSgeaQaEJC0F17FpVS7YMrG4Qg4C7W4T3tFCGTJSQCJP64I7J7LMI
+	7OVLG35hfJA0=
+X-Google-Smtp-Source: AGHT+IFS1pvArZ0aCV/sDSsf7um8PNFWJi22sTowudeeDBY25iY+lGk3il3k6n4C6X3PsuIgZ8ss0g==
+X-Received: by 2002:a05:6a20:e188:b0:1f5:6f95:2544 with SMTP id adf61e73a8af0-203b3fd47e2mr2328501637.33.1744806121845;
+        Wed, 16 Apr 2025 05:22:01 -0700 (PDT)
+Received: from ?IPV6:2804:7f1:e2c3:dc7b:da12:1e53:d800:3508? ([2804:7f1:e2c3:dc7b:da12:1e53:d800:3508])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b0b220fc366sm1112316a12.42.2025.04.16.05.21.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Apr 2025 05:22:01 -0700 (PDT)
+Message-ID: <ef8c59a0-be86-4ddc-b25a-d198051f12b2@mojatatu.com>
+Date: Wed, 16 Apr 2025 09:21:53 -0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250415181543.1072342-2-arkadiusz.kubalewski@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 RESEND iproute2-next 1/1] tc: add dualpi2 scheduler
+ module
+To: chia-yu.chang@nokia-bell-labs.com, netdev@vger.kernel.org,
+ dave.taht@gmail.com, pabeni@redhat.com, jhs@mojatatu.com, kuba@kernel.org,
+ stephen@networkplumber.org, xiyou.wangcong@gmail.com, jiri@resnulli.us,
+ davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+ andrew+netdev@lunn.ch, donald.hunter@gmail.com, ast@fiberby.net,
+ liuhangbin@gmail.com, shuah@kernel.org, linux-kselftest@vger.kernel.org,
+ ij@kernel.org, ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com,
+ g.white@cablelabs.com, ingemar.s.johansson@ericsson.com,
+ mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at,
+ Jason_Livingood@comcast.com, vidhi_goel@apple.com
+Cc: Olga Albisser <olga@albisser.org>,
+ Oliver Tilmans <olivier.tilmans@nokia.com>,
+ Bob Briscoe <research@bobbriscoe.net>, Henrik Steen <henrist@henrist.net>
+References: <20250414131859.97517-1-chia-yu.chang@nokia-bell-labs.com>
+ <20250414131859.97517-2-chia-yu.chang@nokia-bell-labs.com>
+Content-Language: en-US
+From: Victor Nogueira <victor@mojatatu.com>
+In-Reply-To: <20250414131859.97517-2-chia-yu.chang@nokia-bell-labs.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Tue, Apr 15, 2025 at 08:15:40PM +0200, arkadiusz.kubalewski@intel.com wrote:
->Instead of passing list of properties as arguments to
->dpll_device_register(..) use a dedicated struct.
->
->Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
->---
->v2:
->- new commit
->---
-> drivers/dpll/dpll_core.c                      | 34 ++++++++++++-------
-> drivers/dpll/dpll_core.h                      |  2 +-
-> drivers/dpll/dpll_netlink.c                   |  7 ++--
-> drivers/net/ethernet/intel/ice/ice_dpll.c     | 16 +++++----
-> drivers/net/ethernet/intel/ice/ice_dpll.h     |  1 +
-> .../net/ethernet/mellanox/mlx5/core/dpll.c    | 10 +++---
-> drivers/ptp/ptp_ocp.c                         |  7 ++--
-> include/linux/dpll.h                          | 11 ++++--
-> 8 files changed, 57 insertions(+), 31 deletions(-)
->
->diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
->index 20bdc52f63a5..af9cda45a89c 100644
->--- a/drivers/dpll/dpll_core.c
->+++ b/drivers/dpll/dpll_core.c
->@@ -34,7 +34,7 @@ static u32 dpll_pin_xa_id;
+On 4/14/25 10:18, chia-yu.chang@nokia-bell-labs.com wrote:
+> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 > 
-> struct dpll_device_registration {
-> 	struct list_head list;
->-	const struct dpll_device_ops *ops;
->+	const struct dpll_device_info *info;
-> 	void *priv;
-> };
+> DUALPI2 AQM is a combination of the DUALQ Coupled-AQM with a PI2
+> base-AQM. The PI2 AQM is in turn both an extension and a simplification
+> of the PIE AQM. PI2 makes quite some PIE heuristics unnecessary, while
+> being able to control scalable congestion controls like TCP-Prague.
+> With PI2, both Reno/Cubic can be used in parallel with Prague,
+> maintaining window fairness. DUALQ provides latency separation between
+> low latency Prague flows and Reno/Cubic flows that need a bigger queue.
 > 
->@@ -327,12 +327,12 @@ EXPORT_SYMBOL_GPL(dpll_device_put);
+> This patch adds support to tc to configure it through its netlink
+> interface.
 > 
-> static struct dpll_device_registration *
-> dpll_device_registration_find(struct dpll_device *dpll,
->-			      const struct dpll_device_ops *ops, void *priv)
->+			      const struct dpll_device_info *info, void *priv)
-> {
-> 	struct dpll_device_registration *reg;
-> 
-> 	list_for_each_entry(reg, &dpll->registration_list, list) {
->-		if (reg->ops == ops && reg->priv == priv)
->+		if (reg->info == info && reg->priv == priv)
-> 			return reg;
-> 	}
-> 	return NULL;
->@@ -341,8 +341,7 @@ dpll_device_registration_find(struct dpll_device *dpll,
-> /**
->  * dpll_device_register - register the dpll device in the subsystem
->  * @dpll: pointer to a dpll
->- * @type: type of a dpll
->- * @ops: ops for a dpll device
->+ * @info: dpll device information and operations from registerer
->  * @priv: pointer to private information of owner
->  *
->  * Make dpll device available for user space.
->@@ -352,11 +351,13 @@ dpll_device_registration_find(struct dpll_device *dpll,
->  * * 0 on success
->  * * negative - error value
->  */
->-int dpll_device_register(struct dpll_device *dpll, enum dpll_type type,
->-			 const struct dpll_device_ops *ops, void *priv)
->+int dpll_device_register(struct dpll_device *dpll,
->+			 const struct dpll_device_info *info, void *priv)
+> Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+> Co-developed-by: Olga Albisser <olga@albisser.org>
+> Signed-off-by: Olga Albisser <olga@albisser.org>
+> Co-developed-by: Koen De Schepper <koen.de_schepper@nokia-bell-labs.com>
+> Signed-off-by: Koen De Schepper <koen.de_schepper@nokia-bell-labs.com>
+> Co-developed-by: Oliver Tilmans <olivier.tilmans@nokia.com>
+> Signed-off-by: Oliver Tilmans <olivier.tilmans@nokia.com>
+> Signed-off-by: Bob Briscoe <research@bobbriscoe.net>
+> Co-developed-by: Henrik Steen <henrist@henrist.net>
+> Signed-off-by: Henrik Steen <henrist@henrist.net>
+> ---
+>   bash-completion/tc             |  11 +-
+>   include/uapi/linux/pkt_sched.h |  39 +++
+>   include/utils.h                |   2 +
+>   ip/iplink_can.c                |  14 -
+>   lib/utils.c                    |  30 ++
+>   man/man8/tc-dualpi2.8          | 249 ++++++++++++++++
+>   tc/Makefile                    |   1 +
+>   tc/q_dualpi2.c                 | 519 +++++++++++++++++++++++++++++++++
+>   8 files changed, 850 insertions(+), 15 deletions(-)
+>   create mode 100644 man/man8/tc-dualpi2.8
+>   create mode 100644 tc/q_dualpi2.c
 
-I don't like this. If you need some capabilities value, put it into ops
-struct.
+Hi!
 
+I compiled your patch and am seeing the following warnings:
 
-> {
->+	const struct dpll_device_ops *ops = info->ops;
-> 	struct dpll_device_registration *reg;
-> 	bool first_registration = false;
->+	enum dpll_type type = info->type;
-> 
-> 	if (WARN_ON(!ops))
-> 		return -EINVAL;
->@@ -368,7 +369,7 @@ int dpll_device_register(struct dpll_device *dpll, enum dpll_type type,
-> 		return -EINVAL;
-> 
-> 	mutex_lock(&dpll_lock);
->-	reg = dpll_device_registration_find(dpll, ops, priv);
->+	reg = dpll_device_registration_find(dpll, info, priv);
-> 	if (reg) {
-> 		mutex_unlock(&dpll_lock);
-> 		return -EEXIST;
->@@ -379,9 +380,8 @@ int dpll_device_register(struct dpll_device *dpll, enum dpll_type type,
-> 		mutex_unlock(&dpll_lock);
-> 		return -ENOMEM;
-> 	}
->-	reg->ops = ops;
->+	reg->info = info;
-> 	reg->priv = priv;
->-	dpll->type = type;
-> 	first_registration = list_empty(&dpll->registration_list);
-> 	list_add_tail(&reg->list, &dpll->registration_list);
-> 	if (!first_registration) {
->@@ -408,14 +408,14 @@ EXPORT_SYMBOL_GPL(dpll_device_register);
->  * Context: Acquires a lock (dpll_lock)
->  */
-> void dpll_device_unregister(struct dpll_device *dpll,
->-			    const struct dpll_device_ops *ops, void *priv)
->+			    const struct dpll_device_info *info, void *priv)
-> {
-> 	struct dpll_device_registration *reg;
-> 
-> 	mutex_lock(&dpll_lock);
-> 	ASSERT_DPLL_REGISTERED(dpll);
-> 	dpll_device_delete_ntf(dpll);
->-	reg = dpll_device_registration_find(dpll, ops, priv);
->+	reg = dpll_device_registration_find(dpll, info, priv);
-> 	if (WARN_ON(!reg)) {
-> 		mutex_unlock(&dpll_lock);
-> 		return;
->@@ -807,7 +807,15 @@ const struct dpll_device_ops *dpll_device_ops(struct dpll_device *dpll)
-> 	struct dpll_device_registration *reg;
-> 
-> 	reg = dpll_device_registration_first(dpll);
->-	return reg->ops;
->+	return reg->info->ops;
->+}
->+
->+const struct dpll_device_info *dpll_device_info(struct dpll_device *dpll)
+q_dualpi2.c: In function 'dualpi2_parse_opt':
+q_dualpi2.c:218:37: warning: pointer targets in passing argument 1 of 
+'get_u32' differ in signedness [-Wpointer-sign]
+   218 |                         if (get_u32(&min_qlen_step, *argv, 10)) {
+       |                                     ^~~~~~~~~~~~~~
+       |                                     |
+       |                                     int32_t * {aka int *}
+In file included from q_dualpi2.c:39:
+../include/utils.h:157:20: note: expected '__u32 *' {aka 'unsigned int 
+*'} but argument is of type 'int32_t *' {aka 'int *'}
+   157 | int get_u32(__u32 *val, const char *arg, int base);
+       |             ~~~~~~~^~~
+q_dualpi2.c: At top level:
+q_dualpi2.c:516:27: warning: initialization of 'int (*)(const struct 
+qdisc_util *, int,  char **, struct nlmsghdr *, const char *)' from 
+incompatible pointer type 'int (*)(struct qdisc_util *, int,  char **, 
+struct nlmsghdr *, const char *)' [-Wincompatible-pointer-types]
+   516 |         .parse_qopt     = dualpi2_parse_opt,
+       |                           ^~~~~~~~~~~~~~~~~
+q_dualpi2.c:516:27: note: (near initialization for 
+'dualpi2_qdisc_util.parse_qopt')
+q_dualpi2.c:517:27: warning: initialization of 'int (*)(const struct 
+qdisc_util *, FILE *, struct rtattr *)' from incompatible pointer type 
+'int (*)(struct qdisc_util *, FILE *, struct rtattr *)' 
+[-Wincompatible-pointer-types]
+   517 |         .print_qopt     = dualpi2_print_opt,
+       |                           ^~~~~~~~~~~~~~~~~
+q_dualpi2.c:517:27: note: (near initialization for 
+'dualpi2_qdisc_util.print_qopt')
+q_dualpi2.c:518:27: warning: initialization of 'int (*)(const struct 
+qdisc_util *, FILE *, struct rtattr *)' from incompatible pointer type 
+'int (*)(struct qdisc_util *, FILE *, struct rtattr *)' 
+[-Wincompatible-pointer-types]
+   518 |         .print_xstats   = dualpi2_print_xstats,
+       |                           ^~~~~~~~~~~~~~~~~~~~
+q_dualpi2.c:518:27: note: (near initialization for 
+'dualpi2_qdisc_util.print_xstats')
 
-Makes me wonder what you would need this for. I guess "nothing"?
-
-
->+{
->+	struct dpll_device_registration *reg;
->+
->+	reg = dpll_device_registration_first(dpll);
->+	return reg->info;
-> }
-> 
-> static struct dpll_pin_registration *
->diff --git a/drivers/dpll/dpll_core.h b/drivers/dpll/dpll_core.h
->index 2b6d8ef1cdf3..baeb10d7dc1e 100644
->--- a/drivers/dpll/dpll_core.h
->+++ b/drivers/dpll/dpll_core.h
->@@ -30,7 +30,6 @@ struct dpll_device {
-> 	u32 device_idx;
-> 	u64 clock_id;
-> 	struct module *module;
->-	enum dpll_type type;
-> 	struct xarray pin_refs;
-> 	refcount_t refcount;
-> 	struct list_head registration_list;
->@@ -84,6 +83,7 @@ void *dpll_pin_on_pin_priv(struct dpll_pin *parent, struct dpll_pin *pin);
-> const struct dpll_device_ops *dpll_device_ops(struct dpll_device *dpll);
-> struct dpll_device *dpll_device_get_by_id(int id);
-> const struct dpll_pin_ops *dpll_pin_ops(struct dpll_pin_ref *ref);
->+const struct dpll_device_info *dpll_device_info(struct dpll_device *dpll);
-> struct dpll_pin_ref *dpll_xa_ref_dpll_first(struct xarray *xa_refs);
-> extern struct xarray dpll_device_xa;
-> extern struct xarray dpll_pin_xa;
->diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
->index c130f87147fa..2de9ec08d551 100644
->--- a/drivers/dpll/dpll_netlink.c
->+++ b/drivers/dpll/dpll_netlink.c
->@@ -564,6 +564,7 @@ static int
-> dpll_device_get_one(struct dpll_device *dpll, struct sk_buff *msg,
-> 		    struct netlink_ext_ack *extack)
-> {
->+	const struct dpll_device_info *info = dpll_device_info(dpll);
-> 	int ret;
-> 
-> 	ret = dpll_msg_add_dev_handle(msg, dpll);
->@@ -589,7 +590,7 @@ dpll_device_get_one(struct dpll_device *dpll, struct sk_buff *msg,
-> 	ret = dpll_msg_add_mode_supported(msg, dpll, extack);
-> 	if (ret)
-> 		return ret;
->-	if (nla_put_u32(msg, DPLL_A_TYPE, dpll->type))
->+	if (nla_put_u32(msg, DPLL_A_TYPE, info->type))
-> 		return -EMSGSIZE;
-> 
-> 	return 0;
->@@ -1415,11 +1416,13 @@ dpll_device_find(u64 clock_id, struct nlattr *mod_name_attr,
-> 	unsigned long i;
-> 
-> 	xa_for_each_marked(&dpll_device_xa, i, dpll, DPLL_REGISTERED) {
->+		const struct dpll_device_info *info = dpll_device_info(dpll);
->+
-> 		cid_match = clock_id ? dpll->clock_id == clock_id : true;
-> 		mod_match = mod_name_attr ? (module_name(dpll->module) ?
-> 			!nla_strcmp(mod_name_attr,
-> 				    module_name(dpll->module)) : false) : true;
->-		type_match = type ? dpll->type == type : true;
->+		type_match = type ? info->type == type : true;
-> 		if (cid_match && mod_match && type_match) {
-> 			if (dpll_match) {
-> 				NL_SET_ERR_MSG(extack, "multiple matches");
->diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
->index bce3ad6ca2a6..0f7440a889ac 100644
->--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
->+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
->@@ -1977,7 +1977,7 @@ static void
-> ice_dpll_deinit_dpll(struct ice_pf *pf, struct ice_dpll *d, bool cgu)
-> {
-> 	if (cgu)
->-		dpll_device_unregister(d->dpll, &ice_dpll_ops, d);
->+		dpll_device_unregister(d->dpll, &d->info, d);
-> 	dpll_device_put(d->dpll);
-> }
-> 
->@@ -1996,8 +1996,7 @@ ice_dpll_deinit_dpll(struct ice_pf *pf, struct ice_dpll *d, bool cgu)
->  * * negative - initialization failure reason
->  */
-> static int
->-ice_dpll_init_dpll(struct ice_pf *pf, struct ice_dpll *d, bool cgu,
->-		   enum dpll_type type)
->+ice_dpll_init_dpll(struct ice_pf *pf, struct ice_dpll *d, bool cgu)
-> {
-> 	u64 clock_id = pf->dplls.clock_id;
-> 	int ret;
->@@ -2012,7 +2011,7 @@ ice_dpll_init_dpll(struct ice_pf *pf, struct ice_dpll *d, bool cgu,
-> 	d->pf = pf;
-> 	if (cgu) {
-> 		ice_dpll_update_state(pf, d, true);
->-		ret = dpll_device_register(d->dpll, type, &ice_dpll_ops, d);
->+		ret = dpll_device_register(d->dpll, &d->info, d);
-> 		if (ret) {
-> 			dpll_device_put(d->dpll);
-> 			return ret;
->@@ -2363,7 +2362,12 @@ static int ice_dpll_init_info(struct ice_pf *pf, bool cgu)
-> 	if (ret)
-> 		return ret;
-> 	de->mode = DPLL_MODE_AUTOMATIC;
->+	de->info.type = DPLL_TYPE_EEC;
->+	de->info.ops = &ice_dpll_ops;
->+
-> 	dp->mode = DPLL_MODE_AUTOMATIC;
->+	dp->info.type = DPLL_TYPE_PPS;
->+	dp->info.ops = &ice_dpll_ops;
-> 
-> 	dev_dbg(ice_pf_to_dev(pf),
-> 		"%s - success, inputs:%u, outputs:%u rclk-parents:%u\n",
->@@ -2426,10 +2430,10 @@ void ice_dpll_init(struct ice_pf *pf)
-> 	err = ice_dpll_init_info(pf, cgu);
-> 	if (err)
-> 		goto err_exit;
->-	err = ice_dpll_init_dpll(pf, &pf->dplls.eec, cgu, DPLL_TYPE_EEC);
->+	err = ice_dpll_init_dpll(pf, &pf->dplls.eec, cgu);
-> 	if (err)
-> 		goto deinit_info;
->-	err = ice_dpll_init_dpll(pf, &pf->dplls.pps, cgu, DPLL_TYPE_PPS);
->+	err = ice_dpll_init_dpll(pf, &pf->dplls.pps, cgu);
-> 	if (err)
-> 		goto deinit_eec;
-> 	err = ice_dpll_init_pins(pf, cgu);
->diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.h b/drivers/net/ethernet/intel/ice/ice_dpll.h
->index c320f1bf7d6d..9db7463e293a 100644
->--- a/drivers/net/ethernet/intel/ice/ice_dpll.h
->+++ b/drivers/net/ethernet/intel/ice/ice_dpll.h
->@@ -66,6 +66,7 @@ struct ice_dpll {
-> 	enum dpll_mode mode;
-> 	struct dpll_pin *active_input;
-> 	struct dpll_pin *prev_input;
->+	struct dpll_device_info info;
-> };
-> 
-> /** ice_dplls - store info required for CCU (clock controlling unit)
->diff --git a/drivers/net/ethernet/mellanox/mlx5/core/dpll.c b/drivers/net/ethernet/mellanox/mlx5/core/dpll.c
->index 1e5522a19483..f722b1de0754 100644
->--- a/drivers/net/ethernet/mellanox/mlx5/core/dpll.c
->+++ b/drivers/net/ethernet/mellanox/mlx5/core/dpll.c
->@@ -20,6 +20,7 @@ struct mlx5_dpll {
-> 	} last;
-> 	struct notifier_block mdev_nb;
-> 	struct net_device *tracking_netdev;
->+	struct dpll_device_info info;
-> };
-> 
-> static int mlx5_dpll_clock_id_get(struct mlx5_core_dev *mdev, u64 *clock_id)
->@@ -444,8 +445,9 @@ static int mlx5_dpll_probe(struct auxiliary_device *adev,
-> 		goto err_free_mdpll;
-> 	}
-> 
->-	err = dpll_device_register(mdpll->dpll, DPLL_TYPE_EEC,
->-				   &mlx5_dpll_device_ops, mdpll);
->+	mdpll->info.type = DPLL_TYPE_EEC;
->+	mdpll->info.ops = &mlx5_dpll_device_ops;
->+	err = dpll_device_register(mdpll->dpll, &mdpll->info, mdpll);
-> 	if (err)
-> 		goto err_put_dpll_device;
-> 
->@@ -481,7 +483,7 @@ static int mlx5_dpll_probe(struct auxiliary_device *adev,
-> err_put_dpll_pin:
-> 	dpll_pin_put(mdpll->dpll_pin);
-> err_unregister_dpll_device:
->-	dpll_device_unregister(mdpll->dpll, &mlx5_dpll_device_ops, mdpll);
->+	dpll_device_unregister(mdpll->dpll, &mdpll->info, mdpll);
-> err_put_dpll_device:
-> 	dpll_device_put(mdpll->dpll);
-> err_free_mdpll:
->@@ -500,7 +502,7 @@ static void mlx5_dpll_remove(struct auxiliary_device *adev)
-> 	dpll_pin_unregister(mdpll->dpll, mdpll->dpll_pin,
-> 			    &mlx5_dpll_pins_ops, mdpll);
-> 	dpll_pin_put(mdpll->dpll_pin);
->-	dpll_device_unregister(mdpll->dpll, &mlx5_dpll_device_ops, mdpll);
->+	dpll_device_unregister(mdpll->dpll, &mdpll->info, mdpll);
-> 	dpll_device_put(mdpll->dpll);
-> 	kfree(mdpll);
-> 
->diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
->index 7945c6be1f7c..b3c5d294acb4 100644
->--- a/drivers/ptp/ptp_ocp.c
->+++ b/drivers/ptp/ptp_ocp.c
->@@ -382,6 +382,7 @@ struct ptp_ocp {
-> 	struct ptp_ocp_sma_connector sma[OCP_SMA_NUM];
-> 	const struct ocp_sma_op *sma_op;
-> 	struct dpll_device *dpll;
->+	struct dpll_device_info	dpll_info;
-> };
-> 
-> #define OCP_REQ_TIMESTAMP	BIT(0)
->@@ -4745,7 +4746,9 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-> 		goto out;
-> 	}
-> 
->-	err = dpll_device_register(bp->dpll, DPLL_TYPE_PPS, &dpll_ops, bp);
->+	bp->dpll_info.type = DPLL_TYPE_PPS;
->+	bp->dpll_info.ops = &dpll_ops;
->+	err = dpll_device_register(bp->dpll, &bp->dpll_info, bp);
-> 	if (err)
-> 		goto out;
-> 
->@@ -4796,7 +4799,7 @@ ptp_ocp_remove(struct pci_dev *pdev)
-> 			dpll_pin_put(bp->sma[i].dpll_pin);
-> 		}
-> 	}
->-	dpll_device_unregister(bp->dpll, &dpll_ops, bp);
->+	dpll_device_unregister(bp->dpll, &bp->dpll_info, bp);
-> 	dpll_device_put(bp->dpll);
-> 	devlink_unregister(devlink);
-> 	ptp_ocp_detach(bp);
->diff --git a/include/linux/dpll.h b/include/linux/dpll.h
->index 5e4f9ab1cf75..0489464af958 100644
->--- a/include/linux/dpll.h
->+++ b/include/linux/dpll.h
->@@ -97,6 +97,11 @@ struct dpll_pin_ops {
-> 			 struct netlink_ext_ack *extack);
-> };
-> 
->+struct dpll_device_info {
->+	enum dpll_type type;
->+	const struct dpll_device_ops *ops;
->+};
->+
-> struct dpll_pin_frequency {
-> 	u64 min;
-> 	u64 max;
->@@ -170,11 +175,11 @@ dpll_device_get(u64 clock_id, u32 dev_driver_id, struct module *module);
-> 
-> void dpll_device_put(struct dpll_device *dpll);
-> 
->-int dpll_device_register(struct dpll_device *dpll, enum dpll_type type,
->-			 const struct dpll_device_ops *ops, void *priv);
->+int dpll_device_register(struct dpll_device *dpll,
->+			 const struct dpll_device_info *info, void *priv);
-> 
-> void dpll_device_unregister(struct dpll_device *dpll,
->-			    const struct dpll_device_ops *ops, void *priv);
->+			    const struct dpll_device_info *info, void *priv);
-> 
-> struct dpll_pin *
-> dpll_pin_get(u64 clock_id, u32 dev_driver_id, struct module *module,
->-- 
->2.38.1
->
+cheers,
+Victor
