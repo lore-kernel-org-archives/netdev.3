@@ -1,152 +1,88 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0891C27
-	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 16:16:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B223204F8A;
+	Wed, 16 Apr 2025 16:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744820206; cv=none; b=CxvXasUrbuYkplm44g8f/q0uWABYyonEkRsn4aYgN+AH0Qhhv36Hep7qJRd/d+WIe6rDlObvfOSv/+xxPg/g9nhjyKVx4zbYB66Aof3bgowAymSiylz+8h8B1Cou7FcGxyRadpqeSKHq7++V1TieoYcRoyrU3NdHQYKpuHeko/k=
+	t=1744820394; cv=none; b=ftQaiFW0TeXcXeS7iI/r06UPEaLXoYfXWyY7sWi5PwPnHk1TY3tJ52RAT1uZPxgVzJ5czCLh6bjhdOforNXw0OHxEQF9SX+XNgsuZa7dsipZmhBpeahdaW0sjbc5/utL4J0HgTU/J8IQdfVZj2Uk6me5BBH+WyhS3GSlDtDnzWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744820206; c=relaxed/simple;
-	bh=WxGPIaBP7SlPU61ycn7EkEPDTts+Y13/cRgO7QAtjzo=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=rC0ar+Lzx7M5kp/dbEzBd0zzKWHubaNWisf4OzN8UkmILg2rUGmH9IZyj15xlxi8mFspTvfW45lCaQLryY0Y2QVjPv9XYJ48gb4/F/odm5P9rgoEn0Qa4XRvpy4/lxRemj0271zrGMetiyV49dRON5uTAwF/cdze6w1QjbPD0wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=qUEAw2Re; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1744820394; c=relaxed/simple;
+	bh=KstZziaNodfbJGDpMOYATqgz7fJwSStO2y7FfcYiK3s=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=nrPXrXfHDgKjmL6BQHF/CrERvdKDA0IgkYnUtzYKRIH5AaRQQopH2quHC++O+mUqCUbrM8fkgaOP43KTP9NSZDRfeDkJKAIA3PYd7TnUzmz6BeAMHzdLvnp7K7Ej2OafUzhYkvVQTYbY7lbUOpEIYOmOdMSogEESP1ENfrjuJmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ohfdzcEq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="qUEAw2Re"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=VRBSzzTdTZPbtyBVErfwZjzgy20zrDVRX0f0olerif8=; b=qUEAw2Reaohe8sc7oRBy00DJ32
-	GXAoeL+a38VB4j4MubUevig8m0ncLbNTIL9VgIu5u312bKVQ6VRdEKiLvnQcM4oByicCEdQEjXVUW
-	1nvDVRvDxY5H2iumJelDTrvAY2k92P+lqHzsl7int97RZag3zhDep4Er3uJM1b21GXEA40QeDX5XV
-	Xf1VLE1Q5NcYuxrdr4qmCXzapCD+7n5EC76qNkHW+Kz/Vgp3fjuwroqMLaTt/Swuu12VXSuJY2J1Q
-	EppttgljDQg9FWfGjQ7SVQdC8lPrcUSpVlj/I/+Rpa6KNJW+nB6iK37yEkZ6LmfemjKu2ED3HCT+m
-	7EOb03yQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:36598 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1u55RH-0001ce-0u;
-	Wed, 16 Apr 2025 17:16:39 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1u55Qf-0016RN-PA; Wed, 16 Apr 2025 17:16:01 +0100
-In-Reply-To: <Z__URcfITnra19xy@shell.armlinux.org.uk>
-References: <Z__URcfITnra19xy@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexander Duyck <alexander.duyck@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Joakim Zhang <qiangqing.zhang@nxp.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net] net: phylink: fix suspend/resume with WoL enabled and
- link down
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ohfdzcEq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071B2C4CEE4;
+	Wed, 16 Apr 2025 16:19:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744820394;
+	bh=KstZziaNodfbJGDpMOYATqgz7fJwSStO2y7FfcYiK3s=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=ohfdzcEqGWf/Wwu5J2drjdMG5sMnG/exrEZVj8GtyaOwX72bV8+d+uT1rcnaZVp9Q
+	 OuTcqtbGqTc/4cLhQ2WwckuQFQ2HW6n8Mj9Wdt9X0/bNCf9Z5BrP+AhoR2n2eYClww
+	 7L2AGqM7sWGfYymtwbDt6zrD7O+GJ+cG/9jTvNPAY9QhYfc/2ywMaUTOeA29kQdbmd
+	 Ays6CYxm01VNHGIqr7zW+MUz/RtbxDmtvaDhGtwYCNaNces/NaShuJ56NTu0qeC6xo
+	 mKP2BPETnKAwprWsRkhPynYq+Jsa05KffUqdyGOHq3HYWKAPOuOIOEcnsby6ONS3yg
+	 zyVuqUXChY5nw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33C243822D27;
+	Wed, 16 Apr 2025 16:20:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1u55Qf-0016RN-PA@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 16 Apr 2025 17:16:01 +0100
+Subject: Re: [PATCH v2 1/4] Bluetooth: Introduce HCI Driver protocol
+From: patchwork-bot+bluetooth@kernel.org
+Message-Id: 
+ <174482043201.3420647.14476412419394286176.git-patchwork-notify@kernel.org>
+Date: Wed, 16 Apr 2025 16:20:32 +0000
+References: <20250416095505.769906-1-chharry@google.com>
+In-Reply-To: <20250416095505.769906-1-chharry@google.com>
+To: Hsin-chen Chuang <chharry@google.com>
+Cc: luiz.dentz@gmail.com, chharry@chromium.org,
+ chromeos-bluetooth-upstreaming@chromium.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, johan.hedberg@gmail.com,
+ marcel@holtmann.org, pabeni@redhat.com, horms@kernel.org,
+ yinghsu@chromium.org, linux-bluetooth@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
 
-When WoL is enabled, we update the software state in phylink to
-indicate that the link is down, and disable the resolver from
-bringing the link back up.
+Hello:
 
-On resume, we attempt to bring the overall state into consistency
-by calling the .mac_link_down() method, but this is wrong if the
-link was already down, as phylink strictly orders the .mac_link_up()
-and .mac_link_down() methods - and this would break that ordering.
+This series was applied to bluetooth/bluetooth-next.git (master)
+by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
 
-Fixes: f97493657c63 ("net: phylink: add suspend/resume support")
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
+On Wed, 16 Apr 2025 09:53:35 +0000 you wrote:
+> From: Hsin-chen Chuang <chharry@chromium.org>
+> 
+> Although commit 75ddcd5ad40e ("Bluetooth: btusb: Configure altsetting
+> for HCI_USER_CHANNEL") has enabled the HCI_USER_CHANNEL user to send out
+> SCO data through USB Bluetooth chips, it's observed that with the patch
+> HFP is flaky on most of the existing USB Bluetooth controllers: Intel
+> chips sometimes send out no packet for Transparent codec; MTK chips may
+> generate SCO data with a wrong handle for CVSD codec; RTK could split
+> the data with a wrong packet size for Transparent codec; ... etc.
+> 
+> [...]
 
-To fix the suspend/resume with link down, this is what I think we
-should do. Untested at the moment.
+Here is the summary with links:
+  - [v2,1/4] Bluetooth: Introduce HCI Driver protocol
+    (no matching commit)
+  - [v2,2/4] Bluetooth: btusb: Add HCI Drv commands for configuring altsetting
+    (no matching commit)
+  - [v2,3/4] Revert "Bluetooth: btusb: Configure altsetting for HCI_USER_CHANNEL"
+    https://git.kernel.org/bluetooth/bluetooth-next/c/3947fa617367
+  - [v2,4/4] Revert "Bluetooth: btusb: add sysfs attribute to control USB alt setting"
+    https://git.kernel.org/bluetooth/bluetooth-next/c/79f21135b7b0
 
- drivers/net/phy/phylink.c | 38 ++++++++++++++++++++++----------------
- 1 file changed, 22 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 69ca765485db..d2c59ee16ebc 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -81,6 +81,7 @@ struct phylink {
- 	unsigned int pcs_state;
- 
- 	bool link_failed;
-+	bool suspend_link_up;
- 	bool major_config_failed;
- 	bool mac_supports_eee_ops;
- 	bool mac_supports_eee;
-@@ -2545,14 +2546,16 @@ void phylink_suspend(struct phylink *pl, bool mac_wol)
- 		/* Stop the resolver bringing the link up */
- 		__set_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state);
- 
--		/* Disable the carrier, to prevent transmit timeouts,
--		 * but one would hope all packets have been sent. This
--		 * also means phylink_resolve() will do nothing.
--		 */
--		if (pl->netdev)
--			netif_carrier_off(pl->netdev);
--		else
-+		pl->suspend_link_up = phylink_link_is_up(pl);
-+		if (pl->suspend_link_up) {
-+			/* Disable the carrier, to prevent transmit timeouts,
-+			 * but one would hope all packets have been sent. This
-+			 * also means phylink_resolve() will do nothing.
-+			 */
-+			if (pl->netdev)
-+				netif_carrier_off(pl->netdev);
- 			pl->old_link_state = false;
-+		}
- 
- 		/* We do not call mac_link_down() here as we want the
- 		 * link to remain up to receive the WoL packets.
-@@ -2603,15 +2606,18 @@ void phylink_resume(struct phylink *pl)
- 	if (test_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state)) {
- 		/* Wake-on-Lan enabled, MAC handling */
- 
--		/* Call mac_link_down() so we keep the overall state balanced.
--		 * Do this under the state_mutex lock for consistency. This
--		 * will cause a "Link Down" message to be printed during
--		 * resume, which is harmless - the true link state will be
--		 * printed when we run a resolve.
--		 */
--		mutex_lock(&pl->state_mutex);
--		phylink_link_down(pl);
--		mutex_unlock(&pl->state_mutex);
-+		if (pl->suspend_link_up) {
-+			/* Call mac_link_down() so we keep the overall state
-+			 * balanced. Do this under the state_mutex lock for
-+			 * consistency. This will cause a "Link Down" message
-+			 * to be printed during resume, which is harmless -
-+			 * the true link state will be printed when we run a
-+			 * resolve.
-+			 */
-+			mutex_lock(&pl->state_mutex);
-+			phylink_link_down(pl);
-+			mutex_unlock(&pl->state_mutex);
-+		}
- 
- 		/* Re-apply the link parameters so that all the settings get
- 		 * restored to the MAC.
+You are awesome, thank you!
 -- 
-2.30.2
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
