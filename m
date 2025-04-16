@@ -1,42 +1,42 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F8423371A
-	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 09:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D625C2260C
+	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 09:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744795935; cv=none; b=bxsD5tEoZqVrbGS3wYgqHWqoPQ4scUiVPUDRL4qQf0e6JWMr3FJhIVeu8MfePlKpLrznGQgnV4jAqWUxaoMUERP+46v5ZaaguAVuVZV/2BWVOuAz/erOtKLRRwY2zQkL9HxNgoojmU7tSffu6L2ZU/uCEMAzP+kp648ZAkNpSjc=
+	t=1744795941; cv=none; b=Dff1xRhcubFxiRA77nvp9Bypc3fwHKB6lnSb/HEATHWBie5h1EqWqOP/v1ZQbtp9oNULVhgeDZG86KuUPtnu+iHf1PzTjJdrcgFXTjaFdjt/M+xBjKtqM7S77RbNBjp0PoyW1HzAcEbNPRgc9p7DvnyUzlqRsZChEcvBsjj2sGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744795935; c=relaxed/simple;
-	bh=zxiJnA8tlAJAnS/8xOJ8x1QBjQOzcLW7VRfzF5h5AyM=;
+	s=arc-20240116; t=1744795941; c=relaxed/simple;
+	bh=YPSszhs/kE3fPqBXZqWwcJ1Bzy1TsRsjmyQromLF4k4=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=L8GYpWH0eehzcI0x8uFhP5Q2XCpGc+uGDpaOTe0jzbGf7DsXf7bBjWfpOsLZu/puaw7NQj+Kg/XV10rD2OmiLcWTjMcQ2Q8VL4h/CC7EmVHaC9s4sihyb1V+7iHGQ/iipupsIjGaTIuudotPOhFtZDdDlQnAyBNzTVkHaaJHgZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=yRFzxRSP; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=Zcgpxe5kuWY8hPaXRKj1/aKCvTjnkqfwJLvdN3obRCpmahDZ7ClrS9toq3fPAtt++H5zWm+Kd8iL2NLbpcmahS5K3TByeSksZ7mxCkH9+QQ+weBYzSfgBW6Q1ffDExOzFGNQ3ns8nwyCpLH88ku5c4iBfQXbpgR4hPkbpdUC6Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=hOvvGwKa; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="yRFzxRSP"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="hOvvGwKa"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=9n7bu2qX7LooirHoLY1Va5iaADryPdv8WBdIxT2RDo8=; b=yRFzxRSPLt93xrnWnldHKJIZX7
-	s8jqKsAaOejM5thREyAcctecXQwV7yxi2AKLpE8/TkZGORU1IXj40FSPyFnjrG9qusgtXCRuwMPdb
-	2jdaq0Aq9TDDYWALSoz7uRt2s1q7/hwKNQVAvoyqWRAg4V5Zwu52Dp8VCGWJiG4f7dkvSC4Wf+dXE
-	K4h48T+KAUs1EaQnMxYSsyc7TwumJid2VeKLMKHStP85OM5fQi6Jbgb8kf0rb/Wbk5botulN0epm5
-	Z0Y3HZ5lVLRR0wpsf/16rtCI01KEDNVK4C1cR2bVSepjQL580Eifj/KlKijSEmFYA6RrEzV29Ij0A
-	hBinfeYg==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:33556 helo=rmk-PC.armlinux.org.uk)
+	bh=VbzIJjZ9JRmtU3xRpmTgeptOfjJrc8wP+yXsF4MdjLc=; b=hOvvGwKaNJrI53vdcENdKi+/f/
+	yli82WgrZJstnsuP4VqAc1IK1x10JwdCgV1ozWc0ly0BmMLKVC4W++4qs6v2OHa0ln86L16N7CgBj
+	Cn20lqaGxOT8YlqVm0jS14Ohj+zDZZfvAq4ZOE97Jnia6MvmpKkyzMrfTH48ae/v1b0jkJLYebYgj
+	1EqxIifcWd41+XtKhGLwzrxSk0BCx8AEOtCcTO1j/PEFwZ9t6SpuoIrY9/tT8ko4zgYauOb8i3cXq
+	Sk/3sMt5wJAG8M+3+xSc+nAsxZybhnM4+HMzOMaVEIE0XcWZOm4Tqo0sVYQ4s0yFAX8ZLfH4q3n4J
+	D2tMWjgA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:38772 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1u4z7l-0000yo-1S;
-	Wed, 16 Apr 2025 10:32:05 +0100
+	id 1u4z7q-0000z3-24;
+	Wed, 16 Apr 2025 10:32:10 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1u4z79-000xBi-Ue; Wed, 16 Apr 2025 10:31:27 +0100
+	id 1u4z7F-000xBo-26; Wed, 16 Apr 2025 10:31:33 +0100
 In-Reply-To: <Z_95AM64tt_4ri1j@shell.armlinux.org.uk>
 References: <Z_95AM64tt_4ri1j@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -52,7 +52,8 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
 	netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next v2 2/5] net: stmmac: socfpga: provide init function
+Subject: [PATCH net-next v2 3/5] net: stmmac: socfpga: convert to
+ stmmac_pltfr_pm_ops
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,55 +63,83 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1u4z79-000xBi-Ue@rmk-PC.armlinux.org.uk>
+Message-Id: <E1u4z7F-000xBo-26@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 16 Apr 2025 10:31:27 +0100
+Date: Wed, 16 Apr 2025 10:31:33 +0100
 
-Both the resume and probe path needs to configure the phy mode, so
-provide a common function to do this which can later be hooked into
-plat_dat->init.
+Convert socfpga to use the generic stmmac_pltfr_pm_ops, which can be
+achieved by adding an appropriate plat_dat->init function to do the
+setup.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ .../ethernet/stmicro/stmmac/dwmac-socfpga.c   | 39 +------------------
+ 1 file changed, 2 insertions(+), 37 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-index bcdb25ee2a33..000d349a6d4c 100644
+index 000d349a6d4c..69ffc52c0275 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-@@ -435,6 +435,13 @@ static struct phylink_pcs *socfpga_dwmac_select_pcs(struct stmmac_priv *priv,
- 	return priv->hw->phylink_pcs;
+@@ -493,6 +493,7 @@ static int socfpga_dwmac_probe(struct platform_device *pdev)
+ 
+ 	plat_dat->bsp_priv = dwmac;
+ 	plat_dat->fix_mac_speed = socfpga_dwmac_fix_mac_speed;
++	plat_dat->init = socfpga_dwmac_init;
+ 	plat_dat->pcs_init = socfpga_dwmac_pcs_init;
+ 	plat_dat->pcs_exit = socfpga_dwmac_pcs_exit;
+ 	plat_dat->select_pcs = socfpga_dwmac_select_pcs;
+@@ -516,42 +517,6 @@ static int socfpga_dwmac_probe(struct platform_device *pdev)
+ 	return ret;
  }
  
-+static int socfpga_dwmac_init(struct platform_device *pdev, void *bsp_priv)
-+{
-+	struct socfpga_dwmac *dwmac = bsp_priv;
-+
-+	return dwmac->ops->set_phy_mode(dwmac);
-+}
-+
- static int socfpga_dwmac_probe(struct platform_device *pdev)
- {
- 	struct plat_stmmacenet_data *plat_dat;
-@@ -497,7 +504,7 @@ static int socfpga_dwmac_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	ret = ops->set_phy_mode(dwmac);
-+	ret = socfpga_dwmac_init(pdev, dwmac);
- 	if (ret)
- 		goto err_dvr_remove;
- 
-@@ -516,7 +523,7 @@ static int socfpga_dwmac_resume(struct device *dev)
- 	struct stmmac_priv *priv = netdev_priv(ndev);
- 	struct socfpga_dwmac *dwmac_priv = get_stmmac_bsp_priv(dev);
- 
--	dwmac_priv->ops->set_phy_mode(priv->plat->bsp_priv);
-+	socfpga_dwmac_init(to_platform_device(dev), dwmac_priv);
- 
- 	return stmmac_resume(dev);
- }
+-#ifdef CONFIG_PM_SLEEP
+-static int socfpga_dwmac_resume(struct device *dev)
+-{
+-	struct net_device *ndev = dev_get_drvdata(dev);
+-	struct stmmac_priv *priv = netdev_priv(ndev);
+-	struct socfpga_dwmac *dwmac_priv = get_stmmac_bsp_priv(dev);
+-
+-	socfpga_dwmac_init(to_platform_device(dev), dwmac_priv);
+-
+-	return stmmac_resume(dev);
+-}
+-#endif /* CONFIG_PM_SLEEP */
+-
+-static int __maybe_unused socfpga_dwmac_runtime_suspend(struct device *dev)
+-{
+-	struct net_device *ndev = dev_get_drvdata(dev);
+-	struct stmmac_priv *priv = netdev_priv(ndev);
+-
+-	stmmac_bus_clks_config(priv, false);
+-
+-	return 0;
+-}
+-
+-static int __maybe_unused socfpga_dwmac_runtime_resume(struct device *dev)
+-{
+-	struct net_device *ndev = dev_get_drvdata(dev);
+-	struct stmmac_priv *priv = netdev_priv(ndev);
+-
+-	return stmmac_bus_clks_config(priv, true);
+-}
+-
+-static const struct dev_pm_ops socfpga_dwmac_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(stmmac_suspend, socfpga_dwmac_resume)
+-	SET_RUNTIME_PM_OPS(socfpga_dwmac_runtime_suspend, socfpga_dwmac_runtime_resume, NULL)
+-};
+-
+ static const struct socfpga_dwmac_ops socfpga_gen5_ops = {
+ 	.set_phy_mode = socfpga_gen5_set_phy_mode,
+ };
+@@ -572,7 +537,7 @@ static struct platform_driver socfpga_dwmac_driver = {
+ 	.remove = stmmac_pltfr_remove,
+ 	.driver = {
+ 		.name           = "socfpga-dwmac",
+-		.pm		= &socfpga_dwmac_pm_ops,
++		.pm		= &stmmac_pltfr_pm_ops,
+ 		.of_match_table = socfpga_dwmac_match,
+ 	},
+ };
 -- 
 2.30.2
 
