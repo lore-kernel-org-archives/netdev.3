@@ -1,133 +1,132 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1023F236456
-	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 09:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E9B23534D;
+	Wed, 16 Apr 2025 09:23:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744795379; cv=none; b=UhVDJCI03yfGh3EJynoSqjTB/wZ13EuejhVcpTAHKPE75D8L3BJPoL4W+IUoqdliCSlZvjwxl85UHhB06yWIDM4HWCWkUWJEoi2yxjmbBn7Iuo5ybVYoKlZSeOxvuoytQBR1cxEYz9UDG5jA4UZkk/6B/TjFma/A8H16FMBz6U8=
+	t=1744795384; cv=none; b=nopJY+ORWEu2z3AlfgZfWRiZaqpSpeUc4hLJy/XtlJlPlTV0+pwBoP6y7gcvPRCC7kC8kVocT8XExE6s9ebdXRc54fBK5fFLILsK75meD38WE6NpRo2OujT+yabgUk3A/mp+4BHYfQ2CCQrl5xZyaHprKrS+L1X92WYnJVOb4a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744795379; c=relaxed/simple;
-	bh=9AaagRoUGMmuG3v/XLXqgtNoP+syY3mCOivkxE8R+NQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rd0LuXbeBTGXtlL7iSSRBD/TqTu9Q1qM5ZwpBClnsVYbEIjek7KA5r94YIqK8lhDTvrJJkMq0NvRMl5GnEOGl+BmDT9US0hxeJ5vD3uJarnwqKIAUCa5iigEzq8LIWyLozfe3GVbt6+0BObCH4yW8Zpb5WAqzx9zFhGaAEGhXOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=J5rqLzdX; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1744795384; c=relaxed/simple;
+	bh=5HMXIOXHcQTiE/rlzYdmsLi7nBGgfPnASDa1mbPxBqA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=azlDGjsDfDxWOoKNJTE4kje9DKKL6kWsT9aTBfpEw9X3PEcAiorvqJg5XLMO3M2ebhN11DsVfjyfOw40bn2xtbEc1FNZyTwR3xkjkDuXojSvBFKNv5yvkntuO3e/K5Ywo2f8H6pzkgpzkPxagsvDlhdpaanFGpyT00caid2i8Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TSOTY+eq; arc=none smtp.client-ip=209.85.214.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="J5rqLzdX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=+WPslgCeRTES35qN9Ie4Wit2sF445ZU+qKH4X7tw5Ac=; b=J5rqLzdX8fMcZrYm9uLB0w84WM
-	8MIgz/Z3U8BVkLn6KD1A2ghhR/nQesnbQ6/5n9J5Hk0Sut+QFvJa8bcHSAiDhJKMlayD4xN8SIq5D
-	n6i1Aq01mM0K2D4giwpoVDEPGcuMKOWHsLeKNbHnGyn0sLagHShG/Xd9/VCmOG1q6568X7Peo0pLd
-	LBWjLXWP38b8a1krNaY8RRxBq50vS9fKfNHbZKuS95eJ6+OIlRVtiwCfsjyG/tWqrTBYrV7GkDRqD
-	oofFfBUZC0ZAeG4NORCaSvPw0DaJwtjjfNrzga90FRUEZOuX48P8moV+Up8UPO7qJPuZ4tcLJpz2K
-	i01gWQ2Q==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:36116)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1u4yyo-0000xj-2B;
-	Wed, 16 Apr 2025 10:22:50 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1u4yym-0001HR-02;
-	Wed, 16 Apr 2025 10:22:48 +0100
-Date: Wed, 16 Apr 2025 10:22:47 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Kory Maincent <kory.maincent@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>
-Subject: Re: [PATCH RFC net-next 2/5] ptp: marvell: add core support for
- Marvell PTP v2.1
-Message-ID: <Z_9252w9vWiGysiF@shell.armlinux.org.uk>
-References: <Z_mI94gkKkBslWmv@shell.armlinux.org.uk>
- <E1u3LtV-000CP1-2C@rmk-PC.armlinux.org.uk>
- <20250416104849.43374926@kmaincent-XPS-13-7390>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TSOTY+eq"
+Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-226185948ffso69375665ad.0;
+        Wed, 16 Apr 2025 02:23:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744795382; x=1745400182; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ap8ev65dR3E/o3s7og89H/vaAMfdZJXq1GxWrkyepJ4=;
+        b=TSOTY+eq2Wkrz6HQDDQ6JRNz6cyvcAnqj2ubpPLuZiIomQtXuNcaF5vbEs8hwckC/a
+         P2+u4XC01rIb+62uNF0dHBAcJ387PEpo0LGVsXj3iU5qRpSpPdwxcSqIMDdzyRlQdYjl
+         5j0GzVQu+tJhgZGpxrQrX0ZM1uBwmJl8BNGq3rFlX+G3bYhJijC7g8y/uzFiGDlv1szR
+         01hjeZlIffTvosHnlBVDKpUAepmjvwbkTw9dgLV6i3pRDZsSTMfmeg0vNEmBth5KP2Mb
+         Snm/x6ipM3FCSkUfDprf/jNWdWBrl/LYHTbjsBFlRuUbfx9c2NMK/QuL9Nb6qiD24Wnp
+         Ix1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744795382; x=1745400182;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ap8ev65dR3E/o3s7og89H/vaAMfdZJXq1GxWrkyepJ4=;
+        b=Q3UJK/iBYyfIXBSC4cCSbxzEXQp01doanjuOvoS8porZBacAjrOi+wyNZQaoLMTTS1
+         HLF6pZSrj4q2PcX0rYfB1eHUR7HkaM1KX2QBZsnYJULMamPUXb0z9GkO7LfqYfphDeFA
+         k8jxviNRv0g7NxUk6ftTwdybHNfVOE9X0M40ZgGHCO9Zn6bYFuDxxd2Vhj4wNSlAmdfv
+         F3RVQyO14dz5bDQMSGTM/7i6yg0i/vegdTKKfYIku+4aC8Ecy9N+U4JaPDEfybcqeIJI
+         z18frl6fa+h8Y8LFcTm4E++q8asm6zChe6/rjkaJVJ0N1x3NBYzHcAgmLz1O3eGy5XVV
+         10+g==
+X-Forwarded-Encrypted: i=1; AJvYcCUtW6OpYVasKgJqzZ5VSuwlCE276k8AFN6z7vt55+k4fa0rdfmy0vrCx2misI52Img65PebqWIf3Tz20A==@vger.kernel.org, AJvYcCXgVlGTRZfqKagW1zmX5a1czOcOUo3m0WrpcFf9LpexaABUxZ0FZDqP2bzz8bYeqkJ3dLJqYKlRxwZhp6s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqDp16vtZCJcJjJ2wwd+OsWCsPfftlbSefoa97wNBO9tZ+4+pZ
+	1to0vccIuL1JnXFe2cXD4mtgL5U9gYgQd+LcSCAjKg60CAdm/iBu
+X-Gm-Gg: ASbGncvxlNfUImQtsIkpkY7YTEG5YeRtxR+OaKpwAi5ZTdl7RpHHYoJIV1RHUBlqlfr
+	AyYEnOKAc5I5mR+H8dRueefuhqs7RUWc/5RD/Y34EOsURmcMBI3ykn73SXpy4jGEskBpBUZM085
+	bXun/FnboWJmrRORJ2EK1W88SEQEnFt2tqcLitirvdrwUqMDfEO2B69KpFLjOCBHflZ31O1H/0s
+	XIGmq3jmyu3/6fRktkW/TBkYwWB++C7aqQOUC9OqelHmAYQ4LFAecR3MH/A5I/0SBxpcgCePDjM
+	6OlI10A7sL1MCXJbzdDeePXLOkA3zDQ1ENsoRAHkQ5rvWlRUU60pVfyLTdf4yFvBeQ==
+X-Google-Smtp-Source: AGHT+IGbyvuHG1apuglz007WJKTIh8HY03yZtZzDnC3X3Y8KUAZ/4tiUSf9vb9CKlql4KIVk04lUtA==
+X-Received: by 2002:a17:903:32c5:b0:22c:35c5:e30e with SMTP id d9443c01a7336-22c35c60d7amr15433955ad.13.1744795381514;
+        Wed, 16 Apr 2025 02:23:01 -0700 (PDT)
+Received: from henry.localdomain ([111.202.148.49])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c33f1d070sm9369515ad.79.2025.04.16.02.22.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Apr 2025 02:23:01 -0700 (PDT)
+From: Henry Martin <bsdhenrymartin@gmail.com>
+To: saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	bsdhenrymartin@gmail.com,
+	mbloch@nvidia.com,
+	michal.swiatkowski@linux.intel.com,
+	amirtz@nvidia.com
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v6 1/2] net/mlx5: Fix null-ptr-deref in mlx5_create_{inner_,}ttc_table()
+Date: Wed, 16 Apr 2025 17:22:42 +0800
+Message-Id: <20250416092243.65573-2-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250416092243.65573-1-bsdhenrymartin@gmail.com>
+References: <20250416092243.65573-1-bsdhenrymartin@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250416104849.43374926@kmaincent-XPS-13-7390>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 16, 2025 at 10:48:49AM +0200, Kory Maincent wrote:
-> On Fri, 11 Apr 2025 22:26:37 +0100
-> Russell King <rmk+kernel@armlinux.org.uk> wrote:
-> > Provide core support for the Marvell PTP v2.1 implementations, which
-> > consist of a TAI (time application interface) and timestamping blocks.
-> > This hardware can be found in Marvell 88E151x PHYs, Armada 38x and
-> > Armada 37xx (mvneta), as well as Marvell DSA devices.
-> > 
-> > Support for both arrival timestamps is supported, we use arrival 1 for
-> > PTP peer delay messages, and arrival 0 for all other messages.
-> > 
-> > External event capture is also supported.
-> > 
-> > PPS output and trigger generation is not supported.
-> > 
-> > This core takes inspiration from the existing Marvell 88E6xxx DSA PTP
-> > code and DP83640 drivers. Like the original 88E6xxx DSA code, we
-> > use a delayed work to keep the cycle counter updated, and a separate
-> > delayed work for event capture.
-> > 
-> > We expose the ptp clock aux work to allow users to support single and
-> > multi-port designs - where there is one Marvell TAI instance and a
-> > number of Marvell TS instances.
-> 
-> ...
-> 
-> > +#define MV_PTP_MSGTYPE_DELAY_RESP	9
-> > +
-> > +/* This defines which incoming or outgoing PTP frames are timestampped */
-> > +#define MV_PTP_MSD_ID_TS_EN	(BIT(PTP_MSGTYPE_SYNC) | \
-> > +				 BIT(PTP_MSGTYPE_DELAY_REQ) | \
-> > +				 BIT(MV_PTP_MSGTYPE_DELAY_RESP))
-> > +/* Direct Sync messages to Arr0 and delay messages to Arr1 */
-> > +#define MV_PTP_TS_ARR_PTR	(BIT(PTP_MSGTYPE_DELAY_REQ) | \
-> > +				 BIT(MV_PTP_MSGTYPE_DELAY_RESP))
-> 
-> Why did you have chosen to use two queues with two separate behavior?
-> I have tried using only one queue and the PTP as master behaves correctly
-> without all these overrun. It is way better with one queue.
-> Maybe it was not the best approach if you want to use the two queues.  
+Add NULL check for mlx5_get_flow_namespace() returns in
+mlx5_create_inner_ttc_table() and mlx5_create_ttc_table() to prevent
+NULL pointer dereference.
 
-First, both queues have the same behaviour.
+Fixes: 137f3d50ad2a ("net/mlx5: Support matching on l4_type for ttc_table")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Second, because they *aren't* queues as they can only stamp one message.
-The sync messages come from the master on a regular basis. The delay
-response messages come from the master in response to a delay request
-message, the timing of which is determined by the local slave.
-
-If the local end sends a delay request just at the point that the master
-sends a sync message causing the master to immediately follow the sync
-message with the delay response message, then we could get an overrun
-on a single queue - because we'll stamp the sync message and if we don't
-read the timestamp quickly enough, the stamp registers will be busy
-preventing the timestamp of the delay response being captured.
-
-With the overruns that I've seen, they've always been on the second
-"queue" and have always been for a sequence number several in the past
-beyond the point that the overrun has been reported. However, the
-packet which the sequence number matches had already been received -
-and several others have also been received. I've been wondering if it's
-a hardware bug, or maybe it's something other bits of the kernel is
-doing wrong.
-
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
+index eb3bd9c7f66e..066121fed718 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
+@@ -655,6 +655,11 @@ struct mlx5_ttc_table *mlx5_create_inner_ttc_table(struct mlx5_core_dev *dev,
+ 	}
+ 
+ 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
++	if (!ns) {
++		kvfree(ttc);
++		return ERR_PTR(-EOPNOTSUPP);
++	}
++
+ 	groups = use_l4_type ? &inner_ttc_groups[TTC_GROUPS_USE_L4_TYPE] :
+ 			       &inner_ttc_groups[TTC_GROUPS_DEFAULT];
+ 
+@@ -728,6 +733,11 @@ struct mlx5_ttc_table *mlx5_create_ttc_table(struct mlx5_core_dev *dev,
+ 	}
+ 
+ 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
++	if (!ns) {
++		kvfree(ttc);
++		return ERR_PTR(-EOPNOTSUPP);
++	}
++
+ 	groups = use_l4_type ? &ttc_groups[TTC_GROUPS_USE_L4_TYPE] :
+ 			       &ttc_groups[TTC_GROUPS_DEFAULT];
+ 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.34.1
+
