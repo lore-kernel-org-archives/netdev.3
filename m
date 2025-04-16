@@ -1,91 +1,216 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3433238143
-	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 10:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5647E22157B
+	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 10:19:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744798695; cv=none; b=FWJoePiel/qPr3vdltuphE4I0mNCX6wMOA0A+7rM/qSYGhLXUFNcrPEUDI4Uk4ed6y9ct7AmJJ+4j6N2RY0jxdAFl++KaRNzyqQ8FmvfDHm8JdBbSzd+5oC2Ehcf4UB2ZQPg3s2kBL2i12bk+4Ag6HKFmEhvtOBgoTNssfiT/oU=
+	t=1744798772; cv=none; b=GJUfJlEc1+Ap5EgO/+vDhp/Ux/kACTURo4sue8J2jjTkdi8bTV9csxKVcWa+9ryLBcdEW19Sv3mNoxzp0Pnmb4vongE1mglPRnCMRap9idzMW/Djc7C8XMDb3M7y55B4aztLsgDE9q3sBgFNiJ/YTQ46bdJf7C2O0nGK27WAeSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744798695; c=relaxed/simple;
-	bh=acwVM6EpM6rJFxAZraZUmmSeuiSbfOluehd9tus2l4o=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=N5CkcM+Q3pkxq4h2/l4KtWVAnFDyM5nCgyc+WHKS1F9cJfS4UUj+XHLOlvZo+DzNc47T7MxcDRxW2sdYiWlSqKzCugxqJ/ETG4lFnpQO6kdv5Uy4F+TXvCtBJw/lZ0N3qm6FRnpG5tk03GqpfwypbGbefLq9WXtJrVQcJE2ROn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vp099sMc; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744798772; c=relaxed/simple;
+	bh=VajtxdZtXPXZJIMdUBloDGEwDgBVx6vtUYVnxS9bPMk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 References; b=fhs9CYZO17gBY0W0+mvMmJbQRF+k325YlyhBYJrE9KlxgtCKdtBJ2RknnKkpvwI6N18R4TclFy/T7VdFDmeKFCFplIN1KfTMrxdkh3tCy4KYKYwXoAb9MjGiyrHmXmVjPw3Z+JMtNNQH0KeIhjD0yVp/sArsirXowXnmCMksZ1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=partner.samsung.com; spf=pass smtp.mailfrom=partner.samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=QP15S4T6; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=partner.samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=partner.samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vp099sMc"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43ce71582e9so53980155e9.1
-        for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 03:18:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744798692; x=1745403492; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=acwVM6EpM6rJFxAZraZUmmSeuiSbfOluehd9tus2l4o=;
-        b=Vp099sMco9tcHCAWeETc+jspiAa7AaHLKJ4lG+7M4aIpfXekkPEfHt2eWnRzgddxkx
-         qtMjIRYnlq9H7thXsDts1YjvJTD6D1Jrm9Wha6TKfWeNXsR2Ryu1/hqiHwJ5SYb3xDHj
-         ASN0rdVaaaLqIK7D8+lHRzqk8WFc/CzgIe2wZHlG0p1NH5hLj82SPO9LPlbPkyJ9XeGz
-         HML7jC1ytgNzMccn1RiPUkapYTehjPxuqb0aHvJrPd+OpT0WY29eBWj4s0wE6jGWY5MW
-         hBSdWwbUewqPt1KAdPzNxzkI8KhrD3EyT3SOr2kjgB7Efx9Oqr+aFd4NXlv2OyUnRcVT
-         9dQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744798692; x=1745403492;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=acwVM6EpM6rJFxAZraZUmmSeuiSbfOluehd9tus2l4o=;
-        b=g/g6Xkuu/csv5wpDGxRr9w7WUIHpARxgQT2t5aCXF0+zkkayYTDzi6GAKU0bols4zl
-         Z8gTvpNDVp4w4otprecHK1/Z5Xl5qdz7qfUVUro7w08x7LwArvZ5S3TRIPoGK2kz2OSr
-         f7BbJsVlRGBunyElMymbnDmlRawtp55fEjINTNRPzs3O+ftCzRYfBiAKqi/QevH6vReT
-         DCrPZzuQqI1Ifdt6g9y8FUhCNAcgUZAE/s5CNPbDB8Y6GEV7Q/VWih6SPNvjJKDhRZeT
-         aEKVFHXqUFT7Gys4W/Hy7UJizSh1x410w10vTb3y3f8XD8hZ3ZDSpuZolCcWdCpTDocq
-         iKKg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/wPdJKEgoBqbsUei+SA+p308gN3b1oesQd6gvieP3xkbF3cUhglZSUOBGD5XuXfjdmaZfKyw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yww3VVGNv8FUFjtg6P3aWQG6YXlRkD0YIG+FMSgZYs0/QCGv8sN
-	+erejOkn2dg8YGVqn6PKraN/Oym8MQXBDSJo3S6wfThhMtSvnI7r
-X-Gm-Gg: ASbGnct4f+l3p55Gdx4R24nOGvz9hWvwT+FH+UOnF3/7mLWlxAACm7FMtDx/w7vOP1v
-	3PKgXIgsUnPIlOTdQudCZ2MTkQuyrw/6BTXQJH3jxHTEyCvuNs0b6X0SkbUz5HGEX26hqBPua8a
-	crriEfxy0FyN+pamP70ZyYqI9XH4qGKz/hqPqzmVc9Az4Jc2V0NvGuqfLsOdj5w/+qp2Sgx0YWK
-	5dvuC/vjj4M85b5cZldHRqVu5Cn6gLYGZF3c/gC/gv99wc7g0WXNO9cnZeMIWuyfDa2ecnPmcvb
-	kplFlTyevdDfb06MBBHcywNmOuToUoiAMP/86+MOSh8oBOfOI6R6EGV97A==
-X-Google-Smtp-Source: AGHT+IFrOVqPpbnvKAh3IvAtVDw5bRw9hs8dJl0VrcKG6Jvi6LWRkvewgdQOZEVvzs+EFi1347pAGQ==
-X-Received: by 2002:a05:600c:8883:b0:43d:db5:7af8 with SMTP id 5b1f17b1804b1-4405d69b0d8mr9335565e9.21.1744798691866;
-        Wed, 16 Apr 2025 03:18:11 -0700 (PDT)
-Received: from imac ([2a02:8010:60a0:0:e94a:d61b:162d:e77])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4405b58cb6csm16885255e9.27.2025.04.16.03.18.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Apr 2025 03:18:11 -0700 (PDT)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
-  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
-  daniel@iogearbox.net,  sdf@fomichev.me,  jacob.e.keller@intel.com
-Subject: Re: [PATCH net 8/8] netlink: specs: rt-neigh: prefix struct nfmsg
- members with ndm
-In-Reply-To: <20250414211851.602096-9-kuba@kernel.org> (Jakub Kicinski's
-	message of "Mon, 14 Apr 2025 14:18:51 -0700")
-Date: Wed, 16 Apr 2025 11:11:27 +0100
-Message-ID: <m2cydcl8kw.fsf@gmail.com>
-References: <20250414211851.602096-1-kuba@kernel.org>
-	<20250414211851.602096-9-kuba@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="QP15S4T6"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250416101927euoutp01588d56f58a6605fbffdd233d3474556e~2xTwAFHeR3141631416euoutp01P
+	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 10:19:27 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250416101927euoutp01588d56f58a6605fbffdd233d3474556e~2xTwAFHeR3141631416euoutp01P
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1744798767;
+	bh=Fnu34OTKoZur1MRsDH3t+4o7UeBrOio4PhVkGpMtUqc=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=QP15S4T6B1Iq85biHOzkGkkGbv7XKKTSra6QMZdRoBfuipojsbeH4pg95Mvu+lGfa
+	 xGsNIaOo7qfRvb3+72NFg8GsESHMB/s+y6nBLYqxlSHc2xaWsIz2yQwnao1A8U76NQ
+	 /fbw5dS6Q21oyqkuZvCr2W9QDHrBoE3Cv1ictRvw=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+	20250416101926eucas1p18efc08375e0478c1442f84ef4c4de7c8~2xTvqbTaK1096710967eucas1p1I;
+	Wed, 16 Apr 2025 10:19:26 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+	eusmges1new.samsung.com (EUCPMTA) with SMTP id EF.B8.20821.E248FF76; Wed, 16
+	Apr 2025 11:19:26 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250416101926eucas1p193c52e72b20321605905f1c465c8ac06~2xTvSxVEK1095810958eucas1p1P;
+	Wed, 16 Apr 2025 10:19:26 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20250416101926eusmtrp2c2afe5b64e1b5996223adbbb2c7f3e75~2xTvQi6gt2819328193eusmtrp2K;
+	Wed, 16 Apr 2025 10:19:26 +0000 (GMT)
+X-AuditID: cbfec7f2-b09c370000005155-43-67ff842e7292
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+	eusmgms1.samsung.com (EUCPMTA) with SMTP id 03.6F.19920.E248FF76; Wed, 16
+	Apr 2025 11:19:26 +0100 (BST)
+Received: from panorka.. (unknown [106.210.135.126]) by eusmtip2.samsung.com
+	(KnoxPortal) with ESMTPA id
+	20250416101925eusmtip2ee6b878b35adf1a9a51f147fa7f6d3d8~2xTuosv7W2622326223eusmtip2G;
+	Wed, 16 Apr 2025 10:19:25 +0000 (GMT)
+From: "e.kubanski" <e.kubanski@partner.samsung.com>
+To: linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Cc: bjorn@kernel.org, magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com, jonathan.lemon@gmail.com, "e.kubanski"
+	<e.kubanski@partner.samsung.com>
+Subject: [PATCH v2 bpf] xsk: Fix race condition in AF_XDP generic RX path
+Date: Wed, 16 Apr 2025 12:19:08 +0200
+Message-Id: <20250416101908.10919-1-e.kubanski@partner.samsung.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnleLIzCtJLcpLzFFi42LZduzneV29lv/pBkcadSy2vl/FYvFg9lJm
+	i13rZjJbXN41h83i5vHnLBYrDp1gtzi2QMyB3WPnrLvsHov3vGTy2LSqk83j4Ls9TB6fN8kF
+	sEZx2aSk5mSWpRbp2yVwZWy9upStoEum4kLfecYGxpniXYycHBICJhLvz79n62Lk4hASWMEo
+	seLTV0YI5wujxKeOq6wQzmdGif55S5hhWr6sX8QMkVjOKHF43mqo/peMEpf7zoNVsQkYSzR9
+	388CYosIWEhsWvQNbBSzwCxGiSV7doElhAU8JV5/aGQEsVkEVCWu73/MDmLzCjhLTL2/nQli
+	nbzE/oNnmSHighInZz4B62UGijdvnQ110lwOiUcPlSBsF4mJb25D9QpLvDq+hR3ClpH4v3M+
+	E8gREgLNjBKzZnayQzg9jBJrrl4BuoIDyLGWWHvSFsRkFtCUWL9LHyLqKHF/Kw+EySdx460g
+	xAV8EpO2TWeGCPNKdLQJQSzSkbhx8TnUUimJ7zM3s0DYHhLX+rawgpQLCcRK3DnAMYFRYRaS
+	t2YheWsWwgULGJlXMYqnlhbnpqcWG+allusVJ+YWl+al6yXn525iBKaZ0/+Of9rBOPfVR71D
+	jEwcjIcYJTiYlUR4z5n/SxfiTUmsrEotyo8vKs1JLT7EKM3BoiTOu2h/a7qQQHpiSWp2ampB
+	ahFMlomDU6qByaKct8mi88ebjLztnZbfQqYxzXv4YilHesTZF7XR1iuVgpbM6ng2l3HfxFPb
+	BT3l42Rl3LYz2fM3NhrfVVqw3daPLe1b6RuRkFnFaeJHq76sqWtedvAO+9Xd4bsbGTdk3/WY
+	al++y+NZZ/c07vq/OyUf3rV1sD1bF8xYVqV4objcsaev+sPXx5vaedosbRltTmeGilp2Lk5a
+	9MX+74bq9c98F+ZPnszWfva6p9CKfQ5JZz1WvJ89qXU6w7rsiFI5rs2r41ZrFnY3ps1Oi7l6
+	vTL2/U5jmfRn3W7it+7MKHlhPTcwWTzJ87VzsNV1m5vv5lkuexrSvJFpwd+W3yFTbSKm3vyp
+	Jn7nmVsn24c1SizFGYmGWsxFxYkAKRsdMaIDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrBLMWRmVeSWpSXmKPExsVy+t/xe7p6Lf/TDT6cFbTY+n4Vi8WD2UuZ
+	LXatm8lscXnXHDaLm8efs1isOHSC3eLYAjEHdo+ds+6yeyze85LJY9OqTjaPg+/2MHl83iQX
+	wBqlZ1OUX1qSqpCRX1xiqxRtaGGkZ2hpoWdkYqlnaGwea2VkqqRvZ5OSmpNZllqkb5egl7H1
+	6lK2gi6Zigt95xkbGGeKdzFyckgImEh8Wb+IuYuRi0NIYCmjxKnOr8wQCSmJP+v+QNnCEn+u
+	dbFBFD1nlPjU8pAdJMEmYCzR9H0/C4gtImAl8eD2P7BJzALzGCXm7FrPCpIQFvCUeP2hkRHE
+	ZhFQlbi+/zFYM6+As8TU+9uZIDbIS+w/eJYZIi4ocXLmE7ChzEDx5q2zmScw8s1CkpqFJLWA
+	kWkVo0hqaXFuem6xoV5xYm5xaV66XnJ+7iZGYJBvO/Zz8w7Gea8+6h1iZOJgPMQowcGsJMJ7
+	zvxfuhBvSmJlVWpRfnxRaU5q8SFGU6D7JjJLiSbnA+MsryTe0MzA1NDEzNLA1NLMWEmc1+3y
+	+TQhgfTEktTs1NSC1CKYPiYOTqkGJv/Sg8u2KOyrCa8+MHmH6alUe74kxaKMVp6+6iqWGwEe
+	rwUZZZRCJ+/fl8G4vHFB+BrfU0kNEntnqpcbRuklufFc2Hj5XX7roozd344c40i6t1NVVYBH
+	m0nFnvPKeYPLLverNkZyrvg5Z3efj90JTgOvH7Ns8sPSd/Xyc3cr3/zwc2u3m43jHoMc9fJz
+	Wb1mj36l7Uj+4TknPO7v4nVnWbdNrGv+XDzd1+NKW/EslyjJ/OUXLMzcU+e15bi+3rCYu82e
+	cbNy1yMPq5jJwdICP2Q5G64xhC1g/DXb+ZDDD6Vl+h+FC5qNebvTQybZZX75v2Nu5FyPm53v
+	Hn5ZrXzq/uvw29n7n+ns1qnZwR2txFKckWioxVxUnAgAgmxoJvsCAAA=
+X-CMS-MailID: 20250416101926eucas1p193c52e72b20321605905f1c465c8ac06
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250416101926eucas1p193c52e72b20321605905f1c465c8ac06
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20250416101926eucas1p193c52e72b20321605905f1c465c8ac06
+References: <CGME20250416101926eucas1p193c52e72b20321605905f1c465c8ac06@eucas1p1.samsung.com>
 
-Jakub Kicinski <kuba@kernel.org> writes:
+Move rx_lock from xsk_socket to xsk_buff_pool.
+Fix synchronization for shared umem mode in
+generic RX path where multiple sockets share
+single xsk_buff_pool.
 
-> Attach ndm- to all members of struct nfmsg. We could possibly
-> use name-prefix just for C, but I don't think we have any precedent
-> for using name-prefix on structs, and other rtnetlink sub-specs
-> give full names for fixed header struct members.
->
-> Fixes: bc515ed06652 ("netlink: specs: Add a spec for neighbor tables in rtnetlink")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+RX queue is exclusive to xsk_socket, while FILL
+queue can be shared between multiple sockets.
+This could result in race condition where two
+CPU cores access RX path of two different sockets
+sharing the same umem.
 
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Protect both queues by acquiring spinlock in shared
+xsk_buff_pool.
+
+Lock contention may be minimized in the future by some
+per-thread FQ buffering.
+
+It's safe and necessary to move spin_lock_bh(rx_lock)
+after xsk_rcv_check():
+* xs->pool and spinlock_init is synchronized by
+  xsk_bind() -> xsk_is_bound() memory barriers.
+* xsk_rcv_check() may return true at the moment
+  of xsk_release() or xsk_unbind_dev(),
+  however this will not cause any data races or
+  race conditions. xsk_unbind_dev() removes xdp
+  socket from all maps and waits for completion
+  of all outstanding rx operations. Packets in
+  RX path will either complete safely or drop.
+
+Signed-off-by: Eryk Kubanski <e.kubanski@partner.samsung.com>
+Fixes: bf0bdd1343efb ("xdp: fix race on generic receive path")
+---
+ include/net/xdp_sock.h      | 3 ---
+ include/net/xsk_buff_pool.h | 2 ++
+ net/xdp/xsk.c               | 6 +++---
+ net/xdp/xsk_buff_pool.c     | 1 +
+ 4 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/include/net/xdp_sock.h b/include/net/xdp_sock.h
+index bfe625b55d55..df3f5f07bc7c 100644
+--- a/include/net/xdp_sock.h
++++ b/include/net/xdp_sock.h
+@@ -71,9 +71,6 @@ struct xdp_sock {
+ 	 */
+ 	u32 tx_budget_spent;
+ 
+-	/* Protects generic receive. */
+-	spinlock_t rx_lock;
+-
+ 	/* Statistics */
+ 	u64 rx_dropped;
+ 	u64 rx_queue_full;
+diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
+index 50779406bc2d..7f0a75d6563d 100644
+--- a/include/net/xsk_buff_pool.h
++++ b/include/net/xsk_buff_pool.h
+@@ -53,6 +53,8 @@ struct xsk_buff_pool {
+ 	refcount_t users;
+ 	struct xdp_umem *umem;
+ 	struct work_struct work;
++	/* Protects generic receive in shared and non-shared umem mode. */
++	spinlock_t rx_lock;
+ 	struct list_head free_list;
+ 	struct list_head xskb_list;
+ 	u32 heads_cnt;
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 89d2bef96469..e2a75f3be237 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -337,13 +337,14 @@ int xsk_generic_rcv(struct xdp_sock *xs, struct xdp_buff *xdp)
+ 	u32 len = xdp_get_buff_len(xdp);
+ 	int err;
+ 
+-	spin_lock_bh(&xs->rx_lock);
+ 	err = xsk_rcv_check(xs, xdp, len);
+ 	if (!err) {
++		spin_lock_bh(&xs->pool->rx_lock);
+ 		err = __xsk_rcv(xs, xdp, len);
+ 		xsk_flush(xs);
++		spin_unlock_bh(&xs->pool->rx_lock);
+ 	}
+-	spin_unlock_bh(&xs->rx_lock);
++
+ 	return err;
+ }
+ 
+@@ -1724,7 +1725,6 @@ static int xsk_create(struct net *net, struct socket *sock, int protocol,
+ 	xs = xdp_sk(sk);
+ 	xs->state = XSK_READY;
+ 	mutex_init(&xs->mutex);
+-	spin_lock_init(&xs->rx_lock);
+ 
+ 	INIT_LIST_HEAD(&xs->map_list);
+ 	spin_lock_init(&xs->map_list_lock);
+diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+index 1f7975b49657..3a5f16f53178 100644
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -87,6 +87,7 @@ struct xsk_buff_pool *xp_create_and_assign_umem(struct xdp_sock *xs,
+ 	pool->addrs = umem->addrs;
+ 	pool->tx_metadata_len = umem->tx_metadata_len;
+ 	pool->tx_sw_csum = umem->flags & XDP_UMEM_TX_SW_CSUM;
++	spin_lock_init(&pool->rx_lock);
+ 	INIT_LIST_HEAD(&pool->free_list);
+ 	INIT_LIST_HEAD(&pool->xskb_list);
+ 	INIT_LIST_HEAD(&pool->xsk_tx_list);
+-- 
+2.34.1
+
