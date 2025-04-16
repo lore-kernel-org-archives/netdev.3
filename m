@@ -1,575 +1,202 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A67514A82
-	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 12:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE02179A3
+	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 12:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744806817; cv=none; b=C6iPudh2yItfWeucKghuzfcWkZs16lSG0o3K7ema5rHAgzhf59OjOtLwZDgwIxbpdE5/osBpPsbjKnasa/jCd4DLDEPTaLaAMuYSMR4c+HYapPL2KoL2qRrkA8yocoUZjWqCbHRpY+r5brL521l2iOJsrII4b/YS+kJVO4zcalI=
+	t=1744806894; cv=none; b=e4ytyVBrurv9L7W3UY1Uko8XO1pkQAAkPr58h6Vn2qZYbwkmMk1DeGHXpbRtqVdDTxiXDf73lcupfU7o3R9VRumM5Z9SL1Id28b/JM80JUG3JLNOxTZ4RIuABBtbYuE1Gfsg/R18Kol/9k4DOJCx1I+QW0Oc1TvspMjE2fdPHR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744806817; c=relaxed/simple;
-	bh=pNSzYfbJYxbziDKB1Fa1CJCpNCxliGlfCl+n0IPYd6o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NFVnXZBxVPXD8bVHfIOKc3IW/i4QHC31o9qASBYbqY1aBHSevwrQZFIe1Z/3/2V3GLKu5kMPAJZznWS7bDI4UFkN6QvuZkM5nVEXktN1gApp5Wh9opv6oTRJFSe7afKdzpN/rVmzc91Bk2D9D3B4oI7pIgYf/hyj0lXuNCg7ngs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FFiSsLw4; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1744806894; c=relaxed/simple;
+	bh=MQzAdBu/uMebeOJA/sZbwOp+jPQg3Wn4NmMIMqB48Ak=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OjFE13LZgFvc1DlPTPdt4YTVJQMTPqkWoJVW1hNhLnOAIkJCHwhvjJuaKsG8LjJQsNrvr4rXJK0LBHAJMdgjlzkG8xy9KnkMeaOF6EEazs5FJc6FTMmExRfCZT0++E/UnpRW5IB5N6EjQvIxyOikMMsZodM5wf1J29pEKscOesM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HGR7ML/k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FFiSsLw4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744806815; x=1776342815;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=pNSzYfbJYxbziDKB1Fa1CJCpNCxliGlfCl+n0IPYd6o=;
-  b=FFiSsLw4BKwlT4R2OPRANgRqSLO0vJTT9pPkp8o974qxkhSX/dZms0uV
-   KAK4MVzM5b7vn6/bBJIitMvZgiu5XtSQtu46lJCXQ9JmHjVJnECe8otPg
-   9SKPzijDmiZUSWFOfGb5d8hsompN62r2aoj9Le4KT1p/NxyxAEt/Z/Pfp
-   0McA8Kn4R3n4+/na0klOVtza2aznP4a8U7Gb+C/MlIlq/ZgC3QS685aBN
-   kYY+Y+3is5R8GMDDB6H54CMnsSiyBxlhrAdpqRZ+pSDmnz/qz+GMfpy5Y
-   khHtTh7pdO/xIoGLPfDUl5j0dyvJOq0CxO2NM9y4Mdu6NV9Sv03uIKQpV
-   A==;
-X-CSE-ConnectionGUID: n00/9ASYRgKxw4XZwBoyQw==
-X-CSE-MsgGUID: 3uGJUBr5TUi0bzCaywBODg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="46232799"
-X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; 
-   d="scan'208";a="46232799"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 05:33:35 -0700
-X-CSE-ConnectionGUID: UHDWTNl1Rq+Mnq6J2GJQ/g==
-X-CSE-MsgGUID: ILWUKB5mRr+AWZGDTV3RsA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; 
-   d="scan'208";a="130480244"
-Received: from gklab-003-014.igk.intel.com ([10.211.116.96])
-  by fmviesa007.fm.intel.com with ESMTP; 16 Apr 2025 05:33:33 -0700
-From: Milena Olech <milena.olech@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Milena Olech <milena.olech@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-Subject: [PATCH v12 iwl-next 09/11] idpf: add Tx timestamp capabilities negotiation
-Date: Wed, 16 Apr 2025 14:19:20 +0200
-Message-ID: <20250416122142.86176-24-milena.olech@intel.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250416122142.86176-2-milena.olech@intel.com>
-References: <20250416122142.86176-2-milena.olech@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HGR7ML/k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6967BC4CEE2;
+	Wed, 16 Apr 2025 12:34:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744806892;
+	bh=MQzAdBu/uMebeOJA/sZbwOp+jPQg3Wn4NmMIMqB48Ak=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HGR7ML/k61FQ1FDw+5qwWmSxs2bICPqLtCebdQiV+rrFlRGCb+cQytXead4oJXV2h
+	 7eS8lqlYz+k7UdzujkSijNg3fM9I6YjNNStBsl1D7L6S2d2l9rLVHLAuXVjZnm9WNP
+	 96ScdzXOCavsO33Vn5AE0SKhnJc0LdEVmVbyUVvb1xleJVr4HEAUW6ZJ/bakNnaFSG
+	 Xihc/B8idKJVFoV9qu1PoknzSE5lzPW+gKN7Fb8/fb9K/SbmJV12W9A++H+DeAi6I5
+	 +/NqWTLBaEJBCGQdMP4kntCh+rb/2WZoeYPQI/Pn5a5YL6uY0Y4MBxETwQ7q9hbFEG
+	 oYUMv8uF8GELA==
+Date: Wed, 16 Apr 2025 13:34:49 +0100
+From: Simon Horman <horms@kernel.org>
+To: Dave Marquardt <davemarq@linux.ibm.com>
+Cc: netdev@vger.kernel.org, michal.swiatkowski@linux.intel.com,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next v2 1/2] net: ibmveth: make ibmveth use WARN_ON
+ instead of BUG_ON
+Message-ID: <20250416123449.GQ395307@horms.kernel.org>
+References: <20250414194016.437838-1-davemarq@linux.ibm.com>
+ <20250414194016.437838-2-davemarq@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250414194016.437838-2-davemarq@linux.ibm.com>
 
-Tx timestamp capabilities are negotiated for the uplink Vport.
-Driver receives information about the number of available Tx timestamp
-latches, the size of Tx timestamp value and the set of indexes used
-for Tx timestamping.
+On Mon, Apr 14, 2025 at 02:40:15PM -0500, Dave Marquardt wrote:
+> Replaced BUG_ON calls with WARN_ON calls with error handling, with
+> calls to a new ibmveth_reset routine, which resets the device. Removed
+> conflicting and unneeded forward declaration.
 
-Add function to get the Tx timestamp capabilities and parse the uplink
-vport flag.
+To me the most important change here is adding the ibmveth_reset.
+So I would report that in the subject (rather than the WARN_ON) change.
+But perhaps that is just me.
 
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Co-developed-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Co-developed-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-Signed-off-by: Milena Olech <milena.olech@intel.com>
----
-v10 -> v11: use one lock for both free/in-use latches lists, allocate
-each latch separately
-v7 -> v8: refactor idpf_for_each_vport, change a function that
-checks if Tx timestamp for a given vport is enabled
-v2 -> v3: revert changes in idpf_for_each_vport, fix minor issues
-v1 -> v2: change the idpf_for_each_vport macro
+> 
+> Signed-off-by: Dave Marquardt <davemarq@linux.ibm.com>
+> ---
+>  drivers/net/ethernet/ibm/ibmveth.c | 116 ++++++++++++++++++++++++-----
+>  drivers/net/ethernet/ibm/ibmveth.h |  65 ++++++++--------
+>  2 files changed, 130 insertions(+), 51 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
 
- drivers/net/ethernet/intel/idpf/idpf.h        |  10 ++
- drivers/net/ethernet/intel/idpf/idpf_ptp.c    |  61 +++++++++
- drivers/net/ethernet/intel/idpf/idpf_ptp.h    |  93 ++++++++++++-
- .../net/ethernet/intel/idpf/idpf_virtchnl.c   |  11 ++
- .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   | 125 +++++++++++++++++-
- drivers/net/ethernet/intel/idpf/virtchnl2.h   |  12 +-
- 6 files changed, 308 insertions(+), 4 deletions(-)
+...
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-index eb80b7f1e912..e1afacc0aa80 100644
---- a/drivers/net/ethernet/intel/idpf/idpf.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -294,6 +294,7 @@ struct idpf_port_stats {
-  * @port_stats: per port csum, header split, and other offload stats
-  * @link_up: True if link is up
-  * @sw_marker_wq: workqueue for marker packets
-+ * @tx_tstamp_caps: Capabilities negotiated for Tx timestamping
-  */
- struct idpf_vport {
- 	u16 num_txq;
-@@ -338,6 +339,8 @@ struct idpf_vport {
- 	bool link_up;
- 
- 	wait_queue_head_t sw_marker_wq;
-+
-+	struct idpf_ptp_vport_tx_tstamp_caps *tx_tstamp_caps;
- };
- 
- /**
-@@ -482,6 +485,13 @@ struct idpf_vport_config {
- 
- struct idpf_vc_xn_manager;
- 
-+#define idpf_for_each_vport(adapter, iter) \
-+	for (struct idpf_vport **__##iter = &(adapter)->vports[0], \
-+	     *iter = (adapter)->max_vports ? *__##iter : NULL; \
-+	     iter; \
-+	     iter = (++__##iter) < &(adapter)->vports[(adapter)->max_vports] ? \
-+	     *__##iter : NULL)
-+
- /**
-  * struct idpf_adapter - Device data struct generated on probe
-  * @pdev: PCI device struct given on probe
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-index ea6ebd1391e1..f6e65c995509 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-@@ -62,6 +62,13 @@ void idpf_ptp_get_features_access(const struct idpf_adapter *adapter)
- 	ptp->adj_dev_clk_time_access = idpf_ptp_get_access(adapter,
- 							   direct,
- 							   mailbox);
-+
-+	/* Tx timestamping */
-+	direct = VIRTCHNL2_CAP_PTP_TX_TSTAMPS;
-+	mailbox = VIRTCHNL2_CAP_PTP_TX_TSTAMPS_MB;
-+	ptp->tx_tstamp_access = idpf_ptp_get_access(adapter,
-+						    direct,
-+						    mailbox);
- }
- 
- /**
-@@ -528,6 +535,57 @@ static int idpf_ptp_create_clock(const struct idpf_adapter *adapter)
- 	return 0;
- }
- 
-+/**
-+ * idpf_ptp_release_vport_tstamp - Release the Tx timestamps trakcers for a
-+ *				   given vport.
-+ * @vport: Virtual port structure
-+ *
-+ * Remove the queues and delete lists that tracks Tx timestamp entries for a
-+ * given vport.
-+ */
-+static void idpf_ptp_release_vport_tstamp(struct idpf_vport *vport)
-+{
-+	struct idpf_ptp_tx_tstamp *ptp_tx_tstamp, *tmp;
-+	struct list_head *head;
-+
-+	/* Remove list with free latches */
-+	spin_lock(&vport->tx_tstamp_caps->latches_lock);
-+
-+	head = &vport->tx_tstamp_caps->latches_free;
-+	list_for_each_entry_safe(ptp_tx_tstamp, tmp, head, list_member) {
-+		list_del(&ptp_tx_tstamp->list_member);
-+		kfree(ptp_tx_tstamp);
-+	}
-+
-+	/* Remove list with latches in use */
-+	head = &vport->tx_tstamp_caps->latches_in_use;
-+	list_for_each_entry_safe(ptp_tx_tstamp, tmp, head, list_member) {
-+		list_del(&ptp_tx_tstamp->list_member);
-+		kfree(ptp_tx_tstamp);
-+	}
-+
-+	spin_unlock(&vport->tx_tstamp_caps->latches_lock);
-+
-+	kfree(vport->tx_tstamp_caps);
-+	vport->tx_tstamp_caps = NULL;
-+}
-+
-+/**
-+ * idpf_ptp_release_tstamp - Release the Tx timestamps trackers
-+ * @adapter: Driver specific private structure
-+ *
-+ * Remove the queues and delete lists that tracks Tx timestamp entries.
-+ */
-+static void idpf_ptp_release_tstamp(struct idpf_adapter *adapter)
-+{
-+	idpf_for_each_vport(adapter, vport) {
-+		if (!idpf_ptp_is_vport_tx_tstamp_ena(vport))
-+			continue;
-+
-+		idpf_ptp_release_vport_tstamp(vport);
-+	}
-+}
-+
- /**
-  * idpf_ptp_init - Initialize PTP hardware clock support
-  * @adapter: Driver specific private structure
-@@ -614,6 +672,9 @@ void idpf_ptp_release(struct idpf_adapter *adapter)
- 	if (!ptp)
- 		return;
- 
-+	if (ptp->tx_tstamp_access != IDPF_PTP_NONE)
-+		idpf_ptp_release_tstamp(adapter);
-+
- 	if (ptp->clock)
- 		ptp_clock_unregister(ptp->clock);
- 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.h b/drivers/net/ethernet/intel/idpf/idpf_ptp.h
-index 8022ed31defd..c670ce872430 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ptp.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.h
-@@ -91,6 +91,68 @@ struct idpf_ptp_secondary_mbx {
- 	bool valid:1;
- };
- 
-+/**
-+ * enum idpf_ptp_tx_tstamp_state - Tx timestamp states
-+ * @IDPF_PTP_FREE: Tx timestamp index free to use
-+ * @IDPF_PTP_REQUEST: Tx timestamp index set to the Tx descriptor
-+ * @IDPF_PTP_READ_VALUE: Tx timestamp value ready to be read
-+ */
-+enum idpf_ptp_tx_tstamp_state {
-+	IDPF_PTP_FREE,
-+	IDPF_PTP_REQUEST,
-+	IDPF_PTP_READ_VALUE,
-+};
-+
-+/**
-+ * struct idpf_ptp_tx_tstamp_status - Parameters to track Tx timestamp
-+ * @skb: the pointer to the SKB that received the completion tag
-+ * @state: the state of the Tx timestamp
-+ */
-+struct idpf_ptp_tx_tstamp_status {
-+	struct sk_buff *skb;
-+	enum idpf_ptp_tx_tstamp_state state;
-+};
-+
-+/**
-+ * struct idpf_ptp_tx_tstamp - Parameters for Tx timestamping
-+ * @list_member: the list member structure
-+ * @tx_latch_reg_offset_l: Tx tstamp latch low register offset
-+ * @tx_latch_reg_offset_h: Tx tstamp latch high register offset
-+ * @skb: the pointer to the SKB for this timestamp request
-+ * @tstamp: the Tx tstamp value
-+ * @idx: the index of the Tx tstamp
-+ */
-+struct idpf_ptp_tx_tstamp {
-+	struct list_head list_member;
-+	u32 tx_latch_reg_offset_l;
-+	u32 tx_latch_reg_offset_h;
-+	struct sk_buff *skb;
-+	u64 tstamp;
-+	u32 idx;
-+};
-+
-+/**
-+ * struct idpf_ptp_vport_tx_tstamp_caps - Tx timestamp capabilities
-+ * @vport_id: the vport id
-+ * @num_entries: the number of negotiated Tx timestamp entries
-+ * @tstamp_ns_lo_bit: first bit for nanosecond part of the timestamp
-+ * @latches_lock: the lock to the lists of free/used timestamp indexes
-+ * @status_lock: the lock to the status tracker
-+ * @latches_free: the list of the free Tx timestamps latches
-+ * @latches_in_use: the list of the used Tx timestamps latches
-+ * @tx_tstamp_status: Tx tstamp status tracker
-+ */
-+struct idpf_ptp_vport_tx_tstamp_caps {
-+	u32 vport_id;
-+	u16 num_entries;
-+	u16 tstamp_ns_lo_bit;
-+	spinlock_t latches_lock;
-+	spinlock_t status_lock;
-+	struct list_head latches_free;
-+	struct list_head latches_in_use;
-+	struct idpf_ptp_tx_tstamp_status tx_tstamp_status[];
-+};
-+
- /**
-  * struct idpf_ptp - PTP parameters
-  * @info: structure defining PTP hardware capabilities
-@@ -105,6 +167,7 @@ struct idpf_ptp_secondary_mbx {
-  * @get_cross_tstamp_access: access type for the cross timestamping
-  * @set_dev_clk_time_access: access type for setting the device clock time
-  * @adj_dev_clk_time_access: access type for the adjusting the device clock
-+ * @tx_tstamp_access: access type for the Tx timestamp value read
-  * @rsv: reserved bits
-  * @secondary_mbx: parameters for using dedicated PTP mailbox
-  * @read_dev_clk_lock: spinlock protecting access to the device clock read
-@@ -123,7 +186,8 @@ struct idpf_ptp {
- 	enum idpf_ptp_access get_cross_tstamp_access:2;
- 	enum idpf_ptp_access set_dev_clk_time_access:2;
- 	enum idpf_ptp_access adj_dev_clk_time_access:2;
--	u8 rsv;
-+	enum idpf_ptp_access tx_tstamp_access:2;
-+	u8 rsv:6;
- 	struct idpf_ptp_secondary_mbx secondary_mbx;
- 	spinlock_t read_dev_clk_lock;
- };
-@@ -152,6 +216,27 @@ struct idpf_ptp_dev_timers {
- 	u64 dev_clk_time_ns;
- };
- 
-+/**
-+ * idpf_ptp_is_vport_tx_tstamp_ena - Verify the Tx timestamping enablement for
-+ *				     a given vport.
-+ * @vport: Virtual port structure
-+ *
-+ * Tx timestamp capabilities are negotiated with the Control Plane only if the
-+ * device clock value can be read, Tx timestamp access type is different than
-+ * NONE, and the PTP clock for the adapter is created. When all those conditions
-+ * are satisfied, Tx timestamp feature is enabled and tx_tstamp_caps is
-+ * allocated and fulfilled.
-+ *
-+ * Return: true if the Tx timestamping is enabled, false otherwise.
-+ */
-+static inline bool idpf_ptp_is_vport_tx_tstamp_ena(struct idpf_vport *vport)
-+{
-+	if (!vport->tx_tstamp_caps)
-+		return false;
-+	else
-+		return true;
-+}
-+
- #if IS_ENABLED(CONFIG_PTP_1588_CLOCK)
- int idpf_ptp_init(struct idpf_adapter *adapter);
- void idpf_ptp_release(struct idpf_adapter *adapter);
-@@ -164,6 +249,7 @@ int idpf_ptp_get_cross_time(struct idpf_adapter *adapter,
- int idpf_ptp_set_dev_clk_time(struct idpf_adapter *adapter, u64 time);
- int idpf_ptp_adj_dev_clk_fine(struct idpf_adapter *adapter, u64 incval);
- int idpf_ptp_adj_dev_clk_time(struct idpf_adapter *adapter, s64 delta);
-+int idpf_ptp_get_vport_tstamps_caps(struct idpf_vport *vport);
- #else /* CONFIG_PTP_1588_CLOCK */
- static inline int idpf_ptp_init(struct idpf_adapter *adapter)
- {
-@@ -212,5 +298,10 @@ static inline int idpf_ptp_adj_dev_clk_time(struct idpf_adapter *adapter,
- 	return -EOPNOTSUPP;
- }
- 
-+static inline int idpf_ptp_get_vport_tstamps_caps(struct idpf_vport *vport)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- #endif /* CONFIG_PTP_1588_CLOCK */
- #endif /* _IDPF_PTP_H */
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index b7c9c5d84350..9f369bbea0fe 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -169,6 +169,8 @@ static bool idpf_ptp_is_mb_msg(u32 op)
- 	case VIRTCHNL2_OP_PTP_SET_DEV_CLK_TIME:
- 	case VIRTCHNL2_OP_PTP_ADJ_DEV_CLK_FINE:
- 	case VIRTCHNL2_OP_PTP_ADJ_DEV_CLK_TIME:
-+	case VIRTCHNL2_OP_PTP_GET_VPORT_TX_TSTAMP_CAPS:
-+	case VIRTCHNL2_OP_PTP_GET_VPORT_TX_TSTAMP:
- 		return true;
- 	default:
- 		return false;
-@@ -3133,6 +3135,7 @@ void idpf_vport_init(struct idpf_vport *vport, struct idpf_vport_max_q *max_q)
- 	u16 rx_itr[] = {2, 8, 32, 96, 128};
- 	struct idpf_rss_data *rss_data;
- 	u16 idx = vport->idx;
-+	int err;
- 
- 	vport_config = adapter->vport_config[idx];
- 	rss_data = &vport_config->user_config.rss_data;
-@@ -3167,6 +3170,14 @@ void idpf_vport_init(struct idpf_vport *vport, struct idpf_vport_max_q *max_q)
- 	idpf_vport_alloc_vec_indexes(vport);
- 
- 	vport->crc_enable = adapter->crc_enable;
-+
-+	if (!(vport_msg->vport_flags &
-+	      cpu_to_le16(VIRTCHNL2_VPORT_UPLINK_PORT)))
-+		return;
-+
-+	err = idpf_ptp_get_vport_tstamps_caps(vport);
-+	if (err)
-+		pci_dbg(vport->adapter->pdev, "Tx timestamping not supported\n");
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
-index b8185778cd07..0600b0cc34fc 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
-@@ -22,7 +22,8 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
- 				    VIRTCHNL2_CAP_PTP_GET_CROSS_TIME |
- 				    VIRTCHNL2_CAP_PTP_GET_CROSS_TIME_MB |
- 				    VIRTCHNL2_CAP_PTP_SET_DEVICE_CLK_TIME_MB |
--				    VIRTCHNL2_CAP_PTP_ADJ_DEVICE_CLK_MB)
-+				    VIRTCHNL2_CAP_PTP_ADJ_DEVICE_CLK_MB |
-+				    VIRTCHNL2_CAP_PTP_TX_TSTAMPS_MB)
- 	};
- 	struct idpf_vc_xn_params xn_params = {
- 		.vc_op = VIRTCHNL2_OP_PTP_GET_CAPS,
-@@ -315,3 +316,125 @@ int idpf_ptp_adj_dev_clk_fine(struct idpf_adapter *adapter, u64 incval)
- 
- 	return 0;
- }
-+
-+/**
-+ * idpf_ptp_get_vport_tstamps_caps - Send virtchnl to get tstamps caps for vport
-+ * @vport: Virtual port structure
-+ *
-+ * Send virtchnl get vport tstamps caps message to receive the set of tstamp
-+ * capabilities per vport.
-+ *
-+ * Return: 0 on success, -errno otherwise.
-+ */
-+int idpf_ptp_get_vport_tstamps_caps(struct idpf_vport *vport)
-+{
-+	struct virtchnl2_ptp_get_vport_tx_tstamp_caps send_tx_tstamp_caps;
-+	struct virtchnl2_ptp_get_vport_tx_tstamp_caps *rcv_tx_tstamp_caps;
-+	struct virtchnl2_ptp_tx_tstamp_latch_caps tx_tstamp_latch_caps;
-+	struct idpf_ptp_vport_tx_tstamp_caps *tstamp_caps;
-+	struct idpf_ptp_tx_tstamp *ptp_tx_tstamp, *tmp;
-+	struct idpf_vc_xn_params xn_params = {
-+		.vc_op = VIRTCHNL2_OP_PTP_GET_VPORT_TX_TSTAMP_CAPS,
-+		.send_buf.iov_base = &send_tx_tstamp_caps,
-+		.send_buf.iov_len = sizeof(send_tx_tstamp_caps),
-+		.recv_buf.iov_len = IDPF_CTLQ_MAX_BUF_LEN,
-+		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
-+	};
-+	enum idpf_ptp_access tstamp_access, get_dev_clk_access;
-+	struct idpf_ptp *ptp = vport->adapter->ptp;
-+	struct list_head *head;
-+	int err = 0, reply_sz;
-+	u16 num_latches;
-+	u32 size;
-+
-+	if (!ptp)
-+		return -EOPNOTSUPP;
-+
-+	tstamp_access = ptp->tx_tstamp_access;
-+	get_dev_clk_access = ptp->get_dev_clk_time_access;
-+	if (tstamp_access == IDPF_PTP_NONE ||
-+	    get_dev_clk_access == IDPF_PTP_NONE)
-+		return -EOPNOTSUPP;
-+
-+	rcv_tx_tstamp_caps = kzalloc(IDPF_CTLQ_MAX_BUF_LEN, GFP_KERNEL);
-+	if (!rcv_tx_tstamp_caps)
-+		return -ENOMEM;
-+
-+	send_tx_tstamp_caps.vport_id = cpu_to_le32(vport->vport_id);
-+	xn_params.recv_buf.iov_base = rcv_tx_tstamp_caps;
-+
-+	reply_sz = idpf_vc_xn_exec(vport->adapter, &xn_params);
-+	if (reply_sz < 0) {
-+		err = reply_sz;
-+		goto get_tstamp_caps_out;
-+	}
-+
-+	num_latches = le16_to_cpu(rcv_tx_tstamp_caps->num_latches);
-+	size = struct_size(rcv_tx_tstamp_caps, tstamp_latches, num_latches);
-+	if (reply_sz != size) {
-+		err = -EIO;
-+		goto get_tstamp_caps_out;
-+	}
-+
-+	size = struct_size(tstamp_caps, tx_tstamp_status, num_latches);
-+	tstamp_caps = kzalloc(size, GFP_KERNEL);
-+	if (!tstamp_caps) {
-+		err = -ENOMEM;
-+		goto get_tstamp_caps_out;
-+	}
-+
-+	tstamp_caps->num_entries = num_latches;
-+	INIT_LIST_HEAD(&tstamp_caps->latches_in_use);
-+	INIT_LIST_HEAD(&tstamp_caps->latches_free);
-+
-+	spin_lock_init(&tstamp_caps->latches_lock);
-+	spin_lock_init(&tstamp_caps->status_lock);
-+
-+	tstamp_caps->tstamp_ns_lo_bit = rcv_tx_tstamp_caps->tstamp_ns_lo_bit;
-+
-+	for (u16 i = 0; i < tstamp_caps->num_entries; i++) {
-+		__le32 offset_l, offset_h;
-+
-+		ptp_tx_tstamp = kzalloc(sizeof(*ptp_tx_tstamp), GFP_KERNEL);
-+		if (!ptp_tx_tstamp) {
-+			err = -ENOMEM;
-+			goto err_free_ptp_tx_stamp_list;
-+		}
-+
-+		tx_tstamp_latch_caps = rcv_tx_tstamp_caps->tstamp_latches[i];
-+
-+		if (tstamp_access != IDPF_PTP_DIRECT)
-+			goto skip_offsets;
-+
-+		offset_l = tx_tstamp_latch_caps.tx_latch_reg_offset_l;
-+		offset_h = tx_tstamp_latch_caps.tx_latch_reg_offset_h;
-+		ptp_tx_tstamp->tx_latch_reg_offset_l = le32_to_cpu(offset_l);
-+		ptp_tx_tstamp->tx_latch_reg_offset_h = le32_to_cpu(offset_h);
-+
-+skip_offsets:
-+		ptp_tx_tstamp->idx = tx_tstamp_latch_caps.index;
-+
-+		list_add(&ptp_tx_tstamp->list_member,
-+			 &tstamp_caps->latches_free);
-+
-+		tstamp_caps->tx_tstamp_status[i].state = IDPF_PTP_FREE;
-+	}
-+
-+	vport->tx_tstamp_caps = tstamp_caps;
-+	kfree(rcv_tx_tstamp_caps);
-+
-+	return 0;
-+
-+err_free_ptp_tx_stamp_list:
-+	head = &tstamp_caps->latches_free;
-+	list_for_each_entry_safe(ptp_tx_tstamp, tmp, head, list_member) {
-+		list_del(&ptp_tx_tstamp->list_member);
-+		kfree(ptp_tx_tstamp);
-+	}
-+
-+	kfree(tstamp_caps);
-+get_tstamp_caps_out:
-+	kfree(rcv_tx_tstamp_caps);
-+
-+	return err;
-+}
-diff --git a/drivers/net/ethernet/intel/idpf/virtchnl2.h b/drivers/net/ethernet/intel/idpf/virtchnl2.h
-index db9523ef3fa7..11b8f6f05799 100644
---- a/drivers/net/ethernet/intel/idpf/virtchnl2.h
-+++ b/drivers/net/ethernet/intel/idpf/virtchnl2.h
-@@ -569,6 +569,14 @@ struct virtchnl2_queue_reg_chunks {
- };
- VIRTCHNL2_CHECK_STRUCT_LEN(8, virtchnl2_queue_reg_chunks);
- 
-+/**
-+ * enum virtchnl2_vport_flags - Vport flags that indicate vport capabilities.
-+ * @VIRTCHNL2_VPORT_UPLINK_PORT: Representatives of underlying physical ports
-+ */
-+enum virtchnl2_vport_flags {
-+	VIRTCHNL2_VPORT_UPLINK_PORT	= BIT(0),
-+};
-+
- /**
-  * struct virtchnl2_create_vport - Create vport config info.
-  * @vport_type: See enum virtchnl2_vport_type.
-@@ -587,7 +595,7 @@ VIRTCHNL2_CHECK_STRUCT_LEN(8, virtchnl2_queue_reg_chunks);
-  * @max_mtu: Max MTU. CP populates this field on response.
-  * @vport_id: Vport id. CP populates this field on response.
-  * @default_mac_addr: Default MAC address.
-- * @pad: Padding.
-+ * @vport_flags: See enum virtchnl2_vport_flags.
-  * @rx_desc_ids: See VIRTCHNL2_RX_DESC_IDS definitions.
-  * @tx_desc_ids: See VIRTCHNL2_TX_DESC_IDS definitions.
-  * @pad1: Padding.
-@@ -620,7 +628,7 @@ struct virtchnl2_create_vport {
- 	__le16 max_mtu;
- 	__le32 vport_id;
- 	u8 default_mac_addr[ETH_ALEN];
--	__le16 pad;
-+	__le16 vport_flags;
- 	__le64 rx_desc_ids;
- 	__le64 tx_desc_ids;
- 	u8 pad1[72];
+> @@ -370,20 +372,36 @@ static void ibmveth_free_buffer_pool(struct ibmveth_adapter *adapter,
+>  	}
+>  }
+>  
+> -/* remove a buffer from a pool */
+> -static void ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
+> -					    u64 correlator, bool reuse)
+> +/**
+> + * ibmveth_remove_buffer_from_pool - remove a buffer from a pool
+> + * @adapter: adapter instance
+> + * @correlator: identifies pool and index
+> + * @reuse: whether to reuse buffer
+
+The above is the correct way to document function parameters in a Kernel doc.
+
+> + *
+> + * Return:
+> + * * %0       - success
+> + * * %-EINVAL - correlator maps to pool or index out of range
+> + * * %-EFAULT - pool and index map to null skb
+> + */
+> +static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
+> +					   u64 correlator, bool reuse)
+
+...
+
+> +/**
+> + * ibmveth_rxq_harvest_buffer - Harvest buffer from pool
+> + *
+> + * @adapter - pointer to adapter
+> + * @reuse   - whether to reuse buffer
+
+But this is not correct. IOW, tooling expects
+f.e. @adapter: ...  rather than @adapter - ...
+
+Flagged by W=1 builds and ./scripts/kernel-doc -none
+
+> + *
+> + * Context: called from ibmveth_poll
+> + *
+> + * Return:
+> + * * %0    - success
+> + * * other - non-zero return from ibmveth_remove_buffer_from_pool
+> + */
+> +static int ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
+> +				      bool reuse)
+
+...
+
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+> index 8468e2c59d7a..b0a2460ec9f9 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.h
+> +++ b/drivers/net/ethernet/ibm/ibmveth.h
+> @@ -134,38 +134,39 @@ struct ibmveth_rx_q {
+>  };
+>  
+>  struct ibmveth_adapter {
+> -    struct vio_dev *vdev;
+> -    struct net_device *netdev;
+> -    struct napi_struct napi;
+> -    unsigned int mcastFilterSize;
+> -    void * buffer_list_addr;
+> -    void * filter_list_addr;
+> -    void *tx_ltb_ptr[IBMVETH_MAX_QUEUES];
+> -    unsigned int tx_ltb_size;
+> -    dma_addr_t tx_ltb_dma[IBMVETH_MAX_QUEUES];
+> -    dma_addr_t buffer_list_dma;
+> -    dma_addr_t filter_list_dma;
+> -    struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
+> -    struct ibmveth_rx_q rx_queue;
+> -    int rx_csum;
+> -    int large_send;
+> -    bool is_active_trunk;
+> -
+> -    u64 fw_ipv6_csum_support;
+> -    u64 fw_ipv4_csum_support;
+> -    u64 fw_large_send_support;
+> -    /* adapter specific stats */
+> -    u64 replenish_task_cycles;
+> -    u64 replenish_no_mem;
+> -    u64 replenish_add_buff_failure;
+> -    u64 replenish_add_buff_success;
+> -    u64 rx_invalid_buffer;
+> -    u64 rx_no_buffer;
+> -    u64 tx_map_failed;
+> -    u64 tx_send_failed;
+> -    u64 tx_large_packets;
+> -    u64 rx_large_packets;
+> -    /* Ethtool settings */
+> +	struct vio_dev *vdev;
+> +	struct net_device *netdev;
+> +	struct napi_struct napi;
+> +	struct work_struct work;
+> +	unsigned int mcastFilterSize;
+> +	void *buffer_list_addr;
+> +	void *filter_list_addr;
+> +	void *tx_ltb_ptr[IBMVETH_MAX_QUEUES];
+> +	unsigned int tx_ltb_size;
+> +	dma_addr_t tx_ltb_dma[IBMVETH_MAX_QUEUES];
+> +	dma_addr_t buffer_list_dma;
+> +	dma_addr_t filter_list_dma;
+> +	struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
+> +	struct ibmveth_rx_q rx_queue;
+> +	int rx_csum;
+> +	int large_send;
+> +	bool is_active_trunk;
+> +
+> +	u64 fw_ipv6_csum_support;
+> +	u64 fw_ipv4_csum_support;
+> +	u64 fw_large_send_support;
+> +	/* adapter specific stats */
+> +	u64 replenish_task_cycles;
+> +	u64 replenish_no_mem;
+> +	u64 replenish_add_buff_failure;
+> +	u64 replenish_add_buff_success;
+> +	u64 rx_invalid_buffer;
+> +	u64 rx_no_buffer;
+> +	u64 tx_map_failed;
+> +	u64 tx_send_failed;
+> +	u64 tx_large_packets;
+> +	u64 rx_large_packets;
+> +	/* Ethtool settings */
+>  	u8 duplex;
+>  	u32 speed;
+>  };
+
+If you would like to update the indentation of this structure
+then please do so in a separate patch which precedes
+adding/removing/chainging fields of the structure.
+
+As it, it's very hard to see the non-formatting changes in this hunk.
+
 -- 
-2.43.5
-
+pw-bot: changes-requested
