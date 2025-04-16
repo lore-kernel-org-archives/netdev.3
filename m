@@ -1,151 +1,100 @@
-Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C9F237703;
-	Wed, 16 Apr 2025 09:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49D321D3F4
+	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 09:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744795390; cv=none; b=ug8vDa3XmH0KRErW+8lfAkE5iuWamQyDrUFUkjlKxmix+4sFiRA1OPQ2uqHCLWvXlRRUy8rvPyMqnoaMQfq54DLbY/ouJYIQKK2lbGS8wCUgYVTUVSFiHSgDPavNMdMqXcwISBK/GT+SbZ0R4+oFGPH3H2AIZ8xn2PwU7ZTX4gg=
+	t=1744795419; cv=none; b=azg15L7/9xF7TshYP8s2kF2sqavq0QY0jAUGz9C4RerR+yVrMEQHkggLQcljdWAH2N2qG+JKketOiO6wzut0JB7zvNSTRI/im5nvggKXLXcClFSnoTs5t3EBFBo8oG2T2VXSMPd3zPDTLbDzRRbUW373bWShvKKafOZc6w9m2Gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744795390; c=relaxed/simple;
-	bh=8Sbm2WJBnMka8gIHDWz1DAmTW8vaT8RoqZXaXVRevZE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hMqixANoahgmJSj4Ng3c0AtEFP22rJh3X5IQItP7mY4ipR6OARdlWFwEsXDDvRwVICBUyH2CNrv8dPOy9vJxuT/tJPlTD0KnbJGznMUVwxLBJ588LHfzk44xfcif5mwLMZ3xhmsQzx1acLMku78fr2Vq/hFToTxrkDKgGvyZjbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZGlpTbVD; arc=none smtp.client-ip=209.85.214.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744795419; c=relaxed/simple;
+	bh=aQARw0r5jwsZxnY/PcJzIvLUU2cVyj4CIAvdit1QmGU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r8z6BKAogFrWrTb/etqOTxTASOUsWps3P+dfo8k2mwbNzgQ8qZUstFtur+zToNR5fnxk8jU4UbRr9ZQDfSNABpUKgYEmp6cweXSXyjaxeecp3UZDlsRMoUCmx/Hhoe2RWtvddYo64Rb0AfrlLW+UfzGRHzCq64atSVKSwrtKZUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XlSxPNTp; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZGlpTbVD"
-Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-223fb0f619dso71026215ad.1;
-        Wed, 16 Apr 2025 02:23:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744795388; x=1745400188; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nAMj5NXFmJsdPX9HKV8xXwacekMtszHIC96A7raNIsg=;
-        b=ZGlpTbVDZkENc0Lzsl5pyLEoh9n7USJBoWX3neZQcAUi62a6yX/dRkvXAwXH2UygTb
-         QUkp0hWiVJ/2/FvLJeHq+OSIwz5Q1zaGt0qKIxD/SM4PVEBIFq4VXJldlpmhOWnsFM78
-         llpWN30reUYlhW0XZ/27MkxURJOqSgGK1oScVI+YDeH8QG+63NDbs1071oEBy8SDvvIA
-         M/a/xeV+paqjKD703staFDpBBpSi108lUUWS2DgdQwJQXeikyLZbfc0wm1GJ5rQ9ARf4
-         alpoNzAVl0J1a/20QTXUxlt1UpEzTRU/90wWvqDp462cFnYOEZiQyplPEYi/toKsZ1nV
-         vYVQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XlSxPNTp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744795416;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QAqvI/C2fuFiXzVmzEC2R1KgB3LYPmYKQDzm57373Xc=;
+	b=XlSxPNTpsbPFoy8IQLkT/dYlw0cnmTzgzNSRYeykIRBfA59ebFDvRXYkTR/nw9A+U6kPZO
+	lPO5ieZJdBkPjuyxaRZsKhKezej3JbpFXn5ERZLxLzfDJXJJUnt0JW6yuYUR28rjQmHrKY
+	zq25zYX+QQtS3Q82HJQl8SHS1kWoLJo=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-456-L29dVo8COta4PYBF4ZCPpQ-1; Wed, 16 Apr 2025 05:23:35 -0400
+X-MC-Unique: L29dVo8COta4PYBF4ZCPpQ-1
+X-Mimecast-MFC-AGG-ID: L29dVo8COta4PYBF4ZCPpQ_1744795414
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43cf172ffe1so51845545e9.3
+        for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 02:23:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744795388; x=1745400188;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nAMj5NXFmJsdPX9HKV8xXwacekMtszHIC96A7raNIsg=;
-        b=CQ2NJOZy2naUz3CU92fwQZrP1mi0yvBDSOaHTB/jgidK/jmzAntdi8jZtbkUgctfiK
-         82afQRegmUqFWaDQ07hoWWmeHi6Mb7TdaO8XXM78fOC3DbQnJf52WixkXJletfpP8RZ7
-         lJvPBP8wLQEot62SR/6ZWYFEeLXjbZ+8ZEtToqYSuBtE77LJMbosPygSovc9t/8CIy79
-         kiHLAp7LYmox7U2aM97QKY/XG3g0mYgzqW05Qvhh15o5lb2NZt/wjH9FOWsWhXmp3jnO
-         x00VBw2gNBQENabiIaVIL2GyeVf5M+8aWGH4aJvP8SJPfmfCigpjR+L3sYKKnZ5TASs5
-         Uc5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUmHXpvX7eB3bMtxupnCYImvCup/dPjXBgeTDRGij9XDcvzE7cLyLHyl9hBKypQiYq8c322Br76jzJW/UE=@vger.kernel.org, AJvYcCXu6J9RXSjGztDnWaBGBDVeZxZloKyPotl1RI0qf0VXkpikixqsP17uj2CQ/5KoQQHGflDYS6rVeTT8qg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhKzO+Wio+vtMAJU4GlH6RxtzDjyViiO147YuObQUHXD6UAVYn
-	UCBusWn4IW+GAIA6EZcinRiAtaQTnWi0ZKfq6dzg7yyNF5v7tFTJ
-X-Gm-Gg: ASbGncsg6cbOIA6WE4ilr/Ti8eMkc4LfPtFFI/p6TU6YJKz55KaCE+CaNg+zrZOA1Oo
-	OQIUgZiotUzSUWaJE25PcoQm2RU4tRfpf2TBT3dJdWcUkgHBFrCRGYMcVpdmPM+ShlzRGLbdXLU
-	mKm658sqplLKvJM08RnDxmSEcWh1kFXeNb6W/jVkhK4ySs2WcMQx0nG6QgdDpEHQxk8N+eMSGF4
-	v9bIOJGNm30r1Uizn80eR75hQzZXVdemkQGDwgKwF5YvY/K0rGz61uFgEFX94oqQu+pMjY2oldJ
-	rSjLiEqyBQhy5P6f5HMPH+VcKwdBfTjUROaSypZsiLyRN4j8oTCECilslnQylqXoHA==
-X-Google-Smtp-Source: AGHT+IGxm2qrXgWH8qfKA8Dn9KndUuiY7iZe3I8T2BcnyrCWWj85sZCX9whovlmLV384kSrC5kgocw==
-X-Received: by 2002:a17:902:e806:b0:223:5e6a:57ab with SMTP id d9443c01a7336-22c3597ee39mr16568995ad.39.1744795387838;
-        Wed, 16 Apr 2025 02:23:07 -0700 (PDT)
-Received: from henry.localdomain ([111.202.148.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c33f1d070sm9369515ad.79.2025.04.16.02.23.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Apr 2025 02:23:07 -0700 (PDT)
-From: Henry Martin <bsdhenrymartin@gmail.com>
-To: saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	bsdhenrymartin@gmail.com,
-	mbloch@nvidia.com,
-	michal.swiatkowski@linux.intel.com,
-	amirtz@nvidia.com
-Cc: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 2/2] net/mlx5: Move ttc allocation after switch case to prevent leaks
-Date: Wed, 16 Apr 2025 17:22:43 +0800
-Message-Id: <20250416092243.65573-3-bsdhenrymartin@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250416092243.65573-1-bsdhenrymartin@gmail.com>
-References: <20250416092243.65573-1-bsdhenrymartin@gmail.com>
+        d=1e100.net; s=20230601; t=1744795414; x=1745400214;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QAqvI/C2fuFiXzVmzEC2R1KgB3LYPmYKQDzm57373Xc=;
+        b=dzJzpqUU85KK7XtTkKPbdYyg+hG9M1A/a8hu9roKbKfEkfbCF54xCiP7H9RXa/agGY
+         2vFEdOYf41LBk0Aqgdq7RUpaXWaMQ9zhljw4tgwUa+HmAxzokrd4SeEVvv3fKmAK5Ls+
+         FRU1Baupqq9TFrckD08VtwZWKycGFW8H03rFgYh8WKJk3O8uLo8Rav9KtVYMtt15nFyN
+         c96Wq8yOCJwjPjzEeLv90hBoBis6ZDerbbjgrtH6FfuP10qe6mUVDOAYMLnk7C8xntnG
+         qR3/gBmjmUkdzwBpd5Vm3uY81P3GddzsDpz+7NtsL3H22qyTJ9W+/IVTCCuHuqcfEVeJ
+         2yLw==
+X-Forwarded-Encrypted: i=1; AJvYcCVmfKQvP196UjlpGKgQ42CnVKg6zDGPktszg1VeR7p8jgqZSljoBtvMeMpdsh9yIZn+Ti8czQA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyO+FZ4WbJharWcn+2XK/T+bTmGxkNkwKXhXgYdUPgRKCdTYh//
+	U+KlvZ803NzAhEXsCsecwenVLDtuxarhtpOdmvpa64daGLVfgZQJYheKNDtYAuq2uXk5P56VZ5q
+	rJ+pi7mjB9QSsLJHR6o/Okd6C5YvS/SiJiDg73a4tid699cHEd+kxyQ==
+X-Gm-Gg: ASbGnctFYC752x9eAWcN6ixLDQgTfFy3ZLZuxpIBb25rsM0+cI7siZGj8rc5UmEULn+
+	HYN7iTUC/UVCVgfBVXnHSg/T6qj4ptfjelDVtCaydYlK6HNDrgc5QIdAk891uiFOo0JY4LW9WVu
+	mWSgprSfp/Yngx9LzzM/RwJ2f4YWs8gmLZJ5H1htmr+wDVTU1x4xuuAoZHZ2PNIwtXshU19pbO8
+	i5Z1zwD7dlJeWIyV74fdMyYaH41l9qHI+6SZPZBRJJpned7XZsHeCXxKSHo7R0xkpFaFndic5ln
+	Bqni7FxTX9mEbm3wtIBiImgk9Ix09H3wwF1v3Q0=
+X-Received: by 2002:a05:600c:c07:b0:43d:fa59:be39 with SMTP id 5b1f17b1804b1-4405d6bfd5bmr9354565e9.33.1744795414127;
+        Wed, 16 Apr 2025 02:23:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE3HKPRsmzIW7RTPhj1CUzbI3RkTRupJ0Crfwa5nDETw8xZ2UxgXhmInSnalWsyilLxEMw7vw==
+X-Received: by 2002:a05:600c:c07:b0:43d:fa59:be39 with SMTP id 5b1f17b1804b1-4405d6bfd5bmr9354315e9.33.1744795413687;
+        Wed, 16 Apr 2025 02:23:33 -0700 (PDT)
+Received: from [192.168.88.253] (146-241-34-52.dyn.eolo.it. [146.241.34.52])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eae96c123sm17127510f8f.36.2025.04.16.02.23.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Apr 2025 02:23:33 -0700 (PDT)
+Message-ID: <917877cc-414f-48c5-a9b3-0cda1fca09da@redhat.com>
+Date: Wed, 16 Apr 2025 11:23:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v2 net-next 07/14] ipv6: Preallocate
+ rt->fib6_nh->rt6i_pcpu in ip6_route_info_create().
+To: Kuniyuki Iwashima <kuniyu@amazon.com>,
+ "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+ netdev@vger.kernel.org
+References: <20250414181516.28391-1-kuniyu@amazon.com>
+ <20250414181516.28391-8-kuniyu@amazon.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250414181516.28391-8-kuniyu@amazon.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Relocate the memory allocation for ttc table after the switch statement
-that validates params->ns_type in both mlx5_create_inner_ttc_table() and
-mlx5_create_ttc_table(). This ensures memory is only allocated after
-confirming valid input, eliminating potential memory leaks when invalid
-ns_type cases occur.
+On 4/14/25 8:14 PM, Kuniyuki Iwashima wrote:
+> ip6_route_info_create_nh() will be called under RCU.
+> 
+> Then, fib6_nh_init() is also under RCU, but per-cpu memory allocation
+> is very likely to fail with GFP_ATOMIC while bluk-adding IPv6 routes
 
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
----
- .../net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+oops, I forgot a very minor nit:               ^^^^ bulk
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
-index 066121fed718..513dafd5ebf2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
-@@ -637,10 +637,6 @@ struct mlx5_ttc_table *mlx5_create_inner_ttc_table(struct mlx5_core_dev *dev,
- 	bool use_l4_type;
- 	int err;
- 
--	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
--	if (!ttc)
--		return ERR_PTR(-ENOMEM);
--
- 	switch (params->ns_type) {
- 	case MLX5_FLOW_NAMESPACE_PORT_SEL:
- 		use_l4_type = MLX5_CAP_GEN_2(dev, pcc_ifa2) &&
-@@ -654,6 +650,10 @@ struct mlx5_ttc_table *mlx5_create_inner_ttc_table(struct mlx5_core_dev *dev,
- 		return ERR_PTR(-EINVAL);
- 	}
- 
-+	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
-+	if (!ttc)
-+		return ERR_PTR(-ENOMEM);
-+
- 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
- 	if (!ns) {
- 		kvfree(ttc);
-@@ -715,10 +715,6 @@ struct mlx5_ttc_table *mlx5_create_ttc_table(struct mlx5_core_dev *dev,
- 	bool use_l4_type;
- 	int err;
- 
--	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
--	if (!ttc)
--		return ERR_PTR(-ENOMEM);
--
- 	switch (params->ns_type) {
- 	case MLX5_FLOW_NAMESPACE_PORT_SEL:
- 		use_l4_type = MLX5_CAP_GEN_2(dev, pcc_ifa2) &&
-@@ -732,6 +728,10 @@ struct mlx5_ttc_table *mlx5_create_ttc_table(struct mlx5_core_dev *dev,
- 		return ERR_PTR(-EINVAL);
- 	}
- 
-+	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
-+	if (!ttc)
-+		return ERR_PTR(-ENOMEM);
-+
- 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
- 	if (!ns) {
- 		kvfree(ttc);
--- 
-2.34.1
+/P
 
