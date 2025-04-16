@@ -1,96 +1,116 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE76238177
-	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 10:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3E92253BB
+	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 10:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744799052; cv=none; b=krokVq/Lx/qRO6UhdXEIZJ0/in22j1QXKMBum57MVyuBffJa6Dxcrpo4ysMp5jB+B1dR425GeD0P2Wp46xLn6hye4LvT02vN7BMQfHmWdigHRebk888rDBaxBstQHQ1NYeXnXe6DGRKCaKf31/QMnrjLSZSUtVmxQgEUkebVORo=
+	t=1744799077; cv=none; b=hIPdlMwI7uz0y3XjSVKhkrHrJIwA+5v2frB5UqSpuqUwAFRJGB6GD7mCBZu8RM+gxAMs40kulb8/mauyb+kWDkmujfJWdFd7Oq2w8mIC1XKtdHQIDUQegwtMPzUM34H0whBsngDRkUKUoN1xDhtm8/jmp8dFOVoFf1LMsHDMAko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744799052; c=relaxed/simple;
-	bh=I5Ptylv8SBDHZDbjw+8WMGIUfiGxfXIOk+66TH1hNsE=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=ZXg4KpFs7/qnJhBAy41NcNaA0R57fILbEIXPdkF/smeT942qMfcd+rr4CPxG9DrzkWfoWv7NIKajDoQ7NM10CE2Fiiw8fIPX01YxC42aJS7PuHILkFA33FnnH65WD+fyYIS7n0vxObqgqzNjvXEvXeELkfXxbhIY7dSll43fnk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PrtGfKNu; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744799077; c=relaxed/simple;
+	bh=IFrOnSN7ZF9xNWXtvcYWTK8kYSynVU/HEIpJ3inYg1A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n9qQw9yJi/fEg75TXhJo6lf0joc/v7EplpMnCCqr57U/tTkWbghHC0XKy0KTqZepYfuqNufSWU3tIsGbmOlmDwsA1ZIoZNcOFVcShI0a6CjYiWclXXskV5Ni/qUO5OivSPAvo4aH+fztur1eZTMDb90CZT+FmkmdXBQ1SnXprNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=P0oNzqa8; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PrtGfKNu"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3912fdddf8fso349246f8f.1
-        for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 03:24:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="P0oNzqa8"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7fd35b301bdso7322589a12.2
+        for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 03:24:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744799049; x=1745403849; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=058rmNB1d7FYsoEWN5Di82TAeB+tFSqtrwWam7p5lo8=;
-        b=PrtGfKNup71x+cLk4xKNfXM0KbctBQpk3l0IoYSqcxmi1t/5zFZeU/y4GBunLivmqP
-         HjhKxRAKiRu3heiK9Hb2Ghv0624ElkBCZnJxs7v/j7EX9xvQLuFiOZk4MYxQnFd5x9A1
-         OR8P1lRZBEMruN4yK45HDJyWUBMT6jTSWCENF7+e03kwZqENWAqOcmgTqqf0kmOZjQCr
-         svpOzgHDGwVcju548o3nACEdZFZIchf+VXCOkdlbHjMuZ9mUI1Xt4Pp3FIPXBv2cBbiS
-         pNAO17HBgbrCiwGwKFg47cK1A0EVh56AUIJy2ytxIKo5YZRrGcYWpdvci2ZHhrTLPTG9
-         i0DA==
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1744799075; x=1745403875; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CrUmlspayn/U7Fi6UANPQ0JVAUdFI/bj9tjZ0oR09Hc=;
+        b=P0oNzqa8aqsjUBmKZey+AuqLw6Eere1GcVW4kkmD7mqaf9dhW99gfQxDLVtKoeoDig
+         nv9LTdKWD/l0ql2zhDBRqfUjYbT0Fm+ddIsqXmc6vulN0Lcv9u8mrEfDvqXMQcthkbSH
+         2NdAEVgTX61NzvochFfom/A/e5jK2t8NQabV6Fex92AwSaWtseTcYnoYRUas6Kf2y94d
+         mnFSZR3NElwoOwH2RQdwc0Wxhnv10tbtF9/JkKMxAfVxOQLqKWRnEK17FA+7e845IjSh
+         t5ZVGyMocMmUW/ZKKndE07FR0WBeV6PjLYg+wpWkqQ7F1GfBdJvJ+weNcST2SvpYqAqr
+         nvmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744799049; x=1745403849;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=058rmNB1d7FYsoEWN5Di82TAeB+tFSqtrwWam7p5lo8=;
-        b=aQURpILeYUeOl5l+wyCjOeuelBpWPs46lL3O1nQSnpCHXYkP7eNKdbq/Oh3mI+KX6P
-         Jpje9yGYR8Xjvad5+vfqAC8EIYx6eRyR84y3Kmry5CbEZ63RhG1Om1NpN+Vhjum1jQ6J
-         vkVWWVS5Ds9CYKRQBo2iaZjsEEbqcijtQ02WNIkbkRGah1X+eAv9RhReNbx1b1DHnzUq
-         fKYNsAprQj/F5DVaFLRBqjMOlJkd9FhZKZRUJOrlQQD4hdT8Vi7H2sTlwhUFL5uIXI1G
-         aeGJ0SE/SM/R41df9V3QiZ7pjlcKPwBuXZ5RKxx2F5PcGsA9ZwKKEjZT2LURWZ4/oAdB
-         KiNA==
-X-Gm-Message-State: AOJu0YwsZGNijeGcGQBdvflVBmUAJ2j4loJOr8zJhrhV8cx2hv7O5E04
-	P5GxB0pdlx6IIQ7w5Pl42pmXIW3dpBOK6pE4e/fFgcT8eKCuFxsqJyihSg==
-X-Gm-Gg: ASbGncu1Q00FNB67+R56deRcUnfEXoc8OPezHODSI9tSbUaZW6cP29Yx46W6upI4k11
-	eGWrDF/1ezonK8xJoAfZAtgEsRAHaxneL+H1Nz+xH0Rt6jmSgoq0ljl+8jFkOLvtlrWSn3j4S8x
-	HWn05DgeMTBfx4FjtXuqaoQCN+8P2Yqkzrk0NzL2/0MRDe71qKmCdu/81q23I8dO/peER14Zsht
-	tO5sLmZdnwOIhv0SBFRk8BwP/Yy/S9ggQEmrhbyq4X5FiFdY2HvLvALg6Tldq7sX6/gnGHVUG8d
-	eGvdpf08NXqL9TBXXt/85cauyn1HrAOMPc7+x8LR+rKPiJQ8j/MmWO3CvLIaqZeXDumzqu8zjDu
-	OB5zf9rykGTUA2WXbLPWZx8SDgXdc
-X-Google-Smtp-Source: AGHT+IFEU5hH2c9BG3rfkye/87VVc1FjXF5m4h/K0ANVkmCx0HamDV5Rf9qE1OLACn4gQCRIr95SNw==
-X-Received: by 2002:a05:6000:1ac9:b0:39c:266b:feec with SMTP id ffacd0b85a97d-39ee5e9a72cmr1201173f8f.7.1744799048815;
-        Wed, 16 Apr 2025 03:24:08 -0700 (PDT)
-Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eae96400dsm16965071f8f.11.2025.04.16.03.24.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Apr 2025 03:24:08 -0700 (PDT)
-Subject: Re: [RFG] sfc: nvlog and devlink health
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: netdev@vger.kernel.org
-References: <7ec94666-791a-39b2-fffd-eed8b23a869a@gmail.com>
- <e3acvyonpwd6eejk6ka2vmkorggtnohc6vfagzix5xkx4jru6o@kf3q3hvasgtx>
-From: Edward Cree <ecree.xilinx@gmail.com>
-Message-ID: <96e8acf9-dbd9-6512-423e-22f52919475f@gmail.com>
-Date: Wed, 16 Apr 2025 11:24:07 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        d=1e100.net; s=20230601; t=1744799075; x=1745403875;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CrUmlspayn/U7Fi6UANPQ0JVAUdFI/bj9tjZ0oR09Hc=;
+        b=tWT5FpUDxYcgtr3BAtFgOXkMX7WZdUfofjZ8/paAZP5K7mRK6PcyVTrPDs89w9y5z9
+         z2iggDhQr0YPB9lY0kQsPojyDzN0iWdiCeDDeuIE6NUkAxJA/BoXxyFA1t9Oya4+SMdJ
+         3aNhVu8o2K0QVjtZZXBrBln6GvkQfQIS6g2591/XnMMj8SDrYXBL8zy03/9r1VybUw+f
+         7MkutvRnPQv5nZtP33p1RXndc61F147u1/rcShItFgErCiJy2Sk5on2RSPFiGXi4AHfY
+         /GPe+jxyDDSCqru9E7iU2G4HbcSqfcisepPi1eY+6r0XLMtBl21/KGKL/IcmUG/HgR6+
+         A7jg==
+X-Gm-Message-State: AOJu0YzGp5nofW/b+rlWqNpA8xZyBbDN2PM3syEBHaF9b7ZC61PL2hVE
+	yUzkhK13dp4SRA2qERd4KaC8JL2Gdbmm7dXenPRF2c032nyEyEyzjjLgoXtfOl2kgMtxN1G0aAI
+	=
+X-Gm-Gg: ASbGncvVI86992MGdi7JVQpeoELIdEq71Fa1s0pp73y5/peq9Eeax0MkWi2jLQj2yAJ
+	lUrCf5klNndh1IqiNcuM7DqCMUkWhLAZHFf9OahjeKYgeQN4qKomB95MLFwTdU2lBUQfQYHN+9N
+	orG7b/wJaK5IoC+ek+Tt4SgPwHHhSZRzu1cTinjte0aQD1EG4nZ6yCYK2kAzw7VY5bWRMc6fEu7
+	e4ssadErSUiQt0vPopE3+iI7QreZk6rGQCkjqI7M/I1FKmDsbq5FmwJBEFuLFEVNgDM5Af0bmUN
+	7piLNVG/Qpc6aITcf730OswIWo88O/Gw/pdTWhfQMclcFYY2XFV4+NWSbWYhunOPO+rgq/Zs3+M
+	=
+X-Google-Smtp-Source: AGHT+IFiQA1nm4yqUKbezeg3rsxL4VaChjzo8Uc/vLepPvCm2aSOGIGGjaIt6nJyWL64dKC9QjSKaA==
+X-Received: by 2002:a17:90b:2751:b0:2ee:db1a:2e3c with SMTP id 98e67ed59e1d1-30863d1de40mr1947583a91.1.1744799074749;
+        Wed, 16 Apr 2025 03:24:34 -0700 (PDT)
+Received: from exu-caveira.tail33bf8.ts.net ([2804:7f1:e2c3:dc7b:da12:1e53:d800:3508])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-308613cb765sm1193075a91.43.2025.04.16.03.24.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Apr 2025 03:24:34 -0700 (PDT)
+From: Victor Nogueira <victor@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: jhs@mojatatu.com,
+	xiyou.wangcong@gmail.com,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	toke@redhat.com,
+	gerrard.tai@starlabs.sg,
+	pctammela@mojatatu.com
+Subject: [PATCH net v2 0/5] net_sched: Adapt qdiscs for reentrant enqueue cases
+Date: Wed, 16 Apr 2025 07:24:22 -0300
+Message-ID: <20250416102427.3219655-1-victor@mojatatu.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <e3acvyonpwd6eejk6ka2vmkorggtnohc6vfagzix5xkx4jru6o@kf3q3hvasgtx>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 15/04/2025 17:41, Jiri Pirko wrote:
-> Tue, Apr 15, 2025 at 04:51:39PM +0200, ecree.xilinx@gmail.com wrote:
->> DEVLINK_CMD_HEALTH_REPORTER_DUMP_CLEAR is no use here, because it only
->> clears the kernel-saved copy; it doesn't call any driver method.
-> 
-> Can't it be extended to actually call an optional driver method?
-> That would sound fine to me and will solve your problem.
+As described in Gerrard's report [1], there are cases where netem can
+make the qdisc enqueue callback reentrant. Some qdiscs (drr, hfsc, ets,
+qfq) break whenever the enqueue callback has reentrant behaviour.
+This series addresses these issues by adding extra checks that cater for
+these reentrant corner cases. This series has passed all relevant test
+cases in the TDC suite.
 
-Would that be "diagnose"/"dump clear" or "dump"/"dump clear"?
-The former is weird, are you sure it's not a misuse of the API to
- have "dump clear" clear something that's not a dump?  I feel like
- extending the devlink core to support a semantic mismatch /
- layering violation might raise a few eyebrows.
-The latter just doesn't work as (afaict) calling dump twice
- without an intervening clear won't get updated output, and users
- might want to read again without erasing.
+[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
+
+v1 -> v2:
+- Removed RFC tag
+- Added Jamal's Acked-by
+- Added TDC tests
+- Small cleanups
+
+Victor Nogueira (5):
+  net_sched: drr: Fix double list add in class with netem as child qdisc
+  net_sched: hfsc: Fix a UAF vulnerability in class with netem as child
+    qdisc
+  net_sched: ets: Fix double list add in class with netem as child qdisc
+  net_sched: qfq: Fix double list add in class with netem as child qdisc
+  selftests: tc-testing: Add TDC tests that exercise reentrant enqueue
+    behaviour
+
+ net/sched/sch_drr.c                           |   7 +-
+ net/sched/sch_ets.c                           |   7 +-
+ net/sched/sch_hfsc.c                          |   2 +-
+ net/sched/sch_qfq.c                           |   8 +
+ .../tc-testing/tc-tests/infra/qdiscs.json     | 148 ++++++++++++++++++
+ 5 files changed, 169 insertions(+), 3 deletions(-)
+
+-- 
+2.34.1
+
