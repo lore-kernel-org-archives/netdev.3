@@ -1,58 +1,58 @@
-Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
+Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2243F2222DC
-	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 18:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221BC1E9B04
+	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 19:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744829907; cv=none; b=OB5iQuGG5EMob003s4Jk7PcITNXdxSMr4vGUMKM4Wrm7RYnz1NFC3tnwKLECO1JLY4YuyRPQMbeIR3bl4am/VlF8LhDNv1s1g6dadBDppbKtMaoUO2jI+IATg1wjaKK6b52fVdJwZU18cc177iEhVYLLAwHhmnuyrNhXqnOjJBo=
+	t=1744830182; cv=none; b=KfVGHL3y0jpoWRH61EKhF8ZItE2nfgK2/CSn7q4etFDhK865AsRkHHYIzWVwFZwZ+sPID3A2Ut0sCxoLlsP1YeK9HgxkR7/6Hn4nVT6EQxYiqB1k/uDCwE8IOKRIYdP9giu9/8Ztz95klBCjK1ezuhTgbgPt6YvgQ4Hun00QpfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744829907; c=relaxed/simple;
-	bh=kjcO+A9vnkzSq9vS2MUCA+TVg5yhBwDeD0dSUwXWPdM=;
+	s=arc-20240116; t=1744830182; c=relaxed/simple;
+	bh=0Idkm9QblI7RGNDqa7yCYmiyNLiWKB4nK2+hylVmDKE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ICmiRLFbu+Sqv5HgfhQZOFWm+LzdtSWW4Gi15hV6otK6v9Ae7jp2Qh5X9t8iCyeI1GoPn08TAe1t/YD6WsAhhbclvcwmXy3yoiawzmFNoJ1HgiQ8NRJ5rwPoz0s2Ju+zk79w7rVtCPk8dokS/uA4/A0tY7VBeo3KMwWYwZ83iF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=MQk3WvRf; arc=none smtp.client-ip=207.171.188.204
+	 MIME-Version:Content-Type; b=CGVSOTyuDEcLb7gzOjdgfVdfy2CNoTb5aAcc6XqTvNjOdybssPA62Z2Zpi6pc/r2Mt3xOSPvBJFuUYY0kR6LOMtK02F6R2dE/StyjstE0jtmLT2NcnkNLD26XWWH/iEeRHcMrMTbJVGGj2JZOtj9SnaBmlWMjU3kxuV/MJ/JMn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=aDPvWzhZ; arc=none smtp.client-ip=99.78.197.217
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="MQk3WvRf"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="aDPvWzhZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1744829906; x=1776365906;
+  t=1744830181; x=1776366181;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=oJJlWaAHCca4yCkrtTqzmt9ZsGeLeePiEEVkVBZhJgA=;
-  b=MQk3WvRfmszyj1E3skXhNwxFZ6oCfCe7WQIdrL/lNr9i97RAgVzMsM/l
-   RPzhzVgBGKXJPMJo38wOxbIx9akCIsQK2cZe7lI+Aq9k4bHcxXCcJUPIM
-   u5hprNBW2ijG3PKa9ac/OAw7vBejhFE7cgGRi1Tnyt0EuiHNxCasm/+8p
-   0=;
+  bh=c+alg+7ENI9w4IqfEAHX3KlIVDI2Qsan/wQxF5ERGAk=;
+  b=aDPvWzhZMIuSIPIjUTQSY7505aOXOWs4h/G/gW7FkcQek2vaC6jRPH+O
+   lmy3hhyUrPgjc9PqCvtCSZ5AWBgQusG6gWYhd/fI+gZmZUHEMS6Y906Ut
+   ubm2gqx0tNz7ZnLtOR4U9m4jMkFJRtxVkAz21fu04qPkmOAg9JSy7ktbe
+   g=;
 X-IronPort-AV: E=Sophos;i="6.15,216,1739836800"; 
-   d="scan'208";a="11004962"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 18:58:21 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [10.0.7.35:47602]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.34.169:2525] with esmtp (Farcaster)
- id 299ce818-f4b4-45f0-95d2-96f98944496a; Wed, 16 Apr 2025 18:58:20 +0000 (UTC)
-X-Farcaster-Flow-ID: 299ce818-f4b4-45f0-95d2-96f98944496a
+   d="scan'208";a="41235422"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 19:02:57 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.21.151:61834]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.52.33:2525] with esmtp (Farcaster)
+ id df164271-368c-40fd-8dd8-d7f4283c3f0c; Wed, 16 Apr 2025 19:02:57 +0000 (UTC)
+X-Farcaster-Flow-ID: df164271-368c-40fd-8dd8-d7f4283c3f0c
 Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 16 Apr 2025 18:58:20 +0000
+ Wed, 16 Apr 2025 19:02:57 +0000
 Received: from 6c7e67bfbae3.amazon.com (10.187.170.18) by
  EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 16 Apr 2025 18:58:17 +0000
+ Wed, 16 Apr 2025 19:02:54 +0000
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 To: <pabeni@redhat.com>
 CC: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
 	<horms@kernel.org>, <kuba@kernel.org>, <kuni1840@gmail.com>,
 	<kuniyu@amazon.com>, <netdev@vger.kernel.org>
-Subject: Re: [PATCH RESEND v2 net-next 10/14] ipv6: Factorise ip6_route_multipath_add().
-Date: Wed, 16 Apr 2025 11:58:07 -0700
-Message-ID: <20250416185809.1695-1-kuniyu@amazon.com>
+Subject: Re: [PATCH RESEND v2 net-next 13/14] ipv6: Protect nh->f6i_list with spinlock and flag.
+Date: Wed, 16 Apr 2025 12:02:45 -0700
+Message-ID: <20250416190247.2820-1-kuniyu@amazon.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <c9bee472-c94e-4878-8cc2-1512b2c54db5@redhat.com>
-References: <c9bee472-c94e-4878-8cc2-1512b2c54db5@redhat.com>
+In-Reply-To: <36c2a487-4f74-4be3-af66-0dadd1538c64@redhat.com>
+References: <36c2a487-4f74-4be3-af66-0dadd1538c64@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,52 +61,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D045UWC001.ant.amazon.com (10.13.139.223) To
+X-ClientProxiedBy: EX19D045UWC002.ant.amazon.com (10.13.139.230) To
  EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
 From: Paolo Abeni <pabeni@redhat.com>
-Date: Wed, 16 Apr 2025 11:57:23 +0200
-> On 4/14/25 8:14 PM, Kuniyuki Iwashima wrote:
-> > diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-> > index 49eea7e1e2da..c026f8fe5f78 100644
-> > --- a/net/ipv6/route.c
-> > +++ b/net/ipv6/route.c
-> > @@ -5315,29 +5315,131 @@ struct rt6_nh {
-> >  	struct fib6_info *fib6_info;
-> >  	struct fib6_config r_cfg;
-> >  	struct list_head next;
-> > +	int weight;
-> >  };
+Date: Wed, 16 Apr 2025 17:17:13 +0200
+> On 4/14/25 8:15 PM, Kuniyuki Iwashima wrote:
+> > @@ -1498,7 +1504,23 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
+> >  	}
+> >  #endif
 > >  
-> > -static int ip6_route_info_append(struct list_head *rt6_nh_list,
-> > -				 struct fib6_info *rt,
-> > -				 struct fib6_config *r_cfg)
-> > +static void ip6_route_mpath_info_cleanup(struct list_head *rt6_nh_list)
-> >  {
-> > -	struct rt6_nh *nh;
-> > -	int err = -EEXIST;
-> > +	struct rt6_nh *nh, *nh_next;
-> >  
-> > -	list_for_each_entry(nh, rt6_nh_list, next) {
-> > -		/* check if fib6_info already exists */
-> > -		if (rt6_duplicate_nexthop(nh->fib6_info, rt))
-> > -			return err;
-> > +	list_for_each_entry_safe(nh, nh_next, rt6_nh_list, next) {
-> > +		struct fib6_info *rt = nh->fib6_info;
+> > -	err = fib6_add_rt2node(fn, rt, info, extack, &purge_list);
+> > +	if (rt->nh) {
+> > +		spin_lock(&rt->nh->lock);
 > > +
-> > +		if (rt) {
-> > +			free_percpu(rt->fib6_nh->nh_common.nhc_pcpu_rth_output);
-> > +			free_percpu(rt->fib6_nh->rt6i_pcpu);
-> > +			ip_fib_metrics_put(rt->fib6_metrics);
-> > +			kfree(rt);
+> > +		if (rt->nh->dead) {
+> > +			NL_SET_ERR_MSG(extack, "Nexthop has been deleted");
+> > +			err = -EINVAL;
+> > +		} else {
+> > +			err = fib6_add_rt2node(fn, rt, info, extack, &purge_list);
+> > +			if (!err)
+> > +				list_add(&rt->nh_list, &rt->nh->f6i_list);
 > > +		}
-> > +
-> > +		list_del(&nh->next);
 > 
-> Somewhat unrelated, but the field 'next' has IMHO a quite misleading
-> name, and it would be great to rename it to something else ('list'),
-> could you please consider including such change?
+> Maybe move the new check and list_add inside fib6_add_rt2node() or
+> bundle all the above in a new helper?
 
-Had the same feeling :)
+fib6_add_rt2node() has return in many places, so a new hepler makes
+more sense to me.
 
-Will add a patch or post a follow if the series gets over 15.
+Will add fib6_add_rt2node_nh() and move spin_lock() section there.
