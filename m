@@ -1,427 +1,142 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED466189915;
-	Wed, 16 Apr 2025 20:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AFE1E1C29;
+	Wed, 16 Apr 2025 20:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744834124; cv=none; b=lpcjd8wQpXN0+6PO9ioL54sqpPnW88FtlGus4oxaeUFjGusmX/rLaHVgWkmM5auzP1wEAdFvxLgzFt/P8PyVKVZCezTBBwMvA2x9Uvt+HoVi6klnYIRlCzaR+60mTJv4L71lkrNsfk4TnMNkNwwMxrHEpftCOqbs8KKRyysb+YM=
+	t=1744834161; cv=none; b=Dqev9wapioXBhLRkAOboPyvkcgLpKMryTKpcNBK+GgNyczGnvp9n0M2udlg4T8BlgQupOAMBWrFQO+JFvPMQemSC1X+3BEF97tO9PvzyMH4b9AolvVqBCxRxMtzY3nvUktcOh9aJm5T6YIc1r515a9s3GBMb3V3Esi+gCPpz8as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744834124; c=relaxed/simple;
-	bh=myn9l6kJUr4LlnxmB5t1FTNKJEK82xQpx8D8fFOMGOQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pD/OgpTEVuz3stp0vqnREdGawvRudW6URgc408NFu/+U+06KjGPop7677Ideo/3vxi8QkK0NDQJEcIVyzMxFXUACctfxTIifPrCpQWC3alIdC9tkVTGP2daLFQnMEaMCnSTuvclBxj0dGW04dNncLu4OgpboFHF8DsR5ELmyze8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P+ads7lG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744834161; c=relaxed/simple;
+	bh=pCQdOvo4laUHf7dQwDu8+NqQcri7JEdKnymIyq99jkI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yef16dBMDkvDs1RoNFgIXHLVwQ61iDCZlXLcIlsUcA2WXX3n97EP4eKMKLw19mCaWvKHLLWwfwTUb54QalM2Ud2iRtSIsHEh6Lwcz2T+tDE1x8Jq+163uQq8N7WZ+zD4zlsBAr8vxQ/FrinqP/sgvS2pXyx03UNUvSnEwhtaVm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AAdeEAmu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P+ads7lG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D90E4C4CEE2;
-	Wed, 16 Apr 2025 20:08:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AAdeEAmu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EE1C4CEE2;
+	Wed, 16 Apr 2025 20:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744834123;
-	bh=myn9l6kJUr4LlnxmB5t1FTNKJEK82xQpx8D8fFOMGOQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=P+ads7lGKJ1lCvha1d5WHeYFNeu5qDF0MK3SXLkZWK1vKCoGrXTrZFYYEjFYQHW9S
-	 FhfZKOfhGhJVwSpHts3AoiQH9gyri77Ykcm14PNFy1YrTYUZrFinQi0s/Om/JrrfD7
-	 Ssj2qqPIvuYHtympM4+gLhUr7vzRBV11KDrxwN96E8qfMA2PKkQoqEp72p0/bs3cQz
-	 L8Dy3LFdIz/iK5EbP/89TyHzvGCkkYxhz3UEqmEoI4D1VF0LYlft/0G3WmT2fAqrfu
-	 leuFwfvgo5vg0aeowu2Hl5KnXJixbM2Q6ooALWbz/qaR5cdtYW73Ybpsnf7AaocuqM
-	 j01mBXu72g1WA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	m.grzeschik@pengutronix.de,
-	jv@jvosburgh.net,
-	willemdebruijn.kernel@gmail.com,
-	magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com,
-	nhorman@tuxdriver.com,
-	kernelxing@tencent.com,
-	jhs@mojatatu.com,
-	xiyou.wangcong@gmail.com,
-	jiri@resnulli.us,
-	idosch@nvidia.com,
-	gnault@redhat.com,
-	petrm@nvidia.com,
-	bpf@vger.kernel.org
-Subject: [PATCH net-next] net: add UAPI to the header guard in various network headers
-Date: Wed, 16 Apr 2025 13:08:40 -0700
-Message-ID: <20250416200840.1338195-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.49.0
+	s=k20201202; t=1744834161;
+	bh=pCQdOvo4laUHf7dQwDu8+NqQcri7JEdKnymIyq99jkI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AAdeEAmuon9/vsZ60kDxHnAVHe3K9UHfeEPMgTodwRVWyu0vBQMReQ/G+JYguUv2T
+	 HvMYz8VW5+3VAykUadq3Ns+OuqXJfJnfPwADjMISIV5Hhty5oa/1Su8VrJNBbJphLT
+	 etufmg6zplKq6ZlN6Md9FIGRj8sUg/3UgvmcWw/Fbd/xnM6axYOyRl6wFR6wiHtfkG
+	 Ka2gUyS55p6Zs8sY2eRxz13LBQg0/8KH4ozJMt0IBL/WAmsAbXFzFd1aJArcz1gIv7
+	 xGwnVyApmtGIqPIOvF5zfpYA0DY/I7eVgaGokKpGdDRXMo+vN/3anERyK44APXUMb1
+	 12z4vJN+GnE0A==
+Date: Wed, 16 Apr 2025 15:09:19 -0500
+From: Rob Herring <robh@kernel.org>
+To: Alexey Charkov <alchark@gmail.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
+	linux-pwm@vger.kernel.org
+Subject: Re: [PATCH 00/13] ARM: vt8500: DT bindings and dts updates
+Message-ID: <20250416200919.GA3811555-robh@kernel.org>
+References: <20250416-wmt-updates-v1-0-f9af689cdfc2@gmail.com>
+ <20250416155442.GA3255418-robh@kernel.org>
+ <CABjd4YyPzZoX98=FMwr91BG2RhYc0r5=9P-2GGAbR0s043duPw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABjd4YyPzZoX98=FMwr91BG2RhYc0r5=9P-2GGAbR0s043duPw@mail.gmail.com>
 
-fib_rule, ip6_tunnel, and a whole lot of if_* headers lack the customary
-_UAPI in the header guard. Without it YNL build can't protect from in tree
-and system headers both getting included. YNL doesn't need most of these
-but it's annoying to have to fix them one by one.
+On Wed, Apr 16, 2025 at 10:55:52PM +0400, Alexey Charkov wrote:
+> On Wed, Apr 16, 2025 at 7:54 PM Rob Herring <robh@kernel.org> wrote:
+> >
+> > On Wed, Apr 16, 2025 at 12:21:25PM +0400, Alexey Charkov wrote:
+> > > Convert some more VT8500 related textual DT binding descriptions to
+> > > YAML schema, do minor dts correctness fixes, and add a DT for the
+> > > board I'm actually testing those on (VIA APC Rock).
+> > >
+> > > While at that, also describe the PL310 L2 cache controller present on
+> > > WM8850/WM8950.
+> > >
+> > > Note that this series is based upon Krzysztof's linux-dt/for-next
+> > >
+> > > Signed-off-by: Alexey Charkov <alchark@gmail.com>
+> > > ---
+> > > Alexey Charkov (13):
+> > >       dt-bindings: i2c: i2c-wmt: Convert to YAML
+> > >       dt-bindings: interrupt-controller: via,vt8500-intc: Convert to YAML
+> > >       dt-bindings: mmc: vt8500-sdmmc: Convert to YAML
+> > >       dt-bindings: net: via-rhine: Convert to YAML
+> > >       dt-bindings: pwm: vt8500-pwm: Convert to YAML
+> > >       dt-bindings: timer: via,vt8500-timer: Convert to YAML
+> > >       dt-bindings: arm: vt8500: Add VIA APC Rock/Paper boards
+> > >       ARM: dts: vt8500: Add node address and reg in CPU nodes
+> > >       ARM: dts: vt8500: Move memory nodes to board dts and fix addr/size
+> > >       ARM: dts: vt8500: Use generic compatibles for EHCI
+> > >       ARM: dts: vt8500: Use generic node name for the SD/MMC controller
+> > >       ARM: dts: vt8500: Add VIA APC Rock/Paper board
+> > >       ARM: dts: vt8500: Add L2 cache controller on WM8850/WM8950
+> > >
+> > >  Documentation/devicetree/bindings/arm/vt8500.yaml  | 19 ++++---
+> > >  Documentation/devicetree/bindings/i2c/i2c-wmt.txt  | 24 ---------
+> > >  .../devicetree/bindings/i2c/wm,wm8505-i2c.yaml     | 47 +++++++++++++++++
+> > >  .../interrupt-controller/via,vt8500-intc.txt       | 16 ------
+> > >  .../interrupt-controller/via,vt8500-intc.yaml      | 47 +++++++++++++++++
+> > >  .../devicetree/bindings/mmc/vt8500-sdmmc.txt       | 23 --------
+> > >  .../devicetree/bindings/mmc/wm,wm8505-sdhc.yaml    | 61 ++++++++++++++++++++++
+> > >  .../devicetree/bindings/net/via,vt8500-rhine.yaml  | 41 +++++++++++++++
+> > >  .../devicetree/bindings/net/via-rhine.txt          | 17 ------
+> > >  .../devicetree/bindings/pwm/via,vt8500-pwm.yaml    | 43 +++++++++++++++
+> > >  .../devicetree/bindings/pwm/vt8500-pwm.txt         | 18 -------
+> > >  .../devicetree/bindings/timer/via,vt8500-timer.txt | 15 ------
+> > >  .../bindings/timer/via,vt8500-timer.yaml           | 36 +++++++++++++
+> > >  MAINTAINERS                                        |  7 ++-
+> > >  arch/arm/boot/dts/vt8500/Makefile                  |  3 +-
+> > >  arch/arm/boot/dts/vt8500/vt8500-bv07.dts           |  5 ++
+> > >  arch/arm/boot/dts/vt8500/vt8500.dtsi               | 12 ++---
+> > >  arch/arm/boot/dts/vt8500/wm8505-ref.dts            |  5 ++
+> > >  arch/arm/boot/dts/vt8500/wm8505.dtsi               | 14 ++---
+> > >  arch/arm/boot/dts/vt8500/wm8650-mid.dts            |  5 ++
+> > >  arch/arm/boot/dts/vt8500/wm8650.dtsi               | 14 ++---
+> > >  arch/arm/boot/dts/vt8500/wm8750-apc8750.dts        |  5 ++
+> > >  arch/arm/boot/dts/vt8500/wm8750.dtsi               | 14 ++---
+> > >  arch/arm/boot/dts/vt8500/wm8850-w70v2.dts          |  5 ++
+> > >  arch/arm/boot/dts/vt8500/wm8850.dtsi               | 23 +++++---
+> > >  arch/arm/boot/dts/vt8500/wm8950-apc-rock.dts       | 21 ++++++++
+> > >  arch/arm/boot/dts/vt8500/wm8950.dtsi               | 11 ++++
+> > >  27 files changed, 386 insertions(+), 165 deletions(-)
+> > > ---
+> > > base-commit: 62db22c2af6ce306943df5de6f5198ea9bd3d47b
+> >
+> > I could not apply this series for testing. What base is this? It is
+> > unknown to anything I have. Please use most recent rc1 unless you have
+> > a dependency then use recent linux-next or a branch in it.
+> 
+> It's based on Krzysztof's linux-dt/for-next [1] as mentioned in the
+> cover letter above - it hasn't yet been pulled into today's
+> linux-next. Specifically, this patch [2] from Wolfram is a dependency
+> for patch 10/13 in this series - the rest should apply cleanly on top
+> of 6.15-rc1
 
-Note that header installation strips this _UAPI prefix so this should
-result in no change to the end user.
+Unfortunately tools can't read cover letters other than defined tags 
+like base-commit.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: m.grzeschik@pengutronix.de
-CC: jv@jvosburgh.net
-CC: willemdebruijn.kernel@gmail.com
-CC: magnus.karlsson@intel.com
-CC: maciej.fijalkowski@intel.com
-CC: nhorman@tuxdriver.com
-CC: kernelxing@tencent.com
-CC: jhs@mojatatu.com
-CC: xiyou.wangcong@gmail.com
-CC: jiri@resnulli.us
-CC: idosch@nvidia.com
-CC: gnault@redhat.com
-CC: petrm@nvidia.com
-CC: bpf@vger.kernel.org
----
- include/uapi/linux/fib_rules.h    | 4 ++--
- include/uapi/linux/if_addr.h      | 4 ++--
- include/uapi/linux/if_addrlabel.h | 4 ++--
- include/uapi/linux/if_alg.h       | 6 +++---
- include/uapi/linux/if_arcnet.h    | 6 +++---
- include/uapi/linux/if_bonding.h   | 6 +++---
- include/uapi/linux/if_fc.h        | 6 +++---
- include/uapi/linux/if_hippi.h     | 6 +++---
- include/uapi/linux/if_packet.h    | 4 ++--
- include/uapi/linux/if_plip.h      | 4 ++--
- include/uapi/linux/if_slip.h      | 4 ++--
- include/uapi/linux/if_x25.h       | 6 +++---
- include/uapi/linux/if_xdp.h       | 6 +++---
- include/uapi/linux/ip6_tunnel.h   | 4 ++--
- include/uapi/linux/net_dropmon.h  | 4 ++--
- include/uapi/linux/net_tstamp.h   | 6 +++---
- include/uapi/linux/netlink_diag.h | 4 ++--
- include/uapi/linux/pkt_cls.h      | 4 ++--
- include/uapi/linux/pkt_sched.h    | 4 ++--
- 19 files changed, 46 insertions(+), 46 deletions(-)
+I would suggest you send each binding patch separately and then just the 
+.dts changes as a series. Then it is split-up by which trees these all 
+get applied to as bindings are applied by the subsystems typically.
 
-diff --git a/include/uapi/linux/fib_rules.h b/include/uapi/linux/fib_rules.h
-index 2df6e4035d50..418c4be697ad 100644
---- a/include/uapi/linux/fib_rules.h
-+++ b/include/uapi/linux/fib_rules.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
--#ifndef __LINUX_FIB_RULES_H
--#define __LINUX_FIB_RULES_H
-+#ifndef _UAPI__LINUX_FIB_RULES_H
-+#define _UAPI__LINUX_FIB_RULES_H
- 
- #include <linux/types.h>
- #include <linux/rtnetlink.h>
-diff --git a/include/uapi/linux/if_addr.h b/include/uapi/linux/if_addr.h
-index 1c392dd95a5e..aa7958b4e41d 100644
---- a/include/uapi/linux/if_addr.h
-+++ b/include/uapi/linux/if_addr.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
--#ifndef __LINUX_IF_ADDR_H
--#define __LINUX_IF_ADDR_H
-+#ifndef _UAPI__LINUX_IF_ADDR_H
-+#define _UAPI__LINUX_IF_ADDR_H
- 
- #include <linux/types.h>
- #include <linux/netlink.h>
-diff --git a/include/uapi/linux/if_addrlabel.h b/include/uapi/linux/if_addrlabel.h
-index d1f5974c76e1..e69db764fbba 100644
---- a/include/uapi/linux/if_addrlabel.h
-+++ b/include/uapi/linux/if_addrlabel.h
-@@ -8,8 +8,8 @@
-  *	YOSHIFUJI Hideaki @ USAGI/WIDE <yoshfuji@linux-ipv6.org>
-  */
- 
--#ifndef __LINUX_IF_ADDRLABEL_H
--#define __LINUX_IF_ADDRLABEL_H
-+#ifndef _UAPI__LINUX_IF_ADDRLABEL_H
-+#define _UAPI__LINUX_IF_ADDRLABEL_H
- 
- #include <linux/types.h>
- 
-diff --git a/include/uapi/linux/if_alg.h b/include/uapi/linux/if_alg.h
-index 0824fbc026a1..b35871cbeed7 100644
---- a/include/uapi/linux/if_alg.h
-+++ b/include/uapi/linux/if_alg.h
-@@ -11,8 +11,8 @@
-  *
-  */
- 
--#ifndef _LINUX_IF_ALG_H
--#define _LINUX_IF_ALG_H
-+#ifndef _UAPI_LINUX_IF_ALG_H
-+#define _UAPI_LINUX_IF_ALG_H
- 
- #include <linux/types.h>
- 
-@@ -58,4 +58,4 @@ struct af_alg_iv {
- #define ALG_OP_DECRYPT			0
- #define ALG_OP_ENCRYPT			1
- 
--#endif	/* _LINUX_IF_ALG_H */
-+#endif	/* _UAPI_LINUX_IF_ALG_H */
-diff --git a/include/uapi/linux/if_arcnet.h b/include/uapi/linux/if_arcnet.h
-index b122cfac7128..473569eaf692 100644
---- a/include/uapi/linux/if_arcnet.h
-+++ b/include/uapi/linux/if_arcnet.h
-@@ -14,8 +14,8 @@
-  *              2 of the License, or (at your option) any later version.
-  */
- 
--#ifndef _LINUX_IF_ARCNET_H
--#define _LINUX_IF_ARCNET_H
-+#ifndef _UAPI_LINUX_IF_ARCNET_H
-+#define _UAPI_LINUX_IF_ARCNET_H
- 
- #include <linux/types.h>
- #include <linux/if_ether.h>
-@@ -127,4 +127,4 @@ struct archdr {
- 	} soft;
- };
- 
--#endif				/* _LINUX_IF_ARCNET_H */
-+#endif				/* _UAPI_LINUX_IF_ARCNET_H */
-diff --git a/include/uapi/linux/if_bonding.h b/include/uapi/linux/if_bonding.h
-index d174914a837d..3bcc03f3aa4f 100644
---- a/include/uapi/linux/if_bonding.h
-+++ b/include/uapi/linux/if_bonding.h
-@@ -41,8 +41,8 @@
-  *      - added definitions for various XOR hashing policies
-  */
- 
--#ifndef _LINUX_IF_BONDING_H
--#define _LINUX_IF_BONDING_H
-+#ifndef _UAPI_LINUX_IF_BONDING_H
-+#define _UAPI_LINUX_IF_BONDING_H
- 
- #include <linux/if.h>
- #include <linux/types.h>
-@@ -152,4 +152,4 @@ enum {
- };
- #define BOND_3AD_STAT_MAX (__BOND_3AD_STAT_MAX - 1)
- 
--#endif /* _LINUX_IF_BONDING_H */
-+#endif /* _UAPI_LINUX_IF_BONDING_H */
-diff --git a/include/uapi/linux/if_fc.h b/include/uapi/linux/if_fc.h
-index 3e3173282cc3..ff5ab92d16c2 100644
---- a/include/uapi/linux/if_fc.h
-+++ b/include/uapi/linux/if_fc.h
-@@ -18,8 +18,8 @@
-  *		as published by the Free Software Foundation; either version
-  *		2 of the License, or (at your option) any later version.
-  */
--#ifndef _LINUX_IF_FC_H
--#define _LINUX_IF_FC_H
-+#ifndef _UAPI_LINUX_IF_FC_H
-+#define _UAPI_LINUX_IF_FC_H
- 
- #include <linux/types.h>
- 
-@@ -49,4 +49,4 @@ struct fcllc {
- 	__be16 ethertype;		/* ether type field */
- };
- 
--#endif	/* _LINUX_IF_FC_H */
-+#endif	/* _UAPI_LINUX_IF_FC_H */
-diff --git a/include/uapi/linux/if_hippi.h b/include/uapi/linux/if_hippi.h
-index 785a1452a66c..42c4ffd11dae 100644
---- a/include/uapi/linux/if_hippi.h
-+++ b/include/uapi/linux/if_hippi.h
-@@ -20,8 +20,8 @@
-  *		2 of the License, or (at your option) any later version.
-  */
-  
--#ifndef _LINUX_IF_HIPPI_H
--#define _LINUX_IF_HIPPI_H
-+#ifndef _UAPI_LINUX_IF_HIPPI_H
-+#define _UAPI_LINUX_IF_HIPPI_H
- 
- #include <linux/types.h>
- #include <asm/byteorder.h>
-@@ -151,4 +151,4 @@ struct hippi_hdr {
- 	struct hippi_snap_hdr	snap;
- } __attribute__((packed));
- 
--#endif	/* _LINUX_IF_HIPPI_H */
-+#endif	/* _UAPI_LINUX_IF_HIPPI_H */
-diff --git a/include/uapi/linux/if_packet.h b/include/uapi/linux/if_packet.h
-index 1d2718dd9647..6cd1d7a41dfb 100644
---- a/include/uapi/linux/if_packet.h
-+++ b/include/uapi/linux/if_packet.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
--#ifndef __LINUX_IF_PACKET_H
--#define __LINUX_IF_PACKET_H
-+#ifndef _UAPI__LINUX_IF_PACKET_H
-+#define _UAPI__LINUX_IF_PACKET_H
- 
- #include <asm/byteorder.h>
- #include <linux/types.h>
-diff --git a/include/uapi/linux/if_plip.h b/include/uapi/linux/if_plip.h
-index 495a366112f2..054d86a9c6e6 100644
---- a/include/uapi/linux/if_plip.h
-+++ b/include/uapi/linux/if_plip.h
-@@ -9,8 +9,8 @@
-  *
-  */
-  
--#ifndef _LINUX_IF_PLIP_H
--#define _LINUX_IF_PLIP_H
-+#ifndef _UAPI_LINUX_IF_PLIP_H
-+#define _UAPI_LINUX_IF_PLIP_H
- 
- #include <linux/sockios.h>
- 
-diff --git a/include/uapi/linux/if_slip.h b/include/uapi/linux/if_slip.h
-index 65937be53103..299bf7adc862 100644
---- a/include/uapi/linux/if_slip.h
-+++ b/include/uapi/linux/if_slip.h
-@@ -6,8 +6,8 @@
-  *	KISS TNC driver.
-  */
-  
--#ifndef __LINUX_SLIP_H
--#define __LINUX_SLIP_H
-+#ifndef _UAPI__LINUX_SLIP_H
-+#define _UAPI__LINUX_SLIP_H
- 
- #define		SL_MODE_SLIP		0
- #define		SL_MODE_CSLIP		1
-diff --git a/include/uapi/linux/if_x25.h b/include/uapi/linux/if_x25.h
-index 3a5938e38370..861cfa983db4 100644
---- a/include/uapi/linux/if_x25.h
-+++ b/include/uapi/linux/if_x25.h
-@@ -13,8 +13,8 @@
-  *  GNU General Public License for more details.
-  */
- 
--#ifndef _IF_X25_H
--#define _IF_X25_H
-+#ifndef _UAPI_IF_X25_H
-+#define _UAPI_IF_X25_H
- 
- #include <linux/types.h>
- 
-@@ -24,4 +24,4 @@
- #define X25_IFACE_DISCONNECT	0x02
- #define X25_IFACE_PARAMS	0x03
- 
--#endif /* _IF_X25_H */
-+#endif /* _UAPI_IF_X25_H */
-diff --git a/include/uapi/linux/if_xdp.h b/include/uapi/linux/if_xdp.h
-index 42869770776e..44f2bb93e7e6 100644
---- a/include/uapi/linux/if_xdp.h
-+++ b/include/uapi/linux/if_xdp.h
-@@ -7,8 +7,8 @@
-  *	      Magnus Karlsson <magnus.karlsson@intel.com>
-  */
- 
--#ifndef _LINUX_IF_XDP_H
--#define _LINUX_IF_XDP_H
-+#ifndef _UAPI_LINUX_IF_XDP_H
-+#define _UAPI_LINUX_IF_XDP_H
- 
- #include <linux/types.h>
- 
-@@ -180,4 +180,4 @@ struct xdp_desc {
- /* TX packet carries valid metadata. */
- #define XDP_TX_METADATA (1 << 1)
- 
--#endif /* _LINUX_IF_XDP_H */
-+#endif /* _UAPI_LINUX_IF_XDP_H */
-diff --git a/include/uapi/linux/ip6_tunnel.h b/include/uapi/linux/ip6_tunnel.h
-index 0245269b037c..85182a839d42 100644
---- a/include/uapi/linux/ip6_tunnel.h
-+++ b/include/uapi/linux/ip6_tunnel.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
--#ifndef _IP6_TUNNEL_H
--#define _IP6_TUNNEL_H
-+#ifndef _UAPI_IP6_TUNNEL_H
-+#define _UAPI_IP6_TUNNEL_H
- 
- #include <linux/types.h>
- #include <linux/if.h>		/* For IFNAMSIZ. */
-diff --git a/include/uapi/linux/net_dropmon.h b/include/uapi/linux/net_dropmon.h
-index 84f622a66a7a..9dd41c2f58a6 100644
---- a/include/uapi/linux/net_dropmon.h
-+++ b/include/uapi/linux/net_dropmon.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
--#ifndef __NET_DROPMON_H
--#define __NET_DROPMON_H
-+#ifndef _UAPI__NET_DROPMON_H
-+#define _UAPI__NET_DROPMON_H
- 
- #include <linux/types.h>
- #include <linux/netlink.h>
-diff --git a/include/uapi/linux/net_tstamp.h b/include/uapi/linux/net_tstamp.h
-index 383213de612a..a93e6ea37fb3 100644
---- a/include/uapi/linux/net_tstamp.h
-+++ b/include/uapi/linux/net_tstamp.h
-@@ -7,8 +7,8 @@
-  *
-  */
- 
--#ifndef _NET_TIMESTAMPING_H
--#define _NET_TIMESTAMPING_H
-+#ifndef _UAPI_NET_TIMESTAMPING_H
-+#define _UAPI_NET_TIMESTAMPING_H
- 
- #include <linux/types.h>
- #include <linux/socket.h>   /* for SO_TIMESTAMPING */
-@@ -216,4 +216,4 @@ struct sock_txtime {
- 	__u32			flags;	/* as defined by enum txtime_flags */
- };
- 
--#endif /* _NET_TIMESTAMPING_H */
-+#endif /* _UAPI_NET_TIMESTAMPING_H */
-diff --git a/include/uapi/linux/netlink_diag.h b/include/uapi/linux/netlink_diag.h
-index dfa61be43d2f..ff28200204bb 100644
---- a/include/uapi/linux/netlink_diag.h
-+++ b/include/uapi/linux/netlink_diag.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
--#ifndef __NETLINK_DIAG_H__
--#define __NETLINK_DIAG_H__
-+#ifndef _UAPI__NETLINK_DIAG_H__
-+#define _UAPI__NETLINK_DIAG_H__
- 
- #include <linux/types.h>
- 
-diff --git a/include/uapi/linux/pkt_cls.h b/include/uapi/linux/pkt_cls.h
-index 2c32080416b5..490821364165 100644
---- a/include/uapi/linux/pkt_cls.h
-+++ b/include/uapi/linux/pkt_cls.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
--#ifndef __LINUX_PKT_CLS_H
--#define __LINUX_PKT_CLS_H
-+#ifndef _UAPI__LINUX_PKT_CLS_H
-+#define _UAPI__LINUX_PKT_CLS_H
- 
- #include <linux/types.h>
- #include <linux/pkt_sched.h>
-diff --git a/include/uapi/linux/pkt_sched.h b/include/uapi/linux/pkt_sched.h
-index 25a9a47001cd..9ea874395717 100644
---- a/include/uapi/linux/pkt_sched.h
-+++ b/include/uapi/linux/pkt_sched.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
--#ifndef __LINUX_PKT_SCHED_H
--#define __LINUX_PKT_SCHED_H
-+#ifndef _UAPI__LINUX_PKT_SCHED_H
-+#define _UAPI__LINUX_PKT_SCHED_H
- 
- #include <linux/const.h>
- #include <linux/types.h>
--- 
-2.49.0
-
+Rob
