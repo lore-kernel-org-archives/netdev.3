@@ -1,173 +1,156 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D3B34CF5
-	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 12:22:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90544221272
+	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 12:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744806124; cv=none; b=KQF7ekx65tTJJ5PQwnKV84vGJayplQWOmwjPWfiVsSAlA7anoi0QMZjFs/yOjWk2tHBk+Av7Uebus0Kw2aUIUMh59rqbCV2BgmHyV+6Qj+Jvq+Bze49A6tWlYYRkqKGVM9E6uPNaK9FXAsJ3apFyVt1E0FH2QARZAydLMmHkn9Y=
+	t=1744806180; cv=none; b=QfFBs7M902j3gv0zzrybYiU9wxGX+hZm4g8IAdz00mGQJuqsVzNMFn1b8i6+odr0if3dmhU3o5o/bVO67VpNKXVYxKkhitCFihzlXKmsZ3owUg0pp/tZ6ZM50jDAIDwQYSPlQQtH94kKvJi6eDXmoaoWumg1JlXUgu0UF9iC3bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744806124; c=relaxed/simple;
-	bh=EFnc0WRzEf4Z9yc61d/RyuErKOJdh7/lCVhtPeNIyP4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TF/G83UMf2Vr2Sl/JWsYtP3gTI1Ts7R7ud2QalBZxDP4nZJSM49F0ssu773BweymG51c5VLzYDAvfnLVpdO5iB81lZWKtQOwMF/ri1dYfcG6n+RLhjbGr7B+YOHsyzqiw5DiDIWNvXJwdPXm1Z9x4qEh1Hz9BEEyaYR81sALtEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=m2FT9p5S; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1744806180; c=relaxed/simple;
+	bh=O7ppKADWcPNedSeoi8dWIZcBDs/KP37bDVC2WFQKRlo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tyZMPq0Ho4tsCeN9Hfs8lORaHusO46AwXEDOYj8hsSsNNg2g88xmRr/Hn3Q7vTFo9YmHB/y5JpNKFErFlj4H3n4NiQJljYIesHxC+XMqDvZAv4ozdKutNqpnwIRx3PqZkrI7j1oMpi3BLWY7c5PfmuXnUAvOiKdC8HbpT/nTKto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m0Fsj0Od; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="m2FT9p5S"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-736aa9d0f2aso7437260b3a.0
-        for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 05:22:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1744806122; x=1745410922; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8+WVF0vgix7mkFpfvJCcnuLkknP11Yltc17yhUbYhWE=;
-        b=m2FT9p5SMyOk2QGktkchCS4jhGeqdKKKRBBOMT26kuUOefFGjGg6abxZLxUSK5umKj
-         VgOHfnRgm/vZnMLQ30bFwv4UnL/kocF+CkaVNHkKehfr19VSrnd/15Pi8Y71CTsoj22c
-         dsyApoOiqYWMB66XVkqFb7totcFsM1NBXrFyTeGtQ4/Pzj4fEIFxpWMt04zN0X+qD/x/
-         LuEgln4kGtndtbvIRIqpHUN9XWx8pdcTQwNgDITt15D1/YE+Khx/qKkO3JZy23WVu7uv
-         iYEyBG4I+m/yX2Ir2wcz5Tc6uaJMtx2IfP6AqQHnTPyG/vXzjhMPd88inIV9vt1qf63o
-         /KKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744806122; x=1745410922;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8+WVF0vgix7mkFpfvJCcnuLkknP11Yltc17yhUbYhWE=;
-        b=nEKYneaqoxcwXwVfxIf1yD3PCvx29yeGCPS8C1LFzvVWWxRoQ+KNbXGeeXp+469zIz
-         2/WyHYGqxd/KSZnsqroi2OpbjoucQXBGxxST1w4FM3n/c2ukeLfDYngdmEm38LoDHirC
-         Am6T/8CWHNruK6R0xaSGZhkfwvWGwBB7FCil8rSQfAj/gHP6kaMV8IROVC1caW1I9FU5
-         iA+lbdRC9nkeA3Xo+Vf+xGGDDkoFrZF9OQfwv89+Ab3xBGe+ZniokkFSvhsDZgc7qXtu
-         ZnszpiHW87RedeZgPoNFcw0Znq1h5LpdF9tbdt80DWz3vLmzSnJMsZihNsP84HjDOm60
-         8ekA==
-X-Forwarded-Encrypted: i=1; AJvYcCV/BCJeIr5Uv0PJwWfWXp31VrqN6X0H/v0poqTYhj+hPsB5KPj6/pnYQclasrEhQK5mxM320bw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyr+0NYpr7absWmPrJTMiCfw1CHlM4w8aWJdzhgM5fTXvOKtzUx
-	WYhJRHsQ/B0AXhzJBbAz93q/lEDlDXXVlRSKFNtoCMgQWnWYMzcrxUadhbwrsQ==
-X-Gm-Gg: ASbGncta8vCvU8zbFcqbv0AaLEEg/x8PhUaurUohAwmQV8TxbCA2izFUeZ3HnnqtbiP
-	mMJl3Ff/JTbEBK8DkhVp0DgxzBm/HLEtliz6cZXPiL+dWM3/G20BK/bbaenhL6itqAjfXf8Z8Xi
-	lHXYhcKacocViIWYrINRXZEkJD1g4Z6wi+NbrBAJYCOoQ4hHBlo1kcXQ14V/KmZqPSTWHykkIPn
-	/8P4ks0bMOvb5XMxofK6XOW151t8HXM+pqWswxgTyuAcsvbcgwfSUA0PXIVaSASnUUjzBwZ3AA6
-	r7PshxpXbo/78jnGHltW1gdSgeaQaEJC0F17FpVS7YMrG4Qg4C7W4T3tFCGTJSQCJP64I7J7LMI
-	7OVLG35hfJA0=
-X-Google-Smtp-Source: AGHT+IFS1pvArZ0aCV/sDSsf7um8PNFWJi22sTowudeeDBY25iY+lGk3il3k6n4C6X3PsuIgZ8ss0g==
-X-Received: by 2002:a05:6a20:e188:b0:1f5:6f95:2544 with SMTP id adf61e73a8af0-203b3fd47e2mr2328501637.33.1744806121845;
-        Wed, 16 Apr 2025 05:22:01 -0700 (PDT)
-Received: from ?IPV6:2804:7f1:e2c3:dc7b:da12:1e53:d800:3508? ([2804:7f1:e2c3:dc7b:da12:1e53:d800:3508])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b0b220fc366sm1112316a12.42.2025.04.16.05.21.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Apr 2025 05:22:01 -0700 (PDT)
-Message-ID: <ef8c59a0-be86-4ddc-b25a-d198051f12b2@mojatatu.com>
-Date: Wed, 16 Apr 2025 09:21:53 -0300
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m0Fsj0Od"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744806179; x=1776342179;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=O7ppKADWcPNedSeoi8dWIZcBDs/KP37bDVC2WFQKRlo=;
+  b=m0Fsj0OdLdfaPu04tzWxkx2LNXNpc3uJ4HahCGavO52t2R2cW20PBKgB
+   DoLnFJuPDmvtZqeNXyjCGNmQHZHx2ltAH/ogUSqwBoxjfe9X6DHEv2xQm
+   x+FsoD9Es1iFzGl0iW315i1CE5lJc8LtkCj3UzuC1l2eMGFocuCZM3zxJ
+   slbp9nJejh31VJqc3edKwZKtzS/PN11B6ElOlhvyjiW2nXXLo8A+9ZtOB
+   Pz5ciOHkJpggH6oStqRYVKHaBKGYczP6JXVOYZfRzsQH5lzkbQc90qDMS
+   W7kwIQTAYOhyvf9bRxfDg7ub2ob2pfxlcIKTxbe7KQF74EDvu6A7dLMOA
+   g==;
+X-CSE-ConnectionGUID: VXhreCYUQiyq9InXZlhV0w==
+X-CSE-MsgGUID: hwEA5vzlRNe6ejbMom59jw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="63888911"
+X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; 
+   d="scan'208";a="63888911"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 05:22:36 -0700
+X-CSE-ConnectionGUID: 4eTuMUCKQECIJie+NFtlqw==
+X-CSE-MsgGUID: XgSqlmdmSaaa3yxFLJ0kwA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; 
+   d="scan'208";a="130477168"
+Received: from gklab-003-014.igk.intel.com ([10.211.116.96])
+  by fmviesa007.fm.intel.com with ESMTP; 16 Apr 2025 05:22:35 -0700
+From: Milena Olech <milena.olech@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	Milena Olech <milena.olech@intel.com>
+Subject: [PATCH v12 iwl-next 00/11] idpf: add initial PTP support 
+Date: Wed, 16 Apr 2025 14:18:58 +0200
+Message-ID: <20250416122142.86176-2-milena.olech@intel.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 RESEND iproute2-next 1/1] tc: add dualpi2 scheduler
- module
-To: chia-yu.chang@nokia-bell-labs.com, netdev@vger.kernel.org,
- dave.taht@gmail.com, pabeni@redhat.com, jhs@mojatatu.com, kuba@kernel.org,
- stephen@networkplumber.org, xiyou.wangcong@gmail.com, jiri@resnulli.us,
- davem@davemloft.net, edumazet@google.com, horms@kernel.org,
- andrew+netdev@lunn.ch, donald.hunter@gmail.com, ast@fiberby.net,
- liuhangbin@gmail.com, shuah@kernel.org, linux-kselftest@vger.kernel.org,
- ij@kernel.org, ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com,
- g.white@cablelabs.com, ingemar.s.johansson@ericsson.com,
- mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at,
- Jason_Livingood@comcast.com, vidhi_goel@apple.com
-Cc: Olga Albisser <olga@albisser.org>,
- Oliver Tilmans <olivier.tilmans@nokia.com>,
- Bob Briscoe <research@bobbriscoe.net>, Henrik Steen <henrist@henrist.net>
-References: <20250414131859.97517-1-chia-yu.chang@nokia-bell-labs.com>
- <20250414131859.97517-2-chia-yu.chang@nokia-bell-labs.com>
-Content-Language: en-US
-From: Victor Nogueira <victor@mojatatu.com>
-In-Reply-To: <20250414131859.97517-2-chia-yu.chang@nokia-bell-labs.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 4/14/25 10:18, chia-yu.chang@nokia-bell-labs.com wrote:
-> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-> 
-> DUALPI2 AQM is a combination of the DUALQ Coupled-AQM with a PI2
-> base-AQM. The PI2 AQM is in turn both an extension and a simplification
-> of the PIE AQM. PI2 makes quite some PIE heuristics unnecessary, while
-> being able to control scalable congestion controls like TCP-Prague.
-> With PI2, both Reno/Cubic can be used in parallel with Prague,
-> maintaining window fairness. DUALQ provides latency separation between
-> low latency Prague flows and Reno/Cubic flows that need a bigger queue.
-> 
-> This patch adds support to tc to configure it through its netlink
-> interface.
-> 
-> Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-> Co-developed-by: Olga Albisser <olga@albisser.org>
-> Signed-off-by: Olga Albisser <olga@albisser.org>
-> Co-developed-by: Koen De Schepper <koen.de_schepper@nokia-bell-labs.com>
-> Signed-off-by: Koen De Schepper <koen.de_schepper@nokia-bell-labs.com>
-> Co-developed-by: Oliver Tilmans <olivier.tilmans@nokia.com>
-> Signed-off-by: Oliver Tilmans <olivier.tilmans@nokia.com>
-> Signed-off-by: Bob Briscoe <research@bobbriscoe.net>
-> Co-developed-by: Henrik Steen <henrist@henrist.net>
-> Signed-off-by: Henrik Steen <henrist@henrist.net>
-> ---
->   bash-completion/tc             |  11 +-
->   include/uapi/linux/pkt_sched.h |  39 +++
->   include/utils.h                |   2 +
->   ip/iplink_can.c                |  14 -
->   lib/utils.c                    |  30 ++
->   man/man8/tc-dualpi2.8          | 249 ++++++++++++++++
->   tc/Makefile                    |   1 +
->   tc/q_dualpi2.c                 | 519 +++++++++++++++++++++++++++++++++
->   8 files changed, 850 insertions(+), 15 deletions(-)
->   create mode 100644 man/man8/tc-dualpi2.8
->   create mode 100644 tc/q_dualpi2.c
+This patch series introduces support for Precision Time Protocol (PTP) to
+Intel(R) Infrastructure Data Path Function (IDPF) driver. PTP feature is
+supported when the PTP capability is negotiated with the Control
+Plane (CP). IDPF creates a PTP clock and sets a set of supported
+functions.
 
-Hi!
+During the PTP initialization, IDPF requests a set of PTP capabilities
+and receives a writeback from the CP with the set of supported options.
+These options are:
+- get time of the PTP clock
+- get cross timestamp
+- set the time of the PTP clock
+- adjust the PTP clock
+- Tx timestamping
 
-I compiled your patch and am seeing the following warnings:
+Each feature is considered to have direct access, where the operations
+on PCIe BAR registers are allowed, or the mailbox access, where the
+virtchnl messages are used to perform any PTP action. Mailbox access
+means that PTP requests are sent to the CP through dedicated secondary
+mailbox and the CP reads/writes/modifies desired resource - PTP Clock
+or Tx timestamp registers.
 
-q_dualpi2.c: In function 'dualpi2_parse_opt':
-q_dualpi2.c:218:37: warning: pointer targets in passing argument 1 of 
-'get_u32' differ in signedness [-Wpointer-sign]
-   218 |                         if (get_u32(&min_qlen_step, *argv, 10)) {
-       |                                     ^~~~~~~~~~~~~~
-       |                                     |
-       |                                     int32_t * {aka int *}
-In file included from q_dualpi2.c:39:
-../include/utils.h:157:20: note: expected '__u32 *' {aka 'unsigned int 
-*'} but argument is of type 'int32_t *' {aka 'int *'}
-   157 | int get_u32(__u32 *val, const char *arg, int base);
-       |             ~~~~~~~^~~
-q_dualpi2.c: At top level:
-q_dualpi2.c:516:27: warning: initialization of 'int (*)(const struct 
-qdisc_util *, int,  char **, struct nlmsghdr *, const char *)' from 
-incompatible pointer type 'int (*)(struct qdisc_util *, int,  char **, 
-struct nlmsghdr *, const char *)' [-Wincompatible-pointer-types]
-   516 |         .parse_qopt     = dualpi2_parse_opt,
-       |                           ^~~~~~~~~~~~~~~~~
-q_dualpi2.c:516:27: note: (near initialization for 
-'dualpi2_qdisc_util.parse_qopt')
-q_dualpi2.c:517:27: warning: initialization of 'int (*)(const struct 
-qdisc_util *, FILE *, struct rtattr *)' from incompatible pointer type 
-'int (*)(struct qdisc_util *, FILE *, struct rtattr *)' 
-[-Wincompatible-pointer-types]
-   517 |         .print_qopt     = dualpi2_print_opt,
-       |                           ^~~~~~~~~~~~~~~~~
-q_dualpi2.c:517:27: note: (near initialization for 
-'dualpi2_qdisc_util.print_qopt')
-q_dualpi2.c:518:27: warning: initialization of 'int (*)(const struct 
-qdisc_util *, FILE *, struct rtattr *)' from incompatible pointer type 
-'int (*)(struct qdisc_util *, FILE *, struct rtattr *)' 
-[-Wincompatible-pointer-types]
-   518 |         .print_xstats   = dualpi2_print_xstats,
-       |                           ^~~~~~~~~~~~~~~~~~~~
-q_dualpi2.c:518:27: note: (near initialization for 
-'dualpi2_qdisc_util.print_xstats')
+Tx timestamp capabilities are negotiated only for vports that have
+UPLINK_VPORT flag set by the CP. Capabilities provide information about
+the number of available Tx timestamp latches, their indexes and size of
+the Tx timestamp value. IDPF requests Tx timestamp by setting the
+TSYN bit and the requested timestamp index in the context descriptor for
+the PTP packets. When the completion tag for that packet is received,
+IDPF schedules a worker to read the Tx timestamp value.
 
-cheers,
-Victor
+v11 -> v12: restore missing v9 changes - fix Rx filters upscaling,
+check if the link is up in idpf_hwtstamp_get/set 
+v10 -> v11: change timestamp extension algorithm, use one lock for
+latches lists, allocate each index latch separately during caps
+negotiation, fix virtchnl comment
+v9 -> v10: create a separate patch for cross timestamping, change the
+order, improve get device clock time latch mechanism
+v8 -> v9: fix Rx filters upscaling, check if the link is up in
+idpf_hwtstamp_get/set, fix typo
+v7 -> v8: split Tx and Rx timestamping enablement, refactor
+idpf_for_each_vport
+v6 -> v7: remove section about Tx timestamp limitation from cover letter
+since it has been fixed, change preparing flow descriptor method
+v5 -> v6: change locking mechanism in get_ts_info, clean timestamp
+fields when preparing flow descriptor, add Rx filter
+v4 -> v5: fix spin unlock when Tx timestamp index is requested
+v3 -> v4: change timestamp filters dependent on Tx timestamp cap,
+rewrite function that extends Tx timestamp value, minor fixes
+v2 -> v3: fix minor issues, revert idpf_for_each_vport changes,
+extend idpf_ptp_set_rx_tstamp, split tstamp statistics
+v1 -> v2: add stats for timestamping, use ndo_hwtamp_get/set,
+fix minor spelling issues
+
+Milena Olech (11):
+  idpf: change the method for mailbox workqueue allocation
+  idpf: add initial PTP support
+  virtchnl: add PTP virtchnl definitions
+  idpf: move virtchnl structures to the header file
+  idpf: negotiate PTP capabilities and get PTP clock
+  idpf: add mailbox access to read PTP clock time
+  idpf: add cross timestamping
+  idpf: add PTP clock configuration
+  idpf: add Tx timestamp capabilities negotiation
+  idpf: add Tx timestamp flows
+  idpf: add support for Rx timestamping
+
+ drivers/net/ethernet/intel/idpf/Kconfig       |    1 +
+ drivers/net/ethernet/intel/idpf/Makefile      |    3 +
+ drivers/net/ethernet/intel/idpf/idpf.h        |   35 +
+ .../ethernet/intel/idpf/idpf_controlq_api.h   |    3 +
+ drivers/net/ethernet/intel/idpf/idpf_dev.c    |   14 +
+ .../net/ethernet/intel/idpf/idpf_ethtool.c    |   75 +-
+ .../ethernet/intel/idpf/idpf_lan_pf_regs.h    |    4 +
+ .../net/ethernet/intel/idpf/idpf_lan_txrx.h   |   13 +-
+ drivers/net/ethernet/intel/idpf/idpf_lib.c    |   57 +
+ drivers/net/ethernet/intel/idpf/idpf_main.c   |    9 +-
+ drivers/net/ethernet/intel/idpf/idpf_ptp.c    | 1019 +++++++++++++++++
+ drivers/net/ethernet/intel/idpf/idpf_ptp.h    |  379 ++++++
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  171 ++-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |   18 +-
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   |  160 ++-
+ .../net/ethernet/intel/idpf/idpf_virtchnl.h   |   84 ++
+ .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   |  673 +++++++++++
+ drivers/net/ethernet/intel/idpf/virtchnl2.h   |  314 ++++-
+ 18 files changed, 2929 insertions(+), 103 deletions(-)
+ create mode 100644 drivers/net/ethernet/intel/idpf/idpf_ptp.c
+ create mode 100644 drivers/net/ethernet/intel/idpf/idpf_ptp.h
+ create mode 100644 drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+
+
+base-commit: ea9052a7d46c1d95f5af10b9ab907e5c5fa8a4f8
+-- 
+2.43.5
+
