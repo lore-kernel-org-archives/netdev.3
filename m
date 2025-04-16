@@ -1,39 +1,39 @@
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C08721146F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D250211A07;
 	Wed, 16 Apr 2025 13:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744811097; cv=none; b=GMbxhIvi3Byt9selxqvWwiko/VKDgQQHSv/cs3GbOcvsNRtas8WEemCxB4pMc+NQmOm+6ckm2iQbAfG4rnDW4a3Zo48ZBfRq2ouhGlU9GasXJ1cu/ZEHRKoUxMJG4as+YBl3rDohdMUqyU9YyTrEzd2g6DPHio8HLLeKQvlj6Ic=
+	t=1744811097; cv=none; b=sVpkBNs6EC36xLNj1AtoGXULCKre5jG3LT2Udik/kU9fWdfEuGNQ4hSmP3SbXkvdD9HLyyGPGFRJH7iKP//AQBRHY8l0n3YEpXjwNM02oeapxoDDQ/CB9EHNcaVn+H1xV0F4lYs2d2JLzRKD6erGBVGKxknOHouDm2rw8DSjkEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744811097; c=relaxed/simple;
-	bh=df+71usUeRt26Limx1euNtmayGjcmNOWE6vhlwxoFrI=;
+	bh=t/riqLaAjOTLqeQSL35nly0YR/KyFtuEQfe5F3EEdNc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ByT5OpcAW9U9T5zQUIbw0RC3Ru8HN7TRdhePKHrmZWu69tdVyqMBBKtJVPQk+rLohw5EOEmfPqDjwtx5CKWFKLg+3QI0NHuNNCJsK4c1EXcXkSzX+t38xaekYkdILbD6UT492obypzuuJARqtQ1eTL+VGqPXOj4J1ap0PRAsOUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZMgjL+u6; arc=none smtp.client-ip=217.70.183.200
+	 In-Reply-To:To:Cc; b=Xmgpn0sox5PhNvmWkhfz78Hbnnv6OAVgappk1N035otZKLm7vjOn9olrHTjNpDdWlPcmpoxotmYXjRruYpiTnbBnc/wlIHTeSo3PHm13F6t/zCA0xvGjva66o9w2KzTwC64/QCragstXiWRyWu7NMMDWYNl4B8y9+1/DUOrrF7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=i0+Kdj0p; arc=none smtp.client-ip=217.70.183.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZMgjL+u6"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8439C4390E;
-	Wed, 16 Apr 2025 13:44:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="i0+Kdj0p"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4B0AA43926;
+	Wed, 16 Apr 2025 13:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1744811086;
+	t=1744811093;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QkwnrTW3AGm6/c1sg2YnWGt1nX5AkVzIP4B2TZQ9DJs=;
-	b=ZMgjL+u6kSWTFWUakWTa9lFhDrLTC+LH3YTQ89NLY+U0XOb1Jd3W+/tJmR4tvdTXt/tHPd
-	g6tWDp8dPMkI3rCOu/sZBr1cBy5Ih+IomFPDkA7e/USzP4px+ZgQlJ1UEzXAsET0JDjUJM
-	3OpIHH4fCJwf3WaeLQZgoi831WGVOJ6ab533abZuefQxZlzhHQz9Zgcp7tAOkL9R3rvKiE
-	wfjJg+NVjU5Sg3By/ptIJudz64GubweZak2RDGoex0wukgxsp+kQGr3x7UOMKPRkrVe8hk
-	2o9d6OVKfNeAJKVgDbl488fFwQWsLNn4RRCi470+9e55OEgyTVCAE+5wMbcGnw==
+	bh=wj+mjixOIfB1EtFAPF2rLSUo0TbXb+SbBG2QHerAbVg=;
+	b=i0+Kdj0pkVLRrxALhWN8zZev+6+Hu+5QrUrsa07yDFjN8kfWksaJodO13ZFzRli8mD5hbA
+	I8PPtK50D/QBgcU2vpUbQU2IQOKu4FkP52gh7dXWMpQBKCRau+Ah2PihdhLw1GMobeNKUB
+	fgxl4iz47OCTOvdd7wlVn7VgMshNT9FntH2BtAiUCin6XVivdpBLsMsOnM+edxSc4P0XwN
+	NvzdKsHkHq0F2y6tc4Zl8SPmx2GxZRp/W7n6D9gbh99cDrNv+SOhTHQGcJ2z0Z1/6Ijdko
+	lFDboBvVcIQBJQvMVrLSAg+aYbPnTjG2nHPvuZVqsvHDOIlmz7khySrDtCef4A==
 From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Wed, 16 Apr 2025 15:44:16 +0200
-Subject: [PATCH net-next v8 01/13] net: ethtool: Add support for
- ethnl_info_init_ntf helper function
+Date: Wed, 16 Apr 2025 15:44:21 +0200
+Subject: [PATCH net-next v8 06/13] net: pse-pd: Add helper to report
+ hardware enable status of the PI
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,7 +42,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250416-feature_poe_port_prio-v8-1-446c39dc3738@bootlin.com>
+Message-Id: <20250416-feature_poe_port_prio-v8-6-446c39dc3738@bootlin.com>
 References: <20250416-feature_poe_port_prio-v8-0-446c39dc3738@bootlin.com>
 In-Reply-To: <20250416-feature_poe_port_prio-v8-0-446c39dc3738@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
@@ -64,66 +64,83 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
 X-Mailer: b4 0.15-dev-8cb71
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvdeiheefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevgfdvgfektefgfefggeekudfggffhtdfffedtueetheejtddvledvvdelhedtveenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvjedprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehhohhrmhhssehkvghrn
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvdeiheefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevgfdvgfektefgfefggeekudfggffhtdfffedtueetheejtddvledvvdelhedtveenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpeehnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvjedprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehhohhrmhhssehkvghrn
  hgvlhdrohhrghdprhgtphhtthhopehordhrvghmphgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepughonhgrlhgurdhhuhhnthgvrhesghhmrghilhdrtghomh
 X-GND-Sasl: kory.maincent@bootlin.com
 
 From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
 
-Introduce support for the ethnl_info_init_ntf helper function to enable
-initialization of ethtool notifications outside of the netlink.c file.
-This change allows for more flexible notification handling.
+Refactor code by introducing a helper function to retrieve the hardware
+enabled state of the PI, avoiding redundant implementations in the
+future.
 
 Signed-off-by: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
-Changes in v4:
-- Use the new helper in ethnl_default_notify function.
 
-Changes in v2:
-- new patch.
+Change in v7:
+- New patch.
 ---
- net/ethtool/netlink.c | 7 ++++++-
- net/ethtool/netlink.h | 2 ++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/pse-pd/pse_core.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
-index 977beeaaa2f9..4e8cdc070291 100644
---- a/net/ethtool/netlink.c
-+++ b/net/ethtool/netlink.c
-@@ -770,7 +770,7 @@ static void ethnl_default_notify(struct net_device *dev, unsigned int cmd,
- 	int reply_len;
- 	int ret;
+diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+index e6b3c47d9892..f4830fa55cb3 100644
+--- a/drivers/net/pse-pd/pse_core.c
++++ b/drivers/net/pse-pd/pse_core.c
+@@ -227,10 +227,34 @@ static int of_load_pse_pis(struct pse_controller_dev *pcdev)
+ 	return ret;
+ }
  
--	genl_info_init_ntf(&info, &ethtool_genl_family, cmd);
-+	ethnl_info_init_ntf(&info, cmd);
- 
- 	if (WARN_ONCE(cmd > ETHTOOL_MSG_KERNEL_MAX ||
- 		      !ethnl_default_notify_ops[cmd],
-@@ -840,6 +840,11 @@ static void ethnl_default_notify(struct net_device *dev, unsigned int cmd,
- typedef void (*ethnl_notify_handler_t)(struct net_device *dev, unsigned int cmd,
- 				       const void *data);
- 
-+void ethnl_info_init_ntf(struct genl_info *info, u8 cmd)
++/**
++ * pse_pi_is_hw_enabled - Is PI enabled at the hardware level
++ * @pcdev: a pointer to the PSE controller device
++ * @id: Index of the PI
++ *
++ * Return: 1 if the PI is enabled at the hardware level, 0 if not, and
++ *	   a failure value on error
++ */
++static int pse_pi_is_hw_enabled(struct pse_controller_dev *pcdev, int id)
 +{
-+	genl_info_init_ntf(info, &ethtool_genl_family, cmd);
++	struct pse_admin_state admin_state = {0};
++	int ret;
++
++	ret = pcdev->ops->pi_get_admin_state(pcdev, id, &admin_state);
++	if (ret < 0)
++		return ret;
++
++	/* PI is well enabled at the hardware level */
++	if (admin_state.podl_admin_state == ETHTOOL_PODL_PSE_ADMIN_STATE_ENABLED ||
++	    admin_state.c33_admin_state == ETHTOOL_C33_PSE_ADMIN_STATE_ENABLED)
++		return 1;
++
++	return 0;
 +}
 +
- static const ethnl_notify_handler_t ethnl_notify_handlers[] = {
- 	[ETHTOOL_MSG_LINKINFO_NTF]	= ethnl_default_notify,
- 	[ETHTOOL_MSG_LINKMODES_NTF]	= ethnl_default_notify,
-diff --git a/net/ethtool/netlink.h b/net/ethtool/netlink.h
-index ec6ab5443a6f..4d4ad3824bbb 100644
---- a/net/ethtool/netlink.h
-+++ b/net/ethtool/netlink.h
-@@ -323,6 +323,8 @@ struct ethnl_sock_priv {
- int ethnl_sock_priv_set(struct sk_buff *skb, struct net_device *dev, u32 portid,
- 			enum ethnl_sock_type type);
+ static int pse_pi_is_enabled(struct regulator_dev *rdev)
+ {
+ 	struct pse_controller_dev *pcdev = rdev_get_drvdata(rdev);
+-	struct pse_admin_state admin_state = {0};
+ 	const struct pse_controller_ops *ops;
+ 	int id, ret;
  
-+void ethnl_info_init_ntf(struct genl_info *info, u8 cmd);
-+
- /**
-  * struct ethnl_request_ops - unified handling of GET and SET requests
-  * @request_cmd:      command id for request (GET)
+@@ -240,15 +264,7 @@ static int pse_pi_is_enabled(struct regulator_dev *rdev)
+ 
+ 	id = rdev_get_id(rdev);
+ 	mutex_lock(&pcdev->lock);
+-	ret = ops->pi_get_admin_state(pcdev, id, &admin_state);
+-	if (ret)
+-		goto out;
+-
+-	if (admin_state.podl_admin_state == ETHTOOL_PODL_PSE_ADMIN_STATE_ENABLED ||
+-	    admin_state.c33_admin_state == ETHTOOL_C33_PSE_ADMIN_STATE_ENABLED)
+-		ret = 1;
+-
+-out:
++	ret = pse_pi_is_hw_enabled(pcdev, id);
+ 	mutex_unlock(&pcdev->lock);
+ 
+ 	return ret;
 
 -- 
 2.34.1
