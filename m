@@ -1,73 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D16D20C497
-	for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 21:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4882A21ABC5;
+	Wed, 16 Apr 2025 21:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744839889; cv=none; b=MNOF2HcMq5z56xkapUo09845PWp76bEMxximoZt9Nmb6tyi0W5S9/ftMIbnTg5NySn6FBDju4iJjUf1p9/KMvW3v3zOJs9EE50Zcn/onBKC6C6FsD/HdNqitaUdZdk7L7sFmDXZLLXmAE/zGGdhHrKxgeXa/QTz2rvQEoH/ifEI=
+	t=1744840739; cv=none; b=grIo0rkeRPvNUMzWgXnODpBdrc3nvU7cfEvvQcRPboeRdq+wsq8v7f3V40vpL4NO2COjFrU1J+ID2xHlFLWq27w8Wo92B4fmqbmsB/QHabLQCATNkfZ+N9/Kx/elzNylFF/0ND8DipjequucvvRktlBem0qYP/9H/fhokvT97lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744839889; c=relaxed/simple;
-	bh=01Z2kn5a4gonni9b60GWvMhTbeN4kqMq3u63piqLg1Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hves8p/CZrRESSukRJOtt3JwiLfNHqJhNCM+Nv6PySChRSO+ezZvkEt+oPcE9YxDz7fWJc3Qe1zZ7K6iT91NOvTg4W3A6LtnQjt9RBI6sw7stoQfk14zjPx49bJgCwWXAlcAyEGaFHOC3eZJ5iz+4PEUlSLSNBG1a1ds7TJL7hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DKxZCNNv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744840739; c=relaxed/simple;
+	bh=up3bjPp0OgCeJJ0w7pPtgoDYLs4d/inRFsmF3gxyFQg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LeAdmQp4Qzv9IX/VRS3jw6EDvnYFx9fFldGAaeXrihqhujfhxDeWS0w/xNJn94mwkcmbDawldQxahDuqGLv2t/3UlonFzacJ+sUNk7jqV+HdpD28m6Oj2aN8RjquEh9zIuWEh9Yrhlnzy+d7kon2De3SVfZrDJiolo5jPUbPjIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=NT3H4zDA; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKxZCNNv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE46C4CEE2;
-	Wed, 16 Apr 2025 21:44:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744839888;
-	bh=01Z2kn5a4gonni9b60GWvMhTbeN4kqMq3u63piqLg1Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DKxZCNNvjNEdfRjI5Stq11nKS7wfEfsrj/44rIj5U6PceQjkGHEbp9K9l1nSOF+uJ
-	 MnzO6acQ/3zp0mQa9YK56lsxJFJWO+nmIb7C63CHrOq/ITYGwyQyw5qMoQ1vRsaORA
-	 Tx3fpNk7vNvhFLfaxuup+83MRutoF87Oa430RttV9MqYotzvdjQBerFxlurxMQpIDZ
-	 3/4vUn7xihAbNHcDXmqKNJ6z72mhOGxgeRNO56MQUHFglWTi+BkhBWtGt1jcpwAPuI
-	 qx4cq/cHNCwDdlYfImH1Gg77GSIzDvsDHLFxtH1IGwvNOGqnJfWXUqhTfu4HuihjsI
-	 6MZ7ELefznH0Q==
-Date: Wed, 16 Apr 2025 14:44:47 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Michael Chan <michael.chan@broadcom.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, pavan.chebbi@broadcom.com,
- andrew.gospodarek@broadcom.com, Kalesh AP
- <kalesh-anakkur.purayil@broadcom.com>
-Subject: Re: [PATCH net-next 1/4] bnxt_en: Change FW message timeout warning
-Message-ID: <20250416144447.1fde7ada@kernel.org>
-In-Reply-To: <CACKFLi=tvPJXk4zFXxFzWftc-AVU+2m_cg+EFTzs5MSoDoWFaQ@mail.gmail.com>
-References: <20250415174818.1088646-1-michael.chan@broadcom.com>
-	<20250415174818.1088646-2-michael.chan@broadcom.com>
-	<20250415201444.61303ce7@kernel.org>
-	<CACKFLi=tvPJXk4zFXxFzWftc-AVU+2m_cg+EFTzs5MSoDoWFaQ@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="NT3H4zDA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=vv7BpdqbrC4MIJGIoyaCveI8US7dxRJU75TQa1FCYWA=; b=NT3H4zDAb3vOVqUUyDgEmkwU9n
+	pvPgcGIqiVzK4o8M5YI4G/C8hwYJPfzV4/S54epdX+OQhaL0Dx2z9T0K64QX0GPD8SHQlsSxh9652
+	pIq8tf5KvaUfHe9ltDsx3EtN31ZmxU8oIatReKyLyh9zdL7xVFN5Nqq2gpjavK+SXyVg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1u5AmI-009hQk-EE; Wed, 16 Apr 2025 23:58:42 +0200
+Date: Wed, 16 Apr 2025 23:58:42 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Stefan Wahren <wahrenst@gmx.net>
+Cc: Lukasz Majewski <lukma@denx.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Simon Horman <horms@kernel.org>
+Subject: Re: [net-next v5 2/6] ARM: dts: nxp: mxs: Adjust the imx28.dtsi L2
+ switch description
+Message-ID: <2c9a5438-40f1-4196-ada9-bfb572052122@lunn.ch>
+References: <20250414140128.390400-1-lukma@denx.de>
+ <20250414140128.390400-3-lukma@denx.de>
+ <06c21281-565a-4a2e-a209-9f811409fbaf@gmx.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <06c21281-565a-4a2e-a209-9f811409fbaf@gmx.net>
 
-On Wed, 16 Apr 2025 14:41:10 -0700 Michael Chan wrote:
-> On Tue, Apr 15, 2025 at 8:14=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> =
-wrote:
->=20
-> > sysctl_hung_task_timeout_secs is an exported symbol, and it defaults to=
- 120.
-> > Should you not use it in the warning (assuming I understand the intent
-> > there)? =20
-> Yes, we have considered that.  This is only printed once at driver
-> load time, but the sysctl value can be changed at any time after the
-> driver is loaded.  So we just want to use a reasonable value well
-> below the default sysctl_hung_task_timeout_secs value as the
-> threshold.
->=20
-> But we can reference and compare with the
-> sysctl_hung_task_timeout_secs value if that makes more sense.
+> > -		eth_switch: switch@800f8000 {
+> > -			reg = <0x800f8000 0x8000>;
+> > +		eth_switch: switch@800f0000 {
+> > +			compatible = "nxp,imx28-mtip-switch";
+> > +			reg = <0x800f0000 0x20000>;
+> > +			interrupts = <100>, <101>, <102>;
+> > +			clocks = <&clks 57>, <&clks 57>, <&clks 64>, <&clks 35>;
+> > +			clock-names = "ipg", "ahb", "enet_out", "ptp";
+> >   			status = "disabled";
+> from my understanding of device tree this file should describe the hardware,
+> not the software implementation. After this change the switch memory region
+> overlaps the existing mac0 and mac1 nodes.
+> 
+> Definition in the i.MX28 reference manual:
+> ENET MAC0 ENET 0x800F0000 - 0x800F3FFF 16KB
+> ENET MAC1 ENET 0x800F4000 - 0x800F7FFF 16KB
+> ENT Switch SWITCH 0x800F8000 - 0x800FFFFF 32KB
+> 
+> I'm not the expert how to solve this properly. Maybe two node references to
+> mac0 and mac1 under eth_switch in order to allocate the memory regions
+> separately.
 
-I see your point.  We could also check against
-CONFIG_DEFAULT_HUNG_TASK_TIMEOUT ?
+I get what you are saying about describing the hardware, but...
 
-I noticed that some arches set this value really low (10 or 20 sec),
-it may be worth warning the users in such cases.
+The hardware can be used in two different ways.
+
+1) Two FEC devices, and the switch it left unused.
+
+For this, it makes sense that each FEC has its own memory range, there
+are two entries, and each has a compatible, since there are two
+devices.
+
+2) A switch and MAC conglomerate device, which makes use of all three
+   blocks in a single driver.
+
+The three hardware blocks have to be used as one consistent whole, by
+a single driver. There is one compatible for the whole. Given the
+ranges are contiguous, it makes little sense to map them individually,
+it would just make the driver needlessly more complex.
+
+It should also be noted that 1) and 2) are mutually exclusive, so i
+don't think it matters the address ranges overlap. Bad things are
+going to happen independent of this if you enable both at once.
+
+      Andrew
