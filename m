@@ -1,80 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DC01DE4F6
-	for <netdev@vger.kernel.org>; Thu, 17 Apr 2025 01:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3051BBBD4;
+	Thu, 17 Apr 2025 02:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744854028; cv=none; b=HrKtb5Yfj5Cc+DkEvrWlCVlu5eECWVwtNF/z2/bozPd7Hr6D+HK35iJ9QIk9Rlod6/cALXcdRUyr3Z9p39lJY0nr2a1pPQvA2Kc83U6f/R2jIzSXXoOEiIPBp3W4XuDGTLdC0khJTOn7C5szzR8RmSzvZ7g+BMcmxLU5aBSXRyg=
+	t=1744855763; cv=none; b=ADsXJxq3T1dZJncYV885TgQ8Zo/f6/myI0OvK+IqbQNSsMBsh/ff3uFvFOti5w1Mn67ii2n1n+9aOvMqjXTl7/kWO2zvN5HrxllhxYtuQ7flUBsLBiPcX1PYxCxPl/oTi8c1fFRhVWU+6owE/wWOCxHmt0xs5sfPu3LmRdpa1pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744854028; c=relaxed/simple;
-	bh=nKwR+3jYPBI/0L4UPSEMt8dNksHHNBW6YTloUwWu/5E=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NqSXO0rMDIdbvWLvdin7ck3e5N5ReqbGiSo/nl3VCGuabNbnUROg1DTzPcncJ2o6+1/Pz7Ble3P/tOGHYW0X4kdCN+dVfrqJWFxCkMB+af/L8EGWqvRK/2m1oJSE+nQbc/pIekivSi9tBR1FfWyWb0sY9f+UKi/6jVfNcDrCftU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t3VTKc+3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744855763; c=relaxed/simple;
+	bh=v0j0T5Wcrf9Gx1tBLBUdRLrzr+SLUjSSw73EKC3/EJY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iSgjICu9XygWRSFQEOH0MJEzNsJBVIRdHKBcLah4p3qCS9eMRM/RQ+83PXZSs/TePTM9RLZNC5rEbCXF4fGVZQc9NpG+VGh5IFljhIzlrYiTSwyWWm6utWab9cBjbBxM5HxQhdCXKyAo6PFZ5KusnnsBI+OJlfdYdbIvKlhnGXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kFMPt/kB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t3VTKc+3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738D0C4CEEA;
-	Thu, 17 Apr 2025 01:40:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kFMPt/kB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B754C4CEEA;
+	Thu, 17 Apr 2025 02:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744854027;
-	bh=nKwR+3jYPBI/0L4UPSEMt8dNksHHNBW6YTloUwWu/5E=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=t3VTKc+3MIMpjnSv3Gt3L8oNdhinKffD6WdAgSSrzV9SR/eE/rpF/GK2KIwQp6x/U
-	 qHgteXKk8sn4S1259HB/hczQhVWQCLXn2BPOZ/r+opmoUhsfe4rBe792XIX+J7Q2S/
-	 cuhUptnMpc65Rb46G68QT6nZ5ZBbUs/k2nybjHt6QuwP/s7FHFpy3chrxxuIMIP6GI
-	 fOyKy9janZgxQXiNiz7l1yIz+ly2PBm9Mm2Xz9fxsATmhzkb0MYzSCYL/rSCEki1gL
-	 Rd1T411D1kGwTmuuHNRiaVSadN/OT4B0IE7zs+W3elqCHb9ac88Sqn4ANhjJHAPhd4
-	 81ucT5tGe1MgQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE3EA3822D5A;
-	Thu, 17 Apr 2025 01:41:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1744855762;
+	bh=v0j0T5Wcrf9Gx1tBLBUdRLrzr+SLUjSSw73EKC3/EJY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kFMPt/kBIQJMKPoOpqZkInVTpPszcv+egMTMGs//lSDmewfmqo1f4KkVetZr4Jkaq
+	 6rtyMk2jWpRtyh3JIE97kg/7nb+KkAJRsspcGZ3CWSnWp45KMs8ins8/u0ZSITh2Tr
+	 mFI7mSaKiGN9t6fAKYHPdYrCW3Hhd4c5dYzBuV2ONSGRjHfw5a0ESVsfOd91N3Khtj
+	 Kev3hHqm4cOOR4HAdotIndOEjJYjVHcZOwiZ7GOpoSm84BDm7s5LYoXQoItdzGizmf
+	 89qDIVSnsCXFKa7HTwOHS+GYKcNoDGtuNtHmUqWvOMZr+hYoUM0ZvQWGhBVaifTCp/
+	 A5AqUVaOg3ewA==
+Date: Wed, 16 Apr 2025 19:09:21 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Cc: donald.hunter@gmail.com, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, vadim.fedorenko@linux.dev,
+ jiri@resnulli.us, anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ andrew+netdev@lunn.ch, saeedm@nvidia.com, leon@kernel.org,
+ tariqt@nvidia.com, jonathan.lemon@gmail.com, richardcochran@gmail.com,
+ aleksandr.loktionov@intel.com, milena.olech@intel.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/4] dpll: use struct dpll_device_info for
+ dpll registration
+Message-ID: <20250416190921.3cfd6326@kernel.org>
+In-Reply-To: <20250415181543.1072342-2-arkadiusz.kubalewski@intel.com>
+References: <20250415181543.1072342-1-arkadiusz.kubalewski@intel.com>
+	<20250415181543.1072342-2-arkadiusz.kubalewski@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: stmmac: intel: remove unnecessary setting
- max_speed
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174485406520.3559972.9842565280064480120.git-patchwork-notify@kernel.org>
-Date: Thu, 17 Apr 2025 01:41:05 +0000
-References: <E1u4dIh-000dT5-Kt@rmk-PC.armlinux.org.uk>
-In-Reply-To: <E1u4dIh-000dT5-Kt@rmk-PC.armlinux.org.uk>
-To: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, alexandre.torgue@foss.st.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, mcoquelin.stm32@gmail.com,
- netdev@vger.kernel.org, pabeni@redhat.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Tue, 15 Apr 2025 20:15:40 +0200 Arkadiusz Kubalewski wrote:
+> @@ -408,14 +408,14 @@ EXPORT_SYMBOL_GPL(dpll_device_register);
+>   * Context: Acquires a lock (dpll_lock)
+>   */
+>  void dpll_device_unregister(struct dpll_device *dpll,
+> -			    const struct dpll_device_ops *ops, void *priv)
+> +			    const struct dpll_device_info *info, void *priv)
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 15 Apr 2025 11:13:55 +0100 you wrote:
-> Phylink will already limit the MAC speed according to the interface,
-> so if 2500BASE-X is selected, the maximum speed will be 2.5G.
-> Similarly, if SGMII is selected, the maximum speed will be 1G.
-> It is, therefore, not necessary to set a speed limit. Remove setting
-> plat_dat->max_speed from this glue driver.
-> 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next] net: stmmac: intel: remove unnecessary setting max_speed
-    https://git.kernel.org/netdev/net-next/c/978d13b26ab3
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Some kdoc unhappiness here, W=1 build should lead you to it.
