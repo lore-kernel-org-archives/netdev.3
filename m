@@ -1,146 +1,103 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1432C205E2F;
-	Thu, 17 Apr 2025 06:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6FD154430
+	for <netdev@vger.kernel.org>; Thu, 17 Apr 2025 06:46:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744872132; cv=none; b=OKEKF2BG/JXT3pkkbTkVsoi15t+ynt/W4AmUT9xMkimIII7hLzpQClu07ihIZoZwfDL26jWzEqsZeSSQNKe1EWQ/5SVK/0Ivh7/7/jTYRMN20apAdM+khOfYat1lal7kDnOTmuafVxO6wamKcaXZkQ4cXvdjK3EI6UEiF/b6908=
+	t=1744872371; cv=none; b=Yv2BomncH5/TQwvUVCAvOg/+QqO5VT5SHy1Wa4qLyJCQYcPEIhq5jfAFyJbaZgltrK/9yeI2Hi9Z0dZqUIdLvEc7x06fHmY+cza+7YHRrKl1TbKLxYpzGIiDIBXAjbEbO3D+znMF0JMwuYs1wMAsJ4hbShl727HKqm7QCnql84Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744872132; c=relaxed/simple;
-	bh=qBPeov2ee89LdDp4bu5sttFc3P5GRCw9vxvmNL6dVTg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eTFE8h8shdD0NpbskUqJ5VgfOtLEX25V53xkX91SgcgZT1FC6BGylnq1clcGxcK7SQzYJ7W7X2wEjneiVf915AZ+/O71cJ9pVsuqjqR0JpvDeiNbIrDiPfL5QTrODho2R58ECbqhk/vRHtrJ6uRuzeKXyWP9EKw3rmXaM0tuvuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=afXSZzFL; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1744872371; c=relaxed/simple;
+	bh=JIv27Rg0aVzKYIq78qQDtChjbuj0DrbTQO9XUaPYAAk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ocxIqhu76l35NTPdAdqhwlOqaV0itR6xZ5Qkmm7DpH1hluhBQ/XjTRh/lOJB42MQvRiEKT6OYizJwHgCYV29ZpGApKXZPT0TnWWL6HCaynu5EXHt9ySU8f5/TX1PhKdhF2FItK/jaqMwrGXMUyMyAHLxvkjKRdPXyMyzo+K8J+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M/qq9wG+; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="afXSZzFL"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 88C5E1039EF2C;
-	Thu, 17 Apr 2025 08:33:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1744871623; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=pWQQRs0tNulqLLtU6X0X0rTBDfrE7GYWj3CFIceXYpw=;
-	b=afXSZzFLb1a2k7ibreW8JrPnIz18s/tOxCEP8LPHLrvqzy7iC3k+Sb54OJvH8lETFgRDws
-	34fOPk2HzF0pgqCpoaZj4GK/KcG+B8/i7PjxYjji8r94LTopk9GdDHreJXLjlNFKYgX++X
-	ftVu6jWGAkW5Ijbq8gyaGCeCeGFVMQQHgF0ZS8pH0TN4/CUecPt1GPR38DhPVmTC75+xA2
-	Xm+sQEE3XkfYb7055LhVq397AIuuz2aha661U55f2VUaUn2YhENdEu+uIWDpBEBMbD+az8
-	sjOiiHPy/sWtJ1noGDjo0NJWR0kMBfLSSq2SbhO92Qmzx1Z3CuCZ/YmJRlufoQ==
-Date: Thu, 17 Apr 2025 08:33:34 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Stefan Wahren <wahrenst@gmx.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Simon Horman
- <horms@kernel.org>
-Subject: Re: [net-next v5 2/6] ARM: dts: nxp: mxs: Adjust the imx28.dtsi L2
- switch description
-Message-ID: <20250417083334.69b565b0@wsk>
-In-Reply-To: <2c9a5438-40f1-4196-ada9-bfb572052122@lunn.ch>
-References: <20250414140128.390400-1-lukma@denx.de>
-	<20250414140128.390400-3-lukma@denx.de>
-	<06c21281-565a-4a2e-a209-9f811409fbaf@gmx.net>
-	<2c9a5438-40f1-4196-ada9-bfb572052122@lunn.ch>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M/qq9wG+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744872366;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VnSxZovFrg9CXJ8gi0BUAt1W20GbgH0zF4GHBXAvP6w=;
+	b=M/qq9wG+A7vHzm1WZb2nCMtZoRulHSjt+nd9NE3wGZmr4E7j+3jk57pyEKAFgXp7Z0HPwJ
+	Rh1hPmrFpe4d4ij3sqaVeeVudjxZlsr0+ooC9HbPvkNaMdAFIEdoybGMSk4XjwipQ3snVB
+	ZcZQPJkmjEqjBi5O/oEjOo23t6rf1E4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-14-flCTxAYbNq-iSJW5DxxOHQ-1; Thu, 17 Apr 2025 02:46:05 -0400
+X-MC-Unique: flCTxAYbNq-iSJW5DxxOHQ-1
+X-Mimecast-MFC-AGG-ID: flCTxAYbNq-iSJW5DxxOHQ_1744872364
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43cf172ffe1so2243235e9.3
+        for <netdev@vger.kernel.org>; Wed, 16 Apr 2025 23:46:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744872364; x=1745477164;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VnSxZovFrg9CXJ8gi0BUAt1W20GbgH0zF4GHBXAvP6w=;
+        b=SPttkDdFWR+9vXZFszFgsTYqRR6lN5SYZKrUlkehwC6FqssaxKTywUlbnr0QCetWI9
+         FMYUJdT/jA+DKCfjqvw5n7pORjMMXjXJV4lC1Opo5a6eI6QDFg/2vqmTfGwXz/FEJQ0I
+         8LjWiRZ2fOk/llSqJbnnURvcWdvsDaxWuKJnWz+3OwJV9+fppEezU+jEk8LeLBf2izCJ
+         3k4Mj+iyB6r4kBoy1U5l85Qj1XqAiniTC/pyoGi60tZ8CGZfNIvd2i+ctpE3TGu8l+C2
+         XBL3oym502VOjHT2fuhZu0lAhL0E5bowhY2/pQG1iKcI7+KI+Ig3OWk4zxADjfd/S19o
+         i3DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVzbMIbBqyCtK+A+3RPWyY6FPW6Xykfj4ZfL/5LBSf62M3MHFEHdZ6Y7y6kGCLCwgYWH4uZfq0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9+JJf2TzGr8b5oDX5a7m4+VsDzVeqqIDYDhlJKHtxT4OOs37B
+	y5EneXnMLXWaVfDDxpCKlLnKtoWsAGBXkwjtqvvljm2I2OYETtTIZB8KJ5nDtiRqtSJSljMnwDg
+	8ljzEpBh8MJy17f3nx+9Ke/ILpWtAl4o3Hzk6cLolJkxscH6UCTfNWw==
+X-Gm-Gg: ASbGnctZHY6zXW9EL7TOh/cI014YhMAy56dt3fJZmh6s/a4ciknZ7cwVhI96J08Wjyg
+	8muMg3YeV5jbLxru1xCZz77CYAmzz+3eWOivlExR0eG6v/vzUdgXwNxpAl2zpCZZ9XDuqsDzXXO
+	/MJxw6xozy1Tn6EsnRQnowI279TOQPFLgIV31hH2NH5l3gA+vf0aeYlWcDYjNDBjtsxNpeJ9nAb
+	4xeSYiVlmKsQ1TWyiQHxh3ZxXz9bnoV5IRc1Zjp0VWWvO8arR6+9uwURXfWDSof1v7kDCUMrNx0
+	bagWJr1KWZBzEhlptPopDA36Dfeshj5wdjaUmAnKEQ==
+X-Received: by 2002:a05:6000:1847:b0:39e:cbef:95a7 with SMTP id ffacd0b85a97d-39ee5b1854dmr4139802f8f.18.1744872363970;
+        Wed, 16 Apr 2025 23:46:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHI+6u14lEnnPl6L5D0H366tU7Z/Uh2T3lT0Z3/BlEyCHqrUHc8u3mwJ9l1ru/6spoTS2GrAg==
+X-Received: by 2002:a05:6000:1847:b0:39e:cbef:95a7 with SMTP id ffacd0b85a97d-39ee5b1854dmr4139781f8f.18.1744872363643;
+        Wed, 16 Apr 2025 23:46:03 -0700 (PDT)
+Received: from [192.168.88.253] (146-241-55-253.dyn.eolo.it. [146.241.55.253])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eaf43cd17sm19182667f8f.78.2025.04.16.23.46.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Apr 2025 23:46:03 -0700 (PDT)
+Message-ID: <f2c0341f-8b65-4671-891a-61f6892d6e1c@redhat.com>
+Date: Thu, 17 Apr 2025 08:46:01 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/4vV2OQm1rnprx1JCFrQMEAC";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v2 net-next 02/14] ipv6: Get rid of RTNL for
+ SIOCDELRT and RTM_DELROUTE.
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
+ horms@kernel.org, kuba@kernel.org, kuni1840@gmail.com, netdev@vger.kernel.org
+References: <3e28015e-0ca0-4933-80b5-de45e3c43b11@redhat.com>
+ <20250416184559.99881-1-kuniyu@amazon.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250416184559.99881-1-kuniyu@amazon.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
---Sig_/4vV2OQm1rnprx1JCFrQMEAC
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 4/16/25 8:45 PM, Kuniyuki Iwashima wrote:
+> From: Paolo Abeni <pabeni@redhat.com>
+>> but acquiring the rcu lock after grabbing the rcu protected struct
+>> is confusing. It should be good adding a comment or moving the rcu lock
+>> before the lookup (and dropping the RCU lock from fib6_get_table())
+> 
+> There are other callers of fib6_get_table(), so I'd move rcu_read_lock()
+> before it, and will look into them if we can drop it from fib6_get_table().
 
-Hi Andrew,
+you could provide a RCU-lockless __fib6_get_table() variant, use it
+here, and with time (outside this series) such helper usage could be
+extended.
 
-> > > -		eth_switch: switch@800f8000 {
-> > > -			reg =3D <0x800f8000 0x8000>;
-> > > +		eth_switch: switch@800f0000 {
-> > > +			compatible =3D "nxp,imx28-mtip-switch";
-> > > +			reg =3D <0x800f0000 0x20000>;
-> > > +			interrupts =3D <100>, <101>, <102>;
-> > > +			clocks =3D <&clks 57>, <&clks 57>, <&clks
-> > > 64>, <&clks 35>;
-> > > +			clock-names =3D "ipg", "ahb", "enet_out",
-> > > "ptp"; status =3D "disabled"; =20
-> > from my understanding of device tree this file should describe the
-> > hardware, not the software implementation. After this change the
-> > switch memory region overlaps the existing mac0 and mac1 nodes.
-> >=20
-> > Definition in the i.MX28 reference manual:
-> > ENET MAC0 ENET 0x800F0000 - 0x800F3FFF 16KB
-> > ENET MAC1 ENET 0x800F4000 - 0x800F7FFF 16KB
-> > ENT Switch SWITCH 0x800F8000 - 0x800FFFFF 32KB
-> >=20
-> > I'm not the expert how to solve this properly. Maybe two node
-> > references to mac0 and mac1 under eth_switch in order to allocate
-> > the memory regions separately. =20
->=20
-> I get what you are saying about describing the hardware, but...
->=20
-> The hardware can be used in two different ways.
->=20
-> 1) Two FEC devices, and the switch it left unused.
->=20
-> For this, it makes sense that each FEC has its own memory range, there
-> are two entries, and each has a compatible, since there are two
-> devices.
->=20
-> 2) A switch and MAC conglomerate device, which makes use of all three
->    blocks in a single driver.
->=20
-> The three hardware blocks have to be used as one consistent whole, by
-> a single driver. There is one compatible for the whole. Given the
-> ranges are contiguous, it makes little sense to map them individually,
-> it would just make the driver needlessly more complex.
->=20
-> It should also be noted that 1) and 2) are mutually exclusive, so i
-> don't think it matters the address ranges overlap. Bad things are
-> going to happen independent of this if you enable both at once.
->=20
+Paolo
 
-+1
-
->       Andrew
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/4vV2OQm1rnprx1JCFrQMEAC
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmgAoL8ACgkQAR8vZIA0
-zr1dXAf+KoIdy7wyBtKjBP15Tbe4F8OveobBmbcJKV0P6JQ5JNNxIFEwSKWjtTuk
-BY6L/6XG6JF1r/k/kHMe6/RemX45J3eVx0YJlUDNo/ESLK6Eez9YZIkgcfuNom3w
-XwkUNjydQLSEbB+tkY1fizdyBqIGBRiTLq0A2ZHuvklpu9TsgHoLZ7ebuvJaFANd
-9ov3lp9/PRK7+0fQ13XMFoPoDv0Svu4LN0yXwR4d8uhYCxmy8bQbs2Ec40Cb2puN
-DZcrSwXFw9GCgTMXW5NgoAR9Gx/SaOSmS9lBBqR1wIeu0QrPZ6bTsf/zIj8LO8HC
-uiEW59nmY3d05Emg0PG7Wa9MIou19A==
-=SqyS
------END PGP SIGNATURE-----
-
---Sig_/4vV2OQm1rnprx1JCFrQMEAC--
