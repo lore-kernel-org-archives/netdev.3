@@ -1,128 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09EF524EF72;
-	Thu, 17 Apr 2025 13:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E19250BEE;
+	Thu, 17 Apr 2025 13:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744898114; cv=none; b=OuGzjqdyOx13L8Gly/fh7jBf0mQroAuH28rubCpB+PRNgl1RmUZlVd4E8kY4MSDfsDRowPMsWHYYNZrFJP+xlbMHy9R+fah/2JL1y4UqBoQJhtz0RLtsQ/CiEhPfWK1Mbpd2wvJ1wc+ONoUxWWufMSu7yzgk03vJQ/sGNv8PdG4=
+	t=1744898120; cv=none; b=HSxayQEOmrErAn4cF5Qyc5qaDPmi2V3Z3UUnGKMJymXaWjjRYSeXOWqoDXLYkylNshrTJbFtMNmYg4SJv4V0iBNZUzHAGmLQiAOAhjdoiG5l1v4kBrLNGCsjv8taWnJWKpt1UtbL8Ps0z5wkmq6+JQ2encLN82uRF46q3/gfHCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744898114; c=relaxed/simple;
-	bh=DaXbVItV4vEdJ1PxdCzd1lAzo6REI3kB5/yRt2cUJ1Q=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nT9uY2mT999W9sjbIjahKVvTEAldvgItDxgs8mCaKdaaRIu7FfnqhA56mO/RZoXJ9XJrViJQm8zQkJcW6tlrs4qkhlIb4Wddho1XGEvkm7nSLn7nziqGuPyCuqw5BY5mGtIy0U7nWIsamazJKZTV29C1cJrYyVWmzAisioIes/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lTrZinNx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744898120; c=relaxed/simple;
+	bh=5lzD0TshOdrR27H/jD0A3Zp1OSldjowmx/m925ghKvg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GVBY+08xWT9Eb0RWH2J+00qxxFKuMooS3VOqo93Hg2PmbtOTV+2hAQLS9ls542zGuVpNm1UQJRbWRepA4ce639LzK34KN+TxdH2myXayWmVC7PaMBpayneqeGw/TobId6glql3fP8Wqu4YGO90SQrXOhyFiNad/l2kFmYN6tPgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=pTnm5dB7; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lTrZinNx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5FDC4CEEA;
-	Thu, 17 Apr 2025 13:55:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744898113;
-	bh=DaXbVItV4vEdJ1PxdCzd1lAzo6REI3kB5/yRt2cUJ1Q=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=lTrZinNxVD0pK3FP/9ZXEsvueppmmYKT6Axqz6Was9MxSmrYrK/6X/pUMOPbv2jO0
-	 4A+WSRfX9ZhvZbHLinkWHch6E14ByOmz6KsI/uh8IEPWyGz/wS7/dwcyZFHzf1aMbc
-	 RYsfiDXU/K52ECeYWYvbSbRYO5vtzXLXoGxLq7cmWhj/vANDSIBrsLVFTBXTCJUVvx
-	 OaBKnY1jANSBoH+Zo3Vxpbb1t0o/ESBfBVv/PRXtYALSTJcCqhIMg0tC1Zn+Df/l2k
-	 Is4mcjMkvjyp654UAwb2C0I7WXTuWOwmoCkMeyW//k7w4OisjcolTQ2xhx1Ezk6xkB
-	 EaXIOhJglxpmA==
-Subject: [PATCH net-next V5 1/2] net: sched: generalize check for no-queue
- qdisc on TX queue
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-To: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>, bpf@vger.kernel.org,
- tom@herbertland.com, Eric Dumazet <eric.dumazet@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
- dsahern@kernel.org, makita.toshiaki@lab.ntt.co.jp,
- kernel-team@cloudflare.com, phil@nwl.cc
-Date: Thu, 17 Apr 2025 15:55:09 +0200
-Message-ID: <174489810897.355490.12073714761899580608.stgit@firesoul>
-In-Reply-To: <174489803410.355490.13216831426556849084.stgit@firesoul>
-References: <174489803410.355490.13216831426556849084.stgit@firesoul>
-User-Agent: StGit/1.5
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="pTnm5dB7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=MfEXm04TR9hSAuPlSBHlDuFQXlICktBrJoOYKmYwNLE=; b=pTnm5dB7K/QYer3+j7qstl9t2m
+	u2mHR3vFF6A70hv4G+0XqpgYbW5aFq90v+P45JkGylwl9eejYw7PIr+FiZrDVtJ4ho7EGqdE1g2yr
+	pYH4yrq67wGX8hDraLxcMH9f/micPho+mv8Deg0ldzXBv/b9R/3+ZUWUQK0fX3ZITMrs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1u5Phk-009n2J-NR; Thu, 17 Apr 2025 15:55:00 +0200
+Date: Thu, 17 Apr 2025 15:55:00 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Qingfang Deng <dqfext@gmail.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
+	Nathan Sullivan <nathan.sullivan@ni.com>,
+	Josh Cartwright <josh.cartwright@ni.com>,
+	Zach Brown <zach.brown@ni.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Chuanhong Guo <gch981213@gmail.com>,
+	Qingfang Deng <qingfang.deng@siflower.com.cn>,
+	Hao Guan <hao.guan@siflower.com.cn>
+Subject: Re: [PATCH net] net: phy: leds: fix memory leak
+Message-ID: <f9f60754-ef84-483f-bd77-b7bc99aadb27@lunn.ch>
+References: <20250417032557.2929427-1-dqfext@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250417032557.2929427-1-dqfext@gmail.com>
 
-The "noqueue" qdisc can either be directly attached, or get default
-attached if net_device priv_flags has IFF_NO_QUEUE. In both cases, the
-allocated Qdisc structure gets it's enqueue function pointer reset to
-NULL by noqueue_init() via noqueue_qdisc_ops.
+On Thu, Apr 17, 2025 at 11:25:56AM +0800, Qingfang Deng wrote:
+> From: Qingfang Deng <qingfang.deng@siflower.com.cn>
+> 
+> A network restart test on a router led to an out-of-memory condition,
+> which was traced to a memory leak in the PHY LED trigger code.
+> 
+> The root cause is misuse of the devm API. The registration function
+> (phy_led_triggers_register) is called from phy_attach_direct, not
+> phy_probe, and the unregister function (phy_led_triggers_unregister)
+> is called from phy_detach, not phy_remove. This means the register and
+> unregister functions can be called multiple times for the same PHY
+> device, but devm-allocated memory is not freed until the driver is
+> unbound.
+> 
+> This also prevents kmemleak from detecting the leak, as the devm API
+> internally stores the allocated pointer.
+> 
+> Fix this by replacing devm_kzalloc/devm_kcalloc with standard
+> kzalloc/kcalloc, and add the corresponding kfree calls in the unregister
+> path.
+> 
+> Fixes: 3928ee6485a3 ("net: phy: leds: Add support for "link" trigger")
+> Fixes: 2e0bc452f472 ("net: phy: leds: add support for led triggers on phy link state change")
+> Signed-off-by: Hao Guan <hao.guan@siflower.com.cn>
+> Signed-off-by: Qingfang Deng <qingfang.deng@siflower.com.cn>
 
-This is a common case for software virtual net_devices. For these devices
-with no-queue, the transmission path in __dev_queue_xmit() will bypass
-the qdisc layer. Directly invoking device drivers ndo_start_xmit (via
-dev_hard_start_xmit).  In this mode the device driver is not allowed to
-ask for packets to be queued (either via returning NETDEV_TX_BUSY or
-stopping the TXQ).
+Thanks for the fix. I agree with Maxime, this looks correct.
 
-The simplest and most reliable way to identify this no-queue case is by
-checking if enqueue == NULL.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-The vrf driver currently open-codes this check (!qdisc->enqueue). While
-functionally correct, this low-level detail is better encapsulated in a
-dedicated helper for clarity and long-term maintainability.
+The use of devm_free() should trigger any reviewer to take a closer
+look because it generally means something is wrong.
 
-To make this behavior more explicit and reusable, this patch introduce a
-new helper: qdisc_txq_has_no_queue(). Helper will also be used by the
-veth driver in the next patch, which introduces optional qdisc-based
-backpressure.
-
-This is a non-functional change.
-
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
----
- drivers/net/vrf.c         |    4 +---
- include/net/sch_generic.h |    8 ++++++++
- 2 files changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
-index 7168b33adadb..9a4beea6ee0c 100644
---- a/drivers/net/vrf.c
-+++ b/drivers/net/vrf.c
-@@ -343,15 +343,13 @@ static int vrf_ifindex_lookup_by_table_id(struct net *net, u32 table_id)
- static bool qdisc_tx_is_default(const struct net_device *dev)
- {
- 	struct netdev_queue *txq;
--	struct Qdisc *qdisc;
- 
- 	if (dev->num_tx_queues > 1)
- 		return false;
- 
- 	txq = netdev_get_tx_queue(dev, 0);
--	qdisc = rcu_access_pointer(txq->qdisc);
- 
--	return !qdisc->enqueue;
-+	return qdisc_txq_has_no_queue(txq);
- }
- 
- /* Local traffic destined to local address. Reinsert the packet to rx
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index d48c657191cd..b6c177f7141c 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -803,6 +803,14 @@ static inline bool qdisc_tx_changing(const struct net_device *dev)
- 	return false;
- }
- 
-+/* "noqueue" qdisc identified by not having any enqueue, see noqueue_init() */
-+static inline bool qdisc_txq_has_no_queue(const struct netdev_queue *txq)
-+{
-+	struct Qdisc *qdisc = rcu_access_pointer(txq->qdisc);
-+
-+	return qdisc->enqueue == NULL;
-+}
-+
- /* Is the device using the noop qdisc on all queues?  */
- static inline bool qdisc_tx_is_noop(const struct net_device *dev)
- {
-
-
+    Andrew
