@@ -1,48 +1,63 @@
-Received: from lahn.math.uni-bonn.de (lahn.math.uni-bonn.de [131.220.132.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CE92571C6
-	for <netdev@vger.kernel.org>; Thu, 17 Apr 2025 18:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=131.220.132.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3846625B67A;
+	Thu, 17 Apr 2025 18:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916084; cv=none; b=GJzvNZOeYjb008BjFEStoyy0kNRwdrHfMNwehIeCrUF2OlD6lgPI/07lUO9GI+YFpIghKgzSTiF7z4da/iLmUQUX0h3PsOn3bLk+YylMBMY4wKCTrVF2anux66x/g4ZbTe8OofBSKLs4l/Zn4bkh/A/dWxevcfDKyeOhH/jIvEU=
+	t=1744916204; cv=none; b=lZ2Tjnc2Qp2o2St+kKL9fYPd+qqSgvqzcWuC0+xQt+ozaGYTLlwJ6PCHxdMfjtTp8mDCGGRTCwjl+/dv+SbNBQ/mEhS7u/Zui9bLWpcwPvTcYYSCHP+f+ke8d1oDUwtGDB7czg/jDHcDlcAYavsKJ1Pg7aV1NDRtvKkuacsAgj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916084; c=relaxed/simple;
-	bh=UYcaS452a0G7WCRpjAJaGjy4a2DTAXDRmABAn9uO+gQ=;
-	h=From:Subject:To:Content-Type:Date:Message-Id; b=ch5jXECpn9//XCJU+z/7ywXpCUl8oAaxfzxHe4aqEyEDQdDXc/jW7yFtjQ7CIeJA4WWqVOFDLLtMCMFEyJTuuweRfSlz38Vd76DkW50pBdgVskdVcGVLMEdCfAzMLxSZYcCkR2SEk/Ho3arcmtWw0zE/8fLWxL/Jo7/kVRqALgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=math.uni-bonn.de; spf=pass smtp.mailfrom=math.uni-bonn.de; arc=none smtp.client-ip=131.220.132.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=math.uni-bonn.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=math.uni-bonn.de
-Received: from WIN-BUNS25TD77J (unknown [IPv6:2a00:5ba0:20:6a::107])
-	by lahn.math.uni-bonn.de (Postfix) with ESMTP id 8AF9E14BD79
-	for <netdev@vger.kernel.org>; Thu, 17 Apr 2025 20:45:28 +0200 (CEST)
-	(envelope-from legal@math.uni-bonn.de)
-From: "Angela" <legal@math.uni-bonn.de>
-Subject: 2024 Extension Filing Docs-
-To: <netdev@vger.kernel.org>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Reply-To: <angela@unitycareworkspulsehaven.com>
-Date: Thu, 17 Apr 2025 11:45:28 -0700
-Message-Id: <2025170411452807B4F34B98-39C70A0879@math.uni-bonn.de>
+	s=arc-20240116; t=1744916204; c=relaxed/simple;
+	bh=sBV3YKbHTgZ5kMam3MeiqpUnxl97wpHFAF4m6EngynY=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=WG7U/mnmkvrb3AOz1DYnhbAYCnY3H/2WyXQ66/wMUVliHwyZSuHO1hnd+47QzvlHnhQnWLdproH4ZIkvQR3zP2KS9Pk88r4o+o27KKMnNAKTNMWLxa4sFJcf0xlsoHa1zzcJgT27wOr6ggP3R2jyBB/waPqPwqBDN/H0mRVnMn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YB4PZ0OW; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YB4PZ0OW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA7FC4CEE7;
+	Thu, 17 Apr 2025 18:56:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744916204;
+	bh=sBV3YKbHTgZ5kMam3MeiqpUnxl97wpHFAF4m6EngynY=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=YB4PZ0OWk2LVPVdn0xpEjFHtTakzc5CkSJ3VIFN7TuLoADaLhWMzL8ssO3od9tEF6
+	 r9DG0jL0lwH1EbvIrLy3JIvifn6/b8Rfh2+ZQi+cTjNPDoxHU1RY4tkSHGN8sj6Stv
+	 IhK5EwoiMqLejRKazPOqrNivzxAVCtOu+0kMhMSo5pdHGmx44eZnbR2Q9qLu4GvEY3
+	 exWKkNAGz2ftM+93WqA3xbcDBH+E6KC0cLvySAhcY7n5xHdpKRALrbn4kO63f9YS4B
+	 DORGTUazHYFH8TAuj+ToH/G5cvTPPIMg0wUCilanxV0MUL9CGzcHrNudUhXK3dh8vZ
+	 KuoP+h9N7W9rw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 713B9380AAEB;
+	Thu, 17 Apr 2025 18:57:23 +0000 (UTC)
+Subject: Re: [GIT PULL] Networking for v6.15-rc3
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20250417170059.4012070-1-kuba@kernel.org>
+References: <20250417170059.4012070-1-kuba@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20250417170059.4012070-1-kuba@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git tags/net-6.15-rc3
+X-PR-Tracked-Commit-Id: 1b66124135f5f8640bd540fadda4b20cdd23114b
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: b5c6891b2c5b54bf58069966296917da46cda6f2
+Message-Id: <174491624196.4184086.9690868834295128246.pr-tracker-bot@kernel.org>
+Date: Thu, 17 Apr 2025 18:57:21 +0000
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: torvalds@linux-foundation.org, kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, pabeni@redhat.com
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 
-Hello,
+The pull request you sent on Thu, 17 Apr 2025 10:00:59 -0700:
 
-My name is Angela Williams, and I work as a travel nurse. Things have been 
-hectic lately, and I'm looking for help with my 2024 tax return. I heard 
-about your services through a family connection.
+> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git tags/net-6.15-rc3
 
-I've already submitted an extension, so I won't be filing by April 15th. 
-I'd like to send over my documents for review. Could you let me know your 
-pricing and if you accept Zelle, PayPal, debit cards, or bank transfers?
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/b5c6891b2c5b54bf58069966296917da46cda6f2
 
-Thanks so much-looking forward to your reply!
+Thank you!
 
-Warm regards,
-Angela Williams
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
