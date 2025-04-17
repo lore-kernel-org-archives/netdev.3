@@ -1,97 +1,298 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEFB252909
-	for <netdev@vger.kernel.org>; Thu, 17 Apr 2025 15:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536AE24EF90
+	for <netdev@vger.kernel.org>; Thu, 17 Apr 2025 15:12:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744902658; cv=none; b=UxpJdCqZDScQHptIjKNilgpdFEQbBHhjtlMJyoF2X1S3yr404/MLuXMet87BDLGHhH1qppY2qg9wUYyv1CoO2h+1hOaosceh4woHVLaP5m8kZcKznD26a7KvHR9OQAKJpAwqwry/xqcoHVjZIyt8U5S0gjpLjiJecXX4Xqj8VHs=
+	t=1744902773; cv=none; b=KMcEMB25LLyLU7lcSEC8hJscA6fSMba+nNFlMWQcsxAJAiqa4vh+VyfnzvH1MjZK6HDUmHkP1CA/qajSeWb4iDTip6NvFKYlnS+oXm59efTePDRlLAnRw25hg10v0rlGknJzpN9b01hEmPKHZp12v0C8JKNO9HLiMV7AhQF8L3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744902658; c=relaxed/simple;
-	bh=LiZgga9x8uNn0x7WdTDXbakOF44Ru5INCev66F2o+Dc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JAsaq5LqmKVBDSY4L296UVe9Upfo5vlF2hb3YynJdvaeZC5HQDGJV0j6sMbUnQafvUAnZol9cvMDpczboQ5XyYN+QcbQrBoKow37ZpLjq2Fkp6gyWUpXQi4qnioaXC/o8JrSuFkQGDLTbJ/fwqqPAeTEgQ+PUI1l9oBBEDRRxWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=H3yATVk1; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1744902773; c=relaxed/simple;
+	bh=3uh6mdsrNsrsm6YjcZWflQUkgFQg1KT8S2ESk08d3ws=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=qi2z0pfUAt3sjHNkJgMQK3hhugrBsFw19B3XdRzV0nJv+0g+XD7BezxhBKUcOUQjL88tUINDICyHgiIpl7cfZK/NJZRD8/XPu7JphwifwmS/470kH1jEYZVnb5+yqh2HrvGlw6yRz+IUNBeDaSDW2ItcxjWUZGN3ZJDYPNqiOPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dgcNe002; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="H3yATVk1"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-227b828de00so10634095ad.1
-        for <netdev@vger.kernel.org>; Thu, 17 Apr 2025 08:10:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1744902655; x=1745507455; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LiZgga9x8uNn0x7WdTDXbakOF44Ru5INCev66F2o+Dc=;
-        b=H3yATVk10aZqoRI+w4nNhDNAcSrm+D72kf09ipil/lhZBQVG98+L9kHkPcmnSnwazQ
-         2l2q7/rcLpNyHl7W14wjQCbWN87G0IAsm+Yej1cduBZyRY+bLzSw3rdEYxijZFieiE5K
-         4p9sZvZQrU1T5YW0n/Phw1rSXkT4kX9Je/Pl622+TtYHoFzbnncoMrFYet2UFNdX7dEZ
-         Kp5GDmv6d0PucyJocp1zYdAefTVH68d510dC+sFSGKo4O3dpzsf/SX5osPX6hm1NRhbn
-         mn8Q/7MwclR7BEHoMAaKF+jTuamIjIVUOtP2h2aefp90oQRbxnCBj4UUds3GxtLFjNgk
-         ZaBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744902655; x=1745507455;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LiZgga9x8uNn0x7WdTDXbakOF44Ru5INCev66F2o+Dc=;
-        b=gmtghVKCYy6fy4RfMbpCD6Q7liGGZiefAPWhaRSJfba58xI2H3j65FjknTLnnEXOSH
-         UWssr5EzM5qm+syJBR6H2QjbThTsdKu3+rKA/51Sm4I+HLUH1rfAWqXBlDHNwBddQS2A
-         5UXwzWGdEVZF+va4Q1u4PCezzIZQCHTTYJgIzBfVZM1kPPVSk/MrwcXOkz3NiMQX23SQ
-         N7FC4QszxjyIOUpntKDd5wKdmB2FS1J16sX7a8IELDnc6p4/bAlsivObHTD2cxg26g3R
-         4AABm9j/mPLcq/06s/zakBkxf3gjkpIwu1DJVFvE/b5RrfSCWT4K4rSyGuammog4L4jX
-         j6IQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWPuCyNP7KgC4PEBB1KNs5vVnsGP9bIwOndJy3FHXe0pRMj/QOEUwn1L3Gt7MqhSRy8JLqgtL0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwR9DMf8p6wHAjczAdzZc8zJwwYWLWy6AUpBc5p+vgna93X+/kn
-	Flb453P4ipquylVJG19GnSZXaeIEs4Caj8kR1ZgWueG9EwBcWWv24OtosHJc060=
-X-Gm-Gg: ASbGnctGWWb7fF/XaLg9FYFyQO5D2SNVikOcVXXL4HaSYeJJNFd3ZI1bKVgn5QTz4+m
-	Y07q4TvC6Y2gvRTo0RSX/dwbsOLA8Xq6UHsqF4bdiDnpIQ+wbMNoQkC4x6AebqtOoAX/vDGi8Ul
-	MmH4s3wrueay7QS2QFcCCHSr0vykut4XoUylBgGItMDg7AbsAu+7Ib+ZkeZQA7UNyese8V3WbRK
-	EgYmJLY0DBc6WOemacgmidlWkO2HgGmVHOQJIMkzfwetcAbHDtyRPMsNTTbZVN6krLd5nzUKVF2
-	nHo+g76rMidx60L89Ri6W9mRX1RAztkm1k8Jn7Pij4f1Yz6qAwQxRr2LtVZ6Au0Y4Jn4heZoNz4
-	aOwKekYZzcoTi1/Vj
-X-Google-Smtp-Source: AGHT+IHIP5FBpE6QRyj07ov+jrBL6Cb9idEsBOVjWQ1/IColpF0qdvEnnkroDFpHC82/JIDmUgRLTQ==
-X-Received: by 2002:a17:902:f642:b0:220:c813:dfd1 with SMTP id d9443c01a7336-22c359734c3mr102186955ad.36.1744902655602;
-        Thu, 17 Apr 2025 08:10:55 -0700 (PDT)
-Received: from hermes.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd21c210esm12348763b3a.41.2025.04.17.08.10.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Apr 2025 08:10:55 -0700 (PDT)
-Date: Thu, 17 Apr 2025 08:10:53 -0700
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- longli@microsoft.com, kotaranov@microsoft.com, horms@kernel.org,
- kent.overstreet@linux.dev, brett.creeley@amd.com,
- schakrabarti@linux.microsoft.com, shradhagupta@linux.microsoft.com,
- ssengar@linux.microsoft.com, rosenp@gmail.com, paulros@microsoft.com,
- linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH 2/3] net: mana: Add sched HTB offload support
-Message-ID: <20250417081053.5b563a92@hermes.local>
-In-Reply-To: <1744876630-26918-3-git-send-email-ernis@linux.microsoft.com>
-References: <1744876630-26918-1-git-send-email-ernis@linux.microsoft.com>
-	<1744876630-26918-3-git-send-email-ernis@linux.microsoft.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dgcNe002"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744902770;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZvIv6s5NoNu7fgPy/v1DfxlqNul94q/qhEPwAqUT6ok=;
+	b=dgcNe002FuX+IpQtFVcZvTyBJcV7olR2qJ/cJbUM9t8P7hBok7AComSR67HtBs42bw6WWp
+	3eBP75q8nR1NQ2g44hlUk4IAtJba7/DQbEYViCJ1d0fGWRdyFQC3MR59M2nfTWn3IcDqHc
+	KU84bRoR0704KU6kHU2ECiW05b4kbDE=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-550-jQAyl1mQPTWxS2MsBuKsjw-1; Thu,
+ 17 Apr 2025 11:12:45 -0400
+X-MC-Unique: jQAyl1mQPTWxS2MsBuKsjw-1
+X-Mimecast-MFC-AGG-ID: jQAyl1mQPTWxS2MsBuKsjw_1744902762
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6873E19560BB;
+	Thu, 17 Apr 2025 15:12:42 +0000 (UTC)
+Received: from [10.44.33.28] (unknown [10.44.33.28])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 098D119560BA;
+	Thu, 17 Apr 2025 15:12:36 +0000 (UTC)
+Message-ID: <eb4b9a30-0527-4fa0-b3eb-c886da31cc80@redhat.com>
+Date: Thu, 17 Apr 2025 17:12:35 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 net-next 3/8] mfd: Add Microchip ZL3073x support
+From: Ivan Vecera <ivecera@redhat.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jiri Pirko <jiri@resnulli.us>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Prathosh Satish <Prathosh.Satish@microchip.com>,
+ Lee Jones <lee@kernel.org>, Kees Cook <kees@kernel.org>,
+ Andy Shevchenko <andy@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Michal Schmidt <mschmidt@redhat.com>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org
+References: <20250416162144.670760-1-ivecera@redhat.com>
+ <20250416162144.670760-4-ivecera@redhat.com>
+ <8fc9856a-f2be-4e14-ac15-d2d42efa9d5d@lunn.ch>
+ <CAAVpwAsw4-7n_iV=8aXp7=X82Mj7M-vGAc3f-fVbxxg0qgAQQA@mail.gmail.com>
+ <894d4209-4933-49bf-ae4c-34d6a5b1c9f1@lunn.ch>
+ <03afdbe9-8f55-4e87-bec4-a0e69b0e0d86@redhat.com>
+Content-Language: en-US
+In-Reply-To: <03afdbe9-8f55-4e87-bec4-a0e69b0e0d86@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Thu, 17 Apr 2025 00:57:09 -0700
-Erni Sri Satya Vennela <ernis@linux.microsoft.com> wrote:
+On 17. 04. 25 4:50 odp., Ivan Vecera wrote:
+> 
+> 
+> On 17. 04. 25 3:13 odp., Andrew Lunn wrote:
+>> On Wed, Apr 16, 2025 at 08:19:25PM +0200, Ivan Vecera wrote:
+>>> On Wed, Apr 16, 2025 at 7:11 PM Andrew Lunn <andrew@lunn.ch> wrote:
+>>>
+>>>      > +++ b/include/linux/mfd/zl3073x_regs.h
+>>>      > @@ -0,0 +1,105 @@
+>>>      > +/* SPDX-License-Identifier: GPL-2.0-only */
+>>>      > +
+>>>      > +#ifndef __LINUX_MFD_ZL3073X_REGS_H
+>>>      > +#define __LINUX_MFD_ZL3073X_REGS_H
+>>>      > +
+>>>      > +#include <asm/byteorder.h>
+>>>      > +#include <linux/lockdep.h>
+>>>
+>>>      lockdep?
+>>>
+>>>
+>>> lockdep_assert*() is used in later introduced helpers.
+>>
+>> nitpicking, but you generally add headers as they are needed.
+> 
+> +1
+> 
+> 
+>>>      > +#include <linux/mfd/zl3073x.h>
+>>>      > +#include <linux/regmap.h>
+>>>      > +#include <linux/types.h>
+>>>      > +#include <linux/unaligned.h>
+>>>      > +
+>>>      > +/* Registers are mapped at offset 0x100 */
+>>>      > +#define ZL_RANGE_OFF        0x100
+>>>      > +#define ZL_PAGE_SIZE        0x80
+>>>      > +#define ZL_REG_ADDR(_pg, _off) (ZL_RANGE_OFF + (_pg) * 
+>>> ZL_PAGE_SIZE +
+>>>      (_off))
+>>>      > +
+>>>      > +/**************************
+>>>      > + * Register Page 0, General
+>>>      > + **************************/
+>>>      > +
+>>>      > +/*
+>>>      > + * Register 'id'
+>>>      > + * Page: 0, Offset: 0x01, Size: 16 bits
+>>>      > + */
+>>>      > +#define ZL_REG_ID ZL_REG_ADDR(0, 0x01)
+>>>      > +
+>>>      > +static inline __maybe_unused int
+>>>      > +zl3073x_read_id(struct zl3073x_dev *zldev, u16 *value)
+>>>      > +{
+>>>      > +     __be16 temp;
+>>>      > +     int rc;
+>>>      > +
+>>>      > +     rc = regmap_bulk_read(zldev->regmap, ZL_REG_ID, &temp, 
+>>> sizeof
+>>>      (temp));
+>>>      > +     if (rc)
+>>>      > +             return rc;
+>>>      > +
+>>>      > +     *value = be16_to_cpu(temp);
+>>>      > +     return rc;
+>>>      > +}
+>>>
+>>>      It seems odd these are inline functions in a header file.
+>>>
+>>>
+>>> There are going to be used by dpll_zl3073x sub-driver in series part 2.
+>>
+>> The subdriver needs to know the ID, firmware version, etc?
+> 
+> No
+> 
+>> Anyway, look around. How many other MFD, well actually, any sort of
+>> driver at all, have a bunch of low level helpers as inline functions
+>> in a header? You are aiming to write a plain boring driver which looks
+>> like every other driver in Linux....
+> 
+> Well, I took inline functions approach as this is safer than macro usage
+> and each register have own very simple implementation with type and
+> range control (in case of indexed registers).
+> 
+> It is safer to use:
+> zl3073x_read_ref_config(..., &v);
+> ...
+> zl3073x_read_ref_config(..., &v);
+> 
+> than:
+> zl3073x_read_reg8(..., ZL_REG_REF_CONFIG, &v);
+> ...
+> zl3073x_read_reg16(..., ZL_REG_REF_CONFIG, &v); /* wrong */
+> 
+> With inline function defined for each register the mistake in the 
+> example cannot happen and also compiler checks that 'v' has correct type.
+> 
+>> Think about your layering. What does the MFD need to offer to sub
+>> drivers so they can work? For lower registers, maybe just
+>> zl3073x_read_u8(), zl3073x_read_u16() & zl3073x_read_read_u32(). Write
+>> variants as well. Plus the API needed to safely access the mailbox.
+>> Export these using one of the EXPORT_SYMBOL_GPL() variants, so the sub
+>> drivers can access them. The #defines for the registers numbers can be
+>> placed into a shared header file.
+> 
+> Would it be acceptable for you something like this:
+> 
+> int zl3073x_read_reg{8,16,32,48}(..., unsigned int reg, u{8,16,32,64} *v);
+> int zl3073x_write_reg{8,16,32,48}(..., unsigned int reg, u{8,16,32,64} v);
+> int zl3073x_read_idx_reg{8,16,32,48}(..., unsigned int reg, unsigned int 
+> idx, unsigned int max_idx, unsigned int stride, u{8,16,32,64} *v);
+> int zl3073x_write_idx_reg{8,16,32,48}(..., unsigned int reg, unsigned 
+> int idx, unsigned int max_idx, unsigned int stride, u{8,16,32,64} v);
+> 
+> /* Simple non-indexed register */
+> #define ZL_REG_ID    ZL_REG_ADDR(0 /* page */, 0x01 /* offset */
+> #define ZL_REG_ID_BITS    8
+> 
+> /* Simple indexed register */
+> #define ZL_REG_REF_STATUS    ZL_REG_ADDR(2, 0x44)
+> #define ZL_REG_REF_STATUS_BITS    16
+> #define ZL_REG_REF_STATUS_ITEMS    10
+> #define ZL_REG_REF_STATUS_STRIDE 2
+> 
+> /* Read macro for non-indexed register */
+> #define ZL3073X_READ_REG(_zldev, _reg, _v)    \
+>      __PASTE(zl3073x_read_reg, _reg##_BITS)(_zldev, _reg, _v)
+> 
+> /* For indexed one */
+> #define ZL3073X_READ_IDX_REG(_zldev, _reg, _idx, _v)    \
+>      __PASTE(zl3073x_read_idx_reg, _reg##_BITS)(_zldev, _reg, _v,
+>                             _idx, \
+>                             _reg##_ITEMS, \
+>                             _reg##_STRIDE, _v)
+> 
+> This would allow to call simply
+> ZL3073X_READ_REG(zldev, ZL_REG_ID, &val);
+> or
+> ZL3073X_READ_IDX_REG(zldev, ZL_REG_REF_STATUS, 4);
+> 
+> and caller does not need to know register size and range constraints.
+> 
+> WDYT?
 
-> Introduce support for HTB qdisc offload in the mana ethernet
-> controller. This controller can offload only one HTB leaf.
-> The HTB leaf supports clamping the bandwidth for egress traffic.
-> It uses the function mana_set_bw_clamp(), which internally calls
-> a HWC command to the hardware to set the speed.
+Or another approach could be:
 
-A single leaf is just Token Bucket Filter (TBF).
-Are you just trying to support some vendor config?
+struct zl_reg {
+	unsigned int addr;
+	unsigned int bits;
+	unsigned int items;
+	unsigned int stride;
+};
+
+#define ZL_DEF_IDX_REG(_name, _addr, _bits, _items, _stride)	\
+static const struct zl_reg _name = {
+	.addr = _addr,
+	.bits = _bits,
+	.items = _items,
+	.stride = _stride,
+}
+
+#define ZL_DEF_REG(_name, _addr, _bits)	\
+	ZL_DEF_IDX_REG(_name, _addr, _bits, 1, 0)
+
+static inline int zl_read_reg(..., const struct zl_reg reg, void *value)
+{
+	int rc;
+	/* Check that all fields in reg are known constant at build time */
+	BUILD_BUG_ON(!const_true(reg.addr));
+	BUILD_BUG_ON(reg.items != 1);
+	switch (reg.bits) {
+	case 8:
+		rc = zl_read_reg8(zldev, reg.addr, value);
+	...
+	case 48:
+		rc = zl_read_reg48(zldev, reg.addr, value);
+	}
+	return rc;
+}
+
+static inline int zl_read_idx_reg(..., const struct zl_reg reg,
+				  unsigned int idx, void *value)
+{
+	unsigned int addr;
+	int rc;
+	/* Check that all fields in reg are known constant at build time */
+	BUILD_BUG_ON(!const_true(reg.addr));
+	BUILD_BUG_ON(reg.items > 1);
+	
+	if (idx >= reg.items)
+		return -EINVAL;
+
+	addr = reg.addr + (idx * reg.stride);
+	switch (reg.bits) {
+	case 8:
+		rc = zl_read_reg8(zldev, addr, value);
+	...
+	case 48:
+		rc = zl_read_reg48(zldev, addr, value);
+	}
+	return rc;
+}
+
+// page 0, offset 0x01, bits 8
+ZL_DEF_REG(id, ZL_REG_ADDR(0, 0x01, 8);
+
+// page 2, offset 0x55, bits 16, 10 items, 2 bytes between them
+ZL_DEF_IDX_REG(ref_config, ZL_REG_ADDR(2, 0x55, 16, 10, 2))
+
+Caller:
+rc = zl_read_reg(zldev, id, &val);
+rc = zl_read_idx_reg(zldev, ref_config, 5, &val);
+
+Passing constant structures ensures that all 'reg' fields are known
+during compilation and zl_read_*reg() functions are rendered into tiny 
+assembler output.
+
+WDYT?
+
+Ivan
+
