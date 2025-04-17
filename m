@@ -1,152 +1,170 @@
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6D3223710
-	for <netdev@vger.kernel.org>; Thu, 17 Apr 2025 18:13:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD35E2571D2;
+	Thu, 17 Apr 2025 18:23:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913632; cv=none; b=ZzRbOaxf7uYFHwX/HG+7ou8UWX2GUp9eow0Xt17epmifSWs3iPlU3lcnBsJLkCtH4Ap1sGQT7nEGFuOm+9Cv6OenWo8HluG1NeCH+OOxiOsix/m9OOz/KoEhcPUPlLAhMaf5lEzuzBoC6Ns46MAYeXZ4Tcc1PNqXevL2znAIpEk=
+	t=1744914204; cv=none; b=jXlW4EEsuTMTbhJzMIAEw7omAZjmq0Zk6tQ2VfJg3p0IpUCQAZBcgRiKMJGWa9BgFdkpH1pvFWZ1hyVy5kST1pzc6BUoZamihsNSYjB/OPAoCZ3eCLSn/lGCTSL9Y/x9lyhRJUtFZYECyISfzbQMg9Nw/N0EEl+3JhoSRswunB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913632; c=relaxed/simple;
-	bh=mpX+CmBVaCVWcFZGuCrXiu41jZW4H6Ayv+1Rt/1mmGU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QtNT3n3OOO26gJ8FuzV4BcvW00FHoq99vS8JD0YIPZyrMdiyIVpTwBzhiLQA3401tTxHXsjqU6H32viBTG7/yrLuo0C2N07e0VB0Mgd4D4pnjHdC70RmknVcfeBH4E4It0ZbxebthUVMiGHImSLzgrOi/PJzMc5ewontryfupAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=YN5gTegz; arc=none smtp.client-ip=209.85.161.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1744914204; c=relaxed/simple;
+	bh=XZnshW4tv+N58qG6ypzEo+fFEIrhxB4RpLC6FPNdLzI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KsWhh/82310GETp5+JdknSmiHxPdPtIqeECy9WSothY0vlUpHCGNdZfAXn5w9aYag/eQ/8RI5UD4spvmugW/rnPrG6CKf0zUa2KZQ9wr7GzeG7A2ZEdoSMCyQxKFoAuOcJABVpDVIter+xqBgMUXlM0dqZ0JSu5ZAwQqZ0enLz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=waxSSg3n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="YN5gTegz"
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-6044db4b55cso593577eaf.2
-        for <netdev@vger.kernel.org>; Thu, 17 Apr 2025 11:13:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1744913628; x=1745518428; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=zC8ZJE9fPc4qyAJqoLyq653txnvRnlRjFpjJ7hjJ1Vg=;
-        b=YN5gTegzJFexXkxeC61p2ZanfYjMgNKymx0Hj9+dyJ4R8FG4NFgB17VXQGN8ijLckX
-         3yySnglMu+/nSVYmr14ABbrdGzZn1mvP7ciPEoqSPQX0bieGK4hgh3jS1TAzAQU5SVTB
-         ABMuBUZjKTgqY4H6217uJinUM2qwgkz3Puz88=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744913628; x=1745518428;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zC8ZJE9fPc4qyAJqoLyq653txnvRnlRjFpjJ7hjJ1Vg=;
-        b=eRJZh12sb11+vW/s57EbfeKIBF9LyYAxpJ1aVW0BQyrM3qTpJ4/fWycbW8yV+iWGxM
-         1Iqn5eS4TCuQP+e7HQBXbKMQwg+Sk8Grb2SILXm79N6606kYEboeySkLJ+fST5Kapzsj
-         odPvRzIDilys+jasjToamR8qXstu4Nk5xCrF4nF2RsJ4bxoAZsn8YHQvkNXZPg5fcwfz
-         cgAUOsJJ349pnB0gAZQPCQz53Fm21J0gB4Nx/8YgdzuILoxrKVOh5tVgUuwRGwP5J428
-         LhUhCHPltcNZg9smk7AybX/M+hkUBfKJkb9IaJagzvsr2sg/B8Si0LNr96szbc8HIOQ5
-         dpdg==
-X-Forwarded-Encrypted: i=1; AJvYcCUwwDqlX44escryaQSc+C3Za8H2dHFL3Zfs7A0rbyuPT5Rxe/JYykAk0G/qpWWxj0N+1tHTu7g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywpl5LBzlf/j4G/cPBdrAGV1BVhZzq4AB4ttqMfv+jubIwZKbVC
-	6ECf6oafGdbWz1IQ6DunjedZ5NHqzT2ivtXknDMjWvb6RjGS0spomDdubTktUw==
-X-Gm-Gg: ASbGncvAbDqAYnyZY4lo49Uph4Pwg4IDyX52oRsCmE9CUEVDCjGlkhYLhzyFzVqwSIf
-	/JBCn7QUKZV65jOQkVDgKt6mqJpb6h6RulG75w/u3t5OwE7vL4YlQagaM0/PfRH6+XfuDsV3Hxr
-	HT+34X94fOmNLfcITtJRa+MwHADp8h3M1u7TZoQ3KHrNMLrHh0OFou1PPPLCLBlLtBbF2yyHi5L
-	4FZXuueDqZvIeVJpsO0R8NJi8k0JdC2PLwQHV3zww0I0ALxB0TanaHtR7v+MAByAHz7g+JLzfHt
-	irxIzJ8wLRcjb642vguBWGzpE2Vk5fZwLT5MAkc5C3Dz9hITC1tfw+tf1dOlPkxL4srf8Fz+ki7
-	E1Njn
-X-Google-Smtp-Source: AGHT+IHAUz1TIcKTp0qZyVxkurzKipSvBgixZXnaA6wvbeHjZDdrv/X/UeMAeehjDTtmr9wcvRUS2w==
-X-Received: by 2002:a05:6820:1b8d:b0:602:15e6:4559 with SMTP id 006d021491bc7-6060055bb21mr34942eaf.6.1744913628457;
-        Thu, 17 Apr 2025 11:13:48 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-605ff5f7a1dsm51220eaf.20.2025.04.17.11.13.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Apr 2025 11:13:46 -0700 (PDT)
-Message-ID: <84187c48-43bf-41a9-9151-05de335a172a@broadcom.com>
-Date: Thu, 17 Apr 2025 11:13:45 -0700
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="waxSSg3n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0A7C4CEE4;
+	Thu, 17 Apr 2025 18:23:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744914204;
+	bh=XZnshW4tv+N58qG6ypzEo+fFEIrhxB4RpLC6FPNdLzI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=waxSSg3nW846ot7lGhTu3TWWqWuelcudZM4GsYz4fg3Zj8sVycx2CbvAYouX47i5s
+	 ManY8EuT67/bZYxbNdDJ5jMfFRLrS3vu2+cukVRgdnysuClUYEBQvbzbFpa2q/8oPR
+	 +dV7ucGRZCc+aMaABQG6PEtCbyNL0/iSkWYl+Bfo=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Leon Schuermann <leon@is.currently.online>,
+	Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org ("open list:NETWORKING DRIVERS"),
+	Philipp Hahn <phahn-oss@avm.de>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Oliver Neukum <oliver@neukum.org>
+Subject: [PATCH 6.13 113/414] cdc_ether|r8152: ThinkPad Hybrid USB-C/A Dock quirk
+Date: Thu, 17 Apr 2025 19:47:51 +0200
+Message-ID: <20250417175115.982181781@linuxfoundation.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 4/5] net: bcmasp: Add support for asp-v3.0
-To: Justin Chen <justin.chen@broadcom.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: rafal@milecki.pl, linux@armlinux.org.uk, hkallweit1@gmail.com,
- bcm-kernel-feedback-list@broadcom.com, opendmb@gmail.com,
- conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org, pabeni@redhat.com,
- kuba@kernel.org, edumazet@google.com, davem@davemloft.net,
- andrew+netdev@lunn.ch
-References: <20250416224815.2863862-1-justin.chen@broadcom.com>
- <20250416224815.2863862-5-justin.chen@broadcom.com>
-Content-Language: en-US
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <20250416224815.2863862-5-justin.chen@broadcom.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 4/16/25 15:48, Justin Chen wrote:
-> The asp-v3.0 is a major HW revision that reduced the number of
-> channels and filters. The goal was to save cost by reducing the
-> feature set.
-> 
-> Changes for asp-v3.0
-> - Number of network filters were reduced.
-> - Number of channels were reduced.
-> - EDPKT stats were removed.
-> - Fix a bug with csum offload.
-> 
-> Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-> ---
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
-[snip]
+------------------
 
->   MODULE_DEVICE_TABLE(of, bcmasp_mdio_of_match);
-> @@ -1285,6 +1310,17 @@ static int bcmasp_probe(struct platform_device *pdev)
->   	 * how many interfaces come up.
->   	 */
->   	bcmasp_core_init(priv);
-> +
-> +	priv->mda_filters = devm_kzalloc(dev, sizeof(*priv->mda_filters)
-> +					 * priv->num_mda_filters, GFP_KERNEL);
+From: Philipp Hahn <phahn-oss@avm.de>
 
-Nit: those are candidates for devm_kcalloc().
+[ Upstream commit a07f23ad9baf716cbf7746e452c92960536ceae6 ]
 
-> +	if (!priv->mda_filters)
-> +		return -ENOMEM;
-> +
-> +	priv->net_filters = devm_kzalloc(dev, sizeof(*priv->net_filters)
-> +					 * priv->num_net_filters, GFP_KERNEL);
+Lenovo ThinkPad Hybrid USB-C with USB-A Dock (17ef:a359) is affected by
+the same problem as the Lenovo Powered USB-C Travel Hub (17ef:721e):
+Both are based on the Realtek RTL8153B chip used to use the cdc_ether
+driver. However, using this driver, with the system suspended the device
+constantly sends pause-frames as soon as the receive buffer fills up.
+This causes issues with other devices, where some Ethernet switches stop
+forwarding packets altogether.
 
-Likewise.
+Using the Realtek driver (r8152) fixes this issue. Pause frames are no
+longer sent while the host system is suspended.
 
+Cc: Leon Schuermann <leon@is.currently.online>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Oliver Neukum <oliver@neukum.org> (maintainer:USB CDC ETHERNET DRIVER)
+Cc: netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
+Link: https://git.kernel.org/netdev/net/c/cb82a54904a9
+Link: https://git.kernel.org/netdev/net/c/2284bbd0cf39
+Link: https://www.lenovo.com/de/de/p/accessories-and-software/docking/docking-usb-docks/40af0135eu
+Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://patch.msgid.link/484336aad52d14ccf061b535bc19ef6396ef5120.1741601523.git.p.hahn@avm.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/usb/cdc_ether.c | 7 +++++++
+ drivers/net/usb/r8152.c     | 6 ++++++
+ drivers/net/usb/r8153_ecm.c | 6 ++++++
+ 3 files changed, 19 insertions(+)
+
+diff --git a/drivers/net/usb/cdc_ether.c b/drivers/net/usb/cdc_ether.c
+index a6469235d904e..a032c1ded4063 100644
+--- a/drivers/net/usb/cdc_ether.c
++++ b/drivers/net/usb/cdc_ether.c
+@@ -783,6 +783,13 @@ static const struct usb_device_id	products[] = {
+ 	.driver_info = 0,
+ },
+ 
++/* Lenovo ThinkPad Hybrid USB-C with USB-A Dock (40af0135eu, based on Realtek RTL8153) */
++{
++	USB_DEVICE_AND_INTERFACE_INFO(LENOVO_VENDOR_ID, 0xa359, USB_CLASS_COMM,
++			USB_CDC_SUBCLASS_ETHERNET, USB_CDC_PROTO_NONE),
++	.driver_info = 0,
++},
++
+ /* Aquantia AQtion USB to 5GbE Controller (based on AQC111U) */
+ {
+ 	USB_DEVICE_AND_INTERFACE_INFO(AQUANTIA_VENDOR_ID, 0xc101,
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 468c739740463..96fa3857d8e25 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -785,6 +785,7 @@ enum rtl8152_flags {
+ #define DEVICE_ID_THINKPAD_USB_C_DONGLE			0x720c
+ #define DEVICE_ID_THINKPAD_USB_C_DOCK_GEN2		0xa387
+ #define DEVICE_ID_THINKPAD_USB_C_DOCK_GEN3		0x3062
++#define DEVICE_ID_THINKPAD_HYBRID_USB_C_DOCK		0xa359
+ 
+ struct tally_counter {
+ 	__le64	tx_packets;
+@@ -9787,6 +9788,7 @@ static bool rtl8152_supports_lenovo_macpassthru(struct usb_device *udev)
+ 		case DEVICE_ID_THINKPAD_USB_C_DOCK_GEN2:
+ 		case DEVICE_ID_THINKPAD_USB_C_DOCK_GEN3:
+ 		case DEVICE_ID_THINKPAD_USB_C_DONGLE:
++		case DEVICE_ID_THINKPAD_HYBRID_USB_C_DOCK:
+ 			return 1;
+ 		}
+ 	} else if (vendor_id == VENDOR_ID_REALTEK && parent_vendor_id == VENDOR_ID_LENOVO) {
+@@ -10064,6 +10066,8 @@ static const struct usb_device_id rtl8152_table[] = {
+ 	{ USB_DEVICE(VENDOR_ID_MICROSOFT, 0x0927) },
+ 	{ USB_DEVICE(VENDOR_ID_MICROSOFT, 0x0c5e) },
+ 	{ USB_DEVICE(VENDOR_ID_SAMSUNG, 0xa101) },
++
++	/* Lenovo */
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x304f) },
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3054) },
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3062) },
+@@ -10074,7 +10078,9 @@ static const struct usb_device_id rtl8152_table[] = {
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x720c) },
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x7214) },
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x721e) },
++	{ USB_DEVICE(VENDOR_ID_LENOVO,  0xa359) },
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0xa387) },
++
+ 	{ USB_DEVICE(VENDOR_ID_LINKSYS, 0x0041) },
+ 	{ USB_DEVICE(VENDOR_ID_NVIDIA,  0x09ff) },
+ 	{ USB_DEVICE(VENDOR_ID_TPLINK,  0x0601) },
+diff --git a/drivers/net/usb/r8153_ecm.c b/drivers/net/usb/r8153_ecm.c
+index 20b2df8d74ae1..8d860dacdf49b 100644
+--- a/drivers/net/usb/r8153_ecm.c
++++ b/drivers/net/usb/r8153_ecm.c
+@@ -135,6 +135,12 @@ static const struct usb_device_id products[] = {
+ 				      USB_CDC_SUBCLASS_ETHERNET, USB_CDC_PROTO_NONE),
+ 	.driver_info = (unsigned long)&r8153_info,
+ },
++/* Lenovo ThinkPad Hybrid USB-C with USB-A Dock (40af0135eu, based on Realtek RTL8153) */
++{
++	USB_DEVICE_AND_INTERFACE_INFO(VENDOR_ID_LENOVO, 0xa359, USB_CLASS_COMM,
++				      USB_CDC_SUBCLASS_ETHERNET, USB_CDC_PROTO_NONE),
++	.driver_info = (unsigned long)&r8153_info,
++},
+ 
+ 	{ },		/* END */
+ };
 -- 
-Florian
+2.39.5
+
+
+
