@@ -1,180 +1,153 @@
-Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C91321A431
-	for <netdev@vger.kernel.org>; Thu, 17 Apr 2025 07:38:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020202139DC
+	for <netdev@vger.kernel.org>; Thu, 17 Apr 2025 07:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744875535; cv=none; b=PEMS7Wz6EVPcoOTbrAhZ5wMyGtqSunRNoy9UH+GoFAtsFeqln+og4iPPSjLYy1ikp5dUMmHsTiXE92SxrFRKwe0cxx3AfuORiof04frXNn9cRotT8pTa9mV4STN+c+iILcuo1gBUK174FJ119A5lBhroFPuTA1PNxtHbBcxH4jg=
+	t=1744875894; cv=none; b=NwUiknJrHoM3qmyAXPDjMyU48ICppdPGZRv4q6qkX25dDemo97ChXtUyvbQUsRVNOVQMoz6ABuNmJiI0JAOba2NTD+ITaGqrCfxMND0pD2mmoPmQkppiiG+MqTtvYBBYAWgzGYZ6igFW0hVygcfGs7sfDZVZGBLsVNWUxT7+Bpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744875535; c=relaxed/simple;
-	bh=GqulGJ13HXfmmnbZYa2G+bOfdapO+4JVPbhx5Te4nQY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mnqazqrtpqhtpnefVuhGaNOgzyL93YrPqCTkqKuodisjLk8FPYO+n9r20VoxoMExGFPU0ZR+LJbHVzBglPEijaeyJ9rfvAc2oEpWA2P3p0Od1iDL746zftimJRu1/sr1M/tEnWpWPJqYB9Iqa5E2+ZfcZDcDSo3UjLPnd2em+GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.34.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpsz7t1744875479tde347f71
-X-QQ-Originating-IP: UUkWQXDZLL8XrNoyoKq1yBXnLUfxizL6AAOici9hFYg=
-Received: from wxdbg.localdomain.com ( [36.20.107.143])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 17 Apr 2025 15:37:57 +0800 (CST)
-X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 9696252232013015513
-EX-QQ-RecipientCnt: 16
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	dlemoal@kernel.org,
-	jdamato@fastly.com,
-	saikrishnag@marvell.com,
-	vadim.fedorenko@linux.dev,
-	przemyslaw.kitszel@intel.com,
-	ecree.xilinx@gmail.com,
-	rmk+kernel@armlinux.org.uk
-Cc: mengyuanlou@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v3 1/2] net: txgbe: Support to set UDP tunnel port
-Date: Thu, 17 Apr 2025 16:03:27 +0800
-Message-Id: <20250417080328.426554-2-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20250417080328.426554-1-jiawenwu@trustnetic.com>
-References: <20250417080328.426554-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1744875894; c=relaxed/simple;
+	bh=tslz6DlI/Mm4YFhda6oTOI/VUg3AL5GOdcZku7+10qg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IkBhbyhqJHNraR1wyG4U8aXhKmWvU3Q42efZ7E47L3UOTTN+qfn47RkLu+C0Ssks3xAzHVsvBbzU+ly4Yt7ibD6J4/sDoH0eYSslkDppdd6qvNQZkyFklBUakPCiRmwWxc3gaVFIs8acA8nzaTa2RuLqw1cOd7X14918n6uTxpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RqN3/pFu; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RqN3/pFu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744875893; x=1776411893;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=tslz6DlI/Mm4YFhda6oTOI/VUg3AL5GOdcZku7+10qg=;
+  b=RqN3/pFu2mtqyrootBI/S3UB2tlKclZpfiMixjc/cgOiMLjORdpOhGDu
+   hPLnJMWL954kTPGtkiTKChxt7oYwEiZriCL7wxvwR/dHVsLS5OpKn67rm
+   nDh/uLozNGQUdRWQpKBfUQvAhWGNUY2Y9zIqXEEXqNft4szi7mts0ooQt
+   YxrlxmTlTTMcQ0eLoRCKFKqvT2rvnNN+L4PFxx4L88id5A5vExqYFaUyT
+   X67WrDMWgYX/2gHzBFiFmptQQW8BsYCwENELGUxp/CovDu1KVPM1pGDWP
+   DsjZItcoh89sMq7qNKi3ufMc+tvMG8yN4yd2XBVoTFLbsCQ7ql6NEXnul
+   g==;
+X-CSE-ConnectionGUID: eEY97FU0SwKG6mp20lhqFw==
+X-CSE-MsgGUID: ApazkKrjQ5+guf7fjbEaaA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="50099768"
+X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; 
+   d="scan'208";a="50099768"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 00:44:52 -0700
+X-CSE-ConnectionGUID: SECiPiZnTDWrnD/BIEfxOA==
+X-CSE-MsgGUID: oLWOzVShQrCnUO/bkHGTAg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; 
+   d="scan'208";a="130586301"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 00:44:50 -0700
+Date: Thu, 17 Apr 2025 09:44:32 +0200
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Dave Marquardt <davemarq@linux.ibm.com>
+Cc: netdev@vger.kernel.org, michal.swiatkowski@linux.intel.com,
+	horms@kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next v3 1/3] net: ibmveth: Indented struct
+ ibmveth_adapter correctly
+Message-ID: <aACxYGS9F8bh5PkG@mev-dev.igk.intel.com>
+References: <20250416205751.66365-1-davemarq@linux.ibm.com>
+ <20250416205751.66365-2-davemarq@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MkhAA4qIuU0ppQof0gOONMyAXWPsDYFO71AWgC9v2gOvYOKkkJTX1OX6
-	86WMlFP9OK16hKUgFuAU3q9tRMtR0VUBkkIouXLSDm6a1jWDRAeGOsL/L3ukeKiHZc478r7
-	VoCEdzG+UoBJF+2RqNErC2LTg/iw0oPfBQRtO8lntUVfAs1xif3BStZ1oTpDs/tbNkjP9jb
-	FkKAPOUuRGST0S8VI4ymAfB4JEFkwVeIDTgBSsr3/fnrXwmTnC1euIq9qvBvUGgsHJxjZ8P
-	pIZ9Vl7hGu6DtcOkFO0X45pQm1q1TnCr7e63l+pIrLbd4P4RF3KlPVW+udrG/BRuqeGMvN2
-	9HZ6OVYgRMayGnEqvwwtvjo0jbez7/fztraC6eMlHOa6gxaeFe34mXUi1KfdycCiCHAM2mJ
-	nPIrz7ee9gtBgHmMVhnoR2BenWYVvhyIiw/qCVeeTIYds/0/0tSp6r6Id8fS1/KRQGDd/C5
-	yjh+SfdQ1AAR0F32sWm2dbrbFT9JmrwyfqseViY76oiRRozw8s4iJxPMQA3dZESGFbF6lmf
-	zTZ+50vFtsMks/vbMl9ofaRTJV9mn3rb6a+4rmsm2d3J9crVQehSdg7ninJOgg1mAjJJ5n+
-	g4N1bdltyhRU1tJAgK/p0j0nDtlXgozhnzlO/Q/ZD6qhyBg4Y0+JIWHfydR9RyWIywwkMwL
-	hpznLMekOt/lzTWRGHbnkXH4z2rZvf5dJppYYHiq7VD2g/a/SuO11A82Pv1IM1kk+JzfdN3
-	ns+VDZGlpLrgCbcNzOmDQ53euJHoWAcOQ1cSsgLTbichQSXdj7rlZKnQ2z5hanqm3ANJ1Sq
-	v/7xphcJxeNPaFgbKgXeH250Sdo9fdntToEaFlNKI5BLPrvuqUHmDh4PRAX83Bq9ANSe1Px
-	br4pkmOP5VtlHycT1nkBoeQXgchLjzKQEnVXMH5E2JXXfLH5BYYYVjEF9PVSmbmSBVTfq6y
-	XzSSe+ek+zlBUPYwEDhqcQAs4O62RCU8R0KM7e1bgybkCVm75I+JlF8fhVne55n9dLvfl3e
-	3YV8BMwytqgzuDXpeu8TBont8eoaH4d3clDJ3rZ8S1RPVHmrtdkUWSJzh7xTFCdAPkGG1+v
-	A==
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250416205751.66365-2-davemarq@linux.ibm.com>
 
-Tunnel types VXLAN/VXLAN_GPE/GENEVE are supported for txgbe devices. The
-hardware supports to set only one port for each tunnel type.
+On Wed, Apr 16, 2025 at 03:57:49PM -0500, Dave Marquardt wrote:
+> Made struct ibmveth_adapter follow indentation rules
+> 
+> Signed-off-by: Dave Marquardt <davemarq@linux.ibm.com>
+> ---
+>  drivers/net/ethernet/ibm/ibmveth.h | 64 +++++++++++++++---------------
+>  1 file changed, 32 insertions(+), 32 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+> index 8468e2c59d7a..0f72ce54e7cf 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.h
+> +++ b/drivers/net/ethernet/ibm/ibmveth.h
+> @@ -134,38 +134,38 @@ struct ibmveth_rx_q {
+>  };
+>  
+>  struct ibmveth_adapter {
+> -    struct vio_dev *vdev;
+> -    struct net_device *netdev;
+> -    struct napi_struct napi;
+> -    unsigned int mcastFilterSize;
+> -    void * buffer_list_addr;
+> -    void * filter_list_addr;
+> -    void *tx_ltb_ptr[IBMVETH_MAX_QUEUES];
+> -    unsigned int tx_ltb_size;
+> -    dma_addr_t tx_ltb_dma[IBMVETH_MAX_QUEUES];
+> -    dma_addr_t buffer_list_dma;
+> -    dma_addr_t filter_list_dma;
+> -    struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
+> -    struct ibmveth_rx_q rx_queue;
+> -    int rx_csum;
+> -    int large_send;
+> -    bool is_active_trunk;
+> -
+> -    u64 fw_ipv6_csum_support;
+> -    u64 fw_ipv4_csum_support;
+> -    u64 fw_large_send_support;
+> -    /* adapter specific stats */
+> -    u64 replenish_task_cycles;
+> -    u64 replenish_no_mem;
+> -    u64 replenish_add_buff_failure;
+> -    u64 replenish_add_buff_success;
+> -    u64 rx_invalid_buffer;
+> -    u64 rx_no_buffer;
+> -    u64 tx_map_failed;
+> -    u64 tx_send_failed;
+> -    u64 tx_large_packets;
+> -    u64 rx_large_packets;
+> -    /* Ethtool settings */
+> +	struct vio_dev *vdev;
+> +	struct net_device *netdev;
+> +	struct napi_struct napi;
+> +	unsigned int mcastFilterSize;
+> +	void *buffer_list_addr;
+> +	void *filter_list_addr;
+> +	void *tx_ltb_ptr[IBMVETH_MAX_QUEUES];
+> +	unsigned int tx_ltb_size;
+> +	dma_addr_t tx_ltb_dma[IBMVETH_MAX_QUEUES];
+> +	dma_addr_t buffer_list_dma;
+> +	dma_addr_t filter_list_dma;
+> +	struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
+> +	struct ibmveth_rx_q rx_queue;
+> +	int rx_csum;
+> +	int large_send;
+> +	bool is_active_trunk;
+> +
+> +	u64 fw_ipv6_csum_support;
+> +	u64 fw_ipv4_csum_support;
+> +	u64 fw_large_send_support;
+> +	/* adapter specific stats */
+> +	u64 replenish_task_cycles;
+> +	u64 replenish_no_mem;
+> +	u64 replenish_add_buff_failure;
+> +	u64 replenish_add_buff_success;
+> +	u64 rx_invalid_buffer;
+> +	u64 rx_no_buffer;
+> +	u64 tx_map_failed;
+> +	u64 tx_send_failed;
+> +	u64 tx_large_packets;
+> +	u64 rx_large_packets;
+> +	/* Ethtool settings */
+>  	u8 duplex;
+>  	u32 speed;
+>  };
+> -- 
+> 2.49.0
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   | 38 +++++++++++++++++++
- .../net/ethernet/wangxun/txgbe/txgbe_type.h   |  3 ++
- 2 files changed, 41 insertions(+)
-
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index 6d9134a3ce4d..95e5262a1e9c 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -8,6 +8,7 @@
- #include <linux/string.h>
- #include <linux/etherdevice.h>
- #include <linux/phylink.h>
-+#include <net/udp_tunnel.h>
- #include <net/ip.h>
- #include <linux/if_vlan.h>
- 
-@@ -392,6 +393,8 @@ static int txgbe_open(struct net_device *netdev)
- 
- 	txgbe_up_complete(wx);
- 
-+	udp_tunnel_nic_reset_ntf(netdev);
-+
- 	return 0;
- 
- err_free_irq:
-@@ -537,6 +540,39 @@ void txgbe_do_reset(struct net_device *netdev)
- 		txgbe_reset(wx);
- }
- 
-+static int txgbe_udp_tunnel_sync(struct net_device *dev, unsigned int table)
-+{
-+	struct wx *wx = netdev_priv(dev);
-+	struct udp_tunnel_info ti;
-+
-+	udp_tunnel_nic_get_port(dev, table, 0, &ti);
-+	switch (ti.type) {
-+	case UDP_TUNNEL_TYPE_VXLAN:
-+		wr32(wx, TXGBE_CFG_VXLAN, ntohs(ti.port));
-+		break;
-+	case UDP_TUNNEL_TYPE_VXLAN_GPE:
-+		wr32(wx, TXGBE_CFG_VXLAN_GPE, ntohs(ti.port));
-+		break;
-+	case UDP_TUNNEL_TYPE_GENEVE:
-+		wr32(wx, TXGBE_CFG_GENEVE, ntohs(ti.port));
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct udp_tunnel_nic_info txgbe_udp_tunnels = {
-+	.sync_table	= txgbe_udp_tunnel_sync,
-+	.flags		= UDP_TUNNEL_NIC_INFO_OPEN_ONLY,
-+	.tables		= {
-+		{ .n_entries = 1, .tunnel_types = UDP_TUNNEL_TYPE_VXLAN, },
-+		{ .n_entries = 1, .tunnel_types = UDP_TUNNEL_TYPE_VXLAN_GPE, },
-+		{ .n_entries = 1, .tunnel_types = UDP_TUNNEL_TYPE_GENEVE, },
-+	},
-+};
-+
- static const struct net_device_ops txgbe_netdev_ops = {
- 	.ndo_open               = txgbe_open,
- 	.ndo_stop               = txgbe_close,
-@@ -632,6 +668,7 @@ static int txgbe_probe(struct pci_dev *pdev,
- 	wx->driver_name = txgbe_driver_name;
- 	txgbe_set_ethtool_ops(netdev);
- 	netdev->netdev_ops = &txgbe_netdev_ops;
-+	netdev->udp_tunnel_nic_info = &txgbe_udp_tunnels;
- 
- 	/* setup the private structure */
- 	err = txgbe_sw_init(wx);
-@@ -677,6 +714,7 @@ static int txgbe_probe(struct pci_dev *pdev,
- 	netdev->features |= NETIF_F_HIGHDMA;
- 	netdev->hw_features |= NETIF_F_GRO;
- 	netdev->features |= NETIF_F_GRO;
-+	netdev->features |= NETIF_F_RX_UDP_TUNNEL_PORT;
- 
- 	netdev->priv_flags |= IFF_UNICAST_FLT;
- 	netdev->priv_flags |= IFF_SUPP_NOFCS;
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-index 5937cbc6bd05..cb553318641d 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-@@ -88,6 +88,9 @@
- /* Port cfg registers */
- #define TXGBE_CFG_PORT_ST                       0x14404
- #define TXGBE_CFG_PORT_ST_LINK_UP               BIT(0)
-+#define TXGBE_CFG_VXLAN                         0x14410
-+#define TXGBE_CFG_VXLAN_GPE                     0x14414
-+#define TXGBE_CFG_GENEVE                        0x14418
- 
- /* I2C registers */
- #define TXGBE_I2C_BASE                          0x14900
--- 
-2.27.0
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
