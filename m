@@ -1,91 +1,210 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E19250BEE;
-	Thu, 17 Apr 2025 13:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4496D250C05;
+	Thu, 17 Apr 2025 13:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744898120; cv=none; b=HSxayQEOmrErAn4cF5Qyc5qaDPmi2V3Z3UUnGKMJymXaWjjRYSeXOWqoDXLYkylNshrTJbFtMNmYg4SJv4V0iBNZUzHAGmLQiAOAhjdoiG5l1v4kBrLNGCsjv8taWnJWKpt1UtbL8Ps0z5wkmq6+JQ2encLN82uRF46q3/gfHCQ=
+	t=1744898120; cv=none; b=s+4f4tEPYnnMLdd3x8ctu0Z0p6O6B2/fCcgwuLtSp4qC4nabjV+/IbWra60RmginvsHxpviOpIY22Ztq9ukUi2UzbBUhYzIlybGqo/TsV0FLjvc2MOlQj8Dix6Cx2aCYtp3Cd3+l29GuFIkGKpXzRqAx3i9iHbkjPU6NAiZBssQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744898120; c=relaxed/simple;
-	bh=5lzD0TshOdrR27H/jD0A3Zp1OSldjowmx/m925ghKvg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GVBY+08xWT9Eb0RWH2J+00qxxFKuMooS3VOqo93Hg2PmbtOTV+2hAQLS9ls542zGuVpNm1UQJRbWRepA4ce639LzK34KN+TxdH2myXayWmVC7PaMBpayneqeGw/TobId6glql3fP8Wqu4YGO90SQrXOhyFiNad/l2kFmYN6tPgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=pTnm5dB7; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	bh=UZKqP3+llQ3QOmeT2lY8PQ4zeXE9rf8nCh9ro5bpbvM=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F0KiiFtrf18jLm9so1Hy9jPmz62RAa34ywqpFg6dODpu9eSMUq/4cEctegBt0wdZGBvzCb3zMDQ7L+lXJ9yI2SaUFYV0ppbPCqxDdGNJYhKXjmbMKYLZzx2ATNO+DNLc8hucyP+S5NbhiHbx0pA8zU2AgXzLDwaU5Jd4l9uqSN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AS8S5WRt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="pTnm5dB7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=MfEXm04TR9hSAuPlSBHlDuFQXlICktBrJoOYKmYwNLE=; b=pTnm5dB7K/QYer3+j7qstl9t2m
-	u2mHR3vFF6A70hv4G+0XqpgYbW5aFq90v+P45JkGylwl9eejYw7PIr+FiZrDVtJ4ho7EGqdE1g2yr
-	pYH4yrq67wGX8hDraLxcMH9f/micPho+mv8Deg0ldzXBv/b9R/3+ZUWUQK0fX3ZITMrs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1u5Phk-009n2J-NR; Thu, 17 Apr 2025 15:55:00 +0200
-Date: Thu, 17 Apr 2025 15:55:00 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Qingfang Deng <dqfext@gmail.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
-	Nathan Sullivan <nathan.sullivan@ni.com>,
-	Josh Cartwright <josh.cartwright@ni.com>,
-	Zach Brown <zach.brown@ni.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Chuanhong Guo <gch981213@gmail.com>,
-	Qingfang Deng <qingfang.deng@siflower.com.cn>,
-	Hao Guan <hao.guan@siflower.com.cn>
-Subject: Re: [PATCH net] net: phy: leds: fix memory leak
-Message-ID: <f9f60754-ef84-483f-bd77-b7bc99aadb27@lunn.ch>
-References: <20250417032557.2929427-1-dqfext@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AS8S5WRt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53774C4CEE4;
+	Thu, 17 Apr 2025 13:55:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744898119;
+	bh=UZKqP3+llQ3QOmeT2lY8PQ4zeXE9rf8nCh9ro5bpbvM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=AS8S5WRta1v0mmBnURA1c2CaZ8hWnrGT5VBjw1PPq5hQanBTjr/oVS9ZV3pH11YzD
+	 D4iOpaKImuBnrX6/PpbuNsrr4VCeU+4vtbIVSZU/WZU/nDWfP28SKaJTkcEWGGCUes
+	 QTUefpV2qqgkVJz0wfMOPEq6LKlNlUxrGkOsanVeFaOlxQH1waq1be+GRB+vLTnmx3
+	 PTwaJn27X7jl/7+u/T4woUZpQFBmlhUSk+2UrEl/2xnU7w26IpZLo/WnGEGmcGJMWX
+	 u7CtzOQ66MDh2Kmn+ssZ1SqmSdTgnqoBQThKXr3GxJCFiOj5PVfNuJCjAyZ+HlEs/C
+	 Vt4DNitGO31yg==
+Subject: [PATCH net-next V5 2/2] veth: apply qdisc backpressure on full
+ ptr_ring to reduce TX drops
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+To: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>, bpf@vger.kernel.org,
+ tom@herbertland.com, Eric Dumazet <eric.dumazet@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+ dsahern@kernel.org, makita.toshiaki@lab.ntt.co.jp,
+ kernel-team@cloudflare.com, phil@nwl.cc
+Date: Thu, 17 Apr 2025 15:55:15 +0200
+Message-ID: <174489811513.355490.8155513147018728621.stgit@firesoul>
+In-Reply-To: <174489803410.355490.13216831426556849084.stgit@firesoul>
+References: <174489803410.355490.13216831426556849084.stgit@firesoul>
+User-Agent: StGit/1.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250417032557.2929427-1-dqfext@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 17, 2025 at 11:25:56AM +0800, Qingfang Deng wrote:
-> From: Qingfang Deng <qingfang.deng@siflower.com.cn>
-> 
-> A network restart test on a router led to an out-of-memory condition,
-> which was traced to a memory leak in the PHY LED trigger code.
-> 
-> The root cause is misuse of the devm API. The registration function
-> (phy_led_triggers_register) is called from phy_attach_direct, not
-> phy_probe, and the unregister function (phy_led_triggers_unregister)
-> is called from phy_detach, not phy_remove. This means the register and
-> unregister functions can be called multiple times for the same PHY
-> device, but devm-allocated memory is not freed until the driver is
-> unbound.
-> 
-> This also prevents kmemleak from detecting the leak, as the devm API
-> internally stores the allocated pointer.
-> 
-> Fix this by replacing devm_kzalloc/devm_kcalloc with standard
-> kzalloc/kcalloc, and add the corresponding kfree calls in the unregister
-> path.
-> 
-> Fixes: 3928ee6485a3 ("net: phy: leds: Add support for "link" trigger")
-> Fixes: 2e0bc452f472 ("net: phy: leds: add support for led triggers on phy link state change")
-> Signed-off-by: Hao Guan <hao.guan@siflower.com.cn>
-> Signed-off-by: Qingfang Deng <qingfang.deng@siflower.com.cn>
+In production, we're seeing TX drops on veth devices when the ptr_ring
+fills up. This can occur when NAPI mode is enabled, though it's
+relatively rare. However, with threaded NAPI - which we use in
+production - the drops become significantly more frequent.
 
-Thanks for the fix. I agree with Maxime, this looks correct.
+The underlying issue is that with threaded NAPI, the consumer often runs
+on a different CPU than the producer. This increases the likelihood of
+the ring filling up before the consumer gets scheduled, especially under
+load, leading to drops in veth_xmit() (ndo_start_xmit()).
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+This patch introduces backpressure by returning NETDEV_TX_BUSY when the
+ring is full, signaling the qdisc layer to requeue the packet. The txq
+(netdev queue) is stopped in this condition and restarted once
+veth_poll() drains entries from the ring, ensuring coordination between
+NAPI and qdisc.
 
-The use of devm_free() should trigger any reviewer to take a closer
-look because it generally means something is wrong.
+Backpressure is only enabled when a qdisc is attached. Without a qdisc,
+the driver retains its original behavior - dropping packets immediately
+when the ring is full. This avoids unexpected behavior changes in setups
+without a configured qdisc.
 
-    Andrew
+With a qdisc in place (e.g. fq, sfq) this allows Active Queue Management
+(AQM) to fairly schedule packets across flows and reduce collateral
+damage from elephant flows.
+
+A known limitation of this approach is that the full ring sits in front
+of the qdisc layer, effectively forming a FIFO buffer that introduces
+base latency. While AQM still improves fairness and mitigates flow
+dominance, the latency impact is measurable.
+
+In hardware drivers, this issue is typically addressed using BQL (Byte
+Queue Limits), which tracks in-flight bytes needed based on physical link
+rate. However, for virtual drivers like veth, there is no fixed bandwidth
+constraint - the bottleneck is CPU availability and the scheduler's ability
+to run the NAPI thread. It is unclear how effective BQL would be in this
+context.
+
+This patch serves as a first step toward addressing TX drops. Future work
+may explore adapting a BQL-like mechanism to better suit virtual devices
+like veth.
+
+Reported-by: Yan Zhai <yan@cloudflare.com>
+Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+---
+ drivers/net/veth.c |   55 +++++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 45 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 7bb53961c0ea..55be225c4e20 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -307,12 +307,10 @@ static void __veth_xdp_flush(struct veth_rq *rq)
+ 
+ static int veth_xdp_rx(struct veth_rq *rq, struct sk_buff *skb)
+ {
+-	if (unlikely(ptr_ring_produce(&rq->xdp_ring, skb))) {
+-		dev_kfree_skb_any(skb);
+-		return NET_RX_DROP;
+-	}
++	if (unlikely(ptr_ring_produce(&rq->xdp_ring, skb)))
++		return NETDEV_TX_BUSY; /* signal qdisc layer */
+ 
+-	return NET_RX_SUCCESS;
++	return NET_RX_SUCCESS; /* same as NETDEV_TX_OK */
+ }
+ 
+ static int veth_forward_skb(struct net_device *dev, struct sk_buff *skb,
+@@ -346,11 +344,11 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct veth_priv *rcv_priv, *priv = netdev_priv(dev);
+ 	struct veth_rq *rq = NULL;
+-	int ret = NETDEV_TX_OK;
++	struct netdev_queue *txq;
+ 	struct net_device *rcv;
+ 	int length = skb->len;
+ 	bool use_napi = false;
+-	int rxq;
++	int ret, rxq;
+ 
+ 	rcu_read_lock();
+ 	rcv = rcu_dereference(priv->peer);
+@@ -373,17 +371,43 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	}
+ 
+ 	skb_tx_timestamp(skb);
+-	if (likely(veth_forward_skb(rcv, skb, rq, use_napi) == NET_RX_SUCCESS)) {
++
++	ret = veth_forward_skb(rcv, skb, rq, use_napi);
++	switch (ret) {
++	case NET_RX_SUCCESS: /* same as NETDEV_TX_OK */
+ 		if (!use_napi)
+ 			dev_sw_netstats_tx_add(dev, 1, length);
+ 		else
+ 			__veth_xdp_flush(rq);
+-	} else {
++		break;
++	case NETDEV_TX_BUSY:
++		/* If a qdisc is attached to our virtual device, returning
++		 * NETDEV_TX_BUSY is allowed.
++		 */
++		txq = netdev_get_tx_queue(dev, rxq);
++
++		if (qdisc_txq_has_no_queue(txq)) {
++			dev_kfree_skb_any(skb);
++			goto drop;
++		}
++		netif_tx_stop_queue(txq);
++		/* Restore Eth hdr pulled by dev_forward_skb/eth_type_trans */
++		__skb_push(skb, ETH_HLEN);
++		if (use_napi)
++			__veth_xdp_flush(rq);
++		/* Cancel TXQ stop for very unlikely race */
++		if (unlikely(__ptr_ring_empty(&rq->xdp_ring)))
++			netif_tx_wake_queue(txq);
++		break;
++	case NET_RX_DROP: /* same as NET_XMIT_DROP */
+ drop:
+ 		atomic64_inc(&priv->dropped);
+ 		ret = NET_XMIT_DROP;
++		break;
++	default:
++		net_crit_ratelimited("%s(%s): Invalid return code(%d)",
++				     __func__, dev->name, ret);
+ 	}
+-
+ 	rcu_read_unlock();
+ 
+ 	return ret;
+@@ -874,9 +898,17 @@ static int veth_xdp_rcv(struct veth_rq *rq, int budget,
+ 			struct veth_xdp_tx_bq *bq,
+ 			struct veth_stats *stats)
+ {
++	struct veth_priv *priv = netdev_priv(rq->dev);
++	int queue_idx = rq->xdp_rxq.queue_index;
++	struct netdev_queue *peer_txq;
++	struct net_device *peer_dev;
+ 	int i, done = 0, n_xdpf = 0;
+ 	void *xdpf[VETH_XDP_BATCH];
+ 
++	/* NAPI functions as RCU section */
++	peer_dev = rcu_dereference_check(priv->peer, rcu_read_lock_bh_held());
++	peer_txq = netdev_get_tx_queue(peer_dev, queue_idx);
++
+ 	for (i = 0; i < budget; i++) {
+ 		void *ptr = __ptr_ring_consume(&rq->xdp_ring);
+ 
+@@ -925,6 +957,9 @@ static int veth_xdp_rcv(struct veth_rq *rq, int budget,
+ 	rq->stats.vs.xdp_packets += done;
+ 	u64_stats_update_end(&rq->stats.syncp);
+ 
++	if (unlikely(netif_tx_queue_stopped(peer_txq)))
++		netif_tx_wake_queue(peer_txq);
++
+ 	return done;
+ }
+ 
+
+
