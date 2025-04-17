@@ -1,147 +1,99 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F57E2475C7
-	for <netdev@vger.kernel.org>; Thu, 17 Apr 2025 15:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9719724E4D4;
+	Thu, 17 Apr 2025 15:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744902446; cv=none; b=ZgB/Slb9m5CLPQGtf9AlYgIoKJOqMGiGFXpx/n9e3Bi6xEOVH4M0gmhuYN/1QTgi74VxUodAdwsfSxoukR06Ws9qvofVADxD6lKQlLTleG0ctb+X7/vwZepNbLL4QhfEWbutGhIKEPMBWq/nLeymNNLLT/4p2ecmLSUqFWHEfcI=
+	t=1744902657; cv=none; b=lwC/hkPkD26RxmamqeGh+WPOrvo7g0UKUO70+UViAMcQNc/VQdrDedWRlGH1Tx+Yd6SGSNnvKvqdqtmAb1nZdJeeqOQ6rd5uBh12tETa63LmQIYxg5BJ1bk08Rh55JZAGNUqmfTiieoEAMlVkbWJrnqp1gPqzs+EGTlAznw7OcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744902446; c=relaxed/simple;
-	bh=B7XexERuaMMMLPg8aDrwbEfwzYiQp47UuvLtUdrvycw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=sOfs+bBunDKAfDlc37ZrFHCQb4ZUT2dkWpOF9slPxaJdLc+CBvkhpwseW6SR053W9aVX34OQQoLBKkoEAIbqmAFlEzvFnzQEs7kRw4hgImp6muoukGeP9Ji4qlPg9Sv1n1p6mMFEGUhEYifpMHrXI0LaZARQd7eawDhaNhWszBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H3oBwfDn; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1744902657; c=relaxed/simple;
+	bh=k9KzxT8RtT8j3vaMkxgHq/WZQBArYVHXFWM5CAfhicI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kFudnOeySeKoLQnpsRLerZ9DE9ZSffTqozLu5+pq1IfyHjvZ8G0NUOv0cCqt0jXJq6hFeh9h43o1NXcQdOX4NTKYvfmKXnmwA0mfHd3Hq4XfxlGgSihbCKc7+N88sKgr1bYTNDgnM1UbtPHoAat41wQORzI1FY7CpJxU72XUrb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qPejttI5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H3oBwfDn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744902443;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H0kdA5rFfxf/6wSGoecn+F+bnq14+8ogjP5bxs/pSuI=;
-	b=H3oBwfDnvl5GQG785nShH9I5fi36aiaiJPXnNlx0/oK5L+S5MTBtJurcyp8HB88/Rqop9x
-	IwmgqAFd3BEMlror7RNqNzeS5T1r7L9c/RjYU1B7iv7KKIWtGJNicIHMFIN1HDjriYutQL
-	kkKyEhaWwwHvmSTaZeowfkdoAtODS54=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-547-fCm0jeN6PkOUjWTAnvMrog-1; Thu,
- 17 Apr 2025 11:07:19 -0400
-X-MC-Unique: fCm0jeN6PkOUjWTAnvMrog-1
-X-Mimecast-MFC-AGG-ID: fCm0jeN6PkOUjWTAnvMrog_1744902436
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 504741800980;
-	Thu, 17 Apr 2025 15:07:16 +0000 (UTC)
-Received: from RHTRH0061144 (unknown [10.22.64.251])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5C9C319560A3;
-	Thu, 17 Apr 2025 15:07:13 +0000 (UTC)
-From: Aaron Conole <aconole@redhat.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-  netdev@vger.kernel.org,  linux-rt-devel@lists.linux.dev,  "David S.
- Miller" <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
- Kicinski <kuba@kernel.org>,  Simon Horman <horms@kernel.org>,  Thomas
- Gleixner <tglx@linutronix.de>,  Eelco Chaudron <echaudro@redhat.com>,
-  Ilya Maximets <i.maximets@ovn.org>,  dev@openvswitch.org
-Subject: Re: [PATCH net-next v2 12/18] openvswitch: Move
- ovs_frag_data_storage into the struct ovs_pcpu_storage
-In-Reply-To: <867bb4b6-df27-4948-ab51-9dcc11c04064@redhat.com> (Paolo Abeni's
-	message of "Thu, 17 Apr 2025 10:01:17 +0200")
-References: <20250414160754.503321-1-bigeasy@linutronix.de>
-	<20250414160754.503321-13-bigeasy@linutronix.de>
-	<f7tbjsxfl22.fsf@redhat.com> <20250416164509.FOo_r2m1@linutronix.de>
-	<867bb4b6-df27-4948-ab51-9dcc11c04064@redhat.com>
-Date: Thu, 17 Apr 2025 11:07:11 -0400
-Message-ID: <f7t4iymg734.fsf@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qPejttI5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A143C4CEE4;
+	Thu, 17 Apr 2025 15:10:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744902657;
+	bh=k9KzxT8RtT8j3vaMkxgHq/WZQBArYVHXFWM5CAfhicI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=qPejttI5AeQmQ210H5IK7GP2nZk1Lu3IhtfKUVo2lfCfjpV+D5LcW9X/KYQ0NX55Z
+	 Sd87CLpI0klQQpkfg3OzJv9YpNfxLEuBlXNByX2pe7TkIMWS6El/h9V5OeatNhAtbJ
+	 ZOGpfuEsNyUnQ/wYzJDAo8sNKJJUewOglfBsC0kXRIn581ucRmt+OrpaJuLA2ymSRr
+	 j6n9DsikYoUnOi/pvSRiYN/aQfP5KZJ4MtW5+tckyPPIGTDLAL3Khsa5ve7cF6IRi9
+	 BXJH1U2/p1lY0AevN2ZKY3l1tklGxf075KWiZ0ejZFtvhaB3J3DgN+YnpNopLDDRXJ
+	 6QjYLxDdQzzDQ==
+Date: Thu, 17 Apr 2025 08:10:55 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, Florian Fainelli
+ <f.fainelli@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net v2 4/5] net: ethernet: mtk_eth_soc: net: revise
+ NETSYSv3 hardware configuration
+Message-ID: <20250417081055.1bda2ff6@kernel.org>
+In-Reply-To: <28929b5bb2bfd45e040a07c0efefb29e57a77513.1744764277.git.daniel@makrotopia.org>
+References: <8ab7381447e6cdcb317d5b5a6ddd90a1734efcb0.1744764277.git.daniel@makrotopia.org>
+	<28929b5bb2bfd45e040a07c0efefb29e57a77513.1744764277.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Paolo Abeni <pabeni@redhat.com> writes:
+On Wed, 16 Apr 2025 01:51:42 +0100 Daniel Golle wrote:
+> +		/* PSE should not drop port8, port9 and port13 packets from WDMA Tx */
+> +		mtk_w32(eth, 0x00002300, PSE_DROP_CFG);
+> +
+> +		/* PSE should drop packets to port8, port9 and port13 on WDMA Rx ring full */
 
-> On 4/16/25 6:45 PM, Sebastian Andrzej Siewior wrote:
->> On 2025-04-15 12:26:13 [-0400], Aaron Conole wrote:
->>> I'm going to reply here, but I need to bisect a bit more (though I
->>> suspect the results below are due to 11/18).  When I tested with this
->>> patch there were lots of "unexplained" latency spikes during processing
->>> (note, I'm not doing PREEMPT_RT in my testing, but I guess it would
->>> smooth the spikes out at the cost of max performance).
->>>
->>> With the series:
->>> [SUM]   0.00-300.00 sec  3.28 TBytes  96.1 Gbits/sec  9417             sender
->>> [SUM]   0.00-300.00 sec  3.28 TBytes  96.1 Gbits/sec                  receiver
->>>
->>> Without the series:
->>> [SUM]   0.00-300.00 sec  3.26 TBytes  95.5 Gbits/sec  149             sender
->>> [SUM]   0.00-300.00 sec  3.26 TBytes  95.5 Gbits/sec                  receiver
->>>
->>> And while the 'final' numbers might look acceptable, one thing I'll note
->>> is I saw multiple stalls as:
->>>
->>> [  5]  57.00-58.00  sec   128 KBytes   903 Kbits/sec    0   4.02 MBytes
->>>
->>> But without the patch, I didn't see such stalls.  My testing:
->>>
->>> 1. Install openvswitch userspace and ipcalc
->>> 2. start userspace.
->>> 3. Setup two netns and connect them (I have a more complicated script to
->>>    set up the flows, and I can send that to you)
->>> 4. Use iperf3 to test (-P5 -t 300)
->>>
->>> As I wrote I suspect the locking in 11 is leading to these stalls, as
->>> the data I'm sending shouldn't be hitting the frag path.
->>>
->>> Do these results seem expected to you?
->> 
->> You have slightly better throughput but way more retries. I wouldn't
->> expect that. And then the stall.
->> 
->> Patch 10 & 12 move per-CPU variables around and makes them "static"
->> rather than allocating them at module init time. I would not expect this
->> to have a negative impact.
->> Patch #11 assigns the current thread to a variable and clears it again.
->> The remaining lockdep code disappears. The whole thing runs with BH
->> disabled so no preemption.
->> 
->> I can't explain what you observe here. Unless it is a random glitch
->> please send the script and I try to take a look.
->
-> I also think this series should not have any visible performance impact
-> on not RT OVS tests. @Aaron: could you please double check the results
-> (both the good on unpatched kernel and the bad with the series applied)
-> are reproducible and not due some glitches.
+nit: please try to wrap at 80 chars. There's really no need to go over
+on comments. Some of us stick to 80 char terminals. 
 
-I agree, it doesn't seem like it should.  I guess a v3 is coming, so I
-will retry with that.  I planned to ack 10/18 and 12/18 anyway; even
-without the lock restructure, it seems 'nicer' to have the pcpu
-variables in a single location.
+> +		mtk_w32(eth, 0x00002300, PSE_PPE_DROP(0));
+> +		mtk_w32(eth, 0x00002300, PSE_PPE_DROP(1));
+> +		mtk_w32(eth, 0x00002300, PSE_PPE_DROP(2));
+>  
+>  		/* GDM and CDM Threshold */
+> -		mtk_w32(eth, 0x00000707, MTK_CDMW0_THRES);
+> +		mtk_w32(eth, 0x08000707, MTK_CDMW0_THRES);
+>  		mtk_w32(eth, 0x00000077, MTK_CDMW1_THRES);
+>  
+>  		/* Disable GDM1 RX CRC stripping */
+> @@ -4064,7 +4076,7 @@ static int mtk_hw_init(struct mtk_eth *eth, bool reset)
+>  		mtk_w32(eth, 0x00000300, PSE_DROP_CFG);
+>  
+>  		/* PSE should drop packets to port 8/9 on WDMA Rx ring full */
+> -		mtk_w32(eth, 0x00000300, PSE_PPE0_DROP);
+> +		mtk_w32(eth, 0x00000300, PSE_PPE_DROP(0));
+>  
+>  		/* PSE Free Queue Flow Control  */
+>  		mtk_w32(eth, 0x01fa01f4, PSE_FQFC_CFG2);
+> diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.h b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
+> index 39709649ea8d1..eaa96c8483b70 100644
+> --- a/drivers/net/ethernet/mediatek/mtk_eth_soc.h
+> +++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
+> @@ -151,7 +151,12 @@
+>  #define PSE_FQFC_CFG1		0x100
+>  #define PSE_FQFC_CFG2		0x104
+>  #define PSE_DROP_CFG		0x108
+> -#define PSE_PPE0_DROP		0x110
+> +#define PSE_PPE_DROP(x)		(0x110 + ((x) * 0x4))
+> +
+> +/* PSE Last FreeQ Page Request Control */
+> +#define PSE_DUMY_REQ		0x10C
 
-BTW, I am using a slightly modified version of:
-https://gist.github.com/apconole/ed78c9a2e76add9942dc3d6cbcfff4ca
-
-It sets things up similarly to an SDN deployment (although not perfectly
-since I was testing something very special at the time), and I was just
-doing netns->netns testing (so it would go through ct() calls but not
-ct(nat) calls).
-
-> @Sebastian: I think the 'owner' assignment could be optimized out at
-> compile time for non RT build - will likely not matter for performances,
-> but I think it will be 'nicer', could you please update the patches to
-> do that?
->
-> Thanks!
->
-> Paolo
-
+This really looks like misspelling of DUMMY, is it really supposed 
+to have one 'M' ?
