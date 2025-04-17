@@ -1,134 +1,182 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7141E2222D5;
-	Thu, 17 Apr 2025 07:29:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2732122257F;
+	Thu, 17 Apr 2025 07:29:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744874980; cv=none; b=UUitoppi7tefHV0ggen2+5Msw7+0CTBFPWrWJV2ZqeiNbqshzLtZ3Px+3Tal5K/4eBAQuvW0+zjs9E9UrenBMHDKKbyYaJEiAKRjnD4urba+Qyt9rLJTHQBd26rhBQkLwyghmwEoM8+Z2wLHIfdiwvse0YumKdBrUbK6dG3h3Kc=
+	t=1744874986; cv=none; b=qIaY3UmjNn47FS/DVsxLN9u8spK3YL/Mi54BVWfojN4VjYUtNzQ1GdDY9fWg8jGVMJraUDX2ZZ5jOjxRLO0d2p74i2Lcq8nhLM4MElJSAhdOMwyTlch9d8cQBQmD+Z6xO3CToKe6hLT9rSl+AWaVVktP2SuophdxcEIkn/YAj+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744874980; c=relaxed/simple;
-	bh=NzBtddZRCsg1/4g3wwT54tpCt+iF1Q/Oq+nE2yGOUck=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FA0QBoogf842MeXSKMM/xCZX/jj2jP46itiwEl7Z31jd9h6yJIgrcwQTeW/xpJA8rkLxHg0Nx0Ae1n2EyEEy6BtpsnpIKfBT0YuMqM3EVaarDUsPVHsZQ9ZmiG/pQpKUpA8AJNvtT/USO/hMUgFH2LtG+Y6QqfCvK66W+QKJhqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lCNgSEc4; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744874986; c=relaxed/simple;
+	bh=PuciJA/1VzUYYWM/dSmMyX1p0tlv0mS1Tnp3ikG3nB4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jl5+yZ+f09/dwTf7jlL/o7xSCRuLODnaP9Bk33VfOQcHbA/HZhaNc4vMa1/+eyAlqvNWFDgSy3H2ynKZIYPifesU7AZxrCit/XsryanSRDZpEwt9R2IuPv86FqKHRMAY7X8k2voEzde+agkWuFBf3U6PCFq1b2HoNCeLZJIF3f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=SVxF1lQV; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lCNgSEc4"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-73712952e1cso350654b3a.1;
-        Thu, 17 Apr 2025 00:29:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744874979; x=1745479779; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Wxx88K9tSumEw+2ZtRWFe/vr19Ozn+M+DEZTmr3En7Y=;
-        b=lCNgSEc4/4oKNxcSBYoirovgCC6mn7E/+Y85xHD2FusUH8XcD1k7RtD5M726hgT+Cv
-         djcaN6EG3yK76OntTXWXGKvVcZAbaGtbB1il9HxS6jF3dxLCmY75BayBHExofRb2MfoM
-         fesgFhInI+FHYAp8I18rsRic/9pkMsSB26NLHZbpBi4p++MLdPCBAJhWga9I8SB/3qWF
-         EYluZ7IFwXdxtWXkv5aLwNu06zxKrYxqRgcdWhfOVjgUK+Sy35KmWaOq/w3ANTRrUGOv
-         sBP4zbuhpHJGl2f/GcIvcvzZVinFLqsNYtZ6wBnhQMfUqXycJ4j/hUu0hIyhJj2Zz6eu
-         9o5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744874979; x=1745479779;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Wxx88K9tSumEw+2ZtRWFe/vr19Ozn+M+DEZTmr3En7Y=;
-        b=qiOKjZThVVbaGFXx9Adz0aegB+6u4XbCr92YPF8NR2vl2QzppEM27vDfW567osRujl
-         4+nkHeJENO7lPgcWoW3icxEQiIu4hC7uL77azbjxCTuGzKqnHodY7vBlQCKgktNAljXa
-         0B5NrX7IJCdHEoUSnOLbJ9xtZWzapfewDIRehAFM8T3B+EpwF34VzMIXljhtcvcKOGKC
-         w3nQfV++QoubJ+4tENYFJa2Vs3ui3yW3331QUtH2fzw4rV4PdytsagiCZp51Fx14f293
-         KNsQDZ8vwB/ZqryCWseqbw68qhorFXAlpwMCI0jyZF/f++ytovwlQ7CeGdL1SBM7nJ6+
-         ko4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUmiwXnx2cBrunqiYZBmzxRiA3/SQ+u18DRxnMT7iVAVDMlDPFALT7ZV2td3iuRpmMI84kHFdxJke5DjkbD@vger.kernel.org, AJvYcCW3gr6aNtitNVv0fb125iZ8r+lwNwjY4uzr6Le/fnvtLXzr6B6ytD06vUR9bHeZG8ehSsiv312e@vger.kernel.org, AJvYcCWVjiHpFwlOJ+R9KOPMr0Vj0Gpikpt5svO7UdybEmeWsJhm/mpjEetgCPjwhvzUbxvzCG8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzxz9QAALC6ZbEcI/EK0kPmybcANjj0ZD4xs866Eb66N0TVzlQd
-	LE73Ojmwyh1M/jREfh4Fx9uNyRG6OuYYQ0CywfeZgMkuuOVxgppi
-X-Gm-Gg: ASbGnctBkEFiqGeK76TnwlSFqwqVac6Xal3FfMFxf6m8MS80f+oh4xB7QUsJZvZtZcD
-	RDipN+OkolT9QFF3zxaI0mL4mDxv36qEf1HifQglX8X4Dj0GioN6M861ezMq2Y2FcsTsXTtjyLg
-	2HF0m1uFQcwuXLY4Q3NdRR7RdGoBoC8RRpoyAe1pe9cn1Ecv9DteR0rFA0qATxkcRoHaN3Pf6ov
-	2NCzmEq60ceLpAbT3FkPiIOfmT2mA/LmDSlg9KQDF63EbTSHxGzVFnLNY4kYaCvuIZedoIIvQr1
-	lBmbE0JyYmqS7mVOtNM6tglCQFaSvgi+eGkO9FYpMjyshULmeOzUBX46
-X-Google-Smtp-Source: AGHT+IF/swlYlHVVTdpnx/l1Jc8S2a9LeAy6m92Hd3dKyvQqvGjdPqWMZCjUUCXypFPFgGvgke5VPw==
-X-Received: by 2002:a05:6a00:3e27:b0:736:2ff4:f255 with SMTP id d2e1a72fcca58-73c267c183cmr6529845b3a.15.1744874978576;
-        Thu, 17 Apr 2025 00:29:38 -0700 (PDT)
-Received: from minh.192.168.1.1 ([2001:ee0:4f0e:fb30:ab45:ee9c:5719:f829])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-73bd22f0f3fsm11625344b3a.115.2025.04.17.00.29.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Apr 2025 00:29:38 -0700 (PDT)
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-To: virtualization@lists.linux.dev
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="SVxF1lQV"
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id 8B5E321199C7; Thu, 17 Apr 2025 00:29:43 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8B5E321199C7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1744874983;
+	bh=Ih6u1qmnMix4sMgOGDS8Es/QJXFN+XfxYG1bS+em/K8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SVxF1lQVXD490/CYtPiLIT3l37PsSpkYbY0Hljk0wsasUb0hRGqEjqnWxo+9y12/H
+	 I9BSMicrSexTIDoMf8Fw6bD6+siZxvuoaVR1GaN6Zn4la8N9Ic28MMehPb4ntzwmeY
+	 jBzHo0Wztw3H96U/M/yPsBJo7pmBgpTO0NowG+fQ=
+Date: Thu, 17 Apr 2025 00:29:43 -0700
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, linux-hyperv@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Yury Norov <yury.norov@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Cameron <Jonathan.Cameron@huwei.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Shivamurthy Shastri <shivamurthy.shastri@linutronix.de>,
+	Kevin Tian <kevin.tian@intel.com>, Long Li <longli@microsoft.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Rob Herring <robh@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof Wilczy??ski <kw@linux.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	"David S. Miller" <davem@davemloft.net>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Bui Quang Minh <minhquangbui99@gmail.com>
-Subject: [PATCH v4 3/4] selftests: net: add flag to force zerocopy mode in xdp_helper
-Date: Thu, 17 Apr 2025 14:28:05 +0700
-Message-ID: <20250417072806.18660-4-minhquangbui99@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250417072806.18660-1-minhquangbui99@gmail.com>
-References: <20250417072806.18660-1-minhquangbui99@gmail.com>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Simon Horman <horms@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Peter Zijlstra <peterz@infradead.org>, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
+	Shradha Gupta <shradhagupta@microsoft.com>
+Subject: Re: [PATCH 1/2] PCI: hv: enable pci_hyperv to allow dynamic vector
+ allocation
+Message-ID: <20250417072943.GA20244@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <1744817766-3134-1-git-send-email-shradhagupta@linux.microsoft.com>
+ <20250416183042.GA75515@bhelgaas>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250416183042.GA75515@bhelgaas>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-This commit adds an optional -z flag to xdp_helper. When this flag is
-provided, the XDP socket binding is forced to be in zerocopy mode.
+On Wed, Apr 16, 2025 at 01:30:42PM -0500, Bjorn Helgaas wrote:
+> [+to Thomas]
+> 
+> On Wed, Apr 16, 2025 at 08:36:06AM -0700, Shradha Gupta wrote:
+> > For supporting dynamic MSI vector allocation by pci controllers, enabling
+> > the flag MSI_FLAG_PCI_MSIX_ALLOC_DYN is not enough, msix_prepare_msi_desc()
+> > to prepare the desc is needed. Export pci_msix_prepare_desc() to allow pci
+> > controllers like pci-hyperv to support dynamic MSI vector allocation.
+> > Also, add the flag MSI_FLAG_PCI_MSIX_ALLOC_DYN and use
+> > pci_msix_prepare_desc() in pci_hyperv controller
+> 
+> Follow capitalization convention for subject line.  Probably remove
+> "pci_hyperv" since it already contains "PCI: hv" and add something
+> about MSI-X.
+> 
+> s/pci/PCI/
+> 
+> s/MSI vector/MSI-X vector/ since the context says you're concerned
+> with MSI-X.
+> 
+> This requires an ack from Thomas; moved him to "To:" line.
+>
+Thanks Bjorn. I will work on addressing these.
 
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
----
- tools/testing/selftests/net/lib/xdp_helper.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/net/lib/xdp_helper.c b/tools/testing/selftests/net/lib/xdp_helper.c
-index aeed25914104..6afd77bfbe8b 100644
---- a/tools/testing/selftests/net/lib/xdp_helper.c
-+++ b/tools/testing/selftests/net/lib/xdp_helper.c
-@@ -81,8 +81,9 @@ int main(int argc, char **argv)
- 	int sock_fd;
- 	int queue;
- 
--	if (argc != 3) {
--		fprintf(stderr, "Usage: %s ifindex queue_id\n", argv[0]);
-+	if (argc != 3 && argc != 4) {
-+		fprintf(stderr, "Usage: %s ifindex queue_id [-z]\n\n"
-+			"where:\n\t-z: force zerocopy mode", argv[0]);
- 		return 1;
- 	}
- 
-@@ -132,6 +133,14 @@ int main(int argc, char **argv)
- 	sxdp.sxdp_queue_id = queue;
- 	sxdp.sxdp_flags = 0;
- 
-+	if (argc == 4 && strcmp(argv[3], "-z")) {
-+		fprintf(stderr, "Usage: %s ifindex queue_id [-z]\n\n"
-+			"where:\n\t-z: force zerocopy mode\n", argv[0]);
-+		return 1;
-+	} else if (argc == 4) {
-+		sxdp.sxdp_flags = XDP_ZEROCOPY;
-+	}
-+
- 	if (bind(sock_fd, (struct sockaddr *)&sxdp, sizeof(sxdp)) != 0) {
- 		munmap(umem_area, UMEM_SZ);
- 		perror("bind failed");
--- 
-2.43.0
-
+Regards,
+Shradha. 
+> > Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+> > Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+> > Reviewed-by: Long Li <longli@microsoft.com>
+> > ---
+> >  drivers/pci/controller/pci-hyperv.c | 7 +++++--
+> >  drivers/pci/msi/irqdomain.c         | 5 +++--
+> >  include/linux/msi.h                 | 2 ++
+> >  3 files changed, 10 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
+> > index ac27bda5ba26..f2fa6bdb6bb8 100644
+> > --- a/drivers/pci/controller/pci-hyperv.c
+> > +++ b/drivers/pci/controller/pci-hyperv.c
+> > @@ -598,7 +598,8 @@ static unsigned int hv_msi_get_int_vector(struct irq_data *data)
+> >  	return cfg->vector;
+> >  }
+> >  
+> > -#define hv_msi_prepare		pci_msi_prepare
+> > +#define hv_msi_prepare			pci_msi_prepare
+> > +#define hv_msix_prepare_desc		pci_msix_prepare_desc
+> >  
+> >  /**
+> >   * hv_arch_irq_unmask() - "Unmask" the IRQ by setting its current
+> > @@ -727,6 +728,7 @@ static void hv_arch_irq_unmask(struct irq_data *data)
+> >  #define FLOW_HANDLER		NULL
+> >  #define FLOW_NAME		NULL
+> >  #define hv_msi_prepare		NULL
+> > +#define hv_msix_prepare_desc	NULL
+> >  
+> >  struct hv_pci_chip_data {
+> >  	DECLARE_BITMAP(spi_map, HV_PCI_MSI_SPI_NR);
+> > @@ -2063,6 +2065,7 @@ static struct irq_chip hv_msi_irq_chip = {
+> >  static struct msi_domain_ops hv_msi_ops = {
+> >  	.msi_prepare	= hv_msi_prepare,
+> >  	.msi_free	= hv_msi_free,
+> > +	.prepare_desc	= hv_msix_prepare_desc,
+> >  };
+> >  
+> >  /**
+> > @@ -2084,7 +2087,7 @@ static int hv_pcie_init_irq_domain(struct hv_pcibus_device *hbus)
+> >  	hbus->msi_info.ops = &hv_msi_ops;
+> >  	hbus->msi_info.flags = (MSI_FLAG_USE_DEF_DOM_OPS |
+> >  		MSI_FLAG_USE_DEF_CHIP_OPS | MSI_FLAG_MULTI_PCI_MSI |
+> > -		MSI_FLAG_PCI_MSIX);
+> > +		MSI_FLAG_PCI_MSIX | MSI_FLAG_PCI_MSIX_ALLOC_DYN);
+> >  	hbus->msi_info.handler = FLOW_HANDLER;
+> >  	hbus->msi_info.handler_name = FLOW_NAME;
+> >  	hbus->msi_info.data = hbus;
+> > diff --git a/drivers/pci/msi/irqdomain.c b/drivers/pci/msi/irqdomain.c
+> > index d7ba8795d60f..43129aa6d6c7 100644
+> > --- a/drivers/pci/msi/irqdomain.c
+> > +++ b/drivers/pci/msi/irqdomain.c
+> > @@ -222,13 +222,14 @@ static void pci_irq_unmask_msix(struct irq_data *data)
+> >  	pci_msix_unmask(irq_data_get_msi_desc(data));
+> >  }
+> >  
+> > -static void pci_msix_prepare_desc(struct irq_domain *domain, msi_alloc_info_t *arg,
+> > -				  struct msi_desc *desc)
+> > +void pci_msix_prepare_desc(struct irq_domain *domain, msi_alloc_info_t *arg,
+> > +			   struct msi_desc *desc)
+> >  {
+> >  	/* Don't fiddle with preallocated MSI descriptors */
+> >  	if (!desc->pci.mask_base)
+> >  		msix_prepare_msi_desc(to_pci_dev(desc->dev), desc);
+> >  }
+> > +EXPORT_SYMBOL_GPL(pci_msix_prepare_desc);
+> >  
+> >  static const struct msi_domain_template pci_msix_template = {
+> >  	.chip = {
+> > diff --git a/include/linux/msi.h b/include/linux/msi.h
+> > index 86e42742fd0f..d5864d5e75c2 100644
+> > --- a/include/linux/msi.h
+> > +++ b/include/linux/msi.h
+> > @@ -691,6 +691,8 @@ struct irq_domain *pci_msi_create_irq_domain(struct fwnode_handle *fwnode,
+> >  					     struct irq_domain *parent);
+> >  u32 pci_msi_domain_get_msi_rid(struct irq_domain *domain, struct pci_dev *pdev);
+> >  struct irq_domain *pci_msi_get_device_domain(struct pci_dev *pdev);
+> > +void pci_msix_prepare_desc(struct irq_domain *domain, msi_alloc_info_t *arg,
+> > +			   struct msi_desc *desc);
+> >  #else /* CONFIG_PCI_MSI */
+> >  static inline struct irq_domain *pci_msi_get_device_domain(struct pci_dev *pdev)
+> >  {
+> > -- 
+> > 2.34.1
+> > 
