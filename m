@@ -1,188 +1,623 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B21521D599;
-	Thu, 17 Apr 2025 07:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A02A1E1DEB;
+	Thu, 17 Apr 2025 07:32:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744874986; cv=none; b=ixbL2zAWkQ5lksyS7v7IOEIlzMecFbQG0eIKqXjRNdrbSI0gxqMuwrb3Nd/VENnDnnoEICiwwLJb4YOWWT+9Z3UessbjZfO0NSu5A1cFCSivlTtQ9YZ0VZsN61tBLPkQ7P7TN/lGuGyjzdKqvq1OtkEgCERG2rhRdhypi01Z0JY=
+	t=1744875152; cv=none; b=Grw7lNBH/NnihWQlh88wsbCKRUCb0F6WeQD06y+jLUJH8wkpI7yQEsS0wPZko/rOP22JgfuEHcbfIFTivDVilw7eea7j8yKjCqogG/gWEBnzRzO13AOcRjbwhxTJQJn+t4qDKZsXb/u/o5moOKX2w49rAlfRY3mJjNCRRG9WJ+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744874986; c=relaxed/simple;
-	bh=8TizWOwqu3GwN2fiGsHw8X4OMKIAXAGE1CXOpps+ka0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f/scuB5GseJzNA/Mgqhma93jVyGo5rH1K11OvcP8j1gbeAg48RSw6T/1OJ2yIw8UNrYVIxEa2gja7gVDB7kJv/4SSLbKKmwK+HZPcKoVD3LS+4X5P954+2OrMIJ4I7CFUlzdInfekFPIHD+Zr39HHIAvAgsRlZnybzdkHEeMQpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QAphGrvB; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744875152; c=relaxed/simple;
+	bh=6Hb+A5Fk5PgDjc4rn7qVR6KK/95QTcM6SGFsBGOzTF8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rveoaeEQhnrRxQLqakTKh/RmqfX9MN+VjMfo0f2Wl/VaPTDhu2vszeI3eSR6O5nzyVZ6nFh6O0JJKnc7o5PEA8RqywCLI5+5U3iUc/JeXd3i4BKSNYD0UQUTtX8vsT6yXVMJlqEUxtlGQbIdG8a5nKwv1k7Bd9ZIAIZQLKgm7k4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=m/yyQIvJ; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QAphGrvB"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7376dd56f8fso561702b3a.2;
-        Thu, 17 Apr 2025 00:29:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744874984; x=1745479784; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lJO7LyGExRfq4nKL5SVSlHdNbKD8n5gs12N9jLBapQU=;
-        b=QAphGrvBTit428FaKJPfaL3VfMQLv9HkiC1R9pITU2ZgCK6BHURrnwhs9mja2phxxq
-         CeVE+tBGc1JVlNzvHlcHCL231ZLxr3sKfr0URdZfVv0682Mn4D4dBfcrHtL7wqRyfg+p
-         30EoR8eZAdPt3cmY4qH6hsYIl5vFeuyclidBNHA7d8lKm+p8BDMq4Aziyfn4hqh7CzuX
-         AYvBx+CVk5OvJ81hmelQ+zZI/yvvSysgCRbRa14GgkbF8K6NlyDjX6GCxUXReaiX6FgS
-         8OB35kAtdcDP0ss6IedFHisV/Mhs/UQ1N8uelUlPYE985woIToGQHZ8oAhnN/d9HfAvf
-         YMdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744874984; x=1745479784;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lJO7LyGExRfq4nKL5SVSlHdNbKD8n5gs12N9jLBapQU=;
-        b=dbMfN1Beq4QrPJ0AAdLHEg2OmCv9kVlb8sP+CD+eWUVbYZ7O3eEK4o8F8UkAI6DZ8D
-         KdYWFBi6OVNyZA8cUdhRfiGhX2nEZwWPYUqCH34Z4A0k5N39B0S/2AGWlvocK/SwXm3N
-         zgfXWfFYlBRtkuS7GM43ptgui2LZ8W8CFKjUjs3yNR6H2DT2+qi6Biu1/CjxRpqF7Go0
-         K5ic59furKALyTfu1qvB54QRJe4un6vm5BfVQ/WA7q08NOgN7tLlXbY+twlclf0gqgub
-         f5ly6fVsxOEFIEAuDWNFkIhK/iJ9Mg/I8j2h2iGvdYaN9kuVoGtibP5/ftuVvOu824li
-         rtwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVHh5rJfGCsVqWxW1KqerL4M+48hiR7z/jM49KeDQBn1XwXKYraAwWOinGD74j9XrKIspXTp8hx4Wdk2ndD@vger.kernel.org, AJvYcCXitdyxNBb4hUUmiTbOfSiq1+Fjroo19A0k5vvlP4z6wLY6TLjn4EvMvRkuo3CMhQ8jwc4=@vger.kernel.org, AJvYcCXydzeMs/Ggk5nzUg7rE0+pb7YSH6jdJuD+AVYQjjfyZ0yNZ6+cwOaMqmVR0NVjgUFVA45vUWZk@vger.kernel.org
-X-Gm-Message-State: AOJu0YwT8It3L7xD3y3PpCHlMvX/gMDJ9brZCIkuaA2jNTiYXZjrC9vf
-	g2NXPiF6pLxw2Gi3yT57Kh1t7fuYq/9YMFz7OigIWEv/g/KiGHWF
-X-Gm-Gg: ASbGncvsHPh6DY4Wq/EK2ncVBLLYRlr4Ily+W7nbKbCaX+JqrnskNJDA5bCVpi/1het
-	E2Mh1ULGl2u5I5CsJJxpXe+5XBnDSonjgI+iMavuMdqh/C7enXQJt6YgHjIYmvFwWwzwL2mitUG
-	Ab4GFCkbA/3fhrFTh1C3/JI1XHE1xJ5egYHrgSlTTZVDOn4705FLNtHoOBfb8MOcfxgBdIUlaMp
-	EcydvqbqMekvEU45IvSFfyw4l5EPDUoXaWfBJRSEeP+w3BYYWTpXz4uboDiqxfe0DVrdCGyIQRu
-	yAbYp4VmaoxMJLsc0w2fMnNF4jAEXghz8MstbCnVWVpil3TRQKX2nWZL
-X-Google-Smtp-Source: AGHT+IGNH4XYkq81bCriDB/5ZWI5rMHEk/ZZFNYuEACnhmopqi5kSRd+SZ67knR5813pGgdy8GwUJQ==
-X-Received: by 2002:a05:6a00:2985:b0:736:bfc4:ef2c with SMTP id d2e1a72fcca58-73c264bf96amr7064882b3a.0.1744874984214;
-        Thu, 17 Apr 2025 00:29:44 -0700 (PDT)
-Received: from minh.192.168.1.1 ([2001:ee0:4f0e:fb30:ab45:ee9c:5719:f829])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-73bd22f0f3fsm11625344b3a.115.2025.04.17.00.29.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Apr 2025 00:29:43 -0700 (PDT)
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-To: virtualization@lists.linux.dev
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="m/yyQIvJ"
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id E468A21199C9; Thu, 17 Apr 2025 00:32:29 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E468A21199C9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1744875149;
+	bh=pjVefoc0Y2YoU1DGqwqsv0dsksGIXqh9YJpFqmBr0oQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m/yyQIvJzoGLpv4Q+BBx6AGQcik49Eajfl6/YZ/+EnF9/oi9dlo9XRmrgLNxkejXI
+	 C0tx3bt2+UR1gSq8EUWDPD2fQqEjIbykavbR+hj7mw2MPMjYCrmRFYPdq/rUvHET5s
+	 uajru6/Lb1u4JF00aER9ClJ7HVm2dEIlazpOepwo=
+Date: Thu, 17 Apr 2025 00:32:29 -0700
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: linux-hyperv@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Nipun Gupta <nipun.gupta@amd.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Cameron <Jonathan.Cameron@huwei.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Shivamurthy Shastri <shivamurthy.shastri@linutronix.de>,
+	Kevin Tian <kevin.tian@intel.com>, Long Li <longli@microsoft.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Bjorn Helgaas <bhelgaas@google.com>, Rob Herring <robh@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof Wilczy??ski <kw@linux.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	"David S. Miller" <davem@davemloft.net>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Bui Quang Minh <minhquangbui99@gmail.com>
-Subject: [PATCH v4 4/4] selftests: net: add a virtio_net deadlock selftest
-Date: Thu, 17 Apr 2025 14:28:06 +0700
-Message-ID: <20250417072806.18660-5-minhquangbui99@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250417072806.18660-1-minhquangbui99@gmail.com>
-References: <20250417072806.18660-1-minhquangbui99@gmail.com>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Simon Horman <horms@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Peter Zijlstra <peterz@infradead.org>, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
+	Shradha Gupta <shradhagupta@microsoft.com>
+Subject: Re: [PATCH 2/2] net: mana: Allow MANA driver to allocate PCI vector
+ dynamically
+Message-ID: <20250417073229.GB20244@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <1744817747-2920-1-git-send-email-shradhagupta@linux.microsoft.com>
+ <1744817781-3243-1-git-send-email-shradhagupta@linux.microsoft.com>
+ <Z__nPAIE5kdFQRe8@yury>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z__nPAIE5kdFQRe8@yury>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-The selftest reproduces the deadlock scenario when binding/unbinding XDP
-program, XDP socket, rx ring resize on virtio_net interface.
+On Wed, Apr 16, 2025 at 01:22:04PM -0400, Yury Norov wrote:
+> On Wed, Apr 16, 2025 at 08:36:21AM -0700, Shradha Gupta wrote:
+> > Currently, the MANA driver allocates pci vector statically based on
+> > MANA_MAX_NUM_QUEUES and num_online_cpus() values and in some cases ends
+> > up allocating more vectors than it needs.
+> > This is because, by this time we do not have a HW channel and do not know
+> > how many IRQs should be allocated.
+> > To avoid this, we allocate 1 IRQ vector during the creation of HWC and
+> > after getting the value supported by hardware, dynamically add the
+> > remaining vectors.
+> > 
+> > Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+> > Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+> > ---
+> >  .../net/ethernet/microsoft/mana/gdma_main.c   | 306 ++++++++++++++----
+> >  include/net/mana/gdma.h                       |   5 +-
+> >  2 files changed, 250 insertions(+), 61 deletions(-)
+> > 
+> > diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > index 4ffaf7588885..3e3b5854b736 100644
+> > --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > @@ -6,6 +6,9 @@
+> >  #include <linux/pci.h>
+> >  #include <linux/utsname.h>
+> >  #include <linux/version.h>
+> > +#include <linux/msi.h>
+> > +#include <linux/irqdomain.h>
+> > +#include <linux/list.h>
+> >  
+> >  #include <net/mana/mana.h>
+> >  
+> > @@ -80,8 +83,15 @@ static int mana_gd_query_max_resources(struct pci_dev *pdev)
+> >  		return err ? err : -EPROTO;
+> >  	}
+> >  
+> > -	if (gc->num_msix_usable > resp.max_msix)
+> > -		gc->num_msix_usable = resp.max_msix;
+> > +	if (!pci_msix_can_alloc_dyn(pdev)) {
+> > +		if (gc->num_msix_usable > resp.max_msix)
+> > +			gc->num_msix_usable = resp.max_msix;
+> > +	} else {
+> > +		/* If dynamic allocation is enabled we have already allocated
+> > +		 * hwc msi
+> > +		 */
+> > +		gc->num_msix_usable = min(resp.max_msix, num_online_cpus() + 1);
+> > +	}
+> >  
+> >  	if (gc->num_msix_usable <= 1)
+> >  		return -ENOSPC;
+> > @@ -465,9 +475,10 @@ static int mana_gd_register_irq(struct gdma_queue *queue,
+> >  	struct gdma_irq_context *gic;
+> >  	struct gdma_context *gc;
+> >  	unsigned int msi_index;
+> > -	unsigned long flags;
+> > +	struct list_head *pos;
+> > +	unsigned long flags, flag_irq;
+> >  	struct device *dev;
+> > -	int err = 0;
+> > +	int err = 0, count;
+> >  
+> >  	gc = gd->gdma_context;
+> >  	dev = gc->dev;
+> > @@ -482,7 +493,22 @@ static int mana_gd_register_irq(struct gdma_queue *queue,
+> >  	}
+> >  
+> >  	queue->eq.msix_index = msi_index;
+> > -	gic = &gc->irq_contexts[msi_index];
+> > +
+> > +	/* get the msi_index value from the list*/
+> > +	count = 0;
+> > +	spin_lock_irqsave(&gc->irq_ctxs_lock, flag_irq);
+> > +	list_for_each(pos, &gc->irq_contexts) {
+> > +		if (count == msi_index) {
+> > +			gic = list_entry(pos, struct gdma_irq_context, gic_list);
+> > +			break;
+> > +		}
+> > +
+> > +		count++;
+> > +	}
+> > +	spin_unlock_irqrestore(&gc->irq_ctxs_lock, flag_irq);
+> > +
+> > +	if (!gic)
+> > +		return -1;
+> >  
+> >  	spin_lock_irqsave(&gic->lock, flags);
+> >  	list_add_rcu(&queue->entry, &gic->eq_list);
+> > @@ -497,8 +523,10 @@ static void mana_gd_deregiser_irq(struct gdma_queue *queue)
+> >  	struct gdma_irq_context *gic;
+> >  	struct gdma_context *gc;
+> >  	unsigned int msix_index;
+> > -	unsigned long flags;
+> > +	struct list_head *pos;
+> > +	unsigned long flags, flag_irq;
+> >  	struct gdma_queue *eq;
+> > +	int count;
+> >  
+> >  	gc = gd->gdma_context;
+> >  
+> > @@ -507,7 +535,22 @@ static void mana_gd_deregiser_irq(struct gdma_queue *queue)
+> >  	if (WARN_ON(msix_index >= gc->num_msix_usable))
+> >  		return;
+> >  
+> > -	gic = &gc->irq_contexts[msix_index];
+> > +	/* get the msi_index value from the list*/
+> > +	count = 0;
+> > +	spin_lock_irqsave(&gc->irq_ctxs_lock, flag_irq);
+> > +	list_for_each(pos, &gc->irq_contexts) {
+> > +		if (count == msix_index) {
+> > +			gic = list_entry(pos, struct gdma_irq_context, gic_list);
+> > +			break;
+> > +		}
+> > +
+> > +		count++;
+> > +	}
+> > +	spin_unlock_irqrestore(&gc->irq_ctxs_lock, flag_irq);
+> > +
+> > +	if (!gic)
+> > +		return;
+> > +
+> >  	spin_lock_irqsave(&gic->lock, flags);
+> >  	list_for_each_entry_rcu(eq, &gic->eq_list, entry) {
+> >  		if (queue == eq) {
+> > @@ -1288,11 +1331,11 @@ void mana_gd_free_res_map(struct gdma_resource *r)
+> >  	r->size = 0;
+> >  }
+> >  
+> > -static int irq_setup(unsigned int *irqs, unsigned int len, int node)
+> > +static int irq_setup(unsigned int *irqs, unsigned int len, int node, int skip_cpu)
+> >  {
+> >  	const struct cpumask *next, *prev = cpu_none_mask;
+> >  	cpumask_var_t cpus __free(free_cpumask_var);
+> > -	int cpu, weight;
+> > +	int cpu, weight, i = 0;
+> >  
+> >  	if (!alloc_cpumask_var(&cpus, GFP_KERNEL))
+> >  		return -ENOMEM;
+> > @@ -1303,9 +1346,21 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node)
+> >  		while (weight > 0) {
+> >  			cpumask_andnot(cpus, next, prev);
+> >  			for_each_cpu(cpu, cpus) {
+> > +				/* If the call is made for irqs which are dynamically
+> > +				 * added and the num of vcpus is more or equal to
+> > +				 * allocated msix, we need to skip the first
+> > +				 * set of cpus, since they are already affinitized
+> 
+> Can you replace the 'set of cpus' with a 'sibling group'?
+> 
+> > +				 * to HWC IRQ
+> > +				 */
+> 
+> This comment should not be here. This is a helper function. User may
+> want to skip 1st CPU for whatever reason. Please put the comment in
+> mana_gd_setup_dyn_irqs().
+> 
+> > +				if (skip_cpu && !i) {
+> > +					i = 1;
+> > +					goto next_cpumask;
+> > +				}
+> 
+> The 'skip_cpu' variable should be a boolean, and has more a specific
+> name. And you don't need the local 'i' to implement your logic:
+> 
+>         			if (unlikely(skip_first_cpu)) {
+>                                         skip_first_cpu = false;
+>         				goto next_sibling;
+>         			}
+> 
+> >  				if (len-- == 0)
+> >  					goto done;
+> 
+> This check should go before the one you're adding here.
 
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
----
- .../testing/selftests/drivers/net/hw/Makefile |  1 +
- .../selftests/drivers/net/hw/virtio_net.py    | 65 +++++++++++++++++++
- 2 files changed, 66 insertions(+)
- create mode 100755 tools/testing/selftests/drivers/net/hw/virtio_net.py
+Thank you for all the comments, Yury. I will fix these.
 
-diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
-index 07cddb19ba35..b5af7c1412bf 100644
---- a/tools/testing/selftests/drivers/net/hw/Makefile
-+++ b/tools/testing/selftests/drivers/net/hw/Makefile
-@@ -21,6 +21,7 @@ TEST_PROGS = \
- 	rss_ctx.py \
- 	rss_input_xfrm.py \
- 	tso.py \
-+	virtio_net.py \
- 	#
- 
- TEST_FILES := \
-diff --git a/tools/testing/selftests/drivers/net/hw/virtio_net.py b/tools/testing/selftests/drivers/net/hw/virtio_net.py
-new file mode 100755
-index 000000000000..7cad7ab98635
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/virtio_net.py
-@@ -0,0 +1,65 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+
-+# This is intended to be run on a virtio-net guest interface.
-+# The test binds the XDP socket to the interface without setting
-+# the fill ring to trigger delayed refill_work. This helps to
-+# make it easier to reproduce the deadlock when XDP program,
-+# XDP socket bind/unbind, rx ring resize race with refill_work on
-+# the buggy kernel.
-+#
-+# The Qemu command to setup virtio-net
-+# -netdev tap,id=hostnet1,vhost=on,script=no,downscript=no
-+# -device virtio-net-pci,netdev=hostnet1,iommu_platform=on,disable-legacy=on
-+
-+from lib.py import ksft_exit, ksft_run
-+from lib.py import KsftSkipEx, KsftFailEx
-+from lib.py import NetDrvEnv
-+from lib.py import bkg, ip, cmd, ethtool
-+import re
-+
-+def _get_rx_ring_entries(cfg):
-+    output = ethtool(f"-g {cfg.ifname}").stdout
-+    values = re.findall(r'RX:\s+(\d+)', output)
-+    return int(values[1])
-+
-+def setup_xsk(cfg, xdp_queue_id = 0) -> bkg:
-+    # Probe for support
-+    xdp = cmd(f'{cfg.net_lib_dir / "xdp_helper"} - -', fail=False)
-+    if xdp.ret == 255:
-+        raise KsftSkipEx('AF_XDP unsupported')
-+    elif xdp.ret > 0:
-+        raise KsftFailEx('unable to create AF_XDP socket')
-+
-+    try:
-+        xsk_bkg = bkg(f'{cfg.net_lib_dir / "xdp_helper"} {cfg.ifindex} ' \
-+                      '{xdp_queue_id} -z', ksft_wait=3)
-+        return xsk_bkg
-+    except:
-+        raise KsftSkipEx('Failed to bind XDP socket in zerocopy. ' \
-+                         'Please consider adding iommu_platform=on ' \
-+                         'when setting up virtio-net-pci')
-+
-+def check_xdp_bind(cfg):
-+    ip(f"link set dev %s xdp obj %s sec xdp" %
-+       (cfg.ifname, cfg.net_lib_dir / "xdp_dummy.bpf.o"))
-+    ip(f"link set dev %s xdp off" % cfg.ifname)
-+
-+def check_rx_resize(cfg, queue_size = 128):
-+    rx_ring = _get_rx_ring_entries(cfg)
-+    ethtool(f"-G %s rx %d" % (cfg.ifname, queue_size))
-+    ethtool(f"-G %s rx %d" % (cfg.ifname, rx_ring))
-+
-+def main():
-+    with NetDrvEnv(__file__, nsim_test=False) as cfg:
-+        try:
-+            xsk_bkg = setup_xsk(cfg)
-+        except KsftSkipEx as e:
-+            print(f"WARN: xsk pool is not set up, err: {e}")
-+
-+        ksft_run([check_xdp_bind, check_rx_resize],
-+                 args=(cfg, ))
-+    ksft_exit()
-+
-+if __name__ == "__main__":
-+    main()
--- 
-2.43.0
-
+Regards,
+Shradha.
+> 
+> > +
+> >  				irq_set_affinity_and_hint(*irqs++, topology_sibling_cpumask(cpu));
+> > +next_cpumask:
+> >  				cpumask_andnot(cpus, cpus, topology_sibling_cpumask(cpu));
+> >  				--weight;
+> >  			}
+> > @@ -1317,29 +1372,92 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node)
+> >  	return 0;
+> >  }
+> >  
+> > -static int mana_gd_setup_irqs(struct pci_dev *pdev)
+> > +static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
+> >  {
+> >  	struct gdma_context *gc = pci_get_drvdata(pdev);
+> > -	unsigned int max_queues_per_port;
+> >  	struct gdma_irq_context *gic;
+> > -	unsigned int max_irqs, cpu;
+> > -	int start_irq_index = 1;
+> > -	int nvec, *irqs, irq;
+> > +	int *irqs, irq, skip_first_cpu = 0;
+> > +	unsigned long flags;
+> >  	int err, i = 0, j;
+> >  
+> >  	cpus_read_lock();
+> > -	max_queues_per_port = num_online_cpus();
+> > -	if (max_queues_per_port > MANA_MAX_NUM_QUEUES)
+> > -		max_queues_per_port = MANA_MAX_NUM_QUEUES;
+> > +	spin_lock_irqsave(&gc->irq_ctxs_lock, flags);
+> > +	irqs = kmalloc_array(nvec, sizeof(int), GFP_KERNEL);
+> > +	if (!irqs) {
+> > +		err = -ENOMEM;
+> > +		goto free_irq_vector;
+> > +	}
+> >  
+> > -	/* Need 1 interrupt for the Hardware communication Channel (HWC) */
+> > -	max_irqs = max_queues_per_port + 1;
+> > +	for (i = 0; i < nvec; i++) {
+> > +		gic = kcalloc(1, sizeof(struct gdma_irq_context), GFP_KERNEL);
+> > +		if (!gic) {
+> > +			err = -ENOMEM;
+> > +			goto free_irq;
+> > +		}
+> > +		gic->handler = mana_gd_process_eq_events;
+> > +		INIT_LIST_HEAD(&gic->eq_list);
+> > +		spin_lock_init(&gic->lock);
+> >  
+> > -	nvec = pci_alloc_irq_vectors(pdev, 2, max_irqs, PCI_IRQ_MSIX);
+> > -	if (nvec < 0) {
+> > -		cpus_read_unlock();
+> > -		return nvec;
+> > +		snprintf(gic->name, MANA_IRQ_NAME_SZ, "mana_q%d@pci:%s",
+> > +			 i, pci_name(pdev));
+> > +
+> > +		/* one pci vector is already allocated for HWC */
+> > +		irqs[i] = pci_irq_vector(pdev, i + 1);
+> > +		if (irqs[i] < 0) {
+> > +			err = irqs[i];
+> > +			goto free_current_gic;
+> > +		}
+> > +
+> > +		err = request_irq(irqs[i], mana_gd_intr, 0, gic->name, gic);
+> > +		if (err)
+> > +			goto free_current_gic;
+> > +
+> > +		list_add_tail(&gic->gic_list, &gc->irq_contexts);
+> > +	}
+> > +
+> > +	if (gc->num_msix_usable <= num_online_cpus())
+> > +		skip_first_cpu = 1;
+> > +
+> > +	err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
+> > +	if (err)
+> > +		goto free_irq;
+> > +
+> > +	spin_unlock_irqrestore(&gc->irq_ctxs_lock, flags);
+> > +	cpus_read_unlock();
+> > +	kfree(irqs);
+> > +	return 0;
+> > +
+> > +free_current_gic:
+> > +	kfree(gic);
+> > +free_irq:
+> > +	for (j = i - 1; j >= 0; j--) {
+> > +		irq = pci_irq_vector(pdev, j + 1);
+> > +		gic = list_last_entry(&gc->irq_contexts, struct gdma_irq_context, gic_list);
+> > +		irq_update_affinity_hint(irq, NULL);
+> > +		free_irq(irq, gic);
+> > +		list_del(&gic->gic_list);
+> > +		kfree(gic);
+> >  	}
+> > +	kfree(irqs);
+> > +free_irq_vector:
+> > +	spin_unlock_irqrestore(&gc->irq_ctxs_lock, flags);
+> > +	cpus_read_unlock();
+> > +	return err;
+> > +}
+> > +
+> > +static int mana_gd_setup_irqs(struct pci_dev *pdev, int nvec)
+> > +{
+> > +	struct gdma_context *gc = pci_get_drvdata(pdev);
+> > +	struct gdma_irq_context *gic;
+> > +	int start_irq_index = 1;
+> > +	unsigned long flags;
+> > +	unsigned int cpu;
+> > +	int *irqs, irq;
+> > +	int err, i = 0, j;
+> > +
+> > +	cpus_read_lock();
+> > +	spin_lock_irqsave(&gc->irq_ctxs_lock, flags);
+> > +
+> >  	if (nvec <= num_online_cpus())
+> >  		start_irq_index = 0;
+> >  
+> > @@ -1349,15 +1467,12 @@ static int mana_gd_setup_irqs(struct pci_dev *pdev)
+> >  		goto free_irq_vector;
+> >  	}
+> >  
+> > -	gc->irq_contexts = kcalloc(nvec, sizeof(struct gdma_irq_context),
+> > -				   GFP_KERNEL);
+> > -	if (!gc->irq_contexts) {
+> > -		err = -ENOMEM;
+> > -		goto free_irq_array;
+> > -	}
+> > -
+> >  	for (i = 0; i < nvec; i++) {
+> > -		gic = &gc->irq_contexts[i];
+> > +		gic = kcalloc(1, sizeof(struct gdma_irq_context), GFP_KERNEL);
+> > +		if (!gic) {
+> > +			err = -ENOMEM;
+> > +			goto free_irq;
+> > +		}
+> >  		gic->handler = mana_gd_process_eq_events;
+> >  		INIT_LIST_HEAD(&gic->eq_list);
+> >  		spin_lock_init(&gic->lock);
+> > @@ -1372,22 +1487,14 @@ static int mana_gd_setup_irqs(struct pci_dev *pdev)
+> >  		irq = pci_irq_vector(pdev, i);
+> >  		if (irq < 0) {
+> >  			err = irq;
+> > -			goto free_irq;
+> > +			goto free_current_gic;
+> >  		}
+> >  
+> >  		if (!i) {
+> >  			err = request_irq(irq, mana_gd_intr, 0, gic->name, gic);
+> >  			if (err)
+> > -				goto free_irq;
+> > -
+> > -			/* If number of IRQ is one extra than number of online CPUs,
+> > -			 * then we need to assign IRQ0 (hwc irq) and IRQ1 to
+> > -			 * same CPU.
+> > -			 * Else we will use different CPUs for IRQ0 and IRQ1.
+> > -			 * Also we are using cpumask_local_spread instead of
+> > -			 * cpumask_first for the node, because the node can be
+> > -			 * mem only.
+> > -			 */
+> > +				goto free_current_gic;
+> > +
+> >  			if (start_irq_index) {
+> >  				cpu = cpumask_local_spread(i, gc->numa_node);
+> >  				irq_set_affinity_and_hint(irq, cpumask_of(cpu));
+> > @@ -1399,36 +1506,104 @@ static int mana_gd_setup_irqs(struct pci_dev *pdev)
+> >  			err = request_irq(irqs[i - start_irq_index], mana_gd_intr, 0,
+> >  					  gic->name, gic);
+> >  			if (err)
+> > -				goto free_irq;
+> > +				goto free_current_gic;
+> >  		}
+> > +
+> > +		list_add_tail(&gic->gic_list, &gc->irq_contexts);
+> >  	}
+> >  
+> > -	err = irq_setup(irqs, (nvec - start_irq_index), gc->numa_node);
+> > +	err = irq_setup(irqs, nvec - start_irq_index, gc->numa_node, 0);
+> >  	if (err)
+> >  		goto free_irq;
+> >  
+> > -	gc->max_num_msix = nvec;
+> > -	gc->num_msix_usable = nvec;
+> > +	spin_unlock_irqrestore(&gc->irq_ctxs_lock, flags);
+> >  	cpus_read_unlock();
+> >  	kfree(irqs);
+> >  	return 0;
+> >  
+> > +free_current_gic:
+> > +	kfree(gic);
+> >  free_irq:
+> >  	for (j = i - 1; j >= 0; j--) {
+> >  		irq = pci_irq_vector(pdev, j);
+> > -		gic = &gc->irq_contexts[j];
+> > -
+> > +		gic = list_last_entry(&gc->irq_contexts, struct gdma_irq_context, gic_list);
+> >  		irq_update_affinity_hint(irq, NULL);
+> >  		free_irq(irq, gic);
+> > +		list_del(&gic->gic_list);
+> > +		kfree(gic);
+> >  	}
+> > -
+> > -	kfree(gc->irq_contexts);
+> > -	gc->irq_contexts = NULL;
+> > -free_irq_array:
+> >  	kfree(irqs);
+> >  free_irq_vector:
+> > +	spin_unlock_irqrestore(&gc->irq_ctxs_lock, flags);
+> >  	cpus_read_unlock();
+> > -	pci_free_irq_vectors(pdev);
+> > +	return err;
+> > +}
+> > +
+> > +static int mana_gd_setup_hwc_irqs(struct pci_dev *pdev)
+> > +{
+> > +	struct gdma_context *gc = pci_get_drvdata(pdev);
+> > +	unsigned int max_irqs, min_irqs;
+> > +	int max_queues_per_port;
+> > +	int nvec, err;
+> > +
+> > +	if (pci_msix_can_alloc_dyn(pdev)) {
+> > +		max_irqs = 1;
+> > +		min_irqs = 1;
+> > +	} else {
+> > +		max_queues_per_port = num_online_cpus();
+> > +		if (max_queues_per_port > MANA_MAX_NUM_QUEUES)
+> > +			max_queues_per_port = MANA_MAX_NUM_QUEUES;
+> > +		/* Need 1 interrupt for the Hardware communication Channel (HWC) */
+> > +		max_irqs = max_queues_per_port + 1;
+> > +		min_irqs = 2;
+> > +	}
+> > +
+> > +	nvec = pci_alloc_irq_vectors(pdev, min_irqs, max_irqs, PCI_IRQ_MSIX);
+> > +	if (nvec < 0)
+> > +		return nvec;
+> > +
+> > +	err = mana_gd_setup_irqs(pdev, nvec);
+> > +	if (err) {
+> > +		pci_free_irq_vectors(pdev);
+> > +		return err;
+> > +	}
+> > +
+> > +	gc->num_msix_usable = nvec;
+> > +	gc->max_num_msix = nvec;
+> > +
+> > +	return err;
+> > +}
+> > +
+> > +static int mana_gd_setup_remaining_irqs(struct pci_dev *pdev)
+> > +{
+> > +	struct gdma_context *gc = pci_get_drvdata(pdev);
+> > +	int max_irqs, i, err = 0;
+> > +	struct msi_map irq_map;
+> > +
+> > +	if (!pci_msix_can_alloc_dyn(pdev))
+> > +		/* remain irqs are already allocated with HWC IRQ */
+> > +		return 0;
+> > +
+> > +	/* allocate only remaining IRQs*/
+> > +	max_irqs = gc->num_msix_usable - 1;
+> > +
+> > +	for (i = 1; i <= max_irqs; i++) {
+> > +		irq_map = pci_msix_alloc_irq_at(pdev, i, NULL);
+> > +		if (!irq_map.virq) {
+> > +			err = irq_map.index;
+> > +			/* caller will handle cleaning up all allocated
+> > +			 * irqs, after HWC is destroyed
+> > +			 */
+> > +			return err;
+> > +		}
+> > +	}
+> > +
+> > +	err = mana_gd_setup_dyn_irqs(pdev, max_irqs);
+> > +	if (err)
+> > +		return err;
+> > +
+> > +	gc->max_num_msix = gc->max_num_msix + max_irqs;
+> > +
+> >  	return err;
+> >  }
+> >  
+> > @@ -1436,29 +1611,34 @@ static void mana_gd_remove_irqs(struct pci_dev *pdev)
+> >  {
+> >  	struct gdma_context *gc = pci_get_drvdata(pdev);
+> >  	struct gdma_irq_context *gic;
+> > -	int irq, i;
+> > +	struct list_head *pos, *n;
+> > +	unsigned long flags;
+> > +	int irq, i = 0;
+> >  
+> >  	if (gc->max_num_msix < 1)
+> >  		return;
+> >  
+> > -	for (i = 0; i < gc->max_num_msix; i++) {
+> > +	spin_lock_irqsave(&gc->irq_ctxs_lock, flags);
+> > +	list_for_each_safe(pos, n, &gc->irq_contexts) {
+> >  		irq = pci_irq_vector(pdev, i);
+> >  		if (irq < 0)
+> >  			continue;
+> >  
+> > -		gic = &gc->irq_contexts[i];
+> > +		gic = list_entry(pos, struct gdma_irq_context, gic_list);
+> >  
+> >  		/* Need to clear the hint before free_irq */
+> >  		irq_update_affinity_hint(irq, NULL);
+> >  		free_irq(irq, gic);
+> > +		list_del(pos);
+> > +		kfree(gic);
+> > +		i++;
+> >  	}
+> > +	spin_unlock_irqrestore(&gc->irq_ctxs_lock, flags);
+> >  
+> >  	pci_free_irq_vectors(pdev);
+> >  
+> >  	gc->max_num_msix = 0;
+> >  	gc->num_msix_usable = 0;
+> > -	kfree(gc->irq_contexts);
+> > -	gc->irq_contexts = NULL;
+> >  }
+> >  
+> >  static int mana_gd_setup(struct pci_dev *pdev)
+> > @@ -1469,9 +1649,9 @@ static int mana_gd_setup(struct pci_dev *pdev)
+> >  	mana_gd_init_registers(pdev);
+> >  	mana_smc_init(&gc->shm_channel, gc->dev, gc->shm_base);
+> >  
+> > -	err = mana_gd_setup_irqs(pdev);
+> > +	err = mana_gd_setup_hwc_irqs(pdev);
+> >  	if (err) {
+> > -		dev_err(gc->dev, "Failed to setup IRQs: %d\n", err);
+> > +		dev_err(gc->dev, "Failed to setup IRQs for HWC creation: %d\n", err);
+> >  		return err;
+> >  	}
+> >  
+> > @@ -1487,6 +1667,10 @@ static int mana_gd_setup(struct pci_dev *pdev)
+> >  	if (err)
+> >  		goto destroy_hwc;
+> >  
+> > +	err = mana_gd_setup_remaining_irqs(pdev);
+> > +	if (err)
+> > +		goto destroy_hwc;
+> > +
+> >  	err = mana_gd_detect_devices(pdev);
+> >  	if (err)
+> >  		goto destroy_hwc;
+> > @@ -1563,6 +1747,8 @@ static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+> >  	gc->is_pf = mana_is_pf(pdev->device);
+> >  	gc->bar0_va = bar0_va;
+> >  	gc->dev = &pdev->dev;
+> > +	INIT_LIST_HEAD(&gc->irq_contexts);
+> > +	spin_lock_init(&gc->irq_ctxs_lock);
+> >  
+> >  	if (gc->is_pf)
+> >  		gc->mana_pci_debugfs = debugfs_create_dir("0", mana_debugfs_root);
+> > diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
+> > index 228603bf03f2..eae38d7302fe 100644
+> > --- a/include/net/mana/gdma.h
+> > +++ b/include/net/mana/gdma.h
+> > @@ -363,6 +363,7 @@ struct gdma_irq_context {
+> >  	spinlock_t lock;
+> >  	struct list_head eq_list;
+> >  	char name[MANA_IRQ_NAME_SZ];
+> > +	struct list_head gic_list;
+> >  };
+> >  
+> >  struct gdma_context {
+> > @@ -373,7 +374,9 @@ struct gdma_context {
+> >  	unsigned int		max_num_queues;
+> >  	unsigned int		max_num_msix;
+> >  	unsigned int		num_msix_usable;
+> > -	struct gdma_irq_context	*irq_contexts;
+> > +	struct list_head	irq_contexts;
+> > +	/* Protect the irq_contexts list */
+> > +	spinlock_t		irq_ctxs_lock;
+> >  
+> >  	/* L2 MTU */
+> >  	u16 adapter_mtu;
+> > -- 
+> > 2.34.1
