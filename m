@@ -1,117 +1,111 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB1422576A
-	for <netdev@vger.kernel.org>; Thu, 17 Apr 2025 10:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E82A1D63D6;
+	Thu, 17 Apr 2025 10:11:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744884231; cv=none; b=USdcSCox4axecMqByDjc5U7GxmXIc6dTa5SG3qMOMJNSHNT+zoTmmhe+3u/EKMWeEZ0B8K5D3umgjFDrifqp7ISs+3LK2PebSk6D4HKwKfboW+ndksmeucUEjOI3twO9gvax6OWg8OtAjFFkulmwfJXT0UEzpoYN7ZpKYnEs9V0=
+	t=1744884676; cv=none; b=VZx+OeJlOvRa4UKbI555x+6D+KKahtdpsGKXoUqBNlhAwYXLWAsMjACa/NQoWXEbR5xFA6B95BCPjjdAVAc2fUWDjkW/+9gqqN4Ayi2Cdvpy1LRQmjpKyIQ6RMp5h3+vKF5cVxRr8OVi5ARyvs+UdriQiVckbv/n+HRA0lk2tWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744884231; c=relaxed/simple;
-	bh=EqCOTsE+QB5UW/VOIVbAS0MuBQ504cjzCxczF0GFvzo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=REjREiOcMr+BWfKhFd9s2kJBZqPMSlM2PqIR+GtTVVNWitWHHwydVGYL8wEEFUtpi3aBQ4Fg8qHlE5S2tRjwnK+IDk8gONzaTCrwG6H5n1g5bJQT672Vgm8oSSbGxegNcZPm9SOP3m4wt+r39xK/GzKBpykc3Z5JMQ6ih8lAqOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PEG3rHhj; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1744884676; c=relaxed/simple;
+	bh=OjOyXwwkPkvApQlOY7upCNWh6uL9evvXiu2wCmgHLjM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k+wTpS2S+a33vTOxwzyjOlKx4EZLZusukEgN7EeG+VNG06ze0W0jDtBuggQAcoyLPrMg73UnAK+0Uv8X+u8SPeE6LwekLackqCqgevwi4spzAX+eWSrYVtMp27Mj9bFkueUOebRomSREP2AgSLdFtnLslJzaE20Dj3wP14PHLPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=lyFy02Zs; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PEG3rHhj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744884228;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eca6nYlnj6Q/YeQ89T3yXHQz/N/LC2yMQtBQUQX05wA=;
-	b=PEG3rHhjtnbyw3bqhLENLBaZL4jeC+rkLkjDN402R7lnOP6ZqU8SFGM4M8S91myKrR6LZv
-	1OBMW0Er8ELhq2nKlpnmWGdqsxgr9LLmhOEKYgNFdolRdFgMOtAqWwq3qKh+jD4qHRV2vZ
-	xdqyfAjQV1pEFC461R7cWxLRez6eUsw=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-398-gkd0aY-4OuO_QBG_gt1PJA-1; Thu, 17 Apr 2025 06:03:46 -0400
-X-MC-Unique: gkd0aY-4OuO_QBG_gt1PJA-1
-X-Mimecast-MFC-AGG-ID: gkd0aY-4OuO_QBG_gt1PJA_1744884226
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3912b54611dso315391f8f.1
-        for <netdev@vger.kernel.org>; Thu, 17 Apr 2025 03:03:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744884225; x=1745489025;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eca6nYlnj6Q/YeQ89T3yXHQz/N/LC2yMQtBQUQX05wA=;
-        b=MrZ4aYic4fCIbHEQ7Xsfj1oOdYRCgi7ehU1IpAmhwJ0Y3+qJnwLQVxIelvINSYTn6c
-         4eu+P5xF+uz/p7NhW/44krTjokrgY1FYOo7JAFTxijE2VP9k7ggyme06xdezWvCKSAqH
-         8bERsWo+nqa/rqwsi4frCNThVJmiGMoxM6qJpaPikyQ/nAnMoHdWxoO+knH6FzyvqaoT
-         3Hd/gajSSYbxZ3O9IndcInB+uf88Zt590UeooNINbLCggMYOxKawRZ65G0TYTOqcfmqH
-         KYj4RjcnF392TZwB+5N4kwPGdxrmhcAF+ePvOX/0sqUx73EBAI2PKPO9p1BY2hs4vM9V
-         jCDQ==
-X-Gm-Message-State: AOJu0YxnTjri3LoDptdcg9EfWCXoMUxfc5HXXtiFpKKTErIT5GfKe8vN
-	Uz9JuQ4MoZ9rhuXsp6PN8da0qi3teqYQB8Ry9GwdT6l1jQmxtbuhcm0YVDBzUx4oiFirHWJI4+q
-	fZQLNfU6FSKH9cx0TLzyZ9KiTc8skwnErzc+baC7Z+RuMQchdmF0r/w==
-X-Gm-Gg: ASbGnctzPH7NwHt8aBu9GcoUpGp+/TyqAoFwJJVXQL+CJ7b1I4XV/0OiOPUr0U+t+aI
-	LRJvO999vkuXw9AhrpUh8iL1jdWFGKc4gpKZ3HwhKlTlCP5LoMnUeEFGuO20eut4P6hoE20du0M
-	fDjtj4lfZP56KROhp7zNTYgOeWg30EqgKuhznHe6D5QSaXF+E0SQ6aKqiwWJtbt7QFePB8pfZJ3
-	OaD7iJ96r18I6G6m2DkzG5B/XHSFdewmo8JQEyldaCEHdqARUNNnkPBKj9iJd/B9aqxJzekJwJf
-	RnoEMhqmKaEHex529gMICSdW+G8YrbCokkUlFEnkSg==
-X-Received: by 2002:a5d:5f54:0:b0:391:1218:d5f7 with SMTP id ffacd0b85a97d-39ee5b8b7e1mr4746223f8f.40.1744884225631;
-        Thu, 17 Apr 2025 03:03:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEWbMd5UZNS52cZp1/RVD9DV2YcByv7qTywhU//hbfm0mgjXhAdZwTqwRIUercg2jPhhkOtQA==
-X-Received: by 2002:a5d:5f54:0:b0:391:1218:d5f7 with SMTP id ffacd0b85a97d-39ee5b8b7e1mr4746191f8f.40.1744884225284;
-        Thu, 17 Apr 2025 03:03:45 -0700 (PDT)
-Received: from [192.168.88.253] (146-241-55-253.dyn.eolo.it. [146.241.55.253])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eaf43cceesm19733949f8f.73.2025.04.17.03.03.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Apr 2025 03:03:44 -0700 (PDT)
-Message-ID: <564ca4ac-661e-4126-a65a-106d3c28a47e@redhat.com>
-Date: Thu, 17 Apr 2025 12:03:43 +0200
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="lyFy02Zs"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=cJJC6WP3gpZ9K3VX9TT93MWqlpGNyRN7xfN0nAAX5ow=; b=lyFy02Zs99XdoiAkZ/hc5CAzhD
+	YiWUy1eBRdXDgyCSLi+Pqr1lv4YSwKj8r6wjCEIEIoLu/z/rX95dT07toDiLrulNaqFjc1c5qbVhn
+	hizjLWioCaBWkTeKE8r42yWwdh10Q22hupiiju9Z3v0WMdB6hUPI3IFzp1LqVpp34EXIE/RB4SRAN
+	CrVkbklx9/GIp1WNkLMyXIOYLRJsxc10oLD8CihkTabScq1KrtdUoHviFLiY0rKjWD5/xAbEqUFMv
+	a5bnTMsqsqZ+CPCHujM49texrGF0DHB+VrOKUyGJ7yrpByjYN5ahyB60pxoMuKVdPckB2ysBQl9R0
+	2EKY1wNw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50752)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1u5MCv-0005Bh-2W;
+	Thu, 17 Apr 2025 11:10:57 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1u5MCm-0002MO-1y;
+	Thu, 17 Apr 2025 11:10:48 +0100
+Date: Thu, 17 Apr 2025 11:10:48 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Frank Sae <Frank.Sae@motor-comm.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Parthiban.Veerasooran@microchip.com, linux-kernel@vger.kernel.org,
+	"andrew+netdev @ lunn . ch" <andrew+netdev@lunn.ch>, lee@trager.us,
+	horms@kernel.org, linux-doc@vger.kernel.org, corbet@lwn.net,
+	geert+renesas@glider.be, xiaogang.fan@motor-comm.com,
+	fei.zhang@motor-comm.com, hua.sun@motor-comm.com
+Subject: Re: [PATCH net-next v4 00/14] yt6801: Add Motorcomm yt6801 PCIe
+ driver
+Message-ID: <aADTqCC7oaXFauOm@shell.armlinux.org.uk>
+References: <20250408092835.3952-1-Frank.Sae@motor-comm.com>
+ <Z_T6vv013jraCzSD@shell.armlinux.org.uk>
+ <da434f13-fb08-4036-96ed-7de579cb9ddc@motor-comm.com>
+ <4fac4c4f-543b-4887-ace9-d264a0e5b0f2@lunn.ch>
+ <4ad68dae-311f-4cdd-a6f8-0229f069ece3@motor-comm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 1/2] net: ethtool: Introduce per-PHY DUMP
- operations
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, davem@davemloft.net,
- Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
- Eric Dumazet <edumazet@google.com>, Heiner Kallweit <hkallweit1@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Herve Codina <herve.codina@bootlin.com>,
- Florian Fainelli <f.fainelli@gmail.com>, Russell King
- <linux@armlinux.org.uk>, Vladimir Oltean <vladimir.oltean@nxp.com>,
- =?UTF-8?Q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>,
- Oleksij Rempel <o.rempel@pengutronix.de>, Simon Horman <horms@kernel.org>,
- Romain Gantois <romain.gantois@bootlin.com>,
- Piergiorgio Beruto <piergiorgio.beruto@gmail.com>
-References: <20250415085155.132963-1-maxime.chevallier@bootlin.com>
- <20250415085155.132963-2-maxime.chevallier@bootlin.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250415085155.132963-2-maxime.chevallier@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4ad68dae-311f-4cdd-a6f8-0229f069ece3@motor-comm.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 4/15/25 10:51 AM, Maxime Chevallier wrote:
-> +static int ethnl_perphy_dump_all_dev(struct sk_buff *skb,
-> +				     struct ethnl_perphy_dump_ctx *ctx,
-> +				     const struct genl_info *info)
-> +{
-> +	struct ethnl_dump_ctx *ethnl_ctx = &ctx->ethnl_ctx;
-> +	struct net *net = sock_net(skb->sk);
-> +	struct net_device *dev;
-> +	int ret = 0;
-> +
-> +	rcu_read_lock();
-> +	for_each_netdev_dump(net, dev, ethnl_ctx->pos_ifindex) {
-> +		dev_hold(dev);
+On Thu, Apr 17, 2025 at 02:06:05PM +0800, Frank Sae wrote:
+> 
+> 
+> On 2025/4/14 04:33, Andrew Lunn wrote:
+> > On Fri, Apr 11, 2025 at 05:50:55PM +0800, Frank Sae wrote:
+> >>
+> >>
+> >> On 2025/4/8 18:30, Russell King (Oracle) wrote:
+> >>> On Tue, Apr 08, 2025 at 05:28:21PM +0800, Frank Sae wrote:
+> >>>> This series includes adding Motorcomm YT6801 Gigabit ethernet driver
+> >>>>  and adding yt6801 ethernet driver entry in MAINTAINERS file.
+> >>>> YT6801 integrates a YT8531S phy.
+> >>>
+> >>> What is different between this and the Designware GMAC4 core supported
+> >>> by drivers/net/ethernet/stmicro/stmmac/ ?
+> >>>
+> >>
+> >> We support more features: NS, RSS, wpi, wol pattern and aspm control.
+> > 
+> > Details please as to why these preventing the stmmac driver from being
+> > used? Our default opinion will be that you will extend that stmmac
+> > driver. In order to change that, you need to give us deep technical
+> > arguments why it cannot be done.
+> > 
+> 
+> After internal discussion, we have decided to temporarily suspend upstream.
+> Thanks again!
 
-Minor nit: please use netdev_hold() instead.
+Sorry, but please understand the issue from our side, because the more
+code that's in the kernel tree, the more work that gives maintainers
+who stick around for the long term. Therefore, it is desirable not to
+collect lots of driver code that is only subtly different from each
+other, but require re-use and/or adaption of what is already present.
 
-Thanks,
-
-Paolo
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
