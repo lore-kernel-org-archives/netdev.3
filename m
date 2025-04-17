@@ -1,170 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB613770B;
-	Thu, 17 Apr 2025 18:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886781D07BA;
+	Thu, 17 Apr 2025 18:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915391; cv=none; b=NmkEzbcmGw8+p1CGZM5i741SOdXcRVgvY7If0WQja+dmFvLlwG0SGFhWN94d2srSoqGtELvw3QA/ADan3FcP5bGhg52cbyYE61yigeMlR3s94eR2G/6A8RKCpK0VaMIxqmHYHm19Um43YRk6H8ke82GDngTaB0KBtWOw594o9LM=
+	t=1744915432; cv=none; b=Rssj/WAq9UCjnAIvWvvfOfsipeefsGDVDE7l0BjNRCkS88j0SVhRQ2ge0s2bSL5l8LfrbK8CcJuskwS6QPwH2LPBe75AOf3c9kn2f/dx81z8emQ3NqhjD/lDM+Tn/UKl0oUoQ0YmWMEgWPnnGVAvGBdYSOY2aubbDv5gC+wTnYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915391; c=relaxed/simple;
-	bh=hDqF6dTxExQg9b3b60B6OeV2TZ32PrG2edBc5/LLV7c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VsvJGNPVswwRPgmhgKrfDsuOEA1z1AD6D/6vLSfxicL44JImClHIgIGRkPjzpYhRcrGPKHRcUnCbDh9SKM1fx07V7hNFhS70IKJs6LSMAuwq3IqnJxc5NtiyNkHec0ayDkSGXGDhpPE0veH//X1bxdVqVIdDeW/aZ2bA4xV94Xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pl1v8hDh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744915432; c=relaxed/simple;
+	bh=4Wf4cddPliO1/227XJM9I0ZusnnKJaOrUTUevHmuqhM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Qu3r1gydFMY8X08/ej7A1Ws/cDfCoFI4bp0JTrbcc582IWzAYoVLfLXkl2MaxOPjHyshKEjXyP1BZ9Gb82hwTB0wYQutPMEULEgXGUbmevBSiuVHTfrY2SJ53yCZu0WjowE2J1uyYUUkLoosKXh9bE00jcxGTgT1nlDjXlo3eQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UHcHEjDN; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pl1v8hDh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECBDC4CEE4;
-	Thu, 17 Apr 2025 18:43:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915391;
-	bh=hDqF6dTxExQg9b3b60B6OeV2TZ32PrG2edBc5/LLV7c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pl1v8hDhOz88R7ddcwC0HJzRbEuQJi0hcliyTkt3aaEgwAiz+uX7K2NGwQcmCanTH
-	 WK6l0S3Fp4V8QTdLFFcXxOb9eEVa0/Br4s4gJhG6RRt11Ku2uIxd9lUmlfZZd5pCp+
-	 P0fsD+pZM7JHk2hpkO94w9dnOv7lrJWJdAkvmg2c=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Leon Schuermann <leon@is.currently.online>,
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="UHcHEjDN"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1744915427;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vg5zFmLWG03eX0vMZyo4RIATZU1L46uJRdK/srxwg2g=;
+	b=UHcHEjDN6ZR8xOddEau+gniB+oTlzN6HZs7AhYcqejbOEh6cw1m9ZNXFQ9wwU0MYNlAMZA
+	ELwb/t8jJQbIDywNga3AI6t0uFUA2xc3Z7fYroqz5HbsXySMtZNs+L+6JaXIAa7KFkEKMM
+	DveTHLoNFYXR3596BdNpemAx7m5qrAs=
+From: Martin KaFai Lau <martin.lau@linux.dev>
+To: David Miller <davem@davemloft.net>,
 	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org ("open list:NETWORKING DRIVERS"),
-	Philipp Hahn <phahn-oss@avm.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Oliver Neukum <oliver@neukum.org>
-Subject: [PATCH 6.12 112/393] cdc_ether|r8152: ThinkPad Hybrid USB-C/A Dock quirk
-Date: Thu, 17 Apr 2025 19:48:41 +0200
-Message-ID: <20250417175112.090976268@linuxfoundation.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: pull-request: bpf-next 2025-04-17
+Date: Thu, 17 Apr 2025 11:43:37 -0700
+Message-ID: <20250417184338.3152168-1-martin.lau@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+Hi David, hi Jakub, hi Paolo, hi Eric,
 
-------------------
+The following pull-request contains BPF updates for your *net-next* tree.
 
-From: Philipp Hahn <phahn-oss@avm.de>
+We've added 12 non-merge commits during the last 9 day(s) which contain
+a total of 18 files changed, 1748 insertions(+), 19 deletions(-).
 
-[ Upstream commit a07f23ad9baf716cbf7746e452c92960536ceae6 ]
+The main changes are:
 
-Lenovo ThinkPad Hybrid USB-C with USB-A Dock (17ef:a359) is affected by
-the same problem as the Lenovo Powered USB-C Travel Hub (17ef:721e):
-Both are based on the Realtek RTL8153B chip used to use the cdc_ether
-driver. However, using this driver, with the system suspended the device
-constantly sends pause-frames as soon as the receive buffer fills up.
-This causes issues with other devices, where some Ethernet switches stop
-forwarding packets altogether.
+1) bpf qdisc support, from Amery Hung.
+   A qdisc can be implemented in bpf struct_ops programs and
+   can be used the same as other existing qdiscs in the
+   "tc qdisc" command.
 
-Using the Realtek driver (r8152) fixes this issue. Pause frames are no
-longer sent while the host system is suspended.
+2) Add xsk tail adjustment tests, from Tushar Vyavahare.
 
-Cc: Leon Schuermann <leon@is.currently.online>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Oliver Neukum <oliver@neukum.org> (maintainer:USB CDC ETHERNET DRIVER)
-Cc: netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
-Link: https://git.kernel.org/netdev/net/c/cb82a54904a9
-Link: https://git.kernel.org/netdev/net/c/2284bbd0cf39
-Link: https://www.lenovo.com/de/de/p/accessories-and-software/docking/docking-usb-docks/40af0135eu
-Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://patch.msgid.link/484336aad52d14ccf061b535bc19ef6396ef5120.1741601523.git.p.hahn@avm.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/usb/cdc_ether.c | 7 +++++++
- drivers/net/usb/r8152.c     | 6 ++++++
- drivers/net/usb/r8153_ecm.c | 6 ++++++
- 3 files changed, 19 insertions(+)
+Please consider pulling these changes from:
 
-diff --git a/drivers/net/usb/cdc_ether.c b/drivers/net/usb/cdc_ether.c
-index a6469235d904e..a032c1ded4063 100644
---- a/drivers/net/usb/cdc_ether.c
-+++ b/drivers/net/usb/cdc_ether.c
-@@ -783,6 +783,13 @@ static const struct usb_device_id	products[] = {
- 	.driver_info = 0,
- },
- 
-+/* Lenovo ThinkPad Hybrid USB-C with USB-A Dock (40af0135eu, based on Realtek RTL8153) */
-+{
-+	USB_DEVICE_AND_INTERFACE_INFO(LENOVO_VENDOR_ID, 0xa359, USB_CLASS_COMM,
-+			USB_CDC_SUBCLASS_ETHERNET, USB_CDC_PROTO_NONE),
-+	.driver_info = 0,
-+},
-+
- /* Aquantia AQtion USB to 5GbE Controller (based on AQC111U) */
- {
- 	USB_DEVICE_AND_INTERFACE_INFO(AQUANTIA_VENDOR_ID, 0xc101,
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 468c739740463..96fa3857d8e25 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -785,6 +785,7 @@ enum rtl8152_flags {
- #define DEVICE_ID_THINKPAD_USB_C_DONGLE			0x720c
- #define DEVICE_ID_THINKPAD_USB_C_DOCK_GEN2		0xa387
- #define DEVICE_ID_THINKPAD_USB_C_DOCK_GEN3		0x3062
-+#define DEVICE_ID_THINKPAD_HYBRID_USB_C_DOCK		0xa359
- 
- struct tally_counter {
- 	__le64	tx_packets;
-@@ -9787,6 +9788,7 @@ static bool rtl8152_supports_lenovo_macpassthru(struct usb_device *udev)
- 		case DEVICE_ID_THINKPAD_USB_C_DOCK_GEN2:
- 		case DEVICE_ID_THINKPAD_USB_C_DOCK_GEN3:
- 		case DEVICE_ID_THINKPAD_USB_C_DONGLE:
-+		case DEVICE_ID_THINKPAD_HYBRID_USB_C_DOCK:
- 			return 1;
- 		}
- 	} else if (vendor_id == VENDOR_ID_REALTEK && parent_vendor_id == VENDOR_ID_LENOVO) {
-@@ -10064,6 +10066,8 @@ static const struct usb_device_id rtl8152_table[] = {
- 	{ USB_DEVICE(VENDOR_ID_MICROSOFT, 0x0927) },
- 	{ USB_DEVICE(VENDOR_ID_MICROSOFT, 0x0c5e) },
- 	{ USB_DEVICE(VENDOR_ID_SAMSUNG, 0xa101) },
-+
-+	/* Lenovo */
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x304f) },
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3054) },
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3062) },
-@@ -10074,7 +10078,9 @@ static const struct usb_device_id rtl8152_table[] = {
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x720c) },
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x7214) },
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x721e) },
-+	{ USB_DEVICE(VENDOR_ID_LENOVO,  0xa359) },
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0xa387) },
-+
- 	{ USB_DEVICE(VENDOR_ID_LINKSYS, 0x0041) },
- 	{ USB_DEVICE(VENDOR_ID_NVIDIA,  0x09ff) },
- 	{ USB_DEVICE(VENDOR_ID_TPLINK,  0x0601) },
-diff --git a/drivers/net/usb/r8153_ecm.c b/drivers/net/usb/r8153_ecm.c
-index 20b2df8d74ae1..8d860dacdf49b 100644
---- a/drivers/net/usb/r8153_ecm.c
-+++ b/drivers/net/usb/r8153_ecm.c
-@@ -135,6 +135,12 @@ static const struct usb_device_id products[] = {
- 				      USB_CDC_SUBCLASS_ETHERNET, USB_CDC_PROTO_NONE),
- 	.driver_info = (unsigned long)&r8153_info,
- },
-+/* Lenovo ThinkPad Hybrid USB-C with USB-A Dock (40af0135eu, based on Realtek RTL8153) */
-+{
-+	USB_DEVICE_AND_INTERFACE_INFO(VENDOR_ID_LENOVO, 0xa359, USB_CLASS_COMM,
-+				      USB_CDC_SUBCLASS_ETHERNET, USB_CDC_PROTO_NONE),
-+	.driver_info = (unsigned long)&r8153_info,
-+},
- 
- 	{ },		/* END */
- };
--- 
-2.39.5
+  git://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git tags/for-netdev
 
+Thanks a lot!
 
+Also thanks to reporters, reviewers and testers of commits in this pull-request:
 
+Cong Wang, Maciej Fijalkowski, Toke Høiland-Jørgensen
+
+----------------------------------------------------------------
+
+The following changes since commit 0f681b0ecd190fb4516bb34cec227296b10533d1:
+
+  net: ena: Support persistent per-NAPI config. (2025-04-08 12:34:32 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git tags/for-netdev
+
+for you to fetch changes up to fd23ce3eb4a1005bd109977856d12ec0fde7ef75:
+
+  Merge branch 'bpf-qdisc' (2025-04-17 10:54:41 -0700)
+
+----------------------------------------------------------------
+bpf-next-for-netdev
+
+----------------------------------------------------------------
+Amery Hung (10):
+      bpf: Prepare to reuse get_ctx_arg_idx
+      bpf: net_sched: Support implementation of Qdisc_ops in bpf
+      bpf: net_sched: Add basic bpf qdisc kfuncs
+      bpf: net_sched: Add a qdisc watchdog timer
+      bpf: net_sched: Support updating bstats
+      bpf: net_sched: Disable attaching bpf qdisc to non root
+      libbpf: Support creating and destroying qdisc
+      selftests/bpf: Add a basic fifo qdisc test
+      selftests/bpf: Add a bpf fq qdisc to selftest
+      selftests/bpf: Test attaching bpf qdisc to mq and non root
+
+Martin KaFai Lau (2):
+      Merge branch 'selftests-xsk-add-tests-for-xdp-tail-adjustment-in-af_xdp'
+      Merge branch 'bpf-qdisc'
+
+Tushar Vyavahare (2):
+      selftests/xsk: Add packet stream replacement function
+      selftests/xsk: Add tail adjustment tests and support check
+
+ include/linux/btf.h                                |   1 +
+ kernel/bpf/btf.c                                   |   6 +-
+ net/sched/Kconfig                                  |  12 +
+ net/sched/Makefile                                 |   1 +
+ net/sched/bpf_qdisc.c                              | 461 +++++++++++++
+ net/sched/sch_api.c                                |   7 +-
+ net/sched/sch_generic.c                            |   3 +-
+ tools/lib/bpf/libbpf.h                             |   5 +-
+ tools/lib/bpf/netlink.c                            |  20 +-
+ tools/testing/selftests/bpf/config                 |   2 +
+ tools/testing/selftests/bpf/prog_tests/bpf_qdisc.c | 180 +++++
+ .../testing/selftests/bpf/progs/bpf_qdisc_common.h |  31 +
+ tools/testing/selftests/bpf/progs/bpf_qdisc_fifo.c | 117 ++++
+ tools/testing/selftests/bpf/progs/bpf_qdisc_fq.c   | 750 +++++++++++++++++++++
+ tools/testing/selftests/bpf/progs/xsk_xdp_progs.c  |  50 ++
+ tools/testing/selftests/bpf/xsk_xdp_common.h       |   1 +
+ tools/testing/selftests/bpf/xskxceiver.c           | 118 +++-
+ tools/testing/selftests/bpf/xskxceiver.h           |   2 +
+ 18 files changed, 1748 insertions(+), 19 deletions(-)
+ create mode 100644 net/sched/bpf_qdisc.c
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/bpf_qdisc.c
+ create mode 100644 tools/testing/selftests/bpf/progs/bpf_qdisc_common.h
+ create mode 100644 tools/testing/selftests/bpf/progs/bpf_qdisc_fifo.c
+ create mode 100644 tools/testing/selftests/bpf/progs/bpf_qdisc_fq.c
