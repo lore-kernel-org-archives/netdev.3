@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77B3267B98
-	for <netdev@vger.kernel.org>; Fri, 18 Apr 2025 02:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82843267F65
+	for <netdev@vger.kernel.org>; Fri, 18 Apr 2025 02:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744942639; cv=none; b=tnuCEDuaX6naPJFiDYgamvJWEgMYhF05nzXeeAq5bnt1mdBtEuomvtPLU53Rzc3e/XsCApEDwSWjyj+M+drqoun3FknVNh+bvECsB0BBL323pI1SDTAN890JvVKOER6Zf9TpuQzheNqpE+Hz8Uerv8Y0pGRfxoSw/mW4q9RB0DI=
+	t=1744942640; cv=none; b=oJN63HXLATh4edIGysASLPP+ewhRj0N5nKaiL5AALLHaJDd67vZfu2F4GKyK5kuL0t21mccNiQ9A0uvc/ntkbq44TEP4774frTU+zGgRcfJyo+nX7v/nPiK2Ol4lluMURamjGzpphsAx4M0uRJnHOuh3EVgDj5cCG1cTTPtIG7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744942639; c=relaxed/simple;
-	bh=PMSQ7qnFK7wnHEHneabQKw9K7YFrTzmI4TECj1xLcH0=;
+	s=arc-20240116; t=1744942640; c=relaxed/simple;
+	bh=RDUh6uCCiTzArfUadb/u56Uacyn0KBCCBnvHHipE6hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s6YEx2rLRZP/SUrjnfyZBRWcmcQeNKF4vDQv0Az4rYMREdnUEVtfabrYWHmcv6l2NfN61+lm6OcXMW/TeRDq6tyBWnDfjydzUsPPMmOIkqy/yDZRNtN8MEZf+nyF4pcRgIvl61tKacnxW+c1jEER0vCoYBDQd6a13TSb516tk3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xx9b5IXq; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=WJ18qaPioza0HbP2dl00114bBZJr6jiFG7+1E1I6Vt6r5bzVyHCaefOByZyYUNZdivVWGPgVi9S8r9ciSFm/qbWruUYSR3aydu15WAV/M/1bFVEJUijH0/rOqXTxsvMmwoP2BttEDFeezk4XTitI44PUQaVNmh4uHU48Zyi3JCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XsVlLS4i; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xx9b5IXq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AD2C4CEF1;
-	Fri, 18 Apr 2025 02:17:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XsVlLS4i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC54C4CEF0;
+	Fri, 18 Apr 2025 02:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744942638;
-	bh=PMSQ7qnFK7wnHEHneabQKw9K7YFrTzmI4TECj1xLcH0=;
+	s=k20201202; t=1744942640;
+	bh=RDUh6uCCiTzArfUadb/u56Uacyn0KBCCBnvHHipE6hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xx9b5IXqeUeOJ9sTe4AY6r9YDLU25+8oZf7WhZtngVASaqRqJiKyR2Qzl4QHETL2R
-	 9M6RTpkZ7sZGEqx+Glk9yX/EW8B/Td3lUPtNr3An/TBgZDUkP6JreugOeHObolZcB8
-	 cUvvW7DowP6twqLwtx82TyXsMRueU35OECX5HYP095hovOuNzYmbIQDWhljyGHKzm7
-	 ObHukoCO+Ha2oddEs95tEVjn9bI/Cv/mcWE4q50rpXPMmM0jtz1AXIPaFGYKoGuC8d
-	 n83IU75UQwClmXds66bbH8lcAvd+bpD6wLmeVIyyx4qfNcnLGKhJi6vsKjH5m70LdR
-	 LTGPw/nr1/ABg==
+	b=XsVlLS4iRcZYyWIoeDltx2tlG0EYlDiuADEjERO2/8JydsUy0CODle7MJlmKKHMcv
+	 EiQ3UBqBKwj9YGQR2V97gTYT9aToBmFJO0//FDhaEINflHUlQelJ3AtB9qgDk+dzzU
+	 KAW9gGmRKlTASEoP4C6vQZKqjKChNpyvEr1JBwYfKLobekhRD7n6c1VLcNAZy+qgRw
+	 q2bWP/Q7eV3p1ElHYniMxiLeSrxwvPK6K8EMHPayE7EozZm3Gp3g6Mjf+GyBwyaz8A
+	 cZygb49HjrkB+PeyaosRuJgCiO44p1D4u3i0+e35vNnwpiZPPmRA/kIydnRANwUham
+	 yfAqnNJ+H78dQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net,
 	donald.hunter@gmail.com
@@ -35,9 +35,9 @@ Cc: netdev@vger.kernel.org,
 	andrew+netdev@lunn.ch,
 	horms@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 04/12] netlink: specs: rt-link: remove duplicated group in attr list
-Date: Thu, 17 Apr 2025 19:16:58 -0700
-Message-ID: <20250418021706.1967583-5-kuba@kernel.org>
+Subject: [PATCH net-next 07/12] netlink: specs: rt-link: make bond's ipv6 address attribute fixed size
+Date: Thu, 17 Apr 2025 19:17:01 -0700
+Message-ID: <20250418021706.1967583-8-kuba@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250418021706.1967583-1-kuba@kernel.org>
 References: <20250418021706.1967583-1-kuba@kernel.org>
@@ -49,25 +49,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-group is listed twice for newlink.
+ns-ip6-target is an indexed-array. Codegen for variable size binary
+array would be a bit tedious, tell C that we know the size of these
+attributes, since they are IPv6 addrs.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- Documentation/netlink/specs/rt-link.yaml | 1 -
- 1 file changed, 1 deletion(-)
+ Documentation/netlink/specs/rt-link.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
-index 7f411e8cd755..38f439911f94 100644
+index 6ab9b876a464..4b51c5b60d95 100644
 --- a/Documentation/netlink/specs/rt-link.yaml
 +++ b/Documentation/netlink/specs/rt-link.yaml
-@@ -2382,7 +2382,6 @@ protonum: 0
-             - txqlen
-             - operstate
-             - linkmode
--            - group
-             - gso-max-size
-             - gso-max-segs
-             - gro-max-size
+@@ -1447,6 +1447,8 @@ protonum: 0
+         type: indexed-array
+         sub-type: binary
+         display-hint: ipv6
++        checks:
++          exact-len: 16
+       -
+         name: coupled-control
+         type: u8
 -- 
 2.49.0
 
