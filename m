@@ -1,56 +1,56 @@
-Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
+Received: from smtp-fw-52005.amazon.com (smtp-fw-52005.amazon.com [52.119.213.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDF723DE
-	for <netdev@vger.kernel.org>; Fri, 18 Apr 2025 00:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD8879EA
+	for <netdev@vger.kernel.org>; Fri, 18 Apr 2025 00:08:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744934888; cv=none; b=FPymTfloKHBFZackhb13/XBF6aNY9mu6twTzEbP6iieuRLbmLZFIB2pJvXjsDc2S2PA4F7NL8lNI9dRzO9Wq/uDRbglawBDQUzltNBccF1n2F5zbv1S8kBCc9JUZLx3IlmOoXPp/RcxIDOCe9rRTjo1zBS+8qwr8kt10mX+EttI=
+	t=1744934896; cv=none; b=C5TPfYDoGKTfzQ/EgrhufaUY3Aiu/4geic4XGD4M1KjWjY8EOLq6lR9NVJRpqujJqjKTCWQ11E7rSntebCZHjL0YNFDGVV/NVYDJEDHjvttv29qyVmZrXSjgzEMYH6F5MzGBQSsm0SE3ll+Nc8ciQGfABwv6m7JTiUS4Wy2Ntg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744934888; c=relaxed/simple;
-	bh=LXCC3DiTO+MpUZtkieMVJbmIUAMoaxu15xl9NpIgdzU=;
+	s=arc-20240116; t=1744934896; c=relaxed/simple;
+	bh=k/8qX0BNwgh176hMRAi+XVQ3knseryLGwqugBHGY5Lo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WqXw2wNlLs8OmOaWYMsLg17DYKSjnyxARe8HB5Zt5z37UWaRodN5tRo/iOgPc01CTyRk0U8mLLbiA73Xm6budIqoloO2NpJ6gSVVp/RFas1zmVfO+fyCWYDI0dqkFBj6pd8z1qAen8Id7YIjpycCRnlghorDqLx/OxxmS3NyRd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=EtpqqN6q; arc=none smtp.client-ip=99.78.197.220
+	 MIME-Version:Content-Type; b=b15L/haTR+aFAL1ktmmZJqDN4SruKy+T8ax6QLdITAq1YCsx9EzTfiwfcYi3lhdnXqruxjOkBjk6ePm9yJAqXENtSWsK3Sty5ALuZhpixae3a/jXw3sCcstmE/9I5dm2J58kLUR+0OHYoIaOQM644ixRo+fE9rb5Z7csoWNTgvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=f037affS; arc=none smtp.client-ip=52.119.213.156
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="EtpqqN6q"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="f037affS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1744934887; x=1776470887;
+  t=1744934894; x=1776470894;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=OsCX6bAx47k1BIW0b5BPQZME3GBSntyrmTDvcdAH6jQ=;
-  b=EtpqqN6q5QB26USIR+C+SG6Hs+jyKpvKwGrM2UzeBxlQGslptRzVWHyz
-   qwwZgLeWYmc1QcaYBGBl4h9yZGW7nHHO9PtD7/N68cYojNlOUVw2leWSr
-   5X7ENVPoOjLxRM/mLh5X4kbEaZlGpLQuImheKm+KyIW0TIoXIcinil2+q
-   o=;
+  bh=x/vIwFPrQWzVaKDGSkoh0hV7FgliOgaH5bk4sHYD+Sc=;
+  b=f037affSWL2Jn/Sl9ltYIkf7+XDilNfnOu+CT55YygCEi7ukGUUDJe7/
+   IHEFEZ6Fw94euAEc+qkTw/zTxOOQhJ0ftY/UcMrOd3+MxpvBdVN94vRtP
+   ktm7FewU+MjeSXhKMo5Fl6x1kHhAraYp2C1yQmkWDcPQGIQhK4uyMUhcs
+   k=;
 X-IronPort-AV: E=Sophos;i="6.15,220,1739836800"; 
-   d="scan'208";a="192135979"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2025 00:06:56 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.7.35:5819]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.50.54:2525] with esmtp (Farcaster)
- id 62a842f2-fadf-4c55-9f48-cccaabb2ef78; Fri, 18 Apr 2025 00:06:56 +0000 (UTC)
-X-Farcaster-Flow-ID: 62a842f2-fadf-4c55-9f48-cccaabb2ef78
+   d="scan'208";a="736588014"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52005.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2025 00:08:13 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.21.151:56926]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.42.20:2525] with esmtp (Farcaster)
+ id 4df646f8-28ca-497a-8aa6-08d3e18d79ef; Fri, 18 Apr 2025 00:08:12 +0000 (UTC)
+X-Farcaster-Flow-ID: 4df646f8-28ca-497a-8aa6-08d3e18d79ef
 Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Fri, 18 Apr 2025 00:06:56 +0000
+ Fri, 18 Apr 2025 00:08:08 +0000
 Received: from 6c7e67bfbae3.amazon.com (10.94.49.59) by
  EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Fri, 18 Apr 2025 00:06:53 +0000
+ Fri, 18 Apr 2025 00:08:05 +0000
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 To: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
 	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
  Abeni" <pabeni@redhat.com>
 CC: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v3 net-next 05/15] ipv6: Move nexthop_find_by_id() after fib6_info_alloc().
-Date: Thu, 17 Apr 2025 17:03:46 -0700
-Message-ID: <20250418000443.43734-6-kuniyu@amazon.com>
+Subject: [PATCH v3 net-next 08/15] ipv6: Preallocate nhc_pcpu_rth_output in ip6_route_info_create().
+Date: Thu, 17 Apr 2025 17:03:49 -0700
+Message-ID: <20250418000443.43734-9-kuniyu@amazon.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250418000443.43734-1-kuniyu@amazon.com>
 References: <20250418000443.43734-1-kuniyu@amazon.com>
@@ -62,99 +62,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D042UWB002.ant.amazon.com (10.13.139.175) To
+X-ClientProxiedBy: EX19D032UWB001.ant.amazon.com (10.13.139.152) To
  EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-We will get rid of RTNL from RTM_NEWROUTE and SIOCADDRT.
+ip6_route_info_create_nh() will be called under RCU.
 
-Then, we must perform two lookups for nexthop and dev under RCU
-to guarantee their lifetime.
+It calls fib_nh_common_init() and allocates nhc->nhc_pcpu_rth_output.
 
-ip6_route_info_create() calls nexthop_find_by_id() first if
-RTA_NH_ID is specified, and then allocates struct fib6_info.
+As with the reason for rt->fib6_nh->rt6i_pcpu, we want to avoid
+GFP_ATOMIC allocation for nhc->nhc_pcpu_rth_output under RCU.
 
-nexthop_find_by_id() must be called under RCU, but we do not want
-to use GFP_ATOMIC for memory allocation here, which will be likely
-to fail in ip6_route_multipath_add().
-
-Let's move nexthop_find_by_id() after the memory allocation so
-that we can later split ip6_route_info_create() into two parts:
-the sleepable part and the RCU part.
+Let's preallocate it in ip6_route_info_create().
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
 ---
- net/ipv6/route.c | 34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ net/ipv4/fib_semantics.c | 10 ++++++----
+ net/ipv6/route.c         |  9 +++++++++
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index f68bb9e34c34..5326f1501af0 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -617,10 +617,12 @@ int fib_nh_common_init(struct net *net, struct fib_nh_common *nhc,
+ {
+ 	int err;
+ 
+-	nhc->nhc_pcpu_rth_output = alloc_percpu_gfp(struct rtable __rcu *,
+-						    gfp_flags);
+-	if (!nhc->nhc_pcpu_rth_output)
+-		return -ENOMEM;
++	if (!nhc->nhc_pcpu_rth_output) {
++		nhc->nhc_pcpu_rth_output = alloc_percpu_gfp(struct rtable __rcu *,
++							    gfp_flags);
++		if (!nhc->nhc_pcpu_rth_output)
++			return -ENOMEM;
++	}
+ 
+ 	if (encap) {
+ 		struct lwtunnel_state *lwtstate;
 diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 5f370c269e64..06c5414fc14e 100644
+index b0ddb73c732e..ea755027cf61 100644
 --- a/net/ipv6/route.c
 +++ b/net/ipv6/route.c
-@@ -3733,24 +3733,11 @@ static struct fib6_info *ip6_route_info_create(struct fib6_config *cfg,
+@@ -3731,10 +3731,19 @@ void fib6_nh_release_dsts(struct fib6_nh *fib6_nh)
+ 
+ static int fib6_nh_prealloc_percpu(struct fib6_nh *fib6_nh, gfp_t gfp_flags)
  {
- 	struct net *net = cfg->fc_nlinfo.nl_net;
- 	struct fib6_info *rt = NULL;
--	struct nexthop *nh = NULL;
- 	struct fib6_table *table;
- 	struct fib6_nh *fib6_nh;
--	int err = -EINVAL;
-+	int err = -ENOBUFS;
- 	int addr_type;
++	struct fib_nh_common *nhc = &fib6_nh->nh_common;
++
+ 	fib6_nh->rt6i_pcpu = alloc_percpu_gfp(struct rt6_info *, gfp_flags);
+ 	if (!fib6_nh->rt6i_pcpu)
+ 		return -ENOMEM;
  
--	if (cfg->fc_nh_id) {
--		nh = nexthop_find_by_id(net, cfg->fc_nh_id);
--		if (!nh) {
--			NL_SET_ERR_MSG(extack, "Nexthop id does not exist");
--			goto out;
--		}
--		err = fib6_check_nexthop(nh, cfg, extack);
--		if (err)
--			goto out;
--	}
--
--	err = -ENOBUFS;
- 	if (cfg->fc_nlinfo.nlh &&
- 	    !(cfg->fc_nlinfo.nlh->nlmsg_flags & NLM_F_CREATE)) {
- 		table = fib6_get_table(net, cfg->fc_table);
-@@ -3766,7 +3753,7 @@ static struct fib6_info *ip6_route_info_create(struct fib6_config *cfg,
- 		goto out;
++	nhc->nhc_pcpu_rth_output = alloc_percpu_gfp(struct rtable __rcu *,
++						    gfp_flags);
++	if (!nhc->nhc_pcpu_rth_output) {
++		free_percpu(fib6_nh->rt6i_pcpu);
++		return -ENOMEM;
++	}
++
+ 	return 0;
+ }
  
- 	err = -ENOMEM;
--	rt = fib6_info_alloc(gfp_flags, !nh);
-+	rt = fib6_info_alloc(gfp_flags, !cfg->fc_nh_id);
- 	if (!rt)
- 		goto out;
- 
-@@ -3802,12 +3789,27 @@ static struct fib6_info *ip6_route_info_create(struct fib6_config *cfg,
- 	ipv6_addr_prefix(&rt->fib6_src.addr, &cfg->fc_src, cfg->fc_src_len);
- 	rt->fib6_src.plen = cfg->fc_src_len;
- #endif
--	if (nh) {
-+
-+	if (cfg->fc_nh_id) {
-+		struct nexthop *nh;
-+
-+		nh = nexthop_find_by_id(net, cfg->fc_nh_id);
-+		if (!nh) {
-+			err = -EINVAL;
-+			NL_SET_ERR_MSG(extack, "Nexthop id does not exist");
-+			goto out_free;
-+		}
-+
-+		err = fib6_check_nexthop(nh, cfg, extack);
-+		if (err)
-+			goto out_free;
-+
- 		if (!nexthop_get(nh)) {
- 			NL_SET_ERR_MSG(extack, "Nexthop has been deleted");
- 			err = -ENOENT;
- 			goto out_free;
- 		}
-+
- 		rt->nh = nh;
- 		fib6_nh = nexthop_fib6_nh(rt->nh);
- 	} else {
 -- 
 2.49.0
 
