@@ -1,35 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52657267B71
-	for <netdev@vger.kernel.org>; Fri, 18 Apr 2025 02:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BC721930B
+	for <netdev@vger.kernel.org>; Fri, 18 Apr 2025 02:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744942207; cv=none; b=DLajNTzQE1L7eHfVlWkN5t9YNl4vBfGFWly/RcXAlzrhEUa6Ddb3QO80T0YaMaEDgPPOuqAjFIda/LXjFsgecu8ZFZ9HqybnQtY096VCZ3ZB6jcylKht7TwyaL7wjuJ/Sp9axGt2IXqGjlvnXBqAmkcO/IXyQWUAzyrB+7PYtFA=
+	t=1744942637; cv=none; b=N2EsKaneUZizYKAjYWbl0W0fLgt+fOVjmusnpW7gO2B/yv+woCDxWj3DHOHbrTZQyt2dVZtjDFMkSX+3rrVezngtQVuFd/Zs96tQMFWBJYjzisJrqfcjEN0JttOG82wJOmBRoKtbWOvyrX7EHr9sHOa409POD7fGjAyxczY1X7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744942207; c=relaxed/simple;
-	bh=aXA9NqUlpUBGd6rR5V1g0kLlXLqsLbwk1bDBnbXJuT0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WWTQShd+02r5aOtUJgOU+agNhmprg2T90ouBBpf2UR90rO96xRnbSDaKleP0sTlGkOl12pFxuTMHRdRsc8Hb+7rsTijkBMwgMWv551U6VDAlcDkO/7Yvaj6gDYSBPKPXIBUqIpUsrxJOOTc4MQr9DiRDgt0oNrUx57WCpA7thJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XGmjyuQi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744942637; c=relaxed/simple;
+	bh=ak0H73PeUTSwAL/0ZTF8DDXVbbMPerb8nIMn2bHzGys=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QV3WJKEhquRL5CeVBSq6kd9bUyyu/cBpcYYxwS4IRgsx8/yoLoqlyC2aQHtkEPgJ8OALWxJPzHWEhd4/CtWJdMSc1V5hOx0w0NiCE/d6/SCWA3CFzpHjlvbPIbwdRfCRiQUMLYjbpkV2TstU9FbqO4HyqKBJdSHBlvEIN7NaUeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dBkJhz8C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XGmjyuQi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2598AC4CEE4;
-	Fri, 18 Apr 2025 02:10:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dBkJhz8C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A71AC4CEED;
+	Fri, 18 Apr 2025 02:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744942207;
-	bh=aXA9NqUlpUBGd6rR5V1g0kLlXLqsLbwk1bDBnbXJuT0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=XGmjyuQiRWPg99I8LiB3tpshzlHWprsZdS5CwLap0iSlWS7Mpn3Q3sLarnAeHJ2Lw
-	 IRi7LdVs4/ZjRIqt0i7D1BGkoOmSXMH6NMT3EOirjqfsag4VHYFQddeG0V2My5nO5c
-	 UrUO/aSP5C/zovGNRRN5kH/VSbxbsjlxMHumURB6KUINY9pE8/vXKZcvhkeCZIsgnG
-	 8U1mbGFoaV6+uCSSiB5+dUd7l+JO6mkNImVkMES3JPoNJvadlwYKuTToOL2bfnTVgo
-	 JqFA95pzVHUuZFMxse7Y1K9Ar2H/FG3mZYiJfpyhku0k3Zn4aBfIyE58Hy+sXu+5jY
-	 LgtdSFQxCu33Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70E81380AAEB;
-	Fri, 18 Apr 2025 02:10:46 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1744942636;
+	bh=ak0H73PeUTSwAL/0ZTF8DDXVbbMPerb8nIMn2bHzGys=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dBkJhz8CxtJef8MpVOXlZBhMtUUsmzOoT+0JwPRlFjMWE7gkQMiCFCWXl0jJ/HRJc
+	 t/zLQoAKSdYlWrjJixkYjPzW3ZltD3XkaQcjjV7cAHMGtGkTA7RSOMKx78fN1T7agT
+	 4e2cHeewqUMR0dLQVvKqDj0wgq6jKYwCa/lirfPJNSmKyZFZPzELilSZPcmTHsQGPU
+	 uIAKEa19YutsnNtSizX00WT83RfEmNEvHHiYgxpzU/HWdeBSQVQG5pN+G/BTPXUK8S
+	 7sqmOo2dHBaUxzrssg1dQHJY6BDLbhkAlsiNazdx8ovQukkdmu9RXKeyVYaPkwTFFn
+	 12c43+sFcaHvw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net,
+	donald.hunter@gmail.com
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net-next 01/12] netlink: specs: allow header properties for attribute sets
+Date: Thu, 17 Apr 2025 19:16:55 -0700
+Message-ID: <20250418021706.1967583-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250418021706.1967583-1-kuba@kernel.org>
+References: <20250418021706.1967583-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,43 +48,75 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3] netdev: fix the locking for netdev notifications
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174494224501.79616.16190776092573800020.git-patchwork-notify@kernel.org>
-Date: Fri, 18 Apr 2025 02:10:45 +0000
-References: <20250416030447.1077551-1-kuba@kernel.org>
-In-Reply-To: <20250416030447.1077551-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- syzkaller@googlegroups.com, kuniyu@amazon.com, sdf@fomichev.me,
- jdamato@fastly.com, almasrymina@google.com
 
-Hello:
+rt-link has a number of disjoint headers, plus it uses attributes
+of other families (e.g. DPLL). Allow declaring a attribute set
+as "foreign" by specifying which header its definition is coming
+from.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ Documentation/netlink/genetlink-c.yaml      | 3 +++
+ Documentation/netlink/genetlink-legacy.yaml | 3 +++
+ Documentation/netlink/netlink-raw.yaml      | 3 +++
+ tools/net/ynl/pyynl/ynl_gen_c.py            | 2 +-
+ 4 files changed, 10 insertions(+), 1 deletion(-)
 
-On Tue, 15 Apr 2025 20:04:47 -0700 you wrote:
-> Kuniyuki reports that the assert for netdev lock fires when
-> there are netdev event listeners (otherwise we skip the netlink
-> event generation).
-> 
-> Correct the locking when coming from the notifier.
-> 
-> The NETDEV_XDP_FEAT_CHANGE notifier is already fully locked,
-> it's the documentation that's incorrect.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v3] netdev: fix the locking for netdev notifications
-    https://git.kernel.org/netdev/net-next/c/22cbc1ee268b
-
-You are awesome, thank you!
+diff --git a/Documentation/netlink/genetlink-c.yaml b/Documentation/netlink/genetlink-c.yaml
+index 96fa1f1522ed..5a234e9b5fa2 100644
+--- a/Documentation/netlink/genetlink-c.yaml
++++ b/Documentation/netlink/genetlink-c.yaml
+@@ -148,6 +148,9 @@ additionalProperties: False
+         attr-max-name:
+           description: The explicit name for last member of attribute enum.
+           type: string
++        header:
++          description: For C-compatible languages, header which already defines this attribute set.
++          type: string
+         # End genetlink-c
+         attributes:
+           description: List of attributes in the space.
+diff --git a/Documentation/netlink/genetlink-legacy.yaml b/Documentation/netlink/genetlink-legacy.yaml
+index a8c5b521937d..4cbfe666e6f5 100644
+--- a/Documentation/netlink/genetlink-legacy.yaml
++++ b/Documentation/netlink/genetlink-legacy.yaml
+@@ -193,6 +193,9 @@ additionalProperties: False
+         attr-max-name:
+           description: The explicit name for last member of attribute enum.
+           type: string
++        header:
++          description: For C-compatible languages, header which already defines this attribute set.
++          type: string
+         # End genetlink-c
+         attributes:
+           description: List of attributes in the space.
+diff --git a/Documentation/netlink/netlink-raw.yaml b/Documentation/netlink/netlink-raw.yaml
+index 1b0772c8e333..e34bf23897fa 100644
+--- a/Documentation/netlink/netlink-raw.yaml
++++ b/Documentation/netlink/netlink-raw.yaml
+@@ -207,6 +207,9 @@ additionalProperties: False
+         attr-max-name:
+           description: The explicit name for last member of attribute enum.
+           type: string
++        header:
++          description: For C-compatible languages, header which already defines this attribute set.
++          type: string
+         # End genetlink-c
+         attributes:
+           description: List of attributes in the space.
+diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
+index 0d930c17f963..9613a6135003 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_c.py
++++ b/tools/net/ynl/pyynl/ynl_gen_c.py
+@@ -2909,7 +2909,7 @@ _C_KW = {
+             cw.p(f'#include "{hdr_file}"')
+             cw.p('#include "ynl.h"')
+         headers = []
+-    for definition in parsed['definitions']:
++    for definition in parsed['definitions'] + parsed['attribute-sets']:
+         if 'header' in definition:
+             headers.append(definition['header'])
+     if args.mode == 'user':
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.49.0
 
