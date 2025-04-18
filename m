@@ -1,66 +1,66 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26392686AA
-	for <netdev@vger.kernel.org>; Fri, 18 Apr 2025 09:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203121EE7BE
+	for <netdev@vger.kernel.org>; Fri, 18 Apr 2025 09:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744968210; cv=none; b=JBNFXjaIGD5gIirv6mi4Hy0snirLwwU1e8s3yTJd0XW4fby68M19D/xJPtDXp2vCcx4r3sxYz2MBJFB+Sr2SANgrafNI5h/oCcEFUOd1fl33ILxQKyCS3+3Ps9HQ3aXHRrx7odCcPIgDGg74HR2JH81hah//oq7GQO/lNCpJKdU=
+	t=1744968256; cv=none; b=A2XTknxMiUgxXCpTnECfxpPuXiNaSrH5ZfEHuAw2QNAY2KZlUkYwMtE/Sv936vFkO2irXgMjJ/SroLNAnsALyjBF1KezAVkxIsO287umby42CEJc3ceG+gzgJHh6HaQtA4HenL5lVe1bfy2TBTAHaL50KD4vVi3/+QA1JuyHgsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744968210; c=relaxed/simple;
-	bh=VmOQNmGrdYtF18kIa7Q5RW7YD6PCWKi21KVsL9hiF9g=;
+	s=arc-20240116; t=1744968256; c=relaxed/simple;
+	bh=8foQ8OWk/+K7qsz41aVSPVdBiYYVA9WMPMTe1kwlxoQ=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=EA+mqzpOEn3yxRtV4KPVU1jAddrVg1q8vy42DlCI15HXYaCj3HSNdaxZs8f63LPX242yCosQoA5qlXXiLgrxt9rwIE+DMv0NCkGlKqwg6OABIIb8x0x8am+LP+v+BT2VgBJGMhuZnxb307hG8WtsGAcu6XVBzTViNBrr9lqutWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iQQrn9bE; arc=none smtp.client-ip=209.85.221.50
+	 In-Reply-To:Content-Type; b=CmFFCRPze2264wVlzOfUrsZTmbKmbwGUXrT47vE4l1kXYll/n2nUsm/q+2KjAwEg+piaU+AjZqUoaQkCwS43/0VFee6oSsgWGxTBLg5dujQo9Kf/Gf+u9Khctc9sSzhcIiEvK2NEbh++4C6olaI4Edgm7p0v/6K7fm/UmkneNKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YHqpsjX7; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iQQrn9bE"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-39bf44be22fso1148501f8f.0
-        for <netdev@vger.kernel.org>; Fri, 18 Apr 2025 02:23:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YHqpsjX7"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-39149bccb69so1699925f8f.2
+        for <netdev@vger.kernel.org>; Fri, 18 Apr 2025 02:24:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744968207; x=1745573007; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744968253; x=1745573053; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=tjxLOlUMS4EJFDCJezhjNO7oBp3V5mnE5lt4hUMgHms=;
-        b=iQQrn9bEUqgYkZrLIwOEA7K74FA7lLmBLK4VuNwi86QKHBEzzIqbVz+3kenslcJfn1
-         WuZ8HCiLzS/rS0jg7FtBrf0lL0+yL8o4E8r4yxvodN4VgNeu05Gjrz1hqZHuekhCB+j0
-         n9GaGC8SbCnDSPCjJ0NU8pRn/AcEUc+mqPOwTl/a1PmhdZoTWAfEhBM8pmvLo4AZcMew
-         ueFSK/vRzZa/C/8LJRMIKa0vShNbJiRH1fqWPodsS7djwXGzMVsNl4UFENTUvqnW8Kay
-         74dkPZryHnLS9nJxWwh8+dS3M/2MLPnuKnSd2TyKQWy7epVF4yBam5PwN4IZr868x6WN
-         Dw4Q==
+        bh=OkPtgSaJTQD70hhuZjxlBvKdm8G2yoZJpNZ5MjyroRo=;
+        b=YHqpsjX7HnlwjzfhZWAZxZyHGJKorMgTbHa4RfgS66JFFUNLW4xgP3Y1K8iv/4U9b8
+         EWpICvv4OFWr4eXZYteLy3HDSt80Gfw33pGRwWwNi3VR78gUuKvEI0cuD5v2R0m+PU0t
+         5CCRasEEeVJOHL5l95ca1DRPQFw9Pnnq0jEowKML2NkrcqLebZy3lAu9fH4QvuiRItK5
+         1+xHSQPqC0RSaRWOvcLgQJxCTIempvG1ag3kYbpegN64z9KoXsjrUbrWf3AWEbmRy9JF
+         KjauK0jHSaxo1qxw7vHx05fTqMvwwSkH+kCp7IO3lgPi50/qfCbyDAt9puC3iK8MNOmm
+         DDKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744968207; x=1745573007;
+        d=1e100.net; s=20230601; t=1744968253; x=1745573053;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tjxLOlUMS4EJFDCJezhjNO7oBp3V5mnE5lt4hUMgHms=;
-        b=PXPiDO391O73jQDD/Eq4GIKMTzs7IQGUxci8duuw2A+wg87/TsjmwpcippJ3zjROKI
-         9y4vAKISeeitmN8ulwsrgK4/ebdSHQ1W2oMKZ4BxRaKtvR/KjGV1GgyUA7VoZh8F761q
-         X8qE69hfC93I6fHf8EVNJ25AAeb0I/zVpygM0kzt5zJU3usbye2iuaIzHgcjS8dvk5Mp
-         iPTLMexOjhxGLr2R3dDZ0JMyff2s/oWfbqkqdSGLabEQKi2R37MdaqiuPa0JsINFc6hN
-         O3VHTHvqIeaQVOLwWSk3LxodlWEKMZvJQC2CygBGYwcGahDtGJGBCzGD2cu1xgrCeWO+
-         ly+Q==
-X-Gm-Message-State: AOJu0YwfoJj9WoUP9Ponqu5YjyPfaUYi/nx00qPfpA6KUSuLryKXQBeQ
-	yVe0JoHjI7KGIZwkdIc3EgimKhCOZkHYGwTIjV72V748a8am1Pb1
-X-Gm-Gg: ASbGncvX+uPvpBxe05qSLCzSiQIBsbfF79TTjhru3tcc6umNU3dDjVHTVvmTKH/dRBw
-	6g0Je9er/ZDA8O+y8tdgXjKesnnhr1rLbX+brhWUMF4g/km1xJkrTS5Z/3WnN3ylt4IxpW9YWdx
-	9Ru/9ngTZ/NPRrugGbHlQLbCmuq6346Xabp5Cg95jFte6OClGXbk548D6p3g0V6fie+rAxtFWor
-	bLHSIsvWujb/XEymCArUoM2sFtvec7M+NU5Zii1aESIKhvPv2/yc/5EdojpG2zNrXsKxMxnBD3u
-	wGvUvFjtoyeomJI71KOOGSuiN4ZV05il3HzJxqIVjuTmDBy/CJcLSYqCgw/ZKO2rhabyLQFIFdA
-	vBdZjj0LZiRea7dTgiH1n6wk3HS2wYaFlDB0jZcE4/GRLaOuSmnstVZTu3R9xP80uaAZkvTz3S+
-	mD9a5QYLpcYZFu7CMEswvyGeYkpd7qEQRP9+FWiwQYN+o=
-X-Google-Smtp-Source: AGHT+IE+2tWTZZwUmf56Moj57bNW26hZRIkiHQTNm+mOFqjf3w2AkcK/h6yVfaZUWsI2RedRTsm+Fw==
-X-Received: by 2002:a5d:5f49:0:b0:39e:cbe3:881 with SMTP id ffacd0b85a97d-39efba246e0mr1487693f8f.12.1744968206742;
-        Fri, 18 Apr 2025 02:23:26 -0700 (PDT)
+        bh=OkPtgSaJTQD70hhuZjxlBvKdm8G2yoZJpNZ5MjyroRo=;
+        b=PlA4eIbBrh6P9eajcq2B4IGbmPbSvvLsJpxxwBltBv+LgDpOTmPPIzOhqL16UDAKCN
+         F1nNPUytZJjKVbQrHIhimcjK9E3E/7dn31Rqg61sxiNaxyJpVK2F+KbO5kp6gR8Spx5c
+         JiZXUoY8L58+qMv6HZ7kCeTSORsHFfyB2hBWLP8UdZE4DwMKr3NUH56frQ9j3QJCLi96
+         ndVk7BV4cNSJvMAIRyL/HdWFTqHDW3kcMGqfxa223FAbgh7IuB6EuVQeqUEVdtB2Qxmb
+         hy4W0jGxXKuYp/yYsMgQW6MrlFkAiIhTPb3mwsG0HHaYTeh6/qweB4vWsaqTMyiMzbIE
+         CTew==
+X-Gm-Message-State: AOJu0YzKEg35IrBNcjxZ3GoBYKZvvcENgjV2IpYuo4DeiJ4n9co9n03y
+	SPnlnrs/ty3kwK1gRk8sX1QyfstXP1GSJWbzmfBF6VkDfW7dTJss
+X-Gm-Gg: ASbGnctLZiiIkW7bfv51EM1Ycf33D+fO8vKPbMcAJWb3kEu4BbSOea60K2ZCmhmm7PB
+	6NIqq9tPUEMmhIgX8v3bHhJf3lVs5eW2J9mtv1Ar75fkIEV+dJ5uXcrpDkYNK5lb33qJEjaRBKG
+	fwYSa9SWjJBf5WaDDEdL2WVFKA3to3cH1nvldIsBZSMoy3t6Ix00MtDcq77MFvIQ6ptAkAME2qW
+	/qfX0hxYiyGZhCo8HtGbsuWN2wPATA9qMVxS/TNeD1U7QR98m4F/dRaFM7xd9McKn+ddd2Dh/87
+	wmqixRaGXEJRyMTWXVoE5qt24bl3RehAiGAlyndjl8U2deTXAWCJDfS8vwWpBA5Sfsqkq3U9eLP
+	fWtqvRrtGRIr/+uOGyyoRJtBpCEeJxQtru1cg93lS9lq1SLiM+bEQWH5f9t1eDc25wKQo/Ih5vb
+	rbiqdb+MUOb069K52Dbt2tsDlpHAzuX5oD
+X-Google-Smtp-Source: AGHT+IE7ExTj+smPesjkCZH+ihS+Xslw9hGmjg0VVL0rQzCkzVO0D9z5nJcTT5CBUDnxqWjl4adyHw==
+X-Received: by 2002:a05:6000:4027:b0:391:3207:2e75 with SMTP id ffacd0b85a97d-39efba3c8bamr1398305f8f.18.1744968253342;
+        Fri, 18 Apr 2025 02:24:13 -0700 (PDT)
 Received: from ?IPV6:2a02:3100:a14c:6800:64c1:f857:3ca4:c5c8? (dynamic-2a02-3100-a14c-6800-64c1-f857-3ca4-c5c8.310.pool.telefonica.de. [2a02:3100:a14c:6800:64c1:f857:3ca4:c5c8])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-39efa4235a9sm2222240f8f.13.2025.04.18.02.23.25
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-39efa4a4be2sm2137874f8f.83.2025.04.18.02.24.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Apr 2025 02:23:26 -0700 (PDT)
-Message-ID: <0baad123-c679-4154-923f-fdc12783e900@gmail.com>
-Date: Fri, 18 Apr 2025 11:24:30 +0200
+        Fri, 18 Apr 2025 02:24:12 -0700 (PDT)
+Message-ID: <ae866b71-c904-434e-befb-848c831e33ff@gmail.com>
+Date: Fri, 18 Apr 2025 11:25:17 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,7 +68,7 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH net-next 2/3] r8169: merge chip versions 64 and 65 (RTL8125D)
+Subject: [PATCH net-next 3/3] r8169: merge chip versions 52 and 53 (RTL8117)
 From: Heiner Kallweit <hkallweit1@gmail.com>
 To: Realtek linux nic maintainers <nic_swsd@realtek.com>,
  Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
@@ -129,64 +129,112 @@ the firmware. So we can merge handling of both chip versions.
 
 Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 ---
- drivers/net/ethernet/realtek/r8169.h            | 1 -
- drivers/net/ethernet/realtek/r8169_main.c       | 4 +---
- drivers/net/ethernet/realtek/r8169_phy_config.c | 1 -
- 3 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/net/ethernet/realtek/r8169.h            |  1 -
+ drivers/net/ethernet/realtek/r8169_main.c       | 17 +++++++----------
+ drivers/net/ethernet/realtek/r8169_phy_config.c |  1 -
+ 3 files changed, 7 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/net/ethernet/realtek/r8169.h b/drivers/net/ethernet/realtek/r8169.h
-index 3f7182dc8..1878c44ec 100644
+index 1878c44ec..f05231030 100644
 --- a/drivers/net/ethernet/realtek/r8169.h
 +++ b/drivers/net/ethernet/realtek/r8169.h
-@@ -69,7 +69,6 @@ enum mac_version {
+@@ -64,7 +64,6 @@ enum mac_version {
+ 	/* support for RTL_GIGA_MAC_VER_50 has been removed */
+ 	RTL_GIGA_MAC_VER_51,
+ 	RTL_GIGA_MAC_VER_52,
+-	RTL_GIGA_MAC_VER_53,
+ 	/* support for RTL_GIGA_MAC_VER_60 has been removed */
  	RTL_GIGA_MAC_VER_61,
  	RTL_GIGA_MAC_VER_63,
- 	RTL_GIGA_MAC_VER_64,
--	RTL_GIGA_MAC_VER_65,
- 	RTL_GIGA_MAC_VER_66,
- 	RTL_GIGA_MAC_VER_70,
- 	RTL_GIGA_MAC_NONE,
 diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 58d3acf2b..cba5bf8c2 100644
+index cba5bf8c2..b2c48d013 100644
 --- a/drivers/net/ethernet/realtek/r8169_main.c
 +++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -106,7 +106,7 @@ static const struct rtl_chip_info {
- 	{ 0x7cf, 0x681,	RTL_GIGA_MAC_VER_66, "RTL8125BP", FIRMWARE_8125BP_2 },
+@@ -116,7 +116,7 @@ static const struct rtl_chip_info {
+ 	{ 0x7cf, 0x609,	RTL_GIGA_MAC_VER_61, "RTL8125A", FIRMWARE_8125A_3 },
  
- 	/* 8125D family. */
--	{ 0x7cf, 0x689,	RTL_GIGA_MAC_VER_65, "RTL8125D", FIRMWARE_8125D_2 },
-+	{ 0x7cf, 0x689,	RTL_GIGA_MAC_VER_64, "RTL8125D", FIRMWARE_8125D_2 },
- 	{ 0x7cf, 0x688,	RTL_GIGA_MAC_VER_64, "RTL8125D", FIRMWARE_8125D_1 },
+ 	/* RTL8117 */
+-	{ 0x7cf, 0x54b,	RTL_GIGA_MAC_VER_53, "RTL8168fp/RTL8117" },
++	{ 0x7cf, 0x54b,	RTL_GIGA_MAC_VER_52, "RTL8168fp/RTL8117" },
+ 	{ 0x7cf, 0x54a,	RTL_GIGA_MAC_VER_52, "RTL8168fp/RTL8117",
+ 	  FIRMWARE_8168FP_3 },
  
- 	/* 8125B family. */
-@@ -3831,7 +3831,6 @@ static void rtl_hw_config(struct rtl8169_private *tp)
+@@ -831,7 +831,7 @@ static bool rtl_is_8168evl_up(struct rtl8169_private *tp)
+ {
+ 	return tp->mac_version >= RTL_GIGA_MAC_VER_34 &&
+ 	       tp->mac_version != RTL_GIGA_MAC_VER_39 &&
+-	       tp->mac_version <= RTL_GIGA_MAC_VER_53;
++	       tp->mac_version <= RTL_GIGA_MAC_VER_52;
+ }
+ 
+ static bool rtl_supports_eee(struct rtl8169_private *tp)
+@@ -999,9 +999,7 @@ void r8169_get_led_name(struct rtl8169_private *tp, int idx,
+ static void r8168fp_adjust_ocp_cmd(struct rtl8169_private *tp, u32 *cmd, int type)
+ {
+ 	/* based on RTL8168FP_OOBMAC_BASE in vendor driver */
+-	if (type == ERIAR_OOB &&
+-	    (tp->mac_version == RTL_GIGA_MAC_VER_52 ||
+-	     tp->mac_version == RTL_GIGA_MAC_VER_53))
++	if (type == ERIAR_OOB && tp->mac_version == RTL_GIGA_MAC_VER_52)
+ 		*cmd |= 0xf70 << 18;
+ }
+ 
+@@ -1501,7 +1499,7 @@ static enum rtl_dash_type rtl_get_dash_type(struct rtl8169_private *tp)
+ 	case RTL_GIGA_MAC_VER_28:
+ 	case RTL_GIGA_MAC_VER_31:
+ 		return RTL_DASH_DP;
+-	case RTL_GIGA_MAC_VER_51 ... RTL_GIGA_MAC_VER_53:
++	case RTL_GIGA_MAC_VER_51 ... RTL_GIGA_MAC_VER_52:
+ 		return RTL_DASH_EP;
+ 	case RTL_GIGA_MAC_VER_66:
+ 		return RTL_DASH_25_BP;
+@@ -2486,7 +2484,7 @@ static void rtl_init_rxcfg(struct rtl8169_private *tp)
+ 	case RTL_GIGA_MAC_VER_38:
+ 		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_MULTI_EN | RX_DMA_BURST);
+ 		break;
+-	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_53:
++	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_52:
+ 		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_MULTI_EN | RX_DMA_BURST | RX_EARLY_OFF);
+ 		break;
+ 	case RTL_GIGA_MAC_VER_61:
+@@ -2617,7 +2615,7 @@ DECLARE_RTL_COND(rtl_rxtx_empty_cond_2)
+ static void rtl_wait_txrx_fifo_empty(struct rtl8169_private *tp)
+ {
+ 	switch (tp->mac_version) {
+-	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_53:
++	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_52:
+ 		rtl_loop_wait_high(tp, &rtl_txcfg_empty_cond, 100, 42);
+ 		rtl_loop_wait_high(tp, &rtl_rxtx_empty_cond, 100, 42);
+ 		break;
+@@ -3827,7 +3825,6 @@ static void rtl_hw_config(struct rtl8169_private *tp)
+ 		[RTL_GIGA_MAC_VER_48] = rtl_hw_start_8168h_1,
+ 		[RTL_GIGA_MAC_VER_51] = rtl_hw_start_8168ep_3,
+ 		[RTL_GIGA_MAC_VER_52] = rtl_hw_start_8117,
+-		[RTL_GIGA_MAC_VER_53] = rtl_hw_start_8117,
  		[RTL_GIGA_MAC_VER_61] = rtl_hw_start_8125a_2,
  		[RTL_GIGA_MAC_VER_63] = rtl_hw_start_8125b,
  		[RTL_GIGA_MAC_VER_64] = rtl_hw_start_8125d,
--		[RTL_GIGA_MAC_VER_65] = rtl_hw_start_8125d,
- 		[RTL_GIGA_MAC_VER_66] = rtl_hw_start_8125d,
- 		[RTL_GIGA_MAC_VER_70] = rtl_hw_start_8126a,
- 	};
-@@ -3850,7 +3849,6 @@ static void rtl_hw_start_8125(struct rtl8169_private *tp)
+@@ -5288,7 +5285,7 @@ static void rtl_hw_init_8125(struct rtl8169_private *tp)
+ static void rtl_hw_initialize(struct rtl8169_private *tp)
+ {
  	switch (tp->mac_version) {
- 	case RTL_GIGA_MAC_VER_61:
- 	case RTL_GIGA_MAC_VER_64:
--	case RTL_GIGA_MAC_VER_65:
- 	case RTL_GIGA_MAC_VER_66:
- 		for (i = 0xa00; i < 0xb00; i += 4)
- 			RTL_W32(tp, i, 0);
+-	case RTL_GIGA_MAC_VER_51 ... RTL_GIGA_MAC_VER_53:
++	case RTL_GIGA_MAC_VER_51 ... RTL_GIGA_MAC_VER_52:
+ 		rtl8168ep_stop_cmac(tp);
+ 		fallthrough;
+ 	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_48:
 diff --git a/drivers/net/ethernet/realtek/r8169_phy_config.c b/drivers/net/ethernet/realtek/r8169_phy_config.c
-index 7f513086b..e3adfafa2 100644
+index e3adfafa2..5403f8202 100644
 --- a/drivers/net/ethernet/realtek/r8169_phy_config.c
 +++ b/drivers/net/ethernet/realtek/r8169_phy_config.c
-@@ -1180,7 +1180,6 @@ void r8169_hw_phy_config(struct rtl8169_private *tp, struct phy_device *phydev,
+@@ -1176,7 +1176,6 @@ void r8169_hw_phy_config(struct rtl8169_private *tp, struct phy_device *phydev,
+ 		[RTL_GIGA_MAC_VER_48] = rtl8168h_2_hw_phy_config,
+ 		[RTL_GIGA_MAC_VER_51] = rtl8168ep_2_hw_phy_config,
+ 		[RTL_GIGA_MAC_VER_52] = rtl8117_hw_phy_config,
+-		[RTL_GIGA_MAC_VER_53] = rtl8117_hw_phy_config,
  		[RTL_GIGA_MAC_VER_61] = rtl8125a_2_hw_phy_config,
  		[RTL_GIGA_MAC_VER_63] = rtl8125b_hw_phy_config,
  		[RTL_GIGA_MAC_VER_64] = rtl8125d_hw_phy_config,
--		[RTL_GIGA_MAC_VER_65] = rtl8125d_hw_phy_config,
- 		[RTL_GIGA_MAC_VER_66] = rtl8125bp_hw_phy_config,
- 		[RTL_GIGA_MAC_VER_70] = rtl8126a_hw_phy_config,
- 	};
 -- 
 2.49.0
 
