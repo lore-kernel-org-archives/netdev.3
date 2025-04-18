@@ -1,82 +1,98 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED358F49
-	for <netdev@vger.kernel.org>; Fri, 18 Apr 2025 14:01:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D602189915
+	for <netdev@vger.kernel.org>; Fri, 18 Apr 2025 14:14:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744984914; cv=none; b=QkmziYWgyuQ1AoipefpAO1RHP/TJUUff3pLCGczIBOZrPRqI9R6IDnlupt+ltELG2TLKFPRz4FR/OcQJC7cpL1PhbgOW0QjmsLOtICPJx78bAmB5Y/Aj/bVplgg0szTGrVjnqhpuWqdqm8y2+jGGPu3duVQckFVTslaIkyNv1P4=
+	t=1744985653; cv=none; b=N9I5gQAUPSjIA/Qby5tQGItmC+3Re60Xq4udPWI8wvf9gtXw6CU4+FS8OXUwstRmdJ9Ll9sQkp4Er6Bkwp5F/RsFkQKcVxWdqAE7g6/5z37/Hrux+k8kY8Vip1yQ7s3L+JdjT3RHCZZlWZJci8AvCggtL7NS+vJMtbjXGVZbPKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744984914; c=relaxed/simple;
-	bh=+8OdUJwIXjHlLO7MXpVULRrF4daUsJ1JeCYf/lo/0ng=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c+T7FN+W/e2H8rTef/IcHk0a6z9WfYZXR3UYfp9v/kqvSzy6t1/9c7mI8Me1duJdZXuk27l3dDX488GObVF3baTGjaLhnYJy5gzeffXwBE0hLpK34Gov3cx27b57JaXjhUojTo9jy3Nt9tXUDqrKEhRsNVVsfOPFtUiDJW3zcX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iie.ac.cn; spf=pass smtp.mailfrom=iie.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iie.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iie.ac.cn
-Received: from localhost.localdomain (unknown [159.226.95.28])
-	by APP-03 (Coremail) with SMTP id rQCowACHNUJGWwJoeHTeCQ--.23559S2;
-	Fri, 18 Apr 2025 22:01:44 +0800 (CST)
-From: Chen Yufeng <chenyufeng@iie.ac.cn>
-To: isdn@linux-pingi.de
-Cc: marcel@holtmann.org,
-	johan.hedberg@gmail.com,
-	luiz.dentz@gmail.com,
-	chenyufeng@iie.ac.cn,
-	netdev@vger.kernel.org
-Subject: [PATCH] cmtp: enforce CAP_NET_RAW for raw sockets in cmtp_sock_create()
-Date: Fri, 18 Apr 2025 22:01:18 +0800
-Message-ID: <20250418140118.1775-1-chenyufeng@iie.ac.cn>
-X-Mailer: git-send-email 2.43.0.windows.1
+	s=arc-20240116; t=1744985653; c=relaxed/simple;
+	bh=+s14ujFBBxr6ZBLibix6s/f3Zmt1IGlZJv/wTUCAZj0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d6OBm2bepkLL27Mmg6wDyTWFCheMPDfrgc91LRNVzMuNuebftPuILOE+0DQD+a2siglH9EOKw8Pcw+RXZuHYFLlLDk/tF1lvkhZnguLg8rU6PD2f/ctYb7LDsFdDsRuU1x7elMB9M6U9no3tICBLJqXLPEAl+mBEYki5I8pSWvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jj1mHBhi; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jj1mHBhi"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b0db0b6a677so1022580a12.2
+        for <netdev@vger.kernel.org>; Fri, 18 Apr 2025 07:14:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744985651; x=1745590451; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=CJVqYWfvxsMwajl2MePkR1VsXo/YFcgeoMoojX0CTzo=;
+        b=jj1mHBhi7HnwV1pQQzoTHPz6ir2u6SKcskfAq7zU/vLdmN/Buc3cO/pJT/JjiGWxlS
+         mxBU0zJ3nyuTivRcxZQUm0zQqukUj8Fus+aMld35IYsSLSC0IsvLRZqaCuZm8oqP0UWY
+         N4QaXdb+W75lJ1Un70ZzXXnQn1Vk6w3A22XlkogLPDYzR9DOfp+shP9Rrf4hKr2yX9ae
+         UjGX4DZFyEhv8+LoXU9mcK8po5d+n0VyHJq2z0lNGQzDhNEBSKw58tIVplC8cPv4MSNf
+         8io14CrPfl35lP/Z1MErkzzH1L6ff4ANJM+430vSAcj4WQYvNM1bN8Vn6odMuW8DDJgr
+         sI/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744985651; x=1745590451;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CJVqYWfvxsMwajl2MePkR1VsXo/YFcgeoMoojX0CTzo=;
+        b=n4Gm/O56m5v+Zq5Im2qBMMGWEKkkO0KG7lTHpiUl11j15JeeRXqr+Cpc5ijT+bXLAQ
+         1u3lWa+dmRQn2dXbf6Wh3pfolXBcJ2JwOg3GVkzlScaV8llAyFyL6EoFMC3+mlulx6lw
+         zVGSYA20f0Yfts8r78w5AZW+FyMRtmVPzPRM3LmXOftu4NnRK5arDImDoMH49p9QrJxx
+         LW+agUfGZcQG+63yrzYqSVcU38nVkNyAtsGpRIDRvaBStW9srWROCbqwhxD9cjnFfMhv
+         bXUhkiDokZf2GK4RyBQaJFjsmsGGXMAQBLcjctnHvUHpMy3kvn2NY+bh0Ra6X83CmnhN
+         8m5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWa6plCEtef6z/H/VSy95IBnMl1y5VKYNOBaLpjNZCwpTkY+gZBfq1POagNsxAoMqif8wg4ikI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFl5IYp2FJkHGYSYkskJbAMtMgK5rBgOuHVTo+saWX4gA7EcAl
+	7j9pho0GZSHxE2cWUxjmMfeqIFrvB7dxZXiIuuDNfqZw/MMh9y8=
+X-Gm-Gg: ASbGncvka4L7qJETCREuZ+Ya1Z580k8GkOhR4WUz2wV4qATcLMX3QOkxghmnfGDhPZS
+	i1YLRBRYVE5dH1knk8L3Mt6OOReOqGYQ/yZ6FkwzGO1RzZuc3vQ/eQP/axtYhIfmotWeWdbZPFx
+	stToBAQvmn6Ms+2uFudtHtR1yQwVdawKfjMOFXD1p6VvTju/O/o+DSQbIXWaVPMFEWWghALfJ0G
+	EDMBLWGrN7HrO3FyfcON6Zra3TT6leOhAxALOzB+6ctr5gSLxkHit52PG6oXsEugFolCbG40Cj/
+	hk2Elxa6g82kLPwGgv3Zj1Uu87EUcTF/MkhUXxfh
+X-Google-Smtp-Source: AGHT+IHJNqp1s/y/9go5qiH7g/2jUGRLtSymcEVqKPAQRWreeDuASeA4kh6gFuKJVofQG9cmGLPYdA==
+X-Received: by 2002:a17:903:1b0c:b0:224:76f:9e44 with SMTP id d9443c01a7336-22c5357a13dmr39724755ad.8.1744985651415;
+        Fri, 18 Apr 2025 07:14:11 -0700 (PDT)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22c50fda402sm16877175ad.232.2025.04.18.07.14.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Apr 2025 07:14:10 -0700 (PDT)
+Date: Fri, 18 Apr 2025 07:14:10 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, horms@kernel.org, jdamato@fastly.com,
+	sdf@fomichev.me, ap420073@gmail.com
+Subject: Re: [PATCH net] net: fix the missing unlock for detached devices
+Message-ID: <aAJeMtRlBIMGfdN2@mini-arch>
+References: <20250418015317.1954107-1-kuba@kernel.org>
+ <CAHS8izMnK0C0sQpK+5NoL-ETNjJ+6BUhx_Bgq9drViUaic+W1A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACHNUJGWwJoeHTeCQ--.23559S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Xr4ktw17Wrykur48CF13twb_yoW3Crc_Cw
-	48A3sxWryUta15Zayjk3WUur1kJ34fG3WxCwn5XFZ8Was7Cr4qvr1xGr1fCF1xuayjvFZ7
-	Aw1rGFZ3Ja1xGjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbs8FF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s
-	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
-	cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
-	ACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_JF0_
-	Jw1lc2xSY4AK67AK6ry5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI
-	8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AK
-	xVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI
-	8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280
-	aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43
-	ZEXa7VUjmii3UUUUU==
-X-CM-SenderInfo: xfkh05xxih0wo6llvhldfou0/1tbiBg0QEmgCIt2dTQAAsM
+In-Reply-To: <CAHS8izMnK0C0sQpK+5NoL-ETNjJ+6BUhx_Bgq9drViUaic+W1A@mail.gmail.com>
 
-A patch similar to commit b91ee4aa2a21 ("mISDN: enforce CAP_NET_RAW for 
- raw sockets").
+On 04/18, Mina Almasry wrote:
+> On Thu, Apr 17, 2025 at 6:53 PM Jakub Kicinski <kuba@kernel.org> wrote:
+> >
+> > The combined condition was left as is when we converted
+> > from __dev_get_by_index() to netdev_get_by_index_lock().
+> > There was no need to undo anything with the former, for
+> > the latter we need an unlock.
+> >
+> > Fixes: 1d22d3060b9b ("net: drop rtnl_lock for queue_mgmt operations")
+> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> 
+> Reviewed-by: Mina Almasry <almasrymina@google.com>
 
-When creating a raw BLUETOOTH socket, CAP_NET_RAW needs to be checked
-first.
+Mina, the same (unlock netedev on !present) needs to happen for
+https://lore.kernel.org/netdev/20250417231540.2780723-5-almasrymina@google.com/
 
-Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
----
- net/bluetooth/cmtp/sock.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/bluetooth/cmtp/sock.c b/net/bluetooth/cmtp/sock.c
-index 96d49d9fae96..00f944f2863f 100644
---- a/net/bluetooth/cmtp/sock.c
-+++ b/net/bluetooth/cmtp/sock.c
-@@ -206,6 +206,8 @@ static int cmtp_sock_create(struct net *net, struct socket *sock, int protocol,
- 
- 	if (sock->type != SOCK_RAW)
- 		return -ESOCKTNOSUPPORT;
-+	if (!capable(CAP_NET_RAW))
-+		return -EPERM;
- 
- 	sk = sk_alloc(net, PF_BLUETOOTH, GFP_ATOMIC, &cmtp_proto, kern);
- 	if (!sk)
--- 
-2.34.1
-
+Presumably you'll do another repost at some point?
