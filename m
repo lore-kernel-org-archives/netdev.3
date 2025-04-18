@@ -1,59 +1,56 @@
-Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
+Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE6D2AEE1
-	for <netdev@vger.kernel.org>; Fri, 18 Apr 2025 00:34:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A1E2AEE1
+	for <netdev@vger.kernel.org>; Fri, 18 Apr 2025 00:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744936465; cv=none; b=gYhJo338BtDaBxReam4yhwL1R+VWWizEjU5uSP7nEzTzFqGAIuEvOfc9jCqqIQCqQQ0c0qBLge60U0G6xMi0O3aV5w9RSyRZQabLYQzK/EDnH9/YRkrqSa71KNsXY/3kBH5yc0Xqw6MnYD4L2tluz4VEpE2GlJ0CRbIHoD6Ys4k=
+	t=1744936471; cv=none; b=FbwgWy2Xdvuzr9eU4C4u1qkVoiLtyhmLB2UFBVGtPRsU/9TTm0TEdwPAPzSvcSf0DDynvc48RixK9BepmLBBPh/44PyPAY2uF4mK7mzpLw9EZ5Cvf0WIxC7A4GjdytExRMNqPl7tNSguzqMSzT45inlnFBsDyjB56BIFq0NevAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744936465; c=relaxed/simple;
-	bh=D/DHLmmuOgRcuGbwybQpysMimZfmoV5FwVjZlKpTQ1I=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cD3pC+DCdQEAqN6nc3LtFvtagqxnIwxNQOS4XEP2SIZqjQ2+DZZiMLFsm9T8sfGWUZLqqpAJNYdda+/o085zT9zdBfRihIDmU/HO0Cbdhg17jbTIPDSref9WYwWXq4qOkCm8ck+15TpyiqYVtJyN3sVhxVSTfafNBf3dGzmLukI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=FiC4UIA4; arc=none smtp.client-ip=99.78.197.220
+	s=arc-20240116; t=1744936471; c=relaxed/simple;
+	bh=U3d5NJTg6XeTSYd3ie4i6bfmpuXD1tGAt5Lnyups6zY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pwBUL9UFzg6p+m+/ft2KOHEFTMl3GioVPJS25oCj9U2KvNEwDKk25aaQFfSglYlT+leUIVWqin4tZzW5tkmjoUk19TGv9kAn6C0S0vWQ2sUh6yLLR8iayragfYjUSR5BI1B7FszaaLWFRqG9D9M9O/KlEGfyVITNKfuoZ3Ibn5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=CY2HwhlA; arc=none smtp.client-ip=207.171.188.204
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="FiC4UIA4"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="CY2HwhlA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1744936463; x=1776472463;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Nwqt0byEKchaa0MfaS9qiU7N5LZVRebQ/KEpFO/IDSc=;
-  b=FiC4UIA4eHuo9StJoivmLzTkwJyEZjFwySQW2TKlREosS9fFlEw2q19a
-   KDJZyZd3rIe0VTpa9K4z4OQLdfRgoMOpcjFSVWySPZN7MM2n6sg3U0+Ib
-   SG/LRtDtOuteoSTDiKu5aNBOJjpZxtHfZI9EUlILaJvuUfc/JBqXZUt3i
-   0=;
+  t=1744936468; x=1776472468;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=cj6GKE9Ba1jPXaRY0LSeU9oFvmQgBb8X+Tnw3Wau49k=;
+  b=CY2HwhlAgE9eQa6BpG6KmSt9jVsQL/kuC2o5e4dTVxkofi/dXUqovk9L
+   hb2GSg6TROs0xrMjju3icKxCpsLw572jA+8LccdnixlOsmn3ymT9sgcJK
+   pLD+RIAmQYidTZNLng+XuM3uuoKiUl1z696APIaju9L6JVPCrIjJ1sQVp
+   o=;
 X-IronPort-AV: E=Sophos;i="6.15,220,1739836800"; 
-   d="scan'208";a="192139756"
+   d="scan'208";a="11410336"
 Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2025 00:34:23 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:10971]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.57.220:2525] with esmtp (Farcaster)
- id 199272d4-d408-406b-9eb6-0785936d090e; Fri, 18 Apr 2025 00:34:22 +0000 (UTC)
-X-Farcaster-Flow-ID: 199272d4-d408-406b-9eb6-0785936d090e
+  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2025 00:33:13 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:29184]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.42.20:2525] with esmtp (Farcaster)
+ id 57d9725d-7404-4208-86be-5b2648dc380f; Fri, 18 Apr 2025 00:33:12 +0000 (UTC)
+X-Farcaster-Flow-ID: 57d9725d-7404-4208-86be-5b2648dc380f
 Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
  EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Fri, 18 Apr 2025 00:34:22 +0000
+ Fri, 18 Apr 2025 00:33:10 +0000
 Received: from 6c7e67bfbae3.amazon.com (10.94.49.59) by
  EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Fri, 18 Apr 2025 00:34:20 +0000
+ Fri, 18 Apr 2025 00:33:07 +0000
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
 	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
 	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 CC: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v2 net-next 3/3] ppp: Split ppp_exit_net() to ->exit_rtnl().
-Date: Thu, 17 Apr 2025 17:32:34 -0700
-Message-ID: <20250418003259.48017-4-kuniyu@amazon.com>
+Subject: [PATCH v2 net-next 0/3] net: Followup series for ->exit_rtnl().
+Date: Thu, 17 Apr 2025 17:32:31 -0700
+Message-ID: <20250418003259.48017-1-kuniyu@amazon.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250418003259.48017-1-kuniyu@amazon.com>
-References: <20250418003259.48017-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,83 +59,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D046UWA001.ant.amazon.com (10.13.139.112) To
+X-ClientProxiedBy: EX19D037UWB002.ant.amazon.com (10.13.138.121) To
  EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-ppp_exit_net() unregisters devices related to the netns under
-RTNL and destroys lists and IDR.
+Patch 1 drops the hold_rtnl arg in ops_undo_list() as suggested by Jakub.
+Patch 2 & 3 apply ->exit_rtnl() to pfcp and ppp.
 
-Let's use ->exit_rtnl() for the device unregistration part to
-save RTNL dances for each netns.
 
-Note that we delegate the for_each_netdev_safe() part to
-default_device_exit_batch() and replace unregister_netdevice_queue()
-with ppp_nl_dellink() to align with bond, geneve, gtp, and pfcp.
+Changes:
+  v2:
+    * Patch 3
+      * Fix build failure by forward declaration
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
----
-v2: Fix build failure by forward declaration
----
+  v1: https://lore.kernel.org/netdev/20250415022258.11491-1-kuniyu@amazon.com/
+
+
+Kuniyuki Iwashima (3):
+  net: Drop hold_rtnl arg from ops_undo_list().
+  pfcp: Convert pfcp_net_exit() to ->exit_rtnl().
+  ppp: Split ppp_exit_net() to ->exit_rtnl().
+
+ drivers/net/pfcp.c            | 23 +++++++----------------
  drivers/net/ppp/ppp_generic.c | 25 ++++++++++---------------
- 1 file changed, 10 insertions(+), 15 deletions(-)
+ net/core/net_namespace.c      | 14 ++++++++------
+ 3 files changed, 25 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index 53463767cc43..def84e87e05b 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -1131,6 +1131,8 @@ static const struct file_operations ppp_device_fops = {
- 	.llseek		= noop_llseek,
- };
- 
-+static void ppp_nl_dellink(struct net_device *dev, struct list_head *head);
-+
- static __net_init int ppp_init_net(struct net *net)
- {
- 	struct ppp_net *pn = net_generic(net, ppp_net_id);
-@@ -1146,28 +1148,20 @@ static __net_init int ppp_init_net(struct net *net)
- 	return 0;
- }
- 
--static __net_exit void ppp_exit_net(struct net *net)
-+static __net_exit void ppp_exit_rtnl_net(struct net *net,
-+					 struct list_head *dev_to_kill)
- {
- 	struct ppp_net *pn = net_generic(net, ppp_net_id);
--	struct net_device *dev;
--	struct net_device *aux;
- 	struct ppp *ppp;
--	LIST_HEAD(list);
- 	int id;
- 
--	rtnl_lock();
--	for_each_netdev_safe(net, dev, aux) {
--		if (dev->netdev_ops == &ppp_netdev_ops)
--			unregister_netdevice_queue(dev, &list);
--	}
--
- 	idr_for_each_entry(&pn->units_idr, ppp, id)
--		/* Skip devices already unregistered by previous loop */
--		if (!net_eq(dev_net(ppp->dev), net))
--			unregister_netdevice_queue(ppp->dev, &list);
-+		ppp_nl_dellink(ppp->dev, dev_to_kill);
-+}
- 
--	unregister_netdevice_many(&list);
--	rtnl_unlock();
-+static __net_exit void ppp_exit_net(struct net *net)
-+{
-+	struct ppp_net *pn = net_generic(net, ppp_net_id);
- 
- 	mutex_destroy(&pn->all_ppp_mutex);
- 	idr_destroy(&pn->units_idr);
-@@ -1177,6 +1171,7 @@ static __net_exit void ppp_exit_net(struct net *net)
- 
- static struct pernet_operations ppp_net_ops = {
- 	.init = ppp_init_net,
-+	.exit_rtnl = ppp_exit_rtnl_net,
- 	.exit = ppp_exit_net,
- 	.id   = &ppp_net_id,
- 	.size = sizeof(struct ppp_net),
 -- 
 2.49.0
 
