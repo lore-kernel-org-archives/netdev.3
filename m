@@ -1,117 +1,143 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2AF1DF72E
-	for <netdev@vger.kernel.org>; Mon, 21 Apr 2025 21:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB691D95A3;
+	Mon, 21 Apr 2025 21:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745270926; cv=none; b=hgoYpnwwH55efHimjczdVETRiOCwKqhmMSdLnVyuOCSLpLcyd1AP+ltf3YtBC7KryI3ywtVCDXvI5zY43yP5tEptNsAcTMs6hPw3mbw+GhWWXRom26DMDPEliKqrcvB8i12DHOn3MO0DhFXYqjsxZeounDc8mwtTUhP+Xnicgvk=
+	t=1745272285; cv=none; b=BgQJTY0VVgHJ6qzQgyFTcedurLLCQ9N1AR8SYIFBpEU/mihw5WZAeTmeFocjpfEbjtDxEzeWgjXfeqQ9jW/hN3YWPzxmYNx1OQ207jHy+ozvTiicdI+Y4ztXYVO47fa20efJRvz3ZFsEU7VJM/natvO5MqwgiW4rz/7Y3RBEDFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745270926; c=relaxed/simple;
-	bh=cj5Ks1uWmBi3jvbXo7vmiWm0xiYdo/inZP+2yuC3Fpc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YB7nuwYCk8UTrdxBQttqWV7Emvhw9Whahi5j+Iz+jjeWLKaHymzmP5B1uOG0HlAV0VDLKWNQ1hLEHzxRFTYqrAf+LhdR8TR+gn/buay/ThWbQJ3e733FRM0dKAd3RKcdl0JMSTblr17hLW8VdUVqQpzG82ysKot1o0XqHLFC2r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fFbe4nGB; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745272285; c=relaxed/simple;
+	bh=bU72gZf0Mlr4a1DTEu4p6xddG7QuL34UyWY76ya9fjA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=tfd60kmd4cwEtiIDTM/PlEgW+hHjy9l7c43Ia1FJQK1qgY3SfSEokW4eoMYdYzs7jSs8+jBciV9RO35aEceTzp52Oir7t1KG1tim85uRWOy7xgjONyRBt4LsLNJzqGss4tY9R9m+JnlinThOWcrJjFctLZfTnAYSrs+fw6PQSJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=J90FhxkX; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fFbe4nGB"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-54acc04516fso4714720e87.0
-        for <netdev@vger.kernel.org>; Mon, 21 Apr 2025 14:28:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745270922; x=1745875722; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4H+pVshPZ+N3oOAe5R0RofSWaUDM4w267tTXN7y6tdQ=;
-        b=fFbe4nGBU1GLaPrplNJVlUjC8mE4YvK01Kxp/j7TkGgbc/hgN7xaRC0xGaEmRbP/Lq
-         qN8ZU4I4nuLEfzQvG2EgNfWsjLFNupxs8Pb6QlZWV9aZ8YAMFt/xCvzyIukThlLL0YoT
-         EP29vf4H8Vr5ei1HNyuEd03Po9mudz5A0oq3xS0VDwoXuaFmMaSaz/aRqh1t+1PNzIs1
-         K3aIKEuV1QX0LmgsrIDKCjLnt+xk+dsG/BQYu3a1FawqoKK3u0aQYVjVRfzE8/7wnDVL
-         gSGZ73usAm8ktqpTyLz1uedZk+04NfFmx8DakOT/wVyF+4g+WXiTQvk1qkjSclhIOqpT
-         uRiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745270922; x=1745875722;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4H+pVshPZ+N3oOAe5R0RofSWaUDM4w267tTXN7y6tdQ=;
-        b=WWVgn570fS/CbURpWx99J52L/gHzKWQlKwZaqaUGPYVOeejj9OLpbjR0AZVJygDP3f
-         8NXn9M1k/KDZQHQmGWyAc0x7E/N4WyGiZnk3s9lSRus4IsLGMtyJu5u1Bk2/3osmpkQ0
-         M3SWgVeC2snzRvDJXO0G0qjpT407OwomXhXqmgShIiKSpZhbqQB9sorxf/BpYWOMuASn
-         ljCfrrBx9a6F2oUwgzdbmzo+f+6nA4NnGa1YvMKqrvuE6RgASc0usd5hfu2/0vdh9hfL
-         2/p7zC6REWm1DCJgJurgoY4IQO6V0WF4C48E1rBBHW+gml0dBYluqs0992bYIvbpjZbS
-         1gEA==
-X-Forwarded-Encrypted: i=1; AJvYcCUAboUqF5XQXxROwzhwsYP5sqhR8QrRFDtJjWQuQwcgoXO9mG5N6ifcVcD/dthZ9zcbED8r2Xc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPwfPn5y4X9V2mip6PGjJw1i0uwMTc4/OqQbAaOSmjsZs3lkHs
-	/7XF3Gyz0yERK1bUwrgIM39/HztfBwK3j0FJruQjZ6S+jucOcXBtAuKqlIMZaFc=
-X-Gm-Gg: ASbGnctwpbEyJHU+sTB9AobIw0GNYm1KBBL7n96GMOoz9vg2dakw6BfxNqL65ls1vCC
-	bwrQGQZWZJAeaPLPnhFHH2n78O+q78i/nQsLJZmUknmpEDg5bzbjw5Sgy6vFcArs+MDY2xrIRGd
-	AWcxLiSE2eUNFOObL2+0cBjYScAlnZbKIZZlGB+odCTyqTjvjZO8vb8LEyVJdSAICE1AVnhQkXz
-	Pal3X1znCWOpdtM6SpjCmFXNmL3hy9ODP01XNH0ghjSLLaJIoJ/xAW9Hi9xBTVC+6GdUjiirSlY
-	7QReTlT79zBzkzzUlsuDkcdfk/kLego28vSSBxNUiW2lli52Yxf3hA==
-X-Google-Smtp-Source: AGHT+IHrB5+Gs+5ymBeBdDO16MTL1evv43zT3u2uT/2TZTgDIF4MogWUfjyHq4H4fdDl1lCDD3YCTg==
-X-Received: by 2002:a05:6512:2386:b0:545:f9c:a80f with SMTP id 2adb3069b0e04-54d6e61a370mr3927345e87.1.1745270921634;
-        Mon, 21 Apr 2025 14:28:41 -0700 (PDT)
-Received: from localhost.localdomain ([185.201.30.223])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54d6e5f5177sm1032746e87.218.2025.04.21.14.28.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Apr 2025 14:28:41 -0700 (PDT)
-From: Dmitry Kandybka <d.kandybka@gmail.com>
-To: Aaron Conole <aconole@redhat.com>
-Cc: Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	dev@openvswitch.org,
-	netdev@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH] openvswitch: fix band bucket value computation in ovs_meter_execute()
-Date: Tue, 22 Apr 2025 00:28:34 +0300
-Message-ID: <20250421212838.1117423-1-d.kandybka@gmail.com>
-X-Mailer: git-send-email 2.43.5
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="J90FhxkX"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1u6z2n-000P5i-7E; Mon, 21 Apr 2025 23:51:13 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=qswCCZ7zdNCGMNQd6xheEFi5M2DI/AzAcjRQmm33v3U=; b=J90FhxkXtWl335gXrcrN6soVBm
+	Q6xbudBOn9/qMff9L5+o9kTYwOU11Y3t5HhhRR0YxY5UjwSU1hclxGgL1ezvDNg/MagJC5i/4vhe4
+	4XxK+2vwetUSur5Tba/Ef81hulIVRsmBF5d6MYV99PCF/IsgCLbn92DPLcmYfALe02VxHoUWzdsFu
+	iAzHJu942Fpqc+NNT0Em53nbg83EpXVoYJhj3zqNQnerfItzsdiJJ+jaWvNI1opUKHD968AkLGEp2
+	0XgWbLMiAyG5rTK/Z+A8MApKTT6wujw5mAHOLzZbYfzbgwN1w5PxwRoWKw5wUWXbcf+mBnNhSIe8o
+	b9UUbbQw==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1u6z2m-0000Nf-T1; Mon, 21 Apr 2025 23:51:13 +0200
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1u6z2j-0056xd-1t; Mon, 21 Apr 2025 23:51:09 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Date: Mon, 21 Apr 2025 23:50:43 +0200
+Subject: [PATCH net-next v2 3/3] vsock/test: Expand linger test to ensure
+ close() does not misbehave
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250421-vsock-linger-v2-3-fe9febd64668@rbox.co>
+References: <20250421-vsock-linger-v2-0-fe9febd64668@rbox.co>
+In-Reply-To: <20250421-vsock-linger-v2-0-fe9febd64668@rbox.co>
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+ Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-In ovs_meter_execute(), promote 'delta_ms' to 'long long int' to avoid
-possible integer overflow. It's assumed that'delta_ms' and 'band->rate'
-multiplication leads to overcomming UINT32_MAX.
-Compile tested only.
+There was an issue with SO_LINGER: instead of blocking until all queued
+messages for the socket have been successfully sent (or the linger timeout
+has been reached), close() would block until packets were handled by the
+peer.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Add a check to alert on close() lingering when it should not.
 
-Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- net/openvswitch/meter.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/vsock/vsock_test.c | 30 +++++++++++++++++++++++++++---
+ 1 file changed, 27 insertions(+), 3 deletions(-)
 
-diff --git a/net/openvswitch/meter.c b/net/openvswitch/meter.c
-index cc08e0403909..2fab53ac60a8 100644
---- a/net/openvswitch/meter.c
-+++ b/net/openvswitch/meter.c
-@@ -594,11 +594,11 @@ bool ovs_meter_execute(struct datapath *dp, struct sk_buff *skb,
+diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+index d0f6d253ac72d08a957cb81a3c38fcc72bec5a53..82d0bc20dfa75041f04eada1b4310be2f7c3a0c1 100644
+--- a/tools/testing/vsock/vsock_test.c
++++ b/tools/testing/vsock/vsock_test.c
+@@ -1788,13 +1788,16 @@ static void test_stream_connect_retry_server(const struct test_opts *opts)
+ 	close(fd);
+ }
+ 
++#define	LINGER_TIMEOUT	1	/* seconds */
++
+ static void test_stream_linger_client(const struct test_opts *opts)
  {
- 	long long int now_ms = div_u64(ktime_get_ns(), 1000 * 1000);
- 	long long int long_delta_ms;
-+	long long int delta_ms;
- 	struct dp_meter_band *band;
- 	struct dp_meter *meter;
- 	int i, band_exceeded_max = -1;
- 	u32 band_exceeded_rate = 0;
--	u32 delta_ms;
- 	u32 cost;
+ 	struct linger optval = {
+ 		.l_onoff = 1,
+-		.l_linger = 1
++		.l_linger = LINGER_TIMEOUT
+ 	};
+-	int fd;
++	int bytes_unsent, fd;
++	time_t ts;
  
- 	meter = lookup_meter(&dp->meter_tbl, meter_id);
-@@ -623,7 +623,7 @@ bool ovs_meter_execute(struct datapath *dp, struct sk_buff *skb,
- 	 * wrap around below.
- 	 */
- 	delta_ms = (long_delta_ms > (long long int)meter->max_delta_t)
--		   ? meter->max_delta_t : (u32)long_delta_ms;
-+		   ? meter->max_delta_t : long_delta_ms;
+ 	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
+ 	if (fd < 0) {
+@@ -1807,7 +1810,28 @@ static void test_stream_linger_client(const struct test_opts *opts)
+ 		exit(EXIT_FAILURE);
+ 	}
  
- 	/* Update meter statistics.
- 	 */
++	/* Byte left unread to expose any incorrect behaviour. */
++	send_byte(fd, 1, 0);
++
++	/* Reuse LINGER_TIMEOUT to wait for bytes_unsent == 0. */
++	timeout_begin(LINGER_TIMEOUT);
++	do {
++		if (ioctl(fd, SIOCOUTQ, &bytes_unsent) < 0) {
++			perror("ioctl(SIOCOUTQ)");
++			exit(EXIT_FAILURE);
++		}
++		timeout_check("ioctl(SIOCOUTQ) == 0");
++	} while (bytes_unsent != 0);
++	timeout_end();
++
++	ts = current_nsec();
+ 	close(fd);
++	if ((current_nsec() - ts) / NSEC_PER_SEC > 0) {
++		fprintf(stderr, "Unexpected lingering on close()\n");
++		exit(EXIT_FAILURE);
++	}
++
++	control_writeln("DONE");
+ }
+ 
+ static void test_stream_linger_server(const struct test_opts *opts)
+@@ -1820,7 +1844,7 @@ static void test_stream_linger_server(const struct test_opts *opts)
+ 		exit(EXIT_FAILURE);
+ 	}
+ 
+-	vsock_wait_remote_close(fd);
++	control_expectln("DONE");
+ 	close(fd);
+ }
+ 
+
 -- 
-2.43.5
+2.49.0
 
