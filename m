@@ -1,244 +1,233 @@
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F79D266580;
-	Mon, 21 Apr 2025 13:50:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B2926657C
+	for <netdev@vger.kernel.org>; Mon, 21 Apr 2025 13:54:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745243445; cv=none; b=GVVESh8pBvCIv9Za6yAmzuWRHsQWYTLvMBGwNDukyPf+H+o++WQ8HyRDYmW253urdTl0fdcQfeDpJ0J3mQCpCVX7/B8grQwwTOaKqgmIRj0KBmHbG745WlBst4Ua76d6r/u3kp300fC9Dl6V4XmCG4Fyw7CVCmfQBFEdKg6KH0Q=
+	t=1745243649; cv=none; b=fkb9U6MLE1I09lHPdaotC+D97Vz0LOEqAG+Q9CYm1F6cTZ/NzqRDDT4wBNpbkS1AUbioFBFReZMHtt4B2mpw1NTnU5Q9NKqda6ddqV08LsJXpBSknsEakIHSAeWQoQX0IbR5thLGhD6Lim6PZjAd57z4X0RPO4bM7VN1Wb8dOO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745243445; c=relaxed/simple;
-	bh=12mEl+1YTyr+7T+HiJM6voewpOKBSfOE4w8KgEwFzZA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DnOeh2td1MjdOhxAsSa8YVhRAeJUJzFixKlaPLjGyVynApN2zHS4fb3rHNU2XX45M6PhvLhA7zl2vvkthd5dFSACSGQNsOjn0UFYZOeJCGQuX/Dtoq2bATJKblH1N3+boP+c4yl/VRbvyrwafDjLD9tRd/AoN8mwxa4TkbclXTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Zh6CX4W13z1R7fN;
-	Mon, 21 Apr 2025 21:48:40 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8316E1800B2;
-	Mon, 21 Apr 2025 21:50:39 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 21 Apr 2025 21:50:38 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
-CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
-	<liuyonglong@huawei.com>, <chenhao418@huawei.com>,
-	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
-	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <gerhard@engleder-embedded.com>,
-	<shaojijie@huawei.com>
-Subject: [PATCH RFC net-next 2/2] net: hibmcge: add support for selftest
-Date: Mon, 21 Apr 2025 21:43:58 +0800
-Message-ID: <20250421134358.1241851-3-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20250421134358.1241851-1-shaojijie@huawei.com>
-References: <20250421134358.1241851-1-shaojijie@huawei.com>
+	s=arc-20240116; t=1745243649; c=relaxed/simple;
+	bh=Bw+mh5x1d66eHJ3eWvFJFlI7KhtJ9T4KYqhE6JDEdOM=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=VD2+iEgogAFZL4y1r6nS5h39cJJdbNIfCzLg2J8h+PA66bLfiT4ahsad0baWSH0hfgKW/66KYQfnQ6XSVKdpHVBG3yCaVLkFcY6BsLV1njVeGKHWkL8rDTZYXO8emu8WAf7sFuaKmg4xwFaP2wh4ZWCGAbLOk2TDQTwyjLWEAcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f4618cAB; arc=none smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f4618cAB"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-47690a4ec97so42844221cf.2
+        for <netdev@vger.kernel.org>; Mon, 21 Apr 2025 06:54:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745243646; x=1745848446; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=choG9lHCXqU5TlVnJ5m8z33yTbfQv3jZp/5uvguC1BA=;
+        b=f4618cABqXK8fsH+MzGppZP6AWBSEHA9wkGZs/T4nKLraFV9hxGXnDR6Gi09UtrwWi
+         WCkf7iU6ByIMkLUH1ibwEuQrriOcwvTjuw8mGe1FsYFxztFQmxGAs7Top3UI+9Imez3d
+         2rsV4clN233Cm7op+nX3HSqSzgovdIPn1uhZRU8SB3r9uWEJLxSiQkwI3r+NVfDioR4h
+         nNo7HNAKidS36oTR6a9oniWIP1t5835+rDtVg8WOzOy6jHJT6Hzg+N9sTAL9YoiEZTow
+         M4YkbZwICtCcSf+QDrCSkc8pIe5Bs7ybDzrCvJYr9PsZf+CKyI5KOiiGzgrxA3OUYC2b
+         8r2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745243646; x=1745848446;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=choG9lHCXqU5TlVnJ5m8z33yTbfQv3jZp/5uvguC1BA=;
+        b=FItVSGBGCZcxTMix9gCKNqphpE5ddtSEt0Dp31Z5tJkAT50zK225ZnICyUtM0pPeo3
+         TRAZg+yA0zOVHgYDtfkqQ07GBbQhUQ/Q+x4ldIZU1+pt2NeT0sEycnuHZJpnBVcvvAn3
+         YbhUKSMACOUrj0KBwRwPURrVYoBbrs860T3YVRwFEh5fjjU4SDSKhM9WTqlWSjv+ESZs
+         lo+L+ngR1yfK7ZQ0eYNIRWmN0Fz0tRu9nTjbsxeQBeHR6gmgH0bC720KgLhKMNSTqK8t
+         A7T1WDEqgYjBvWu8YvZTzeAPtGXIoyzmhVyzODv6YJRjHRzwsU97mTFXwUNdOc+Ed1g5
+         96VA==
+X-Forwarded-Encrypted: i=1; AJvYcCVDt2PnJHiH6bzW7UvPf6cLCcOB0E6W5OPDkBC1fBqpLVoj9M/iywAoUsm+KHKEXLkzVzRLSf4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMBJJ9NI2dwgsZia01Q/U+Zc58Yc3ObAM7CqiDpP++ApZ6HGbR
+	jDHoc6400VgTocbpcHWhctVFJQGAjAxQX1agk7EGVgCK5q1PNbm8
+X-Gm-Gg: ASbGncuF32f+4hwviIO0uzmbRUquIvsRabDq3JSvUAeH01Fn6UIVU5n1JIlaltKWXhw
+	IbU4uTfZ8+qAI0U/Akb5RVUgBhw4OvlQkaITyzRg8xICG4HEyzYb3rzyipY+fAQhpUqa9mCM9oM
+	xEb4ySFz5DxHM0bUzAv8QFhDvFFFcRd0kVOgexpmxQZW5p9DCMb6/vw0fuBpnDomcktB0DN2H+t
+	3SjTl+uwOuBBpcg4qZ3Ef4m/mrqMVGpl/SLsAGNJ6J1uKdrEIHedkBPa8vUhS3a5uQrfeXCF0as
+	0+JSPsQ46jmAviOS5/7qEf8/wXhtNgm/eumLO/b9FPFDP4xbssqNXmfvfoeCpkVJfNcNeWE2a3U
+	PkbYLU0K4XDS48wXR6uPXZPMyYUAx1w0=
+X-Google-Smtp-Source: AGHT+IEpBIueYd61qqAtvxQ90Aglgzj5SwQp3fkqRCOjQY59e/LrW0HB97agQaoKegNVu+2MSiP4zQ==
+X-Received: by 2002:ac8:5f53:0:b0:472:801:3e74 with SMTP id d75a77b69052e-47aec4b72b0mr185786211cf.41.1745243646319;
+        Mon, 21 Apr 2025 06:54:06 -0700 (PDT)
+Received: from localhost (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
+        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-47ae9c16dd2sm42149771cf.14.2025.04.21.06.54.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Apr 2025 06:54:05 -0700 (PDT)
+Date: Mon, 21 Apr 2025 09:54:05 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: davem@davemloft.net, 
+ kuba@kernel.org, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ dsahern@kernel.org, 
+ horms@kernel.org, 
+ idosch@nvidia.com, 
+ kuniyu@amazon.com, 
+ Willem de Bruijn <willemb@google.com>
+Message-ID: <68064dfd68775_32bae8294e1@willemb.c.googlers.com.notmuch>
+In-Reply-To: <20250420180537.2973960-3-willemdebruijn.kernel@gmail.com>
+References: <20250420180537.2973960-1-willemdebruijn.kernel@gmail.com>
+ <20250420180537.2973960-3-willemdebruijn.kernel@gmail.com>
+Subject: Re: [PATCH net-next 2/3] ip: load balance tcp connections to single
+ dst addr and port
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-This patch implements selftest, including MAC and SerDes selftest,
-which is the driver's own test. The .enable() is implemented by the driver.
+Willem de Bruijn wrote:
+> From: Willem de Bruijn <willemb@google.com>
+> 
+> Load balance new TCP connections across nexthops also when they
+> connect to the same service at a single remote address and port.
+> 
+> This affects only port-based multipath hashing:
+> fib_multipath_hash_policy 1 or 3.
+> 
+> Local connections must choose both a source address and port when
+> connecting to a remote service, in ip_route_connect. This
+> "chicken-and-egg problem" (commit 2d7192d6cbab ("ipv4: Sanitize and
+> simplify ip_route_{connect,newports}()")) is resolved by first
+> selecting a source address, by looking up a route using the zero
+> wildcard source port and address.
+> 
+> As a result multiple connections to the same destination address and
+> port have no entropy in fib_multipath_hash.
+> 
+> This is not a problem when forwarding, as skb-based hashing has a
+> 4-tuple. Nor when establishing UDP connections, as autobind there
+> selects a port before reaching ip_route_connect.
+> 
+> Load balance also TCP, by using a random port in fib_multipath_hash.
+> Port assignment in inet_hash_connect is not atomic with
+> ip_route_connect. Thus ports are unpredictable, effectively random.
+> 
+> Implementation details:
+> 
+> Do not actually pass a random fl4_sport, as that affects not only
+> hashing, but routing more broadly, and can match a source port based
+> policy route, which existing wildcard port 0 will not. Instead,
+> define a new wildcard flowi flag that is used only for hashing.
+> 
+> Selecting a random source is equivalent to just selecting a random
+> hash entirely. But for code clarity, follow the normal 4-tuple hash
+> process and only update this field.
+> 
+> fib_multipath_hash can be reached with zero sport from other code
+> paths, so explicitly pass this flowi flag, rather than trying to infer
+> this case in the function itself.
+> 
+> Signed-off-by: Willem de Bruijn <willemb@google.com>
+> ---
+>  include/net/flow.h  |  1 +
+>  include/net/route.h |  3 +++
+>  net/ipv4/route.c    | 13 ++++++++++---
+>  net/ipv6/route.c    | 13 ++++++++++---
+>  net/ipv6/tcp_ipv6.c |  2 ++
+>  5 files changed, 26 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/net/flow.h b/include/net/flow.h
+> index 2a3f0c42f092..a1839c278d87 100644
+> --- a/include/net/flow.h
+> +++ b/include/net/flow.h
+> @@ -39,6 +39,7 @@ struct flowi_common {
+>  #define FLOWI_FLAG_ANYSRC		0x01
+>  #define FLOWI_FLAG_KNOWN_NH		0x02
+>  #define FLOWI_FLAG_L3MDEV_OIF		0x04
+> +#define FLOWI_FLAG_ANY_SPORT		0x08
+>  	__u32	flowic_secid;
+>  	kuid_t  flowic_uid;
+>  	__u32		flowic_multipath_hash;
+> diff --git a/include/net/route.h b/include/net/route.h
+> index c605fd5ec0c0..8e39aa822cf9 100644
+> --- a/include/net/route.h
+> +++ b/include/net/route.h
+> @@ -326,6 +326,9 @@ static inline void ip_route_connect_init(struct flowi4 *fl4, __be32 dst,
+>  	if (inet_test_bit(TRANSPARENT, sk))
+>  		flow_flags |= FLOWI_FLAG_ANYSRC;
+>  
+> +	if (IS_ENABLED(CONFIG_IP_ROUTE_MULTIPATH) && !sport)
+> +		flow_flags |= FLOWI_FLAG_ANY_SPORT;
+> +
+>  	flowi4_init_output(fl4, oif, READ_ONCE(sk->sk_mark), ip_sock_rt_tos(sk),
+>  			   ip_sock_rt_scope(sk), protocol, flow_flags, dst,
+>  			   src, dport, sport, sk->sk_uid);
+> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+> index e5e4c71be3af..685e8d3b4f5d 100644
+> --- a/net/ipv4/route.c
+> +++ b/net/ipv4/route.c
+> @@ -2037,8 +2037,12 @@ static u32 fib_multipath_custom_hash_fl4(const struct net *net,
+>  		hash_keys.addrs.v4addrs.dst = fl4->daddr;
+>  	if (hash_fields & FIB_MULTIPATH_HASH_FIELD_IP_PROTO)
+>  		hash_keys.basic.ip_proto = fl4->flowi4_proto;
+> -	if (hash_fields & FIB_MULTIPATH_HASH_FIELD_SRC_PORT)
+> -		hash_keys.ports.src = fl4->fl4_sport;
+> +	if (hash_fields & FIB_MULTIPATH_HASH_FIELD_SRC_PORT) {
+> +		if (fl4->flowi4_flags & FLOWI_FLAG_ANY_SPORT)
+> +			hash_keys.ports.src = get_random_u16();
+> +		else
+> +			hash_keys.ports.src = fl4->fl4_sport;
+> +	}
+>  	if (hash_fields & FIB_MULTIPATH_HASH_FIELD_DST_PORT)
+>  		hash_keys.ports.dst = fl4->fl4_dport;
+>  
+> @@ -2093,7 +2097,10 @@ int fib_multipath_hash(const struct net *net, const struct flowi4 *fl4,
+>  			hash_keys.control.addr_type = FLOW_DISSECTOR_KEY_IPV4_ADDRS;
+>  			hash_keys.addrs.v4addrs.src = fl4->saddr;
+>  			hash_keys.addrs.v4addrs.dst = fl4->daddr;
+> -			hash_keys.ports.src = fl4->fl4_sport;
+> +			if (fl4->flowi4_flags & FLOWI_FLAG_ANY_SPORT)
+> +				hash_keys.ports.src = get_random_u16();
+> +			else
+> +				hash_keys.ports.src = fl4->fl4_sport;
+>  			hash_keys.ports.dst = fl4->fl4_dport;
+>  			hash_keys.basic.ip_proto = fl4->flowi4_proto;
+>  		}
+> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+> index 945857a8bfe3..39f07cdbbc64 100644
+> --- a/net/ipv6/route.c
+> +++ b/net/ipv6/route.c
+> @@ -2492,8 +2492,12 @@ static u32 rt6_multipath_custom_hash_fl6(const struct net *net,
+>  		hash_keys.basic.ip_proto = fl6->flowi6_proto;
+>  	if (hash_fields & FIB_MULTIPATH_HASH_FIELD_FLOWLABEL)
+>  		hash_keys.tags.flow_label = (__force u32)flowi6_get_flowlabel(fl6);
+> -	if (hash_fields & FIB_MULTIPATH_HASH_FIELD_SRC_PORT)
+> -		hash_keys.ports.src = fl6->fl6_sport;
+> +	if (hash_fields & FIB_MULTIPATH_HASH_FIELD_SRC_PORT) {
+> +		if (fl6->flowi6_flags & FLOWI_FLAG_ANY_SPORT)
+> +			hash_keys.ports.src = get_random_u16();
+> +		else
+> +			hash_keys.ports.src = fl6->fl6_sport;
+> +	}
+>  	if (hash_fields & FIB_MULTIPATH_HASH_FIELD_DST_PORT)
+>  		hash_keys.ports.dst = fl6->fl6_dport;
+>  
+> @@ -2547,7 +2551,10 @@ u32 rt6_multipath_hash(const struct net *net, const struct flowi6 *fl6,
+>  			hash_keys.control.addr_type = FLOW_DISSECTOR_KEY_IPV6_ADDRS;
+>  			hash_keys.addrs.v6addrs.src = fl6->saddr;
+>  			hash_keys.addrs.v6addrs.dst = fl6->daddr;
+> -			hash_keys.ports.src = fl6->fl6_sport;
+> +			if (fl6->flowi6_flags & FLOWI_FLAG_ANY_SPORT)
+> +				hash_keys.ports.src = get_random_u16();
 
-In addition, the driver sets extra_flags to
-test the carrier status, full duplex, and PHY.
+I missed the __be16 endianness here and in the related cases
 
-For example:
-ethtool -t enp132s0f1
-The test result is PASS
-The test extra info:
- 1. MAC internal loopback      	 0
- 2. Serdes internal loopback   	 0
- 3. Carrier                    	 0
- 4. Full Duplex                	 0
- 5. PHY internal loopback      	 0
+That'll teach me to forget running
 
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
----
- .../ethernet/hisilicon/hibmcge/hbg_common.h   |  2 +
- .../ethernet/hisilicon/hibmcge/hbg_ethtool.c  | 60 ++++++++++++++++---
- .../net/ethernet/hisilicon/hibmcge/hbg_hw.c   |  6 ++
- .../net/ethernet/hisilicon/hibmcge/hbg_hw.h   |  1 +
- .../net/ethernet/hisilicon/hibmcge/hbg_reg.h  |  1 +
- .../net/ethernet/hisilicon/hibmcge/hbg_txrx.c |  3 +-
- 6 files changed, 65 insertions(+), 8 deletions(-)
+    make C=2 CF=-D__CHECK_ENDIAN__ net/ipv4/route.o [...]
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-index 7725cb0c5c8a..876933f88329 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-@@ -84,6 +84,8 @@ enum hbg_hw_event_type {
- 	HBG_HW_EVENT_INIT, /* driver is loading */
- 	HBG_HW_EVENT_RESET,
- 	HBG_HW_EVENT_CORE_RESET,
-+	HBG_HW_EVENT_SERDES_LOOP_ENABLE,
-+	HBG_HW_EVENT_SERDES_LOOP_DISABLE = 5,
- };
- 
- struct hbg_dev_specs {
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-index 8f1107b85fbb..cc60bd76890d 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-@@ -4,6 +4,7 @@
- #include <linux/ethtool.h>
- #include <linux/phy.h>
- #include <linux/rtnetlink.h>
-+#include <net/selftests.h>
- #include "hbg_common.h"
- #include "hbg_err.h"
- #include "hbg_ethtool.h"
-@@ -339,12 +340,55 @@ void hbg_update_stats(struct hbg_priv *priv)
- 				 ARRAY_SIZE(hbg_ethtool_ctrl_stats_info));
- }
- 
-+static int hbg_test_mac_loopback_enable(struct net_device *ndev,
-+					bool enable)
-+{
-+	struct hbg_priv *priv = netdev_priv(ndev);
-+
-+	hbg_hw_loop_enable(priv, enable);
-+	return 0;
-+}
-+
-+static int hbg_test_serdes_loopback_enable(struct net_device *ndev,
-+					   bool enable)
-+{
-+	struct hbg_priv *priv = netdev_priv(ndev);
-+	u32 event = enable ? HBG_HW_EVENT_SERDES_LOOP_ENABLE :
-+			     HBG_HW_EVENT_SERDES_LOOP_DISABLE;
-+
-+	return hbg_hw_event_notify(priv, event);
-+}
-+
-+static const struct net_test hbg_test = {
-+	.extra_flags = NET_EXTRA_CARRIER_TEST |
-+		       NET_EXTRA_FULL_DUPLEX_TEST |
-+		       NET_EXTRA_PHY_TEST,
-+	.entries = {
-+		NET_TEST_E("MAC internal loopback",
-+			   hbg_test_mac_loopback_enable,
-+			   NET_TEST_UDP_MAX_MTU | NET_TEST_TCP),
-+		NET_TEST_E("Serdes internal loopback",
-+			   hbg_test_serdes_loopback_enable,
-+			   NET_TEST_UDP_MAX_MTU | NET_TEST_TCP),
-+	},
-+	.count = 2,
-+};
-+
-+static void hbg_ethtool_self_test(struct net_device *netdev,
-+				  struct ethtool_test *etest,
-+				  u64 *buf)
-+{
-+	net_selftest_custom(netdev, &hbg_test, etest, buf);
-+}
-+
- static int hbg_ethtool_get_sset_count(struct net_device *netdev, int stringset)
- {
--	if (stringset != ETH_SS_STATS)
--		return -EOPNOTSUPP;
-+	if (stringset == ETH_SS_STATS)
-+		return ARRAY_SIZE(hbg_ethtool_stats_info);
-+	else if (stringset == ETH_SS_TEST)
-+		return net_selftest_get_count_custom(&hbg_test);
- 
--	return ARRAY_SIZE(hbg_ethtool_stats_info);
-+	return -EOPNOTSUPP;
- }
- 
- static void hbg_ethtool_get_strings(struct net_device *netdev,
-@@ -352,11 +396,12 @@ static void hbg_ethtool_get_strings(struct net_device *netdev,
- {
- 	u32 i;
- 
--	if (stringset != ETH_SS_STATS)
--		return;
-+	if (stringset == ETH_SS_STATS)
-+		for (i = 0; i < ARRAY_SIZE(hbg_ethtool_stats_info); i++)
-+			ethtool_puts(&data, hbg_ethtool_stats_info[i].name);
-+	else if (stringset == ETH_SS_TEST)
-+		net_selftest_get_strings_custom(&hbg_test, data);
- 
--	for (i = 0; i < ARRAY_SIZE(hbg_ethtool_stats_info); i++)
--		ethtool_puts(&data, hbg_ethtool_stats_info[i].name);
- }
- 
- static void hbg_ethtool_get_stats(struct net_device *netdev,
-@@ -488,6 +533,7 @@ static const struct ethtool_ops hbg_ethtool_ops = {
- 	.get_eth_mac_stats	= hbg_ethtool_get_eth_mac_stats,
- 	.get_eth_ctrl_stats	= hbg_ethtool_get_eth_ctrl_stats,
- 	.get_rmon_stats		= hbg_ethtool_get_rmon_stats,
-+	.self_test		= hbg_ethtool_self_test,
- };
- 
- void hbg_ethtool_set_ops(struct net_device *netdev)
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-index 9b65eef62b3f..ad3fc572bc13 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-@@ -264,6 +264,12 @@ void hbg_hw_set_rx_pause_mac_addr(struct hbg_priv *priv, u64 mac_addr)
- 	hbg_reg_write64(priv, HBG_REG_FD_FC_ADDR_LOW_ADDR, mac_addr);
- }
- 
-+void hbg_hw_loop_enable(struct hbg_priv *priv, u32 enable)
-+{
-+	hbg_reg_write_field(priv, HBG_REG_LOOP_REG_ADDR,
-+			    HBG_REG_CF_CG2MI_LP_EN_B, enable);
-+}
-+
- static void hbg_hw_init_transmit_ctrl(struct hbg_priv *priv)
- {
- 	u32 ctrl = 0;
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h
-index a4a049b5121d..f7917a5353c2 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h
-@@ -59,5 +59,6 @@ void hbg_hw_set_mac_filter_enable(struct hbg_priv *priv, u32 enable);
- void hbg_hw_set_pause_enable(struct hbg_priv *priv, u32 tx_en, u32 rx_en);
- void hbg_hw_get_pause_enable(struct hbg_priv *priv, u32 *tx_en, u32 *rx_en);
- void hbg_hw_set_rx_pause_mac_addr(struct hbg_priv *priv, u64 mac_addr);
-+void hbg_hw_loop_enable(struct hbg_priv *priv, u32 enable);
- 
- #endif
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-index a6e7f5e62b48..85b46f35b876 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-@@ -117,6 +117,7 @@
- #define HBG_REG_MODE_CHANGE_EN_ADDR		(HBG_REG_SGMII_BASE + 0x01B4)
- #define HBG_REG_MODE_CHANGE_EN_B		BIT(0)
- #define HBG_REG_LOOP_REG_ADDR			(HBG_REG_SGMII_BASE + 0x01DC)
-+#define HBG_REG_CF_CG2MI_LP_EN_B		BIT(2)
- #define HBG_REG_RECV_CTRL_ADDR			(HBG_REG_SGMII_BASE + 0x01E0)
- #define HBG_REG_RECV_CTRL_STRIP_PAD_EN_B	BIT(3)
- #define HBG_REG_VLAN_CODE_ADDR			(HBG_REG_SGMII_BASE + 0x01E8)
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.c
-index 8d814c8f19ea..5802748f3a13 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.c
-@@ -258,7 +258,8 @@ static bool hbg_rx_check_l3l4_error(struct hbg_priv *priv,
- 		break;
- 	case HBG_L4_ZERO_PORT_NUM:
- 		priv->stats.rx_desc_l4_zero_port_num_cnt++;
--		return false;
-+		/* Don't drop packets whose L4 port number is 0. */
-+		break;
- 	default:
- 		priv->stats.rx_desc_l4_other_cnt++;
- 		return false;
--- 
-2.33.0
 
+> +			else
+> +				hash_keys.ports.src = fl6->fl6_sport;
