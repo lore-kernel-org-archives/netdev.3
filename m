@@ -1,179 +1,316 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2065.outbound.protection.outlook.com [40.107.92.65])
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11011008.outbound.protection.outlook.com [52.101.125.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A4C1E5732;
-	Mon, 21 Apr 2025 17:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC59C1519B8;
+	Mon, 21 Apr 2025 17:50:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.8
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745257607; cv=fail; b=QtM524XSR/FUd8WPJY3l/KkB0cyPxlCAE1C3gkxKMJyjwttnM/osXt619xnRVULhORNKvpXDpDIrrqaZuwVJxf8Dixnp9g4qqWI10hQvDrk5Bnn74Pp+yySuom/4+T1piws0FKozbT9Xhce5/Kw/U5DUyGhww8di9SBxsz9Y/oo=
+	t=1745257836; cv=fail; b=A9rmhJzINCl/Whln7GQ6yiaPtN8tAOFH/95uNwwW3ftpRcFgWnYGMGfGJPDMIGz6OolUUXG+TDmfB0Yji1Pkp3gYILtMtismGDEbok8VkaEWeuSB19ID67qUeez+BHT3ANg36+gBRy8vjdOv4TAJIbWFHlx/IG7KbQ+hCdpAlc8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745257607; c=relaxed/simple;
-	bh=HGb5tQ3XN8BWou/bI2U2/LtPYoeSoX+TFBaiLGIyDHw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G5nXf1jBITbeKko1l3w7wRtt1KJ/pQ+8heCTcNcSzpQGIG1+RvD0LyZgSdALSmfnH/FeUizFGho8o7z8JFxBONLGxwIwZ0ymCUYG98O6Drs0Ks3TSN+joDIFAflDS30mdvBGPV6s8tmmSB5TAksxPBILHLInR9DQLXbJvlYn0nM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=r+W07o/u; arc=fail smtp.client-ip=40.107.92.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1745257836; c=relaxed/simple;
+	bh=NVXbTZWAvjRxl4gnwmTxJi1GK73RyJB1LnjzttbahPU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rEOUCIVWbMMcu5R10alZY9PNrkMKXsbAvRp1ma70QV2gJQGHPE2w3cod4tmNZudmqrT6hOHGJbGR3ubA963jZ6A3GajRAHYmYXkB7yD5Wc7XA0JOBF1aXe2eG3gyl255HlSsl6Me5dbnyJ6Sdw4j7TrXZ5xz9YRMbVjXzFup/GU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=hzt3+90j; arc=fail smtp.client-ip=52.101.125.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="r+W07o/u"
+	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="hzt3+90j"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B/hwy9x4flAnocSK1b4Gigf7zhl9iJcwR8LJgsNrSJYr2zrzRknyVOVxe0rYgdqZj6TBKytRtF+KW+QFlEV0SZiyODsEXsAqybfADycHn7C01XHD31e5KWlg1qCoHAzqryHp91YlG7oSy8DzGsAPyGNw9O52jex/ui0Mb0ivevWOcT5tZfS2lPQNPxGyXwZ39ySTapaatr5XIWw56/YK1gGQYlf47MCVnqKOH9YK9fW73yC9PNILi+WOAE5SK6TC6vqVHpDU7Vmfwp+eiAcq8ug8sckkFY2YGWlMWRtCF1jN7Oa6vZMU0IffQ+WbfB1+n0CCwgpZx8y+0URRhwHZfQ==
+ b=vAXPangvnkJ0MlQ3OHHC2qOA5ATy84eyAksR73rvulbf6vKZC+A2jvaQpSP8WIiaasbCsuIxiYT/R0znsKerrKy9K33LJQ+CIG7HQvNgoytO0twDsbiA/HWuOmpi7obYuIKAxU+P5KSMZkpndAHOMrow3KG6SW4kBsOOzNy4607rxWRfHcVGDTUnS5Sz0QQK+pDtScKYkzQ82Jezht0Iy/oN6ZJtdguE/98DFa0WUiSUuhBaVqizh2heqVGnjLb3bI/FTGvn+V5nxwoLwxLCSn5WOwe7v11fya/zTS+2CgG78A9/+QUbMRBv5m+qx9W0WwGV7nouE/ytlgJWgeUJvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=csXqUu8Goa2RO5A1a4O/7TRpWKVTfs83nqQ60wBA/VA=;
- b=XIUTIcciogDGu08DYlibivr7DlHM3+Ewbs+AniwRRguoKIWlwj+ZiVrGgcHm7V0q0+EAkGnkriOpvYhRYXYOkt62dFNWpA74soZ2/bj9SburtrxxQaQvoWRmmZwNNVD9vz1EeDziVArKDO/V6EtXJW7O4vwsjoYkUsOehfEPTJMc+XcwXeBcQQZBRTLyeaGmEb4Qjgt9G8Q0aH2hMdncmMZGh4Sd50xL6ewzvTlJmvfqCUQm4m2p0EzomT8bokGLAqn1Fd/MVHu5rvu7D2g5s4QmhH0zYrIOFlYaqQ+93851z7H9AFFpOmFkxi5QePhvxvK3H+YnTV9Xo9nKsOJMOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=Xy3PF2JiMIobW/wkOYgS7t4FZxnsC+J0jJ+DS7Dl/rQ=;
+ b=jgdUfLuo31XMoZjM4nyOJ6c75NHHTctolzgtIxgzPXloJJ06LTyJ/PoDvFVyr0trbyx/TJ+Q8uxSjqn0pfm2N09kkul26Riq2Vz0xE4ROmP5wKbjO0q1sHtMEKoVfqXzP7g8TR4vwcLlemY/rLS0P86p8A+doDZsrxN0MtE/c504fMYkTHyxvyIpOFQKUnvVhQ0nsuEj+tMlKg5t2II3O7O2iZ4hRt/RaHmlrwOlGHNaF6Z950woGRY2uErJIv7iCk4Ao7Zw5Ll9i30c2irFzOiB+abiOdRTPPSKFc+pLX25y9H7kRCRPspF7DeODLqi4ssxaPWasDDj5SEEr/CwHg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=csXqUu8Goa2RO5A1a4O/7TRpWKVTfs83nqQ60wBA/VA=;
- b=r+W07o/ul1302P9eO1fF5fs2jYuu7sU4Kzk3IQXlJZXEWS/sAnBCqWa8hc9oHGBMi7PrwwJ2GcSTvXdwNpCfLMiyUpm9DNoKXcnrtXheKZIUTiu6NgdG6E94j84Fk7qEpJ1uCmybBelF1ZDp1XHQRW3K/Mii+jevZGJmX/v29ww=
-Received: from BYAPR08CA0042.namprd08.prod.outlook.com (2603:10b6:a03:117::19)
- by SA1PR12MB8945.namprd12.prod.outlook.com (2603:10b6:806:375::14) with
+ bh=Xy3PF2JiMIobW/wkOYgS7t4FZxnsC+J0jJ+DS7Dl/rQ=;
+ b=hzt3+90jZcax56Qv2+qUJztMazcrg7xY3a22pQnDAhw1ubTfbGKumdphq8FgEt40Pf8ZO2PJZEKcjYARZmfVLJKQRb50aoLk6IBdOed2TQyVSxLl0m732w7JMw5vRCC/n5PZ0nm1cVoIjds4mYRKRwTFocsRFdjU6Of+0q56JHA=
+Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com (2603:1096:400:3d0::7)
+ by TYRPR01MB14083.jpnprd01.prod.outlook.com (2603:1096:405:223::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.35; Mon, 21 Apr
- 2025 17:46:42 +0000
-Received: from CO1PEPF000042A8.namprd03.prod.outlook.com
- (2603:10b6:a03:117:cafe::4b) by BYAPR08CA0042.outlook.office365.com
- (2603:10b6:a03:117::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.33 via Frontend Transport; Mon,
- 21 Apr 2025 17:46:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000042A8.mail.protection.outlook.com (10.167.243.37) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8655.12 via Frontend Transport; Mon, 21 Apr 2025 17:46:41 +0000
-Received: from driver-dev1.pensando.io (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 21 Apr
- 2025 12:46:40 -0500
-From: Shannon Nelson <shannon.nelson@amd.com>
-To: <andrew+netdev@lunn.ch>, <brett.creeley@amd.com>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<michal.swiatkowski@linux.intel.com>, <horms@kernel.org>,
-	<jacob.e.keller@intel.com>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>
-CC: Shannon Nelson <shannon.nelson@amd.com>
-Subject: [PATCH v4 net 3/4] pds_core: Remove unnecessary check in pds_client_adminq_cmd()
-Date: Mon, 21 Apr 2025 10:46:05 -0700
-Message-ID: <20250421174606.3892-4-shannon.nelson@amd.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250421174606.3892-1-shannon.nelson@amd.com>
-References: <20250421174606.3892-1-shannon.nelson@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.34; Mon, 21 Apr
+ 2025 17:50:25 +0000
+Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com
+ ([fe80::86ef:ca98:234d:60e1]) by TY3PR01MB11346.jpnprd01.prod.outlook.com
+ ([fe80::86ef:ca98:234d:60e1%4]) with mapi id 15.20.8655.031; Mon, 21 Apr 2025
+ 17:50:25 +0000
+From: Biju Das <biju.das.jz@bp.renesas.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>, "Russell King (Oracle)"
+	<linux@armlinux.org.uk>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
+ Torgue <alexandre.torgue@foss.st.com>, Richard Cochran
+	<richardcochran@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Jose Abreu
+	<joabreu@synopsys.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-stm32@st-md-mailman.stormreply.com"
+	<linux-stm32@st-md-mailman.stormreply.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-renesas-soc@vger.kernel.org"
+	<linux-renesas-soc@vger.kernel.org>, Fabrizio Castro
+	<fabrizio.castro.jz@renesas.com>, Prabhakar Mahadev Lad
+	<prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: RE: [PATCH net-next v5 3/3] net: stmmac: Add DWMAC glue layer for
+ Renesas GBETH
+Thread-Topic: [PATCH net-next v5 3/3] net: stmmac: Add DWMAC glue layer for
+ Renesas GBETH
+Thread-Index:
+ AQHbp7UXRdTsn2oCYUWD5qYhUQGHu7OjbUQAgAAVgQCAATLSgIAJgP8QgAAGBICAAAEN4IAAEkSAgAAhbNCAAAn7QA==
+Date: Mon, 21 Apr 2025 17:50:25 +0000
+Message-ID:
+ <TY3PR01MB113466ADD365C6C569923F9A486B82@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+References: <20250407120317.127056-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20250407120317.127056-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <Z_0-iH91A4Sexlzj@shell.armlinux.org.uk>
+ <CA+V-a8sS0TtS-TEdkQ8MB5F4JtzV9358Y9fmKe5MggGU+wP=4Q@mail.gmail.com>
+ <CA+V-a8tbW2Zs6op20yRTcihSm1bcMC2dYnRXVCKRf=q4fymZyg@mail.gmail.com>
+ <TY3PR01MB1134633A8CB82788BB98C6E6286B82@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <f27b0531-11dd-4074-9c79-172953d28292@lunn.ch>
+ <TY3PR01MB11346FA4767B74B2CBB2CAFB786B82@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <c27a2359-ee55-4d20-907d-314eee30ed4f@lunn.ch>
+ <TY3PR01MB1134652607E0CB04ED520EDFF86B82@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+In-Reply-To:
+ <TY3PR01MB1134652607E0CB04ED520EDFF86B82@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TY3PR01MB11346:EE_|TYRPR01MB14083:EE_
+x-ms-office365-filtering-correlation-id: 817c66ef-0d25-4ded-1120-08dd80fcff34
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?vDvhcDPXR1oJNE4IO8DC5FSxsToII+joOWIQMGaEF8E+d3I16en/o/TbeTHT?=
+ =?us-ascii?Q?vpToHq6cKDzDzDGutpDIZZyUjmCEkBKfplTkJpbEzJ6m1d4cJYGG2TbWq6Xg?=
+ =?us-ascii?Q?yr7Qw/a4DbLanRdADq6oI96xbVx+RxFgC861a7oX9DIBvOYjwQqUDLaRpJWO?=
+ =?us-ascii?Q?e1gIDx+JNaxJ0Bian3D6ltAPYJP9Mjf1R4HREO2byFhTY39cnRModJDnPopg?=
+ =?us-ascii?Q?3/146i+7hFaGGU864Ql4maNOaSemkc7DPsPQtsDrvAHJsO7c9eBCLpoIXA/g?=
+ =?us-ascii?Q?QWyz5lHiJRq0bgYj28gOcy3JjFGyo5Wnw05OWkehsJ2Xej8L+cAv8QXPl/1m?=
+ =?us-ascii?Q?YWOFOHzfVWs5nsnLUufXrpi4YDev/fCJ1b6ifTVDijv1OXzqxZzb91pzgqXH?=
+ =?us-ascii?Q?5SQfY4O7gc7eXPv/h2vi91Fxczm1Xp9uoHXfeZkEdpdL0McwgAXsVeDAa0ri?=
+ =?us-ascii?Q?UkiBj7PIvUCvcg4BH71uOT/g8CVBHlB8Uz5VxYOxPZfqZMJ5qsWSAtRYumuJ?=
+ =?us-ascii?Q?c4/MgbS6rhoy/IOtDKTy+20xOrGLwGmdvxs8OhMy3IVgKaH5O0hpu7U8pzB4?=
+ =?us-ascii?Q?iRrqKzKgAsjE0RD+OioETuzZF4tK5KjNzgXqpgQZS4gcPkzScSA5oN+PxiZM?=
+ =?us-ascii?Q?0gaYDHf4RowxcuQQr8maGeoQuW5OIjkxO+rBpMEVK8khWD94xyKVpybrHw21?=
+ =?us-ascii?Q?94G3MSHKGumlb561Jgl55MvZxpLjBJfdvFGd/RI5bnD56KLIYtwhbCEHVGOQ?=
+ =?us-ascii?Q?PthR71jHvujGYCGT0razTZ5iISpLpyq+RKWKeWHwoEUVgj3RW+VX25KlX5TH?=
+ =?us-ascii?Q?5h5Y67CLeYNgW9CgBXoIeZybtId+1dkyha7koKtvILP9ttz4wuUpu9tI5NC1?=
+ =?us-ascii?Q?3sDYFm2wvd3FPxy75gT/cLsNWHCHWTtnmuL1XEa3635Xg0NlAUjdqifr1gtu?=
+ =?us-ascii?Q?c7SmgfZKz/nTWwhthcymlEG3tDpB5AmIm4PLsX+exii4TA/M7sbc8JLW3JyF?=
+ =?us-ascii?Q?zToB5MU3Ugg8hxW+roHTBRFKH01ESruL2TSKLCBy3BgqkNHy/zOMGp/9++v9?=
+ =?us-ascii?Q?D5zIi00+jVnuXt0juPG4FpvOB4ShcGQtfevGMsFIadRi4zUsXTrnuKdCLkKk?=
+ =?us-ascii?Q?NQfHPggNRI6Wcs14CnMZ1U0L/5KYVrIqYx0MN8ZnJZDkFviMNA13sPm6bnum?=
+ =?us-ascii?Q?SeMtNSDZsuzDgG1IbhG6TJCHpvw8WGl+M9UIex7QlUB/rXoY8Ud5dWjX9St6?=
+ =?us-ascii?Q?EapD5CXM0c3Xg2Uma8T+93xYd6DfWmGiByl6ffQxIN6hNDIL9rCEPcvM9wVm?=
+ =?us-ascii?Q?Zs46PfutlSya/LGTKHybZAjCOMz5LqDAbYNFbuESmQ+/gcg53xopmmnmVAjd?=
+ =?us-ascii?Q?Fc+tRSNiz2ne9xXCVJ9Meroa3V8+Q8gO9wHEEHwk5BpM5cA6qtpQUPRxQbvZ?=
+ =?us-ascii?Q?wsKIXZ4EglMVJRIXBNhGD41yJ3hR+TqWcZLP1mBOSyo6jZ/qwCDGf83wB4A+?=
+ =?us-ascii?Q?kiRbeXOM21YNL/M=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB11346.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?2+MpEPnMNPsQ9CmfYU6nTj/il/ABD4hg1Q9mX1Z1Rj3NoTwoa/llSjwSzJCX?=
+ =?us-ascii?Q?aMOXQ2cG0fAS32b+oiBknpuVMZ7mcoViRfdLnEY3pYgamIsZcpi+XrEhsijQ?=
+ =?us-ascii?Q?yMctOf9yN+CjTfXHrTZE0BhQZpHyaQWesrNNSBCE2CZm5NTkDreUc2oib04A?=
+ =?us-ascii?Q?ZggtLrIsTekOSa1fwD3vJSFs2EzJpZU2D4+56i8n5J8j/u8n86yamynU4olq?=
+ =?us-ascii?Q?7ogFqVidqqgKUlWGv9x3Qmnal0NDxIi0u4hmj+yhrjkaddWiDnCpEOsPoEtX?=
+ =?us-ascii?Q?omFjHf9AwHgLQBv/FXKyhZkyAv/FfZnk9W2eoZXlFGlHQ7bSz4X69cGyyQ1a?=
+ =?us-ascii?Q?n4m5OlDoEv61bPWfSafc9CVvVLUowEYx0C9VD3eKzL2lsinsIOjIkYKhNZXu?=
+ =?us-ascii?Q?X3KQvh0AjW/5HnahxUXtoAHK1Lm/2niYwGe6QBWj7rWwPHKZkDOWZCswC32V?=
+ =?us-ascii?Q?RPVGMkNpZwAEISNc2MA4hE539+M7K8/wSscpbdACGjDR62HjOgqGMnTr1Wj5?=
+ =?us-ascii?Q?KacXqRU3zZXwkdXNpc+wb6x6vSLqBG3djwCd1puYEkyYa7p3azsbtFobS3q0?=
+ =?us-ascii?Q?pqqYDrQ60xtvKEFGmUKkPlwvIReN8R+rGUD2mnN2Fh7NPkQzFPaFmXeUMz4u?=
+ =?us-ascii?Q?TjUPxgruU3HdsdIY6praLUgK2W/5/F7RN2sNoFKOLMjIXsy7bgj8ydv6hkx7?=
+ =?us-ascii?Q?nPUKMIeXGNiuvNUvQJclBvqWT1ov3MD7/fGk4OsuBkxJR3GzAU0KgVqicbbm?=
+ =?us-ascii?Q?gI44doWPBGszKslxi/VOhFsMobLAna+xP+8RVKtvwtTfOXtQAeUCsjiqQylM?=
+ =?us-ascii?Q?7Lm8Zs3fyiewG0iCz7GxGA71nVkgCT66quZ7b8Do5LuYuAqACCyQGrN3Y22k?=
+ =?us-ascii?Q?MLjuDyQGI4AHy1r+qkbYs+iEJDmILSQX1pw2uNhV+RTMSXAAJmp2RD9Prqzs?=
+ =?us-ascii?Q?mm0RnTeiZkSSdMCyXQ72SZlmC3krxVSGH3HJ73MLOa+eCl/LPlKw0wo+dUHX?=
+ =?us-ascii?Q?TGAUUNbk2nikUR/IWeTGdJhw2KeaymnWo14m4y4bwM1xRlDmlxPKmI6GgekM?=
+ =?us-ascii?Q?tH0OV0t9fTXs1JakJL1jLnEMiFKEHp093OzrTJr+hWob9/RMBiVxT4Nl3oT6?=
+ =?us-ascii?Q?kcrNSHaDSUItxRto2Mm5g5OreWMjFW0Scz/YaAJXmCPDHNg7oc3BjWXq/xKF?=
+ =?us-ascii?Q?Zc6lOlQSRThY4Q8+jrIHL5Ati1zVmyahi4xxPl8MH6lttEYAN/IdjE394luv?=
+ =?us-ascii?Q?Pwn+YYxS5956sVJaSnwTdKpCpi67Cf0jQuoGtqXDgQfu7LTzsqGR3b+hOZnZ?=
+ =?us-ascii?Q?hsG+vtO0SY053g/r4wYyFo7i2XKbX/dWlmpQRe1ktjM1sX03CFdHf8y6fwbG?=
+ =?us-ascii?Q?J9SCilsIIfbh1pga1cOEkj5QqYj2WDOO1l6TFtwLYQXfxDpF7QBeLcf82Jmg?=
+ =?us-ascii?Q?tChUG3us0ldtRWyPk2me4U5aijAefKG6Qhu0/mSCPxga0x48aqEKdnI0neb8?=
+ =?us-ascii?Q?070zbd4/HVPfYs8bIH5kSfMolIWbm70PNahxZpsMB9Rxicr/s/9/U5LC99IV?=
+ =?us-ascii?Q?rbLyQoWBGvU6j3Qrhtar7fCK+f0fJ/RqKuk1YbCU0N3cMqFYX846iuHKcIKt?=
+ =?us-ascii?Q?lg=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000042A8:EE_|SA1PR12MB8945:EE_
-X-MS-Office365-Filtering-Correlation-Id: bf4d6b42-3223-4eb4-bd45-08dd80fc79a7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014|7416014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?SreLPKwr1atRfZtzLfqCtNSJQaALcyVAylrSBGAOw0d3yRasYBvndMGdxaoi?=
- =?us-ascii?Q?yveW0yPoAX7pBH5p1OSIkq5ZL8L9j9GdE9DIqxgfrP+lh9FOtKCmdgr5UADg?=
- =?us-ascii?Q?fQ4gGUhhNTVESGeAGoZKrh19rKL6tLCD4gv1NUpHmngwS/IPemCalhXmsHPw?=
- =?us-ascii?Q?lY4xITASrkTXVNRWddJKGM8skMEugry9lioRVwH1x7gTjWts/BM49ieNcGSa?=
- =?us-ascii?Q?VgVrpkMO4PQhso8Y/8qrUavV42vkkbM7knRJmpSlVWypHXw75EJ79VcV9fsr?=
- =?us-ascii?Q?DpK3PxbWOsjavwLCtMt6CqW/UA2MG9DfwjJIe7PGhZSG+IAOuNWRBHiSSBQ6?=
- =?us-ascii?Q?XvpgqPWTzjdR/2f13HrrxoS//IR4OfTCkeNt8AvtrkFDx+61PptFctdkWian?=
- =?us-ascii?Q?Pt7dYa2/NcH8HrByVdrRticOu8V4ZD3VIoUf2hGVG7NpmzU9+7GEPgvEjXnU?=
- =?us-ascii?Q?juVla/QiQjYbE7mDPzouFz5NkvVahbHGXmXSkdVWaT0yGHFu+75Cd524hQhI?=
- =?us-ascii?Q?G6V1aTizvM38j0v3zgoQCjUN0BpI6PgHxPk/tidHQSvFQn+gFRCyHxYzkOC0?=
- =?us-ascii?Q?t0izYY9c5DjlzMMSdYOCCC/nqwvILb9I9z4nb4pM1t8OF3dIBVsoJNG9NIhv?=
- =?us-ascii?Q?cc+yrLdyEQ2uxIJ1PhMIj4WV2N77DjE1t2h5O/TJ76qGH1Cyrgeltx38mWkO?=
- =?us-ascii?Q?/zpWrJQXI3Z1Gj2Mh2j5QNsKqjHDs93JjVjeuRImWlZj5CBJR174avy7G1G2?=
- =?us-ascii?Q?ew+R19E9eG3TGD7B1RZnGUPZSIL2MbNBTTgGXbNvLFLKnXM8hYo6iktiujGa?=
- =?us-ascii?Q?+m3sUIGA74uVb2J2C9NWYRIjYuwH8kI6lS1+Jl6TzDZ4MxGX0sVvPnBxUqnJ?=
- =?us-ascii?Q?c6MQIG+WtY0QtFRdBZYzZjjB+39DY/hRUjulGEW/sTQ/YACSpvckL0zD1vG0?=
- =?us-ascii?Q?ZMJWUNUkkFEcgK24p1dtPRZAwCU6Cxqd0WFD3z/PfUnWGLLH+azqXppks9lP?=
- =?us-ascii?Q?UGhLpjvdzkwgFa66cA1hF4ZDZvnFI4DLejJ53QpnV1Oexjw42lSZViYkamaN?=
- =?us-ascii?Q?1ODhbMiT+ZbF6AOQCfOPr7WAHu4ugFxDdbc9tcvNSQxips+JzgyWkFtnB3a9?=
- =?us-ascii?Q?4BdNVgh/ajwcHUqTcC7g1MOr6M27NNj1dSJKkOg6PH48+buSvVjvMIR+x846?=
- =?us-ascii?Q?UNUW91vuLzsP4nCiypW3C33FOQnCEEwCKjNeXq9VqBj9bWwHsERA4Bezf3Ti?=
- =?us-ascii?Q?aaC2PUeCRjrtWZ0g8JBHN93YNdItonG9/AVj7f6rqu18NhvCwnMjL3koBBQI?=
- =?us-ascii?Q?b9g3yZ1921rYTUlcGbw20mJckxpbyBA6vJ+9CSG5L45tSW7f7e/rqG9TYlwa?=
- =?us-ascii?Q?RIIXhap3GUoN/tYWRVtTz2GSCCBcpppkx1DBkClbJ4M3dz7h3odfg1EDwwPa?=
- =?us-ascii?Q?QDvgSCJnKT78H3KaQGXtyVr7iW3tAZC6XuU44ru7s7G9fOUR2iHvqNyXkTEZ?=
- =?us-ascii?Q?364T3Q1+YyWgrolSZhTuyBUXO+iKssZ096GNirjs8mvFhx7xPDBTaVjkVA?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2025 17:46:41.6222
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TY3PR01MB11346.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 817c66ef-0d25-4ded-1120-08dd80fcff34
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Apr 2025 17:50:25.8098
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf4d6b42-3223-4eb4-bd45-08dd80fc79a7
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000042A8.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8945
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: +lcOsbkle14CEQqbaCFXh0eb62eRX99mtgIb3BI3nmDGIuMmlteIZbjX/O7vi0SXrOvalFSSDJGxwWKa+UMAQN4NQ9qr/i6d+n7JPtcNIC8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYRPR01MB14083
 
-From: Brett Creeley <brett.creeley@amd.com>
+Hi Andrew,
 
-When the pds_core driver was first created there were some race
-conditions around using the adminq, especially for client drivers.
-To reduce the possibility of a race condition there's a check
-against pf->state in pds_client_adminq_cmd(). This is problematic
-for a couple of reasons:
+> -----Original Message-----
+> From: Biju Das
+> Sent: 21 April 2025 18:26
+> Subject: RE: [PATCH net-next v5 3/3] net: stmmac: Add DWMAC glue layer fo=
+r Renesas GBETH
+>=20
+> Hi Andrew,
+>=20
+> > -----Original Message-----
+> > From: Andrew Lunn <andrew@lunn.ch>
+> > Sent: 21 April 2025 16:12
+> > Subject: Re: [PATCH net-next v5 3/3] net: stmmac: Add DWMAC glue layer
+> > for Renesas GBETH
+> >
+> > On Mon, Apr 21, 2025 at 02:22:01PM +0000, Biju Das wrote:
+> > > Hi Andrew,
+> > >
+> > > > -----Original Message-----
+> > > > From: Andrew Lunn <andrew@lunn.ch>
+> > > > Sent: 21 April 2025 15:02
+> > > > Subject: Re: [PATCH net-next v5 3/3] net: stmmac: Add DWMAC glue
+> > > > layer for Renesas GBETH
+> > > >
+> > > > > > On the RZ/G3E, the upstream support for testing S2R is not yet
+> > > > > > in a usable state. So for now, I'll switch to using init/exit
+> > > > > > callbacks and drop the PM
+> > callback.
+> > > > >
+> > > > > FYI, On RZ/G3E, for STR to work with mainline, we need to reiniti=
+alize the PHY.
+> > > > > I have done below changes on top of [1] to make STR working.
+> > > >
+> > > > Can you explain why you need to reinitialise the PHY? The MAC
+> > > > driver should not need to do this, so something is wrong
+> > > > somewhere. If we understand the 'Why?' we can probably tell you a b=
+etter way to do this.
+> > >
+> > > Without this change bind/unbind works. But for the STR case, without
+> > > reinitializing the PHY, even though the IP link is UP, I am not able
+> > > to talk the NFS server or ping
+> > the host properly.
+> > >
+> > > I checked clock/reset before and after reset everything set as expect=
+ed.
+> > >
+> > > Only change during STR is, on wakeup we need to restore direction
+> > > (MII/RGMII) of IO block for ET0/1_TXC_TXCLK (IO attribute) in the
+> > > pin control driver. After that looks like PHY init is required to tal=
+k to server.
+> >
+> > When talking about suspend/resume, is this with or without WoL?
+>=20
+> Without WoL.
+>=20
+> >
+> > If WoL is enabled for the PHY, the PHY is left running while the
+> > system is suspended, and so all its clocks and reset lines also need
+> > to be left enabled etc. On resume, there should not be any need to touc=
+h the PHY.
+>=20
+> OK.
+>=20
+> >
+> > If WoL is not enabled in the PHY, it should get powered off. On
+> > resume, phylib should be reinitializing the PHY.
+>=20
+> OK.
+>=20
+> >
+> > Which of these two cases need the reinitialisation?
+> >
+> > The reasons i can think of for the PHY needing a reinitialization are:
+> >
+> > 1) It lost power when it did not expect to loose power
+> > 2) Got reset when it did not expect to be reset
+> > 3) Clock not ticking when it should of been ticking.
+>=20
+> OK.
+>=20
+> >
+> > So you cannot just check clock/reset before and after, you need to
+> > look at the order of events. The loss of power, or a reset after
+> > phylib resumed the PHY would not be good. Similarly, if the needed cloc=
+ks are not ticking while
+> phylib resumes it would also not be good.
+> >
+> > I would also suggest you check the datasheet for the PHY, and does it
+> > document anything about the clock input TXC_TXCLK is connected to?
+>=20
+> It is connected to TX_CTL on micrel phy.
+>=20
+> > Does it need to be ticking while configuring the PHY? Any action which
+> > needs to be taken after this starts ticking? Is the pinctrl resume bein=
+g called before the PHY
+> resume?
+>=20
+> Pinctrl resume is called before PHY resume
+>=20
+> Previously STR did not work, because of not restoring direction (MII/RGMI=
+I) of IO block for
+> ET0/1_TXC_TXCLK (IO attribute) .Because of this, the direction of IO bloc=
+k is set to IN (input) MII
+> mode instead of OUT(output) RGMII mode.
+>=20
+> Now everything works. Thanks for your detailed pointers.
 
-1. The PDSC_S_INITING_DRIVER bit is set during probe, but not
-   cleared until after everything in probe is complete, which
-   includes creating the auxiliary devices. For pds_fwctl this
-   means it can't make any adminq commands until after pds_core's
-   probe is complete even though the adminq is fully up by the
-   time pds_fwctl's auxiliary device is created.
+I need to debug this issue further as without reinitializing the PHY, the S=
+TR wakeup is not stable
+(Linkup, but not able to contact the server).
 
-2. The race conditions around using the adminq have been fixed
-   and this path is already protected against client drivers
-   calling pds_client_adminq_cmd() if the adminq isn't ready,
-   i.e. see pdsc_adminq_post() -> pdsc_adminq_inc_if_up().
+[   34.572232] dwmac4: Master AXI performs fixed burst length
+[   34.572232] renesas-gbeth 15c30000.ethernet eth0: No Safety Features sup=
+port found
+[   34.572232] renesas-gbeth 15c30000.ethernet eth0: IEEE 1588-2008 Advance=
+d Timestamp supported
+[   34.572232] renesas-gbeth 15c30000.ethernet eth0: configuring for phy/rg=
+mii-id link mode
+[   34.572232] OOM killer enabled.
+[   34.572232] Restarting tasks ... done.
+[   34.572232] random: crng reseeded on system resumption
+[   34.572232] PM: suspend exit
 
-Fix this by removing the pf->state check in pds_client_adminq_cmd()
-because invalid accesses to pds_core's adminq is already handled by
-pdsc_adminq_post()->pdsc_adminq_inc_if_up().
+root@smarc-rzg3e:~#
+root@smarc-rzg3e:~# ls
+[   34.572232] renesas-gbeth 15c30000.ethernet eth0: Link is Up - 1Gbps/Ful=
+l - flow control rx/tx
+root@smarc-rzg3e:~# [   34.572232] mmc2: Skipping voltage switch
 
-Fixes: 10659034c622 ("pds_core: add the aux client API")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
----
- drivers/net/ethernet/amd/pds_core/auxbus.c | 3 ---
- 1 file changed, 3 deletions(-)
+root@smarc-rzg3e:~#
+root@smarc-rzg3e:~#
+root@smarc-rzg3e:~# ping 192.168.10.1
 
-diff --git a/drivers/net/ethernet/amd/pds_core/auxbus.c b/drivers/net/ethernet/amd/pds_core/auxbus.c
-index eeb72b1809ea..c9aac27883a3 100644
---- a/drivers/net/ethernet/amd/pds_core/auxbus.c
-+++ b/drivers/net/ethernet/amd/pds_core/auxbus.c
-@@ -107,9 +107,6 @@ int pds_client_adminq_cmd(struct pds_auxiliary_dev *padev,
- 	dev_dbg(pf->dev, "%s: %s opcode %d\n",
- 		__func__, dev_name(&padev->aux_dev.dev), req->opcode);
- 
--	if (pf->state)
--		return -ENXIO;
--
- 	/* Wrap the client's request */
- 	cmd.client_request.opcode = PDS_AQ_CMD_CLIENT_CMD;
- 	cmd.client_request.client_id = cpu_to_le16(padev->client_id);
--- 
-2.17.1
+[   34.572232] nfs: server 192.168.10.1 not responding, still trying
 
+
+Cheers,
+Biju
