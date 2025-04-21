@@ -1,44 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF42C265CDF;
-	Mon, 21 Apr 2025 13:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5741A83F9;
+	Mon, 21 Apr 2025 13:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745242153; cv=none; b=orEbMDdhePiVAY7p5xvBLLBtwDjAsLYqBj2Spfx1fdaqUUiBjkk+BXQDySJJpICFL+b5UMJ3Tn27MI5ZLEY+a0nAixwo2B05G5KWE+OtYRgNgxvZptLCTObbIG3mTvAZ15YJ+W7IBJKzyS4N43UuzSTFCV4nfQ0EYxODqyouJhE=
+	t=1745243088; cv=none; b=XwILiCtwsgE3r9Xfk95pb4WdtfAYALbeNNcS5XXlWDmDt2Nqzu7I8f99Y/t8GXADvoisfOuLMkOSzSeJzWj+9IPGdQgQ2i2auoRD/qvM8BD25mibUpfkIa7bizWF8E4wsoGB92m3tcSgT6uQk0K3pCVcOS4g2d7WEPSoXrbl5Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745242153; c=relaxed/simple;
-	bh=OjPb0Os4g0jA2afhKN6cIy2DeKVLhPUQwkDjg8pUgS0=;
+	s=arc-20240116; t=1745243088; c=relaxed/simple;
+	bh=G6FxoJLKFHERPMeKjiLbFx7X8l5JWlzu9uf8PTSsFW4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=at5gKxOslsPFzedQpTr6LFF9zt/lYfXqrtUsTw7pmm/nC1zYXjRixzauGRstoz9weJOt7Bj1pCv5u5E3LIqF75Qe/ZzsMSJ6hgSySUzvuIl1jb1psivTu42rcVBjwifkoEGOh9dinY38IJ4+9mWnfd3/rOf5sg4CJV1DPWZKqg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u9/aXBKv; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cj0zbPY4VVf9bC+RbwTn/zrUDGOdiAxZ8A+JQW4RCfFsunaKNNwP093LOBhNqyE49kt+QxvSacVdIwR11EzyrZ9TnWQhcHm2CId4tl+A7S9I1Bq9k3ehssxHCZju3MPmluqWADCZYyepOejeVJ3LaRxz8OERVKqGrIUJpWoap9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=agg/ZlKf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u9/aXBKv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D329C4CEE4;
-	Mon, 21 Apr 2025 13:29:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="agg/ZlKf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E97C4CEE4;
+	Mon, 21 Apr 2025 13:44:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745242152;
-	bh=OjPb0Os4g0jA2afhKN6cIy2DeKVLhPUQwkDjg8pUgS0=;
+	s=k20201202; t=1745243088;
+	bh=G6FxoJLKFHERPMeKjiLbFx7X8l5JWlzu9uf8PTSsFW4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u9/aXBKvN9npDfV9FJZez4cOROYseG1kEekFKeg1iwhYLObUU/EfvpSzidlVFpI91
-	 RnKxLQ5jK1YsKzrTY6iw0x1Am/cu+4jO6xipAMzYxLSplamBBjj5I4+IU1XLpV4yB9
-	 neHBwOBNGva+5DlU/ccArocqWCyflgEsbol044vnHtFuVdESK4BJkZVrQhALJuUymO
-	 RpzFNwv5NuK1AnW8A38XwTKnyciLIDBeMcAqFrLnBOFAxyxSOjsSlB+HCb8elPY5mX
-	 vniE4FR0PUEZF3khF0ghVXZxWLvQ/tyaTUkSX2rZacg524WVTFnmzm4o3v1hVd+/HV
-	 OxZ6AMoimFb0g==
-Date: Mon, 21 Apr 2025 14:29:08 +0100
+	b=agg/ZlKfSuamPNpyykRssodgY9plQYN3lWy1fsotU6TQdY/3Thj1lzrZW3vaUvK3N
+	 4q8OVPe6r3Ana/gWRObTrW+LVGb0mtK+odvI+c+3+fnVBgV5zMx8ld4a+an1rNvdXY
+	 0VOSD/hLCONTXJMCNkBA19EZqq8KxxMpbFxT4xFKjrrKOatHc0aPaaa6rFSyzTHwZ3
+	 JP9D8hlhdYTJ7qS4KqmAj1RnID31L8Z+LZvTfAKGPtgY79Pqi20HgBmrLgbkUvDdyE
+	 qYSpqAEQ7GGbeDfQsranY9+8foNSTTaefjdDCVllsvysBm9kD9gIDT4vlG5fM5cLHv
+	 iPfe6jXJebaCA==
+Date: Mon, 21 Apr 2025 14:44:43 +0100
 From: Simon Horman <horms@kernel.org>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	stable@vger.kernel.org, kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH net v1 1/1] net: selftests: initialize TCP header and skb
- payload with zero
-Message-ID: <20250421132908.GF2789685@horms.kernel.org>
-References: <20250416160125.2914724-1-o.rempel@pengutronix.de>
+To: Justin Iurman <justin.iurman@uliege.be>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, kuniyu@amazon.com,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>, bpf <bpf@vger.kernel.org>,
+	Stanislav Fomichev <stfomichev@gmail.com>,
+	Sebastian Sewior <bigeasy@linutronix.de>,
+	Andrea Mayer <andrea.mayer@uniroma2.it>,
+	Stefano Salsano <stefano.salsano@uniroma2.it>,
+	Paolo Lungaroni <paolo.lungaroni@uniroma2.it>
+Subject: Re: [PATCH net v3] net: lwtunnel: disable BHs when required
+Message-ID: <20250421134443.GG2789685@horms.kernel.org>
+References: <20250416160716.8823-1-justin.iurman@uliege.be>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,19 +49,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250416160125.2914724-1-o.rempel@pengutronix.de>
+In-Reply-To: <20250416160716.8823-1-justin.iurman@uliege.be>
 
-On Wed, Apr 16, 2025 at 06:01:25PM +0200, Oleksij Rempel wrote:
-> Zero-initialize TCP header via memset() to avoid garbage values that
-> may affect checksum or behavior during test transmission.
+On Wed, Apr 16, 2025 at 06:07:16PM +0200, Justin Iurman wrote:
+> v3:
+> - removed unrelated code cleanups
+> v2:
+> - https://lore.kernel.org/netdev/20250415173239.39781-1-justin.iurman@uliege.be/
+> v1:
+> - https://lore.kernel.org/netdev/20250403083956.13946-1-justin.iurman@uliege.be/
+
+Hi Justin,
+
+There is probably no need to resend because of this,
+but the changelog above belongs below the scissors ("---")
+which will preserve it in mailing list archives and so on,
+while excluding it from git history.
+
 > 
-> Also zero-fill allocated payload and padding regions using memset()
-> after skb_put(), ensuring deterministic content for all outgoing
-> test packets.
+> In lwtunnel_{output|xmit}(), dev_xmit_recursion() may be called in
+> preemptible scope for PREEMPT kernels. This patch disables BHs before
+> calling dev_xmit_recursion(). BHs are re-enabled only at the end, since
+> we must ensure the same CPU is used for both dev_xmit_recursion_inc()
+> and dev_xmit_recursion_dec() (and any other recursion levels in some
+> cases) in order to maintain valid per-cpu counters.
 > 
-> Fixes: 3e1e58d64c3d ("net: add generic selftest support")
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Cc: stable@vger.kernel.org
+> Reported-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+> Closes: https://lore.kernel.org/netdev/CAADnVQJFWn3dBFJtY+ci6oN1pDFL=TzCmNbRgey7MdYxt_AP2g@mail.gmail.com/
+> Reported-by: Eduard Zingerman <eddyz87@gmail.com>
+> Closes: https://lore.kernel.org/netdev/m2h62qwf34.fsf@gmail.com/
+> Fixes: 986ffb3a57c5 ("net: lwtunnel: fix recursion loops")
+> Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+
+I agree that this patch is in keeping with the solution discussed
+at the links above.
 
 Reviewed-by: Simon Horman <horms@kernel.org>
-
