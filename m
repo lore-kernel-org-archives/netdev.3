@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D1C21A435
-	for <netdev@vger.kernel.org>; Mon, 21 Apr 2025 22:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E2B227E99
+	for <netdev@vger.kernel.org>; Mon, 21 Apr 2025 22:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745274521; cv=none; b=W85+cF4cuqubyLeDJ0ACw6jk0gKBO31bw3iPs2SgaHHEX9XRiEA3u1wvOPrcZubdrND/JgVuDrwOGNQb+QN5wZ6EbJfBtryio5Fvt9Srb4/XpAZ91ca/w7KlIyGrer1QJlcTLnju7kCKOebiuCuPxYRAHui2tV4R4QEjYa64eDk=
+	t=1745274521; cv=none; b=OTvUOGvm3dvYEGYwVzzZ/peapDt3lnbwTk88uenQUF5Ql2kLkfaOolBt28qeds6jEbaaG0Ox3ij2nFop4za0lkiNc4bSOHAux9u22aV2GjTrN18LuDGwcteqrnBS4nkl1R9widyGzF/RpG0JjVbypFtsvZWVTWI0aGyhcvluL6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1745274521; c=relaxed/simple;
-	bh=gd3UNsP6TNDseQJtLIR55y9TdWda/3/zJM7xpzwm8As=;
+	bh=Q0pac5Wjrtl9yws9IhT5q+cWoJ/29gPWqnpVqOwy0NE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PM8fLpOUXpXScXsUA/8CUMU0IE84Rj9kho3cVHzVN67MNDcsARoaRjL+pKTdOJORBcsLp0s6MAOkGqJoLDtDP7EgHeNgF/bbiKHAH5473xVNlMo4zqWGh4K+die0Y+5cQg0wUZ7/DTY9cdgYcAU8Ojr57jZgR5BgonTm4H1AWXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XBGv2S7L; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=JnLR3hJDtljjwFHIKFc7PoaVgda74yuS/g1pMpnzPkOKwuKWmFczQj5m3+HAqZiBzwmstH6VLrYZKKSpMXK8vmvTXQ6eoXTpKmJl+h0RazYYr8sxyBBLwVN2NrKt77+J6pzjr2jpQvIxDKqJMUpk3KIhZEyK0gOwgCNqKr2wGHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N3LDWFgc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XBGv2S7L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13FEC4CEE4;
-	Mon, 21 Apr 2025 22:28:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N3LDWFgc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DEB0C4CEEB;
+	Mon, 21 Apr 2025 22:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745274519;
-	bh=gd3UNsP6TNDseQJtLIR55y9TdWda/3/zJM7xpzwm8As=;
+	s=k20201202; t=1745274520;
+	bh=Q0pac5Wjrtl9yws9IhT5q+cWoJ/29gPWqnpVqOwy0NE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XBGv2S7Loo3SOv8krkvaoQ5/CN0ZXOo/6DkQIMEmaUfplDQW7Y32ct3X5qtymyrao
-	 Li2Q2KVhSC4nAOrSPhqT4zcbarLKwO/gi6/f1aou/b9E7w0PRf04KFLsU6hKaeKgAu
-	 I/EHyBi5gpdAu9YRwFpfzH8Xl+bPAWnabTKsNb5cH15b5RbLjm2wixp7U5KcAEbvfA
-	 ZthfebYwoGlIhsvOV9BHOrwvYXY5zGdxIq9fGIP3RndrQz5rRklMsMUoDP5Km0Du3L
-	 lQO+hrNUSFzeqsM4heZ1peXEvNswx73XRvA4ImtOU81lIenotzlRqVVGDoi+DlAFrc
-	 Z/ObQJr/gXkxg==
+	b=N3LDWFgcJw/Lk4WywMtlmX6MWsdyOXyV91HeH0rJITh5irYvt2vudOjyO6/+KM6kp
+	 hcQWrFLCJxJjki2UtQYZbKbgLM0bvQ1fVxMgs0b73Lten3JrldPOl3+TqXKAhTLMYt
+	 +Npi2/TsGK7S/a0Pw15iWq24vxWuvwVbnEm9vwUerC697aYmcxMJzpp7BxPRc84ENv
+	 OfzQw69+5QjucCMehJ6xBlBtw0nwDFFq6kiZDrcwnlrp9k1AbRwqbm9q6OJqyuC4t9
+	 J0IpTjU3Xg0Jp3WcRDYNb3jcBnil246AkTI3OsysUAh0eVchIhxFYEthbaVBxPCktO
+	 BDtJuMDALUa5w==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -43,9 +43,9 @@ Cc: netdev@vger.kernel.org,
 	dtatulea@nvidia.com,
 	michael.chan@broadcom.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [RFC net-next 08/22] eth: bnxt: support setting size of agg buffers via ethtool
-Date: Mon, 21 Apr 2025 15:28:13 -0700
-Message-ID: <20250421222827.283737-9-kuba@kernel.org>
+Subject: [RFC net-next 10/22] net: reduce indent of struct netdev_queue_mgmt_ops members
+Date: Mon, 21 Apr 2025 15:28:15 -0700
+Message-ID: <20250421222827.283737-11-kuba@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250421222827.283737-1-kuba@kernel.org>
 References: <20250421222827.283737-1-kuba@kernel.org>
@@ -57,86 +57,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-bnxt seems to be able to aggregate data up to 32kB without any issue.
-The driver is already capable of doing this for systems with higher
-order pages. While for systems with 4k pages we historically preferred
-to stick to small buffers because they are easier to allocate, the
-zero-copy APIs remove the allocation problem. The ZC mem is
-pre-allocated and fixed size.
+Trivial change, reduce the indent. I think the original is copied
+from real NDOs. It's unnecessarily deep, makes passing struct args
+problematic.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  3 ++-
- .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 21 ++++++++++++++++++-
- 2 files changed, 22 insertions(+), 2 deletions(-)
+ include/net/netdev_queues.h | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index 158b8f96f50c..1723909bde77 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -758,7 +758,8 @@ struct nqe_cn {
- #define BNXT_RX_PAGE_SHIFT PAGE_SHIFT
- #endif
+diff --git a/include/net/netdev_queues.h b/include/net/netdev_queues.h
+index a9ee147dd914..c50de8db72ce 100644
+--- a/include/net/netdev_queues.h
++++ b/include/net/netdev_queues.h
+@@ -145,18 +145,18 @@ struct netdev_stat_ops {
+  * be called for an interface which is open.
+  */
+ struct netdev_queue_mgmt_ops {
+-	size_t			ndo_queue_mem_size;
+-	int			(*ndo_queue_mem_alloc)(struct net_device *dev,
+-						       void *per_queue_mem,
+-						       int idx);
+-	void			(*ndo_queue_mem_free)(struct net_device *dev,
+-						      void *per_queue_mem);
+-	int			(*ndo_queue_start)(struct net_device *dev,
+-						   void *per_queue_mem,
+-						   int idx);
+-	int			(*ndo_queue_stop)(struct net_device *dev,
+-						  void *per_queue_mem,
+-						  int idx);
++	size_t	ndo_queue_mem_size;
++	int	(*ndo_queue_mem_alloc)(struct net_device *dev,
++				       void *per_queue_mem,
++				       int idx);
++	void	(*ndo_queue_mem_free)(struct net_device *dev,
++				      void *per_queue_mem);
++	int	(*ndo_queue_start)(struct net_device *dev,
++				   void *per_queue_mem,
++				   int idx);
++	int	(*ndo_queue_stop)(struct net_device *dev,
++				  void *per_queue_mem,
++				  int idx);
+ };
  
--#define BNXT_RX_PAGE_SIZE (1 << BNXT_RX_PAGE_SHIFT)
-+#define BNXT_MAX_RX_PAGE_SIZE	(1 << 15)
-+#define BNXT_RX_PAGE_SIZE	(1 << BNXT_RX_PAGE_SHIFT)
- 
- #define BNXT_MAX_MTU		9500
- 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 48dd5922e4dd..956f51449709 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -835,6 +835,8 @@ static void bnxt_get_ringparam(struct net_device *dev,
- 	ering->rx_jumbo_pending = bp->rx_agg_ring_size;
- 	ering->tx_pending = bp->tx_ring_size;
- 
-+	kernel_ering->rx_buf_len_max = BNXT_MAX_RX_PAGE_SIZE;
-+	kernel_ering->rx_buf_len = bp->rx_page_size;
- 	kernel_ering->hds_thresh_max = BNXT_HDS_THRESHOLD_MAX;
- }
- 
-@@ -862,6 +864,21 @@ static int bnxt_set_ringparam(struct net_device *dev,
- 		return -EINVAL;
- 	}
- 
-+	if (!kernel_ering->rx_buf_len)	/* Zero means restore default */
-+		kernel_ering->rx_buf_len = BNXT_RX_PAGE_SIZE;
-+
-+	if (kernel_ering->rx_buf_len != bp->rx_page_size &&
-+	    !(bp->flags & BNXT_FLAG_CHIP_P5_PLUS)) {
-+		NL_SET_ERR_MSG_MOD(extack, "changing rx-buf-len not supported");
-+		return -EINVAL;
-+	}
-+	if (!is_power_of_2(kernel_ering->rx_buf_len) ||
-+	    kernel_ering->rx_buf_len < BNXT_RX_PAGE_SIZE ||
-+	    kernel_ering->rx_buf_len > BNXT_MAX_RX_PAGE_SIZE) {
-+		NL_SET_ERR_MSG_MOD(extack, "rx-buf-len out of range, or not power of 2");
-+		return -ERANGE;
-+	}
-+
- 	if (netif_running(dev))
- 		bnxt_close_nic(bp, false, false);
- 
-@@ -874,6 +891,7 @@ static int bnxt_set_ringparam(struct net_device *dev,
- 
- 	bp->rx_ring_size = ering->rx_pending;
- 	bp->tx_ring_size = ering->tx_pending;
-+	bp->rx_page_size = kernel_ering->rx_buf_len;
- 	bnxt_set_ring_params(bp);
- 
- 	if (netif_running(dev))
-@@ -5463,7 +5481,8 @@ const struct ethtool_ops bnxt_ethtool_ops = {
- 				     ETHTOOL_COALESCE_STATS_BLOCK_USECS |
- 				     ETHTOOL_COALESCE_USE_ADAPTIVE_RX |
- 				     ETHTOOL_COALESCE_USE_CQE,
--	.supported_ring_params	= ETHTOOL_RING_USE_TCP_DATA_SPLIT |
-+	.supported_ring_params	= ETHTOOL_RING_USE_RX_BUF_LEN |
-+				  ETHTOOL_RING_USE_TCP_DATA_SPLIT |
- 				  ETHTOOL_RING_USE_HDS_THRS,
- 	.get_link_ksettings	= bnxt_get_link_ksettings,
- 	.set_link_ksettings	= bnxt_set_link_ksettings,
+ /**
 -- 
 2.49.0
 
