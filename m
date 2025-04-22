@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7F7265CC0;
-	Tue, 22 Apr 2025 08:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665012566EA;
+	Tue, 22 Apr 2025 08:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745310240; cv=none; b=a7Qww9YUgn+fcZm4L4GOpM7vG3PZ0P2XZsvE3d6uuk7vFcZtnRmEtru1kzTVTseMt7SWmaDGJdGCHl4S34Qam+PJxRjFMZt1aJLeHM7bKTM4anBFyIvB2C++bFULg/47qCOJLNKy8LxQ5aamMaLQOShkSbhgTQ22UrpY2Z4lGF4=
+	t=1745310240; cv=none; b=QM9LH1kdkhSBBFaWoZ//tYwSzBKnr43C8dSFLxfX21UjKzSL6EGyAv+ncpHaa6E9x/VDJaOvkxE7UPkbiepgMIgPVoSxVylpGHzaiKCbjs6N3JpH5lRmU4XEP+aNX+SM5Sv7QGsKvuu9gmLL/1HDmsf/SbPWfneIg9byuLr8IF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1745310240; c=relaxed/simple;
-	bh=fFY2exO1b2EjO/RUxQ7qiqFgDPzzyBF3dGw0te3RS3M=;
+	bh=HFXlOSrmXh0pQzmh70nzr8a0e2j82SKgXVMAzu1LuBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BaRvbCd2I13K4Eue5/GUj+bmdvQ8gcnyAIYs8Z2He1uri1aEGm9ZuoNAeZXnwKPo3pisoFAS6DPaQQGu2zw1pWFsZ2ud/yt2CgJd2Q4qMRTupW18c0Dw+GwfuGp+n+METS4A20c38DjphVbC4zEwjDjYVPB70SFRm0mGp5C4mD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=PxUOo6k2; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=NQHRjB1YD30boZm2fWhh1xsvRn8k/ZwXBz812IoK++P1KiI/BJmNzOC0Ky07AkTe/LbXaMy02Bhz9KFmvX4lEfopg0+Lgugq6Ws8mB4KwIw8MlIAXM9fzLAveXiDm5QNSJ1VXbRagAkJ8A1VbfQtLvbg0VrOw2dKwbf6Ak/1ebU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=Uc1b2MMH; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="PxUOo6k2"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="Uc1b2MMH"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53M8MG9Q1954391
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53M8MG9m1954391
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Tue, 22 Apr 2025 01:22:44 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53M8MG9Q1954391
+	Tue, 22 Apr 2025 01:23:30 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53M8MG9m1954391
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1745310167;
-	bh=1VgQf4QInSDQLzZ+1XUhguUTrkXvawFaEvDB+uGxtVM=;
+	s=2025042001; t=1745310212;
+	bh=qnYCpm2Cl6ZIZ5hId3xkbPkJqqrZQFZfyOkhGDhffqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PxUOo6k2ygRA60Nwwh//GGmJ2Ha25YqcuuadFmBT9kb1B0PYfv6Aywtx1iVRLb9BX
-	 Fj19RkC5hv8Sp/5xrXDu9u9ly5DcABPKX/vm0TRbuxcIZElbLl9gCac7HgrOAD88Tn
-	 2pYSZ/+5KDeI4ZgydWimYqeKvfaOFnXYFTKuKkphpfKHP7Oxq5j7JldvtBkd7nq6BZ
-	 t/NtOGh8DANYccVS0g5u+IJWleUBogtX3IuQR6ftaSD3LJp8UXHEPuFjDNC7EcRq10
-	 df5RT52Kc7UjBWr8D24hnur7y8Zo5qGDf32z3E6BpdSccjOFnylRA2HEY5y5jIKf7W
-	 fG4OSdCdfxxgw==
+	b=Uc1b2MMHUkmSSWkI2MOrRUT6ZGc7p2OK1RO57VTRGzrFk3nJp7mExF9yRLqhXwrcN
+	 BEEh5kJRgcNa0ORqLGKos3bgYft/LGNyer5Hj/VmrWBwEfN4bo5k4h7fYDJnj7l0iH
+	 x3KPzP8Y8/4VNpO8JH9Yfwzhho87jdCmeXcBpjzy/qaN1+VLUT/st/KMk2S7jIMbTL
+	 ErV/dz7vQ+VWICcFlhVd+X7D1ljAh8bI0Ed7Om76UDvHltu1oSI+3z4c9vWm1fO4pm
+	 4dTYUhuIvfW4g6DD8/vRKD69Q3YVmGv0OG8qFORLYD4AB4LVkHungT3s69bi00Wvfu
+	 KweyIKTZ9esZQ==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
@@ -50,9 +50,9 @@ Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
         pbonzini@redhat.com, vkuznets@redhat.com, seanjc@google.com,
         luto@kernel.org, boris.ostrovsky@oracle.com, kys@microsoft.com,
         haiyangz@microsoft.com, decui@microsoft.com
-Subject: [RFC PATCH v2 12/34] x86/msr: Remove pmu_msr_{read,write}()
-Date: Tue, 22 Apr 2025 01:21:53 -0700
-Message-ID: <20250422082216.1954310-13-xin@zytor.com>
+Subject: [RFC PATCH v2 34/34] x86/msr: Convert native_rdmsr_no_trace() uses to native_rdmsrq_no_trace() uses
+Date: Tue, 22 Apr 2025 01:22:15 -0700
+Message-ID: <20250422082216.1954310-35-xin@zytor.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250422082216.1954310-1-xin@zytor.com>
 References: <20250422082216.1954310-1-xin@zytor.com>
@@ -64,140 +64,136 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-As pmu_msr_{read,write}() are now wrappers of pmu_msr_chk_emulated(),
-remove them and use pmu_msr_chk_emulated() directly.
+Convert native_rdmsr_no_trace() uses to native_rdmsrq_no_trace() uses
+cleanly with the use of struct msr, and remove native_rdmsr_no_trace().
 
-While at it, convert the data type of MSR index to u32 in functions
-called in pmu_msr_chk_emulated().
-
-Suggested-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 ---
- arch/x86/xen/enlighten_pv.c | 17 ++++++++++-------
- arch/x86/xen/pmu.c          | 24 ++++--------------------
- arch/x86/xen/xen-ops.h      |  3 +--
- 3 files changed, 15 insertions(+), 29 deletions(-)
+ arch/x86/include/asm/microcode.h      |  6 +++---
+ arch/x86/include/asm/msr.h            | 13 +++----------
+ arch/x86/kernel/cpu/microcode/amd.c   |  8 ++------
+ arch/x86/kernel/cpu/microcode/core.c  |  4 ++--
+ arch/x86/kernel/cpu/microcode/intel.c |  6 +++---
+ 5 files changed, 13 insertions(+), 24 deletions(-)
 
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index 1418758b57ff..b5a8bceb5f56 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -1089,8 +1089,9 @@ static void xen_write_cr4(unsigned long cr4)
- static u64 xen_do_read_msr(unsigned int msr, int *err)
+diff --git a/arch/x86/include/asm/microcode.h b/arch/x86/include/asm/microcode.h
+index d581fdaf1f36..1d9641349744 100644
+--- a/arch/x86/include/asm/microcode.h
++++ b/arch/x86/include/asm/microcode.h
+@@ -61,7 +61,7 @@ static inline int intel_microcode_get_datasize(struct microcode_header_intel *hd
+ 
+ static inline u32 intel_get_microcode_revision(void)
  {
- 	u64 val = 0;	/* Avoid uninitialized value for safe variant. */
-+	bool emulated;
+-	u32 rev, dummy;
++	struct msr val;
  
--	if (pmu_msr_read(msr, &val, err))
-+	if (pmu_msr_chk_emulated(msr, &val, true, &emulated) && emulated)
- 		return val;
+ 	native_wrmsrq_no_trace(MSR_IA32_UCODE_REV, 0);
  
- 	if (err)
-@@ -1133,6 +1134,7 @@ static void xen_do_write_msr(unsigned int msr, unsigned int low,
- 			     unsigned int high, int *err)
+@@ -69,9 +69,9 @@ static inline u32 intel_get_microcode_revision(void)
+ 	native_cpuid_eax(1);
+ 
+ 	/* get the current revision from MSR 0x8B */
+-	native_rdmsr_no_trace(MSR_IA32_UCODE_REV, dummy, rev);
++	val.q = native_rdmsrq_no_trace(MSR_IA32_UCODE_REV);
+ 
+-	return rev;
++	return val.h;
+ }
+ #endif /* !CONFIG_CPU_SUP_INTEL */
+ 
+diff --git a/arch/x86/include/asm/msr.h b/arch/x86/include/asm/msr.h
+index be593a15a838..aebcd846af3e 100644
+--- a/arch/x86/include/asm/msr.h
++++ b/arch/x86/include/asm/msr.h
+@@ -141,9 +141,9 @@ static __always_inline bool is_msr_imm_insn(void *ip)
+  *                            /     \                                |
+  *                           /       \                               |
+  *        native_rdmsrq_no_trace()    native_rdmsrq_safe()           |
+- *                   /      \                                        |
+- *                  /        \                                       |
+- * native_rdmsr_no_trace()    native_rdmsrq()                        |
++ *               /                                                   |
++ *              /                                                    |
++ *      native_rdmsrq()                                              |
+  *                                                                   |
+  *                                                                   |
+  *                                                                   |
+@@ -239,13 +239,6 @@ static __always_inline u64 native_rdmsrq_no_trace(u32 msr)
+ 	return val;
+ }
+ 
+-#define native_rdmsr_no_trace(msr, low, high)		\
+-do {							\
+-	u64 __val = native_rdmsrq_no_trace(msr);	\
+-	(void)((low) = (u32)__val);			\
+-	(void)((high) = (u32)(__val >> 32));		\
+-} while (0)
+-
+ static inline u64 native_rdmsrq(u32 msr)
  {
- 	u64 val;
-+	bool emulated;
+ 	u64 val = native_rdmsrq_no_trace(msr);
+diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
+index f1f275ddab57..b4d66e79089c 100644
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -254,11 +254,7 @@ static bool verify_sha256_digest(u32 patch_id, u32 cur_rev, const u8 *data, unsi
  
- 	switch (msr) {
- 	case MSR_FS_BASE:
-@@ -1162,12 +1164,13 @@ static void xen_do_write_msr(unsigned int msr, unsigned int low,
- 	default:
- 		val = (u64)high << 32 | low;
+ static u32 get_patch_level(void)
+ {
+-	u32 rev, dummy __always_unused;
+-
+-	native_rdmsr_no_trace(MSR_AMD64_PATCH_LEVEL, rev, dummy);
+-
+-	return rev;
++	return native_rdmsrq_no_trace(MSR_AMD64_PATCH_LEVEL);
+ }
  
--		if (!pmu_msr_write(msr, val)) {
--			if (err)
--				*err = native_write_msr_safe(msr, low, high);
--			else
--				native_write_msr(msr, low, high);
--		}
-+		if (pmu_msr_chk_emulated(msr, &val, false, &emulated) && emulated)
-+			return;
-+
-+		if (err)
-+			*err = native_write_msr_safe(msr, low, high);
-+		else
-+			native_write_msr(msr, low, high);
+ static union cpuid_1_eax ucode_rev_to_cpuid(unsigned int val)
+@@ -835,7 +831,7 @@ static struct ucode_patch *find_patch(unsigned int cpu)
+ 
+ void reload_ucode_amd(unsigned int cpu)
+ {
+-	u32 rev, dummy __always_unused;
++	u32 rev;
+ 	struct microcode_amd *mc;
+ 	struct ucode_patch *p;
+ 
+diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
+index 9bda8fd987ab..81b264373d3e 100644
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -81,10 +81,10 @@ struct early_load_data early_data;
+  */
+ static bool amd_check_current_patch_level(void)
+ {
+-	u32 lvl, dummy, i;
++	u32 lvl, i;
+ 	u32 *levels;
+ 
+-	native_rdmsr_no_trace(MSR_AMD64_PATCH_LEVEL, lvl, dummy);
++	lvl = native_rdmsrq_no_trace(MSR_AMD64_PATCH_LEVEL);
+ 
+ 	levels = final_levels;
+ 
+diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
+index c0307b1ad63d..1b484214f3ee 100644
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -75,11 +75,11 @@ void intel_collect_cpu_info(struct cpu_signature *sig)
+ 	sig->rev = intel_get_microcode_revision();
+ 
+ 	if (IFM(x86_family(sig->sig), x86_model(sig->sig)) >= INTEL_PENTIUM_III_DESCHUTES) {
+-		unsigned int val[2];
++		struct msr val;
+ 
+ 		/* get processor flags from MSR 0x17 */
+-		native_rdmsr_no_trace(MSR_IA32_PLATFORM_ID, val[0], val[1]);
+-		sig->pf = 1 << ((val[1] >> 18) & 7);
++		val.q = native_rdmsrq_no_trace(MSR_IA32_PLATFORM_ID);
++		sig->pf = 1 << ((val.h >> 18) & 7);
  	}
  }
- 
-diff --git a/arch/x86/xen/pmu.c b/arch/x86/xen/pmu.c
-index 95caae97a394..afb02f43ee3f 100644
---- a/arch/x86/xen/pmu.c
-+++ b/arch/x86/xen/pmu.c
-@@ -128,7 +128,7 @@ static inline uint32_t get_fam15h_addr(u32 addr)
- 	return addr;
- }
- 
--static inline bool is_amd_pmu_msr(unsigned int msr)
-+static bool is_amd_pmu_msr(u32 msr)
- {
- 	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
- 	    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
-@@ -194,8 +194,7 @@ static bool is_intel_pmu_msr(u32 msr_index, int *type, int *index)
- 	}
- }
- 
--static bool xen_intel_pmu_emulate(unsigned int msr, u64 *val, int type,
--				  int index, bool is_read)
-+static bool xen_intel_pmu_emulate(u32 msr, u64 *val, int type, int index, bool is_read)
- {
- 	uint64_t *reg = NULL;
- 	struct xen_pmu_intel_ctxt *ctxt;
-@@ -257,7 +256,7 @@ static bool xen_intel_pmu_emulate(unsigned int msr, u64 *val, int type,
- 	return false;
- }
- 
--static bool xen_amd_pmu_emulate(unsigned int msr, u64 *val, bool is_read)
-+static bool xen_amd_pmu_emulate(u32 msr, u64 *val, bool is_read)
- {
- 	uint64_t *reg = NULL;
- 	int i, off = 0;
-@@ -298,8 +297,7 @@ static bool xen_amd_pmu_emulate(unsigned int msr, u64 *val, bool is_read)
- 	return false;
- }
- 
--static bool pmu_msr_chk_emulated(unsigned int msr, uint64_t *val, bool is_read,
--				 bool *emul)
-+bool pmu_msr_chk_emulated(u32 msr, u64 *val, bool is_read, bool *emul)
- {
- 	int type, index = 0;
- 
-@@ -313,20 +311,6 @@ static bool pmu_msr_chk_emulated(unsigned int msr, uint64_t *val, bool is_read,
- 	return true;
- }
- 
--bool pmu_msr_read(u32 msr, u64 *val)
--{
--	bool emulated;
--
--	return pmu_msr_chk_emulated(msr, val, true, &emulated) && emulated;
--}
--
--bool pmu_msr_write(u32 msr, u64 val)
--{
--	bool emulated;
--
--	return pmu_msr_chk_emulated(msr, &val, false, &emulated) && emulated;
--}
--
- static u64 xen_amd_read_pmc(int counter)
- {
- 	struct xen_pmu_amd_ctxt *ctxt;
-diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
-index a1875e10be31..fde9f9d7415f 100644
---- a/arch/x86/xen/xen-ops.h
-+++ b/arch/x86/xen/xen-ops.h
-@@ -271,8 +271,7 @@ void xen_pmu_finish(int cpu);
- static inline void xen_pmu_init(int cpu) {}
- static inline void xen_pmu_finish(int cpu) {}
- #endif
--bool pmu_msr_read(u32 msr, u64 *val);
--bool pmu_msr_write(u32 msr, u64 val);
-+bool pmu_msr_chk_emulated(u32 msr, u64 *val, bool is_read, bool *emul);
- int pmu_apic_update(uint32_t reg);
- u64 xen_read_pmc(int counter);
- 
+ EXPORT_SYMBOL_GPL(intel_collect_cpu_info);
 -- 
 2.49.0
 
