@@ -1,61 +1,62 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFE917BED0
-	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 20:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AD81DEFE0
+	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 20:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745353001; cv=none; b=O/cqwmQOZHu2oS0TYVv2qR5Kbmt5y5k9Yg9lFn3wlnWZOS5BuFdpynJmSPaQSQWL9qg7N0gJU+sAsVmX75R+mG3tVuX3mYlaXZazgLyJZvVxp2GTTFs7txLB4HkMsYyailjppPYhFX7a7r6AL3z/jIFpytLgksxaQ2RVIyb55to=
+	t=1745353143; cv=none; b=IlzV0meDyorMEAX/+tab3/7n0nr9x0iCWLl8F/2JuTMwL3Hs7IEhIPjkx5nHdBzCJsQrEzeYDVibBFYzZt3bSwg06FjFAiyg5fq44Cm/R3NMwdblHq4UKfXUoy3WFjrYhtmMQCWNLsMeH4fDQ8CAqBQqjJNR0p9WfZ7jSy2lEos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745353001; c=relaxed/simple;
-	bh=V738fx9sHxbPJQLFqueueap3epQ0m87kcqgyyj8D30k=;
+	s=arc-20240116; t=1745353143; c=relaxed/simple;
+	bh=idXdvxc548cmcGUY+7fxHntywwpdMns5AGSR76rGB/Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QM8t2docO/DVInAe0FzG7j5S5nStYGefkJF7vPM3Pr4XJoP7N88fC+rV95oAtdnJrOe4obvEMfQzZLtP4WwxnXei1OONP3CerQSPTsoPEwJGlWvuq3J1iHr3+TeqKrvsSj5Z8k08z1gEUsyv+kpWxDRX+Pa+CjBsOiQA/MaWndk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=Srl1DmVS; arc=none smtp.client-ip=209.85.214.176
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ag5jLbQoF0paaPOixKhY+FkOTX94gibIdnf1PlrWrbrprXC/Jpaq6jcwgVLdCeJe7mk2jh5kVTYQ9QVH07dfIh17dEo2YeAR03QWmOOv8m33vSZke1xCCD/+KGPiFMwj71JgNnIPLt1SL+ioNdEs8qTKzVzJE97BtGvaZZAwGkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=B8vR8mGX; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="Srl1DmVS"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-22435603572so60570935ad.1
-        for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 13:16:39 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="B8vR8mGX"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-227cf12df27so2818455ad.0
+        for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 13:19:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1745352999; x=1745957799; darn=vger.kernel.org;
+        d=fastly.com; s=google; t=1745353141; x=1745957941; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references
          :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PTJQZJPXr8Cguq9A3DxbN48+CCPVDmv7CfP9nMMaJAk=;
-        b=Srl1DmVSGXQLYBcfSjWC8wMDMVEVBdFP0vzGbLbLcwxEyPNcZi709z65WKE8EmU1iy
-         IzRVBADXw6uPGoI7JaMdk6kCciaAfF9nGrtxNNmEd880Loqw7X3EqTStlmaEcaVzkW3M
-         IDKoCJNqAkzsBS366CXddvecNuBLFcdjtNWuE=
+        bh=RlVdV1YlZfrtkMqtQXHNBZSHY/DkoheWkjaRUvA1EvY=;
+        b=B8vR8mGXk/LCHnkLnwS/UEYwOVnKQssvMfvhIG6LyIlcDNnnQVIWAJEyzGAelLW3wS
+         3P+cOa3cy0I/aXNV+vDDXQJGdJsF6Dfk+rW618g+oeByZ6SJMjY/zUF8OYPfPtj2GXi7
+         M0pX6NtuRLLRZ7YtBAoqlJoE2W4JVvUgdex0U=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745352999; x=1745957799;
+        d=1e100.net; s=20230601; t=1745353141; x=1745957941;
         h=in-reply-to:content-disposition:mime-version:references
          :mail-followup-to:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PTJQZJPXr8Cguq9A3DxbN48+CCPVDmv7CfP9nMMaJAk=;
-        b=L5OLzWOecy5TEWv4DmeiVarlz67Jo8+UlTtYW9trPYeKFxWwAUmjuJ5Wre+l+FO9vC
-         LghiUbdyDaA9cHD8KuFtfIqFkxh6+dLLl/vBPnkjOh4JOPyip83VyZWLtuqPnXjXTjSJ
-         5fHsFfBT+wGG4zU9A2MoUXYWiqo1FIwQl6mv/qmOhpF6McAprfIoZzG8LvBAXWfxwGGB
-         MeVLm9elFk23ZIr+6bTrwlqdP2osUwNTBrqsbYJFdMiM1FFkI0Hk7dEJVRZtQZtIVXOf
-         x0hlZA6SoSyRR0AwXQ0iKAp89mRmNzirgFWy3Ht2F2D6R32uui/lGh8josNhJIbVwsLi
-         1flg==
-X-Forwarded-Encrypted: i=1; AJvYcCXzYq9gK+GpYJby1RSaawNXhgixGREhwqVhIL+yOjFir+D6uixcvCF4NBgKUoM0s1Q/S4DbPWY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5E44CANPQ+BzdJ31WpAghbbfI5SrW9j6JUHsKQtMy7Y443MfB
-	wde6zJiTYAubo6NSqtU/IDWQsUAgf1gRFgKI7WBkAesYJLX5nrYVozX5KRihAns=
-X-Gm-Gg: ASbGncvJ0S+apJr6DOdV6tdhHCHnQ/jTEKdom+RGr8wB5KGnbzwlJp39ngFeTD4DCyK
-	sm1z4/QEvFXmjiJcawW0AuBAvlMsPkTRWe9mdWpcF+PrAPKrYpkpaVFBA1667QaxQUYd00WaED6
-	ytCBb3a20LRuj44EGToDSBreXS5N6cNtlPZ5VgOP9DgH6IPDNw2i/Z4L/PuFqHYZ5BnryinHt6B
-	ulZ236kyPcMn62mdBiq76S7S79XZrjfAAjDsae/ybtAB/100ebR5JT5MT5c0Tjp4tfGdSGKA2nL
-	aaUvqAql6s9szmGkaGvq2dzvPxKZPjw2Od07x4EHIKZkldleiv2xiYfwgkwZlYFYZI7/BBtIopy
-	v0ti6j2xNSL3X
-X-Google-Smtp-Source: AGHT+IG5yrzAQBYAFkmoitMysLfBX/Z6QCRLxBHqf2aQqFIPKHSHy4KWs/XOtfpwNDAOp538QbChVQ==
-X-Received: by 2002:a17:903:1a6b:b0:224:1ec0:8a16 with SMTP id d9443c01a7336-22c53580d28mr244534545ad.21.1745352999144;
-        Tue, 22 Apr 2025 13:16:39 -0700 (PDT)
+        bh=RlVdV1YlZfrtkMqtQXHNBZSHY/DkoheWkjaRUvA1EvY=;
+        b=T8zLWizaoNBBuSYjE0ObZbGWGhYcQtDmZREzKz8aG/g+r1usHezcywOsJciUIkNSOC
+         B9421moeqVZjP6jMvRKilLeNOsALOutDtQjIuVZxTG2HK57N7HCfohKADVBDediCl6Rr
+         q+WIKlGkw0//OHgGv6mwDpLTBZkm9elWPhd7/ikJEisWEiuUml8rXALpRE2TrVAmb47U
+         auWTBLAeBI8DEImohgxUJVaimBpBCBXDg/4xbaABZvv/W11jFOCyblQMKIYX/hL5Aoqf
+         2SVERkxtYhDx06ZJSJQHlsZepLu0Z1pyhVcaJrGR6uE2GEds24zcwt+Wz3pGhRNSPY17
+         qwDA==
+X-Forwarded-Encrypted: i=1; AJvYcCUzSeOotR9MrXVF7F5wY4wsfb1icPGC/YUoD/tjYubY9OASlf80XkAMLNRPfLiFju05I00qGv8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRy8EevcjkJEF6F2r4qfoAxJ+vWDzmMZMnZM57yaL3XfuB3UDR
+	szyIkx8XGWTqZ/w1/f6HIoe1Q5YviOUmVvgejGMNKYOggWcnWyr24DXVpqx9mIuWc5D/oWtFgZW
+	V
+X-Gm-Gg: ASbGncsVXg2xdu+5NZ+1EMF7dVLQBUtOTjwEQHJd9QHnw6XKjRrxyb0Z2aEXMSns1Z3
+	6G/eT1Sn3WLCnq4xZF38kY7VDqObQPmQpxoZWsWXNHf+b4zlLTwZM8szCKmBLGJ/YNPkqrTkivd
+	Wfy+pWoA8vpYF07dzz9tbUG3wiLrFy+EAnYdsbJTh9hLQbdbqZU9jecwRm1OhrsyKuT0nsIU8FJ
+	+cFko/Ld+AhyFJdlX25mp/d7Ve4RP3hN+9AEfrDtiHi3d/y/taCB60Nq8SILllEXJEz+CoW6hmc
+	2xfVxEpnyjhoV1bRLMV1yjl16gWZo3oskJk8hM5BxDt7Mv2yyKQIFYoSl/2+I3Kd2Tglb8oDrKs
+	ngGiW67yzcM5Rlnwg9r2IZi0=
+X-Google-Smtp-Source: AGHT+IGkk8GEXTiyk2osYDKOaiFWILDzYKHoATRwnmCj/s6J7bv5rHUipNSPZ27QqXwQFd3xi+z2Lw==
+X-Received: by 2002:a17:902:fc4b:b0:21f:7078:4074 with SMTP id d9443c01a7336-22da31974c3mr4347715ad.7.1745353140737;
+        Tue, 22 Apr 2025 13:19:00 -0700 (PDT)
 Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50eb530dsm89240395ad.151.2025.04.22.13.16.37
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50eb4483sm89802715ad.118.2025.04.22.13.18.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 13:16:38 -0700 (PDT)
-Date: Tue, 22 Apr 2025 13:16:35 -0700
+        Tue, 22 Apr 2025 13:19:00 -0700 (PDT)
+Date: Tue, 22 Apr 2025 13:18:57 -0700
 From: Joe Damato <jdamato@fastly.com>
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
@@ -63,8 +64,8 @@ Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
 	donald.hunter@gmail.com, sdf@fomichev.me, almasrymina@google.com,
 	dw@davidwei.uk, asml.silence@gmail.com, ap420073@gmail.com,
 	dtatulea@nvidia.com, michael.chan@broadcom.com
-Subject: Re: [RFC net-next 13/22] net: add queue config validation callback
-Message-ID: <aAf5I3kKrf7l5oym@LQ3V64L9R2>
+Subject: Re: [RFC net-next 14/22] eth: bnxt: always set the queue mgmt ops
+Message-ID: <aAf5scux38EGRaHr@LQ3V64L9R2>
 Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
 	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
 	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
@@ -73,7 +74,7 @@ Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
 	asml.silence@gmail.com, ap420073@gmail.com, dtatulea@nvidia.com,
 	michael.chan@broadcom.com
 References: <20250421222827.283737-1-kuba@kernel.org>
- <20250421222827.283737-14-kuba@kernel.org>
+ <20250421222827.283737-15-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,37 +83,14 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250421222827.283737-14-kuba@kernel.org>
+In-Reply-To: <20250421222827.283737-15-kuba@kernel.org>
 
-On Mon, Apr 21, 2025 at 03:28:18PM -0700, Jakub Kicinski wrote:
+On Mon, Apr 21, 2025 at 03:28:19PM -0700, Jakub Kicinski wrote:
+> Core provides a centralized callback for validating per-queue settings
+> but the callback is part of the queue management ops. Having the ops
+> conditionally set complicates the parts of the driver which could
+> otherwise lean on the core to feel it the correct settings.
+                       feed ?   ^^^^
 
-> The "trick" of passing a negative index is a bit ugly, we may
-> want to revisit if it causes confusion and bugs. Existing drivers
-> don't care about the index so it "just works".
-
-FWIW: I thought some drivers use the "-1 means all queues" trick for
-things internally (I thought I saw at least one driver use it for
-per-queue vs NIC-wide coalesce settings?) so maybe it isn't *that*
-strange
-
-> --- a/net/core/netdev_config.c
-> +++ b/net/core/netdev_config.c
-> @@ -99,3 +99,23 @@ void netdev_queue_config(struct net_device *dev, int rxq,
->  	__netdev_queue_config(dev, rxq, qcfg, true);
->  }
->  EXPORT_SYMBOL(netdev_queue_config);
-> +
-> +int netdev_queue_config_revalidate(struct net_device *dev,
-> +				   struct netlink_ext_ack *extack)
-> +{
-> +	const struct netdev_queue_mgmt_ops *qops = dev->queue_mgmt_ops;
-> +	struct netdev_queue_config qcfg;
-> +	int i, err;
-> +
-> +	if (!qops || !qops->ndo_queue_cfg_validate)
-> +		return 0;
-> +
-> +	for (i = -1; i < (int)dev->real_num_rx_queues; i++) {
-
-Not gonna lie: this looks weird. But maybe all that matters is that
-people following this changeset are OK with it?
+Otherwise, I think I like Stanislav's suggestion on code
+structure/flow.
