@@ -1,178 +1,147 @@
-Received: from fallback23.i.mail.ru (fallback23.i.mail.ru [79.137.243.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843672D320C;
-	Tue, 22 Apr 2025 20:39:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.137.243.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6F2242D9D;
+	Tue, 22 Apr 2025 20:42:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745354375; cv=none; b=PfjEOvISp67pdTBpyQvq8Sd1WeiCgTUDQoa/DYnvu6STi9AUU7erge/bf4WUH6CoLBBpailREvtZmY41naAcLPezX4wIcnV/XmESeAQJxUSJBOihtSBanO60FeiZVA0S0zd/QD755dOGYO9dG1QsqwZvPnR+E42QTlK95JGIyog=
+	t=1745354543; cv=none; b=pOuFWrKOnHc3JwcW2uOOqi/UyavjPKZcJAqNPxC3VUHXPHcsHBJe1mzuleT10GYk7KnwFdYNEGxp+kyrmYHzWsbqlQnON7HKXqgCc10Mg9Jweldh7cG1XVhxRZ3AM2drEwiEQpmqLH8FWGujFXUZIujkupTVzbZ+wkNF053E1rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745354375; c=relaxed/simple;
-	bh=iB/3spXTyoXhYOC6DMJxePFcQgRtzeJq/vnZrNM2A7w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hbTTI2et0k7A45JFWAautAPTbWLE0Lho121sZiRFVC7vFdVnkFAPy53gzsxQcCIq09kVBsfhKZL8bz+cTTp7PqzNyzurJED/oxnlw6cwxw71YufCd8SFxJwAXTrzQsiJkptXTC2QcqIxI+xbJJ07UnZ0YbzL3601qefOHQvizdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jiaxyga.com; spf=pass smtp.mailfrom=jiaxyga.com; dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b=GLYDmg8r; dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b=GZl1KifZ; dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b=eAx/e6EX; arc=none smtp.client-ip=79.137.243.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jiaxyga.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jiaxyga.com
+	s=arc-20240116; t=1745354543; c=relaxed/simple;
+	bh=iykaHhBnl9JNM7hxvi+qM8kwPweNLcLOO2zElA+Pdjk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GB04spbu04sHivPUNNR+gbrwn+tXztPii9PXBuaxCvxsLjdw+4XY7n6C6Ih2Zg5sKHGeyLenXLm447QexEEJ3aaDCNDu9F5DntGRnZBrxyjpc5gROI3YVPwJCGFSdvzjVoQvmFwfo/x1Dji1mgbFiDLpEwnGahsTbONbe20zVQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZhqJns9B; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b="GLYDmg8r";
-	dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b="GZl1KifZ";
-	dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b="eAx/e6EX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=jiaxyga.com; s=mailru;
-	h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:From:Subject:Content-Type:Content-Transfer-Encoding:To:Cc; bh=oep76IvVDk1lFblYSYOJ8OGL1w/RX6NPSq5NyE1/9N0=;
-	t=1745354372;x=1745444372; 
-	b=GLYDmg8rYTPctWW0eVLR9KR6tHutjZrSN3TEmJ9G1KUNYxAROIN31H218zv1huPNZpBKeqkcutfqFfEfVSPZVzwG1wyHwiD5uk7Qj+fV7CwAaDJPjmuMNY0ZWg6L81dEfjvpZFq3ak5urXNxnHe0zEfNEBTsT+COHJ4usb2bx3M=;
-Received: from [10.113.20.137] (port=56898 helo=send262.i.mail.ru)
-	by fallback23.i.mail.ru with esmtp (envelope-from <danila@jiaxyga.com>)
-	id 1u7KBr-00DlZm-38; Tue, 22 Apr 2025 23:25:59 +0300
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=jiaxyga.com
-	; s=mailru; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive:X-Cloud-Ids;
-	bh=oep76IvVDk1lFblYSYOJ8OGL1w/RX6NPSq5NyE1/9N0=; t=1745353559; x=1745443559; 
-	b=GZl1KifZ3UoHYf/36t9im4J1f5EzevSm2wgfLVyIxWabq6lxrOhtkfRiUJQFGhJ6LsrEznzYdyL
-	qaVv2wJ0ig7tR2VX5oS9MrI3ZEDQZSNMYWLEhhXgzUinWaDF6scCSQou0bYk/7PC1npJHknbbIHi5
-	FH9OT4YSl/mZt9/HYFk=;
-Received: from [10.113.236.93] (port=53278 helo=send277.i.mail.ru)
-	by exim-fallback-5f8f9b6d5b-nbkz4 with esmtp (envelope-from <danila@jiaxyga.com>)
-	id 1u7KBe-00000000M2b-0yd7; Tue, 22 Apr 2025 23:25:46 +0300
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=jiaxyga.com
-	; s=mailru; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:From:
-	Sender:Reply-To:To:Cc:Content-Type:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive:X-Cloud-Ids:Disposition-Notification-To;
-	bh=oep76IvVDk1lFblYSYOJ8OGL1w/RX6NPSq5NyE1/9N0=; t=1745353546; x=1745443546; 
-	b=eAx/e6EXxfkumrjUcIdy+hCgaCaF7DJ7Wv3Nhb+GFMy4pKfpHgxOgjqg2yHbDL+cHxj+vbDMoDn
-	2UyphvrGavOxkDftejPbTuj1J4JOpqRJ9tT8Yk2erZSD7u6zMNXoMui2nWiTDSYIWBKWmuLkHTfOW
-	LceO70Pq4Nmr/XScRwk=;
-Received: by exim-smtp-77d8cdf77b-httmk with esmtpa (envelope-from <danila@jiaxyga.com>)
-	id 1u7KBI-00000000Adc-1ffY; Tue, 22 Apr 2025 23:25:24 +0300
-From: Danila Tikhonov <danila@jiaxyga.com>
-Date: Tue, 22 Apr 2025 23:17:14 +0300
-Subject: [PATCH 13/33] dt-bindings: mfd: qcom,tcsr: Add the SM7150
- compatible
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZhqJns9B"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-224019ad9edso80352925ad.1;
+        Tue, 22 Apr 2025 13:42:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745354541; x=1745959341; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=CaIOmdrt13KU/miHWyqAdd2EpE7lQ4kV1HkCuMBXWOk=;
+        b=ZhqJns9BvWvcgVJUHiHR2pDfWn99+MVKQW3GZw5CS4WVG0tDPdhxbjprPn0KIUvm1L
+         ZhWW50MVbOkURzWsd20Mzt38p9EDwV+R84dNHXNdwawwyPqCUpBsenzNOFTBS5vQs4mn
+         8a6z4Cyq88VfluTaOlIkxc5frL5vHr5VobFm8Xqx4rVCrvfLjFTdY9XxPGJMuVkaOoD3
+         eQvb/le/2ajXDj+f+InBEpckhXg7hqm909hat4WFsQr2W1lFj7VmJZL5rSRr3Ye1cKaH
+         KaEEDpHQvXYgoWPxEvWi35wwNO7Drxhs1NS38HpSPWWSJ4tC9shHPhln/Z9xxKy1+R83
+         KSZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745354541; x=1745959341;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CaIOmdrt13KU/miHWyqAdd2EpE7lQ4kV1HkCuMBXWOk=;
+        b=fA+63ZEuJRoE2fy46OIlidppAsp5pphN4In+F3EkKxg1gcgPxLtmlU3kOiS2Wblr0C
+         pwy4hOssMez3XJDFb0Tv2Vbu7PlSHV21UbohPQGDiLXfRkvmn0R8Bm6vB8Js2Ayvj+cN
+         bKgP4hd8cHDh7cUyPZo+37vWQC+j+sEK4Rb2hSm/YiEE8STOFBjl+ORj1R6z6nuMze9Q
+         4UC9n6dk4qTP8JYFEXWhnhRNsotMhawGfnIsRzpsUh+uusPbJh19MEOvKQdRoQT3Hvwf
+         6BpCsqKaLx0ACrh+zIFhT7rSA2iNTPp2YXS33G7C5REApR5Q2NqdJS8cr4KOhUqYT7GP
+         PrmA==
+X-Forwarded-Encrypted: i=1; AJvYcCUMftQYY0bJxdZt9bWur6uyFBHMAqMhHOxKX/D30Zn648+1w7tHKi3AUINTlS/emdHUhQsk4Vc0@vger.kernel.org, AJvYcCV+vL80nZfJ+Hn1GE5Q7iZyEPuk07TwRffeKRQLgDPc4CxdAkyHfH1MYT3dXZZWWlonmgWr3Qt/@vger.kernel.org, AJvYcCXi6oPuP1+399821BdRD288fattxu4BZxLFFzV/zCdAAfcBDzsbbtE5Moljd2H+6WVmOZt3Meo0/snABi0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyOwuO+kHMeIs5JohL5ObLFStg71LCD2QF2peXJTHAj54WhqBs
+	WLed6ZFmouWpyYBSPdtcd9bG/vXVVLk7+E2QzeVbPK7ZEsMlGWVQ
+X-Gm-Gg: ASbGncvf9dpVvVl84T9ePPSOaUxrsFVsCpGzAhUFBsY+I96QmppQ7tv9sjguvcIfrWZ
+	XvAH5rycO05mu8GzWaxJx71wL7/58tR49c3uVKzVSF21g/b+c4r3JW8X159aF1uBx5qR/v2hW78
+	hF3ezK3HCYRxYZf5K7jQwdfh1ZSrDoVDWulQX594Txm9CNslnccvl8oDITmd++abn7u9cKIykgU
+	zwGtJ/QaiU3g6+ORITktCnP3hu+9/k2AawbPUXnwqPL0YXI2/wMw+Rc/8pCAZ+Kwoa6xsD9/cwU
+	Y5klX2HZfa7OrYPeuEnKxlNT2kKCy19zGWUGfzh8IZFg
+X-Google-Smtp-Source: AGHT+IGBlLoRB1xhv3Q/YgrhOc0DfgkasA/12Oe3DR29IJaqjESvijQ/+eEb2nRJAHl8NBi8VItuGw==
+X-Received: by 2002:a17:903:2f88:b0:223:65a9:ab86 with SMTP id d9443c01a7336-22c535a4b55mr257118285ad.12.1745354541235;
+        Tue, 22 Apr 2025 13:42:21 -0700 (PDT)
+Received: from localhost ([129.210.115.104])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50fdbf00sm89438705ad.225.2025.04.22.13.42.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Apr 2025 13:42:20 -0700 (PDT)
+Date: Tue, 22 Apr 2025 13:42:19 -0700
+From: Cong Wang <xiyou.wangcong@gmail.com>
+To: Holger =?iso-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>
+Cc: "Alan J. Wylie" <alan@wylie.me.uk>, Jamal Hadi Salim <jhs@mojatatu.com>,
+	regressions@lists.linux.dev, Jiri Pirko <jiri@resnulli.us>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Octavian Purdila <tavip@google.com>,
+	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+	stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [REGRESSION] 6.14.3 panic - kernel NULL pointer dereference in
+ htb_dequeue
+Message-ID: <aAf/K7F9TmCJIT+N@pop-os.localdomain>
+References: <20250421104019.7880108d@frodo.int.wylie.me.uk>
+ <6fa68b02-cf82-aeca-56e6-e3b8565b22f4@applied-asynchrony.com>
+ <20250421131000.6299a8e0@frodo.int.wylie.me.uk>
+ <20250421200601.5b2e28de@frodo.int.wylie.me.uk>
+ <89301960-1758-5b2e-6d91-81ef06843e14@applied-asynchrony.com>
+ <20250421210927.50d6a355@frodo.int.wylie.me.uk>
+ <20250422175145.1cb0bd98@frodo.int.wylie.me.uk>
+ <4e2a6522-d455-f0ce-c77d-b430c3047d7c@applied-asynchrony.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250422-sm7150-upstream-v1-13-bf9a9081631d@jiaxyga.com>
-References: <20250422-sm7150-upstream-v1-0-bf9a9081631d@jiaxyga.com>
-In-Reply-To: <20250422-sm7150-upstream-v1-0-bf9a9081631d@jiaxyga.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Viresh Kumar <viresh.kumar@linaro.org>, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Wim Van Sebroeck <wim@linux-watchdog.org>, 
- Guenter Roeck <linux@roeck-us.net>, 
- Rajendra Nayak <quic_rjendra@quicinc.com>, 
- Jassi Brar <jassisinghbrar@gmail.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Amit Kucheria <amitk@kernel.org>, 
- Thara Gopinath <thara.gopinath@gmail.com>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
- Lukasz Luba <lukasz.luba@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Wesley Cheng <quic_wcheng@quicinc.com>, Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, 
- Ulf Hansson <ulf.hansson@linaro.org>, 
- Souradeep Chowdhury <quic_schowdhu@quicinc.com>, Lee Jones <lee@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Alex Elder <elder@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
- Avri Altman <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>, 
- Andy Gross <agross@kernel.org>, Srinivas Kandagatla <srini@kernel.org>, 
- Herbert Xu <herbert@gondor.apana.org.au>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Georgi Djakov <djakov@kernel.org>, 
- Loic Poulain <loic.poulain@oss.qualcomm.com>, 
- Robert Foss <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Taniya Das <quic_tdas@quicinc.com>, 
- Sibi Sankar <quic_sibis@quicinc.com>, Will Deacon <will@kernel.org>, 
- Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>, 
- Imran Shaik <quic_imrashai@quicinc.com>, 
- Mathieu Poirier <mathieu.poirier@linaro.org>, 
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <quic_jesszhan@quicinc.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>, 
- David Wronek <david@mainlining.org>, Jens Reidel <adrian@mainlining.org>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-watchdog@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-phy@lists.infradead.org, linux-mmc@vger.kernel.org, 
- netdev@vger.kernel.org, linux-scsi@vger.kernel.org, 
- dmaengine@vger.kernel.org, linux-crypto@vger.kernel.org, 
- linux-i2c@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev, 
- linux-remoteproc@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-hardening@vger.kernel.org, linux@mainlining.org, 
- ~postmarketos/upstreaming@lists.sr.ht, Danila Tikhonov <danila@jiaxyga.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1745353049; l=800;
- i=danila@jiaxyga.com; s=20250422; h=from:subject:message-id;
- bh=iB/3spXTyoXhYOC6DMJxePFcQgRtzeJq/vnZrNM2A7w=;
- b=YupfB/INRRo0jdIK2JIsQpatSMq2jiDRptDhHdyWQOF8EXHEP9nvkRFDZkftHiPUgi5Yep5rj
- OWRxIYvW/32C8GgNmS+iF4TDJNr0ZnZqQYAu6rDcTbtPmaNDIanFgTB
-X-Developer-Key: i=danila@jiaxyga.com; a=ed25519;
- pk=kkU4G47tvpSEUdBQEkXuWvTk/3WmGrVrdzZiKAKjBJo=
-X-Mailru-Src: smtp
-X-7564579A: 78E4E2B564C1792B
-X-77F55803: 4F1203BC0FB41BD985535D2C87FE65BB428924C3407BD0482EEFE9AD9C1224FD00894C459B0CD1B90481F82A0F86BA90C591814E25D11F9FB5F4AEDE62B93BD818467F1A5D86361FF8D9167951636B18
-X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE7F1942E6D70B4A2F0EA1F7E6F0F101C67BD4B6F7A4D31EC0BCC500DACC3FED6E28638F802B75D45FF8AA50765F79006370EBB47D88F71BB738638F802B75D45FF914D58D5BE9E6BC1A93B80C6DEB9DEE97C6FB206A91F05B2DD6AE2AF9C8C992F2E070BE324C7D3C4F05332FBFE46C99DF6B57BC7E64490618DEB871D839B73339E8FC8737B5C224936DA1BED736F9328CC7F00164DA146DAFE8445B8C89999729449624AB7ADAF37F6B57BC7E64490611E7FA7ABCAF51C92176DF2183F8FC7C04CF195F1528592878941B15DA834481F9449624AB7ADAF37BA3038C0950A5D3613377AFFFEAFD269176DF2183F8FC7C02271980798FBD5E27B076A6E789B0E97A8DF7F3B2552694AD5FFEEA1DED7F25D49FD398EE364050F0AC5B80A05675ACD0A5971FBB7557E96B3661434B16C20ACC84D3B47A649675FE827F84554CEF5019E625A9149C048EE9ECD01F8117BC8BEE2021AF6380DFAD18AA50765F790063735872C767BF85DA227C277FBC8AE2E8BDAE3FA6833AEA0C275ECD9A6C639B01B4E70A05D1297E1BBCB5012B2E24CD356
-X-C1DE0DAB: 0D63561A33F958A5C2115259C21A1E765002B1117B3ED6966908B757469F2E36CCE9A60C8CB01D7C823CB91A9FED034534781492E4B8EEAD577AE849BCD98940C79554A2A72441328621D336A7BC284946AD531847A6065A535571D14F44ED41
-X-C8649E89: 1C3962B70DF3F0ADE00A9FD3E00BEEDF77DD89D51EBB7742D3581295AF09D3DF87807E0823442EA2ED31085941D9CD0AF7F820E7B07EA4CFFAF7C1AA7FDED7D2B26DC9353A3EF692CBBE4864294D57EF5A986D6EDDF44F65C2F598A3E54AB45168A835CA8743990BE1AE8A8D9947C33F0E280A9F3BCC449B48A628B3FC2DAC6EEFF8118B638B08AA02C26D483E81D6BE72B480F99247062FEE42F474E8A1C6FD34D382445848F2F3
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu53w8ahmwBjZKM/YPHZyZHvz5uv+WouB9+ObcCpyrx6l7KImUglyhkEat/+ysWwi0gdhEs0JGjl6ggRWTy1haxBpVdbIX1nthFXMZebaIdHP2ghjoIc/363UZI6Kf1ptIMVS+uSU+BUhgv+uGOS1i2dQQ=
-X-Mailru-Sender: 9EB879F2C80682A0D0AE6A344B45275F06305510B7D0CCFD81508210FEB0A3EA3FEA15F7615E6C5CFB827C7355A6A2512C62728BC403A049225EC17F3711B6CF1A6F2E8989E84EC137BFB0221605B344978139F6FA5A77F05FEEDEB644C299C0ED14614B50AE0675
-X-Mras: Ok
-X-Mailru-Src: fallback
-X-7564579A: 646B95376F6C166E
-X-77F55803: 6242723A09DB00B4F4CF43BFC943A605C6C1A77FDB0143BE89F632B0FE86362B68F3CF0E9FE49B693D0DD15183EF2CA61BB8ED703FAE52326B72C8F9B1ECA232494E0D9C86073E32194ED3D835EFDEBC
-X-87b9d050: 1
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu53w8ahmwBjZKM/YPHZyZHvz5uv+WouB9+OYcBso8Zm+oliTz8oZwnDrFsY77LZRcHyw5ht0smWrfSeTW5FiI8avd9v29gUBslpEZ9wIMwqVP4jLQVQ+dVm7x9BpDHadBV9RMjI809PraZt3vHzALP3UecpuJTSFx9UA==
-X-Mras: Ok
-X-7564579A: 78E4E2B564C1792B
-X-77F55803: 6242723A09DB00B4F4CF43BFC943A60553B7021BC3C09F8BCC8DB0ABA578393B68F3CF0E9FE49B693D0DD15183EF2CA6BE43604BB8A0DF1306CA3F47D61938E6C8FFCFA74AD93A64
-X-87b9d050: 1
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu53w8ahmwBjZKM/YPHZyZHvz5uv+WouB9+OYcBso8Zm+oliTz8oZwnDrFsY77LZRcHyw5ht0smWrfSeTW5FiI8avd9v29gUBslpEZ9wIMwqVP4jLQVQ+dVm7x9BpDHadBV9RMjI809PraZt3vHzALP3UczAdJHa8MmYQ==
-X-Mailru-MI: 20000000000000800
-X-Mras: Ok
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4e2a6522-d455-f0ce-c77d-b430c3047d7c@applied-asynchrony.com>
 
-Document the qcom,sm7150-tcsr compatible.
+On Tue, Apr 22, 2025 at 07:20:24PM +0200, Holger Hoffstätte wrote:
+> (cc: Greg KH)
+> 
+> On 2025-04-22 18:51, Alan J. Wylie wrote:
+> > On Mon, 21 Apr 2025 21:09:27 +0100
+> > "Alan J. Wylie" <alan@wylie.me.uk> wrote:
+> > 
+> > > On Mon, 21 Apr 2025 21:47:44 +0200
+> > > Holger Hoffstätte <holger@applied-asynchrony.com> wrote:
+> > > 
+> > > > > I'm afraid that didn't help. Same panic.
+> > > > 
+> > > > Bummer :-(
+> > > > 
+> > > > Might be something else missing then - so for now the only other
+> > > > thing I'd suggest is to revert the removal of the qlen check in
+> > > > fq_codel.
+> > > 
+> > > Like this?
+> > > 
+> > > $ git diff  sch_fq_codel.c
+> > > diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+> > > index 6c9029f71e88..4fdf317b82ec 100644
+> > > --- a/net/sched/sch_fq_codel.c
+> > > +++ b/net/sched/sch_fq_codel.c
+> > > @@ -316,7 +316,7 @@ static struct sk_buff *fq_codel_dequeue(struct
+> > > Qdisc *sch) qdisc_bstats_update(sch, skb);
+> > >          flow->deficit -= qdisc_pkt_len(skb);
+> > > -       if (q->cstats.drop_count) {
+> > > +       if (q->cstats.drop_count && sch->q.qlen) {
+> > >                  qdisc_tree_reduce_backlog(sch, q->cstats.drop_count,
+> > >                                            q->cstats.drop_len);
+> > >                  q->cstats.drop_count = 0;
+> > > $
+> > > 
+> > 
+> > It's been about 21 hours and no crash yet. I had an excellent day down
+> > a cave, so there's not been as much Internet traffic as usual, but
+> > there's a good chance the above patch as at least worked around, if not
+> > fixed the issue.
+> 
+> Thought so .. \o/
+> 
+> I guess now the question is what to do about it. IIUC the fix series [1]
+> addressed some kind of UAF problem, but obviously was not applied
+> correctly or is missing follow-ups. It's also a bit mysterious why
+> adding the HTB patch didn't work.
+> 
+> Maybe Cong Wang can advise what to do here?
 
-Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
----
- Documentation/devicetree/bindings/mfd/qcom,tcsr.yaml | 1 +
- 1 file changed, 1 insertion(+)
+I guess my patch caused some regression, I am still decoding the crashes
+reported here.
 
-diff --git a/Documentation/devicetree/bindings/mfd/qcom,tcsr.yaml b/Documentation/devicetree/bindings/mfd/qcom,tcsr.yaml
-index 7e7225aadae3285f59ec303294cf1515772a629b..649101c8bd3372f9dfa891ab61fc441c36ccfd0a 100644
---- a/Documentation/devicetree/bindings/mfd/qcom,tcsr.yaml
-+++ b/Documentation/devicetree/bindings/mfd/qcom,tcsr.yaml
-@@ -35,6 +35,7 @@ properties:
-           - qcom,sdx75-tcsr
-           - qcom,sm4450-tcsr
-           - qcom,sm6115-tcsr
-+          - qcom,sm7150-tcsr
-           - qcom,sm8150-tcsr
-           - qcom,sm8250-tcsr
-           - qcom,sm8350-tcsr
+Meanwhile, if you could provide a reliable (and ideally minimum)
+reproducer, it would help me a lot to debug.
 
--- 
-2.49.0
-
+Thanks!
