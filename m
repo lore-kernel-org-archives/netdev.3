@@ -1,164 +1,107 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A0F284B5D;
-	Tue, 22 Apr 2025 15:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4720D2857C9
+	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 15:32:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745335889; cv=none; b=OcUE71CRK+Pml86J9QnwAaNrOheULqsHj85w+qtIwVgIqH+Oj/gpuATzMjCkGX/Nqb9QNqOSi9wAiEnwgXycL/nO7kxjQHpO//pD9/9Feb/RWdtWVPoFfiUQ/2gEZeCaUWwnIhWLCHVNFnYnJ0qczrIh7kn+b7ICfP87t/orhGE=
+	t=1745335953; cv=none; b=Rsau7LRjqXgu32aUQ+ni46je2k6Gh3A4MXsXuFtYtJmJqXadh3XQHKlrdbK99h9deo9d5AGJv8KUipPFS8QAn1oBjEY5U7DG1mNyfQEUKtF7mggOFz56svXvSUCEcrqiStHhHKN71nD3goMO6lL5WJAwzv4m66ZPWA59SoF8jf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745335889; c=relaxed/simple;
-	bh=MQNQkrPPcC7LKPOQVQW5RB7uvEPTiEv7n5ZEWn92mSM=;
+	s=arc-20240116; t=1745335953; c=relaxed/simple;
+	bh=3iLZ6/Xk+KIMMqvsw3XazeI9R0wol8DQUREYt1qVlqE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kM9j+GvpoDrhA6G0kmFlodPde+c5BlLsbZD0evpOs2eYjqm+0qHjhOVFN3AJZPuTuUX052MAuzw7Lu7DxHMnF5WI+KnPgnaKW16wTkYs2yRGcLIzcgMUHlyusSx38G9QgxMLOVKPIlzhxKVFqUDjGWPVazO03O4mEiSdSN7YGSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=fYDmlBUq; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=IH+5d6HRsDwCYsvPkUkLUzX56bdBP2xhQ4kNV8LJAvHoDBEdg/bbUopJE2O0adS5jPwTy8mqdSodwv60awJOBhOD22XYR5qJruKgSfhbANT5ehiz0N5yu2bYSVIVSSuqcw6eDf7uyCcUof97pElO91KbrJcBbVDdE4of4c3ifY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bG+LK/F+; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="fYDmlBUq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Td9goxiMzFg+ZSKQu8L6C/qdbNZNgQG5kJwAGOsifSk=; b=fYDmlBUq82sXEic7j3/kGcqQpl
-	OWpUsCDPaMShS8xWRkUPGWrCVyks24gtdDpLWO2D+2J9m3/UgH9oQfhy3a8kexUxaTAkIxN7dlCen
-	4WVxkNoAXeg/tfyXZ1Jb2t4rg2NebadOY5agbKK9CDsk5e8BFlnFzuXoTcy5VPjnMUezYTlZp9CfQ
-	LK/x1B2YiTPVJnlJow/0npfaDe3NLEz+/14FVj4VDfCmVxsnmCqrFwNXVkQw8RkzlfQm+Srhz0QNR
-	3IAPK7F8AuYhyGVcJDTuYSl2J36+WOlw8AuK9w1NTZxbvOLfKVLMIEB6Kli7PwRtbNQchfwb+CHfP
-	hLX2YCRw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:37550)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1u7FaT-0004dS-1a;
-	Tue, 22 Apr 2025 16:31:05 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1u7FaO-0007a1-1j;
-	Tue, 22 Apr 2025 16:31:00 +0100
-Date: Tue, 22 Apr 2025 16:31:00 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andy Whitcroft <apw@canonical.com>,
-	Dwaipayan Ray <dwaipayanray1@gmail.com>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Joe Perches <joe@perches.com>, Jonathan Corbet <corbet@lwn.net>,
-	Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Roger Quadros <rogerq@kernel.org>, Tero Kristo <kristo@kernel.org>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
-Subject: Re: [PATCH net-next 1/4] dt-bindings: net: ethernet-controller:
- update descriptions of RGMII modes
-Message-ID: <aAe2NFFrcXDice2Z@shell.armlinux.org.uk>
-References: <cover.1744710099.git.matthias.schiffer@ew.tq-group.com>
- <218a27ae2b2ef2db53fdb3573b58229659db65f9.1744710099.git.matthias.schiffer@ew.tq-group.com>
- <aAaafd8LZ3Ks-AoT@shell.armlinux.org.uk>
- <a53b5f22-d603-4b7d-9765-a1fc8571614d@lunn.ch>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bG+LK/F+"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-30820167b47so4928822a91.0
+        for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 08:32:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745335951; x=1745940751; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UI8UekRx6SzQBgHt6Lyjt0jwFeKfomPbkSxvXHBJgpk=;
+        b=bG+LK/F+g+ZzTh2RxFM8psLq8XphBOS3RJ9/JIN5CCbTCUHuinkGSpzWWFaep2FGAz
+         xC/JOEiiQ7mXgRLvDI6h3nNA8BoypzbDzG1UEmZWtcI+BjA3g7Cpzrswb//amwGWXkQy
+         oB+7QRInmHTjSkGA/Q/n+r2QoYQcoZZMrOW2iItmasdQ3tAC4+IbSi/lQxMZ3GVXbTfo
+         tc1/BZGo2Wq6qycHoJr9XFaaKh0P3UyzroRCVpdIsL0/UZeoP+XHTOBq9HAf47YCqYdi
+         XAcP+G0YLuBaVdvgtkhMmMfn0+Nusq00LrPCHSsLP3A9OgJ811LLYew4PWONlTSbuuOz
+         hHVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745335951; x=1745940751;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UI8UekRx6SzQBgHt6Lyjt0jwFeKfomPbkSxvXHBJgpk=;
+        b=S1J3TzLIVw8tT0eMy3gyBY+EtbHkmp7i9vnUztu0FABBC02U4mWxDiuBa+YM6079m/
+         sP/DZxvAwswUUBdPLG/1kez2AHsgiFPyegC3YFKDEFlMoaYMe5k2ayN+kOgcVAK3lFPz
+         E3wT2a49QCEIco/aTjxS+rFd7+uie2fqjUe0z3N05VfciERM3iGmEkjoACfLpJ8Cce5/
+         I82LxDDX3DHr62Um8Cb3ADC5gjuddKYhhaLOb/Bp22PNnism4/eniBWfSlCcxkrPqm36
+         n8Bp8QGEObruav8AxGaXHv4B4AaNCUWqET1cym14as7/XxGh8Ud7HQncg97jzw0p0JOe
+         KLfg==
+X-Forwarded-Encrypted: i=1; AJvYcCV2irU2kaM45C8rVdMzp5jepy2DpQA0zNp8spDBRT1Up8ux4Lwd/xRimbijpaeaDjRhbgaIjmY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxssNSmWv6caCM4kWgY7tewEAx7ktZ6MHkczMuTN4gFfEeKDBp5
+	9DeHHaqAHeSnUXA9QV6XSNYavovf8hwdFxwAaveYcRI/q9mp79g=
+X-Gm-Gg: ASbGncvn2DLjQUp0DTxbjIsBxNPZcBbM+h4SOBzH5CZhCV4SwdLh0aa+sboo73CtU8V
+	c2V3xXm4vejLZiS2YHrG3L9lmzOG5dp32jDT1Zjp4JvP+eEzJlqfyKhcLoZvytokwrNF7rYwLaU
+	xNjodHk+uZQryenqKVvMAQUGDTJGWRk6Qc6f4v7etCGEdBK7XqdFxL3t6gdec3wFK9S5xNm0ENO
+	7r/XvNkrwnmogmpcrF+qjjL02Y4d255nxBaq9GLLAiPUKAENsbkd7paatwE592OBU+sKLr+5EB7
+	305Mrvg9BIZ4fHhrXO0nzT+Qqkx7VO4TpT18jSPx
+X-Google-Smtp-Source: AGHT+IH7/yPJ5G7UeRIJD3HBrBRT3MrIEYXbpuzbL/4t8ofDIXOhVhDmPm8YHMks3ZWcvc2r/K0xUQ==
+X-Received: by 2002:a17:90b:568b:b0:2fa:42f3:e3e4 with SMTP id 98e67ed59e1d1-30879ab0397mr22843432a91.3.1745335951092;
+        Tue, 22 Apr 2025 08:32:31 -0700 (PDT)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-3087df4dfc5sm8783423a91.32.2025.04.22.08.32.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Apr 2025 08:32:30 -0700 (PDT)
+Date: Tue, 22 Apr 2025 08:32:29 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	donald.hunter@gmail.com, sdf@fomichev.me, almasrymina@google.com,
+	dw@davidwei.uk, asml.silence@gmail.com, ap420073@gmail.com,
+	jdamato@fastly.com, dtatulea@nvidia.com, michael.chan@broadcom.com
+Subject: Re: [RFC net-next 07/22] eth: bnxt: set page pool page order based
+ on rx_page_size
+Message-ID: <aAe2jaAUi0-deSeI@mini-arch>
+References: <20250421222827.283737-1-kuba@kernel.org>
+ <20250421222827.283737-8-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <a53b5f22-d603-4b7d-9765-a1fc8571614d@lunn.ch>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20250421222827.283737-8-kuba@kernel.org>
 
-On Tue, Apr 22, 2025 at 05:00:37PM +0200, Andrew Lunn wrote:
-> On Mon, Apr 21, 2025 at 08:20:29PM +0100, Russell King (Oracle) wrote:
-> > On Tue, Apr 15, 2025 at 12:18:01PM +0200, Matthias Schiffer wrote:
-> > > diff --git a/Documentation/devicetree/bindings/net/ethernet-controller.yaml b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
-> > > index 45819b2358002..2ddc1ce2439a6 100644
-> > > --- a/Documentation/devicetree/bindings/net/ethernet-controller.yaml
-> > > +++ b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
-> > > @@ -74,19 +74,21 @@ properties:
-> > >        - rev-rmii
-> > >        - moca
-> > >  
-> > > -      # RX and TX delays are added by the MAC when required
-> > > +      # RX and TX delays are part of the board design (through PCB traces). MAC
-> > > +      # and PHY must not add delays.
-> > >        - rgmii
-> > >  
-> > > -      # RGMII with internal RX and TX delays provided by the PHY,
-> > > -      # the MAC should not add the RX or TX delays in this case
-> > > +      # RGMII with internal RX and TX delays provided by the MAC or PHY. No
-> > > +      # delays are included in the board design; this is the most common case
-> > > +      # in modern designs.
-> > >        - rgmii-id
-> > >  
-> > > -      # RGMII with internal RX delay provided by the PHY, the MAC
-> > > -      # should not add an RX delay in this case
-> > > +      # RGMII with internal RX delay provided by the MAC or PHY. TX delay is
-> > > +      # part of the board design.
-> > >        - rgmii-rxid
-> > >  
-> > > -      # RGMII with internal TX delay provided by the PHY, the MAC
-> > > -      # should not add an TX delay in this case
-> > > +      # RGMII with internal TX delay provided by the MAC or PHY. RX delay is
-> > > +      # part of the board design.
-> > >        - rgmii-txid
-> > >        - rtbi
-> > >        - smii
-> > 
-> > Sorry, but I don't think this wording improves the situation - in fact,
-> > I think it makes the whole thing way more confusing.
-> > 
-> > Scenario 1: I'm a network device driver author. I read the above, Okay,
-> > I have a RGMII interface, but I need delays to be added. I'll detect
-> > when RGMII-ID is used, and cause the MAC driver to add the delays, but
-> > still pass PHY_INTERFACE_MODE_RGMII_ID to phylib.
-> > 
-> > Scenario 2: I'm writing a DT file for a board. Hmm, so if I specify
-> > rgmii because the delays are implemented in the traces, but I need to
-> > fine-tune them. However, the documentation says that delays must not
-> > be added by the MAC or the PHY so how do I adjust them. I know, I'll
-> > use rgmii-id because that allows delays!
-> > 
-> > I suspect neither of these two are really want you mean, but given
-> > this wording, that's exactly where it leads - which is more
-> > confusion and less proper understanding.
+On 04/21, Jakub Kicinski wrote:
+> If user decides to increase the buffer size for agg ring
+> we need to ask the page pool for higher order pages.
+> There is no need to use larger pages for header frags,
+> if user increase the size of agg ring buffers switch
+> to separate header page automatically.
 > 
-> These DT documents are supposed to be normative and OS agnostic. I
-> wounder what the DT Maintainers will say if we add an Informative
-> section afterwards giving a detailed description of how Linux actually
-> implements these normative statements? It will need to open with a
-> clear statement that it is describing Linux behaviour, and other OSes
-> can implement the normative part in other ways and still be compliant,
-> but that Linux has seen a lot of broken implementations and so wants
-> to add Informative information to guide Linux developers.
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  drivers/net/ethernet/broadcom/bnxt/bnxt.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> index b611a5ff6d3c..a86bb2ba5adb 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> @@ -3802,6 +3802,7 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
+>  	pp.pool_size = bp->rx_agg_ring_size;
+>  	if (BNXT_RX_PAGE_MODE(bp))
+>  		pp.pool_size += bp->rx_ring_size;
+> +	pp.order = get_order(bp->rx_page_size);
 
-Well, looking at ePAPR, the only thing that was defined back then was
-the presence of a property to describe the interface type between the
-ethernet device and PHY. The values were left to the implementation
-to decide upon, but with some recommendations.
-
-What that means is that the values to this property are not part of
-the DT standard, but are a matter for the implementation.
-
-However, with the yaml stuff, if that is basically becoming "DT
-specification" then it needs to be clearly defined what each value
-actually means for the system, and not this vague airy-fairy thing
-we have now.
-
-We've learnt the hard way in the kernel where that gets us with
-the number of back-compat breaking changes we've had to make where
-the RGMII delays have been totally wrongly interpreted and leaving
-it vague means that other implementations will suffer the same pain.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Since it's gonna be configured by the users going forward, for the
+pps that don't have mp, we might want to check pp.order against
+MAX_PAGE_ORDER (and/or PAGE_ALLOC_COSTLY_ORDER?) during
+page_pool_create? 
