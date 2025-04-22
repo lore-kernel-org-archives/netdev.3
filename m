@@ -1,389 +1,97 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FB627E1A7
-	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 12:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3EB27CCD4
+	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 12:41:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745325561; cv=none; b=bpl5aZMoGq4kM6vF2cbTiqydYKUes6xbzgRO3n/XWFIG94Zq877zky5Rvyw7a/gYEI459ZKdXmaC5ihZjDZ+fYtCyaE/Vynvm1GMLFjCeY9WcNbvu62UoFGboo9pXBCtuP+HC/F1IAURJCotQ9MAX0ACjIp7GynWo4qixm1CxnQ=
+	t=1745325692; cv=none; b=blmY88VFRlAn8q3G0v5m/neDNoMvlmXoZaI4XgzG8ZZT3S5SJiLQhO74uVg2lPNW9Mo71weNrAu6UzQ0Kv+vjryBFg5XCBRm+Jnuvr4kMARHJk8TIr7u+2NMlXJbJKAw5NEJ44gCNJ2b+zrJogobhn551C9zoeyXRYsSPWvfxKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745325561; c=relaxed/simple;
-	bh=nU+O1Una1TIiAm07bKMi/oDXNkUkAHyXkJkMwhSb8C0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dOFUl3t55FJVOvB7hL97rhbP+AZz9vPzsd5zsSYZ8xbXgukZMQp0mNJQZkR1g1/h2GB4dIHTKvxtG0rYNuSF7hzXli8BcKYZuaoI1rqne3L5/k1w6WlHNf9tqukuHjL9QzOOoJLZ4uCuAYEhHBKOV5vQ0xJ0kMD4l5hERpzXRsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1u7Cu0-0001wK-Kp; Tue, 22 Apr 2025 14:39:04 +0200
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1u7Ctz-001YQl-1R;
-	Tue, 22 Apr 2025 14:39:03 +0200
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1u7Ctz-008TQU-1E;
-	Tue, 22 Apr 2025 14:39:03 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: [PATCH net-next v2 3/4] net: selftests: add checksum mode support and SW checksum handling
-Date: Tue, 22 Apr 2025 14:39:01 +0200
-Message-Id: <20250422123902.2019685-4-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250422123902.2019685-1-o.rempel@pengutronix.de>
-References: <20250422123902.2019685-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1745325692; c=relaxed/simple;
+	bh=9HDhsbv01RswNfMx4a32oUc3pEzflO6SLP0klnbym7o=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=pFgqsqSvEJv6tnI7XEtYZU7W87qBYWSD3Wu+2eh9oKxsKSYGIS7CwA417xUSdKVNyeQmmZ8zuucaCEx7oe8EPdrQgHpMhapGWPXwj3nYE4Qk5lL3TMvRbToa/UqLtZaLvovGkrVk/yRjIxS/x5FnWEbMOfdmV7nbfOhBUIQv6TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3d83124c000so73129605ab.1
+        for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 05:41:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745325690; x=1745930490;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Be+SpEOEdwqWDakuD2zS8KThXc2AfpnLOHspB4bIBlE=;
+        b=nooYDG3j08/WctaSjfmYHiuD5U0cqhvHFTFp1mBVj5KyyCBZDRfcMIWnlx+IBpg9YG
+         HZ+Zqi+M/HH5z6ohyJu5NBVicDXW1YtZB14P06qmk6P5ItI2Z69b3qwWPNJo+ejS5FL4
+         4LkSvl9hEJIv45rGzxhDJib66+nISb0BVV9R4jQhP1RGumPIpC+mUprV8FB5dqBMael7
+         WAG6MQRA2jpWDo5xxxG1nEGcWDTSeWa4c8Ivrjnlw6k3FMrDzpvICYiK0B+K7k2DmV/t
+         OFK8VEn9mH3vXFHZD1iE/b2wx4a1QxEuaN5J6J0jzJrp9qZLn4yz9Vf5uzNegHeWnAgo
+         tY0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX9bpjfFXgFPWtj33onXEL1EOcLscuPVMpoIaVetLbHwm5BPXCMQRrTOM8KcCaXBdAiXSrqt+Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxsjmThV2Uoe8VuqVPlpy0K/NvKEqz/on10Fmz6mkFfwl1PZPE9
+	Mq+6MhnKa5cnUgfKjInMZ1IuFXHcixwS1H7yIxCXUFT1WN1fprkxcDGPBcX9GNQQx5kDHGj/CYU
+	cjMOI3TV0HynZ+VejkLnMZWxN5CXF6bEhXsN7PNuBN4BcwwJZDGmkvYA=
+X-Google-Smtp-Source: AGHT+IH5wsaN/1EWPEUutBW6CD/hHPC4n4GPvZUdGxyv2J8/5bEz9Jqmsh5CU6mVoqkUzefVAO/hH6j5JCgEMKWm5Svpv03yO4x6
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+X-Received: by 2002:a05:6e02:18c6:b0:3d5:8923:faa5 with SMTP id
+ e9e14a558f8ab-3d88edc18eamr134648485ab.10.1745325690031; Tue, 22 Apr 2025
+ 05:41:30 -0700 (PDT)
+Date: Tue, 22 Apr 2025 05:41:30 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68078e7a.050a0220.8500a.0018.GAE@google.com>
+Subject: [syzbot] Monthly wireless report (Apr 2025)
+From: syzbot <syzbot+list69c01228851d15c2b2d9@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Introduce `enum net_test_checksum_mode` to support both CHECKSUM_COMPLETE
-and CHECKSUM_PARTIAL modes in selftest packet generation.
+Hello wireless maintainers/developers,
 
-Add helpers to calculate and apply software checksums for TCP/UDP in
-CHECKSUM_COMPLETE mode, and refactor checksum handling into a dedicated
-function `net_test_set_checksum()`.
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
 
-Update PHY loopback tests to use CHECKSUM_COMPLETE by default to avoid
-hardware offload dependencies and improve reliability.
+During the period, 5 new issues were detected and 0 were fixed.
+In total, 56 issues are still open and 157 have already been fixed.
 
-Also rename loopback test names to clarify checksum type and transport.
+Some of the still happening issues:
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Ref  Crashes Repro Title
+<1>  116744  Yes   WARNING in __ieee80211_beacon_get
+                   https://syzkaller.appspot.com/bug?extid=18c783c5cf6a781e3e2c
+<2>  9766    Yes   WARNING in rate_control_rate_init (3)
+                   https://syzkaller.appspot.com/bug?extid=9bdc0c5998ab45b05030
+<3>  6569    Yes   WARNING in __cfg80211_ibss_joined (2)
+                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
+<4>  6319    Yes   WARNING in __rate_control_send_low (3)
+                   https://syzkaller.appspot.com/bug?extid=34463a129786910405dd
+<5>  1206    Yes   WARNING in ieee80211_start_next_roc
+                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
+<6>  1014    Yes   INFO: task hung in rfkill_global_led_trigger_worker (3)
+                   https://syzkaller.appspot.com/bug?extid=50499e163bfa302dfe7b
+<7>  562     Yes   INFO: task hung in crda_timeout_work (8)
+                   https://syzkaller.appspot.com/bug?extid=d41f74db64598e0b5016
+<8>  455     Yes   INFO: task hung in reg_check_chans_work (7)
+                   https://syzkaller.appspot.com/bug?extid=a2de4763f84f61499210
+<9>  349     No    WARNING in ieee80211_request_ibss_scan
+                   https://syzkaller.appspot.com/bug?extid=1634c5399e29d8b66789
+<10> 344     Yes   INFO: task hung in reg_process_self_managed_hints
+                   https://syzkaller.appspot.com/bug?extid=1f16507d9ec05f64210a
+
 ---
-changes v2:
-- Rebased on latest net-next
-- Fixed Sparse warnings in net_test_setup_sw_csum():
-  * Use __sum16 instead of __be16 for final_csum
----
- net/core/selftests.c | 219 ++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 207 insertions(+), 12 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/net/core/selftests.c b/net/core/selftests.c
-index 3f82a5d14cd4..591686978dd7 100644
---- a/net/core/selftests.c
-+++ b/net/core/selftests.c
-@@ -10,10 +10,16 @@
-  */
- 
- #include <linux/phy.h>
-+#include <net/checksum.h>
- #include <net/selftests.h>
- #include <net/tcp.h>
- #include <net/udp.h>
- 
-+enum net_test_checksum_mode {
-+	NET_TEST_CHECKSUM_COMPLETE,
-+	NET_TEST_CHECKSUM_PARTIAL,
-+};
-+
- struct net_packet_attrs {
- 	const unsigned char *src;
- 	const unsigned char *dst;
-@@ -27,6 +33,7 @@ struct net_packet_attrs {
- 	int max_size;
- 	u8 id;
- 	u16 queue_mapping;
-+	enum net_test_checksum_mode csum_mode;
- };
- 
- struct net_test_priv {
-@@ -51,6 +58,133 @@ static u8 net_test_next_id;
- #define NET_TEST_PKT_MAGIC	0xdeadcafecafedeadULL
- #define NET_LB_TIMEOUT		msecs_to_jiffies(200)
- 
-+/**
-+ * net_test_setup_sw_csum - Compute and apply software checksum
-+ *                          (CHECKSUM_COMPLETE)
-+ * @skb: Socket buffer with transport header set
-+ * @iph: Pointer to IPv4 header inside skb
-+ *
-+ * This function computes and fills the transport layer checksum (TCP or UDP),
-+ * and sets skb->ip_summed = CHECKSUM_COMPLETE.
-+ *
-+ * Returns 0 on success, or negative error code on failure.
-+ */
-+static int net_test_setup_sw_csum(struct sk_buff *skb,
-+				  struct iphdr *iph)
-+{
-+	int transport_offset = skb_transport_offset(skb);
-+	int transport_len = skb->len - transport_offset;
-+	__sum16 final_csum;
-+	__wsum csum;
-+
-+	switch (iph->protocol) {
-+	case IPPROTO_TCP:
-+		if (!pskb_may_pull(skb,
-+				   transport_offset + sizeof(struct tcphdr)))
-+			return -EFAULT;
-+
-+		tcp_hdr(skb)->check = 0;
-+		break;
-+	case IPPROTO_UDP:
-+		if (!pskb_may_pull(skb,
-+				   transport_offset + sizeof(struct udphdr)))
-+			return -EFAULT;
-+
-+		udp_hdr(skb)->check = 0;
-+		break;
-+	default:
-+		pr_err("net_selftest: unsupported proto for sw csum: %u\n",
-+		       iph->protocol);
-+		return -EINVAL;
-+	}
-+
-+	csum = skb_checksum(skb, transport_offset, transport_len, 0);
-+	final_csum = csum_tcpudp_magic(iph->saddr, iph->daddr, transport_len,
-+				       iph->protocol, csum);
-+
-+	if (iph->protocol == IPPROTO_UDP && final_csum == 0)
-+		final_csum = CSUM_MANGLED_0;
-+
-+	if (iph->protocol == IPPROTO_TCP)
-+		tcp_hdr(skb)->check = final_csum;
-+	else
-+		udp_hdr(skb)->check = final_csum;
-+
-+	skb->ip_summed = CHECKSUM_COMPLETE;
-+
-+	return 0;
-+}
-+
-+/**
-+ * net_test_setup_hw_csum - Setup skb for hardware checksum offload
-+ *			    (CHECKSUM_PARTIAL)
-+ * @skb: Socket buffer to prepare
-+ * @iph: Pointer to IPv4 header inside skb
-+ *
-+ * This function sets skb fields and clears transport checksum field
-+ * so that the NIC or driver can compute the checksum during transmit.
-+ *
-+ * Returns 0 on success, or negative error code on failure.
-+ */
-+static int net_test_setup_hw_csum(struct sk_buff *skb, struct iphdr *iph)
-+{
-+	u16 csum_offset;
-+
-+	skb->ip_summed = CHECKSUM_PARTIAL;
-+	skb->csum = 0;
-+
-+	switch (iph->protocol) {
-+	case IPPROTO_TCP:
-+		if (!tcp_hdr(skb))
-+			return -EINVAL;
-+		tcp_hdr(skb)->check = 0;
-+		csum_offset = offsetof(struct tcphdr, check);
-+		break;
-+	case IPPROTO_UDP:
-+		if (!udp_hdr(skb))
-+			return -EINVAL;
-+		udp_hdr(skb)->check = 0;
-+		csum_offset = offsetof(struct udphdr, check);
-+		break;
-+	default:
-+		pr_err("net_selftest: unsupported proto for hw csum: %u\n",
-+		       iph->protocol);
-+		return -EINVAL;
-+	}
-+
-+	skb->csum_start = skb_transport_header(skb) - skb->head;
-+	skb->csum_offset = csum_offset;
-+
-+	return 0;
-+}
-+
-+/**
-+ * net_test_set_checksum - Apply requested checksum mode to skb
-+ * @skb: Socket buffer containing the packet
-+ * @attr: Packet attributes including desired checksum mode
-+ * @iph: Pointer to the IP header within skb
-+ *
-+ * This function sets up the skb's checksum handling based on
-+ * attr->csum_mode by calling the appropriate helper.
-+ *
-+ * Returns 0 on success, or negative error code on failure.
-+ */
-+static int net_test_set_checksum(struct sk_buff *skb,
-+				 struct net_packet_attrs *attr,
-+				 struct iphdr *iph)
-+{
-+	switch (attr->csum_mode) {
-+	case NET_TEST_CHECKSUM_COMPLETE:
-+		return net_test_setup_sw_csum(skb, iph);
-+	case NET_TEST_CHECKSUM_PARTIAL:
-+		return net_test_setup_hw_csum(skb, iph);
-+	default:
-+		pr_err("net_selftest: invalid checksum mode: %d\n",
-+		       attr->csum_mode);
-+		return -EINVAL;
-+	}
-+}
-+
- static struct sk_buff *net_test_get_skb(struct net_device *ndev,
- 					struct net_packet_attrs *attr)
- {
-@@ -61,6 +195,7 @@ static struct sk_buff *net_test_get_skb(struct net_device *ndev,
- 	struct ethhdr *ehdr;
- 	struct iphdr *ihdr;
- 	int iplen, size;
-+	int ret;
- 
- 	size = attr->size + NET_TEST_PKT_SIZE;
- 
-@@ -157,15 +292,10 @@ static struct sk_buff *net_test_get_skb(struct net_device *ndev,
- 		memset(pad, 0, pad_len);
- 	}
- 
--	skb->csum = 0;
--	skb->ip_summed = CHECKSUM_PARTIAL;
--	if (attr->tcp) {
--		thdr->check = ~tcp_v4_check(skb->len, ihdr->saddr,
--					    ihdr->daddr, 0);
--		skb->csum_start = skb_transport_header(skb) - skb->head;
--		skb->csum_offset = offsetof(struct tcphdr, check);
--	} else {
--		udp4_hwcsum(skb, ihdr->saddr, ihdr->daddr);
-+	ret = net_test_set_checksum(skb, attr, ihdr);
-+	if (ret < 0) {
-+		kfree_skb(skb);
-+		return ERR_PTR(ret);
- 	}
- 
- 	skb->protocol = htons(ETH_P_IP);
-@@ -318,29 +448,94 @@ static int net_test_phy_loopback_disable(struct net_device *ndev)
- 	return phy_loopback(ndev->phydev, false, 0);
- }
- 
-+/**
-+ * net_test_phy_loopback_udp - Basic PHY loopback test using UDP with SW
-+ *                             checksum
-+ * @ndev: The network device to test
-+ *
-+ * Sends and receives a minimal UDP packet through the device's internal
-+ * PHY loopback path. The transport checksum is computed in software
-+ * (CHECKSUM_COMPLETE), ensuring test validity regardless of hardware
-+ * checksum offload support.
-+ *
-+ * Expected packet path:
-+ *   Test code → MAC driver → MAC HW → xMII → PHY →
-+ *   internal PHY loopback → xMII → MAC HW → MAC driver → test code
-+ *
-+ * The test frame includes Ethernet (14B), IPv4 (20B), UDP (8B), and a
-+ * minimal payload (13B), totaling 55 bytes before padding/FCS. Most
-+ * MACs will pad this to 60 bytes before appending the FCS.
-+ *
-+ * Returns 0 on success, or negative error code on failure.
-+ */
- static int net_test_phy_loopback_udp(struct net_device *ndev)
- {
- 	struct net_packet_attrs attr = { };
- 
- 	attr.dst = ndev->dev_addr;
-+	attr.tcp = false;
-+	attr.csum_mode = NET_TEST_CHECKSUM_COMPLETE;
-+
- 	return __net_test_loopback(ndev, &attr);
- }
- 
-+/**
-+ * net_test_phy_loopback_udp_mtu - PHY loopback test using UDP MTU-sized frame
-+ *                                 with SW checksum
-+ * @ndev: The network device to test
-+ *
-+ * Sends and receives a UDP packet through the device's internal PHY loopback
-+ * path. The packet uses software checksum calculation (CHECKSUM_COMPLETE),
-+ * and the total L2 frame size is padded to match the device MTU.
-+ *
-+ * This tests the loopback path with larger frames and ensures checksum
-+ * correctness regardless of hardware offload support.
-+ *
-+ * Expected packet path:
-+ *   Test code → MAC driver → MAC HW → xMII → PHY →
-+ *   internal PHY loopback → xMII → MAC HW → MAC driver → test code
-+ *
-+ * Returns 0 on success, or negative error code on failure.
-+ */
- static int net_test_phy_loopback_udp_mtu(struct net_device *ndev)
- {
- 	struct net_packet_attrs attr = { };
- 
- 	attr.dst = ndev->dev_addr;
- 	attr.max_size = ndev->mtu;
-+	attr.tcp = false;
-+	attr.csum_mode = NET_TEST_CHECKSUM_COMPLETE;
-+
- 	return __net_test_loopback(ndev, &attr);
- }
- 
-+/**
-+ * net_test_phy_loopback_tcp - PHY loopback test using TCP with SW checksum
-+ * @ndev: The network device to test
-+ *
-+ * Sends and receives a minimal TCP packet through the device's internal
-+ * PHY loopback path. The checksum is computed in software
-+ * (CHECKSUM_COMPLETE), avoiding reliance on hardware checksum offload,
-+ * which may behave inconsistently with TCP in some loopback setups.
-+ *
-+ * Expected packet path:
-+ *   Test code → MAC driver → MAC HW → xMII → PHY →
-+ *   internal PHY loopback → xMII → MAC HW → MAC driver → test code
-+ *
-+ * The generated test frame includes Ethernet (14B), IPv4 (20B), TCP (20B),
-+ * and a small payload (13B), totaling 67 bytes before FCS. Since the total
-+ * exceeds the Ethernet minimum, MAC padding is typically not applied.
-+ *
-+ * Returns 0 on success, or negative error code on failure.
-+ */
- static int net_test_phy_loopback_tcp(struct net_device *ndev)
- {
- 	struct net_packet_attrs attr = { };
- 
- 	attr.dst = ndev->dev_addr;
- 	attr.tcp = true;
-+	attr.csum_mode = NET_TEST_CHECKSUM_COMPLETE;
-+
- 	return __net_test_loopback(ndev, &attr);
- }
- 
-@@ -359,13 +554,13 @@ static const struct net_test {
- 		.name = "PHY internal loopback, enable ",
- 		.fn = net_test_phy_loopback_enable,
- 	}, {
--		.name = "PHY internal loopback, UDP    ",
-+		.name = "PHY loopback UDP (SW csum)    ",
- 		.fn = net_test_phy_loopback_udp,
- 	}, {
--		.name = "PHY internal loopback, MTU    ",
-+		.name = "PHY loopback UDP MTU (SW csum)",
- 		.fn = net_test_phy_loopback_udp_mtu,
- 	}, {
--		.name = "PHY internal loopback, TCP    ",
-+		.name = "PHY loopback TCP (SW csum)    ",
- 		.fn = net_test_phy_loopback_tcp,
- 	}, {
- 		/* This test should be done after all PHY loopback test */
--- 
-2.39.5
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
