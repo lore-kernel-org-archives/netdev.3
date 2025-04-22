@@ -1,53 +1,69 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C95F256C90
-	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 08:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC1222A1ED;
+	Tue, 22 Apr 2025 08:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745310744; cv=none; b=AgXQFhT1yAWos+4k/X3yB0dGKy7Htgd30O2UZOezaBLLtW19ms7qHxNFjgI4+2TWCbs617L1fSeaXDl5RU6jDCzIDdj5awH/j14/FyrjpszHtMBj6qDighsdkYa5ipHxCJfq/jL4gvcRRqqKUnaWqiIkmT9nOvzJUZ/EJrgsXZ0=
+	t=1745311102; cv=none; b=JI3UOSKW9c3A9tdjhOu0fHJvgteWHuQKowqCasdKm7ZNOtJ4A3ti0FA3xh2fIAuPve9QIrVo3mno5qEtK5Ju+ZO8fio2S3fG32QN4uXEuxUL56UaNjxpQLvPBAfSXO0Dm1PGIkCEO6UuhGWO7sx4EwZOBmefK7gHw3MRSeODiKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745310744; c=relaxed/simple;
-	bh=md54eftSqSvagKV4lssM18jAS8IPYi7EGuAzwU7ygXU=;
+	s=arc-20240116; t=1745311102; c=relaxed/simple;
+	bh=p8VDFnBBLQB+c84WukX9np3V2pQTHpPbephzaUIJxy4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nFsaAfSZWel4a+Ub0WuqCScNlKP0QzeH3GYdJa+ilggWtXQtWUfIUuqbDDpFEYmTH/xlIu0B69itJfT7duFnWoxzI5vfIEMsl7vCpfOw7x8zwPHMQmt5oo0dClfpX+osm3Zs43enIJLjFbGabf2nbMtJhzUekDqGErzrvZuT9P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=daQNUfuy; arc=none smtp.client-ip=78.32.30.218
+	 Content-Type:Content-Disposition:In-Reply-To; b=rTQbBDfTAqfSdgzqAkaa0iCnb4MrpmqG5+RQpDFJ7lGuIp72RTXaFZt/Fm1zz04vEn/EzyJr+uvFTluiEDHQSSGAYnA+MSguPGY5bZ3xHAED3A9HWqmvkU20YJB0y2qlHO9D/133840/mk1B/JXIHWLSOKJKe9ND8TYQcNywSEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=pY1FOnwL; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="daQNUfuy"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="pY1FOnwL"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=+vovlrAh34BqLlcA5qqWSA+VUMyuO5igI3//WoHM4UE=; b=daQNUfuyKlysKlINUAmTxK6i/E
-	U36AHcnZOlWM7AaYCK8jJ1447zh/+kGb8nMcVbbREqez4Sn2wZ2pvH7a81sndswHEK+X6fdddUVn7
-	DCrwyhRZhTqvKjnwWxKqcJCk0GxW75osushG0LlAE7SzoEi4RbpsyPpLTcFqQb9jTkMYhsNCVgoby
-	2+TofNHMagjrPhRAqOT79UGWxOyMhWMTEL564ZPznYCGA4WhbR/uvlu58skTBYpmbXKRcU8IM3jAR
-	XbEE0IFj3+K6DCpsiBu7Pxe4YjOyyN+e5x0kD807jR4nq33zidftfVV+3/cB8TSh2cgzLxNfI/pHe
-	EwzhHNKQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39298)
+	bh=o0w6pamxCxDKHzVZmfTHs/uYuK6PeXKb0434M6fEc3M=; b=pY1FOnwL/S8J3yGEKh1QZZ5tZL
+	Vp5eQoQWU2/fdqKvavzm9zcqh0HuU5etRNXQGprVs9hiAsBfNYdPqrgId2x5g/Xe0bKHniIm2xhvE
+	8qg3NSfGSBE/rkWYZks9XUrVuCuPYpQP1SMdO3Ip+CZZ50Utq3eo9em0yld9lfynz3LfK+NJMuc+A
+	ZqdNlAzkl5OT2o8YyCKMhreS5amF8eK3LuM7nR4+SHjRhbC9YRoQ1WMob9krsSoaaSnHEVBf1u6/r
+	YxqplweIaUZVt50eYcclgDhxG7A5F7pkPpGykSHp04WnpNU8QIqCrDU0sf7ITae99C+JYPuZxBI4C
+	vfDNrPJw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:42670)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <linux@armlinux.org.uk>)
-	id 1u793B-000425-0S;
-	Tue, 22 Apr 2025 09:32:17 +0100
+	id 1u798f-00042g-1a;
+	Tue, 22 Apr 2025 09:37:57 +0100
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
 	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1u7938-0007KM-1u;
-	Tue, 22 Apr 2025 09:32:14 +0100
-Date: Tue, 22 Apr 2025 09:32:14 +0100
+	id 1u798X-0007KW-2n;
+	Tue, 22 Apr 2025 09:37:49 +0100
+Date: Tue, 22 Apr 2025 09:37:49 +0100
 From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Alexander Duyck <alexander.duyck@gmail.com>
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com
-Subject: Re: [net-next PATCH 1/2] net: phylink: Drop unused defines for
- SUPPORTED/ADVERTISED_INTERFACES
-Message-ID: <aAdUDgTVIWbSA2Xa@shell.armlinux.org.uk>
-References: <174481691693.986682.7535952762130777433.stgit@ahduyck-xeon-server.home.arpa>
- <174481733345.986682.8252879138577629245.stgit@ahduyck-xeon-server.home.arpa>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andy Whitcroft <apw@canonical.com>,
+	Dwaipayan Ray <dwaipayanray1@gmail.com>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Joe Perches <joe@perches.com>, Jonathan Corbet <corbet@lwn.net>,
+	Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+	Roger Quadros <rogerq@kernel.org>, Tero Kristo <kristo@kernel.org>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
+Subject: Re: [PATCH net-next 1/4] dt-bindings: net: ethernet-controller:
+ update descriptions of RGMII modes
+Message-ID: <aAdVXQhR7-mYl783@shell.armlinux.org.uk>
+References: <cover.1744710099.git.matthias.schiffer@ew.tq-group.com>
+ <218a27ae2b2ef2db53fdb3573b58229659db65f9.1744710099.git.matthias.schiffer@ew.tq-group.com>
+ <6be3bdbe-e87e-4e83-9847-54e52984c645@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,28 +72,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <174481733345.986682.8252879138577629245.stgit@ahduyck-xeon-server.home.arpa>
+In-Reply-To: <6be3bdbe-e87e-4e83-9847-54e52984c645@ti.com>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Wed, Apr 16, 2025 at 08:28:53AM -0700, Alexander Duyck wrote:
-> From: Alexander Duyck <alexanderduyck@fb.com>
+On Tue, Apr 15, 2025 at 04:06:31PM +0530, Siddharth Vadapalli wrote:
+> On Tue, Apr 15, 2025 at 12:18:01PM +0200, Matthias Schiffer wrote:
+> > As discussed [1], the comments for the different rgmii(-*id) modes do not
+> > accurately describe what these values mean.
+> > 
+> > As the Device Tree is primarily supposed to describe the hardware and not
+> > its configuration, the different modes need to distinguish board designs
 > 
-> The defines for SUPPORTED_INTERFACES and ADVERTISED_INTERFACES both appear
-> to be unused. I couldn't find anything that actually references them in the
-> original diff that added them and it seems like they have persisted despite
-> using deprecated defines that aren't supposed to be used as per the
-> ethtool.h header that defines the bits they are composed of.
+> If the Ethernet-Controller (MAC) is integrated in an SoC (as is the case
+> with CPSW Ethernet Switch), and, given that "phy-mode" is a property
+> added within the device-tree node of the MAC, I fail to understand how
+> the device-tree can continue "describing" hardware for different board
+> designs using the same SoC (unchanged MAC HW).
 > 
-> Since they are unused, and not supposed to be used anymore I am just
-> dropping the lines of code since they seem to just be occupying space.
-> 
-> Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
+> How do we handle situations where a given MAC supports various
+> "phy-modes" in HW? Shouldn't "phy-modes" then be a "list" to technically
+> descibe the HW? Even if we set aside the "rgmii" variants that this
+> series is attempting to address, the CPSW MAC supports "sgmii", "qsgmii"
+> and "usxgmii/xfi" as well.
 
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+phy-mode is quite simply the operating mode for the link between the PHY
+and the MAC, and depends how the PHY is wired to the MAC.
 
-Please send this separately, it can be applied independently of patch 2.
-
-Thanks!
+The list of modes that a MAC supports is dependent on its hardware
+design and is generally known by the MAC driver without need to specify
+it firmware.
 
 -- 
 RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
