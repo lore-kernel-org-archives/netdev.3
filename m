@@ -1,153 +1,276 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2041.outbound.protection.outlook.com [40.107.243.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C7A27CCCC
-	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 12:26:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745324765; cv=fail; b=J7e9zhUg+pSD7OSvqk4FHwcqoQsHZ3T6Fq2ADR7oZouae6WeaU5oqKi66xecU7ijveALd0x/YjMU9nAs4DXGe41zXJDEL1V81ovpIvzGUbDevt/qpDVvOOsqdkECZYroHuCEZtygn3X0o7OuCYbyKqKLyxZPVdphTS5ZmbL6Ll4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745324765; c=relaxed/simple;
-	bh=8qkQSwc7hc7RDNK+CzI22j3tVav2d+I6WBXizUC2fOA=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=e6HCYnKD54fIfMXEs5IL9/8UFiLgbMFNVipDgjH5CEEurC6iVzJFnb6smOdmaSfRXckHIVHWBtv8oXHToeCSM6Wi6yRXHO9b0RkkJte5dygU06MAU8VB+J1iFUIrscVQ3glB3pnQq9k5jBfNOObijw6w7xlMB/df+q9//SWwYKQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kTXtkazV; arc=fail smtp.client-ip=40.107.243.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D505A27D77E
+	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 12:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745324834; cv=none; b=M/P6o9EZ3Mt0pbHqWhb13iGTCXZ89ZWFUHUXTWvOS3N4s5xr4RNqalzGQccQYAMubll8VBwBAOFAwTqD0u4xFE2bIM3qsTvFjRiJd1FPzEtBO7F84fwttKcVh9RMtSa9p/VyzrDrcPHMPdFxSiVyQ5+y2+kzUt2ffCslaFjosno=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745324834; c=relaxed/simple;
+	bh=LXeGa/WI1F7kTOziXlM9CaLkFCqaM9QXpCE2Kz1GK8M=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=EvWYXnEol3kuWE69UsJFY3+SOyl7gKjtv2Qxy026dLL/6SWZF0JKMAqNI3i+XinlJuSiV+FwjtJyw7AqJwaKUa4KP8M1CCBEDNHBN+H2EPXKxkpDc9xQCqAjJm3mw5gOfvuzMAVRhZ2r/zr1h3BvMN2V9QDyQVbTlpcctsHEOMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZwGN9cOH; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kTXtkazV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mcke4P0EtjBylNMYygc9nznUPddC9m03tZPRrvViBloNr1qJivg2UULolmwI2P+KoYtW4DMDKPQzxuOb3Stq2oYDDIgni/pkYchhLuXfFV7sk+Mz9EY8e6fkYzBBGu24l7pbVyv8/9xr5vYf985IzeOM3FvG4q3LLIJVa+7pWg+ln/LtxgB4BYEALJeTEznSEMQhIxU4KA4wjqvwBqurPGd2ZtrK+kfDeSIRMfjdcOA18p98+ZNcUozwI47Xg/cA9XhzemITo2Q3NCtw8hqKJ3KJ2qC1IoKxZ0EqVDkN7rkFBPUCOTVTxqw2AmmQurVGrEou8Xc8gSr6Ab1Jv/AIYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8qkQSwc7hc7RDNK+CzI22j3tVav2d+I6WBXizUC2fOA=;
- b=yygMsD/a5+VmHE0KdRCqPSD2L1IEebRzps4FqV5ZrPX6fXZ6VeCctYliOunJRvMVTbvxF1rrflZEbnnBqo+TUSpQDeKJaf8iZnKI5RaIZiuRr/nghgvlb+8Y4Boy1j9XRTrAvokRiyX/cJlupfrBhAS3JNqnNmqjhYZMEjWY+WP7N81Rj6F2ExubW7Co3grjqFGYCKkupuHmxfvowk20y0loOf0w7xB3KEgjoBbu0UiZMKle8TQpIAls7kSxA83q8FyQRtmpMtx1gIURB6Lf+INs34U0AVlHPwBNh1RXj721dbzNogOnGRYTqvlXuLTA31WEAhqcD6zrTW+6ps2AKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8qkQSwc7hc7RDNK+CzI22j3tVav2d+I6WBXizUC2fOA=;
- b=kTXtkazV9BoftMpUnc0BZw9IdQ0RO6eNu2OeVz3ZQUhcrZdZJO2vAhZQ8l/Jn2ZQ7kyqUTJNyEghkW5/c0GNuw3wM5o3oujhF0YifvEgum2/s7zl6OBq8oF0OwRBpgwprTw3qH7CNPHLu+Lv0LbXH66wTQWRPFf4hchxtU0lbH/vIgW2c6KWrcodFcWcD+ooBywILK9l7lYA5dhawNYJmd7KqTDvlcwHMTuqccOCyj3gcmK/Feql3u+Jb80ZkNRncn5CmtVoMwZLVbmjPgjmAtSRCrAAX3ML8YdjWmSiNJL943WHcJibj7yUGyPb9MNIbGf3gBhUb6dTnjJMj9n6jA==
-Received: from MW4PR04CA0278.namprd04.prod.outlook.com (2603:10b6:303:89::13)
- by PH0PR12MB7094.namprd12.prod.outlook.com (2603:10b6:510:21d::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.36; Tue, 22 Apr
- 2025 12:25:58 +0000
-Received: from CO1PEPF000066EA.namprd05.prod.outlook.com
- (2603:10b6:303:89:cafe::d) by MW4PR04CA0278.outlook.office365.com
- (2603:10b6:303:89::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.36 via Frontend Transport; Tue,
- 22 Apr 2025 12:25:58 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CO1PEPF000066EA.mail.protection.outlook.com (10.167.249.5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8655.12 via Frontend Transport; Tue, 22 Apr 2025 12:25:58 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 22 Apr
- 2025 05:25:40 -0700
-Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 22 Apr
- 2025 05:25:34 -0700
-References: <cover.1744896433.git.petrm@nvidia.com>
- <36976a87816f7228ca25d7481512ebe2556d892c.1744896433.git.petrm@nvidia.com>
- <8af190ea-5b12-4393-95ac-2bc5cf682c65@blackwall.org>
- <8F591F22-50C7-429E-AF42-BDFBE35FD10B@nvidia.com>
-User-agent: mu4e 1.8.14; emacs 29.4
-From: Petr Machata <petrm@nvidia.com>
-To: Yong Wang <yongwang@nvidia.com>
-CC: Nikolay Aleksandrov <razor@blackwall.org>, Petr Machata
-	<petrm@nvidia.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, Ido Schimmel
-	<idosch@nvidia.com>, "bridge@lists.linux.dev" <bridge@lists.linux.dev>, "Andy
- Roulin" <aroulin@nvidia.com>, mlxsw <mlxsw@nvidia.com>, Nikhil Dhar
-	<ndhar@nvidia.com>
-Subject: Re: [PATCH net-next 1/3] net: bridge: mcast: re-implement
- br_multicast_{enable, disable}_port functions
-Date: Tue, 22 Apr 2025 14:20:22 +0200
-In-Reply-To: <8F591F22-50C7-429E-AF42-BDFBE35FD10B@nvidia.com>
-Message-ID: <87zfg8l6x1.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZwGN9cOH"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-476a304a8edso52603131cf.3
+        for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 05:27:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745324831; x=1745929631; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wyrGerPo8zYvhdaWH7ZlcaRCmQF1Afq3zqQZGUKcrHQ=;
+        b=ZwGN9cOH7LF8NFqp5BA+IRRDQ/qTLVEXlFRFtWTJmVMDDXybpWM4y+UgUsHBeCgVIL
+         LuRFj+77UdTn/zJgnRblw4EJu8+gZxfZRznKc/S08NbVldiTddVRl0kycl3F1j7OIo8D
+         BzxQ9DMoW41RiYnpqeu2ZKOHE/wmG7mspfvCEBBeueYnuzEYosHyZELyId25kS5E2Gwc
+         fFREXKOoR54Vi3mxRDecN9mVyLWzf6M88gLAhWlf4CtaATaDxSbMQehxabXVHq9SM59V
+         Smxvr64woCk/mw2/VfG2TcH+4SNasvl22Xdx5HBA6cOanVEVtPRLkGDBKB6qrdHEthrP
+         OewA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745324831; x=1745929631;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=wyrGerPo8zYvhdaWH7ZlcaRCmQF1Afq3zqQZGUKcrHQ=;
+        b=HqOaUD7ztBIJXjGE4UcEVJHnjtTYVTJMFRZ1yBG7/VtlMpF8VArdxUPaJytk63IL/y
+         a+wib/vSxT8OUAUUgeYScrzTaGzzBoJbDmXbynW9FyaHNa60W0jlJPxB9B/9O5YQtu85
+         Oy18IeV5sVkeb+AOzKhUwAfTBzoqmVEPLcqajH3EkRBJ/+LmR8Pg9erHzUUc4liO7Fkw
+         c8moveYErRcotD1kplyZsfjFdWVspC95Syy6YR5TqBJ/KA3DbTkPbLYsbVqUi7ipzwbA
+         BPrBT9pKIjimv6lHJ9s/lp9cxggRAN9pRKfSD1qxvdIiWhc6ywxd5OosBSn6Ciu1iyAY
+         uqZw==
+X-Gm-Message-State: AOJu0Yxzgz//sV4GCPL20zMchpStDJ1ElAlDJBFnUXgd1q9WiiH6R5iZ
+	zf68upDRK/YqcD2wB3b4L27tLXJbORYMfBwfBbUfcoVXEyBDZ2l+
+X-Gm-Gg: ASbGnctthUhgyPkInGVF4XbCkYAD8AoE2azFBVU3WDA1T+MP7LoxQyBCKP62LCvOnoj
+	IgPRuZwacI99mlQDJCInbcndSOzribyCVfyb63dU/mFZBuWkf2/+ZyWmyy+t7/mmQkUMYnLZoFW
+	HNhT88/u7khOWtUaIRXpKV0kUIzQwVnIX9ahZC6zjERDuvQL79aGEmQkIuKn7Ije7+UqZs9C4rL
+	tcFaOSMAM6sglpTS42v0W/8dvfR4ZoAsRuTTnLoWfdNvB+j9XQ1zNuzXsMQ/QVdmhin1ZxeYkEx
+	uOsM5eqW9OGUO7WC/CqPcnl7B+6OVOfia3brWHkWnHVUIETUN4A2/0PC5xPlVPT7tK+5dhSgcbo
+	UWSdh/HNXyq9q6NpUmxud
+X-Google-Smtp-Source: AGHT+IHdSptXehMe95/WqFHPGqdNlzhBzqLChjfnE/nTvwK8vtSZbVXgMlGDeYnhfsvTUvpFws5H2g==
+X-Received: by 2002:a05:622a:3:b0:477:6ef6:12f with SMTP id d75a77b69052e-47aec369f45mr288187061cf.3.1745324831513;
+        Tue, 22 Apr 2025 05:27:11 -0700 (PDT)
+Received: from localhost (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
+        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-47ae9cf7357sm55373011cf.66.2025.04.22.05.27.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Apr 2025 05:27:10 -0700 (PDT)
+Date: Tue, 22 Apr 2025 08:27:10 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Qiyu Yan <yanqiyu17@mails.ucas.ac.cn>, 
+ Tariq Toukan <tariqt@nvidia.com>, 
+ Saeed Mahameed <saeedm@nvidia.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Eric Dumazet <edumazet@google.com>, 
+ "David S. Miller" <davem@davemloft.net>
+Cc: netdev@vger.kernel.org
+Message-ID: <68078b1e6d1a5_396ca0294b4@willemb.c.googlers.com.notmuch>
+In-Reply-To: <af01ddc5-82bc-4376-9874-e465bf5424f7@mails.ucas.ac.cn>
+References: <af01ddc5-82bc-4376-9874-e465bf5424f7@mails.ucas.ac.cn>
+Subject: Re: DNAT'ed traffic from ConnectX-4 card triggers "hw csum failure"
+ on veth interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000066EA:EE_|PH0PR12MB7094:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4e79d29-e522-4e48-c796-08dd8198d5f2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|82310400026|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?IVnVncDfzFOTn4L0Pa2QQfYODSoMjgFp5TpCIAva+HTp/m8Zs/hbFukL8j/v?=
- =?us-ascii?Q?Ysj5dfITKh3goTNgOROIcWf9MXIjanrGpUbe9+6JTmtHkiXYbhCDG4cNLwyQ?=
- =?us-ascii?Q?iaG3GkJLBMfBhshJFm/v2XtAF7J6/KRIwNuz+trGsAbzt8Vr1OuHeBHCNC2x?=
- =?us-ascii?Q?KrEZyOAAs1Yb8m0UcAt4oizdaTLK1lU0QPd0tWNDmBS3GPLscW3mONDruO9n?=
- =?us-ascii?Q?LvNxCdI/qG2CfIEM16gTmJ8G+laYkwZ8urQpn5GMQ/fwMCyYD3dBISMWEGmP?=
- =?us-ascii?Q?ObWvvymPYs9/0eNEhm4USOftcHNVBpYNcMJDNc209ir6Ui0vWPpbioaE+C6q?=
- =?us-ascii?Q?YdPx2ygUm0oIww1IHWE5lNNU1EV5OSk8+1vEOZS0YZiEGQtg8GO2EAiP7bkO?=
- =?us-ascii?Q?gtEFPEn5kV4H6xGf/Brn5ZOPF36xQvuSIoW3/nxDjzYQbx+GzeITRA7xgPIn?=
- =?us-ascii?Q?jahXo5jS+BZefF65oWzl0ukD6U761cnBe8qkve7GsW6C5ysky4vvcoq8JZC+?=
- =?us-ascii?Q?6BN4lVXeeNfgfpAor2zj/oRmvkuKYc9yEpg+28OJ+GKZHD8Cbr5qKCb3+3a8?=
- =?us-ascii?Q?ePQT21f5nT2MdlZAJ43//WpyBazwG234xJe92pe5mvxKxm1QnPl7qNXyCYUx?=
- =?us-ascii?Q?umOLPll9OeDQoto4L/sXa1B+96tn8kOFrfPWXhBuiIpfZo4mLKSD8FNyzutJ?=
- =?us-ascii?Q?HN4EWAOakM0eMj59ZmGdTjGLeNCli0ocihGlPr5pDea5n7Gb+p98nLPmfRui?=
- =?us-ascii?Q?Gh34UF7ktn2YkdJyWb5H/x4cUhECFF6QlU3xVX4COqCV9wX4uQX2G7E0Mbaz?=
- =?us-ascii?Q?WYDloyCvkGi1wf2YbBfG3HJtFgnTsHtXSyZ/68SuALIfWEPrjKnNFxUa/xM/?=
- =?us-ascii?Q?3NLl/gBKR5Mlwf2fPLwYOFyYGlHfwd4S8ia/619HinG/x/iwcLRqB5/hrtx7?=
- =?us-ascii?Q?HPBjRmgJafx/rgQdoJtKCWy6dTY68tHMPB9hWcq32xbBat5cMHDXAy6wt5Jy?=
- =?us-ascii?Q?vaZSuvG+hO+1yXGCmbJFmh8Y4Mk+efuNO8Uos2kCswu+S36WR6HihG04A77Q?=
- =?us-ascii?Q?CVZ0l0gUX0JfIkD4QwV+gJ6cJSpJuFd7+EfQ704uxWJ5Evdt/1rUkKBMfa8V?=
- =?us-ascii?Q?SwDVa5iNo8GDwebM1a3ZRpehERAP82DPUA51x3yMwijtCZXEA1fB/RW/uXV1?=
- =?us-ascii?Q?udmJry90v437IXbXZxZ0oKz0PrgNusABKEt4o9+a1mFz0mmUv5FWlyDtOqC/?=
- =?us-ascii?Q?W2IqYQp5o46gmB/Q/RALx+3ho7Zcyfyc5RwuXKiMgTbeMAfrWWyxNB63TsOT?=
- =?us-ascii?Q?r46SawQ3L6PjaQO1EATvaIyjcXeh2+75DoCWx48Wwp5jB4ewNpx5bkbDSPUr?=
- =?us-ascii?Q?5y3DLsOF1SdoPeukf0JS1ZpbtsNe5sY3vhLKYVuXZr1dYplyfmp+tzlzNXVN?=
- =?us-ascii?Q?Q2rO02YrmU6L7mjm8yG5gBA4smxQ8ZaUTAzd5DE3R2UNSijDhgj8qLsQx5w1?=
- =?us-ascii?Q?MVR1b9L3D0cA0R6kljngGxWxq8n8bLDQ4x7c?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2025 12:25:58.0010
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4e79d29-e522-4e48-c796-08dd8198d5f2
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000066EA.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7094
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Qiyu Yan wrote:
+> Hi all,
+> =
+
+> Apologies for the broad CC=E2=80=94I'm unsure which component is relate=
+d to the =
+
+> issue, but I've gathered more details since my last report.
+> =
+
+> After boot or after resetting the WARN_ONCE flag, I consistently observ=
+e =
+
+> the following in `dmesg`:
+> =
+
+> eth0: hw csum failure
+> skb len=3D52 headroom=3D98 headlen=3D52 tailroom=3D1578
+> mac=3D(64,14) mac_len=3D14 net=3D(78,20) trans=3D98
+> shinfo(txflags=3D0 nr_frags=3D0 gso(size=3D0 type=3D0 segs=3D0))
+> csum(0x98009d14 start=3D40212 offset=3D38912 ip_summed=3D2 complete_sw=3D=
+0 =
+
+> valid=3D0 level=3D0)
+> hash(0x2135374 sw=3D0 l4=3D1) proto=3D0x0800 pkttype=3D0 iif=3D2
+> priority=3D0x0 mark=3D0x0 alloc_cpu=3D20 vlan_all=3D0x0
+> encapsulation=3D0 inner(proto=3D0x0000, mac=3D0, net=3D0, trans=3D0)
+> dev name=3Deth0 feat=3D0x000061164fdd09e9
+> skb headroom: 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00=
+
+> skb headroom: 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00=
+
+> skb headroom: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00=
+
+> skb headroom: 00000030: ba d7 32 44 dd 39 7e b7 bb bd 2e d5 88 e5 2d 00=
+
+> skb headroom: 00000040: 9e 52 9b 58 46 89 aa 93 51 02 83 7e 08 00 45 00=
+
+> skb headroom: 00000050: 00 48 d3 6d 00 00 3f 11 93 48 0a 00 00 7a 0a 58=
+
+> skb headroom: 00000060: 00 1e
+> skb linear:=C2=A0=C2=A0 00000000: e2 e4 00 35 00 34 92 e9 f4 39 01 00 0=
+0 01 00 00
+> skb linear:=C2=A0=C2=A0 00000010: 00 00 00 00 06 72 65 70 6f 72 74 07 6=
+d 65 65 74
+> skb linear:=C2=A0=C2=A0 00000020: 69 6e 67 07 74 65 6e 63 65 6e 74 03 6=
+3 6f 6d 00
+> skb linear:=C2=A0=C2=A0 00000030: 00 01 00 01
+> ... large tailroom
+> CPU: 20 UID: 0 PID: 0 Comm: swapper/20 Tainted: G OE=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 =
+
+> 6.14.2-300.fc42.x86_64 #1
+> Tainted: [O]=3DOOT_MODULE, [E]=3DUNSIGNED_MODULE
+> Hardware name: To Be Filled By O.E.M. To Be Filled By O.E.M./EPYCD8, =
+
+> BIOS L2.52 11/25/2020
+> Call Trace:
+>  =C2=A0<IRQ>
+>  =C2=A0dump_stack_lvl+0x5d/0x80
+>  =C2=A0__skb_checksum_complete+0xeb/0x110
+>  =C2=A0? __pfx_csum_partial_ext+0x10/0x10
+>  =C2=A0? __pfx_csum_block_add_ext+0x10/0x10
+>  =C2=A0udp4_csum_init+0x1dc/0x2f0
+>  =C2=A0__udp4_lib_rcv+0xc8/0x750
+>  =C2=A0? srso_return_thunk+0x5/0x5f
+>  =C2=A0? raw_v4_input+0x14a/0x270
+>  =C2=A0ip_protocol_deliver_rcu+0xcb/0x1a0
+>  =C2=A0ip_local_deliver_finish+0x76/0xa0
+>  =C2=A0ip_local_deliver+0xfa/0x110
+>  =C2=A0__netif_receive_skb_one_core+0x87/0xa0
+>  =C2=A0process_backlog+0x87/0x130
+>  =C2=A0__napi_poll+0x31/0x1b0
+>  =C2=A0? srso_return_thunk+0x5/0x5f
+>  =C2=A0net_rx_action+0x333/0x420
+>  =C2=A0handle_softirqs+0xf2/0x340
+>  =C2=A0? srso_return_thunk+0x5/0x5f
+>  =C2=A0? srso_return_thunk+0x5/0x5f
+>  =C2=A0__irq_exit_rcu+0xcb/0xf0
+>  =C2=A0common_interrupt+0x85/0xa0
+>  =C2=A0</IRQ>
+>  =C2=A0<TASK>
+>  =C2=A0asm_common_interrupt+0x26/0x40
+> RIP: 0010:cpuidle_enter_state+0xcc/0x660
+> Code: 00 00 e8 67 28 fb fe e8 d2 ed ff ff 49 89 c4 0f 1f 44 00 00 31 ff=
+ =
+
+> e8 73 61 f9 fe 45 84 ff 0f 85 02 02 00 00 fb 0f 1f 44 00 00 <85> ed 0f =
+
+> 88 d3 01 00 00 4c 63 f5 49 83 fe 0a 0f 83 9f 04 00 00 49
+> RSP: 0018:ffffa79d003afe50 EFLAGS: 00000246
+> RAX: ffff96440ca00000 RBX: ffff962542b89800 RCX: 0000000000000000
+> RDX: 000051a9557f7bf1 RSI: 000000003152c088 RDI: 0000000000000000
+> RBP: 0000000000000002 R08: ffffffee4d207359 R09: ffff96440ca315e0
+> R10: 000051bb10ea059b R11: 0000000000000000 R12: 000051a9557f7bf1
+> R13: ffffffffa7b15160 R14: 0000000000000002 R15: 0000000000000000
+> =
+
+>  From inspecting the SKB, the packet comes from a host (10.0.0.122) =
+
+> connected via a ConnectX-4 Lx NIC to our server. It is DNAT'ed via =
+
+> iptables from 10.0.0.1:53 to a container at 10.88.0.30:53.
+> =
+
+> Traffic path:
+> =
+
+>  =C2=A0=C2=A0=C2=A0 10.0.0.122 --> [CX4 NIC 10.0.0.1/16]
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 iptables DNAT (10.0.0.1:53 -> 10.88.0.30:53)
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 [linux bridge (podman0 10.88.0.1/16)]
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [veth pair]
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 [eth0 inside container]
+> =
+
+> The warning is triggered when the packet arrives at eth0 inside the =
+
+> container.
+> =
+
+> What's suspicious is the reported checksum info:
+> =
+
+>  =C2=A0=C2=A0=C2=A0 csum(0x9800a314 start=3D41748 offset=3D38912 ip_sum=
+med=3D2 ...)
+> =
+
+> Here, start and offset are far beyond the size of the skb. This seems =
+
+> like an invalid buffer?
+
+No, these fields are a union. With CHECKSUM_COMPLETE, you can ignore
+those values
+
+        union { =
+
+                __wsum          csum;
+                struct {
+                        __u16   csum_start;
+                        __u16   csum_offset;
+                };
+        };
+
+> And I suspect that during DNAT and/or forwarding =
+
+> through the bridge and veth, the checksum status is not properly cleare=
+d =
+
+> or recalculated.
+
+That sounds most likely. Something in the path pushing or pulling or
+modifying a header without updating skb->csum correctly.
+
+You can try capturing the packet earlier in the receive path in the init
+namespace. Or capture and log it along more points using bpftrace
+instead of tcpdump.
+
+> The NIC is:
+> $ ethtool -i mlx-p1
+> driver: mlx5_core
+> version: 6.14.2-300.fc42.x86_64
+> firmware-version: 14.32.1900 (MT_2420110034)
+> expansion-rom-version:
+> bus-info: 0000:c1:00.1
+> supports-statistics: yes
+> supports-test: yes
+> supports-eeprom-access: no
+> supports-register-dump: no
+> supports-priv-flags: yes
+> =
+
+> =
+
+> Best,
+> Qiyu
+> =
 
 
-Yong Wang <yongwang@nvidia.com> writes:
 
-> On 4/18/25, 11:38 PM, "Nikolay Aleksandrov" <razor@blackwall.org > wrote:
->
->> I feel like I've seen a similar patch before. Are you sure this is not v2? :)
->> Anyway looks good to me. Thanks!
->
-> Yes, this should be V2. Petr is helping upstreaming this patch. Thanks
-> for your acknowledgement.
-
-Indeed, there were two RFCs and a v1 back in December. My bad, I forgot
-all about it.
