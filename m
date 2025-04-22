@@ -1,165 +1,267 @@
-Received: from send100.i.mail.ru (send100.i.mail.ru [89.221.237.195])
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF0E2BEC55;
-	Tue, 22 Apr 2025 20:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.221.237.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633702D29B4
+	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 20:29:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745353648; cv=none; b=iKQH6ZSWZPeCntArf5+Pj4LkQOoRANcYdqmJQ0Do9EP+kPrT/+fW/JsDyLHks83mUqrRui/ElaFBG2+8GKXN6E7rWgeYKKjxbcCHqOxPlKIM3OCtxtLnbK1fVqSIuv05/dt7e1jJPtV0cel4342Td9phA9LlRFQ/TVjzMMq5wo4=
+	t=1745353747; cv=none; b=YcAr8aCjtZQmLJ/1WbkCqFYZtK8I8zPTHpAN2e+JawUtfJiVhpO9xFmJpW15pN2si7gYrC79uMbgWuPxI3vgnH8D5DyqJlvRsydv01FrUCYySHvIWm4hfL/VgC00i6Aipz+U7DBP36IzOCfVcWw2Z/reubh8KAIjAcvCJu+kAk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745353648; c=relaxed/simple;
-	bh=xrgzt0AYr03bSyVvzboebvxUO5xBNxJ5K5gE8GBN70A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ozKi3kV4nz2xJKdVXX/39PcwO9bbJOvmhdEm78EGAUG3gzpLBrIZqa6ep6ESejc6RgARpZHAhioXinXMzSywy5Woa3k8K2Ptt10I/S3Ya5GDZXiUMyUGSeXbtxqW/Zn3pI4tCEJRRpON2FXdecMKZS7tiNBM/qEjmj82Npvt6b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jiaxyga.com; spf=pass smtp.mailfrom=jiaxyga.com; dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b=jxsSxV/r; dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b=biSDTL32; arc=none smtp.client-ip=89.221.237.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jiaxyga.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jiaxyga.com
+	s=arc-20240116; t=1745353747; c=relaxed/simple;
+	bh=Vwk0KjLUgyV/mMn+aHudb9sTz9/21QB2k9ExbfVjYFM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=eCUNIIOIJ14wOsTOdGE+Cej6kxbzLCnSPZ0lgmGzN1NFw8tMuAFPx1UPD9lw0qrrOTIFSGXThE/obwC/w0r2CrZgpCfma27uGHwulAvi4TLBgWA26ApsrxxqtI7/Ts7CyrKhQpkuNVupMCzcc1ggH7euCZBcj6Jq0bJJIjDDDkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=p7vP0epe; arc=none smtp.client-ip=91.218.175.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b="jxsSxV/r";
-	dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b="biSDTL32"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=jiaxyga.com
-	; s=mailru; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive:X-Cloud-Ids;
-	bh=dEpnsmQnAo6lpDiuzatMVzN7H/d3uG6CkzO/Nx3XqLM=; t=1745353645; x=1745443645; 
-	b=jxsSxV/rwtodcUTlDlieUrCUeCZWtskSC5ptEoo7n4q4nXr4rDbiX1RCjrHGr9vjtcridm2gXPs
-	Bzvr337EX41PG87nvqgeLUVEKuRwp9zGl4zbZGAV6qo0RjGZgo7PgXQ1gAvi8JrE5ytuXYJ+9WnsA
-	UwR6kE85/6PBUAun8CQ=;
-Received: from [10.113.239.200] (port=50178 helo=send194.i.mail.ru)
-	by exim-fallback-5f8f9b6d5b-6hmp9 with esmtp (envelope-from <danila@jiaxyga.com>)
-	id 1u7KDD-000000007xV-0och; Tue, 22 Apr 2025 23:27:23 +0300
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=jiaxyga.com
-	; s=mailru; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:From:
-	Sender:Reply-To:To:Cc:Content-Type:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive:X-Cloud-Ids:Disposition-Notification-To;
-	bh=dEpnsmQnAo6lpDiuzatMVzN7H/d3uG6CkzO/Nx3XqLM=; t=1745353643; x=1745443643; 
-	b=biSDTL32VRTgBUe1a+BLJHTE1SRAgQBxN4m8nFVIqDkiAb/e0v5q0OT3VZzDWsiPc8vqSiMlrlK
-	ZfYNAX+wNfN5zeqlTe7xz/lcF3nusC6BoRj7bJ/vtaVlI6r5dpwFZ8iGtWCrMLoxkTlsGj7vnwk3Q
-	6la5KxieKTOv8Fjamik=;
-Received: by exim-smtp-77d8cdf77b-httmk with esmtpa (envelope-from <danila@jiaxyga.com>)
-	id 1u7KCs-00000000Adc-3uQw; Tue, 22 Apr 2025 23:27:03 +0300
-From: Danila Tikhonov <danila@jiaxyga.com>
-Date: Tue, 22 Apr 2025 23:17:17 +0300
-Subject: [PATCH 16/33] dt-bindings: dmaengine: qcom: gpi: Add the SM7150
- compatible
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="p7vP0epe"
+Message-ID: <68dfbcbe-1f12-406c-8913-70e3dd5f8154@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1745353730;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ogdazcLBiZ46Sb/8G5gEgaN31idssmFMNZLWBGG+gG8=;
+	b=p7vP0epetZQEzuJ+eTcL6p/sITJda6FlyPtt+WGeKzIVaz48tWAsnHL4BOiup7ditNEhsc
+	7JUbxJrPkcj43p66Bmc/x09PE39q6demTeuzjOwkeN5Wj2t7PBXmvXlifKD93OFBGa+l08
+	7P7+q+EoIHBkgj0U+OkbOKqsqMbFneQ=
+Date: Tue, 22 Apr 2025 13:28:45 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250422-sm7150-upstream-v1-16-bf9a9081631d@jiaxyga.com>
-References: <20250422-sm7150-upstream-v1-0-bf9a9081631d@jiaxyga.com>
-In-Reply-To: <20250422-sm7150-upstream-v1-0-bf9a9081631d@jiaxyga.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Viresh Kumar <viresh.kumar@linaro.org>, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Wim Van Sebroeck <wim@linux-watchdog.org>, 
- Guenter Roeck <linux@roeck-us.net>, 
- Rajendra Nayak <quic_rjendra@quicinc.com>, 
- Jassi Brar <jassisinghbrar@gmail.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Amit Kucheria <amitk@kernel.org>, 
- Thara Gopinath <thara.gopinath@gmail.com>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
- Lukasz Luba <lukasz.luba@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Wesley Cheng <quic_wcheng@quicinc.com>, Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, 
- Ulf Hansson <ulf.hansson@linaro.org>, 
- Souradeep Chowdhury <quic_schowdhu@quicinc.com>, Lee Jones <lee@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Alex Elder <elder@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
- Avri Altman <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>, 
- Andy Gross <agross@kernel.org>, Srinivas Kandagatla <srini@kernel.org>, 
- Herbert Xu <herbert@gondor.apana.org.au>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Georgi Djakov <djakov@kernel.org>, 
- Loic Poulain <loic.poulain@oss.qualcomm.com>, 
- Robert Foss <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Taniya Das <quic_tdas@quicinc.com>, 
- Sibi Sankar <quic_sibis@quicinc.com>, Will Deacon <will@kernel.org>, 
- Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>, 
- Imran Shaik <quic_imrashai@quicinc.com>, 
- Mathieu Poirier <mathieu.poirier@linaro.org>, 
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <quic_jesszhan@quicinc.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>, 
- David Wronek <david@mainlining.org>, Jens Reidel <adrian@mainlining.org>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-watchdog@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-phy@lists.infradead.org, linux-mmc@vger.kernel.org, 
- netdev@vger.kernel.org, linux-scsi@vger.kernel.org, 
- dmaengine@vger.kernel.org, linux-crypto@vger.kernel.org, 
- linux-i2c@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev, 
- linux-remoteproc@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-hardening@vger.kernel.org, linux@mainlining.org, 
- ~postmarketos/upstreaming@lists.sr.ht, Danila Tikhonov <danila@jiaxyga.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1745353049; l=901;
- i=danila@jiaxyga.com; s=20250422; h=from:subject:message-id;
- bh=xrgzt0AYr03bSyVvzboebvxUO5xBNxJ5K5gE8GBN70A=;
- b=+frghtU6pZZ2t+jW/lZtviRREA8yW+SnY9ymySGnT0dRj8icJkaFXv+5G/JOoWSmSSLkAGfpi
- GDU+SD0JdRsDR+24I3+jI8SWJG8xZ9Z/Pns5WDvYJnbFA5LFMKRFykb
-X-Developer-Key: i=danila@jiaxyga.com; a=ed25519;
- pk=kkU4G47tvpSEUdBQEkXuWvTk/3WmGrVrdzZiKAKjBJo=
-X-Mailru-Src: smtp
-X-7564579A: 646B95376F6C166E
-X-77F55803: 4F1203BC0FB41BD985535D2C87FE65BBC130AA961422AF79512048C0361E837600894C459B0CD1B9026FB6DF323496D1C591814E25D11F9F119A5CDB81FC9140A81D68A931C38B86C91F273C30732FC0
-X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE70D278D70F8433719EA1F7E6F0F101C67BD4B6F7A4D31EC0BCC500DACC3FED6E28638F802B75D45FF8AA50765F7900637FF37B1FF54E2C7C48638F802B75D45FF914D58D5BE9E6BC1A93B80C6DEB9DEE97C6FB206A91F05B25A03889D44050E112E070BE324C7D3C4012A87A647E25D7DF6B57BC7E64490618DEB871D839B73339E8FC8737B5C224936DA1BED736F9328CC7F00164DA146DAFE8445B8C89999729449624AB7ADAF37F6B57BC7E64490611E7FA7ABCAF51C92176DF2183F8FC7C078FCF50C7EAF9C588941B15DA834481F9449624AB7ADAF37BA3038C0950A5D3613377AFFFEAFD269176DF2183F8FC7C02271980798FBD5E27B076A6E789B0E97A8DF7F3B2552694AD5FFEEA1DED7F25D49FD398EE364050F0AC5B80A05675ACD0A5971FBB7557E96B3661434B16C20ACC84D3B47A649675FE827F84554CEF5019E625A9149C048EE9ECD01F8117BC8BEE2021AF6380DFAD18AA50765F790063735872C767BF85DA227C277FBC8AE2E8BDC0F6C5B2EEF3D0C75ECD9A6C639B01B4E70A05D1297E1BBCB5012B2E24CD356
-X-C1DE0DAB: 0D63561A33F958A5E96544D16E1A0D995002B1117B3ED696D7411CAC22AFCEDB30E4A65F242F5898823CB91A9FED034534781492E4B8EEADC8D8B8CB12567299C79554A2A72441328621D336A7BC284946AD531847A6065A535571D14F44ED41
-X-C8649E89: 1C3962B70DF3F0ADE00A9FD3E00BEEDF77DD89D51EBB7742D3581295AF09D3DF87807E0823442EA2ED31085941D9CD0AF7F820E7B07EA4CF8DC976B8C6882C4218D899837EC2685907CDEE5D0F08FB6D8F91C867D84BA9CE66401EE05C14F77D68A835CA8743990BCA95E3497914C76F0E280A9F3BCC449B68EC3667DC7BC350EFF8118B638B08AA02C26D483E81D6BE72B480F99247062FEE42F474E8A1C6FD34D382445848F2F3
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu53w8ahmwBjZKM/YPHZyZHvz5uv+WouB9+ObcCpyrx6l7KImUglyhkEat/+ysWwi0gdhEs0JGjl6ggRWTy1haxBpVdbIX1nthFXMZebaIdHP2ghjoIc/363UZI6Kf1ptIMVS+uSU+BUhgv8TxGLeB5zA8=
-X-Mailru-Sender: 9EB879F2C80682A0D0AE6A344B45275F68390E26C1E4CF4805E38EDE555C28061214B9AB6A0CA68BC0CD8652978296A92C62728BC403A049225EC17F3711B6CF1A6F2E8989E84EC137BFB0221605B344978139F6FA5A77F05FEEDEB644C299C0ED14614B50AE0675
-X-Mras: Ok
-X-Mailru-Src: fallback
-X-7564579A: B8F34718100C35BD
-X-77F55803: 6242723A09DB00B4F4CF43BFC943A6051BEB685425B5CA97CE3AC4A05355C76C68F3CF0E9FE49B693D0DD15183EF2CA62C8FAFA20181AADA6641ADE2ED544FB03F84CA5C24DD8F49F3D3C5E189B8ECD1
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu53w8ahmwBjZKM/YPHZyZHvz5uv+WouB9+OYcBso8Zm+oliTz8oZwnDrFsY77LZRcHyw5ht0smWrfSeTW5FiI8avd9v29gUBslpEZ9wIMwqVP4jLQVQ+dVm7x9BpDHadBV9RMjI809PraZb8PU3D/aONz3sMqhUFiA/w==
-X-Mailru-MI: 20000000000000800
-X-Mras: Ok
+Subject: Re: [PATCH v4 bpf-next 2/6] bpf: udp: Make sure iter->batch always
+ contains a full bucket snapshot
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+To: Jordan Rife <jordan@jrife.io>
+Cc: Aditi Ghag <aditi.ghag@isovalent.com>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Kuniyuki Iwashima <kuniyu@amazon.com>, netdev@vger.kernel.org,
+ bpf@vger.kernel.org
+References: <20250419155804.2337261-1-jordan@jrife.io>
+ <20250419155804.2337261-3-jordan@jrife.io>
+ <e3b08fdc-8a10-4491-a7a3-c11fed6d15ae@linux.dev>
+ <CABi4-ojzWBaKBFDvu_aO2mRppYz46BZxybRXJ8d7sgzqaGtM_Q@mail.gmail.com>
+ <fa0a7936-145a-4f47-a858-66e46b829486@linux.dev>
+Content-Language: en-US
+In-Reply-To: <fa0a7936-145a-4f47-a858-66e46b829486@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Add a compatible for the GPI DMA controller on SM7150. It uses the same
-0x0 offset as SDM845.
+On 4/22/25 1:25 PM, Martin KaFai Lau wrote:
+> On 4/22/25 11:02 AM, Jordan Rife wrote:
+>>> I found the "if (lock)" changes and its related changes make the code harder
+>>> to follow. This change is mostly to handle one special case,
+>>> avoid releasing the lock when "resizes" reaches the limit.
+>>>
+>>> Can this one case be specifically handled in the "for(bucket)" loop?
+>>>
+>>> With this special case, it can alloc exactly the "batch_sks" size
+>>> with GFP_ATOMIC. It does not need to put the sk or get the cookie.
+>>> It can directly continue from the "iter->batch[iter->end_sk - 1].sock".
+>>>
+>>> Something like this on top of this set. I reset the "resizes" on each new 
+>>> bucket,
+>>> removed the existing "done" label and avoid getting cookie in the last attempt.
+>>>
+>>> Untested code and likely still buggy. wdyt?
+>>
+>> Overall I like it, and at a glance, it seems correct. The code before
+> 
+> Thanks for checking!
+> 
+>> (with the if (lock) stuff) made it harder to easily verify that the
+>> lock was always released for every code path. This structure makes it
+>> more clear. I'll adopt this for the next version of the series and do
+>> a bit more testing to make sure everything's sound.
+>>
+>>>
+>>> #define MAX_REALLOC_ATTEMPTS 2
+>>>
+>>> static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
+>>> {
+>>>        struct bpf_udp_iter_state *iter = seq->private;
+>>>        struct udp_iter_state *state = &iter->state;
+>>>        unsigned int find_cookie, end_cookie = 0;
+>>>        struct net *net = seq_file_net(seq);
+>>>        struct udp_table *udptable;
+>>>        unsigned int batch_sks = 0;
+>>>        int resume_bucket;
+>>>        struct sock *sk;
+>>>        int resizes = 0;
+>>>        int err = 0;
+>>>
+>>>        resume_bucket = state->bucket;
+>>>
+>>>        /* The current batch is done, so advance the bucket. */
+>>>        if (iter->st_bucket_done)
+>>>                state->bucket++;
+>>>
+>>>        udptable = udp_get_table_seq(seq, net);
+>>>
+>>> again:
+>>>        /* New batch for the next bucket.
+>>>         * Iterate over the hash table to find a bucket with sockets matching
+>>>         * the iterator attributes, and return the first matching socket from
+>>>         * the bucket. The remaining matched sockets from the bucket are batched
+>>>         * before releasing the bucket lock. This allows BPF programs that are
+>>>         * called in seq_show to acquire the bucket lock if needed.
+>>>         */
+>>>        find_cookie = iter->cur_sk;
+>>>        end_cookie = iter->end_sk;
+>>>        iter->cur_sk = 0;
+>>>        iter->end_sk = 0;
+>>>        iter->st_bucket_done = false;
+>>>        batch_sks = 0;
+>>>
+>>>        for (; state->bucket <= udptable->mask; state->bucket++) {
+>>>                struct udp_hslot *hslot2 = &udptable->hash2[state->bucket].hslot;
+>>>
+>>>                if (hlist_empty(&hslot2->head)) {
+>>>                        resizes = 0;
+>>
+>>
+>>
+>>>                        continue;
+>>>                }
+>>>
+>>>                spin_lock_bh(&hslot2->lock);
+>>>
+>>>                /* Initialize sk to the first socket in hslot2. */
+>>>                sk = hlist_entry_safe(hslot2->head.first, struct sock,
+>>>                                      __sk_common.skc_portaddr_node);
+>>>                /* Resume from the first (in iteration order) unseen socket from
+>>>                 * the last batch that still exists in resume_bucket. Most of
+>>>                 * the time this will just be where the last iteration left off
+>>>                 * in resume_bucket unless that socket disappeared between
+>>>                 * reads.
+>>>                 *
+>>>                 * Skip this if end_cookie isn't set; this is the first
+>>>                 * batch, we're on bucket zero, and we want to start from the
+>>>                 * beginning.
+>>>                 */
+>>>                if (state->bucket == resume_bucket && end_cookie)
+>>>                        sk = bpf_iter_udp_resume(sk,
+>>>                                                 &iter->batch[find_cookie],
+>>>                                                 end_cookie - find_cookie);
+>>> last_realloc_retry:
+>>>                udp_portaddr_for_each_entry_from(sk) {
+>>>                        if (seq_sk_match(seq, sk)) {
+>>>                                if (iter->end_sk < iter->max_sk) {
+>>>                                        sock_hold(sk);
+>>>                                        iter->batch[iter->end_sk++].sock = sk;
+>>>                                }
+>>>                                batch_sks++;
+>>>                        }
+>>>                }
+>>>
+>>>                if (unlikely(resizes == MAX_REALLOC_ATTEMPTS)  &&
+>>>                    iter->end_sk && iter->end_sk != batch_sks) {
+>>
+>> While iter->end_sk == batch_sks should always be true here after goto
+>> last_realloc_retry, I wonder if it's worth adding a sanity check:
+>> WARN_*ing and bailing out if we hit this condition twice? Not sure if
+>> I'm being overly paranoid here.
+> 
+> hmm... I usually won't go with WARN if the case is impossible.
+> 
+> The code is quite tricky here, so I think it is ok to have a WARN_ON_ONCE.
+> 
+> May be increment the "retries" in this special case also and it can stop hitting 
 
-Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
----
- Documentation/devicetree/bindings/dma/qcom,gpi.yaml | 1 +
- 1 file changed, 1 insertion(+)
+typo.... s/retries/resizes/. Same for the code below.
 
-diff --git a/Documentation/devicetree/bindings/dma/qcom,gpi.yaml b/Documentation/devicetree/bindings/dma/qcom,gpi.yaml
-index 7052468b15c87430bb98fd10bc972cbe6307a866..464e751721ac18a9c0ba1e1cccdff01ebfa1c19f 100644
---- a/Documentation/devicetree/bindings/dma/qcom,gpi.yaml
-+++ b/Documentation/devicetree/bindings/dma/qcom,gpi.yaml
-@@ -45,6 +45,7 @@ properties:
-               - qcom,qcs615-gpi-dma
-               - qcom,sdm670-gpi-dma
-               - qcom,sm6125-gpi-dma
-+              - qcom,sm7150-gpi-dma
-               - qcom,sm8150-gpi-dma
-               - qcom,sm8250-gpi-dma
-           - const: qcom,sdm845-gpi-dma
-
--- 
-2.49.0
+> this case again for the same bucket. WARN outside of the for loop. Like:
+> 
+>>
+>>>                        /* last realloc attempt to batch the whole
+>>>                         * bucket. Keep holding the lock to ensure the
+>>>                         * bucket will not be changed.
+>>>                         */
+>>>                        err = bpf_iter_udp_realloc_batch(iter, batch_sks, 
+>>> GFP_ATOMIC);
+>>>                        if (err) {
+>>>                                spin_unlock_bh(&hslot2->lock);
+>>>                                return ERR_PTR(err);
+>>>                        }
+>>>                        sk = iter->batch[iter->end_sk - 1].sock;
+>>>                        sk = hlist_entry_safe(sk- 
+>>> >__sk_common.skc_portaddr_node.next,
+>>>                                              struct sock, 
+>>> __sk_common.skc_portaddr_node);
+>>>                        batch_sks = iter->end_sk;
+> 
+>                /* and then WARN outside of the for loop */
+>                            retries++;
+> 
+> 
+>>>                        goto last_realloc_retry;
+>>>                }
+>>>
+>>>                spin_unlock_bh(&hslot2->lock);
+>>>
+>>>                if (iter->end_sk)
+>>>                        break;
+>>>
+>>>                /* Got an empty bucket after taking the lock */
+>>>                resizes = 0;
+>>>        }
+>>>
+>>>        /* All done: no batch made. */
+>>>        if (!iter->end_sk)
+>>>                return NULL;
+>>>
+>>>        if (iter->end_sk == batch_sks) {
+>>>                /* Batching is done for the current bucket; return the first
+>>>                 * socket to be iterated from the batch.
+>>>                 */
+>>>                iter->st_bucket_done = true;
+>>>                return iter->batch[0].sock;
+>>>        }
+> 
+>        if (WARN_ON_ONCE(retries > MAX_REALLOC_ATTEMPTS))
+>                  return iter->batch[0].sock;
+> 
+>>>
+>>>        err = bpf_iter_udp_realloc_batch(iter, batch_sks * 3 / 2, GFP_USER);
+>>>        if (err)
+>>>                return ERR_PTR(err);
+>>>
+>>>        resizes++;
+>>>        goto again;
+>>> }
+>>> static int bpf_iter_udp_realloc_batch(struct bpf_udp_iter_state *iter,
+>>>                                      unsigned int new_batch_sz, int flags)
+>>> {
+>>>        union bpf_udp_iter_batch_item *new_batch;
+>>>
+>>>        new_batch = kvmalloc_array(new_batch_sz, sizeof(*new_batch),
+>>>                                   flags | __GFP_NOWARN);
+>>>        if (!new_batch)
+>>>                return -ENOMEM;
+>>>
+>>>        if (flags != GFP_ATOMIC)
+>>>                bpf_iter_udp_put_batch(iter);
+>>>
+>>>        /* Make sure the new batch has the cookies of the sockets we haven't
+>>>         * visited yet.
+>>>         */
+>>>        memcpy(new_batch, iter->batch, sizeof(*iter->batch) * iter->end_sk);
+>>>        kvfree(iter->batch);
+>>>        iter->batch = new_batch;
+>>>        iter->max_sk = new_batch_sz;
+>>>
+>>>        return 0;
+>>> }
+>>
+>> Jordan
+> 
+> 
 
