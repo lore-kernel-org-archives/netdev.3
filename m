@@ -1,105 +1,90 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D24927815F
-	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 16:03:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75572290086;
+	Tue, 22 Apr 2025 16:06:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745337839; cv=none; b=HCFS5mr22YlZJF1MTMuR0KqM/UzPQ3QdrNiqNV5dZqxFSos5iuSLRX/HYTr0uZ5wv5PBcpF1G1cIT1amo+ssUDnoZD+bbNtpUYBTCOfxZGBPCoCYa8Y+8lzypaWrFxK9sNoaZ9PyHt+73/0ryL8i64dCfT8BFb/4jkiwf3/DuWw=
+	t=1745337985; cv=none; b=cx/H/0MyXOqroIMFp8Cha+kvnt65R6G78j6SHd7ig/cR0ajhhr11suOcmnmUuRlH3F+KByzxQ7nePVc8VMlbwS4R55MZUI9Yi6mLUMAX89l0tRHGMS+lQDARHi75Y+KsX+Va+YoHuSqBwc2gYQEqF5zCbjejD9fh99eSOldbJrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745337839; c=relaxed/simple;
-	bh=UNnhvLP7zIb5IJPg1Tnki+zvvtQrfIX980UlR7/FUfY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fFfgNUOPkjKvZcn9XAdfGc8fAdSc1V+70BY0sNX3z+NnRb1EmPvEG4R2wZyaNuAAbw5MLHLGE+faIEcaTibA7gYeM8S0w2VVe+pVi0XD5qVrtDB4dtpeeyrkLtBI8SVy1Udx/O1YuiYxsuHJ64vAGfKUeiJu3/wa6UjxScshAr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=n7oFJI4W; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1745337985; c=relaxed/simple;
+	bh=l/GKSbrMBp2X50Z2sa9WsYIMj+6sBSQ5RVr1V8Qo+ak=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=jsDbxlgH6mP0K83OgtavGJyFHaZgPBElJKgqkPGt1iQPHAY2RXNdYi0+zrrMIXcy4UUThMlKKk5e8I4g97mOpwPUomwbCOjzCJ0hTV5eOMEurZSfG425OeiUNDrtGRHw6YAhZyeGt1OCVLM7zyJxhsgSbBOkQGsypFimXFRoMd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=AcOXqpIj; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="n7oFJI4W"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=qJTeiDhJ/WU7DbPen9gCUpOHDGJpW9QAvy7lOs5acwQ=; b=n7oFJI4WqKOu9+eVmJtqHXOVB3
-	JTIVy23JI8bH8OPl6Mz309ZOVFRTYODek7sIIX9YFVW7Z+r6MHkHXPJ8mtDkGS1p0M2T0MGTti99k
-	Faa9DIsszbBqTzeRXUG/MyUS5G5FjtL9/Au3W3bjzFbeW6hEHUUM81B6a1W26v7/+BU1tyH/It2Qa
-	nHom0TZAiFC8pvGpSnGo9NrvXn5FRDAexrTT7VL4FkeizKRhyMPw9XSY5LFN+oUAY3koiZOXOAlj3
-	J6S8wOJYEioUn65n/JyR70aSXhE3HKaEB5r5xaVCUByXGWmEk0Cz90yTERtG3MCMWoyjuYoh3yjBg
-	/bDc9G1Q==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:44004)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1u7G69-0004hZ-2X;
-	Tue, 22 Apr 2025 17:03:49 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1u7G66-0007bk-0A;
-	Tue, 22 Apr 2025 17:03:46 +0100
-Date: Tue, 22 Apr 2025 17:03:45 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Mathew McBride <matt@traverse.com.au>
-Cc: Ioana Ciornei <ioana.ciornei@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>, regressions@lists.linux.dev
-Subject: Re: [REGRESSION] net: pcs-lynx: 10G SFP no longer links up
-Message-ID: <aAe94Tkf-IYjswfP@shell.armlinux.org.uk>
-References: <Z1F1b8eh8s8T627j@shell.armlinux.org.uk>
- <E1tJ8NM-006L5J-AH@rmk-PC.armlinux.org.uk>
- <025c0ebe-5537-4fa3-b05a-8b835e5ad317@app.fastmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AcOXqpIj"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 43304438C1;
+	Tue, 22 Apr 2025 16:06:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1745337980;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EYp1PH84CI/1BjGsz+Aop4wrRagREEsClZGhgLNu8YE=;
+	b=AcOXqpIj1Y5WHHcyuArtzMkdreDit/Ps1+jloEHY3T8+Dr2Exj7tcyzpHwaaA2YO+Ay+cu
+	XxAKVq4fbXpCOOl28MCp4zejQRvHlKBGqVs97g/a+TWVn0Icll1gkDR7WuHnLFVpVcRMXg
+	JV9+8FR/4BEsqO/ZYv5NtF1yZbZIsxMJ27keaFOwbWHZ8cPhxJyN8RG1u/VNYwGedA38TF
+	DBMj1aOjXK8xP75F3tyJRltTrN7+6UhCOF3JhzpFY/vbrGHq3olR4PGXK6xtp3jVOe3DVd
+	tbHXaIg96rp7ImtFUehKsx3cBRyjLoJIB0w7XvxLlY9WVLQJv9NoH7Kd4znQlQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <025c0ebe-5537-4fa3-b05a-8b835e5ad317@app.fastmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 22 Apr 2025 18:06:18 +0200
+Message-Id: <D9DAOEKXJKQB.HHD75KOLKIW1@bootlin.com>
+Cc: "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Maxime
+ Coquelin" <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
+ <alexandre.torgue@foss.st.com>, "Richard Cochran"
+ <richardcochran@gmail.com>, "Daniel Machon" <daniel.machon@microchip.com>,
+ "Maxime Chevallier" <maxime.chevallier@bootlin.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, <netdev@vger.kernel.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net 2/2] net: stmmac: fix multiplication overflow when
+ reading timestamp
+From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250422-stmmac_ts-v1-0-b59c9f406041@bootlin.com>
+ <20250422-stmmac_ts-v1-2-b59c9f406041@bootlin.com>
+ <aAe2iULNthghEEEt@shell.armlinux.org.uk>
+In-Reply-To: <aAe2iULNthghEEEt@shell.armlinux.org.uk>
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeegudejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkvefuhffvofhfjgesthhqredtredtjeenucfhrhhomheptehlvgigihhsucfnohhthhhorhoruceorghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeelkeehiefhfeehvefhtdegueelkeehffffffeuvdekkeekuddvueeguefgieeukeenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudeipdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepkhhusggrsehkv
+ ghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepmhgtohhquhgvlhhinhdrshhtmhefvdesghhmrghilhdrtghomhdprhgtphhtthhopegrlhgvgigrnhgurhgvrdhtohhrghhuvgesfhhoshhsrdhsthdrtghomh
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-On Fri, Apr 18, 2025 at 01:02:19PM +1000, Mathew McBride wrote:
-> #regzbot introduced: 6561f0e547be221f411fda5eddfcc5bd8bb058a5
-> 
-> Hi Russell,
-> 
-> On Thu, Dec 5, 2024, at 8:42 PM, Russell King (Oracle) wrote:
-> > Report the PCS in-band capabilities to phylink for the Lynx PCS.
-> > 
-> 
-> The implementation of in-band capabilities has broken SFP+ (10GBase-R) mode on my LS1088 board.
-> The other ports in the system (QSGMII) work fine.
+Hello Russell,
 
-Thanks for the report.
+On Tue Apr 22, 2025 at 5:32 PM CEST, Russell King (Oracle) wrote:
+> On Tue, Apr 22, 2025 at 05:07:23PM +0200, Alexis Lothor=C3=A9 wrote:
+>>  	ns =3D readl(ptpaddr + GMAC_PTP_ATNR);
+>> -	ns +=3D readl(ptpaddr + GMAC_PTP_ATSR) * NSEC_PER_SEC;
+>> +	ns +=3D (u64)(readl(ptpaddr + GMAC_PTP_ATSR)) * NSEC_PER_SEC;
+>
+> I'm not sure what the extra parens around readl() are actually trying to
+> do. Please drop them if they're not useful.
 
-Please try the diff below:
+They are indeed not specifically useful in this case, they will be dropped
+in v2.
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 1bdd5d8bb5b0..2147e2d3003a 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -3624,6 +3624,15 @@ static int phylink_sfp_config_optical(struct phylink *pl)
- 	phylink_dbg(pl, "optical SFP: chosen %s interface\n",
- 		    phy_modes(interface));
- 
-+	/* GBASE-R interfaces with the exception of KR do not have autoneg at
-+	 * the PCS. As the PCS is media facing, disable the Autoneg bit in the
-+	 * advertisement.
-+	 */
-+	if (interface == PHY_INTERFACE_MODE_5GBASER ||
-+	    interface == PHY_INTERFACE_MODE_10GBASER ||
-+	    interface == PHY_INTERFACE_MODE_25GBASER)
-+		__clear_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, config.advertising);
-+
- 	if (!phylink_validate_pcs_inband_autoneg(pl, interface,
- 						 config.advertising)) {
- 		phylink_err(pl, "autoneg setting not compatible with PCS");
+Thanks,
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Alexis
+
+--=20
+Alexis Lothor=C3=A9, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
