@@ -1,43 +1,88 @@
-Received: from smtp-bc0d.mail.infomaniak.ch (smtp-bc0d.mail.infomaniak.ch [45.157.188.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95991B87F2
-	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 17:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C271A304A;
+	Tue, 22 Apr 2025 17:39:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745343321; cv=none; b=sBEKrXNRuynEPKbg/4vOPLYNPslrzyiZh4IJ3aRpKppgItwkQ5MtUVkgzKixV53+uFwS+f5Hh1TbswdN20bu7VEbFRNC1WUWWO/9wFCWiL8P3zGyrjoh17COcgsNb931UmxtnlI1bu6K+T16VQECWu7vgGfGt/JggWVYbbTb+Rw=
+	t=1745343587; cv=none; b=CW9SvBGLz0lAHBoER+Cg5eNbWc/pSsMXY+FjjzBSYRPiuNMZuEfJbmjGKR8OXvnyRj1sFSDgIEHsvMiGQneyma6Nm9qN6lrbUHOqWKYUhMVRZodAcEoaTp16Dbat9CyBw+JUhchzeWXw03rnnqIamidn6ZYvGXuJJE/8WqX04gE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745343321; c=relaxed/simple;
-	bh=t35hlQuDtvfHPTHDg0CvjqyOvwh0pkrGfRx7H9Y7c98=;
+	s=arc-20240116; t=1745343587; c=relaxed/simple;
+	bh=3YZFzxOuKJTu8Q1FGxg6Bi9g2E5JnxHXdcJm8VS/K0U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FM4PolJWfmZ8IO+b9n16v09guV/aHP61y1okVV8x3u8bfxc15VDLcnF9hodqdPytVwtojyX50vOHdgfjZjqFKJR/S+RC8Znpdhr1vE4hbIFdCIb+o/Hv3Z2azpigiPZQAyWCr9Ma5nUk2nopCuY7ttJyPiCOl6tfdI/9YeNpZGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=csqOyEo8; arc=none smtp.client-ip=45.157.188.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=oL3vGEoXnFCQclDiEeZbiGgg01ULgua5kMAQHFOYM98Hr0dAEDDvOO8nCwhIZVhy1EYNoWxggz3Hd0yjRiFBZwk/vJrKma7IgqDvLRIiL9k9j1MKAF2cg2ItqYdExCZLOQNhcUCj3X0Sy74Y8uwI1Li6yzfYFkM+XieT9t8mr/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RCdDxSRJ; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="csqOyEo8"
-Received: from smtp-4-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10:40ca:feff:fe05:0])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Zhpqr2rSDzYGH;
-	Tue, 22 Apr 2025 19:19:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1745342344;
-	bh=GsNBQQ/0jgUnK4M3pOOre1/bTfSk8iwc/ssxVA4CQTA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=csqOyEo8MaRVFS4xclpqckzIVytITwa+bLw3V+sKYSDC+Wy1F+CfQY2zR2QHq/bkK
-	 kNgmhXJ4GX143muDMoz1vO/Mp7gSo7bSLEB7YnIQprxxI+p7YVHs3TakuGmq54NNsC
-	 nzadJMSBa7zYIA8TyhKdgMVDSAu4R5Go6jNtDyD0=
-Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4Zhpqq4Vf1z1rG;
-	Tue, 22 Apr 2025 19:19:03 +0200 (CEST)
-Date: Tue, 22 Apr 2025 19:19:02 +0200
-From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
-Cc: willemdebruijn.kernel@gmail.com, gnoack3000@gmail.com, 
-	linux-security-module@vger.kernel.org, netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, 
-	yusongping@huawei.com, artem.kuzin@huawei.com, konstantin.meskhidze@huawei.com, 
-	Paul Moore <paul@paul-moore.com>
-Subject: Re: [RFC PATCH v3 00/19] Support socket access-control
-Message-ID: <20250422.iesaivaj8Aeb@digikod.net>
-References: <20240904104824.1844082-1-ivanov.mikhail1@huawei-partners.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RCdDxSRJ"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-224019ad9edso77710115ad.1;
+        Tue, 22 Apr 2025 10:39:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745343584; x=1745948384; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=anhUaw1RW0p1uWHnHVQxnFlleHgiv10T6B9HOPoc5+k=;
+        b=RCdDxSRJSr9md71gMVp2kAFb/P4i1ikH0zRR3U7BHn3y9eID2w00J+Ic1jsRFOdseL
+         Fdodo/Jsf+Smgn4kWrBe1FfJSG0ZRydjMO6WrgxnEDrTb/eMdyUZ+1GjCfaDZ/1GBBVS
+         4emCTL8BqaY9heqak2B0teUurP4CGTNnEQ9GuNugK2yQoYNK+Y/LAD+Ri8Un+bpmQq0U
+         x8Ov/gtH9Npw8pOI01cPOh0IA7ik3aOo8nxQM/fwEjB7p9vqoYI29VkmH12C1iHQQWbv
+         hRR5cT+dTi6kAm+P9yNGs92SvlGIBlTznSkE0Wd9L9nIe8gX7tQnouBEeuY7qPmdh1Lz
+         aCjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745343584; x=1745948384;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=anhUaw1RW0p1uWHnHVQxnFlleHgiv10T6B9HOPoc5+k=;
+        b=e64JHEnTo8appmYeza7FIAbVhMNQ22ti+Rapj0Sg3PiRDtkEYr49AkjJR8MrEoCZYj
+         8CWrAx5iKUjP4NO9zKDhGfK5naoJi6YqC+BUfUrCI3hMUjtkYiANVDTOrr8inCw43kNO
+         djAGKcUYExQWzjhPhhuZR4yZxlJneBcuEwgSkTsa57+qJzpN/DI0ionrK5n+okrsYw+g
+         wBgscAA5LeODdwejdHcFb88S5+sPSANHln/pTWNdISbn8sL45mK0bktrV/DBNy7lHHdN
+         wgEMX7Qwa3VfX3ItZ1UQj/yAO8p3pFrg3C6fyoKgb8iZeUFwnFtwlGpOMsu9yK+F/WmL
+         iI/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU6/DP5YLDvEgNUDzVkx/hdgCY6WhbG7pQipGQHvhjhZttR30x6524zP57pGeZjZVZa/UKnhlyiqOkTx7a+@vger.kernel.org, AJvYcCVlhh5ZZNC1X30554KXUGMASnwZHjIGd/LVX/YXwg0MDNgUX5gDRiUlr9i33Pi6hLEY2dk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYUHEDuqdwVNzLtW3wNwRUd5KjYV8TDj8FLnGOizoOxDwxFUj6
+	ggbAy3woE5CghG8yElNeeTG/NUGiJeyf6JVDn7BELi0V0a1Jus4=
+X-Gm-Gg: ASbGncuwkYWaTTwa/wd3QFHXU4DG0P0fA+VgSOlMgx/XbjK09Iqf+0QaJ9NiKOGpb2U
+	Dda/z2mkYGIMiDaPyxC7Mm6rn91ZLiNVkh7TwGSjJ/uO3UNOZJZWWxldzVOT2l5+ZDZ+usme6qM
+	pSnZo66ch1Im7soZqO6Dx/wGK4NDF3krC0rz3tpzEB/sZIJsvFcdeQS4xTTc6m4f5nNUK06m72D
+	qNNssMTm0WN4cHOSJp0gdeorXaDPc44AelbrTZJ5uHddRlwaWNQnW7kaOZ8nZ/OzphoZaiEchY4
+	BDY2wKT5BJ9MugM3JE3VYL5WNe5bClJvW46FDi0N
+X-Google-Smtp-Source: AGHT+IHvr3CHGB3eDx2bTmct/OupIJFB9ySp0TkQI8A4cDHpuOWfg/rg1k0f3jpJcDBOwp937CEu/w==
+X-Received: by 2002:a17:902:d4cd:b0:21f:35fd:1b6c with SMTP id d9443c01a7336-22c5364235fmr207110085ad.45.1745343584621;
+        Tue, 22 Apr 2025 10:39:44 -0700 (PDT)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22c50bdb34fsm88466805ad.31.2025.04.22.10.39.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Apr 2025 10:39:44 -0700 (PDT)
+Date: Tue, 22 Apr 2025 10:39:43 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Joshua Washington <joshwash@google.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
+	Mina Almasry <almasrymina@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Jeroen de Borst <jeroendb@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Shailend Chand <shailend@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Joe Damato <jdamato@fastly.com>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next] xdp: create locked/unlocked instances of xdp
+ redirect target setters
+Message-ID: <aAfUX_jDZpe4Vx_M@mini-arch>
+References: <20250422011643.3509287-1-joshwash@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,170 +91,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240904104824.1844082-1-ivanov.mikhail1@huawei-partners.com>
-X-Infomaniak-Routing: alpha
+In-Reply-To: <20250422011643.3509287-1-joshwash@google.com>
 
-Hi Mikhail.  Could you please send a new version taking into account the
-reviews?
+On 04/21, Joshua Washington wrote:
+> Commit 03df156dd3a6 ("xdp: double protect netdev->xdp_flags with
+> netdev->lock") introduces the netdev lock to xdp_set_features_flag().
+> The change includes a _locked version of the method, as it is possible
+> for a driver to have already acquired the netdev lock before calling
+> this helper. However, the same applies to
+> xdp_features_(set|clear)_redirect_flags(), which ends up calling the
+> unlocked version of xdp_set_features_flags() leading to deadlocks in
+> GVE, which grabs the netdev lock as part of its suspend, reset, and
+> shutdown processes:
+> 
+> [  833.265543] WARNING: possible recursive locking detected
+> [  833.270949] 6.15.0-rc1 #6 Tainted: G            E
+> [  833.276271] --------------------------------------------
+> [  833.281681] systemd-shutdow/1 is trying to acquire lock:
+> [  833.287090] ffff949d2b148c68 (&dev->lock){+.+.}-{4:4}, at: xdp_set_features_flag+0x29/0x90
+> [  833.295470]
+> [  833.295470] but task is already holding lock:
+> [  833.301400] ffff949d2b148c68 (&dev->lock){+.+.}-{4:4}, at: gve_shutdown+0x44/0x90 [gve]
+> [  833.309508]
+> [  833.309508] other info that might help us debug this:
+> [  833.316130]  Possible unsafe locking scenario:
+> [  833.316130]
+> [  833.322142]        CPU0
+> [  833.324681]        ----
+> [  833.327220]   lock(&dev->lock);
+> [  833.330455]   lock(&dev->lock);
+> [  833.333689]
+> [  833.333689]  *** DEADLOCK ***
+> [  833.333689]
+> [  833.339701]  May be due to missing lock nesting notation
+> [  833.339701]
+> [  833.346582] 5 locks held by systemd-shutdow/1:
+> [  833.351205]  #0: ffffffffa9c89130 (system_transition_mutex){+.+.}-{4:4}, at: __se_sys_reboot+0xe6/0x210
+> [  833.360695]  #1: ffff93b399e5c1b8 (&dev->mutex){....}-{4:4}, at: device_shutdown+0xb4/0x1f0
+> [  833.369144]  #2: ffff949d19a471b8 (&dev->mutex){....}-{4:4}, at: device_shutdown+0xc2/0x1f0
+> [  833.377603]  #3: ffffffffa9eca050 (rtnl_mutex){+.+.}-{4:4}, at: gve_shutdown+0x33/0x90 [gve]
+> [  833.386138]  #4: ffff949d2b148c68 (&dev->lock){+.+.}-{4:4}, at: gve_shutdown+0x44/0x90 [gve]
+> 
+> Introduce xdp_features_(set|clear)_redirect_target_locked() versions
+> which assume that the netdev lock has already been acquired before
+> setting the XDP feature flag and update GVE to use the locked version.
+> 
+> Cc: bpf@vger.kernel.org
+> Fixes: 03df156dd3a6 ("xdp: double protect netdev->xdp_flags with netdev->lock")
+> Tested-by: Mina Almasry <almasrymina@google.com>
+> Reviewed-by: Willem de Bruijn <willemb@google.com>
+> Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+> Signed-off-by: Joshua Washington <joshwash@google.com>
 
-This series should support audit by logging socket creation denials and
-extending audit_log_lsm_data().  You can get inspiration from the format
-used by audit_net_cb() but without the number to text translation, that
-can be handled by auditd if needed.  New tests should check these new
-audit logs.
-
-
-On Wed, Sep 04, 2024 at 06:48:05PM +0800, Mikhail Ivanov wrote:
-> Hello! This is v3 RFC patch dedicated to socket protocols restriction.
-> 
-> It is based on the landlock's mic-next branch on top of v6.11-rc1 kernel
-> version.
-> 
-> Objective
-> =========
-> Extend Landlock with a mechanism to restrict any set of protocols in
-> a sandboxed process.
-> 
-> Closes: https://github.com/landlock-lsm/linux/issues/6
-> 
-> Motivation
-> ==========
-> Landlock implements the `LANDLOCK_RULE_NET_PORT` rule type, which provides
-> fine-grained control of actions for a specific protocol. Any action or
-> protocol that is not supported by this rule can not be controlled. As a
-> result, protocols for which fine-grained control is not supported can be
-> used in a sandboxed system and lead to vulnerabilities or unexpected
-> behavior.
-> 
-> Controlling the protocols used will allow to use only those that are
-> necessary for the system and/or which have fine-grained Landlock control
-> through others types of rules (e.g. TCP bind/connect control with
-> `LANDLOCK_RULE_NET_PORT`, UNIX bind control with
-> `LANDLOCK_RULE_PATH_BENEATH`).
-> 
-> Consider following examples:
-> * Server may want to use only TCP sockets for which there is fine-grained
->   control of bind(2) and connect(2) actions [1].
-> * System that does not need a network or that may want to disable network
->   for security reasons (e.g. [2]) can achieve this by restricting the use
->   of all possible protocols.
-> 
-> [1] https://lore.kernel.org/all/ZJvy2SViorgc+cZI@google.com/
-> [2] https://cr.yp.to/unix/disablenetwork.html
-> 
-> Implementation
-> ==============
-> This patchset adds control over the protocols used by implementing a
-> restriction of socket creation. This is possible thanks to the new type
-> of rule - `LANDLOCK_RULE_SOCKET`, that allows to restrict actions on
-> sockets, and a new access right - `LANDLOCK_ACCESS_SOCKET_CREATE`, that
-> corresponds to creating user space sockets. The key in this rule is a pair
-> of address family and socket type (Cf. socket(2)).
-> 
-> The right to create a socket is checked in the LSM hook, which is called
-> in the __sock_create method. The following user space operations are
-> subject to this check: socket(2), socketpair(2), io_uring(7).
-> 
-> In the case of connection-based socket types,
-> `LANDLOCK_ACCESS_SOCKET_CREATE` does not restrict the actions that result
-> in creation of sockets used for messaging between already existing
-> endpoints (e.g. accept(2), setsockopt(2) with option
-> `SCTP_SOCKOPT_PEELOFF`).
-> 
-> Current limitations
-> ===================
-> `SCTP_SOCKOPT_PEELOFF` should not be restricted (see test
-> socket_creation.sctp_peeloff).
-> 
-> SCTP socket can be connected to a multiple endpoints (one-to-many
-> relation). Calling setsockopt(2) on such socket with option
-> `SCTP_SOCKOPT_PEELOFF` detaches one of existing connections to a separate
-> UDP socket. This detach is currently restrictable.
-> 
-> Code coverage
-> =============
-> Code coverage(gcov) report with the launch of all the landlock selftests:
-> * security/landlock:
-> lines......: 93.5% (794 of 849 lines)
-> functions..: 95.5% (106 of 111 functions)
-> 
-> * security/landlock/socket.c:
-> lines......: 100.0% (33 of 33 lines)
-> functions..: 100.0% (4 of 4 functions)
-> 
-> General changes v2->v3
-> ======================
-> * Implementation
->   * Accepts (AF_INET, SOCK_PACKET) as an alias for (AF_PACKET, SOCK_PACKET).
->   * Adds check to not restrict kernel sockets.
->   * Fixes UB in pack_socket_key().
->   * Refactors documentation.
-> * Tests
->   * Extends variants of `protocol` fixture with every protocol that can be
->     used to create user space sockets.
->   * Adds 5 new tests:
->     * 3 tests to check socketpair(2), accept(2) and sctp_peeloff
->       restriction.
->     * 1 test to check restriction of kernel sockets.
->     * 1 test to check AF_PACKET aliases.
-> * Documentation
->   * Updates Documentation/userspace-api/landlock.rst.
-> * Commits
->   * Rebases on mic-next.
->   * Refactors commits.
-> 
-> Previous versions
-> =================
-> v2: https://lore.kernel.org/all/20240524093015.2402952-1-ivanov.mikhail1@huawei-partners.com/
-> v1: https://lore.kernel.org/all/20240408093927.1759381-1-ivanov.mikhail1@huawei-partners.com/
-> 
-> Mikhail Ivanov (19):
->   landlock: Support socket access-control
->   landlock: Add hook on socket creation
->   selftests/landlock: Test basic socket restriction
->   selftests/landlock: Test adding a rule with each supported access
->   selftests/landlock: Test adding a rule for each unknown access
->   selftests/landlock: Test adding a rule for unhandled access
->   selftests/landlock: Test adding a rule for empty access
->   selftests/landlock: Test overlapped restriction
->   selftests/landlock: Test creating a ruleset with unknown access
->   selftests/landlock: Test adding a rule with family and type outside
->     the range
->   selftests/landlock: Test unsupported protocol restriction
->   selftests/landlock: Test that kernel space sockets are not restricted
->   selftests/landlock: Test packet protocol alias
->   selftests/landlock: Test socketpair(2) restriction
->   selftests/landlock: Test SCTP peeloff restriction
->   selftests/landlock: Test that accept(2) is not restricted
->   samples/landlock: Replace atoi() with strtoull() in
->     populate_ruleset_net()
->   samples/landlock: Support socket protocol restrictions
->   landlock: Document socket rule type support
-> 
->  Documentation/userspace-api/landlock.rst      |   46 +-
->  include/uapi/linux/landlock.h                 |   61 +-
->  samples/landlock/sandboxer.c                  |  135 ++-
->  security/landlock/Makefile                    |    2 +-
->  security/landlock/limits.h                    |    4 +
->  security/landlock/ruleset.c                   |   33 +-
->  security/landlock/ruleset.h                   |   45 +-
->  security/landlock/setup.c                     |    2 +
->  security/landlock/socket.c                    |  137 +++
->  security/landlock/socket.h                    |   19 +
->  security/landlock/syscalls.c                  |   66 +-
->  tools/testing/selftests/landlock/base_test.c  |    2 +-
->  tools/testing/selftests/landlock/common.h     |   13 +
->  tools/testing/selftests/landlock/config       |   47 +
->  tools/testing/selftests/landlock/net_test.c   |   11 -
->  .../testing/selftests/landlock/socket_test.c  | 1013 +++++++++++++++++
->  16 files changed, 1593 insertions(+), 43 deletions(-)
->  create mode 100644 security/landlock/socket.c
->  create mode 100644 security/landlock/socket.h
->  create mode 100644 tools/testing/selftests/landlock/socket_test.c
-> 
-> 
-> base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
-> -- 
-> 2.34.1
-> 
-> 
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
