@@ -1,264 +1,222 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011015.outbound.protection.outlook.com [40.107.130.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9841928CF67
-	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 15:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745336251; cv=none; b=QRvORxUImV8Om+cv/UX0CjT4HmETsfig+Jl3UtubK4ANF6u8ftOU+JKtNTLeKurBZuruI4wc7Lud91Y4I6FEMmdP+/jNGxdauH+SmpHQbzh96m4dTQUlHxTFsM6YlqhFRGZCKWKRKpLRVfUvtFVbvuPPvurX/eB6MMZANaAx+O8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745336251; c=relaxed/simple;
-	bh=RDucU3H5XAP8b9jMjhhYs8B6oOHkcNRqDggZs5GqKNo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=f5oN0cffebziRbsd8gqT1czzTDA+8l86RCVC8DJ1b0fjlYPlqCi998lY4siwC9mo/hDyzG380Sa7HOWBNBWWK7Eo3YWkLDaHlgV3MakAPWyB+Vw5ihO2ATjxyk+1nvGIeQBxuAd9I9s87NTiKabX01htAUmbvBD5kafKaL41f9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aaCEvprz; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB82E28150A;
+	Tue, 22 Apr 2025 15:37:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745336270; cv=fail; b=Sr5h9iqQjl+a2jPcwoBYeMtRqm1H2w4QajxdTgfpzlGn288kw3FnL3zcaiI30/y8/pl66KnL7qlbNI6N90jxkF7kjOPogcmQhSg7y8CDVGg9dDoZ64p2pMmM7A7lCQgLuw417Naflws81PiW7cXlig6/iY1rBrvuZc4NzYTN9Y8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745336270; c=relaxed/simple;
+	bh=vuVmMiXIlIFrE9SzFK9pAEnSc3+Q2F1dEruNDsDrnp4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=NuRlE1UjK3zXtZT2Wcdb0nQ4+cwz01VBQdpskgJoxoe30kl4mh0SvN0fJoH7VDt24CAWRr7ydFStZgwFiWclwSdN3h0x62VbWWLd74CITWdA6xmWyLzjns48VkMW7NPiCvu56VR9DCFMXzrmiCrNxKA36oShGcHWkgjvBR2nKfY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=IwPNH+bi; arc=fail smtp.client-ip=40.107.130.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aaCEvprz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745336250; x=1776872250;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=RDucU3H5XAP8b9jMjhhYs8B6oOHkcNRqDggZs5GqKNo=;
-  b=aaCEvprzFuppfjGzjI/Nq3i8K9QPkX+ra1ig7MCqltwXBNViTcUYOhsI
-   CNJD/1WgIrndcoN1cWcrG3oTVdSg/sNCQKaxwUvSm6vH6BD+xQqe1pskQ
-   n+gn+Q2+fyDNX9zwLxcFHYg6xGpUYMDH8HEdnpwxu0qoHmi0FHjPRAMvW
-   g0DsPwH9DwpO1jUH/kUXsej5Ze82haqw9DkqIpQz1ue9xaFWoBcvA8esq
-   7qzyycauNFmUeoRsU9iA7AqEUx6Zda0Zja/J0qvedkseDmFiwbFyWrOY9
-   enHwKCHIyHdrD35/DlWXfJVRdFagJuxJXP20TQdA1E7NNfe0hcuj8tPwW
-   g==;
-X-CSE-ConnectionGUID: zQhkHFQARE+sBHaw4bE54A==
-X-CSE-MsgGUID: u0ywNH00Q6qAqwOEIaU5xg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="64312356"
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
-   d="scan'208";a="64312356"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 08:37:24 -0700
-X-CSE-ConnectionGUID: GjODENvjSxmCX/o41ONp/w==
-X-CSE-MsgGUID: 2DV9VM5EQWiXxxv45sTGGg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
-   d="scan'208";a="131947833"
-Received: from gk3153-pr4-x299-22869.igk.intel.com (HELO localhost.igk.intel.com) ([10.102.21.130])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 08:37:21 -0700
-From: Michal Kubiak <michal.kubiak@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: maciej.fijalkowski@intel.com,
-	aleksander.lobakin@intel.com,
-	przemyslaw.kitszel@intel.com,
-	dawid.osuchowski@linux.intel.com,
-	jacob.e.keller@intel.com,
+	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="IwPNH+bi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xEBo3J21St+717WggkB9mii7tAFqZ4sy1SrB5MOQLfPsOAPfqK0woo3XVh/AcVL+XI76GPhWTogPzGE3+f/unx6V8BsdxXWS5eZLb0xuaeU624s6ti8OSpJ7ZntkJavPnV6lUagJULMuBjIBMLoe0T0HPJyYSkxERjp60uNan9ODodFQvLLelAZ7nBJdVItqVG0oNlyBIRHCZu6UiiVuGVWGnvKVX/WN3EI/bYLLc/JAY3xN39V3o8pSINCsKZw/JQTW9QDugtbqI9HfpXOBLTpTQ9eWPZG3L7fmtRXDxhTVyKHNQXW/rryE9Qd8SvKLB0Po6IeTGjnMUtwbxzzIBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7/lunyvCm0Hb8cd7sJ/iaSABAweI957IMRI5NtjFtSY=;
+ b=VBWhcb+PZHv7fl3qOJeG9YFG7wRlrLWHIagnAZJUQH6qNLt19Tb0jnnIXLnXnLSxjWXBPoMDvni2tR11a4NaeYGDUuTx/v0v6airJGGk9c3dCGwDJiYxFv4IQGxnZQV3GsPaj9S/E+Jtns+ziYfrTfAkupfzfQraIABVlxuqlUCeMP/sYREMYP7JkyH++gQUqpCgg1E6TzCOvM3wdOd0mkRf6y1F4wVazkq/iRUzLDmNo+QV0cJATxnHnk7330NsyezDgrj7h+6azr6TRB05vx7kYJtjJFP8kOjic+tZMVmJWlYZo7Kly5ITR9+mTa4vc6tFiSFt8cDSiKgeFLf+dA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 131.228.2.29) smtp.rcpttodomain=amazon.com smtp.mailfrom=nokia-bell-labs.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nokia-bell-labs.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7/lunyvCm0Hb8cd7sJ/iaSABAweI957IMRI5NtjFtSY=;
+ b=IwPNH+biMwbETanBRWO1Ay7HXcGHp9ieg2MsPW/Frsn4UNZzaeg1DDB7kGkBVOYN6O3+jxkcn4Lr3ohY/Bv83J93HeAYQv23gJLrgbzPcF2GSpPib0rC4AulEl3oOtxVthuDcsqF+5eQHgknRtIhdaaenYjVSQ2mF+Xzpqtevfw6dwYxeSFs7bZPmjRMuTDTp3TisXE3308W9841Ewrms33X1SuxY9AxM26oAvytd9Em5PZkHoZ2Go4f0k6klAKkTQhZ3mEsEeNsCxa0RkiI/UETnCZwY0K5sI8uaxmHKESOUrnvBWHuMpOtuvL0NrNR5a6qkD9IIzo962x7oVOr+g==
+Received: from DB9PR01CA0021.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:1d8::26) by PAXPR07MB7901.eurprd07.prod.outlook.com
+ (2603:10a6:102:134::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.31; Tue, 22 Apr
+ 2025 15:37:45 +0000
+Received: from DU6PEPF00009525.eurprd02.prod.outlook.com
+ (2603:10a6:10:1d8:cafe::d5) by DB9PR01CA0021.outlook.office365.com
+ (2603:10a6:10:1d8::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.35 via Frontend Transport; Tue,
+ 22 Apr 2025 15:37:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 131.228.2.29)
+ smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
+Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
+ designates 131.228.2.29 as permitted sender) receiver=protection.outlook.com;
+ client-ip=131.228.2.29; helo=fihe3nok0735.emea.nsn-net.net; pr=C
+Received: from fihe3nok0735.emea.nsn-net.net (131.228.2.29) by
+ DU6PEPF00009525.mail.protection.outlook.com (10.167.8.6) with Microsoft SMTP
+ Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.12 via
+ Frontend Transport; Tue, 22 Apr 2025 15:37:44 +0000
+Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
+	by fihe3nok0735.emea.nsn-net.net (Postfix) with ESMTP id 94CAB20A27;
+	Tue, 22 Apr 2025 18:37:43 +0300 (EEST)
+From: chia-yu.chang@nokia-bell-labs.com
+To: horms@kernel.org,
+	dsahern@kernel.org,
+	kuniyu@amazon.com,
+	bpf@vger.kernel.org,
 	netdev@vger.kernel.org,
-	Michal Kubiak <michal.kubiak@intel.com>
-Subject: [PATCH iwl-net 3/3] ice: fix rebuilding the Tx scheduler tree for large queue counts
-Date: Tue, 22 Apr 2025 17:36:59 +0200
-Message-Id: <20250422153659.284868-4-michal.kubiak@intel.com>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20250422153659.284868-1-michal.kubiak@intel.com>
-References: <20250422153659.284868-1-michal.kubiak@intel.com>
+	dave.taht@gmail.com,
+	pabeni@redhat.com,
+	jhs@mojatatu.com,
+	kuba@kernel.org,
+	stephen@networkplumber.org,
+	xiyou.wangcong@gmail.com,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	donald.hunter@gmail.com,
+	ast@fiberby.net,
+	liuhangbin@gmail.com,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	ij@kernel.org,
+	ncardwell@google.com,
+	koen.de_schepper@nokia-bell-labs.com,
+	g.white@cablelabs.com,
+	ingemar.s.johansson@ericsson.com,
+	mirja.kuehlewind@ericsson.com,
+	cheshire@apple.com,
+	rs.ietf@gmx.at,
+	Jason_Livingood@comcast.com,
+	vidhi_goel@apple.com
+Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Subject: [PATCH v5 net-next 00/15] AccECN protocol patch series
+Date: Tue, 22 Apr 2025 17:35:47 +0200
+Message-Id: <20250422153602.54787-1-chia-yu.chang@nokia-bell-labs.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU6PEPF00009525:EE_|PAXPR07MB7901:EE_
+X-MS-Office365-Filtering-Correlation-Id: 32dd5005-711f-4cb9-a4c5-08dd81b3a09f
+X-LD-Processed: 5d471751-9675-428d-917b-70f44f9630b0,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|36860700013|13003099007|921020;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?WWk5SGVoU3ZYMnpvVTUwQXNyRUNSa2J2eC9xanJuZDBBY2FUOHVPZ3g2aFh3?=
+ =?utf-8?B?UFBPNXBBSkQ1cVVVb0VIQXJ3RmU5dGJneWtSdGxiVUdPSDdhd2tNL2NLT3VW?=
+ =?utf-8?B?Smh2Z1dzQ2QvckRVWWNlcmxRdmRYZWlRUXJUeXRPTEpmcTZqQTc3WXdiZWlk?=
+ =?utf-8?B?MGVEbDdRbHhFK1hOQ2RGMFA0a1VMVkRCVnVyMVYxL3BGWDZIYmpLWEpUUEZO?=
+ =?utf-8?B?S1A3Y0NjMGdGbTQzQ1FqUkk0QWtLREZ1RnVmY3pJVUgwSm9zT3YxYW1kRTdS?=
+ =?utf-8?B?bGliWkY1YVpBSlR6WGpBUUNMSnlqRWMyNUVvVjZseXpKdVI4Q3hWRUVoUVlp?=
+ =?utf-8?B?RytRb0dFaHJ4aXNMWGFtLzVBcWk3OTNFb205blVucDZ2bHB3MjE0M2VFdWNy?=
+ =?utf-8?B?MlVPUVY1U3V6WmZXYktmbE5GcDlPY29uM3p2THR3bzdTYlNBSmk3VEtoUjZx?=
+ =?utf-8?B?Zzc0eWsrVzBRdFp2aG1yajdOQnBoYjJQR0FDTW1mVEMyc1VOVUJWRmRZb2tS?=
+ =?utf-8?B?R2UzVEw1a2MydElkWDVWaWVWaFVtNHBDaWtDVUtEVTlTck5TSktOK0p6dDZB?=
+ =?utf-8?B?S3hWRk8yRitPNUZSTnBLSFVGbXVBZFJvc2J3eG9FSHhaWUVBZUtCeVl4Uitr?=
+ =?utf-8?B?eGRaaGsyaHBLUitkOEpVYm4vSVg0TU42MjBZRU5Uc1hyQUEzUVR2bHBPdHRJ?=
+ =?utf-8?B?QU9IbTRHdDl6TmJ5eDM4cHZtd1Y0WmJUbXRNczY5cVNsazJHcTVGaWZ3b0dH?=
+ =?utf-8?B?NElybkVTSDYyY3FHelNMaGFpbXdiVGtISFlROHI3NDljMnBSL2ovUDJMV1Jz?=
+ =?utf-8?B?MXdMcUxqeC9nZGtwcEZlUHBnSW4xNWxPemkydzRBdCtlbHBYQitpQ3ZVQVZh?=
+ =?utf-8?B?d3QxclVNMzQ1cDNMZ3ozaVZHblNRQU9wWFBub3NoN0JvbVRvek1EejJSMTIw?=
+ =?utf-8?B?cWRESFVZQXRKUVhEM3BKT3hoZndPTUE5VG5TUm1YdFhkdHkwck9qdEFtQWZW?=
+ =?utf-8?B?TGM2WTdIekFLTWUrN1BnL0pwZmVKMG5sVnlKZGo3TGlNT0owSmJyOGQvbjRP?=
+ =?utf-8?B?aGo1WjhhdW9WODlzL3N4N3FxV09yeWFxL29lVTNkSWhXbTU3NTM5eDFJWVpU?=
+ =?utf-8?B?eStwdFRpMnhJZk9iUVU2K0hjM2pvZmlBemZlQkZOTmd6Q1ZGWTNTQWdoZlky?=
+ =?utf-8?B?TU1vZHl4U1lCMGV5aDVSaVd1Y0syQ1hHUVY2OHRSRjFTUEtRRFlIYWZCZFE5?=
+ =?utf-8?B?OFFHay9xUHFaaUo5OHo0aHlka0F1Mlc5ZlhHL1ExWVFvMkZ3cjQwM1k0OWw2?=
+ =?utf-8?B?ajJJSzZKUEszalU0eG02dFBFbHNXR0RZK1Z5QVRBTlFsVmZCUjlSU1hmZVd0?=
+ =?utf-8?B?UzUwSEJOVWsxQXBtaVdqV1R6WnFsMlM5andaS3Q5QWNndFVYKzU0dU5wOXhq?=
+ =?utf-8?B?UHYvRFFtSVIzU3RpQVpiQXJZeVlGVHRXT2J4cDRNN0s2enMxaDZJODYvSTgw?=
+ =?utf-8?B?WWNjY3NrRDdSemtueG9jUVdlb3cxV0JNZDY0WnJ3WkRTQjFGV0ZnVzdLbHoz?=
+ =?utf-8?B?RnFlT0lyVW4zVC9oU0lGRnRWV2lrS0I3MGcxbTQ3SzBhQ1RMMHB4ZDZFLytU?=
+ =?utf-8?B?WkttSTNkT3lzMWxEOUhJR0MvNU5SRHlDREJpNEFMUEFid0t3Yy8zTmx1VXB1?=
+ =?utf-8?B?QlplVmhWeDFQT3dOVko2NjNkRk1ndkVsMHR0ZmJGajJyVTVtTTZrMERON3d5?=
+ =?utf-8?B?TGZVV3BFbDI3YmJRMzBYcjVFZVJFQ0JpaDdiemhtYXFDSnBBZHljN2FXVXBm?=
+ =?utf-8?B?NXFoWHRCbk9qYjZNSzE4Ryt3TTBIVkcvUEVmQ1lKcnJwdm9ldjQwUXovYjBX?=
+ =?utf-8?B?N3FwL3dvRVdKQm9sVzRtUWxIS2Q1UzNRcTFSNVMrR0c1OW96akVzSTVFeGFv?=
+ =?utf-8?B?djIvMStrTVBFbUJaa25ranJRVEhZMHNHVkZhaFlLdWN5U2pERXFaR3loNDU1?=
+ =?utf-8?B?ZGJqWGRXczJCeEthRmpzY3dISE9VYjZYekcrTmQ2OEMwVXlUK2ZvWU5MWEtB?=
+ =?utf-8?B?d3VNbGJzZEYxRDZWM2lnNmd3UFhWVVd0dlpUQT09?=
+X-Forefront-Antispam-Report:
+ CIP:131.228.2.29;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fihe3nok0735.emea.nsn-net.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(36860700013)(13003099007)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: nokia-bell-labs.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2025 15:37:44.9945
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32dd5005-711f-4cb9-a4c5-08dd81b3a09f
+X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.29];Helo=[fihe3nok0735.emea.nsn-net.net]
+X-MS-Exchange-CrossTenant-AuthSource: DU6PEPF00009525.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR07MB7901
 
-The current implementation of the Tx scheduler allows the tree to be
-rebuilt as the user adds more Tx queues to the VSI. In such a case,
-additional child nodes are added to the tree to support the new number
-of queues.
-Unfortunately, this algorithm does not take into account that the limit
-of the VSI support node may be exceeded, so an additional node in the
-VSI layer may be required to handle all the requested queues.
+From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 
-Such a scenario occurs when adding XDP Tx queues on machines with many
-CPUs. Although the driver still respects the queue limit returned by
-the FW, the Tx scheduler was unable to add those queues to its tree
-and returned one of the errors below.
+Hello,
 
-Such a scenario occurs when adding XDP Tx queues on machines with many
-CPUs (e.g. at least 321 CPUs, if there is already 128 Tx/Rx queue pairs).
-Although the driver still respects the queue limit returned by the FW,
-the Tx scheduler was unable to add those queues to its tree and returned
-the following errors:
+Plese find the v5:
 
-     Failed VSI LAN queue config for XDP, error: -5
-or:
-     Failed to set LAN Tx queue context, error: -22
+v5 (22-Apr-2025)
+- Further fix for 32-bit ARM alignment in tcp.c (Simon Horman <horms@kernel.org>)
 
-Fix this problem by extending the tree rebuild algorithm to check if the
-current VSI node can support the requested number of queues. If it
-cannot, create as many additional VSI support nodes as necessary to
-handle all the required Tx queues.
-Also, make the search for the next free VSI node more restrictive. That is,
-add queue group nodes only to the VSI support nodes that have a matching
-VSI handle.
-Finally, fix the comment describing the tree update algorithm to better
-reflect the current scenario.
+v4 (18-Apr-2025)
+- Fix 32-bit ARM assertion for alignment requirement (Simon Horman <horms@kernel.org>)
 
-Fixes: b0153fdd7e8a ("ice: update VSI config dynamically")
-Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_sched.c | 92 ++++++++++++++++++++--
- 1 file changed, 87 insertions(+), 5 deletions(-)
+v3 (14-Apr-2025)
+- Fix patch apply issue in v2 (Jakub Kicinski <kuba@kernel.org>)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sched.c b/drivers/net/ethernet/intel/ice/ice_sched.c
-index 6524875b34d3..9d1f8db4c503 100644
---- a/drivers/net/ethernet/intel/ice/ice_sched.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sched.c
-@@ -84,6 +84,27 @@ ice_sched_find_node_by_teid(struct ice_sched_node *start_node, u32 teid)
- 	return NULL;
- }
- 
-+/**
-+ * ice_sched_find_next_vsi_node - find the next node for a given VSI
-+ * @vsi_node: VSI support node to start search with
-+ *
-+ * Return: Next VSI support node, or NULL.
-+ *
-+ * The function returns a pointer to the next node from the VSI layer
-+ * assigned to the given VSI, or NULL if there is no such a node.
-+ */
-+static struct ice_sched_node *
-+ice_sched_find_next_vsi_node(struct ice_sched_node *vsi_node)
-+{
-+	unsigned int vsi_handle = vsi_node->vsi_handle;
-+
-+	while ((vsi_node = vsi_node->sibling) != NULL)
-+		if (vsi_node->vsi_handle == vsi_handle)
-+			break;
-+
-+	return vsi_node;
-+}
-+
- /**
-  * ice_aqc_send_sched_elem_cmd - send scheduling elements cmd
-  * @hw: pointer to the HW struct
-@@ -1084,8 +1105,10 @@ ice_sched_add_nodes_to_layer(struct ice_port_info *pi,
- 		if (parent->num_children < max_child_nodes) {
- 			new_num_nodes = max_child_nodes - parent->num_children;
- 		} else {
--			/* This parent is full, try the next sibling */
--			parent = parent->sibling;
-+			/* This parent is full,
-+			 * try the next available sibling.
-+			 */
-+			parent = ice_sched_find_next_vsi_node(parent);
- 			/* Don't modify the first node TEID memory if the
- 			 * first node was added already in the above call.
- 			 * Instead send some temp memory for all other
-@@ -1528,12 +1551,23 @@ ice_sched_get_free_qparent(struct ice_port_info *pi, u16 vsi_handle, u8 tc,
- 	/* get the first queue group node from VSI sub-tree */
- 	qgrp_node = ice_sched_get_first_node(pi, vsi_node, qgrp_layer);
- 	while (qgrp_node) {
-+		struct ice_sched_node *next_vsi_node;
-+
- 		/* make sure the qgroup node is part of the VSI subtree */
- 		if (ice_sched_find_node_in_subtree(pi->hw, vsi_node, qgrp_node))
- 			if (qgrp_node->num_children < max_children &&
- 			    qgrp_node->owner == owner)
- 				break;
- 		qgrp_node = qgrp_node->sibling;
-+		if (qgrp_node)
-+			continue;
-+
-+		next_vsi_node = ice_sched_find_next_vsi_node(vsi_node);
-+		if (!next_vsi_node)
-+			break;
-+
-+		vsi_node = next_vsi_node;
-+		qgrp_node = ice_sched_get_first_node(pi, vsi_node, qgrp_layer);
- 	}
- 
- 	/* Select the best queue group */
-@@ -1779,7 +1813,11 @@ ice_sched_add_vsi_support_nodes(struct ice_port_info *pi, u16 vsi_handle,
- 		if (!parent)
- 			return -EIO;
- 
--		if (i == vsil)
-+		/* Do not modify the VSI handle for already existing VSI nodes,
-+		 * (if no new VSI node was added to the tree).
-+		 * Assign the VSI handle only to newly added VSI nodes.
-+		 */
-+		if (i == vsil && num_added)
- 			parent->vsi_handle = vsi_handle;
- 	}
- 
-@@ -1812,6 +1850,41 @@ ice_sched_add_vsi_to_topo(struct ice_port_info *pi, u16 vsi_handle, u8 tc)
- 					       num_nodes);
- }
- 
-+/**
-+ * ice_sched_recalc_vsi_support_nodes - recalculate VSI support nodes count
-+ * @hw: pointer to the HW struct
-+ * @vsi_node: pointer to the leftmost VSI node that needs to be extended
-+ * @new_numqs: new number of queues that has to be handled by the VSI
-+ * @new_num_nodes: pointer to nodes count table to modify the VSI layer entry
-+ *
-+ * This function recalculates the number of supported nodes that need to
-+ * be added after adding more Tx queues for a given VSI.
-+ * The number of new VSI support nodes that shall be added will be saved
-+ * to the @new_num_nodes table for the VSI layer.
-+ */
-+static void
-+ice_sched_recalc_vsi_support_nodes(struct ice_hw *hw,
-+				   struct ice_sched_node *vsi_node,
-+				   unsigned int new_numqs, u16 *new_num_nodes)
-+{
-+	u32 vsi_nodes_cnt = 1;
-+	u32 max_queue_cnt = 1;
-+	u32 qgl, vsil;
-+
-+	qgl = ice_sched_get_qgrp_layer(hw);
-+	vsil = ice_sched_get_vsi_layer(hw);
-+
-+	for (u32 i = vsil; i <= qgl; i++)
-+		max_queue_cnt *= hw->max_children[i];
-+
-+	while ((vsi_node = ice_sched_find_next_vsi_node(vsi_node)) != NULL)
-+		vsi_nodes_cnt++;
-+
-+	if (new_numqs > (max_queue_cnt * vsi_nodes_cnt))
-+		new_num_nodes[vsil] = DIV_ROUND_UP(new_numqs, max_queue_cnt) -
-+				      vsi_nodes_cnt;
-+}
-+
- /**
-  * ice_sched_update_vsi_child_nodes - update VSI child nodes
-  * @pi: port information structure
-@@ -1863,16 +1936,25 @@ ice_sched_update_vsi_child_nodes(struct ice_port_info *pi, u16 vsi_handle,
- 			return status;
- 	}
- 
-+	ice_sched_recalc_vsi_support_nodes(hw, vsi_node,
-+					   new_numqs, new_num_nodes);
- 	ice_sched_calc_vsi_child_nodes(hw, new_numqs - prev_numqs,
- 				       new_num_nodes);
- 
--	/* Keep the max number of queue configuration all the time. Update the
--	 * tree only if number of queues > previous number of queues. This may
-+	/* Never decrease the number of queues in the tree. Update the tree
-+	 * only if number of queues > previous number of queues. This may
- 	 * leave some extra nodes in the tree if number of queues < previous
- 	 * number but that wouldn't harm anything. Removing those extra nodes
- 	 * may complicate the code if those nodes are part of SRL or
- 	 * individually rate limited.
-+	 * Also, add the required VSI support nodes if the existing ones cannot
-+	 * handle the requested new number of queues.
- 	 */
-+	status = ice_sched_add_vsi_support_nodes(pi, vsi_handle, tc_node,
-+						 new_num_nodes);
-+	if (status)
-+		return status;
-+
- 	status = ice_sched_add_vsi_child_nodes(pi, vsi_handle, tc_node,
- 					       new_num_nodes, owner);
- 	if (status)
+v2 (18-Mar-2025)
+- Add one missing patch from previous AccECN protocol preparation patch series to this patch series
+
+The full patch series can be found in
+https://github.com/L4STeam/linux-net-next/commits/upstream_l4steam/
+
+The Accurate ECN draft can be found in
+https://datatracker.ietf.org/doc/html/draft-ietf-tcpm-accurate-ecn-28
+
+Best regards,
+Chia-Yu
+
+Chia-Yu Chang (1):
+  tcp: accecn: AccECN option failure handling
+
+Ilpo Järvinen (14):
+  tcp: reorganize SYN ECN code
+  tcp: fast path functions later
+  tcp: AccECN core
+  tcp: accecn: AccECN negotiation
+  tcp: accecn: add AccECN rx byte counters
+  tcp: accecn: AccECN needs to know delivered bytes
+  tcp: allow embedding leftover into option padding
+  tcp: sack option handling improvements
+  tcp: accecn: AccECN option
+  tcp: accecn: AccECN option send control
+  tcp: accecn: AccECN option ceb/cep heuristic
+  tcp: accecn: AccECN ACE field multi-wrap heuristic
+  tcp: accecn: try to fit AccECN option with SACK
+  tcp: try to avoid safer when ACKs are thinned
+
+ include/linux/tcp.h        |  27 +-
+ include/net/netns/ipv4.h   |   2 +
+ include/net/tcp.h          | 198 +++++++++++--
+ include/uapi/linux/tcp.h   |   7 +
+ net/ipv4/syncookies.c      |   3 +
+ net/ipv4/sysctl_net_ipv4.c |  19 ++
+ net/ipv4/tcp.c             |  26 +-
+ net/ipv4/tcp_input.c       | 591 +++++++++++++++++++++++++++++++++++--
+ net/ipv4/tcp_ipv4.c        |   5 +-
+ net/ipv4/tcp_minisocks.c   |  92 +++++-
+ net/ipv4/tcp_output.c      | 302 +++++++++++++++++--
+ net/ipv6/syncookies.c      |   1 +
+ net/ipv6/tcp_ipv6.c        |   1 +
+ 13 files changed, 1178 insertions(+), 96 deletions(-)
+
 -- 
-2.45.2
+2.34.1
 
