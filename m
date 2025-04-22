@@ -1,165 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5699F214815;
-	Tue, 22 Apr 2025 10:12:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A06DF510;
+	Tue, 22 Apr 2025 10:16:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745316778; cv=none; b=H6q08drlIXGiXDLO23X/ITJPIOAFPw0iMv99ibEmXkWl6MQnsbpqASrsvSJDYJaIJsWAEdhVsMl0LYRFgOQ+MGhf8y1i0ByTWKAaEy3pwUrRREkGXv93UQT4+4X3RpgMu35CVF1eefKfI8BiVLWcorVrAMIKMIWBjaIceq7duuk=
+	t=1745316987; cv=none; b=q2XAkkTSvKg3RxoBWrSqoVcbZztP/fgGtJQa+MCySmnFes1KIFI7rsXpJrxCyJwj0HA8p7o9uFhgqewWA+0Elh7SmWVBT/Jy61RyyYF8TDF4o4wrnyBWgOdU3uX5PMXBs/rr8si6hnzg8y/rRcf6C+6ocWISejli454ALKcxY3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745316778; c=relaxed/simple;
-	bh=zBdyi2R9Lkw9tHEasbCLnDpaXuNn2xb91rzlh3ywO7A=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=m1dGHTBOF4OsKfYW1aH223NAGU7VVs2ZEhX6wPtciLAZnyjmWt/kpao4vgTkjHu7x6vyrbAEVYqrOn5p2svqdVaM+l/kDlPSmsXjonOnlJaJD1Yx3McRQyIBWLsONxzIT19K7Cddr+SsHYUrvxEIv1iLa6/UlX3m9ZBJdfu2+Gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FNMvgoMX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745316987; c=relaxed/simple;
+	bh=wWjKBX2zeekrjYxCeQgtVm5V/GoHtzZQlT8JVvJNDWk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pINYpaGxRCybjPRASnierEmuA539BLEP1o46+a4bjErG6gGeVN7iES2A4x1csWaUbbm3BJ029dJK/n7603ABy9JELTCB/RUf6NVR+kkdwFdF9WFtmBtbuWzGsGTIAA7+NCKUGcOLrAIvHt9/UkA8SZznxkP2M3fdb8MK84CQQbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PJmtq8bG; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FNMvgoMX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91AABC4CEEF;
-	Tue, 22 Apr 2025 10:12:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745316777;
-	bh=zBdyi2R9Lkw9tHEasbCLnDpaXuNn2xb91rzlh3ywO7A=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=FNMvgoMXoicOi9N84cvWyw/627EaP8c/B31+dwNTir3+vDFFnUMa/ByaMeQwif1q/
-	 cpwBKO7JICYSqToP6NBIVY0+CwS7ZDPhBOH3+pfHRlJOzNIXxp3tf+qMHhGxpVnBVb
-	 uyvff7dkuRT2Lk2es+0uP+Mny5VjkTpJ6i+k19kW3NPk0+qFMR3KcyBlfBFGv3CIKb
-	 dQxvXSgDSyuhIgOF8xXlLnlIDTmHDEawIXsKujv59qPZFvzAPMUwJRZ5i1grkIpwXu
-	 3hNtz+UO6dHqEjm9FkaKSe0HCQYar8sZWoxp1J936PHU/1x17BGmj92kQ+TmHjDlCU
-	 0xniIqxVIShnA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
-Cc: <boqun.feng@gmail.com>,  <rust-for-linux@vger.kernel.org>,
-  <gary@garyguo.net>,  <me@kloenk.dev>,  <daniel.almeida@collabora.com>,
-  <linux-kernel@vger.kernel.org>,  <netdev@vger.kernel.org>,
-  <andrew@lunn.ch>,  <hkallweit1@gmail.com>,  <tmgross@umich.edu>,
-  <ojeda@kernel.org>,  <alex.gaynor@gmail.com>,
-  <bjorn3_gh@protonmail.com>,  <benno.lossin@proton.me>,
-  <a.hindborg@samsung.com>,  <aliceryhl@google.com>,
-  <anna-maria@linutronix.de>,  <frederic@kernel.org>,
-  <tglx@linutronix.de>,  <arnd@arndb.de>,  <jstultz@google.com>,
-  <sboyd@kernel.org>,  <mingo@redhat.com>,  <peterz@infradead.org>,
-  <juri.lelli@redhat.com>,  <vincent.guittot@linaro.org>,
-  <dietmar.eggemann@arm.com>,  <rostedt@goodmis.org>,
-  <bsegall@google.com>,  <mgorman@suse.de>,  <vschneid@redhat.com>,
-  <tgunders@redhat.com>,  <david.laight.linux@gmail.com>
-Subject: Re: [PATCH v13 3/5] rust: time: Introduce Instant type
-In-Reply-To: <20250416.124624.303652240226377083.fujita.tomonori@gmail.com>
-	(FUJITA Tomonori's message of "Wed, 16 Apr 2025 12:46:24 +0900")
-References: <87lds3cjgx.fsf@kernel.org>
-	<20250414.205954.2258973048785103265.fujita.tomonori@gmail.com>
-	<67fe9efe.d40a0220.aa401.b05f@mx.google.com>
-	<E9nr7KtdtfgTx8OzOOMM6dg3LRl1-BqtqXj6-tGosNOz6Gi2PvOpoyiiqPGv_9nL8hfBOcnCbGP-LfBKIjlV9A==@protonmail.internalid>
-	<20250416.124624.303652240226377083.fujita.tomonori@gmail.com>
-User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Tue, 22 Apr 2025 12:07:02 +0200
-Message-ID: <87cyd4bjcp.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PJmtq8bG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745316986; x=1776852986;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wWjKBX2zeekrjYxCeQgtVm5V/GoHtzZQlT8JVvJNDWk=;
+  b=PJmtq8bGCja3G5VPd96LQFIi1PAaj5jo6fd+DVKjchWYEBeSNLpE7lc3
+   z5ME8ba/PWvTg6ijdAJ4ojZfASnPU55VsvwTEnI6zpmmgm0k6tUjVUTP1
+   hFhRCbr+mPtRbMAVIqaIBmtaKjMiv9bf4VS1ITpMPX+bh/edk3mdBaYqE
+   UfWAaxU3JEu/ZAUJgWslZacj4kQ+ksLNvhqz+SYsND6RNVTm+QkbfX9RG
+   yZS6oPgd4OvhTVvLraHZ4QRhKUA8eXWZ+/GQ2T7XUkcE6TIQtZexOJ41G
+   fX86OB6KRKsZPUk6Ie3tuYjZYdOjw2u81z9DfonABeVcrEwuBxzzhqOaw
+   Q==;
+X-CSE-ConnectionGUID: hm8sOjwMQpCcczQqFgITYg==
+X-CSE-MsgGUID: 0oc2Us8NR2CYrP5W/mN0cw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11410"; a="58244146"
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; 
+   d="scan'208";a="58244146"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 03:16:25 -0700
+X-CSE-ConnectionGUID: wGdjKXAeT1SkyB2PVG1zzA==
+X-CSE-MsgGUID: 97t2Opq9TX+hchHBw8+i/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; 
+   d="scan'208";a="132513185"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 03:16:19 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1u7Afm-0000000EhIi-3puL;
+	Tue, 22 Apr 2025 13:16:14 +0300
+Date: Tue, 22 Apr 2025 13:16:14 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Aditya Garg <gargaditya08@live.com>, Hector Martin <marcan@marcan.st>,
+	alyssa@rosenzweig.io, Petr Mladek <pmladek@suse.com>,
+	Sven Peter <sven@svenpeter.dev>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Aun-Ali Zaidi <admin@kodeit.net>,
+	Maxime Ripard <mripard@kernel.org>, airlied@redhat.com,
+	Simona Vetter <simona@ffwll.ch>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andrew Morton <akpm@linux-foundation.org>, apw@canonical.com,
+	joe@perches.com, dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com,
+	Kees Cook <kees@kernel.org>, tamird@gmail.com,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+	Asahi Linux Mailing List <asahi@lists.linux.dev>,
+	netdev <netdev@vger.kernel.org>
+Subject: Re: [PATCH v4 1/3] lib/vsprintf: Add support for generic FourCCs by
+ extending %p4cc
+Message-ID: <aAdsbgx53ZbdvB6p@smile.fi.intel.com>
+References: <PN3PR01MB9597382EFDE3452410A866AEB8B52@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
+ <PN3PR01MB9597B01823415CB7FCD3BC27B8B52@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
+ <CAMuHMdV9tX=TG7E_CrSF=2PY206tXf+_yYRuacG48EWEtJLo-Q@mail.gmail.com>
+ <PN3PR01MB9597B3AE75E009857AA12D4DB8BB2@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
+ <CAMuHMdWpqHLest0oqiB+hG47t=G7OScLmHz5zr2u0ZgED_+Obg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdWpqHLest0oqiB+hG47t=G7OScLmHz5zr2u0ZgED_+Obg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+On Tue, Apr 22, 2025 at 10:43:59AM +0200, Geert Uytterhoeven wrote:
+> On Tue, 22 Apr 2025 at 10:30, Aditya Garg <gargaditya08@live.com> wrote:
+> > On 22-04-2025 01:37 pm, Geert Uytterhoeven wrote:
+> > > On Tue, 8 Apr 2025 at 08:48, Aditya Garg <gargaditya08@live.com> wrote:
 
-> On Tue, 15 Apr 2025 11:01:30 -0700
-> Boqun Feng <boqun.feng@gmail.com> wrote:
->
->> On Mon, Apr 14, 2025 at 08:59:54PM +0900, FUJITA Tomonori wrote:
->>> On Mon, 14 Apr 2025 09:04:14 +0200
->>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->>>
->>> > "Boqun Feng" <boqun.feng@gmail.com> writes:
->>> >
->>> >> On Sun, Apr 13, 2025 at 07:43:08PM +0900, FUJITA Tomonori wrote:
->>> >>> Introduce a type representing a specific point in time. We could use
->>> >>> the Ktime type but C's ktime_t is used for both timestamp and
->>> >>> timedelta. To avoid confusion, introduce a new Instant type for
->>> >>> timestamp.
->>> >>>
->>> >>> Rename Ktime to Instant and modify their methods for timestamp.
->>> >>>
->>> >>> Implement the subtraction operator for Instant:
->>> >>>
->>> >>> Delta = Instant A - Instant B
->>> >>>
->>> >>> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
->>> >>
->>> >> I probably need to drop my Reviewed-by because of something below:
->>> >>
->>> >>> Reviewed-by: Gary Guo <gary@garyguo.net>
->>> >>> Reviewed-by: Fiona Behrens <me@kloenk.dev>
->>> >>> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
->>> >>> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
->>> >>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->>> >>> ---
->>> >> [...]
->>> >>> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
->>> >>> index ce53f8579d18..27243eaaf8ed 100644
->>> >>> --- a/rust/kernel/time/hrtimer.rs
->>> >>> +++ b/rust/kernel/time/hrtimer.rs
->>> >>> @@ -68,7 +68,7 @@
->>> >>>  //! `start` operation.
->>> >>>
->>> >>>  use super::ClockId;
->>> >>> -use crate::{prelude::*, time::Ktime, types::Opaque};
->>> >>> +use crate::{prelude::*, time::Instant, types::Opaque};
->>> >>>  use core::marker::PhantomData;
->>> >>>  use pin_init::PinInit;
->>> >>>
->>> >>> @@ -189,7 +189,7 @@ pub trait HrTimerPointer: Sync + Sized {
->>> >>>
->>> >>>      /// Start the timer with expiry after `expires` time units. If the timer was
->>> >>>      /// already running, it is restarted with the new expiry time.
->>> >>> -    fn start(self, expires: Ktime) -> Self::TimerHandle;
->>> >>> +    fn start(self, expires: Instant) -> Self::TimerHandle;
->>> >>
->>> >> We should be able to use what I suggested:
->>> >>
->>> >> 	https://lore.kernel.org/rust-for-linux/Z_ALZsnwN53ZPBrB@boqun-archlinux/
->>> >>
->>> >> to make different timer modes (rel or abs) choose different expire type.
->>> >>
->>> >> I don't think we can merge this patch as it is, unfortunately, because
->>> >> it doesn't make sense for a relative timer to take an Instant as expires
->>> >> value.
->>> >
->>> > I told Tomo he could use `Instant` in this location and either he or I
->>> > would fix it up later [1].
->>> >
->>
->> I saw that, however, I don't think we can put `Instant` as the parameter
->> for HrTimerPointer::start() because we don't yet know how long would the
->> fix-it-up-later take. And it would confuse users if they need a put an
->> Instant for relative time.
->>
->>> > I don't want to block the series on this since the new API is not worse
->>> > than the old one where Ktime is overloaded for both uses.
->>
->> How about we keep Ktime? That is HrTimerPointer::start() still uses
->> Ktime, until we totally finish the refactoring as Tomo show below?
->> `Ktime` is much better here because it at least matches C API behavior,
->> we can remove `Ktime` once the dust is settled. Thoughts?
->
-> Either is fine with me. I'll leave it to Andreas' judgment.
->
-> Andreas, if you like Boqun's approach, I'll replace the third patch
-> with the following one and send v14.
->
-> I added Ktime struct to hrtimer.rs so the well-reviewed changes to
-> time.rs remain unchanged.
+...
 
-OK, Let's keep Ktime for hrtimer for now. I am OK with you putting
-`Ktime` in `hrtimer.rs` but you could also put it in time.rs. If you
-don't want to modify the patches that already has reviews, you can add
-it back in a separate patch.
+> > Originally, it was %p4cr (reverse-endian), but on the request of the
+> > maintainers, it was changed to %p4cn.
+> 
+> Ah, I found it[1]:
+> 
+> | so, it needs more information that this mimics htonl() / ntohl() for
+> networking.
+> 
+> IMHO this does not mimic htonl(), as htonl() is a no-op on big-endian.
+> while %p4ch and %p4cl yield different results on big-endian.
+> 
+> > So here network means reverse of host, not strictly big-endian.
+> 
+> Please don't call it "network byte order" if that does not have the same
+> meaning as in the network subsystem.
+> 
+> Personally, I like "%p4r" (reverse) more...
+> (and "%p4ch" might mean human-readable ;-)
 
-Either way we should add a `// NOTE: Ktime is going to be removed when
-hrtimer is converted to Instant/Duration`.
+It will confuse the reader. h/r is not very established pair. If you really
+wont see h/n, better to drop them completely for now then. Because I'm against
+h/r pair.
+
+> [1] https://lore.kernel.org/all/Z8B6DwcRbV-8D8GB@smile.fi.intel.com
 
 
-Best regards,
-Andreas Hindborg
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
