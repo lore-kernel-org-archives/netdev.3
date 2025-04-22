@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A1A38382
-	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 18:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A353838382
+	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 18:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745348273; cv=none; b=RaWpFwwXPXkRih+6i866bbyTfTiKgar5GFuANvCnSAoTEQSUUw1iax7fAUEMGQsvqNefkDMEyYjsvyGGsgWRaGiIgmGDJ6TPu0kERYIG7y2ag0vWfvF0KwDiWxA13WWoR9YJxi6WzxcWgfe0hy5AAR1HxHmaSPx4KxS3Xf+pNtM=
+	t=1745348290; cv=none; b=leQKa1uU8tkPVznFu7JA/ChnsXtrgeiOEvzMchw+aKybdvSkwkK7ezGb45M/L9xUj1QYRuyhwNJKA8+w7iPl647PxvxIeeKM1UwBAF4DxtQcDRSOoO+ftlaeTRSOsq6tEOuQER1/fFG6kupp6n55t3wKjRb6KsDiwR0Q6w8mR+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745348273; c=relaxed/simple;
-	bh=HO+fpImhO7XKnlu3DeitYxfXUm6VtfAy3gIvVV7B/Z0=;
+	s=arc-20240116; t=1745348290; c=relaxed/simple;
+	bh=p7AkfJTAsxh2LzSasm+A/6Jwqk6Ibo+H9/B36bII/mU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T4pMMt420/3vvt+pHV5MHWTFqQ/Qzl6sHM8NTqAKLu8SFgfAWe3qCGsngUr+lS7M5rklk9tXTBCfOmtCUdZLRQ3v2TbklC9z3KWMhMGJJrqkU0yj9kWK/EiQoQhYvG7+M7PoyIboGXsbTgubcNy2r9Q59k/WPdT9gi/3gBAcBYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+sufVVY; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=K0WY7d/TNTEVw1dI9MluSCW1E4CppZYyvAjcuOoSEME0hSGhGbdVFj3qbyz9tsAjurq1qpEOafpRdGoj/1vfCyD62slXDw/wAJv7AzcFm426WLzDqltrrWTDhCWRBBi1dE8+b8lSf9o5p0er2ciNRJ2D3qSVSoVBhJ6KP8s7oO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uWrhhvT/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+sufVVY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CCD5C4CEE9;
-	Tue, 22 Apr 2025 18:57:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uWrhhvT/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78903C4CEE9;
+	Tue, 22 Apr 2025 18:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745348272;
-	bh=HO+fpImhO7XKnlu3DeitYxfXUm6VtfAy3gIvVV7B/Z0=;
+	s=k20201202; t=1745348290;
+	bh=p7AkfJTAsxh2LzSasm+A/6Jwqk6Ibo+H9/B36bII/mU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N+sufVVYu/pIhm/Wvn/XMcjTI/qYO8/L3grjzZB4lyGtOMPn1WWQO8PUVnuCIj/QW
-	 zdSmBkWUjKykyyMnzy9BE1riX2OrNxIeCojSb/bYeI/c2TPlg4A4Wjq5DCeamNZgV9
-	 hTAvDYCok8TNEXoYZPzP+kqzGaq0BdqUV82mmUhxFNqBDU0DXWM7rKlZvmpylEcqQL
-	 kVft54D5NZIKsbVUJrH7WOr97drlcZSLUoh2XPHqTEmoABIknPHDgmtQOGtlBuEXbf
-	 nOHj02ME3ZagXE+Sxd3KfXjagKiQb4B0MtDT/kKUInakcDc+jkI6124aZY7/h7Mvtr
-	 MNIVBYHcuOIWQ==
-Date: Tue, 22 Apr 2025 19:57:48 +0100
+	b=uWrhhvT/0T4bhF6TL5qJYwhLF+plfk9qULYFiDd5wjEp2/dwA1SxLnPMnUwevRxRU
+	 6DV4jXO46SJY0tRy49AECaxn9Cx9bEepreVqjYZj3KIaJaIDqZsmJXE0UxsGKshF3P
+	 rwsq5CjJRgMU/u4PEeDkeane368EHTlsxJS5JvHSLbcB3YJhBsyHTvFRp2xQ7LrcXH
+	 BieqoExfMg4VAA71z/WY8SACVzs3y9eRBww2+WAaM+rGB6GLXTmom8MOoj7NnO2S9U
+	 xe+enOhFCIMwHVa0GjcTN8058lPHk5itNBxqtpm86RqfHqYM5iUei7ByHueTnbxavB
+	 hCa9a35HWdIIw==
+Date: Tue, 22 Apr 2025 19:58:06 +0100
 From: Simon Horman <horms@kernel.org>
 To: Heiner Kallweit <hkallweit1@gmail.com>
 Cc: Realtek linux nic maintainers <nic_swsd@realtek.com>,
@@ -35,11 +35,11 @@ Cc: Realtek linux nic maintainers <nic_swsd@realtek.com>,
 	David Miller <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH net-next 1/3] r8169: merge chip versions 70 and 71
- (RTL8126A)
-Message-ID: <20250422185748.GO2843373@horms.kernel.org>
+Subject: Re: [PATCH net-next 2/3] r8169: merge chip versions 64 and 65
+ (RTL8125D)
+Message-ID: <20250422185806.GP2843373@horms.kernel.org>
 References: <5e1e14ea-d60f-4608-88eb-3104b6bbace8@gmail.com>
- <97d7ae79-d021-4b6b-b424-89e5e305b029@gmail.com>
+ <0baad123-c679-4154-923f-fdc12783e900@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,9 +48,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <97d7ae79-d021-4b6b-b424-89e5e305b029@gmail.com>
+In-Reply-To: <0baad123-c679-4154-923f-fdc12783e900@gmail.com>
 
-On Fri, Apr 18, 2025 at 11:23:45AM +0200, Heiner Kallweit wrote:
+On Fri, Apr 18, 2025 at 11:24:30AM +0200, Heiner Kallweit wrote:
 > Handling of both chip versions is the same, only difference is
 > the firmware. So we can merge handling of both chip versions.
 > 
