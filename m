@@ -1,83 +1,112 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728BD28FFC6;
-	Tue, 22 Apr 2025 15:32:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B919928EA5A
+	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 15:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745335958; cv=none; b=J2OFoORSZEjD7/mz4jKbdlNchx2lpNcsxbKnua7zTbDKJM2jIRCPPFF43t2fg+QaX3HpD8+W3PrvjFtLTOOYuhU948qGvJbmYilOOlmQ2PtUY35LQxPEM25FBOVrb9fgtw/xM2xLNjgUhAhuwzQtFKTqZKPCc6IKoH6MD7e0l9A=
+	t=1745336239; cv=none; b=Fz4ZRDGmflZJ2fTCw8mM98zb2DTSef99dzTFeENKRjqIuPdQJmA8xQfFO9h94/MByr7qNRwfm8uHHnzDZnn5rb5PcwQcTmakFaysov1M7okWgV4TW5/aGmRllqsPdP+SxIVvwLPNJ+2/9/ZCMNgQTgEAjVPs9hfm/i35qZyf0tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745335958; c=relaxed/simple;
-	bh=22H4WnLIuzHHicBYeOrAb8HFdRvT8lTg3+LnSBWpFqo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tmPURJUtXraVrm8waSwo16mjbUllPCxM9THQRryFKGvFi+m598j62QF/Ja5hQY1Aoo4E+ON1RJ3D6Wx6fSphc1+YXEVIfGuIMELN++12LrdCJVFhrpBxyVIIJdnuvLC4CaxIz9Qfi1y75ybuhZRM9gLS7uzCbl7ahWUd3zBUD4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=ERX6sxyp; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1745336239; c=relaxed/simple;
+	bh=n/Ymh0EFbuVorEMi04SIWJFnWO9TGcRoXwxRzF2Endo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kBP/YYWuRbqahleT1LcNj5SLXhQyYmkOdnopQDr1xJPAO5z1geQ9Ghvj+WYoP3uVUs+V2cBK736KW4eFyRjfuF1wc+CjMzI7C4gR4bg6BGQU4PvIEl+JCztAAXQN9g8GSGw9RUCG2LND0kQJSuXfH6tWM3kDxLGPh5N3SLjTlbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mz2pG2xd; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="ERX6sxyp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Gt7L3h/h6JftjK7S6HBLGWArLASFLVo4SYarGabL1Sk=; b=ERX6sxypfDytXPK6JY1ybh0dep
-	fWUaOf7LKQKP0oDx0asAHaPa1mlqj21OQAIm4wYUH4QL/pMZuI2fpI/jKmcizCooHta3UGi/ndYbz
-	gdVAYVsdaH5pOB07HPPshfAC0mrMpf+I3EAi2VbUUpMNYkpardHsKFB+hh/sxfqgdA1x1+S5COQLV
-	v6sxsZ0/Irb+3xGMzghdK3Y/Nesg6HcmLDneD7/o2wfJeJDE71P/Pnne/jIwFIxUX1M/IM9ZJm4dw
-	WP2F+JbYlvNReGJvc4KSTff6qJK8LHjbFM1tzlsMjg+DN40gnlkZ2UccF5C78kyoubRzD4gLZDCzp
-	dWDC+11w==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:52312)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1u7Fbo-0004e6-2Y;
-	Tue, 22 Apr 2025 16:32:28 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1u7Fbl-0007a9-1U;
-	Tue, 22 Apr 2025 16:32:25 +0100
-Date: Tue, 22 Apr 2025 16:32:25 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Alexis =?iso-8859-1?Q?Lothor=E9?= <alexis.lothore@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 2/2] net: stmmac: fix multiplication overflow when
- reading timestamp
-Message-ID: <aAe2iULNthghEEEt@shell.armlinux.org.uk>
-References: <20250422-stmmac_ts-v1-0-b59c9f406041@bootlin.com>
- <20250422-stmmac_ts-v1-2-b59c9f406041@bootlin.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mz2pG2xd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745336238; x=1776872238;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=n/Ymh0EFbuVorEMi04SIWJFnWO9TGcRoXwxRzF2Endo=;
+  b=Mz2pG2xdhCci3J525xKnSb5L4+Cb3BaUvuysZK97Zod9aHpHs0d5zZlz
+   9jYHvyVmaopl6XPH9AEG4nJmY/mDQQL1TBV3jLziqfcE6wUIYoTkiHhb5
+   yG/OA1o/yVqSzND9ijpCALEzRzazKt4/A78O0bjVuh+WSDQ5kyVJ8//rU
+   JVmR65f4HJCzDG3C9YiJ8S4TbTSLI29QCiwtF/W8f6fkM0XWRx8jBaXwy
+   MXLWjiB4KNqyMdMCw1+jwXhshksrKxDRevN0oQ9cHpKsl9v7oMPzntIaG
+   iBJKKNw/CQz60TMzTPb3ghq8XyxO68R1WeIIi/9/OrC8cYl/2jYZG7w4v
+   w==;
+X-CSE-ConnectionGUID: Aq+NybFFQK2qWxADr8rhIA==
+X-CSE-MsgGUID: woYIMOILR/CK+8quAiaVlg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="64312333"
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
+   d="scan'208";a="64312333"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 08:37:17 -0700
+X-CSE-ConnectionGUID: 993qaqTfRcylNdp9inO42A==
+X-CSE-MsgGUID: Yfx8QJ6jRU6QZzwAgMXCOA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
+   d="scan'208";a="131947817"
+Received: from gk3153-pr4-x299-22869.igk.intel.com (HELO localhost.igk.intel.com) ([10.102.21.130])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 08:37:14 -0700
+From: Michal Kubiak <michal.kubiak@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: maciej.fijalkowski@intel.com,
+	aleksander.lobakin@intel.com,
+	przemyslaw.kitszel@intel.com,
+	dawid.osuchowski@linux.intel.com,
+	jacob.e.keller@intel.com,
+	netdev@vger.kernel.org,
+	Michal Kubiak <michal.kubiak@intel.com>
+Subject: [PATCH iwl-net 0/3] Fix XDP loading on machines with many CPUs
+Date: Tue, 22 Apr 2025 17:36:56 +0200
+Message-Id: <20250422153659.284868-1-michal.kubiak@intel.com>
+X-Mailer: git-send-email 2.33.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250422-stmmac_ts-v1-2-b59c9f406041@bootlin.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Apr 22, 2025 at 05:07:23PM +0200, Alexis Lothoré wrote:
->  	ns = readl(ptpaddr + GMAC_PTP_ATNR);
-> -	ns += readl(ptpaddr + GMAC_PTP_ATSR) * NSEC_PER_SEC;
-> +	ns += (u64)(readl(ptpaddr + GMAC_PTP_ATSR)) * NSEC_PER_SEC;
+Hi,
 
-I'm not sure what the extra parens around readl() are actually trying to
-do. Please drop them if they're not useful.
+Some of our customers have reported a crash problem when trying to load
+the XDP program on machines with a large number of CPU cores. After
+extensive debugging, it became clear that the root cause of the problem
+lies in the Tx scheduler implementation, which does not seem to be able
+to handle the creation of a large number of Tx queues (even though this
+number does not exceed the number of available queues reported by the
+FW).
+This series addresses this problem.
+
+First of all, the XDP callback should not crash even if the Tx scheduler
+returns an error, so Patch #1 fixes this error handling and makes the
+XDP callback fail gracefully.
+Patch #2 fixes the problem where the Tx scheduler tries to create too
+many nodes even though some of them have already been added to the
+scheduler tree.
+Finally, Patch #3 implements an improvement to the Tx scheduler tree
+rebuild algorithm to add another VSI support node if it is necessary to
+support all requested Tx rings.
+
+As testing hints, I include sample failure scenarios below:
+  1) Number of LAN Tx/Rx queue pairs: 128
+     Number of requested XDP queues: >= 321 and <= 640
+     Error message:
+        Failed to set LAN Tx queue context, error: -22
+  2) Number of LAN Tx/Rx queue pairs: 128
+     Number of requested XDP queues: >= 641
+     Error message:
+        Failed VSI LAN queue config for XDP, error: -5
+
+Thanks,
+Michal
+
+
+Michal Kubiak (3):
+  ice: fix Tx scheduler error handling in XDP callback
+  ice: create new Tx scheduler nodes for new queues only
+  ice: fix rebuilding the Tx scheduler tree for large queue counts
+
+ drivers/net/ethernet/intel/ice/ice_main.c  |  47 +++++++---
+ drivers/net/ethernet/intel/ice/ice_sched.c | 103 +++++++++++++++++++--
+ 2 files changed, 126 insertions(+), 24 deletions(-)
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.45.2
+
