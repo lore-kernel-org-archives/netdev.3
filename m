@@ -1,413 +1,148 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from send240.i.mail.ru (send240.i.mail.ru [95.163.59.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21EF2D0261;
-	Tue, 22 Apr 2025 20:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621762BEC2E;
+	Tue, 22 Apr 2025 20:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.163.59.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745353443; cv=none; b=hPxU2RvshZn8wgldoAwuWe6e8UVsRdYunYEQ13LYC0sCz0xVFbWO1Nw4jAp7j73RR0j1EFS1r0W4er8ZX+4AjQXla/j3HNtJ81ZxpidjWjJOKpWsq3HtfjwCaxJJn2W8xQ7EotNBXssVAB0dNSrhqzuZvimLx6gGp+9eysWfGew=
+	t=1745353444; cv=none; b=s5NsMR5eBTvtnOVlWLhEvRRLj9K9WcfWwkvk+z/2fTCgATWGsGB/Ibtcu2MLtN7hWmdmItd/cxWDewuC/OLMWnSGxrVBMIzEjv7yj+a+WB15Jp13Vfr/fB+oAfTkt85ZJDzudefhs3Z9MSJE9H5V/uo9MbVb7rexO7iiuuK5IUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745353443; c=relaxed/simple;
-	bh=W9B56y/1e2VNF0GDYDVpKNnAod/7cx5D988X6ej4Xx8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IZZO995fm5hMgNDiRL9es8Bvpd1SgsURg6UcGAhLxXVWNyFhBiz1T4Uhs/sp2UA1aIogeZbBKEEf83mMLOkl2pjpy9BCgf+b92KKCmk4tLLbt7avzsQvuTOTwrUSqSAnAqSVFZn7T3vP/utCwhbrDOzWyEbc5lI1eEaMvKQ95LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=BLG8Jto6; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=s4OCvWte; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1745353444; c=relaxed/simple;
+	bh=+DMB85egLvbtaaY3I8Y2gNZbnP0JxswAxZSXsmFYBbE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=dafNp/2L1rU/ruWV/YLEJ0oomcXVo+qLH7NsNfa+53W+Q7E0YS/efPcmDs6f5O3WuXPu1in+QQ2jcZoVyq0xLXQc7a9IOdximkOw65oMyZqAQVlRcT4K+021TZx2kDgSC6RmXlUAIDVTON1ZQzJxYrDYiI8VdERy/FN29DqZfkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jiaxyga.com; spf=pass smtp.mailfrom=jiaxyga.com; dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b=BbPXBWLk; arc=none smtp.client-ip=95.163.59.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jiaxyga.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jiaxyga.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="BLG8Jto6";
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="s4OCvWte"
-Received: by mail.netfilter.org (Postfix, from userid 109)
-	id 57747609B7; Tue, 22 Apr 2025 22:24:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1745353440;
-	bh=DF/dbc9yujO6X92LbVBOTQ7n7U8r73XeLkbxpIj51Fs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BLG8Jto6qGIX5siVne6bjuOogMs/bJ5srG96tOfP3twYREdLqfQFuuImVWQgScBdu
-	 qLavJYd2pcsXmN0pHoszfTeSxx5ZdWA83scSW0tSdqcHGXLSagEBHsytaAMi+ydQZj
-	 pciOV3/dUxbE4h1Cko0C+1/D8Sosd4B24N0oNIk7L7kXGjMKPrWrokLudwjovfkexe
-	 FdKMVl2NcrGpgZgHsX4cOReY2U78xRg7XLFVxU5xK76W3ew6X1G/qjKHjIBFsARL61
-	 gqOq6tdseQa6A/unAEb1KD4X8Osdp3vs1vEyej/KK75Ufu7QopkgBeiAyb0zWlhiME
-	 a9qkA/xqzkdwQ==
-X-Spam-Level: 
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 5ACDD609B4;
-	Tue, 22 Apr 2025 22:23:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1745353431;
-	bh=DF/dbc9yujO6X92LbVBOTQ7n7U8r73XeLkbxpIj51Fs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s4OCvWteVNzzzybbGYWSEWhtgabK/jXGVDz5bDRMPUcYb/rqEt3j9sUFeJnKm4ECq
-	 +DHB6Ohv9C6nJr19Ftv/gIEtNKAL8jiEzzksa4RWaL70QL2oJ+IX6VBANytioMmTBr
-	 gRrpX5buCjT/9PLNpfBYv4UQGBV8nMOkjKOJYwKiccTI2OIKfrpIGc6T1Fipje6Xgw
-	 Yqu2fmpTdxKzq7kQ5p3LsXX9QL4V2//MYWvYpwK2+4deoc9hytHCDmMMbNDOCaQh8o
-	 SYIF5U9xHbr05gQ31egw18bIbh5RNa1csoKvHW41S8dgMlStrwRT1i6N3RxufVqlyK
-	 7/eP5dVJqHm8Q==
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	fw@strlen.de,
-	horms@kernel.org
-Subject: [PATCH net-next 4/7] netfilter: Exclude LEGACY TABLES on PREEMPT_RT.
-Date: Tue, 22 Apr 2025 22:23:24 +0200
-Message-Id: <20250422202327.271536-5-pablo@netfilter.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20250422202327.271536-1-pablo@netfilter.org>
-References: <20250422202327.271536-1-pablo@netfilter.org>
+	dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b="BbPXBWLk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=jiaxyga.com
+	; s=mailru; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:From:
+	Sender:Reply-To:To:Cc:Content-Type:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive:X-Cloud-Ids:Disposition-Notification-To;
+	bh=0DZ6KDHPDU4b66/qDrTrdmWFtMQYZncSSmjOyyryUp0=; t=1745353442; x=1745443442; 
+	b=BbPXBWLk6ZOD6f5ZVb4GkRTu+LA952jDvIEyxoYmz5LNrENlOsNTurROJMxpvAKO5+JFYS/ix8b
+	ugR1pszioamYkOmFF97Ga1vx5sVUbLzq+kXXwKVcbuHOkkkGw5F6NyupqkXqBfP5v48W09QlsOSuc
+	OGWdaFnv7CzRGnPNbNY=;
+Received: by exim-smtp-77d8cdf77b-httmk with esmtpa (envelope-from <danila@jiaxyga.com>)
+	id 1u7K9j-00000000Adc-0JtP; Tue, 22 Apr 2025 23:23:47 +0300
+From: Danila Tikhonov <danila@jiaxyga.com>
+Date: Tue, 22 Apr 2025 23:17:11 +0300
+Subject: [PATCH 10/33] dt-bindings: phy: qcom,qusb2: Add the SM7150
+ compatible
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250422-sm7150-upstream-v1-10-bf9a9081631d@jiaxyga.com>
+References: <20250422-sm7150-upstream-v1-0-bf9a9081631d@jiaxyga.com>
+In-Reply-To: <20250422-sm7150-upstream-v1-0-bf9a9081631d@jiaxyga.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Wim Van Sebroeck <wim@linux-watchdog.org>, 
+ Guenter Roeck <linux@roeck-us.net>, 
+ Rajendra Nayak <quic_rjendra@quicinc.com>, 
+ Jassi Brar <jassisinghbrar@gmail.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Amit Kucheria <amitk@kernel.org>, 
+ Thara Gopinath <thara.gopinath@gmail.com>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
+ Lukasz Luba <lukasz.luba@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Wesley Cheng <quic_wcheng@quicinc.com>, Vinod Koul <vkoul@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Ulf Hansson <ulf.hansson@linaro.org>, 
+ Souradeep Chowdhury <quic_schowdhu@quicinc.com>, Lee Jones <lee@kernel.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Alex Elder <elder@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+ Avri Altman <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>, 
+ Andy Gross <agross@kernel.org>, Srinivas Kandagatla <srini@kernel.org>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Georgi Djakov <djakov@kernel.org>, 
+ Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Robert Foss <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Taniya Das <quic_tdas@quicinc.com>, 
+ Sibi Sankar <quic_sibis@quicinc.com>, Will Deacon <will@kernel.org>, 
+ Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>, 
+ Imran Shaik <quic_imrashai@quicinc.com>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, 
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <quic_jesszhan@quicinc.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>, 
+ David Wronek <david@mainlining.org>, Jens Reidel <adrian@mainlining.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-watchdog@vger.kernel.org, linux-usb@vger.kernel.org, 
+ linux-phy@lists.infradead.org, linux-mmc@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ dmaengine@vger.kernel.org, linux-crypto@vger.kernel.org, 
+ linux-i2c@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev, 
+ linux-remoteproc@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-hardening@vger.kernel.org, linux@mainlining.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, Danila Tikhonov <danila@jiaxyga.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1745353049; l=902;
+ i=danila@jiaxyga.com; s=20250422; h=from:subject:message-id;
+ bh=5Z4bvK+dfAPod8CMvHpa7EVVtcmzmeKsh4GdCmFEsRs=;
+ b=ksXX2DNJmW81OGvMF2/yRCIFnraIfgwhjfURk+NYmtXR25UYW96VPO92pDePoZoVwWAHMzlu1
+ Dqh2jluDosmAQm/NAf+Ky8/ewB2xFdlVVjDnsGhbkspsZkOb4EPmFFu
+X-Developer-Key: i=danila@jiaxyga.com; a=ed25519;
+ pk=kkU4G47tvpSEUdBQEkXuWvTk/3WmGrVrdzZiKAKjBJo=
+Authentication-Results: exim-smtp-77d8cdf77b-httmk; auth=pass smtp.auth=danila@jiaxyga.com smtp.mailfrom=danila@jiaxyga.com
+X-Mailru-Src: smtp
+X-7564579A: 646B95376F6C166E
+X-77F55803: 4F1203BC0FB41BD985535D2C87FE65BBB00D56579F39AA51FD6A4116671575B900894C459B0CD1B997E5B251B7792F44C591814E25D11F9F0C16F97918928A41E87930C8331D046FDAEE934B56E2D9F8
+X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE7AB524098FB2F2222EA1F7E6F0F101C67BD4B6F7A4D31EC0BCC500DACC3FED6E28638F802B75D45FF8AA50765F7900637560334CFC131571A8638F802B75D45FF914D58D5BE9E6BC1A93B80C6DEB9DEE97C6FB206A91F05B22B7B4719DEAF975B2E070BE324C7D3C4886C92A76E532D95F6B57BC7E64490618DEB871D839B73339E8FC8737B5C2249BAA8CD687FCDB2EBCC7F00164DA146DAFE8445B8C89999729449624AB7ADAF37F6B57BC7E64490611E7FA7ABCAF51C92176DF2183F8FC7C0DCF4F0DC832992758941B15DA834481F9449624AB7ADAF37BA3038C0950A5D3613377AFFFEAFD269176DF2183F8FC7C02271980798FBD5E27B076A6E789B0E97A8DF7F3B2552694AD5FFEEA1DED7F25D49FD398EE364050F0AC5B80A05675ACD0A5971FBB7557E96B3661434B16C20ACC84D3B47A649675FE827F84554CEF5019E625A9149C048EE9ECD01F8117BC8BEE2021AF6380DFAD18AA50765F790063735872C767BF85DA227C277FBC8AE2E8BDAE3FA6833AEA0C275ECD9A6C639B01B4E70A05D1297E1BBCB5012B2E24CD356
+X-C1DE0DAB: 0D63561A33F958A58340308A434F57A75002B1117B3ED6963786406DF864173722DFD5397F446790823CB91A9FED034534781492E4B8EEAD2739D626790C8313C79554A2A72441328621D336A7BC284946AD531847A6065A535571D14F44ED41
+X-C8649E89: 1C3962B70DF3F0ADE00A9FD3E00BEEDF77DD89D51EBB7742D3581295AF09D3DF87807E0823442EA2ED31085941D9CD0AF7F820E7B07EA4CF5632063D2FEB5319FF77E6F2581BDFD8553D05640C16E6BDA8FC6074853BFF5F9FECE8BBF8D5259268A835CA8743990B75AF869E71F687C00E280A9F3BCC449BD2C1456F0AD9ACB1EFF8118B638B08AA02C26D483E81D6BE72B480F99247062FEE42F474E8A1C6FD34D382445848F2F3
+X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu53w8ahmwBjZKM/YPHZyZHvz5uv+WouB9+ObcCpyrx6l7KImUglyhkEat/+ysWwi0gdhEs0JGjl6ggRWTy1haxBpVdbIX1nthFXMZebaIdHP2ghjoIc/363UZI6Kf1ptIMVS+uSU+BUhgvDPYBRTaPb7I=
+X-Mailru-Sender: 9EB879F2C80682A0D0AE6A344B45275FD83198E81855D47E0841F56765D88C40AE4A689CFFF712CB70D844E392156C332C62728BC403A049225EC17F3711B6CF1A6F2E8989E84EC137BFB0221605B344978139F6FA5A77F05FEEDEB644C299C0ED14614B50AE0675
+X-Mras: Ok
 
-The seqcount xt_recseq is used to synchronize the replacement of
-xt_table::private in xt_replace_table() against all readers such as
-ipt_do_table()
+From: David Wronek <david@mainlining.org>
 
-To ensure that there is only one writer, the writing side disables
-bottom halves. The sequence counter can be acquired recursively. Only the
-first invocation modifies the sequence counter (signaling that a writer
-is in progress) while the following (recursive) writer does not modify
-the counter.
-The lack of a proper locking mechanism for the sequence counter can lead
-to live lock on PREEMPT_RT if the high prior reader preempts the
-writer. Additionally if the per-CPU lock on PREEMPT_RT is removed from
-local_bh_disable() then there is no synchronisation for the per-CPU
-sequence counter.
+Add devicetree compatible for the usb phy on SM7150 SoC.
 
-The affected code is "just" the legacy netfilter code which is replaced
-by "netfilter tables". That code can be disabled without sacrificing
-functionality because everything is provided by the newer
-implementation. This will only requires the usage of the "-nft" tools
-instead of the "-legacy" ones.
-The long term plan is to remove the legacy code so lets accelerate the
-progress.
-
-Relax dependencies on iptables legacy, replace select with depends on,
-this should cause no harm to existing kernel configs and users can still
-toggle IP{6}_NF_IPTABLES_LEGACY in any case.
-Make EBTABLES_LEGACY, IPTABLES_LEGACY and ARPTABLES depend on
-NETFILTER_LEGACY. Hide xt_recseq and its users, xt_register_table() and
-xt_percpu_counter_alloc() behind NETFILTER_LEGACY. Let NETFILTER_LEGACY
-depend on !PREEMPT_RT.
-
-Replace CONFIG_IP6_NF_MANGLE->CONFIG_IP6_NF_IPTABLES for TCPOPTSTRIP and
-add CONFIG_NFT_COMPAT_ARP to the MARK target for the IPv6 and ARP target
-to keep it enabled without the LEGACY code for NFT.
-
-Co-developed-by: Florian Westphal <fw@strlen.de>
-Co-developed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: David Wronek <david@mainlining.org>
+Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
 ---
- net/Kconfig                    | 10 ++++++++++
- net/bridge/netfilter/Kconfig   |  8 ++++----
- net/ipv4/netfilter/Kconfig     | 15 ++++++++-------
- net/ipv6/netfilter/Kconfig     | 13 +++++++------
- net/netfilter/x_tables.c       | 16 +++++++++++-----
- net/netfilter/xt_TCPOPTSTRIP.c |  4 ++--
- net/netfilter/xt_mark.c        |  2 +-
- 7 files changed, 43 insertions(+), 25 deletions(-)
+ Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/Kconfig b/net/Kconfig
-index 202cc595e5e6..1a4d18b8501d 100644
---- a/net/Kconfig
-+++ b/net/Kconfig
-@@ -211,6 +211,16 @@ menuconfig NETFILTER
- 
- if NETFILTER
- 
-+config NETFILTER_LEGACY
-+	bool "Netfilter legacy tables support"
-+	depends on NETFILTER && !PREEMPT_RT
-+	help
-+	  Say Y here if you still require support for legacy tables. This is
-+	  required by the legacy tools (iptables-legacy) and is not needed if
-+	  you use iptables over nftables (iptales-nft).
-+	  Legacy support is not limited to IP, it also includes EBTABLES and
-+	  ARPTABLES.
-+
- config NETFILTER_ADVANCED
- 	bool "Advanced netfilter configuration"
- 	depends on NETFILTER
-diff --git a/net/bridge/netfilter/Kconfig b/net/bridge/netfilter/Kconfig
-index f16bbbbb9481..008012742188 100644
---- a/net/bridge/netfilter/Kconfig
-+++ b/net/bridge/netfilter/Kconfig
-@@ -42,7 +42,7 @@ config NF_CONNTRACK_BRIDGE
- # old sockopt interface and eval loop
- config BRIDGE_NF_EBTABLES_LEGACY
- 	tristate "Legacy EBTABLES support"
--	depends on BRIDGE && NETFILTER_XTABLES
-+	depends on BRIDGE && NETFILTER_XTABLES && NETFILTER_LEGACY
- 	default n
- 	help
- 	 Legacy ebtables packet/frame classifier.
-@@ -65,7 +65,7 @@ if BRIDGE_NF_EBTABLES
- #
- config BRIDGE_EBT_BROUTE
- 	tristate "ebt: broute table support"
--	select BRIDGE_NF_EBTABLES_LEGACY
-+	depends on BRIDGE_NF_EBTABLES_LEGACY
- 	help
- 	  The ebtables broute table is used to define rules that decide between
- 	  bridging and routing frames, giving Linux the functionality of a
-@@ -76,7 +76,7 @@ config BRIDGE_EBT_BROUTE
- 
- config BRIDGE_EBT_T_FILTER
- 	tristate "ebt: filter table support"
--	select BRIDGE_NF_EBTABLES_LEGACY
-+	depends on BRIDGE_NF_EBTABLES_LEGACY
- 	help
- 	  The ebtables filter table is used to define frame filtering rules at
- 	  local input, forwarding and local output. See the man page for
-@@ -86,7 +86,7 @@ config BRIDGE_EBT_T_FILTER
- 
- config BRIDGE_EBT_T_NAT
- 	tristate "ebt: nat table support"
--	select BRIDGE_NF_EBTABLES_LEGACY
-+	depends on BRIDGE_NF_EBTABLES_LEGACY
- 	help
- 	  The ebtables nat table is used to define rules that alter the MAC
- 	  source address (MAC SNAT) or the MAC destination address (MAC DNAT).
-diff --git a/net/ipv4/netfilter/Kconfig b/net/ipv4/netfilter/Kconfig
-index ef8009281da5..dcf015e0d426 100644
---- a/net/ipv4/netfilter/Kconfig
-+++ b/net/ipv4/netfilter/Kconfig
-@@ -14,6 +14,7 @@ config NF_DEFRAG_IPV4
- config IP_NF_IPTABLES_LEGACY
- 	tristate "Legacy IP tables support"
- 	default	n
-+	depends on NETFILTER_LEGACY
- 	select NETFILTER_XTABLES
- 	help
- 	  iptables is a legacy packet classifier.
-@@ -183,7 +184,7 @@ config IP_NF_MATCH_TTL
- config IP_NF_FILTER
- 	tristate "Packet filtering"
- 	default m if NETFILTER_ADVANCED=n
--	select IP_NF_IPTABLES_LEGACY
-+	depends on IP_NF_IPTABLES_LEGACY
- 	help
- 	  Packet filtering defines a table `filter', which has a series of
- 	  rules for simple packet filtering at local input, forwarding and
-@@ -220,10 +221,10 @@ config IP_NF_TARGET_SYNPROXY
- config IP_NF_NAT
- 	tristate "iptables NAT support"
- 	depends on NF_CONNTRACK
-+	depends on IP_NF_IPTABLES_LEGACY
- 	default m if NETFILTER_ADVANCED=n
- 	select NF_NAT
- 	select NETFILTER_XT_NAT
--	select IP_NF_IPTABLES_LEGACY
- 	help
- 	  This enables the `nat' table in iptables. This allows masquerading,
- 	  port forwarding and other forms of full Network Address Port
-@@ -264,7 +265,7 @@ endif # IP_NF_NAT
- config IP_NF_MANGLE
- 	tristate "Packet mangling"
- 	default m if NETFILTER_ADVANCED=n
--	select IP_NF_IPTABLES_LEGACY
-+	depends on IP_NF_IPTABLES_LEGACY
- 	help
- 	  This option adds a `mangle' table to iptables: see the man page for
- 	  iptables(8).  This table is used for various packet alterations
-@@ -299,7 +300,7 @@ config IP_NF_TARGET_TTL
- # raw + specific targets
- config IP_NF_RAW
- 	tristate  'raw table support (required for NOTRACK/TRACE)'
--	select IP_NF_IPTABLES_LEGACY
-+	depends on IP_NF_IPTABLES_LEGACY
- 	help
- 	  This option adds a `raw' table to iptables. This table is the very
- 	  first in the netfilter framework and hooks in at the PREROUTING
-@@ -313,7 +314,7 @@ config IP_NF_SECURITY
- 	tristate "Security table"
- 	depends on SECURITY
- 	depends on NETFILTER_ADVANCED
--	select IP_NF_IPTABLES_LEGACY
-+	depends on IP_NF_IPTABLES_LEGACY
- 	help
- 	  This option adds a `security' table to iptables, for use
- 	  with Mandatory Access Control (MAC) policy.
-@@ -325,7 +326,7 @@ endif # IP_NF_IPTABLES
- # ARP tables
- config IP_NF_ARPTABLES
- 	tristate "Legacy ARPTABLES support"
--	depends on NETFILTER_XTABLES
-+	depends on NETFILTER_XTABLES && NETFILTER_LEGACY
- 	default n
- 	help
- 	  arptables is a legacy packet classifier.
-@@ -342,7 +343,7 @@ config IP_NF_ARPFILTER
- 	tristate "arptables-legacy packet filtering support"
- 	select IP_NF_ARPTABLES
- 	select NETFILTER_FAMILY_ARP
--	depends on NETFILTER_XTABLES
-+	depends on NETFILTER_XTABLES && NETFILTER_LEGACY
- 	help
- 	  ARP packet filtering defines a table `filter', which has a series of
- 	  rules for simple ARP packet filtering at local input and
-diff --git a/net/ipv6/netfilter/Kconfig b/net/ipv6/netfilter/Kconfig
-index e087a8e97ba7..303942174b5d 100644
---- a/net/ipv6/netfilter/Kconfig
-+++ b/net/ipv6/netfilter/Kconfig
-@@ -9,8 +9,9 @@ menu "IPv6: Netfilter Configuration"
- # old sockopt interface and eval loop
- config IP6_NF_IPTABLES_LEGACY
- 	tristate "Legacy IP6 tables support"
--	depends on INET && IPV6
-+	depends on INET && IPV6 && NETFILTER_LEGACY
- 	select NETFILTER_XTABLES
-+	select IP6_NF_IPTABLES
- 	default n
- 	help
- 	  ip6tables is a legacy packet classifier.
-@@ -197,7 +198,7 @@ config IP6_NF_TARGET_HL
- config IP6_NF_FILTER
- 	tristate "Packet filtering"
- 	default m if NETFILTER_ADVANCED=n
--	select IP6_NF_IPTABLES_LEGACY
-+	depends on IP6_NF_IPTABLES_LEGACY
- 	tristate
- 	help
- 	  Packet filtering defines a table `filter', which has a series of
-@@ -234,7 +235,7 @@ config IP6_NF_TARGET_SYNPROXY
- config IP6_NF_MANGLE
- 	tristate "Packet mangling"
- 	default m if NETFILTER_ADVANCED=n
--	select IP6_NF_IPTABLES_LEGACY
-+	depends on IP6_NF_IPTABLES_LEGACY
- 	help
- 	  This option adds a `mangle' table to iptables: see the man page for
- 	  iptables(8).  This table is used for various packet alterations
-@@ -244,7 +245,7 @@ config IP6_NF_MANGLE
- 
- config IP6_NF_RAW
- 	tristate  'raw table support (required for TRACE)'
--	select IP6_NF_IPTABLES_LEGACY
-+	depends on IP6_NF_IPTABLES_LEGACY
- 	help
- 	  This option adds a `raw' table to ip6tables. This table is the very
- 	  first in the netfilter framework and hooks in at the PREROUTING
-@@ -258,7 +259,7 @@ config IP6_NF_SECURITY
- 	tristate "Security table"
- 	depends on SECURITY
- 	depends on NETFILTER_ADVANCED
--	select IP6_NF_IPTABLES_LEGACY
-+	depends on IP6_NF_IPTABLES_LEGACY
- 	help
- 	  This option adds a `security' table to iptables, for use
- 	  with Mandatory Access Control (MAC) policy.
-@@ -269,8 +270,8 @@ config IP6_NF_NAT
- 	tristate "ip6tables NAT support"
- 	depends on NF_CONNTRACK
- 	depends on NETFILTER_ADVANCED
-+	depends on IP6_NF_IPTABLES_LEGACY
- 	select NF_NAT
--	select IP6_NF_IPTABLES_LEGACY
- 	select NETFILTER_XT_NAT
- 	help
- 	  This enables the `nat' table in ip6tables. This allows masquerading,
-diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-index 709840612f0d..24788bd3cbcb 100644
---- a/net/netfilter/x_tables.c
-+++ b/net/netfilter/x_tables.c
-@@ -1317,12 +1317,13 @@ void xt_compat_unlock(u_int8_t af)
- EXPORT_SYMBOL_GPL(xt_compat_unlock);
- #endif
- 
--DEFINE_PER_CPU(seqcount_t, xt_recseq);
--EXPORT_PER_CPU_SYMBOL_GPL(xt_recseq);
--
- struct static_key xt_tee_enabled __read_mostly;
- EXPORT_SYMBOL_GPL(xt_tee_enabled);
- 
-+#ifdef CONFIG_NETFILTER_LEGACY
-+DEFINE_PER_CPU(seqcount_t, xt_recseq);
-+EXPORT_PER_CPU_SYMBOL_GPL(xt_recseq);
-+
- static int xt_jumpstack_alloc(struct xt_table_info *i)
- {
- 	unsigned int size;
-@@ -1514,6 +1515,7 @@ void *xt_unregister_table(struct xt_table *table)
- 	return private;
- }
- EXPORT_SYMBOL_GPL(xt_unregister_table);
-+#endif
- 
- #ifdef CONFIG_PROC_FS
- static void *xt_table_seq_start(struct seq_file *seq, loff_t *pos)
-@@ -1897,6 +1899,7 @@ void xt_proto_fini(struct net *net, u_int8_t af)
- }
- EXPORT_SYMBOL_GPL(xt_proto_fini);
- 
-+#ifdef CONFIG_NETFILTER_LEGACY
- /**
-  * xt_percpu_counter_alloc - allocate x_tables rule counter
-  *
-@@ -1951,6 +1954,7 @@ void xt_percpu_counter_free(struct xt_counters *counters)
- 		free_percpu((void __percpu *)pcnt);
- }
- EXPORT_SYMBOL_GPL(xt_percpu_counter_free);
-+#endif
- 
- static int __net_init xt_net_init(struct net *net)
- {
-@@ -1983,8 +1987,10 @@ static int __init xt_init(void)
- 	unsigned int i;
- 	int rv;
- 
--	for_each_possible_cpu(i) {
--		seqcount_init(&per_cpu(xt_recseq, i));
-+	if (IS_ENABLED(CONFIG_NETFILTER_LEGACY)) {
-+		for_each_possible_cpu(i) {
-+			seqcount_init(&per_cpu(xt_recseq, i));
-+		}
- 	}
- 
- 	xt = kcalloc(NFPROTO_NUMPROTO, sizeof(struct xt_af), GFP_KERNEL);
-diff --git a/net/netfilter/xt_TCPOPTSTRIP.c b/net/netfilter/xt_TCPOPTSTRIP.c
-index 30e99464171b..93f064306901 100644
---- a/net/netfilter/xt_TCPOPTSTRIP.c
-+++ b/net/netfilter/xt_TCPOPTSTRIP.c
-@@ -91,7 +91,7 @@ tcpoptstrip_tg4(struct sk_buff *skb, const struct xt_action_param *par)
- 	return tcpoptstrip_mangle_packet(skb, par, ip_hdrlen(skb));
- }
- 
--#if IS_ENABLED(CONFIG_IP6_NF_MANGLE)
-+#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
- static unsigned int
- tcpoptstrip_tg6(struct sk_buff *skb, const struct xt_action_param *par)
- {
-@@ -119,7 +119,7 @@ static struct xt_target tcpoptstrip_tg_reg[] __read_mostly = {
- 		.targetsize = sizeof(struct xt_tcpoptstrip_target_info),
- 		.me         = THIS_MODULE,
- 	},
--#if IS_ENABLED(CONFIG_IP6_NF_MANGLE)
-+#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
- 	{
- 		.name       = "TCPOPTSTRIP",
- 		.family     = NFPROTO_IPV6,
-diff --git a/net/netfilter/xt_mark.c b/net/netfilter/xt_mark.c
-index 65b965ca40ea..59b9d04400ca 100644
---- a/net/netfilter/xt_mark.c
-+++ b/net/netfilter/xt_mark.c
-@@ -48,7 +48,7 @@ static struct xt_target mark_tg_reg[] __read_mostly = {
- 		.targetsize     = sizeof(struct xt_mark_tginfo2),
- 		.me             = THIS_MODULE,
- 	},
--#if IS_ENABLED(CONFIG_IP_NF_ARPTABLES)
-+#if IS_ENABLED(CONFIG_IP_NF_ARPTABLES) || IS_ENABLED(CONFIG_NFT_COMPAT_ARP)
- 	{
- 		.name           = "MARK",
- 		.revision       = 2,
+diff --git a/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml
+index 39851ba9de4369282d3499dfad3d8b87a87c462c..51dd79e6db6bb8bf2cde5f43342d1258fd6791f2 100644
+--- a/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml
+@@ -36,6 +36,7 @@ properties:
+               - qcom,sdm670-qusb2-phy
+               - qcom,sdm845-qusb2-phy
+               - qcom,sm6350-qusb2-phy
++              - qcom,sm7150-qusb2-phy
+           - const: qcom,qusb2-v2-phy
+   reg:
+     maxItems: 1
+
 -- 
-2.30.2
+2.49.0
 
