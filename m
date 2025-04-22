@@ -1,471 +1,130 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B263929292B;
-	Tue, 22 Apr 2025 14:57:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4821EF37A;
+	Tue, 22 Apr 2025 15:00:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745333841; cv=none; b=TJW24nNSzo+HD+PqqV7otY9xiLL0bwAG1rI7BC8Nr92dyJR+YqSkkFN/KjUQRpA1B3hgAU9Midzp2UTXC+3tWrzejZPKndE51qfqP1Kl2eNf2UXfgt4eSZQPCDEX06QIlXiJsVadV2zBtbiSdchn5PwwlBsj5x0B0THRp5L+32k=
+	t=1745334057; cv=none; b=UhC1yg62092+Js3HQtfYfzLefAQCzdYsZm89XDa7SGdn26kbqZKL6f5W6pFr300LadtwUVBZ1pLElHb5Syx9l6+OCsdtS1v6wIOgUziFEGDoHy6zIpLrBjKaNuezs333fyx6ocvXAX25dL4m9Uz9ac+/rzT/a+R5oEukzOud0tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745333841; c=relaxed/simple;
-	bh=L0X/btvzdLjg4azHNqivvPwYVmjjUusmbmcD7v0D4Ak=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GgzaZxQOpmTuZMxe/OqridWlsE2yWE+0OX6PNd1rxNMQNc1b1Qd68hi5iehytCTK8ogbsDnu5FsKXi4HK/fReYQVbj0tvshFxNW7WvZUACW0ixuwcLxJFOzn2bBqauCxxJzvNFPuLZhBL7goyVxcSB2FIhprEDmlbro3hKLcmYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JwGUeHl3; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1745334057; c=relaxed/simple;
+	bh=HZVHS4IPySnMn9xD+qPcIx/5bnoYe6A07DDfnd/Nzyk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T839i1Jl5D8YicYHLTVzqp1UsJF31Nz2kk7Delp6ghyhnKj7sYISPwMwHYUrY08+9MpLY8NczDyB+dMjTavY2R5uuAYOM3MaHbcFTyxkrQJmaujZ5emIu36ugjQgg8coDmOH1TGZSciwwDbjOykztVgF5aT29FgXj8EajMXPhGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rQ2mMiaz; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JwGUeHl3"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9154D439B2;
-	Tue, 22 Apr 2025 14:57:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1745333835;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zLYoPMHwCF1ltsEY42yv9c+u9LcKjPUqXZ69v7P+6Ng=;
-	b=JwGUeHl3NgRBWxX9lE3r1It+2qQQQP7uXjNxn28L1NRPf/jaOKxS6AdSmRVjdMvvb/xJEE
-	ecftclY0xiiszpXOZAZ86ND22Gg4LGwhoYs62HuU0RwoMOpgJMsWtj30C8svMGCZaHv2LO
-	i4XsVlzghYjLiM2QymcDzeoMUgdfouRwbbiDzjv4NLRDA5U/iLojTDNTjPG17tWiRR5l5N
-	M2oBhJU9V3GjFzN6noJiIDZqrevfPImQf/3AVmV5EpBe3WLZxTWooo6VNdmH0jWAJU1NPq
-	NIqI6DmtuOvWxl6kw6hFcm3E73oSc3QARM2zNxAFSazOy51aFescQutg11Sarg==
-From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Tue, 22 Apr 2025 16:56:45 +0200
-Subject: [PATCH net-next v9 12/13] net: pse-pd: tps23881: Add support for
- static port priority feature
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rQ2mMiaz"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=29nqVClkVJOEOI67Hmj+Amifgccth5t3PZQd0ZpbUiQ=; b=rQ2mMiaztt3yrB/gN6a1Hhlc14
+	wKRbAfHk6NMJaaWizl24Qp43YxbsrgFfQPwFKEcAeO8ODDl+erqZ/nRkLahizuGzkkOxtoeiS0n/Z
+	6qtxNMMBzzTNUnzdqsqmzLhYFAtf4e731yy4HOunBwY0h0kyFPAMyFz+5dBSaChxqwSA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1u7F6z-00ADQa-PK; Tue, 22 Apr 2025 17:00:37 +0200
+Date: Tue, 22 Apr 2025 17:00:37 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andy Whitcroft <apw@canonical.com>,
+	Dwaipayan Ray <dwaipayanray1@gmail.com>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Joe Perches <joe@perches.com>, Jonathan Corbet <corbet@lwn.net>,
+	Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>, Tero Kristo <kristo@kernel.org>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
+Subject: Re: [PATCH net-next 1/4] dt-bindings: net: ethernet-controller:
+ update descriptions of RGMII modes
+Message-ID: <a53b5f22-d603-4b7d-9765-a1fc8571614d@lunn.ch>
+References: <cover.1744710099.git.matthias.schiffer@ew.tq-group.com>
+ <218a27ae2b2ef2db53fdb3573b58229659db65f9.1744710099.git.matthias.schiffer@ew.tq-group.com>
+ <aAaafd8LZ3Ks-AoT@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250422-feature_poe_port_prio-v9-12-417fc007572d@bootlin.com>
-References: <20250422-feature_poe_port_prio-v9-0-417fc007572d@bootlin.com>
-In-Reply-To: <20250422-feature_poe_port_prio-v9-0-417fc007572d@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Jonathan Corbet <corbet@lwn.net>, Donald Hunter <donald.hunter@gmail.com>, 
- Rob Herring <robh@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
- linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, 
- Dent Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Kory Maincent (Dent Project)" <kory.maincent@bootlin.com>
-X-Mailer: b4 0.15-dev-8cb71
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeegtdefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevgfdvgfektefgfefggeekudfggffhtdfffedtueetheejtddvledvvdelhedtveenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpeelnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvjedprhgtphhtthhopegtohhrsggvtheslhifnhdrnhgvthdprhgtphhtthhopegsrhhoohhnihgvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeguohhnrghlugdrhhhunhhtvghrsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepuggvvhhitggvthhrvggvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggvnhhtp
- hhrohhjvggttheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aAaafd8LZ3Ks-AoT@shell.armlinux.org.uk>
 
-From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
+On Mon, Apr 21, 2025 at 08:20:29PM +0100, Russell King (Oracle) wrote:
+> On Tue, Apr 15, 2025 at 12:18:01PM +0200, Matthias Schiffer wrote:
+> > diff --git a/Documentation/devicetree/bindings/net/ethernet-controller.yaml b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
+> > index 45819b2358002..2ddc1ce2439a6 100644
+> > --- a/Documentation/devicetree/bindings/net/ethernet-controller.yaml
+> > +++ b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
+> > @@ -74,19 +74,21 @@ properties:
+> >        - rev-rmii
+> >        - moca
+> >  
+> > -      # RX and TX delays are added by the MAC when required
+> > +      # RX and TX delays are part of the board design (through PCB traces). MAC
+> > +      # and PHY must not add delays.
+> >        - rgmii
+> >  
+> > -      # RGMII with internal RX and TX delays provided by the PHY,
+> > -      # the MAC should not add the RX or TX delays in this case
+> > +      # RGMII with internal RX and TX delays provided by the MAC or PHY. No
+> > +      # delays are included in the board design; this is the most common case
+> > +      # in modern designs.
+> >        - rgmii-id
+> >  
+> > -      # RGMII with internal RX delay provided by the PHY, the MAC
+> > -      # should not add an RX delay in this case
+> > +      # RGMII with internal RX delay provided by the MAC or PHY. TX delay is
+> > +      # part of the board design.
+> >        - rgmii-rxid
+> >  
+> > -      # RGMII with internal TX delay provided by the PHY, the MAC
+> > -      # should not add an TX delay in this case
+> > +      # RGMII with internal TX delay provided by the MAC or PHY. RX delay is
+> > +      # part of the board design.
+> >        - rgmii-txid
+> >        - rtbi
+> >        - smii
+> 
+> Sorry, but I don't think this wording improves the situation - in fact,
+> I think it makes the whole thing way more confusing.
+> 
+> Scenario 1: I'm a network device driver author. I read the above, Okay,
+> I have a RGMII interface, but I need delays to be added. I'll detect
+> when RGMII-ID is used, and cause the MAC driver to add the delays, but
+> still pass PHY_INTERFACE_MODE_RGMII_ID to phylib.
+> 
+> Scenario 2: I'm writing a DT file for a board. Hmm, so if I specify
+> rgmii because the delays are implemented in the traces, but I need to
+> fine-tune them. However, the documentation says that delays must not
+> be added by the MAC or the PHY so how do I adjust them. I know, I'll
+> use rgmii-id because that allows delays!
+> 
+> I suspect neither of these two are really want you mean, but given
+> this wording, that's exactly where it leads - which is more
+> confusion and less proper understanding.
 
-This patch enhances PSE callbacks by introducing support for the static
-port priority feature. It extends interrupt management to handle and report
-detection, classification, and disconnection events. Additionally, it
-introduces the pi_get_pw_req() callback, which provides information about
-the power requested by the Powered Devices.
+These DT documents are supposed to be normative and OS agnostic. I
+wounder what the DT Maintainers will say if we add an Informative
+section afterwards giving a detailed description of how Linux actually
+implements these normative statements? It will need to open with a
+clear statement that it is describing Linux behaviour, and other OSes
+can implement the normative part in other ways and still be compliant,
+but that Linux has seen a lot of broken implementations and so wants
+to add Informative information to guide Linux developers.
 
-Interrupt support is essential for the proper functioning of the TPS23881
-controller. Without it, after a power-on (PWON), the controller will
-no longer perform detection and classification. This could lead to
-potential hazards, such as connecting a non-PoE device after a PoE device,
-which might result in magic smoke.
-
-Signed-off-by: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
-
-Change in v7:
-- Add configuration of the power limit back after an over current event.
-
-Change in v4:
-- Fix variable type nit.
-
-Change in v3:
-- New patch
----
- drivers/net/pse-pd/tps23881.c | 244 +++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 228 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/net/pse-pd/tps23881.c b/drivers/net/pse-pd/tps23881.c
-index 69a3ede20b33..2d807b1e40e9 100644
---- a/drivers/net/pse-pd/tps23881.c
-+++ b/drivers/net/pse-pd/tps23881.c
-@@ -20,20 +20,30 @@
- 
- #define TPS23881_REG_IT		0x0
- #define TPS23881_REG_IT_MASK	0x1
-+#define TPS23881_REG_IT_DISF	BIT(2)
-+#define TPS23881_REG_IT_DETC	BIT(3)
-+#define TPS23881_REG_IT_CLASC	BIT(4)
- #define TPS23881_REG_IT_IFAULT	BIT(5)
- #define TPS23881_REG_IT_SUPF	BIT(7)
-+#define TPS23881_REG_DET_EVENT	0x5
- #define TPS23881_REG_FAULT	0x7
- #define TPS23881_REG_SUPF_EVENT	0xb
- #define TPS23881_REG_TSD	BIT(7)
-+#define TPS23881_REG_DISC	0xc
- #define TPS23881_REG_PW_STATUS	0x10
- #define TPS23881_REG_OP_MODE	0x12
-+#define TPS23881_REG_DISC_EN	0x13
- #define TPS23881_OP_MODE_SEMIAUTO	0xaaaa
- #define TPS23881_REG_DIS_EN	0x13
- #define TPS23881_REG_DET_CLA_EN	0x14
- #define TPS23881_REG_GEN_MASK	0x17
-+#define TPS23881_REG_CLCHE	BIT(2)
-+#define TPS23881_REG_DECHE	BIT(3)
- #define TPS23881_REG_NBITACC	BIT(5)
- #define TPS23881_REG_INTEN	BIT(7)
- #define TPS23881_REG_PW_EN	0x19
-+#define TPS23881_REG_RESET	0x1a
-+#define TPS23881_REG_CLRAIN	BIT(7)
- #define TPS23881_REG_2PAIR_POL1	0x1e
- #define TPS23881_REG_PORT_MAP	0x26
- #define TPS23881_REG_PORT_POWER	0x29
-@@ -178,6 +188,7 @@ static int tps23881_pi_enable(struct pse_controller_dev *pcdev, int id)
- 	struct i2c_client *client = priv->client;
- 	u8 chan;
- 	u16 val;
-+	int ret;
- 
- 	if (id >= TPS23881_MAX_CHANS)
- 		return -ERANGE;
-@@ -191,7 +202,22 @@ static int tps23881_pi_enable(struct pse_controller_dev *pcdev, int id)
- 				       BIT(chan % 4));
- 	}
- 
--	return i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
-+	ret = i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
-+	if (ret)
-+		return ret;
-+
-+	/* Enable DC disconnect*/
-+	chan = priv->port[id].chan[0];
-+	ret = i2c_smbus_read_word_data(client, TPS23881_REG_DISC_EN);
-+	if (ret < 0)
-+		return ret;
-+
-+	val = tps23881_set_val(ret, chan, 0, BIT(chan % 4), BIT(chan % 4));
-+	ret = i2c_smbus_write_word_data(client, TPS23881_REG_DISC_EN, val);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
- }
- 
- static int tps23881_pi_disable(struct pse_controller_dev *pcdev, int id)
-@@ -224,6 +250,17 @@ static int tps23881_pi_disable(struct pse_controller_dev *pcdev, int id)
- 	 */
- 	mdelay(5);
- 
-+	/* Disable DC disconnect*/
-+	chan = priv->port[id].chan[0];
-+	ret = i2c_smbus_read_word_data(client, TPS23881_REG_DISC_EN);
-+	if (ret < 0)
-+		return ret;
-+
-+	val = tps23881_set_val(ret, chan, 0, 0, BIT(chan % 4));
-+	ret = i2c_smbus_write_word_data(client, TPS23881_REG_DISC_EN, val);
-+	if (ret)
-+		return ret;
-+
- 	/* Enable detection and classification */
- 	ret = i2c_smbus_read_word_data(client, TPS23881_REG_DET_CLA_EN);
- 	if (ret < 0)
-@@ -919,6 +956,47 @@ static int tps23881_setup_pi_matrix(struct pse_controller_dev *pcdev)
- 	return ret;
- }
- 
-+static int tps23881_power_class_table[] = {
-+	-ERANGE,
-+	4000,
-+	7000,
-+	15500,
-+	30000,
-+	15500,
-+	15500,
-+	-ERANGE,
-+	45000,
-+	60000,
-+	75000,
-+	90000,
-+	15500,
-+	45000,
-+	-ERANGE,
-+	-ERANGE,
-+};
-+
-+static int tps23881_pi_get_pw_req(struct pse_controller_dev *pcdev, int id)
-+{
-+	struct tps23881_priv *priv = to_tps23881_priv(pcdev);
-+	struct i2c_client *client = priv->client;
-+	u8 reg, chan;
-+	int ret;
-+	u16 val;
-+
-+	/* For a 4-pair the classification need 5ms to be completed */
-+	if (priv->port[id].is_4p)
-+		mdelay(5);
-+
-+	chan = priv->port[id].chan[0];
-+	reg = TPS23881_REG_DISC + (chan % 4);
-+	ret = i2c_smbus_read_word_data(client, reg);
-+	if (ret < 0)
-+		return ret;
-+
-+	val = tps23881_calc_val(ret, chan, 4, 0xf);
-+	return tps23881_power_class_table[val];
-+}
-+
- static const struct pse_controller_ops tps23881_ops = {
- 	.setup_pi_matrix = tps23881_setup_pi_matrix,
- 	.pi_enable = tps23881_pi_enable,
-@@ -931,6 +1009,7 @@ static const struct pse_controller_ops tps23881_ops = {
- 	.pi_get_pw_limit = tps23881_pi_get_pw_limit,
- 	.pi_set_pw_limit = tps23881_pi_set_pw_limit,
- 	.pi_get_pw_limit_ranges = tps23881_pi_get_pw_limit_ranges,
-+	.pi_get_pw_req = tps23881_pi_get_pw_req,
- };
- 
- static const char fw_parity_name[] = "ti/tps23881/tps23881-parity-14.bin";
-@@ -1088,17 +1167,113 @@ static void tps23881_irq_event_over_temp(struct tps23881_priv *priv,
- 	}
- }
- 
--static void tps23881_irq_event_over_current(struct tps23881_priv *priv,
--					    u16 reg_val,
--					    unsigned long *notifs,
--					    unsigned long *notifs_mask)
-+static int tps23881_irq_event_over_current(struct tps23881_priv *priv,
-+					   u16 reg_val,
-+					   unsigned long *notifs,
-+					   unsigned long *notifs_mask)
- {
-+	int i, ret;
- 	u8 chans;
- 
- 	chans = tps23881_irq_export_chans_helper(reg_val, 0);
-+	if (!chans)
-+		return 0;
-+
-+	tps23881_set_notifs_helper(priv, chans, notifs, notifs_mask,
-+				   ETHTOOL_PSE_EVENT_OVER_CURRENT |
-+				   ETHTOOL_C33_PSE_EVENT_DISCONNECTION);
-+
-+	/* Over Current event resets the power limit registers so we need
-+	 * to configured it again.
-+	 */
-+	for_each_set_bit(i, notifs_mask, priv->pcdev.nr_lines) {
-+		if (priv->port[i].pw_pol < 0)
-+			continue;
-+
-+		ret = tps23881_pi_enable_manual_pol(priv, i);
-+		if (ret < 0)
-+			return ret;
-+
-+		/* Set power policy */
-+		ret = tps23881_pi_set_pw_pol_limit(priv, i,
-+						   priv->port[i].pw_pol,
-+						   priv->port[i].is_4p);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static void tps23881_irq_event_disconnection(struct tps23881_priv *priv,
-+					     u16 reg_val,
-+					     unsigned long *notifs,
-+					     unsigned long *notifs_mask)
-+{
-+	u8 chans;
-+
-+	chans = tps23881_irq_export_chans_helper(reg_val, 4);
- 	if (chans)
- 		tps23881_set_notifs_helper(priv, chans, notifs, notifs_mask,
--					   ETHTOOL_PSE_EVENT_OVER_CURRENT);
-+					   ETHTOOL_C33_PSE_EVENT_DISCONNECTION);
-+}
-+
-+static int tps23881_irq_event_detection(struct tps23881_priv *priv,
-+					u16 reg_val,
-+					unsigned long *notifs,
-+					unsigned long *notifs_mask)
-+{
-+	enum ethtool_pse_events event;
-+	int reg, ret, i, val;
-+	unsigned long chans;
-+
-+	chans = tps23881_irq_export_chans_helper(reg_val, 0);
-+	for_each_set_bit(i, &chans, TPS23881_MAX_CHANS) {
-+		reg = TPS23881_REG_DISC + (i % 4);
-+		ret = i2c_smbus_read_word_data(priv->client, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		val = tps23881_calc_val(ret, i, 0, 0xf);
-+		/* If detection valid */
-+		if (val == 0x4)
-+			event = ETHTOOL_C33_PSE_EVENT_DETECTION;
-+		else
-+			event = ETHTOOL_C33_PSE_EVENT_DISCONNECTION;
-+
-+		tps23881_set_notifs_helper(priv, BIT(i), notifs,
-+					   notifs_mask, event);
-+	}
-+
-+	return 0;
-+}
-+
-+static int tps23881_irq_event_classification(struct tps23881_priv *priv,
-+					     u16 reg_val,
-+					     unsigned long *notifs,
-+					     unsigned long *notifs_mask)
-+{
-+	int reg, ret, val, i;
-+	unsigned long chans;
-+
-+	chans = tps23881_irq_export_chans_helper(reg_val, 4);
-+	for_each_set_bit(i, &chans, TPS23881_MAX_CHANS) {
-+		reg = TPS23881_REG_DISC + (i % 4);
-+		ret = i2c_smbus_read_word_data(priv->client, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		val = tps23881_calc_val(ret, i, 4, 0xf);
-+		/* Do not report classification event for unknown class */
-+		if (!val || val == 0x8 || val == 0xf)
-+			continue;
-+
-+		tps23881_set_notifs_helper(priv, BIT(i), notifs,
-+					   notifs_mask,
-+					   ETHTOOL_C33_PSE_EVENT_CLASSIFICATION);
-+	}
-+
-+	return 0;
- }
- 
- static int tps23881_irq_event_handler(struct tps23881_priv *priv, u16 reg,
-@@ -1106,7 +1281,7 @@ static int tps23881_irq_event_handler(struct tps23881_priv *priv, u16 reg,
- 				      unsigned long *notifs_mask)
- {
- 	struct i2c_client *client = priv->client;
--	int ret;
-+	int ret, val;
- 
- 	/* The Supply event bit is repeated twice so we only need to read
- 	 * the one from the first byte.
-@@ -1118,13 +1293,36 @@ static int tps23881_irq_event_handler(struct tps23881_priv *priv, u16 reg,
- 		tps23881_irq_event_over_temp(priv, ret, notifs, notifs_mask);
- 	}
- 
--	if (reg & (TPS23881_REG_IT_IFAULT | TPS23881_REG_IT_IFAULT << 8)) {
-+	if (reg & (TPS23881_REG_IT_IFAULT | TPS23881_REG_IT_IFAULT << 8 |
-+		   TPS23881_REG_IT_DISF | TPS23881_REG_IT_DISF << 8)) {
- 		ret = i2c_smbus_read_word_data(client, TPS23881_REG_FAULT);
- 		if (ret < 0)
- 			return ret;
--		tps23881_irq_event_over_current(priv, ret, notifs, notifs_mask);
-+		ret = tps23881_irq_event_over_current(priv, ret, notifs,
-+						      notifs_mask);
-+		if (ret)
-+			return ret;
-+
-+		tps23881_irq_event_disconnection(priv, ret, notifs, notifs_mask);
- 	}
- 
-+	if (reg & (TPS23881_REG_IT_DETC | TPS23881_REG_IT_DETC << 8 |
-+		   TPS23881_REG_IT_CLASC | TPS23881_REG_IT_CLASC << 8)) {
-+		ret = i2c_smbus_read_word_data(client, TPS23881_REG_DET_EVENT);
-+		if (ret < 0)
-+			return ret;
-+
-+		val = ret;
-+		ret = tps23881_irq_event_detection(priv, val, notifs,
-+						   notifs_mask);
-+		if (ret)
-+			return ret;
-+
-+		ret = tps23881_irq_event_classification(priv, val, notifs,
-+							notifs_mask);
-+		if (ret)
-+			return ret;
-+	}
- 	return 0;
- }
- 
-@@ -1179,7 +1377,14 @@ static int tps23881_setup_irq(struct tps23881_priv *priv, int irq)
- 	int ret;
- 	u16 val;
- 
--	val = TPS23881_REG_IT_IFAULT | TPS23881_REG_IT_SUPF;
-+	if (!irq) {
-+		dev_err(&client->dev, "interrupt is missing");
-+		return -EINVAL;
-+	}
-+
-+	val = TPS23881_REG_IT_IFAULT | TPS23881_REG_IT_SUPF |
-+	      TPS23881_REG_IT_DETC | TPS23881_REG_IT_CLASC |
-+	      TPS23881_REG_IT_DISF;
- 	val |= val << 8;
- 	ret = i2c_smbus_write_word_data(client, TPS23881_REG_IT_MASK, val);
- 	if (ret)
-@@ -1189,11 +1394,19 @@ static int tps23881_setup_irq(struct tps23881_priv *priv, int irq)
- 	if (ret < 0)
- 		return ret;
- 
--	val = (u16)(ret | TPS23881_REG_INTEN | TPS23881_REG_INTEN << 8);
-+	val = TPS23881_REG_INTEN | TPS23881_REG_CLCHE | TPS23881_REG_DECHE;
-+	val |= val << 8;
-+	val |= (u16)ret;
- 	ret = i2c_smbus_write_word_data(client, TPS23881_REG_GEN_MASK, val);
- 	if (ret < 0)
- 		return ret;
- 
-+	/* Reset interrupts registers */
-+	ret = i2c_smbus_write_word_data(client, TPS23881_REG_RESET,
-+					TPS23881_REG_CLRAIN);
-+	if (ret < 0)
-+		return ret;
-+
- 	return devm_pse_irq_helper(&priv->pcdev, irq, 0, &irq_desc);
- }
- 
-@@ -1271,17 +1484,16 @@ static int tps23881_i2c_probe(struct i2c_client *client)
- 	priv->pcdev.dev = dev;
- 	priv->pcdev.types = ETHTOOL_PSE_C33;
- 	priv->pcdev.nr_lines = TPS23881_MAX_CHANS;
-+	priv->pcdev.supp_budget_eval_strategies = PSE_BUDGET_EVAL_STRAT_STATIC;
- 	ret = devm_pse_controller_register(dev, &priv->pcdev);
- 	if (ret) {
- 		return dev_err_probe(dev, ret,
- 				     "failed to register PSE controller\n");
- 	}
- 
--	if (client->irq) {
--		ret = tps23881_setup_irq(priv, client->irq);
--		if (ret)
--			return ret;
--	}
-+	ret = tps23881_setup_irq(priv, client->irq);
-+	if (ret)
-+		return ret;
- 
- 	return ret;
- }
-
--- 
-2.34.1
-
+   Andrew
