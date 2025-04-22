@@ -1,107 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A658290BAE
-	for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 16:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831B328FFEF;
+	Tue, 22 Apr 2025 16:11:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745338067; cv=none; b=GqRDe+coPZn9fMd5COo/p6jmXdq656k6dYyM/vvHN9CrgvD87xtJAVizoZVwcj+vxUCTRimBwtSKoWBK6gz62YvOZoIo3SFgvlQ836d+JnSPTkrmKzw0g1psoMCu+CdX3QECXz6x8VvuaDcNxk6ZqrCw6c2HTDuU8lK5xyaMDdE=
+	t=1745338284; cv=none; b=WTfskOYipKKXnpuVENcvH/5wSUXswoVIYrIvD1p1Jlx/GBdHU/ZeVdLEe3pFg+U8cZyDy/21GKAkI4/unUkFadA/PLHt/ZF7/aYqflwcEqc47MMitnZUk54XVNhU2/DHp09R1dO2EoPCVgl5RcdotaqyMffkuyDei9igkI6YH7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745338067; c=relaxed/simple;
-	bh=Ucct7ug/sc59MUthipbdjNfLgEhVwF3WKl6PurlN2Ug=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=I2ZHfYfZ/ovRruHd0ikptds0SN7KZDOnE/aY2jzy+cUDWsjYcMC5oThqHFC0CBIzYlkiEGE5VKHmN1IZtR8EltwvDtarMOLgTlJD+wRtsMeR8MZi7al+Aj3KH5EoZuVu3KlXbYMej88xCFuMgz8z/NtYv3h61Z+JA2kKB30B710=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KHY09NnG; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1745338284; c=relaxed/simple;
+	bh=RRoJLlC7A12/TR2Wz8V+c+670ziWaCSA92DtyIsQ39c=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=bVX6ycf0Of5VJtnebyoAzc0RC07xNAiyMv5pfI2GEJ2lbc+/IOti1h/LUhhyoy3S7na4ZNZUk7tDP+muma9ShnbbJPKBZFH037iQzyzYEgmIx1tzkyBrprQf+Xbw+28y6UYVNmuhSSuWfdw5CaMhMPtLrKo0F3MbVXgGPpIa5Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BL+N8Q5F; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KHY09NnG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745338066; x=1776874066;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Ucct7ug/sc59MUthipbdjNfLgEhVwF3WKl6PurlN2Ug=;
-  b=KHY09NnGXr1LGJwsmqOqUkgkgBkJyddM48DmbDAWnXaB2Ikf5BslvLN7
-   MNmyGT1DxvJgQg5is0F15mCpliuoDFA0ho9iv2rv7JmJJKjc7nRwVJCa9
-   4/wypmsPaXqTCKGu+EsvZuLAZxgSFPqA6N83YU6oYk8My17NmHCzPTcxj
-   1kOR+Q9Z1psuZId/H//16tnk2OM1QtKH9wjSSLRgJ6bwgDTJCjERnS+fM
-   xgoz826/mNuxjwCRL7G364164gAzN5h7ugm1SM1zZY+qETYjiOYxO7vER
-   vZYpjwnAdKYE4yCbEeL/D+Q2W9iTLkKjb8zZHQU+8DWbplU3mIjEXCcRM
-   w==;
-X-CSE-ConnectionGUID: +oo5dCwjTiK/rf8fq67I6g==
-X-CSE-MsgGUID: OqW5nmwVSbaL95GLsJMT6Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50709028"
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
-   d="scan'208";a="50709028"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 09:07:46 -0700
-X-CSE-ConnectionGUID: TpDil5afQviMSHMAe+6D9A==
-X-CSE-MsgGUID: 2+rcNoRNT+mXQL7PlJRKIg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
-   d="scan'208";a="132592468"
-Received: from amlin-018-114.igk.intel.com ([10.102.18.114])
-  by orviesa007.jf.intel.com with ESMTP; 22 Apr 2025 09:07:44 -0700
-From: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Karol Kolacinski <karol.kolacinski@intel.com>,
-	Milena Olech <milena.olech@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Subject: [PATCH iwl-next v5 3/3] ice: add ice driver PTP pin documentation
-Date: Tue, 22 Apr 2025 18:01:49 +0200
-Message-Id: <20250422160149.1131069-4-arkadiusz.kubalewski@intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20250422160149.1131069-1-arkadiusz.kubalewski@intel.com>
-References: <20250422160149.1131069-1-arkadiusz.kubalewski@intel.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BL+N8Q5F"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6506D43A46;
+	Tue, 22 Apr 2025 16:11:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1745338279;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RRoJLlC7A12/TR2Wz8V+c+670ziWaCSA92DtyIsQ39c=;
+	b=BL+N8Q5Fn6rdiqBn6OmTsxXoJ9Hmwb4+Cp9EPmNsArEyLxUBWFVxrjkUHAF0kIsavPM6XX
+	diCJtu+5Ly9c8KpN6G8x6k6lDFpyCYNdFdmJbLzqvILAA2E461zP6Vl5aQnWM52I1ZKFjb
+	URv4AQLYjPslN6FYm//6sL4cTinqbdZ0ozPAQ8e/3iB+TBYuQf2hdfFevjXWgqw3IDHG8/
+	uY3oRLwfCgKhdSGVb6x4CH2T0ogBE6yTmirNGCqLE14+OuS7xL/NOa3//AO+jRjVas+IZt
+	Do7zVrHIg0pSTNgvl5tNaYZYAfY7atWN0Xxx+Tu4ztV+/zEpRVIM3rCNf3Da9w==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 22 Apr 2025 18:11:18 +0200
+Message-Id: <D9DAS80VMYAW.3JALOQIHS2B0W@bootlin.com>
+To: "Maxime Chevallier" <maxime.chevallier@bootlin.com>
+Cc: "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Maxime
+ Coquelin" <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
+ <alexandre.torgue@foss.st.com>, "Richard Cochran"
+ <richardcochran@gmail.com>, "Daniel Machon" <daniel.machon@microchip.com>,
+ "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>,
+ <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ "Russell King (Oracle)" <linux@armlinux.org.uk>
+Subject: Re: [PATCH net 1/2] net: stmmac: fix dwmac1000 ptp timestamp status
+ offset
+From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250422-stmmac_ts-v1-0-b59c9f406041@bootlin.com>
+ <20250422-stmmac_ts-v1-1-b59c9f406041@bootlin.com>
+ <20250422174934.309a1309@fedora.home>
+In-Reply-To: <20250422174934.309a1309@fedora.home>
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeegudejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkvfevuffhofhfjgesthhqredtredtjeenucfhrhhomheptehlvgigihhsucfnohhthhhorhoruceorghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeekgfffhfehhfefgeekhfffudfhheekveffleeuhfelgfefueevhedvkeduhfehveenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudeipdhrtghpthhtohepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhto
+ hepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepmhgtohhquhgvlhhinhdrshhtmhefvdesghhmrghilhdrtghomhdprhgtphhtthhopegrlhgvgigrnhgurhgvrdhtohhrghhuvgesfhhoshhsrdhsthdrtghomh
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-From: Karol Kolacinski <karol.kolacinski@intel.com>
+Hi Maxime,
 
-Add a description of PTP pins support by the adapters to ice driver
-documentation.
+On Tue Apr 22, 2025 at 5:49 PM CEST, Maxime Chevallier wrote:
+> Hi Alexis,
+>
+> On Tue, 22 Apr 2025 17:07:22 +0200
+> Alexis Lothore <alexis.lothore@bootlin.com> wrote:
+>
+>> When a PTP interrupt occurs, the driver accesses the wrong offset to
+>> learn about the number of available snapshots in the FIFO for dwmac1000:
+>> it should be accessing bits 29..25, while it is currently reading bits
+>> 19..16 (those are bits about the auxiliary triggers which have generated
+>> the timestamps). As a consequence, it does not compute correctly the
+>> number of available snapshots, and so possibly do not generate the
+>> corresponding clock events if the bogus value ends up being 0.
+>>=20
+>> Fix clock events generation by reading the correct bits in the timestamp
+>> register for dwmac1000.
+>>=20
+>> Fixes: 19b93bbb20eb ("net: stmmac: Introduce dwmac1000 timestamping oper=
+ations")
+>
+> Looks like the commit hash is wrong, should be :
+>
+> 477c3e1f6363 ("net: stmmac: Introduce dwmac1000 timestamping operations")
 
-Reviewed-by: Milena Olech <milena.olech@intel.com>
-Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
-Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
----
-v5:
-- no change.
----
- .../device_drivers/ethernet/intel/ice.rst           | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Yes, you are absolutely right, I wrongly picked this hash from a custom
+branch rather than a stable branch -_- Thanks for spotting this, will be
+fixed in v2.
 
-diff --git a/Documentation/networking/device_drivers/ethernet/intel/ice.rst b/Documentation/networking/device_drivers/ethernet/intel/ice.rst
-index 3c46a48d99ba..0bca293cf9cb 100644
---- a/Documentation/networking/device_drivers/ethernet/intel/ice.rst
-+++ b/Documentation/networking/device_drivers/ethernet/intel/ice.rst
-@@ -927,6 +927,19 @@ To enable/disable UDP Segmentation Offload, issue the following command::
- 
-   # ethtool -K <ethX> tx-udp-segmentation [off|on]
- 
-+PTP pin interface
-+-----------------
-+All adapters support standard PTP pin interface. SDPs (Software Definable Pin)
-+are single ended pins with both periodic output and external timestamp
-+supported. There are also specific differential input/output pins (TIME_SYNC,
-+1PPS) with only one of the functions supported.
-+
-+There are adapters with DPLL, where pins are connected to the DPLL instead of
-+being exposed on the board. You have to be aware that in those configurations,
-+only SDP pins are exposed and each pin has its own fixed direction.
-+To see input signal on those PTP pins, you need to configure DPLL properly.
-+Output signal is only visible on DPLL and to send it to the board SMA/U.FL pins,
-+DPLL output pins have to be manually configured.
- 
- GNSS module
- -----------
--- 
-2.38.1
+>
+> Other than that I agree with the change, these offset are the right
+> ones, thanks...
+>
+> With the Fixes tag fixed,
+>
+> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+Thanks,
+
+Alexis
+
+
+
+
+--=20
+Alexis Lothor=C3=A9, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
