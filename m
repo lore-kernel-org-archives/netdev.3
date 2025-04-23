@@ -1,648 +1,163 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD91292922
-	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 19:27:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AFB293471;
+	Wed, 23 Apr 2025 19:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745436460; cv=none; b=iI1zO8kTmdTyuWPTRSuyKtLRZUEmVPfP36FcwL+vMXwSj34VsUNgzqz6vCxpOHBilSNqcJhr9gkO5BGHFMLUHZQ17ssMOQg/FN9Jyf33OlXJSsD2Odei7TTvvA+NFQ3i/3wX1fyqPUU+4F0tZ1okuovSH3YFJsT7qRFnqAgJgrs=
+	t=1745436782; cv=none; b=FENzhPQKeq2vi24i5q2V97e0pCbDA6H1lvijNpsKZeMCy/6B+OOl1MRs8Ajl+7r21F8Tqyzvdui2KlZUV53W/F4hHbW9UdUv4ZdIScfZuTTKs9/7lp5CgTuhamDcuJMC+30DqQslfXjdfiFz6jZ1fQAiAxzJu6ubSbwOyQ2kEy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745436460; c=relaxed/simple;
-	bh=mfY85NeeEIzK1YcTbYddQVB/TjbEzEmgFmjrKsQEAkQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPtTJWL/RG6hVFeBLm8406NMEiaeiPjh5nIXKg0hWM1S+qJoOfPUtlg5GOPBla5wobCwhZjwwjKEo2ZfPilUOxDxjDimtpYS6+HJ2tK91WrPyLMkw9OF7MBIvStfN+d8t26wOSYaGrj5sm5kga9E6fCM1qz3IZWOaRxBrpV3vUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PU53tW6I; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1745436782; c=relaxed/simple;
+	bh=qeXaEOZxb709KPbgIWs4cj6m9zaoicIroOb1v3e0D38=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CthRZKd88FMoLO+UkujMd+uNO+OLS6RyNH0xGBEYxYm31KBCLegcUHPCNlV36hg8QnpQmXmkQvYKHxwZSSRfL7cT6NK4P+BYxXNIYVyr2yfFSfVJW7ALF0OombShBRGO4IKLdnwDk1G/qkgc2ekbhsS5pyrOxx2AdZ78senHeE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T6OObWSo; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PU53tW6I"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745436459; x=1776972459;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=mfY85NeeEIzK1YcTbYddQVB/TjbEzEmgFmjrKsQEAkQ=;
-  b=PU53tW6I7YrjWtykVdOQ5bdMkuh+XA1gfii0RzakFYWCIIqN4aGnVH4e
-   rYYVs6mqmC1J9HR3CQhDd/HRxchRrQre2H8U+5qyjYX+YrAYoScuS1woY
-   4qKUhWdhL60ndFxxjJMAplC6n0udIOnOoyNpra719Vgg6YLNQZMLzGh2o
-   aCVBFtvIMvi6SDZLppZHLMreJx2yZBTOiOGDEF48hyrWErxCkO9/r8YW5
-   ZS0s5VD85lbxGTkK2MlD+gTjI4zcuh0tOxv4LtfWXmoIwbUoz7J8zodJm
-   mD5Ky3aMFucP+Xv2MWYsRj4xD4u+nl+ybfhRXGGcgkuNy1LZsqpSvhNl1
-   w==;
-X-CSE-ConnectionGUID: L79SVd5SSFiYcKTMHQ7loQ==
-X-CSE-MsgGUID: zUytL+dQQXeqW1p1CiKw0g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="47176447"
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="47176447"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 12:27:38 -0700
-X-CSE-ConnectionGUID: 6I1O4STKRpqYJPY0FfyMbw==
-X-CSE-MsgGUID: ODq0Fav7TlK1dKRR7oALWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="163442598"
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO azaki-desk1.intel.com) ([10.125.108.47])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 12:27:30 -0700
-From: Ahmed Zaki <ahmed.zaki@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	ahmed.zaki@intel.com,
-	sridhar.samudrala@intel.com,
-	aleksandr.loktionov@intel.com,
-	aleksander.lobakin@intel.com,
-	dinesh.kumar@intel.com,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	almasrymina@google.com,
-	willemb@google.com,
-	pmenzel@molgen.mpg.de
-Subject: [PATCH iwl-next v5 3/3] idpf: add flow steering support
-Date: Wed, 23 Apr 2025 13:27:05 -0600
-Message-ID: <20250423192705.1648119-4-ahmed.zaki@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250423192705.1648119-1-ahmed.zaki@intel.com>
-References: <20250423192705.1648119-1-ahmed.zaki@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T6OObWSo"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-22c33e4fdb8so1914005ad.2;
+        Wed, 23 Apr 2025 12:33:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745436780; x=1746041580; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7TWawy/oO2koF169FCbsai+IajiXPIwWUAaxyA1lZrk=;
+        b=T6OObWSoyjLfGNeKZZI692OwBdfvG0Cr/tu+jL7l3+I4Tn7fRcs4VxzJzqbyDf1JOb
+         bZTyjlbgkatxWkRBuK9TcRU+aSFucd88RU0gLHK0HKq6QkooTjVdM176uSFQ6dG2ZIMt
+         PI9AjvnULsLvBXX18umqufxRZv5EnwesFYlUhbeD5Zg4JlNXdDucqrSVHs+0Zfi/mZSG
+         J4zGBAR221/eEPVKcKh+Wn69SyFNNXds9Lhecn09WeurRR0zlv57mrHNp8cxNAvO266y
+         jcA4T3PB3KJkgHx9Wbnkvfti3goBbEXFicA08aBHm2CDxEEaSIJmSFmmsnblVGsjTcKN
+         x/XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745436780; x=1746041580;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7TWawy/oO2koF169FCbsai+IajiXPIwWUAaxyA1lZrk=;
+        b=LOzMZRGxuufmnA0UmehSm+stTINdMZzN5z4OUXYlrAkFzk/RB5yWFWrBm+pQYGY6G3
+         sG+xJ9VgsgREl0cX521jnXtvzAuIE9tSsgciEYMoXkA0Bd22dYbwRrbf9xhbujAh6mU2
+         pbe9htcqW+Yh3ka0pTH1BtJUTt/sJZWwciuIddnRi6UQyV7J4CLuaLnmSJ35q3CWO/NB
+         GiqxBOz6SVGFeJWai/zcRGWrs5WRlIJ6P5Eh8rMHevFWRL5YvkW970RU08c8qBFCrLrd
+         4NaybmQ9bvPvlhJ99T8gIjQE1nxpY+xwtMME+m908yq1rvbJ8+lSZmORB5e6Dq5HN1Xp
+         gpxw==
+X-Forwarded-Encrypted: i=1; AJvYcCV8JM5jJ5bsUY1aTV1eC9u1YyByOW5R0yV9nLKmcC+UWrmTpbXnzxIhgXtQWTfE2ZrYHTidPQuqssH571k=@vger.kernel.org, AJvYcCVdpQ527Q5WpGiPwYf9r1bSW9hBbLn0e4dOGb/okdlWhwZT/5xqQ4rrQTLlDyi2zhIH+Z0X6ntK@vger.kernel.org, AJvYcCXcWUvwuticsw/mRhd3TnkQB82MdV7sKxonEFIM4u7byWlVxB9uHuh/sIHt21+GDLNDj/S7CzIe@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLTibhI7Si7lMssZh2tAbu8QmhU2RTQQ+n+U9K+rOOG2GJBnhv
+	YqYzeyVEemNEs7Tp+KTnb1xzrw5+8Tx6v1141VmWOCZ9Tw1iz3nu
+X-Gm-Gg: ASbGncsfSPJzMaWM5m/BN5gmwmmvT70HqcAA+X+tnTqR9BPBcOpekqJB+JWmmD/6Uxh
+	FGqfA+PuwGu7sfAWZHR0H4pxoBc1mZz/BwL8WfguJ2N5KztXyKtJsYeZv5Q+PajpacQlV5CR7h2
+	RTW2pKuPx0t2L9bOv+JbnHhoN++5aaIT48+yfECNmMPG0oRTYt/jWESjMm+0mz7FIpEA3Wyg5Oe
+	Ayp7HreHqrfaOaY3cjrYDq4J+BLvrGeIYU1bvcRDNnVVgcZKbKrFA1xtKUe/O7jqt/b1Cox6JDY
+	mbZcMU6l3VvcaYpFynU20rZMocgQ6PqO50mZEVG0h9Sb
+X-Google-Smtp-Source: AGHT+IEWT0wZBmAOH0PSIjsDQw7UecOVeWgSLRwG+BXz/ugDANFWFinATMDNMWo+M4dyODERvpT75A==
+X-Received: by 2002:a17:902:e5cc:b0:223:3630:cd32 with SMTP id d9443c01a7336-22c5365eaefmr309410525ad.53.1745436780172;
+        Wed, 23 Apr 2025 12:33:00 -0700 (PDT)
+Received: from localhost ([129.210.115.104])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50bf52cesm108249605ad.65.2025.04.23.12.32.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Apr 2025 12:32:59 -0700 (PDT)
+Date: Wed, 23 Apr 2025 12:32:58 -0700
+From: Cong Wang <xiyou.wangcong@gmail.com>
+To: "Alan J. Wylie" <alan@wylie.me.uk>
+Cc: Holger =?iso-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>, regressions@lists.linux.dev,
+	Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Octavian Purdila <tavip@google.com>,
+	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+	stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [REGRESSION] 6.14.3 panic - kernel NULL pointer dereference in
+ htb_dequeue
+Message-ID: <aAlAakEUu4XSEdXF@pop-os.localdomain>
+References: <20250421131000.6299a8e0@frodo.int.wylie.me.uk>
+ <20250421200601.5b2e28de@frodo.int.wylie.me.uk>
+ <89301960-1758-5b2e-6d91-81ef06843e14@applied-asynchrony.com>
+ <20250421210927.50d6a355@frodo.int.wylie.me.uk>
+ <20250422175145.1cb0bd98@frodo.int.wylie.me.uk>
+ <4e2a6522-d455-f0ce-c77d-b430c3047d7c@applied-asynchrony.com>
+ <aAf/K7F9TmCJIT+N@pop-os.localdomain>
+ <20250422214716.5e181523@frodo.int.wylie.me.uk>
+ <aAgO59L0ccXl6kUs@pop-os.localdomain>
+ <20250423105131.7ab46a47@frodo.int.wylie.me.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250423105131.7ab46a47@frodo.int.wylie.me.uk>
 
-Use the new virtchnl2 OP codes to communicate with the Control Plane to
-add flow steering filters. We add the basic functionality for add/delete
-with TCP/UDP IPv4 only. Support for other OP codes and protocols will be
-added later.
+On Wed, Apr 23, 2025 at 10:51:49AM +0100, Alan J. Wylie wrote:
+> On Tue, 22 Apr 2025 14:49:27 -0700
+> Cong Wang <xiyou.wangcong@gmail.com> wrote:
+> 
+> > Although I am still trying to understand the NULL pointer, which seems
+> > likely from:
+> > 
+> >  478                         if (p->inner.clprio[prio].ptr == cl->node + prio) {
+> >  479                                 /* we are removing child which is pointed to from
+> >  480                                  * parent feed - forget the pointer but remember
+> >  481                                  * classid
+> >  482                                  */
+> >  483                                 p->inner.clprio[prio].last_ptr_id = cl->common.classid;
+> >  484                                 p->inner.clprio[prio].ptr = NULL;
+> >  485                         }
+> > 
+> > Does the following patch work? I mean not just fixing the crash, but
+> > also not causing any other problem.
+> 
+> > ---
+> > 
+> > diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
+> > index 4b9a639b642e..0cdc778fddef 100644
+> > --- a/net/sched/sch_htb.c
+> > +++ b/net/sched/sch_htb.c
+> > @@ -348,7 +348,8 @@ static void htb_add_to_wait_tree(struct htb_sched *q,
+> >   */
+> >  static inline void htb_next_rb_node(struct rb_node **n)
+> >  {
+> > -	*n = rb_next(*n);
+> > +	if (*n)
+> > +		*n = rb_next(*n);
+> >  }
+> >  
+> >  /**
+> 
+> There's been three of these: 
+> 
+> Apr 23 08:08:32 bilbo kernel: WARNING: CPU: 0 PID: 0 at htb_deactivate+0xd/0x30 [sch_htb]
+> Apr 23 08:08:32 bilbo kernel: WARNING: CPU: 0 PID: 0 at htb_deactivate+0xd/0x30 [sch_htb]
+> Apr 23 10:41:36 bilbo kernel: WARNING: CPU: 1 PID: 0 at htb_deactivate+0xd/0x30 [sch_htb]
+> 
+> But no panic.
+> 
+> I've run scripts/decode.sh on the last one.
+> 
 
-Standard 'ethtool -N|--config-ntuple' should be used, for example:
+Thanks a lot for testing! This helped a lot to verify how far we can go
+beyond the panic and what I still missed. To me it looks a bit
+complicated for -stable if we make everything idempotent along the path.
 
-    # ethtool -N ens801f0d1 flow-type tcp4 src-ip 10.0.0.1 action 6
+Do you mind testing the following one instead? Please revert the
+above one for htb_next_rb_node(). I think maybe this is the safest fix
+we could have for -stable.
 
-to route all IPv4/TCP traffic from IP 10.0.0.1 to queue 6.
+Thanks!
 
-Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
----
- drivers/net/ethernet/intel/idpf/idpf.h        |  13 +
- .../net/ethernet/intel/idpf/idpf_ethtool.c    | 298 +++++++++++++++++-
- drivers/net/ethernet/intel/idpf/idpf_lib.c    |   5 +
- .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 108 +++++++
- .../net/ethernet/intel/idpf/idpf_virtchnl.h   |   6 +
- 5 files changed, 425 insertions(+), 5 deletions(-)
+--------->
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-index c21903310354..0f3553782ea2 100644
---- a/drivers/net/ethernet/intel/idpf/idpf.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -252,6 +252,12 @@ struct idpf_port_stats {
- 	struct virtchnl2_vport_stats vport_stats;
- };
+diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
+index 4b9a639b642e..3786abbdc4c3 100644
+--- a/net/sched/sch_htb.c
++++ b/net/sched/sch_htb.c
+@@ -1487,7 +1487,8 @@ static void htb_qlen_notify(struct Qdisc *sch, unsigned long arg)
  
-+struct idpf_fsteer_fltr {
-+	struct list_head list;
-+	u32 loc;
-+	u32 q_index;
-+};
-+
- /**
-  * struct idpf_tx_tstamp_stats - Tx timestamp statistics
-  * @tx_hwtstamp_lock: Lock to protect Tx tstamp stats
-@@ -406,6 +412,8 @@ struct idpf_rss_data {
-  *		      ethtool
-  * @user_flags: User toggled config flags
-  * @mac_filter_list: List of MAC filters
-+ * @num_fsteer_fltrs: number of flow steering filters
-+ * @flow_steer_list: list of flow steering filters
-  *
-  * Used to restore configuration after a reset as the vport will get wiped.
-  */
-@@ -417,6 +425,8 @@ struct idpf_vport_user_config_data {
- 	u32 num_req_rxq_desc;
- 	DECLARE_BITMAP(user_flags, __IDPF_USER_FLAGS_NBITS);
- 	struct list_head mac_filter_list;
-+	u32 num_fsteer_fltrs;
-+	struct list_head flow_steer_list;
- };
- 
- /**
-@@ -878,4 +888,7 @@ int idpf_sriov_configure(struct pci_dev *pdev, int num_vfs);
- u8 idpf_vport_get_hsplit(const struct idpf_vport *vport);
- bool idpf_vport_set_hsplit(const struct idpf_vport *vport, u8 val);
- 
-+int idpf_add_del_fsteer_filters(struct idpf_adapter *adapter,
-+				struct virtchnl2_flow_rule_add_del *rule,
-+				enum virtchnl2_op opcode);
- #endif /* !_IDPF_H_ */
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-index 7a4793749bc5..8a7145dd912b 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-@@ -3,6 +3,7 @@
- 
- #include "idpf.h"
- #include "idpf_ptp.h"
-+#include "idpf_virtchnl.h"
- 
- /**
-  * idpf_get_rxnfc - command to get RX flow classification rules
-@@ -13,26 +14,312 @@
-  * Returns Success if the command is supported.
-  */
- static int idpf_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd,
--			  u32 __always_unused *rule_locs)
-+			  u32 *rule_locs)
- {
-+	struct idpf_netdev_priv *np = netdev_priv(netdev);
-+	struct idpf_vport_user_config_data *user_config;
-+	struct idpf_fsteer_fltr *f;
- 	struct idpf_vport *vport;
-+	unsigned int cnt = 0;
-+	int err = 0;
- 
- 	idpf_vport_ctrl_lock(netdev);
- 	vport = idpf_netdev_to_vport(netdev);
-+	user_config = &np->adapter->vport_config[np->vport_idx]->user_config;
- 
- 	switch (cmd->cmd) {
- 	case ETHTOOL_GRXRINGS:
- 		cmd->data = vport->num_rxq;
--		idpf_vport_ctrl_unlock(netdev);
--
--		return 0;
-+		break;
-+	case ETHTOOL_GRXCLSRLCNT:
-+		cmd->rule_cnt = user_config->num_fsteer_fltrs;
-+		cmd->data = idpf_fsteer_max_rules(vport);
-+		break;
-+	case ETHTOOL_GRXCLSRULE:
-+		err = -EINVAL;
-+		list_for_each_entry(f, &user_config->flow_steer_list, list)
-+			if (f->loc == cmd->fs.location) {
-+				cmd->fs.ring_cookie = f->q_index;
-+				err = 0;
-+				break;
-+			}
-+		break;
-+	case ETHTOOL_GRXCLSRLALL:
-+		cmd->data = idpf_fsteer_max_rules(vport);
-+		list_for_each_entry(f, &user_config->flow_steer_list, list) {
-+			if (cnt == cmd->rule_cnt) {
-+				err = -EMSGSIZE;
-+				break;
-+			}
-+			rule_locs[cnt] = f->loc;
-+			cnt++;
-+		}
-+		if (!err)
-+			cmd->rule_cnt = user_config->num_fsteer_fltrs;
-+		break;
- 	default:
- 		break;
- 	}
- 
- 	idpf_vport_ctrl_unlock(netdev);
- 
--	return -EOPNOTSUPP;
-+	return err;
-+}
-+
-+static void idpf_fsteer_fill_ipv4(struct virtchnl2_proto_hdrs *hdrs,
-+				  struct ethtool_rx_flow_spec *fsp)
-+{
-+	struct iphdr *iph;
-+
-+	hdrs->proto_hdr[0].hdr_type = cpu_to_le32(VIRTCHNL2_PROTO_HDR_IPV4);
-+
-+	iph = (struct iphdr *)hdrs->proto_hdr[0].buffer_spec;
-+	iph->saddr = fsp->h_u.tcp_ip4_spec.ip4src;
-+	iph->daddr = fsp->h_u.tcp_ip4_spec.ip4dst;
-+
-+	iph = (struct iphdr *)hdrs->proto_hdr[0].buffer_mask;
-+	iph->saddr = fsp->m_u.tcp_ip4_spec.ip4src;
-+	iph->daddr = fsp->m_u.tcp_ip4_spec.ip4dst;
-+}
-+
-+static void idpf_fsteer_fill_udp(struct virtchnl2_proto_hdrs *hdrs,
-+				 struct ethtool_rx_flow_spec *fsp,
-+				 bool v4)
-+{
-+	struct udphdr *udph, *udpm;
-+
-+	hdrs->proto_hdr[1].hdr_type = cpu_to_le32(VIRTCHNL2_PROTO_HDR_UDP);
-+
-+	udph = (struct udphdr *)hdrs->proto_hdr[1].buffer_spec;
-+	udpm = (struct udphdr *)hdrs->proto_hdr[1].buffer_mask;
-+
-+	if (v4) {
-+		udph->source = fsp->h_u.udp_ip4_spec.psrc;
-+		udph->dest = fsp->h_u.udp_ip4_spec.pdst;
-+		udpm->source = fsp->m_u.udp_ip4_spec.psrc;
-+		udpm->dest = fsp->m_u.udp_ip4_spec.pdst;
-+	} else {
-+		udph->source = fsp->h_u.udp_ip6_spec.psrc;
-+		udph->dest = fsp->h_u.udp_ip6_spec.pdst;
-+		udpm->source = fsp->m_u.udp_ip6_spec.psrc;
-+		udpm->dest = fsp->m_u.udp_ip6_spec.pdst;
-+	}
-+}
-+
-+static void idpf_fsteer_fill_tcp(struct virtchnl2_proto_hdrs *hdrs,
-+				 struct ethtool_rx_flow_spec *fsp,
-+				 bool v4)
-+{
-+	struct tcphdr *tcph, *tcpm;
-+
-+	hdrs->proto_hdr[1].hdr_type = cpu_to_le32(VIRTCHNL2_PROTO_HDR_TCP);
-+
-+	tcph = (struct tcphdr *)hdrs->proto_hdr[1].buffer_spec;
-+	tcpm = (struct tcphdr *)hdrs->proto_hdr[1].buffer_mask;
-+
-+	if (v4) {
-+		tcph->source = fsp->h_u.tcp_ip4_spec.psrc;
-+		tcph->dest = fsp->h_u.tcp_ip4_spec.pdst;
-+		tcpm->source = fsp->m_u.tcp_ip4_spec.psrc;
-+		tcpm->dest = fsp->m_u.tcp_ip4_spec.pdst;
-+	} else {
-+		tcph->source = fsp->h_u.tcp_ip6_spec.psrc;
-+		tcph->dest = fsp->h_u.tcp_ip6_spec.pdst;
-+		tcpm->source = fsp->m_u.tcp_ip6_spec.psrc;
-+		tcpm->dest = fsp->m_u.tcp_ip6_spec.pdst;
-+	}
-+}
-+
-+/**
-+ * idpf_add_flow_steer - add a Flow Steering filter
-+ * @netdev: network interface device structure
-+ * @cmd: command to add Flow Steering filter
-+ *
-+ * Return: 0 on success and negative values for failure
-+ */
-+static int idpf_add_flow_steer(struct net_device *netdev,
-+			       struct ethtool_rxnfc *cmd)
-+{
-+	struct idpf_fsteer_fltr *fltr, *parent = NULL, *f;
-+	struct idpf_netdev_priv *np = netdev_priv(netdev);
-+	struct idpf_vport_user_config_data *user_config;
-+	struct ethtool_rx_flow_spec *fsp = &cmd->fs;
-+	struct virtchnl2_flow_rule_add_del *rule;
-+	struct idpf_vport_config *vport_config;
-+	struct virtchnl2_rule_action_set *acts;
-+	struct virtchnl2_flow_rule_info *info;
-+	struct virtchnl2_proto_hdrs *hdrs;
-+	struct idpf_vport *vport;
-+	u32 flow_type, q_index;
-+	u16 num_rxq;
-+	int err;
-+
-+	vport = idpf_netdev_to_vport(netdev);
-+	vport_config = vport->adapter->vport_config[np->vport_idx];
-+	user_config = &vport_config->user_config;
-+	num_rxq = user_config->num_req_rx_qs;
-+
-+	flow_type = fsp->flow_type & ~(FLOW_EXT | FLOW_MAC_EXT | FLOW_RSS);
-+	if (flow_type != fsp->flow_type)
-+		return -EINVAL;
-+
-+	if (!idpf_sideband_action_ena(vport, fsp) ||
-+	    !idpf_sideband_flow_type_ena(vport, flow_type))
-+		return -EOPNOTSUPP;
-+
-+	if (user_config->num_fsteer_fltrs > idpf_fsteer_max_rules(vport))
-+		return -ENOSPC;
-+
-+	q_index = fsp->ring_cookie;
-+	if (q_index >= num_rxq)
-+		return -EINVAL;
-+
-+	rule = kzalloc(struct_size(rule, rule_info, 1), GFP_KERNEL);
-+	if (!rule)
-+		return -ENOMEM;
-+
-+	rule->vport_id = cpu_to_le32(vport->vport_id);
-+	rule->count = cpu_to_le32(1);
-+	info = &rule->rule_info[0];
-+	info->rule_id = cpu_to_le32(fsp->location);
-+
-+	hdrs = &info->rule_cfg.proto_hdrs;
-+	hdrs->tunnel_level = 0;
-+	hdrs->count = cpu_to_le32(2);
-+
-+	acts = &info->rule_cfg.action_set;
-+	acts->count = cpu_to_le32(1);
-+	acts->actions[0].action_type = cpu_to_le32(VIRTCHNL2_ACTION_QUEUE);
-+	acts->actions[0].act_conf.q_id = cpu_to_le32(q_index);
-+
-+	switch (flow_type) {
-+	case UDP_V4_FLOW:
-+		idpf_fsteer_fill_ipv4(hdrs, fsp);
-+		idpf_fsteer_fill_udp(hdrs, fsp, true);
-+		break;
-+	case TCP_V4_FLOW:
-+		idpf_fsteer_fill_ipv4(hdrs, fsp);
-+		idpf_fsteer_fill_tcp(hdrs, fsp, true);
-+		break;
-+	default:
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
-+	err = idpf_add_del_fsteer_filters(vport->adapter, rule,
-+					  VIRTCHNL2_OP_ADD_FLOW_RULE);
-+	if (err)
-+		goto out;
-+
-+	if (info->status != cpu_to_le32(VIRTCHNL2_FLOW_RULE_SUCCESS)) {
-+		err = -EIO;
-+		goto out;
-+	}
-+
-+	fltr = kzalloc(sizeof(*fltr), GFP_KERNEL);
-+	if (!fltr) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
-+
-+	fltr->loc = fsp->location;
-+	fltr->q_index = q_index;
-+	list_for_each_entry(f, &user_config->flow_steer_list, list) {
-+		if (f->loc >= fltr->loc)
-+			break;
-+		parent = f;
-+	}
-+
-+	parent ? list_add(&fltr->list, &parent->list) :
-+		 list_add(&fltr->list, &user_config->flow_steer_list);
-+
-+	user_config->num_fsteer_fltrs++;
-+
-+out:
-+	kfree(rule);
-+	return err;
-+}
-+
-+/**
-+ * idpf_del_flow_steer - delete a Flow Steering filter
-+ * @netdev: network interface device structure
-+ * @cmd: command to add Flow Steering filter
-+ *
-+ * Return: 0 on success and negative values for failure
-+ */
-+static int idpf_del_flow_steer(struct net_device *netdev,
-+			       struct ethtool_rxnfc *cmd)
-+{
-+	struct idpf_netdev_priv *np = netdev_priv(netdev);
-+	struct idpf_vport_user_config_data *user_config;
-+	struct ethtool_rx_flow_spec *fsp = &cmd->fs;
-+	struct virtchnl2_flow_rule_add_del *rule;
-+	struct idpf_vport_config *vport_config;
-+	struct virtchnl2_flow_rule_info *info;
-+	struct idpf_fsteer_fltr *f, *iter;
-+	struct idpf_vport *vport;
-+	int err;
-+
-+	vport = idpf_netdev_to_vport(netdev);
-+	vport_config = vport->adapter->vport_config[np->vport_idx];
-+	user_config = &vport_config->user_config;
-+
-+	if (!idpf_sideband_action_ena(vport, fsp))
-+		return -EOPNOTSUPP;
-+
-+	rule = kzalloc(struct_size(rule, rule_info, 1), GFP_KERNEL);
-+	if (!rule)
-+		return -ENOMEM;
-+
-+	rule->vport_id = cpu_to_le32(vport->vport_id);
-+	rule->count = cpu_to_le32(1);
-+	info = &rule->rule_info[0];
-+	info->rule_id = cpu_to_le32(fsp->location);
-+
-+	err = idpf_add_del_fsteer_filters(vport->adapter, rule,
-+					  VIRTCHNL2_OP_DEL_FLOW_RULE);
-+	if (err)
-+		goto out;
-+
-+	if (info->status != cpu_to_le32(VIRTCHNL2_FLOW_RULE_SUCCESS)) {
-+		err = -EIO;
-+		goto out;
-+	}
-+
-+	list_for_each_entry_safe(f, iter,
-+				 &user_config->flow_steer_list, list) {
-+		if (f->loc == fsp->location) {
-+			list_del(&f->list);
-+			kfree(f);
-+			user_config->num_fsteer_fltrs--;
-+			goto out;
-+		}
-+	}
-+	err = -EINVAL;
-+
-+out:
-+	kfree(rule);
-+	return err;
-+}
-+
-+static int idpf_set_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd)
-+{
-+	int ret = -EOPNOTSUPP;
-+
-+	idpf_vport_ctrl_lock(netdev);
-+	switch (cmd->cmd) {
-+	case ETHTOOL_SRXCLSRLINS:
-+		ret = idpf_add_flow_steer(netdev, cmd);
-+		break;
-+	case ETHTOOL_SRXCLSRLDEL:
-+		ret = idpf_del_flow_steer(netdev, cmd);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	idpf_vport_ctrl_unlock(netdev);
-+	return ret;
+ 	if (!cl->prio_activity)
+ 		return;
+-	htb_deactivate(qdisc_priv(sch), cl);
++	if (!cl->leaf.q->q.qlen)
++		htb_deactivate(qdisc_priv(sch), cl);
  }
  
- /**
-@@ -1400,6 +1687,7 @@ static const struct ethtool_ops idpf_ethtool_ops = {
- 	.get_sset_count		= idpf_get_sset_count,
- 	.get_channels		= idpf_get_channels,
- 	.get_rxnfc		= idpf_get_rxnfc,
-+	.set_rxnfc		= idpf_set_rxnfc,
- 	.get_rxfh_key_size	= idpf_get_rxfh_key_size,
- 	.get_rxfh_indir_size	= idpf_get_rxfh_indir_size,
- 	.get_rxfh		= idpf_get_rxfh,
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index bab12ecb2df5..7d42f21c86b6 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -755,6 +755,10 @@ static int idpf_cfg_netdev(struct idpf_vport *vport)
- 
- 	if (idpf_is_cap_ena_all(adapter, IDPF_RSS_CAPS, IDPF_CAP_RSS))
- 		dflt_features |= NETIF_F_RXHASH;
-+	if (idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS,
-+			    VIRTCHNL2_CAP_FLOW_STEER) &&
-+	    idpf_vport_is_cap_ena(vport, VIRTCHNL2_VPORT_SIDEBAND_FLOW_STEER))
-+		dflt_features |= NETIF_F_NTUPLE;
- 	if (idpf_is_cap_ena_all(adapter, IDPF_CSUM_CAPS, IDPF_CAP_TX_CSUM_L4V4))
- 		csum_offloads |= NETIF_F_IP_CSUM;
- 	if (idpf_is_cap_ena_all(adapter, IDPF_CSUM_CAPS, IDPF_CAP_TX_CSUM_L4V6))
-@@ -1481,6 +1485,7 @@ void idpf_init_task(struct work_struct *work)
- 	spin_lock_init(&vport_config->mac_filter_list_lock);
- 
- 	INIT_LIST_HEAD(&vport_config->user_config.mac_filter_list);
-+	INIT_LIST_HEAD(&vport_config->user_config.flow_steer_list);
- 
- 	err = idpf_check_supported_desc_ids(vport);
- 	if (err) {
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index 06c33b638e60..8b8c5415e418 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -890,6 +890,41 @@ static int idpf_send_get_caps_msg(struct idpf_adapter *adapter)
- 	return 0;
- }
- 
-+/**
-+ * idpf_add_del_fsteer_filters - Send virtchnl add/del Flow Steering message
-+ * @adapter: adapter info struct
-+ * @rule: Flow steering rule to add/delete
-+ * @opcode: VIRTCHNL2_OP_ADD_FLOW_RULE to add filter, or
-+ *          VIRTCHNL2_OP_DEL_FLOW_RULE to delete. All other values are invalid.
-+ *
-+ * Send ADD/DELETE flow steering virtchnl message and receive the result.
-+ *
-+ * Return: 0 on success, negative on failure.
-+ */
-+int idpf_add_del_fsteer_filters(struct idpf_adapter *adapter,
-+				struct virtchnl2_flow_rule_add_del *rule,
-+				enum virtchnl2_op opcode)
-+{
-+	int rule_count = le32_to_cpu(rule->count);
-+	struct idpf_vc_xn_params xn_params = {};
-+	ssize_t reply_sz;
-+
-+	if (opcode != VIRTCHNL2_OP_ADD_FLOW_RULE &&
-+	    opcode != VIRTCHNL2_OP_DEL_FLOW_RULE)
-+		return -EINVAL;
-+
-+	xn_params.vc_op = opcode;
-+	xn_params.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC;
-+	xn_params.async = false;
-+	xn_params.send_buf.iov_base = rule;
-+	xn_params.send_buf.iov_len = struct_size(rule, rule_info, rule_count);
-+	xn_params.recv_buf.iov_base = rule;
-+	xn_params.recv_buf.iov_len = struct_size(rule, rule_info, rule_count);
-+
-+	reply_sz = idpf_vc_xn_exec(adapter, &xn_params);
-+	return reply_sz < 0 ? reply_sz : 0;
-+}
-+
- /**
-  * idpf_vport_alloc_max_qs - Allocate max queues for a vport
-  * @adapter: Driver specific private structure
-@@ -3491,6 +3526,79 @@ bool idpf_is_capability_ena(struct idpf_adapter *adapter, bool all,
- 		return !!(*cap_field & flag);
- }
- 
-+/**
-+ * idpf_vport_is_cap_ena - Check if vport capability is enabled
-+ * @vport: Private data struct
-+ * @flag: flag(s) to check
-+ *
-+ * Return: true if the capability is supported, false otherwise
-+ */
-+bool idpf_vport_is_cap_ena(struct idpf_vport *vport, u16 flag)
-+{
-+	struct virtchnl2_create_vport *vport_msg;
-+
-+	vport_msg = vport->adapter->vport_params_recvd[vport->idx];
-+
-+	return !!(le16_to_cpu(vport_msg->vport_flags) & flag);
-+}
-+
-+/**
-+ * idpf_sideband_flow_type_ena - Check if steering is enabled for flow type
-+ * @vport: Private data struct
-+ * @flow_type: flow type to check (from ethtool.h)
-+ *
-+ * Return: true if sideband filters are allowed for @flow_type, false otherwise
-+ */
-+bool idpf_sideband_flow_type_ena(struct idpf_vport *vport, u32 flow_type)
-+{
-+	struct virtchnl2_create_vport *vport_msg;
-+	__le64 caps;
-+
-+	vport_msg = vport->adapter->vport_params_recvd[vport->idx];
-+	caps = vport_msg->sideband_flow_caps;
-+
-+	switch (flow_type) {
-+	case TCP_V4_FLOW:
-+		return !!(caps & cpu_to_le64(VIRTCHNL2_FLOW_IPV4_TCP));
-+	case UDP_V4_FLOW:
-+		return !!(caps & cpu_to_le64(VIRTCHNL2_FLOW_IPV4_UDP));
-+	default:
-+		return false;
-+	}
-+}
-+
-+/**
-+ * idpf_sideband_action_ena - Check if steering is enabled for action
-+ * @vport: Private data struct
-+ * @fsp: flow spec
-+ *
-+ * Return: true if sideband filters are allowed for @fsp, false otherwise
-+ */
-+bool idpf_sideband_action_ena(struct idpf_vport *vport,
-+			      struct ethtool_rx_flow_spec *fsp)
-+{
-+	struct virtchnl2_create_vport *vport_msg;
-+	unsigned int supp_actions;
-+
-+	vport_msg = vport->adapter->vport_params_recvd[vport->idx];
-+	supp_actions = le32_to_cpu(vport_msg->sideband_flow_actions);
-+
-+	/* Actions Drop/Wake are not supported */
-+	if (fsp->ring_cookie == RX_CLS_FLOW_DISC ||
-+	    fsp->ring_cookie == RX_CLS_FLOW_WAKE)
-+		return false;
-+
-+	return !!(supp_actions & VIRTCHNL2_ACTION_QUEUE);
-+}
-+
-+unsigned int idpf_fsteer_max_rules(struct idpf_vport *vport)
-+{
-+	struct virtchnl2_create_vport *vport_msg;
-+
-+	vport_msg = vport->adapter->vport_params_recvd[vport->idx];
-+	return le32_to_cpu(vport_msg->flow_steer_max_rules);
-+}
-+
- /**
-  * idpf_get_vport_id: Get vport id
-  * @vport: virtual port structure
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-index 3522c1238ea2..165767705469 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-@@ -105,6 +105,12 @@ int idpf_get_reg_intr_vecs(struct idpf_vport *vport,
- int idpf_queue_reg_init(struct idpf_vport *vport);
- int idpf_vport_queue_ids_init(struct idpf_vport *vport);
- 
-+bool idpf_vport_is_cap_ena(struct idpf_vport *vport, u16 flag);
-+bool idpf_sideband_flow_type_ena(struct idpf_vport *vport, u32 flow_type);
-+bool idpf_sideband_action_ena(struct idpf_vport *vport,
-+			      struct ethtool_rx_flow_spec *fsp);
-+unsigned int idpf_fsteer_max_rules(struct idpf_vport *vport);
-+
- int idpf_recv_mb_msg(struct idpf_adapter *adapter);
- int idpf_send_mb_msg(struct idpf_adapter *adapter, u32 op,
- 		     u16 msg_size, u8 *msg, u16 cookie);
--- 
-2.43.0
-
+ static inline int htb_parent_last_child(struct htb_class *cl)
