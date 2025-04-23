@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FB0298CCA;
-	Wed, 23 Apr 2025 15:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3108B29AAF1;
+	Wed, 23 Apr 2025 15:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422451; cv=none; b=k/qFugSvpKX8TKA+/QuzSwqa12wsmC1+K09NVSgNk4BVx5TuEqGJfqaXIy9i1Q/jN7Z5riuWzENtplTwOj8L2DcZ0jAOg+Rc7XuFH085NGqmW8bbeMGvkQH6UKxovOz9RTgOVZhYo8A/fKrgP+vM3zuIqKHAU3y9W8NHoBfdvdQ=
+	t=1745422494; cv=none; b=uUTc3ktKcUF7WfUZJ/1V1QIN4qJJR1O4oVVbxp2C76AJb1gCobzkl3TJYRAN0fuSj6rntt2mlc/RbLR8/jmP73uA/V8T/mjYoDhQXqbDNUy9ciIxSVqSdfp1PvH496nhfI41RAwMB97NGpIaRi9yOReBFoj1M6i+9WOlvwbw+Zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422451; c=relaxed/simple;
-	bh=4dZGTxOMlI6lJPyNCE7bp/S/ATLVwiABeAvtgl4Aa9U=;
+	s=arc-20240116; t=1745422494; c=relaxed/simple;
+	bh=p/nh3OW4M+82zbNV28nOlVLNUKAQWBOI2NC59sQvgzI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qSS8wn2YB5WsZ7cInRG7FzfGUXJBEyz9gwGSVVdfhhgIumsy5U2XtZ5sqkQx1so5aFpEgqWKSm+La7N/AZ8j0ugE8COEW7lEJgF0HyUHSjA0Tg1Iw2vb7VO7bIpuVWqLXyvRhDExzhqH9XjGOfOgi2eohetiJ9roMDgMriYHBA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bDBB8r5o; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q4B3YvFQE5TofP1/1S7Mx7bDxjX99A0iYVVqORM6t62A6Vvg4shU8Wc+p1RM99KKvyEEHHJRGp5eLc7J3cliKZCrJst+F3lea0krNV6dPdsf4m8OBzPh5w6dEoGt+fmywZCn003521F43AbVnay+ApJTq49OmzfCZR95xLWTMOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uD/qEYJx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bDBB8r5o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB4BC4CEE2;
-	Wed, 23 Apr 2025 15:34:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uD/qEYJx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89C9C4CEE2;
+	Wed, 23 Apr 2025 15:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745422450;
-	bh=4dZGTxOMlI6lJPyNCE7bp/S/ATLVwiABeAvtgl4Aa9U=;
+	s=k20201202; t=1745422493;
+	bh=p/nh3OW4M+82zbNV28nOlVLNUKAQWBOI2NC59sQvgzI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bDBB8r5oF+sDb2+8MYCSJCnPScYtVX77O+SgNvUs2ZnDSlyBjCSuTzkukkrSkCuZi
-	 r7NM0ChACP0fsel2Wb2Y1ouQlTxg1UZ8sKkp8zA8irROwWV1TTW4cOEo0Mdc/TxUfV
-	 oC8l89DQGR1R5wJCqzYWjP/t2PGvgLu1b/1AaYgQvH5P7NY4/WhMMOJvjrELn4dw+f
-	 f0KdxZk0olJeky8MlIeXEaESOPvRlRB32gM5dHQy7URo1Qbm7uOpok5dR+c70C+gzK
-	 N84ZbUgLf5JW7uUfoDGqQgd/C/WlbXmdKdpHFlDk0orhqu4YZN5w8GToJXLRSeiMfT
-	 EiFx6JmSeKGaw==
-Date: Wed, 23 Apr 2025 16:34:05 +0100
+	b=uD/qEYJxcJIIhciJ5jhtNU70eFBcW9LhOFCIVuy1HeJxfE2LeS/5l8x3/sOwDYIEH
+	 FDOzoDVPJIuED+wvFBvzVNWFS5B/RVzbND67k6thEY7lMSOmNBQPxxhWa+AjfK6vI9
+	 5Ruf8RuzMxvMCjj4IXsf8nrK4sx3JcRoSxwGtwY8nrp93VuvvZvmaE18lWVk0x++1C
+	 WwLUrcmrvKK+qPUtWQUdA9KEP/osRlF/WK7L7+I5Fqse/weCRhXLRPRSs9yGjSV96L
+	 pCUOtG8A+bNZZ/64fIJmulpwuoi+5g5MX9HMM4ejEPkeMuovlc9pHwPvi2E9mLcinX
+	 re0hJFHV04z7A==
+Date: Wed, 23 Apr 2025 16:34:47 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Justin Chen <justin.chen@broadcom.com>
 Cc: devicetree@vger.kernel.org, netdev@vger.kernel.org, rafal@milecki.pl,
@@ -36,11 +36,11 @@ Cc: devicetree@vger.kernel.org, netdev@vger.kernel.org, rafal@milecki.pl,
 	pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
 	davem@davemloft.net, andrew+netdev@lunn.ch,
 	florian.fainelli@broadcom.com
-Subject: Re: [PATCH net-next v2 5/8] dt-bindings: net: brcm,asp-v2.0: Add
- asp-v3.0
-Message-ID: <20250423-opt-entrust-8bee59fa7a1f@spud>
+Subject: Re: [PATCH net-next v2 1/8] dt-bindings: net: brcm,asp-v2.0: Remove
+ asp-v2.0
+Message-ID: <20250423-hardly-answering-87ec478ef51d@spud>
 References: <20250422233645.1931036-1-justin.chen@broadcom.com>
- <20250422233645.1931036-6-justin.chen@broadcom.com>
+ <20250422233645.1931036-2-justin.chen@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,34 +48,33 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="fU6Vs7wFRNSFVO99"
+	protocol="application/pgp-signature"; boundary="5Yh4ycaxJJXdv8FW"
 Content-Disposition: inline
-In-Reply-To: <20250422233645.1931036-6-justin.chen@broadcom.com>
+In-Reply-To: <20250422233645.1931036-2-justin.chen@broadcom.com>
 
 
---fU6Vs7wFRNSFVO99
+--5Yh4ycaxJJXdv8FW
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 22, 2025 at 04:36:42PM -0700, Justin Chen wrote:
-> Add asp-v3.0 support. v3.0 is a major revision that reduces
-> the feature set for cost savings. We have a reduced amount of
-> channels and network filters.
+On Tue, Apr 22, 2025 at 04:36:38PM -0700, Justin Chen wrote:
+> Remove asp-v2.0 which was only supported on one SoC that never
+> saw the light of day.
 >=20
 > Signed-off-by: Justin Chen <justin.chen@broadcom.com>
 
 Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
---fU6Vs7wFRNSFVO99
+--5Yh4ycaxJJXdv8FW
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaAkIbQAKCRB4tDGHoIJi
-0n3DAQCsXV3h+OYNAdYj64Hv5z5YN9n3SvoK5dONNx863jk8JQD7Br0xBT9IUNfz
-NNkAp9Wxz1W6EVCNUet7lhZToExeSQE=
-=xNjz
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaAkIlwAKCRB4tDGHoIJi
+0hA1AP90p1vX9aj5sXfGtpEOiHnEj97spwAeSnFvApbg2bKLdQD+MJhVSI5nqBCM
+mxX7nXNjPHrKSrFuuRFvqjdVxHBsaQo=
+=SspX
 -----END PGP SIGNATURE-----
 
---fU6Vs7wFRNSFVO99--
+--5Yh4ycaxJJXdv8FW--
