@@ -1,154 +1,232 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sg-1-23.ptr.blmpb.com (sg-1-23.ptr.blmpb.com [118.26.132.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B854E26982A;
-	Wed, 23 Apr 2025 10:34:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281BA264620
+	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 10:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745404475; cv=none; b=MLp5eG2ew6Kd1k2VQpiS7EnrRIKZ60rdtbMN+aZlvXwOQpPJV8Z5tsNbUvTn0mgx57mvxJgOeSw4vh+wxdzW+ruzOZTqZKxpf1+SBTc4Dt7ETRI95XSVpIBefOPIP/j3841p5jiGochnJYljy3XTQk3FT/Vek7Z5DcbgnUoau58=
+	t=1745404798; cv=none; b=LG87oH2g+9aTubsmkkCxSWEc+GsRYnkni3Zh3ES3N/RBf7W6wQtdPVsV+fjSHOQfnzE2Q8USCoc5kx+SsGby8mLhxW2v4CgC/NKKbsld6MtjURmEZU7ozImbb0Pab9I0J6gq8acS2kRGMqYTOrFtff4y3EqIC9F7FER34NHzlWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745404475; c=relaxed/simple;
-	bh=1RB7NIL91XUf2k6m8r8JVyagzIj5xdzoJ5ohhRrl3a8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H8yp2MDA3L+heDYim+5ncnnoT3IhU+Vhx3LLzm6wwbmleiPliUOoSelTZ+uXY70fMCyIBptYVoMk6+h4PHOegvuUyP2K5S4X3V1pWFvbXTVOWH0P2Alve4y6YQW6AAsZTDi1dDD5wLndtyT6/fx48lDzfQzAYtLWA8Edu2kl0YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QQNzGFZE; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1745404798; c=relaxed/simple;
+	bh=cB3zsQ/CNsZAWssxqRUV0Vyfu4JHs07k8F5vj/zVQaI=;
+	h=Cc:Date:Message-Id:In-Reply-To:References:Mime-Version:To:From:
+	 Subject:Content-Type; b=AnYp2N9Gn9QECe6qNJVhydDxu8kOMMq4bQBmwTf+9uAk+oqHlIF63FatgiomjEiCW61KB+/Jm7wD1ocffMxvSSuRJrUt4cNcTSFEAGml1wak3t0EVIhVigtiJFeEXpaXZpTXd4bJjC4psUEylX7GSIgqQvEP9Blg5OEI+rmxrhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=PQQ9ro/Q; arc=none smtp.client-ip=118.26.132.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QQNzGFZE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745404474; x=1776940474;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1RB7NIL91XUf2k6m8r8JVyagzIj5xdzoJ5ohhRrl3a8=;
-  b=QQNzGFZEUJiX+1FoWe2Lqj539/1RN55WVxgy5V5kFfa1fVPtVZcq1+5c
-   S2Dv+KO0WN27WpVz9lCLj9j/VYkgg48zpu6D0QAJ3MYxDOpaXZF4iwMzW
-   UwYuQJOrk7yne2fys5VBwlJGNPeytAwppnXRJv3GOh+MpaQwY9v/GY3na
-   QoQ2t/a3w+Du0zVug4vF4YqF/g2ldgWLiDUd+/C23Hu9zGZ7VZlvL9E2F
-   qSr0n9CjO3FFvXwbmMBbTNI/z550IuuPhoPbP+KquhY0RW/ojfLGpmpLt
-   L0nVd+ircr8WoYJyhUvkCuyz6xeUEj1kr4jfn3HrIaTbsgi6Zht3s/KtK
-   w==;
-X-CSE-ConnectionGUID: STpmY10FSuabNHbmfCnYCA==
-X-CSE-MsgGUID: FVuFOoF8TyOIefVCUixuJQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="57980407"
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="57980407"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 03:34:33 -0700
-X-CSE-ConnectionGUID: ChnanD1PQAiJuLHDknsfWA==
-X-CSE-MsgGUID: cWUuRIhUSYivP4+B+XZ7QQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="132810669"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 03:34:30 -0700
-Date: Wed, 23 Apr 2025 12:34:08 +0200
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Mark Bloch <mbloch@nvidia.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Vlad Dogaru <vdogaru@nvidia.com>,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>
-Subject: Re: [PATCH net 1/5] net/mlx5e: Use custom tunnel header for vxlan gbp
-Message-ID: <aAjCIE/DMAlLZXGA@mev-dev.igk.intel.com>
-References: <20250423083611.324567-1-mbloch@nvidia.com>
- <20250423083611.324567-2-mbloch@nvidia.com>
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="PQQ9ro/Q"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2403070942; d=yunsilicon.com; t=1745404788; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=Ob7CZwFOseRDKkVP1bTFTiEkK1g23YF2MspH+CAzTJo=;
+ b=PQQ9ro/QNRiT/g+svolC7K1XY9XZGFxTcG3MxnK/Ft50XxulTUZKkvVnpbu+q+5C2HuJzs
+ uh7tbue490sPIcZfM2ABXDr9tMHj0x9Mr/bsCXGkD+yK8X7WBwwsoT8Qu6kQhJQrMpJfkY
+ oCcDJWxp7fXm4Geudb58QJ+E8qAx/ED9eM/n0ulNo5vaijVHyanPReIMZomCU3SRtB/4NS
+ +RZLs8jq0B53I59prWttmnkWyn4/wIZUrA7wthQK3e/e6H5a9muJLowZg8I7/JNlxJo+Nj
+ AyoIDk0ckgMqFQ04lcU0VUQZNI+gMj/rpr9+eRybGMSw8M/Je2rlg/xQeWmVAA==
+Cc: <leon@kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>, 
+	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
+	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
+	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <jacky@yunsilicon.com>, 
+	<horms@kernel.org>, <parthiban.veerasooran@microchip.com>, 
+	<masahiroy@kernel.org>, <kalesh-anakkur.purayil@broadcom.com>, 
+	<geert+renesas@glider.be>, <pabeni@redhat.com>, <geert@linux-m68k.org>
+Date: Wed, 23 Apr 2025 18:39:45 +0800
+Message-Id: <20250423103944.2513425-9-tianx@yunsilicon.com>
+X-Lms-Return-Path: <lba+26808c372+46b7b2+vger.kernel.org+tianx@yunsilicon.com>
+In-Reply-To: <20250423103923.2513425-1-tianx@yunsilicon.com>
+Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Wed, 23 Apr 2025 18:39:45 +0800
+References: <20250423103923.2513425-1-tianx@yunsilicon.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250423083611.324567-2-mbloch@nvidia.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+To: <netdev@vger.kernel.org>
+From: "Xin Tian" <tianx@yunsilicon.com>
+Subject: [PATCH net-next v11 08/14] xsc: Add ethernet interface
+Content-Type: text/plain; charset=UTF-8
 
-On Wed, Apr 23, 2025 at 11:36:07AM +0300, Mark Bloch wrote:
-> From: Vlad Dogaru <vdogaru@nvidia.com>
-> 
-> Symbolic (e.g. "vxlan") and custom (e.g. "tunnel_header_0") tunnels
-> cannot be combined, but the match params interface does not have fields
-> for matching on vxlan gbp. To match vxlan bgp, the tc_tun layer uses
-> tunnel_header_0.
-> 
-> Allow matching on both VNI and GBP by matching the VNI with a custom
-> tunnel header instead of the symbolic field name.
-> 
-> Matching solely on the VNI continues to use the symbolic field name.
-> 
-> Fixes: 74a778b4a63f ("net/mlx5: HWS, added definers handling")
-> Signed-off-by: Vlad Dogaru <vdogaru@nvidia.com>
-> Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-> Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-> ---
->  .../mellanox/mlx5/core/en/tc_tun_vxlan.c      | 32 +++++++++++++++++--
->  1 file changed, 29 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c
-> index 5c762a71818d..7a18a469961d 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c
-> @@ -165,9 +165,6 @@ static int mlx5e_tc_tun_parse_vxlan(struct mlx5e_priv *priv,
->  	struct flow_match_enc_keyid enc_keyid;
->  	void *misc_c, *misc_v;
->  
-> -	misc_c = MLX5_ADDR_OF(fte_match_param, spec->match_criteria, misc_parameters);
-> -	misc_v = MLX5_ADDR_OF(fte_match_param, spec->match_value, misc_parameters);
-> -
->  	if (!flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_ENC_KEYID))
->  		return 0;
->  
-> @@ -182,6 +179,30 @@ static int mlx5e_tc_tun_parse_vxlan(struct mlx5e_priv *priv,
->  		err = mlx5e_tc_tun_parse_vxlan_gbp_option(priv, spec, f);
->  		if (err)
->  			return err;
-> +
-> +		/* We can't mix custom tunnel headers with symbolic ones and we
-> +		 * don't have a symbolic field name for GBP, so we use custom
-> +		 * tunnel headers in this case. We need hardware support to
-> +		 * match on custom tunnel headers, but we already know it's
-> +		 * supported because the previous call successfully checked for
-> +		 * that.
-> +		 */
-> +		misc_c = MLX5_ADDR_OF(fte_match_param, spec->match_criteria,
-> +				      misc_parameters_5);
-> +		misc_v = MLX5_ADDR_OF(fte_match_param, spec->match_value,
-> +				      misc_parameters_5);
-> +
-> +		/* Shift by 8 to account for the reserved bits in the vxlan
-> +		 * header after the VNI.
-> +		 */
-> +		MLX5_SET(fte_match_set_misc5, misc_c, tunnel_header_1,
-> +			 be32_to_cpu(enc_keyid.mask->keyid) << 8);
-> +		MLX5_SET(fte_match_set_misc5, misc_v, tunnel_header_1,
-> +			 be32_to_cpu(enc_keyid.key->keyid) << 8);
-> +
-> +		spec->match_criteria_enable |= MLX5_MATCH_MISC_PARAMETERS_5;
-> +
-> +		return 0;
->  	}
->  
->  	/* match on VNI is required */
-> @@ -195,6 +216,11 @@ static int mlx5e_tc_tun_parse_vxlan(struct mlx5e_priv *priv,
->  		return -EOPNOTSUPP;
->  	}
->  
-> +	misc_c = MLX5_ADDR_OF(fte_match_param, spec->match_criteria,
-> +			      misc_parameters);
-> +	misc_v = MLX5_ADDR_OF(fte_match_param, spec->match_value,
-> +			      misc_parameters);
-> +
->  	MLX5_SET(fte_match_set_misc, misc_c, vxlan_vni,
->  		 be32_to_cpu(enc_keyid.mask->keyid));
->  	MLX5_SET(fte_match_set_misc, misc_v, vxlan_vni,
+Implement an auxiliary driver for ethernet and initialize the
+netdevice simply.
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
+Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
+Co-developed-by: Lei Yan <jacky@yunsilicon.com>
+Signed-off-by: Lei Yan <jacky@yunsilicon.com>
+Signed-off-by: Xin Tian <tianx@yunsilicon.com>
+---
+ drivers/net/ethernet/yunsilicon/Makefile      |  1 +
+ .../net/ethernet/yunsilicon/xsc/net/main.c    | 98 +++++++++++++++++++
+ .../net/ethernet/yunsilicon/xsc/net/xsc_eth.h | 16 +++
+ .../yunsilicon/xsc/net/xsc_eth_common.h       | 15 +++
+ 4 files changed, 130 insertions(+)
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/main.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
 
-> -- 
-> 2.34.1
+diff --git a/drivers/net/ethernet/yunsilicon/Makefile b/drivers/net/ethernet/yunsilicon/Makefile
+index 05aa35c3c..86e241b01 100644
+--- a/drivers/net/ethernet/yunsilicon/Makefile
++++ b/drivers/net/ethernet/yunsilicon/Makefile
+@@ -4,4 +4,5 @@
+ # Makefile for the Yunsilicon device drivers.
+ #
+ 
++obj-$(CONFIG_YUNSILICON_XSC_ETH) += xsc/net/
+ obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc/pci/
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/main.c b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
+new file mode 100644
+index 000000000..f5e247864
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
+@@ -0,0 +1,98 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#include <linux/netdevice.h>
++#include <linux/etherdevice.h>
++#include <linux/auxiliary_bus.h>
++
++#include "common/xsc_core.h"
++#include "xsc_eth_common.h"
++#include "xsc_eth.h"
++
++static int xsc_get_max_num_channels(struct xsc_core_device *xdev)
++{
++	return min_t(int, xdev->dev_res->eq_table.num_comp_vectors,
++		     XSC_ETH_MAX_NUM_CHANNELS);
++}
++
++static int xsc_eth_probe(struct auxiliary_device *adev,
++			 const struct auxiliary_device_id *adev_id)
++{
++	struct xsc_adev *xsc_adev = container_of(adev, struct xsc_adev, adev);
++	struct xsc_core_device *xdev = xsc_adev->xdev;
++	struct xsc_adapter *adapter;
++	struct net_device *netdev;
++	int num_chl, num_tc;
++	int err;
++
++	num_chl = xsc_get_max_num_channels(xdev);
++	num_tc = xdev->caps.max_tc;
++
++	netdev = alloc_etherdev_mqs(sizeof(struct xsc_adapter),
++				    num_chl * num_tc, num_chl);
++	if (!netdev) {
++		pr_err("alloc_etherdev_mqs failed, txq=%d, rxq=%d\n",
++		       (num_chl * num_tc), num_chl);
++		return -ENOMEM;
++	}
++
++	netdev->dev.parent = &xdev->pdev->dev;
++	adapter = netdev_priv(netdev);
++	adapter->netdev = netdev;
++	adapter->pdev = xdev->pdev;
++	adapter->dev = &adapter->pdev->dev;
++	adapter->xdev = xdev;
++	xdev->eth_priv = adapter;
++
++	err = register_netdev(netdev);
++	if (err) {
++		netdev_err(netdev, "register_netdev failed, err=%d\n", err);
++		goto err_free_netdev;
++	}
++
++	return 0;
++
++err_free_netdev:
++	free_netdev(netdev);
++
++	return err;
++}
++
++static void xsc_eth_remove(struct auxiliary_device *adev)
++{
++	struct xsc_adev *xsc_adev = container_of(adev, struct xsc_adev, adev);
++	struct xsc_core_device *xdev = xsc_adev->xdev;
++	struct xsc_adapter *adapter;
++
++	if (!xdev)
++		return;
++
++	adapter = xdev->eth_priv;
++	if (!adapter)
++		return;
++
++	unregister_netdev(adapter->netdev);
++
++	free_netdev(adapter->netdev);
++
++	xdev->eth_priv = NULL;
++}
++
++static const struct auxiliary_device_id xsc_eth_id_table[] = {
++	{ .name = XSC_PCI_DRV_NAME "." XSC_ETH_ADEV_NAME },
++	{},
++};
++MODULE_DEVICE_TABLE(auxiliary, xsc_eth_id_table);
++
++static struct auxiliary_driver xsc_eth_driver = {
++	.name = "eth",
++	.probe = xsc_eth_probe,
++	.remove = xsc_eth_remove,
++	.id_table = xsc_eth_id_table,
++};
++module_auxiliary_driver(xsc_eth_driver);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Yunsilicon XSC ethernet driver");
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
+new file mode 100644
+index 000000000..0c70c0d59
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#ifndef __XSC_ETH_H
++#define __XSC_ETH_H
++
++struct xsc_adapter {
++	struct net_device	*netdev;
++	struct pci_dev		*pdev;
++	struct device		*dev;
++	struct xsc_core_device	*xdev;
++};
++
++#endif /* __XSC_ETH_H */
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
+new file mode 100644
+index 000000000..b5640f05d
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#ifndef __XSC_ETH_COMMON_H
++#define __XSC_ETH_COMMON_H
++
++#define XSC_LOG_INDIR_RQT_SIZE		0x8
++
++#define XSC_INDIR_RQT_SIZE		BIT(XSC_LOG_INDIR_RQT_SIZE)
++#define XSC_ETH_MIN_NUM_CHANNELS	2
++#define XSC_ETH_MAX_NUM_CHANNELS	XSC_INDIR_RQT_SIZE
++
++#endif
+-- 
+2.43.0
