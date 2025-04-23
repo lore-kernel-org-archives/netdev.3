@@ -1,91 +1,79 @@
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADEB1F584E
-	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 22:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C9518A6AD
+	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 23:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745449178; cv=none; b=OoP1HeWRUxnmaYddHjPlTMU3GHxiB5Q8oNLmDrPeKhJtdAW1uHPlwaTrwP8KpSKnxhmRbK1RjpfmvTl2u7ZqvdnoxjDjHiIUtFjzHLacv216uH3SsD3NDWsLotmYydqZ0wEu7Lwx6rmp+MMZrhulzKU18ypeA2oRALIFJG+f97o=
+	t=1745450083; cv=none; b=MP7cANEJgpLYFvepJTg8m8Ho2ps5faIw/2GCoEuyjnBXQi2iZggvW7F5Vc62k5McldfY7SmTP7Utd88Lt+2CoHi2BMY3x2yCQYI0F9sFv7dWi1ulXWgX+EJfucjxVuZvpYfQRcJKr3eUtYn+aqhr21EUhAQIC5UMk9EKn2RW+Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745449178; c=relaxed/simple;
-	bh=ANM1L0fguovtc5G10RZhCVZ6sfOMQzacN9PCVs7IQb0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sl0vkColsnF2cBNUPL04wf0Jur93KTIcOLAQJj5vDuA6MhPmEuU4IeTlK6Ykwlh5nZYDDAcFvd+Nxo/JO9vDgE4ly1yafy4puG8No4zPllTyKDeohqSlGQ14Ojkyp+1RKlQ1byfZtEtWLSpLwMnly2lpki2s5k27d7+q6e2+v7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=R/jHDlrK; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1745450083; c=relaxed/simple;
+	bh=NwPdaUZJAZ+ANYSzIVj7rk7f0HACGHmAdYi8K/KSyN4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=es1vxSTj4caHA5lVKRFQQ705pN+f2s/vi6ctffab1E7Bue4yfS+w9fM9AgxlJooroqCbQxxP0gZbeivzBQ9RSPmoM37tqF3vQr87OynHPx0FmT9GlYcwl99/Edf7uBIPZbS0qImwbX+sj7HtH+uGfrpET715BdSzYuIVasobLJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qv/8ndts; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="R/jHDlrK"
-Date: Wed, 23 Apr 2025 15:59:18 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1745449163;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FD1aCXz6k1Jg0AnKxmnZHvXUq4o3mf+YIXA3Fl6SqoY=;
-	b=R/jHDlrKZgVW0GCW96rhyiqI6YnD5xtDMGwoo1oNLRj2fVRKDrh6KmAIm7qD90e8JubDzX
-	ua56Bp6ukaev27wDIN48iLTDca/GfUdS5y6ny4gwJtK+9RnXs3H3fqd+QI4l3374GuaBtv
-	5aNZfIGGaoVtYBpacUKmrF7iPdrzK3Y=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Vlastimil Babka <vbabka@suse.cz>, Eric Dumazet <edumazet@google.com>, 
-	Soheil Hassas Yeganeh <soheil@google.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Meta kernel team <kernel-team@meta.com>
-Subject: Re: [PATCH] memcg: multi-memcg percpu charge cache
-Message-ID: <agazegt7js4jrbbng2di33xggfswxgrdrojoiqh4vaqxxmdidj@zmyzkgfuhykl>
-References: <20250416180229.2902751-1-shakeel.butt@linux.dev>
- <20250422181022.308116c1@kernel.org>
- <ha4sqstdknwvvubs2g33r3itrabepz2jwlr3ksrbjdlgjnbuel@appekpf6ffud>
- <20250423153046.54d135f2@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qv/8ndts"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECF0C4CEE2;
+	Wed, 23 Apr 2025 23:14:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745450083;
+	bh=NwPdaUZJAZ+ANYSzIVj7rk7f0HACGHmAdYi8K/KSyN4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=qv/8ndts6AWpsTgPCu6Jakxn7NPuQaBNcVpasq4/qTXXHgOztPsHznio1aG6RTyu8
+	 RMvihSJ6Fq7WoxvWIBVKu0WpJhChmGHvBFBAYP4VfvQQmicQrB9PHiDSdhknXcrt2g
+	 UrYbiS48yUDw6HqP0KKOQSP+WjFwZpTe5yjZ6YYk9RvAiv3nh/HaCO6f1pydRKvtRb
+	 MrnWYM4NqWimy7zxCACmzj02FJXdtTsCO7qPwb+/rsKC5ZIqGPXb1LxEIVAAogKRim
+	 kSywYzYlmcViwf38b11U2+DmxJTF/ecq3c63JXjUb2YzAg/WhkpQB8tJT8Rgvzoq5d
+	 hwsz4st979i6w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD63380CED9;
+	Wed, 23 Apr 2025 23:15:22 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250423153046.54d135f2@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: stmmac: dwc-qos: calibrate tegra with mdio bus
+ idle
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174545012150.2793299.8349789230420012979.git-patchwork-notify@kernel.org>
+Date: Wed, 23 Apr 2025 23:15:21 +0000
+References: <E1u7EYR-001ZAS-Cr@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1u7EYR-001ZAS-Cr@rmk-PC.armlinux.org.uk>
+To: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, alexandre.torgue@foss.st.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, jonathanh@nvidia.com, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, mcoquelin.stm32@gmail.com,
+ netdev@vger.kernel.org, pabeni@redhat.com, treding@nvidia.com
 
-On Wed, Apr 23, 2025 at 03:30:46PM -0700, Jakub Kicinski wrote:
-> On Wed, 23 Apr 2025 15:16:56 -0700 Shakeel Butt wrote:
-> > > > -	if (!local_trylock_irqsave(&memcg_stock.stock_lock, flags)) {
-> > > > +	if (nr_pages > MEMCG_CHARGE_BATCH ||
-> > > > +	    !local_trylock_irqsave(&memcg_stock.stock_lock, flags)) {
-> > > >  		/*
-> > > > -		 * In case of unlikely failure to lock percpu stock_lock
-> > > > -		 * uncharge memcg directly.
-> > > > +		 * In case of larger than batch refill or unlikely failure to
-> > > > +		 * lock the percpu stock_lock, uncharge memcg directly.
-> > > >  		 */  
-> > > 
-> > > We're bypassing the cache for > CHARGE_BATCH because the u8 math 
-> > > may overflow? Could be useful to refocus the comment on the 'why'
-> > 
-> > We actually never put more than MEMCG_CHARGE_BATCH in the cache and thus
-> > we can use u8 as type here. Though we may increase the batch size in
-> > future, so I should put a BUILD_BUG_ON somewhere here.
-> 
-> No idea if this matters enough to deserve its own commit but basically
-> I was wondering if that behavior change is a separate optimization.
-> 
-> Previously we'd check if the cache was for the releasing cgroup and sum
-> was over BATCH - drain its stock completely. Now we bypass looking at
-> the cache if nr_pages > BATCH so the cgroup may retain some stock.
+Hello:
 
-Yes indeed there is a little bit behavior change as you have explained.
-The older behavior (fully drain if nr_pages > BATCH) might be due to
-single per-cpu memcg cache limitation and in my opinion is problematic
-in some scenarios. If you see commit 5387c90490f7 ("mm/memcg: improve
-refill_obj_stock() performance"), a very similar behavior for objcg
-cache was having a performance impact and was optimized by only allowing
-the drain for some code paths. With multi-memcg support, I think we
-don't need to worry about it. Multi-objcg per-cpu cache is also on my
-TODO list.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 22 Apr 2025 15:24:55 +0100 you wrote:
+> Thierry states that there are prerequists for Tegra's calibration
+> that should be met before starting calibration - both the RGMII and
+> MDIO interfaces should be idle.
+> 
+> This commit adds the necessary MII bus locking to ensure that the MDIO
+> interface is idle during calibration.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] net: stmmac: dwc-qos: calibrate tegra with mdio bus idle
+    https://git.kernel.org/netdev/net-next/c/87f43e6f06a2
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
