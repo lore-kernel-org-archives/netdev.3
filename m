@@ -1,154 +1,168 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9DF2580E7
-	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 20:47:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008B127935A
+	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 20:50:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745441245; cv=none; b=W92q7zj3k7KgJC1eWN9v5I59qk5IC0DdONbMiV546y8H84xYCPJC9gFo2pNmDCVqOHJ7jjgN0Pfi8VV8Yfj2z329WA9Qri6RVkjV283nlx8L0mKnKC6juTOktbS6djDzdUnL9eAmVyd+PYE8+ALdyHSoGj3KLt6mtwUrnk6JW1E=
+	t=1745441454; cv=none; b=nzyahGrPd6vGgwh45x02Aj2aQTmwx8TA6Oh7u6Eda7uYhdOZEoWiksldbmYEbh6kSv5piZtnmQnlnR8++GRr9dvGGSB6Z2kn0vAT3j33faFzYCrry1xsimf69FWhTu4+8accBvXwG6GBu85omBUQrkmCvY5xxGv/hYuQGR9+DNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745441245; c=relaxed/simple;
-	bh=9o+fog/E8/Y/Ep3sI6pTRlp7waYxHqWZlzLlUSvxIbo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KyKPbt6TtOLYk2YV+9NtErJNPpfRpniRm1ws5wV8i7XjvDDlGp3IKAIxc2qPo8b9cvhUnDU+KStb/jPvawOrrJef4xqpGyRepglW1dogKzSbuDTAKkiZlcrdj8f66NkBy74o4VuXraGokIsoGVARjG4GExsOrwyj2AgpXZW/3Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=K0BKg295; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+	s=arc-20240116; t=1745441454; c=relaxed/simple;
+	bh=EPkRvXmwlR3RU4qVGBNgoF0s+yoQC5cc73SAuhZGqlQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ia8ejMqlBf+En4oFfMZJhB68rVm4L/ilsXA0YQvQZf72accbGSRm602+tliLuSa3JT/poAnIsgfPVutPKATDlx44PmoC5GmkeZkJHNTKcJ8f1SLeMjKGGzktlc90VJqU/yO4mrdF4qIkESRrdqY96S08P925YygYjjeZqDoxPwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XlMxAG0g; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="K0BKg295"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-30549dacd53so249708a91.1
-        for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 13:47:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XlMxAG0g"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ff6cf448b8so412953a91.3
+        for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 13:50:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1745441242; x=1746046042; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qadNYoaJhFPVnikI7MqGvzeOQWIRrwJCqdY+2xJb3Ik=;
-        b=K0BKg2958DiU4hWdg/ztCOoAJvYPW3CMDZWb+ZwOdV6Vl9Pv5dXsC/jmzEMVjtPXBB
-         gHX+Xdkfw0E6jHzenQLnmmZkOTn8LG6zIg3qudIRXqOpWNqOQgUBOQJrAf9UIBrL5OLf
-         LZeEWySKA3ix1BiFJxTB28jx3On+Wq0TN+eXE=
+        d=gmail.com; s=20230601; t=1745441452; x=1746046252; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BUBkm1IOr6p2VHqzMvkmLagJkrXpfHVpkWga12/AYks=;
+        b=XlMxAG0gFGlDIlMOYHud4IEUes2b36MzjCfT0Btovh2RCdZ2nVtrh9+wCKjd0kj1ml
+         CVITzxJI7BXCXxT/8pWlTrE45jTs00WeSAS7TMGVZ66pp3sXAykdC0RO/QQ2Q2dnIDDl
+         YxT6ZQh3TYCJ8/mdK/Kad4qn5AABcBDJNTzLjF5x3etIcwav0QlOz3h1ykUY7BPQSLDg
+         IFLkj8TgVVPqu+xz4lMQwKSmRmhhQonF4uVir4+9qI6CcBS+4wXLZaAYZiVyCEa0Fk0u
+         k1DIl/utfidz7xY53/CHRNSRIsThd4VSLITb57KqkJs61bHVa7M//MCaMzKvFVRneTUl
+         bdFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745441242; x=1746046042;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qadNYoaJhFPVnikI7MqGvzeOQWIRrwJCqdY+2xJb3Ik=;
-        b=XLcoy02uAj0vgzzwOB0+2xyt/LG/2HjYlz/TjySHC+LqIZNu1MCcN5/7Vcz9aCFYU3
-         QWjuk4H9DChatPszitk0eA/ODfmSWDR/s4+LVYrd5+Ajovb+OrON/2YT1TsyvlTc+xjN
-         HXPMez2Lg/ph6diqoLCDdCX9b6YLJPV1qIawqpunxOcsGHi9AhhmXXzenhNTjwa6Jiyn
-         6g748Ka7yvQPzyIPKlufxDIw8Rm4Kue04j+lqksavBTKbrZj7ZhtS9n/RJy8+/Por+FF
-         EueoTQpVETnN9snnSNvIjc7C+jGCIfZvrtGEZfSKUFOt2hpeHB1zj+uTkjC5rEbTfd43
-         lW8w==
-X-Gm-Message-State: AOJu0YzQIGVtZ4DaaDelTAQxePqfMpFJI5Rko+X19sKvi/8RRQ7Z2VEH
-	POxaGkHaDpZ8Y4vA2KYMRiPCy2htI6RCmCqLlZO1cpp66S6A7vRiJvCcZlvsZtmGFL6r+J3wd3a
-	/OYU66p3OUObpJKRDVVJISxptHUXvg+UwXuwXiGswN2jjAiKPvPJ1t2f30wG3TA6jWIKKiBUv+t
-	VX8fwbEoaYPlUGEj/pDaLHf1yspRVtTzOtF+w=
-X-Gm-Gg: ASbGncuaq/PhksVf6ky09o3mJrbfXKn+RXsWsi5aD5ayBUPRKaGhxoRGItQfzcRYHt+
-	Hi9Ru3kLkoz+/qjp4orK8eydgqfA2goUQHRSTLoV2tg5VckfA3KKlT0v8xqe65nnE32AOAI4JaG
-	qQW2dU8FQXbV5CrutDyKLBL2irSN22bzzdfG7Ryzzj9Nkr5GLQt8Rsn0IZ1O1+8GkBZ7W7HonaQ
-	rwks/ODZwD2KPizDp+b7wyceV96JfCDUhBJ2T3dIisuynRJq1mbm1Lj8LafhW2cQKnHuup62pkS
-	39f7AyCJEcIF3tUsbALdzvfut/FuynX171g2gnmuSeT/tBdBSV7JUkMFjyU=
-X-Google-Smtp-Source: AGHT+IF5+OdbC6uuNEBaPHTOjQ76F8Y9VNe3wZx/cneGiXQy2TYO2E3fpZtgPx1i/wPR7pX74IsDUw==
-X-Received: by 2002:a17:90b:2801:b0:2f1:2e10:8160 with SMTP id 98e67ed59e1d1-309edab1bd7mr1408a91.11.1745441241864;
-        Wed, 23 Apr 2025 13:47:21 -0700 (PDT)
-Received: from localhost.localdomain ([2620:11a:c019:0:65e:3115:2f58:c5fd])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-309e0d09cacsm2120908a91.49.2025.04.23.13.47.20
+        d=1e100.net; s=20230601; t=1745441452; x=1746046252;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BUBkm1IOr6p2VHqzMvkmLagJkrXpfHVpkWga12/AYks=;
+        b=Thgc54xgAU1MO7i7IDyz7Fk9Gq/azT/NZ3GoB5RMrM5YCHWFQE0mymoDD3udnGjNQF
+         PARWUzyuqHXqUh+eiXIjlvI9XkhbjdtFV8bc7+wYUnW0OFVVmKYhJG4FD8fR8m2MCW3d
+         QylBFaG2Ij/pF8co2ay1LoK5RxaUEaG2qkvqYh263YiZFFxv1Bapb95wDwh8IlXqJXI4
+         ykGelbwefrzZV+5v3oeI1Qirk/kWSHE8PB9Glqa0wzTivJiLLzRQWFwB19c6yRVvQsFb
+         1vlBiQKChabttPZT1YYWsCRz8OexhyxxVavx1Hcf9XCJi5EX8u4A3ICpdUzyWKVQ8EKU
+         IIPA==
+X-Forwarded-Encrypted: i=1; AJvYcCUstrCsfhk8JjS9geqcfeYGpAT1YJFScRyroE/S2osRPofv0jNhxy0HD4FZp258lSnM4knAJfc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEw7cWYnRo65aNIxxXB/RvW12ruHADvZYUSrsKRHoqM3pc3Nwf
+	wSZHlXlzSK+2NCyFiKJ8BOEj/+QWMQTplNaj6LEQsIhyy4jkJW747kNWAH6K
+X-Gm-Gg: ASbGncvqkYwq26IQY3xwjkeOnclXF5/ycM4SBCZLGr/jfhckYJlbGQmXGg96jhtMRsA
+	ny9AOqTn8vyfDxew4dzzzxoa2HogGWOrq+D8fPFJxJmlzmBS0RWDSLc7yR7oIzCZY4pGOe10bPy
+	nIqYttLG/E/CIbwdiLazBfIDb3T70Hfg704gDDnesJyZYtemJ4DOA/QEsyLZbSHbFJq3qUciyiZ
+	KBvtvSDHso1v7ihsdVlbLtW5KEZUKfq/wRVW3TlNpyo94WM0LnhHGc84+l67yh81ZibIkAtwZ4X
+	hTwxlGlWfZhMDDhPxOU1igyc9buOHeH8TzZznBf3skyI
+X-Google-Smtp-Source: AGHT+IHksSQWm2zN6VzQa5YMR14iHgpLwRUqaP4pqJNvZr87iSwsfv4EOaomnysSOCvxBvq9Xlt2qQ==
+X-Received: by 2002:a17:90b:2dd2:b0:305:5f33:980f with SMTP id 98e67ed59e1d1-309ed312ef0mr336408a91.27.1745441452176;
+        Wed, 23 Apr 2025 13:50:52 -0700 (PDT)
+Received: from localhost ([129.210.115.104])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-309dfa5bac9sm2119334a91.33.2025.04.23.13.50.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 13:47:21 -0700 (PDT)
-From: Joe Damato <jdamato@fastly.com>
-To: netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	donald.hunter@gmail.com,
-	Joe Damato <jdamato@fastly.com>,
-	Jianfeng Liu <liujianfeng1994@gmail.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Hao Luo <haoluo@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] tools/Makefile: Add ynl target
-Date: Wed, 23 Apr 2025 20:46:44 +0000
-Message-ID: <20250423204647.190784-1-jdamato@fastly.com>
-X-Mailer: git-send-email 2.43.0
+        Wed, 23 Apr 2025 13:50:51 -0700 (PDT)
+Date: Wed, 23 Apr 2025 13:50:50 -0700
+From: Cong Wang <xiyou.wangcong@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Victor Nogueira <victor@mojatatu.com>, netdev@vger.kernel.org,
+	jhs@mojatatu.com, jiri@resnulli.us, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, toke@redhat.com,
+	gerrard.tai@starlabs.sg, pctammela@mojatatu.com
+Subject: Re: [PATCH net v2 0/5] net_sched: Adapt qdiscs for reentrant enqueue
+ cases
+Message-ID: <aAlSqk9UBMNu6JnJ@pop-os.localdomain>
+References: <20250416102427.3219655-1-victor@mojatatu.com>
+ <aAFVHqypw/snAOwu@pop-os.localdomain>
+ <4295ec79-035c-4858-9ec4-eb639767d12b@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4295ec79-035c-4858-9ec4-eb639767d12b@redhat.com>
 
-Add targets to build, clean, and install ynl headers, libynl.a, and
-python tooling.
+On Tue, Apr 22, 2025 at 01:21:22PM +0200, Paolo Abeni wrote:
+> On 4/17/25 9:23 PM, Cong Wang wrote:
+> > On Wed, Apr 16, 2025 at 07:24:22AM -0300, Victor Nogueira wrote:
+> >> As described in Gerrard's report [1], there are cases where netem can
+> >> make the qdisc enqueue callback reentrant. Some qdiscs (drr, hfsc, ets,
+> >> qfq) break whenever the enqueue callback has reentrant behaviour.
+> >> This series addresses these issues by adding extra checks that cater for
+> >> these reentrant corner cases. This series has passed all relevant test
+> >> cases in the TDC suite.
+> >>
+> >> [1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
+> >>
+> > 
+> > I am wondering why we need to enqueue the duplicate skb before enqueuing
+> > the original skb in netem? IOW, why not just swap them?
+> 
+> It's not clear to me what you are suggesting, could you please rephrase
+> and/or expand the above?
 
-Signed-off-by: Joe Damato <jdamato@fastly.com>
----
- tools/Makefile | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+Sure, below is the change on my mind:
 
-diff --git a/tools/Makefile b/tools/Makefile
-index 5e1254eb66de..c31cbbd12c45 100644
---- a/tools/Makefile
-+++ b/tools/Makefile
-@@ -41,6 +41,7 @@ help:
- 	@echo '  mm                     - misc mm tools'
- 	@echo '  wmi			- WMI interface examples'
- 	@echo '  x86_energy_perf_policy - Intel energy policy tool'
-+	@echo '  ynl			- ynl headers, library, and python tool'
- 	@echo ''
- 	@echo 'You can do:'
- 	@echo ' $$ make -C tools/ <tool>_install'
-@@ -118,11 +119,14 @@ freefall: FORCE
- kvm_stat: FORCE
- 	$(call descend,kvm/$@)
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index fdd79d3ccd8c..000f8138f561 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -531,21 +531,6 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return NET_XMIT_DROP;
+ 	}
  
-+ynl: FORCE
-+	$(call descend,net/ynl)
+-	/*
+-	 * If doing duplication then re-insert at top of the
+-	 * qdisc tree, since parent queuer expects that only one
+-	 * skb will be queued.
+-	 */
+-	if (skb2) {
+-		struct Qdisc *rootq = qdisc_root_bh(sch);
+-		u32 dupsave = q->duplicate; /* prevent duplicating a dup... */
+-
+-		q->duplicate = 0;
+-		rootq->enqueue(skb2, rootq, to_free);
+-		q->duplicate = dupsave;
+-		skb2 = NULL;
+-	}
+-
+ 	qdisc_qstats_backlog_inc(sch, skb);
+ 
+ 	cb = netem_skb_cb(skb);
+@@ -613,6 +598,21 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		sch->qstats.requeues++;
+ 	}
+ 
++	/*
++	 * If doing duplication then re-insert at top of the
++	 * qdisc tree, since parent queuer expects that only one
++	 * skb will be queued.
++	 */
++	if (skb2) {
++		struct Qdisc *rootq = qdisc_root_bh(sch);
++		u32 dupsave = q->duplicate; /* prevent duplicating a dup... */
 +
- all: acpi counter cpupower gpio hv firewire \
- 		perf selftests bootconfig spi turbostat usb \
- 		virtio mm bpf x86_energy_perf_policy \
- 		tmon freefall iio objtool kvm_stat wmi \
--		debugging tracing thermal thermometer thermal-engine
-+		debugging tracing thermal thermometer thermal-engine ynl
- 
- acpi_install:
- 	$(call descend,power/$(@:_install=),install)
-@@ -157,13 +161,16 @@ freefall_install:
- kvm_stat_install:
- 	$(call descend,kvm/$(@:_install=),install)
- 
-+ynl_install:
-+	$(call descend,net/$(@:_install=),install)
++		q->duplicate = 0;
++		rootq->enqueue(skb2, rootq, to_free);
++		q->duplicate = dupsave;
++		skb2 = NULL;
++	}
 +
- install: acpi_install counter_install cpupower_install gpio_install \
- 		hv_install firewire_install iio_install \
- 		perf_install selftests_install turbostat_install usb_install \
- 		virtio_install mm_install bpf_install x86_energy_perf_policy_install \
- 		tmon_install freefall_install objtool_install kvm_stat_install \
- 		wmi_install debugging_install intel-speed-select_install \
--		tracing_install thermometer_install thermal-engine_install
-+		tracing_install thermometer_install thermal-engine_install ynl_install
- 
- acpi_clean:
- 	$(call descend,power/acpi,clean)
-@@ -214,12 +221,15 @@ freefall_clean:
- build_clean:
- 	$(call descend,build,clean)
- 
-+ynl_clean:
-+	$(call descend,net/$(@:_clean=),clean)
-+
- clean: acpi_clean counter_clean cpupower_clean hv_clean firewire_clean \
- 		perf_clean selftests_clean turbostat_clean bootconfig_clean spi_clean usb_clean virtio_clean \
- 		mm_clean bpf_clean iio_clean x86_energy_perf_policy_clean tmon_clean \
- 		freefall_clean build_clean libbpf_clean libsubcmd_clean \
- 		gpio_clean objtool_clean leds_clean wmi_clean firmware_clean debugging_clean \
- 		intel-speed-select_clean tracing_clean thermal_clean thermometer_clean thermal-engine_clean \
--		sched_ext_clean
-+		sched_ext_clean ynl_clean
- 
- .PHONY: FORCE
+ finish_segs:
+ 	if (skb2)
+ 		__qdisc_drop(skb2, to_free);
 
-base-commit: 45bd443bfd8697a7da308c16c3e75e2bb353b3d1
--- 
-2.43.0
+> 
+> When duplication packets, I think we will need to call root->enqueue()
+> no matter what, to ensure proper accounting, and that would cause the
+> re-entrancy issue. What I'm missing?
 
+The problem here is the ordering, if we enqueue the skb2 (aka the
+duplication packet) first (as what it is), the qlen is not yet increased
+at this point so the qdisc is technically still empty (as we test qlen).
+
+If we reverse that order, that is, enqueuing skb2 _after_ the original
+packet, qlen should be increased by tfifo_enqueue() _before_ skb2 is
+enqueue, so the qdisc is not empty for skb2 any more.
+
+This is why I think (meaning I never test it) it could solve the problem
+here and is a much simpler fix (0 line of code in delta).
+
+Thanks!
