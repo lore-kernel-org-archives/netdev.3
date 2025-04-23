@@ -1,240 +1,190 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E40F27FD7D;
-	Wed, 23 Apr 2025 14:54:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A416A19DF4C
+	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 14:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420051; cv=none; b=L7V7rv77uVN4VRJoYKpFKyVZGwj7TYCe0pxKav1xKObGUGPyhVtzqWV2dfK25M3l/d8RgznoUdDq/BU4mRVEOwNQTo7Qs0FVil3N8ezcd6rnzENNZ1vNUOsS7Qm2IzB1ZXak2u4wH+bhmTmz0D/eK/rJfpimwnjMXze+Zs49Iq4=
+	t=1745420276; cv=none; b=OOLP825pNbVzMy814w/yCeDGL/Tzn40P1vKjMX61IrYbkx4RESX9arNrdEkwjc+KuQVz+X/5bB0sQ8lBXlbZOHiA3jQvXaErI9bAolJzTV/e95RTNjl4rGg9LHzYEwvCNmQHnJArOn+IjmuZF8IEZouPa5zfko+RQ0nAgfoas/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420051; c=relaxed/simple;
-	bh=iRvzhTCY40eyUf30cBOphXvJH2USUk1ryr0GebDIlEE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fZFVCm/Rq7Dz1dNZPGNCQQcZhl9TzifzMWKF1SCq54SlhDlZ6WXpGjWbuUTmzZFJVqhOiZqynyx07ljbroyT70j4utdr+S3jGNaBO2h1jBxFPrTI+EGkpD1vVMhKQwgYpYqic/S8C2ceUCBB0xB/Uv0OEVLIAwAOtuw1THI/17g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=drT6ZThe; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745420276; c=relaxed/simple;
+	bh=ry3OXvm8MNRk+35hfjC8SLmfLbP+2zJngT3Y9Q1kPhE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fcaJn7i3NCptX0ipHcZLUHCfjWm+xZeXew80kiN9fEqY+FHfumGGY9NEq3QzEAFp+4kGJ1urFH0QrHDk44v2UtH9ADM6IY360aQqk9U86aYeo7rRdwbQfR1pwPXH7zTIh4sefCXkVZ/r2A1vXb5Qdu13W/IcRL/pRIz2WZv+ZA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=mY46HS5w; arc=none smtp.client-ip=72.21.196.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="drT6ZThe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A4DC4CEE3;
-	Wed, 23 Apr 2025 14:54:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745420051;
-	bh=iRvzhTCY40eyUf30cBOphXvJH2USUk1ryr0GebDIlEE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=drT6ZThecwolHq2TVsRm6HR0I8j7Tl4uPnZMDUvzKX7epDpmruHLI4mOxGnn7kJPU
-	 ru5xq558kNpnSEmz7EuQVbfdyFaszLRmbcbNS36M0SOppVqwfhWI3UKuveZ/HCVmu7
-	 egfbdX04k+S/fvclL2He4alD1zXxXKNvp/Z4ohLqfZn73JbZjizLzATVQC6l504TQk
-	 qXcOH2KVzyAkBZbHseWGrNcjcKBRO4lCpHgbgvg+YfC4X6zvjE8KxDjH096wi+9fVk
-	 NFGmXdpib2KDSRjyZkj1rHv1AEUeTjdZXHJwDXHjKFMWBLX1SEvqxbLWIF0+BAv+S2
-	 AV8AoSomFvuMQ==
-Date: Wed, 23 Apr 2025 16:54:08 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Stanislav Fomichev <stfomichev@gmail.com>
-Cc: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH bpf-next] bpf: Allow XDP dev bounded program to perform
- XDP_REDIRECT into maps
-Message-ID: <aAj_ELYjc7cFDjSG@lore-desk>
-References: <20250422-xdp-prog-bound-fix-v1-1-0b581fa186fe@kernel.org>
- <aAgdECkTiP-po7HP@mini-arch>
- <aAi80as6PpOeuWJU@lore-desk>
- <aAj6IBZ4hsUS12f4@mini-arch>
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="mY46HS5w"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1745420274; x=1776956274;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=CJBKbhvv7r7Qvsp/mJhqVYAJDHVE7tJ01jHxTylhxpA=;
+  b=mY46HS5wZh2G1kC88EQuMRu0n45MGnTu+XNku8mAnUpB7D9SEkqCdmbl
+   +fYBysqeoq1LniacHnZ9sjP9UIEkpJZWkcVz3mzQIndOeUXFdQlzF5ym4
+   nhCNzDO6FH20LQ5ynB65sUEejZnU+hQKcSaqBkDpcCa+wulPOf/LEDOzo
+   g=;
+X-IronPort-AV: E=Sophos;i="6.15,233,1739836800"; 
+   d="scan'208";a="485590208"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 14:57:50 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.38.20:21643]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.42.20:2525] with esmtp (Farcaster)
+ id c11a44be-4fa3-46ab-9d9f-60ef549ea072; Wed, 23 Apr 2025 14:57:49 +0000 (UTC)
+X-Farcaster-Flow-ID: c11a44be-4fa3-46ab-9d9f-60ef549ea072
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 23 Apr 2025 14:57:48 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.106.101.42) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 23 Apr 2025 14:57:45 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <kuba@kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<horms@kernel.org>, <kuni1840@gmail.com>, <kuniyu@amazon.com>,
+	<netdev@vger.kernel.org>, <pabeni@redhat.com>
+Subject: Re: [PATCH v2 net-next 2/3] pfcp: Convert pfcp_net_exit() to ->exit_rtnl().
+Date: Wed, 23 Apr 2025 07:12:55 -0700
+Message-ID: <20250423145736.95775-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250423064026.636c822f@kernel.org>
+References: <20250423064026.636c822f@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="DVvT67f+LmJRu8M0"
-Content-Disposition: inline
-In-Reply-To: <aAj6IBZ4hsUS12f4@mini-arch>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D043UWC004.ant.amazon.com (10.13.139.206) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
+
+From: Jakub Kicinski <kuba@kernel.org>
+Date: Wed, 23 Apr 2025 06:40:26 -0700
+> On Thu, 17 Apr 2025 17:32:33 -0700 Kuniyuki Iwashima wrote:
+> > -static void __net_exit pfcp_net_exit(struct net *net)
+> > +static void __net_exit pfcp_net_exit_rtnl(struct net *net,
+> > +					  struct list_head *dev_to_kill)
+> >  {
+> >  	struct pfcp_net *pn = net_generic(net, pfcp_net_id);
+> >  	struct pfcp_dev *pfcp, *pfcp_next;
+> > -	struct net_device *dev;
+> > -	LIST_HEAD(list);
+> > -
+> > -	rtnl_lock();
+> > -	for_each_netdev(net, dev)
+> > -		if (dev->rtnl_link_ops == &pfcp_link_ops)
+> > -			pfcp_dellink(dev, &list);
+> >  
+> >  	list_for_each_entry_safe(pfcp, pfcp_next, &pn->pfcp_dev_list, list)
+> > -		pfcp_dellink(pfcp->dev, &list);
+> > -
+> > -	unregister_netdevice_many(&list);
+> > -	rtnl_unlock();
+> > +		pfcp_dellink(pfcp->dev, dev_to_kill);
+> 
+> Kuniyuki, I got distracted by the fact the driver is broken but I think
+> this isn't right.
+
+I guess it was broken recently ?  at least I didn't see null-deref
+while testing ffc90e9ca61b ("pfcp: Destroy device along with udp
+socket's netns dismantle.").
 
 
---DVvT67f+LmJRu8M0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> The devices do not migrate to the local pcfp_dev_list
+> when their netns is changed. They always stay on the list of original
+> netns. Which I guess may make some sense as that's where their socket
+> is? So we need to scan both the pcfp_dev_list _and_ the local netdevs
+> that are pfcp. Am I misunderstanding something?
 
-> On 04/23, Lorenzo Bianconi wrote:
-> > On Apr 22, Stanislav Fomichev wrote:
-> > > On 04/22, Lorenzo Bianconi wrote:
-> > > > In the current implementation if the program is bounded to a specif=
-ic
-> > > > device, it will not be possible to perform XDP_REDIRECT into a DEVM=
-AP
-> > > > or CPUMAP even if the program is not attached to the map entry. This
-> > > > seems in contrast with the explanation available in
-> > > > bpf_prog_map_compatible routine. Fix the issue taking into account
-> > > > even the attach program type and allow XDP dev bounded program to
-> > > > perform XDP_REDIRECT into maps if the attach type is not BPF_XDP_DE=
-VMAP
-> > > > or BPF_XDP_CPUMAP.
-> > > >=20
-> > > > Fixes: 3d76a4d3d4e59 ("bpf: XDP metadata RX kfuncs")
-> > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > > > ---
-> > > >  kernel/bpf/core.c | 22 +++++++++++++++++++++-
-> > > >  1 file changed, 21 insertions(+), 1 deletion(-)
-> > > >=20
-> > > > diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-> > > > index ba6b6118cf504041278d05417c4212d57be6fca0..a33175efffc377edbfe=
-281397017eb467bfbcce9 100644
-> > > > --- a/kernel/bpf/core.c
-> > > > +++ b/kernel/bpf/core.c
-> > > > @@ -2358,6 +2358,26 @@ static unsigned int __bpf_prog_ret0_warn(con=
-st void *ctx,
-> > > >  	return 0;
-> > > >  }
-> > > > =20
-> > > > +static bool bpf_prog_dev_bound_map_compatible(struct bpf_map *map,
-> > > > +					      const struct bpf_prog *prog)
-> > > > +{
-> > > > +	if (!bpf_prog_is_dev_bound(prog->aux))
-> > > > +		return true;
-> > > > +
-> > > > +	if (map->map_type =3D=3D BPF_MAP_TYPE_PROG_ARRAY)
-> > > > +		return false;
-> > >=20
-> > > [..]
-> > >=20
-> > > > +	if (map->map_type =3D=3D BPF_MAP_TYPE_DEVMAP &&
-> > > > +	    prog->expected_attach_type !=3D BPF_XDP_DEVMAP)
-> > > > +		return true;
-> > > > +
-> > > > +	if (map->map_type =3D=3D BPF_MAP_TYPE_CPUMAP &&
-> > > > +	    prog->expected_attach_type !=3D BPF_XDP_CPUMAP)
-> > > > +		return true;
-> > >=20
-> > > Not sure I understand, what does it mean exactly? That it's ok to add
-> > > a dev-bound program to the dev/cpumap if the program itself is gonna
-> > > be attached only to the real device? Can you expand more on the speci=
-fic
-> > > use-case?
-> > >=20
-> > > The existing check makes sure that the dev-bound programs run only in=
- the
-> > > contexts that have hw descriptors. devmap and cpumap don't satisfy
-> > > this constraint afaiu.
-> >=20
-> > My use-case is to use a hw-metadata kfunc like bpf_xdp_metadata_rx_time=
-stamp()
-> > to read hw timestamp from the NIC and then redirect the xdp_buff into a=
- DEVMP
-> > (please note there are no programs attached to any DEVMAP entries):
-> >=20
-> > extern int bpf_xdp_metadata_rx_timestamp(const struct xdp_md *ctx,
-> > 					 __u64 *timestamp) __ksym;
-> >=20
-> > struct {
-> > 	__uint(type, BPF_MAP_TYPE_DEVMAP);
-> > 	__uint(key_size, sizeof(__u32));
-> > 	__uint(value_size, sizeof(struct bpf_devmap_val));
-> > 	__uint(max_entries, 1);
-> > } dev_map SEC(".maps");
-> >=20
-> > SEC("xdp")
-> > int xdp_meta_redirect(struct xdp_md *ctx)
-> > {
-> > 	__u64 timestamp;
-> >=20
-> > 	...
-> > 	bpf_xdp_metadata_rx_timestamp(ctx, &timestamp);
-> > 	...
-> >=20
-> > 	return bpf_redirect_map(&dev_map, ctx->rx_queue_index, XDP_PASS);
-> > }
-> >=20
-> > According to my understanding this is feasible just if the "xdp_meta_re=
-direct"
-> > program is bounded to a device otherwise the program is reject with the=
- following
-> > error at load time:
-> >=20
-> > libbpf: prog 'xdp_meta_redirect': BPF program load failed: -EINVAL
-> > libbpf: prog 'xdp_meta_redirect': -- BEGIN PROG LOAD LOG --
-> > metadata kfuncs require device-bound program
-> > processed 0 insns (limit 1000000) max_states_per_insn 0 total_states 0
-> > peak_states 0 mark_read 0
-> > -- END PROG LOAD LOG --
-> >=20
-> > in order to fix it:
-> >=20
-> > 	...
-> > 	index =3D if_nametoindex(DEV);=20
-> > 	bpf_program__set_ifindex(prog, index);
-> > 	bpf_program__set_flags(prog, BPF_F_XDP_DEV_BOUND_ONLY);
-> > 	...
-> >=20
-> > Doing so the program load still fails for the check in bpf_prog_map_com=
-patible():
-> >=20
-> > 	bool bpf_prog_map_compatible()
-> > 	{
-> > 		...
-> > 		if (bpf_prog_is_dev_bound(aux))
-> > 			return false;
-> > 		...
->=20
-> [..]
-> =20
-> > In other words, a dev-bound XDP program can't interact with a DEVMAP (or
-> > CPUMAP) even if it is not attached to a map entry.
-> > I think if the XDP program is just running in the driver NAPI context
-> > it should be doable to use a hw-metada kfunc and perform a redirect into
-> > a DEVMAP or CPUMAP, right? Am I missing something?
->=20
-> Thanks for the info! Yes, that should work. I wonder if you hit
-> bpf_prog_select_runtime->bpf_check_tail_call->bpf_prog_map_compatible
-> path? Looks like we should not do bpf_prog_is_dev_bound in that case (the=
- rest
-> of the bpf_prog_map_compatible callers should).
+If the netns is queued up for cleanup_net(), the local netdevs
+are handled later by default_device_exit_batch().
 
-yes, the issue occurs at the program load time when we run
-bpf_prog_map_compatible() following the call path you pointed out:
+If the module is unloaded, we call pfcp_net_exit_rtnl() for
+all netns including all local netdevs.
 
-bpf_prog_select_runtime() -> bpf_check_tail_call() -> bpf_prog_map_compatib=
-le()
+I remember bareudp did like that and I changed geneve and gtp
+as well.
 
-Do you mean we should get rid of the bpf_prog_is_dev_bound() check in
-bpf_prog_map_compatible() and move it in the bpf_prog_map_compatible() call=
-ers
-instead? In particular:
+I applied the quivalent diff below on ffc90e9ca61b, and during
+netns dismantle, 2 local netdevs were removed properly (one
+was originally created there, another was moved to the netns).
 
- - __cpu_map_load_bpf_program()
- - __dev_map_alloc_node()
- - prog_fd_array_get_ptr()
+---8<---
+[root@localhost ~]# ip netns add ns1
+[root@localhost ~]# ip netns add ns2
+[root@localhost ~]# ip -n ns1 link add netns ns2 name pfcp0 type pfcp
+[   74.564522] newlink: dev: pfcp0 at ff11000103ca9000
+[root@localhost ~]# ip -n ns2 link add netns ns2 name pfcp1 type pfcp
+[   79.510334] newlink: dev: pfcp1 at ff11000103caa000
+[root@localhost ~]# ip netns del ns2
+[   83.953871] dellink: dev: pfcp1 at ff11000103caa000 from cleanup_net+0x20e/0x3b0
+[   83.980520] dellink: dev: pfcp0 at ff11000103ca9000 from default_device_exit_batch+0x244/0x300
+---8<---
 
->=20
-> When doing a follow up, can you also extend tools/testing/selftests/bpf/p=
-rog_tests/xdp_metadata.c
-> to cover these conditions? (redirect to empty map -> nop, adding
-> dev-bound program to devmap is einval).
-
-ack, I will do it in v2.
-
-Regards,
-Lorenzo
-
---DVvT67f+LmJRu8M0
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaAj/EAAKCRA6cBh0uS2t
-rOMoAP9dBdpg5Yah4sc0bnU8REim94G00sbkU32Jo1xybmPB5QD/d13V3jUYQeuj
-ylMGn28jbNj0sGMS1uQwt2aSfGthiws=
-=6vQ1
------END PGP SIGNATURE-----
-
---DVvT67f+LmJRu8M0--
+---8<---
+diff --git a/drivers/net/pfcp.c b/drivers/net/pfcp.c
+index 68d0d9e92a22..f7f254d7d031 100644
+--- a/drivers/net/pfcp.c
++++ b/drivers/net/pfcp.c
+@@ -206,6 +206,7 @@ static int pfcp_newlink(struct net *net, struct net_device *dev,
+ 		goto exit_del_pfcp_sock;
+ 	}
+ 
++	printk(KERN_ERR "newlink: dev: %s at %px\n", dev->name, dev);
+ 	pn = net_generic(net, pfcp_net_id);
+ 	list_add(&pfcp->list, &pn->pfcp_dev_list);
+ 
+@@ -224,6 +225,7 @@ static void pfcp_dellink(struct net_device *dev, struct list_head *head)
+ {
+ 	struct pfcp_dev *pfcp = netdev_priv(dev);
+ 
++	printk(KERN_ERR "dellink: dev: %s at %px from %pS\n", dev->name, dev, __builtin_return_address(0));
+ 	list_del(&pfcp->list);
+ 	unregister_netdevice_queue(dev, head);
+ }
+@@ -244,28 +246,26 @@ static int __net_init pfcp_net_init(struct net *net)
+ 	return 0;
+ }
+ 
+-static void __net_exit pfcp_net_exit(struct net *net)
++static void __net_exit pfcp_net_exit(struct net *net, struct list_head *list)
+ {
+ 	struct pfcp_net *pn = net_generic(net, pfcp_net_id);
+ 	struct pfcp_dev *pfcp, *pfcp_next;
+-	struct net_device *dev;
+-	LIST_HEAD(list);
+-
+-	rtnl_lock();
+-	for_each_netdev(net, dev)
+-		if (dev->rtnl_link_ops == &pfcp_link_ops)
+-			pfcp_dellink(dev, &list);
+ 
+ 	list_for_each_entry_safe(pfcp, pfcp_next, &pn->pfcp_dev_list, list)
+-		pfcp_dellink(pfcp->dev, &list);
++		pfcp_dellink(pfcp->dev, list);
++}
++
++static void __net_exit pfcp_net_exit_batch_rtnl(struct list_head *net_list, struct list_head *head)
++{
++	struct net *net;
+ 
+-	unregister_netdevice_many(&list);
+-	rtnl_unlock();
++	list_for_each_entry(net, net_list, exit_list)
++		pfcp_net_exit(net, head);
+ }
+ 
+ static struct pernet_operations pfcp_net_ops = {
+ 	.init	= pfcp_net_init,
+-	.exit	= pfcp_net_exit,
++	.exit_batch_rtnl	= pfcp_net_exit_batch_rtnl,
+ 	.id	= &pfcp_net_id,
+ 	.size	= sizeof(struct pfcp_net),
+ };
+---8<---
