@@ -1,303 +1,141 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860C6223DC5
-	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 23:49:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E914521FF28
+	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 23:51:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745452186; cv=none; b=GCINRDhsZK4fO16nYkVGCeEr4Bs+MT11ya5cyaGKeKHYy5DTmsCPxEZI4zOkCQ277m/flkyjfzyE0lmo6ktQAgXjSjiRs2uMfTtI9QYAflerKm10DZ60DNcPSkK89yNruI1v7tYpw2JYeULgVRDSPJMPNZzrxlkHBhZEyFkzd4s=
+	t=1745452290; cv=none; b=F/g+C+RTTWPIpAQBC8JuPIJJPr/IfKVFQFs6mdun/nKf3SPUtFN1//5jrVXYx66kaRSechP/a09VOOk3mZ1Vw9E4yLjmVtfj8Q7yN8FjpzyWGsPYHB9K6NkLyJbVjDNLAilQk51MVfezYyJZNzci541pqmokd7zgPz8VKsLAOFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745452186; c=relaxed/simple;
-	bh=2VepqBRKfk+JUtYK6Opi6yC4PoH9lRaO6DVRy49F788=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g3Y6Rl4fFK4/YGdyfcrA8JqGnRuakbzKPKOMgnKNlgBKkJBFPXb9Rp8IX0l5KvNThPFRTxceJ69+DjFsv9vy5IDG+f2In+MVQVqff3Zdxczl7iMjsc0zoZgTHpTCEwfrBxcFk3KSWLjIgaQVYPMu1HwxIXgg+ePDcg9kDvh23JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m22b7eh7; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1745452290; c=relaxed/simple;
+	bh=FvoiZo8CsQW0GPXAIiATIYaWqN8/nCTt141sKLDXks4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nfED4Y0m4iCw9GkeEpKP8P40sZzxHai6+qq9OqFpUznAnaqjP/NcCuuxkpa+2doPwVjbDPUGwvzfM0VJq45lh2kbEJAbNJRAUWr00ypnjh7EOTr7GezYRL0oSOCyeDqovcBypbuLvmCPi2q5K28GaWquPXjYNpnQOPuw2bgyeSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io; spf=none smtp.mailfrom=jrife.io; dkim=pass (2048-bit key) header.d=jrife-io.20230601.gappssmtp.com header.i=@jrife-io.20230601.gappssmtp.com header.b=rFXobRAo; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=jrife.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m22b7eh7"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2240aad70f2so104655ad.0
-        for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 16:49:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=jrife-io.20230601.gappssmtp.com header.i=@jrife-io.20230601.gappssmtp.com header.b="rFXobRAo"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-22403c99457so770115ad.3
+        for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 16:51:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745452184; x=1746056984; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=jrife-io.20230601.gappssmtp.com; s=20230601; t=1745452288; x=1746057088; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZgkZ0Ext9iMP/JpiGlrjV0G3sg7KUzWq6I5onInGXLo=;
-        b=m22b7eh7ZBAWuwp7bnnFNPDsGXVQsJgKx+hykA/dVSbsJgYAf5w2hfu5xArKlpaCHf
-         jt+IWwYEfNrRJzlhCsLsw6WR+n+EGP7r+VoSB54JXwSHboVNzntSz3/Z6Hodfr7a/15u
-         8+k3QfiC/wMJz6eYAM+iuFiBEtLs6dzI2Rw3y1IaqESHzvdXk4jyVgAwLdrssEtEL6D6
-         3HPrHD5dd6IpQaMzXB76bNq9QUljv+CaRttURfXotriwapSQ+0U0HB0sFCfZpQEANqfA
-         +TqfHvmWI3VIMd8qdr3Qf1kohOYK4cwoxuwjmUzJA6/Pf+DokhIf64GtClz7SkLog/1d
-         VyEg==
+        bh=8T6hDhDL07Ig6e5imc6Py5jYi0Q9TXugskoJKEqglC8=;
+        b=rFXobRAo9Veuz4M9cQXAlNUiDRPg8N281ifgb77de6foU7X/+NYyNwCBbHk6/8Z4sq
+         dIdfTgM/4+jgY/ov+Nr6mbHdi0zA3/z+R0xMECK1U+79hxbPGcfwJwGdlYKfO3QX89GV
+         ZNakRegm0AELqMkC4chAo9HZVTVWfgB5xEpc6Ahcx7DsZ0Hmn+CM+0Ae2XmewzwGtnco
+         W/8o6OQ7MYtrBoco+zj9sGW9FyABmNX/Q7kaqFELG/Y3NJMcTjtGa2W16IgDzb9gfc7G
+         FxMZGKe1TZwXxrtrWzyI48toWDFkA3QsTGWRKVkO0/wqf43eBc2OItPTysdnfu5P6LtL
+         Xtjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745452184; x=1746056984;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1745452288; x=1746057088;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZgkZ0Ext9iMP/JpiGlrjV0G3sg7KUzWq6I5onInGXLo=;
-        b=d0nSwCqltO5AD2bVj5PItXT3zoxJ12qUq/EEaf7AVMi8nkFINKO4VlPgHsufc/jN05
-         thyMQhmzoWiT2VlIl7s04E7oP+jofQNfbqy5hGxOggoaQAjI3hPsZAYtU994XBEiqSMx
-         PpfeVRoXCbmquNJG3Dtvebdd0hBuW2qA9RTOo5fqHkeTI+UycF2Roftg2duWQQdRqAKF
-         NzDWaYUvBVwRSUv6MJe8fXkUiKXbkURp1GSO0JXN3Aok3rF0OQwQqaMGo52fxZrDWbWg
-         DA/PROb/AMstmcy+qSEGo7+WU84+TXunhwgmN1MBLau8CprgJS7hFa6ChzmVcqX1Cpav
-         gxHg==
-X-Gm-Message-State: AOJu0YwOGQ/e1ip8lfzIIxxhU6y/z9lZcLybwEyzjdDpat4G4ZvsFDCk
-	Fb9ZIVtcx88f+s2IAQYfeS0hHaov/5xcObrLZ3cYH5SEcQVsV08tw7b5rNapycodHBr6BDqy6aG
-	CHx3myz0Xp1F5+GLFsbsbu7ffQGA7xGkWQnFI
-X-Gm-Gg: ASbGncutMAVCD2T5D24OFAzSzARhiANJEjD3ipuBilrYyY0MXAyJOHZXQx6A8BKKRKz
-	OM9oGYqDRPpj5/bYRamob2BaopB9ihLED5dvqh4t50AP/lmdj6mE4ZaXQVY0C2Nt2dMUccKLg52
-	lI5F3vwgDvk8p5EsOFEflyZnzco6WQFADcf80sBvlA4Y6HpLzAT6Y3
-X-Google-Smtp-Source: AGHT+IGX7LK2aizJTPRrsUG1SCwbT2wY7Q85CyE+4DCuBGCQwpCEAfBGkW2ltJ7AcRFVxOQFDMwRmDSguzDhCxxr7Yc=
-X-Received: by 2002:a17:903:46c6:b0:21f:3c4a:136f with SMTP id
- d9443c01a7336-22db2214bfcmr1400785ad.28.1745452183416; Wed, 23 Apr 2025
- 16:49:43 -0700 (PDT)
+        bh=8T6hDhDL07Ig6e5imc6Py5jYi0Q9TXugskoJKEqglC8=;
+        b=fUt6Lm6ij/Zqvb+65cyYqXNZ7sHIeD2XcWopI4sztU0S3MJrl8OPsS59QdTY9+8xIW
+         lv3lNekJ7vefL7U13fzKbuHHeBAQaT3kQIwMNXNHpnTev/RIQbECUloRVAwKLILQ6cfu
+         8uxuiXs54iZx/tAOEy8tTMlp/G6WdZu5rMyuMrbuHzom4DMayt2oOIwloZe1OdERIaDY
+         FvoIA6PlMI11v9bJSSQ7jsM+zx+8/jdE5YFOS58tKXI0Nh89flTW1svfpZERmOq+XqHZ
+         nBRjX1ApPiDIlihRNBbY0TahUqvSCorDp3cQ2L0QqLUl/UkcrTIt844yr4PlNWXhLNaY
+         ZbfA==
+X-Gm-Message-State: AOJu0YxDu0n1PTJNyQgBBsxUnFwnSSuuwiNVye+5+pUOp/QSllFvEl19
+	YXBHgYN6SPIVgv2DNqIyp3QlPblQNw7eY4nT4r0KHnlssfiiwawRQMw49iQXYp3GmAMvfDFo1oN
+	cPHI=
+X-Gm-Gg: ASbGncsLELq6fvG2kilgRnV5veWEpoS9ixtf7zh8tcFvD/3qvH5ORcgxr62r25ggngj
+	4xw0A5qX9CH2VPOtlTyI8GqDacVvUm/c5QtjfAkOrRMIjHLplrP5172I9clrgg199JOVMdp/E6C
+	9MIATgLBJRXsAU366GCm4zOVW8I/a+xP+p1PVPrGHqMul3Ti40mCOTeFhTUbzbcCTBfuVr5CtDX
+	APU0cHnojs8B7IHqZ4O56SCYdjLO4Xq/TcMx/6Zw7s7iKzk9xRK6Ti9cwQfTVMFMpKade/qV+nF
+	oroRUpEB6ZYwVCv1hIMpjUzzdtVd8g==
+X-Google-Smtp-Source: AGHT+IEyGRyxFGq4bQ617nWX+ar/YlqkpHG2LTnFNSv2adeU33TxrPM3w/oazKd8EtAl2do0qnCXDw==
+X-Received: by 2002:a17:902:f541:b0:212:48f0:5b6f with SMTP id d9443c01a7336-22db3d72cbcmr1907505ad.9.1745452287851;
+        Wed, 23 Apr 2025 16:51:27 -0700 (PDT)
+Received: from t14.. ([2001:5a8:4528:b100:f4b1:8a64:c239:dca3])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db4d76cfasm499175ad.47.2025.04.23.16.51.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Apr 2025 16:51:27 -0700 (PDT)
+From: Jordan Rife <jordan@jrife.io>
+To: netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: Jordan Rife <jordan@jrife.io>,
+	Aditi Ghag <aditi.ghag@isovalent.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>
+Subject: [PATCH v5 bpf-next 1/6] bpf: udp: Make mem flags configurable through bpf_iter_udp_realloc_batch
+Date: Wed, 23 Apr 2025 16:51:09 -0700
+Message-ID: <20250423235115.1885611-2-jordan@jrife.io>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250423235115.1885611-1-jordan@jrife.io>
+References: <20250423235115.1885611-1-jordan@jrife.io>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250423031117.907681-1-almasrymina@google.com>
- <20250423031117.907681-5-almasrymina@google.com> <20250423140931-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20250423140931-mutt-send-email-mst@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 23 Apr 2025 16:49:30 -0700
-X-Gm-Features: ATxdqUHdLn2wP88hj2tffPEL1QlUjkAMN1_0DSb5R09qEYsDQJ9iaUC4P8x0YMU
-Message-ID: <CAHS8izNRk1MOs-R1RmWMQ5zMBOo70YpTzOdt8=OrrjrD7JQTfA@mail.gmail.com>
-Subject: Re: [PATCH net-next v10 4/9] net: devmem: Implement TX path
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, io-uring@vger.kernel.org, 
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Jeroen de Borst <jeroendb@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Kuniyuki Iwashima <kuniyu@amazon.com>, Willem de Bruijn <willemb@google.com>, Jens Axboe <axboe@kernel.dk>, 
-	Pavel Begunkov <asml.silence@gmail.com>, David Ahern <dsahern@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, sdf@fomichev.me, dw@davidwei.uk, 
-	Jamal Hadi Salim <jhs@mojatatu.com>, Victor Nogueira <victor@mojatatu.com>, 
-	Pedro Tammela <pctammela@mojatatu.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Kaiyuan Zhang <kaiyuanz@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 23, 2025 at 11:24=E2=80=AFAM Michael S. Tsirkin <mst@redhat.com=
-> wrote:
->
-> some nits
->
-> On Wed, Apr 23, 2025 at 03:11:11AM +0000, Mina Almasry wrote:
-> > @@ -189,43 +200,44 @@ net_devmem_bind_dmabuf(struct net_device *dev, un=
-signed int dmabuf_fd,
-> >       }
-> >
-> >       binding->dev =3D dev;
-> > -
-> > -     err =3D xa_alloc_cyclic(&net_devmem_dmabuf_bindings, &binding->id=
-,
-> > -                           binding, xa_limit_32b, &id_alloc_next,
-> > -                           GFP_KERNEL);
-> > -     if (err < 0)
-> > -             goto err_free_binding;
-> > -
-> >       xa_init_flags(&binding->bound_rxqs, XA_FLAGS_ALLOC);
-> > -
-> >       refcount_set(&binding->ref, 1);
-> > -
-> >       binding->dmabuf =3D dmabuf;
-> >
->
-> given you keep iterating, don't tweak whitespace in the same patch-
-> will make the review a tiny bit easier.
->
+Prepare for the next patch which needs to be able to choose either
+GFP_USER or GFP_ATOMIC for calls to bpf_iter_udp_realloc_batch.
 
-Sure.
+Signed-off-by: Jordan Rife <jordan@jrife.io>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+---
+ net/ipv4/udp.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
->
-> >       binding->attachment =3D dma_buf_attach(binding->dmabuf, dev->dev.=
-parent);
-> >       if (IS_ERR(binding->attachment)) {
-> >               err =3D PTR_ERR(binding->attachment);
-> >               NL_SET_ERR_MSG(extack, "Failed to bind dmabuf to device")=
-;
-> > -             goto err_free_id;
-> > +             goto err_free_binding;
-> >       }
-> >
-> >       binding->sgt =3D dma_buf_map_attachment_unlocked(binding->attachm=
-ent,
-> > -                                                    DMA_FROM_DEVICE);
-> > +                                                    direction);
-> >       if (IS_ERR(binding->sgt)) {
-> >               err =3D PTR_ERR(binding->sgt);
-> >               NL_SET_ERR_MSG(extack, "Failed to map dmabuf attachment")=
-;
-> >               goto err_detach;
-> >       }
-> >
-> > +     if (direction =3D=3D DMA_TO_DEVICE) {
-> > +             binding->tx_vec =3D kvmalloc_array(dmabuf->size / PAGE_SI=
-ZE,
-> > +                                              sizeof(struct net_iov *)=
-,
-> > +                                              GFP_KERNEL);
-> > +             if (!binding->tx_vec) {
-> > +                     err =3D -ENOMEM;
-> > +                     goto err_unmap;
-> > +             }
-> > +     }
-> > +
-> >       /* For simplicity we expect to make PAGE_SIZE allocations, but th=
-e
-> >        * binding can be much more flexible than that. We may be able to
-> >        * allocate MTU sized chunks here. Leave that for future work...
-> >        */
-> > -     binding->chunk_pool =3D
-> > -             gen_pool_create(PAGE_SHIFT, dev_to_node(&dev->dev));
-> > +     binding->chunk_pool =3D gen_pool_create(PAGE_SHIFT,
-> > +                                           dev_to_node(&dev->dev));
-> >       if (!binding->chunk_pool) {
-> >               err =3D -ENOMEM;
-> > -             goto err_unmap;
-> > +             goto err_tx_vec;
-> >       }
-> >
-> >       virtual =3D 0;
-> > @@ -270,24 +282,34 @@ net_devmem_bind_dmabuf(struct net_device *dev, un=
-signed int dmabuf_fd,
-> >                       niov->owner =3D &owner->area;
-> >                       page_pool_set_dma_addr_netmem(net_iov_to_netmem(n=
-iov),
-> >                                                     net_devmem_get_dma_=
-addr(niov));
-> > +                     if (direction =3D=3D DMA_TO_DEVICE)
-> > +                             binding->tx_vec[owner->area.base_virtual =
-/ PAGE_SIZE + i] =3D niov;
-> >               }
-> >
-> >               virtual +=3D len;
-> >       }
-> >
-> > +     err =3D xa_alloc_cyclic(&net_devmem_dmabuf_bindings, &binding->id=
-,
-> > +                           binding, xa_limit_32b, &id_alloc_next,
-> > +                           GFP_KERNEL);
-> > +     if (err < 0)
-> > +             goto err_free_id;
-> > +
-> >       return binding;
-> >
-> > +err_free_id:
-> > +     xa_erase(&net_devmem_dmabuf_bindings, binding->id);
-> >  err_free_chunks:
-> >       gen_pool_for_each_chunk(binding->chunk_pool,
-> >                               net_devmem_dmabuf_free_chunk_owner, NULL)=
-;
-> >       gen_pool_destroy(binding->chunk_pool);
-> > +err_tx_vec:
-> > +     kvfree(binding->tx_vec);
-> >  err_unmap:
-> >       dma_buf_unmap_attachment_unlocked(binding->attachment, binding->s=
-gt,
-> >                                         DMA_FROM_DEVICE);
-> >  err_detach:
-> >       dma_buf_detach(dmabuf, binding->attachment);
-> > -err_free_id:
-> > -     xa_erase(&net_devmem_dmabuf_bindings, binding->id);
-> >  err_free_binding:
-> >       kfree(binding);
-> >  err_put_dmabuf:
-> > @@ -295,6 +317,21 @@ net_devmem_bind_dmabuf(struct net_device *dev, uns=
-igned int dmabuf_fd,
-> >       return ERR_PTR(err);
-> >  }
-> >
-> > +struct net_devmem_dmabuf_binding *net_devmem_lookup_dmabuf(u32 id)
-> > +{
-> > +     struct net_devmem_dmabuf_binding *binding;
-> > +
-> > +     rcu_read_lock();
-> > +     binding =3D xa_load(&net_devmem_dmabuf_bindings, id);
-> > +     if (binding) {
-> > +             if (!net_devmem_dmabuf_binding_get(binding))
-> > +                     binding =3D NULL;
-> > +     }
-> > +     rcu_read_unlock();
-> > +
-> > +     return binding;
-> > +}
-> > +
-> >  void net_devmem_get_net_iov(struct net_iov *niov)
-> >  {
-> >       net_devmem_dmabuf_binding_get(net_devmem_iov_binding(niov));
-> > @@ -305,6 +342,53 @@ void net_devmem_put_net_iov(struct net_iov *niov)
-> >       net_devmem_dmabuf_binding_put(net_devmem_iov_binding(niov));
-> >  }
-> >
-> > +struct net_devmem_dmabuf_binding *net_devmem_get_binding(struct sock *=
-sk,
-> > +                                                      unsigned int dma=
-buf_id)
-> > +{
-> > +     struct net_devmem_dmabuf_binding *binding;
-> > +     struct dst_entry *dst =3D __sk_dst_get(sk);
-> > +     int err =3D 0;
-> > +
-> > +     binding =3D net_devmem_lookup_dmabuf(dmabuf_id);
->
-> why not initialize binding together with the declaration?
->
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 2742cc7602bb..6a3c351aa06e 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -3401,7 +3401,7 @@ struct bpf_udp_iter_state {
+ };
+ 
+ static int bpf_iter_udp_realloc_batch(struct bpf_udp_iter_state *iter,
+-				      unsigned int new_batch_sz);
++				      unsigned int new_batch_sz, int flags);
+ static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
+ {
+ 	struct bpf_udp_iter_state *iter = seq->private;
+@@ -3477,7 +3477,8 @@ static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
+ 		iter->st_bucket_done = true;
+ 		goto done;
+ 	}
+-	if (!resized && !bpf_iter_udp_realloc_batch(iter, batch_sks * 3 / 2)) {
++	if (!resized && !bpf_iter_udp_realloc_batch(iter, batch_sks * 3 / 2,
++						    GFP_USER)) {
+ 		resized = true;
+ 		/* After allocating a larger batch, retry one more time to grab
+ 		 * the whole bucket.
+@@ -3831,12 +3832,12 @@ DEFINE_BPF_ITER_FUNC(udp, struct bpf_iter_meta *meta,
+ 		     struct udp_sock *udp_sk, uid_t uid, int bucket)
+ 
+ static int bpf_iter_udp_realloc_batch(struct bpf_udp_iter_state *iter,
+-				      unsigned int new_batch_sz)
++				      unsigned int new_batch_sz, int flags)
+ {
+ 	struct sock **new_batch;
+ 
+ 	new_batch = kvmalloc_array(new_batch_sz, sizeof(*new_batch),
+-				   GFP_USER | __GFP_NOWARN);
++				   flags | __GFP_NOWARN);
+ 	if (!new_batch)
+ 		return -ENOMEM;
+ 
+@@ -3859,7 +3860,7 @@ static int bpf_iter_init_udp(void *priv_data, struct bpf_iter_aux_info *aux)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = bpf_iter_udp_realloc_batch(iter, INIT_BATCH_SZ);
++	ret = bpf_iter_udp_realloc_batch(iter, INIT_BATCH_SZ, GFP_USER);
+ 	if (ret)
+ 		bpf_iter_fini_seq_net(priv_data);
+ 
+-- 
+2.48.1
 
-I find it stylistically much better to error check this right after
-it's assigned.
-
-> > +     if (!binding || !binding->tx_vec) {
-> > +             err =3D -EINVAL;
-> > +             goto out_err;
-> > +     }
-> > +
-> > +     /* The dma-addrs in this binding are only reachable to the corres=
-ponding
-> > +      * net_device.
-> > +      */
-> > +     if (!dst || !dst->dev || dst->dev->ifindex !=3D binding->dev->ifi=
-ndex) {
-> > +             err =3D -ENODEV;
-> > +             goto out_err;
-> > +     }
-> > +
-> > +     return binding;
-> > +
-> > +out_err:
-> > +     if (binding)
-> > +             net_devmem_dmabuf_binding_put(binding);
-> > +
-> > +     return ERR_PTR(err);
-> > +}
-> > +
-> > +struct net_iov *
-> > +net_devmem_get_niov_at(struct net_devmem_dmabuf_binding *binding,
-> > +                    size_t virt_addr, size_t *off, size_t *size)
-> > +{
-> > +     size_t idx;
-> > +
-> > +     if (virt_addr >=3D binding->dmabuf->size)
-> > +             return NULL;
-> > +
-> > +     idx =3D virt_addr / PAGE_SIZE;
->
-> init this at where it's declared?
-> or where it's used.
->
-
-I think probably a local variable isn't warranted. Will remove.
-
---=20
-Thanks,
-Mina
