@@ -1,73 +1,149 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570CF2853E0;
-	Wed, 23 Apr 2025 15:44:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55A528935F
+	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 15:51:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745423092; cv=none; b=kUPnUUBdmrAN8VFfK1w569vsexl5i3V/fSI5O89Y9VZl+qLL3jeKeODFYogDnCpuK40Lpq875wvMHRi7pFc0n+CCUkVUvxzNxP3r9Ub/nLaweKnF1Dyry9aL/MrlFmvwUwrSUs+KjsqWf3HScspWoYEBrRqwXvtJzyyvryfI8eI=
+	t=1745423500; cv=none; b=oB+i3gid2JMzkW10O35/ExfnsOUmtQhYQ2Dlu5Y2q/PH3W9lI2Lni9UYcZASZ/HkqZC6QFHzH/M73WCvl2tSN+xM3g/F8bn2YfaTmWRgULknOk1IeGiQwvWo4pho/ss+td3eA06ZsFpY7kcDdbuMHWdXf8LKRgeBRfrkk4RXGAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745423092; c=relaxed/simple;
-	bh=RvH5FgF81bFkw2pxOgwseRZAgpOXsvqHOEmUofvT3cA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Id8fY9wgc6b1RG+mKCXYbRV01itshQOWkv+ptoL1OnyBbzzyk378pM9roNrCDT7yaBWcXKjUaujXCmwMQznjtv4pg09FPYmA6uygQNTA4i1ML9YYGWwhbh8Yk9gPwVvLgzXHqJWPciZv0QhUzBDgr9LBhNZSmAyZniGQafMYnaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=So8kcJYK; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1745423500; c=relaxed/simple;
+	bh=LmGNjL79ycB3Z0X51PcQ3PdY52xzY2zPzNSIVi+0xOo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lDpgZs1cLpdnR+FetTiPMdYwIqHxXaw+glA1uDhSrJ7oWfgDCODZRsoQHvHShMomLnPkbW3arrZoH5uWl+y/VhSCef5E7s+P0mpNOcuGIxJ3wuzpERwK40gxr2jX9f3yLCjuT34v1JvkyNGn0VZbQZOudSZxQeUSoDPD47x89gY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QtGyDd7L; arc=none smtp.client-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="So8kcJYK"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=RvH5FgF81bFkw2pxOgwseRZAgpOXsvqHOEmUofvT3cA=;
-	t=1745423091; x=1746632691; b=So8kcJYKTAbL/D1EBRPJIu5p95H6F7AL1cE/SN9LvsQ87fT
-	apYp2+oagzgYrHAKks7YB7dqaJWE6uBtA4HQ6Rnru2RQ/mJfyO0Pzdm5hv+xQLhYgOfV1ELmweBEa
-	MR1hXz5tl48BKBmkFkZ10Z3fIUEjNXn5sHmJR2bs9OlDsgr360aAlb/4ysGVAKNQc5fBkiKZDsrx7
-	u8h6Mh4nHfyVeRDpFrOG1F6KBWXMvUDbHbz15n0osFxHIH6rD2eDmw1QgAYGKjR7etR7H2wwjpfw9
-	538RJ+8uZfTcZN7FsQ8+TQySTp8KkSVd/rzbBXhIfFbJzqiugiph+GwXIXrHt6Yw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.1)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1u7cHI-0000000Ensa-0njz;
-	Wed, 23 Apr 2025 17:44:48 +0200
-Message-ID: <4a91f731c49d3449632f19dcf4a1a8f5a9eb847b.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 1/3] cfg80211: Restore initial state on failed
- device_rename() in cfg80211_switch_netns()
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ivan Abramov <i.abramov@mt-integration.ru>
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>, linux-wireless@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, 
-	netdev@vger.kernel.org
-Date: Wed, 23 Apr 2025 17:44:45 +0200
-In-Reply-To: <20250407125345.1238818-2-i.abramov@mt-integration.ru>
-References: <20250407125345.1238818-1-i.abramov@mt-integration.ru>
-	 <20250407125345.1238818-2-i.abramov@mt-integration.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QtGyDd7L"
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfout.stl.internal (Postfix) with ESMTP id D444C1140061;
+	Wed, 23 Apr 2025 11:51:37 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Wed, 23 Apr 2025 11:51:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1745423497; x=1745509897; bh=dJwXLllvGclfC4U6L7/Xi9A7JqzIdWAnZqt
+	u44QdLQw=; b=QtGyDd7LRjo2kH/EdvrCqpJ0qefJr24MjQsNl2tzz5teaSDqrDy
+	0V17HQtlKd0XoB0vzqf3xdk9yJS/0fdt7sFO0qr+CnZ1IrVV+kQxJu3wCWE19iIf
+	fsa1XXZNsBOqdvk6tepNsUXTVKn+V6oPs2dxsA8tqDUelYEcOsos6UBdQcx5PJSb
+	x9X1ryS0g+z8iI3YnsMBFc7mPcCxeI4k2dVPJR/DZjyyu6cp/OEOztzbomLsi5Xy
+	qt97k/UIaNcB12lXwC3G4wlXrJybPqc7GNCC7TWNF38A8wNc3tCDUhE4ZAAoZCv8
+	Trx0qlpV2xlfv4/aZ/ceQ8WLwie/iogb/vQ==
+X-ME-Sender: <xms:iQwJaGwJjI435ONzt7W6sfgpRgyFHx6wkH-jphMqI9iPO4cQSHiI_g>
+    <xme:iQwJaCQnnSF6ciEFa2JiJ6RHfuUZ1ZGEcgEtN-McWSZpur96dRwCX_6zB9jNa9kN-
+    _Nbrze8UxI96gM>
+X-ME-Received: <xmr:iQwJaIVapMW8flajzpP4RM6wxt8J4K7_1XVzKtMT5WDvLs3SEVOefIs3-QbM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeejtdduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepkfguohcuufgthhhimhhmvghluceoihguohhstghhsehiughoshgthh
+    drohhrgheqnecuggftrfgrthhtvghrnhepvddufeevkeehueegfedtvdevfefgudeifedu
+    ieefgfelkeehgeelgeejjeeggefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepihguohhstghhsehiughoshgthhdrohhrghdpnhgspghrtghp
+    thhtohepvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshhimhhonhhksggrsg
+    ihsehgmhgrihhlrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhn
+    vghlrdhorhhg
+X-ME-Proxy: <xmx:iQwJaMh0zd2MR9_eLSaDpmixQjPc4MciX-KHH9Pm1k-cDCTAgFmzQA>
+    <xmx:iQwJaIAtClwE9xAC8Gz_jg4kTNkllozyM8oANfALigsITa3G9QcvAw>
+    <xmx:iQwJaNL7HMgXW493n4TN1hVznk3JoJMxM7CXojUyhhYen7nPMyz7Gw>
+    <xmx:iQwJaPB1y_K9yX23RHQEStgO0tRFJjvmBLmuoh6xwX2yPCuGqG53-g>
+    <xmx:iQwJaPw6ulDIJZl5siDW5SRZ6zE_dynlQ0O2eZsRll1r5k-kKoiut2q->
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 23 Apr 2025 11:51:36 -0400 (EDT)
+Date: Wed, 23 Apr 2025 18:51:34 +0300
+From: Ido Schimmel <idosch@idosch.org>
+To: SIMON BABY <simonkbaby@gmail.com>
+Cc: netdev@vger.kernel.org
+Subject: Re: query on EAPOL multicast packet with linux bridge interface
+Message-ID: <aAkMhl3klxYx-n2Q@shredder>
+References: <CAEFUPH1Erfh9YUctVDHxL8TWsiVfs+Fr8aJLtrjiKECbiGTxHQ@mail.gmail.com>
+ <aAjSCwwuRpI8GdB7@shredder>
+ <CAEFUPH0cU-5ZJ_qAevp1DENYrUkSO4zipUTg0vzLmgz16nPbbw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAEFUPH0cU-5ZJ_qAevp1DENYrUkSO4zipUTg0vzLmgz16nPbbw@mail.gmail.com>
 
-On Mon, 2025-04-07 at 15:53 +0300, Ivan Abramov wrote:
-> Currently, the return value of device_rename() is not acted upon.
->=20
-> To avoid an inconsistent state in case of failure, roll back the changes
-> made before the device_rename() call.
+(Please avoid top posting)
 
-This kind of seems complicated for something that ought to not happen
-...
+On Wed, Apr 23, 2025 at 06:26:40AM -0700, SIMON BABY wrote:
+> Thank you Ido.
+> 
+> Here is the details of my setup:
+> 
+> I have a microchip CPU connected to an 11 port marvell 88E6390 switch.
+> I am using the marvel  linux DSA driver  so that all the switch ports
+> (lan1, lan2, lan3 etc) are part of the linux kernel.
+> 
+> I am using hostapd as an authenticator.
+> 
+> An 802.1x client device is connected to port lan1 and binds this port
+> (lan1) to hostapd daemon, I can see EAPOL packets are being forwarded
+> to a radius server.
+> 
+> I have created a bridge with vlan filtering with below commands and
+> bind the bridge (br0) with hostapd daemon. Now EAPOL packets are not
+> forwarded.
 
-And also (+netdev), what do we do in case this is called from
-cfg80211_pernet_exit() - leak the whole network namespace because we
-couldn't allocate memory for the name? That seems counterproductive.
+Do you see the EAPOL packets when running tcpdump on 'lan1' and 'br0'?
+Does the result change if you pass '-p' to tcpdump?
 
-I'm really not convinced of this whole patchset.
+> 
+> ip link add name br0 type bridge vlan_filtering 1
+> ip link set dev lan1 master br0
+> ip link set dev lan2 master br0
+> bridge vlan add dev lan1 vid 10 pvid untagged
+> bridge vlan add dev lan2 vid 10 pvid untagged
+> ip link set dev br0 up
+> ip link set dev lan1 up
+> ip link set dev lan2 up
+> ip link add link br0 name br0.10 type vlan id 10
+> ip link set dev br0.10 up
+> ip addr add 192.168.2.1/24 dev br0.10
+> bridge vlan add vid 10 dev br0 self
+> 
+> bridge vlan show
+> port              vlan-id
+> lan1              10 PVID Egress Untagged
+> lan2              10 PVID Egress Untagged
+> br0                10
+> 
+> echo 8 > /sys/class/net/br0/bridge/group_fwd_mask
+> cat /sys/class/net/br0/bridge/group_fwd_mask
+> 0x8
+> 
+> root@sama7g5ek-tdy-sd:~# cat /etc/hostapd.conf
+> ##### hostapd configuration file ##############################################
+> # Empty lines and lines starting with # are ignored
+> 
+> # Example configuration file for wired authenticator. See hostapd.conf for
+> # more details.
+> interface=br0
 
-johannes
+I have zero experience with hostapd, but I assume it opens a packet
+socket on the specified interface to receive the EAPOL packets. When
+listening on 'br0' you should see the EAPOL packets with a VLAN tag
+which could be a problem for hostapd. When you told it to listen on
+'lan1' it received the EAPOL packets without a VLAN. I would try to
+specify 'br0.10' and see if it helps. hostapd should observe the packets
+without a VLAN tag in this case.
 
+> >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>passing br0 as interface to
+> hostapd.
+> driver=wired
+> 
+> 
+> 
+> Regards
+> Simon
