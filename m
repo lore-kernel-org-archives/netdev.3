@@ -1,130 +1,104 @@
-Received: from silver.cherry.relay.mailchannels.net (silver.cherry.relay.mailchannels.net [23.83.223.166])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1AE264602;
-	Wed, 23 Apr 2025 06:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.223.166
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745391501; cv=pass; b=l18hu/WHfafxYEQDwvA1o+NdUMjE/b/i//UzXBqWvLffu74yfjYaaDRU7tH61/AjoJBgnGpoPmmQzTZIDfGP8s6Lip+Kq+8xKiMQYYtSOoXJEZnL9AnXYMxKT7iBXuGHmQBkZ2dy5n8zDe9eufQqoxZG91pHGwY/pRaaSDqhT7w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745391501; c=relaxed/simple;
-	bh=9Pv/UqOlGAz6M6uYoscsoU17c6hsgoL6aNA1kJI82qs=;
-	h=From:To:Subject:In-Reply-To:References:Message-ID:MIME-Version:
-	 Content-Type:Date; b=pQE/Ta7rkcSJ16ciQgvaggtRHIg77T3jk5OE0+d8eg97hjcAV0rq4owQjYLjeVjeXfrQO2ThZV2GItSyZ+Il6vUGwozyJZz9qJ7sVDS6L727c4qKVUWZNxnqM1CBOC+YM/6SB2aVuIxNPYeaYrzlxmEh2lTbHgRRGi7SGwr3/70=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com; spf=pass smtp.mailfrom=arinc9.com; dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b=rRvB7UGL; arc=pass smtp.client-ip=23.83.223.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arinc9.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E32228F1;
+	Wed, 23 Apr 2025 07:12:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745392344; cv=none; b=cfHe9hutao6XIFqOFQUQIb9nUw709d55zoa9LZjtL98MNc5yJRKyDgZAZJ3CsWIMJ3hemiK9Hf+gpDIyTuEMUJlRCIsTUAw+Tg0crjLzVn01jIADQ1GVVlUjdDAC89OQNaL1tPcpp2QssMNLt2d7p85wQ15r/B121Ar5RISXAhE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745392344; c=relaxed/simple;
+	bh=jkrACJE2d+d8mv+ZcK+lLYOcnpIzrRL386CdU37AKoM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=siagvEn9k3VwSuTwLjkIJN34/DNEqXLcO6cnyuIQZH3l9l9EwYiAKJCpod4t8pN2W3h2Csljk8ltdBDKfoy+YBkUbDKPo9WoPs6zwDA7F3ZrW6Gg9BYRyPjKmiQEN4G12Bz/pexNUpQ6GBwCXpFN5b3vRe2Vx1EdKJLRq2XRqxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MpXO5NI0; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b="rRvB7UGL"
-X-Sender-Id: hostingeremail|x-authuser|chester.a.unal@arinc9.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 8F84B8439E0;
-	Wed, 23 Apr 2025 06:50:25 +0000 (UTC)
-Received: from fr-int-smtpout9.hostinger.io (trex-9.trex.outbound.svc.cluster.local [100.113.64.21])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 853AD8454F4;
-	Wed, 23 Apr 2025 06:50:22 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1745391025; a=rsa-sha256;
-	cv=none;
-	b=qb188cWjCtdZiVZpRIaoNuQW3H0UKtf7otGdFXrbvLzX9aoJPDUeTZU9aTZdydp2u7q/22
-	xGa2ZIUDQAcdI/TqYrrZmAvqHXPIpgBSgH4MZVyE+QjQsoBJ+DtOMS3KwxWymZMa3UDk/g
-	ukMnxM0q7kPB0Ibm5SLS8X7bHfgB5zLqB9shoMnOyrSkCP24iy6a6yr/I8HC/iw6ShT/Ex
-	U5+hlUxiA0CI5ojAWeC5O5hROuKHLpKs7BE/CBf96XgzJy9epJFwC3uE1ZXIqGhE2dQhRZ
-	flgctoRv7vvSxJUgvf+2c9oBb/TKSoN3hJyVIWtpEfaupoS+yO6lfXxYu0xy5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1745391025;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MpXO5NI0"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5CDFF43A36;
+	Wed, 23 Apr 2025 07:12:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1745392339;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9Pv/UqOlGAz6M6uYoscsoU17c6hsgoL6aNA1kJI82qs=;
-	b=axu470fjexr5bBgpmPZCQ2/FBnMxiy0wl7SLsnALI/P/egdVmRWUKd99dKA0WDabNZiyFx
-	r6sncISV6RL7ej5JUUv1O/vqLC1QGhX4emtL97N6ZMFeSrLtcMdLlEszq/8jjoXYpcBH+u
-	eXGflSWVo7WrbTeMcydps5giED9lvdwPlINjFU4MJvRbOVBR0vQO+ckn7hjfESpyDL7ysv
-	fRWA/ZwV4n07I5NfKZIO92egYRZkH/N7Cy/uzrYdi6wIe31BPoV5UQ4B/ug/hR13YM8eQK
-	bxBjPQtXfyRbUVyRyfdrOZKGm/g216jKAl4JmjQLIsvZhLtjXoFl5MjIfs0wBQ==
-ARC-Authentication-Results: i=1;
-	rspamd-5cfcf5665-kj6cg;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=chester.a.unal@arinc9.com
-X-Sender-Id: hostingeremail|x-authuser|chester.a.unal@arinc9.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|chester.a.unal@arinc9.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Madly-Rock: 5ce5863d4316f6a1_1745391025410_3471300557
-X-MC-Loop-Signature: 1745391025409:59469947
-X-MC-Ingress-Time: 1745391025409
-Received: from fr-int-smtpout9.hostinger.io (fr-int-smtpout9.hostinger.io
- [89.116.146.43])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.113.64.21 (trex/7.0.3);
-	Wed, 23 Apr 2025 06:50:25 +0000
-Received: from [127.0.0.1] (unknown [82.165.193.131])
-	(Authenticated sender: chester.a.unal@arinc9.com)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4Zj8qv5Zy7zH9gKF;
-	Wed, 23 Apr 2025 06:50:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arinc9.com;
-	s=hostingermail-a; t=1745391020;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9Pv/UqOlGAz6M6uYoscsoU17c6hsgoL6aNA1kJI82qs=;
-	b=rRvB7UGLlhnr2BbHcKSDyclrFwluPsInB4qipbV+vlBsPug9CFdnHftTOskq2E/dCz2xUp
-	AcLog4x5bbhEaidnEpJdHReYT5zNwyBRIQbAwZnC1VYkjQUSPC136hBUFskj0dKs4Us7gx
-	ozVSucH4wd/TpmTrkeu6wM0CDc9oi5P2nsNy1xxxv8VN4kz5pb83jTx5ohx1sI2tNDpvQX
-	FyRIWOa8FOKrneq42GIaa735xlx05dCACwg72o0LfCXWYtmOCYEZ+qCltD14Mvt9T3k0cq
-	P9A1Y3GxWaeFOQdQ0WU7vNeGo9Ts62fghjqPtPWJxJmR/BhPzCguHzPo31M6lQ==
-From: "Chester A. Unal" <chester.a.unal@arinc9.com>
-To: Daniel Golle <daniel@makrotopia.org>, DENG Qingfang <dqfext@gmail.com>,
- Neal Yen <neal.yen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net=5D_net=3A_dsa=3A_mt7530=3A_sync_dr?=
- =?US-ASCII?Q?iver-specific_behavior_of_MT7531_variants?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <89ed7ec6d4fa0395ac53ad2809742bb1ce61ed12.1745290867.git.daniel@makrotopia.org>
-References: <89ed7ec6d4fa0395ac53ad2809742bb1ce61ed12.1745290867.git.daniel@makrotopia.org>
-Message-ID: <F9390C07-3C4F-47FD-A89F-FB5A90D38A84@arinc9.com>
+	bh=zkjBpj7wvMxsVfxHzks1lri0zffcvGGh+bHSb8/6KeA=;
+	b=MpXO5NI0S0uqAIOfOq71TlNJIo/ygPFDHO68GFpxyoc+MkBSWP1roW4BBVRB5QMozRNtUA
+	tNC14wqLbfYp9xTUPJuOjj+D66+tRFwKDk1K1rBDmrWThhWIYIU+ZMauyR2tMOIgbDGlkr
+	kJaq+33VxEAiW+KUdP8ofRE/TGBs3oO7rWkdVbGyo+/q8ECIZMVjdgHz/+sJiAitHXY87u
+	+ZQnwDRwDTb53AiplHwtX4Sva+gEWY4ZGZ+Tj1FDmJTfheYZcu1SURL5rASsw0e1SaHM3W
+	82mjxbVNmpNKEFQGzBhFlVmqioeSuevcwPp5u5YL4BsF5xQVudZeBSk9kke/Pw==
+From: Alexis Lothore <alexis.lothore@bootlin.com>
+Date: Wed, 23 Apr 2025 09:12:09 +0200
+Subject: [PATCH net v2 1/2] net: stmmac: fix dwmac1000 ptp timestamp status
+ offset
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 23 Apr 2025 06:50:19 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=Vv1xAP2n c=0 sm=1 tr=0 ts=68088dac p=VT4XjZGOAAAA:8 a=TIbRxBwJK3FFcHPSi+5Ynw==:117 a=TIbRxBwJK3FFcHPSi+5Ynw==:17 a=IkcTkHD0fZMA:10 a=puQWGBksFvoA:10 a=mpaa-ttXAAAA:8
-X-CM-Envelope: MS4xfF7jBa0YSLhlk6TV6ePe0WqoEsEHXS/cCyxaL7CiN4ZJkDGyZ+GqpqGiK5D+idyg+8D8/oDxxYUsTDDfLVfPAJS+bN6nhtEqFUDRvS7JSJujUR6lyArD umz16IOW50tygTML3dnxJ/Ax9NSrfrkKHctd+ZAXuDTP6A+pbEamzCG8T7CJxcIW2QfGEdWvL9FIkMfJSkzpbHmf4W5kcxkqMr12YPKtnSnFUZrzYtrNRGK1 X8cbF+cP/MOjv0UfEDkG9c5yuU1qIJluG86fbzi9kZ6GfO0McKSWn8FSWNwgYw2ziPbaDJmzHIFf0UVaQzJ8ADXCKBk9tPCCWIFbSW+2ui6M3qfgzZrBVfDq xMoH6IQHrW5wt8uT8dakwQ7OhBTXGB8LP2DK43Fo5DKcT/IimXk16yutnIQ6Vry5FxKsU1AzNjXZWwRoEpxEsvuK6MhTVrT7l9C60DUwrbyu7qSAhaeGooQi X3w11FSs70oyJHslOoksrjK0AR2BptQDW5j+LrWsU+jg9NivyRf21mIroMbMQ+NV+VdKmHdKt+kIKbgseAYtZlsLaVm8u2KQBtsfblT74ZT+sCLXehykNvpK JceIUJKaPv0SGPjKQbsHQS7TktJrHIK22G+QOng0ZCWYiZ2hiJkuj0ho/h5vOzWt2L+fl9+UZ3RuD8e1mcLBgOdu+XnoQaLl+aehny0T/1WsKyb+OtZ1Fwor EwWeHCjocX5uSJ352MjgzzdoNkd1IOez
-X-AuthUser: chester.a.unal@arinc9.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250423-stmmac_ts-v2-1-e2cf2bbd61b1@bootlin.com>
+References: <20250423-stmmac_ts-v2-0-e2cf2bbd61b1@bootlin.com>
+In-Reply-To: <20250423-stmmac_ts-v2-0-e2cf2bbd61b1@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Daniel Machon <daniel.machon@microchip.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ "Russell King (Oracle)" <linux@armlinux.org.uk>, 
+ =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+X-Mailer: b4 0.14.2
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeehleeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthekredtredtjeenucfhrhhomheptehlvgigihhsucfnohhthhhorhgvuceorghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefhheefudfhgeegtdekvdeujedugefhhffhfedtgfetffevveekfeelveejfffhjeenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvudgnpdhmrghilhhfrhhomheprghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedujedprhgtphhtthhopehmtghoqhhuvghlihhnrdhsthhmfedvsehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggrnhhivghlrdhmrggthhhonhesmhhitghrohgthhhiphdrtghomhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtoheprghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmpdhrtghpthhtoheplhhinhhug
+ iesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrghnughrvgdrthhorhhguhgvsehfohhsshdrshhtrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-On 22 April 2025 06:10:20 GMT+03:00, Daniel Golle <daniel@makrotopia=2Eorg>=
- wrote:
->MT7531 standalone and MMIO variants found in MT7988 and EN7581 share
->most basic properties=2E Despite that, assisted_learning_on_cpu_port and
->mtu_enforcement_ingress were only applied for MT7531 but not for MT7988
->or EN7581, causing the expected issues on MMIO devices=2E
->
->Apply both settings equally also for MT7988 and EN7581 by moving both
->assignments form mt7531_setup() to mt7531_setup_common()=2E
->
->This fixes unwanted flooding of packets due to unknown unicast
->during DA lookup, as well as issues with heterogenous MTU settings=2E
->
->Fixes: 7f54cc9772ce ("net: dsa: mt7530: split-off common parts from mt753=
-1_setup")
->Signed-off-by: Daniel Golle <daniel@makrotopia=2Eorg>
->---
->See also https://git01=2Emediatek=2Ecom/plugins/gitiles/openwrt/feeds/mtk=
--openwrt-feeds/+/b4204fb062d60ac57791c90a11d05cf75269dcbd
+When a PTP interrupt occurs, the driver accesses the wrong offset to
+learn about the number of available snapshots in the FIFO for dwmac1000:
+it should be accessing bits 29..25, while it is currently reading bits
+19..16 (those are bits about the auxiliary triggers which have generated
+the timestamps). As a consequence, it does not compute correctly the
+number of available snapshots, and so possibly do not generate the
+corresponding clock events if the bogus value ends up being 0.
 
-Reviewed-by: Chester A=2E Unal <chester=2Ea=2Eunal@arinc9=2Ecom>
+Fix clock events generation by reading the correct bits in the timestamp
+register for dwmac1000.
 
-Chester A=2E
+Fixes: 477c3e1f6363 ("net: stmmac: Introduce dwmac1000 timestamping operations")
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac1000.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac1000.h b/drivers/net/ethernet/stmicro/stmmac/dwmac1000.h
+index 967a16212faf008bc7b5e43031e2d85800c5c467..0c011a47d5a3e98280a98d25b8ef3614684ae78c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac1000.h
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac1000.h
+@@ -320,8 +320,8 @@ enum rtc_control {
+ 
+ /* PTP and timestamping registers */
+ 
+-#define GMAC3_X_ATSNS       GENMASK(19, 16)
+-#define GMAC3_X_ATSNS_SHIFT 16
++#define GMAC3_X_ATSNS       GENMASK(29, 25)
++#define GMAC3_X_ATSNS_SHIFT 25
+ 
+ #define GMAC_PTP_TCR_ATSFC	BIT(24)
+ #define GMAC_PTP_TCR_ATSEN0	BIT(25)
+
+-- 
+2.49.0
+
