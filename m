@@ -1,501 +1,242 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2042.outbound.protection.outlook.com [40.107.223.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2F8262FF2
-	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 09:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745401989; cv=none; b=d2P99JhJ+ZwXPg651sRXyqxnd2Z3zzmZJU+lSeAYJCvpeTkJk2OgBgwxEUrSBEUM2e4ihLPNQRFNak2UY0A5OSI2Bq8vV3TUKHTTJZ87156VYgsIauNMSunolawgUdi77zWO2Ul3uEUAUsFsb21w2jqHqiCQwV5pBxsxzbYY25k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745401989; c=relaxed/simple;
-	bh=U5yXw26sa3szgBEB4LzfURQCw32HcHb31OM/JpInzAQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kmtfj1j2FNOpV+jadiWYqqn6I8SEXTWYbmsSxMBg0wHoXubCzXPWk8spb8O5OcLiuTl8Sq4ITSYiXConCSTFmDhGM2lC4kbQSgo0f3v/gz/tAJnIHs+RpvQfIX9Dw0e84h4zujkB7Pzp8Q+j1WScxoVTVhhLJgo4Mypv6CMXKzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I/4rlgCh; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3345A2701A7
+	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 10:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745402431; cv=fail; b=RCPxl3T04lSEJwzMEODE/M0ACLhSe57aOUBmhS8eOGLfza8bLuvNXCOq0/uaTS5lgv6etKpftsW7Ir1UsTqWLR+El0kmSw6o2logN+OHafOFsQ2GNlyz4uonl9e/8JnMC8M350Q8ixC0gQDS+Knv/QnyXGviFKiC7HHk9JJBH8s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745402431; c=relaxed/simple;
+	bh=p1Beh2jCBFURjQProu199L0IZrYIldXT/OZqado2EEw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=NO9Q7zfKOcQIxeHeQBDIaVVP0BxOZX+hKvU/vTOFUrUc5dokBm8indPzs3KNmJ2kPeKFqnB8hZM9pL6zZ8xi91qe2DBC80+oRyTGSlh1MldtIEFtHUJGGiZyxAbvaa4KlHJpMDww5fc8iSol8qMLChXmFZqUS6ZMqXb49cMB3Xw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mSDPzUkZ; arc=fail smtp.client-ip=40.107.223.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I/4rlgCh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745401986;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dj2sAoXNr+Ixy1q2pKFX2yBLtrU4B8tUlBpM53gKSfA=;
-	b=I/4rlgChzi1AbXEX6dD31bPCB20VP0UJn5FxcyTgYwXrfNe9jUkyqBpwtrvqIJ1ybQHYeK
-	moV+sHMI/lfKmsshQ30usuRznviZcD1xV2IN+IPjc4CucMVktrjea0O9GFVQpFUeuWz3do
-	FJcctMs3gHEwsNOhO541zTdJ4F/4Nto=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-65-k6zl9hWROfaDxOA_TM0oZg-1; Wed, 23 Apr 2025 05:53:05 -0400
-X-MC-Unique: k6zl9hWROfaDxOA_TM0oZg-1
-X-Mimecast-MFC-AGG-ID: k6zl9hWROfaDxOA_TM0oZg_1745401984
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6e90b13f5c3so141046056d6.0
-        for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 02:53:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745401984; x=1746006784;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dj2sAoXNr+Ixy1q2pKFX2yBLtrU4B8tUlBpM53gKSfA=;
-        b=LQGMKTTcUgCEnszjCTKWocuK1dcIs0HhGjewG0LY606TrXRhgN24JqnQT2N6598PHN
-         MbUQ00qIrpS1mtQNz83QTEcJDK/TOMKlW9Hp0sRGshFyHzME9RXv5OlKNosY5QsSrQPK
-         VvnUTypm6Jd9GSUCn29IA7qxcfKu0xr7JmRBmWIMiLelyC7BA9uBNNoTSjKfDHHw0jgk
-         UkMg3JKp5LfR63VJw+QS5apc2RmcQCd20yescvILrG5hvewQpDoCnkI9JQxniJNlo/PS
-         xldtcw/A8/PpZbhWYlhW8k/tN9h8CymsH4bKaQBMzEFQAZTwnC9LlHYno9EZYo5Fno9G
-         Ej6w==
-X-Forwarded-Encrypted: i=1; AJvYcCWNMjtt9XAEQHTtbRO02cD09PBsMJ/BHtmPK4DfSE7QtRs5Eel0f9OiSt3/RTm0nDKDH6P55Eg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEITAfKHfJH1bbXMkyhX7T4Gv4c0vsu2QVKurviVHjghlP5pYG
-	PFAj620gwgsuYgzMrhCC1j/qCBGvfs/1pVcXsxE+eyuOd35tgoeIGTg5ncglekq3GquQ/QwGv3v
-	fzWVDfuRitPcHSlsHAnU32k149cGs7fhvxiyANVvE+C6sHLY4dTC00a6C5QbS3g==
-X-Gm-Gg: ASbGncv8N7Khnt0mdzRHaJxv0Y0+wOI1BRadgzjYVsQeRaZZxQQhDuv4P/y93Lftb4F
-	Lpht5TMEBGgP0gn091sPxi+fgGexeaCEUgC6ygguSZEixS9OlVOZVP5H5NbbJZ6SCovPCMgaNOG
-	LcNbk5hrVMser5Zf9iJe5ApGIyN5ODRFYkf92Uo1Rqyzh6hJpMnOalC5vKVm8BZus1n3w9ovBZo
-	KBUjlgCkGYQer7dKatV8ls7XvhvTyJECs/ed1m9tPs85HddC8Hvi3iE+jNkU+yA+Pgnk1ggnMP5
-	Q3J6iVNYwiEqNcA/IA==
-X-Received: by 2002:a05:6214:29cd:b0:6e8:9e9c:d20f with SMTP id 6a1803df08f44-6f2c4576b1amr350122606d6.21.1745401983905;
-        Wed, 23 Apr 2025 02:53:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEmgp2JwRrNMK/q74s595Od7UgPj2YU5GS4W3JOW29wbPRRb1P3CCPoBNzovYyqRKwPt+8evQ==
-X-Received: by 2002:a05:6214:29cd:b0:6e8:9e9c:d20f with SMTP id 6a1803df08f44-6f2c4576b1amr350122286d6.21.1745401983459;
-        Wed, 23 Apr 2025 02:53:03 -0700 (PDT)
-Received: from sgarzare-redhat ([193.207.217.181])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2af1c27sm68897826d6.2.2025.04.23.02.53.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 02:53:02 -0700 (PDT)
-Date: Wed, 23 Apr 2025 11:52:52 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	kvm@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v2] selftests/vsock: add initial vmtest.sh for
- vsock
-Message-ID: <lgqapvbfvfzkbe3xzuytba4zct7zryomgqfnc4k7ejhxxzanyj@n7i5jawceipr>
-References: <20250417-vsock-vmtest-v2-1-3901a27331e8@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mSDPzUkZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Tvy3yuqlLohXIlVB9Fok9pXSSCi+0qTedlJR1ao6gz+2Lo8kokYvz2fF1lB9Xmu9myOpBSOuD8a3Oc5YZtnwaYDsNQzoKMC88IxKZB1UOeYOdBRFjtTQoNJoNvr/xOGe7i2feL6EnXg95xeLko7lqMhjpgwXe0R7LpEaqgDrZn6dGat4XtDFAiyJ/NO0zQtEWjJqlV0zavIXvwQNG5npsRH8JvomhPvsdWjBeTtrSrUM79YjJ+zr5MR2phM6x6rxrqvtcx3rjNBUJ2svGyvdeuNwZoT+oiKNlnhPJtp5iIe+fISKHU9P2G3X4ExMiNCDwKe072TAMaTgN7u4/+tIDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=C2bskSi/friMDg470hm+eCNZ0Gb83EDhOlwu3SKwuTA=;
+ b=QpU0ZYUuvWh6f9ZDwBxoG0KFuqXmkfS9yBhOSJsgEgccqqZYbF6ZUKfPSfr6IBR08GbBBXvcjwyx5EIRx20Ybx/rf23JR/dBrZqTviyhk6PnPXSy+DkRJu7VCJCwNjd4aaKoCg1CM+gJjqt29mdJYrQGlWmmB3lLrZ4HQ+owEMVJotP3WoOQ0Iuiuw/QPCooQT4jhTLE3IBHZsvx9sOqZohvDRRZ+jYVaSDQHZMPHpIL+vjlBx92ZlsnbCPTicTGWvN6wW6pkYJdvHOjtiHwOx5yMT28tm4jvUEvVztaIdrn5SY4ai1bsaKIOsJtz3Sq4spYAgR6fqJojXCel1/JVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=C2bskSi/friMDg470hm+eCNZ0Gb83EDhOlwu3SKwuTA=;
+ b=mSDPzUkZwezhgCUBXP4qH1WosxIgMd/9nMDtEBbfHiN8XHMMFclGYr/ls1UAqHMMtCHWDo9i9L6jp8RNGUlKLe3rAdrDFA8g74bwprWwFIVGEETlSKxbgr/o5IxIIm/zwJkbBVVkYg979BqFtnWypx8emJqwxIdQekDoaizIZ9o8AEfV1nmvBD/pvwP5Iy2GTYErw/+M3H5l0Lh+NiYaW/+GfKqL7iBVbrqJxy5gf/xUmdFD5R0L7FgFVASU+bvPAmTm4jDaQPsO6srovSzl95MSol7aInKWQ3lXmb8uz2tfY8IxC9TeerO0YHSSpSdHCeF+TabqD39/U6X5ohT5Kg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from IA1PR12MB9031.namprd12.prod.outlook.com (2603:10b6:208:3f9::19)
+ by DM4PR12MB6206.namprd12.prod.outlook.com (2603:10b6:8:a7::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8655.38; Wed, 23 Apr 2025 10:00:26 +0000
+Received: from IA1PR12MB9031.namprd12.prod.outlook.com
+ ([fe80::1fb7:5076:77b5:559c]) by IA1PR12MB9031.namprd12.prod.outlook.com
+ ([fe80::1fb7:5076:77b5:559c%5]) with mapi id 15.20.8655.033; Wed, 23 Apr 2025
+ 10:00:25 +0000
+Date: Wed, 23 Apr 2025 10:00:01 +0000
+From: Dragos Tatulea <dtatulea@nvidia.com>
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com, 
+	andrew+netdev@lunn.ch, horms@kernel.org, donald.hunter@gmail.com, sdf@fomichev.me, 
+	almasrymina@google.com, dw@davidwei.uk, asml.silence@gmail.com, ap420073@gmail.com, 
+	jdamato@fastly.com, michael.chan@broadcom.com
+Subject: Re: [RFC net-next 19/22] eth: bnxt: use queue op config validate
+Message-ID: <a5uokb5qgp5atz2cakap2idwhepu5uxkmhj43guf5t3abhyu4n@7xaxugulyng2>
+References: <20250421222827.283737-1-kuba@kernel.org>
+ <20250421222827.283737-20-kuba@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250421222827.283737-20-kuba@kernel.org>
+X-ClientProxiedBy: TL0P290CA0002.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:5::10) To IA1PR12MB9031.namprd12.prod.outlook.com
+ (2603:10b6:208:3f9::19)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250417-vsock-vmtest-v2-1-3901a27331e8@gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR12MB9031:EE_|DM4PR12MB6206:EE_
+X-MS-Office365-Filtering-Correlation-Id: 94813ddf-5037-42a8-1ab5-08dd824dab5f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?o/ho37P6CkmoUfHAEEwFJaFrkZ8Y43qrVrsOSExvSyaOqbKxYeUGkPlZdFDf?=
+ =?us-ascii?Q?TCn5wtRKCmtSjeeGe2M7ekP0R/DYIYr8TRQy+IE9ZIWDJ0dhbPl9JjivJjIL?=
+ =?us-ascii?Q?PsfrSSabBAj7iHE+IXVGP3kLtrS6tOK+Q4vhWU1DdDfoiEZQrly5PHrVjW2w?=
+ =?us-ascii?Q?UEgka6hB3qp6cIzc2hnME05+V4i2jdCjTYoOJ7uQRqyL/CBl6NBu507M0Wx/?=
+ =?us-ascii?Q?FQcJAsuIFrMk1NKuT+7AlyOhzqg1Zime4R/1r8VTI8fQZHLI/zwlxPWlV0VF?=
+ =?us-ascii?Q?Cip2IxwKPiAI4E5R1m6lxX9gjC8tOQb2Q1MraWZj904etGYST3n9/C9HAlgI?=
+ =?us-ascii?Q?QlRivWYzflFBFJwcReZu4iyfGqubetM1XyCCdA5TsUnxBWIjnQ+gAZZSZ2Um?=
+ =?us-ascii?Q?Dtjve99AVQVedCLbFhApDEIDDClJ3mikXR6lChnVbpsIiO4hWwijnQ8vxoSR?=
+ =?us-ascii?Q?gvAJTdqRWWAJTEOeuuKAULXPLbezXqdaCv7NbyuybsV6q9xXdZfQnXueF8o8?=
+ =?us-ascii?Q?4gQUi0BryTRNWxIsnBp79tkW/e9Ghjy0lFAIfaz+hZqeZx+8kwSHlubsse4b?=
+ =?us-ascii?Q?NB0WoVrJ2UrTsjYtLkYBKvd3InQ7WW5QuSPHxF8Zy4CYmS0vnEEBCku5BG21?=
+ =?us-ascii?Q?EflV1mMXSrjrwgkjll0/T6PnnXqwbdz+FPSzFO0duKbNG5CzzVRgrqha/Asm?=
+ =?us-ascii?Q?v38xUpO/JwAp7DyintndZso5tzimgal3w4MC5kMZdDykUHPV/i6DLJASwUVV?=
+ =?us-ascii?Q?8/WIjQaF5yFQoAAuaWlcgycY1E2MrZ2xub/6cTKRJ/xjjtb+AxQ93mxPIDWK?=
+ =?us-ascii?Q?IGYAcrx5I/NLr2VIoTYT5tK4IMlJkezKDAroGirli14cTAUcPxY4Ugb+zcrO?=
+ =?us-ascii?Q?58nyPtYAz4LeqiCDu21ZRDZiyvlXp4Myddb4kMxjOpqBf8kFWCjchBw4RWR3?=
+ =?us-ascii?Q?XTnno/vgWalX4yCpOKpDOKSVsYxvX7XFiAv6EQIFdQRSIr6EVADo/RYPSKJ/?=
+ =?us-ascii?Q?X0HOVQ7JZbGzpFRDWe9IFXCF493brTVUmF7CNrdGszcIS8Nc36ZZL6JXdaHM?=
+ =?us-ascii?Q?s5p3RhmuB37u+6FqHrll1msQDl0jCk0shsJ+Im6TDh3EAZgKdDHmO5Fsozbr?=
+ =?us-ascii?Q?myHyy1N1WOXGEqtXpnpqS+IW1RVexnKzFCqwaWPyWkm3K4Px7AqUH122kAFb?=
+ =?us-ascii?Q?PdpKi1eq7Aub1Tz5V1IAlndRhZ8Z0z3/Mp3m0jQ2gEPHG2IsxeULSqJ/YuLS?=
+ =?us-ascii?Q?urlaOyRqbJMYUQDemDaWD7GTyr9F3ZNExXJcS5PWGC8YdCPHGfHx3xaWgyHo?=
+ =?us-ascii?Q?Ngg5RTt9PyEee1Obb++6GxUq/S7PHO1Ti9ugLAbrXxBr+cuN9t9bP9XvlYNN?=
+ =?us-ascii?Q?pooxC9TMH4zTCUtB0qrMKQOQY2tuv6NvKpdmPEekC+ZYEL18tKpoGUdSZGqY?=
+ =?us-ascii?Q?gzjFQkEYmWs=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB9031.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?g2ATbPx8McPphDAWBVZrc87VhilrxhCwqtLullKQd3yyNuLgPZ689GmhnwPh?=
+ =?us-ascii?Q?E0W5wHWZsCwCUE57kKEDCMRQfZubhxxXysWFalnCEvTa/CYDe4CaS5wnI21h?=
+ =?us-ascii?Q?N4qb5ncihXwwcYPgO7MaHEvvr7uS+tXdNbMEu90x6brwF+D40FBDCB09PmZl?=
+ =?us-ascii?Q?cvVy5XVCQtXvDfs7lBNfrLcPTpBpdoqe0OL5OxJGwldcXnvKRvv5E5Rz0e1D?=
+ =?us-ascii?Q?I8t12BzwiBC4NMM28r+QS1z3/R3nA7XkucICtoMznyI5qaRVPMoG2xM0QQoi?=
+ =?us-ascii?Q?WWKzIb5y4mQ9P7UtHoqwsxM/wLNcTUJSRbbyerQV58uTykS5MzyxEzlBwHEF?=
+ =?us-ascii?Q?o4FqWN7dw9ydcDj3G8OeOdIb+64PtglDktV9Soc95mJiye4FJV6Q2o2HauCZ?=
+ =?us-ascii?Q?UhtmABB6cNg6rpS+ehtgKyQaEJ8D4SSxJM9hilwFW41LzHN6ZPBHKcAI4ZlU?=
+ =?us-ascii?Q?Up7ysP2QaWrbXSCekJMQcAqjCI45BE9C0aUlelpV1uiXvJBGcOi7VXx/kurP?=
+ =?us-ascii?Q?VHWhoyM+10GNbAH98xCMGxSk2Lw4576U2x2ppTL/i0AmCrJ+uJlxhKPvMWGk?=
+ =?us-ascii?Q?0Ls6zG4IeMvLFnNTds4Ku74sDyCWhCDO9t6Rc7Zn+uphC2pYeQRqCenDtCPW?=
+ =?us-ascii?Q?QT5rpJfnJJYiBH6jVbL3j8lZARNsqbDEyRVPIRLAVQrqjwc6aYgCkDplAAI6?=
+ =?us-ascii?Q?dR1dt7HAeTw/C2o7bdmoJz7uxfrL4lJK4moDckC1eEZWbYqQz38N/YW9XQm5?=
+ =?us-ascii?Q?gSvDKp2Lu9n1daGKweoVz28bvlPFnHJY+1LQQY/fBKG02M8w+1/tlsH8qlne?=
+ =?us-ascii?Q?c0K8PZLur8RZl8485UGCrf1UP6ifLcMAGcs7/bpHlcHNRC5ngYTZalQzEwBy?=
+ =?us-ascii?Q?o1Zfv3BNZUzE2eDVtD25wzUWYKUbW2vlG43Bhkq3wEmF7hcBtdagp7+NrZUD?=
+ =?us-ascii?Q?p8Qg1y4Fz0FqBq/ZhE779QFPpw8PFVzwiKwYv5jimKiDbZfbpRMtGoJGx8FY?=
+ =?us-ascii?Q?L/G+FcnnvJFCt+f/hq8evlVI6RLTmmvUvoYC2Dxa8/8g3EkuAG3UsMXcagXT?=
+ =?us-ascii?Q?ufiJMqf78W2913II3I/3xX33mDBjJ8mRJll84OZQohVMd7nBvkhRmnI1m9MJ?=
+ =?us-ascii?Q?9qK8HZCjAG6K9UhsXtWzj/YQCjMm563a1Sd9b1ZFA6EqcrSswzob2cQRrS3s?=
+ =?us-ascii?Q?npG2xkKVO1eD73Ski4EaPMYwQSCz81ACtU0Y2NFMxrxEFrY6L0MT/E8Yxabw?=
+ =?us-ascii?Q?PGCcfAS3H90yQBTdq8lsKm1QkopExS7NXkiYY4rv3TtKgxYac1KuqPBwx/LY?=
+ =?us-ascii?Q?CQGdik+qcS/MltHpStPliRPv6m/hhv56W2yHbwZ6eikLRDa0wonwxXaei+9a?=
+ =?us-ascii?Q?nIdnO1AlfOsNAMBYRnGbKq42ls49bywpRzQ4gdBs3H6jmvWE/1u9lr/qudK2?=
+ =?us-ascii?Q?w4TwA9qG+ddvDN3Ce5zUSnYkAhiTVqUQrs8nGUb/hxvUpKQl2Ot0388Fa6va?=
+ =?us-ascii?Q?ArzjqRWM0Jucx6yJOkp0tbG2qjiMV8visw4Wz36sihTU2nY0RoYvInPmbXJ/?=
+ =?us-ascii?Q?hGd9uw147XSVKB4/VcSvPSpzxrwpWsTdBJveNBnw?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 94813ddf-5037-42a8-1ab5-08dd824dab5f
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB9031.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2025 10:00:25.8873
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9oeVqhO5tHtMomwrNAY1YT+5PWTILZV6DCzB6ljpm0fCp+cuWOrH4KXK25EKU7lWQTCkYdeMJiayQFSHA/azwg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6206
 
-Hi Bobby,
-I had couple of more comments below:
+On Mon, Apr 21, 2025 at 03:28:24PM -0700, Jakub Kicinski wrote:
+> Move the rx-buf-len config validation to the queue ops.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 40 +++++++++++++++++++
+>  .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 12 ------
+>  2 files changed, 40 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> index 43497b335329..a772ffaf3e5b 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> @@ -16052,8 +16052,46 @@ static int bnxt_queue_stop(struct net_device *dev, void *qmem, int idx)
+>  	return 0;
+>  }
+>  
+> +static int
+> +bnxt_queue_cfg_validate(struct net_device *dev, int idx,
+> +			struct netdev_queue_config *qcfg,
+> +			struct netlink_ext_ack *extack)
+> +{
+> +	struct bnxt *bp = netdev_priv(dev);
+> +
+> +	/* Older chips need MSS calc so rx_buf_len is not supported,
+> +	 * but we don't set queue ops for them so we should never get here.
+> +	 */
+> +	if (qcfg->rx_buf_len != bp->rx_page_size &&
+> +	    !(bp->flags & BNXT_FLAG_CHIP_P5_PLUS)) {
+> +		NL_SET_ERR_MSG_MOD(extack, "changing rx-buf-len not supported");
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (!is_power_of_2(qcfg->rx_buf_len)) {
+> +		NL_SET_ERR_MSG_MOD(extack, "rx-buf-len is not power of 2");
+> +		return -ERANGE;
+> +	}
+> +	if (qcfg->rx_buf_len < BNXT_RX_PAGE_SIZE ||
+> +	    qcfg->rx_buf_len > BNXT_MAX_RX_PAGE_SIZE) {
+> +		NL_SET_ERR_MSG_MOD(extack, "rx-buf-len out of range");
+> +		return -ERANGE;
+> +	}
+> +	return 0;
+> +}
+> +
+HDS off and rx_buf_len > 4K seems to be accepted. Is this inteded?
 
-On Thu, Apr 17, 2025 at 10:05:53PM -0700, Bobby Eshleman wrote:
->This commit introduces a new vmtest.sh runner for vsock.
->
->It uses virtme-ng/qemu to run tests in a VM. The tests validate G2H,
->H2G, and loopback. The testing tools from tools/testing/vsock/ are
->reused. Currently, only vsock_test is used.
->
->VMCI and hyperv support is automatically built, though not used.
->
->Only tested on x86.
->
->To run:
->
->  $ tools/testing/selftests/vsock/vmtest.sh
->
->Future work can include vsock_diag_test.
->
->Signed-off-by: Bobby Eshleman <bobbyeshleman@gmail.com>
->---
->Changes in v2:
->- add kernel oops and warnings checker
->- change testname variable to use FUNCNAME
->- fix spacing in test_vm_server_host_client
->- add -s skip build option to vmtest.sh
->- add test_vm_loopback
->- pass port to vm_wait_for_listener
->- fix indentation in vmtest.sh
->- add vmci and hyperv to config
->- changed whitespace from tabs to spaces in help string
->- Link to v1: https://lore.kernel.org/r/20250410-vsock-vmtest-v1-1-f35a81dab98c@gmail.com
->---
-> MAINTAINERS                                |   1 +
-> tools/testing/selftests/vsock/.gitignore   |   1 +
-> tools/testing/selftests/vsock/config.vsock |  10 +
-> tools/testing/selftests/vsock/vmtest.sh    | 306 +++++++++++++++++++++++++++++
-> 4 files changed, 318 insertions(+)
->
->diff --git a/MAINTAINERS b/MAINTAINERS
->index c3fce441672349f7850c57d788bc1a29b203fba5..f214cf7c4fb59ec67885ee6c81daa44e17c80f5f 100644
->--- a/MAINTAINERS
->+++ b/MAINTAINERS
->@@ -25323,6 +25323,7 @@ F:	include/uapi/linux/vm_sockets.h
-> F:	include/uapi/linux/vm_sockets_diag.h
-> F:	include/uapi/linux/vsockmon.h
-> F:	net/vmw_vsock/
->+F:	tools/testing/selftests/vsock/
-> F:	tools/testing/vsock/
->
-> VMALLOC
->diff --git a/tools/testing/selftests/vsock/.gitignore b/tools/testing/selftests/vsock/.gitignore
->new file mode 100644
->index 0000000000000000000000000000000000000000..1950aa8ac68c0831c12c1aaa429da45bbe41e60f
->--- /dev/null
->+++ b/tools/testing/selftests/vsock/.gitignore
->@@ -0,0 +1 @@
->+vsock_selftests.log
->diff --git a/tools/testing/selftests/vsock/config.vsock b/tools/testing/selftests/vsock/config.vsock
->new file mode 100644
->index 0000000000000000000000000000000000000000..9e0fb2270e6a2fc0beb5f0d9f0bc37158d0a9d23
->--- /dev/null
->+++ b/tools/testing/selftests/vsock/config.vsock
->@@ -0,0 +1,10 @@
->+CONFIG_VSOCKETS=y
->+CONFIG_VSOCKETS_DIAG=y
->+CONFIG_VSOCKETS_LOOPBACK=y
->+CONFIG_VMWARE_VMCI_VSOCKETS=y
->+CONFIG_VIRTIO_VSOCKETS=y
->+CONFIG_VIRTIO_VSOCKETS_COMMON=y
->+CONFIG_HYPERV_VSOCKETS=y
->+CONFIG_VMWARE_VMCI=y
->+CONFIG_VHOST_VSOCK=y
->+CONFIG_HYPERV=y
->diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
->new file mode 100755
->index 0000000000000000000000000000000000000000..61dfcc06223fa7a30cb575cb3f2d01121b3ed3ce
->--- /dev/null
->+++ b/tools/testing/selftests/vsock/vmtest.sh
->@@ -0,0 +1,306 @@
->+#!/bin/bash
->+# SPDX-License-Identifier: GPL-2.0
->+#
->+# Copyright (c) 2025 Meta Platforms, Inc. and affiliates
->+#
->+# Dependencies:
->+#		* virtme-ng
->+#		* busybox-static (used by virtme-ng)
->+#		* qemu	(used by virtme-ng)
->+
->+SCRIPT_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
->+KERNEL_CHECKOUT=$(realpath ${SCRIPT_DIR}/../../../..)
->+PLATFORM=${PLATFORM:-$(uname -m)}
->+
->+if [[ -z "${QEMU:-}" ]]; then
->+	QEMU=$(which qemu-system-${PLATFORM})
->+fi
->+
->+SKIP_BUILD=0
->+
->+VSOCK_TEST=${KERNEL_CHECKOUT}/tools/testing/vsock/vsock_test
->+
->+TEST_GUEST_PORT=51000
->+TEST_HOST_PORT=50000
->+TEST_HOST_PORT_LISTENER=50001
->+SSH_GUEST_PORT=22
->+SSH_HOST_PORT=2222
->+VSOCK_CID=1234
->+
->+QEMU_PIDFILE=/tmp/qemu.pid
->+
->+# virtme-ng offers a netdev for ssh when using "--ssh", but we also need a
->+# control port forwarded for vsock_test.  Because virtme-ng doesn't support
->+# adding an additional port to forward to the device created from "--ssh" and
->+# virtme-init mistakenly sets identical IPs to the ssh device and additional
->+# devices, we instead opt out of using --ssh, add the device manually, and also
->+# add the kernel cmdline options that virtme-init uses to setup the interface.
->+QEMU_OPTS=""
->+QEMU_OPTS="${QEMU_OPTS} -netdev user,id=n0,hostfwd=tcp::${TEST_HOST_PORT}-:${TEST_GUEST_PORT}"
->+QEMU_OPTS="${QEMU_OPTS},hostfwd=tcp::${SSH_HOST_PORT}-:${SSH_GUEST_PORT}"
->+QEMU_OPTS="${QEMU_OPTS} -device virtio-net-pci,netdev=n0"
->+QEMU_OPTS="${QEMU_OPTS} -device vhost-vsock-pci,guest-cid=${VSOCK_CID}"
->+QEMU_OPTS="${QEMU_OPTS} --pidfile ${QEMU_PIDFILE}"
->+KERNEL_CMDLINE="virtme.dhcp net.ifnames=0 biosdevname=0 virtme.ssh virtme_ssh_user=$USER"
->+
->+LOG=${SCRIPT_DIR}/vsock_selftests.log
->+
->+#		Name				Description
->+tests="
->+	vm_server_host_client     Run vsock_test in server mode on the VM and in client mode on the host.
->+	vm_client_host_server     Run vsock_test in client mode on the VM and in server mode on the host.
->+	vm_loopback               Run vsock_test using the loopback transport in the VM.
->+"
->+
->+usage() {
->+	echo
->+	echo "$0 [OPTIONS]"
->+	echo
->+	echo "Options"
->+	echo "  -v: verbose output"
->+	echo "  -s: skip build"
->+	echo
->+	echo "Available tests${tests}"
->+	exit 1
->+}
->+
->+die() {
->+	echo "$*" >&2
->+	exit 1
->+}
->+
->+vm_ssh() {
->+	ssh -q -o UserKnownHostsFile=/dev/null -p 2222 localhost $*
->+	return $?
->+}
->+
->+cleanup() {
->+	if [[ -f "${QEMU_PIDFILE}" ]]; then
->+		pkill -9 -F ${QEMU_PIDFILE} 2>&1 >/dev/null
-
-Why SIGKILL ? can we be more graceful (e.g. SIGTERM) ?
-
->+	fi
->+}
->+
->+build() {
->+	log_setup "Building kernel and tests"
->+
->+	pushd ${KERNEL_CHECKOUT} >/dev/null
->+	vng \
->+		--kconfig \
->+		--config ${KERNEL_CHECKOUT}/tools/testing/selftests/vsock/config.vsock
->+	make -j$(nproc)
->+	make -C ${KERNEL_CHECKOUT}/tools/testing/vsock
->+	popd >/dev/null
->+	echo
->+}
->+
->+vm_setup() {
->+	local VNG_OPTS=""
->+	if [[ "${VERBOSE}" = 1 ]]; then
->+		VNG_OPTS="--verbose"
->+	fi
->+	vng \
->+		$VNG_OPTS	\
->+		--run ~/local/linux \
->+		--qemu /bin/qemu-system-x86_64 \
->+		--qemu-opts="${QEMU_OPTS}" \
->+		--user root \
->+		--append "${KERNEL_CMDLINE}" \
->+		--rw  2>&1 >/dev/null &
->+}
->+
->+vm_wait_for_ssh() {
->+	i=0
->+	while [[ true ]]; do
->+		if (( i > 20 )); then
->+			die "Timed out waiting for guest ssh"
->+		fi
->+		vm_ssh -- true
->+		if [[ $? -eq 0 ]]; then
->+			break
->+		fi
->+		i=$(( i + 1 ))
->+		sleep 5
->+	done
->+}
->+
->+wait_for_listener() {
->+	local PORT=$1
->+	local i=0
->+	while ! ss -ltn | grep -q ":${PORT}"; do
->+		if (( i > 30 )); then
->+			die "Timed out waiting for listener on port ${PORT}"
->+		fi
->+		sleep 3
->+		i=$(( i + 1 ))
->+	done
->+}
->+
->+vm_wait_for_listener() {
->+	local port=$1
->+	vm_ssh -- "$(declare -f wait_for_listener); wait_for_listener ${port}"
->+}
->+
->+host_wait_for_listener() {
->+	wait_for_listener ${TEST_HOST_LISTENER_PORT}
-
-Typo here: s/TEST_HOST_LISTENER_PORT/TEST_HOST_PORT_LISTENER
-
->+}
->+
->+log() {
->+	local prefix="$1"
->+	shift
->+
->+	if [[ "$#" -eq 0 ]]; then
->+		cat | awk '{ printf "%s:\t%s\n","'"${prefix}"'", $0 }' | tee -a ${LOG}
->+	else
->+		echo "$*" | awk '{ printf "%s:\t%s\n","'"${prefix}"'", $0 }' | tee -a ${LOG}
->+	fi
->+}
->+
->+log_setup() {
->+	log "setup" "$@"
->+}
->+
->+log_host() {
->+	testname=$1
->+	shift
->+	log "test:${testname}:host" "$@"
->+}
->+
->+log_guest() {
->+	testname=$1
->+	shift
->+	log "test:${testname}:guest" "$@"
->+}
->+
->+test_vm_server_host_client() {
->+	local testname="${FUNCNAME[0]#test_}"
->+
->+	vm_ssh -- "${VSOCK_TEST}" \
->+		--mode=server \
->+		--control-port="${TEST_GUEST_PORT}" \
->+		--peer-cid=2 \
->+		2>&1 | log_guest "${testname}" &
->+
->+	vm_wait_for_listener ${TEST_GUEST_PORT}
->+
->+	${VSOCK_TEST}	\
->+		--mode=client	\
->+		--control-host=127.0.0.1	\
->+		--peer-cid="${VSOCK_CID}"	\
->+		--control-port="${TEST_HOST_PORT}" 2>&1 | log_host "${testname}"
->+
->+	rc=$?
-
-Why using a global variable instead of a return value?
-
->+}
->+
->+test_vm_client_host_server() {
->+	local testname="${FUNCNAME[0]#test_}"
->+
->+	${VSOCK_TEST}	\
->+		--mode "server" \
->+		--control-port "${TEST_HOST_PORT_LISTENER}" \
->+		--peer-cid "${VSOCK_CID}" 2>&1 | log_host "${testname}" &
->+
->+	host_wait_for_listener
->+
->+	vm_ssh -- "${VSOCK_TEST}"	\
->+		--mode=client	\
->+		--control-host=10.0.2.2	\
->+		--peer-cid=2	\
->+		--control-port="${TEST_HOST_PORT_LISTENER}" 2>&1 | log_guest "${testname}"
->+
->+	rc=$?
->+}
->+
->+test_vm_loopback() {
->+	local testname="${FUNCNAME[0]#test_}"
->+	local port=60000 # non-forwarded local port
->+
->+	vm_ssh -- ${VSOCK_TEST}	\
->+		--mode=server \
->+		--control-port="${port}" \
->+		--peer-cid="${VSOCK_CID}" &
->+
->+	vm_wait_for_listener ${port}
->+
->+	vm_ssh -- ${VSOCK_TEST}	\
->+		--mode=client	\
->+		--control-host="127.0.0.1" \
->+		--control-port="${port}" \
->+		--peer-cid="${VSOCK_CID}"
->+
->+	rc=$?
->+}
->+
->+run_test() {
->+	unset IFS
->+	local host_oops_cnt_before=$(dmesg | grep -i 'Oops' | wc -l)
->+	local host_warn_cnt_before=$(dmesg --level=warn | wc -l)
->+	local vm_oops_cnt_before=$(vm_ssh -- dmesg | grep -i 'Oops' | wc -l)
->+	local vm_warn_cnt_before=$(vm_ssh -- dmesg --level=warn | wc -l)
->+
->+	name=$(echo "${1}" | awk '{ print $1 }')
->+	eval test_"${name}"
->+
->+	local host_oops_cnt_after=$(dmesg | grep -i 'Oops' | wc -l)
->+	if [[ ${host_oops_cnt_after} -gt ${host_oops_cnt_before} ]]; then
->+		echo "${name}: kernel oops detected on host" | log_host ${name}
->+		rc=1
->+	fi
->+
->+	local host_warn_cnt_after=$(dmesg --level=warn | wc -l)
->+	if [[ ${host_warn_cnt_after} -gt ${host_warn_cnt_before} ]]; then
->+		echo "${name}: kernel warning detected on host" | log_host ${name}
->+		rc=1
->+	fi
->+
->+	local vm_oops_cnt_after=$(vm_ssh -- dmesg | grep -i 'Oops' | wc -l)
->+	if [[ ${vm_oops_cnt_after} -gt ${vm_oops_cnt_before} ]]; then
->+		echo "${name}: kernel oops detected on vm" | log_host ${name}
->+		rc=1
->+	fi
->+
->+	local vm_warn_cnt_after=$(vm_ssh -- dmesg --level=warn | wc -l)
->+	if [[ ${vm_warn_cnt_after} -gt ${vm_warn_cnt_before} ]]; then
->+		echo "${name}: kernel warning detected on vm" | log_host ${name}
->+		rc=1
->+	fi
->+}
->+
->+while getopts :hvs o
->+do
->+	case $o in
->+	v) VERBOSE=1;;
-
-Should we set VERBOSE=0 on top as default like we do for SKIP_BUILD ?
-
->+	s) SKIP_BUILD=1;;
->+	h|*) usage;;
->+	esac
->+done
->+shift $((OPTIND-1))
->+
->+trap cleanup EXIT
->+
->+> ${LOG}
->+if (( SKIP_BUILD != 1 )); then
-
-I recommend using the same syntax in this file to check variables
-(I mean for example when we check SKIP_BUILD and VERBOSE), I don't
-have a preference.
-
->+	build
->+fi
->+log_setup "Booting up VM"
->+vm_setup
->+vm_wait_for_ssh
->+log_setup "VM booted up"
->+
->+IFS="
->+"
->+cnt=0
->+for t in ${tests}; do
->+	rc=0
->+	run_test "${t}"
->+	if [[ ${rc} != 0 ]]; then
->+		cnt=$(( cnt + 1 ))
->+	fi
->+done
->+
->+if [[ ${cnt} = 0 ]]; then
->+	echo OK
->+else
->+	echo FAILED: ${cnt}
->+fi
->+echo "Log: ${LOG}"
->+exit ${cnt}
->
->---
->base-commit: cc04ed502457412960d215b9cd55f0d966fda255
->change-id: 20250325-vsock-vmtest-b3a21d2102c2
->
->Best regards,
->-- 
->Bobby Eshleman <bobbyeshleman@gmail.com>
+> +static void
+> +bnxt_queue_cfg_defaults(struct net_device *dev, int idx,
+> +			struct netdev_queue_config *qcfg)
+> +{
+> +	qcfg->rx_buf_len	= BNXT_RX_PAGE_SIZE;
+> +}
+> +
+>  static const struct netdev_queue_mgmt_ops bnxt_queue_mgmt_ops = {
+>  	.ndo_queue_mem_size	= sizeof(struct bnxt_rx_ring_info),
+> +
+> +	.ndo_queue_cfg_defaults	= bnxt_queue_cfg_defaults,
+> +	.ndo_queue_cfg_validate = bnxt_queue_cfg_validate,
+>  	.ndo_queue_mem_alloc	= bnxt_queue_mem_alloc,
+>  	.ndo_queue_mem_free	= bnxt_queue_mem_free,
+>  	.ndo_queue_start	= bnxt_queue_start,
+> @@ -16061,6 +16099,8 @@ static const struct netdev_queue_mgmt_ops bnxt_queue_mgmt_ops = {
+>  };
+>  
+>  static const struct netdev_queue_mgmt_ops bnxt_queue_mgmt_ops_unsupp = {
+> +	.ndo_queue_cfg_defaults	= bnxt_queue_cfg_defaults,
+> +	.ndo_queue_cfg_validate = bnxt_queue_cfg_validate,
+>  };
+>  
+>  static void bnxt_remove_one(struct pci_dev *pdev)
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+> index 956f51449709..8842390f687f 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+> @@ -867,18 +867,6 @@ static int bnxt_set_ringparam(struct net_device *dev,
+>  	if (!kernel_ering->rx_buf_len)	/* Zero means restore default */
+>  		kernel_ering->rx_buf_len = BNXT_RX_PAGE_SIZE;
+>  
+> -	if (kernel_ering->rx_buf_len != bp->rx_page_size &&
+> -	    !(bp->flags & BNXT_FLAG_CHIP_P5_PLUS)) {
+> -		NL_SET_ERR_MSG_MOD(extack, "changing rx-buf-len not supported");
+> -		return -EINVAL;
+> -	}
+> -	if (!is_power_of_2(kernel_ering->rx_buf_len) ||
+> -	    kernel_ering->rx_buf_len < BNXT_RX_PAGE_SIZE ||
+> -	    kernel_ering->rx_buf_len > BNXT_MAX_RX_PAGE_SIZE) {
+> -		NL_SET_ERR_MSG_MOD(extack, "rx-buf-len out of range, or not power of 2");
+> -		return -ERANGE;
+> -	}
+> -
+>  	if (netif_running(dev))
+>  		bnxt_close_nic(bp, false, false);
+>  
+> -- 
+> 2.49.0
 >
 
+Thanks,
+Dragos
