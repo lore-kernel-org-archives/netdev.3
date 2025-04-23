@@ -1,151 +1,133 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5C326B2A1;
-	Wed, 23 Apr 2025 07:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4E626B08D
+	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 07:51:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745394394; cv=none; b=bL0CT3eGGdGgNvYkhGefnTPcHy2IJoO23x+pj8pi2H9RiY+PCLpIw0wUj1vPz3piKgiAYjDBKpeV7GaivO/rnloM2w4MhON3W/piEguW6HB4Qz5sCL7P1Jv9OlH912u0OGlnuLf9rhWkCEwmc60264f7z2c1rpebmDL7Ot8EE5I=
+	t=1745394692; cv=none; b=LVq84HbQSQk3qZ1rZ+iXWeraJjyfOwHt/j4hH5QT8gnnabMSmU5/A8IYTjO1xMvvqAkaZ2JgUax8TJn2UZC94THC8PjxcTBmrv1hrrie2X7bDOUVfK4YbU/9ywCM8209C2tIkGncG3Bb1LCMXKr+JqWuWWM7elYPtB5k6GkpHH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745394394; c=relaxed/simple;
-	bh=ZXP+q502u1qHNaU5v6BQ1Yen6wpIdo6X/xAfOiQjE6Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DaOVlMz1FC3w8r/TbVj30YvMiqSsJDszf0EUlurXZpYIagE+knroBNC5nVvZxH4t3wD/FFDSbGdhi1F9wNPoSMk01JrPJ/rOiniDlhBZys4MTOB4O863kLvg+QQPLEksk2dMcjwsRFZjmTzl/natU4QxjnkXXMutBlnwvkx3eso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=rsGbDGQQ; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="rsGbDGQQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1745394378; x=1745999178; i=wahrenst@gmx.net;
-	bh=NZy7CxzfYYcimz4ZEhmuCpHqYGjXSktFeVXfg2A+7XU=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=rsGbDGQQArHESvu1mvIXiZivtLTB9kfRStBR+tv/CDltae/0RZ8j1YUxgIWSpGjA
-	 wkn1cVBuHOweUQwHiWMznCmsflmp59dn7CGJyuIKTpTf+xSTvz+r+Hrg1VFTbWRMX
-	 y921Ao3FP7mpZMT5evketu8yB8p2SedF9Z5Hoc/q3llSwPA+2Sz1lylHayb+1PZrH
-	 HJ+C9OQgXIfpepDirqFSraoMlsYzbUOJ5mVcq5cN7iqTMfSI8X1wwfBtNz/S1PnvT
-	 YFJ8ws5JCHnVD5i0I8zPuhLJE3lq9/+g/VBUK33tt8HzhC6pnZZffaTYreL34Kf2G
-	 +WdrOJPorxD/wfjUyg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from stefanw-SCHENKER ([37.4.251.153]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M72oH-1uBb9B2A8N-00Avsz; Wed, 23
- Apr 2025 09:46:18 +0200
-From: Stefan Wahren <wahrenst@gmx.net>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH net 1/5] net: vertexcom: mse102x: Fix possible stuck of SPI interrupt
-Date: Wed, 23 Apr 2025 09:45:49 +0200
-Message-Id: <20250423074553.8585-2-wahrenst@gmx.net>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250423074553.8585-1-wahrenst@gmx.net>
-References: <20250423074553.8585-1-wahrenst@gmx.net>
+	s=arc-20240116; t=1745394692; c=relaxed/simple;
+	bh=JVM+D2cPD5kJCHNUnkFYFbPV/xrj7r3Yu2JBXWM/bAw=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ePHIYdlTBPpdox8T9yhqJRkqojzCBwVxcyjhbYzrS7BFHTEs7NgpWyKvtxIM2tmsIdIrBM/LmngCYI5J2rNtOkfU6YrO8N3AshKQoLzjJj9XClecGcN3HLUiBUR/2pBN0LLhYAu+hePOfKaLjear6S4ZfluR+TcLLvOcbOpwsa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3d90a7e86f7so86929175ab.2
+        for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 00:51:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745394689; x=1745999489;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ndzc6o3PQmddI86XNaY5hOBgE+u1I/s9h4gsKtPCnXA=;
+        b=ogorzUITKxm4Xm7Vt/Or/PuV1JKYeYahvRdbA8TI6OhjJcMYzTvUVAE97vCu97mjmF
+         lvWlPJHoAASmfq8qOlo91sI4Ntb7GqFnfp56hV8kZwlBJM0sdynt1bJWeaIKhWSLbaY2
+         RlO2UkLEWb89hD1L2iVhocLbfuQV/uQhfJXZYqR3lZo5qXe0vmd9HR9s+4y/d4qpa+2S
+         Qy0kEnNuGOYV4ORyCK/IKyWkQ5td+/kQ9dIcERvFaOz79UpAeAgBYGN/z4/2l2g4RaF8
+         MW8hqx/jYcdvyfFyofDxPaNQoDH0GyGJTCmtY144YCFn7eBh7ZWALZ8m9mupkW1gTXrK
+         IjzA==
+X-Forwarded-Encrypted: i=1; AJvYcCWbnb2R1Fkqvvf3/HI/kVkTkVQmX3E/OuJVpNpH/9aqBIKvsjIWOWyA80QY8vDigB36YgzYysE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9ZjRVpAP81FLcNufy+bXZSD+UTchxGXnLRGNy2XekDlBsEqJp
+	oir6FMJNbdjTVscE2oAfgzo3jVbg7r5B+wRZZp+wNyOvxVbhY9Yxht2ifJm0FPUXL7aMFgGB8y/
+	QjbjckHcGf43xCmHK5ptsaJe6HVYjblPUTVJdUbJCatSNpgjWB+GCBTA=
+X-Google-Smtp-Source: AGHT+IG5YLRkPk6ll0iD2rCSjwKFuFfurI2t2jOfecpW+WGCbVLdc1PkvWWxpmLjuN7Eii/AIBDV3eP249+/8w8J/XBuHeUt6u3x
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:m9PYOMQH1lapuAKBWr3ufXhy3of+mVSvrJDsHHdJD5AENFZtw2h
- juFZac7In6yHRt/N+l8WyjXHmd2QUdq3e1/A5xWeZrMlt8/YRLlFuY9Xu6GhFsvGtJN1wb2
- xDvM/g8FS0oFYw/gsEyC56FxbkzpkmagI2NaglL0oUDfVznS7EqzumZwB7QhJAZLdkE9iTy
- bMRXbXC4mC/2B/Mw7Mm4A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:E5DC7xJ6BPY=;D8sinKu31AKZx71CFliyceel0hF
- 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
+X-Received: by 2002:a05:6e02:1946:b0:3d8:1d7c:e192 with SMTP id
+ e9e14a558f8ab-3d88ed8839bmr182605365ab.7.1745394689606; Wed, 23 Apr 2025
+ 00:51:29 -0700 (PDT)
+Date: Wed, 23 Apr 2025 00:51:29 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68089c01.050a0220.36a438.000f.GAE@google.com>
+Subject: [syzbot] [net?] KASAN: null-ptr-deref Write in dst_cache_per_cpu_get (3)
+From: syzbot <syzbot+c71bf8ad5b74c29baa2f@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-The MSE102x doesn't provide any SPI commands for interrupt handling.
-So in case the interrupt fired before the driver requests the IRQ,
-the interrupt will never fire again. In order to fix this always poll
-for pending packets after opening the interface.
+Hello,
 
-Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-=2D--
- drivers/net/ethernet/vertexcom/mse102x.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+syzbot found the following issue on:
 
-diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethern=
-et/vertexcom/mse102x.c
-index 89dc4c401a8d..92ebf1633159 100644
-=2D-- a/drivers/net/ethernet/vertexcom/mse102x.c
-+++ b/drivers/net/ethernet/vertexcom/mse102x.c
-@@ -509,6 +509,7 @@ static irqreturn_t mse102x_irq(int irq, void *_mse)
- static int mse102x_net_open(struct net_device *ndev)
- {
- 	struct mse102x_net *mse =3D netdev_priv(ndev);
-+	struct mse102x_net_spi *mses =3D to_mse102x_spi(mse);
- 	int ret;
-=20
- 	ret =3D request_threaded_irq(ndev->irq, NULL, mse102x_irq, IRQF_ONESHOT,
-@@ -524,6 +525,13 @@ static int mse102x_net_open(struct net_device *ndev)
-=20
- 	netif_carrier_on(ndev);
-=20
-+	/* The SPI interrupt can stuck in case of pending packet(s).
-+	 * So poll for possible packet(s) to re-arm the interrupt.
-+	 */
-+	mutex_lock(&mses->lock);
-+	mse102x_rx_pkt_spi(mse);
-+	mutex_unlock(&mses->lock);
-+
- 	netif_dbg(mse, ifup, ndev, "network device up\n");
-=20
- 	return 0;
-=2D-=20
-2.34.1
+HEAD commit:    fc96b232f8e7 Merge tag 'pci-v6.15-fixes-2' of git://git.ke..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1049063f980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=170d968a88ba5c06
+dashboard link: https://syzkaller.appspot.com/bug?extid=c71bf8ad5b74c29baa2f
+compiler:       Debian clang version 15.0.6, Debian LLD 15.0.6
 
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/fd977d7e57de/disk-fc96b232.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/ffa0a3b5b655/vmlinux-fc96b232.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/44df3bd100d2/bzImage-fc96b232.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c71bf8ad5b74c29baa2f@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KASAN: null-ptr-deref in instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
+BUG: KASAN: null-ptr-deref in atomic_add_negative_relaxed include/linux/atomic/atomic-instrumented.h:1475 [inline]
+BUG: KASAN: null-ptr-deref in rcuref_get include/linux/rcuref.h:67 [inline]
+BUG: KASAN: null-ptr-deref in dst_hold include/net/dst.h:238 [inline]
+BUG: KASAN: null-ptr-deref in dst_cache_per_cpu_get+0x7d/0x2b0 net/core/dst_cache.c:50
+Write of size 4 at addr 0000000000000043 by task kworker/1:0/24
+
+CPU: 1 UID: 0 PID: 24 Comm: kworker/1:0 Not tainted 6.15.0-rc2-syzkaller-00278-gfc96b232f8e7 #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+Workqueue: wg-crypt-wg2 wg_packet_tx_worker
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_report+0xe3/0x5b0 mm/kasan/report.c:524
+ kasan_report+0x143/0x180 mm/kasan/report.c:634
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+ kasan_check_range+0x28f/0x2a0 mm/kasan/generic.c:189
+ instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
+ atomic_add_negative_relaxed include/linux/atomic/atomic-instrumented.h:1475 [inline]
+ rcuref_get include/linux/rcuref.h:67 [inline]
+ dst_hold include/net/dst.h:238 [inline]
+ dst_cache_per_cpu_get+0x7d/0x2b0 net/core/dst_cache.c:50
+ dst_cache_get_ip6+0x8c/0xf0 net/core/dst_cache.c:133
+ send6+0x466/0xbf0 drivers/net/wireguard/socket.c:129
+ wg_socket_send_skb_to_peer+0x115/0x1d0 drivers/net/wireguard/socket.c:178
+ wg_packet_create_data_done drivers/net/wireguard/send.c:251 [inline]
+ wg_packet_tx_worker+0x1bf/0x810 drivers/net/wireguard/send.c:276
+ process_one_work kernel/workqueue.c:3238 [inline]
+ process_scheduled_works+0xac3/0x18e0 kernel/workqueue.c:3319
+ worker_thread+0x870/0xd50 kernel/workqueue.c:3400
+ kthread+0x7b7/0x940 kernel/kthread.c:464
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:153
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+==================================================================
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
