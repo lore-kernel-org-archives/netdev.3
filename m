@@ -1,83 +1,54 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C07280CFF;
-	Wed, 23 Apr 2025 16:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2835280CD1;
+	Wed, 23 Apr 2025 16:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745425812; cv=none; b=T8G+dlvloVjkJm+Fmqq/z27/vZd0k5W7ytfhFmAQkX/wOywc/p5vl8CeB4QCBv4oEXtYkmmLATTvSEXo/F3OTH6TvrWtziOypS4BT5Apeo7sREXKXoFVFQwywZ3zR7aSQRfm1evklhb2DzVilGNpsKqS1Gt1Z2PIgklHOLVN6Go=
+	t=1745426069; cv=none; b=dm5IgplUW+q31SShJLv6s4M1RK83zicOghwEfDI7h6nurJo7feRlQuakQVjiikV0ac+Oz+ZUnDDM1ciH2YG3QvMBmHTUvT9p3LnqIKMEEG7lDgF3t12FO1WlyGtkPI85TPeCdVBj7zW++m1EFbmeqUrtwMG6DSBNbuVooWnOvZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745425812; c=relaxed/simple;
-	bh=blCd0egQnP2RQ1crpeuSGS0mStW2KuzlnHkxCncnzPw=;
+	s=arc-20240116; t=1745426069; c=relaxed/simple;
+	bh=mN8F7NbzDaBbeVXijWSv4xXDoOWK3C4w28jSbiy3Hms=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iKgS5smwznVkQtQCJ8BL5b/qDd2hL3WaB+aUHtHWAAAatbJl6M4auOZCUaZ3oAQiiXkfIOk1QTpz87B5+7+MqqwIdcv8D+MpWdUeNsN3hplAbjAWabp6AJvP56/+/cVHtRzN9SqDRVMsiFp/mivJ71DwRFpQXlKll5Uz2yJrPfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UtkWTpV1; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=VUOsvQVseB/UsJErbIU1HcIdfSMtGoZIdZVmfIHjSLH3Imgy6ep4ayODDj1IS6H15xQqOVedjafzXQY0MrnfoUdvSpTdYKRgSfc0tp1SPWDU8G5wpchJUOd2vY86Ml9ERC/rSodx3TxE1aCMaIlqyclMS3d7ucgmcV3+JxiPvlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f9R+8h+V; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UtkWTpV1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745425811; x=1776961811;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=blCd0egQnP2RQ1crpeuSGS0mStW2KuzlnHkxCncnzPw=;
-  b=UtkWTpV1tuWRuDbrzuP3PhYgWNeeFvumhMG2II5EFyB3BApBQ91g3Ef3
-   L25vZMFsbNjBhyN0hXakSnx3998+kwjmpbr9vkiHSUmhoRozenjQCurKI
-   Uc6KRyvSD1sv2+0DjAyZcFRhL2iljy58IT+dJ9+gY0G+8HfrpOEV7OBU3
-   eHpDLLxh9bJSmx4B4GmgWsodyzaBC/txr1Ydo5Ny8h4hrCIU/5GgkMgRy
-   vUhoQ3fMwVuIjrFyo44NcSlOD2ahMqzVj6x8t0ABe16VTD++nF/JRuE2S
-   C/rkXitN6z2wC6GmXCPV/nFrSHcwErHRmxVnAE3Ov0ArbV3XIO9IIpPv6
-   g==;
-X-CSE-ConnectionGUID: 1iBrGGOrRmSe+lT4mk2ubA==
-X-CSE-MsgGUID: vGPxNNKBRzeI0Wy/PI/H3w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="50691995"
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="50691995"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 09:30:10 -0700
-X-CSE-ConnectionGUID: AOZmElnvQS6Bz4a7vmV+Lg==
-X-CSE-MsgGUID: k1cYvI4HTxyrG+74eZSxKw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="137527738"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 09:29:42 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1u7cyf-0000000F7DT-2dhw;
-	Wed, 23 Apr 2025 19:29:37 +0300
-Date: Wed, 23 Apr 2025 19:29:37 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Petr Mladek <pmladek@suse.com>, Aditya Garg <gargaditya08@live.com>,
-	Hector Martin <marcan@marcan.st>, alyssa@rosenzweig.io,
-	Sven Peter <sven@svenpeter.dev>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Aun-Ali Zaidi <admin@kodeit.net>,
-	Maxime Ripard <mripard@kernel.org>, airlied@redhat.com,
-	Simona Vetter <simona@ffwll.ch>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Andrew Morton <akpm@linux-foundation.org>, apw@canonical.com,
-	joe@perches.com, dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com,
-	Kees Cook <kees@kernel.org>, tamird@gmail.com,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
-	Asahi Linux Mailing List <asahi@lists.linux.dev>,
-	netdev <netdev@vger.kernel.org>
-Subject: Re: [PATCH v4 1/3] lib/vsprintf: Add support for generic FourCCs by
- extending %p4cc
-Message-ID: <aAkVcaRrMmqXRSFz@smile.fi.intel.com>
-References: <PN3PR01MB9597382EFDE3452410A866AEB8B52@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
- <PN3PR01MB9597B01823415CB7FCD3BC27B8B52@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
- <CAMuHMdV9tX=TG7E_CrSF=2PY206tXf+_yYRuacG48EWEtJLo-Q@mail.gmail.com>
- <PN3PR01MB9597B3AE75E009857AA12D4DB8BB2@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
- <CAMuHMdWpqHLest0oqiB+hG47t=G7OScLmHz5zr2u0ZgED_+Obg@mail.gmail.com>
- <aAjthvTuIeUIO4CT@pathway.suse.cz>
- <CAMuHMdXuawN0eC0yO40-zrz70TH-3_Y-CFSy6=hHCCMLAPvU5w@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f9R+8h+V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C54D7C4CEE2;
+	Wed, 23 Apr 2025 16:34:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745426068;
+	bh=mN8F7NbzDaBbeVXijWSv4xXDoOWK3C4w28jSbiy3Hms=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f9R+8h+VZLxdc49EdXOrzCaWtvHbYKtHhsO9lJ2niGl1lNAuUgTvPqh/fv5wPfH2u
+	 VfzW/eVzN043ohsT93YB9Z9MIrfIHcXEXps2WRxByoc8gS/Ut13n205MlcO6ormi0w
+	 A2qH+i78VNkk37qvbeNXaIFeQQRnRbvxr7JCPe9sOUQocH4BJHAYTmGTuc0v8mz90s
+	 wCDNXL8O7OWik/DhIrSIhHXPCuqYMzZTVgUGkFrov4FiIO9whDyJFAtFHob0un8H2z
+	 2h/VNx751b85E3BbY8c1O7e1D7vNGb4xTuGpp1SV30peT/2SAgO+5W6yRPT9alwKp1
+	 9yUQ8xYmE/qlA==
+Date: Wed, 23 Apr 2025 17:34:19 +0100
+From: Simon Horman <horms@kernel.org>
+To: Parvathi Pudi <parvathi@couthit.com>
+Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, nm@ti.com, ssantosh@kernel.org,
+	tony@atomide.com, richardcochran@gmail.com, glaroque@baylibre.com,
+	schnelle@linux.ibm.com, m-karicheri2@ti.com, s.hauer@pengutronix.de,
+	rdunlap@infradead.org, diogo.ivo@siemens.com, basharath@couthit.com,
+	jacob.e.keller@intel.com, m-malladi@ti.com,
+	javier.carrasco.cruz@gmail.com, afd@ti.com, s-anna@ti.com,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	pratheesh@ti.com, prajith@ti.com, vigneshr@ti.com, praneeth@ti.com,
+	srk@ti.com, rogerq@ti.com, krishna@couthit.com, pmohan@couthit.com,
+	mohan@couthit.com
+Subject: Re: [PATCH net-next v5 05/11] net: ti: prueth: Adds ethtool support
+ for ICSSM PRUETH Driver
+Message-ID: <20250423163419.GE2843373@horms.kernel.org>
+References: <20250414113458.1913823-1-parvathi@couthit.com>
+ <20250414130237.1915448-6-parvathi@couthit.com>
+ <20250423162816.GD2843373@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,33 +57,175 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdXuawN0eC0yO40-zrz70TH-3_Y-CFSy6=hHCCMLAPvU5w@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20250423162816.GD2843373@horms.kernel.org>
 
-On Wed, Apr 23, 2025 at 04:50:02PM +0200, Geert Uytterhoeven wrote:
-> On Wed, 23 Apr 2025 at 15:39, Petr Mladek <pmladek@suse.com> wrote:
-> > On Tue 2025-04-22 10:43:59, Geert Uytterhoeven wrote:
-
-...
-
-> > The problem is that the semantic is not the same. The modifiers affect
-> > the output ordering of IPv4 addresses while they affect the reading order
-> > in case of FourCC code.
+On Wed, Apr 23, 2025 at 05:28:16PM +0100, Simon Horman wrote:
+> On Mon, Apr 14, 2025 at 06:32:31PM +0530, Parvathi Pudi wrote:
+> > From: Roger Quadros <rogerq@ti.com>
+> > 
+> > Changes for enabling ethtool support for the newly added PRU Ethernet
+> > interfaces. Extends the support for statistics collection from PRU internal
+> > memory and displays it in the user space. Along with statistics,
+> > enable/disable of features, configuring link speed etc.are now supported.
+> > 
+> > The firmware running on PRU maintains statistics in internal data memory.
+> > When requested ethtool collects all the statistics for the specified
+> > interface and displays it in the user space.
+> > 
+> > Makefile is updated to include ethtool support into PRUETH driver.
+> > 
+> > Signed-off-by: Roger Quadros <rogerq@ti.com>
+> > Signed-off-by: Andrew F. Davis <afd@ti.com>
+> > Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
+> > Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
 > 
-> Note that for IPv4 addresses we have %pI4, which BTW also takes [hnbl]
-> modifiers.
+> ...
+> 
+> > diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.h b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
+> 
+> ...
+> 
+> > @@ -108,6 +114,119 @@ struct prueth_packet_info {
+> >  	bool timestamp;
+> >  };
+> >  
+> > +/**
+> > + * struct port_statistics - Statistics structure for capturing statistics
+> > + *			    on PRUs
+> > + * @tx_bcast: Number of broadcast packets sent
+> > + * @tx_mcast:Number of multicast packets sent
+> > + * @tx_ucast:Number of unicast packets sent
+> > + *
+> > + * @tx_octets:Number of undersized frames rcvd
+> > + *
+> > + * @rx_bcast:Number of broadcast packets rcvd
+> > + * @rx_mcast:Number of multicast packets rcvd
+> > + * @rx_ucast:Number of unicast packets rcvd
+> > + *
+> > + * @rx_octets:Number of Rx packets
+> > + *
+> > + * @tx64byte:Number of 64 byte packets sent
+> > + * @tx65_127byte:Number of 65-127 byte packets sent
+> > + * @tx128_255byte:Number of 128-255 byte packets sent
+> > + * @tx256_511byte:Number of 256-511 byte packets sent
+> > + * @tx512_1023byte:Number of 512-1023 byte packets sent
+> > + * @tx1024byte:Number of 1024 and larger size packets sent
+> > + *
+> > + * @rx64byte:Number of 64 byte packets rcvd
+> > + * @rx65_127byte:Number of 65-127 byte packets rcvd
+> > + * @rx128_255byte:Number of 128-255 byte packets rcvd
+> > + * @rx256_511byte:Number of 256-511 byte packets rcvd
+> > + * @rx512_1023byte:Number of 512-1023 byte packets rcvd
+> > + * @rx1024byte:Number of 1024 and larger size packets rcvd
+> > + *
+> > + * @late_coll:Number of late collisions(Half Duplex)
+> > + * @single_coll:Number of single collisions (Half Duplex)
+> > + * @multi_coll:Number of multiple collisions (Half Duplex)
+> > + * @excess_coll:Number of excess collisions(Half Duplex)
+> > + *
+> > + * @rx_misalignment_frames:Number of non multiple of 8 byte frames rcvd
+> > + * @stormprev_counter:Number of packets dropped because of Storm Prevention
+> 
+> nit: It looks like the documentation of @stormprev_counter should
+>      be replaced by documentation of:
+>      @u32 stormprev_counter_bc;
+>      @u32 stormprev_counter_mc;
+>      @u32 stormprev_counter_uc;
+> 
+> > + * @mac_rxerror:Number of MAC receive errors
+> > + * @sfd_error:Number of invalid SFD
+> > + * @def_tx:Number of transmissions deferred
+> > + * @mac_txerror:Number of MAC transmit errors
+> > + * @rx_oversized_frames:Number of oversized frames rcvd
+> > + * @rx_undersized_frames:Number of undersized frames rcvd
+> > + * @rx_crc_frames:Number of CRC error frames rcvd
+> > + * @dropped_packets:Number of packets dropped due to link down on opposite port
+> > + *
+> > + * @tx_hwq_overflow:Hardware Tx Queue (on PRU) over flow count
+> > + * @tx_hwq_underflow:Hardware Tx Queue (on PRU) under flow count
+> > + *
+> > + * @u32 cs_error: Number of carrier sense errors
+> 
+> nit: @cs_error
+> 
+>      i.e. remove "u32 "
+> 
+> Documentation nits flagged by ./scripts/kernel-doc -none
+> 
+> > + * @sqe_test_error: Number of MAC receive errors
+> > + *
+> > + * Above fields are aligned so that it's consistent
+> > + * with the memory layout in PRU DRAM, this is to facilitate easy
+> > + * memcpy. Don't change the order of the fields.
+> > + *
+> > + * @vlan_dropped: Number of VLAN tagged packets dropped
+> > + * @multicast_dropped: Number of multicast packets dropped
+> > + */
+> > +struct port_statistics {
+> > +	u32 tx_bcast;
+> > +	u32 tx_mcast;
+> > +	u32 tx_ucast;
+> > +
+> > +	u32 tx_octets;
+> > +
+> > +	u32 rx_bcast;
+> > +	u32 rx_mcast;
+> > +	u32 rx_ucast;
+> > +
+> > +	u32 rx_octets;
+> > +
+> > +	u32 tx64byte;
+> > +	u32 tx65_127byte;
+> > +	u32 tx128_255byte;
+> > +	u32 tx256_511byte;
+> > +	u32 tx512_1023byte;
+> > +	u32 tx1024byte;
+> > +
+> > +	u32 rx64byte;
+> > +	u32 rx65_127byte;
+> > +	u32 rx128_255byte;
+> > +	u32 rx256_511byte;
+> > +	u32 rx512_1023byte;
+> > +	u32 rx1024byte;
+> > +
+> > +	u32 late_coll;
+> > +	u32 single_coll;
+> > +	u32 multi_coll;
+> > +	u32 excess_coll;
+> > +
+> > +	u32 rx_misalignment_frames;
+> > +	u32 stormprev_counter_bc;
+> > +	u32 stormprev_counter_mc;
+> > +	u32 stormprev_counter_uc;
+> > +	u32 mac_rxerror;
+> > +	u32 sfd_error;
+> > +	u32 def_tx;
+> > +	u32 mac_txerror;
+> > +	u32 rx_oversized_frames;
+> > +	u32 rx_undersized_frames;
+> > +	u32 rx_crc_frames;
+> > +	u32 dropped_packets;
+> > +
+> > +	u32 tx_hwq_overflow;
+> > +	u32 tx_hwq_underflow;
+> > +
+> > +	u32 cs_error;
+> > +	u32 sqe_test_error;
+> > +
+> > +	u32 vlan_dropped;
+> > +	u32 multicast_dropped;
+> > +} __packed;
+> 
+> ...
 
-Ouch, now I think I understand your complain. You mean that the behaviour of
-h/n here is different to what it is for IPv4 case?
+Oops, I seem to have replied to an old version of this patch-set.
+My comments above do still seem relevant to v6.
+But as v6 exits the comment below is nonsense. Sorry about that.
 
-> > Avoid the confusion by replacing the "n" modifier with "hR", aka
-> > reverse host ordering.
-
-Not ideal, but better than 'h'ost / 'r'everse pair. Not giving a tag and not
-objecting either if there is a consensus.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> 
+> The above notwithstanding, it seems based on comment's elsewhere in this
+> thread that there will be another revision of this patchset. Let patchwork
+> know about that.
+> 
+> pw-bot: changes-requested
+> 
