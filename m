@@ -1,142 +1,151 @@
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CB81EF38E
-	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 06:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDB5266B62
+	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 06:42:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745390366; cv=none; b=Rs0JmuvEH+NqNkHGoa3bY/qU+FIEx2U4Ybx1gSTt3lq4bcnijRDj0wVvVDg3k1dL+RiTS79MEmyS1FpQwnFTx7exwN6h1EYosubjQLJEXgw0GC8islqEiIY2SiMHLgcKah57laU6/6d3p2+w8MckHfrQjsXfIla5IVwLjETXpOo=
+	t=1745390569; cv=none; b=lffFFfjsfBk6i4oknMa90wF5PnJLBQUQdpsct0ugtEvipYrC3f/WUrukB9F8ObEMuBohYv2dG1TwYhm6rb3GfIg0Sxj0I3w1hViT1EjoIZB77fyYFWhf0QQ4YMxGQtMNMqViijB0yyRzvvvusHqQRn/MN6g7KScp/nexPpzcRS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745390366; c=relaxed/simple;
-	bh=Cr1h5rbLJ8qV7Vf++T+SdTHJVkx4HoIoWpukUt2WFQQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mIlVqTKj3yk4NgjYgjuBh5Ad+27bQQfg0TdiS3WElwTqFNOouvYlvGQQAlrzWTmBoSAtQU4ZpG7SolHUAel5QETW/+4zek5WgZroTBlFPV/RZk5VZ2hTBVWRHngW3/0wFyzhA9FYImPlmbSIAxNSLGuqbqybHr4XuoRCMWQZXso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=g8wNaRfc; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	s=arc-20240116; t=1745390569; c=relaxed/simple;
+	bh=1z9o8ll4AHzFt/k/hmidvON8KqNqYeHpKakhn28WR60=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=bqFEafqRhHGpF44BQ0CJu43Cu8IVz/pHhg2hrkzltZE4/6Q3IK1bZDZ7MzpQ/SFzkkryptbUU/6FIr+1axmbDqeM76cvXqdCHB3z+Ga67A90hN7150Sy1qGBHXJPuevsP4zBld+8AdXNRqFyk76D7JLFaGb1bvKu/I7Y6eN9bGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DxiEBmsJ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="g8wNaRfc"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=aE/bfOgnUy7S/NJlZ54EY7E0OtFBouF9DxmozZpy7xU=; t=1745390364;
-	x=1745822364; b=g8wNaRfcR+tMsoTC5QLNG5SnIiUl66WudTcRn3/dPE93uGQvKWniuv7fWHPen
-	Yc/2h+IEiL4VfIFgz+459+3t4ReziyeXK8w5tPO23Pju8O88W3YPC19YxmfA2eKznT4YmFcOvYrQz
-	JkAL4iXYzYlixuqFowSWyxb3RuXTQjBHA8Gci3w1/3iHLWAbHKtiOt6lLx04hx5jH52hOQFwFXaxE
-	Fs/9J1MiT/ZMJ4AJW2inTjPt9snzHm3qAoIsyssK3ZKqzNr4Mtt+WszB8xIARh2EO1kw54ogCEKbs
-	HzqAuurW7NSxrhBqv7+ZxXv/5Iy0eayKZ3SPmV0g3lHs6kFX0g==;
-Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	id 1u7TKL-00137N-2u;
-	Wed, 23 Apr 2025 08:11:22 +0200
-Message-ID: <e903cf91-6e88-45e7-a388-8b40c11ed45a@leemhuis.info>
-Date: Wed, 23 Apr 2025 08:11:21 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DxiEBmsJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745390566;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=A+IIFd1CyCLzYQbKkS9qdqGwkTTadepQIc+Dm7g0mP0=;
+	b=DxiEBmsJNPum/5wfbykMzpBzzCHSpM95B9wrzU5YCTk52J7e+21iF44F6XZKMRb08/3Cqs
+	JHFgVIZGE7cC5sJAoQ4Xb82yu1RMo7bj1SOVwgN7396nw6Abd7ZsYsa8dG54tZzFAbXFRQ
+	R0rlEJydtE+T5lXsRdAgu91NMmMUhPQ=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-388-P97pTlgMMXW5M6c9pc5x4w-1; Wed, 23 Apr 2025 02:42:44 -0400
+X-MC-Unique: P97pTlgMMXW5M6c9pc5x4w-1
+X-Mimecast-MFC-AGG-ID: P97pTlgMMXW5M6c9pc5x4w_1745390563
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-39ee4b91d1cso241280f8f.0
+        for <netdev@vger.kernel.org>; Tue, 22 Apr 2025 23:42:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745390563; x=1745995363;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=A+IIFd1CyCLzYQbKkS9qdqGwkTTadepQIc+Dm7g0mP0=;
+        b=vfxah9q2Szlhgviao5VMAEmih6/29d/lAHi8daEWP1c/U/Rec5HIihJw40X9ODUukq
+         Qw+f0uhGM15+ujeqeZLODJcpa43DTHa0h2gv3VxA/QPST7ajZ9GlkvhoqJOM20g0yA9t
+         9TB8g2akisQki440M2n7RB+tkEmV9zv4wBP93BWgxnxv9sdcsznM6wFf428nl0o0JgOQ
+         Jkp2+drudosUK6dLThctb4cf+iWEvjUgYjg+vyVngtAVg/yo8AqIT3ZuaC7rSiw0v+2o
+         JYS/BLW9sFtkImv27C5GtQyaweE2pC8Bem/8dyhbTZzppOWptl8UljQwyB21rKE0ghyL
+         MH0A==
+X-Forwarded-Encrypted: i=1; AJvYcCWEhXS78dP397FexpDKyyzfBTFAAzZ0C51Xf76BUUTOKml2s1u9IzIqXUXSUxAHuyEk/7Vn/4A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvfbTYlOoLy+qDIXHJkBALurWYjRx4pmOdRYVSff6SfskLrd/J
+	EufYRsbHsmGMd4KVBEfgR84gl/d5MGOh1HSwNP2z++nh9a2w2He0MMC+IZTEqtA8Myx8KdgLXo7
+	2BiCScUW8akTks0zITKMMIVAfx05ZiqukyBF+mrIZmVa3/GdquMY3ug==
+X-Gm-Gg: ASbGncsX+DDmaBuyz5DIHoT6k4IRWloMU8u/c9T2GAB1+RJP+x1AKnb5FUFddxnsAY3
+	0Kp0Qdic241TMUa7UUn6Bwzhr9NyP3B2IEsp0gRJZlBSOyCuaCfKPP1NA2mrJRyzz1Y+S7ivnLD
+	M2BPlQ/2ssrnrVTXVDeo/5M4vZa8+TCxZVkrXizODjoXh2QdE4BwjVhtpuit4KMUs1UdDH8krTp
+	7Ghq9Cjl1zV5ZO/EfmhNRRFy6L5KK/Ae/qpVzthYi2gkTLo3RPzncuTbEpMpsHR9JDjXIDBSvH5
+	pHHObA==
+X-Received: by 2002:a5d:64a4:0:b0:38d:ba8e:7327 with SMTP id ffacd0b85a97d-3a06723c38cmr1327887f8f.8.1745390562732;
+        Tue, 22 Apr 2025 23:42:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGfqF3/DnXpz0jT/bVyus2YqORUpTFcY/LdcHG+U6sJT+ZpWhfo0iR0WXLgcAAw16VAtx6A4g==
+X-Received: by 2002:a5d:64a4:0:b0:38d:ba8e:7327 with SMTP id ffacd0b85a97d-3a06723c38cmr1327865f8f.8.1745390562360;
+        Tue, 22 Apr 2025 23:42:42 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa4930f1sm17830202f8f.61.2025.04.22.23.42.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Apr 2025 23:42:41 -0700 (PDT)
+Date: Wed, 23 Apr 2025 02:42:39 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	danielj@nvidia.com, dongli.zhang@oracle.com, eauger@redhat.com,
+	eric.auger@redhat.com, jasowang@redhat.com, jfalempe@redhat.com,
+	maxbr@linux.ibm.com, mst@redhat.com, pasic@linux.ibm.com,
+	quic_zhonhan@quicinc.com, sgarzare@redhat.com,
+	syzbot+efe683d57990864b8c8e@syzkaller.appspotmail.com
+Subject: [GIT PULL] virtio, vhost: fixes
+Message-ID: <20250423024239-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 1/4] bnxt_en: Change FW message timeout
- warning
-To: Louis Peens <louis.peens@corigine.com>,
- Michael Chan <michael.chan@broadcom.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
- pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com,
- Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
- Randy Dunlap <rdunlap@infradead.org>
-References: <20250417172448.1206107-1-michael.chan@broadcom.com>
- <20250417172448.1206107-2-michael.chan@broadcom.com>
- <aAeosU3V02vWxD7Z@LouisNoVo>
-Content-Language: de-DE, en-US
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 n7RI
-In-Reply-To: <aAeosU3V02vWxD7Z@LouisNoVo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1745390364;e571c1cf;
-X-HE-SMSGID: 1u7TKL-00137N-2u
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mutt-Fcc: =sent
 
-On 22.04.25 16:33, Louis Peens wrote:
-> On Thu, Apr 17, 2025 at 10:24:45AM -0700, Michael Chan wrote:
->> The firmware advertises a "hwrm_cmd_max_timeout" value to the driver
->> for NVRAM and coredump related functions that can take tens of seconds
->> to complete.  The driver polls for the operation to complete under
->> mutex and may trigger hung task watchdog warning if the wait is too long.
->> To warn the user about this, the driver currently prints a warning if
->> this advertised value exceeds 40 seconds:
-> 
-> Hi. Sorry if this is noise - but I have not seen this reported yet. I
-> think this change introduced a config dependency on 'DEBUG_KERNEL'. As far as I
-> track the dependency chain:
-> 
->     DEFAULT_HUNG_TASK_TIMEOUT -> DETECT_HUNG_TASK -> DEBUG_KERNEL.
-> 
-> I have a 'local_defconfig' file which I'm regularly using for compiles,
-> and I had to add all three these CONFIG settings to it to be able to
-> compile again, otherwise I encounter this issue:
-> 
-> drivers/net/ethernet/broadcom/bnxt/bnxt.c:10188:21: \
-> error: 'CONFIG_DEFAULT_HUNG_TASK_TIMEOUT' undeclared (first use in this function)
->       max_tmo_secs > CONFIG_DEFAULT_HUNG_TASK_TIMEOUT) {
->                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> Perhaps this was on purpose, but from what I can tell on a quick scan I don't
-> think it was.
+The following changes since commit 8ffd015db85fea3e15a77027fda6c02ced4d2444:
 
-TWIMC, I yesterday ran into this myself with my daily -next builds for
-Fedora, too. Log from the build can be found here:
-https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-42-x86_64/08951548-next-next-all/builder-live.log.gz
-Enabling DETECT_HUNG_TASK and DEFAULT_HUNG_TASK_TIMEOUT fixed it.
+  Linux 6.15-rc2 (2025-04-13 11:54:49 -0700)
 
-Randy (now CCed) reported the problem as well:
-https://lore.kernel.org/all/8ba27b19-6259-49d3-a77f-84bfa39aa694@infradead.org/
+are available in the Git repository at:
 
-Ciao, Thorsten
+  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+
+for you to fetch changes up to 58465d86071b61415e25fb054201f61e83d21465:
+
+  vhost-scsi: Fix vhost_scsi_send_status() (2025-04-18 10:08:11 -0400)
+
+----------------------------------------------------------------
+virtio, vhost: fixes
+
+A small number of fixes.
+
+virtgpu is exempt from reset shutdown fow now -
+	 a more complete fix is in the works
+spec compliance fixes in:
+	virtio-pci cap commands
+	vhost_scsi_send_bad_target
+	virtio console resize
+missing locking fix in vhost-scsi
+virtio ring - a KCSAN false positive fix
+VHOST_*_OWNER documentation fix
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+----------------------------------------------------------------
+Daniel Jurgens (1):
+      virtio_pci: Use self group type for cap commands
+
+Dongli Zhang (3):
+      vhost-scsi: protect vq->log_used with vq->mutex
+      vhost-scsi: Fix vhost_scsi_send_bad_target()
+      vhost-scsi: Fix vhost_scsi_send_status()
+
+Halil Pasic (1):
+      virtio_console: fix missing byte order handling for cols and rows
+
+Maximilian Immanuel Brandtner (1):
+      virtio_console: fix order of fields cols and rows
+
+Michael S. Tsirkin (1):
+      virtgpu: don't reset on shutdown
+
+Stefano Garzarella (2):
+      vhost: fix VHOST_*_OWNER documentation
+      vhost_task: fix vhost_task_create() documentation
+
+Zhongqiu Han (1):
+      virtio_ring: Fix data race by tagging event_triggered as racy for KCSAN
+
+ drivers/char/virtio_console.c        |  7 ++--
+ drivers/gpu/drm/virtio/virtgpu_drv.c |  9 +++++
+ drivers/vhost/scsi.c                 | 74 +++++++++++++++++++++++++++---------
+ drivers/virtio/virtio.c              |  6 +++
+ drivers/virtio/virtio_pci_modern.c   |  4 +-
+ drivers/virtio/virtio_ring.c         |  2 +-
+ include/linux/virtio.h               |  3 ++
+ include/uapi/linux/vhost.h           |  4 +-
+ include/uapi/linux/virtio_pci.h      |  1 +
+ kernel/vhost_task.c                  |  2 +-
+ 10 files changed, 85 insertions(+), 27 deletions(-)
 
