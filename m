@@ -1,921 +1,169 @@
-Received: from sg-1-18.ptr.blmpb.com (sg-1-18.ptr.blmpb.com [118.26.132.18])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963D0268C49
-	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 10:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81F426C38B;
+	Wed, 23 Apr 2025 10:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745405524; cv=none; b=VYRiW9iAp6kfQONdGP3e3T3SueDghg1bzU1eegEVtq+nzhWPE+NjKyOJXKQuAyeXbB1xYn7wQWODRYZNPSLxhPpFAdmL9n71IN2+kifbLTPmCjK/GJy1WB2rzECmPEm+7+EuLkT/fPuLcLcdHSA3RROfqV/N/G5Vok5lwKayuUg=
+	t=1745405681; cv=none; b=kvEe00fFmylmJKoxvl6hEDiiI9IhmeteDj61K8rlOLPrGSxBQ0PrNLY+ZgW6U35wY3butKkfvpfjs2D9oQPLye5+ZqgMQppHXMV/zoWXDVdmn+MMolkVaB+1BokyvuOmb/8WWv1zR+DO3YXY5Gs8a8DkssjgAalf76hlTPCdk94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745405524; c=relaxed/simple;
-	bh=kiCzGH7HhNFLVFpjS5H7nYpZGK2qIsziqvyXfba71SU=;
-	h=To:Subject:Date:Content-Type:Cc:From:Message-Id:In-Reply-To:
-	 References:Mime-Version; b=bJWlNhWpuA0QCeZsWf+fJd6eVzX5MA8HahYmMdIG3O4bCoC6wCg7TQOzquIy2ZPKMu7JG4MM6aKe4UKb1pDMW/K2g5E0PcVXnqznPxatAHUFQMh3eohB1+bXDYs4NubHDHXdOeyN4ng9S86evPd8sPvrhqDpK6t1VFFFTKbyKRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=eK7Wm9Ux; arc=none smtp.client-ip=118.26.132.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
+	s=arc-20240116; t=1745405681; c=relaxed/simple;
+	bh=PKRxF5CSeXMnjowgFobPAyzE/YcGtkyPnA1UcaUN9us=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=a+LcjmrP+aAmIEUhBFNn9Acs/1Ynlxd4CoEG48xtNiLKMafWkZqzL67qLbyaLLHlkpWek0i9/N6Z0MlbeF415BpADvvd9FI8Cr3kmWJqgfDkLPBM/C/V54P6h32PGfTfmQOiRi6dYGOfduLoen1S3LmCU7rj2+OCuXAHQuZLDeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=Up4iEUVK; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="eK7Wm9Ux"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1745404790; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=UxvV8MFojBWbhuKOwiJA7KEUlvuKFHMasCo5fBsC1B8=;
- b=eK7Wm9UxQVkqvwdfBMn1yuzW30AhMY8WoL8dHZimYSLq/gsaoqYsyOfPc+Q3yDu+rPUyPY
- Ehkcqvvcnsz+1KSQMAYsIbqshuqnHMcs937K/nJQ5WfWq7vLAwr9PzlBdcpiqBxXlj1vh2
- Gr5/9JfSyD9guqKWkzzeJno3bvx4mGCM6ygHWOQxo0EZSdV1G5tThU9RCvJb5/AGzRTonF
- 0J2J2ZH0QeoVV0G8gdpjLa94dIk91zYYgnmSB2cr/OcX8Ro6YZi8Ef2aQW+LxzMcPik1ZX
- rvzVEumLNIi8kc4p5lsbww13A/gpTBBa56AKZP9D9+j97lBreche7h7gM1FP3Q==
-To: <netdev@vger.kernel.org>
-Subject: [PATCH net-next v11 09/14] xsc: Init net device
-Date: Wed, 23 Apr 2025 18:39:48 +0800
-Content-Type: text/plain; charset=UTF-8
-Cc: <leon@kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>, 
-	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
-	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
-	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <jacky@yunsilicon.com>, 
-	<horms@kernel.org>, <parthiban.veerasooran@microchip.com>, 
-	<masahiroy@kernel.org>, <kalesh-anakkur.purayil@broadcom.com>, 
-	<geert+renesas@glider.be>, <pabeni@redhat.com>, <geert@linux-m68k.org>
-From: "Xin Tian" <tianx@yunsilicon.com>
-Message-Id: <20250423103946.2513425-10-tianx@yunsilicon.com>
-X-Original-From: Xin Tian <tianx@yunsilicon.com>
-X-Lms-Return-Path: <lba+26808c374+129fd4+vger.kernel.org+tianx@yunsilicon.com>
-In-Reply-To: <20250423103923.2513425-1-tianx@yunsilicon.com>
-References: <20250423103923.2513425-1-tianx@yunsilicon.com>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 7bit
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="Up4iEUVK"
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 53NArs5S32446350, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1745405634; bh=PKRxF5CSeXMnjowgFobPAyzE/YcGtkyPnA1UcaUN9us=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=Up4iEUVKeOna4yP778vBMZbKx3A5ugyvfwy4E59mKuVEspOFdjU5nDYImJuGg93Ta
+	 2s3nZiiqJOKmiCKWL6GRdPslfW1tmpOa/rJiQqP+Ok8izxkqZbmczfzalWl29f8xBW
+	 ykmkbtInuWV4wYGYGE091BxRluJdVutQV4RwIZNFQziPGs2P+k8Auy4vZIvBWGvOr2
+	 rwAk0Wsc88eQN5sdtpsUTDgMIIvW/Ria1cF6Lf3epwXpNT7khGrDZ1H0+rUT2/d0tw
+	 020Inc4nvp5WwwScw7UYATJeNHa0EhO6NZloDnpyiOE+sKGhgxRQtbVRPC9lIEAqrf
+	 Lq2AFD62IU/0Q==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 53NArs5S32446350
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 23 Apr 2025 18:53:54 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 23 Apr 2025 18:53:54 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 23 Apr 2025 18:53:53 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
+ RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
+ 15.01.2507.035; Wed, 23 Apr 2025 18:53:53 +0800
+From: Justin Lai <justinlai0215@realtek.com>
+To: Simon Horman <horms@kernel.org>
+CC: "kuba@kernel.org" <kuba@kernel.org>,
+        "davem@davemloft.net"
+	<davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Larry Chiu
+	<larry.chiu@realtek.com>, Andrew Lunn <andrew@lunn.ch>,
+        David Laight
+	<david.laight.linux@gmail.com>
+Subject: RE: [PATCH net v3 3/3] rtase: Fix a type error in min_t
+Thread-Topic: [PATCH net v3 3/3] rtase: Fix a type error in min_t
+Thread-Index: AQHbr3bl9x+S2lV3JkCdeosgY8bnPbOvL9aAgAHmKAA=
+Date: Wed, 23 Apr 2025 10:53:53 +0000
+Message-ID: <040b019af779423f96752f10a697195b@realtek.com>
+References: <20250417085659.5740-1-justinlai0215@realtek.com>
+ <20250417085659.5740-4-justinlai0215@realtek.com>
+ <20250422132831.GH2843373@horms.kernel.org>
+In-Reply-To: <20250422132831.GH2843373@horms.kernel.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Wed, 23 Apr 2025 18:39:48 +0800
+MIME-Version: 1.0
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Initialize network device:
-1. Prepare xsc_eth_params, set up the network parameters such as MTU,
-number of channels, and RSS configuration
-2. Configure netdev, Set the MTU, features
-3. Set mac addr to hardware, and attach netif
+>=20
+> + David Laight
+>=20
+> On Thu, Apr 17, 2025 at 04:56:59PM +0800, Justin Lai wrote:
+> > Fix a type error in min_t.
+> >
+> > Fixes: a36e9f5cfe9e ("rtase: Add support for a pci table in this
+> > module")
+> > Signed-off-by: Justin Lai <justinlai0215@realtek.com>
+> > Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> > ---
+> >  drivers/net/ethernet/realtek/rtase/rtase_main.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> > b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> > index 55b8d3666153..bc856fb3d6f3 100644
+> > --- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> > +++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> > @@ -1923,7 +1923,7 @@ static u16 rtase_calc_time_mitigation(u32
+> time_us)
+> >       u8 msb, time_count, time_unit;
+> >       u16 int_miti;
+> >
+> > -     time_us =3D min_t(int, time_us, RTASE_MITI_MAX_TIME);
+> > +     time_us =3D min_t(u32, time_us, RTASE_MITI_MAX_TIME);
+>=20
+> Hi Justin, Andrew, David, all,
+>=20
+> I may be on the wrong track here, but near the top of minmax.h I see:
+>=20
+> /*
+>  * min()/max()/clamp() macros must accomplish several things:
+>  *
+>  * - Avoid multiple evaluations of the arguments (so side-effects like
+>  *   "x++" happen only once) when non-constant.
+>  * - Perform signed v unsigned type-checking (to generate compile
+>  *   errors instead of nasty runtime surprises).
+>  * - Unsigned char/short are always promoted to signed int and can be
+>  *   compared against signed or unsigned arguments.
+>  * - Unsigned arguments can be compared against non-negative signed
+> constants.
+>  * - Comparison of a signed argument against an unsigned constant fails
+>  *   even if the constant is below __INT_MAX__ and could be cast to int.
+>  */
+>=20
+> So, considering the 2nd last point, I think we can simply use min() both =
+above
+> and below. Which would avoid the possibility of casting to the wrong type=
+ again
+> in future.
+>=20
+> Also, aside from which call is correct. Please add some colour to the com=
+mit
+> message describing why this is a bug if it is to be treated as a fix for =
+net rather
+> than a clean-up for net-next.
+>=20
+> >
+> >       if (time_us > RTASE_MITI_TIME_COUNT_MASK) {
+> >               msb =3D fls(time_us);
+> > @@ -1945,7 +1945,7 @@ static u16 rtase_calc_packet_num_mitigation(u16
+> pkt_num)
+> >       u8 msb, pkt_num_count, pkt_num_unit;
+> >       u16 int_miti;
+> >
+> > -     pkt_num =3D min_t(int, pkt_num, RTASE_MITI_MAX_PKT_NUM);
+> > +     pkt_num =3D min_t(u16, pkt_num, RTASE_MITI_MAX_PKT_NUM);
+> >
+> >       if (pkt_num > 60) {
+> >               pkt_num_unit =3D RTASE_MITI_MAX_PKT_NUM_IDX;
+> > --
+> > 2.34.1
+> >
 
-Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
-Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
-Co-developed-by: Lei Yan <jacky@yunsilicon.com>
-Signed-off-by: Lei Yan <jacky@yunsilicon.com>
-Signed-off-by: Xin Tian <tianx@yunsilicon.com>
----
- .../ethernet/yunsilicon/xsc/common/xsc_core.h |   1 +
- .../yunsilicon/xsc/common/xsc_device.h        |  42 +++
- .../net/ethernet/yunsilicon/xsc/net/main.c    | 356 +++++++++++++++++-
- .../net/ethernet/yunsilicon/xsc/net/xsc_eth.h |  33 ++
- .../yunsilicon/xsc/net/xsc_eth_common.h       |  30 ++
- .../net/ethernet/yunsilicon/xsc/net/xsc_pp.h  |  38 ++
- .../net/ethernet/yunsilicon/xsc/net/xsc_pph.h | 180 +++++++++
- .../ethernet/yunsilicon/xsc/net/xsc_queue.h   |  49 +++
- 8 files changed, 728 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_device.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_pp.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_pph.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
+Hi Simon,
 
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
-index e6863cb08..f310ca810 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
-+++ b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
-@@ -8,6 +8,7 @@
- 
- #include <linux/pci.h>
- #include <linux/auxiliary_bus.h>
-+#include <linux/if_vlan.h>
- 
- #include "common/xsc_cmdq.h"
- 
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_device.h b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_device.h
-new file mode 100644
-index 000000000..45ea8d2a0
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_device.h
-@@ -0,0 +1,42 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+
-+#ifndef __XSC_DEVICE_H
-+#define __XSC_DEVICE_H
-+
-+enum xsc_traffic_types {
-+	XSC_TT_IPV4,
-+	XSC_TT_IPV4_TCP,
-+	XSC_TT_IPV4_UDP,
-+	XSC_TT_IPV6,
-+	XSC_TT_IPV6_TCP,
-+	XSC_TT_IPV6_UDP,
-+	XSC_TT_IPV4_IPSEC_AH,
-+	XSC_TT_IPV6_IPSEC_AH,
-+	XSC_TT_IPV4_IPSEC_ESP,
-+	XSC_TT_IPV6_IPSEC_ESP,
-+	XSC_TT_ANY,
-+	XSC_NUM_TT,
-+};
-+
-+#define XSC_NUM_INDIR_TIRS XSC_NUM_TT
-+
-+enum {
-+	XSC_L3_PROT_TYPE_IPV4	= BIT(0),
-+	XSC_L3_PROT_TYPE_IPV6	= BIT(1),
-+};
-+
-+enum {
-+	XSC_L4_PROT_TYPE_TCP	= BIT(0),
-+	XSC_L4_PROT_TYPE_UDP	= BIT(1),
-+};
-+
-+struct xsc_tirc_config {
-+	u8 l3_prot_type;
-+	u8 l4_prot_type;
-+	u32 rx_hash_fields;
-+};
-+
-+#endif
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/main.c b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
-index f5e247864..11d07b062 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/net/main.c
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
-@@ -6,17 +6,354 @@
- #include <linux/netdevice.h>
- #include <linux/etherdevice.h>
- #include <linux/auxiliary_bus.h>
-+#include <linux/ethtool.h>
- 
- #include "common/xsc_core.h"
-+#include "common/xsc_cmd_api.h"
-+#include "common/xsc_device.h"
-+#include "xsc_pp.h"
- #include "xsc_eth_common.h"
- #include "xsc_eth.h"
- 
-+static const struct xsc_tirc_config tirc_default_config[XSC_NUM_INDIR_TIRS] = {
-+	[XSC_TT_IPV4] = {
-+				.l3_prot_type = XSC_L3_PROT_TYPE_IPV4,
-+				.l4_prot_type = 0,
-+				.rx_hash_fields = XSC_HASH_IP,
-+	},
-+	[XSC_TT_IPV4_TCP] = {
-+				.l3_prot_type = XSC_L3_PROT_TYPE_IPV4,
-+				.l4_prot_type = XSC_L4_PROT_TYPE_TCP,
-+				.rx_hash_fields = XSC_HASH_IP_PORTS,
-+	},
-+	[XSC_TT_IPV4_UDP] = {
-+				.l3_prot_type = XSC_L3_PROT_TYPE_IPV4,
-+				.l4_prot_type = XSC_L4_PROT_TYPE_UDP,
-+				.rx_hash_fields = XSC_HASH_IP_PORTS,
-+	},
-+	[XSC_TT_IPV6] = {
-+				.l3_prot_type = XSC_L3_PROT_TYPE_IPV6,
-+				.l4_prot_type = 0,
-+				.rx_hash_fields = XSC_HASH_IP6,
-+	},
-+	[XSC_TT_IPV6_TCP] = {
-+				.l3_prot_type = XSC_L3_PROT_TYPE_IPV6,
-+				.l4_prot_type = XSC_L4_PROT_TYPE_TCP,
-+				.rx_hash_fields = XSC_HASH_IP6_PORTS,
-+	},
-+	[XSC_TT_IPV6_UDP] = {
-+				.l3_prot_type = XSC_L3_PROT_TYPE_IPV6,
-+				.l4_prot_type = XSC_L4_PROT_TYPE_UDP,
-+				.rx_hash_fields = XSC_HASH_IP6_PORTS,
-+	},
-+};
-+
- static int xsc_get_max_num_channels(struct xsc_core_device *xdev)
- {
- 	return min_t(int, xdev->dev_res->eq_table.num_comp_vectors,
- 		     XSC_ETH_MAX_NUM_CHANNELS);
- }
- 
-+static void xsc_build_default_indir_rqt(u32 *indirection_rqt, int len,
-+					int num_channels)
-+{
-+	int i;
-+
-+	for (i = 0; i < len; i++)
-+		indirection_rqt[i] = i % num_channels;
-+}
-+
-+static void xsc_build_rss_param(struct xsc_rss_params *rss_param,
-+				u16 num_channels)
-+{
-+	enum xsc_traffic_types tt;
-+
-+	rss_param->hfunc = ETH_RSS_HASH_TOP;
-+	netdev_rss_key_fill(rss_param->toeplitz_hash_key,
-+			    sizeof(rss_param->toeplitz_hash_key));
-+
-+	xsc_build_default_indir_rqt(rss_param->indirection_rqt,
-+				    XSC_INDIR_RQT_SIZE, num_channels);
-+
-+	for (tt = 0; tt < XSC_NUM_INDIR_TIRS; tt++) {
-+		rss_param->rx_hash_fields[tt] =
-+			tirc_default_config[tt].rx_hash_fields;
-+	}
-+	rss_param->rss_hash_tmpl = XSC_HASH_IP_PORTS | XSC_HASH_IP6_PORTS;
-+}
-+
-+static void xsc_eth_build_nic_params(struct xsc_adapter *adapter,
-+				     u32 ch_num, u32 tc_num)
-+{
-+	struct xsc_eth_params *params = &adapter->nic_param;
-+	struct xsc_core_device *xdev = adapter->xdev;
-+
-+	params->mtu = SW_DEFAULT_MTU;
-+	params->num_tc = tc_num;
-+
-+	params->comp_vectors = xdev->dev_res->eq_table.num_comp_vectors;
-+	params->max_num_ch = ch_num;
-+	params->num_channels = ch_num;
-+
-+	params->rq_max_size = BIT(xdev->caps.log_max_qp_depth);
-+	params->sq_max_size = BIT(xdev->caps.log_max_qp_depth);
-+	xsc_build_rss_param(&adapter->rss_param,
-+			    adapter->nic_param.num_channels);
-+}
-+
-+static int xsc_eth_netdev_init(struct xsc_adapter *adapter)
-+{
-+	unsigned int node, tc, nch;
-+
-+	tc = adapter->nic_param.num_tc;
-+	nch = adapter->nic_param.max_num_ch;
-+	node = dev_to_node(adapter->dev);
-+	adapter->txq2sq = kcalloc_node(nch * tc,
-+				       sizeof(*adapter->txq2sq),
-+				       GFP_KERNEL, node);
-+	if (!adapter->txq2sq)
-+		goto err_out;
-+
-+	mutex_init(&adapter->status_lock);
-+
-+	adapter->workq = create_singlethread_workqueue("xsc_eth");
-+	if (!adapter->workq)
-+		goto err_free_priv;
-+
-+	netif_carrier_off(adapter->netdev);
-+
-+	return 0;
-+
-+err_free_priv:
-+	kfree(adapter->txq2sq);
-+err_out:
-+	return -ENOMEM;
-+}
-+
-+static int xsc_eth_close(struct net_device *netdev)
-+{
-+	struct xsc_adapter *adapter = netdev_priv(netdev);
-+	int ret = 0;
-+
-+	mutex_lock(&adapter->status_lock);
-+
-+	if (!netif_device_present(netdev)) {
-+		ret = -ENODEV;
-+		goto out;
-+	}
-+
-+	if (adapter->status != XSCALE_ETH_DRIVER_OK)
-+		goto out;
-+	adapter->status = XSCALE_ETH_DRIVER_CLOSE;
-+
-+	netif_carrier_off(adapter->netdev);
-+
-+out:
-+	mutex_unlock(&adapter->status_lock);
-+
-+	return ret;
-+}
-+
-+static int xsc_eth_set_hw_mtu(struct xsc_core_device *xdev,
-+			      u16 mtu, u16 rx_buf_sz)
-+{
-+	struct xsc_set_mtu_mbox_out out;
-+	struct xsc_set_mtu_mbox_in in;
-+	int err;
-+
-+	memset(&in, 0, sizeof(struct xsc_set_mtu_mbox_in));
-+	memset(&out, 0, sizeof(struct xsc_set_mtu_mbox_out));
-+
-+	in.hdr.opcode = cpu_to_be16(XSC_CMD_OP_SET_MTU);
-+	in.mtu = cpu_to_be16(mtu);
-+	in.rx_buf_sz_min = cpu_to_be16(rx_buf_sz);
-+	in.mac_port = xdev->mac_port;
-+
-+	err = xsc_cmd_exec(xdev, &in, sizeof(struct xsc_set_mtu_mbox_in), &out,
-+			   sizeof(struct xsc_set_mtu_mbox_out));
-+	if (err) {
-+		netdev_err(xsc_dev_to_netdev(xdev),
-+			   "failed to set hw_mtu=%u rx_buf_sz=%u, err=%d, status=%d\n",
-+			   mtu, rx_buf_sz, err, out.hdr.status);
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct net_device_ops xsc_netdev_ops = {
-+	/* TBD */
-+};
-+
-+static void xsc_eth_build_nic_netdev(struct xsc_adapter *adapter)
-+{
-+	struct net_device *netdev = adapter->netdev;
-+
-+	/* Set up network device as normal. */
-+	netdev->priv_flags |= IFF_UNICAST_FLT | IFF_LIVE_ADDR_CHANGE;
-+	netdev->netdev_ops = &xsc_netdev_ops;
-+
-+	netdev->min_mtu = SW_MIN_MTU;
-+	netdev->max_mtu = SW_MAX_MTU;
-+	/*mtu - macheaderlen - ipheaderlen should be aligned in 8B*/
-+	netdev->mtu = SW_DEFAULT_MTU;
-+
-+	netdev->vlan_features |= NETIF_F_SG;
-+	netdev->vlan_features |= NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM;
-+	netdev->vlan_features |= NETIF_F_GRO;
-+	netdev->vlan_features |= NETIF_F_TSO;
-+	netdev->vlan_features |= NETIF_F_TSO6;
-+
-+	netdev->vlan_features |= NETIF_F_RXCSUM;
-+	netdev->vlan_features |= NETIF_F_RXHASH;
-+
-+	netdev->hw_features = netdev->vlan_features;
-+
-+	netdev->hw_enc_features |= NETIF_F_IP_CSUM;
-+	netdev->hw_enc_features |= NETIF_F_IPV6_CSUM;
-+	netdev->hw_enc_features |= NETIF_F_TSO;
-+	netdev->hw_enc_features |= NETIF_F_TSO6;
-+	netdev->hw_enc_features |= NETIF_F_GSO_PARTIAL;
-+
-+	netdev->hw_features		|= NETIF_F_GSO_PARTIAL;
-+	netdev->hw_features		|= NETIF_F_GSO_UDP_L4;
-+	netdev->features		|= netdev->hw_features;
-+	netdev->gso_partial_features	|= NETIF_F_GSO_UDP_L4;
-+
-+	netdev->features		|= NETIF_F_HIGHDMA;
-+}
-+
-+static int xsc_eth_nic_init(struct xsc_adapter *adapter,
-+			    void *rep_priv, u32 ch_num, u32 tc_num)
-+{
-+	int err;
-+
-+	xsc_eth_build_nic_params(adapter, ch_num, tc_num);
-+
-+	err = xsc_eth_netdev_init(adapter);
-+	if (err)
-+		return err;
-+
-+	xsc_eth_build_nic_netdev(adapter);
-+
-+	return 0;
-+}
-+
-+static void xsc_eth_nic_cleanup(struct xsc_adapter *adapter)
-+{
-+	destroy_workqueue(adapter->workq);
-+	kfree(adapter->txq2sq);
-+}
-+
-+static int xsc_eth_get_mac(struct xsc_core_device *xdev, char *mac)
-+{
-+	struct xsc_query_eth_mac_mbox_out *out;
-+	struct xsc_query_eth_mac_mbox_in in;
-+	int err = 0;
-+
-+	out = kzalloc(sizeof(*out), GFP_KERNEL);
-+	if (!out)
-+		return -ENOMEM;
-+
-+	memset(&in, 0, sizeof(in));
-+	in.hdr.opcode = cpu_to_be16(XSC_CMD_OP_QUERY_ETH_MAC);
-+
-+	err = xsc_cmd_exec(xdev, &in, sizeof(in), out, sizeof(*out));
-+	if (err)
-+		goto err_free;
-+
-+	ether_addr_copy(mac, out->mac);
-+
-+err_free:
-+	kfree(out);
-+	return err;
-+}
-+
-+static void xsc_eth_l2_addr_init(struct xsc_adapter *adapter)
-+{
-+	struct net_device *netdev = adapter->netdev;
-+	char mac[6] = {0};
-+	int ret = 0;
-+
-+	ret = xsc_eth_get_mac(adapter->xdev, mac);
-+	if (ret) {
-+		netdev_err(netdev, "get mac failed %d, generate random mac...",
-+			   ret);
-+		eth_hw_addr_random(netdev);
-+	}
-+
-+	if (!is_valid_ether_addr(netdev->perm_addr))
-+		memcpy(netdev->perm_addr, netdev->dev_addr, netdev->addr_len);
-+}
-+
-+static int xsc_eth_nic_enable(struct xsc_adapter *adapter)
-+{
-+	struct xsc_core_device *xdev = adapter->xdev;
-+
-+	xsc_eth_l2_addr_init(adapter);
-+
-+	xsc_eth_set_hw_mtu(xdev, XSC_SW2HW_MTU(adapter->nic_param.mtu),
-+			   XSC_SW2HW_RX_PKT_LEN(adapter->nic_param.mtu));
-+
-+	rtnl_lock();
-+	netif_device_attach(adapter->netdev);
-+	rtnl_unlock();
-+
-+	return 0;
-+}
-+
-+static void xsc_eth_nic_disable(struct xsc_adapter *adapter)
-+{
-+	rtnl_lock();
-+	if (netif_running(adapter->netdev))
-+		xsc_eth_close(adapter->netdev);
-+	netif_device_detach(adapter->netdev);
-+	rtnl_unlock();
-+}
-+
-+static int xsc_attach_netdev(struct xsc_adapter *adapter)
-+{
-+	int err = -1;
-+
-+	err = xsc_eth_nic_enable(adapter);
-+	if (err)
-+		return err;
-+
-+	return 0;
-+}
-+
-+static void xsc_detach_netdev(struct xsc_adapter *adapter)
-+{
-+	xsc_eth_nic_disable(adapter);
-+
-+	flush_workqueue(adapter->workq);
-+	adapter->status = XSCALE_ETH_DRIVER_DETACH;
-+}
-+
-+static int xsc_eth_attach(struct xsc_core_device *xdev,
-+			  struct xsc_adapter *adapter)
-+{
-+	int err = -1;
-+
-+	if (netif_device_present(adapter->netdev))
-+		return 0;
-+
-+	err = xsc_attach_netdev(adapter);
-+	if (err)
-+		return err;
-+
-+	return 0;
-+}
-+
-+static void xsc_eth_detach(struct xsc_core_device *xdev,
-+			   struct xsc_adapter *adapter)
-+{
-+	if (!netif_device_present(adapter->netdev))
-+		return;
-+
-+	xsc_detach_netdev(adapter);
-+}
-+
- static int xsc_eth_probe(struct auxiliary_device *adev,
- 			 const struct auxiliary_device_id *adev_id)
- {
-@@ -24,6 +361,7 @@ static int xsc_eth_probe(struct auxiliary_device *adev,
- 	struct xsc_core_device *xdev = xsc_adev->xdev;
- 	struct xsc_adapter *adapter;
- 	struct net_device *netdev;
-+	void *rep_priv = NULL;
- 	int num_chl, num_tc;
- 	int err;
- 
-@@ -46,14 +384,30 @@ static int xsc_eth_probe(struct auxiliary_device *adev,
- 	adapter->xdev = xdev;
- 	xdev->eth_priv = adapter;
- 
-+	err = xsc_eth_nic_init(adapter, rep_priv, num_chl, num_tc);
-+	if (err) {
-+		netdev_err(netdev, "xsc_eth_nic_init failed, err=%d\n", err);
-+		goto err_free_netdev;
-+	}
-+
-+	err = xsc_eth_attach(xdev, adapter);
-+	if (err) {
-+		netdev_err(netdev, "xsc_eth_attach failed, err=%d\n", err);
-+		goto err_nic_cleanup;
-+	}
-+
- 	err = register_netdev(netdev);
- 	if (err) {
- 		netdev_err(netdev, "register_netdev failed, err=%d\n", err);
--		goto err_free_netdev;
-+		goto err_detach;
- 	}
- 
- 	return 0;
- 
-+err_detach:
-+	xsc_eth_detach(xdev, adapter);
-+err_nic_cleanup:
-+	xsc_eth_nic_cleanup(adapter);
- err_free_netdev:
- 	free_netdev(netdev);
- 
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
-index 0c70c0d59..7e06f7bd5 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
-@@ -6,11 +6,44 @@
- #ifndef __XSC_ETH_H
- #define __XSC_ETH_H
- 
-+#include "common/xsc_device.h"
-+#include "xsc_eth_common.h"
-+
-+enum {
-+	XSCALE_ETH_DRIVER_INIT,
-+	XSCALE_ETH_DRIVER_OK,
-+	XSCALE_ETH_DRIVER_CLOSE,
-+	XSCALE_ETH_DRIVER_DETACH,
-+};
-+
-+struct xsc_rss_params {
-+	u32	indirection_rqt[XSC_INDIR_RQT_SIZE];
-+	u32	rx_hash_fields[XSC_NUM_INDIR_TIRS];
-+	u8	toeplitz_hash_key[52];
-+	u8	hfunc;
-+	u32	rss_hash_tmpl;
-+};
-+
- struct xsc_adapter {
- 	struct net_device	*netdev;
- 	struct pci_dev		*pdev;
- 	struct device		*dev;
- 	struct xsc_core_device	*xdev;
-+
-+	struct xsc_eth_params	nic_param;
-+	struct xsc_rss_params	rss_param;
-+
-+	struct workqueue_struct	*workq;
-+
-+	struct xsc_sq		**txq2sq;
-+
-+	u32			status;
-+	struct mutex		status_lock; /*protect status */
- };
- 
-+static inline struct net_device *xsc_dev_to_netdev(struct xsc_core_device *xdev)
-+{
-+	return ((struct xsc_adapter *)xdev->eth_priv)->netdev;
-+}
-+
- #endif /* __XSC_ETH_H */
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
-index b5640f05d..7490e13ec 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
-@@ -6,10 +6,40 @@
- #ifndef __XSC_ETH_COMMON_H
- #define __XSC_ETH_COMMON_H
- 
-+#include "xsc_pph.h"
-+
-+#define SW_MIN_MTU		ETH_MIN_MTU
-+#define SW_DEFAULT_MTU		ETH_DATA_LEN
-+#define SW_MAX_MTU		9600
-+
-+#define XSC_ETH_HW_MTU_SEND	9800
-+#define XSC_ETH_HW_MTU_RECV	9800
-+#define XSC_ETH_HARD_MTU	(ETH_HLEN + VLAN_HLEN * 2 + ETH_FCS_LEN)
-+#define XSC_SW2HW_MTU(mtu)	((mtu) + XSC_ETH_HARD_MTU)
-+#define XSC_SW2HW_FRAG_SIZE(mtu)	((mtu) + XSC_ETH_HARD_MTU)
-+#define XSC_ETH_RX_MAX_HEAD_ROOM	256
-+#define XSC_SW2HW_RX_PKT_LEN(mtu)	\
-+	((mtu) + ETH_HLEN + XSC_ETH_RX_MAX_HEAD_ROOM)
-+
- #define XSC_LOG_INDIR_RQT_SIZE		0x8
- 
- #define XSC_INDIR_RQT_SIZE		BIT(XSC_LOG_INDIR_RQT_SIZE)
- #define XSC_ETH_MIN_NUM_CHANNELS	2
- #define XSC_ETH_MAX_NUM_CHANNELS	XSC_INDIR_RQT_SIZE
- 
-+struct xsc_eth_params {
-+	u16	num_channels;
-+	u16	max_num_ch;
-+	u8	num_tc;
-+	u32	mtu;
-+	u32	hard_mtu;
-+	u32	comp_vectors;
-+	u32	sq_size;
-+	u32	sq_max_size;
-+	u8	rq_wq_type;
-+	u32	rq_size;
-+	u32	rq_max_size;
-+	u32	rq_frags_size;
-+};
-+
- #endif
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_pp.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_pp.h
-new file mode 100644
-index 000000000..582f99d8c
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_pp.h
-@@ -0,0 +1,38 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+
-+#ifndef __XSC_PP_H
-+#define __XSC_PP_H
-+
-+enum {
-+	XSC_HASH_FIELD_SEL_SRC_IP	= BIT(0),
-+	XSC_HASH_FIELD_SEL_PROTO	= BIT(1),
-+	XSC_HASH_FIELD_SEL_DST_IP	= BIT(2),
-+	XSC_HASH_FIELD_SEL_SPORT	= BIT(3),
-+	XSC_HASH_FIELD_SEL_DPORT	= BIT(4),
-+	XSC_HASH_FIELD_SEL_SRC_IPV6	= BIT(5),
-+	XSC_HASH_FIELD_SEL_DST_IPV6	= BIT(6),
-+	XSC_HASH_FIELD_SEL_SPORT_V6	= BIT(7),
-+	XSC_HASH_FIELD_SEL_DPORT_V6	= BIT(8),
-+};
-+
-+#define XSC_HASH_IP		(XSC_HASH_FIELD_SEL_SRC_IP	|\
-+				XSC_HASH_FIELD_SEL_DST_IP	|\
-+				XSC_HASH_FIELD_SEL_PROTO)
-+#define XSC_HASH_IP_PORTS	(XSC_HASH_FIELD_SEL_SRC_IP	|\
-+				XSC_HASH_FIELD_SEL_DST_IP	|\
-+				XSC_HASH_FIELD_SEL_SPORT	|\
-+				XSC_HASH_FIELD_SEL_DPORT	|\
-+				XSC_HASH_FIELD_SEL_PROTO)
-+#define XSC_HASH_IP6		(XSC_HASH_FIELD_SEL_SRC_IPV6	|\
-+				XSC_HASH_FIELD_SEL_DST_IPV6	|\
-+				XSC_HASH_FIELD_SEL_PROTO)
-+#define XSC_HASH_IP6_PORTS	(XSC_HASH_FIELD_SEL_SRC_IPV6	|\
-+				XSC_HASH_FIELD_SEL_DST_IPV6	|\
-+				XSC_HASH_FIELD_SEL_SPORT_V6	|\
-+				XSC_HASH_FIELD_SEL_DPORT_V6	|\
-+				XSC_HASH_FIELD_SEL_PROTO)
-+
-+#endif /* __XSC_PP_H */
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_pph.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_pph.h
-new file mode 100644
-index 000000000..34f1200e8
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_pph.h
-@@ -0,0 +1,180 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+
-+#ifndef __XSC_PPH_H
-+#define __XSC_PPH_H
-+
-+#define XSC_PPH_HEAD_LEN	64
-+
-+enum {
-+	L4_PROTO_NONE	= 0,
-+	L4_PROTO_TCP	= 1,
-+	L4_PROTO_UDP	= 2,
-+	L4_PROTO_ICMP	= 3,
-+	L4_PROTO_GRE	= 4,
-+};
-+
-+enum {
-+	L3_PROTO_NONE	= 0,
-+	L3_PROTO_IP	= 2,
-+	L3_PROTO_IP6	= 3,
-+};
-+
-+struct epp_pph {
-+	u16 outer_eth_type;
-+	u16 inner_eth_type;
-+
-+	u16 rsv1:1;
-+	u16 outer_vlan_flag:2;
-+	u16 outer_ip_type:2;
-+	u16 outer_ip_ofst:5;
-+	u16 outer_ip_len:6;
-+
-+	u16 rsv2:1;
-+	u16 outer_tp_type:3;
-+	u16 outer_tp_csum_flag:1;
-+	u16 outer_tp_ofst:7;
-+	u16 ext_tunnel_type:4;
-+
-+	u8 tunnel_ofst;
-+	u8 inner_mac_ofst;
-+
-+	u32 rsv3:2;
-+	u32 inner_mac_flag:1;
-+	u32 inner_vlan_flag:2;
-+	u32 inner_ip_type:2;
-+	u32 inner_ip_ofst:8;
-+	u32 inner_ip_len:6;
-+	u32 inner_tp_type:2;
-+	u32 inner_tp_csum_flag:1;
-+	u32 inner_tp_ofst:8;
-+
-+	u16 rsv4:1;
-+	u16 payload_type:4;
-+	u16 payload_ofst:8;
-+	u16 pkt_type:3;
-+
-+	u16 rsv5:2;
-+	u16 pri:3;
-+	u16 logical_in_port:11;
-+	u16 vlan_info;
-+	u8 error_bitmap:8;
-+
-+	u8 rsv6:7;
-+	u8 recirc_id_vld:1;
-+	u16 recirc_id;
-+
-+	u8 rsv7:7;
-+	u8 recirc_data_vld:1;
-+	u32 recirc_data;
-+
-+	u8 rsv8:6;
-+	u8 mark_tag_vld:2;
-+	u16 mark_tag;
-+
-+	u8 rsv9:4;
-+	u8 upa_to_soc:1;
-+	u8 upa_from_soc:1;
-+	u8 upa_re_up_call:1;
-+	u8 upa_pkt_drop:1;
-+
-+	u8 ucdv;
-+	u16 rsv10:2;
-+	u16 pkt_len:14;
-+
-+	u16 rsv11:2;
-+	u16 pkt_hdr_ptr:14;
-+
-+	u64	 rsv12:5;
-+	u64	 csum_ofst:8;
-+	u64	 csum_val:29;
-+	u64	 csum_plen:14;
-+	u64	 rsv11_0:8;
-+
-+	u64	 rsv11_1;
-+	u64	 rsv11_2;
-+	u16 rsv11_3;
-+};
-+
-+#define OUTER_L3_BIT	BIT(3)
-+#define OUTER_L4_BIT	BIT(2)
-+#define INNER_L3_BIT	BIT(1)
-+#define INNER_L4_BIT	BIT(0)
-+#define OUTER_BIT		(OUTER_L3_BIT | OUTER_L4_BIT)
-+#define INNER_BIT		(INNER_L3_BIT | INNER_L4_BIT)
-+#define OUTER_AND_INNER	(OUTER_BIT | INNER_BIT)
-+
-+#define PACKET_UNKNOWN	BIT(4)
-+
-+#define EPP2SOC_PPH_EXT_TUNNEL_TYPE_OFFSET (6UL)
-+#define EPP2SOC_PPH_EXT_TUNNEL_TYPE_BIT_MASK (0XF00)
-+#define EPP2SOC_PPH_EXT_TUNNEL_TYPE_BIT_OFFSET (8)
-+
-+#define EPP2SOC_PPH_EXT_ERROR_BITMAP_OFFSET (20UL)
-+#define EPP2SOC_PPH_EXT_ERROR_BITMAP_BIT_MASK (0XFF)
-+#define EPP2SOC_PPH_EXT_ERROR_BITMAP_BIT_OFFSET (0)
-+
-+#define XSC_GET_EPP2SOC_PPH_EXT_TUNNEL_TYPE(PPH_BASE_ADDR)	\
-+	((*(u16 *)((u8 *)(PPH_BASE_ADDR) +	\
-+	EPP2SOC_PPH_EXT_TUNNEL_TYPE_OFFSET) &	\
-+	EPP2SOC_PPH_EXT_TUNNEL_TYPE_BIT_MASK) >>	\
-+	EPP2SOC_PPH_EXT_TUNNEL_TYPE_BIT_OFFSET)
-+
-+#define XSC_GET_EPP2SOC_PPH_ERROR_BITMAP(PPH_BASE_ADDR)	\
-+	((*(u8 *)((u8 *)(PPH_BASE_ADDR) +	\
-+	EPP2SOC_PPH_EXT_ERROR_BITMAP_OFFSET) &	\
-+	EPP2SOC_PPH_EXT_ERROR_BITMAP_BIT_MASK) >>	\
-+	EPP2SOC_PPH_EXT_ERROR_BITMAP_BIT_OFFSET)
-+
-+#define PPH_OUTER_IP_TYPE_OFF		(4UL)
-+#define PPH_OUTER_IP_TYPE_MASK		(0x3)
-+#define PPH_OUTER_IP_TYPE_SHIFT		(11)
-+#define PPH_OUTER_IP_TYPE(base)		\
-+	((ntohs(*(u16 *)((u8 *)(base) + PPH_OUTER_IP_TYPE_OFF)) >>	\
-+	PPH_OUTER_IP_TYPE_SHIFT) & PPH_OUTER_IP_TYPE_MASK)
-+
-+#define PPH_OUTER_IP_OFST_OFF		(4UL)
-+#define PPH_OUTER_IP_OFST_MASK		(0x1f)
-+#define PPH_OUTER_IP_OFST_SHIFT		(6)
-+#define PPH_OUTER_IP_OFST(base)			\
-+	((ntohs(*(u16 *)((u8 *)(base) + PPH_OUTER_IP_OFST_OFF)) >>	\
-+	PPH_OUTER_IP_OFST_SHIFT) & PPH_OUTER_IP_OFST_MASK)
-+
-+#define PPH_OUTER_IP_LEN_OFF		(4UL)
-+#define PPH_OUTER_IP_LEN_MASK		(0x3f)
-+#define PPH_OUTER_IP_LEN_SHIFT		(0)
-+#define PPH_OUTER_IP_LEN(base)		\
-+	((ntohs(*(u16 *)((u8 *)(base) + PPH_OUTER_IP_LEN_OFF)) >>	\
-+	PPH_OUTER_IP_LEN_SHIFT) & PPH_OUTER_IP_LEN_MASK)
-+
-+#define PPH_OUTER_TP_TYPE_OFF		(6UL)
-+#define PPH_OUTER_TP_TYPE_MASK		(0x7)
-+#define PPH_OUTER_TP_TYPE_SHIFT		(12)
-+#define PPH_OUTER_TP_TYPE(base)		\
-+	((ntohs(*(u16 *)((u8 *)(base) + PPH_OUTER_TP_TYPE_OFF)) >>	\
-+	PPH_OUTER_TP_TYPE_SHIFT) & PPH_OUTER_TP_TYPE_MASK)
-+
-+#define PPH_PAYLOAD_OFST_OFF		(14UL)
-+#define PPH_PAYLOAD_OFST_MASK		(0xff)
-+#define PPH_PAYLOAD_OFST_SHIFT		(3)
-+#define PPH_PAYLOAD_OFST(base)		\
-+	((ntohs(*(u16 *)((u8 *)(base) + PPH_PAYLOAD_OFST_OFF)) >>	\
-+	PPH_PAYLOAD_OFST_SHIFT) & PPH_PAYLOAD_OFST_MASK)
-+
-+#define PPH_CSUM_OFST_OFF		(38UL)
-+#define PPH_CSUM_OFST_MASK		(0xff)
-+#define PPH_CSUM_OFST_SHIFT		(51)
-+#define PPH_CSUM_OFST(base)		\
-+	((be64_to_cpu(*(u64 *)((u8 *)(base) + PPH_CSUM_OFST_OFF)) >>	\
-+	PPH_CSUM_OFST_SHIFT) & PPH_CSUM_OFST_MASK)
-+
-+#define PPH_CSUM_VAL_OFF		(38UL)
-+#define PPH_CSUM_VAL_MASK		(0xeffffff)
-+#define PPH_CSUM_VAL_SHIFT		(22)
-+#define PPH_CSUM_VAL(base)		\
-+	((be64_to_cpu(*(u64 *)((u8 *)(base) + PPH_CSUM_VAL_OFF)) >>	\
-+	PPH_CSUM_VAL_SHIFT) & PPH_CSUM_VAL_MASK)
-+#endif /* __XSC_TBM_H */
-+
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
-new file mode 100644
-index 000000000..223d4873d
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
-@@ -0,0 +1,49 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ * Copyright (c) 2015-2016, Mellanox Technologies. All rights reserved.
-+ */
-+
-+#ifndef __XSC_QUEUE_H
-+#define __XSC_QUEUE_H
-+
-+#include "common/xsc_core.h"
-+
-+struct xsc_sq {
-+	struct xsc_core_qp		cqp;
-+	/* dirtied @completion */
-+	u16                        cc;
-+	u32                        dma_fifo_cc;
-+
-+	/* dirtied @xmit */
-+	u16                        pc ____cacheline_aligned_in_smp;
-+	u32                        dma_fifo_pc;
-+
-+	struct xsc_cq            cq;
-+
-+	/* read only */
-+	struct xsc_wq_cyc         wq;
-+	u32                        dma_fifo_mask;
-+	struct {
-+		struct xsc_sq_dma         *dma_fifo;
-+		struct xsc_tx_wqe_info    *wqe_info;
-+	} db;
-+	void __iomem              *uar_map;
-+	struct netdev_queue       *txq;
-+	u32                        sqn;
-+	u16                        stop_room;
-+
-+	__be32                     mkey_be;
-+	unsigned long              state;
-+	unsigned int               hw_mtu;
-+
-+	/* control path */
-+	struct xsc_wq_ctrl        wq_ctrl;
-+	struct xsc_channel         *channel;
-+	int                        ch_ix;
-+	int                        txq_ix;
-+	struct work_struct         recover_work;
-+} ____cacheline_aligned_in_smp;
-+
-+#endif /* __XSC_QUEUE_H */
--- 
-2.43.0
+According to a more detailed clarification, this part is actually an
+enhancement and does not cause any issues during operation, so it is
+not a real bug. Therefore, I will post this patch in net-next.
+
+Thanks,
+Justin
