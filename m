@@ -1,55 +1,43 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC661B393C;
-	Wed, 23 Apr 2025 08:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6152701B2;
+	Wed, 23 Apr 2025 08:59:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745398531; cv=none; b=UXOcT0fCIgP4XmZrJdpXDOpxHm6DekqL387Y0Q4bShvpTsuNQY11vCHsrxUIDR7C1RXKO7fi5TYzg/SwbwT3G/aVuMNsM8LbfWrPo57nXgwe05MHtQfH9TdvpV6SFiuAK395q0O5vHFI4wPUtX3NLqc6ZvusH3ONZ44b+JmalYA=
+	t=1745398787; cv=none; b=j2TU0KcH156LY4EYY9dCnyYUepxexviGi/9oK1icQvQKYfn6BCz1fb+NzYSbmXw9a1SrIDSMwl8RPx9/0Qb2Z7E6fJ+UXQjnBpDmYzRs275edsYwXoyHEF9g46CcZuF+ls3WsMIZBfgg+f92vvpeVf3vbn9T6iuCrTqW7TtbMao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745398531; c=relaxed/simple;
-	bh=E8lCmYELthXVrgPK9DiQF5wazPVbs7kqfzcZCrjY54c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NGc3tC+NCbdpw93bVPPL2jxhHDCuzdBpJJ6OWhAkeb2boS9c3MvPNa17jHk46lNa6M3ABLMqSHmJsMgL8V8C9HDA6xBXcu4nDpLP8fZmFp57O3IpiXyh3H9la97oZvWazDf27+k1SeorHj2mzH2sgzdY36/WdrIR5CPPjYxFYVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oQP22YwH; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="oQP22YwH"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5A3F943226;
-	Wed, 23 Apr 2025 08:55:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1745398528;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B4zIqLZCfsgZ3vHsVWWBu8KvyZdoEpgxEavAMbbq/00=;
-	b=oQP22YwHEeTSzgAnr3FkTp5W8J7XvMwbt9r6IsUtIMZIYUwXjoRTFkKvifGUhKIdQja4Qd
-	gNL2D8WCgOQSs1WP9vjITextePsQpFfJozpzhp4WZ4PP4WiZuBzainP4SOyCrddvXeqB14
-	Pna587uV6z2qmovWVBIjqzWBv3mx/hcelxGThvUwqe+C5vpLJtn+0RFAg1+dbYPls9uXZr
-	0X3YZGR2xLMWckEcQzwyufkNmzZUCKeCAwsgdmXE/YSJYXQXm8tt5QQ82fyeF2eNqXQ1a8
-	4nwhpBbu728dXnfDx93arCZqP3pTTSke9q9i7LyMZ7zsw52CUOfo2s5NQMW3QA==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: davem@davemloft.net,
-	Andrew Lunn <andrew@lunn.ch>,
-	Russell King <linux@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com,
-	Simon Horman <horms@kernel.org>,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH net v2 3/3] net: stmmac: socfpga: Remove unused pcs-mdiodev field
-Date: Wed, 23 Apr 2025 12:46:45 +0200
-Message-ID: <20250423104646.189648-4-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423104646.189648-1-maxime.chevallier@bootlin.com>
-References: <20250423104646.189648-1-maxime.chevallier@bootlin.com>
+	s=arc-20240116; t=1745398787; c=relaxed/simple;
+	bh=uHWekA94BHUStyZoX5LJyDtvPegkwkDK+SHYN1zdReg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RDfbwazxNYO0iT7YSMLOKrMzzhn4uYSScu3i2dORpRH4xE5J/81NO1Y2odqhjES9Z/mAc9SKq9i+xTWt7avrnXq/yJA8hoYxqNki/Fa76FwYoeDYtAjeWnE2zwt4vHaMg3oALvI4SyLqwa4erGQW6JAtxMlFYOvV05NqKjX04Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53N7lBYB025978;
+	Wed, 23 Apr 2025 08:59:29 GMT
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 466jhj8h9w-3
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Wed, 23 Apr 2025 08:59:28 +0000 (GMT)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Wed, 23 Apr 2025 01:59:27 -0700
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Wed, 23 Apr 2025 01:59:23 -0700
+From: <jianqi.ren.cn@windriver.com>
+To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
+CC: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <jianqi.ren.cn@windriver.com>, <jhs@mojatatu.com>,
+        <xiyou.wangcong@gmail.com>, <jiri@resnulli.us>, <davem@davemloft.net>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+        <michal.swiatkowski@linux.intel.com>
+Subject: [PATCH 5.15.y] net/sched: act_mirred: don't override retval if we already lost the skb
+Date: Wed, 23 Apr 2025 16:59:23 +0800
+Message-ID: <20250423085923.2890055-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,40 +45,101 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeeiudekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveegtdffleffleevueellefgjeefvedvjefhheegfefgffdvfeetgeevudetffdtnecukfhppedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejnecuvehluhhsthgvrhfuihiivgepvdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjedphhgvlhhopehfvgguohhrrgdrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudefpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhto
- hepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-GND-Sasl: maxime.chevallier@bootlin.com
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: IEluZoRdqirOPmjxdYA4XupcAB1J8Z7l
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDIzMDA2MCBTYWx0ZWRfX1DCx4QgzP1eT V7bkHXk0uxGxAdOYczLh1Os+Z3ICuxlVea4uNIKt8uEoraFjPw0NLVxockOYz78qapziTu8svOV 1Il5u1NCjMOv2ezzm7tbzG3/KMG0HrBEGAo3NlIgf8DV8UnvmVnR8TQbVO5nA4KKmNQKYnGz2y3
+ vgfDogb2axwTt+N0JAyEYjHaE3vK3ts0i9T/3EtowoXibBOlYJrhrmUo/3caGAkF3PqOu99LQO+ KsRjky49T4tH0ufdMLsYIk53jjogwe739+PzG0gOgvmnhQTIqANE0G4GbEuGzSczo98Cz3eDuTG dCaBNqXQ4vs2XbnoeGS0a46bPeLIM1V6Xi1LxlrjE5aycDrKUDXd7/33TFwVAClchQYJ7ZtVNOj
+ ykJqaNkuPcy62VHFT4JcijhyheK3oPvTuEl6n+y0Ojf3s4zJUJMH+pNhgVm86AsHl7V511bi
+X-Authority-Analysis: v=2.4 cv=ONQn3TaB c=1 sm=1 tr=0 ts=6808abf0 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=A7XncKjpAAAA:8 a=J1Y8HTJGAAAA:8 a=t7CeM3EgAAAA:8
+ a=z6SZLS2PjRZJ6NiNSX0A:9 a=R9rPLQDAdC6-Ub70kJmZ:22 a=y1Q9-5lHfBjTkpIzbSAN:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: IEluZoRdqirOPmjxdYA4XupcAB1J8Z7l
+X-Sensitive_Customer_Information: Yes
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-23_06,2025-04-22_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
+ mlxscore=0 mlxlogscore=999 priorityscore=1501 adultscore=0
+ lowpriorityscore=0 clxscore=1015 impostorscore=0 phishscore=0 spamscore=0
+ malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2504070000
+ definitions=main-2504230060
 
-When dwmac-socfpga was converted to using the Lynx PCS (previously
-referred to in the driver as the Altera TSE PCS), the
-lynx_pcs_create_mdiodev() was used to create the pcs instance.
+From: Jakub Kicinski <kuba@kernel.org>
 
-As this function didn't exist in the early versions of the series, a
-local mdiodev object was stored for PCS creation. It was never used, but
-still made it into the driver, so remove it.
+[ Upstream commit 166c2c8a6a4dc2e4ceba9e10cfe81c3e469e3210 ]
 
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+If we're redirecting the skb, and haven't called tcf_mirred_forward(),
+yet, we need to tell the core to drop the skb by setting the retcode
+to SHOT. If we have called tcf_mirred_forward(), however, the skb
+is out of our hands and returning SHOT will lead to UaF.
+
+Move the retval override to the error path which actually need it.
+
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Fixes: e5cf1baf92cb ("act_mirred: use TC_ACT_REINSERT when possible")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[Minor conflict resolved due to code context change.]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 ---
-V2: Added Russell's r'd-by tag
+Verified the build test
+---
+ net/sched/act_mirred.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
- drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-index c832a41c1747..72b50f6d72f4 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-@@ -59,7 +59,6 @@ struct socfpga_dwmac {
- 	void __iomem *sgmii_adapter_base;
- 	bool f2h_ptp_ref_clk;
- 	const struct socfpga_dwmac_ops *ops;
--	struct mdio_device *pcs_mdiodev;
- };
+diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
+index 97cd4b2377d6..e1c183b28306 100644
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -258,13 +258,13 @@ static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
+ 	dev = rcu_dereference_bh(m->tcfm_dev);
+ 	if (unlikely(!dev)) {
+ 		pr_notice_once("tc mirred: target device is gone\n");
+-		goto out;
++		goto err_cant_do;
+ 	}
  
- static void socfpga_dwmac_fix_mac_speed(void *bsp_priv, int speed,
+ 	if (unlikely(!(dev->flags & IFF_UP)) || !netif_carrier_ok(dev)) {
+ 		net_notice_ratelimited("tc mirred to Houston: device %s is down\n",
+ 				       dev->name);
+-		goto out;
++		goto err_cant_do;
+ 	}
+ 
+ 	/* we could easily avoid the clone only if called by ingress and clsact;
+@@ -278,7 +278,7 @@ static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
+ 	if (!use_reinsert) {
+ 		skb2 = skb_clone(skb, GFP_ATOMIC);
+ 		if (!skb2)
+-			goto out;
++			goto err_cant_do;
+ 	}
+ 
+ 	want_ingress = tcf_mirred_act_wants_ingress(m_eaction);
+@@ -321,12 +321,16 @@ static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
+ 	}
+ 
+ 	err = tcf_mirred_forward(want_ingress, skb2);
+-	if (err) {
+-out:
++	if (err)
+ 		tcf_action_inc_overlimit_qstats(&m->common);
+-		if (tcf_mirred_is_act_redirect(m_eaction))
+-			retval = TC_ACT_SHOT;
+-	}
++	__this_cpu_dec(mirred_nest_level);
++
++	return retval;
++
++err_cant_do:
++	if (is_redirect)
++		retval = TC_ACT_SHOT;
++	tcf_action_inc_overlimit_qstats(&m->common);
+ 	__this_cpu_dec(mirred_nest_level);
+ 
+ 	return retval;
 -- 
-2.49.0
+2.34.1
 
