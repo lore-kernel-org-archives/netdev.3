@@ -1,154 +1,152 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFF6293B5A;
-	Wed, 23 Apr 2025 19:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619F1139566
+	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 20:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745437334; cv=none; b=BagKx8wqFch+nGd3gC3cvl4mQvtqBwk5VohDcRGsV6h781e21HcOmcOGl64dhhxpkaPf6K7ZLke4FQjSElomO+qml5jGkv8i15eN+RZyw87UPqP3uoJEEtem4M6T8JSqIDT64TguuxiGMXyRmp7wBeHjonazEXIXo51yGNm9gPA=
+	t=1745438587; cv=none; b=pYHx6q6jKvUOe+YKgMGukbV9Z5bY8R3FmBV2JEdbEDgz/I2YKZ2g001cGmznAyH04gYaVaj4+PR4A2wC9dh5aMYU4cSJbGjUlXqxg8EpVatyfT3mUqqAR7CcpQd+bchSDa/nPS/kLIH/7uggT+R78OQFc5rJI6cvxZKTkWcgy3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745437334; c=relaxed/simple;
-	bh=4ZdUq2tzBznByojYCi0WA8cKaEHmxfVFiiY35QjqGeM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MvHGRcksUfKam3JuqqjTtScliBa0ofO8oYjam3yRe/oziVKW2UfXdIBM5/Px9HL7/tWia1HSc6/PFjiS9DqU7B8ykcy3KAryuaLX9whDsA3HSbFgoEEG28lkzEl8u1GhTcwMV/ivrvs4ITqOw8VSL8J5SLz6BFnHpVhpHT1AzUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hmXX85RI; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745438587; c=relaxed/simple;
+	bh=LFMvKrt+NeQG6HVm9/qE5kZikjR5SUoTf0b4leEdIu4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a0WZhoWYW4SfC3C1DRhbzatQ6R9bvg/ZNHmwcy8QBX3E376GG9y42vCnFVZTEXhYqkSujC/qzXotYuJzj59A9qv+dCbx74A9A2OFtpPMldOBW1Hs4YtzpgVNRL8iei+tSat0nu0U0da3vpMY9BH2WrAwuW++j6JyZwvRuyDmD4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=srC6GUeF; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hmXX85RI"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2ff6cf448b8so334930a91.3;
-        Wed, 23 Apr 2025 12:42:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="srC6GUeF"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2240aad70f2so56945ad.0
+        for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 13:03:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745437332; x=1746042132; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1745438585; x=1746043385; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iBIIB+/ZmIi8Tc2LcqXAgRSWZd60kP7sw7lnOaM4f9M=;
-        b=hmXX85RIAtMQuPggXYQd1hxa7W4Df1yKq4A2zSl+0aUoqsmuEnJHh70hlHVQ8qi501
-         os+pjuLzcg0lCZturKWWVu5kLToFYyF4dqj/yFW8OK6wY//8WbD3zOTPU+Zuqui5QagB
-         BEhMDEYcsur9lh1uIJrI+blqgoYkC4kpCh1GS8koGa//zdTNTdIuh/GQAQEwfzV2rGnD
-         y9uaOfj5W7wz6YKpaWeO+6rPP6qt48bur4dpCEpNXli+48BChkee0p5qXQBIzc9+33rz
-         xE2LpUeOvA5F51+/1E5QgRyJ7O8S0xCEOzhPsDQh8Z6EyUtNzNX9DwOGSjEObpRtpC9C
-         3cow==
+        bh=LFMvKrt+NeQG6HVm9/qE5kZikjR5SUoTf0b4leEdIu4=;
+        b=srC6GUeF+o8aXR3d5i9KqPx9nzYOMQNYy5VxW00+7l1bqQY5xadAU7j6v2qzDCcdF9
+         idoYiWww+YyryB0b6uKiGbpe/KDpKiZzbfmuprJebhB+95c12zxu4jxUKBHYh/71ICSS
+         7do+vqpH2DoG4GxlTnL9TrFri0TSVZK0M6nsdkrDX7X9J2v4lYHTKmgzCOKm0paw+X/2
+         f8QSNRhplosnZ0J8toI1IjTAmcvokJB5yEmqO014XIJzlqlDSgGLI45G9ABzBGrbvEmp
+         Unq078vOQ8Pq7teSi5g69qycoTA7CEI0erbNrxiD46MdhjWIgOSVZgs71xOroa/5lKHM
+         TY9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745437332; x=1746042132;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1745438585; x=1746043385;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iBIIB+/ZmIi8Tc2LcqXAgRSWZd60kP7sw7lnOaM4f9M=;
-        b=XCKO8bGgdpe97p/GlI0kCOtIqq8fzPlA2V2hbJw9//i05XffktlXj0bVWPZZDfQk39
-         5cO43RdPHQJpg6AsYhcbttCvf+KvrYLG/zOycbb+Gszm2BuEwhy/HpqWl1T9Bp7e6bC+
-         09PCUzqgysTIOYs1SECAxQd1ZfufDXiRr8ogwBrqjPT9POpF/hxTvozmIQCp3UAjqeev
-         M5PlfwUwj5zLpaZaoxP2qf6te2gZo/rUVFgHHEWz1SisqZfhXxDnO0obykFSxjG6d99U
-         AfMJeSGpcxsSQ62grmhoOSW3F9Nol0nQi4LtWOnAb5eHGRQhBojwQ1Dt+l9jBe3cYM30
-         CSsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVshvQ7dBWi9MPjNjPEF0I0NjZGxzdyUMIuRgnmnqt5qX0i3wPUgFrmUqtskidGaM0PUAy7UvkL@vger.kernel.org, AJvYcCWImE7UveCMWk5FlSiJCfIgXmcZWwCAd2jEzxqmiZG3Cc4+8h+b7uDxo8nEhS6og3Acw2nTKAjkDRHyYgg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvrgCwk8DiiDO98XscyH+ruJfXKdbyKcz8IQmeQ9d2LRLzd3lX
-	BLhjrj7BHtgJNqkjX86Ws/yaLxW9rs2Fl496yqHbvSjetYiIhgEM0wCcDp88
-X-Gm-Gg: ASbGncs0hCk80o+l6YNCvVImAl6SSurpGZvVtrOsaC7Cdz7YhqCkL1XAMts1aO7rH2J
-	VDuv8JwqfbjnOyHyAW3yGlCq50bK77BUsywBsjbarhdBtUs5DuYQE8VnjEX2KPiJIfskFw9n7Kc
-	KRWYl+dLY+/BLAqgFxQtF1a5iNTKbWWU9ku+NhKpiFJl4cVmlwDf2rEUm7DzrqXp/7IeKNKB81/
-	LNI7A2hUQ+y5NBFiBFO2wCKw8O/ExJKV+dHjOlbUdEmzu08kPoX8xNKXOqs2EvrRqknoK54H72H
-	vPGhhWt81Caf0VsXlXwV/bT9SSczBb2jnp5OWk4QTmkP248QKs1TCmrdAKyvCCjLDjZd376ppzE
-	xUKauhoUmkkEuI1fInw==
-X-Google-Smtp-Source: AGHT+IHVHb8f5emrtviZLG/qufveIt8tZsd+Ml9sZN+0I3m7amvYcQpN6eX7VVzpqWUE/VNgi2h9Nw==
-X-Received: by 2002:a17:90b:5488:b0:2ee:ee77:2263 with SMTP id 98e67ed59e1d1-309ed24bc3bmr93692a91.7.1745437331875;
-        Wed, 23 Apr 2025 12:42:11 -0700 (PDT)
-Received: from mew.. (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-309df9ef918sm2056475a91.7.2025.04.23.12.42.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 12:42:11 -0700 (PDT)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: John Stultz <jstultz@google.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	tmgross@umich.edu,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	anna-maria@linutronix.de,
-	frederic@kernel.org,
-	tglx@linutronix.de,
-	arnd@arndb.de,
-	sboyd@kernel.org,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	tgunders@redhat.com,
-	me@kloenk.dev,
-	david.laight.linux@gmail.com
-Subject: [PATCH v15 6/6] MAINTAINERS: rust: Add a new section for all of the time stuff
-Date: Thu, 24 Apr 2025 04:28:56 +0900
-Message-ID: <20250423192857.199712-7-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250423192857.199712-1-fujita.tomonori@gmail.com>
-References: <20250423192857.199712-1-fujita.tomonori@gmail.com>
+        bh=LFMvKrt+NeQG6HVm9/qE5kZikjR5SUoTf0b4leEdIu4=;
+        b=uJB3iuMqiVg6/atTTSNELpSACfChCcEn3gxDYsjs+q8BdvTJ7zfhn5e1JagXOXCMmP
+         dbz4UuZs6mnDd1i/nssDQPcEP7v3mDFVEW3biVvFGg2vndtx78Yy+nzth/kiYaBlDBTa
+         uFJ1KwBFB+LU/uKX6NjNMiA2l8S9lLwwVGxmQ0y01XSltgh+o+nqCmyN37tDgWwXDOrK
+         uw5njMo7rWt5JyOSNLEvNvA/2sTY05plHESG/b6dQOYX7mTh+x+EWUmlw0jqE8f5SutH
+         kJoGBK3GE0Yn2K1uRYbpfYzVdCOPMWnGD+jpL7jSc6UOEBNMoxSIoZcJItRgz0Qsvxzh
+         VrCA==
+X-Forwarded-Encrypted: i=1; AJvYcCXF5elQDEfAJSq3IbOWYBNHluCQx7oAfIskYFV2+Ou6MW5T0K7DTl+iArmqkLiQHO1tY4w+5nk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx4Sw12coRUe3Vhv94haPfvswuKKPMCjEjwASoBBZF0qwZyeTH
+	j6EQitiThEkLg2qfvLPXxYR3JFht4sxli1ooAiK6rmdpjGJZFebTel4193HSvQktxB93g1DQrJL
+	r3Cn7FW+ziIVvK77C0nEMmkAQL9pfYRW98I6z
+X-Gm-Gg: ASbGncs32mGPAEz8OhqyXsGVMlupDRytkYH+QpXc4N7b2l3fMgfdUC9Pj017uFgw3Hp
+	kjhwzjLw70MPD9j8cCooYFJU8QLdn0L9ibmJhZvJnCzCe/s41CKh2nwDidP0G0VS0Mlh8QpheM0
+	lo+gvBkiZ+zaTYP12OiYRJqMVQnvjAzznWy3AiB36Klzc6rWzf5YxIV8GAQO7mj7g=
+X-Google-Smtp-Source: AGHT+IHOOgkDEz1BzB1Huw4IYNV20kvslf1WKtNl6e2FLaUj1MbSuD54Lz6m4FZxewCwS2cHuUm5X2HTPXALPgYGuak=
+X-Received: by 2002:a17:903:2384:b0:216:27f5:9dd7 with SMTP id
+ d9443c01a7336-22db233b7d5mr546065ad.11.1745438585345; Wed, 23 Apr 2025
+ 13:03:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250421222827.283737-1-kuba@kernel.org>
+In-Reply-To: <20250421222827.283737-1-kuba@kernel.org>
+From: Mina Almasry <almasrymina@google.com>
+Date: Wed, 23 Apr 2025 13:02:52 -0700
+X-Gm-Features: ATxdqUF4PdCWIt3lwFgLq_7phV68lTaEn8SQI7vMvQH2u2CmChWJj90qNffBd64
+Message-ID: <CAHS8izMYF__OsryoH6wyvv8wf57RHWHH8i4z8AggYZVvNqH2TQ@mail.gmail.com>
+Subject: Re: [RFC net-next 00/22] net: per-queue rx-buf-len configuration
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
+	donald.hunter@gmail.com, sdf@fomichev.me, dw@davidwei.uk, 
+	asml.silence@gmail.com, ap420073@gmail.com, jdamato@fastly.com, 
+	dtatulea@nvidia.com, michael.chan@broadcom.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a new section for all of the time stuff to MAINTAINERS file, with
-the existing hrtimer entry fold.
+On Mon, Apr 21, 2025 at 3:28=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> Add support for per-queue rx-buf-len configuration.
+>
+> I'm sending this as RFC because I'd like to ponder the uAPI side
+> a little longer but it's good enough for people to work on
+> the memory provider side and support in other drivers.
+>
 
-Acked-by: John Stultz <jstultz@google.com>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- MAINTAINERS | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+May be silly question, but I assume opting into this is optional for
+queue API drivers? Or do you need GVE to implement dependencies of
+this very soon otherwise it's blocking your work?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c59316109e3f..3072c0f8ec0e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10585,20 +10585,23 @@ F:	kernel/time/timer_list.c
- F:	kernel/time/timer_migration.*
- F:	tools/testing/selftests/timers/
- 
--HIGH-RESOLUTION TIMERS [RUST]
-+DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]
- M:	Andreas Hindborg <a.hindborg@kernel.org>
- R:	Boqun Feng <boqun.feng@gmail.com>
-+R:	FUJITA Tomonori <fujita.tomonori@gmail.com>
- R:	Frederic Weisbecker <frederic@kernel.org>
- R:	Lyude Paul <lyude@redhat.com>
- R:	Thomas Gleixner <tglx@linutronix.de>
- R:	Anna-Maria Behnsen <anna-maria@linutronix.de>
-+R:	John Stultz <jstultz@google.com>
-+R:	Stephen Boyd <sboyd@kernel.org>
- L:	rust-for-linux@vger.kernel.org
- S:	Supported
- W:	https://rust-for-linux.com
- B:	https://github.com/Rust-for-Linux/linux/issues
--T:	git https://github.com/Rust-for-Linux/linux.git hrtimer-next
--F:	rust/kernel/time/hrtimer.rs
--F:	rust/kernel/time/hrtimer/
-+T:	git https://github.com/Rust-for-Linux/linux.git rust-timekeeping-next
-+F:	rust/kernel/time.rs
-+F:	rust/kernel/time/
- 
- HIGH-SPEED SCC DRIVER FOR AX.25
- L:	linux-hams@vger.kernel.org
--- 
-2.43.0
+> The direct motivation for the series is that zero-copy Rx queues would
+> like to use larger Rx buffers. Most modern high-speed NICs support HW-GRO=
+,
+> and can coalesce payloads into pages much larger than than the MTU.
+> Enabling larger buffers globally is a bit precarious as it exposes us
+> to potentially very inefficient memory use. Also allocating large
+> buffers may not be easy or cheap under load. Zero-copy queues service
+> only select traffic and have pre-allocated memory so the concerns don't
+> apply as much.
+>
+> The per-queue config has to address 3 problems:
+> - user API
+> - driver API
+> - memory provider API
+>
+> For user API the main question is whether we expose the config via
+> ethtool or netdev nl. I picked the latter - via queue GET/SET, rather
+> than extending the ethtool RINGS_GET API. I worry slightly that queue
+> GET/SET will turn in a monster like SETLINK. OTOH the only per-queue
+> settings we have in ethtool which are not going via RINGS_SET is
+> IRQ coalescing.
+>
+> My goal for the driver API was to avoid complexity in the drivers.
+> The queue management API has gained two ops, responsible for preparing
+> configuration for a given queue, and validating whether the config
+> is supported. The validating is used both for NIC-wide and per-queue
+> changes. Queue alloc/start ops have a new "config" argument which
+> contains the current config for a given queue (we use queue restart
+> to apply per-queue settings). Outside of queue reset paths drivers
+> can call netdev_queue_config() which returns the config for an arbitrary
+> queue. Long story short I anticipate it to be used during ndo_open.
+>
+> In the core I extended struct netdev_config with per queue settings.
+> All in all this isn't too far from what was there in my "queue API
+> prototype" a few years ago. One thing I was hoping to support but
+> haven't gotten to is providing the settings at the RSS context level.
+> Zero-copy users often depend on RSS for load spreading. It'd be more
+> convenient for them to provide the settings per RSS context.
+> We may be better off converting the QUEUE_SET netlink op to CONFIG_SET
+> and accept multiple "scopes" (queue, rss context)?
+>
+> Memory provider API is a bit tricky. Initially I wasn't sure whether
+> the buffer size should be a MP attribute or a device attribute.
+> IOW whether it's the device that should be telling the MP what page
+> size it wants, or the MP telling the device what page size it has.
 
+I think it needs to be the former. Memory providers will have wildly
+differing restrictions in regards to size. I think already the dmabuf
+mp can allocate any byte size net_iov. I think the io_uring mp can
+allocate any multiple of PAGE_SIZE net_iov. MPs communicating their
+restrictions over a uniform interface with the driver seems difficult
+to define. Better for the driver to ask the pp/mp what it wants, and
+the mp can complain if it doesn't support it.
+
+Also this mirrors what we do today with page_pool_params.order arg
+IIRC. You probably want to piggy back off that or rework it.
+
+
+--=20
+Thanks,
+Mina
