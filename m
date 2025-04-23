@@ -1,190 +1,220 @@
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A416A19DF4C
-	for <netdev@vger.kernel.org>; Wed, 23 Apr 2025 14:57:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5835281363;
+	Wed, 23 Apr 2025 14:58:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420276; cv=none; b=OOLP825pNbVzMy814w/yCeDGL/Tzn40P1vKjMX61IrYbkx4RESX9arNrdEkwjc+KuQVz+X/5bB0sQ8lBXlbZOHiA3jQvXaErI9bAolJzTV/e95RTNjl4rGg9LHzYEwvCNmQHnJArOn+IjmuZF8IEZouPa5zfko+RQ0nAgfoas/g=
+	t=1745420289; cv=none; b=gMO+Z59N17PJQZC79FOUSzqSlmgHrFZ+pQ5x+6RxpETQjA1WRDPanfOVa/TToZ9kIHMZdhLSp4c+E8AcjqlxMUQY1r7TG2fe/5vnhuMBNjrZUNAc9LMBLVGSeWRSZDZtGot6IsezGU6+D87AkgAAU/gTRmfgnzLaAUEaKC7sOWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420276; c=relaxed/simple;
-	bh=ry3OXvm8MNRk+35hfjC8SLmfLbP+2zJngT3Y9Q1kPhE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fcaJn7i3NCptX0ipHcZLUHCfjWm+xZeXew80kiN9fEqY+FHfumGGY9NEq3QzEAFp+4kGJ1urFH0QrHDk44v2UtH9ADM6IY360aQqk9U86aYeo7rRdwbQfR1pwPXH7zTIh4sefCXkVZ/r2A1vXb5Qdu13W/IcRL/pRIz2WZv+ZA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=mY46HS5w; arc=none smtp.client-ip=72.21.196.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="mY46HS5w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1745420274; x=1776956274;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=CJBKbhvv7r7Qvsp/mJhqVYAJDHVE7tJ01jHxTylhxpA=;
-  b=mY46HS5wZh2G1kC88EQuMRu0n45MGnTu+XNku8mAnUpB7D9SEkqCdmbl
-   +fYBysqeoq1LniacHnZ9sjP9UIEkpJZWkcVz3mzQIndOeUXFdQlzF5ym4
-   nhCNzDO6FH20LQ5ynB65sUEejZnU+hQKcSaqBkDpcCa+wulPOf/LEDOzo
-   g=;
-X-IronPort-AV: E=Sophos;i="6.15,233,1739836800"; 
-   d="scan'208";a="485590208"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 14:57:50 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [10.0.38.20:21643]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.42.20:2525] with esmtp (Farcaster)
- id c11a44be-4fa3-46ab-9d9f-60ef549ea072; Wed, 23 Apr 2025 14:57:49 +0000 (UTC)
-X-Farcaster-Flow-ID: c11a44be-4fa3-46ab-9d9f-60ef549ea072
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 23 Apr 2025 14:57:48 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.106.101.42) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 23 Apr 2025 14:57:45 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <kuba@kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<horms@kernel.org>, <kuni1840@gmail.com>, <kuniyu@amazon.com>,
-	<netdev@vger.kernel.org>, <pabeni@redhat.com>
-Subject: Re: [PATCH v2 net-next 2/3] pfcp: Convert pfcp_net_exit() to ->exit_rtnl().
-Date: Wed, 23 Apr 2025 07:12:55 -0700
-Message-ID: <20250423145736.95775-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423064026.636c822f@kernel.org>
-References: <20250423064026.636c822f@kernel.org>
+	s=arc-20240116; t=1745420289; c=relaxed/simple;
+	bh=jnfqlRhyk0nxJXxoUORXfipw+CR6jruRhOi93htI5a8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MWhZAT2PT9QuBGoWD4K0PU4hYbhODA6gebNk+q9tAbwC+1EYWlxw+RFouwLPmNJ3uddwUu9hJvaGtsu6tyRYqzDO56fCxK2rAqyqc8pljwmF4Kgk9k909YMKp4SvAmcnSFbzwJhoj4zY4TC/X06B/o3vicAQTlhtLp9O1R48k/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7c5aecec8f3so397944485a.1;
+        Wed, 23 Apr 2025 07:58:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745420284; x=1746025084;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hlyPTphf+x28unQ9fsmlIwni94vcWgQaX/dq2nBGd2c=;
+        b=uo70yKrNm5TbrHdXKvXWi8VnQESgYgOVM1K5HXlAo16VYU45OYFJe9ua/Sa2iwLV6+
+         28WHwOkgnXp9EQjg21NVCeYrNWh9xiZZhO8FP6rNkBvDgz2AiYgSDW7ZOASqyY9cmkPf
+         BTP2J/NTbYUVFOhKF3l/AT+k+rKw96giRmEFMFlD77ggnkP93jk6zAk9cpr6d4setTiq
+         H20Oj+AFMqW0rZ9nT7JYi2aq8cNWgd6iT+3TxEsSKAiX56Z61og1+GyMJq4t92Qi48kQ
+         ORC066vv1rMfoyMpKOSsNVUZNreZDGpmij5axRIJoCXb+OmTZSO23aqKXjfrKKupXZKJ
+         XQ4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVbZaWCugcFVPmvcT9h4IJu+gAbtzcXOTOhnXfHYnlEYimt1l8LRTOoA1bnt+HPPKaw1fRZiS/+@vger.kernel.org, AJvYcCWJ7+toTLi1se2nADmhVQnjsi5cju3HVfi9U5h0Xb7k4+jPTJ/mbBQEHu/lrYVp9vGdAza01ym70M8=@vger.kernel.org, AJvYcCWmAR8UNFF/kdfTltg92iPVUWvqfqBqenGXPPEBjaHCC8aNDtLcrI7APaW2OoxX2/M9FyKrwpRXP+8+Eo3N@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCAjyH46+Wi163XODQ7KI/n1/qHZAh71DulJyRjfovY0HkRSpO
+	lqhBny7gCTap7ilY9CVCm1+CaE8pBzmsJEk/a3tOAEDsozjjZ40Kv6E0JYZ3m+c=
+X-Gm-Gg: ASbGncu4LKHFcUuoVZBEuLcCiDylHBrBINwVtGYkmlWsn7d5KmMNrheIbn2OGAZXrn8
+	aUbCCror/X0gqli0zxpe1iFvDEXsSxT8t3cn+/OVHDWyWAv5EWwL5ACCyQF7EvEI/MkmM6z43rJ
+	kU7KweJiZoiStWd0zmspQp2pb2s0iUedrE9zpa0mFIGqPkpRUGr5/GO83AD7L0bR7tzvH0MUe2X
+	vajEiijipBkB18jtfaec/Wq14UPTHtjDQZYAmSF+rYEV5qTsq9U4rR58O0V1X+pcY01PPNfvjoo
+	2L5f1+jfV6VETp1ehaJXkkcUvWwKuJvnoQeE07Z7Jxed6SRZ27BYo65xAw8j4R7SQsJG6lCvl2e
+	VGGAl9E0=
+X-Google-Smtp-Source: AGHT+IGsXgE4cnpqPU+SPp8fFl9Kxl40eBT7/qjgJZoSA8IrqAUo4bACVTD1sY9dv1/pRyXoi8nFUA==
+X-Received: by 2002:a05:620a:1790:b0:7c5:4b24:468d with SMTP id af79cd13be357-7c927f594f8mr2723135285a.2.1745420284118;
+        Wed, 23 Apr 2025 07:58:04 -0700 (PDT)
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com. [209.85.222.180])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c925b4dbdbsm688524185a.68.2025.04.23.07.58.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Apr 2025 07:58:03 -0700 (PDT)
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7c54b651310so902884985a.0;
+        Wed, 23 Apr 2025 07:58:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU7L5GOAoLnNdpzwNAd+rhMJM+znc5VuHw2IfNDUbsdwNDyKtk5weFJmCyk1ERe3px2DAp8mdoF8vc=@vger.kernel.org, AJvYcCX3efPKSfbUpf4hWr9NrfiVUxOZCNewxx2qjUwajaxji8siOvkKj/13zMZ5rVY+k5H9X47pWaQD@vger.kernel.org, AJvYcCXYvXlEmKLEusF2FZBenHXVXs9R9BMApYP1nTXFE+L5+pCq+GurBi2ip7Io3/TBpEd7cA6AEvR029TWxM/n@vger.kernel.org
+X-Received: by 2002:a05:6122:793:b0:526:285a:f4b3 with SMTP id
+ 71dfb90a1353d-529253b90f7mr17209301e0c.2.1745419814638; Wed, 23 Apr 2025
+ 07:50:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D043UWC004.ant.amazon.com (10.13.139.206) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+References: <PN3PR01MB9597382EFDE3452410A866AEB8B52@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
+ <PN3PR01MB9597B01823415CB7FCD3BC27B8B52@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
+ <CAMuHMdV9tX=TG7E_CrSF=2PY206tXf+_yYRuacG48EWEtJLo-Q@mail.gmail.com>
+ <PN3PR01MB9597B3AE75E009857AA12D4DB8BB2@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
+ <CAMuHMdWpqHLest0oqiB+hG47t=G7OScLmHz5zr2u0ZgED_+Obg@mail.gmail.com> <aAjthvTuIeUIO4CT@pathway.suse.cz>
+In-Reply-To: <aAjthvTuIeUIO4CT@pathway.suse.cz>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 23 Apr 2025 16:50:02 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXuawN0eC0yO40-zrz70TH-3_Y-CFSy6=hHCCMLAPvU5w@mail.gmail.com>
+X-Gm-Features: ATxdqUEtXjwX1Xvi6EF4OaIe3skICOJiGJO6vzaZtD0WSg84WGPiul-c6IaIVeg
+Message-ID: <CAMuHMdXuawN0eC0yO40-zrz70TH-3_Y-CFSy6=hHCCMLAPvU5w@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] lib/vsprintf: Add support for generic FourCCs by
+ extending %p4cc
+To: Petr Mladek <pmladek@suse.com>
+Cc: Aditya Garg <gargaditya08@live.com>, Hector Martin <marcan@marcan.st>, alyssa@rosenzweig.io, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Sven Peter <sven@svenpeter.dev>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Aun-Ali Zaidi <admin@kodeit.net>, 
+	Maxime Ripard <mripard@kernel.org>, airlied@redhat.com, Simona Vetter <simona@ffwll.ch>, 
+	Steven Rostedt <rostedt@goodmis.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Andrew Morton <akpm@linux-foundation.org>, apw@canonical.com, joe@perches.com, 
+	dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com, Kees Cook <kees@kernel.org>, 
+	tamird@gmail.com, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, 
+	Asahi Linux Mailing List <asahi@lists.linux.dev>, netdev <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Jakub Kicinski <kuba@kernel.org>
-Date: Wed, 23 Apr 2025 06:40:26 -0700
-> On Thu, 17 Apr 2025 17:32:33 -0700 Kuniyuki Iwashima wrote:
-> > -static void __net_exit pfcp_net_exit(struct net *net)
-> > +static void __net_exit pfcp_net_exit_rtnl(struct net *net,
-> > +					  struct list_head *dev_to_kill)
-> >  {
-> >  	struct pfcp_net *pn = net_generic(net, pfcp_net_id);
-> >  	struct pfcp_dev *pfcp, *pfcp_next;
-> > -	struct net_device *dev;
-> > -	LIST_HEAD(list);
-> > -
-> > -	rtnl_lock();
-> > -	for_each_netdev(net, dev)
-> > -		if (dev->rtnl_link_ops == &pfcp_link_ops)
-> > -			pfcp_dellink(dev, &list);
-> >  
-> >  	list_for_each_entry_safe(pfcp, pfcp_next, &pn->pfcp_dev_list, list)
-> > -		pfcp_dellink(pfcp->dev, &list);
-> > -
-> > -	unregister_netdevice_many(&list);
-> > -	rtnl_unlock();
-> > +		pfcp_dellink(pfcp->dev, dev_to_kill);
-> 
-> Kuniyuki, I got distracted by the fact the driver is broken but I think
-> this isn't right.
+Hi Petr,
 
-I guess it was broken recently ?  at least I didn't see null-deref
-while testing ffc90e9ca61b ("pfcp: Destroy device along with udp
-socket's netns dismantle.").
+On Wed, 23 Apr 2025 at 15:39, Petr Mladek <pmladek@suse.com> wrote:
+> On Tue 2025-04-22 10:43:59, Geert Uytterhoeven wrote:
+> > On Tue, 22 Apr 2025 at 10:30, Aditya Garg <gargaditya08@live.com> wrote:
+> > > On 22-04-2025 01:37 pm, Geert Uytterhoeven wrote:
+> > > > On Tue, 8 Apr 2025 at 08:48, Aditya Garg <gargaditya08@live.com> wrote:
+> > > >> From: Hector Martin <marcan@marcan.st>
+> > > >>
+> > > >> %p4cc is designed for DRM/V4L2 FourCCs with their specific quirks, but
+> > > >> it's useful to be able to print generic 4-character codes formatted as
+> > > >> an integer. Extend it to add format specifiers for printing generic
+> > > >> 32-bit FourCCs with various endian semantics:
+> > > >>
+> > > >> %p4ch   Host byte order
+> > > >> %p4cn   Network byte order
+> > > >> %p4cl   Little-endian
+> > > >> %p4cb   Big-endian
+> > > >>
+> > > >> The endianness determines how bytes are interpreted as a u32, and the
+> > > >> FourCC is then always printed MSByte-first (this is the opposite of
+> > > >> V4L/DRM FourCCs). This covers most practical cases, e.g. %p4cn would
+> > > >> allow printing LSByte-first FourCCs stored in host endian order
+> > > >> (other than the hex form being in character order, not the integer
+> > > >> value).
+> > > >>
+> > > >> Acked-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> > > >> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > > >> Reviewed-by: Petr Mladek <pmladek@suse.com>
+> > > >> Tested-by: Petr Mladek <pmladek@suse.com>
+> > > >> Signed-off-by: Hector Martin <marcan@marcan.st>
+> > > >> Signed-off-by: Aditya Garg <gargaditya08@live.com>
+> > > >
+> > > > Thanks for your patch, which is now commit 1938479b2720ebc0
+> > > > ("lib/vsprintf: Add support for generic FourCCs by extending %p4cc")
+> > > > in drm-misc-next/
+> > > >
+> > > >> --- a/Documentation/core-api/printk-formats.rst
+> > > >> +++ b/Documentation/core-api/printk-formats.rst
+> > > >> @@ -648,6 +648,38 @@ Examples::
+> > > >>         %p4cc   Y10  little-endian (0x20303159)
+> > > >>         %p4cc   NV12 big-endian (0xb231564e)
+> > > >>
+> > > >> +Generic FourCC code
+> > > >> +-------------------
+> > > >> +
+> > > >> +::
+> > > >> +       %p4c[hnlb]      gP00 (0x67503030)
+> > > >> +
+> > > >> +Print a generic FourCC code, as both ASCII characters and its numerical
+> > > >> +value as hexadecimal.
+> > > >> +
+> > > >> +The generic FourCC code is always printed in the big-endian format,
+> > > >> +the most significant byte first. This is the opposite of V4L/DRM FourCCs.
+> > > >> +
+> > > >> +The additional ``h``, ``n``, ``l``, and ``b`` specifiers define what
+> > > >> +endianness is used to load the stored bytes. The data might be interpreted
+> > > >> +using the host byte order, network byte order, little-endian, or big-endian.
+> > > >> +
+> > > >> +Passed by reference.
+> > > >> +
+> > > >> +Examples for a little-endian machine, given &(u32)0x67503030::
+> > > >> +
+> > > >> +       %p4ch   gP00 (0x67503030)
+> > > >> +       %p4cn   00Pg (0x30305067)
+> > > >> +       %p4cl   gP00 (0x67503030)
+> > > >> +       %p4cb   00Pg (0x30305067)
+> > > >> +
+> > > >> +Examples for a big-endian machine, given &(u32)0x67503030::
+> > > >> +
+> > > >> +       %p4ch   gP00 (0x67503030)
+> > > >> +       %p4cn   00Pg (0x30305067)
+> > > >
+> > > > This doesn't look right to me, as network byte order is big endian?
+> > > > Note that I didn't check the code.
+> > >
+> > > Originally, it was %p4cr (reverse-endian), but on the request of the maintainers, it was changed to %p4cn.
+> >
+> > Ah, I found it[1]:
+> >
+> > | so, it needs more information that this mimics htonl() / ntohl() for
+> > networking.
+> >
+> > IMHO this does not mimic htonl(), as htonl() is a no-op on big-endian.
+> > while %p4ch and %p4cl yield different results on big-endian.
+> >
+> > > So here network means reverse of host, not strictly big-endian.
+> >
+> > Please don't call it "network byte order" if that does not have the same
+> > meaning as in the network subsystem.
+> >
+> > Personally, I like "%p4r" (reverse) more...
+> > (and "%p4ch" might mean human-readable ;-)
+> >
+> > [1] https://lore.kernel.org/all/Z8B6DwcRbV-8D8GB@smile.fi.intel.com
+>
+> I have to admit that I was always a bit confused by the meaning of the
+> new modifiers. And I did give up at some point and decided to do not
+> block the patch when it made sense to others.
+>
+> But I have to agree with Geert here. The current behavior of %p4ch
+> is confusing on big endian system. I would expect that it does not
+> revert the ordering.
+>
+> Well, I still think that people might find all 4 variants useful.
+> Andy does not like "r". What about "hR"? It is inspired by
+> the existing %pmR.
 
+I am not a fan of complicating the format specifier even more by adding
+more characters...  But seeing %pmR, I have to admit it does make sense.
 
-> The devices do not migrate to the local pcfp_dev_list
-> when their netns is changed. They always stay on the list of original
-> netns. Which I guess may make some sense as that's where their socket
-> is? So we need to scan both the pcfp_dev_list _and_ the local netdevs
-> that are pfcp. Am I misunderstanding something?
+> The problem is that the semantic is not the same. The modifiers affect
+> the output ordering of IPv4 addresses while they affect the reading order
+> in case of FourCC code.
 
-If the netns is queued up for cleanup_net(), the local netdevs
-are handled later by default_device_exit_batch().
+Note that for IPv4 addresses we have %pI4, which BTW also takes [hnbl]
+modifiers.
 
-If the module is unloaded, we call pfcp_net_exit_rtnl() for
-all netns including all local netdevs.
+> Avoid the confusion by replacing the "n" modifier with "hR", aka
+> reverse host ordering.
+>
+> Signed-off-by: Petr Mladek <pmladek@suse.com>
 
-I remember bareudp did like that and I changed geneve and gtp
-as well.
+Thanks, LGTM!
 
-I applied the quivalent diff below on ffc90e9ca61b, and during
-netns dismantle, 2 local netdevs were removed properly (one
-was originally created there, another was moved to the netns).
+Gr{oetje,eeting}s,
 
----8<---
-[root@localhost ~]# ip netns add ns1
-[root@localhost ~]# ip netns add ns2
-[root@localhost ~]# ip -n ns1 link add netns ns2 name pfcp0 type pfcp
-[   74.564522] newlink: dev: pfcp0 at ff11000103ca9000
-[root@localhost ~]# ip -n ns2 link add netns ns2 name pfcp1 type pfcp
-[   79.510334] newlink: dev: pfcp1 at ff11000103caa000
-[root@localhost ~]# ip netns del ns2
-[   83.953871] dellink: dev: pfcp1 at ff11000103caa000 from cleanup_net+0x20e/0x3b0
-[   83.980520] dellink: dev: pfcp0 at ff11000103ca9000 from default_device_exit_batch+0x244/0x300
----8<---
+                        Geert
 
----8<---
-diff --git a/drivers/net/pfcp.c b/drivers/net/pfcp.c
-index 68d0d9e92a22..f7f254d7d031 100644
---- a/drivers/net/pfcp.c
-+++ b/drivers/net/pfcp.c
-@@ -206,6 +206,7 @@ static int pfcp_newlink(struct net *net, struct net_device *dev,
- 		goto exit_del_pfcp_sock;
- 	}
- 
-+	printk(KERN_ERR "newlink: dev: %s at %px\n", dev->name, dev);
- 	pn = net_generic(net, pfcp_net_id);
- 	list_add(&pfcp->list, &pn->pfcp_dev_list);
- 
-@@ -224,6 +225,7 @@ static void pfcp_dellink(struct net_device *dev, struct list_head *head)
- {
- 	struct pfcp_dev *pfcp = netdev_priv(dev);
- 
-+	printk(KERN_ERR "dellink: dev: %s at %px from %pS\n", dev->name, dev, __builtin_return_address(0));
- 	list_del(&pfcp->list);
- 	unregister_netdevice_queue(dev, head);
- }
-@@ -244,28 +246,26 @@ static int __net_init pfcp_net_init(struct net *net)
- 	return 0;
- }
- 
--static void __net_exit pfcp_net_exit(struct net *net)
-+static void __net_exit pfcp_net_exit(struct net *net, struct list_head *list)
- {
- 	struct pfcp_net *pn = net_generic(net, pfcp_net_id);
- 	struct pfcp_dev *pfcp, *pfcp_next;
--	struct net_device *dev;
--	LIST_HEAD(list);
--
--	rtnl_lock();
--	for_each_netdev(net, dev)
--		if (dev->rtnl_link_ops == &pfcp_link_ops)
--			pfcp_dellink(dev, &list);
- 
- 	list_for_each_entry_safe(pfcp, pfcp_next, &pn->pfcp_dev_list, list)
--		pfcp_dellink(pfcp->dev, &list);
-+		pfcp_dellink(pfcp->dev, list);
-+}
-+
-+static void __net_exit pfcp_net_exit_batch_rtnl(struct list_head *net_list, struct list_head *head)
-+{
-+	struct net *net;
- 
--	unregister_netdevice_many(&list);
--	rtnl_unlock();
-+	list_for_each_entry(net, net_list, exit_list)
-+		pfcp_net_exit(net, head);
- }
- 
- static struct pernet_operations pfcp_net_ops = {
- 	.init	= pfcp_net_init,
--	.exit	= pfcp_net_exit,
-+	.exit_batch_rtnl	= pfcp_net_exit_batch_rtnl,
- 	.id	= &pfcp_net_id,
- 	.size	= sizeof(struct pfcp_net),
- };
----8<---
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
