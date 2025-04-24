@@ -1,167 +1,131 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5B522330F;
-	Thu, 24 Apr 2025 10:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0AB214A8B;
+	Thu, 24 Apr 2025 10:25:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745490291; cv=none; b=jlk8wNrL570pUUzLqHt43v9vK9Zprx3sCaGjrYA8TwxMA4zwUDLvIbrHwnY680dzUPzB0IlYnclvazJtDOYk2CGdBY9p90sJE+A/zdekh6u3fbqnVCz46edhpwH1uKLiKB6tRSnUfoMUXpsEIk1+uIwokE6FOfHuy6Ab1HkrE2k=
+	t=1745490317; cv=none; b=qbxJGSZuq7b146pY2l+gQg9144Nku62NtzXWxq4pu2AaK1t/yvWRPvhFiLpiV2QcHVo9tLHlPzR7PFFQ/RzeWUqa1ejz5B71zK245VCFd2d7Ffe0kNmYqDuMvVOnZ7j+Oia5E3CbQb8nVR+2T2lu8EcJHqsq/VBWRQsR4800HS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745490291; c=relaxed/simple;
-	bh=IlIOMdYHJ555cWzmt/zQ4blnbGSKrIpEZRcdBetLLXY=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=RySQBOdzfHCz80ReOPNdEodADXdsAo5ZdTZ3/hc43dc6r4DfCEP1FG69Jq2WEDy2dztOiN1R4sFWwV0dgpE+iS4twW4yd0GsbcKIE+UhIQo4VI9VnH0B00cIZcsAaLVxX/WjhbDWG3S5CkJZmVeNO1s3k3JkqmPxxwuFct5NPZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i28B6GdT; arc=none smtp.client-ip=209.85.221.41
+	s=arc-20240116; t=1745490317; c=relaxed/simple;
+	bh=dq3SEv/mAr3Fh7AUnlDUbfcGx4Y3XJcuMQH+ODPQkq8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FzWieb7ldsS1o3jC1HCMXX8d1K3whWjS9dRGjhdEW8sWmHLFNGdP5OAaFeII8HlMgHjMIc0BEak5p35lcn/oEtJvpcVI+vFQAfbIjY6y5Ly2Y7f5/LhH+nFy6Azfkqm2riOiSur1A7rOZM8q0OntiroPM4gkwCrbnw2ImSThdLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i8wui8m6; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i28B6GdT"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-39c1efc457bso557301f8f.2;
-        Thu, 24 Apr 2025 03:24:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i8wui8m6"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5e61a18c05aso128473a12.1;
+        Thu, 24 Apr 2025 03:25:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745490287; x=1746095087; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mNRkChMGDnmCH0tbjwsRxL/MLXsmw5IBK1Xkg2PwUx4=;
-        b=i28B6GdT6t9FvH4L2p9gLhw+Akv+/OSwhX7e1GqfZACqdP2wf7rM0qS4EDyDBHO/FR
-         QrKqUVeK6WnOFCkcG9lVeHWhh8P8VI8+c9x6+oKT9fGhy8BOF3yklCDvzEz0Xcb1auVN
-         JeexpOQUoTm451WEfhu7UfQHLPg2djAW+fX8q+ETqR+AsGOHdGiIeFFTcIeaXqfML98U
-         4Ml54PHMsBkKRTb8jLizaG3JkbR/15BVk1hSmfFSIfKLnPpw3AcnTPX8WHc9n9nE3yd5
-         rI2Q2lVyCaKDkujslMo0VR4mBSRfvIJniwxXH8Xntqxeq4DLMAEKh5LIc2jY77+1T0LQ
-         CGBw==
+        d=gmail.com; s=20230601; t=1745490313; x=1746095113; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PZMp6B5mpmeFYGu6EDH43QaBIrfAmtdeuZxvgFBICYw=;
+        b=i8wui8m6946OWsfKNt/56p0nXHkXQ3c2jBZKPmkf0xkexBrQlkD+ZbYgoDYm1U9dtg
+         3eBgJango6xrIeYGu1VglYyH4DXRVNwEQzFsX3LOCzdqA2ZsOgR4ty4I2yR5mozTMNs3
+         qj16/56O3WSoKsjODg0axi695t6lL+07ZnK5NQ5ga31WQ/kbHJ/5wkx0P7hT+ulpXZAY
+         sfUhkwEtvZewGIoG46YkzlcwDLgDEV82xUgMIa/2xXvl0xZWbZWymqPW1jyZWYgjgVBK
+         aGTBNpXMm9g5khDZUX5rkzyKCh0gmth9QKICrza0joIyaDoNwPVT4tij7GBu99lubblY
+         AQkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745490287; x=1746095087;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1745490313; x=1746095113;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mNRkChMGDnmCH0tbjwsRxL/MLXsmw5IBK1Xkg2PwUx4=;
-        b=fZp75mzyE2RjJEpXO8xCrqqWO9CqNkUIexLWVY4NsktH6eky98ozvhnqH9Cq5oALOJ
-         3Q/02ndFAPYLMy7/aQSqCbQ+2RFRmb0LB+AZ9xQ7ZKwctHNujDpe3Ux08+Iy03lSEfq8
-         Ax5GGnkOOg2foJeUK7cWzWdM7hBc4L7OyQySqLuaEJrIkoka+9CFymBFGMVIN24nn+fT
-         V74EC/aYL/D7UpKbqcM4pp8DDcICtzokjmZq4HGcXsGhEBGlPV+0XOgEjfZ7cxNGSXfL
-         xH4HQsnfGU8fgdQAFKU9V7/uJGda7xwhXnTI0P0h1Kqn37fHqotl2AdAOrhwHEZot6Fl
-         2i7g==
-X-Forwarded-Encrypted: i=1; AJvYcCVOURfVRZlyhPGJlT4YJT7lo5WRxc6mvMbK4qgthVhiymtlehvbWN9lIYssVo54sEXcq+QWDyOBld9up2c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFeNN9cpLD3EMsgwdl1szmmz9NOz6UZCQ3HxMn1/aF2/xkdIvO
-	iBFuRoZ5rhSLb2q1AjozQUmj/M6uJrcLHtOKbdhckQLEX0q7P09+08u0VqlQ
-X-Gm-Gg: ASbGncv0jGev/fC7Tx8WHx/AP/+TfLzUdSmPAta6ZknSmgRtuDVHddLiUHpeJpveu0u
-	VEeqXv4ldZH0+WQSFqTbya8a+ogiQ4HPMDCW8TXdIjaGC6v7twg3Xq82d4Zdnc1tCDpZrVjaxXu
-	Rwi+TYwcQ7xpVRMBxqK9TlRxbTQx/fMpL2LfX7b6wW/RLbJGz3WD169KB9hFN1w+rhAzH3QOzgN
-	BCrddSrrLHzLMslcsAs1bHD9F4GzPo+E2D23fd/Nd2IEFMAM9mzQya1mVgzRiRgTAbK2p1x/8ou
-	pVzIX9QFG98e7XqyCFk/6YgIwNLHOuYcxjkoigWs8ia1bsQtDi/HVfk+euY=
-X-Google-Smtp-Source: AGHT+IHI3Jwi5rsbBtTyPyfz1rQCpzMHD+eGtHPy64ax+ON+GQRz3pu4mezK2hfis4H+kAk/HBzt5g==
-X-Received: by 2002:a05:6000:4202:b0:391:40bd:6222 with SMTP id ffacd0b85a97d-3a06cf5c719mr1526065f8f.22.1745490287395;
-        Thu, 24 Apr 2025 03:24:47 -0700 (PDT)
-Received: from imac ([2a02:8010:60a0:0:7d34:7f0d:292f:fa10])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a06d532958sm1643367f8f.62.2025.04.24.03.24.46
+        bh=PZMp6B5mpmeFYGu6EDH43QaBIrfAmtdeuZxvgFBICYw=;
+        b=a/T+OD9qZYdyZHqAjQ+eUiA46DUWcpFMIDpwtI/AVzDWpbMg18orbxTN3hsiyUhr+K
+         4cymIiRbWznVcTJ0ybJ1U/SmGJNR4nurx4CiqgSkUiuNqCxMPUnQRehEvqP1EvQQLGnM
+         qE+Akkq8vY2c5ml4EVTbRbRXunza6/bbmhTQEK0v9F5IUn2N6cTq0VroCrttrViNZYKk
+         8J15ddDvptA23EsXb6rTOqn4KRGkSLcyJiBEC8/jXMwUGILs5fGeUU/whubbbvOHlnKt
+         ZstonNKKzbxh0jY00Ct631F4Z67jDBhP4x841rZ3K3/HTesyh+6m9KezMUreip1q815b
+         YH2w==
+X-Forwarded-Encrypted: i=1; AJvYcCVEFSwdNrID7cP26BBCr7MOkDJclYn0feaoIWJv3ajzs++a1xLfzGDryL4GS/EdCCuSTCZlcqNs@vger.kernel.org, AJvYcCXRMb2C9DBWU14oxPVJRum7yQhjPPRH3dWv4Z7dNNfX8MNdBvu1IJTKpRJp2xkU6LmjIJ0ztvFuWbkYxh0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaT5lFNbLjazSF5UK/2bmW9pCLoxjj2C6Q+3SryEV9jchGHzA7
+	3MBC0dWad6xbc5N4ZmRrZ2DQv4SekU6Ygu1VRGV/TuI0vPxtRY+Q
+X-Gm-Gg: ASbGncuGXHloT2GhazIuMTSA6htBeRGCCcjBdez3/0l1uW7AUCHIsdHA/gJbTRYQase
+	DesaOUdCtGeBO/IfUJ/M5qM+J4/t3dPTgQ+FYKjRB0bBZMa9vTV5NhX1W/MMjMKR8dkV+brIalW
+	vQHRFq+hCqah6IzhfsxmV+suzcpOZk1M6W9wF6t9O1FdAVixoVptoQtfsNcV14FNl321Jatc/CH
+	L9fAm2l2A+/1vjyI6hSg5DunTEOpkZ/v8dB8laQf+exbfAAnyZvWEnnCa/3qdoBIpXbKO7S+Kqy
+	DvmALbPWT12JzeXtQOEojrgWalp3
+X-Google-Smtp-Source: AGHT+IG8MYu06ujGbb7kKbPP/EfBk+GYNRAuV0slFfvCch4wK1VUGdi9kwB47zwnFSLbeAuVCEdzkQ==
+X-Received: by 2002:a05:6402:3584:b0:5ed:c6aa:8c6d with SMTP id 4fb4d7f45d1cf-5f6df93668cmr708490a12.9.1745490313090;
+        Thu, 24 Apr 2025 03:25:13 -0700 (PDT)
+Received: from skbuf ([188.25.50.178])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f6eb43ea92sm941608a12.25.2025.04.24.03.25.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Apr 2025 03:24:47 -0700 (PDT)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: Joe Damato <jdamato@fastly.com>
-Cc: netdev@vger.kernel.org,  kuba@kernel.org,  Jianfeng Liu
- <liujianfeng1994@gmail.com>,  Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>,  Hao Luo <haoluo@google.com>,  Tejun Heo
- <tj@kernel.org>,  Bjorn Helgaas <bhelgaas@google.com>,
-  linux-kernel@vger.kernel.org (open list)
-Subject: Re: [PATCH] tools/Makefile: Add ynl target
-In-Reply-To: <20250423204647.190784-1-jdamato@fastly.com> (Joe Damato's
-	message of "Wed, 23 Apr 2025 20:46:44 +0000")
-Date: Thu, 24 Apr 2025 11:17:34 +0100
-Message-ID: <m2selxsw1t.fsf@gmail.com>
-References: <20250423204647.190784-1-jdamato@fastly.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+        Thu, 24 Apr 2025 03:25:11 -0700 (PDT)
+Date: Thu, 24 Apr 2025 13:25:09 +0300
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Jonas Gorski <jonas.gorski@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: dsa: fix VLAN 0 filter imbalance when toggling
+ filtering
+Message-ID: <20250424102509.65u5zmxhbjsd5vun@skbuf>
+References: <20250422184913.20155-1-jonas.gorski@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250422184913.20155-1-jonas.gorski@gmail.com>
 
-Joe Damato <jdamato@fastly.com> writes:
-
-> Add targets to build, clean, and install ynl headers, libynl.a, and
-> python tooling.
->
-> Signed-off-by: Joe Damato <jdamato@fastly.com>
+On Tue, Apr 22, 2025 at 08:49:13PM +0200, Jonas Gorski wrote:
+> When a net device has NETIF_F_HW_VLAN_CTAG_FILTER set, the 8021q code
+> will add VLAN 0 when enabling the device, and remove it on disabling it
+> again.
+> 
+> But since we are changing NETIF_F_HW_VLAN_CTAG_FILTER during runtime in
+> dsa_user_manage_vlan_filtering(), user ports that are already enabled
+> may end up with no VLAN 0 configured, or VLAN 0 left configured.
+> 
+> E.g.the following sequence would leave sw1p1 without VLAN 0 configured:
+> 
+> $ ip link add br0 type bridge vlan_filtering 1
+> $ ip link set br0 up
+> $ ip link set sw1p1 up (filtering is 0, so no HW filter added)
+> $ ip link set sw1p1 master br0 (filtering gets set to 1, but already up)
+> 
+> while the following sequence would work:
+> 
+> $ ip link add br0 type bridge vlan_filtering 1
+> $ ip link set br0 up
+> $ ip link set sw1p1 master br0 (filtering gets set to 1)
+> $ ip link set sw1p1 up (filtering is 1, HW filter is added)
+> 
+> Likewise, the following sequence would leave sw1p2 with a VLAN 0 filter
+> enabled on a vlan_filtering_is_global dsa switch:
+> 
+> $ ip link add br0 type bridge vlan_filtering 1
+> $ ip link set br0 up
+> $ ip link set sw1p1 master br0 (filtering set to 1 for all devices)
+> $ ip link set sw1p2 up (filtering is 1, so VLAN 0 filter is added)
+> $ ip link set sw1p1 nomaster (filtering is reset to 0 again)
+> $ ip link set sw1p2 down (VLAN 0 filter is left configured)
+> 
+> This even causes untagged traffic to break on b53 after undoing the
+> bridge (though this is partially caused by b53's own doing).
+> 
+> Fix this by emulating 8021q's vlan_device_event() behavior when changing
+> the NETIF_F_HW_VLAN_CTAG_FILTER flag, including the printk, so that the
+> absence of it doesn't become a red herring.
+> 
+> While vlan_vid_add() has a return value, vlan_device_event() does not
+> check its return value, so let us do the same.
+> 
+> Fixes: 06cfb2df7eb0 ("net: dsa: don't advertise 'rx-vlan-filter' when not needed")
+> Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 > ---
->  tools/Makefile | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
->
-> diff --git a/tools/Makefile b/tools/Makefile
-> index 5e1254eb66de..c31cbbd12c45 100644
-> --- a/tools/Makefile
-> +++ b/tools/Makefile
-> @@ -41,6 +41,7 @@ help:
->  	@echo '  mm                     - misc mm tools'
->  	@echo '  wmi			- WMI interface examples'
->  	@echo '  x86_energy_perf_policy - Intel energy policy tool'
-> +	@echo '  ynl			- ynl headers, library, and python tool'
->  	@echo ''
->  	@echo 'You can do:'
->  	@echo ' $$ make -C tools/ <tool>_install'
-> @@ -118,11 +119,14 @@ freefall: FORCE
->  kvm_stat: FORCE
->  	$(call descend,kvm/$@)
->  
-> +ynl: FORCE
-> +	$(call descend,net/ynl)
-> +
->  all: acpi counter cpupower gpio hv firewire \
->  		perf selftests bootconfig spi turbostat usb \
->  		virtio mm bpf x86_energy_perf_policy \
->  		tmon freefall iio objtool kvm_stat wmi \
-> -		debugging tracing thermal thermometer thermal-engine
-> +		debugging tracing thermal thermometer thermal-engine ynl
->  
->  acpi_install:
->  	$(call descend,power/$(@:_install=),install)
-> @@ -157,13 +161,16 @@ freefall_install:
->  kvm_stat_install:
->  	$(call descend,kvm/$(@:_install=),install)
->  
-> +ynl_install:
-> +	$(call descend,net/$(@:_install=),install)
 
-nit: I'm not sure there's any merit in the $(@:_install=) construct,
-when it's only really needed when there are multiple targets in the same
-rule. For ynl_install, $(call descend,net/ynl,install) would be just
-fine. It's funny that the existing convention in this Makefile is to
-mostly use substitution for the _install rules, but literals for the
-_clean rules.
-
-Either way:
-
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-
-> +
->  install: acpi_install counter_install cpupower_install gpio_install \
->  		hv_install firewire_install iio_install \
->  		perf_install selftests_install turbostat_install usb_install \
->  		virtio_install mm_install bpf_install x86_energy_perf_policy_install \
->  		tmon_install freefall_install objtool_install kvm_stat_install \
->  		wmi_install debugging_install intel-speed-select_install \
-> -		tracing_install thermometer_install thermal-engine_install
-> +		tracing_install thermometer_install thermal-engine_install ynl_install
->  
->  acpi_clean:
->  	$(call descend,power/acpi,clean)
-> @@ -214,12 +221,15 @@ freefall_clean:
->  build_clean:
->  	$(call descend,build,clean)
->  
-> +ynl_clean:
-> +	$(call descend,net/$(@:_clean=),clean)
-> +
->  clean: acpi_clean counter_clean cpupower_clean hv_clean firewire_clean \
->  		perf_clean selftests_clean turbostat_clean bootconfig_clean spi_clean usb_clean virtio_clean \
->  		mm_clean bpf_clean iio_clean x86_energy_perf_policy_clean tmon_clean \
->  		freefall_clean build_clean libbpf_clean libsubcmd_clean \
->  		gpio_clean objtool_clean leds_clean wmi_clean firmware_clean debugging_clean \
->  		intel-speed-select_clean tracing_clean thermal_clean thermometer_clean thermal-engine_clean \
-> -		sched_ext_clean
-> +		sched_ext_clean ynl_clean
->  
->  .PHONY: FORCE
->
-> base-commit: 45bd443bfd8697a7da308c16c3e75e2bb353b3d1
+Why does the b53 driver depend on VID 0? CONFIG_VLAN_8021Q can be
+disabled or be an unloaded module, how does it work in that case?
