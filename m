@@ -1,106 +1,132 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C7527FD54
-	for <netdev@vger.kernel.org>; Thu, 24 Apr 2025 13:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A99284667;
+	Thu, 24 Apr 2025 13:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745499766; cv=none; b=mc1Z1cY++efscO0qA4Pbvp+GHXVxRIaCu84nt4sqsP/uBdXyC/E14w2LRv6OD1pOxbHj2vkzVlTpGsc8sOqXQkSQ2hpnOrVEgagqHoZMTspdFiRo4iPyE5kwfRp1sSF1V8pM5NXhOyDF8EhzcA/GPhhKyHdgWt+EaRkba87V6Gw=
+	t=1745499799; cv=none; b=MOrHZZ8KoTPNhhnGyHhP79I3ht4GHsM057yVnmge/oYj68DrzqRt0eQAd8hj5Verf8K5eyEcDtP/9aDpLz2f6ptkj2P5WCsHWh8po/pwKpkUlB6X/oB5ftGzQ3b65Qv3NbWAkO6VcoO3FhWU+rtLVDuSfqpd53avLETmtVTt0Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745499766; c=relaxed/simple;
-	bh=VkBMTFzQQcwgUPsyNIWIjWTCwANchLCXkLSY2etY9w4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OwEKPKWvgvlTtzqg2X+JYs35Vg3wSJVvuzqaCvpn/K6UhLL8q3Fk8Z5VYn9Z6zQoQRYpK5+v2RieBsB/A2HRu6j8rLaofwO+9NEKdU89UshWba62d1QJMmyONKilAOWZjcpDmeFGzm2mWJzr0K8CH/r/UcezGQMxfA67jwp9KWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1u7wDh-0002ZT-3v; Thu, 24 Apr 2025 15:02:25 +0200
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1u7wDf-001swF-1o;
-	Thu, 24 Apr 2025 15:02:23 +0200
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1u7wDf-00Gc4L-1Y;
-	Thu, 24 Apr 2025 15:02:23 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Woojung Huh <woojung.huh@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	s=arc-20240116; t=1745499799; c=relaxed/simple;
+	bh=+jxdHN9w6058fmKwsIbAeD1FE5biFmWbN0xy0yZYaKs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JpBCPpGZnqm4/hjlQUY8KuyHrK+j4/hahDtZfTQRChJRcCE4Up/V9DSYt8DoJd11c8kYNHPPSLwj3k7Nx7WvOpLw44VNkFBBnYqPrDiVS0sJGmDQsCj0E1WhEi4TcW8dqX9sVjKgb5BPrMFKhuUN8D3eHmU2CWJlNcfdtRmCUg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=etTn8cU0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oYsGUKUR; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="etTn8cU0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oYsGUKUR"
+Date: Thu, 24 Apr 2025 15:03:14 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1745499796;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BqK7PllKhCIzrgYgkhlhTeeMaCbSdmEmMtce1oOfVcE=;
+	b=etTn8cU0pXTwMIbc6N0lS1VOiHDVydPDuaSgWUq6awaGiNO/yl7Pw5ulB8wmyfUImk52+1
+	CTBEGy98oJ96NDnuTo6TgZHAx/rF3KxZsHP/hUlGFGpn7Cz6pS1fPneKaLNwXANSoZW69l
+	4EHIQyoeh+4wWENg4k/d0exsFqU6nINR8pcIK9MDFpGS6KjPcHXCCf3Flp0VEA3To0syAX
+	4HXWq7LZ2qTRNjkoBKP3FXVp+n8SQ0q21aaOZFPwP2RJUvM0Ol1ep2SBB7suw5coUTTBgM
+	AoTNkpOlfu/nxqQ7Ex8EJeaF6hRL6/VBqWcE22Ld0MyfQsLkv7dBZF5LjGKjLA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1745499796;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BqK7PllKhCIzrgYgkhlhTeeMaCbSdmEmMtce1oOfVcE=;
+	b=oYsGUKURg1lz0s5P+B+D2mqt24fc4sIA1ugmvZLeeeC0BpVOdrxJ09HhsVcQMqa++oGx3e
+	S6tkw7DKDRPzksBw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
+	Ricardo =?utf-8?Q?Ca=C3=B1uelo?= Navarro <rcn@igalia.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	UNGLinuxDriver@microchip.com,
-	Simon Horman <horms@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: [PATCH net-next v1 0/4]  Improve EEE control for KSZ switches and clarify ethtool output
-Date: Thu, 24 Apr 2025 15:02:18 +0200
-Message-Id: <20250424130222.3959457-1-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
+Subject: [PATCH stable v6.1 v5.15] xdp: Reset bpf_redirect_info before
+ running a xdp's BPF prog.
+Message-ID: <20250424130314.C9jOS1c5@linutronix.de>
+References: <20250414162120.U-UFSLv8@linutronix.de>
+ <2025042223-departed-aids-add9@gregkh>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <2025042223-departed-aids-add9@gregkh>
 
-This patch series addresses two areas related to Energy Efficient
-Ethernet (EEE) handling, focusing on better integration of Microchip KSZ
-switches with the DSA framework and improving the clarity of ethtool
---show-eee output.
+Ricardo reported a KASAN discovered use after free in v6.6-stable.
 
-Part 1: Previously, I added a filter to the set_mac_eee() implementation
-in the Microchip KSZ driver to reject unsupported configurations -
-specifically, attempts to disable LPI while keeping EEE enabled, or to
-change the Tx LPI timer. This was intended as a safeguard to clarify
-what the driver does not support, since EEE is handled internally by the
-KSZ hardware through PHY advertisement.
+The syzbot starts a BPF program via xdp_test_run_batch() which assigns
+ri->tgt_value via dev_hash_map_redirect() and the return code isn't
+XDP_REDIRECT it looks like nonsense. So the output in
+bpf_warn_invalid_xdp_action() appears once.
+Then the TUN driver runs another BPF program (on the same CPU) which
+returns XDP_REDIRECT without setting ri->tgt_value first. It invokes
+bpf_trace_printk() to print four characters and obtain the required
+return value. This is enough to get xdp_do_redirect() invoked which
+then accesses the pointer in tgt_value which might have been already
+deallocated.
 
-However, after many changes in the EEE framework, this filter has become
-outdated and problematic. It now blocks users from disabling EEE
-altogether. Since there is no MAC-level configuration required for KSZ
-switches, and the driver already implements support_eee(), the cleanest
-path forward is to remove the set_mac_eee() implementation entirely.
+This problem does not affect upstream because since commit
+	401cb7dae8130 ("net: Reference bpf_redirect_info via task_struct on PREEMP=
+T_RT.")
 
-Part 2: Clarify ethtool output related to EEE
-The ethtool --show-eee command could produce misleading output:
-- It displayed "Advertised EEE link modes" even when EEE was disabled
-- It omitted the link partner's EEE advertisement unless local EEE was
-  enabled
+the per-CPU variable is referenced via task's task_struct and exists on
+the stack during NAPI callback. Therefore it is cleared once before the
+first invocation and remains valid within the RCU section of the NAPI
+callback.
 
-The remaining patches focus on improving the usability and correctness
-of the ethtool --show-eee output, particularly in cases where EEE is
-disabled.
+Instead of performing the huge backport of the commit (plus its fix ups)
+here is an alternative version which only resets the variable in
+question prior invoking the BPF program.
 
-Tested with Microchip KSZ series hardware.
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@kernel.org>
+Reported-by: Ricardo Ca=C3=B1uelo Navarro <rcn@igalia.com>
+Closes: https://lore.kernel.org/all/20250226-20250204-kasan-slab-use-after-=
+free-read-in-dev_map_enqueue__submit-v3-0-360efec441ba@igalia.com/
+Fixes: 97f91a7cf04ff ("bpf: add bpf_redirect_map helper routine")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+backport: function moved to filter.h from xdp.h
 
-Oleksij Rempel (4):
-  net: dsa: user: Skip set_mac_eee() if support_eee() is implemented
-  net: dsa: microchip: Remove set_mac_eee() callback from KSZ driver
-  net: phy: Don't report advertised EEE modes if EEE is disabled
-  net: phy: Always read EEE LPA in genphy_c45_ethtool_get_eee()
+ include/linux/filter.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
- drivers/net/dsa/microchip/ksz_common.c | 19 -------------------
- drivers/net/phy/phy-c45.c              |  7 ++++---
- net/dsa/user.c                         |  6 ++----
- 3 files changed, 6 insertions(+), 26 deletions(-)
-
---
-2.39.5
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index 01f97956572ce..f3ef1a8965bb2 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -775,7 +775,14 @@ static __always_inline u32 bpf_prog_run_xdp(const stru=
+ct bpf_prog *prog,
+ 	 * under local_bh_disable(), which provides the needed RCU protection
+ 	 * for accessing map entries.
+ 	 */
+-	u32 act =3D __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
++	struct bpf_redirect_info *ri =3D this_cpu_ptr(&bpf_redirect_info);
++	u32 act;
++
++	if (ri->map_id || ri->map_type) {
++		ri->map_id =3D 0;
++		ri->map_type =3D BPF_MAP_TYPE_UNSPEC;
++	}
++	act =3D __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
+=20
+ 	if (static_branch_unlikely(&bpf_master_redirect_enabled_key)) {
+ 		if (act =3D=3D XDP_TX && netif_is_bond_slave(xdp->rxq->dev))
+--=20
+2.49.0
 
