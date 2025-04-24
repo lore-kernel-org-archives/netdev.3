@@ -1,211 +1,186 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37732701AA;
-	Thu, 24 Apr 2025 12:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A4127BF9B
+	for <netdev@vger.kernel.org>; Thu, 24 Apr 2025 12:56:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745499414; cv=none; b=mFR9ByrloNt2QEqJeznQrKpuFtC6TXY7parJ55xMX9T+7dspCJyD8k4Ergd7xs48zfmMGssRNFL8gom59PfDS9aPVURkWRN4yDIC3s4PGiF/rbt63HkdeMPyrnoPeZSObVp6n3cJBZvdPGT3tJiJ1arlm5mxorLOiwaPVfGlH7Q=
+	t=1745499417; cv=none; b=irFnjgwRF367vIEP5SxGZl3+yyUJu/WwoAedJTRuYumYzAu4gq2a5rGJxJmE3zPVC+qnrKnQB433qILK4zcgQpPs+FNiup/1cOzS0AaSsoRBIbm5OjWNd4Q9lkoSkt37HjVIAghhKqfE/T/eo2Dyjx32w7JC/hcRKzOGutbTST8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745499414; c=relaxed/simple;
-	bh=G7Is2Yga23kCntji9MW/uh+LYyQM64wGwPypKtzx28w=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hWhv3Ye9apfAuCvah/Han4jhgf/cCIH7EdMNreIuDXJbXb7pWxmPWa/GRgE4QXciwjjDjRxs3HrtfwaOauuzZOkN5losOJAeEaR4Paz0EqooIeXm1wpf6HiGeD3O/QZrVlnkG19eFXADw5iMIzUK1091/IwNMr1/r7gqkFWvSxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=roRTLsas; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745499417; c=relaxed/simple;
+	bh=5BTfy8Idhyh2VjCRIiZGY+O8FpzzYRJBlt2Qx7yYD3Q=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ms4gfLwVSgfLS/SakbX36VJh5FZ141+MD6QALbkwg5e1Co7xhTa8HVxx6/UO6y+IWdY2m8TboS72IdrNlgghfbloN5iUCaKLjCR4ZdKHMcMyizBysZKRZtaMAVCpgp7OsIEuvxFQ1zM9bztVOKFbI44On+NRZxvCnN4aJolhaf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=KNYgM9v0; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="roRTLsas"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEF9C4CEE3;
-	Thu, 24 Apr 2025 12:56:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745499414;
-	bh=G7Is2Yga23kCntji9MW/uh+LYyQM64wGwPypKtzx28w=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=roRTLsas951WOJ/pUtHUIethszb2WxikGGayimttBVBfQzS9lAYpQOsWeO6u++NTk
-	 zZ7B+bp6fP+XZ09HP5MDr5JTgo4FMka699Lz34HvQZOqwfzYRv3iUTSoPGlAZjXEw5
-	 QGqQW26QIxr/HCwQQhb53HuRwEjeiUWsxjvcCs/VdrYAN1S9PSmr+Z+NZE6laI2Gg8
-	 cAEGP+RDoGE+lL2IkI1FAqdXLVWjM7AwAUx4GFFTybcwHdgoku1TRF0qieLNYzLvoA
-	 RdrMYhCxnS7PjaLZjZljmAT1ncECEbPiEg+2AzXDmlTZXhaRAUMdaj2gQIqVSFB9Z8
-	 Gx2ZgVZS3xPSg==
-Subject: [PATCH net-next V6 2/2] veth: apply qdisc backpressure on full
- ptr_ring to reduce TX drops
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-To: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>, bpf@vger.kernel.org,
- tom@herbertland.com, Eric Dumazet <eric.dumazet@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
- dsahern@kernel.org, makita.toshiaki@lab.ntt.co.jp,
- kernel-team@cloudflare.com, phil@nwl.cc
-Date: Thu, 24 Apr 2025 14:56:49 +0200
-Message-ID: <174549940981.608169.4363875844729313831.stgit@firesoul>
-In-Reply-To: <174549933665.608169.392044991754158047.stgit@firesoul>
-References: <174549933665.608169.392044991754158047.stgit@firesoul>
-User-Agent: StGit/1.5
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="KNYgM9v0"
+Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
+	by m0089730.ppops.net (8.18.1.2/8.18.1.2) with ESMTP id 53OCujqv028013;
+	Thu, 24 Apr 2025 05:56:49 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=s2048-2021-q4; bh=HlQ+EQjhFs6QLbsrbZ
+	mQO2SieqI0k7nwEw12f1VBDt0=; b=KNYgM9v0vcVkH4QGj1WNY1NYusXzoKQbry
+	ghFZJIkLE/Sj+99ajtN5vbeZWf+daFbb9IV3cCEs8ViM34ftnqBIFIX5ap5AFSF4
+	x1YHJE51Z52BTsw97a7Xund3wh3jd9oj76uEJ9BzMASfLJVtqfEkj4o4TkxboPkY
+	KfW4rQBNebTiSZW8qZBs8/KsRQlzoE/2zfhoFeQzty9gSOgUj3UEeJyzqb9RluXz
+	zD1ZcxjPGT7q6Y7XE582xKeetJZAJiIYYPlOSRZdw8SRhBb1hGD+v48GaCrSsRun
+	h+pFwzP071ybyblPuldsuYc28668wAET5QLUokKMbccKJfAcYWlA==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by m0089730.ppops.net (PPS) with ESMTPS id 467k9mgyej-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 24 Apr 2025 05:56:48 -0700 (PDT)
+Received: from devvm31871.cln0.facebook.com (2620:10d:c085:108::4) by
+ mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.1748.10; Thu, 24 Apr 2025 12:56:01 +0000
+From: Vadim Fedorenko <vadfed@meta.com>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+        Michael Chan
+	<michael.chan@broadcom.com>,
+        Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Jakub
+ Kicinski <kuba@kernel.org>
+CC: Richard Cochran <richardcochran@gmail.com>, <netdev@vger.kernel.org>
+Subject: [PATCH net v4] bnxt_en: improve TX timestamping FIFO configuration
+Date: Thu, 24 Apr 2025 05:55:47 -0700
+Message-ID: <20250424125547.460632-1-vadfed@meta.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=cKPgskeN c=1 sm=1 tr=0 ts=680a3510 cx=c_pps a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17 a=XR8D0OoHHMoA:10 a=Q-fNiiVtAAAA:8 a=VabnemYjAAAA:8 a=VnezELSGKxGoUyyTTqgA:9 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-ORIG-GUID: lxKmby8uKhGwaRupVIqLZu3iT3ZdKyct
+X-Proofpoint-GUID: lxKmby8uKhGwaRupVIqLZu3iT3ZdKyct
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI0MDA4NyBTYWx0ZWRfX7q5rC1bgdRPc L2CflvSPQ9y3sCErVmWepjN3dhPDaWJ/Nk+FL/3jKN5vXo/ux8NewLURxOa4c0qRhLZ9i3CC1HG 4UwFGmEWg2cuYH9JIxe7Z3xPafU12pH8uvFMEmfNbMNhEHFn9428w9QxedXLPNX7NGfyxK0CnMY
+ 5n2hz8E/NCDINx/6DxIgm6T00nV1cCDp2DRG/CxPjsA20zj0cB8UdHxjLHILnMmqdp+nVD4t0Kb Xon8ccNfcuv+g3QG3oXEiKPkGPqjcsY+L/LzM6TsgK/L2LbxoVoYL84nCMZVkJMLPM+qtPEYnvb 427VE/qFlj2BS0JnhDDk7DEPPI62Tpk5XefL7+a/vZdth+88gqzoyTQNskCilmk8/KCPqPOQL63
+ BobZffWJfveBkndJqPHsx7uOQdmPsi/aKP0QJBiSjXBtAair8UERyZG+KwRzM5Cn0RFl4Jh1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.680,FMLib:17.12.80.40
+ definitions=2025-04-24_06,2025-04-22_01,2025-02-21_01
 
-In production, we're seeing TX drops on veth devices when the ptr_ring
-fills up. This can occur when NAPI mode is enabled, though it's
-relatively rare. However, with threaded NAPI - which we use in
-production - the drops become significantly more frequent.
+Reconfiguration of netdev may trigger close/open procedure which can
+break FIFO status by adjusting the amount of empty slots for TX
+timestamps. But it is not really needed because timestamps for the
+packets sent over the wire still can be retrieved. On the other side,
+during netdev close procedure any skbs waiting for TX timestamps can be
+leaked because there is no cleaning procedure called. Free skbs waiting
+for TX timestamps when closing netdev.
 
-The underlying issue is that with threaded NAPI, the consumer often runs
-on a different CPU than the producer. This increases the likelihood of
-the ring filling up before the consumer gets scheduled, especially under
-load, leading to drops in veth_xmit() (ndo_start_xmit()).
-
-This patch introduces backpressure by returning NETDEV_TX_BUSY when the
-ring is full, signaling the qdisc layer to requeue the packet. The txq
-(netdev queue) is stopped in this condition and restarted once
-veth_poll() drains entries from the ring, ensuring coordination between
-NAPI and qdisc.
-
-Backpressure is only enabled when a qdisc is attached. Without a qdisc,
-the driver retains its original behavior - dropping packets immediately
-when the ring is full. This avoids unexpected behavior changes in setups
-without a configured qdisc.
-
-With a qdisc in place (e.g. fq, sfq) this allows Active Queue Management
-(AQM) to fairly schedule packets across flows and reduce collateral
-damage from elephant flows.
-
-A known limitation of this approach is that the full ring sits in front
-of the qdisc layer, effectively forming a FIFO buffer that introduces
-base latency. While AQM still improves fairness and mitigates flow
-dominance, the latency impact is measurable.
-
-In hardware drivers, this issue is typically addressed using BQL (Byte
-Queue Limits), which tracks in-flight bytes needed based on physical link
-rate. However, for virtual drivers like veth, there is no fixed bandwidth
-constraint - the bottleneck is CPU availability and the scheduler's ability
-to run the NAPI thread. It is unclear how effective BQL would be in this
-context.
-
-This patch serves as a first step toward addressing TX drops. Future work
-may explore adapting a BQL-like mechanism to better suit virtual devices
-like veth.
-
-Reported-by: Yan Zhai <yan@cloudflare.com>
-Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Fixes: 8aa2a79e9b95 ("bnxt_en: Increase the max total outstanding PTP TX packets to 4")
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
 ---
- drivers/net/veth.c |   56 +++++++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 46 insertions(+), 10 deletions(-)
+v3 -> v4:
+* actually remove leftover unused variable in bnxt_ptp_clear()
+(v3 was not committed before preparing unfortunately)
+v2 -> v3:
+* remove leftover unused variable in bnxt_ptp_clear()
+v1 -> v2:
+* move clearing of TS skbs to bnxt_free_tx_skbs
+* remove spinlock as no TX is possible after bnxt_tx_disable()
+* remove extra FIFO clearing in bnxt_ptp_clear()
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     |  5 ++--
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 29 ++++++++++++++-----
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h |  1 +
+ 3 files changed, 25 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 7bb53961c0ea..6ef24e261574 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -307,12 +307,10 @@ static void __veth_xdp_flush(struct veth_rq *rq)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index c8e3468eee61..2c8e2c19d854 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -3414,6 +3414,9 @@ static void bnxt_free_tx_skbs(struct bnxt *bp)
  
- static int veth_xdp_rx(struct veth_rq *rq, struct sk_buff *skb)
+ 		bnxt_free_one_tx_ring_skbs(bp, txr, i);
+ 	}
++
++	if (bp->ptp_cfg && !(bp->fw_cap & BNXT_FW_CAP_TX_TS_CMP))
++		bnxt_ptp_free_txts_skbs(bp->ptp_cfg);
+ }
+ 
+ static void bnxt_free_one_rx_ring(struct bnxt *bp, struct bnxt_rx_ring_info *rxr)
+@@ -12797,8 +12800,6 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
+ 	/* VF-reps may need to be re-opened after the PF is re-opened */
+ 	if (BNXT_PF(bp))
+ 		bnxt_vf_reps_open(bp);
+-	if (bp->ptp_cfg && !(bp->fw_cap & BNXT_FW_CAP_TX_TS_CMP))
+-		WRITE_ONCE(bp->ptp_cfg->tx_avail, BNXT_MAX_TX_TS);
+ 	bnxt_ptp_init_rtc(bp, true);
+ 	bnxt_ptp_cfg_tstamp_filters(bp);
+ 	if (BNXT_SUPPORTS_MULTI_RSS_CTX(bp))
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+index 2d4e19b96ee7..0669d43472f5 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+@@ -794,6 +794,27 @@ static long bnxt_ptp_ts_aux_work(struct ptp_clock_info *ptp_info)
+ 	return HZ;
+ }
+ 
++void bnxt_ptp_free_txts_skbs(struct bnxt_ptp_cfg *ptp)
++{
++	struct bnxt_ptp_tx_req *txts_req;
++	u16 cons = ptp->txts_cons;
++
++	/* make sure ptp aux worker finished with
++	 * possible BNXT_STATE_OPEN set
++	 */
++	ptp_cancel_worker_sync(ptp->ptp_clock);
++
++	ptp->tx_avail = BNXT_MAX_TX_TS;
++	while (cons != ptp->txts_prod) {
++		txts_req = &ptp->txts_req[cons];
++		if (!IS_ERR_OR_NULL(txts_req->tx_skb))
++			dev_kfree_skb_any(txts_req->tx_skb);
++		cons = NEXT_TXTS(cons);
++	}
++	ptp->txts_cons = cons;
++	ptp_schedule_worker(ptp->ptp_clock, 0);
++}
++
+ int bnxt_ptp_get_txts_prod(struct bnxt_ptp_cfg *ptp, u16 *prod)
  {
--	if (unlikely(ptr_ring_produce(&rq->xdp_ring, skb))) {
--		dev_kfree_skb_any(skb);
--		return NET_RX_DROP;
+ 	spin_lock_bh(&ptp->ptp_tx_lock);
+@@ -1105,7 +1126,6 @@ int bnxt_ptp_init(struct bnxt *bp)
+ void bnxt_ptp_clear(struct bnxt *bp)
+ {
+ 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
+-	int i;
+ 
+ 	if (!ptp)
+ 		return;
+@@ -1117,12 +1137,5 @@ void bnxt_ptp_clear(struct bnxt *bp)
+ 	kfree(ptp->ptp_info.pin_config);
+ 	ptp->ptp_info.pin_config = NULL;
+ 
+-	for (i = 0; i < BNXT_MAX_TX_TS; i++) {
+-		if (ptp->txts_req[i].tx_skb) {
+-			dev_kfree_skb_any(ptp->txts_req[i].tx_skb);
+-			ptp->txts_req[i].tx_skb = NULL;
+-		}
 -	}
-+	if (unlikely(ptr_ring_produce(&rq->xdp_ring, skb)))
-+		return NETDEV_TX_BUSY; /* signal qdisc layer */
- 
--	return NET_RX_SUCCESS;
-+	return NET_RX_SUCCESS; /* same as NETDEV_TX_OK */
- }
- 
- static int veth_forward_skb(struct net_device *dev, struct sk_buff *skb,
-@@ -346,11 +344,11 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct veth_priv *rcv_priv, *priv = netdev_priv(dev);
- 	struct veth_rq *rq = NULL;
--	int ret = NETDEV_TX_OK;
-+	struct netdev_queue *txq;
- 	struct net_device *rcv;
- 	int length = skb->len;
- 	bool use_napi = false;
--	int rxq;
-+	int ret, rxq;
- 
- 	rcu_read_lock();
- 	rcv = rcu_dereference(priv->peer);
-@@ -373,17 +371,44 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- 	}
- 
- 	skb_tx_timestamp(skb);
--	if (likely(veth_forward_skb(rcv, skb, rq, use_napi) == NET_RX_SUCCESS)) {
-+
-+	ret = veth_forward_skb(rcv, skb, rq, use_napi);
-+	switch (ret) {
-+	case NET_RX_SUCCESS: /* same as NETDEV_TX_OK */
- 		if (!use_napi)
- 			dev_sw_netstats_tx_add(dev, 1, length);
- 		else
- 			__veth_xdp_flush(rq);
--	} else {
-+		break;
-+	case NETDEV_TX_BUSY:
-+		/* If a qdisc is attached to our virtual device, returning
-+		 * NETDEV_TX_BUSY is allowed.
-+		 */
-+		txq = netdev_get_tx_queue(dev, rxq);
-+
-+		if (qdisc_txq_has_no_queue(txq)) {
-+			dev_kfree_skb_any(skb);
-+			goto drop;
-+		}
-+		netif_tx_stop_queue(txq);
-+		/* Restore Eth hdr pulled by dev_forward_skb/eth_type_trans */
-+		__skb_push(skb, ETH_HLEN);
-+		/* Depend on prior success packets started NAPI consumer via
-+		 * __veth_xdp_flush(). Cancel TXQ stop if consumer stopped,
-+		 * paired with empty check in veth_poll().
-+		 */
-+		if (unlikely(__ptr_ring_empty(&rq->xdp_ring)))
-+			netif_tx_wake_queue(txq);
-+		break;
-+	case NET_RX_DROP: /* same as NET_XMIT_DROP */
- drop:
- 		atomic64_inc(&priv->dropped);
- 		ret = NET_XMIT_DROP;
-+		break;
-+	default:
-+		net_crit_ratelimited("%s(%s): Invalid return code(%d)",
-+				     __func__, dev->name, ret);
- 	}
 -
- 	rcu_read_unlock();
- 
- 	return ret;
-@@ -874,9 +899,17 @@ static int veth_xdp_rcv(struct veth_rq *rq, int budget,
- 			struct veth_xdp_tx_bq *bq,
- 			struct veth_stats *stats)
- {
-+	struct veth_priv *priv = netdev_priv(rq->dev);
-+	int queue_idx = rq->xdp_rxq.queue_index;
-+	struct netdev_queue *peer_txq;
-+	struct net_device *peer_dev;
- 	int i, done = 0, n_xdpf = 0;
- 	void *xdpf[VETH_XDP_BATCH];
- 
-+	/* NAPI functions as RCU section */
-+	peer_dev = rcu_dereference_check(priv->peer, rcu_read_lock_bh_held());
-+	peer_txq = netdev_get_tx_queue(peer_dev, queue_idx);
-+
- 	for (i = 0; i < budget; i++) {
- 		void *ptr = __ptr_ring_consume(&rq->xdp_ring);
- 
-@@ -925,6 +958,9 @@ static int veth_xdp_rcv(struct veth_rq *rq, int budget,
- 	rq->stats.vs.xdp_packets += done;
- 	u64_stats_update_end(&rq->stats.syncp);
- 
-+	if (unlikely(netif_tx_queue_stopped(peer_txq)))
-+		netif_tx_wake_queue(peer_txq);
-+
- 	return done;
+ 	bnxt_unmap_ptp_regs(bp);
  }
- 
-
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
+index a95f05e9c579..0481161d26ef 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
+@@ -162,6 +162,7 @@ int bnxt_ptp_cfg_tstamp_filters(struct bnxt *bp);
+ void bnxt_ptp_reapply_pps(struct bnxt *bp);
+ int bnxt_hwtstamp_set(struct net_device *dev, struct ifreq *ifr);
+ int bnxt_hwtstamp_get(struct net_device *dev, struct ifreq *ifr);
++void bnxt_ptp_free_txts_skbs(struct bnxt_ptp_cfg *ptp);
+ int bnxt_ptp_get_txts_prod(struct bnxt_ptp_cfg *ptp, u16 *prod);
+ void bnxt_get_tx_ts_p5(struct bnxt *bp, struct sk_buff *skb, u16 prod);
+ int bnxt_get_rx_ts_p5(struct bnxt *bp, u64 *ts, u32 pkt_ts);
+-- 
+2.47.1
 
