@@ -1,128 +1,98 @@
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD0D1FAC46;
-	Thu, 24 Apr 2025 12:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229D6214226;
+	Thu, 24 Apr 2025 12:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745496341; cv=none; b=DZNN00bQRIBN2gVSF/3LGS7mmRihugpKPWXiOnobfPAqqycqDMR835WSHq4VDj8E558IhAAfpFJ1pqCg4ivaU8OQbY4r6+OPZJ1z/8OLZTOYr/Eda4SojBe72r5NQmxyhTnhkMKu50kHg7o1hxpXq6SmewgWdtE1i9bJs7DgO84=
+	t=1745496570; cv=none; b=MeN9LJg0J0hHjsNB/59qZW89duB1oEZj9PuEugZQZFy/ZgN24hyABtlqLq4ZAxyVAKIu96okbzj7dTe56WyZY8dVO/djfvgnh0jp5gPIy5En+f2bfvEJdxB+H3IzIKFpQuS3nn55sVGYfPNj24Tn45vqxv+1IBI5NokqMzj6eeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745496341; c=relaxed/simple;
-	bh=LdvVn3vD5PEw+p2rGtchK6WZasNfVt6AxRmAGMWeFyg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lxhax90INsb4v9+f53T5ebDa4HNcqkgxJCEJhl9GU4CsdxcDxHcF7LbRlt/HQ4E+1UGj7VL3qK7t3uM6dma9SqBqrIzkyIKgclWObmOyfyF5n9FIJpt3zR08kY5450vPwAEaC/ZMIcPrfh3AxLaGW2sj24BsLig8Ko2dIbnxqXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=d/OX914x; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1745496570; c=relaxed/simple;
+	bh=mhvQAy4PwAusFJNPxPQDFwPrFvhTyyBHabTJwdC0aUU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jamtRNGm9V6aISTpMH+Fu6ajn9nb5EZNLy53STVn/To+rq2a4bgGUgk0YfOykXmhjqnL+jGoy53XPUNXTRSYS8g40VlS9oT+4x5EyYEIlWmNFSl7jlXoEv2br1jeKK4b5t+0LwKoJWbHfucaRo8RDAh5nBpICGlvRKHg8GHNyEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=bQLeMiOT; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="d/OX914x"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="bQLeMiOT"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=+ssIICqG5fsCIIvA7xsf3kAjlA8mLhDr52xt+ZTEOpM=; t=1745496340; x=1746705940; 
-	b=d/OX914xR4nN16brej8G+poonKTXWW4De8JDfiR3lDfAo9XG12Kk9xfYqWhiZuH+l31+vpaH5js
-	MTxRjBXAWIPyFYLCjJUxvh+nwkRK9ZeUxUQ/9Yh5ALZlL7gchXj6ipSpBWrC1cHAmC0vUJO8HnIet
-	Lq6L1BgpS6jddG1Ky7VequW1S61Tw5LJlkpz3j8qK1iEtFBTRw4FBwTFjJSCUmsXxZYXdK1J1jXmr
-	p5yUk8ZRVzu63DvduxS0vfCmdNsQBmjU9izbrXgk8JW3QrGVKuvYALrgz+7POuZa4vwgoQDqEm8Qa
-	P5fix6xgdyaPnWitCWxOb3F356RP9vvM9cRw==;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=mhvQAy4PwAusFJNPxPQDFwPrFvhTyyBHabTJwdC0aUU=;
+	t=1745496569; x=1746706169; b=bQLeMiOTL/CLn6kVXjUmypjR6zOeND/9JQJU+Mrlbe30Tei
+	hlO6P2tM5Em2SBXGNkFROFXie/L1SSd9hyzF2LiJ8aA0DtIf1MQ/ul5ja05UAOUiCWcG3+MMr/U2I
+	cW1gEs+swyKT2uK1uXIYYvI3aODHrARtUL1u/4XJtO1aFuKdwaDtT9v69g5ADIoh4ADgkAeVviBNP
+	2V1iv4PJexVTwRsP8bTzJr+SgONslwJpcyByKqsKQ4CSYHmXlW5Ugdoh8zy2FqDHcsXLQ8b/ksIto
+	dn6wcfkn9OZXluWbEgcQcCpmWTXLJB3sDCfkSRQSe0JjNaLpTSfiWQX+I102x67Q==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.1)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1u7vKj-0000000H4DT-1aeS;
-	Thu, 24 Apr 2025 14:05:37 +0200
+	id 1u7vOJ-0000000H4Oc-2vQj;
+	Thu, 24 Apr 2025 14:09:20 +0200
+Message-ID: <4b040936baa8fa8669b34e36fe9dff6e08aeede9.camel@sipsolutions.net>
+Subject: Re: [PATCH v5 3/5] dt-bindings: wireless: bcm4329-fmac: Use
+ wireless-controller.yaml schema
 From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-2025-04-24
-Date: Thu, 24 Apr 2025 14:04:57 +0200
-Message-ID: <20250424120535.56499-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.49.0
+To: Krzysztof Kozlowski <krzk@kernel.org>, david@ixit.cz, Andrew Lunn	
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni	 <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Mailing List	 <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Lorenzo Bianconi	 <lorenzo@kernel.org>, van Spriel <arend@broadcom.com>, 
+ =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller	 <jerome.pouiller@silabs.com>, Bjorn
+ Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>,
+ Andy Gross <agross@kernel.org>, Mailing List	
+ <devicetree-spec@vger.kernel.org>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, Janne Grunau <j@jannau.net>
+Date: Thu, 24 Apr 2025 14:09:18 +0200
+In-Reply-To: <57701e2e-0005-4a8a-a3f5-ba098c97b480@kernel.org>
+References: <20250324-dt-bindings-network-class-v5-0-f5c3fe00e8f0@ixit.cz>
+	 <20250324-dt-bindings-network-class-v5-3-f5c3fe00e8f0@ixit.cz>
+	 <d8619ab4-3a91-467f-a3d4-f23b4e0383a4@kernel.org>
+	 <57701e2e-0005-4a8a-a3f5-ba098c97b480@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-Hi,
+On Thu, 2025-04-24 at 10:28 +0200, Krzysztof Kozlowski wrote:
+> On 24/04/2025 10:20, Krzysztof Kozlowski wrote:
+> > On 24/03/2025 18:41, David Heidelberg via B4 Relay wrote:
+> > > From: Janne Grunau <j@jannau.net>
+> > >=20
+> > > The wireless-controller schema specifies local-mac-address as
+> > > used in the bcm4329-fmac device nodes of Apple silicon devices
+> > > (arch/arm64/boot/dts/apple).
+> > >=20
+> > > Fixes `make dtbs_check` for those devices.
+> > >=20
+> > > Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> > > Signed-off-by: Janne Grunau <j@jannau.net>
+> > > Signed-off-by: David Heidelberg <david@ixit.cz>
+> >=20
+> > This introduced several new dtbs_check warnings. Including on platforms
+> > which were warnings free. It is nice to fix these warnings when you mak=
+e
+> > such changes.
 
-Got a bit late due to holidays/vacations, but here are
-a couple of fixes, including somewhat high profile
-regressions for some devices in iwlwifi.
+Heh, especially since it said it should _fix_ things there.
 
-Please pull and let us know if there's any problem.
+> I will send the patches for them, except for Apple SoCs.
 
-Thanks,
+Thanks, I guess I'll hold the pull request for that. And I guess the
+Apple ones are on David then.
+
+Knew it was a mistake for me to ever do anything with DT stuff ;-)
+
 johannes
-
-
-
-The following changes since commit 491ef1117c56476f199b481f8c68820fe4c3a7c2:
-
-  net: ethernet: mtk_eth_soc: net: revise NETSYSv3 hardware configuration (2025-04-22 18:51:48 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2025-04-24
-
-for you to fetch changes up to 175e69e33c66904dfe910c5f43edfe5c95b32f0c:
-
-  wifi: iwlwifi: restore missing initialization of async_handlers_list (2025-04-23 14:59:06 +0200)
-
-----------------------------------------------------------------
-Some more fixes, notably:
- * iwlwifi: various regression and iwlmld fixes
- * mac80211: fix TX frames in monitor mode
- * brcmfmac: error handling for firmware load
-
-----------------------------------------------------------------
-Benjamin Berg (1):
-      wifi: iwlwifi: mld: only create debugfs symlink if it does not exist
-
-Emmanuel Grumbach (2):
-      wifi: iwlwifi: don't warn if the NIC is gone in resume
-      wifi: iwlwifi: fix the check for the SCRATCH register upon resume
-
-Itamar Shalev (1):
-      wifi: iwlwifi: restore missing initialization of async_handlers_list
-
-Johannes Berg (3):
-      wifi: mac80211: restore monitor for outgoing frames
-      wifi: iwlwifi: back off on continuous errors
-      wifi: iwlwifi: mld: fix BAID validity check
-
-Miri Korenblit (4):
-      Revert "wifi: iwlwifi: add support for BE213"
-      Revert "wifi: iwlwifi: make no_160 more generic"
-      wifi: iwlwifi: mld: properly handle async notification in op mode start
-      wifi: iwlwifi: mld: inform trans on init failure
-
-Murad Masimov (1):
-      wifi: plfxlc: Remove erroneous assert in plfxlc_mac_release
-
-Wentao Liang (1):
-      wifi: brcm80211: fmac: Add error handling for brcmf_usb_dl_writeimage()
-
- .../net/wireless/broadcom/brcm80211/brcmfmac/usb.c |   6 +-
- drivers/net/wireless/intel/iwlwifi/cfg/sc.c        |   2 -
- drivers/net/wireless/intel/iwlwifi/iwl-config.h    |  16 +-
- drivers/net/wireless/intel/iwlwifi/iwl-csr.h       |   1 +
- drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c |  16 +-
- drivers/net/wireless/intel/iwlwifi/iwl-trans.c     |  28 ++-
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h     |  14 +-
- drivers/net/wireless/intel/iwlwifi/mld/agg.c       |   6 +-
- drivers/net/wireless/intel/iwlwifi/mld/debugfs.c   |   5 +-
- drivers/net/wireless/intel/iwlwifi/mld/fw.c        |  13 +-
- drivers/net/wireless/intel/iwlwifi/mld/mac80211.c  |   1 +
- drivers/net/wireless/intel/iwlwifi/mld/mld.c       |  11 +-
- drivers/net/wireless/intel/iwlwifi/mld/mld.h       |   5 -
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c      | 245 ++++++++++-----------
- drivers/net/wireless/intel/iwlwifi/pcie/internal.h |   9 +-
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c    |  16 +-
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c       |   2 +-
- drivers/net/wireless/intel/iwlwifi/tests/devinfo.c |  15 +-
- drivers/net/wireless/purelifi/plfxlc/mac.c         |   1 -
- net/mac80211/status.c                              |   8 +-
- 20 files changed, 224 insertions(+), 196 deletions(-)
