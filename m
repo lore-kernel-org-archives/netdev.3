@@ -1,155 +1,113 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01584221713
-	for <netdev@vger.kernel.org>; Thu, 24 Apr 2025 10:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4071AED5C;
+	Thu, 24 Apr 2025 10:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745490172; cv=none; b=WHwTPHbblQo0vBY42K/ZaE4bAncpvrWu31gCVqR5xsz9YSjsyLTOhaM87+MhvN3QOEIhM072hvrg4h5Lc8ZWBOpPbjbjdtBwy6k9l61QgP/uV8TMYGk1L4wcIh15Zt2NMsUYfKM0rwyT8aW2jtT9ZSLyvfmDH3UJi4eUmA5elB4=
+	t=1745490287; cv=none; b=oymrijihsY1QTC6WioDggbnFtXR/NfGFO+D78+5UfXLMC6sa9H90yRSgenVElQEO3ck2jyRVQU90q9DNV9qOMJ4KqSNpaGbmczYGsOdc9Lx9iRuLoccKwJF05NfvKSxf/x6N4pvt78zPwkvzLb1C+5M1XGJ0KMdiJGlLF+Vqgek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745490172; c=relaxed/simple;
-	bh=ZZscz1TzzK6pwyRSI4DUP6zhRhLE5DuXiEnG47nYXDQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XprxbHa0E8wCU34thW7H/hZ9FtAaIEsmSq6SJdcjjwz/1h+3OHniL6QdrIaP2PkvmozLUCiTsW14iHfN5iaqx7gGrbCB1w4uIhD2FcnecBG4wuQgY/Th94oz5yrEmg1LfFhRWewsgQRBdH9kQdf7jS78oy7tA4tP3SJKZ//t+kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mej4yx46; arc=none smtp.client-ip=209.85.218.51
+	s=arc-20240116; t=1745490287; c=relaxed/simple;
+	bh=xRGlQ+YuAfq0yjKo537Wvq+MxdVlDxgBBdCxFEB1sqw=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=fhNS0nuufWD/2erYPvzrm24NnzJJLljVmz+6E8T028BPLZmaa2M/hSGDzMf6VBJRio/UKyR0afZblPM4H1jbVt+4wZqClYHVIdRiopih2WiNqwpB8w8wZi9IYEAKLpdLj4ThKCkUQfFDb+OhJ5FRn2nYhgCz2S9cXPDkqLMgl/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RzgpgHEW; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mej4yx46"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ac3123c0ef9so9016266b.2
-        for <netdev@vger.kernel.org>; Thu, 24 Apr 2025 03:22:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RzgpgHEW"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-39129fc51f8so658757f8f.0;
+        Thu, 24 Apr 2025 03:24:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745490169; x=1746094969; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bvq7TJMLPZK6wd7Kn74QI2hB0rQ01AGm9wyonxsUoJI=;
-        b=mej4yx46sY/++QFzRuMSt4rxO91JDyYYKmqBuv63JDD5e0gNHlgKGds+q/oVrdJpZ2
-         5kxiyAC00WElvvlQqKmV6CGfwox6erIpVEJwpjPlzTnV1hVX09GMoNLCHf0L8nELtg1q
-         u+PNa+CGlJoZH2A1lfdns7x9yh3c2E/eU8ovxc8oNVY9+qFAAx+RlVKX9rVU6nq3xoYI
-         v5N6hy0s4CrcCWBi36O0XM5x1OD9x2s0YctQl3VENxzpI0DH1yBDDWX9NfAlbPvuxKgO
-         UfS3znzFuvEG2L20XCdlwIMt4ySU0Vg35cZ1L4TOaIa/dBs30YiEvjmd8J4B8LHWvG2v
-         wyrg==
+        d=gmail.com; s=20230601; t=1745490284; x=1746095084; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xRGlQ+YuAfq0yjKo537Wvq+MxdVlDxgBBdCxFEB1sqw=;
+        b=RzgpgHEWA8qQetLQSrwWiOGfWTGwLA6ArjRUvGU7JtwK/q5BjJnXFBF+oGWjVs4oEm
+         e2jLEVgBmaPbZ6slJVBnJZSAJLFcbwhAQOc/CVdvPKvStaI+w0YTe7+sNadU7F4ZkJnH
+         QEcTjyBEjYXjYe+3gN6Kdts5CbohE2Dr1uhjLhKsupBgZkQ9NnwsEpYNE0VML9mUOrmE
+         Qj5a6lii00eg29QxE4dLW4Zuzq1+h3f8OTUyCLCTjWu7oA06t+2P8MiCJ671sP54/rGP
+         iErA5LoSviEovRF4U9OvK+iDscgD9FQ5XWHv0RlxANgrIn+293FosHp9cgH8pvX4XBqB
+         keBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745490169; x=1746094969;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1745490284; x=1746095084;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bvq7TJMLPZK6wd7Kn74QI2hB0rQ01AGm9wyonxsUoJI=;
-        b=FNAZJp4XWY8agvJa1k/E8T94YAQvDHvOCfeuebIQmFOw5Au4rwzpJcg1ol0zXXUjir
-         gqS9JIcDOugwIx6id5JXM1cpi1PIEr+TwydBI+f6LoX2kkZU3hzvTWB6WRkzSEvM2Krf
-         ANiaDiVNmKcLbkKRr6gs1MwqItTKnoHXcK5VpEOpJW6Mc6kImawM2l/+tdcmuMv+l4z0
-         CGJmsuor0TEs1sZk4uqvJ/Nh4Gv7cca3Cxko96khKy3N238plERe3KT7Pp5H2+iokgWq
-         WbuHU9hPYXwrNVV6fWEUfkwKWvAEgn1Fm+BkX8CamP1CqlAqakygTyC4+PUvKkOFlsKB
-         Ks7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVaspFxj6mGwuUnjWZ9Bbe3D1aFw9XTcfE+k6PKrzlFFAu4hR2oaBx0GlMiN4KTwj3Oz+GveCk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtK/sd9n9VH/Ms9I55Gz7y+y73ey8T1vNxxnm6fYr7MlVqfq+Q
-	kJv7m2Fa+582b6kVYY7lshkJPxCyok7ydCSpuXDSptaL3337dJYH
-X-Gm-Gg: ASbGncvzsSdNe8l0kBrdm8rqoWJmfniCrBQcPwm38REpeDd8IUeHx+P5A7vzV1L0e/t
-	FekOlzVdoRn/smEhhfpF+oYaCU6f+6QxGynHrNhA+oOo37knmhqtI+np1rSguKvP73Rc1FfNo/u
-	uJLigKBd4UcbNVZqF/v0uxF524ZpyIExCWbdHKGzZ7zv+t2m0Royn616jHEleb+GzjArE6OY8A/
-	K77cKWx2+4B8PGfxsdep/Ntz4q2s89Py+95btOmWqp6QLZLgWvLKL+PCWjco+52vcNn+AxPl1Uc
-	zdfXLgCO6FntiyqguWzLr6AMhz9f
-X-Google-Smtp-Source: AGHT+IEO0ewxmZ5oxySa/oECLbNlV2Vwpsku7ukBM4WY2jwm6kiXQVzXaWt7Yh/KQvV8pWSFLB9LXA==
-X-Received: by 2002:a17:907:3f87:b0:ac2:6d40:1307 with SMTP id a640c23a62f3a-ace57429fe2mr70714366b.13.1745490168907;
-        Thu, 24 Apr 2025 03:22:48 -0700 (PDT)
-Received: from skbuf ([188.25.50.178])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace598999f0sm86783866b.65.2025.04.24.03.22.47
+        bh=xRGlQ+YuAfq0yjKo537Wvq+MxdVlDxgBBdCxFEB1sqw=;
+        b=dhnuwwXV83FcCKFW4fmpb4uat7d6QjM5qXl50JWHFvSafXlmwyxzJWZQZxj5aReQpn
+         djsZpfZ8o6yE2DwYswA52TwHFhek2w9USgteCp3iECIhayAqFq+yuAeQZoTAznPbPKKm
+         zZw9tFjEkOM8GLWVe0AahKW1SeYR+nX3VUUhJ4/oYboHiuEBBBKPYTzwZmrkXsQcOEmx
+         wdk4bWVg3EXbwOeyOSJGOk8CBUa18ZP0pQZx8QaCWqVxO2oNovgTXzphM34e3n2DRNWS
+         +KJQ2xDLLm30zHyFKTuFeOHPuaNREzeLgMVXFX+kyDPTbHO3H/eH32ITmrxrNF1K4dN5
+         d/hA==
+X-Forwarded-Encrypted: i=1; AJvYcCURZD/iiSkYM5jq7zc8hPo5yyTEB0bOFOyeF+GArJ3XfBMsqXlcw5HGnFb9twEJvNGPzAdz4XSkZadtkyx2gPrh@vger.kernel.org, AJvYcCVYa8gwn7OLIrf+6fr6XP2fB/sMA8hgSaCvzJ5t1KwjQRcI4Glm4eN1Px378nUk1+zMx7LGtCyNFunVR8FZ@vger.kernel.org, AJvYcCW7cirSayhcy6QbZ15JbSll151ih6Sn5SLwJx6hEWsf3pscj9JIjbeC0knxi7DbHaea0zICVz3uJsf8@vger.kernel.org, AJvYcCWTpl7WibZmDd7mYbOf2Ar9f/KMa+wpGUV1j3YF6/yL2Bh7Mza98yZZeAYmV+zM9Nk3nwNC@vger.kernel.org, AJvYcCXic7Dr+Ubb0rDt9AFxTS54UNA/eXr9Hty6DJA/6WGIPcLaJMQzbQd/b/TFbPplmJW555n+nN6cdQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1PBt0m+5F9XucEx9qyiICPcE2oeBFsXdt035xFCGiFuXlekTt
+	l+EQb4MAktEBfQxFx6Y+h3rrn0Xt1taz9ulGZkipsR7u6GqFniX6
+X-Gm-Gg: ASbGncv8zjOh2Ql26IxT/ZQJ3f+Yhn/1xGKvV0RGbeRSdnfkUqJOhIgT1sZgePInHbO
+	5MPaK9pp+2tq0RjX5cub7RR4cKfJSCl284eVclQ90N3CIBGBU9Z7kFCS6axwVYaF5v+62O4Gvzn
+	jtavxQFkrj+4V0ZTpi3bARrWKcGyoHdKaNbNkUPD8cLDMc6l60pO1V75hcCx8jyOwkiPeoX6PCI
+	KZTKiRnHS+on3Y6AFeDBgBIz+fIj5uFwn+ZiVD3YWUzi8kSPvr3fWqvZ/Sf/xZTa5mDGb8yz41c
+	1iEw74yY2VZUUhP4AHxJ/cxYeBWyPkmwjE9BMbrxr7UbQL7Cb4S1xsmEy2c=
+X-Google-Smtp-Source: AGHT+IHEb3DW07bLAA/VXg08jEDjB059mOzNk65AI9NhSRJOViAxq2muSv9evi1rARkf40X091csiA==
+X-Received: by 2002:a5d:5983:0:b0:39e:e438:8e4b with SMTP id ffacd0b85a97d-3a06cfab546mr1827774f8f.50.1745490283934;
+        Thu, 24 Apr 2025 03:24:43 -0700 (PDT)
+Received: from imac ([2a02:8010:60a0:0:7d34:7f0d:292f:fa10])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a06d569b38sm1578696f8f.100.2025.04.24.03.24.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Apr 2025 03:22:47 -0700 (PDT)
-Date: Thu, 24 Apr 2025 13:22:40 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: SIMON BABY <simonkbaby@gmail.com>
-Cc: Ido Schimmel <idosch@idosch.org>, netdev@vger.kernel.org
-Subject: Re: query on EAPOL multicast packet with linux bridge interface
-Message-ID: <20250424102240.dxyk5uf6t6xfnd2k@skbuf>
-References: <CAEFUPH1Erfh9YUctVDHxL8TWsiVfs+Fr8aJLtrjiKECbiGTxHQ@mail.gmail.com>
- <aAjSCwwuRpI8GdB7@shredder>
- <CAEFUPH0cU-5ZJ_qAevp1DENYrUkSO4zipUTg0vzLmgz16nPbbw@mail.gmail.com>
+        Thu, 24 Apr 2025 03:24:43 -0700 (PDT)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-doc@vger.kernel.org,  io-uring@vger.kernel.org,
+  virtualization@lists.linux.dev,  kvm@vger.kernel.org,
+  linux-kselftest@vger.kernel.org,  Jakub Kicinski <kuba@kernel.org>,
+  "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Paolo Abeni <pabeni@redhat.com>,  Simon Horman
+ <horms@kernel.org>,  Jonathan Corbet <corbet@lwn.net>,  Andrew Lunn
+ <andrew+netdev@lunn.ch>,  Jeroen de Borst <jeroendb@google.com>,
+  Harshitha Ramamurthy <hramamurthy@google.com>,  Kuniyuki Iwashima
+ <kuniyu@amazon.com>,  Willem de Bruijn <willemb@google.com>,  Jens Axboe
+ <axboe@kernel.dk>,  Pavel Begunkov <asml.silence@gmail.com>,  David Ahern
+ <dsahern@kernel.org>,  Neal Cardwell <ncardwell@google.com>,  Stefan
+ Hajnoczi <stefanha@redhat.com>,  Stefano Garzarella <sgarzare@redhat.com>,
+  "Michael S. Tsirkin" <mst@redhat.com>,  Jason Wang <jasowang@redhat.com>,
+  Xuan Zhuo <xuanzhuo@linux.alibaba.com>,  Eugenio =?utf-8?Q?P=C3=A9rez?=
+ <eperezma@redhat.com>,  Shuah Khan <shuah@kernel.org>,  sdf@fomichev.me,
+  dw@davidwei.uk,  Jamal Hadi Salim <jhs@mojatatu.com>,  Victor Nogueira
+ <victor@mojatatu.com>,  Pedro Tammela <pctammela@mojatatu.com>,  Samiullah
+ Khawaja <skhawaja@google.com>
+Subject: Re: [PATCH net-next v10 3/9] net: devmem: TCP tx netlink api
+In-Reply-To: <CAHS8izNUOO-X0WHFTMd3_yEjCDu4sPYADE1oDEtWTYFNNMB5wQ@mail.gmail.com>
+	(Mina Almasry's message of "Wed, 23 Apr 2025 10:59:17 -0700")
+Date: Thu, 24 Apr 2025 10:06:42 +0100
+Message-ID: <m21ptiszbx.fsf@gmail.com>
+References: <20250423031117.907681-1-almasrymina@google.com>
+	<20250423031117.907681-4-almasrymina@google.com>
+	<m2y0vrtd5i.fsf@gmail.com>
+	<CAHS8izNUOO-X0WHFTMd3_yEjCDu4sPYADE1oDEtWTYFNNMB5wQ@mail.gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAEFUPH0cU-5ZJ_qAevp1DENYrUkSO4zipUTg0vzLmgz16nPbbw@mail.gmail.com>
+Content-Type: text/plain
 
-Hello Simon,
+Mina Almasry <almasrymina@google.com> writes:
+>>
+>> The bind-rx op has "flags: [ admin-perm ]", should bind-tx also?
+>
+> The omission of admin-perm for tx is intentional.
+>
+> Binding a dmabuf to an rx queue should and is a privileged operation,
+> because basically the application doing the binding is taking
+> ownership of this rx queue. For TX, no such queue ownership is being
+> taken. The TX binding just gives the netdevice access to the dmabuf
+> dma-addresses so the netdevice can send from there. It's very similar
+> to a normal dma-map with normal memory. There is no need for privilege
+> checks.
 
-On Wed, Apr 23, 2025 at 06:26:40AM -0700, SIMON BABY wrote:
-> Thank you Ido.
-> 
-> Here is the details of my setup:
-> 
-> I have a microchip CPU connected to an 11 port marvell 88E6390 switch.
-> I am using the marvel  linux DSA driver  so that all the switch ports
-> (lan1, lan2, lan3 etc) are part of the linux kernel.
-> 
-> I am using hostapd as an authenticator.
-> 
-> An 802.1x client device is connected to port lan1 and binds this port
-> (lan1) to hostapd daemon, I can see EAPOL packets are being forwarded
-> to a radius server.
-> 
-> I have created a bridge with vlan filtering with below commands and
-> bind the bridge (br0) with hostapd daemon. Now EAPOL packets are not
-> forwarded.
-> 
-> ip link add name br0 type bridge vlan_filtering 1
-> ip link set dev lan1 master br0
-> ip link set dev lan2 master br0
-> bridge vlan add dev lan1 vid 10 pvid untagged
-> bridge vlan add dev lan2 vid 10 pvid untagged
-> ip link set dev br0 up
-> ip link set dev lan1 up
-> ip link set dev lan2 up
-> ip link add link br0 name br0.10 type vlan id 10
-> ip link set dev br0.10 up
-> ip addr add 192.168.2.1/24 dev br0.10
-> bridge vlan add vid 10 dev br0 self
-> 
-> bridge vlan show
-> port              vlan-id
-> lan1              10 PVID Egress Untagged
-> lan2              10 PVID Egress Untagged
-> br0                10
-> 
-> echo 8 > /sys/class/net/br0/bridge/group_fwd_mask
-> cat /sys/class/net/br0/bridge/group_fwd_mask
-> 0x8
-> 
-> root@sama7g5ek-tdy-sd:~# cat /etc/hostapd.conf
-> ##### hostapd configuration file ##############################################
-> # Empty lines and lines starting with # are ignored
-> 
-> # Example configuration file for wired authenticator. See hostapd.conf for
-> # more details.
-> interface=br0
-> >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>passing br0 as interface to
-> hostapd.
-> driver=wired
-
-Could you please clarify what is the expected data path of EAPOL packets?
-(I also have no experience with hostapd)
-Is the forwarding to the RADIUS server something that is handled by
-hostapd, through an IP socket, or is the kernel responsible for doing
-that automatically somehow? Is the RADIUS server IP accessible? Does
-hostapd log the reception of EAPOL packets? I'm trying to understand
-whether the problem is that hostapd is not receiving or not sending
-packets.
-
-I think the hostapd.conf "interface" option can be overridden by '-i'
-command line options. I'm wondering if there's any chance that is going
-on, and hostapd is not listening on br0.
-
-I don't understand the need for group_fwd_mask. In my image, you don't
-need software forwarding of EAPOL packets among bridge ports (which that
-option provides). You only need EAPOL frames to be received by a packet
-socket, and routed using IP to the RADIUS server, correct? Can't you
-just specify multiple '-i' options to hostapd, for the individual bridge
-ports like lan1, lan2, and skip the bridge data path processing for
-these packets, as happens by default when no group_fwd_mask is specified?
-
-Are you also using some other bridge port options, like 'locked', which
-you are not showing in the steps above?
+Thanks for the explanation. I couldn't find any mention of ownership in
+the docs.
