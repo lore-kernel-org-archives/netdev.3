@@ -1,86 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE821FC0FA;
-	Thu, 24 Apr 2025 09:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68E2221FAA;
+	Thu, 24 Apr 2025 10:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745488793; cv=none; b=Kf/k+rhHCp0XNWlld0LET7KgUfJs67vNleDeoUiS5eAlq59GB/sHLwwmH78k3PbHtFxrbK4+A3NrTu5RuggC95cenzsDMcRlY9RWztLNGM0ftaix5q8d0unN+qoXzNvHSgiULzhFZTDrDWZBpfD+aHPeQDinnZRPllflb7lstBY=
+	t=1745489121; cv=none; b=XLSk+8350NV6pmAjNirWlX62LZRvJ7SL064kisXXVLM9AZHq7I1sEVxvFhqDCgHSEvyWmznGxFQQROinlxpMpLmtwDj8FSSeTnm54662KyH14we1uYfJV0kMFt/TY3OEsjxCCIMCKvNuCrJeFBq4YMhA16v0wf5tPof0Oq386Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745488793; c=relaxed/simple;
-	bh=0tvvSnk8ULXJWC8UVXdj328qfDMVzDjjl0icK/+r8Pg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=MBhGKfKan20f72tEUFreK11hX0PjyTD8gx0RJO/mNZmLRTp9j82+Zo0wHj3jhMo3Vt4KALrjqSx1lu+wOicenP1TIk37U9wJ4le7Nc+r/bE6SY9J0Jl/XIBR4ICniZyP5t8LcICre79jw4Y5vx2GAx3gqi44pr2P9IGuzi1ER+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1zDvKUJ; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1zDvKUJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926ADC4CEE3;
-	Thu, 24 Apr 2025 09:59:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745488792;
-	bh=0tvvSnk8ULXJWC8UVXdj328qfDMVzDjjl0icK/+r8Pg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=h1zDvKUJt1IfwS1/Fel+frXyQnAD1Gj5eHUh89C36XTplozRDivahhNeTqKdzqEPa
-	 ZSjVpW6cWkBwey63ozOw7bxm/Ym/CcE0GOkIyEX4q7d/0wYugu3WDN1uu0+2hXoxN+
-	 M99VZ5T2p2OAJp1oscN7ckbOZTB2TY/HcQByBv/zICFNxwPKv+kk0EooORq3+jmRdZ
-	 H7e7R53US23RIlqOTCpV5xV8MOYhRTvgzVTnNPDOULdZ6BzYEaUQPlrNPv2xxyF5dT
-	 TPzn3rlGq/wKOurcyXUweMyCbHcoMvLrqSw9sZxP0WiFtdSnb5jczuAZ7dyJD9Hrhk
-	 n1fNf1vds2BYw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70EC5380CFD9;
-	Thu, 24 Apr 2025 10:00:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1745489121; c=relaxed/simple;
+	bh=IkAVQLQcbBsqd++RWlxWPNV68rQ02JZMdcpF9vVK4mw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CbRqZZoeCQK+uYeRVwHsVHvtGEKFRY/Cjx44j/4npEGqdCUtBoDG6E1349crFRJXad7RMQkT7DNG/bBLcXIKoL5u6jhuZAgAsFfVTCXfPXE+7jYDRJnUl+K+kQ1TZ0s8bu4lYKsjDXWd/AcNbLOCbme9yaG+xuxApQbxvHLMi6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
+Received: from localhost (unknown [116.232.18.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dlan)
+	by smtp.gentoo.org (Postfix) with ESMTPSA id 9CCA2340DF9;
+	Thu, 24 Apr 2025 10:05:18 +0000 (UTC)
+Date: Thu, 24 Apr 2025 10:05:14 +0000
+From: Yixun Lan <dlan@gentoo.org>
+To: Andre Przywara <andre.przywara@arm.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 4/5] arm64: dts: allwinner: a527: add EMAC0 to Radxa A5E
+ board
+Message-ID: <20250424100514-GYA48784@gentoo>
+References: <20250423-01-sun55i-emac0-v1-0-46ee4c855e0a@gentoo.org>
+ <20250423-01-sun55i-emac0-v1-4-46ee4c855e0a@gentoo.org>
+ <aa38baed-f528-4650-9e06-e7a76c25ec89@lunn.ch>
+ <20250424014120.0d66bd85@minigeek.lan>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 0/2] net: stmmac: fix timestamp snapshots on
- dwmac1000
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174548883125.3289294.6660302727268151005.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Apr 2025 10:00:31 +0000
-References: <20250423-stmmac_ts-v2-0-e2cf2bbd61b1@bootlin.com>
-In-Reply-To: <20250423-stmmac_ts-v2-0-e2cf2bbd61b1@bootlin.com>
-To: =?utf-8?q?Alexis_Lothor=C3=A9_=3Calexis=2Elothore=40bootlin=2Ecom=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, richardcochran@gmail.com,
- daniel.machon@microchip.com, maxime.chevallier@bootlin.com,
- thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux@armlinux.org.uk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250424014120.0d66bd85@minigeek.lan>
 
-Hello:
+Hi Andrew, Andre,
 
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Wed, 23 Apr 2025 09:12:08 +0200 you wrote:
-> Hello,
+On 01:42 Thu 24 Apr     , Andre Przywara wrote:
+> On Wed, 23 Apr 2025 18:58:37 +0200
+> Andrew Lunn <andrew@lunn.ch> wrote:
 > 
-> this is the v2 of a small series containing two small fixes for the
-> timestamp snapshot feature on stmmac, especially on dwmac1000 version.
-> Those issues have been detected on a socfpga (Cyclone V) platform. They
-> kind of follow the big rework sent by Maxime at the end of last year to
-> properly split this feature support between different versions of the
-> DWMAC IP.
+> Hi,
 > 
-> [...]
+> > > +&emac0 {
+> > > +	phy-mode = "rgmii";  
+> > 
+> > Does the PCB have extra long clock lines in order to provide the
+> > needed 2ns delay? I guess not, so this should be rgmii-id.
+> 
+> That's a good point, and it probably true.
+> 
+> > 
+> > > +	phy-handle = <&ext_rgmii_phy>;
+> > > +
+> > > +	allwinner,tx-delay-ps = <300>;
+> > > +	allwinner,rx-delay-ps = <400>;  
+> > 
+> > These are rather low delays, since the standard requires 2ns. Anyway,
+> > once you change phy-mode, you probably don't need these.
+> 
+As I tested, drop these two properties making ethernet unable to work,
+there might be some space to improve, but currently I'd leave it for now
 
-Here is the summary with links:
-  - [net,v2,1/2] net: stmmac: fix dwmac1000 ptp timestamp status offset
-    https://git.kernel.org/netdev/net/c/73fa4597bdc0
-  - [net,v2,2/2] net: stmmac: fix multiplication overflow when reading timestamp
-    https://git.kernel.org/netdev/net/c/7b7491372f8e
+> Those go on top of the main 2ns delay, I guess to accommodate some skew
+> between the RX and TX lines, or to account for extra some PCB delay
+> between clock and data? The vendor BSP kernels/DTs program those board
+> specific values, so we have been following suit for a while, for the
+> previous SoCs as well.
+> I just tried, it also works with some variations of those values, but
+> setting tx-delay to 0 stops communication.
+> 
+I'd not bother to try other combinations, and just stick to vendor's settings
 
-You are awesome, thank you!
+thanks
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Yixun Lan (dlan)
