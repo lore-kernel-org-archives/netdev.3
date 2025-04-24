@@ -1,116 +1,105 @@
-Received: from out.smtpout.orange.fr (out-18.smtpout.orange.fr [193.252.22.18])
-	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD00DDC3;
-	Thu, 24 Apr 2025 07:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A7D8C11
+	for <netdev@vger.kernel.org>; Thu, 24 Apr 2025 07:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745480760; cv=none; b=QncgMgw0c4AIsYuY16Ef39iTxFolSTY7k3Rb7qUi6lKDPDAhEDiJv+sQQlUPW58QqEZUxheMcGsoYcQOZjCwFc1FRFM9m0UeHSLid3h88luGKJJsRKL4hTWFIdI941dj6iJQOXcyJ36IzDOeJ+KD1lrImbFi0apF3IsWEnqFE0s=
+	t=1745481009; cv=none; b=i73YL42Q1D+QHfKMLDz8UyWSSuXCECnkAksMXrbbMDuHItyLRuXNIChSbIPmVfQwPB2P3HaUT98x2D4C1msPqwOQBVGC0QmW4V1LodR7+JfuQT8Y05Y3wXYwxsK4J13NUdkx4RMeDnRqSJLJCR51AzUarAKO48mitUTGKUQ9jkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745480760; c=relaxed/simple;
-	bh=sxpPaFhd+Ue6b02ohkhAO2i4Z5lkuhyrfHxIzZsWLIM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PWzSAj7p+BZ3IE+n+aJUm/b2RyBLyo+BV43n7sRrhTqdB4RDrpAOdiFuXKHg2gvyTj4hUVNgujqb7YywzWvexwIreNcOmQawoS9FtXrudPYYHMEYP8+xT+mEBxT7//xCfkN0/Du/SMmwZPyOI2LSBYqtqeSxaMIO3ITOBNHn/9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=CZhOGtQD; arc=none smtp.client-ip=193.252.22.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+	s=arc-20240116; t=1745481009; c=relaxed/simple;
+	bh=rOpxxm+9KW6szQxQ0KqgxfWTa6IVtYN+ONDUkutwY0M=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=FVvyDH6hbvEmrxjRLU2fW5zwgsk+XrKXbtEJ71TMzcwwhKoc6c2A/KyzAJRu/HQdPwL/PGvJvPuAAQDi0eihQUEyad92lTWPTR9yYJ3WRIuONFiinTTn64Gb2sEJfvzRjhgrwNre21v/pkML1FauaVo8CBiEXbC9zkA7FHomHs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KAeJDrlg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="CZhOGtQD"
-Received: from mail-ej1-f42.google.com ([209.85.218.42])
-	by smtp.orange.fr with ESMTPSA
-	id 7rHMuyZ0fRaJG7rHQuYlyJ; Thu, 24 Apr 2025 09:45:56 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1745480756;
-	bh=2fqv4IDSS2zr1aUyGU0ieiex1pCPFx+Sg+AMYvPVOJA=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To;
-	b=CZhOGtQDVNBzTGef0MCcbPx2sQ/2YgBsuuJxn/5fSoiC6J0ZmJzUpG4hWa7LB8LcV
-	 l+8i4AlJJuQEbJNFV+MbekNgf/OauuEbKnbfHZJvVMCC1W0NnYNOIwvKmLKvZR6mWU
-	 SrTCYAzAOccBtwmm5JnIXmt34bYWU82DGcO1HogkEvR/Q7r1Xx8j7GQSDuS4TPxu3F
-	 tM75tmApZxH0KfNm+Av7YMbDnQAeZjlVtbIF6hLySANyX2g83krQw/vIuJp1/N3NLS
-	 r6j5RHBRwAmxrgC2ovVrSPSavv+SqQYWfFyjE+dcx1YcRpDGBQfSvmyprDUqJlrEw5
-	 bqbhe1hO4HJUA==
-X-ME-Helo: mail-ej1-f42.google.com
-X-ME-Auth: bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 24 Apr 2025 09:45:56 +0200
-X-ME-IP: 209.85.218.42
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ac2902f7c2aso118263566b.1;
-        Thu, 24 Apr 2025 00:45:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVHpsjiTF8B23UF5skpC5ORXXSaeWO8PfGPHoDqMvnsPBkUXcn8eX8M7ex2vAnKnneyDBcBi05V@vger.kernel.org, AJvYcCVgGMkyEDmfY4/yUFNnGDWTIWcYzQ4BHXlI60Khk0pHp2J7YeWxdI/82cakdzHFR3W+7dkKyvj5sHqY1lVkAu48@vger.kernel.org, AJvYcCWpHAMeGOsoQFEIty2cF0vfDpohpofAo8EcKZJwhan6G8oFDvQJ0aqlLTmrzDTegtPnRKybLYZWy8w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyGfCI4mrKSSL3k2e81F1bGm38Ldb4QzlCNOY4CVqzLvGJoCT8
-	VFNB0F8xmUMqsyr0B0GWPCss5HgMTGZ+Ysg12sudazFhTvym1K1Wartvn2uQGCH5+5A+O56XjOq
-	E6WqcvpiM8xdNEGMQlOd7gAxHDcg=
-X-Google-Smtp-Source: AGHT+IEXEuzhAtzMJUDSys5Tp9omu6oqt32tdaeZ9eDKgN3uoXirPbUeaxeLP4sm6QZQiet7HI/xBdUBvWJbK92Zd60=
-X-Received: by 2002:a17:907:3c93:b0:ac2:9093:6856 with SMTP id
- a640c23a62f3a-ace573a6e8cmr170228666b.54.1745480752789; Thu, 24 Apr 2025
- 00:45:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KAeJDrlg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2793EC4CEE3;
+	Thu, 24 Apr 2025 07:50:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745481009;
+	bh=rOpxxm+9KW6szQxQ0KqgxfWTa6IVtYN+ONDUkutwY0M=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=KAeJDrlgSjjrczJnJf/Mq/b6tZpirZUSxduzwbFqEX33y6G4psEp+5BbruR3priMX
+	 BLnSbJ/NCoJVcgQeQwakSZJ7zlNm2DK19ivzx4xGY4Mi08vwyYnhG8/t69pgb/EGJG
+	 0ExDYCfFTR2f5DW4tgFLx0Su/uhpKX5pQpyfDBCalwY1ZLbGqqoPEHeZVbVgbtAcLQ
+	 RoIbQ+Iov/sI1YvKjxvmWG+ENTD+qev/+kNLc1el372E0o7aoYg0ifvJAxqov3rZXg
+	 WW0Hz8HqubDdYCfsxfBLcBQR37jzcEYVfwtD9rc7hAY6hT9ps3Dq8bTyGfIjxO0OJe
+	 dQHUWWNCq+sZg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAE42380CFD9;
+	Thu, 24 Apr 2025 07:50:48 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1745323279.git.fmaurer@redhat.com>
-In-Reply-To: <cover.1745323279.git.fmaurer@redhat.com>
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Date: Thu, 24 Apr 2025 16:45:41 +0900
-X-Gmail-Original-Message-ID: <CAMZ6RqK8TdzzMW645OLq5tbkyQdYW+tGGVcr7vsRBE81_u4W4Q@mail.gmail.com>
-X-Gm-Features: ATxdqUGcHCEvNbNb4kKFz7RewC2S_idBvf0uxICwJ6_bEDAtUlXro5ygwq8HyoU
-Message-ID: <CAMZ6RqK8TdzzMW645OLq5tbkyQdYW+tGGVcr7vsRBE81_u4W4Q@mail.gmail.com>
-Subject: Re: [PATCH 0/4] selftest: can: Start importing selftests from can-tests
-To: Felix Maurer <fmaurer@redhat.com>
-Cc: socketcan@hartkopp.net, mkl@pengutronix.de, shuah@kernel.org, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, dcaratti@redhat.com, fstornio@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 net-next 00/15] ipv6: No RTNL for IPv6 routing table.
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174548104775.3247136.12623057523963360588.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Apr 2025 07:50:47 +0000
+References: <20250418000443.43734-1-kuniyu@amazon.com>
+In-Reply-To: <20250418000443.43734-1-kuniyu@amazon.com>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kuni1840@gmail.com,
+ netdev@vger.kernel.org
 
-Hi Felix,
+Hello:
 
-On Tue. 22 Apr. 2025 at 21:08, Felix Maurer <fmaurer@redhat.com> wrote:
-> This is the initial import of a CAN selftest from can-tests[1] into the
-> tree. For now, it is just a single test but when agreed on the
-> structure, we intend to import more tests from can-tests and add
-> additional test cases.
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Excellent initiative!
+On Thu, 17 Apr 2025 17:03:41 -0700 you wrote:
+> IPv6 routing tables are protected by each table's lock and work in
+> the interrupt context, which means we basically don't need RTNL to
+> modify an IPv6 routing table itself.
+> 
+> Currently, the control paths require RTNL because we may need to
+> perform device and nexthop lookups; we must prevent dev/nexthop from
+> going away from the netns.
+> 
+> [...]
 
-> The goal of moving the CAN selftests into the tree is to align the tests
-> more closely with the kernel, improve testing of CAN in general, and to
-> simplify running the tests automatically in the various kernel CI
-> systems.
->
-> I have cc'ed netdev and its reviewers and maintainers to make sure they
-> are okay with the location of the tests and the changes to the paths in
-> MAINTAINERS. The changes should be merged through linux-can-next and
-> subsequent changes will not go to netdev anymore.
+Here is the summary with links:
+  - [v3,net-next,01/15] ipv6: Validate RTA_GATEWAY of RTA_MULTIPATH in rtm_to_fib6_config().
+    https://git.kernel.org/netdev/net-next/c/4cb4861d8c3b
+  - [v3,net-next,02/15] ipv6: Get rid of RTNL for SIOCDELRT and RTM_DELROUTE.
+    https://git.kernel.org/netdev/net-next/c/bd11ff421d36
+  - [v3,net-next,03/15] ipv6: Move some validation from ip6_route_info_create() to rtm_to_fib6_config().
+    https://git.kernel.org/netdev/net-next/c/fa76c1674f2e
+  - [v3,net-next,04/15] ipv6: Check GATEWAY in rtm_to_fib6_multipath_config().
+    https://git.kernel.org/netdev/net-next/c/e6f497955fb6
+  - [v3,net-next,05/15] ipv6: Move nexthop_find_by_id() after fib6_info_alloc().
+    https://git.kernel.org/netdev/net-next/c/c9cabe05e450
+  - [v3,net-next,06/15] ipv6: Split ip6_route_info_create().
+    https://git.kernel.org/netdev/net-next/c/c4837b9853e5
+  - [v3,net-next,07/15] ipv6: Preallocate rt->fib6_nh->rt6i_pcpu in ip6_route_info_create().
+    https://git.kernel.org/netdev/net-next/c/5720a328c3e9
+  - [v3,net-next,08/15] ipv6: Preallocate nhc_pcpu_rth_output in ip6_route_info_create().
+    https://git.kernel.org/netdev/net-next/c/d27b9c40dbd6
+  - [v3,net-next,09/15] ipv6: Don't pass net to ip6_route_info_append().
+    https://git.kernel.org/netdev/net-next/c/87d5d921eaf2
+  - [v3,net-next,10/15] ipv6: Rename rt6_nh.next to rt6_nh.list.
+    https://git.kernel.org/netdev/net-next/c/5a1ccff5c65a
+  - [v3,net-next,11/15] ipv6: Factorise ip6_route_multipath_add().
+    https://git.kernel.org/netdev/net-next/c/71c0efb6d12f
+  - [v3,net-next,12/15] ipv6: Protect fib6_link_table() with spinlock.
+    https://git.kernel.org/netdev/net-next/c/834d97843e3b
+  - [v3,net-next,13/15] ipv6: Defer fib6_purge_rt() in fib6_add_rt2node() to fib6_add().
+    https://git.kernel.org/netdev/net-next/c/accb46b56bc3
+  - [v3,net-next,14/15] ipv6: Protect nh->f6i_list with spinlock and flag.
+    https://git.kernel.org/netdev/net-next/c/081efd18326e
+  - [v3,net-next,15/15] ipv6: Get rid of RTNL for SIOCADDRT and RTM_NEWROUTE.
+    https://git.kernel.org/netdev/net-next/c/169fd62799e8
 
-I am not a netdev maintainer, just a /drivers/net/can maintainer, but
-you have my blessing on this. As far the location goes, your proposal
-makes perfect sense to me. Actually, I can not think of any other
-places than
-
-  tools/testing/selftests/net/can
-
-for this kind of thing.
-
-> [1]: https://github.com/linux-can/can-tests
->
-> Felix Maurer (4):
->   selftests: can: Import tst-filter from can-tests
->   selftests: can: use kselftest harness in test_raw_filter
->   selftests: can: Use fixtures in test_raw_filter
->   selftests: can: Document test_raw_filter test cases
-
-You are doing a lot of change to the original to the point that this
-is more a full rewrite. I have no intent of reviewing the first patch
-which is just the copy paste from the original. If no one else has a
-strong opinion on this, I would rather prefer if you just squash
-everything and send a single patch with the final result. This will
-also save you some effort when migrating the other tests.
-
-I have a few comments on the individual patches, but overall very
-good. Thanks a lot!
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-Yours sincerely,
-Vincent Mailhol
