@@ -1,175 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from spam.asrmicro.com (asrmicro.com [210.13.118.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C631DC1A7
-	for <netdev@vger.kernel.org>; Thu, 24 Apr 2025 02:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9D92701BA
+	for <netdev@vger.kernel.org>; Thu, 24 Apr 2025 02:12:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.13.118.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745460741; cv=none; b=E4wKLv5jYcPeiJQBGo6xEXuGuHz+5Fz4PcEN7Cewh9RgVK1kFpk2pkuAIKN0AOSDbEWlmmEfRVd4g9sJt6BXAk/2SZmK5uS7aCLzELP2QBZgCIZcuOdIgD70cfUeULIAc+fttPCxe8O3hr38AvhUeGWIK3Bw3HhiHd6kbVhWi+E=
+	t=1745460758; cv=none; b=K/edn0Y7CIkr6k4hZFCoUh+cHGHlsAwSLmhfRXiqogL0NVPCD8zonbgxFKDVRyeDM9rfAmB634gGit/9kCbHoj4105Hzcufx6tnFesWf7a4KJ7+enA62MqS6hMPRbdDxp9pMzxjJmx44+VAUv9KCWfM+M2Lobp2avBkd1EGL7m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745460741; c=relaxed/simple;
-	bh=znBOyjZTYD1e+q8pQZccXofF9Xxnx8igNq8hLs7ASjY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZakdJe5O7HFqjfylLLU5EKgPxuwrGUkhvuCEjoXYtboDcB3w84kfeQDVbwiJkEDrrOMcwcuNs+5Z44LsO/TwmPqy60rD6IuIZMtI5WTvokBxz8ClVxoKgoe3c4p2nUfxl35wMnxDWqf6v7w5YJbcFGlxYNTbYy9sNlW93NZnhJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rELPg+0V; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rELPg+0V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC3CC4CEED;
-	Thu, 24 Apr 2025 02:12:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745460741;
-	bh=znBOyjZTYD1e+q8pQZccXofF9Xxnx8igNq8hLs7ASjY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rELPg+0ViSWaEOpQAHqComFrTRYztH9oPvNxrl/8MF/R0/MGDxBM4Jej4StobuA1m
-	 oZB8mQpZ+dmO5Ea/NiaksBV8+Zb4KFFVWpX4yjSBDe5vePJH3EQE5ZBZ+WgL349UL2
-	 4U4Q9SkGGLMxPAEIJ5gEUQWo1vy5iW622/DOpOi5qb6B2SRwbp19wrOY0kag/1XWOx
-	 ZryerLfqZ4lamX8/X+6m734lNJ8FT1U3e16ZSA9L1UNJ4+GzIJr7QjtabMAYnZVckr
-	 fidbPQJswOLw1LJgNapAf1dic95j4dIKOSN7KNSACxLIheClW5XHHzAI2sGb/bNWuA
-	 b0Ufoo6Gga+Sw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	donald.hunter@gmail.com,
-	jacob.e.keller@intel.com,
-	sdf@fomichev.me,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 12/12] tools: ynl: allow fixed-header to be specified per op
-Date: Wed, 23 Apr 2025 19:12:07 -0700
-Message-ID: <20250424021207.1167791-13-kuba@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250424021207.1167791-1-kuba@kernel.org>
-References: <20250424021207.1167791-1-kuba@kernel.org>
+	s=arc-20240116; t=1745460758; c=relaxed/simple;
+	bh=ngAvRTONXmOFNq0kaBBb2o8T/nNOkmpZwfprdyr1saE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=aFpStC2OH0uqraertuASS6LieTN4em+V9hztmir5iVLB2sWY5Qo3FzGw0vJv8IhHOQ3eIaz25wNPNZ3HnU8tVTyh6kPNVyuI59LFm8RHLulrpTLzcdEIu9HAZZkLUIYuvOsZiM2qwFwPaWYRsv3J8TydG2QW2NCzeQIAo8CNFhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=asrmicro.com; spf=pass smtp.mailfrom=asrmicro.com; arc=none smtp.client-ip=210.13.118.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=asrmicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asrmicro.com
+Received: from exch01.asrmicro.com (exch01.asrmicro.com [10.1.24.121])
+	by spam.asrmicro.com with ESMTPS id 53O2C1WR086872
+	(version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=FAIL);
+	Thu, 24 Apr 2025 10:12:01 +0800 (GMT-8)
+	(envelope-from huajianyang@asrmicro.com)
+Received: from exch03.asrmicro.com (10.1.24.118) by exch01.asrmicro.com
+ (10.1.24.121) with Microsoft SMTP Server (TLS) id 15.0.847.32; Thu, 24 Apr
+ 2025 10:12:02 +0800
+Received: from exch03.asrmicro.com ([::1]) by exch03.asrmicro.com ([::1]) with
+ mapi id 15.00.0847.030; Thu, 24 Apr 2025 10:12:02 +0800
+From: =?gb2312?B?WWFuZyBIdWFqaWFuo6jR7ruqvaGjqQ==?= <huajianyang@asrmicro.com>
+To: "pablo@netfilter.org" <pablo@netfilter.org>
+CC: Florian Westphal <fw@strlen.de>,
+        "kadlec@netfilter.org"
+	<kadlec@netfilter.org>,
+        "razor@blackwall.org" <razor@blackwall.org>,
+        "idosch@nvidia.com" <idosch@nvidia.com>,
+        "davem@davemloft.net"
+	<davem@davemloft.net>,
+        "dsahern@kernel.org" <dsahern@kernel.org>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org"
+	<kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "horms@kernel.org" <horms@kernel.org>,
+        "netfilter-devel@vger.kernel.org"
+	<netfilter-devel@vger.kernel.org>,
+        "coreteam@netfilter.org"
+	<coreteam@netfilter.org>,
+        "bridge@lists.linux.dev" <bridge@lists.linux.dev>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: =?gb2312?B?tPC4tDogW1BBVENIXSBuZXQ6IE1vdmUgc3BlY2lmaWMgZnJhZ21lbnRlZCBw?=
+ =?gb2312?Q?acket_to_slow=5Fpath_instead_of_dropping_it?=
+Thread-Topic: [PATCH] net: Move specific fragmented packet to slow_path
+ instead of dropping it
+Thread-Index: AQHbr3tKZ+wvjkSVukOYgchKk3XfyLOnYFuAgAq8iFA=
+Date: Thu, 24 Apr 2025 02:12:02 +0000
+Message-ID: <313bbfd54e6540e58e60dfcd9f0e8b2e@exch03.asrmicro.com>
+References: <20250417092953.8275-1-huajianyang@asrmicro.com>
+ <aAEMPbbOGZDRygwr@strlen.de>
+In-Reply-To: <aAEMPbbOGZDRygwr@strlen.de>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL:spam.asrmicro.com 53O2C1WR086872
 
-rtnetlink has variety of ops with different fixed headers.
-Detect that op fixed header is not the same as family one,
-and use sizeof() directly. For reverse parsing we need to
-pass the fixed header len along the policy (in the socket
-state).
-
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- tools/net/ynl/lib/ynl.h          |  1 +
- tools/net/ynl/lib/ynl.c          |  8 ++++----
- tools/net/ynl/pyynl/ynl_gen_c.py | 17 ++++++++++++++++-
- 3 files changed, 21 insertions(+), 5 deletions(-)
-
-diff --git a/tools/net/ynl/lib/ynl.h b/tools/net/ynl/lib/ynl.h
-index 0b4acc0d288a..5a27b8648120 100644
---- a/tools/net/ynl/lib/ynl.h
-+++ b/tools/net/ynl/lib/ynl.h
-@@ -80,6 +80,7 @@ struct ynl_sock {
- 
- 	struct nlmsghdr *nlh;
- 	const struct ynl_policy_nest *req_policy;
-+	size_t req_hdr_len;
- 	unsigned char *tx_buf;
- 	unsigned char *rx_buf;
- 	unsigned char raw_buf[];
-diff --git a/tools/net/ynl/lib/ynl.c b/tools/net/ynl/lib/ynl.c
-index c16f01372ca3..d263f6f40ad5 100644
---- a/tools/net/ynl/lib/ynl.c
-+++ b/tools/net/ynl/lib/ynl.c
-@@ -191,12 +191,12 @@ ynl_ext_ack_check(struct ynl_sock *ys, const struct nlmsghdr *nlh,
- 		n = snprintf(bad_attr, sizeof(bad_attr), "%sbad attribute: ",
- 			     str ? " (" : "");
- 
--		start = ynl_nlmsg_data_offset(ys->nlh, ys->family->hdr_len);
-+		start = ynl_nlmsg_data_offset(ys->nlh, ys->req_hdr_len);
- 		end = ynl_nlmsg_end_addr(ys->nlh);
- 
- 		off = ys->err.attr_offs;
- 		off -= sizeof(struct nlmsghdr);
--		off -= ys->family->hdr_len;
-+		off -= ys->req_hdr_len;
- 
- 		n += ynl_err_walk(ys, start, end, off, ys->req_policy,
- 				  &bad_attr[n], sizeof(bad_attr) - n, NULL);
-@@ -216,14 +216,14 @@ ynl_ext_ack_check(struct ynl_sock *ys, const struct nlmsghdr *nlh,
- 		n = snprintf(miss_attr, sizeof(miss_attr), "%smissing attribute: ",
- 			     bad_attr[0] ? ", " : (str ? " (" : ""));
- 
--		start = ynl_nlmsg_data_offset(ys->nlh, ys->family->hdr_len);
-+		start = ynl_nlmsg_data_offset(ys->nlh, ys->req_hdr_len);
- 		end = ynl_nlmsg_end_addr(ys->nlh);
- 
- 		nest_pol = ys->req_policy;
- 		if (tb[NLMSGERR_ATTR_MISS_NEST]) {
- 			off = ynl_attr_get_u32(tb[NLMSGERR_ATTR_MISS_NEST]);
- 			off -= sizeof(struct nlmsghdr);
--			off -= ys->family->hdr_len;
-+			off -= ys->req_hdr_len;
- 
- 			n += ynl_err_walk(ys, start, end, off, ys->req_policy,
- 					  &miss_attr[n], sizeof(miss_attr) - n,
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index fbcd3da72b3d..be7aaa3eef41 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -1313,8 +1313,15 @@ from lib import SpecFamily, SpecAttrSet, SpecAttr, SpecOperation, SpecEnumSet, S
-         self.op = op
- 
-         self.fixed_hdr = None
-+        self.fixed_hdr_len = 'ys->family->hdr_len'
-         if op and op.fixed_header:
-             self.fixed_hdr = 'struct ' + c_lower(op.fixed_header)
-+            if op.fixed_header != family.fixed_header:
-+                if family.is_classic():
-+                    self.fixed_hdr_len = f"sizeof({self.fixed_hdr})"
-+                else:
-+                    raise Exception(f"Per-op fixed header not supported, yet")
-+
- 
-         # 'do' and 'dump' response parsing is identical
-         self.type_consistent = True
-@@ -1801,6 +1808,11 @@ _C_KW = {
-         if ri.fixed_hdr:
-             local_vars += ['void *hdr;']
-         iter_line = "ynl_attr_for_each(attr, nlh, yarg->ys->family->hdr_len)"
-+        if ri.op.fixed_header != ri.family.fixed_header:
-+            if ri.family.is_classic():
-+                iter_line = f"ynl_attr_for_each(attr, nlh, sizeof({ri.fixed_hdr}))"
-+            else:
-+                raise Exception(f"Per-op fixed header not supported, yet")
- 
-     array_nests = set()
-     multi_attrs = set()
-@@ -2018,6 +2030,7 @@ _C_KW = {
-         ri.cw.p(f"nlh = ynl_gemsg_start_req(ys, {ri.nl.get_family_id()}, {ri.op.enum_name}, 1);")
- 
-     ri.cw.p(f"ys->req_policy = &{ri.struct['request'].render_name}_nest;")
-+    ri.cw.p(f"ys->req_hdr_len = {ri.fixed_hdr_len};")
-     if 'reply' in ri.op[ri.op_mode]:
-         ri.cw.p(f"yrs.yarg.rsp_policy = &{ri.struct['reply'].render_name}_nest;")
-     ri.cw.nl()
-@@ -2097,6 +2110,7 @@ _C_KW = {
- 
-     if "request" in ri.op[ri.op_mode]:
-         ri.cw.p(f"ys->req_policy = &{ri.struct['request'].render_name}_nest;")
-+        ri.cw.p(f"ys->req_hdr_len = {ri.fixed_hdr_len};")
-         ri.cw.nl()
-         for _, attr in ri.struct["request"].member_list():
-             attr.attr_put(ri, "req")
-@@ -2916,7 +2930,8 @@ _C_KW = {
-         cw.p(f'.is_classic\t= true,')
-         cw.p(f'.classic_id\t= {family.get("protonum")},')
-     if family.is_classic():
--        cw.p(f'.hdr_len\t= sizeof(struct {c_lower(family.fixed_header)}),')
-+        if family.fixed_header:
-+            cw.p(f'.hdr_len\t= sizeof(struct {c_lower(family.fixed_header)}),')
-     elif family.fixed_header:
-         cw.p(f'.hdr_len\t= sizeof(struct genlmsghdr) + sizeof(struct {c_lower(family.fixed_header)}),')
-     else:
--- 
-2.49.0
-
+SGkgUGFibG8sDQoNCkNhbiB5b3UgZ2l2ZSBzb21lIGFkdmljZT8NCg0KVGhhbmtzLg0KDQpCZXN0
+IFJlZ2FyZHMsDQpIdWFqaWFuDQoNCi0tLS0t08q8/tStvP4tLS0tLQ0Kt6K8/sjLOiBGbG9yaWFu
+IFdlc3RwaGFsIFttYWlsdG86ZndAc3RybGVuLmRlXSANCreiy83KsbzkOiAyMDI1xOo01MIxN8jV
+IDIyOjEyDQrK1bz+yMs6IFlhbmcgSHVhamlhbqOo0e67qr2ho6kgPGh1YWppYW55YW5nQGFzcm1p
+Y3JvLmNvbT4NCrOty806IHBhYmxvQG5ldGZpbHRlci5vcmc7IGthZGxlY0BuZXRmaWx0ZXIub3Jn
+OyByYXpvckBibGFja3dhbGwub3JnOyBpZG9zY2hAbnZpZGlhLmNvbTsgZGF2ZW1AZGF2ZW1sb2Z0
+Lm5ldDsgZHNhaGVybkBrZXJuZWwub3JnOyBlZHVtYXpldEBnb29nbGUuY29tOyBrdWJhQGtlcm5l
+bC5vcmc7IHBhYmVuaUByZWRoYXQuY29tOyBob3Jtc0BrZXJuZWwub3JnOyBuZXRmaWx0ZXItZGV2
+ZWxAdmdlci5rZXJuZWwub3JnOyBjb3JldGVhbUBuZXRmaWx0ZXIub3JnOyBicmlkZ2VAbGlzdHMu
+bGludXguZGV2OyBuZXRkZXZAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJu
+ZWwub3JnDQrW98ziOiBSZTogW1BBVENIXSBuZXQ6IE1vdmUgc3BlY2lmaWMgZnJhZ21lbnRlZCBw
+YWNrZXQgdG8gc2xvd19wYXRoIGluc3RlYWQgb2YgZHJvcHBpbmcgaXQNCg0KSHVhamlhbiBZYW5n
+IDxodWFqaWFueWFuZ0Bhc3JtaWNyby5jb20+IHdyb3RlOg0KPiBUaGUgY29uZmlnIE5GX0NPTk5U
+UkFDS19CUklER0Ugd2lsbCBjaGFuZ2UgdGhlIGJyaWRnZSBmb3J3YXJkaW5nIGZvciANCj4gZnJh
+Z21lbnRlZCBwYWNrZXRzLg0KPiANCj4gVGhlIG9yaWdpbmFsIGJyaWRnZSBkb2VzIG5vdCBrbm93
+IHRoYXQgaXQgaXMgYSBmcmFnbWVudGVkIHBhY2tldCBhbmQgDQo+IGZvcndhcmRzIGl0IGRpcmVj
+dGx5LCBhZnRlciBORl9DT05OVFJBQ0tfQlJJREdFIGlzIGVuYWJsZWQsIGZ1bmN0aW9uIA0KPiBu
+Zl9icl9pcF9mcmFnbWVudCBhbmQgYnJfaXA2X2ZyYWdtZW50IHdpbGwgY2hlY2sgdGhlIGhlYWRy
+b29tLg0KPiANCj4gSW4gb3JpZ2luYWwgYnJfZm9yd2FyZCwgaW5zdWZmaWNpZW50IGhlYWRyb29t
+IG9mIHNrYiBtYXkgaW5kZWVkIGV4aXN0LCANCj4gYnV0IHRoZXJlJ3Mgc3RpbGwgYSB3YXkgdG8g
+c2F2ZSB0aGUgc2tiIGluIHRoZSBkZXZpY2UgZHJpdmVyIGFmdGVyIA0KPiBkZXZfcXVldWVfeG1p
+dC5TbyBkcm9waW5nIHRoZSBza2Igd2lsbCBjaGFuZ2UgdGhlIG9yaWdpbmFsIGJyaWRnZSANCj4g
+Zm9yd2FyZGluZyBpbiBzb21lIGNhc2VzLg0KDQpGaXhlczogM2MxNzFmNDk2ZWY1ICgibmV0Zmls
+dGVyOiBicmlkZ2U6IGFkZCBjb25uZWN0aW9uIHRyYWNraW5nIHN5c3RlbSIpDQpSZXZpZXdlZC1i
+eTogRmxvcmlhbiBXZXN0cGhhbCA8ZndAc3RybGVuLmRlPg0KDQpUaGlzIHNob3VsZCBwcm9iYWJs
+eSBiZSByb3V0ZWQgdmlhIFBhYmxvLg0KDQpQYWJsbywgZmVlbCBmcmVlIHRvIHJvdXRlIHRoaXMg
+dmlhIG5mLW5leHQgaWYgeW91IHRoaW5rIGl0cyBub3QgYW4gdXJnZW50IGZpeCwgaXRzIGJlZW4g
+bGlrZSB0aGlzIHNpbmNlIGJyaWRnZSBjb25udHJhY2sgd2FzIGFkZGVkLg0K
