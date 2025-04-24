@@ -1,197 +1,148 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CD6237A4F;
-	Thu, 24 Apr 2025 11:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3987A23816F
+	for <netdev@vger.kernel.org>; Thu, 24 Apr 2025 11:33:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745494396; cv=none; b=ZnyJWyXsw2il/zMRtXkTlN5apcx2079WQk9at3DnmvKaWpo/OCslbNOfRiyP2Xx10pl9cjCWOm1YsPvhhIZviBH9ofEY71TqsD9ulmnITczbVjE3nKgH0EcSsfSbXyX59COcYJIVFcN82xyUzQT8HDMNkNw3N4Xwz1m/HLHNgUE=
+	t=1745494397; cv=none; b=s283f1KgfYTRNueM3KeKt2rrxjXKBtJKeMLae3k8JzeZUw+MT6yhip/DdpLpzGRa9RSrGaEly7SNaa7c00kYtxIatoyV5ZWc12AClzDnYljbjx82Aq6Cpk2SyLq9P48krv88gtSyKlbpPpJRHZSsQnH8DnwLikwXpZQuqv5oClE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745494396; c=relaxed/simple;
-	bh=+B4DW6mkhs0cPei6W59d71W4bkzH7YgJU8sLNR1RW6g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZwfucGlq19JkOFOAljKXAH2goTuzmn3W+ZX57Ak2S4jEjdiM15vd3Nh/hMHGNuU4+OHocJL18o9MlsxT3kiZD4dC/dwOwXQ9rBhKgPCsOMIVOBMHaoWjdXGDOYLaMe6Xtmb81YpshL1BHgj5jv7PcO106m0AWl1qc04862XTdGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G5fEus3c; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G5fEus3c"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745494395; x=1777030395;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=+B4DW6mkhs0cPei6W59d71W4bkzH7YgJU8sLNR1RW6g=;
-  b=G5fEus3c60H+PzOx3AUx3TBZrg0tQXra5L9sA4puT7Vqj2kBKlEOIhFX
-   C82GFeSJjL7P/k1HQaMRdXKm8GOITIiKoiNH+sF9e9mCq6LJkAcMJtowh
-   IsED/vzQ7i3aIK3aPJIQlDYSWpAlsUlzGHTaPLGiPcPbXFh18NiArCfnc
-   nW3aNzq2gOlpYHNW/TERGNVGJcd40HnSOz7GL6nVki+ODMTS6kr1oUMiw
-   scbA6IGONfVzOEDXH9S1cXccY/CLEWBjKaG1YLhBHXJr90Fsc+JG6sbHq
-   VjSqh2IgM1DDzOFDsW7P66HJqopWyJ+br676xUELARC7Zh6ErOE1dWnPy
-   Q==;
-X-CSE-ConnectionGUID: /0nS9apwQGiR+S1HIMSVVA==
-X-CSE-MsgGUID: ma8MfxE0SgS7ZIO5VLSxcQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="57771267"
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; 
-   d="scan'208";a="57771267"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 04:33:13 -0700
-X-CSE-ConnectionGUID: rVM5iFf2QnmkoRouqjkV/Q==
-X-CSE-MsgGUID: AaIOB2UGSeq9+Dbq84n9UA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; 
-   d="scan'208";a="137389446"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa005.fm.intel.com with ESMTP; 24 Apr 2025 04:33:07 -0700
-Received: from mglak.igk.intel.com (mglak.igk.intel.com [10.237.112.146])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 394E333EA2;
-	Thu, 24 Apr 2025 12:33:04 +0100 (IST)
-From: Larysa Zaremba <larysa.zaremba@intel.com>
-To: intel-wired-lan@lists.osuosl.org,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Lee Trager <lee@trager.us>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Ahmed Zaki <ahmed.zaki@intel.com>,
-	netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Karlsson, Magnus" <magnus.karlsson@intel.com>,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Madhu Chittim <madhu.chittim@intel.com>,
-	Josh Hay <joshua.a.hay@intel.com>,
-	Milena Olech <milena.olech@intel.com>,
-	pavan.kumar.linga@intel.com,
-	"Singhai, Anjali" <anjali.singhai@intel.com>,
-	Michal Kubiak <michal.kubiak@intel.com>
-Subject: [PATCH iwl-next v2 09/14] idpf: make mbx_task queueing and cancelling more consistent
-Date: Thu, 24 Apr 2025 13:32:32 +0200
-Message-ID: <20250424113241.10061-10-larysa.zaremba@intel.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250424113241.10061-1-larysa.zaremba@intel.com>
-References: <20250424113241.10061-1-larysa.zaremba@intel.com>
+	s=arc-20240116; t=1745494397; c=relaxed/simple;
+	bh=jApDZhqpWgZhrw7+xKexH6+5kJ7S00zVkH84/nOW8rE=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=T9M9Zjtx868QWH+vU+Uz+r09dIoQArGxoKa+CGiQH89hzp0vMSUZDwqpw18/fmfg2pmYpY+JMRXfgRjfODQdV0zWPpsBYcUGmAkfN75TJWYvflOmvyE635X1d6TspIx1gImG9qnFpJmG+0E5EGlF/0ZjzSgA8D10OAR7zz0dFgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fejes.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fejes.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43cfe63c592so8759465e9.2
+        for <netdev@vger.kernel.org>; Thu, 24 Apr 2025 04:33:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745494392; x=1746099192;
+        h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
+         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qysaWPGR4kx1KRyaPfNKtdkOTIfkWPtl6HnHLktm75o=;
+        b=azbF1jmQlarTEEO/SoqeCtw42C8G4wRU8/OLNXHa8psZyQB2f7zk2M53qBpXDonUMd
+         q3eKUJagyVP87nxQ9bFc/mhBBXsg3wU52NPgjMebunj/3KjafSxHFDtm1a6weXS0I91O
+         15PF3ROpTe0RtdWv/yj6b2qQqZ0d+OO4xLUJbSLSXKKHVsm/8AyOYjqPHB5z252mBg3n
+         HbFRXypqJf7L6uB1v+4nn40K6xdYYbC0GKe9JHRtp9X/DmbhRgI16HaZV6efL9U9IjDY
+         UdoZSVQcv0iMpBiQ9xTT8uFkxqKZXJ81fOY4ddUtvBQQx70HLaAVbrTOIWZVh8v5qdh1
+         jijA==
+X-Gm-Message-State: AOJu0YwZvCArTTpcJX7xUsyap1+uKNT9B5UJirpftj6TrRcvEdcDq+5A
+	8XxGYbIZJDgVUw2+sUDSIltEoz+SXsJOENnMWD6BESOOYE2d1NfbO3VGxt5k
+X-Gm-Gg: ASbGncsFVirwUTj2cvGYJYvuhdCDaPbjJ9MNWv/ghlbIJnPO1Dvx0TvTtf8NCemJ3Va
+	PWoMKPG5c0kHHT6T2yOJAtHwfIRVZAxq5RYLKzz+I5o8Yi5LW7zH4ZRWJ84mMw0zzi2HvBW7LJB
+	fx5emT9o2KxR8QiKJQxsjmv8aRijJMSqJse3KXSrcTqkecOJ9aIL/StdSCGDcVvl+5cIqOhGw4M
+	Qre4Ls10rDOvxM9HpNPIfes10YNF/7fKe3IMwUUD8D+Cn08UydxTpGGgWbGhh4qkFsHocDjosRb
+	ANWEi99HoHFpCWiq4RH17Uuh+/R/BiHISqRFBQ==
+X-Google-Smtp-Source: AGHT+IHFnwWjhh9WoKjcvB31S3YpA93ckgAl2yXU3HGAZV5080i4xXOntPR0NTXsZqKQX5rZBmw+/Q==
+X-Received: by 2002:a05:600c:3553:b0:43c:fdbe:4398 with SMTP id 5b1f17b1804b1-4409bcfc1ebmr18164855e9.6.1745494391198;
+        Thu, 24 Apr 2025 04:33:11 -0700 (PDT)
+Received: from [10.148.85.1] ([195.228.69.10])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4409d2e0241sm17591885e9.37.2025.04.24.04.33.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Apr 2025 04:33:09 -0700 (PDT)
+Message-ID: <c28ded3224734ca62187ed9a41f7ab39ceecb610.camel@fejes.dev>
+Subject: [question] robust netns association with fib4 lookup
+From: Ferenc Fejes <ferenc@fejes.dev>
+To: netdev <netdev@vger.kernel.org>
+Cc: "<idosch@nvidia.com>" <idosch@nvidia.com>, kuniyu@amazon.com
+Date: Thu, 24 Apr 2025 13:33:08 +0200
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1-1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-As a consequence of refactoring idpf code to use libie APIs,
-idpf_vc_xn_shutdown was merged with and replaced by idpf_deinit_dflt_mbx.
-This does not affect the Tx path, as it checked for a presence of an xn
-manager anyway. Rx processing is handled by the mbx_task that is not always
-cancelled before calling the new consolidated mailbox deinit function.
-Moreover, in the reset path idpf_intr_rel() reschedules it after the deinit
-is done. This leads to mbx_task referencing the freed mailbox and causing
-KASAN warnings.
+Hi,
 
-To remedy this, in the init path, do the first queueing of mbx_task in
-idpf_init_dflt_mbx(), in deinit and reset, always cancel the task in
-idpf_deinit_dflt_mbx() and in every flow first call idpf_mb_intr_rel_irq().
+tl;dr: I want to trace fib4 lookups within a network namespace with eBPF.  =
+ This
+works well with fib6, as the struct net ptr passed as an argument to
+fib6_table_lookup [0], so I can read the inode from it and pass it to users=
+pace.
 
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
----
- drivers/net/ethernet/intel/idpf/idpf.h          | 1 +
- drivers/net/ethernet/intel/idpf/idpf_lib.c      | 9 ++++-----
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 6 +++++-
- 3 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-index b68362cf9a87..56c1c2f99ab3 100644
---- a/drivers/net/ethernet/intel/idpf/idpf.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -850,6 +850,7 @@ void idpf_vc_event_task(struct work_struct *work);
- void idpf_dev_ops_init(struct idpf_adapter *adapter);
- void idpf_vf_dev_ops_init(struct idpf_adapter *adapter);
- int idpf_intr_req(struct idpf_adapter *adapter);
-+void idpf_mb_intr_rel_irq(struct idpf_adapter *adapter);
- void idpf_intr_rel(struct idpf_adapter *adapter);
- u16 idpf_get_max_tx_hdr_size(struct idpf_adapter *adapter);
- int idpf_initiate_soft_reset(struct idpf_vport *vport,
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index a9f8d5f79347..0562f74a4d61 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -66,9 +66,11 @@ static void idpf_deinit_vector_stack(struct idpf_adapter *adapter)
-  * This will also disable interrupt mode and queue up mailbox task. Mailbox
-  * task will reschedule itself if not in interrupt mode.
-  */
--static void idpf_mb_intr_rel_irq(struct idpf_adapter *adapter)
-+void idpf_mb_intr_rel_irq(struct idpf_adapter *adapter)
- {
--	clear_bit(IDPF_MB_INTR_MODE, adapter->flags);
-+	if (!test_and_clear_bit(IDPF_MB_INTR_MODE, adapter->flags))
-+		return;
-+
- 	kfree(free_irq(adapter->msix_entries[0].vector, adapter));
- 	queue_delayed_work(adapter->mbx_wq, &adapter->mbx_task, 0);
- }
-@@ -1765,14 +1767,11 @@ static int idpf_init_hard_reset(struct idpf_adapter *adapter)
- 		goto unlock_mutex;
- 	}
- 
--	queue_delayed_work(adapter->mbx_wq, &adapter->mbx_task, 0);
--
- 	/* Initialize the state machine, also allocate memory and request
- 	 * resources
- 	 */
- 	err = idpf_vc_core_init(adapter);
- 	if (err) {
--		cancel_delayed_work_sync(&adapter->mbx_task);
- 		idpf_deinit_dflt_mbx(adapter);
- 		goto unlock_mutex;
- 	}
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index a8569227ee2c..6bc7068b613a 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -2336,6 +2336,8 @@ int idpf_init_dflt_mbx(struct idpf_adapter *adapter)
- 	adapter->xn_init_params.xnm = params.xnm;
- 	adapter->state = __IDPF_VER_CHECK;
- 
-+	queue_delayed_work(adapter->mbx_wq, &adapter->mbx_task, 0);
-+
- 	return 0;
- }
- 
-@@ -2345,6 +2347,9 @@ int idpf_init_dflt_mbx(struct idpf_adapter *adapter)
-  */
- void idpf_deinit_dflt_mbx(struct idpf_adapter *adapter)
- {
-+	idpf_mb_intr_rel_irq(adapter);
-+	cancel_delayed_work_sync(&adapter->mbx_task);
-+
- 	if (adapter->arq && adapter->asq) {
- 		idpf_mb_clean(adapter);
- 		libie_ctlq_xn_deinit(adapter->xn_init_params.xnm,
-@@ -2574,7 +2579,6 @@ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
- 		idpf_deinit_dflt_mbx(adapter);
- 
- 	cancel_delayed_work_sync(&adapter->serv_task);
--	cancel_delayed_work_sync(&adapter->mbx_task);
- 
- 	idpf_vport_params_buf_rel(adapter);
- 
--- 
-2.47.0
+Additional context. I'm working on a fib table and fib rule lookup tracer
+application that hooks fib_table_lookup/fib6_table_lookup and fib_rules_loo=
+kup
+with fexit eBPF probes and gathers useful data from the struct flowi4 and f=
+lowi6
+used for the lookup as well as the resulting nexthop (gw, seg6, mpls tunnel=
+) if
+the lookup is successful. If this works, my plan is to extend it to neighbo=
+ur,
+fdb and mdb lookups.
 
+Tracepoints exist for fib lookups v4 [1] and v6 [2] but in my tracer I woul=
+d
+like to have netns filtering. For example: "check unsuccessful fib4 rule an=
+d
+table lookups in netns foo". Unfortunately I can't find a reliable way to
+associate netns info with fib4 lookups. The main problems are as follows.
+
+Unlike fib6_table_lookup for v6, fib_table_lookup for v4 does not have a st=
+ruct
+net argument. This makes sense, as struct net is not needed there. But with=
+out
+it, the netns association is not as easy as in the v6 case.
+
+On the other hand, fib_lookup [3], which in most cases calls fib_table_look=
+up,
+has a struct net parameter. Even better, there is the struct fib_result ptr
+returned by fib_table_lookup. This would be the perfect candidate to hook i=
+nto,
+but unfortunately it is an inline function.
+
+If there are custom fib rules in the netns, __fib_lookup [4] is called, whi=
+ch is
+hookable. This has all the necessary info like netns, table and result. To =
+use
+this I have to add the custom rule to the traced netns and remove it
+immediately. This will enforce the __fib_lookup codepath. But I feel that a=
+t
+some point this bug(?) will be fixed and the kernel will notice the absence=
+ of
+custom rules and switch back to the original codepath.
+
+But this option is useless for tracing unsuccessful lookups. The stack look=
+s
+like this:
+__fib_lookup                    <-- netns info available
+  fib_rules_lookup              <-- losing netns info... :-(
+    fib4_rule_action            <-- unsuccessful result available
+      fib_table_lookup          <-- source of unsuccessful result
+
+My current workaround is to restore the netns info using the struct flowi4
+pointer. When we have the stack above, I use an eBPF hashmap and use the fl=
+owi4
+pointer as the key and netns as the value. Then in the fib_table_lookup I l=
+ook
+up the netns id based on the value of the flowi4 pointer. Since this is the
+common case, it works, but looks like fib_table_lookup is called from other
+places as well (even its rare).
+
+Is there any other way to get the netns info for fib4 lookups? If not, woul=
+d it
+be worth an RFC to pass the struct net argument to fib_table_lookup as well=
+, as
+is currently done in fib6_table_lookup? Unfortunately this includes some ca=
+llers
+to fib_table_lookup. The netns id would also be presented in the existing
+tracepoints ([1] and [2]). Thanks in advance for any suggestion.
+
+Best,
+Ferenc
+
+
+[0] https://elixir.bootlin.com/linux/v6.15-rc3/source/net/ipv6/route.c#L222=
+1
+[1] https://elixir.bootlin.com/linux/v6.15-rc3/source/include/trace/events/=
+fib.h
+[2] https://elixir.bootlin.com/linux/v6.14/source/include/trace/events/fib6=
+.h
+[3] https://elixir.bootlin.com/linux/v6.15-rc3/source/include/net/ip_fib.h#=
+L374
