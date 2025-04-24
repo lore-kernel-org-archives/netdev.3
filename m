@@ -1,150 +1,167 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10F513CA9C;
-	Thu, 24 Apr 2025 14:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F38612CDA5;
+	Thu, 24 Apr 2025 14:47:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745505925; cv=none; b=MiZdHK5vXg6YPd7coHZCkZNNdCZwVbQRGV4zHj6684jTit1OIOe7ODecJtDr4dNS57FUVj10QkmphIYnCf6rrgIpcv6YWZIW2bNZF7/r0qUhM13bv8Yxh/UUXSIIIWMkT2KmgI5Ff0IFTKOrQ56mUjzKGDjv15Z5LJg5yhKQzBY=
+	t=1745506029; cv=none; b=SZtTuGSqwSeOAgkazdEtnypL3/69ofMqk3HxtkQhuxOYTNhoOErzQf4z5QwhXFd/NB57g8E9yDgHbUINTtx3M9KUJDta7CYEyf/28xwV1YFYbylqWCzj63HIyMZeACtKL8115h5iy9JM3jx8q5AkD0R4mTIhfI4cFwp6DOlMraE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745505925; c=relaxed/simple;
-	bh=WfFFauBOimAA1xG7/eaugx9UY2R4AXtESa3PSQzg0KU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jngROzsK/hN9ZmlcI3bj6VTOvZwexHN2KzY25Ko0YvGKDSOLUGjUHFyVJsJf6AC/fGxBw/rhe8vDqVEU3Kdaeg6jqYOe5lrjLyQhXcUZ6TmCEN/OdlV7dAZ5LTDcthJx4U1z8cKd9Q8NEWu/XYxSpwZIRtx2VbfpJiQMv2BsOMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZhKu4kC9; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745506029; c=relaxed/simple;
+	bh=Bn7qKgmVirMnL4HSoD6+ySbU242thJzaLTltDmOvM9c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YOHyrghSLKMSGgPUJ9casVPkVL8lEYrVzGLY8Bd5cU663iCxks4Gv4GeaHbM7fZTqY2ElfuAV3H7cF8pX102Kh5d/9iKpVlZeO3elRVdPhJwD47DQndKt0J3N7/lNdEWzIsnCy5oG4j30KVKWt375MxVhn0jLlskUWCReFy46As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=UiBzdblN; arc=none smtp.client-ip=212.227.126.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZhKu4kC9"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-73c17c770a7so1495296b3a.2;
-        Thu, 24 Apr 2025 07:45:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745505923; x=1746110723; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4PAGLeinOTw1BegEcFTcz+g2dJ2nTYeNG2yLekJHkNo=;
-        b=ZhKu4kC948GYQQf0HzrVY5w+PpKrvbIARLw2ZoPdGrfnQonoqW8pyCzdNMN9n5gCvZ
-         Z5ZfJwu8AKb4ZEPpkWOrMeceAL8Y/UHG/cWAkL5TMK13tYgG7HN8DNyDNuq81NzmKgzB
-         cv4VLkD9w0J4j3cPLG0Xhkn+sdQEiZOzmvSeW5sYmv0VJj6B9edODN89D4e+BSBxai4w
-         rt5Rh4Cq7icOpvrY5gUY36rh0Z62q7/WYulbHaa5Td//bBQMt7eFwXoJNxTZkbQWsGli
-         n0Bkh3STpKk6/4NfkHBDC8+PShP7aCIlM0/hBlV7paW+OxiXmhCQ7rw8U0FRfiyFNdb8
-         4BYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745505923; x=1746110723;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4PAGLeinOTw1BegEcFTcz+g2dJ2nTYeNG2yLekJHkNo=;
-        b=urJXbN3ui5VkJ93wPp/hkkWdFoTpUGTBd5vLt4BMrEasFPiV7ZSzzW46XjhI6mvMSH
-         TIu3affq9Hj18Otwr8oYuI+MfA+2NOLi5i9DEcrN7GYhZitVzyYnoMRfeiwGa7VJo4LG
-         XkZArDDIRIqPEP64+H7JaYm0kjymlV4PfDcbYdcrtGUx2vHU7Fgiuxdh/NQ5KfEYmI+g
-         OlzOrl20DBBj6h6mtvojh0rHXQGm3g7kvZacnNJwuzx0pBCAsa6FSfsKOjrErhpi16mt
-         yDM6AHmltcVTamHkuhQBIF905BgMOs698Nkxmxb5S9tiCA7rz0/wI13naTlozwc0m2K5
-         TyLw==
-X-Forwarded-Encrypted: i=1; AJvYcCUfoWllnK1DAGm1YEgJ5hnbZrY+HV8xVOq3CLnh+ivfQlkwtFz65oozP5ldkQ3fHF0IGLE=@vger.kernel.org, AJvYcCXMViui7smLkkh1PMciRg8jgDEP1YYRafvC7W0M/dc2eShXxMb3mpEWgHWhNm7KIAhnZClsIHSQVsN+in+n@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEQpxkGNFRaA2YxQYVnpz0KIGi6Sb5kiV+57yYC68EUTo22eFF
-	001aXOglqRpodkIeUKpp3+ewzExadq+sOozZ3EmvNS1iSkzzuaNR
-X-Gm-Gg: ASbGncvA1hgLdM0qRgXDOxdfbDt/s7tz9MtqLHFrUaKSOW2CpZSdYEyZUMh7I04PpCu
-	S17ZwDOwm2OAO1Je2KPLgFlF8J7rM4HltuAZ4pnmo/WfaefrAwQHuk34agAvanWZHEO5KfgWNXa
-	3yEoyQtKiIWOE+WGUdTN64/74aewLeTwau+fpFhDvzC5BsMvg6m38yGteKPQrY2vSZPNrYXmugR
-	yuJ7p+I6+uD7xHid7SHWWQk9S4W0Y+vwQ5rxUZHnOJt8tz8FT+u3X2UneQdrd0SwbenSNk3v7Ns
-	OzZM7gtwPVip74A8iu+NOdbz2RBhIPBueoJqMsPAUfifSzs+Af+7tMXBJhs+/quKTEFNyIqLsnZ
-	2NG7N3bEA76EzZEXMw7U=
-X-Google-Smtp-Source: AGHT+IFVuYKB/RLifTofF8XnjcJX6TCVuQ5lhxXULqxxcU1gSNRlAOIL1o0jpGAizcAW5raamumQWA==
-X-Received: by 2002:a05:6a00:391b:b0:737:6e1f:29da with SMTP id d2e1a72fcca58-73e24e05a1cmr4301845b3a.21.1745505922795;
-        Thu, 24 Apr 2025 07:45:22 -0700 (PDT)
-Received: from ?IPV6:2001:ee0:4f0e:fb30:f632:6238:46f4:702e? ([2001:ee0:4f0e:fb30:f632:6238:46f4:702e])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e2593f557sm1474503b3a.42.2025.04.24.07.45.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Apr 2025 07:45:22 -0700 (PDT)
-Message-ID: <9cb42173-e394-4c5b-aef2-fe9ce737689e@gmail.com>
-Date: Thu, 24 Apr 2025 21:45:15 +0700
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="UiBzdblN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1745506020; x=1746110820; i=christian@heusel.eu;
+	bh=BiYoI3t07zEC8MRuyXYTtYuABNrGYYjjjTp7cv/tN5k=;
+	h=X-UI-Sender-Class:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=UiBzdblNx8SwoBGVxvk9jjILOoLWahs1kH+IM9Jg1GoFjDtyCk7d6VMXlArVRrCV
+	 cImoPPph4TrSVxDGFE4IFj2DND54y/B6fE6KDxDealrOQ8kNrQq1/YvHSSPLMxZ9I
+	 xyk6DtjWUJEpcJV3O9PZPKmD0QBFd0KESuAK0mAVObJyNaehAL43rmKHkIgsC6GQl
+	 DAYR2elgIPK/3EdTRx5hyUD4BgpERUy+gRW35H43fpfG00yTsJNKg5kEuBpcJNqEu
+	 JLz6g3bh9yLkh4i+UQrKViu6W8HiUfsubgDPrBUJ4K26vux5YRRwkMWJ0FCbbYIOV
+	 QdVGVxbZY82aIH5o/Q==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from meterpeter.localdomain ([80.187.66.147]) by
+ mrelayeu.kundenserver.de (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis)
+ id 1M7auL-1uBYB23HSf-0093Pm; Thu, 24 Apr 2025 16:01:06 +0200
+From: Christian Heusel <christian@heusel.eu>
+Date: Thu, 24 Apr 2025 16:00:28 +0200
+Subject: [PATCH] Revert "rndis_host: Flag RNDIS modems as WWAN devices"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] xsk: respect the offsets when copying frags
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: netdev@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250423101047.31402-1-minhquangbui99@gmail.com>
- <34e2c7f7-4d83-4e5c-af56-d91e68b3e7e1@intel.com>
-Content-Language: en-US
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-In-Reply-To: <34e2c7f7-4d83-4e5c-af56-d91e68b3e7e1@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <20250424-usb-tethering-fix-v1-1-b65cf97c740e@heusel.eu>
+X-B4-Tracking: v=1; b=H4sIAPtDCmgC/x2MywqAIBAAf0X23ELZA+tXokPmpnux0Iog+veWj
+ jMw80CmxJRhUA8kujjzFgWqQsES5ugJ2QmDLnVbNrrBM1s86AiSRY8r31j3pjPG1trNDqTbE4n
+ +n+P0vh/8VO0nYwAAAA==
+X-Change-ID: 20250424-usb-tethering-fix-398688b32dad
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+ regressions@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Lubomir Rintel <lkundrak@v3.sk>, 
+ Christian Heusel <christian@heusel.eu>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2318; i=christian@heusel.eu;
+ h=from:subject:message-id; bh=uCmWJ08d3T6sqzruRhhWDBmrpAmhzZjpMdT+4kKwQso=;
+ b=owEBbQKS/ZANAwAIAcBH1PMotSWFAcsmYgBoCkQYdLRPMzkf+QHfzbvX3tEyVNKkXCfmnJZ2b
+ F3yPlBdc5+JAjMEAAEIAB0WIQRvd5reJHprig9yzBPAR9TzKLUlhQUCaApEGAAKCRDAR9TzKLUl
+ hbkUEADVFJTdIYmV70vJOafWG6Q0MJ2+D744VIi72htiDZaU5KXXnhjhgcCkc7ERzzc6EPBdfvh
+ fT0tSm0OSj5EmPxftgKRfnKpuSzgUf3JrqszWBjc3b1VS116beAeKyBSL3CDxn410Qgefxq6ONN
+ Snx4HfR6mmQMdYskMAmBfXcnhZumZbOs6E79j4Rgo9aGyhn8e5br9Wjydvdaha6ofhalKG4/noI
+ 3V1sxjlLAtItMZN6x8K/Sw//g6oOpKeUarSXzINs2jE1KE+KM9iEL0ao23V7D/Abvx5j8uIOnsH
+ Zd3XTbOumKO9MwGhRFcWscVXtTbwcwE4l08BvhjLrNQcx1CCXK4r1NDkqEvmCEQPkEs5gOCKe2s
+ KcH2umRSOXY3MdEFn6MfOaswwA9qB3GYfklyjZJ5sFsZ7B/CYK5taj4ZBdF2B2mJN+n8ZZJNOTa
+ GRQh2SZ5wcR4TfSt/UO8xGbvngKYeHzj1PVMBar79KJNDpwolwDF4Q12CUTfP0aPs2kCuWFaeTA
+ qSq8esVlTmrAYmpstcqq5ggZHK12aTwAgzo137jYyjctXFMGjwAMeHZ2/tAEHRQKYF/x0xp1J8l
+ rQvN2uVtySCduj5BGS8ibjNrLYHIy+QSEWgpYxK7DTRpQcR+TXmmojhXCma6F4AKINd9+Xit5sO
+ aVMbYywjdZ0p1AQ==
+X-Developer-Key: i=christian@heusel.eu; a=openpgp;
+ fpr=6F779ADE247A6B8A0F72CC13C047D4F328B52585
+X-Provags-ID: V03:K1:inbTguRCRiMzNvBapqeKfvNgoRAp4ykFIM+J2mJo0gamsw0VmE2
+ SCWeqUtxg/rShR/rwfRc771bqCWDaQuMi2EiSCFU/1U7cbNqcuOcfj6n03OKFnTz8PoT3Xy
+ cj3rVVGs0Lo8CPxQbCb3CxFRkiY/ojr9BH/QlvXlUFPFXIBABy3qJl/IsDYJqUiFt5Q2FTk
+ /8AdAL1xp0bS9+MPHtEHw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:PflABPEdXXQ=;RPRrPH81t1zq5AQlBJjAPtNrmDf
+ z1ri80UOQmYc4dRQUCwE5PDe/i4AuVyT68lf9t4FuUdxaA6OqAOMueSuojh8tubI4CHNBcRW7
+ 6jAjlC3xrBbdKpr26g06tMgBOivVL0NfE2FXD5NK5f4pUUFRSVczL34JXwwY2GsRLERxgRZvr
+ Xwf0Jb6vgkwENptVDqO8r7I5CZBayJBwgfnRtdvarmas+9hzEMs8sNtBMRzvwyyUQadp95qQc
+ ZjmGS9cHnh9nrzr/vfbCu5v1MNbbxhEawVbH+dNpjxl7A7hG6YUVXLGy7QjBP3XNDyC6JZnLu
+ CoTVuxEs/3aLm+6vTqVhbTO2MyCNQqvbONprbOhfckBCsJ7fLHuNdMogxphtbiCUKJ4FhuDpc
+ tfcbRormUhfG15NRrOY2pdX7iTXliAvZPdBOPJZfXehfsssLtv7VrQNcKtkecnKxc6gH2ivFd
+ DY1XrrOMyEJcVCZf6lZGyXr5BrI3xbSvCkWUwCOPHugWzsrNtLrTyw8xO9v6HJNpCx7DH4ayd
+ yKtxvKjcXLrUkyCrQoULoM2CGNamwCtEXdvpUDCfonqww/ED4jio9nURsWRRkBjcbzebweZ0H
+ /qYqskUX9VQpXLidBVBZhdirQLm5Ex049Vb50Iv+8w5fxCoWx7uMi0hRhJxKoRsu5//Zqp3/x
+ hYJMaVFao/MPUPXdId7ujlm48QFsxT7ALMXmTJtMy+1MHBoJ+u8FB12OXdmQ1lsvjoEqxb/TL
+ 8ix9TaULacjJ7hw+sWq3GDtHmZMwH81/ekfIA1SkbmwJ88ixv7HJ2Bq5H8aurUKBGDWK5s20y
+ yfrbNkEKuhlzI3Lqa/ZSTjYEJy6i/hT0DAY2xznOO4kLF5BgbJQQ38Cl+xq7Rl/0IEJmAwkKm
+ eLGCYYpUt3vXzKKMhh7eGl0j7i1uFHzfcLm0AG+6e6yAxmm0M+C/THAZg2GxZGqcowO4p2IF7
+ wsBJShEbeaBWPmfd9Jy+MJtMYboksE+8moo2SUTuPyzBFwvQFBHRNChAmt+vKXlVbw+wG3wPS
+ 1GxyDcFvAk2QbjjiTIm2pG9hrUHCLkzyXZ2COmHf787pNwXQO3oP+2w2DKA8xKxaNveeozQEo
+ ebEriHEf+7+pL2Ih0kZmk5xvpRh3GBw4FNf7WdP6z8NGsOL+fv0HdGFDtHWH4PsYq3ww/Co5i
+ CDbZuHM40lxEAIeMWLr8XzPzMzxW5GW5l/3a8Ol3TZucCEEmcI571WTcuG9Or5Jrl8BGvP/dy
+ 93ZYovJGafW889NA9VXP4Gvp9hJITNjbnLnjxMrF9UePt8x5PiIGgyBmFrNUHieqWpUZe06No
+ /q3t2GI+gAXepIrMOGveVwcKBQrjL7+gTtItIBFrZXs94+JSNsSP78Gf3Hce63EOyIYWsKe4R
+ 33jLZG0aF7F35D1DYAYsjHW+kq43b0ci7QzcE=
 
-On 4/24/25 21:02, Alexander Lobakin wrote:
-> From: Bui Quang Minh <minhquangbui99@gmail.com>
-> Date: Wed, 23 Apr 2025 17:10:47 +0700
->
->> Add the missing offsets when copying frags in xdp_copy_frags_from_zc().
->>
->> Fixes: 560d958c6c68 ("xsk: add generic XSk &xdp_buff -> skb conversion")
->> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
->> ---
->>   net/core/xdp.c | 7 ++++---
->>   1 file changed, 4 insertions(+), 3 deletions(-)
->>
->> diff --git a/net/core/xdp.c b/net/core/xdp.c
->> index f86eedad586a..a723dc301f94 100644
->> --- a/net/core/xdp.c
->> +++ b/net/core/xdp.c
->> @@ -697,7 +697,8 @@ static noinline bool xdp_copy_frags_from_zc(struct sk_buff *skb,
->>   	nr_frags = xinfo->nr_frags;
->>   
->>   	for (u32 i = 0; i < nr_frags; i++) {
->> -		u32 len = skb_frag_size(&xinfo->frags[i]);
->> +		const skb_frag_t *frag = &xinfo->frags[i];
->> +		u32 len = skb_frag_size(frag);
->>   		u32 offset, truesize = len;
->>   		netmem_ref netmem;
->>   
->> @@ -707,8 +708,8 @@ static noinline bool xdp_copy_frags_from_zc(struct sk_buff *skb,
->>   			return false;
->>   		}
->>   
->> -		memcpy(__netmem_address(netmem),
->> -		       __netmem_address(xinfo->frags[i].netmem),
->> +		memcpy(__netmem_address(netmem) + offset,
->> +		       __netmem_address(frag->netmem) + skb_frag_off(frag),
->>   		       LARGEST_ALIGN(len));
->>   		__skb_fill_netmem_desc_noacc(sinfo, i, netmem, offset, len);
-> Incorrect fix.
->
-> page_pool_dev_alloc_netmem() allocates a buffer of skb_frag_size() len,
-> but then you pass offset when copying, which may lead to access beyond
-> the end of the buffer.
->
-> I know that my code here is incorrect as well, but the idea was to
-> allocate only skb_frag_size() and copy the actual payload without any
-> offset to the new buffer. So, you need to pass the offset only to the
-> second argument of memcpy() and then pass 0 as @offset to
-> __skb_fill_netmem_desc_noacc().
+This reverts commit 67d1a8956d2d62fe6b4c13ebabb57806098511d8. Since this
+commit has been proven to be problematic for the setup of USB-tethered
+ethernet connections and the related breakage is very noticeable for
+users it should be reverted until a fixed version of the change can be
+rolled out.
 
-I'm not quite familiar with the page_pool API so I might be wrong. 
-AFAICS, the netmem_ref is just a wrapper around struct page now. 
-page_pool_dev_alloc_netmem(pp, &offset, &truesize) returns the allocated 
-page for our request but we must use the returned offset to access our 
-allocated space. The start of page may be currently used by other user.
+Closes: https://lore.kernel.org/all/e0df2d85-1296-4317-b717-bd757e3ab928@h=
+eusel.eu/
+Link: https://chaos.social/@gromit/114377862699921553
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D220002
+Link: https://bugs.gentoo.org/953555
+Link: https://bbs.archlinux.org/viewtopic.php?id=3D304892
+Cc: stable@vger.kernel.org
+Acked-by: Lubomir Rintel <lkundrak@v3.sk>
+Signed-off-by: Christian Heusel <christian@heusel.eu>
+=2D--
+ drivers/net/usb/rndis_host.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
-That's my understanding when looking at this code path
+diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
+index bb0bf1415872745aea177ce0ba7d6eb578cb4a47..7b3739b29c8f72b7b108c5f4ae=
+11fdfcf243237d 100644
+=2D-- a/drivers/net/usb/rndis_host.c
++++ b/drivers/net/usb/rndis_host.c
+@@ -630,16 +630,6 @@ static const struct driver_info	zte_rndis_info =3D {
+ 	.tx_fixup =3D	rndis_tx_fixup,
+ };
+=20
+-static const struct driver_info	wwan_rndis_info =3D {
+-	.description =3D	"Mobile Broadband RNDIS device",
+-	.flags =3D	FLAG_WWAN | FLAG_POINTTOPOINT | FLAG_FRAMING_RN | FLAG_NO_SET=
+INT,
+-	.bind =3D		rndis_bind,
+-	.unbind =3D	rndis_unbind,
+-	.status =3D	rndis_status,
+-	.rx_fixup =3D	rndis_rx_fixup,
+-	.tx_fixup =3D	rndis_tx_fixup,
+-};
+-
+ /*-----------------------------------------------------------------------=
+=2D-*/
+=20
+ static const struct usb_device_id	products [] =3D {
+@@ -676,11 +666,9 @@ static const struct usb_device_id	products [] =3D {
+ 	USB_INTERFACE_INFO(USB_CLASS_WIRELESS_CONTROLLER, 1, 3),
+ 	.driver_info =3D (unsigned long) &rndis_info,
+ }, {
+-	/* Mobile Broadband Modem, seen in Novatel Verizon USB730L and
+-	 * Telit FN990A (RNDIS)
+-	 */
++	/* Novatel Verizon USB730L */
+ 	USB_INTERFACE_INFO(USB_CLASS_MISC, 4, 1),
+-	.driver_info =3D (unsigned long)&wwan_rndis_info,
++	.driver_info =3D (unsigned long) &rndis_info,
+ },
+ 	{ },		// END
+ };
 
-page_pool_dev_alloc_netmem
--> page_pool_alloc_netmem
-     -> page_pool_alloc_frag_netmem <- specifically this function
+=2D--
+base-commit: 9c32cda43eb78f78c73aee4aa344b777714e259b
+change-id: 20250424-usb-tethering-fix-398688b32dad
 
-Thanks,
-Quang Minh.
+Best regards,
+=2D-=20
+Christian Heusel <christian@heusel.eu>
+
