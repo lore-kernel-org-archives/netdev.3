@@ -1,157 +1,136 @@
-Received: from out.smtpout.orange.fr (out-67.smtpout.orange.fr [193.252.22.67])
-	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F432701DA;
-	Thu, 24 Apr 2025 14:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6DD27456;
+	Thu, 24 Apr 2025 14:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745505218; cv=none; b=lHVe5pPKQRFtTBmIKRTudG8Tnw0seou2gHfEM0RwDQVtPTRfZOIC+lq/JGb81Kn/BAvx+AGgiAzRxMTI6R+MXBvG0COkA/Csz2aEiTVnixhH8cOw9ostp2Lpv2aHwqCYifC9zYtqJGT7MuQdh9pjoNwtV6GKhlD9otCOWiWFIvU=
+	t=1745505270; cv=none; b=CRmvvYTgbOAcD0gme15Fsf+5MM2kpruCE61XJgagZho2x5qbtoo9no5gQ6c73wJGJvIrSl4B8uqvpYN17MOEchosP7p+QqSlyiDYqgjQSLHOt4akcfN7hOMC+b2czRoWjxhS6gmAL8bSG+PRuZ4u90qANDVZSJhl3qb6r0Z6amQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745505218; c=relaxed/simple;
-	bh=bdu4AdfU3rVBoxI7dS381WsNGFKefFYdMLFb+5Z2TMI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hsnzu3FBpHIr5xsURRaJQ6eywc2fNo2KkcU11NxlcI8Nfw7fGkIRJKBiEIs+vqRRGP27b/OFoclMDt4kaD7rgR31GD8r/vopt5VXZo4VSIEOednu6y6arW1z1MJtoz4HZmXhKHw8but1sQGe7LMXKO3aeK1iFyN5AtHz6LyZBGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=Mo0zD16k; arc=none smtp.client-ip=193.252.22.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+	s=arc-20240116; t=1745505270; c=relaxed/simple;
+	bh=lBY632yHFONY6RYE7IZBlTMj+ZH0jJ67pll7LbVsi50=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=QwfYOm5JOT6Gnh0P4FYgMFMQbYN/HlK8VJEDv8gteDWwz4Piz2qiTmRiOF2r16YWXEV49vsU//Z8Gy4vpbMBXdoq+6a67sZwNrufIwwBRssiQuOF+TKcY3jqxM5lFkAUsXwhHk0LeO/0mRrECJB7PfewCopmeNlQDvjK+av6828=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=fcyInJHC; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=J1cOdWPH; arc=none smtp.client-ip=202.12.124.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="Mo0zD16k"
-Received: from [172.16.82.72] ([124.33.176.97])
-	by smtp.orange.fr with ESMTPA
-	id 7xUeu3cnoukJt7xUiuRXfG; Thu, 24 Apr 2025 16:24:09 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1745504649;
-	bh=K9cTD87TavWzyJKYV4zrWDK5k7WI86kJqfUPCYnBnpY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=Mo0zD16kfhROPb+1Ho5AGTv/skh9UvI9T+ybmvv0ZaPxLZk/mRql/25aIiG8QyLCe
-	 tvxfUJsuopjzSih0MEig6qCnAog+5SP+EMQwFehpp9jWfjQH3UbRHUiZEDxvxAXfad
-	 RNooe3PS1rVFnrCa6LKgdWKDncDCdIIdFz4n0db4lkkILWSELqJPYRLnDm3RYA43Bn
-	 oM5uxlXMQYjE6e9suw2j9QZkzwlBfcEstuxJDkMkuzkds4s1w/nhnBWYe8qP4GDtVl
-	 vuklKInx8Tvyi5Cahx1qUsKW6AE+SmJJfgm5+Lt52iwK2XwMrjobv6E2ulGXl00phY
-	 /rpMczZfmaSPA==
-X-ME-Helo: [172.16.82.72]
-X-ME-Auth: bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 24 Apr 2025 16:24:09 +0200
-X-ME-IP: 124.33.176.97
-Message-ID: <6c1980f7-9cdb-4443-830d-1d76dc8e2dd6@wanadoo.fr>
-Date: Thu, 24 Apr 2025 23:23:59 +0900
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="fcyInJHC";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="J1cOdWPH"
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id E4EAC1140230;
+	Thu, 24 Apr 2025 10:34:25 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-05.internal (MEProxy); Thu, 24 Apr 2025 10:34:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1745505265;
+	 x=1745591665; bh=zTkvCEnROr1A65wAUwD/pBdGL1QA1EttebQzh1cAxms=; b=
+	fcyInJHC855hzAWTZ2h3AVxngjSc+fFcc6loF5MtVM9qaOJ8prCdjio44QD9CK9Z
+	zMo6bJmPFq12CjR1VuSXrd9eKceErfiaxlG6nx9Z7ae4o7FBSAupTULqA4oaTzBi
+	VHseiiHlUY3DYaU9iEeeiFN0sUD//cd46MTtY0QsHBQRIQoL1SU58lLjwrVzsE4A
+	0naxzbGQQ+THgQA6O8wCmaTaQs6j1l5B9duv7w3CEhDfE4YWon6WVJ7kCg6hDP7C
+	eTovsz+eXTyq6p1ex5NUN7QUvL83hA19JJ4ygoXSxvI9UYxU+GV3q4xQUHHkcAXQ
+	n74I3uYZO/bsuUkm0O4aYg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1745505265; x=
+	1745591665; bh=zTkvCEnROr1A65wAUwD/pBdGL1QA1EttebQzh1cAxms=; b=J
+	1cOdWPHspr4C/scac8IbOUvSOQvD7e9hdQwop/kh5GV3ew7KZ9gna1X5H4LDUafk
+	bMF07kCGYjRO6/eVREigZDQmrZAa/8YYA9RipNYfDARrAMMTzl5sNVl4YXwq0cF8
+	yMQ2fMouIDZDqpIf2vMwqpwX5vmGgZ0MB5luG2puRjIeadnYxzhsrUK+uIB2G+cE
+	NH5bgY2PzEDF1NUyVxjqH1DP22r1E2sHXZiqjjanV2hdDL3e79rgr8ec3VzSSLxO
+	f8J/xt5hufP1MwdiDV6GunboWKjvSbd3JiG/Gn1pu04tvK+O9fBSZe/Kim1qKwUf
+	OaK3PxMkaKdOC9gbawmEw==
+X-ME-Sender: <xms:8EsKaJNuqCDjxjPu2DaEr7dsZ_7l5s-hCob_4zL0GrheSqjJGNUtxw>
+    <xme:8EsKaL9CiezppF3Q0XmZ1flUGkn9nl3Co3i0yHskhUc9UC2_3bFu86TBe9Z6NblJm
+    tqHA6SWF7UOn-TIsi0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeeljedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
+    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
+    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
+    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
+    vdejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegurghvvghmsegurghvvghmlh
+    hofhhtrdhnvghtpdhrtghpthhtohepphgrvhgvlhesuggvnhigrdguvgdprhgtphhtthho
+    pehfrdhfrghinhgvlhhlihesghhmrghilhdrtghomhdprhgtphhtthhopehsuhguihhpmh
+    drmhhukhhhvghrjhgvvgesghhmrghilhdrtghomhdprhgtphhtthhopehrfigrrhhsohif
+    sehgmhigrdguvgdprhgtphhtthhopegsrhhoohhnihgvsehkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopegtohhnohhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhgsrges
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgrthhhrghnsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:8EsKaIRd3Sl6rsoO-64VW8JMHzPSHZHnQEFXsQgChAQ5zl4caKg0Xw>
+    <xmx:8EsKaFvV2KflmPXyAtdb-mxtNoD6jzwtux6j6qlRaEZk9tQXOdCcTg>
+    <xmx:8EsKaBdeKh2DeonmkhAqgy2IqsLyOLIKpI9ahv7V0oMJFbIKmdqcIQ>
+    <xmx:8EsKaB1WrauUdokUwXNaVmdICfNCsKJYwzgs3ppl8MxOgLlLbqsEcA>
+    <xmx:8UsKaLtlJLq9XUVq_FgwPc-FdeQNxlAG4nvOIao8z4kjl0lxY1b-AarP>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id CA59F2220075; Thu, 24 Apr 2025 10:34:24 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] selftests: can: Import tst-filter from can-tests
-To: Felix Maurer <fmaurer@redhat.com>
-Cc: socketcan@hartkopp.net, mkl@pengutronix.de, shuah@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, linux-can@vger.kernel.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- dcaratti@redhat.com, fstornio@redhat.com
-References: <cover.1745323279.git.fmaurer@redhat.com>
- <a4468403cc51ea6c0e8495d7d095befb37aa5aaf.1745323279.git.fmaurer@redhat.com>
- <CAMZ6RqKfdNRBKoH16=7JDC2QKB+XO68mahg2X7zKDcUAM+8bzw@mail.gmail.com>
- <96bd9677-c257-480b-be3c-7c4b9b79b238@redhat.com>
-Content-Language: en-US
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Autocrypt: addr=mailhol.vincent@wanadoo.fr; keydata=
- xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
- LFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI+wrIEExYKAFoC
- GwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQTtj3AFdOZ/IOV06OKrX+uI
- bbuZwgUCZx41XhgYaGtwczovL2tleXMub3BlbnBncC5vcmcACgkQq1/riG27mcIYiwEAkgKK
- BJ+ANKwhTAAvL1XeApQ+2NNNEwFWzipVAGvTRigA+wUeyB3UQwZrwb7jsQuBXxhk3lL45HF5
- 8+y4bQCUCqYGzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrbYZzu0JG5w8gxE6EtQe6LmxKMqP6E
- yR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDldOjiq1/riG27mcIFAmceMvMCGwwF
- CQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8VzsZwr/S44HCzcz5+jkxnVVQ5LZ4B
- ANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
-In-Reply-To: <96bd9677-c257-480b-be3c-7c4b9b79b238@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+X-ThreadId: T573a13c25518dc45
+Date: Thu, 24 Apr 2025 16:34:04 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Naresh Kamboju" <naresh.kamboju@linaro.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ "Linus Torvalds" <torvalds@linux-foundation.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Guenter Roeck" <linux@roeck-us.net>, shuah <shuah@kernel.org>,
+ patches@kernelci.org, lkft-triage@lists.linaro.org,
+ "Pavel Machek" <pavel@denx.de>, "Jon Hunter" <jonathanh@nvidia.com>,
+ "Florian Fainelli" <f.fainelli@gmail.com>,
+ "Sudip Mukherjee" <sudipm.mukherjee@gmail.com>,
+ "Slade Watkins" <srw@sladewatkins.net>, rwarsow@gmx.de,
+ "Conor Dooley" <conor@kernel.org>, hargar@microsoft.com,
+ "Mark Brown" <broonie@kernel.org>, Netdev <netdev@vger.kernel.org>,
+ clang-built-linux <llvm@lists.linux.dev>,
+ "Anders Roxell" <anders.roxell@linaro.org>,
+ "Dan Carpenter" <dan.carpenter@linaro.org>,
+ "Nathan Chancellor" <nathan@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>
+Message-Id: <e77b24ce-e91b-4c90-82d6-0fa91fcce163@app.fastmail.com>
+In-Reply-To: <2025042443-ibuprofen-scavenger-c4df@gregkh>
+References: <20250423142624.409452181@linuxfoundation.org>
+ <CA+G9fYu+FEZ-3ye30Hk2sk1+LFsw7iO5AHueUa9H1Ub=JO-k2g@mail.gmail.com>
+ <2025042443-ibuprofen-scavenger-c4df@gregkh>
+Subject: Re: [PATCH 6.1 000/291] 6.1.135-rc1 review
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-On 24/04/2025 at 23:02, Felix Maurer wrote:
-> On 24.04.25 09:42, Vincent Mailhol wrote:
->> On Tue. 22 Apr. 2025 at 21:08, Felix Maurer <fmaurer@redhat.com> wrote:
-> [...]
->>> +ALL_TESTS="
->>> +       test_raw_filter
->>> +"
->>> +
->>> +net_dir=$(dirname $0)/..
->>> +source $net_dir/lib.sh
->>> +
->>> +VCANIF="vcan0"
->>
->> Here, you are making the VCANIF variable configuration, but then, in
->> your test_raw_filter.c I see:
->>
->>   #define VCANIF "vcan0"
->>
->> This means that in order to modify the interface, one would have to
->> both modify the .sh script and the .c source. Wouldn't it be possible
->> to centralize this? For example by reading the environment variable in
->> the C file?
->>
->> Or maybe there is a smarter way to pass values in the kernel selftests
->> framework which I am not aware of?
-> 
-> Good point, I'll try to come up with something to avoid the duplication
-> (either from the selftest framework or just for the CAN tests). I'd
-> prefer an argument to the program though, as I find this the more usual
-> way to pass info if one ever wants to run the test directly.
+On Thu, Apr 24, 2025, at 15:41, Greg Kroah-Hartman wrote:
+> On Thu, Apr 24, 2025 at 07:01:02PM +0530, Naresh Kamboju wrote:
+>> 
+>> ## Build error:
+>> net/sched/act_mirred.c:265:6: error: variable 'is_redirect' is used
+>> uninitialized whenever 'if' condition is true
+>> [-Werror,-Wsometimes-uninitialized]
+>>   265 |         if (unlikely(!(dev->flags & IFF_UP)) ||
+>> !netif_carrier_ok(dev)) {
+>>       |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>
+> Odd this isn't showing up in newer releases, as this is an old commit
+> and nothing has changed in this file since then (it showed up in 6.8.)
+>
+> Is there some follow-up commit somewhere that I'm missing that resolved
+> this issue?
 
-Passing an argument would be the best. I am not sure how to do this with the
-selftests (but I did not investigate either).
+I think the difference is commit 16085e48cb48 ("net/sched: act_mirred:
+Create function tcf_mirred_to_dev and improve readability") from 
+v6.8, which adds the initialization that 166c2c8a6a4d ("net/sched:
+act_mirred: don't override retval if we already lost the skb")
+relies on.
 
->>> +setup()
->>> +{
->>> +       ip link add name $VCANIF type vcan || exit $ksft_skip
->>> +       ip link set dev $VCANIF up
->>> +       pwd
->>> +}
-
-Speaking of which, if you allow the user to modify the interface, then you will
-one additional check here to see whether it is a virtual can interface or not
-(the ip link commands are not the same for the vcan and the physical can).
-
-Something like:
-
-  CANIF="${CANIF:-vcan}"
-  BITRATE="${BITRATE:-500000}"
-
-  setup()
-  {
-  	if [ $CANIF == vcan* ]; then
-  		ip link add name $CANIF type vcan || exit $ksft_skip
-  	else
-  		ip link set dev $CANIF type can $BITRATE 500000
-  	fi
-  	ip link set dev $VCANIF up
-  	pwd
-  }
-
->>> +cleanup()
->>> +{
->>> +       ip link delete $VCANIF
->>> +}
->>
->> I guess that this setup() and this cleanup() is something that you
->> will also need in the other can tests. Would it make sense to declare
->> these in a common.sh file and just do a
->>
->>   source common.sh
->>
->> here?
-> 
-> I usually try to avoid making changes in anticipation of the future. I'm
-> not sure if all the tests need a similar environment and would prefer to
-> split this when we encounter that they do. Are you okay with that?
-
-Yes, this works. Keep this idea in back of your mind and if there is a need to
-reuse those in the future, then it will be a good timing to do the factorize the
-code.
-
-
-Yours sincerely,
-Vincent Mailhol
-
+      Arnd
