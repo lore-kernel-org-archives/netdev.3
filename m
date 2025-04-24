@@ -1,150 +1,213 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DA319DF7D;
-	Thu, 24 Apr 2025 22:52:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83B514900B;
+	Thu, 24 Apr 2025 22:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745535162; cv=none; b=GL+3cXaquWM5Y0LB1v0mgINgzF4cCjjGgDoeWqNk0HJ7c1y3R1YF6cJR9v9PWco4Nk8w/H3dDgmqt7iuQ9qnf7ZngzjBfQp4lM1L8KVqGIKeI8L65WvR4JNNjfsaga898vFIcaoRFXHzN463XWa+WsQ/dLI9i32KFXIRZN0aXpE=
+	t=1745535466; cv=none; b=scQiIVHijDWODOC5a8+k2n+pa52DDMnd3ZCoqwtDCzeha45Rvw8UXay1h2qwnabphMYj0LZ9rDgYDYjLPt3x2AJNT8kJYjzgng4XqsSQUstnIoxm+DqRNeC2oD5xcjSexf++ozi5aWZkpgmkuIf9MoQ5wMbNLJOfwvEe6bWUtK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745535162; c=relaxed/simple;
-	bh=vPcIZ8pDaO2fxwVC5G00kxdWjIdGTsiuQwohPKn5T0Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KVsZQV6bMbtvJ+IXTHIju4PHCCdsfDbyRr94wsj7DFppxRyXiuJNpeJt2bErV1NYemvz5uLHw7Gof43I5iTmutfZQ4iTXX2S41iuSjdsN8hAR8+AMVqqYf7v+hpPuQ+EMvArzyQ809RyKBB0qJkhwgLdU1q2u/1GKTCK2rGW3a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EYasCJ+P; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745535466; c=relaxed/simple;
+	bh=I9GLLHXNevi/4S5O0gi610ywDg9g4cLrTCrLugcDduI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cA6xrb+s2E4qs3nRCoy7zxj5GVhRYynGpvB9NWXLvYtAJWg5Exy5NRVMstQeS6Y+sz3hxC92bAVOZs9pn6/TnVvx/EPsIr4ZYVmpZlS9nLFpT/S0Vmhft9iV1hPqX8teQCXLGu8+S3us3Qc+jyokSJ51/FL5tIh4K8oKtXNtJw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AX0Kg4UR; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EYasCJ+P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5211C4CEE3;
-	Thu, 24 Apr 2025 22:52:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745535160;
-	bh=vPcIZ8pDaO2fxwVC5G00kxdWjIdGTsiuQwohPKn5T0Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EYasCJ+PCKWsJfy6QKCS+dED2eee1eSGBrM6XFnNE259pPlh18AJDP8PmN1suzJQQ
-	 cH/grB+hHocnc8k+6xVMygiJ+X27thXwsQ25O+O9YSsSDOUpCj1QXmQFORXYlAcZt+
-	 KcByJOBeC3WcI8zrYfr+IGT1+tjjWEXc1uteTduLxmiG40HnS17N046oN3r2/ltS+7
-	 FL/k75eqNsXpmOhGT8IOdM8AzQAK7SmVbHWfHsycpJmKk9j+TXCQeONjrE3JmYzY/L
-	 h0t8O9Mc1LIPwprxr8tA7o6dVSp6g+jdCQTENRnKq2RUZyU7D3udtg33XZXgthg0U7
-	 2xxPaLfNpOp+A==
-Date: Thu, 24 Apr 2025 15:52:38 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Jeff Layton <jlayton@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>, Qasim
- Ijaz <qasdev00@gmail.com>, Nathan Chancellor <nathan@kernel.org>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v4 7/7] net: register debugfs file for net_device refcnt
- tracker
-Message-ID: <20250424155238.7d0d2a29@kernel.org>
-In-Reply-To: <4118dbd6-2b4b-42c3-9d1e-2b533fc92a66@lunn.ch>
-References: <20250418-reftrack-dbgfs-v4-0-5ca5c7899544@kernel.org>
-	<20250418-reftrack-dbgfs-v4-7-5ca5c7899544@kernel.org>
-	<20250423165323.270642e3@kernel.org>
-	<a07cd1c64b16b074d8e1ec2e8c06d31f4f27d5e5.camel@kernel.org>
-	<20250423173231.5c61af5b@kernel.org>
-	<cdfc5c6f260ee1f81b8bb0402488bb97dd4351bb.camel@kernel.org>
-	<4118dbd6-2b4b-42c3-9d1e-2b533fc92a66@lunn.ch>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AX0Kg4UR"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43cf7c2c351so1530325e9.0;
+        Thu, 24 Apr 2025 15:57:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745535462; x=1746140262; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Tt3wakvDIHzIQYo4afILWwjn2SUWyuaONXXdhw9MFGc=;
+        b=AX0Kg4URbUOB5mKq+Sv4q4D8wE8in03Q3W/3YcQ45DVjlmFT6z4l2uvcbluw4poWkk
+         gwXGVPUTtr0+9j5AYlQxwHSss1lcUFSO0lBjpzpV0F7l7AgWoFwhvBUnuTYD/dxDMMYS
+         +Tj4CfCYoSLhZ4oY5Pnc5ruFSctvEMUnNXhP83TDjKbGS4Ntf5SeDuWgs9nX0BgZUR+m
+         IPFdWuCXcDsw5khSG6lDrEC9ENDaEh7f25BPoDPww7CTkjQphRrxVWEUb4Dzvc2fSCqW
+         WFko2jWmaqT6Mmv1MN3hObGXke3I++wf/16VLdbRpLY60ZlHNZ64jNGnUQKnlqJVDcr/
+         CwQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745535462; x=1746140262;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tt3wakvDIHzIQYo4afILWwjn2SUWyuaONXXdhw9MFGc=;
+        b=qWErYJIZ1CY5+xtw7dbiYeuaOJ7b29A2ijTx+7MzXkJQXhjHGNlX1hzYlnV0Uaa1sm
+         mkXIe8zKvB8huZZV2mq/lYsv0OrfboNb+bxA6CXQw29nbdpcKacAA57tYXmVyeheWGti
+         WPrK5rbiW4FKAvbRPUK6YnUAjiv42CXP/AhmMvOlwpcqNGVt4WfXKU+i/9eBkQchZ4/f
+         4Er4PK0cuHMDpKSeK/fdSptAZDfaOPUak0oz/bLRU4QgZPLOEvisAEtCo8grpomtuy74
+         k39b6LojZ1PhowAXFqg7szLUtVbwruWyTrqeY07mXFLttVzxRxdOFBbeXjHhhNB09GKw
+         VdFw==
+X-Forwarded-Encrypted: i=1; AJvYcCVU1YquO2a3e3yxZe79qV/r0aA2T/E9Fe85TzsdKHOaMeg612vc6iXwD/KAwVkgNoX32fEnub1R@vger.kernel.org, AJvYcCW1nmeeSwxPIRY2rOwUEjRDJs9TTcLvsrhfhbP9MYYQYRn3HChMjRpzc4ja9si0zdMXUKEdRAuRPc65cJg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzT4ffdunYaI912e2jDPdS3fTPJQmlAQn4hcxdXrk/SsVJ6RC+K
+	oQBuYJsldFLTpFqYfGYPUoot+dezBjcbwRSLuH2LuWTJJhF9ezwV
+X-Gm-Gg: ASbGnct3CReBZNhRV1Lr69HVxMY8dSiZkxudV4BT6TFG8AyNe9xVnFFZNwq3cq2OZoc
+	Z+nHHUNoTussbH4IBIm03kJW7kFPl1S9C10sQ7pMKW6hieSXXA+wEcCxG3s4TENoBjzCIUr3nke
+	Z720+fRFVMwiVEpq6NbsJppaM8D3TolepqPg9IQ4rplQpX2PhlaAEKH73fIL2t8rBnriuczjgxt
+	193NKIFzXNK2HSk/dBOVHJBDPbIt4Mh2DTwRYS4t8917e8jyN2GObrRqtxF8gGSR7EvM8eYZ/9K
+	LndKAYiidHoHoaep4Oy7dHcKwpul
+X-Google-Smtp-Source: AGHT+IGGTdiMBQwmNpdRAXt++I8DcOe06hDEC6vJgeQcv6JXKGjqLOk5vlJ4oHfQrRVHt+/NiHS00w==
+X-Received: by 2002:a05:600c:4e01:b0:439:9a1f:d73d with SMTP id 5b1f17b1804b1-440a66bdd1emr9635e9.8.1745535461520;
+        Thu, 24 Apr 2025 15:57:41 -0700 (PDT)
+Received: from skbuf ([188.25.50.178])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a073e46c23sm528105f8f.75.2025.04.24.15.57.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Apr 2025 15:57:40 -0700 (PDT)
+Date: Fri, 25 Apr 2025 01:57:38 +0300
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Jonas Gorski <jonas.gorski@gmail.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: dsa: fix VLAN 0 filter imbalance when toggling
+ filtering
+Message-ID: <20250424225738.7xr36vll3vg4irzf@skbuf>
+References: <20250422184913.20155-1-jonas.gorski@gmail.com>
+ <20250424102509.65u5zmxhbjsd5vun@skbuf>
+ <04ac4aec-e6cd-4432-a31d-73088e762565@gmail.com>
+ <CAOiHx==5p2O6wVa42YtR-d=Sufbb2Ljy64mFSHavX2bguVXPWg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOiHx==5p2O6wVa42YtR-d=Sufbb2Ljy64mFSHavX2bguVXPWg@mail.gmail.com>
 
-On Thu, 24 Apr 2025 14:10:03 +0200 Andrew Lunn wrote:
-> > > > > How much naming the objects in a "user readable" fashion actually
-> > > > > matter? It'd be less churn to create some kind of "object class"
-> > > > > with a directory level named after what's already passed to
-> > > > > ref_tracker_dir_init() and then id the objects by the pointer value 
-> > > > > as sub-dirs of that?    
-> > > > 
-> > > > That sounds closer to what I had done originally. Andrew L. suggested
-> > > > the flat directory that this version represents. I'm fine with whatever
-> > > > hierarchy, but let's decide that before I respin again.  
-> > > 
-> > > Sorry about that :(
-> > >   
-> > 
-> > No worries...but we do need to decide what this directory hierarchy
-> > should look like.
-> > 
-> > Andrew's point earlier was that this is just debugfs, so a flat
-> > "ref_tracker" directory full of files is fine. I tend to agree with
-> > him; NAME_MAX is 255, so we have plenty of room to make uniquely-named
-> > files.
-> > 
-> > We could build a dir hierarchy though. Something like:
-> > 
-> > - ref_tracker
-> >     + netdev
-> >     + netns  
+On Thu, Apr 24, 2025 at 03:58:50PM +0200, Jonas Gorski wrote:
+> On Thu, Apr 24, 2025 at 2:34 PM Florian Fainelli <f.fainelli@gmail.com> wrote:
+> > On 4/24/2025 12:25 PM, Vladimir Oltean wrote:
+> > > On Tue, Apr 22, 2025 at 08:49:13PM +0200, Jonas Gorski wrote:
+> > >> When a net device has NETIF_F_HW_VLAN_CTAG_FILTER set, the 8021q code
+> > >> will add VLAN 0 when enabling the device, and remove it on disabling it
+> > >> again.
+> > >>
+> > >> But since we are changing NETIF_F_HW_VLAN_CTAG_FILTER during runtime in
+> > >> dsa_user_manage_vlan_filtering(), user ports that are already enabled
+> > >> may end up with no VLAN 0 configured, or VLAN 0 left configured.
+> > >>
+> > >> E.g.the following sequence would leave sw1p1 without VLAN 0 configured:
+> > >>
+> > >> $ ip link add br0 type bridge vlan_filtering 1
+> > >> $ ip link set br0 up
+> > >> $ ip link set sw1p1 up (filtering is 0, so no HW filter added)
+> > >> $ ip link set sw1p1 master br0 (filtering gets set to 1, but already up)
+> > >>
+> > >> while the following sequence would work:
+> > >>
+> > >> $ ip link add br0 type bridge vlan_filtering 1
+> > >> $ ip link set br0 up
+> > >> $ ip link set sw1p1 master br0 (filtering gets set to 1)
+> > >> $ ip link set sw1p1 up (filtering is 1, HW filter is added)
+> > >>
+> > >> Likewise, the following sequence would leave sw1p2 with a VLAN 0 filter
+> > >> enabled on a vlan_filtering_is_global dsa switch:
+> > >>
+> > >> $ ip link add br0 type bridge vlan_filtering 1
+> > >> $ ip link set br0 up
+> > >> $ ip link set sw1p1 master br0 (filtering set to 1 for all devices)
+> > >> $ ip link set sw1p2 up (filtering is 1, so VLAN 0 filter is added)
+> > >> $ ip link set sw1p1 nomaster (filtering is reset to 0 again)
+> > >> $ ip link set sw1p2 down (VLAN 0 filter is left configured)
+> > >>
+> > >> This even causes untagged traffic to break on b53 after undoing the
+> > >> bridge (though this is partially caused by b53's own doing).
+> > >>
+> > >> Fix this by emulating 8021q's vlan_device_event() behavior when changing
+> > >> the NETIF_F_HW_VLAN_CTAG_FILTER flag, including the printk, so that the
+> > >> absence of it doesn't become a red herring.
+> > >>
+> > >> While vlan_vid_add() has a return value, vlan_device_event() does not
+> > >> check its return value, so let us do the same.
+> > >>
+> > >> Fixes: 06cfb2df7eb0 ("net: dsa: don't advertise 'rx-vlan-filter' when not needed")
+> > >> Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+> > >> ---
+> > >
+> > > Why does the b53 driver depend on VID 0? CONFIG_VLAN_8021Q can be
+> > > disabled or be an unloaded module, how does it work in that case?
+> >
+> > This is explained in this commit:
+> >
+> > https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=64a81b24487f0d2fba0f033029eec2abc7d82cee
+> >
+> > however the case of starting up with CONFIG_VLAN_8021Q and then loading
+> > the 8021q module was not thought about, arguably I am not sure what sort
+> > of notification or event we can hook onto in order to react properly to
+> > that module being loaded. Do you know?
 > 
-> How do you make that generic? How due the GPU users of reftracker fit
-> in? And whatever the next users are? A flat directory keeps it
-> simple. Anybody capable of actually using this has to have a level of
-> intelligence sufficient for glob(3).
+> config BRIDGE_VLAN_FILTERING
+>         bool "VLAN filtering"
+>         depends on BRIDGE
+>         depends on VLAN_8021Q
 > 
-> However, a varargs format function does make sense, since looking at
-> the current users, many of them will need it.
+> without 8021Q there is no vlan filtering bridge, so filtering can
+> never be 1, so NETIF_F_HW_VLAN_CTAG_FILTER is never set, so HW filters
+> for VLAN 0 are never installed or removed, therefore the issue can
+> never happen.
 
-No preference on my side about the hierarchy TBH. I just defaulted to
-thinking about it in terms of a hierarchy class/id rather than class-id
-but shouldn't matter.
+nitpick: except for ds->needs_standalone_vlan_filtering (which b53 does not set though).
 
-The main point I was trying to make was about using a synthetic ID -
-like the pointer value. For the netdevs this patchset waits until 
-the very end of the registration process to add the debugfs dir
-because (I'm guessing) the name isn't assigned when we alloc 
-the device (and therefore when we call ref_tracker_dir_init()).
+> 
+> The issue is only if a vlan filtering bridge was there, and now isn't
+> anymore, and a previously VLAN 0 HW filter is left intact. This causes
+> an incomplete vlan entry left programmed in the vlan table of the chip
+> with just this port as a member, which breaks forwarding for that
+> VLAN, which is incidentally also the VLAN used for untagged traffic in
+> the non filtering case.
 
-Using synthetic ID lets us register the debugfs from
-ref_tracker_dir_init().
+Ok, so let's say b53_default_pvid() is 0, and b53_setup() ->
+b53_apply_config() -> b53_configure_vlan() calls b53_set_vlan_entry() on
+it to set it up, independently of the 8021q layer. So far so good.
 
-In fact using "registered name" can be misleading. In modern setups
-where devices are renamed based on the system topology, after
-registration.
+But then, the 8021q layer can modify VID 0 on the device from the way in
+which it was set up by the driver for VLAN-unaware operation, namely it
+can remove it, and this breaks VLAN-unaware reception.
 
-The Ethernet interface on my laptop is called enp0s13f0u1u1,
-not eth0. It is renamed by systemd right _after_ registration.
+One needs to wonder why would the b53 driver even permit changes coming
+from .port_vlan_add() and .port_vlan_del() to a VID it has reserved for
+special use. There's nothing to gain from reacting to these operations,
+only to lose.
 
-[45224.911324] r8152 2-1.1:1.0 eth0: v1.12.13
-[45225.220032] r8152 2-1.1:1.0 enp0s13f0u1u1: renamed from eth0
+I'm trying to think whether switchdev drivers in general have anything
+to benefit from commit ad1afb003939 ("vlan_dev: VLAN 0 should be treated
+as "no vlan tag" (802.1p packet)"). I'm tempted to say "thanks for the
+well-intended hint about VID 0, but a switchdev's data path is so
+complicated that we'd rather manage VID 0 ourselves". Not only do many
+drivers reserve VID 0 and thus need to be independent of the 8021q layer
+even for VLAN-unaware operation, but also think of this: the bridge may
+have vlan_filtering 1 and vlan_default_pvid 0. What will happen if the
+8021q layer decides to add VID 0 to the RX filtering table? My logic and
+testing with the software data path says that VID 0 traffic should not
+be forwarded. My intuition is that it will make b53 accept this kind of
+traffic.
 
-so in (most?) modern systems the name we carefully printed
-into the debugfs name will in fact not match the current device name.
-What more we don't try to keep the IDs monotonically increasing. 
-If I plug in another Ethernet card it will also be called eth0 when
-it's registered, again. You can experiment by adding dummy devices:
+Here's a self test I posted exactly for this scenario, if you don't
+mind, please let me know what happens, and we'll see where to go from
+there. On ocelot, which has commit 9323ac367005 ("net: mscc: ocelot:
+ignore VID 0 added by 8021q module"), it passes (but fails elsewhere,
+sadly - I've sent a patch also for that).
+https://lore.kernel.org/netdev/20250424223734.3096202-2-vladimir.oltean@nxp.com/T/#u
 
-# ip link add type dummy
-# ip link
-...
-2: dummy0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-    link/ether b2:51:ee:5b:4b:83 brd ff:ff:ff:ff:ff:ff
+That being said, I don't think we are quite prepared to adopt my
+solution (of ignoring VID 0) DSA-wide (especially not as a bug fix),
+because it is driver-dependent whether VID 0 is in a conflict with a
+VLAN ID reserved for private use or not. Even though adding VID 0 to the
+RX filtering table possibly allows its forwarding even when it shouldn't
+(and that isn't desirable), there might be some positive benefits as
+well - like permitting VID 0 reception when it _should_ be received.
 
-# ip link set dev dummy0 name other-name
-[  206.747381][  T670] other-name: renamed from dummy0
-# ip link
-...
-2: other-name: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-    link/ether b2:51:ee:5b:4b:83 brd ff:ff:ff:ff:ff:ff
-
-# ip link add type dummy
-# ip link
-...
-2: other-name: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-    link/ether b2:51:ee:5b:4b:83 brd ff:ff:ff:ff:ff:ff
-3: dummy0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-    link/ether b2:51:ee:5b:4b:83 brd ff:ff:ff:ff:ff:ff
-
-
-The second device is called dummy0, again, because that name was
-"free". So with the current code we delay the registration of debugfs
-just to provide a name which is in fact misleading :S
-
-But with all that said, I guess you still want the "meaningful" ID for
-the netns, and that one is in fact stable :S
+It's a pretty tricky situation, I guess we should first establish what
+are the tests that need to pass, then assess on a per-driver basis where
+we are. We don't have nearly as much coverage as we would need.
