@@ -1,102 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2A61F09B4;
-	Thu, 24 Apr 2025 18:26:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2C228BAA1
+	for <netdev@vger.kernel.org>; Thu, 24 Apr 2025 18:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745519185; cv=none; b=IP34JmmAW2P+eEMmpgek2UGI3mxcvCFYlvvNiRWwCg+DsHaD8AYC+yxbbefqt1m+NZxmEhMKaAmFfed/L2j99m7qTiISBFroHFfdE7UhVQgnQdzwOG1soOY+kwgUglGJkJMA224DrdUgmGDeP3M1NiB3S3zP7DHOnjk3lNlARGs=
+	t=1745519842; cv=none; b=LI4VooP0cMBbQ/yyScjKV0qF8BdM1jHPc9znC0GZ0Rm69mb+OZRXBQjbH4jvFdBXZDRwUYRb79vr2KsKRh8d0qZgWghP3R6nLE1TRXdjIuFGSWHqZTeN9k6g3Fy2a312ypOC9cwMJB3s0u7CxE3firpVSNaEfyr3eSbnNLHYZiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745519185; c=relaxed/simple;
-	bh=CHScCNXIVyd/VGxBgYpY/XP42OaAihqot4h2Nj/OKjE=;
+	s=arc-20240116; t=1745519842; c=relaxed/simple;
+	bh=+ObrAILT9MkV5shE5b54uVUAUE30hCzzXTVkWGYXhw8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oOtSmv9lL+lAnO36eJc3IR67wbB4A63JDMxXqJebbNMIlxikrkxgpdqPL+5eLoevtz3OwJ/wloQ4YH+GxqE6j9PlCEAfpJuzRa7RZ1rg/YNbzxebJRsTGWWQwk9+QGwB3MwcZP73raUI6vNfyrx2PcHNXR31dlyVTkATDLfOW5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SKkJpikB; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=cmsfQZgqAWE6Llyh4XESMeybefctD6EQD5VRZEISGYQK7FyS/9JM83mbx/iMMtGSNzHJaYFKwyw4TS+JX/BDF5wYvXpZsmvvNzLM00Cu2NXENSiA+lFo9hf0gl6gXTrOfNLrjGbXnT6PO7tLjz+sXLMp+WJTRPkEBajSRTykYy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KEkR48Nm; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SKkJpikB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8D8C4AF0B;
-	Thu, 24 Apr 2025 18:26:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745519184;
-	bh=CHScCNXIVyd/VGxBgYpY/XP42OaAihqot4h2Nj/OKjE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SKkJpikBw8teLtSB7WRreyv1/9vmWXIkN1GViZIboErjPpSRCQSZO114Xo5eFww8k
-	 vyJdpZC+gY8mgSSvxGUDRQ82f/bV2ckkgjpkuuPyM2i4MXOaSs1CqUX3as26MjdLL4
-	 DP7CY/IZ7Fy/fPk40MxD0/l0Hhx5eZyf2tC5R91d6zLCjlgRffpWWNtIoWnqxmOEGM
-	 YcI/uVKhNYRtcXv+UryAQ1suBGv/m0NaCk4EtbiE4o/wKkhySFyTRLxeb5S3Q+X+/e
-	 60w3fozZd4TIQ99IcAtdT1d8fKItbK/SWZ4HRFLeKfkVr85nIDNbh+/H/qG2EzJS0/
-	 QXyRHmiCsMhUA==
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ac2902f7c2aso238083966b.1;
-        Thu, 24 Apr 2025 11:26:24 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUDffNfJFi8BSVlMfaMYLvxiFxFWvxoebXfDSV7qsjxMm+cGUofnaV0nAB064VAwM8ZYz0URXuK4m1yNMxkGDA=@vger.kernel.org, AJvYcCVmjGF2MqJDBdXe/YReFReCQDvggrLRHB6XORIAMVOsDcoYy47cdbcn9SRsnudR/hfAhvMen2cySZY1kQ==@vger.kernel.org, AJvYcCWJ7MDsoakZiNsecGKCZ9soPxvGSPXeCKbLinMpZ0nB6Y5Bp2B6Avgdy6THXaUuFA0SCGad3RlXRMM2EhO+@vger.kernel.org, AJvYcCWyXaSZYKalM7xsu7JzzGKjpTk+1NgdCLkF9T1Pca4OVpqAK6riqHJU8kCmN886U7gsDbvOdowH@vger.kernel.org, AJvYcCXKtuPeNkasemhWKLIY0oE1whwGX7lS95Dugtdbnu8CkAi/i8zksur3NgdDbg95pPQoWPaWyxl1ggswtiPVhg==@vger.kernel.org, AJvYcCXlDZhSYdHBElbjH8TzfyuHJ4TikG7rUiznaMfHa7HL7DjfW0x1a+5YAkwpftBlTIeQ+j5bYTuMMcKhTrxbK+g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxqWPzyj8HAudD8NwAOLthGHHO/PSBJrOFI2LdywFeMFgHpu09
-	34Hrcx6c1XhDQgUkGbSl36w547tMvXHkJkS1oAbS1o1pAxMjkrZzUnOfXtsv50V/j7PHZZdTy2u
-	9Q80co+u/C2N4hYV53ZZNEO2pSA==
-X-Google-Smtp-Source: AGHT+IHcANHsE+bdvnqkb2UnKhC0wdjfxj1hMco6j907XGhULHiQTFKk0sGPEoDGTWQ2tPxmo7m1kava8JyVOdEeOiQ=
-X-Received: by 2002:a17:907:944e:b0:acb:5070:dd19 with SMTP id
- a640c23a62f3a-ace6b759bd9mr49595766b.61.1745519183439; Thu, 24 Apr 2025
- 11:26:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KEkR48Nm"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43ef83a6bfaso5355e9.1
+        for <netdev@vger.kernel.org>; Thu, 24 Apr 2025 11:37:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745519839; x=1746124639; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yNqctYL3THrGPUgjPioxVFaahQ/pztGGq3mgBrGdeIA=;
+        b=KEkR48Nmw3ARC98RUya/+7ej53CBzhGZXZN0R9eQHTvrufmKK2/FzYklC//bw3JciR
+         yK9nYiEKti2OfipZrKXr5p7sDtaNfWYGKisfDTTUCdiaSg+Fjr7JC+Mxbs3WrsVdETJn
+         CuekIjCAkY6kpM1bkcZHlralAJJ4mhl4F0kTpv52gOAUi7FmnXT7LwG3yvtde7IVv004
+         qju9AU+8x2Xcc0XZ3tzlm3GlxmBYHsc1CzAe9ydNcNciqhlyMELZ5OdibRNnqAjo72DA
+         rIQtFovm1ZhjEwjIoCp6tCFIcZnXmZiftsLuULeHe1LJ2L4uQ5BP+MApJ3EDROSEB/HB
+         ySkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745519839; x=1746124639;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yNqctYL3THrGPUgjPioxVFaahQ/pztGGq3mgBrGdeIA=;
+        b=wBDxS48UcreR/wtUreZyEWZ72xbkR5jrbAbBCrs0pNZ2gnsL2jlPVi8N4nvsWbp22q
+         1Z+RbVTpGfI+U8FhfCXJthl0Dy2+7bL9yvvUgUxjCw1ZD9+MR3fj+48d6nKRfWTL3a3h
+         Yy/DvBy/4NHh01re3etDLU2BTpub2utzSrl4R8Gz/pp/DXRenD5zjRRYS0oeyIYjBp3O
+         lUJKG4/C0Xh+tRQvws7nQCT8ZHIaqRmmMdKyYm3rCNqCH6lXF3FEj2qbFPgM9yO4fnEW
+         V44Ptq0D4ULkzVMC/zSEM4VbdRCe5toJy1k+KQ5z9OTbhvBSwblyhDo8Bgb8w0xjrQP6
+         6Xiw==
+X-Forwarded-Encrypted: i=1; AJvYcCWovR1j+OnSwA7x3Gg5t2POe+iIsyOnN7y6UNWvU0rqqbfAyrTOBRyuchmqRDI7t2i0mGHNL70=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPY+w5T2dMzwuZ0VinyRZ+XkbXhJurbg/a6j+OxDFoellIlp7I
+	BfqmRbT4koyg6X6ZqgBS4Pig/5lAid9yNHcgGYWcI2Auqk1zgeP+LKdh8R2OcGKk17xU/cc7jcB
+	yaG95PmBuHLO1h62mL2uV5tAU1eDH7HgRQN43
+X-Gm-Gg: ASbGncu7G28LV0+Gg+pn9/6Jc9ri1+g8eqCNZPYYvZWEPmb2Fp4p2U04SWQc+c3MeGQ
+	CrQdXnxG19XyrCrk90DgYSOrxD2iBC5TD1Wf+qgPR64dxdggFKYdVBg0yXG0NAGsGRAIVHaTPK7
+	x7ITCH4v0ODIwAzJHd4pMlqH+9F0dT27bczsmHR8nhOrms/mau1pAr
+X-Google-Smtp-Source: AGHT+IEHp5xBpPTtWdZMCzH+i0q9BEJGwYBYE7/dAlz0v4nOND8LIunN0ki4CNECu8NBZl9yPLxj0Z18YNBl1Z62spA=
+X-Received: by 2002:a7b:ce10:0:b0:43b:bf3f:9664 with SMTP id
+ 5b1f17b1804b1-440a44c1c39mr72835e9.5.1745519838948; Thu, 24 Apr 2025 11:37:18
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250324-dt-bindings-network-class-v5-0-f5c3fe00e8f0@ixit.cz>
- <20250324-dt-bindings-network-class-v5-3-f5c3fe00e8f0@ixit.cz>
- <d8619ab4-3a91-467f-a3d4-f23b4e0383a4@kernel.org> <57701e2e-0005-4a8a-a3f5-ba098c97b480@kernel.org>
- <4b040936baa8fa8669b34e36fe9dff6e08aeede9.camel@sipsolutions.net>
- <f0e56cb2-17a6-44d4-ae71-8639966d565a@kernel.org> <8d8b7c3ad6a67a683abbb4fc6049898747300a16.camel@sipsolutions.net>
-In-Reply-To: <8d8b7c3ad6a67a683abbb4fc6049898747300a16.camel@sipsolutions.net>
-From: Rob Herring <robh@kernel.org>
-Date: Thu, 24 Apr 2025 13:26:11 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKGmoiW=yDD7G4Qznsa7S2wQ7x4Mh0i4puAyFsvcnHz1A@mail.gmail.com>
-X-Gm-Features: ATxdqUFdarqKSYdeEAbhUblK1AO9Oheq1fLCxeCtymN54D8OfpcAV5pt8PJAs0g
-Message-ID: <CAL_JsqKGmoiW=yDD7G4Qznsa7S2wQ7x4Mh0i4puAyFsvcnHz1A@mail.gmail.com>
-Subject: Re: [PATCH v5 3/5] dt-bindings: wireless: bcm4329-fmac: Use
- wireless-controller.yaml schema
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, david@ixit.cz, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Mailing List <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, van Spriel <arend@broadcom.com>, 
-	=?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Andy Gross <agross@kernel.org>, Mailing List <devicetree-spec@vger.kernel.org>, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, Janne Grunau <j@jannau.net>
+References: <20250417204323.3902669-1-hramamurthy@google.com> <20250423171431.2cd8ca21@kernel.org>
+In-Reply-To: <20250423171431.2cd8ca21@kernel.org>
+From: Ziwei Xiao <ziweixiao@google.com>
+Date: Thu, 24 Apr 2025 11:37:07 -0700
+X-Gm-Features: ATxdqUHZZkXp_HEGK61LJUBhezgIo7ojwCvAQNi8CpuLohtbOPKgVVzGIJimasw
+Message-ID: <CAG-FcCPexBHubfzRcVUsBXRYkY0v-ricG-yqLd5q1j051cbEoQ@mail.gmail.com>
+Subject: Re: [PATCH net] gve: Add adminq lock for creating and destroying
+ multiple queues
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Harshitha Ramamurthy <hramamurthy@google.com>, netdev@vger.kernel.org, jeroendb@google.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, pkaligineedi@google.com, willemb@google.com, 
+	shailend@google.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 24, 2025 at 10:42=E2=80=AFAM Johannes Berg
-<johannes@sipsolutions.net> wrote:
+On Wed, Apr 23, 2025 at 5:14=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
 >
-> On Thu, 2025-04-24 at 17:37 +0200, Krzysztof Kozlowski wrote:
-> > >
-> > > Thanks, I guess I'll hold the pull request for that. And I guess the
-> > > Apple ones are on David then.
-> > I think you can go ahead. I already referenced that commit from next in
-> > my patches, so I hope that SHA will not change (don't rebase your tree)=
-:
-> >
-> > https://lore.kernel.org/linux-devicetree/?q=3Df%3Akrzysztof+%22Align+wi=
-fi+node+name+with+bindings%22
-> >
+> On Thu, 17 Apr 2025 20:43:23 +0000 Harshitha Ramamurthy wrote:
+> > Also this patch cleans up the error handling code of
+> > gve_adminq_destroy_tx_queue.
 >
-> Hm. I thought this patchset broke it, and it is going through my tree.
-> Wouldn't it be much more complex for fixes on top of it to go through
-> another tree?
+> >  static int gve_adminq_destroy_tx_queue(struct gve_priv *priv, u32 queu=
+e_index)
+> >  {
+> >       union gve_adminq_command cmd;
+> > -     int err;
+> >
+> >       memset(&cmd, 0, sizeof(cmd));
+> >       cmd.opcode =3D cpu_to_be32(GVE_ADMINQ_DESTROY_TX_QUEUE);
+> > @@ -808,11 +820,7 @@ static int gve_adminq_destroy_tx_queue(struct gve_=
+priv *priv, u32 queue_index)
+> >               .queue_id =3D cpu_to_be32(queue_index),
+> >       };
+> >
+> > -     err =3D gve_adminq_issue_cmd(priv, &cmd);
+> > -     if (err)
+> > -             return err;
+> > -
+> > -     return 0;
+> > +     return gve_adminq_issue_cmd(priv, &cmd);
+> >  }
+>
+> You mean this cleanup? That's not appropriate for a stable fix...
+>
+> Could you also explain which callers of this core are not already
+> under rtnl_lock and/pr the netdev instance lock?
+I discovered this and thought that this applied more widely, but upon
+rereading it turns out it only applies to upcoming timestamping
+patches and a previous flow steering code attempt that was scuttled.
+Current callers are under rtnl_lock or netdev_lock. Should not have
+been sent to the net. So will send as part of the timestamping series.
+Thanks.
 
-While it seems the reviews of the series caused more warnings for
-Apple, in general, schemas creating warnings is not breaking things.
-In a way, the whole point is to create warnings because if the .dts
-files were perfect already we wouldn't need schemas. The main
-requirement for schemas is only that they don't create warnings for
-the examples. There's still too many for .dts files to worry about it
-(and there's intermittent warnings from things getting merged via
-different trees).
 
-Rob
+> --
+> pw-bot: cr
