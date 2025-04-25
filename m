@@ -1,248 +1,214 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCBCC25395B;
-	Fri, 25 Apr 2025 08:35:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994F1230BD8;
+	Fri, 25 Apr 2025 08:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745570160; cv=none; b=kJPrbxqNjOx3Avic6+/BSglt0eyElQqZ4HFg3MruYVIWL/Y/Qv267ysnpXYq+B8OV0f6i6PIxvMmiihe9H/Whhci9QspS3YPJrt12kXRttB5IICig0XputimhhId+1E8O4XyybtxwEnliwsN78hSq6TmZ7hbtuZEDihMNRsCPIc=
+	t=1745570352; cv=none; b=Pvh3/UFo+FG2VdpipEgC8lDFxQ9VEQ1M1rUPyPYgFbldkgiTE2AWzi+YyO71uZ0Bq/JFQME5OYItY0AVN4QZHdxokVPJkEa+wx79QQ+UNBMS0ffNEzkhKgRTui7yBxRzg451pOjxN9d3TFS7D3CGdGgdIkBSIeJ3kfqfu4/zuoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745570160; c=relaxed/simple;
-	bh=NDognvLvDHWzs0ZVdpZxgIq4j8zsUyk3xC2JBzkjl6s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nm7noHBR0KoKuUBRdGTTs8PGfHnhdUvqgsf7pEnNphTCCBBDzovp5J/RhGxxn/JYvffqkIIUxnS/uJnFbH8xmrCtzZPaL9fA8Q7uIUPvB3c0Ua5NuzxioBD4UyXJFyRU9P8Rrc0jDq5tLhhk+S3SCNcV3yAD+P5mEl1wJ7GeKJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=LAHupr+a; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1745570352; c=relaxed/simple;
+	bh=/yXX9pgvUOeDvQBrbXVUN8W1QFyPQNhdnV+dJfUxJ/4=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=N/u/bp0153zeH+P9XyHV1tiA6XQ6XOEZ9YAK+HfYCqR2qHxpH5V5dI5drGiApeGQdeiEru74gtNfQl3dQ54MOLRuVvBKBOCA+J8cBVChXC1zeDSrQauQTd1ssRfyhLP0qeZo9udzG5vV2cOy+TkS5XeQe6UzsfG0yLCTfYt+g9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=ElLrvg4w; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HnXq2HQk; arc=none smtp.client-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="LAHupr+a"
-Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53P8Yg5b2390085
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Fri, 25 Apr 2025 01:35:14 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53P8Yg5b2390085
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1745570116;
-	bh=uv41QT4bUCUeg9kRJU+Ll1R/EUQNWmYyobPhZDDnvG0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LAHupr+aVuwBpQ/lNk4VRYfQ8YqH5gxJ2rbpQnBuRb4FaPPs70H6aY1LwvgqiZm7g
-	 HGijy5UeFm73/eBXR+IGsU6GUt8lk0uW2ujOhjHd+8YFP6FlTKaPe4NoqX38awxYPk
-	 /xIGSplFs/IhIrHT35jWYZVGRoIeRgbzT1lZOmuyNtXHKUuFWzrhnryI2+qkXFrVTN
-	 TY5LUhj34npFxPcxFG7+6q0Ud1MXC09OUc5i8nZbZf+9zaMDQf/GlSdPVLQbd+lBGC
-	 WCjWDfnBVN4vbnbd4hlZgXwvR+IWnKB3H6jRhkgL304Rs2jXmKs1f9GQRy0wpbeZsY
-	 ZKoo8rEiZWH1g==
-From: "Xin Li (Intel)" <xin@zytor.com>
-To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        virtualization@lists.linux.dev, linux-pm@vger.kernel.org,
-        linux-edac@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, jgross@suse.com, andrew.cooper3@citrix.com,
-        peterz@infradead.org, namhyung@kernel.org, mark.rutland@arm.com,
-        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-        irogers@google.com, adrian.hunter@intel.com, kan.liang@linux.intel.com,
-        wei.liu@kernel.org, ajay.kaher@broadcom.com,
-        bcm-kernel-feedback-list@broadcom.com, tony.luck@intel.com,
-        pbonzini@redhat.com, vkuznets@redhat.com, seanjc@google.com,
-        luto@kernel.org, boris.ostrovsky@oracle.com, kys@microsoft.com,
-        haiyangz@microsoft.com, decui@microsoft.com,
-        dapeng1.mi@linux.intel.com
-Subject: [PATCH v3 13/14] x86/msr: Replace wrmsr(msr, low, 0) with wrmsrq(msr, low)
-Date: Fri, 25 Apr 2025 01:34:36 -0700
-Message-ID: <20250425083442.2390017-14-xin@zytor.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250425083442.2390017-1-xin@zytor.com>
-References: <20250425083442.2390017-1-xin@zytor.com>
+	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="ElLrvg4w";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HnXq2HQk"
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 8AA911140218;
+	Fri, 25 Apr 2025 04:39:06 -0400 (EDT)
+Received: from phl-imap-08 ([10.202.2.84])
+  by phl-compute-02.internal (MEProxy); Fri, 25 Apr 2025 04:39:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=readahead.eu; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1745570346;
+	 x=1745656746; bh=XnvyM4plL/VWjKsIduuUMp0AGlTQ6ZHweSxORhSaPAI=; b=
+	ElLrvg4w9Et7djySJSaqsYYSTHeWOyllNLyST+gW14VDygocISieLR9UdjIZ+KmC
+	juSTvFM/pE++E/8BEkxj19/z8YPByQGEKkwsP4gY8MP1g1QcljoPcC3SL60vTLst
+	ZeRZ3CG2YeHpap7ua+IeQJh8gx42N4ozi+6DUo/ulK7BK7OktIRMnB0qxgaPse7o
+	tGaYaCEETlf1Hqk0u75ojP8cwNaF6Fln5ZvOkkhh0jYy+cUaqMcsV3qaZvI5qfam
+	9/aHmF1O/uJLqmqo67zcZIsHgrilNcfCOqbdcRm3hzrg3003yqqof6FuP1WaGuO5
+	w50E/SV2UAatd+/Uuh5aUA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1745570346; x=
+	1745656746; bh=XnvyM4plL/VWjKsIduuUMp0AGlTQ6ZHweSxORhSaPAI=; b=H
+	nXq2HQkrvQn3KCcT5xydJEpqiiQl7MVuZNAG49oq2mBpX/3aChiXeVfYqZZXNBsb
+	Azzivimrjd2yLv6PsweCIQIlcHvgG5V1Ipc3LbqRm0hPsjYaZSFp/54QMaxaF1FG
+	c0LXGyD3db04E6y6HCbhW1ygXPp4N3U5rlo9f8LKDExT/d+PwPdYQE8dTJBhuxeo
+	dZo85rBk31QDlRR0oXkkY5z2h1Sf81/cogAl78PhY+5X3I2iMoO6meenkI8xYPyb
+	t+ZeOgDwY/gMuEaq7p7x2hWUt3quX2yCkDU36aCq+xMcKbtm2YA8ihKCO21JZ9IY
+	91V+EwTnt6ORg9hUVl3lw==
+X-ME-Sender: <xms:KUoLaD6BrvEtZ243u7bFoc8e9rwbadWeZIvtNJDTmD4PSD2k6BJdzg>
+    <xme:KUoLaI7XiODhi5OEFyHIwV_a9U6_ZUHmr70_8HnPzBOXcTFZXD6E5IbvsWhepshRt
+    pzkDQtkdyXHnImMWso>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvhedukeekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
+    tddtnecuhfhrohhmpedfffgrvhhiugcutfhhvghinhhssggvrhhgfdcuoegurghvihguse
+    hrvggruggrhhgvrggurdgvuheqnecuggftrfgrthhtvghrnhepueekteduueejkeehheel
+    vdefleeivdeugfekvdfffefgkeefuedvtdfftddvveeknecuffhomhgrihhnpehkvghrnh
+    gvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
+    ohhmpegurghvihgusehrvggruggrhhgvrggurdgvuhdpnhgspghrtghpthhtohepudejpd
+    hmohguvgepshhmthhpohhuthdprhgtphhtthhopehkuhhnihihuhesrghmrgiiohhnrdgt
+    ohhmpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtth
+    hopegslhhutggrseguvggsihgrnhdrohhrghdprhgtphhtthhopegurggrnhdrjhdruggv
+    mhgvhigvrhesghhmrghilhdrtghomhdprhgtphhtthhopegvughumhgriigvthesghhooh
+    hglhgvrdgtohhmpdhrtghpthhtohepsghrrghunhgvrheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhusggrse
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgigrnhguvghrsehmihhhrghlihgt
+    hihnrdgtohhm
+X-ME-Proxy: <xmx:KUoLaKezNV5TdX96i0hcAXZKW3tm6pFEMxn8sTIOZDrBuk57bcaD2g>
+    <xmx:KUoLaEL0HBEybq4fRAGMpvl_p3k_Gv17OTAfwTitj1SgF2xPUZlleQ>
+    <xmx:KUoLaHIQ4_Famr47P1XAtLg60JsEtUkoVugx3jiRQ_-WFWkEs6PxCQ>
+    <xmx:KUoLaNwIc4QoBzJj044NWxyyLX0M298_kQkkjvHyZtpnwF_FybuOoQ>
+    <xmx:KkoLaJ6jLFtsEBhotZ1JZwTKqfiy1M1m9ZDxDzQ24RlSdI1h-jobmHpy>
+Feedback-ID: id2994666:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 8536F18A006B; Fri, 25 Apr 2025 04:39:05 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: Tbcbd793788c73c94
+Date: Fri, 25 Apr 2025 10:38:45 +0200
+From: "David Rheinsberg" <david@readahead.eu>
+To: "Christian Brauner" <brauner@kernel.org>,
+ "Oleg Nesterov" <oleg@redhat.com>, "Kuniyuki Iwashima" <kuniyu@amazon.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ netdev@vger.kernel.org, "Jan Kara" <jack@suse.cz>,
+ "Alexander Mikhalitsyn" <alexander@mihalicyn.com>,
+ "Luca Boccassi" <bluca@debian.org>,
+ "Lennart Poettering" <lennart@poettering.net>,
+ "Daan De Meyer" <daan.j.demeyer@gmail.com>, "Mike Yuan" <me@yhndnzj.com>
+Message-Id: <4950895a-9b99-4ec3-981c-a392a20ce74c@app.fastmail.com>
+In-Reply-To: <20250425-work-pidfs-net-v2-0-450a19461e75@kernel.org>
+References: <20250425-work-pidfs-net-v2-0-450a19461e75@kernel.org>
+Subject: Re: [PATCH v2 0/4] net, pidfs: enable handing out pidfds for reaped
+ sk->sk_peer_pid
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-The third argument in wrmsr(msr, low, 0) is unnecessary.  Instead, use
-wrmsrq(msr, low), which automatically sets the higher 32 bits of the
-MSR value to 0.
+Hi
 
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
----
- arch/x86/hyperv/hv_apic.c                 | 6 +++---
- arch/x86/include/asm/apic.h               | 2 +-
- arch/x86/include/asm/switch_to.h          | 2 +-
- arch/x86/kernel/cpu/amd.c                 | 2 +-
- arch/x86/kernel/cpu/common.c              | 8 ++++----
- arch/x86/kernel/cpu/resctrl/pseudo_lock.c | 4 ++--
- arch/x86/kernel/cpu/resctrl/rdtgroup.c    | 2 +-
- arch/x86/kernel/cpu/umwait.c              | 4 ++--
- arch/x86/kernel/kvm.c                     | 2 +-
- 9 files changed, 16 insertions(+), 16 deletions(-)
+On Fri, Apr 25, 2025, at 10:11 AM, Christian Brauner wrote:
+> SO_PEERPIDFD currently doesn't support handing out pidfds if the
+> sk->sk_peer_pid thread-group leader has already been reaped. In this
+> case it currently returns EINVAL. Userspace still wants to get a pidfd
+> for a reaped process to have a stable handle it can pass on.
+> This is especially useful now that it is possible to retrieve exit
+> information through a pidfd via the PIDFD_GET_INFO ioctl()'s
+> PIDFD_INFO_EXIT flag.
+>
+> Another summary has been provided by David in [1]:
+>
+>> A pidfd can outlive the task it refers to, and thus user-space must
+>> already be prepared that the task underlying a pidfd is gone at the time
+>> they get their hands on the pidfd. For instance, resolving the pidfd to
+>> a PID via the fdinfo must be prepared to read `-1`.
+>>
+>> Despite user-space knowing that a pidfd might be stale, several kernel
+>> APIs currently add another layer that checks for this. In particular,
+>> SO_PEERPIDFD returns `EINVAL` if the peer-task was already reaped,
+>> but returns a stale pidfd if the task is reaped immediately after the
+>> respective alive-check.
+>>
+>> This has the unfortunate effect that user-space now has two ways to
+>> check for the exact same scenario: A syscall might return
+>> EINVAL/ESRCH/... *or* the pidfd might be stale, even though there is no
+>> particular reason to distinguish both cases. This also propagates
+>> through user-space APIs, which pass on pidfds. They must be prepared to
+>> pass on `-1` *or* the pidfd, because there is no guaranteed way to get a
+>> stale pidfd from the kernel.
+>> Userspace must already deal with a pidfd referring to a reaped task as
+>> the task may exit and get reaped at any time will there are still many
+>> pidfds referring to it.
+>
+> In order to allow handing out reaped pidfd SO_PEERPIDFD needs to ensure
+> that PIDFD_INFO_EXIT information is available whenever a pidfd for a
+> reaped task is created by PIDFD_INFO_EXIT. The uapi promises that reaped
+> pidfds are only handed out if it is guaranteed that the caller sees the
+> exit information:
+>
+> TEST_F(pidfd_info, success_reaped)
+> {
+>         struct pidfd_info info = {
+>                 .mask = PIDFD_INFO_CGROUPID | PIDFD_INFO_EXIT,
+>         };
+>
+>         /*
+>          * Process has already been reaped and PIDFD_INFO_EXIT been set.
+>          * Verify that we can retrieve the exit status of the process.
+>          */
+>         ASSERT_EQ(ioctl(self->child_pidfd4, PIDFD_GET_INFO, &info), 0);
+>         ASSERT_FALSE(!!(info.mask & PIDFD_INFO_CREDS));
+>         ASSERT_TRUE(!!(info.mask & PIDFD_INFO_EXIT));
+>         ASSERT_TRUE(WIFEXITED(info.exit_code));
+>         ASSERT_EQ(WEXITSTATUS(info.exit_code), 0);
+> }
+>
+> To hand out pidfds for reaped processes we thus allocate a pidfs entry
+> for the relevant sk->sk_peer_pid at the time the sk->sk_peer_pid is
+> stashed and drop it when the socket is destroyed. This guarantees that
+> exit information will always be recorded for the sk->sk_peer_pid task
+> and we can hand out pidfds for reaped processes.
+>
+> Note, I'm marking this as RFC mostly because I'm open to other
+> approaches to solving the pidfs registration. The functionality in
+> general we should really provide either way.
+>
+> Link: 
+> https://lore.kernel.org/lkml/20230807085203.819772-1-david@readahead.eu 
+> [1]
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> ---
+> Changes in v2:
+> - Fix typo in pidfs_register_pid() kernel documentation.
+> - Remove SOCK_RCU_FREE check as it's already and better covered by 
+> might_sleep().
+> - Add comment to pidfd_prepare() about PIDFD_STALE only being valid if
+>   the caller knows PIDFD_INFO_EXIT information is guaranteed to be
+>   available.
+> - Fix naming of variables and adhere to net declaration ordering.
+> - Link to v1: 
+> https://lore.kernel.org/20250424-work-pidfs-net-v1-0-0dc97227d854@kernel.org
+>
+> ---
+> Christian Brauner (4):
+>       pidfs: register pid in pidfs
+>       net, pidfs: prepare for handing out pidfds for reaped sk->sk_peer_pid
+>       pidfs: get rid of __pidfd_prepare()
+>       net, pidfs: enable handing out pidfds for reaped sk->sk_peer_pid
+>
+>  fs/pidfs.c                 | 80 ++++++++++++++++++++++++++++++++++++++-----
+>  include/linux/pid.h        |  2 +-
+>  include/linux/pidfs.h      |  3 ++
+>  include/uapi/linux/pidfd.h |  2 +-
+>  kernel/fork.c              | 83 ++++++++++++++++----------------------------
+>  net/core/sock.c            | 14 +++-----
+>  net/unix/af_unix.c         | 85 ++++++++++++++++++++++++++++++++++++++++------
+>  7 files changed, 183 insertions(+), 86 deletions(-)
+> ---
+> base-commit: b590c928cca7bdc7fd580d52e42bfdc3ac5eeacb
+> change-id: 20250423-work-pidfs-net-bc0181263d38
 
-diff --git a/arch/x86/hyperv/hv_apic.c b/arch/x86/hyperv/hv_apic.c
-index c450e67cb0a4..4d617ee59377 100644
---- a/arch/x86/hyperv/hv_apic.c
-+++ b/arch/x86/hyperv/hv_apic.c
-@@ -75,10 +75,10 @@ static void hv_apic_write(u32 reg, u32 val)
- {
- 	switch (reg) {
- 	case APIC_EOI:
--		wrmsr(HV_X64_MSR_EOI, val, 0);
-+		wrmsrq(HV_X64_MSR_EOI, val);
- 		break;
- 	case APIC_TASKPRI:
--		wrmsr(HV_X64_MSR_TPR, val, 0);
-+		wrmsrq(HV_X64_MSR_TPR, val);
- 		break;
- 	default:
- 		native_apic_mem_write(reg, val);
-@@ -92,7 +92,7 @@ static void hv_apic_eoi_write(void)
- 	if (hvp && (xchg(&hvp->apic_assist, 0) & 0x1))
- 		return;
- 
--	wrmsr(HV_X64_MSR_EOI, APIC_EOI_ACK, 0);
-+	wrmsrq(HV_X64_MSR_EOI, APIC_EOI_ACK);
- }
- 
- static bool cpu_is_self(int cpu)
-diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index 0174dd548327..68e10e30fe9b 100644
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -209,7 +209,7 @@ static inline void native_apic_msr_write(u32 reg, u32 v)
- 	    reg == APIC_LVR)
- 		return;
- 
--	wrmsr(APIC_BASE_MSR + (reg >> 4), v, 0);
-+	wrmsrq(APIC_BASE_MSR + (reg >> 4), v);
- }
- 
- static inline void native_apic_msr_eoi(void)
-diff --git a/arch/x86/include/asm/switch_to.h b/arch/x86/include/asm/switch_to.h
-index 4f21df7af715..499b1c15cc8b 100644
---- a/arch/x86/include/asm/switch_to.h
-+++ b/arch/x86/include/asm/switch_to.h
-@@ -61,7 +61,7 @@ static inline void refresh_sysenter_cs(struct thread_struct *thread)
- 		return;
- 
- 	this_cpu_write(cpu_tss_rw.x86_tss.ss1, thread->sysenter_cs);
--	wrmsr(MSR_IA32_SYSENTER_CS, thread->sysenter_cs, 0);
-+	wrmsrq(MSR_IA32_SYSENTER_CS, thread->sysenter_cs);
- }
- #endif
- 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 0bbe79862aa6..5e28ec2fe4e8 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1200,7 +1200,7 @@ void amd_set_dr_addr_mask(unsigned long mask, unsigned int dr)
- 	if (per_cpu(amd_dr_addr_mask, cpu)[dr] == mask)
- 		return;
- 
--	wrmsr(amd_msr_dr_addr_masks[dr], mask, 0);
-+	wrmsrq(amd_msr_dr_addr_masks[dr], mask);
- 	per_cpu(amd_dr_addr_mask, cpu)[dr] = mask;
- }
- 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index cefc99990bde..ef9751d577c3 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1982,9 +1982,9 @@ void enable_sep_cpu(void)
- 	 */
- 
- 	tss->x86_tss.ss1 = __KERNEL_CS;
--	wrmsr(MSR_IA32_SYSENTER_CS, tss->x86_tss.ss1, 0);
--	wrmsr(MSR_IA32_SYSENTER_ESP, (unsigned long)(cpu_entry_stack(cpu) + 1), 0);
--	wrmsr(MSR_IA32_SYSENTER_EIP, (unsigned long)entry_SYSENTER_32, 0);
-+	wrmsrq(MSR_IA32_SYSENTER_CS, tss->x86_tss.ss1);
-+	wrmsrq(MSR_IA32_SYSENTER_ESP, (unsigned long)(cpu_entry_stack(cpu) + 1));
-+	wrmsrq(MSR_IA32_SYSENTER_EIP, (unsigned long)entry_SYSENTER_32);
- 
- 	put_cpu();
- }
-@@ -2198,7 +2198,7 @@ static inline void setup_getcpu(int cpu)
- 	struct desc_struct d = { };
- 
- 	if (boot_cpu_has(X86_FEATURE_RDTSCP) || boot_cpu_has(X86_FEATURE_RDPID))
--		wrmsr(MSR_TSC_AUX, cpudata, 0);
-+		wrmsrq(MSR_TSC_AUX, cpudata);
- 
- 	/* Store CPU and node number in limit. */
- 	d.limit0 = cpudata;
-diff --git a/arch/x86/kernel/cpu/resctrl/pseudo_lock.c b/arch/x86/kernel/cpu/resctrl/pseudo_lock.c
-index 324bd4919300..1190c48a16b2 100644
---- a/arch/x86/kernel/cpu/resctrl/pseudo_lock.c
-+++ b/arch/x86/kernel/cpu/resctrl/pseudo_lock.c
-@@ -905,7 +905,7 @@ int resctrl_arch_measure_cycles_lat_fn(void *_plr)
- 	 * Disable hardware prefetchers.
- 	 */
- 	rdmsr(MSR_MISC_FEATURE_CONTROL, saved_low, saved_high);
--	wrmsr(MSR_MISC_FEATURE_CONTROL, prefetch_disable_bits, 0x0);
-+	wrmsrq(MSR_MISC_FEATURE_CONTROL, prefetch_disable_bits);
- 	mem_r = READ_ONCE(plr->kmem);
- 	/*
- 	 * Dummy execute of the time measurement to load the needed
-@@ -1001,7 +1001,7 @@ static int measure_residency_fn(struct perf_event_attr *miss_attr,
- 	 * Disable hardware prefetchers.
- 	 */
- 	rdmsr(MSR_MISC_FEATURE_CONTROL, saved_low, saved_high);
--	wrmsr(MSR_MISC_FEATURE_CONTROL, prefetch_disable_bits, 0x0);
-+	wrmsrq(MSR_MISC_FEATURE_CONTROL, prefetch_disable_bits);
- 
- 	/* Initialize rest of local variables */
- 	/*
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-index 26f4d820ee6e..2ec6d7d843c5 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -1707,7 +1707,7 @@ void resctrl_arch_mon_event_config_write(void *_config_info)
- 		pr_warn_once("Invalid event id %d\n", config_info->evtid);
- 		return;
- 	}
--	wrmsr(MSR_IA32_EVT_CFG_BASE + index, config_info->mon_config, 0);
-+	wrmsrq(MSR_IA32_EVT_CFG_BASE + index, config_info->mon_config);
- }
- 
- static void mbm_config_write_domain(struct rdt_resource *r,
-diff --git a/arch/x86/kernel/cpu/umwait.c b/arch/x86/kernel/cpu/umwait.c
-index 0050eae153bb..933fcd7ff250 100644
---- a/arch/x86/kernel/cpu/umwait.c
-+++ b/arch/x86/kernel/cpu/umwait.c
-@@ -33,7 +33,7 @@ static DEFINE_MUTEX(umwait_lock);
- static void umwait_update_control_msr(void * unused)
- {
- 	lockdep_assert_irqs_disabled();
--	wrmsr(MSR_IA32_UMWAIT_CONTROL, READ_ONCE(umwait_control_cached), 0);
-+	wrmsrq(MSR_IA32_UMWAIT_CONTROL, READ_ONCE(umwait_control_cached));
- }
- 
- /*
-@@ -71,7 +71,7 @@ static int umwait_cpu_offline(unsigned int cpu)
- 	 * the original control MSR value in umwait_init(). So there
- 	 * is no race condition here.
- 	 */
--	wrmsr(MSR_IA32_UMWAIT_CONTROL, orig_umwait_control_cached, 0);
-+	wrmsrq(MSR_IA32_UMWAIT_CONTROL, orig_umwait_control_cached);
- 
- 	return 0;
- }
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index 44a45df7200a..bc9d21d7395f 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -399,7 +399,7 @@ static void kvm_disable_steal_time(void)
- 	if (!has_steal_clock)
- 		return;
- 
--	wrmsr(MSR_KVM_STEAL_TIME, 0, 0);
-+	wrmsrq(MSR_KVM_STEAL_TIME, 0);
- }
- 
- static u64 kvm_steal_clock(int cpu)
--- 
-2.49.0
+Thank you very much! Looks good to me!
 
+Reviewed-by: David Rheinsberg <david@readahead.eu>
+
+Thanks
+David
