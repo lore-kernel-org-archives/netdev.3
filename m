@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A04226534
-	for <netdev@vger.kernel.org>; Fri, 25 Apr 2025 21:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62832192F3
+	for <netdev@vger.kernel.org>; Fri, 25 Apr 2025 21:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745617961; cv=none; b=lvHhZRv63IqjJUOaA5GFYApG3QxUtuLeYwQ3HPUNbK3QtWkxB8EgTEm2+X7U4KcX5SP9r0zRxIn0jMjhxLNrfFuGZxMs4usBQ3huTNITjBli1CU/vD33htjrHFYnamaigyegW3JHTT0G7JO54K3lX6Nopzm72GKSHurobH9/VrQ=
+	t=1745617962; cv=none; b=Kz072h+ueBQoxV/vVvNFp1H4kO8sg1uy6rrntibyqmrIQt5j1ds+dGgYTuPbbPuIqw8rdnc87qOgxFbNesO0TKpq60jdfuGvhkI/8dmeG2OWVUSAvd23Vrtu77H63nm1vCB3ssS5E3cE7ewyZmKB1OF/5ZGzaOO7CHLFHJYj82k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745617961; c=relaxed/simple;
-	bh=LXV21G/RmUZO+1ngZo8XElkum7eS7vamO2aNZhJoKp8=;
+	s=arc-20240116; t=1745617962; c=relaxed/simple;
+	bh=CKXc9W+Tu9wPP2JawqYY4Bk3JjZPrUtWW0yt9kjoCHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IiE5JM/k4MLa14teqN3eq8W+cBzKzTI5p4uDOeMfmw4lw8emb8o5wlC2OL+1PUhr+cy30nWYAYz07I8uu2UqDtRQhYcp4oCwDUp1Fd2jNS7QE3TeXwgvJmE3nsZdQTkY+bHr5kTjL6Lbs0qU1soqwmdifBd4/1XLaCG7I5706R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MU6AscQD; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=aT6mt1CZfxphVaNQs4UhTmFkaEFOBZ/HqqKwpA1mVwDIRaetdYFUqYJQWVligaiCGf9MFoAv2/ns5bkzaMjv2ipZ+whUrwjIK8KGVVTinLSFNkb6U2g2aZWiHVyGfhkHzrD/gAatpNyH2N3jYwL4sw4juw4vTFIGf0XERL3OcTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HiGsFOEp; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MU6AscQD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HiGsFOEp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745617960; x=1777153960;
+  t=1745617961; x=1777153961;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=LXV21G/RmUZO+1ngZo8XElkum7eS7vamO2aNZhJoKp8=;
-  b=MU6AscQD+GGZj0+pUG5LajaCrlBrSAjDuIj2PDf5AavhoRwyO/4HYjzm
-   UzuSigKwksbG4s154nI/VxjRoRONgXItK4Ku2xFl+IRpUr5tMBj2GzL8n
-   /9lkdqjAYjvaO4whRfXu1RmF/rKHDB6JyOhFw3BU0GaUeB0rg28IiVrvX
-   x+aYExx5DyvXCvhF4vj5oUSJUfGlR17IvxA6lPyAB/xfG1ZEQNyIn0NYR
-   nJaMm4ialECG6Qc+A/HXA4B1EKLJtgnWHBYLQWik4gAbumHruyq3bI1P7
-   0mlwBKgTK3f3Rct2aQK4n3qKh4bme0zoeTr2ajXArm9J3mjadxqj97Rw4
-   w==;
-X-CSE-ConnectionGUID: tXbvdNu3QZ+hqBg+h9FIvA==
-X-CSE-MsgGUID: fjIcX3m1Qzm8wkQB8dwkqA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11414"; a="69784549"
+  bh=CKXc9W+Tu9wPP2JawqYY4Bk3JjZPrUtWW0yt9kjoCHM=;
+  b=HiGsFOEp53MU674Fczt9pHBom9OlhbGtCG3MOii6eR/4JGu2alYrIUHj
+   oBZ0GKtnMt1i841y6OKb8HbmYLnZaTdztzKTYw+j6YPPIqZHwM+GUg+yJ
+   9m7t/c02i2lBhmVmQZfCjwNYwS8+InpUqynCSj5VR/wjxf0VDFg5YBBio
+   Xm2NsjELIu8UTODdxgJdNLoY1uv2o5MMNB0QhrKm33gjhIWIiHIGWHBIv
+   FsWno/aikjV61xNFHb9tqMxBJDSDvlQz2PKlv0eM9Ro+NhdLh0PnjHogG
+   6uc35PbcuXn/LeKS73SAEy4oEqREUg+VODGOSl7bxkMS2vqMzRP+rUQsx
+   g==;
+X-CSE-ConnectionGUID: OckQQTAnTbObLixKii/ygQ==
+X-CSE-MsgGUID: vjchj6GCTdKkJj/LGUG1hA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11414"; a="69784564"
 X-IronPort-AV: E=Sophos;i="6.15,240,1739865600"; 
-   d="scan'208";a="69784549"
+   d="scan'208";a="69784564"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
   by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 14:52:37 -0700
-X-CSE-ConnectionGUID: l7T3k7/uSIu4AEVORYU3vQ==
-X-CSE-MsgGUID: uwbgtYsyS7i0Ef4hP7OeXg==
+X-CSE-ConnectionGUID: ANZdm6HXQku2ZE6LSdmoTA==
+X-CSE-MsgGUID: BesPYgDLTrqT0ODZ0PQU4A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,240,1739865600"; 
-   d="scan'208";a="163973514"
+   d="scan'208";a="163973520"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa002.jf.intel.com with ESMTP; 25 Apr 2025 14:52:36 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -57,11 +57,10 @@ Cc: Milena Olech <milena.olech@intel.com>,
 	richardcochran@gmail.com,
 	Alexander Lobakin <aleksander.lobakin@intel.com>,
 	Willem de Bruijn <willemb@google.com>,
-	Mina Almasry <almasrymina@google.com>,
 	Samuel Salin <Samuel.salin@intel.com>
-Subject: [PATCH net-next v2 04/11] idpf: move virtchnl structures to the header file
-Date: Fri, 25 Apr 2025 14:52:18 -0700
-Message-ID: <20250425215227.3170837-5-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next v2 06/11] idpf: add mailbox access to read PTP clock time
+Date: Fri, 25 Apr 2025 14:52:20 -0700
+Message-ID: <20250425215227.3170837-7-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250425215227.3170837-1-anthony.l.nguyen@intel.com>
 References: <20250425215227.3170837-1-anthony.l.nguyen@intel.com>
@@ -75,227 +74,308 @@ Content-Transfer-Encoding: 8bit
 
 From: Milena Olech <milena.olech@intel.com>
 
-Move virtchnl structures to the header file to expose them for the PTP
-virtchnl file.
+When the access to read PTP clock is specified as mailbox, the driver
+needs to send virtchnl message to perform PTP actions. Message is sent
+using idpf_mbq_opc_send_msg_to_peer_drv mailbox opcode, with the parameters
+received during PTP capabilities negotiation.
+
+Add functions to recognize PTP messages, move them to dedicated secondary
+mailbox, read the PTP clock time and cross timestamp using mailbox
+messages.
 
 Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 Reviewed-by: Willem de Bruijn <willemb@google.com>
 Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 Signed-off-by: Milena Olech <milena.olech@intel.com>
-Tested-by: Mina Almasry <almasrymina@google.com>
 Tested-by: Samuel Salin <Samuel.salin@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 86 +------------------
- .../net/ethernet/intel/idpf/idpf_virtchnl.h   | 84 ++++++++++++++++++
- 2 files changed, 86 insertions(+), 84 deletions(-)
+ .../ethernet/intel/idpf/idpf_controlq_api.h   |  3 ++
+ drivers/net/ethernet/intel/idpf/idpf_ptp.c    | 33 +++++++++++++
+ drivers/net/ethernet/intel/idpf/idpf_ptp.h    | 34 ++++++++++++++
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 47 +++++++++++++++++++
+ .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   | 47 +++++++++++++++++++
+ 5 files changed, 164 insertions(+)
 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_controlq_api.h b/drivers/net/ethernet/intel/idpf/idpf_controlq_api.h
+index e8e046ef2f0d..9642494a67d8 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_controlq_api.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_controlq_api.h
+@@ -123,9 +123,12 @@ struct idpf_ctlq_info {
+ /**
+  * enum idpf_mbx_opc - PF/VF mailbox commands
+  * @idpf_mbq_opc_send_msg_to_cp: used by PF or VF to send a message to its CP
++ * @idpf_mbq_opc_send_msg_to_peer_drv: used by PF or VF to send a message to
++ *				       any peer driver
+  */
+ enum idpf_mbx_opc {
+ 	idpf_mbq_opc_send_msg_to_cp		= 0x0801,
++	idpf_mbq_opc_send_msg_to_peer_drv	= 0x0804,
+ };
+ 
+ /* API supported for control queue management */
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+index 3322598cf7d5..bda194b56bbe 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_ptp.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+@@ -92,6 +92,37 @@ static u64 idpf_ptp_read_src_clk_reg_direct(struct idpf_adapter *adapter,
+ 	return ((u64)hi << 32) | lo;
+ }
+ 
++/**
++ * idpf_ptp_read_src_clk_reg_mailbox - Read the main timer value through mailbox
++ * @adapter: Driver specific private structure
++ * @sts: Optional parameter for holding a pair of system timestamps from
++ *	 the system clock. Will be ignored when NULL is given.
++ * @src_clk: Returned main timer value in nanoseconds unit
++ *
++ * Return: 0 on success, -errno otherwise.
++ */
++static int idpf_ptp_read_src_clk_reg_mailbox(struct idpf_adapter *adapter,
++					     struct ptp_system_timestamp *sts,
++					     u64 *src_clk)
++{
++	struct idpf_ptp_dev_timers clk_time;
++	int err;
++
++	/* Read the system timestamp pre PHC read */
++	ptp_read_system_prets(sts);
++
++	err = idpf_ptp_get_dev_clk_time(adapter, &clk_time);
++	if (err)
++		return err;
++
++	/* Read the system timestamp post PHC read */
++	ptp_read_system_postts(sts);
++
++	*src_clk = clk_time.dev_clk_time_ns;
++
++	return 0;
++}
++
+ /**
+  * idpf_ptp_read_src_clk_reg - Read the main timer value
+  * @adapter: Driver specific private structure
+@@ -107,6 +138,8 @@ static int idpf_ptp_read_src_clk_reg(struct idpf_adapter *adapter, u64 *src_clk,
+ 	switch (adapter->ptp->get_dev_clk_time_access) {
+ 	case IDPF_PTP_NONE:
+ 		return -EOPNOTSUPP;
++	case IDPF_PTP_MAILBOX:
++		return idpf_ptp_read_src_clk_reg_mailbox(adapter, sts, src_clk);
+ 	case IDPF_PTP_DIRECT:
+ 		*src_clk = idpf_ptp_read_src_clk_reg_direct(adapter, sts);
+ 		break;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.h b/drivers/net/ethernet/intel/idpf/idpf_ptp.h
+index 955d697e51ab..b536c1cdbb2e 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_ptp.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.h
+@@ -52,6 +52,19 @@ enum idpf_ptp_access {
+ 	IDPF_PTP_MAILBOX,
+ };
+ 
++/**
++ * struct idpf_ptp_secondary_mbx - PTP secondary mailbox
++ * @peer_mbx_q_id: PTP mailbox queue ID
++ * @peer_id: Peer ID for PTP Device Control daemon
++ * @valid: indicates whether secondary mailblox is supported by the Control
++ *	   Plane
++ */
++struct idpf_ptp_secondary_mbx {
++	u16 peer_mbx_q_id;
++	u16 peer_id;
++	bool valid:1;
++};
++
+ /**
+  * struct idpf_ptp - PTP parameters
+  * @info: structure defining PTP hardware capabilities
+@@ -62,6 +75,7 @@ enum idpf_ptp_access {
+  * @caps: PTP capabilities negotiated with the Control Plane
+  * @get_dev_clk_time_access: access type for getting the device clock time
+  * @rsv: reserved bits
++ * @secondary_mbx: parameters for using dedicated PTP mailbox
+  * @read_dev_clk_lock: spinlock protecting access to the device clock read
+  *		       operation executed by the HW latch
+  */
+@@ -74,6 +88,7 @@ struct idpf_ptp {
+ 	u32 caps;
+ 	enum idpf_ptp_access get_dev_clk_time_access:2;
+ 	u32 rsv:30;
++	struct idpf_ptp_secondary_mbx secondary_mbx;
+ 	spinlock_t read_dev_clk_lock;
+ };
+ 
+@@ -91,11 +106,23 @@ idpf_ptp_info_to_adapter(const struct ptp_clock_info *info)
+ 	return ptp->adapter;
+ }
+ 
++/**
++ * struct idpf_ptp_dev_timers - System time and device time values
++ * @sys_time_ns: system time value expressed in nanoseconds
++ * @dev_clk_time_ns: device clock time value expressed in nanoseconds
++ */
++struct idpf_ptp_dev_timers {
++	u64 sys_time_ns;
++	u64 dev_clk_time_ns;
++};
++
+ #if IS_ENABLED(CONFIG_PTP_1588_CLOCK)
+ int idpf_ptp_init(struct idpf_adapter *adapter);
+ void idpf_ptp_release(struct idpf_adapter *adapter);
+ int idpf_ptp_get_caps(struct idpf_adapter *adapter);
+ void idpf_ptp_get_features_access(const struct idpf_adapter *adapter);
++int idpf_ptp_get_dev_clk_time(struct idpf_adapter *adapter,
++			      struct idpf_ptp_dev_timers *dev_clk_time);
+ #else /* CONFIG_PTP_1588_CLOCK */
+ static inline int idpf_ptp_init(struct idpf_adapter *adapter)
+ {
+@@ -112,5 +139,12 @@ static inline int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+ static inline void
+ idpf_ptp_get_features_access(const struct idpf_adapter *adapter) { }
+ 
++static inline int
++idpf_ptp_get_dev_clk_time(struct idpf_adapter *adapter,
++			  struct idpf_ptp_dev_timers *dev_clk_time)
++{
++	return -EOPNOTSUPP;
++}
++
+ #endif /* CONFIG_PTP_1588_CLOCK */
+ #endif /* _IDPF_PTP_H */
 diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index 1d42f8aee4aa..e27f3f2777a2 100644
+index e27f3f2777a2..0fc2be15b539 100644
 --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
 +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -7,88 +7,6 @@
- #include "idpf_virtchnl.h"
- #include "idpf_ptp.h"
+@@ -154,6 +154,50 @@ static int idpf_mb_clean(struct idpf_adapter *adapter)
+ 	return err;
+ }
  
--#define IDPF_VC_XN_MIN_TIMEOUT_MSEC	2000
--#define IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC	(60 * 1000)
--#define IDPF_VC_XN_IDX_M		GENMASK(7, 0)
--#define IDPF_VC_XN_SALT_M		GENMASK(15, 8)
--#define IDPF_VC_XN_RING_LEN		U8_MAX
--
--/**
-- * enum idpf_vc_xn_state - Virtchnl transaction status
-- * @IDPF_VC_XN_IDLE: not expecting a reply, ready to be used
-- * @IDPF_VC_XN_WAITING: expecting a reply, not yet received
-- * @IDPF_VC_XN_COMPLETED_SUCCESS: a reply was expected and received,
-- *				  buffer updated
-- * @IDPF_VC_XN_COMPLETED_FAILED: a reply was expected and received, but there
-- *				 was an error, buffer not updated
-- * @IDPF_VC_XN_SHUTDOWN: transaction object cannot be used, VC torn down
-- * @IDPF_VC_XN_ASYNC: transaction sent asynchronously and doesn't have the
-- *		      return context; a callback may be provided to handle
-- *		      return
-- */
--enum idpf_vc_xn_state {
--	IDPF_VC_XN_IDLE = 1,
--	IDPF_VC_XN_WAITING,
--	IDPF_VC_XN_COMPLETED_SUCCESS,
--	IDPF_VC_XN_COMPLETED_FAILED,
--	IDPF_VC_XN_SHUTDOWN,
--	IDPF_VC_XN_ASYNC,
--};
--
--struct idpf_vc_xn;
--/* Callback for asynchronous messages */
--typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
--			    const struct idpf_ctlq_msg *);
--
--/**
-- * struct idpf_vc_xn - Data structure representing virtchnl transactions
-- * @completed: virtchnl event loop uses that to signal when a reply is
-- *	       available, uses kernel completion API
-- * @state: virtchnl event loop stores the data below, protected by the
-- *	   completion's lock.
-- * @reply_sz: Original size of reply, may be > reply_buf.iov_len; it will be
-- *	      truncated on its way to the receiver thread according to
-- *	      reply_buf.iov_len.
-- * @reply: Reference to the buffer(s) where the reply data should be written
-- *	   to. May be 0-length (then NULL address permitted) if the reply data
-- *	   should be ignored.
-- * @async_handler: if sent asynchronously, a callback can be provided to handle
-- *		   the reply when it's received
-- * @vc_op: corresponding opcode sent with this transaction
-- * @idx: index used as retrieval on reply receive, used for cookie
-- * @salt: changed every message to make unique, used for cookie
-- */
--struct idpf_vc_xn {
--	struct completion completed;
--	enum idpf_vc_xn_state state;
--	size_t reply_sz;
--	struct kvec reply;
--	async_vc_cb async_handler;
--	u32 vc_op;
--	u8 idx;
--	u8 salt;
--};
--
--/**
-- * struct idpf_vc_xn_params - Parameters for executing transaction
-- * @send_buf: kvec for send buffer
-- * @recv_buf: kvec for recv buffer, may be NULL, must then have zero length
-- * @timeout_ms: timeout to wait for reply
-- * @async: send message asynchronously, will not wait on completion
-- * @async_handler: If sent asynchronously, optional callback handler. The user
-- *		   must be careful when using async handlers as the memory for
-- *		   the recv_buf _cannot_ be on stack if this is async.
-- * @vc_op: virtchnl op to send
-- */
--struct idpf_vc_xn_params {
--	struct kvec send_buf;
--	struct kvec recv_buf;
--	int timeout_ms;
--	bool async;
--	async_vc_cb async_handler;
--	u32 vc_op;
--};
--
++#if IS_ENABLED(CONFIG_PTP_1588_CLOCK)
++/**
++ * idpf_ptp_is_mb_msg - Check if the message is PTP-related
++ * @op: virtchnl opcode
++ *
++ * Return: true if msg is PTP-related, false otherwise.
++ */
++static bool idpf_ptp_is_mb_msg(u32 op)
++{
++	switch (op) {
++	case VIRTCHNL2_OP_PTP_GET_DEV_CLK_TIME:
++	case VIRTCHNL2_OP_PTP_GET_CROSS_TIME:
++		return true;
++	default:
++		return false;
++	}
++}
++
++/**
++ * idpf_prepare_ptp_mb_msg - Prepare PTP related message
++ *
++ * @adapter: Driver specific private structure
++ * @op: virtchnl opcode
++ * @ctlq_msg: Corresponding control queue message
++ */
++static void idpf_prepare_ptp_mb_msg(struct idpf_adapter *adapter, u32 op,
++				    struct idpf_ctlq_msg *ctlq_msg)
++{
++	/* If the message is PTP-related and the secondary mailbox is available,
++	 * send the message through the secondary mailbox.
++	 */
++	if (!idpf_ptp_is_mb_msg(op) || !adapter->ptp->secondary_mbx.valid)
++		return;
++
++	ctlq_msg->opcode = idpf_mbq_opc_send_msg_to_peer_drv;
++	ctlq_msg->func_id = adapter->ptp->secondary_mbx.peer_mbx_q_id;
++	ctlq_msg->host_id = adapter->ptp->secondary_mbx.peer_id;
++}
++#else /* !CONFIG_PTP_1588_CLOCK */
++static void idpf_prepare_ptp_mb_msg(struct idpf_adapter *adapter, u32 op,
++				    struct idpf_ctlq_msg *ctlq_msg)
++{ }
++#endif /* CONFIG_PTP_1588_CLOCK */
++
  /**
-  * struct idpf_vc_xn_manager - Manager for tracking transactions
-  * @ring: backing and lookup for transactions
-@@ -450,8 +368,8 @@ static void idpf_vc_xn_push_free(struct idpf_vc_xn_manager *vcxn_mngr,
-  * >= @recv_buf.iov_len, but we never overflow @@recv_buf_iov_base). < 0 for
-  * error.
-  */
--static ssize_t idpf_vc_xn_exec(struct idpf_adapter *adapter,
--			       const struct idpf_vc_xn_params *params)
-+ssize_t idpf_vc_xn_exec(struct idpf_adapter *adapter,
-+			const struct idpf_vc_xn_params *params)
- {
- 	const struct kvec *send_buf = &params->send_buf;
- 	struct idpf_vc_xn *xn;
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-index 83da5d8da56b..3522c1238ea2 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-@@ -4,6 +4,88 @@
- #ifndef _IDPF_VIRTCHNL_H_
- #define _IDPF_VIRTCHNL_H_
+  * idpf_send_mb_msg - Send message over mailbox
+  * @adapter: Driver specific private structure
+@@ -197,6 +241,9 @@ int idpf_send_mb_msg(struct idpf_adapter *adapter, u32 op,
  
-+#define IDPF_VC_XN_MIN_TIMEOUT_MSEC	2000
-+#define IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC	(60 * 1000)
-+#define IDPF_VC_XN_IDX_M		GENMASK(7, 0)
-+#define IDPF_VC_XN_SALT_M		GENMASK(15, 8)
-+#define IDPF_VC_XN_RING_LEN		U8_MAX
+ 	ctlq_msg->opcode = idpf_mbq_opc_send_msg_to_cp;
+ 	ctlq_msg->func_id = 0;
 +
-+/**
-+ * enum idpf_vc_xn_state - Virtchnl transaction status
-+ * @IDPF_VC_XN_IDLE: not expecting a reply, ready to be used
-+ * @IDPF_VC_XN_WAITING: expecting a reply, not yet received
-+ * @IDPF_VC_XN_COMPLETED_SUCCESS: a reply was expected and received, buffer
-+ *				  updated
-+ * @IDPF_VC_XN_COMPLETED_FAILED: a reply was expected and received, but there
-+ *				 was an error, buffer not updated
-+ * @IDPF_VC_XN_SHUTDOWN: transaction object cannot be used, VC torn down
-+ * @IDPF_VC_XN_ASYNC: transaction sent asynchronously and doesn't have the
-+ *		      return context; a callback may be provided to handle
-+ *		      return
-+ */
-+enum idpf_vc_xn_state {
-+	IDPF_VC_XN_IDLE = 1,
-+	IDPF_VC_XN_WAITING,
-+	IDPF_VC_XN_COMPLETED_SUCCESS,
-+	IDPF_VC_XN_COMPLETED_FAILED,
-+	IDPF_VC_XN_SHUTDOWN,
-+	IDPF_VC_XN_ASYNC,
-+};
++	idpf_prepare_ptp_mb_msg(adapter, op, ctlq_msg);
 +
-+struct idpf_vc_xn;
-+/* Callback for asynchronous messages */
-+typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
-+			    const struct idpf_ctlq_msg *);
-+
-+/**
-+ * struct idpf_vc_xn - Data structure representing virtchnl transactions
-+ * @completed: virtchnl event loop uses that to signal when a reply is
-+ *	       available, uses kernel completion API
-+ * @state: virtchnl event loop stores the data below, protected by the
-+ *	   completion's lock.
-+ * @reply_sz: Original size of reply, may be > reply_buf.iov_len; it will be
-+ *	      truncated on its way to the receiver thread according to
-+ *	      reply_buf.iov_len.
-+ * @reply: Reference to the buffer(s) where the reply data should be written
-+ *	   to. May be 0-length (then NULL address permitted) if the reply data
-+ *	   should be ignored.
-+ * @async_handler: if sent asynchronously, a callback can be provided to handle
-+ *		   the reply when it's received
-+ * @vc_op: corresponding opcode sent with this transaction
-+ * @idx: index used as retrieval on reply receive, used for cookie
-+ * @salt: changed every message to make unique, used for cookie
-+ */
-+struct idpf_vc_xn {
-+	struct completion completed;
-+	enum idpf_vc_xn_state state;
-+	size_t reply_sz;
-+	struct kvec reply;
-+	async_vc_cb async_handler;
-+	u32 vc_op;
-+	u8 idx;
-+	u8 salt;
-+};
-+
-+/**
-+ * struct idpf_vc_xn_params - Parameters for executing transaction
-+ * @send_buf: kvec for send buffer
-+ * @recv_buf: kvec for recv buffer, may be NULL, must then have zero length
-+ * @timeout_ms: timeout to wait for reply
-+ * @async: send message asynchronously, will not wait on completion
-+ * @async_handler: If sent asynchronously, optional callback handler. The user
-+ *		   must be careful when using async handlers as the memory for
-+ *		   the recv_buf _cannot_ be on stack if this is async.
-+ * @vc_op: virtchnl op to send
-+ */
-+struct idpf_vc_xn_params {
-+	struct kvec send_buf;
-+	struct kvec recv_buf;
-+	int timeout_ms;
-+	bool async;
-+	async_vc_cb async_handler;
-+	u32 vc_op;
-+};
-+
- struct idpf_adapter;
- struct idpf_netdev_priv;
- struct idpf_vec_regs;
-@@ -11,6 +93,8 @@ struct idpf_vport;
- struct idpf_vport_max_q;
- struct idpf_vport_user_config_data;
+ 	ctlq_msg->data_len = msg_size;
+ 	ctlq_msg->cookie.mbx.chnl_opcode = op;
+ 	ctlq_msg->cookie.mbx.chnl_retval = 0;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+index c3c6b920f277..79bd2585703b 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+@@ -29,6 +29,7 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+ 		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
+ 	};
+ 	struct virtchnl2_ptp_clk_reg_offsets clock_offsets;
++	struct idpf_ptp_secondary_mbx *scnd_mbx;
+ 	struct idpf_ptp *ptp = adapter->ptp;
+ 	enum idpf_ptp_access access_type;
+ 	u32 temp_offset;
+@@ -50,6 +51,16 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
  
-+ssize_t idpf_vc_xn_exec(struct idpf_adapter *adapter,
-+			const struct idpf_vc_xn_params *params);
- int idpf_init_dflt_mbx(struct idpf_adapter *adapter);
- void idpf_deinit_dflt_mbx(struct idpf_adapter *adapter);
- int idpf_vc_core_init(struct idpf_adapter *adapter);
+ 	ptp->caps = le32_to_cpu(recv_ptp_caps_msg->caps);
+ 
++	scnd_mbx = &ptp->secondary_mbx;
++	scnd_mbx->peer_mbx_q_id = le16_to_cpu(recv_ptp_caps_msg->peer_mbx_q_id);
++
++	/* if the ptp_mb_q_id holds invalid value (0xffff), the secondary
++	 * mailbox is not supported.
++	 */
++	scnd_mbx->valid = scnd_mbx->peer_mbx_q_id != 0xffff;
++	if (scnd_mbx->valid)
++		scnd_mbx->peer_id = recv_ptp_caps_msg->peer_id;
++
+ 	/* Determine the access type for the PTP features */
+ 	idpf_ptp_get_features_access(adapter);
+ 
+@@ -76,3 +87,39 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+ 
+ 	return 0;
+ }
++
++/**
++ * idpf_ptp_get_dev_clk_time - Send virtchnl get device clk time message
++ * @adapter: Driver specific private structure
++ * @dev_clk_time: Pointer to the device clock structure where the value is set
++ *
++ * Send virtchnl get time message to get the time of the clock.
++ *
++ * Return: 0 on success, -errno otherwise.
++ */
++int idpf_ptp_get_dev_clk_time(struct idpf_adapter *adapter,
++			      struct idpf_ptp_dev_timers *dev_clk_time)
++{
++	struct virtchnl2_ptp_get_dev_clk_time get_dev_clk_time_msg;
++	struct idpf_vc_xn_params xn_params = {
++		.vc_op = VIRTCHNL2_OP_PTP_GET_DEV_CLK_TIME,
++		.send_buf.iov_base = &get_dev_clk_time_msg,
++		.send_buf.iov_len = sizeof(get_dev_clk_time_msg),
++		.recv_buf.iov_base = &get_dev_clk_time_msg,
++		.recv_buf.iov_len = sizeof(get_dev_clk_time_msg),
++		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
++	};
++	int reply_sz;
++	u64 dev_time;
++
++	reply_sz = idpf_vc_xn_exec(adapter, &xn_params);
++	if (reply_sz < 0)
++		return reply_sz;
++	if (reply_sz != sizeof(get_dev_clk_time_msg))
++		return -EIO;
++
++	dev_time = le64_to_cpu(get_dev_clk_time_msg.dev_time_ns);
++	dev_clk_time->dev_clk_time_ns = dev_time;
++
++	return 0;
++}
 -- 
 2.47.1
 
