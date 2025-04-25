@@ -1,209 +1,196 @@
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256712D78A;
-	Fri, 25 Apr 2025 19:27:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B08C21ADB9
+	for <netdev@vger.kernel.org>; Fri, 25 Apr 2025 19:38:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745609226; cv=none; b=T729V4m4k+Rcvyc55Tg/FQ5L+Rgu/EVgXjtmn0BCq85TylT+BZuxo0HBoXGBxE2uc7MMDFj+Rn/PqeXzr1GNhJfFGLVSVNQ3egvqbo/aV0yGMm5nMoFL1RiS0gsSZOqTEksttro4VmQBTkxrabfBAZiujgfleL9l+86vt5sCvuU=
+	t=1745609896; cv=none; b=Z+jmsQGcCzH6KZLwnKXkOSiB9ONGCYF9UxWAS17v6sjl0KXdFPPpWogfABZolHLHIPTvh3TNO06OzfeyVEniSLCjsROyBckP737NFf9genyWpOpUTalsu1zQGhdKb6FwGCQ3yxBK1PzrFi5S83jVbnhmYAgxHTVQoFa/T4yuJeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745609226; c=relaxed/simple;
-	bh=RvD5mC4sHD3jGSm/9Cbrj96ZlAKNLWHG1osWOR3rIO4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=hFaD41ZukTL/SbcwU5oyNKLuqT/BZ7Z/+WhDN720nXOqwFCuR1icKAlQ5QtV+AeCEajYJcDX1LGE1YlmmsZKOvDLaaJk3SPF4YX2QxSZOEO4EAUyME0r9rW/AJaPyhXuJ6wGVxXuHYDTyMrt9A3N/zaPql++Ovt7VySk787MtbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arthurfabre.com; spf=pass smtp.mailfrom=arthurfabre.com; dkim=pass (2048-bit key) header.d=arthurfabre.com header.i=@arthurfabre.com header.b=d00b44Bf; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AiBiVfJC; arc=none smtp.client-ip=202.12.124.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arthurfabre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arthurfabre.com
+	s=arc-20240116; t=1745609896; c=relaxed/simple;
+	bh=28o2sV/wyFvUoWaDjcvjEzgtksHLVjkMKCL8ogSMSrE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fcz2zQuN0i4kZ3A8oX8Cy6+x3xJixfdsdOKjaZWsyS2MZYzFzdmcniAFPLtPhdgYUJcAe8QWbA0CzIDzxOaXIufxzmrIzVxWtMCSJnyvWL3pEpP3IBCrxJnY1m6P8F9RsFPfpEvzpCDjKpF+EbFapYOULuNVW63zSV3dithd6E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UIQt84MD; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arthurfabre.com header.i=@arthurfabre.com header.b="d00b44Bf";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AiBiVfJC"
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id A453811401A5;
-	Fri, 25 Apr 2025 15:27:00 -0400 (EDT)
-Received: from phl-imap-13 ([10.202.2.103])
-  by phl-compute-05.internal (MEProxy); Fri, 25 Apr 2025 15:27:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arthurfabre.com;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
-	 t=1745609220; x=1745695620; bh=zQLMxe8QsqJK1fYcw7ILxK9codnxO47h
-	QzxDx+TrHqA=; b=d00b44BfliSIETbJKugb6MlG3MAOWeFHi2Yl6Aymgr1v5H2l
-	l9ID6PkyrHgxJ9VmvkKgcL5auW5SGKV7RTZ7+gp0bQFtjamjFvFzpTkKiDvstswW
-	oWTBt0fUduLwM2EAGOdX47Ems8iYnpR8iuOyhZsyHCokkV1Ef7QHEjhE8zRXtw07
-	GWYX5VvfcDB9chyeStmR0von84KC3HGklf7MhSe9SoZgsFrRjI5VT6tkMxAeSTpu
-	cOYfCndpMatp20ag1vStkvC07Tjac+AqPdRsP5VYkCsaRqqDJERwAoKcHKY+jfCA
-	K6ZJrIVV/Wbq1TxwRV6dtyOO4w7wEUYZxDfIsQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1745609220; x=
-	1745695620; bh=zQLMxe8QsqJK1fYcw7ILxK9codnxO47hQzxDx+TrHqA=; b=A
-	iBiVfJC1hOq3PO4sHUvypNjjP7dnBZM0JWlh98Elm7ZbCIHKM+yi/tj7AiywtPuk
-	U0j6HGc0XDp47XHwSwfu+80Fb81taYnvTxrf5kPxpp1tcjUfOA8NNOGiuHa23nSI
-	U7LVf9vYXMINyBkHaTOgRxVAJ0gtQHtHVLEBWOnixwYniYW5OXGnBNBxjBNOuZ3Y
-	O+t61RDIGxXNlJ/fUoB/FsdquLMxiqWFu1hoTG0gPzgQ3rrYsXiD74dANjzgTep7
-	jGL2d6BikqT/XEZHy/ysn35Wd6MUu1yH4hTiL5roVWPyXEjhp31XWo9d3pHtrsq9
-	RIxTIvHej/zAJXsYbdGOA==
-X-ME-Sender: <xms:BOILaKjnItOguChcis_NH9sdjmjG0IRPJbLAoZKZ8w5Meo4tPaR2IA>
-    <xme:BOILaLCu08h-rpAfHvIqIAi7-J9akmLvnWWpeeZvKnCR6r9OuBhqr5jFFU34kq8Tj
-    ZrF1js8KaN0uw7mzdk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvheefudejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofgggfgtfffkuffhvfevofhfjgesthhqredt
-    redtjeenucfhrhhomhepfdetrhhthhhurhcuhfgrsghrvgdfuceorghrthhhuhhrsegrrh
-    hthhhurhhfrggsrhgvrdgtohhmqeenucggtffrrghtthgvrhhnpeejfeeiudeijeehtddt
-    leejffetudeuvddvvdeludfhvddtgeefgefhtedtheelueenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhthhhurhesrghrthhhuhhrfhgr
-    sghrvgdrtghomhdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprh
-    gtphhtthhopehjrghkuhgssegtlhhouhgufhhlrghrvgdrtghomhdprhgtphhtthhopehj
-    sghrrghnuggvsghurhhgsegtlhhouhgufhhlrghrvgdrtghomhdprhgtphhtthhopeihrg
-    hnsegtlhhouhgufhhlrghrvgdrtghomhdprhgtphhtthhopegrlhgvgigvihdrshhtrghr
-    ohhvohhithhovhesghhmrghilhdrtghomhdprhgtphhtthhopegvughumhgriigvthesgh
-    hoohhglhgvrdgtohhmpdhrtghpthhtoheprghstheskhgvrhhnvghlrdhorhhgpdhrtghp
-    thhtohephhgrfihksehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhgsrgeskhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtoheplhgsihgrnhgtohhnsehrvgguhhgrthdrtghomh
-X-ME-Proxy: <xmx:BOILaCHZs1KaiUO3lVvxpyfnWLUhv5MQXtbYEd5k9YQALBibOW6tVA>
-    <xmx:BOILaDSF9tik_O7EoX3nszlksHE-Tc9kYLHHBEezsd74YTAHTuZd3A>
-    <xmx:BOILaHwz1_wmmJvpJqUzlTVmu1GtSGx7EskFPVZtOv3s2e3SttxdFQ>
-    <xmx:BOILaB7wGH--88AN6G63iVtBoHVIJPDrNX9fuX0SFwyqm1MYyMdTxg>
-    <xmx:BOILaAu3LAg4pUoQmMzsIRdPwlN1pQ8DXahEMVjwLtZPHSG3MmjUFTiM>
-Feedback-ID: i9179493c:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 140D21F00073; Fri, 25 Apr 2025 15:27:00 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UIQt84MD"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43cfe574976so19158355e9.1
+        for <netdev@vger.kernel.org>; Fri, 25 Apr 2025 12:38:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745609888; x=1746214688; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6BkSRBYFPqQ4IVJKqNFKOBIM1YRhav7ShqS8Cybp0O8=;
+        b=UIQt84MDp5lMB0o0fxKmGGRaLrTnn5yxAB8j2hPk3XhnGj9lzftrX+9ipqFJ75Clza
+         7ffkxH8Zl7bwnnoSLxWcPG21PRlb0h1FgDwOnFN3448yIGZue+sJaA6i6Cb2555Qbx54
+         zXmV68rdpwqghbc2C2MpM+T30fu4keUrkicWf1cGICQvXThQ/g9tElTJtbQv4CGgKVTf
+         h1w62Zvfe4xJMyUcMVpnUMQNEbGrMGLwlH+W5zXM0/+fGVt8xSgm/T8buPIgX02GxfjG
+         CKpAJkLz9wYwpOHXnJ7IlGY0uOftk9b5sEmuvhtmJyihBA93C0pkCogHsFj2HKsBNsWo
+         wlYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745609888; x=1746214688;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6BkSRBYFPqQ4IVJKqNFKOBIM1YRhav7ShqS8Cybp0O8=;
+        b=TElEGttpOeFzVx5qEL+89nHkciFDyVASL77WZdI4JVEAcp4Zrr7CrCyKhpVY5dzL/X
+         aEsWlz96fXwmrrrw7UQRUC9Q+v0HBHxGqe03sNfLjRbRV3d1wK7cfji3MW56l0++lWwH
+         AyZkLQ4OVsJcsB7QmQ/TUW2dUvh8UdVEpuVNky2kNHzUsVP+XbE+zt5FbEGyZiZUcUaw
+         LyN8yrpMdySFizy3E6Lg6YSoS/3fozAqx4lQL/wQppHgXG7TQGRMQs4RWRulNMpAS4nN
+         3OERRc3IR/p2MB6TjQb236oPY3la/1L4Mbavc0Ha4XxAYMH0cm1Nso8RiVGj4o5XU0Gb
+         rP0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWARUkM0GiI7WFVKERisz9bbonS+JL45AiPcKj42X9QD8FQt8Y/wt8Bc3KaWpxGwJNAbs4CzDE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBBihQ2CVjj7+oqn6gc9pauK6mX5ebYTumnN1iuQ5sCwmzyza4
+	0rzlUvRyjZOJmv6t3LWkDNR2cAJqpcshH1BwhBrrYg2aiu686B9r
+X-Gm-Gg: ASbGnct1C5PL5B2KwlcNj7JEstgzNkFj73MPlOF0OsdJy3CsbBEVn9ab9BN2lnW6zxw
+	KZ8H7aSbmFGbnt92/x6jujFH/ojoGh2Xqj7DmOhqH2Z/uo+CabkAdKzgRuVPEAb93Owg8SmyGh6
+	MNWsB/nBARj+7c8i8NEEBI+9L86BmeFxiwkBmHivc8iBTLdcScKBqLCd+Q4IdUMpaBN9KcNs511
+	Wb1Dy+qDV7DW1LR5TT20xYDhrT05FatMRr8EueXUzkHikO0r1KlGjZw+ncHDHUpKcIBL854QuP1
+	pEB0T9I9CdqOe5QFrpZ+VRdBVmfQathdsm6w89YjGRyqdxNwcOi5Kiq7Upapr64GO4QWKXgDhA=
+	=
+X-Google-Smtp-Source: AGHT+IGmvbaocFIwS86jJgsDUPfr0DE039D4IT5wBnyy8hccOWKWWxfSqn5jnKgin/+QlL2kEmy2CA==
+X-Received: by 2002:a05:6000:18ab:b0:39f:e50:af8 with SMTP id ffacd0b85a97d-3a074e23351mr2892567f8f.18.1745609888010;
+        Fri, 25 Apr 2025 12:38:08 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a07a5ed2e0sm516341f8f.39.2025.04.25.12.38.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Apr 2025 12:38:06 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 7549ABE2DE0; Fri, 25 Apr 2025 21:38:05 +0200 (CEST)
+Date: Fri, 25 Apr 2025 21:38:05 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Michal Kubecek <mkubecek@suse.cz>
+Cc: Petter Reinholdtsen <pere@debian.org>, netdev@vger.kernel.org,
+	Robert Scheck <fedora@robert-scheck.de>,
+	AsciiWolf <mail@asciiwolf.com>
+Subject: Re: [mail@asciiwolf.com: Re: ethtool: Incorrect component type in
+ AppStream metainfo causes issues and possible breakages]
+Message-ID: <aAvknd6dv1haJl3A@eldamar.lan>
+References: <p3e5khlw5gcofvjnx7whj7y64bwmjy2t7ogu3xnbhlzw7scbl4@3rceiook7pwu>
+ <CAB-mu-QjxGvBHGzaVmwBpq-0UXALzdSpzcvVQPvyXjFAnxZkqA@mail.gmail.com>
+ <CAB-mu-TgZ5ewRzn45Q5LrGtEKWGhrafP39enmV0DAYvTkU5mwQ@mail.gmail.com>
+ <CAB-mu-QE0v=eUdvu_23gq4ncUpXu20NErH3wkAz9=hAL+rh0zQ@mail.gmail.com>
+ <aAo8q1X882NYUHmk@eldamar.lan>
+ <i6bv6u7bepyqueeagzcpkzonicgupqk47wijpynz24mylvumzq@td444peudd2u>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 25 Apr 2025 21:26:59 +0200
-Message-Id: <D9FYTORERFI7.36F4WG8G3NHGX@arthurfabre.com>
-Subject: Re: [PATCH RFC bpf-next v2 01/17] trait: limited KV store for
- packet metadata
-From: "Arthur Fabre" <arthur@arthurfabre.com>
-To: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-Cc: "Network Development" <netdev@vger.kernel.org>, "bpf"
- <bpf@vger.kernel.org>, "Jakub Sitnicki" <jakub@cloudflare.com>, "Jesper
- Dangaard Brouer" <hawk@kernel.org>, "Yan Zhai" <yan@cloudflare.com>,
- <jbrandeburg@cloudflare.com>, =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?=
- <thoiland@redhat.com>, <lbiancon@redhat.com>, "Alexei Starovoitov"
- <ast@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Eric Dumazet"
- <edumazet@google.com>
-X-Mailer: aerc 0.17.0
-References: <20250422-afabre-traits-010-rfc2-v2-0-92bcc6b146c9@arthurfabre.com> <20250422-afabre-traits-010-rfc2-v2-1-92bcc6b146c9@arthurfabre.com> <CAADnVQJeCC5j4_ss2+G2zjMbAcn=G3JLeAJCBZRC8uzfsVAjMA@mail.gmail.com>
-In-Reply-To: <CAADnVQJeCC5j4_ss2+G2zjMbAcn=G3JLeAJCBZRC8uzfsVAjMA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <i6bv6u7bepyqueeagzcpkzonicgupqk47wijpynz24mylvumzq@td444peudd2u>
 
-On Thu Apr 24, 2025 at 6:22 PM CEST, Alexei Starovoitov wrote:
-> On Tue, Apr 22, 2025 at 6:23=E2=80=AFAM Arthur Fabre <arthur@arthurfabre.=
-com> wrote:
-> >
-> > +/**
-> > + * trait_set() - Set a trait key.
-> > + * @traits: Start of trait store area.
-> > + * @hard_end: Hard limit the trait store can currently grow up against=
-.
-> > + * @key: The key to set.
-> > + * @val: The value to set.
-> > + * @len: The length of the value.
-> > + * @flags: Unused for now. Should be 0.
-> > + *
-> > + * Return:
-> > + * * %0       - Success.
-> > + * * %-EINVAL - Key or length invalid.
-> > + * * %-EBUSY  - Key previously set with different length.
-> > + * * %-ENOSPC - Not enough room left to store value.
-> > + */
-> > +static __always_inline
-> > +int trait_set(void *traits, void *hard_end, u64 key, const void *val, =
-u64 len, u64 flags)
-> > +{
-> > +       if (!__trait_valid_key(key) || !__trait_valid_len(len))
-> > +               return -EINVAL;
-> > +
-> > +       struct __trait_hdr *h =3D (struct __trait_hdr *)traits;
-> > +
-> > +       /* Offset of value of this key. */
-> > +       int off =3D __trait_offset(*h, key);
-> > +
-> > +       if ((h->high & (1ull << key)) || (h->low & (1ull << key))) {
-> > +               /* Key is already set, but with a different length */
-> > +               if (__trait_total_length(__trait_and(*h, (1ull << key))=
-) !=3D len)
-> > +                       return -EBUSY;
-> > +       } else {
-> > +               /* Figure out if we have enough room left: total length=
- of everything now. */
-> > +               if (traits + sizeof(struct __trait_hdr) + __trait_total=
-_length(*h) + len > hard_end)
-> > +                       return -ENOSPC;
->
-> I'm still not excited about having two metadata-s
-> in front of the packet.
-> Why cannot traits use the same metadata space ?
->
-> For trait_set() you already pass hard_end and have to check it
-> at run-time.
-> If you add the same hard_end to trait_get/del the kfuncs will deal
-> with possible corruption of metadata by the program.
-> Transition from xdp to skb will be automatic. The code won't care that tr=
-aits
-> are there. It will just copy all metadata from xdp to skb. Corrupted or n=
-ot.
-> bpf progs in xdp and skb might even use the same kfuncs
-> (or two different sets if the verifier is not smart enough right now).
+Hi Michal,
 
-Good idea, that would solve the corruption problem.
+On Fri, Apr 25, 2025 at 06:46:31PM +0200, Michal Kubecek wrote:
+> On Thu, Apr 24, 2025 at 03:29:15PM +0200, Salvatore Bonaccorso wrote:
+> > Hi Michal,
+> > 
+> > On Fri, Apr 11, 2025 at 10:48:44PM +0200, AsciiWolf wrote:
+> > > Please note that as pointed out in my previous emails, the binary
+> > > provides seems to be required for console-application component type.
+> > > 
+> > > Daniel
+> > > 
+> > > pá 11. 4. 2025 v 22:18 odesílatel AsciiWolf <mail@asciiwolf.com> napsal:
+> > > 
+> > > >
+> > > > Here is the proposed fix. It is validated using appstreamcli validate
+> > > > and should work without issues.
+> > > >
+> > > > --- org.kernel.software.network.ethtool.metainfo.xml_orig
+> > > > 2025-03-31 00:46:03.000000000 +0200
+> > > > +++ org.kernel.software.network.ethtool.metainfo.xml    2025-04-11
+> > > > 22:14:11.634355310 +0200
+> > > > @@ -1,5 +1,5 @@
+> > > >  <?xml version="1.0" encoding="UTF-8"?>
+> > > > -<component type="desktop">
+> > > > +<component type="console-application">
+> > > >    <id>org.kernel.software.network.ethtool</id>
+> > > >    <metadata_license>MIT</metadata_license>
+> > > >    <name>ethtool</name>
+> > > > @@ -11,6 +11,7 @@
+> > > >    </description>
+> > > >    <url type="homepage">https://www.kernel.org/pub/software/network/ethtool/</url>
+> > > >    <provides>
+> > > > +    <binary>ethtool</binary>
+> > > >      <modalias>pci:v*d*sv*sd*bc02sc80i*</modalias>
+> > > >    </provides>
+> > > >  </component>
+> > > >
+> > > > Regards,
+> > > > Daniel Rusek
+> > 
+> > Is there anything else you need from us here? Or are you waiting for
+> > us for a git am'able patch? If Daniel Rusek prefers to not submit one,
+> > I can re-iterate with the required changes my proposal 
+> > https://lore.kernel.org/netdev/20250411141023.14356-2-carnil@debian.org/
+> > with the needed changes.
+> 
+> Yes, please. I'll need a formally submitted patch.
 
-But I think storing metadata at the "end" of the headroom (ie where=20
-XDP metadata is today) makes it harder to persist in the SKB layer.
-Functions like __skb_push() assume that skb_headroom() bytes are
-available just before skb->data.
+Here is the respective patch to apply to the git three with the
+credits hopefully all on the correct spot.
 
-They can be updated to move XDP metadata out of the way, but this
-assumption seems pretty pervasive.
+if you want something changed let me please know.
 
-By using the "front" of the headroom, we can hide that from the rest of
-the SKB code. We could even update skb->head to completely hide the
-space used at the front of the headroom.
-It also avoids the cost of moving the metadata around (but maybe that
-would be insignificant).
+Regards,
+Salvatore
 
-XDP metadata also doesn't work well with GRO (see below).
+From 7daa26e40d0888c13a2346053638408c03376015 Mon Sep 17 00:00:00 2001
+From: Salvatore Bonaccorso <carnil@debian.org>
+Date: Fri, 11 Apr 2025 15:58:55 +0200
+Subject: [PATCH] Set type property to console-application for provided
+ AppStream metainfo XML
 
-> Ideally we add hweight64 as new bpf instructions then maybe
-> we won't need any kernel changes at all.
-> bpf side will do:
-> bpf_xdp_adjust_meta(xdp, -max_offset_for_largest_key);
-> and then
-> trait_set(xdp->data_meta /* pointer to trait header */, xdp->data /*
-> hard end */, ...);
-> can be implemented as bpf prog.
->
-> Same thing for skb progs.
-> netfilter/iptable can use another bpf prog to make decisions.
+As pointed out in the Debian downstream report, as ethtool is a
+command-line tool the XML root myst have the type property set to
+console-application.
 
-There are (at least) two reasons for wanting the kernel to understand the
-format:
+Additionally with the type propety set to desktop, ethtool is user
+uninstallable via GUI (such as GNOME Software or KDE Discover).
 
-* GRO: With an opaque binary blob, the kernel can either forbid GRO when
-  the metadata differs (like XDP metadata today), or keep the entire blob
-  of one of the packets.
-  But maybe some users will want to keep a KV of the first packet, or
-  the last packet, eg for receive timestamps.
-  With a KV store we can have a sane default option for merging the
-  different KV stores, and even add a per KV policy in the future if
-  needed.
+console-application AppStream metainfo XML at least one binary provided
+must be listed in the <binary> tag, thus add the required value along.
 
-* Hardware metadata: metadata exposed from NICs (like the receive
-  timestamp, 4 tuple hash...) is currently only exposed to XDP programs
-  (via kfuncs).
-  But that doesn't expose them to the rest of the stack.
-  Storing them in traits would allow XDP, other BPF programs, and the
-  kernel to access and modify them (for example to into account
-  decapsulating a packet).
+Fixes: 02d505bba6fe ("Add AppStream metainfo XML with modalias documented supported hardware.")
+Reported-by: Daniel Rusek <asciiwolf@seznam.cz>
+Co-Developed-by: Daniel Rusek <asciiwolf@seznam.cz>
+Link: https://bugs.debian.org/1102647
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2359069
+Link: https://freedesktop.org/software/appstream/docs/sect-Metadata-ConsoleApplication.html
+Tested-by: Petter Reinholdtsen <pere@hungry.com>
+Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
+---
+ org.kernel.software.network.ethtool.metainfo.xml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/org.kernel.software.network.ethtool.metainfo.xml b/org.kernel.software.network.ethtool.metainfo.xml
+index efe84c17e4cd..7cfacf223af7 100644
+--- a/org.kernel.software.network.ethtool.metainfo.xml
++++ b/org.kernel.software.network.ethtool.metainfo.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+-<component type="desktop">
++<component type="console-application">
+   <id>org.kernel.software.network.ethtool</id>
+   <metadata_license>MIT</metadata_license>
+   <name>ethtool</name>
+@@ -11,6 +11,7 @@
+   </description>
+   <url type="homepage">https://www.kernel.org/pub/software/network/ethtool/</url>
+   <provides>
++    <binary>ethtool</binary>
+     <modalias>pci:v*d*sv*sd*bc02sc80i*</modalias>
+   </provides>
+ </component>
+-- 
+2.49.0
+
