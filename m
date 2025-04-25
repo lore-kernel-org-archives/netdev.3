@@ -1,147 +1,152 @@
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F191DDE9;
-	Fri, 25 Apr 2025 07:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D80FA29;
+	Fri, 25 Apr 2025 07:35:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745566231; cv=none; b=f4h2aAEVGJJjrt1oL/5exBpHOlbDy7WkP68zSBPVJpXTImTg/OSNAXxfp2QfslazIzND8AnYmmgyKlxTfW4HcpfKv1boOqzihfMI72Uw49oLVvHo/A4AIDlQoxjXBz1IByekC4pdFkaK01LQnS/bstFfCadFEYp4Crm5CFWVrmE=
+	t=1745566511; cv=none; b=s2R9ka18XU5rlUKfXO91KL9llEbTSi9A+zP1r5isgvHp37oyQfYw5v2gqw5RrvLk2XGqjRhxJzZWfO8bOdByPP8HklI+ptIiwnSUFcXMnCVNb54n5aKR2x1KKg2XNImvLcSU8TN36S1n6ok3+4OnyHUx0XD8tptFPywWtFR/3J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745566231; c=relaxed/simple;
-	bh=OWvy44TnOoF2Xr9rCIjsqTfY38fVghdoAqz+8yWzeiE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WDKCxny42WlQ7dxnVveuFQKC+tDYEprcDvbiE+2+O4LVbAbXxzwMxCSl6+upXjYQ7xgW04IUiOdQnAFWnljn5GA7e6kSwZ06BwhPg0LinCoudRthAYqB0ZJq46I1JtY4l8njm93vTAum69/DQ5B/O9vE6PUuE1EtyzYn5rMMDzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lkTD64xk; arc=none smtp.client-ip=209.85.219.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745566511; c=relaxed/simple;
+	bh=NXDMzhuqaItzHEjDVf+ZgFR1PH/wdyRxk4SgLXzkHDQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ErmJEn7AShV9rJJ2pYAUmolSYU/AiS8Cz1YZEqJ5g4L11WBkkteivQHEUUXj12PwSNkRlvDnCZqNPWR/tTmsiuv1gorb87CYu84eZqp9s0Ih+xBSiipEFwYx+wqa2dpwJxfSFfNfmvW7U2DINQATbueItxzb4z8XSZLex2lnZqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=OuVgSLTU; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lkTD64xk"
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e6deb3eb7dbso1614016276.0;
-        Fri, 25 Apr 2025 00:30:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745566228; x=1746171028; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OWvy44TnOoF2Xr9rCIjsqTfY38fVghdoAqz+8yWzeiE=;
-        b=lkTD64xkfmuPvga8IW34AGtw3lZn18u5ZnI+uo6zv/I4IOGRIf93z9JapXKcIgSquz
-         NrnMZCucTowXNzOj3/DWETgXrkiOfRXuHUk7Sfb4MzSKqDmDbCZznFhWMC/41mk4PMWo
-         mfJAJuD7tJg7w9sMnC/jEaPPVYvglAa5QlQng5dFJsdpQxYTu8SySjdC8+F3CTvbK0yu
-         +QCCsRTWFuN26pRpM5kOseQKClHdfn9NgjywO7/YfVM+rwbcLD1aT/2W3cClbTD8WyMm
-         8UtDr0AnD1FEjUyk87grl/dUVkcFDcGx6t1NuVpEfAWTjKaR+TvtWM9bBtXi4xMCSKgG
-         Zt4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745566228; x=1746171028;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OWvy44TnOoF2Xr9rCIjsqTfY38fVghdoAqz+8yWzeiE=;
-        b=rOzNv5ciRJ0IqzywrisJHZUnCdGUzX9vRiJbyp3xsLfbug1Vd0dZzPiYHlpLiAnhl0
-         tNYQJnpL8MQ0+k3Qyt9gDENoSie21FdUMU++qOj2fHF3nroCpsULe+wHxrhsm2BiErWT
-         4bX7KhuEDmxT4A7vsGb1YnVGjvO+UkS+Ebwh79ymvVFR2RXWlxLSk2Py4NOrAkz9q9o6
-         hdrfQxewEmMEVysu3p7Pzo1+7RRKyVJSawaSlIQCfZJfVkkYJTlDA38x3ia4FSANOOGb
-         21VboyirtZGN4GFI5ts6VbcHvtgMdiAwYDknoeHOsLdi31A2pi0we2mjHS0+MZV2KI2J
-         SOUw==
-X-Forwarded-Encrypted: i=1; AJvYcCWFe0YRWO9+bGV6E4x+bV+4W6F7FPj9qYgf2evah6pX5nQghAhU9WsWtFu//l77OwgwBfd1IwmLsatjdt4=@vger.kernel.org, AJvYcCWrveSikYhsPauxXVC5beLK1gGao7iyu3SoGmLcZSSaHEpcRpstyPAuO8nnJEJFsY2SJ2N6it7E@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYCcO63snB+BqoLQvCrHZ8y6h0k1i3raXzRKQz/yk+F6vMAkR6
-	KamAZu4CzakwpZRaCgyBZToEJjXka1AR/nnQnDp1t/BaSeBDrA2zyuuHdKKJ/1DMYlLPxU5d49s
-	X+3qCW8XnVUF1G/HRnSxyUOIfL5Q=
-X-Gm-Gg: ASbGncvPqkS5q0W+cu5FmJVen1RbaqNkOM4u5xygn7OLzZfVXaW1kzR1F7Vss0P9g8M
-	JAso8z4xa65bUAcGu6Li6V4qMs8oii0SFf1m0dH5V/5SY9+e7HNNE5LF3l55hxOPw7epTDSiUfi
-	VwnxJf6TwRpLmzP7iPQJa98/0EB8g7Lg==
-X-Google-Smtp-Source: AGHT+IEWV18KS8MumgZb8OB0QJeoK1Zd+UkrJ95ng4qoBG03B/slgD3wqgI2ekZkNmF7B69VFTKtCzF6mDRYhdO/BTo=
-X-Received: by 2002:a05:6902:2387:b0:e73:930:cc31 with SMTP id
- 3f1490d57ef6-e73165c3e38mr1843193276.13.1745566228645; Fri, 25 Apr 2025
- 00:30:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="OuVgSLTU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1745566506; x=1746171306; i=wahrenst@gmx.net;
+	bh=NXDMzhuqaItzHEjDVf+ZgFR1PH/wdyRxk4SgLXzkHDQ=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=OuVgSLTUEYhGuQsmoTURxhXjQmjpj8p7y+FH62KYAiHahqT4/ZEa0N2ZySWEyAQq
+	 v50nr/2py9CEApi6LaqYSK3Dlkm+5jTCT0oV4Ds2n4JvSgJ7aU4D5wVo8qe28CtUj
+	 Spt+U2UCRNHbNdTM2OY8PxoZjZHuGeUsdvar0kTEbvs0vhIna886HZCoXyD62tEQS
+	 geMUjlKcFNcQypnelcnIp3svBB/vF0O66uXaK+4JcibC24LLN3iFvoSbPKb/LCr/g
+	 n/o/HCyNv+vLcVnDRAeCVxMMHos0w4kY5BKVJ8sQJJ4b+3OMtbXGyeAc+ahJoNJKn
+	 5unCSfB31DaOCoAwaw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.107] ([37.4.251.153]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M4s0j-1u8Uhh2Cal-00HZ7x; Fri, 25
+ Apr 2025 09:35:06 +0200
+Message-ID: <7e261db8-7b3a-4425-93ce-b7bac3746da1@gmx.net>
+Date: Fri, 25 Apr 2025 09:35:04 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250422184913.20155-1-jonas.gorski@gmail.com>
- <cf0d5622-9b35-4a33-8680-2501d61f3cdf@redhat.com> <CAOiHx=mkuvuJOBFjmDRMAeSFByW=AZ=RTTOG6poEu53XGkWHbw@mail.gmail.com>
-In-Reply-To: <CAOiHx=mkuvuJOBFjmDRMAeSFByW=AZ=RTTOG6poEu53XGkWHbw@mail.gmail.com>
-From: Jonas Gorski <jonas.gorski@gmail.com>
-Date: Fri, 25 Apr 2025 09:30:17 +0200
-X-Gm-Features: ATxdqUHGRxEKMxxN2LzsQ4XQH9Vmxm-WedPheRLmBBKrtF9mIxhxgkLohyWfgjw
-Message-ID: <CAOiHx=m6Dqo4r9eaSSHDy5Zo8RxBY4DpE-qNeZXTjQRDAZMmaA@mail.gmail.com>
-Subject: Re: [PATCH net] net: dsa: fix VLAN 0 filter imbalance when toggling filtering
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Florian Fainelli <f.fainelli@gmail.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/5] net: vertexcom: mse102x: Fix possible stuck of
+ SPI interrupt
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, netdev@vger.kernel.org, devicetree@vger.kernel.org
+References: <20250423074553.8585-1-wahrenst@gmx.net>
+ <20250423074553.8585-2-wahrenst@gmx.net> <20250424181828.5d38001f@kernel.org>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+Autocrypt: addr=wahrenst@gmx.net; keydata=
+ xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
+ IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
+ NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
+ JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
+ TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
+ f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
+ V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
+ aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
+In-Reply-To: <20250424181828.5d38001f@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:tVlU/3meqyPYXQAO8i99zAJp+CxOy0p6mpe5wHTqo3xrs3/0C2T
+ v0MucHglZ5KjI0Je2v5mWlIX+j1vtESN7ODdSe5YDGYC4a3ZW5dOXvqk/B4MfD2Ba4NuPTo
+ OcSi6OrH0j0IP4PUbhacngV9bzMglFBFpoRGQbeKz8X/Ol42sKjvaRmC7MQsTm3WSHl3sft
+ UR1sDbpsK/JQIoKz9TyCQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:ON+3jz9YBOo=;6QORVE+LuOKnt0CtxO5Wor0tc8j
+ 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
 
-On Thu, Apr 24, 2025 at 11:50=E2=80=AFAM Jonas Gorski <jonas.gorski@gmail.c=
-om> wrote:
->
-> Hi,
->
-> On Thu, Apr 24, 2025 at 11:15=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> =
-wrote:
-> >
-> >
-> >
-> > On 4/22/25 8:49 PM, Jonas Gorski wrote:
-> > > When a net device has NETIF_F_HW_VLAN_CTAG_FILTER set, the 8021q code
-> > > will add VLAN 0 when enabling the device, and remove it on disabling =
-it
-> > > again.
-> > >
-> > > But since we are changing NETIF_F_HW_VLAN_CTAG_FILTER during runtime =
-in
-> > > dsa_user_manage_vlan_filtering(), user ports that are already enabled
-> > > may end up with no VLAN 0 configured, or VLAN 0 left configured.
-> >
-> > Why this is a problem specifically for dsa and not a generic one? other=
-s
-> > devices allow flipping the NETIF_F_HW_VLAN_CTAG_FILTER feature at runti=
-me.
-> >
-> > AFAICS dsa_user_manage_vlan_filtering() is currently missing a call to
-> > netdev_update_features(), why is that not sufficient nor necessary?
->
-> Good point, I missed that (looked for something like this, but
-> obviously didn't look hard enough). But checking the flow of it in the
-> kernel ...
->
-> netdev_update_features() for NETIF_F_HW_VLAN_CTAG_FILTER triggers a
-> NETDEV_CVLAN_FILTER_PUSH_INFO notification, which would then trigger
-> vlan_filter_push_vids(), which then calls vlan_add_rx_filter_info()
-> for all configured vlans.
->
-> This is more or less identical to what dsa does with its
-> vlan_for_each(user, dsa_user_restore_vlan, user); call.
->
-> And AFAICT it also has the same issue I am trying to fix here, that it
-> does not install a VLAN 0 filter for devices that are already up,
-> which it would have if the device had NETIF_F_HW_VLAN_CTAG_FILTER set
-> when was the device was enabled (and vice versa on on down/remove).
->
-> So I guess the course of action for a V2 is fixing this in the core
-> vlan code and make vlan_filter_push_vids() / vlan_filter_drop_vids()
-> take care of the VLAN 0 filter as well, and then make dsa use
-> netdev_update_features() to simplify the code as well.
->
-> Does that sound reasonable?
+Hi Jakub,
 
-After looking into it a bit more, netdev_update_features() does not
-relay any success or failure, so there is no way for DSA to know if it
-succeded or not. And there are places where we temporarily want to
-undo all configured vlans, which makes it hard to do via
-netdev_update_features().
+Am 25.04.25 um 03:18 schrieb Jakub Kicinski:
+> On Wed, 23 Apr 2025 09:45:49 +0200 Stefan Wahren wrote:
+>> The MSE102x doesn't provide any SPI commands for interrupt handling.
+>> So in case the interrupt fired before the driver requests the IRQ,
+>> the interrupt will never fire again. In order to fix this always poll
+>> for pending packets after opening the interface.
+> Wouldn't this cause invalid_rts or some other error counter
+> to increment every time the user opens the device?
+you are right, this would increase the invalid_cmd counter.
 
-Not sure anymore if this is a good way forward, especially if it is
-just meant to fix a corner case. @Vladimir, what do you think?
+I'm missed to mention in the cover letter, that this series is only the=20
+first part of two patch series. The first one only contains fixes, which=
+=20
+should be backported. The second one contains improvement, which can go=20
+to net-next.
 
-I'd probably rather go forward with the current fix (+ apply it as
-well for the vlan core code), and do the conversion to
-netdev_update_features() at later time, since I see potential for
-unexpected breakage.
+Regarding the invalid_cmd there is already a patch in my backlog, but I=20
+didn't consider this as a real fix:
 
-Best regards,
-Jonas
+net: vertexcom: mse102x: drop invalid cmd stats
+
+Since the SPI implementation on the MSE102x MCU is in software, it=20
+cannot reply to SPI commands in busy state. So drop the scaring=20
+statistics about "invalid" command replies.
+
+https://github.com/chargebyte/linux/commit/9f8a69e5c0d6c4482e89d7b86f72069=
+b89a94547
+
+Should I add it as a fix?
+
+Regards
