@@ -1,70 +1,41 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093B026AC3
-	for <netdev@vger.kernel.org>; Fri, 25 Apr 2025 04:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3B13596A;
+	Fri, 25 Apr 2025 04:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745555331; cv=none; b=eLSM+dX5NTor0Gq7cAd4X8FWHnQP70Pb6MzKf1CkHVqoiwN6G2X2Ns4ARwy76/2LU5u/sO0f7tDh2SyAZIW2aTUc0OFT+SL70pBbStEnoM9oQ8NEbYquyBAddYrDIejlhB/VncEbeaOeNiDJQvNRTUNa0Im27xi5NnY2zDXGqFs=
+	t=1745555425; cv=none; b=G0LwWNmqEj16+BbRMTTxz0Jpfl//L91BHsOIYhzYbiqqjX3kqd7MTUAFc59JnW55oH5+m9/sE3t+XMkONvGbGcU++kdUwCX2mp4nuMIWr+oSPOUaBR15/RNDsXIN/Jcf/W1cFiDNrbksK5S6aEVTzkx7KEVc/hK5kFZ0+UPQI2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745555331; c=relaxed/simple;
-	bh=mUwKmpSiftDQFWb84758vCTbsmaHpPDT/l2BtxaPHOg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JZgsdOKkKYtjGpB8NxXWnGOz57RlirA3gXgcMIt/fE6fFJhWQHXnvlQVayVdcC7XV/Cm5aXusA1spGnja0fgqAbXcIyNVTFGAM0Wek4NurW4zz2t9Usx+DfPWq7yNDRw8gbSeyRjWfh6JtscqqWtNOUnIVhoaTU6DRyIS5GNc5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YVBozJmW; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YVBozJmW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745555330; x=1777091330;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=mUwKmpSiftDQFWb84758vCTbsmaHpPDT/l2BtxaPHOg=;
-  b=YVBozJmWSdJCo+OQpYAX5qai9zSp+wz6Xur7DWSsxmU6zlpmTItg2DeX
-   jNX+PBlFohesfr48NlTciSdsmQaC2QJKRm5tBE/xT0ZnGpNj3UvHZUZk0
-   Q0HrxFiPkr2NKek6+Flcxd5I6W0uwZ1m8IjQLrG2z6yMGovRHWkVL/vk7
-   12sJIg1hexvv8drzLzMcEZ/OfMkcqA24qzTsO6n44O3DibgTjyuKKoZ1J
-   ndXOJ1eYaQueQLuTN3y/yFrP15DhzeKZgWzE6r6z+b6e6B/l6V0DrgQgz
-   eTto3zUfEUwglThXWveEJwyZhtYpQ776EN442R4ANkAGnK7YzMRuDIVKF
-   A==;
-X-CSE-ConnectionGUID: VSfJIh2rSm2wrwKAt8d7ig==
-X-CSE-MsgGUID: k6X37O0DRU2aHVjpkB8ObQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="47082752"
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="47082752"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 21:28:49 -0700
-X-CSE-ConnectionGUID: dslbe/EER86DCVEyRxP2tA==
-X-CSE-MsgGUID: RAwXs4lSTYm05Q/7sOH+Qw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="137799898"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 21:28:46 -0700
-Date: Fri, 25 Apr 2025 06:28:26 +0200
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	s=arc-20240116; t=1745555425; c=relaxed/simple;
+	bh=kDx0pLQY7WRn2W3g10RIxdAuMEnnZVNPamr/Cy9aYZ4=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=i36gzPrEFCxRO+zT8Rf8T1H2n45gQsQEY8h7ySVxXcAck1An/EZJSE43XD6a9W7+pExLRkUx9+ZCOE0Go0vEskekNhk6rneJZOtmdnNmJBjYPnHMG9BZ91u0ICuwtsQscU0zDDfBHtJ1nZLDVVMcmIc8ykpwr6PndOqiJEIxTig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.98.2)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1u8Abe-000000006IQ-1KFU;
+	Fri, 25 Apr 2025 04:30:01 +0000
+Date: Fri, 25 Apr 2025 05:29:53 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
-	marcin.szycik@intel.com
-Subject: Re: [PATCH v2 net-next 2/3] pfcp: Convert pfcp_net_exit() to
- ->exit_rtnl().
-Message-ID: <aAsPamW5qmCp+O3e@mev-dev.igk.intel.com>
-References: <20250418003259.48017-1-kuniyu@amazon.com>
- <20250418003259.48017-3-kuniyu@amazon.com>
- <20250422194757.67ba67d6@kernel.org>
- <aAimsamTlQOq3/aD@mev-dev.igk.intel.com>
- <20250423063350.49025e5e@kernel.org>
- <aAnAxEXgyyhfgHWw@mev-dev.igk.intel.com>
- <20250424152638.5915c020@kernel.org>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Daniel Golle <daniel@makrotopia.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH net] net: ethernet: mtk_eth_soc: sync mtk_clks_source_name
+ array
+Message-ID: <d075e706ff1cebc07f9ec666736d0b32782fd487.1745555321.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,35 +44,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250424152638.5915c020@kernel.org>
 
-On Thu, Apr 24, 2025 at 03:26:38PM -0700, Jakub Kicinski wrote:
-> On Thu, 24 Apr 2025 06:40:36 +0200 Michal Swiatkowski wrote:
-> > > > Uh, I remember that we used it to add tc filter. Maybe we can fix it?  
-> > > 
-> > > If it really was broken for over a year and nobody noticed -
-> > > my preference would be to delete it. I don't think you need
-> > > an actual tunnel dev to add TC filters?  
-> > 
-> > Our approach was to follow scheme from exsisting ones.
-> > For example, vxlan filter:
-> > tc filter add dev vxlan ingress protocol ip ...
-> > PFCP filter:
-> > tc filter add dev pfcp ingress protocol ip ...
-> > 
-> > so in this case we need sth to point and pass the information that this
-> > tunnel is PFCP. If you have an idea how to do it without actual tunnel
-> > we are willing to implement it. AFAIR simple matching on specific port
-> > number isn't good solution as tunnel specific fields can't be passed in
-> > such scenario.
-> 
-> You're right, not sure what I was thinking.. probably about 
-> the offloaded flow.
-> 
-> Could you please fix this and provide a selftests for offloaded 
-> and non-offloaded operation? To make sure this code is exercised?
+When removing the clock bits for clocks which aren't used by the
+Ethernet driver their names should also have been removed from the
+mtk_clks_source_name array.
 
-Sure, I will do that. I am going for a two week vacation from today, so it
-can take some time for v1.
+Remove them now as enum mtk_clks_map needs to match the
+mtk_clks_source_name array so the driver can make sure that all required
+clocks are present and correctly name missing clocks.
 
-Thanks
+Fixes: 887b1d1adb2e ("net: ethernet: mtk_eth_soc: drop clocks unused by Ethernet driver")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+---
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 47807b202310..83068925c589 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -269,12 +269,8 @@ static const char * const mtk_clks_source_name[] = {
+ 	"ethwarp_wocpu2",
+ 	"ethwarp_wocpu1",
+ 	"ethwarp_wocpu0",
+-	"top_usxgmii0_sel",
+-	"top_usxgmii1_sel",
+ 	"top_sgm0_sel",
+ 	"top_sgm1_sel",
+-	"top_xfi_phy0_xtal_sel",
+-	"top_xfi_phy1_xtal_sel",
+ 	"top_eth_gmii_sel",
+ 	"top_eth_refck_50m_sel",
+ 	"top_eth_sys_200m_sel",
+-- 
+2.49.0
+
