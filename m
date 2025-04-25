@@ -1,48 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFD3219FC;
-	Fri, 25 Apr 2025 01:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B071BA29
+	for <netdev@vger.kernel.org>; Fri, 25 Apr 2025 01:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745544892; cv=none; b=aQNKiwQ9g+yd/OeCM3dMOoocArR2KHAQAFLPf0YwDO5Mg397JVzdufU/0qPv8wwQfqLADWpUFymXknXB7qc2lL+dNoOQJJiA2EdjIvwEj2X2zPuOIpRIauCtPpjOJ4kkE+0NNXuAkR1yJFnjYhnUllPQSRFbUtLfGyEGJwSG/k8=
+	t=1745544996; cv=none; b=tK/UI6ibZkFLmv6THJ5ljz3Dd2KQp5xsg8zKzKffFxcUgUXJ6iKDlNOg99CfBI8EokiB+dzQYigyBiBgondtRIJdA4XIuW2mK0xqKyzbWuo3m2iRzdFqHY0Z7JE5Wm2yi9cBC0yu423S193hH+VFB2UhYqb2CYVmMb3mhBqpQS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745544892; c=relaxed/simple;
-	bh=oOaYkaS/qZ/j69534YB4WXg9JzG1tuS4cM2YUrZRMcY=;
+	s=arc-20240116; t=1745544996; c=relaxed/simple;
+	bh=3k9hDQLsnP9h/bGwcs5dTU1K+K9VW9JMJKPxKZKK2hQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gsw5MonGdLZtQkTcaqULYczauGi+BscO+aTfNlaMve//+rxCXI67799WOEGkHm7Dl9qe5xrfNQgCENxqgm+0RBUmoIogE0aV/l3C7wj8uHXXiozPbB6wt+1moAPMV/nbEqUJEcViUpyIY2/PmK0BF9LK5NS7zHXyFaDcTCAwVHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rzZWW9FK; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=amTrrBPWr8y0fUqZRzBTvCfdhgpLzZVCPsyi0nPtncIxgVThO5v5ZeP1EOfuTRf5HCmp/02aVgic59vhyL7qZUgVC9FnWbpJlp7X8JQhSP011RhNtLPXM40yFqMpwWEvy9Vai7Rq2Si5ROLE++GugZ+ucq8IiFy5DkAzt79NnIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IBqeljDn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rzZWW9FK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016D5C4CEE3;
-	Fri, 25 Apr 2025 01:34:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IBqeljDn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39EDC4CEE3;
+	Fri, 25 Apr 2025 01:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745544891;
-	bh=oOaYkaS/qZ/j69534YB4WXg9JzG1tuS4cM2YUrZRMcY=;
+	s=k20201202; t=1745544996;
+	bh=3k9hDQLsnP9h/bGwcs5dTU1K+K9VW9JMJKPxKZKK2hQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rzZWW9FK50e+W99VufmV7I98NPvW/oafB2wEa01eq+9zbPbrqr9x69iW0lLSg8VPM
-	 jBiV8e3KSZaPIQY/ZR1LhwuQp0f+GzoKX7XGtxbYslOvAKs53iF2MG3O5EMgnlqB4J
-	 l/WxzqHzBt0/KAaSu2mqKB7G4c90VVOhVQQnsmGqHeq6RIWDiHUpoB/iUSpwbSlPsw
-	 ISrQJJryQo/LOZt5iN0lazaXA1I5+WVIjqCJr8y0kNATq6MwSvnGDUeiiJMVVTeugM
-	 7sdgH2GgUwQ7bsCoRpDtdnEj9MB8gYZIcXIke1J9TvB0/KufQDujgvE0gyI7uSNou+
-	 WYVEXrs7Tda4Q==
-Date: Thu, 24 Apr 2025 18:34:50 -0700
+	b=IBqeljDn63LP0xwCEG0gqdrO+zbmitzJj1qsfDBGpLfYsjf0twkmC3zKrta2wjMpT
+	 AEPoqSXrFNwYnF0JOpc89ZbzKvGefYaK5hcyG4Q7gou8QBvEckNUSGGVD1l19zDpiC
+	 7GKOEu+59MQTDZ4WKoFvyslxpYFtg/dNW9+ZSDj+EGfF6B1FauRvR+OjDhuTAwYfFJ
+	 GXqkVox7lt4EfU/K+09kvA9ktS03RutF9G72Ngyn+14BVcdqFcFYXQa8kaR5BXe5r0
+	 1clKDFEE23KhJS4zwyl8xFfgjFGaodweVurY7pa19iHFp/T7xEpqFWBSNgvdITdK7Q
+	 /KCtsO2aeFINw==
+Date: Thu, 24 Apr 2025 18:36:34 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: virtualization@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer
- <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Eugenio
- =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH v5 0/3] virtio-net: disable delayed refill when pausing
- rx
-Message-ID: <20250424183450.28f5d5fb@kernel.org>
-In-Reply-To: <20250424104716.40453-1-minhquangbui99@gmail.com>
-References: <20250424104716.40453-1-minhquangbui99@gmail.com>
+To: Shankari02 <shankari.ak0208@gmail.com>
+Cc: netdev@vger.kernel.org, allison.henderson@oracle.com,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, skhan@linuxfoundation.org
+Subject: Re: [PATCH] net: rds: Replace strncpy with strscpy in connection
+ setup
+Message-ID: <20250424183634.02c51156@kernel.org>
+In-Reply-To: <20250423153730.69812-1-shankari.ak0208@gmail.com>
+References: <20250423153730.69812-1-shankari.ak0208@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,13 +46,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 24 Apr 2025 17:47:13 +0700 Bui Quang Minh wrote:
-> This only includes the selftest for virtio-net deadlock bug. The fix
-> commit has been applied already.
+On Wed, 23 Apr 2025 21:07:30 +0530 Shankari02 wrote:
+> This patch replaces strncpy() with strscpy(), which is the
+> preferred, safer alternative. strscpy() guarantees null-termination
+> as long as the destination buffer is non-zero in size, and also
+> provides a return value that can be used to detect truncation.
+> 
+> This change is made in accordance with the Linux kernel
+> documentation which marks strncpy() as deprecated for bounded
+> string copying:
 
-This conflicts with Joe's series slightly: 
-https://lore.kernel.org/all/20250424002746.16891-1-jdamato@fastly.com/
-Could you rebase on latest net-next and perhaps follow the comment 
-I left on v4 ? 
+You need to explain why padding is not necessary.
+
+Please use full name in the Author / From line, like you used in the
+Sign-off tag.
 -- 
 pw-bot: cr
