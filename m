@@ -1,127 +1,164 @@
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C728B248176;
-	Fri, 25 Apr 2025 12:28:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660E75695;
+	Fri, 25 Apr 2025 12:31:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745584138; cv=none; b=IQirjfiLjW5l8l1z+G/pJRsDJjDOvOMt0NWzjga1USjOHBdCLQ3H0c+Z/9e+gWDx/h+CHu/qs8KjUPnVvP4MxDhQtxVlPgjOMR7fE7mUgHidWgp8F+W13M9srFcgaK12VQtIb0DjdoRCLH09uQwO4FvW1W4vdIM4SeR4PIbX1l0=
+	t=1745584286; cv=none; b=oEnB4kRELxHxQc1i35dYPxocLRc0hZ32tlbU203Bl1zPdkeZ3dpbkRng9BHeQx1T2GMgc7foAvuWUpbfVXThP1kQU02Bb2VyaBFcHpeO5mjJzxytoSdbhXjRSXUUVZjOkeE1Vch9RpxUmt1XGLBeze04f3D8JOkfbUwaosVmt74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745584138; c=relaxed/simple;
-	bh=5t7yNPr1CWOau0RMYcrRFsXe9MPaeyzZjGY5BgZV1o4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l75oOdqMA721OVWix1TkWWHc47L2zNT4uPyR/HV4P1KaMVd3IY+6ZAT48kUbyTZLRanpV/w+sSERzbi4dMClq3ZLd8GLE3sQAuF5uSIMF+9Mm9y4XUhVgfycJrSNIscdMUOhHWRFksnOsexiPykNT+SP7nZJVflCGd2oFNb/vQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=dQLZS1vH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=n9Yspg5x; arc=none smtp.client-ip=202.12.124.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1745584286; c=relaxed/simple;
+	bh=mXLsFPPFsBURdJfhP1NKqrNjYJ5DFZkpY6MJs2kdvkQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LyIGMMsOxOFLN3MsOg24OVo4da9935aiJtuN89tGpjynQgS6HeLwBiwYDaPqVo09K+pwevfDh+oGSylQb0XJnsb+inzZfySDrxk278sQJYpOcdeNqt0ZzMHlagLf7RWgk+/0PSJbTsPhYPbRAQlly/mBxp4qGJiug+7tx0O0ccs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=C4KGDrKS; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="dQLZS1vH";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="n9Yspg5x"
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfout.stl.internal (Postfix) with ESMTP id 76B3D114021B;
-	Fri, 25 Apr 2025 08:28:53 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Fri, 25 Apr 2025 08:28:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1745584133; x=
-	1745670533; bh=oDNpPryBrsrLI6MNT652iy7u9ZryJF8wQVHOnmOUp+k=; b=d
-	QLZS1vHt7XLg7laxQNs3/RSjp2nYQx2mnXx61t4OGwllZ2Yk1qGJb2IrDw1LlhIN
-	nwzrGSD2LxB+pDkOxUKrppjFqtHvYzMWPN0VXHScOfh7L5VXWUAGa9nlNDoKm9uK
-	/xPjCvnNu9zwVwu268/FYsOdS/h1J/QOo7Gjw/JNAPmTX453++t21Hn+94mXZuNI
-	1fPywjoctp8apcCcNQ8pTAWepIrpit/LFpG9kR49XRdbSQpVgLa1ZngkxRYI07J3
-	Mmfqvowwz8LxXp2J06/Uoh9Drclbsn749kjx9OZgGnlgN0Ico0Wrl/j/tS2HJcyo
-	l6AJHuPvDnNihSt+U9vEw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1745584133; x=1745670533; bh=oDNpPryBrsrLI6MNT652iy7u9ZryJF8wQVH
-	OnmOUp+k=; b=n9Yspg5xZCHkbVLlFEM7+UfoJiUJLX6/+6E3pB6Xyfcxef89b4b
-	/19hzcDppt3Oh0582KczHBgO5sb8G+e4DP83k7KshsNZ51K9Tvg5O+gw8dRhvfrv
-	MCUOGeXa67ZlAp2oIuFXoQTsKdfAE6N/sYeVY6sruLfubmlWvEcGA0D4aLbIXTiN
-	Kzt72b8nrE9mwqemVsLD8ZZBQn8JeGjO+eYo0Et/Bo3ANzYgCqsXj+i7gpdUrv37
-	saRJ9fkIBSJ5lUdIi9Nm+Mxi5R2aBq1oupUQHrbNeau2HgEQgrGApGnciD/ZAyni
-	qkJ8IgcnxsEgV5vWvWaZQjAXYllHvH3JItA==
-X-ME-Sender: <xms:BIALaBwbI7RNIZkzSUkRqcF85j_JdkpB3AoGf95xIZEBHEukpWIPcg>
-    <xme:BIALaBTPE8uTm3KMrreJFpdrRGn1jwWnOftSVWsQBYSF52rrVmu0S5Sh255EoLm9_
-    QYYm-oFz4svhZpFaXU>
-X-ME-Received: <xmr:BIALaLV7S3lw3nKMDYt44ugtBzMjG8qkD8u6OfJNd7RGnR4icilx01iecleA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvhedvfeegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtrodttddt
-    jeenucfhrhhomhepufgrsghrihhnrgcuffhusghrohgtrgcuoehsugesqhhuvggrshihsh
-    hnrghilhdrnhgvtheqnecuggftrfgrthhtvghrnhepjeekleevleekfefgueehveejueek
-    vdehvdeugedvkeelgefhleegieevffdtuedunecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhn
-    sggprhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohephhgvrh
-    gsvghrthesghhonhguohhrrdgrphgrnhgrrdhorhhgrdgruhdprhgtphhtthhopehlihhn
-    uhigqdgtrhihphhtohesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehrih
-    gthhgrrhgusehnohgurdgrthdprhgtphhtthhopegthhgvnhhgiihhihhhrghoudeshhhu
-    rgifvghirdgtohhmpdhrtghpthhtoheplhhinhhugidqmhhtugeslhhishhtshdrihhnfh
-    hrrgguvggrugdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtohepphgrvhgvlhesuhgtfidrtgiipdhrtghpthhtoheplhhinhhugidqph
-    hmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtvghffhgvnhdrkhhl
-    rghsshgvrhhtsehsvggtuhhnvghtrdgtohhm
-X-ME-Proxy: <xmx:BIALaDi2B7zCD1xIfS789Vp3Zl0ypkFSvqJIl-8By3nbbu5P5m-frg>
-    <xmx:BIALaDCq4sTkjFppwq-q_GGh3p_n4BYrxCYASJhM18McRJx-5UgMIA>
-    <xmx:BIALaMIykH5GVHTlYxktpiQyupiQobkz4UHdkomjPKwmTqsMpX1low>
-    <xmx:BIALaCB6deqlUAKFo3DHVX-0ixnnUqO6_mMpdkeaqJ8-2_pct678fw>
-    <xmx:BYALaJIvyXovcrkjbdwJKw4DsG-aXUoG53dlaE-zhb-I9gLORb42TQHu>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 25 Apr 2025 08:28:51 -0400 (EDT)
-Date: Fri, 25 Apr 2025 14:28:49 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-	Richard Weinberger <richard@nod.at>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	linux-mtd@lists.infradead.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Pavel Machek <pavel@ucw.cz>, linux-pm@vger.kernel.org,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	netdev@vger.kernel.org
-Subject: Re: [v5 PATCH 11/14] xfrm: ipcomp: Use crypto_acomp interface
-Message-ID: <aAuAAVOvfcTeZJbY@krikkit>
-References: <cover.1742034499.git.herbert@gondor.apana.org.au>
- <d7bccafdf38259c2b820be79763f66bfaad1497e.1742034499.git.herbert@gondor.apana.org.au>
- <aAt8AIiFWZZwgCyj@krikkit>
- <aAt-GiUloeLEfu7O@gondor.apana.org.au>
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="C4KGDrKS"
+X-UUID: 2a9111a821d111f0980a8d1746092496-20250425
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=LpBRKr0cZRLIHevWTWQoGj/eG6iewYGfCh3UgiIk+eI=;
+	b=C4KGDrKS4flHPBO+C4QXwXugUsg206q+m0BOmMLAQ2fjYM3qnnUfLaZTqwKy8x+RTuRm9Tgy1gQSZYU1UFAd6u627xNLCueQo5vX5pSSAWjUhk4PLSFZw6U/a8+S2eUkaNCOVnLPhwGMNOSagnkBuA8eNXSKF0bj3KwsWfJElqg=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.2.1,REQID:8af11324-b437-4099-9298-e2c2df9d859a,IP:0,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-25
+X-CID-META: VersionHash:0ef645f,CLOUDID:4f689ef0-ff26-40e8-a637-f0e9524b171a,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 2a9111a821d111f0980a8d1746092496-20250425
+Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw01.mediatek.com
+	(envelope-from <shiming.cheng@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1819063952; Fri, 25 Apr 2025 20:31:09 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.39; Fri, 25 Apr 2025 20:31:08 +0800
+Received: from mbjsdccf07.gcn.mediatek.inc (10.15.20.246) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.39 via Frontend Transport; Fri, 25 Apr 2025 20:31:07 +0800
+From: Shiming Cheng <shiming.cheng@mediatek.com>
+To: <edumazet@google.com>, <davem@davemloft.net>, <dsahern@kernel.org>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
+	<matthias.bgg@gmail.com>, <angelogioacchino.delregno@collabora.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>
+CC: <shiming.cheng@mediatek.com>, Jibin Zhang <jibin.zhang@mediatek.com>
+Subject: [PATCH v2] net: use inet_twsk_put() when sk_state is TCP_TIME_WAIT
+Date: Fri, 25 Apr 2025 20:33:48 +0800
+Message-ID: <20250425123354.29254-1-shiming.cheng@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aAt-GiUloeLEfu7O@gondor.apana.org.au>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 
-2025-04-25, 20:20:42 +0800, Herbert Xu wrote:
-> On Fri, Apr 25, 2025 at 02:11:44PM +0200, Sabrina Dubroca wrote:
-> >
-> > The splat goes away with
-> > 
-> >  	/* Only update truesize on input. */
-> >  	if (!hlen)
-> > -		skb->truesize += dlen - plen;
-> > +		skb->truesize += dlen;
-> >  	skb->data_len = dlen;
-> >  	skb->len += dlen;
-> > 
-> > pskb_trim_unique ends up calling skb_condense, which seems to adjust
-> > the truesize to account for all frags being dropped.
-> > 
-> > Does that look like the right fix to you?
-> 
-> You're right.  I must've missed the truesize update in skb_condense
-> when writing this.
+From: Jibin Zhang <jibin.zhang@mediatek.com>
 
-Ok, I'll submit the patch in a bit. Thanks.
+It is possible for a pointer of type struct inet_timewait_sock to be
+returned from the functions __inet_lookup_established() and
+__inet6_lookup_established(). This can cause a crash when the
+returned pointer is of type struct inet_timewait_sock and
+sock_put() is called on it. The following is a crash call stack that
+shows sk->sk_wmem_alloc being accessed in sk_free() during the call to
+sock_put() on a struct inet_timewait_sock pointer. To avoid this issue,
+use inet_twsk_put() instead of sock_put() when sk->sk_state
+is TCP_TIME_WAIT.
 
+mrdump.ko        ipanic() + 120
+vmlinux          notifier_call_chain(nr_to_call=-1, nr_calls=0) + 132
+vmlinux          atomic_notifier_call_chain(val=0) + 56
+vmlinux          panic() + 344
+vmlinux          add_taint() + 164
+vmlinux          end_report() + 136
+vmlinux          kasan_report(size=0) + 236
+vmlinux          report_tag_fault() + 16
+vmlinux          do_tag_recovery() + 16
+vmlinux          __do_kernel_fault() + 88
+vmlinux          do_bad_area() + 28
+vmlinux          do_tag_check_fault() + 60
+vmlinux          do_mem_abort() + 80
+vmlinux          el1_abort() + 56
+vmlinux          el1h_64_sync_handler() + 124
+vmlinux        > 0xFFFFFFC080011294()
+vmlinux          __lse_atomic_fetch_add_release(v=0xF2FFFF82A896087C)
+vmlinux          __lse_atomic_fetch_sub_release(v=0xF2FFFF82A896087C)
+vmlinux          arch_atomic_fetch_sub_release(i=1, v=0xF2FFFF82A896087C)
++ 8
+vmlinux          raw_atomic_fetch_sub_release(i=1, v=0xF2FFFF82A896087C)
++ 8
+vmlinux          atomic_fetch_sub_release(i=1, v=0xF2FFFF82A896087C) + 8
+vmlinux          __refcount_sub_and_test(i=1, r=0xF2FFFF82A896087C,
+oldp=0) + 8
+vmlinux          __refcount_dec_and_test(r=0xF2FFFF82A896087C, oldp=0) + 8
+vmlinux          refcount_dec_and_test(r=0xF2FFFF82A896087C) + 8
+vmlinux          sk_free(sk=0xF2FFFF82A8960700) + 28
+vmlinux          sock_put() + 48
+vmlinux          tcp6_check_fraglist_gro() + 236
+vmlinux          tcp6_gro_receive() + 624
+vmlinux          ipv6_gro_receive() + 912
+vmlinux          dev_gro_receive() + 1116
+vmlinux          napi_gro_receive() + 196
+ccmni.ko         ccmni_rx_callback() + 208
+ccmni.ko         ccmni_queue_recv_skb() + 388
+ccci_dpmaif.ko   dpmaif_rxq_push_thread() + 1088
+vmlinux          kthread() + 268
+vmlinux          0xFFFFFFC08001F30C()
+
+Signed-off-by: Jibin Zhang <jibin.zhang@mediatek.com>
+---
+ net/ipv4/tcp_offload.c   | 8 ++++++--
+ net/ipv6/tcpv6_offload.c | 8 ++++++--
+ 2 files changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index 2308665b51c5..95d7cbf6a2b5 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -431,8 +431,12 @@ static void tcp4_check_fraglist_gro(struct list_head *head, struct sk_buff *skb,
+ 				       iph->daddr, ntohs(th->dest),
+ 				       iif, sdif);
+ 	NAPI_GRO_CB(skb)->is_flist = !sk;
+-	if (sk)
+-		sock_put(sk);
++	if (sk) {
++		if (sk->sk_state == TCP_TIME_WAIT)
++			inet_twsk_put(inet_twsk(sk));
++		else
++			sock_put(sk);
++	}
+ }
+ 
+ INDIRECT_CALLABLE_SCOPE
+diff --git a/net/ipv6/tcpv6_offload.c b/net/ipv6/tcpv6_offload.c
+index a45bf17cb2a1..5fcfa45b6f46 100644
+--- a/net/ipv6/tcpv6_offload.c
++++ b/net/ipv6/tcpv6_offload.c
+@@ -41,8 +41,12 @@ static void tcp6_check_fraglist_gro(struct list_head *head, struct sk_buff *skb,
+ 					&hdr->daddr, ntohs(th->dest),
+ 					iif, sdif);
+ 	NAPI_GRO_CB(skb)->is_flist = !sk;
+-	if (sk)
+-		sock_put(sk);
++	if (sk) {
++		if (sk->sk_state == TCP_TIME_WAIT)
++			inet_twsk_put(inet_twsk(sk));
++		else
++			sock_put(sk);
++	}
+ #endif /* IS_ENABLED(CONFIG_IPV6) */
+ }
+ 
 -- 
-Sabrina
+2.45.2
+
