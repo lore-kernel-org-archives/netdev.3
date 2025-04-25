@@ -1,167 +1,182 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E6C242D60
-	for <netdev@vger.kernel.org>; Fri, 25 Apr 2025 12:33:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6831A08AF;
+	Fri, 25 Apr 2025 12:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745584429; cv=none; b=qBAloD3b7NiWGJ1lGX8RTS+IrRqMUZi/zhtd/V73n16uLHC8cTq16lhb2ePpgvPd+DQo+lHLSTt6uQaiKGWU7IDS3HyM8CB12fCE2P2Jz86f+hTsMMAGn1b5WVnBO+x0ZTfKW4M7oeXWrz48K6Ueq4/sCrI1geFMkbHtypAM7ds=
+	t=1745584812; cv=none; b=Lp99Fr6N58qtykFSqTriaGzgrKUzyBqV56V3PUa+UpqI079hdUb16VX2KFnKMbsFUiaA+/9aG+qtAUVKHWAnCSpByzbT9g6ru2jfxkDjzv08IZk5QEmmjl8fsobHQiyoZ6p7fgLZVivyjUQC7arIvQf5KWUtcolXR3oB4jdeb9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745584429; c=relaxed/simple;
-	bh=tQiTl86FEuO5UgYuomByyvi5w9Hmntw7EaR1CWYauKg=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:To; b=YD8CMzKD/CZr6ZgTyDfY3x5oh5g6hCMF1NxwnwbvY8YPtdrCNF/pEZwfwc9NFoTa/kaEik0e1vcsoJquJC7RKxec98zUN9Gn1o3Og+YBCqvumm6aA68tm3iEjLoWGDKiq4QNIyyhw6GxfjGJKWM4XQBdX8sKss7xNQ/jYRKhvPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=avride.ai; spf=none smtp.mailfrom=avride.ai; dkim=pass (2048-bit key) header.d=avride-ai.20230601.gappssmtp.com header.i=@avride-ai.20230601.gappssmtp.com header.b=n8NIp3Rt; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=avride.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=avride.ai
+	s=arc-20240116; t=1745584812; c=relaxed/simple;
+	bh=l84s3l24uJI5BzEC5TFI3p7j+TPKs82FoLLx2xJ4JbU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=EVWEn6Q4KvdyqYS04x5OBpayRLTPszUaJDjV/Dk2hBIL3v14hdfg5zbZvVkiL/9CalVxy5rNnZdeUltiIowRCU+NDqNs1XSDl8rtpqjIX2izOCoY/zeUeVfAjy94ILbEYTUqlF8p/8c/j8qr/+xgz76h+yshC0McFD15fpQRCkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JyL5agEl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=avride-ai.20230601.gappssmtp.com header.i=@avride-ai.20230601.gappssmtp.com header.b="n8NIp3Rt"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-39c30d9085aso1608899f8f.1
-        for <netdev@vger.kernel.org>; Fri, 25 Apr 2025 05:33:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=avride-ai.20230601.gappssmtp.com; s=20230601; t=1745584425; x=1746189225; darn=vger.kernel.org;
-        h=to:date:message-id:subject:mime-version:content-transfer-encoding
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yntU4EniIC3f4h3SJqk8e0Y5d89MUpTfrJEc3h0DwPg=;
-        b=n8NIp3RtaxRSPhznbjqt3okMg5XBZYxPOPDthnGlHDUgb6WHvQhdPL1U4fNGcfwIxM
-         ZFC8r1F3Dqi5xuh1fTjWg5mH5MtBBPNjlSNy5Eyf+v22636urX8qSpu5inyhHRYCei4G
-         aW4uu7myOaZD5cPjmeq5UNkvTnRooUpS01suyscA3CShtcf1FgXwQMl4H+/CZX0/Z6i7
-         UfyyWCMwKpc2JMUGDwi5j5Bj1XwaO9ysWj/zP1NgAGSqzK7J+oOAegG1RJwspJSqlOHT
-         M1pYkdBUufp5WQZrn6qda7C+Sge8awSWpoc1ox10lXub0gUKGyCGWXtFXahqMPc+bJIZ
-         1JWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745584425; x=1746189225;
-        h=to:date:message-id:subject:mime-version:content-transfer-encoding
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yntU4EniIC3f4h3SJqk8e0Y5d89MUpTfrJEc3h0DwPg=;
-        b=j6AzhqlMWvV+ulr6Sq58tchojZyOiXJRCBzbbas9rupfV6AcyN6TK6dNcaMnpo9Kxg
-         6I2whbQNpX795a2qQh6rQD59YAqU7+6KLFnwPYGuilACoO9MPV/ziyOt6StQ/5Y17ovg
-         VXwyUdt7yFcGsTjj3vdJ/tUQtYDyTl6UArDaWC1L3AA1A30mPHKwFgV9p7lpXyljFCcb
-         QHhWiT05ZetVAB+i0ehfZziDMN2iZVQjkhmYB2pbvd+wX+mAo0WhgDLc16/kQ4BJKRDK
-         B1j7z88ZLW1g4kgqKGj9Quk2I//I1JNMKYXHI56TiaCKy8M1yce8mmHjJgcXiQvg8+8/
-         DczQ==
-X-Gm-Message-State: AOJu0YxhB0xrJ06go0h9+wucPJGvJs8mfyP5J/qLnYBzOG0vQ1kfj5Gm
-	lefM71aP5jFjlzNFji0DhzDlh55qBe7UIQxWSh7sDMlGXQj3gnbLfJ6Qba2ZJfo3912mZO2R84Y
-	9GiM=
-X-Gm-Gg: ASbGncsopIPBknNc0bNwu3QynCXlOTN60qNMg5NvgA1tt5oyzKq+7xmWLdns+bFjqyy
-	uqkuLOPTp98Qe8Xo4xWvTGy5wBi0H7CYd7eQ0+XWgyAEzudLVvb0ziqykAwrNblP3EmUhsa/Q5V
-	t3S4dp0QfgGnhqAzcNlLiZN0jWTwrIdxIAut9JSrgc+oK84w4GHYyBplZKeipMKdNoGa/wb2EB7
-	SPyXB39NCcFGzRQBT8xp0P3jWUgxuonkJCV72X2D0AUwk5CAqHHc/A5N5SJ9LU+HNJws26m26Tz
-	Go1p1J3S645e0mQueiriTHxuGEHCMtAgR6OUiICELDIA5Q0bvYiRW10RB5fEsCGz0wZZrA==
-X-Google-Smtp-Source: AGHT+IE8ax6S19eZtBWnOqc/2avNz/0bVbmMzwBWPw2GA5x/PwSj+C2zecdCnOz8WETDsB+ttPzEPg==
-X-Received: by 2002:a5d:59ae:0:b0:39a:ca05:5232 with SMTP id ffacd0b85a97d-3a074e0ef10mr1729900f8f.5.1745584424611;
-        Fri, 25 Apr 2025 05:33:44 -0700 (PDT)
-Received: from smtpclient.apple ([2a02:14a:105:a03:f827:4b18:cd52:f8b4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a073e5e345sm2244398f8f.94.2025.04.25.05.33.43
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 25 Apr 2025 05:33:44 -0700 (PDT)
-From: Kamil Zaripov <zaripov-kamil@avride.ai>
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JyL5agEl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8D6C4CEE4;
+	Fri, 25 Apr 2025 12:40:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745584812;
+	bh=l84s3l24uJI5BzEC5TFI3p7j+TPKs82FoLLx2xJ4JbU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=JyL5agElbeBnCcwz6w8h2KndS1ujz8iKQH4r5yLeyerwV06Almzrm9danbCc84rMQ
+	 K6GrHnXjPAQLbHrjFD/SE2ezKhxcpcihsKo0WlyKf02s71d6xKVBZ04eztuTAdSnhO
+	 aDpFRhkgdalnXKXR7H9HXRq2Tvm9yLFei84mHlXAGFAHAdE0w5E9/+rwdmn4VADIK5
+	 b6bcv2YRiwSma8xkXbsRTLP5RiKI4TFyAF6o4KnXfPoSBHOQiYSBPT9mTpApStFOSE
+	 QIxtnLmTwSdpPus0cXxZttlZpU62uonju8wrAMk4gx9u54azfpawI76TRvChQYwlke
+	 /xYgt9fPJGgXw==
+Message-ID: <9580167080271af15ef6f1f9d9baa586539bc34e.camel@kernel.org>
+Subject: Re: [PATCH v4 7/7] net: register debugfs file for net_device refcnt
+ tracker
+From: Jeff Layton <jlayton@kernel.org>
+To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Morton <akpm@linux-foundation.org>,
+  "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>,
+ Qasim Ijaz <qasdev00@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Date: Fri, 25 Apr 2025 08:40:09 -0400
+In-Reply-To: <CANn89iJn53KF8CG4Q8D97sFy0hhkLrgWbFwHfJb8-w2DudZdZw@mail.gmail.com>
+References: <20250418-reftrack-dbgfs-v4-0-5ca5c7899544@kernel.org>
+	 <20250418-reftrack-dbgfs-v4-7-5ca5c7899544@kernel.org>
+	 <20250423165323.270642e3@kernel.org>
+	 <a07cd1c64b16b074d8e1ec2e8c06d31f4f27d5e5.camel@kernel.org>
+	 <20250423173231.5c61af5b@kernel.org>
+	 <cdfc5c6f260ee1f81b8bb0402488bb97dd4351bb.camel@kernel.org>
+	 <4118dbd6-2b4b-42c3-9d1e-2b533fc92a66@lunn.ch>
+	 <20250424155238.7d0d2a29@kernel.org>
+	 <CANn89iJn53KF8CG4Q8D97sFy0hhkLrgWbFwHfJb8-w2DudZdZw@mail.gmail.com>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=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
+ QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: bnxt_en: Invalid data read from SFP EEPROM
-Message-Id: <ED8A7112-D31F-4C4F-94AB-0F0D0DD5DDE6@avride.ai>
-Date: Fri, 25 Apr 2025 15:33:33 +0300
-To: Linux Netdev List <netdev@vger.kernel.org>
-X-Mailer: Apple Mail (2.3774.600.62)
+MIME-Version: 1.0
 
-Hi all,
+On Thu, 2025-04-24 at 16:07 -0700, Eric Dumazet wrote:
+> On Thu, Apr 24, 2025 at 3:52=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> =
+wrote:
+>=20
+> > But with all that said, I guess you still want the "meaningful" ID for
+> > the netns, and that one is in fact stable :S
+>=20
+> We could add a stable id for net devices, and use it for this purpose
+>=20
+> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+> index 0321fd952f70887735ac789d72f72948a3879832..339d09167eaf7f58fc877fa47=
+0c94175237ce534
+> 100644
+> --- a/include/linux/netdevice.h
+> +++ b/include/linux/netdevice.h
+> @@ -2544,6 +2544,8 @@ struct net_device {
+>=20
+>         struct hwtstamp_provider __rcu  *hwprov;
+>=20
+> +       u64                     permanent_id;
+> +
+>         u8                      priv[] ____cacheline_aligned
+>                                        __counted_by(priv_len);
+>  } ____cacheline_aligned;
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index d1a8cad0c99c47996e8bda44bf220266a5e51102..9d2d45e0246fab99ad3e75238=
+85224bd114fa686
+> 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -10954,6 +10954,9 @@ int register_netdevice(struct net_device *dev)
+>  {
+>         int ret;
+>         struct net *net =3D dev_net(dev);
+> +       static atomic64_t permanent_id;
+> +
+> +       dev->permanent_id =3D atomic64_inc_return(&permanent_id);
+>=20
+>         BUILD_BUG_ON(sizeof(netdev_features_t) * BITS_PER_BYTE <
+>                      NETDEV_FEATURE_COUNT);
 
-I=E2=80=99m seeing corrupted EEPROM data when reading an Intel =
-E10GSFPSRX SFP module plugged into a Broadcom BCM57502 NIC (bnxt_en =
-driver). The same module gives correct EEPROM content when connected to =
-Intel E810 (ice driver) or connected directly to the CPU through I2C =
-controller. So probably the issue is specific to BCM57502 + bnxt_en + =
-firmware combination.
+That would give us uniqueness, but the name doesn't mean anything and
+it wouldn't be trivial to track down which ref_tracker/netdev-* file
+refers to which device.
 
-Output below shows corrupted dump vs correct dump:
-
-# BCM57502 + bnxt_en (corrupted)
-$ sudo ethtool -m enP2s1f1np1 hex on
-Offset		Values
-------		------
-0x0000:		03 00 f3 00 58 00 f8 00 90 88 71 48 8c a0 75 30
-0x0010:		19 64 07 d0 18 6a 09 c4 27 10 09 d0 1f 07 0c 5a
-0x0020:		27 10 00 64 1f 07 00 9e 00 00 00 00 00 00 00 00
-0x0030:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x0040:		00 00 00 00 3f 80 00 00 00 00 00 00 01 00 00 00
-0x0050:		01 00 00 00 01 00 00 00 01 00 00 00 00 00 00 a3
-0x0060:		1f 94 83 f9 0b d5 16 81 00 15 00 00 00 00 32 00
-0x0070:		00 40 00 00 00 40 00 00 ff ff ff ff ff ff ff 01
-0x0080:		5d 01 01 01 01 01 03 04 07 10 00 00 00 00 00 00
-0x0090:		00 06 67 00 00 00 08 03 00 1e 46 49 4e 49 53 41
-0x00a0:		52 20 43 4f 52 50 2e 20 20 20 00 00 90 65 46 54
-0x00b0:		4c 58 38 35 37 31 44 33 42 43 4c 20 20 20 41 20
-0x00c0:		00 20 03 52 00 48 00 1a 00 00 41 50 4b 31 45 48
-0x00d0:		30 20 20 20 20 20 20 20 20 20 31 33 30 35 31 34
-0x00e0:		20 20 68 f0 03 cd 00 00 00 00 00 00 00 00 00 00
-0x00f0:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-
-# E810 + ice (correct)
-$ sudo ethtool -m ens102f0np0 hex on
-Offset		Values
-------		------
-0x0000:		03 04 07 10 00 00 00 00 00 00 00 06 67 00 00 00
-0x0010:		08 03 00 1e 49 6e 74 65 6c 20 43 6f 72 70 20 20
-0x0020:		20 20 20 20 00 00 1b 21 46 54 4c 58 38 35 37 34
-0x0030:		44 33 42 4e 4c 2d 49 54 41 20 20 20 03 52 00 89
-0x0040:		00 1a 00 00 41 34 31 41 53 59 4b 20 20 20 20 20
-0x0050:		20 20 20 20 32 30 30 37 30 36 20 20 68 f0 05 e4
-0x0060:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x0070:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x0080:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x0090:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x00a0:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x00b0:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x00c0:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x00d0:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x00e0:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x00f0:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x0100:		5d 00 f3 00 58 00 f8 00 90 88 71 48 8c a0 75 30
-0x0110:		19 64 07 d0 18 6a 09 c4 27 10 09 d0 1f 07 0c 5a
-0x0120:		27 10 00 64 1f 07 00 9e 00 00 00 00 00 00 00 00
-0x0130:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x0140:		00 00 00 00 3f 80 00 00 00 00 00 00 01 00 00 00
-0x0150:		01 00 00 00 01 00 00 00 01 00 00 00 00 00 00 a3
-0x0160:		23 56 85 e0 10 f8 16 94 00 15 00 00 00 00 32 00
-0x0170:		00 40 00 00 00 40 01 00 ff ff ff ff ff ff ff 01
-0x0180:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x0190:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x01a0:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x01b0:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x01c0:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x01d0:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x01e0:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0x01f0:		00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-
-Problems with the BCM57502 + bnxt_en output:
-- Bytes 0x14-0x23 should contain [49 6e 74 65 6c 20 43 6f 72 70 20 20 20 =
-20 20 20] (ASCII string =E2=80=9CIntel Corp       =E2=80=9C), but =
-instead contains [18 6a 09 c4 27 10 09 d0 1f 07 0c 5a 27 10 00 64] which =
-is not valid ASCII string.
-- Diagnostic part (0x0100-x01f0) is missing, probably because 0x5c byte =
-in first part is 0x00.
-- Bytes 0x001-0x05f in BCM57502 + bnxt_en output is the same as bytes =
-0x101-0x15f from Intel E810 + ice output.
-- Other bytes look like garbage, but this garbage persists between =
-request, different SFP modules and different ports where modules =
-inserted.
-
-Given all that facts probably there is an issue between bnxt_en driver =
-and BCM57502 firmware in I2C commands propagation interface.
-
-Is there someone who can help me to find out where is the issue? The =
-only bug that I find in code is that bnxt_read_sfp_module_eeprom_info do =
-not fill bank_number field of the struct hwrm_port_phy_i2c_read_input, =
-but it is not relevant for my case.
-
-Kamil.
-
-
-
+If we're going to go that route, we're probably better off just
+embedding the address in the name using a "netdev@%px" format.
+--=20
+Jeff Layton <jlayton@kernel.org>
