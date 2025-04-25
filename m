@@ -1,143 +1,154 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E1D34CF5
-	for <netdev@vger.kernel.org>; Fri, 25 Apr 2025 07:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E79D10FD;
+	Fri, 25 Apr 2025 07:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745566054; cv=none; b=o0y+1xEPoyFaWPxIJdjJNLD8YYfDp1v3zQwLA3UGmlljKE8+VIzc0UUrmR3jHJ7OnXbRyqyUiw/wslTxE+NZ/Em7YuBqWM/emig86dQt1tV98OWm8T2u0KCK1MGMucyqxBDywJPkguiSSfGb3dE28DKq7rqOibgf47sqZGv5FA8=
+	t=1745566137; cv=none; b=OwnJi1haBNPB+KuQmdlGPux96dppWk4PQQAAgr1atdNfoYrPQbCi1LjSDvWFhqdjne8kBrO7RPe98t18RmBdImQthByJdT0DZo1oqrWWjy4thADSyUq8VYNWjtViyaYJCyVnecfzH1KYJJ1jKmR0etV0KGGRn7e0QYW1UGI/oDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745566054; c=relaxed/simple;
-	bh=3xso4MRl8H4lblLpPr2RV5VaEdRg7Vpw3ViA1nJtwY8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gl8dv6AWjCUNNle7Ne1Xq1b9m0kXWv0qkPl2BcHRTDgz3qE7g4tn+/6iSZdWYs7LQb/vas2vMyJgq92BAPldzTvKjU5PWAHm/cWNVqNomN4UIOav/T/i4kC5hZWXx8bOG8Qo2/FAl+LqSkXnaIiTe3YoAPNJ0CvlUKse4Y2aTOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=vXKK/f19; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1745566137; c=relaxed/simple;
+	bh=OffDbqTBVes6nVtKvc2+GvuunHqk86fjhIel2nXw05w=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HNFGB/KAMedPuDGI5wjHrRHAmlWOPvGsnDRn6KA/eUQMfkteoNRKaGytmGgkYNgRSphw/0X4TySWsSP2Kb3MUTFpEE5dKgQxlR7vgx3gYyTLKL7zG0l1C05pACmImNb6ov6lSm44j3GZ7MY4Y3Zpxe/qn9Zli9OeGc/43GWgp0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=SevJ/7Vu; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="vXKK/f19"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43ce70f9afbso15335545e9.0
-        for <netdev@vger.kernel.org>; Fri, 25 Apr 2025 00:27:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1745566050; x=1746170850; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=TGFoUQDq04rKNiRk8IE621ZcnwHxGE4vxpM8LZEMwsM=;
-        b=vXKK/f19pt8vW/NQGzbnuC+QKp32wRTWjPNGlbmXXx/mYunGvzXbh2CanvEul0gAfY
-         cYdyTPlty7hxy3hxuVn1/ylG4iPnqBWj9VCzlpVEtziVfvjJJzuCTrWqpSFTV8KX1cpQ
-         h1uOu49XfUR2DDqaMYnqPrqdECdZ6E0lShBRvKAnIkfIBhGYfQqTm/Oor0O6alv0gez3
-         WvvhU50JcGdH9nLK3TWSfWhCrvE7SnszGuWsLz/VPQ2RIGthiFU15SL7FKqhyb5d5eVF
-         P7uIaBOZm71YyZ6QWhJ+EGPkwT3l8Z5+E9+bfUwNuHxse/4HTVgqw8WYQ7dJwTpZ4zww
-         a6PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745566050; x=1746170850;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TGFoUQDq04rKNiRk8IE621ZcnwHxGE4vxpM8LZEMwsM=;
-        b=hotrdSoHQcXQlbWZvvELBjAAm2u4+YyYtKX/t3Y+mbeyp9xwXDXo6Ty1UY5TDWZfM2
-         iX8yVtPoVzQIscbMN5d/I5SWb6UNLTRZj9W2ZVXtCuvIPk+BwU+dux57RQwW/nlWpU0g
-         /gE+7Wv+icxeCbecVbm+jhxI3+e4leJ9XNiUj1LAL8XPYguYtf3yBL39X1+D39acEa6S
-         n54V7FuUXdRH/AXuESg834F6s4VeUTYVBXOC1jlQXS81b3cgqNkTtqj52/c1Xlshc1A8
-         gg3RvCA8bKl/wQf3SLmz9GClzk8LRztqTUuMHYUT8iGecSUp75LMdQEfNGNiSylbQg+6
-         IVUA==
-X-Gm-Message-State: AOJu0Yx2C4+EfbTygC7xYzFYST0L450gUNBiMbxafhcU0nnbZ8/pboZs
-	HF+lq/LKTukc7pU/+uKY65Fdlg+naZthtrEAPwYf8CCV4B1QfN5erMBrCowj+ug=
-X-Gm-Gg: ASbGnctHEZMU4PVDdT1JigyjD3fo0z3ffnakhFSCSLz4JRXgoYf6bTn8lX1DGp1IMZu
-	7WByHrVX0TafTbhFuxrHHyMfmt7q0f9jlg3+DQ8BAnRREgVtTNwMVeXcC5aFU1MddidXKzoY8/f
-	I9i6A73Xsugnj4Z0X03XRDKGRTtp6xvk0jGZdwaKJMcNjijpKNyKdmumIqt+f7DpjiwIJnh6xF6
-	WYDFNqBvsJSMM3sg/MGEX0kWbzFKtamOgd2mDVeh7OTXcWjASU0ggZEfHEX1cbGmFlf94qMxv3b
-	+vO1GMwUw9RIFgqm7UrL+UbibKZ3Ze9VDp1bCGfh3M+zuI1D
-X-Google-Smtp-Source: AGHT+IHs7o1e1KYOiRqNq70mqcnxnwWyiDPaOI2zEMleHx9AmzWD66gcz75taZCBbgJM3rDSNBl74Q==
-X-Received: by 2002:a05:600c:5028:b0:43c:fda5:41e9 with SMTP id 5b1f17b1804b1-440a66b6f63mr11691875e9.31.1745566048971;
-        Fri, 25 Apr 2025 00:27:28 -0700 (PDT)
-Received: from jiri-mlt ([193.47.165.251])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-440a5369cc1sm14751045e9.32.2025.04.25.00.27.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Apr 2025 00:27:28 -0700 (PDT)
-Date: Fri, 25 Apr 2025 09:27:19 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	pabeni@redhat.com, tariqt@nvidia.com, andrew+netdev@lunn.ch, horms@kernel.org, 
-	donald.hunter@gmail.com, kalesh-anakkur.purayil@broadcom.com
-Subject: Re: [PATCH net-next v3 2/3] devlink: add function unique identifier
- to devlink dev info
-Message-ID: <kxyjur2elo3h2jkajuckkqg3fklnkmdewhch2npqnti6mylw6f@snsjaotsbdy2>
-References: <20250416214133.10582-3-jiri@resnulli.us>
- <20250417183822.4c72fc8e@kernel.org>
- <o47ap7uhadqrsxpo5uxwv5r2x5uk5zvqrlz36lczake4yvlsat@xx2wmz6rlohi>
- <20250418172015.7176c3c0@kernel.org>
- <5abwoi3oh3jy7y65kybk42stfeu3a7bx4smx4bc5iueivusflj@qkttnjzlqzbl>
- <20250422080238.00cbc3dc@kernel.org>
- <25ibrzwenjiuull524o42b4ch5mg7am2mhw5y2f5gb6d6qp5gt@ghgzmi7pd2rw>
- <20250423151745.0b5a8e77@kernel.org>
- <3kjuqbqtgfvklja3hmz55uh3pmlzruynih3lfainmnwzsog4hz@x7x74s2c36vx>
- <20250424150629.7fbf2d3b@kernel.org>
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="SevJ/7Vu"
+X-UUID: e8cba82021a611f09b6713c7f6bde12e-20250425
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=JYqespCzipBArbkbxwYqmmhBdhSBu5Sof0tluCzWjzo=;
+	b=SevJ/7VuOaCdLQhWKJDTlAsQ25Lq34Kp9PokzmhNpcW7MFfLs96ybN+UhzvvZLWCXcShBNh6gXu0wIn+EH/Do9/f250FIdRkJGuQ7XTURxFIzxfdDxndy/MtdXy01W7od7p7d4sFFtuFRijypwYln9g9lRX4LIZJjjkfqHYH7Tg=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.2.1,REQID:bd336e9d-80d5-4a59-a328-206cda895afe,IP:0,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-25
+X-CID-META: VersionHash:0ef645f,CLOUDID:502c0907-829c-41bc-b3dd-83387f72f90e,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: e8cba82021a611f09b6713c7f6bde12e-20250425
+Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw02.mediatek.com
+	(envelope-from <shiming.cheng@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1674504371; Fri, 25 Apr 2025 15:28:40 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.39; Fri, 25 Apr 2025 15:28:39 +0800
+Received: from mbjsdccf07.gcn.mediatek.inc (10.15.20.246) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.39 via Frontend Transport; Fri, 25 Apr 2025 15:28:38 +0800
+From: Shiming Cheng <shiming.cheng@mediatek.com>
+To: <edumazet@google.com>, <davem@davemloft.net>, <dsahern@kernel.org>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
+	<matthias.bgg@gmail.com>, <angelogioacchino.delregno@collabora.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>
+CC: Jibin Zhang <jibin.zhang@mediatek.com>
+Subject: [PATCH] net: call inet_twsk_put() on TIMEWAIT sockets It is possible for a pointer of type struct inet_timewait_sock to be returned from the functions __inet_lookup_established() and __inet6_lookup_established(). This can cause a crash when the returned pointer is of type struct inet_timewait_sock and sock_put() is called on it. The following is a crash call stack that shows sk->sk_wmem_alloc being accessed in sk_free() during the call to sock_put() on a struct inet_timewait_sock pointer. To avoid this issue, use inet_twsk_put() instead of sock_put() when sk->sk_state is TCP_TIME_WAIT.
+Date: Fri, 25 Apr 2025 15:31:13 +0800
+Message-ID: <20250425073120.28195-1-shiming.cheng@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250424150629.7fbf2d3b@kernel.org>
+Content-Type: text/plain
+X-MTK: N
 
-Fri, Apr 25, 2025 at 12:06:29AM +0200, kuba@kernel.org wrote:
->On Thu, 24 Apr 2025 11:42:09 +0200 Jiri Pirko wrote:
->> This you see on the PF that is managing the eswitch. This devlink port
->> is a representor of another PF, let's call it PFx. PFx may or may not be
->> on a different host. It's a link from PF managed eswitch to PFx.
->> 
->> So you have 2 PFs that are in hierarchy (one is on downlink of another),
->> each on different host.
->> 
->> To find out how these 2 are connected together, you need to know some
->> identification, on both sides. On PF side, that is port.function.uid the
->> patchset mentioned above introduces. On PFx, the same value is listed
->> under devlink info, which is what my patch we are discussing here is
->> adding.
->
->Still not clear, sorry, can you show a diagram?
->"Downsteam" makes me think the NIC device itself is a PCIe switch?
+From: Jibin Zhang <jibin.zhang@mediatek.com>
 
-No, in theory, the PF can manage a nested eswitch. That is not the case
-atm if I'm not mistaken for any device.
+mrdump.ko        ipanic() + 120
+vmlinux          notifier_call_chain(nr_to_call=-1, nr_calls=0) + 132
+vmlinux          atomic_notifier_call_chain(val=0) + 56
+vmlinux          panic() + 344
+vmlinux          add_taint() + 164
+vmlinux          end_report() + 136
+vmlinux          kasan_report(size=0) + 236
+vmlinux          report_tag_fault() + 16
+vmlinux          do_tag_recovery() + 16
+vmlinux          __do_kernel_fault() + 88
+vmlinux          do_bad_area() + 28
+vmlinux          do_tag_check_fault() + 60
+vmlinux          do_mem_abort() + 80
+vmlinux          el1_abort() + 56
+vmlinux          el1h_64_sync_handler() + 124
+vmlinux        > 0xFFFFFFC080011294()
+vmlinux          __lse_atomic_fetch_add_release(v=0xF2FFFF82A896087C)
+vmlinux          __lse_atomic_fetch_sub_release(v=0xF2FFFF82A896087C)
+vmlinux          arch_atomic_fetch_sub_release(i=1, v=0xF2FFFF82A896087C)
++ 8
+vmlinux          raw_atomic_fetch_sub_release(i=1, v=0xF2FFFF82A896087C)
++ 8
+vmlinux          atomic_fetch_sub_release(i=1, v=0xF2FFFF82A896087C) + 8
+vmlinux          __refcount_sub_and_test(i=1, r=0xF2FFFF82A896087C,
+oldp=0) + 8
+vmlinux          __refcount_dec_and_test(r=0xF2FFFF82A896087C, oldp=0) + 8
+vmlinux          refcount_dec_and_test(r=0xF2FFFF82A896087C) + 8
+vmlinux          sk_free(sk=0xF2FFFF82A8960700) + 28
+vmlinux          sock_put() + 48
+vmlinux          tcp6_check_fraglist_gro() + 236
+vmlinux          tcp6_gro_receive() + 624
+vmlinux          ipv6_gro_receive() + 912
+vmlinux          dev_gro_receive() + 1116
+vmlinux          napi_gro_receive() + 196
+ccmni.ko         ccmni_rx_callback() + 208
+ccmni.ko         ccmni_queue_recv_skb() + 388
+ccci_dpmaif.ko   dpmaif_rxq_push_thread() + 1088
+vmlinux          kthread() + 268
+vmlinux          0xFFFFFFC08001F30C()
 
-Here's the diagram:
+Signed-off-by: Jibin Zhang <jibin.zhang@mediatek.com>
+---
+ net/ipv4/tcp_offload.c   | 8 ++++++--
+ net/ipv6/tcpv6_offload.c | 8 ++++++--
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
-               ┌──────────────────────────────────────────────────┐     ┌────────────────────────────────────────────────┐
-               │                 host A (DPU)                     │     │  host B (host)                                 │
-               │                                                  │     │                                                │
-      ┌────────┼──────────────────────────────────────────────────┼─────┼──────────────────────────────────────────────┐ │
-      │        │                                                  │     │                                              │ │
-      │ NIC    │   ┌──────────────────────────────────────────┐   │     │                                              │ │
-      │        │   │               PF0_devlink  info_fuid:A   │   │     │  ┌──────────────────────────────────┐        │ │
-──────┼────────┼───┼─phys_dl_port                             │   │     │  │        PFx_devlink  info_fuid:C  │        │ │
-      │        │   │                            PFx_dl_port───┼───┼─────┼──┼─virt_dl_port                     │        │ │
-      │        │   │                              fuid:C      │   │     │  │                                  │        │ │
-      │        │   │                                          │   │     │  └──────────────────────────────────┘        │ │
-      │        │   │                            VFx1_dl_port──┼───┼──┐  │  ┌──────────────────────────────────┐        │ │
-      │        │   │                              fuid:D      │   │  │  │  │       VFx1_devlink  info_fuid:D  │        │ │
-      │        │   └──────────────────────────────────────────┘   │  └──┼──┼─virt_dl_port                     │        │ │
-      │        │   ┌──────────────────────────────────────────┐   │     │  │                                  │        │ │
-      │        │   │               PF1_devlink  info_fuid:B   │   │     │  └──────────────────────────────────┘        │ │
-──────┼────────┼───┼─phys_dl_port                             │   │     │                                              │ │
-      │        │   │                                          │   │     │                                              │ │
-      │        │   └──────────────────────────────────────────┘   │     │                                              │ │
-      └────────┼──────────────────────────────────────────────────┼─────┼──────────────────────────────────────────────┘ │
-               │                                                  │     │                                                │
-               └──────────────────────────────────────────────────┘     └────────────────────────────────────────────────┘
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index 2308665b51c5..95d7cbf6a2b5 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -431,8 +431,12 @@ static void tcp4_check_fraglist_gro(struct list_head *head, struct sk_buff *skb,
+ 				       iph->daddr, ntohs(th->dest),
+ 				       iif, sdif);
+ 	NAPI_GRO_CB(skb)->is_flist = !sk;
+-	if (sk)
+-		sock_put(sk);
++	if (sk) {
++		if (sk->sk_state == TCP_TIME_WAIT)
++			inet_twsk_put(inet_twsk(sk));
++		else
++			sock_put(sk);
++	}
+ }
+ 
+ INDIRECT_CALLABLE_SCOPE
+diff --git a/net/ipv6/tcpv6_offload.c b/net/ipv6/tcpv6_offload.c
+index a45bf17cb2a1..5fcfa45b6f46 100644
+--- a/net/ipv6/tcpv6_offload.c
++++ b/net/ipv6/tcpv6_offload.c
+@@ -41,8 +41,12 @@ static void tcp6_check_fraglist_gro(struct list_head *head, struct sk_buff *skb,
+ 					&hdr->daddr, ntohs(th->dest),
+ 					iif, sdif);
+ 	NAPI_GRO_CB(skb)->is_flist = !sk;
+-	if (sk)
+-		sock_put(sk);
++	if (sk) {
++		if (sk->sk_state == TCP_TIME_WAIT)
++			inet_twsk_put(inet_twsk(sk));
++		else
++			sock_put(sk);
++	}
+ #endif /* IS_ENABLED(CONFIG_IPV6) */
+ }
+ 
+-- 
+2.46.0
 
-
-
-info_fuid is the devlink info function.uid I'm introducing.
-the "fuid" under port is the port function uid attr from the RFC
-patchset.
-
-Is it clearer now? Should I extend the diagram by something you miss?
-
-Thanks!
