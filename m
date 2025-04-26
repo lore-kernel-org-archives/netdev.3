@@ -1,50 +1,95 @@
-Received: from nbd.name (nbd.name [46.4.11.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAC919CC0A;
-	Sat, 26 Apr 2025 15:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CFE8488;
+	Sat, 26 Apr 2025 16:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745682776; cv=none; b=DIpVi9y4BF4+VzIJO4SSDabNJlSM1TfxOeI6i4Q1GpPi5Ml+Kayx+J2V0nWOdXj/gxdYbV40pnb4aOX2s8erGpCwNEkomox2hHogR8wOKgMCKMO9o4opeL5o4sfNhRWpuSqu5BS/uyI8Pw68hKnsCQJqlrU32KNtUDQyxMev5B8=
+	t=1745683243; cv=none; b=kJAWN7IgX8haunInpDzJu53Us35ugvt6TsY3PUydlhUaCWNhkKo5YQpQFgAYhombefB44PsoXw8+9BKmyEJ+HgXkFkjLxpk8XxBTb193oDMaC/F5bJW3uNwuz7oEw+h4MxuXpD/h4XrbTDW/4EZHw0lxbq+r8Y/Rb7q7kdXDMag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745682776; c=relaxed/simple;
-	bh=uINH35vO359kuO4RKCBqhNMqf7rry0dhDnoFY7BQ++0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t63su/rO6MRrs2jFsWNzGn7rBtSkNzXMcOuE/FvDYCF1ytNwOgIDlTPzlukQs3QCj/arUehaRyKCoqTokUiG/h2rqlR7CmUw6viG3gFDuDy3DSRBJoiddMdTxDhhvEPYVQa7WpDCtewFZJQS0bGd6yFca1zmE+2vVywOuH5LG3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=muZMyENy; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+	s=arc-20240116; t=1745683243; c=relaxed/simple;
+	bh=wGwWAknTOCMxz0RPq8zv6IjjubENWlU5qOlxtfmR5t0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bw1e9dvfXaYxWDgUHk15J1Fk+q/mXNTrg+Veu0MUqwIti8ogsvhvbCF3fW5k5qxWoe64k7snOyn/1camGMMWhGZwbUSOx/KqQSIeKdDPC4CZYLka0ZZKQCpPcRohfDyVGU3GVL8J8awTBsdM2Rh1EzVDSaVYNWzUvQebncyha1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QsVvjLcp; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="muZMyENy"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=luF1/ZSWAFeNSfH7gBHAFSQcCO8MBfOBlBzZ4kCjuvc=; b=muZMyENyxj8U9rbvrUED25L643
-	YAQNXfz/9PjxlkZ7cjSY0OeE/QvsO+Zg9uzXG6YxNVapqruZjujWkta1Jt/nq/yXX9IFUpoHrAgk+
-	CNeE49k+Xt6Ly923c/AdZcFoqceafh+37/HscczGatb/4648EUFUHnG7nyOQugaszFfk=;
-Received: from p5b206c93.dip0.t-ipconnect.de ([91.32.108.147] helo=Maecks.lan)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1u8hVn-00FfwR-0F;
-	Sat, 26 Apr 2025 17:32:15 +0200
-From: Felix Fietkau <nbd@nbd.name>
-To: netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Willem de Bruijn <willemb@google.com>
-Cc: linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: ipv6: fix UDPv6 GSO segmentation with NAT
-Date: Sat, 26 Apr 2025 17:32:09 +0200
-Message-ID: <20250426153210.14044-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QsVvjLcp"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7396f13b750so3723612b3a.1;
+        Sat, 26 Apr 2025 09:00:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745683241; x=1746288041; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=znOdau2L+/dcZkQ6O6k0/5CeHr55iQYi/h0B2Jyxhy8=;
+        b=QsVvjLcpUWuSmXDhdUa5Cg3pBT0j7m1Be3Ay0GK0Ry4rST89vNLbHjj0ix7WOSIx4B
+         opqQT3A/o5UzNK74vpfnC+g54Motqm+E24ZXmZVpf066Nel9s5a0KvxSQYc24QfJaXFk
+         ewaHWEs4leWsPCRew5PqozsWSjg6TMx9LM+GqHRVlhuZ3bMA8eZjvJahXUUJAmvseeiz
+         TX0dlOZ2CYlJDL4Xyl33jc3AwbaDYh7/x1Q19mLXWY2STy4nJwyPFsO3NMsPSQ/cKKVa
+         E/foO0auvQYkb5oUQS3TCGipkWCv/7C+aG4/aCSnt5Iw9Wz7U8y7iuKAjO8Y99Lh60Fk
+         gH7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745683241; x=1746288041;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=znOdau2L+/dcZkQ6O6k0/5CeHr55iQYi/h0B2Jyxhy8=;
+        b=gRBbPx5PPyryQdRnqf8022gycSIjU4KvdG0CVJHAnM7hRA7hBcP0jSckgDEEJ3C8Y+
+         1ZRXsv81w55KwtEH2Z3V3jN4U2nHFzoBSdrfzxPFCC4Ge2KZ0/UHhmhFnFZdjnZ1TFgT
+         7OyVmpRE3L24Xq7h7BMOD3+wSoruWkyj82WinWiI+pDHw+lFMj16b/osVfbI61ONlfVM
+         inadJ5ZUbrnvrJgzGkpyrjg2XXOXcYxzhOkwdhy8Qidx/Td4WFeAbdtooUGJBVDXXM8W
+         NDOx6xNY9lTUxDu7AVogE6uhuz9WRDDS0XwkPo9UKJrD2l9PLCX2RG5GN8v4jUuYuRY5
+         worA==
+X-Forwarded-Encrypted: i=1; AJvYcCV1HigWYTBiSl2IsbjPMKlGm9KnKmiBaszJlwRkM/iKmBgt3ptokDCpnX+85b4K0l1O774=@vger.kernel.org, AJvYcCV9BP6HuAt8ToBI2+b8ENl5McLD0OhSA9mGdIhQQOGX29lu8y7FKmEQE8s4RWlB28QOzpUE6Aqv@vger.kernel.org, AJvYcCVrFMH4bMmoJ2CdFEx32xWNz4Paqktpk1OwB4CxsaWB4g5Dyg27MINW3QgPczaiJjCu4sUVB9tj64+CTSX5pQLQ@vger.kernel.org, AJvYcCX/+/IU54gc+EPU61Ljd9NzgSkN6Du9SmlBgP68BWbURITPvSWmAPgDSjG6kJ4MniUnq/jHeB2dqtKUdXd3NQkkVtLM@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxr5A0I3gS5xEAGV6GAUi1t3Em3FkNbkwuHrjLCVMDIxd6gtWot
+	xH/8I/kqPCBy93XFex5+92mJ6UR9qy28p2YDw4h8Tgjp3Q+tp7uo
+X-Gm-Gg: ASbGncvFIxs/k6CiZddY2f75cuL/0oLnSjUGYYUxq0ecypkpoOmzuPz8oEJiqXmNeaT
+	8BIgWFW6qd/GFFSgCqPeFU6VPZJiuabEaNX2/GgMbYf6uOE/8tcL3HL5go20blZwXpFmVEUEfrP
+	aMcU398Bkkx2ESsGv41xpnzy1DbzcukvnwbPS6UFNY5jnosVYa8d/cdFW9GLzF21MRLKlTXV0Ju
+	1VcDIFgPZ4TZL3tpi0Zrr9+qIPcF+GydA+sAEB+Ey7fVHzIjM+7SD7/8xwDn5CDcXndWZHgSenQ
+	RPP+DPFiucsIlWfX7CT2JJGWie00/nK1wpppDuYv6fI=
+X-Google-Smtp-Source: AGHT+IGcovqBau2DivQ0yh8b8PJpIgtx+uIrmZAQJE5XOKpzVaC3xkNekpOyApo9s2Jjcrh6mQst/g==
+X-Received: by 2002:a05:6a00:1742:b0:736:5822:74b4 with SMTP id d2e1a72fcca58-73fd8f4e0c7mr8710527b3a.21.1745683241340;
+        Sat, 26 Apr 2025 09:00:41 -0700 (PDT)
+Received: from ubuntu2404.. ([122.231.145.226])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e25941cc1sm5174760b3a.60.2025.04.26.09.00.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Apr 2025 09:00:40 -0700 (PDT)
+From: KaFai Wan <mannkafai@gmail.com>
+To: song@kernel.org,
+	jolsa@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	yonghong.song@linux.dev,
+	john.fastabend@gmail.com,
+	kpsingh@kernel.org,
+	sdf@fomichev.me,
+	haoluo@google.com,
+	mattbobrowski@google.com,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	mykolal@fb.com,
+	shuah@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	leon.hwang@linux.dev,
+	mannkafai@gmail.com
+Subject: [PATCH bpf-next 0/4] bpf: Allow get_func_[arg|arg_cnt] helpers in raw tracepoint programs
+Date: Sun, 27 Apr 2025 00:00:23 +0800
+Message-ID: <20250426160027.177173-1-mannkafai@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,94 +98,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If any address or port is changed, update it in all packets and recalculate
-checksum.
+hi, 
 
-Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+We can use get_func_[arg|arg_cnt] helpers in fentry/fexit/fmod_ret programs
+currently[1]. But they can't be used in raw_tp/tp_btf programs.
+
+Adding support to use get_func_[arg|arg_cnt] helpers in raw_tp/tp_btf
+programs.
+Adding BPF_PROG_TEST_RUN for tp_btf.
+Add selftests to check them.
+
+Thanks,
+KaFai
+
+[1] https://lore.kernel.org/bpf/20211208193245.172141-1-jolsa@kernel.org/
 ---
- net/ipv4/udp_offload.c | 61 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 60 insertions(+), 1 deletion(-)
+KaFai Wan (4):
+  bpf: Allow get_func_[arg|arg_cnt] helpers in raw tracepoint programs
+  bpf: Enable BPF_PROG_TEST_RUN for tp_btf
+  selftests/bpf: Add raw_tp_test_run for tp_btf
+  selftests/bpf: Add tests for get_func_[arg|arg_cnt] helpers in raw
+    tracepoint programs
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 2c0725583be3..9a8142ccbabe 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -247,6 +247,62 @@ static struct sk_buff *__udpv4_gso_segment_list_csum(struct sk_buff *segs)
- 	return segs;
- }
- 
-+static void __udpv6_gso_segment_csum(struct sk_buff *seg,
-+				     struct in6_addr *oldip,
-+				     const struct in6_addr *newip,
-+				     __be16 *oldport, __be16 newport)
-+{
-+	struct udphdr *uh = udp_hdr(seg);
-+
-+	if (ipv6_addr_equal(oldip, newip) && *oldport == newport)
-+		return;
-+
-+	if (uh->check) {
-+		inet_proto_csum_replace16(&uh->check, seg, oldip->s6_addr32,
-+					  newip->s6_addr32, true);
-+
-+		inet_proto_csum_replace2(&uh->check, seg, *oldport, newport,
-+					 false);
-+		if (!uh->check)
-+			uh->check = CSUM_MANGLED_0;
-+	}
-+
-+	*oldip = *newip;
-+	*oldport = newport;
-+}
-+
-+static struct sk_buff *__udpv6_gso_segment_list_csum(struct sk_buff *segs)
-+{
-+	const struct ipv6hdr *iph;
-+	const struct udphdr *uh;
-+	struct ipv6hdr *iph2;
-+	struct sk_buff *seg;
-+	struct udphdr *uh2;
-+
-+	seg = segs;
-+	uh = udp_hdr(seg);
-+	iph = ipv6_hdr(seg);
-+	uh2 = udp_hdr(seg->next);
-+	iph2 = ipv6_hdr(seg->next);
-+
-+	if (!(*(const u32 *)&uh->source ^ *(const u32 *)&uh2->source) &&
-+	    ipv6_addr_equal(&iph->saddr, &iph2->saddr) &&
-+	    ipv6_addr_equal(&iph->daddr, &iph2->daddr))
-+		return segs;
-+
-+	while ((seg = seg->next)) {
-+		uh2 = udp_hdr(seg);
-+		iph2 = ipv6_hdr(seg);
-+
-+		__udpv6_gso_segment_csum(seg, &iph2->saddr, &iph->saddr,
-+					 &uh2->source, uh->source);
-+		__udpv6_gso_segment_csum(seg, &iph2->daddr, &iph->daddr,
-+					 &uh2->dest, uh->dest);
-+	}
-+
-+	return segs;
-+}
-+
- static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
- 					      netdev_features_t features,
- 					      bool is_ipv6)
-@@ -259,7 +315,10 @@ static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
- 
- 	udp_hdr(skb)->len = htons(sizeof(struct udphdr) + mss);
- 
--	return is_ipv6 ? skb : __udpv4_gso_segment_list_csum(skb);
-+	if (is_ipv6)
-+		return __udpv6_gso_segment_list_csum(skb);
-+	else
-+		return __udpv4_gso_segment_list_csum(skb);
- }
- 
- struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+ kernel/trace/bpf_trace.c                      | 17 +++++--
+ net/bpf/test_run.c                            | 16 +++----
+ .../bpf/prog_tests/raw_tp_get_func_args.c     | 48 +++++++++++++++++++
+ .../bpf/prog_tests/raw_tp_test_run.c          | 18 ++++++-
+ .../bpf/progs/test_raw_tp_get_func_args.c     | 47 ++++++++++++++++++
+ .../bpf/progs/test_raw_tp_test_run.c          | 16 +++++--
+ 6 files changed, 146 insertions(+), 16 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/raw_tp_get_func_args.c
+ create mode 100644 tools/testing/selftests/bpf/progs/test_raw_tp_get_func_args.c
+
 -- 
-2.49.0
+2.43.0
 
