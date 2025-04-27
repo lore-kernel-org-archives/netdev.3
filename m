@@ -1,99 +1,111 @@
-Received: from wylie.me.uk (wylie.me.uk [82.68.155.94])
+Received: from smtp1.math.uni-bielefeld.de (smtp1.math.uni-bielefeld.de [129.70.45.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824328F5A;
-	Sun, 27 Apr 2025 20:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.68.155.94
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B048F211C;
+	Sun, 27 Apr 2025 20:56:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.70.45.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745786163; cv=none; b=GSGt5louijwbkdNhQtDBFC20HJjeg+ZemQ28ym7/x/8dhH2Af6iYTUNecFruG4yzjQymYpQu5+Hd7iZO89VUbaMI3YgCp4OI97Y08YoUie2X9u0BWsO1cKjLkRa0q8UCLDNtYRJHNmGy3GuZ67ksNwVineL1RHdRM4V+vSraOQE=
+	t=1745787373; cv=none; b=kycxRZgmkb1VvzYEqtFWmGMFT108SDQ5Zgpw4t8fnb2riL+R/D5PBUISxxC/+Y5xb6LqxE/p0nE1xm2SL8Y4q0Q7U9nyAiDKrEQ/ILRzxgFsHkjq5qNeG7dmYORqqEU214QbEQr79GX2LGYSVL0oyZ6vDmzmrqMwORRhcotPphg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745786163; c=relaxed/simple;
-	bh=SWMTbEmm5//wR2OBFc2QnhX7Z0C+SqWQvafmLIydBS4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KP/FKyEGse4nHLpFgjoV3zvExZrg5QOdAyGjaHlDvj0ceN4bJpsRf0cOWhKNGfwdmjxX/x1FxTzkTyQxwVhxkQwHTx1VFWhd/YOIMw5fbooI1TOeUaMHjfrRavh0QzJiDU8H8eXin/UYnCMF0VNxOrYjA1ZsyQkpCLXRLD3Q6nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wylie.me.uk; spf=pass smtp.mailfrom=wylie.me.uk; dkim=pass (2048-bit key) header.d=wylie.me.uk header.i=@wylie.me.uk header.b=GtnbAlsq; arc=none smtp.client-ip=82.68.155.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wylie.me.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wylie.me.uk
+	s=arc-20240116; t=1745787373; c=relaxed/simple;
+	bh=UBR+DNEJafbXedpk+z2kPk/t2Z8YXWMQJ/Yyer8ZIZc=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=loc+TJLxu0XQf3exRKor/VRdytX4HvIQT2nMREdCfJdGxMJJlsDNFfslDgc1mb6J75Lyubhtn75W7iyfWrmVF1yOHtdGx6B9q8C52dNUwaXUyuhqsP+qjzmD3zhBXZF/OipAv4ksbM61u0Yh/bGBd/VxKOeO+Zr7nGfc9zFm/MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=math.uni-bielefeld.de; spf=pass smtp.mailfrom=math.uni-bielefeld.de; dkim=pass (2048-bit key) header.d=math.uni-bielefeld.de header.i=@math.uni-bielefeld.de header.b=DDmCz5Ti; arc=none smtp.client-ip=129.70.45.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=math.uni-bielefeld.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=math.uni-bielefeld.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wylie.me.uk header.i=@wylie.me.uk header.b="GtnbAlsq"
-Received: from frodo.int.wylie.me.uk (frodo.int.wylie.me.uk [192.168.21.2])
-	by wylie.me.uk (Postfix) with ESMTP id 05F87120713;
-	Sun, 27 Apr 2025 21:35:49 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wylie.me.uk;
-	s=mydkim006; t=1745786149;
-	bh=SWMTbEmm5//wR2OBFc2QnhX7Z0C+SqWQvafmLIydBS4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=GtnbAlsqxgtEdG+qrGaaRfb7yyBU17yk/maPGOzJuxlHOxwiEkoJ8RvuwJgzQe0we
-	 QJ525afA393TQxmEZekt9f8w9rpYndnftsGTRcil4eISuKo6pyqWURxHQ2VI2TJKFR
-	 e0P0SWXCI+JMnJDt42+/zWjEaIZhwM/nGx0VEt0LVCMcFVTrjXwIt1VwtT6JpG8cCj
-	 dLPZvJw+dyC86ucyOI9zk3NDchTPpRri2b4qT/asglXgG1GD6DV+oyTxQ9z586MNBz
-	 WPujbcvJLCvn7hgzkQf7mW9xQpz33ghA4o7fS2se3do6eFQyjiGiAtEgUkquv0SAi2
-	 gZ0pP8GtKD/jg==
-Date: Sun, 27 Apr 2025 21:35:48 +0100
-From: "Alan J. Wylie" <alan@wylie.me.uk>
-To: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: Holger =?UTF-8?B?SG9mZnN0w6R0dGU=?= <holger@applied-asynchrony.com>,
- Jamal Hadi Salim <jhs@mojatatu.com>, regressions@lists.linux.dev, Jiri
- Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Octavian Purdila <tavip@google.com>, Toke
- =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?= <toke@redhat.com>,
- stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [REGRESSION] 6.14.3 panic - kernel NULL pointer dereference in
- htb_dequeue
-Message-ID: <20250427213548.73efc7b9@frodo.int.wylie.me.uk>
-In-Reply-To: <20250427204254.6ae5cd4a@frodo.int.wylie.me.uk>
-References: <89301960-1758-5b2e-6d91-81ef06843e14@applied-asynchrony.com>
-	<20250421210927.50d6a355@frodo.int.wylie.me.uk>
-	<20250422175145.1cb0bd98@frodo.int.wylie.me.uk>
-	<4e2a6522-d455-f0ce-c77d-b430c3047d7c@applied-asynchrony.com>
-	<aAf/K7F9TmCJIT+N@pop-os.localdomain>
-	<20250422214716.5e181523@frodo.int.wylie.me.uk>
-	<aAgO59L0ccXl6kUs@pop-os.localdomain>
-	<20250423105131.7ab46a47@frodo.int.wylie.me.uk>
-	<aAlAakEUu4XSEdXF@pop-os.localdomain>
-	<20250424135331.02511131@frodo.int.wylie.me.uk>
-	<aA6BcLENWhE4pQCa@pop-os.localdomain>
-	<20250427204254.6ae5cd4a@frodo.int.wylie.me.uk>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
-X-Clacks-Overhead: GNU Terry Pratchett
+	dkim=pass (2048-bit key) header.d=math.uni-bielefeld.de header.i=@math.uni-bielefeld.de header.b="DDmCz5Ti"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=math.uni-bielefeld.de; s=default; t=1745787039;
+	bh=UBR+DNEJafbXedpk+z2kPk/t2Z8YXWMQJ/Yyer8ZIZc=;
+	h=Date:To:Cc:References:Subject:From:In-Reply-To:From;
+	b=DDmCz5TisABFCbUD2S9+VQzFOb52mlmWWMKllZcP4iuPWT3wYn7aCnxMU5XBDzZgS
+	 vs1DEdUoyhV83qYROdsg6jS4JP3K81DaJ3nYE3KdSya1DJ+C8Yl28NBKaoApV/IzC5
+	 fJt8Ja++9LWyT/9FJ5p6MUPmwcH02urOaWWFEkbZXmcN67juVRj/td3LaYsfJLQsOk
+	 11mNBm1DfoSw9dFlcm0N6kRaOE5hPTLBjSrvYYSOZ+w/Z7sq89OXLDFiG0etnqjJgF
+	 e3HZTskkLht+Ty5LvW5bh7Maeq5rqOqTwBYi2Y+wyjmIrEUTTwasMHLtbRhXtWFQXB
+	 WMfp8HL3ZBOwQ==
+Received: from [192.168.0.100] (dslb-084-060-118-083.084.060.pools.vodafone-ip.de [84.60.118.83])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp1.math.uni-bielefeld.de (Postfix) with ESMTPSA id B0E6020352;
+	Sun, 27 Apr 2025 22:50:38 +0200 (CEST)
+Message-ID: <9b822fe6-699a-4fe6-88c5-1e92e6a6e588@math.uni-bielefeld.de>
+Date: Sun, 27 Apr 2025 22:50:34 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+To: pmenzel@molgen.mpg.de
+Cc: davem@davemloft.net, edumazet@google.com, frederic@kernel.org,
+ hayeswang@realtek.com, horms@kernel.org, kuba@kernel.org,
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ netdev@vger.kernel.org, pabeni@redhat.com, romieu@fr.zoreil.com
+References: <8db2e1cd-553e-4082-a018-ec269592b69f@molgen.mpg.de>
+Subject: Re: [PATCH 2/2] r8152: Call napi_schedule() from proper context
+Content-Language: en-US
+From: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+Autocrypt: addr=tjakobi@math.uni-bielefeld.de; keydata=
+ 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
+ 5pwFHSz7G+1ahA==
+In-Reply-To: <8db2e1cd-553e-4082-a018-ec269592b69f@molgen.mpg.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Sun, 27 Apr 2025 20:42:54 +0100
-"Alan J. Wylie" <alan@wylie.me.uk> wrote:
+Hello everyone,
 
-> That would be https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/ ?
-> 
-> I've just cloned that. I'll do a build and a test.
+I believe this is still a problem, correct? I've been carrying the two 
+patches in my tree for some weeks now -- otherwise the network adapter 
+in my USB-C dock stops working randomly.
 
-$ uname -r
-6.15.0-rc3-00109-gf73f05c6f711
+Anything I can do to get these merged?
 
-It's crashed. Same place as usual. I tried again, same thing.
+With best wishes,
+Tobias
 
- htb_dequeue+0x42e/0x610 [sch_htb]
-
-Rather than a ping flood, I was running a Speedtest. Both times it
-crashed during the upload test, not the download.
-
-https://www.speedtest.net/
-
-Could running an iptables firewall perhaps have anything to do with it?
-
-HTH
-Alan
-
-
-
-
--- 
-Alan J. Wylie     https://www.wylie.me.uk/     mailto:<alan@wylie.me.uk>
-
-Dance like no-one's watching. / Encrypt like everyone is.
-Security is inversely proportional to convenience
