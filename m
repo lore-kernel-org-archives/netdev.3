@@ -1,57 +1,57 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9DB2949FA
-	for <netdev@vger.kernel.org>; Mon, 28 Apr 2025 17:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEC8294A17
+	for <netdev@vger.kernel.org>; Mon, 28 Apr 2025 17:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745861777; cv=none; b=ThUVvt9IC7E6MQCVXjdzV2+U6bywSvUyftd3rtc74UmgWO/yaC80X5Mgfv4k68hy9JEE6Re6GNYtD2Ixoy2IN8AYVaMaLC+xHoBPFh1mzUFtkg4ioqoWYsbRvKyV4F+hIEqHtWnDNPfCw7IrPwRzEjgCJJ6MF4r6Iuc6QswKZTs=
+	t=1745861778; cv=none; b=OZo8PxgSI/hVD6StZMZyiqDoqxSvPA7whbl+R3Mm4AsrAlLUiUb9Ry9H3QZogG7anKtq8r7OFhvIZJ76bqJ92wUIA7GoqyIMcphFZpbiFPc4Xv8ItM0NGcgMmok4GnIdEs2y9hysHx4CqK6VCLcawm94Tn+NCwNaW8nSlb9plPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745861777; c=relaxed/simple;
-	bh=wCtKStpsR4X0MNcF8xA6qq1+P6PKf+EEbiy0RzjGtoQ=;
+	s=arc-20240116; t=1745861778; c=relaxed/simple;
+	bh=6A5I6ee9+wW9VXv222+jYTtgcusG76CERZnv59A8kD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PxozeS4mjp8VWi+U93h/mEaa0BweQwxOdcV6S3Bi9fuzgQds0k5Jaq+RjNnkZ5bKHIvCC+R6r1TJaYeV4EY60oyP7YWnvJuibu3foACvxTpf/sx9vxXpAFjYwfchotUp5x6/57dj9sqGblEaLfj8Gr3yppSd+BhRI5DZOAZiAOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LosEJumf; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=CCw559DpXP9bh6euSFFTfPSJuVI5FWiQ9v4vB7h28Oc1zqoDqBW/stmaUQT24Jkv8m567ufnMicPJRQu3t+BXSxTusMNCYjzB80f6oKUFbET5mGpVu36jtKNY7uZyw3VXJpVNVokzTz9tcp7+LgtCfUEM/9dPwzCY0HebazATr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n3NvCLZj; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LosEJumf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n3NvCLZj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745861774; x=1777397774;
+  t=1745861776; x=1777397776;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=wCtKStpsR4X0MNcF8xA6qq1+P6PKf+EEbiy0RzjGtoQ=;
-  b=LosEJumf7ou7XR0cPMjrikBouz6criKyA/5UG/3HYsyxMNoPFEokXUg/
-   AWt13O9/GeqyLfvCwYFKC/oMIroSdfUNBH76w3nGO6frTKLQX6gLE+y4W
-   cRjtnPXQ1r4rE97Rc5c+NfHKKgCmFfkLtNN6JHOwNfzmMnGNgy42yfLiE
-   azHBDwYbsYsIgLy6/cXgXvGlpMM+svi7VmljWdjlmxTeu6UG2IftBEm3+
-   KTXn29Sg9TfKQF3JlVIOiw7dN3CdDNOCWuV1ypYbzSN1lsJT0P7Ep/Kgd
-   4zxWz9dvSPlkg9lNlRTZid73X+5yIlDiMxC4HyCcT7oALFSN1brdT1NuT
-   A==;
-X-CSE-ConnectionGUID: iVQU1JZOT+e2JJE2+Ax/Uw==
-X-CSE-MsgGUID: SBcWo9dQTf+guCB7C1/POg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="58452159"
+  bh=6A5I6ee9+wW9VXv222+jYTtgcusG76CERZnv59A8kD0=;
+  b=n3NvCLZj3+g5OUCyS+IzIc2z6GwiZKJWKYSaunc/MqVAETNUa6SddN2e
+   bvlFIlWpGDJF0Qnip1v6SxJPIkXmLx9xlKkSCLjPa90UY3pZKq+gjxrEv
+   BwMBzIuI87/dAVv1VrtZJrtVEjSC+eQ3Z9KZ2kbOoEE0Z+URWQnIG3Zw3
+   1vfw4TG2vNic3LWZcC7zcMRVDKcC5sE0WflRs+T43l113gKjS7t+fiQol
+   z/YUn94qf8hOwEulEm0y1tdWTOnVYy1PoEUa120G2hQWqI5pX46r1Immp
+   jEOH+R0zvKKXOxaYsTjVBWFy797Ch9jKK+vtqyGnG8HW6zUNZ/pYHkHrT
+   g==;
+X-CSE-ConnectionGUID: cj/jsIo5SBWhnvK4+DYwjg==
+X-CSE-MsgGUID: 0siVMtoWSR6XC17M9SOwIg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="58452163"
 X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; 
-   d="scan'208";a="58452159"
+   d="scan'208";a="58452163"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 10:36:12 -0700
-X-CSE-ConnectionGUID: 88I16XFbRHK8TDbgZtUm9w==
-X-CSE-MsgGUID: O+XaJ6hBS6u0ysRvxRYQhg==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 10:36:13 -0700
+X-CSE-ConnectionGUID: L+u2TA+oST2wkGv4ap1pyA==
+X-CSE-MsgGUID: s/m5OxtrQ3esPsDIrWB8Rg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; 
-   d="scan'208";a="138679019"
+   d="scan'208";a="138679033"
 Received: from unknown (HELO localhost.jf.intel.com) ([10.166.80.55])
-  by fmviesa004.fm.intel.com with ESMTP; 28 Apr 2025 10:36:12 -0700
+  by fmviesa004.fm.intel.com with ESMTP; 28 Apr 2025 10:36:13 -0700
 From: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
 	milena.olech@intel.com,
 	anton.nadezhdin@intel.com,
 	Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-Subject: [PATCH iwl-next v3 3/9] idpf: introduce idpf_q_vec_rsrc struct and move vector resources to it
-Date: Mon, 28 Apr 2025 10:35:46 -0700
-Message-ID: <20250428173552.2884-4-pavan.kumar.linga@intel.com>
+Subject: [PATCH iwl-next v3 5/9] idpf: reshuffle idpf_vport struct members to avoid holes
+Date: Mon, 28 Apr 2025 10:35:48 -0700
+Message-ID: <20250428173552.2884-6-pavan.kumar.linga@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250428173552.2884-1-pavan.kumar.linga@intel.com>
 References: <20250428173552.2884-1-pavan.kumar.linga@intel.com>
@@ -63,925 +63,86 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-To group all the vector and queue resources, introduce idpf_q_vec_rsrc
-structure. This helps to reuse the same config path functions by
-other features. For example, PTP implementation can use the
-existing config infrastructure to configure secondary mailbox
-by passing its queue and vector info. It also helps to avoid any
-duplication of code.
-
-Existing queue and vector resources are grouped as default
-resources. This patch moves vector info to the newly introduced
-structure. Following patch moves the queue resources.
-
-While at it, declare the loop iterator for 'num_q_vectors'
-in loop and use the correct type.
+The previous refactor of moving queue and vector resources
+out of the idpf_vport structure, created few holes. Reshuffle
+the existing members to avoid holes as much as possible.
 
 Reviewed-by: Anton Nadezhdin <anton.nadezhdin@intel.com>
 Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf.h        |  24 ++-
- drivers/net/ethernet/intel/idpf/idpf_dev.c    |  10 +-
- drivers/net/ethernet/intel/idpf/idpf_lib.c    |  40 ++--
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 187 +++++++++---------
- drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  14 +-
- drivers/net/ethernet/intel/idpf/idpf_vf_dev.c |  10 +-
- .../net/ethernet/intel/idpf/idpf_virtchnl.c   |  27 +--
- .../net/ethernet/intel/idpf/idpf_virtchnl.h   |   4 +-
- 8 files changed, 177 insertions(+), 139 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf.h | 27 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-index e88ffc31f351..1c1e1fc54441 100644
+index c81aba7d5256..e9f531c3b5ca 100644
 --- a/drivers/net/ethernet/intel/idpf/idpf.h
 +++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -8,6 +8,7 @@
- struct idpf_adapter;
- struct idpf_vport;
- struct idpf_vport_max_q;
-+struct idpf_q_vec_rsrc;
- 
- #include <net/pkt_sched.h>
- #include <linux/aer.h>
-@@ -195,7 +196,8 @@ struct idpf_vport_max_q {
-  */
- struct idpf_reg_ops {
- 	void (*ctlq_reg_init)(struct idpf_ctlq_create_info *cq);
--	int (*intr_reg_init)(struct idpf_vport *vport);
-+	int (*intr_reg_init)(struct idpf_vport *vport,
-+			     struct idpf_q_vec_rsrc *rsrc);
- 	void (*mb_intr_reg_init)(struct idpf_adapter *adapter);
- 	void (*reset_reg_init)(struct idpf_adapter *adapter);
- 	void (*trigger_reset)(struct idpf_adapter *adapter,
-@@ -271,8 +273,21 @@ struct idpf_tx_tstamp_stats {
- 	u32 tx_hwtstamp_flushed;
- };
- 
-+/**
-+ * struct idpf_q_vec_rsrc - handle for queue and vector resources
-+ * @q_vectors: array of queue vectors
-+ * @q_vector_idxs: starting index of queue vectors
-+ * @num_q_vectors: number of IRQ vectors allocated
-+ */
-+struct idpf_q_vec_rsrc {
-+	struct idpf_q_vector	*q_vectors;
-+	u16			*q_vector_idxs;
-+	u16			num_q_vectors;
-+};
-+
+@@ -325,24 +325,24 @@ struct idpf_q_vec_rsrc {
  /**
   * struct idpf_vport - Handle for netdevices and queue resources
-+ * @dflt_qv_rsrc: contains default queue and vector resources
-  * @num_txq: Number of allocated TX queues
-  * @num_complq: Number of allocated completion queues
-  * @txq_desc_count: TX queue descriptor count
-@@ -304,9 +319,6 @@ struct idpf_tx_tstamp_stats {
+  * @dflt_qv_rsrc: contains default queue and vector resources
+- * @num_txq: Number of allocated TX queues
+- * @compln_clean_budget: Work budget for completion clean
+  * @txqs: Used only in hotpath to get to the right queue very fast
+- * @crc_enable: Enable CRC insertion offload
+- * @rx_ptype_lkup: Lookup table for ptypes on RX
+  * @adapter: back pointer to associated adapter
+  * @netdev: Associated net_device. Each vport should have one and only one
+  *	    associated netdev.
+  * @flags: See enum idpf_vport_flags
+- * @vport_type: Default SRIOV, SIOV, etc.
++ * @compln_clean_budget: Work budget for completion clean
+  * @vport_id: Device given vport identifier
++ * @vport_type: Default SRIOV, SIOV, etc.
   * @idx: Software index in adapter vports struct
-  * @default_vport: Use this vport if one isn't specified
-  * @base_rxd: True if the driver should use base descriptors instead of flex
-- * @num_q_vectors: Number of IRQ vectors allocated
-- * @q_vectors: Array of queue vectors
-- * @q_vector_idxs: Starting index of queue vectors
+- * @default_vport: Use this vport if one isn't specified
++ * @num_txq: Number of allocated TX queues
   * @max_mtu: device given max possible MTU
   * @default_mac_addr: device will give a default MAC to use
   * @rx_itr_profile: RX profiles for Dynamic Interrupt Moderation
-@@ -320,6 +332,7 @@ struct idpf_tx_tstamp_stats {
-  * @tstamp_stats: Tx timestamping statistics
+  * @tx_itr_profile: TX profiles for Dynamic Interrupt Moderation
++ * @rx_ptype_lkup: Lookup table for ptypes on RX
+  * @port_stats: per port csum, header split, and other offload stats
++ * @default_vport: Use this vport if one isn't specified
++ * @crc_enable: Enable CRC insertion offload
+  * @link_up: True if link is up
+  * @sw_marker_wq: workqueue for marker packets
+  * @tx_tstamp_caps: Capabilities negotiated for Tx timestamping
+@@ -352,27 +352,26 @@ struct idpf_q_vec_rsrc {
   */
  struct idpf_vport {
-+	struct idpf_q_vec_rsrc dflt_qv_rsrc;
- 	u16 num_txq;
- 	u16 num_complq;
- 	u32 txq_desc_count;
-@@ -350,9 +363,6 @@ struct idpf_vport {
- 	bool default_vport;
- 	bool base_rxd;
+ 	struct idpf_q_vec_rsrc dflt_qv_rsrc;
+-	u16 num_txq;
+-	u32 compln_clean_budget;
+ 	struct idpf_tx_queue **txqs;
+-	bool crc_enable;
+-
+-	struct libeth_rx_pt *rx_ptype_lkup;
  
--	u16 num_q_vectors;
--	struct idpf_q_vector *q_vectors;
--	u16 *q_vector_idxs;
+ 	struct idpf_adapter *adapter;
+ 	struct net_device *netdev;
+ 	DECLARE_BITMAP(flags, IDPF_VPORT_FLAGS_NBITS);
+-	u16 vport_type;
++	u32 compln_clean_budget;
+ 	u32 vport_id;
++	u16 vport_type;
+ 	u16 idx;
+-	bool default_vport;
+ 
++	u16 num_txq;
  	u16 max_mtu;
  	u8 default_mac_addr[ETH_ALEN];
  	u16 rx_itr_profile[IDPF_DIM_PROFILE_SLOTS];
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_dev.c b/drivers/net/ethernet/intel/idpf/idpf_dev.c
-index 3fae81f1f988..3d358030b809 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_dev.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_dev.c
-@@ -67,11 +67,13 @@ static void idpf_mb_intr_reg_init(struct idpf_adapter *adapter)
- /**
-  * idpf_intr_reg_init - Initialize interrupt registers
-  * @vport: virtual port structure
-+ * @rsrc: pointer to queue and vector resources
-  */
--static int idpf_intr_reg_init(struct idpf_vport *vport)
-+static int idpf_intr_reg_init(struct idpf_vport *vport,
-+			      struct idpf_q_vec_rsrc *rsrc)
- {
- 	struct idpf_adapter *adapter = vport->adapter;
--	int num_vecs = vport->num_q_vectors;
-+	u16 num_vecs = rsrc->num_q_vectors;
- 	struct idpf_vec_regs *reg_vals;
- 	int num_regs, i, err = 0;
- 	u32 rx_itr, tx_itr;
-@@ -90,8 +92,8 @@ static int idpf_intr_reg_init(struct idpf_vport *vport)
- 	}
- 
- 	for (i = 0; i < num_vecs; i++) {
--		struct idpf_q_vector *q_vector = &vport->q_vectors[i];
--		u16 vec_id = vport->q_vector_idxs[i] - IDPF_MBX_Q_VEC;
-+		struct idpf_q_vector *q_vector = &rsrc->q_vectors[i];
-+		u16 vec_id = rsrc->q_vector_idxs[i] - IDPF_MBX_Q_VEC;
- 		struct idpf_intr_reg *intr = &q_vector->intr_reg;
- 		u32 spacing;
- 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index bc342e79addd..c79a5fbe7138 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -838,6 +838,7 @@ static void idpf_remove_features(struct idpf_vport *vport)
- static void idpf_vport_stop(struct idpf_vport *vport)
- {
- 	struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
-+	struct idpf_q_vec_rsrc *rsrc = &vport->dflt_qv_rsrc;
- 	struct idpf_queue_id_reg_info *chunks;
- 
- 	if (np->state <= __IDPF_VPORT_DOWN)
-@@ -849,7 +850,7 @@ static void idpf_vport_stop(struct idpf_vport *vport)
- 	chunks = &vport->adapter->vport_config[vport->idx]->qid_reg_info;
- 
- 	idpf_send_disable_vport_msg(vport);
--	idpf_send_disable_queues_msg(vport, chunks);
-+	idpf_send_disable_queues_msg(vport, rsrc, chunks);
- 	idpf_send_map_unmap_queue_vector_msg(vport, false);
- 	/* Normally we ask for queues in create_vport, but if the number of
- 	 * initially requested queues have changed, for example via ethtool
-@@ -862,9 +863,9 @@ static void idpf_vport_stop(struct idpf_vport *vport)
- 	idpf_remove_features(vport);
- 
- 	vport->link_up = false;
--	idpf_vport_intr_deinit(vport);
-+	idpf_vport_intr_deinit(vport, rsrc);
- 	idpf_vport_queues_rel(vport);
--	idpf_vport_intr_rel(vport);
-+	idpf_vport_intr_rel(rsrc);
- 	np->state = __IDPF_VPORT_DOWN;
- }
- 
-@@ -924,6 +925,7 @@ static void idpf_decfg_netdev(struct idpf_vport *vport)
-  */
- static void idpf_vport_rel(struct idpf_vport *vport)
- {
-+	struct idpf_q_vec_rsrc *rsrc = &vport->dflt_qv_rsrc;
- 	struct idpf_adapter *adapter = vport->adapter;
- 	struct idpf_vport_config *vport_config;
- 	struct idpf_vector_info vec_info;
-@@ -948,13 +950,13 @@ static void idpf_vport_rel(struct idpf_vport *vport)
- 
- 	/* Release all the allocated vectors on the stack */
- 	vec_info.num_req_vecs = 0;
--	vec_info.num_curr_vecs = vport->num_q_vectors;
-+	vec_info.num_curr_vecs = rsrc->num_q_vectors;
- 	vec_info.default_vport = vport->default_vport;
- 
--	idpf_req_rel_vector_indexes(adapter, vport->q_vector_idxs, &vec_info);
-+	idpf_req_rel_vector_indexes(adapter, rsrc->q_vector_idxs, &vec_info);
- 
--	kfree(vport->q_vector_idxs);
--	vport->q_vector_idxs = NULL;
-+	kfree(rsrc->q_vector_idxs);
-+	rsrc->q_vector_idxs = NULL;
- 	kfree(vport_config->qid_reg_info.queue_chunks);
- 	vport_config->qid_reg_info.queue_chunks = NULL;
- 
-@@ -1075,6 +1077,7 @@ static struct idpf_vport *idpf_vport_alloc(struct idpf_adapter *adapter,
- {
- 	struct idpf_rss_data *rss_data;
- 	u16 idx = adapter->next_vport;
-+	struct idpf_q_vec_rsrc *rsrc;
- 	struct idpf_vport *vport;
- 	u16 num_max_q;
- 	int err;
-@@ -1106,8 +1109,10 @@ static struct idpf_vport *idpf_vport_alloc(struct idpf_adapter *adapter,
- 			       idpf_get_default_vports(adapter);
- 
- 	num_max_q = max(max_q->max_txq, max_q->max_rxq);
--	vport->q_vector_idxs = kcalloc(num_max_q, sizeof(u16), GFP_KERNEL);
--	if (!vport->q_vector_idxs)
-+
-+	rsrc = &vport->dflt_qv_rsrc;
-+	rsrc->q_vector_idxs = kcalloc(num_max_q, sizeof(u16), GFP_KERNEL);
-+	if (!rsrc->q_vector_idxs)
- 		goto free_vport;
- 
- 	err = idpf_vport_init(vport, max_q);
-@@ -1140,7 +1145,7 @@ static struct idpf_vport *idpf_vport_alloc(struct idpf_adapter *adapter,
- free_qreg_chunks:
- 	kfree(adapter->vport_config[idx]->qid_reg_info.queue_chunks);
- free_vector_idxs:
--	kfree(vport->q_vector_idxs);
-+	kfree(rsrc->q_vector_idxs);
- free_vport:
- 	kfree(vport);
- 
-@@ -1313,6 +1318,7 @@ static void idpf_rx_init_buf_tail(struct idpf_vport *vport)
- static int idpf_vport_open(struct idpf_vport *vport)
- {
- 	struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
-+	struct idpf_q_vec_rsrc *rsrc = &vport->dflt_qv_rsrc;
- 	struct idpf_adapter *adapter = vport->adapter;
- 	struct idpf_vport_config *vport_config;
- 	struct idpf_queue_id_reg_info *chunks;
-@@ -1324,7 +1330,7 @@ static int idpf_vport_open(struct idpf_vport *vport)
- 	/* we do not allow interface up just yet */
- 	netif_carrier_off(vport->netdev);
- 
--	err = idpf_vport_intr_alloc(vport);
-+	err = idpf_vport_intr_alloc(vport, rsrc);
- 	if (err) {
- 		dev_err(&adapter->pdev->dev, "Failed to allocate interrupts for vport %u: %d\n",
- 			vport->vport_id, err);
-@@ -1345,7 +1351,7 @@ static int idpf_vport_open(struct idpf_vport *vport)
- 		goto queues_rel;
- 	}
- 
--	err = idpf_vport_intr_init(vport);
-+	err = idpf_vport_intr_init(vport, rsrc);
- 	if (err) {
- 		dev_err(&adapter->pdev->dev, "Failed to initialize interrupts for vport %u: %d\n",
- 			vport->vport_id, err);
-@@ -1367,7 +1373,7 @@ static int idpf_vport_open(struct idpf_vport *vport)
- 	}
- 
- 	idpf_rx_init_buf_tail(vport);
--	idpf_vport_intr_ena(vport);
-+	idpf_vport_intr_ena(vport, rsrc);
- 
- 	err = idpf_send_config_queues_msg(vport);
- 	if (err) {
-@@ -1424,15 +1430,15 @@ static int idpf_vport_open(struct idpf_vport *vport)
- disable_vport:
- 	idpf_send_disable_vport_msg(vport);
- disable_queues:
--	idpf_send_disable_queues_msg(vport, chunks);
-+	idpf_send_disable_queues_msg(vport, rsrc, chunks);
- unmap_queue_vectors:
- 	idpf_send_map_unmap_queue_vector_msg(vport, false);
- intr_deinit:
--	idpf_vport_intr_deinit(vport);
-+	idpf_vport_intr_deinit(vport, rsrc);
- queues_rel:
- 	idpf_vport_queues_rel(vport);
- intr_rel:
--	idpf_vport_intr_rel(vport);
-+	idpf_vport_intr_rel(rsrc);
- 
- 	return err;
- }
-@@ -1913,7 +1919,7 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
- 	memcpy(vport, new_vport, offsetof(struct idpf_vport, link_up));
- 
- 	if (reset_cause == IDPF_SR_Q_CHANGE)
--		idpf_vport_alloc_vec_indexes(vport);
-+		idpf_vport_alloc_vec_indexes(vport, &vport->dflt_qv_rsrc);
- 
- 	err = idpf_set_real_num_queues(vport);
- 	if (err)
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 970fa9e5c39b..beb2ac1173b8 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -3670,39 +3670,34 @@ static irqreturn_t idpf_vport_intr_clean_queues(int __always_unused irq,
- 
- /**
-  * idpf_vport_intr_napi_del_all - Unregister napi for all q_vectors in vport
-- * @vport: virtual port structure
-- *
-+ * @rsrc: pointer to queue and vector resources
-  */
--static void idpf_vport_intr_napi_del_all(struct idpf_vport *vport)
-+static void idpf_vport_intr_napi_del_all(struct idpf_q_vec_rsrc *rsrc)
- {
--	u16 v_idx;
--
--	for (v_idx = 0; v_idx < vport->num_q_vectors; v_idx++)
--		netif_napi_del(&vport->q_vectors[v_idx].napi);
-+	for (u16 v_idx = 0; v_idx < rsrc->num_q_vectors; v_idx++)
-+		netif_napi_del(&rsrc->q_vectors[v_idx].napi);
- }
- 
- /**
-  * idpf_vport_intr_napi_dis_all - Disable NAPI for all q_vectors in the vport
-- * @vport: main vport structure
-+ * @rsrc: pointer to queue and vector resources
-  */
--static void idpf_vport_intr_napi_dis_all(struct idpf_vport *vport)
-+static void idpf_vport_intr_napi_dis_all(struct idpf_q_vec_rsrc *rsrc)
- {
--	int v_idx;
--
--	for (v_idx = 0; v_idx < vport->num_q_vectors; v_idx++)
--		napi_disable(&vport->q_vectors[v_idx].napi);
-+	for (u16 v_idx = 0; v_idx < rsrc->num_q_vectors; v_idx++)
-+		napi_disable(&rsrc->q_vectors[v_idx].napi);
- }
- 
- /**
-  * idpf_vport_intr_rel - Free memory allocated for interrupt vectors
-- * @vport: virtual port
-+ * @rsrc: pointer to queue and vector resources
-  *
-  * Free the memory allocated for interrupt vectors  associated to a vport
-  */
--void idpf_vport_intr_rel(struct idpf_vport *vport)
-+void idpf_vport_intr_rel(struct idpf_q_vec_rsrc *rsrc)
- {
--	for (u32 v_idx = 0; v_idx < vport->num_q_vectors; v_idx++) {
--		struct idpf_q_vector *q_vector = &vport->q_vectors[v_idx];
-+	for (u16 v_idx = 0; v_idx < rsrc->num_q_vectors; v_idx++) {
-+		struct idpf_q_vector *q_vector = &rsrc->q_vectors[v_idx];
- 
- 		kfree(q_vector->complq);
- 		q_vector->complq = NULL;
-@@ -3714,28 +3709,29 @@ void idpf_vport_intr_rel(struct idpf_vport *vport)
- 		q_vector->rx = NULL;
- 	}
- 
--	kfree(vport->q_vectors);
--	vport->q_vectors = NULL;
-+	kfree(rsrc->q_vectors);
-+	rsrc->q_vectors = NULL;
- }
- 
- /**
-  * idpf_vport_intr_rel_irq - Free the IRQ association with the OS
-  * @vport: main vport structure
-+ * @rsrc: pointer to queue and vector resources
-  */
--static void idpf_vport_intr_rel_irq(struct idpf_vport *vport)
-+static void idpf_vport_intr_rel_irq(struct idpf_vport *vport,
-+				    struct idpf_q_vec_rsrc *rsrc)
- {
- 	struct idpf_adapter *adapter = vport->adapter;
--	int vector;
- 
--	for (vector = 0; vector < vport->num_q_vectors; vector++) {
--		struct idpf_q_vector *q_vector = &vport->q_vectors[vector];
-+	for (u16 vector = 0; vector < rsrc->num_q_vectors; vector++) {
-+		struct idpf_q_vector *q_vector = &rsrc->q_vectors[vector];
- 		int irq_num, vidx;
- 
- 		/* free only the irqs that were actually requested */
- 		if (!q_vector)
- 			continue;
- 
--		vidx = vport->q_vector_idxs[vector];
-+		vidx = rsrc->q_vector_idxs[vector];
- 		irq_num = adapter->msix_entries[vidx].vector;
- 
- 		kfree(free_irq(irq_num, q_vector));
-@@ -3744,14 +3740,13 @@ static void idpf_vport_intr_rel_irq(struct idpf_vport *vport)
- 
- /**
-  * idpf_vport_intr_dis_irq_all - Disable all interrupt
-- * @vport: main vport structure
-+ * @rsrc: pointer to queue and vector resources
-  */
--static void idpf_vport_intr_dis_irq_all(struct idpf_vport *vport)
-+static void idpf_vport_intr_dis_irq_all(struct idpf_q_vec_rsrc *rsrc)
- {
--	struct idpf_q_vector *q_vector = vport->q_vectors;
--	int q_idx;
-+	struct idpf_q_vector *q_vector = rsrc->q_vectors;
- 
--	for (q_idx = 0; q_idx < vport->num_q_vectors; q_idx++)
-+	for (u16 q_idx = 0; q_idx < rsrc->num_q_vectors; q_idx++)
- 		writel(0, q_vector[q_idx].intr_reg.dyn_ctl);
- }
- 
-@@ -3889,8 +3884,10 @@ void idpf_vport_intr_update_itr_ena_irq(struct idpf_q_vector *q_vector)
- /**
-  * idpf_vport_intr_req_irq - get MSI-X vectors from the OS for the vport
-  * @vport: main vport structure
-+ * @rsrc: pointer to queue and vector resources
-  */
--static int idpf_vport_intr_req_irq(struct idpf_vport *vport)
-+static int idpf_vport_intr_req_irq(struct idpf_vport *vport,
-+				   struct idpf_q_vec_rsrc *rsrc)
- {
- 	struct idpf_adapter *adapter = vport->adapter;
- 	const char *drv_name, *if_name, *vec_name;
-@@ -3899,11 +3896,11 @@ static int idpf_vport_intr_req_irq(struct idpf_vport *vport)
- 	drv_name = dev_driver_string(&adapter->pdev->dev);
- 	if_name = netdev_name(vport->netdev);
- 
--	for (vector = 0; vector < vport->num_q_vectors; vector++) {
--		struct idpf_q_vector *q_vector = &vport->q_vectors[vector];
-+	for (vector = 0; vector < rsrc->num_q_vectors; vector++) {
-+		struct idpf_q_vector *q_vector = &rsrc->q_vectors[vector];
- 		char *name;
- 
--		vidx = vport->q_vector_idxs[vector];
-+		vidx = rsrc->q_vector_idxs[vector];
- 		irq_num = adapter->msix_entries[vidx].vector;
- 
- 		if (q_vector->num_rxq && q_vector->num_txq)
-@@ -3931,9 +3928,9 @@ static int idpf_vport_intr_req_irq(struct idpf_vport *vport)
- 
- free_q_irqs:
- 	while (--vector >= 0) {
--		vidx = vport->q_vector_idxs[vector];
-+		vidx = rsrc->q_vector_idxs[vector];
- 		irq_num = adapter->msix_entries[vidx].vector;
--		kfree(free_irq(irq_num, &vport->q_vectors[vector]));
-+		kfree(free_irq(irq_num, &rsrc->q_vectors[vector]));
- 	}
- 
- 	return err;
-@@ -3962,15 +3959,16 @@ void idpf_vport_intr_write_itr(struct idpf_q_vector *q_vector, u16 itr, bool tx)
- /**
-  * idpf_vport_intr_ena_irq_all - Enable IRQ for the given vport
-  * @vport: main vport structure
-+ * @rsrc: pointer to queue and vector resources
-  */
--static void idpf_vport_intr_ena_irq_all(struct idpf_vport *vport)
-+static void idpf_vport_intr_ena_irq_all(struct idpf_vport *vport,
-+					struct idpf_q_vec_rsrc *rsrc)
- {
- 	bool dynamic;
--	int q_idx;
- 	u16 itr;
- 
--	for (q_idx = 0; q_idx < vport->num_q_vectors; q_idx++) {
--		struct idpf_q_vector *qv = &vport->q_vectors[q_idx];
-+	for (u16 q_idx = 0; q_idx < rsrc->num_q_vectors; q_idx++) {
-+		struct idpf_q_vector *qv = &rsrc->q_vectors[q_idx];
- 
- 		/* Set the initial ITR values */
- 		if (qv->num_txq) {
-@@ -3997,13 +3995,15 @@ static void idpf_vport_intr_ena_irq_all(struct idpf_vport *vport)
- /**
-  * idpf_vport_intr_deinit - Release all vector associations for the vport
-  * @vport: main vport structure
-+ * @rsrc: pointer to queue and vector resources
-  */
--void idpf_vport_intr_deinit(struct idpf_vport *vport)
-+void idpf_vport_intr_deinit(struct idpf_vport *vport,
-+			    struct idpf_q_vec_rsrc *rsrc)
- {
--	idpf_vport_intr_dis_irq_all(vport);
--	idpf_vport_intr_napi_dis_all(vport);
--	idpf_vport_intr_napi_del_all(vport);
--	idpf_vport_intr_rel_irq(vport);
-+	idpf_vport_intr_dis_irq_all(rsrc);
-+	idpf_vport_intr_napi_dis_all(rsrc);
-+	idpf_vport_intr_napi_del_all(rsrc);
-+	idpf_vport_intr_rel_irq(vport, rsrc);
- }
- 
- /**
-@@ -4075,14 +4075,12 @@ static void idpf_init_dim(struct idpf_q_vector *qv)
- 
- /**
-  * idpf_vport_intr_napi_ena_all - Enable NAPI for all q_vectors in the vport
-- * @vport: main vport structure
-+ * @rsrc: pointer to queue and vector resources
-  */
--static void idpf_vport_intr_napi_ena_all(struct idpf_vport *vport)
-+static void idpf_vport_intr_napi_ena_all(struct idpf_q_vec_rsrc *rsrc)
- {
--	int q_idx;
--
--	for (q_idx = 0; q_idx < vport->num_q_vectors; q_idx++) {
--		struct idpf_q_vector *q_vector = &vport->q_vectors[q_idx];
-+	for (u16 q_idx = 0; q_idx < rsrc->num_q_vectors; q_idx++) {
-+		struct idpf_q_vector *q_vector = &rsrc->q_vectors[q_idx];
- 
- 		idpf_init_dim(q_vector);
- 		napi_enable(&q_vector->napi);
-@@ -4209,10 +4207,12 @@ static int idpf_vport_splitq_napi_poll(struct napi_struct *napi, int budget)
- /**
-  * idpf_vport_intr_map_vector_to_qs - Map vectors to queues
-  * @vport: virtual port
-+ * @rsrc: pointer to queue and vector resources
-  *
-  * Mapping for vectors to queues
-  */
--static void idpf_vport_intr_map_vector_to_qs(struct idpf_vport *vport)
-+static void idpf_vport_intr_map_vector_to_qs(struct idpf_vport *vport,
-+					     struct idpf_q_vec_rsrc *rsrc)
- {
- 	bool split = idpf_is_queue_model_split(vport->rxq_model);
- 	u16 num_txq_grp = vport->num_txq_grp;
-@@ -4223,7 +4223,7 @@ static void idpf_vport_intr_map_vector_to_qs(struct idpf_vport *vport)
- 	for (i = 0, qv_idx = 0; i < vport->num_rxq_grp; i++) {
- 		u16 num_rxq;
- 
--		if (qv_idx >= vport->num_q_vectors)
-+		if (qv_idx >= rsrc->num_q_vectors)
- 			qv_idx = 0;
- 
- 		rx_qgrp = &vport->rxq_grps[i];
-@@ -4239,7 +4239,7 @@ static void idpf_vport_intr_map_vector_to_qs(struct idpf_vport *vport)
- 				q = &rx_qgrp->splitq.rxq_sets[j]->rxq;
- 			else
- 				q = rx_qgrp->singleq.rxqs[j];
--			q->q_vector = &vport->q_vectors[qv_idx];
-+			q->q_vector = &rsrc->q_vectors[qv_idx];
- 			q_index = q->q_vector->num_rxq;
- 			q->q_vector->rx[q_index] = q;
- 			q->q_vector->num_rxq++;
-@@ -4253,7 +4253,7 @@ static void idpf_vport_intr_map_vector_to_qs(struct idpf_vport *vport)
- 				struct idpf_buf_queue *bufq;
- 
- 				bufq = &rx_qgrp->splitq.bufq_sets[j].bufq;
--				bufq->q_vector = &vport->q_vectors[qv_idx];
-+				bufq->q_vector = &rsrc->q_vectors[qv_idx];
- 				q_index = bufq->q_vector->num_bufq;
- 				bufq->q_vector->bufq[q_index] = bufq;
- 				bufq->q_vector->num_bufq++;
-@@ -4268,7 +4268,7 @@ static void idpf_vport_intr_map_vector_to_qs(struct idpf_vport *vport)
- 	for (i = 0, qv_idx = 0; i < num_txq_grp; i++) {
- 		u16 num_txq;
- 
--		if (qv_idx >= vport->num_q_vectors)
-+		if (qv_idx >= rsrc->num_q_vectors)
- 			qv_idx = 0;
- 
- 		tx_qgrp = &vport->txq_grps[i];
-@@ -4278,14 +4278,14 @@ static void idpf_vport_intr_map_vector_to_qs(struct idpf_vport *vport)
- 			struct idpf_tx_queue *q;
- 
- 			q = tx_qgrp->txqs[j];
--			q->q_vector = &vport->q_vectors[qv_idx];
-+			q->q_vector = &rsrc->q_vectors[qv_idx];
- 			q->q_vector->tx[q->q_vector->num_txq++] = q;
- 		}
- 
- 		if (split) {
- 			struct idpf_compl_queue *q = tx_qgrp->complq;
- 
--			q->q_vector = &vport->q_vectors[qv_idx];
-+			q->q_vector = &rsrc->q_vectors[qv_idx];
- 			q->q_vector->complq[q->q_vector->num_complq++] = q;
- 		}
- 
-@@ -4296,20 +4296,21 @@ static void idpf_vport_intr_map_vector_to_qs(struct idpf_vport *vport)
- /**
-  * idpf_vport_intr_init_vec_idx - Initialize the vector indexes
-  * @vport: virtual port
-+ * @rsrc: pointer to queue and vector resources
-  *
-  * Initialize vector indexes with values returened over mailbox
-  */
--static int idpf_vport_intr_init_vec_idx(struct idpf_vport *vport)
-+static int idpf_vport_intr_init_vec_idx(struct idpf_vport *vport,
-+					struct idpf_q_vec_rsrc *rsrc)
- {
- 	struct idpf_adapter *adapter = vport->adapter;
- 	struct virtchnl2_alloc_vectors *ac;
- 	u16 *vecids, total_vecs;
--	int i;
- 
- 	ac = adapter->req_vec_chunks;
- 	if (!ac) {
--		for (i = 0; i < vport->num_q_vectors; i++)
--			vport->q_vectors[i].v_idx = vport->q_vector_idxs[i];
-+		for (u16 i = 0; i < rsrc->num_q_vectors; i++)
-+			rsrc->q_vectors[i].v_idx = rsrc->q_vector_idxs[i];
- 
- 		return 0;
- 	}
-@@ -4321,8 +4322,8 @@ static int idpf_vport_intr_init_vec_idx(struct idpf_vport *vport)
- 
- 	idpf_get_vec_ids(adapter, vecids, total_vecs, &ac->vchunks);
- 
--	for (i = 0; i < vport->num_q_vectors; i++)
--		vport->q_vectors[i].v_idx = vecids[vport->q_vector_idxs[i]];
-+	for (u16 i = 0; i < rsrc->num_q_vectors; i++)
-+		rsrc->q_vectors[i].v_idx = vecids[rsrc->q_vector_idxs[i]];
- 
- 	kfree(vecids);
- 
-@@ -4332,21 +4333,24 @@ static int idpf_vport_intr_init_vec_idx(struct idpf_vport *vport)
- /**
-  * idpf_vport_intr_napi_add_all- Register napi handler for all qvectors
-  * @vport: virtual port structure
-+ * @rsrc: pointer to queue and vector resources
-  */
--static void idpf_vport_intr_napi_add_all(struct idpf_vport *vport)
-+static void idpf_vport_intr_napi_add_all(struct idpf_vport *vport,
-+					 struct idpf_q_vec_rsrc *rsrc)
- {
- 	int (*napi_poll)(struct napi_struct *napi, int budget);
--	u16 v_idx, qv_idx;
- 	int irq_num;
-+	u16 qv_idx;
- 
- 	if (idpf_is_queue_model_split(vport->txq_model))
- 		napi_poll = idpf_vport_splitq_napi_poll;
- 	else
- 		napi_poll = idpf_vport_singleq_napi_poll;
- 
--	for (v_idx = 0; v_idx < vport->num_q_vectors; v_idx++) {
--		struct idpf_q_vector *q_vector = &vport->q_vectors[v_idx];
--		qv_idx = vport->q_vector_idxs[v_idx];
-+	for (u16 v_idx = 0; v_idx < rsrc->num_q_vectors; v_idx++) {
-+		struct idpf_q_vector *q_vector = &rsrc->q_vectors[v_idx];
-+
-+		qv_idx = rsrc->q_vector_idxs[v_idx];
- 		irq_num = vport->adapter->msix_entries[qv_idx].vector;
- 
- 		netif_napi_add_config(vport->netdev, &q_vector->napi,
-@@ -4358,33 +4362,35 @@ static void idpf_vport_intr_napi_add_all(struct idpf_vport *vport)
- /**
-  * idpf_vport_intr_alloc - Allocate memory for interrupt vectors
-  * @vport: virtual port
-+ * @rsrc: pointer to queue and vector resources
-  *
-  * We allocate one q_vector per queue interrupt. If allocation fails we
-  * return -ENOMEM.
-  */
--int idpf_vport_intr_alloc(struct idpf_vport *vport)
-+int idpf_vport_intr_alloc(struct idpf_vport *vport,
-+			  struct idpf_q_vec_rsrc *rsrc)
- {
- 	u16 txqs_per_vector, rxqs_per_vector, bufqs_per_vector;
- 	struct idpf_q_vector *q_vector;
--	u32 complqs_per_vector, v_idx;
-+	u32 complqs_per_vector;
- 
--	vport->q_vectors = kcalloc(vport->num_q_vectors,
--				   sizeof(struct idpf_q_vector), GFP_KERNEL);
--	if (!vport->q_vectors)
-+	rsrc->q_vectors = kcalloc(rsrc->num_q_vectors,
-+				  sizeof(struct idpf_q_vector), GFP_KERNEL);
-+	if (!rsrc->q_vectors)
- 		return -ENOMEM;
- 
- 	txqs_per_vector = DIV_ROUND_UP(vport->num_txq_grp,
--				       vport->num_q_vectors);
-+				       rsrc->num_q_vectors);
- 	rxqs_per_vector = DIV_ROUND_UP(vport->num_rxq_grp,
--				       vport->num_q_vectors);
-+				       rsrc->num_q_vectors);
- 	bufqs_per_vector = vport->num_bufqs_per_qgrp *
- 			   DIV_ROUND_UP(vport->num_rxq_grp,
--					vport->num_q_vectors);
-+					rsrc->num_q_vectors);
- 	complqs_per_vector = DIV_ROUND_UP(vport->num_txq_grp,
--					  vport->num_q_vectors);
-+					  rsrc->num_q_vectors);
- 
--	for (v_idx = 0; v_idx < vport->num_q_vectors; v_idx++) {
--		q_vector = &vport->q_vectors[v_idx];
-+	for (u16 v_idx = 0; v_idx < rsrc->num_q_vectors; v_idx++) {
-+		q_vector = &rsrc->q_vectors[v_idx];
- 		q_vector->vport = vport;
- 
- 		q_vector->tx_itr_value = IDPF_ITR_TX_DEF;
-@@ -4424,7 +4430,7 @@ int idpf_vport_intr_alloc(struct idpf_vport *vport)
- 	return 0;
- 
- error:
--	idpf_vport_intr_rel(vport);
-+	idpf_vport_intr_rel(rsrc);
- 
- 	return -ENOMEM;
- }
-@@ -4432,40 +4438,41 @@ int idpf_vport_intr_alloc(struct idpf_vport *vport)
- /**
-  * idpf_vport_intr_init - Setup all vectors for the given vport
-  * @vport: virtual port
-+ * @rsrc: pointer to queue and vector resources
-  *
-  * Returns 0 on success or negative on failure
-  */
--int idpf_vport_intr_init(struct idpf_vport *vport)
-+int idpf_vport_intr_init(struct idpf_vport *vport, struct idpf_q_vec_rsrc *rsrc)
- {
- 	int err;
- 
--	err = idpf_vport_intr_init_vec_idx(vport);
-+	err = idpf_vport_intr_init_vec_idx(vport, rsrc);
- 	if (err)
- 		return err;
- 
--	idpf_vport_intr_map_vector_to_qs(vport);
--	idpf_vport_intr_napi_add_all(vport);
-+	idpf_vport_intr_map_vector_to_qs(vport, rsrc);
-+	idpf_vport_intr_napi_add_all(vport, rsrc);
- 
--	err = vport->adapter->dev_ops.reg_ops.intr_reg_init(vport);
-+	err = vport->adapter->dev_ops.reg_ops.intr_reg_init(vport, rsrc);
- 	if (err)
- 		goto unroll_vectors_alloc;
- 
--	err = idpf_vport_intr_req_irq(vport);
-+	err = idpf_vport_intr_req_irq(vport, rsrc);
- 	if (err)
- 		goto unroll_vectors_alloc;
- 
- 	return 0;
- 
- unroll_vectors_alloc:
--	idpf_vport_intr_napi_del_all(vport);
-+	idpf_vport_intr_napi_del_all(rsrc);
- 
- 	return err;
- }
- 
--void idpf_vport_intr_ena(struct idpf_vport *vport)
-+void idpf_vport_intr_ena(struct idpf_vport *vport, struct idpf_q_vec_rsrc *rsrc)
- {
--	idpf_vport_intr_napi_ena_all(vport);
--	idpf_vport_intr_ena_irq_all(vport);
-+	idpf_vport_intr_napi_ena_all(rsrc);
-+	idpf_vport_intr_ena_irq_all(vport, rsrc);
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index c779fe71df99..a034afb06b77 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -1020,12 +1020,16 @@ int idpf_vport_calc_total_qs(struct idpf_adapter *adapter, u16 vport_index,
- void idpf_vport_calc_num_q_groups(struct idpf_vport *vport);
- int idpf_vport_queues_alloc(struct idpf_vport *vport);
- void idpf_vport_queues_rel(struct idpf_vport *vport);
--void idpf_vport_intr_rel(struct idpf_vport *vport);
--int idpf_vport_intr_alloc(struct idpf_vport *vport);
-+void idpf_vport_intr_rel(struct idpf_q_vec_rsrc *rsrc);
-+int idpf_vport_intr_alloc(struct idpf_vport *vport,
-+			  struct idpf_q_vec_rsrc *rsrc);
- void idpf_vport_intr_update_itr_ena_irq(struct idpf_q_vector *q_vector);
--void idpf_vport_intr_deinit(struct idpf_vport *vport);
--int idpf_vport_intr_init(struct idpf_vport *vport);
--void idpf_vport_intr_ena(struct idpf_vport *vport);
-+void idpf_vport_intr_deinit(struct idpf_vport *vport,
-+			    struct idpf_q_vec_rsrc *rsrc);
-+int idpf_vport_intr_init(struct idpf_vport *vport,
-+			 struct idpf_q_vec_rsrc *rsrc);
-+void idpf_vport_intr_ena(struct idpf_vport *vport,
-+			 struct idpf_q_vec_rsrc *rsrc);
- int idpf_config_rss(struct idpf_vport *vport);
- int idpf_init_rss(struct idpf_vport *vport);
- void idpf_deinit_rss(struct idpf_vport *vport);
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c b/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c
-index aba828abcb17..61d6f774e2f6 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c
-@@ -66,11 +66,13 @@ static void idpf_vf_mb_intr_reg_init(struct idpf_adapter *adapter)
- /**
-  * idpf_vf_intr_reg_init - Initialize interrupt registers
-  * @vport: virtual port structure
-+ * @rsrc: pointer to queue and vector resources
-  */
--static int idpf_vf_intr_reg_init(struct idpf_vport *vport)
-+static int idpf_vf_intr_reg_init(struct idpf_vport *vport,
-+				 struct idpf_q_vec_rsrc *rsrc)
- {
- 	struct idpf_adapter *adapter = vport->adapter;
--	int num_vecs = vport->num_q_vectors;
-+	u16 num_vecs = rsrc->num_q_vectors;
- 	struct idpf_vec_regs *reg_vals;
- 	int num_regs, i, err = 0;
- 	u32 rx_itr, tx_itr;
-@@ -89,8 +91,8 @@ static int idpf_vf_intr_reg_init(struct idpf_vport *vport)
- 	}
- 
- 	for (i = 0; i < num_vecs; i++) {
--		struct idpf_q_vector *q_vector = &vport->q_vectors[i];
--		u16 vec_id = vport->q_vector_idxs[i] - IDPF_MBX_Q_VEC;
-+		struct idpf_q_vector *q_vector = &rsrc->q_vectors[i];
-+		u16 vec_id = rsrc->q_vector_idxs[i] - IDPF_MBX_Q_VEC;
- 		struct idpf_intr_reg *intr = &q_vector->intr_reg;
- 		u32 spacing;
- 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index 92c780b1fd46..eca54a67e5f4 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -1923,7 +1923,7 @@ int idpf_send_map_unmap_queue_vector_msg(struct idpf_vport *vport, bool map)
- 
- /**
-  * idpf_send_enable_queues_msg - send enable queues virtchnl message
-- * @vport: Virtual port private data structure
-+ * @vport: virtual port private data structure
-  * @chunks: queue ids received over mailbox
-  *
-  * Will send enable queues virtchnl message.  Returns 0 on success, negative on
-@@ -1937,16 +1937,18 @@ int idpf_send_enable_queues_msg(struct idpf_vport *vport,
- 
- /**
-  * idpf_send_disable_queues_msg - send disable queues virtchnl message
-- * @vport: Virtual port private data structure
-+ * @vport: virtual port private data structure
-+ * @rsrc: pointer to queue and vector resources
-  * @chunks: queue ids received over mailbox
-  *
-  * Will send disable queues virtchnl message.  Returns 0 on success, negative
-  * on failure.
-  */
- int idpf_send_disable_queues_msg(struct idpf_vport *vport,
-+				 struct idpf_q_vec_rsrc *rsrc,
- 				 struct idpf_queue_id_reg_info *chunks)
- {
--	int err, i;
-+	int err;
- 
- 	err = idpf_send_ena_dis_queues_msg(vport, chunks, false);
- 	if (err)
-@@ -1955,13 +1957,13 @@ int idpf_send_disable_queues_msg(struct idpf_vport *vport,
- 	/* switch to poll mode as interrupts will be disabled after disable
- 	 * queues virtchnl message is sent
- 	 */
--	for (i = 0; i < vport->num_txq; i++)
-+	for (u16 i = 0; i < vport->num_txq; i++)
- 		idpf_queue_set(POLL_MODE, vport->txqs[i]);
- 
- 	/* schedule the napi to receive all the marker packets */
- 	local_bh_disable();
--	for (i = 0; i < vport->num_q_vectors; i++)
--		napi_schedule(&vport->q_vectors[i].napi);
-+	for (u16 i = 0; i < rsrc->num_q_vectors; i++)
-+		napi_schedule(&rsrc->q_vectors[i].napi);
- 	local_bh_enable();
- 
- 	return idpf_wait_for_marker_event(vport);
-@@ -3033,6 +3035,7 @@ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
- /**
-  * idpf_vport_alloc_vec_indexes - Get relative vector indexes
-  * @vport: virtual port data struct
-+ * @rsrc: pointer to queue and vector resources
-  *
-  * This function requests the vector information required for the vport and
-  * stores the vector indexes received from the 'global vector distribution'
-@@ -3040,18 +3043,19 @@ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
-  *
-  * Return 0 on success, error on failure
-  */
--int idpf_vport_alloc_vec_indexes(struct idpf_vport *vport)
-+int idpf_vport_alloc_vec_indexes(struct idpf_vport *vport,
-+				 struct idpf_q_vec_rsrc *rsrc)
- {
- 	struct idpf_vector_info vec_info;
- 	int num_alloc_vecs;
- 
--	vec_info.num_curr_vecs = vport->num_q_vectors;
-+	vec_info.num_curr_vecs = rsrc->num_q_vectors;
- 	vec_info.num_req_vecs = max(vport->num_txq, vport->num_rxq);
- 	vec_info.default_vport = vport->default_vport;
- 	vec_info.index = vport->idx;
- 
- 	num_alloc_vecs = idpf_req_rel_vector_indexes(vport->adapter,
--						     vport->q_vector_idxs,
-+						     rsrc->q_vector_idxs,
- 						     &vec_info);
- 	if (num_alloc_vecs <= 0) {
- 		dev_err(&vport->adapter->pdev->dev, "Vector distribution failed: %d\n",
-@@ -3059,7 +3063,7 @@ int idpf_vport_alloc_vec_indexes(struct idpf_vport *vport)
- 		return -EINVAL;
- 	}
- 
--	vport->num_q_vectors = num_alloc_vecs;
-+	rsrc->num_q_vectors = num_alloc_vecs;
- 
- 	return 0;
- }
-@@ -3075,6 +3079,7 @@ int idpf_vport_alloc_vec_indexes(struct idpf_vport *vport)
-  */
- int idpf_vport_init(struct idpf_vport *vport, struct idpf_vport_max_q *max_q)
- {
-+	struct idpf_q_vec_rsrc *rsrc = &vport->dflt_qv_rsrc;
- 	struct idpf_adapter *adapter = vport->adapter;
- 	struct virtchnl2_create_vport *vport_msg;
- 	struct idpf_vport_config *vport_config;
-@@ -3119,7 +3124,7 @@ int idpf_vport_init(struct idpf_vport *vport, struct idpf_vport_max_q *max_q)
- 	idpf_vport_init_num_qs(vport, vport_msg);
- 	idpf_vport_calc_num_q_desc(vport);
- 	idpf_vport_calc_num_q_groups(vport);
--	idpf_vport_alloc_vec_indexes(vport);
-+	idpf_vport_alloc_vec_indexes(vport, rsrc);
- 
- 	vport->crc_enable = adapter->crc_enable;
- 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-index 2251560426df..048b1653dfcd 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-@@ -137,10 +137,12 @@ int idpf_send_delete_queues_msg(struct idpf_vport *vport,
- int idpf_send_enable_queues_msg(struct idpf_vport *vport,
- 				struct idpf_queue_id_reg_info *chunks);
- int idpf_send_disable_queues_msg(struct idpf_vport *vport,
-+				 struct idpf_q_vec_rsrc *rsrc,
- 				 struct idpf_queue_id_reg_info *chunks);
- int idpf_send_config_queues_msg(struct idpf_vport *vport);
- 
--int idpf_vport_alloc_vec_indexes(struct idpf_vport *vport);
-+int idpf_vport_alloc_vec_indexes(struct idpf_vport *vport,
-+				 struct idpf_q_vec_rsrc *rsrc);
- int idpf_get_vec_ids(struct idpf_adapter *adapter,
- 		     u16 *vecids, int num_vecids,
- 		     struct virtchnl2_vector_chunks *chunks);
+ 	u16 tx_itr_profile[IDPF_DIM_PROFILE_SLOTS];
+-	struct idpf_port_stats port_stats;
+ 
++	struct libeth_rx_pt *rx_ptype_lkup;
++	struct idpf_port_stats port_stats;
++	bool default_vport;
++	bool crc_enable;
+ 	bool link_up;
+ 
+ 	wait_queue_head_t sw_marker_wq;
 -- 
 2.43.0
 
