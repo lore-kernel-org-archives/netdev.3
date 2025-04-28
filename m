@@ -1,95 +1,114 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C3E1AC44D
-	for <netdev@vger.kernel.org>; Mon, 28 Apr 2025 10:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EC0263F4C;
+	Mon, 28 Apr 2025 11:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745835825; cv=none; b=PXKfD5jNNe9omaExV4eh9c3GzWCcLjU0/9qhjY0mUbgOeiXcbLVQBVjT6rjoBCDqHgdudLQSPMCkAXWY9mgAyXZXw5/JNC435k+XTLzZ5QYOsQf3xkmdiK1C3v7SbwkTVxOH9tn7e7KPtUjHvU2YPvzvoN9XsFTPBa4d4Ht7aVg=
+	t=1745838628; cv=none; b=miMJq+ll6fLfW2zhO/lH8f7Oz1z0KruZ3Ctgfb2M4WL/ZgfCvjiX8hq8DEvxOeAsHBq2/1x4aT1y2FML1DJo5E4Wl/zFUfBoiqn0p8LRBvQwbHdp60EQ2a6+ERsHUiyQ1gOtECpIoA/tIZWAC4FJfu/dCRV+eq4FG9ELoUVkbW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745835825; c=relaxed/simple;
-	bh=17pvybsa8MjfcQEVNUC4rBbc0vTyJvBdLu6k5GZ+w+g=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NIK6kw0crHSXxWdm8YGXz3xG8N4IIfCsBupeuVURaCpU/Pdk5cnvicVjzhsJQsMxcXmuX4FO2+kQId8IY42w0Ju+06s+YRQ6No6cNObslvdLwz9iY0o77jVHYvoxQQEt37OKgPtmfyIBPn35c+5YoF1c14dhB4PH1WSCTT0r330=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fejes.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fejes.dev
+	s=arc-20240116; t=1745838628; c=relaxed/simple;
+	bh=bIwFZkm38ynM7HX1Oa10JXlzhPJFAfh/bhhb1iyC5Gs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OzZEaL5Flo+vdJ0j4whr4EMgxve9lfGnbWLuOCM7JQ+ksMhSlWIlXDKTVuNJA2Nq6JngBs7x8X5RF3cVFuZjeWmnFQ6kzDEzb3SMXTcM0kb635UBw5rmF7BECNHrogQD9tNCNldew5YmzNuTGQksH46amuclacCFj2un9/3JhtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZcJlintl; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-39c1ef4ae3aso2792910f8f.1
-        for <netdev@vger.kernel.org>; Mon, 28 Apr 2025 03:23:43 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZcJlintl"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5f6222c6c4cso7180120a12.1;
+        Mon, 28 Apr 2025 04:10:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745838624; x=1746443424; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZEPaEW3F/zxdw0Y59OhNfESRd9ryJ0bqx54YjVSlNEM=;
+        b=ZcJlintlA++R/TSYw6ypXpDrXKD6ZJlYhQR/xt/exSEUjJkq+Z1pNsolCHYvKon4HC
+         OQaJLdVGGNWBgBeRS2dskk5ssykSjzdTzcxLrL1IEJTVacjR4CH8M2MjmX0NpesNgPqk
+         4kegSbGYBX5akiv0RsH0HJyE5apHo7kOaBpmPgmOHjUcakrJLWFZvbvyYaUStqz5PxxI
+         jxBdXJkjr67p/8UsZjThzo7zEWi7E2yCeTVp8TW1ouxyOc0Rkqn5Y5TzW6zJRz+FjPpu
+         rHZzSw2/V1IiQv4Gq2BvQvxAWttcU5ALMvqlRcAo1ioK6xH5npjhHe+fvnhRnYfTLNf7
+         yH6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745835822; x=1746440622;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=17pvybsa8MjfcQEVNUC4rBbc0vTyJvBdLu6k5GZ+w+g=;
-        b=A0KoeeY83krjm1PO9HpbtrRUXY9GpcPLFNOcLRJQUfnw39LxzDS3s8dgtgn0UHx599
-         B3DxQMQPs1C0RVZJxY/+YuPxRnT+oLqZ2o3WkdfJgxulKVUhTYAzW6/v+3qNCHZzSyap
-         3ktrC0Cd8zvbamB4C5LUUFxIXI6XxciMLxXAic9se4HAyaJNsS3PxVeEqtcMq2QLIWxO
-         FiEEKwEAUWn/mP56ksG8UDlrFW6l5v0EPM6/HSIhrWOFLLhx1qK/5CFlv+jYTvLfB8rI
-         rKYn2Vg2Nh4GgdiCUajqZQhk48ryiHXyiHwnfF9NNVg1LYf96UyP5vjV5pY46z/RRoTE
-         OE4w==
-X-Gm-Message-State: AOJu0YxeROEA9yZuiWWVCW2yT+yqtOwIWxQ7RrCAe2Vm7NVPojJTfwua
-	Sv86sVxHUWMgAdyf5gpmqpnUDDqtkqzugC7Npe4+gvbG5SeKRZoH
-X-Gm-Gg: ASbGncvunOTE7GghhB92ucA3vo5O/l4Ld6FAVRib01zNmy0ZTYOiUyrY+O5FywfTeZ6
-	vr7Pv4PCzmLkNeaPKAMDflBpr3CNZiMuOqlfaDmuakKyq1ZGfDT26wrN93IDk+OsDmVMzpbqWt2
-	knZQkO7EZJwtaRTtbXMgjPFX1b3zFMnqRNZFal3wbzfMu9oZ7owLoVuEKvPiwWb6JPFYEil++Wu
-	GbpW+jWyVTxurKXha0RhQOBZXj8/A8qgfCa0Ua9A3oo3JLP3FGWO8fZb6Hb4fsE1TG2ZSxtSj6e
-	4M/xSGdOlKF3FDNitYCSl8Yj1MRQ8OpEsE2w6w==
-X-Google-Smtp-Source: AGHT+IEJPlvTjTVx2s8RZz2x3BdkB6aFFlCJtdbcivm7Rv3DHl0LyR5j3onL9rJi0wAnNETnwXCqtA==
-X-Received: by 2002:a5d:64a3:0:b0:39f:bfa:7c90 with SMTP id ffacd0b85a97d-3a06d66cfb5mr12167006f8f.13.1745835821844;
-        Mon, 28 Apr 2025 03:23:41 -0700 (PDT)
-Received: from [10.148.85.1] ([195.228.69.10])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a073e5d264sm10954767f8f.95.2025.04.28.03.23.40
+        d=1e100.net; s=20230601; t=1745838624; x=1746443424;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZEPaEW3F/zxdw0Y59OhNfESRd9ryJ0bqx54YjVSlNEM=;
+        b=DmM9hJPw+BUJYF045Uy7ZY6OIv4AxA3dhnZJWWpA573lFS/O84dR2EpVUdOa8xz19L
+         u0wW38IYLcRKHDx9bK6AdJt4btnm3n3iMH2AoZU4X9owSx9iFg/RTCVPIyz+rM/q0UAm
+         kqSAtJmpwJ/mtTW5RzZRcSNviCsu25P0OQaDpf49nUykOpAEbLT/SvUoE1Ma6KQJZvTr
+         MP9w4z2W17YAVE/EZjJzKSP9JK+PwfXAGvSHShEXwQAYwRnkaw6y7g/JUde5zeT6vdJz
+         S5b45U3FRkD3c9UnbjFHydGizcPG17eMJ5Z/73RogjbYjxvnD9YUItEz/rmlPTAjQngX
+         ZnfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVfH6/W9egzKn6U4ty6J84L6L68j1YY4ttEOQ8vJOoNAN/r0lEAbetnxAR+4v1rApwvXUwVGS4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYrw+rsPwDSSG0S3Kih398271Vfj2juZo/RUx73DFKkyZD0qOh
+	2CFOJlkd5fVT/EDNrUkDw9PwnH4RukVtlehb3J2iqy6KGvsGlZoG
+X-Gm-Gg: ASbGnctjJdAU4R5acg7np+mpCpJKS0fUK9K7WF6db6GPvu89SoQxDewnL/IhYnG0vUT
+	iD339dN+axQ5BwD6Gkfauvo4Pm0Gpb8IgdUad5/SoabM0bDS6KcsdIO86ZPX0WetxxLbf99dQDB
+	ErhdTBpMrIO0IUeD/drz+59dZt5ps4zBJOIESI8+h1LtZvW6Cd13B4t0pPPIEvLZGc3UzuQsEEr
+	fbhOp+R/yoxdMIVzRQLgnL4rflb0LRyLQEbTiOMCi6064x5O4C5po4HNHgYv90MyglcYCBxK5Vb
+	kFbFgbOYRP3Tq9iBNhd6ylm9SEkHmsejRhduOzIqO3DAa5PgpvP017s7csldrS0yJ4RHGTylNcw
+	tnhF6f/w7GmWJO65oevyeiCo1jL1chdABUCWgYXM=
+X-Google-Smtp-Source: AGHT+IGm+R3U2ff1WmMOdGvIBe2V0PqlZpnpHbbBT6HmOy4sjPS3TwTCnqN1mgE4aPVMMPL6rw7qdA==
+X-Received: by 2002:a05:6402:524f:b0:5f6:c5e3:fa98 with SMTP id 4fb4d7f45d1cf-5f72343471dmr10240290a12.27.1745838624398;
+        Mon, 28 Apr 2025 04:10:24 -0700 (PDT)
+Received: from titan.emea.group.atlascopco.com (static-212-247-106-195.cust.tele2.se. [212.247.106.195])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f7016f5dccsm5686131a12.37.2025.04.28.04.10.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Apr 2025 03:23:40 -0700 (PDT)
-Message-ID: <d59000131aeacbe69708dc2c7581dc21758db852.camel@fejes.dev>
-Subject: Re: [question] robust netns association with fib4 lookup
-From: Ferenc Fejes <ferenc@fejes.dev>
-To: David Ahern <dsahern@gmail.com>, Ido Schimmel <idosch@nvidia.com>
-Cc: netdev <netdev@vger.kernel.org>, kuniyu@amazon.com
-Date: Mon, 28 Apr 2025 12:23:40 +0200
-In-Reply-To: <c1266298-8833-4bef-9ac5-6c61ba4dd0c6@gmail.com>
-References: <c28ded3224734ca62187ed9a41f7ab39ceecb610.camel@fejes.dev>
-	 <aAvRxOGcyaEx0_V2@shredder>
-	 <c1266298-8833-4bef-9ac5-6c61ba4dd0c6@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1-1 
+        Mon, 28 Apr 2025 04:10:24 -0700 (PDT)
+From: mattiasbarthel@gmail.com
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	wei.fang@nxp.com,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Mattias Barthel <mattias.barthel@atlascopco.com>
+Subject: [PATCH net] fec: Workaround for ERR007885 on fec_enet_txq_submit_skb()
+Date: Mon, 28 Apr 2025 13:10:18 +0200
+Message-ID: <20250428111018.3048176-1-mattiasbarthel@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, 2025-04-25 at 11:21 -0700, David Ahern wrote:
-> On 4/25/25 11:17 AM, Ido Schimmel wrote:
-> > > Is there any other way to get the netns info for fib4 lookups? If not=
-,
-> > > would it
-> > > be worth an RFC to pass the struct net argument to fib_table_lookup a=
-s
-> > > well, as
-> > > is currently done in fib6_table_lookup?
-> >=20
-> > I think it makes sense to make both tracepoints similar and pass the ne=
-t
-> > argument to trace_fib_table_lookup()
-> >=20
-> > > Unfortunately this includes some callers to fib_table_lookup. The
-> > > netns id would also be presented in the existing tracepoints ([1] and
-> > > [2]). Thanks in advance for any suggestion.
-> >=20
-> > By "netns id" you mean the netns cookie? It seems that some TCP trace
-> > events already expose it (see include/trace/events/tcp.h). It would be
-> > nice to finally have "perf" filter these FIB events based on netns.
-> >=20
-> > David, any objections?
->=20
-> none from me. I was looking at the code last night and going to suggest
-> either plumbing net all the way down or add net to the fib table struct.
->=20
+From: Mattias Barthel <mattias.barthel@atlascopco.com>
 
-Great, thanks for the check. I'll experiment with these to find out which l=
-ooks
-better or less intrusive. Will CC both of you in RFC/v1.
+Activate workaround also in fec_enet_txq_submit_skb() for when TSO is not enbabled.
+
+Errata: ERR007885
+Symptoms: NETDEV WATCHDOG: eth0 (fec): transmit queue 0 timed out
+
+reference commit 37d6017b84f7 ("net: fec: Workaround for imx6sx enet tx hang when enable three queues"),
+
+Signed-off-by: Mattias Barthel <mattias.barthel@atlascopco.com>
+---
+ drivers/net/ethernet/freescale/fec_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index a86cfebedaa8..17e9bddb9ddd 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -714,7 +714,12 @@ static int fec_enet_txq_submit_skb(struct fec_enet_priv_tx_q *txq,
+ 	txq->bd.cur = bdp;
+ 
+ 	/* Trigger transmission start */
+-	writel(0, txq->bd.reg_desc_active);
++	if (!(fep->quirks & FEC_QUIRK_ERR007885) ||
++	    !readl(txq->bd.reg_desc_active) ||
++	    !readl(txq->bd.reg_desc_active) ||
++	    !readl(txq->bd.reg_desc_active) ||
++	    !readl(txq->bd.reg_desc_active))
++		writel(0, txq->bd.reg_desc_active);
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
+
