@@ -1,27 +1,27 @@
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEC8265CD2;
-	Mon, 28 Apr 2025 11:55:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94601DED76;
+	Mon, 28 Apr 2025 12:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745841355; cv=none; b=gK1aNURunedbhAzQvK5OSGx5l4gYNeLp/eHZ+LazcmiPH7/gK3A/KLlwcY0ETNgMuF+sXDxy97NsGhmyq7wK5li72oEHxgACE6Ogq0bF6GYPE9gbhh4ZcraDoVMWdj4+P4LuSY0WfcsYsuKHNY+DTWGjZwSoZbHztDwXuw/11/w=
+	t=1745841916; cv=none; b=cgxvo3qdjsSKIrIRidt+bPCYcN9JTLL6CkLOBADZO5qsLxVkyxH17ibobMffMFdVUBl2XvC64D15hCCWBRoY6EIotNg9z1zpcwAWVOUUdUg+SfCeA9CTT6mLzmJZiGnvQNIMRc5srHOF/qdFLNwQO/F5YkpbAX3pTsgp1h4jt74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745841355; c=relaxed/simple;
-	bh=bs4sVu1SDPDV04Utncap5yMSBI6QPAR58r0OfdUFcg0=;
+	s=arc-20240116; t=1745841916; c=relaxed/simple;
+	bh=RfOJdD5BUi+nJI7xbgDTOcxoqOR1Kt/VacUpy+9m/iQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CXBivMs5vBhDngX7AT+9Y0ush7NVMxo1Rj8dFdKBiDTPue3LIY/yerfhgyfkLNHuHjFjhkIT1p9wtVnOEN20CtWtS/WbmWfnQug7d1VS+pS/VAG7DwVJ5a9v6QnofR2Bexp7vgSOfV8ql8d1duQuDTpGzfxUom/S/Tskk4Xi1Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinsec.com.cn; spf=none smtp.mailfrom=kylinsec.com.cn; arc=none smtp.client-ip=54.243.244.52
+	 MIME-Version; b=Un40ZCxMdha4UYSdyqDtxQrtHfmBIS5Mnwi40VxKhANrCn209dDQheWex1dn7DyVw4kWCIFNAmz07z2Qi6VQg/m51wBRmXC5oy+6XCatIrG7zbgEJ9THvk7w0irKnTNF5RZ1TiQheh4e6s28JDSeQ2L77w6uXt2+o1E4E6eKqZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinsec.com.cn; spf=none smtp.mailfrom=kylinsec.com.cn; arc=none smtp.client-ip=15.184.224.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinsec.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kylinsec.com.cn
-X-QQ-mid: zesmtpsz3t1745841187td2361a33
-X-QQ-Originating-IP: ys7IB8NA/ghcXVMpoph0BeV5U9UDEae97i3K2hj40cY=
+X-QQ-mid: zesmtpsz9t1745841839t32dc210c
+X-QQ-Originating-IP: +fiLpNgiFyCq9nH67qUypFlkxKVTxU7uVycUNFqDSOI=
 Received: from localhost.localdomain ( [175.9.43.233])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 28 Apr 2025 19:53:05 +0800 (CST)
+	id ; Mon, 28 Apr 2025 20:03:58 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 18270107804818011286
+X-BIZMAIL-ID: 9940238249024063661
 EX-QQ-RecipientCnt: 9
 From: Zhou Bowen <zhoubowen@kylinsec.com.cn>
 To: horms@kernel.org
@@ -33,12 +33,12 @@ Cc: Shyam-sundar.S-k@amd.com,
 	netdev@vger.kernel.org,
 	pabeni@redhat.com,
 	zhoubowen@kylinsec.com.cn
-Subject: Re: [PATCH] amd-xgbe: Add device IDs for Hygon 10Gb ethernet controller
-Date: Mon, 28 Apr 2025 19:50:44 +0800
-Message-Id: <20250428115044.2472511-1-zhoubowen@kylinsec.com.cn>
+Subject: [PATCH v1] amd-xgbe: Add device IDs for Hygon 10Gb ethernet controller
+Date: Mon, 28 Apr 2025 20:02:34 +0800
+Message-Id: <20250428120234.2473239-1-zhoubowen@kylinsec.com.cn>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20250416185218.GY395307@horms.kernel.org>
-References: <20250415132006.11268-1-zhoubowen@kylinsec.com.cn>
+References: <20250416185218.GY395307@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,50 +48,47 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpsz:kylinsec.com.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: NiYVgwQNWo+48meKEqbT6gaYaTShYr6EMXuDvC7wDClzUxwDeUyB4dAs
-	fWnjh8tpejbHs6rHe0JPgLJVt4RpQY1/ofzmTtVO0GEaKp9fUwDlgjLX6srp+tpnewo1nbs
-	e6LTmGdAR0fR5ujIa0n9HEQYDpTan6qsuViWcmUxWTUN4GgVlJXG16b/BMmxgIY6fOR4c2e
-	uXUIfmdtz9RQvlPOkBFzv9bKMXEwWcrBJ+Z5UBAbVwO6cKGpJNaAxxZ0/5iIx4Zd2aEMVw4
-	ON1G8iEPzamYYoYREzo0GONT7Nt8TMBHBKU5Zi/wCGr3qec8mz+D/y9WbeP5Z/mUHtX7tuQ
-	MDSp24Tt+zaf+hS/x9FXC+lxeHxzJBh4YZsDjxPOwqunwADe2UOKHAYxKb5iqW2lmUiBBiQ
-	6SHrYcm79VBsOGNCTxqnoji8TWrgkTxqfbtB69K3YoPe6rNXLqGeDIZ4ijjUJRppgOHw6vI
-	NzfwDs9gjUhDoga+Zpyd+8fC2zZtc8JbeKNRaIkAmr+fY/JSyZLN5LNQ+8ph9/ADmYMmnQF
-	r6Vbu+xw5r7xN1O0rPGlHQWZXHL2J9nah6MuQXZ1IEACV7sXnWFIPHopPqgKfoIHxKMxr2k
-	1QFqnekv6uBno8rBk9xQpw5IEetDJmu2NwGfbj7eCXjkJ8krnmNGgQ6EwD8PNyzCkWEyVt5
-	2SU/q5Ke9K+Mt3QQmtl5y1ya3mFJXCw+k00C26RO0va+MsFrcD1Wa/kTMWrkPs7YpPYDrXO
-	iYLerDB6KZkyVRA0HZfoETY1I8LBCYdL66dCTGTRfn4vWxPAagwauU7ZN81W+mOHzWXAABn
-	X7i8xzkQSAUj13DNwRWlNiZPr/c9PPm6R+qxynlBH8hj2/U8XFZHAV8T1FcuhB2tdTRr51n
-	mo8Inffsbgf3TJecx9u5FxFCN4PCK6Gh41ebvdiEU6+qQwnkSWO4JlRD85perTZMBjkzXpk
-	pHs4cUTgNCrwV5XVeK7/ipZHKMI8j7OyZr5ZcH0vNGJ2U18K90mkCVJZhEOaunF9dsa/g+T
-	QnvLAC5JWg0JKy8lqWEduAl4N5Hp9P40dx7mLVKz/PStkPIDThhSjFS/uDXLbBlKPZFzTur
-	jzKDS3f6pp/HDdwXJWOpVhvx30hrOSJtfIdvvkNk828
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+X-QQ-XMAILINFO: M8TtDEU6z3sY061kYGe9fzlAnb0heBOrytg0uFI94QhQsMNpCSifkU6w
+	wpZfk5PgYd4qY+8/ub47/A0eJFPs4Qa5xNvrM3xCTLGlQlsPi47XhLwejIbkXgKQudkfbWp
+	oVoM6r/Uf8TYbrL9oj7KG6+UeUQHy4gxub3tMDS6riam1J2qNB8ek6FDs85ESnWVBce8+US
+	RBJTccl3WdMWdoyGyoDjCVJNPEyHXO2yRHxHa5EFAL0vKBk9Z5IGKSRacU4unhLoNPYnUCn
+	z606ipoyQip+7mkcm+H9Iu//QwXpAzWkR6Fz5gKY77PqFkMYeppbvVH8FJl+I3Kq+gAQnUB
+	w1dpERtycGLN7cCwAupcKHjdTh2gHc3epdP/mTxsOskmFzNB+nllP8ti7AI/nLAPf6Lyj9v
+	WJ5PGSrrXQuOqw7z6s26jtIWKTkvu+qHxVvX+b+7XU41wJAXacBYgVsPtEboy9Ep9T/jju0
+	ELG3ncuppSIuNBgm8mntQLpYjHPX2U3vOUR12DsPMSpAgKdItzTUn3DNnb4jwDRtS3bfl/s
+	XugpdOnzo5T6yHE0wjCDQ6dCj3FwHAZC1sUO39vIAd3//0NETWpc5xiIkH8qHfEubb0S+dK
+	XSDjmQ+DF++EuIZYtzlc+2L5hrofGtU8zmHCntamRFx0NAka/tFhRXBV65VYVzWj45VrwdK
+	V/mPudlb4AKLjW9nqSVig3Y/hfJvO128cvodxYJLCYlRdMigz6231kPDzAzujzOHjPQuZrD
+	FMuhfKuLg9VN4j5OJ79SZmyqdiYfCMdO76ct5CnrlDqTBhqMPTMdsSxz8yJeZIa9Cv016WS
+	0t9yrqDmZDUTVfXRGGsdrOpbXYz+LZRQmViZqEzcFWbzBrw0C4nUxXTCBg1sLJmcYYMLEpM
+	1jCNLffge8fO6mLgZ9HHWvgmwksBIxTwqOWHINlQueJs95M4Ayvo+mLFD3nMfkhrkH5djbR
+	veHUdOJUdx066IST0VMwxN4qbxfjOyTDRki1MmxBS8YwcmPhcrgj7kTWK/EHWj+96xIoE7v
+	o6TrMcUbd5VUGUnopT
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
 X-QQ-RECHKSPAM: 0
 
-Hi Simon,
+Add device IDs for Hygon 10Gb Ethernet controller.
 
-Thank you for reviewing the patch!
-
->On Tue, Apr 15, 2025 at 09:20:06PM +0800, zhoubowen wrote:
->> Add device IDs for Hygon 10Gb Ethernet controller.
->
->Am I correct in assuming that with this change in place these devices
->function correctly with this driver without further modification to it?
->
-
-Yes, this patch has been validated on the Hygon C86-3G platform with the on-board 10GbE NIC.
-It works properly (link up/down, data transfer, etc.) without any additional modifications.
-
->> Signed-off-by: zhoubowen <zhoubowen@kylinsec.com.cn>
->
->Please consider adding a space between your first and family name,
->and capitalising each name in the Signed-off-by and From of
->the patch. e.g. Zhou Bowen
-
-Thanks for your comments, I will fix it,and the corresponding patch will be reissued next time.
-
---
-Best regards,
-Zhou Bowen
-
+Signed-off-by: Zhou Bowen <zhoubowen@kylinsec.com.cn>
 ---
+ drivers/net/ethernet/amd/xgbe/xgbe-pci.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-pci.c b/drivers/net/ethernet/amd/xgbe/xgbe-pci.c
+index f409d7bd1f1e..206ff2e9e3cb 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-pci.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-pci.c
+@@ -510,6 +510,10 @@ static const struct pci_device_id xgbe_pci_table[] = {
+ 	  .driver_data = (kernel_ulong_t)&xgbe_v2a },
+ 	{ PCI_VDEVICE(AMD, 0x1459),
+ 	  .driver_data = (kernel_ulong_t)&xgbe_v2b },
++	{ PCI_VDEVICE(HYGON, 0x1458),
++	  .driver_data = (kernel_ulong_t)&xgbe_v2a },
++	{ PCI_VDEVICE(HYGON, 0x1459),
++	  .driver_data = (kernel_ulong_t)&xgbe_v2b },
+ 	/* Last entry must be zero */
+ 	{ 0, }
+ };
+-- 
+2.27.0
+
