@@ -1,59 +1,59 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54EB9213E7E
-	for <netdev@vger.kernel.org>; Mon, 28 Apr 2025 22:59:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15822147EA
+	for <netdev@vger.kernel.org>; Mon, 28 Apr 2025 22:59:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745881185; cv=none; b=tpU6iMrJEURJgwNQxhyoN2dUoiXd2+wwaYJLXDr4d3dzKoZEC/5G4E/kiCGhSrFhlOh9u3nA/NvKSSYw+jXysD9v00aoVzexABTlWOnVm08GV2G5qygTQ3qtKR8yJbmNc0s6rhODamVddfubVHyWQLfYYqGS1Eqj9gH8tiEw6xY=
+	t=1745881188; cv=none; b=stvmXA8HNwyo/SNN1BFB5l+wNGc3F8Rx22arS76COac60/pAIVE8bxmCzNDAkO1JQEw0H58RPYDnGhnAA03yY7hjCBzRkiI68E6L5hLNiSyXO4woijJQoqifz5HTL6SYoH2wNgIkNv95OEBYVtFqNIz6265m4KJwFB4EN55Tjw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745881185; c=relaxed/simple;
-	bh=f4t4TKJlNpYkqk7ehL7tBnOY98/Qu6Z8p38RJIuv0S0=;
+	s=arc-20240116; t=1745881188; c=relaxed/simple;
+	bh=RS7kxD9bGcaZlohLXX7CdpJBw+mRTmDp3aL7u6by1Ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBGEgML6VoN37LHOoJFCESrecgv5le+motWcqKSJ114qykYf4B8Soon1bgtgcgQcSFnTHqzqqczq1kyZ6PClgKvAclB5ePI0NxwofPn98a8ndJ5dE7MEWa6/CQLEppwCGICeswcH1cU9FSyNuLwrzdiCBVGEDYCPFr094vVr1Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ebozQUbQ; arc=none smtp.client-ip=209.85.210.171
+	 MIME-Version; b=MeMiwydUiAPrn4NkhBN5p/hvHy/CZdO2U09kbpTNO31t5CWOmAD28pNdT110CZhT3FBVo9IqjmrGne7CGSvqLxAgYCbIsXEOGHur5xi7SucwJPijaaD7GrLSlKISOyRG1yqzgKK+AptULLe2Y3qMvuIGM4bR1GQxfIc/CPd2thg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=UUQdI6Ci; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ebozQUbQ"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7396f13b750so5952991b3a.1
-        for <netdev@vger.kernel.org>; Mon, 28 Apr 2025 15:59:44 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UUQdI6Ci"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-73712952e1cso5749215b3a.1
+        for <netdev@vger.kernel.org>; Mon, 28 Apr 2025 15:59:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1745881183; x=1746485983; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1745881186; x=1746485986; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iSWwfqmUXunE76n4urBHfhNwMzZjjmoFWMuTQWI0bTc=;
-        b=ebozQUbQES2usX4OnNgHNCxGLKSnXXIV3m7E5yI5gAbjEZUcbePJiU7LWiuzXOyEG4
-         UP4bCIpW6cZRPHy+2LQlJbf4VywwJh4KdGppm+UBAQoJyWSrixzWPodYy78blh/rv9+P
-         D1C+oRvCQnFfgfTisSnLilmlR2paBHa4rLzvw=
+        bh=b/Fj2lziC2fCK6yEmJRcDnu1EO2oNWh6h/OQdmv3/vk=;
+        b=UUQdI6Ci0Z2jU6lgEiMQL7nBNgBQfL1P7ZZ8bIXcayLZ30mm2nFUseF1IZIUxqNLXH
+         xcDL0VnGBQEZgKmNRygTv5/OvmrxVsS8ZOnRyN/Auul/ElQKX9ptSDtbhsK22FB+txif
+         fda2zSguc9JjH8m4h8fx5VEP0EOEM2ZL96uoQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745881183; x=1746485983;
+        d=1e100.net; s=20230601; t=1745881186; x=1746485986;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iSWwfqmUXunE76n4urBHfhNwMzZjjmoFWMuTQWI0bTc=;
-        b=YliJER82p0PR/YecX3uvVY4HdB0+EHKufpzuY1Ce1+g78fWmPglogbwuvcGhGsAjB+
-         ZoFq8C9AVbpJNyluupcDAeyZGXRePHcbsOTTRO29OH56Q9aqzkPgAH7hvyJzlZxHVMkz
-         ft6LsDTURqq8xVqErI9rgIO9qDOEmMlkTLzbmssdy5vtw6cRWPkpXi5ZEMRzVhafHJWD
-         kHWVKYSYlGUlYfBEKJcC33dwHc/nWDJBoxGsnUPps7Nx1Q/nrZp0mT9ogwQjb4UJEm98
-         peZZcE9OEefgow+X8j87ZI0M1U/C5Lo/lq/8C4fbDug1cTHwjLtmGgTBpNUOevio62k5
-         y5Jw==
-X-Gm-Message-State: AOJu0YyQwB28CPIQ8Lsu23pSbqpEuFDfZlzWdMVSmskrNrbYFw+LWfUo
-	8zeiPO7EtSNrmYIv0iZ+R+L8qYAG7GO0oj/3fPDbibnossDEBZULBRs/Yiv5LQ==
-X-Gm-Gg: ASbGncvDMDEEiXW1kmZBDh/GKf5d7Sg1MkbEX2INpFuglc8MYk841q1vq3J2/usDVQq
-	6P6RVJnfZdq9VAjCjmXpP/nUQd+EJxL4lGgFODXYnOVhSflhktTt2Aw4TewjW0tSzlJV3ZmbdRA
-	vlHIiZyUq4ChFe2S9YcMLMWdsz3C647ANm/ZeTlsitKg5alTc8/tXKhXGCONFUH9KuXgNc+nML2
-	rez9URb+5DdLQR9Ih2OS6D9SHxp5Ivow3+EPaJmu343zlM8Xcp0JOGJF0a/NWVjLTSxswTKr5FH
-	8yyUvtOm3aGrEquVXI/i3mD9GAvoptKzLXjqAwoKk0WIwned2h4Rxlg7aR5lRPrwMzkjjQcIXc1
-	86hMHYbzFArdH0A0L
-X-Google-Smtp-Source: AGHT+IHowHADbrW3+jryVDOKkhOspEJcX5pv9I8rGMLLEE+5sX59ak95C0+tpoI6pBGsPRWYkVSrOw==
-X-Received: by 2002:a05:6a00:2303:b0:72d:9cbc:730d with SMTP id d2e1a72fcca58-7402929fdc3mr1137310b3a.11.1745881183478;
-        Mon, 28 Apr 2025 15:59:43 -0700 (PDT)
+        bh=b/Fj2lziC2fCK6yEmJRcDnu1EO2oNWh6h/OQdmv3/vk=;
+        b=eGXhXu3Q+YIMd1cWH6urW4Z4o5D3bqIOj4ONGHjExf95zQTD6ERFBnCzRZyzlWJDd1
+         U6okgk/2uJ5dBFntnRcK6bNGPbZFdXqXRfQna1NtjQdn5avdoxV7/Ifj7qupa39zWhuj
+         JcF3haanSFEd8qSGF0Ra1bgC9JvkCldBMKliK9Bj4ktf9IUrVmmOc2IaqsclhrCJIMRV
+         lPTU3cdKh2Z5CVF6hyKcm1J7Ow49osRlfBmIucVSAgR9bsRULAJXTG0mMNSR2w08jvoW
+         ZSD2tPRol60ZgvOGX9oV2Ee80sLZPZQgoqdMdfRxlk/kLW/TIxxmFOi7f7brPodCkAlg
+         mULQ==
+X-Gm-Message-State: AOJu0YwF7oUiWRqQhCmd026ETadokU/0n37gzTh9AvoUAbcMEjAxp3H6
+	pILC9tBWZ5Ir6j5HQqrFwSecPDJVW0zPf7IzqhuqCtEsRk5M1SQPS4W1AmYOnQ==
+X-Gm-Gg: ASbGncsyyxWZXWPa4zRTpJDypK5t7Nt/KF+FkM226mvhNspviPFvq1Q4QWZY9pafbqC
+	PBVWXnXg1pUtg9+ofVouzlj0g/BNtO0sIlRkX3hnL3vg1cIXA4d7QnVzr4bTkIxDjEZ+zfXvnzS
+	Os8GNnJeLblSDSDQXh74cmPOizA6UsQXmcNCfO55FWHJifXk9+RGLIZ8A0wicdNs6xWClXvljN5
+	28055WSZo3VNZ0r8A8CMXCIPcOA56fLe7Au4WqRyJYbMScR4p9q+oly8m9VBEIM6iwmqWMIQBxy
+	4RElkCBJLFXTWBGpDzqL7c6XqPNJixVzWBAh0rXb6J+ilVCLoXN5kG8k87rJGX2efO7qgfhHjNQ
+	axnOXmgYXWnx8+3U/
+X-Google-Smtp-Source: AGHT+IFxeMQjROjtSgoLS8zDG/WJCPeb6eX9NMxlEfNQ+bD841VJUh0ETid3kLh4D9pn4+kXZlW8Ng==
+X-Received: by 2002:a05:6a00:114f:b0:730:9502:d564 with SMTP id d2e1a72fcca58-73ff72e3083mr14363270b3a.14.1745881186078;
+        Mon, 28 Apr 2025 15:59:46 -0700 (PDT)
 Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e25aca4e8sm8534344b3a.162.2025.04.28.15.59.42
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e25aca4e8sm8534344b3a.162.2025.04.28.15.59.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Apr 2025 15:59:43 -0700 (PDT)
+        Mon, 28 Apr 2025 15:59:45 -0700 (PDT)
 From: Michael Chan <michael.chan@broadcom.com>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -63,10 +63,11 @@ Cc: netdev@vger.kernel.org,
 	andrew+netdev@lunn.ch,
 	pavan.chebbi@broadcom.com,
 	andrew.gospodarek@broadcom.com,
-	Kashyap Desai <kashyap.desai@broadcom.com>
-Subject: [PATCH net 4/8] bnxt_en: call pci_alloc_irq_vectors() after bnxt_reserve_rings()
-Date: Mon, 28 Apr 2025 15:58:59 -0700
-Message-ID: <20250428225903.1867675-5-michael.chan@broadcom.com>
+	Shruti Parab <shruti.parab@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Subject: [PATCH net 6/8] bnxt_en: Fix coredump logic to free allocated buffer
+Date: Mon, 28 Apr 2025 15:59:01 -0700
+Message-ID: <20250428225903.1867675-7-michael.chan@broadcom.com>
 X-Mailer: git-send-email 2.43.4
 In-Reply-To: <20250428225903.1867675-1-michael.chan@broadcom.com>
 References: <20250428225903.1867675-1-michael.chan@broadcom.com>
@@ -78,45 +79,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Kashyap Desai <kashyap.desai@broadcom.com>
+From: Shruti Parab <shruti.parab@broadcom.com>
 
-On some architectures (e.g. ARM), calling pci_alloc_irq_vectors()
-will immediately cause the MSIX table to be written.  This will not
-work if we haven't called bnxt_reserve_rings() to properly map
-the MSIX table to the MSIX vectors reserved by FW.
+When handling HWRM_DBG_COREDUMP_LIST FW command in
+bnxt_hwrm_dbg_dma_data(), the allocated buffer info->dest_buf is
+not freed in the error path.  In the normal path, info->dest_buf
+is assigned to coredump->data and it will eventually be freed after
+the coredump is collected.
 
-Fix the FW error recovery path to delay the bnxt_init_int_mode() ->
-pci_alloc_irq_vectors() call by removing it from bnxt_hwrm_if_change().
-bnxt_request_irq() later in the code path will call it and by then the
-MSIX table is properly mapped.
+Free info->dest_buf immediately inside bnxt_hwrm_dbg_dma_data() in
+the error path.
 
-Fixes: 4343838ca5eb ("bnxt_en: Replace deprecated PCI MSIX APIs")
-Suggested-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Fixes: c74751f4c392 ("bnxt_en: Return error if FW returns more data than dump length")
+Reported-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Shruti Parab <shruti.parab@broadcom.com>
 Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index cfc9ccab39bf..3b2ea36f25a2 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -12399,13 +12399,8 @@ static int bnxt_hwrm_if_change(struct bnxt *bp, bool up)
- 				set_bit(BNXT_STATE_ABORT_ERR, &bp->state);
- 				return rc;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c
+index 5576e7cf8463..9a74793648f6 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c
+@@ -116,6 +116,11 @@ static int bnxt_hwrm_dbg_dma_data(struct bnxt *bp, void *msg,
+ 				memcpy(info->dest_buf + off, dma_buf, len);
+ 			} else {
+ 				rc = -ENOBUFS;
++				if (cmn_req->req_type ==
++				    cpu_to_le16(HWRM_DBG_COREDUMP_LIST)) {
++					kfree(info->dest_buf);
++					info->dest_buf = NULL;
++				}
+ 				break;
  			}
-+			/* IRQ will be initialized later in bnxt_request_irq()*/
- 			bnxt_clear_int_mode(bp);
--			rc = bnxt_init_int_mode(bp);
--			if (rc) {
--				clear_bit(BNXT_STATE_FW_RESET_DET, &bp->state);
--				netdev_err(bp->dev, "init int mode failed\n");
--				return rc;
--			}
  		}
- 		rc = bnxt_cancel_reservations(bp, fw_reset);
- 	}
 -- 
 2.30.1
 
