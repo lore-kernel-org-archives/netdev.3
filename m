@@ -1,95 +1,81 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F44264FB0
-	for <netdev@vger.kernel.org>; Mon, 28 Apr 2025 12:51:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BED71F8AC5;
+	Mon, 28 Apr 2025 12:54:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745844704; cv=none; b=qLvoeMRc+KUb57S+/9f7aCsz4yAdVPwDOzcdTLQmodfTBFrbZSxm8eSxNQyHO1y4prMNhCmZtBcO+9FLg+cVEf696COCteh7vvxhX7PIw4EHf4N9Ond7FfQDCqt8RHr3H9MLD5SI0ifPlgdSv9KQqn3GfnEMqrSaxYDQEShhYxQ=
+	t=1745844849; cv=none; b=VJb7E+beKp4IAgJcOWf+S2QSV+FomVRg+vkle1MQvgazILqc3O51uJRuAUN3WitpAYvqFWznMSfQPUnXFx50atA/1o1uekhrsYEbCqZSwg62VqfTFz8DdzP4AO0KZ8P2tD5TbOInKjK+lgZ4KpzgcKd9zDwx3ojEE2BVCJXFkCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745844704; c=relaxed/simple;
-	bh=uk7Y3YRIZo49khtn8nhECd6YZErDw92lSstgPpb5TVI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jdog/sFaBnAfpulmZUho96hel1/Max5eEdN7DL+7O3kadz60JZXLvhwYHtcp8A2hlhW980DJHZcpcEekHDy4CwW7cSkRUgwAxD4PV6QY8RzB4UMN61ADELwCsNqDWgs8U13MAGV1kqTT9LfYC97TY4c4HXBdG72vEYHbZ6GIxXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1u9NxD-0002i5-AO; Mon, 28 Apr 2025 14:51:23 +0200
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1u9NxB-00068F-2k;
-	Mon, 28 Apr 2025 14:51:21 +0200
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1u9NxB-00EK9k-2U;
-	Mon, 28 Apr 2025 14:51:21 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: "David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew@lunn.ch>,
+	s=arc-20240116; t=1745844849; c=relaxed/simple;
+	bh=ljVmkwfyBpxbZuNNqkJ6Uc4gcwYncJlBYXT65/Ip3V8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UqWrlXbhRhK7Br5VXgRJ2YuAbhQla2mLa0g4RyBOdYUyGTtt2uPRH1vfFoliE2S2J1mVzWzyxNl+7p29OsbrMeqZVRFXFeAUtVS3XqhfadHNgfJW74lhD20NR4gJ72Bt1UpNbN2qGozUNHCTrwOR6NAZuHyZIpeehUWWZk6gVDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=TyTI+CiJ; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="TyTI+CiJ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=KuthMj4SVMiZzJYTH3vd30SFc9+oF/zdEInnc/IAW3I=; b=TyTI+CiJ2BuRPrHGUpV3WnqfK5
+	pQHGHEiVzGirZafi2MBTbScvTMlVUkWI4B1Uq1BlJQGwXJUP0ZBrOMQ08AFtFSVdok8NwhLo7IrD9
+	srcEU0Yf9668WCud4JinfuHuAEnFCMxouxXhdBk96mxRhIORVK61LG5lhfsDg+kwHsjA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1u9Nzf-00Apzo-1Z; Mon, 28 Apr 2025 14:53:55 +0200
+Date: Mon, 28 Apr 2025 14:53:55 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: daniel.braunwarth@kuka.com
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	"Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	UNGLinuxDriver@microchip.com,
-	stable@vger.kernel.org
-Subject: [PATCH net v1 0/2] address EEE regressions on KSZ switches since v6.9 (v6.14+)
-Date: Mon, 28 Apr 2025 14:51:17 +0200
-Message-Id: <20250428125119.3414046-1-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: phy: realtek: Add support for WOL magic
+ packet on RTL8211F
+Message-ID: <39f9fa02-7fa9-4246-aaa5-2f14d6319f90@lunn.ch>
+References: <20250428-realtek_wol-v1-1-15de3139d488@kuka.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250428-realtek_wol-v1-1-15de3139d488@kuka.com>
 
-This patch series addresses a regression in Energy Efficient Ethernet
-(EEE) handling for KSZ switches with integrated PHYs, introduced in
-kernel v6.9 by commit fe0d4fd9285e ("net: phy: Keep track of EEE
-configuration").
+> +static void rtl8211f_get_wol(struct phy_device *dev, struct ethtool_wolinfo *wol)
+> +{
+> +	struct rtl821x_priv *priv = dev->priv;
+> +
+> +	wol->supported = WAKE_MAGIC;
+> +	wol->wolopts = priv->saved_wolopts;
 
-The first patch updates the DSA driver to allow phylink to properly
-manage PHY EEE configuration. Since integrated PHYs handle LPI
-internally and ports without integrated PHYs do not document MAC-level
-LPI support, dummy MAC LPI callbacks are provided.
+Can the current configuration be read from the hardware, rather than
+using a cached value. The BIOS could for example enable magic packet,
+and Linux inherits it.
 
-The second patch removes outdated EEE workarounds from the micrel PHY
-driver, as they are no longer needed with correct phylink handling.
+> +static int rtl8211f_set_wol(struct phy_device *dev, struct ethtool_wolinfo *wol)
+> +{
+> +	struct rtl821x_priv *priv = dev->priv;
+> +	const u8 *mac_addr = dev->attached_dev->dev_addr;
+> +	int oldpage;
+> +
+> +	oldpage = phy_save_page(dev);
+> +	if (oldpage < 0)
+> +		goto err;
+> +
+> +	if (wol->wolopts & WAKE_MAGIC) {
+> +		/* Store the device address for the magic packet */
+> +		rtl821x_write_page(dev, 0xd8c);
 
-This series addresses the regression for mainline and kernels starting
-from v6.14. It is not easily possible to fully fix older kernels due
-to missing infrastructure changes.
+Does the datasheet have names for these magic values? Please add
+#defines.
 
-Tested on KSZ9893 hardware.
-
-Oleksij Rempel (2):
-  net: dsa: microchip: let phylink manage PHY EEE configuration on KSZ
-    switches
-  net: phy: micrel: remove KSZ9477 EEE quirks now handled by phylink
-
- drivers/net/dsa/microchip/ksz_common.c | 97 ++++++++++++++++++--------
- drivers/net/phy/micrel.c               |  7 --
- include/linux/micrel_phy.h             |  1 -
- 3 files changed, 69 insertions(+), 36 deletions(-)
-
---
-2.39.5
-
+	Andrew
