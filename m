@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8885F26F44B
-	for <netdev@vger.kernel.org>; Mon, 28 Apr 2025 13:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9521D26F475
+	for <netdev@vger.kernel.org>; Mon, 28 Apr 2025 13:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745845557; cv=none; b=m7jqE7GTA2jRZaRN3IKuCPXShbeBmspHGoLyCE0ea6wE+z9G3GCt3bdAejRghJk8qL/zwaTFN2680yQFWkUB2q5rGgMoqGwx9pkOKN7QUgZyvlAz2KDEhj3vxADynda30ecHAnkm2DEcHm7/DOUmFB7RjqlHZghs4z/K93b+YlM=
+	t=1745845558; cv=none; b=NZBtjPufLan4s4e9PYnfQEB4EqEMkBiVMix1SgweUk38vYd0VvEPTfCAFq7/lmEYNOohVymmDiqfE3WvaPDzP3wgDqmclPmM2HLg62a9luoW6d0+MgHy+601mtDSA5fRFFFRcCNMGJ/Jf+PigMMr8lquC2kITkDbH09pMqbi/2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745845557; c=relaxed/simple;
-	bh=yDBPrVSL+UwTdx3j7DqwG9mfpeNf/ZqzrDQtnxyuIIs=;
+	s=arc-20240116; t=1745845558; c=relaxed/simple;
+	bh=5URiGYR5zlAEfTrePIZ8K4h++6AoVHBDIfSU+U1wtuI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rLhUPQSYXmKK2Dh/OduoooQi07/0ivxvt2nwc7uQMfDK92f5NxitoB7lztOUIglUf2VkOqN/qnUn5ZXYYnaUN+kJTTQNgOASh4xuoRIlNxkLD3CXb6/op1D3OLryQfk+Y7hvoHejNA5MupqIEUibK+NflvqIMa6ihSxfl6ysxBg=
+	 MIME-Version:Content-Type; b=upGOh/6/UZl1d1heGvjkNnlaMXAZYk5Om5k69aAiuLNFXNTRqti+Tih91kAU/AF7Euym7EWHSJmH2XfLThnUEGvmsiwcYWSiHF3qZneSLpioJ9pb9xgLIzo7g9Q6hoLfBcM7rHIKMDGea7AmFiF7MWaHaBO4m60Kb8N2eMvrhZE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u9OB7-0000MS-L7; Mon, 28 Apr 2025 15:05:45 +0200
+	id 1u9OB7-0000MQ-L7; Mon, 28 Apr 2025 15:05:45 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u9OB6-0006FQ-0n;
+	id 1u9OB6-0006FM-0Y;
 	Mon, 28 Apr 2025 15:05:44 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u9OB6-00GJ8z-0U;
+	id 1u9OB6-00GJ7J-0J;
 	Mon, 28 Apr 2025 15:05:44 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -47,9 +47,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Phil Elwell <phil@raspberrypi.org>,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next v7 06/12] net: usb: lan78xx: Refactor USB link power configuration into helper
-Date: Mon, 28 Apr 2025 15:05:36 +0200
-Message-Id: <20250428130542.3879769-7-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v7 03/12] net: usb: lan78xx: refactor PHY init to separate detection and MAC configuration
+Date: Mon, 28 Apr 2025 15:05:33 +0200
+Message-Id: <20250428130542.3879769-4-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250428130542.3879769-1-o.rempel@pengutronix.de>
 References: <20250428130542.3879769-1-o.rempel@pengutronix.de>
@@ -59,165 +59,261 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Move the USB link power configuration logic from lan78xx_link_reset()
-to a new helper function lan78xx_configure_usb(). This simplifies the
-main link reset path and isolates USB-specific logic.
+Split out PHY detection into lan78xx_get_phy() and MAC-side setup into
+lan78xx_mac_prepare_for_phy(), making the main lan78xx_phy_init() cleaner
+and easier to follow.
 
-The new function handles U1/U2 enablement based on Ethernet link speed,
-but only for SuperSpeed-capable devices (LAN7800 and LAN7801). LAN7850,
-a High-Speed-only device, is explicitly excluded. A warning is logged
-if SuperSpeed is reported unexpectedly for LAN7850.
+This improves separation of concerns and prepares the code for a future
+transition to phylink. Fixed PHY registration and interface selection
+are now handled in lan78xx_get_phy(), while MAC-side delay configuration
+is done in lan78xx_mac_prepare_for_phy().
 
-Add a forward declaration for lan78xx_configure_usb() as preparation for
-the upcoming phylink conversion, where it will also be used from the
-mac_link_up() callback.
+The fixed PHY fallback is preserved for setups like EVB-KSZ9897-1,
+where LAN7801 connects directly to a KSZ switch without a standard PHY
+or device tree support.
 
-Open questions remain:
-
-- Why is the 1000 Mbps configuration split into two steps (U2 disable,
-  then U1 enable), unlike the single-step config used for 10/100 Mbps?
-
-- U1/U2 behavior appears to depend on proper EEPROM configuration.
-  There are known devices in the field without EEPROM. Should the driver
-  enforce safe defaults in such cases?
-
-Due to lack of USB subsystem expertise, no changes were made to this logic
-beyond structural refactoring.
+No functional changes intended.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
 changes v6:
 - this patch is added in v6
 ---
- drivers/net/usb/lan78xx.c | 90 +++++++++++++++++++++++++--------------
- 1 file changed, 59 insertions(+), 31 deletions(-)
+ drivers/net/usb/lan78xx.c | 174 ++++++++++++++++++++++++++++----------
+ 1 file changed, 128 insertions(+), 46 deletions(-)
 
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index de2b429e906e..bff53324c70a 100644
+index 9c0658227bde..7f1ecc415d53 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -1650,12 +1650,13 @@ static int lan78xx_phy_int_ack(struct lan78xx_net *dev)
- 	return lan78xx_write_reg(dev, INT_STS, INT_STS_PHY_INT_);
- }
- 
-+static int lan78xx_configure_usb(struct lan78xx_net *dev, int speed);
-+
- static int lan78xx_link_reset(struct lan78xx_net *dev)
- {
- 	struct phy_device *phydev = dev->net->phydev;
- 	struct ethtool_link_ksettings ecmd;
- 	int ladv, radv, ret, link;
--	u32 buf;
- 
- 	/* clear LAN78xx interrupt status */
- 	ret = lan78xx_phy_int_ack(dev);
-@@ -1681,36 +1682,9 @@ static int lan78xx_link_reset(struct lan78xx_net *dev)
- 
- 		phy_ethtool_ksettings_get(phydev, &ecmd);
- 
--		if (dev->udev->speed == USB_SPEED_SUPER) {
--			if (ecmd.base.speed == 1000) {
--				/* disable U2 */
--				ret = lan78xx_read_reg(dev, USB_CFG1, &buf);
--				if (ret < 0)
--					return ret;
--				buf &= ~USB_CFG1_DEV_U2_INIT_EN_;
--				ret = lan78xx_write_reg(dev, USB_CFG1, buf);
--				if (ret < 0)
--					return ret;
--				/* enable U1 */
--				ret = lan78xx_read_reg(dev, USB_CFG1, &buf);
--				if (ret < 0)
--					return ret;
--				buf |= USB_CFG1_DEV_U1_INIT_EN_;
--				ret = lan78xx_write_reg(dev, USB_CFG1, buf);
--				if (ret < 0)
--					return ret;
--			} else {
--				/* enable U1 & U2 */
--				ret = lan78xx_read_reg(dev, USB_CFG1, &buf);
--				if (ret < 0)
--					return ret;
--				buf |= USB_CFG1_DEV_U2_INIT_EN_;
--				buf |= USB_CFG1_DEV_U1_INIT_EN_;
--				ret = lan78xx_write_reg(dev, USB_CFG1, buf);
--				if (ret < 0)
--					return ret;
--			}
--		}
-+		ret = lan78xx_configure_usb(dev, ecmd.base.speed);
-+		if (ret < 0)
-+			return ret;
- 
- 		ladv = phy_read(phydev, MII_ADVERTISE);
- 		if (ladv < 0)
-@@ -2522,6 +2496,60 @@ static void lan78xx_remove_irq_domain(struct lan78xx_net *dev)
+@@ -2508,53 +2508,145 @@ static void lan78xx_remove_irq_domain(struct lan78xx_net *dev)
  	dev->domain_data.irqdomain = NULL;
  }
  
+-static struct phy_device *lan7801_phy_init(struct lan78xx_net *dev)
 +/**
-+ * lan78xx_configure_usb - Configure USB link power settings
-+ * @dev: pointer to the LAN78xx device structure
-+ * @speed: negotiated Ethernet link speed (in Mbps)
++ * lan78xx_register_fixed_phy() - Register a fallback fixed PHY
++ * @dev: LAN78xx device
 + *
-+ * This function configures U1/U2 link power management for SuperSpeed
-+ * USB devices based on the current Ethernet link speed. It uses the
-+ * USB_CFG1 register to enable or disable U1 and U2 low-power states.
++ * Registers a fixed PHY with 1 Gbps full duplex. This is used in special cases
++ * like EVB-KSZ9897-1, where LAN7801 acts as a USB-to-Ethernet interface to a
++ * switch without a visible PHY.
 + *
-+ * Note: Only LAN7800 and LAN7801 support SuperSpeed (USB 3.x).
-+ *       LAN7850 is a High-Speed-only (USB 2.0) device and is skipped.
-+ *
-+ * Return: 0 on success or a negative error code on failure.
++ * Return: pointer to the registered fixed PHY, or ERR_PTR() on error.
 + */
-+static int lan78xx_configure_usb(struct lan78xx_net *dev, int speed)
++static struct phy_device *lan78xx_register_fixed_phy(struct lan78xx_net *dev)
+ {
+ 	struct fixed_phy_status fphy_status = {
+ 		.link = 1,
+ 		.speed = SPEED_1000,
+ 		.duplex = DUPLEX_FULL,
+ 	};
++
++	netdev_info(dev->net,
++		    "No PHY found on LAN7801 – registering fixed PHY (e.g. EVB-KSZ9897-1)\n");
++
++	return fixed_phy_register(PHY_POLL, &fphy_status, NULL);
++}
++
++/**
++ * lan78xx_get_phy() - Probe or register PHY device and set interface mode
++ * @dev: LAN78xx device structure
++ *
++ * This function attempts to find a PHY on the MDIO bus. If no PHY is found
++ * and the chip is LAN7801, it registers a fixed PHY as fallback. It also
++ * sets dev->interface based on chip ID and detected PHY type.
++ *
++ * Return: a valid PHY device pointer, or ERR_PTR() on failure.
++ */
++static struct phy_device *lan78xx_get_phy(struct lan78xx_net *dev)
 +{
-+	u32 mask, val;
-+	int ret;
+ 	struct phy_device *phydev;
+-	int ret;
+ 
++	/* Attempt to locate a PHY on the MDIO bus */
+ 	phydev = phy_find_first(dev->mdiobus);
+-	if (!phydev) {
+-		netdev_dbg(dev->net, "PHY Not Found!! Registering Fixed PHY\n");
+-		phydev = fixed_phy_register(PHY_POLL, &fphy_status, NULL);
+-		if (IS_ERR(phydev)) {
+-			netdev_err(dev->net, "No PHY/fixed_PHY found\n");
+-			return ERR_PTR(-ENODEV);
 +
-+	/* Only configure USB settings for SuperSpeed devices */
-+	if (dev->udev->speed != USB_SPEED_SUPER)
-+		return 0;
++	switch (dev->chipid) {
++	case ID_REV_CHIP_ID_7801_:
++		if (phydev) {
++			/* External RGMII PHY detected */
++			dev->interface = PHY_INTERFACE_MODE_RGMII_ID;
++			phydev->is_internal = false;
 +
-+	/* LAN7850 does not support USB 3.x */
-+	if (dev->chipid == ID_REV_CHIP_ID_7850_) {
-+		netdev_warn_once(dev->net, "Unexpected SuperSpeed for LAN7850 (USB 2.0 only)\n");
-+		return 0;
-+	}
++			if (!phydev->drv)
++				netdev_warn(dev->net,
++					    "PHY driver not found – assuming RGMII delays are on PCB or strapped for the PHY\n");
 +
-+	switch (speed) {
-+	case SPEED_1000:
-+		/* Disable U2, enable U1 */
-+		ret = lan78xx_update_reg(dev, USB_CFG1,
-+					 USB_CFG1_DEV_U2_INIT_EN_, 0);
-+		if (ret < 0)
-+			return ret;
++			return phydev;
+ 		}
+-		netdev_dbg(dev->net, "Registered FIXED PHY\n");
 +
-+		return lan78xx_update_reg(dev, USB_CFG1,
-+					  USB_CFG1_DEV_U1_INIT_EN_,
-+					  USB_CFG1_DEV_U1_INIT_EN_);
+ 		dev->interface = PHY_INTERFACE_MODE_RGMII;
++		/* No PHY found – fallback to fixed PHY (e.g. KSZ switch board) */
++		return lan78xx_register_fixed_phy(dev);
 +
-+	case SPEED_100:
-+	case SPEED_10:
-+		/* Enable both U1 and U2 */
-+		mask = USB_CFG1_DEV_U1_INIT_EN_ | USB_CFG1_DEV_U2_INIT_EN_;
-+		val = mask;
-+		return lan78xx_update_reg(dev, USB_CFG1, mask, val);
++	case ID_REV_CHIP_ID_7800_:
++	case ID_REV_CHIP_ID_7850_:
++		if (!phydev)
++			return ERR_PTR(-ENODEV);
++
++		/* These use internal GMII-connected PHY */
++		dev->interface = PHY_INTERFACE_MODE_GMII;
++		phydev->is_internal = true;
++		return phydev;
 +
 +	default:
-+		netdev_warn(dev->net, "Unsupported link speed: %d\n", speed);
-+		return -EINVAL;
++		netdev_err(dev->net, "Unknown CHIP ID: 0x%08x\n", dev->chipid);
++		return ERR_PTR(-ENODEV);
 +	}
 +}
 +
- /**
-  * lan78xx_register_fixed_phy() - Register a fallback fixed PHY
-  * @dev: LAN78xx device
++/**
++ * lan78xx_mac_prepare_for_phy() - Preconfigure MAC-side interface settings
++ * @dev: LAN78xx device
++ *
++ * Configure MAC-side registers according to dev->interface, which should be
++ * set by lan78xx_get_phy().
++ *
++ * - For PHY_INTERFACE_MODE_RGMII:
++ *   Enable MAC-side TXC delay. This mode seems to be used in a special setup
++ *   without a real PHY, likely on EVB-KSZ9897-1. In that design, LAN7801 is
++ *   connected to the KSZ9897 switch, and the link timing is expected to be
++ *   hardwired (e.g. via strapping or board layout). No devicetree support is
++ *   assumed here.
++ *
++ * - For PHY_INTERFACE_MODE_RGMII_ID:
++ *   Disable MAC-side delay and rely on the PHY driver to provide delay.
++ *
++ * - For GMII, no MAC-specific config is needed.
++ *
++ * Return: 0 on success or a negative error code.
++ */
++static int lan78xx_mac_prepare_for_phy(struct lan78xx_net *dev)
++{
++	int ret;
++
++	switch (dev->interface) {
++	case PHY_INTERFACE_MODE_RGMII:
++		/* Enable MAC-side TX clock delay */
+ 		ret = lan78xx_write_reg(dev, MAC_RGMII_ID,
+ 					MAC_RGMII_ID_TXC_DELAY_EN_);
+ 		if (ret < 0)
+-			return ERR_PTR(ret);
++			return ret;
+ 
+ 		ret = lan78xx_write_reg(dev, RGMII_TX_BYP_DLL, 0x3D00);
+ 		if (ret < 0)
+-			return ERR_PTR(ret);
++			return ret;
+ 
+-		ret = lan78xx_update_reg(dev, HW_CFG, HW_CFG_CLK125_EN_ |
+-					 HW_CFG_REFCLK25_EN_,
++		ret = lan78xx_update_reg(dev, HW_CFG,
++					 HW_CFG_CLK125_EN_ | HW_CFG_REFCLK25_EN_,
+ 					 HW_CFG_CLK125_EN_ | HW_CFG_REFCLK25_EN_);
+ 		if (ret < 0)
+-			return ERR_PTR(ret);
+-	} else {
+-		dev->interface = PHY_INTERFACE_MODE_RGMII_ID;
+-		/* The PHY driver is responsible to configure proper RGMII
+-		 * interface delays. Disable RGMII delays on MAC side.
+-		 */
++			return ret;
++
++		break;
++
++	case PHY_INTERFACE_MODE_RGMII_ID:
++		/* Disable MAC-side TXC delay, PHY provides it */
+ 		ret = lan78xx_write_reg(dev, MAC_RGMII_ID, 0);
+ 		if (ret < 0)
+-			return ERR_PTR(ret);
++			return ret;
+ 
+-		phydev->is_internal = false;
++		break;
++
++	case PHY_INTERFACE_MODE_GMII:
++		/* No MAC-specific configuration required */
++		break;
++
++	default:
++		netdev_warn(dev->net, "Unsupported interface mode: %d\n",
++			    dev->interface);
++		break;
+ 	}
+ 
+-	return phydev;
++	return 0;
+ }
+ 
+ static int lan78xx_phy_init(struct lan78xx_net *dev)
+@@ -2564,31 +2656,13 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
+ 	u32 mii_adv;
+ 	struct phy_device *phydev;
+ 
+-	switch (dev->chipid) {
+-	case ID_REV_CHIP_ID_7801_:
+-		phydev = lan7801_phy_init(dev);
+-		if (IS_ERR(phydev)) {
+-			netdev_err(dev->net, "lan7801: failed to init PHY: %pe\n",
+-				   phydev);
+-			return PTR_ERR(phydev);
+-		}
+-		break;
+-
+-	case ID_REV_CHIP_ID_7800_:
+-	case ID_REV_CHIP_ID_7850_:
+-		phydev = phy_find_first(dev->mdiobus);
+-		if (!phydev) {
+-			netdev_err(dev->net, "no PHY found\n");
+-			return -ENODEV;
+-		}
+-		phydev->is_internal = true;
+-		dev->interface = PHY_INTERFACE_MODE_GMII;
+-		break;
++	phydev = lan78xx_get_phy(dev);
++	if (IS_ERR(phydev))
++		return PTR_ERR(phydev);
+ 
+-	default:
+-		netdev_err(dev->net, "Unknown CHIP ID found\n");
+-		return -ENODEV;
+-	}
++	ret = lan78xx_mac_prepare_for_phy(dev);
++	if (ret < 0)
++		goto free_phy;
+ 
+ 	/* if phyirq is not set, use polling mode in phylib */
+ 	if (dev->domain_data.phyirq > 0)
+@@ -2662,6 +2736,14 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
+ 	dev->fc_autoneg = phydev->autoneg;
+ 
+ 	return 0;
++
++free_phy:
++	if (phy_is_pseudo_fixed_link(phydev)) {
++		fixed_phy_unregister(phydev);
++		phy_device_free(phydev);
++	}
++
++	return ret;
+ }
+ 
+ static int lan78xx_set_rx_max_frame_length(struct lan78xx_net *dev, int size)
 -- 
 2.39.5
 
