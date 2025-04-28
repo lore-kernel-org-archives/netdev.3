@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E360215764;
-	Mon, 28 Apr 2025 23:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D912165E7;
+	Mon, 28 Apr 2025 23:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745881205; cv=none; b=LgRDyDeUyj5qhNC0fMCEYh9MSO3jjHEW2pPRqi9eVGHCd3bCaQdvfmSqBc6szy8YvuyV8yZx/9zfY9BCl3ItaJEqDgATj//X4jHCw07YcdaN1LEXIJOqp4UlXORFbCqpdPkXBs+7lPu945VjfyZvyMWqDglG6hGVDsrp0sgNGP8=
+	t=1745881207; cv=none; b=mevnbBBMRmsWYDhEOp0xML1xzOH1lNCddwRrE+MUDEAioy+QWQEcd4nhUar23VStTqabaoPs6tZdx4xbJi7P5Q/nQwcDLjynUjhHt44NN7XgWO9QkXd2K6XkGk25h8e8hJms/pTccDSI4tOi6OQ/PpYDyEKtJGe+IFOGIgj6W2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745881205; c=relaxed/simple;
-	bh=m/TUezcl5CvUNs3SVqx2d/Cl7oo/VxLk4B3Ff2SZe/0=;
+	s=arc-20240116; t=1745881207; c=relaxed/simple;
+	bh=+jr1pXW8/0vwyUPzbw2kYLE7uX67prwhm7CwUieZEIA=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BzYXTR4CQiGHCNziDxiKvE4Xe4EGopnOOp4eEVa4UpTqP0RzDqNMfAaXqhfPzTxcUP1UoRrc/3O2ls9fl2GyYwd2yTwSmSOyEg6fXh8h+QxNO0kqLhDcI/4iKaoMoMuMgoIqETDYkODX9D2O5M8MIhyqBFfW6kkt5OmSCfcm9Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K40faaYt; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=SlsyilTH4uSW1xjUw0GiUvgJ0txuo19KysCz63j6RDByzfmg5Lsi+B3SlMfRfA+wgXrwIWXQdyr/CPMgrbm7AgceGxb7Kvgk2Beb/K4WVuiUWkrP/CdGz+1G0X/XsMHq9qs+6F7hVm1e1vTsKFckEz77HiWs0C34iUaK1DsOqUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IOblO8pn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K40faaYt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BF1C4CEEE;
-	Mon, 28 Apr 2025 23:00:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IOblO8pn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9BBAC4CEE4;
+	Mon, 28 Apr 2025 23:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745881205;
-	bh=m/TUezcl5CvUNs3SVqx2d/Cl7oo/VxLk4B3Ff2SZe/0=;
+	s=k20201202; t=1745881206;
+	bh=+jr1pXW8/0vwyUPzbw2kYLE7uX67prwhm7CwUieZEIA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=K40faaYtXnjhaKA97MplQyUqCTP5tlOucQmHxb7MJgx4cUQGrMtFxDxfaIcGPDzFC
-	 lmYW9A8QxridKdN45QID49VXMarYgut3h8sapR49REpiSkelwyVG11yEPBS/8UFzzX
-	 HEtBvM7syShp85Mq6CCcLLo5+TUJPU08skY92nGjQVeYgtqk0Raxx2cYdOf9vPtVXk
-	 PhBZWVc3rPD2RU//f8xPRZmAHmhsigFnZ4XN2kLl8AP/A+8IJntzcjrzTYSE0TE290
-	 D0AOQ+KvFY+lwqJvdYuihL65EPLf6yLiHbxxjY0gjkt1PXFGnK36aB8liQDjJ8lfu4
-	 tvpd8GRRa6Yag==
+	b=IOblO8pn09UiUSeXaEg7HuFrw71RZxTB8jLXHATdn0uZt7nCQ/HcNXwh4BINhRetX
+	 iXoLeB5craQ/FM1E/dPelNvuc2HyBklhfcdG2OGfKsjYmsVLVbLM7Zi3D3DZBl3WYU
+	 ryCOTzXATxzmULF0T0xZgBlZrqatVGqPS0587hi76f28RTCL2hSn2VLp3bjRCpmOLg
+	 tlSxNd2JrSc5x5WfIlU+97HHCP/WwOYxQblxrbkwUaQ4FBtqQ9Po32XOP7BNyiE/cD
+	 9lp5qOOMzhsfm6K1TR6bqlbwZ2KvKrPWnIPAmISs7UBzaB0neHiAJmpV1EPTcoipkv
+	 rhXUIATSGBuaQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70E853822D43;
-	Mon, 28 Apr 2025 23:00:45 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB1463822D43;
+	Mon, 28 Apr 2025 23:00:46 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,36 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [GIT PULL] bluetooth 2025-04-25
+Subject: Re: [PATCH net] pds_core: remove write-after-free of client_id
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174588124424.1071900.523000305063322904.git-patchwork-notify@kernel.org>
-Date: Mon, 28 Apr 2025 23:00:44 +0000
-References: <20250425192412.1578759-1-luiz.dentz@gmail.com>
-In-Reply-To: <20250425192412.1578759-1-luiz.dentz@gmail.com>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
- netdev@vger.kernel.org
+ <174588124556.1071900.9575309402812835802.git-patchwork-notify@kernel.org>
+Date: Mon, 28 Apr 2025 23:00:45 +0000
+References: <20250425203857.71547-1-shannon.nelson@amd.com>
+In-Reply-To: <20250425203857.71547-1-shannon.nelson@amd.com>
+To: Nelson@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
+	Shannon <shannon.nelson@amd.com>
+Cc: andrew+netdev@lunn.ch, brett.creeley@amd.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
 
 Hello:
 
-This pull request was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 25 Apr 2025 15:24:12 -0400 you wrote:
-> The following changes since commit 49ba1ca2e0cc6d2eb0667172f1144c8b85907971:
+On Fri, 25 Apr 2025 13:38:57 -0700 you wrote:
+> A use-after-free error popped up in stress testing:
 > 
->   Merge branch 'mlx5-misc-fixes-2025-04-23' (2025-04-24 18:20:00 -0700)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2025-04-25
+> [Mon Apr 21 21:21:33 2025] BUG: KFENCE: use-after-free write in pdsc_auxbus_dev_del+0xef/0x160 [pds_core]
+> [Mon Apr 21 21:21:33 2025] Use-after-free write at 0x000000007013ecd1 (in kfence-#47):
+> [Mon Apr 21 21:21:33 2025]  pdsc_auxbus_dev_del+0xef/0x160 [pds_core]
+> [Mon Apr 21 21:21:33 2025]  pdsc_remove+0xc0/0x1b0 [pds_core]
+> [Mon Apr 21 21:21:33 2025]  pci_device_remove+0x24/0x70
+> [Mon Apr 21 21:21:33 2025]  device_release_driver_internal+0x11f/0x180
+> [Mon Apr 21 21:21:33 2025]  driver_detach+0x45/0x80
+> [Mon Apr 21 21:21:33 2025]  bus_remove_driver+0x83/0xe0
+> [Mon Apr 21 21:21:33 2025]  pci_unregister_driver+0x1a/0x80
 > 
 > [...]
 
 Here is the summary with links:
-  - [GIT,PULL] bluetooth 2025-04-25
-    https://git.kernel.org/netdev/net/c/a54b2e2d40b4
+  - [net] pds_core: remove write-after-free of client_id
+    https://git.kernel.org/netdev/net/c/dfd76010f8e8
 
 You are awesome, thank you!
 -- 
