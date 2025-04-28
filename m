@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C2A26B96E
-	for <netdev@vger.kernel.org>; Mon, 28 Apr 2025 13:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CD126B96F
+	for <netdev@vger.kernel.org>; Mon, 28 Apr 2025 13:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745845556; cv=none; b=O+bNoOIEx13d2rmPGQ3XrfQmenkmlQW0CEZwUbUCvL7H+iVHf+PPHBB2J/zAaAU2mGepPfNMD8KtVMh3q/2gN6n5+2TKl+fqYBfHEp8Gmvw0oeFtmE1ygDMQZ6n2aZn5exK11LJ23opzEf4bXkon3BO9xAPNcl0ms9o1FNNTSV0=
+	t=1745845556; cv=none; b=s+sQsLCFhv6oKFnefTJeOLW3Bj26iCB8pgvKssp3wBN1KKKAApDnwZVQnZ92Jrn4fa2yLVdlGEcly/IPwWzT68gwUgLK7tP3KBnMntnP8u/89pAyUwGQQXBpmgewbDXSm0amgsHMJ9r10hCA9ubihK/4or/KJjCktJ/oVPmo03Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1745845556; c=relaxed/simple;
-	bh=PfDu6Fp8KyBjovfjyOpuBNf1DbqZ7wUZxTHJtarXAtU=;
+	bh=Ym/VO1lsf4cxLe2zwu26BSqCE0/7Tphe1tRXLpCeV9Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m/txMdEf6mxqulkFYoohpM9nF0xs29TFjLo4Lx/N3f3K5xu1YnF4Ovk+DQGo++CcUodLYloOkwSzPrYzTOXO5BbxGjHEQfgSTZ/nOPF3TY+O4RG36Ujxl7dTxr5casuP42pvGQ16HUNcwOC/2CeBM4YQnojvb6bEZQTIRDFBbXU=
+	 MIME-Version:Content-Type; b=YykV8yg0AsabO6G6PvNvgKRAqP6ZiqQ0VEIHFrZok7ULgQf8f7mGDWukNF3sOEkkV4UU4NYQRZiFKTXkH7/9VJX+DVdHMy9Ok0dyPqM84U4hS4ByQNRs+DzgxAFJ1kTGkzbi8WdVHw9RavGVETSFcCvH+xzh/8V3VtYjITA6mK8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u9OB7-0000MP-L6; Mon, 28 Apr 2025 15:05:45 +0200
+	id 1u9OB7-0000MV-L7; Mon, 28 Apr 2025 15:05:45 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u9OB6-0006FK-0V;
+	id 1u9OB6-0006FR-19;
 	Mon, 28 Apr 2025 15:05:44 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u9OB6-00GJ65-0D;
+	id 1u9OB6-00GJ9Z-0X;
 	Mon, 28 Apr 2025 15:05:44 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -47,9 +47,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Phil Elwell <phil@raspberrypi.org>,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next v7 01/12] net: usb: lan78xx: Improve error handling in PHY initialization
-Date: Mon, 28 Apr 2025 15:05:31 +0200
-Message-Id: <20250428130542.3879769-2-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v7 07/12] net: usb: lan78xx: Extract flow control configuration to helper
+Date: Mon, 28 Apr 2025 15:05:37 +0200
+Message-Id: <20250428130542.3879769-8-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250428130542.3879769-1-o.rempel@pengutronix.de>
 References: <20250428130542.3879769-1-o.rempel@pengutronix.de>
@@ -59,155 +59,174 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Ensure that return values from `lan78xx_write_reg()`,
-`lan78xx_read_reg()`, and `phy_find_first()` are properly checked and
-propagated. Use `ERR_PTR(ret)` for error reporting in
-`lan7801_phy_init()` and replace `-EIO` with `-ENODEV` where appropriate
-to provide more accurate error codes.
+Move flow control register configuration from
+lan78xx_update_flowcontrol() into a new helper function
+lan78xx_configure_flowcontrol(). This separates hardware-specific
+programming from policy logic and simplifies the upcoming phylink
+integration.
+
+The values used in this initial version of
+lan78xx_configure_flowcontrol() are taken over as-is from the original
+implementation to avoid functional changes. While they may not be
+optimal for all USB and link speed combinations, they are known to work
+reliably. Optimization of pause time and thresholds based on runtime
+conditions can be done in a separate follow-up patch.
+
+The forward declaration of lan78xx_configure_flowcontrol() will also be
+removed later during the phylink conversion.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
 changes v6:
-- confirmed with maintainers that fixed_phy_register() leak is acceptable
-  as soon as it is fixed within the patch set
-changes v5:
-- make sure lan7801_phy_init() caller is testing against IS_ERR
-  instead of NULL.
-changes v4:
-- split the patch and move part of it before PHYlink migration
+- this patch is added in v6
 ---
- drivers/net/usb/lan78xx.c | 47 ++++++++++++++++++++++++++-------------
- 1 file changed, 31 insertions(+), 16 deletions(-)
+ drivers/net/usb/lan78xx.c | 105 +++++++++++++++++++++++++++++++-------
+ 1 file changed, 87 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index e4f1663b6204..19db18cf0504 100644
+index bff53324c70a..58e3589e3b89 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -2510,14 +2510,13 @@ static void lan78xx_remove_irq_domain(struct lan78xx_net *dev)
- 
- static struct phy_device *lan7801_phy_init(struct lan78xx_net *dev)
- {
--	u32 buf;
--	int ret;
- 	struct fixed_phy_status fphy_status = {
- 		.link = 1,
- 		.speed = SPEED_1000,
- 		.duplex = DUPLEX_FULL,
- 	};
- 	struct phy_device *phydev;
-+	int ret;
- 
- 	phydev = phy_find_first(dev->mdiobus);
- 	if (!phydev) {
-@@ -2525,30 +2524,40 @@ static struct phy_device *lan7801_phy_init(struct lan78xx_net *dev)
- 		phydev = fixed_phy_register(PHY_POLL, &fphy_status, NULL);
- 		if (IS_ERR(phydev)) {
- 			netdev_err(dev->net, "No PHY/fixed_PHY found\n");
--			return NULL;
-+			return ERR_PTR(-ENODEV);
- 		}
- 		netdev_dbg(dev->net, "Registered FIXED PHY\n");
- 		dev->interface = PHY_INTERFACE_MODE_RGMII;
- 		ret = lan78xx_write_reg(dev, MAC_RGMII_ID,
- 					MAC_RGMII_ID_TXC_DELAY_EN_);
-+		if (ret < 0)
-+			return ERR_PTR(ret);
-+
- 		ret = lan78xx_write_reg(dev, RGMII_TX_BYP_DLL, 0x3D00);
--		ret = lan78xx_read_reg(dev, HW_CFG, &buf);
--		buf |= HW_CFG_CLK125_EN_;
--		buf |= HW_CFG_REFCLK25_EN_;
--		ret = lan78xx_write_reg(dev, HW_CFG, buf);
-+		if (ret < 0)
-+			return ERR_PTR(ret);
-+
-+		ret = lan78xx_update_reg(dev, HW_CFG, HW_CFG_CLK125_EN_ |
-+					 HW_CFG_REFCLK25_EN_,
-+					 HW_CFG_CLK125_EN_ | HW_CFG_REFCLK25_EN_);
-+		if (ret < 0)
-+			return ERR_PTR(ret);
- 	} else {
- 		if (!phydev->drv) {
- 			netdev_err(dev->net, "no PHY driver found\n");
--			return NULL;
-+			return ERR_PTR(-EINVAL);
- 		}
- 		dev->interface = PHY_INTERFACE_MODE_RGMII_ID;
- 		/* The PHY driver is responsible to configure proper RGMII
- 		 * interface delays. Disable RGMII delays on MAC side.
- 		 */
--		lan78xx_write_reg(dev, MAC_RGMII_ID, 0);
-+		ret = lan78xx_write_reg(dev, MAC_RGMII_ID, 0);
-+		if (ret < 0)
-+			return ERR_PTR(ret);
- 
- 		phydev->is_internal = false;
- 	}
-+
- 	return phydev;
+@@ -1554,10 +1554,12 @@ static void lan78xx_set_multicast(struct net_device *netdev)
+ 	schedule_work(&pdata->set_multicast);
  }
  
-@@ -2562,9 +2571,10 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
- 	switch (dev->chipid) {
- 	case ID_REV_CHIP_ID_7801_:
- 		phydev = lan7801_phy_init(dev);
--		if (!phydev) {
--			netdev_err(dev->net, "lan7801: PHY Init Failed");
--			return -EIO;
-+		if (IS_ERR(phydev)) {
-+			netdev_err(dev->net, "lan7801: failed to init PHY: %pe\n",
-+				   phydev);
-+			return PTR_ERR(phydev);
- 		}
- 		break;
- 
-@@ -2573,7 +2583,7 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
- 		phydev = phy_find_first(dev->mdiobus);
- 		if (!phydev) {
- 			netdev_err(dev->net, "no PHY found\n");
--			return -EIO;
-+			return -ENODEV;
- 		}
- 		phydev->is_internal = true;
- 		dev->interface = PHY_INTERFACE_MODE_GMII;
-@@ -2581,7 +2591,7 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
- 
- 	default:
- 		netdev_err(dev->net, "Unknown CHIP ID found\n");
--		return -EIO;
-+		return -ENODEV;
- 	}
- 
- 	/* if phyirq is not set, use polling mode in phylib */
-@@ -2633,7 +2643,10 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
- 						      sizeof(u32));
- 		if (len >= 0) {
- 			/* Ensure the appropriate LEDs are enabled */
--			lan78xx_read_reg(dev, HW_CFG, &reg);
-+			ret = lan78xx_read_reg(dev, HW_CFG, &reg);
-+			if (ret < 0)
-+				return ret;
++static int lan78xx_configure_flowcontrol(struct lan78xx_net *dev,
++					 bool tx_pause, bool rx_pause);
 +
- 			reg &= ~(HW_CFG_LED0_EN_ |
- 				 HW_CFG_LED1_EN_ |
- 				 HW_CFG_LED2_EN_ |
-@@ -2642,7 +2655,9 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
- 				(len > 1) * HW_CFG_LED1_EN_ |
- 				(len > 2) * HW_CFG_LED2_EN_ |
- 				(len > 3) * HW_CFG_LED3_EN_;
--			lan78xx_write_reg(dev, HW_CFG, reg);
-+			ret = lan78xx_write_reg(dev, HW_CFG, reg);
-+			if (ret < 0)
-+				return ret;
- 		}
- 	}
+ static int lan78xx_update_flowcontrol(struct lan78xx_net *dev, u8 duplex,
+ 				      u16 lcladv, u16 rmtadv)
+ {
+-	u32 flow = 0, fct_flow = 0;
+ 	u8 cap;
  
+ 	if (dev->fc_autoneg)
+@@ -1565,27 +1567,13 @@ static int lan78xx_update_flowcontrol(struct lan78xx_net *dev, u8 duplex,
+ 	else
+ 		cap = dev->fc_request_control;
+ 
+-	if (cap & FLOW_CTRL_TX)
+-		flow |= (FLOW_CR_TX_FCEN_ | 0xFFFF);
+-
+-	if (cap & FLOW_CTRL_RX)
+-		flow |= FLOW_CR_RX_FCEN_;
+-
+-	if (dev->udev->speed == USB_SPEED_SUPER)
+-		fct_flow = FLOW_CTRL_THRESHOLD(FLOW_ON_SS, FLOW_OFF_SS);
+-	else if (dev->udev->speed == USB_SPEED_HIGH)
+-		fct_flow = FLOW_CTRL_THRESHOLD(FLOW_ON_HS, FLOW_OFF_HS);
+-
+ 	netif_dbg(dev, link, dev->net, "rx pause %s, tx pause %s",
+ 		  (cap & FLOW_CTRL_RX ? "enabled" : "disabled"),
+ 		  (cap & FLOW_CTRL_TX ? "enabled" : "disabled"));
+ 
+-	lan78xx_write_reg(dev, FCT_FLOW, fct_flow);
+-
+-	/* threshold value should be set before enabling flow */
+-	lan78xx_write_reg(dev, FLOW, flow);
+-
+-	return 0;
++	return lan78xx_configure_flowcontrol(dev,
++					     cap & FLOW_CTRL_TX,
++					     cap & FLOW_CTRL_RX);
+ }
+ 
+ static void lan78xx_rx_urb_submit_all(struct lan78xx_net *dev);
+@@ -2550,6 +2538,87 @@ static int lan78xx_configure_usb(struct lan78xx_net *dev, int speed)
+ 	}
+ }
+ 
++/**
++ * lan78xx_configure_flowcontrol - Set MAC and FIFO flow control configuration
++ * @dev: pointer to the LAN78xx device structure
++ * @tx_pause: enable transmission of pause frames
++ * @rx_pause: enable reception of pause frames
++ *
++ * This function configures the LAN78xx flow control settings by writing
++ * to the FLOW and FCT_FLOW registers. The pause time is set to the
++ * maximum allowed value (65535 quanta). FIFO thresholds are selected
++ * based on USB speed.
++ *
++ * The Pause Time field is measured in units of 512-bit times (quanta):
++ *   - At 1 Gbps: 1 quanta = 512 ns → max ~33.6 ms pause
++ *   - At 100 Mbps: 1 quanta = 5.12 µs → max ~335 ms pause
++ *   - At 10 Mbps: 1 quanta = 51.2 µs → max ~3.3 s pause
++ *
++ * Flow control thresholds (FCT_FLOW) are used to trigger pause/resume:
++ *   - RXUSED is the number of bytes used in the RX FIFO
++ *   - Flow is turned ON when RXUSED ≥ FLOW_ON threshold
++ *   - Flow is turned OFF when RXUSED ≤ FLOW_OFF threshold
++ *   - Both thresholds are encoded in units of 512 bytes (rounded up)
++ *
++ * Thresholds differ by USB speed because available USB bandwidth
++ * affects how fast packets can be drained from the RX FIFO:
++ *   - USB 3.x (SuperSpeed):
++ *       FLOW_ON  = 9216 bytes → 18 units
++ *       FLOW_OFF = 4096 bytes →  8 units
++ *   - USB 2.0 (High-Speed):
++ *       FLOW_ON  = 8704 bytes → 17 units
++ *       FLOW_OFF = 1024 bytes →  2 units
++ *
++ * Note: The FCT_FLOW register must be configured before enabling TX pause
++ *       (i.e., before setting FLOW_CR_TX_FCEN_), as required by the hardware.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++static int lan78xx_configure_flowcontrol(struct lan78xx_net *dev,
++					 bool tx_pause, bool rx_pause)
++{
++	/* Use maximum pause time: 65535 quanta (512-bit times) */
++	const u32 pause_time_quanta = 65535;
++	u32 fct_flow = 0;
++	u32 flow = 0;
++	int ret;
++
++	/* Prepare MAC flow control bits */
++	if (tx_pause)
++		flow |= FLOW_CR_TX_FCEN_ | pause_time_quanta;
++
++	if (rx_pause)
++		flow |= FLOW_CR_RX_FCEN_;
++
++	/* Select RX FIFO thresholds based on USB speed
++	 *
++	 * FCT_FLOW layout:
++	 *   bits [6:0]   FLOW_ON threshold (RXUSED ≥ ON → assert pause)
++	 *   bits [14:8]  FLOW_OFF threshold (RXUSED ≤ OFF → deassert pause)
++	 *   thresholds are expressed in units of 512 bytes
++	 */
++	switch (dev->udev->speed) {
++	case USB_SPEED_SUPER:
++		fct_flow = FLOW_CTRL_THRESHOLD(FLOW_ON_SS, FLOW_OFF_SS);
++		break;
++	case USB_SPEED_HIGH:
++		fct_flow = FLOW_CTRL_THRESHOLD(FLOW_ON_HS, FLOW_OFF_HS);
++		break;
++	default:
++		netdev_warn(dev->net, "Unsupported USB speed: %d\n",
++			    dev->udev->speed);
++		return -EINVAL;
++	}
++
++	/* Step 1: Write FIFO thresholds before enabling pause frames */
++	ret = lan78xx_write_reg(dev, FCT_FLOW, fct_flow);
++	if (ret < 0)
++		return ret;
++
++	/* Step 2: Enable MAC pause functionality */
++	return lan78xx_write_reg(dev, FLOW, flow);
++}
++
+ /**
+  * lan78xx_register_fixed_phy() - Register a fallback fixed PHY
+  * @dev: LAN78xx device
 -- 
 2.39.5
 
