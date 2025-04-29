@@ -1,300 +1,151 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6FE27700B
-	for <netdev@vger.kernel.org>; Tue, 29 Apr 2025 07:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00FF1C8629;
+	Tue, 29 Apr 2025 07:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745911414; cv=none; b=qmtgq/SzwRyxo/XXmtKo8O60m6LdD41YNmJNOsPT62jeMSN/KMJZ0bYUT5g/DaUhW4BaQcybnLPk+kVSFXkjFp2HP7DId3pibZjxA6z1j7cNVE63Lx3RFpghDyUNL/6miFWYSgwY/0bxMZ/om0SSlSFTcpyTPhbpntOPnfiK5cY=
+	t=1745911515; cv=none; b=RApZ3d3+cvjlBKIO/NIRzsxaH6qQGcbTlLZdtNXWtLyYxt9sK97eKrhOPB32eOAE2Hob8NkBoXngzazwHLHGPNgRh7HNKBzfBr39ik5le+ofZaCOoJdJAaIrjss9sfusqAefIfDw7teRpsQXUx7yAo4ipU1nJxd2ILHL0eRkhIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745911414; c=relaxed/simple;
-	bh=+Aj0IkwXCDg4PLX2HNVQlSOEB5kV+Em80qoKSxhmsbU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=l60VuEdzhTksi1XzpeejqyG0jFjmT3gQNx9CDspZvEkyLB6zjYCHUR2zx29lmHhVvJVOnviwXQBEcBUnY9x79o0Zc0/9l5GrX6KPnhrP+tDEblpjoqHrhD8vqC4BMPFx2sT55zkzikvrCr6lxTuYCNaI4hVS7UPoJ5jLq4Ggnxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1u9fJH-0005zM-D1; Tue, 29 Apr 2025 09:23:19 +0200
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1u9fJG-000DwS-1c;
-	Tue, 29 Apr 2025 09:23:18 +0200
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1u9fJG-00CVpR-1M;
-	Tue, 29 Apr 2025 09:23:18 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: "David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	"Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	stable@vger.kernel.org,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	UNGLinuxDriver@microchip.com
-Subject: [PATCH net v2 1/2] net: dsa: microchip: let phylink manage PHY EEE configuration on KSZ switches
-Date: Tue, 29 Apr 2025 09:23:16 +0200
-Message-Id: <20250429072317.2982256-2-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250429072317.2982256-1-o.rempel@pengutronix.de>
-References: <20250429072317.2982256-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1745911515; c=relaxed/simple;
+	bh=BTTld/avRyX9/xFUVdq/cjPb7ZmIdI1aSwabNE90ZT8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FNRI0aiyPPKueXT3uDl1X6PumCn1nR60yv1mbSLg7/uxAnxnnz277MqjAz4QH2NFfAp4JRy/y3xPAYcyfgtOI2lxjKGBcAVb3P5rx2MTiEfY2k8SiAdAiY4REZi5+He4xdZ/ZSMRAbXS/GT99yifNq4NsfBjPP+xo9gy6KoMXJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=LkCo0zvG; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=UMBk4PSS reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="LkCo0zvG";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="UMBk4PSS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1745911511; x=1777447511;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=0HTPHirUqJp7iM6IFbqXNuusghxBtTxmX3QXCCMPY0Q=;
+  b=LkCo0zvG/pzwFIaSerwZ2FJLguAyhlcG5WuaIWH3llgNYsxVc67mcLXs
+   yiyjuaWuRbyW3J8KAzF+D0ohli0eGrggnQJN9rujf13+/dbBepAfWJ8Y9
+   MoK7vO1lONECwNkOjN9J6yF54nVFcXvZ7YbDAzA0MM+SMvQruUuuYLDjL
+   qdEXUgTRfJLCeI+7/HviFVY+rldo0EBzYMDVaIzRpXd/t2H5Varw0Wzpj
+   9bWIVjPE4CVnuGlDkfdNOnjCBb5fzwb9a8bjiPwq1UkWARvdUqNoo9HGk
+   ldfOuTobUsBJQKgOSQYG+VycB+p2S3ZpXfYg3P7ymA06+MPTtEt4Djww7
+   w==;
+X-CSE-ConnectionGUID: mvncbzE7TwS02I9aCObShg==
+X-CSE-MsgGUID: Oo+CuzYXSh2hT+Oi+La46Q==
+X-IronPort-AV: E=Sophos;i="6.15,248,1739833200"; 
+   d="scan'208";a="43772696"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 29 Apr 2025 09:25:01 +0200
+X-CheckPoint: {68107ECD-32-F35B2447-E1635CDE}
+X-MAIL-CPID: 4C6EC668F1D0F19820FBD4C1ED5AF527_1
+X-Control-Analysis: str=0001.0A006376.68107EDB.007D,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E4E1E160F78;
+	Tue, 29 Apr 2025 09:24:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1745911497;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0HTPHirUqJp7iM6IFbqXNuusghxBtTxmX3QXCCMPY0Q=;
+	b=UMBk4PSSN3UPAEvH64wlD/DQG63n6qyz8Vno1RD6lID08HbYoSOsULofaTdR5GBIBR3dMC
+	mFpdWkhtUDfnpSseGPOmYzTQTNSYRZ3DnFJZUo7mFx6/bijMtSUSx/fq3o1dVVYvhFNwBY
+	VReTlz6llr68OZdahRTkt+Ae95QczLZHbR+tHmrSa3Ov+pgA5/xelkQS9xi2IR7JUhnW+z
+	aBv77qSBW2cGa4CjsTUon7WSlGvklEDnBkpkK3Evpc+ilIBWeOkJZv2CEfoCLy1VBORQSo
+	1uolbaIQbqdBZjmupkWsKjxAgm+OzCBGDvoZ6yDjacJyW4yCSNwmIFAxVhla2A==
+Message-ID: <b75c6a2cf10e2acf878c38f8ca2ff46708a2c0a1.camel@ew.tq-group.com>
+Subject: Re: [PATCH net-next 1/4] dt-bindings: net: ethernet-controller:
+ update descriptions of RGMII modes
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>,  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andy Whitcroft <apw@canonical.com>, Dwaipayan Ray
+ <dwaipayanray1@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, Joe
+ Perches <joe@perches.com>, Jonathan Corbet <corbet@lwn.net>, Nishanth Menon
+ <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>, Siddharth Vadapalli
+ <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, Tero Kristo
+ <kristo@kernel.org>, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org,  linux-arm-kernel@lists.infradead.org,
+ linux@ew.tq-group.com
+Date: Tue, 29 Apr 2025 09:24:49 +0200
+In-Reply-To: <9b9fc5d0-e973-4f4f-8dd5-d3896bf29093@lunn.ch>
+References: <cover.1744710099.git.matthias.schiffer@ew.tq-group.com>
+	 <218a27ae2b2ef2db53fdb3573b58229659db65f9.1744710099.git.matthias.schiffer@ew.tq-group.com>
+	 <aAaafd8LZ3Ks-AoT@shell.armlinux.org.uk>
+	 <a53b5f22-d603-4b7d-9765-a1fc8571614d@lunn.ch>
+	 <aAe2NFFrcXDice2Z@shell.armlinux.org.uk>
+	 <fdc02e46e4906ba92b562f8d2516901adc85659b.camel@ew.tq-group.com>
+	 <9b9fc5d0-e973-4f4f-8dd5-d3896bf29093@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+X-Last-TLS-Session-Version: TLSv1.3
 
-Phylink expects MAC drivers to provide LPI callbacks to properly manage
-Energy Efficient Ethernet (EEE) configuration. On KSZ switches with
-integrated PHYs, LPI is internally handled by hardware, while ports
-without integrated PHYs have no documented MAC-level LPI support.
+On Mon, 2025-04-28 at 16:08 +0200, Andrew Lunn wrote:
+>=20
+> > > However, with the yaml stuff, if that is basically becoming "DT
+> > > specification" then it needs to be clearly defined what each value
+> > > actually means for the system, and not this vague airy-fairy thing
+> > > we have now.
+>=20
+> =20
+> > I agree with Russell that it seems preferable to make it unambiguous wh=
+ether
+> > delays are added on the MAC or PHY side, in particular for fine-tuning.=
+ If
+> > anything is left to the implementation, we should make the range of acc=
+eptable
+> > driver behavior very clear in the documentation.
+>=20
+> I think we should try the "Informative" route first, see what the DT
+> Maintainers think when we describe in detail how Linux interprets
+> these values.
 
-Provide dummy mac_disable_tx_lpi() and mac_enable_tx_lpi() callbacks to
-satisfy phylink requirements. Also, set default EEE capabilities during
-phylink initialization where applicable.
+Oh, we should not be Linux-specific. We should describe in detail how *any =
+OS*
+must interpret values.
 
-Since phylink can now gracefully handle optional EEE configuration,
-remove the need for the MICREL_NO_EEE PHY flag.
 
-This change addresses issues caused by incomplete EEE refactoring
-introduced in commit fe0d4fd9285e ("net: phy: Keep track of EEE
-configuration"). It is not easily possible to fix all older kernels, but
-this patch ensures proper behavior on latest kernels and can be
-considered for backporting to stable kernels starting from v6.14.
+>=20
+> I don't think a whole new set of properties will solve anything. I
+> would say the core of the problem is that there are multiple ways of
+> getting a working system, many of which don't fit the DT binding. But
+> DT developers don't care about that, they are just happy when it
+> works. Adding a different set of properties won't change that.
+>=20
+> 	Andrew
 
-Fixes: fe0d4fd9285e ("net: phy: Keep track of EEE configuration")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: stable@vger.kernel.org # v6.14+
----
-changes v2:
-- add extend function comments
+Hmm, considering that
 
- drivers/net/dsa/microchip/ksz_common.c | 134 +++++++++++++++++++------
- 1 file changed, 106 insertions(+), 28 deletions(-)
+- interpretation of existing properties is inconsistent
+- we could like something with a consistent interpretation
+- we can't change how existing drivers interpret the properties, as that wo=
+uld
+be a breaking change,
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index b45052497f8a..a0e144a04ea9 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -265,16 +265,70 @@ static void ksz_phylink_mac_link_down(struct phylink_config *config,
- 				      unsigned int mode,
- 				      phy_interface_t interface);
+I don't think we really have any options but to introduce something new, or=
+ keep
+the inconsistent status quo.
 
-+/**
-+ * ksz_phylink_mac_disable_tx_lpi() - Callback to signal LPI support (Dummy)
-+ * @config: phylink config structure
-+ *
-+ * This function is a dummy handler. See ksz_phylink_mac_enable_tx_lpi() for
-+ * a detailed explanation of EEE/LPI handling in KSZ switches.
-+ */
-+static void ksz_phylink_mac_disable_tx_lpi(struct phylink_config *config)
-+{
-+}
-+
-+/**
-+ * ksz_phylink_mac_enable_tx_lpi() - Callback to signal LPI support (Dummy)
-+ * @config: phylink config structure
-+ * @timer: timer value before entering LPI (unused)
-+ * @tx_clock_stop: whether to stop the TX clock in LPI mode (unused)
-+ *
-+ * This function signals to phylink that the driver architecture supports
-+ * LPI management, enabling phylink to control EEE advertisement during
-+ * negotiation according to IEEE Std 802.3 (Clause 78).
-+ *
-+ * Hardware Management of EEE/LPI State:
-+ * For KSZ switch ports with integrated PHYs (e.g., KSZ9893R ports 1-2),
-+ * observation and testing suggest that the actual EEE / Low Power Idle (LPI)
-+ * state transitions are managed autonomously by the hardware based on
-+ * the auto-negotiation results. (Note: While the datasheet describes EEE
-+ * operation based on negotiation, it doesn't explicitly detail the internal
-+ * MAC/PHY interaction, so autonomous hardware management of the MAC state
-+ * for LPI is inferred from observed behavior).
-+ * This hardware control, consistent with the switch's ability to operate
-+ * autonomously via strapping, means MAC-level software intervention is not
-+ * required or exposed for managing the LPI state once EEE is negotiated.
-+ * (Ref: KSZ9893R Data Sheet DS00002420D, primarily Section 4.7.5 explaining
-+ * EEE, also Sections 4.1.7 on Auto-Negotiation and 3.2.1 on Configuration
-+ * Straps).
-+ *
-+ * Additionally, ports configured as MAC interfaces (e.g., KSZ9893R port 3)
-+ * lack documented MAC-level LPI control.
-+ *
-+ * Therefore, this callback performs no action and serves primarily to inform
-+ * phylink of LPI awareness and to document the inferred hardware behavior.
-+ *
-+ * Returns: 0 (Always success)
-+ */
-+static int ksz_phylink_mac_enable_tx_lpi(struct phylink_config *config,
-+					 u32 timer, bool tx_clock_stop)
-+{
-+	return 0;
-+}
-+
- static const struct phylink_mac_ops ksz88x3_phylink_mac_ops = {
- 	.mac_config	= ksz88x3_phylink_mac_config,
- 	.mac_link_down	= ksz_phylink_mac_link_down,
- 	.mac_link_up	= ksz8_phylink_mac_link_up,
-+	.mac_disable_tx_lpi = ksz_phylink_mac_disable_tx_lpi,
-+	.mac_enable_tx_lpi = ksz_phylink_mac_enable_tx_lpi,
- };
+Best,
+Matthias
 
- static const struct phylink_mac_ops ksz8_phylink_mac_ops = {
- 	.mac_config	= ksz_phylink_mac_config,
- 	.mac_link_down	= ksz_phylink_mac_link_down,
- 	.mac_link_up	= ksz8_phylink_mac_link_up,
-+	.mac_disable_tx_lpi = ksz_phylink_mac_disable_tx_lpi,
-+	.mac_enable_tx_lpi = ksz_phylink_mac_enable_tx_lpi,
- };
 
- static const struct ksz_dev_ops ksz88xx_dev_ops = {
-@@ -358,6 +412,8 @@ static const struct phylink_mac_ops ksz9477_phylink_mac_ops = {
- 	.mac_config	= ksz_phylink_mac_config,
- 	.mac_link_down	= ksz_phylink_mac_link_down,
- 	.mac_link_up	= ksz9477_phylink_mac_link_up,
-+	.mac_disable_tx_lpi = ksz_phylink_mac_disable_tx_lpi,
-+	.mac_enable_tx_lpi = ksz_phylink_mac_enable_tx_lpi,
- };
 
- static const struct ksz_dev_ops ksz9477_dev_ops = {
-@@ -401,6 +457,8 @@ static const struct phylink_mac_ops lan937x_phylink_mac_ops = {
- 	.mac_config	= ksz_phylink_mac_config,
- 	.mac_link_down	= ksz_phylink_mac_link_down,
- 	.mac_link_up	= ksz9477_phylink_mac_link_up,
-+	.mac_disable_tx_lpi = ksz_phylink_mac_disable_tx_lpi,
-+	.mac_enable_tx_lpi = ksz_phylink_mac_enable_tx_lpi,
- };
-
- static const struct ksz_dev_ops lan937x_dev_ops = {
-@@ -2016,6 +2074,18 @@ static void ksz_phylink_get_caps(struct dsa_switch *ds, int port,
-
- 	if (dev->dev_ops->get_caps)
- 		dev->dev_ops->get_caps(dev, port, config);
-+
-+	if (ds->ops->support_eee && ds->ops->support_eee(ds, port)) {
-+		memcpy(config->lpi_interfaces, config->supported_interfaces,
-+		       sizeof(config->lpi_interfaces));
-+
-+		config->lpi_capabilities = MAC_100FD;
-+		if (dev->info->gbit_capable[port])
-+			config->lpi_capabilities |= MAC_1000FD;
-+
-+		/* EEE is fully operational */
-+		config->eee_enabled_default = true;
-+	}
- }
-
- void ksz_r_mib_stats64(struct ksz_device *dev, int port)
-@@ -3008,31 +3078,6 @@ static u32 ksz_get_phy_flags(struct dsa_switch *ds, int port)
- 		if (!port)
- 			return MICREL_KSZ8_P1_ERRATA;
- 		break;
--	case KSZ8567_CHIP_ID:
--		/* KSZ8567R Errata DS80000752C Module 4 */
--	case KSZ8765_CHIP_ID:
--	case KSZ8794_CHIP_ID:
--	case KSZ8795_CHIP_ID:
--		/* KSZ879x/KSZ877x/KSZ876x Errata DS80000687C Module 2 */
--	case KSZ9477_CHIP_ID:
--		/* KSZ9477S Errata DS80000754A Module 4 */
--	case KSZ9567_CHIP_ID:
--		/* KSZ9567S Errata DS80000756A Module 4 */
--	case KSZ9896_CHIP_ID:
--		/* KSZ9896C Errata DS80000757A Module 3 */
--	case KSZ9897_CHIP_ID:
--	case LAN9646_CHIP_ID:
--		/* KSZ9897R Errata DS80000758C Module 4 */
--		/* Energy Efficient Ethernet (EEE) feature select must be manually disabled
--		 *   The EEE feature is enabled by default, but it is not fully
--		 *   operational. It must be manually disabled through register
--		 *   controls. If not disabled, the PHY ports can auto-negotiate
--		 *   to enable EEE, and this feature can cause link drops when
--		 *   linked to another device supporting EEE.
--		 *
--		 * The same item appears in the errata for all switches above.
--		 */
--		return MICREL_NO_EEE;
- 	}
-
- 	return 0;
-@@ -3466,6 +3511,20 @@ static int ksz_max_mtu(struct dsa_switch *ds, int port)
- 	return -EOPNOTSUPP;
- }
-
-+/**
-+ * ksz_support_eee - Determine Energy Efficient Ethernet (EEE) support for a
-+ *                   port
-+ * @ds: Pointer to the DSA switch structure
-+ * @port: Port number to check
-+ *
-+ * This function also documents devices where EEE was initially advertised but
-+ * later withdrawn due to reliability issues, as described in official errata
-+ * documents. These devices are explicitly listed to record known limitations,
-+ * even if there is no technical necessity for runtime checks.
-+ *
-+ * Returns: true if the internal PHY on the given port supports fully
-+ * operational EEE, false otherwise.
-+ */
- static bool ksz_support_eee(struct dsa_switch *ds, int port)
- {
- 	struct ksz_device *dev = ds->priv;
-@@ -3475,15 +3534,34 @@ static bool ksz_support_eee(struct dsa_switch *ds, int port)
-
- 	switch (dev->chip_id) {
- 	case KSZ8563_CHIP_ID:
-+	case KSZ9563_CHIP_ID:
-+	case KSZ9893_CHIP_ID:
-+		return true;
- 	case KSZ8567_CHIP_ID:
-+		/* KSZ8567R Errata DS80000752C Module 4 */
-+	case KSZ8765_CHIP_ID:
-+	case KSZ8794_CHIP_ID:
-+	case KSZ8795_CHIP_ID:
-+		/* KSZ879x/KSZ877x/KSZ876x Errata DS80000687C Module 2 */
- 	case KSZ9477_CHIP_ID:
--	case KSZ9563_CHIP_ID:
-+		/* KSZ9477S Errata DS80000754A Module 4 */
- 	case KSZ9567_CHIP_ID:
--	case KSZ9893_CHIP_ID:
-+		/* KSZ9567S Errata DS80000756A Module 4 */
- 	case KSZ9896_CHIP_ID:
-+		/* KSZ9896C Errata DS80000757A Module 3 */
- 	case KSZ9897_CHIP_ID:
- 	case LAN9646_CHIP_ID:
--		return true;
-+		/* KSZ9897R Errata DS80000758C Module 4 */
-+		/* Energy Efficient Ethernet (EEE) feature select must be
-+		 * manually disabled
-+		 *   The EEE feature is enabled by default, but it is not fully
-+		 *   operational. It must be manually disabled through register
-+		 *   controls. If not disabled, the PHY ports can auto-negotiate
-+		 *   to enable EEE, and this feature can cause link drops when
-+		 *   linked to another device supporting EEE.
-+		 *
-+		 * The same item appears in the errata for all switches above.
-+		 */
- 	}
-
- 	return false;
---
-2.39.5
-
+--=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+https://www.tq-group.com/
