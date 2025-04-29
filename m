@@ -1,133 +1,62 @@
-Received: from smtp.smtpout.orange.fr (smtp-30.smtpout.orange.fr [80.12.242.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AB713AC1;
-	Tue, 29 Apr 2025 21:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AC6215040;
+	Tue, 29 Apr 2025 21:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745960682; cv=none; b=W6N83ePIpIWUcUIzjhnK65lC/JzYdvm28vjymeXKXr/pqalAKHTw94SRwsaRchRwIZm4ww4OInuKjr94neAm1N4VPrQEscYxfqaVeK73lFpitnER3B8xssBujAS+twarciad4z/o5cf2sLW8dTqAoqaPz9caZF+W7kyM+4Wpjjo=
+	t=1745962505; cv=none; b=tc25cImRy465wUK/K5mv8HSjws539eMkzxPuN33oigS2NATbyfFp5Y9oX6scD245fy0PvablGUiBm51D3VOPavqaP5hWx3BnPXQYRn6xfXmIq1Oxo/QFBMcQ8kDueepBL9tIzbLZgadk/SgRZdZxvYFKKOsG61zBgme7pKyWtrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745960682; c=relaxed/simple;
-	bh=9MN7EzPl8Ix41M3eTmAMrKzzZ19Zdur1bzdSLBkorjY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oEJ3tlSO7AaguX4Huz3UrclCQtKTYsqhitU3uYh5SXzN1rfk4D+bjy+xRd3I3MsGji+mJJ5gpHWU3Q4y8FapUQz/8iCWuISWHuouOCsaDsNRirmksnPYfovTkVrogwC2JHbQLK7hawIWxM/okezn9Fmqpy7hiVTtKD5TSRKmtFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=E9f552v1; arc=none smtp.client-ip=80.12.242.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+	s=arc-20240116; t=1745962505; c=relaxed/simple;
+	bh=ylmvcbjnT+ht/5XeTR8I9zgGEbq526jEQ+kO+wRCvnM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rsKMAkQPg+OodV6TcVVeaONgL1BbdLjOoEVSecPZGMIuwDOw+U3FEcqmBtr5DnuUx5cmoY/j6R/VUn113bu033Tp/CvmAGatoCVdHknNTRhVNHcGrxe5ZhWHFKK7qyR+dHEPPGmTdRM56G86wwOkwuqntaAvuWJpcrluvN6gGIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m/D7xqgs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="E9f552v1"
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id 9rzNumpcYN5mI9rzQuMyVC; Tue, 29 Apr 2025 22:55:47 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1745960147;
-	bh=NqrZP5JivyxldFmAi4UVOQoQCnpE7WmY52m/wQ8PrDM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=E9f552v1eFs2M5RxbiunKLS2gnnjSGCo6hzrEh6jaPK03065K+1nT5dkBAszEdjKw
-	 AI7xqWuvhsHem6Nx4H3rcjsJjPr4H96CMKKa4y457EgNOCUnZXzkrERuC1M4FRE3JW
-	 dDRKGu7+CG3ebjSU4g+UPa7cel34II0iYK8xkp7mp7bzgahLXjhqrUIzQy5NEDaxHB
-	 cvVaEyaeGmOV/NVfldXu6B0KHjLejiTB+i6UdaBwqg41vpfyHsVQAh/hCFnnDPcL9S
-	 eS+6vHW+diXwf6syIkCNoKqXzhQh6lO4XWGs9GOGdq5JdkmQ9hZzvCyaPdVPhEzYsU
-	 CVV4zdRpzrBFQ==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Tue, 29 Apr 2025 22:55:47 +0200
-X-ME-IP: 90.11.132.44
-Message-ID: <85758958-0e67-4492-a9e0-40f25c554e8c@wanadoo.fr>
-Date: Tue, 29 Apr 2025 22:55:37 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m/D7xqgs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5991DC4CEE3;
+	Tue, 29 Apr 2025 21:35:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745962504;
+	bh=ylmvcbjnT+ht/5XeTR8I9zgGEbq526jEQ+kO+wRCvnM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=m/D7xqgsDKYjqOSMMNM5oFBZZOZr1ow6Mdk/vuhD9yocsF+uPmiei5VmOXgNswD2M
+	 KKNipTlVFdHDZucIEsNZp3mXB3NnWy9c35W3tZEpPjruo9rtyHXECvkMM7LSxC1W4/
+	 Kfa/WJKJ1NGBhyfAum7p30huypFrGXRjSpWLyJwKzBhjP3tgCyAnYICfJOaSVNwHOV
+	 PMDvtQ0YlTk0smcK5xyk1/i4vr5ZgKLy8el4Bk7M1AR1tYZQlJOYHRCkDThC4KqaMq
+	 tdu5nDo9LRdyyyOCXWY2g9hX41Hr8nOFEg0QwW/VZWcwI4EfSwVJMnvbU1YCcLE6cA
+	 PNnCez5ZJzWdw==
+Date: Tue, 29 Apr 2025 14:35:03 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Moon Yeounsu <yyyynoom@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2] net: dlink: add synchronization for stats
+ update
+Message-ID: <20250429143503.5a44a94f@kernel.org>
+In-Reply-To: <20250425231352.102535-2-yyyynoom@gmail.com>
+References: <20250425231352.102535-2-yyyynoom@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: airoha: Fix an error handling path in airoha_probe()
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- netdev@vger.kernel.org
-References: <f4a420f3a8b4a6fe72798f9774ec9aff2291522d.1744977434.git.christophe.jaillet@wanadoo.fr>
- <aAJFgqrOFL_xAqtW@lore-desk> <aBDglZH4VaBlWU2a@lore-desk>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <aBDglZH4VaBlWU2a@lore-desk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Le 29/04/2025 à 16:22, Lorenzo Bianconi a écrit :
->>> If an error occurs after a successful airoha_hw_init() call,
->>> airoha_ppe_deinit() needs to be called as already done in the remove
->>> function.
->>>
->>> Fixes: 00a7678310fe ("net: airoha: Introduce flowtable offload support")
->>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->>> ---
->>> Compile tested-only
->>> ---
->>>   drivers/net/ethernet/airoha/airoha_eth.c | 2 ++
->>>   1 file changed, 2 insertions(+)
->>>
->>> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
->>> index 69e523dd4186..252b32ceb064 100644
->>> --- a/drivers/net/ethernet/airoha/airoha_eth.c
->>> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
->>> @@ -2631,6 +2631,8 @@ static int airoha_probe(struct platform_device *pdev)
->>>   		}
->>>   	}
->>>   	free_netdev(eth->napi_dev);
->>> +
->>> +	airoha_ppe_deinit(eth);
->>>   	platform_set_drvdata(pdev, NULL);
->>>   
->>>   	return err;
->>> -- 
->>> 2.49.0
->>>
->>
->> Hi Christophe,
->>
->> I agree we are missing a airoha_ppe_deinit() call in the probe error path,
->> but we should move it above after stopping the NAPI since if airoha_hw_init()
->> fails we will undo the work done by airoha_ppe_init(). Something like:
->>
->> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
->> index 16c7896f931f..37d9678798d1 100644
->> --- a/drivers/net/ethernet/airoha/airoha_eth.c
->> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
->> @@ -2959,6 +2959,7 @@ static int airoha_probe(struct platform_device *pdev)
->>   error_napi_stop:
->>   	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
->>   		airoha_qdma_stop_napi(&eth->qdma[i]);
->> +	airoha_ppe_init(eth);
->>   error_hw_cleanup:
->>   	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
->>   		airoha_hw_cleanup(&eth->qdma[i]);
->>
-> 
-> Hi Christophe,
-> 
-> any plan to repost this fix?
+On Sat, 26 Apr 2025 08:13:52 +0900 Moon Yeounsu wrote:
+> +	spin_lock_irq(&np->stats_lock);
+>  	/* Maximum Collisions */
+>  	if (tx_status & 0x08)
+>  		dev->stats.collisions++;
+> +
+> +	dev->stats.tx_errors++;
+> +	spin_unlock_irq(&np->stats_lock);
 
-Hi,
-
-I'll send a v2, but I currently don't have time to look at it.
-Will need a few more days.
-
-CJ
-
-> 
-> Regards,
-> Lorenzo
-> 
->>
->> Agree?
->>
->> Regards,
->> Lorenzo
-> 
-> 
-
+I could be wrong but since this code runs in IRQ context I believe 
+you need to use spin_lock_irqsave() here. Or just spin_lock() but
+not sure, and spin_lock_irqsave() always works..
+-- 
+pw-bot: cr
