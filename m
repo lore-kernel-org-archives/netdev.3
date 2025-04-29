@@ -1,16 +1,15 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E03527A931
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BF727B4E3
 	for <netdev@vger.kernel.org>; Tue, 29 Apr 2025 07:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745912476; cv=none; b=I9plbRu8oxU3hwv+dgZ0YBGwloXJD4OH2QHR9K3JJBkpgsJtdxF+MFZGTXFxRHPjRUTE0hZxEYvKsJnH4d4tRtBQZpVeFEc8Yuu5k5O+s2AsvYfnRgl0AB1lz9PSwg6hLSTGnf2cBpZ9XVOX5v3PdN4RF2upp26z2AwiY3633iY=
+	t=1745912476; cv=none; b=CGLHnK0tK9GiTLG3XFm2ULVumvZAmb12J0cPxoMjSVYZLMo6foQdZYFTh3jvDpr0J3KQj3sTvSDr0niHfH7xWA5KrbVxB58W8ikpQlZSyHhb+X/ASKwEmlHjcTjlHmGinRDraF1cVL/DRC20dAJyOoXaDbeep3VPa+dk6A8FNmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1745912476; c=relaxed/simple;
-	bh=1k8DD7DU6StfRskpYGO/JVOEw0YmLwAKC4vCqPkq0s4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YZAULKpnL6yi5lDTH7gg70LFkdUUN36+1Zqkpqw1ZBv19GdfqxTC16kEOfGXEs2qSyxszg3Sl4x995HbH0X4j9Kyno83+2Vo4wu0cq+Va68SP2mz89FMymLr8rKHOQVLmpYPcD7YmmGhTz1aI3k6K64CSEsapKCtLRbInFyZkgU=
+	bh=S19/Flofel9AeUg2OHz/3Ga05JqDWZ+y0Fk5OatPor0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Nas7S1GZitukXG8f66hG2vjImz7F0VektMF6F8zBScENZ4+ne1lO7JwEC2xaRsiF3pCWzvIWMNCWjUGjm2rFuZlUov4ZAOBFLgDC1ndFeW7YAfp6cSiU0yCv5yx6wyjvm/gwohIWDcI307E4ia+JNzfkq3Uo9YySHDLuBGoWLNA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +17,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u9faT-0006KP-Sj; Tue, 29 Apr 2025 09:41:05 +0200
+	id 1u9faT-0006KN-Si; Tue, 29 Apr 2025 09:41:05 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u9faS-000E3D-1W;
+	id 1u9faS-000E3B-1M;
 	Tue, 29 Apr 2025 09:41:04 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u9faS-00CY6o-1J;
+	id 1u9faS-00CY6U-18;
 	Tue, 29 Apr 2025 09:41:04 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -40,12 +39,10 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: [PATCH net-next v3 2/4] net: selftests: prepare for detailed error handling in net_test_get_skb()
-Date: Tue, 29 Apr 2025 09:41:01 +0200
-Message-Id: <20250429074103.2991006-3-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v3 0/4] net: selftest: improve test string formatting and checksum handling
+Date: Tue, 29 Apr 2025 09:40:59 +0200
+Message-Id: <20250429074103.2991006-1-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250429074103.2991006-1-o.rempel@pengutronix.de>
-References: <20250429074103.2991006-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,42 +55,34 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Replace NULL return with ERR_PTR(-ENOMEM) in net_test_get_skb() and
-update the caller to use IS_ERR/PTR_ERR.
+This patchset addresses two issues in the current net selftest
+framework:
 
-This prepares the code for follow-up changes that will return more
-specific error codes from net_test_get_skb().
+- Truncated test names: Existing test names are prefixed with an index,
+  reducing the available space within the ETH_GSTRING_LEN limit.  This
+  patch removes the index to allow more descriptive names.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Simon Horman <horms@kernel.org>
----
- net/core/selftests.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+- Inconsistent checksum behavior: On DSA setups and similar
+  environments, checksum offloading is not always available or
+  appropriate. The previous selftests did not distinguish between software
+  and hardware checksum modes, leading to unreliable results. This
+  patchset introduces explicit csum_mode handling and adds separate tests
+  for both software and hardware checksum validation.
 
-diff --git a/net/core/selftests.c b/net/core/selftests.c
-index 9146e33db25a..3f82a5d14cd4 100644
---- a/net/core/selftests.c
-+++ b/net/core/selftests.c
-@@ -74,7 +74,7 @@ static struct sk_buff *net_test_get_skb(struct net_device *ndev,
- 
- 	skb = netdev_alloc_skb(ndev, size);
- 	if (!skb)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 
- 	prefetchw(skb->data);
- 
-@@ -267,8 +267,8 @@ static int __net_test_loopback(struct net_device *ndev,
- 	dev_add_pack(&tpriv->pt);
- 
- 	skb = net_test_get_skb(ndev, attr);
--	if (!skb) {
--		ret = -ENOMEM;
-+	if (IS_ERR(skb)) {
-+		ret = PTR_ERR(skb);
- 		goto cleanup;
- 	}
- 
--- 
+changes v3:
+- no functional changes
+- rebase against latest net-next
+
+Oleksij Rempel (4):
+  net: selftests: drop test index from net_selftest_get_strings()
+  net: selftests: prepare for detailed error handling in
+    net_test_get_skb()
+  net: selftests: add checksum mode support and SW checksum handling
+  net: selftests: add PHY loopback tests with HW checksum offload
+
+ net/core/selftests.c | 308 ++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 291 insertions(+), 17 deletions(-)
+
+--
 2.39.5
 
