@@ -1,151 +1,81 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F1226ACD
-	for <netdev@vger.kernel.org>; Tue, 29 Apr 2025 20:38:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED00253F2C
+	for <netdev@vger.kernel.org>; Tue, 29 Apr 2025 21:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745959095; cv=none; b=ASZAR90sm+zgNQ2egUv11sn8ykb7mT4yU8eNUZ6D/weXBbiCfLYWtke43mmPeBSgQTkjNYj4ojbvrV2Vx44FEztGJ0i300pQP4wgDhcdD1b7tnB6cREcdPKdxgAt624dJxbtOwvEoSF4UPV/FbqneN405NOGR82kQ1ZS64ITJWI=
+	t=1745960414; cv=none; b=fO3Zp1khENRyme9TgsqDjGVthsxN+PC3uDFBhjuf79zaPZt2yAFlTt+u+4dCww/x9mxTajRQBNIasKSlxCrqaY0eFA98H7KE1gcQfnJj/qC5pYhSWW+Ll1pdf91GTSIfcWU7nraWOIUGj4SQENDDi7UZgQbd/FUU2TW1wsRPjRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745959095; c=relaxed/simple;
-	bh=9eb9+rz2hmmZKsnkZfIGaprzttw+iwUdoFkRCI0XYCQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t29cQOU2JrP6lxl3yQLny7zW0HYEjzx6oaGWul5sMILQf+j8eMgEu/CXl06x++4Hj/8WxDhk5Y7C8oqjPeawX9M/KhJthKwTpOb3/ISWIzdunWeuoFcGT/kE9xo3yLOzdhb2fdymK4aT5MRULkk5zUJN33r1lvesiqT5as6FQ6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=AqqiZc0q; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=eUPsCEdj; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=AqqiZc0q; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=eUPsCEdj; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="AqqiZc0q";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="eUPsCEdj";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="AqqiZc0q";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="eUPsCEdj"
-Received: from lion.mk-sys.cz (unknown [10.100.225.114])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6702621902;
-	Tue, 29 Apr 2025 20:38:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1745959092; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9eb9+rz2hmmZKsnkZfIGaprzttw+iwUdoFkRCI0XYCQ=;
-	b=AqqiZc0q+TprIrWXJL71wGBrlw0cssciDNwVJKjRqpbFzlJQQ6j+pu1tSNQLH2vAZ/nozU
-	4S6xajPpnkuy7BqbimHR79RTkcsMxDr0g6WzHlUBP/YlSm7s/jwglNlzxx+HttTWfi6oI+
-	3g/sFxNTcrLmuAEELn3icgq0dLyZAPU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1745959092;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9eb9+rz2hmmZKsnkZfIGaprzttw+iwUdoFkRCI0XYCQ=;
-	b=eUPsCEdjL4DAHb+UpP6tlVZ3urY26EeCUcgQFO2/oVWtsS5U9EzoUL81zhX0H2kAarT/d/
-	eERYCiEqIFbbb5Bg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1745959092; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9eb9+rz2hmmZKsnkZfIGaprzttw+iwUdoFkRCI0XYCQ=;
-	b=AqqiZc0q+TprIrWXJL71wGBrlw0cssciDNwVJKjRqpbFzlJQQ6j+pu1tSNQLH2vAZ/nozU
-	4S6xajPpnkuy7BqbimHR79RTkcsMxDr0g6WzHlUBP/YlSm7s/jwglNlzxx+HttTWfi6oI+
-	3g/sFxNTcrLmuAEELn3icgq0dLyZAPU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1745959092;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9eb9+rz2hmmZKsnkZfIGaprzttw+iwUdoFkRCI0XYCQ=;
-	b=eUPsCEdjL4DAHb+UpP6tlVZ3urY26EeCUcgQFO2/oVWtsS5U9EzoUL81zhX0H2kAarT/d/
-	eERYCiEqIFbbb5Bg==
-Received: by lion.mk-sys.cz (Postfix, from userid 1000)
-	id 4F57920057; Tue, 29 Apr 2025 22:38:12 +0200 (CEST)
-Date: Tue, 29 Apr 2025 22:38:12 +0200
-From: Michal Kubecek <mkubecek@suse.cz>
-To: Taehee Yoo <ap420073@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	edumazet@google.com, andrew+netdev@lunn.ch, horms@kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH ethtool-next] ethtool: Add support for configuring
- hds-thresh
-Message-ID: <ztricyoyiyn4gvuhqlgxfxycq7nxljht7zmiavvsvxgxna4mk4@w45ileelwjc7>
-References: <20250408060625.2180330-1-ap420073@gmail.com>
+	s=arc-20240116; t=1745960414; c=relaxed/simple;
+	bh=sXo0fgS8TalrcfMC8zTyTPNoeowX0Qo4jX6/Af3oWa4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=LG2LDKJ2g/wNHRvSIcwEqhvnoxXMn5jzgAVH2YLdScboupVGhTWxJNuN/3Tj7iqKbWBcVFXELGV3CAhWPo9Ulzfpv4SJHAC5UJ2cEQ0ae1B3RqwWuUItIeFyUXKqSQhvwunYlPsxHYBSl41Kfvm1DyLnqWa+2HntUWJCeoScVis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=basealt.ru; arc=none smtp.client-ip=193.43.8.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=basealt.ru
+Received: from localhost (broadband-46-242-4-129.ip.moscow.rt.ru [46.242.4.129])
+	(Authenticated sender: gremlin)
+	by air.basealt.ru (Postfix) with ESMTPSA id 4532B2336D;
+	Wed, 30 Apr 2025 00:00:01 +0300 (MSK)
+Date: Wed, 30 Apr 2025 00:00:00 +0300
+From: "Alexey V. Vissarionov" <gremlin@altlinux.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "Alexey V. Vissarionov" <gremlin@altlinux.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Derek Chickles <derek.chickles@cavium.com>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Felix Manlunas <felix.manlunas@cavium.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, lvc-project@linuxtesting.org
+Subject: [PATCH net] liquidio: check other_oct before dereferencing
+Message-ID: <20250429210000.GB1820@altlinux.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="k4g75xkxmveabck7"
+Content-Type: text/plain; charset=koi8-r
 Content-Disposition: inline
-In-Reply-To: <20250408060625.2180330-1-ap420073@gmail.com>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.40 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	NEURAL_HAM_SHORT(-0.20)[-0.985];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	TAGGED_RCPT(0.00)[netdev];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lion.mk-sys.cz:helo]
-X-Spam-Score: -4.40
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
+
+get_other_octeon_device() may return NULL; avoid dereferencing the
+other_oct pointer in that case.
+
+Found by ALT Linux Team (altlinux.org) and Linux Verification Center
+(linuxtesting.org).
+
+Fixes: bb54be589c7a ("liquidio: fix Octeon core watchdog timeout false alarm")
+Signed-off-by: Alexey V. Vissarionov <gremlin@altlinux.org>
+---
+ drivers/net/ethernet/cavium/liquidio/lio_main.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/cavium/liquidio/lio_main.c b/drivers/net/ethernet/cavium/liquidio/lio_main.c
+index 1d79f6eaa41f6cbf..7b255126289b9fcd 100644
+--- a/drivers/net/ethernet/cavium/liquidio/lio_main.c
++++ b/drivers/net/ethernet/cavium/liquidio/lio_main.c
+@@ -796,10 +796,11 @@ static int liquidio_watchdog(void *param)
+ 
+ #ifdef CONFIG_MODULE_UNLOAD
+ 		vfs_mask1 = READ_ONCE(oct->sriov_info.vf_drv_loaded_mask);
+-		vfs_mask2 = READ_ONCE(other_oct->sriov_info.vf_drv_loaded_mask);
+-
+-		vfs_referencing_pf  = hweight64(vfs_mask1);
+-		vfs_referencing_pf += hweight64(vfs_mask2);
++		vfs_referencing_pf = hweight64(vfs_mask1);
++		if (other_oct) {
++			vfs_mask2 = READ_ONCE(other_oct->sriov_info.vf_drv_loaded_mask);
++			vfs_referencing_pf += hweight64(vfs_mask2);
++		}
+ 
+ 		refcount = module_refcount(THIS_MODULE);
+ 		if (refcount >= vfs_referencing_pf) {
 
 
---k4g75xkxmveabck7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Apr 08, 2025 at 06:06:25AM +0000, Taehee Yoo wrote:
-> HDS(Header Data Split) threshold value is used by header-data-split.
-> If received packet's length is larger than hds-thresh value,
-> header/data of packet will be splited.
->=20
-> ethtool -g|--get-ring <interface name> hds-thresh
-> ethtool -G|--set-ring <interface name> hds-thresh <0 - MAX>
->=20
-> The minimum value is 0, which indicates header/data will be splited
-> for all receive packets.
-> The maximum value is up to hardware limitation.
->=20
-> Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-> ---
-
-Applied now, thank you.
-
-Michal
-
---k4g75xkxmveabck7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEWN3j3bieVmp26mKO538sG/LRdpUFAmgROLAACgkQ538sG/LR
-dpUwUgf5AZcqsWNG/7pozgV1RKQL4K5lm8V8WPIoTNgRH6NAiq9Ac/p8lvKZ5Mzg
-ejkPE8476FYlQ9/LYU+yCLxxtWHMvkxchCIW/xnR7PuX279ok3RcPzLEdxMrXk32
-+a3misz+jP5R9ysTefsph1IpQ7EMOVbrc5dtinJBZIkVhNxWo19rDGHX+uzhhpD+
-+hlHo0VYZxNxK1Zn02bjvLGvPMIDRz829VvOFypUbsK0BGW9dQd820BXKFxCTixN
-lXMXVQBHKHMFD50qnJqTbLFRr+19cexuQhuJCu6a+WruBAtCEAGAOji16nmg09O9
-M8hcYec0RV5NOpjgNra1sleXy/JI8A==
-=MCpF
------END PGP SIGNATURE-----
-
---k4g75xkxmveabck7--
+-- 
+Alexey V. Vissarionov
+gremlin נעי altlinux פ‏כ org; +vii-cmiii-ccxxix-lxxix-xlii
+GPG: 0D92F19E1C0DC36E27F61A29CD17E2B43D879005 @ hkp://keys.gnupg.net
