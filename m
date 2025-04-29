@@ -1,137 +1,179 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1006226F47F;
-	Tue, 29 Apr 2025 05:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5048E270ECD
+	for <netdev@vger.kernel.org>; Tue, 29 Apr 2025 05:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745904577; cv=none; b=hyynznumzaug/gpMBcGYkJIvZGyhNuDPgxq+NE5dCWAMgRn70H5nnQSShIfUb5NV0MUSI2Ym5xJynU5aULhBkmvbnV8e1A3FV1xj0wp1wqsgnLiLuUVAFNZDvMR91UE0rOr6zzo1ffqIwUo32YL6F10rHfStIuEna10bUik+TRA=
+	t=1745905818; cv=none; b=EUdGcrn+Dbfs7D8C9BB3G9IwvlgGAtKaPDq7eYdBzsHt2S3OM+LjTjJZ7uf1FFJDeCvHfOkR2sLJeKVYpvxU0pGDfctogKaLqytXCff4kt6p3tiPXOzLxE3Fw2OfEFpKHdNAbTsJDl5Q3pqDhe/O8++qKgIMEmhNQJvpewoWyP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745904577; c=relaxed/simple;
-	bh=Lv3e47k2fwPuD/LA71tXJaD4eBI796WRIGkmveFhIiY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GojUG9NkGdxO8uNam4e6s6mM9RA5hdQzMs72vU/QMWDTxS26MEYnLCy0yzeCcj3whI4lbBe8yPO3TEk4vKwpkv4DeCH8+iFiwWwj+hJ5A2WbrVuqvKYwxe/wntOFl1jqhYlqshruH9FcIWDJ64lsbYahtYMI/BclqtWCkcQO7MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=cAYCecKS; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="cAYCecKS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1745904575; x=1777440575;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Lv3e47k2fwPuD/LA71tXJaD4eBI796WRIGkmveFhIiY=;
-  b=cAYCecKSvRIAPyIFdw9kW2M9+IIMSsnrc7oVD8oOWTzHv0bJ8lOr8Qa8
-   Q3MnXjsPn6oRBqajtWMR0wE0RFAGKMMsHZZISbc8aPqI3cedJZo9c+Gwn
-   BNfHniMIYvfft/zvg+feYKWS+MjVSUbYOAazEcJLB76xFTzqy66x5igMF
-   bh9natYCBW45JFRpvS35iJjt6L78UJQmkxUGU5EZZ1RmCEPfdBtiAMdD7
-   p4UFOnmPfqMR1X7KpGfHnCDHsZ2FFbKYTDsups2ZYA0lVRk+XjJh6rqXL
-   kRE+T0BhgySrOgSW0CogIeHRo31UMIC7cfdA7QoPXfph8Y4BLmbF21X/v
-   g==;
-X-CSE-ConnectionGUID: cBTODZR3SKuLWw3lXtWFog==
-X-CSE-MsgGUID: nkpCiSi6Tdej7hMIR2hKDw==
-X-IronPort-AV: E=Sophos;i="6.15,248,1739862000"; 
-   d="scan'208";a="208513184"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Apr 2025 22:29:29 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Mon, 28 Apr 2025 22:28:49 -0700
-Received: from che-ld-unglab06.microchip.com (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.44 via Frontend Transport; Mon, 28 Apr 2025 22:28:46 -0700
-From: Thangaraj Samynathan <thangaraj.s@microchip.com>
-To: <netdev@vger.kernel.org>
-CC: <bryan.whitehead@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 net] net: lan743x: Fix memleak issue when GSO enabled
-Date: Tue, 29 Apr 2025 10:55:27 +0530
-Message-ID: <20250429052527.10031-1-thangaraj.s@microchip.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1745905818; c=relaxed/simple;
+	bh=MbUdQJ8uMDoDJtp7jwLtx4jR1eO9ZMl8f/GioT48EzI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=q1hr6zOmnyex9M7gMUdMLBU3wz8hYwamSnTFsIOim/3DEHBi7kVkeUOKWAEWACnRmtCCA3ExWsX2J90DXIEZYTTgpUwDNeMf6JnSYQo9aeC9P7B4g7xGC+UiQNVLyaV4YXoaGHcJiw6WcwRU1i8fskctin4uPnZvDEW0HpHW+dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fejes.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fejes.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-39c13fa05ebso3630193f8f.0
+        for <netdev@vger.kernel.org>; Mon, 28 Apr 2025 22:50:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745905813; x=1746510613;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MbUdQJ8uMDoDJtp7jwLtx4jR1eO9ZMl8f/GioT48EzI=;
+        b=AxDS7gKrAras+cnuu/oH1pAYVKEVTERzDM1GPgdsTOAGQmEZBIS2floba4sZi1zSNn
+         Efa6s63XZ5E79rq0aqPIgcsBqqKKp9mSbLxeaIJmklWDLwmghf1pBOrI+0e+U7o0BHFI
+         YaE0vasg3JTBRHiMciX7S0RBIJzK0llFE8nz5MoWF0hwB3GNpbzNVPEy7phhXOh+4XaN
+         TIVrxgmGpNSVA7wwyOVvBkXS+BpDb8eZ1h5Wj5Bj7B9YLJFDNOvUT/SsfghVF9OKdBJ9
+         4tExLj6Kso8U3Y8/jg+7heaAmfpV1Qwlmfhf+YpdpAvDZVhHPlTUx5btD0QeCeniHDoh
+         uuKg==
+X-Forwarded-Encrypted: i=1; AJvYcCWqJBtFRp0C5NfHNd58UIVjc5vzSsPmaK6xJ7VV3dyijBpTDSgYIprAGy2jcUDFXDe/1Tc18pw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZLoXXx86IPf7mWEPItAON3rH+0yEariL1YVdhnk8XF+HvtlU4
+	CQl/3wibiWVpjjHuz97p1v3g0OYTI54mg/raEKDrLzQjPeWUlX+8kzsCtOBE
+X-Gm-Gg: ASbGncs3niWHl0x5ppT0iG6WTiiT+tXDbGeBRqxwNK32S5pyP5y4z7MJ3PevaTcaSRl
+	YFeK1oU3G0rKTf0zpgQpzS2QwxY9/LwIwZqKJJDfhviSMvQwo/1mu0ZFnxOkuXx6FKVdVBAxL2w
+	AUTd/LIHSfZOLcle974C7outAZln1v0gp/JNbIRyOKiL9fKHo/YaVe7G/m6/RMWVTLR6hEgzrLH
+	kZ+um7ncrjOFV/vG/BxpTDmgKudPFmxT4sndBCBCYu4miQF4Ex/WLX3rKgTT3WByfWwbJhIx94+
+	Es21OyF5/f7T49mn0EuSfdjKj5m+g2hhWBEaMs2l9eOun2zY
+X-Google-Smtp-Source: AGHT+IEsolNMrMqby68BQtbvzflIWNvjRzwqXWu+usXNv7vpWH0CC4VHp85OIXnKXHy01Lv1V8dlng==
+X-Received: by 2002:a05:6000:1286:b0:39c:1f04:a646 with SMTP id ffacd0b85a97d-3a07aa6d787mr7642501f8f.13.1745905813146;
+        Mon, 28 Apr 2025 22:50:13 -0700 (PDT)
+Received: from [10.148.85.1] ([195.228.69.10])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a073ca557bsm13024951f8f.35.2025.04.28.22.50.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Apr 2025 22:50:11 -0700 (PDT)
+Message-ID: <1d99d7ccfc3a7a18840948ab6ba1c0b5fad90901.camel@fejes.dev>
+Subject: Re: [question] robust netns association with fib4 lookup
+From: Ferenc Fejes <ferenc@fejes.dev>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: dsahern@gmail.com, netdev <netdev@vger.kernel.org>, kuniyu@amazon.com
+Date: Tue, 29 Apr 2025 07:50:10 +0200
+In-Reply-To: <aA-gNpCWG2XJaf-X@shredder>
+References: <c28ded3224734ca62187ed9a41f7ab39ceecb610.camel@fejes.dev>
+	 <aAvRxOGcyaEx0_V2@shredder>
+	 <2eb4b72dc5578407715e91f87116d2385598fa82.camel@fejes.dev>
+	 <aA-gNpCWG2XJaf-X@shredder>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1-1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-Always map the `skb` to the LS descriptor. Previously skb was
-mapped to EXT descriptor when the number of fragments is zero with
-GSO enabled. Mapping the skb to EXT descriptor prevents it from
-being freed, leading to a memory leak
+On Mon, 2025-04-28 at 18:35 +0300, Ido Schimmel wrote:
+> On Mon, Apr 28, 2025 at 12:20:06PM +0200, Ferenc Fejes wrote:
+> > On Fri, 2025-04-25 at 21:17 +0300, Ido Schimmel wrote:
+> > > On Thu, Apr 24, 2025 at 01:33:08PM +0200, Ferenc Fejes wrote:
 
-Fixes: 23f0703c125b ("lan743x: Add main source files for new lan743x driver")
-Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
----
-v1
--Intial Submission
+...
 
-v2
--Modify the description to imperative mood
+> > > > Unfortunately this includes some callers to fib_table_lookup. The
+> > > > netns id would also be presented in the existing tracepoints ([1] a=
+nd
+> > > > [2]). Thanks in advance for any suggestion.
+> > >=20
+> > > By "netns id" you mean the netns cookie? It seems that some TCP trace
+> > > events already expose it (see include/trace/events/tcp.h). It would b=
+e
+> > > nice to finally have "perf" filter these FIB events based on netns.
+> >=20
+> > No, by netns id I mean struct net::ns::inum, which is the inode number
+> > associated with the netns. This is convenient since it's easy to look u=
+p
+> > this
+> > value in userspace with the lsns tool or just stat through the procfs f=
+or
+> > the
+> > inode.
+> >=20
+> > Looks like struct net::net_cookie is for similar purpose and can be use=
+d
+> > from
+> > restricted context (e.g.: xdp/tc/cls eBPF progs) where rich context (st=
+ruct
+> > net
+> > for example) as in a fexit/fentry probe is not available.
+>=20
+> I'm not sure the inode number is a good identifier for a namespace. See
+> this comment from the namespace maintainer for a patch that tried to add
+> a BPF helper to read this value:
+>=20
+> https://lore.kernel.org/all/87efzq8jbi.fsf@xmission.com/
 
----
- drivers/net/ethernet/microchip/lan743x_main.c | 8 ++++++--
- drivers/net/ethernet/microchip/lan743x_main.h | 1 +
- 2 files changed, 7 insertions(+), 2 deletions(-)
+Thanks for the pointer, this makes it crystal clear why the cookie is the w=
+ay to
+go. The TCP tracepoints also stick with the coockie.=20
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index 8b6b9b6efe18..73dfc85fa67e 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -1815,6 +1815,7 @@ static void lan743x_tx_frame_add_lso(struct lan743x_tx *tx,
- 	if (nr_frags <= 0) {
- 		tx->frame_data0 |= TX_DESC_DATA0_LS_;
- 		tx->frame_data0 |= TX_DESC_DATA0_IOC_;
-+		tx->frame_last = tx->frame_first;
- 	}
- 	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
- 	tx_descriptor->data0 = cpu_to_le32(tx->frame_data0);
-@@ -1884,6 +1885,7 @@ static int lan743x_tx_frame_add_fragment(struct lan743x_tx *tx,
- 		tx->frame_first = 0;
- 		tx->frame_data0 = 0;
- 		tx->frame_tail = 0;
-+		tx->frame_last = 0;
- 		return -ENOMEM;
- 	}
- 
-@@ -1924,16 +1926,18 @@ static void lan743x_tx_frame_end(struct lan743x_tx *tx,
- 	    TX_DESC_DATA0_DTYPE_DATA_) {
- 		tx->frame_data0 |= TX_DESC_DATA0_LS_;
- 		tx->frame_data0 |= TX_DESC_DATA0_IOC_;
-+		tx->frame_last = tx->frame_tail;
- 	}
- 
--	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
--	buffer_info = &tx->buffer_info[tx->frame_tail];
-+	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_last];
-+	buffer_info = &tx->buffer_info[tx->frame_last];
- 	buffer_info->skb = skb;
- 	if (time_stamp)
- 		buffer_info->flags |= TX_BUFFER_INFO_FLAG_TIMESTAMP_REQUESTED;
- 	if (ignore_sync)
- 		buffer_info->flags |= TX_BUFFER_INFO_FLAG_IGNORE_SYNC;
- 
-+	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
- 	tx_descriptor->data0 = cpu_to_le32(tx->frame_data0);
- 	tx->frame_tail = lan743x_tx_next_index(tx, tx->frame_tail);
- 	tx->last_tail = tx->frame_tail;
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
-index 7f73d66854be..db5fc73e41cc 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.h
-+++ b/drivers/net/ethernet/microchip/lan743x_main.h
-@@ -980,6 +980,7 @@ struct lan743x_tx {
- 	u32		frame_first;
- 	u32		frame_data0;
- 	u32		frame_tail;
-+	u32		frame_last;
- 
- 	struct lan743x_tx_buffer_info *buffer_info;
- 
--- 
-2.25.1
+>=20
+> More here:
+>=20
+> https://lore.kernel.org/netdev/87h93xqlui.fsf@xmission.com/
+>=20
+> Which I suspect is why Daniel added the netns cookie:
+>=20
+> https://lore.kernel.org/bpf/c47d2346982693a9cf9da0e12690453aded4c788.1585=
+323121.git.daniel@iogearbox.net/
+>=20
+> Regarding retrieval of this cookie, there is SO_NETNS_COOKIE:
+>=20
+> https://lore.kernel.org/all/20210623135646.1632083-1-m@lambda.lt/
+>=20
+> Seems to work fine [1]. Maybe ip-netns can be extended to retrieve the
+> cookie with something like:
+>=20
+> ip netns cookie [ NETNSNAME | PID ]
 
+Agree, the exposure of the cookie for the userspace with ip netns or lsns w=
+ould
+be useful. Luckily [1] is straightforward enough and makes the netns
+identification trivial.
+
+>=20
+> [1]
+> # cat so_netns_cookie.c
+> #include <unistd.h>
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <stdint.h>
+> #include <sys/types.h>
+> #include <sys/socket.h>
+>=20
+> int main(int argc, char *argvp[])
+> {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 socklen_t vallen;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint64_t cookie;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int sock;
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sock =3D socket(AF_INET, SOCK_=
+STREAM, 0);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (sock < 0)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 return sock;
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vallen =3D sizeof(cookie);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (getsockopt(sock, SOL_SOCKE=
+T, SO_NETNS_COOKIE, &cookie, &vallen) !=3D
+> 0)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 return -1;
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 printf("cookie =3D %lu\n", coo=
+kie);
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 close(sock);
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
+> }
+> # gcc -Wall so_netns_cookie.c -o so_netns_cookie
+> # ip netns add ns1
+> # ip netns add ns2
+> # ./so_netns_cookie
+> cookie =3D 1
+> # ip netns exec ns1 ./so_netns_cookie
+> cookie =3D 2
+> # ip netns exec ns2 ./so_netns_cookie
+> cookie =3D 3
