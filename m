@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEB7279337
-	for <netdev@vger.kernel.org>; Tue, 29 Apr 2025 07:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26BA2798F5
+	for <netdev@vger.kernel.org>; Tue, 29 Apr 2025 07:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745912217; cv=none; b=GdLFAxcxZRCJeHwmw/vIbjNVIrvqIVT/SUrrSegx7/lhYeB64+YlfTGeVMjGFKmwQkSCLAC/w2nwa2MsC/V5xE0gcg/lB+YSN48yDWY2dMLTFTb3jEJWu+GfY1wk2VBRTggvOJTdTZKhynWgDNsPpgF9L6ojYmJUgCViEnCquCg=
+	t=1745912218; cv=none; b=ceR2Q82c8I9+28hU6TkraAEoi+caWsA6S/hqmnrbQJov3YrW4UJDjnUyTDDvGq2txYMf+Sj0ZohU5fWgf+6Wz9AYJERpb/qxURzyPk6TK1mzhjZobljR+hByyDA4EirjEpVQWOToTwvHlKWxhD/thfmC32RcVt5ZhhfTRhKTHFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745912217; c=relaxed/simple;
-	bh=0DjVB5bsxhzbNAMeRyZa4FifU108HCJLKTchWTnfluc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JkwGOBBnnEJRl5bEmcpZev+o8xT61uWBbvpFxE74c6RxE/1iUGKlaH8a7bE7uHBbSffGNftZdocNQiJsKKSzbahuX1CzDEh4dQ6HzhgRpy+gv3WlizxCONKop9u15aMsXrhNg/4J6Qye1Y5mTdxRoIy5vx077wh/t8wg7LRTJoU=
+	s=arc-20240116; t=1745912218; c=relaxed/simple;
+	bh=VGUYVw6QW+wGdP57zdeokyo5cVDXcXvy4Co08zbuMzM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=l7Xm96AS5OmhG/XOyC7rxG8M4qGDoKOcZJX7wF6iLabB/QggeVhHsGo13wpBwC0lM7OnRdGX/BBhfipEhvcd8Av7G8e/vy8lZpDEjkx6aA49Kn6T2gKDrpYKkMEtV2Vm8He3Kh66uradPuEyBNEBXtuU6g5QbozoELaReRBq3lQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u9fWI-0004BB-1Z; Tue, 29 Apr 2025 09:36:46 +0200
+	id 1u9fWI-0004BD-1d; Tue, 29 Apr 2025 09:36:46 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u9fWH-000E2W-1x;
+	id 1u9fWH-000E2Y-26;
 	Tue, 29 Apr 2025 09:36:45 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u9fWH-00CX8L-1g;
+	id 1u9fWH-00CX8f-1q;
 	Tue, 29 Apr 2025 09:36:45 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -40,15 +41,17 @@ To: "David S. Miller" <davem@davemloft.net>,
 	"Russell King (Oracle)" <linux@armlinux.org.uk>,
 	Heiner Kallweit <hkallweit1@gmail.com>
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	stable@vger.kernel.org,
 	kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
-	UNGLinuxDriver@microchip.com,
-	stable@vger.kernel.org
-Subject: [PATCH net v3 0/2] address EEE regressions on KSZ switches since v6.9 (v6.14+)
-Date: Tue, 29 Apr 2025 09:36:42 +0200
-Message-Id: <20250429073644.2987282-1-o.rempel@pengutronix.de>
+	UNGLinuxDriver@microchip.com
+Subject: [PATCH net v3 2/2] net: phy: micrel: remove KSZ9477 EEE quirks now handled by phylink
+Date: Tue, 29 Apr 2025 09:36:44 +0200
+Message-Id: <20250429073644.2987282-3-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250429073644.2987282-1-o.rempel@pengutronix.de>
+References: <20250429073644.2987282-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,35 +64,63 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-This patch series addresses a regression in Energy Efficient Ethernet
-(EEE) handling for KSZ switches with integrated PHYs, introduced in
-kernel v6.9 by commit fe0d4fd9285e ("net: phy: Keep track of EEE
-configuration").
+The KSZ9477 PHY driver contained workarounds for broken EEE capability
+advertisements by manually masking supported EEE modes and forcibly
+disabling EEE if MICREL_NO_EEE was set.
 
-The first patch updates the DSA driver to allow phylink to properly
-manage PHY EEE configuration. Since integrated PHYs handle LPI
-internally and ports without integrated PHYs do not document MAC-level
-LPI support, dummy MAC LPI callbacks are provided.
+With proper MAC-side EEE handling implemented via phylink, these quirks
+are no longer necessary. Remove MICREL_NO_EEE handling and the use of
+ksz9477_get_features().
 
-The second patch removes outdated EEE workarounds from the micrel PHY
-driver, as they are no longer needed with correct phylink handling.
+This simplifies the PHY driver and avoids duplicated EEE management logic.
 
-This series addresses the regression for mainline and kernels starting
-from v6.14. It is not easily possible to fully fix older kernels due
-to missing infrastructure changes.
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: stable@vger.kernel.org # v6.14+
+---
+changes v3:
+- included missing CC
+---
+ drivers/net/phy/micrel.c   | 7 -------
+ include/linux/micrel_phy.h | 1 -
+ 2 files changed, 8 deletions(-)
 
-Tested on KSZ9893 hardware.
-
-Oleksij Rempel (2):
-  net: dsa: microchip: let phylink manage PHY EEE configuration on KSZ
-    switches
-  net: phy: micrel: remove KSZ9477 EEE quirks now handled by phylink
-
- drivers/net/dsa/microchip/ksz_common.c | 134 +++++++++++++++++++------
- drivers/net/phy/micrel.c               |   7 --
- include/linux/micrel_phy.h             |   1 -
- 3 files changed, 106 insertions(+), 36 deletions(-)
-
---
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 71fb4410c31b..c2e5be404f07 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -2027,12 +2027,6 @@ static int ksz9477_config_init(struct phy_device *phydev)
+ 			return err;
+ 	}
+ 
+-	/* According to KSZ9477 Errata DS80000754C (Module 4) all EEE modes
+-	 * in this switch shall be regarded as broken.
+-	 */
+-	if (phydev->dev_flags & MICREL_NO_EEE)
+-		phy_disable_eee(phydev);
+-
+ 	return kszphy_config_init(phydev);
+ }
+ 
+@@ -5698,7 +5692,6 @@ static struct phy_driver ksphy_driver[] = {
+ 	.handle_interrupt = kszphy_handle_interrupt,
+ 	.suspend	= genphy_suspend,
+ 	.resume		= ksz9477_resume,
+-	.get_features	= ksz9477_get_features,
+ } };
+ 
+ module_phy_driver(ksphy_driver);
+diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
+index 591bf5b5e8dc..9af01bdd86d2 100644
+--- a/include/linux/micrel_phy.h
++++ b/include/linux/micrel_phy.h
+@@ -44,7 +44,6 @@
+ #define MICREL_PHY_50MHZ_CLK	BIT(0)
+ #define MICREL_PHY_FXEN		BIT(1)
+ #define MICREL_KSZ8_P1_ERRATA	BIT(2)
+-#define MICREL_NO_EEE		BIT(3)
+ 
+ #define MICREL_KSZ9021_EXTREG_CTRL	0xB
+ #define MICREL_KSZ9021_EXTREG_DATA_WRITE	0xC
+-- 
 2.39.5
 
