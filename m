@@ -1,116 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164A325B1E0;
-	Wed, 30 Apr 2025 13:25:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCB71EB5B;
+	Wed, 30 Apr 2025 13:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746019540; cv=none; b=Ap7T6mxbkn9U3yF8/FYOs+anv2bgUkUK+QwK2+VjLKvSkB4rFmOj+FnDOaHvGvfqEbbiX6W9UraRCgBOF6t+F+gxylJELH1lDMHvJlfnixLR95790WB1S736VKSU64fIhjvAjHrkR+49IlWdlJq7McNY3V1fzNvQ18+I5I2tg78=
+	t=1746019857; cv=none; b=mxd879gXx7c1Znf0T6NyLyNdurYDEdyDmwRWDp/HPfvgn3qf3woftOZ40GXjVDOooKF1VMH6pCfrmVT6L3yqprieUJOslB6+702Yv5EYK1UK6YAIHhU8ygUicVjbQAwPoslMAiEWyZIVn1zOeavWcZPlu80/LRT8KQZY1ipDoWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746019540; c=relaxed/simple;
-	bh=/LI7JX8DlnvmPnG1T214t1rd+I4m1oR6VQ1Rjq4IYCw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Qso4Nk+QGRfkDlZl6yZohfHJPCEWyT9PQBBtGqwoYGzpM2TIfl/vYPJJxIct7VgO3txlhNyMwNplPTQ8o53ULCQ6eF5LKXrRvjr9497/ESekRfGhOci4t8U5MWjOe/VAuBTrdgxOMBHh7RJswY9m1D/TMek3adIH0y2EuXH7qjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IbozTqVv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746019857; c=relaxed/simple;
+	bh=rtUf7kOs0Puf2UPujlWySKy2elK/Uoh7yNJ8qWZHYmA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=cIuqtme+cBOBRleDqMxtAx1FWjp3jEh0taCe+FfpBksJiTfzk4fLD156HizgifJb53fCzd6xuuWDxcUtQw0bkv7I0Ow2EWAMicXRjrteby4/jg05AFDo1jnTmxabaUPthKlq7DqbzdwMNjNYSUgmJIXZppbku5IPeURTIvtShsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=EyE/GTLK; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IbozTqVv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E5FAC4CEE9;
-	Wed, 30 Apr 2025 13:25:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746019539;
-	bh=/LI7JX8DlnvmPnG1T214t1rd+I4m1oR6VQ1Rjq4IYCw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IbozTqVvpONNMXNPqrfg9ujLON906ST+28hSSXAnGfSGwk6Dzz+n6vJOaU0gy999P
-	 KDe27uKRN6mZPeqn6+I2bQyfp3oYPt/XvYNI2RPdW5FksA4IIWtIJm1PFVHhX4Ych4
-	 6eLHc3qe+8IQLhcjgFgfd7fnOGZeKldTuutqnJ6q+/Nd6CIy9fksAHw/ElYBGCnnBG
-	 3+DA8NojftWXsiv0T3JAVS1KfU4Ap6rFBCnAcKB9sgf451FtA+03OfOwsM7Cjfys0G
-	 Pltuu9MbDAGL73cdMduU5Lkz+Z1RsdA8HG5KwEe2VjFjViYct3qrVGZ0qI0a1OpxaU
-	 emTa8/eMn0GKQ==
-Message-ID: <236a2ace-24ca-421f-82e8-a2d3910730c7@kernel.org>
-Date: Wed, 30 Apr 2025 15:25:33 +0200
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="EyE/GTLK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1746019853; x=1746624653; i=wahrenst@gmx.net;
+	bh=s5jtIj5ZEfTChRlGTCSG/OOmpwscxmjvvOjSBkMie9I=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=EyE/GTLKk04oKWN+veW8kaT4TwQ89W/Q7SQ0jzuNHWjplIlvCuyaEZLohWUmLiDA
+	 vN2Fl0BWT558kx5Fw3APfo+AFeEjULhAhNskyLCsJou5fqV2Cf59bodoXG1WbLrE8
+	 u2dU3gPIZZZcU2SdFfFzsHsCtRqy7Ivwe/JaapJ8+ABNcHPXRvRlfNyRAW4l5HmsW
+	 +yjIQxXBI/ivQIBkOHN8+/J5bR9UP5/pMzRi3icZ7f+mP8QUKKgnvAUpP3QKSdKgk
+	 RQTnOc6NP4BgWtyRz+VaPCOPxJIPqdY5XnMtvo4Z7iUer7viPV4g1JPdxJ1U1686K
+	 gOWwoMK3HbS4qSLlyQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from stefanw-SCHENKER ([91.41.216.32]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N9Mtg-1v6bPN0GZw-00yWmA; Wed, 30
+ Apr 2025 15:30:53 +0200
+From: Stefan Wahren <wahrenst@gmx.net>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH net V2 3/4] net: vertexcom: mse102x: Add range check for CMD_RTS
+Date: Wed, 30 Apr 2025 15:30:42 +0200
+Message-Id: <20250430133043.7722-4-wahrenst@gmx.net>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250430133043.7722-1-wahrenst@gmx.net>
+References: <20250430133043.7722-1-wahrenst@gmx.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] dt-bindings: net: via-rhine: Convert to YAML
-To: Alexey Charkov <alchark@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20250430-rhine-binding-v2-1-4290156c0f57@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250430-rhine-binding-v2-1-4290156c0f57@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:IphSiOkYzbSeeNZaq98VQNBTkQOqI2Hb++d72sMoFWVs4B3jZrN
+ vcqmFsO4dfKSMZP96UEsHGTblN52f0lpRPl38zMHPeeOaIYpUKHKyYEG0vFhIYme4B2mPc6
+ tQuTZtFMaKiXF2bGzlVjuphwf5O/HtUN02L8L4zCMS9guoVcXNlPfPWGo+1n5UMnYhSsgOx
+ IBVunafMn7ONtyxirIl5g==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:xLu90oQ6650=;KOCCObISy2W5hwLWH//JGuGuWH+
+ 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
+ bwjG7y/m2O03oU0/o6qjE3FS+rxL4V0qtW
 
-On 30/04/2025 12:42, Alexey Charkov wrote:
-> Rewrite the textual description for the VIA Rhine platform Ethernet
-> controller as YAML schema, and switch the filename to follow the
-> compatible string. These are used in several VIA/WonderMedia SoCs
-> 
-> Signed-off-by: Alexey Charkov <alchark@gmail.com>
-> ---
-> Changes in v2:
-> - Dropped the update to MAINTAINERS for now to reduce merge conflicts
->   across different trees
-> - Split out the Rhine binding separately from the big series affecting
->   multiple subsystems unnecessarily (thanks Rob)
-> - Link to v1: https://lore.kernel.org/all/20250416-wmt-updates-v1-4-f9af689cdfc2@gmail.com/
-> ---
+Since there is no protection in the SPI protocol against electrical
+interferences, the driver shouldn't blindly trust the length payload
+of CMD_RTS. So introduce a bounds check for incoming frames.
 
-You should have net-next prefix (see maintainer-netdev).
+Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+=2D--
+ drivers/net/ethernet/vertexcom/mse102x.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethern=
+et/vertexcom/mse102x.c
+index 3edf2c3753f0..2c06d1d05164 100644
+=2D-- a/drivers/net/ethernet/vertexcom/mse102x.c
++++ b/drivers/net/ethernet/vertexcom/mse102x.c
+@@ -6,6 +6,7 @@
+=20
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+=20
++#include <linux/if_vlan.h>
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+@@ -337,8 +338,9 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse=
+)
+ 	}
+=20
+ 	rxlen =3D cmd_resp & LEN_MASK;
+-	if (!rxlen) {
+-		net_dbg_ratelimited("%s: No frame length defined\n", __func__);
++	if (rxlen < ETH_ZLEN || rxlen > VLAN_ETH_FRAME_LEN) {
++		net_dbg_ratelimited("%s: Invalid frame length: %d\n", __func__,
++				    rxlen);
+ 		mse->stats.invalid_len++;
+ 		return;
+ 	}
+=2D-=20
+2.34.1
 
-Best regards,
-Krzysztof
