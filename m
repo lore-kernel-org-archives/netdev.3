@@ -1,116 +1,152 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886EB221F1D
-	for <netdev@vger.kernel.org>; Wed, 30 Apr 2025 09:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFEC222563;
+	Wed, 30 Apr 2025 09:13:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746004294; cv=none; b=PLWPXKxP2LDgVMM3jAhxg6di3k+SeA3QtqR1qnJo+oGBnMGKw73lQGcuxVpcFFqwdoI2umxUhIMy2bdKmdqixEVpYwe4n3aEMJmXOCP5xswmQWXwuHHJLq93MYMO0Ta4cmXDScwWE+JdxzBng7pkiNV2g85SifjQkmAhcvfYA04=
+	t=1746004400; cv=none; b=gI1YKG0OrWg59wWn1OEURo4jueaBSTrLdPw9lOTTZl9yEE0MFKohuLUaUTahRGngc76o1Hk4+RuvGKnGlqVjv7VWMP3/7QT32rXDZTIgZ7s/znWeVsdQ1TlPwsWFiy4JukO8G0Lag/5KPfZbkj7TI3SrMnmTmM5svexlTDnUgiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746004294; c=relaxed/simple;
-	bh=h2owf59eEgI833PcMlqHoA2GqBM6oQTPhXWSLBaut3I=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nDR24PYZTzqlUaC+LENcIZytsIo1tPk0aw2dIMcYYFHipeQzv7LzeIrrEnfJRKh7OdTrjOSIbYxQSQNIrnWwjO1IU1WEGwX8lX5UM1FvIY4quNP5oSJhL4o5g045I+cywOiKn07UeHLJsPPlXfJhFB3UxNuh91Q12KEgHFTpfQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=Uk8aiSiB; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1746004400; c=relaxed/simple;
+	bh=d2DDZC70gbpscPgbWYbwQPfzHaJwMRuO8UuuTeGXlnc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AIhv4hR7OcNBRJuQz4A+VJMW3ST7lKZ/P5Q/Wpt5Th8ePBkZyXWhZ/elRvpU0glPDoSUm11Wo9qkUchz3gUcvkeE6fMmHLjUyLgIYG+eLCL4Nx0XOGtTaTfOEOQgFf+IH5ocqrrUMPRzNsUIcAiOwk0CWmsTiCECJuCDLmkJBGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=AB7yHzHZ; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="Uk8aiSiB"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1uA3TK-006EEO-7T; Wed, 30 Apr 2025 11:11:18 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=DW7ucJ6dWqPm7JmubDw+SOLAZx/FUUKm5KizEO3YhQI=; b=Uk8aiSiBm+f3k9AQ4xtNgCv4Mx
-	ApF/yvsofovWSB0LCwrJA4agLjugAVEAktvaxtiJg6EfiVstKmDGNJPGq1s8kdJaR8Wl4ih3dPcEo
-	vOciNguLZrw/iak09HUNDIA85MUVXSgxZ4l+JenIPeky3B2lUR5Oq5a2nDBlsaRtQ+30JVyHgmqIh
-	uISmJl0W1KDmTBxNDrCAjfYG5J1779JuHxF2dPU2m75sx2IAAG6aX0QRvRaP+EwhmNZxf5LbYSBGM
-	JakA+JbzGslwA4sUWHOGfcD10ggV6IEy33OtHBDgXtAsqnimoe/x0yrvC/nEfGJ/4SHSOyr7NV31A
-	hlVSkHYQ==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1uA3TJ-00050f-5s; Wed, 30 Apr 2025 11:11:17 +0200
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1uA3TG-00CDEV-Of; Wed, 30 Apr 2025 11:11:14 +0200
-From: Michal Luczaj <mhal@rbox.co>
-Date: Wed, 30 Apr 2025 11:10:27 +0200
-Subject: [PATCH net-next v3 1/4] vsock/virtio: Linger on unsent data
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="AB7yHzHZ"
+Received: from [192.168.7.202] ([71.202.166.45])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53U9CK8G823665
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Wed, 30 Apr 2025 02:12:20 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53U9CK8G823665
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025042001; t=1746004344;
+	bh=/7rTi9HvZ6onJSTdYqzzgTETKP8TAGe+/d/qRha+9aU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=AB7yHzHZAPzuuD3gLAO5sc0iXVQ+0GQF0XcAMrHLP5xDswXkqmewyho4mFI+++jqF
+	 MUjpki2/cVxD8OLc2l7OexLkzHfkljDGVxdNMg55yJJaHHq61lYWVxCqkbcDlKPQUA
+	 zSYweN1JtJ7V8wjKay/kfLYDENnpupYxIHInm8F/XdaI7EVCrqyb+ID3uZvWWl1lZ6
+	 JjsGcIx5lBkgRJaxum2F+bKJHQvcOpilyvKrFHCwoCu7yRPQ3Cx+lli3hqR1yJzAxL
+	 76HNJqHr0UMhGU5BXc72W6NjFJ4FPu6zOuAmJG9uLPuSgV47tgyG8sly9PeO8s0Rh4
+	 x5a/U6REmH0ZA==
+Message-ID: <d5b7edab-1872-45ff-8f2e-bcb34f6bdc23@zytor.com>
+Date: Wed, 30 Apr 2025 02:12:19 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250430-vsock-linger-v3-1-ddbe73b53457@rbox.co>
-References: <20250430-vsock-linger-v3-0-ddbe73b53457@rbox.co>
-In-Reply-To: <20250430-vsock-linger-v3-0-ddbe73b53457@rbox.co>
-To: Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
- Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.14.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/15] x86/msr: Add missing includes of <asm/msr.h>
+To: Michael Kelley <mhklinux@outlook.com>,
+        =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+        "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+        "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+        "acme@kernel.org" <acme@kernel.org>,
+        "jgross@suse.com" <jgross@suse.com>,
+        "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "namhyung@kernel.org" <namhyung@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>,
+        "jolsa@kernel.org" <jolsa@kernel.org>,
+        "irogers@google.com" <irogers@google.com>,
+        "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
+        "kan.liang@linux.intel.com" <kan.liang@linux.intel.com>,
+        "wei.liu@kernel.org" <wei.liu@kernel.org>,
+        "ajay.kaher@broadcom.com" <ajay.kaher@broadcom.com>,
+        "bcm-kernel-feedback-list@broadcom.com"
+ <bcm-kernel-feedback-list@broadcom.com>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "pbonzini@redhat.com" <pbonzini@redhat.com>,
+        "vkuznets@redhat.com" <vkuznets@redhat.com>,
+        "seanjc@google.com" <seanjc@google.com>,
+        "luto@kernel.org"
+ <luto@kernel.org>,
+        "boris.ostrovsky@oracle.com"
+ <boris.ostrovsky@oracle.com>,
+        "kys@microsoft.com" <kys@microsoft.com>,
+        "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+        "decui@microsoft.com" <decui@microsoft.com>,
+        "dapeng1.mi@linux.intel.com" <dapeng1.mi@linux.intel.com>
+References: <20250427092027.1598740-1-xin@zytor.com>
+ <20250427092027.1598740-2-xin@zytor.com>
+ <a1917b37-e41e-d303-749b-4007cda01605@linux.intel.com>
+ <SN6PR02MB4157EA2E3B827141588DA310D4832@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Language: en-US
+From: Xin Li <xin@zytor.com>
+Autocrypt: addr=xin@zytor.com; keydata=
+ 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
+ l75w1xInsg==
+In-Reply-To: <SN6PR02MB4157EA2E3B827141588DA310D4832@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Currently vsock's lingering effectively boils down to waiting (or timing
-out) until packets are consumed or dropped by the peer; be it by receiving
-the data, closing or shutting down the connection.
+On 4/29/2025 9:20 PM, Michael Kelley wrote:
+>> Also under hyperv/ not all files are covered but I'm a bit hesitant to
+>> suggest a change there since I'm not sure if they (hypervisors) do
+>> something special w.r.t. msr.
+> I've worked on the Hyper-V code in Linux for 8 years or so, first as
+> a Microsoft employee, and more recently as a retiree. 🙂 I'm not
+> aware of anything special w.r.t. MSR access for Hyper-V guests.
+> All the normal Linux code for accessing MSRs just works. Hyper-V
+> *does* provide a set of synthetic MSRs that are unique to
+> Hyper-V, but they are also accessed using normal Linux code. Of
+> course, at runtime the access to these synthetic MSRs always
+> traps to the hypervisor.
+> 
+> I'm planning to apply Xin Li's patch set and make sure nothing
+> breaks for Hyper-V guests, and particularly when running as an
+> SEV-SNP or TDX guest. Hopefully I can do that by early next week
+> at the latest.
 
-To align with the semantics described in the SO_LINGER section of man
-socket(7) and to mimic AF_INET's behaviour more closely, change the logic
-of a lingering close(): instead of waiting for all data to be handled,
-block until data is considered sent from the vsock's transport point of
-view. That is until worker picks the packets for processing and decrements
-virtio_vsock_sock::bytes_unsent down to 0.
-
-Note that (some interpretation of) lingering was always limited to
-transports that called virtio_transport_wait_close() on transport release.
-This does not change, i.e. under Hyper-V and VMCI no lingering would be
-observed.
-
-The implementation does not adhere strictly to man page's interpretation of
-SO_LINGER: shutdown() will not trigger the lingering. This follows AF_INET.
-
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
- net/vmw_vsock/virtio_transport_common.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 7f7de6d8809655fe522749fbbc9025df71f071bd..49c6617b467195ba385cc3db86caa4321b422d7a 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1196,12 +1196,16 @@ static void virtio_transport_wait_close(struct sock *sk, long timeout)
- {
- 	if (timeout) {
- 		DEFINE_WAIT_FUNC(wait, woken_wake_function);
-+		ssize_t (*unsent)(struct vsock_sock *vsk);
-+		struct vsock_sock *vsk = vsock_sk(sk);
-+
-+		unsent = vsk->transport->unsent_bytes;
- 
- 		add_wait_queue(sk_sleep(sk), &wait);
- 
- 		do {
--			if (sk_wait_event(sk, &timeout,
--					  sock_flag(sk, SOCK_DONE), &wait))
-+			if (sk_wait_event(sk, &timeout, unsent(vsk) == 0,
-+					  &wait))
- 				break;
- 		} while (!signal_pending(current) && timeout);
- 
-
--- 
-2.49.0
-
+Hi Michael, I appreciate it!
