@@ -1,80 +1,145 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC8C21325D;
-	Wed, 30 Apr 2025 09:53:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400F623184F
+	for <netdev@vger.kernel.org>; Wed, 30 Apr 2025 09:54:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746006811; cv=none; b=ff3RYhQwRXTndE/LTmQtJpS3FMcVpFNMUz78GGJfqTW/xPDOHpRXJRkqh+CkLVqSCg1KVw6LR53DyOvY0cgJP9S0TpfUNDXlbDRkiWpZV8kTq27iyh9Z54SSbr3Q4cyx0fF0Khtp7MxaTJuvABXmKGdXCcKZfuPvl1B9ZST7gGk=
+	t=1746006869; cv=none; b=CvAO1GdfkdXtwFBcsmsAt+JSVuyIrzOkyAlBu1JpPs2EJphtVo78amhG0LdKiNn9LS9N9JiTa3lkr4HaWVYbSyd+GZJQsWJS/YsHxDToO2wgGglIt3z24GNKBuW9UjgwAjvxfEmAe0p5P0gJp3Akn3TiDNllOGKCgvXzW+wBggw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746006811; c=relaxed/simple;
-	bh=JzQpokK6fstc6jMeRyD83tGumvON7WS7NNjqeNY3D98=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PiOHIXUQU1s2qpnkgO3rxnzF8Gbtn5YmlLuUTACFLmYmaND7oK8JEZlpfCTV1sI/SDSQW3w3p7bsiPfJlxO3plEWg0Ur51qd5pv0oEQBAbq1mgkDoP2R+C7eKUsnEEm050TJu6KDjfn4fnpqzPk4sIGWZrFc/o30qpODy+jmeZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinsec.com.cn; spf=none smtp.mailfrom=kylinsec.com.cn; arc=none smtp.client-ip=54.206.16.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinsec.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kylinsec.com.cn
-X-QQ-mid: esmtpsz17t1746006696t61dbbf8b
-X-QQ-Originating-IP: SgdxThapkgx48M+mCvGDLsHXNAQ5atEQrIwqzuEiytg=
-Received: from localhost.localdomain ( [175.9.43.233])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 30 Apr 2025 17:51:34 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 11376402698331337444
-From: Zhou Bowen <zhoubowen@kylinsec.com.cn>
-To: Simon Horman <horms@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH WITHDRAW] amd-xgbe: Add device IDs for Hygon 10Gb ethernet controller
-Date: Wed, 30 Apr 2025 17:49:12 +0800
-Message-Id: <20250430094912.6590-1-zhoubowen@kylinsec.com.cn>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20250416185218.GY395307@horms.kernel.org>
-References: <20250416185218.GY395307@horms.kernel.org>
+	s=arc-20240116; t=1746006869; c=relaxed/simple;
+	bh=OPZigiWpxwHv1lnOkpeezwZwtsRjjBDFCG5NyXPV4cw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hsd3Muu0gGqQIG6NSEFcwAVyidJ3sQaXZu0GR4qTyW1gn9jP5IfL4i2epsdvcHV2F5TapAIQHtjJi6RmPp1qhaY1C6UHp2bomopK78SYxvd3qYglzcxSbUq56Yo8bmkHY8x6EeaxcjszYck2tV8WhsgEuPbik2A3FNHWJWzmQcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fXiVsn/S; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fXiVsn/S"
+Message-ID: <2d86bf48-6588-4051-8eb8-30bd4e1a34ca@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1746006864;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QbLQyfbFYW96SBXE2wDxy7CIZhwc9mKxQpduRfQsUX4=;
+	b=fXiVsn/SnD01eZr6ljJuAh/mBiFOY+JikmiV1F9soSKz418wlLMGa6KUBIkhCF952LU+yZ
+	RXj477ysmHZd4Fc9jb+rXKolte8iCJHTk1DfqIMQvvGGPfmn4irweA//UKh1dM9taHSMnN
+	LXslZ6zPp5r21G7PndrEJ34zMWxdbUA=
+Date: Wed, 30 Apr 2025 10:54:20 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:kylinsec.com.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MX+1SEN3H+wAU6OWG1ICS4n58oY0tX6NTu///qtjaJUJiwo52GIvs6DF
-	9/dk+ZURmKVZuGMV87PiB4lP6ZKY9wFG66C6s1hPNg+DfwGKUM1KcJzNs7zZaRVRh1JQjxi
-	yql/D04/+IacHSQB5dwSokfQ3yicOSiVcXrDOOc0MinAjufzULnxzV/Q8R6ndfofuQfgakO
-	TU1FAt1vARXmtz6ebtVhYjq8Lk8xkXalElWiMm62bidzkEoMt4hj3Pyy/wlsGbtI1E+LvRe
-	VpK0KG90czmx+zHE0s6xWblEuxbJ+Q6ZSAXesVpYFuOHS5JxGjQVFVkRf6jG8//Za/hs8NV
-	t+rC/+n2zh/ASxu4dC/BW+DhPPrZVLwf2mvd1nN2b8Ms162Xn5UjFDgrpmWPpu6RFE4rG9p
-	PVCaDAkNnQZQMr78kGjHcc87O5XGkFu8/uYy1ttaPWCFxAQLiXX/h2FMpH2PUwa2zMl66Dv
-	mFObEdwGam9jjeAU+yJkgTDTfF4UghG4MPCMaCaxGokY/jmLOJ23tyBy/vx8KEYcW9ORMc2
-	hhJ19UiARN3pGW3q7zF+jbnP+HyM9Dt2Hj9c2Ru7Afn+0VuGKKWKllehRzwjT57yiho9H5I
-	gKeB8a9BXdjQasCkDAFm086v8JCLRw8oKD3OtWp7oyRt+iQa5xLwa4iTFY8UDFB7+VzV9DJ
-	3XXsgwzzMVpQS2HREbwlDDaouUc90PYOgSoxLcCjRomDnr4bvG0BwcEJt/iQBfAGB/UjlNK
-	5JpA81LLQBuy/pvXMkjc8jBPLrjeKLrLo3SvxzZ+h3hPsOpCmIL+5wQnXzX3py+pBxyq0Rn
-	X+85Ym58hMMNcEweRt7qiAbVtjxmjQFRxmbl5WMfhwp12ZVTiJ40EwNt5BzcITDgWBLYsGq
-	/WNg1eXLc1FDzy543VVhhCMA1XyCjjPODRloFRZpji+SqkywL6suPRNLC7DVMq6gIZZPmx3
-	DVMxgr6U9wJf9dGCByEVd+wIJOwHoF9rOdkT3ntH25ll/c1JWzTV5Wlkb
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
-X-QQ-RECHKSPAM: 0
+Subject: Re: [PATCH v2] ptp: ocp: Fix NULL dereference in Adva board SMA sysfs
+ operations
+To: Sagi Maimon <maimon.sagi@gmail.com>, jonathan.lemon@gmail.com,
+ richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ Sagi Maimon <sagi.maimon@adtran.com>
+References: <20250429073320.33277-1-maimon.sagi@gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20250429073320.33277-1-maimon.sagi@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi all,
+On 29/04/2025 08:33, Sagi Maimon wrote:
+> From: Sagi Maimon <sagi.maimon@adtran.com>
+> 
+> On Adva boards, SMA sysfs store/get operations can call
+> __handle_signal_outputs() or __handle_signal_inputs() while the `irig`
+> and `dcf` pointers are uninitialized, leading to a NULL pointer
+> dereference in __handle_signal() and causing a kernel crash. Adva boards
+> don't use `irig` or `dcf` functionality, so add Adva-specific callbacks
+> `ptp_ocp_sma_adva_set_outputs()` and `ptp_ocp_sma_adva_set_inputs()` that
+> avoid invoking `irig` or `dcf` input/output routines.
+> 
+> Fixes: ef61f5528fca ("ptp: ocp: add Adva timecard support")
+> Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
+> ---
+> Addressed comments from Vadim Fedorenko:
+>   - https://www.spinics.net/lists/kernel/msg5659845.html
+> Changes since v1:
+>   - Remove unused `irig` and `dcf` code.
+> ---
+> ---
+>   drivers/ptp/ptp_ocp.c | 52 +++++++++++++++++++++++++++++++++++++++++--
+>   1 file changed, 50 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+> index faf6e027f89a..2ccdca4f6960 100644
+> --- a/drivers/ptp/ptp_ocp.c
+> +++ b/drivers/ptp/ptp_ocp.c
+> @@ -2578,12 +2578,60 @@ static const struct ocp_sma_op ocp_fb_sma_op = {
+>   	.set_output	= ptp_ocp_sma_fb_set_output,
+>   };
+>   
+> +static int
+> +ptp_ocp_sma_adva_set_output(struct ptp_ocp *bp, int sma_nr, u32 val)
+> +{
+> +	u32 reg, mask, shift;
+> +	unsigned long flags;
+> +	u32 __iomem *gpio;
+> +
+> +	gpio = sma_nr > 2 ? &bp->sma_map1->gpio2 : &bp->sma_map2->gpio2;
+> +	shift = sma_nr & 1 ? 0 : 16;
+> +
+> +	mask = 0xffff << (16 - shift);
+> +
+> +	spin_lock_irqsave(&bp->lock, flags);
+> +
+> +	reg = ioread32(gpio);
+> +	reg = (reg & mask) | (val << shift);
+> +
+> +	iowrite32(reg, gpio);
+> +
+> +	spin_unlock_irqrestore(&bp->lock, flags);
+> +
+> +	return 0;
+> +}
+> +
+> +static int
+> +ptp_ocp_sma_adva_set_inputs(struct ptp_ocp *bp, int sma_nr, u32 val)
+> +{
+> +	u32 reg, mask, shift;
+> +	unsigned long flags;
+> +	u32 __iomem *gpio;
+> +
+> +	gpio = sma_nr > 2 ? &bp->sma_map2->gpio1 : &bp->sma_map1->gpio1;
+> +	shift = sma_nr & 1 ? 0 : 16;
+> +
+> +	mask = 0xffff << (16 - shift);
+> +
+> +	spin_lock_irqsave(&bp->lock, flags);
+> +
+> +	reg = ioread32(gpio);
+> +	reg = (reg & mask) | (val << shift);
+> +
+> +	iowrite32(reg, gpio);
+> +
+> +	spin_unlock_irqrestore(&bp->lock, flags);
+> +
+> +	return 0;
+> +}
+> +
+>   static const struct ocp_sma_op ocp_adva_sma_op = {
+>   	.tbl		= { ptp_ocp_adva_sma_in, ptp_ocp_adva_sma_out },
+>   	.init		= ptp_ocp_sma_fb_init,
+>   	.get		= ptp_ocp_sma_fb_get,
+> -	.set_inputs	= ptp_ocp_sma_fb_set_inputs,
+> -	.set_output	= ptp_ocp_sma_fb_set_output,
+> +	.set_inputs	= ptp_ocp_sma_adva_set_inputs,
+> +	.set_output	= ptp_ocp_sma_adva_set_output,
+>   };
+>   
+>   static int
 
-I would like to formally withdraw the following patch due to a possible conflict
-with Hygon product using in the future :
-
-Subject: [PATCH] amd-xgbe: Add device IDs for Hygon 10Gb ethernet controller
-Message-ID: <20250415132006.11268-1-zhoubowen@kylinsec.com.cn>
-
-Apologies for the confusion and thank you for your understanding.
-
----
-Best regards,
-Zhou Bowen
+LGTM,
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
