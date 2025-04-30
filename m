@@ -1,179 +1,154 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C98B1A3177
-	for <netdev@vger.kernel.org>; Wed, 30 Apr 2025 17:37:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64F91AA1FF
+	for <netdev@vger.kernel.org>; Wed, 30 Apr 2025 17:54:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746034629; cv=none; b=QmRvgFPwElLL5F//jqVkjJABURQzMAuRJ+2jICBed84GQMoWgza5bvcRWNrvNZS6d8GpKxATuDwRJyCLv6npm6JR+SRRjSBQzHS3EQ9VJyi4FPRIJVAztKVoj48LkRHYlV1qUd7totancjnGdXLKvnIbVj1oXvTgHtanHaxPB/0=
+	t=1746035671; cv=none; b=hGnR0IdwDrRFz5K3DFGuyzoC7qcwvdAq5JGxqC6sOoOGMutAHi1IWqR68XA8jkIZy1lVbk/W2tR0RxB2i6BD8vAKLpHbHfAWpYvv+npN1GNiZuWV6qcVhznncPU4zMjWlTg6VnBz38xNkBlT/N2a4Ud8ms77zJSl9aM9eMA9lys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746034629; c=relaxed/simple;
-	bh=UBkpy5vDRMHh2aM95MJDqelfLSnbUMgAnpORMtlH2Cc=;
+	s=arc-20240116; t=1746035671; c=relaxed/simple;
+	bh=Ljcc3ZAZS+yzcl3OGD3RFYaZpoWN2HMvVtdY5ZCKCo4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MJRgEbfLTT1581/fbFg1n7XGrg1NidlVOtO8XA8J59ivah3xfwdTOP600WsIYRe4gwxe6QeOTUmU8OlQLITbVL1ksFJX3stecqf52zSLw4+nvtuqUwtE+w+aBbRGUBmqD02uCye4fiwhgESXRPd8tRsYIMr7quZsMe5r/yQs5r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZnEli6FC; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	 To:Content-Type; b=W4QTORKyYMUo09OcFjGUVGxsvxTUiPjuE6KWAw5QnFBjcUKymPONm2kPHczlecOwIkxX/mQt9oWsLq6yCoGLW26EvWA0Q6trs4hKIYyFpNt8sBcxWmLx9F3YkwzCGKNIcbU9KVETxQS6JYm6wqX2u+C68tJWipoVvNzS1Qc/3gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RWQdQ5xR; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZnEli6FC"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5eb92df4fcbso297042a12.0
-        for <netdev@vger.kernel.org>; Wed, 30 Apr 2025 10:37:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RWQdQ5xR"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2242ac37caeso24155ad.1
+        for <netdev@vger.kernel.org>; Wed, 30 Apr 2025 10:54:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1746034626; x=1746639426; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tcd2Gt+RWZNO6TkLmRjy/t3WCsfrr+5R42mYPuL8BzY=;
-        b=ZnEli6FC+axwZ9im0I5B7TPiDIeIDoZiNgZEx4/MwDs7/pvP6tmObMMipV8WIt6JKl
-         q+iIzPW+YKTdM9SMg225Zi54V7rGRzAnwqC+zOu3KNbP14P+57dxzN6/LeyzCWCqbwC8
-         /MDzcse77KWNMcWeyVreWqTghskkyezNO6fnQ=
+        d=google.com; s=20230601; t=1746035669; x=1746640469; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VPbUTi2PYYIIfuKOmYX8yf8KMD2tLvoABDEozQ6vVb4=;
+        b=RWQdQ5xRyBSZI9j4ezcYZw6kHoZWgYKJ2W8IC+LRSuR79DzheQXfk+F3TcaTb+rCVg
+         b1sLBz8qM4lnXZlA3oEzQhAYWJ4WlOaBE2VCDBYPqPrADSCulyJaVL6wxotVwX13Iwa3
+         HUUIB69tMwer6cBYG//pQGOS9pOyXyU0L+TizwKZxhHDhaxSgGfAMYTprQOo5fv8PsyL
+         XrYjJ/SfLE/aF3iRDaZd7tqGK22tDZpF7Qvk/HlUOyt2DqHb/m2PblxaDh8Obut3k0LR
+         Oz/KRa+8zEyANZ3cg9fNbb4l5JJwedHo2YNiiJgCHMIv8+BFTViimPlbi+nW6hIkgChC
+         fVrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746034626; x=1746639426;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Tcd2Gt+RWZNO6TkLmRjy/t3WCsfrr+5R42mYPuL8BzY=;
-        b=WNNkHKG3lwRcZHoYt5FdEQYZ4JT7qpMpysmhA4umtGFl7nePSwxGaDHAz7kBJq1/50
-         wTYywnVAYHavhkCW120jaOBDcdJN3lVVQeTbRQrxQ/42/lGfX3gcS2p8hjvyAfxG2JkE
-         OLnKqmn92MAywBQzHwFR2aq5x+UGqxyndbf/niKUbN19SUlBs+6R0795FjcI77QqkCOU
-         kXmPrbSfVPjXSOQ7tadYuEy7uKvDBzv+kWOHr02hy1nTkDfih94Z+T117RPOdOL1UPoU
-         a/o7O/R7awWlC4tBumTQOkCSn5jwGAR73o3hO9EwmqGGKxVrErtghRN6NeXAiOZtrJzp
-         KHpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVMV/3xbXhJC5gLOtS8a5UOLl6NMKuSLyiYKc51yo9vQ80XbDdbhzRNKFywNhU8MPIEebBHklU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2p0/5EHKT9UgJryDWOGelkFa2KwAQaM+YGyclnnCrPz/F6aOJ
-	8aHj92Gcg7bWpw3NwiX6g3iUfdmedABfr5qWVRYePgfxySfKpUFlduhs5ugKDqjaTh26L5O0Rbu
-	zCgBE3AQ5M0Rt7W9VFwxsDToupxFgsA3gIEoG
-X-Gm-Gg: ASbGnctNQ3JGRzQsCPKOdgc94rsqlmLR9Ye5pSwTITBCdEZnUr4E0MLkI1xxmo6cCxS
-	fC5M31q8zdIh783aRtpJ5bvF56eNf0ZbBOmHRw/Q93Y1326A/qB7N4UbuJJkDHQJYj8ZkAKg4t1
-	sXxPhrdEJv7KOj81BI4TJdwWVhHBc4jmTlHA==
-X-Google-Smtp-Source: AGHT+IEhNDKTl5vPF1HzfY9TPVSTTk+UgDhkV1/x2UHNVlXOIxdgQmzomE9nb5aTRViWWRrpxTzmRPDiGHFoL7E41Pg=
-X-Received: by 2002:a05:6402:4011:b0:5f6:25d6:71e1 with SMTP id
- 4fb4d7f45d1cf-5f8aec5aa07mr3112921a12.0.1746034625802; Wed, 30 Apr 2025
- 10:37:05 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1746035669; x=1746640469;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VPbUTi2PYYIIfuKOmYX8yf8KMD2tLvoABDEozQ6vVb4=;
+        b=gSL38n2//uMwE3Bo15W97g9WFWEuzxK1q8X0ZbGb40pse3+oCKG17fcsTZngdMOcNn
+         Q74BsQWXiButcbS6JgJz/MSw5J+gZNJJvIq1dApbTlJy+QPU1N7LdbxQvQ9gR2yQyiDl
+         ezXmlEOcWLKkgLnKVKUio/KPxFQpc2bi9+PmWelLMupXhz+pvsb6xZmRuYBqD4+VTNje
+         X9iucarWNbpPKWDzBQ4rBfSI6BXv0KkXfl5CJkdPFsarWL6HMeVdhZn9NgEScFttabjY
+         38p8BpdGym/AI1Qy92q9E+TOszSMvmVBCmhxmeBwllhVuYo6uslCEwYx5nFb68YprkGl
+         8QRg==
+X-Forwarded-Encrypted: i=1; AJvYcCXrHiIwPwIK+bb7cxmNIrPGjr3GJ6dUP+Kjv5kuRiR/On7RQSHiFuoDC1Y3StJs5goagJ+u+iQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/URyu4oZEdMz/FrFnfHfb3lIBelRuEw6HGQ8QM2eM+TQHUPGv
+	OcYQ/5XvGA7VKMXCtjl5QHkN6/v1Zr3h5CSxh3Gl2Rq/T+HO2ZAIiQwib4XpFkZ7QsWa3ZrkIc2
+	MubqmuDxom0wJje28DcmM3a02VgqJwE1mxpg7
+X-Gm-Gg: ASbGnctJpOVFrV3hqtYU9BANO+XeKGMrqo6ELefRyheDfXq+ZbLNloVwxEbkoThR9Me
+	WUu0kr6Gxdau78cS9KZQUl7N1CVAHlnsyP0cABRMss05UzRSA1Nzf2tq9jARgps3VpW60N2PwCX
+	jpHIS1gtb/3A1FBY2Skxzh+LVSxIzOuNgp95t8NxMoEIqc/emkvC6LBbI=
+X-Google-Smtp-Source: AGHT+IGAtUTjE1ToVn0X3a2r3Fobwj+ih4T08C12Zh3vsndflqz/st0/DImi+CWIBqvca6vfjpERbh1RGNH0tzvDv54=
+X-Received: by 2002:a17:902:d4d1:b0:215:86bf:7e46 with SMTP id
+ d9443c01a7336-22e0400910bmr19045ad.7.1746035668734; Wed, 30 Apr 2025 10:54:28
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250430170343.759126-1-vadfed@meta.com>
-In-Reply-To: <20250430170343.759126-1-vadfed@meta.com>
-From: Michael Chan <michael.chan@broadcom.com>
-Date: Wed, 30 Apr 2025 10:36:53 -0700
-X-Gm-Features: ATxdqUEEL_hFhTaF_5r4C9ASw4CJBaTJFtIZqe0wTNPaXPcfZz3T5F-U4z5ndQk
-Message-ID: <CACKFLiniEL5bcf7Zz1WD8PEZOaiLYNEzN5oT7fqCfB-10VNT8Q@mail.gmail.com>
-Subject: Re: [PATCH net] bnxt_en: fix module unload sequence
-To: Vadim Fedorenko <vadfed@meta.com>
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Richard Cochran <richardcochran@gmail.com>, 
-	Taehee Yoo <ap420073@gmail.com>, netdev@vger.kernel.org
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000a911b10634025df3"
-
---000000000000a911b10634025df3
+References: <20250429222656.936279-1-skhawaja@google.com> <aBFnU2Gs0nRZbaKw@LQ3V64L9R2>
+ <CAAywjhQZDd2rJiF35iyYqMd86zzgDbLVinfEcva0b1=6tne3Pg@mail.gmail.com> <aBJVi0LmwqAtQxv_@LQ3V64L9R2>
+In-Reply-To: <aBJVi0LmwqAtQxv_@LQ3V64L9R2>
+From: Samiullah Khawaja <skhawaja@google.com>
+Date: Wed, 30 Apr 2025 10:54:16 -0700
+X-Gm-Features: ATxdqUEVlZrlbMlWoJi11fTmuCkas696qQEk1_hTru9xa_M7wbTjnF95cYimFto
+Message-ID: <CAAywjhQVdYuc3NuLYNMgf90Ng_zjhFyTQRWLnPR7Mk-2MWQ2JA@mail.gmail.com>
+Subject: Re: [PATCH net-next v6] Add support to set napi threaded for
+ individual napi
+To: Joe Damato <jdamato@fastly.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, almasrymina@google.com, 
+	willemb@google.com, mkarsten@uwaterloo.ca, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 30, 2025 at 10:03=E2=80=AFAM Vadim Fedorenko <vadfed@meta.com> =
-wrote:
+On Wed, Apr 30, 2025 at 9:53=E2=80=AFAM Joe Damato <jdamato@fastly.com> wro=
+te:
 >
-> Recent updates to the PTP part of bnxt changed the way PTP FIFO is
-> cleared, skbs waiting for TX timestamps are now cleared during
-> ndo_close() call. To do clearing procedure, the ptp structure must
-> exist and point to a valid address. Module destroy sequence had ptp
-> clear code running before netdev close causing invalid memory access and
-> kernel crash. Change the sequence to destroy ptp structure after device
-> close.
+> On Tue, Apr 29, 2025 at 06:16:29PM -0700, Samiullah Khawaja wrote:
+> > On Tue, Apr 29, 2025 at 4:57=E2=80=AFPM Joe Damato <jdamato@fastly.com>=
+ wrote:
+> > >
+> > > On Tue, Apr 29, 2025 at 10:26:56PM +0000, Samiullah Khawaja wrote:
+> > >
+> > > > v6:
+> > > >  - Set the threaded property at device level even if the currently =
+set
+> > > >    value is same. This is to override any per napi settings. Update
+> > > >    selftest to verify this scenario.
+> > > >  - Use u8 instead of uint in netdev_nl_napi_set_config implementati=
+on.
+> > > >  - Extend the selftest to verify the existing behaviour that the PI=
+D
+> > > >    stays valid once threaded napi is enabled. It stays valid even a=
+fter
+> > > >    disabling the threaded napi. Also verify that the same kthread(P=
+ID)
+> > > >    is reused when threaded napi is enabled again. Will keep this
+> > > >    behaviour as based on the discussion on v5.
+> > >
+> > > This doesn't address the feedback from Jakub in the v5 [1] [2]:
+> > >
+> > >  - Jakub said the netlink attributes need to make sense from day 1.
+> > >    Threaded =3D 0 and pid =3D 1234 does not make sense, and
+> > Jakub mentioned following in v5 and that is the existing behaviour:
+> > ```
+> > That part I think needs to stay as is, the thread can be started and
+> > stopped on napi_add / del, IMO.
+> > ```
+> > Please see my reply to him in v5 also to confirm this. I also quoted
+> > the original reason, when this was added, behind not doing
+> > kthread_stop when unsetting napi threaded.
 >
-> Fixes: 8f7ae5a85137 ("bnxt_en: improve TX timestamping FIFO configuration=
-")
-> Reported-by: Taehee Yoo <ap420073@gmail.com>
-> Closes: https://lore.kernel.org/netdev/CAMArcTWDe2cd41=3Dub=3DzzvYifaYcYv=
--N-csxfqxUvejy_L0D6UQ@mail.gmail.com/
-> Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
+> Here's what [2] says:
+>
+>   We need to handle the case Joe pointed out. The new Netlink attributes
+>   must make sense from day 1. I think it will be cleanest to work on
+>   killing the thread first, but it can be a separate series.
+>
+> In this v6 as I understand it, it is possible to get:
+>
+>     threaded =3D 0
+>     pid =3D 1234
+>
+> I don't think that makes sense and it goes against my interpretation
+> of Jakub's message which seemed clear to me that this must be fixed.
+>
+> If you disagree and think my interpretation of what Jakub said
+> is off, we can let him weigh in again.
+Agreed. Also my interpretation of his statement might be incorrect.
+Considering the possible actions,
 
-The PTP destroy sequence is now consistent with bnxt_shutdown() and
-bnxt_suspend().  Thanks.
+- Hiding the PID when "napi threaded" is disabled is likely not ideal,
+as you have pointed out, though I find it acceptable.
+- Stopping the thread when "napi threaded" is set to 0 doesn't align
+with Jakub's following statement,
+```
+That part I think needs to stay as is, the thread can be started and
+stopped on napi_add / del, IMO.
+```
+Also please note the discussion on stopping the thread I shared earlier:
+https://lore.kernel.org/netdev/CAKgT0UdjWGBrv9wOUyOxon5Sn7qSBHL5-KfByPS4uB1=
+_TJ3WiQ@mail.gmail.com/
 
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-
---000000000000a911b10634025df3
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-OnaLEot1MoQO7BIe5S9H4AcCEXXcrJJiAtMCl47ARpyHmvQFQFFTrHgUYEd9V+9bOzY7MBIGSV1N
-/JfsT1sZw6HT0lJkSQefhPGpBniAob62DJP3qr11tu8CAwEAAaOCAdowggHWMA4GA1UdDwEB/wQE
-AwIFoDCBowYIKwYBBQUHAQEEgZYwgZMwTgYIKwYBBQUHMAKGQmh0dHA6Ly9zZWN1cmUuZ2xvYmFs
-c2lnbi5jb20vY2FjZXJ0L2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNydDBBBggrBgEFBQcw
-AYY1aHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAw
-TQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYBBQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2Jh
-bHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwSQYDVR0fBEIwQDA+oDygOoY4aHR0cDov
-L2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcmwwJAYDVR0R
-BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQU31rAyTdZweIF0tJTFYwfOv2w
-L4QwDQYJKoZIhvcNAQELBQADggEBACcuyaGmk0NSZ7Kio7O7WSZ0j0f9xXcBnLbJvQXFYM7JI5uS
-kw5ozATEN5gfmNIe0AHzqwoYjAf3x8Dv2w7HgyrxWdpjTKQFv5jojxa3A5LVuM8mhPGZfR/L5jSk
-5xc3llsKqrWI4ov4JyW79p0E99gfPA6Waixoavxvv1CZBQ4Stu7N660kTu9sJrACf20E+hdKLoiU
-hd5wiQXo9B2ncm5P3jFLYLBmPltIn/uzdiYpFj+E9kS9XYDd+boBZhN1Vh0296zLQZobLfKFzClo
-E6IFyTTANonrXvCRgodKS+QJEH8Syu2jSKe023aVemkuZjzvPK7o9iU7BKkPG2pzLPgxggJgMIIC
-XAIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQD
-EyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxeQGjDntHGb2iaQkIw
-DQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEIGGjhgcGRX3d6uMY4epjEX3vcCzo0EeX
-H+vQCY2//yXNMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDQz
-MDE3MzcwNlowXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCG
-SAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJYIZIAWUDBAIBMA0GCSqGSIb3DQEB
-AQUABIIBAJIV6ZNzNUERuNCeZva32fO7JnWzYpOX3rT/3moMOemiBzDF5muLY15a+anSqkEn/oGC
-30mlmZuuG1RMho5UxF2MH/B+5JwfskrBj1H6XjF86LIYBGyVI5tuDGBViqrqMu/aDFHkHnawaR9v
-Ynwn+H4fAW5nj1gd0xn0qQOyk1vNP7u3ke8XcquPdNqb0zOHYwxIrkHeDv8K1INDkgkTNOhlD5lV
-w5/5BJFltocw9YJFh/08iXS3pLcVvB9weph9b9eG74XmxJQ0/db9vsjkXL6mnDA6K3hLzzLAJZil
-64DUVmcxBRZhTGN1vM0Ze6ddsAeSEAwig6lCX0LJRAkZZpI=
---000000000000a911b10634025df3--
+>
+> > >
+> > >  - The thread should be started and stopped.
+> > >
+> > > [1]: https://lore.kernel.org/netdev/20250425201220.58bf25d7@kernel.or=
+g/
+> > > [2]: https://lore.kernel.org/netdev/20250428112306.62ff198b@kernel.or=
+g/
