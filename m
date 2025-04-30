@@ -1,51 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C3122A4D1
-	for <netdev@vger.kernel.org>; Wed, 30 Apr 2025 22:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18EA22A4F1
+	for <netdev@vger.kernel.org>; Wed, 30 Apr 2025 22:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746053511; cv=none; b=HC8p4amoHLrsOFN5+QjcQj2JRK7bNkWxMTV2o/kvEC8quvq7jeYXCPKVAWIwEB9pKAZXkejgzZlw5ZmXAj9ZByeV0BnSDqMZey2sQeBsKjW8MD19Wza/vF0XdvdCOSz8P1whMjmAL3viD4ceQUrZ4Qqg1gWNwyw9pPTIggFqHIM=
+	t=1746053512; cv=none; b=gHyMq/m3P9/WZf2c0kKldXwVpFYQe34vToIS1tnJwciyjTT9izJLMhsIelcMBZLiXh8nX8YZVN5n87cuM7Ft1bdpph1zMmcg6NZVvJz2T5+/PVxcRhnTCoUbuyccaPUf+KKW5OlTE584Jr+0LYXldZpEwRuoOjsXeX/SvahqQio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746053511; c=relaxed/simple;
-	bh=1Wem77COV0Eps0ohw2i0BfAw/29dTjrwWhD0otEHxIA=;
+	s=arc-20240116; t=1746053512; c=relaxed/simple;
+	bh=P+iNkEdwlUrja5URJ/amj6hrk1flV7wnzjKbGtD+5qU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kCaWoAgc7ZU1/wPyhwXJ5vm7gy43+ElFXqMJFCKX0E7uGDE4ScZokqlDvMKI9cbEk3TimfT9Mnlz8Tpek3423Y0DGj0eIE1jdU67Ns5GmQP4xOpzTETBW9Vx25V6utFLEF/VmA8wpyYDtP0A8C9MqsyC5YU/0BQr8kTB+OTjADE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ATI7Uw6A; arc=none smtp.client-ip=192.198.163.7
+	 In-Reply-To:To:Cc; b=R4uOdmarITStHMd6mL/gnzrbJV21MR4oJA87IIZhq9wM2S97YRmDIVTstNCJ3gmziHaRlTJtzbgAyr7FpaW0yJChdiQS5Z/ZbW4Ki3NJSPr61uuuJOuvpD95blEZB8BSFNypP8CbUbB0YU8JKSeuR385Dajr8DEvh8yNJ+pnKdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SJspWBgY; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ATI7Uw6A"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SJspWBgY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1746053510; x=1777589510;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=1Wem77COV0Eps0ohw2i0BfAw/29dTjrwWhD0otEHxIA=;
-  b=ATI7Uw6Aw/3LsZRAvo3sV6jgYuroQzg6StgRA9ycOBDpdCnHcRFWeKvj
-   v4w445u3kwohkFsrNlM4UoevvsXxGS3+vjRx2iFoXAGw0HWi9MArdZMzP
-   IG2i0REvo0n7SPgtqqQC9+WppYHfPXwojwicWq0wc74Lp/7Q4hVAuSLVO
-   20QObcJfOTMcdgtB9cccrgcn2zARPH6fjJ8OBWsETdijn9CRsU3ZfeVbw
-   frIMyK6WGE+fOTX93eE0H8EB3ph+ovzuB7WwClbUXMxkjqkudXiK680+s
-   uGoIJLbuZGcGSnS2KAAvsylYhBCcmYQBoHpHkRe4eqfd9zYuHk2h+97Ko
-   A==;
-X-CSE-ConnectionGUID: PW7v/RzJSUOw7XVHMBMTdw==
-X-CSE-MsgGUID: Y1H2ias4R6GoMPwtArFRpw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11419"; a="73120906"
+  bh=P+iNkEdwlUrja5URJ/amj6hrk1flV7wnzjKbGtD+5qU=;
+  b=SJspWBgYN7vBo4hXKEXHW8Z0qvtLJJPwxtgf9LypfJcze8T6ps8PIMBY
+   qEr773lkzsF4KkilGO/PhGZWmxjcS7kSM1e6tp1eM10gmfFKYUePBNtHl
+   ijbNcwoq5b4en9Kqs7FR0CoyzbJMzsUbTLllM8mm5SvOd6FyN1DVa/tak
+   MKII8i2jZqisPGccWjPelJH1PqpgyRxp5k+QYW6nJql06xAilTDP2ZggO
+   tAh/7ryJWVOyFtQ9PmC8XthD9YByMcvKoh1Z0xgPpofx81g5vl5dx7AOd
+   Fm2+WgeGbTTHTvCBvrO9I06MJXXoCGeebHWs6jjwuagxBn5ZJUPJAXf4g
+   g==;
+X-CSE-ConnectionGUID: V1m/KJIST2SN0fO+8T+K3w==
+X-CSE-MsgGUID: Y7EHEWBbTzi/zwUu345Z+w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11419"; a="73120909"
 X-IronPort-AV: E=Sophos;i="6.15,252,1739865600"; 
-   d="scan'208";a="73120906"
+   d="scan'208";a="73120909"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
   by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 15:51:41 -0700
-X-CSE-ConnectionGUID: LRPlJnuLQPydPTemOIEO9A==
-X-CSE-MsgGUID: kLUaWq01SZy7E7WdQN03mA==
+X-CSE-ConnectionGUID: FRkmzg5VSVKuCkcaVcXP6Q==
+X-CSE-MsgGUID: YQgNbADmQaCYu7uVLixymw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,252,1739865600"; 
-   d="scan'208";a="134145088"
+   d="scan'208";a="134145100"
 Received: from jekeller-desk.jf.intel.com ([10.166.241.15])
   by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 15:51:40 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Wed, 30 Apr 2025 15:51:38 -0700
-Subject: [PATCH v3 07/15] ice: add ICE_READ/WRITE_CGU_REG_OR_DIE helpers
+Date: Wed, 30 Apr 2025 15:51:42 -0700
+Subject: [PATCH v3 11/15] ice: add multiple TSPLL helpers
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250430-kk-tspll-improvements-alignment-v3-7-ab8472e86204@intel.com>
+Message-Id: <20250430-kk-tspll-improvements-alignment-v3-11-ab8472e86204@intel.com>
 References: <20250430-kk-tspll-improvements-alignment-v3-0-ab8472e86204@intel.com>
 In-Reply-To: <20250430-kk-tspll-improvements-alignment-v3-0-ab8472e86204@intel.com>
 To: Anthony Nguyen <anthony.l.nguyen@intel.com>, 
@@ -70,330 +70,217 @@ X-Mailer: b4 0.14.2
 
 From: Karol Kolacinski <karol.kolacinski@intel.com>
 
-Add ICE_READ_CGU_REG_OR_DIE() and ICE_WRITE_CGU_REG_OR_DIE() helpers to
-avoid multiple error checks after calling read/write functions.
+Add helpers for checking TSPLL params, disabling sticky bits,
+configuring TSPLL and getting default clock frequency to simplify
+the code flows.
 
-Suggested-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
 Reviewed-by: Milena Olech <milena.olech@intel.com>
 Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_common.h |  15 +++
- drivers/net/ethernet/intel/ice/ice_tspll.c  | 160 ++++++----------------------
- 2 files changed, 47 insertions(+), 128 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_tspll.c | 156 ++++++++++++++++++++---------
+ 1 file changed, 108 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.h b/drivers/net/ethernet/intel/ice/ice_common.h
-index 0ed9b5e2a0afb1d3a0e697a027e3cb125e4db443..fb671e243d5b9520ed3cb1ca3fcb4c697d3a5c94 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.h
-+++ b/drivers/net/ethernet/intel/ice/ice_common.h
-@@ -493,5 +493,20 @@ int ice_get_pca9575_handle(struct ice_hw *hw, u16 *pca9575_handle);
- int ice_read_pca9575_reg(struct ice_hw *hw, u8 offset, u8 *data);
- bool ice_fw_supports_report_dflt_cfg(struct ice_hw *hw);
- int ice_read_cgu_reg(struct ice_hw *hw, u32 addr, u32 *val);
-+#define ICE_READ_CGU_REG_OR_DIE(hw, addr, val)                     \
-+	do {                                                       \
-+		int __err = ice_read_cgu_reg((hw), (addr), (val)); \
-+								   \
-+		if (__err)                                         \
-+			return __err;                              \
-+	} while (0)
- int ice_write_cgu_reg(struct ice_hw *hw, u32 addr, u32 val);
-+#define ICE_WRITE_CGU_REG_OR_DIE(hw, addr, val)                     \
-+	do {                                                        \
-+		int __err = ice_write_cgu_reg((hw), (addr), (val)); \
-+								    \
-+		if (__err)                                          \
-+			return __err;                               \
-+	} while (0)
-+
- #endif /* _ICE_COMMON_H_ */
 diff --git a/drivers/net/ethernet/intel/ice/ice_tspll.c b/drivers/net/ethernet/intel/ice/ice_tspll.c
-index a338cfb1044869f9c844bbd0d6d77987f275f945..acb6a4e77678962f8dea61d914579888c9b87b23 100644
+index ae8aee1c7d40ebe452725196b87d22dc3484892a..0792d60438cad479934bac0ffd3454c8b193079a 100644
 --- a/drivers/net/ethernet/intel/ice/ice_tspll.c
 +++ b/drivers/net/ethernet/intel/ice/ice_tspll.c
-@@ -132,7 +132,6 @@ static int ice_tspll_cfg_e82x(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
- 	union ice_cgu_r22 dw22;
- 	union ice_cgu_r24 dw24;
- 	union ice_cgu_r9 dw9;
--	int err;
- 
- 	if (clk_freq >= NUM_ICE_TSPLL_FREQ) {
- 		dev_warn(ice_hw_to_dev(hw), "Invalid TIME_REF frequency %u\n",
-@@ -152,17 +151,9 @@ static int ice_tspll_cfg_e82x(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
- 		return -EINVAL;
+@@ -71,6 +71,58 @@ static const char *ice_tspll_clk_freq_str(enum ice_tspll_freq clk_freq)
  	}
- 
--	err = ice_read_cgu_reg(hw, ICE_CGU_R9, &dw9.val);
--	if (err)
--		return err;
--
--	err = ice_read_cgu_reg(hw, ICE_CGU_R24, &dw24.val);
--	if (err)
--		return err;
--
--	err = ice_read_cgu_reg(hw, TSPLL_RO_BWM_LF, &bwm_lf.val);
--	if (err)
--		return err;
-+	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R9, &dw9.val);
-+	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R24, &dw24.val);
-+	ICE_READ_CGU_REG_OR_DIE(hw, TSPLL_RO_BWM_LF, &bwm_lf.val);
- 
- 	ice_tspll_log_cfg(hw, dw24.ts_pll_enable, dw24.time_ref_sel,
- 			  dw9.time_ref_freq_sel, bwm_lf.plllock_true_lock_cri,
-@@ -171,69 +162,40 @@ static int ice_tspll_cfg_e82x(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
- 	/* Disable the PLL before changing the clock source or frequency */
- 	if (dw24.ts_pll_enable) {
- 		dw24.ts_pll_enable = 0;
--
--		err = ice_write_cgu_reg(hw, ICE_CGU_R24, dw24.val);
--		if (err)
--			return err;
-+		ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R24, dw24.val);
- 	}
- 
- 	/* Set the frequency */
- 	dw9.time_ref_freq_sel = clk_freq;
--	err = ice_write_cgu_reg(hw, ICE_CGU_R9, dw9.val);
--	if (err)
--		return err;
-+	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R9, dw9.val);
- 
- 	/* Configure the TSPLL feedback divisor */
--	err = ice_read_cgu_reg(hw, ICE_CGU_R19, &dw19.val);
--	if (err)
--		return err;
--
-+	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R19, &dw19.val);
- 	dw19.fbdiv_intgr = e82x_tspll_params[clk_freq].feedback_div;
- 	dw19.ndivratio = 1;
--
--	err = ice_write_cgu_reg(hw, ICE_CGU_R19, dw19.val);
--	if (err)
--		return err;
-+	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R19, dw19.val);
- 
- 	/* Configure the TSPLL post divisor */
--	err = ice_read_cgu_reg(hw, ICE_CGU_R22, &dw22.val);
--	if (err)
--		return err;
--
-+	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R22, &dw22.val);
- 	dw22.time1588clk_div = e82x_tspll_params[clk_freq].post_pll_div;
- 	dw22.time1588clk_sel_div2 = 0;
--
--	err = ice_write_cgu_reg(hw, ICE_CGU_R22, dw22.val);
--	if (err)
--		return err;
-+	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R22, dw22.val);
- 
- 	/* Configure the TSPLL pre divisor and clock source */
--	err = ice_read_cgu_reg(hw, ICE_CGU_R24, &dw24.val);
--	if (err)
--		return err;
--
-+	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R24, &dw24.val);
- 	dw24.ref1588_ck_div = e82x_tspll_params[clk_freq].refclk_pre_div;
- 	dw24.fbdiv_frac = e82x_tspll_params[clk_freq].frac_n_div;
- 	dw24.time_ref_sel = clk_src;
--
--	err = ice_write_cgu_reg(hw, ICE_CGU_R24, dw24.val);
--	if (err)
--		return err;
-+	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R24, dw24.val);
- 
- 	/* Finally, enable the PLL */
- 	dw24.ts_pll_enable = 1;
--
--	err = ice_write_cgu_reg(hw, ICE_CGU_R24, dw24.val);
--	if (err)
--		return err;
-+	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R24, dw24.val);
- 
- 	/* Wait to verify if the PLL locks */
- 	usleep_range(1000, 5000);
- 
--	err = ice_read_cgu_reg(hw, TSPLL_RO_BWM_LF, &bwm_lf.val);
--	if (err)
--		return err;
--
-+	ICE_READ_CGU_REG_OR_DIE(hw, TSPLL_RO_BWM_LF, &bwm_lf.val);
- 	if (!bwm_lf.plllock_true_lock_cri) {
- 		dev_warn(ice_hw_to_dev(hw), "TSPLL failed to lock\n");
- 		return -EBUSY;
-@@ -257,12 +219,8 @@ static int ice_tspll_cfg_e82x(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
- static int ice_tspll_dis_sticky_bits_e82x(struct ice_hw *hw)
- {
- 	union tspll_cntr_bist_settings cntr_bist;
--	int err;
--
--	err = ice_read_cgu_reg(hw, TSPLL_CNTR_BIST_SETTINGS, &cntr_bist.val);
--	if (err)
--		return err;
- 
-+	ICE_READ_CGU_REG_OR_DIE(hw, TSPLL_CNTR_BIST_SETTINGS, &cntr_bist.val);
- 	/* Disable sticky lock detection so lock err reported is accurate */
- 	cntr_bist.i_plllock_sel_0 = 0;
- 	cntr_bist.i_plllock_sel_1 = 0;
-@@ -294,7 +252,6 @@ static int ice_tspll_cfg_e825c(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
- 	union ice_cgu_r23 dw23;
- 	union ice_cgu_r22 dw22;
- 	union ice_cgu_r9 dw9;
--	int err;
- 
- 	if (clk_freq >= NUM_ICE_TSPLL_FREQ) {
- 		dev_warn(ice_hw_to_dev(hw), "Invalid TIME_REF frequency %u\n",
-@@ -313,21 +270,10 @@ static int ice_tspll_cfg_e825c(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
- 		return -EINVAL;
- 	}
- 
--	err = ice_read_cgu_reg(hw, ICE_CGU_R9, &dw9.val);
--	if (err)
--		return err;
--
--	err = ice_read_cgu_reg(hw, ICE_CGU_R16, &dw16.val);
--	if (err)
--		return err;
--
--	err = ice_read_cgu_reg(hw, ICE_CGU_R23, &dw23.val);
--	if (err)
--		return err;
--
--	err = ice_read_cgu_reg(hw, TSPLL_RO_LOCK_E825C, &ro_lock.val);
--	if (err)
--		return err;
-+	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R9, &dw9.val);
-+	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R16, &dw16.val);
-+	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R23, &dw23.val);
-+	ICE_READ_CGU_REG_OR_DIE(hw, TSPLL_RO_LOCK_E825C, &ro_lock.val);
- 
- 	ice_tspll_log_cfg(hw, dw23.ts_pll_enable, dw23.time_ref_sel,
- 			  dw9.time_ref_freq_sel,
-@@ -336,10 +282,7 @@ static int ice_tspll_cfg_e825c(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
- 	/* Disable the PLL before changing the clock source or frequency */
- 	if (dw23.ts_pll_enable) {
- 		dw23.ts_pll_enable = 0;
--
--		err = ice_write_cgu_reg(hw, ICE_CGU_R23, dw23.val);
--		if (err)
--			return err;
-+		ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R23, dw23.val);
- 	}
- 
- 	/* Set the frequency */
-@@ -353,72 +296,42 @@ static int ice_tspll_cfg_e825c(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
- 		dw9.time_ref_en = 1;
- 		dw9.clk_eref0_en = 0;
- 	}
--	err = ice_write_cgu_reg(hw, ICE_CGU_R9, dw9.val);
--	if (err)
--		return err;
-+	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R9, dw9.val);
- 
- 	/* Choose the referenced frequency */
- 	dw16.ck_refclkfreq = ICE_TSPLL_CK_REFCLKFREQ_E825;
--	err = ice_write_cgu_reg(hw, ICE_CGU_R16, dw16.val);
--	if (err)
--		return err;
-+	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R16, dw16.val);
- 
- 	/* Configure the TSPLL feedback divisor */
--	err = ice_read_cgu_reg(hw, ICE_CGU_R19, &dw19.val);
--	if (err)
--		return err;
--
-+	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R19, &dw19.val);
- 	dw19.tspll_fbdiv_intgr = ICE_TSPLL_FBDIV_INTGR_E825;
- 	dw19.tspll_ndivratio = ICE_TSPLL_NDIVRATIO_E825;
--
--	err = ice_write_cgu_reg(hw, ICE_CGU_R19, dw19.val);
--	if (err)
--		return err;
-+	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R19, dw19.val);
- 
- 	/* Configure the TSPLL post divisor */
--	err = ice_read_cgu_reg(hw, ICE_CGU_R22, &dw22.val);
--	if (err)
--		return err;
--
-+	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R22, &dw22.val);
- 	/* These two are constant for E825C */
- 	dw22.time1588clk_div = 5;
- 	dw22.time1588clk_sel_div2 = 0;
--
--	err = ice_write_cgu_reg(hw, ICE_CGU_R22, dw22.val);
--	if (err)
--		return err;
-+	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R22, dw22.val);
- 
- 	/* Configure the TSPLL pre divisor and clock source */
--	err = ice_read_cgu_reg(hw, ICE_CGU_R23, &dw23.val);
--	if (err)
--		return err;
--
-+	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R23, &dw23.val);
- 	dw23.ref1588_ck_div = 0;
- 	dw23.time_ref_sel = clk_src;
--
--	err = ice_write_cgu_reg(hw, ICE_CGU_R23, dw23.val);
--	if (err)
--		return err;
-+	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R23, dw23.val);
- 
- 	/* Clear the R24 register. */
--	err = ice_write_cgu_reg(hw, ICE_CGU_R24, 0);
--	if (err)
--		return err;
-+	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R24, 0);
- 
- 	/* Finally, enable the PLL */
- 	dw23.ts_pll_enable = 1;
--
--	err = ice_write_cgu_reg(hw, ICE_CGU_R23, dw23.val);
--	if (err)
--		return err;
-+	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R23, dw23.val);
- 
- 	/* Wait to verify if the PLL locks */
- 	usleep_range(1000, 5000);
- 
--	err = ice_read_cgu_reg(hw, TSPLL_RO_LOCK_E825C, &ro_lock.val);
--	if (err)
--		return err;
--
-+	ICE_READ_CGU_REG_OR_DIE(hw, TSPLL_RO_LOCK_E825C, &ro_lock.val);
- 	if (!ro_lock.plllock_true_lock_cri) {
- 		dev_warn(ice_hw_to_dev(hw), "TSPLL failed to lock\n");
- 		return -EBUSY;
-@@ -442,14 +355,9 @@ static int ice_tspll_cfg_e825c(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
- static int ice_tspll_dis_sticky_bits_e825c(struct ice_hw *hw)
- {
- 	union tspll_bw_tdc_e825c bw_tdc;
--	int err;
--
--	err = ice_read_cgu_reg(hw, TSPLL_BW_TDC_E825C, &bw_tdc.val);
--	if (err)
--		return err;
- 
-+	ICE_READ_CGU_REG_OR_DIE(hw, TSPLL_BW_TDC_E825C, &bw_tdc.val);
- 	bw_tdc.i_plllock_sel_1_0 = 0;
--
- 	return ice_write_cgu_reg(hw, TSPLL_BW_TDC_E825C, bw_tdc.val);
  }
  
-@@ -465,12 +373,8 @@ static int ice_tspll_dis_sticky_bits_e825c(struct ice_hw *hw)
- int ice_tspll_cfg_pps_out_e825c(struct ice_hw *hw, bool enable)
++/**
++ * ice_tspll_default_freq - Return default frequency for a MAC type
++ * @mac_type: MAC type
++ *
++ * Return: default TSPLL frequency for a correct MAC type, -ERANGE otherwise.
++ */
++static enum ice_tspll_freq ice_tspll_default_freq(enum ice_mac_type mac_type)
++{
++	switch (mac_type) {
++	case ICE_MAC_GENERIC:
++		return ICE_TSPLL_FREQ_25_000;
++	case ICE_MAC_GENERIC_3K_E825:
++		return ICE_TSPLL_FREQ_156_250;
++	default:
++		return -ERANGE;
++	}
++}
++
++/**
++ * ice_tspll_check_params - Check if TSPLL params are correct
++ * @hw: Pointer to the HW struct
++ * @clk_freq: Clock frequency to program
++ * @clk_src: Clock source to select (TIME_REF or TCXO)
++ *
++ * Return: true if TSPLL params are correct, false otherwise.
++ */
++static bool ice_tspll_check_params(struct ice_hw *hw,
++				   enum ice_tspll_freq clk_freq,
++				   enum ice_clk_src clk_src)
++{
++	if (clk_freq >= NUM_ICE_TSPLL_FREQ) {
++		dev_warn(ice_hw_to_dev(hw), "Invalid TSPLL frequency %u\n",
++			 clk_freq);
++		return false;
++	}
++
++	if (clk_src >= NUM_ICE_CLK_SRC) {
++		dev_warn(ice_hw_to_dev(hw), "Invalid clock source %u\n",
++			 clk_src);
++		return false;
++	}
++
++	if ((hw->mac_type == ICE_MAC_GENERIC_3K_E825 ||
++	     clk_src == ICE_CLK_SRC_TCXO) &&
++	    clk_freq != ice_tspll_default_freq(hw->mac_type)) {
++		dev_warn(ice_hw_to_dev(hw), "Unsupported frequency for this clock source\n");
++		return false;
++	}
++
++	return true;
++}
++
+ /**
+  * ice_tspll_clk_src_str - Convert time_ref_src to string
+  * @clk_src: Clock source
+@@ -129,24 +181,6 @@ static int ice_tspll_cfg_e82x(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
  {
- 	union ice_cgu_r9 r9;
--	int err;
--
--	err = ice_read_cgu_reg(hw, ICE_CGU_R9, &r9.val);
--	if (err)
--		return err;
+ 	u32 val, r9, r24;
  
-+	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R9, &r9.val);
- 	r9.one_pps_out_en = enable;
- 	r9.one_pps_out_amp = enable * ICE_ONE_PPS_OUT_AMP_MAX;
- 	return ice_write_cgu_reg(hw, ICE_CGU_R9, r9.val);
+-	if (clk_freq >= NUM_ICE_TSPLL_FREQ) {
+-		dev_warn(ice_hw_to_dev(hw), "Invalid TIME_REF frequency %u\n",
+-			 clk_freq);
+-		return -EINVAL;
+-	}
+-
+-	if (clk_src >= NUM_ICE_CLK_SRC) {
+-		dev_warn(ice_hw_to_dev(hw), "Invalid clock source %u\n",
+-			 clk_src);
+-		return -EINVAL;
+-	}
+-
+-	if (clk_src == ICE_CLK_SRC_TCXO && clk_freq != ICE_TSPLL_FREQ_25_000) {
+-		dev_warn(ice_hw_to_dev(hw),
+-			 "TCXO only supports 25 MHz frequency\n");
+-		return -EINVAL;
+-	}
+-
+ 	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R9, &r9);
+ 	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R24, &r24);
+ 	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_RO_BWM_LF, &val);
+@@ -258,23 +292,6 @@ static int ice_tspll_cfg_e825c(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
+ {
+ 	u32 val, r9, r23;
+ 
+-	if (clk_freq >= NUM_ICE_TSPLL_FREQ) {
+-		dev_warn(ice_hw_to_dev(hw), "Invalid TIME_REF frequency %u\n",
+-			 clk_freq);
+-		return -EINVAL;
+-	}
+-
+-	if (clk_src >= NUM_ICE_CLK_SRC) {
+-		dev_warn(ice_hw_to_dev(hw), "Invalid clock source %u\n",
+-			 clk_src);
+-		return -EINVAL;
+-	}
+-
+-	if (clk_freq != ICE_TSPLL_FREQ_156_250) {
+-		dev_warn(ice_hw_to_dev(hw), "Adapter only supports 156.25 MHz frequency\n");
+-		return -EINVAL;
+-	}
+-
+ 	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R9, &r9);
+ 	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_R23, &r23);
+ 	ICE_READ_CGU_REG_OR_DIE(hw, ICE_CGU_RO_LOCK, &val);
+@@ -400,6 +417,52 @@ int ice_tspll_cfg_pps_out_e825c(struct ice_hw *hw, bool enable)
+ 	return ice_write_cgu_reg(hw, ICE_CGU_R9, val);
+ }
+ 
++/**
++ * ice_tspll_cfg - Configure the Clock Generation Unit TSPLL
++ * @hw: Pointer to the HW struct
++ * @clk_freq: Clock frequency to program
++ * @clk_src: Clock source to select (TIME_REF, or TCXO)
++ *
++ * Configure the Clock Generation Unit with the desired clock frequency and
++ * time reference, enabling the TSPLL which drives the PTP hardware clock.
++ *
++ * Return: 0 on success, -ERANGE on unsupported MAC type, other negative error
++ *         codes when failed to configure CGU.
++ */
++static int ice_tspll_cfg(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
++			 enum ice_clk_src clk_src)
++{
++	switch (hw->mac_type) {
++	case ICE_MAC_GENERIC:
++		return ice_tspll_cfg_e82x(hw, clk_freq, clk_src);
++	case ICE_MAC_GENERIC_3K_E825:
++		return ice_tspll_cfg_e825c(hw, clk_freq, clk_src);
++	default:
++		return -ERANGE;
++	}
++}
++
++/**
++ * ice_tspll_dis_sticky_bits - disable TSPLL sticky bits
++ * @hw: Pointer to the HW struct
++ *
++ * Configure the Clock Generation Unit TSPLL sticky bits so they don't latch on
++ * losing TSPLL lock, but always show current state.
++ *
++ * Return: 0 on success, -ERANGE on unsupported MAC type.
++ */
++static int ice_tspll_dis_sticky_bits(struct ice_hw *hw)
++{
++	switch (hw->mac_type) {
++	case ICE_MAC_GENERIC:
++		return ice_tspll_dis_sticky_bits_e82x(hw);
++	case ICE_MAC_GENERIC_3K_E825:
++		return ice_tspll_dis_sticky_bits_e825c(hw);
++	default:
++		return -ERANGE;
++	}
++}
++
+ /**
+  * ice_tspll_init - Initialize TSPLL with settings from firmware
+  * @hw: Pointer to the HW structure
+@@ -411,25 +474,22 @@ int ice_tspll_cfg_pps_out_e825c(struct ice_hw *hw, bool enable)
+ int ice_tspll_init(struct ice_hw *hw)
+ {
+ 	struct ice_ts_func_info *ts_info = &hw->func_caps.ts_func_info;
++	enum ice_tspll_freq tspll_freq;
++	enum ice_clk_src clk_src;
+ 	int err;
+ 
+-	/* Disable sticky lock detection so lock err reported is accurate. */
+-	if (hw->mac_type == ICE_MAC_GENERIC_3K_E825)
+-		err = ice_tspll_dis_sticky_bits_e825c(hw);
+-	else
+-		err = ice_tspll_dis_sticky_bits_e82x(hw);
++	tspll_freq = (enum ice_tspll_freq)ts_info->time_ref;
++	clk_src = (enum ice_clk_src)ts_info->clk_src;
++	if (!ice_tspll_check_params(hw, tspll_freq, clk_src))
++		return -EINVAL;
++
++	/* Disable sticky lock detection so lock status reported is accurate */
++	err = ice_tspll_dis_sticky_bits(hw);
+ 	if (err)
+ 		return err;
+ 
+ 	/* Configure the TSPLL using the parameters from the function
+ 	 * capabilities.
+ 	 */
+-	if (hw->mac_type == ICE_MAC_GENERIC_3K_E825)
+-		err = ice_tspll_cfg_e825c(hw, ts_info->time_ref,
+-					  (enum ice_clk_src)ts_info->clk_src);
+-	else
+-		err = ice_tspll_cfg_e82x(hw, ts_info->time_ref,
+-					 (enum ice_clk_src)ts_info->clk_src);
+-
+-	return err;
++	return ice_tspll_cfg(hw, tspll_freq, clk_src);
+ }
 
 -- 
 2.48.1.397.gec9d649cc640
