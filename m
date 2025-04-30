@@ -1,134 +1,173 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A63821C173
-	for <netdev@vger.kernel.org>; Wed, 30 Apr 2025 09:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EF121ADAB;
+	Wed, 30 Apr 2025 09:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746004216; cv=none; b=ST0honjZllsGhRO0Fp06f+vTo1s8vKEp4uB36WQfZ1M0fxt9XCgvnpo56URkKwnPy8p9IX874Qfgj86d/VYAg21bCW043NfYvn5u6Xl9XRxpgnNgDdBvqjiAsrQY1m/z79ywRcScvMnxPjNu6de8JuBAKeVulAsGExT3lfaglP4=
+	t=1746004291; cv=none; b=iotAAYkmBglMVW82t8zVTZjDIv3v2n0VMUiCQlMZH8PBDPbIL3+YJ29O3mtl5UlFkc3anSKhn7uElVorgyqw0kobvw+u7d1KrKD3oUz57l+F2ezGwaPmRX+sM80BexJMPU0DKswJjLgkLYQGRT/+hDZH2PuH6XygZ2fW8W/VKF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746004216; c=relaxed/simple;
-	bh=igMUEO2jdAMJa66FnKgZHk74FDW367SkId7b0Aj61PU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jTlhRoCieIavTINQIuF7myk8w3axuFqZFReTU4gxHDzBmegqtur5ripVY1xzjSlohkBRc8oRncMaS4KKQprEJhE89mE11p8hy8U7hZat06vCJ/I/o0V26Z4PTKy3iVoeMhZCRdgyWdUuD5zEl7uhC2BhwSkas7vV9m2lfg1fayE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N4kYwgVh; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1746004291; c=relaxed/simple;
+	bh=B6PUeUS9nTSTlha5n91p/+cQVOJulOurJQNUX1pTWL8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=HSrGslVxr/gO6FtmguMEmqEGnPSJZie8tcS9evQ//23wNbfehOLnm72YvgcIlyBe7LInRmbpkiugaUL8jBWvSfKO/uXt+qNOVV88WPSPEXuVu54n7TheX7wnYXrAr/o99QNtzYpTHVo9Kw7loe/MnHHAIZG2rRiwe1cr01B3tAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=ffRb+s5H; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N4kYwgVh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746004213;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RBM8h9GXkd4oRheqBQptKlBrFr1ALhS3777dATJTzNQ=;
-	b=N4kYwgVh1m05hL0ewz737lPHK6imuCEIm49pHySaVIeQXcoG6Frf6JT7ZSmGvX8qIuKLfk
-	k6DmFKUPQt+dbBvi4pQ1RWnE6AfiaLWPnbyZOeSy1L/nGIqnJQAzGsTH9ApjKp1JAcLqEV
-	AbwL16RpBIaxjVnQ24NIlCCargOxa18=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-333-PieIhso4MQ66jQrJ6Lo0nQ-1; Wed, 30 Apr 2025 05:10:11 -0400
-X-MC-Unique: PieIhso4MQ66jQrJ6Lo0nQ-1
-X-Mimecast-MFC-AGG-ID: PieIhso4MQ66jQrJ6Lo0nQ_1746004210
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-acb8f9f58ebso523610566b.2
-        for <netdev@vger.kernel.org>; Wed, 30 Apr 2025 02:10:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746004209; x=1746609009;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RBM8h9GXkd4oRheqBQptKlBrFr1ALhS3777dATJTzNQ=;
-        b=Dv/CnpyQGla8ySmsv0Py2+LG98z8aFGL2Tf4/jRY9/txGMj0SMSu8FCGezvZtuZe2y
-         KZ/TiJxfdmaMah8ptIhrGh2DtQ0Qti+e+4AR/RBfd+PwlTqtWr94+Rh+AnxTLlXbpT/i
-         OrLRmoG9/dBo1jAjmtU8ZIKoREny5866REJWj4FG41HqdATQIUVqyM1RQ4MWbb+Q5kOX
-         V0UHVGKuwFgzIT0V1rfvvKS3k5I7ZeQPkmVePl/dwBMAZo31NosSxoHIsr9fxDtjYZHE
-         bbnD5Biyb9SL5xotSYtWy7uEogVdYyjKAg/xiivqfguP5w4pmMWGOUhkg5HwJd3T9dw9
-         R/pw==
-X-Forwarded-Encrypted: i=1; AJvYcCVsZurZGc1cWnkCpP9M3Tokn9wT6qOGio/zxKqahzmTOd9sVmooT8QlpGuqFv6XwJh8KtNfy6E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4eRGWjLBTooTGdJMQvvpNpoH3FlUfRnT1goUFgdbbFezH4Ndz
-	OA626vnfMWJ/1tg54u8gv7KIBx6JO3DBI33v6H7ljF9GG6aI7BkUqWY98kaInZxS+5h/f36mrrC
-	IIcISK7ll714xDC1lB8VK86vQ7CfKwe4sR5ZTFAEJ+6snY4j0wqSc2w==
-X-Gm-Gg: ASbGncuPDRsIGLeGPFAP9+Ni4KaLH9lfe6LsITCBGgRM19R0vHIOLDMgSfQ1UQYXAEu
-	bw5K/xKW1i6DIURVFVOz3TbBbJ9B6P+JpI7Uz5OKgZeyZsmeZ7qthBwKnGsejk8I6Z4ciI20dD8
-	2Gg/TIo9aVlOoyMwNAGy5VYrPZvBXALxbmUyt57XaqV5bQAiESj+dkB4S/KLJ9MeSB1ezgWav9X
-	G/dUAGbvbujwdKvJODxeWSquZC2XzQDwrpGLJtim05hyK65+qNJsCTplH9k/ubk6J4WBLkVZZlA
-	4lHEZkPIFO263mH+/w==
-X-Received: by 2002:a17:907:7b82:b0:aca:aeb4:9bd6 with SMTP id a640c23a62f3a-acedc574a4cmr220066666b.10.1746004209571;
-        Wed, 30 Apr 2025 02:10:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHBMPamEhDPbDLqOXiGcIZesC1dmK+7e+0MqQ1tv9XUC/crH+ZQmawf9DLNdOJwg2QfTaPusw==
-X-Received: by 2002:a17:907:7b82:b0:aca:aeb4:9bd6 with SMTP id a640c23a62f3a-acedc574a4cmr220063766b.10.1746004208996;
-        Wed, 30 Apr 2025 02:10:08 -0700 (PDT)
-Received: from sgarzare-redhat ([193.207.220.254])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acebe7a4ee8sm313299266b.74.2025.04.30.02.10.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Apr 2025 02:10:08 -0700 (PDT)
-Date: Wed, 30 Apr 2025 11:10:01 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	"Michael S . Tsirkin" <mst@redhat.com>, jasowang@redhat.com, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.6 13/21] vhost_task: fix vhost_task_create()
- documentation
-Message-ID: <n2c3bjkh4jbzm2psd4wfrxzf5wdzv2qihcnds5apfgfyrojhyd@l6p47teppn62>
-References: <20250429235233.537828-1-sashal@kernel.org>
- <20250429235233.537828-13-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="ffRb+s5H"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1uA3TM-006EEa-3L; Wed, 30 Apr 2025 11:11:20 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=06COR0tHUw7dwx3cleQDSPa8f7BJblvvOI8tjwdPeEs=; b=ffRb+s5HpGDOPdiZFy+1cNQJsg
+	720p7GEtohFdCIqTKb+Xci0dCuflIRFQAPczM9Fy2eRltBfmNboHS7UCZhL9KInT2IevMTfkW2io+
+	EH9M2tYJ1VbURZm8FXdyychvFe70jG6c0wlJrdZZK4ENbZbT/lS3vPHsYgeLgU/h+UtU79hfvpoRh
+	/12wtHiDNv9f9Aq4QKbxpKTm0xfvSvS/jrS97IE86BtWpXyB5mHGJE7tAt9+pNVJWB2szKNKBVwiB
+	K/2FuejfDtRKo4jGliVMxpvIXRmvUDNklz1sFM3ASXHQzpFonLmNvbdbJMy0ljBdthGS0Zxjfyvmp
+	iFNnpGEw==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1uA3TL-0006As-Or; Wed, 30 Apr 2025 11:11:19 +0200
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1uA3TI-00CDEV-A1; Wed, 30 Apr 2025 11:11:16 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Date: Wed, 30 Apr 2025 11:10:29 +0200
+Subject: [PATCH net-next v3 3/4] vsock: Move lingering logic to af_vsock
+ core
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250429235233.537828-13-sashal@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250430-vsock-linger-v3-3-ddbe73b53457@rbox.co>
+References: <20250430-vsock-linger-v3-0-ddbe73b53457@rbox.co>
+In-Reply-To: <20250430-vsock-linger-v3-0-ddbe73b53457@rbox.co>
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+ Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-On Tue, Apr 29, 2025 at 07:52:25PM -0400, Sasha Levin wrote:
->From: Stefano Garzarella <sgarzare@redhat.com>
->
->[ Upstream commit fec0abf52609c20279243699d08b660c142ce0aa ]
->
->Commit cb380909ae3b ("vhost: return task creation error instead of NULL")
->changed the return value of vhost_task_create(), but did not update the
->documentation.
->
->Reflect the change in the documentation: on an error, vhost_task_create()
->returns an ERR_PTR() and no longer NULL.
->
->Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
->Message-Id: <20250327124435.142831-1-sgarzare@redhat.com>
->Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->Signed-off-by: Sasha Levin <sashal@kernel.org>
->---
-> kernel/vhost_task.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
+Lingering should be transport-independent in the long run. In preparation
+for supporting other transports, as well the linger on shutdown(), move
+code to core.
 
-It looks like 6.6 doesn't contain commit cb380909ae3b ("vhost: return 
-task creation error instead of NULL") so I think we should not backport 
-this.
+Guard against an unimplemented vsock_transport::unsent_bytes() callback.
 
-BTW, this is just a fix for a comment, so not a big issue if we backport 
-or not.
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ include/net/af_vsock.h                  |  1 +
+ net/vmw_vsock/af_vsock.c                | 25 +++++++++++++++++++++++++
+ net/vmw_vsock/virtio_transport_common.c | 23 +----------------------
+ 3 files changed, 27 insertions(+), 22 deletions(-)
 
-Thanks,
-Stefano
+diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+index 9e85424c834353d016a527070dd62e15ff3bfce1..bd8b88d70423051dd05fc445fe37971af631ba03 100644
+--- a/include/net/af_vsock.h
++++ b/include/net/af_vsock.h
+@@ -221,6 +221,7 @@ void vsock_for_each_connected_socket(struct vsock_transport *transport,
+ 				     void (*fn)(struct sock *sk));
+ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk);
+ bool vsock_find_cid(unsigned int cid);
++void vsock_linger(struct sock *sk, long timeout);
+ 
+ /**** TAP ****/
+ 
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index fc6afbc8d6806a4d98c66abc3af4bd139c583b08..946b37de679a0e68b84cd982a3af2a959c60ee57 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1013,6 +1013,31 @@ static int vsock_getname(struct socket *sock,
+ 	return err;
+ }
+ 
++void vsock_linger(struct sock *sk, long timeout)
++{
++	DEFINE_WAIT_FUNC(wait, woken_wake_function);
++	ssize_t (*unsent)(struct vsock_sock *vsk);
++	struct vsock_sock *vsk = vsock_sk(sk);
++
++	if (!timeout)
++		return;
++
++	/* unsent_bytes() may be unimplemented. */
++	unsent = vsk->transport->unsent_bytes;
++	if (!unsent)
++		return;
++
++	add_wait_queue(sk_sleep(sk), &wait);
++
++	do {
++		if (sk_wait_event(sk, &timeout, unsent(vsk) == 0, &wait))
++			break;
++	} while (!signal_pending(current) && timeout);
++
++	remove_wait_queue(sk_sleep(sk), &wait);
++}
++EXPORT_SYMBOL_GPL(vsock_linger);
++
+ static int vsock_shutdown(struct socket *sock, int mode)
+ {
+ 	int err;
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 4425802c5d718f65aaea425ea35886ad64e2fe6e..9230b8358ef2ac1f6e72a5961bae39f9093c8884 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1192,27 +1192,6 @@ static void virtio_transport_remove_sock(struct vsock_sock *vsk)
+ 	vsock_remove_sock(vsk);
+ }
+ 
+-static void virtio_transport_wait_close(struct sock *sk, long timeout)
+-{
+-	DEFINE_WAIT_FUNC(wait, woken_wake_function);
+-	ssize_t (*unsent)(struct vsock_sock *vsk);
+-	struct vsock_sock *vsk = vsock_sk(sk);
+-
+-	if (!timeout)
+-		return;
+-
+-	unsent = vsk->transport->unsent_bytes;
+-
+-	add_wait_queue(sk_sleep(sk), &wait);
+-
+-	do {
+-		if (sk_wait_event(sk, &timeout, unsent(vsk) == 0, &wait))
+-			break;
+-	} while (!signal_pending(current) && timeout);
+-
+-	remove_wait_queue(sk_sleep(sk), &wait);
+-}
+-
+ static void virtio_transport_cancel_close_work(struct vsock_sock *vsk,
+ 					       bool cancel_timeout)
+ {
+@@ -1283,7 +1262,7 @@ static bool virtio_transport_close(struct vsock_sock *vsk)
+ 		(void)virtio_transport_shutdown(vsk, SHUTDOWN_MASK);
+ 
+ 	if (sock_flag(sk, SOCK_LINGER) && !(current->flags & PF_EXITING))
+-		virtio_transport_wait_close(sk, sk->sk_lingertime);
++		vsock_linger(sk, sk->sk_lingertime);
+ 
+ 	if (sock_flag(sk, SOCK_DONE)) {
+ 		return true;
 
->
->diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
->index 8800f5acc0071..0e4455742190c 100644
->--- a/kernel/vhost_task.c
->+++ b/kernel/vhost_task.c
->@@ -111,7 +111,7 @@ EXPORT_SYMBOL_GPL(vhost_task_stop);
->  * @arg: data to be passed to fn and handled_kill
->  * @name: the thread's name
->  *
->- * This returns a specialized task for use by the vhost layer or NULL on
->+ * This returns a specialized task for use by the vhost layer or ERR_PTR() on
->  * failure. The returned task is inactive, and the caller must fire it up
->  * through vhost_task_start().
->  */
->-- 
->2.39.5
->
+-- 
+2.49.0
 
