@@ -1,263 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA25920F091;
-	Wed, 30 Apr 2025 15:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC9F1C1F13
+	for <netdev@vger.kernel.org>; Wed, 30 Apr 2025 15:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746025634; cv=none; b=uD4GGihzE7CxDY/lnlQZd27hRyWi74JFTFVMS0JQr61aR2jlDuHENFOr8Uk+ofzVliWNsFMic1efnjh7wkdXCfZsyj8xhpqtj4/mv58UyGTBie2/SKSZbI6T3ZZ42nWUS6yg0Sozt9EgaCdJWhr6ZZfZz42DX56APca6xd9e+Tw=
+	t=1746025663; cv=none; b=USxLDpEf9ZukzXf8/zfCBBEO/MzXFJd8kixbtoAGLQJIXNyKinJMTPhz3CNZz/PYokc8ynJUz1hhHWdzY+SILrGnteAZhyAvzaD5PiD7aUERZ10kh9rd5T8uKuY4RcXDQaT3n3e09KdtHT1jpfR0q8fwcRm/xpuM9zayE7NK4AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746025634; c=relaxed/simple;
-	bh=te3/SWtYXksBycfmngxcsGWsZSFl9uAYFDEPPLo/BdQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=foDaxkAj4D4ru2JGIxn1BrBFcRCtlv6vAF99/2vulf1KlWbe6Hvta2ZPYL+pphWj6v+2CdMo+ILnSiJ/hsXmzH5PU9cikVzy09e8xYGATzzj8mTJxLmRUsAi5lwQp1yBX62kUstoXx5kEnZJLdhhLB/sUl/DWVlm9FczE2kHh8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SHiLXyQc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746025663; c=relaxed/simple;
+	bh=JcSIk0Gk88GbM15qjPlsMD7b2UlOmbDf6LzZ3sR3k/w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rrRFckrLZiNg22I1jqgK8w7mtBM/UsKXfVsJhuURkvhK+yr7bXvSk/hbs7g7c56ZwjIiQxYlzM1J5ljHAuKd203rn/mKgRVQpMFa+OL3DNpNXNWpOhqDMaTT++NkiMcIJMf3uuGZ9H7BFCAj+FJ8BraANTLbpdsGqb9y05Ib3Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=GY8trVzz; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SHiLXyQc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E885C4CEEC;
-	Wed, 30 Apr 2025 15:07:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746025633;
-	bh=te3/SWtYXksBycfmngxcsGWsZSFl9uAYFDEPPLo/BdQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=SHiLXyQcxktLUACqltvhyhPGLf6ikVkmv9iDUz73wXUr8P+lOdolIlLl/kpU7Gx4U
-	 q1qWumC1hBLvexZwXiVd6UPoRVkDaeVOWZiD9oZmqVE0peOOBbz2MZxISV6hOuJR85
-	 TNI9DuZ5Bn7XmSsaqPVj6+pyvBJHS3YYrg94/l5e16IfRbc4TA+vrXXj0VZjHLxYFT
-	 SKKpVa6EcARcFCGmjLqu3Jj0U2uTSfPsOi2WWrYTgKGT3PIy39OYXI+4fRtbuNNOxf
-	 4xdlGgPAyLumJ0Ejdfh+c6Fs/VeyOrIpB97ZESxaiJfPn1nC+17mMcYIp7OY7n/dAN
-	 /S8oAzZyeFrng==
-From: Jeff Layton <jlayton@kernel.org>
-Date: Wed, 30 Apr 2025 08:06:56 -0700
-Subject: [PATCH v6 10/10] ref_tracker: eliminate the ref_tracker_dir name
- field
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="GY8trVzz"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=FgH271E5UhHWL7UBf06R1vnRmS6aAfFmCY8z1Ia+CAU=; b=GY8trVzzwn6GlfiFw9Fe2UH2XG
+	I0JX9ttNhFnaG+XaEndVIKf067pR9kkFot+hGuJuHBRET8DO4JjvWpDSR1FVDMBWKMkNGlrsL9xBO
+	FL7kkld8xWAeOTVHLVOVAYnyQhhTAIeML1O2ox4vkC96MMVq7quTPb/MjVaX1KSHss+6MM12N/iR2
+	IZKkwQWZ3AJMq9MwLs1JrkpFGXsP20sRFVf1bmxDJPKtDhnIii10dDfYi30Mhs4xi+rkcOnqQpnCb
+	rXrnVKUzMUHjjqr1Dqb6gmCAORIT01n/mBbWZABTyKW1CPQm6HUrpKNXe+XMSqCe6L4vNfCdfqVNt
+	PH51YL2g==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <carnil@debian.org>)
+	id 1uA8ew-00GRtq-Bs; Wed, 30 Apr 2025 14:43:38 +0000
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 90822BE2DE0; Wed, 30 Apr 2025 16:43:37 +0200 (CEST)
+Date: Wed, 30 Apr 2025 16:43:37 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Michal Kubecek <mkubecek@suse.cz>
+Cc: Petter Reinholdtsen <pere@debian.org>, netdev@vger.kernel.org,
+	Robert Scheck <fedora@robert-scheck.de>,
+	AsciiWolf <mail@asciiwolf.com>
+Subject: Re: [mail@asciiwolf.com: Re: ethtool: Incorrect component type in
+ AppStream metainfo causes issues and possible breakages]
+Message-ID: <aBI3GZ_yLdfkZuTP@eldamar.lan>
+References: <p3e5khlw5gcofvjnx7whj7y64bwmjy2t7ogu3xnbhlzw7scbl4@3rceiook7pwu>
+ <CAB-mu-QjxGvBHGzaVmwBpq-0UXALzdSpzcvVQPvyXjFAnxZkqA@mail.gmail.com>
+ <CAB-mu-TgZ5ewRzn45Q5LrGtEKWGhrafP39enmV0DAYvTkU5mwQ@mail.gmail.com>
+ <CAB-mu-QE0v=eUdvu_23gq4ncUpXu20NErH3wkAz9=hAL+rh0zQ@mail.gmail.com>
+ <aAo8q1X882NYUHmk@eldamar.lan>
+ <i6bv6u7bepyqueeagzcpkzonicgupqk47wijpynz24mylvumzq@td444peudd2u>
+ <aAvknd6dv1haJl3A@eldamar.lan>
+ <utlmo4lzclx5u3w3a7kp6jrpsv2zkjobzxnb6meusclp3dxv6j@43t6mqbglfqb>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250430-reftrack-dbgfs-v6-10-867c29aff03a@kernel.org>
-References: <20250430-reftrack-dbgfs-v6-0-867c29aff03a@kernel.org>
-In-Reply-To: <20250430-reftrack-dbgfs-v6-0-867c29aff03a@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Jani Nikula <jani.nikula@linux.intel.com>, 
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
- Rodrigo Vivi <rodrigo.vivi@intel.com>, 
- Tvrtko Ursulin <tursulin@ursulin.net>
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>, Qasim Ijaz <qasdev00@gmail.com>, 
- Nathan Chancellor <nathan@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
- Jeff Layton <jlayton@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7677; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=te3/SWtYXksBycfmngxcsGWsZSFl9uAYFDEPPLo/BdQ=;
- b=owEBbQKS/ZANAwAIAQAOaEEZVoIVAcsmYgBoEjyVzvpmChSmuwcar32/JyqDjcAqmdVYdaGh0
- WbmO3mvFHmJAjMEAAEIAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaBI8lQAKCRAADmhBGVaC
- FTvtEAC1gp2ontnydAGEZUVn/t/3vwThev+YLly7R6avr4Cg5IdwjCKvhJuh0Pxlw1oW/inv5f3
- 8zpTEFmGdOFRYk3XSWmxZx6oQkMJVVcDBlLnmqSSKc/2g4oRbHkSs1HXKKBq+7hQIHe71yeHtZI
- j3xpMXOFing6kAgM33ukXEiLBK7wdvhdi2TDpgCrrzEOzpRWfYf7azsvwGGsnmj1WvudmUTWksj
- OqWKQfUHoIukQYx/iblvIguo4vVkoLPdk20JKAXZm4xtmDCkgYUoYpL+LpoBMai/JfPCdWTLwp3
- u8i92tS5bSHwzJbok8JhrniFKUeov3KdH5C2ZEd/1u3yP5DJL30MN1zZo1CVaIpOp7PfNSJ0Ipi
- 7VMd+BtdABMjXdoopgNfhVAVv8qL/eZUY6U+YIL3n7H7s6ZSnzq8S379NckhZMyndhYog9VfRdx
- SMUyzGFehK7xWP5S03sJnWAXhAHgxvHU2TUiSenQE1Qc3NIDJdXUqysJ2HdME2giGo0J6uSTONT
- wdvzDz/np/NpTbVnSOQUCnv+SZaAz5cgqfOzU1ZTCPBBSRGvX+2h40uESuz5Kjf3MXIWLMKbiJz
- F8PDZ0vYBWg4fIv4DIm/oZFZWrBxCOekwTAkfKX8rc1SPB+W//YxF2/ICbXkPeEeIDaLyEqIDH6
- M8WvZ8ot6zjTFZw==
-X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
- fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <utlmo4lzclx5u3w3a7kp6jrpsv2zkjobzxnb6meusclp3dxv6j@43t6mqbglfqb>
+X-Debian-User: carnil
 
-Now that we have dentries and the ability to create meaningful symlinks
-to them, don't keep a name string in each tracker. Switch the output
-format to print "class@address", and drop the name field.
+Hi,
 
-Also, add a kerneldoc header for ref_tracker_dir_init().
+On Tue, Apr 29, 2025 at 10:37:36PM +0200, Michal Kubecek wrote:
+> On Fri, Apr 25, 2025 at 09:38:05PM +0200, Salvatore Bonaccorso wrote:
+> > From 7daa26e40d0888c13a2346053638408c03376015 Mon Sep 17 00:00:00 2001
+> > From: Salvatore Bonaccorso <carnil@debian.org>
+> > Date: Fri, 11 Apr 2025 15:58:55 +0200
+> > Subject: [PATCH] Set type property to console-application for provided
+> >  AppStream metainfo XML
+> > 
+> > As pointed out in the Debian downstream report, as ethtool is a
+> > command-line tool the XML root myst have the type property set to
+> > console-application.
+> > 
+> > Additionally with the type propety set to desktop, ethtool is user
+> > uninstallable via GUI (such as GNOME Software or KDE Discover).
+> > 
+> > console-application AppStream metainfo XML at least one binary provided
+> > must be listed in the <binary> tag, thus add the required value along.
+> > 
+> > Fixes: 02d505bba6fe ("Add AppStream metainfo XML with modalias documented supported hardware.")
+> > Reported-by: Daniel Rusek <asciiwolf@seznam.cz>
+> > Co-Developed-by: Daniel Rusek <asciiwolf@seznam.cz>
+> > Link: https://bugs.debian.org/1102647
+> > Link: https://bugzilla.redhat.com/show_bug.cgi?id=2359069
+> > Link: https://freedesktop.org/software/appstream/docs/sect-Metadata-ConsoleApplication.html
+> > Tested-by: Petter Reinholdtsen <pere@hungry.com>
+> > Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
+> > ---
+> >  org.kernel.software.network.ethtool.metainfo.xml | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/org.kernel.software.network.ethtool.metainfo.xml b/org.kernel.software.network.ethtool.metainfo.xml
+> > index efe84c17e4cd..7cfacf223af7 100644
+> > --- a/org.kernel.software.network.ethtool.metainfo.xml
+> > +++ b/org.kernel.software.network.ethtool.metainfo.xml
+> > @@ -1,5 +1,5 @@
+> >  <?xml version="1.0" encoding="UTF-8"?>
+> > -<component type="desktop">
+> > +<component type="console-application">
+> >    <id>org.kernel.software.network.ethtool</id>
+> >    <metadata_license>MIT</metadata_license>
+> >    <name>ethtool</name>
+> > @@ -11,6 +11,7 @@
+> >    </description>
+> >    <url type="homepage">https://www.kernel.org/pub/software/network/ethtool/</url>
+> >    <provides>
+> > +    <binary>ethtool</binary>
+> >      <modalias>pci:v*d*sv*sd*bc02sc80i*</modalias>
+> >    </provides>
+> >  </component>
+> > -- 
+> > 2.49.0
+> 
+> Applied now, thank you.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
----
- drivers/gpu/drm/display/drm_dp_tunnel.c |  2 +-
- drivers/gpu/drm/i915/intel_runtime_pm.c |  2 +-
- drivers/gpu/drm/i915/intel_wakeref.c    |  2 +-
- include/linux/ref_tracker.h             | 20 ++++++++++++++------
- lib/ref_tracker.c                       |  6 +++---
- lib/test_ref_tracker.c                  |  2 +-
- net/core/dev.c                          |  2 +-
- net/core/net_namespace.c                |  4 ++--
- 8 files changed, 24 insertions(+), 16 deletions(-)
+Thank you much appreciated. I just noticed a glitch we have in our
+metainfo file again, claiming the metadata license is MIT license, but
+the rest of upstream files are GPL-2.
 
-diff --git a/drivers/gpu/drm/display/drm_dp_tunnel.c b/drivers/gpu/drm/display/drm_dp_tunnel.c
-index f2a8ef6abf34d89a642d7c7708c41e5b1dc9dece..f8d1f9c60e86c5a7b1866e1c9f6425e99d4ca9c6 100644
---- a/drivers/gpu/drm/display/drm_dp_tunnel.c
-+++ b/drivers/gpu/drm/display/drm_dp_tunnel.c
-@@ -1920,7 +1920,7 @@ drm_dp_tunnel_mgr_create(struct drm_device *dev, int max_group_count)
- 	}
- 
- #ifdef CONFIG_DRM_DISPLAY_DP_TUNNEL_STATE_DEBUG
--	ref_tracker_dir_init(&mgr->ref_tracker, 16, "drm_dptun", "dptun");
-+	ref_tracker_dir_init(&mgr->ref_tracker, 16, "drm_dptun");
- #endif
- 
- 	for (i = 0; i < max_group_count; i++) {
-diff --git a/drivers/gpu/drm/i915/intel_runtime_pm.c b/drivers/gpu/drm/i915/intel_runtime_pm.c
-index 94315e952ead9be276298fb2a0200d102005a0c1..d560f94af7a86f1fc139204a4e901eaea22c6ef1 100644
---- a/drivers/gpu/drm/i915/intel_runtime_pm.c
-+++ b/drivers/gpu/drm/i915/intel_runtime_pm.c
-@@ -60,7 +60,7 @@ static struct drm_i915_private *rpm_to_i915(struct intel_runtime_pm *rpm)
- static void init_intel_runtime_pm_wakeref(struct intel_runtime_pm *rpm)
- {
- 	ref_tracker_dir_init(&rpm->debug, INTEL_REFTRACK_DEAD_COUNT,
--			     "intel_runtime_pm", dev_name(rpm->kdev));
-+			     "intel_runtime_pm");
- 	ref_tracker_dir_symlink(&rpm->debug, "intel_runtime_pm-%s", dev_name(rpm->kdev));
- }
- 
-diff --git a/drivers/gpu/drm/i915/intel_wakeref.c b/drivers/gpu/drm/i915/intel_wakeref.c
-index 2e0498b3fa7947f994de1339d4d2bed93de1a795..bbd5171ce0a22435e540f10821f2a0dad59c1d2f 100644
---- a/drivers/gpu/drm/i915/intel_wakeref.c
-+++ b/drivers/gpu/drm/i915/intel_wakeref.c
-@@ -114,7 +114,7 @@ void __intel_wakeref_init(struct intel_wakeref *wf,
- 			 "wakeref.work", &key->work, 0);
- 
- #if IS_ENABLED(CONFIG_DRM_I915_DEBUG_WAKEREF)
--	ref_tracker_dir_init(&wf->debug, INTEL_REFTRACK_DEAD_COUNT, "intel_wakeref", name);
-+	ref_tracker_dir_init(&wf->debug, INTEL_REFTRACK_DEAD_COUNT, "intel_wakeref");
- 	ref_tracker_dir_symlink(&wf->debug, "intel_wakeref-%s", name);
- #endif
- }
-diff --git a/include/linux/ref_tracker.h b/include/linux/ref_tracker.h
-index 210f26e2528f23bea3b713a57ac27c730bd100ce..262432d6cbf265ea76bad968a7b00485586dfd60 100644
---- a/include/linux/ref_tracker.h
-+++ b/include/linux/ref_tracker.h
-@@ -23,7 +23,6 @@ struct ref_tracker_dir {
- 	struct dentry		*dentry;
- 	struct dentry		*symlink;
- #endif
--	char			name[32];
- #endif
- };
- 
-@@ -32,10 +31,21 @@ struct ref_tracker_dir {
- void ref_tracker_dir_debugfs(struct ref_tracker_dir *dir);
- void ref_tracker_dir_symlink(struct ref_tracker_dir *dir, const char *fmt, ...);
- 
-+/**
-+ * ref_tracker_dir_init - initialize a ref_tracker dir
-+ * @dir: ref_tracker_dir to be initialized
-+ * @quarantime_count: max number of entries to be tracked
-+ * @class: pointer to static string that describes object type
-+ *
-+ * Initialize a ref_tracker_dir. If debugfs is configured, then a file
-+ * will also be created for it under the top-level ref_tracker debugfs
-+ * directory.
-+ *
-+ * Note that @class must point to a static string.
-+ */
- static inline void ref_tracker_dir_init(struct ref_tracker_dir *dir,
- 					unsigned int quarantine_count,
--					const char *class,
--					const char *name)
-+					const char *class)
- {
- 	INIT_LIST_HEAD(&dir->list);
- 	INIT_LIST_HEAD(&dir->quarantine);
-@@ -49,7 +59,6 @@ static inline void ref_tracker_dir_init(struct ref_tracker_dir *dir,
- 	dir->dentry = NULL;
- 	dir->symlink = NULL;
- #endif
--	strscpy(dir->name, name, sizeof(dir->name));
- 	ref_tracker_dir_debugfs(dir);
- 	stack_depot_init();
- }
-@@ -74,8 +83,7 @@ int ref_tracker_free(struct ref_tracker_dir *dir,
- 
- static inline void ref_tracker_dir_init(struct ref_tracker_dir *dir,
- 					unsigned int quarantine_count,
--					const char *class,
--					const char *name)
-+					const char *class)
- {
- }
- 
-diff --git a/lib/ref_tracker.c b/lib/ref_tracker.c
-index 16ef752e52c230763f2832c312793d27da47c608..2ec34846aaa354b3e4057e51ec44433fcec9af86 100644
---- a/lib/ref_tracker.c
-+++ b/lib/ref_tracker.c
-@@ -136,7 +136,7 @@ __ref_tracker_dir_pr_ostream(struct ref_tracker_dir *dir,
- 	stats = ref_tracker_get_stats(dir, display_limit);
- 	if (IS_ERR(stats)) {
- 		pr_ostream(s, "%s%s@%p: couldn't get stats, error %pe\n",
--			   s->prefix, dir->name, dir, stats);
-+			   s->prefix, dir->class, dir, stats);
- 		return;
- 	}
- 
-@@ -147,14 +147,14 @@ __ref_tracker_dir_pr_ostream(struct ref_tracker_dir *dir,
- 		if (sbuf && !stack_depot_snprint(stack, sbuf, STACK_BUF_SIZE, 4))
- 			sbuf[0] = 0;
- 		pr_ostream(s, "%s%s@%p has %d/%d users at\n%s\n", s->prefix,
--			   dir->name, dir, stats->stacks[i].count,
-+			   dir->class, dir, stats->stacks[i].count,
- 			   stats->total, sbuf);
- 		skipped -= stats->stacks[i].count;
- 	}
- 
- 	if (skipped)
- 		pr_ostream(s, "%s%s@%p skipped reports about %d/%d users.\n",
--			   s->prefix, dir->name, dir, skipped, stats->total);
-+			   s->prefix, dir->class, dir, skipped, stats->total);
- 
- 	kfree(sbuf);
- 
-diff --git a/lib/test_ref_tracker.c b/lib/test_ref_tracker.c
-index d263502a4c1db248f64a66a468e96c8e4cffab25..b983ceb12afcb84ad60360a1e6fec0072e78ef79 100644
---- a/lib/test_ref_tracker.c
-+++ b/lib/test_ref_tracker.c
-@@ -64,7 +64,7 @@ static int __init test_ref_tracker_init(void)
- {
- 	int i;
- 
--	ref_tracker_dir_init(&ref_dir, 100, "selftest", "selftest");
-+	ref_tracker_dir_init(&ref_dir, 100, "selftest");
- 
- 	timer_setup(&test_ref_tracker_timer, test_ref_tracker_timer_func, 0);
- 	mod_timer(&test_ref_tracker_timer, jiffies + 1);
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 380d07bec15a1f62ed27c31a6e211e74f3a5561d..00776cba0276554066c94a6fc86f5ed4df430cfa 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -11620,7 +11620,7 @@ struct net_device *alloc_netdev_mqs(int sizeof_priv, const char *name,
- 
- 	dev->priv_len = sizeof_priv;
- 
--	ref_tracker_dir_init(&dev->refcnt_tracker, 128, "netdev", name);
-+	ref_tracker_dir_init(&dev->refcnt_tracker, 128, "netdev");
- #ifdef CONFIG_PCPU_DEV_REFCNT
- 	dev->pcpu_refcnt = alloc_percpu(int);
- 	if (!dev->pcpu_refcnt)
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index 6cbc8eabb8e56c847fc34fa8ec9994e8b275b0af..d70e058476aafbac59738e1fd88f0ebb32ee0fb2 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -324,8 +324,8 @@ static __net_init void preinit_net(struct net *net, struct user_namespace *user_
- {
- 	refcount_set(&net->passive, 1);
- 	refcount_set(&net->ns.count, 1);
--	ref_tracker_dir_init(&net->refcnt_tracker, 128, "net_refcnt", "net_refcnt");
--	ref_tracker_dir_init(&net->notrefcnt_tracker, 128, "net_notrefcnt", "net_notrefcnt");
-+	ref_tracker_dir_init(&net->refcnt_tracker, 128, "net_refcnt");
-+	ref_tracker_dir_init(&net->notrefcnt_tracker, 128, "net_notrefcnt");
- 
- 	get_random_bytes(&net->hash_mix, sizeof(u32));
- 	net->dev_base_seq = 1;
+If all contributors to the file agree I would like to suggest we
+switch consistently to GPL-2.0.
 
--- 
-2.49.0
-
+Regards,
+Salvatore
