@@ -1,42 +1,42 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EDE33086
-	for <netdev@vger.kernel.org>; Thu,  1 May 2025 11:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A21533086
+	for <netdev@vger.kernel.org>; Thu,  1 May 2025 11:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746099958; cv=none; b=KmHddIlWfG+jCDiTD0eAXK2os6Ak+2/xiOOE3tPUH6hfTwslhuaedaCbWfkRL3gjNA9Sc3iisbWFYO4B8WIx75JyIoZdv3XlW2aX4Adr4+N9siceJMq5uEQ2jCgN3NeJK5sdQyDZSgE63Xw+P+h5PrKt5SuMQveG7KZDFbpSvUk=
+	t=1746099966; cv=none; b=hy3q0O4DX+QoyU1mteM4f1CV2HKc3Bz8j+Kh+Q9LDtRSdTtFk2SkTBHYAHMAK6RCQS2iYVvXfm1YNtD0+74y9I4JqTmN7j/6CCw4FdPVxbYqgcUPTVb1H7Zye5A/dMxNSzdLuCJy1Q8I0AO0Q9S9Ih/JIuIiGi84/Dk+xMxNr28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746099958; c=relaxed/simple;
-	bh=s1Hn1iumNKiWv8AZ91RErnNaCMFolyIlfyuDInn56Ak=;
+	s=arc-20240116; t=1746099966; c=relaxed/simple;
+	bh=M6GC5VLrs9ZubG8qysyHgfZx4VcnIzuBM46V0taifBU=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=Cc4ilfIX97G28ux01m/loZFiOM1W+A34FeeSjViKSNpcq/+t/RmeSB3ASyJD7sZrMfcGf+NlyjHh8nByN8ajxdMkkOUN4WJuarwmCk3b5AkmzFvDnsDYlCNnV0qTcqcfsdHINhuGACbQN1V/UjDd3aXWjT086S+AoPhjvHceRx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=oheLXXR5; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=Jt2yVwVUVadlehA89Gzd8DgESwxms52S3pGyvbrgJ3TQbrV7GI/pDtcan8UTQO4J541mzvJiEE+3gi962ON3HOvreDB0mSm1/Wut7Ol7TiC88ZsjoSbJdeEk+lWkmExOaR+tPpYdX2XdQu+BmwkJMGDth1Wi2N4wz6DsKMY5uOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=GhZhaaV9; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="oheLXXR5"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="GhZhaaV9"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=y2NzlMux4LrqC/vPkr6or5eWcOWLuQXUxiLC+yJIl8I=; b=oheLXXR5lGWOjntwJ41mwnesps
-	+hVg0vxSx3kC3VSHIMVsNlulhX3Jxnd7v/LE6oiJDZiOkg2qzBwkbd/k075b/Gfijz5hqnDOUrCUr
-	HqiatDSeZrnLTQur8k0gU6knMFpVloA9HPhtBavKVFIf97/ZD6+mqEGfcnRWWipShqdZZ/7bVtmhn
-	p9Q1GuKcxMtg1kEZYm+x0wd2IwGfNnoUovDqiM0e8w7EwR2EKxFHSU55qCd7xvIujcWEsbpx372DT
-	gtPSzvCxr0hOr1MjpQ5oXOUfdN368z6lxoTtaeZ+7VpkoQJOMmG1p2pBPZheFAnkALBMZiZ59Aj9V
-	XPkTcPfA==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:59436 helo=rmk-PC.armlinux.org.uk)
+	bh=OdA8agaxPzxQIQQWrn0uJEVFsTc/quCaDXwb7JdYp+k=; b=GhZhaaV9+W8BpvPOukv6nuhPQ2
+	R1EdMDq+xyWD6dnRoviKN/PtC7Q8Jap0ahR/qhJ7jNbYTooTuk05IeKxFb4ntHf6/fVSddInWyCbr
+	XCIKgJ3yUvMk0x0usONd+pxQuCx1o2Qklcva7kNXOBwlQvo9Bp6yp/RRplBEKKLGXCzWLeOosO8oJ
+	2b4h8KX5iCJH9hpYKTlLCXXVHbYj3xUIBVugFifx3UiQ2zi+FlUpzsVPlrCoCYawJ1W6o0efCEzH9
+	0USk2ThGk/a4VgZ69qw92D+xe6+PwXN8OW0HGvyqNDdJS87ji/P1Erh1KenXoW2KeMy+JwslKJiwE
+	xIwDLumQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:59062 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1uASMK-000050-2M;
-	Thu, 01 May 2025 12:45:44 +0100
+	id 1uASMV-00005H-0T;
+	Thu, 01 May 2025 12:45:55 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1uASLi-0021QX-HG; Thu, 01 May 2025 12:45:06 +0100
+	id 1uASLs-0021Qk-Qt; Thu, 01 May 2025 12:45:16 +0100
 In-Reply-To: <aBNe0Vt81vmqVCma@shell.armlinux.org.uk>
 References: <aBNe0Vt81vmqVCma@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -52,8 +52,8 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
 	netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 2/6] net: stmmac: use priv->plat->phy_interface
- directly
+Subject: [PATCH net-next 4/6] net: stmmac: intel: move phy_interface init to
+ tgl_common_data()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,49 +63,62 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1uASLi-0021QX-HG@rmk-PC.armlinux.org.uk>
+Message-Id: <E1uASLs-0021Qk-Qt@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Thu, 01 May 2025 12:45:06 +0100
+Date: Thu, 01 May 2025 12:45:16 +0100
 
-Avoid using a local variable for priv->plat->phy_interface as this
-may be modified in the .get_interfaces() method added in a future
-commit.
+Move the initialisation of plat->phy_interface to tgl_common_data()
+as all callers set this same interface mode. This moves it to a
+single location to make the change to get_interfaces() more obvious.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index fe7f9e3a92a5..ac6ab121eb33 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1258,7 +1258,6 @@ static int stmmac_init_phy(struct net_device *dev)
- static int stmmac_phy_setup(struct stmmac_priv *priv)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+index 96c893dd262f..4b263a3c65a4 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+@@ -929,6 +929,7 @@ static int tgl_common_data(struct pci_dev *pdev,
+ 	plat->rx_queues_to_use = 6;
+ 	plat->tx_queues_to_use = 4;
+ 	plat->clk_ptp_rate = 204800000;
++	plat->phy_interface = PHY_INTERFACE_MODE_SGMII;
+ 	plat->speed_mode_2500 = intel_speed_mode_2500;
+ 
+ 	plat->safety_feat_cfg->tsoee = 1;
+@@ -948,7 +949,6 @@ static int tgl_sgmii_phy0_data(struct pci_dev *pdev,
+ 			       struct plat_stmmacenet_data *plat)
  {
- 	struct stmmac_mdio_bus_data *mdio_bus_data;
--	int mode = priv->plat->phy_interface;
- 	struct phylink_config *config;
- 	struct fwnode_handle *fwnode;
- 	struct phylink_pcs *pcs;
-@@ -1287,7 +1286,7 @@ static int stmmac_phy_setup(struct stmmac_priv *priv)
- 	/* Set the platform/firmware specified interface mode. Note, phylink
- 	 * deals with the PHY interface mode, not the MAC interface mode.
- 	 */
--	__set_bit(mode, config->supported_interfaces);
-+	__set_bit(priv->plat->phy_interface, config->supported_interfaces);
+ 	plat->bus_id = 1;
+-	plat->phy_interface = PHY_INTERFACE_MODE_SGMII;
+ 	plat->serdes_powerup = intel_serdes_powerup;
+ 	plat->serdes_powerdown = intel_serdes_powerdown;
+ 	return tgl_common_data(pdev, plat);
+@@ -962,7 +962,6 @@ static int tgl_sgmii_phy1_data(struct pci_dev *pdev,
+ 			       struct plat_stmmacenet_data *plat)
+ {
+ 	plat->bus_id = 2;
+-	plat->phy_interface = PHY_INTERFACE_MODE_SGMII;
+ 	plat->serdes_powerup = intel_serdes_powerup;
+ 	plat->serdes_powerdown = intel_serdes_powerdown;
+ 	return tgl_common_data(pdev, plat);
+@@ -976,7 +975,6 @@ static int adls_sgmii_phy0_data(struct pci_dev *pdev,
+ 				struct plat_stmmacenet_data *plat)
+ {
+ 	plat->bus_id = 1;
+-	plat->phy_interface = PHY_INTERFACE_MODE_SGMII;
  
- 	/* If we have an xpcs, it defines which PHY interfaces are supported. */
- 	if (priv->hw->xpcs)
-@@ -1315,7 +1314,8 @@ static int stmmac_phy_setup(struct stmmac_priv *priv)
- 	if (!fwnode)
- 		fwnode = dev_fwnode(priv->device);
+ 	/* SerDes power up and power down are done in BIOS for ADL */
  
--	phylink = phylink_create(config, fwnode, mode, &stmmac_phylink_mac_ops);
-+	phylink = phylink_create(config, fwnode, priv->plat->phy_interface,
-+				 &stmmac_phylink_mac_ops);
- 	if (IS_ERR(phylink))
- 		return PTR_ERR(phylink);
+@@ -991,7 +989,6 @@ static int adls_sgmii_phy1_data(struct pci_dev *pdev,
+ 				struct plat_stmmacenet_data *plat)
+ {
+ 	plat->bus_id = 2;
+-	plat->phy_interface = PHY_INTERFACE_MODE_SGMII;
+ 
+ 	/* SerDes power up and power down are done in BIOS for ADL */
  
 -- 
 2.30.2
