@@ -1,91 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic308-34.consmr.mail.gq1.yahoo.com (sonic308-34.consmr.mail.gq1.yahoo.com [98.137.68.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED657083A
-	for <netdev@vger.kernel.org>; Thu,  1 May 2025 20:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF887083A
+	for <netdev@vger.kernel.org>; Thu,  1 May 2025 20:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.137.68.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746132429; cv=none; b=u9fruW2QT1L2Md8zWI53pPshHna+6+inbGiXMFHCa8iKfHc9TXloqaUWF4y8dtQZ74K3RbKXGWQk3OP4EOl5PSg+WWhVwTZVRNe1kHpFbHjHjjampzRDwlzvuwPPuQJxeyL8OOWh7mLB2nADfPmobiaGtsGuR3ZuBf9wVpwXzZY=
+	t=1746132726; cv=none; b=tsDkh9imh30ft88k+uUQO3gWnwABPyPyArU77XKHY/FPEWSWEREg3upDbyZRdoVtX/tppqaKiUGa2YqaUBrmTqIGQXHm+urfxbLJmpE/iFWIfxNX8Tkseo1sK1k9ovZSMM2Mo6BOdVkXiqY4CrWQPcTk3inBEuqbtSVAU9K4nwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746132429; c=relaxed/simple;
-	bh=c09lk6K3YO8nS0KvYKheCXbPOVWu+SLwqbVSB6+4KRM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rLJAoYBWKdwe+prH9WI8pZyYClcyjxpPtaYUc9YA36R61L+VESmZNWr1n2zSSwCO1gPxuAHNQGSB4gDfF6cluFCcpdYIyrPR0gTMQD1QFdQXP+QW7flO0qoqrVPuFeQc5mUhnsSppORFqPhS/yeblSMzzrIsxKPHjX4qigMnBmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fp3HaqMA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746132726; c=relaxed/simple;
+	bh=8BQgMnOPLzJcsHZKQXjtera8wmGFTGQ4Ws6OqMUcXpA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=JTeSJc5TYHS1sfHWvIzazeZM7JaWExTczL4uk/ZY4dSDwKWXx+ChZenADhQd5vLjVSSMOlcFBfGf/fG9mbDyANXcY71u/Z5Z7gHuMX2BZK2azaukAcXsfN2mdNGowYukIYuKPFHVkIPQMDRfEMqvm9+fxLRy296NziTXEy86bjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com; spf=pass smtp.mailfrom=aol.com; dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b=P+Uw9MZz; arc=none smtp.client-ip=98.137.68.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aol.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fp3HaqMA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1810C4CEE3;
-	Thu,  1 May 2025 20:47:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746132429;
-	bh=c09lk6K3YO8nS0KvYKheCXbPOVWu+SLwqbVSB6+4KRM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fp3HaqMAExVxltGru5F6kWIKHOkCmpTjE5vDVBR3Ikh8PxRnbdZIC7UL/Zti8QSF1
-	 9VAyk02BUKwonpMZ9R0UTng8GGYTTwisl4CU4NINn5d8GuKVmmt82MxhyLCb+aW4H0
-	 1SpofpnbopLtOnk7NKO1QT727/EVjVnOFaowCdxUOXG2eN+7IYprrWSrVoAvkHTrOE
-	 FNZhoHI/fgLQ1t2EZbkHXU+PmeX/KVo9pWZxU/VUk0eYBwQ2EQ/YyQ9k5s3FOtpVJh
-	 pNVSMhbCcNVi2bjRrmyh3ox0NGxZC3I1g1SiHlxppWpepDb/q41uZ0Gczz+a5xnAW1
-	 1WdetZSt+VgkA==
-Date: Thu, 1 May 2025 22:47:06 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>
-Subject: Re: [PATCH net v4] net: airoha: Add missing filed to ppe_mbox_data
- struct
-Message-ID: <aBPdyn580lxUMJKz@lore-desk>
-References: <20250429-airoha-en7581-fix-ppe_mbox_data-v4-1-d2a8b901dad0@kernel.org>
- <20250501071518.50c92e8c@kernel.org>
+	dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b="P+Uw9MZz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1746132724; bh=tgdHuHwBD1KjujCVAxrOeOpzFBWKO2iH4yol6NkKnIg=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=P+Uw9MZzzAJntPkXoMoHWH72csNWtVSRLDl7gAK+w84a2pwh5oUMjP1sPGaC0PjfJN5J2KTbP0VSjQDqUXfsvjIqsZHggKjs6uTTHJDurGHIu7YQp7Eyd7q5XqF4Hb2WasLvb8ZOkeb9XaWpPK66kZuWCxzJ1PgbB8z5HGadZIeCaZlAYbpZ5d0PAoTArL/GQMML+d4DFJbJSTXppHe0heY2TLo464Z41yPlm5xLPfJVS2dGBztKi2Nqe1tVbVZgFwAFIx8748IOtl2bPssf4BxfsFst6SUd522772lsi0UQ/ugG26HMC+me7+RcE2dffUn1qV3Ajv+Vty1wKjGn4g==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1746132724; bh=d/m8PfIRIjvRVpTN7GCTGihTCMYyUyYDGbSbeEJ2Ynb=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=RWiJHO5stBNJfUyFmyTQ1778N5NCPk+y7/ahYWx3mnWYgFPcT8uNVlgAnI2feZEwHFu/9UvQE6nm8qwJyfQ2n4C5+6uKUKkCKlHlm8zaQWLjHDXbMzdEw52rdjaZImIYTmPKssZOyiP/nh3ptiACfr/q3QIDJ/VSggWtFR+JDBHIQ86ww27n/2N7nHc/4hh4v/g+hZbnb9F9RpcePWbR/x83kq2aun5wUaDXNKPnQK5NgbFLq31+jt85Y63NjfOjq1VSglFrGlKt45l4k3EJ3WVXmOMGcCFVj0yydC6lE80zaYKSXYuO3tdOgliP8bakXFmurm9IYs3jIvRr1FYANQ==
+X-YMail-OSG: eZfxIRsVM1lXAgLGQpmlCbW_.QROo59wChths4C6DXV3OjF07XdBejwAZFOXZmo
+ dQ.Hmkhi4JyNagM0AKQpRyx6uzC1UpDCTKaFbrduyWA.kZGaGNQz8pvuK2p0vBXobiQtJ8S4T66c
+ 8M6I4bdhqTZosm8PwrusYlm1hR98J63KHHRgsiDBwIOXW0Rij6tMEHHWObNP1rWuWXt3QnnMTYIi
+ tEZ6STew08LCvQ878yY9YS2k378L_EfJnCt3LQIP3s99behB85PuS1BlwF3FaErA7rK22UcJeCus
+ dlXuf3dIyVDxbBCBmo.ExNlkPZbUR5Q.kAjxEU8r8IvtQozfZFidhfA7qvLDtk5rlIKX2v8W78eN
+ 9aeXdNx4gkrVfgb0uXfaWceMhIRop6a2VGJtcyod1LBujFCs.gaBUB05C9Orb_yrPxcBoS.eQyWO
+ e4Jr9qPTgIS97WRzQHpPdxtiAG6YD4Z7zfjQOi9X_Q5_SLTS.78xr87GJSjSnn_DPRInasSUUVf3
+ KCZjP_FuXWwnn377kRraqYElTyccnxaseFTzMzM8TKGgBr_Y33_maSFiF3PsIwhGFpEECKJ_Kmx0
+ QWs6Cu8uKf2mSKby3F76b0NWJG3NdsqvvMTqq0.HiOXIfmZx.xgFdPFLA8TlK6zNU7bSqZ4geMyr
+ FwodcCO0xZDoAi79lS_lhE6v5bEvPnzVxNlibB215utlnTRdHoUOeBJsWRyadPzUslDsMwbTyq8f
+ egX63o9irnCMiHjPA3jjmNUlJw5DCqUlC92hl3ccvuSRjFZz.NHNEYbTWkTG2wC6FDq4Ejq5XB3j
+ hgC9euKUcvbuqVd1axGrCHkJZ5zaBZvixQycQfIKsmslbeU5S__iZtkVW2NVH6hOmV4wzAapEJPB
+ _v4ASmhhDDpcI6bI3DVaz6sQIX1p7TtZLQXdsmadnf.oK9His3vejdbLvZsJBL_Y5yKxbsh9KTTW
+ ZHZ7VN5.3fy2Z80Xu7EMHshdRgeu5TPxzOB74ecC2VezVnqdsu85H0IGHf0U9oinlkoVy.Pqzzg5
+ 86lsAyCK8KvFiQBfRwycPesj5YJfoQSiCosTNvASIdrHX7nF2JoaUu17zqvh76fcpSN1LmdY4iZg
+ PEwt_MBmZIbCCzFeEw0SKbR9e8OP8Gkxh_ERtlo.reoaL1XWW.UgwOWh.UjkC_AUjz5Iuyme2ZGI
+ 7ARyBmJHASgTf.BFh4I6UMzutKKILFoGSgJtv3vb3GREgv9HZa.KxwquwUBtuGt05rU2eqBGg01V
+ pA9LfMj17JItkWITRHPic3GDBv_8agcQg8sS76mltWm6YxC.lpYoNFME852FKbHkqPG0tQ6B8tog
+ DcgP.qNzhKbSyVWFkehn.CSYAn9i67eRPRlD0bC_4R2Ytuh3Ef29HoRfCd_Qa1RyuWFo_t1ug.Si
+ MqsUpahnwKhU9Nu2WHe7cjVT3EAdKsiC1ktbHSTHSV0mqoiYIenA65jO62YfNM4IZB4hTeF8ne1e
+ gIqw3APgWN5pxSYAfBtSvpRvdFj2hwQj7oUbfTyU.er.RePjI4xpQWRa_wfl16S7.VwzNpfHTSnp
+ P0MCDNqQXFohAhQxBGhaP3sVtFNFWtq26o9FnyF9AjGy_EK8D6E.DOfJ4YGi_IZ.MQTl.SReKASz
+ VJUpaiIxDw9FOQViJmCjc0HfXb8vhqWlsC8Fazoe4ryX6V20Ue6341W0br7HqD9zLMcgIfvNiKb6
+ FV0LhKtczzHvcIR_L2xLofadGVtgdPfYbGXoNLc1x7p._qbMbqcXrcez3lFBp5jYhx2H6dxC_4G.
+ e50Vmo9rnvRdrXHkxr9wHNRRZR4HpqBMIJZQC8Wdu_ljX1sYSgcbBEKsHsMZFFjryxCS31WMS52f
+ zZeX.sMdmTxdVNmb.hClmxAaKZWMeAVzJvMZhgDkgCvSskLW4bEbUXqHwqbEtl9EUldmOqhDPb11
+ z15wUr9XXWRhhvTArVtI7Y6yoaI4en_IHB_7t6al1QO7N_.HbitvlHmeeGYoUfHKlvHTGw5w.yX9
+ S3CnnLeq8du1YXcAQr2z8uWcacJVPIbum0Dc2QOSzGJ5T4YjlasEon7IgFEXCSU5HXF5FmbJCnhy
+ FITWLfqI48OeDd4RYj40cTPNR6V3nxRbfCjR9RK9ZxKXRjPrpkVD.WACG30Q56VgkM_Tiyha73Ya
+ VkE9Pi4uTYObo7YLpqQb73eynsWt1yls36soWTHO5uHALCuGF2WpFlOEfmVAXklPacq4bHWMKmjM
+ 9v_G52xB61VRYCsFX0Qnn.2alnjqUPLhDwUoqUnAf8uo84kl.gsV2Rh4EWMWXIICjU55bVHEDZEb
+ 4b7mHY1ZEAuOpfELQEcLptf1oHiTIr8YeONFqAwhCUx8_K_Vdron8CFWYe3c-
+X-Sonic-MF: <rubenru09@aol.com>
+X-Sonic-ID: 5795e362-1f95-4e80-8c6d-965873ffca1e
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.gq1.yahoo.com with HTTP; Thu, 1 May 2025 20:52:04 +0000
+Received: by hermes--production-ir2-858bd4ff7b-vtq9f (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 5a27a9df395be0c8f98fb626c99e5270;
+          Thu, 01 May 2025 20:29:47 +0000 (UTC)
+From: Ruben Wauters <rubenru09@aol.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Ruben Wauters <rubenru09@aol.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 net-next] ipv4: ip_tunnel: Replace strcpy use with strscpy
+Date: Thu,  1 May 2025 21:23:55 +0100
+Message-ID: <20250501202935.46318-1-rubenru09@aol.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="c1jF/W4ziIWJGsAB"
-Content-Disposition: inline
-In-Reply-To: <20250501071518.50c92e8c@kernel.org>
+Content-Transfer-Encoding: 8bit
+References: <20250501202935.46318-1-rubenru09.ref@aol.com>
 
+Use of strcpy is decpreated, replaces the use of strcpy with strscpy as
+recommended.
 
---c1jF/W4ziIWJGsAB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+strscpy was chosen as it requires a NUL terminated non-padded string,
+which is the case here.
 
-On May 01, Jakub Kicinski wrote:
-> On Tue, 29 Apr 2025 16:17:41 +0200 Lorenzo Bianconi wrote:
-> > Moreover, add __packed attribute to ppe_mbox_data struct definition and
-> > make the fw layout padding explicit in init_info struct.
->=20
-> Why? everything looks naturally packed now :(
+I am aware there is an explicit bounds check above the second instance,
+however using strscpy protects against buffer overflows in any future
+code, and there is no good reason I can see to not use it.
 
-What I mean here is the padding in the ppe_mbox_data struct used by the fw =
-running
-on the NPU, not in the version used by the airoha_eth driver, got my point?
-Sorry, re-reading it, it was not so clear, I agree.
+I have also replaced the scrscpy above that had 3 params with the
+version using 2 params. These are functionally equivalent, but it is
+cleaner to have both using 2 params.
 
-Regards,
-Lorenzo
+Signed-off-by: Ruben Wauters <rubenru09@aol.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+---
+Changes since v1:
+Replace existing 3 parameter strscpy with 2 parameter scrscpy
+Edit commit message adding justification for scrscpy and for added
+changes
+---
+ net/ipv4/ip_tunnel.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> __packed also forces the compiler to assume the data is unaligned AFAIU.
-> The recommended way to ensure the compiler doesn't insert padding is
-> to do a compile time assert.
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index 3913ec89ad20..678b8f96e3e9 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -243,11 +243,11 @@ static struct net_device *__ip_tunnel_create(struct net *net,
+ 	if (parms->name[0]) {
+ 		if (!dev_valid_name(parms->name))
+ 			goto failed;
+-		strscpy(name, parms->name, IFNAMSIZ);
++		strscpy(name, parms->name);
+ 	} else {
+ 		if (strlen(ops->kind) > (IFNAMSIZ - 3))
+ 			goto failed;
+-		strcpy(name, ops->kind);
++		strscpy(name, ops->kind);
+ 		strcat(name, "%d");
+ 	}
+ 
+-- 
+2.48.1
 
---c1jF/W4ziIWJGsAB
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaBPdygAKCRA6cBh0uS2t
-rNmWAQDg2BUSYvHrs8L2q54TesvQyahWGkNZ9Gvtio431NOhFgD/Z4fFaMqjgP5E
-FG9oyib06hjPa7jUUJ/4Q6ZzHA4RpAU=
-=8BzH
------END PGP SIGNATURE-----
-
---c1jF/W4ziIWJGsAB--
