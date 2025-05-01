@@ -1,149 +1,194 @@
-Received: from sonic308-34.consmr.mail.gq1.yahoo.com (sonic308-34.consmr.mail.gq1.yahoo.com [98.137.68.58])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4484A21B9C5
-	for <netdev@vger.kernel.org>; Thu,  1 May 2025 17:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.137.68.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6B721D3FD;
+	Thu,  1 May 2025 18:12:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746119608; cv=none; b=D/mpYXJmJav1a8tXBMrr8RTp3Nvj2EOBld7P6lPE3JPQa1G6AJES6jvDegF+5ZVB7n+K+bv/h1yJvJcm6IwVlITIbqyC53h43MPZ+7Oodqr4tC5NQ2DGW3TpOl7EEIs+fsVc+iVphRxaQRI9J8cSmVu4qhbp53rDD74EY1vssC0=
+	t=1746123126; cv=none; b=WaqbjNH62iePGwHX6PVOBsPqArZgET0WHD6soA1WzZacVxspaJlvnC6CkY/yhGMZWrMNIzYFcf6tgExYqxfGAYvWaN+ayJCWtq2MmxPr2/s4Y9LUkbiFHDvQEc6JwV+DPmVZKwlBxYkgxJNO1SaHZxcwkrAMZ3UR3z6k3QZsi88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746119608; c=relaxed/simple;
-	bh=xua9ecA9uOH1ZKFWYBtLLFa5jd5NF90sNfqHgAU3Yys=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=p4MwlmSZAYDs5DFUts0toth7OBihIVIkvkIGMUmC1YlDg3DVvhrzhJsTFOHTXPvVXcm8/P1PFPB/EBUyFTQiLFf11UKLtYbEhX+BYXWoywQ0aQm2nM+TbbM856M5/pr5Qlyrlpx82fuzZHRMkaSdQOH5+9z1PAnweu2w/7i//kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com; spf=pass smtp.mailfrom=aol.com; dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b=FNcysF81; arc=none smtp.client-ip=98.137.68.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aol.com
+	s=arc-20240116; t=1746123126; c=relaxed/simple;
+	bh=4XvbgcAfvaKHgkvrKyrrbxsc9Zo4i8P85+j5/TVPMVw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HsWzfhLBbbrp45U+ZkmRwjp4k6pygxESEYxP82SDg5tBRVzVAR+VEPDRenegij7nPq01XqEvvQwzqVPyg672y/6XrnLzLx3/tFQm2AujdZdDJysiZYvlZ13k52x4RkG+HZj7sYiEJEJKVHiOweKJtoYzxfvrMmr5VbBMzuKUd+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQjNP5T1; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b="FNcysF81"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1746119606; bh=/jjMGaEnE1Ry14S3SzWAh78pho9oZMXc91gZh0sWC48=; h=Subject:From:To:Cc:Date:In-Reply-To:References:From:Subject:Reply-To; b=FNcysF81D1qfdnP0fBHW+vgicN/ChYfKXonIq9P3chI7t7LML1brKElp7cdcLtVwVwD9I0FJd1ztvlrTqEF1BIZeOfJhjKCDKxch0AhotvsC0N3v4bHI/aY5kOTQmbIIq/NELfKBeXabwrj5zWVD3oMlTXQNweP1mN9PQwBrSeGjzzn+3CRlHyc+HA6l8P6gFLGh2FBpp8c1p1CX99+zHBanIm/Gr6kpQwwfpzPvHw1D0zO9aGLiVedhWksVwl4qK/L13ziys4GpE0wQ+zRrc9JLA82j/JGuCGMbjI6t/sQ4KNHOa9kRjNXYiRFFFvPTiTZG35lq7FDCjOkn8JYcMQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1746119606; bh=jg17AvsZyAKjZhfvibng+A6LWwlzUMvzja4Hg0z6yad=; h=X-Sonic-MF:Subject:From:To:Date:From:Subject; b=JadCR5/4KaRYrtjT8A0LF0V64LWU3GJWzd//QlfrqFIgKijWDJYXCmWqOr4jj1WtZi6vjHdaf9XLp7VMJlyfJodZBD66Oc0eMa4qwhkn/SGnxRF/zEzJxAW23cJnACEQFqFz/rIsjeidRrZw3hq5mVbW2Mp67l5U63gofzukX4A4izBYbGLVTAD7z56UesZKKV5KlYHwbBXuB3e+tZ69c5qKeYHCYHpGsqS0tkQH2cTouZndBy4TVoXV+GxPuxkxWP4FhcmI7eKqcH1UP2AXtIJKiVaHysGBsRyUcXy3eO8EgyvW5yYg8UCMSZ55NVwCi+IB/Vc4zBi7HIf0jSyd0w==
-X-YMail-OSG: JzintLoVM1ns4FF2qHrX.ROUv6_KzPwxz7scSRXlIUGI_73_RWCN6sfKvccSUOS
- gkurrwEoSNasDVWc3Ne6y.JhuJW84O4POJ4iKWahvUgmAoJcm2MOXJTj6l68fIO09.mB9T6w_Sv_
- prmwbtZWwi5.Oola2ysYVbpsUSKdNiwyFUfPfnPRRXbi9Ee.19l1VZ4KhukR_no3_CNRizTQaao.
- kkZfEjyv5HTlJqYQy8SVVtTrNCwbg_SBNSdXNEayZgEXMUsrf9.vbd1MF_MX_hIQfhPCJm0SQUaw
- Bgq3ftgoYhrwHfpdi76kSCCdAl.ivHgkbZN2WUhmcL4kigWXnCv86pZLWvJc.tE7aoGOQkShF1uB
- tDC2Wa4Dmtu2rP8tlLMKQQyZGIMCyFnscUidvuSkc1jibYA28Zkqb.okKSqP3n8.2o0IXTYYNg1A
- 6pj2BG3_QP4RK1Kl1CxhEB91d1TkV2tP4WDiZn2G0D9WCMgHQlpgyuxs.PiO1gA31Efh5MOBfhT1
- deNTcSSc2D.wlQyA3nZJLPZSKnsROt1w9shS85KZ.DFWxhiHxaeF9_TZn6e9ZY8gfGXSoW8w1Tsl
- Ln8Cm1PeGNdkwQqzoOYVmluy1AF6W2uC_T4EakgVTiKDwaX5tQEOlzh85DDB3RN8NbPlrz_WqAkC
- Id1d8F2mJ4rK9u9HtUu51VfHv5h.jCR3r_9dO9oXWaDh3bifi_uaQ.UQVrprB8THQKPyfdwxOzVG
- _mkRku2hC2_l9KQgBDoDI9G0xiRUKiZV6kYEcr9ShT7VeC72I25t3Epx2H9_O1seuqPkj3qYEKnR
- nNA_8WX1q91aCsoOuTiCwRasHfL8lf1wOc3UTba4E9ZKuyqgh_1HOlLH2mqNqay2ld3Pvko3isWr
- KaWNg8sZnuFNKuLlt0a1Yxt7b3nzrw_Y27lITUa3XNZih2nTtL_rNBNDPDCdd2e531Sq.TTgt_yB
- N_gSfJ_5TevOhjlrmR5LAOCLYnniuHpxg4Im9CLR0Tfb499eMF7U_2JWCpGDLs6Nb0Ya8kJvVhcY
- jyvnlCiRHquvwuhQWkypE1C7B525zcUES_7oA7GOUfLJijMnVC8Ij89XaeYYhnJDgdgAS0GyihGi
- 8PrP4_uvCucU4hB5e13Pl5.NQLBFf9rj6j7VVnuK8myqAcWh3LZ59htmY.yYpF_FlmoFY7n4vzHM
- Y2DgDGbgDwqKvLWDH8uN65igntL.u73zxSh_zn6kmnVnuo7E2AvoeFHW9M7yfEqtT86733xtBtla
- CJ2K3.T9GwyP.ftOi22XUEFCWBXsIDUuQKYQBxQ7EJwlOn5BJLvnZselvSC49yTSA59Cakh7AZb3
- hi6uNNjxngAaVaaLQaPFr38tklJjvWepqEAu_T2Jiu3FqMGUWgjXM3e.XhLwhsg.VC9rsuR3oF7B
- 61VELbGDIr6pDYTzb61k7a6QbJ6fr9qPE.TPoN5AF85.wjREm_C58o8lWDvvRIn.X5Of4YPArxX4
- BThLpIw2ZiJjNV7p0hrQoFBeG0NNsARNKHXBDPmpq_qK49SrRZH9mpjsblTL0c.7PwVKhV8ZUhsz
- 1ci0QwzsFHKdMMf7EZQpJ0NyN6l2M.86iDqbu85xpIK4Gm5UcPTcSbQADo6GVdmVxvizw6j7vTv4
- NqRZaEBDkL0TArLIFRssy_5bzgcRcPPbwvuQib27jE7SWjBFQ4TeJrhBJuuf.vVWwHTdtjq03ASk
- Z2uuwob.vcpL.tRpwCDYv4hullVgOOCTTm20Xfc_WOaGloL1I__XTIL7mzxFvwRu4d8ekvc1EeLx
- jV8sRrY3DfDeXrPhAabhMaYGZEVAeAHf5H_tdwLfv.WxBgGHLCSLKTZvc80e9iQqEi5PjKtVjVxY
- FrHUmJODbDnc68hAC8KQ5jzgX_GVwyP8qmZTVgh51fSQ55auwAV3PnPCRtAZS8an1VZmlitFYF_Q
- KQo2oz04IbHusKlWEaZ4zP9PbkLJ6ihn3EDE3gGZCUp4UuQRbC7_e4hk2RRvjhaRikvLcN5sqOVH
- KNiykeX7mSrB04dtfe3jAfYnaTl_zrSz2._z8Ik3nLzXWY9SoZCvjipFaQVzgqORdKhKvoemLFBY
- NY3Du8a_7nfI.gJNMyd.thEhbmRODNqCE7rceKua3Bvh9jQFgh8E1M84uHCk4_U5MraePyQPtxI8
- 4KpprTcL2jGwFhTBs4qNkFa0RYN26AoIzAAoorh7lTBlARGU5jLpu4uztUxdHEgIU_lnNNRcNEOP
- hFxFmwxbHTXSmfmMzf8gsTA4n75niXB6sQvd3Kv6vyb6Hf719nNNuBtrh3Sgemu_6K7qsyU3e.an
- r_uTr.zQMRMKJJiXqv.FB5lDKsdF2IEa8jMdyofY58g--
-X-Sonic-MF: <rubenru09@aol.com>
-X-Sonic-ID: 3a23b236-684f-4e7d-a6ab-1b61d00bba40
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.gq1.yahoo.com with HTTP; Thu, 1 May 2025 17:13:26 +0000
-Received: by hermes--production-ir2-858bd4ff7b-mfhj2 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 96a77f014c5b7fe0938726d43e9f2542;
-          Thu, 01 May 2025 16:51:11 +0000 (UTC)
-Message-ID: <9fab7b2389d43e0800024a431bd7736f22062f06.camel@aol.com>
-Subject: Re: [PATCH net-next] ipv4: ip_tunnel: Replace strcpy use with
- strscpy
-From: Ruben Wauters <rubenru09@aol.com>
-To: Simon Horman <horms@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>, David Ahern
- <dsahern@kernel.org>,  Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 01 May 2025 17:51:08 +0100
-In-Reply-To: <20250501153956.GC3339421@horms.kernel.org>
-References: <20250501012555.92688-1-rubenru09.ref@aol.com>
-	 <20250501012555.92688-1-rubenru09@aol.com>
-	 <20250501153956.GC3339421@horms.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.0-1 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bQjNP5T1"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7390d21bb1cso1458736b3a.2;
+        Thu, 01 May 2025 11:12:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746123125; x=1746727925; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x2KG2as49bpWoOoSGAasYC9XopQyjIivrGhuc6j4Ja8=;
+        b=bQjNP5T1I7Js8J7w5NTxt04RcBavgH+0ZgdXlX/CQAhESJ8chMnfpYW96hNKs5tndS
+         L2Ppy5TAdqUxCFwTNRkkyl0X6Sg2NjmBo2A7CS7oa/RN6IM56TVkI4DSQqGNTk/T239O
+         XTXSk5RRiOATs3Qqfdps63LrDNQgX/dkBPFNRl7TvFXrwL/mtG0kti8nI19X86T3QSNp
+         AWNdXoNK2U+8IJSStptewId52keQlcGj4Vex/b0EzEAj6CgfICeVNVP7lEDe9nn9zQcM
+         SJINQw4FUqO9rd5x/ZaH8pej9mx0Q585N8h9jpDYSnXkN5JdFu83YT+yFF+Qd7K15VNk
+         g6Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746123125; x=1746727925;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=x2KG2as49bpWoOoSGAasYC9XopQyjIivrGhuc6j4Ja8=;
+        b=Dp9gqM7Wv59+xLmCK79mttaH5y+Gy5NDJFx7K7kKqZeLRMK78yMXrhJBF85J/gPvie
+         +fYb4dHdwzHc+6MaHy+kOApKKgwYlduR7QEIeOQYvAsgw05/jIVU1NOTOuvvJkmWEFjW
+         cmhIj7Mtnm7Q3/+ZZZuVhbam25Lk16Be798/uDwXz2S8fjijsTzFmCCFJ2yA1kAaLF7p
+         Fdy5BYGQHLvpiF8XAzJYI8o8LKcBsb0cuzJ72nYpeOZRWhpuoleDL0TMPHgi+LbPzoDu
+         PRX9BJejpAFUkfD7t5dsjOUoHKnyWLjTtF1PP3fSCvv/qAs+OQLOMne6wSD3O4khzAGp
+         nrkg==
+X-Forwarded-Encrypted: i=1; AJvYcCUSDJ5D9MKTIY4/g6/NnybioQ9Nn76h74yzWBXxS5VVNTIfnRtlcBw7uLf/kM5HcDi6oCQESvOv@vger.kernel.org, AJvYcCVAGifGUFYxgtyPjr+KA4zoaNzz5kRjVF27oavz0z7x6ZUfRXaB2nKldWBi1+T9t1/z5lOPlfueXclDxU3nONuT37/F@vger.kernel.org, AJvYcCWuizKf0JozSE4xFLdEFS5QZeKk7AvCbZPVo8OhFftokKsxnQ0S47BN4vPfBJp3bBf1iqg=@vger.kernel.org, AJvYcCXl/ti90M6CuFQZ9HYimjtUpRHAkIQfK8zmcRfPrA3ClAjwLKBUPHUImlnA7Jir4i6gQ4zbSfHck3DpqJ0b@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWu8okbSP+C5vSTyZOarMLQ/WOROfVR63lXpuMmAfkSrLkN0mP
+	Uud9hpGEwmHlfquPdX8Tj6XXaw9h7rAFIDaop7tYrV6dtFfFA0t1j4JvDwd+MrVkTwJ2u74frcJ
+	Z/wwncA+13N8RvaVhiu71y9MdZDU=
+X-Gm-Gg: ASbGncsrPcVU2A9K1Mgxi/NvTtPep1xemTrL6+ZTJcjgbAx7Qfa9G8JnvCg1UaGVSle
+	bELGBbNpQo2SwiFXerpfipkBNhJxhaH0rpIcqq40ZU/X/RE8n9UgwB/DQqCAwiwqYBOBQrZU+e/
+	3qCwir0qdmPVpKFMHTg4OoNVurpxf3K0godmlvtg==
+X-Google-Smtp-Source: AGHT+IGqDlC2E7jiIsFNvlbYgxIKsWbas6w3+iAUOFuauDSOc2+ar8JgNhN475KkLIkoWKqF5a+y+XbTQjTmFoi/4BY=
+X-Received: by 2002:a05:6a21:338c:b0:1f3:41d5:6608 with SMTP id
+ adf61e73a8af0-20bd8247791mr3810125637.26.1746123124663; Thu, 01 May 2025
+ 11:12:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mailer: WebService/1.1.23772 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.aol
+References: <20250427063821.207263-1-yangfeng59949@163.com>
+In-Reply-To: <20250427063821.207263-1-yangfeng59949@163.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Thu, 1 May 2025 11:11:52 -0700
+X-Gm-Features: ATxdqUEFaJVWHzuMIuxkj8n2TpEySzKQv1HstKSN00XuW5rRGuMvrjMLfJDz_ZI
+Message-ID: <CAEf4BzbJ0eaiiaCukaJV0JmrzF6fsbwOxszQUV3pL+MAJT25rw@mail.gmail.com>
+Subject: Re: [PATCH v2 bpf-next] bpf: Allow some trace helpers for all prog types
+To: Feng Yang <yangfeng59949@163.com>
+Cc: martin.lau@linux.dev, ast@kernel.org, daniel@iogearbox.net, 
+	andrii@kernel.org, eddyz87@gmail.com, song@kernel.org, 
+	yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org, 
+	sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, 
+	mattbobrowski@google.com, rostedt@goodmis.org, mhiramat@kernel.org, 
+	mathieu.desnoyers@efficios.com, davem@davemloft.net, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, htejun@fb.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2025-05-01 at 16:39 +0100, Simon Horman wrote:
-> On Thu, May 01, 2025 at 02:23:00AM +0100, Ruben Wauters wrote:
-> > Use of strcpy is decpreated, replaces the use of strcpy with
-> > strscpy as
-> > recommended.
-> >=20
-> > I am aware there is an explicit bounds check above, however using
-> > strscpy protects against buffer overflows in any future code, and
-> > there
-> > is no good reason I can see to not use it.
->=20
-> Thanks, I agree. This patch doesn't buy us safety. But it doesn't
-> lose
-> us anything. And allows the code to move towards best practice.
->=20
-> One thing I notices is that this change is is inconsistent with the
-> call to
-> the 3-argument variant of strscpy a few lines above - it should also
-> be hte
-> 2-argument version. Maybe that could be changed too. Maybe in a
-> separate patch.
+On Sat, Apr 26, 2025 at 11:39=E2=80=AFPM Feng Yang <yangfeng59949@163.com> =
+wrote:
+>
+> From: Feng Yang <yangfeng@kylinos.cn>
+>
+> if it works under NMI and doesn't use any context-dependent things,
+> should be fine for any program type. The detailed discussion is in [1].
+>
+> [1] https://lore.kernel.org/all/CAEf4Bza6gK3dsrTosk6k3oZgtHesNDSrDd8sdeQ-=
+GiS6oJixQg@mail.gmail.com/
+>
+> Suggested-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+> Signed-off-by: Feng Yang <yangfeng@kylinos.cn>
+> ---
+> Changes in v2:
+> - not expose compat probe read APIs to more program types.
+> - Remove the prog->sleepable check added for copy_from_user,
+> - or the summarization_freplace/might_sleep_with_might_sleep test will fa=
+il with the error "program of this type cannot use helper bpf_copy_from_use=
+r"
+> - Link to v1: https://lore.kernel.org/all/20250425080032.327477-1-yangfen=
+g59949@163.com/
+> ---
+>  kernel/bpf/cgroup.c      |  6 ------
+>  kernel/bpf/helpers.c     | 38 +++++++++++++++++++++++++++++++++++++
+>  kernel/trace/bpf_trace.c | 41 ++++------------------------------------
+>  net/core/filter.c        |  2 --
+>  4 files changed, 42 insertions(+), 45 deletions(-)
+>
+> diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
+> index 84f58f3d028a..dbdad5f42761 100644
+> --- a/kernel/bpf/cgroup.c
+> +++ b/kernel/bpf/cgroup.c
+> @@ -2607,16 +2607,10 @@ const struct bpf_func_proto *
+>  cgroup_current_func_proto(enum bpf_func_id func_id, const struct bpf_pro=
+g *prog)
+>  {
+>         switch (func_id) {
+> -       case BPF_FUNC_get_current_uid_gid:
+> -               return &bpf_get_current_uid_gid_proto;
+> -       case BPF_FUNC_get_current_comm:
+> -               return &bpf_get_current_comm_proto;
+>  #ifdef CONFIG_CGROUP_NET_CLASSID
+>         case BPF_FUNC_get_cgroup_classid:
+>                 return &bpf_get_cgroup_classid_curr_proto;
+>  #endif
 
+this is the only one left, and again, it's just current-dependent, so
+I'd just move this into base set and got rid of
+cgroup_current_func_proto altogether (there are 5 callers, let's clean
+them up)
 
-I can remove the size parameter from the above strscpy to make it
-consistent in v2.
+> -       case BPF_FUNC_current_task_under_cgroup:
+> -               return &bpf_current_task_under_cgroup_proto;
+>         default:
+>                 return NULL;
+>         }
+> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+> index e3a2662f4e33..a01a2e55e17d 100644
+> --- a/kernel/bpf/helpers.c
+> +++ b/kernel/bpf/helpers.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/btf_ids.h>
+>  #include <linux/bpf_mem_alloc.h>
+>  #include <linux/kasan.h>
+> +#include <linux/bpf_verifier.h>
 
-> It is customary when making such changes to add a note that
-> strscpy() was chosen because the code expects a NUL-terminated string
-> without zero-padding. (Which is the case due to the call to
-> strcat().)
-> Perhaps you could add some text to the commit message of v2 of this
-> patch?
+why do we need this include?
 
-Apologies, I wasn't aware of this, I can add the text to v2.
+[...]
 
-Just a point of clarification I wanted to ask, for v2 of the patch,
-should I include the Reviewed-by tag below? or should I remove it as
-there has been changes?
+> @@ -2057,6 +2074,27 @@ bpf_base_func_proto(enum bpf_func_id func_id, cons=
+t struct bpf_prog *prog)
+>                 return bpf_get_trace_vprintk_proto();
+>         case BPF_FUNC_perf_event_read_value:
+>                 return bpf_get_perf_event_read_value_proto();
+> +       case BPF_FUNC_perf_event_read:
+> +               return &bpf_perf_event_read_proto;
+> +       case BPF_FUNC_send_signal:
+> +               return &bpf_send_signal_proto;
+> +       case BPF_FUNC_send_signal_thread:
+> +               return &bpf_send_signal_thread_proto;
+> +       case BPF_FUNC_get_task_stack:
+> +               return prog->sleepable ? &bpf_get_task_stack_sleepable_pr=
+oto
+> +                                      : &bpf_get_task_stack_proto;
+> +       case BPF_FUNC_task_storage_get:
+> +               if (bpf_prog_check_recur(prog))
+> +                       return &bpf_task_storage_get_recur_proto;
+> +               return &bpf_task_storage_get_proto;
+> +       case BPF_FUNC_task_storage_delete:
+> +               if (bpf_prog_check_recur(prog))
+> +                       return &bpf_task_storage_delete_recur_proto;
+> +               return &bpf_task_storage_delete_proto;
 
+task_storage_{get,delete} probably should be guarded just by CAP_BPF,
+no need for CAP_PERFMON, IMO. Can you please move them up a bit?
 
-> > Signed-off-by: Ruben Wauters <rubenru09@aol.com>
->=20
-> Reviewed-by: Simon Horman <horms@kernel.org>
->=20
-> > ---
-> > =C2=A0net/ipv4/ip_tunnel.c | 2 +-
-> > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-> > index 3913ec89ad20..9724bbbd0e0a 100644
-> > --- a/net/ipv4/ip_tunnel.c
-> > +++ b/net/ipv4/ip_tunnel.c
-> > @@ -247,7 +247,7 @@ static struct net_device
-> > *__ip_tunnel_create(struct net *net,
-> > =C2=A0	} else {
-> > =C2=A0		if (strlen(ops->kind) > (IFNAMSIZ - 3))
-> > =C2=A0			goto failed;
-> > -		strcpy(name, ops->kind);
-> > +		strscpy(name, ops->kind);
-> > =C2=A0		strcat(name, "%d");
-> > =C2=A0	}
-> > =C2=A0
-> > --=20
-> > 2.48.1
-> >=20
-> >=20
-Ruben Wauters
+Also, we should probably get rid of bpf_scx_get_func_proto() in
+kernel/sched/ext.c, given it only adds these two on top of the base
+set? But that's probably a separate patch against sched_ext tree?
+cc'ing Tejun
+
+pw-bot: cr
+
+> +       case BPF_FUNC_get_branch_snapshot:
+> +               return &bpf_get_branch_snapshot_proto;
+> +       case BPF_FUNC_find_vma:
+> +               return &bpf_find_vma_proto;
+>         default:
+>                 return NULL;
+>         }
+
+[...]
