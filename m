@@ -1,176 +1,104 @@
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF57833987
-	for <netdev@vger.kernel.org>; Thu,  1 May 2025 23:58:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3B5EC4
+	for <netdev@vger.kernel.org>; Fri,  2 May 2025 00:13:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746143909; cv=none; b=U82UjutpynUNm5AYotgJT2+hnGa/K5HmF3+K+Yndb+UYhuq4KY5ZI2LFXkJOJi8UL5zPdDry00aM/HR3NjbIsQLATDH/dNCYNg9dtL8YoDZA6TYDEvflN278aN7Zv9eXNAdkjg/sCe0o06rpOTx909sMjfOWdtSo/rCFKoSPkGs=
+	t=1746144840; cv=none; b=kq7FsnDTgJVWtjNBPuKOTvld9HQZfV9tcoHBzUJg7CtbEBFJtUL+gdLbrvJF9U08I0RwMIo1bX60W7Bf6GZ9W5GMTRIZU+1V+BO2Is53N+cfI/cBTLqBgsQtx9GhAwhuWz5Ct983Hg6SgM+/3+61l1VJGkznudiWE8YaCcb76yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746143909; c=relaxed/simple;
-	bh=I5u9d8HWSZ/ZH/v+9KgdHorfTXAGHqr6+YiS97kzkxs=;
+	s=arc-20240116; t=1746144840; c=relaxed/simple;
+	bh=VQLRhFRdfvWzZQ7KcRtiX4AJZdrlr3vdVrdSRB/ywE8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VebgMA7MQW6S0MmrHUKtMx3lvXt63GvVpOjVyescZdFufYExIZNXNWiK3C6U0kGH0CJDFqfl3Rmohr6sN8JLJHTQhRWjbs6Vk0Q0O/2H4WriFAzlZgWvzYmElRl9lJNxu5N2hxeoKiqwlkyQ1btNeVwSVIoZmw6lWqCib7IhLX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=v4XTPbg6; arc=none smtp.client-ip=95.215.58.179
+	 In-Reply-To:Content-Type; b=ld4Z+B2VW2edXmocsaOm46JSjpLfCQL4g0zmdERHRP7yohxdhE0bT9IwpCxUi/itiFLJj25z/X622axTs1O88qshAuhhtnEF3ewOaxmGGBypq6nkzR7IUn05etwWAP4x2D/vHGiMcQdHI+ZWH7B/PuBmLfvKTNFSsV4AswufvLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ieSWIZNb; arc=none smtp.client-ip=91.218.175.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="v4XTPbg6"
-Message-ID: <83c8f387-c4a9-4293-9996-fec285d34c94@linux.dev>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ieSWIZNb"
+Message-ID: <507f8523-74ac-4250-a9d2-3942e11b6f74@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1746143895;
+	t=1746144835;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tncfEf9FYDlLvfP3M87721xQwzJy/xmBPxmLH4uisu4=;
-	b=v4XTPbg6220J33yOMAVDdpprkK87l1JXWgxAgOApGYxk0I/YoR08sx2fqAnPMDmTzM6YLc
-	1PkQzC5n4zZqRe1WDqyAlVEvZ3IeEkx72YaD4BTjWdL1RDdztSd4/e6qWuhjPvhlB2zOoT
-	B6dgECqCriWZJd1UEHSy9ApluSWVrQA=
-Date: Thu, 1 May 2025 16:58:09 -0700
+	bh=31Typsk0NogO5wM4BwN5w2BYXQgCrT3yMVuwvKtrTvE=;
+	b=ieSWIZNbyhCG5hc6Oe1P1D1/jLFmdEb63T9T2vRu4nSuUkTbm7ka6ZreCSd7RJ4Ub+Jpr5
+	ik6QZxW9W97W2lvB/5VfeIre4fA0cq8kE3bf4qMB8KEt4uMwqPRY4oX8R64a2Xo4Hn5rpd
+	7XSAX6dWbfzXqntYSxrXN6f7m9nini8=
+Date: Thu, 1 May 2025 17:13:50 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH bpf-next/net v1 2/5] selftests/bpf: Test setting and
- creating bpf qdisc as default qdisc
+Subject: Re: [PATCH bpf-next/net v1 3/5] bpf: net_sched: Make some Qdisc_ops
+ ops mandatory
 To: Amery Hung <ameryhung@gmail.com>
 Cc: bpf@vger.kernel.org, netdev@vger.kernel.org,
  alexei.starovoitov@gmail.com, andrii@kernel.org, daniel@iogearbox.net,
  martin.lau@kernel.org, xiyou.wangcong@gmail.com, kernel-team@meta.com
 References: <20250501223025.569020-1-ameryhung@gmail.com>
- <20250501223025.569020-3-ameryhung@gmail.com>
+ <20250501223025.569020-4-ameryhung@gmail.com>
 Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Martin KaFai Lau <martin.lau@linux.dev>
-In-Reply-To: <20250501223025.569020-3-ameryhung@gmail.com>
+In-Reply-To: <20250501223025.569020-4-ameryhung@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
 
 On 5/1/25 3:30 PM, Amery Hung wrote:
-> First, test that bpf qdisc can be set as default qdisc. Then, attach
-> an mq qdisc to see if bpf qdisc can be successfully created and grafted.
+> The patch makes all currently supported Qdisc_ops (i.e., .enqueue,
+> .dequeue, .init, .reser, and .destroy) mandatory.
+
+s/reser/reset/.
+
 > 
-> The test is a sequential test as net.core.default_qdisc is global.
+> Make .init, .reset and .destroy mandatory as bpf qdisc relies on prologue
+> and epilogue to check attach points and correctly initialize/cleanup
+> resources. The prologue/epilogue will only be generated for an struct_ops
+> operator only if users implement the operator.
 > 
+> Make .enqueue and .dequeue mandatory as bpf qdisc infra does not provide
+> a default data path.
+> 
+> Fixes: Fixes: c8240344956e ("bpf: net_sched: Support implementation of Qdisc_ops in bpf")
 > Signed-off-by: Amery Hung <ameryhung@gmail.com>
 > ---
->   .../selftests/bpf/prog_tests/bpf_qdisc.c      | 78 +++++++++++++++++++
->   1 file changed, 78 insertions(+)
+>   net/sched/bpf_qdisc.c | 12 ++++++++++++
+>   1 file changed, 12 insertions(+)
 > 
-> diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_qdisc.c b/tools/testing/selftests/bpf/prog_tests/bpf_qdisc.c
-> index c9a54177c84e..c954cc2ae64f 100644
-> --- a/tools/testing/selftests/bpf/prog_tests/bpf_qdisc.c
-> +++ b/tools/testing/selftests/bpf/prog_tests/bpf_qdisc.c
-> @@ -159,6 +159,79 @@ static void test_qdisc_attach_to_non_root(void)
->   	bpf_qdisc_fifo__destroy(fifo_skel);
+> diff --git a/net/sched/bpf_qdisc.c b/net/sched/bpf_qdisc.c
+> index a8efc3ff2b7e..7ea8b54b2ab1 100644
+> --- a/net/sched/bpf_qdisc.c
+> +++ b/net/sched/bpf_qdisc.c
+> @@ -395,6 +395,17 @@ static void bpf_qdisc_unreg(void *kdata, struct bpf_link *link)
+>   	return unregister_qdisc(kdata);
 >   }
 >   
-> +static int get_default_qdisc(char *qdisc_name)
+> +static int bpf_qdisc_validate(void *kdata)
 > +{
-> +	FILE *f;
-> +	int num;
+> +	struct Qdisc_ops *ops = (struct Qdisc_ops *)kdata;
 > +
-> +	f = fopen("/proc/sys/net/core/default_qdisc", "r");
-> +	if (!f)
-> +		return -errno;
+> +	if (!ops->enqueue || !ops->dequeue || !ops->init ||
+> +	    !ops->reset || !ops->destroy)
+> +		return -EINVAL;
 > +
-> +	num = fscanf(f, "%s", qdisc_name);
-> +	fclose(f);
-> +
-> +	return num == 1 ? 0 : -EFAULT;
+> +	return 0;
 > +}
 > +
-> +static void test_default_qdisc_attach_to_mq(void)
-> +{
-> +	struct bpf_qdisc_fifo *fifo_skel;
-> +	char default_qdisc[IFNAMSIZ];
-> +	struct netns_obj *netns;
-> +	char tc_qdisc_show[64];
-> +	struct bpf_link *link;
-> +	char *str_ret;
-> +	FILE *tc;
-> +	int err;
-> +
-> +	fifo_skel = bpf_qdisc_fifo__open_and_load();
-> +	if (!ASSERT_OK_PTR(fifo_skel, "bpf_qdisc_fifo__open_and_load"))
-> +		return;
-> +
-> +	link = bpf_map__attach_struct_ops(fifo_skel->maps.fifo);
-
-	fifo_skel->links.fifo = bpf_map__attach_struct_ops(....);
-
-Then no need to bpf_link__destroy(link). bpf_qdisc_fifo__destroy() should do.
-
-> +	if (!ASSERT_OK_PTR(link, "bpf_map__attach_struct_ops")) {
-> +		bpf_qdisc_fifo__destroy(fifo_skel);
-> +		return;
-> +	}
-> +
-> +	err = get_default_qdisc(default_qdisc);
-> +	if (!ASSERT_OK(err, "read sysctl net.core.default_qdisc"))
-> +		goto out;
-> +
-> +	err = write_sysctl("/proc/sys/net/core/default_qdisc", "bpf_fifo");
-> +	if (!ASSERT_OK(err, "write sysctl net.core.default_qdisc"))
-> +		goto out;
-> +
-> +	netns = netns_new("bpf_qdisc_ns", true);
-> +	if (!ASSERT_OK_PTR(netns, "netns_new"))
-> +		goto out;
-
-This should be 'goto out_restore_dflt_qdisc'.
-
-I would stay with minimum number of cleanup labels if possible. Initialize the 
-variables that need to be cleaned up instead. There is no need to optimize each 
-cleanup case for a test,
-
-e.g. "struct netns_obj netns = NULL; char default_qdisc[IFNAMSIZ] = {};..."
-
-> +
-> +	SYS(out_restore_dflt_qdisc, "ip link add veth0 type veth peer veth1");
-> +	SYS(out_delete_netns, "tc qdisc add dev veth0 root handle 1: mq");
-> +
-> +	tc = popen("tc qdisc show dev veth0 parent 1:1", "r");
-> +	if (!ASSERT_OK_PTR(tc, "tc qdisc show dev veth0 parent 1:1"))
-> +		goto out_delete_netns;
-> +
-> +	str_ret = fgets(tc_qdisc_show, sizeof(tc_qdisc_show), tc);
-> +	if (!ASSERT_OK_PTR(str_ret, "tc qdisc show dev veth0 parent 1:1"))
-> +		goto out_delete_netns;
-> +
-> +	str_ret = strstr(tc_qdisc_show, "qdisc bpf_fifo");
-> +	if (!ASSERT_OK_PTR(str_ret, "check if bpf_fifo is created"))
-> +		goto out_delete_netns;
-
-Instead of pipe and grep, how about having the bpf_fifo_init bpf prog to set a 
-global variable when called and then check the "fifo_skel->bss->init_called == 
-true" here?
-
-> +
-> +	SYS(out_delete_netns, "tc qdisc delete dev veth0 root mq");
-> +out_delete_netns:
-> +	netns_free(netns);
-> +out_restore_dflt_qdisc:
-> +	write_sysctl("/proc/sys/net/core/default_qdisc", default_qdisc);
-> +out:
-> +	bpf_link__destroy(link);
-> +	bpf_qdisc_fifo__destroy(fifo_skel);
-> +}
-> +
->   void test_bpf_qdisc(void)
+>   static int Qdisc_ops__enqueue(struct sk_buff *skb__ref, struct Qdisc *sch,
+>   			      struct sk_buff **to_free)
 >   {
->   	struct netns_obj *netns;
-> @@ -178,3 +251,8 @@ void test_bpf_qdisc(void)
->   
->   	netns_free(netns);
->   }
-> +
-> +void serial_test_bpf_qdisc_default(void)
-> +{
-> +	test_default_qdisc_attach_to_mq();
-> +}
+> @@ -432,6 +443,7 @@ static struct bpf_struct_ops bpf_Qdisc_ops = {
+>   	.verifier_ops = &bpf_qdisc_verifier_ops,
+>   	.reg = bpf_qdisc_reg,
+>   	.unreg = bpf_qdisc_unreg,
+> +	.validate = bpf_qdisc_validate,
+>   	.init_member = bpf_qdisc_init_member,
+>   	.init = bpf_qdisc_init,
+>   	.name = "Qdisc_ops",
 
