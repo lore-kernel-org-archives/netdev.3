@@ -1,110 +1,103 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13F925524D;
-	Fri,  2 May 2025 13:36:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3732550AE
+	for <netdev@vger.kernel.org>; Fri,  2 May 2025 13:41:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746192994; cv=none; b=XqcOoAsONbB7YazoEbDbBiJpauJGjewVFjBHt4utjtDwl9v5DIb7oELee1sp00gpFAEPDPkFMLIha+u2MpEOR7YPSXCUN5DJIKA7KEIz5vEu7h2ibNU1hnXlruZELgmbt+In+4rHatfXT0tKhvgXs7aEbopmoHZgJmIkzkgevTU=
+	t=1746193319; cv=none; b=lpy2wi2EXcxgS2eqI6az90fRRMXU3ZweW8OTb6RgOrGMsXuB90/8Yrag3kdjJThCmvairbTET76pNIXpnC2RDh0UaG2tgijlibWy4b4CGqjgkCxhPib78xRj5WG8ikw9+kGdjrPYCfoVGVQWMMigqpwhrl1f0thMBzMsURYRLaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746192994; c=relaxed/simple;
-	bh=PQhoe9XRy2OTczxvGO62foemCM6nltYXx9AWJcoyddg=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=Q/CNgzM6cBnTeCU5oDjTkIXIv6toWqFTVC8VEZxhTlxPa0qz5qDSJEuSKqetvinpNgphvzS4cHTdNeA+thRHWHYROc77qnPGVfp52uZebf/tO+4nuX6W68a9deqDrTafBRpkmHHevpVLJ4CJyl7jIkkUiq77caux2xAvycKN/FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=cSFc2TcE; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1746193319; c=relaxed/simple;
+	bh=TROPBMCbMyvDVv3WXZTM227JrnzJPNhF7H75SnRW21c=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=B/+s8yqztb5/g7qVgVzQYbbPs6xkYl9rpZc5NGcES8/TUjwRyOPNAplgoc6qq4xsvi4A61Vn/26XOyCsiMnPoW1HOllZoBHB8irYqjbSaQgvz0qtbztO/TCe5ITbHxFyetZ0sOPzqlt+WT4FToGUo8317xQazXoaV6r5pq68E5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fKAhgC/e; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="cSFc2TcE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=tMsYaN25z76lktbBdIck2Jfs8+Pu7kcg9oa4M4iajcs=; b=cSFc2TcE8QON1lJEl1vxBmZ+PB
-	er39jf7VRDi85a7WRoCkv2VH9aGObtmVv3sbRs3G3Cq/+Efvvf+8HTsfJc65h+YjFClnKvc9zqBrt
-	PM07APXmvBWjXXt6dkdSJ1/sG0kCPH/fqicLT3JqUpnOHomK541IZELqMJh56ZRjKpNQTyL8YrB4n
-	uHb2PzZOwtOXmJ6daWvzkXmc22gubNo3Uze9xIQmdEVND1tHfjG78gQzrjJBcyuhb+2vKsLFwTj/v
-	PXp4vfBXVzwHhvIL0JVkLaJKVE2+OIaRVHf8OAMaSq00hiDDVb29Zhw1FnH//+clAdVC7oQhYWpMV
-	2dg53/qA==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:58384 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1uAqYz-0001PF-3D;
-	Fri, 02 May 2025 14:36:26 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1uAqYN-002D41-53; Fri, 02 May 2025 14:35:47 +0100
-In-Reply-To: <aBTKOBKnhoz3rrlQ@shell.armlinux.org.uk>
-References: <aBTKOBKnhoz3rrlQ@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH net-next v2 4/4] net: stmmac: leave enabling _RE and _TE to
- stmmac_mac_link_up()
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fKAhgC/e"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746193316;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5ynGlkRsk+Imh41/5x5BheKOozxWwcZOycP4AjDpPpk=;
+	b=fKAhgC/eXkMkrxm7LJAsqvLkhMcorNzpeYyuUyrHd8H/h6e76y7ml3AP1DQz9fcyTgekF2
+	MjDasQYW/5oTh8okz4e1hS75AWnECOMrWDRFqrORybA2BQimszysmNiH59bRMQYyjUzK3A
+	PEgI+DIR9vizSKpr/RrtnkXCaFaE+8c=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-_WnTn2J_OhyhN6lXR5WLZA-1; Fri,
+ 02 May 2025 09:41:53 -0400
+X-MC-Unique: _WnTn2J_OhyhN6lXR5WLZA-1
+X-Mimecast-MFC-AGG-ID: _WnTn2J_OhyhN6lXR5WLZA_1746193311
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 338F61801A14;
+	Fri,  2 May 2025 13:41:51 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.188])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B6778180045B;
+	Fri,  2 May 2025 13:41:47 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <0aa1b4a2-47b2-40a4-ae14-ce2dd457a1f7@lunn.ch>
+References: <0aa1b4a2-47b2-40a4-ae14-ce2dd457a1f7@lunn.ch> <1015189.1746187621@warthog.procyon.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: dhowells@redhat.com, David Hildenbrand <david@redhat.com>,
+    John Hubbard <jhubbard@nvidia.com>,
+    "David S. Miller" <davem@davemloft.net>,
+    Jakub Kicinski <kuba@kernel.org>, willy@infradead.org,
+    netdev@vger.kernel.org, linux-mm@kvack.org
+Subject: MSG_ZEROCOPY and the O_DIRECT vs fork() race
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1uAqYN-002D41-53@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Fri, 02 May 2025 14:35:47 +0100
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1021351.1746193306.1@warthog.procyon.org.uk>
+Date: Fri, 02 May 2025 14:41:46 +0100
+Message-ID: <1021352.1746193306@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-We only need to enable the MAC receiver and transmiter only when the
-link has come up.
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-With commit "net: stmmac: move phylink_resume() after resume setup
-is complete" we move the race between stmmac_mac_link_up() and
-stmmac_hw_setup(), ensuring that stmmac_mac_link_up() happens
-afterwards. This patch is a pre-requisit of this change.
+> > I'm looking into making the sendmsg() code properly handle the 'DIO vs
+> > fork' issue (where pages need pinning rather than refs taken) and also
+> > getting rid of the taking of refs entirely as the page refcount is going
+> > to go away in the relatively near future.
+> 
+> Sorry, new to this conversation, and i don't know what you mean by DIO
+> vs fork.
 
-Remove the unnecessary call to stmmac_mac_set(, true) in
-stmmac_hw_setup().
+As I understand it, there's a race between O_DIRECT I/O and fork whereby if
+you, say, start a DIO read operation on a page and then fork, the target page
+gets attached to child and a copy made for the parent (because the refcount is
+elevated by the I/O) - and so only the child sees the result.  This is made
+more interesting by such as AIO where the parent gets the completion
+notification, but not the data.
 
-Tested-by: Furong Xu <0x1207@gmail.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 ---
- 1 file changed, 3 deletions(-)
+Further, a DIO write is then alterable by the child if the DMA has not yet
+happened.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index ac27ea679b23..ef2a08342b25 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3533,9 +3533,6 @@ static int stmmac_hw_setup(struct net_device *dev, bool ptp_register)
- 		priv->hw->rx_csum = 0;
- 	}
- 
--	/* Enable the MAC Rx/Tx */
--	stmmac_mac_set(priv, priv->ioaddr, true);
--
- 	/* Set the HW DMA mode and the COE */
- 	stmmac_dma_operation_mode(priv);
- 
--- 
-2.30.2
+One of the things mm/gup.c does is to work around this issue...  However, I
+don't think that MSG_ZEROCOPY handles this - and so zerocopy sendmsg is, I
+think, subject to the same race.
+
+> Could you point me at a discussion.
+
+I don't know of one, offhand, apart from in the logs for mm/gup.c.  I've added
+a couple more mm guys and the mm list to the cc: field.
+
+The information in the description of fc1d8e7cca2daa18d2fe56b94874848adf89d7f5
+may be relevant.
+
+David
 
