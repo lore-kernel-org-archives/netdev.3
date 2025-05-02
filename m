@@ -1,46 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298713234
-	for <netdev@vger.kernel.org>; Fri,  2 May 2025 00:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEFB2576;
+	Fri,  2 May 2025 00:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746146502; cv=none; b=kKCtQc/t02BUqnncCFEX7Z/bRqSGpnmXRLKx/hIGgKClpa3nzfqGABtIlFRs3lDKEaTHw7RcaGTKoJsK7tKfWTLn3H6eY+WvFCLuAvKNIBP9jTK6byzxYBbcEfjfddPwYQ4+Z/9u7S6+WcRxp6mn6jS/C9Kc9PNNS3LECviGkdE=
+	t=1746147438; cv=none; b=Pjn4rxjIsELNyol0BlvrqMy0OwxmZrEhdo79lMiFg2z/b58An0dBSY04u38wuDQ9RYwuJsIfFL8e5kgsXu/tF5ipvMLS5wrRSy3k7AgJCUCtUOQi7lKH1piEapDoaf8coRIjmsOURS5efD6+I926/L4da+50ITtHuPqfPRdpgGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746146502; c=relaxed/simple;
-	bh=Ognsc8thM1OpvG3RfPb+lorEGejnWGeUehw3OBBJOsQ=;
+	s=arc-20240116; t=1746147438; c=relaxed/simple;
+	bh=MoqpqiYmYsjQ16yN73Y7SVxbPLWAuOZzKEnuNo+e/Lw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iBYKrdD7kg8XnybOgfheJP0pE8eShe+Qyu+CcgQXsGsWEgj1tYBruBrsgPqn9MiP3HBqy5nszxiuCs3qQWG1W2OdgGAXTw8PnnVf57580hwvlyAGkd7rERt6CO2302Rol7fRs0RXc2DQOPEEjYhud+igrPDdPsSCkVAtjB8jqzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W3neSmoe; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=V3bZ/KwxwGJStkWV76f9SK+RIKyUbogFMfhaPzG5AHjEFRd7tIslEFQ8huv2oNIrOaqYfH/FkhqikuiyDV/i6ZDJygZJGfWMcMxgUSqkCq6uagr6glYKLZ8tJYB/bszy1hJux6axJPcghOdy2IPOvCbx7jPMVRoN1Sw4ICx1HAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KoKfvxiY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W3neSmoe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F62BC4CEE3;
-	Fri,  2 May 2025 00:41:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KoKfvxiY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C32C4CEE3;
+	Fri,  2 May 2025 00:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746146501;
-	bh=Ognsc8thM1OpvG3RfPb+lorEGejnWGeUehw3OBBJOsQ=;
+	s=k20201202; t=1746147435;
+	bh=MoqpqiYmYsjQ16yN73Y7SVxbPLWAuOZzKEnuNo+e/Lw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=W3neSmoe0A6RvPhFrm5DDot+23ysIe+Qw4C0u0dQyvM+rrKJIbwHHXoB7JSUb5yys
-	 1XfPHNnXXrs47n4JzmUxLu16/WENskkX+QYGQ9RG/bLscqtggZ167AG9ysxvJm3kud
-	 5/ASYeq8C0CPSScIvN+X8+G6guKfaG2JoXdMFo5rkm/FF6t7qNrot4sFWcBd+lIcGJ
-	 EJrSeMKlVCDFoN3qKFDyNBsZaimeErixERpM4AnkAgC0btOaPW6GKpwBd5wcBgIMN2
-	 RgPQfi9b/9BZWIinCDwpQV9qLrRrgu5OSxOayMotTSt3Lw5FH/yEpjlD0NVd24B8Y3
-	 uBzLrlWMHFHzQ==
-Date: Thu, 1 May 2025 17:41:40 -0700
+	b=KoKfvxiYkOFnahr34ekNz23PL+yeDdfBJIyL5MdW8IwgD0IxzGRGB6VjzXjXmh1aJ
+	 at5E4VYqg8hLg0DsqD41btJu+cgTTmJNJbd1+qVpO+4kMU5UKr72cev98KbpnZMQ5b
+	 +1LI5ukrFFsaiVwKcG+5V/1/p4aEGnSpzQiiuv4JlZfMLolyRq6Vg5Zka5FBjltgpQ
+	 MUgpUz5K9yhFMDyypTBEHbytEUITAt/a375ixRBuBqq3IkwcYzPju4XV6fNUb3uy0e
+	 hnJIGJYYxS+gPLYSfTCKwsOvOelO/wDOLQLT2QnTuJgcG3zgydww5cKZqmskvfJC2E
+	 2INRE/s0errdA==
+Date: Thu, 1 May 2025 17:57:13 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, Simon Horman
- <horms@kernel.org>, Jacob Keller <jacob.e.keller@intel.com>
-Subject: Re: [PATCH net v4] net: airoha: Add missing filed to ppe_mbox_data
- struct
-Message-ID: <20250501174140.6dc31b36@kernel.org>
-In-Reply-To: <aBPdyn580lxUMJKz@lore-desk>
-References: <20250429-airoha-en7581-fix-ppe_mbox_data-v4-1-d2a8b901dad0@kernel.org>
-	<20250501071518.50c92e8c@kernel.org>
-	<aBPdyn580lxUMJKz@lore-desk>
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew@lunn.ch>
+Subject: Re: [net-next v9 4/7] net: mtip: The L2 switch driver for imx287
+Message-ID: <20250501175713.54aa656e@kernel.org>
+In-Reply-To: <20250430051756.574067-5-lukma@denx.de>
+References: <20250430051756.574067-1-lukma@denx.de>
+	<20250430051756.574067-5-lukma@denx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,17 +54,18 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 1 May 2025 22:47:06 +0200 Lorenzo Bianconi wrote:
-> On May 01, Jakub Kicinski wrote:
-> > On Tue, 29 Apr 2025 16:17:41 +0200 Lorenzo Bianconi wrote:  
-> > > Moreover, add __packed attribute to ppe_mbox_data struct definition and
-> > > make the fw layout padding explicit in init_info struct.  
-> > 
-> > Why? everything looks naturally packed now :(  
-> 
-> What I mean here is the padding in the ppe_mbox_data struct used by the fw running
-> on the NPU, not in the version used by the airoha_eth driver, got my point?
-> Sorry, re-reading it, it was not so clear, I agree.
+On Wed, 30 Apr 2025 07:17:53 +0200 Lukasz Majewski wrote:
+> +static int __init mtip_switch_dma_init(struct switch_enet_private *fep)
+> +{
+...
+> +}
 
-You mean adding the "u8 rsv[3];" ? that is fine.
-I don't get why we also need to add the 3 __packed
+> +static int mtip_sw_probe(struct platform_device *pdev)
+
+One more warning:
+
+WARNING: modpost: drivers/net/ethernet/freescale/mtipsw/nxp-mtipl2sw: section mismatch in reference: mtip_sw_probe+0xa50 (section: .text) -> mtip_switch_dma_init (section: .init.text)
+
+We only see it with clang, not sure why. The warning looks legit.
+-- 
+pw-bot: cr
