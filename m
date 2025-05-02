@@ -1,201 +1,228 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4590B42A87;
-	Fri,  2 May 2025 17:51:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF35D79D2;
+	Fri,  2 May 2025 17:52:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746208264; cv=none; b=ii7v7Y/7ZXI+ekUFGY93kSUnH3EtMwHK0BQOYkoG7UMWOuOoPIOCcvrZpsL/AZl5NacXPTpmaRtil87xDT0+2mJrnPm8mv4XZxYEwRlnojwAHJLcyHwCP9vkWhCwi5Xq4ogBYkWq5Ph7yAqCJpGJo/7tt+P35nrWjXVU2SyaI4U=
+	t=1746208357; cv=none; b=Y3Po3sBoLAzMvTHG8rf1PfWca/lC42LnJ8vtx9SOo19jYaClnnvMv4oO63lUmyHfIjKuyXzySoSNqeCX+7sEqjyceT5R4DexCT+2vOZc+rC1826F166wVsDEyM6GCybn1IK4Xcy2Ko0NCKD4ocsln/4xEj8e2S8XCj1g6k+YMc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746208264; c=relaxed/simple;
-	bh=drM8O3toaDkU9WbF5hourjHUHTWTN+EOTGXaXdM7ew0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fTtbVi0q9SuXtCOTWC2oCnNpK2ShXOle7UTawFpb9+m/g2Qn5bORJ8MFeFBJ01Yd+hU5jmYjGBNDDgMZC5I1sHDLSIf3jG6u2ELwMvx9YQFYT/CNJThU+L+TgoQSDmv92oyFQqvuIIAnhl3y0D3C9JtvOMNlfDVqu2DKnRzFXX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=f2DvQ9MW; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1746208357; c=relaxed/simple;
+	bh=vjS8jgTul1WtZ6z2zj/dmJa8VfflckHqR9kg8wclsck=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iyWNFE4w8+eofmm5oFtHo2azsWwiYc9M0jV2urUX6UV7C2NTLYtVTiiNXZX0EflsF1swiZyjQWQu9D5KzkCygFeL99Tg+JbM4DZEs/izUZvmJG5gHpWBqLQCbqQ7ejgbKG5y4f0U/RCM3n2eqzj5fBr6sakYnkeN8Y8hI506mgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XwV5q50I; arc=none smtp.client-ip=209.85.219.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="f2DvQ9MW"
-Received: from [192.168.7.202] ([71.202.166.45])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 542Ho3nX2101973
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Fri, 2 May 2025 10:50:03 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 542Ho3nX2101973
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1746208207;
-	bh=LzR4L+NzvxhTrQ0qnGzytLxrMo2x9HNW2SUoBs+4hnk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=f2DvQ9MW8Z0JHknIhUmlaIPnE6PHfIIPe0rpr7QJUvAXpKBCT+qAa2LT23C9nwyHn
-	 /1a1mWwt981CwHC7LEhukO1K0m1bgC3vouAUx32YzUdMpcsCtQbd/jw/0r9+oZFhHH
-	 zWNmyzJlWsf15/gfOAQCHW/PstZJwBaw5PzyA2AIZsvRshoRiosxrgxL3BGNy8GnvI
-	 j1N92z82OgALfPhLkgXq737LFNKZtz9B4b6V3qkfZIO+IB2Ra6RgpyueZDDglkuTjG
-	 iaLXdZxYtCOMzwCegp0RoTN30GI8VbyzguvhXK2x0MgYmhv6FrtA1j3wSshxLcp5ca
-	 a3YLWxbyYWbZw==
-Message-ID: <a2bdcbaf-2a00-4b12-84e9-14c40610d599@zytor.com>
-Date: Fri, 2 May 2025 10:50:02 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XwV5q50I"
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e728cd7150dso1713120276.3;
+        Fri, 02 May 2025 10:52:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746208355; x=1746813155; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4TKrGTrei+o08fUU8B5T0TZBHZrTaMqeNf1MYykjSyE=;
+        b=XwV5q50IyC+Kl+tgUYsgVshWWEfiVl9XwqvR/Fvza+F0pvXcZAeTYguU8bLKyBNk6X
+         me/UyPF+S8keenm+8H5mW/lBo9DNTLXQ0KAZRN1w9NBWwhs+YotGc5Cgik7b2zrnOfst
+         39hUWZAneFcr+rt1uAx0aGmRHvYCHmVeTz7RQV6KTU4XTPCKV7YzxjMMAjn3Dr5DEZqG
+         o0VtlnEExs9BGCQKHuhVIdwFJmNJJBNpz5GnVLEEFVaQI0DKlvdhZPtg2yffQIlXUh0e
+         9tq10OAzN4v6I9rzst+vEEoUhRso8YJmMsPFgx4v3a/UF0V+XInV/2tgwKCdepN34eUk
+         yhOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746208355; x=1746813155;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4TKrGTrei+o08fUU8B5T0TZBHZrTaMqeNf1MYykjSyE=;
+        b=tBPCLuJ0bUzEQdHTQo5XV2y7rRcgNm5r6Ssd5ifu+d3nQq5WE2Joxs7/eQlmnZFpQS
+         ynqMD6fylDKDyYj6GhEyfqJBLyVmTz+jo1VUq+9mUx8bIdP/Mrdh7MPBmfE40hV1HCcJ
+         Yl+aLt4j/VXBfUSQwDA6XFUKyu0JwCyje8mMm0LZbS6Re9jA9ThwkW/oZFFvK7VMvm7l
+         QaEfyVTEjRjq9nQ49PL0LfUvIxGvPrSlUzSYUIHFQzg139FI2D4VgvP/soSxgPRyuwp8
+         sZ3JrqtJaNeyBHMsiEAWXITYdbalR2HUIrrqJPeTagfowVraHc/EA7GTBJW28dv+Lv5B
+         Q8Yg==
+X-Forwarded-Encrypted: i=1; AJvYcCV6broONueKYbBLWuTbY6omgu5K8Ydii6ABpxj3WStJYQycC+Q65ZJGbzv0ZE+efPg3s1FcsN4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2PNM/FbucPrUdqgb+Bg2BrxkMQxjhbom1zGx6KKXbfixwy2Uw
+	CyrtqLIKSatt5pa1Ud+SuaUzqN9RxKst2itV5Eb9l707dzTbMrJXt0wHUPJ+iR7NZrMvE/2gV6O
+	dRD3hGbB8JvPIcsYxvTjyEt4FYFQ=
+X-Gm-Gg: ASbGnct4xPOmzy1ahCxJ/b9zW3k02VySHpJljU/pLyhtmk1Yo+cAg86mFGg8EnraTo+
+	TnKvpXYvrX2PjZd3JexpnoJdj/tzXI/P8ORnjJOR+yj0AipZZa4J/U7mNdXU1g+vlKu8037yRUC
+	b9qsAechlU7n9IfSK67Bxs5HHGQMQR7Jsm
+X-Google-Smtp-Source: AGHT+IEwFh4+UvvZVtH4lxvcGyMLZ/1VlDyJvEGMbRKzsvc1ugr/mTGj1Egq0eVkJVEbcEl7xQTTlOa/f8KjN5Nj9hU=
+X-Received: by 2002:a05:690c:4d01:b0:6f9:a3c6:b2e4 with SMTP id
+ 00721157ae682-708cee10cb8mr60804937b3.37.1746208354570; Fri, 02 May 2025
+ 10:52:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4A 01/15] x86/msr: Add missing includes of <asm/msr.h>
-To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        mingo@redhat.com
-Cc: LKML <linux-kernel@vger.kernel.org>, kvm@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        virtualization@lists.linux.dev, linux-pm@vger.kernel.org,
-        linux-edac@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        Netdev <netdev@vger.kernel.org>, platform-driver-x86@vger.kernel.org,
-        tglx@linutronix.de, bp@alien8.de, dave.hansen@linux.intel.com,
-        x86@kernel.org, hpa@zytor.com, acme@kernel.org, jgross@suse.com,
-        andrew.cooper3@citrix.com, peterz@infradead.org, namhyung@kernel.org,
-        mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
-        jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com,
-        kan.liang@linux.intel.com, wei.liu@kernel.org, ajay.kaher@broadcom.com,
-        bcm-kernel-feedback-list@broadcom.com, tony.luck@intel.com,
-        pbonzini@redhat.com, vkuznets@redhat.com, seanjc@google.com,
-        luto@kernel.org, boris.ostrovsky@oracle.com, kys@microsoft.com,
-        haiyangz@microsoft.com, decui@microsoft.com,
-        dapeng1.mi@linux.intel.com
-References: <a1917b37-e41e-d303-749b-4007cda01605@linux.intel.com>
- <20250501054241.1245648-1-xin@zytor.com>
- <a34d7955-aa31-7bef-52cf-65dc4bb7a5c1@linux.intel.com>
-Content-Language: en-US
-From: Xin Li <xin@zytor.com>
-Autocrypt: addr=xin@zytor.com; keydata=
- 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
- l75w1xInsg==
-In-Reply-To: <a34d7955-aa31-7bef-52cf-65dc4bb7a5c1@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250501223025.569020-1-ameryhung@gmail.com> <20250501223025.569020-3-ameryhung@gmail.com>
+ <83c8f387-c4a9-4293-9996-fec285d34c94@linux.dev>
+In-Reply-To: <83c8f387-c4a9-4293-9996-fec285d34c94@linux.dev>
+From: Amery Hung <ameryhung@gmail.com>
+Date: Fri, 2 May 2025 10:52:23 -0700
+X-Gm-Features: ATxdqUGH80K2A4cNjSDr11LTmgOT3CzXtmllOmdxwB1jmN3mlZClfwZoIQgaKVo
+Message-ID: <CAMB2axO2Jkc4Ec051+BYhju2Vr_GwzZL6yhHGuohMdg2q6WLRQ@mail.gmail.com>
+Subject: Re: [PATCH bpf-next/net v1 2/5] selftests/bpf: Test setting and
+ creating bpf qdisc as default qdisc
+To: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com, 
+	andrii@kernel.org, daniel@iogearbox.net, martin.lau@kernel.org, 
+	xiyou.wangcong@gmail.com, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/2/2025 6:13 AM, Ilpo Järvinen wrote:
->> diff --git a/arch/x86/kernel/trace_clock.c b/arch/x86/kernel/trace_clock.c
->> index b8e7abe00b06..708d61743d15 100644
->> --- a/arch/x86/kernel/trace_clock.c
->> +++ b/arch/x86/kernel/trace_clock.c
->> @@ -4,7 +4,7 @@
->>    */
->>   #include <asm/trace_clock.h>
->>   #include <asm/barrier.h>
->> -#include <asm/msr.h>
->> +#include <asm/tsc.h>
-> Does this change belong to this patch?
-> 
-> It might even cause a build failure until the second patch which moves
-> the tsc related things to the other file (unless there's indirect include
-> path to asm/msr.h).
-
-Ah, you're right as I have separated the relocation of rdtsc_ordered()
-into a following patch.
-
-> 
->> diff --git a/arch/x86/lib/kaslr.c b/arch/x86/lib/kaslr.c
->> index a58f451a7dd3..b5893928d55c 100644
->> --- a/arch/x86/lib/kaslr.c
->> +++ b/arch/x86/lib/kaslr.c
->> @@ -8,7 +8,7 @@
->>    */
->>   #include <asm/asm.h>
->>   #include <asm/kaslr.h>
->> -#include <asm/msr.h>
->> +#include <asm/tsc.h>
-> Same thing here.
-> 
->>   #include <asm/archrandom.h>
->>   #include <asm/e820/api.h>
->>   #include <asm/shared/io.h>
->> diff --git a/drivers/accel/habanalabs/common/habanalabs_ioctl.c b/drivers/accel/habanalabs/common/habanalabs_ioctl.c
->> index 8729a0c57d78..dc80ca921d90 100644
->> --- a/drivers/accel/habanalabs/common/habanalabs_ioctl.c
->> +++ b/drivers/accel/habanalabs/common/habanalabs_ioctl.c
->> @@ -17,8 +17,6 @@
->>   #include <linux/uaccess.h>
->>   #include <linux/vmalloc.h>
->>   
->> -#include <asm/msr.h>
->> -
-> I suggested making a separate patch out of these removals. Currently you
-> do them without any clear warning in the changelog which only talks about
-> adding asm/msr.h.
+On Thu, May 1, 2025 at 4:58=E2=80=AFPM Martin KaFai Lau <martin.lau@linux.d=
+ev> wrote:
+>
+> On 5/1/25 3:30 PM, Amery Hung wrote:
+> > First, test that bpf qdisc can be set as default qdisc. Then, attach
+> > an mq qdisc to see if bpf qdisc can be successfully created and grafted=
+.
+> >
+> > The test is a sequential test as net.core.default_qdisc is global.
+> >
+> > Signed-off-by: Amery Hung <ameryhung@gmail.com>
+> > ---
+> >   .../selftests/bpf/prog_tests/bpf_qdisc.c      | 78 ++++++++++++++++++=
++
+> >   1 file changed, 78 insertions(+)
+> >
+> > diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_qdisc.c b/tools=
+/testing/selftests/bpf/prog_tests/bpf_qdisc.c
+> > index c9a54177c84e..c954cc2ae64f 100644
+> > --- a/tools/testing/selftests/bpf/prog_tests/bpf_qdisc.c
+> > +++ b/tools/testing/selftests/bpf/prog_tests/bpf_qdisc.c
+> > @@ -159,6 +159,79 @@ static void test_qdisc_attach_to_non_root(void)
+> >       bpf_qdisc_fifo__destroy(fifo_skel);
+> >   }
+> >
+> > +static int get_default_qdisc(char *qdisc_name)
+> > +{
+> > +     FILE *f;
+> > +     int num;
+> > +
+> > +     f =3D fopen("/proc/sys/net/core/default_qdisc", "r");
+> > +     if (!f)
+> > +             return -errno;
+> > +
+> > +     num =3D fscanf(f, "%s", qdisc_name);
+> > +     fclose(f);
+> > +
+> > +     return num =3D=3D 1 ? 0 : -EFAULT;
+> > +}
+> > +
+> > +static void test_default_qdisc_attach_to_mq(void)
+> > +{
+> > +     struct bpf_qdisc_fifo *fifo_skel;
+> > +     char default_qdisc[IFNAMSIZ];
+> > +     struct netns_obj *netns;
+> > +     char tc_qdisc_show[64];
+> > +     struct bpf_link *link;
+> > +     char *str_ret;
+> > +     FILE *tc;
+> > +     int err;
+> > +
+> > +     fifo_skel =3D bpf_qdisc_fifo__open_and_load();
+> > +     if (!ASSERT_OK_PTR(fifo_skel, "bpf_qdisc_fifo__open_and_load"))
+> > +             return;
+> > +
+> > +     link =3D bpf_map__attach_struct_ops(fifo_skel->maps.fifo);
+>
+>         fifo_skel->links.fifo =3D bpf_map__attach_struct_ops(....);
+>
+> Then no need to bpf_link__destroy(link). bpf_qdisc_fifo__destroy() should=
+ do.
 >
 
-I didn't want to add an extra patch to the v4 series, but I really
-should have mentioned the removal at least.
+I see. I assume it will also be okay to set autoattach and call
+bpf_qdisc_fifo__attach()?
 
+> > +     if (!ASSERT_OK_PTR(link, "bpf_map__attach_struct_ops")) {
+> > +             bpf_qdisc_fifo__destroy(fifo_skel);
+> > +             return;
+> > +     }
+> > +
+> > +     err =3D get_default_qdisc(default_qdisc);
+> > +     if (!ASSERT_OK(err, "read sysctl net.core.default_qdisc"))
+> > +             goto out;
+> > +
+> > +     err =3D write_sysctl("/proc/sys/net/core/default_qdisc", "bpf_fif=
+o");
+> > +     if (!ASSERT_OK(err, "write sysctl net.core.default_qdisc"))
+> > +             goto out;
+> > +
+> > +     netns =3D netns_new("bpf_qdisc_ns", true);
+> > +     if (!ASSERT_OK_PTR(netns, "netns_new"))
+> > +             goto out;
+>
+> This should be 'goto out_restore_dflt_qdisc'.
+>
+> I would stay with minimum number of cleanup labels if possible. Initializ=
+e the
+> variables that need to be cleaned up instead. There is no need to optimiz=
+e each
+> cleanup case for a test,
+>
+> e.g. "struct netns_obj netns =3D NULL; char default_qdisc[IFNAMSIZ] =3D {=
+};..."
+>
 
->> diff --git a/drivers/acpi/processor_throttling.c b/drivers/acpi/processor_throttling.c
->> index 00d045e5f524..ecd7fe256153 100644
->> --- a/drivers/acpi/processor_throttling.c
->> +++ b/drivers/acpi/processor_throttling.c
->> @@ -18,9 +18,13 @@
->>   #include <linux/sched.h>
->>   #include <linux/cpufreq.h>
->>   #include <linux/acpi.h>
->> +#include <linux/uaccess.h>
->>   #include <acpi/processor.h>
->>   #include <asm/io.h>
->> -#include <linux/uaccess.h>
->> +#include <asm/asm.h>
-> ???
+I will simplify the cleanup as you suggested.
 
-Damn me!
+> > +
+> > +     SYS(out_restore_dflt_qdisc, "ip link add veth0 type veth peer vet=
+h1");
+> > +     SYS(out_delete_netns, "tc qdisc add dev veth0 root handle 1: mq")=
+;
+> > +
+> > +     tc =3D popen("tc qdisc show dev veth0 parent 1:1", "r");
+> > +     if (!ASSERT_OK_PTR(tc, "tc qdisc show dev veth0 parent 1:1"))
+> > +             goto out_delete_netns;
+> > +
+> > +     str_ret =3D fgets(tc_qdisc_show, sizeof(tc_qdisc_show), tc);
+> > +     if (!ASSERT_OK_PTR(str_ret, "tc qdisc show dev veth0 parent 1:1")=
+)
+> > +             goto out_delete_netns;
+> > +
+> > +     str_ret =3D strstr(tc_qdisc_show, "qdisc bpf_fifo");
+> > +     if (!ASSERT_OK_PTR(str_ret, "check if bpf_fifo is created"))
+> > +             goto out_delete_netns;
+>
+> Instead of pipe and grep, how about having the bpf_fifo_init bpf prog to =
+set a
+> global variable when called and then check the "fifo_skel->bss->init_call=
+ed =3D=3D
+> true" here?
+>
 
-Not to find an excuse but I guess I got somewhat tired when doing it.
+That simplifies things quite a bit. I will use a global variable to
+check if the qdisc is being created.
 
-> 
->> +#ifdef CONFIG_X86
->> +#include <asm/msr.h>
->> +#endif
-> 
-> I really appreciate you took the effort to do this change the correct
-> way! 🙂
-
-Same here for pushing it the right direction!
-
-
-Hi Ingo,
-
-Since you *wisely* didn't remove msr.h from tsc.h, maybe you could just
-zap this patch and I will send an afterwards patch set to replace this
-patch?
-
-Apology for the noise.
-
-Thanks!
-     Xin
+> > +
+> > +     SYS(out_delete_netns, "tc qdisc delete dev veth0 root mq");
+> > +out_delete_netns:
+> > +     netns_free(netns);
+> > +out_restore_dflt_qdisc:
+> > +     write_sysctl("/proc/sys/net/core/default_qdisc", default_qdisc);
+> > +out:
+> > +     bpf_link__destroy(link);
+> > +     bpf_qdisc_fifo__destroy(fifo_skel);
+> > +}
+> > +
+> >   void test_bpf_qdisc(void)
+> >   {
+> >       struct netns_obj *netns;
+> > @@ -178,3 +251,8 @@ void test_bpf_qdisc(void)
+> >
+> >       netns_free(netns);
+> >   }
+> > +
+> > +void serial_test_bpf_qdisc_default(void)
+> > +{
+> > +     test_default_qdisc_attach_to_mq();
+> > +}
+>
