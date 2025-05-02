@@ -1,94 +1,113 @@
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910224A32;
-	Fri,  2 May 2025 17:54:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9709326156E;
+	Fri,  2 May 2025 17:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746208443; cv=none; b=loM8+jnf9XLO0AbX2YUACyTM9eCsGCLbbeQRMUpXNlG4xZJAf5JO76zrvWTN+nrcXbsj2AdSXohjHBS1dtXWp347mB9cLnONWuRGvPSerieQVwTezLQtyjjUXF1GI63VWmV1SvswLCRcahgupfpRgccm9HalksmvdYzQQAnfp5Q=
+	t=1746208447; cv=none; b=LglPAjC4NnO8RC9OxUT0L8VahT539LC4W/YOM+Soyp6lMMO947ErRGZJWygaSQUdah+YqHheymwpvaDZKpdNv98vUI60h8XhAMb/96YXYHCgu5xC+o9Kbjw7M9OXm7Z8+YX76jhCeS2C0tA2aZnmz8CjTjgo9MSVP0CjXfPPDmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746208443; c=relaxed/simple;
-	bh=ZfbEwFziy/+4B2qUyM5vjQWrVAUxklnDjbXAavZR/+0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cyfdhKpdT/IKsm8PDIQ6PsnhMlYtKIHkSbQVZiC7WB3sFGDDgzE6W+8D6BxZDssfIgCXrNhqOHbXnIYo5Lx2lS7OaVnPg7P/uDEXrbMIn33BT8WjcLnworUyBw92g+0b43jVuffFjfPwaz+ujIVFAKdJF9f/qL48GBTFWwkNIBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LnehpX0f; arc=none smtp.client-ip=209.85.219.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746208447; c=relaxed/simple;
+	bh=hePHbVanD/Qw8nmeoKE942pxIMTBlEDYcl2/QM1nNgw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iHu0Ibfg4Zo0BvuHZ/Iz/xGBXcfG7/nxmw823bz/ZRHnGOD1SJJynYruBcKOq5FevvC8dmCr44onlNRoHCPBsCITzVISH0MAv9nqWTk44jVBDqasWBeQuw+fqhC7DONa+s523+zMeEF+ypVDMTfd81bAr76fkd91TME3bA2mA/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=mgMH1XMC; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LnehpX0f"
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e740a09eae0so2072496276.1;
-        Fri, 02 May 2025 10:54:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746208439; x=1746813239; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZfbEwFziy/+4B2qUyM5vjQWrVAUxklnDjbXAavZR/+0=;
-        b=LnehpX0fvb7jba3NseDvlnYVQhjwLR3q9OB8dZWQ3vDZCbuzN+Z/BkE/WHVwqtm4Qe
-         ie3xy0tHwRUkCyC1u/TuwUNO3M+hSoE7IqfdkO4azxi6jSVX9HsjVNEKQakPoZIhWn19
-         MtbwIytOQ1CpDp25/DH53LLog2l6okDId1zLiPk6bT0zZB0GS6bMdDqlFesqu8+3A7B4
-         x7eCOsCHxjcwLE++GUfwVMxpiE0HqqSHo6TY0R279AYMsHFJm5BW8++QE0K8OEueQ66n
-         FtK3xFI+jLj1GU4nL7RYjsDagkmfdrD9rH6kVGe3fnB4hUkZPJ5FySP3JTuwvZVnxByq
-         woaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746208439; x=1746813239;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZfbEwFziy/+4B2qUyM5vjQWrVAUxklnDjbXAavZR/+0=;
-        b=kmfhPgzuWKFlfm2rG9RuN/AbfBDoOv63SlwxO1JzHi3hqgbWZGIlEoESSNlS97U9VV
-         zscimAFeU+bdYdy4AwjvsZptu2DK/eJxVzCWgQbj2ht3fDPwALMV7FpdvKLEgOiAgXOD
-         EqfPmKPQT9rMG7EebBcXSGYGzmm4HTvBm9QfQq+posycTuXLxMQfRfwYFSiHpMrG3URo
-         G6szyR7ht6OL0nIBCjq2v/fxPx0YCDh4QK1pBgoin3u40h5gMUXcVBYM+qg34aLV9cK0
-         B8X4HEQ27jMjnAaqDJF5kPqzaFkTvi52ioFD1D6GH62s5YscDShE039UGWyoTycLYIo6
-         HpOA==
-X-Forwarded-Encrypted: i=1; AJvYcCWMyLjtk/NsLoMjksJiAlyHCFH1gd90xVBd/CyuyaG8wWtcLdvuXfVSJwANZ4iLs3vodkXV4VE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKZdC5euTt5OJM4mpibO2RatuvCiNRbpas27fXamO8E0R8DakO
-	fWd/VNKBz1pMcQUxN+GYzvLiSNRAYNqXlcXN7nOSI8QdYUkzznvdNMcB6RDIRxfmU+/Qf8nEU+A
-	bBHutV+t9LrnvD3ZADfMV+yUB+jhfwsuD
-X-Gm-Gg: ASbGncvXG/VsfNsOb7zrYxa8sGOT5ZgGGs13dmbrUFO1GNDHmFajCE9zexNHnG+13T+
-	isBYQ5cmxqzH/1/PbijjMKNpqWFFTB0TSCl/6aBYvE+EPdjPejFrpKkzh40noksviUNijtrwgKf
-	wnFzx/UG+yhNvv7nZ1tp2img==
-X-Google-Smtp-Source: AGHT+IEY+GywdK9E2dZhEsZnsPpdiKyWAL0RVMGDBChgNcQBIKUIrJN+0+jPjqysO9/Mghc0WjBOjlqWDgkmedXJ6yM=
-X-Received: by 2002:a05:6902:2781:b0:e73:2284:4ec3 with SMTP id
- 3f1490d57ef6-e7571b52927mr262929276.42.1746208439344; Fri, 02 May 2025
- 10:53:59 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="mgMH1XMC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-ID:MIME-Version:
+	Content-Type; bh=QLqkgEezk574VjARrudTaygkXXsebma6evZNIZRrqPU=;
+	b=mgMH1XMCk9w/pj09yc7XKp3lSxugVw/UaPO6gp9Qctkamjbr2RmqI1IKhwpKc7
+	qK9N8PwW3gf2/weJJRqjVOSSn0LuO1lBbi/rsOww3ElqBefOZeAoDR5eYNNglrVm
+	gciya0x4HqxLNJifnwEOjauwjOnQnK36GY9UMYTh3IePI=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wDHWWRNBhVoolSMEA--.14240S2;
+	Sat, 03 May 2025 01:52:14 +0800 (CST)
+From: Haiyue Wang <haiyuewa@163.com>
+To: netdev@vger.kernel.org
+Cc: Haiyue Wang <haiyuewa@163.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	David Wei <dw@davidwei.uk>,
+	Jens Axboe <axboe@kernel.dk>,
+	Simon Horman <horms@kernel.org>,
+	linux-kselftest@vger.kernel.org (open list:KERNEL SELFTEST FRAMEWORK),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net-next v2] selftests: iou-zcrx: Clean up build warnings for error format
+Date: Sat,  3 May 2025 01:50:25 +0800
+Message-ID: <20250502175136.1122-1-haiyuewa@163.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250501223025.569020-1-ameryhung@gmail.com> <20250501223025.569020-6-ameryhung@gmail.com>
- <b395276d-81d4-4a6b-aaf2-297c78a6c33e@linux.dev>
-In-Reply-To: <b395276d-81d4-4a6b-aaf2-297c78a6c33e@linux.dev>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Fri, 2 May 2025 10:53:48 -0700
-X-Gm-Features: ATxdqUEPV6LS417ZqIzVHabCdgMm_idaUVjknQ_bXsiAUUT0VHMja95ow30T9lo
-Message-ID: <CAMB2axP5Sbk-oU5nxaK5NjrjMO+WRU_tc3DkG1BsSC-wKL6UHQ@mail.gmail.com>
-Subject: Re: [PATCH bpf-next/net v1 5/5] selftests/bpf: Cleanup bpf qdisc selftests
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com, 
-	andrii@kernel.org, daniel@iogearbox.net, martin.lau@kernel.org, 
-	xiyou.wangcong@gmail.com, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDHWWRNBhVoolSMEA--.14240S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tFy5Ww17uFy3Ar18KF1UAwb_yoW8CF1kpa
+	4ktw1qkrWrJF17GayUGrWfKFWUXrsFy3yIkr1UAa4aqFW3AFWvqrWfKFy0kFyDWrWS93WY
+	yrZFkF45AF1jv3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zMWlkUUUUUU=
+X-CM-SenderInfo: 5kdl53xhzdqiywtou0bp/1tbiYBNBa2gU-ku4OgAAsS
 
-On Thu, May 1, 2025 at 5:22=E2=80=AFPM Martin KaFai Lau <martin.lau@linux.d=
-ev> wrote:
->
-> On 5/1/25 3:30 PM, Amery Hung wrote:
-> > diff --git a/tools/testing/selftests/bpf/progs/bpf_qdisc_common.h b/too=
-ls/testing/selftests/bpf/progs/bpf_qdisc_common.h
-> > index 65a2c561c0bb..c495da1c43db 100644
-> > --- a/tools/testing/selftests/bpf/progs/bpf_qdisc_common.h
-> > +++ b/tools/testing/selftests/bpf/progs/bpf_qdisc_common.h
->
-> There is a recent change landed in this file.
->
-> Overall the set makes sense. Thanks.
+Clean up two build warnings:
 
-Thanks for the feedback. I will rebase and resend.
+[1]
 
-Thanks,
-Amery
+iou-zcrx.c: In function ‘process_recvzc’:
+iou-zcrx.c:263:37: warning: too many arguments for format [-Wformat-extra-args]
+  263 |                         error(1, 0, "payload mismatch at ", i);
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~
+
+[2] Use "%zd" for ssize_t type as better
+
+iou-zcrx.c: In function ‘run_client’:
+iou-zcrx.c:357:47: warning: format ‘%d’ expects argument of type ‘int’, but argument 4 has type ‘ssize_t’ {aka ‘long int’} [-Wformat=]
+  357 |                         error(1, 0, "send(): %d", sent);
+      |                                              ~^   ~~~~
+      |                                               |   |
+      |                                               int ssize_t {aka long int}
+      |                                              %ld
+
+Signed-off-by: Haiyue Wang <haiyuewa@163.com>
+---
+v2:
+  - Dont't wrap the build warning message to make scripts/checkpatch.pl happy,
+    keep it as for readability.
+  - Change the format for ssize_t from "%ld" to "%zd" as Simon suggested.
+  - Change the target to net-next tree.
+v1: https://lore.kernel.org/netdev/20250502042240.17371-1-haiyuewa@163.com/
+---
+ tools/testing/selftests/drivers/net/hw/iou-zcrx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
+index 8aa426014c87..62456df947bc 100644
+--- a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
++++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
+@@ -260,7 +260,7 @@ static void process_recvzc(struct io_uring *ring, struct io_uring_cqe *cqe)
+ 
+ 	for (i = 0; i < n; i++) {
+ 		if (*(data + i) != payload[(received + i)])
+-			error(1, 0, "payload mismatch at ", i);
++			error(1, 0, "payload mismatch at %d", i);
+ 	}
+ 	received += n;
+ 
+@@ -354,7 +354,7 @@ static void run_client(void)
+ 		chunk = min_t(ssize_t, cfg_payload_len, to_send);
+ 		res = send(fd, src, chunk, 0);
+ 		if (res < 0)
+-			error(1, 0, "send(): %d", sent);
++			error(1, 0, "send(): %zd", sent);
+ 		sent += res;
+ 		to_send -= res;
+ 	}
+-- 
+2.49.0
+
