@@ -1,114 +1,271 @@
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA3F1DB125;
-	Fri,  2 May 2025 19:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023701F30DD;
+	Fri,  2 May 2025 20:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746214415; cv=none; b=KaOv8WjMMIimc5d/L4I58Y+GfJyu1/bkxDK1SRrh/wjCOS+Ga226u5xLyLJhPBmsUoif9/94fukxxWofSmtQfefMXwQO34tBv9p7vSpiQsv9DRw08dE+aSsTpwXDJzZQfO6jyolxVPq5IrnFZcdqLlHfwiw2XDhgJm1OCUsMSNg=
+	t=1746216665; cv=none; b=syiHbkXRBRCKwXIfrm8i8QeVKSuwNYJPLw60uaEovVlrsiuPEhK/yK6hnJ6lgvZlt4pnLwRTSm7jOHM3s2xr7sDrPdkAOqRmlfcX3Z05qDWMTfQstFQWepwm8s8XS4DVffbELeiMqrTPWFp9MTFzevonOHCvA4kugQwW5RgvFsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746214415; c=relaxed/simple;
-	bh=qWBC80F2xAAlXhQQHnmL+8164r7M6zUNF6naOIszZbE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lt0r0ZigTvNCFgUn8owIsyCym5Ru9eOiuOTSVoi3oTMQv7zWBkTLLea7LSterY6byDUqjGobCxovWB139Ooul/7mzmpSmRRgLdrobIAAB0xafQ5vnBfcndTQJLQI3WBU/fkyUGhZMTIAyTdM92nb7DkveXC5edcTc/shF8t/Ees=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KOeQBIZK; arc=none smtp.client-ip=209.85.219.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746216665; c=relaxed/simple;
+	bh=iTuW9YI+dyuT02HLYxJyyxkPKnlk5po8c12xAAkhwpw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Btc08IcTIyLS9U84eH3vCOneQY6L9JG0mkqXvQ0xYWKLOTjlLIkJPVj4MHj4KQxVxuagrjCHFrzct9JjulRHUz4UHaERCntiMELbL5/+sUZ/yjVKJxYkq89WfJJvAbsC9vsuMguzMaDmx4jKcE4l4W3QxQjVRRTxd2IN3lJ69Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sv864FeB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KOeQBIZK"
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e6405e4ab4dso2876449276.0;
-        Fri, 02 May 2025 12:33:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746214413; x=1746819213; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EfS7K1haLBHftdjDHGYldaRugLtY9AbpZpUC4/2URWI=;
-        b=KOeQBIZKTTzwaGQYeJcIxFzQ/b9SiLblFCQdS8enmcf+ep1njsVw456bBU3I0NSB4x
-         rBLHpiOqmiyaACuzWsJol49anXWonSt3hXngWY36JIPd8+pInzOO5HKIfdmgZUNCfS+O
-         XRmcgyOTDFiTVe2nZimnOzum2/mZtsgpmJk8VTmu/UIGCAo/4sg1nJA4jTOw6iCuvLX3
-         OtaEjv8Iev2JOvM66BNjX4am4mbrjbm7D8iHkt+ETOI/gVkTLcXZ8BfqVEveLcXdunT+
-         62LAzakwIB/RfbqpYAD52LkXETW7AadeFR8u/iv535X+qFz4Hu20BlPqApST6sft8mD6
-         OwuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746214413; x=1746819213;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EfS7K1haLBHftdjDHGYldaRugLtY9AbpZpUC4/2URWI=;
-        b=h7mNvm6pAQXNw84pDo5iu64tjlgYvv0+zgHVeWIHKhHObYjdBRQgnFxQvFR5I+TWm2
-         pQhljeF9Z9etXEzxgUQb2cFU51pfHkFxoWehKAIjYv2GrIFE93xWfAmu2KowXrSxtV+F
-         nEF1hyy7ql7PobcEomDtciu/zdPK03CardtW5UhXSU4aZ0NDX/nSb2HVdvX7InsnnnXs
-         wdO3Y+urpC6imPug5cHfSsfuh4IJNAVv2QuY/PGKfpXa5x3Oo5XU9pBfhk2HpFSAA1tV
-         s+BF4EBL/wT61RQ5U0ySgeFyGlYwX1zXYbQThyK/PI26ADgALWbRp2mlacd8c7XD2hRg
-         j5oA==
-X-Forwarded-Encrypted: i=1; AJvYcCUq7Ikdn87LNO/WKjrmnZEkmAwK1joOKwv5j3ND1v11ves7dJnaZ+r9Ambj3GZ/lalMNo90dqE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcqMvLLIUzEupUqRDXwTa1b+PkJfVJiVpppAMCDr3OK03Uxt1A
-	LzoqSWnRp/cOaLEYixRJRcxmSIRU94dmf8ogHPQhxkkeqBICcYbkhiXCpozUO8x0Kw9HuE6VbMA
-	BqCHu5/1cAr4QRe9WE40g6p8wm68=
-X-Gm-Gg: ASbGncspW5O9dYxBe/mMtLM/M+hn2mkeIASn2/cxby/tWJstrTdfpdj5Tqt7xSobhBz
-	Fsrrze55eCTCdQQkDbLIRUTSzAcJY88rgbFD6tyD1lv/1sLNk8Oapf6jr7KK7uQQ0Zq+5B7neiA
-	iWyQ0JuUkWUJXiMAOM1njQKg==
-X-Google-Smtp-Source: AGHT+IGzX7EmNI70ec9qEkEis7ZSaP0ZznbyzKq7yDQ/Od/uW/JYTP4iqVJzbbgEopqygWZ8mrTlkMIiMgkblR85qTE=
-X-Received: by 2002:a05:6902:18cc:b0:e69:18e6:6729 with SMTP id
- 3f1490d57ef6-e7564a530b9mr5459451276.13.1746214413218; Fri, 02 May 2025
- 12:33:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sv864FeB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADB5C4CEE4;
+	Fri,  2 May 2025 20:10:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746216664;
+	bh=iTuW9YI+dyuT02HLYxJyyxkPKnlk5po8c12xAAkhwpw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Sv864FeBd9KxTRdvKgOZ+axY1H8VJH6iQ6cUVIomlzaF8Tt9DU1hTss3RaV0GZGw0
+	 RKet8XeU2WIeWeupCA3Z9iHmv84YHtpKjuDx2zS50DsC7PFGE3b0m1BzZhn6cqY0iw
+	 ZiOVbf4T5FM1pJ38MSl5brA85uW6PChKkKaCJiMldiQgECJympibLARyoEuarBSxjo
+	 Jp9rOnCwV3RTUZJmrxWtRmwna1eihF+o7ly+2lZSOrU06Jk4AfecpZXmte8Y09CbPd
+	 6lzKD8lSPHAJyJbSj9PDcRHDM5i4A1KjJtHmmESVkhFiw/Tp+pLNeiEVbXUFW6hF8c
+	 G56Lo/9mbOmqw==
+Date: Fri, 2 May 2025 22:10:57 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Jann Horn <jannh@google.com>
+Cc: Eric Dumazet <edumazet@google.com>, 
+	Kuniyuki Iwashima <kuniyu@amazon.com>, Oleg Nesterov <oleg@redhat.com>, linux-fsdevel@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Daan De Meyer <daan.j.demeyer@gmail.com>, David Rheinsberg <david@readahead.eu>, 
+	Jakub Kicinski <kuba@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Lennart Poettering <lennart@poettering.net>, Luca Boccassi <bluca@debian.org>, Mike Yuan <me@yhndnzj.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Zbigniew =?utf-8?Q?J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH RFC v2 3/6] coredump: support AF_UNIX sockets
+Message-ID: <20250502-fanden-unbeschadet-89973225255f@brauner>
+References: <20250502-work-coredump-socket-v2-0-43259042ffc7@kernel.org>
+ <20250502-work-coredump-socket-v2-3-43259042ffc7@kernel.org>
+ <CAG48ez1w+25tbSPPU6=z1rWRm3ZXuGq0ypq4jffhzUva9Bwazw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250501223025.569020-1-ameryhung@gmail.com> <20250501223025.569020-3-ameryhung@gmail.com>
- <83c8f387-c4a9-4293-9996-fec285d34c94@linux.dev> <CAMB2axO2Jkc4Ec051+BYhju2Vr_GwzZL6yhHGuohMdg2q6WLRQ@mail.gmail.com>
- <ec91dcac-d2d0-4705-aca1-8cdc1954aa11@linux.dev>
-In-Reply-To: <ec91dcac-d2d0-4705-aca1-8cdc1954aa11@linux.dev>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Fri, 2 May 2025 12:33:21 -0700
-X-Gm-Features: ATxdqUHV1YzGIXl-sVQzJeJu1zHaRUwp_mbSihMS6gvmuldsLtYwsSuHc9RfJMA
-Message-ID: <CAMB2axNCKcGST4SVxXJ+9eqna7u3JZka+qH=pp-dpmW6gM0OaQ@mail.gmail.com>
-Subject: Re: [PATCH bpf-next/net v1 2/5] selftests/bpf: Test setting and
- creating bpf qdisc as default qdisc
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com, 
-	andrii@kernel.org, daniel@iogearbox.net, martin.lau@kernel.org, 
-	xiyou.wangcong@gmail.com, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAG48ez1w+25tbSPPU6=z1rWRm3ZXuGq0ypq4jffhzUva9Bwazw@mail.gmail.com>
 
-On Fri, May 2, 2025 at 12:27=E2=80=AFPM Martin KaFai Lau <martin.lau@linux.=
-dev> wrote:
->
-> On 5/2/25 10:52 AM, Amery Hung wrote:
-> >>> +static void test_default_qdisc_attach_to_mq(void)
-> >>> +{
-> >>> +     struct bpf_qdisc_fifo *fifo_skel;
-> >>> +     char default_qdisc[IFNAMSIZ];
-> >>> +     struct netns_obj *netns;
-> >>> +     char tc_qdisc_show[64];
-> >>> +     struct bpf_link *link;
-> >>> +     char *str_ret;
-> >>> +     FILE *tc;
-> >>> +     int err;
-> >>> +
-> >>> +     fifo_skel =3D bpf_qdisc_fifo__open_and_load();
-> >>> +     if (!ASSERT_OK_PTR(fifo_skel, "bpf_qdisc_fifo__open_and_load"))
-> >>> +             return;
-> >>> +
-> >>> +     link =3D bpf_map__attach_struct_ops(fifo_skel->maps.fifo);
-> >>
-> >>          fifo_skel->links.fifo =3D bpf_map__attach_struct_ops(....);
-> >>
-> >> Then no need to bpf_link__destroy(link). bpf_qdisc_fifo__destroy() sho=
-uld do.
-> >>
-> >
-> > I see. I assume it will also be okay to set autoattach and call
-> > bpf_qdisc_fifo__attach()?
->
-> Good point. bpf_qdisc_fifo__attach() will be even simpler. I thought the
-> autoattach is true by default. Please check.
->
+On Fri, May 02, 2025 at 04:04:32PM +0200, Jann Horn wrote:
+> On Fri, May 2, 2025 at 2:42 PM Christian Brauner <brauner@kernel.org> wrote:
+> > diff --git a/fs/coredump.c b/fs/coredump.c
+> [...]
+> > @@ -801,6 +841,73 @@ void do_coredump(const kernel_siginfo_t *siginfo)
+> >                 }
+> >                 break;
+> >         }
+> > +       case COREDUMP_SOCK: {
+> > +               struct file *file __free(fput) = NULL;
+> > +#ifdef CONFIG_UNIX
+> > +               ssize_t addr_size;
+> > +               struct sockaddr_un unix_addr = {
+> > +                       .sun_family = AF_UNIX,
+> > +               };
+> > +               struct sockaddr_storage *addr;
+> > +
+> > +               /*
+> > +                * TODO: We need to really support core_pipe_limit to
+> > +                * prevent the task from being reaped before userspace
+> > +                * had a chance to look at /proc/<pid>.
+> > +                *
+> > +                * I need help from the networking people (or maybe Oleg
+> > +                * also knows?) how to do this.
+> > +                *
+> > +                * IOW, we need to wait for the other side to shutdown
+> > +                * the socket/terminate the connection.
+> > +                *
+> > +                * We could just read but then userspace could sent us
+> > +                * SCM_RIGHTS and we just shouldn't need to deal with
+> > +                * any of that.
+> > +                */
+> 
+> I don't think userspace can send you SCM_RIGHTS if you don't do a
+> recvmsg() with a control data buffer?
 
-You are right. It is true by default. I will also clean up other qdisc
-subtests in this way.
+Oh hm, then maybe just a regular read at the end would work. As soon as
+userspace send us anything or we get a close event we just disconnect.
+
+But btw, I think we really need a recvmsg() flag that allows a receiver
+to refuse SCM_RIGHTS/file descriptors from being sent to it. IIRC, right
+now this is a real issue that systemd works around by always calling its
+cmsg_close_all() helper after each recvmsg() to ensure that no one sent
+it file descriptors it didn't want. The problem there is that someone
+could have sent it an fd to a hanging NFS server or something and then
+it would hang in close() even though it never even wanted any file
+descriptors in the first place.
+
+> 
+> > +               if (WARN_ON_ONCE(core_pipe_limit)) {
+> > +                       retval = -EINVAL;
+> > +                       goto close_fail;
+> > +               }
+> > +
+> > +               retval = strscpy(unix_addr.sun_path, cn.corename, sizeof(unix_addr.sun_path));
+> > +               if (retval < 0)
+> > +                       goto close_fail;
+> > +               addr_size = offsetof(struct sockaddr_un, sun_path) + retval + 1,
+> > +
+> > +               file = __sys_socket_file(AF_UNIX, SOCK_STREAM, 0);
+> > +               if (IS_ERR(file))
+> > +                       goto close_fail;
+> > +
+> > +               /*
+> > +                * It is possible that the userspace process which is
+> > +                * supposed to handle the coredump and is listening on
+> > +                * the AF_UNIX socket coredumps. This should be fine
+> > +                * though. If this was the only process which was
+> > +                * listen()ing on the AF_UNIX socket for coredumps it
+> > +                * obviously won't be listen()ing anymore by the time it
+> > +                * gets here. So the __sys_connect_file() call will
+> > +                * often fail with ECONNREFUSED and the coredump.
+> 
+> Why will the server not be listening anymore? Have the task's file
+> descriptors already been closed by the time we get here?
+
+No, the file descriptors are still open.
+
+> 
+> (Maybe just get rid of this comment, I agree with the following
+> comment saying we should let userspace deal with this.)
+
+Good idea.
+
+> 
+> > +                * In general though, userspace should just mark itself
+> > +                * non dumpable and not do any of this nonsense. We
+> > +                * shouldn't work around this.
+> > +                */
+> > +               addr = (struct sockaddr_storage *)(&unix_addr);
+> > +               retval = __sys_connect_file(file, addr, addr_size, O_CLOEXEC);
+> 
+> Have you made an intentional decision on whether you want to connect
+> to a unix domain socket with a path relative to current->fs->root (so
+> that containers can do their own core dump handling) or relative to
+> the root namespace root (so that core dumps always reach the init
+> namespace's core dumping even if a process sandboxes itself with
+> namespaces or such)? Also, I think this connection attempt will be
+
+Fsck no. :) I just jotted this down as an RFC. Details below.
+
+> subject to restrictions imposed by (for example) Landlock or AppArmor,
+> I'm not sure if that is desired here (since this is not actually a
+> connection that the process in whose context the call happens decided
+> to make, it's something the system administrator decided to do, and
+> especially with Landlock, policies are controlled by individual
+> applications that may not know how core dumps work on the system).
+> 
+> I guess if we keep the current behavior where the socket path is
+> namespaced, then we also need to keep the security checks, since an
+> unprivileged user could probably set up a namespace and chroot() to a
+> place where the socket path (indirectly, through a symlink) refers to
+> an arbitrary socket...
+> 
+> An alternative design might be to directly register the server socket
+> on the userns/mountns/netns or such in some magic way, and then have
+> the core dumping walk up the namespace hierarchy until it finds a
+> namespace that has opted in to using its own core dumping socket, and
+> connect to that socket bypassing security checks. (A bit like how
+> namespaced binfmt_misc works.) Like, maybe userspace with namespaced
+
+Yeah, I namespaced that thing. :)
+
+> CAP_SYS_ADMIN could bind() to some magic UNIX socket address, or use
+> some new setsockopt() on the socket or such, to become the handler of
+> core dumps? This would also have the advantage that malicious
+> userspace wouldn't be able to send fake bogus core dumps to the
+> server, and the server would provide clear consent to being connected
+> to without security checks at connection time.
+
+I think that's policy that I absolute don't want the kernel to get
+involved in unless absolutely necessary. A few days ago I just discussed
+this at length with Lennart and the issue is that systemd would want to
+see all coredumps on the system independent of the namespace they're
+created in. To have a per-namespace (userns/mountns/netns) coredump
+socket would invalidate that one way or the other and end up hiding
+coredumps from the administrator unless there's some elaborate scheme
+where it doesn't.
+
+systemd-coredump (and Apport fwiw) has infrastructure to forward
+coredumps to individual services and containers and it's already based
+on AF_UNIX afaict. And I really like that it's the job of userspace to
+deal with this instead of the kernel having to get involved in that
+mess.
+
+So all of this should be relative to the initial namespace. I want a
+separate security hook though so an LSMs can be used to prevent
+processes from connecting to the coredump socket.
+
+My idea has been that systemd-coredump could use a bpf lsm program that
+would allow to abort a coredump before the crashing process connects to
+the socket and again make this a userspace policy issue.
+
+> 
+> > +               if (retval)
+> > +                       goto close_fail;
+> > +
+> > +               /* The peer isn't supposed to write and we for sure won't read. */
+> > +               retval =  __sys_shutdown_sock(sock_from_file(file), SHUT_RD);
+> > +               if (retval)
+> > +                       goto close_fail;
+> > +
+> > +               cprm.limit = RLIM_INFINITY;
+> > +#endif
+> > +               cprm.file = no_free_ptr(file);
+> > +               break;
+> > +       }
+> >         default:
+> >                 WARN_ON_ONCE(true);
+> >                 retval = -EINVAL;
+> > @@ -818,7 +925,10 @@ void do_coredump(const kernel_siginfo_t *siginfo)
+> >                  * have this set to NULL.
+> >                  */
+> >                 if (!cprm.file) {
+> > -                       coredump_report_failure("Core dump to |%s disabled", cn.corename);
+> > +                       if (cn.core_type == COREDUMP_PIPE)
+> > +                               coredump_report_failure("Core dump to |%s disabled", cn.corename);
+> > +                       else
+> > +                               coredump_report_failure("Core dump to :%s disabled", cn.corename);
+> >                         goto close_fail;
+> >                 }
+> >                 if (!dump_vma_snapshot(&cprm))
+> > @@ -839,8 +949,25 @@ void do_coredump(const kernel_siginfo_t *siginfo)
+> >                 file_end_write(cprm.file);
+> >                 free_vma_snapshot(&cprm);
+> >         }
+> > -       if ((cn.core_type == COREDUMP_PIPE) && core_pipe_limit)
+> > -               wait_for_dump_helpers(cprm.file);
+> > +
+> > +       if (core_pipe_limit) {
+> > +               switch (cn.core_type) {
+> > +               case COREDUMP_PIPE:
+> > +                       wait_for_dump_helpers(cprm.file);
+> > +                       break;
+> > +               case COREDUMP_SOCK: {
+> > +                       /*
+> > +                        * TODO: Wait for the coredump handler to shut
+> > +                        * down the socket so we prevent the task from
+> > +                        * being reaped.
+> > +                        */
+> 
+> Hmm, I'm no expert but maybe you could poll for the POLLRDHUP event...
+> though that might require writing your own helper with a loop that
+> does vfs_poll() and waits for a poll wakeup, since I don't think there
+> is a kernel helper analogous to a synchronous poll() syscall yet.
+> 
+> > +                       break;
+> > +               }
+> > +               default:
+> > +                       break;
+> > +               }
+> > +       }
+> > +
+> >  close_fail:
+> >         if (cprm.file)
+> >                 filp_close(cprm.file, NULL);
