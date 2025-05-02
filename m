@@ -1,38 +1,38 @@
 Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023D822F77F
-	for <netdev@vger.kernel.org>; Fri,  2 May 2025 23:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4321244678
+	for <netdev@vger.kernel.org>; Fri,  2 May 2025 23:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746229100; cv=none; b=iEtqBm31HmslSOpGuUnYoi9E9vmT7AaDlXCSKvKTYeRc7eHvGLwHC6uo7G6pWXtjDSzhNJNsnue6YdIvA0iqgOUixVfbjF+cbeqHqVJZI+3MZRQ6w8dyYbOLuVwAJNcUcJjxWFeXi+lzuqInmJuiFXhcwD2K6BpBoTRj5gV1IYY=
+	t=1746229103; cv=none; b=Q4DTCw5BWWOG/6GYFYD+/JgKmkOWHgIcyRpMe2cH/JN8Fexd3Q0oaEyqsBNCUhzI9A1r8VCdSF99RfZA8aVYZl8XGqukSCNqlAvtsJA2QwXpHFgBgbCB7teHaw63WgdUJhRnokcAkV6nlC2aG72eXeIsBRVmNj/ROhkk7xka/ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746229100; c=relaxed/simple;
-	bh=Kq1iDNgh/5EccG5SCgNb0UUqYBx6+4Lr3WD+AfV2CYM=;
+	s=arc-20240116; t=1746229103; c=relaxed/simple;
+	bh=/5tqR+EKgP/AWXnIdD3vm+rBL9D14aOsXqmoZvaXSXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKQ/oVF05inr2Jvb4R8ayGsNjTGVKr/QPkhOaF4jLRXBq/2yMen6uWJtbhldQpCijoDwkvc/CUVXH/BGaWiBtuGMXb23mqzE8bugmLO89pejEgD6EAPkDwg/foqozob4nWEF7hkD5fEmwpNOYeFxYy6bEeNEvfHfNwRDC/WyVcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=N9ApBULY; arc=none smtp.client-ip=171.64.64.25
+	 MIME-Version; b=Yc0PyGf3L9cbqeIrRrBGex/pMnUvgeP1mnmR3yPFO6iADxhuwaq3XkH5l7gZQUktAs7zoDoiG8kTuuKztBFKWCuoCA09IWtrqoPQhAY8R2Ag4r6CbK5RjhdcX3xxY0yzMZhI7s5+m8MaXpnzx1GlUfK+DhMeJVyTRcDgW5a/kcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=SWCAX7Nr; arc=none smtp.client-ip=171.64.64.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="N9ApBULY"
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="SWCAX7Nr"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=0S/RYLRmm68qUeRHXGrMvUwLMghP/IVrguboouBfNEc=; t=1746229099; x=1747093099; 
-	b=N9ApBULYCZEDQ+DyPlUpkhcnvHC74yWBuyZ2hNIgdFotQCTVPivOZd/D8AfCVdl3oa2R1KDMl2z
-	lqmkWumVeI1DNPUfZvThW1epcwzo9PEbRfm/UY5fAKWCPZ/xBBmDTIv9gBP07uXVNy31S6fF3NSlZ
-	4VYf0zZ+T91Z+u4jBvk4CgdozVCdq4dooQpszPnro2aqul3qSlmw/AZ7lTOmrz8TISIiPcP+pzUTa
-	3bJ85kG9+SMQOr1G93iqQVEgBnB9PGQA3ij64EIQWTTeZe7itVDznW4eW3c8emyptuWb/4x8JTvC+
-	4MKqwizFLohq8qbEmallZbqv4LwzMo8gD9Fw==;
+	bh=8/akm69R6hqh9yMwUhrlkZD3YiRbqqr8iJhYI/RtVfo=; t=1746229101; x=1747093101; 
+	b=SWCAX7NrJyHFNQjCV+Nq/a34T+NcO8NmZGFzzl3DFTAeyflcK3tO40J7gI1G8M51nO84l19KsQN
+	z/i+ybly/iPNMRf7p7t1vSEGfvCcVX6AFbV43XS0BVtZTVpJ11P2Sr6iZtsjf9Mlunj1Mmga+DFgi
+	gM3HZozsne96JNjJDhj9GF3t7fxxCIUqorX9lO+StkMl4qIftNsEeZTQbkhvu4H6TZkww++hSfR/6
+	s7AC4mamDxeFNH8iZhRJJLTnz8muJF5CjBUKlJJ5ZhelmqL5FtDu4YDkR6DdVdS/sDiLmE5BydLT2
+	6N8ZYyIHeAY/M3K8EcGK74WE5f9ZfRrLlwbA==;
 Received: from ouster448.stanford.edu ([172.24.72.71]:64199 helo=localhost.localdomain)
 	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ouster@cs.stanford.edu>)
-	id 1uAzxR-0007if-QD; Fri, 02 May 2025 16:38:18 -0700
+	id 1uAzxU-0007if-Fg; Fri, 02 May 2025 16:38:21 -0700
 From: John Ousterhout <ouster@cs.stanford.edu>
 To: netdev@vger.kernel.org
 Cc: pabeni@redhat.com,
@@ -40,9 +40,9 @@ Cc: pabeni@redhat.com,
 	horms@kernel.org,
 	kuba@kernel.org,
 	John Ousterhout <ouster@cs.stanford.edu>
-Subject: [PATCH net-next v8 11/15] net: homa: create homa_utils.c
-Date: Fri,  2 May 2025 16:37:24 -0700
-Message-ID: <20250502233729.64220-12-ouster@cs.stanford.edu>
+Subject: [PATCH net-next v8 13/15] net: homa: create homa_timer.c
+Date: Fri,  2 May 2025 16:37:26 -0700
+Message-ID: <20250502233729.64220-14-ouster@cs.stanford.edu>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20250502233729.64220-1-ouster@cs.stanford.edu>
 References: <20250502233729.64220-1-ouster@cs.stanford.edu>
@@ -54,136 +54,185 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Score: -101.0
-X-Scan-Signature: b34415b11b396f6021f8c280aedacb6a
+X-Scan-Signature: 6c8cb0273de1460ab521b985bed8743e
 
-This file contains functions for constructing and destructing
-homa structs.
+This file contains code that wakes up periodically to check for
+missing data, initiate retransmissions, and declare peer nodes
+"dead".
 
 Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
 
 ---
-Changes for v8:
-* Accommodate homa_pacer refactoring
-
 Changes for v7:
-* Make Homa a pernet subsystem
-* Add support for tx memory accounting
-* Remove "lock_slow" functions, which don't add functionality in this
-  patch series
+* Interface changes to homa_sock_start_scan etc.
+* Remove locker argument from locking functions
 * Use u64 and __u64 properly
 ---
- net/homa/homa_utils.c | 103 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 103 insertions(+)
- create mode 100644 net/homa/homa_utils.c
+ net/homa/homa_timer.c | 156 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 156 insertions(+)
+ create mode 100644 net/homa/homa_timer.c
 
-diff --git a/net/homa/homa_utils.c b/net/homa/homa_utils.c
+diff --git a/net/homa/homa_timer.c b/net/homa/homa_timer.c
 new file mode 100644
-index 000000000000..01716014afaa
+index 000000000000..5bb29310f7c7
 --- /dev/null
-+++ b/net/homa/homa_utils.c
-@@ -0,0 +1,103 @@
++++ b/net/homa/homa_timer.c
+@@ -0,0 +1,156 @@
 +// SPDX-License-Identifier: BSD-2-Clause
 +
-+/* This file contains miscellaneous utility functions for Homa, such
-+ * as initializing and destroying homa structs.
++/* This file handles timing-related functions for Homa, such as retries
++ * and timeouts.
 + */
 +
 +#include "homa_impl.h"
-+#include "homa_pacer.h"
 +#include "homa_peer.h"
 +#include "homa_rpc.h"
 +#include "homa_stub.h"
 +
 +/**
-+ * homa_init() - Constructor for homa objects.
-+ * @homa:   Object to initialize.
-+ * @net:    Network namespace that @homa is associated with.
-+ *
-+ * Return:  0 on success, or a negative errno if there was an error. Even
-+ *          if an error occurs, it is safe (and necessary) to call
-+ *          homa_destroy at some point.
++ * homa_check_rpc() -  Invoked for each RPC during each timer pass; does
++ * most of the work of checking for time-related actions such as sending
++ * resends, aborting RPCs for which there is no response, and sending
++ * requests for acks. It is separate from homa_timer because homa_timer
++ * got too long and deeply indented.
++ * @rpc:     RPC to check; must be locked by the caller.
 + */
-+int homa_init(struct homa *homa, struct net *net)
++void homa_check_rpc(struct homa_rpc *rpc)
++	__must_hold(&rpc->bucket->lock)
 +{
-+	int err;
++	struct homa *homa = rpc->hsk->homa;
++	struct homa_resend_hdr resend;
 +
-+	memset(homa, 0, sizeof(*homa));
-+	atomic64_set(&homa->next_outgoing_id, 2);
-+	homa->pacer = homa_pacer_new(homa, net);
-+	if (IS_ERR(homa->pacer)) {
-+		err = PTR_ERR(homa->pacer);
-+		homa->pacer = NULL;
-+		return err;
-+	}
-+	homa->prev_default_port = HOMA_MIN_DEFAULT_PORT - 1;
-+	homa->port_map = kmalloc(sizeof(*homa->port_map), GFP_KERNEL);
-+	if (!homa->port_map) {
-+		pr_err("%s couldn't create port_map: kmalloc failure",
-+		       __func__);
-+		return -ENOMEM;
-+	}
-+	homa_socktab_init(homa->port_map);
-+	homa->peers = kmalloc(sizeof(*homa->peers), GFP_KERNEL);
-+	if (!homa->peers) {
-+		pr_err("%s couldn't create peers: kmalloc failure", __func__);
-+		return -ENOMEM;
-+	}
-+	err = homa_peertab_init(homa->peers);
-+	if (err) {
-+		pr_err("%s couldn't initialize peer table (errno %d)\n",
-+		       __func__, -err);
-+		return err;
++	/* See if we need to request an ack for this RPC. */
++	if (!homa_is_client(rpc->id) && rpc->state == RPC_OUTGOING &&
++	    rpc->msgout.next_xmit_offset >= rpc->msgout.length) {
++		if (rpc->done_timer_ticks == 0) {
++			rpc->done_timer_ticks = homa->timer_ticks;
++		} else {
++			/* >= comparison that handles tick wrap-around. */
++			if ((rpc->done_timer_ticks + homa->request_ack_ticks
++					- 1 - homa->timer_ticks) & 1 << 31) {
++				struct homa_need_ack_hdr h;
++
++				homa_xmit_control(NEED_ACK, &h, sizeof(h), rpc);
++			}
++		}
 +	}
 +
-+	/* Wild guesses to initialize configuration values... */
-+	homa->resend_ticks = 5;
-+	homa->resend_interval = 5;
-+	homa->timeout_ticks = 100;
-+	homa->timeout_resends = 5;
-+	homa->request_ack_ticks = 2;
-+	homa->reap_limit = 10;
-+	homa->dead_buffs_limit = 5000;
-+	homa->max_gso_size = 10000;
-+	homa->wmem_max = 100000000;
-+	homa->bpage_lease_usecs = 10000;
-+	return 0;
++	if (rpc->state == RPC_INCOMING) {
++		if (rpc->msgin.num_bpages == 0) {
++			/* Waiting for buffer space, so no problem. */
++			rpc->silent_ticks = 0;
++			return;
++		}
++	} else if (!homa_is_client(rpc->id)) {
++		/* We're the server and we've received the input message;
++		 * no need to worry about retries.
++		 */
++		rpc->silent_ticks = 0;
++		return;
++	}
++
++	if (rpc->state == RPC_OUTGOING) {
++		if (rpc->msgout.next_xmit_offset < rpc->msgout.length) {
++			/* There are granted bytes that we haven't transmitted,
++			 * so no need to be concerned; the ball is in our court.
++			 */
++			rpc->silent_ticks = 0;
++			return;
++		}
++	}
++
++	if (rpc->silent_ticks < homa->resend_ticks)
++		return;
++	if (rpc->silent_ticks >= homa->timeout_ticks) {
++		homa_rpc_abort(rpc, -ETIMEDOUT);
++		return;
++	}
++	if (((rpc->silent_ticks - homa->resend_ticks) % homa->resend_interval)
++			!= 0)
++		return;
++
++	/* Issue a resend for the bytes just after the last ones received
++	 * (gaps in the middle were already handled by homa_gap_retry above).
++	 */
++	if (rpc->msgin.length < 0) {
++		/* Haven't received any data for this message; request
++		 * retransmission of just the first packet (the sender
++		 * will send at least one full packet, regardless of
++		 * the length below).
++		 */
++		resend.offset = htonl(0);
++		resend.length = htonl(100);
++	} else {
++		homa_gap_retry(rpc);
++		resend.offset = htonl(rpc->msgin.recv_end);
++		resend.length = htonl(rpc->msgin.length - rpc->msgin.recv_end);
++		if (resend.length == 0)
++			return;
++	}
++	homa_xmit_control(RESEND, &resend, sizeof(resend), rpc);
 +}
 +
 +/**
-+ * homa_destroy() -  Destructor for homa objects.
-+ * @homa:      Object to destroy.
++ * homa_timer() - This function is invoked at regular intervals ("ticks")
++ * to implement retries and aborts for Homa.
++ * @homa:    Overall data about the Homa protocol implementation.
 + */
-+void homa_destroy(struct homa *homa)
++void homa_timer(struct homa *homa)
 +{
-+	/* The order of the following statements matters! */
-+	if (homa->port_map) {
-+		homa_socktab_destroy(homa->port_map);
-+		kfree(homa->port_map);
-+		homa->port_map = NULL;
-+	}
-+	if (homa->pacer) {
-+		homa_pacer_destroy(homa->pacer);
-+		homa->pacer = NULL;
-+	}
-+	if (homa->peers) {
-+		homa_peertab_destroy(homa->peers);
-+		kfree(homa->peers);
-+		homa->peers = NULL;
-+	}
-+}
++	struct homa_socktab_scan scan;
++	struct homa_sock *hsk;
++	struct homa_rpc *rpc;
++	int total_rpcs = 0;
++	int rpc_count = 0;
 +
-+/**
-+ * homa_spin() - Delay (without sleeping) for a given time interval.
-+ * @ns:   How long to delay (in nanoseconds)
-+ */
-+void homa_spin(int ns)
-+{
-+	u64 end;
++	homa->timer_ticks++;
 +
-+	end = sched_clock() + ns;
-+	while (sched_clock() < end)
-+		/* Empty loop body.*/
-+		;
++	/* Scan all existing RPCs in all sockets. */
++	for (hsk = homa_socktab_start_scan(homa->port_map, &scan);
++			hsk; hsk = homa_socktab_next(&scan)) {
++		while (hsk->dead_skbs >= homa->dead_buffs_limit)
++			/* If we get here, it means that homa_wait_for_message
++			 * isn't keeping up with RPC reaping, so we'll help
++			 * out.  See reap.txt for more info.
++			 */
++			if (homa_rpc_reap(hsk, false) == 0)
++				break;
++
++		if (list_empty(&hsk->active_rpcs) || hsk->shutdown)
++			continue;
++
++		if (!homa_protect_rpcs(hsk))
++			continue;
++		rcu_read_lock();
++		list_for_each_entry_rcu(rpc, &hsk->active_rpcs, active_links) {
++			total_rpcs++;
++			homa_rpc_lock(rpc);
++			if (rpc->state == RPC_IN_SERVICE) {
++				rpc->silent_ticks = 0;
++				homa_rpc_unlock(rpc);
++				continue;
++			}
++			rpc->silent_ticks++;
++			homa_check_rpc(rpc);
++			homa_rpc_unlock(rpc);
++			rpc_count++;
++			if (rpc_count >= 10) {
++				/* Give other kernel threads a chance to run
++				 * on this core.
++				 */
++				rcu_read_unlock();
++				schedule();
++				rcu_read_lock();
++				rpc_count = 0;
++			}
++		}
++		rcu_read_unlock();
++		homa_unprotect_rpcs(hsk);
++	}
++	homa_socktab_end_scan(&scan);
++	homa_skb_release_pages(homa);
 +}
 -- 
 2.43.0
