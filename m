@@ -1,48 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D9D17F7
-	for <netdev@vger.kernel.org>; Sat,  3 May 2025 02:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5184A17F7;
+	Sat,  3 May 2025 02:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746238550; cv=none; b=i6vr5bZ+glilKJk/S0bPbe44yCtbmai/gTis0yvcICQS9cOOpn0iLPSgxOrG762N/349pvvzlcsGpDItSnstYwwAMTMsl2GozKDbRXblDjxFy0TsOspM4NVyX8SUijM4TUl1xNmZQ0NqicgEO/lCZm3eoPtBZO1D+XYkY8h+FCQ=
+	t=1746238616; cv=none; b=aJbaOZ1VDXIqJ3ImzZIEgmlEkTD5NA7k3kbZ/yB6OJabvmY3JSU6DoFjmqVTwVgGeuBKy/bXiEUFKw46Ptl7m7pr13hk2AEvJCD0aFVOg2l2bdmP9iOByX4nY8uVMBFK5wUQ4M1f6/e/H2SdT4yjJ4+YwZDOy0mSe2IrX9d3r6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746238550; c=relaxed/simple;
-	bh=1tKnZbL8Hboz3gXw6460I3eBAVmQmhe0jp+0mrWQEr8=;
+	s=arc-20240116; t=1746238616; c=relaxed/simple;
+	bh=S9yP0Y2wTVUeGaFh/FcZXkUd4IK0A01eTYPb6dzK/7s=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XC5osGwx4btCgdWccItokEKzjZP8ghSuDKBFIqMmHN7RU2a08Hjzhzg6E0WYPLnInverdlJ87Voc261oEepfBCh6ZGNY7nY+djezmWSfCdhzNdi+YFLUcxWE3J7KNhEmpG5Ou22guMTStj8lKgxOCMA+VUYiCN8s4DEVIIS//eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rUgwD3Il; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Dir9VJosNwSuOb0F8cLTkS+xnmmu/L16DtT9hX4ioGwxwH685ZJjxHT1PvWmTgBXPkgekqO/fLqnVFxlQaU8Tn5YH1bVMHBFuodcK9cdUmzZCCNRUeTgyB+CZ8zFFvt/myepmn2Xo+0ewzHs3AWVnGArB74nGZOiZVnC/fRghDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=piP8naiz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rUgwD3Il"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A897CC4CEE4;
-	Sat,  3 May 2025 02:15:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="piP8naiz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B42EC4CEE4;
+	Sat,  3 May 2025 02:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746238550;
-	bh=1tKnZbL8Hboz3gXw6460I3eBAVmQmhe0jp+0mrWQEr8=;
+	s=k20201202; t=1746238615;
+	bh=S9yP0Y2wTVUeGaFh/FcZXkUd4IK0A01eTYPb6dzK/7s=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rUgwD3IlHGGQrI9PKa9NEku1V7+aCeyrdEkIk4PDkBK4969GSrGNFGoBJusQJZA1g
-	 3S6Y2RzVEQ4Y1MrQZK/6ZgaRrP0ZT4H6EFjxgGuV1FInzUJs9bmjTMUqUSnJ6L5SmH
-	 3P6NVzK62hMndRLosyhkDrO1ZP3fOrFAxebQco1AmQulHo9YjuXnf/99g40VTPmsI3
-	 kD67DYHMlfw09+mke44AXDTqpF04QRuf6S7maDefvz/QCgCGrUiTyxbcenGNtl/u2f
-	 fr+d0G5NA0dz83ntf/sS2rx10zliDUeq28j1LVCY3AyhyWbtRwij2TMwSjMPfkIny+
-	 WgwcwPFzqmruw==
-Date: Fri, 2 May 2025 19:15:48 -0700
+	b=piP8naizBQy2TPrVzfgu0ohGerlPNF8JCENFcyEFQf0D49XYtbImJth/oC8z4BqsO
+	 wjuWxhj6+wqRdqNMUsb3oqbt7Pfw6VPcZFb48Nw6alCV900VGZdmSokgJ1bl+TT2Gb
+	 87FXhVsMftqNtwz9cR1GEuUf8FtNN0wLrVUpmaGojN0MG5kMMBMSgi14P6He40E5eS
+	 G4EXTjL/GgEzwdgX7mviHI2KD/QMhpEfAYzjke4wz73QpGSB/t+vhS0jbz3LWn8GRE
+	 ufQ8pquxuafGG9bIfcUt+MiBdLT3zgghIgKtwQU70xdheqUB8JQE6fdgmmFQOwfdld
+	 fmzHxNMaSDYOA==
+Date: Fri, 2 May 2025 19:16:54 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Joe Damato <jdamato@fastly.com>
-Cc: Samiullah Khawaja <skhawaja@google.com>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, almasrymina@google.com, willemb@google.com,
- mkarsten@uwaterloo.ca, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v6] Add support to set napi threaded for
- individual napi
-Message-ID: <20250502191548.559cc416@kernel.org>
-In-Reply-To: <aBJntw1WwxxFJ9e2@LQ3V64L9R2>
-References: <20250429222656.936279-1-skhawaja@google.com>
-	<aBFnU2Gs0nRZbaKw@LQ3V64L9R2>
-	<CAAywjhQZDd2rJiF35iyYqMd86zzgDbLVinfEcva0b1=6tne3Pg@mail.gmail.com>
-	<aBJVi0LmwqAtQxv_@LQ3V64L9R2>
-	<CAAywjhQVdYuc3NuLYNMgf90Ng_zjhFyTQRWLnPR7Mk-2MWQ2JA@mail.gmail.com>
-	<aBJntw1WwxxFJ9e2@LQ3V64L9R2>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S .
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, Hayes Wang
+ <hayeswang@realtek.com>
+Subject: Re: [PATCH net-next] r8152: use SHA-256 library API instead of
+ crypto_shash API
+Message-ID: <20250502191654.2da1f58b@kernel.org>
+In-Reply-To: <20250428191606.856198-1-ebiggers@kernel.org>
+References: <20250428191606.856198-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,22 +48,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 30 Apr 2025 11:11:03 -0700 Joe Damato wrote:
->   > We should check the discussions we had when threaded NAPI was added.
->   > I feel nothing was exposed in terms of observability so leaving the
->   > thread running didn't seem all that bad back then. Stopping the NAPI
->   > polling safely is not entirely trivial, we'd need to somehow grab
->   > the SCHED bit like busy polling does, and then re-schedule.
->   > Or have the thread figure out that it's done and exit.  
->   
->   Actually, we ended up adding the explicit ownership bits so it may not
->   be all that hard any more.. Worth trying.
+On Mon, 28 Apr 2025 12:16:06 -0700 Eric Biggers wrote:
+> From: Eric Biggers <ebiggers@google.com>
 > 
-> So based on all of the messages in the v5 and in the past, it seems pretty
-> clear to me that this needs to be fixed.
+> This user of SHA-256 does not support any other algorithm, so the
+> crypto_shash abstraction provides no value.  Just use the SHA-256
+> library API instead, which is much simpler and easier to use.
+> 
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
 
-Joe is right, sorry for not replying earlier.
-Let's try to stop / start the thread on SET immediately.
-
-IIRC there was also a suggestion to defer start / stop to
-napi_enable() if NAPI is not enabled -- that's not needed.
+Applied, thanks!
