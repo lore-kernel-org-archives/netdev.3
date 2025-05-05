@@ -1,45 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87DE2FB45C;
-	Mon,  5 May 2025 23:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27959385402;
+	Mon,  5 May 2025 23:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487405; cv=none; b=PXnG+v1E101gdqicBSbKqNMDVsrqBuU+Ienmw2G9TQ/KAUWPwRwRMIQ5ir5caEUP2bVpP8QlZtvN7nbh/8TTsQDaDlkD91t/3ljMxW6EpLDeg4iRmVagkRf2Ti6v/6IphXcKLhyKymmcuzjjujg5C/4kvlVFpmwAhGKetYfhejM=
+	t=1746487424; cv=none; b=SBT0u/4CfB2v958HIcsxrFI7l0L181O8Tqq1RQbm0H97Sd36LgLQFWSWOhx0ugWzM5rdItbxlv2Gqz8knDjHA0AufNRifzYOL15QW1Uat8HqAW7STOEvN/Qafi4ypNaSA9UWlNfte4dH9b1Gl+aw2i5/MUx1azsag66MRnnEjPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487405; c=relaxed/simple;
-	bh=TLK/nw2rcYQzO6iVjYaqZj4A8EqjcfM5zZQ6+AxLI/4=;
+	s=arc-20240116; t=1746487424; c=relaxed/simple;
+	bh=fzSzdTe7U8gOqg5CSe06w5il22KPV5S86Hppe8x/Dxg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=opGaJ7c4dT1M0l9LduPh+c3UT2oQg0IfuLGg21HmXPBkfyBd62lArPuZkhKXkz8cb/QM4NRxswvggSnk81XtKVOzYQBi0to2FHHqiM9dk8f0I7i0d+WiscRgcFSu7drMsxRDL8PLNM+K3w82Py6Ojr5bBXqkPlkUfJkbpeT6PLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mbOJ7T2x; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=MeKQq5H+RXhsS/XzzZ2asi5EIKbERoDe8BIh5PTcmzuugJGeNqmS1C99lvimqgs1UGSZLXeephV9vX6g23V0oLFwqjWcs8Ga65k3aAvbc6BoFAsmGClR4CrkT+Y41ZVmGaO4EOd7Uj0spTQaf2jdsefmd/HSG07idH8f+xOeng4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LkEeVeLb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mbOJ7T2x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A27C4CEE4;
-	Mon,  5 May 2025 23:23:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LkEeVeLb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB2DC4CEED;
+	Mon,  5 May 2025 23:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487404;
-	bh=TLK/nw2rcYQzO6iVjYaqZj4A8EqjcfM5zZQ6+AxLI/4=;
+	s=k20201202; t=1746487423;
+	bh=fzSzdTe7U8gOqg5CSe06w5il22KPV5S86Hppe8x/Dxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mbOJ7T2x03FT5Yn1xinxvVrTkFAlzupqeocTWv8hYJwgREJ2V1zy0xe59acJtlD0H
-	 y6yZwIj1/VAeFHr/u3cQCynnigdpU4kBLPyqDIFgbsuX01DPSiTG3WgYjfbQzkR3Z7
-	 vU2PFLxG1cRdHMOpPw7psgE8tObkR6sTGluJzz8BBDJzKNOyQ5Q6kxMTTlLJp8AIjz
-	 GZAjBkPgTDRopHNdv0tDvc1T+GXOVicXFpC/mJ2iLJo4CGWKfXk4SHYZyOx5X4m51m
-	 jNfTK2iAmelqyOfwkd0RaGuHx1pZt+u2I/ISstjh3otdTM48U5T1ciulElu0Xz/oWL
-	 iJGig+ORMJQzQ==
+	b=LkEeVeLbCEv6cqn8LznVLHO+DyUHm2hpurZeKAeOjGEONI2OBhawuP3E2OkVJY4nX
+	 JrRpFVxJo566W1hX4v7Ogwg1ib5cdpdOpE1j8qe3AfunkcHpBDgN3fOsj287FzLb9Y
+	 fBGHM6jw6Rtl2HoMF+tE5/bPPj8Ml+KHHZ7pDVFPdsrZZv+WKMv7XaFW/PhAk+M+PI
+	 7rb4WZJBnV2An3qZvjA5DGeFp70+wAoKTo8595WqHudueCXzaDW+Vkh60yyFnhJQoI
+	 n3dfoK0vxOHuAAZKqAk0/SLjbEweLiS9+vHroFii24A0l6f4i4pyMILbucR1ue2Len
+	 6jdfGHXeQqOVA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peter Seiderer <ps.report@gmx.net>,
-	Simon Horman <horms@kernel.org>,
+Cc: William Tu <witu@nvidia.com>,
+	Daniel Jurgens <danielj@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	saeedm@nvidia.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 51/79] net: pktgen: fix access outside of user given buffer in pktgen_thread_write()
-Date: Mon,  5 May 2025 19:21:23 -0400
-Message-Id: <20250505232151.2698893-51-sashal@kernel.org>
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 63/79] net/mlx5e: set the tx_queue_len for pfifo_fast
+Date: Mon,  5 May 2025 19:21:35 -0400
+Message-Id: <20250505232151.2698893-63-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -54,47 +59,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Peter Seiderer <ps.report@gmx.net>
+From: William Tu <witu@nvidia.com>
 
-[ Upstream commit 425e64440ad0a2f03bdaf04be0ae53dededbaa77 ]
+[ Upstream commit a38cc5706fb9f7dc4ee3a443f61de13ce1e410ed ]
 
-Honour the user given buffer size for the strn_len() calls (otherwise
-strn_len() will access memory outside of the user given buffer).
+By default, the mq netdev creates a pfifo_fast qdisc. On a
+system with 16 core, the pfifo_fast with 3 bands consumes
+16 * 3 * 8 (size of pointer) * 1024 (default tx queue len)
+= 393KB. The patch sets the tx qlen to representor default
+value, 128 (1<<MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE), which
+consumes 16 * 3 * 8 * 128 = 49KB, saving 344KB for each
+representor at ECPF.
 
-Signed-off-by: Peter Seiderer <ps.report@gmx.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250219084527.20488-8-ps.report@gmx.net
+Signed-off-by: William Tu <witu@nvidia.com>
+Reviewed-by: Daniel Jurgens <danielj@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250209101716.112774-9-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/pktgen.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/pktgen.c b/net/core/pktgen.c
-index e7cde4f097908..4fd66e6466d29 100644
---- a/net/core/pktgen.c
-+++ b/net/core/pktgen.c
-@@ -1770,8 +1770,8 @@ static ssize_t pktgen_thread_write(struct file *file,
- 	i = len;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+index a40fecfdb10ca..26a9d38d1e2a7 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+@@ -1470,6 +1470,8 @@ static void mlx5e_build_rep_netdev(struct net_device *netdev)
+ 	}
  
- 	/* Read variable name */
--
--	len = strn_len(&user_buffer[i], sizeof(name) - 1);
-+	max = min(sizeof(name) - 1, count - i);
-+	len = strn_len(&user_buffer[i], max);
- 	if (len < 0)
- 		return len;
+ 	netdev->watchdog_timeo    = 15 * HZ;
++	if (mlx5_core_is_ecpf(mdev))
++		netdev->tx_queue_len = 1 << MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE;
  
-@@ -1801,7 +1801,8 @@ static ssize_t pktgen_thread_write(struct file *file,
- 	if (!strcmp(name, "add_device")) {
- 		char f[32];
- 		memset(f, 0, 32);
--		len = strn_len(&user_buffer[i], sizeof(f) - 1);
-+		max = min(sizeof(f) - 1, count - i);
-+		len = strn_len(&user_buffer[i], max);
- 		if (len < 0) {
- 			ret = len;
- 			goto out;
+ 	netdev->features       |= NETIF_F_NETNS_LOCAL;
+ 
 -- 
 2.39.5
 
