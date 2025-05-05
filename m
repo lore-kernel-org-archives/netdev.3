@@ -1,47 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72252BE7BC;
-	Mon,  5 May 2025 22:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F37A2BE7CC;
+	Mon,  5 May 2025 22:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485256; cv=none; b=ARxBH5yPwCv1IWHc0gtm6ATuFmXNOF5K1KXYpwYSCfhvov+1+RLwykdENP66zDoY9cNXx03TlvH/Aj0g4FKV5VuDBa0S+6Y7DDlzDPMbGV3Up9lo5KWat4RwnXFqC5uAD9PS8Ghv5tgM07FIpUsuD+/ghX9qeu2IxemPhkhWwTw=
+	t=1746485279; cv=none; b=WNuicQ6EGFhq7oy0KojTR9uaJt5HFxnGrnSFVtxmV7iNbdeu1kE5DhUNLZpiHOqHFXsjNZnFG4EsSya4fYhZJwH7UALjmD3DK+3Uok1HoO16TOliCjA7F8H+RmnZbVvle9rqgyJNUn/p5eLGOqRFLZfoNFq+gm8vrmtlJafEB2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485256; c=relaxed/simple;
-	bh=Z9n9wiIPdC41RfHmTwLHjKY+A1WrsoMrfXOJKYq3Qso=;
+	s=arc-20240116; t=1746485279; c=relaxed/simple;
+	bh=W/fmnVm28UABsUxm8BpRqAlkePFFxH/1wCASUfw3Z+k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WAt0c20UcRLrBOhkpyJSkukq/j7fmHw4Us1Oc9YaGN256TGDLXGe9xMUVEonSgj/kxu1qhQZU075BIdBOMtn6J4AuQUkzYLRgcgp4PgFtQTUumHHjxub4RlUOPRLWv7g8ycmdTFqzj9aVbrCzim52mjtdIdLCU6PyOrtUEe498g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aDyD300x; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Be/vcQ9H5MiKqKjbZiCoEXUf0uScK6twXC9HhF30+Jt8w0gy8eh/7soHd1FTCqReUuqdTLgzQmQp/J4+8Jf8RS9RVQC+wCnv4oBBNDJbwOnYKCdi8LE33qIBcxWQjWXmiQ1tW9J8XlMdWZ3K1mQTWoorM4ybqodu1LvQho9T7Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zfet+8yc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aDyD300x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66005C4CEF2;
-	Mon,  5 May 2025 22:47:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zfet+8yc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2031DC4CEE4;
+	Mon,  5 May 2025 22:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485256;
-	bh=Z9n9wiIPdC41RfHmTwLHjKY+A1WrsoMrfXOJKYq3Qso=;
+	s=k20201202; t=1746485279;
+	bh=W/fmnVm28UABsUxm8BpRqAlkePFFxH/1wCASUfw3Z+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aDyD300x/mOB4/lsXU4OZyGeOIHIeqSnl02RCN6FGVMEQGZsoontt6+hQZMOs/wTV
-	 qSkHyrczLndDfIetP2ogs4xgRUQim+IlF8rsNlC3fDhOnbq3291S2Pe3tFt+VC1n+K
-	 5gXq/SwVUd6fm1xTZgTsnXuZVeMUL5n0wV3FCk2Mb73JwgRvHlSOeldACRd2XRiaks
-	 Iv6Z7Z3SfbjG9qpwp32loDHhJzlijT8mQFlTQZlYb6tM628h1FBqNiGpAcBQNQCL9k
-	 JVazEfvUE2jFgNyyRbScVbl4qJjOYFuI58TyBSGtNluUt92JdOP191v7IgSyGJpw8N
-	 3DexpyVpF76ew==
+	b=Zfet+8yc7R62CN8UfwbqMUAterl85qBQpagXJaeO6l+pc3G4cqlCWVb+meMAlTO5p
+	 3G44aWjmfXCRGpVjvjrLPPOmSKFbW2ObQcsu84rVVMrDRSkanRZzXpivPBXgn0ukGX
+	 pI4y9K0a2DSPtTjPk5ZCCT3RbSdCxITcNaZcu/ZAeJUOzbohYahYK/ihhXChg/LsuT
+	 46g3vzAAAJ7Z3c8oB11YNuafKr6hVPXhdVozTvEvE5XAz03g49wMhWgyiZg+R+SCbX
+	 xfPcy8dWqInvEUm/qJP/pASjG0VlI/LDW+oTPC9VU77wJ1olsCAyqAFRRowO8Pt/ms
+	 6MKb0gq1ju5KQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kevin Krakauer <krakauer@google.com>,
-	Willem de Bruijn <willemb@google.com>,
+Cc: Hariprasad Kelam <hkelam@marvell.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	sgoutham@marvell.com,
+	lcherian@marvell.com,
+	gakula@marvell.com,
+	jerinj@marvell.com,
+	sbhatta@marvell.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	shuah@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 239/486] selftests/net: have `gro.sh -t` return a correct exit code
-Date: Mon,  5 May 2025 18:35:15 -0400
-Message-Id: <20250505223922.2682012-239-sashal@kernel.org>
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 250/486] Octeontx2-af: RPM: Register driver with PCI subsys IDs
+Date: Mon,  5 May 2025 18:35:26 -0400
+Message-Id: <20250505223922.2682012-250-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -56,35 +59,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Kevin Krakauer <krakauer@google.com>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit 784e6abd99f24024a8998b5916795f0bec9d2fd9 ]
+[ Upstream commit fc9167192f29485be5621e2e9c8208b717b65753 ]
 
-Modify gro.sh to return a useful exit code when the -t flag is used. It
-formerly returned 0 no matter what.
+Although the PCI device ID and Vendor ID for the RPM (MAC) block
+have remained the same across Octeon CN10K and the next-generation
+CN20K silicon, Hardware architecture has changed (NIX mapped RPMs
+and RFOE Mapped RPMs).
 
-Tested: Ran `gro.sh -t large` and verified that test failures return 1.
-Signed-off-by: Kevin Krakauer <krakauer@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250226192725.621969-2-krakauer@google.com
+Add PCI Subsystem IDs to the device table to ensure that this driver
+can be probed from NIX mapped RPM devices only.
+
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Link: https://patch.msgid.link/20250224035603.1220913-1-hkelam@marvell.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/gro.sh | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 14 ++++++++++++--
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.h |  2 ++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/gro.sh b/tools/testing/selftests/net/gro.sh
-index 02c21ff4ca81f..aabd6e5480b8e 100755
---- a/tools/testing/selftests/net/gro.sh
-+++ b/tools/testing/selftests/net/gro.sh
-@@ -100,5 +100,6 @@ trap cleanup EXIT
- if [[ "${test}" == "all" ]]; then
-   run_all_tests
- else
--  run_test "${proto}" "${test}"
-+  exit_code=$(run_test "${proto}" "${test}")
-+  exit $exit_code
- fi;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index 8216f843a7cd5..0b27a695008bd 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -66,8 +66,18 @@ static int cgx_fwi_link_change(struct cgx *cgx, int lmac_id, bool en);
+ /* Supported devices */
+ static const struct pci_device_id cgx_id_table[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_CAVIUM, PCI_DEVID_OCTEONTX2_CGX) },
+-	{ PCI_DEVICE(PCI_VENDOR_ID_CAVIUM, PCI_DEVID_CN10K_RPM) },
+-	{ PCI_DEVICE(PCI_VENDOR_ID_CAVIUM, PCI_DEVID_CN10KB_RPM) },
++	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_CAVIUM, PCI_DEVID_CN10K_RPM,
++	  PCI_ANY_ID, PCI_SUBSYS_DEVID_CN10K_A) },
++	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_CAVIUM, PCI_DEVID_CN10K_RPM,
++	  PCI_ANY_ID, PCI_SUBSYS_DEVID_CNF10K_A) },
++	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_CAVIUM, PCI_DEVID_CN10K_RPM,
++	  PCI_ANY_ID, PCI_SUBSYS_DEVID_CNF10K_B) },
++	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_CAVIUM, PCI_DEVID_CN10KB_RPM,
++	  PCI_ANY_ID, PCI_SUBSYS_DEVID_CN10K_B) },
++	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_CAVIUM, PCI_DEVID_CN10KB_RPM,
++	  PCI_ANY_ID, PCI_SUBSYS_DEVID_CN20KA) },
++	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_CAVIUM, PCI_DEVID_CN10KB_RPM,
++	  PCI_ANY_ID, PCI_SUBSYS_DEVID_CNF20KA) },
+ 	{ 0, }  /* end of table */
+ };
+ 
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+index 8555edbb1c8f9..f94bf04788e98 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+@@ -30,6 +30,8 @@
+ #define PCI_SUBSYS_DEVID_CNF10K_A	       0xBA00
+ #define PCI_SUBSYS_DEVID_CNF10K_B              0xBC00
+ #define PCI_SUBSYS_DEVID_CN10K_B               0xBD00
++#define PCI_SUBSYS_DEVID_CN20KA                0xC220
++#define PCI_SUBSYS_DEVID_CNF20KA               0xC320
+ 
+ /* PCI BAR nos */
+ #define	PCI_AF_REG_BAR_NUM			0
 -- 
 2.39.5
 
