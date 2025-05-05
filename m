@@ -1,60 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93A62F1CC0;
-	Mon,  5 May 2025 23:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3296B2F2C51;
+	Mon,  5 May 2025 23:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486775; cv=none; b=FUFKGGIu+V7MtieOnuCxeGj061qF/7iZZsGVh15np/aCre4UEfaKrJsZruEZXbVuxm00FNdoOWyHm3lLMspxp5zl2/QKe4WrucGp3jWybNCv1sMCO2JO3oegIPtFpMji3kmdAlJ/WvlD28Z8MILgfZx23+RbjQDAMj/tpxr9yis=
+	t=1746486825; cv=none; b=B8g6dEZkwX+uruo+KE/83P7xGT3ZDuDPvRsxceqcbuR2jbfSwA2Z6m3OjjovLdXaPt759C6AjVu/0Ko/5xMA87YdlJbBUIUa8Nx97jqq87GnZaXjx3MSdLaMIStyMnsk2ilx+W4cDrTRAXyKblLygmYzA7VB6P9AyTIqxMw9u4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486775; c=relaxed/simple;
-	bh=mJNYIOLRP6hvW0SxNCmdphAtmZ6oNfD/R+SEJP65BXw=;
+	s=arc-20240116; t=1746486825; c=relaxed/simple;
+	bh=IgM49T9ksnvRHRuSeR0og7Jw/nAXyFhvqciGhoiWpq0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GowCCKy2/K8s8jvp05oN8gso1kyiU+tVpNjL7oyJCUjN71nNZ2qyOtVTMSXHg+WxSjq/1BsC57TBpZKEgPwM/5uC3R2xgYjnd8+tr+VHy6usTBNddfk3iUYI5wb+uzE1unEe8/ddobby8w1Ttu6X4g3RsxBxvQpB7rV9n8ZKg8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G8zV5/bc; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=io1MWKRPlxOOQW02tHi1/G/VHNJQedK6/MHznlJpKlaxd1+ckEl6anstUhoSY2bSQ+yh2RpLq10A0hB0wBgbI5Q5WOKPGYjkBx0Caa/dN9p28ehb44Jv0VWd0hkgBppJRJlc1qQBLLHYN90FK1K2QV0anCSCcpN5b5YyjoBg4TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q9Y9U0/C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G8zV5/bc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99115C4CEE4;
-	Mon,  5 May 2025 23:12:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q9Y9U0/C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800C0C4CEE4;
+	Mon,  5 May 2025 23:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486773;
-	bh=mJNYIOLRP6hvW0SxNCmdphAtmZ6oNfD/R+SEJP65BXw=;
+	s=k20201202; t=1746486824;
+	bh=IgM49T9ksnvRHRuSeR0og7Jw/nAXyFhvqciGhoiWpq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G8zV5/bc3qKoPowCIYtYiDz1vWSXl+nITNUTADvpYVyA6jE53viL9xT8U/1EZcLCa
-	 7DKajy+zrmTaUpvUzmHBEuwTqA+vaz0iJP6BmAKBZvaRJ6t9Bl3WSB4lujrDSp85Zj
-	 kDoQ3tHST7m/OecJRo59e3HaD84DSNoas80AzHvzjy0PHwwrdidDesga+yC5SeOckB
-	 8Gsv+TftOaT0ANqh0q7m4jEivl5dI8RpKvxn3GUAkMeBdysoVHwrzEHxmQGLaXQgtP
-	 +9xpuYYjlvrw97MxvtUT7O5bvdo5jgSxlKn11c/W/bLBA74MJ6Fhcych0M+qsVA8Az
-	 GpOEoLxhMgN4w==
+	b=Q9Y9U0/CSq5T4vxjkYK/oIKDxxkCG/5eCBi7E35qOuBT4H70yzMWkTj/WbZW+a6JR
+	 6N6cjbhXRNAjDKvtEN+VRryjrzvGwjU3BPtpn9yYoCdQPjfLREEnJtR7EXwM55Zusq
+	 shQGusD27xQrqZ684f5EFnjbk/m8t4B0YnklQ5a8NWL99VZl1Gt0fRe4ko+EV9iYLM
+	 w0NObSEwJ+0KzjzxMvNF/hWAItSIBXHzlFysBXfbgJNIUzb4hqhhlBSvfYXzZDi6JW
+	 QuLbcqJgU9s2s+j22bSVFvR7ksUbwqNiIUHRL5biJFdndWX14LZ9x00BQ1dZ1CeByZ
+	 Xy9qAAfP4jBZA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Konstantin Taranov <kotaranov@microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>,
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	andrew+netdev@lunn.ch,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	chuck.lever@oracle.com,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	shradhagupta@linux.microsoft.com,
-	mlevitsk@redhat.com,
-	ernis@linux.microsoft.com,
-	peterz@infradead.org,
-	linux-hyperv@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 195/212] net/mana: fix warning in the writer of client oob
-Date: Mon,  5 May 2025 19:06:07 -0400
-Message-Id: <20250505230624.2692522-195-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 009/153] SUNRPC: rpc_clnt_set_transport() must not change the autobind setting
+Date: Mon,  5 May 2025 19:10:56 -0400
+Message-Id: <20250505231320.2695319-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
-References: <20250505230624.2692522-1-sashal@kernel.org>
+In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
+References: <20250505231320.2695319-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,38 +56,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.136
+X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Konstantin Taranov <kotaranov@microsoft.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 5ec7e1c86c441c46a374577bccd9488abea30037 ]
+[ Upstream commit bf9be373b830a3e48117da5d89bb6145a575f880 ]
 
-Do not warn on missing pad_data when oob is in sgl.
+The autobind setting was supposed to be determined in rpc_create(),
+since commit c2866763b402 ("SUNRPC: use sockaddr + size when creating
+remote transport endpoints").
 
-Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
-Link: https://patch.msgid.link/1737394039-28772-9-git-send-email-kotaranov@linux.microsoft.com
-Reviewed-by: Shiraz Saleem <shirazsaleem@microsoft.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sunrpc/clnt.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index d674ebda2053d..9e55679796d93 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -995,7 +995,7 @@ static u32 mana_gd_write_client_oob(const struct gdma_wqe_request *wqe_req,
- 	header->inline_oob_size_div4 = client_oob_size / sizeof(u32);
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index 5de2fc7af268a..48ffdd4192538 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -275,9 +275,6 @@ static struct rpc_xprt *rpc_clnt_set_transport(struct rpc_clnt *clnt,
+ 	old = rcu_dereference_protected(clnt->cl_xprt,
+ 			lockdep_is_held(&clnt->cl_lock));
  
- 	if (oob_in_sgl) {
--		WARN_ON_ONCE(!pad_data || wqe_req->num_sge < 2);
-+		WARN_ON_ONCE(wqe_req->num_sge < 2);
- 
- 		header->client_oob_in_sgl = 1;
- 
+-	if (!xprt_bound(xprt))
+-		clnt->cl_autobind = 1;
+-
+ 	clnt->cl_timeout = timeout;
+ 	rcu_assign_pointer(clnt->cl_xprt, xprt);
+ 	spin_unlock(&clnt->cl_lock);
 -- 
 2.39.5
 
