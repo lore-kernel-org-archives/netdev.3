@@ -1,47 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC772D5D1E;
-	Mon,  5 May 2025 22:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5792D6449;
+	Mon,  5 May 2025 22:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485696; cv=none; b=gf6MVBeaAhSiM87QCK2Nbf962Z84zEzmo3Krvn+4DP0LzuSroo7USPWiZr6vxTL6hIC+caivQLKkKom9esNaX0Lr15nbmsrvBivdz0jVMjnyFuDCqZJmeS4TuvQsfLTBuMwPGZO+MoCUf5AdVP3L98doDdqxxsnOZW34XAVRn4k=
+	t=1746485702; cv=none; b=muQSXI79m5ZOm5EkVMZOzXmfSYd+DVILZomT4OczBow693/LECuTwyjfGx5ZIfvmWFNUarcrJEVoifQBxMCY408upmIGZ2TEwcMZIimu/V8YMgwCgMOmsIew24sf/6dmZdtGkMP9Jbuj0HLoDY5980jeO7MJOpqHlS0nFLc5cmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485696; c=relaxed/simple;
-	bh=PToc3oAucTTxUmNd2oG82d8nn7vf2GxBtLFvdRfeVBQ=;
+	s=arc-20240116; t=1746485702; c=relaxed/simple;
+	bh=r4fgLAAVznNRNX+Ukr/B1QOru5Iw0iU6f8ToF0OtkFg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CrwUnaf1u5bIFLvjzzCAnB1i9iX2tc3rogkIWOW8CXOro8A8KX2wqNuT+q35u+jy0TlL5BUJcPrOnEunTaO4N5omvN6D6ZW0OwVJOJnQhtH6DNklfGuGM1iuiQAtJTSAxoPQGiOrYmZhYjsOkPDC6+eApZiX3Nr9txqcil1AdTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JCK05MEa; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=cETjKa1P6rqcFK7p09OyTt4b+JNafwbXXmwBumQjIFqMzg4dl9oNqM35voh2/1gI48PTiOx/1aMVbLP15KFfCiHU543pDtq5Xi6j1dgY/WSDqFsXKE2ZCI+WxOu13FbavdEVMpYXVUVGq7D93LylN89QtOoOJNy4dSAl2cuti+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=An6mkgLO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JCK05MEa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F406EC4CEE4;
-	Mon,  5 May 2025 22:54:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="An6mkgLO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 009B6C4CEED;
+	Mon,  5 May 2025 22:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485696;
-	bh=PToc3oAucTTxUmNd2oG82d8nn7vf2GxBtLFvdRfeVBQ=;
+	s=k20201202; t=1746485701;
+	bh=r4fgLAAVznNRNX+Ukr/B1QOru5Iw0iU6f8ToF0OtkFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JCK05MEaw03ri7xDluWDUKGpm9AM/ZTjhwGHI7VGN++vspHmzKjysV9XkaRntoiKn
-	 vH9NW6p1tV/EPv5bFMZqUhOq9vsoVyAuthSmtn7iMbhWtFGKMr/wKwjpVZ4ellvmTl
-	 QAwOoI3DH2BT9jsnrt2wCDnxr2OeeXbo4xQTJ9tjTkBfHSOU2Nw2OlDlx2bOhQhJ4D
-	 m8vVfSau240OLgFtGC4rIivlhIS2cqIxK0E37MEVSbjY10B8OTSs1xf6GnxtGo2z8e
-	 TPdx7U/eOXHSHu/eLQqvA37c0dzg/KEqLsYFWDvWdLhRwSwHHYLUireANRyRkbWw9A
-	 aqEzi2ai9dsFg==
+	b=An6mkgLOpfOXnvmTSu6c058drQew3R7QVXZ9mBTuqmg/20vHz4R55mN5X6vnuQshd
+	 WLDUZG2N7Pd0IAUgksHroYOPrVgSfLy9wM9p+ppUAUlFJwmTSAR4jaHApIyKGWXJgX
+	 cGOoglwEc3lrKyXFLxq84fK7aA+SzIt6t2zWT1xxscN4RIPgjf6EAe+gmWbrdLGKwP
+	 zhZs9GZpHbNc3tjuWDyGp3wc5R049Dyhrvx0u39og2lqlgmMNrjTp9GGHczdBrmrKe
+	 BW3/qLbwgZJeu6KLieQkDdFTR1OMC8mbVz0HwOp5QBFnE1qb7KOIrLiIqHY0NWUqnq
+	 cIxVWJMQ+R/yQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Antoine Tenart <atenart@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	sdf@fomichev.me,
-	jdamato@fastly.com,
-	aleksander.lobakin@intel.com,
+	intel-wired-lan@lists.osuosl.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 430/486] net-sysfs: prevent uncleared queues from being re-added
-Date: Mon,  5 May 2025 18:38:26 -0400
-Message-Id: <20250505223922.2682012-430-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 432/486] ice: init flow director before RDMA
+Date: Mon,  5 May 2025 18:38:28 -0400
+Message-Id: <20250505223922.2682012-432-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -56,74 +59,58 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-[ Upstream commit 7e54f85c60828842be27e0149f3533357225090e ]
+[ Upstream commit d67627e7b53203ca150e54723abbed81a0716286 ]
 
-With the (upcoming) removal of the rtnl_trylock/restart_syscall logic
-and because of how Tx/Rx queues are implemented (and their
-requirements), it might happen that a queue is re-added before having
-the chance to be cleared. In such rare case, do not complete the queue
-addition operation.
+Flow director needs only one MSI-X. Load it before RDMA to save MSI-X
+for it.
 
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Link: https://patch.msgid.link/20250204170314.146022-4-atenart@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/net-sysfs.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-index b398a2e0c243d..d6d0c3082b82b 100644
---- a/net/core/net-sysfs.c
-+++ b/net/core/net-sysfs.c
-@@ -1100,6 +1100,22 @@ static int rx_queue_add_kobject(struct net_device *dev, int index)
- 	struct kobject *kobj = &queue->kobj;
- 	int error = 0;
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index ca707dfcb286e..63d2105fce933 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -5175,11 +5175,12 @@ int ice_load(struct ice_pf *pf)
  
-+	/* Rx queues are cleared in rx_queue_release to allow later
-+	 * re-registration. This is triggered when their kobj refcount is
-+	 * dropped.
-+	 *
-+	 * If a queue is removed while both a read (or write) operation and a
-+	 * the re-addition of the same queue are pending (waiting on rntl_lock)
-+	 * it might happen that the re-addition will execute before the read,
-+	 * making the initial removal to never happen (queue's kobj refcount
-+	 * won't drop enough because of the pending read). In such rare case,
-+	 * return to allow the removal operation to complete.
-+	 */
-+	if (unlikely(kobj->state_initialized)) {
-+		netdev_warn_once(dev, "Cannot re-add rx queues before their removal completed");
-+		return -EAGAIN;
-+	}
-+
- 	/* Kobject_put later will trigger rx_queue_release call which
- 	 * decreases dev refcount: Take that reference here
- 	 */
-@@ -1811,6 +1827,22 @@ static int netdev_queue_add_kobject(struct net_device *dev, int index)
- 	struct kobject *kobj = &queue->kobj;
- 	int error = 0;
+ 	ice_napi_add(vsi);
  
-+	/* Tx queues are cleared in netdev_queue_release to allow later
-+	 * re-registration. This is triggered when their kobj refcount is
-+	 * dropped.
-+	 *
-+	 * If a queue is removed while both a read (or write) operation and a
-+	 * the re-addition of the same queue are pending (waiting on rntl_lock)
-+	 * it might happen that the re-addition will execute before the read,
-+	 * making the initial removal to never happen (queue's kobj refcount
-+	 * won't drop enough because of the pending read). In such rare case,
-+	 * return to allow the removal operation to complete.
-+	 */
-+	if (unlikely(kobj->state_initialized)) {
-+		netdev_warn_once(dev, "Cannot re-add tx queues before their removal completed");
-+		return -EAGAIN;
-+	}
++	ice_init_features(pf);
 +
- 	/* Kobject_put later will trigger netdev_queue_release call
- 	 * which decreases dev refcount: Take that reference here
- 	 */
+ 	err = ice_init_rdma(pf);
+ 	if (err)
+ 		goto err_init_rdma;
+ 
+-	ice_init_features(pf);
+ 	ice_service_task_restart(pf);
+ 
+ 	clear_bit(ICE_DOWN, pf->state);
+@@ -5187,6 +5188,7 @@ int ice_load(struct ice_pf *pf)
+ 	return 0;
+ 
+ err_init_rdma:
++	ice_deinit_features(pf);
+ 	ice_tc_indir_block_unregister(vsi);
+ err_tc_indir_block_register:
+ 	ice_unregister_netdev(vsi);
+@@ -5210,8 +5212,8 @@ void ice_unload(struct ice_pf *pf)
+ 
+ 	devl_assert_locked(priv_to_devlink(pf));
+ 
+-	ice_deinit_features(pf);
+ 	ice_deinit_rdma(pf);
++	ice_deinit_features(pf);
+ 	ice_tc_indir_block_unregister(vsi);
+ 	ice_unregister_netdev(vsi);
+ 	ice_devlink_destroy_pf_port(pf);
 -- 
 2.39.5
 
