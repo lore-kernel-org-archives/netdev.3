@@ -1,49 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274BD3BEED7;
-	Mon,  5 May 2025 23:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934BF2F10A3;
+	Mon,  5 May 2025 23:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487421; cv=none; b=oDwyfUZ1TB+tDFrDWrM/2Xy+kdYiovFelixLMgAZ1r0cRyJK0hYUS3SRc9Ha6m/zNJtzHU88+eDTHADYujImzig0f80+mkkza7BwMbKt8RFLsSRC9c9k//SCvKGR55ZB9q/wo41hm7mBe2kYNOIPfnpMzfPtc1elIsP/X4QZFPg=
+	t=1746487435; cv=none; b=AE6Kh7Sj2FTPeyPVLrfBHLykmCg/y+KzsQGY2LCGYgq6nz2iolZo/VIgXZV661zws6DoxfboRx3vBPynjyxHq4BVzPzWulEjlQ6bJhRzkMS8UIM84lGd7BamUBW0vEKyVzqiTmLpb1n9Sy87re2W97FS4su6bvupErWb2HL+Vds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487421; c=relaxed/simple;
-	bh=ej3MdU1zOoJOnH+5G83oWr8cksMgqKvy1/A008AgEGg=;
+	s=arc-20240116; t=1746487435; c=relaxed/simple;
+	bh=Xqo5iZ4YGVxrB/Rap8N1HtW9HTVyu1H5uyH8lcgaPPQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Sy+iyAMYeBk360Hein95WqTO7Y58xr5wGT8L2a45+K6wTv1Ds38yuVaKivLrKm/0pJmG5UYbTbycq3pQVFHiJoZWGWepaJ3Ppqm7XiEv/yB8KejWdvavRutUU5znA/MMU22dAH+f5SqJPgJfOpK4uJ15hZl8GhkOMuh4BYOV2SY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e5eIM//N; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=tKEDLkLPDvtRpgsY9wVEQTLVxsFvPW75jBzup4nJA9XJ7lvH4ddXjErE2mrZGkxXv03DsEKJhd2HUIBjjXNa68qKJI990rG5nfPRTjGO+QSrp7MaaSDoLzsO8kWfJX1bkSaBgd76m55Xj0phw7eVGih6dk3Jf02Q+2ThF91nz30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s+Uidgvn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e5eIM//N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878DEC4CEED;
-	Mon,  5 May 2025 23:23:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s+Uidgvn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D019FC4CEED;
+	Mon,  5 May 2025 23:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487421;
-	bh=ej3MdU1zOoJOnH+5G83oWr8cksMgqKvy1/A008AgEGg=;
+	s=k20201202; t=1746487434;
+	bh=Xqo5iZ4YGVxrB/Rap8N1HtW9HTVyu1H5uyH8lcgaPPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e5eIM//NUAKw71k91ai4U5q0BsbdzCz5WV0DcOh0wCwbrrMt2xJRxdb+JaP7bIwaB
-	 K2gU7dslGp5pp1LFRbwBrTUnac+bBiEECoPbaviQe8P7paZK8Ii8uEdCLwH1OvwefN
-	 gqovg9KlWlRLTpyF34iWRMIT060mKArkA0fXmX+m0aiW4KlDseSajWI4NK843zXW8V
-	 5jNsRlNbWFp3UYVlLVe8LzxgKBlKIRfYOoN+SQ8prR3XUceHTd4+7PWJeSyncDmKL/
-	 ILBgSM8LQVqcltfqlTIrEGfhohZtHm9y7zkdoHAOHEviHSUGf06qI0w/UTJZNc5n7+
-	 jdi9bH0OAqn7w==
+	b=s+UidgvnIT1ExCwe+1KvCS7WGDMJUoZFaleqdkLzOMsa0KUSwuQ2nYIV/izxYPco/
+	 u+u1rz6fqS3k2s77dxX0EAfWM+0z6F0r4GITc6DS9pEhAHOBnT1gmWEpRj02UWOf/j
+	 c2uJxdivejAJBtVdT40QRxr5cfXDylwyd+bYlvqejb5tPFNNhczqw1XX/Kgrj9nnN+
+	 Y1Swo8jdXFEXiZ0BgkPhHQopx1ar5m5eFS3o+qb1xlTVJOvaYYc8ltPPS89rQ20REk
+	 DGixy+f+P0uT+n7VR0O57D3HXBRcWBSuDrTAfTEsk5rg8nEx4AxCPJYuMUE+yGy05L
+	 jikEmw/Vudg9A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexei Lazar <alazar@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
+Cc: Antoine Tenart <atenart@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
-	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 62/79] net/mlx5: Extend Ethtool loopback selftest to support non-linear SKB
-Date: Mon,  5 May 2025 19:21:34 -0400
-Message-Id: <20250505232151.2698893-62-sashal@kernel.org>
+	sdf@fomichev.me,
+	jdamato@fastly.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 69/79] net-sysfs: prevent uncleared queues from being re-added
+Date: Mon,  5 May 2025 19:21:41 -0400
+Message-Id: <20250505232151.2698893-69-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -58,39 +55,74 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Alexei Lazar <alazar@nvidia.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit 95b9606b15bb3ce1198d28d2393dd0e1f0a5f3e9 ]
+[ Upstream commit 7e54f85c60828842be27e0149f3533357225090e ]
 
-Current loopback test validation ignores non-linear SKB case in
-the SKB access, which can lead to failures in scenarios such as
-when HW GRO is enabled.
-Linearize the SKB so both cases will be handled.
+With the (upcoming) removal of the rtnl_trylock/restart_syscall logic
+and because of how Tx/Rx queues are implemented (and their
+requirements), it might happen that a queue is re-added before having
+the chance to be cleared. In such rare case, do not complete the queue
+addition operation.
 
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250209101716.112774-15-tariqt@nvidia.com
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Link: https://patch.msgid.link/20250204170314.146022-4-atenart@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/core/net-sysfs.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c b/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
-index bbff8d8ded767..abb88a61e4d98 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
-@@ -189,6 +189,9 @@ mlx5e_test_loopback_validate(struct sk_buff *skb,
- 	struct udphdr *udph;
- 	struct iphdr *iph;
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index bcad7028bbf45..6b0c682e5ea70 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -968,6 +968,22 @@ static int rx_queue_add_kobject(struct net_device *dev, int index)
+ 	struct kobject *kobj = &queue->kobj;
+ 	int error = 0;
  
-+	if (skb_linearize(skb))
-+		goto out;
++	/* Rx queues are cleared in rx_queue_release to allow later
++	 * re-registration. This is triggered when their kobj refcount is
++	 * dropped.
++	 *
++	 * If a queue is removed while both a read (or write) operation and a
++	 * the re-addition of the same queue are pending (waiting on rntl_lock)
++	 * it might happen that the re-addition will execute before the read,
++	 * making the initial removal to never happen (queue's kobj refcount
++	 * won't drop enough because of the pending read). In such rare case,
++	 * return to allow the removal operation to complete.
++	 */
++	if (unlikely(kobj->state_initialized)) {
++		netdev_warn_once(dev, "Cannot re-add rx queues before their removal completed");
++		return -EAGAIN;
++	}
 +
- 	/* We are only going to peek, no need to clone the SKB */
- 	if (MLX5E_TEST_PKT_SIZE - ETH_HLEN > skb_headlen(skb))
- 		goto out;
+ 	/* Kobject_put later will trigger rx_queue_release call which
+ 	 * decreases dev refcount: Take that reference here
+ 	 */
+@@ -1558,6 +1574,22 @@ static int netdev_queue_add_kobject(struct net_device *dev, int index)
+ 	struct kobject *kobj = &queue->kobj;
+ 	int error = 0;
+ 
++	/* Tx queues are cleared in netdev_queue_release to allow later
++	 * re-registration. This is triggered when their kobj refcount is
++	 * dropped.
++	 *
++	 * If a queue is removed while both a read (or write) operation and a
++	 * the re-addition of the same queue are pending (waiting on rntl_lock)
++	 * it might happen that the re-addition will execute before the read,
++	 * making the initial removal to never happen (queue's kobj refcount
++	 * won't drop enough because of the pending read). In such rare case,
++	 * return to allow the removal operation to complete.
++	 */
++	if (unlikely(kobj->state_initialized)) {
++		netdev_warn_once(dev, "Cannot re-add tx queues before their removal completed");
++		return -EAGAIN;
++	}
++
+ 	/* Kobject_put later will trigger netdev_queue_release call
+ 	 * which decreases dev refcount: Take that reference here
+ 	 */
 -- 
 2.39.5
 
