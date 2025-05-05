@@ -1,67 +1,79 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D67155C88
-	for <netdev@vger.kernel.org>; Mon,  5 May 2025 08:57:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7D91A5BAE;
+	Mon,  5 May 2025 09:10:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746435440; cv=none; b=ct4yRwzl3uogEAvvStJYaPkRqHIT7LUTe07Ag0UKHRZF2CsXrNyfGEMDP47dQxxpGEGiSQ8jxEhezyP9xYIBnMjYmdchrOOnN3bvAfNYbJrBw/BQ0r5lZK/SGM9hvfz88vtgr3bCel0z0MAtj7gxwV2vC1WBUhTSSIDL2j4lpog=
+	t=1746436222; cv=none; b=Voijyz+BD9ZJe6lwoNWGLCw3MAsXc7rAuUORTJv+B6iZCkul8R7GXkwV+3KzwVIQUhuc2u95SApGOxLwqUNl6v/XtXXdHxNCb+wFFV0iwAqF+23mDJWH7/gJ5rC54w5OqSzZK3QyuThMJ8ONVCKbuCPzFzrfdt60YLuQossnCJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746435440; c=relaxed/simple;
-	bh=9KSOFqCouvAPXUIaFERVwNffS2Yd76AEW7nRjkeW0M0=;
+	s=arc-20240116; t=1746436222; c=relaxed/simple;
+	bh=puuc22v2t/JD2fiBI9QkGj3Q41l34IGpAdd9V3RoJbs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YtdiZy63PibcFtGSoUiOnudLKXimwhB/zQdTETNNwXSjzRIjjRyOvqzyYl1c2IQBc+DSmZ1y7ngvWfggUTa38JCCECHuzWve9YPwJ6PnzCwMg26By9Mhq8iAy67oMUJ9khWKPQenzzIznG3NyzfG67ZzuDlm+8pnfjk3Yr1pGkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JsyZ1b4b; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E42hsZhg; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=NsytRX8LKyFJ24PPkqejOEPQnXT9APfVxSHGUXEcDyBEW07drGflMYsNcwE8oe+58sg6rlesY0kSlDa7gvHnCVuFZTopZgFizv44fWoK044XrO+p/mNJs2Bvx4+yMuH7phwtWbEmbZYRxtZ/+GE3wZac7XER91O4ayK75XAGWQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ayLMkAit; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JsyZ1b4b";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E42hsZhg"
-Date: Mon, 5 May 2025 10:57:13 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746435436;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8FfjRNTFSF4kCYdBoCLyc7uSjRO+tk2Tnewi5gynsu4=;
-	b=JsyZ1b4bi8qd2Hm9HfQvKPvHMVBy44eKwLDtuZqF9/MCFyYWT7JOoLHOVXNrgYKUq9UGOJ
-	ZvBrvRrM3TuF+o4QnW+nZEb8e5ksy0idIIYPuX+RMpK9ovudZUezMS6hkvD0/hxJuQrrVl
-	u4X5jlq1CQbD/2lQA0FPrM95fVvvcouxCU3b+YWK5GY+qNZFeKayKCAa9AV3vu3HT1Javf
-	SuVRZP74xO7ecPRA2tSnt30RWSFN3yMbdkygty869p+1XzH0wNN+8fx7sWss41UAm0USn+
-	m1lNXNDmYZmq2ai4tqZNL/B9aLw84ff+oi6M/fp9xO2+VRkDQNUQRKFFhelx6w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746435436;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8FfjRNTFSF4kCYdBoCLyc7uSjRO+tk2Tnewi5gynsu4=;
-	b=E42hsZhg6FhxonvcIWAfJWzajFY8m3o2o1jlaq3H6WEuzB/lMc71oT5lOg3OIDzye2e5Vk
-	3GwJ3GHwgQZgf7DQ==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Cc: netdev@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ayLMkAit"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43d07ca6a80so14962255e9.1;
+        Mon, 05 May 2025 02:10:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746436218; x=1747041018; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=J+vROSkrhHhaFxfGi2oXWznd9/H+mGUL5SpO8laPrVM=;
+        b=ayLMkAit5GpVB0bvGGefyc+HyO+sz3C9NIWSAR4BcXcrQP1VGH6UJ59E+AwPNHxPZ9
+         L/MvRxs/V53lQKWt3GT4zaDluKjMvYzkXxvb17JcihRaUB9C1IrAcV3xM/qBCpkulqKI
+         /XMFngu1fAvGvXj6Y2F35a+mNw5Vc4l92bosd2H/Jtph8e/yVS/AL9lYVBk7C/9tPlv9
+         F5WZF+YiCiZOmbtMwEHfbfUpRtbOlZF0sc5UupFo/hPeGI8lgsPDVMrS3ScnX6UFJBSE
+         Na1T2/2nBK2O+nyB1e7t11pdiJ4uoY4PdOtV0CYCWpdBeLFYWkJUswpBgyif0+YwGpLc
+         P8yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746436218; x=1747041018;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=J+vROSkrhHhaFxfGi2oXWznd9/H+mGUL5SpO8laPrVM=;
+        b=gisGJ++JLVlVYeQLQ+PS5aac/mwAXUcbsiCU6BqYRRkPi/5tg1jkqBN6ZH2PPGy95r
+         hZFCUnO9rsxEYUXADagrzFWPPC6lqq/z9URVaQuIRQQoH0+FwCpAP13I4wCZhl27PwOF
+         MH6exMGKGFdhejOPcBZGu/2sR9Z5U7zP/JDveiU3CJrEHLVtACKaSwdVonsmGmm1bFqu
+         P3PSla1Zmfn3AjQcv0f1BoZ+W18XOTU6vFYXTDpnIstGDyMc90QRWfgvj5LX6MQqzAcU
+         maHQB8eGw3kelP+Ht6Eh54YC4seY7jVXuQuhS1JnLh6M6MK4JoBBHOWnNIYrqmNirpG/
+         +Bzg==
+X-Forwarded-Encrypted: i=1; AJvYcCU6hvpYurLpCeudZHOlq2UvuEoU1vscmtjLAhazBAi1Ooc1KhRyWL8uogskzpJZ/f5CLk0KhLtF3wtJX3o=@vger.kernel.org, AJvYcCWl6eHR2WY8pERqA8Rxc3NAHidXuJQY/OQZBAwQVBiRaJXAB6ypZM1RE8ZvI90UGObFGSNQxb0d@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzszeh/llOXkugH4UeIFtXOp0ccUYpKFX9MJ3sYOzALP+Xhr8Gi
+	Yn6TmmCmf5bS9ISQ5BxCJSMcpF7LlGJpYXcxzUKBQGUUWEuu9wcn
+X-Gm-Gg: ASbGnctjb2Ib+ezYj7K0HqL74a/PjBcAMMwRfFPxe0/iLddHxksJlLulmlpYQ/Jej5N
+	wLLtu0GpuQr7qDubjZ79c6VaGr88Qqhkbt6D+uaP9dyRw9DLxm34IVhcPEe3aEBzUX0zZ1UvfYy
+	JEPuPqjaVJUNVrL87rDRBg6DaWdkgoHNlg7aywn2CSMikBWeJRsCQ9BYvuWV4KUiJJzTjqEeZfP
+	jp8bc9qDBXbUbf/yKxSouc/RqCVD37jk8SXTMDGOl3/CdTrSfaCnz9d8h2Ju8O6IJx0jfRCtecy
+	pda96khkpmLVsVBxgbvIi+UKyy/5mDU4eN592g==
+X-Google-Smtp-Source: AGHT+IEETkvA9kxggSfQEv6lgC0JK2LQfLov2hirKwFSQLnPT59YeHE1WVZSeMLo3STImaGoKT2/8w==
+X-Received: by 2002:a05:6000:310f:b0:3a0:88e5:dbb2 with SMTP id ffacd0b85a97d-3a09fd6b796mr4972409f8f.11.1746436217424;
+        Mon, 05 May 2025 02:10:17 -0700 (PDT)
+Received: from debian ([2a00:79c0:608:9e00:45fb:7d1a:5e4d:9727])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099b17074sm9931794f8f.95.2025.05.05.02.10.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 May 2025 02:10:17 -0700 (PDT)
+Date: Mon, 5 May 2025 11:10:15 +0200
+From: Dimitri Fedrau <dima.fedrau@gmail.com>
+To: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>
-Subject: Re: [PATCH net-next v3 05/18] xdp: Use nested-BH locking for
- system_page_pool
-Message-ID: <20250505085713.ZAgyY1mJ@linutronix.de>
-References: <20250430124758.1159480-1-bigeasy@linutronix.de>
- <20250430124758.1159480-6-bigeasy@linutronix.de>
- <878qng7i63.fsf@toke.dk>
- <20250502133231.lS281-FN@linutronix.de>
- <87ikmj5bh5.fsf@toke.dk>
- <20250502150705.1sewZ77B@linutronix.de>
- <87frhn57i3.fsf@toke.dk>
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+	Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kory Maincent <kory.maincent@bootlin.com>
+Subject: Re: [PATCH net-next v3] net: phy: marvell-88q2xxx: Enable
+ temperature measurement in probe again
+Message-ID: <20250505091015.GA9329@debian>
+References: <20250429-marvell-88q2xxx-hwmon-enable-at-probe-v3-1-0351ccd9127e@gmail.com>
+ <20250429200306.GE1969140@ragnatech.se>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,158 +82,88 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <87frhn57i3.fsf@toke.dk>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250429200306.GE1969140@ragnatech.se>
 
-On 2025-05-02 17:59:00 [+0200], Toke H=C3=B8iland-J=C3=B8rgensen wrote:
-> >> I had in mind moving the out: label (and the unlock) below the
-> >> skb->protocol assignment, which would save the if(skb) check; any reas=
-on
-> >> we can't call xsk_buff_free() while holding the lock?
-> >
-> > We could do that, I wasn't entirely sure about xsk_buff_free(). It is
-> > just larger scope but nothing else so far.
-> >
-> > I've been staring at xsk_buff_free() and the counterparts such as
-> > xsk_buff_alloc_batch() and I didn't really figure out what is protecting
-> > the list. Do we rely on the fact that this is used once per-NAPI
-> > instance within RX-NAPI and never somewhere else?
->=20
-> Yeah, I believe so. The commit adding the API[0] mentions this being
-> "single core (single producer/consumer)".
+Hi Niklas,
 
-So if TX is excluded, it should work=E2=80=A6
-For the former, I have now this:
+Am Tue, Apr 29, 2025 at 10:03:06PM +0200 schrieb Niklas Söderlund:
+> Hi Dimitri,
+> 
+> Thanks for your work.
+> 
+> On 2025-04-29 08:54:25 +0200, Dimitri Fedrau wrote:
+> > Enabling of the temperature sensor was moved from mv88q2xxx_hwmon_probe to
+> > mv88q222x_config_init with the consequence that the sensor is only
+> > usable when the PHY is configured. Enable the sensor in
+> > mv88q2xxx_hwmon_probe as well to fix this.
+> > 
+> > Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+> > Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+> > ---
+> > Changes in v3:
+> > - Remove patch "net: phy: marvell-88q2xxx: Prevent hwmon access with asserted reset"
+> >   from series. There will be a separate patch handling this and I'm not
+> >   sure if it is going to be accepted. Separating this is necessary
+> >   because the temperature reading is somehow odd at the moment, because
+> >   the interface has to be brought up for it to work. See:
+> >   https://lore.kernel.org/netdev/20250418145800.2420751-1-niklas.soderlund+renesas@ragnatech.se/
+> > - Link to v2: https://lore.kernel.org/r/20250220-marvell-88q2xxx-hwmon-enable-at-probe-v2-0-78b2838a62da@gmail.com
+> > 
+> > Changes in v2:
+> > - Add comment in mv88q2xxx_config_init why the temperature sensor is
+> >   enabled again (Stefan)
+> > - Fix commit message by adding the information why the PHY reset might
+> >   be asserted. (Andrew)
+> > - Remove fixes tags (Andrew)
+> > - Switch to net-next (Andrew)
+> > - Return ENETDOWN instead of EIO when PHYs reset is asserted in
+> >   mv88q2xxx_hwmon_read (Andrew)
+> > - Add check if PHYs reset is asserted in mv88q2xxx_hwmon_write as it was
+> >   done in mv88q2xxx_hwmon_read
+> > - Link to v1: https://lore.kernel.org/r/20250218-marvell-88q2xxx-hwmon-enable-at-probe-v1-0-999a304c8a11@gmail.com
+> > ---
+> >  drivers/net/phy/marvell-88q2xxx.c | 12 +++++++++++-
+> >  1 file changed, 11 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/net/phy/marvell-88q2xxx.c b/drivers/net/phy/marvell-88q2xxx.c
+> > index 5c687164b8e068f3f09e91cd4dd198f24782682e..5d2fbbf332933ffe06f4506058e380fbc7c52921 100644
+> > --- a/drivers/net/phy/marvell-88q2xxx.c
+> > +++ b/drivers/net/phy/marvell-88q2xxx.c
+> > @@ -513,7 +513,10 @@ static int mv88q2xxx_config_init(struct phy_device *phydev)
+> >  			return ret;
+> >  	}
+> >  
+> > -	/* Enable temperature sense */
+> > +	/* Enable temperature sense again. There might have been a hard reset
+> > +	 * of the PHY and in this case the register content is restored to
+> > +	 * defaults and we need to enable it again.
+> > +	 */
+> >  	if (priv->enable_temp) {
+> >  		ret = phy_modify_mmd(phydev, MDIO_MMD_PCS,
+> >  				     MDIO_MMD_PCS_MV_TEMP_SENSOR2,
+> > @@ -765,6 +768,13 @@ static int mv88q2xxx_hwmon_probe(struct phy_device *phydev)
+> >  	struct mv88q2xxx_priv *priv = phydev->priv;
+> >  	struct device *dev = &phydev->mdio.dev;
+> >  	struct device *hwmon;
+> > +	int ret;
+> > +
+> > +	/* Enable temperature sense */
+> > +	ret = phy_modify_mmd(phydev, MDIO_MMD_PCS, MDIO_MMD_PCS_MV_TEMP_SENSOR2,
+> > +			     MDIO_MMD_PCS_MV_TEMP_SENSOR2_DIS_MASK, 0);
+> > +	if (ret < 0)
+> > +		return ret;
+> 
+> nit: I wonder if it make sens to create a helper function to enable the 
+> sensor? My worry being this procedure growing in the future and only 
+> being fixed in one location and not the other. It would also reduce code 
+> duplication and could be stubbed to be compiled out with the existing 
+> IS_ENABLED(CONFIG_HWMON) guard for other hwmon functions.
+>
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 2d11d013cabed..2018e2432cb56 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -3502,7 +3502,12 @@ struct softnet_data {
- };
-=20
- DECLARE_PER_CPU_ALIGNED(struct softnet_data, softnet_data);
--DECLARE_PER_CPU(struct page_pool *, system_page_pool);
-+
-+struct page_pool_bh {
-+	struct page_pool *pool;
-+	local_lock_t bh_lock;
-+};
-+DECLARE_PER_CPU(struct page_pool_bh, system_page_pool);
-=20
- #ifndef CONFIG_PREEMPT_RT
- static inline int dev_recursion_level(void)
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 1be7cb73a6024..b56becd070bc7 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -462,7 +462,9 @@ EXPORT_PER_CPU_SYMBOL(softnet_data);
-  * PP consumers must pay attention to run APIs in the appropriate context
-  * (e.g. NAPI context).
-  */
--DEFINE_PER_CPU(struct page_pool *, system_page_pool);
-+DEFINE_PER_CPU(struct page_pool_bh, system_page_pool) =3D {
-+	.bh_lock =3D INIT_LOCAL_LOCK(bh_lock),
-+};
-=20
- #ifdef CONFIG_LOCKDEP
- /*
-@@ -5238,7 +5240,10 @@ netif_skb_check_for_xdp(struct sk_buff **pskb, const=
- struct bpf_prog *prog)
- 	struct sk_buff *skb =3D *pskb;
- 	int err, hroom, troom;
-=20
--	if (!skb_cow_data_for_xdp(this_cpu_read(system_page_pool), pskb, prog))
-+	local_lock_nested_bh(&system_page_pool.bh_lock);
-+	err =3D skb_cow_data_for_xdp(this_cpu_read(system_page_pool.pool), pskb, =
-prog);
-+	local_unlock_nested_bh(&system_page_pool.bh_lock);
-+	if (!err)
- 		return 0;
-=20
- 	/* In case we have to go down the path and also linearize,
-@@ -12629,7 +12634,7 @@ static int net_page_pool_create(int cpuid)
- 		return err;
- 	}
-=20
--	per_cpu(system_page_pool, cpuid) =3D pp_ptr;
-+	per_cpu(system_page_pool.pool, cpuid) =3D pp_ptr;
- #endif
- 	return 0;
- }
-@@ -12759,13 +12764,13 @@ static int __init net_dev_init(void)
- 		for_each_possible_cpu(i) {
- 			struct page_pool *pp_ptr;
-=20
--			pp_ptr =3D per_cpu(system_page_pool, i);
-+			pp_ptr =3D per_cpu(system_page_pool.pool, i);
- 			if (!pp_ptr)
- 				continue;
-=20
- 			xdp_unreg_page_pool(pp_ptr);
- 			page_pool_destroy(pp_ptr);
--			per_cpu(system_page_pool, i) =3D NULL;
-+			per_cpu(system_page_pool.pool, i) =3D NULL;
- 		}
- 	}
-=20
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index f86eedad586a7..8696e8ffa3bcc 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -737,25 +737,27 @@ static noinline bool xdp_copy_frags_from_zc(struct sk=
-_buff *skb,
-  */
- struct sk_buff *xdp_build_skb_from_zc(struct xdp_buff *xdp)
- {
--	struct page_pool *pp =3D this_cpu_read(system_page_pool);
- 	const struct xdp_rxq_info *rxq =3D xdp->rxq;
- 	u32 len =3D xdp->data_end - xdp->data_meta;
- 	u32 truesize =3D xdp->frame_sz;
--	struct sk_buff *skb;
-+	struct sk_buff *skb =3D NULL;
-+	struct page_pool *pp;
- 	int metalen;
- 	void *data;
-=20
- 	if (!IS_ENABLED(CONFIG_PAGE_POOL))
- 		return NULL;
-=20
-+	local_lock_nested_bh(&system_page_pool.bh_lock);
-+	pp =3D this_cpu_read(system_page_pool.pool);
- 	data =3D page_pool_dev_alloc_va(pp, &truesize);
- 	if (unlikely(!data))
--		return NULL;
-+		goto out;
-=20
- 	skb =3D napi_build_skb(data, truesize);
- 	if (unlikely(!skb)) {
- 		page_pool_free_va(pp, data, true);
--		return NULL;
-+		goto out;
- 	}
-=20
- 	skb_mark_for_recycle(skb);
-@@ -774,13 +776,16 @@ struct sk_buff *xdp_build_skb_from_zc(struct xdp_buff=
- *xdp)
- 	if (unlikely(xdp_buff_has_frags(xdp)) &&
- 	    unlikely(!xdp_copy_frags_from_zc(skb, xdp, pp))) {
- 		napi_consume_skb(skb, true);
--		return NULL;
-+		skb =3D NULL;
-+		goto out;
- 	}
-=20
- 	xsk_buff_free(xdp);
-=20
- 	skb->protocol =3D eth_type_trans(skb, rxq->dev);
-=20
-+out:
-+	local_unlock_nested_bh(&system_page_pool.bh_lock);
- 	return skb;
- }
- EXPORT_SYMBOL_GPL(xdp_build_skb_from_zc);
+thanks for testing. Wouldn't it then be better to implement HWMON_T_ENABLE
+instead ? Add the enablement into mv88q2xxx_hwmon_write and the user is
+responsible for enablement of the sensor ?
 
-> -Toke
-
-Sebastian
+Best regards,
+Dimitri Fedrau
