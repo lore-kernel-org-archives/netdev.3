@@ -1,46 +1,57 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5162F6631;
-	Mon,  5 May 2025 23:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E3B2F6B55;
+	Mon,  5 May 2025 23:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487071; cv=none; b=tUD7BV6ebcFHQ0nd1TAfNRiEeLw8EFDR9j8E7bbdN48gGmEAGeo1MmQ3PfXgz5Hui1IhkRAa2rmW/BTxPjqjtkYD7Eemix3vZI96YKkM1u5dFiuC7FAzGeXmYTI5bmpn4Raj+Jift8DoEJco2YW1TTV0e/sKXbBth1lvuQGnTI0=
+	t=1746487079; cv=none; b=WBPI6LYLxbfAy7IVCZI7EafOiGfe0p2T0xQn1H+oB0qkcyTZYh1Lhi+KeeDnSyffsbWArkLJr9CoXi4qikXK3yeyxP76W7I/mnx9fKCLpdpvYJk/rWxcU0mFBq9LjCh630pwCLn62x+cXD7Eb1AWPXVc0nTiVDR+B77Zx/xUlcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487071; c=relaxed/simple;
-	bh=WP6KHK2/0rnIE3gNHDNXEAUvma31iLJ4x0CdhCO4exE=;
+	s=arc-20240116; t=1746487079; c=relaxed/simple;
+	bh=VkEDehoOkFDH575yzWrUFq76dyse+0I2ePUzowEbN3Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qtmN9VGqP/NztezZSw51ZWPwWQnNI++/xpRqql/hAPytFhyjHRJYjJos7n1BMR+Ojprp3B3VVWRCDWw5QvH/bTrPPdDHZfE/T6Zm4KeplVzezJVpGVEFWnz2NL8Ep0phvsohRPNGsjbuD/dU03O6BQoCCduFQsJY3O5ltKq8xYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MUc4NJqK; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=kCl1o8xMXSIQfd3pbGMXv9eVa17LQJnoCZfBVpiOrh2PsHgxhqD0j5JkgRxLuCZK6KPDnmPNg6N+hNzKhz9Kt0u6IbFz4Vfc+o+zjxwyc2lHTZGj9gE4PEettFNsvLm7ad7lcBy/m1D46P6PkVkaS0yNRQ34Q45n1/ZWhUoibpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NqVgjClv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MUc4NJqK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BE2C4CEEE;
-	Mon,  5 May 2025 23:17:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NqVgjClv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E25EC4CEE4;
+	Mon,  5 May 2025 23:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487071;
-	bh=WP6KHK2/0rnIE3gNHDNXEAUvma31iLJ4x0CdhCO4exE=;
+	s=k20201202; t=1746487078;
+	bh=VkEDehoOkFDH575yzWrUFq76dyse+0I2ePUzowEbN3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MUc4NJqKozpoGMXxIkiUi3uEre/89deYo7y+fDNjkQVRdSZR5Rn4ynuVvO6D4Dmnk
-	 aFyy05GwC5Ly0u9YRWuaGDNEbL0eQtMFG90KRUJbK6A6yn8FfOA5K4qTOTQM/vUxKD
-	 mBAsQzdbpkNsaYkE3gk/zGFISOC2gVrJdJ3QnQYgJGSlfjya/1zzMCxZoD8aiPJmwr
-	 qAILZCpoaCBx0a5ZOcm4rNKaU1qUItO8rnzY7/A+Jr+QfwVikWVn/pRBjKWc7VdoY9
-	 nufxQy14+4x95nn06FQE2ontnLrgEEcihH0sxwiejuFfEYfrndpVijaHU4SrtTVgBo
-	 x5/Y0CnrCAQqA==
+	b=NqVgjClviuWJlmLwjaS6PNMwSSzyfukt0VhG1WOPhHw6cjvPixxxgTKBQjG/U41tw
+	 1ol3yypsqUm+9GIcN03M5xZnqTJO1CWT2b43Wt3fZo1hDyOzxNqQdqNwcArovKhHRQ
+	 knK8sKPi/JwKnGOW7c2QLjl/jN6MhYqMGhemKr+X0t/7WdH+9+IUeBarPe1XCHQpWz
+	 OzZgdd5Zyod0thv4RZS+c7kcgtsLlgfYbpThFfkAXBAuZ2PYJBCrOl5SiCvy2WCfTE
+	 uSYLU9WI+UQNWFqJAr7m/pB+cBMqFv1mClDBqLt4lHY35lRR3yHkQzUpvsc/3wSGO1
+	 0CoDb9FDy1YlA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Antoine Tenart <atenart@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Konstantin Taranov <kotaranov@microsoft.com>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	sdf@fomichev.me,
-	jdamato@fastly.com,
+	shradhagupta@linux.microsoft.com,
+	mlevitsk@redhat.com,
+	ernis@linux.microsoft.com,
+	peterz@infradead.org,
+	linux-hyperv@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 138/153] net-sysfs: prevent uncleared queues from being re-added
-Date: Mon,  5 May 2025 19:13:05 -0400
-Message-Id: <20250505231320.2695319-138-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 141/153] net/mana: fix warning in the writer of client oob
+Date: Mon,  5 May 2025 19:13:08 -0400
+Message-Id: <20250505231320.2695319-141-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -55,74 +66,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Konstantin Taranov <kotaranov@microsoft.com>
 
-[ Upstream commit 7e54f85c60828842be27e0149f3533357225090e ]
+[ Upstream commit 5ec7e1c86c441c46a374577bccd9488abea30037 ]
 
-With the (upcoming) removal of the rtnl_trylock/restart_syscall logic
-and because of how Tx/Rx queues are implemented (and their
-requirements), it might happen that a queue is re-added before having
-the chance to be cleared. In such rare case, do not complete the queue
-addition operation.
+Do not warn on missing pad_data when oob is in sgl.
 
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Link: https://patch.msgid.link/20250204170314.146022-4-atenart@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
+Link: https://patch.msgid.link/1737394039-28772-9-git-send-email-kotaranov@linux.microsoft.com
+Reviewed-by: Shiraz Saleem <shirazsaleem@microsoft.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/net-sysfs.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ drivers/net/ethernet/microsoft/mana/gdma_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-index 173ea92124f8c..6e5ecab4ebb14 100644
---- a/net/core/net-sysfs.c
-+++ b/net/core/net-sysfs.c
-@@ -1050,6 +1050,22 @@ static int rx_queue_add_kobject(struct net_device *dev, int index)
- 	struct kobject *kobj = &queue->kobj;
- 	int error = 0;
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index 0fb42193643dc..7864611f55a77 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -957,7 +957,7 @@ static u32 mana_gd_write_client_oob(const struct gdma_wqe_request *wqe_req,
+ 	header->inline_oob_size_div4 = client_oob_size / sizeof(u32);
  
-+	/* Rx queues are cleared in rx_queue_release to allow later
-+	 * re-registration. This is triggered when their kobj refcount is
-+	 * dropped.
-+	 *
-+	 * If a queue is removed while both a read (or write) operation and a
-+	 * the re-addition of the same queue are pending (waiting on rntl_lock)
-+	 * it might happen that the re-addition will execute before the read,
-+	 * making the initial removal to never happen (queue's kobj refcount
-+	 * won't drop enough because of the pending read). In such rare case,
-+	 * return to allow the removal operation to complete.
-+	 */
-+	if (unlikely(kobj->state_initialized)) {
-+		netdev_warn_once(dev, "Cannot re-add rx queues before their removal completed");
-+		return -EAGAIN;
-+	}
-+
- 	/* Kobject_put later will trigger rx_queue_release call which
- 	 * decreases dev refcount: Take that reference here
- 	 */
-@@ -1657,6 +1673,22 @@ static int netdev_queue_add_kobject(struct net_device *dev, int index)
- 	struct kobject *kobj = &queue->kobj;
- 	int error = 0;
+ 	if (oob_in_sgl) {
+-		WARN_ON_ONCE(!pad_data || wqe_req->num_sge < 2);
++		WARN_ON_ONCE(wqe_req->num_sge < 2);
  
-+	/* Tx queues are cleared in netdev_queue_release to allow later
-+	 * re-registration. This is triggered when their kobj refcount is
-+	 * dropped.
-+	 *
-+	 * If a queue is removed while both a read (or write) operation and a
-+	 * the re-addition of the same queue are pending (waiting on rntl_lock)
-+	 * it might happen that the re-addition will execute before the read,
-+	 * making the initial removal to never happen (queue's kobj refcount
-+	 * won't drop enough because of the pending read). In such rare case,
-+	 * return to allow the removal operation to complete.
-+	 */
-+	if (unlikely(kobj->state_initialized)) {
-+		netdev_warn_once(dev, "Cannot re-add tx queues before their removal completed");
-+		return -EAGAIN;
-+	}
-+
- 	/* Kobject_put later will trigger netdev_queue_release call
- 	 * which decreases dev refcount: Take that reference here
- 	 */
+ 		header->client_oob_in_sgl = 1;
+ 
 -- 
 2.39.5
 
