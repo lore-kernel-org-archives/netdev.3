@@ -1,47 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860272FAECC;
-	Mon,  5 May 2025 23:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BDF3BC8EB;
+	Mon,  5 May 2025 23:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487388; cv=none; b=meWAhdr8IAhZ486BPEtS4hI2GnQSXO3bVy0Nz5UXWaMCSmXBN0p9sj6ztIeNhRATshjQH2z/kk+28DDElMKHs1S8lLdl0D/Ygrkc5+zQRJDhvUcUbaEkDGvt0y+3prrFK9ozuweUYK3TDgDrDCSbW3RxXiy/+inkgmjKCW/rfFc=
+	t=1746487374; cv=none; b=DBFa2NafcTZg7tfftiX0I++qMkUixIO8xcF10CqHzYYEJHPN2hDJ8olbj+SUK+vTtBfSdVcp29jx+vDmYfcaar1N09YxHmIR6qhbEEqCSsNsYKjzAo+TRIA7YqagBcmpjieOVCnR77SUpl0BCvOZv4v5hk9IrBQN1sUevRDUPGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487388; c=relaxed/simple;
-	bh=r1tiKjuKfbd96zLtE+khOfPEPljsl9llIGk5isv3VwU=;
+	s=arc-20240116; t=1746487374; c=relaxed/simple;
+	bh=nkV0XuP2UmH+YAEtwRszRvh/4U5zUqzdGszDws1FZOA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=K8jzSF7SP9RduV+SL7shaD4mW5OcnNbRHGga7yCeWYdJqS60k90vat3E2HN7mvfSfsCwSdLSI4+rg9MKM5d6WKmfCA43LIBu70sPzs6cvdRz7B71eMZjt+eB5K8t0ssvdiJ0PcjGVtMfkBH4i5RaFWDj3tiAJI5cwd5TIexFaAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vJEBddhj; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=dloRZpk/FwufoAU5+9Ty1Bq/X6NVvpBhxmcqehJ16O4coyxzQCr2IA8P1ZU2VTlSUZJn3bIO5w/e86pSu90P6K9ngyfKjh9Z/3k87IAznjehSUuk1kaW8Zxj3cWThxR+n36l29ugqRuYvcjJ7yUMokIoSb2OrCbsPU89mO4sCBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y++DsvZX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vJEBddhj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC276C4CEEE;
-	Mon,  5 May 2025 23:23:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y++DsvZX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F36C4CEEE;
+	Mon,  5 May 2025 23:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487388;
-	bh=r1tiKjuKfbd96zLtE+khOfPEPljsl9llIGk5isv3VwU=;
+	s=k20201202; t=1746487374;
+	bh=nkV0XuP2UmH+YAEtwRszRvh/4U5zUqzdGszDws1FZOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJEBddhj9LiXDIz3E//MW/xvde+KlG9JD4MpM0pemEKOb+0yWKIEV+JwwdHav6TxH
-	 CLeqR6Y/9LcwGxxhrqkXGfkC0iPHfZr7iRLtJ1f2Q+6Ix6oZYfYrDSeLC/4lry4cn+
-	 g11wOlNRx3NJQtF7+Je5P2MD+eWBfjLDiwswemhNlDXXH9INA8ECEgs9fliTesDeyf
-	 wuR6lZ1RvvOihpFJw9kw8pEH8roSl1yJWAxZQs/V4HjKz5r1EF0ZxOSYIUrkH1Npe3
-	 c5OJ9qn6n/cTo7pBAuXu/CXQx1lq3aaMeF/unIMzIzKYmtbOXiI9N0lMsZzccYWDgd
-	 oeQkGd1FOzMnw==
+	b=Y++DsvZXaeISGXG1UN6E1F1iVGSvt378Vx26a9QR3mBQQkXyv0fg3sVSlWHcQsemS
+	 xtahFJrjB6WFq75x2aPhLwqWz68DXbGBhu+guvg9k/FljYpgwfkU6jRRL2PZfiyJti
+	 ExWLelTEsNXmmU0ETVcY05RdyFXEBjaaCdgchdRT845DDapQuq8as6cRKdjU+bnrvA
+	 cOf6SWa86EzXkPet+eAWT/vGdYWpacmzmKHx6gtjRIOMoQk4Zof8TgxjLoH1AG9UJP
+	 ZxVG1uyEjwCA7lzbd98vdRN3KCE8PJGgYQtImDDt7Gh4NKXjpSqd38V9uu/0oxdqjw
+	 TZu1X0Tt2TnZg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
+Cc: Peter Seiderer <ps.report@gmx.net>,
+	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	iyappan@os.amperecomputing.com,
-	keyur@os.amperecomputing.com,
-	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 43/79] net: xgene-v2: remove incorrect ACPI_PTR annotation
-Date: Mon,  5 May 2025 19:21:15 -0400
-Message-Id: <20250505232151.2698893-43-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 36/79] net: pktgen: fix mpls maximum labels list parsing
+Date: Mon,  5 May 2025 19:21:08 -0400
+Message-Id: <20250505232151.2698893-36-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -56,45 +54,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Peter Seiderer <ps.report@gmx.net>
 
-[ Upstream commit 01358e8fe922f716c05d7864ac2213b2440026e7 ]
+[ Upstream commit 2b15a0693f70d1e8119743ee89edbfb1271b3ea8 ]
 
-Building with W=1 shows a warning about xge_acpi_match being unused when
-CONFIG_ACPI is disabled:
+Fix mpls maximum labels list parsing up to MAX_MPLS_LABELS entries (instead
+of up to MAX_MPLS_LABELS - 1).
 
-drivers/net/ethernet/apm/xgene-v2/main.c:723:36: error: unused variable 'xge_acpi_match' [-Werror,-Wunused-const-variable]
+Addresses the following:
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250225163341.4168238-2-arnd@kernel.org
+	$ echo "mpls 00000f00,00000f01,00000f02,00000f03,00000f04,00000f05,00000f06,00000f07,00000f08,00000f09,00000f0a,00000f0b,00000f0c,00000f0d,00000f0e,00000f0f" > /proc/net/pktgen/lo\@0
+	-bash: echo: write error: Argument list too long
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/apm/xgene-v2/main.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/core/pktgen.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/apm/xgene-v2/main.c b/drivers/net/ethernet/apm/xgene-v2/main.c
-index 848be6bf2fd1f..514a121d96aeb 100644
---- a/drivers/net/ethernet/apm/xgene-v2/main.c
-+++ b/drivers/net/ethernet/apm/xgene-v2/main.c
-@@ -9,8 +9,6 @@
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index 5e9bd9d80b393..e7cde4f097908 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -805,6 +805,10 @@ static ssize_t get_labels(const char __user *buffer, struct pktgen_dev *pkt_dev)
+ 	pkt_dev->nr_labels = 0;
+ 	do {
+ 		__u32 tmp;
++
++		if (n >= MAX_MPLS_LABELS)
++			return -E2BIG;
++
+ 		len = hex32_arg(&buffer[i], 8, &tmp);
+ 		if (len <= 0)
+ 			return len;
+@@ -816,8 +820,6 @@ static ssize_t get_labels(const char __user *buffer, struct pktgen_dev *pkt_dev)
+ 			return -EFAULT;
+ 		i++;
+ 		n++;
+-		if (n >= MAX_MPLS_LABELS)
+-			return -E2BIG;
+ 	} while (c == ',');
  
- #include "main.h"
- 
--static const struct acpi_device_id xge_acpi_match[];
--
- static int xge_get_resources(struct xge_pdata *pdata)
- {
- 	struct platform_device *pdev;
-@@ -733,7 +731,7 @@ MODULE_DEVICE_TABLE(acpi, xge_acpi_match);
- static struct platform_driver xge_driver = {
- 	.driver = {
- 		   .name = "xgene-enet-v2",
--		   .acpi_match_table = ACPI_PTR(xge_acpi_match),
-+		   .acpi_match_table = xge_acpi_match,
- 	},
- 	.probe = xge_probe,
- 	.remove = xge_remove,
+ 	pkt_dev->nr_labels = n;
 -- 
 2.39.5
 
