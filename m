@@ -1,64 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA402DA0EA;
-	Mon,  5 May 2025 23:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8079E281359;
+	Mon,  5 May 2025 23:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486177; cv=none; b=M+T+PaijYZ7VKOCXAZWeQiOp9O9apIXXC8ndrMNw0RhfJYe7lJ+fXVlzT6dcEh/wKQwBdXYAR0yLDYUtC7RwOhgSudHWkOCBm8LQkuUQTaUcd7QhgSpAVpjTfbApeQue54NH/P7HmWU/bnDrwm9MDWpX5AW+bba+W5NMPyY2kow=
+	t=1746486195; cv=none; b=CD2ACHdsGpbX87qeXFo8eykXsXeJ9254nFKCyoaEZzy263fNDjJ2oJNIzAivpRASxP03/v2GwwJa+FVkQeB1low0yGkjjfEGj/tLiGiChJqYLxMRbnBSJGyAjZJj6Izon07JVQH7nGn6SO8SXHGB3VZEAjL3K7+rLFrdu63v1A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486177; c=relaxed/simple;
-	bh=pEmDVUXvc0J46+4t6pQY34qv1kz8YJhrfowiq+L+feA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gIjnDopG3EB3FvNPh07p7ILpgM2cSJHYBy80fHFfTptBzMpgnRIrIDbmxOgvcNwnWFgu1XWgZWNxFn/eFNxvMDeub/AAmAg9ZG7nl3E2Y2jFIBWqy0ZhmnQvMi0WZ3cQ7o9eiC3+daObQgIMgVpRQgedRhWUF0maCwHGe+K1SXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UXAcwsgW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746486195; c=relaxed/simple;
+	bh=cG9+6Z7Bog13sT6niqG2mYbzsvFckweOUilz1ChfGsY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=t4U1+5dQ1Yj87a6V1ounBhh9MYU3EG3XtMQh1O0eLhYqtSSFEyP/+MrikGJse+6NjnHY1i1AMhwbVZqX5n32wA9Gnb97hm1uwF9DbJoNjWXavKAuo0UFituualsLhot8QGr5KVTKTOi33bx0tin5Gu3mTch6lK0dtGUAmMjGJfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eku9V9da; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UXAcwsgW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D1CC4CEED;
-	Mon,  5 May 2025 23:02:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eku9V9da"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F1AC4CEED;
+	Mon,  5 May 2025 23:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486175;
-	bh=pEmDVUXvc0J46+4t6pQY34qv1kz8YJhrfowiq+L+feA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UXAcwsgWa1shdmgMd4J6YmBSb37jGGNWNiDwN5W0hrXuQCM4ei3rTEvGxbYQmpuOB
-	 0KBVWAzhLvuusSaEiWughaw8K96UmAZLjNC/a4kn4GhytEsFD5U20nuy1iqQxESjk8
-	 Gi5DW2Rm7rhtS96ChJgaN45Ae0+18fi3KuwW5c0F/7RWAKoW4g2OuDJxWCnpIkBgbL
-	 upx9EJrnmRlVrUc7RtdRj5ffRPtgry4B/7W6R8zhPWnr91k206yMzaaXfd/pLmZ6K0
-	 bjF1J84dHygQUCWIPwmL0vrVaHF+vhB+Eup9PwF2xmqGrhqs/whyzKEoGTBShkWw7m
-	 /eyDguntyItSA==
-Date: Mon, 5 May 2025 16:02:53 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: netdev@vger.kernel.org, linux-rt-devel@lists.linux.dev, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Thomas Gleixner
- <tglx@linutronix.de>
-Subject: Re: [PATCH net-next v3 00/18] net: Cover more per-CPU storage with
- local nested BH locking.
-Message-ID: <20250505160253.3d50ebab@kernel.org>
-In-Reply-To: <20250430124758.1159480-1-bigeasy@linutronix.de>
-References: <20250430124758.1159480-1-bigeasy@linutronix.de>
+	s=k20201202; t=1746486194;
+	bh=cG9+6Z7Bog13sT6niqG2mYbzsvFckweOUilz1ChfGsY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Eku9V9dao6NMG5zyzaZGM7qBaIBi4MiGSQV2KzrJwbq6SF17AtLdZbuf+ksPXLDve
+	 zj2a3xu+kFFLNWVIhN6lia40qHM/Odxrg2EhwrWyitjlCcNeSadBasMToTUkXS3/Kn
+	 PVvOVQRrdMdHXfWoKrTrV5EW8cZ3urhDG5GqUZrkmUcsOvIszYTkA7sXaXrjLXeZpq
+	 d+/IAM1eWaVjMIKTGSpX09i/U0zUJXlZTQ8meMLLDmJWnO74hYNkO2VBV8CjTOixWl
+	 qcVtAIOp2rvAaqw5EfwIV/ssDyJ6C59ae+iImsCIA1rBm4tx8xxjurB53ZRjSkofBZ
+	 RLBmrL8JRr28w==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	saeedm@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 197/294] net/mlx5: Apply rate-limiting to high temperature warning
+Date: Mon,  5 May 2025 18:54:57 -0400
+Message-Id: <20250505225634.2688578-197-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
+References: <20250505225634.2688578-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.89
+Content-Transfer-Encoding: 8bit
 
-On Wed, 30 Apr 2025 14:47:40 +0200 Sebastian Andrzej Siewior wrote:
-> I was looking at the build-time defined per-CPU variables in net/ and
-> added the needed local-BH-locks in order to be able to remove the
-> current per-CPU lock in local_bh_disable() on PREMPT_RT.
-> 
-> The work is not yet complete, I just wanted to post what I have so far
-> instead of sitting on it.
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-Looks fine overall but we're anticipating a respin for patch 5?
-When you repost could you split out the netfilter patches so they 
-can be applied by Pablo to the netfilter tree?
+[ Upstream commit 9dd3d5d258aceb37bdf09c8b91fa448f58ea81f0 ]
 
-And there really doesn't seem to be a strong reason to make this
-series longer than 15 patches, so please don't add more:
-https://www.kernel.org/doc/html/next/process/maintainer-netdev.html
+Wrap the high temperature warning in a temperature event with
+a call to net_ratelimit() to prevent flooding the kernel log
+with repeated warning messages when temperature exceeds the
+threshold multiple times within a short duration.
+
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Link: https://patch.msgid.link/20250213094641.226501-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/events.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+index 0f4763dab5d25..e7143d32b2211 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+@@ -169,9 +169,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
+ 	value_lsb &= 0x1;
+ 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
+ 
+-	mlx5_core_warn(events->dev,
+-		       "High temperature on sensors with bit set %llx %llx",
+-		       value_msb, value_lsb);
++	if (net_ratelimit())
++		mlx5_core_warn(events->dev,
++			       "High temperature on sensors with bit set %llx %llx",
++			       value_msb, value_lsb);
+ 
+ 	return NOTIFY_OK;
+ }
+-- 
+2.39.5
+
