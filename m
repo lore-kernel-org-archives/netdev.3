@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99921F873E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE53B1F8743
 	for <netdev@vger.kernel.org>; Mon,  5 May 2025 08:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746434635; cv=none; b=qHVJUsZlOqzllRo6UBx7CsUJ7mbJ8igfOKmEU/A8kCJYtYNjJ04AhxX39Tn4RJbBick9nYwcpP9bg6GvxDmLE5FiuU6BANplT1pRF9GILFK4bZ0FDFqJ83yWw0/EVZeESMJXsoZxNvf5swNYATZCnZwVuz5dmxgqTrLknF/DFZE=
+	t=1746434635; cv=none; b=tbgWSOsXJ6GBr46aotm6Qqh/ERX8FIkbLhCj66DQMpvVEswwF8WFG0T0Ch3d4Vnd8Y7enn1c2ECGlbPXG6DbpIiHKOJh8CkKMsL9oI3GF0Ffx8VBv52/RCH9fuZVLuVy3Fu/ks514a5EfwH0UAtPDMoIYkex4Wu+tCKJU2wkkBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746434635; c=relaxed/simple;
-	bh=yDBPrVSL+UwTdx3j7DqwG9mfpeNf/ZqzrDQtnxyuIIs=;
+	bh=CywE26rgas3evbSjo68DaIxIX7NCR5wqWdWiofqIa3Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ttufdUt+djH5Tl8AoVDOBv7khYXHrCdmEW4r/3rdH+hd+iXhTzT693hEqz622sJ7F66BNvSPeuYl68640CJtKrgJR7cqPvJC2JdRmU/YwHw4TTusBL80api66KLXOwahmji/0grfdh4LnWWagrraYygbw8X27rENzyzcWix99+c=
+	 MIME-Version; b=BtT3YCfOIuCSC7QLz+KV+vLaSW7FtHwFylcox/iHacBh5xgRqwM/lzoU3rvdd2VXjfWKN1S8gbm1cYyIQfs8AGeH3YarMqMJ/4xdoY4ZbboE2RsVuYdzwdAVNQzSrHcvQ1/9FSCejwuLhcorbHFEUmSW4liLP8vqmkAFxjA+3+Q=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uBrQN-0005WA-Al; Mon, 05 May 2025 10:43:43 +0200
+	id 1uBrQN-0005W9-Al; Mon, 05 May 2025 10:43:43 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uBrQM-001CSI-1X;
+	id 1uBrQM-001CSE-1N;
 	Mon, 05 May 2025 10:43:42 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uBrQM-003SQa-1D;
+	id 1uBrQM-003SQF-15;
 	Mon, 05 May 2025 10:43:42 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -47,9 +47,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Phil Elwell <phil@raspberrypi.org>,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next v8 6/7] net: usb: lan78xx: Refactor USB link power configuration into helper
-Date: Mon,  5 May 2025 10:43:40 +0200
-Message-Id: <20250505084341.824165-7-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v8 4/7] net: usb: lan78xx: move LED DT configuration to helper
+Date: Mon,  5 May 2025 10:43:38 +0200
+Message-Id: <20250505084341.824165-5-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505084341.824165-1-o.rempel@pengutronix.de>
 References: <20250505084341.824165-1-o.rempel@pengutronix.de>
@@ -65,159 +65,110 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Move the USB link power configuration logic from lan78xx_link_reset()
-to a new helper function lan78xx_configure_usb(). This simplifies the
-main link reset path and isolates USB-specific logic.
+Extract the LED enable logic based on the "microchip,led-modes"
+property into a new helper function lan78xx_configure_leds_from_dt().
 
-The new function handles U1/U2 enablement based on Ethernet link speed,
-but only for SuperSpeed-capable devices (LAN7800 and LAN7801). LAN7850,
-a High-Speed-only device, is explicitly excluded. A warning is logged
-if SuperSpeed is reported unexpectedly for LAN7850.
-
-Add a forward declaration for lan78xx_configure_usb() as preparation for
-the upcoming phylink conversion, where it will also be used from the
-mac_link_up() callback.
-
-Open questions remain:
-
-- Why is the 1000 Mbps configuration split into two steps (U2 disable,
-  then U1 enable), unlike the single-step config used for 10/100 Mbps?
-
-- U1/U2 behavior appears to depend on proper EEPROM configuration.
-  There are known devices in the field without EEPROM. Should the driver
-  enforce safe defaults in such cases?
-
-Due to lack of USB subsystem expertise, no changes were made to this logic
-beyond structural refactoring.
+This simplifies lan78xx_phy_init() and improves modularity.
+No functional changes intended.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
 changes v6:
 - this patch is added in v6
 ---
- drivers/net/usb/lan78xx.c | 90 +++++++++++++++++++++++++--------------
- 1 file changed, 59 insertions(+), 31 deletions(-)
+ drivers/net/usb/lan78xx.c | 72 +++++++++++++++++++++++++--------------
+ 1 file changed, 46 insertions(+), 26 deletions(-)
 
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index de2b429e906e..bff53324c70a 100644
+index 7f1ecc415d53..07530eef82cb 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -1650,12 +1650,13 @@ static int lan78xx_phy_int_ack(struct lan78xx_net *dev)
- 	return lan78xx_write_reg(dev, INT_STS, INT_STS_PHY_INT_);
- }
- 
-+static int lan78xx_configure_usb(struct lan78xx_net *dev, int speed);
-+
- static int lan78xx_link_reset(struct lan78xx_net *dev)
- {
- 	struct phy_device *phydev = dev->net->phydev;
- 	struct ethtool_link_ksettings ecmd;
- 	int ladv, radv, ret, link;
--	u32 buf;
- 
- 	/* clear LAN78xx interrupt status */
- 	ret = lan78xx_phy_int_ack(dev);
-@@ -1681,36 +1682,9 @@ static int lan78xx_link_reset(struct lan78xx_net *dev)
- 
- 		phy_ethtool_ksettings_get(phydev, &ecmd);
- 
--		if (dev->udev->speed == USB_SPEED_SUPER) {
--			if (ecmd.base.speed == 1000) {
--				/* disable U2 */
--				ret = lan78xx_read_reg(dev, USB_CFG1, &buf);
--				if (ret < 0)
--					return ret;
--				buf &= ~USB_CFG1_DEV_U2_INIT_EN_;
--				ret = lan78xx_write_reg(dev, USB_CFG1, buf);
--				if (ret < 0)
--					return ret;
--				/* enable U1 */
--				ret = lan78xx_read_reg(dev, USB_CFG1, &buf);
--				if (ret < 0)
--					return ret;
--				buf |= USB_CFG1_DEV_U1_INIT_EN_;
--				ret = lan78xx_write_reg(dev, USB_CFG1, buf);
--				if (ret < 0)
--					return ret;
--			} else {
--				/* enable U1 & U2 */
--				ret = lan78xx_read_reg(dev, USB_CFG1, &buf);
--				if (ret < 0)
--					return ret;
--				buf |= USB_CFG1_DEV_U2_INIT_EN_;
--				buf |= USB_CFG1_DEV_U1_INIT_EN_;
--				ret = lan78xx_write_reg(dev, USB_CFG1, buf);
--				if (ret < 0)
--					return ret;
--			}
--		}
-+		ret = lan78xx_configure_usb(dev, ecmd.base.speed);
-+		if (ret < 0)
-+			return ret;
- 
- 		ladv = phy_read(phydev, MII_ADVERTISE);
- 		if (ladv < 0)
-@@ -2522,6 +2496,60 @@ static void lan78xx_remove_irq_domain(struct lan78xx_net *dev)
- 	dev->domain_data.irqdomain = NULL;
+@@ -2649,6 +2649,49 @@ static int lan78xx_mac_prepare_for_phy(struct lan78xx_net *dev)
+ 	return 0;
  }
  
 +/**
-+ * lan78xx_configure_usb - Configure USB link power settings
-+ * @dev: pointer to the LAN78xx device structure
-+ * @speed: negotiated Ethernet link speed (in Mbps)
++ * lan78xx_configure_leds_from_dt() - Configure LED enables based on DT
++ * @dev: LAN78xx device
++ * @phydev: PHY device (must be valid)
 + *
-+ * This function configures U1/U2 link power management for SuperSpeed
-+ * USB devices based on the current Ethernet link speed. It uses the
-+ * USB_CFG1 register to enable or disable U1 and U2 low-power states.
++ * Reads "microchip,led-modes" property from the PHY's DT node and enables
++ * the corresponding number of LEDs by writing to HW_CFG.
 + *
-+ * Note: Only LAN7800 and LAN7801 support SuperSpeed (USB 3.x).
-+ *       LAN7850 is a High-Speed-only (USB 2.0) device and is skipped.
++ * This helper preserves the original logic, enabling up to 4 LEDs.
++ * If the property is not present, this function does nothing.
 + *
-+ * Return: 0 on success or a negative error code on failure.
++ * Return: 0 on success or a negative error code.
 + */
-+static int lan78xx_configure_usb(struct lan78xx_net *dev, int speed)
++static int lan78xx_configure_leds_from_dt(struct lan78xx_net *dev,
++					  struct phy_device *phydev)
 +{
-+	u32 mask, val;
-+	int ret;
++	struct device_node *np = phydev->mdio.dev.of_node;
++	u32 reg;
++	int len, ret;
 +
-+	/* Only configure USB settings for SuperSpeed devices */
-+	if (dev->udev->speed != USB_SPEED_SUPER)
++	if (!np)
 +		return 0;
 +
-+	/* LAN7850 does not support USB 3.x */
-+	if (dev->chipid == ID_REV_CHIP_ID_7850_) {
-+		netdev_warn_once(dev->net, "Unexpected SuperSpeed for LAN7850 (USB 2.0 only)\n");
++	len = of_property_count_elems_of_size(np, "microchip,led-modes",
++					      sizeof(u32));
++	if (len < 0)
 +		return 0;
-+	}
 +
-+	switch (speed) {
-+	case SPEED_1000:
-+		/* Disable U2, enable U1 */
-+		ret = lan78xx_update_reg(dev, USB_CFG1,
-+					 USB_CFG1_DEV_U2_INIT_EN_, 0);
-+		if (ret < 0)
-+			return ret;
++	ret = lan78xx_read_reg(dev, HW_CFG, &reg);
++	if (ret < 0)
++		return ret;
 +
-+		return lan78xx_update_reg(dev, USB_CFG1,
-+					  USB_CFG1_DEV_U1_INIT_EN_,
-+					  USB_CFG1_DEV_U1_INIT_EN_);
++	reg &= ~(HW_CFG_LED0_EN_ | HW_CFG_LED1_EN_ |
++		 HW_CFG_LED2_EN_ | HW_CFG_LED3_EN_);
 +
-+	case SPEED_100:
-+	case SPEED_10:
-+		/* Enable both U1 and U2 */
-+		mask = USB_CFG1_DEV_U1_INIT_EN_ | USB_CFG1_DEV_U2_INIT_EN_;
-+		val = mask;
-+		return lan78xx_update_reg(dev, USB_CFG1, mask, val);
++	reg |= (len > 0) * HW_CFG_LED0_EN_ |
++	       (len > 1) * HW_CFG_LED1_EN_ |
++	       (len > 2) * HW_CFG_LED2_EN_ |
++	       (len > 3) * HW_CFG_LED3_EN_;
 +
-+	default:
-+		netdev_warn(dev->net, "Unsupported link speed: %d\n", speed);
-+		return -EINVAL;
-+	}
++	return lan78xx_write_reg(dev, HW_CFG, reg);
 +}
 +
- /**
-  * lan78xx_register_fixed_phy() - Register a fallback fixed PHY
-  * @dev: LAN78xx device
+ static int lan78xx_phy_init(struct lan78xx_net *dev)
+ {
+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(fc) = { 0, };
+@@ -2704,32 +2747,9 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
+ 
+ 	phy_support_eee(phydev);
+ 
+-	if (phydev->mdio.dev.of_node) {
+-		u32 reg;
+-		int len;
+-
+-		len = of_property_count_elems_of_size(phydev->mdio.dev.of_node,
+-						      "microchip,led-modes",
+-						      sizeof(u32));
+-		if (len >= 0) {
+-			/* Ensure the appropriate LEDs are enabled */
+-			ret = lan78xx_read_reg(dev, HW_CFG, &reg);
+-			if (ret < 0)
+-				return ret;
+-
+-			reg &= ~(HW_CFG_LED0_EN_ |
+-				 HW_CFG_LED1_EN_ |
+-				 HW_CFG_LED2_EN_ |
+-				 HW_CFG_LED3_EN_);
+-			reg |= (len > 0) * HW_CFG_LED0_EN_ |
+-				(len > 1) * HW_CFG_LED1_EN_ |
+-				(len > 2) * HW_CFG_LED2_EN_ |
+-				(len > 3) * HW_CFG_LED3_EN_;
+-			ret = lan78xx_write_reg(dev, HW_CFG, reg);
+-			if (ret < 0)
+-				return ret;
+-		}
+-	}
++	ret = lan78xx_configure_leds_from_dt(dev, phydev);
++	if (ret)
++		goto free_phy;
+ 
+ 	genphy_config_aneg(phydev);
+ 
 -- 
 2.39.5
 
