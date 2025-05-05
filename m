@@ -1,49 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BD828A70F;
-	Mon,  5 May 2025 23:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B79B3A6F96;
+	Mon,  5 May 2025 23:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487021; cv=none; b=mFvvj+OThNo3/epUWtcfpPHkDv9reGUh5slOpTJMmHKZ4+y3KIeGo2nY7L8AtKKpiFMHLv7Hd8TIxVeopSOYzQb10rEkNNlj8UxAgbp4F6/Nj4PPxBZBeRcHC2xPnRs/7jp1EP9FPdNGszQsy28YOpi4Fbf1JqT71qbLDf/gQwI=
+	t=1746487007; cv=none; b=o0qV59iyGxe403jrj7nwvluRVQor1WFgQzCPBdvI57PHHpFp0yNV4hU59MC4wlP6nEYj9axOmuyUsAPRMylp4M6LsIyKWXe1o+hYHw+w82z5H/x17/JnNQd/6f8eQcDZ49PRkqpCDwpyhH/eaGUi4B3hE857pe3vD9ECgfXkJDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487021; c=relaxed/simple;
-	bh=ib1Vrhx+ahc+Vj+0Ro997g+1+fNzOjfu6r3NEqs8MS8=;
+	s=arc-20240116; t=1746487007; c=relaxed/simple;
+	bh=qzo60eq99Q4KeFcPO165fQwMvAIqpbtTaxi/l/uJZ7g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ozm2NAbmzz51SvCYXxMEj8kZSXGPD7XL7Nv55M+Gtxyd6wVSu80pCtVeyeGYf912kO2JZ2hXXzwmk6WjgiIP0LpmlDdibbOFjUohzkcL7tSA1gI964JZCVaeyIzhRsuAXDUcdXpHu5TD3qeM/THL7+wcDFi6FRERmXL7b+l6mYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eDOpt8zo; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=VLWXNqifq8TqoKA7DWa9qqKOa6AD5p20wlZek+uAAptmW8xL9XshleGIhIsfjxTyBrzrYIdleQmveSXBPXiCTv4uis8JjkiF0ZbjzXvfZVMr7pc/1ndK/kqF8dxfe1W5G8E1aN2UeVEOTiCp2RxNzz99DDlpycI7CqadMzgFk3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQrZYJEB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eDOpt8zo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2269BC4CEEF;
-	Mon,  5 May 2025 23:16:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BQrZYJEB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E870C4CEED;
+	Mon,  5 May 2025 23:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487019;
-	bh=ib1Vrhx+ahc+Vj+0Ro997g+1+fNzOjfu6r3NEqs8MS8=;
+	s=k20201202; t=1746487006;
+	bh=qzo60eq99Q4KeFcPO165fQwMvAIqpbtTaxi/l/uJZ7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eDOpt8zoJA7nYIpA1Bu17Pr41oxLD+KDp9X7yVEELPd+h9aiBB/odBHZdjx9tkLPY
-	 fgyXcUGO7wQVptLG4t5WitZE3yqfOy5e/6E8mflM008nuFfEd9FBME2AhTKjPK7Sp1
-	 56Ve0bcyY+WtcIiQuKpKQsU1caL00EwvXNPfk5moeuGis6rSy0DyDvAH4feFixVpL6
-	 LEfDQUnwG4nk7pf0cpteIopcX5q/CXYhNcWwKSomIT44LKpS982CNntX7TrN6JSxhm
-	 /W9Lpv7OeBunuwnlTSRh4bEfct7Incwvu6YkOdTeztiqyyCIOGcn3uS1eR1gVwR2tV
-	 1q8OsmTzFqwgA==
+	b=BQrZYJEBlFstL68ok+AREMoABLlY2j5s2NmNZJND91UdIsMJ05p6QeewvzEoiiSVy
+	 Zi02+QFnWuoiQiKBiDeQYmMZxhHATQgUbKh1PcaqfnCmj28anIoKUPWoQOfS+xTz6m
+	 CfCeao4pws2tUxoGjQSwDVYZNyY8Q5sXvpP6/+A0gDBKVhicSK7NpoAwU6qOz3w/76
+	 /B2N0Zi1WJio9tbY+poPI34FQwuD8PQBImdAmzvIutqaTgSiVdw9rNJtlnf4ZdDoRc
+	 pDzTGmQTFzkXFHD7a6hXnDUXqBRAQ2jGjVr69uboHrlXLEPzmcRlemZSIQ/DSylPKq
+	 g+WGHNwFoMHGA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Jason Xing <kerneljasonxing@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
 	edumazet@google.com,
+	ncardwell@google.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 111/153] net/mlx5: Apply rate-limiting to high temperature warning
-Date: Mon,  5 May 2025 19:12:38 -0400
-Message-Id: <20250505231320.2695319-111-sashal@kernel.org>
+	martin.lau@linux.dev,
+	dsahern@kernel.org,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 104/153] bpf: Prevent unsafe access to the sock fields in the BPF timestamping callback
+Date: Mon,  5 May 2025 19:12:31 -0400
+Message-Id: <20250505231320.2695319-104-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -58,43 +61,147 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
 
-[ Upstream commit 9dd3d5d258aceb37bdf09c8b91fa448f58ea81f0 ]
+[ Upstream commit fd93eaffb3f977b23bc0a48d4c8616e654fcf133 ]
 
-Wrap the high temperature warning in a temperature event with
-a call to net_ratelimit() to prevent flooding the kernel log
-with repeated warning messages when temperature exceeds the
-threshold multiple times within a short duration.
+The subsequent patch will implement BPF TX timestamping. It will
+call the sockops BPF program without holding the sock lock.
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Link: https://patch.msgid.link/20250213094641.226501-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This breaks the current assumption that all sock ops programs will
+hold the sock lock. The sock's fields of the uapi's bpf_sock_ops
+requires this assumption.
+
+To address this, a new "u8 is_locked_tcp_sock;" field is added. This
+patch sets it in the current sock_ops callbacks. The "is_fullsock"
+test is then replaced by the "is_locked_tcp_sock" test during
+sock_ops_convert_ctx_access().
+
+The new TX timestamping callbacks added in the subsequent patch will
+not have this set. This will prevent unsafe access from the new
+timestamping callbacks.
+
+Potentially, we could allow read-only access. However, this would
+require identifying which callback is read-safe-only and also requires
+additional BPF instruction rewrites in the covert_ctx. Since the BPF
+program can always read everything from a socket (e.g., by using
+bpf_core_cast), this patch keeps it simple and disables all read
+and write access to any socket fields through the bpf_sock_ops
+UAPI from the new TX timestamping callback.
+
+Moreover, note that some of the fields in bpf_sock_ops are specific
+to tcp_sock, and sock_ops currently only supports tcp_sock. In
+the future, UDP timestamping will be added, which will also break
+this assumption. The same idea used in this patch will be reused.
+Considering that the current sock_ops only supports tcp_sock, the
+variable is named is_locked_"tcp"_sock.
+
+Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20250220072940.99994-4-kerneljasonxing@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/events.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/linux/filter.h | 1 +
+ include/net/tcp.h      | 1 +
+ net/core/filter.c      | 8 ++++----
+ net/ipv4/tcp_input.c   | 2 ++
+ net/ipv4/tcp_output.c  | 2 ++
+ 5 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-index 080aee3e3f9bb..15d90d68b1ffd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-@@ -166,9 +166,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
- 	value_lsb &= 0x1;
- 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index 7d8294d0d7173..e723b930bac14 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -1327,6 +1327,7 @@ struct bpf_sock_ops_kern {
+ 	void	*skb_data_end;
+ 	u8	op;
+ 	u8	is_fullsock;
++	u8	is_locked_tcp_sock;
+ 	u8	remaining_opt_len;
+ 	u64	temp;			/* temp and everything after is not
+ 					 * initialized to 0 before calling
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index be91d81d66ab3..577e60ec41b8c 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -2322,6 +2322,7 @@ static inline int tcp_call_bpf(struct sock *sk, int op, u32 nargs, u32 *args)
+ 	memset(&sock_ops, 0, offsetof(struct bpf_sock_ops_kern, temp));
+ 	if (sk_fullsock(sk)) {
+ 		sock_ops.is_fullsock = 1;
++		sock_ops.is_locked_tcp_sock = 1;
+ 		sock_owned_by_me(sk);
+ 	}
  
--	mlx5_core_warn(events->dev,
--		       "High temperature on sensors with bit set %llx %llx",
--		       value_msb, value_lsb);
-+	if (net_ratelimit())
-+		mlx5_core_warn(events->dev,
-+			       "High temperature on sensors with bit set %llx %llx",
-+			       value_msb, value_lsb);
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 9d358fb865e28..983aca1bf833f 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -9640,10 +9640,10 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
+ 		}							      \
+ 		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(			      \
+ 						struct bpf_sock_ops_kern,     \
+-						is_fullsock),		      \
++						is_locked_tcp_sock),	      \
+ 				      fullsock_reg, si->src_reg,	      \
+ 				      offsetof(struct bpf_sock_ops_kern,      \
+-					       is_fullsock));		      \
++					       is_locked_tcp_sock));	      \
+ 		*insn++ = BPF_JMP_IMM(BPF_JEQ, fullsock_reg, 0, jmp);	      \
+ 		if (si->dst_reg == si->src_reg)				      \
+ 			*insn++ = BPF_LDX_MEM(BPF_DW, reg, si->src_reg,	      \
+@@ -9728,10 +9728,10 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
+ 					       temp));			      \
+ 		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(			      \
+ 						struct bpf_sock_ops_kern,     \
+-						is_fullsock),		      \
++						is_locked_tcp_sock),	      \
+ 				      reg, si->dst_reg,			      \
+ 				      offsetof(struct bpf_sock_ops_kern,      \
+-					       is_fullsock));		      \
++					       is_locked_tcp_sock));	      \
+ 		*insn++ = BPF_JMP_IMM(BPF_JEQ, reg, 0, 2);		      \
+ 		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(			      \
+ 						struct bpf_sock_ops_kern, sk),\
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 8859a38b45d5e..0caf1474b9807 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -168,6 +168,7 @@ static void bpf_skops_parse_hdr(struct sock *sk, struct sk_buff *skb)
+ 	memset(&sock_ops, 0, offsetof(struct bpf_sock_ops_kern, temp));
+ 	sock_ops.op = BPF_SOCK_OPS_PARSE_HDR_OPT_CB;
+ 	sock_ops.is_fullsock = 1;
++	sock_ops.is_locked_tcp_sock = 1;
+ 	sock_ops.sk = sk;
+ 	bpf_skops_init_skb(&sock_ops, skb, tcp_hdrlen(skb));
  
- 	return NOTIFY_OK;
- }
+@@ -184,6 +185,7 @@ static void bpf_skops_established(struct sock *sk, int bpf_op,
+ 	memset(&sock_ops, 0, offsetof(struct bpf_sock_ops_kern, temp));
+ 	sock_ops.op = bpf_op;
+ 	sock_ops.is_fullsock = 1;
++	sock_ops.is_locked_tcp_sock = 1;
+ 	sock_ops.sk = sk;
+ 	/* sk with TCP_REPAIR_ON does not have skb in tcp_finish_connect */
+ 	if (skb)
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 3a66d0c7d015c..3a819413d3968 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -507,6 +507,7 @@ static void bpf_skops_hdr_opt_len(struct sock *sk, struct sk_buff *skb,
+ 		sock_owned_by_me(sk);
+ 
+ 		sock_ops.is_fullsock = 1;
++		sock_ops.is_locked_tcp_sock = 1;
+ 		sock_ops.sk = sk;
+ 	}
+ 
+@@ -552,6 +553,7 @@ static void bpf_skops_write_hdr_opt(struct sock *sk, struct sk_buff *skb,
+ 		sock_owned_by_me(sk);
+ 
+ 		sock_ops.is_fullsock = 1;
++		sock_ops.is_locked_tcp_sock = 1;
+ 		sock_ops.sk = sk;
+ 	}
+ 
 -- 
 2.39.5
 
