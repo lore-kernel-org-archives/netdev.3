@@ -1,47 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D46E2EC288;
-	Mon,  5 May 2025 23:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB242EFB80;
+	Mon,  5 May 2025 23:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486616; cv=none; b=LHUt0DCEWp2QZrvG4m0A7+TxraAmlSrU0fnQSX0bevy3oNFWHxef6E67hS8hpl/I0VpZ5ht/B4pDI/uHb4P5jo6a1DpR+Ov0XyCHxoa5gTviKHnfCfWdjFhouA5QnQKx1TZngF4Qttln1Eu4tXqSb7S2B+jAlOZG9YnsxIAvHng=
+	t=1746486656; cv=none; b=RbmJhxBMK9PkiJea1SG4L2l0UbIWcN0Xf++d1/52MJRZDV2xdVoA3s0DES0OLebTmTtuY0v7oIdsKWp7TtVOgvBYOKiWGHWorO3X08GFG7Ub/OfGdTQvvroQLoJS4MD+AWTS4CU+fT+if0WSdkv8Js13fvLQLPSBCNXsY6+5F08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486616; c=relaxed/simple;
-	bh=JFhIQAL0dJT7ZGzwUod4Y5ApAOyYZQd5iKFN0uqTNBw=;
+	s=arc-20240116; t=1746486656; c=relaxed/simple;
+	bh=Pa7L28cijMi8iOzF4/ANZtkfnSuJCas+Gkv0hY5XP1Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nv+0qFD4IaPbSRd02AWRBAlBlJ+2ZB7ioh+KUOwhjRpCjpzdrgzosxW5knGiPaSmvc4mcS6ui0rHxFjOUyAONqwlecL5oRo6E1UjScwwp4wuvofjrAWlhKeQqxQhcgaFizvZIz6MmXbI7GjAgAarPIqxXCofxtpc/0yatX4VlXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J3gnGefx; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=PCZ88zA9jblEGGlOT128YG2UUnIM4kCJ9ehNrsCPD8qXXxiAd+8qN/SWWmgwp06zNtBetYOLI+BGqF7g8c1K0OMkZvjmZGh2kPULaoWf7qAeG6HEaH0SWAhpFEo/XQLKwlzUDoEcXoSvJouIPk21QzwUW/TlVJyInAlMV4Jh2iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vMBNl+W+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J3gnGefx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A371C4CEE4;
-	Mon,  5 May 2025 23:10:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vMBNl+W+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516F3C4CEED;
+	Mon,  5 May 2025 23:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486616;
-	bh=JFhIQAL0dJT7ZGzwUod4Y5ApAOyYZQd5iKFN0uqTNBw=;
+	s=k20201202; t=1746486656;
+	bh=Pa7L28cijMi8iOzF4/ANZtkfnSuJCas+Gkv0hY5XP1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J3gnGefxrOVL7b6rkM8bGT4LRkRN9WFY6BWvSmNVZuwJSLYYYZZNqafJK/WmkoGkJ
-	 JNR7+mDlaCUQzW9WQZ8kWzuJxRrgIeXz0IAQ1nbEXjPvi4JGWzleOVNxRiWfsv7BLf
-	 IbDqdqO14ttoAC5va7T1ytWUeEMCIrTnrYipPQ5pI+HBTPtkbNS3l4v/myC8Yaj6OB
-	 wJtDiKkW17MbvAHoo9jrIU+Vu7LkIzb1KjEFeUslbBNnYyHmiCk4xTG/XJqSnFmnXY
-	 8lgop9sz/R1PvQC0pkQSgpaXqiqcvXihn7a0Zc8E8nPaygGufKoJdHSuycPuKEIS50
-	 y6kaDbcok6f9w==
+	b=vMBNl+W+fTyfYuhJw/vjqaIvcgE99M1m363kh8tSrzF9r9yVTvM3OoIAAxRarvRyI
+	 JEwaZ+kZnrIyAxM6MBF2WKAo6vSJ+9JWm4fx2Gd/9ZghMFQ+perTLNNkVPH6dUKfk/
+	 7lBJcQEd6vlIaxtlFWp/digAobw7WW9HfPV+7jtyt/t2o6OLufOakw8HntRhoXYzWS
+	 iu9MN5mcWyHtZOiDqqBfs7OHuhJ0OZSxdgqvc32tmqrUl+t73HCRsKuwQbdWMftP7c
+	 ofepVELn1pzKhjNdO6U2SGDpmewh/7b91bYYBY/OfKh1ybomFlwUTrE6GCHrqBvFdN
+	 HtkPhOTbbLO1Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hangbin Liu <liuhangbin@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+Cc: Peter Seiderer <ps.report@gmx.net>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jv@jvosburgh.net,
-	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 120/212] bonding: report duplicate MAC address in all situations
-Date: Mon,  5 May 2025 19:04:52 -0400
-Message-Id: <20250505230624.2692522-120-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 140/212] net: pktgen: fix access outside of user given buffer in pktgen_thread_write()
+Date: Mon,  5 May 2025 19:05:12 -0400
+Message-Id: <20250505230624.2692522-140-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -51,48 +49,52 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Peter Seiderer <ps.report@gmx.net>
 
-[ Upstream commit 28d68d396a1cd21591e8c6d74afbde33a7ea107e ]
+[ Upstream commit 425e64440ad0a2f03bdaf04be0ae53dededbaa77 ]
 
-Normally, a bond uses the MAC address of the first added slave as the bond’s
-MAC address. And the bond will set active slave’s MAC address to bond’s
-address if fail_over_mac is set to none (0) or follow (2).
+Honour the user given buffer size for the strn_len() calls (otherwise
+strn_len() will access memory outside of the user given buffer).
 
-When the first slave is removed, the bond will still use the removed slave’s
-MAC address, which can lead to a duplicate MAC address and potentially cause
-issues with the switch. To avoid confusion, let's warn the user in all
-situations, including when fail_over_mac is set to 2 or not in active-backup
-mode.
-
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250225033914.18617-1-liuhangbin@gmail.com
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250219084527.20488-8-ps.report@gmx.net
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/pktgen.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index ded9e369e4038..3cedadef9c8ab 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2431,7 +2431,7 @@ static int __bond_release_one(struct net_device *bond_dev,
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index 5917820f92c3d..a2838c15aa9da 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -1877,8 +1877,8 @@ static ssize_t pktgen_thread_write(struct file *file,
+ 	i = len;
  
- 	RCU_INIT_POINTER(bond->current_arp_slave, NULL);
+ 	/* Read variable name */
+-
+-	len = strn_len(&user_buffer[i], sizeof(name) - 1);
++	max = min(sizeof(name) - 1, count - i);
++	len = strn_len(&user_buffer[i], max);
+ 	if (len < 0)
+ 		return len;
  
--	if (!all && (!bond->params.fail_over_mac ||
-+	if (!all && (bond->params.fail_over_mac != BOND_FOM_ACTIVE ||
- 		     BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)) {
- 		if (ether_addr_equal_64bits(bond_dev->dev_addr, slave->perm_hwaddr) &&
- 		    bond_has_slaves(bond))
+@@ -1908,7 +1908,8 @@ static ssize_t pktgen_thread_write(struct file *file,
+ 	if (!strcmp(name, "add_device")) {
+ 		char f[32];
+ 		memset(f, 0, 32);
+-		len = strn_len(&user_buffer[i], sizeof(f) - 1);
++		max = min(sizeof(f) - 1, count - i);
++		len = strn_len(&user_buffer[i], max);
+ 		if (len < 0) {
+ 			ret = len;
+ 			goto out;
 -- 
 2.39.5
 
