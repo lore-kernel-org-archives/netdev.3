@@ -1,45 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2022EE499;
-	Mon,  5 May 2025 23:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BA9388C2C;
+	Mon,  5 May 2025 23:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486579; cv=none; b=VajUDsrr+FVOCZIO/UTMs8cWXhy6/kGoS4YIkdTujytIFwJLbCJ3z6hjUYilt/r3ImGLf/T56vY8/GZ3DQKvJeFmb+xjhAwYYUvUcJRNZJDRI9I+JCZElYLKPTFlXGkUFGrN9+BtheiqpHIZbtHOFz8D1bkud7Vbs0hIeG6Q4D4=
+	t=1746486613; cv=none; b=J+CgCetuXQOApP26rg0RXjVg/mKkvNOA5Nymu4c6g3WfYh2Z4qyD6EvXIBQFG3wXPuYhOfJ3rbql00pa0fe3/s7OKD5lrZer3dEP4GAZtxxE4Ldn7b0FlDNYSkGf/xsHeUgJsg3VhaZpDkzUc3fx2dDhk0p0Wb/djrf76B3wuBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486579; c=relaxed/simple;
-	bh=aiC4SBjgelIG567vwbV5hUes4Lo+EROcUkIHcu2EjXc=;
+	s=arc-20240116; t=1746486613; c=relaxed/simple;
+	bh=aWAaNwhV/x0DOI5AMVG//fIxQeAHIm2Mo3OcOCuYYfU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QPVOBYUXPBFANHP211rYxLdne/gv0zva+saPEwvG8r6YEtuGxL8zdcQMv2Ch3lhsPgzxi+9UKLmTkVypRHKx6e+SPKi/aqMzNuVt69jaS3eAa5r0ObkFpsFflUcYRY195Lm5lDPdUB6CF9zJ4cLVdHG19A2ia4G3A9ro/M9E0eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q11DXU7y; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=YOCnnrfdN0qC4XPSJFd2d81J6WKsh2vCi8ohyh5aVcokkQRNacKbMw3rY+OHomIlKc4WYKNsl0mEcNVsLeODVorJgZsgBGMRm4lJTbtkdK8uD9lIpMe2DNklnCDGBc32XYm9Dy0MFm4xooHoFovi1sggKur+0b5QcO7GQfMY10c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ElR7jyKI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q11DXU7y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A22FC4CEED;
-	Mon,  5 May 2025 23:09:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ElR7jyKI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FA5C4CEF1;
+	Mon,  5 May 2025 23:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486578;
-	bh=aiC4SBjgelIG567vwbV5hUes4Lo+EROcUkIHcu2EjXc=;
+	s=k20201202; t=1746486613;
+	bh=aWAaNwhV/x0DOI5AMVG//fIxQeAHIm2Mo3OcOCuYYfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q11DXU7yjXFlypezHioOKAe7sYxEouKYtZ3TtpBttkMrJnG4mrgcrxHiHk0pAyxZP
-	 NcYz5rFIWMENYMhYJJAV02Ij7xpi/n9O1OpTHC6UKZlaWONQIbiKO5O2H9VsCBehz8
-	 aAiF+M3416SFMfPws7rBecbQFh6HUJwaKDiT3oPsRhem55wXLepVWnBp/v3Ion8FYA
-	 qukUuG7wFMzujlrbJIp+Cpi0b91ciuDTHqIlihudW/DxuOJEa5UYckvQNIv4OPhYk8
-	 LuUqKH3bUMNr3PPHGM35j8i1raXMjXxZaKx1/fFc2uEp0Qzmc+g4f3+HzAfQaF94Jl
-	 +r1CIqql+Fw3g==
+	b=ElR7jyKIL8u/HSDGnAGKW6B5a6hK4dXCOU528IhH7XXokOfx8fLaI74ywOPouMt3C
+	 wL4BXAphZjl5lDnM3MY0d/ygStNZskyqWs9Z/mA9ES2QmNbZRc17JfYkTcVaGZAohS
+	 prnaBBajVcZpPJu6zN2EnU8Nhf7eXSeAFvUzr6OMjbwNV0AX4zmPvlIKQ3iXCcuiTS
+	 sCoJLPtNxih98xmucUY23l0y7XUSsBp7jKalsRY0uroUrNc+tWqGL/GkoZCYGu76oc
+	 dlzsLQJc4NytKqxmOsAiSLEBqTKp+ThdrAjSWRaCvdk/gqe8tlJ9fEfDQud7urmGp9
+	 15zg6ogMn1ACA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Eric Woudstra <ericwouds@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
+	nbd@nbd.name,
+	sean.wang@mediatek.com,
+	lorenzo@kernel.org,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 099/212] ipv4: fib: Move fib_valid_key_len() to rtm_to_fib_config().
-Date: Mon,  5 May 2025 19:04:31 -0400
-Message-Id: <20250505230624.2692522-99-sashal@kernel.org>
+	edumazet@google.com,
+	kuba@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 118/212] net: ethernet: mtk_ppe_offload: Allow QinQ, double ETH_P_8021Q only
+Date: Mon,  5 May 2025 19:04:50 -0400
+Message-Id: <20250505230624.2692522-118-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -54,126 +61,86 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Eric Woudstra <ericwouds@gmail.com>
 
-[ Upstream commit 254ba7e6032d3fc738050d500b0c1d8197af90ca ]
+[ Upstream commit 7fe0353606d77a32c4c7f2814833dd1c043ebdd2 ]
 
-fib_valid_key_len() is called in the beginning of fib_table_insert()
-or fib_table_delete() to check if the prefix length is valid.
+mtk_foe_entry_set_vlan() in mtk_ppe.c already supports double vlan
+tagging, but mtk_flow_offload_replace() in mtk_ppe_offload.c only allows
+for 1 vlan tag, optionally in combination with pppoe and dsa tags.
 
-fib_table_insert() and fib_table_delete() are called from 3 paths
+However, mtk_foe_entry_set_vlan() only allows for setting the vlan id.
+The protocol cannot be set, it is always ETH_P_8021Q, for inner and outer
+tag. This patch adds QinQ support to mtk_flow_offload_replace(), only in
+the case that both inner and outer tags are ETH_P_8021Q.
 
-  - ip_rt_ioctl()
-  - inet_rtm_newroute() / inet_rtm_delroute()
-  - fib_magic()
+Only PPPoE-in-Q (as before) and Q-in-Q are allowed. A combination
+of PPPoE and Q-in-Q is not allowed.
 
-In the first ioctl() path, rtentry_to_fib_config() checks the prefix
-length with bad_mask().  Also, fib_magic() always passes the correct
-prefix: 32 or ifa->ifa_prefixlen, which is already validated.
-
-Let's move fib_valid_key_len() to the rtnetlink path, rtm_to_fib_config().
-
-While at it, 2 direct returns in rtm_to_fib_config() are changed to
-goto to match other places in the same function
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250228042328.96624-12-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
+Link: https://patch.msgid.link/20250225201509.20843-1-ericwouds@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_frontend.c | 18 ++++++++++++++++--
- net/ipv4/fib_trie.c     | 22 ----------------------
- 2 files changed, 16 insertions(+), 24 deletions(-)
+ .../net/ethernet/mediatek/mtk_ppe_offload.c   | 22 +++++++++----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
-index 90ce87ffed461..7993ff46de23c 100644
---- a/net/ipv4/fib_frontend.c
-+++ b/net/ipv4/fib_frontend.c
-@@ -829,19 +829,33 @@ static int rtm_to_fib_config(struct net *net, struct sk_buff *skb,
- 		}
- 	}
+diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+index 6a72687d5b83f..8cb8d47227f51 100644
+--- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
++++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+@@ -34,8 +34,10 @@ struct mtk_flow_data {
+ 	u16 vlan_in;
  
-+	if (cfg->fc_dst_len > 32) {
-+		NL_SET_ERR_MSG(extack, "Invalid prefix length");
-+		err = -EINVAL;
-+		goto errout;
-+	}
-+
-+	if (cfg->fc_dst_len < 32 && (ntohl(cfg->fc_dst) << cfg->fc_dst_len)) {
-+		NL_SET_ERR_MSG(extack, "Invalid prefix for given prefix length");
-+		err = -EINVAL;
-+		goto errout;
-+	}
-+
- 	if (cfg->fc_nh_id) {
- 		if (cfg->fc_oif || cfg->fc_gw_family ||
- 		    cfg->fc_encap || cfg->fc_mp) {
- 			NL_SET_ERR_MSG(extack,
- 				       "Nexthop specification and nexthop id are mutually exclusive");
--			return -EINVAL;
-+			err = -EINVAL;
-+			goto errout;
- 		}
- 	}
+ 	struct {
+-		u16 id;
+-		__be16 proto;
++		struct {
++			u16 id;
++			__be16 proto;
++		} vlans[2];
+ 		u8 num;
+ 	} vlan;
+ 	struct {
+@@ -321,18 +323,19 @@ mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f)
+ 		case FLOW_ACTION_CSUM:
+ 			break;
+ 		case FLOW_ACTION_VLAN_PUSH:
+-			if (data.vlan.num == 1 ||
++			if (data.vlan.num + data.pppoe.num == 2 ||
+ 			    act->vlan.proto != htons(ETH_P_8021Q))
+ 				return -EOPNOTSUPP;
  
- 	if (has_gw && has_via) {
- 		NL_SET_ERR_MSG(extack,
- 			       "Nexthop configuration can not contain both GATEWAY and VIA");
--		return -EINVAL;
-+		err = -EINVAL;
-+		goto errout;
- 	}
+-			data.vlan.id = act->vlan.vid;
+-			data.vlan.proto = act->vlan.proto;
++			data.vlan.vlans[data.vlan.num].id = act->vlan.vid;
++			data.vlan.vlans[data.vlan.num].proto = act->vlan.proto;
+ 			data.vlan.num++;
+ 			break;
+ 		case FLOW_ACTION_VLAN_POP:
+ 			break;
+ 		case FLOW_ACTION_PPPOE_PUSH:
+-			if (data.pppoe.num == 1)
++			if (data.pppoe.num == 1 ||
++			    data.vlan.num == 2)
+ 				return -EOPNOTSUPP;
  
- 	if (!cfg->fc_table)
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index 77b97c48da5ea..fa54b36b241ac 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -1192,22 +1192,6 @@ static int fib_insert_alias(struct trie *t, struct key_vector *tp,
- 	return 0;
- }
+ 			data.pppoe.sid = act->pppoe.sid;
+@@ -422,12 +425,9 @@ mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f)
+ 	if (offload_type == MTK_PPE_PKT_TYPE_BRIDGE)
+ 		foe.bridge.vlan = data.vlan_in;
  
--static bool fib_valid_key_len(u32 key, u8 plen, struct netlink_ext_ack *extack)
--{
--	if (plen > KEYLENGTH) {
--		NL_SET_ERR_MSG(extack, "Invalid prefix length");
--		return false;
+-	if (data.vlan.num == 1) {
+-		if (data.vlan.proto != htons(ETH_P_8021Q))
+-			return -EOPNOTSUPP;
++	for (i = 0; i < data.vlan.num; i++)
++		mtk_foe_entry_set_vlan(eth, &foe, data.vlan.vlans[i].id);
+ 
+-		mtk_foe_entry_set_vlan(eth, &foe, data.vlan.id);
 -	}
--
--	if ((plen < KEYLENGTH) && (key << plen)) {
--		NL_SET_ERR_MSG(extack,
--			       "Invalid prefix for given prefix length");
--		return false;
--	}
--
--	return true;
--}
--
- static void fib_remove_alias(struct trie *t, struct key_vector *tp,
- 			     struct key_vector *l, struct fib_alias *old);
+ 	if (data.pppoe.num == 1)
+ 		mtk_foe_entry_set_pppoe(eth, &foe, data.pppoe.sid);
  
-@@ -1228,9 +1212,6 @@ int fib_table_insert(struct net *net, struct fib_table *tb,
- 
- 	key = ntohl(cfg->fc_dst);
- 
--	if (!fib_valid_key_len(key, plen, extack))
--		return -EINVAL;
--
- 	pr_debug("Insert table=%u %08x/%d\n", tb->tb_id, key, plen);
- 
- 	fi = fib_create_info(cfg, extack);
-@@ -1723,9 +1704,6 @@ int fib_table_delete(struct net *net, struct fib_table *tb,
- 
- 	key = ntohl(cfg->fc_dst);
- 
--	if (!fib_valid_key_len(key, plen, extack))
--		return -EINVAL;
--
- 	l = fib_find_node(t, &tp, key);
- 	if (!l)
- 		return -ESRCH;
 -- 
 2.39.5
 
