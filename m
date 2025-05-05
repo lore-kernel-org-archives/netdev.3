@@ -1,51 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5AE2D5D14;
-	Mon,  5 May 2025 22:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B4136E084;
+	Mon,  5 May 2025 22:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485678; cv=none; b=OkshbliBTu7Yk6Csy+wFp2v77FMOKvp5IGFnlZFA04MUxTYzjthu3rTvNew7MZk8/4SlwzCPbB/cvbzHI/cq2GAuNNLlHLLEAOafPHITrR/QcdlFxo3qgxgq5PHs2/+mtCnwb2zXwlu7tc/PK1RTqv+MNf8IoupNpFYyRAMEcpc=
+	t=1746485845; cv=none; b=YzRamGoTMEJeCsGPzTP8a7ueyGMwDEKmTIgtdWHvgBmroF/cfsZd5l1TF0/qkOYJEwfNL4RFnzfIze8r+FS8MZpps7WvGq2yMKY1J1ZRPWHxAn9y9p1uMQM8VXjBuUeCANiUiU5HLUgscCb+qIcil2+a/KEiA/XbuTKYd6s2MI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485678; c=relaxed/simple;
-	bh=OLizhLH1GnI6+VepvsENhJMEKJeSmbGNRZoZnzB8f1Y=;
+	s=arc-20240116; t=1746485845; c=relaxed/simple;
+	bh=BYmx1SoM6cZjl6yYUpyus6wm6SDYezgd/kLQ4Fl4VDg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OXs/0r5lWUSxDDBJEO7t1It2Jfc4N6oHGHcw53FIVKkU7tH4gKD59JZDJen/4hze5OAfiwnBBAhIr2GAe5maV5fvp6kByoGtqD197NRs+l1jQ4shIDnX5/vZRqSRYJxdx4nUtw3x50+vnKu+t6p5SbAAkMrsh2hughQSsipdOzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i77d85uN; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Okqfcs4riMMCnf4CQfktVjj1zAWS/T+1nnJF5ytAxhcuK8vkma+jP7lof2nSbupnBuR026BMhIaY5QBuyt+tgsHPDDkr09NaL72ZUtKScyvFEzEOBFa4jT3Uwb71XMJmszPpQTnf1CTQiUZVa89vAwlemhge5Zku/49dK+nsPGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EFV5ElRQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i77d85uN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D244C4CEEE;
-	Mon,  5 May 2025 22:54:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EFV5ElRQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4652AC4CEE4;
+	Mon,  5 May 2025 22:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485676;
-	bh=OLizhLH1GnI6+VepvsENhJMEKJeSmbGNRZoZnzB8f1Y=;
+	s=k20201202; t=1746485843;
+	bh=BYmx1SoM6cZjl6yYUpyus6wm6SDYezgd/kLQ4Fl4VDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i77d85uNxp5bn/QBN+XqUXSNimrMt/nlyjarAflPysKmy/CepRA0nNi5n9NGHNXmE
-	 vh9jlx4KDzlkJv7D3thekbURfsED9Na0nTplRQhfusTErdhtsIJBlt1Sdd76sDqJss
-	 EgzyEOLlHk2of0uE05rZsG/ZTnVINirJDShBhGETCJ5aA9Xq3YNs+PnC7eo9T+io1P
-	 awU4M5wgoCR74wnWP8oCeG0Fw4prQmH3UHsEuFEyy3s8Sy0s+kgnh2jPK3PQ8ALgMX
-	 FGzSI7CDnbpNmDj46r3XpG8bywVhj1KIlA6NHLcTLG2bubCAWYUN2Rn5gEfswPx8E0
-	 yFf/Ap99PvuYA==
+	b=EFV5ElRQrki9YQMhBEsQx3PoIC6dy2baLUqIqTiyxmsfcJaQlDmfQ8SUB8PIPokYn
+	 ahNIxnYEDGokMpE0AhqkorrybpryrCbSa/IjP11RGZZkR9Y/QIjbqQu93oCz8WEnIr
+	 N2JEldHJaiXBJZStEu3xH0Yg/rYVDKo2HzW4AIN87/bQUklIf1KLkd+QzRdxA/WVnP
+	 0ewm1sx9KvYsoSQsNoTEMsz2yUPBjCzjMkf3dyZ2UTzgZM/62LViYs/14unXa+P9Vb
+	 wI9CTrZh2x7n1LeFWI2cFQPECBJnJgOw2I+YB4YcOpyof/b0IYWBjM1UkGgpNJofg1
+	 M++MS0XiweFjg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	donald.hunter@gmail.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	chuck.lever@oracle.com,
 	davem@davemloft.net,
 	edumazet@google.com,
-	sdf@fomichev.me,
-	antonio@openvpn.net,
-	jstancek@redhat.com,
-	johannes.berg@intel.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-nfs@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 421/486] tools: ynl-gen: don't output external constants
-Date: Mon,  5 May 2025 18:38:17 -0400
-Message-Id: <20250505223922.2682012-421-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 024/294] SUNRPC: rpcbind should never reset the port to the value '0'
+Date: Mon,  5 May 2025 18:52:04 -0400
+Message-Id: <20250505225634.2688578-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
-References: <20250505223922.2682012-1-sashal@kernel.org>
+In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
+References: <20250505225634.2688578-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,41 +56,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.26
+X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 7e8b24e24ac46038e48c9a042e7d9b31855cbca5 ]
+[ Upstream commit 214c13e380ad7636631279f426387f9c4e3c14d9 ]
 
-A definition with a "header" property is an "external" definition
-for C code, as in it is defined already in another C header file.
-Other languages will need the exact value but C codegen should
-not recreate it. So don't output those definitions in the uAPI
-header.
+If we already had a valid port number for the RPC service, then we
+should not allow the rpcbind client to set it to the invalid value '0'.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://patch.msgid.link/20250203215510.1288728-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/net/ynl/ynl-gen-c.py | 3 +++
- 1 file changed, 3 insertions(+)
+ net/sunrpc/rpcb_clnt.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/net/ynl/ynl-gen-c.py b/tools/net/ynl/ynl-gen-c.py
-index 463f1394ab971..c78f1c1bca75c 100755
---- a/tools/net/ynl/ynl-gen-c.py
-+++ b/tools/net/ynl/ynl-gen-c.py
-@@ -2417,6 +2417,9 @@ def render_uapi(family, cw):
+diff --git a/net/sunrpc/rpcb_clnt.c b/net/sunrpc/rpcb_clnt.c
+index 102c3818bc54d..53bcca365fb1c 100644
+--- a/net/sunrpc/rpcb_clnt.c
++++ b/net/sunrpc/rpcb_clnt.c
+@@ -820,9 +820,10 @@ static void rpcb_getport_done(struct rpc_task *child, void *data)
+ 	}
  
-     defines = []
-     for const in family['definitions']:
-+        if const.get('header'):
-+            continue
-+
-         if const['type'] != 'const':
-             cw.writes_defines(defines)
-             defines = []
+ 	trace_rpcb_setport(child, map->r_status, map->r_port);
+-	xprt->ops->set_port(xprt, map->r_port);
+-	if (map->r_port)
++	if (map->r_port) {
++		xprt->ops->set_port(xprt, map->r_port);
+ 		xprt_set_bound(xprt);
++	}
+ }
+ 
+ /*
 -- 
 2.39.5
 
