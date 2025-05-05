@@ -1,49 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE47227F754;
-	Mon,  5 May 2025 22:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBF227F743;
+	Mon,  5 May 2025 22:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485457; cv=none; b=Tp3G4Y32tVVck0Kx/MCE58uAGeI+7QGkHu/bCbjdEgiLebji9LP1W3F/8/wrxQTdmlsvTwK+2THikWXMEsQ1HPhndm/YFqygMNah7umNHCeZNOEGJC71k1VvxBZC2RjaQTEufOlxB5bWRIlEujNkJjBMrnpvUn+6zZECrwRO9hU=
+	t=1746485523; cv=none; b=hHWHs0WatchZCi984WVGR5EsSUHxj7vJGZehYa2AXj0DZgv11iEvPoyvsc3wX7g6qfEnxioKBj6x4yDtYR8R0AUhqMbI3tkMq6Q1kATeugwhUFc2pIP7/VBaDDbkp44qfBmiKbvMeoq9kV/A370SkEQBpXUt36Ma+GhqeA0fzVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485457; c=relaxed/simple;
-	bh=lBWU+9wpWhMPBNO5GCvKFPDkpojiMGc2rdryTUP+QnM=;
+	s=arc-20240116; t=1746485523; c=relaxed/simple;
+	bh=mma8tzwZ/NqwWnsXqPq43wQ4tvCGsiw9PyvHomQ17l4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=P7hrXAyvN4fObVc/FnZoSj3ooFA0ixZiDis6Ek+NbGn9dS+8XH14QUZgfQaezCRW2TAcfD37iTH90trDbsqR7afjWtEhH249H/nHeprHVjXKSBHdDdVSS8R4W/0M4kBx6ZgKTJHQ5IhIiHwiehgzME210DtNrosHjWoXydHEzgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q168+Ed6; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=PLO4qii6IsMAEk6VHBQwz68lvuaRs378zfafXMjSG7a3JMYpVYr7g/btRG/BBIpbJzo1EG0FN9JCMHw+xur8d/wbV8Pt4CfqVSGz+A9HZhgx9NznxpVdo0CKPY3SL6ReaBFB1EYp9OoFmUcyjMtt/dmlmdBkSw/VF61TE2Tp5YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o8UHUuAV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q168+Ed6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4CAC4CEF2;
-	Mon,  5 May 2025 22:50:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o8UHUuAV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD57C4CEEE;
+	Mon,  5 May 2025 22:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485456;
-	bh=lBWU+9wpWhMPBNO5GCvKFPDkpojiMGc2rdryTUP+QnM=;
+	s=k20201202; t=1746485523;
+	bh=mma8tzwZ/NqwWnsXqPq43wQ4tvCGsiw9PyvHomQ17l4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q168+Ed64q+GMk/Sx5Jt6dbNnzWMqbWi6Zcq/R0r1drIh968MV5p0kPHtiOkvC6DB
-	 Jhz7wmK1DuT2fTXuOf3ltzvONYrgjXlnk1y6ReUtsiPec3LdPgdDSentdOruV6KfFm
-	 hA2n4f/FIuR/OSXGzfEVLj8CMayjxRd/KsSIA6XfMukl2GYSA1Ii9oXwT/Sln1nK31
-	 g0Kuv7VRpGrcURlNBJzA2Jd5bnrnE7CjjRkfeLMNHube8V92lBaGUCnDJ89lKMbgOx
-	 YzfbTfcUEDyDFajUMXhhsBTgm6Ofl/wsqWmTv5fw7VMzHGj9iz+3RR2IlGJc9AGDfS
-	 p+lrgGpLP3BVw==
+	b=o8UHUuAV+pp8U4nzrTGRW3FafFipWgqRsYr3y82xYCrwmiQgenXntYpbxXN+jj3hl
+	 93lHACaMNuCKUiTjPgdNQz+XknKL5rixeL7R6xGgA4gbsdiqNfOtxkrOrxQVwqJBM3
+	 DpDw80m+k/+Iw7ZEM2Qt21XH+0sCtoTCdqJ9YEcdzzgUULtFJJusThbNm0HyGpiQqG
+	 rAKV7ex2tDHALtwOHoxgaDtlkSZIfRBoIcY2gfq0gAxvzqMvcPNnV9SvFemzkVTQae
+	 6u3oXBv3oOUB6CoUp2E47QnlEzqLhSfn+JOZGIcqs3YuUuCRwOPXzTJHBAgli7CVTQ
+	 pFNWS0X7egAKg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+Cc: Huacai Chen <chenhuacai@loongson.cn>,
+	Yanteng Si <si.yanteng@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Chong Qiao <qiaochong@loongson.cn>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	chenhuacai@kernel.org,
+	fancer.lancer@gmail.com,
+	chenfeiyang@loongson.cn,
+	phasta@kernel.org,
+	zhaoqunqin@loongson.cn,
+	rmk+kernel@armlinux.org.uk,
 	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 321/486] net/mlx5: Modify LSB bitmask in temperature event to include only the first bit
-Date: Mon,  5 May 2025 18:36:37 -0400
-Message-Id: <20250505223922.2682012-321-sashal@kernel.org>
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.12 359/486] net: stmmac: dwmac-loongson: Set correct {tx,rx}_fifo_size
+Date: Mon,  5 May 2025 18:37:15 -0400
+Message-Id: <20250505223922.2682012-359-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -58,43 +67,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 633f16d7e07c129a36b882c05379e01ce5bdb542 ]
+[ Upstream commit 8dbf0c7556454b52af91bae305ca71500c31495c ]
 
-In the sensor_count field of the MTEWE register, bits 1-62 are
-supported only for unmanaged switches, not for NICs, and bit 63
-is reserved for internal use.
+Now for dwmac-loongson {tx,rx}_fifo_size are uninitialised, which means
+zero. This means dwmac-loongson doesn't support changing MTU because in
+stmmac_change_mtu() it requires the fifo size be no less than MTU. Thus,
+set the correct tx_fifo_size and rx_fifo_size for it (16KB multiplied by
+queue counts).
 
-To prevent confusing output that may include set bits that are
-not relevant to NIC sensors, we update the bitmask to retain only
-the first bit, which corresponds to the sensor ASIC.
+Here {tx,rx}_fifo_size is initialised with the initial value (also the
+maximum value) of {tx,rx}_queues_to_use. So it will keep as 16KB if we
+don't change the queue count, and will be larger than 16KB if we change
+(decrease) the queue count. However stmmac_change_mtu() still work well
+with current logic (MTU cannot be larger than 16KB for stmmac).
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Link: https://patch.msgid.link/20250213094641.226501-4-tariqt@nvidia.com
+Note: the Fixes tag picked here is the oldest commit and key commit of
+the dwmac-loongson series "stmmac: Add Loongson platform support".
+
+Acked-by: Yanteng Si <si.yanteng@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Chong Qiao <qiaochong@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://patch.msgid.link/20250210134328.2755328-1-chenhuacai@loongson.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/events.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-index d91ea53eb394d..cd8d107f7d9e3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-@@ -163,6 +163,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
- 	u64 value_msb;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+index ab7c2750c1042..702ea5a00b56d 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -590,6 +590,9 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
+ 	if (ret)
+ 		goto err_disable_device;
  
- 	value_lsb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_lsb);
-+	/* bit 1-63 are not supported for NICs,
-+	 * hence read only bit 0 (asic) from lsb.
-+	 */
-+	value_lsb &= 0x1;
- 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
- 
- 	mlx5_core_warn(events->dev,
++	plat->tx_fifo_size = SZ_16K * plat->tx_queues_to_use;
++	plat->rx_fifo_size = SZ_16K * plat->rx_queues_to_use;
++
+ 	if (dev_of_node(&pdev->dev))
+ 		ret = loongson_dwmac_dt_config(pdev, plat, &res);
+ 	else
 -- 
 2.39.5
 
