@@ -1,111 +1,123 @@
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050151F3D20;
-	Mon,  5 May 2025 09:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E631F2BB5
+	for <netdev@vger.kernel.org>; Mon,  5 May 2025 09:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746436253; cv=none; b=LqJmdlDmK7fMKL9KiAFUSkALiFfu2wI6ppk5YUnFB//qfXg7VgfllCEAgx5Fgl5iVcG+5xHtCTtqjD3VTcTqXSDRWS8xGhj9vRUepDT46WkE6DO5EJUOfdUY+6pYQVJjWfjZf74pCvUFUs1wQRMwmixJXqYYPOWS73Er4SJ2RTg=
+	t=1746436440; cv=none; b=Iih11FMMpm3vMd5Y70/qvT6u0BDwR06YY2zQ96SzANdbHAXgDeePm8O4HUWpldKQ+AXHaefnBCpuI8cUsGgibqV3FkHr65YHtQ5khA6q8OD2c4le2SHP0AlORV+k48iXHObmrxrd33hF1wkSJu+l8C1EuBzlujJDxub68gbwI64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746436253; c=relaxed/simple;
-	bh=W1UhMgLjVd2n2XGiQWxnLIrYjuUTOOTZ7SjWfHY102Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HtnHVEC9ucf2v5gBNy4LERUHcx2rkiBit2LuQzxEh9DgcRwtpSlpAIRMJRHOW7o3fzVQ1jZdugGFAOBiccn6lGrDKfJ/S/Mz8+5QCp9K71UODIe3lqrjrBxQ6wGUZjSBMRtQNJD/kRNWPQeXmZQWxRVRKFe7N7GGOHTNV0uC6Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S6yuBXwh; arc=none smtp.client-ip=209.85.214.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746436440; c=relaxed/simple;
+	bh=k1IcIw8oEyJYviPuUQqrU0ETws0CuY9iE8gFyKeLrvQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=opqiyHeM/UXIaHYJrM6OkK9+LaBpDZ82TR0bMjpUYbXa/AY5Jpgte40cYhE4qv59PJBXXUCfhHnHFfZeDklWIhDq/wl3WC3EHfJku/IMz1Lq/3fEBvAbzd2k+R1tfa6JveUY9dFZoSaBFUtxjI/plY+SNqMDcXG1hTvO++9Yt7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aG99vJgc; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S6yuBXwh"
-Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-22423adf751so47127495ad.2;
-        Mon, 05 May 2025 02:10:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746436251; x=1747041051; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=E/zvdg2/U/i/qCcOe+f7vAEo8dPot4Sa76Am+x0kALM=;
-        b=S6yuBXwht2gLJOl1zmis/Ukdeg/HniBoa0QTe9NFEvpq4ffa53yHWTc9IgEYSzfP8B
-         npSU4aRqzXop+D3OnxJR74GHOWXmEdwn3vGdf/MrGcXnuyXaZ6OJRArFUYUSJ1C/yMEP
-         nIqY43LMqqooyIr8pn2T126EUenJ5OitEnjXyiUpQvqYD32LNMUWARJCCrnupH/4u0aB
-         913LNb9g25pCxEyzqDkft9wx+GKXq2j06WO6luoxZ3iGuYqfPSQ5QSp+Q28UygeJgNks
-         JdyUpeOL2fMaVf2xGy5H91KBzew76wvq+U58eoEk8Y0TC75L9XwbHEGETSCGegwSOgm8
-         NKCw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aG99vJgc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746436436;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=k1IcIw8oEyJYviPuUQqrU0ETws0CuY9iE8gFyKeLrvQ=;
+	b=aG99vJgc3lC8DNa6Oc9XUfiFI0j8scCol/KKwWJY3/FdmN5hndf9aKlN6O1HXWNb4aSiJE
+	qffZ8xe4DJOj/fRfU8+qZwwuBuSK5UA8AoMeFvKCfwO+d/+TJ70Oth00zX5C5TkSDRn0lY
+	1kTUarnkAJitjCKof4AxV663pKM1a7g=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-647-eozjT1ZJO72dIdvqmiwsLg-1; Mon, 05 May 2025 05:13:54 -0400
+X-MC-Unique: eozjT1ZJO72dIdvqmiwsLg-1
+X-Mimecast-MFC-AGG-ID: eozjT1ZJO72dIdvqmiwsLg_1746436433
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-ace99fe4282so461421166b.1
+        for <netdev@vger.kernel.org>; Mon, 05 May 2025 02:13:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746436251; x=1747041051;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E/zvdg2/U/i/qCcOe+f7vAEo8dPot4Sa76Am+x0kALM=;
-        b=slyTKTvBje3rLtDN8r5KytXUptCq/zck+Z+wz5T9apJuh/7EUm5h9Cwl5yU7u07lcL
-         rsTTmwO+z5d8qt9rlHBzJtVK83zKg2iIbZfK3qiiRSZfuUYQvIOv4hsLFz7xsf0f+2j0
-         /KOQwISlyyh+Zu+Ep9pRqAtif5PsW1AfPs+p3fm5+E5OnvRS/klmPDzius52kNb+FEsr
-         NMOuszFi0cKbB0L3CyLa+SWDkvU8HgnwQ3XGSBQTxotW66Mi/l3eJvjVIcC7llb2SN4g
-         5ghOYE2x/y8ptePZlOql2vISLhSKwogTKWm/CHBTE3hfsF3R+Elc33uht5mUoRHDw1BG
-         tF6w==
-X-Forwarded-Encrypted: i=1; AJvYcCViPR/iCklktso6QnCRr/qe1T7zc5Zp1XhmD8spX/m84aRPwO7xd0Sq8IlHq2gMbvCwSMSWBa1HFnYhusQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDPXgwzRHoAUiT0uQ3ifnTTo03wMz8g9d8CvCoc3RM0QWn+ocT
-	8NXC/pyoakUtkSzo5Ob4fxHkw9u2HItVH5nj6vHdFwtvJOuvw5Yy
-X-Gm-Gg: ASbGncuj7SoPcfmEUT1aKzAItPAY7X0HCdlU278IkjplCZVX/hJSjlf/x3sqHm+11Ac
-	S4gLhGVTbPow41fLlX+WIs0Bb+2NLOT8b0TJI1l8/PdVHAA1nMBa5roRAXGIw772uSXZhe7GabJ
-	iaaqs0ZCdjKizy5qyu2hpg6KA26AZ077yHfPpTXtogk1lbv0H0NuhXVcm69umaxvVycgwBnWpxu
-	HfEICsMxASqTIFqEsx+RjAkOsgRcpZcio0aMQ0WvAURs+1+UhCuz3jpDyJAtle6eEB57S3rIMDt
-	RPKiztyXnk3kuw4TqUPkAjzh8SdNQF65KSZrsxrkPzn5UQ2Qp87gn86q/ig=
-X-Google-Smtp-Source: AGHT+IHLbxeGLjT/TswtMt+x7j48HKYYWzeEqiEchK77MOzKnnrmbYjxUgmkxglRUnq2YBocQ1/WiA==
-X-Received: by 2002:a17:903:3c25:b0:22c:3609:97ed with SMTP id d9443c01a7336-22e1031f6femr176430255ad.30.1746436251199;
-        Mon, 05 May 2025 02:10:51 -0700 (PDT)
-Received: from sid-Inspiron-15-3525.. ([106.222.229.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74059020fe7sm6435377b3a.102.2025.05.05.02.10.47
+        d=1e100.net; s=20230601; t=1746436433; x=1747041233;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=k1IcIw8oEyJYviPuUQqrU0ETws0CuY9iE8gFyKeLrvQ=;
+        b=LgG3Lirq0CDBeMbDAAP4nTmhwuL7T1fPGwZrTJeZ8UitUAhpIFDSwZVCl2ZIADmHwE
+         REARqVlpyNLkihiCknVKVc1RFTry7kC+fuMtTsC2ynfl7z48g6zypJIVwXae2+pBHKp1
+         be66XP940TXd8HOmVCoP5w7BbmPXlxp09iwjNprKqaJcA2XIqZMzIfJKvR14PcIjr75h
+         Z03xQEr+X3nXwKNDAxEjyCFxRlr0DAtV8t8bNR+QW5PBsKFZv4g8WamOmySpxbqUMvFx
+         nW8xfEefcTyYcd+wp9pE/NMPKpm543v6rSW7MoSr+3oSymy4UOXmvZJgfQ5zLGzKdYnk
+         ckqA==
+X-Gm-Message-State: AOJu0YwGnoBOS660Zk6rVHmf6q+P2IWFHU23k9IVI1TZ7OI6J96zlBxp
+	1YclmvTXha4ZKPCyPfv/a+29eq7tMaPdZLapZU4fwdtXkSPKSE22CuBs67yEl84an7v3mNd4na6
+	LI5pmK6VoQwzYNJ0nIMGPYOjNB3K6r6SyD4XpSKRsHbiGIo0JHMyVrA==
+X-Gm-Gg: ASbGnctXiRbCyIZTjVb6om0M99f2aYY/PIAEM3Q0CJcJtihlT5pKzUcA0JMqRV6d6g7
+	bcOIiWE+6jD4JbxM+XYly7U7gxFoXc0HTl3I/DqI9kk5ufCkzMUT+9qcvyrHTbLZZBwuex48Orw
+	MSBEMZd9Eu5O2ZQyzFe4nzmkZETTL+wu7wRyKY74SKvkrmp+jWJjf9Ya3i9yFYHCMoatEiLkFhG
+	lsNWX5WtDcVUPsqLeRNuc/lXR5DQnJiZHStERV7i1Hlw5yZt84Ku3mA1HvVEN7LQ0RXOKJyQoeD
+	ui6HR0PV
+X-Received: by 2002:a17:907:2daa:b0:acb:aa43:e82d with SMTP id a640c23a62f3a-ad17ad44558mr1016883066b.3.1746436432768;
+        Mon, 05 May 2025 02:13:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGzH7nbUKnkvNU50lx2bKZYCMG1O7IVV7E6VLNwRUOWFhfv66iShat4B39Dv/kpSXct4T08lQ==
+X-Received: by 2002:a17:907:2daa:b0:acb:aa43:e82d with SMTP id a640c23a62f3a-ad17ad44558mr1016880466b.3.1746436432331;
+        Mon, 05 May 2025 02:13:52 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad1895402c7sm456179466b.164.2025.05.05.02.13.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 May 2025 02:10:50 -0700 (PDT)
-From: Siddarth G <siddarthsgml@gmail.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	Siddarth G <siddarthsgml@gmail.com>
-Subject: [PATCH] fddi/skfp: fix null pointer dereference in smt.c
-Date: Mon,  5 May 2025 14:40:25 +0530
-Message-ID: <20250505091025.27368-1-siddarthsgml@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Mon, 05 May 2025 02:13:51 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 848561A0BD4D; Mon, 05 May 2025 11:13:50 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: netdev@vger.kernel.org, linux-rt-devel@lists.linux.dev, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>
+Subject: Re: [PATCH net-next v3 05/18] xdp: Use nested-BH locking for
+ system_page_pool
+In-Reply-To: <20250505085713.ZAgyY1mJ@linutronix.de>
+References: <20250430124758.1159480-1-bigeasy@linutronix.de>
+ <20250430124758.1159480-6-bigeasy@linutronix.de> <878qng7i63.fsf@toke.dk>
+ <20250502133231.lS281-FN@linutronix.de> <87ikmj5bh5.fsf@toke.dk>
+ <20250502150705.1sewZ77B@linutronix.de> <87frhn57i3.fsf@toke.dk>
+ <20250505085713.ZAgyY1mJ@linutronix.de>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Mon, 05 May 2025 11:13:50 +0200
+Message-ID: <87a57r5sj5.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-In smt_string_swap(), when a closing bracket ']' is encountered
-before any opening bracket '[' open_paren would be NULL,
-and assigning it to format would lead to a null pointer being
-dereferenced in the format++ statement.
+Sebastian Andrzej Siewior <bigeasy@linutronix.de> writes:
 
-Add a check to verify open_paren is non-NULL before assigning
-it to format
+> On 2025-05-02 17:59:00 [+0200], Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>> >> I had in mind moving the out: label (and the unlock) below the
+>> >> skb->protocol assignment, which would save the if(skb) check; any rea=
+son
+>> >> we can't call xsk_buff_free() while holding the lock?
+>> >
+>> > We could do that, I wasn't entirely sure about xsk_buff_free(). It is
+>> > just larger scope but nothing else so far.
+>> >
+>> > I've been staring at xsk_buff_free() and the counterparts such as
+>> > xsk_buff_alloc_batch() and I didn't really figure out what is protecti=
+ng
+>> > the list. Do we rely on the fact that this is used once per-NAPI
+>> > instance within RX-NAPI and never somewhere else?
+>>=20
+>> Yeah, I believe so. The commit adding the API[0] mentions this being
+>> "single core (single producer/consumer)".
+>
+> So if TX is excluded, it should work=E2=80=A6
+> For the former, I have now this:
 
-Fixes: CID 100271 (Coverity Scan)
+Yeah, much cleaner, thanks!
 
-Signed-off-by: Siddarth G <siddarthsgml@gmail.com>
----
- drivers/net/fddi/skfp/smt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/fddi/skfp/smt.c b/drivers/net/fddi/skfp/smt.c
-index dd15af4e98c2..174f279b89ac 100644
---- a/drivers/net/fddi/skfp/smt.c
-+++ b/drivers/net/fddi/skfp/smt.c
-@@ -1857,7 +1857,8 @@ static void smt_string_swap(char *data, const char *format, int len)
- 			open_paren = format ;
- 			break ;
- 		case ']' :
--			format = open_paren ;
-+			if (open_paren)
-+				format = open_paren ;
- 			break ;
- 		case '1' :
- 		case '2' :
--- 
-2.43.0
+Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 
