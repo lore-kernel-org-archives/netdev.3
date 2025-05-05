@@ -1,49 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1792D5CE7;
-	Mon,  5 May 2025 22:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199D02D642C;
+	Mon,  5 May 2025 22:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485684; cv=none; b=ivDTBNBWnrGkffTQeF55rLKrxSQ3hzEg2DmubAIFfPLbsBh8KfbkvcB43rq/jgan6g7+4BDOJ2TupnsLhDMq2OAZEe2kXEeUq7iQiajXqQ6Bxi8Jigo3sIxckkGfJOWhSmdivx8lVqLeGvk+RbMThxcK/SKDVOMu5kBsRyY7yzc=
+	t=1746485694; cv=none; b=FAye/m70LDmraAmlXtP4dnmkIS5H6cCC7Ux35PGobYh33GF64OF14nmAo0naj7BE0EY6jXSi/cYyv42QxqAGk7GmiOIEWGAqyM2MyuTwgDuOdaIdwRf00hHNBkxj2A0ZKQaFVDVqQrlwJ7SCqI8HaDbTlTdW3Kn/NLABiUg9/9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485684; c=relaxed/simple;
-	bh=GEmoE8ZMsXsanwoyXRNDMaRJS40Ti3n9tpU7IktHxQE=;
+	s=arc-20240116; t=1746485694; c=relaxed/simple;
+	bh=KaG4hW4B91bEHj0KR2xNtLQpGmyZ0d0EEHW0MAaGRXk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lOkA198UC2whOvFzlyjruDnjW5ETsoEP3iT3wvjSlaUu5aaf4CqxSTi8LAeUS118EFedSsSVlFij5k3b+nM+4yVvPwkrJrveS3Cys00AhBPUFqZ+UMnkU0dQA7yPQlEzCi9pRzPbDWQCpxDJ6adnqMY6MJBL79jIvGkm6ftzwu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLDfKSEI; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Hanp/XgVSX5IBW14pluZUiy1qkkO71iL93T+fgcnhLlr6iuCSSxTKvdRChrHzmQtaBOKca4XhD5ydMdyjy4Vj+HzdA9CnrSocnjkZ3zvPYUL52yd0LwHcRaD3wu5STFJS6kll6ak8P/gwg40UWPlOBTqAsNOyU/ipg3N4j1M5L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkahdUX3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLDfKSEI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3963C4CEEE;
-	Mon,  5 May 2025 22:54:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkahdUX3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF505C4CEEE;
+	Mon,  5 May 2025 22:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485683;
-	bh=GEmoE8ZMsXsanwoyXRNDMaRJS40Ti3n9tpU7IktHxQE=;
+	s=k20201202; t=1746485694;
+	bh=KaG4hW4B91bEHj0KR2xNtLQpGmyZ0d0EEHW0MAaGRXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLDfKSEIAxJAJT72fOvUn3mYzV61edvImObcieIhmpVTai7a10saSCJ3jURcV/e+I
-	 gvu9tLkkzfBfozN/87tkkMpysqVCh9cACEpC1RYdx0dtQzKUTR92akRMxcjTC1z7HK
-	 mwLfdN+WQfDCu2JWcMXgJ0/fn5ETH7BuRGoyAz6+Y528l3+OEnzSoyYxmaEmkxxhDL
-	 2l1FQtf7jXEXiG82ZB3nY5ctWfX9rc2a3MrU+g0FtpCTu/978zx4aHnodye247Ui8v
-	 JE1kdvHp4IlHFN//sEEf60tucJZwMrdHrghQ27lJrlbqVYJkaRtlaIlrYVtBYvbdUK
-	 8uUiWDLB08rBA==
+	b=SkahdUX3PUrlG8N/58vFNfIm1gzaub1+3V5JMY/x0N8ZdJFBJeCtzfAhfTvhQaFno
+	 bm6ff9g5+wdzh+8TkoXZyVkFK9HxuQcUNP6yRkBn2u3Ioro8ju4gAEF3qpeMZlWyZz
+	 LMXxIeb6Bh+7uCQCk599c3K76xOPSq2fdvJ311pgBFPx9eZ64wwybc7+RHrhJTrhxm
+	 KjCNf04hkVNqyXuI6D+B4a9atn46me1lPYcjsk5FUo/xdXEHzDcbM0U7TAKT+e7MxE
+	 so1Z6+ieE5/dEyH3tJB8gfohoUibFz91O/Xm3YZpYmn01ihNjkfK8DKnOOBQWjzqzR
+	 93dwSNrg56BnA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+Cc: Antoine Tenart <atenart@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
+	edumazet@google.com,
 	pabeni@redhat.com,
-	menglong8.dong@gmail.com,
-	gnault@redhat.com,
+	sdf@fomichev.me,
+	jdamato@fastly.com,
+	aleksander.lobakin@intel.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 424/486] vxlan: Annotate FDB data races
-Date: Mon,  5 May 2025 18:38:20 -0400
-Message-Id: <20250505223922.2682012-424-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 429/486] net-sysfs: remove rtnl_trylock from queue attributes
+Date: Mon,  5 May 2025 18:38:25 -0400
+Message-Id: <20250505223922.2682012-429-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -58,142 +56,375 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit f6205f8215f12a96518ac9469ff76294ae7bd612 ]
+[ Upstream commit b0b6fcfa6ad8433e22b050c72cfbeec2548744b9 ]
 
-The 'used' and 'updated' fields in the FDB entry structure can be
-accessed concurrently by multiple threads, leading to reports such as
-[1]. Can be reproduced using [2].
+Similar to the commit removing remove rtnl_trylock from device
+attributes we here apply the same technique to networking queues.
 
-Suppress these reports by annotating these accesses using
-READ_ONCE() / WRITE_ONCE().
-
-[1]
-BUG: KCSAN: data-race in vxlan_xmit / vxlan_xmit
-
-write to 0xffff942604d263a8 of 8 bytes by task 286 on cpu 0:
- vxlan_xmit+0xb29/0x2380
- dev_hard_start_xmit+0x84/0x2f0
- __dev_queue_xmit+0x45a/0x1650
- packet_xmit+0x100/0x150
- packet_sendmsg+0x2114/0x2ac0
- __sys_sendto+0x318/0x330
- __x64_sys_sendto+0x76/0x90
- x64_sys_call+0x14e8/0x1c00
- do_syscall_64+0x9e/0x1a0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-read to 0xffff942604d263a8 of 8 bytes by task 287 on cpu 2:
- vxlan_xmit+0xadf/0x2380
- dev_hard_start_xmit+0x84/0x2f0
- __dev_queue_xmit+0x45a/0x1650
- packet_xmit+0x100/0x150
- packet_sendmsg+0x2114/0x2ac0
- __sys_sendto+0x318/0x330
- __x64_sys_sendto+0x76/0x90
- x64_sys_call+0x14e8/0x1c00
- do_syscall_64+0x9e/0x1a0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-value changed: 0x00000000fffbac6e -> 0x00000000fffbac6f
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 2 UID: 0 PID: 287 Comm: mausezahn Not tainted 6.13.0-rc7-01544-gb4b270f11a02 #5
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
-
-[2]
- #!/bin/bash
-
- set +H
- echo whitelist > /sys/kernel/debug/kcsan
- echo !vxlan_xmit > /sys/kernel/debug/kcsan
-
- ip link add name vx0 up type vxlan id 10010 dstport 4789 local 192.0.2.1
- bridge fdb add 00:11:22:33:44:55 dev vx0 self static dst 198.51.100.1
- taskset -c 0 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
- taskset -c 2 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250204145549.1216254-2-idosch@nvidia.com
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Link: https://patch.msgid.link/20250204170314.146022-5-atenart@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ net/core/net-sysfs.c | 147 ++++++++++++++++++++++++++-----------------
+ 1 file changed, 89 insertions(+), 58 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 01f66760e1328..474faccf75fd9 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -227,9 +227,9 @@ static int vxlan_fdb_info(struct sk_buff *skb, struct vxlan_dev *vxlan,
- 			be32_to_cpu(fdb->vni)))
- 		goto nla_put_failure;
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index 05cf5347f25e8..b398a2e0c243d 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -1213,9 +1213,11 @@ static int net_rx_queue_change_owner(struct net_device *dev, int num,
+  */
+ struct netdev_queue_attribute {
+ 	struct attribute attr;
+-	ssize_t (*show)(struct netdev_queue *queue, char *buf);
+-	ssize_t (*store)(struct netdev_queue *queue,
+-			 const char *buf, size_t len);
++	ssize_t (*show)(struct kobject *kobj, struct attribute *attr,
++			struct netdev_queue *queue, char *buf);
++	ssize_t (*store)(struct kobject *kobj, struct attribute *attr,
++			 struct netdev_queue *queue, const char *buf,
++			 size_t len);
+ };
+ #define to_netdev_queue_attr(_attr) \
+ 	container_of(_attr, struct netdev_queue_attribute, attr)
+@@ -1232,7 +1234,7 @@ static ssize_t netdev_queue_attr_show(struct kobject *kobj,
+ 	if (!attribute->show)
+ 		return -EIO;
  
--	ci.ndm_used	 = jiffies_to_clock_t(now - fdb->used);
-+	ci.ndm_used	 = jiffies_to_clock_t(now - READ_ONCE(fdb->used));
- 	ci.ndm_confirmed = 0;
--	ci.ndm_updated	 = jiffies_to_clock_t(now - fdb->updated);
-+	ci.ndm_updated	 = jiffies_to_clock_t(now - READ_ONCE(fdb->updated));
- 	ci.ndm_refcnt	 = 0;
- 
- 	if (nla_put(skb, NDA_CACHEINFO, sizeof(ci), &ci))
-@@ -434,8 +434,8 @@ static struct vxlan_fdb *vxlan_find_mac(struct vxlan_dev *vxlan,
- 	struct vxlan_fdb *f;
- 
- 	f = __vxlan_find_mac(vxlan, mac, vni);
--	if (f && f->used != jiffies)
--		f->used = jiffies;
-+	if (f && READ_ONCE(f->used) != jiffies)
-+		WRITE_ONCE(f->used, jiffies);
- 
- 	return f;
+-	return attribute->show(queue, buf);
++	return attribute->show(kobj, attr, queue, buf);
  }
-@@ -1009,12 +1009,12 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
- 	    !(f->flags & NTF_VXLAN_ADDED_BY_USER)) {
- 		if (f->state != state) {
- 			f->state = state;
--			f->updated = jiffies;
-+			WRITE_ONCE(f->updated, jiffies);
- 			notify = 1;
- 		}
- 		if (f->flags != fdb_flags) {
- 			f->flags = fdb_flags;
--			f->updated = jiffies;
-+			WRITE_ONCE(f->updated, jiffies);
- 			notify = 1;
- 		}
+ 
+ static ssize_t netdev_queue_attr_store(struct kobject *kobj,
+@@ -1246,7 +1248,7 @@ static ssize_t netdev_queue_attr_store(struct kobject *kobj,
+ 	if (!attribute->store)
+ 		return -EIO;
+ 
+-	return attribute->store(queue, buf, count);
++	return attribute->store(kobj, attr, queue, buf, count);
+ }
+ 
+ static const struct sysfs_ops netdev_queue_sysfs_ops = {
+@@ -1254,7 +1256,8 @@ static const struct sysfs_ops netdev_queue_sysfs_ops = {
+ 	.store = netdev_queue_attr_store,
+ };
+ 
+-static ssize_t tx_timeout_show(struct netdev_queue *queue, char *buf)
++static ssize_t tx_timeout_show(struct kobject *kobj, struct attribute *attr,
++			       struct netdev_queue *queue, char *buf)
+ {
+ 	unsigned long trans_timeout = atomic_long_read(&queue->trans_timeout);
+ 
+@@ -1272,18 +1275,18 @@ static unsigned int get_netdev_queue_index(struct netdev_queue *queue)
+ 	return i;
+ }
+ 
+-static ssize_t traffic_class_show(struct netdev_queue *queue,
+-				  char *buf)
++static ssize_t traffic_class_show(struct kobject *kobj, struct attribute *attr,
++				  struct netdev_queue *queue, char *buf)
+ {
+ 	struct net_device *dev = queue->dev;
+-	int num_tc, tc;
+-	int index;
++	int num_tc, tc, index, ret;
+ 
+ 	if (!netif_is_multiqueue(dev))
+ 		return -ENOENT;
+ 
+-	if (!rtnl_trylock())
+-		return restart_syscall();
++	ret = sysfs_rtnl_lock(kobj, attr, queue->dev);
++	if (ret)
++		return ret;
+ 
+ 	index = get_netdev_queue_index(queue);
+ 
+@@ -1310,24 +1313,25 @@ static ssize_t traffic_class_show(struct netdev_queue *queue,
+ }
+ 
+ #ifdef CONFIG_XPS
+-static ssize_t tx_maxrate_show(struct netdev_queue *queue,
+-			       char *buf)
++static ssize_t tx_maxrate_show(struct kobject *kobj, struct attribute *attr,
++			       struct netdev_queue *queue, char *buf)
+ {
+ 	return sysfs_emit(buf, "%lu\n", queue->tx_maxrate);
+ }
+ 
+-static ssize_t tx_maxrate_store(struct netdev_queue *queue,
+-				const char *buf, size_t len)
++static ssize_t tx_maxrate_store(struct kobject *kobj, struct attribute *attr,
++				struct netdev_queue *queue, const char *buf,
++				size_t len)
+ {
+-	struct net_device *dev = queue->dev;
+ 	int err, index = get_netdev_queue_index(queue);
++	struct net_device *dev = queue->dev;
+ 	u32 rate = 0;
+ 
+ 	if (!capable(CAP_NET_ADMIN))
+ 		return -EPERM;
+ 
+ 	/* The check is also done later; this helps returning early without
+-	 * hitting the trylock/restart below.
++	 * hitting the locking section below.
+ 	 */
+ 	if (!dev->netdev_ops->ndo_set_tx_maxrate)
+ 		return -EOPNOTSUPP;
+@@ -1336,18 +1340,21 @@ static ssize_t tx_maxrate_store(struct netdev_queue *queue,
+ 	if (err < 0)
+ 		return err;
+ 
+-	if (!rtnl_trylock())
+-		return restart_syscall();
++	err = sysfs_rtnl_lock(kobj, attr, dev);
++	if (err)
++		return err;
+ 
+ 	err = -EOPNOTSUPP;
+ 	if (dev->netdev_ops->ndo_set_tx_maxrate)
+ 		err = dev->netdev_ops->ndo_set_tx_maxrate(dev, index, rate);
+ 
+-	rtnl_unlock();
+ 	if (!err) {
+ 		queue->tx_maxrate = rate;
++		rtnl_unlock();
+ 		return len;
  	}
-@@ -1048,7 +1048,7 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
++
++	rtnl_unlock();
+ 	return err;
+ }
+ 
+@@ -1391,16 +1398,17 @@ static ssize_t bql_set(const char *buf, const size_t count,
+ 	return count;
+ }
+ 
+-static ssize_t bql_show_hold_time(struct netdev_queue *queue,
+-				  char *buf)
++static ssize_t bql_show_hold_time(struct kobject *kobj, struct attribute *attr,
++				  struct netdev_queue *queue, char *buf)
+ {
+ 	struct dql *dql = &queue->dql;
+ 
+ 	return sysfs_emit(buf, "%u\n", jiffies_to_msecs(dql->slack_hold_time));
+ }
+ 
+-static ssize_t bql_set_hold_time(struct netdev_queue *queue,
+-				 const char *buf, size_t len)
++static ssize_t bql_set_hold_time(struct kobject *kobj, struct attribute *attr,
++				 struct netdev_queue *queue, const char *buf,
++				 size_t len)
+ {
+ 	struct dql *dql = &queue->dql;
+ 	unsigned int value;
+@@ -1419,15 +1427,17 @@ static struct netdev_queue_attribute bql_hold_time_attribute __ro_after_init
+ 	= __ATTR(hold_time, 0644,
+ 		 bql_show_hold_time, bql_set_hold_time);
+ 
+-static ssize_t bql_show_stall_thrs(struct netdev_queue *queue, char *buf)
++static ssize_t bql_show_stall_thrs(struct kobject *kobj, struct attribute *attr,
++				   struct netdev_queue *queue, char *buf)
+ {
+ 	struct dql *dql = &queue->dql;
+ 
+ 	return sysfs_emit(buf, "%u\n", jiffies_to_msecs(dql->stall_thrs));
+ }
+ 
+-static ssize_t bql_set_stall_thrs(struct netdev_queue *queue,
+-				  const char *buf, size_t len)
++static ssize_t bql_set_stall_thrs(struct kobject *kobj, struct attribute *attr,
++				  struct netdev_queue *queue, const char *buf,
++				  size_t len)
+ {
+ 	struct dql *dql = &queue->dql;
+ 	unsigned int value;
+@@ -1453,13 +1463,15 @@ static ssize_t bql_set_stall_thrs(struct netdev_queue *queue,
+ static struct netdev_queue_attribute bql_stall_thrs_attribute __ro_after_init =
+ 	__ATTR(stall_thrs, 0644, bql_show_stall_thrs, bql_set_stall_thrs);
+ 
+-static ssize_t bql_show_stall_max(struct netdev_queue *queue, char *buf)
++static ssize_t bql_show_stall_max(struct kobject *kobj, struct attribute *attr,
++				  struct netdev_queue *queue, char *buf)
+ {
+ 	return sysfs_emit(buf, "%u\n", READ_ONCE(queue->dql.stall_max));
+ }
+ 
+-static ssize_t bql_set_stall_max(struct netdev_queue *queue,
+-				 const char *buf, size_t len)
++static ssize_t bql_set_stall_max(struct kobject *kobj, struct attribute *attr,
++				 struct netdev_queue *queue, const char *buf,
++				 size_t len)
+ {
+ 	WRITE_ONCE(queue->dql.stall_max, 0);
+ 	return len;
+@@ -1468,7 +1480,8 @@ static ssize_t bql_set_stall_max(struct netdev_queue *queue,
+ static struct netdev_queue_attribute bql_stall_max_attribute __ro_after_init =
+ 	__ATTR(stall_max, 0644, bql_show_stall_max, bql_set_stall_max);
+ 
+-static ssize_t bql_show_stall_cnt(struct netdev_queue *queue, char *buf)
++static ssize_t bql_show_stall_cnt(struct kobject *kobj, struct attribute *attr,
++				  struct netdev_queue *queue, char *buf)
+ {
+ 	struct dql *dql = &queue->dql;
+ 
+@@ -1478,8 +1491,8 @@ static ssize_t bql_show_stall_cnt(struct netdev_queue *queue, char *buf)
+ static struct netdev_queue_attribute bql_stall_cnt_attribute __ro_after_init =
+ 	__ATTR(stall_cnt, 0444, bql_show_stall_cnt, NULL);
+ 
+-static ssize_t bql_show_inflight(struct netdev_queue *queue,
+-				 char *buf)
++static ssize_t bql_show_inflight(struct kobject *kobj, struct attribute *attr,
++				 struct netdev_queue *queue, char *buf)
+ {
+ 	struct dql *dql = &queue->dql;
+ 
+@@ -1490,13 +1503,16 @@ static struct netdev_queue_attribute bql_inflight_attribute __ro_after_init =
+ 	__ATTR(inflight, 0444, bql_show_inflight, NULL);
+ 
+ #define BQL_ATTR(NAME, FIELD)						\
+-static ssize_t bql_show_ ## NAME(struct netdev_queue *queue,		\
+-				 char *buf)				\
++static ssize_t bql_show_ ## NAME(struct kobject *kobj,			\
++				 struct attribute *attr,		\
++				 struct netdev_queue *queue, char *buf)	\
+ {									\
+ 	return bql_show(buf, queue->dql.FIELD);				\
+ }									\
+ 									\
+-static ssize_t bql_set_ ## NAME(struct netdev_queue *queue,		\
++static ssize_t bql_set_ ## NAME(struct kobject *kobj,			\
++				struct attribute *attr,			\
++				struct netdev_queue *queue,		\
+ 				const char *buf, size_t len)		\
+ {									\
+ 	return bql_set(buf, len, &queue->dql.FIELD);			\
+@@ -1582,19 +1598,21 @@ static ssize_t xps_queue_show(struct net_device *dev, unsigned int index,
+ 	return len < PAGE_SIZE ? len : -EINVAL;
+ }
+ 
+-static ssize_t xps_cpus_show(struct netdev_queue *queue, char *buf)
++static ssize_t xps_cpus_show(struct kobject *kobj, struct attribute *attr,
++			     struct netdev_queue *queue, char *buf)
+ {
+ 	struct net_device *dev = queue->dev;
+ 	unsigned int index;
+-	int len, tc;
++	int len, tc, ret;
+ 
+ 	if (!netif_is_multiqueue(dev))
+ 		return -ENOENT;
+ 
+ 	index = get_netdev_queue_index(queue);
+ 
+-	if (!rtnl_trylock())
+-		return restart_syscall();
++	ret = sysfs_rtnl_lock(kobj, attr, queue->dev);
++	if (ret)
++		return ret;
+ 
+ 	/* If queue belongs to subordinate dev use its map */
+ 	dev = netdev_get_tx_queue(dev, index)->sb_dev ? : dev;
+@@ -1605,18 +1623,21 @@ static ssize_t xps_cpus_show(struct netdev_queue *queue, char *buf)
+ 		return -EINVAL;
  	}
  
- 	if (ndm_flags & NTF_USE)
--		f->used = jiffies;
-+		WRITE_ONCE(f->used, jiffies);
+-	/* Make sure the subordinate device can't be freed */
+-	get_device(&dev->dev);
++	/* Increase the net device refcnt to make sure it won't be freed while
++	 * xps_queue_show is running.
++	 */
++	dev_hold(dev);
+ 	rtnl_unlock();
  
- 	if (notify) {
- 		if (rd == NULL)
-@@ -1477,7 +1477,7 @@ static bool vxlan_snoop(struct net_device *dev,
- 				    src_mac, &rdst->remote_ip.sa, &src_ip->sa);
+ 	len = xps_queue_show(dev, index, tc, buf, XPS_CPUS);
  
- 		rdst->remote_ip = *src_ip;
--		f->updated = jiffies;
-+		WRITE_ONCE(f->updated, jiffies);
- 		vxlan_fdb_notify(vxlan, f, rdst, RTM_NEWNEIGH, true, NULL);
- 	} else {
- 		u32 hash_index = fdb_head_index(vxlan, src_mac, vni);
-@@ -2825,7 +2825,7 @@ static void vxlan_cleanup(struct timer_list *t)
- 			if (f->flags & NTF_EXT_LEARNED)
- 				continue;
+-	put_device(&dev->dev);
++	dev_put(dev);
+ 	return len;
+ }
  
--			timeout = f->used + vxlan->cfg.age_interval * HZ;
-+			timeout = READ_ONCE(f->used) + vxlan->cfg.age_interval * HZ;
- 			if (time_before_eq(timeout, jiffies)) {
- 				netdev_dbg(vxlan->dev,
- 					   "garbage collect %pM\n",
+-static ssize_t xps_cpus_store(struct netdev_queue *queue,
+-			      const char *buf, size_t len)
++static ssize_t xps_cpus_store(struct kobject *kobj, struct attribute *attr,
++			      struct netdev_queue *queue, const char *buf,
++			      size_t len)
+ {
+ 	struct net_device *dev = queue->dev;
+ 	unsigned int index;
+@@ -1640,9 +1661,10 @@ static ssize_t xps_cpus_store(struct netdev_queue *queue,
+ 		return err;
+ 	}
+ 
+-	if (!rtnl_trylock()) {
++	err = sysfs_rtnl_lock(kobj, attr, dev);
++	if (err) {
+ 		free_cpumask_var(mask);
+-		return restart_syscall();
++		return err;
+ 	}
+ 
+ 	err = netif_set_xps_queue(dev, mask, index);
+@@ -1656,26 +1678,34 @@ static ssize_t xps_cpus_store(struct netdev_queue *queue,
+ static struct netdev_queue_attribute xps_cpus_attribute __ro_after_init
+ 	= __ATTR_RW(xps_cpus);
+ 
+-static ssize_t xps_rxqs_show(struct netdev_queue *queue, char *buf)
++static ssize_t xps_rxqs_show(struct kobject *kobj, struct attribute *attr,
++			     struct netdev_queue *queue, char *buf)
+ {
+ 	struct net_device *dev = queue->dev;
+ 	unsigned int index;
+-	int tc;
++	int tc, ret;
+ 
+ 	index = get_netdev_queue_index(queue);
+ 
+-	if (!rtnl_trylock())
+-		return restart_syscall();
++	ret = sysfs_rtnl_lock(kobj, attr, dev);
++	if (ret)
++		return ret;
+ 
+ 	tc = netdev_txq_to_tc(dev, index);
++
++	/* Increase the net device refcnt to make sure it won't be freed while
++	 * xps_queue_show is running.
++	 */
++	dev_hold(dev);
+ 	rtnl_unlock();
+-	if (tc < 0)
+-		return -EINVAL;
+ 
+-	return xps_queue_show(dev, index, tc, buf, XPS_RXQS);
++	ret = tc >= 0 ? xps_queue_show(dev, index, tc, buf, XPS_RXQS) : -EINVAL;
++	dev_put(dev);
++	return ret;
+ }
+ 
+-static ssize_t xps_rxqs_store(struct netdev_queue *queue, const char *buf,
++static ssize_t xps_rxqs_store(struct kobject *kobj, struct attribute *attr,
++			      struct netdev_queue *queue, const char *buf,
+ 			      size_t len)
+ {
+ 	struct net_device *dev = queue->dev;
+@@ -1699,9 +1729,10 @@ static ssize_t xps_rxqs_store(struct netdev_queue *queue, const char *buf,
+ 		return err;
+ 	}
+ 
+-	if (!rtnl_trylock()) {
++	err = sysfs_rtnl_lock(kobj, attr, dev);
++	if (err) {
+ 		bitmap_free(mask);
+-		return restart_syscall();
++		return err;
+ 	}
+ 
+ 	cpus_read_lock();
 -- 
 2.39.5
 
