@@ -1,212 +1,132 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6B82741CF;
-	Mon,  5 May 2025 22:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C5C270ED2;
+	Mon,  5 May 2025 22:19:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483487; cv=none; b=dmxFkpuFWTq+Zl2mw201S0WzexpFudpn36hYSGr4F0r48wKnZJmnHiT/7Qv2wu98k+ER4E+z1kS4Tjaqv04o50TApiW0LWFVR7R/MU3m/wbUI2ufR8EoWvEssLWWg0ekQ6WXMFlOx+oj8kgS7TKQlQQrB0u7dXf01/H4As6B3m4=
+	t=1746483562; cv=none; b=CCMJygdX41X2R+tLxd8Of3r5tO8SYc7CMZjlI6+zVpv9VrvY3OnFAotY4WWlJxNOmIlYQVEydX/oi+TPNn0+1TQUJiM4qBKhr9ZbFx0M8S7hQpSMYBH+Qq54RSLnwvRkb81SncwmMsHX7EfnHQHqVSNNB6kjGxcSIp86ltqclMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483487; c=relaxed/simple;
-	bh=ICQOgm/oxvbMn3j3DrNQVqEImZIBabjshKw7nTcOCxw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KO4fkGdgz5CZiHS8oTQ0Uf3gqji0NPb/LZrfe9NHolmX/ocm8ZN6fNZYCUB5zuG8AFhGtbsomjwFgxpZoIvc2BcbPhsmPaoWbzdJV5m0BImeVNXoLsjZe3uLqEH7gZDtopRKvMLm82Slua6CzA803mAzLspOUMrnB9tlZUGraMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DR74P9QT; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1746483562; c=relaxed/simple;
+	bh=gJOWUeD1S/7jV0r5kWY4nHy8F7NqqrZHwZ4AE47cmc4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Yt2h66MiNyAjH8LaYSAsyPcjSOXoZlDh1PrcQF9KKTujNJ50ZXb/MMQv6UiQMvhY6ElYumgkguAHHW6ruUk3qsCGnexMlMfchyWY7P5qzW52mcC2CiSyWdiue7J7WEkuZhlY9Ci8lJz7JVreOBo2X+G3wbAWUa3BHZTA58O0qB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JstQqrvw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DR74P9QT"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B824B41E0D;
-	Mon,  5 May 2025 22:17:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1746483482;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eKS/cb+SXa/UAIJAbrppHX30ENDfVc1mR64QNynsoJ0=;
-	b=DR74P9QTZJGbK9Z79HPwvtbYGMuId/FJAYXc0xvaA64UZWDmBAagBMoKtWL2xXdl/x079W
-	m63W6CroOIhAM4xgrppK6BouWErcNqQsYWRPi7ampHQbHjX4T9G24pP32Tz6+Mg7q7nWYw
-	X2w6npZ4QLKGezj3R/RWR2SIeH+B16WUP9/sg4EtFE0v1FfYptRGJCoYEKDjOwoCPS/org
-	XXeHAqendbaizLhLpPBFGYhOLBi6lwGoEHwrL9AYWBwD+aLurH175au+kI8pWVoBv+vPGN
-	ohkgBa8r9wMKsiK/C/uth99HI9KGFT18U/5gYwk6xLYiAIBGamkMIb89ZvhUig==
-Date: Tue, 6 May 2025 00:17:58 +0200
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Donald Hunter <donald.hunter@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Jason Xing <kernelxing@tencent.com>, Richard Cochran
- <richardcochran@gmail.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Maxime Chevallier
- <maxime.chevallier@bootlin.com>, "Russell King (Oracle)"
- <linux@armlinux.org.uk>
-Subject: Re: [PATCH net-next] net: Add support for providing the PTP
- hardware source in tsinfo
-Message-ID: <20250506001758.297449f1@kmaincent-XPS-13-7390>
-In-Reply-To: <20250429150657.1f32a10c@kernel.org>
-References: <20250425-feature_ptp_source-v1-1-c2dfe7b2b8b4@bootlin.com>
- <20250429150657.1f32a10c@kernel.org>
-Organization: bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JstQqrvw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF76C4CEED;
+	Mon,  5 May 2025 22:19:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746483561;
+	bh=gJOWUeD1S/7jV0r5kWY4nHy8F7NqqrZHwZ4AE47cmc4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JstQqrvw44sh9hYCVA2glV+oU4HqMrLxsoXiFuyyfLB8fnrWRbW+0u2mtyvhexcOW
+	 SvAfPhy8ezMFrRMR3KYj/W++RdtXn+qOEgALvXzFlebOJAhMnHix4HX4a3z53dEeQn
+	 3wg7YdZZe/rF7lVmegMuR8pwB8dsOy1in+jALg5R3jR5u5eFwOK5BlatmCDl7rJ58+
+	 mj/k1U/Fu4UwS9uyJuVnyWFEkqkZ1lagFtQjhmdMGD3Hk0buQjGrKbCrrkfiWc/EUE
+	 Tfdfdqfg6a+7kppEyvEfD45hepQV2Vi5KspCm3WhanXsKwpQVppSB84NSS1RxfzEDE
+	 0gJbOvSUF9MvQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Carolina Jubran <cjubran@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	saeedm@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	cratiu@nvidia.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 115/642] net/mlx5: Preserve rate settings when creating a rate node
+Date: Mon,  5 May 2025 18:05:31 -0400
+Message-Id: <20250505221419.2672473-115-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
+References: <20250505221419.2672473-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkedvvdekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtqhertdertdejnecuhfhrohhmpefmohhrhicuofgrihhntggvnhhtuceokhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgfdutdefvedtudegvefgvedtgfdvhfdtueeltefffefffffhgfetkedvfeduieeinecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudelmeekheekjeemjedutddtmedutgelrgemfegusghfmeehrgegugemvgefvggsnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkeehkeejmeejuddttdemudgtlegrmeefuggsfhemhegrgegumegvfegvsgdphhgvlhhopehkmhgrihhntggvnhhtqdgirffuqddufedqjeefledtpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudeipdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopeguohhnrghlugdrhhhunhhtv
- ghrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopeifihhllhgvmhguvggsrhhuihhjnhdrkhgvrhhnvghlsehgmhgrihhlrdgtohhm
-X-GND-Sasl: kory.maincent@bootlin.com
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.14.5
+Content-Transfer-Encoding: 8bit
 
-Thanks for the review!
+From: Carolina Jubran <cjubran@nvidia.com>
 
-On Tue, 29 Apr 2025 15:06:57 -0700
-Jakub Kicinski <kuba@kernel.org> wrote:
+[ Upstream commit f88c349c75e3784a3f5463f5b403ff28dd823782 ]
 
-> On Fri, 25 Apr 2025 19:42:43 +0200 Kory Maincent wrote:
-> > Multi-PTP source support within a network topology has been merged,
-> > but the hardware timestamp source is not yet exposed to users.
-> > Currently, users only see the PTP index, which does not indicate
-> > whether the timestamp comes from a PHY or a MAC.
-> >=20
-> > Add support for reporting the hwtstamp source using a
-> > hwtstamp-source field, alongside hwtstamp-phyindex, to describe
-> > the origin of the hardware timestamp.
-> >=20
-> > Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-> > ---
-> > Not sure moving the hwtstamp_source enum to uapi/linux/net_tstamp.h and
-> > adding this header to ynl/Makefile.deps is the best choice. Maybe it is
-> > better to move the enum directly to ethtool.h header. =20
->=20
-> Weak preference for the YAML and therefore ethtool.h from my side.
-> That way the doc strings will propagate to more places, like the HTML
-> docs.
+Modify `esw_qos_create_node_sched_elem()` to receive max_rate and
+bw_share values while maintaining the previous configuration.
 
-Ack.
+This change is essential for the upcoming patch that will modify rate
+nodes and requires the existing settings to be preserved unless
+explicitly changed.
 
-> > diff --git a/include/linux/net_tstamp.h b/include/linux/net_tstamp.h
-> > index
-> > ff0758e88ea1008efe533cde003b12719bf4fcd3..1414aed0b6adeae15b56e7a99a7d9=
-eeb43ba0b6c
-> > 100644 --- a/include/linux/net_tstamp.h +++ b/include/linux/net_tstamp.h
-> > @@ -13,12 +13,6 @@
-> >  					 SOF_TIMESTAMPING_TX_HARDWARE | \
-> >  					 SOF_TIMESTAMPING_RAW_HARDWARE)
-> > =20
-> > -enum hwtstamp_source {
-> > -	HWTSTAMP_SOURCE_UNSPEC, =20
->=20
-> when is unspec used in practice? Only path I could spot that may not
-> set it is if we fetch the data by PHC index?
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1741642016-44918-4-git-send-email-tariqt@nvidia.com
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-Indeed it is not used. I think it get merged in one of the several version
-tackling the "make PTP selectable support" work. As it is finally not used =
-we
-could drop it.
-=20
-> > -	HWTSTAMP_SOURCE_NETDEV,
-> > -	HWTSTAMP_SOURCE_PHYLIB,
-> > -};
-> > -
-> >  /**
-> >   * struct hwtstamp_provider_desc - hwtstamp provider description
-> >   * =20
->=20
-> > diff --git a/include/uapi/linux/net_tstamp.h
-> > b/include/uapi/linux/net_tstamp.h index
-> > a93e6ea37fb3a69f331b1c90851d4e68cb659a83..bf5fb9f7acf5c03aaa121e0cda3c0=
-b1d83e49f71
-> > 100644 --- a/include/uapi/linux/net_tstamp.h +++
-> > b/include/uapi/linux/net_tstamp.h @@ -13,6 +13,19 @@
-> >  #include <linux/types.h>
-> >  #include <linux/socket.h>   /* for SO_TIMESTAMPING */
-> > =20
-> > +/**
-> > + * enum hwtstamp_source - Source of the hardware timestamp
-> > + * @HWTSTAMP_SOURCE_UNSPEC: Source not specified or unknown
-> > + * @HWTSTAMP_SOURCE_NETDEV: Hardware timestamp comes from the net devi=
-ce =20
->=20
-> We should probably document that netdev here means that the timestamp
-> comes from a MAC or device which has MAC and PHY integrated together?
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+index 823c1ba456cd1..803bacf2a95e6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+@@ -305,8 +305,9 @@ static int esw_qos_set_node_min_rate(struct mlx5_esw_sched_node *node,
+ 	return 0;
+ }
+ 
+-static int esw_qos_create_node_sched_elem(struct mlx5_core_dev *dev, u32 parent_element_id,
+-					  u32 *tsar_ix)
++static int
++esw_qos_create_node_sched_elem(struct mlx5_core_dev *dev, u32 parent_element_id,
++			       u32 max_rate, u32 bw_share, u32 *tsar_ix)
+ {
+ 	u32 tsar_ctx[MLX5_ST_SZ_DW(scheduling_context)] = {};
+ 	void *attr;
+@@ -323,6 +324,8 @@ static int esw_qos_create_node_sched_elem(struct mlx5_core_dev *dev, u32 parent_
+ 		 SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR);
+ 	MLX5_SET(scheduling_context, tsar_ctx, parent_element_id,
+ 		 parent_element_id);
++	MLX5_SET(scheduling_context, tsar_ctx, max_average_bw, max_rate);
++	MLX5_SET(scheduling_context, tsar_ctx, bw_share, bw_share);
+ 	attr = MLX5_ADDR_OF(scheduling_context, tsar_ctx, element_attributes);
+ 	MLX5_SET(tsar_element, attr, tsar_type, TSAR_ELEMENT_TSAR_TYPE_DWRR);
+ 
+@@ -396,7 +399,8 @@ __esw_qos_create_vports_sched_node(struct mlx5_eswitch *esw, struct mlx5_esw_sch
+ 	u32 tsar_ix;
+ 	int err;
+ 
+-	err = esw_qos_create_node_sched_elem(esw->dev, esw->qos.root_tsar_ix, &tsar_ix);
++	err = esw_qos_create_node_sched_elem(esw->dev, esw->qos.root_tsar_ix, 0,
++					     0, &tsar_ix);
+ 	if (err) {
+ 		NL_SET_ERR_MSG_MOD(extack, "E-Switch create TSAR for node failed");
+ 		return ERR_PTR(err);
+@@ -463,7 +467,8 @@ static int esw_qos_create(struct mlx5_eswitch *esw, struct netlink_ext_ack *exta
+ 	if (!MLX5_CAP_GEN(dev, qos) || !MLX5_CAP_QOS(dev, esw_scheduling))
+ 		return -EOPNOTSUPP;
+ 
+-	err = esw_qos_create_node_sched_elem(esw->dev, 0, &esw->qos.root_tsar_ix);
++	err = esw_qos_create_node_sched_elem(esw->dev, 0, 0, 0,
++					     &esw->qos.root_tsar_ix);
+ 	if (err) {
+ 		esw_warn(dev, "E-Switch create root TSAR failed (%d)\n", err);
+ 		return err;
+-- 
+2.39.5
 
-Yes, I will.
-
->=20
-> > + * @HWTSTAMP_SOURCE_PHYLIB: Hardware timestamp comes from one of the P=
-HY
-> > + *			    devices of the network topology
-> > + */
-> > +enum hwtstamp_source {
-> > +	HWTSTAMP_SOURCE_UNSPEC,
-> > +	HWTSTAMP_SOURCE_NETDEV,
-> > +	HWTSTAMP_SOURCE_PHYLIB,
-> > +}; =20
->=20
-> > --- a/net/ethtool/common.c
-> > +++ b/net/ethtool/common.c
-> > @@ -920,12 +920,20 @@ int ethtool_get_ts_info_by_phc(struct net_device =
-*dev,
-> >  		struct phy_device *phy;
-> > =20
-> >  		phy =3D ethtool_phy_get_ts_info_by_phc(dev, info,
-> > hwprov_desc);
-> > -		if (IS_ERR(phy))
-> > +		if (IS_ERR(phy)) {
-> >  			err =3D PTR_ERR(phy);
-> > -		else
-> > -			err =3D 0;
-> > +			goto out;
-> > +		}
-> > +
-> > +		info->phc_source =3D HWTSTAMP_SOURCE_PHYLIB;
-> > +		info->phc_phyindex =3D phy->phyindex;
-> > +		err =3D 0;
-> > +		goto out; =20
->=20
-> The goto before the else looks a bit odd now.
-> Can we return directly in the error cases?
-> There is no cleanup to be done.
-
-Yes indeed.
-
-> > +	} else {
-> > +		info->phc_source =3D HWTSTAMP_SOURCE_NETDEV;
-> >  	}
-> > =20
-> > +out:
-> >  	info->so_timestamping |=3D SOF_TIMESTAMPING_RX_SOFTWARE |
-> >  				 SOF_TIMESTAMPING_SOFTWARE;
-> > =20
-> > @@ -947,10 +955,14 @@ int __ethtool_get_ts_info(struct net_device *dev,
-> > =20
-> >  		ethtool_init_tsinfo(info);
-> >  		if (phy_is_default_hwtstamp(phydev) &&
-> > -		    phy_has_tsinfo(phydev))
-> > +		    phy_has_tsinfo(phydev)) {
-> >  			err =3D phy_ts_info(phydev, info);
-> > -		else if (ops->get_ts_info)
-> > +			info->phc_source =3D HWTSTAMP_SOURCE_PHYLIB;
-> > +			info->phc_phyindex =3D phydev->phyindex;
-> > +		} else if (ops->get_ts_info) {
-> >  			err =3D ops->get_ts_info(dev, info);
-> > +			info->phc_source =3D HWTSTAMP_SOURCE_NETDEV; =20
->=20
-> Let's move the assignment before the calls if we can?
-> Otherwise someone adding code below may miss the fact that err may
-> already be carrying an unhandled error.
-
-Ack.
-
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
