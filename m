@@ -1,72 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35E33635ED
-	for <netdev@vger.kernel.org>; Mon,  5 May 2025 22:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA1D28314A;
+	Mon,  5 May 2025 22:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485492; cv=none; b=XifsA/n6HssC+D9R9hRugDakz0nfH5bIbN7YzBVXta3CUQjJZ6ZfijRFHr5VBunayN95zAh3wrcc+lvQOawEVQF0BUkNnECcODXXLfdspcQ4wUNEeQHAaUc5vXsgB/gLV+bUc2bU4nMEHEEgVknypcO/j+b0kGgHrwThi2nzeic=
+	t=1746485441; cv=none; b=HRP8SROMBZqIxP/zKFOVyYNfuEF+zKVKB7cKl0TXQdzgI/edT0WZvYFCURQyaJJRspi8bwDZXJm4iNnVR9uxGN2dmaeAjHRH64XAcBQeaFdKUVFm166PsL96bU44daaLY1ns5vy+a253IVwJmRaQeN05+UblhCCHYgtR6pm4MuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485492; c=relaxed/simple;
-	bh=Fv7tOcmIH8k0UEu1oeq8fVLRh8TtLCZmxeQiaSFWbC8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Teahvwnzg1s9inCuUFkEBS7PxbmCmqTlCBmzhf5FDoPG0/n5NCBZ7fYwjawEW7/4Li1LJc1ENa4d8bXYm1YXWE65jMD8YjfzuQfREca5J5C2BA4vvaAy2MdEtw78IWkPPZ1cGCA2tOT6xJ18t+/kdZwWsn7T60cdKWN4wac1IjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K9fXRjxE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746485441; c=relaxed/simple;
+	bh=MdrJnSTl2GoD+ObNrqreZP6yMBRewaoB71vuYFeA3Rw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Aa8sbpkLEdY7LDgOUSjFgebN4zFus8u9z6uAYX2a/bG5pv7+28Ih29D+Ly0R4jtxZt1xyMO9R+RkyXmpLVP6WtXwCCGocGcvbwB1U8xGx/gFU0b8ZHns/Sc15aLjb9fnkglHnlefxlNmcklzniFJUmqlPzJDNrtLu2ZDkBO7QS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D3W+S9KB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K9fXRjxE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D43C4CEED;
-	Mon,  5 May 2025 22:51:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D3W+S9KB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56BCC4CEF3;
+	Mon,  5 May 2025 22:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485491;
-	bh=Fv7tOcmIH8k0UEu1oeq8fVLRh8TtLCZmxeQiaSFWbC8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=K9fXRjxE/jzp5T7JufShItC4QtV89AbCu62dyrao4T8eJBhlslig3WFvxOiCnt9S3
-	 aRUxeT7OZ+KDt1ZB5u1dwVUgjO5jcUMdJUr2ngmK2HyFmG4Ml1ot/Zw5W9moid9esS
-	 uH5uCsuBVetm7EaMgdJ9FbKpMWwz5ew45ZV4mphYUKkhxYkbkEUnpVf742v34kFDD1
-	 qo6T2vhdRMEN07HBOeiR+JuiNWpcopTUix94McNnMA2CsosqLWJB6P3lQPGojtgqsb
-	 h3PNA6ojCnaFt2gZicjTjPDCqz/rvabBMmmnGouGPYQQEBILXYAsaTZ/6hXwxud6VD
-	 euZFM89CYCaVg==
-Date: Mon, 5 May 2025 15:51:30 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Keith Busch <kbusch@kernel.org>
-Cc: Gustavo Padovan <gus@collabora.com>, Aurelien Aptel <aaptel@nvidia.com>,
- linux-nvme <linux-nvme@lists.infradead.org>, netdev
- <netdev@vger.kernel.org>, sagi <sagi@grimberg.me>, hch <hch@lst.de>, axboe
- <axboe@fb.com>, chaitanyak <chaitanyak@nvidia.com>, davem
- <davem@davemloft.net>, "aurelien.aptel" <aurelien.aptel@gmail.com>, smalin
- <smalin@nvidia.com>, malin1024 <malin1024@gmail.com>, ogerlitz
- <ogerlitz@nvidia.com>, yorayz <yorayz@nvidia.com>, borisp
- <borisp@nvidia.com>, galshalom <galshalom@nvidia.com>, mgurtovoy
- <mgurtovoy@nvidia.com>, tariqt <tariqt@nvidia.com>, edumazet
- <edumazet@google.com>
-Subject: Re: [PATCH v28 00/20] nvme-tcp receive offloads
-Message-ID: <20250505155130.6e588cdf@kernel.org>
-In-Reply-To: <aBky09WRujm8KmEC@kbusch-mbp.dhcp.thefacebook.com>
-References: <20250430085741.5108-1-aaptel@nvidia.com>
-	<19686c19e11.ba39875d3947402.7647787744422691035@collabora.com>
-	<20250505134334.28389275@kernel.org>
-	<aBky09WRujm8KmEC@kbusch-mbp.dhcp.thefacebook.com>
+	s=k20201202; t=1746485439;
+	bh=MdrJnSTl2GoD+ObNrqreZP6yMBRewaoB71vuYFeA3Rw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=D3W+S9KBYkK78Rb82uONFQbDCDbLKLLf0VUxUnHlL5QmELFFeDpBI6X7qAxSiQnF4
+	 CCdsDeCULGQRsihsgraAmDWYwHnaPmbh9v9gY5+xFX6BZsYif5f8gsyjh1VtvkwLwC
+	 gbfHiiBe6bmDYLdWp/3hKVHHZw88sBoASJYYgAxXQQ2jCTYD3au0eLCEVlg4KDyBaL
+	 7sk4tze8qT/79DiRZtSRl1huz0qw1+4e8o3XT1aA92dTqVij/75kKeVVlRzKyKPPUy
+	 mYlSxGmlWv0NnoBEwztnoB5Xctq+h9nuKhvqlF93A/u5bWKHmeRdjDhlC3dQRSc32h
+	 zKEsYcZAmX6rQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 312/486] eth: mlx4: don't try to complete XDP frames in netpoll
+Date: Mon,  5 May 2025 18:36:28 -0400
+Message-Id: <20250505223922.2682012-312-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
+References: <20250505223922.2682012-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.26
+Content-Transfer-Encoding: 8bit
 
-On Mon, 5 May 2025 15:51:15 -0600 Keith Busch wrote:
-> On Mon, May 05, 2025 at 01:43:34PM -0700, Jakub Kicinski wrote:
-> > Looks like the tests passed? But we'll drop this from our PW, again.
-> > Christoph Hellwig was pushing back on the v27. We can't do anything
-> > with these until NVMe people are all happy.  
-> 
-> FWIW, I believe Sagi is okay with this as he has reviewed or acked all
-> the patches. I am also okay with this, though I'm more or less neutral
-> on the whole since it's outside my scope, but the nvme parts look fine.
-> The new additions are isolated to hardware that provides these offloads,
-> so I'm not really concerned this is going to be a problem maintaining
-> with the existing nvme-tcp driver. I trust in Sagi on this one.
+From: Jakub Kicinski <kuba@kernel.org>
 
-Thanks, so we have two "yes" votes. Let's give it a week and if there
-are no vetoes / nacks we can start.. chasing TCP maintainers for an ack?
+[ Upstream commit 8fdeafd66edaf420ea0063a1f13442fe3470fe70 ]
+
+mlx4 doesn't support ndo_xdp_xmit / XDP_REDIRECT and wasn't
+using page pool until now, so it could run XDP completions
+in netpoll (NAPI budget == 0) just fine. Page pool has calling
+context requirements, make sure we don't try to call it from
+what is potentially HW IRQ context.
+
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250213010635.1354034-3-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/mellanox/mlx4/en_tx.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx4/en_tx.c b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
+index 1ddb11cb25f91..6e077d202827a 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/en_tx.c
++++ b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
+@@ -450,6 +450,8 @@ int mlx4_en_process_tx_cq(struct net_device *dev,
+ 
+ 	if (unlikely(!priv->port_up))
+ 		return 0;
++	if (unlikely(!napi_budget) && cq->type == TX_XDP)
++		return 0;
+ 
+ 	netdev_txq_bql_complete_prefetchw(ring->tx_queue);
+ 
+-- 
+2.39.5
+
