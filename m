@@ -1,52 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4FC28A700;
-	Mon,  5 May 2025 23:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C13D3AAC9B;
+	Mon,  5 May 2025 23:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487019; cv=none; b=kVK2CdPF+R4uJGcTgm+4XBvKNcyXcgyu80wjogQeXDtTW+SyOk6y2UlPhCq/hvqRR7eNdCxP9OUtQppwg05XPKkN9MPm/jQ8ciXCevt5geGykt795zkXjikeBtALQnNQLDM1grHRfPjdoonlY0N+45WJqcNChiH7u6g+NsuQvOM=
+	t=1746487121; cv=none; b=sG2uofVXC6yc/xi23nubqrUhMkNyzwkuyTHMYqFL0fjYFyi/K1jg8/OUSmSVOoSYxnNHeE/VR+EDZWRomISwvnxZOJScSatK69SC8T64IKFgSj10u5jJAxUODguCX6YX5B7FXxITT6vh5eMCfdjCN6+3Dcl6tIXoPeN7N7UPcqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487019; c=relaxed/simple;
-	bh=JxjItHrrQgLMHSz/Gv5gajhZoDln5AohXYwfHcgnOyw=;
+	s=arc-20240116; t=1746487121; c=relaxed/simple;
+	bh=Z0ttmRYVVdxOD0UDIR1vXxrkZblPfNce2r7moqOmxgw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dd+gOyqabtAe3Fm7+RZu4aLrDuPw9QmP6ck1Hz2LeD1xq8w9oZct15RCssL9pfhwzyxR9mg+xbg9SZPSNmNDi+arhvOirzdjGNj9nzMKWcbwo0zTaivgzd1I/Mz10pStnwlW06UcAlv5PsLlucKp2BIEMct84DQSo0S5POxuDuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rkH16t5E; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=dpfM4Cc1vJBFTlywcrQNJiJMOTFPWXVFovGZ8QUtH79tAI7X6Ul7R29w5ahA388u+nEh7/OllOsGQ1nZugbJuyYL0Rwd+MhoYHQ69cOv5ALJ50BRWEGObq31Bg91LFiLaiZp0bAJU6zWc6haJNXPG02krbJ1yQEAkssuUVgdQAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KHsvez8f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rkH16t5E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A5FC4CEED;
-	Mon,  5 May 2025 23:16:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KHsvez8f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E63DC4CEEE;
+	Mon,  5 May 2025 23:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487017;
-	bh=JxjItHrrQgLMHSz/Gv5gajhZoDln5AohXYwfHcgnOyw=;
+	s=k20201202; t=1746487119;
+	bh=Z0ttmRYVVdxOD0UDIR1vXxrkZblPfNce2r7moqOmxgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rkH16t5EibkbO9BEXyCS7JoIyOsIxBMmm8d/7VeeXIbqiuRf6fVrVqOvp8geLosh5
-	 d5XtcJl5HRM7q0ZNYLqTwFa9s+7UzoiBEajuIRNpM4Ku9ECWRSusIfa8cJ+qbl5j3s
-	 PqZamyMkhyQNyW6slXuIZBZtEJ9rb5o3BhlsSsCqCLMqH50sHJKctHZkYjb5iqu2qb
-	 obed4Uf6jL+cS29phXlQspHJQCaJ7LYTTsrqGMWNAcu7HMTeZI1pyELbCSs7LiUWY0
-	 fSutSsg+dzha66zyXPOxmpONreHq5o420Sw9hhRu2KRWotVvLVLZ+A/T/MednEVehJ
-	 gCPVxtV/qRuYQ==
+	b=KHsvez8fy9aXjUDjH4N1L3stkUclTwkk4SOux8JsMyJ+jcTANzXxacpGgLP2KNTYi
+	 4WA11sdc4Y7Sl8yaA7xtthbgqYSxopbssUbo+isdh0d9+oyhdokD/lAnvmmSdyb76R
+	 P3N4CUxWYlM6hd/VURPz3sJ7q+UZ66JZMe/R2w4toJ/vpw3m8iF1SjTwTTwsjc21+I
+	 UvVhj0MA9oKhLKn/3QDyQYWVYE5/ClGGinXJ6uUFMAPbtIFfjwiBNskFFuMw9fd+l+
+	 p+Fy9dO6KpIExNyx/vmONxk76JB/m6ltqL70hY6oVp+T/EPkZx+NX0SSNZA3uWa49V
+	 qoHyZYbR+sLsw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
-	andrew+netdev@lunn.ch,
+	chuck.lever@oracle.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
 	davem@davemloft.net,
 	edumazet@google.com,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 110/153] net/mlx5: Modify LSB bitmask in temperature event to include only the first bit
-Date: Mon,  5 May 2025 19:12:37 -0400
-Message-Id: <20250505231320.2695319-110-sashal@kernel.org>
+	linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 008/114] SUNRPC: rpc_clnt_set_transport() must not change the autobind setting
+Date: Mon,  5 May 2025 19:16:31 -0400
+Message-Id: <20250505231817.2697367-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
-References: <20250505231320.2695319-1-sashal@kernel.org>
+In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
+References: <20250505231817.2697367-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,46 +56,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.181
+X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 633f16d7e07c129a36b882c05379e01ce5bdb542 ]
+[ Upstream commit bf9be373b830a3e48117da5d89bb6145a575f880 ]
 
-In the sensor_count field of the MTEWE register, bits 1-62 are
-supported only for unmanaged switches, not for NICs, and bit 63
-is reserved for internal use.
+The autobind setting was supposed to be determined in rpc_create(),
+since commit c2866763b402 ("SUNRPC: use sockaddr + size when creating
+remote transport endpoints").
 
-To prevent confusing output that may include set bits that are
-not relevant to NIC sensors, we update the bitmask to retain only
-the first bit, which corresponds to the sensor ASIC.
-
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Link: https://patch.msgid.link/20250213094641.226501-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/events.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/sunrpc/clnt.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-index a1ac3a654962e..080aee3e3f9bb 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-@@ -160,6 +160,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
- 	u64 value_msb;
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index 7ec5b0bc48ebf..0a4b4870c4d99 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -273,9 +273,6 @@ static struct rpc_xprt *rpc_clnt_set_transport(struct rpc_clnt *clnt,
+ 	old = rcu_dereference_protected(clnt->cl_xprt,
+ 			lockdep_is_held(&clnt->cl_lock));
  
- 	value_lsb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_lsb);
-+	/* bit 1-63 are not supported for NICs,
-+	 * hence read only bit 0 (asic) from lsb.
-+	 */
-+	value_lsb &= 0x1;
- 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
- 
- 	mlx5_core_warn(events->dev,
+-	if (!xprt_bound(xprt))
+-		clnt->cl_autobind = 1;
+-
+ 	clnt->cl_timeout = timeout;
+ 	rcu_assign_pointer(clnt->cl_xprt, xprt);
+ 	spin_unlock(&clnt->cl_lock);
 -- 
 2.39.5
 
