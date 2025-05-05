@@ -1,47 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF15238C411;
-	Mon,  5 May 2025 23:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1412E36E099;
+	Mon,  5 May 2025 23:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486091; cv=none; b=JyajLG99dwSQgbBkDo8MHUvLa13hZ8Qh8dgPEPKcS8UYjWTOmhzClf9vCMIStFT0g4FSu4x8HRbMUOm+xGaZ0vTUqP/o3Vkr0+QCOUN08HkzZhEiphII3t67cfzZLlYw4ALypIGvBj95kyPmP0L0VT+LA7eXl1em0weTX82CHZ4=
+	t=1746486117; cv=none; b=eN9FE3VYhTufET/RDNDzmB91Wv3Z510Kv7LAp2YXDDEpxEZHZFW/nmmUL1q1r8lJIb258F15EuT0uIuZQcBX04yHmMwZtGUh6QNma+XmPJA8MyUXIV3jMN2Qx2U1K4jp2EpN9tOQI0rYuviZ4eavq+76shaF75Dbv/ZSDC0gcd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486091; c=relaxed/simple;
-	bh=7vZJ/qgoHpmHGdqWagURVrg/UArHS/UJRLHVDnt/V3I=;
+	s=arc-20240116; t=1746486117; c=relaxed/simple;
+	bh=PAZV3TgFo6qGCFziwxdvUIXqDXd56PaqynSudrDxEgU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aEhGkaJV9YiwpO5kMS8fpQb1WZWRerCTVDfaY3Neb42AIAFeSCnCF1c/P3k1XpWAaHae0aaUCpu20VkH00qaYE8nYfJM71P0imkUjUQdbo06/ReKbIp01JP12Y9NusANIIaVQ4+CA180p8Jjy44FftelJ3gQUP8OOS+uVffQhks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U4zIygeo; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=p4BBcLfXiFBvYkl5XFuF7HJwXFcR66QmVRSU0bdXxyGwfQLmP46YFqihESFNfUuAc9FdEmxRzpYy639KSdkB0kTxp00jJDuv3YaNPXeewL8qIfqHK+hVYztXM1xfmnnLQZh1I/1rvRXE7fRqunE1UxWTObS16/FF6Xba1NxyFpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VUrgY/at; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U4zIygeo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEBDC4CEF1;
-	Mon,  5 May 2025 23:01:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VUrgY/at"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E78C4CEF2;
+	Mon,  5 May 2025 23:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486090;
-	bh=7vZJ/qgoHpmHGdqWagURVrg/UArHS/UJRLHVDnt/V3I=;
+	s=k20201202; t=1746486116;
+	bh=PAZV3TgFo6qGCFziwxdvUIXqDXd56PaqynSudrDxEgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U4zIygeoytiXMsrrGgg5YnqMZg99sApFMjBd3jFAx+/d2Gl+2wmiVmsA6udz29fn9
-	 mNcxrhG/y+PvySSGtrvV33Dx6geLS+sUX0RbBFhT02jS+G7C2Wn/FT9MCJEEfI74KU
-	 3ekuED9nm8DKa+yMR5tKgcQ1jWtqN8YP2LbVTNv7m2gZv7SAy30dsR+rnAs/qnmC5K
-	 6HmtDY4+75w+/q4PWJlm21lWdz7IbckebY+2qrpvSZ2XkKsm5G8I88JmG7Lmajw+Wi
-	 s8LucJQiwgKRzRkXV+BOTrSlt+9fc4O/BOEPYVsa4yiemjeZpv84tbKs4ZSF7SIF3s
-	 ctAO1YGGJxjwA==
+	b=VUrgY/at7dgk0SfpA+WFXOR8anyvfrpIPQrqniYEwHMlvUmm9QffwmPk1LqEr4NHJ
+	 VHI8dRY5SF0MWLxY8t646Zjt5v/Dq/BDNkVDCaspY7PIdNaW6JhzykC2RLK1B/JVsy
+	 rO/rEWx3Oe0FbAZu7Xa9tUf4Jsr7b36h089z2NrdAhnkZ1ZtnZnZnq/BxqCdAZOEfS
+	 NkoKalXOXK+41jt1AJL2tc/cfBMRtwhvYYSlv8gAYUndFJ0u4zuH6O+9TXmV47Uyk5
+	 /LbOeurpxPChb6WoKDINNPDS4e/elA++6dOjRnhAxiQD38IJL5MVtKddM15Yckci5z
+	 MIvlqRuKSs8Fw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hangbin Liu <liuhangbin@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Mike Christie <michael.christie@oracle.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jv@jvosburgh.net,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
+	jasowang@redhat.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 150/294] bonding: report duplicate MAC address in all situations
-Date: Mon,  5 May 2025 18:54:10 -0400
-Message-Id: <20250505225634.2688578-150-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 160/294] vhost-scsi: Return queue full for page alloc failures during copy
+Date: Mon,  5 May 2025 18:54:20 -0400
+Message-Id: <20250505225634.2688578-160-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -51,48 +49,82 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit 28d68d396a1cd21591e8c6d74afbde33a7ea107e ]
+[ Upstream commit 891b99eab0f89dbe08d216f4ab71acbeaf7a3102 ]
 
-Normally, a bond uses the MAC address of the first added slave as the bond’s
-MAC address. And the bond will set active slave’s MAC address to bond’s
-address if fail_over_mac is set to none (0) or follow (2).
+This has us return queue full if we can't allocate a page during the
+copy operation so the initiator can retry.
 
-When the first slave is removed, the bond will still use the removed slave’s
-MAC address, which can lead to a duplicate MAC address and potentially cause
-issues with the switch. To avoid confusion, let's warn the user in all
-situations, including when fail_over_mac is set to 2 or not in active-backup
-mode.
-
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250225033914.18617-1-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Message-Id: <20241203191705.19431-5-michael.christie@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vhost/scsi.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 7eb62fe55947f..56c241246d1af 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2469,7 +2469,7 @@ static int __bond_release_one(struct net_device *bond_dev,
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 8d8a22504d71f..9a62372bdac32 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -746,7 +746,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
+ 	size_t len = iov_iter_count(iter);
+ 	unsigned int nbytes = 0;
+ 	struct page *page;
+-	int i;
++	int i, ret;
  
- 	RCU_INIT_POINTER(bond->current_arp_slave, NULL);
+ 	if (cmd->tvc_data_direction == DMA_FROM_DEVICE) {
+ 		cmd->saved_iter_addr = dup_iter(&cmd->saved_iter, iter,
+@@ -759,6 +759,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
+ 		page = alloc_page(GFP_KERNEL);
+ 		if (!page) {
+ 			i--;
++			ret = -ENOMEM;
+ 			goto err;
+ 		}
  
--	if (!all && (!bond->params.fail_over_mac ||
-+	if (!all && (bond->params.fail_over_mac != BOND_FOM_ACTIVE ||
- 		     BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)) {
- 		if (ether_addr_equal_64bits(bond_dev->dev_addr, slave->perm_hwaddr) &&
- 		    bond_has_slaves(bond))
+@@ -766,8 +767,10 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
+ 		sg_set_page(&sg[i], page, nbytes, 0);
+ 
+ 		if (cmd->tvc_data_direction == DMA_TO_DEVICE &&
+-		    copy_page_from_iter(page, 0, nbytes, iter) != nbytes)
++		    copy_page_from_iter(page, 0, nbytes, iter) != nbytes) {
++			ret = -EFAULT;
+ 			goto err;
++		}
+ 
+ 		len -= nbytes;
+ 	}
+@@ -782,7 +785,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
+ 	for (; i >= 0; i--)
+ 		__free_page(sg_page(&sg[i]));
+ 	kfree(cmd->saved_iter_addr);
+-	return -ENOMEM;
++	return ret;
+ }
+ 
+ static int
+@@ -1221,9 +1224,9 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
+ 			 " %d\n", cmd, exp_data_len, prot_bytes, data_direction);
+ 
+ 		if (data_direction != DMA_NONE) {
+-			if (unlikely(vhost_scsi_mapal(cmd, prot_bytes,
+-						      &prot_iter, exp_data_len,
+-						      &data_iter))) {
++			ret = vhost_scsi_mapal(cmd, prot_bytes, &prot_iter,
++					       exp_data_len, &data_iter);
++			if (unlikely(ret)) {
+ 				vq_err(vq, "Failed to map iov to sgl\n");
+ 				vhost_scsi_release_cmd_res(&cmd->tvc_se_cmd);
+ 				goto err;
 -- 
 2.39.5
 
