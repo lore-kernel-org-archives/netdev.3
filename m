@@ -1,109 +1,143 @@
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5AC14AA9
-	for <netdev@vger.kernel.org>; Mon,  5 May 2025 07:38:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DD8176AC8
+	for <netdev@vger.kernel.org>; Mon,  5 May 2025 07:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746430727; cv=none; b=Xmr46C6bFYWhi33CEVUtXgn2tjEqn6VFK7VuUOh38081JfMIiRvv4ZE7b60spHueWD4GnMN0YMq9WezeSBXO70c9f0pS0OcftA/0KXiSDz7mVnluCUWWnctvYUVGJQCS87ckPZ419IdTLnSqorkpXOqzfbdfFz55U/DkD1CkzsU=
+	t=1746431007; cv=none; b=BMQXJDuHvsH/68tzJc2zK282ojxgpkQzdas0b4p8Qjmyz4etPsNIMGRiOxlskK9RHDNAF2ytl4EyeFSukvPMU9hix+JNGpbDptCSSP+O/xa1g3J+kcIqVstos5Z3h/R/GH5NIVRrVpqZXuQNb5s+WXPlzv9viCYJijHQQIvjWjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746430727; c=relaxed/simple;
-	bh=Z6Gb8mwLjXQ0Zk5osbDPifZ1fceJUjnD5q3DxKLdXO4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BKe+RnDxfS42yTmNa9dZy5W7/jJiVeEZ2bxtYVYoWp4Lw6slX1Q1NDzn/1gEv2f8bf61MpIPAt/h5Aq81DQtWwafF2qWr++jjiJIe12yGPCemGaoTF57AeKCL+cmiSpOtozyyX/lmg0YUMOLKLvx2hSgltLxsdZ9WYzucNiroWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iUd4RoEr; arc=none smtp.client-ip=202.12.124.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
+	s=arc-20240116; t=1746431007; c=relaxed/simple;
+	bh=/1L4VXQZnM4TVg9Q0XEcQOC1Z7dwzdgPChSwdWfL7fE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XNMm3vS4ZShkXOEO4j400VttZBjAtvBq/TK7g9UqUQuFFe9vW1jG6pxiuA46ovS7C6/qig8OcimVmiO2R7NdiwmiiiZg3dYOAwlvpNJRakE/+mKej6ECx0iEVvRkGWHn3U0UZRQFLMVSy62MBCwBXpnggrE2Qf0QSERJWmmFdw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aFvdcU6H; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iUd4RoEr"
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfout.stl.internal (Postfix) with ESMTP id E66C1114018A;
-	Mon,  5 May 2025 03:38:44 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Mon, 05 May 2025 03:38:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1746430724; x=1746517124; bh=24Ylv/f2AxNlgILEtbkWVvD3+rIOnpfmIEb
-	4bdzPL1c=; b=iUd4RoErMdc0OGa9jCIooL/maly6wZSw92d+4PqcSiY5ak0oxuY
-	OHnMh7Edwk5mojN/WNWIr4iVhVnBzLO9BbwwtJv9OcUYdTLWw7rNMU4sfss9T4re
-	UOj3PD2kTg6HeVo6VD/yBy8fGQKnavnSk27nHvWkEwTB8y95UN2Owbtl1uviJIvy
-	2XM8pmvgoW5pneIVeHL4fGgjldgie6shXYq4bJ/5lMkNGYzUrBtKP2YjBdv002h2
-	rKSa5Y3rNYxkg471qbPlnDETM7ClWp1Rk9iCjSGeea18hS0qFIeAmBlgSF9jHI3S
-	O9S0Jn50yvySdDeyssAkwXQDVbiPNO3e7Mg==
-X-ME-Sender: <xms:BGsYaEkQKfybklkS_y290I3bVfuWbL32Zo3XhwRRK402fF3oLb1Qgg>
-    <xme:BGsYaD2hX9u4jHJKveKStPl1Gn4wlvcs1M2FBeWuob5m-yy6gxZIfyIvilYfYNtSt
-    _a6WMzzVCW_3CY>
-X-ME-Received: <xmr:BGsYaCrNMNR78LeLMSp8Rk0CLTA4oaOGXU9b9-JBKdYt5VkfjrhXAYUuajS7>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkedtheduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepkfguohcuufgthhhimhhmvghluceoihguohhstghhsehiughoshgthh
-    drohhrgheqnecuggftrfgrthhtvghrnhepjeegjefhffeigffgheevfeffteekveekudeu
-    heeiieduleegtdelleetkedvfeeknecuffhomhgrihhnpegtohhnfhdruggvvhenucevlh
-    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehiughoshgthhes
-    ihguohhstghhrdhorhhgpdhnsggprhgtphhtthhopeduuddpmhhouggvpehsmhhtphhouh
-    htpdhrtghpthhtohepghhnrghulhhtsehrvgguhhgrthdrtghomhdprhgtphhtthhopegu
-    rghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepkhhusggrsehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghp
-    thhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehnvghtug
-    gvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehhohhrmhhssehkvghr
-    nhgvlhdrohhrghdprhgtphhtthhopegushgrhhgvrhhnsehkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopegrnhhtohhnihhosehmrghnuggvlhgsihhtrdgtohhm
-X-ME-Proxy: <xmx:BGsYaAmDtgTAQ2jxwVxOV_7PJbMurxgdDiS2T2QDx23nXzCmK2jn7Q>
-    <xmx:BGsYaC2l_9GABme0FEV3pyx-eef7LM6BhyxDFS8MU6h6NB9n5Nebcg>
-    <xmx:BGsYaHteouQoELPwFdfy6LDJdA0D04gPyW3dRMuNb3Eg-PWjBD-knA>
-    <xmx:BGsYaOVNBnBZnMcvqexZUsgcGh5svobKi48ktO_wJJlpZHt2fNC7ZA>
-    <xmx:BGsYaG3AdtEaEsqa18QI1l7DF_IiCbe0jT6hByXtD4M7dezJw2Qu3EGw>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 5 May 2025 03:38:43 -0400 (EDT)
-Date: Mon, 5 May 2025 10:38:41 +0300
-From: Ido Schimmel <idosch@idosch.org>
-To: Guillaume Nault <gnault@redhat.com>
-Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Antonio Quartulli <antonio@mandelbit.com>,
-	Stanislav Fomichev <stfomichev@gmail.com>,
-	Petr Machata <petrm@nvidia.com>
-Subject: Re: [PATCH net 2/2] selftests: Add IPv6 link-local address
- generation tests for GRE devices.
-Message-ID: <aBhrAacLs1H1KliD@shredder>
-References: <cover.1746225213.git.gnault@redhat.com>
- <2c3a5733cb3a6e3119504361a9b9f89fda570a2d.1746225214.git.gnault@redhat.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aFvdcU6H"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746431004;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NYutuEk9tS5pMcj+KQxarlK855jenHaF07JshpvJP/c=;
+	b=aFvdcU6HBJ5kwWqI80QeGa/nksKkq3du/L+rgPS8XllBA3KGzaJtIbs+16kvoTZHTRL6ly
+	0PSdRYohTI0qQgRMITeHNHHCSS0iLiFErwyXmTaMIFxUzpOLSEJAWXab6ifNkc1KeSGbC6
+	/jwLce1PS4uj83B+nsSCb8jaZYSovhw=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-144-cSuaWo_OPiuOB4pyGi5O1A-1; Mon, 05 May 2025 03:43:23 -0400
+X-MC-Unique: cSuaWo_OPiuOB4pyGi5O1A-1
+X-Mimecast-MFC-AGG-ID: cSuaWo_OPiuOB4pyGi5O1A_1746431002
+Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-30c4cbc324bso20505141fa.1
+        for <netdev@vger.kernel.org>; Mon, 05 May 2025 00:43:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746431002; x=1747035802;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NYutuEk9tS5pMcj+KQxarlK855jenHaF07JshpvJP/c=;
+        b=m2/LuUQ0r+xPWSTLcJv1b+ziPRbUVbfTgXJuoSudNAOkt94gUo3cDFNfHSM8+MPuS9
+         ZVp3oxJyHaOJwIegApc2MEMNOYRqOTCvzVYCUBrNOacAb7DUrLyJ20ehbIY/knJATFxY
+         UrxGfQZGR8a2C9qneY1wKOXK2LIUUb8iaFzwt8G6ate5MjwjH5TZGYEvRDHyOBoI1dpL
+         9YUI2k6piHKYbuFc6sE34BsJsFZdK/R+/N7GicJbt6DNDvE2ivXY1VOXc2z9jLSzEoPe
+         Ubjn6CN6DtiOy6CiusvPRO4RxWJ0agWrnbh/BN3leVdcAij/Av9Zrlv2pU8aghIYmjg4
+         SamQ==
+X-Gm-Message-State: AOJu0YyBCBFV7MzWCopoz7Uwl9dGjV87zRc0aOlY5s8MFKL74o2+CtIv
+	kKb7qtqv0TDwB2gkOPM/RA+wgemTB9v/tA41VCKhWCvDJQzI0/3+/Ofe04hFTsrlEUgJDz5ncyQ
+	hV6jcGrEEjvf+0FaQrC5GS6u5qvKpFbGb7g55JL033UtUHPg8XDj3a8gkHs1/YoA99Zc=
+X-Gm-Gg: ASbGncstB1WLmq20QfEwSOUWpOCf4GHdJEWUCdAStLIyJR1aLrSPiG3ofobaTkJV/YN
+	a5BpK3QamHXnMTPa7I5XLshQi3OKdksgnpPWW7sMN+mQqyF2dNMbE2cus9vEjxMaTlHFdyU/c2+
+	OHNY4QqfZCEPCNlpCruo9kl6WwPHhC/UZq2sYiV+lKm7RoYsNNLGJhXoGcM4S0RQe4at8a3GWxL
+	ENHJYWGPmSvzyHWkS1sxx3amKYOzWEpYNQkw/4JlX8dX5emNAQvLivk2GgKJbRHKiUbQ/AWXJ0k
+	x2/rZaFfSHWLWGKS6J2cSkIKU8rzBMNL5v8x+PEAKz4/7E7E+mcbouudq50=
+X-Received: by 2002:a05:6512:a87:b0:549:38d2:f630 with SMTP id 2adb3069b0e04-54f9efd2c99mr1456238e87.24.1746431001781;
+        Mon, 05 May 2025 00:43:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHsEsHgZOcmzKyEYKe53zgGMeSaMF3WinuQkv4wSGTWsyP+GpxlPUt85uINmh0HuIcOZYrSLQ==
+X-Received: by 2002:a05:600c:1e09:b0:43c:f895:cb4e with SMTP id 5b1f17b1804b1-441cb49494cmr15680615e9.17.1746430567130;
+        Mon, 05 May 2025 00:36:07 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2706:e010:b099:aac6:4e70:6198? ([2a0d:3344:2706:e010:b099:aac6:4e70:6198])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b391c42bsm162401715e9.39.2025.05.05.00.36.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 May 2025 00:36:06 -0700 (PDT)
+Message-ID: <8cdf120d-a0f0-4dcc-a8f9-cea967ce6e7b@redhat.com>
+Date: Mon, 5 May 2025 09:36:03 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2c3a5733cb3a6e3119504361a9b9f89fda570a2d.1746225214.git.gnault@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v13 4/9] net: devmem: Implement TX path
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, io-uring@vger.kernel.org,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, Donald Hunter <donald.hunter@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Jeroen de Borst <jeroendb@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Kuniyuki Iwashima <kuniyu@amazon.com>, Willem de Bruijn
+ <willemb@google.com>, Jens Axboe <axboe@kernel.dk>,
+ Pavel Begunkov <asml.silence@gmail.com>, David Ahern <dsahern@kernel.org>,
+ Neal Cardwell <ncardwell@google.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>,
+ sdf@fomichev.me, dw@davidwei.uk, Jamal Hadi Salim <jhs@mojatatu.com>,
+ Victor Nogueira <victor@mojatatu.com>, Pedro Tammela
+ <pctammela@mojatatu.com>, Samiullah Khawaja <skhawaja@google.com>,
+ Kaiyuan Zhang <kaiyuanz@google.com>
+References: <20250429032645.363766-1-almasrymina@google.com>
+ <20250429032645.363766-5-almasrymina@google.com>
+ <53433089-7beb-46cf-ae8a-6c58cd909e31@redhat.com>
+ <CAHS8izMefrkHf9WXerrOY4Wo8U2KmxSVkgY+4JB+6iDuoCZ3WQ@mail.gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CAHS8izMefrkHf9WXerrOY4Wo8U2KmxSVkgY+4JB+6iDuoCZ3WQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sat, May 03, 2025 at 12:57:59AM +0200, Guillaume Nault wrote:
-> GRE devices have their special code for IPv6 link-local address
-> generation that has been the source of several regressions in the past.
+On 5/2/25 9:20 PM, Mina Almasry wrote:
+> On Fri, May 2, 2025 at 4:47 AM Paolo Abeni <pabeni@redhat.com> wrote:
+>>> @@ -1078,7 +1092,8 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+>>>                               zc = MSG_ZEROCOPY;
+>>>               } else if (sock_flag(sk, SOCK_ZEROCOPY)) {
+>>>                       skb = tcp_write_queue_tail(sk);
+>>> -                     uarg = msg_zerocopy_realloc(sk, size, skb_zcopy(skb));
+>>> +                     uarg = msg_zerocopy_realloc(sk, size, skb_zcopy(skb),
+>>> +                                                 sockc_valid && !!sockc.dmabuf_id);
+>>
+>> If sock_cmsg_send() failed and the user did not provide a dmabuf_id,
+>> memory accounting will be incorrect.
 > 
-> Add selftest to check that all gre, ip6gre, gretap and ip6gretap get an
-> IPv6 link-link local address in accordance with the
-> net.ipv6.conf.<dev>.addr_gen_mode sysctl.
-> 
-> Note:
->   This patch was originally applied as commit 6f50175ccad4 ("selftests:
->   Add IPv6 link-local address generation tests for GRE devices.").
->   However, it was then reverted by commit 355d940f4d5a ("Revert "selftests:
->   Add IPv6 link-local address generation tests for GRE devices."")
->   because the commit it depended on was going to be reverted. Now that
->   the situation is resolved, we can add this selftest again (no changes
->   since original patch, appart from context update in
->   tools/testing/selftests/net/Makefile).
-> Signed-off-by: Guillaume Nault <gnault@redhat.com>
+> Forgive me but I don't see it. sockc_valid will be false, so
+> msg_zerocopy_realloc will do the normal MSG_ZEROCOPY accounting. Then
+> below whech check sockc_valid in place of where we did the
+> sock_cmsg_send before, and goto err. I assume the goto err should undo
+> the memory accounting in the new code as in the old code. Can you
+> elaborate on the bug you see?
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
+Uhm, I think I misread the condition used for msg_zerocopy_realloc()
+last argument.
+
+Re-reading it now it the problem I see is that if sock_cmsg_send() fails
+after correctly setting 'dmabuf_id', msg_zerocopy_realloc() will account
+the dmabuf memory, which looks unexpected.
+
+Somewhat related, I don't see any change to the msg_zerocopy/ubuf
+complete/cleanup path(s): what will happen to the devmem ubuf memory at
+uarg->complete() time? It looks like it will go unexpectedly through
+mm_unaccount_pinned_pages()???
+
+Thanks,
+
+Paolo
+
