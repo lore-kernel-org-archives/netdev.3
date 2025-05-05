@@ -1,197 +1,195 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E392B3C088F;
-	Mon,  5 May 2025 23:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8C939FE62;
+	Mon,  5 May 2025 23:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487433; cv=none; b=UyzuYG8XUPAx6q/kJuJ3pUTaidfd+TPr45CRFwM/LXUrrIkRRMVBq31q3J07Gh1VBHUYaqOU9ZsxoQ8nDxR265oB+vTfDs83l7aSlqwgRz1J5HrTCj8t+3dtdx9wPJlWxF/Xzb7V1snzesGapMLDkbjPSbWqgLRgycd8TsMgBJU=
+	t=1746487608; cv=none; b=u9mcmbC+18wNkCDcqkEz/dFMMhgmEk0Lzh+0VtpVGDDsGcwDYlegUNBssAi1Gl93/5vWRGsDmzm/7SQGBtjIF4sJKkBoQk0XpUWNz3cO+ptSFzSEyn7PWkv06IxOCfVA8swEUi9+KnpoSmIjxmK2qEhisKWzemN2gCs1etzGqgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487433; c=relaxed/simple;
-	bh=VqAjdqFowdMxBwvZn1FNxrrbYAYPH2ZoKKabX/YN78c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p9wyGoqSCVM9xiRnFVvxXOHdflOoo/hXV9PczEPphtnBNTzyBSkM0x5qOdQzJ45jmM94gM4Dv5eZXQoiVLyETGrmK5QlpSkd1yhjpHHsRq16kVoEFHWnIhX0K1+IX5X+hVuBD9o8tU4gOfhQ3ELHJRGh0CpCRW6OCoOxbKZDmBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D6LmhY75; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746487608; c=relaxed/simple;
+	bh=NI1weFRp69aLLX3aQNP5hOOXCfiH/cY1nvFD2lXLJos=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=GjT8RaZooCA2a9+HQBsymyz9YTinoIsHWLWtfKzbX6Q7wvOJwEqs1McSkXNB3FE6nud92PHn9mCnEqhoT1R0EJyYKxAgrajryAUWuKG4Klsu9mLD78QTqtWFRILyHko06uqaT42grQMrBDZpMjOTIbwe5cviMRkzAfEAMb/3baY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qpggm2qF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D6LmhY75"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81866C4CEEE;
-	Mon,  5 May 2025 23:23:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qpggm2qF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7EBC4CEED;
+	Mon,  5 May 2025 23:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487431;
-	bh=VqAjdqFowdMxBwvZn1FNxrrbYAYPH2ZoKKabX/YN78c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6LmhY75C9YditeDX/dEhKgDe1QNaLBnE/gCXqt5Q59itSHzCyL4fLRH5gaPvGwG7
-	 8MLPPdnn3bvmy+q1mdhHF8do+ARQ1tjRW5BzI1xhFpdM2Hbo+5yqoQzEP6rZQhpEik
-	 E1RkmX65OBH/qDchkEKIAM8jeXPrYjv2f3zNGRnjx3VgOG7HZyYMB9pN+5/CmxZ/uj
-	 8WuBXVcovu701ihhusD8QvLuAEd2sP/YKjxY37yLxJL1GzNFljWLlvv73hw03OaVta
-	 o1KkvhUdkhbpjffaypGroGnN7ARDNGedbdK3jvO3oTh2BQSM0WlnIIW9aOYNhuKrvO
-	 yGQGWIsRxSB9w==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 68/79] vxlan: Annotate FDB data races
-Date: Mon,  5 May 2025 19:21:40 -0400
-Message-Id: <20250505232151.2698893-68-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
-References: <20250505232151.2698893-1-sashal@kernel.org>
+	s=k20201202; t=1746487607;
+	bh=NI1weFRp69aLLX3aQNP5hOOXCfiH/cY1nvFD2lXLJos=;
+	h=From:Date:To:cc:Subject:In-Reply-To:References:From;
+	b=qpggm2qFTv2HfZCl2OEOa7+ajxaQ18zXfV/NHSCmP2wAaoh1dGnlQ591oD/KMj6u6
+	 yW279w7wCDpmecW+FOX1fND5TK+a0xIHHpKbZjvfCj14nDC8OAk/aN00hMbLccORJC
+	 NE7Q1kYcAa1/n1Or3h24i3sML8izsaE/DChwZh/ABWpiadIvts4XDxW7xvv2T0SBqx
+	 7UwtSASjoztoTKvaNZiIHUZ4Q86eB20DETPPHtdNCBOnMGf21olqitYWp7fFJi1xY/
+	 VLXx1qa5dp33htO9/OkED0e/8bZGhSqln9B+1U8ARlnEZFh/qLsMDF6CJRLmIsThOy
+	 1bjIaLgu005Rw==
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ij@kernel.org>
+Date: Tue, 6 May 2025 02:26:41 +0300 (EEST)
+To: "Chia-Yu Chang (Nokia)" <chia-yu.chang@nokia-bell-labs.com>
+cc: Paolo Abeni <pabeni@redhat.com>, "horms@kernel.org" <horms@kernel.org>, 
+    "dsahern@kernel.org" <dsahern@kernel.org>, 
+    "kuniyu@amazon.com" <kuniyu@amazon.com>, 
+    "bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
+    "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+    "dave.taht@gmail.com" <dave.taht@gmail.com>, 
+    "jhs@mojatatu.com" <jhs@mojatatu.com>, "kuba@kernel.org" <kuba@kernel.org>, 
+    "stephen@networkplumber.org" <stephen@networkplumber.org>, 
+    "xiyou.wangcong@gmail.com" <xiyou.wangcong@gmail.com>, 
+    "jiri@resnulli.us" <jiri@resnulli.us>, 
+    "davem@davemloft.net" <davem@davemloft.net>, 
+    "edumazet@google.com" <edumazet@google.com>, 
+    "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, 
+    "donald.hunter@gmail.com" <donald.hunter@gmail.com>, 
+    "ast@fiberby.net" <ast@fiberby.net>, 
+    "liuhangbin@gmail.com" <liuhangbin@gmail.com>, 
+    "shuah@kernel.org" <shuah@kernel.org>, 
+    "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, 
+    "ncardwell@google.com" <ncardwell@google.com>, 
+    "Koen De Schepper (Nokia)" <koen.de_schepper@nokia-bell-labs.com>, 
+    "g.white" <g.white@cablelabs.com>, 
+    "ingemar.s.johansson@ericsson.com" <ingemar.s.johansson@ericsson.com>, 
+    "mirja.kuehlewind@ericsson.com" <mirja.kuehlewind@ericsson.com>, 
+    "cheshire@apple.com" <cheshire@apple.com>, 
+    "rs.ietf@gmx.at" <rs.ietf@gmx.at>, 
+    "Jason_Livingood@comcast.com" <Jason_Livingood@comcast.com>, 
+    vidhi_goel <vidhi_goel@apple.com>
+Subject: RE: [PATCH v5 net-next 10/15] tcp: accecn: AccECN option send
+ control
+In-Reply-To:  <PAXPR07MB79845AAB1468B67FE9BD2EDCA38E2@PAXPR07MB7984.eurprd07.prod.outlook.com>
+Message-ID: <9d741b0d-fff8-5565-f6e7-491a1d0928f7@kernel.org>
+References: <20250422153602.54787-1-chia-yu.chang@nokia-bell-labs.com> <20250422153602.54787-11-chia-yu.chang@nokia-bell-labs.com> <0a5c7897-ed95-4198-9896-ddae64335083@redhat.com> 
+ <PAXPR07MB79845AAB1468B67FE9BD2EDCA38E2@PAXPR07MB7984.eurprd07.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.293
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="8323328-1936862257-1746487601=:1002"
 
-From: Ido Schimmel <idosch@nvidia.com>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-[ Upstream commit f6205f8215f12a96518ac9469ff76294ae7bd612 ]
+--8323328-1936862257-1746487601=:1002
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-The 'used' and 'updated' fields in the FDB entry structure can be
-accessed concurrently by multiple threads, leading to reports such as
-[1]. Can be reproduced using [2].
+On Mon, 5 May 2025, Chia-Yu Chang (Nokia) wrote:
 
-Suppress these reports by annotating these accesses using
-READ_ONCE() / WRITE_ONCE().
+> > -----Original Message-----
+> > From: Paolo Abeni <pabeni@redhat.com>=20
+> > Sent: Tuesday, April 29, 2025 2:10 PM
+> > To: Chia-Yu Chang (Nokia) <chia-yu.chang@nokia-bell-labs.com>; horms@ke=
+rnel.org; dsahern@kernel.org; kuniyu@amazon.com; bpf@vger.kernel.org; netde=
+v@vger.kernel.org; dave.taht@gmail.com; jhs@mojatatu.com; kuba@kernel.org; =
+stephen@networkplumber.org; xiyou.wangcong@gmail.com; jiri@resnulli.us; dav=
+em@davemloft.net; edumazet@google.com; andrew+netdev@lunn.ch; donald.hunter=
+@gmail.com; ast@fiberby.net; liuhangbin@gmail.com; shuah@kernel.org; linux-=
+kselftest@vger.kernel.org; ij@kernel.org; ncardwell@google.com; Koen De Sch=
+epper (Nokia) <koen.de_schepper@nokia-bell-labs.com>; g.white <g.white@cabl=
+elabs.com>; ingemar.s.johansson@ericsson.com; mirja.kuehlewind@ericsson.com=
+; cheshire@apple.com; rs.ietf@gmx.at; Jason_Livingood@comcast.com; vidhi_go=
+el <vidhi_goel@apple.com>
+> > Subject: Re: [PATCH v5 net-next 10/15] tcp: accecn: AccECN option send =
+control
+> >=20
+> >=20
+> > CAUTION: This is an external email. Please be very careful when clickin=
+g links or opening attachments. See the URL nok.it/ext for additional infor=
+mation.
+> >=20
+> >=20
+> >=20
+> > On 4/22/25 5:35 PM, chia-yu.chang@nokia-bell-labs.com wrote:
+> > > From: Ilpo J=C3=A4rvinen <ij@kernel.org>
+> > >
+> > > Instead of sending the option in every ACK, limit sending to those=20
+> > > ACKs where the option is necessary:
+> > > - Handshake
+> > > - "Change-triggered ACK" + the ACK following it. The
+> > >   2nd ACK is necessary to unambiguously indicate which
+> > >   of the ECN byte counters in increasing. The first
+> > >   ACK has two counters increasing due to the ecnfield
+> > >   edge.
+> > > - ACKs with CE to allow CEP delta validations to take
+> > >   advantage of the option.
+> > > - Force option to be sent every at least once per 2^22
+> > >   bytes. The check is done using the bit edges of the
+> > >   byte counters (avoids need for extra variables).
+> > > - AccECN option beacon to send a few times per RTT even if
+> > >   nothing in the ECN state requires that. The default is 3
+> > >   times per RTT, and its period can be set via
+> > >   sysctl_tcp_ecn_option_beacon.
+> > >
+> > > Signed-off-by: Ilpo J=C3=A4rvinen <ij@kernel.org>
+> > > Co-developed-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+> > > Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+> > > ---
+> > >  include/linux/tcp.h        |  3 +++
+> > >  include/net/netns/ipv4.h   |  1 +
+> > >  include/net/tcp.h          |  1 +
+> > >  net/ipv4/sysctl_net_ipv4.c |  9 ++++++++
+> > >  net/ipv4/tcp.c             |  5 ++++-
+> > >  net/ipv4/tcp_input.c       | 36 +++++++++++++++++++++++++++++++-
+> > >  net/ipv4/tcp_ipv4.c        |  1 +
+> > >  net/ipv4/tcp_minisocks.c   |  2 ++
+> > >  net/ipv4/tcp_output.c      | 42 ++++++++++++++++++++++++++++++------=
+--
+> > >  9 files changed, 90 insertions(+), 10 deletions(-)
 
-[1]
-BUG: KCSAN: data-race in vxlan_xmit / vxlan_xmit
+> > > diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c index=20
+> > > 3f3e285fc973..2e95dad66fe3 100644
+> > > --- a/net/ipv4/tcp_ipv4.c
+> > > +++ b/net/ipv4/tcp_ipv4.c
+> > > @@ -3451,6 +3451,7 @@ static int __net_init tcp_sk_init(struct net=20
+> > > *net)  {
+> > >       net->ipv4.sysctl_tcp_ecn =3D 2;
+> > >       net->ipv4.sysctl_tcp_ecn_option =3D 2;
+> > > +     net->ipv4.sysctl_tcp_ecn_option_beacon =3D 3;
+> > >       net->ipv4.sysctl_tcp_ecn_fallback =3D 1;
+> >=20
+> > Human readable macros instead of magic numbers could help.
+>=20
+> OK, commments will be added here.
 
-write to 0xffff942604d263a8 of 8 bytes by task 286 on cpu 0:
- vxlan_xmit+0xb29/0x2380
- dev_hard_start_xmit+0x84/0x2f0
- __dev_queue_xmit+0x45a/0x1650
- packet_xmit+0x100/0x150
- packet_sendmsg+0x2114/0x2ac0
- __sys_sendto+0x318/0x330
- __x64_sys_sendto+0x76/0x90
- x64_sys_call+0x14e8/0x1c00
- do_syscall_64+0x9e/0x1a0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Hi,
 
-read to 0xffff942604d263a8 of 8 bytes by task 287 on cpu 2:
- vxlan_xmit+0xadf/0x2380
- dev_hard_start_xmit+0x84/0x2f0
- __dev_queue_xmit+0x45a/0x1650
- packet_xmit+0x100/0x150
- packet_sendmsg+0x2114/0x2ac0
- __sys_sendto+0x318/0x330
- __x64_sys_sendto+0x76/0x90
- x64_sys_call+0x14e8/0x1c00
- do_syscall_64+0x9e/0x1a0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Using named defines to replace literals would be more useful than comments=
+=20
+(names can be grepped for, do not fall out-of-sync with code, etc.).
 
-value changed: 0x00000000fffbac6e -> 0x00000000fffbac6f
+> > > @@ -1237,13 +1253,18 @@ static unsigned int=20
+> > > tcp_established_options(struct sock *sk, struct sk_buff *skb
+> > >
+> > >       if (tcp_ecn_mode_accecn(tp) &&
+> > >           sock_net(sk)->ipv4.sysctl_tcp_ecn_option) {
+> > > -             int saving =3D opts->num_sack_blocks > 0 ? 2 : 0;
+> > > -             int remaining =3D MAX_TCP_OPTION_SPACE - size;
+> > > -
+> > > -             opts->ecn_bytes =3D tp->received_ecn_bytes;
+> > > -             size +=3D tcp_options_fit_accecn(opts, tp->accecn_minle=
+n,
+> > > -                                            remaining,
+> > > -                                            saving);
+> > > +             if (sock_net(sk)->ipv4.sysctl_tcp_ecn_option >=3D 2 ||
+> > > +                 tp->accecn_opt_demand ||
+> > > +                 tcp_accecn_option_beacon_check(sk)) {
+> >=20
+> > Why a nested if here and just not expanding the existing one?
+>=20
+> Sure, will merge them.
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 2 UID: 0 PID: 287 Comm: mausezahn Not tainted 6.13.0-rc7-01544-gb4b270f11a02 #5
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
+While I don't remember everything that well anymore, this might have been=
+=20
+to reduce code churn in some later patch, so it might be worth to check=20
+it first (that patch might even fall outside of this series now that these=
+=20
+are split into multiple chunks).
 
-[2]
- #!/bin/bash
+--=20
+ i.
 
- set +H
- echo whitelist > /sys/kernel/debug/kcsan
- echo !vxlan_xmit > /sys/kernel/debug/kcsan
-
- ip link add name vx0 up type vxlan id 10010 dstport 4789 local 192.0.2.1
- bridge fdb add 00:11:22:33:44:55 dev vx0 self static dst 198.51.100.1
- taskset -c 0 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
- taskset -c 2 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250204145549.1216254-2-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/vxlan.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/vxlan.c b/drivers/net/vxlan.c
-index ce11fb2b05561..7105ac37f341e 100644
---- a/drivers/net/vxlan.c
-+++ b/drivers/net/vxlan.c
-@@ -302,9 +302,9 @@ static int vxlan_fdb_info(struct sk_buff *skb, struct vxlan_dev *vxlan,
- 	    nla_put_u32(skb, NDA_IFINDEX, rdst->remote_ifindex))
- 		goto nla_put_failure;
- 
--	ci.ndm_used	 = jiffies_to_clock_t(now - fdb->used);
-+	ci.ndm_used	 = jiffies_to_clock_t(now - READ_ONCE(fdb->used));
- 	ci.ndm_confirmed = 0;
--	ci.ndm_updated	 = jiffies_to_clock_t(now - fdb->updated);
-+	ci.ndm_updated	 = jiffies_to_clock_t(now - READ_ONCE(fdb->updated));
- 	ci.ndm_refcnt	 = 0;
- 
- 	if (nla_put(skb, NDA_CACHEINFO, sizeof(ci), &ci))
-@@ -510,8 +510,8 @@ static struct vxlan_fdb *vxlan_find_mac(struct vxlan_dev *vxlan,
- 	struct vxlan_fdb *f;
- 
- 	f = __vxlan_find_mac(vxlan, mac, vni);
--	if (f && f->used != jiffies)
--		f->used = jiffies;
-+	if (f && READ_ONCE(f->used) != jiffies)
-+		WRITE_ONCE(f->used, jiffies);
- 
- 	return f;
- }
-@@ -942,12 +942,12 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
- 	    !(f->flags & NTF_VXLAN_ADDED_BY_USER)) {
- 		if (f->state != state) {
- 			f->state = state;
--			f->updated = jiffies;
-+			WRITE_ONCE(f->updated, jiffies);
- 			notify = 1;
- 		}
- 		if (f->flags != fdb_flags) {
- 			f->flags = fdb_flags;
--			f->updated = jiffies;
-+			WRITE_ONCE(f->updated, jiffies);
- 			notify = 1;
- 		}
- 	}
-@@ -974,7 +974,7 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
- 	}
- 
- 	if (ndm_flags & NTF_USE)
--		f->used = jiffies;
-+		WRITE_ONCE(f->used, jiffies);
- 
- 	if (notify) {
- 		if (rd == NULL)
-@@ -1351,7 +1351,7 @@ static bool vxlan_snoop(struct net_device *dev,
- 				    src_mac, &rdst->remote_ip.sa, &src_ip->sa);
- 
- 		rdst->remote_ip = *src_ip;
--		f->updated = jiffies;
-+		WRITE_ONCE(f->updated, jiffies);
- 		vxlan_fdb_notify(vxlan, f, rdst, RTM_NEWNEIGH, true, NULL);
- 	} else {
- 		u32 hash_index = fdb_head_index(vxlan, src_mac, vni);
-@@ -2748,7 +2748,7 @@ static void vxlan_cleanup(struct timer_list *t)
- 			if (f->flags & NTF_EXT_LEARNED)
- 				continue;
- 
--			timeout = f->used + vxlan->cfg.age_interval * HZ;
-+			timeout = READ_ONCE(f->used) + vxlan->cfg.age_interval * HZ;
- 			if (time_before_eq(timeout, jiffies)) {
- 				netdev_dbg(vxlan->dev,
- 					   "garbage collect %pM\n",
--- 
-2.39.5
-
+--8323328-1936862257-1746487601=:1002--
