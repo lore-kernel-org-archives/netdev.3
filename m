@@ -1,45 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD2B2F818E;
-	Mon,  5 May 2025 23:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5877C3AF413;
+	Mon,  5 May 2025 23:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487196; cv=none; b=gUnAwn/YetZ83tr0j4znpa1DjbdJeXB/FUJw6gz1RzwGyVOfR9tAR3fD/3J5Ms/RFRQPJppNt3HxZJCbsmWRE8Vz1lzKdfXjEbx9hHQQPEw3wGXgHN3DvudzESc1V35nYzSkCgFp+oeYtCTGOTeyzdR8MOaZqp8LiwQnk56wA5I=
+	t=1746487211; cv=none; b=JZj3C/9ZoeQJmUXz7JJcVWbsHa2L0ABFjhi4FilWqVUF2IzoCahvVvoi9CDv+HD2o8BzGFOin6ZFpb+vye/VLR+Bl43EukDp3gLFCElwqXyks6I1WWmYoUCcriMmmeVYiUMhEpGVd5j5aOA76PRdVekXMCW0A2k8XpLqFtjcZpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487196; c=relaxed/simple;
-	bh=KT+uXDczhG9CVFcFO/QUvgBQUbGLWTZv1Qclq7yxCGw=;
+	s=arc-20240116; t=1746487211; c=relaxed/simple;
+	bh=2yE7zy2FWQ3AXCJ6jui9QnR9f1PfghpII4uGE+xFPO4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Z51/EZTzXr+/wdPPZHbEycw8oLooHKqFecE+KbOUXJ44kTErZrYKLYQlBOccJipwEmug/s7Munap1zxNQxpPlSsRWhXL0QBJBXhPJLRBoI3M6Vif1UYKmzXBQRCegmdw1Xg0gPggiowXfXgC6Rb1hewkHODZgk4s8A6olqLLbC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZV9zMkLD; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=KzE+4LDGvtEi9LQkJA8V5brPcTkZ0C3ts6czcAneZkJHb1JsMS/PMF4GBVP9ySelN4c7QkvPEpMfXK/MOCDbw48iwsbFsQIMSZ67rqKxIeosFy1R2K6HB9M/UdTvDtqHZUOvE0bUHZ6T5BdiesSlILTrkLWKiu7cIjsh0Ic7K7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ewfl4VnR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZV9zMkLD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B93FC4CEEF;
-	Mon,  5 May 2025 23:19:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ewfl4VnR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98425C4CEED;
+	Mon,  5 May 2025 23:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487195;
-	bh=KT+uXDczhG9CVFcFO/QUvgBQUbGLWTZv1Qclq7yxCGw=;
+	s=k20201202; t=1746487211;
+	bh=2yE7zy2FWQ3AXCJ6jui9QnR9f1PfghpII4uGE+xFPO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZV9zMkLD44MdQ3/UoflK/8azkTDfhiJ55trbDUbHDI+Nr6SiR2b6Ztq9e1O9nZNYa
-	 w4aYi+EiwoMfdr5QfEXyuiIYMKibnEtcJKEYlMwmqRXe/WsWYf77Riemq3OM2Jl7ws
-	 T6Q2UJWL505xHNa5A0Mc4abbu+tA6Yw9jjQyLRmzXwjHT5ZuC/dqTfOCvpqwQ3Vyty
-	 0lbGeF7I239WHZ8wL2BZOJDhGNWaWADMLTRgwbfhK8/TjIgaNCPdCQXKt5KKFjKR3k
-	 i2AAU37jMlGGrREctXQsWYxVEotj1O5Ozh6+ucCoHl4P7usb6YZroQJ52UpYBg2sWu
-	 ROTWJVwCP/A2A==
+	b=Ewfl4VnRIeAARoPMNjwvb62j8zOQ6ARTZjFtG0ysAaEDdmxv0oXZU1AMWfuTUi4fh
+	 62JrYa3iLJRNjVbLlyYaWBa2HGGwlDfPWdU636NtNVP+XnyvsWjnrfRfOdS+UBBlFT
+	 CG+xiSYghbas3pUmYdvkEXA4T+M4vkm/AQd13d/GvjU/PQYYDECADj2TQ+/NrpP+il
+	 3TV8eLYG52EVPxOQyQbgpwj+0X7BHNCazODKZCuXqrmoi1rh7npaBvPK5YQdB9WElY
+	 WFIm8CB6RmDYaNkHiOVqnG6u+b2Jo3XFaMqLmuEUCfumZeAZ/98NjPgMpgYECNzSlD
+	 FVKU/ZsOW0fVw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Moshe Shemesh <moshe@nvidia.com>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
+	saeedm@nvidia.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 051/114] ipv4: fib: Move fib_valid_key_len() to rtm_to_fib_config().
-Date: Mon,  5 May 2025 19:17:14 -0400
-Message-Id: <20250505231817.2697367-51-sashal@kernel.org>
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 059/114] net/mlx5: Avoid report two health errors on same syndrome
+Date: Mon,  5 May 2025 19:17:22 -0400
+Message-Id: <20250505231817.2697367-59-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -54,126 +59,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit 254ba7e6032d3fc738050d500b0c1d8197af90ca ]
+[ Upstream commit b5d7b2f04ebcff740f44ef4d295b3401aeb029f4 ]
 
-fib_valid_key_len() is called in the beginning of fib_table_insert()
-or fib_table_delete() to check if the prefix length is valid.
+In case health counter has not increased for few polling intervals, miss
+counter will reach max misses threshold and health report will be
+triggered for FW health reporter. In case syndrome found on same health
+poll another health report will be triggered.
 
-fib_table_insert() and fib_table_delete() are called from 3 paths
+Avoid two health reports on same syndrome by marking this syndrome as
+already known.
 
-  - ip_rt_ioctl()
-  - inet_rtm_newroute() / inet_rtm_delroute()
-  - fib_magic()
-
-In the first ioctl() path, rtentry_to_fib_config() checks the prefix
-length with bad_mask().  Also, fib_magic() always passes the correct
-prefix: 32 or ifa->ifa_prefixlen, which is already validated.
-
-Let's move fib_valid_key_len() to the rtnetlink path, rtm_to_fib_config().
-
-While at it, 2 direct returns in rtm_to_fib_config() are changed to
-goto to match other places in the same function
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250228042328.96624-12-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_frontend.c | 18 ++++++++++++++++--
- net/ipv4/fib_trie.c     | 22 ----------------------
- 2 files changed, 16 insertions(+), 24 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/health.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
-index 5e2a003cd83c7..f902cd8cb852b 100644
---- a/net/ipv4/fib_frontend.c
-+++ b/net/ipv4/fib_frontend.c
-@@ -817,19 +817,33 @@ static int rtm_to_fib_config(struct net *net, struct sk_buff *skb,
- 		}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+index f42e118f32901..d48912d7afe54 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+@@ -733,6 +733,7 @@ static void poll_health(struct timer_list *t)
+ 	health->prev = count;
+ 	if (health->miss_counter == MAX_MISSES) {
+ 		mlx5_core_err(dev, "device's health compromised - reached miss count\n");
++		health->synd = ioread8(&h->synd);
+ 		print_health_info(dev);
+ 		queue_work(health->wq, &health->report_work);
  	}
- 
-+	if (cfg->fc_dst_len > 32) {
-+		NL_SET_ERR_MSG(extack, "Invalid prefix length");
-+		err = -EINVAL;
-+		goto errout;
-+	}
-+
-+	if (cfg->fc_dst_len < 32 && (ntohl(cfg->fc_dst) << cfg->fc_dst_len)) {
-+		NL_SET_ERR_MSG(extack, "Invalid prefix for given prefix length");
-+		err = -EINVAL;
-+		goto errout;
-+	}
-+
- 	if (cfg->fc_nh_id) {
- 		if (cfg->fc_oif || cfg->fc_gw_family ||
- 		    cfg->fc_encap || cfg->fc_mp) {
- 			NL_SET_ERR_MSG(extack,
- 				       "Nexthop specification and nexthop id are mutually exclusive");
--			return -EINVAL;
-+			err = -EINVAL;
-+			goto errout;
- 		}
- 	}
- 
- 	if (has_gw && has_via) {
- 		NL_SET_ERR_MSG(extack,
- 			       "Nexthop configuration can not contain both GATEWAY and VIA");
--		return -EINVAL;
-+		err = -EINVAL;
-+		goto errout;
- 	}
- 
- 	if (!cfg->fc_table)
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index 1bdcdc79d43f9..6c53381fa36f7 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -1145,22 +1145,6 @@ static int fib_insert_alias(struct trie *t, struct key_vector *tp,
- 	return 0;
- }
- 
--static bool fib_valid_key_len(u32 key, u8 plen, struct netlink_ext_ack *extack)
--{
--	if (plen > KEYLENGTH) {
--		NL_SET_ERR_MSG(extack, "Invalid prefix length");
--		return false;
--	}
--
--	if ((plen < KEYLENGTH) && (key << plen)) {
--		NL_SET_ERR_MSG(extack,
--			       "Invalid prefix for given prefix length");
--		return false;
--	}
--
--	return true;
--}
--
- static void fib_remove_alias(struct trie *t, struct key_vector *tp,
- 			     struct key_vector *l, struct fib_alias *old);
- 
-@@ -1181,9 +1165,6 @@ int fib_table_insert(struct net *net, struct fib_table *tb,
- 
- 	key = ntohl(cfg->fc_dst);
- 
--	if (!fib_valid_key_len(key, plen, extack))
--		return -EINVAL;
--
- 	pr_debug("Insert table=%u %08x/%d\n", tb->tb_id, key, plen);
- 
- 	fi = fib_create_info(cfg, extack);
-@@ -1671,9 +1652,6 @@ int fib_table_delete(struct net *net, struct fib_table *tb,
- 
- 	key = ntohl(cfg->fc_dst);
- 
--	if (!fib_valid_key_len(key, plen, extack))
--		return -EINVAL;
--
- 	l = fib_find_node(t, &tp, key);
- 	if (!l)
- 		return -ESRCH;
 -- 
 2.39.5
 
