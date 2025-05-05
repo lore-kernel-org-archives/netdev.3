@@ -1,47 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1E82D2CD3;
-	Mon,  5 May 2025 23:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BD828A70F;
+	Mon,  5 May 2025 23:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486969; cv=none; b=kOk8+Wjtvjkb0VPil1kH3P0euyaSP6MJjz3JEefs3+fja8YPgUYOLD5lvm4rWGgi8PMAYO3HRY/SAgTjUPGtEyxs1/5K8gX6G3TDJXR1KGuXBaLlDkfUqL4qcck9gDE0SNFBH59sMJofujYKi6cI8PLsD5i/bNuZ9dbuv9Z+7sw=
+	t=1746487021; cv=none; b=mFvvj+OThNo3/epUWtcfpPHkDv9reGUh5slOpTJMmHKZ4+y3KIeGo2nY7L8AtKKpiFMHLv7Hd8TIxVeopSOYzQb10rEkNNlj8UxAgbp4F6/Nj4PPxBZBeRcHC2xPnRs/7jp1EP9FPdNGszQsy28YOpi4Fbf1JqT71qbLDf/gQwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486969; c=relaxed/simple;
-	bh=JkHI0b1zow/nDmNd3xJ8u6Z6ausDsIzQ8YeaD5Xhb7Y=;
+	s=arc-20240116; t=1746487021; c=relaxed/simple;
+	bh=ib1Vrhx+ahc+Vj+0Ro997g+1+fNzOjfu6r3NEqs8MS8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iJEvmk/a7lMgJGBnThzu+sTcMbir0mUNSTDwndtaTXdHXAFUlx5OkrW6Z9AcCGgvYEZZHxtKPtwwdESaqXODn8NAKbrlNrNc+SGSffOrYdSa6Slh2JofkwYOWdt0XVS81DMLdMG1KdT4ASYxdGpvgT5NxaWd1rB70ei1cSW/W2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uv+EOZgs; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=ozm2NAbmzz51SvCYXxMEj8kZSXGPD7XL7Nv55M+Gtxyd6wVSu80pCtVeyeGYf912kO2JZ2hXXzwmk6WjgiIP0LpmlDdibbOFjUohzkcL7tSA1gI964JZCVaeyIzhRsuAXDUcdXpHu5TD3qeM/THL7+wcDFi6FRERmXL7b+l6mYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eDOpt8zo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uv+EOZgs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DF7C4CEEE;
-	Mon,  5 May 2025 23:16:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eDOpt8zo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2269BC4CEEF;
+	Mon,  5 May 2025 23:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486968;
-	bh=JkHI0b1zow/nDmNd3xJ8u6Z6ausDsIzQ8YeaD5Xhb7Y=;
+	s=k20201202; t=1746487019;
+	bh=ib1Vrhx+ahc+Vj+0Ro997g+1+fNzOjfu6r3NEqs8MS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uv+EOZgsPJ+qAvsvBJ4JLs1EzAGbGCBDIV1bvcsG2NMIxbd1fvhU5eshLOJmBE+A/
-	 gx3oOO7VBmJpmsec1Lb9CzvZ3V7KPg8WrDeMtYXybWChaopZhniloWw6LliqzBSwi5
-	 5EdE4UupNGOipaubUoGcoz3qDvLIiQKXn/tAKBKiSKszR3dmXT/5ZuJ2HkqKAoJz2d
-	 /WdW5Hppl1Zl0iJXRS2syOnK/isczcBoz6ljSPNSHN4NHC3tqnIAWX93szlNxZx0uA
-	 otgZNMEnfSYAM4n3WjQk1CHVJdiAxcnN/JX47GKtU8xkW0tlYWDCEDuHK74u7UvdVc
-	 CuXvon82lamhA==
+	b=eDOpt8zoJA7nYIpA1Bu17Pr41oxLD+KDp9X7yVEELPd+h9aiBB/odBHZdjx9tkLPY
+	 fgyXcUGO7wQVptLG4t5WitZE3yqfOy5e/6E8mflM008nuFfEd9FBME2AhTKjPK7Sp1
+	 56Ve0bcyY+WtcIiQuKpKQsU1caL00EwvXNPfk5moeuGis6rSy0DyDvAH4feFixVpL6
+	 LEfDQUnwG4nk7pf0cpteIopcX5q/CXYhNcWwKSomIT44LKpS982CNntX7TrN6JSxhm
+	 /W9Lpv7OeBunuwnlTSRh4bEfct7Incwvu6YkOdTeztiqyyCIOGcn3uS1eR1gVwR2tV
+	 1q8OsmTzFqwgA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	iyappan@os.amperecomputing.com,
-	keyur@os.amperecomputing.com,
+	saeedm@nvidia.com,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 085/153] net: xgene-v2: remove incorrect ACPI_PTR annotation
-Date: Mon,  5 May 2025 19:12:12 -0400
-Message-Id: <20250505231320.2695319-85-sashal@kernel.org>
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 111/153] net/mlx5: Apply rate-limiting to high temperature warning
+Date: Mon,  5 May 2025 19:12:38 -0400
+Message-Id: <20250505231320.2695319-111-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -56,45 +58,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-[ Upstream commit 01358e8fe922f716c05d7864ac2213b2440026e7 ]
+[ Upstream commit 9dd3d5d258aceb37bdf09c8b91fa448f58ea81f0 ]
 
-Building with W=1 shows a warning about xge_acpi_match being unused when
-CONFIG_ACPI is disabled:
+Wrap the high temperature warning in a temperature event with
+a call to net_ratelimit() to prevent flooding the kernel log
+with repeated warning messages when temperature exceeds the
+threshold multiple times within a short duration.
 
-drivers/net/ethernet/apm/xgene-v2/main.c:723:36: error: unused variable 'xge_acpi_match' [-Werror,-Wunused-const-variable]
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250225163341.4168238-2-arnd@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Link: https://patch.msgid.link/20250213094641.226501-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/apm/xgene-v2/main.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/events.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/apm/xgene-v2/main.c b/drivers/net/ethernet/apm/xgene-v2/main.c
-index 80399c8980bd3..627f860141002 100644
---- a/drivers/net/ethernet/apm/xgene-v2/main.c
-+++ b/drivers/net/ethernet/apm/xgene-v2/main.c
-@@ -9,8 +9,6 @@
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+index 080aee3e3f9bb..15d90d68b1ffd 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+@@ -166,9 +166,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
+ 	value_lsb &= 0x1;
+ 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
  
- #include "main.h"
+-	mlx5_core_warn(events->dev,
+-		       "High temperature on sensors with bit set %llx %llx",
+-		       value_msb, value_lsb);
++	if (net_ratelimit())
++		mlx5_core_warn(events->dev,
++			       "High temperature on sensors with bit set %llx %llx",
++			       value_msb, value_lsb);
  
--static const struct acpi_device_id xge_acpi_match[];
--
- static int xge_get_resources(struct xge_pdata *pdata)
- {
- 	struct platform_device *pdev;
-@@ -733,7 +731,7 @@ MODULE_DEVICE_TABLE(acpi, xge_acpi_match);
- static struct platform_driver xge_driver = {
- 	.driver = {
- 		   .name = "xgene-enet-v2",
--		   .acpi_match_table = ACPI_PTR(xge_acpi_match),
-+		   .acpi_match_table = xge_acpi_match,
- 	},
- 	.probe = xge_probe,
- 	.remove = xge_remove,
+ 	return NOTIFY_OK;
+ }
 -- 
 2.39.5
 
