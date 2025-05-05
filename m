@@ -1,62 +1,90 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB8E176FB0;
-	Mon,  5 May 2025 22:09:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C0827C17C;
+	Mon,  5 May 2025 22:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746482960; cv=none; b=UDa1hL7bkLNAaahDTWGCOLme0Glc3bNLxbsIp8OiLROfk3AUxoRx07VReIMkG9jAu1iGDzUwnnIuF5ivFpNBtljOAt07755fwG3XoV/GlvTDMmmSuPOKMZBXGyqWjz/TzVtQRoBqKJuLaoPyuP6Xk5Sv30w5HRizq32+LAlHmak=
+	t=1746483283; cv=none; b=e5vbjDn6Xop1l05xoMhzBnz8YWO6rswHU8D172T/hvzka0y+nbW7ZDT/rz1Ig16tAgjAQEz0OL/bdf/ZENVAccyJxYswCNPv/DUNqMC9g28bDS5Rki4qgYZdiBSxeHHfwlyRzUxVJniiFpxOJ2NN5V8jJVP9V+U9FOpRcjw7UGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746482960; c=relaxed/simple;
-	bh=zznqT6mCmm+gXSIpm0j9JC6CWIA1LdtE8fnL3S7LF9k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kPhHIK62Fjf8Edcee5lo6VOHk1Lrvlst2cdMfKOtERlR/BawH73w4bdd9PAIzxSZUKHO8uvSfBEyQJnK7grO6DXC2VKqrCymtb8qpvh60lYHFa2l7x8SioW403Q8LUXrqfWgfK4iZ4tgPaDvBrTX1nWEj5U9AkVyX/QAAGYpKvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=HG05UBWD; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1746483283; c=relaxed/simple;
+	bh=qHENiOabmT77UFCXK7h2Oxu5/iLS0ySjclWVOhKY/ws=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=plXIpQ8Z+qvmNhw2smJlF7bk0JZnY1op6wNmRJycmElDwNEtgTgqo4hi0pEbxeJrW68lVyRvbZ2KB7j/n83g3tcEbGMPLr5w+N2fjMbNs293VQQBUYhRhB6+EGJN5iXAIij1o6Fw0kPD4jkQebUU7VG9n45iu4RG7j6t5r+HHMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=exGn1nF2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="HG05UBWD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=GuSxxzSuHa3qwHDwpNoEIKmX6t685vUDFgKb5+SzDG4=; b=HG05UBWD4JG8yT4awIbWZArWTn
-	RSmYIy+d0Cv+HPGUag+ycLu7+M3//H5dtAN0hxGGAYeL1oM+5J9xE46TuzGZBOFJwzIZ580qf4JQ3
-	wPvGsfj4O7PMGKFLQRren8S8G1Xj2Hal7x2RoCstjvH0mlLBPH7BG/q2HSyPT7sK1AkY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uC3zq-00BdpY-LU; Tue, 06 May 2025 00:09:10 +0200
-Date: Tue, 6 May 2025 00:09:10 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Michael Klein <michael@fossekall.de>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [net-next v7 4/6] net: phy: realtek: Group RTL82* macro
- definitions
-Message-ID: <8233e532-927d-4b8a-86aa-57c88c878790@lunn.ch>
-References: <20250504172916.243185-1-michael@fossekall.de>
- <20250504172916.243185-5-michael@fossekall.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="exGn1nF2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71BAC4CEF1;
+	Mon,  5 May 2025 22:14:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746483283;
+	bh=qHENiOabmT77UFCXK7h2Oxu5/iLS0ySjclWVOhKY/ws=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=exGn1nF211ZU/LdpgClgOJDYWbadM9ACef62sLsYsKlQaKaBD9/U92KjM4xQk2VNg
+	 CHDNDd6eFg4RQTdxdFhx6kDQPRsl25DnGEOMtk9E0LfUziLaivwD9NeumKAqhaTDDZ
+	 7FsRSUvyK9uaLs70sNqDX+Ndvvm1+XcvxydOypB8CTVdH4UKjn07MPBkr7XWUlMyc3
+	 N6cO4igFVe/KftxBPZOUZEaG3jYyjrgjCCaVwNyr3NS9NVquaGperDaupUov/ScelR
+	 8ng+n7NrPBrEUuQuGkYkRWnrYNttTfdFW0y2idmSe8gnM0yR7Nb+/lW5OKq3W8T8Kv
+	 nvPL3EqRCNxmA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	chuck.lever@oracle.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 014/642] SUNRPC: Don't allow waiting for exiting tasks
+Date: Mon,  5 May 2025 18:03:50 -0400
+Message-Id: <20250505221419.2672473-14-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
+References: <20250505221419.2672473-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250504172916.243185-5-michael@fossekall.de>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.14.5
+Content-Transfer-Encoding: 8bit
 
-On Sun, May 04, 2025 at 07:29:14PM +0200, Michael Klein wrote:
-> Group macro definitions by PHY in lexicographic order. Within each PHY
-> block, definitions are order by page number and then register number.
-> 
-> Signed-off-by: Michael Klein <michael@fossekall.de>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+[ Upstream commit 14e41b16e8cb677bb440dca2edba8b041646c742 ]
 
-    Andrew
+Once a task calls exit_signals() it can no longer be signalled. So do
+not allow it to do killable waits.
+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/sunrpc/sched.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
+index 9b45fbdc90cab..73bc39281ef5f 100644
+--- a/net/sunrpc/sched.c
++++ b/net/sunrpc/sched.c
+@@ -276,6 +276,8 @@ EXPORT_SYMBOL_GPL(rpc_destroy_wait_queue);
+ 
+ static int rpc_wait_bit_killable(struct wait_bit_key *key, int mode)
+ {
++	if (unlikely(current->flags & PF_EXITING))
++		return -EINTR;
+ 	schedule();
+ 	if (signal_pending_state(mode, current))
+ 		return -ERESTARTSYS;
+-- 
+2.39.5
+
