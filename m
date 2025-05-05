@@ -1,45 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5A029B22B;
-	Mon,  5 May 2025 22:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4C1360312;
+	Mon,  5 May 2025 22:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485078; cv=none; b=nLHJ9oFQ4NcvyFOq860xCOA26BCYYAMUdrATBFi4xjpXc0CEvJrdFt+dKVkaDXWpRHHibOrt/JjJP6lXm0Y36rhtOzhqxEIbh6ozZw1h8t4/XnCKikYKdmC5WQLZ8XpgWT68lCCgxPIpHrmcOQ7khjf7yjupdQiWQbUO+UZIg3A=
+	t=1746485142; cv=none; b=YsEwg4zJoEzetbXTNEarxqRZ1u5UshDAl6/+mVe8jTqYE09kPwnepJYHJXpGmNxEItT52JECGYmzZcTrZGgAkOQy9MpVhIRBbPWW2JzcpsgBXXTqFl2BIT2q49JidSGkedG/UunErmHBy7kwbDXgbQqjs0xPBYtCzHmlcWme3Rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485078; c=relaxed/simple;
-	bh=pG9jfuldlO2800hDmNAh2x2uJRK3w7OEvUGwAG1O76k=;
+	s=arc-20240116; t=1746485142; c=relaxed/simple;
+	bh=NnPnudEG8u4eNUBGCuS+YBI+NjHx/MT7Hlssv4Gji0I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pzoq715h5ejH5pwJnvmUab1uGV2yyOH0wCNjsd7CM7QuirBGimFkjC/+GWJNSW0/bboaCPuYwMI0rLqhnwQPSErYdAH8pioTPU+IE3C+Z1G0rDXKllmZ2oLZZLhjvz0OyesMRXaiTBrSK483NgdFmaEQduua5VIgBrvvpqG8yUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gwV3ah0g; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=OUdsy5cCVSLatNEZ3S2gzGX5iaXOSI+8QxfGQqEBFkrv0FldcnFa4us1qq3xFdLC4Omj6LiUNEEbDvT3D67DYLEj+OmK994enEOijJRan5nH1pGJ7GjPm5EKxw70CoGcWEVB4N5zyqzCBvkcBNGHTtz0O3t5bQAbxVMIIAvf4gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c3U0vcrk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gwV3ah0g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99064C4CEED;
-	Mon,  5 May 2025 22:44:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c3U0vcrk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4A0C4CEEF;
+	Mon,  5 May 2025 22:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485077;
-	bh=pG9jfuldlO2800hDmNAh2x2uJRK3w7OEvUGwAG1O76k=;
+	s=k20201202; t=1746485140;
+	bh=NnPnudEG8u4eNUBGCuS+YBI+NjHx/MT7Hlssv4Gji0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gwV3ah0gm8yL4fRrYi9b8YjZALjLF4ec29m5ehs7ejuVGbJfiwZu/X8TZkcU+hIZs
-	 Rl7/GyZPs8M7kZ1vzUVTEBMijiERoRPVUcO81zwB4xxWPnZGW4iyoUzEkRHbHeUntT
-	 a1T1WEHjoM5t5i1caSqMCfUfvBTELgQOGPLKsYUxjBXDdrLglRqSJNsshwRrU/0yZL
-	 MRNb8SLAeJOQ0PQvCLHoaY5tF8SA0PXL96+xkCl1UKWO/2whLsQwgAwBEfRwZSwz7L
-	 R4vaKarxlzFw7MnmhrYF4STPWkZrR4FmjaLGWiuD7ialfhQk+fxOmdCpafrnFkeC/N
-	 zVKIRjN8CyXDA==
+	b=c3U0vcrktIyzDYXLCB8E8y6tLmcmoTfPCgEDgA7w04lALxRLrZW4uWl6W2ZBdcs/y
+	 JS1TDN4NC14v0VikavDFAlLEHgv9muSG80ky92LBt78ex6KH3bCdPBV/vt309L2CZ7
+	 QwyTIcRbAUc2e0s3/GxOpqneq6JGhO1qFR2ZzNInzN2X9UpnwWlJuBWj05Pii0MarM
+	 hU9fm2ilODB+eYXC5mfOfkXzOAL90l6EkW9NF9XqWmFO9etdwJMpCnXrCzx1ZfJzel
+	 JHXytl6wW1dtCv1L2NZQcv/UQ460SCG/hp/bV+0GSnWJkROvruQXHzIt/mvskuTlaK
+	 gv9KA1/GFuwuQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Willem de Bruijn <willemb@google.com>,
-	Eric Dumazet <edumazet@google.com>,
+Cc: Eric Dumazet <edumazet@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	ncardwell@google.com,
 	davem@davemloft.net,
 	dsahern@kernel.org,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 155/486] ipv6: save dontfrag in cork
-Date: Mon,  5 May 2025 18:33:51 -0400
-Message-Id: <20250505223922.2682012-155-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 180/486] tcp: bring back NUMA dispersion in inet_ehash_locks_alloc()
+Date: Mon,  5 May 2025 18:34:16 -0400
+Message-Id: <20250505223922.2682012-180-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -54,101 +56,103 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Willem de Bruijn <willemb@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a ]
+[ Upstream commit f8ece40786c9342249aa0a1b55e148ee23b2a746 ]
 
-When spanning datagram construction over multiple send calls using
-MSG_MORE, per datagram settings are configured on the first send.
+We have platforms with 6 NUMA nodes and 480 cpus.
 
-That is when ip(6)_setup_cork stores these settings for subsequent use
-in __ip(6)_append_data and others.
+inet_ehash_locks_alloc() currently allocates a single 64KB page
+to hold all ehash spinlocks. This adds more pressure on a single node.
 
-The only flag that escaped this was dontfrag. As a result, a datagram
-could be constructed with df=0 on the first sendmsg, but df=1 on a
-next. Which is what cmsg_ip.sh does in an upcoming MSG_MORE test in
-the "diff" scenario.
+Change inet_ehash_locks_alloc() to use vmalloc() to spread
+the spinlocks on all online nodes, driven by NUMA policies.
 
-Changing datagram conditions in the middle of constructing an skb
-makes this already complex code path even more convoluted. It is here
-unintentional. Bring this flag in line with expected sockopt/cmsg
-behavior.
+At boot time, NUMA policy is interleave=all, meaning that
+tcp_hashinfo.ehash_locks gets hash dispersion on all nodes.
 
-And stop passing ipc6 to __ip6_append_data, to avoid such issues
-in the future. This is already the case for __ip_append_data.
+Tested:
 
-inet6_cork had a 6 byte hole, so the 1B flag has no impact.
+lack5:~# grep inet_ehash_locks_alloc /proc/vmallocinfo
+0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
 
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250307033620.411611-3-willemdebruijn.kernel@gmail.com
+lack5:~# echo 8192 >/proc/sys/net/ipv4/tcp_child_ehash_entries
+lack5:~# numactl --interleave=all unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
+0x000000004e99d30c-0x00000000763f3279   36864 inet_ehash_locks_alloc+0x90/0x100 pages=8 vmalloc N0=1 N1=2 N2=2 N3=1 N4=1 N5=1
+0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
+
+lack5:~# numactl --interleave=0,5 unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
+0x00000000fd73a33e-0x0000000004b9a177   36864 inet_ehash_locks_alloc+0x90/0x100 pages=8 vmalloc N0=4 N5=4
+0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
+
+lack5:~# echo 1024 >/proc/sys/net/ipv4/tcp_child_ehash_entries
+lack5:~# numactl --interleave=all unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
+0x00000000db07d7a2-0x00000000ad697d29    8192 inet_ehash_locks_alloc+0x90/0x100 pages=1 vmalloc N2=1
+0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Tested-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250305130550.1865988-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ipv6.h  | 1 +
- net/ipv6/ip6_output.c | 9 +++++----
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ net/ipv4/inet_hashtables.c | 37 ++++++++++++++++++++++++++-----------
+ 1 file changed, 26 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/ipv6.h b/include/linux/ipv6.h
-index a6e2aadbb91bd..5aeeed22f35bf 100644
---- a/include/linux/ipv6.h
-+++ b/include/linux/ipv6.h
-@@ -207,6 +207,7 @@ struct inet6_cork {
- 	struct ipv6_txoptions *opt;
- 	u8 hop_limit;
- 	u8 tclass;
-+	u8 dontfrag:1;
- };
- 
- /* struct ipv6_pinfo - ipv6 private area */
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 434ddf263b88a..89a61e040e6a1 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1386,6 +1386,7 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
- 	}
- 	v6_cork->hop_limit = ipc6->hlimit;
- 	v6_cork->tclass = ipc6->tclass;
-+	v6_cork->dontfrag = ipc6->dontfrag;
- 	if (rt->dst.flags & DST_XFRM_TUNNEL)
- 		mtu = READ_ONCE(np->pmtudisc) >= IPV6_PMTUDISC_PROBE ?
- 		      READ_ONCE(rt->dst.dev->mtu) : dst_mtu(&rt->dst);
-@@ -1417,7 +1418,7 @@ static int __ip6_append_data(struct sock *sk,
- 			     int getfrag(void *from, char *to, int offset,
- 					 int len, int odd, struct sk_buff *skb),
- 			     void *from, size_t length, int transhdrlen,
--			     unsigned int flags, struct ipcm6_cookie *ipc6)
-+			     unsigned int flags)
+diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+index 9bfcfd016e182..2b4a588247639 100644
+--- a/net/ipv4/inet_hashtables.c
++++ b/net/ipv4/inet_hashtables.c
+@@ -1230,22 +1230,37 @@ int inet_ehash_locks_alloc(struct inet_hashinfo *hashinfo)
  {
- 	struct sk_buff *skb, *skb_prev = NULL;
- 	struct inet_cork *cork = &cork_full->base;
-@@ -1471,7 +1472,7 @@ static int __ip6_append_data(struct sock *sk,
- 	if (headersize + transhdrlen > mtu)
- 		goto emsgsize;
+ 	unsigned int locksz = sizeof(spinlock_t);
+ 	unsigned int i, nblocks = 1;
++	spinlock_t *ptr = NULL;
  
--	if (cork->length + length > mtu - headersize && ipc6->dontfrag &&
-+	if (cork->length + length > mtu - headersize && v6_cork->dontfrag &&
- 	    (sk->sk_protocol == IPPROTO_UDP ||
- 	     sk->sk_protocol == IPPROTO_ICMPV6 ||
- 	     sk->sk_protocol == IPPROTO_RAW)) {
-@@ -1843,7 +1844,7 @@ int ip6_append_data(struct sock *sk,
+-	if (locksz != 0) {
+-		/* allocate 2 cache lines or at least one spinlock per cpu */
+-		nblocks = max(2U * L1_CACHE_BYTES / locksz, 1U);
+-		nblocks = roundup_pow_of_two(nblocks * num_possible_cpus());
++	if (locksz == 0)
++		goto set_mask;
  
- 	return __ip6_append_data(sk, &sk->sk_write_queue, &inet->cork,
- 				 &np->cork, sk_page_frag(sk), getfrag,
--				 from, length, transhdrlen, flags, ipc6);
-+				 from, length, transhdrlen, flags);
+-		/* no more locks than number of hash buckets */
+-		nblocks = min(nblocks, hashinfo->ehash_mask + 1);
++	/* Allocate 2 cache lines or at least one spinlock per cpu. */
++	nblocks = max(2U * L1_CACHE_BYTES / locksz, 1U) * num_possible_cpus();
+ 
+-		hashinfo->ehash_locks = kvmalloc_array(nblocks, locksz, GFP_KERNEL);
+-		if (!hashinfo->ehash_locks)
+-			return -ENOMEM;
++	/* At least one page per NUMA node. */
++	nblocks = max(nblocks, num_online_nodes() * PAGE_SIZE / locksz);
++
++	nblocks = roundup_pow_of_two(nblocks);
++
++	/* No more locks than number of hash buckets. */
++	nblocks = min(nblocks, hashinfo->ehash_mask + 1);
+ 
+-		for (i = 0; i < nblocks; i++)
+-			spin_lock_init(&hashinfo->ehash_locks[i]);
++	if (num_online_nodes() > 1) {
++		/* Use vmalloc() to allow NUMA policy to spread pages
++		 * on all available nodes if desired.
++		 */
++		ptr = vmalloc_array(nblocks, locksz);
++	}
++	if (!ptr) {
++		ptr = kvmalloc_array(nblocks, locksz, GFP_KERNEL);
++		if (!ptr)
++			return -ENOMEM;
+ 	}
++	for (i = 0; i < nblocks; i++)
++		spin_lock_init(&ptr[i]);
++	hashinfo->ehash_locks = ptr;
++set_mask:
+ 	hashinfo->ehash_locks_mask = nblocks - 1;
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(ip6_append_data);
- 
-@@ -2048,7 +2049,7 @@ struct sk_buff *ip6_make_skb(struct sock *sk,
- 	err = __ip6_append_data(sk, &queue, cork, &v6_cork,
- 				&current->task_frag, getfrag, from,
- 				length + exthdrlen, transhdrlen + exthdrlen,
--				flags, ipc6);
-+				flags);
- 	if (err) {
- 		__ip6_flush_pending_frames(sk, &queue, cork, &v6_cork);
- 		return ERR_PTR(err);
 -- 
 2.39.5
 
