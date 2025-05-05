@@ -1,50 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5877C3AF413;
-	Mon,  5 May 2025 23:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33B12F8BAC;
+	Mon,  5 May 2025 23:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487211; cv=none; b=JZj3C/9ZoeQJmUXz7JJcVWbsHa2L0ABFjhi4FilWqVUF2IzoCahvVvoi9CDv+HD2o8BzGFOin6ZFpb+vye/VLR+Bl43EukDp3gLFCElwqXyks6I1WWmYoUCcriMmmeVYiUMhEpGVd5j5aOA76PRdVekXMCW0A2k8XpLqFtjcZpc=
+	t=1746487242; cv=none; b=q7luJt73eu7uGNhkt2Ju8ESxdnm0syIJjGmwtklF0tk+i7gfBxlhdoffYuW+cMMrJaJ1dOjTQ2iKzo9ZlhCuh5HDxnrqAozVC/2b9424ZAAhxLtlblVdMxvC2EilqsXe+xof7AvZEdWQ2w9IybMvuVZeEfjEoF6XwtN5RUI+5Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487211; c=relaxed/simple;
-	bh=2yE7zy2FWQ3AXCJ6jui9QnR9f1PfghpII4uGE+xFPO4=;
+	s=arc-20240116; t=1746487242; c=relaxed/simple;
+	bh=YL/1WgjLI1B6LoS2/NIYGlwG7WEGAG37g1mVj7vL2kA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KzE+4LDGvtEi9LQkJA8V5brPcTkZ0C3ts6czcAneZkJHb1JsMS/PMF4GBVP9ySelN4c7QkvPEpMfXK/MOCDbw48iwsbFsQIMSZ67rqKxIeosFy1R2K6HB9M/UdTvDtqHZUOvE0bUHZ6T5BdiesSlILTrkLWKiu7cIjsh0Ic7K7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ewfl4VnR; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=To/CMR6zK0SDNS5wCb3w2hAi+RzzPu9H/ElSh82KR4FVQjs0CPKstmYNlj2kdanaUxlAyYwrYic10zjBqGCf6VflGG7t5I40OO8l0rNBvC7ytPskAdmk4D2boyQG2HNlEWHXAHKtGWPq7FFRsX1yGFPg3hbc29BwnQ/4JMGllWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DvgdihHf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ewfl4VnR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98425C4CEED;
-	Mon,  5 May 2025 23:20:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DvgdihHf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75121C4CEED;
+	Mon,  5 May 2025 23:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487211;
-	bh=2yE7zy2FWQ3AXCJ6jui9QnR9f1PfghpII4uGE+xFPO4=;
+	s=k20201202; t=1746487241;
+	bh=YL/1WgjLI1B6LoS2/NIYGlwG7WEGAG37g1mVj7vL2kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ewfl4VnRIeAARoPMNjwvb62j8zOQ6ARTZjFtG0ysAaEDdmxv0oXZU1AMWfuTUi4fh
-	 62JrYa3iLJRNjVbLlyYaWBa2HGGwlDfPWdU636NtNVP+XnyvsWjnrfRfOdS+UBBlFT
-	 CG+xiSYghbas3pUmYdvkEXA4T+M4vkm/AQd13d/GvjU/PQYYDECADj2TQ+/NrpP+il
-	 3TV8eLYG52EVPxOQyQbgpwj+0X7BHNCazODKZCuXqrmoi1rh7npaBvPK5YQdB9WElY
-	 WFIm8CB6RmDYaNkHiOVqnG6u+b2Jo3XFaMqLmuEUCfumZeAZ/98NjPgMpgYECNzSlD
-	 FVKU/ZsOW0fVw==
+	b=DvgdihHfuI5qUA0ZhbfyiWXXrwcFtQVcgn14rckyWU4wOFEq3zBo7+lWSABK90924
+	 jedGM19JkGl09MewPEE0JMn2a9ziT6f1MiuNI9+hbGkoD/VwSWF183I2q7I0KK2+fj
+	 ZR1vKGJJwsDtvP25JJt9vt8mfIo08X8oP1BxZluHulIZ6mrprSdr6tbqwBvmQKxmrc
+	 5bjNbG1bwIJbRztdLmDPW499SyLEJPQfJV9V+x01xDGoWfvtXBraIcXAmrZVLvBlja
+	 17DJ3wjFNtSXp0EIokoVXwMO4x1zC5BcyZvvEK2hcYQ8QzKvvDRFBRgr9awXeAraM8
+	 KsqatmM4dD6xw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Moshe Shemesh <moshe@nvidia.com>,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Peter Seiderer <ps.report@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
-	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 059/114] net/mlx5: Avoid report two health errors on same syndrome
-Date: Mon,  5 May 2025 19:17:22 -0400
-Message-Id: <20250505231817.2697367-59-sashal@kernel.org>
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 075/114] net: pktgen: fix access outside of user given buffer in pktgen_thread_write()
+Date: Mon,  5 May 2025 19:17:38 -0400
+Message-Id: <20250505231817.2697367-75-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -59,40 +54,47 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Peter Seiderer <ps.report@gmx.net>
 
-[ Upstream commit b5d7b2f04ebcff740f44ef4d295b3401aeb029f4 ]
+[ Upstream commit 425e64440ad0a2f03bdaf04be0ae53dededbaa77 ]
 
-In case health counter has not increased for few polling intervals, miss
-counter will reach max misses threshold and health report will be
-triggered for FW health reporter. In case syndrome found on same health
-poll another health report will be triggered.
+Honour the user given buffer size for the strn_len() calls (otherwise
+strn_len() will access memory outside of the user given buffer).
 
-Avoid two health reports on same syndrome by marking this syndrome as
-already known.
-
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250219084527.20488-8-ps.report@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/health.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/core/pktgen.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-index f42e118f32901..d48912d7afe54 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-@@ -733,6 +733,7 @@ static void poll_health(struct timer_list *t)
- 	health->prev = count;
- 	if (health->miss_counter == MAX_MISSES) {
- 		mlx5_core_err(dev, "device's health compromised - reached miss count\n");
-+		health->synd = ioread8(&h->synd);
- 		print_health_info(dev);
- 		queue_work(health->wq, &health->report_work);
- 	}
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index c2b3c454eddd9..57502e8628462 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -1770,8 +1770,8 @@ static ssize_t pktgen_thread_write(struct file *file,
+ 	i = len;
+ 
+ 	/* Read variable name */
+-
+-	len = strn_len(&user_buffer[i], sizeof(name) - 1);
++	max = min(sizeof(name) - 1, count - i);
++	len = strn_len(&user_buffer[i], max);
+ 	if (len < 0)
+ 		return len;
+ 
+@@ -1801,7 +1801,8 @@ static ssize_t pktgen_thread_write(struct file *file,
+ 	if (!strcmp(name, "add_device")) {
+ 		char f[32];
+ 		memset(f, 0, 32);
+-		len = strn_len(&user_buffer[i], sizeof(f) - 1);
++		max = min(sizeof(f) - 1, count - i);
++		len = strn_len(&user_buffer[i], max);
+ 		if (len < 0) {
+ 			ret = len;
+ 			goto out;
 -- 
 2.39.5
 
