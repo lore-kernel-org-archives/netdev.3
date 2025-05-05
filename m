@@ -1,122 +1,131 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410101F4C97
-	for <netdev@vger.kernel.org>; Mon,  5 May 2025 09:15:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DBB2DC789;
+	Mon,  5 May 2025 09:17:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746436507; cv=none; b=s8TO+gK2qrkMAzwkLfwM6jtaXRAEudvAIBsATh1FHm4ejha2fi7uL3/GUQ5OZaWWmIwg2CU77UiqZvXKFDUGODeq7hw3Z+K/VheBQjRRoG4SdOafgQEP73Zwyg2LjNKH58ix9PXymb7MFyxgGyWcud0B+dDD6sVvnYmD0TVYD0g=
+	t=1746436681; cv=none; b=BupmeF1FlmeOZHB0UX2oo01yM3QMVC5AIzki/HYWdRFpn8ryqrD/NFbxSRWrbqYVfzU6cOGJaKg0+0xfifYfT0zW8y7E/xSgfXGArKmqNQ2OYLFVYihfjevUJ9dtXSVqe6BfkegvuOeAraI+M6hFYBTf1wHte3iYwzy8P7YTv2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746436507; c=relaxed/simple;
-	bh=bvPDlKJLUfDwrOM3TVQzXMoltiuoAzh+aXpJ+cNNsW0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ENdJoZ+LPUEgz3Dk+Y0IYbwU+emnNQS822s1AH0Uwz9XSOWzNZ5lvd8sHZmNXQNUZc30tmZCgdLb8TVdM3cZyGwAOaYP1EGpgJC9oMh9xI+/f1KKp7F6RftLaRoTODyAbpR6WatfVlEPu4amN71472R5VUmyQbxOT4Fzrfx8tgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=lSL4CaxZ; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1746436681; c=relaxed/simple;
+	bh=n9DSrRhvj6S5JgtzQkpkDqezZ/xHBdRJ5jQgPsYXCLg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DA3br3cTP/c/pusdyv3TupupLN1FjVRgJk/IMX3UTF5oQx382OBjlWMW3MgrkKKwZ+zVhItiAryGbsho49iiTVWqxi0Jf9Q6+N0H9VZGKwlS7pudndIxbvI7vu6zEKWa45yewGRpzoh5DVFsEhE5IpnZN8dTNDblnWS5aAXw2Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H+zp0Cve; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="lSL4CaxZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H+zp0Cve"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43d07ca6a80so14989715e9.1;
+        Mon, 05 May 2025 02:17:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1746435923;
-	bh=oXqBDEcTn8k7y4zmpSs29XEcQ0Mrw0n4KBq3glGBi3o=;
-	h=From:Date:Subject:To:Cc;
-	b=lSL4CaxZPaDzLmYyfrYvXEVFWCEQuOZCeTZxRm2QBAato24yuiD21NOmxiwGyqFlT
-	 EPVRCUg3JZfBMkSAxSvB6jXBEJlBmoMY6zaQpD0ysfORTOzLMG27d7plwkIi2L/1em
-	 pfB+JRpalNoLxV7o1yLq4zdm5KLlNeJWKZVeCQn7s4B6YVTdDWPqd2HJhmucK8h9uM
-	 10T/ALDLm4gStoVHYkzmpdaE7vW+toALbkakr8VlZxTmK46+Lc5+BqWLatUMR4ogLU
-	 SCZUDjS/bBJao7402SdR1WX1SA9776/28uKZILmawehhWowEZ1f2kARU/Y318aVN/2
-	 vL36PBebJJdrg==
-Received: by codeconstruct.com.au (Postfix, from userid 10001)
-	id 0545A80666; Mon,  5 May 2025 17:05:23 +0800 (AWST)
-From: Matt Johnston <matt@codeconstruct.com.au>
-Date: Mon, 05 May 2025 17:05:12 +0800
-Subject: [PATCH net] net: mctp: Don't access ifa_index when missing
+        d=gmail.com; s=20230601; t=1746436678; x=1747041478; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=PF2CyQx2MPaV+rJ68g+o7uLVAoJbG7ga5+6WFdjiP3A=;
+        b=H+zp0CvexGqSz+Q1ujaj960/UDH/tSzSj+BEhj8BZ7zKK6HM1To1N5cOTncNGrX2Td
+         WlP2gJWfCv7j5xO33cVKNLuF2E3i4+h4vaNp9k4atPn96gKXMwHTrsKnrkdwST+43jyh
+         RQcawGvkSMgxaamve6f92fksEjURFNC5eptI78aNFPze7G052P4VgsUqhzSGsJzg7EFf
+         MlShdAZ3F2/yz1N1FQYbEm0qn6MxXit7uyv5+SnFK6mzyclZsNFk1aBYXMg2WBhCGI6C
+         akA65Do1knZSAYxp9CENUrfaXPhe8ur2MfMpdJqRkDe66BZT59ofPMex2jsliEuBvtwK
+         8Iwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746436678; x=1747041478;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PF2CyQx2MPaV+rJ68g+o7uLVAoJbG7ga5+6WFdjiP3A=;
+        b=M3g1+GOgO7Gv0vm245Vmd0XU/lOvpfXwv0mxqYv3vU09Pv+FGNEFHvBaPLBnlxmmPR
+         gysTVY6K0isAMF1ji0PnofhF6Oyhm84gQU11GU4kYZ9lb69/cFPm8U8whAgzn73xmu45
+         g5LNwT+NgVB4D6Vo52ej9qL8ZxnLnAO24+cfuHpnWT+GEPWJUISM+8hLSDCQx9tzyYQv
+         LDvXfDFiHBz8ncCeHS18W5L7CgB8lGY7KsFkKSD6Qf1pUVak7DQVCI7agyUEv7EWZuJ8
+         FzBZeZjd0amhsxIr4fanzDve0wwC4Vv+cLZcI0un0k4YCUiPjdYwjFq+RAgT3/hcskHU
+         3/ww==
+X-Forwarded-Encrypted: i=1; AJvYcCVb1vflr6dEqvWc/om3x/6XNWJU2+/1RDAU6hRVjrORP5ql/za+CfJS2oR+AwhNRfA/2zIGu1PR5BMU5JU=@vger.kernel.org, AJvYcCXcZzvzBrB5axU9Lg22KMadSpG5F9OvyHOvV1NXVN5aQKDBN8/18+nuMqjtq0vRio8Q8jPYWDkb@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOMqyO4tS8sOzskZm9W6mSMAGppi9GG2RZw/HyG8aa0J1/zb8U
+	4HBCf6RIlMIhEmzBVAVif/glwA4L9x3bpZAOzIHor3bbgd8mtr62
+X-Gm-Gg: ASbGnctcojsXOfldn4f7pTgqdaI4Nazor6gVEPM1OJrwHqRtuPpomaZ3hHXXCyECb3+
+	pbOsyKFwrFsYlU7eWUaykJivf5/6XeYxuJ6JxhQSzJgPu2r3oaPgt04VDDu01RL0VWf2YIbDepE
+	o7MMuqrrWkJlfnGlB9X4Fk+zd8gOMhZwO9Vgl9qE3AyHG62OoT+2tHTN4VjjFLIoMQYXNwkuQOE
+	RQsev4GivzJ0HPjmLkmKCZ/HL3AR5X85JyIG/0ZCmeVk425O/hMSxXj2v2RCNOJlxweaOooWUAz
+	xSLq+BuqqIPRWgNgbiTojxyACkn9GjdaNuT6rg==
+X-Google-Smtp-Source: AGHT+IFIqdr/tc0ob8HjmKsgvnPZEZu7wfgqrfLNWKbQpPSOjxgUG71cRtZVlqchJSK9RCEg2GbJXw==
+X-Received: by 2002:a05:600c:8012:b0:43d:26e3:f2f6 with SMTP id 5b1f17b1804b1-441c48b069emr54300605e9.5.1746436678067;
+        Mon, 05 May 2025 02:17:58 -0700 (PDT)
+Received: from debian ([2a00:79c0:608:9e00:45fb:7d1a:5e4d:9727])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b89cc469sm128392865e9.6.2025.05.05.02.17.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 May 2025 02:17:57 -0700 (PDT)
+Date: Mon, 5 May 2025 11:17:56 +0200
+From: Dimitri Fedrau <dima.fedrau@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+	Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kory Maincent <kory.maincent@bootlin.com>
+Subject: Re: [PATCH net-next v3] net: phy: marvell-88q2xxx: Enable
+ temperature measurement in probe again
+Message-ID: <20250505091756.GA9785@debian>
+References: <20250429-marvell-88q2xxx-hwmon-enable-at-probe-v3-1-0351ccd9127e@gmail.com>
+ <20250429200306.GE1969140@ragnatech.se>
+ <4e68ca40-85b8-4766-9040-edf677afd0f7@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250505-mctp-addr-dump-v1-1-a997013f99b8@codeconstruct.com.au>
-X-B4-Tracking: v=1; b=H4sIAEd/GGgC/x2MSQqAMAwAvyI5G6j78hXxIE2qOVhLqyJI/26RO
- c1h5oXAXjjAmL3g+ZYgh01S5BnobbEro1ByKFXZqATu+nS4EHmka3fYdhUrQ7rrhxpS5Dwbef7
- hBJZPmGP8ALAUia1lAAAA
-X-Change-ID: 20250505-mctp-addr-dump-673e0fdc7894
-To: Jeremy Kerr <jk@codeconstruct.com.au>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, 
- syzbot+e76d52dadc089b9d197f@syzkaller.appspotmail.com, 
- syzbot+1065a199625a388fce60@syzkaller.appspotmail.com, 
- Matt Johnston <matt@codeconstruct.com.au>
-X-Mailer: b4 0.15-dev-cbbb4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1746435922; l=2444;
- i=matt@codeconstruct.com.au; s=20241018; h=from:subject:message-id;
- bh=bvPDlKJLUfDwrOM3TVQzXMoltiuoAzh+aXpJ+cNNsW0=;
- b=GjjBmX86BTQjZiWsjbjHlVeuROFk59geJfQH+3hsV2fc0c2y/oWWiGb/p6kwi5xdz+x1yGDQw
- UR/kSiYTDpMCe23uUH1ohXyRek2PluONGr1e1efxVwk821Hqzp24FE9
-X-Developer-Key: i=matt@codeconstruct.com.au; a=ed25519;
- pk=exersTcCYD/pEBOzXGO6HkLd6kKXRuWxHhj+LXn3DYE=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4e68ca40-85b8-4766-9040-edf677afd0f7@redhat.com>
 
-In mctp_dump_addrinfo, ifa_index can be used to filter interfaces, but
-only when the struct ifaddrmsg is provided. Otherwise it will be
-comparing to uninitialised memory - reproducible in the syzkaller case from
-dhcpd, or busybox "ip addr show".
+Hi Paolo,
 
-The kernel MCTP implementation has always filtered by ifa_index, so
-existing userspace programs expecting to dump MCTP addresses must
-already be passing a valid ifa_index value (either 0 or a real index).
+On Fri, May 02, 2025 at 12:51:47PM +0200, Paolo Abeni wrote:
+> On 4/29/25 10:03 PM, Niklas Söderlund wrote:
+> >> @@ -765,6 +768,13 @@ static int mv88q2xxx_hwmon_probe(struct phy_device *phydev)
+> >>  	struct mv88q2xxx_priv *priv = phydev->priv;
+> >>  	struct device *dev = &phydev->mdio.dev;
+> >>  	struct device *hwmon;
+> >> +	int ret;
+> >> +
+> >> +	/* Enable temperature sense */
+> >> +	ret = phy_modify_mmd(phydev, MDIO_MMD_PCS, MDIO_MMD_PCS_MV_TEMP_SENSOR2,
+> >> +			     MDIO_MMD_PCS_MV_TEMP_SENSOR2_DIS_MASK, 0);
+> >> +	if (ret < 0)
+> >> +		return ret;
+> > 
+> > nit: I wonder if it make sens to create a helper function to enable the 
+> > sensor? My worry being this procedure growing in the future and only 
+> > being fixed in one location and not the other. It would also reduce code 
+> > duplication and could be stubbed to be compiled out with the existing 
+> > IS_ENABLED(CONFIG_HWMON) guard for other hwmon functions.
+> > 
+> > That being said I tested this with mv88q211x and the temp sensor and PHY 
+> > keeps working as expected.
+> > 
+> > Tested-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+> 
+> Since this is net-next material +1 for the helper.
+>
+Agreed.
 
-BUG: KMSAN: uninit-value in mctp_dump_addrinfo+0x208/0xac0 net/mctp/device.c:128
- mctp_dump_addrinfo+0x208/0xac0 net/mctp/device.c:128
- rtnl_dump_all+0x3ec/0x5b0 net/core/rtnetlink.c:4380
- rtnl_dumpit+0xd5/0x2f0 net/core/rtnetlink.c:6824
- netlink_dump+0x97b/0x1690 net/netlink/af_netlink.c:2309
+> Also AFAICS this is fixing a net-next regression, so it needs a fixes
+> tag, too.
+> 
+We discussed it here:
+https://lore.kernel.org/netdev/48c4cd14-be56-438e-9561-c85b0245178c@lunn.ch/
 
-Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
-Reported-by: syzbot+e76d52dadc089b9d197f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68135815.050a0220.3a872c.000e.GAE@google.com/
-Reported-by: syzbot+1065a199625a388fce60@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/681357d6.050a0220.14dd7d.000d.GAE@google.com/
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
----
- net/mctp/device.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
-diff --git a/net/mctp/device.c b/net/mctp/device.c
-index 8e0724c56723de328592bfe5c6fc8085cd3102fe..7780acdb99dedca1cd6a17e4d6bf917c7f7f370f 100644
---- a/net/mctp/device.c
-+++ b/net/mctp/device.c
-@@ -117,11 +117,17 @@ static int mctp_dump_addrinfo(struct sk_buff *skb, struct netlink_callback *cb)
- 	struct net_device *dev;
- 	struct ifaddrmsg *hdr;
- 	struct mctp_dev *mdev;
--	int ifindex, rc;
-+	int ifindex = 0, rc;
- 
--	hdr = nlmsg_data(cb->nlh);
--	// filter by ifindex if requested
--	ifindex = hdr->ifa_index;
-+	/* Filter by ifindex if a header is provided */
-+	if (cb->nlh->nlmsg_len >= nlmsg_msg_size(sizeof(*hdr))) {
-+		hdr = nlmsg_data(cb->nlh);
-+		/* Userspace programs providing AF_MCTP must be expecting ifa_index filter
-+		 * behaviour, as will those setting strict_check.
-+		 */
-+		if (hdr->ifa_family == AF_MCTP || cb->strict_check)
-+			ifindex = hdr->ifa_index;
-+	}
- 
- 	rcu_read_lock();
- 	for_each_netdev_dump(net, dev, mcb->ifindex) {
-
----
-base-commit: ebd297a2affadb6f6f4d2e5d975c1eda18ac762d
-change-id: 20250505-mctp-addr-dump-673e0fdc7894
+Andrews opinion was the change is rather archtitecture then a fix.
 
 Best regards,
--- 
-Matt Johnston <matt@codeconstruct.com.au>
-
+Dimitri Fedrau
