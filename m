@@ -1,50 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509BF360A71;
-	Mon,  5 May 2025 22:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0BE3635F9;
+	Mon,  5 May 2025 22:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485145; cv=none; b=GrvHqvxgjtgzms5CAzOsRgLfRDGsjDGIx7d4k6qiLZSipVdD5/iM4b2HJWvJlXW73PeF9JfTmEeGRmZz4cL/QyaHEE7p8x1d+aJk5k0Fw4AQZ06binNaPzWy0V1gSgZYB4JoWImNL0zlKOddJEGJX2b05HNRJbAGO6q1doMw41s=
+	t=1746485163; cv=none; b=AUddOKM0v01BstM8p9qmKFmpqje+M4ssNMp9KLAdmxA/8rCjl1TPOWG7UPhhtxNM7fgFcQyPsItmpdTjYhvI2T2hCpTAbR8QvHGLVf/Z+XS4T9+5xGD89SnVUE3/+lsonydmNrpfwzC7XIMXbLxo3xdF/Ho5lf/aettE81Y/4Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485145; c=relaxed/simple;
-	bh=SgLEUyTjEn/ONPzkIoL52jJRgKC8KFCGTZ1fMwifZu0=;
+	s=arc-20240116; t=1746485163; c=relaxed/simple;
+	bh=V8ig1lRsGtwoWBZKNn2Wr9A2FUXJGFgMfFPPKD6vL54=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KBqHqGtMkMMtJg6HtoxrqYeQrJpFR6u54wQXl3rlvJ4cbul8/MRk3a3kfIqgGwxQluVfvb7FtBIuAkv6+oTXUT422Aoihb+w3NWvjxCV5t+xNZfSS8tDja+vpR0ckE1q9XuWt/aFMPcpojniqvE04hSKgXWgkZzFyFDQl7+cK94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ThkyvxRU; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=rjOgy+o+JEfSLS9WTpgS3EyXEHMYeyZqbMVxXKipiOn6T2SDi9CnTzJstjyaTKC/hNa5dpzPeXclTViTYfcmi+2rELX6Mb7bt5nZlZ8aEyn+un+FEItrdq9CdawqB1MNv3zSK4EoqfLz25eYTDeCqc7tWjMnck1NSOS1IrYdhFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=caE9VaaU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ThkyvxRU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E03C4CEEE;
-	Mon,  5 May 2025 22:45:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="caE9VaaU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FFCFC4CEF2;
+	Mon,  5 May 2025 22:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485143;
-	bh=SgLEUyTjEn/ONPzkIoL52jJRgKC8KFCGTZ1fMwifZu0=;
+	s=k20201202; t=1746485161;
+	bh=V8ig1lRsGtwoWBZKNn2Wr9A2FUXJGFgMfFPPKD6vL54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ThkyvxRUJvjocGoGx/NoEMUoZjKmiuy4HA8+HuwS132IyLeDwEI8mT/ATn8DJTcYc
-	 GNf+d6RLP7o/tflRUeC9uLtpt+/5cAsy1u4G33rCFHXbailTNL+/GkzjX9pbX40Ws+
-	 JM0m1jdupsbjdIN5tWIxCYqZBlunB0kSxzKO4/Cc8iJF6yNZ+VQFfIwtm9+cFOv61t
-	 gB7vNlVZ+Tm+7Ody9OODKYnlZbJp58iiVMHcRsaiosf8Th38sb5wA4Y6JlP+lhXV8/
-	 zyGiNcOL65LW8pgKEskX6sHtfZ+Nc7B97uKVeg/dTlyxLtDPYxeyR3I0zkJgKgnAHB
-	 o8wTCcxlneoVg==
+	b=caE9VaaUcxmwbMfZhhTclvG21Uu6yJO78fN1SDr2GM08zkbDCLFnDW5mUAOvFyXmT
+	 /ot1qG5HqZUMBwWTxceSrJYSsskftwzqcffTAV0mtdpZO68NCB+R1VPNeDDWqSuf0R
+	 BlFVdLWownbL39ItOlOqyI+7/7HHTixTgGveilWkf5UmRXQsxCYokva8BmVo2tt9su
+	 Y9Kamq27YyS9JYheREokZHOwjZDljoZisk+C+y+qoyTmimQK5eMR3HBetTSO0Xp7uY
+	 Wd9u/SOah3xZlnjyZhFOpfseFsKGEvtyzItRvc+Ne/PXfFFl0rN7gEmOb/7mWejjry
+	 iZxprAFAavsTw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
+Cc: Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	alex.aring@gmail.com,
-	andrew+netdev@lunn.ch,
+	linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	linux-wpan@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 182/486] ieee802154: ca8210: Use proper setters and getters for bitwise types
-Date: Mon,  5 May 2025 18:34:18 -0400
-Message-Id: <20250505223922.2682012-182-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 193/486] net: phylink: use pl->link_interface in phylink_expects_phy()
+Date: Mon,  5 May 2025 18:34:29 -0400
+Message-Id: <20250505223922.2682012-193-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -59,75 +57,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Choong Yong Liang <yong.liang.choong@linux.intel.com>
 
-[ Upstream commit 169b2262205836a5d1213ff44dca2962276bece1 ]
+[ Upstream commit b63263555eaafbf9ab1a82f2020bbee872d83759 ]
 
-Sparse complains that the driver doesn't respect the bitwise types:
+The phylink_expects_phy() function allows MAC drivers to check if they are
+expecting a PHY to attach. The checking condition in phylink_expects_phy()
+aims to achieve the same result as the checking condition in
+phylink_attach_phy().
 
-drivers/net/ieee802154/ca8210.c:1796:27: warning: incorrect type in assignment (different base types)
-drivers/net/ieee802154/ca8210.c:1796:27:    expected restricted __le16 [addressable] [assigned] [usertype] pan_id
-drivers/net/ieee802154/ca8210.c:1796:27:    got unsigned short [usertype]
-drivers/net/ieee802154/ca8210.c:1801:25: warning: incorrect type in assignment (different base types)
-drivers/net/ieee802154/ca8210.c:1801:25:    expected restricted __le16 [addressable] [assigned] [usertype] pan_id
-drivers/net/ieee802154/ca8210.c:1801:25:    got unsigned short [usertype]
-drivers/net/ieee802154/ca8210.c:1928:28: warning: incorrect type in argument 3 (different base types)
-drivers/net/ieee802154/ca8210.c:1928:28:    expected unsigned short [usertype] dst_pan_id
-drivers/net/ieee802154/ca8210.c:1928:28:    got restricted __le16 [addressable] [usertype] pan_id
+However, the checking condition in phylink_expects_phy() uses
+pl->link_config.interface, while phylink_attach_phy() uses
+pl->link_interface.
 
-Use proper setters and getters for bitwise types.
+Initially, both pl->link_interface and pl->link_config.interface are set
+to SGMII, and pl->cfg_link_an_mode is set to MLO_AN_INBAND.
 
-Note, in accordance with [1] the protocol is little endian.
+When the interface switches from SGMII to 2500BASE-X,
+pl->link_config.interface is updated by phylink_major_config().
+At this point, pl->cfg_link_an_mode remains MLO_AN_INBAND, and
+pl->link_config.interface is set to 2500BASE-X.
+Subsequently, when the STMMAC interface is taken down
+administratively and brought back up, it is blocked by
+phylink_expects_phy().
 
-Link: https://www.cascoda.com/wp-content/uploads/2018/11/CA-8210_datasheet_0418.pdf [1]
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/20250305105656.2133487-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Since phylink_expects_phy() and phylink_attach_phy() aim to achieve the
+same result, phylink_expects_phy() should check pl->link_interface,
+which never changes, instead of pl->link_config.interface, which is
+updated by phylink_major_config().
+
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Choong Yong Liang <yong.liang.choong@linux.intel.com>
+Link: https://patch.msgid.link/20250227121522.1802832-2-yong.liang.choong@linux.intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ieee802154/ca8210.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/phy/phylink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
-index 753215ebc67c7..a036910f60828 100644
---- a/drivers/net/ieee802154/ca8210.c
-+++ b/drivers/net/ieee802154/ca8210.c
-@@ -1446,8 +1446,7 @@ static u8 mcps_data_request(
- 	command.pdata.data_req.src_addr_mode = src_addr_mode;
- 	command.pdata.data_req.dst.mode = dst_address_mode;
- 	if (dst_address_mode != MAC_MODE_NO_ADDR) {
--		command.pdata.data_req.dst.pan_id[0] = LS_BYTE(dst_pan_id);
--		command.pdata.data_req.dst.pan_id[1] = MS_BYTE(dst_pan_id);
-+		put_unaligned_le16(dst_pan_id, command.pdata.data_req.dst.pan_id);
- 		if (dst_address_mode == MAC_MODE_SHORT_ADDR) {
- 			command.pdata.data_req.dst.address[0] = LS_BYTE(
- 				dst_addr->short_address
-@@ -1795,12 +1794,12 @@ static int ca8210_skb_rx(
- 	}
- 	hdr.source.mode = data_ind[0];
- 	dev_dbg(&priv->spi->dev, "srcAddrMode: %#03x\n", hdr.source.mode);
--	hdr.source.pan_id = *(u16 *)&data_ind[1];
-+	hdr.source.pan_id = cpu_to_le16(get_unaligned_le16(&data_ind[1]));
- 	dev_dbg(&priv->spi->dev, "srcPanId: %#06x\n", hdr.source.pan_id);
- 	memcpy(&hdr.source.extended_addr, &data_ind[3], 8);
- 	hdr.dest.mode = data_ind[11];
- 	dev_dbg(&priv->spi->dev, "dstAddrMode: %#03x\n", hdr.dest.mode);
--	hdr.dest.pan_id = *(u16 *)&data_ind[12];
-+	hdr.dest.pan_id = cpu_to_le16(get_unaligned_le16(&data_ind[12]));
- 	dev_dbg(&priv->spi->dev, "dstPanId: %#06x\n", hdr.dest.pan_id);
- 	memcpy(&hdr.dest.extended_addr, &data_ind[14], 8);
- 
-@@ -1927,7 +1926,7 @@ static int ca8210_skb_tx(
- 	status =  mcps_data_request(
- 		header.source.mode,
- 		header.dest.mode,
--		header.dest.pan_id,
-+		le16_to_cpu(header.dest.pan_id),
- 		(union macaddr *)&header.dest.extended_addr,
- 		skb->len - mac_len,
- 		&skb->data[mac_len],
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 3e9957b6aa148..b78dfcbec936c 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -1811,7 +1811,7 @@ bool phylink_expects_phy(struct phylink *pl)
+ {
+ 	if (pl->cfg_link_an_mode == MLO_AN_FIXED ||
+ 	    (pl->cfg_link_an_mode == MLO_AN_INBAND &&
+-	     phy_interface_mode_is_8023z(pl->link_config.interface)))
++	     phy_interface_mode_is_8023z(pl->link_interface)))
+ 		return false;
+ 	return true;
+ }
 -- 
 2.39.5
 
