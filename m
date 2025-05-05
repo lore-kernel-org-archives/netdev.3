@@ -1,352 +1,199 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9782D5D0C;
-	Mon,  5 May 2025 22:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1792D5CE7;
+	Mon,  5 May 2025 22:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485676; cv=none; b=UeYDoGizwdwqOvRJoB395FXnthqKBq5bC6XmcjbCRlH55pUdAOp2gP9CAKDBZzm4MtaFCvdyjgbbbJgacWEBX55TuYXH4TMrZfXtXWVOjssPYfnhEpMIUTKGwqORTQmO1qAqrQxaGH4buu4EKeDnKm0jX59YVT9fYZqV0Kq+d4Y=
+	t=1746485684; cv=none; b=ivDTBNBWnrGkffTQeF55rLKrxSQ3hzEg2DmubAIFfPLbsBh8KfbkvcB43rq/jgan6g7+4BDOJ2TupnsLhDMq2OAZEe2kXEeUq7iQiajXqQ6Bxi8Jigo3sIxckkGfJOWhSmdivx8lVqLeGvk+RbMThxcK/SKDVOMu5kBsRyY7yzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485676; c=relaxed/simple;
-	bh=5TVo7ZSmhgN3LYeiSwaALQnkXbpb+sb65opx3Pb3mHI=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=iF7pzWJ92adFuMZ4zG3eJppyETHQM5a6q86TfJxqvkgEW5JHALOSO60OUynwXc3mQAHhMoH6b21kepRuQMen4TBcSJPOgPX0Wk6gZyiHEHHf2IX9wx1Bk6LWxGkTxv7xcIdkGoJ9mbyj77zFkjD3p0/deSlwt11idte/krkiUI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cmgBmD6e; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746485684; c=relaxed/simple;
+	bh=GEmoE8ZMsXsanwoyXRNDMaRJS40Ti3n9tpU7IktHxQE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=lOkA198UC2whOvFzlyjruDnjW5ETsoEP3iT3wvjSlaUu5aaf4CqxSTi8LAeUS118EFedSsSVlFij5k3b+nM+4yVvPwkrJrveS3Cys00AhBPUFqZ+UMnkU0dQA7yPQlEzCi9pRzPbDWQCpxDJ6adnqMY6MJBL79jIvGkm6ftzwu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLDfKSEI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cmgBmD6e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF22C4CEED;
-	Mon,  5 May 2025 22:54:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLDfKSEI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3963C4CEEE;
+	Mon,  5 May 2025 22:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485675;
-	bh=5TVo7ZSmhgN3LYeiSwaALQnkXbpb+sb65opx3Pb3mHI=;
-	h=From:Date:To:cc:Subject:In-Reply-To:References:From;
-	b=cmgBmD6emuuZ1c7FzF7NwT50mtds5sTK43JOzd9jCGaiNdtboGBCZXt0WRTCJoGSA
-	 V9ON+syeTz1a24Fs9KG/fUpIK3BkfxFVCA4tV4+Lr68owKqldqgTwHiVk6T9/xvGde
-	 8IWAsGMU1GcArtNCbRMyK8FW9Nyg+bJtbri9lqU56PYezHYbmDyEJJ/IfFlEKDfnDi
-	 AjH5ehTb9SrnEkW6w/MQaMpi9ElHo2d+ocuztcR7fHu795Gq3M74DGUfV6QX/nn6w3
-	 ZIT9TgO+YK64L8LM+mo6iwYnyCVCY/xUifMfWmd6vp8b+jxOGS+tugRQDeauIai6YC
-	 jh8ZBPlJxnPcw==
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ij@kernel.org>
-Date: Tue, 6 May 2025 01:54:29 +0300 (EEST)
-To: Paolo Abeni <pabeni@redhat.com>
-cc: chia-yu.chang@nokia-bell-labs.com, horms@kernel.org, dsahern@kernel.org, 
-    kuniyu@amazon.com, bpf@vger.kernel.org, netdev@vger.kernel.org, 
-    dave.taht@gmail.com, jhs@mojatatu.com, kuba@kernel.org, 
-    stephen@networkplumber.org, xiyou.wangcong@gmail.com, jiri@resnulli.us, 
-    davem@davemloft.net, edumazet@google.com, andrew+netdev@lunn.ch, 
-    donald.hunter@gmail.com, ast@fiberby.net, liuhangbin@gmail.com, 
-    shuah@kernel.org, linux-kselftest@vger.kernel.org, ncardwell@google.com, 
-    koen.de_schepper@nokia-bell-labs.com, g.white@cablelabs.com, 
-    ingemar.s.johansson@ericsson.com, mirja.kuehlewind@ericsson.com, 
-    cheshire@apple.com, rs.ietf@gmx.at, Jason_Livingood@comcast.com, 
-    vidhi_goel@apple.com
-Subject: Re: [PATCH v5 net-next 09/15] tcp: accecn: AccECN option
-In-Reply-To: <d0969c3d-e33c-472e-815d-70b333990b39@redhat.com>
-Message-ID: <412724ed-f5a0-9749-8c50-4dd76afd4140@kernel.org>
-References: <20250422153602.54787-1-chia-yu.chang@nokia-bell-labs.com> <20250422153602.54787-10-chia-yu.chang@nokia-bell-labs.com> <d0969c3d-e33c-472e-815d-70b333990b39@redhat.com>
+	s=k20201202; t=1746485683;
+	bh=GEmoE8ZMsXsanwoyXRNDMaRJS40Ti3n9tpU7IktHxQE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nLDfKSEIAxJAJT72fOvUn3mYzV61edvImObcieIhmpVTai7a10saSCJ3jURcV/e+I
+	 gvu9tLkkzfBfozN/87tkkMpysqVCh9cACEpC1RYdx0dtQzKUTR92akRMxcjTC1z7HK
+	 mwLfdN+WQfDCu2JWcMXgJ0/fn5ETH7BuRGoyAz6+Y528l3+OEnzSoyYxmaEmkxxhDL
+	 2l1FQtf7jXEXiG82ZB3nY5ctWfX9rc2a3MrU+g0FtpCTu/978zx4aHnodye247Ui8v
+	 JE1kdvHp4IlHFN//sEEf60tucJZwMrdHrghQ27lJrlbqVYJkaRtlaIlrYVtBYvbdUK
+	 8uUiWDLB08rBA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	menglong8.dong@gmail.com,
+	gnault@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 424/486] vxlan: Annotate FDB data races
+Date: Mon,  5 May 2025 18:38:20 -0400
+Message-Id: <20250505223922.2682012-424-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
+References: <20250505223922.2682012-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.26
+Content-Transfer-Encoding: 8bit
 
-On Tue, 29 Apr 2025, Paolo Abeni wrote:
+From: Ido Schimmel <idosch@nvidia.com>
 
-> On 4/22/25 5:35 PM, chia-yu.chang@nokia-bell-labs.com wrote:
-> > @@ -302,10 +303,13 @@ struct tcp_sock {
-> >  	u32	snd_up;		/* Urgent pointer		*/
-> >  	u32	delivered;	/* Total data packets delivered incl. rexmits */
-> >  	u32	delivered_ce;	/* Like the above but only ECE marked packets */
-> > +	u32	delivered_ecn_bytes[3];
-> 
-> This new fields do not belong to this cacheline group. I'm unsure they
-> belong to fast-path at all. Also u32 will wrap-around very soon.
-> 
-> [...]
-> > diff --git a/include/uapi/linux/tcp.h b/include/uapi/linux/tcp.h
-> > index dc8fdc80e16b..74ac8a5d2e00 100644
-> > --- a/include/uapi/linux/tcp.h
-> > +++ b/include/uapi/linux/tcp.h
-> > @@ -298,6 +298,13 @@ struct tcp_info {
-> >  	__u32	tcpi_snd_wnd;	     /* peer's advertised receive window after
-> >  				      * scaling (bytes)
-> >  				      */
-> > +	__u32	tcpi_received_ce;    /* # of CE marks received */
-> > +	__u32	tcpi_delivered_e1_bytes;  /* Accurate ECN byte counters */
-> > +	__u32	tcpi_delivered_e0_bytes;
-> > +	__u32	tcpi_delivered_ce_bytes;
-> > +	__u32	tcpi_received_e1_bytes;
-> > +	__u32	tcpi_received_e0_bytes;
-> > +	__u32	tcpi_received_ce_bytes;
-> 
-> This will break uAPI: new fields must be addded at the end, or must fill
-> existing holes. Also u32 set in stone in uAPI for a byte counter looks
-> way too small.
-> 
-> > @@ -5100,7 +5113,7 @@ static void __init tcp_struct_check(void)
-> >  	/* 32bit arches with 8byte alignment on u64 fields might need padding
-> >  	 * before tcp_clock_cache.
-> >  	 */
-> > -	CACHELINE_ASSERT_GROUP_SIZE(struct tcp_sock, tcp_sock_write_txrx, 109 + 7);
-> > +	CACHELINE_ASSERT_GROUP_SIZE(struct tcp_sock, tcp_sock_write_txrx, 122 + 6);
-> 
-> The above means an additional cacheline in fast-path WRT the current
-> status. IMHO should be avoided.
-> 
-> > diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> > index 5bd7fc9bcf66..41e45b9aff3f 100644
-> > --- a/net/ipv4/tcp_input.c
-> > +++ b/net/ipv4/tcp_input.c
-> > @@ -70,6 +70,7 @@
-> >  #include <linux/sysctl.h>
-> >  #include <linux/kernel.h>
-> >  #include <linux/prefetch.h>
-> > +#include <linux/bitops.h>
-> >  #include <net/dst.h>
-> >  #include <net/tcp.h>
-> >  #include <net/proto_memory.h>
-> > @@ -499,6 +500,144 @@ static bool tcp_ecn_rcv_ecn_echo(const struct tcp_sock *tp, const struct tcphdr
-> >  	return false;
-> >  }
-> >  
-> > +/* Maps IP ECN field ECT/CE code point to AccECN option field number, given
-> > + * we are sending fields with Accurate ECN Order 1: ECT(1), CE, ECT(0).
-> > + */
-> > +static u8 tcp_ecnfield_to_accecn_optfield(u8 ecnfield)
-> > +{
-> > +	switch (ecnfield) {
-> > +	case INET_ECN_NOT_ECT:
-> > +		return 0;	/* AccECN does not send counts of NOT_ECT */
-> > +	case INET_ECN_ECT_1:
-> > +		return 1;
-> > +	case INET_ECN_CE:
-> > +		return 2;
-> > +	case INET_ECN_ECT_0:
-> > +		return 3;
-> > +	default:
-> > +		WARN_ONCE(1, "bad ECN code point: %d\n", ecnfield);
-> 
-> No WARN_ONCE() above please: either the 'ecnfield' data is masked vs
-> INET_ECN_MASK and the WARN_ONCE should not be possible or a remote
-> sender can deterministically trigger a WARN() which nowadays will in
-> turn raise a CVE...
-> 
-> [...]
-> > +static u32 tcp_accecn_field_init_offset(u8 ecnfield)
-> > +{
-> > +	switch (ecnfield) {
-> > +	case INET_ECN_NOT_ECT:
-> > +		return 0;	/* AccECN does not send counts of NOT_ECT */
-> > +	case INET_ECN_ECT_1:
-> > +		return TCP_ACCECN_E1B_INIT_OFFSET;
-> > +	case INET_ECN_CE:
-> > +		return TCP_ACCECN_CEB_INIT_OFFSET;
-> > +	case INET_ECN_ECT_0:
-> > +		return TCP_ACCECN_E0B_INIT_OFFSET;
-> > +	default:
-> > +		WARN_ONCE(1, "bad ECN code point: %d\n", ecnfield);
-> 
-> Same as above.
-> 
-> > +	}
-> > +	return 0;
-> > +}
-> > +
-> > +/* Maps AccECN option field #nr to IP ECN field ECT/CE bits */
-> > +static unsigned int tcp_accecn_optfield_to_ecnfield(unsigned int optfield,
-> > +						    bool order)
-> > +{
-> > +	u8 tmp;
-> > +
-> > +	optfield = order ? 2 - optfield : optfield;
-> > +	tmp = optfield + 2;
-> > +
-> > +	return (tmp + (tmp >> 2)) & INET_ECN_MASK;
-> > +}
-> > +
-> > +/* Handles AccECN option ECT and CE 24-bit byte counters update into
-> > + * the u32 value in tcp_sock. As we're processing TCP options, it is
-> > + * safe to access from - 1.
-> > + */
-> > +static s32 tcp_update_ecn_bytes(u32 *cnt, const char *from, u32 init_offset)
-> > +{
-> > +	u32 truncated = (get_unaligned_be32(from - 1) - init_offset) &
-> > +			0xFFFFFFU;
-> > +	u32 delta = (truncated - *cnt) & 0xFFFFFFU;
-> > +
-> > +	/* If delta has the highest bit set (24th bit) indicating
-> > +	 * negative, sign extend to correct an estimation using
-> > +	 * sign_extend32(delta, 24 - 1)
-> > +	 */
-> > +	delta = sign_extend32(delta, 23);
-> > +	*cnt += delta;
-> > +	return (s32)delta;
-> > +}
-> > +
-> > +/* Returns true if the byte counters can be used */
-> > +static bool tcp_accecn_process_option(struct tcp_sock *tp,
-> > +				      const struct sk_buff *skb,
-> > +				      u32 delivered_bytes, int flag)
-> > +{
-> > +	u8 estimate_ecnfield = tp->est_ecnfield;
-> > +	bool ambiguous_ecn_bytes_incr = false;
-> > +	bool first_changed = false;
-> > +	unsigned int optlen;
-> > +	unsigned char *ptr;
+[ Upstream commit f6205f8215f12a96518ac9469ff76294ae7bd612 ]
 
-u8 would we more appropriate type for binary data.
+The 'used' and 'updated' fields in the FDB entry structure can be
+accessed concurrently by multiple threads, leading to reports such as
+[1]. Can be reproduced using [2].
 
-> > +	bool order1, res;
-> > +	unsigned int i;
-> > +
-> > +	if (!(flag & FLAG_SLOWPATH) || !tp->rx_opt.accecn) {
-> > +		if (estimate_ecnfield) {
-> > +			u8 ecnfield = estimate_ecnfield - 1;
-> > +
-> > +			tp->delivered_ecn_bytes[ecnfield] += delivered_bytes;
-> > +			return true;
-> > +		}
-> > +		return false;
-> > +	}
-> > +
-> > +	ptr = skb_transport_header(skb) + tp->rx_opt.accecn;
-> > +	optlen = ptr[1] - 2;
-> 
-> This assumes optlen is greater then 2, but I don't see the relevant
-> check.
+Suppress these reports by annotating these accesses using
+READ_ONCE() / WRITE_ONCE().
 
-The options parser should check that, please see the "silly options" 
-check.
+[1]
+BUG: KCSAN: data-race in vxlan_xmit / vxlan_xmit
 
-> Are tcp options present at all?
+write to 0xffff942604d263a8 of 8 bytes by task 286 on cpu 0:
+ vxlan_xmit+0xb29/0x2380
+ dev_hard_start_xmit+0x84/0x2f0
+ __dev_queue_xmit+0x45a/0x1650
+ packet_xmit+0x100/0x150
+ packet_sendmsg+0x2114/0x2ac0
+ __sys_sendto+0x318/0x330
+ __x64_sys_sendto+0x76/0x90
+ x64_sys_call+0x14e8/0x1c00
+ do_syscall_64+0x9e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-There is !tp->rx_opt.accecn check above which should ensure we're 
-processing only AccECN Option that is present.
+read to 0xffff942604d263a8 of 8 bytes by task 287 on cpu 2:
+ vxlan_xmit+0xadf/0x2380
+ dev_hard_start_xmit+0x84/0x2f0
+ __dev_queue_xmit+0x45a/0x1650
+ packet_xmit+0x100/0x150
+ packet_sendmsg+0x2114/0x2ac0
+ __sys_sendto+0x318/0x330
+ __x64_sys_sendto+0x76/0x90
+ x64_sys_call+0x14e8/0x1c00
+ do_syscall_64+0x9e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-> > +	WARN_ON_ONCE(ptr[0] != TCPOPT_ACCECN0 && ptr[0] != TCPOPT_ACCECN1);
-> 
-> Please, don't warn for arbitrary wrong data sent from the peer.
+value changed: 0x00000000fffbac6e -> 0x00000000fffbac6f
 
-If there isn't AccECN option at ptr, there's bug elsewhere in the code 
-(in the option parse code). So this is an internal sanity check that 
-tp->rx_opt.accecn points to AccECN option for real like it should.
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 2 UID: 0 PID: 287 Comm: mausezahn Not tainted 6.13.0-rc7-01544-gb4b270f11a02 #5
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
 
-If you still want that removed, no problem but it's should not be 
-arbitrary data at this point because the options parsing code should
-have validated this condition already, thus WARN_ON_ONCE() seemed 
-appropriate to me.
+[2]
+ #!/bin/bash
 
-> > +	order1 = (ptr[0] == TCPOPT_ACCECN1);
-> > +	ptr += 2;
-> > +
-> > +	res = !!estimate_ecnfield;
-> > +	for (i = 0; i < 3; i++) {
-> > +		if (optlen >= TCPOLEN_ACCECN_PERFIELD) {
+ set +H
+ echo whitelist > /sys/kernel/debug/kcsan
+ echo !vxlan_xmit > /sys/kernel/debug/kcsan
 
-It's easy to reverse logic here and use continue, which buys one level of 
-indentation.
+ ip link add name vx0 up type vxlan id 10010 dstport 4789 local 192.0.2.1
+ bridge fdb add 00:11:22:33:44:55 dev vx0 self static dst 198.51.100.1
+ taskset -c 0 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
+ taskset -c 2 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
 
-> > +			u32 init_offset;
-> > +			u8 ecnfield;
-> > +			s32 delta;
-> > +			u32 *cnt;
-> > +
-> > +			ecnfield = tcp_accecn_optfield_to_ecnfield(i, order1);
-> > +			init_offset = tcp_accecn_field_init_offset(ecnfield);
-> > +			cnt = &tp->delivered_ecn_bytes[ecnfield - 1];
-> > +			delta = tcp_update_ecn_bytes(cnt, ptr, init_offset);
-> > +			if (delta) {
-> > +				if (delta < 0) {
-> > +					res = false;
-> > +					ambiguous_ecn_bytes_incr = true;
-> > +				}
-> > +				if (ecnfield != estimate_ecnfield) {
-> > +					if (!first_changed) {
-> > +						tp->est_ecnfield = ecnfield;
-> > +						first_changed = true;
-> > +					} else {
-> > +						res = false;
-> > +						ambiguous_ecn_bytes_incr = true;
-> > +					}
-> 
-> At least 2 indentation levels above the maximum readable.
-> 
-> [...]
-> > @@ -4378,6 +4524,7 @@ void tcp_parse_options(const struct net *net,
-> >  
-> >  	ptr = (const unsigned char *)(th + 1);
-> >  	opt_rx->saw_tstamp = 0;
-> > +	opt_rx->accecn = 0;
-> >  	opt_rx->saw_unknown = 0;
-> 
-> It would be good to be able to zero both 'accecn' and 'saw_unknown' with
-> a single statement.
-> 
-> [...]
-> > @@ -766,6 +769,47 @@ static void tcp_options_write(struct tcphdr *th, struct tcp_sock *tp,
-> >  		*ptr++ = htonl(opts->tsecr);
-> >  	}
-> >  
-> > +	if (OPTION_ACCECN & options) {
-> > +		const u8 ect0_idx = INET_ECN_ECT_0 - 1;
-> > +		const u8 ect1_idx = INET_ECN_ECT_1 - 1;
-> > +		const u8 ce_idx = INET_ECN_CE - 1;
-> > +		u32 e0b;
-> > +		u32 e1b;
-> > +		u32 ceb;
-> > +		u8 len;
-> > +
-> > +		e0b = opts->ecn_bytes[ect0_idx] + TCP_ACCECN_E0B_INIT_OFFSET;
-> > +		e1b = opts->ecn_bytes[ect1_idx] + TCP_ACCECN_E1B_INIT_OFFSET;
-> > +		ceb = opts->ecn_bytes[ce_idx] + TCP_ACCECN_CEB_INIT_OFFSET;
-> > +		len = TCPOLEN_ACCECN_BASE +
-> > +		      opts->num_accecn_fields * TCPOLEN_ACCECN_PERFIELD;
-> > +
-> > +		if (opts->num_accecn_fields == 2) {
-> > +			*ptr++ = htonl((TCPOPT_ACCECN1 << 24) | (len << 16) |
-> > +				       ((e1b >> 8) & 0xffff));
-> > +			*ptr++ = htonl(((e1b & 0xff) << 24) |
-> > +				       (ceb & 0xffffff));
-> > +		} else if (opts->num_accecn_fields == 1) {
-> > +			*ptr++ = htonl((TCPOPT_ACCECN1 << 24) | (len << 16) |
-> > +				       ((e1b >> 8) & 0xffff));
-> > +			leftover_bytes = ((e1b & 0xff) << 8) |
-> > +					 TCPOPT_NOP;
-> > +			leftover_size = 1;
-> > +		} else if (opts->num_accecn_fields == 0) {
-> > +			leftover_bytes = (TCPOPT_ACCECN1 << 8) | len;
-> > +			leftover_size = 2;
-> > +		} else if (opts->num_accecn_fields == 3) {
-> > +			*ptr++ = htonl((TCPOPT_ACCECN1 << 24) | (len << 16) |
-> > +				       ((e1b >> 8) & 0xffff));
-> > +			*ptr++ = htonl(((e1b & 0xff) << 24) |
-> > +				       (ceb & 0xffffff));
-> > +			*ptr++ = htonl(((e0b & 0xffffff) << 8) |
-> > +				       TCPOPT_NOP);
-> 
-> The above chunck and the contents of patch 7 must be in the same patch.
-> This split makes the review even harder.
-> 
-> [...]
-> > @@ -1117,6 +1235,17 @@ static unsigned int tcp_established_options(struct sock *sk, struct sk_buff *skb
-> >  		opts->num_sack_blocks = 0;
-> >  	}
-> >  
-> > +	if (tcp_ecn_mode_accecn(tp) &&
-> > +	    sock_net(sk)->ipv4.sysctl_tcp_ecn_option) {
-> > +		int saving = opts->num_sack_blocks > 0 ? 2 : 0;
-> > +		int remaining = MAX_TCP_OPTION_SPACE - size;
-> 
-> AFACS the above means tcp_options_fit_accecn() must clear any already
-> set options, but apparently it does not do so. Have you tested with
-> something adding largish options like mptcp?
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250204145549.1216254-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/vxlan/vxlan_core.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-This "fitting" for AccEcn option is not to make room for the option but to 
-check if AccECN option fits and in what length, and how it can take 
-advantage of some nop bytes when available to save option space.
-
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 01f66760e1328..474faccf75fd9 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -227,9 +227,9 @@ static int vxlan_fdb_info(struct sk_buff *skb, struct vxlan_dev *vxlan,
+ 			be32_to_cpu(fdb->vni)))
+ 		goto nla_put_failure;
+ 
+-	ci.ndm_used	 = jiffies_to_clock_t(now - fdb->used);
++	ci.ndm_used	 = jiffies_to_clock_t(now - READ_ONCE(fdb->used));
+ 	ci.ndm_confirmed = 0;
+-	ci.ndm_updated	 = jiffies_to_clock_t(now - fdb->updated);
++	ci.ndm_updated	 = jiffies_to_clock_t(now - READ_ONCE(fdb->updated));
+ 	ci.ndm_refcnt	 = 0;
+ 
+ 	if (nla_put(skb, NDA_CACHEINFO, sizeof(ci), &ci))
+@@ -434,8 +434,8 @@ static struct vxlan_fdb *vxlan_find_mac(struct vxlan_dev *vxlan,
+ 	struct vxlan_fdb *f;
+ 
+ 	f = __vxlan_find_mac(vxlan, mac, vni);
+-	if (f && f->used != jiffies)
+-		f->used = jiffies;
++	if (f && READ_ONCE(f->used) != jiffies)
++		WRITE_ONCE(f->used, jiffies);
+ 
+ 	return f;
+ }
+@@ -1009,12 +1009,12 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 	    !(f->flags & NTF_VXLAN_ADDED_BY_USER)) {
+ 		if (f->state != state) {
+ 			f->state = state;
+-			f->updated = jiffies;
++			WRITE_ONCE(f->updated, jiffies);
+ 			notify = 1;
+ 		}
+ 		if (f->flags != fdb_flags) {
+ 			f->flags = fdb_flags;
+-			f->updated = jiffies;
++			WRITE_ONCE(f->updated, jiffies);
+ 			notify = 1;
+ 		}
+ 	}
+@@ -1048,7 +1048,7 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 	}
+ 
+ 	if (ndm_flags & NTF_USE)
+-		f->used = jiffies;
++		WRITE_ONCE(f->used, jiffies);
+ 
+ 	if (notify) {
+ 		if (rd == NULL)
+@@ -1477,7 +1477,7 @@ static bool vxlan_snoop(struct net_device *dev,
+ 				    src_mac, &rdst->remote_ip.sa, &src_ip->sa);
+ 
+ 		rdst->remote_ip = *src_ip;
+-		f->updated = jiffies;
++		WRITE_ONCE(f->updated, jiffies);
+ 		vxlan_fdb_notify(vxlan, f, rdst, RTM_NEWNEIGH, true, NULL);
+ 	} else {
+ 		u32 hash_index = fdb_head_index(vxlan, src_mac, vni);
+@@ -2825,7 +2825,7 @@ static void vxlan_cleanup(struct timer_list *t)
+ 			if (f->flags & NTF_EXT_LEARNED)
+ 				continue;
+ 
+-			timeout = f->used + vxlan->cfg.age_interval * HZ;
++			timeout = READ_ONCE(f->used) + vxlan->cfg.age_interval * HZ;
+ 			if (time_before_eq(timeout, jiffies)) {
+ 				netdev_dbg(vxlan->dev,
+ 					   "garbage collect %pM\n",
 -- 
- i.
+2.39.5
 
