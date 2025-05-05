@@ -1,62 +1,62 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1CCD49659
-	for <netdev@vger.kernel.org>; Mon,  5 May 2025 11:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42CD1FFC67
+	for <netdev@vger.kernel.org>; Mon,  5 May 2025 11:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746445524; cv=none; b=Ax4pEN184/jsOKid3Xrkh4xljSR6ker+vqP+9H8R+EVBdev4D7P3ysNTpIbjO1O9oEVxLok+2WJPiq+xzgck24TeIfeAieG0OVSNO5FLa75/wrqs2qtfybFXLV6vCLgBkRYwAyGq8YPGloy3va5qNslJdqdMowQ1Y/zR/PvECZg=
+	t=1746445525; cv=none; b=IqyQmIETeOx/IzTbecZy/L+On75c5jShQk0zGoU4Pf2yXjEnA1GHuXyAr9RhIgW2zKBG7RV22Uhe6TmImdhyJ4ForvvTU4hjSZUzGh9t0dYAGZ4J+d81p2bMYGs+v5Xbu69AwOc0cmcElcmZw9zKDhfqXEeXltJbNNqQAPKOUiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746445524; c=relaxed/simple;
-	bh=+xrFH+959Wfjay5dJUOvaqmEVhTD8UmyUNF8VwdpN74=;
+	s=arc-20240116; t=1746445525; c=relaxed/simple;
+	bh=l5OklO6urvodd9DpyZlCAAduWmlS3Qw87Ee0BYtL4p0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ghQse+NkZH2DswFzL5aSeBi03ha73iCXYR8a1rTd8MKfVYt3/K7jMGMKwDQlSrDBHE2K/1f9+/YHRzJDaaQfO3Ll63WQ+pLKHf7FWe11y7jtZw6C9vPrnS2jEN8MzNY0gz4sGdYzrALxmcJ26Dq4t7IeeCNu7JM/jY/DBDfYTb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=xN+rPHfp; arc=none smtp.client-ip=209.85.128.47
+	 MIME-Version; b=dudZGc8EEXM/2YUJclNfg2Ue3wE3p9sbgbDcVA9XRaIJsfDPpmZNaZO4h70usEqqyJHhGzkVTD+L7Ll4gsVQgJb5JpNgK/8I51zvfzC48jVGSsS3/MdWpqOX6cHdwlhybP8uG4v8krz/liat3tHuoopZm0/6rTRWI5545jzU7YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=2URlHDeb; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="xN+rPHfp"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43cfe63c592so39700845e9.2
-        for <netdev@vger.kernel.org>; Mon, 05 May 2025 04:45:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="2URlHDeb"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43d0359b1fcso26652815e9.0
+        for <netdev@vger.kernel.org>; Mon, 05 May 2025 04:45:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1746445517; x=1747050317; darn=vger.kernel.org;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1746445522; x=1747050322; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GR+iaBeipVE5H/6NIskEDd2663MYaiZaMs1eRdyeff8=;
-        b=xN+rPHfpn8UpA/BHgPUx94pbqQLJcczvROnuHXo48cn/hPTDTrtoci17I08UCYaHBs
-         0YLBKOy2RYtbkSiRqtqhLp4u/YjoBG7AqCJqaZVahUbVsaGtCEpNPZF8mFOsWdbRsPcR
-         0+y4auVLH+vi0CnueldDJ73pZMG+6e3PYIPAAPE4AoPI05tparEW/cZB5WFIh4vVmqiX
-         ci058iGfQr/7PV9QDOLiiIbJ93iK1DM3NIpUbI/76y6x0CQ36eBNE81O8FyN4XNSJV1j
-         f/0LYUSEOLItrWBmNSObxWwWlakQt06Y6RUTTJi7gZeqRVANjcUMu6+s8HOeXEtJz2tG
-         VHlg==
+        bh=fM9bANBgtLCJBal/LhgHHpL+psNr3o4t++hgMzvBqN4=;
+        b=2URlHDeb1Ncr1vVOz4s3Ev5e62Fu406tnHUhyTKU0IR3zvvS0Q1APXcry4d2aAtWhn
+         k4embf9VikcJ17g6nCcPBSZVMA8rDH2WaidEB1Kaux+nzhfD3fsNeYJZ89Cdr0u4TTdQ
+         oZX8SQyG1eOn5Ak6RGHLe3Iztj6DpVd16ObebZa27MOIstyOXZMq/kCpkJMUZChR7lsG
+         oRlGLTIAA4hcoNZdiyTo+hTiH0LhBfp5I25v5GUKIdO6KGnZFI2gw/RPqEHPZa3JKrvN
+         blu3TW7h6ZgQMhN/CPCi5PdvmA13wUj8CdXlOiZvaDHdijooWguCXG6PbQ5B2PpV7z0K
+         wmxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746445517; x=1747050317;
+        d=1e100.net; s=20230601; t=1746445522; x=1747050322;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GR+iaBeipVE5H/6NIskEDd2663MYaiZaMs1eRdyeff8=;
-        b=pAiG97Gl9Le5sUsw5MU8+nKw87GkzLCCWuhVCA2g0YX0fcNWGpHc7uupAo0rzEHtZt
-         n2tMM8NlYoeYiMuyMq6lsG/0j5O+CW/7B2tMVljy8kH+MeZC0XmwnLTrdqaOsJhYdc3d
-         mnxpNMPuFY6hR55LlXRaLzRtBktxZvj5mw8reRxz++4/E32hB/oFnX5T+dXkd5jLR4E1
-         iudrgTzbDcE73hsqCYTK59XI0zAHP6qFdgRBkvn9k7vppSGyYjatN2gBGlda2+/1Bw3x
-         pabfcCZz0el7/CfFXhVx+5rHKmhK0k288PSXZPZgmejgKYUnDYkY00H9wvbCibh5j61U
-         oDSA==
-X-Gm-Message-State: AOJu0Yzg6wGyZszuDAb2snfALsHdfhVrPiG97jWPV8KrL5FnZQrEkDdZ
-	YNtkyf6pM0TfoSuHHvfiXQHCMED9LTVzabhP6wDQTLx2UvE2mG47sVJVeO0OJ3VI+lolUftY+kV
-	Q
-X-Gm-Gg: ASbGncsls1tUL/+1dhiwkUd9O/KKjLFvh+a3W0lsw5bA5uM2GCy55O9Q/lMG+cXFOPC
-	nIJkUmhtXC7vfFTXNVTBu00Q+1AoSfKsoeRtC/8dncp8qJqo8aBeQYqpq+541mLu2QLfZFISY2b
-	bUHHT+lYgdSyg1VWzsFx0NUeGBkspF9k561yeVzG0ULFuGryvrp45RLk8CR2SkSBfgbbaWCK8Pr
-	S/53RvPF+XDQQfmAkN8DtpGIBvkMmPGwfiDv+8cESZedkkN2w6X1kMQe/HVecrF9W3HpQEoaFeB
-	tkMIDs9yglDOCuu0lWpMhv7r7OK9CHK4Zq3k6htc0P9hMwdh+j9CQV0eHQ==
-X-Google-Smtp-Source: AGHT+IHKyrA430oxeFQPY6G1IdgVGDKk9PFzXFngHNVbfTVR6x+bbr8NJM9SIrD78FbloI8+4zpDDw==
-X-Received: by 2002:a05:600c:a405:b0:43e:ee80:c233 with SMTP id 5b1f17b1804b1-441c83cd1dcmr28656195e9.32.1746445516723;
-        Mon, 05 May 2025 04:45:16 -0700 (PDT)
+        bh=fM9bANBgtLCJBal/LhgHHpL+psNr3o4t++hgMzvBqN4=;
+        b=AjGcLDlpp2BnFpf/QO5FD+eXP+Ei0olxc0HJuF51wBwmRxazZmmjWifStx/BB8l5KF
+         wakrwl6lCe5k67xVxURQuyhut3KjnpzIXayleKT2ezQN6f9IVvD/Hq3yXWWMF7VDfQqT
+         jjHK28jYtozlIvg9yEf4gNQcGPWf4MV8sXLyfm0I53CblbmxGcjG30hcaEFPlSDrdZ4z
+         iOhbmAp9zcm7BupPnMGmeh+feuOIt5O5DxhmZmKwsiEYpDPIAMl0EnGlUZBL7KESRqbr
+         Y5rt1xY3jAN6DxmDEqXZoSjFUClz/mOAaogLwrLCMXHBauqYoDfqrwhlOmhy/yiUaky+
+         sT3Q==
+X-Gm-Message-State: AOJu0Yw3b1QKORCjl+wEFpUmlhxQo8AZp+H+MhAr9z+TX8TUbX/vwP/R
+	mZQelQtrl6suZIG5waic0V//549btUfVLzGOvgyxzM0OPwnKmDpXN1kG1TRctWKOfm8t+wUaVZL
+	6
+X-Gm-Gg: ASbGncv3ki1RFKMiL2AIMt7a2VyJhKWIfFzIwBcCyX8ykjbpyFKQ2VUOGDSLbn3u0AS
+	KZ5Gd+fuNdLVMZ8sE+2eVqkY4TA+UCATfH5ppx9k4vxOK90DuNN4MM/jS8gtbDp3lxHrqiCVX/x
+	mAZ90bOAX76omPmhz/IVcFmZdsRyzK+rrsuK1rfl8lSJK5TAY58SiNGUBaeL18DGBCqgi0FA3WI
+	wYjcNoyUVYPum9Qbgevl1wJQVNBZghTGQfI7BTMQLTVA5uS2Xcs1W74bhrW1A/QaDrN1l5x1EUa
+	nVgWI+oCAdHPCWpB3WG1U9jK/Yb8mwDeYU6V0elSrWRlTT3HFNhoXVrAGg==
+X-Google-Smtp-Source: AGHT+IFqkBAniJArsVMshsaaMibzbS7xC+SDa7PPxZTc/HozKUGimaAZOOVae5N8hSW2+rPvsKOZKg==
+X-Received: by 2002:a05:600c:348b:b0:439:9434:4f3b with SMTP id 5b1f17b1804b1-441bb8567a1mr113106325e9.8.1746445522147;
+        Mon, 05 May 2025 04:45:22 -0700 (PDT)
 Received: from localhost (37-48-1-197.nat.epc.tmcz.cz. [37.48.1.197])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099ae32fesm10010673f8f.22.2025.05.05.04.45.16
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b8a3113csm130016315e9.33.2025.05.05.04.45.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 May 2025 04:45:16 -0700 (PDT)
+        Mon, 05 May 2025 04:45:21 -0700 (PDT)
 From: Jiri Pirko <jiri@resnulli.us>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -66,9 +66,9 @@ Cc: davem@davemloft.net,
 	saeedm@nvidia.com,
 	horms@kernel.org,
 	donald.hunter@gmail.com
-Subject: [PATCH net-next v2 1/4] tools: ynl-gen: allow noncontiguous enums
-Date: Mon,  5 May 2025 13:45:10 +0200
-Message-ID: <20250505114513.53370-2-jiri@resnulli.us>
+Subject: [PATCH net-next v2 4/4] devlink: use DEVLINK_VAR_ATTR_TYPE_* instead of NLA_* in fmsg
+Date: Mon,  5 May 2025 13:45:13 +0200
+Message-ID: <20250505114513.53370-5-jiri@resnulli.us>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250505114513.53370-1-jiri@resnulli.us>
 References: <20250505114513.53370-1-jiri@resnulli.us>
@@ -82,118 +82,154 @@ Content-Transfer-Encoding: 8bit
 
 From: Jiri Pirko <jiri@nvidia.com>
 
-in case the enum has holes, instead of hard stop, generate a validation
-callback to check valid enum values.
+Use newly introduced DEVLINK_VAR_ATTR_TYPE_* enum values instead of
+internal NLA_* in fmsg health reporter code.
 
-signed-off-by: jiri pirko <jiri@nvidia.com>
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
 ---
-v1->v2:
-- fixed min/max none check
-- changed switch-case to fall-through with single return statement
-- removed not needed special indentation treating
-saeed's v3->v1:
-- added validation callback generation
----
- tools/net/ynl/pyynl/ynl_gen_c.py | 58 ++++++++++++++++++++++++++++----
- 1 file changed, 52 insertions(+), 6 deletions(-)
+ net/devlink/health.c | 65 ++++++++++++++------------------------------
+ 1 file changed, 21 insertions(+), 44 deletions(-)
 
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index 09b87c9a6908..acba03bbe67d 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -389,11 +389,14 @@ class TypeScalar(Type):
-         if 'enum' in self.attr:
-             enum = self.family.consts[self.attr['enum']]
-             low, high = enum.value_range()
--            if 'min' not in self.checks:
--                if low != 0 or self.type[0] == 's':
--                    self.checks['min'] = low
--            if 'max' not in self.checks:
--                self.checks['max'] = high
-+            if low == None and high == None:
-+                self.checks['sparse'] = True
-+            else:
-+                if 'min' not in self.checks:
-+                    if low != 0 or self.type[0] == 's':
-+                        self.checks['min'] = low
-+                if 'max' not in self.checks:
-+                    self.checks['max'] = high
+diff --git a/net/devlink/health.c b/net/devlink/health.c
+index 95a7a62d85a2..b3ce8ecbb7fb 100644
+--- a/net/devlink/health.c
++++ b/net/devlink/health.c
+@@ -735,7 +735,7 @@ static void devlink_fmsg_put_name(struct devlink_fmsg *fmsg, const char *name)
+ 		return;
+ 	}
  
-         if 'min' in self.checks and 'max' in self.checks:
-             if self.get_limit('min') > self.get_limit('max'):
-@@ -425,6 +428,8 @@ class TypeScalar(Type):
-             return f"NLA_POLICY_MIN({policy}, {self.get_limit_str('min')})"
-         elif 'max' in self.checks:
-             return f"NLA_POLICY_MAX({policy}, {self.get_limit_str('max')})"
-+        elif 'sparse' in self.checks:
-+            return f"NLA_POLICY_VALIDATE_FN({policy}, &{c_lower(self.enum_name)}_validate)"
-         return super()._attr_policy(policy)
+-	item->nla_type = NLA_NUL_STRING;
++	item->nla_type = DEVLINK_VAR_ATTR_TYPE_NUL_STRING;
+ 	item->len = strlen(name) + 1;
+ 	item->attrtype = DEVLINK_ATTR_FMSG_OBJ_NAME;
+ 	memcpy(&item->value, name, item->len);
+@@ -822,32 +822,37 @@ static void devlink_fmsg_put_value(struct devlink_fmsg *fmsg,
+ static void devlink_fmsg_bool_put(struct devlink_fmsg *fmsg, bool value)
+ {
+ 	devlink_fmsg_err_if_binary(fmsg);
+-	devlink_fmsg_put_value(fmsg, &value, sizeof(value), NLA_FLAG);
++	devlink_fmsg_put_value(fmsg, &value, sizeof(value),
++			       DEVLINK_VAR_ATTR_TYPE_FLAG);
+ }
  
-     def _attr_typol(self):
-@@ -930,7 +935,7 @@ class EnumSet(SpecEnumSet):
-         high = max([x.value for x in self.entries.values()])
+ static void devlink_fmsg_u8_put(struct devlink_fmsg *fmsg, u8 value)
+ {
+ 	devlink_fmsg_err_if_binary(fmsg);
+-	devlink_fmsg_put_value(fmsg, &value, sizeof(value), NLA_U8);
++	devlink_fmsg_put_value(fmsg, &value, sizeof(value),
++			       DEVLINK_VAR_ATTR_TYPE_U8);
+ }
  
-         if high - low + 1 != len(self.entries):
--            raise Exception("Can't get value range for a noncontiguous enum")
-+            return None, None
+ void devlink_fmsg_u32_put(struct devlink_fmsg *fmsg, u32 value)
+ {
+ 	devlink_fmsg_err_if_binary(fmsg);
+-	devlink_fmsg_put_value(fmsg, &value, sizeof(value), NLA_U32);
++	devlink_fmsg_put_value(fmsg, &value, sizeof(value),
++			       DEVLINK_VAR_ATTR_TYPE_U32);
+ }
+ EXPORT_SYMBOL_GPL(devlink_fmsg_u32_put);
  
-         return low, high
+ static void devlink_fmsg_u64_put(struct devlink_fmsg *fmsg, u64 value)
+ {
+ 	devlink_fmsg_err_if_binary(fmsg);
+-	devlink_fmsg_put_value(fmsg, &value, sizeof(value), NLA_U64);
++	devlink_fmsg_put_value(fmsg, &value, sizeof(value),
++			       DEVLINK_VAR_ATTR_TYPE_U64);
+ }
  
-@@ -2426,6 +2431,46 @@ def print_kernel_policy_ranges(family, cw):
-             cw.nl()
+ void devlink_fmsg_string_put(struct devlink_fmsg *fmsg, const char *value)
+ {
+ 	devlink_fmsg_err_if_binary(fmsg);
+-	devlink_fmsg_put_value(fmsg, value, strlen(value) + 1, NLA_NUL_STRING);
++	devlink_fmsg_put_value(fmsg, value, strlen(value) + 1,
++			       DEVLINK_VAR_ATTR_TYPE_NUL_STRING);
+ }
+ EXPORT_SYMBOL_GPL(devlink_fmsg_string_put);
  
+@@ -857,7 +862,8 @@ void devlink_fmsg_binary_put(struct devlink_fmsg *fmsg, const void *value,
+ 	if (!fmsg->err && !fmsg->putting_binary)
+ 		fmsg->err = -EINVAL;
  
-+def print_kernel_policy_sparse_enum_validates(family, cw):
-+    first = True
-+    for _, attr_set in family.attr_sets.items():
-+        if attr_set.subset_of:
-+            continue
-+
-+        for _, attr in attr_set.items():
-+            if not attr.request:
-+                continue
-+            if not attr.enum_name:
-+                continue
-+            if 'sparse' not in attr.checks:
-+                continue
-+
-+            if first:
-+                cw.p('/* Sparse enums validation callbacks */')
-+                first = False
-+
-+            sign = '' if attr.type[0] == 'u' else '_signed'
-+            suffix = 'ULL' if attr.type[0] == 'u' else 'LL'
-+            cw.write_func_prot('static int', f'{c_lower(attr.enum_name)}_validate',
-+                               ['const struct nlattr *attr', 'struct netlink_ext_ack *extack'])
-+            cw.block_start()
-+            cw.block_start(line=f'switch (nla_get_{attr["type"]}(attr))')
-+            enum = family.consts[attr['enum']]
-+            first_entry = True
-+            for entry in enum.entries.values():
-+                if first_entry:
-+                    first_entry = False
-+                else:
-+                    cw.p('fallthrough;')
-+                cw.p(f'case {entry.c_name}:')
-+            cw.p('return 0;')
-+            cw.block_end()
-+            cw.p('NL_SET_ERR_MSG_ATTR(extack, attr, "invalid enum value");')
-+            cw.p('return -EINVAL;')
-+            cw.block_end()
-+            cw.nl()
-+
-+
- def print_kernel_op_table_fwd(family, cw, terminate):
-     exported = not kernel_can_gen_family_struct(family)
+-	devlink_fmsg_put_value(fmsg, value, value_len, NLA_BINARY);
++	devlink_fmsg_put_value(fmsg, value, value_len,
++			       DEVLINK_VAR_ATTR_TYPE_BINARY);
+ }
+ EXPORT_SYMBOL_GPL(devlink_fmsg_binary_put);
  
-@@ -3097,6 +3142,7 @@ def main():
-             print_kernel_family_struct_hdr(parsed, cw)
-         else:
-             print_kernel_policy_ranges(parsed, cw)
-+            print_kernel_policy_sparse_enum_validates(parsed, cw)
+@@ -927,36 +933,6 @@ void devlink_fmsg_binary_pair_put(struct devlink_fmsg *fmsg, const char *name,
+ }
+ EXPORT_SYMBOL_GPL(devlink_fmsg_binary_pair_put);
  
-             for _, struct in sorted(parsed.pure_nested_structs.items()):
-                 if struct.request:
+-static int
+-devlink_fmsg_item_fill_type(struct devlink_fmsg_item *msg, struct sk_buff *skb)
+-{
+-	enum devlink_var_attr_type var_attr_type;
+-
+-	switch (msg->nla_type) {
+-	case NLA_FLAG:
+-		var_attr_type = DEVLINK_VAR_ATTR_TYPE_FLAG;
+-		break;
+-	case NLA_U8:
+-		var_attr_type = DEVLINK_VAR_ATTR_TYPE_U8;
+-		break;
+-	case NLA_U32:
+-		var_attr_type = DEVLINK_VAR_ATTR_TYPE_U32;
+-		break;
+-	case NLA_U64:
+-		var_attr_type = DEVLINK_VAR_ATTR_TYPE_U64;
+-		break;
+-	case NLA_NUL_STRING:
+-		var_attr_type = DEVLINK_VAR_ATTR_TYPE_NUL_STRING;
+-		break;
+-	case NLA_BINARY:
+-		var_attr_type = DEVLINK_VAR_ATTR_TYPE_BINARY;
+-		break;
+-	default:
+-		return -EINVAL;
+-	}
+-	return nla_put_u8(skb, DEVLINK_ATTR_FMSG_OBJ_VALUE_TYPE, var_attr_type);
+-}
+-
+ static int
+ devlink_fmsg_item_fill_data(struct devlink_fmsg_item *msg, struct sk_buff *skb)
+ {
+@@ -964,20 +940,20 @@ devlink_fmsg_item_fill_data(struct devlink_fmsg_item *msg, struct sk_buff *skb)
+ 	u8 tmp;
+ 
+ 	switch (msg->nla_type) {
+-	case NLA_FLAG:
++	case DEVLINK_VAR_ATTR_TYPE_FLAG:
+ 		/* Always provide flag data, regardless of its value */
+ 		tmp = *(bool *)msg->value;
+ 
+ 		return nla_put_u8(skb, attrtype, tmp);
+-	case NLA_U8:
++	case DEVLINK_VAR_ATTR_TYPE_U8:
+ 		return nla_put_u8(skb, attrtype, *(u8 *)msg->value);
+-	case NLA_U32:
++	case DEVLINK_VAR_ATTR_TYPE_U32:
+ 		return nla_put_u32(skb, attrtype, *(u32 *)msg->value);
+-	case NLA_U64:
++	case DEVLINK_VAR_ATTR_TYPE_U64:
+ 		return devlink_nl_put_u64(skb, attrtype, *(u64 *)msg->value);
+-	case NLA_NUL_STRING:
++	case DEVLINK_VAR_ATTR_TYPE_NUL_STRING:
+ 		return nla_put_string(skb, attrtype, (char *)&msg->value);
+-	case NLA_BINARY:
++	case DEVLINK_VAR_ATTR_TYPE_BINARY:
+ 		return nla_put(skb, attrtype, msg->len, (void *)&msg->value);
+ 	default:
+ 		return -EINVAL;
+@@ -1011,7 +987,8 @@ devlink_fmsg_prepare_skb(struct devlink_fmsg *fmsg, struct sk_buff *skb,
+ 			err = nla_put_flag(skb, item->attrtype);
+ 			break;
+ 		case DEVLINK_ATTR_FMSG_OBJ_VALUE_DATA:
+-			err = devlink_fmsg_item_fill_type(item, skb);
++			err = nla_put_u8(skb, DEVLINK_ATTR_FMSG_OBJ_VALUE_TYPE,
++					 item->nla_type);
+ 			if (err)
+ 				break;
+ 			err = devlink_fmsg_item_fill_data(item, skb);
 -- 
 2.49.0
 
