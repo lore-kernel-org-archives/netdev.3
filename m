@@ -1,151 +1,176 @@
-Received: from smtp-fw-80008.amazon.com (smtp-fw-80008.amazon.com [99.78.197.219])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2073.outbound.protection.outlook.com [40.107.244.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BBA525A2AD;
-	Mon,  5 May 2025 19:45:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.219
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746474308; cv=none; b=tUTYFWxlJjUg6GBUtJwY407x1sFiHynIZ8/1WzQjSKs1OziEPtIH0Cx4CgjrnMM3IcgeGYTZT9Z+izvGQvZ1j3Ux67a9ywtypK4+BKLJjhoVEZgVDlREfGNT9D41B0CdFhRQ6QHQgn7j+IQxTk51fxtzGpPfw9e5F2u7Z6hEg4I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746474308; c=relaxed/simple;
-	bh=E5D00Fn3Ews3NrcKKo40oyb0gzJDlFcBX1biTaaaB/M=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NHyRcxsFHfKcU7+aoWOlhZLFpnJaXTTufXHpHW4FWjMa6DOirTwLWwU+vTkApk89Ef9siptKh0pMa4JUG9+L4f9QsORcANd2PKKGNFPife0mufLOCvY6Ii1VIWp87urA1fo6pShXmbD7Gtt0fuPq3Fr4H50+GT9wtKNb1j42Vq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=mg74TtMj; arc=none smtp.client-ip=99.78.197.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848BC6DCE1;
+	Mon,  5 May 2025 19:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.73
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746474481; cv=fail; b=RDWWqkZBuK3eQoHYG1qk3kQHHKr5txPwJdd7EahBx0orclfE5kWR/WluC23wdWfpD27A9YGIssfCZ7uSo4yBo2QqVaO8BOlYgZ3amhj3veweN2fRnZo7DERQj68GsypqOxMAKUFZ2InqQBXSZJVPa9Fej4qTu2mlEiSArrVKXfs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746474481; c=relaxed/simple;
+	bh=hwpPbBECLZl0pyzu8hnRQY1oMp5BCcgkbRM7oPc/0Eg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PdMNo9sCpkjHLgkD9uHIXZ8W+ghmZsWkaAOAADWn26sCsn9qA6Sf5/8l5DNqNHqh/LrciaNlval4PihGEtbN/JeW37mrNXD4D1RbqjX4FrERqtN1USe5gl/IyBwNJOCmBpnMOXvaYgo63QNzVrh9ULdWVufd+w7QeTGs3YcKgK8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kSZZ+TDy; arc=fail smtp.client-ip=40.107.244.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="mg74TtMj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1746474306; x=1778010306;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=in13V4Hpf+rM5riCqQp8PkhP40WaDgpbmkmr0PaeIdU=;
-  b=mg74TtMjtX5BsB7/ecNyyiha/yPhviJqK8hNBpLaygWG4iRQB+IPxXS3
-   m++796nkesS725aK6nKi1ZtYB1Qj01sSsdk90v192n0JXULNgA7bMoitK
-   Yyxu73OQ3a/KOBCyP6YttORTdG6GcipFSicy5rSyXe5dBWPu49w7ylTuX
-   g=;
-X-IronPort-AV: E=Sophos;i="6.15,264,1739836800"; 
-   d="scan'208";a="193851574"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-80008.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 19:45:04 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.21.151:50948]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.10.32:2525] with esmtp (Farcaster)
- id a2fb1d49-05fb-4bfc-b186-5b0439853504; Mon, 5 May 2025 19:45:04 +0000 (UTC)
-X-Farcaster-Flow-ID: a2fb1d49-05fb-4bfc-b186-5b0439853504
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Mon, 5 May 2025 19:45:03 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.187.170.18) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Mon, 5 May 2025 19:44:59 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <kuniyu@amazon.com>
-CC: <alexander@mihalicyn.com>, <bluca@debian.org>, <brauner@kernel.org>,
-	<daan.j.demeyer@gmail.com>, <davem@davemloft.net>, <david@readahead.eu>,
-	<edumazet@google.com>, <horms@kernel.org>, <jack@suse.cz>,
-	<jannh@google.com>, <kuba@kernel.org>, <lennart@poettering.net>,
-	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<me@yhndnzj.com>, <netdev@vger.kernel.org>, <oleg@redhat.com>,
-	<pabeni@redhat.com>, <viro@zeniv.linux.org.uk>, <zbyszek@in.waw.pl>
-Subject: Re: [PATCH RFC v3 08/10] net, pidfs, coredump: only allow coredumping tasks to connect to coredump socket
-Date: Mon, 5 May 2025 12:44:30 -0700
-Message-ID: <20250505194451.22723-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250505193828.21759-1-kuniyu@amazon.com>
-References: <20250505193828.21759-1-kuniyu@amazon.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kSZZ+TDy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dEfu5tF3LSFaQZGr0UfvJOm8YieMyiMD9a/m/JvSze5glBhzhM8FMcD53OZg1wKNw7c5cjxfyC3bFlVRczdRjPOQfVKYL7hccAEt/x2kwrRIpzarrL7eo/LeIfFCn5d7CuSRSni63/JAidUTYnDqIKSdHhL7TTCCivtC38d2FBrXjwQHlBZwtlSTtcWrLzmyYITfCB+WIYw44S6GiEylSdqSrS7rrqOPgMDTTeEd5oAz7B1qhQHbDdmJ/2uS07YfOUDBEzdJaecnIuZSDbYdQVYroo9flHqxEZ3kTJOCWysHEFpFExuU/4Ajy6edxjrSTfmLfWViCnqWB5cSmcetdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iwCvFIwDRTI7zZ/y1JDfwXx3mUASQIpsHj+D6awCQtY=;
+ b=mhTyGYbryt8VaZ7Q6qaCdE07LDVDlcRUlchakSULaO3afLaj2Wt5/TuqW9JMaGKl8xpNCTDk6vDzLpDmBJfpfLxg0p/+rYV0/nf9m5WRrmA1Rvl5fnVrfRdZQIo+lEUk8pFE+lQX8FPeD5IxgZa/DD2hPfvuho49uA72Qftq6sCwu4erWEbSNBbZUqOF4XNwDHOaPzB+z/9aOqbGOYtoOYw37PYNcq2u26icg8GfLeur6IV3K8TyAf/J5wPrmFKETDDlBy/kaRcrqd4iLsmoFZVnkXLGCTF2Hefuy5Y4p7b0xrCcVyx1M8IXaBCHMSawyjLYkXXgXldFovW+TSddIA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iwCvFIwDRTI7zZ/y1JDfwXx3mUASQIpsHj+D6awCQtY=;
+ b=kSZZ+TDyffAllUc+RMGCbeZjKivRaLoUoapTAez+oSlc4HS50SulLfa9IRWL9QJSBZmkqAq+VoM8t+72qWr9b8ULL8NZUo+q4LKgLwisvUBlI0X0RAHQ5lUkvpJBeyvqww/JRh/YcoQqGu3frR6vluMoW5mel3bLs4NJ0JjU9UKgUbpRHlMCuEQH/CgsKSN6ESj2La5FbOKuyjSoaLm1lldkjM/Vs3edYD19DiwDeohCqs9Q7otIRePyzSAQQGDUcWAcL4XY9tmeXa4XlzyvbOGvIErFDhTCk5jW/iFlXn8tiooyrSCrcg9N9skAH3e7b4HQpCp5XZgF9qk1mOPSCQ==
+Received: from BL1PR13CA0266.namprd13.prod.outlook.com (2603:10b6:208:2ba::31)
+ by SN7PR12MB6714.namprd12.prod.outlook.com (2603:10b6:806:272::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.24; Mon, 5 May
+ 2025 19:47:56 +0000
+Received: from BN1PEPF00005FFF.namprd05.prod.outlook.com
+ (2603:10b6:208:2ba:cafe::d6) by BL1PR13CA0266.outlook.office365.com
+ (2603:10b6:208:2ba::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.17 via Frontend Transport; Mon,
+ 5 May 2025 19:47:56 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BN1PEPF00005FFF.mail.protection.outlook.com (10.167.243.231) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8722.18 via Frontend Transport; Mon, 5 May 2025 19:47:55 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 5 May 2025
+ 12:47:31 -0700
+Received: from c-237-113-240-247.mtl.labs.mlnx (10.126.230.35) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Mon, 5 May 2025 12:47:27 -0700
+From: Cosmin Ratiu <cratiu@nvidia.com>
+To: <netdev@vger.kernel.org>, <cratiu@nvidia.com>
+CC: Stanislav Fomichev <sdf@fomichev.me>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "jiri @ resnulli . us"
+	<jiri@resnulli.us>, Saeed Mahameed <saeedm@nvidia.com>, Dragos Tatulea
+	<dtatulea@nvidia.com>, <linux-kselftest@vger.kernel.org>
+Subject: [PATCH net] net: Lock netdevices during dev_shutdown
+Date: Mon, 5 May 2025 22:47:13 +0300
+Message-ID: <20250505194713.1723399-1-cratiu@nvidia.com>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: EX19D043UWA004.ant.amazon.com (10.13.139.41) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF00005FFF:EE_|SN7PR12MB6714:EE_
+X-MS-Office365-Filtering-Correlation-Id: 683aeafc-0311-42b8-e835-08dd8c0dbb40
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?NPR9xtulkJEGD++NOMMwXfHAsSfARuY2l8BjpHWJ9EO+9GfGXj3xNP7svonl?=
+ =?us-ascii?Q?+/xVs45mC4JOAHuzB3FKdBddSrfL+kd9vTHklgcLrZ+5HfBJuzBfQeC/0Gsr?=
+ =?us-ascii?Q?ZGxBwNTdRubmVw6A+2YfHze5W/xpDNgE/3c5Jx1ULv3kO1n+22gcgQupXPUn?=
+ =?us-ascii?Q?0vU55SEDcmdsEfVUS7sRSJaVr7KQOWtJUa7A+Ii7PjBaCfwxwOYC8RlaME9S?=
+ =?us-ascii?Q?QJ6F6ll/0jKdsdPhXHWfbaUpOlrYJo+0J8jkDL1XvDC71Qk4/nlMJrhbSaXd?=
+ =?us-ascii?Q?vmTsCS3CuaDvkKXXuBsRMDcdxjTZCiSOZpSsVZuwsUMWkaeGbmmuKAaa2xTX?=
+ =?us-ascii?Q?HeMebLUxEOVy7m0zqx3Uyu94z2VY4mXZbDy4kcgwNqFuLDuKBrpUbIK9Tpcn?=
+ =?us-ascii?Q?fkFlCLcfQWMxDWlZgtY4F8J6G90F/afp9oKwSg7M+3CeQwdMX1xJHd7Fg0Xk?=
+ =?us-ascii?Q?cPFCJvT+ipXWWMP7lulX0s80+Hij2cl/y6YYt6CfBo6jHOsFt0rnw+93jqOd?=
+ =?us-ascii?Q?E//m25ews2x7rmV+GSu3u2ruoqVUTkVZS6Cbgb37xdBBaVA4q77MNmuGTmU4?=
+ =?us-ascii?Q?qaY2axQw1r3p/sbTRVld6upurxEo1t0CO5Elytyd4rUgR/VYhknjBMuPpkbG?=
+ =?us-ascii?Q?1PSkzgD48Iz2IQj0gjhCcr++/VqSOqNe2eKg+8vwrAvMVRhtQDSQkd76GIvV?=
+ =?us-ascii?Q?vp2GqbrraK6EwesfUPgadRH56qEoXDfmOcuFWMZgBEu6EfcZASbdOpVRSfmn?=
+ =?us-ascii?Q?93liAVb+lfFLkZEHIjrGZNpsNVxaZOSrcZPfHykzzf5UGIt/XlDUqc0HkVAI?=
+ =?us-ascii?Q?oU82A/fbdY9Ke8J6haeFyO1m/oVIUY6xQ8wuhjSEDF935kbOmiT9f85iW2AZ?=
+ =?us-ascii?Q?2o6ZQg5aOZKezJ9JhPKBEWmbsIK4bpZe2Y3L6kH7GfQYhXEDJ5A0pO/gCHbD?=
+ =?us-ascii?Q?rnsBNlnTqrG/24o0ZEGlOY7I3bKAijxNj4b18hSRbb7FPMFcxZFzsXPDlSNn?=
+ =?us-ascii?Q?Le+3YL45rqJfUDRsFvgq+xS+Qz3DsXiXIh2xgCqHGYdLTKZAp1A8D+ARdBNo?=
+ =?us-ascii?Q?2W+9Cr4aw1+QGTzXctKqebumFpARwn/iGnUgdSGKUKG+jmZezATPeCY2oMSz?=
+ =?us-ascii?Q?N51TnqFbBGkCx/kt7oKnZ2tlVLdSn/vaMG4ZOcTDScR3FBD/WcV9PDCxbZw8?=
+ =?us-ascii?Q?yBidzAqeXlGX7Ee9IsqSYy2Zp/NuUtW0rohcmgytzQzHQ5O7cimnqJWsm0Og?=
+ =?us-ascii?Q?EaMSftM2SaTVJBUzwNZLBgyhvpVzlgy/gPE7SWmKZlPelArb8xGwgXx4dw9P?=
+ =?us-ascii?Q?oVNrQC5yY7u0o3HWy2V3wZhzfltbhkvCHf3ggHVRg+dOKcl1Na/BulZgj66U?=
+ =?us-ascii?Q?b80wP+9PKAWvCOni4bLpXZcbN5AxXyGD4Ogv92TARniZginMYqtDe0BEmUeO?=
+ =?us-ascii?Q?3KnQkgv/ID+BafKvVYcsHlj2cgFGxhuUVG0RSTPKgYuqUOjMpZLF8XsXeToJ?=
+ =?us-ascii?Q?zScf2KM5N29rQLGXTE0ovpf9sdW7G1r1nxOw?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2025 19:47:55.8386
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 683aeafc-0311-42b8-e835-08dd8c0dbb40
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00005FFF.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6714
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-Date: Mon, 5 May 2025 12:35:50 -0700
-> From: Jann Horn <jannh@google.com>
-> Date: Mon, 5 May 2025 21:10:28 +0200
-> > On Mon, May 5, 2025 at 8:41 PM Kuniyuki Iwashima <kuniyu@amazon.com> wrote:
-> > > From: Christian Brauner <brauner@kernel.org>
-> > > Date: Mon, 5 May 2025 16:06:40 +0200
-> > > > On Mon, May 05, 2025 at 03:08:07PM +0200, Jann Horn wrote:
-> > > > > On Mon, May 5, 2025 at 1:14 PM Christian Brauner <brauner@kernel.org> wrote:
-> > > > > > Make sure that only tasks that actually coredumped may connect to the
-> > > > > > coredump socket. This restriction may be loosened later in case
-> > > > > > userspace processes would like to use it to generate their own
-> > > > > > coredumps. Though it'd be wiser if userspace just exposed a separate
-> > > > > > socket for that.
-> > > > >
-> > > > > This implementation kinda feels a bit fragile to me... I wonder if we
-> > > > > could instead have a flag inside the af_unix client socket that says
-> > > > > "this is a special client socket for coredumping".
-> > > >
-> > > > Should be easily doable with a sock_flag().
-> > >
-> > > This restriction should be applied by BPF LSM.
-> > 
-> > I think we shouldn't allow random userspace processes to connect to
-> > the core dump handling service and provide bogus inputs; that
-> > unnecessarily increases the risk that a crafted coredump can be used
-> > to exploit a bug in the service. So I think it makes sense to enforce
-> > this restriction in the kernel.
-> 
-> It's already restricted by /proc/sys/kernel/core_pattern.
-> We don't need a duplicated logic.
-> 
-> Even when the process holding the listener dies, you can
-> still avoid such a leak.
-> 
-> e.g.
-> 
-> 1. Set up a listener
-> 2. Put the socket into a bpf map
-> 3. Attach LSM at connect()
-> 
-> Then, the LSM checks if the destination socket is
-> 
->   * listening on the name specified in /proc/sys/kernel/core_pattern
->   * exists in the associated BPF map
+__qdisc_destroy() calls into various qdiscs .destroy() op, which in turn
+can call .ndo_setup_tc(), which requires the netdev instance lock.
 
-and LSM can check if the source socket is a kernel socket too.
+This commit extends the critical section in
+unregister_netdevice_many_notify() to cover dev_shutdown() (and
+dev_tcx_uninstall() as a side-effect) and acquires the netdev instance
+lock in __dev_change_net_namespace() for the other dev_shutdown() call.
 
+This should now guarantee that for all qdisc ops, the netdev instance
+lock is held during .ndo_setup_tc().
 
-> 
-> So, if the socket is dies and a malicious user tries to hijack
-> the core_pattern name, LSM still rejects such connect().
-> 
-> Later, the admin can restart the program with different core_pattern.
-> 
-> 
-> > 
-> > My understanding is that BPF LSM creates fairly tight coupling between
-> > userspace and the kernel implementation, and it is kind of unwieldy
-> > for userspace. (I imagine the "man 5 core" manpage would get a bit
-> > longer and describe more kernel implementation detail if you tried to
-> > show how to write a BPF LSM that is capable of detecting unix domain
-> > socket connections to a specific address that are not initiated by
-> > core dumping.) I would like to keep it possible to implement core
-> > userspace functionality in a best-practice way without needing eBPF.
-> 
-> I think the untrusted user scenario is paranoia in most cases,
-> and the man page just says "if you really care, use BPF LSM".
-> 
-> If someone can listen on a name AND set it to core_pattern, most
-> likely something worse already happened.
-> 
-> 
-> > 
-> > > It's hard to loosen such a default restriction as someone might
-> > > argue that's unexpected and regression.
-> > 
-> > If userspace wants to allow other processes to connect to the core
-> > dumping service, that's easy to implement - userspace can listen on a
-> > separate address that is not subject to these restrictions.
-> > 
+Fixes: a0527ee2df3f ("net: hold netdev instance lock during qdisc ndo_setup_tc")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+---
+ net/core/dev.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 1be7cb73a602..92e004c354ea 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -11966,9 +11966,9 @@ void unregister_netdevice_many_notify(struct list_head *head,
+ 		struct sk_buff *skb = NULL;
+ 
+ 		/* Shutdown queueing discipline. */
++		netdev_lock_ops(dev);
+ 		dev_shutdown(dev);
+ 		dev_tcx_uninstall(dev);
+-		netdev_lock_ops(dev);
+ 		dev_xdp_uninstall(dev);
+ 		dev_memory_provider_uninstall(dev);
+ 		netdev_unlock_ops(dev);
+@@ -12161,7 +12161,9 @@ int __dev_change_net_namespace(struct net_device *dev, struct net *net,
+ 	synchronize_net();
+ 
+ 	/* Shutdown queueing discipline. */
++	netdev_lock_ops(dev);
+ 	dev_shutdown(dev);
++	netdev_unlock_ops(dev);
+ 
+ 	/* Notify protocols, that we are about to destroy
+ 	 * this device. They should clean all the things.
+-- 
+2.45.0
+
