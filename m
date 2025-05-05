@@ -1,62 +1,62 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB921FBC92
-	for <netdev@vger.kernel.org>; Mon,  5 May 2025 11:45:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1CCD49659
+	for <netdev@vger.kernel.org>; Mon,  5 May 2025 11:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746445524; cv=none; b=oLc6pNfl28ZjtVVtxNDOojsn+YVHXynB1NPTHw/7jQdUnX1xU7V6JDQYT8gROdmO0Pya9SSKLlk7iHAnzwoXNKPKdCVg1wKYPuhtRJnxNCOvgdFew/j/owTv+5pdcBsxJeEcN+/bJCo8/trQkntgmX+anjyKi+60ookAAUli80o=
+	t=1746445524; cv=none; b=Ax4pEN184/jsOKid3Xrkh4xljSR6ker+vqP+9H8R+EVBdev4D7P3ysNTpIbjO1O9oEVxLok+2WJPiq+xzgck24TeIfeAieG0OVSNO5FLa75/wrqs2qtfybFXLV6vCLgBkRYwAyGq8YPGloy3va5qNslJdqdMowQ1Y/zR/PvECZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746445524; c=relaxed/simple;
-	bh=zdkm2EviynFIYLE1LwU0bnlK63oN/k8ZvxF1A9Q68Is=;
+	bh=+xrFH+959Wfjay5dJUOvaqmEVhTD8UmyUNF8VwdpN74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0hOPZEZe0jyLWgHHHvnpDFHzkHk+32Y+/aa1kD91j4z1IqM58+IBucMw33fa+8WyojsKDKID2lld2H85InHpB8IrbS9gNCoHUi6jWyKOL+lNJ9fyPPptXjSpPlBifZBXEBjvTdDcEGAJqO4oT1yhiLyxQDltSzQviXoJixjBRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=imCEEbPB; arc=none smtp.client-ip=209.85.128.46
+	 MIME-Version; b=ghQse+NkZH2DswFzL5aSeBi03ha73iCXYR8a1rTd8MKfVYt3/K7jMGMKwDQlSrDBHE2K/1f9+/YHRzJDaaQfO3Ll63WQ+pLKHf7FWe11y7jtZw6C9vPrnS2jEN8MzNY0gz4sGdYzrALxmcJ26Dq4t7IeeCNu7JM/jY/DBDfYTb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=xN+rPHfp; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="imCEEbPB"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-441c99459e9so7474055e9.3
-        for <netdev@vger.kernel.org>; Mon, 05 May 2025 04:45:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="xN+rPHfp"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43cfe63c592so39700845e9.2
+        for <netdev@vger.kernel.org>; Mon, 05 May 2025 04:45:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1746445521; x=1747050321; darn=vger.kernel.org;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1746445517; x=1747050317; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bze5g06E954LhW/FHm6j15sAmJzcmP1iMkHBALei+OY=;
-        b=imCEEbPBBX6iL3l57M4NW3viMkke7Ik4AHDOFXMnSVNflRDSFttts+mlzl/+gBdjRA
-         pE9u5eugM4BdwzgGzRmaAo1fpcMvxL5gpM6yyu+aujlbme4WQo18bscDmkgw7OCsC+pf
-         IovRXxQLw88HP3S6fuihmNmUPA1AkcGgBWf6tzuYEn5xbEp5rB9atMvNb7nAc9IjbIdO
-         lvRS45sE1cAoqGmAE/C3Lf+GUMiIIPBQw5a/NzFZrsjur3nZIItI0zQ/NKcKPt63+I1P
-         zWl9tcrcbahG3GsjUvhRmpPtbjRmCK2cwZoTaWGtQZ5CW7AjNlF/KUdGH+WxvoCXopHh
-         tFDA==
+        bh=GR+iaBeipVE5H/6NIskEDd2663MYaiZaMs1eRdyeff8=;
+        b=xN+rPHfpn8UpA/BHgPUx94pbqQLJcczvROnuHXo48cn/hPTDTrtoci17I08UCYaHBs
+         0YLBKOy2RYtbkSiRqtqhLp4u/YjoBG7AqCJqaZVahUbVsaGtCEpNPZF8mFOsWdbRsPcR
+         0+y4auVLH+vi0CnueldDJ73pZMG+6e3PYIPAAPE4AoPI05tparEW/cZB5WFIh4vVmqiX
+         ci058iGfQr/7PV9QDOLiiIbJ93iK1DM3NIpUbI/76y6x0CQ36eBNE81O8FyN4XNSJV1j
+         f/0LYUSEOLItrWBmNSObxWwWlakQt06Y6RUTTJi7gZeqRVANjcUMu6+s8HOeXEtJz2tG
+         VHlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746445521; x=1747050321;
+        d=1e100.net; s=20230601; t=1746445517; x=1747050317;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bze5g06E954LhW/FHm6j15sAmJzcmP1iMkHBALei+OY=;
-        b=OYLTRfMcxXF+SDTHcQpaLHgm0MmhXcVKTNgWQhDLeaRW2W6gl0naxcMdI2v/uiBGxL
-         eMvmpG831TmWiolcZtuTw30xQAm6Hhbb3f933mf4SO+54mZKD7TvVfBAerdfVrl9JGhk
-         KbxGTk5JHPo2AUOOmXRL5YIRUb/cxw/TU6N9cVvpAA7rxwZDKGPhmBUtfiHf5qL/uDTb
-         qo1DcGWT9FS6BgIXpnhb2u661ERN41mMiHcBsTfB9ixubYNc1XGaGEtENi1InzZcdGzX
-         QOw5JJfHx0/EYIrWbrdoDcEVACabG4QuMV3PrqT39s/Y8mRtowkaRYEkEoRpIQZM4v6X
-         dOhw==
-X-Gm-Message-State: AOJu0YyjAp1qQbdYnJ5molHv3e5yFfGie/9rsoU8FDDCKfj+QQtL35qn
-	Y3UU6X7FPGQNglpb//TFbJDgPIWiM0EfFEI0Yw3cFKX62N8pyRXctwYiuvP2+TFhxjwOsH2KSm0
-	k
-X-Gm-Gg: ASbGncs94DBx68KbmI1TkiyvxSHEABb1ft4CTJcTbvCECgogQcKC/p9+fiN+5P55Nis
-	Am1H6ApqBDQzryglpGE293L1chTQMaoeU5j7PHZPf18Ua4pPlg3yXUJbUM0TRie1rYBI98NiIMl
-	UmteVswfDxjRKkwQl/s8i9XoPcQsLpby/W2XFz774T+k0MZYJ3Ox7/Uvjp8/QHMDbwtFbLpvk53
-	g76n/emzNJ7c71W5b+Rb5C9kZvA8Z/MMbVZSog0SVBC/RdLqBhapkkY05rLWV+49GFNn6c7zYZK
-	8mbCrFQff3G6C/fu6csqB0QRxTZvdrGhnxXNC1pyAkYhOO3oP4uZeb1wGA==
-X-Google-Smtp-Source: AGHT+IEDnHhsPP6xf3kkm8b5+rKB6KHt+2f9ukkJEsIdqj7JjqNV6TPmbw6ZST2j19omfg7q+AgfEw==
-X-Received: by 2002:a05:600c:19c6:b0:43c:e9f7:d6a3 with SMTP id 5b1f17b1804b1-441bbec2a80mr103134285e9.13.1746445520671;
-        Mon, 05 May 2025 04:45:20 -0700 (PDT)
+        bh=GR+iaBeipVE5H/6NIskEDd2663MYaiZaMs1eRdyeff8=;
+        b=pAiG97Gl9Le5sUsw5MU8+nKw87GkzLCCWuhVCA2g0YX0fcNWGpHc7uupAo0rzEHtZt
+         n2tMM8NlYoeYiMuyMq6lsG/0j5O+CW/7B2tMVljy8kH+MeZC0XmwnLTrdqaOsJhYdc3d
+         mnxpNMPuFY6hR55LlXRaLzRtBktxZvj5mw8reRxz++4/E32hB/oFnX5T+dXkd5jLR4E1
+         iudrgTzbDcE73hsqCYTK59XI0zAHP6qFdgRBkvn9k7vppSGyYjatN2gBGlda2+/1Bw3x
+         pabfcCZz0el7/CfFXhVx+5rHKmhK0k288PSXZPZgmejgKYUnDYkY00H9wvbCibh5j61U
+         oDSA==
+X-Gm-Message-State: AOJu0Yzg6wGyZszuDAb2snfALsHdfhVrPiG97jWPV8KrL5FnZQrEkDdZ
+	YNtkyf6pM0TfoSuHHvfiXQHCMED9LTVzabhP6wDQTLx2UvE2mG47sVJVeO0OJ3VI+lolUftY+kV
+	Q
+X-Gm-Gg: ASbGncsls1tUL/+1dhiwkUd9O/KKjLFvh+a3W0lsw5bA5uM2GCy55O9Q/lMG+cXFOPC
+	nIJkUmhtXC7vfFTXNVTBu00Q+1AoSfKsoeRtC/8dncp8qJqo8aBeQYqpq+541mLu2QLfZFISY2b
+	bUHHT+lYgdSyg1VWzsFx0NUeGBkspF9k561yeVzG0ULFuGryvrp45RLk8CR2SkSBfgbbaWCK8Pr
+	S/53RvPF+XDQQfmAkN8DtpGIBvkMmPGwfiDv+8cESZedkkN2w6X1kMQe/HVecrF9W3HpQEoaFeB
+	tkMIDs9yglDOCuu0lWpMhv7r7OK9CHK4Zq3k6htc0P9hMwdh+j9CQV0eHQ==
+X-Google-Smtp-Source: AGHT+IHKyrA430oxeFQPY6G1IdgVGDKk9PFzXFngHNVbfTVR6x+bbr8NJM9SIrD78FbloI8+4zpDDw==
+X-Received: by 2002:a05:600c:a405:b0:43e:ee80:c233 with SMTP id 5b1f17b1804b1-441c83cd1dcmr28656195e9.32.1746445516723;
+        Mon, 05 May 2025 04:45:16 -0700 (PDT)
 Received: from localhost (37-48-1-197.nat.epc.tmcz.cz. [37.48.1.197])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b2af32a0sm179471615e9.23.2025.05.05.04.45.19
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099ae32fesm10010673f8f.22.2025.05.05.04.45.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 May 2025 04:45:20 -0700 (PDT)
+        Mon, 05 May 2025 04:45:16 -0700 (PDT)
 From: Jiri Pirko <jiri@resnulli.us>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -66,9 +66,9 @@ Cc: davem@davemloft.net,
 	saeedm@nvidia.com,
 	horms@kernel.org,
 	donald.hunter@gmail.com
-Subject: [PATCH net-next v2 3/4] devlink: avoid param type value translations
-Date: Mon,  5 May 2025 13:45:12 +0200
-Message-ID: <20250505114513.53370-4-jiri@resnulli.us>
+Subject: [PATCH net-next v2 1/4] tools: ynl-gen: allow noncontiguous enums
+Date: Mon,  5 May 2025 13:45:10 +0200
+Message-ID: <20250505114513.53370-2-jiri@resnulli.us>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250505114513.53370-1-jiri@resnulli.us>
 References: <20250505114513.53370-1-jiri@resnulli.us>
@@ -82,115 +82,118 @@ Content-Transfer-Encoding: 8bit
 
 From: Jiri Pirko <jiri@nvidia.com>
 
-Assign DEVLINK_PARAM_TYPE_* enum values to DEVLINK_VAR_ATTR_TYPE_* to
-ensure the same values are used internally and in UAPI. Benefit from
-that by removing the value translations.
+in case the enum has holes, instead of hard stop, generate a validation
+callback to check valid enum values.
 
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+signed-off-by: jiri pirko <jiri@nvidia.com>
 ---
- include/net/devlink.h | 10 +++++-----
- net/devlink/param.c   | 46 ++-----------------------------------------
- 2 files changed, 7 insertions(+), 49 deletions(-)
+v1->v2:
+- fixed min/max none check
+- changed switch-case to fall-through with single return statement
+- removed not needed special indentation treating
+saeed's v3->v1:
+- added validation callback generation
+---
+ tools/net/ynl/pyynl/ynl_gen_c.py | 58 ++++++++++++++++++++++++++++----
+ 1 file changed, 52 insertions(+), 6 deletions(-)
 
-diff --git a/include/net/devlink.h b/include/net/devlink.h
-index b8783126c1ed..0091f23a40f7 100644
---- a/include/net/devlink.h
-+++ b/include/net/devlink.h
-@@ -420,11 +420,11 @@ typedef u64 devlink_resource_occ_get_t(void *priv);
+diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
+index 09b87c9a6908..acba03bbe67d 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_c.py
++++ b/tools/net/ynl/pyynl/ynl_gen_c.py
+@@ -389,11 +389,14 @@ class TypeScalar(Type):
+         if 'enum' in self.attr:
+             enum = self.family.consts[self.attr['enum']]
+             low, high = enum.value_range()
+-            if 'min' not in self.checks:
+-                if low != 0 or self.type[0] == 's':
+-                    self.checks['min'] = low
+-            if 'max' not in self.checks:
+-                self.checks['max'] = high
++            if low == None and high == None:
++                self.checks['sparse'] = True
++            else:
++                if 'min' not in self.checks:
++                    if low != 0 or self.type[0] == 's':
++                        self.checks['min'] = low
++                if 'max' not in self.checks:
++                    self.checks['max'] = high
  
- #define __DEVLINK_PARAM_MAX_STRING_VALUE 32
- enum devlink_param_type {
--	DEVLINK_PARAM_TYPE_U8,
--	DEVLINK_PARAM_TYPE_U16,
--	DEVLINK_PARAM_TYPE_U32,
--	DEVLINK_PARAM_TYPE_STRING,
--	DEVLINK_PARAM_TYPE_BOOL,
-+	DEVLINK_PARAM_TYPE_U8 = DEVLINK_VAR_ATTR_TYPE_U8,
-+	DEVLINK_PARAM_TYPE_U16 = DEVLINK_VAR_ATTR_TYPE_U16,
-+	DEVLINK_PARAM_TYPE_U32 = DEVLINK_VAR_ATTR_TYPE_U32,
-+	DEVLINK_PARAM_TYPE_STRING = DEVLINK_VAR_ATTR_TYPE_STRING,
-+	DEVLINK_PARAM_TYPE_BOOL = DEVLINK_VAR_ATTR_TYPE_FLAG,
- };
+         if 'min' in self.checks and 'max' in self.checks:
+             if self.get_limit('min') > self.get_limit('max'):
+@@ -425,6 +428,8 @@ class TypeScalar(Type):
+             return f"NLA_POLICY_MIN({policy}, {self.get_limit_str('min')})"
+         elif 'max' in self.checks:
+             return f"NLA_POLICY_MAX({policy}, {self.get_limit_str('max')})"
++        elif 'sparse' in self.checks:
++            return f"NLA_POLICY_VALIDATE_FN({policy}, &{c_lower(self.enum_name)}_validate)"
+         return super()._attr_policy(policy)
  
- union devlink_param_value {
-diff --git a/net/devlink/param.c b/net/devlink/param.c
-index d0fb7c88bdb8..b29abf8d3ed4 100644
---- a/net/devlink/param.c
-+++ b/net/devlink/param.c
-@@ -166,25 +166,6 @@ static int devlink_param_set(struct devlink *devlink,
- 	return param->set(devlink, param->id, ctx, extack);
- }
+     def _attr_typol(self):
+@@ -930,7 +935,7 @@ class EnumSet(SpecEnumSet):
+         high = max([x.value for x in self.entries.values()])
  
--static int
--devlink_param_type_to_var_attr_type(enum devlink_param_type param_type)
--{
--	switch (param_type) {
--	case DEVLINK_PARAM_TYPE_U8:
--		return DEVLINK_VAR_ATTR_TYPE_U8;
--	case DEVLINK_PARAM_TYPE_U16:
--		return DEVLINK_VAR_ATTR_TYPE_U16;
--	case DEVLINK_PARAM_TYPE_U32:
--		return DEVLINK_VAR_ATTR_TYPE_U32;
--	case DEVLINK_PARAM_TYPE_STRING:
--		return DEVLINK_VAR_ATTR_TYPE_STRING;
--	case DEVLINK_PARAM_TYPE_BOOL:
--		return DEVLINK_VAR_ATTR_TYPE_FLAG;
--	default:
--		return -EINVAL;
--	}
--}
--
- static int
- devlink_nl_param_value_fill_one(struct sk_buff *msg,
- 				enum devlink_param_type type,
-@@ -247,7 +228,6 @@ static int devlink_nl_param_fill(struct sk_buff *msg, struct devlink *devlink,
- 	struct devlink_param_gset_ctx ctx;
- 	struct nlattr *param_values_list;
- 	struct nlattr *param_attr;
--	int var_attr_type;
- 	void *hdr;
- 	int err;
- 	int i;
-@@ -293,11 +273,7 @@ static int devlink_nl_param_fill(struct sk_buff *msg, struct devlink *devlink,
- 		goto param_nest_cancel;
- 	if (param->generic && nla_put_flag(msg, DEVLINK_ATTR_PARAM_GENERIC))
- 		goto param_nest_cancel;
--
--	var_attr_type = devlink_param_type_to_var_attr_type(param->type);
--	if (var_attr_type < 0)
--		goto param_nest_cancel;
--	if (nla_put_u8(msg, DEVLINK_ATTR_PARAM_TYPE, var_attr_type))
-+	if (nla_put_u8(msg, DEVLINK_ATTR_PARAM_TYPE, param->type))
- 		goto param_nest_cancel;
+         if high - low + 1 != len(self.entries):
+-            raise Exception("Can't get value range for a noncontiguous enum")
++            return None, None
  
- 	param_values_list = nla_nest_start_noflag(msg,
-@@ -419,25 +395,7 @@ devlink_param_type_get_from_info(struct genl_info *info,
- 	if (GENL_REQ_ATTR_CHECK(info, DEVLINK_ATTR_PARAM_TYPE))
- 		return -EINVAL;
+         return low, high
  
--	switch (nla_get_u8(info->attrs[DEVLINK_ATTR_PARAM_TYPE])) {
--	case DEVLINK_VAR_ATTR_TYPE_U8:
--		*param_type = DEVLINK_PARAM_TYPE_U8;
--		break;
--	case DEVLINK_VAR_ATTR_TYPE_U16:
--		*param_type = DEVLINK_PARAM_TYPE_U16;
--		break;
--	case DEVLINK_VAR_ATTR_TYPE_U32:
--		*param_type = DEVLINK_PARAM_TYPE_U32;
--		break;
--	case DEVLINK_VAR_ATTR_TYPE_STRING:
--		*param_type = DEVLINK_PARAM_TYPE_STRING;
--		break;
--	case DEVLINK_VAR_ATTR_TYPE_FLAG:
--		*param_type = DEVLINK_PARAM_TYPE_BOOL;
--		break;
--	default:
--		return -EINVAL;
--	}
-+	*param_type = nla_get_u8(info->attrs[DEVLINK_ATTR_PARAM_TYPE]);
+@@ -2426,6 +2431,46 @@ def print_kernel_policy_ranges(family, cw):
+             cw.nl()
  
- 	return 0;
- }
+ 
++def print_kernel_policy_sparse_enum_validates(family, cw):
++    first = True
++    for _, attr_set in family.attr_sets.items():
++        if attr_set.subset_of:
++            continue
++
++        for _, attr in attr_set.items():
++            if not attr.request:
++                continue
++            if not attr.enum_name:
++                continue
++            if 'sparse' not in attr.checks:
++                continue
++
++            if first:
++                cw.p('/* Sparse enums validation callbacks */')
++                first = False
++
++            sign = '' if attr.type[0] == 'u' else '_signed'
++            suffix = 'ULL' if attr.type[0] == 'u' else 'LL'
++            cw.write_func_prot('static int', f'{c_lower(attr.enum_name)}_validate',
++                               ['const struct nlattr *attr', 'struct netlink_ext_ack *extack'])
++            cw.block_start()
++            cw.block_start(line=f'switch (nla_get_{attr["type"]}(attr))')
++            enum = family.consts[attr['enum']]
++            first_entry = True
++            for entry in enum.entries.values():
++                if first_entry:
++                    first_entry = False
++                else:
++                    cw.p('fallthrough;')
++                cw.p(f'case {entry.c_name}:')
++            cw.p('return 0;')
++            cw.block_end()
++            cw.p('NL_SET_ERR_MSG_ATTR(extack, attr, "invalid enum value");')
++            cw.p('return -EINVAL;')
++            cw.block_end()
++            cw.nl()
++
++
+ def print_kernel_op_table_fwd(family, cw, terminate):
+     exported = not kernel_can_gen_family_struct(family)
+ 
+@@ -3097,6 +3142,7 @@ def main():
+             print_kernel_family_struct_hdr(parsed, cw)
+         else:
+             print_kernel_policy_ranges(parsed, cw)
++            print_kernel_policy_sparse_enum_validates(parsed, cw)
+ 
+             for _, struct in sorted(parsed.pure_nested_structs.items()):
+                 if struct.request:
 -- 
 2.49.0
 
