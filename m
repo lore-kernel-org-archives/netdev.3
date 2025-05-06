@@ -1,112 +1,84 @@
-Received: from gardel.0pointer.net (gardel.0pointer.net [85.214.157.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF1627FD5F;
-	Tue,  6 May 2025 12:27:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.157.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB7727FB20
+	for <netdev@vger.kernel.org>; Tue,  6 May 2025 12:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746534445; cv=none; b=otfILYGVeFoffVvrLywbXBSeRtj8pCovM2JZbrQh1ViU2phPKnfjUW5Ehu1bIzuv+ypuFWxoxDQoyz0lOtfqiYaMOYq8eSs2bIWhALOE82kWoH1xPFkr9+WWJVQUjD4brkayo3e4A1SS1LjjxNvZm8i+MmZkDRXCCqyuLN4hQCs=
+	t=1746535859; cv=none; b=dnqN3cHSEQlQmJ0WWMz+oT2rhS6qauKbxqZ+whalq2c8EcI+Nnc9hHhBnMQvcQwLIAKVA9vnz7Q/fm7W8jxsRobEy/DalRNDUfuFhOAZaU1Qh881ds+ZH7cGq97GyvjhqAUGCnjePKo2J+CAkLSdLbrDqAbooZRtbqn7sNYhUgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746534445; c=relaxed/simple;
-	bh=m7SBsfQfLVW4xNj3QrIhN2V3ELt1ceEG+cP+bc5hvNs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nh5Wo4Zb7U0gSlVNWxuGiR/qV1HW1wRYwcm0OBUo3v2wC8smutP2WJ38N5VPWr0rb6k475ow3FtNk34kvcUfk2GDUwMT4zJ7t48c2aWfgzL0GOGmocgCa2/yvJGDJwjOLIBu3GcIP/qtYKsEyaIMKiJu3VdIE4onFO0mXyQgpno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=poettering.net; spf=pass smtp.mailfrom=poettering.net; arc=none smtp.client-ip=85.214.157.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=poettering.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poettering.net
-Received: from zeta (p200300ea6f02a700ee7fde6810ab8036.dip0.t-ipconnect.de [IPv6:2003:ea:6f02:a700:ee7f:de68:10ab:8036])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gardel.0pointer.net (Postfix) with ESMTPSA id 89EC9E802CC;
-	Tue,  6 May 2025 14:17:24 +0200 (CEST)
-Date: Tue, 6 May 2025 14:17:22 +0200
-From: Lennart Poettering <lennart@poettering.net>
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: Martin KaFai Lau <martin.lau@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	=?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
-	=?iso-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-security-module@vger.kernel.org,
-	selinux@vger.kernel.org
-Subject: Re: [PATCH v1 bpf-next 0/5] af_unix: Allow BPF LSM to scrub
- SCM_RIGHTS at sendmsg().
-Message-ID: <aBn90vJ49ymBT3LW@zeta>
-References: <20250505215802.48449-1-kuniyu@amazon.com>
+	s=arc-20240116; t=1746535859; c=relaxed/simple;
+	bh=iuWVZjPND+KWjhJ9x/SFAnPnmVENpipJ/a6Z85Bx/rw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WEhIoXmC6vGN8nDtGkmXC3v0Je6fl1zdZ8kQUVqUGqZDPsx+FMhuXb3Qxg6RnNCFTBXhsVO2MEIpb5EwQF5kMFq1I4VfSqHXpr2tszaq4NXZ5wnlbrwL9aVYGOBCR123cobxoJBdBeHRbkIRFQEz8diyubJLjkFAnyqS7WqgsMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RCdoV1zX; arc=none smtp.client-ip=209.85.167.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RCdoV1zX"
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3f8ae3ed8adso4063358b6e.3
+        for <netdev@vger.kernel.org>; Tue, 06 May 2025 05:50:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746535856; x=1747140656; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ylefJrOM0At36TRbx//OwmJb/NbumE251FEl48mtalw=;
+        b=RCdoV1zX+NvOqXZRHAInZdK16DdqIyx/gmC0ufElV3K7xzJf1VJRPqszpjrTx0CtKF
+         NuWfyXpHh4FUnIHAdoxpvRWT9IsaZUNCXVRQlJvOI6G9t5wypDSW1ywKZrgnmvjbm9zZ
+         RkZuBnBg4CQipjn7I2YPq/N1aO80n7UMtxAaMdtTZwmwrI5/2pOm70nkh24fM0RKUHzK
+         OnvFHgSynQOn6mqEfmmDgHT/VdJxHtvgRBgbNxPg9ezA5f4+JI675lBnyztxyLLXsqMS
+         p13KA7cRoeQK8vsfvSW8Y/CO6UnIRSHqcMMvpuwe5YMk0vnoAbtdVJrctv+F8PgIuHsY
+         RaoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746535856; x=1747140656;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ylefJrOM0At36TRbx//OwmJb/NbumE251FEl48mtalw=;
+        b=hrR4GM7V732gnvcmzuXZXi9bzUVSOgdXIRykLge+UBdH0ra/3kg/8muHrJdlwEGxQs
+         8fov/WCXnWziKKBFVvGWvnN8z/Lhb8azO0xH/ddM8gvHuYJ/MJSMGMh/+LLoqksN3oBO
+         Z+M1fQd2HK6vkf4y5SVQuZqcRVYh3ddS8RjCPBO4jK9ew+07/gXIlC0b8/jRJrH2KkMa
+         9VrvfV1DloZmlPAXTp9I+m7NPEoHGiOIVo+HFvQtLt4zS+PsnG0QJgpZMOab6vQzyaHK
+         xq+zVJ1vSmoS3Xt7jDIDZhi5uFY9KOi5cCudkjaFL4OqJ8/R5exod3+GQvxqvkAgKvh2
+         UUXA==
+X-Forwarded-Encrypted: i=1; AJvYcCUuNAxqza7+FUxXSiAqPoC68FUq83c2Apad2lJsvpnnFc8AC0gGXK3WvLeH59RXniZr8HxjG0A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZH3adQS6KsxTMBwfVxF6hlbg22zVfq0jcZOugHQ6vrRN9PObm
+	f2IZc1WjiZqkO+hZJGtEsA95HV9WqRwRPl9ZyZuJ1FVpmXLO5RdeOxBoD5YpNx6jgUuhwH9og9n
+	CUfHXMVA+D7kchr5z5oIvDetORn0=
+X-Gm-Gg: ASbGncsJTX1zoOlO+3q7Cz48YsSe2w5GLlUCv3HSDrcINaUxa1MWyZb3yXka2BBjHVG
+	nAfb/gWLUgP4uQonhorjWt5E7cYVgw6vaCIzibmR4/CQ4XcFxdCvr9OIILwHe07AmkezJO3ZnGI
+	dUcRM1une11FI1j7xCq3zBf3y07F/CwLBMXEW45VOC+tX9eDBcPEI=
+X-Google-Smtp-Source: AGHT+IFmwGBFGS7phY3jyDY3dBI/J+iafmWwUQmkOg9CUZCueJx38i5/OfPzybFafG53GAC4+jWYfHeZX1pXSUX/zLc=
+X-Received: by 2002:a05:6808:6c91:b0:3f7:8f77:2a9e with SMTP id
+ 5614622812f47-40341a0f05cmr10721173b6e.20.1746535856453; Tue, 06 May 2025
+ 05:50:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250505215802.48449-1-kuniyu@amazon.com>
+References: <20250505170215.253672-1-kuba@kernel.org> <20250505170215.253672-4-kuba@kernel.org>
+In-Reply-To: <20250505170215.253672-4-kuba@kernel.org>
+From: Donald Hunter <donald.hunter@gmail.com>
+Date: Tue, 6 May 2025 13:50:44 +0100
+X-Gm-Features: ATxdqUGoItTmldn3wrHwkeVY9aEbbw7bECp26wv-_DBgjHYl8slP5nNz-rB1c-M
+Message-ID: <CAD4GDZyFM0uY9WPPw3DF1F+tsDU=0PwyA1yFvbxVxv3amyfu5g@mail.gmail.com>
+Subject: Re: [PATCH net-next 3/4] netlink: specs: remove implicit structs for
+ SNMP counters
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
+	johannes@sipsolutions.net, razor@blackwall.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mo, 05.05.25 14:56, Kuniyuki Iwashima (kuniyu@amazon.com) wrote:
-
-> As long as recvmsg() or recvmmsg() is used with cmsg, it is not
-> possible to avoid receiving file descriptors via SCM_RIGHTS.
+On Mon, 5 May 2025 at 18:02, Jakub Kicinski <kuba@kernel.org> wrote:
 >
-> This behaviour has occasionally been flagged as problematic.
->
-> For instance, as noted on the uAPI Group page [0], an untrusted peer
-> could send a file descriptor pointing to a hung NFS mount and then
-> close it.  Once the receiver calls recvmsg() with msg_control, the
-> descriptor is automatically installed, and then the responsibility
-> for the final close() now falls on the receiver, which may result
-> in blocking the process for a long time.
->
-> systemd calls cmsg_close_all() [1] after each recvmsg() to close()
-> unwanted file descriptors sent via SCM_RIGHTS.
->
-> However, this cannot work around the issue because the last fput()
-> could occur on the receiver side once sendmsg() with SCM_RIGHTS
-> succeeds.  Also, even filtering by LSM at recvmsg() does not work
-> for the same reason.
->
-> Thus, we need a better way to filter SCM_RIGHTS on the sender side.
->
-> This series allows BPF LSM to inspect skb at sendmsg() and scrub
-> SCM_RIGHTS fds by kfunc.
+>          name: reasm-overlaps
+> -        type: u64
+>    - name: br-boolopt-multi
+>      type: struct
+>      header: linux/if_bridge.h
 
-Frankly, this sounds like a bad idea to me. The number and order of
-the fds passed matters, and if you magically make some fds disappear
-everything becomes a complete mess for most protocols. Hence, making
-fds disappear from a messasge mid-flight is really not a realistic
-option, already for compat. Not for systemd, and not for other tools
-either I am sure.
-
-I also think it's pointless to enforce this on the receiving side,
-because the deed is done by then. i.e. it doesn't matter if we have to
-close the fd via bpf or in userspace, we still have to wait for it to
-be closed on the receiving side, hence we have to pay. i.e. focus must
-be to refuse the fds on the sender side, instead of allowing this to
-go to the receiver side.
-
-From my perspective this must be enforced on sender side. And more
-importantly, for systemd's usecase it would be a lot more relevant to
-have a simple, dumb boolean per socket instead of the full bpf
-machinery. I mean, as much as I like the lsm-bpf concept it's not
-clear to me that this is the right place to make use of it. I
-personally would really like to see a SO_PASSRIGHTS sockopt, that is
-modelled after SO_PASSCREDS and SO_PASSSEC.
-
-Lennart
-
---
-Lennart Poettering, Berlin
+The patch does not apply for me, I think due to the above line
+changing in another series.
