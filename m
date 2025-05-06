@@ -1,150 +1,137 @@
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4670B21D5A9
-	for <netdev@vger.kernel.org>; Tue,  6 May 2025 22:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7861A23A9;
+	Tue,  6 May 2025 23:14:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746572195; cv=none; b=nIGmVxjDUKADqo4Xni2lN0pCSNsZmwUsG7+eiQd02WYobHozqnI6R2iyic9YgNQeyXLoMNXpSTTsPtoiXWU20RxzpVkk2z/P9Exm61osDv+QSQHmOtqPO9s1dCje42UtyaaZV+kHEd3U92eyM7txktIlOjt1B5k41gOf2Kns5eQ=
+	t=1746573301; cv=none; b=T1mCsE+Qa/z+TCenTXvzWP+Loe/6WSEgpyYF+UBqt7kC5hRYY5ioV2gjVNnmnXLZJleRdqelr57S4Nb6/JPSNe4p6PFgUV2e5wONmFcDsLtvGhWRbklU5h3qpP+F3el53ywTSx9Y7NVXNa6Lr3NRMznCpjalkL3jvRuTPolir2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746572195; c=relaxed/simple;
-	bh=ymPetmztVj4ZKjM6qJYBSDvFukJw9xzz9yDALJZYHR0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qycVqFWKgQbjk1jxR/dPxJFifd4AR2pzoebZ1U+n/CHJsxMXj0Uc4m6oO9rRS7EEjsOP9gssibNx/RtXhOjuo5//Q5Au3UHsakfh75sahLjus0tZqjQowenkmM3Y9vnPEb6bAeZRr2OS+JhW2/ov+g9IXgnMEIOOmiVR5y8eDq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vgIDG1Zl; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1746573301; c=relaxed/simple;
+	bh=0APPBYsT8cIqi0gvG0DV20fanKAT7WzukD/B32mb0z4=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=S+AHn8t7C4HHYeskUjmhPV0fCWdXzVeik+biZw8jv1tdeUx2GOMrfphXlLr509v2fsmeSd+ZWc3q51p8LcyncL7OEAZQ1eeJmK+5nDf5AR/OpjRbqv3RpENEdT4WfS10EXN9Bd9ETLecynY9v6Iyr8RmYVr5CbuVmdyCDw/wzDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=QfaO9SCT; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vgIDG1Zl"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1746572191;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b6zqPxMuKls1ect+i80Pr9eZUaXtWgeMitGJN3FhUCk=;
-	b=vgIDG1ZlTQv/1d/jlb+cn/ieWHsMOlwaJYb2IvRtXROBKliLUIk/PmHWQGOE0aQyWOpx22
-	G8jKSDouRdjGNE3VSVNFoLCBvqINHyKEIQ6+6g3UtCuv8JKI1qZDJ/PS97t1+UxdUGIILx
-	dVimCd9GGwGHBzv7pvmCpcr75ds2Y+k=
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Meta kernel team <kernel-team@meta.com>
-Subject: [PATCH 4/4] memcg: no irq disable for memcg stock lock
-Date: Tue,  6 May 2025 15:55:33 -0700
-Message-ID: <20250506225533.2580386-5-shakeel.butt@linux.dev>
-In-Reply-To: <20250506225533.2580386-1-shakeel.butt@linux.dev>
-References: <20250506225533.2580386-1-shakeel.butt@linux.dev>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="QfaO9SCT"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1uCR4T-007tJK-2w; Wed, 07 May 2025 00:47:29 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
+	bh=BMq0rqR/Z/Nu+2i3yDlis9NI97iG+saHQkwWMHw8sw0=; b=QfaO9SCT4A3ryrokVq0tNv2Ie2
+	Jb8lnps96YvimNQOJvx9Nl8/eT8AFAFTYBlN95CQfx3p2oG4EvTHjvie1JPaOplGPfmetkwP2ZWvy
+	3d13IpFuEusdcv35+zYSAaB2J+429FqjE5otK1KCXupg5PqLIRfqSs5buokqa4Y8kNRY6tTSF9lcj
+	rKBFnADYjurMWzlu2WpsrxiTy4+jSDEWlazkUiuM29/h1wHoWAe5GPdzrDlA3Y07fNeLmb2s4KEzP
+	3F5mk8nExShIi/bWKum/TISh5BngU6aXcSKaz4tCIdl+545PBUGAFykCSPdREnA8oxFr6WiziKbu/
+	SI72Cj5Q==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1uCR4R-0006Gd-Rg; Wed, 07 May 2025 00:47:28 +0200
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1uCR4A-00FMcb-5o; Wed, 07 May 2025 00:47:10 +0200
+Message-ID: <6a818cc6-f26c-417b-ad06-0686b698b2fe@rbox.co>
+Date: Wed, 7 May 2025 00:47:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+From: Michal Luczaj <mhal@rbox.co>
+Subject: Re: [PATCH net-next v4 2/3] vsock: Move lingering logic to af_vsock
+ core
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+References: <20250501-vsock-linger-v4-0-beabbd8a0847@rbox.co>
+ <20250501-vsock-linger-v4-2-beabbd8a0847@rbox.co>
+ <hcme242wm3h33zvbo6g6xinhbsjkeaawhsjjutxrhkjoh6xhin@gm5yvzv4ao7k>
+Content-Language: pl-PL, en-GB
+In-Reply-To: <hcme242wm3h33zvbo6g6xinhbsjkeaawhsjjutxrhkjoh6xhin@gm5yvzv4ao7k>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-There is no need to disable irqs to use memcg per-cpu stock, so let's
-just not do that. One consequence of this change is if the kernel while
-in task context has the memcg stock lock and that cpu got interrupted.
-The memcg charges on that cpu in the irq context will take the slow path
-of memcg charging. However that should be super rare and should be fine
-in general.
+On 5/6/25 11:53, Stefano Garzarella wrote:
+> On Thu, May 01, 2025 at 10:05:23AM +0200, Michal Luczaj wrote:
+>> Lingering should be transport-independent in the long run. In preparation
+>> for supporting other transports, as well the linger on shutdown(), move
+>> code to core.
+>>
+>> Generalize by querying vsock_transport::unsent_bytes(), guard against the
+>> callback being unimplemented. Do not pass sk_lingertime explicitly. Pull
+>> SOCK_LINGER check into vsock_linger().
+>>
+>> Flatten the function. Remove the nested block by inverting the condition:
+>> return early on !timeout.
+>>
+>> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>> ---
+>> include/net/af_vsock.h                  |  1 +
+>> net/vmw_vsock/af_vsock.c                | 30 ++++++++++++++++++++++++++++++
+>> net/vmw_vsock/virtio_transport_common.c | 23 ++---------------------
+>> 3 files changed, 33 insertions(+), 21 deletions(-)
+>>
+>> diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+>> index 9e85424c834353d016a527070dd62e15ff3bfce1..d56e6e135158939087d060dfcf65d3fdaea53bf3 100644
+>> --- a/include/net/af_vsock.h
+>> +++ b/include/net/af_vsock.h
+>> @@ -221,6 +221,7 @@ void vsock_for_each_connected_socket(struct vsock_transport *transport,
+>> 				     void (*fn)(struct sock *sk));
+>> int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock 
+>> *psk);
+>> bool vsock_find_cid(unsigned int cid);
+>> +void vsock_linger(struct sock *sk);
+>>
+>> /**** TAP ****/
+>>
+>> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>> index fc6afbc8d6806a4d98c66abc3af4bd139c583b08..a31ad6b141cd38d1806df4b5d417924bb8607e32 100644
+>> --- a/net/vmw_vsock/af_vsock.c
+>> +++ b/net/vmw_vsock/af_vsock.c
+>> @@ -1013,6 +1013,36 @@ static int vsock_getname(struct socket *sock,
+>> 	return err;
+>> }
+>>
+>> +void vsock_linger(struct sock *sk)
+>> +{
+>> +	DEFINE_WAIT_FUNC(wait, woken_wake_function);
+>> +	ssize_t (*unsent)(struct vsock_sock *vsk);
+>> +	struct vsock_sock *vsk = vsock_sk(sk);
+>> +	long timeout;
+>> +
+>> +	if (!sock_flag(sk, SOCK_LINGER))
+>> +		return;
+>> +
+>> +	timeout = sk->sk_lingertime;
+>> +	if (!timeout)
+>> +		return;
+>> +
+>> +	/* unsent_bytes() may be unimplemented. */
+> 
+> This comment IMO should be enriched, as it is now it doesn't add much to 
+> the code. I'm thinking on something like this:
+>      Transports must implement `unsent_bytes` if they want to support
+>      SOCK_LINGER through `vsock_linger()` since we use it to check when
+>      the socket can be closed.
 
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
----
- mm/memcontrol.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+OK, will do.
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 14d73e5352fe..5ac3c8cc1ac5 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1831,12 +1831,11 @@ static bool consume_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
- {
- 	struct memcg_stock_pcp *stock;
- 	uint8_t stock_pages;
--	unsigned long flags;
- 	bool ret = false;
- 	int i;
- 
- 	if (nr_pages > MEMCG_CHARGE_BATCH ||
--	    !local_trylock_irqsave(&memcg_stock.lock, flags))
-+	    !local_trylock(&memcg_stock.lock))
- 		return ret;
- 
- 	stock = this_cpu_ptr(&memcg_stock);
-@@ -1853,7 +1852,7 @@ static bool consume_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
- 		break;
- 	}
- 
--	local_unlock_irqrestore(&memcg_stock.lock, flags);
-+	local_unlock(&memcg_stock.lock);
- 
- 	return ret;
- }
-@@ -1897,18 +1896,17 @@ static void drain_stock_fully(struct memcg_stock_pcp *stock)
- static void drain_local_memcg_stock(struct work_struct *dummy)
- {
- 	struct memcg_stock_pcp *stock;
--	unsigned long flags;
- 
- 	if (WARN_ONCE(!in_task(), "drain in non-task context"))
- 		return;
- 
--	local_lock_irqsave(&memcg_stock.lock, flags);
-+	local_lock(&memcg_stock.lock);
- 
- 	stock = this_cpu_ptr(&memcg_stock);
- 	drain_stock_fully(stock);
- 	clear_bit(FLUSHING_CACHED_CHARGE, &stock->flags);
- 
--	local_unlock_irqrestore(&memcg_stock.lock, flags);
-+	local_unlock(&memcg_stock.lock);
- }
- 
- static void drain_local_obj_stock(struct work_struct *dummy)
-@@ -1933,7 +1931,6 @@ static void refill_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
- 	struct memcg_stock_pcp *stock;
- 	struct mem_cgroup *cached;
- 	uint8_t stock_pages;
--	unsigned long flags;
- 	bool success = false;
- 	int empty_slot = -1;
- 	int i;
-@@ -1948,7 +1945,7 @@ static void refill_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
- 	VM_WARN_ON_ONCE(mem_cgroup_is_root(memcg));
- 
- 	if (nr_pages > MEMCG_CHARGE_BATCH ||
--	    !local_trylock_irqsave(&memcg_stock.lock, flags)) {
-+	    !local_trylock(&memcg_stock.lock)) {
- 		/*
- 		 * In case of larger than batch refill or unlikely failure to
- 		 * lock the percpu memcg_stock.lock, uncharge memcg directly.
-@@ -1983,7 +1980,7 @@ static void refill_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
- 		WRITE_ONCE(stock->nr_pages[i], nr_pages);
- 	}
- 
--	local_unlock_irqrestore(&memcg_stock.lock, flags);
-+	local_unlock(&memcg_stock.lock);
- }
- 
- static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
--- 
-2.47.1
+Thanks,
+Michal
 
