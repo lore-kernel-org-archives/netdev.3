@@ -1,203 +1,207 @@
-Received: from mx0a-002c1b01.pphosted.com (mx0a-002c1b01.pphosted.com [148.163.151.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1F41DDA2D;
-	Tue,  6 May 2025 14:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.151.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746542173; cv=fail; b=TiBfo7P9oGl+NS3aEjuAZ7gcex7dVH0A0uTfu1O46GpyhqPGddVcw/LU/JHvu8WgVcxOSLnRjaozHUGXFZshh4mQpkT60G0MR0uaapl8dEQ9KVf4F0NvsDA8gNALa5PSMdlYz0DXva7EfWkjwt7tfRZb40vLPI6t4Ka7GaFmouo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746542173; c=relaxed/simple;
-	bh=4fFyf19ow5qMuqSoJeXWEP34lark8KJwPlWkcd8WrM0=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sa92el9LxI0AVBVrhtBIAUImiYXCcvWm8KpfaFV+CsGnyUM1gKUkrLB/2dyfZHnlNmoTzfvO0kGMoSfURW/n0mqbGJ9fqja55PH8TQerq/woESDaHBc4AnE4+8ZX1loZKFkIh3k0uf/O/Oxzs2/dfkptcuPFBijv6a0dYQUpWxY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nutanix.com; spf=pass smtp.mailfrom=nutanix.com; dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b=N0XgZgXU; dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b=MmO8mHRs; arc=fail smtp.client-ip=148.163.151.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nutanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nutanix.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FF918D656
+	for <netdev@vger.kernel.org>; Tue,  6 May 2025 14:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746542311; cv=none; b=eqky5ytBMNmLzC3l8DC3Zu0O9izdA77uTw8bCk5QComuuBd4aNC1lFEcnMPM1LC0nDhljnzzhcqA3MxXWGJo4XEfL39ODqGqVa+kMUU7bbs/2Hd51ZNcb3BAYguS+ojDrmCcfkWa8Tiqa7smJsQAtWA++zqrlxTxlAvfhUuhGlc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746542311; c=relaxed/simple;
+	bh=Ma83b15qnnbFaueFtEvSpUdw/TKvSFOJHfOZe78Fr4A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uMB01eC0MLSJSrLasrfUWG95CTakEvDTnNkkif8WdIRYSRdQeMLiitfgkZnFzviVYdKc94QwAdFZOL1BLtRKrHW2a+sM4OIwYpDVaSV2RStA2TPJz/wT01YQQj+xIuNpQmkfBPZuqVpBz3ojwc+ymEdg7FeYkOxhjqITY9efl24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CRxKH3Pk; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b="N0XgZgXU";
-	dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b="MmO8mHRs"
-Received: from pps.filterd (m0127839.ppops.net [127.0.0.1])
-	by mx0a-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 546Aru21023332;
-	Tue, 6 May 2025 07:25:21 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	proofpoint20171006; bh=aQ5DbLom8Ahcibhanmw7HsifA0NU5npO57kt94U8g
-	PY=; b=N0XgZgXUbECnbBkE7tYwQxWXTEa5iDTcTyznjBIYEzWFUSvcosrebZVlQ
-	O/eCIrTC3csknHkiV8raLBLYUkG+fx+vgj00v611u3eMuExVU7FN+KEKw3+v7vM3
-	520wVizrDdvXcAjg07OYu2pyyo8p+qf97vXFCnphuano7Ikb9DCiSNNNztKx5Xph
-	A1wu+HuuSnu0qQRO41s4BGd4ZCGOKDz8r5iF2GkH2tnZ8vauk/y7J6kZKNMNYr/H
-	2R9kW0MlRRW+OKU51DOmmKLi1sEnPPsfP23QxFo2vZ9Fao24NMz3U3MmlAENNKPP
-	XsOZDJvNsKtoeO5MnXG94KWuWOKNQ==
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2172.outbound.protection.outlook.com [104.47.57.172])
-	by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 46dj7kx0kh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 May 2025 07:25:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WfHpDIfQ+hd98IntNQby67O78dkGCWTCM+Xy/I6p1UtWYkgCh9mfezKlBcgP8qt9Ga2I7gc9LcggkONvDrv0rfefN/vN/txMvaQE6KfOzou4XT9KrX8c1TtAn+Jod4GCJyVIYGVrlCDSnLpr8WZJZBr34cNfgh21GWLhggoP0QJ/lqf8GJbI/A1ho63MvUMtiNmXummk66AMnqHHeZGoX+fnjZChjj5FUHgw7iYorbOJHyQHN540HXDGiLGc3iw8MYti+fowHByb4d30JD19Q7zXr6gB1SqhIgy+TGQhE6md3fDBsoIvuEeQPrGO4FEeebX+pKYURytEsOUPw3bdwg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aQ5DbLom8Ahcibhanmw7HsifA0NU5npO57kt94U8gPY=;
- b=grneSUZ6E8poOv6YgPEjvub2oraIKn8sZDI0I9DOdt3y2IfX6vHLgEDyn9sXzZifS/mA4HiLVtJDB7RJMC/CaXs0v7Gn0g9krmcf7q28xF3ftFF5/mNVrSrV4RednH8Evq4rxahqmKDAREIgsk/bisewZG+nI94+VIBzs/oV/9A9lSxT4aTSYqkCi+7/lYouix5rG8eqPl5QHpo4BZf2fw5v4OAg/OqE/Oi67eOfFuwLdTN0UE0BXj6q75s82KRLTy5AnJdChzzGtMGxgTtUOUeGxDFwKOj3R+MnFS4rGKVoZNLGyZmwOjai6I5SZYJtx6tsoXfexPLQJ26DSfnJMA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aQ5DbLom8Ahcibhanmw7HsifA0NU5npO57kt94U8gPY=;
- b=MmO8mHRs7wouJE3XmO9I2B1pPf0rL83oJk3hXVRCI82r7STQU3x2P3r/4mFw4MFjV1/HWJwXAZ03r4QCHib8pb7GBKwRWQJSDxd/bnZuFx4HKujq+LkFf1SiBOL+fZZH3djtO42u4IGxg4USnbRQTFesI0ChBZN9QtO1eFc/OqIUjgKy+Nbz+S2J7WxeEZ5BmwMkw4aWpaFPbflK2QFo1/5EUgC0fH96qGHaa9PBSEAminoK4LHZiWCdgkOmhUufP8r86KAcb5RpjpqMoC+dBmAJEtZI1M99sNFhizoA+UmwyoYnagfJNKmt0YL1Qpn8pSORl6pICf4qQl7AsMYw9Q==
-Received: from LV8PR02MB10287.namprd02.prod.outlook.com
- (2603:10b6:408:1fa::10) by IA1PR02MB9181.namprd02.prod.outlook.com
- (2603:10b6:208:42b::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.20; Tue, 6 May
- 2025 14:25:18 +0000
-Received: from LV8PR02MB10287.namprd02.prod.outlook.com
- ([fe80::b769:6234:fd94:5054]) by LV8PR02MB10287.namprd02.prod.outlook.com
- ([fe80::b769:6234:fd94:5054%4]) with mapi id 15.20.8699.012; Tue, 6 May 2025
- 14:25:18 +0000
-From: Jon Kohler <jon@nutanix.com>
-To: ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
-        hawk@kernel.org, john.fastabend@gmail.com, netdev@vger.kernel.org,
-        bpf@vger.kernel.org, jon@nutanix.com, aleksander.lobakin@intel.com,
-        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-        Jason Wang <jasowang@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net-next 3/4] tun: use napi_build_skb in __tun_build_skb
-Date: Tue,  6 May 2025 07:55:28 -0700
-Message-ID: <20250506145530.2877229-4-jon@nutanix.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250506145530.2877229-1-jon@nutanix.com>
-References: <20250506145530.2877229-1-jon@nutanix.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR04CA0006.namprd04.prod.outlook.com
- (2603:10b6:a03:40::19) To LV8PR02MB10287.namprd02.prod.outlook.com
- (2603:10b6:408:1fa::10)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CRxKH3Pk"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5f632bada3bso9382a12.1
+        for <netdev@vger.kernel.org>; Tue, 06 May 2025 07:38:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1746542307; x=1747147107; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WS0cqO7mEX8JBUGkY5ZSym9XPagAwEGfVvGLKmJF5sY=;
+        b=CRxKH3PkApshm30WZX8T9D4ebFVa2DK7zxt1/b5UuPL7Un040C1U04ni6pt6wn4EUz
+         5jx1dasvgSqPUAApV3udF1A/6C+nUlyypZIjBlpCM0dEuoRq7fICJSpaB2UhsFtOvRan
+         cgQZYs6G4UwwFepUYX64nBp1bhYcLI2CFkrti2s0X0fJmnym8e6wcNm1nbXBgHxxU4DO
+         73DjIY+ZRiUL8YZ58MzUU1ACZJE2e8eq3/y6W2agirsIrZFZiItiW8MF9e73oHUvzxHh
+         hKax1ddqHIzpONWeLztbYaFGdnyw3RTmNcKMUjTpBsKxrrazzPA+4XJ0EXcghTL4bPa9
+         UEJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746542307; x=1747147107;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WS0cqO7mEX8JBUGkY5ZSym9XPagAwEGfVvGLKmJF5sY=;
+        b=it/FADGQKqDCWN5Mo9E3EApnmmrRwTuajB6TkYsXdAf4ssDHyY2p9GwGPI3hxD3Ixe
+         CXlULA+KcSRLJSehR0E6PAIJs4QC/l075hYx9Bf8xDW0mfBgSnmR40OmZp8kLIiB+QyZ
+         CokWwSS0pPZRimSzG7GTWV5q5KEOzYMK+eFBq78Hx/7AF1sEUcq2FgQJUq08R3HUUoK1
+         OtP9oa2ftuzYTZsK3C6qA5qu1kSzCwxEQdL1e7T+UYhrcK8evyyMJXvDB5klMa0VF32w
+         rfIMMruyE+COuGHlRl8hCsCOVH0wtuXCD6PniMvhhTCKo8Ugmpwz+rmdyb8d5qjLz/U9
+         0dVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXcsb/mrnwr7h8vpBonwHJ+t/PVneI8SahGvqHtgUcEQKgKhvpsZzwiDxVi839HXO1kcxnBoeA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6FmcPz8UV6YVRC3TBSMEGJrUHOKZ+8fL7K183FihmvmitMlKI
+	C+tOf/H5CauM8QOrtsh+T6PKz7qVbELgj5xoJ5B5zLguMV7WWusBHL4SOWqyzbOPxCsMSdeZxck
+	D/iOkjm2bN/1QiaTf1uByxLFWy5ogKuDhwB8d
+X-Gm-Gg: ASbGncuvaHJqNBQuKzy6eSsERSeUrwpHO8CK1Pi7farBtmjreQWDO6lEaZhDJTyHJu/
+	msPOoPCP5lB5GiC83odwtIz0yOdE6wkRGXwqhPOka1subzHiofYMzSrY79iW9AKQ1s1mqPySalG
+	GeEhLdZaz53e283TwSkAzD8Jo+VN6frYBVakRbGwK4BylnAjoD7Q==
+X-Google-Smtp-Source: AGHT+IEKBtQbqHTSi7RTxOlTKbd2L3krdaRx+iHlrQhBUxrpFEHfioEBlUhMAatv2Ff4k8wWL2KQK5USpqhewEIPDcg=
+X-Received: by 2002:aa7:d1d9:0:b0:5f8:d6b1:71ba with SMTP id
+ 4fb4d7f45d1cf-5fbe76ccb80mr239a12.4.1746542307024; Tue, 06 May 2025 07:38:27
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR02MB10287:EE_|IA1PR02MB9181:EE_
-X-MS-Office365-Filtering-Correlation-Id: d1e618cf-9ce8-48ed-9125-08dd8ca9d39d
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|366016|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/WMfrJiZGjDW5zutSvvwPPqESitu8QEhBeIp1T5EbJqbtATr5ofKKuoXnKWU?=
- =?us-ascii?Q?2vt661hSWIbEOlE6wi5MoftUbaTB3QH44PTmOsyTtDIEMC06cfXbOT2Thtwt?=
- =?us-ascii?Q?cFwDBgjkvUIFZDy8tLa6LVPKj1hJgPY9ZtQsjwqNFXL/2ZJZ7DpmC748k/Ca?=
- =?us-ascii?Q?008ztvykR8YTZ3L4O/f6J10qbTSNHZ7DzxwwZl2DTpOyutbdX2Sr42hKItoy?=
- =?us-ascii?Q?QHGtW9fFQy5ZXOozMKwXzW0SqyxjZBcaYO+un7D9zxqCOFn4sbtSYd53X7Pj?=
- =?us-ascii?Q?XTvgK5ETtr6ZPhv+xMfMhvvh7fLLE9ml8QPShn01UC3qS2BH11EzntoJwAee?=
- =?us-ascii?Q?8oIxz3+42+Dqfiv3p5Vqr9Mm9xj4GQJJAkUpuIwGD7inG+t0jVqswkZXs1Rd?=
- =?us-ascii?Q?IsaJnxpb6529MtMEl0480KSdWSpjGxln+ssZH0taiXSHad0Hc1ndGcrnDRkJ?=
- =?us-ascii?Q?np6xgO1SDVssK2/XXpCHtRHw/fvxbjvKWVIlXN4gzOiQtBzhP8EOHx3f86qZ?=
- =?us-ascii?Q?eHP367mpN8N95d+2OLRMWtFXBwAHfcadKX/JEwIxWS4n41f1OQJFrWprqOxO?=
- =?us-ascii?Q?mTq6bl8SZR3IT0fjFUvh1oxlDzW3qwrIod58o1vyocisZ5jZ8ltkwGxVdJRQ?=
- =?us-ascii?Q?faR7KZ6YFUaPFv2SIM07LpWR3kuaXAbIF+4WmtgrgzQQFrZUhdxknwrFLKTf?=
- =?us-ascii?Q?TV8bbv6TJ5hWOuPIxesTspviKVcHdf4qc10YXPb+g9DRFkuxgajd15FaWrkP?=
- =?us-ascii?Q?dWzUI+9dAwFZUW3mttA79FGwQeLiXojbmLO1/x15FuidC52B5eIjwQLFlhb+?=
- =?us-ascii?Q?wFPwKJ6ARGT8oRhcv+kM285F8xe0lFVQU+shpAeh3LuaBuXGtzu0Zab9d4Oh?=
- =?us-ascii?Q?oYH0mZNdMdRavrh89m3mWNkU5Hc0VKuYKyDqp9q6NhQZ2e3Lgvf1JYG30xS6?=
- =?us-ascii?Q?1sOkvaaaWJKk75aJT4zHWDNwUWn/FT6qTiOOfEr42woCYd0i2/Fi5tXLf1fn?=
- =?us-ascii?Q?d1mtBe7yW24cCW1kpn/xhnvIOJou6ztudfu2EmTYtSR3slhrTDk/ap35YBWC?=
- =?us-ascii?Q?OhXpN4iNwcdYu21FE8LHr+IfWvWSnMCC9k9zXWoZZBujQgfHOOtrDl9I2e73?=
- =?us-ascii?Q?VY6gFSvE2qV9SvpN4QzcFF6V/nPZ/o076YvNGv60pgLOY62g/F2hCUDKcXzk?=
- =?us-ascii?Q?HthwaDEerGVAxlbmHwp6vY3+UDCc7CaIc80uKL/2yNdJq09XExY59BqaqeFh?=
- =?us-ascii?Q?ueGyFAYyYAE2TNYKjjNYRs5FtMgWGWmL7XHeG4eCVzZB/p3y7LytiQaakigL?=
- =?us-ascii?Q?ccVTfBWOZCO2n6qNKj9F9LKLhxqxY3h1XoJSrV4zyMaEB8P8li4AF8r3cgu7?=
- =?us-ascii?Q?qs2Sm8Bz/o8Pgk8/gwXFpcftPvDxBpcilIumvU8o5leQac817qG2/KBWz7Bg?=
- =?us-ascii?Q?Q+9LNPykOciflKDK+pbKhmoMD/6z4B3LBA7oaoNu6fZugSrmDVHcP69w2SRQ?=
- =?us-ascii?Q?4W0TYblAEEYdAJU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR02MB10287.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(366016)(38350700014)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?od8iocwLtnG4rtuc2KRktOXocxk7zN82UFNSIj3Mmbq2RjCGyGovRDm/F8X4?=
- =?us-ascii?Q?InzUf+JxHKp4vByCoJhcL1P+eDEdFGLnM8Yd1NajnDDtaBZU29vYg2LGBCW6?=
- =?us-ascii?Q?aWkk7StVKmKN4ZvJeZbsvJiTj2p0Mnn5LwhRME/KjrwQ2/d1DiAKKLfK6Oau?=
- =?us-ascii?Q?+uyP8+coK1sGb0/OFC/2Tcln5ismR9t7jOEYIqvDO3vIgfD+T4qacM2Ar+Z/?=
- =?us-ascii?Q?DPu1TzYEDXRnSuDmvW7VjTlYioefs3GkbCUZ4zKeG/TfNGSIyz/j932NpI4C?=
- =?us-ascii?Q?/EyxvVDctOsiI4ydZltpYNYGn86VY2iMZcloegNf2MybZCld078DoJjJ/rDg?=
- =?us-ascii?Q?RjHi4C4mU0+Q3aH+q7LKM+YSI2QG/bAPq9JKavrPnt/RHY8lQVgVq2VCkgOu?=
- =?us-ascii?Q?Y+w1TmTQM7IO74ZT+AhBXLERPTfBepWRlBKHCAPdxUp/lwx7rXct366hZJg9?=
- =?us-ascii?Q?kszxxR5cIOGt8S5nh7+hNJpAPuNZWXXXttMfViyK7KAoHi5GqNNeUNV09E42?=
- =?us-ascii?Q?Tx00ZGLDP8PQ00LydAOLUVRtspCcKE+2Sgvtz7pZf4a2ZCwXFqHLu1cDOTjp?=
- =?us-ascii?Q?nlVLQbEPIFOmrGrQMqhkzRfDe238zEVxCWt+rfOBbgrVVYc3VCUFiMjxf3kl?=
- =?us-ascii?Q?JuiIHOPyTdwN6jBHa/VohkKymhEPJq2+rFu7x6F1BbSn2fuiBT2qKRMpTaoc?=
- =?us-ascii?Q?zmRhEqWjlbMtBb4a+pcraMzUNfKZOA7qwlfkAk6RMHwvBI8arJYfjOWjderS?=
- =?us-ascii?Q?oi3/UIgXlsW1niBMGDj/gQVEgA8Bk6xnMwxT4mXRj079n2CZSXQ5yOxYhYlP?=
- =?us-ascii?Q?jP2z7ORJXr0SFY81zsdYm1UvHfB+5zPcDetT8kRNA1jNCSpjErJMn4xSrhL6?=
- =?us-ascii?Q?aQ4ehhndfMl/UlRBeN4Am658IdsBDU0B1BOIucGC1JekTehUeG5nWD4oTFwP?=
- =?us-ascii?Q?DkiSCIFpBoLkn7PJ5I1dE+dmHbc10OSJ1DXKR/6Gp95dpSwSUocr73w1xkwq?=
- =?us-ascii?Q?sGMGswMukfZh+OXh5nSJqUVBr2Z5Xg7DWH0OYIFVKFiqEiXkDdpwPSBP5yUW?=
- =?us-ascii?Q?rLd6F5RfrgtcYsDpvploBKUcJLCo97J1ejh4G8ipRrLN3DBIkT7WdaV07mgv?=
- =?us-ascii?Q?BgjjWQo1N+rYZDJbVMQEvSsQbYbiwUjXu4pUl4KsU6insW4zHD4qMVti5LIF?=
- =?us-ascii?Q?wxyAeqj3eemAL8eRcbSxiYaqC/sk1MG0C4wxKcDmQhdTXTHYHWhtbmnb/Ymh?=
- =?us-ascii?Q?Z/UXELklM5hRmKdoPkDKhSwAsyDrbDoK/mzrB5pnO4FUlxK82ChG9s+qfIf5?=
- =?us-ascii?Q?r3BQtg/e1L/FynRbRo2FkHv63OUnOzysSSSeZiuXodqEYh175s4bKJ/ziJYU?=
- =?us-ascii?Q?m3eNogIMHnY6oNIZ5dH9xv3cgoF+B8HbY9KtvKMCw8oTCKc9td7vKa5ncPeQ?=
- =?us-ascii?Q?BzZWf2G79r0q1Q9qWs/i9/K90ft2K3yWP5fVT7F6AGs58yFnCfG4ySBPyUxk?=
- =?us-ascii?Q?LC275I0A3wXKL9XcNqZwue3uqOmhOGL8bJBIVBI+uab+JVSJaTcOaB0h3Mnt?=
- =?us-ascii?Q?ju5aQ/RNaOD/LTmzv2VPLpNENFv9PgAGcBj3FdQ+LpnmV85py/hDcI+6qtdX?=
- =?us-ascii?Q?GQ=3D=3D?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1e618cf-9ce8-48ed-9125-08dd8ca9d39d
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR02MB10287.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 14:25:18.6794
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lHI0jby9eVNm/Bkaqnx9szGHhzoODTI23EDcUsNwSUbfQEkaJiCdLyex6A4P7EfDn08/eJ0ed5I4VkOaMSwAPA0h0gvnMOq9hzgH3iXU6BQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR02MB9181
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA2MDEzOSBTYWx0ZWRfXwhD+hVeiMx0C hIMNzWn3A1E1ZPYWFgFHVK3E6VHaIIKH7yJQ2xF8ytsO2zkMiQLOmnWR1gHJwDc1NVJ74cPaNPY NpFBWntPYsmqFCeQQI6bQmKTtS02BBVAxO9JeQm6+N3C36xX8sXmPzc86BzCVwmCUHFy1lCv/Nu
- k1Zoha9oLk9wtJR+j4h5ud8cGsQzx/8ZkKRDDvidzCl3yqWqf373DZ03Ysq5R41tVyRgO+9/8nO QyfZTLeTIG4rN8TjtZdCFdiP0PKWIp57uSkAOMIOjlSrYLQpRAOXzY5Ahr2BKbt5C9FrondJC4w A3/YIGU9dnyaFll7AZpvGIEVNlMR8l3ZxAiHBW6RcX/A4u3oYXEb3kUERHddSkvrOKHePtQSeet
- GDhDr5s97b5hj9Iwa6VsrtyJRsU2pdYAqudUbuqL6fu1dUS0AAvatTEh+o3kIHxOXZ54xJD2
-X-Authority-Analysis: v=2.4 cv=LNpmQIW9 c=1 sm=1 tr=0 ts=681a1bd0 cx=c_pps a=AHWEOuZXH7ukEk4XErmcRg==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=dt9VzEwgFbYA:10
- a=0kUYKlekyDsA:10 a=64Cc0HZtAAAA:8 a=DtH-ZNJ2jHKKiKdS_QUA:9
-X-Proofpoint-ORIG-GUID: o-UE0N6u_dGMJ99VKXig2001MizTYuwM
-X-Proofpoint-GUID: o-UE0N6u_dGMJ99VKXig2001MizTYuwM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-06_06,2025-05-05_01,2025-02-21_01
-X-Proofpoint-Spam-Reason: safe
+References: <20250505-dompteur-hinhalten-204b1e16bd02@brauner>
+ <20250505184136.14852-1-kuniyu@amazon.com> <CAG48ez35FN6ka4QtrNQ6aKEycQBOpJKy=VyhQDzKTwey+4KOMg@mail.gmail.com>
+ <20250506-zugabe-bezog-f688fbec72d3@brauner>
+In-Reply-To: <20250506-zugabe-bezog-f688fbec72d3@brauner>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 6 May 2025 16:37:49 +0200
+X-Gm-Features: ATxdqUG1RLsm5I44mZFoXDEOhGLmKo0PIMKTKhu327qv26lJZYIhQ2B6edAN2po
+Message-ID: <CAG48ez0Pc+QzxgAnT25KqyvjC8n0=diL6DnxBe7CcdQ32u9GcA@mail.gmail.com>
+Subject: Re: [PATCH RFC v3 08/10] net, pidfs, coredump: only allow coredumping
+ tasks to connect to coredump socket
+To: Christian Brauner <brauner@kernel.org>
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>, alexander@mihalicyn.com, bluca@debian.org, 
+	daan.j.demeyer@gmail.com, davem@davemloft.net, david@readahead.eu, 
+	edumazet@google.com, horms@kernel.org, jack@suse.cz, kuba@kernel.org, 
+	lennart@poettering.net, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, me@yhndnzj.com, netdev@vger.kernel.org, 
+	oleg@redhat.com, pabeni@redhat.com, viro@zeniv.linux.org.uk, 
+	zbyszek@in.waw.pl
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Use napi_build_skb for small payload SKBs that end up using the
-tun_build_skb path.
+On Tue, May 6, 2025 at 10:06=E2=80=AFAM Christian Brauner <brauner@kernel.o=
+rg> wrote:
+> On Mon, May 05, 2025 at 09:10:28PM +0200, Jann Horn wrote:
+> > On Mon, May 5, 2025 at 8:41=E2=80=AFPM Kuniyuki Iwashima <kuniyu@amazon=
+.com> wrote:
+> > > From: Christian Brauner <brauner@kernel.org>
+> > > Date: Mon, 5 May 2025 16:06:40 +0200
+> > > > On Mon, May 05, 2025 at 03:08:07PM +0200, Jann Horn wrote:
+> > > > > On Mon, May 5, 2025 at 1:14=E2=80=AFPM Christian Brauner <brauner=
+@kernel.org> wrote:
+> > > > > > Make sure that only tasks that actually coredumped may connect =
+to the
+> > > > > > coredump socket. This restriction may be loosened later in case
+> > > > > > userspace processes would like to use it to generate their own
+> > > > > > coredumps. Though it'd be wiser if userspace just exposed a sep=
+arate
+> > > > > > socket for that.
+> > > > >
+> > > > > This implementation kinda feels a bit fragile to me... I wonder i=
+f we
+> > > > > could instead have a flag inside the af_unix client socket that s=
+ays
+> > > > > "this is a special client socket for coredumping".
+> > > >
+> > > > Should be easily doable with a sock_flag().
+> > >
+> > > This restriction should be applied by BPF LSM.
+> >
+> > I think we shouldn't allow random userspace processes to connect to
+> > the core dump handling service and provide bogus inputs; that
+> > unnecessarily increases the risk that a crafted coredump can be used
+> > to exploit a bug in the service. So I think it makes sense to enforce
+> > this restriction in the kernel.
+> >
+> > My understanding is that BPF LSM creates fairly tight coupling between
+> > userspace and the kernel implementation, and it is kind of unwieldy
+> > for userspace. (I imagine the "man 5 core" manpage would get a bit
+> > longer and describe more kernel implementation detail if you tried to
+> > show how to write a BPF LSM that is capable of detecting unix domain
+> > socket connections to a specific address that are not initiated by
+> > core dumping.) I would like to keep it possible to implement core
+> > userspace functionality in a best-practice way without needing eBPF.
+> >
+> > > It's hard to loosen such a default restriction as someone might
+> > > argue that's unexpected and regression.
+> >
+> > If userspace wants to allow other processes to connect to the core
+> > dumping service, that's easy to implement - userspace can listen on a
+> > separate address that is not subject to these restrictions.
+>
+> I think Kuniyuki's point is defensible. And I did discuss this with
+> Lennart when I wrote the patch and he didn't see a point in preventing
+> other processes from connecting to the core dump socket. He actually
+> would like this to be possible because there's some userspace programs
+> out there that generate their own coredumps (Python?) and he wanted them
+> to use the general coredump socket to send them to.
+>
+> I just found it more elegant to simply guarantee that only connections
+> are made to that socket come from coredumping tasks.
+>
+> But I should note there are two ways to cleanly handle this in
+> userspace. I had already mentioned the bpf LSM in the contect of
+> rate-limiting in an earlier posting:
+>
+> (1) complex:
+>
+>     Use a bpf LSM to intercept the connection request via
+>     security_unix_stream_connect() in unix_stream_connect().
+>
+>     The bpf program can simply check:
+>
+>     current->signal->core_state
+>
+>     and reject any connection if it isn't set to NULL.
 
-Signed-off-by: Jon Kohler <jon@nutanix.com>
----
- drivers/net/tun.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+I think that would be racy, since zap_threads sets that pointer before
+ensuring that the other threads under the signal_struct are killed.
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index f7f7490e78dc..7b13d4bf5374 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -1538,7 +1538,11 @@ static struct sk_buff *__tun_build_skb(struct tun_file *tfile,
- 				       int buflen, int len, int pad,
- 				       int metasize)
- {
--	struct sk_buff *skb = build_skb(buf, buflen);
-+	struct sk_buff *skb;
-+
-+	local_bh_disable();
-+	skb = napi_build_skb(buf, buflen);
-+	local_bh_enable();
- 
- 	if (!skb)
- 		return ERR_PTR(-ENOMEM);
--- 
-2.43.0
+>     The big downside is that bpf (and security) need to be enabled.
+>     Neither is guaranteed and there's quite a few users out there that
+>     don't enable bpf.
+>
+> (2) simple (and supported in this series):
+>
+>     Userspace accepts a connection. It has to get SO_PEERPIDFD anyway.
+>     It then needs to verify:
+>
+>     struct pidfd_info info =3D {
+>             info.mask =3D PIDFD_INFO_EXIT | PIDFD_INFO_COREDUMP,
+>     };
+>
+>     ioctl(pidfd, PIDFD_GET_INFO, &info);
+>     if (!(info.mask & PIDFD_INFO_COREDUMP)) {
+>             // Can't be from a coredumping task so we can close the
+>             // connection without reading.
+>             close(coredump_client_fd);
+>             return;
+>     }
+>
+>     /* This has to be set and is only settable by do_coredump(). */
+>     if (!(info.coredump_mask & PIDFD_COREDUMPED)) {
+>             // Can't be from a coredumping task so we can close the
+>             // connection without reading.
+>             close(coredump_client_fd);
+>             return;
+>     }
+>
+>     // Ok, this is a connection from a task that has coredumped, let's
+>     // handle it.
+>
+>     The crux is that the series guarantees that by the time the
+>     connection is made the info whether the task/thread-group did
+>     coredump is guaranteed to be available via the pidfd.
+>
+> I think if we document that most coredump servers have to do (2) then
+> this is fine. But I wouldn't mind a nod from Jann on this.
 
+I wouldn't recommend either of these as a way to verify that the data
+coming over the socket is a core dump generated by the kernel, since
+they both look racy in that regard.
+
+But given that you're saying the initial userspace user wouldn't
+actually want such a restriction, and that we could later provide a
+separate way for userspace to check what initiated the connection, I
+guess this is fine for now.
