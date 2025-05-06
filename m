@@ -1,136 +1,97 @@
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997A85680
-	for <netdev@vger.kernel.org>; Tue,  6 May 2025 22:39:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1E2218ADD;
+	Tue,  6 May 2025 22:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746571196; cv=none; b=X1bbIsxBZr4TRuCCmbCCynczQPLHSL8/5nWMerQ3fFWWgxzuIg9PHyfjJOOI2fJmId/HvZwmmUzegQO45t+QZglmOLaRg05PWPNHKQo2Umx5MxnCC7DTEtAtt2UazvIOhCGgmEyIZY8V0n3E3Y5Q6m6ni1LlCt+negp++niGvos=
+	t=1746571678; cv=none; b=dpHJZ4iSFchAGItfdjRycbD28hRS0ZIlsn7o3mwbxNDC1zdA9kqjEkyHtOc7fD41ozbnBHGKFyAD/VT6Qvb6FFIRKq507xsmfEA5jE9oAm5YtkuBMLPBCwTUU1e/VAjgC32uHFfX5Dz7Mlbs8FpgNgaqQZOSIwUwbL8b5n/CrvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746571196; c=relaxed/simple;
-	bh=9GzFnldB/RPzmJjAClHv/ObE6Ew9kZSOMYJFBVJl3eg=;
+	s=arc-20240116; t=1746571678; c=relaxed/simple;
+	bh=BmVebgSwoJe1CZ2YVQOiNYym1SpMqws0eh/maQxHzZU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qDIzc8vwWBtq1hiH0wTuRlt+txMC/IOvFvVuJa/m5csfZPddayH73TyQx1XRUCf8k7LUZ831iJpUKc0cXOtSsbf0wY7OFPAku6rjqmTDaFclpVxWymOcTsJw8btQPosm9VtBhoEDYYUUQHQlE0y9ineOYmBrcjvKnY6xzl+6Evc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dBxvYUbG; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 In-Reply-To:Content-Type; b=gkjFmk0ZaEvsvueLaHOt5qXbd+QcbPJbGhxH4cju9wLVLbZ4O8o5ORdTSn4P5i22Og5avaDvDTc99Li0iwfQ93BTHmKkkWZM7SP9g3gSufyJmfHMAvTfeaMKhQUrd6rWulPWnr4FyqZZqIEft1jcBXIRBZ4QN1HpGCXE850dX8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=OV/XZL1C; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dBxvYUbG"
-Message-ID: <39753b36-adfd-4e00-beea-b58c1e5606e3@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1746571191;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MGtKCWxeeCvHWwIXpg+TiH0nAUubbBX52QN4JIdpmDA=;
-	b=dBxvYUbGFjSvYPErgbn2TcYVIGRVNpmNzM/8TioVlNVuOPAa0Eoy6QGm+QMdUJI1S/c5Kk
-	SH90tg7O5nhrD6XwUoh5Kwh5p7UVhNWbyid5ILzAO3KUTRUQVfpGfA+046gTFSNWjxZrFe
-	YFaKCJiQNFIjmHFD29gIbGGiKmhAgZ0=
-Date: Tue, 6 May 2025 18:39:43 -0400
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="OV/XZL1C"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1uCR4m-00AXJk-76; Wed, 07 May 2025 00:47:48 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
+	bh=BmVebgSwoJe1CZ2YVQOiNYym1SpMqws0eh/maQxHzZU=; b=OV/XZL1CJjjLBM6ND5SoR0EevN
+	h6AOvVWGeUNvub+mIIa2x4xRhY04lqYnRMMnd0uubnBIg2WjpVNcvVh4r0ZGa6FH3bwuC9ftcH80d
+	IW010Kswehpf4inm7fVh/7jNgaAa7Uyy7pjT4B/jwyJqak+kmG7awJS9quWpU885AskrSU4BZXPSA
+	tkFgcMkCTz8JIdSvKkefvE4mR6Qvd+MG+AMMRDfiK/H2+4BmcgIDukIyywl1hJ+qfPd5OnSwwTjab
+	qzT0EOqh06fHXLSqo/Kpk34dbNGKbq2yWhNb5NmDZe4IQINz/G4pzrRzrw64D0+Jxw8OyF2XDhyWd
+	zFpR2GtA==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1uCR4l-0005WD-MV; Wed, 07 May 2025 00:47:48 +0200
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1uCR4i-00FMkF-A2; Wed, 07 May 2025 00:47:44 +0200
+Message-ID: <ff959c3e-4c47-4f93-8ab8-32446bb0e0d0@rbox.co>
+Date: Wed, 7 May 2025 00:47:43 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [net-next PATCH v3 05/11] net: pcs: lynx: Convert to an MDIO
- driver
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
- upstream@airoha.com, Christian Marangi <ansuelsmth@gmail.com>,
- linux-kernel@vger.kernel.org, Kory Maincent <kory.maincent@bootlin.com>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Clark Wang <xiaoning.wang@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>,
- Ioana Ciornei <ioana.ciornei@nxp.com>, Joyce Ooi <joyce.ooi@intel.com>,
- Madalin Bucur <madalin.bucur@nxp.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, UNGLinuxDriver@microchip.com,
- Wei Fang <wei.fang@nxp.com>, imx@lists.linux.dev,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20250506215841.54rnxy3wqtlywxgb@skbuf>
- <20250415193323.2794214-1-sean.anderson@linux.dev>
- <20250415193323.2794214-1-sean.anderson@linux.dev>
- <20250415193323.2794214-6-sean.anderson@linux.dev>
- <20250415193323.2794214-6-sean.anderson@linux.dev>
- <20250506215841.54rnxy3wqtlywxgb@skbuf>
- <50e809ea-62a4-413d-af63-7900929c3247@linux.dev>
- <50e809ea-62a4-413d-af63-7900929c3247@linux.dev>
- <20250506221834.uw5ijjeyinehdm3x@skbuf>
- <d66ac48c-8fe3-4782-9b36-8506bb1da779@linux.dev>
- <20250506222928.fozoqcxuf7roxur5@skbuf>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <20250506222928.fozoqcxuf7roxur5@skbuf>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 3/3] vsock/test: Expand linger test to ensure
+ close() does not misbehave
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+References: <20250501-vsock-linger-v4-0-beabbd8a0847@rbox.co>
+ <20250501-vsock-linger-v4-3-beabbd8a0847@rbox.co>
+ <g5wemyogxthe43rkigufv7p5wrkegbdxbleujlsrk45dmbmm4l@qdynsbqfjwbk>
+ <CAGxU2F59O7QK2Q7TeaP6GU9wHrDMTpcO94TKz72UQndXfgNLVA@mail.gmail.com>
+Content-Language: pl-PL, en-GB
+From: Michal Luczaj <mhal@rbox.co>
+In-Reply-To: <CAGxU2F59O7QK2Q7TeaP6GU9wHrDMTpcO94TKz72UQndXfgNLVA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 
-On 5/6/25 18:29, Vladimir Oltean wrote:
-> On Tue, May 06, 2025 at 06:20:32PM -0400, Sean Anderson wrote:
->> On 5/6/25 18:18, Vladimir Oltean wrote:
->> > On Tue, May 06, 2025 at 06:03:35PM -0400, Sean Anderson wrote:
->> >> On 5/6/25 17:58, Vladimir Oltean wrote:
->> >> > Hello Sean,
->> >> > 
->> >> > On Tue, Apr 15, 2025 at 03:33:17PM -0400, Sean Anderson wrote:
->> >> >> diff --git a/drivers/net/pcs/pcs-lynx.c b/drivers/net/pcs/pcs-lynx.c
->> >> >> index 23b40e9eacbb..bacba1dd52e2 100644
->> >> >> --- a/drivers/net/pcs/pcs-lynx.c
->> >> >> +++ b/drivers/net/pcs/pcs-lynx.c
->> >> >> @@ -1,11 +1,15 @@
->> >> >> -// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
->> >> >> -/* Copyright 2020 NXP
->> >> >> +// SPDX-License-Identifier: GPL-2.0+
->> >> >> +/* Copyright (C) 2022 Sean Anderson <seanga2@gmail.com>
->> >> >> + * Copyright 2020 NXP
->> >> >>   * Lynx PCS MDIO helpers
->> >> >>   */
->> >> >>  
->> >> >> -MODULE_DESCRIPTION("NXP Lynx PCS phylink library");
->> >> >> -MODULE_LICENSE("Dual BSD/GPL");
->> >> >> +MODULE_DESCRIPTION("NXP Lynx PCS phylink driver");
->> >> >> +MODULE_LICENSE("GPL");
->> >> > 
->> >> > What's the idea with the license change for this code?
->> >> 
->> >> I would like to license my contributions under the GPL in order to
->> >> ensure that they remain free software.
->> >> 
->> >> --Sean
->> > 
->> > But in the process, you are relicensing code which is not yours.
->> > Do you have agreement from the copyright owners of this file that the
->> > license can be changed?
->> 
->> I'm not relicensing anything. It's already (GPL OR BSD-3-Clause). I'm
->> just choosing not to license my contributions under BSD-3-Clause.
->> 
->> --Sean
-> 
-> You will need to explain that better, because what I see is that the
-> "BSD-3-Clause" portion of the license has disappeared and that applies
-> file-wide, not just to your contribution.
+On 5/6/25 11:46, Stefano Garzarella wrote:
+> On Tue, 6 May 2025 at 11:43, Stefano Garzarella <sgarzare@redhat.com> wrote:
+>>
+>> On Thu, May 01, 2025 at 10:05:24AM +0200, Michal Luczaj wrote:
+>>> There was an issue with SO_LINGER: instead of blocking until all queued
+>>> messages for the socket have been successfully sent (or the linger timeout
+>>> has been reached), close() would block until packets were handled by the
+>>> peer.
+>>
+>> This is a new behaviour that only new kernels will follow, so I think
+>> it is better to add a new test instead of extending a pre-existing test
+>> that we described as "SOCK_STREAM SO_LINGER null-ptr-deref".
+>>
+>> The old test should continue to check the null-ptr-deref also for old
+>> kernels, while the new test will check the new behaviour, so we can skip
+>> the new test while testing an old kernel.
 
-But I also have the option to just use the GPL-2.0+ license. When you
-have an SPDX like (GPL-2.0+ OR BSD-3-Clause) that means the authors gave
-permission to relicense it as
+Right, I'll split it.
 
-- BSD-3-Clause
-- GPL-2.0+
-- GPL-2.0+ OR BSD-3-Clause
-- GPL-2.0
-- GPL-2.0 OR BSD-3-Clause
-- GPL-3.0
-- GPL-3.0 OR BSD-3-Clause
-- GPL-4.0 (if it ever happens)
+> I also saw that we don't have any test to verify that actually the
+> lingering is working, should we add it since we are touching it?
 
-I want my contributions to remain free software, so I don't want to
-allow someone to take the BSD-3-Clause option (without the GPL).
+Yeah, I agree we should. Do you have any suggestion how this could be done
+reliably?
 
---Sean
+Thanks,
+Michal
+
