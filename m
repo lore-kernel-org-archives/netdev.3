@@ -1,76 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7AD27FB1B
-	for <netdev@vger.kernel.org>; Tue,  6 May 2025 00:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB719350156;
+	Tue,  6 May 2025 00:57:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746491273; cv=none; b=qbNGGRKMnecosKLSei+LMFLb172Ny7HyXz52rartAkvDAWStm4w1dCjUizrm2I1kCLZlgUWISvwGNBipwuE76ONP7GWIpCAUZ5sprZYfTo+On/eotXlIbMRzJF8rJGXZ6GMWbrULEjAolRVNmkfnx32RDP7oZbj+9VIyAo1HtKY=
+	t=1746493024; cv=none; b=ClXDU069teHgpXzffefqYCX8IMPHXldQ0QNTG9PatTC917fW24yDrElDlu/R9cv45VD7JWmti0IL/u4LXw9aK1lojVKs72166Npa8rfMiiOUineIDcDtYJQhv2Fih+T0MpG9YzD3QOtNZRb0Thz9OJucfChZ7P8u4hu/mfklx/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746491273; c=relaxed/simple;
-	bh=iddWnoqHwptXsz6AW0BUirbqdjrQz8LAD2GWn07NSCU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W115lokhvra1+q32/Pshhg7bYUKTy+a6pSgwU+IwWe7VZ+Er1V0gxB8xT3LzjZSJAnWVF1djtKnAg1G2sJOUM1EeUE+MHJvRXOGTe/9GsTqn859tVONysrwVQK4KO5C/uezk+Y1v8qwLyGz32tmPo1dgrthPY5GvF7lFiDlsbD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=byxgfciZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746493024; c=relaxed/simple;
+	bh=WJ5N3hpgmYKXtAvoAQtuBt6dpWd9vR5puNnmvUo5hIA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lA9OVbxUiKdHGusdK5dL3PUHnnWuDh2a3F8J4syFAGDDSzdR31c2W6EFjWSXJuIlCWmOEBAxQysOQsywXMrFlezOsNM6v8GFNfCPd6tE8W3CwX8iCA03KBybZqx8iCGsFTsmmOPpudZ9OzIYgHrMZ9tNJDzkmM1/EoFZj2LnCnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NWPsFDxv; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="byxgfciZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF8EC4CEE4;
-	Tue,  6 May 2025 00:27:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746491271;
-	bh=iddWnoqHwptXsz6AW0BUirbqdjrQz8LAD2GWn07NSCU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=byxgfciZiiHBfKUyWomW1PlOlkvvvWNnHqS+eFWyDaPLhFEPYUBl5kz73LjukyVuJ
-	 AUalFFR6aOaqw+Go8Qx7pJpWUBgj/PTBjH+3IKaPEV0Z5XYTeQ6QpGmDAlAnZTZ0iv
-	 4S4poqb2KZMEhWMxXeHMxyPOmTxXcqS/V1D14UAL9opXP0UP5dl+Ke8rw/k+6BNbEZ
-	 vgj2qEhuyQJKCb/AlCApViaJKRDrZ1IzoHILfeJXd5Pj8F9np2MOPojL2MQuJ1aa7N
-	 1MwQ/cmUlTR02aI8Ng9b4XOyCM/Lbak492qoBB+s+M1qjHfekqh6EE49MHTniOpvJU
-	 5afX0aDWNbeEg==
-Date: Mon, 5 May 2025 17:27:50 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: David Wei <dw@davidwei.uk>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- donald.hunter@gmail.com, jacob.e.keller@intel.com, sdf@fomichev.me
-Subject: Re: [PATCH net-next 2/3] tools: ynl-gen: split presence metadata
-Message-ID: <20250505172750.2c0a8f2b@kernel.org>
-In-Reply-To: <a6842c5f-032c-4003-9e7c-2705fecc2835@davidwei.uk>
-References: <20250505165208.248049-1-kuba@kernel.org>
-	<20250505165208.248049-3-kuba@kernel.org>
-	<a6842c5f-032c-4003-9e7c-2705fecc2835@davidwei.uk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NWPsFDxv"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-39bf44be22fso3389146f8f.0;
+        Mon, 05 May 2025 17:57:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746493020; x=1747097820; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NG56sgydZqZDSI93ssWFt8es69R/8NDv+wgZ7H1Zg5M=;
+        b=NWPsFDxvwAAbihX7mz9EpN5XcLam1G2od3qcy2QZS9vdDgaQ+Y78UvcyWg/hBYjt0q
+         gIcqyTxQ9FeNucPcagNVXHBV+rc8AM5sZ0b+kpc7AG4sov4FeZPoPJnFiVKP/NAHGFdA
+         FB/H0Zf7UfoJuE3cu0nS6jhEzXjq54BE3t6J/xvFDzIv7E2SYqfwH7qRgbvvlTy+sB4k
+         Lwt8AiEZ1+RY8TmDa966crOHew617mt5vOsI8dui7dNIYAQyjdaHVZD+xNDwMmn78F26
+         6EbKYSDi6q6uZbIItsNiwbGhiIwk0JPh+GLF1fAbVz4N5uRk57aWadBOaoSq/DTHuov9
+         0gWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746493020; x=1747097820;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NG56sgydZqZDSI93ssWFt8es69R/8NDv+wgZ7H1Zg5M=;
+        b=WIdjygJ8gPQO8WxeOFahqkFDd6aCME0VOgxdzRuo5p7FQTwMEhH/ZW1DlyrtYX2s2/
+         CXkoCYV7bVgnCRXkxR0l5yyhw32jLnI1ge9qnQgLVy5qC5Q9LhxV7EOMPCjCAYkIW1PJ
+         +zch4K7VYfm5WltxwHHABIY/cPpHuYSo/gGMysnhbFKeSMJbPL32zw58+LfLCTfVnkYY
+         3H4XsD9x62V/YOb7OlEbk6toD4kNdTqIjhqLT56VXdaiiSuk6Ad4yh7YAKbn9UDnsS7r
+         LTAKgKv4PYs56vP5Xlq01I7OGJXYgROmaqKLGyebjdw8qhB3VMaypMlvY0YOlX/WXkT7
+         syTw==
+X-Forwarded-Encrypted: i=1; AJvYcCVMaL4CAZp0gDTJVo8pOJYx7BTMTFsW3ABWfpLVpD5ksnhccHDiohlpN+wUX4T9m3gPTD5C1tRnCA==@vger.kernel.org, AJvYcCWJhZYUTzxPiS9e7oOeUrsAe0mhGt2YSw5UP3LxAnVKHGYByX8BABZPcnBSzSYgy+aSFvw=@vger.kernel.org, AJvYcCXjh61v2fcrjhYaimWg0iruAngTV1uIAgmHKg3Vhmwsn8Iuf0Nlxt9iZnCGX3rmuuO3uO6syZPS@vger.kernel.org, AJvYcCXlorQzWl74yOvMjyfxIkWtAccmU+htrkgz/P9zYV8mZHRSLhrTMYZ9JHBQvffCimsBvieXyloKG/vOLzgjq/jZEeOO1Jp7@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfpF007L7xBDWrTBAtn0ovSFwxfAw+U8hmRtBNZ3wfwy8maVWn
+	TlXsdTYflyhHFt/zIeIE5qy+bMCvhIHMmTo4PHxJQ5sTa9sPGdG8lwsAghKdhUUfbT4MrpaF7Tt
+	ow/DO77UEbvpHLBb1rzX+ScIkdu8=
+X-Gm-Gg: ASbGnctTXiu/ErsJKHU5OWThKfRjytp9OHK/e/oNt2W4BuBodpoTfxIpiflDJACwfWQ
+	X1ZcAHxbfWEvScuRADiRADp3rk903S/3exDgNVfV39m8hYmLKz851lFvHdH0Sk5/ojfSoAbHUDM
+	we9iKHfveUVtLdI7su0MAgY8cqb5kI5YPDxeNmFDkpujyPlsVijU8Q+kF29Pq1
+X-Google-Smtp-Source: AGHT+IFmq92gXDyJ4tG7YRwzhLFbPsIymRx1JYkBfkuzkB8bzfB0NsMIXg9vTiXFzK0daiHD2Viir2BOAVh6NAVWprM=
+X-Received: by 2002:a05:6000:18af:b0:39c:30f9:339c with SMTP id
+ ffacd0b85a97d-3a0ac0ec442mr710518f8f.28.1746493019898; Mon, 05 May 2025
+ 17:56:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <CAADnVQK1t3ZqERODdHJM_HaZDMm+JH4OFvwTsLNqZG0=4SQQcA@mail.gmail.com.txt>
+ <20250506004550.67917-1-kuniyu@amazon.com>
+In-Reply-To: <20250506004550.67917-1-kuniyu@amazon.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Mon, 5 May 2025 17:56:49 -0700
+X-Gm-Features: ATxdqUE--sGACWHpoTDfN6Z19YjKVfIMpJPMpn9rpWA5hJnc1H25_PoxJfzy7Ls
+Message-ID: <CAADnVQ+bk8Qt=Zo4S2MZxB+O4G4q_EXB4P0BtJ3LjgbJuY_9_w@mail.gmail.com>
+Subject: Re: [PATCH v1 bpf-next 4/5] bpf: Add kfunc to scrub SCM_RIGHTS at security_unix_may_send().
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>, 
+	Christian Brauner <brauner@kernel.org>, Casey Schaufler <casey@schaufler-ca.com>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Eduard <eddyz87@gmail.com>, 
+	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
+	Hao Luo <haoluo@google.com>, James Morris <jmorris@namei.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Jiri Olsa <jolsa@kernel.org>, 
+	KP Singh <kpsingh@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>, 
+	LSM List <linux-security-module@vger.kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
+	Network Development <netdev@vger.kernel.org>, Ondrej Mosnacek <omosnace@redhat.com>, 
+	Paul Moore <paul@paul-moore.com>, Stanislav Fomichev <sdf@fomichev.me>, selinux@vger.kernel.org, 
+	"Serge E . Hallyn" <serge@hallyn.com>, Song Liu <song@kernel.org>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Yonghong Song <yonghong.song@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 5 May 2025 14:06:29 -0700 David Wei wrote:
-> > @@ -282,6 +281,7 @@ from lib import SpecFamily, SpecAttrSet, SpecAttr, SpecOperation, SpecEnumSet, S
-> >               # Every layer below last is a nest, so we know it uses bit presence
-> >               # last layer is "self" and may be a complex type
-> >               if i == len(ref) - 1 and self.presence_type() != 'present':
-> > +                presence = f"{var}->{'.'.join(ref[:i] + [''])}_{self.presence_type()}.{ref[i]}"  
-> 
-> Can this go a few lines higher and replace:
-> 
->              presence = f"{var}->{'.'.join(ref[:i] + [''])}_present.{ref[i]}"
-> 
-> Since self.presence_type() would always return the correct string,
-> including "_present"?
+On Mon, May 5, 2025 at 5:46=E2=80=AFPM Kuniyuki Iwashima <kuniyu@amazon.com=
+> wrote:
+>
+> From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+> Date: Mon, 5 May 2025 17:13:32 -0700
+> > On Mon, May 5, 2025 at 3:00=E2=80=AFPM Kuniyuki Iwashima <kuniyu@amazon=
+.com> wrote:
+> > >
+> > > As Christian Brauner said [0], systemd calls cmsg_close_all() [1] aft=
+er
+> > > each recvmsg() to close() unwanted file descriptors sent via SCM_RIGH=
+TS.
+> > >
+> > > However, this cannot work around the issue that close() for unwanted =
+file
+> > > descriptors could block longer because the last fput() could occur on
+> > > the receiver side once sendmsg() with SCM_RIGHTS succeeds.
+> > >
+> > > Also, even filtering by LSM at recvmsg() does not work for the same r=
+eason.
+> > >
+> > > Thus, we need a better way to filter SCM_RIGHTS on the sender side.
+> > >
+> > > Let's add a new kfunc to scrub all file descriptors from skb in
+> > > sendmsg().
+> > >
+> > > This allows the receiver to keep recv()ing the bare data and disallow=
+s
+> > > the sender to impose the potential slowness of the last fput().
+> > >
+> > > If necessary, we can add more granular filtering per file descriptor
+> > > after refactoring GC code and adding some fd-to-file helpers for BPF.
+> > >
+> > > Sample:
+> > >
+> > > SEC("lsm/unix_may_send")
+> > > int BPF_PROG(unix_scrub_scm_rights,
+> > >              struct socket *sock, struct socket *other, struct sk_buf=
+f *skb)
+> > > {
+> > >         struct unix_skb_parms *cb;
+> > >
+> > >         if (skb && bpf_unix_scrub_fds(skb))
+> > >                 return -EPERM;
+> > >
+> > >         return 0;
+> > > }
+> >
+> > Any other programmability do you need there?
+>
+> This is kind of PoC, and as Kumar mentioned, per-fd scrubbing
+> is ideal to cover the real use cases.
+>
+> https://lore.kernel.org/netdev/CAP01T77STmncrPt=3DBsFfEY6SX1+oYNXhPeZ1HC9=
+J=3DS2jhOwQoQ@mail.gmail.com/
+>
+> for example:
+> https://uapi-group.org/kernel-features/#filtering-on-received-file-descri=
+ptors
 
-Hm, I don't think so. This is some of the gnarliest code the codegen
-has, but it tries to generate something like:
-
-	req->_present.options = 1;
-	req->options._present.cgroup = 1;
-	req->options.cgroup._count.act = n_act;
-
-We have a nested member called "act". It's two nesting layers deep
-inside the requests. We need to mark the "act" as present, but also
-all parent nests as present. The nests always have presence type
-of "present" (that's why its hardcoded at the start of the loop).
-Last layer is the "real" presence type of the attribute, so we use
-self.presence_type().
+Fair enough.
+Would be great to have them as selftests to make sure that advanced
+use cases are actually working.
