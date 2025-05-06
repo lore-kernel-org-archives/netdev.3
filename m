@@ -1,187 +1,163 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F68B278E49;
-	Tue,  6 May 2025 11:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7A01474B8;
+	Tue,  6 May 2025 11:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746529494; cv=none; b=bzk2rD0sPBVUhzHwwiRVDsYCQagt1PU9EhjQdmF9SqOy6KmvRiVS+o+GLq05fXnyqfFtymQioMczbSJylkvJlFi+R2uP6AYIadk69IXprnP0Z1/kGbuE9z9oGAmwF9a1TJ6vCB6+DqtXqb/QewW2g9j5kV5Bqsk35cMyKMRGwJg=
+	t=1746529590; cv=none; b=fruTtskgMuL/EhtmuN+vjQpMX00tU4R5TczN7/neh/YuBmkBNQS8i4W0q8FjWD34SJyfQlrwDlSPRS9cibBnuulqJ5HqeVxH7wg7KLyGn70pbn66kb3NBhLu53ZX3NdCtJcaMPvESUyx2oAISowVWOp1tRIc2I17n4fMI5MY+T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746529494; c=relaxed/simple;
-	bh=pjPSBZN/Mfk5jqUTuqEyMQU0j98SWAtl2iKUPD9duZw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aGby3zc6+oXRBc84I6v5SFScXIwZYNs3vtZ1ptZ89M0zykPdaek0DmxLQyYnKnpUr02J2KeFEtgB8gjcPdlln1a6IExyJaCUBvlFH0d1cASxOduybZO0Z+xCGhLEtCsgaoJdIXScnsCcQfKU+dLV3VypdWxVXmTfi8JfLU1uMO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=EAAN14My; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1746529590; c=relaxed/simple;
+	bh=qNm+CmWA+REq11MX0pK+MB134jmTLdtEtOeioJpz41g=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KG0wD1/SCiFH7B32FpYRQdvOjRv1PTgMbAvbnKXNzVmiS7FvguenBjjQK3VTxE/2mVQjVVdW/p0XLie2E3M7B4IRvb1J2gq4ZqbWlKpZ+zIm1fPkAzXrveXORyukd4g3wkCmSldJdcGYMJ+B421Bg/zfPXlpVfFzY5hP2GH1dUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=vGIG9+Fr; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="EAAN14My"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A24331048C2EF;
-	Tue,  6 May 2025 13:04:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1746529483; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=xoo6sbESeyMu4C1VAqN+/dYdjb4WLdeB4YQBhu0GSeE=;
-	b=EAAN14MyA20btevFZPvu6BMNnnlFaTyQAnW6z0GPRjzZk3Yi2rmN7FPCyS3PA2YvBQj3sl
-	FNhgRG9NVNpLKa+zBxYxtk+GbhVTaeScgVPKvzaRoM8/lYbWfq48kxtIijn92+jzPIPQiw
-	l8Ba8h9SsikRqx7ilXFTkrWNwrxmQkgXJJsTvkqt8iXiBEjUebFgo8lE6dqSf0EmESvUbF
-	cuOoIr0GteTs8hpT8shefM/KbYS8NHPRacoqlZW7Td93crdUK2o4dyjmO/6NJqB3PzqjYJ
-	3g0flqLo00vwJmk+yY/YB+O00BGgPi1JAIzGH04jBGJF+8NKlC7l/yjPPvkNCA==
-Date: Tue, 6 May 2025 13:04:38 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
- <andrew@lunn.ch>
-Subject: Re: [net-next v11 4/7] net: mtip: The L2 switch driver for imx287
-Message-ID: <20250506130438.149c137e@wsk>
-In-Reply-To: <61ebe754-d895-47cb-a4b2-bb2650b9ff7b@redhat.com>
-References: <20250504145538.3881294-1-lukma@denx.de>
-	<20250504145538.3881294-5-lukma@denx.de>
-	<61ebe754-d895-47cb-a4b2-bb2650b9ff7b@redhat.com>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="vGIG9+Fr"
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 546B5wX71035554
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 6 May 2025 06:05:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1746529558;
+	bh=lwn/nB2s1mWnia5rEGt+fuy0yNLE//GziOUFT14kOpg=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=vGIG9+Frwej8VHGdVitTr95aGGSLopkiZxto4Kjg+/Cvi2NAZ6DSl8M/Xy08Xhb52
+	 h7KjBWW/SKDImsybPWDkqYiHG0ShGK6cx25v/VXVQMPzm566aUxC9IVOBl82Kp28/y
+	 OvdKr9IM1/2Uu925eEpxsF+pAvzRowgxS48nL1ug=
+Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 546B5wEe055864
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 6 May 2025 06:05:58 -0500
+Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 6
+ May 2025 06:05:57 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 6 May 2025 06:05:57 -0500
+Received: from lelv0854.itg.ti.com (lelv0854.itg.ti.com [10.181.64.140])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 546B5vmb055972;
+	Tue, 6 May 2025 06:05:57 -0500
+Received: from localhost (meghana-pc.dhcp.ti.com [10.24.69.13] (may be forged))
+	by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 546B5uUL010343;
+	Tue, 6 May 2025 06:05:57 -0500
+From: Meghana Malladi <m-malladi@ti.com>
+To: <namcao@linutronix.de>, <horms@kernel.org>, <m-malladi@ti.com>,
+        <john.fastabend@gmail.com>, <hawk@kernel.org>, <daniel@iogearbox.net>,
+        <ast@kernel.org>, <pabeni@redhat.com>, <kuba@kernel.org>,
+        <edumazet@google.com>, <davem@davemloft.net>, <andrew+netdev@lunn.ch>
+CC: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <srk@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+        Roger Quadros
+	<rogerq@kernel.org>, <danishanwar@ti.com>
+Subject: [PATCH net v2 2/3] net: ti: icssg-prueth: Fix kernel panic during concurrent Tx queue access
+Date: Tue, 6 May 2025 16:35:45 +0530
+Message-ID: <20250506110546.4065715-3-m-malladi@ti.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250506110546.4065715-1-m-malladi@ti.com>
+References: <20250506110546.4065715-1-m-malladi@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/jzWygP56FGIH1XjAZKtG7zv";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
---Sig_/jzWygP56FGIH1XjAZKtG7zv
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Add __netif_tx_lock() to ensure that only one packet is being
+transmitted at a time to avoid race conditions in the netif_txq
+struct and prevent packet data corruption. Failing to do so causes
+kernel panic with the following error:
 
-Hi Paolo,
+[ 2184.746764] ------------[ cut here ]------------
+[ 2184.751412] kernel BUG at lib/dynamic_queue_limits.c:99!
+[ 2184.756728] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
 
-> On 5/4/25 4:55 PM, Lukasz Majewski wrote:
-> > +		/* This does 16 byte alignment, exactly what we
-> > need.
-> > +		 * The packet length includes FCS, but we don't
-> > want to
-> > +		 * include that when passing upstream as it messes
-> > up
-> > +		 * bridging applications.
-> > +		 */
-> > +		skb =3D netdev_alloc_skb(pndev, pkt_len +
-> > NET_IP_ALIGN);
-> > +		if (unlikely(!skb)) {
-> > +			dev_dbg(&fep->pdev->dev,
-> > +				"%s: Memory squeeze, dropping
-> > packet.\n",
-> > +				pndev->name);
-> > +			pndev->stats.rx_dropped++;
-> > +			goto err_mem;
-> > +		} else {
-> > +			skb_reserve(skb, NET_IP_ALIGN);
-> > +			skb_put(skb, pkt_len);      /* Make room */
-> > +			skb_copy_to_linear_data(skb, data,
-> > pkt_len);
-> > +			skb->protocol =3D eth_type_trans(skb, pndev);
-> > +			napi_gro_receive(&fep->napi, skb);
-> > +		}
-> > +
-> > +		bdp->cbd_bufaddr =3D dma_map_single(&fep->pdev->dev,
-> > data,
-> > +						  bdp->cbd_datlen,
-> > +						  DMA_FROM_DEVICE);
-> > +		if (unlikely(dma_mapping_error(&fep->pdev->dev,
-> > +					       bdp->cbd_bufaddr)))
-> > {
-> > +			dev_err(&fep->pdev->dev,
-> > +				"Failed to map descriptor rx
-> > buffer\n");
-> > +			pndev->stats.rx_errors++;
-> > +			pndev->stats.rx_dropped++;
-> > +			dev_kfree_skb_any(skb);
-> > +			goto err_mem;
-> > +		} =20
->=20
-> This is doing the mapping and ev. dropping the skb _after_ pushing the
-> skb up the stack, you must attempt the mapping first.
->=20
-> > +static void mtip_free_buffers(struct net_device *dev)
-> > +{
-> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
-> > +	struct switch_enet_private *fep =3D priv->fep;
-> > +	struct sk_buff *skb;
-> > +	struct cbd_t *bdp;
-> > +	int i;
-> > +
-> > +	bdp =3D fep->rx_bd_base;
-> > +	for (i =3D 0; i < RX_RING_SIZE; i++) {
-> > +		skb =3D fep->rx_skbuff[i];
-> > +
-> > +		if (bdp->cbd_bufaddr)
-> > +			dma_unmap_single(&fep->pdev->dev,
-> > bdp->cbd_bufaddr,
-> > +					 MTIP_SWITCH_RX_FRSIZE,
-> > +					 DMA_FROM_DEVICE);
-> > +		if (skb)
-> > +			dev_kfree_skb(skb); =20
->=20
-> I suspect that on error paths mtip_free_buffers() can be invoked
-> multiple consecutive times with any successful allocation in between:
-> skb will be freed twice. Likely you need to clear fep->rx_skbuff[i]
-> here.
+logs: https://gist.github.com/MeghanaMalladiTI/9c7aa5fc3b7fb03f87c74aad487956e9
 
-I don't know what I shall say now.... really...=20
+The lock is acquired before calling emac_xmit_xdp_frame() and released after the
+call returns. This ensures that the TX queue is protected from concurrent access
+during the transmission of XDP frames.
 
->=20
-> Side note: this patch is way too big for a proper review: you need to
-> break it in multiple smaller ones, introducing the basic features
-> separately.
->=20
+Fixes: 62aa3246f462 ("net: ti: icssg-prueth: Add XDP support")
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+---
 
-This code is a basic version of the driver as discussed on March with
-the community (Andrew).
+Changes from v1 (v2-v1):
+- Move netif_tx_lock/unlock outside of the loop, reported by Jesper Dangaard Brouer <hawk@kernel.org>
 
-It provides the basic functionality - like separate ports support and
-then, if required, configures the IP block to perform L2 switching in
-HW.=20
+ drivers/net/ethernet/ti/icssg/icssg_common.c | 7 ++++++-
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 7 ++++++-
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-> Cheers,
->=20
-> Paolo
->=20
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_common.c b/drivers/net/ethernet/ti/icssg/icssg_common.c
+index 79f2d86acf21..36d5cb25c017 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_common.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_common.c
+@@ -650,6 +650,8 @@ static u32 emac_run_xdp(struct prueth_emac *emac, struct xdp_buff *xdp,
+ 			struct page *page, u32 *len)
+ {
+ 	struct net_device *ndev = emac->ndev;
++	struct netdev_queue *netif_txq;
++	int cpu = smp_processor_id();
+ 	struct bpf_prog *xdp_prog;
+ 	struct xdp_frame *xdpf;
+ 	u32 pkt_len = *len;
+@@ -669,8 +671,11 @@ static u32 emac_run_xdp(struct prueth_emac *emac, struct xdp_buff *xdp,
+ 			goto drop;
+ 		}
+ 
+-		q_idx = smp_processor_id() % emac->tx_ch_num;
++		q_idx = cpu % emac->tx_ch_num;
++		netif_txq = netdev_get_tx_queue(ndev, q_idx);
++		__netif_tx_lock(netif_txq, cpu);
+ 		result = emac_xmit_xdp_frame(emac, xdpf, page, q_idx);
++		__netif_tx_unlock(netif_txq);
+ 		if (result == ICSSG_XDP_CONSUMED) {
+ 			ndev->stats.tx_dropped++;
+ 			goto drop;
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index ee35fecf61e7..86fc1278127c 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -1075,17 +1075,21 @@ static int emac_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frame
+ {
+ 	struct prueth_emac *emac = netdev_priv(dev);
+ 	struct net_device *ndev = emac->ndev;
++	struct netdev_queue *netif_txq;
++	int cpu = smp_processor_id();
+ 	struct xdp_frame *xdpf;
+ 	unsigned int q_idx;
+ 	int nxmit = 0;
+ 	u32 err;
+ 	int i;
+ 
+-	q_idx = smp_processor_id() % emac->tx_ch_num;
++	q_idx = cpu % emac->tx_ch_num;
++	netif_txq = netdev_get_tx_queue(ndev, q_idx);
+ 
+ 	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
+ 		return -EINVAL;
+ 
++	__netif_tx_lock(netif_txq, cpu);
+ 	for (i = 0; i < n; i++) {
+ 		xdpf = frames[i];
+ 		err = emac_xmit_xdp_frame(emac, xdpf, NULL, q_idx);
+@@ -1095,6 +1099,7 @@ static int emac_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frame
+ 		}
+ 		nxmit++;
+ 	}
++	__netif_tx_unlock(netif_txq);
+ 
+ 	return nxmit;
+ }
+-- 
+2.43.0
 
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/jzWygP56FGIH1XjAZKtG7zv
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmgZ7MYACgkQAR8vZIA0
-zr1SGgf/X4lTSbA5wV/GRygSxbZlIT0eA/yxbGzZMIHf7CmhmX20nnuSJN6B51s2
-pqBZzQ6lcB8krbIdDTFJ1/W4xeUTeW5SZSI2UCXt6IlimlLwN5NkV3R+QBKEYOuK
-bjHWjaafO8fSZtmvX67xuiSmBTtKDjLKGY95M0dIp+vahKvru1Fm/mwZL56xHQzR
-yBrMeVkjFTttMxkIHdbxXTL4LyCefczvGGIiEHMBb/o0UTZzk2bnPeUKVW23/zd+
-gUstiifHLosnY9DB/iIhR9kNCwHQGOwpp5VYWKSzG8fdU/ttDgmECQuAqMPncx0T
-KEKJrQEQUIUNYoZ/4C1nSAM0N6Oh3w==
-=NnK5
------END PGP SIGNATURE-----
-
---Sig_/jzWygP56FGIH1XjAZKtG7zv--
