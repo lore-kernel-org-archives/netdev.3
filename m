@@ -1,32 +1,32 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0EB2F9276
-	for <netdev@vger.kernel.org>; Tue,  6 May 2025 01:59:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BBC2F8DFC
+	for <netdev@vger.kernel.org>; Tue,  6 May 2025 01:59:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746496754; cv=none; b=bd/aSNs66AsbgNaE1YifZLW9arSrR6unhp0n866e5W85yqPIF6191jnauB5dxkC/f9V+Pcj+FzGTLWvMN8sqVrdaWGaaFU1L69erSgyuXJqbIbcjVBzUdNquRyVrQ846wNATy8yN8Rs7KFNSW/6DsxOVZaqFqhd6pncSkST+gBQ=
+	t=1746496766; cv=none; b=V+UH2cUkvFDuATZJSFHTVzYDUqtZCiofUDS4HP3hd0jiYGGUBpMRS0EaSOzuz1LfmhyxGyyeEI7EyTCCUoxzZqxaIjFipCzHJOgcY8/GV5KUUFh06pk9fIRXGQBo6w63FldK4dXldrfowhZzh4emvAtyfvLCguUsJGQ1+McXMkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746496754; c=relaxed/simple;
-	bh=e9YQoGHsPv9Pr5rrKlkB55ELjAs7cLYgaTDkrs6kpyI=;
+	s=arc-20240116; t=1746496766; c=relaxed/simple;
+	bh=IC2DFeGDnaJV0AsGdsc00/VL8Jg2PXjB4wsUnDx79yI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I37dDMytqRWR+gpWjjaRBM5oVFxalZsoy6gmMqnUJUJkwx2RI+FUwiTMjU9wKl+5+M683JnlxxJaV8kAnHWUKXCkbJWCv7rNWodXyHdgVMWYNkM2vG7krxWgs4Nxh5IMIzxR3tsYhfSLcRnR8c8ljNU4pdjQkLDgmOfIRiJplAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LS8nU96p; arc=none smtp.client-ip=91.218.175.177
+	 MIME-Version; b=H9DiTVng3V51tDtmCqi5xye+8IvGjyX6iEpFMNjMfEUECQX8u1mcpqb909uNBl2y/uvj+KAL9rrjT/ejutdaaJitJa44mRpxXvX6eGvYR3W2xNKrLuZQk1ZI7uvkiu4dGzPdMvdzKKyAoZlWItU3Lm4YUPF7nyqCQkdzmZIR+mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PT90DV6U; arc=none smtp.client-ip=91.218.175.189
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LS8nU96p"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PT90DV6U"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1746496750;
+	t=1746496763;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xCqE//7IGy5V+pCIAhzsgPWNPRwg/vSnXXRrGIfsfDU=;
-	b=LS8nU96p5gtemp+gO+ZJj3I7XCDif6IuTH0gXHVCHr4WJBYjNtdium0Sz0EO0M1fnPFplj
-	QT1gYoqv19nH+BvHVTKwMXwOC6j3pNmqJVTvkv7Nd5rvEk3wp2UjvQ2V5ZECEnfC/atu5n
-	U0bBlIB17pFo+pEzBAKr4Wh3f49b8uk=
+	bh=MrSRj6u5dDFn+U6UhyI/q+bYbViTrcuI6lxB/1P47+A=;
+	b=PT90DV6UiUAOrPSb/vjzkz0EBuEM1jfCSJ8oAhe7qLu8k4zUYTx8A1clOdFqquBxLl56OE
+	oj1S/7Lmzwl9AT2md+EvuJOquRUFzGgnvNpvtq6lqgZ4/3fir9X0Lwk5lzAUklCOxtbei/
+	Ej30oyCPMz6VCYn9YZqXdb/t1iIzfsc=
 From: Martin KaFai Lau <martin.lau@linux.dev>
 To: bpf@vger.kernel.org
 Cc: 'Alexei Starovoitov ' <ast@kernel.org>,
@@ -36,9 +36,9 @@ Cc: 'Alexei Starovoitov ' <ast@kernel.org>,
 	'Amery Hung ' <ameryhung@gmail.com>,
 	netdev@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH v2 bpf-next 2/8] bpf: Simplify reg0 marking for the rbtree kfuncs that return a bpf_rb_node pointer
-Date: Mon,  5 May 2025 18:58:49 -0700
-Message-ID: <20250506015857.817950-3-martin.lau@linux.dev>
+Subject: [PATCH v2 bpf-next 7/8] bpf: Add bpf_list_{front,back} kfunc
+Date: Mon,  5 May 2025 18:58:54 -0700
+Message-ID: <20250506015857.817950-8-martin.lau@linux.dev>
 In-Reply-To: <20250506015857.817950-1-martin.lau@linux.dev>
 References: <20250506015857.817950-1-martin.lau@linux.dev>
 Precedence: bulk
@@ -52,60 +52,112 @@ X-Migadu-Flow: FLOW_OUT
 
 From: Martin KaFai Lau <martin.lau@kernel.org>
 
-The current rbtree kfunc, bpf_rbtree_{first, remove}, returns the
-bpf_rb_node pointer. The check_kfunc_call currently checks the
-kfunc btf_id instead of its return pointer type to decide
-if it needs to do mark_reg_graph_node(reg0) and ref_set_non_owning(reg0).
+In the kernel fq qdisc implementation, it only needs to look at
+the fields of the first node in a list but does not always
+need to remove it from the list. It is more convenient to have
+a peek kfunc for the list. It works similar to the bpf_rbtree_first().
 
-The later patch will add bpf_rbtree_{root,left,right} that will also
-return a bpf_rb_node pointer. Instead of adding more kfunc btf_id
-checks to the "if" case, this patch changes the test to check the
-kfunc's return type. is_rbtree_node_type() function is added to
-test if a pointer type is a bpf_rb_node. The callers have already
-skipped the modifiers of the pointer type.
-
-A note on the ref_set_non_owning(), although bpf_rbtree_remove()
-also returns a bpf_rb_node pointer, the bpf_rbtree_remove()
-has the KF_ACQUIRE flag. Thus, its reg0 will not become non-owning.
+This patch adds bpf_list_{front,back} kfunc. The verifier is changed
+such that the kfunc returning "struct bpf_list_node *" will be
+marked as non-owning. The exception is the KF_ACQUIRE kfunc. The
+net effect is only the new bpf_list_{front,back} kfuncs will
+have its return pointer marked as non-owning.
 
 Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 ---
- kernel/bpf/verifier.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ kernel/bpf/helpers.c  | 22 ++++++++++++++++++++++
+ kernel/bpf/verifier.c | 12 ++++++++++--
+ 2 files changed, 32 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 2e1ce7debc16..bf14da00f09a 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -11987,6 +11987,11 @@ static bool is_kfunc_arg_res_spin_lock(const struct btf *btf, const struct btf_p
- 	return __is_kfunc_ptr_arg_type(btf, arg, KF_ARG_RES_SPIN_LOCK_ID);
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 36150d340c16..78cefb41266a 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -2293,6 +2293,26 @@ __bpf_kfunc struct bpf_list_node *bpf_list_pop_back(struct bpf_list_head *head)
+ 	return __bpf_list_del(head, true);
  }
  
-+static bool is_rbtree_node_type(const struct btf_type *t)
++__bpf_kfunc struct bpf_list_node *bpf_list_front(struct bpf_list_head *head)
 +{
-+	return t == btf_type_by_id(btf_vmlinux, kf_arg_btf_ids[KF_ARG_RB_NODE_ID]);
++	struct list_head *h = (struct list_head *)head;
++
++	if (list_empty(h) || unlikely(!h->next))
++		return NULL;
++
++	return (struct bpf_list_node *)h->next;
 +}
 +
- static bool is_kfunc_arg_callback(struct bpf_verifier_env *env, const struct btf *btf,
- 				  const struct btf_param *arg)
++__bpf_kfunc struct bpf_list_node *bpf_list_back(struct bpf_list_head *head)
++{
++	struct list_head *h = (struct list_head *)head;
++
++	if (list_empty(h) || unlikely(!h->next))
++		return NULL;
++
++	return (struct bpf_list_node *)h->prev;
++}
++
+ __bpf_kfunc struct bpf_rb_node *bpf_rbtree_remove(struct bpf_rb_root *root,
+ 						  struct bpf_rb_node *node)
  {
-@@ -13750,8 +13755,7 @@ static int check_kfunc_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
- 				struct btf_field *field = meta.arg_list_head.field;
+@@ -3236,6 +3256,8 @@ BTF_ID_FLAGS(func, bpf_list_push_front_impl)
+ BTF_ID_FLAGS(func, bpf_list_push_back_impl)
+ BTF_ID_FLAGS(func, bpf_list_pop_front, KF_ACQUIRE | KF_RET_NULL)
+ BTF_ID_FLAGS(func, bpf_list_pop_back, KF_ACQUIRE | KF_RET_NULL)
++BTF_ID_FLAGS(func, bpf_list_front, KF_RET_NULL)
++BTF_ID_FLAGS(func, bpf_list_back, KF_RET_NULL)
+ BTF_ID_FLAGS(func, bpf_task_acquire, KF_ACQUIRE | KF_RCU | KF_RET_NULL)
+ BTF_ID_FLAGS(func, bpf_task_release, KF_RELEASE)
+ BTF_ID_FLAGS(func, bpf_rbtree_remove, KF_ACQUIRE | KF_RET_NULL)
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index acb2f44316cc..99aa2c890e7b 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -12079,6 +12079,8 @@ enum special_kfunc_type {
+ 	KF_bpf_list_push_back_impl,
+ 	KF_bpf_list_pop_front,
+ 	KF_bpf_list_pop_back,
++	KF_bpf_list_front,
++	KF_bpf_list_back,
+ 	KF_bpf_cast_to_kern_ctx,
+ 	KF_bpf_rdonly_cast,
+ 	KF_bpf_rcu_read_lock,
+@@ -12124,6 +12126,8 @@ BTF_ID(func, bpf_list_push_front_impl)
+ BTF_ID(func, bpf_list_push_back_impl)
+ BTF_ID(func, bpf_list_pop_front)
+ BTF_ID(func, bpf_list_pop_back)
++BTF_ID(func, bpf_list_front)
++BTF_ID(func, bpf_list_back)
+ BTF_ID(func, bpf_cast_to_kern_ctx)
+ BTF_ID(func, bpf_rdonly_cast)
+ BTF_ID(func, bpf_rbtree_remove)
+@@ -12160,6 +12164,8 @@ BTF_ID(func, bpf_list_push_front_impl)
+ BTF_ID(func, bpf_list_push_back_impl)
+ BTF_ID(func, bpf_list_pop_front)
+ BTF_ID(func, bpf_list_pop_back)
++BTF_ID(func, bpf_list_front)
++BTF_ID(func, bpf_list_back)
+ BTF_ID(func, bpf_cast_to_kern_ctx)
+ BTF_ID(func, bpf_rdonly_cast)
+ BTF_ID(func, bpf_rcu_read_lock)
+@@ -12598,7 +12604,9 @@ static bool is_bpf_list_api_kfunc(u32 btf_id)
+ 	return btf_id == special_kfunc_list[KF_bpf_list_push_front_impl] ||
+ 	       btf_id == special_kfunc_list[KF_bpf_list_push_back_impl] ||
+ 	       btf_id == special_kfunc_list[KF_bpf_list_pop_front] ||
+-	       btf_id == special_kfunc_list[KF_bpf_list_pop_back];
++	       btf_id == special_kfunc_list[KF_bpf_list_pop_back] ||
++	       btf_id == special_kfunc_list[KF_bpf_list_front] ||
++	       btf_id == special_kfunc_list[KF_bpf_list_back];
+ }
  
- 				mark_reg_graph_node(regs, BPF_REG_0, &field->graph_root);
--			} else if (meta.func_id == special_kfunc_list[KF_bpf_rbtree_remove] ||
--				   meta.func_id == special_kfunc_list[KF_bpf_rbtree_first]) {
-+			} else if (is_rbtree_node_type(ptr_type)) {
- 				struct btf_field *field = meta.arg_rbtree_root.field;
- 
- 				mark_reg_graph_node(regs, BPF_REG_0, &field->graph_root);
-@@ -13881,7 +13885,7 @@ static int check_kfunc_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
+ static bool is_bpf_rbtree_api_kfunc(u32 btf_id)
+@@ -13903,7 +13911,7 @@ static int check_kfunc_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
  			if (is_kfunc_ret_null(&meta))
  				regs[BPF_REG_0].id = id;
  			regs[BPF_REG_0].ref_obj_id = id;
--		} else if (meta.func_id == special_kfunc_list[KF_bpf_rbtree_first]) {
-+		} else if (is_rbtree_node_type(ptr_type)) {
+-		} else if (is_rbtree_node_type(ptr_type)) {
++		} else if (is_rbtree_node_type(ptr_type) || is_list_node_type(ptr_type)) {
  			ref_set_non_owning(env, &regs[BPF_REG_0]);
  		}
  
