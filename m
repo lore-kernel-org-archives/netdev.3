@@ -1,143 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB5D283FF6;
-	Tue,  6 May 2025 16:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC848284667
+	for <netdev@vger.kernel.org>; Tue,  6 May 2025 16:00:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746547207; cv=none; b=VSmZAQQU82fVS+Dv9y7WKZ7syBvFmrmj9KKBlmDYf+ydf7Kf3wVwCP8d9OpmLuZ6CMHNdI2Rwl95+ZbLY8zz0koXwxm9ZQ9RVOi1qs4HRDVGK3Y3tek7C1BKS2ONc6UAH+MgIfVGEtdzwx4oBaRYCwDvS2GllCbVSUXqipx48GQ=
+	t=1746547209; cv=none; b=XmoqelGyA8Algxj6whq15yfVhrgqvrtLnHMBnB5jdifbJ9EKvbA2/YC4ACw22dob/toaWeZyN3OmdqCZPqkX+tiIg5uxu4LpHJq9MwraHFDK9aMyG4+r153jwJPjRUOAApQJtMqUqf+6OiCBo0u0CdpLTZAgYLsrq7yS39DdTGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746547207; c=relaxed/simple;
-	bh=szbW/T48e07o7nsdAtspJ3TqCa91gXQ5dwM1QNp7ZX4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g0d4Hh5r+g9mkyMeI2NaWOuisu9tMNsPi6ioQp1/JosDRvDw9cqVD+iNz8/dzFXnPobnxAQoWthRd74L2vDQsRMcp+ohqnWvTzxP+3KC4SWuJFK1rZLKG4XLA1VUnGi/kZwok15HHBoNlUrQMuxbmAz+4lrQf066OlYTLqMBmVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MGt6rFDo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746547209; c=relaxed/simple;
+	bh=484I+MLC5U50gnDw9oFx3RURKBj/52zdm9lq+O80ffs=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GqXHfwzdUUNFUtNuOEAwJ73KaRSTgmk7E0sbFoSwiii0BdTop8XutnbvKBZkafF5c1q+fsYRD25S6pOCfIaPbF4jA6SHUyh06RuLrZx1XUg5k8lLKJ2CT3Q5dC9iCMXL2OHj+o2qia1jP9/Rr0xaLgq+PYSHpj2r3hVEHz1AkXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UaT+K1WU; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MGt6rFDo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E42C4CEE4;
-	Tue,  6 May 2025 16:00:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746547206;
-	bh=szbW/T48e07o7nsdAtspJ3TqCa91gXQ5dwM1QNp7ZX4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MGt6rFDota1d2WLpw7YKaQYlev1YgRkYOc97GjSpPzuQaqANHfObtJFxL0NbA9jpV
-	 fqrNNUZV6D7tKBJK6R5rWmTPS9NmzWrBJuGVo32+kLhVmLb41NkVmC1cWPEmfC4y3Q
-	 DcDYZDkvzEftF40AffVwywKhmBK5CyHg3Ka1heSiEfTi6SGf+mgEe63VThumLnTS0d
-	 NMiksZH4+DB/niW4uVrKhq+W5sayApdu9lNAXx8fPSdFSBLf1s+e9ErWFxTYPlJ9uS
-	 R54vHMJTjmcSfkDO3TsLYJazLU29CDW04BydjOh/w93ZxqsULPkQZsCJ9OPvz+FxZd
-	 1JOwKPeANPx8g==
-Date: Tue, 6 May 2025 16:59:58 +0100
-From: Simon Horman <horms@kernel.org>
-To: Larysa Zaremba <larysa.zaremba@intel.com>
-Cc: Jacob Keller <jacob.e.keller@intel.com>,
-	intel-wired-lan@lists.osuosl.org,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Lee Trager <lee@trager.us>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Ahmed Zaki <ahmed.zaki@intel.com>, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Karlsson, Magnus" <magnus.karlsson@intel.com>,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Madhu Chittim <madhu.chittim@intel.com>,
-	Josh Hay <joshua.a.hay@intel.com>,
-	Milena Olech <milena.olech@intel.com>, pavan.kumar.linga@intel.com,
-	"Singhai, Anjali" <anjali.singhai@intel.com>
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next v2 01/14] virtchnl: create
- 'include/linux/intel' and move necessary header files
-Message-ID: <20250506155958.GT3339421@horms.kernel.org>
-References: <20250424113241.10061-1-larysa.zaremba@intel.com>
- <20250424113241.10061-2-larysa.zaremba@intel.com>
- <20250428161542.GD3339421@horms.kernel.org>
- <10fd9a4b-f071-47eb-bdde-13438218aee9@intel.com>
- <20250430085545.GT3339421@horms.kernel.org>
- <aBhvNfWP-Rmec3Ci@soc-5CG4396X81.clients.intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UaT+K1WU"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2295d78b45cso76752885ad.0
+        for <netdev@vger.kernel.org>; Tue, 06 May 2025 09:00:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746547207; x=1747152007; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :in-reply-to:message-id:date:cc:to:from:subject:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=DeEpmQRwXolX/nkIjxhbBLC2UHTxfqYqsZypSvjmKIA=;
+        b=UaT+K1WU1EtX1mIigMJuQMiKDb2OJCYvGnj2bth5YTReL8vhqY4ET0Gwb3/h+jiOyo
+         fHZ+JEXynvIeoiEPn4jgpMF1AaMMfYgWpS/5lu+CiP9DCwGuSXyVcIY0nXyNfr5v9pUv
+         0y/HCkiK7DtUOijsi3u/DBOAqv0mKp0Rrx7xAOKlhet4hyPtIqglqnUkPZQrofjYOtHI
+         E815mwUSGysLOEMBk4HsrEnBEUnR+dlC+yzT2YZcLquTtQCshpQ1fuDlQddeVmjJWwzU
+         9utHda+17noDxvCAvKHYhKYTpybMezLHF2fsqioLs/OhGLtjPTJHw6GjYEZEjPDUKwuv
+         ZowA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746547207; x=1747152007;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :in-reply-to:message-id:date:cc:to:from:subject:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DeEpmQRwXolX/nkIjxhbBLC2UHTxfqYqsZypSvjmKIA=;
+        b=S/JS6S12p7sm62CKmbNBYd+0ddiW40iV9DbzkhaXT3qR/XAjXf+jylkMkUY9R4DsYv
+         Y0fl0eW4GsOcxTLQDYCq4oahLCQq02Xu+smnIOQpOn2jLIx8Qo8TKj8BPrnpSr5PWX7b
+         etT2fa+T45/jrQwFPvUKFT2Fsl/SaQTP8S0qW/LtA+LDL7uOEFKA/LU0cK4/r4OIGcb3
+         zDBIjwfLHKG/cVmvWyuasaOg3Je+ZWdes1USb2+uhka164jQ7/qSyagDuPc2LuAwECF9
+         BScNdrDPDB2JYYe5iRG+9W0tzWbZjp2hf635/wufteIB8cDaw9hdc8QQi3PdMvgQnA/O
+         kPdw==
+X-Gm-Message-State: AOJu0YxeoJRj/TcLLXbkv7B7irMtpbfpjJB0ngImlZfzasbsorz0VgDm
+	GfHem/iOzcFjvfe1ohRs++idIK0WzBa4dhGQTXAJqq7ZI/CxN/mU2tJkhg==
+X-Gm-Gg: ASbGncvUfMSQJIDK10LCCY8I4Q8apbH8727vdt0KI2qH6rwfDEQIqsr3yRH71N1ImI4
+	w+B1FDqAOOcTGdP7YJ9K6tc/x/bDJ3wpQT4YHbXuXoSS6okUH4HNnZh7JbxR0ro6gjf61KY5XKu
+	N6y49eDZvqrzrkeIxPwcAAp7YPjRHnEck+4lrNrCO36POrT9gWZXT34nJV7BxjVp6Dtj5mZFHRg
+	88zSmlZAhCtdGstQmUZ2Rs8VYiXk1x3Xt714LLuQzO5Kb8FHj1Rpheknvr6mYHHrRiAFeRr5PX/
+	GZdqtCO7FxFbwYpfo2YiSTl+h0BBg+6LMmX15ht692cKl6LFeuMWn4M1WLdot3KUcohOhoKsMle
+	dbEYkaX/O6A==
+X-Google-Smtp-Source: AGHT+IHiDYyjWidn3HZeUQbkCKXBGWncwuLVNn7dA7dbpwyTeyu8iSw7zdSfbIoeUY9OAhOO1e5DyA==
+X-Received: by 2002:a17:903:2284:b0:220:efc8:60b1 with SMTP id d9443c01a7336-22e32f031c2mr50752505ad.39.1746547207081;
+        Tue, 06 May 2025 09:00:07 -0700 (PDT)
+Received: from ahduyck-xeon-server.home.arpa ([2605:59c8:829:4c00:9e5c:8eff:fe4f:f2d0])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e150eb01dsm75676255ad.17.2025.05.06.09.00.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 May 2025 09:00:06 -0700 (PDT)
+Subject: [net PATCH v2 5/8] fbnic: Cleanup handling of completions
+From: Alexander Duyck <alexander.duyck@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
+Date: Tue, 06 May 2025 09:00:05 -0700
+Message-ID: 
+ <174654720578.499179.380252598204530873.stgit@ahduyck-xeon-server.home.arpa>
+In-Reply-To: 
+ <174654659243.499179.11194817277075480209.stgit@ahduyck-xeon-server.home.arpa>
+References: 
+ <174654659243.499179.11194817277075480209.stgit@ahduyck-xeon-server.home.arpa>
+User-Agent: StGit/1.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aBhvNfWP-Rmec3Ci@soc-5CG4396X81.clients.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Mon, May 05, 2025 at 09:56:37AM +0200, Larysa Zaremba wrote:
-> On Wed, Apr 30, 2025 at 09:55:45AM +0100, Simon Horman wrote:
-> > On Tue, Apr 29, 2025 at 11:47:58AM -0700, Jacob Keller wrote:
-> > > On 4/28/2025 9:15 AM, Simon Horman wrote:
-> > > > On Thu, Apr 24, 2025 at 01:32:24PM +0200, Larysa Zaremba wrote:
+From: Alexander Duyck <alexanderduyck@fb.com>
 
-...
+There was an issue in that if we were to shutdown we could be left with
+a completion in flight as the mailbox went away. To address that I have
+added an fbnic_mbx_evict_all_cmpl function that is meant to essentially
+create a "broken pipe" type response so that all callers will receive an
+error indicating that the connection has been broken as a result of us
+shutting down the mailbox.
 
-> > > >> diff --git a/MAINTAINERS b/MAINTAINERS
-> > > >> index 657a67f9031e..2e2a57dfea8f 100644
-> > > >> --- a/MAINTAINERS
-> > > >> +++ b/MAINTAINERS
-> > > >> @@ -11884,8 +11884,8 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue.git
-> > > >>  F:	Documentation/networking/device_drivers/ethernet/intel/
-> > > >>  F:	drivers/net/ethernet/intel/
-> > > >>  F:	drivers/net/ethernet/intel/*/
-> > > >> -F:	include/linux/avf/virtchnl.h
-> > > >> -F:	include/linux/net/intel/iidc.h
-> > > >> +F:	include/linux/intel/iidc.h
-> > > >> +F:	include/linux/intel/virtchnl.h
-> > > > 
-> > > > I'm not sure that I understand the motivation for moving files out of
-> > > > include/linux/net, but I guess the answer is that my suggestion, which
-> > > > would be to move files into include/linux/net, is somehow less good.
-> > > > 
-> > > > But if file are moving out of include/linux/net then I think it would
-> > > > make sense to make a corresponding update to NETWORKING DRIVERS.
-> > > > 
-> > > > Also, include/linux/intel, does feel a bit too general. These files
-> > > > seem to relate to NICs (of some sort of flavour or another). But Intel
-> > > > does a lot more than make NICs.
-> > > > 
-> > > 
-> > > 'include/linux/net/intel' seems fine to me. I agree with moving
-> > > virtchnl.h there since it is quite clear that any historical ambitions
-> > > about AVF being vendor agnostic are long dead, so having it in its own
-> > > 'non-intel' folder is silly.
-> > > 
-> > > Strictly speaking, I think the goal of moving the files is due to the
-> > > fact that a lot of the core ixd code is not really network layer but
-> > > instead PCI layer.
-> > 
-> > Sure. I was more thinking out loud in my previous email than requesting any
-> > action. Thanks for filling in my understanding of the situation.
-> >
-> 
-> Olek suggested this because intel was the only resident in include/linux/net and 
-> include/linux/intel was vacant.
->  
-> > But could we please consider updating NETWORKING DRIVERS so
-> > that get_maintainers.pl can help people to CC netdev and it's maintainers
-> > as appropriate?
-> 
-> I am not sure what kind of update do you mean, include/linux/net directory was 
+Fixes: 378e5cc1c6c6 ("eth: fbnic: hwmon: Add completion infrastructure for firmware requests")
+Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
+---
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-Thanks I missed that.
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+index d019191d6ae9..732875aae46c 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+@@ -928,6 +928,20 @@ int fbnic_mbx_poll_tx_ready(struct fbnic_dev *fbd)
+ 	return attempts ? 0 : -ETIMEDOUT;
+ }
+ 
++static void __fbnic_fw_evict_cmpl(struct fbnic_fw_completion *cmpl_data)
++{
++	cmpl_data->result = -EPIPE;
++	complete(&cmpl_data->done);
++}
++
++static void fbnic_mbx_evict_all_cmpl(struct fbnic_dev *fbd)
++{
++	if (fbd->cmpl_data) {
++		__fbnic_fw_evict_cmpl(fbd->cmpl_data);
++		fbd->cmpl_data = NULL;
++	}
++}
++
+ void fbnic_mbx_flush_tx(struct fbnic_dev *fbd)
+ {
+ 	unsigned long timeout = jiffies + 10 * HZ + 1;
+@@ -945,6 +959,9 @@ void fbnic_mbx_flush_tx(struct fbnic_dev *fbd)
+ 	/* Read tail to determine the last tail state for the ring */
+ 	tail = tx_mbx->tail;
+ 
++	/* Flush any completions as we are no longer processing Rx */
++	fbnic_mbx_evict_all_cmpl(fbd);
++
+ 	spin_unlock_irq(&fbd->fw_tx_lock);
+ 
+ 	/* Give firmware time to process packet,
 
-> not under any maintainer. include/linux/mlx5 and include/linux/mlx4 are only 
-> under vendor maintainers.
-> 
-> For sure I should add include/linux/intel/* under Tony.
-> Do you think it also should be added to general networking maintainers?
 
-I think it would make sense to add it to general networking, or at least
-those files that would tend to be updated via netdev. But at least let's
-put the directory under Tony so it's maintained by somebody.
