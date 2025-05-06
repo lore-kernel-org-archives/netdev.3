@@ -1,471 +1,181 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094D827B519;
-	Tue,  6 May 2025 09:39:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A3926AAAF
+	for <netdev@vger.kernel.org>; Tue,  6 May 2025 09:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746524364; cv=none; b=fifXRMB2QZT8cyHWq3IVC7fDrq3M8AWYpVT+j/yNruox2HOQBGmGKlLiXh5ECE2K4gK8CfvVi/nQyWuXPktsCo+E29NKy3tWOHwUPZY2Odm6ooUm9G73GFA/yOXKQL2dZlKqHs0B9FyYCA05jGL/PkTzgNwqHiFXxt4bO2aKXyE=
+	t=1746524600; cv=none; b=be8iTFqxja0sPGImKewRYI+LByDhpyhhnC1crbimd4VAm2lHOPr4nHx1JHrUf3zFmhz3CK+thUhJ8EHG04VY36GIz7OO7HjcB7xuLLq7MDxhswBorHDwW5si4J9KGASLDIgYMDt4aOuVOPl9V8+UUkt6kyvlNQk7/9FNxfWwWyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746524364; c=relaxed/simple;
-	bh=L0X/btvzdLjg4azHNqivvPwYVmjjUusmbmcD7v0D4Ak=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=M16sZ3qPdTmz7F3LIVO2eratvRKsuCWsIywgwt6ZPgk5pPZNMiVgSkLJV2eu11BDl7Ng2RFEBdDe2Qf7V4i2X5DVsBt+vLmizOMAdVVTIy4AylaHprHQh9Sh1gtkvHilqCnisGqm4Jx/uKV7XBulG10wv0UWVAfe0347014f4Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=i+lVm2LH; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1746524600; c=relaxed/simple;
+	bh=OdYxdf2NS9wIbAV3ovwDZCL2iMe9F3X5Sqi4us7Hjcw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m7mtkWLlfRxZxcuSjz5vKueBsV0rqoaJRGtE9VOx7W4vFec4GIbu0x45CEyPSLc5KXpfLlvt/li1MQwZd51e9RkoBUgK6trkVNQZUgZptPW4wl7qeDc22AuX8lKwLaW1qTweLpnaZM++Wl6Yn2eBfAoTaatzOXP1r0ALEZkc32o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D/qR00xV; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="i+lVm2LH"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0EA1043315;
-	Tue,  6 May 2025 09:39:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1746524358;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D/qR00xV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746524597;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zLYoPMHwCF1ltsEY42yv9c+u9LcKjPUqXZ69v7P+6Ng=;
-	b=i+lVm2LHdmqtXZItjLw97Om2ON3qCkaTL7MWUg7ROp6NZiYsQoQlK4aq1dGtVX1/Ipzint
-	+sBB31kE6Gg8I2SvPS4A+Fd0HU9gJ0S1W0Orsj2XkSI4jXgT8voAQ9tIcOBHvJPw6HNAp3
-	HVnU7Nb9mkvnxBMB7OagFhGsVK6zF5ZODU8s+qARD+uuhr0y+7kwkbYC2C/v73kIcVMt3u
-	PRSyuVkpIJVjx7k27jOggI0BG0smA305P0lPe2A721ttAUp/XYXKJ2AyOhOIjv3kpOXx+7
-	338LyUpNJJNdghwXF+XuPGSZmrYmEnpV/YcKSdsyh2BKa+L9S1mlgXpN2qgNwg==
-From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Tue, 06 May 2025 11:38:44 +0200
-Subject: [PATCH net-next v10 12/13] net: pse-pd: tps23881: Add support for
- static port priority feature
+	bh=DXoAgnolhnIWon+GSP4Yh+No5sQktwbAsoZby2qJ9Oc=;
+	b=D/qR00xVZfdpDDdDQo+s+cHuoJP0KyHrnVc0hKFgnt3yZCGxO6OFs5cvsMD+sZEIKTpPfZ
+	ioUBv04NSLm3IWgfc6ZBBwnnbQF30y/XW9I3xpyZvcK8WSHAZeLi7l7Vmkpdy0oL3swFZ4
+	sJLgM4d0CCjDtS5+WiACaTsdWJTF0GM=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-57-MT_DS228PMWU328_wwxvjA-1; Tue, 06 May 2025 05:43:16 -0400
+X-MC-Unique: MT_DS228PMWU328_wwxvjA-1
+X-Mimecast-MFC-AGG-ID: MT_DS228PMWU328_wwxvjA_1746524595
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-acb2fdc6b29so600379766b.1
+        for <netdev@vger.kernel.org>; Tue, 06 May 2025 02:43:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746524595; x=1747129395;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DXoAgnolhnIWon+GSP4Yh+No5sQktwbAsoZby2qJ9Oc=;
+        b=b5N3t4lsRB4qkIeNrCqSFHAqq/o4G+nThGHaPeYLwE9at1A6Nt4aMWGy6qlhE9VNU+
+         C0+KqnLGJ64Yk7qIAEQTG2wD73IPyOJS+PtDc3rvzwzohP6cI6s9Y/Y/ZJRDw0thbFNE
+         Ld/GPrtviE6BuHygLsZ2GDNWmYRG9nBDs6M/MH5btxQIW7Rht/zFA8FdNtq6F2pC5+if
+         Gm3kY9YNJnJBVovIfrdAjDYr3nivum+tm5WOMkKuTj1xKbT72g+seIyzue/6pSFOZmga
+         3rJoQzyAZUy5D6aVuwCQRIDl5IhqHvKE77k6I3ipPhZSgRNGfISb32eLIjqazK1fO1iN
+         zRtA==
+X-Forwarded-Encrypted: i=1; AJvYcCV/tazfZGROSoNGkx6TURufzM5o+bBiHKTM4LWmU3zt9BEFqtuBzdc5BpXEIcR2k8vgcL76Smo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkXTM2c6FDRZlPFL+PjeqUI+XY+J0mG++Pw/7t5YRJ62MjN8rT
+	X4inuT9A4r9+CSrQlMlCeMw0BCo4dK1zR+Wn3sX+PBZZIM41kR6MCMe8iIUCdlds9WJRgAZjmWl
+	gPs2YwQSiuKm8b0qPGNrGjoQ1WXLgoq77I1GkvOkLlWZ2re/3K09ZWQ==
+X-Gm-Gg: ASbGnctREX4okQPEM/ELHy9RXFo4rOJUSCe165OkovFYU/jSeQrWWDKg6ur9fSaVzeE
+	fTCtq1WycAVqh7eiH9TQ4Taoa+ktZ+81fwJSn9iSdeslepFMUmzf0OvUR0cPLmyvg0JOI4U7RKc
+	/vQpJYGbPgWd1Td9xqHjzdnanujHI+UCpr1V0hWfk9NlefyVKYIkuK0yWr1uNE3D698m6aunCff
+	5Ofo9z29qjjA4jdAzwuIv3f391sd1sQix5v8tUVh0GPpCW+fnv764iJ8iN2OCXKlGn/8xqMVWdg
+	rdUaMGaXKTNfYlaSKg==
+X-Received: by 2002:a17:907:6eac:b0:ac7:b213:b7e5 with SMTP id a640c23a62f3a-ad1d2ecb11emr249438666b.18.1746524595034;
+        Tue, 06 May 2025 02:43:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGr2idRnebYQGCDDQ8BywfWXGWGiLs9tHDNaPLdjiBxzUREqjzvsHE6e+fFczVT0Qkx8Sxwyg==
+X-Received: by 2002:a17:907:6eac:b0:ac7:b213:b7e5 with SMTP id a640c23a62f3a-ad1d2ecb11emr249435966b.18.1746524594435;
+        Tue, 06 May 2025 02:43:14 -0700 (PDT)
+Received: from sgarzare-redhat ([193.207.219.197])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad189540dabsm671051666b.171.2025.05.06.02.43.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 May 2025 02:43:13 -0700 (PDT)
+Date: Tue, 6 May 2025 11:43:10 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Subject: Re: [PATCH net-next v4 3/3] vsock/test: Expand linger test to ensure
+ close() does not misbehave
+Message-ID: <g5wemyogxthe43rkigufv7p5wrkegbdxbleujlsrk45dmbmm4l@qdynsbqfjwbk>
+References: <20250501-vsock-linger-v4-0-beabbd8a0847@rbox.co>
+ <20250501-vsock-linger-v4-3-beabbd8a0847@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250506-feature_poe_port_prio-v10-12-55679a4895f9@bootlin.com>
-References: <20250506-feature_poe_port_prio-v10-0-55679a4895f9@bootlin.com>
-In-Reply-To: <20250506-feature_poe_port_prio-v10-0-55679a4895f9@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Jonathan Corbet <corbet@lwn.net>, Donald Hunter <donald.hunter@gmail.com>, 
- Rob Herring <robh@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
- linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, 
- Dent Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Kory Maincent (Dent Project)" <kory.maincent@bootlin.com>
-X-Mailer: b4 0.15-dev-8cb71
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkeefieegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevgfdvgfektefgfefggeekudfggffhtdfffedtueetheejtddvledvvdelhedtveenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedutdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvdejpdhrtghpthhtoheplhhgihhrugifohhougesghhmrghilhdrtghomhdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeguvghnthhprhhojhgvtghtsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepughonhgrlhgurdhhuhhnthgvrhesghhmrghilhdrtghom
- hdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250501-vsock-linger-v4-3-beabbd8a0847@rbox.co>
 
-From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
+On Thu, May 01, 2025 at 10:05:24AM +0200, Michal Luczaj wrote:
+>There was an issue with SO_LINGER: instead of blocking until all queued
+>messages for the socket have been successfully sent (or the linger timeout
+>has been reached), close() would block until packets were handled by the
+>peer.
 
-This patch enhances PSE callbacks by introducing support for the static
-port priority feature. It extends interrupt management to handle and report
-detection, classification, and disconnection events. Additionally, it
-introduces the pi_get_pw_req() callback, which provides information about
-the power requested by the Powered Devices.
+This is a new behaviour that only new kernels will follow, so I think
+it is better to add a new test instead of extending a pre-existing test
+that we described as "SOCK_STREAM SO_LINGER null-ptr-deref".
 
-Interrupt support is essential for the proper functioning of the TPS23881
-controller. Without it, after a power-on (PWON), the controller will
-no longer perform detection and classification. This could lead to
-potential hazards, such as connecting a non-PoE device after a PoE device,
-which might result in magic smoke.
+The old test should continue to check the null-ptr-deref also for old
+kernels, while the new test will check the new behaviour, so we can skip
+the new test while testing an old kernel.
 
-Signed-off-by: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
+Thanks,
+Stefano
 
-Change in v7:
-- Add configuration of the power limit back after an over current event.
-
-Change in v4:
-- Fix variable type nit.
-
-Change in v3:
-- New patch
----
- drivers/net/pse-pd/tps23881.c | 244 +++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 228 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/net/pse-pd/tps23881.c b/drivers/net/pse-pd/tps23881.c
-index 69a3ede20b33..2d807b1e40e9 100644
---- a/drivers/net/pse-pd/tps23881.c
-+++ b/drivers/net/pse-pd/tps23881.c
-@@ -20,20 +20,30 @@
- 
- #define TPS23881_REG_IT		0x0
- #define TPS23881_REG_IT_MASK	0x1
-+#define TPS23881_REG_IT_DISF	BIT(2)
-+#define TPS23881_REG_IT_DETC	BIT(3)
-+#define TPS23881_REG_IT_CLASC	BIT(4)
- #define TPS23881_REG_IT_IFAULT	BIT(5)
- #define TPS23881_REG_IT_SUPF	BIT(7)
-+#define TPS23881_REG_DET_EVENT	0x5
- #define TPS23881_REG_FAULT	0x7
- #define TPS23881_REG_SUPF_EVENT	0xb
- #define TPS23881_REG_TSD	BIT(7)
-+#define TPS23881_REG_DISC	0xc
- #define TPS23881_REG_PW_STATUS	0x10
- #define TPS23881_REG_OP_MODE	0x12
-+#define TPS23881_REG_DISC_EN	0x13
- #define TPS23881_OP_MODE_SEMIAUTO	0xaaaa
- #define TPS23881_REG_DIS_EN	0x13
- #define TPS23881_REG_DET_CLA_EN	0x14
- #define TPS23881_REG_GEN_MASK	0x17
-+#define TPS23881_REG_CLCHE	BIT(2)
-+#define TPS23881_REG_DECHE	BIT(3)
- #define TPS23881_REG_NBITACC	BIT(5)
- #define TPS23881_REG_INTEN	BIT(7)
- #define TPS23881_REG_PW_EN	0x19
-+#define TPS23881_REG_RESET	0x1a
-+#define TPS23881_REG_CLRAIN	BIT(7)
- #define TPS23881_REG_2PAIR_POL1	0x1e
- #define TPS23881_REG_PORT_MAP	0x26
- #define TPS23881_REG_PORT_POWER	0x29
-@@ -178,6 +188,7 @@ static int tps23881_pi_enable(struct pse_controller_dev *pcdev, int id)
- 	struct i2c_client *client = priv->client;
- 	u8 chan;
- 	u16 val;
-+	int ret;
- 
- 	if (id >= TPS23881_MAX_CHANS)
- 		return -ERANGE;
-@@ -191,7 +202,22 @@ static int tps23881_pi_enable(struct pse_controller_dev *pcdev, int id)
- 				       BIT(chan % 4));
- 	}
- 
--	return i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
-+	ret = i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
-+	if (ret)
-+		return ret;
-+
-+	/* Enable DC disconnect*/
-+	chan = priv->port[id].chan[0];
-+	ret = i2c_smbus_read_word_data(client, TPS23881_REG_DISC_EN);
-+	if (ret < 0)
-+		return ret;
-+
-+	val = tps23881_set_val(ret, chan, 0, BIT(chan % 4), BIT(chan % 4));
-+	ret = i2c_smbus_write_word_data(client, TPS23881_REG_DISC_EN, val);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
- }
- 
- static int tps23881_pi_disable(struct pse_controller_dev *pcdev, int id)
-@@ -224,6 +250,17 @@ static int tps23881_pi_disable(struct pse_controller_dev *pcdev, int id)
- 	 */
- 	mdelay(5);
- 
-+	/* Disable DC disconnect*/
-+	chan = priv->port[id].chan[0];
-+	ret = i2c_smbus_read_word_data(client, TPS23881_REG_DISC_EN);
-+	if (ret < 0)
-+		return ret;
-+
-+	val = tps23881_set_val(ret, chan, 0, 0, BIT(chan % 4));
-+	ret = i2c_smbus_write_word_data(client, TPS23881_REG_DISC_EN, val);
-+	if (ret)
-+		return ret;
-+
- 	/* Enable detection and classification */
- 	ret = i2c_smbus_read_word_data(client, TPS23881_REG_DET_CLA_EN);
- 	if (ret < 0)
-@@ -919,6 +956,47 @@ static int tps23881_setup_pi_matrix(struct pse_controller_dev *pcdev)
- 	return ret;
- }
- 
-+static int tps23881_power_class_table[] = {
-+	-ERANGE,
-+	4000,
-+	7000,
-+	15500,
-+	30000,
-+	15500,
-+	15500,
-+	-ERANGE,
-+	45000,
-+	60000,
-+	75000,
-+	90000,
-+	15500,
-+	45000,
-+	-ERANGE,
-+	-ERANGE,
-+};
-+
-+static int tps23881_pi_get_pw_req(struct pse_controller_dev *pcdev, int id)
-+{
-+	struct tps23881_priv *priv = to_tps23881_priv(pcdev);
-+	struct i2c_client *client = priv->client;
-+	u8 reg, chan;
-+	int ret;
-+	u16 val;
-+
-+	/* For a 4-pair the classification need 5ms to be completed */
-+	if (priv->port[id].is_4p)
-+		mdelay(5);
-+
-+	chan = priv->port[id].chan[0];
-+	reg = TPS23881_REG_DISC + (chan % 4);
-+	ret = i2c_smbus_read_word_data(client, reg);
-+	if (ret < 0)
-+		return ret;
-+
-+	val = tps23881_calc_val(ret, chan, 4, 0xf);
-+	return tps23881_power_class_table[val];
-+}
-+
- static const struct pse_controller_ops tps23881_ops = {
- 	.setup_pi_matrix = tps23881_setup_pi_matrix,
- 	.pi_enable = tps23881_pi_enable,
-@@ -931,6 +1009,7 @@ static const struct pse_controller_ops tps23881_ops = {
- 	.pi_get_pw_limit = tps23881_pi_get_pw_limit,
- 	.pi_set_pw_limit = tps23881_pi_set_pw_limit,
- 	.pi_get_pw_limit_ranges = tps23881_pi_get_pw_limit_ranges,
-+	.pi_get_pw_req = tps23881_pi_get_pw_req,
- };
- 
- static const char fw_parity_name[] = "ti/tps23881/tps23881-parity-14.bin";
-@@ -1088,17 +1167,113 @@ static void tps23881_irq_event_over_temp(struct tps23881_priv *priv,
- 	}
- }
- 
--static void tps23881_irq_event_over_current(struct tps23881_priv *priv,
--					    u16 reg_val,
--					    unsigned long *notifs,
--					    unsigned long *notifs_mask)
-+static int tps23881_irq_event_over_current(struct tps23881_priv *priv,
-+					   u16 reg_val,
-+					   unsigned long *notifs,
-+					   unsigned long *notifs_mask)
- {
-+	int i, ret;
- 	u8 chans;
- 
- 	chans = tps23881_irq_export_chans_helper(reg_val, 0);
-+	if (!chans)
-+		return 0;
-+
-+	tps23881_set_notifs_helper(priv, chans, notifs, notifs_mask,
-+				   ETHTOOL_PSE_EVENT_OVER_CURRENT |
-+				   ETHTOOL_C33_PSE_EVENT_DISCONNECTION);
-+
-+	/* Over Current event resets the power limit registers so we need
-+	 * to configured it again.
-+	 */
-+	for_each_set_bit(i, notifs_mask, priv->pcdev.nr_lines) {
-+		if (priv->port[i].pw_pol < 0)
-+			continue;
-+
-+		ret = tps23881_pi_enable_manual_pol(priv, i);
-+		if (ret < 0)
-+			return ret;
-+
-+		/* Set power policy */
-+		ret = tps23881_pi_set_pw_pol_limit(priv, i,
-+						   priv->port[i].pw_pol,
-+						   priv->port[i].is_4p);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static void tps23881_irq_event_disconnection(struct tps23881_priv *priv,
-+					     u16 reg_val,
-+					     unsigned long *notifs,
-+					     unsigned long *notifs_mask)
-+{
-+	u8 chans;
-+
-+	chans = tps23881_irq_export_chans_helper(reg_val, 4);
- 	if (chans)
- 		tps23881_set_notifs_helper(priv, chans, notifs, notifs_mask,
--					   ETHTOOL_PSE_EVENT_OVER_CURRENT);
-+					   ETHTOOL_C33_PSE_EVENT_DISCONNECTION);
-+}
-+
-+static int tps23881_irq_event_detection(struct tps23881_priv *priv,
-+					u16 reg_val,
-+					unsigned long *notifs,
-+					unsigned long *notifs_mask)
-+{
-+	enum ethtool_pse_events event;
-+	int reg, ret, i, val;
-+	unsigned long chans;
-+
-+	chans = tps23881_irq_export_chans_helper(reg_val, 0);
-+	for_each_set_bit(i, &chans, TPS23881_MAX_CHANS) {
-+		reg = TPS23881_REG_DISC + (i % 4);
-+		ret = i2c_smbus_read_word_data(priv->client, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		val = tps23881_calc_val(ret, i, 0, 0xf);
-+		/* If detection valid */
-+		if (val == 0x4)
-+			event = ETHTOOL_C33_PSE_EVENT_DETECTION;
-+		else
-+			event = ETHTOOL_C33_PSE_EVENT_DISCONNECTION;
-+
-+		tps23881_set_notifs_helper(priv, BIT(i), notifs,
-+					   notifs_mask, event);
-+	}
-+
-+	return 0;
-+}
-+
-+static int tps23881_irq_event_classification(struct tps23881_priv *priv,
-+					     u16 reg_val,
-+					     unsigned long *notifs,
-+					     unsigned long *notifs_mask)
-+{
-+	int reg, ret, val, i;
-+	unsigned long chans;
-+
-+	chans = tps23881_irq_export_chans_helper(reg_val, 4);
-+	for_each_set_bit(i, &chans, TPS23881_MAX_CHANS) {
-+		reg = TPS23881_REG_DISC + (i % 4);
-+		ret = i2c_smbus_read_word_data(priv->client, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		val = tps23881_calc_val(ret, i, 4, 0xf);
-+		/* Do not report classification event for unknown class */
-+		if (!val || val == 0x8 || val == 0xf)
-+			continue;
-+
-+		tps23881_set_notifs_helper(priv, BIT(i), notifs,
-+					   notifs_mask,
-+					   ETHTOOL_C33_PSE_EVENT_CLASSIFICATION);
-+	}
-+
-+	return 0;
- }
- 
- static int tps23881_irq_event_handler(struct tps23881_priv *priv, u16 reg,
-@@ -1106,7 +1281,7 @@ static int tps23881_irq_event_handler(struct tps23881_priv *priv, u16 reg,
- 				      unsigned long *notifs_mask)
- {
- 	struct i2c_client *client = priv->client;
--	int ret;
-+	int ret, val;
- 
- 	/* The Supply event bit is repeated twice so we only need to read
- 	 * the one from the first byte.
-@@ -1118,13 +1293,36 @@ static int tps23881_irq_event_handler(struct tps23881_priv *priv, u16 reg,
- 		tps23881_irq_event_over_temp(priv, ret, notifs, notifs_mask);
- 	}
- 
--	if (reg & (TPS23881_REG_IT_IFAULT | TPS23881_REG_IT_IFAULT << 8)) {
-+	if (reg & (TPS23881_REG_IT_IFAULT | TPS23881_REG_IT_IFAULT << 8 |
-+		   TPS23881_REG_IT_DISF | TPS23881_REG_IT_DISF << 8)) {
- 		ret = i2c_smbus_read_word_data(client, TPS23881_REG_FAULT);
- 		if (ret < 0)
- 			return ret;
--		tps23881_irq_event_over_current(priv, ret, notifs, notifs_mask);
-+		ret = tps23881_irq_event_over_current(priv, ret, notifs,
-+						      notifs_mask);
-+		if (ret)
-+			return ret;
-+
-+		tps23881_irq_event_disconnection(priv, ret, notifs, notifs_mask);
- 	}
- 
-+	if (reg & (TPS23881_REG_IT_DETC | TPS23881_REG_IT_DETC << 8 |
-+		   TPS23881_REG_IT_CLASC | TPS23881_REG_IT_CLASC << 8)) {
-+		ret = i2c_smbus_read_word_data(client, TPS23881_REG_DET_EVENT);
-+		if (ret < 0)
-+			return ret;
-+
-+		val = ret;
-+		ret = tps23881_irq_event_detection(priv, val, notifs,
-+						   notifs_mask);
-+		if (ret)
-+			return ret;
-+
-+		ret = tps23881_irq_event_classification(priv, val, notifs,
-+							notifs_mask);
-+		if (ret)
-+			return ret;
-+	}
- 	return 0;
- }
- 
-@@ -1179,7 +1377,14 @@ static int tps23881_setup_irq(struct tps23881_priv *priv, int irq)
- 	int ret;
- 	u16 val;
- 
--	val = TPS23881_REG_IT_IFAULT | TPS23881_REG_IT_SUPF;
-+	if (!irq) {
-+		dev_err(&client->dev, "interrupt is missing");
-+		return -EINVAL;
-+	}
-+
-+	val = TPS23881_REG_IT_IFAULT | TPS23881_REG_IT_SUPF |
-+	      TPS23881_REG_IT_DETC | TPS23881_REG_IT_CLASC |
-+	      TPS23881_REG_IT_DISF;
- 	val |= val << 8;
- 	ret = i2c_smbus_write_word_data(client, TPS23881_REG_IT_MASK, val);
- 	if (ret)
-@@ -1189,11 +1394,19 @@ static int tps23881_setup_irq(struct tps23881_priv *priv, int irq)
- 	if (ret < 0)
- 		return ret;
- 
--	val = (u16)(ret | TPS23881_REG_INTEN | TPS23881_REG_INTEN << 8);
-+	val = TPS23881_REG_INTEN | TPS23881_REG_CLCHE | TPS23881_REG_DECHE;
-+	val |= val << 8;
-+	val |= (u16)ret;
- 	ret = i2c_smbus_write_word_data(client, TPS23881_REG_GEN_MASK, val);
- 	if (ret < 0)
- 		return ret;
- 
-+	/* Reset interrupts registers */
-+	ret = i2c_smbus_write_word_data(client, TPS23881_REG_RESET,
-+					TPS23881_REG_CLRAIN);
-+	if (ret < 0)
-+		return ret;
-+
- 	return devm_pse_irq_helper(&priv->pcdev, irq, 0, &irq_desc);
- }
- 
-@@ -1271,17 +1484,16 @@ static int tps23881_i2c_probe(struct i2c_client *client)
- 	priv->pcdev.dev = dev;
- 	priv->pcdev.types = ETHTOOL_PSE_C33;
- 	priv->pcdev.nr_lines = TPS23881_MAX_CHANS;
-+	priv->pcdev.supp_budget_eval_strategies = PSE_BUDGET_EVAL_STRAT_STATIC;
- 	ret = devm_pse_controller_register(dev, &priv->pcdev);
- 	if (ret) {
- 		return dev_err_probe(dev, ret,
- 				     "failed to register PSE controller\n");
- 	}
- 
--	if (client->irq) {
--		ret = tps23881_setup_irq(priv, client->irq);
--		if (ret)
--			return ret;
--	}
-+	ret = tps23881_setup_irq(priv, client->irq);
-+	if (ret)
-+		return ret;
- 
- 	return ret;
- }
-
--- 
-2.34.1
+>
+>Add a check to alert on close() lingering when it should not.
+>
+>Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>---
+> tools/testing/vsock/vsock_test.c | 30 +++++++++++++++++++++++++++---
+> 1 file changed, 27 insertions(+), 3 deletions(-)
+>
+>diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+>index d0f6d253ac72d08a957cb81a3c38fcc72bec5a53..82d0bc20dfa75041f04eada1b4310be2f7c3a0c1 100644
+>--- a/tools/testing/vsock/vsock_test.c
+>+++ b/tools/testing/vsock/vsock_test.c
+>@@ -1788,13 +1788,16 @@ static void test_stream_connect_retry_server(const struct test_opts *opts)
+> 	close(fd);
+> }
+>
+>+#define	LINGER_TIMEOUT	1	/* seconds */
+>+
+> static void test_stream_linger_client(const struct test_opts *opts)
+> {
+> 	struct linger optval = {
+> 		.l_onoff = 1,
+>-		.l_linger = 1
+>+		.l_linger = LINGER_TIMEOUT
+> 	};
+>-	int fd;
+>+	int bytes_unsent, fd;
+>+	time_t ts;
+>
+> 	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
+> 	if (fd < 0) {
+>@@ -1807,7 +1810,28 @@ static void test_stream_linger_client(const struct test_opts *opts)
+> 		exit(EXIT_FAILURE);
+> 	}
+>
+>+	/* Byte left unread to expose any incorrect behaviour. */
+>+	send_byte(fd, 1, 0);
+>+
+>+	/* Reuse LINGER_TIMEOUT to wait for bytes_unsent == 0. */
+>+	timeout_begin(LINGER_TIMEOUT);
+>+	do {
+>+		if (ioctl(fd, SIOCOUTQ, &bytes_unsent) < 0) {
+>+			perror("ioctl(SIOCOUTQ)");
+>+			exit(EXIT_FAILURE);
+>+		}
+>+		timeout_check("ioctl(SIOCOUTQ) == 0");
+>+	} while (bytes_unsent != 0);
+>+	timeout_end();
+>+
+>+	ts = current_nsec();
+> 	close(fd);
+>+	if ((current_nsec() - ts) / NSEC_PER_SEC > 0) {
+>+		fprintf(stderr, "Unexpected lingering on close()\n");
+>+		exit(EXIT_FAILURE);
+>+	}
+>+
+>+	control_writeln("DONE");
+> }
+>
+> static void test_stream_linger_server(const struct test_opts *opts)
+>@@ -1820,7 +1844,7 @@ static void test_stream_linger_server(const struct test_opts *opts)
+> 		exit(EXIT_FAILURE);
+> 	}
+>
+>-	vsock_wait_remote_close(fd);
+>+	control_expectln("DONE");
+> 	close(fd);
+> }
+>
+>
+>-- 
+>2.49.0
+>
 
