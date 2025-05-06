@@ -1,110 +1,117 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE38280012
-	for <netdev@vger.kernel.org>; Tue,  6 May 2025 13:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603FA27E1AC
+	for <netdev@vger.kernel.org>; Tue,  6 May 2025 13:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746539782; cv=none; b=n6WvpV81TRnAzlcm+X+6RIqeB0Rn2B/2AVRpJilra2H6t/8dQpes01NucwaOTuonPSTl+J5bzDNkBgW7mTdYo5tzewiNmBaJxMjNDs19DbvQFDsBKVzZ+sZVlinA1JwzTy+lfd9uqENRlACAnDVhXLKQZ3SgsfgJB9lG609XnLo=
+	t=1746539987; cv=none; b=QWVBfgZ5VQ5IAZSaU5mGzv3h2yOY+Q6RPL7SFt0g22rocvdjDJBNGiPtxMhxm8EwVifADUXi8HEyDPFuNnBLve3uloMLRZigfZxX5yV2SmwMqB17M7jF4w6dbZQelYaT+lxe+Lh95FU/eIFYYRvJfmh2GCilph7JH1H+r9ydmvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746539782; c=relaxed/simple;
-	bh=lf6YtdrdwJ2QtsANp3wjNVE6niIZ90eHUTTGp1DiNGc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FZ4iLd4tW29o+Envyv7mTT8Zgdw4DEZIaBbpk15KzqEkl7rxpP4i4I/Hl9aO7mfLmg2m96zFidl2Xy09ErEBQ61LzqZIfx9FCoXaRw2Ry7l6YqKW1e6ZW4ycYzXIb68RQWLWXzh+q22I7mNLlJzuELeWZ3La65zwReLg/mpk5IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=d4+QEZ9G; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="d4+QEZ9G"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=sDSa7bE8NOJXLelvEMpU/rC6sYcMXis7kEsdOk5BpI0=; b=d4+QEZ9GFyHLyMVwJ48TKE6Ihn
-	S1FaSH9ltOcNp8C2wL3927zufKs6vPAHstgRsiUbOBT/avqnIvnJLb7XBsytAf6hUbBRr4DgcLD5E
-	QxXqrbiDvqWJCSj2su4ZAgm5Q24jQsVEwnveMOLWQOD3Acy7oJfqgeOursDLY7diLPcQGrKbhQfz1
-	2MtbfQJI/M5z/exkUBLhgl5GT5inYAirRFLHgqvcAauiRhQlDigbzHxDM9FPDkScK6uy9NW0KpzHo
-	s+JcggW/WUYOWoHuOaWCNLI3mFZnAJNRXSqKNpYdStdAjwQHF0vy1LmTYJlZviuRWeeFgcQVT4zGa
-	YJ2py6yA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uCImP-0000000CDgT-3Equ;
-	Tue, 06 May 2025 13:56:17 +0000
-Date: Tue, 6 May 2025 06:56:17 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Hildenbrand <david@redhat.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Christoph Hellwig <hch@infradead.org>, willy@infradead.org,
-	netdev@vger.kernel.org, linux-mm@kvack.org,
-	Willem de Bruijn <willemb@google.com>
-Subject: Re: Reorganising how the networking layer handles memory
-Message-ID: <aBoVAd-XX_44RKbC@infradead.org>
-References: <20250505131446.7448e9bf@kernel.org>
- <165f5d5b-34f2-40de-b0ec-8c1ca36babe8@lunn.ch>
- <0aa1b4a2-47b2-40a4-ae14-ce2dd457a1f7@lunn.ch>
- <1015189.1746187621@warthog.procyon.org.uk>
- <1021352.1746193306@warthog.procyon.org.uk>
- <1069540.1746202908@warthog.procyon.org.uk>
- <1216273.1746539449@warthog.procyon.org.uk>
+	s=arc-20240116; t=1746539987; c=relaxed/simple;
+	bh=CkoiTXTjj8d9aaicoVN2Rau20I/DIb8g+69Zn9p40Dc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r/IxQaWbCf0RNUsiD+Wmk1TP2eVoN39tGGp00lCwg/ZCf2N72y5z0mZdwJIIhrR0JaG+gaCFfa5WK4YECvkEfE8M2JryHp/grzTyQyhMY6YqjAzBoBsYUkqScUv+XgAb9KnbCoeuHZnsyuAvysi1+KV2TmEM+ovb3v8k23vR0HQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uCIpj-0007oF-Nr
+	for netdev@vger.kernel.org; Tue, 06 May 2025 15:59:43 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uCIpj-001P7u-1J
+	for netdev@vger.kernel.org;
+	Tue, 06 May 2025 15:59:43 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id 1DB48408F4E
+	for <netdev@vger.kernel.org>; Tue, 06 May 2025 13:59:43 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id CC0C2408F33;
+	Tue, 06 May 2025 13:59:41 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 071df4b2;
+	Tue, 6 May 2025 13:59:40 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: [PATCH net 0/6] pull-request: can 2025-05-06
+Date: Tue,  6 May 2025 15:56:16 +0200
+Message-ID: <20250506135939.652543-1-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1216273.1746539449@warthog.procyon.org.uk>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Tue, May 06, 2025 at 02:50:49PM +0100, David Howells wrote:
-> > > (2) sendmsg(MSG_ZEROCOPY) suffers from the O_DIRECT vs fork() bug because
-> > >      it doesn't use page pinning.  It needs to use the GUP routines.
-> > 
-> > We end up calling iov_iter_get_pages2(). Is it not setting
-> > FOLL_PIN is a conscious choice, or nobody cared until now?
-> 
-> iov_iter_get_pages*() predates GUP, I think.
+Hello netdev-team,
 
-It predates pin_user_pages, but get_user_pages is much older.
+this is a pull request of 6 patches for net/main.
 
-> There's now an
-> iov_iter_extract_pages() that does the pinning stuff, but you have to do a
-> different cleanup, which is why I created a new API call.
+The first patch is by Antonios Salios and adds a missing
+spin_lock_init() to the m_can driver.
 
-But yes, iov_iter_get_pages* needs to go away in favour of
-iov_iter_extract_pages, and I'm still annoyed that despite multiple
-pings no one has done any work on that outside of block / block based
-direct I/O and netfs.
+The next 3 patches are by me and fix the unregistration order in the
+mcp251xfd, rockchip_canfd and m_can driver.
 
-> > >  (3) sendmsg(MSG_SPLICE_PAGES) isn't entirely satisfactory because it can't be
-> > >      used with certain memory types (e.g. slab).  It takes a ref on whatever
-> > >      it is given - which is wrong if it should pin this instead.
-> > 
-> > s/takes a ref/requires a ref/ ? I mean - the caller implicitly grants 
-> > a ref  to the stack, right? But yes, the networking stack will try to
-> > release it.
-> 
-> I mean 'takes' as in skb_append_pagefrags() calls get_page() - something that
-> needs to be changed.
-> 
-> Christoph Hellwig would like to make it such that the extractor gets
-> {phyaddr,len} rather than {page,off,len} - so all you, the network layer, see
-> is that you've got a span of memory to use as your buffer.  How that span of
-> memory is managed is the responsibility of whoever called sendmsg() - and they
-> need a callback to be able to handle that.
+The last patch is by Oliver Hartkopp and fixes RCU and BH
+locking/handling in the CAN gw protocol.
 
-Not sure what the extractor is, but we plan to change the bio_vec
-to be physical address instead of page+offset based.  Where we is
-a lot more people than just me.
+regards,
+Marc
 
-> Once advantage of delegating it to the caller, though, and having the caller
-> keep track of which bits in still needs to hold on to by transmission
-> completion position is that we don't need to manage refs/pins across sk_buff
-> duplication - let alone what we should do with stuff that's kmalloc'd.
+---
 
-And the callers already do that for all other kinds of I/O anyway.
+The following changes since commit ebd297a2affadb6f6f4d2e5d975c1eda18ac762d:
+
+  Merge tag 'net-6.15-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-05-01 10:37:49 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can.git tags/linux-can-fixes-for-6.15-20250506
+
+for you to fetch changes up to 511e64e13d8cc72853275832e3f372607466c18c:
+
+  can: gw: fix RCU/BH usage in cgw_create_job() (2025-05-06 15:55:36 +0200)
+
+----------------------------------------------------------------
+linux-can-fixes-for-6.15-20250506
+
+----------------------------------------------------------------
+Antonios Salios (1):
+      can: m_can: m_can_class_allocate_dev(): initialize spin lock on device probe
+
+Kelsey Maes (1):
+      can: mcp251xfd: fix TDC setting for low data bit rates
+
+Marc Kleine-Budde (4):
+      can: mcp251xfd: mcp251xfd_remove(): fix order of unregistration calls
+      can: rockchip_canfd: rkcanfd_remove(): fix order of unregistration calls
+      can: mcan: m_can_class_unregister(): fix order of unregistration calls
+      Merge patch series "can: rx-offload: fix order of unregistration calls"
+
+Oliver Hartkopp (1):
+      can: gw: fix RCU/BH usage in cgw_create_job()
+
+ drivers/net/can/m_can/m_can.c                  |   3 +-
+ drivers/net/can/rockchip/rockchip_canfd-core.c |   2 +-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c |  42 +++++--
+ net/can/gw.c                                   | 151 +++++++++++++++----------
+ 4 files changed, 127 insertions(+), 71 deletions(-)
 
