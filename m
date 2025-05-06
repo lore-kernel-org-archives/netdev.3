@@ -1,77 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0F8290D9D
-	for <netdev@vger.kernel.org>; Tue,  6 May 2025 01:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D50B1E1DEF;
+	Tue,  6 May 2025 01:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746494398; cv=none; b=Bqd9KIK5Uc8gUEe0XDa/f/MQ2MwueK8HuRqM0jPyBkJb5vpQ+onDH5PZXxgyTSsnQpHg/bRxon4fuH8X/KxG995c8eO5aJze2rtLPxqGBEm7xHGNInFbC/EeZNEl5G0z2HydKwXHwesPN4zhzxhTC5bACP96ppJShL5OjbQVwN0=
+	t=1746494769; cv=none; b=AYgJ2+Z2aJ5zgr0ewqwYxmcEcaCZd0fqZ/Kl0UwgReluYEfcHfYpZkU51/52ncMMpsBE/rnJw7AGN+FtRwB8mwTcv3w6069mNQjev96DoWHAM3VblTDd7AOE5ko8DQ1dUjzvDmd5qTVAwkYOKccnxSocP6lGlJNpdzTwJLYqbEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746494398; c=relaxed/simple;
-	bh=xj4Os+WdiExkpD8Zgxlvke07JByqhTWf/PLeXJ2HIPo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=FnYn3weTfO0EydakenAG10Zoclw4PAXjEKu4G5mZusGqERCIUih5p6+QFiwXzV3o2KMdUFem0ptD2zS6Etr8GTXsa8cGDomVksr3cseMtAcV/pfGSASphOZq1A+fstdR5VWdq1gBc3S/XXvrX/95P7nqi9cbdEFQtqF5xfAX7mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XciCIkvg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746494769; c=relaxed/simple;
+	bh=yqO5N+PlLNkY4mIRLHix0b1VTSn6zED+m8H+R9a0gwo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=kqlt1aw/jmsLZlvGsb31Zlxbm43VKNXtdYlBix9SgV6+IfhwKnKFTgLozrTRfyIpB9ZE81XaW7gbn5O6Jy//O5L/MSz50j1bkFV2g6XAeS032B/AX1Y78xgYgasK7Gy1BlqWO9TB69SXYugYXLTmZheyBwIeF+iopNlqIBq7PwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=o+QumNOW; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XciCIkvg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1632C4CEE4;
-	Tue,  6 May 2025 01:19:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746494398;
-	bh=xj4Os+WdiExkpD8Zgxlvke07JByqhTWf/PLeXJ2HIPo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=XciCIkvg8te71lsOJtbBg8bGJuOslb39HIm3HLIqA1VKN8YRSymvd4hwuYTgS0bQo
-	 S7NatZOm2kN7016qTkVRv5C0Ingx1/gfzEnZQPCpSaQx/TyOu+Th5MazNFfNEy3mns
-	 ShbdiRxmw91gGRpioLnX6iopPQZC3BOQQRQhEnWlODTpNWVOUkjnURdNkyQH1r13dB
-	 bIlP1XoaqVM74TnGXI70jAmUP2Ct1FM0yACAr8uufW8PjyDA6CU3QYGwJmx6xyPw9d
-	 +9hB9YeZxZ6isRS3TP88zatQQawaDSMxkrlgjkiLfm4Vk430j0rbYJSdZGyrnc0A7N
-	 6wCsr8JF/fi4g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70C18380CFD9;
-	Tue,  6 May 2025 01:20:38 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="o+QumNOW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=202503; t=1746494757;
+	bh=E003ozl3HMPtf+EUX7TMGXJJ5Zb3SEgE/KzqNV3jMQc=;
+	h=Date:From:To:Cc:Subject:From;
+	b=o+QumNOWtM9/LCYRjhU2K93IbhgVvRS3GjrQlFcRyy9+yivRzWaYSQQ15UJPNOHYi
+	 mDCe3vq941I7NIJXpFJiSE+1BI0NtcV0+1gRWagDYKzkrjdi68vw7tWDIZK8eGqjdM
+	 /waSscg7o+bEzU6oGVloUAB/Or0U38opiprusNICh1EF/bxzd527bwjMN6PzLSbfA3
+	 0zjFAfBKxVqmECijmUktRAotJMCF0iBqQnzUZhnCky+y1cY/umJ5jvwIJw9JVsFx45
+	 99Av54jn1Ht5ivBlv+Y6vxvFZnMWfueQa9utR0+BzCCzPaNQGbwUXApLIm3VTT6cC1
+	 eQCa1qH25fJCg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Zs11c2bf0z4wyh;
+	Tue,  6 May 2025 11:25:55 +1000 (AEST)
+Date: Tue, 6 May 2025 11:25:54 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Networking
+ <netdev@vger.kernel.org>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>
+Subject: linux-next: manual merge of the net-next tree with the reset tree
+Message-ID: <20250506112554.3832cd40@canb.auug.org.au>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v1] tools: ynl-gen: validate 0 len strings from
- kernel
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174649443724.1003512.5539017727353269660.git-patchwork-notify@kernel.org>
-Date: Tue, 06 May 2025 01:20:37 +0000
-References: <20250503043050.861238-1-dw@davidwei.uk>
-In-Reply-To: <20250503043050.861238-1-dw@davidwei.uk>
-To: David Wei <dw@davidwei.uk>
-Cc: netdev@vger.kernel.org, donald.hunter@gmail.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, jacob.e.keller@intel.com
+Content-Type: multipart/signed; boundary="Sig_/LpSby9OtKnEIEs_fDNqXHfs";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
-Hello:
+--Sig_/LpSby9OtKnEIEs_fDNqXHfs
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Hi all,
 
-On Fri,  2 May 2025 21:30:50 -0700 you wrote:
-> Strings from the kernel are guaranteed to be null terminated and
-> ynl_attr_validate() checks for this. But it doesn't check if the string
-> has a len of 0, which would cause problems when trying to access
-> data[len - 1]. Fix this by checking that len is positive.
-> 
-> Signed-off-by: David Wei <dw@davidwei.uk>
-> 
-> [...]
+Today's linux-next merge of the net-next tree got a conflict in:
 
-Here is the summary with links:
-  - [net-next,v1] tools: ynl-gen: validate 0 len strings from kernel
-    https://git.kernel.org/netdev/net/c/4720f9707c78
+  MAINTAINERS
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+between commit:
 
+  57dfdfbe1a03 ("MAINTAINERS: Add entry for Renesas RZ/V2H(P) USB2PHY Port =
+Reset driver")
 
+from the reset tree and commit:
+
+  326976b05543 ("MAINTAINERS: Add entry for Renesas RZ/V2H(P) DWMAC GBETH g=
+lue layer driver")
+
+from the net-next tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc MAINTAINERS
+index c056bd633983,5c31814c9687..000000000000
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@@ -20827,14 -20699,14 +20829,22 @@@ S:	Maintaine
+  F:	Documentation/devicetree/bindings/usb/renesas,rzn1-usbf.yaml
+  F:	drivers/usb/gadget/udc/renesas_usbf.c
+ =20
++ RENESAS RZ/V2H(P) DWMAC GBETH GLUE LAYER DRIVER
++ M:	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
++ L:	netdev@vger.kernel.org
++ L:	linux-renesas-soc@vger.kernel.org
++ S:	Maintained
++ F:	Documentation/devicetree/bindings/net/renesas,r9a09g057-gbeth.yaml
++ F:	drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
++=20
+ +RENESAS RZ/V2H(P) USB2PHY PORT RESET DRIVER
+ +M:	Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+ +M:	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+ +L:	linux-renesas-soc@vger.kernel.org
+ +S:	Supported
+ +F:	Documentation/devicetree/bindings/reset/renesas,rzv2h-usb2phy-reset.ya=
+ml
+ +F:	drivers/reset/reset-rzv2h-usb2phy.c
+ +
+  RENESAS RZ/V2M I2C DRIVER
+  M:	Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+  L:	linux-i2c@vger.kernel.org
+
+--Sig_/LpSby9OtKnEIEs_fDNqXHfs
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmgZZSIACgkQAVBC80lX
+0GyiQAgAiBOVH2URILyoPYMPJPn0jjgUcL9pFe1T4dFQ7MuefzektIWuYkyIO6pM
+VTwEjnEJ+XVluyVPPQ+fmAHU+ZD12LzGPUmk4ylfc5/mgZZeQk83d5AnE+PK6K2V
+wBt0wpB/hjIHaQ5kwQvyqplZdyS1Rmd1nWPAKJB3aY4zGAbYyZf7fDAIPR9Nmte/
+prBRr9OEDSdz/0gkywwhveRcLS9IJWMgM3A5YD3xzh2HzVCuLkHBYLYXBlUXtSNu
+ae/Mv7pATGFoAgTyCrKRLeuOdaFOTZXPvMhiwluVMJH4+brJlnOm/8WFomFD66g8
+hs+p3KpEBtf0KnwuI2Tk40i//+1iEQ==
+=c2h4
+-----END PGP SIGNATURE-----
+
+--Sig_/LpSby9OtKnEIEs_fDNqXHfs--
