@@ -1,50 +1,52 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from gardel.0pointer.net (gardel.0pointer.net [85.214.157.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA1C280030;
-	Tue,  6 May 2025 12:24:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF1627FD5F;
+	Tue,  6 May 2025 12:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.157.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746534253; cv=none; b=tJD5uE1OlnQEWwYQaJjVdnwE3HkeZupdkuuXvNYn6XYTLgDPFDIlLiIWdT4Lc3zlDrQRIIAVnEdfYGoItREVVwWeCsexB5R//wpgeZu36sMjV3xnlJg58W/ef2TlnK/ZnSX1DJVmzQkjQJ8k+I8tz9Tpyfl1WHCLcSl9Com5g+s=
+	t=1746534445; cv=none; b=otfILYGVeFoffVvrLywbXBSeRtj8pCovM2JZbrQh1ViU2phPKnfjUW5Ehu1bIzuv+ypuFWxoxDQoyz0lOtfqiYaMOYq8eSs2bIWhALOE82kWoH1xPFkr9+WWJVQUjD4brkayo3e4A1SS1LjjxNvZm8i+MmZkDRXCCqyuLN4hQCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746534253; c=relaxed/simple;
-	bh=Pe/LD1R11v0r3nlohRwma2BBA+QuXERTLjiv7SMrDH0=;
+	s=arc-20240116; t=1746534445; c=relaxed/simple;
+	bh=m7SBsfQfLVW4xNj3QrIhN2V3ELt1ceEG+cP+bc5hvNs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n6rrUC3h1zEOVTpXLVks7LqcSmChGkYjfrWNs2mx+ajEenEr72YbKvOL5A2Fuv6mrwMt2qYhaX8GRbjcJwpKnHUw5ON5dus7RBBLJITONfhZpg9Y3c4JWDQHhmRwwSBmh/Yuu2iY6/LvVStnabn1rLC8FkE9eD788f1UZD+ilh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=lKI6Le0K; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="lKI6Le0K"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=y94onA26ptuGt6ZZ1O0PWKBzwfWEx+cfBmv8M1gAVUg=; b=lKI6Le0KREcdNawRsk0CAI0W4h
-	YKfzlKz5/1N0rCWNPOVlKunDUiZvVYlHZTDoCy+JhPcM/aoEkLpNFsCtYibgDU2HTjR2EFXS0+FJv
-	DE7tlyBKVFtKuF5zA/ikUTG+MZr22NPuxbhEeRYNDG0B1LN6rYc+4+RAFPsE3ZJ6fARk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uCHLA-00BlBI-0c; Tue, 06 May 2025 14:24:04 +0200
-Date: Tue, 6 May 2025 14:24:03 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Stefan Wahren <wahrenst@gmx.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next 2/5] net: vertexcom: mse102x: Add warning about
- IRQ trigger type
-Message-ID: <a9633874-a41c-4f62-9b80-33785c0eec10@lunn.ch>
-References: <20250505142427.9601-1-wahrenst@gmx.net>
- <20250505142427.9601-3-wahrenst@gmx.net>
- <14326654-2573-4bb6-b7c0-eb73681caabd@lunn.ch>
- <e75cebaf-6119-4502-ae63-a8758d0dd9f5@gmx.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=nh5Wo4Zb7U0gSlVNWxuGiR/qV1HW1wRYwcm0OBUo3v2wC8smutP2WJ38N5VPWr0rb6k475ow3FtNk34kvcUfk2GDUwMT4zJ7t48c2aWfgzL0GOGmocgCa2/yvJGDJwjOLIBu3GcIP/qtYKsEyaIMKiJu3VdIE4onFO0mXyQgpno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=poettering.net; spf=pass smtp.mailfrom=poettering.net; arc=none smtp.client-ip=85.214.157.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=poettering.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poettering.net
+Received: from zeta (p200300ea6f02a700ee7fde6810ab8036.dip0.t-ipconnect.de [IPv6:2003:ea:6f02:a700:ee7f:de68:10ab:8036])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gardel.0pointer.net (Postfix) with ESMTPSA id 89EC9E802CC;
+	Tue,  6 May 2025 14:17:24 +0200 (CEST)
+Date: Tue, 6 May 2025 14:17:22 +0200
+From: Lennart Poettering <lennart@poettering.net>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+	=?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+	=?iso-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-security-module@vger.kernel.org,
+	selinux@vger.kernel.org
+Subject: Re: [PATCH v1 bpf-next 0/5] af_unix: Allow BPF LSM to scrub
+ SCM_RIGHTS at sendmsg().
+Message-ID: <aBn90vJ49ymBT3LW@zeta>
+References: <20250505215802.48449-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,33 +55,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e75cebaf-6119-4502-ae63-a8758d0dd9f5@gmx.net>
+In-Reply-To: <20250505215802.48449-1-kuniyu@amazon.com>
 
-On Tue, May 06, 2025 at 10:38:53AM +0200, Stefan Wahren wrote:
-> Hi Andrew,
-> 
-> Am 05.05.25 um 18:32 schrieb Andrew Lunn:
-> > > +	if (!irq_data) {
-> > > +		netdev_err(ndev, "Invalid IRQ: %d\n", ndev->irq);
-> > > +		return -EINVAL;
-> > > +	}
-> > > +
-> > > +	switch (irqd_get_trigger_type(irq_data)) {
-> > > +	case IRQ_TYPE_LEVEL_HIGH:
-> > > +	case IRQ_TYPE_LEVEL_LOW:
-> > > +		break;
-> > > +	default:
-> > > +		netdev_warn_once(ndev, "Only IRQ type level recommended, please update your firmware.\n");
-> > I would probably put DT in there somewhere. firmware is rather
-> > generic.
-> I'm fine with changing it to DT. I slightly remember of a patch for a
-> BCM2835 driver, which also had a warning to update the DT and a reviewer
-> requested it to change it to firmware. I don't remember the reason behind
-> it, maybe it's the fact that not all user know what a DT / devicetree is. A
-> quick grep shows both variants (DT vs firmware).
+On Mo, 05.05.25 14:56, Kuniyuki Iwashima (kuniyu@amazon.com) wrote:
 
+> As long as recvmsg() or recvmmsg() is used with cmsg, it is not
+> possible to avoid receiving file descriptors via SCM_RIGHTS.
+>
+> This behaviour has occasionally been flagged as problematic.
+>
+> For instance, as noted on the uAPI Group page [0], an untrusted peer
+> could send a file descriptor pointing to a hung NFS mount and then
+> close it.  Once the receiver calls recvmsg() with msg_control, the
+> descriptor is automatically installed, and then the responsibility
+> for the final close() now falls on the receiver, which may result
+> in blocking the process for a long time.
+>
+> systemd calls cmsg_close_all() [1] after each recvmsg() to close()
+> unwanted file descriptors sent via SCM_RIGHTS.
+>
+> However, this cannot work around the issue because the last fput()
+> could occur on the receiver side once sendmsg() with SCM_RIGHTS
+> succeeds.  Also, even filtering by LSM at recvmsg() does not work
+> for the same reason.
+>
+> Thus, we need a better way to filter SCM_RIGHTS on the sender side.
+>
+> This series allows BPF LSM to inspect skb at sendmsg() and scrub
+> SCM_RIGHTS fds by kfunc.
 
-The line gets long, but "Only IRQ type level recommended, please
-update your device tree firmware.\n" is good for me.
+Frankly, this sounds like a bad idea to me. The number and order of
+the fds passed matters, and if you magically make some fds disappear
+everything becomes a complete mess for most protocols. Hence, making
+fds disappear from a messasge mid-flight is really not a realistic
+option, already for compat. Not for systemd, and not for other tools
+either I am sure.
 
-	Andrew
+I also think it's pointless to enforce this on the receiving side,
+because the deed is done by then. i.e. it doesn't matter if we have to
+close the fd via bpf or in userspace, we still have to wait for it to
+be closed on the receiving side, hence we have to pay. i.e. focus must
+be to refuse the fds on the sender side, instead of allowing this to
+go to the receiver side.
+
+From my perspective this must be enforced on sender side. And more
+importantly, for systemd's usecase it would be a lot more relevant to
+have a simple, dumb boolean per socket instead of the full bpf
+machinery. I mean, as much as I like the lsm-bpf concept it's not
+clear to me that this is the right place to make use of it. I
+personally would really like to see a SO_PASSRIGHTS sockopt, that is
+modelled after SO_PASSCREDS and SO_PASSSEC.
+
+Lennart
+
+--
+Lennart Poettering, Berlin
