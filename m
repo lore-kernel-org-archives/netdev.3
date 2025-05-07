@@ -1,144 +1,173 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2D7283CBE;
-	Wed,  7 May 2025 12:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3226280020
+	for <netdev@vger.kernel.org>; Wed,  7 May 2025 12:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746621946; cv=none; b=ag/1g2XER5i/9KEoNdrDwb7m6vSIskM+2lao7rK8Yo9mbIt1p6HJRyS56BWPWyZxdvo78eiKBkIZ/wYfiVXSbluICsienkKO+NcMc0PmvjKcOUxh3gBxlHQRv2xX6lUTyqfdhb9IsVYMFWGu6SMZcRNR4c3U6v2dz/grRiBI1Mg=
+	t=1746622045; cv=none; b=rWINmqV5UcVU/cOeIU5valBkotMC7NtX5YzOeEPVfbDwq0h/XsDIQvbX3pzhKOXbyexI9U31rr7Q859wR+oZw7E7h/RWlkSMJ5kwvOjfXqacFVix67EkhlHygW0dMfHtSgBQJ70zSmtURgNqWmSUblTHmGCQUWeYwMJnSKna2i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746621946; c=relaxed/simple;
-	bh=9DxzN9AnLFsBNzZZdwpy9vlafkqwBrDUBdeLAzxHO7c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fZFP/UzWGQMluT/iQWlnVj/g+f/MrwW22bpkaQgmjcB/CawgtLczWpGuRtFwrbba+tSF0Rw8CCx15kayfa6rqiiSY9d3E3RNaIiDJWZ4FGhzvL8KMF9U1ue2Tx1loibmJ2RzpkXV3jeLvDPajddMoyvKxUpaILoJaEtoMmZZfQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gy/4BwLs; arc=none smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746622045; c=relaxed/simple;
+	bh=FUN5iesvZIB15oVD5+kjdSiETFouMpoSDwpkgdOWONo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lQikhoHVkye9iZIS3lYIDY4QmnZsne/dau10hytRCGWzGkTvmMnm+uXlbT8ntB46lpHK1bKVQbsSf5W5lokWjv2EFivQTOcx+8JgNjYAfOT+RmCMDz4JY9xwoMxZxvvtmhgFhQh6AT+XAhAlNNLK5h8lZIC6GWiBKQigW4scJNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L3+wumS6; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gy/4BwLs"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7c5ba363f1aso1017252685a.0;
-        Wed, 07 May 2025 05:45:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746621944; x=1747226744; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=M2zV074M+6nwcpFqf4vrNr7jLnOtispGdjqzYB/cGTY=;
-        b=gy/4BwLsBM3siEmcH+xfrcJPvaX7/VuKlrC5SSryGdyO0A3lt+um3F9dwb8r+RjPT3
-         RCDnEULzuADiz+YcpV+0uUlEbxjqLcl2HTpe5FpyFhoqWDFsoF6VWTRSdBm5MLqNolra
-         uLxIm7LKwc4wUd9mILIoYJrGUM2SENbVRSllI+GaD/+mixBq+CpmP34udzHL34beuVW9
-         QV1BiVrurHAx9T5LGXSNbSklzqrBfohXIpZAmtmwJkiztJDOh/1qdOmuH2QdWiLEGMdP
-         k9VwKpj7GdzV0XKuUXf05bhJ9XRuULDpEYG9WX0delVdhGZEQjzKOu0PzxYLEY97IFul
-         CK8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746621944; x=1747226744;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M2zV074M+6nwcpFqf4vrNr7jLnOtispGdjqzYB/cGTY=;
-        b=olVfe3OecoHp7tXhSOjgKR6ufGoaOBoPNk8dTntglqhRJv0/6nwPIvNUa7rAmLnxh4
-         3TvAMA5U3h61f374vc/g4yyIFs7gjT8QQSyIFOGpeScjtGyAxHUWXbsaux1KL7cIgILU
-         tcULocJkx1+g4/vccgiHO9HAMwuWZNLZpRIJ5/Zpqb72SpcAc3lo/O3m0NJdUxOchez9
-         j4cu6Vd5yP3/1Bx0zDa0Qndhld3Dg0QPMeiIqyWM8HR2AO/B9S3R5MiI+YFHGWJtNuLm
-         l1Ez4NxTTrISt4HOwMRZ9gs59X0v7F9iNwe1QPxVpv1HhuXfraZvclNCTexCS3FmIubB
-         W03Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWnvdywLTImpIvVQpiiIrWj8nWaWAOIx2owAxfyHwnJ5nezg5sqRfNgMREX3cPK52l2TSwy+FVhRtAhIKgG@vger.kernel.org, AJvYcCWuhAtyeRynDsPl6jUwJ+DszQFrrpGl7BZXrKoQViUPVOv4GMSedv94zyz4o1Rwvlhw2Bkj7Sxz@vger.kernel.org, AJvYcCXGsZLIINUSCOsVAFp6RJw6Ck7GgS8yEedcvD7RlZyV6ZAcm7jKcPqyvLx+lnLdIbFCMlfeLLA6Cy2c@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+0EG0xEFF1CLe+7UlTYslir6T1VDeY8aCvIgGQK6QxTLnoWMs
-	hsdwPqwTPK/TpheUOY+wPyoYq5DFC6FUo7EtELna2/MkjxNP3t8IB7ObQQ==
-X-Gm-Gg: ASbGnctri37GeD/9ZzDH1EOLuNuvfOph94OwflC/zVb01LkhQFIbq2MSwddFnyiQQkf
-	tr26RLMTcSz8c5jh2XCX0BYYSOhuj0c07pByvRhOukE2NfSx24zgl7d7QjO/PMnZDZ8tx6qyRSl
-	fN9uTWiv47J10axEDmN5Fi40lEsmIRTmfyaqLeQ9uIuvN3xSxR0GJ6YYMkVmxSe9BIBZLFr/ie8
-	DC+9jwMtMljQPE7wJGKg21b4wMB6ESIorgDt5cDOXHTQ7o1D2h+yE0OQc4x8gu8uK66XUr75kiv
-	npccyjgn3ZUJ925t
-X-Google-Smtp-Source: AGHT+IFe4p/E5mc6ZXdUskO144UfSWaGztqfNqrlmQcNmUMrZJzV/ph5M+fDa1Vi9KU3agPcMIiCzQ==
-X-Received: by 2002:a05:620a:40c7:b0:7c7:bbc9:aba0 with SMTP id af79cd13be357-7caf73fcfb1mr554734385a.35.1746621943769;
-        Wed, 07 May 2025 05:45:43 -0700 (PDT)
-Received: from localhost ([2001:da8:7001:11::cb])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7caf75b3a6esm145729385a.89.2025.05.07.05.45.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 May 2025 05:45:43 -0700 (PDT)
-Date: Wed, 7 May 2025 20:45:18 +0800
-From: Inochi Amaoto <inochiama@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>, Inochi Amaoto <inochiama@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chen Wang <unicorn_wang@outlook.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Richard Cochran <richardcochran@gmail.com>, 
-	Guo Ren <guoren@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>, "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
-	Romain Gantois <romain.gantois@bootlin.com>, Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>, 
-	Lothar Rubusch <l.rubusch@gmail.com>, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, sophgo@lists.linux.dev, 
-	linux-riscv@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, Yixun Lan <dlan@gentoo.org>, Longbin Li <looong.bin@gmail.com>
-Subject: Re: [PATCH net-next 0/4] riscv: sophgo: Add ethernet support for
- SG2042
-Message-ID: <tgqngwc7mteczfzhuyguy3jojnqhdi3ecaqhupuq5lhhhn3ve4@n2gb4w3pc7va>
-References: <20250506093256.1107770-1-inochiama@gmail.com>
- <c7a8185e-07b7-4a62-b39b-7d1e6eec64d6@lunn.ch>
- <fgao5qnim6o3gvixzl7lnftgsish6uajlia5okylxskn3nrexe@gyvgrp72jvj6>
- <ffa044e2-ee9e-4a34-af6a-2e45294144f7@lunn.ch>
- <2tu2mvwsnqdezjei5h43ko24vfave4c3ek2fjoatwsg72p6lpz@3vbtpmm7l73z>
- <b4ce3e35-9255-4fc7-9c8d-4078b24ac3fa@lunn.ch>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L3+wumS6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746622042;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DvlamrKvIRy0y8V7iGg6C04u4JBbaSuDm4R9vBWsHHc=;
+	b=L3+wumS6DErROJNT9noK4OilxHC3ysb27vRZTCLSd7uaswHoDNn4kh8hWtGNWFo2QMXO5H
+	lgDo4i1sKsWGFL8xZZRBIxGUsC05+Cs7XE0HjeWrRSc4etANVO8GjOc1mCUhZEPRAvgBc0
+	GZuYoZALTs3Qp2wFKspVjKqLcUKZfKk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-fzkrCnn8M0qdaWXuzriQIw-1; Wed,
+ 07 May 2025 08:44:44 -0400
+X-MC-Unique: fzkrCnn8M0qdaWXuzriQIw-1
+X-Mimecast-MFC-AGG-ID: fzkrCnn8M0qdaWXuzriQIw_1746621882
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6A5A91955E88;
+	Wed,  7 May 2025 12:44:42 +0000 (UTC)
+Received: from p16v.luc.cera.cz (unknown [10.44.33.91])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EE36119560AB;
+	Wed,  7 May 2025 12:44:36 +0000 (UTC)
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Prathosh Satish <Prathosh.Satish@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: [PATCH net-next v7 5/8] mfd: zl3073x: Protect operations requiring multiple register accesses
+Date: Wed,  7 May 2025 14:43:55 +0200
+Message-ID: <20250507124358.48776-6-ivecera@redhat.com>
+In-Reply-To: <20250507124358.48776-1-ivecera@redhat.com>
+References: <20250507124358.48776-1-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b4ce3e35-9255-4fc7-9c8d-4078b24ac3fa@lunn.ch>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Wed, May 07, 2025 at 02:37:15PM +0200, Andrew Lunn wrote:
-> On Wed, May 07, 2025 at 08:01:29PM +0800, Inochi Amaoto wrote:
-> > On Wed, May 07, 2025 at 02:10:48AM +0200, Andrew Lunn wrote:
-> > > On Wed, May 07, 2025 at 06:24:29AM +0800, Inochi Amaoto wrote:
-> > > > On Tue, May 06, 2025 at 02:03:18PM +0200, Andrew Lunn wrote:
-> > > > > On Tue, May 06, 2025 at 05:32:50PM +0800, Inochi Amaoto wrote:
-> > > > > > The ethernet controller of SG2042 is Synopsys DesignWare IP with
-> > > > > > tx clock. Add device id for it.
-> > > > > > 
-> > > > > > This patch can only be tested on a SG2042 x4 evb board, as pioneer
-> > > > > > does not expose this device.
-> > > > > 
-> > > > > Do you have a patch for this EVB board? Ideally there should be a user
-> > > > > added at the same time as support for a device.
-> > > > > 
-> > > > > 	Andrew
-> > > > 
-> > > > Yes, I have one for this device. And Han Gao told me that he will send
-> > > > the board patch for the evb board. So I only send the driver.
-> > > > And the fragment for the evb board is likes below, I think it is kind
-> > > > of trivial:
-> > > > 
-> > > > &gmac0 {
-> > > > 	phy-handle = <&phy0>;
-> > > > 	phy-mode = "rgmii-txid";
-> > > 
-> > > And this is why i ask, because this is broken. For more information,
-> > > please see:
-> > > 
-> > > https://patchwork.kernel.org/project/netdevbpf/patch/20250430-v6-15-rc3-net-rgmii-delays-v2-1-099ae651d5e5@lunn.ch/
-> > > 
-> > > 	Andrew
-> > 
-> > You are right, the right phy-mode is "rgmii-id", the delay is not
-> > added by the PCB. It seems to be better to ask for the vendor about
-> > the hardware design before copying params for vendor dts. Anyway,
-> > thanks for reviewing this.
-> 
-> Please do figure this out. Since you are adding a new compatible, you
-> have a bit more flexibility. If the MAC driver is doing something
-> wrong, you can change its behaviour based on this new compatible
-> without breaking other users of the driver using other compatibles.
-> 
+Registers located on page 10 and above are called mailbox-type
+registers. Each page represents a mailbox and is used to read from
+and write to configuration of a specific object (DPLL, output,
+reference or synth).
 
-Thanks, I will check it out. And adapt the driver if needed.
+Each mailbox page contains a mask register, which selects an index of
+the target object to interact with and a semaphore register, which
+indicates the requested operation.
 
-Regards,
-Inochi
+The remaining registers within the page are latch registers, which are
+populated by the firmware during read operations or by the driver prior
+to write operations.
+
+Operations with these registers requires multiple register reads, writes
+and polls and all of them need to be done atomically.
+
+So add multiop_lock mutex to protect such operations and check the mutex
+is held by the caller when it's accessing registers from page 10 and
+above.
+
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+---
+v5->v6:
+* no change
+v4->v5:
+* dropped mailbox API and replaced by an ability to protect multi-op
+  accesses
+v3->v4:
+* completely reworked mailbox access
+v1->v3:
+* dropped ZL3073X_MB_OP macro usage
+---
+ drivers/mfd/zl3073x-core.c  | 14 ++++++++++++++
+ include/linux/mfd/zl3073x.h |  3 +++
+ 2 files changed, 17 insertions(+)
+
+diff --git a/drivers/mfd/zl3073x-core.c b/drivers/mfd/zl3073x-core.c
+index 079550682510..a12cfc7eb6ff 100644
+--- a/drivers/mfd/zl3073x-core.c
++++ b/drivers/mfd/zl3073x-core.c
+@@ -121,6 +121,12 @@ static const struct regmap_config zl3073x_regmap_config = {
+ static bool
+ zl3073x_check_reg(struct zl3073x_dev *zldev, unsigned int reg, size_t size)
+ {
++	/* Check that multiop lock is held when accessing registers
++	 * from page 10 and above.
++	 */
++	if (ZL_REG_PAGE(reg) >= 10)
++		lockdep_assert_held(&zldev->multiop_lock);
++
+ 	/* Check the index is in valid range for indexed register */
+ 	if (ZL_REG_OFFSET(reg) > ZL_REG_MAX_OFFSET(reg)) {
+ 		dev_err(zldev->dev, "Index out of range for reg 0x%04lx\n",
+@@ -557,6 +563,14 @@ int zl3073x_dev_probe(struct zl3073x_dev *zldev,
+ 		FIELD_GET(GENMASK(15, 8), cfg_ver),
+ 		FIELD_GET(GENMASK(7, 0), cfg_ver));
+ 
++	/* Initialize mutex for operations where multiple reads, writes
++	 * and/or polls are required to be done atomically.
++	 */
++	rc = devm_mutex_init(zldev->dev, &zldev->multiop_lock);
++	if (rc)
++		return dev_err_probe(zldev->dev, rc,
++				     "Failed to initialize mutex\n");
++
+ 	/* Register the device as devlink device */
+ 	devlink = priv_to_devlink(zldev);
+ 	devlink_register(devlink);
+diff --git a/include/linux/mfd/zl3073x.h b/include/linux/mfd/zl3073x.h
+index 8df10b82e3c2..a42a275577c4 100644
+--- a/include/linux/mfd/zl3073x.h
++++ b/include/linux/mfd/zl3073x.h
+@@ -3,6 +3,7 @@
+ #ifndef __LINUX_MFD_ZL3073X_H
+ #define __LINUX_MFD_ZL3073X_H
+ 
++#include <linux/mutex.h>
+ #include <linux/types.h>
+ 
+ struct device;
+@@ -12,10 +13,12 @@ struct regmap;
+  * struct zl3073x_dev - zl3073x device
+  * @dev: pointer to device
+  * @regmap: regmap to access device registers
++ * @multiop_lock: to serialize multiple register operations
+  */
+ struct zl3073x_dev {
+ 	struct device		*dev;
+ 	struct regmap		*regmap;
++	struct mutex		multiop_lock;
+ };
+ 
+ /**********************
+-- 
+2.49.0
+
