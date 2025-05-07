@@ -1,105 +1,160 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850212868B9
-	for <netdev@vger.kernel.org>; Wed,  7 May 2025 12:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A3627738;
+	Wed,  7 May 2025 13:06:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746622597; cv=none; b=t4VyUuEbgtZIs5tNMut1s8Wp9MeHLIdCMFpeh/y2qDQELzEKLDJDLiacoXss57ARGCuOkrD/sMfaES9p237vJSUTI22vySU8WgMNYN2VjnCsAfUmb9NxVqIYGLc2sMYSTcuoAKGRuFk7t/gGI330Mxha4LjORX/7u6bL78sM8kE=
+	t=1746623212; cv=none; b=WM85RwOjE93ZHL9uuXvFrwxWueTIW3yThRa/sh2hRnL5Qb+/5ZQLx+dkxafK2LQmQJXpOtJSEK0bMHihZV/8Ans2NL3phYHbfiF6AUMG8km2WowoUHSwYguMk5hJmCu/s1qWGdh780wGSP7h9bayW1f3RPkhFfks3qM8aPriGyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746622597; c=relaxed/simple;
-	bh=pmgBmVFHG5dwmHS2I90dALMcPCyLWDDKaLRQX2tDSNY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QQ45W9rSBECvt5zGU7gyTT834wXCaEs2oRChYc7u4jX0ryYMYb7mBQQq6rcsyQ194xIbLTkvCp0drujHmEQGkPSMSUD+acLPAOY0tNw6BuWfsorKc52OWPDU9CtcgyaRGoqc26WoJENfoQPsePi071X/tQCFBR9nsHjOP8osbnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=l6okT1Cl; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1746623212; c=relaxed/simple;
+	bh=wyAYYd84JBmoBLFkIu08Qe55Uogwnq+GwPkJ9/VYoFg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KO+b3+e6ni+FcK47LbIWilfwtIJqvDoPAr7mUHWABOIPBZLPGN9rV8p1WFnGVC5IW5jLMO5yxGf8mQS11j6bx49SDVzu4WUnDAOv23mJa3Ll6RmhdUbb1dZT8nfQdWGxiYBYAN41r1wIW4chOhUITM1J0QgRzfkAj3ORiqcjTc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SoANQq3h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="l6okT1Cl"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=7yFiUJMvxd+brtMkZOQ3kNGPogxiayEtQ77mEoxeYG0=; b=l6okT1ClafPedgc+Mz+M2LcJyl
-	JNUvSLvFFd/kFLROuLZ+LrbNtNpCAWRMci+J35BFuJfiDoA9c6sweInd5fO+8hnZU+FUwqhhaLHZK
-	ZymywsrQyXiu5PTpLNGFPcgKMZxg5pAH7KiXzXiw/8Y2BrPLGneEDJR7HKTfDrFFGQbS6L0bW2UBB
-	G1krmc36iBFNcOVaZ3bal5N0iri2HK9k5awloFGQIUcyTfVdTMGcQvgrlEM54sKUr5L/I13Mh3j8i
-	Zl9rQhxZeMhS6IZjZurhIP/gfp/vzme68MsgZRf82L3Mq4JpCpeqJJPEWJIh/NMgoZFqFh+6yKdN+
-	oSXRz4tQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47350)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1uCeK1-0007ZS-0F;
-	Wed, 07 May 2025 13:56:25 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1uCeJy-0005nU-0q;
-	Wed, 07 May 2025 13:56:22 +0100
-Date: Wed, 7 May 2025 13:56:22 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	David Miller <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	imx@lists.linux.dev
-Subject: Re: [PATCH net-next] net: phy: remove Kconfig symbol MDIO_DEVRES
-Message-ID: <aBtYdq2NurrTIcJi@shell.armlinux.org.uk>
-References: <9c2df2f8-6248-4a06-81ef-f873e5a31921@gmail.com>
- <aBs58BUtVAHeMPip@shell.armlinux.org.uk>
- <5ecf2ece-683b-4c7b-a648-aca82d5843ed@lunn.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SoANQq3h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F45C4CEE7;
+	Wed,  7 May 2025 13:06:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746623212;
+	bh=wyAYYd84JBmoBLFkIu08Qe55Uogwnq+GwPkJ9/VYoFg=;
+	h=From:Subject:Date:To:Cc:From;
+	b=SoANQq3hHJQV9KgS9Z7XVfwsP/Meoxu9SvgyKX2su5wlTjqCpq2mB0G3424QgeutE
+	 Rwh1usS7XyEIKcO0zfl4dqCzVumxGUHm9shInbxDlDP7RjWuu+4kJ0HC9PL5ag+Q7t
+	 6KyjQYupU045CQgfirq6BRe+Em7esBmHnkdA7Qjati5cUHP1SczOx7/4kyNk0/MuCn
+	 jQzthBilyIpTHP7DQ5nzHChFDrq8D505lRamWrT+vjYCny8fjkQLPa5CaNfyNKSjUm
+	 Tix58VokwMdSl9frxL+ju9rhrED9SWNehYaLJ7l9Z8I1tI7tQXkliZPMn0EIMFVm7x
+	 8lggBaOdwZmrw==
+From: Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH v8 00/10] ref_tracker: add ability to register a debugfs
+ file for a ref_tracker_dir
+Date: Wed, 07 May 2025 09:06:25 -0400
+Message-Id: <20250507-reftrack-dbgfs-v8-0-607717d3bb98@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5ecf2ece-683b-4c7b-a648-aca82d5843ed@lunn.ch>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANFaG2gC/2XQwWrEIBAG4FdZPNeio0bTU9+j9KCjZmVLsugSW
+ pa8eycLpWnF0+/w/TBzZy3Vkhp7Od1ZTWtpZZkpuKcTw7Ofp8RLpMxAgBFaKl5TvlWPFx7DlBt
+ XdrBBCZUge0boSvPy+Sh8e6d8Lu221K9H/yr3358q/b9qlVzwLJRxxikAoV4vqc7p43mpE9u7V
+ jh603kgH6RD7UOUALnz6uht5xV5VNKMGhy6HDqvj951XpM36A1aN45G686bg4feG/ISQ4iZlnc
+ hdn44eCU6P5B3g0UYfaY7+s7bX0+v83a/v3Vo4mgD4l+/bds3wXPUIy0CAAA=
+X-Change-ID: 20250413-reftrack-dbgfs-3767b303e2fa
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Jani Nikula <jani.nikula@linux.intel.com>, 
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+ Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>, Qasim Ijaz <qasdev00@gmail.com>, 
+ Nathan Chancellor <nathan@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
+ Jeff Layton <jlayton@kernel.org>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+ Jani Nikula <jani.nikula@intel.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3668; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=wyAYYd84JBmoBLFkIu08Qe55Uogwnq+GwPkJ9/VYoFg=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBoG1rhBJ9llmbY3ne2ZbTEU+iAzAWhkr9X5Nag1
+ ifMlVoU+BKJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaBta4QAKCRAADmhBGVaC
+ FVDzEACJu1HeohOGr7I/rjrFlmMFPaLjCvxlvM0mu2GfDxiaiQALRxoA8pWoxjyz4oomP3zlG4X
+ 6N+WX/N4lryaaX6zqwy0LVD6eBf9R8y7GBtlvHhWBSwPMqmRu1/UPhJw0jh7irTVwgSbQSn3DBz
+ KLdE6TkOx7jSSC1TukYfgHlHham+i3OQSOsjKMypJ7FlrOyAERyQTVdS5kzJTfbYMUx8jbfdr2X
+ /0N8kSYtWA0vQLC8AOEPzeDjm5TdohIbunFFp+kSYlQV79h0kP35B7JFb77hKXn5zBNvEND8Ha1
+ nvbdM6qhMrd1a6zGeAsmLM3rBAbl/kpQCIcd8Yj4dhlZ+LKAPSAkdw8hMZts98vFlFx1OcKdH7U
+ tSOHBoOYPQ6uAKCE6xplxsnVE9LLzdJfaSJYiAVoK59J/NG2IO2JEzQUi+NTVwYTxW8BmOy5u6o
+ qT/zMuztogcTyYaLIEMjzDhIsH/p+x8fsOwHogamDIzcizB6r894cHXrQ4DnNkBe+/zCVXvrflT
+ lY9JFgDYfXQ3I/RFzwjaITNu4Jezf3OcYL2nqdyRyZEeOQLH7mpsHaehPWz+tkBz8caLWQcEzRW
+ sOeV6gHrVs/Wwy50337BwAW+pTaeTgR1p+FB2Hr37aXSTTPc2amYEf4yR/DEsvymeKfYf0F6u/v
+ 2OEnPYtZ/HjBn2Q==
+X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
+ fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-On Wed, May 07, 2025 at 02:49:05PM +0200, Andrew Lunn wrote:
-> On Wed, May 07, 2025 at 11:46:08AM +0100, Russell King (Oracle) wrote:
-> > On Wed, May 07, 2025 at 08:17:17AM +0200, Heiner Kallweit wrote:
-> > > MDIO_DEVRES is only set where PHYLIB/PHYLINK are set which
-> > > select MDIO_DEVRES. So we can remove this symbol.
-> > 
-> > Does it make sense for mdio_devres to be a separate module from libphy?
-> 
-> I _think_ Broadcom have one MDIO bus master which is not used for
-> PHYs/Switches but regulators or GPIOs or something. In theory, you
-> could build a kernel without networking, but still use those
-> regulators or GPIOs. But given that Broadcom SoCs are all about
-> networking, it does seem like a very unlikely situation.
+Minor update to fix up the build and some compiler warnings with more
+esoteric Kconfigs.
 
-I'm pointing out that:
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+---
+Changes in v8:
+- fix up compiler warnings that the KTR warned about
+- ensure builds with CONFIG_DEBUG_FS=n and CONFIG_REF_TRACKER=y work
+- Link to v7: https://lore.kernel.org/r/20250505-reftrack-dbgfs-v7-0-f78c5d97bcca@kernel.org
 
-libphy-y                        := phy.o phy-c45.o phy-core.o phy_device.o \
-                                   linkmode.o phy_link_topology.o \
-                                   phy_package.o phy_caps.o mdio_bus_provider.o
+Changes in v7:
+- include net->net_cookie in netns symlink name
+- add __ostream_printf to ref_tracker_dir_symlink() stub function
+- remove unneeded #include of seq_file.h
+- Link to v6: https://lore.kernel.org/r/20250430-reftrack-dbgfs-v6-0-867c29aff03a@kernel.org
 
-mdio_bus_provider.o provides at least some of the functions used by
-mdio_devres.
+Changes in v6:
+- clean up kerneldoc comment for ref_tracker_dir_debugfs()
+- add missing stub function for ref_tracker_dir_symlink()
+- temporary __maybe_unused on ref_tracker_dir_seq_print() to silence compiler warning
+- Link to v5: https://lore.kernel.org/r/20250428-reftrack-dbgfs-v5-0-1cbbdf2038bd@kernel.org
 
-obj-$(CONFIG_PHYLIB)            += mdio_devres.o
-obj-$(CONFIG_PHYLIB)            += libphy.o
+Changes in v5:
+- add class string to each ref_tracker_dir
+- auto-register debugfs file for every tracker in ref_tracker_dir_init
+- add function to allow adding a symlink for each tracker
+- add patches to create symlinks for netns's and i915 entries
+- change output format to print class@%p instead of name@%p
+- eliminate the name field in ref_tracker_dir
+- fix off-by-one bug when NULL terminating name string
+- Link to v4: https://lore.kernel.org/r/20250418-reftrack-dbgfs-v4-0-5ca5c7899544@kernel.org
 
-So, when PHYLIB=m, we end up with mdio_devres and libphy as two separate
-loadable modules. I'm questioning whether this makes any sense, or
-whether making mdio_devres part of libphy would be more sensible.
+Changes in v4:
+- Drop patch to widen ref_tracker_dir_.name, use NAME_MAX+1 (256) instead since this only affects dentry name
+- Link to v3: https://lore.kernel.org/r/20250417-reftrack-dbgfs-v3-0-c3159428c8fb@kernel.org
 
-Maybe the only case is if mdio_devres adds dependencies we don't want
-libphy to have, but I think that needs to be spelt out in the commit.
+Changes in v3:
+- don't overwrite dir->name in ref_tracker_dir_debugfs
+- define REF_TRACKER_NAMESZ and use it when setting name
+- Link to v2: https://lore.kernel.org/r/20250415-reftrack-dbgfs-v2-0-b18c4abd122f@kernel.org
 
+Changes in v2:
+- Add patch to do %pK -> %p conversion in ref_tracker.c
+- Pass in output function to pr_ostream() instead of if statement
+- Widen ref_tracker_dir.name to 64 bytes to accomodate unique names
+- Eliminate error handling with debugfs manipulation
+- Incorporate pointer value into netdev name
+- Link to v1: https://lore.kernel.org/r/20250414-reftrack-dbgfs-v1-0-f03585832203@kernel.org
 
+---
+Jeff Layton (10):
+      ref_tracker: don't use %pK in pr_ostream() output
+      ref_tracker: add a top level debugfs directory for ref_tracker
+      ref_tracker: have callers pass output function to pr_ostream()
+      ref_tracker: add a static classname string to each ref_tracker_dir
+      ref_tracker: allow pr_ostream() to print directly to a seq_file
+      ref_tracker: automatically register a file in debugfs for a ref_tracker_dir
+      ref_tracker: add a way to create a symlink to the ref_tracker_dir debugfs file
+      net: add symlinks to ref_tracker_dir for netns
+      i915: add ref_tracker_dir symlinks for each tracker
+      ref_tracker: eliminate the ref_tracker_dir name field
+
+ drivers/gpu/drm/display/drm_dp_tunnel.c |   2 +-
+ drivers/gpu/drm/i915/intel_runtime_pm.c |   4 +-
+ drivers/gpu/drm/i915/intel_wakeref.c    |   3 +-
+ include/linux/ref_tracker.h             |  58 +++++++++-
+ lib/ref_tracker.c                       | 190 +++++++++++++++++++++++++++++---
+ net/core/dev.c                          |   2 +-
+ net/core/net_namespace.c                |  34 +++++-
+ 7 files changed, 267 insertions(+), 26 deletions(-)
+---
+base-commit: 5bc1018675ec28a8a60d83b378d8c3991faa5a27
+change-id: 20250413-reftrack-dbgfs-3767b303e2fa
+
+Best regards,
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Jeff Layton <jlayton@kernel.org>
+
