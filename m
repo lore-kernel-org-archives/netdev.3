@@ -1,98 +1,168 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA9B28CF44
-	for <netdev@vger.kernel.org>; Wed,  7 May 2025 17:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF964B1E7B
+	for <netdev@vger.kernel.org>; Wed,  7 May 2025 17:48:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746639370; cv=none; b=HipLNsFlUY5ptfK5eV6FEgftn9GJkTsbWXON04i4TRdnKr+5DowuRq7XjD7Cq39ufaWRfXt8Bgwq/9POMrvQh2gMgi55W6crd7DnZHUYrURbU0tXupotOYlqw2tF0NoR+ZcYsuGFL1jJ+5R7kqW0b+gNPIrSd14IOQDopkwGNQI=
+	t=1746640083; cv=none; b=hV4HU/CkohMOSsmkxSdkYAjJ5OO2DlZhLeePgtJ3IkZnCV65dvGSGuWANQMqh+sS/PAyeQIStx5Jt0KrNc6U+0VIRSFYrt+4u5d/9aSDZBePvK/j7fhzUto7bOQFPa0PMfKZY18GjwJ2pToqGdH6OOFpOWw2GkLKjbwdfdIWkFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746639370; c=relaxed/simple;
-	bh=yjNQFfYHnsSlu9oV5t/urGkzPEPJMJ/DfUcr1X8fC/8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=i+tCjyM3ujcMGXNh4pZgKIAl34gO7BYsCubpYb4EjxanIo6DaYgw0pD5lUku7UrHHlpJD2yt5Num9GGtxgyygbiivO/GRZDo1EVYPG/qd31ovJuv3Aj6zpNy11SmzMGMJxePWVus4QPWEYE5ti52xxX0/KeAGCk7HHeYQ3g/rSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=M2NGSgF6; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1746640083; c=relaxed/simple;
+	bh=kBFSxNa7pSMUNAap1ENd44xFvmHNyHCL2gFTR6BrVfI=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=tMUJ870tXeBRNf+ykfSB+wspnjK1LhcN+XXKXD8Nv4subctChepIh0/QzzeCUqiXsgRs05ugIIWx9F2HgbdWi7yWsSGQnidxFzE9QEF4Lw3f4y3C4pD+x6ZHGeLqtCNE2SI6aqmSDlMIpygGVRvG8DhzSPV/9xtQ8Dw7OPLPpmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=joAy1pSb; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="M2NGSgF6"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5476ZMQM002041;
-	Wed, 7 May 2025 10:14:30 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:message-id:mime-version:subject:to; s=
-	pfpt0220; bh=F9j3Kj+m+B8wtA0h2FFEtQd4GNSz0p0I3dTxH3VjXLk=; b=M2N
-	GSgF6XIN8APYHghshCenGShl8gXJlmnjkpM5Z39s7J+F8P2TREOk3VAUQrduPB8s
-	kxovr91pu1ZHjsTGHItmoVeEom9cgCEL6OxQRFTrKOLfcyzX0XS2qMQzIpseMDou
-	/RDscEiI4oyfQrmPrSITc9KRAiq1yW7uhewjeagKVyR98wUeR6RIPXvFbExBoY8W
-	tKeb1XXKoUt/IFBpxAEAPWxcLW5SDfk/LB208ISpMYlP8YT12RyyzJrowE04DAMI
-	F8eH7O01Xx/0qb9uEmmpZq09orsDGhg2/lbFKbMG7m+46uGXjWbSDfOE68EkxG1m
-	B9hhH5DM32gcefbMwvA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 46g2c89d56-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 May 2025 10:14:30 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Wed, 7 May 2025 10:14:29 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Wed, 7 May 2025 10:14:29 -0700
-Received: from hyd1358.marvell.com (unknown [10.29.37.11])
-	by maili.marvell.com (Postfix) with ESMTP id 4ABF83F708A;
-	Wed,  7 May 2025 10:14:25 -0700 (PDT)
-From: Subbaraya Sundeep <sbhatta@marvell.com>
-To: <sd@queasysnail.net>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <horms@kernel.org>, <gakula@marvell.com>, <hkelam@marvell.com>,
-        <sgoutham@marvell.com>
-CC: <netdev@vger.kernel.org>, Subbaraya Sundeep <sbhatta@marvell.com>
-Subject: [PATCH] octeontx2-pf: macsec: Fix incorrect MTU size in TX secy policy
-Date: Wed, 7 May 2025 22:44:20 +0530
-Message-ID: <1746638060-10419-1-git-send-email-sbhatta@marvell.com>
-X-Mailer: git-send-email 2.7.4
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="joAy1pSb"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6ecf0e07954so2442746d6.1
+        for <netdev@vger.kernel.org>; Wed, 07 May 2025 10:48:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746640081; x=1747244881; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QQSmPTDbULmzMF5gJg4AJqSu8sXW4nk4u9j8nFhsi9I=;
+        b=joAy1pSbjP9P08lZeFAi+kUSi/+eJ0KVfsbQKcVhi93a/G+Nbwr8jIBEAq13wLECeF
+         Mun34Yj84pKGyHeD+/Ee/w53r+qxrZgAmGIxYRftxymUK3e56/PWr24YzcZ2sGGr1ESO
+         FSOZqCZ0hbfndEVTzxd6aB963oa+8wp0sKESUc1DoF1nDlNOZX1Vq+udvRujeDW8pArB
+         dFsrRuldctMqwiLkI+/GoAu2YysHtoedeC1dLMSNjvsz5gWaaFgk7D9okBOUVcnp95Fi
+         GYdNPOw1OZzFa9wFNLBrLJbY1+ujHP/4Rq8PDe2M3EC9U+quitgxe/jriV+sh/EwD1De
+         yQLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746640081; x=1747244881;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=QQSmPTDbULmzMF5gJg4AJqSu8sXW4nk4u9j8nFhsi9I=;
+        b=CrMKdkHHPtWYVO3Iy33lrqcU/aNnIi6CJkeCvtLj+ElzL+8equ/aKHIcFo2daBb5Hx
+         DtsgSiIFfWwjhV3kCpzeaoUV58xnk/kANFD5SAI/tN4+rn8I7TTuzg4ExSKtHThQa4aE
+         q6CZofTbZqepJuO5Q+XcQb8VRezFKveYsR1YvgCHt/4arRWUsH3BSfbaNOdh2sTkHGQ8
+         B+pxS9mjJr2Rc0s2nq1vTPw7Tm4TGfcXpnwfBoItLyu6Va1paOgsmkpAKixEtdt98iQN
+         TDkRvJLBfAUQzkW/LKVMMizss2O+gA91XFAnJZWx9ft5KNBcXyPvjzPe1VJ1O+lGpR1N
+         c8+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUhqN+PU75wWr+K8+lxqjdaEIUFfkpQh9yIItKnkrHOeP/4zpHgr7Ojr9Vj2XrM7tToUOyqWCk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQ3o6fhxseCIyGtHvevBvSvFZ2cnTxT7aK1xGgtluqsjKgB9hy
+	Dz/06AzhyfWFoza5NJLAuSqxka/i4UHLC5boa0G5bCyW0xWrmXA4
+X-Gm-Gg: ASbGnctaw903ZrmhqoF4vh2ry8iHUpwfs72EBSrn9Eq9E5n2loFygSX47/I/0ILDcdD
+	J8IAqLRxpPIAq7QKFgC5iAjJQeqli8TzW+JB8/QSrWRYP7jQMAQU+6ITaakboYeyXrGDZCdcxUK
+	Hu+w5X3JyrAGUTmfhGqG4Rqj624k5MgZLoKjiYn303rmyhI5w6yy0xSOHjmTD8ypFYLGFv5PO1S
+	e2b5EaNHdiZmt/8T06vq/elJIpdGj6kvXwljkgxg/CyD8+KCbCje1f73Ri2sxvbRojTHk+F9LKR
+	Ujb8Q95Tbd60Ww89rSMP3pBjQd3r72E2eykTIJI1BLPT6e3OV62jX6RFiWcN/e5HzBnzzdSmNGx
+	oQt/g6HsC2FdXEuoL8enzB7cVj7qmoAk=
+X-Google-Smtp-Source: AGHT+IGfGRCqCg93LEMzDK3ypi3hdHaxZz0AOBWRpxRd2uNuNoA/VmcLD/gtGuUnj++rH1zAvgcWbg==
+X-Received: by 2002:a05:6214:5c9:b0:6f5:4508:fd84 with SMTP id 6a1803df08f44-6f54509024dmr46081966d6.35.1746640080568;
+        Wed, 07 May 2025 10:48:00 -0700 (PDT)
+Received: from localhost (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-6f542798fbdsm16807316d6.99.2025.05.07.10.47.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 May 2025 10:47:59 -0700 (PDT)
+Date: Wed, 07 May 2025 13:47:59 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: David Howells <dhowells@redhat.com>, 
+ Jakub Kicinski <kuba@kernel.org>
+Cc: dhowells@redhat.com, 
+ Andrew Lunn <andrew@lunn.ch>, 
+ Eric Dumazet <edumazet@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ David Hildenbrand <david@redhat.com>, 
+ John Hubbard <jhubbard@nvidia.com>, 
+ Christoph Hellwig <hch@infradead.org>, 
+ willy@infradead.org, 
+ netdev@vger.kernel.org, 
+ linux-mm@kvack.org, 
+ Willem de Bruijn <willemb@google.com>
+Message-ID: <681b9ccf970c5_1f6aad29428@willemb.c.googlers.com.notmuch>
+In-Reply-To: <1352674.1746625556@warthog.procyon.org.uk>
+References: <20250506112012.5779d652@kernel.org>
+ <20250505131446.7448e9bf@kernel.org>
+ <165f5d5b-34f2-40de-b0ec-8c1ca36babe8@lunn.ch>
+ <0aa1b4a2-47b2-40a4-ae14-ce2dd457a1f7@lunn.ch>
+ <1015189.1746187621@warthog.procyon.org.uk>
+ <1021352.1746193306@warthog.procyon.org.uk>
+ <1069540.1746202908@warthog.procyon.org.uk>
+ <1216273.1746539449@warthog.procyon.org.uk>
+ <1352674.1746625556@warthog.procyon.org.uk>
+Subject: Re: Reorganising how the networking layer handles memory
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: ztLOo_1Fe5Uh6wNE5eJFJb4I9Y1p2y2C
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA3MDE1OSBTYWx0ZWRfX4lzYPmVhsE2T rfVzW1rUddnmYLIkQNgt6y6FEmpFASJ+ICmee8bGrt0pz8vhjJaZSzX7IkoS+aKmZM/DR0z7GJu QrGZ1bDyiUD7Sx5MkhLG4G7OBxeVWaOvvI78BU7Vg7GuGIIor8im0d1/pT9iw/h2qxzuLdOd5+F
- 4+yCd2ROn27hc6u7afd7DfzInoi1c8wC4sd3CSh5n4vdn2MXEKGHGzEM6m7KfqyWpUb2QxYvwdq StIWMsEJ8ukVrsAgs51aXPX1uJ2mtlJRrtu+dblWQGIAn6yE8/nMrAgLCf1knzJRfohMuUSn/48 9FY29TfSA3CkmJzmlvdDGrlNI+0gnBKnhEvFgWOhKKrsulfBXX4+4XZ22o1MhTDXVBTueBlacJZ
- hSg3tlyoS12awltZGvkt4pNUMw8oljH8ZLq+yHqI6LGNWRD+uqJfZiVh0uPNOgHwYRtd0iZb
-X-Proofpoint-GUID: ztLOo_1Fe5Uh6wNE5eJFJb4I9Y1p2y2C
-X-Authority-Analysis: v=2.4 cv=Tc2WtQQh c=1 sm=1 tr=0 ts=681b94f6 cx=c_pps a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17 a=dt9VzEwgFbYA:10 a=M5GUcnROAAAA:8 a=Qv9XQcIsZFxj3cm0Ll4A:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-07_05,2025-05-06_01,2025-02-21_01
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Underlying real device MTU plus the L2 header length has to
-be configured in TX secy policy because hardware expects the
-mtu to be programmed is outgoing maximum transmission unit from
-MCS block i.e, including L2 header, SecTag and ICV.
+David Howells wrote:
+> Jakub Kicinski <kuba@kernel.org> wrote:
+> 
+> > On Tue, 06 May 2025 14:50:49 +0100 David Howells wrote:
+> > > Jakub Kicinski <kuba@kernel.org> wrote:
+> > > > > (2) sendmsg(MSG_ZEROCOPY) suffers from the O_DIRECT vs fork() bug because
+> > > > >      it doesn't use page pinning.  It needs to use the GUP routines.  
+> > > > 
+> > > > We end up calling iov_iter_get_pages2(). Is it not setting
+> > > > FOLL_PIN is a conscious choice, or nobody cared until now?  
+> > > 
+> > > iov_iter_get_pages*() predates GUP, I think.  There's now an
+> > > iov_iter_extract_pages() that does the pinning stuff, but you have to do a
+> > > different cleanup, which is why I created a new API call.
+> > > 
+> > > iov_iter_extract_pages() also does no pinning at all on pages extracted from a
+> > > non-user iterator (e.g. ITER_BVEC).
+> > 
+> > FWIW it occurred to me after hitting send that we may not care. 
+> > We're talking about Tx, so the user pages are read only for the kernel.
+> > I don't think we have the "child gets the read data" problem?
+> 
+> Worse: if the child alters the data in the buffer to be transmitted after the
+> fork() (say it calls free() and malloc()), it can do so; if the parent tries
+> that, there will be no effect.
+> 
+> > Likely all this will work well for ZC but not sure if we can "convert"
+> > the stack to phyaddr+len.
+> 
+> Me neither.  We also use bio_vec[] to hold lists of memory and then trawl them
+> to do cleanup, but a conversion to holding {phys,len} will mandate being able
+> to do some sort of reverse lookup.
+> 
+> > Okay, just keep in mind that we are working on 800Gbps NIC support these
+> > days, and MTU does not grow. So whatever we do - it must be fast fast.
+> 
+> Crazy:-)
+> 
+> One thing I've noticed in the uring stuff is that it doesn't seem to like the
+> idea of having an sk_buff pointing to more than one ubuf_info, presumably
+> because the sk_buff will point to the ubuf_info holding the zerocopyable data.
+> Is that actually necessary for SOCK_STREAM, though?
 
-Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
----
- drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+In MSG_ZEROCOPY this limitation of at most one ubuf_info per skb was
+chosen just because it was simpler and sufficient.
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-index f3b9daf..4c7e0f3 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-@@ -531,7 +531,8 @@ static int cn10k_mcs_write_tx_secy(struct otx2_nic *pfvf,
- 	if (sw_tx_sc->encrypt)
- 		sectag_tci |= (MCS_TCI_E | MCS_TCI_C);
- 
--	policy = FIELD_PREP(MCS_TX_SECY_PLCY_MTU, secy->netdev->mtu);
-+	policy = FIELD_PREP(MCS_TX_SECY_PLCY_MTU,
-+			    pfvf->netdev->mtu + OTX2_ETH_HLEN);
- 	/* Write SecTag excluding AN bits(1..0) */
- 	policy |= FIELD_PREP(MCS_TX_SECY_PLCY_ST_TCI, sectag_tci >> 2);
- 	policy |= FIELD_PREP(MCS_TX_SECY_PLCY_ST_OFFSET, tag_offset);
--- 
-2.7.4
+A single skb can still combine skb frags from multiple consecutive
+sendmsg requests, including multiple separate MSG_ZEROCOPY calls.
+Because the ubuf_info notification is for a range of bytes.
+
+There is a rare edge case in skb_zerocopy_iter_stream that detects
+two ubuf_infos on a single skb.
+
+                /* An skb can only point to one uarg. This edge case happens
+                 * when TCP appends to an skb, but zerocopy_realloc triggered
+                 * a new alloc.
+                 */     
+                if (orig_uarg && uarg != orig_uarg)
+                        return -EEXIST;
+
+Instead TCP then just creates a new skb.
+This will result in smaller skbs than otherwise. But as said is rare.
+
+> My thought for SOCK_STREAM is to have an ordered list of zerocopy source
+> records on the socket and a completion counter and not tag the skbuffs at all.
+> That way, an skbuff can carry data for multiple zerocopy send requests.
+> 
+> David
+> 
+
 
