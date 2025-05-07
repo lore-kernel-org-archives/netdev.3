@@ -1,130 +1,130 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0020D28C2A5
-	for <netdev@vger.kernel.org>; Wed,  7 May 2025 16:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A76428A706;
+	Wed,  7 May 2025 16:19:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746634713; cv=none; b=ZjBHoqtQpniVlFcjYbFPpkpJqRJ0SKJU60tX8SakbaxDqKJ+uGJP2FQp04SX0uDlne9KwD5X+ufgBfaEjMkD5GMYNnSA4K8aLlPfNI1FodYzPhqxe/dfO376tdAxx/FllUIPTgXOFpxdn/56vX7s55VZgB6qi93iaF6glx0A6Is=
+	t=1746634755; cv=none; b=G6OXFyr6QohIJCC1jeB4W/nUrGmjqHuqctR3aNdKIbgVWTL45mf1a9T+d5DDWquK261SDE9kdSxbeHnqyiHMUWEfB3nZ8tk6z3j9sBrtXiqjtMQNS4Nnnh6I3fEXNIeFbY0jeCdoUkMhvhtsntPuGCIATzSBz3TfkYgmpR1eZas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746634713; c=relaxed/simple;
-	bh=bWVXWi6FNTmsC6XQcQl5QLoeoLqMPPpdOvDyzqsEHVc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hod0fAufeiEqyLN+EJqzerZa4gMeEYXGcQOaZPrbnTDPLuNMtB1B4R5SKTdiSDyg8Q8QVBmURSvQmsaV+GdwH0//IiBMdL+PCJuHxkp1XS1WZKIGnJkyqqB1cv2BLqER1JWNvBDvPO7gh2if16BZmZ3yuxJZ0S9vP11uZKaWbVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H61aVhr6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1746634755; c=relaxed/simple;
+	bh=k8pqdNg1GfZESTUXWxaQOW3gbR0tXjU7ZIUJyuVxzIk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X0zZV+k6iro/uCfSwFbgPU2zInEUg7YPpI2CkaGDWE7gziKYLBjPWyh8oNPEpRVkb+Pld58/P4NzQrjqizVIN2Xq5lO4rJQt8O1VafjoeiGF6eU6lDCImcdn7Lat9T81tfmLop4dErxN6VjvC33By7Xxv/wY83BkEPEe7st1yJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=RXAL06ao; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H61aVhr6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746634707;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=39nLFDBfyFezv/758tbb1M4Ol4SxY7Fer6M45n6qLAM=;
-	b=H61aVhr6a4C06legg8oIs6BV5Oy10L0zbDMeDORlpI7EYjmpb3brmVXCkQmnkuY0F9T2+b
-	O31b3r2HB2q/5zalnpzLSSdsGob1yCmSaMSNpQUnQW4I5V87+X6jkdP0Ub0fSbYi737D85
-	ZWlmN0A/gGTCy0aAPn7nSGfpjgT1KDo=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-269--KbgfGn7NiGFQ4RXHAXHMw-1; Wed, 07 May 2025 12:18:26 -0400
-X-MC-Unique: -KbgfGn7NiGFQ4RXHAXHMw-1
-X-Mimecast-MFC-AGG-ID: -KbgfGn7NiGFQ4RXHAXHMw_1746634705
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-acbbb00099eso604020466b.2
-        for <netdev@vger.kernel.org>; Wed, 07 May 2025 09:18:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746634705; x=1747239505;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=39nLFDBfyFezv/758tbb1M4Ol4SxY7Fer6M45n6qLAM=;
-        b=mrIBFnp6vNgIyJkOkqR8gKjU3a5/+1Ku6IJB68zdlGEy38E0u3JwGfMI808tUN9y9U
-         Ug6hpHQ0ck00A6AAlQKyHedsHdQXnm/X6ERplGIJuq6/Nw1aZABnrcSBQoB0e+peEUfU
-         nZ3SSMgDpYAOTj+8jeJIINAfbyhjhsB0DoYzTpjnJFeWKW1wK7K+xh2QD6cX5D1vlATH
-         h2uqUFXYiEkhYSmRuXHTMCLOHl+w+ZIgIYqG5lGNMf5QPAPQcoIeTDCgO78ukho9vbSg
-         K3qb10PnC7WEI2KefGnjmyC8wXTDISv4EDH/vnK9GzqYYjKWoNIbzHsgobPCXrx9frp2
-         D4UA==
-X-Forwarded-Encrypted: i=1; AJvYcCUps/B4WkXYTduajb5MT6YtxVLWYIt46t5H1IspMbAjDZz8AK/bEjs735EkNQYl2b6R/pLKcOU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAYQmM6T/3IZGF4QTIr4FCXOxz11roALKjI5YQl+HvlfQHgkhP
-	vLGe8uxGs4xU6YU2ajMnAHOnSiBRxMeeHCSvFXtEMiNSXW2nxbPJHkDmNR6wK9GgF8u/1jgezqm
-	K+lSRpX0lElNRI4avo4ga2mZsEWx8rrAZ6Jd3xM0YloFJgHzIyNNWnQ==
-X-Gm-Gg: ASbGncubrrERA5b3G2wOt4wRD/B5wrBVRums15ROPrsZej6QoFhBRb6u2ODfkQxwkXL
-	WdWwrIUxSTAQfvnrU4bdDHMOMxEbYZTwYl627uCExLfl+Ml88a5LWF9/nK2wtm85jPJHhI0fYUB
-	EKGhVP4Ao109Pl4LGONTf6PcC2j1v596NZ0DXJlvfeWRvl9y88TuI/kgSc8Nab4J0m14Ge/vxFE
-	P89u/FgqFj6Xd8/reFjw5zenoY7Q0I4uYUlmD6YzI5FQDpAHXBNd246PfrZ0iLCrhZlMB2i0rlN
-	1wT2jXYq3Fvh55xy
-X-Received: by 2002:a17:906:6a21:b0:ac3:5c8e:d3f5 with SMTP id a640c23a62f3a-ad1e8bf2298mr431573566b.27.1746634705136;
-        Wed, 07 May 2025 09:18:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHcpsNEPHJMDyuwXMw9YaT6C3LUO/0nHh1kX9E1tgCGACOK+8BvvpnBj9Yg4yGqdZN/AhWgIA==
-X-Received: by 2002:a17:906:6a21:b0:ac3:5c8e:d3f5 with SMTP id a640c23a62f3a-ad1e8bf2298mr431569666b.27.1746634704432;
-        Wed, 07 May 2025 09:18:24 -0700 (PDT)
-Received: from sgarzare-redhat ([193.207.183.85])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad1891e980bsm920838266b.76.2025.05.07.09.18.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 May 2025 09:18:23 -0700 (PDT)
-Date: Wed, 7 May 2025 18:18:20 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Konstantin Shkolnyy <kshk@linux.ibm.com>
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, mjrosato@linux.ibm.com
-Subject: Re: [PATCH net v2] vsock/test: Fix occasional failure in SIOCOUTQ
- tests
-Message-ID: <CAGxU2F5XeRs+4Fwrf_LhOjhjxaWOocpZDQanOc+mcDyPFRHCfQ@mail.gmail.com>
-References: <20250507151456.2577061-1-kshk@linux.ibm.com>
- <CAGxU2F6ssoadHjCH9qi6HdaproC3rH=d-CdYh2mvK+_X4-C4nw@mail.gmail.com>
- <689ab62a-7800-497d-a9a6-3a81e256f98d@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="RXAL06ao"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=kgddrne6l8Gqlt1gPOvoX/vQTZfxlnGhWB0Y9y3hEak=; b=RXAL06aoKT1XG6fxyYMCrmrIjg
+	SFy58f5ciZaf8cqfAtMTy4ruEvggyudnXZYoD0cLHKAymwGHw+3i/gbh9JTbmQS9p1DlYwGtZF2Gy
+	1eKSfsgnyDjdGYA2wfeSnPK/E3qCw5ijMXUTOfvk5wdHdCjhIgYckEnhIrvHMPgyw/2ean81P1sRt
+	Qor0bI99vERlAhLYz5UYhQI2zhTRVFdhZqEUMh+AfNvsVlOFmPxB2akVYeZuCxjVWOkTF2S6AK0Oe
+	lLQvYZO14elosfWhrFUO0RS5dBaRGuNlK6VPkom9hl7ok6HTKlb4KAhknPSjW/ZMIDPP0p1vv93PC
+	ZgegnmhA==;
+Received: from sslproxy04.your-server.de ([78.46.152.42])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1uChU5-0003wS-11;
+	Wed, 07 May 2025 18:19:01 +0200
+Received: from [85.195.247.12] (helo=[192.168.1.114])
+	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1uChU4-0008QW-24;
+	Wed, 07 May 2025 18:19:00 +0200
+Message-ID: <d4973197-c1be-49e4-8954-cb07e7ad05ac@iogearbox.net>
+Date: Wed, 7 May 2025 18:18:59 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <689ab62a-7800-497d-a9a6-3a81e256f98d@linux.ibm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3] xdp: Add helpers for head length, headroom,
+ and metadata length
+To: Jon Kohler <jon@nutanix.com>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Jason Wang <jasowang@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alexei Starovoitov <ast@kernel.org>, Jesper Dangaard Brouer
+ <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Cc: Jacob Keller <jacob.e.keller@intel.com>
+References: <20250506125242.2685182-1-jon@nutanix.com>
+Content-Language: en-US
+From: Daniel Borkmann <daniel@iogearbox.net>
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ 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
+In-Reply-To: <20250506125242.2685182-1-jon@nutanix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27630/Tue May  6 11:43:15 2025)
 
-On Wed, 7 May 2025 at 18:01, Konstantin Shkolnyy <kshk@linux.ibm.com> wrote:
->
-> On 07-May-25 10:41, Stefano Garzarella wrote:
-> > On Wed, 7 May 2025 at 17:15, Konstantin Shkolnyy <kshk@linux.ibm.com> wrote:
-> >>
-> >> These tests:
-> >>      "SOCK_STREAM ioctl(SIOCOUTQ) 0 unsent bytes"
-> >>      "SOCK_SEQPACKET ioctl(SIOCOUTQ) 0 unsent bytes"
-> >> output: "Unexpected 'SIOCOUTQ' value, expected 0, got 64 (CLIENT)".
-> >>
-> >> They test that the SIOCOUTQ ioctl reports 0 unsent bytes after the data
-> >> have been received by the other side. However, sometimes there is a delay
-> >> in updating this "unsent bytes" counter, and the test fails even though
-> >> the counter properly goes to 0 several milliseconds later.
-> >>
-> >> The delay occurs in the kernel because the used buffer notification
-> >> callback virtio_vsock_tx_done(), called upon receipt of the data by the
-> >> other side, doesn't update the counter itself. It delegates that to
-> >> a kernel thread (via vsock->tx_work). Sometimes that thread is delayed
-> >> more than the test expects.
-> >>
-> >> Change the test to poll SIOCOUTQ until it returns 0 or a timeout occurs.
-> >>
-> >> Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
-> >> ---
-> >> Changes in v2:
-> >>   - Use timeout_check() to end polling, instead of counting iterations.
-> >
-> > Why removing the sleep?
->
-> I just imagined that whoever uses SIOCOUTQ might want to repeat it
-> without a delay, so why not do it, it's a test. Is there a reason to
-> insert a sleep?
->
+On 5/6/25 2:52 PM, Jon Kohler wrote:
+> Introduce new XDP helpers:
+> - xdp_headlen: Similar to skb_headlen
+> - xdp_headroom: Similar to skb_headroom
+> - xdp_metadata_len: Similar to skb_metadata_len
+> 
+> Integrate these helpers into tap, tun, and XDP implementation to start.
+> 
+> No functional changes introduced.
+> 
+> Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+> Signed-off-by: Jon Kohler <jon@nutanix.com>
 
-Okay, now that I think back on it, it's the same thing I thought of when 
-I did this.
+lgtm as well, thanks!
 
-I guess in v1 the sleep was just to limit the number of cycles.
-
-LGTM:
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-
-
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
