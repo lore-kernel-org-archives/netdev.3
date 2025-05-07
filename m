@@ -1,75 +1,132 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4BD19D092
-	for <netdev@vger.kernel.org>; Wed,  7 May 2025 10:46:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B57215F49;
+	Wed,  7 May 2025 11:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746614782; cv=none; b=XIr0IoEP5PiLbbcbi9TfUa5XS4OJcHfNx98UP2brUuQWt778y5tC+YD4Eibv8/zcGaYgyK6Xw/AupVJ7c/lrLTJylDILD2EYw5JE//biTi0lcDOkVwk9qpz47bYc1xT6iRVR/3pKlAVcxK27DMDTp4rX3GTCmmXFc6nc0ItewNk=
+	t=1746615988; cv=none; b=O5RRyaROz1EaZ5v5ovZbaxQYkKMni+rFVJForvaM13HK+IThJ/BdU2W4vCOFtCT+Wusa7T/f7HYRW2X6FOQssxrKLETIrrY86ablAMzKfAuZV9f96rAxELetF4OamiebqEsJhEdB+lXNFozW4/VODjglxw4Mv8b6a4D8jOVPQqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746614782; c=relaxed/simple;
-	bh=tVUHt4u5BtEeZoLMejAqvaVl3urAiuFNBSxKLm7hY8E=;
+	s=arc-20240116; t=1746615988; c=relaxed/simple;
+	bh=x6JZx+dOYymoRNv+YG8960djGVqVEcH0E3ay4BxKGss=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hI0ZZDJZhuulvOd4HYMC+Cqm8uM5aZSWM0f/ocfoVIxgnHEBIZ1uCM3vksQawVc2HjRRR4K4jwB7Pghc8E/PtSZur/yOawZUeSh0DhHGtXKPmo9UklKTJSvluOFBjIvngUG0Cvrk1cBsTpJR8/u+mT01os0Thqs0KBhotzy8W7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=t7Wq+7a7; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=SpBjSiminz0l8BUkabq91gLLSUly8s20ZIGnDCU570hO/uFkiO8d1P2M4NmkA+XItvIFyBtjfrtkxo2zlLE/vxpOjrjYFyOsQ9oBY1axrfy3Q/YSEHm+hcUOqiz1kfl0No0UjsxXTuVoNBZ1rXRUko/dlzLcbXTWq+2JLAKz9F4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TQ4UFZE7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="t7Wq+7a7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=9/KxYK0r5mOPS2j4c9eNdJXVJKdT84YmFWg2UIuE8cw=; b=t7Wq+7a7EWTU8I19wQAewgxjvC
-	3spMT9R6iZe1uDjX0a7A3zhgGjNZHHxH7GuCUV1kcqUzprhK2fJJ72Hc6VSwXIybocSKp2EB5e5UN
-	K4hmCGllRpAUjRKxldC6xuE1SM8DSnaWp8Srrn/ssj97/TRKsf+l0TbUHJfuOdmqCyXI0W3VN+e7g
-	J0WarNJBTuhAkcNuxIYJwV4BGjLS7SxgqwsrtY98M0EizXhjY/YBwckmvSnwQaPKMNWBnr5/x8pwT
-	oWlXsqAGmSQZmNL3TVOeS4g4JSvbZ7KzSBnCP4y1pkhRarvtF0oDUmjIjKdWQo8xEsk+R/EGQgDxy
-	t0tjl7Wg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:49032)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1uCcHy-0007PV-2E;
-	Wed, 07 May 2025 11:46:10 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1uCcHw-0005ik-18;
-	Wed, 07 May 2025 11:46:08 +0100
-Date: Wed, 7 May 2025 11:46:08 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	David Miller <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	imx@lists.linux.dev
-Subject: Re: [PATCH net-next] net: phy: remove Kconfig symbol MDIO_DEVRES
-Message-ID: <aBs58BUtVAHeMPip@shell.armlinux.org.uk>
-References: <9c2df2f8-6248-4a06-81ef-f873e5a31921@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TQ4UFZE7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7642AC4CEE7;
+	Wed,  7 May 2025 11:06:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746615988;
+	bh=x6JZx+dOYymoRNv+YG8960djGVqVEcH0E3ay4BxKGss=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TQ4UFZE7muTuWd5GcbVqwDA1zs7oSSrN0OZsKGydTQNoAe5fZ+YxTKEKXmzA0uhbs
+	 V1qlyS9BVuunskNg101PiJeI0r/gRvYL1h4PMRvC6pZRwPF3ZQ/17m1qVlnLkq+Uc/
+	 9EBbdMXYPpyjslgWDmXjlB1lCMTw7RwH0l5uAttumKzAObETzWGcs+2ddjKTxtY1AD
+	 Zco1ngz84KPnVTQ+k5YQtJX9CLvrHKdOaSc3ewX5Bfijhn358nWM9mDvoaiiIby5+x
+	 ooKVq+AT6EaXXwaRi28HX7LMXb0WJkPWcAth3keDwxcYsXRZxYc2vZ3Zm2aN4V7gWp
+	 LMyQIvlgErNMw==
+Date: Wed, 7 May 2025 12:06:21 +0100
+From: Lee Jones <lee@kernel.org>
+To: Ivan Vecera <ivecera@redhat.com>
+Cc: netdev@vger.kernel.org, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Prathosh Satish <Prathosh.Satish@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+	Michal Schmidt <mschmidt@redhat.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next v6 8/8] mfd: zl3073x: Register DPLL sub-device
+ during init
+Message-ID: <20250507110621.GJ3865826@google.com>
+References: <20250430101126.83708-1-ivecera@redhat.com>
+ <20250430101126.83708-9-ivecera@redhat.com>
+ <20250501132201.GP1567507@google.com>
+ <a699035f-3e8d-44d7-917d-13c693feaf2e@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <9c2df2f8-6248-4a06-81ef-f873e5a31921@gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a699035f-3e8d-44d7-917d-13c693feaf2e@redhat.com>
 
-On Wed, May 07, 2025 at 08:17:17AM +0200, Heiner Kallweit wrote:
-> MDIO_DEVRES is only set where PHYLIB/PHYLINK are set which
-> select MDIO_DEVRES. So we can remove this symbol.
+On Fri, 02 May 2025, Ivan Vecera wrote:
 
-Does it make sense for mdio_devres to be a separate module from libphy?
+> 
+> 
+> On 01. 05. 25 3:22 odp., Lee Jones wrote:
+> > On Wed, 30 Apr 2025, Ivan Vecera wrote:
+> > 
+> > > Register DPLL sub-devices to expose the functionality provided
+> > > by ZL3073x chip family. Each sub-device represents one of
+> > > the available DPLL channels.
+> > > 
+> > > Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+> > > ---
+> > > v4->v6:
+> > > * no change
+> > > v3->v4:
+> > > * use static mfd cells
+> > > ---
+> > >   drivers/mfd/zl3073x-core.c | 19 +++++++++++++++++++
+> > >   1 file changed, 19 insertions(+)
+> > > 
+> > > diff --git a/drivers/mfd/zl3073x-core.c b/drivers/mfd/zl3073x-core.c
+> > > index 050dc57c90c3..3e665cdf228f 100644
+> > > --- a/drivers/mfd/zl3073x-core.c
+> > > +++ b/drivers/mfd/zl3073x-core.c
+> > > @@ -7,6 +7,7 @@
+> > >   #include <linux/device.h>
+> > >   #include <linux/export.h>
+> > >   #include <linux/math64.h>
+> > > +#include <linux/mfd/core.h>
+> > >   #include <linux/mfd/zl3073x.h>
+> > >   #include <linux/module.h>
+> > >   #include <linux/netlink.h>
+> > > @@ -755,6 +756,14 @@ static void zl3073x_devlink_unregister(void *ptr)
+> > >   	devlink_unregister(ptr);
+> > >   }
+> > > +static const struct mfd_cell zl3073x_dpll_cells[] = {
+> > > +	MFD_CELL_BASIC("zl3073x-dpll", NULL, NULL, 0, 0),
+> > > +	MFD_CELL_BASIC("zl3073x-dpll", NULL, NULL, 0, 1),
+> > > +	MFD_CELL_BASIC("zl3073x-dpll", NULL, NULL, 0, 2),
+> > > +	MFD_CELL_BASIC("zl3073x-dpll", NULL, NULL, 0, 3),
+> > > +	MFD_CELL_BASIC("zl3073x-dpll", NULL, NULL, 0, 4),
+> > > +};
+> > 
+> > What other devices / subsystems will be involved when this is finished?
+> 
+> Lee, btw. I noticed from another discussion that you mentioned that
+> mfd_cell->id should not be used outside MFD.
+> 
+> My sub-drivers uses this to get DPLL channel number that should be used
+> for the particular sub-device.
+> 
+> E.g.
+> 1) MFD_CELL_BASIC("zl3073x-dpll", NULL, NULL, 0, 2);
+> 2) MFD_CELL_BASIC("zl3073x-phc", NULL, NULL, 0, 3);
+> 
+> In these cases dpll_zl3073x sub-driver will use DPLL channel 2 for this
+> DPLL sub-device and ptp_zl3073x sub-driver will use DPLL channel 3 for
+> this PHC sub-device.
+> 
+> platform_device->id cannot be used for this purpose in conjunction with
+> PLATFORM_DEVID_AUTO as that ->id can be arbitrary.
+> 
+> So if I cannot use mfd_cell->id what should I use for that case?
+> Platform data per cell with e.g. the DPLL channel number?
+
+Yes, using the device ID for anything other than enumeration is a hack.
+
+Channel numbers and the like should be passed as platform data.
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Lee Jones [李琼斯]
