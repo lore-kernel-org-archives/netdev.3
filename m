@@ -1,153 +1,121 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B014A280005
-	for <netdev@vger.kernel.org>; Wed,  7 May 2025 12:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FAB280028;
+	Wed,  7 May 2025 12:37:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746621399; cv=none; b=XNG4oRueegELSbWK3Fc3rnDl0X/k2ILLw3QzdgRvqvh6gtifn/pVwFBmid45dcyCekJeeuePyneaZJ0ICWXBhgKx3rWe0K357VbZ1j44Hr0Z9L2QUeCh4N1IMCDrXXlFumd3lCDLqG2+kB3JycAmRyOh94pUr5jZhAOyIsUb5SU=
+	t=1746621463; cv=none; b=VaTjPQ8NTh032EXRDhvxee26Cccbcu0YdyjyqZtHnWLTQp3JQsIJFbhHB/URm2oue4MdufFqCr+k06Li58ktjHnkPc3XI9iIeXJl92xcMJSDoa7An6YXiOQBrxLdwbJj7HH2LwjnwJSmXhoFkUUL570qOn7kfLLp2W5SjoKjARw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746621399; c=relaxed/simple;
-	bh=ANQL2Z2mMkbXRvzftivNBYyTpd2FsjheCIMPkPyIky0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GD1VwPDTSPKTmnExD5hmLvrlAU7395Eec5BtAGFjSpcI+DmIn1vS2vX8NrCLZM6KtVNM045QbIUMjqgZsQZtAXPVGgn9RirZdX3bhfN8YeFb3jd5qNprzoM3fQsFzMiFlnMbILnJphIgTv7LldiWHhbcTCKXWkCBvj4ZzFoHpyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BXd4NI9H; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1746621463; c=relaxed/simple;
+	bh=xCGmUPVZuDdzuUKuQNbIIVf2waBPmWTdSstOrPdd0oE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EGwqGd1MJWHR8glUNiNayBnfonzclZDr55WZIvgadXZrMzGJnTK8ZzdGNUCXO42PcHG9OghhfkZ2DzmQeACdJ0cb1e7RFGP6T3dh7unC31SfPZEw5TUYfvUZJKA9Bb7powLQtT6L+G5DwUHnC6hr50CeqBkMCCyAuD7HHOdc4pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=UxEUkuIl; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BXd4NI9H"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746621396;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R4OangMaKmpfQS75O4hoSdU6AYI1lR2PZPMYPMmrmQc=;
-	b=BXd4NI9HEkJktrzKWBIA2UBzvOBsKCOLb4UNoSRbj7yt9XBlfLYYda6Lpx1h3Q84Cmluzz
-	hKjVOutXOf9ta7Dir6B19lyE3qJ4pKxab32lJe5LibpB7Vn9lztKkecbzqQh0n9ELm9eOL
-	bVpAxNqjszKRyQqy7tigk+8nUWsKCd0=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-301-TZ32l5kDOH2JZUq_QcgFLg-1; Wed,
- 07 May 2025 08:36:30 -0400
-X-MC-Unique: TZ32l5kDOH2JZUq_QcgFLg-1
-X-Mimecast-MFC-AGG-ID: TZ32l5kDOH2JZUq_QcgFLg_1746621388
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 52F141955DE8;
-	Wed,  7 May 2025 12:36:28 +0000 (UTC)
-Received: from [10.44.33.91] (unknown [10.44.33.91])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C65371953B85;
-	Wed,  7 May 2025 12:36:22 +0000 (UTC)
-Message-ID: <ef8ae196-84c9-447e-98ff-071d347531d5@redhat.com>
-Date: Wed, 7 May 2025 14:36:21 +0200
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="UxEUkuIl"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=5sPVrzUiQ+hehg1asUBhs/XYvzKveDurKf1FDpj71eU=; b=UxEUkuIlcl7krxdT+42I9uKAVB
+	YsgHWsOYxgVRqKwf7S8mlsuYxgynUv7Q9dX/JaEovXdfoebGLpb08RSV3kTRj4omig7NyEb6+V/rw
+	UceXPNJzvFZKjLe9487sxOqbkwnHbCPN4zSyyKGVVC3kyRHngUxW7FK4rGWfa2nyHZr4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uCe1T-00BsZW-F1; Wed, 07 May 2025 14:37:15 +0200
+Date: Wed, 7 May 2025 14:37:15 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Inochi Amaoto <inochiama@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Guo Ren <guoren@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Lothar Rubusch <l.rubusch@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, Yixun Lan <dlan@gentoo.org>,
+	Longbin Li <looong.bin@gmail.com>
+Subject: Re: [PATCH net-next 0/4] riscv: sophgo: Add ethernet support for
+ SG2042
+Message-ID: <b4ce3e35-9255-4fc7-9c8d-4078b24ac3fa@lunn.ch>
+References: <20250506093256.1107770-1-inochiama@gmail.com>
+ <c7a8185e-07b7-4a62-b39b-7d1e6eec64d6@lunn.ch>
+ <fgao5qnim6o3gvixzl7lnftgsish6uajlia5okylxskn3nrexe@gyvgrp72jvj6>
+ <ffa044e2-ee9e-4a34-af6a-2e45294144f7@lunn.ch>
+ <2tu2mvwsnqdezjei5h43ko24vfave4c3ek2fjoatwsg72p6lpz@3vbtpmm7l73z>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 8/8] mfd: zl3073x: Register DPLL sub-device
- during init
-To: Lee Jones <lee@kernel.org>
-Cc: netdev@vger.kernel.org, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Prathosh Satish <Prathosh.Satish@microchip.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Andy Shevchenko <andy@kernel.org>, Michal Schmidt <mschmidt@redhat.com>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-References: <20250430101126.83708-1-ivecera@redhat.com>
- <20250430101126.83708-9-ivecera@redhat.com>
- <20250501132201.GP1567507@google.com>
- <a699035f-3e8d-44d7-917d-13c693feaf2e@redhat.com>
- <20250507110621.GJ3865826@google.com>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <20250507110621.GJ3865826@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2tu2mvwsnqdezjei5h43ko24vfave4c3ek2fjoatwsg72p6lpz@3vbtpmm7l73z>
 
-On 07. 05. 25 1:06 odp., Lee Jones wrote:
-> On Fri, 02 May 2025, Ivan Vecera wrote:
+On Wed, May 07, 2025 at 08:01:29PM +0800, Inochi Amaoto wrote:
+> On Wed, May 07, 2025 at 02:10:48AM +0200, Andrew Lunn wrote:
+> > On Wed, May 07, 2025 at 06:24:29AM +0800, Inochi Amaoto wrote:
+> > > On Tue, May 06, 2025 at 02:03:18PM +0200, Andrew Lunn wrote:
+> > > > On Tue, May 06, 2025 at 05:32:50PM +0800, Inochi Amaoto wrote:
+> > > > > The ethernet controller of SG2042 is Synopsys DesignWare IP with
+> > > > > tx clock. Add device id for it.
+> > > > > 
+> > > > > This patch can only be tested on a SG2042 x4 evb board, as pioneer
+> > > > > does not expose this device.
+> > > > 
+> > > > Do you have a patch for this EVB board? Ideally there should be a user
+> > > > added at the same time as support for a device.
+> > > > 
+> > > > 	Andrew
+> > > 
+> > > Yes, I have one for this device. And Han Gao told me that he will send
+> > > the board patch for the evb board. So I only send the driver.
+> > > And the fragment for the evb board is likes below, I think it is kind
+> > > of trivial:
+> > > 
+> > > &gmac0 {
+> > > 	phy-handle = <&phy0>;
+> > > 	phy-mode = "rgmii-txid";
+> > 
+> > And this is why i ask, because this is broken. For more information,
+> > please see:
+> > 
+> > https://patchwork.kernel.org/project/netdevbpf/patch/20250430-v6-15-rc3-net-rgmii-delays-v2-1-099ae651d5e5@lunn.ch/
+> > 
+> > 	Andrew
 > 
->>
->>
->> On 01. 05. 25 3:22 odp., Lee Jones wrote:
->>> On Wed, 30 Apr 2025, Ivan Vecera wrote:
->>>
->>>> Register DPLL sub-devices to expose the functionality provided
->>>> by ZL3073x chip family. Each sub-device represents one of
->>>> the available DPLL channels.
->>>>
->>>> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
->>>> ---
->>>> v4->v6:
->>>> * no change
->>>> v3->v4:
->>>> * use static mfd cells
->>>> ---
->>>>    drivers/mfd/zl3073x-core.c | 19 +++++++++++++++++++
->>>>    1 file changed, 19 insertions(+)
->>>>
->>>> diff --git a/drivers/mfd/zl3073x-core.c b/drivers/mfd/zl3073x-core.c
->>>> index 050dc57c90c3..3e665cdf228f 100644
->>>> --- a/drivers/mfd/zl3073x-core.c
->>>> +++ b/drivers/mfd/zl3073x-core.c
->>>> @@ -7,6 +7,7 @@
->>>>    #include <linux/device.h>
->>>>    #include <linux/export.h>
->>>>    #include <linux/math64.h>
->>>> +#include <linux/mfd/core.h>
->>>>    #include <linux/mfd/zl3073x.h>
->>>>    #include <linux/module.h>
->>>>    #include <linux/netlink.h>
->>>> @@ -755,6 +756,14 @@ static void zl3073x_devlink_unregister(void *ptr)
->>>>    	devlink_unregister(ptr);
->>>>    }
->>>> +static const struct mfd_cell zl3073x_dpll_cells[] = {
->>>> +	MFD_CELL_BASIC("zl3073x-dpll", NULL, NULL, 0, 0),
->>>> +	MFD_CELL_BASIC("zl3073x-dpll", NULL, NULL, 0, 1),
->>>> +	MFD_CELL_BASIC("zl3073x-dpll", NULL, NULL, 0, 2),
->>>> +	MFD_CELL_BASIC("zl3073x-dpll", NULL, NULL, 0, 3),
->>>> +	MFD_CELL_BASIC("zl3073x-dpll", NULL, NULL, 0, 4),
->>>> +};
->>>
->>> What other devices / subsystems will be involved when this is finished?
->>
->> Lee, btw. I noticed from another discussion that you mentioned that
->> mfd_cell->id should not be used outside MFD.
->>
->> My sub-drivers uses this to get DPLL channel number that should be used
->> for the particular sub-device.
->>
->> E.g.
->> 1) MFD_CELL_BASIC("zl3073x-dpll", NULL, NULL, 0, 2);
->> 2) MFD_CELL_BASIC("zl3073x-phc", NULL, NULL, 0, 3);
->>
->> In these cases dpll_zl3073x sub-driver will use DPLL channel 2 for this
->> DPLL sub-device and ptp_zl3073x sub-driver will use DPLL channel 3 for
->> this PHC sub-device.
->>
->> platform_device->id cannot be used for this purpose in conjunction with
->> PLATFORM_DEVID_AUTO as that ->id can be arbitrary.
->>
->> So if I cannot use mfd_cell->id what should I use for that case?
->> Platform data per cell with e.g. the DPLL channel number?
-> 
-> Yes, using the device ID for anything other than enumeration is a hack.
-> 
-> Channel numbers and the like should be passed as platform data.
+> You are right, the right phy-mode is "rgmii-id", the delay is not
+> added by the PCB. It seems to be better to ask for the vendor about
+> the hardware design before copying params for vendor dts. Anyway,
+> thanks for reviewing this.
 
-OK, I will send v7 quickly.
+Please do figure this out. Since you are adding a new compatible, you
+have a bit more flexibility. If the MAC driver is doing something
+wrong, you can change its behaviour based on this new compatible
+without breaking other users of the driver using other compatibles.
 
-Ivan
-
+	Andrew
