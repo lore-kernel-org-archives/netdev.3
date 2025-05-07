@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E3D284674
-	for <netdev@vger.kernel.org>; Wed,  7 May 2025 12:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2B32857F9
+	for <netdev@vger.kernel.org>; Wed,  7 May 2025 12:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746621886; cv=none; b=hILJ/bVeZQDAPZyZwBPA+Pg1dbfTGgCw+zecQaM4mqSZ8Fhf4vCmVxocDiXyZ9K5EeZwGerOCZRdpcpefBXdwRPEtDSb8KfwA7oTURiFflBuiuV5B740vREAOWA8DiKTJdlmHcKSfDUodCCFrgH1z+NyOPW3MeTNitGrvFLM41k=
+	t=1746621896; cv=none; b=WULdbXOP7eQdrxk1g+6VC2tOfmxeXCcIMNlXuFUnSLcWAuqfDiimLe1rh8XYb3DERDvcv21qHgaTeHx0eeZrONhlFTTzVhPbGY3Frjq/2z5MTJ2KUJeRDN7XXigterbOGbeyskJ5nlTrFk8JHJEma6TE77cQchKW25vtiBmBPOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746621886; c=relaxed/simple;
-	bh=1GKVhGZIeSHrSFM1p8A1ycOlC+iuZov0PlsyJeC6Fh8=;
+	s=arc-20240116; t=1746621896; c=relaxed/simple;
+	bh=UCJJwpeSRDtMwkz8iZe6CJrgRI5QJ5IRc44FDNBuWZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+mUvTSOkWV5pJlMotGjTTkfkTHvPHTIzDphiZ9SVZNcnkdkuiph4WhFB9oyP88/u8kkxJ+R+6W0uJNEMKsB5eGTlytRS2O5b8H52LebSVr9cwqcK8VD74ycwodxffXMvfP1T4kphBPYQ5leMN49MBjqlyj4VEq5wvWIBAV1D38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KeM+BgCu; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=bTsxnRsar4RE5gkulzDB2LBkOCppVRp17gPZBOuuV21Wnqn3/rKvN7Ex+rQhHikdL0D2KKeb4txh0nBYZHXVwA5e0chR6Xpb2PrLzJJ5Vd3wTNMJvK+ucIqvKVsyFVSlao1G7rp4+OFc+Fn0WXKZ7X2KpI71zyAtwXGOBaNCbLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XL8RONrv; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KeM+BgCu"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XL8RONrv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746621882;
+	s=mimecast20190719; t=1746621893;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XulpVzxDO61vMU5Om1r000qWddaCZ+Y+tGIvosGypbI=;
-	b=KeM+BgCu0P0TklYY7vrhHG8Z0pw0iGFaOTSkO5IqhmMCo88gbPogVZ6jFDJTzNu8s3oBBk
-	tGAIQTRBhiE9D4gptJyT2nRUs1Gs+PzM/uTbXmVZmNogv2I36VvGRNa5d8o3qkJZfd8uAM
-	/PtWVgEaUPyvTJSdFWqrekGGA9iSvqg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=ic+HSID5twX1goXewCst5BojnJVgDHADN0ABYnTKi2c=;
+	b=XL8RONrvY5iAM+zrz1qepsK1p+A2h5sI3atcM0lSLbLZcOf4zgCMmmxQvOwWjGgGT11N9H
+	t08dwnlzBRZOTKw8JhYDmcIdZ6pzTqRx8FCguD7GccONkMtEzM37PP0hlEWp7lzO9ft3dS
+	7xiZ5cZPDOPb8eMeTGjbcEjcAvurwPE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-537-HMrLiIHsPGS_uVXPrbzRAQ-1; Wed,
- 07 May 2025 08:44:38 -0400
-X-MC-Unique: HMrLiIHsPGS_uVXPrbzRAQ-1
-X-Mimecast-MFC-AGG-ID: HMrLiIHsPGS_uVXPrbzRAQ_1746621876
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-265-wIaU8HLBPyGGw3DlRPB70Q-1; Wed,
+ 07 May 2025 08:44:50 -0400
+X-MC-Unique: wIaU8HLBPyGGw3DlRPB70Q-1
+X-Mimecast-MFC-AGG-ID: wIaU8HLBPyGGw3DlRPB70Q_1746621888
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7D55F19560AA;
-	Wed,  7 May 2025 12:44:36 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 50F58180036F;
+	Wed,  7 May 2025 12:44:48 +0000 (UTC)
 Received: from p16v.luc.cera.cz (unknown [10.44.33.91])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8E9CC19560A7;
-	Wed,  7 May 2025 12:44:30 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DC0E319560A7;
+	Wed,  7 May 2025 12:44:42 +0000 (UTC)
 From: Ivan Vecera <ivecera@redhat.com>
 To: netdev@vger.kernel.org
 Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
@@ -61,9 +61,9 @@ Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org
-Subject: [PATCH net-next v7 4/8] mfd: zl3073x: Add support for devlink device info
-Date: Wed,  7 May 2025 14:43:54 +0200
-Message-ID: <20250507124358.48776-5-ivecera@redhat.com>
+Subject: [PATCH net-next v7 6/8] mfd: zl3073x: Fetch invariants during probe
+Date: Wed,  7 May 2025 14:43:56 +0200
+Message-ID: <20250507124358.48776-7-ivecera@redhat.com>
 In-Reply-To: <20250507124358.48776-1-ivecera@redhat.com>
 References: <20250507124358.48776-1-ivecera@redhat.com>
 Precedence: bulk
@@ -75,261 +75,581 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Use devlink_alloc() to allocate zl3073x_dev structure, register
-the device as a devlink device, and add devlink callback to provide
-device info.
+Several configuration parameters will remain constant at runtime,
+so we can load them during probe to avoid excessive reads from
+the hardware.
+
+These parameters will be frequently accessed by the DPLL sub-device
+driver (in follow-up series), and later by the PHC/PTP sub-device
+driver.
+
+Read the following parameters from the device during probe and store
+them for later use:
+
+* frequencies of the synthesizers and their associated DPLL channels
+* enablement and type (single-ended or differential) of input pins
+* associated synthesizers, signal format, and enablement status of
+  outputs
 
 Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 ---
+v6->v7:
+* export zl3073x_mb_op() - will be used immediatelly in part2
 v5->v6:
-* fixed devlink info firmware version to be running instead of fixed
-* added documentation for devlink info versions
-
+* no change
 v4->v5:
-* use new register access helpers
-
+* updated to use new register API
 v3->v4:
-* pass error code from devm_add_action_or_reset() call
-
+* adjusted for new mailbox API
 v2->v3:
-* merged devlink device allocation, registration and device info
-  callback
-
+* dropped usage of macros for generating helper functions
 v1->v2:
-* dependency on NET moved to MFD_ZL3073X_CORE in Kconfig
-* devlink register managed way
+* fixed and added inline documentation
 ---
- Documentation/networking/devlink/index.rst   |   1 +
- Documentation/networking/devlink/zl3073x.rst |  37 +++++++
- drivers/mfd/Kconfig                          |   2 +
- drivers/mfd/zl3073x-core.c                   | 108 ++++++++++++++++++-
- 4 files changed, 146 insertions(+), 2 deletions(-)
- create mode 100644 Documentation/networking/devlink/zl3073x.rst
+ drivers/mfd/zl3073x-core.c       | 251 +++++++++++++++++++++++++++++++
+ drivers/mfd/zl3073x-regs.h       |  37 +++++
+ include/linux/mfd/zl3073x-regs.h |  22 +++
+ include/linux/mfd/zl3073x.h      | 153 +++++++++++++++++++
+ 4 files changed, 463 insertions(+)
 
-diff --git a/Documentation/networking/devlink/index.rst b/Documentation/networking/devlink/index.rst
-index 8319f43b5933..250ae71f4023 100644
---- a/Documentation/networking/devlink/index.rst
-+++ b/Documentation/networking/devlink/index.rst
-@@ -98,3 +98,4 @@ parameters, info versions, and other features it supports.
-    iosm
-    octeontx2
-    sfc
-+   zl3073x
-diff --git a/Documentation/networking/devlink/zl3073x.rst b/Documentation/networking/devlink/zl3073x.rst
-new file mode 100644
-index 000000000000..9a6744fb2e86
---- /dev/null
-+++ b/Documentation/networking/devlink/zl3073x.rst
-@@ -0,0 +1,37 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+=======================
-+zl3073x devlink support
-+=======================
-+
-+This document describes the devlink features implemented by the ``zl3073x``
-+device driver.
-+
-+Info versions
-+=============
-+
-+The ``zl3073x`` driver reports the following versions
-+
-+.. list-table:: devlink info versions implemented
-+    :widths: 5 5 5 90
-+
-+    * - Name
-+      - Type
-+      - Example
-+      - Description
-+    * - ``asic.id``
-+      - fixed
-+      - 1E94
-+      - Chip identification number
-+    * - ``asic.rev``
-+      - fixed
-+      - 300
-+      - Chip revision number
-+    * - ``fw``
-+      - running
-+      - 7006
-+      - Firmware version number
-+    * - ``cfg.custom_ver``
-+      - running
-+      - 1.3.0.1
-+      - Device configuration version customized by OEM
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 7d7902ec1d89..e4eca15af175 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -2424,6 +2424,8 @@ config MFD_UPBOARD_FPGA
- 
- config MFD_ZL3073X_CORE
- 	tristate
-+	depends on NET
-+	select NET_DEVLINK
- 	select MFD_CORE
- 
- config MFD_ZL3073X_I2C
 diff --git a/drivers/mfd/zl3073x-core.c b/drivers/mfd/zl3073x-core.c
-index c408aafb0f8a..079550682510 100644
+index a12cfc7eb6ff..127e240a143d 100644
 --- a/drivers/mfd/zl3073x-core.c
 +++ b/drivers/mfd/zl3073x-core.c
-@@ -8,8 +8,11 @@
+@@ -6,6 +6,7 @@
+ #include <linux/dev_printk.h>
+ #include <linux/device.h>
  #include <linux/export.h>
++#include <linux/math64.h>
  #include <linux/mfd/zl3073x.h>
  #include <linux/module.h>
-+#include <linux/netlink.h>
- #include <linux/regmap.h>
-+#include <linux/sprintf.h>
- #include <linux/unaligned.h>
-+#include <net/devlink.h>
- #include "zl3073x.h"
- #include "zl3073x-regs.h"
- 
-@@ -375,6 +378,83 @@ int zl3073x_poll_zero_u8(struct zl3073x_dev *zldev, unsigned int reg, u8 mask)
- }
- EXPORT_SYMBOL_NS_GPL(zl3073x_poll_zero_u8, "ZL3073X");
- 
-+/**
-+ * zl3073x_devlink_info_get - Devlink device info callback
-+ * @devlink: devlink structure pointer
-+ * @req: devlink request pointer to store information
-+ * @extack: netlink extack pointer to report errors
-+ *
-+ * Return: 0 on success, <0 on error
-+ */
-+static int zl3073x_devlink_info_get(struct devlink *devlink,
-+				    struct devlink_info_req *req,
-+				    struct netlink_ext_ack *extack)
-+{
-+	struct zl3073x_dev *zldev = devlink_priv(devlink);
-+	u16 id, revision, fw_ver;
-+	char buf[16];
-+	u32 cfg_ver;
-+	int rc;
-+
-+	rc = zl3073x_read_u16(zldev, ZL_REG_ID, &id);
-+	if (rc)
-+		return rc;
-+
-+	snprintf(buf, sizeof(buf), "%X", id);
-+	rc = devlink_info_version_fixed_put(req,
-+					    DEVLINK_INFO_VERSION_GENERIC_ASIC_ID,
-+					    buf);
-+	if (rc)
-+		return rc;
-+
-+	rc = zl3073x_read_u16(zldev, ZL_REG_REVISION, &revision);
-+	if (rc)
-+		return rc;
-+
-+	snprintf(buf, sizeof(buf), "%X", revision);
-+	rc = devlink_info_version_fixed_put(req,
-+					    DEVLINK_INFO_VERSION_GENERIC_ASIC_REV,
-+					    buf);
-+	if (rc)
-+		return rc;
-+
-+	rc = zl3073x_read_u16(zldev, ZL_REG_FW_VER, &fw_ver);
-+	if (rc)
-+		return rc;
-+
-+	snprintf(buf, sizeof(buf), "%u", fw_ver);
-+	rc = devlink_info_version_running_put(req,
-+					      DEVLINK_INFO_VERSION_GENERIC_FW,
-+					      buf);
-+	if (rc)
-+		return rc;
-+
-+	rc = zl3073x_read_u32(zldev, ZL_REG_CUSTOM_CONFIG_VER, &cfg_ver);
-+	if (rc)
-+		return rc;
-+
-+	/* No custom config version */
-+	if (cfg_ver == U32_MAX)
-+		return 0;
-+
-+	snprintf(buf, sizeof(buf), "%lu.%lu.%lu.%lu",
-+		 FIELD_GET(GENMASK(31, 24), cfg_ver),
-+		 FIELD_GET(GENMASK(23, 16), cfg_ver),
-+		 FIELD_GET(GENMASK(15, 8), cfg_ver),
-+		 FIELD_GET(GENMASK(7, 0), cfg_ver));
-+
-+	return devlink_info_version_running_put(req, "cfg.custom_ver", buf);
-+}
-+
-+static const struct devlink_ops zl3073x_devlink_ops = {
-+	.info_get = zl3073x_devlink_info_get,
-+};
-+
-+static void zl3073x_devlink_free(void *ptr)
-+{
-+	devlink_free(ptr);
-+}
-+
- /**
-  * zl3073x_devm_alloc - allocates zl3073x device structure
-  * @dev: pointer to device structure
-@@ -386,11 +466,19 @@ EXPORT_SYMBOL_NS_GPL(zl3073x_poll_zero_u8, "ZL3073X");
- struct zl3073x_dev *zl3073x_devm_alloc(struct device *dev)
- {
- 	struct zl3073x_dev *zldev;
-+	struct devlink *devlink;
-+	int rc;
- 
--	zldev = devm_kzalloc(dev, sizeof(*zldev), GFP_KERNEL);
--	if (!zldev)
-+	devlink = devlink_alloc(&zl3073x_devlink_ops, sizeof(*zldev), dev);
-+	if (!devlink)
- 		return ERR_PTR(-ENOMEM);
- 
-+	/* Add devres action to free devlink device */
-+	rc = devm_add_action_or_reset(dev, zl3073x_devlink_free, devlink);
-+	if (rc)
-+		return ERR_PTR(rc);
-+
-+	zldev = devlink_priv(devlink);
- 	zldev->dev = dev;
- 	dev_set_drvdata(zldev->dev, zldev);
- 
-@@ -410,6 +498,11 @@ void zl3073x_dev_init_regmap_config(struct regmap_config *regmap_cfg)
+ #include <linux/netlink.h>
+@@ -504,6 +505,251 @@ void zl3073x_dev_init_regmap_config(struct regmap_config *regmap_cfg)
  }
  EXPORT_SYMBOL_NS_GPL(zl3073x_dev_init_regmap_config, "ZL3073X");
  
-+static void zl3073x_devlink_unregister(void *ptr)
++int zl3073x_mb_op(struct zl3073x_dev *zldev, unsigned int op_reg, u8 op_val,
++		  unsigned int mask_reg, u16 mask_val)
 +{
-+	devlink_unregister(ptr);
-+}
++	int rc;
 +
- /**
-  * zl3073x_dev_probe - initialize zl3073x device
-  * @zldev: pointer to zl3073x device
-@@ -423,6 +516,7 @@ int zl3073x_dev_probe(struct zl3073x_dev *zldev,
- 		      const struct zl3073x_chip_info *chip_info)
- {
- 	u16 id, revision, fw_ver;
-+	struct devlink *devlink;
- 	unsigned int i;
- 	u32 cfg_ver;
- 	int rc;
-@@ -463,6 +557,16 @@ int zl3073x_dev_probe(struct zl3073x_dev *zldev,
- 		FIELD_GET(GENMASK(15, 8), cfg_ver),
- 		FIELD_GET(GENMASK(7, 0), cfg_ver));
- 
-+	/* Register the device as devlink device */
-+	devlink = priv_to_devlink(zldev);
-+	devlink_register(devlink);
-+
-+	/* Add devres action to unregister devlink device */
-+	rc = devm_add_action_or_reset(zldev->dev, zl3073x_devlink_unregister,
-+				      devlink);
++	/* Set mask for the operation */
++	rc = zl3073x_write_u16(zldev, mask_reg, mask_val);
 +	if (rc)
 +		return rc;
 +
- 	return 0;
- }
- EXPORT_SYMBOL_NS_GPL(zl3073x_dev_probe, "ZL3073X");
++	/* Trigger the operation */
++	rc = zl3073x_write_u8(zldev, op_reg, op_val);
++	if (rc)
++		return rc;
++
++	/* Wait for the operation to actually finish */
++	return zl3073x_poll_zero_u8(zldev, op_reg, op_val);
++}
++EXPORT_SYMBOL_NS_GPL(zl3073x_mb_op, "ZL3073X");
++
++/**
++ * zl3073x_input_state_fetch - get input state
++ * @zldev: pointer to zl3073x_dev structure
++ * @index: input pin index to fetch state for
++ *
++ * Function fetches information for the given input reference that are
++ * invariant and stores them for later use.
++ *
++ * Return: 0 on success, <0 on error
++ */
++static int
++zl3073x_input_state_fetch(struct zl3073x_dev *zldev, u8 index)
++{
++	struct zl3073x_input *input;
++	u8 ref_config;
++	int rc;
++
++	input = &zldev->input[index];
++
++	/* If the input is differential then the configuration for N-pin
++	 * reference is ignored and P-pin config is used for both.
++	 */
++	if (zl3073x_is_n_pin(index) &&
++	    zl3073x_input_is_diff(zldev, index - 1)) {
++		input->enabled = zl3073x_input_is_enabled(zldev, index - 1);
++		input->diff = true;
++
++		return 0;
++	}
++
++	guard(mutex)(&zldev->multiop_lock);
++
++	/* Read reference configuration */
++	rc = zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_RD,
++			   ZL_REG_REF_MB_MASK, BIT(index));
++	if (rc)
++		return rc;
++
++	/* Read ref_config register */
++	rc = zl3073x_read_u8(zldev, ZL_REG_REF_CONFIG, &ref_config);
++	if (rc)
++		return rc;
++
++	input->enabled = FIELD_GET(ZL_REF_CONFIG_ENABLE, ref_config);
++	input->diff = FIELD_GET(ZL_REF_CONFIG_DIFF_EN, ref_config);
++
++	dev_dbg(zldev->dev, "INPUT%u is %s and configured as %s\n", index,
++		input->enabled ? "enabled" : "disabled",
++		input->diff ? "differential" : "single-ended");
++
++	return rc;
++}
++
++/**
++ * zl3073x_output_state_fetch - get output state
++ * @zldev: pointer to zl3073x_dev structure
++ * @index: output index to fetch state for
++ *
++ * Function fetches information for the given output (not output pin)
++ * that are invariant and stores them for later use.
++ *
++ * Return: 0 on success, <0 on error
++ */
++static int
++zl3073x_output_state_fetch(struct zl3073x_dev *zldev, u8 index)
++{
++	struct zl3073x_output *output;
++	u8 output_ctrl, output_mode;
++	int rc;
++
++	output = &zldev->output[index];
++
++	/* Read output configuration */
++	rc = zl3073x_read_u8(zldev, ZL_REG_OUTPUT_CTRL(index), &output_ctrl);
++	if (rc)
++		return rc;
++
++	/* Store info about output enablement and synthesizer the output
++	 * is connected to.
++	 */
++	output->enabled = FIELD_GET(ZL_OUTPUT_CTRL_EN, output_ctrl);
++	output->synth = FIELD_GET(ZL_OUTPUT_CTRL_SYNTH_SEL, output_ctrl);
++
++	dev_dbg(zldev->dev, "OUTPUT%u is %s, connected to SYNTH%u\n",
++		index, output->enabled ? "enabled" : "disabled", output->synth);
++
++	guard(mutex)(&zldev->multiop_lock);
++
++	/* Read output configuration */
++	rc = zl3073x_mb_op(zldev, ZL_REG_OUTPUT_MB_SEM, ZL_OUTPUT_MB_SEM_RD,
++			   ZL_REG_OUTPUT_MB_MASK, BIT(index));
++	if (rc)
++		return rc;
++
++	/* Read output_mode */
++	rc = zl3073x_read_u8(zldev, ZL_REG_OUTPUT_MODE, &output_mode);
++	if (rc)
++		return rc;
++
++	/* Extract and store output signal format */
++	output->signal_format = FIELD_GET(ZL_OUTPUT_MODE_SIGNAL_FORMAT,
++					  output_mode);
++
++	dev_dbg(zldev->dev, "OUTPUT%u has signal format 0x%02x\n", index,
++		output->signal_format);
++
++	return rc;
++}
++
++/**
++ * zl3073x_synth_state_fetch - get synth state
++ * @zldev: pointer to zl3073x_dev structure
++ * @index: synth index to fetch state for
++ *
++ * Function fetches information for the given synthesizer that are
++ * invariant and stores them for later use.
++ *
++ * Return: 0 on success, <0 on error
++ */
++static int
++zl3073x_synth_state_fetch(struct zl3073x_dev *zldev, u8 index)
++{
++	u16 base, num, denom;
++	u8 synth_ctrl;
++	u32 mult;
++	int rc;
++
++	/* Read synth control register */
++	rc = zl3073x_read_u8(zldev, ZL_REG_SYNTH_CTRL(index), &synth_ctrl);
++	if (rc)
++		return rc;
++
++	/* Extract and store DPLL channel the synth is driven by */
++	zldev->synth[index].dpll = FIELD_GET(ZL_SYNTH_CTRL_DPLL_SEL,
++					     synth_ctrl);
++
++	dev_dbg(zldev->dev, "SYNTH%u is connected to DPLL%u\n", index,
++		zldev->synth[index].dpll);
++
++	guard(mutex)(&zldev->multiop_lock);
++
++	/* Read synth configuration */
++	rc = zl3073x_mb_op(zldev, ZL_REG_SYNTH_MB_SEM, ZL_SYNTH_MB_SEM_RD,
++			   ZL_REG_SYNTH_MB_MASK, BIT(index));
++	if (rc)
++		return rc;
++
++	/* The output frequency is determined by the following formula:
++	 * base * multiplier * numerator / denominator
++	 *
++	 * Read registers with these values
++	 */
++	rc = zl3073x_read_u16(zldev, ZL_REG_SYNTH_FREQ_BASE, &base);
++	if (rc)
++		return rc;
++
++	rc = zl3073x_read_u32(zldev, ZL_REG_SYNTH_FREQ_MULT, &mult);
++	if (rc)
++		return rc;
++
++	rc = zl3073x_read_u16(zldev, ZL_REG_SYNTH_FREQ_M, &num);
++	if (rc)
++		return rc;
++
++	rc = zl3073x_read_u16(zldev, ZL_REG_SYNTH_FREQ_N, &denom);
++	if (rc)
++		return rc;
++
++	/* Check denominator for zero to avoid div by 0 */
++	if (!denom) {
++		dev_err(zldev->dev,
++			"Zero divisor for SYNTH%u retrieved from device\n",
++			index);
++		return -EINVAL;
++	}
++
++	/* Compute and store synth frequency */
++	zldev->synth[index].freq = mul_u64_u32_div(mul_u32_u32(base, mult),
++						   num, denom);
++
++	dev_dbg(zldev->dev, "SYNTH%u frequency: %llu Hz\n", index,
++		zldev->synth[index].freq);
++
++	return rc;
++}
++
++static int
++zl3073x_dev_state_fetch(struct zl3073x_dev *zldev)
++{
++	int rc;
++	u8 i;
++
++	for (i = 0; i < ZL3073X_NUM_INPUTS; i++) {
++		rc = zl3073x_input_state_fetch(zldev, i);
++		if (rc) {
++			dev_err(zldev->dev,
++				"Failed to fetch input state: %pe\n",
++				ERR_PTR(rc));
++			return rc;
++		}
++	}
++
++	for (i = 0; i < ZL3073X_NUM_SYNTHS; i++) {
++		rc = zl3073x_synth_state_fetch(zldev, i);
++		if (rc) {
++			dev_err(zldev->dev,
++				"Failed to fetch synth state: %pe\n",
++				ERR_PTR(rc));
++			return rc;
++		}
++	}
++
++	for (i = 0; i < ZL3073X_NUM_OUTPUTS; i++) {
++		rc = zl3073x_output_state_fetch(zldev, i);
++		if (rc) {
++			dev_err(zldev->dev,
++				"Failed to fetch output state: %pe\n",
++				ERR_PTR(rc));
++			return rc;
++		}
++	}
++
++	return rc;
++}
++
+ static void zl3073x_devlink_unregister(void *ptr)
+ {
+ 	devlink_unregister(ptr);
+@@ -571,6 +817,11 @@ int zl3073x_dev_probe(struct zl3073x_dev *zldev,
+ 		return dev_err_probe(zldev->dev, rc,
+ 				     "Failed to initialize mutex\n");
+ 
++	/* Fetch device state */
++	rc = zl3073x_dev_state_fetch(zldev);
++	if (rc)
++		return rc;
++
+ 	/* Register the device as devlink device */
+ 	devlink = priv_to_devlink(zldev);
+ 	devlink_register(devlink);
+diff --git a/drivers/mfd/zl3073x-regs.h b/drivers/mfd/zl3073x-regs.h
+index 6bb7ea1ef0b5..dcd278acab4b 100644
+--- a/drivers/mfd/zl3073x-regs.h
++++ b/drivers/mfd/zl3073x-regs.h
+@@ -14,4 +14,41 @@
+ #define ZL_REG_FW_VER				ZL_REG(0, 0x05, 2)
+ #define ZL_REG_CUSTOM_CONFIG_VER		ZL_REG(0, 0x07, 4)
+ 
++/***********************************
++ * Register Page 9, Synth and Output
++ ***********************************/
++
++#define ZL_REG_SYNTH_CTRL(_idx)						\
++	ZL_REG_IDX(_idx, 9, 0x00, 1, ZL3073X_NUM_SYNTHS, 1)
++#define ZL_SYNTH_CTRL_EN			BIT(0)
++#define ZL_SYNTH_CTRL_DPLL_SEL			GENMASK(6, 4)
++
++#define ZL_REG_OUTPUT_CTRL(_idx)					\
++	ZL_REG_IDX(_idx, 9, 0x28, 1, ZL3073X_NUM_OUTPUTS, 1)
++#define ZL_OUTPUT_CTRL_EN			BIT(0)
++#define ZL_OUTPUT_CTRL_SYNTH_SEL		GENMASK(6, 4)
++
++/*******************************
++ * Register Page 10, Ref Mailbox
++ *******************************/
++
++#define ZL_REG_REF_CONFIG			ZL_REG(10, 0x0d, 1)
++#define ZL_REF_CONFIG_ENABLE			BIT(0)
++#define ZL_REF_CONFIG_DIFF_EN			BIT(2)
++
++/*********************************
++ * Register Page 13, Synth Mailbox
++ *********************************/
++
++#define ZL_REG_SYNTH_MB_MASK			ZL_REG(13, 0x02, 2)
++
++#define ZL_REG_SYNTH_MB_SEM			ZL_REG(13, 0x04, 1)
++#define ZL_SYNTH_MB_SEM_WR			BIT(0)
++#define ZL_SYNTH_MB_SEM_RD			BIT(1)
++
++#define ZL_REG_SYNTH_FREQ_BASE			ZL_REG(13, 0x06, 2)
++#define ZL_REG_SYNTH_FREQ_MULT			ZL_REG(13, 0x08, 4)
++#define ZL_REG_SYNTH_FREQ_M			ZL_REG(13, 0x0c, 2)
++#define ZL_REG_SYNTH_FREQ_N			ZL_REG(13, 0x0e, 2)
++
+ #endif /* __ZL3073X_REGS_H */
+diff --git a/include/linux/mfd/zl3073x-regs.h b/include/linux/mfd/zl3073x-regs.h
+index cd2baed244eb..d94bd389f9a7 100644
+--- a/include/linux/mfd/zl3073x-regs.h
++++ b/include/linux/mfd/zl3073x-regs.h
+@@ -63,4 +63,26 @@
+ #define ZL_REG(_page, _offset, _size)					\
+ 	ZL_REG_IDX(0, _page, _offset, _size, 1, 0)
+ 
++/*******************************
++ * Register Page 10, Ref Mailbox
++ *******************************/
++
++#define ZL_REG_REF_MB_MASK			ZL_REG(10, 0x02, 2)
++
++#define ZL_REG_REF_MB_SEM			ZL_REG(10, 0x04, 1)
++#define ZL_REF_MB_SEM_WR			BIT(0)
++#define ZL_REF_MB_SEM_RD			BIT(1)
++
++/**********************************
++ * Register Page 14, Output Mailbox
++ **********************************/
++#define ZL_REG_OUTPUT_MB_MASK			ZL_REG(14, 0x02, 2)
++
++#define ZL_REG_OUTPUT_MB_SEM			ZL_REG(14, 0x04, 1)
++#define ZL_OUTPUT_MB_SEM_WR			BIT(0)
++#define ZL_OUTPUT_MB_SEM_RD			BIT(1)
++
++#define ZL_REG_OUTPUT_MODE			ZL_REG(14, 0x05, 1)
++#define ZL_OUTPUT_MODE_SIGNAL_FORMAT		GENMASK(7, 4)
++
+ #endif /* __LINUX_MFD_ZL3073X_REGS_H */
+diff --git a/include/linux/mfd/zl3073x.h b/include/linux/mfd/zl3073x.h
+index a42a275577c4..ca78ab6600f6 100644
+--- a/include/linux/mfd/zl3073x.h
++++ b/include/linux/mfd/zl3073x.h
+@@ -9,22 +9,71 @@
+ struct device;
+ struct regmap;
+ 
++/*
++ * Hardware limits for ZL3073x chip family
++ */
++#define ZL3073X_NUM_INPUTS	10
++#define ZL3073X_NUM_OUTPUTS	10
++#define ZL3073X_NUM_SYNTHS	5
++
++/**
++ * struct zl3073x_input - input invariant info
++ * @enabled: input is enabled or disabled
++ * @diff: true if input is differential
++ */
++struct zl3073x_input {
++	bool	enabled;
++	bool	diff;
++};
++
++/**
++ * struct zl3073x_output - output invariant info
++ * @enabled: output is enabled or disabled
++ * @synth: synthesizer the output is connected to
++ * @signal_format: output signal format
++ */
++struct zl3073x_output {
++	bool	enabled;
++	u8	synth;
++	u8	signal_format;
++};
++
++/**
++ * struct zl3073x_synth - synthesizer invariant info
++ * @freq: synthesizer frequency
++ * @dpll: ID of DPLL the synthesizer is driven by
++ */
++struct zl3073x_synth {
++	u64	freq;
++	u8	dpll;
++};
++
+ /**
+  * struct zl3073x_dev - zl3073x device
+  * @dev: pointer to device
+  * @regmap: regmap to access device registers
+  * @multiop_lock: to serialize multiple register operations
++ * @input: array of inputs' invariants
++ * @output: array of outputs' invariants
++ * @synth: array of synthesizers' invariants
+  */
+ struct zl3073x_dev {
+ 	struct device		*dev;
+ 	struct regmap		*regmap;
+ 	struct mutex		multiop_lock;
++
++	/* Invariants */
++	struct zl3073x_input	input[ZL3073X_NUM_INPUTS];
++	struct zl3073x_output	output[ZL3073X_NUM_OUTPUTS];
++	struct zl3073x_synth	synth[ZL3073X_NUM_SYNTHS];
+ };
+ 
+ /**********************
+  * Registers operations
+  **********************/
+ 
++int zl3073x_mb_op(struct zl3073x_dev *zldev, unsigned int op_reg, u8 op_val,
++		  unsigned int mask_reg, u16 mask_val);
+ int zl3073x_poll_zero_u8(struct zl3073x_dev *zldev, unsigned int reg, u8 mask);
+ int zl3073x_read_u8(struct zl3073x_dev *zldev, unsigned int reg, u8 *val);
+ int zl3073x_read_u16(struct zl3073x_dev *zldev, unsigned int reg, u16 *val);
+@@ -35,4 +84,108 @@ int zl3073x_write_u16(struct zl3073x_dev *zldev, unsigned int reg, u16 val);
+ int zl3073x_write_u32(struct zl3073x_dev *zldev, unsigned int reg, u32 val);
+ int zl3073x_write_u48(struct zl3073x_dev *zldev, unsigned int reg, u64 val);
+ 
++static inline
++bool zl3073x_is_n_pin(u8 index)
++{
++	/* P-pins indices are even while N-pins are odd */
++	return index & 1;
++}
++
++static inline
++bool zl3073x_is_p_pin(u8 index)
++{
++	return !zl3073x_is_n_pin(index);
++}
++
++/**
++ * zl3073x_input_is_diff - check if the given input ref is differential
++ * @zldev: pointer to zl3073x device
++ * @index: output index
++ *
++ * Return: true if input is differential, false if input is single-ended
++ */
++static inline
++bool zl3073x_input_is_diff(struct zl3073x_dev *zldev, u8 index)
++{
++	return zldev->input[index].diff;
++}
++
++/**
++ * zl3073x_input_is_enabled - check if the given input ref is enabled
++ * @zldev: pointer to zl3073x device
++ * @index: input index
++ *
++ * Return: true if input is enabled, false if input is disabled
++ */
++static inline
++bool zl3073x_input_is_enabled(struct zl3073x_dev *zldev, u8 index)
++{
++	return zldev->input[index].enabled;
++}
++
++/**
++ * zl3073x_output_is_enabled - check if the given output is enabled
++ * @zldev: pointer to zl3073x device
++ * @index: output index
++ *
++ * Return: true if output is enabled, false if output is disabled
++ */
++static inline
++u8 zl3073x_output_is_enabled(struct zl3073x_dev *zldev, u8 index)
++{
++	return zldev->output[index].enabled;
++}
++
++/**
++ * zl3073x_output_signal_format_get - get output signal format
++ * @zldev: pointer to zl3073x device
++ * @index: output index
++ *
++ * Return: signal format of given output
++ */
++static inline
++u8 zl3073x_output_signal_format_get(struct zl3073x_dev *zldev, u8 index)
++{
++	return zldev->output[index].signal_format;
++}
++
++/**
++ * zl3073x_output_synth_get - get synth connected to given output
++ * @zldev: pointer to zl3073x device
++ * @index: output index
++ *
++ * Return: index of synth connected to given output.
++ */
++static inline
++u8 zl3073x_output_synth_get(struct zl3073x_dev *zldev, u8 index)
++{
++	return zldev->output[index].synth;
++}
++
++/**
++ * zl3073x_synth_dpll_get - get DPLL ID the synth is driven by
++ * @zldev: pointer to zl3073x device
++ * @index: synth index
++ *
++ * Return: ID of DPLL the given synthetizer is driven by
++ */
++static inline
++u64 zl3073x_synth_dpll_get(struct zl3073x_dev *zldev, u8 index)
++{
++	return zldev->synth[index].dpll;
++}
++
++/**
++ * zl3073x_synth_freq_get - get synth current freq
++ * @zldev: pointer to zl3073x device
++ * @index: synth index
++ *
++ * Return: frequency of given synthetizer
++ */
++static inline
++u64 zl3073x_synth_freq_get(struct zl3073x_dev *zldev, u8 index)
++{
++	return zldev->synth[index].freq;
++}
++
+ #endif /* __LINUX_MFD_ZL3073X_H */
 -- 
 2.49.0
 
