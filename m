@@ -1,65 +1,78 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D8728A40B;
-	Wed,  7 May 2025 15:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC74D2144CD;
+	Wed,  7 May 2025 15:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746630915; cv=none; b=AxrhZwAv7b5+LHuIHZM0qYvVBxM7HcTrZa6t7VXzg/nqPEb9GXWVw04QsHk89TzC3iPSIdw2v8Pah8xYaUTFrQoEB+u2uJBen3Y7CG1bDhX5g7tGnuZILFUrru+XB5RJilhw+zbx9KI3LYvXsTPNlQajFYjq+cxB5h3TT8SKAuM=
+	t=1746631287; cv=none; b=e0K6i3YI5yS+CDaeXuZgdOr6qMafXVa/+23NBnhViCX6Qs1rPawfMc7dD/H5NIJSDwuQyG0OVGtm3TvfBCQDsXPMOdOtdoQ7KU6fE3Re7OAx73mMHUhOiceA5BXX8aENgBKP6BppZZSaHKc8dT3XzyJsSbq9xvJ0PnWavszkYgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746630915; c=relaxed/simple;
-	bh=5tkF3CDM/SiahZE1ey/V/R9PuHe6xmDu1THD4EbU57Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uxi4ZLt1UdpeHux5GV2DOPFWGDcoWwq/qgLklpP6fB8spOGTzzWNSFowSyng/H8LLvzKvKNPvtm+W91swWvWYZ29nAxXoCzbDgVf6tJxtorO2/rbFvBGAa02IJSrFsYA0k7ONkl3rpVDVCgx4uQO8cMtRZDg3PMzOew2ugWxIoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lszMnzFx; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1746631287; c=relaxed/simple;
+	bh=Rp2RWQ2SmfrP/wcKdEEy5VWXzW6C7wbaPad+wRFEvEc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ePzaBfMnXuFjXYGWqYbpPEFJYfhHbnNON0F4KFdxtKZ/tlj0Qs806v770gTyLhXcW8g7c5DwBf3exzzeMOZX7pPrWViSUQKytnPeje7+upX1hAQqOeUei5KroBssq9leuMtbMGp/VGCPBtFeuyH5dOG2P8aHI6W67spOTS1Pj68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S03gyzyH; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lszMnzFx"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54795ISI004107;
-	Wed, 7 May 2025 15:15:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=uNrmQhTG6hbnUeRlUgPPTB1Jk+T5FRziSefdljTfZ
-	YY=; b=lszMnzFxEynDa40P61y45fNpCk784ts7Q0wM2XHskJfIzh7YiG40jcFeK
-	/KR4oEJEbDL/mkbQgvouksvIRVcPLNM/nc9+jTCnJzRMn6U0pzjRs1fk/Flp2mJ3
-	0fdn59oeQJfZh1vGPwzaAuOj14/pvXFU/h60AF4cR2S8hWd4nKN1ed4x4sJen2Nb
-	w+Txfwt5//NswH99gmCYc790VDMmy5c75kyR8gnT9U6JDKPTw4Xra4d7b78iqyMc
-	4h2uwruZO2tNJNPNa95Oc+qK4Qcvf4toyNsIO8zCOCaL3JMZcug3tGAVmPrnwKnw
-	1ahYPYGzrrohjlB9Uh6nrKY7cRkpA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46ft0mcg2n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 May 2025 15:15:08 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 547CDWaF004231;
-	Wed, 7 May 2025 15:15:07 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46fjb25ynx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 May 2025 15:15:07 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 547FF2rT24707818
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 7 May 2025 15:15:03 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BB69558062;
-	Wed,  7 May 2025 15:15:05 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 848E65805E;
-	Wed,  7 May 2025 15:15:05 +0000 (GMT)
-Received: from WIN-DU0DFC9G5VV.austin.ibm.com (unknown [9.41.105.251])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  7 May 2025 15:15:05 +0000 (GMT)
-From: Konstantin Shkolnyy <kshk@linux.ibm.com>
-To: sgarzare@redhat.com
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, mjrosato@linux.ibm.com,
-        Konstantin Shkolnyy <kshk@linux.ibm.com>
-Subject: [PATCH net v2] vsock/test: Fix occasional failure in SIOCOUTQ tests
-Date: Wed,  7 May 2025 10:14:56 -0500
-Message-Id: <20250507151456.2577061-1-kshk@linux.ibm.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S03gyzyH"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-22423adf751so80062275ad.2;
+        Wed, 07 May 2025 08:21:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746631285; x=1747236085; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FHYXpGSD8xf0POifLdqzvkcg78XfISduLF2AQceCFVg=;
+        b=S03gyzyHAop54EyMzDzN/4TznHBg6eXllPGcydI2FEHRIu8/UIrAAj1CyaeIwRnhZr
+         4JXE8PKQD6hNlmYBNppGb/qefv7KNuR4VCDx64y5Aef5XXqr1Ev39diFUX/m/Slrlo9L
+         iumhfTni1ckZeJfoxqs4s0OT5lFLTkq4iM0WvtZNGcP5HZk95QrdFYlXtYrz3SCyJzU6
+         eItJHXfGpiJ+LqwIZmU/SAbarDgok28jcafN8Sh5aTi6LInVm19nJNrd+yKijzeGK4zn
+         XU7jAjaUCgJWOJifr1hCmaAxGUcksBUdV26OzpUSj3UqQo9yL6vIxVj4gOfqUXtpHlSR
+         02SA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746631285; x=1747236085;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FHYXpGSD8xf0POifLdqzvkcg78XfISduLF2AQceCFVg=;
+        b=eMusnHs6NpcQYmzn9xwaBRJmRvjtGfYNDBCitK19pI8jgBU3TlySajDHeWU9ARO1vH
+         wjWI5rOVVA6P0wnovHwNYrmLh4IjMOyo5+8d6MadmJPcXUWHFMSF5viK7s6cKL/kdSAN
+         rsYHKG6X7iyr0OCarmYWzvSC5mvQQ1JHxzvw5AH69aRQtlQnUGacDsWVQ6jPSWq7fi5Q
+         p+G+kuYiI4lraFALsHhbCU6idRIuXg9UFUOBaEIZRKRG9JBuRhyhxsDSudwUsT23Gb0u
+         OUVqj4DPB8i1Zc36D39clY5WG95K72iDexCI52vnbdjGYSj0l6OGwEmWXHwo9jxNXdSR
+         ztPw==
+X-Forwarded-Encrypted: i=1; AJvYcCW0kAWsLGFFiBQ8mxPgXiom4TiUf1hBaGCJx0oMaapatHzy8xEubswOM0gEeV9IrHaIOy0AJvjww9e7REE=@vger.kernel.org, AJvYcCWxCi01+2Ty6TgjbCGZe4VIyPMLMIbRpueRumP4/lQBrlrsXBIoef75Zjp4EY5v6r8XJzThke9M@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxd7g6SDcnmixPsKyC++U7ysITcMQsvss8rrpYGdHKPhkW1/jF1
+	fmeMur1hTzpftro7fjf9xFCY61EVkWGhMUwITVU6/ziAra4n+fHD
+X-Gm-Gg: ASbGncsOWtezl7+IXr+LGX1z5db/OQDzf4b6AHIaIBGkMdE8n73e85cwIYFbtKExXqo
+	tkuTiFFgkeYV/h2QvHzNvys3uSyRnIGeYR0tQAAQYdtVVF7Zqt44QbN/sQR/vD3CBbUE8iZFCrL
+	lmvwdvqCu0RHIa+0cZ/suD2sF+xVOtW+tE5KxKdqUga+sSb006Lu3KyZf8qP2+74wQC9WjSFPpM
+	Ne2bdj8oOR6OeLjI5mfiRD7vygqUfyr5OQCObMG9JSY7ZsmOntVZ9VLohxFQK3MouuE7u8+OaY/
+	AGm0t8n0zw5dczZXv75CPvPyu72D/s6lIUxy/Y2ZnoANFP2eO7DDzw==
+X-Google-Smtp-Source: AGHT+IHFUiFNkkCbXkCtoDYGospKz+U/fHm+dGtocIkZN5tVhCqe60E9zpNrlEWkcod4loYukr8TJQ==
+X-Received: by 2002:a17:903:198d:b0:224:24d3:60f4 with SMTP id d9443c01a7336-22e5ea792a6mr49831435ad.15.1746631284997;
+        Wed, 07 May 2025 08:21:24 -0700 (PDT)
+Received: from localhost.localdomain ([49.37.223.8])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-22e15228f62sm94771405ad.168.2025.05.07.08.21.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 May 2025 08:21:24 -0700 (PDT)
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
+To: shshaikh@marvell.com
+Cc: Abdun Nihaal <abdun.nihaal@gmail.com>,
+	manishc@marvell.com,
+	GR-Linux-NIC-Dev@marvell.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	rajesh.borundia@qlogic.com,
+	sucheta.chakraborty@qlogic.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] qlcnic: fix memory leak in qlcnic_sriov_channel_cfg_cmd()
+Date: Wed,  7 May 2025 20:51:00 +0530
+Message-ID: <20250507152102.53783-1-abdun.nihaal@gmail.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,91 +80,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: N5VCJu82kjq3pSZkrKerxRsT73TIubyF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA3MDE0MiBTYWx0ZWRfX0RBznA7dB3wc o99INo9SP5+GQM+nfpXtHYE7gvSpE+8ms8Vd4ilsnLGkvSCLlUafIj256ntO9yIAdONEm8kJpvf 6DPjNmF28P/0cL6aDXBG5+8BU9rP5ABQoe12o14xDkuDwvqGHiRTGMAIR9P1OSVgudHkaHayUUq
- y+ttoyXDhabtviVhdSnLqGSKPBB9zHycSN8RoFYwKDOOEJunWh3KmMj6+DaLnJM+oFOo1X1jgWJ CcyhHWpjGxwygDGxgzHrhP/hA5x6N76/VNH45SpvqHD7mjtK4lMZW104duVUBx/LUKG0AokBige MKH6Go8PqxHpW7J6ImEbHZJbD7APFiuaQIR9T1PbdvJuljncE2Nsb0nK59H+FafqoBP6/Iqce0b
- Fc90gQ7qMtvE3GMmSQgobebZYFXPDgSJLK/8i+1fuCUWT3aSrWO9itYBpUp5u2l/xOw61Ah2
-X-Authority-Analysis: v=2.4 cv=U4eSDfru c=1 sm=1 tr=0 ts=681b78fc cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=3dInbp6vRfHhuKdI63AA:9
-X-Proofpoint-GUID: N5VCJu82kjq3pSZkrKerxRsT73TIubyF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-07_04,2025-05-06_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
- suspectscore=0 phishscore=0 spamscore=0 clxscore=1015 mlxlogscore=999
- lowpriorityscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
- mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505070142
 
-These tests:
-    "SOCK_STREAM ioctl(SIOCOUTQ) 0 unsent bytes"
-    "SOCK_SEQPACKET ioctl(SIOCOUTQ) 0 unsent bytes"
-output: "Unexpected 'SIOCOUTQ' value, expected 0, got 64 (CLIENT)".
+In one of the error paths in qlcnic_sriov_channel_cfg_cmd(), the memory
+allocated in qlcnic_sriov_alloc_bc_mbx_args() for mailbox arguments is
+not freed. Fix that by jumping to the error path that frees them, by
+calling qlcnic_free_mbx_args().
 
-They test that the SIOCOUTQ ioctl reports 0 unsent bytes after the data
-have been received by the other side. However, sometimes there is a delay
-in updating this "unsent bytes" counter, and the test fails even though
-the counter properly goes to 0 several milliseconds later.
-
-The delay occurs in the kernel because the used buffer notification
-callback virtio_vsock_tx_done(), called upon receipt of the data by the
-other side, doesn't update the counter itself. It delegates that to
-a kernel thread (via vsock->tx_work). Sometimes that thread is delayed
-more than the test expects.
-
-Change the test to poll SIOCOUTQ until it returns 0 or a timeout occurs.
-
-Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
+Fixes: f197a7aa6288 ("qlcnic: VF-PF communication channel implementation")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
 ---
-Changes in v2:
- - Use timeout_check() to end polling, instead of counting iterations.
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
- tools/testing/vsock/vsock_test.c | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
-
-diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
-index d0f6d253ac72..613551132a96 100644
---- a/tools/testing/vsock/vsock_test.c
-+++ b/tools/testing/vsock/vsock_test.c
-@@ -1264,21 +1264,25 @@ static void test_unsent_bytes_client(const struct test_opts *opts, int type)
- 	send_buf(fd, buf, sizeof(buf), 0, sizeof(buf));
- 	control_expectln("RECEIVED");
+diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
+index 28d24d59efb8..d57b976b9040 100644
+--- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
++++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
+@@ -1484,8 +1484,11 @@ static int qlcnic_sriov_channel_cfg_cmd(struct qlcnic_adapter *adapter, u8 cmd_o
+ 	}
  
--	ret = ioctl(fd, SIOCOUTQ, &sock_bytes_unsent);
--	if (ret < 0) {
--		if (errno == EOPNOTSUPP) {
--			fprintf(stderr, "Test skipped, SIOCOUTQ not supported.\n");
--		} else {
-+	/* SIOCOUTQ isn't guaranteed to instantly track sent data. Even though
-+	 * the "RECEIVED" message means that the other side has received the
-+	 * data, there can be a delay in our kernel before updating the "unsent
-+	 * bytes" counter. Repeat SIOCOUTQ until it returns 0.
-+	 */
-+	timeout_begin(TIMEOUT);
-+	do {
-+		ret = ioctl(fd, SIOCOUTQ, &sock_bytes_unsent);
-+		if (ret < 0) {
-+			if (errno == EOPNOTSUPP) {
-+				fprintf(stderr, "Test skipped, SIOCOUTQ not supported.\n");
-+				break;
-+			}
- 			perror("ioctl");
- 			exit(EXIT_FAILURE);
- 		}
--	} else if (ret == 0 && sock_bytes_unsent != 0) {
--		fprintf(stderr,
--			"Unexpected 'SIOCOUTQ' value, expected 0, got %i\n",
--			sock_bytes_unsent);
--		exit(EXIT_FAILURE);
--	}
--
-+		timeout_check("SIOCOUTQ");
-+	} while (sock_bytes_unsent != 0);
-+	timeout_end();
- 	close(fd);
- }
- 
+ 	cmd_op = (cmd.rsp.arg[0] & 0xff);
+-	if (cmd.rsp.arg[0] >> 25 == 2)
+-		return 2;
++	if (cmd.rsp.arg[0] >> 25 == 2) {
++		ret = 2;
++		goto out;
++	}
++
+ 	if (cmd_op == QLCNIC_BC_CMD_CHANNEL_INIT)
+ 		set_bit(QLC_BC_VF_STATE, &vf->state);
+ 	else
 -- 
-2.34.1
+2.47.2
 
