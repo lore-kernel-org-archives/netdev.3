@@ -1,182 +1,160 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16887227B95
-	for <netdev@vger.kernel.org>; Thu,  8 May 2025 12:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEC714A4C7;
+	Thu,  8 May 2025 12:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746707010; cv=none; b=uFzUhimI4jlrlx6jIcfPk4FlIJLg/bcgV01I5Sck2lDWF15aCw9VcGhTxGQ4OcobDYFUZi/IY3sJv9ahbduRpKjf/Yw+V2WUO44F4A+ivpps5DEUnJP0xffRsuX7PO6pgr0h/+eauPNp2DIAKUVT5e19G62hhkv2MaFAY2c0OK0=
+	t=1746707246; cv=none; b=msWbITtU2s73NARQ+5/CfivSEs1uZDNO7ysBCR6SfqRoBjF+xBr50F52lxxRYL9fQhbzsfb83ebXn6yrceEw5oaaR5HKv46Nh4yOtLJDtxbtsac+/Wr0sDoaigCKRP6PAlBicBovISy5dzo/xIL6leZE0R8yb2iRE076lMSvKYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746707010; c=relaxed/simple;
-	bh=IJiVHfiQ/sN6BEfO7MXn+IH8AM0+CIljhV3S0beWA2M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RQESVVITzQrD4cdflNbDgIx/+BlJmUWcyQyo9aVVyZ0iO+MOD21riPRaqPfEcGZe6VkKBO+ztTD5zqUncQ2rYzWJB45UuZ24KV8DOEfktwtsvpiYlmFenRhtTAZC3knWKypDZ0e291Fz6X0FZOxcH+nWjyFC1LfjHruVSruOTIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FYeyukRy; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746707246; c=relaxed/simple;
+	bh=6GjyiTfn5SI4PebBO0uNWjR6eASjOV4bUgJNv0Jed3A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RYeJFwj7kk4ZzISeUakvDU1LiWzWoYbHPqZv/M2akaQsd+Eg3oxVE4hnsV8ng2IuqFHmFcBbKehuusVgwfmelVbRh+24svGQD3wD4+cAV2gt672rM892f5N3kKngceRTlI/msl1C49E5lWfsa3yPFy6Iow8iL55gklz3cPPsY84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VTMBHg7M; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FYeyukRy"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-477296dce8dso10117471cf.3
-        for <netdev@vger.kernel.org>; Thu, 08 May 2025 05:23:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746707007; x=1747311807; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jYX8qqDD4JOYlfuvNPe4ZEMyg6c1lBo9WKWQB/eyoT0=;
-        b=FYeyukRymg6YgXTyGyM55KWUt8uNIYZ4tyadcpBMw9G+4A3h8eM12LDyzNjkbmsQGy
-         XPbw8pk3vAr4k3pPkA6HL8y2QnNb1BbbEsrlksr+QgEpn8cJA5ZJ7rtUADrOYwAjVZyR
-         TD1fArrPcQzhRbNmyVnt5aFrMRfsDbr9XQVMtZFoxbKf+ktv8Vgviz9hMIBBtLHWjvRE
-         qgK9zXROZYEwF4bGXb6kGMOCSPx/ve89jjHgjy6ujuSxT0Lbwbo5RXhDo7h8l8xzxnh2
-         pMicahlil1VY3x1jWVlesxmrmmbHqbWrA0v2D/WPJRD7s5LiAy5FLal/0Ag6Dea0knDb
-         3Cow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746707007; x=1747311807;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jYX8qqDD4JOYlfuvNPe4ZEMyg6c1lBo9WKWQB/eyoT0=;
-        b=F1WkYgYkUlkU4WGXEjRgahQlnm/H7eGUPM6jYK1XP8kPN/keM7sz2NJutnlZgUldyL
-         sEWb4mHUdiMso6TYnsi6Y5yRTA+FjHLc3i1wlJRqzuez8H+QKkDO40ccNxX8BChumgHJ
-         mALcnkLmbma5KdiqY0yvZkgPobp6O1RaRNWJyxuxHypSEw/sQQSfDMi+XUGpEHRUVoAj
-         xeZILc1OwFOtth7pgXpj0q8HOxHY9yz/3xtMGrVk2hXLc6IrBtvD++xyeorFUAnHd/g4
-         7xqbvUeqvP2U5vtHeByVPByd/dgU5vrsE7yXLoZbaVwCaGD0EelMHeL8JXkPpZGXZ6/u
-         MIrA==
-X-Forwarded-Encrypted: i=1; AJvYcCXGQMoCcYJx3lUXtakBeB6mv1yQKGZzHnI78oogcaDixaDd7RlssfMQCSQXoAbsQg//fEV3b+Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmWd7iAuU2ADQUgvYMkAUT4MzIt0G5m0Aaz2eMnLYSPRrktLEj
-	k1oaBdVTEfNAXQgsEDP8VKGtUqZKXwplBiSZpSmQhfvpZ+moKrQQnE5QwmfUiOt/2M/gpknuSgj
-	TK3KreglVZGxCP4ymgEpNFa3Xh+gLwaJegCY=
-X-Gm-Gg: ASbGncv4QIsIoYsBeM8+K6heM4nJpYXW6rXmHL2s+V9jqspCoaFIh0u5M8f7aGUXHOd
-	lhbDl5c8u9SyuDTZ6m56t6FWMYe9Cj0RL0G4FbVH42+xKjt1mGcPUneaOqcijJPzLIUHE4hWnRp
-	5a2cEzDJc0nnPCam/mvI1jAg==
-X-Google-Smtp-Source: AGHT+IE+uL01gV6BnaJuogyasEEOBXMdeInFnUaS5xfQn4hQfGn/seeOu61dluwOGAXIkgHX/HPbWChIzJK/4OO/xCI=
-X-Received: by 2002:a05:6e02:12ef:b0:3d9:6cb5:3be4 with SMTP id
- e9e14a558f8ab-3da7392c8d3mr79276605ab.15.1746706996046; Thu, 08 May 2025
- 05:23:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VTMBHg7M"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746707245; x=1778243245;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6GjyiTfn5SI4PebBO0uNWjR6eASjOV4bUgJNv0Jed3A=;
+  b=VTMBHg7M6pffPze0+emr06uAUjZG8/KntYsoEEF6FSlNyWoC4hywLHMR
+   lWyO+pw1NxlETUeYzuqj+1OCZZa5QmJlXgsIXsJWlVq1dZVf9IEhK2oXO
+   zNGLi5kSl+bf4R5RgH7To9WHHgtMzsk2CqWQdOezQIY3WapMpyVSYjaLF
+   6jfK0y9b4B8NZgvI1gtpz3lYAJlb3GgyGBxOl2OmA/+81a54c2ALND6gP
+   EXFr8tyT6o4Y1OcuxR2GKOUL+QoWyoxXsDVaz6VRzC56BjscHdPKVOyLT
+   57SOrw/oH92JM8xJMetDGKVFG7YyMdaIYwppgWvT7wC4hpEtpe3LB6UUn
+   w==;
+X-CSE-ConnectionGUID: Nw0o8fcMQUePT2Gr5uknRg==
+X-CSE-MsgGUID: q2nApTZASEWdUgoPlVOVUA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="36115102"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
+   d="scan'208";a="36115102"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 05:27:25 -0700
+X-CSE-ConnectionGUID: 65W7j38jRyO6Pv3w4+EBiA==
+X-CSE-MsgGUID: fsyGWW4PQO+5/tmgOs6e+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
+   d="scan'208";a="136772854"
+Received: from amlin-018-114.igk.intel.com ([10.102.18.114])
+  by fmviesa010.fm.intel.com with ESMTP; 08 May 2025 05:27:19 -0700
+From: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+To: donald.hunter@gmail.com,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	vadim.fedorenko@linux.dev,
+	jiri@resnulli.us,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	jonathan.lemon@gmail.com,
+	richardcochran@gmail.com,
+	aleksandr.loktionov@intel.com,
+	milena.olech@intel.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	linux-rdma@vger.kernel.org,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Subject: [PATCH net-next v3 0/3]  dpll: add all inputs phase offset monitor
+Date: Thu,  8 May 2025 14:21:25 +0200
+Message-Id: <20250508122128.1216231-1-arkadiusz.kubalewski@intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250508033328.12507-1-kerneljasonxing@gmail.com>
- <20250508033328.12507-5-kerneljasonxing@gmail.com> <20250508070700.m3bufh2q4v4llbfx@DEN-DL-M31836.microchip.com>
- <CAL+tcoCuvxfQUbzjSfk+7vPWLEqQgVK8muqkOQe+N6jQQwXfUw@mail.gmail.com> <20250508094156.kbegdd5vianotsrr@DEN-DL-M31836.microchip.com>
-In-Reply-To: <20250508094156.kbegdd5vianotsrr@DEN-DL-M31836.microchip.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Thu, 8 May 2025 20:22:39 +0800
-X-Gm-Features: ATxdqUF7fr2w19MfngP-Su9tvfrXMs7O2uRtM2xM9K46rrKLvtXS-sBBlIBE5e0
-Message-ID: <CAL+tcoBrB05QSTQjcCS7=W3GRTC5MeGoKv=inxtQHPvmYcmVyA@mail.gmail.com>
-Subject: Re: [PATCH net-next v1 4/4] net: lan966x: generate software timestamp
- just before the doorbell
-To: Horatiu Vultur <horatiu.vultur@microchip.com>
-Cc: irusskikh@marvell.com, andrew+netdev@lunn.ch, bharat@chelsio.com, 
-	ayush.sawal@chelsio.com, UNGLinuxDriver@microchip.com, 
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	sgoutham@marvell.com, willemb@google.com, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, 
-	Jason Xing <kernelxing@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 8, 2025 at 5:44=E2=80=AFPM Horatiu Vultur
-<horatiu.vultur@microchip.com> wrote:
->
-> The 05/08/2025 16:40, Jason Xing wrote:
-> > Hi Horatiu,
->
-> Hi Jason,
->
-> >
-> > On Thu, May 8, 2025 at 3:08=E2=80=AFPM Horatiu Vultur
-> > <horatiu.vultur@microchip.com> wrote:
-> > >
-> > > The 05/08/2025 11:33, Jason Xing wrote:
-> > > >
-> > > > From: Jason Xing <kernelxing@tencent.com>
-> > > >
-> > > > Make sure the call of skb_tx_timestamp as close to the doorbell.
-> > > >
-> > > > Signed-off-by: Jason Xing <kernelxing@tencent.com>
-> > > > ---
-> > > >  drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c =
-b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-> > > > index 502670718104..e030f23e5145 100644
-> > > > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-> > > > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-> > > > @@ -730,7 +730,6 @@ int lan966x_fdma_xmit(struct sk_buff *skb, __be=
-32 *ifh, struct net_device *dev)
-> > > >                 }
-> > > >         }
-> > > >
-> > > > -       skb_tx_timestamp(skb);
-> > >
-> > > Changing this will break the PHY timestamping because the frame gets
-> > > modified in the next line, meaning that the classify function will
-> > > always return PTP_CLASS_NONE.
-> >
-> > Sorry that I'm not that familiar with the details. I will remove it
-> > from this series, but still trying to figure out what cases could be.
-> >
-> > Do you mean it can break when bpf prog is loaded because
-> > 'skb_push(skb, IFH_LEN_BYTES);' expands the skb->data area?
->
-> Well, the bpf program will check if it is a PTP frame that needs to be
-> timestamp when it runs ptp_classify_raw, and as we push some data in
-> front of the frame, the bpf will run from that point meaning that it
-> would failed to detect the PTP frames.
+Add dpll device level feature: phase offset monitor.
 
-Thanks for the kind reply.
+Phase offset measurement is typically performed against the current active
+source. However, some DPLL (Digital Phase-Locked Loop) devices may offer
+the capability to monitor phase offsets across all available inputs.
+The attribute and current feature state shall be included in the response
+message of the ``DPLL_CMD_DEVICE_GET`` command for supported DPLL devices.
+In such cases, users can also control the feature using the
+``DPLL_CMD_DEVICE_SET`` command by setting the ``enum dpll_feature_state``
+values for the attribute.
 
-It looks like how to detect depends on how the bpf prog is written?
-Mostly depends on how the writer handles this data part. Even though
-we don't guarantee on how to ask users/admins to write/adjust their
-bpf codes, it's not that convenient for them if this patch is applied,
-to be frank. I'm not pushing you to accept this patch, just curious on
-"how and why". Now I can guess why you're opposed to it....
+Implement feature support in ice driver for dpll-enabled devices.
 
-Thanks,
-Jason
+Verify capability:
+$ ./tools/net/ynl/pyynl/cli.py \
+ --spec Documentation/netlink/specs/dpll.yaml \
+ --dump device-get
+[{'clock-id': 4658613174691613800,
+  'id': 0,
+  'lock-status': 'locked-ho-acq',
+  'mode': 'automatic',
+  'mode-supported': ['automatic'],
+  'module-name': 'ice',
+  'type': 'eec'},
+ {'clock-id': 4658613174691613800,
+  'id': 1,
+  'lock-status': 'locked-ho-acq',
+  'mode': 'automatic',
+  'mode-supported': ['automatic'],
+  'module-name': 'ice',
+  'phase-offset-monitor': 'disable',
+  'type': 'pps'}]
 
->
-> > May I ask
-> > how the modified data of skb breaks the PHY timestamping feature?
->
-> If it fails to detect that it is a PTP frame, then the frame will not be
-> passed to the PHY using the callback txtstamp. So the PHY will timestamp =
-the
-> frame but it doesn't have the frame to attach the timestamp.
->
-> >
-> > Thanks,
-> > Jason
-> >
-> > >
-> > > Nacked-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-> > >
-> > > >         skb_push(skb, IFH_LEN_BYTES);
-> > > >         memcpy(skb->data, ifh, IFH_LEN_BYTES);
-> > > >         skb_put(skb, 4);
-> > > > @@ -768,6 +767,7 @@ int lan966x_fdma_xmit(struct sk_buff *skb, __be=
-32 *ifh, struct net_device *dev)
-> > > >                 next_dcb_buf->ptp =3D true;
-> > > >
-> > > >         /* Start the transmission */
-> > > > +       skb_tx_timestamp(skb);
-> > > >         lan966x_fdma_tx_start(tx);
-> > > >
-> > > >         return NETDEV_TX_OK;
-> > > > --
-> > > > 2.43.5
-> > > >
-> > >
-> > > --
-> > > /Horatiu
->
-> --
-> /Horatiu
+Enable the feature:
+$ ./tools/net/ynl/pyynl/cli.py \
+ --spec Documentation/netlink/specs/dpll.yaml \
+ --do device-set --json '{"id":1, "phase-offset-monitor":"enable"}'
+
+Verify feature is enabled:
+$ ./tools/net/ynl/pyynl/cli.py \
+ --spec Documentation/netlink/specs/dpll.yaml \
+ --dump device-get
+[
+ [...]
+ {'capabilities': {'all-inputs-phase-offset-monitor'},
+  'clock-id': 4658613174691613800,
+  'id': 1,
+ [...]
+  'phase-offset-monitor': 'enable',
+ [...]]
+
+v3:
+- removed patch 1/4:
+  "dpll: use struct dpll_device_info for dpll registration"
+
+
+Arkadiusz Kubalewski (3):
+  dpll: add phase-offset-monitor feature to netlink spec
+  dpll: add phase_offset_monitor_get/set callbacks
+  ice: add phase offset monitor for all PPS dpll inputs
+
+ Documentation/driver-api/dpll.rst             |  16 ++
+ Documentation/netlink/specs/dpll.yaml         |  24 +++
+ drivers/dpll/dpll_netlink.c                   |  76 ++++++-
+ drivers/dpll/dpll_nl.c                        |   5 +-
+ .../net/ethernet/intel/ice/ice_adminq_cmd.h   |  20 ++
+ drivers/net/ethernet/intel/ice/ice_common.c   |  26 +++
+ drivers/net/ethernet/intel/ice/ice_common.h   |   3 +
+ drivers/net/ethernet/intel/ice/ice_dpll.c     | 191 +++++++++++++++++-
+ drivers/net/ethernet/intel/ice/ice_dpll.h     |   6 +
+ drivers/net/ethernet/intel/ice/ice_main.c     |   4 +
+ include/linux/dpll.h                          |   8 +
+ include/uapi/linux/dpll.h                     |  12 ++
+ 12 files changed, 386 insertions(+), 5 deletions(-)
+
+
+base-commit: 46431fd5224f7f3bab2823992ae1cf6f2700f1ce
+-- 
+2.38.1
+
