@@ -1,38 +1,38 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8C328FFED;
-	Fri,  9 May 2025 12:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50FB290BB3;
+	Fri,  9 May 2025 12:04:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746792295; cv=none; b=mdW8nNp455RXETrON71bDFacvxbj0uQZVyAkXWMDkQSUXCwis/GvvNEJENYkNOTsfVlT5P2waFx/BOSgNaJ/M2e279nqgRvMzrrjN+/xYHzdDqqtRW5MXcWpaQL9E5+7QMJYthZnXtwqubSOajZLEzBUlp9BhL7JTKst8cC/1n4=
+	t=1746792295; cv=none; b=a/tFKv/6VlQawQEdeyod7amuVfBuUP3LdnQHroqXHKF7sU4ZNJeIC/0p6orSmttM5lyRaon05QSP3mrGu579PqpWRlM7aKF0Ec6bVXG0KVX8D952wd8t1HR0Q3PU2f4KugN52tBqG5/i4SL7bI3A1TcCs7uVS6i3344TViU5pak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746792295; c=relaxed/simple;
-	bh=szttWa0JPEC+JvhU8cBYMvI//h7+JuD+0EvoFmpegX8=;
+	bh=bSFVDwN8D4G1us96dI4iB9j9aOSFB1APZESYIHOs2LA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Cxe60EnVmBSkUd5Oqsi+/WO+W3NyXxByv7uc/vrogjm43KT5UJITQq0hgOckFKFGf3knebw2QISNyWU4gs1NaEF/lFG5HzVrrI8eskyHGeeKTc1GiyKcO/yd2wDYAVmFPSTdCpzQHjTE1EtrEYfN/Sf0IVcnEnMSRdYU+Bd3ugs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=g4ISw/gw; arc=none smtp.client-ip=212.227.17.21
+	 MIME-Version; b=iMXBGkuVGbc8Qk1L2xs3zLmuhip6IGuDzrGDxwr0nwXyrtHqgnJpuBKtp1ebaVhKI10piPjFntLkSHG8uBnyUG9BUCXTBt2QrVc03P0uZsXR///3TWhrl6S1dXfhCgreHZ3i4WSSa8nvpfL0hgnqPvgeBVLZ8uopDh1QZOpa37k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=kT+YU9nW; arc=none smtp.client-ip=212.227.17.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="g4ISw/gw"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="kT+YU9nW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1746792283; x=1747397083; i=wahrenst@gmx.net;
-	bh=r8QbWdy35aMAZoLD6+7Ut+Lr+Nax9SROXt4VZiabsgI=;
+	s=s31663417; t=1746792282; x=1747397082; i=wahrenst@gmx.net;
+	bh=GU9F06VWTq6RKZnt3xFBDMIUJGjf9pRtqn9SeNwBKQs=;
 	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:In-Reply-To:
 	 References:MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=g4ISw/gwBTPpoGSbaSnFG/WvzGZ7gNTHTkFM2a7hsEFGvyXHovcUIE1TvRyD/FZg
-	 zEiJtWACVo8AFxTe1j3w2WCXatjPqdpOqSsCeHq3i8NIiRU1FclfiidgzS7DUa7tW
-	 k0sNf/68DjdQwJNPdHkXeyn/NVRinY9k2jbd3pBBP8gw5HvMy01dKeIW5jHbXABHt
-	 8fURGHPoclN4h7zhg1QNDZgfOAf1A4dyE+0GYG5xXRiulvvzF9BtTy7dmYRozJk2O
-	 daui+JuhZPx7aP6tFROBkuEr8ZMbiRfaA46xwJ4YmXCeggDXOjPW9cDOQUovwXYiJ
-	 oLg7+FE5TCXFyycqpw==
+	b=kT+YU9nWslwse2W670mja00b5EaJCKm5u/+A53cH/n1V5Lvy/4bsF+lkhEMZaSJz
+	 V9ISYJIu8/6y+T8kREjpgo0ycG1esz4fPjJdzYzgOBx1WSq+p+BwoPfUuz8GDx04F
+	 Vfqy824uJTxPE3F9vzGLCr3yGWqWrNDmRwfXR4LDjaXUIB0LKy9C5bUZo1l4GN5WI
+	 DyLXC7YfKl928I25OT/VDtsC307D6HAT7aQFB4W5y5WJx1CJhMOw8WPWnyEGuA3Ij
+	 J1X1CbivvYHH8CuNfnMrhhvtyK5C6FAl5zXCw/IuRQdgYNXLTpLhdkFD22G0l4yOv
+	 nsr+gAnDJDPzjDEnVA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from stefanw-SCHENKER ([91.41.216.208]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M1po0-1uB9Xf1V6W-004ibi; Fri, 09
- May 2025 14:04:43 +0200
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M7sDq-1u9WiB3Y6k-0034ye; Fri, 09
+ May 2025 14:04:41 +0200
 From: Stefan Wahren <wahrenst@gmx.net>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -44,10 +44,11 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Conor Dooley <conor+dt@kernel.org>
 Cc: netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH net-next V3 5/6] net: vertexcom: mse102x: Return code for mse102x_rx_pkt_spi
-Date: Fri,  9 May 2025 14:04:34 +0200
-Message-Id: <20250509120435.43646-6-wahrenst@gmx.net>
+	Stefan Wahren <wahrenst@gmx.net>,
+	Andrew Lunn <andrew@lunn.ch>
+Subject: [PATCH net-next V3 1/6] dt-bindings: vertexcom-mse102x: Fix IRQ type in example
+Date: Fri,  9 May 2025 14:04:30 +0200
+Message-Id: <20250509120435.43646-2-wahrenst@gmx.net>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250509120435.43646-1-wahrenst@gmx.net>
 References: <20250509120435.43646-1-wahrenst@gmx.net>
@@ -58,142 +59,81 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:lb5J0EIxQlseo6zBGKuABoB1jiI8Hy7xsqstIqbRMix+NQRdyCO
- RdwJ/jKS8at3aB9qYnpHNu4Q/WAwpiM7YITrcbLcRfexgjke29oJDTx/HCS28oMxbY8uf4z
- Tt+pXe7WAdza6znRiTXu5vXyh3cjIfDdEKNJCK/1wKvBTYhpXsbLXYG6+CEqnP1MMysu78O
- pPip2tin8NPkiJ43gdZzw==
+X-Provags-ID: V03:K1:B9f35Slo1ehizVftZtTa/La9brD9AMeRU4oYKK3XZNozqm/2Pwl
+ ZUAG/L2F9ScePF9PyT+qdpeHOSh7F6Xm7+9Gn4yktINLx3Gd9GKbgPOPm3eW827irfh7Po/
+ IWj9DD1rlWiRg4j82eWIhha8GRHP2HzTHmFeqM4kuZkYGpYX9vUKpRnyVsbjT10r7SdEHlb
+ dzzQGOuYd1QILO15xdb0A==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:yiTRsPEGlDk=;7flghkuaIp1uZmsLs+AR8fnMKNl
- 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
- V8h+Ip7Z3b1RJSTOpB7OJWbFq
+UI-OutboundReport: notjunk:1;M01:P0:OTT0taEpeS0=;Ykk6tuVw1hUFarnxTyOhqwSubfd
+ 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
 
-The MSE102x doesn't provide any interrupt register, so the only way
-to handle the level interrupt is to fetch the whole packet from
-the MSE102x internal buffer via SPI. So in cases the interrupt
-handler fails to do this, it should return IRQ_NONE. This allows
-the core to disable the interrupt in case the issue persists
-and prevent an interrupt storm.
+According to the MSE102x documentation the trigger type is a
+high level.
 
 Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 =2D--
- drivers/net/ethernet/vertexcom/mse102x.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ Documentation/devicetree/bindings/net/vertexcom-mse102x.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethern=
-et/vertexcom/mse102x.c
-index c2b8df604238..62219fd818f5 100644
-=2D-- a/drivers/net/ethernet/vertexcom/mse102x.c
-+++ b/drivers/net/ethernet/vertexcom/mse102x.c
-@@ -310,7 +310,7 @@ static void mse102x_dump_packet(const char *msg, int l=
-en, const char *data)
- 		       data, len, true);
- }
-=20
--static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
-+static irqreturn_t mse102x_rx_pkt_spi(struct mse102x_net *mse)
- {
- 	struct sk_buff *skb;
- 	unsigned int rxalign;
-@@ -331,7 +331,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse=
-)
- 		mse102x_tx_cmd_spi(mse, CMD_CTR);
- 		ret =3D mse102x_rx_cmd_spi(mse, (u8 *)&rx);
- 		if (ret)
--			return;
-+			return IRQ_NONE;
-=20
- 		cmd_resp =3D be16_to_cpu(rx);
- 		if ((cmd_resp & CMD_MASK) !=3D CMD_RTS) {
-@@ -364,7 +364,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse=
-)
- 	rxalign =3D ALIGN(rxlen + DET_SOF_LEN + DET_DFT_LEN, 4);
- 	skb =3D netdev_alloc_skb_ip_align(mse->ndev, rxalign);
- 	if (!skb)
--		return;
-+		return IRQ_NONE;
-=20
- 	/* 2 bytes Start of frame (before ethernet header)
- 	 * 2 bytes Data frame tail (after ethernet frame)
-@@ -374,7 +374,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse=
-)
- 	if (mse102x_rx_frame_spi(mse, rxpkt, rxlen, drop)) {
- 		mse->ndev->stats.rx_errors++;
- 		dev_kfree_skb(skb);
--		return;
-+		return IRQ_HANDLED;
- 	}
-=20
- 	if (netif_msg_pktdata(mse))
-@@ -385,6 +385,8 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse=
-)
-=20
- 	mse->ndev->stats.rx_packets++;
- 	mse->ndev->stats.rx_bytes +=3D rxlen;
-+
-+	return IRQ_HANDLED;
- }
-=20
- static int mse102x_tx_pkt_spi(struct mse102x_net *mse, struct sk_buff *tx=
-b,
-@@ -516,12 +518,13 @@ static irqreturn_t mse102x_irq(int irq, void *_mse)
- {
- 	struct mse102x_net *mse =3D _mse;
- 	struct mse102x_net_spi *mses =3D to_mse102x_spi(mse);
-+	irqreturn_t ret;
-=20
- 	mutex_lock(&mses->lock);
--	mse102x_rx_pkt_spi(mse);
-+	ret =3D mse102x_rx_pkt_spi(mse);
- 	mutex_unlock(&mses->lock);
-=20
--	return IRQ_HANDLED;
-+	return ret;
- }
-=20
- static int mse102x_net_open(struct net_device *ndev)
+diff --git a/Documentation/devicetree/bindings/net/vertexcom-mse102x.yaml =
+b/Documentation/devicetree/bindings/net/vertexcom-mse102x.yaml
+index 4158673f723c..8359de7ad272 100644
+=2D-- a/Documentation/devicetree/bindings/net/vertexcom-mse102x.yaml
++++ b/Documentation/devicetree/bindings/net/vertexcom-mse102x.yaml
+@@ -63,7 +63,7 @@ examples:
+             compatible =3D "vertexcom,mse1021";
+             reg =3D <0>;
+             interrupt-parent =3D <&gpio>;
+-            interrupts =3D <23 IRQ_TYPE_EDGE_RISING>;
++            interrupts =3D <23 IRQ_TYPE_LEVEL_HIGH>;
+             spi-cpha;
+             spi-cpol;
+             spi-max-frequency =3D <7142857>;
 =2D-=20
 2.34.1
 
