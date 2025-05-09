@@ -1,17 +1,17 @@
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9927E28ECD8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992F428F930;
 	Fri,  9 May 2025 11:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746791504; cv=none; b=lx579mM2O8vJbEKZALHEvp6bR9yabhugpvjlCuLnHxyLYsW5+JNcXFtYapwuzLvAwZV1KBjD6XO5wGvCdCoSfnW6c1HC2k618MmIT8XSqncvz4PzEotJeKtj8qNhn5Yj5oGrO5zTV8+d9zu616bwM6350SRQxrXFfA+ATdXd9rY=
+	t=1746791505; cv=none; b=ematUwLqL1XLLl5OjUXv24TTf2O5a6ygiuMEltAxHBfhPB46UJg0IHQSRpigHrNwKqvqIDgn1q9pZnEI358W7kUowZYooy5LZVt/HG1hL582VOAIZY2KN35pdFAanKVbRGEDrQOgwz1KOPA/OgSwUeIj5qGuRHCQpQwx82Wbfuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746791504; c=relaxed/simple;
-	bh=ahRvGyDp/0glVQdyyjcRPGs0TtGVJN5Yys2SjqBdLGg=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=jYStlKyFw3AllEGuA6J21WWMU7scTqCGlFbkyMc1g8y16MbbfUf7pkA2S1hOHxLrOPTyBTceoDn5PYHuFp9xJAEAa4B7InwmiwsKGFY22O2H1d+iM2FvRKIHmkU2S2yEYognZ5jDchjS7vjnZONHMFH0XSjcIVFRGiGzuxdmHw8=
+	s=arc-20240116; t=1746791505; c=relaxed/simple;
+	bh=MaWnivG0bkyZnL3UV4hhAq5uTzeVjyZQ1dynQ9IhHto=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=tQLkh3SXarXC9+J9pWS7TqVkzVV9DAt4MsaV4FA07xiiPieX1bSewccx8xMd6j7VIYuZ7mf89bmiOzuxE5pQ6nvLvrL1stwnC9NGZ/tudLwJDZVUm0BkSzfQVT1g3kv6xpi/C6lwXQNbLqQ0JBzGHPdQEgiYFq2KhlUWnySqHBg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-669ff7000002311f-26-681dec488b68
+X-AuditID: a67dfc5b-669ff7000002311f-32-681dec49c7b9
 From: Byungchul Park <byungchul@sk.com>
 To: willy@infradead.org,
 	netdev@vger.kernel.org
@@ -32,34 +32,36 @@ Cc: linux-kernel@vger.kernel.org,
 	edumazet@google.com,
 	pabeni@redhat.com,
 	vishal.moola@gmail.com
-Subject: [RFC 00/19] Split netmem from struct page
-Date: Fri,  9 May 2025 20:51:07 +0900
-Message-Id: <20250509115126.63190-1-byungchul@sk.com>
+Subject: [RFC 02/19] netmem: introduce netmem alloc/put API to wrap page alloc/put API
+Date: Fri,  9 May 2025 20:51:09 +0900
+Message-Id: <20250509115126.63190-3-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrMLMWRmVeSWpSXmKPExsXC9ZZnoa7nG9kMgzfPWCzmrF/DZrH6R4XF
-	8gc7WC2+/LzNbrF44TdmiznnW1gsnh57xG5xfxlQ2Z727cwWvS2/mS2adqxgsriwrY/V4vKu
-	OWwW99b8Z7U4tkDM4tvpN4wW6/fdYLX4/WMOm4OQx5aVN5k8ds66y+6xYFOpx+YVWh5dNy4x
-	e2xa1cnmsenTJHaPO9f2sHmcmPGbxWPnjs9MHh+f3mLxeL/vKpvH501yAbxRXDYpqTmZZalF
-	+nYJXBnPFjxnKrgmW3F+TQtrA+MKsS5GDg4JAROJu6dkuhg5wcxFS7+zg9hsAuoSN278ZAax
-	RQQMJT4/Os7SxcjFwSywkFniyuKfYEXCAkYSl2Y1MoLYLAKqEtcmzwWL8wqYSqzvPMAMMVRe
-	YvUGEJsLyH7OJrFo+h5WiISkxMEVN1gmMHIvYGRYxSiUmVeWm5iZY6KXUZmXWaGXnJ+7iREY
-	1Mtq/0TvYPx0IfgQowAHoxIPr8Vz2Qwh1sSy4srcQ4wSHMxKIrzPO2UyhHhTEiurUovy44tK
-	c1KLDzFKc7AoifMafStPERJITyxJzU5NLUgtgskycXBKNTC2fZr8+MCl43p2HluFon31V26z
-	31j13pA9J9owrEM7vynmxYW7B/bI6Qv+25J2VnKVjWOGb6yi8lnz2cnn7GZVvRNqKJlcc2K5
-	0O1GnxczbiTyznKImfJ7Dn+9RcGZXb1uSq/2S0XcUlb1ZufhPb+CV7BvOctip1d8xfIyV5WS
-	jrCujXcKvKLEUpyRaKjFXFScCACqmHYCZgIAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrNLMWRmVeSWpSXmKPExsXC5WfdrOvxRjbDYPpfE4s569ewWaz+UWGx
+In-Reply-To: <20250509115126.63190-1-byungchul@sk.com>
+References: <20250509115126.63190-1-byungchul@sk.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrFLMWRmVeSWpSXmKPExsXC9ZZnka7nG9kMg5W/uSzmrF/DZrH6R4XF
+	8gc7WC2+/LzNbrF44TdmiznnW1gsnh57xG5xf9kzFos97duZLXpbfjNbNO1YwWRxYVsfq8Xl
+	XXPYLO6t+c9qcWyBmMW3028YLdbvu8Fq8fvHHDYHIY8tK28yeeycdZfdY8GmUo/NK7Q8um5c
+	YvbYtKqTzWPTp0nsHneu7WHzODHjN4vHzh2fmTw+Pr3F4vF+31U2j8+b5AJ4o7hsUlJzMstS
+	i/TtErgylnxqZC2YxFUxa9cP1gbGbRxdjJwcEgImEpc7+lm7GDnA7L8rA0DCbALqEjdu/GQG
+	sUUEDCU+PzrO0sXIxcEssJBZ4srin+wgCWGBMIkty6YygtgsAqoS/aeesoHYvAKmEkeunGaD
+	mC8vsXrDAWaQ+ZwCZhL9H9VBwkJAJcumLGADmSkh0MwucXvbOkaIekmJgytusExg5F3AyLCK
+	USgzryw3MTPHRC+jMi+zQi85P3cTIzAGltX+id7B+OlC8CFGAQ5GJR5ei+eyGUKsiWXFlbmH
+	GCU4mJVEeJ93ymQI8aYkVlalFuXHF5XmpBYfYpTmYFES5zX6Vp4iJJCeWJKanZpakFoEk2Xi
+	4JRqYFSP/Ly26jtTRF/ejLwtfvH2m93tRR7a3PsS9fdVUOauFxdLbTlvBq7zeD7hWbZ5+Yzq
+	2om+9p+vnQzKEg9LT8hzXS6nEujSdMZAyPWVNM+a/+9t7P/LnZecrP1xU/WGlCg+448mV3c9
+	vbJbWG3z3hq3y8mPv4W6rZ6jVpp2wsdLUr28Zw+bqBJLcUaioRZzUXEiAOuMkL99AgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrILMWRmVeSWpSXmKPExsXC5WfdrOv5RjbD4MgNRos569ewWaz+UWGx
 	/MEOVosvP2+zWyxe+I3ZYs75FhaLp8cesVvcX/aMxWJP+3Zmi96W38wWTTtWMFkcnnuS1eLC
 	tj5Wi8u75rBZ3Fvzn9Xi2AIxi2+n3zBarN93g9Xi9485bA7CHltW3mTy2DnrLrvHgk2lHptX
 	aHl03bjE7LFpVSebx6ZPk9g97lzbw+ZxYsZvFo+dOz4zeXx8eovF4/2+q2wei198YPL4vEku
-	gC+KyyYlNSezLLVI3y6BK+PZgudMBddkK86vaWFtYFwh1sXIySEhYCKxaOl3dhCbTUBd4saN
-	n8wgtoiAocTnR8dZuhi5OJgFFjJLXFn8E6xIWMBI4tKsRkYQm0VAVeLa5LlgcV4BU4n1nQeY
-	IYbKS6zecIB5AiPHAkaGVYwimXlluYmZOaZ6xdkZlXmZFXrJ+bmbGIFBuqz2z8QdjF8uux9i
-	FOBgVOLhtXgumyHEmlhWXJl7iFGCg1lJhPd5p0yGEG9KYmVValF+fFFpTmrxIUZpDhYlcV6v
-	8NQEIYH0xJLU7NTUgtQimCwTB6dUA2PRj46qU44VK5mOLPNqucitmi+kce6fqtIVoTPbhDat
-	qH4qsc412FRw6fRdHiUSdxrV9QKmz9fOevNgosyKnldteRXTaw8Xrf4fP08gbr4A8/f7Sws5
-	W2UqOc+cibTe+zO0R+g4b0HhvM/szmb6x810+fROJxXI5TZ/ffh/M/8FoZO1xy9bzVFiKc5I
-	NNRiLipOBABTo7tITgIAAA==
+	gC+KyyYlNSezLLVI3y6BK2PJp0bWgklcFbN2/WBtYNzG0cXIwSEhYCLxd2VAFyMnB5uAusSN
+	Gz+ZQWwRAUOJz4+Os3QxcnEwCyxklriy+Cc7SEJYIExiy7KpjCA2i4CqRP+pp2wgNq+AqcSR
+	K6fBbAkBeYnVGw4wg8znFDCT6P+oDhIWAipZNmUB2wRGrgWMDKsYRTLzynITM3NM9YqzMyrz
+	Miv0kvNzNzECA3pZ7Z+JOxi/XHY/xCjAwajEw2vxXDZDiDWxrLgy9xCjBAezkgjv806ZDCHe
+	lMTKqtSi/Pii0pzU4kOM0hwsSuK8XuGpCUIC6YklqdmpqQWpRTBZJg5OqQbGubUxFo9ePvLO
+	K3HPCbuaWNCZpntlugdbiJwqw88jJvw+VRvNtGX2Si3yMNkqWHhhz+x30apTOb8+27tnM7fS
+	BTOnulbWqy6+vpZ1wosuhMcny3rH82u4sJ9jspu27kPEV9ktdfUKQfPbz0a/7ZjQInzq4Yue
+	kumvFeQXfMy/PfdKpbyawRclluKMREMt5qLiRADMbW5KZAIAAA==
 X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -67,81 +69,46 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 
-The MM subsystem is trying to reduce struct page to a single pointer.
-The first step towards that is splitting struct page by its individual
-users, as has already been done with folio and slab.  This patchset does
-that for netmem which is used for page pools.
+To eliminate the use of struct page in page pool, the page pool code
+should use netmem descriptor and API instead.
 
-Matthew Wilcox tried and stopped the same work, you can see in:
+As part of the work, introduce netmem alloc/put API allowing the code to
+use them rather than struct page things.
 
-   https://lore.kernel.org/linux-mm/20230111042214.907030-1-willy@infradead.org/
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+---
+ include/net/netmem.h | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-Mina Almasry already has done a lot fo prerequisite works by luck, he
-said :).  I stacked my patches on the top of his work e.i. netmem.
-
-I focused on removing the page pool members in struct page this time,
-not moving the allocation code of page pool from net to mm.  It can be
-done later if needed.
-
-There are still a lot of works to do, to remove the dependency on struct
-page in the network subsystem.  I will continue to work on this after
-this base patchset is merged.
-
-This patchset is based on mm tree's mm-unstable branch.
-
-Byungchul Park (19):
-  netmem: rename struct net_iov to struct netmem_desc
-  netmem: introduce netmem alloc/put API to wrap page alloc/put API
-  page_pool: use netmem alloc/put API in __page_pool_alloc_page_order()
-  page_pool: rename __page_pool_alloc_page_order() to
-    __page_pool_alloc_large_netmem()
-  page_pool: use netmem alloc/put API in __page_pool_alloc_pages_slow()
-  page_pool: rename page_pool_return_page() to page_pool_return_netmem()
-  page_pool: use netmem alloc/put API in page_pool_return_netmem()
-  page_pool: rename __page_pool_release_page_dma() to
-    __page_pool_release_netmem_dma()
-  page_pool: rename __page_pool_put_page() to __page_pool_put_netmem()
-  page_pool: rename __page_pool_alloc_pages_slow() to
-    __page_pool_alloc_netmems_slow()
-  mlx4: use netmem descriptor and API for page pool
-  netmem: introduce page_pool_recycle_direct_netmem()
-  page_pool: expand scope of is_pp_{netmem,page}() to global
-  mm: page_alloc: do not directly access page->pp_magic but use
-    is_pp_page()
-  mlx5: use netmem descriptor and API for page pool
-  netmem: use _Generic to cover const casting for page_to_netmem()
-  netmem: remove __netmem_get_pp()
-  page_pool: make page_pool_get_dma_addr() just wrap
-    page_pool_get_dma_addr_netmem()
-  mm, netmem: remove the page pool members in struct page
-
- drivers/net/ethernet/mellanox/mlx4/en_rx.c    |  46 ++++----
- drivers/net/ethernet/mellanox/mlx4/en_tx.c    |   8 +-
- drivers/net/ethernet/mellanox/mlx4/mlx4_en.h  |   4 +-
- drivers/net/ethernet/mellanox/mlx5/core/en.h  |   4 +-
- .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  18 +--
- .../net/ethernet/mellanox/mlx5/core/en/xdp.h  |   2 +-
- .../net/ethernet/mellanox/mlx5/core/en_main.c |  15 ++-
- .../net/ethernet/mellanox/mlx5/core/en_rx.c   |  66 +++++------
- include/linux/mm_types.h                      |  13 +--
- include/linux/skbuff.h                        |  18 ++-
- include/net/netmem.h                          |  88 +++++----------
- include/net/netmem_type.h                     |  22 ++++
- include/net/page_pool/helpers.h               |  17 ++-
- include/net/page_pool/memory_provider.h       |   6 +-
- include/net/page_pool/types.h                 |   2 +
- io_uring/zcrx.c                               |  42 +++----
- mm/page_alloc.c                               |   5 +-
- net/core/devmem.c                             |  14 +--
- net/core/devmem.h                             |  24 ++--
- net/core/page_pool.c                          | 106 ++++++++++--------
- net/core/skbuff.c                             |   5 -
- net/ipv4/tcp.c                                |   2 +-
- 22 files changed, 272 insertions(+), 255 deletions(-)
- create mode 100644 include/net/netmem_type.h
-
-
-base-commit: fd93b3350b4314eebd8fbf0fea3ca7fe48d777e3
+diff --git a/include/net/netmem.h b/include/net/netmem.h
+index 45c209d6cc689..c87a604e980b9 100644
+--- a/include/net/netmem.h
++++ b/include/net/netmem.h
+@@ -138,6 +138,24 @@ static inline netmem_ref page_to_netmem(struct page *page)
+ 	return (__force netmem_ref)page;
+ }
+ 
++static inline netmem_ref alloc_netmems_node(int nid, gfp_t gfp_mask,
++		unsigned int order)
++{
++	return page_to_netmem(alloc_pages_node(nid, gfp_mask, order));
++}
++
++static inline unsigned long alloc_netmems_bulk_node(gfp_t gfp, int nid,
++		unsigned long nr_netmems, netmem_ref *netmem_array)
++{
++	return alloc_pages_bulk_node(gfp, nid, nr_netmems,
++			(struct page **)netmem_array);
++}
++
++static inline void put_netmem(netmem_ref netmem)
++{
++	put_page(netmem_to_page(netmem));
++}
++
+ /**
+  * virt_to_netmem - convert virtual memory pointer to a netmem reference
+  * @data: host memory pointer to convert
 -- 
 2.17.1
 
