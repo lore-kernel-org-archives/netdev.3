@@ -1,92 +1,272 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD96A22CBF6;
-	Fri,  9 May 2025 17:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667DE22AE59
+	for <netdev@vger.kernel.org>; Fri,  9 May 2025 17:32:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746811819; cv=none; b=Dez0emfn467879TcMhrWVUnYZy5vbCIoF110TZkzBbq19V/N+ChJb5Y1IJagV7AFt9KvPNr/IbZ/Sy42WZk8EPBlblIkADG+qS/vxs62lfLyhDwp8r41VcarjbebMIenbjeuTgC9V7EpURBR2DvQpwS2lYm6qg6C+22FywVubuU=
+	t=1746811944; cv=none; b=nfupU9HW42aK2oxVv/dTtIK/5biyvS291DhHN18bw95aNMoDUYIk4k1xNvPwKLpt1qxlW4h6ld4AngIyGlexn7F9+PzJnyZi8XafPX72SoEmKzufmhY/if4IPs4j9d55dWM/I/+gz6pygLeZXVFN7W6tf0Rp5dBtFsbOOxXji74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746811819; c=relaxed/simple;
-	bh=mW7Q4WOzI5YU1FYLOgmozqSQi3IAzhyUp6jsc2gvljI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GSKfsrOPwMvd90r+WXKIYepS4apUtvi/XRx/qpc/1zE+GLgeoyhugSxa4jNqGqFn2GWW6mJ5IaDRGirpXsj4K6mIpudg3RVCXKnelf5+JQ0NY1pHy/QJObLkF/8ta2PI7IKt7B9l89qSuJX6Wn6txg1Zcl8IDidyRDx5f0xdgeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j7G5iLCm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746811944; c=relaxed/simple;
+	bh=5eHoUKhkqLQGmaUembnNdbV4+tA3vXC6gIgS8fRZvko=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DvpHUi5fRZj5g8vZE6KUEfUqMAVWR+AOv/7iN8n2yk3NTpUeM1Yg81bn0iFTPlC/ZecDZZF3eCt/HAUw1n6seLB5wvKZmJzVwN1cxSJvsWJqHXXTAkmGm/mfmCtw8G3vKFhMil++weIzLGhZm47R1h1Wwi+fFmOotj3JJZuMKqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aIE7lTsx; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j7G5iLCm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7BEC4CEE4;
-	Fri,  9 May 2025 17:30:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746811818;
-	bh=mW7Q4WOzI5YU1FYLOgmozqSQi3IAzhyUp6jsc2gvljI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j7G5iLCmXAjHqnDymoGSMYCHKt0FGONZ2280C13jjahlcYvubNWIgN9NnDcCqdQnu
-	 AEO58bEaRAqF14/wxZDzBySNJp3+LSN0Y74nNO7YDkmqh7EqPV2ge7s3dXT0BUhSaq
-	 VGZLa6RVkWQv2g+dTRak/4qnig5LDJfO1RV6ibSJdYly7zm6+P0W4xbCfk5vZC+GzO
-	 2m7mL+xResoyVFbcavHB6yjSJYO+FMm+HYOCMjo6ikq2vwh868xV2zec2bzWmTz+D3
-	 0nYEDHor6jzucViInfWQJ32KQ6OdKkkEzpLZt2R+zg3SKxemCNK26WyuLt8ELwxxad
-	 7iqtTUsTqya+w==
-Date: Fri, 9 May 2025 18:30:14 +0100
-From: Simon Horman <horms@kernel.org>
-To: Ozgur Kara <ozgur@goosey.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] net: ethernet: Fixe issue in nvmem_get_mac_address()
- where invalid mac addresses
-Message-ID: <20250509173014.GQ3339421@horms.kernel.org>
-References: <01100196adabd19e-0056f10b-0ffb-4076-8a6b-779f87c327b6-000000@eu-north-1.amazonses.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aIE7lTsx"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-22fa47f295dso12145ad.1
+        for <netdev@vger.kernel.org>; Fri, 09 May 2025 10:32:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1746811941; x=1747416741; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eksCJPPKUnzZZMnCwrQDL/i184EE28xZ4rbD/Sa6J8s=;
+        b=aIE7lTsx8savGL5Q5mamEtqcix3P+sESbWkcCfn3Hr9VeAFOYnILPcxJbByibmcR0w
+         DW21DtUkWT4gPwldwyAkE3xMaKrjQeCfj5s3XrrmSh4OVZq61qRRZbiIOPK6Owj6Qqj2
+         fnV2txXGrFgBacwJ6Wg+2rjda69nYEKVmMgoLVkJIgYwitSmresw1Fm0cRZVvuLQVRQ7
+         NbTNvUKnM4tNcGB2zuodYknU2fcNHvTcUvL7jLTbS7mzLnAw1tKC+ATc3N7/4jmxRgwS
+         lmwPU2V7VGeSnofh2ComatdS5tg53lfsxdlUWEBSxlVbE1EGxiRLL9QOhuYOv9YHDrub
+         bhfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746811941; x=1747416741;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eksCJPPKUnzZZMnCwrQDL/i184EE28xZ4rbD/Sa6J8s=;
+        b=JtPcByaTv2K8EF6a0kj68gorLTNGJL6c30HnvEvSufBlKCop3beN0zB3Bf30ncAoYZ
+         ffXsvu7XO+GVABLjFNCEx0DyRVlG6K5Sy03H0ORQBvvQecNL0uXyamjP09jj0QVgvZp+
+         7x4Qql51AWLNAurwh3HgnLqPpcxUqbAOgRKaiTrr7Qgql+pKhD03MKjPzQIj1rHncXQe
+         1dbyYFCfTsisGemRzVyt3ko1t3gELJF0ed1k2afo8OvYQuE/LJBwt8+Wk9U2cJuedFId
+         +BTcI6EyWADbTK0oQmtm0HjasVTf5HxAYmjvtjg6aXTVE67vfxQ4a2tHMR5Zj2O8wnm5
+         ZX/g==
+X-Forwarded-Encrypted: i=1; AJvYcCV9xq6ZxJtAnJJilSpdLER7/pDYPvCGarN/uw/jN1tkdFW81en8cdRTclGaHflc7KmMVbbC+1o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0ddWdxByqW7gcCtyluJJKV3ldnAIQ2jMzM/x20IxIdJ8NP4p1
+	0uUHigR0RlfVHIblvicvGWDK1gUqU90EExFuI1WNIB6XrLmO4AsLtriDJ3cXT4kZBnzXCzQ6Aq4
+	Q0hX4l8OscdWaHN0dS42s+whtHAtbh7NaJO9+
+X-Gm-Gg: ASbGnctGsYgnLUvsdDlMyBNr/AMv4e4ZIv8aNA8eSw3gk4bkVmbQ1X9Lvimc1nCbTYP
+	SSmoxkZeObVMDueLXybD6GevL+S3FZv3ahZfH18+TLaUozv1Wo2FUsVsXdELQe0Ioj80W0Pz7AB
+	EkHkB5sghjZjy8wQEPYy0JRvLZF4Y2829wYhiUvOyIbLhMTQq3xUJF
+X-Google-Smtp-Source: AGHT+IFj0TndIRh/lZTWlpbLPDcfoUAdbzU63ncHeXdLshLF4cedqgULo3qSXEtwteAKMmWMtY8DXC8psezDG8cJFVo=
+X-Received: by 2002:a17:903:4403:b0:216:21cb:2e14 with SMTP id
+ d9443c01a7336-22fcfa67bbdmr2405535ad.21.1746811941138; Fri, 09 May 2025
+ 10:32:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <01100196adabd19e-0056f10b-0ffb-4076-8a6b-779f87c327b6-000000@eu-north-1.amazonses.com>
+References: <20250509115126.63190-1-byungchul@sk.com> <20250509115126.63190-20-byungchul@sk.com>
+In-Reply-To: <20250509115126.63190-20-byungchul@sk.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 9 May 2025 10:32:08 -0700
+X-Gm-Features: ATxdqUGI6dEeIG5BsTRWq0lynejMc_q6rYi0sEc0AnPpkdnHxpWvN7YcbLR7W5c
+Message-ID: <CAHS8izMoS4wwmc363TFJU_XCtOX9vOv5ZQwD_k2oHx40D8hAPA@mail.gmail.com>
+Subject: Re: [RFC 19/19] mm, netmem: remove the page pool members in struct page
+To: Byungchul Park <byungchul@sk.com>
+Cc: willy@infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, kernel_team@skhynix.com, kuba@kernel.org, 
+	ilias.apalodimas@linaro.org, harry.yoo@oracle.com, hawk@kernel.org, 
+	akpm@linux-foundation.org, ast@kernel.org, daniel@iogearbox.net, 
+	davem@davemloft.net, john.fastabend@gmail.com, andrew+netdev@lunn.ch, 
+	edumazet@google.com, pabeni@redhat.com, vishal.moola@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 08, 2025 at 02:14:00AM +0000, Ozgur Kara wrote:
-> From: Ozgur Karatas <ozgur@goosey.org>
-> 
-> it's necessary to log error returned from
-> fwnode_property_read_u8_array because there is no detailed information
-> when addr returns an invalid mac address.
+On Fri, May 9, 2025 at 4:51=E2=80=AFAM Byungchul Park <byungchul@sk.com> wr=
+ote:
+>
+> Now that all the users of the page pool members in struct page have been
+> gone, the members can be removed from struct page.  However, the space
+> in struct page needs to be kept using a place holder with the same size,
+> until struct netmem_desc has its own instance, not overlayed onto struct
+> page, to avoid conficting with other members within struct page.
+>
+> Remove the page pool members in struct page and replace with a place
+> holder.  The place holder should be removed once struct netmem_desc has
+> its own instance.
+>
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> ---
+>  include/linux/mm_types.h  | 13 ++-----------
+>  include/net/netmem.h      | 35 +----------------------------------
+>  include/net/netmem_type.h | 22 ++++++++++++++++++++++
+>  3 files changed, 25 insertions(+), 45 deletions(-)
+>  create mode 100644 include/net/netmem_type.h
+>
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index e76bade9ebb12..69904a0855358 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -20,6 +20,7 @@
+>  #include <linux/seqlock.h>
+>  #include <linux/percpu_counter.h>
+>  #include <linux/types.h>
+> +#include <net/netmem_type.h> /* for page pool */
+>
+>  #include <asm/mmu.h>
+>
+> @@ -118,17 +119,7 @@ struct page {
+>                          */
+>                         unsigned long private;
+>                 };
+> -               struct {        /* page_pool used by netstack */
+> -                       /**
+> -                        * @pp_magic: magic value to avoid recycling non
+> -                        * page_pool allocated pages.
+> -                        */
+> -                       unsigned long pp_magic;
+> -                       struct page_pool *pp;
+> -                       unsigned long _pp_mapping_pad;
+> -                       unsigned long dma_addr;
+> -                       atomic_long_t pp_ref_count;
+> -               };
+> +               struct __netmem_desc place_holder_1; /* for page pool */
+>                 struct {        /* Tail pages of compound page */
+>                         unsigned long compound_head;    /* Bit zero is se=
+t */
+>                 };
+> diff --git a/include/net/netmem.h b/include/net/netmem.h
+> index 00064e766b889..c414de6c6ab0d 100644
+> --- a/include/net/netmem.h
+> +++ b/include/net/netmem.h
+> @@ -10,6 +10,7 @@
+>
+>  #include <linux/mm.h>
+>  #include <net/net_debug.h>
+> +#include <net/netmem_type.h>
+>
+>  /* net_iov */
+>
+> @@ -20,15 +21,6 @@ DECLARE_STATIC_KEY_FALSE(page_pool_mem_providers);
+>   */
+>  #define NET_IOV 0x01UL
+>
+> -struct netmem_desc {
+> -       unsigned long __unused_padding;
+> -       unsigned long pp_magic;
+> -       struct page_pool *pp;
+> -       struct net_iov_area *owner;
+> -       unsigned long dma_addr;
+> -       atomic_long_t pp_ref_count;
+> -};
+> -
+>  struct net_iov_area {
+>         /* Array of net_iovs for this area. */
+>         struct netmem_desc *niovs;
+> @@ -38,31 +30,6 @@ struct net_iov_area {
+>         unsigned long base_virtual;
+>  };
+>
+> -/* These fields in struct page are used by the page_pool and net stack:
+> - *
+> - *        struct {
+> - *                unsigned long pp_magic;
+> - *                struct page_pool *pp;
+> - *                unsigned long _pp_mapping_pad;
+> - *                unsigned long dma_addr;
+> - *                atomic_long_t pp_ref_count;
+> - *        };
+> - *
+> - * We mirror the page_pool fields here so the page_pool can access these=
+ fields
+> - * without worrying whether the underlying fields belong to a page or ne=
+t_iov.
+> - *
+> - * The non-net stack fields of struct page are private to the mm stack a=
+nd must
+> - * never be mirrored to net_iov.
+> - */
+> -#define NET_IOV_ASSERT_OFFSET(pg, iov)             \
+> -       static_assert(offsetof(struct page, pg) =3D=3D \
+> -                     offsetof(struct netmem_desc, iov))
+> -NET_IOV_ASSERT_OFFSET(pp_magic, pp_magic);
+> -NET_IOV_ASSERT_OFFSET(pp, pp);
+> -NET_IOV_ASSERT_OFFSET(dma_addr, dma_addr);
+> -NET_IOV_ASSERT_OFFSET(pp_ref_count, pp_ref_count);
+> -#undef NET_IOV_ASSERT_OFFSET
+> -
+>  static inline struct net_iov_area *net_iov_owner(const struct netmem_des=
+c *niov)
+>  {
+>         return niov->owner;
+> diff --git a/include/net/netmem_type.h b/include/net/netmem_type.h
+> new file mode 100644
+> index 0000000000000..6a3ac8e908515
+> --- /dev/null
+> +++ b/include/net/netmem_type.h
+> @@ -0,0 +1,22 @@
+> +/* SPDX-License-Identifier: GPL-2.0
+> + *
+> + *     Author: Byungchul Park <max.byungchul.park@gmail.com>
+> + */
+> +
+> +#ifndef _NET_NETMEM_TYPE_H
+> +#define _NET_NETMEM_TYPE_H
+> +
+> +#include <linux/stddef.h>
+> +
+> +struct netmem_desc {
+> +       unsigned long __unused_padding;
+> +       struct_group_tagged(__netmem_desc, actual_data,
+> +               unsigned long pp_magic;
+> +               struct page_pool *pp;
+> +               struct net_iov_area *owner;
+> +               unsigned long dma_addr;
+> +               atomic_long_t pp_ref_count;
+> +       );
+> +};
+> +
+> +#endif /* _NET_NETMEM_TYPE_H */
+> --
+> 2.17.1
+>
 
-Maybe "useful" would be better wording than "necessary".
-Logging doesn't seem to be a hard requirement to me.
+Currently the only restriction on net_iov is that some of its fields
+need to be cache aligned with some of the fields of struct page, but
+there is no restriction on new fields added to net_iov. We already
+have fields in net_iov that have nothing to do with struct page and
+shouldn't be part of struct page. Like net_iov_area *owner. I don't
+think net_iov_area should be part of struct page and I don't think we
+should add restrictions of net_iov.
 
-Moreover, I'm not sure that logging is appropriate.
-E.g. fwnode_get_mac_addr() is called by fwnode_get_mac_address(),
-which is in turn called by acpi_get_mac_address(), which logs if call
-fails.
+What I would suggest here is, roughly:
 
-> kfree(mac) should actually be marked as kfree((void *)mac) because mac
-> pointer is of type const void * and type conversion is required so
-> data returned from nvmem_cell_read() is of same type.
+1. Add a new struct:
 
-It seems to me that nvmem_cell_read returns void *.
-So a good approach would be to change type of mac to void *.
-In any case I don't think casting away const is the right approach;
-what is the point of const if it is selectively ignored?
+               struct netmem_desc {
+                       unsigned long pp_magic;
+                       struct page_pool *pp;
+                       unsigned long _pp_mapping_pad;
+                       unsigned long dma_addr;
+                       atomic_long_t pp_ref_count;
+               };
 
-Also, I think this should be a separate patch to the logging change:
-one patch per issue. If there is more than one patch then I would
-suggest collecting them together in a patch-set with a cover letter.
+2. Then update struct page to include this entry instead of the definitions=
+:
 
-> 
-> This patch fixes the issue in nvmem_get_mac_address() where invalid
-> mac addresses could be read due to improper error handling.
+struct page {
+...
+               struct netmem_desc place_holder_1; /* for page pool */
+...
+}
 
-I don't see any changes to the program flow for error handling in this patch.
-It doesn't seem like a fix to me.
+3. And update struct net_iov to also include netmem_desc:
 
-> 
-> Signed-off-by: Ozgur Karatas <ozgur@goosey.org>
+struct net_iov {
+    struct netmem_desc desc;
+    struct net_iov_area *owner;
+    /* More net_iov specific fields in the future */
+};
 
--- 
-pw-bot: changes-requested
+And drop patch 1 which does a rename.
+
+Essentially netmem_desc can be an encapsulation of the shared fields
+between struct page and struct net_iov.
+
+--=20
+Thanks,
+Mina
