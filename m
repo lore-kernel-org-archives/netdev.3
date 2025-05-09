@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E15517D2
-	for <netdev@vger.kernel.org>; Fri,  9 May 2025 15:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068A823026B
+	for <netdev@vger.kernel.org>; Fri,  9 May 2025 15:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746805339; cv=none; b=uDLSw8l34WGNIZkIpAAz7pJUTvaFrc5ZMmSYhSSzTDDEKVRIePfHgdW8BQaHbDoXjq0Q5o/WWX5RfAMSfDaoF6yExHHl7P7kJS2ZqbGwdvtgDthgMjLCtm2ri0/eMVs0A8LmX7rLKULpTPEYOEIORXHR6W+PlWD7KNJAXLdy21U=
+	t=1746805341; cv=none; b=IkWA8AEasja6es6O5bY0EH7/7NT1nCsevDCU/CW19k8J7D+ui3veip+tPIJSIRIvJ7HjgrEtu90jlx1Jga3nWCWEgKhVR4PzOdM/fljkxQTBM5gR04wgOpaWkAG+9JSdFG0VHgdpAqwW4Taoxr/+VwlyC7KZukgdtxOcQyShFBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746805339; c=relaxed/simple;
-	bh=0/gnZJQXc29oWFzBUywOpl79hD8csjqYWJf08fMPRuI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XQDmlNcaZE2/ith/piPnB77HLL1t6FXSf/NLvbslUsiLUpSUIF4v912PNijulNbaJYViEiUURxV0FnkMuVf0xoWRJtw+NPfUwzDsLTzCnkgSM7Ecc/sM8tVzjApt7jpzGsX0Ec1+kje7Lrab2nrq49DsxfxT2lKZPppO96y6z3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lWMWnzFZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746805341; c=relaxed/simple;
+	bh=O3KIz5VwT9bfBJ4zuS5ljbcCvbfJS177vEZ0YdiGdog=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cSz8fhaiNiSoBR9mBjD6X0U5VnRsrCEv6oh5dqPTcXoBSPB33pVO1mMs4PqOh3laadkHMECYr6SO37D073FBWrMNxgi22IZUTmofsa74QwHw0MBGc+3AzRPGMsb2+AEFIwFTug2HQ0aJC54gecgfss5iUEdn7eoJyq2bVwGsmBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HyZs3o6z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lWMWnzFZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 519B8C4CEE4;
-	Fri,  9 May 2025 15:42:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HyZs3o6z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34849C4CEF1;
+	Fri,  9 May 2025 15:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746805338;
-	bh=0/gnZJQXc29oWFzBUywOpl79hD8csjqYWJf08fMPRuI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=lWMWnzFZBtvPqUgoeDHGlOrM4+VVcJAZWEu5yqd28HJdsB3lXT8hAJB2UewVUQW9O
-	 +L0BvTxSoJbu05SCldpN4cEUrFALv19pgia2ido1lMOCNrV4a8b9ExnIehPnu8vQHL
-	 vmnU/KKPuaBL8lvrcQxoK/5JbbztvmtiPBuLKjoLSluVcuMqn81vLRidq/k4n4PMjS
-	 TkVWT645YZSxwnSP+6yC3xpxrf4gOEy4OuOQbUIMoB97ByaOBGn9Ji+n5Zc9veamIt
-	 E3aYPOIZWpiH2wA7uSIFk0/Zac8OgOgNZM8/CZZcHA/Fk4gVOW8+mSLwAeu5wH5Iyu
-	 kWxQk3I9yIOog==
+	s=k20201202; t=1746805339;
+	bh=O3KIz5VwT9bfBJ4zuS5ljbcCvbfJS177vEZ0YdiGdog=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HyZs3o6zqf6Ld3lad+LlOP87clqdeNXqZ2D+yWTkr4qbJrI84f4E0a5k6P5FPa/FZ
+	 wIufvXjwS9EmvNk0xGc1EwFkNFPOh2+rVJLM8KOCrqupKhtO+oF5G+gBLOvK6AXWsH
+	 pPEjNOOtMVBBo0EErKLWH+BiGEbm8RLI6m8pfZie01eP//aEotEoQ0kSAIYylYYKbt
+	 FHEm6ewW4e15ZCB+hSf6nRMgEAOGZ9nw3R7yC8cL5Dk8n+U+jNeVN7sdn8lG2KQSkH
+	 BoAYRqrN4jV1fDQpUs9QVtOTo3X/N0Svqo9j6z+0fmNHTjxhJfvZ+9dEEZuObjWOpH
+	 DSyj4IsUvLdJQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -35,10 +36,12 @@ Cc: netdev@vger.kernel.org,
 	donald.hunter@gmail.com,
 	jacob.e.keller@intel.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 0/3] tools: ynl-gen: support sub-types for binary attributes
-Date: Fri,  9 May 2025 08:42:10 -0700
-Message-ID: <20250509154213.1747885-1-kuba@kernel.org>
+Subject: [PATCH net-next v2 2/3] tools: ynl-gen: auto-indent else
+Date: Fri,  9 May 2025 08:42:12 -0700
+Message-ID: <20250509154213.1747885-3-kuba@kernel.org>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250509154213.1747885-1-kuba@kernel.org>
+References: <20250509154213.1747885-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,26 +50,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Binary attributes have sub-type annotations which either indicate
-that the binary object should be interpreted as a raw / C array of
-a simple type (e.g. u32), or that it's a struct.
+We auto-indent if statements (increase the indent of the subsequent
+line by 1), do the same thing for else branches without a block.
+There hasn't been any else branches before but we're about to add one.
 
-Use this information in the C codegen instead of outputting void *
-for all binary attrs. It doesn't make a huge difference in the genl
-families, but in classic Netlink there is a lot more structs.
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ tools/net/ynl/pyynl/ynl_gen_c.py | 1 +
+ 1 file changed, 1 insertion(+)
 
-v2:
- - use sub-classes
-v1: https://lore.kernel.org/20250508022839.1256059-1-kuba@kernel.org
-
-Jakub Kicinski (3):
-  tools: ynl-gen: support sub-type for binary attributes
-  tools: ynl-gen: auto-indent else
-  tools: ynl-gen: support struct for binary attributes
-
- tools/net/ynl/pyynl/ynl_gen_c.py | 63 ++++++++++++++++++++++++++++++--
- 1 file changed, 60 insertions(+), 3 deletions(-)
-
+diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
+index 4e2ae738c0aa..9a5c65966e9d 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_c.py
++++ b/tools/net/ynl/pyynl/ynl_gen_c.py
+@@ -1458,6 +1458,7 @@ from lib import SpecFamily, SpecAttrSet, SpecAttr, SpecOperation, SpecEnumSet, S
+         if self._silent_block:
+             ind += 1
+         self._silent_block = line.endswith(')') and CodeWriter._is_cond(line)
++        self._silent_block |= line.strip() == 'else'
+         if line[0] == '#':
+             ind = 0
+         if add_ind:
 -- 
 2.49.0
 
