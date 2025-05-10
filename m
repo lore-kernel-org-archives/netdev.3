@@ -1,111 +1,121 @@
-Received: from trager.us (trager.us [52.5.81.116])
+Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7CBB67F;
-	Sat, 10 May 2025 01:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.5.81.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092A91754B
+	for <netdev@vger.kernel.org>; Sat, 10 May 2025 01:57:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746840757; cv=none; b=ji+zfpvNeKR2yck/eUFBsRgKeYxD9YsWf6bZYeuW0hidDBC2MB1cf852Ru8/N4Jn7NHSMBtFI72qvxPy015Px7p78IzEQPlLUDqn4w9iFbDg2g4M1JOYsCrVZMUvKY/1G5xhKEYqJgNVB3NtnPzS1HbJ+7gHgKP+mp6T77NO2qs=
+	t=1746842229; cv=none; b=swbUrMa6qV2imGY5P1AdMqWnV6HutOdurIPTHQTh86p2Tg0LhYIdVV6AOLlGPVp1MDQfUOmHuO7GWwTK2VlMxC1urW70nzaJD5RkKkABnUmnrDde8wVTqbBXOYSWtqDw+o0M4WYaSJfDWciJOG48qmTo2iuDz4YXe51W0vs0MIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746840757; c=relaxed/simple;
-	bh=xgEoxdF8WtQ4LXl7GXwgSisMk5T5Altc6CL481mKxEQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GkWp0rfPi1LVgfwW+i9eB2QPVFRQdIpcuGX/zqxLeeGU4Jzq9zvf/od7Z1hGOyhJ7/Ia7olQVpDmOgCj6axIHsDq93ppSq2iogU+cCjHjMvkjpEEws1VnqIxQjvIgISFY4d1cw1SyyZv1zUM7Ts4dllCNd3n+ALP34Oy4a/uZSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us; spf=pass smtp.mailfrom=trager.us; arc=none smtp.client-ip=52.5.81.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trager.us
-Received: from c-76-104-255-50.hsd1.wa.comcast.net ([76.104.255.50] helo=localhost)
-	by trager.us with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-	(Exim 4.92.3)
-	(envelope-from <lee@trager.us>)
-	id 1uDY9X-0002Do-TG; Sat, 10 May 2025 00:33:20 +0000
-From: Lee Trager <lee@trager.us>
-To: Alexander Duyck <alexanderduyck@fb.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	kernel-team@meta.com,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Mohsin Bashir <mohsin.bashr@gmail.com>,
-	Sanman Pradhan <sanman.p211993@gmail.com>,
-	Su Hui <suhui@nfschina.com>,
-	Lee Trager <lee@trager.us>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4 0/5] eth: fbnic: Add devlink dev flash support
-Date: Fri,  9 May 2025 17:21:12 -0700
-Message-ID: <20250510002851.3247880-1-lee@trager.us>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1746842229; c=relaxed/simple;
+	bh=OsZgbx1oWF1HMK3WeaaDafeplVXWcQRdRLuet96Q4YQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Stxbmab5REmdp+LJYTTZHJ1OgumiukkggjshbtxZmg6ZYcUIrA7ySZ0LdmlkvfnwEaeBBWBclsnONEw0wdELrSMh73y30nRa1Vpu4T4Mi6ujyqHWKMCvcBgzVJwTTzK3Uu3kY1K68I5NXZSBpMAca3CQCntt0M8iI7ZircZOiTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=MwJ4kPzw; arc=none smtp.client-ip=99.78.197.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="MwJ4kPzw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1746842229; x=1778378229;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ppoamjTlJwkoPSdZhTGPYViuc/laK54t8/pyyWmGnBY=;
+  b=MwJ4kPzwln7eCtsuCXEBkEBYRhMTmNWZLQlI6MW+5iAMOSPR/u1Isghn
+   UFPqwRFq5bVk8UxY3/aKptk27RGwrSYKIQhbRQJvnxobD9qQQH4KxJ03R
+   an0It0H24FJtrfi4kZ/b+mBfk/AqiomtzvsorSSvSbBqdPTBXoLOFMxhV
+   MCz/Za3atuPEqF3wYAL6R8EXIEp5DpC/Rz6Fq567IXq3luY3Ck/WcOrER
+   AKv/HEVibr7wGjY/0bHjctcyrYRKhukevIewzHJ5iHwuFA2iTrnjfCx+n
+   qZteACawJfsGsqR1s392WNNTmXwaSKiFsBpUEVYloZWf+8smfnIQCDuaU
+   Q==;
+X-IronPort-AV: E=Sophos;i="6.15,276,1739836800"; 
+   d="scan'208";a="48521519"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2025 01:57:07 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [10.0.7.35:44557]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.59.114:2525] with esmtp (Farcaster)
+ id 098e440e-b226-49c6-abe7-f693efded85f; Sat, 10 May 2025 01:57:06 +0000 (UTC)
+X-Farcaster-Flow-ID: 098e440e-b226-49c6-abe7-f693efded85f
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Sat, 10 May 2025 01:57:05 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.187.170.14) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Sat, 10 May 2025 01:57:02 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>
+CC: Simon Horman <horms@kernel.org>, Christian Brauner <brauner@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
+	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
+Subject: [PATCH v2 net-next 0/9] af_unix: Introduce SO_PASSRIGHTS
+Date: Fri, 9 May 2025 18:56:23 -0700
+Message-ID: <20250510015652.9931-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EX19D043UWA002.ant.amazon.com (10.13.139.53) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-fbnic supports updating firmware using signed PLDM images. PLDM images are
-written into the flash. Flashing does not interrupt the operation of the
-device.
+As long as recvmsg() or recvmmsg() is used with cmsg, it is not
+possible to avoid receiving file descriptors via SCM_RIGHTS.
+
+This series introduces a new socket option, SO_PASSRIGHTS, to allow
+disabling SCM_RIGHTS.  The option is enabled by default.
+
+See patch 8 for background/context.
+
+This series is related to [0], but is split into a separate series,
+as most of the patches are specific to af_unix.
+
+The v2 of the BPF LSM extension part will be posted later, once
+this series is merged into net-next and has landed in bpf-next.
+
+[0]: https://lore.kernel.org/bpf/20250505215802.48449-1-kuniyu@amazon.com/
+
 
 Changes:
+  v2:
+    * Added patch 4 & 5 to reuse sk_txrehash for scm_recv() flags
 
-V4:
-* Tested flashing in a 50x loop
-* Add devl_lock() in shutdown / quiescene paths like suspend to prevent
-  interrupting the FW flashing process.
-* Add support for multiple completion messages.
-* Removed BSD function notation from fbnic_fw_xmit_fw_start_upgrade()
-* Mailbox functions no longer return cmpl_data->result
-* Add missing error check in fbnic_fw_xmit_fw_write
-* Drop setting cmpl->u.fw_update.* to 0
-* Set offset and length before validation
-* Drop !fw check
-* Firmware upgrades are now process driven
-* Fix potential memory leak when an error is received in the mailbox when
-  updating.
-* Include anti-rollback support
-* Drop retries when updating but increase timeout to 10s
-* Use NL_SET_ERR_MSG_FMT_MOD in fbnic_devlink_flash_update()
-* Updated cover letter, commit messages, and docs as suggested
-* Dropped kdocs
-* Patched libpldmfw to not require send_package_data or send_component_table
-  which allowed stub functions to be dropped.
-* Dropped all dev_*() printks
-* Fixed Xmas tree variable declarations
+  v1: https://lore.kernel.org/netdev/20250508013021.79654-1-kuniyu@amazon.com/
 
-V3 - https://lore.kernel.org/lkml/20241111043058.1251632-1-lee@trager.us/T/
-* Fix comments
 
-V2 - https://lore.kernel.org/all/20241022013941.3764567-1-lee@trager.us/
-* Fixed reversed Xmas tree variable declarations
-* Replaced memcpy with strscpy
+Kuniyuki Iwashima (9):
+  af_unix: Factorise test_bit() for SOCK_PASSCRED and SOCK_PASSPIDFD.
+  af_unix: Don't pass struct socket to maybe_add_creds().
+  scm: Move scm_recv() from scm.h to scm.c.
+  tcp: Restrict SO_TXREHASH to TCP socket.
+  net: Restrict SO_PASS{CRED,PIDFD,SEC} to AF_{UNIX,NETLINK,BLUETOOTH}.
+  af_unix: Move SOCK_PASS{CRED,PIDFD,SEC} to struct sock.
+  af_unix: Inherit sk_flags at connect().
+  af_unix: Introduce SO_PASSRIGHTS.
+  selftest: af_unix: Test SO_PASSRIGHTS.
 
-Lee Trager (5):
-  pldmfw: Don't require send_package_data or send_component_table to be
-    defined
-  eth: fbnic: Accept minimum anti-rollback version from firmware
-  eth: fbnic: Add support for multiple concurrent completion messages
-  eth: fbnic: Add mailbox support for PLDM updates
-  eth: fbnic: Add devlink dev flash support
+ arch/alpha/include/uapi/asm/socket.h          |   2 +
+ arch/mips/include/uapi/asm/socket.h           |   2 +
+ arch/parisc/include/uapi/asm/socket.h         |   2 +
+ arch/sparc/include/uapi/asm/socket.h          |   2 +
+ include/linux/net.h                           |  15 +--
+ include/net/scm.h                             | 121 +-----------------
+ include/net/sock.h                            |  29 ++++-
+ include/uapi/asm-generic/socket.h             |   2 +
+ net/core/scm.c                                | 121 ++++++++++++++++++
+ net/core/sock.c                               |  52 ++++++--
+ net/unix/af_unix.c                            |  96 +++++++-------
+ tools/include/uapi/asm-generic/socket.h       |   2 +
+ .../selftests/net/af_unix/scm_rights.c        |  84 +++++++++++-
+ 13 files changed, 343 insertions(+), 187 deletions(-)
 
- .../device_drivers/ethernet/meta/fbnic.rst    |  11 +
- drivers/net/ethernet/meta/Kconfig             |   1 +
- drivers/net/ethernet/meta/fbnic/fbnic.h       |   3 +-
- .../net/ethernet/meta/fbnic/fbnic_devlink.c   | 260 +++++++++++++++-
- drivers/net/ethernet/meta/fbnic/fbnic_fw.c    | 294 ++++++++++++++++--
- drivers/net/ethernet/meta/fbnic/fbnic_fw.h    |  53 +++-
- drivers/net/ethernet/meta/fbnic/fbnic_mac.c   |   2 +-
- drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |   9 +
- lib/pldmfw/pldmfw.c                           |   6 +
- 9 files changed, 616 insertions(+), 23 deletions(-)
+-- 
+2.49.0
 
---
-2.47.1
