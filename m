@@ -1,35 +1,51 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from trager.us (trager.us [52.5.81.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829524642D
-	for <netdev@vger.kernel.org>; Sat, 10 May 2025 00:29:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461C6CA6F;
+	Sat, 10 May 2025 00:34:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.5.81.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746836999; cv=none; b=lLig2z21AiuWFJbK7zZSXWz+84xfowSx8A4p+QPh00ZmzU32WbOO4VSH/rWCSAqd1gywoU3/a68vg1aE3xvGgwNtblr/ae/0TPFeH2CCAF5AxbYjQcbEEYp30sUsC9m3KnARXGBkTjkIDfPG/PqLFFhYJ1yE00cW4BWbB1j7SQM=
+	t=1746837297; cv=none; b=Kw/9LUNGS87WHEbE23YbxEASwG/HCvtUW+z44m8BYUrnh6nw370QnJaWx6AZ8Rg3SAA+FXcQfM3IWR/tHkww9WTHilsyXWs1X7aozSwWam0pCc1Y17JKKBbsFK5U3nDoVIuyNhkFyirnfnHWsnoAIV0hpENAy1GKbKBY0fp645U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746836999; c=relaxed/simple;
-	bh=c7XqTLSqPZNa0TlLOhnuTYHLUQd3oJKRhOPZCIqcXVE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qOjnU4BupQNSU+tWg5IeTtVNa0QYaE/DUcOJeCNSBq6xsRXh2rDPAQ8IahNutLrFVfvWUGoKyGVPheMnGXF8S2aTOjn/N0lkN0rC+qUTTZ9AI3rHi9MsfgMFgcxAPHMKawUolaSg49VOrcp5cLHG+WdvhXAbAvLdMSqEIBUENwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZ0s0aeR; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZ0s0aeR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5730CC4CEE4;
-	Sat, 10 May 2025 00:29:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746836999;
-	bh=c7XqTLSqPZNa0TlLOhnuTYHLUQd3oJKRhOPZCIqcXVE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=iZ0s0aeRaLN/dnLFSq1Rk17l98qP8tXVBULcYgfgumnOEBjMH6z7kJ0rMA6aduUv+
-	 kn3Y2Rjqb4UmXXQH6X2AO1Dlbhz7eGGkwbiMPNBZq++wUsMZA+BJojqOPGdan+0KnU
-	 /wEQCmjOP1AFUcheLyMxGI48/+K6tqqW9AoGiIACn46nLuRsbIcW71xpbigisNrU+p
-	 Uf/jDHxiU1NVeSBOb9C3Ud+erod9SRHLiVDJ18wWYljcTh/EiJEN6YcFQ6hiRC257L
-	 i4tgEWp5COXn+7RSM/HwRcGjV6BkpMoZdsgNbDZhqkI+N88J6+JUDeSUptzvOLvAjC
-	 XG31EE7ZqRIMQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EABB2381091A;
-	Sat, 10 May 2025 00:30:38 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1746837297; c=relaxed/simple;
+	bh=iUKIhwoRMiye51Xwv0gCRSu5tX42w2M3ND0fwVhJi0w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Cz6mZ6dSqQZW3iyRwIUtjWGEP0HgHipZFJ8dmn/23L1pt3nTVAm29e9CVK6SqVtHqODJs5mbN/6vGN+Rp+LeCvHVloUeR+wdHxzCezSmP5oizz5I7/BG4/KEazlwI0QWjsqmQOcErwhlwLmZKkpOAhQG49GyZpTHN++YNX6/sHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us; spf=pass smtp.mailfrom=trager.us; arc=none smtp.client-ip=52.5.81.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trager.us
+Received: from c-76-104-255-50.hsd1.wa.comcast.net ([76.104.255.50] helo=localhost)
+	by trager.us with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+	(Exim 4.92.3)
+	(envelope-from <lee@trager.us>)
+	id 1uDYAw-0002EB-2N; Sat, 10 May 2025 00:34:46 +0000
+From: Lee Trager <lee@trager.us>
+To: Alexander Duyck <alexanderduyck@fb.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	kernel-team@meta.com,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Mohsin Bashir <mohsin.bashr@gmail.com>,
+	Sanman Pradhan <sanman.p211993@gmail.com>,
+	Su Hui <suhui@nfschina.com>,
+	Lee Trager <lee@trager.us>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v4 1/5] pldmfw: Don't require send_package_data or send_component_table to be defined
+Date: Fri,  9 May 2025 17:21:13 -0700
+Message-ID: <20250510002851.3247880-2-lee@trager.us>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250510002851.3247880-1-lee@trager.us>
+References: <20250510002851.3247880-1-lee@trager.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,47 +53,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 1/5] batman-adv: Start new development cycle
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174683703749.3851370.18436694245732853832.git-patchwork-notify@kernel.org>
-Date: Sat, 10 May 2025 00:30:37 +0000
-References: <20250509091041.108416-2-sw@simonwunderlich.de>
-In-Reply-To: <20250509091041.108416-2-sw@simonwunderlich.de>
-To: Simon Wunderlich <sw@simonwunderlich.de>
-Cc: kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org,
- b.a.t.m.a.n@lists.open-mesh.org
 
-Hello:
+Not all drivers require send_package_data or send_component_table when
+updating firmware. Instead of forcing drivers to implement a stub allow
+these functions to go undefined.
 
-This series was applied to netdev/net-next.git (main)
-by Simon Wunderlich <sw@simonwunderlich.de>:
+Signed-off-by: Lee Trager <lee@trager.us>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ lib/pldmfw/pldmfw.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-On Fri,  9 May 2025 11:10:37 +0200 you wrote:
-> This version will contain all the (major or even only minor) changes for
-> Linux 6.16.
-> 
-> The version number isn't a semantic version number with major and minor
-> information. It is just encoding the year of the expected publishing as
-> Linux -rc1 and the number of published versions this year (starting at 0).
-> 
-> [...]
+diff --git a/lib/pldmfw/pldmfw.c b/lib/pldmfw/pldmfw.c
+index 6264e2013f25..b45ceb725780 100644
+--- a/lib/pldmfw/pldmfw.c
++++ b/lib/pldmfw/pldmfw.c
+@@ -728,6 +728,9 @@ pldm_send_package_data(struct pldmfw_priv *data)
+ 	struct pldmfw_record *record = data->matching_record;
+ 	const struct pldmfw_ops *ops = data->context->ops;
 
-Here is the summary with links:
-  - [net-next,1/5] batman-adv: Start new development cycle
-    https://git.kernel.org/netdev/net-next/c/4a1cff317d95
-  - [net-next,2/5] batman-adv: constify and move broadcast addr definition
-    https://git.kernel.org/netdev/net-next/c/d699628dae07
-  - [net-next,3/5] batman-adv: no need to start/stop queue on mesh-iface
-    https://git.kernel.org/netdev/net-next/c/8a7bb74a79d4
-  - [net-next,4/5] batman-adv: Switch to crc32 header for crc32c
-    https://git.kernel.org/netdev/net-next/c/a608f11d3a3b
-  - [net-next,5/5] batman-adv: Drop unused net_namespace.h include
-    https://git.kernel.org/netdev/net-next/c/4e1ccc8e52e5
++	if (!ops->send_package_data)
++		return 0;
++
+ 	return ops->send_package_data(data->context, record->package_data,
+ 				      record->package_data_len);
+ }
+@@ -755,6 +758,9 @@ pldm_send_component_tables(struct pldmfw_priv *data)
+ 		if (!test_bit(index, bitmap))
+ 			continue;
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
++		if (!data->context->ops->send_component_table)
++			continue;
++
+ 		/* determine whether this is the start, middle, end, or both
+ 		 * the start and end of the component tables
+ 		 */
+--
+2.47.1
