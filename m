@@ -1,80 +1,129 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC0C25DD17
-	for <netdev@vger.kernel.org>; Mon, 12 May 2025 09:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6AB25DD17
+	for <netdev@vger.kernel.org>; Mon, 12 May 2025 09:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747042054; cv=none; b=XAsMAfO+IhBmUO+umR0nF4nOfJ3yXAH50/M4zngraOlAqA6Sr+KDqWYMVTi1ve+RKCJaHCX87paKpbAvXxcijp4d6mleI6KiUWwn2mTDOe0cKxA6cP3gXiyIqq8Dwy8D7XRpvkIWEgpdsB5iIXel0db/DpiidxvOSRu54OUG5pc=
+	t=1747042065; cv=none; b=I/bYNSATsl+oTZlY7odBMwYJd/ZbEv2ZnUfaq0+qdFXXnYujKBLHeitNAHXXiWrazKvGuwCbaL26cS6h97ThgUUe2aKemFf4ZQMZ33ogyazhtie3m6NtHCLLdANXVsh/JrunLPv39QK4GkjSTgCIuBmsMFz0QWSrpLl/CN5Pl44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747042054; c=relaxed/simple;
-	bh=uaZ69ms+r2tPDlfwyayuqqZ39J7PMqRVdQjliPS9TOA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FsXwRziX8a1gLAJ/C2V7geFlogTWAyxFg+lA/JikjHq5TySyA9C3iCQFp5QuLEseDUxPBv2Zr8YivZ4QWUG48I4ZqEeqFdXcQRRZYKoXOXvcp3+5O6SZRQYOnSZ++hSYfSdYgrrkQYexAU4EwlVB/PcQ5EHzyKLuA7RyEMTlOuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.2.107] (p57bd9455.dip0.t-ipconnect.de [87.189.148.85])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id BA307601EBF0A;
-	Mon, 12 May 2025 11:27:10 +0200 (CEST)
-Message-ID: <355fc4f1-0116-4028-a455-ec76772f19b3@molgen.mpg.de>
-Date: Mon, 12 May 2025 11:27:09 +0200
+	s=arc-20240116; t=1747042065; c=relaxed/simple;
+	bh=0+Ksli5EQaWGaOkAnBgor72S4sJr/MfaOZ+uBIe4pOI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Vl8zs637VA39c0j20nuj3r3BIzsWEdSYpeWAuaBW6ep9qL2swh+tpi8P5ziV1Ad7mC0t2NSRBteoLLBa5gNNzYKAQpXA8HyHjdcWZKa3zyrddvuOH4oiL1gCEuy9fsKOkmlGIpYtNn7Pfszn/qhEERWewg4Od3BLsP6Uq5f6/qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=S/Y+iDG/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6x6vUzdN; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="S/Y+iDG/";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6x6vUzdN"
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1747042061;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=x9bvJbz4rA6x9F64n3GMRGwdtwxVa5d/y5IWIS2DHrw=;
+	b=S/Y+iDG/LYNj34ExQpKU67C6mCkJ94TjR0SiAC3nHy1+++8QLZn5Zu2pcvdpoEd2RWVH9l
+	bIhr1lC2v0cMoBuznAJ82YRlUi7gt3cCe2plMkOQpsX7H3ePD8RtLGnvQT3nsNXAKvgftT
+	kiEEHzWyA32QDW/CCSFKzpUSG+Z4aoFygZRoNNKZRo2R9j6LERCFkIoCyOd4nH5YWdT9Qc
+	T8d/3O9Pnkh7DKYAhJhqbDC47bzr6ckkizsYrRO0LE9ry9BPZoOyb6q34pD4W4aP68oFEE
+	947BEqJzPQyXDcC4JL7gPFOP5ft2cDUtXkLrL20S/uH7hterGGMM4IN05H/uJw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1747042061;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=x9bvJbz4rA6x9F64n3GMRGwdtwxVa5d/y5IWIS2DHrw=;
+	b=6x6vUzdNuT0ervVv7xaCWt9o0LXfzQoPT8gAlnzyPHRPOrofDG/n7uOCV442If0gyMsvro
+	E2diASTBHDLXXxAQ==
+To: netdev@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH net-next v4 00/15] net: Cover more per-CPU storage with local nested BH locking
+Date: Mon, 12 May 2025 11:27:21 +0200
+Message-ID: <20250512092736.229935-1-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next 1/2] ice: add link_down_events
- statistic
-To: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
-References: <20250409113622.161379-2-martyna.szapar-mudlaw@linux.intel.com>
- <20250409113622.161379-4-martyna.szapar-mudlaw@linux.intel.com>
- <55ae83fc-8333-4a04-9320-053af1fd6f46@molgen.mpg.de>
- <4012b88a-091d-4f81-92ab-ad32727914ff@linux.intel.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <4012b88a-091d-4f81-92ab-ad32727914ff@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Dear Martyna,
+I was looking at the build-time defined per-CPU variables in net/ and
+added the needed local-BH-locks in order to be able to remove the
+current per-CPU lock in local_bh_disable() on PREMPT_RT.
 
+The work is not yet complete, I just wanted to post what I have so far
+instead of sitting on it.
 
-Thank you for your reply.
+v3=E2=80=A6v4: https://lore.kernel.org/all/20250430124758.1159480-1-bigeasy=
+@linutronix.de/
+   - xdp: Extend locked section and create a single unlock/ exit path in
+     xdp_copy_frags_from_zc(). Toke asked for this.
+   - Dropped the netfilter patches.
+   - Fixed up a typo in the openswitch comment.
 
-Am 14.04.25 um 15:12 schrieb Szapar-Mudlaw, Martyna:
+v2=E2=80=A6v3: https://lore.kernel.org/all/20250414160754.503321-1-bigeasy@=
+linutronix.de
+   - openvswitch: Limit the ovs_pcpu_storage::owner assignment (and so
+     the whole locking procedure in the recursive case) to PREEMPT_RT.
+   - Add acked-by from sched folks for "netfilter: nf_dup{4, 6}: Move
+     duplication check to task_struct"
 
-> On 4/9/2025 2:08 PM, Paul Menzel wrote:
-
->> Am 09.04.25 um 13:36 schrieb Martyna Szapar-Mudlaw:
->>> Introduce a new ethtool statistic to ice driver, `link_down_events`,
->>> to track the number of times the link transitions from up to down.
->>> This counter can help diagnose issues related to link stability,
->>> such as port flapping or unexpected link drops.
->>>
->>> The counter increments when a link-down event occurs and is exposed
->>> via ethtool stats as `link_down_events.nic`.
->>
->> It’d be great if you pasted an example output.
-> 
-> In v2 (which I just submitted) the generic ethtool statistic is used for 
-> this, instead of driver specific, so I guess no need to paste the 
-> example output now.
-
-I think it’s always good also as a reference how to test the patch. I 
-just saw your v3. Should you resent, it’d be great if you added the 
-example output.
-
-[…]
+v1=E2=80=A6v2: https://lore.kernel.org/all/20250309144653.825351-1-bigeasy@=
+linutronix.de
+   - act_mirred: Using proper variable on PREEMPT_RT, noticed by Davide
+     Caratti.
+   - openvswitch:
+     - Renamed the per-CPU variable to ovs_pcpu_storage.
+     - Moved some data structures from action.c to datapath.h in order
+       to implement the locking within datapath.c.
 
 
-Kind regards,
+Sebastian Andrzej Siewior (15):
+  net: page_pool: Don't recycle into cache on PREEMPT_RT
+  net: dst_cache: Use nested-BH locking for dst_cache::cache
+  ipv4/route: Use this_cpu_inc() for stats on PREEMPT_RT
+  ipv6: sr: Use nested-BH locking for hmac_storage
+  xdp: Use nested-BH locking for system_page_pool
+  xfrm: Use nested-BH locking for nat_keepalive_sk_ipv[46]
+  openvswitch: Merge three per-CPU structures into one
+  openvswitch: Use nested-BH locking for ovs_pcpu_storage
+  openvswitch: Move ovs_frag_data_storage into the struct
+    ovs_pcpu_storage
+  net/sched: act_mirred: Move the recursion counter struct netdev_xmit
+  net/sched: Use nested-BH locking for sch_frag_data_storage
+  mptcp: Use nested-BH locking for hmac_storage
+  rds: Disable only bottom halves in rds_page_remainder_alloc()
+  rds: Acquire per-CPU pointer within BH disabled section
+  rds: Use nested-BH locking for rds_page_remainder
 
-Paul
+ include/linux/netdevice.h      |  7 ++-
+ include/linux/netdevice_xmit.h |  3 ++
+ net/core/dev.c                 | 15 ++++--
+ net/core/dst_cache.c           | 30 ++++++++++--
+ net/core/page_pool.c           |  4 ++
+ net/core/xdp.c                 | 15 ++++--
+ net/ipv4/route.c               |  4 ++
+ net/ipv6/seg6_hmac.c           | 13 ++++-
+ net/mptcp/protocol.c           |  4 +-
+ net/mptcp/protocol.h           |  9 +++-
+ net/openvswitch/actions.c      | 86 +++++-----------------------------
+ net/openvswitch/datapath.c     | 33 +++++++++----
+ net/openvswitch/datapath.h     | 52 ++++++++++++++++++--
+ net/rds/page.c                 | 25 +++++-----
+ net/sched/act_mirred.c         | 28 +++++++++--
+ net/sched/sch_frag.c           | 10 +++-
+ net/xfrm/xfrm_nat_keepalive.c  | 30 ++++++++----
+ 17 files changed, 241 insertions(+), 127 deletions(-)
+
+--=20
+2.49.0
