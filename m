@@ -1,288 +1,410 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21E625A32C;
-	Mon, 12 May 2025 09:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229BB1A239B;
+	Mon, 12 May 2025 09:27:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747041735; cv=none; b=WIELxG+Wfq4A9l2I6Qk/QtqxYl1i89+My9LCyftgK/d1hgHIS5ZvT7VECKCQ56P8g/JzgSZcB0+kUyHcDh+kdep3Vys6/ivfN8bcCnraE5sOnseisjqP3Ux+KZMlx1FMsZJOpStzpV4mkvMn0MV5PlX/hYm2JgnWCnRAlZcu7UA=
+	t=1747042043; cv=none; b=hxsAojdD7HhhfFdgYLcjV81J9IT+uYjd+ETBCfKLSzU+likjoK060GiMchcsS3eGlVAX2NZeS37CjeOngoom9IDEFqDwcMAGtbm7sehEca/JAs/t/TIZ5bAF0jlEUIvoY/KtTNfECK5KyrDt5IEL5ljmf0z1vZJzw4JKJv2oBuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747041735; c=relaxed/simple;
-	bh=63Xla2q+6hr/2d84/UOsWS1nUsyEbKKfUrI6v0LXHNE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nsgNeB2WAqBToY7aRekFSwAgJRbOqjV7YI3fPzv3bGo16vL24VcLoiyC8SOTNz4RMM3AhJtHSLeFHPHkT5cic9iHn7A7PpSsXThTZZzD9hTKhu3pgFhL7KPn7aZbplIOShIQNfX2HshZIAgTNJ5tQ6p5cjWzDL6bEZiDcyB7kG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=myroYSTo; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1747042043; c=relaxed/simple;
+	bh=tOe2lgKCbgqYYIMOtKeKhAwAOjWlZcBSaNqvUehU9UQ=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j6p8I+cUU5brPmx9am+fvUELFnNQJAM6vjykXqrSqZPz62tbdwQ3YJoveR2frxla21EhV7gCa6ckDeQtupC19TwIsRsiRrY9Q6hfjFpbFsB7UDvu8VilSefLvnFMo0n5A4RoXsg9yJqax/xiJmm7eOk13tAHb6IyKwUaCads62I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HvniRrJ1; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="myroYSTo"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B96A642E7E;
-	Mon, 12 May 2025 09:22:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1747041731;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kaiEC+PufeTUFVHYk/7+WnDcWgVB2rCo/IXTSdg1Hds=;
-	b=myroYSToz66ns5AWaEKJJvPJUQ2gNhiviSmOpp/J2y/Y8GROMCYAYuwQj8YyoGQq0ioQrw
-	I0vja15KBTuai/J5zuSpLfuqRQvQiR3kb2j3hHKZ3BcBsRXrmg2YnmRQwaBSuy+vx6s/pB
-	1D83Xhz/+9fcJksBAxbL9E0q4tvY8TteyaYaLEtxufK51sq7VmWbCEC0WvYDFGFBsGYCfS
-	36kYPxE4KFGfMPeCaWLFJrogT8glen7n3s2DRBE3lNQkyNFvGFTXHHfKS3QK691LwDekZV
-	tRzViTTgIV7ihzkV75uqQhgc0VRSa4JY6wdpJoo/hOJVrOvqkI9jfVbYQFE5RA==
-From: Romain Gantois <romain.gantois@bootlin.com>
-To: davem@davemloft.net, Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- thomas.petazzoni@bootlin.com, Andrew Lunn <andrew@lunn.ch>,
- Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
- linux-arm-kernel@lists.infradead.org,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Herve Codina <herve.codina@bootlin.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
- =?UTF-8?B?S8O2cnk=?= Maincent <kory.maincent@bootlin.com>,
- Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>,
- Oleksij Rempel <o.rempel@pengutronix.de>,
- =?UTF-8?B?Tmljb2zDsg==?= Veronese <nicveronese@gmail.com>,
- Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
- Antoine Tenart <atenart@kernel.org>, devicetree@vger.kernel.org,
- Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Rob Herring <robh@kernel.org>, Daniel Golle <daniel@makrotopia.org>,
- Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Subject:
- Re: [PATCH net-next v6 14/14] Documentation: networking: Document the
- phy_port infrastructure
-Date: Mon, 12 May 2025 11:22:04 +0200
-Message-ID: <873525603.0ifERbkFSE@fw-rgant>
-In-Reply-To: <20250507135331.76021-15-maxime.chevallier@bootlin.com>
-References:
- <20250507135331.76021-1-maxime.chevallier@bootlin.com>
- <20250507135331.76021-15-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HvniRrJ1"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a1d8c09683so2201419f8f.0;
+        Mon, 12 May 2025 02:27:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747042039; x=1747646839; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=EP5ciUrJhx2qjL/YTEW+Ro+6nfUBpD7HupJKLYyZ5WU=;
+        b=HvniRrJ1lLMp75VJvD7FHd4Z30I4++nF6Eg8lJY6u8S2cem1NWxRyzeLjPyEuVx3WO
+         oqA0i9EPDPWk5CXYq2Ju/A0hyXrgs+Cq6XP3rXumIlmXBHIQQB9i2FOUnlGt2icLm3RI
+         2kmjgLKPBxDuG3qLblWSqaruZl2HkOjhkjutbL6t+l7rfhzSAYvAll3pfYdMXXyXPuxV
+         31mmNsoDskGhZgXFUwEKDSP0dgL2wY5YTXMYZrihdKYtAf5cFSfiQTGEo0+B0eNJfRfG
+         NbjlHtgng97hz75t/FXNk3fliV21FJk4EJlfzE5vIPZJXdNhJtlTtAZxCb1aIaHfcnys
+         nTPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747042039; x=1747646839;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EP5ciUrJhx2qjL/YTEW+Ro+6nfUBpD7HupJKLYyZ5WU=;
+        b=i0CtRlaaPSeu2DXST+OALX2fRF9wPZHNok6YbNU/43tWrXgQOaUwMjKyC3sE7m8rH5
+         1QD0S+iJQLwY9xDRpCytFpWNU4322/r2mRLrdIdwHFVMHS/sMj9LBAJfZgMweHzTtigD
+         gb7yZKPXC2YqKbEp01qnSslQcYm9l5gKdBZ+/GW2AWtiyelRwgZoe7OD6/IdEviNPZk8
+         TsXNkdlXqwHBAcqIg+39f519hgbDRgniOAgCFWkHJ7c+R5PbnskVEdE+VDiayjDL3eQC
+         i5LxhyeY0s3jPI14ABcF2LlvmbSlzKQypeKxMWh2BO+txHhcx136534pqhkI8Cls5MqP
+         j2jg==
+X-Forwarded-Encrypted: i=1; AJvYcCXYeX0Bl7w0zL+ZWRkJ+TVnD9c94RaHtpvaPejwYcXKK/nEf5lHKPmCUXmDEo9NBt5ahXNlprIHzT55nUb6@vger.kernel.org, AJvYcCXbnIM24LBRn5XXUyM3JPlbh/S0F93wF7rMSIJUaqH6HTFZhoKFhraVIP3P55s3IWZ6lXtq0rPcwTBY@vger.kernel.org, AJvYcCXyZhrxQDtub657LQnRja1DDTJ5jTVEeo/KbrT+vTTAvqqAZorCr7rN/PhsLbyHnk+X0LLiS9At@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzQcvm3F3aZJbkBdLaBSicRRYZA9DaJ2tP6/1PY+sKfopWuftq
+	JmxqHqk2RIzEZkhtnAHXKMU8mCqMoEek+rpxo1Qw6pUNHpBJ9EmO
+X-Gm-Gg: ASbGncvNe/QlmdneEIkqDU55TsFN21KHlcI1bdCme56IuIlXPBWjHfLzQAInwpZErpJ
+	G8rCA76oEh84i2Q4DcQw+A/zfPzJ6Ewl8hqNbYdstItRP7cuRdeOkZLImv98GWmq7TaK0owWyV7
+	85W13wo2MYGbHukVaj8iLoqy1AcVRZUjMfLs9o7xBIoNWrNt/g1rGm7KG2iayqo3dGlK8BxRX+C
+	pYEn0EYSJQvsAVmdJn75xodLaH6hMXNJ7rFPZTlXf9EHvSyFjRRK0SJxJXQiUgpMqOFFsSO7QJ3
+	P5U5SnpSbfqYUX38eCLvE1TIr/C150HtP5MZghYvygyLcz5AQPB7vy/p+RZjpy7ya4fEurvmLie
+	ItsgTc7k=
+X-Google-Smtp-Source: AGHT+IEIx2dngjb6axDv4lWuQJCqhwKHcwmf+wk9ypXMGeGlR42a1KIrb2TLCO+LYY/WGRgWY7SQ1Q==
+X-Received: by 2002:a05:6000:430d:b0:3a0:b378:a4eb with SMTP id ffacd0b85a97d-3a1f6487e1amr9306477f8f.40.1747042038492;
+        Mon, 12 May 2025 02:27:18 -0700 (PDT)
+Received: from Ansuel-XPS. (93-34-88-225.ip49.fastwebnet.it. [93.34.88.225])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f5a2d96csm11933224f8f.69.2025.05.12.02.27.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 May 2025 02:27:17 -0700 (PDT)
+Message-ID: <6821bef5.5d0a0220.319347.d533@mx.google.com>
+X-Google-Original-Message-ID: <aCG-8mJYlQoa_4ls@Ansuel-XPS.>
+Date: Mon, 12 May 2025 11:27:14 +0200
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Daniel Golle <daniel@makrotopia.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, llvm@lists.linux.dev
+Subject: Re: [net-next PATCH v4 11/11] net: airoha: add phylink support for
+ GDM2/3/4
+References: <20250511201250.3789083-1-ansuelsmth@gmail.com>
+ <20250511201250.3789083-12-ansuelsmth@gmail.com>
+ <aCG9q6i7HomgilI6@lore-desk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart5568568.Sb9uPGUboI";
- micalg="pgp-sha256"; protocol="application/pgp-signature"
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeftddtkeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhggtgesghdtreertddtjeenucfhrhhomheptfhomhgrihhnucfirghnthhoihhsuceorhhomhgrihhnrdhgrghnthhoihhssegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefhvdelkeevgfeijedtudeiheefffejhfelgeduuefhleetudeiudektdeiheelgfenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghlohepfhifqdhrghgrnhhtrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpehrohhmrghinhdrghgrnhhtohhishessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedtpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrk
- hgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqmhhsmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhg
-X-GND-Sasl: romain.gantois@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aCG9q6i7HomgilI6@lore-desk>
 
---nextPart5568568.Sb9uPGUboI
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Romain Gantois <romain.gantois@bootlin.com>
-Date: Mon, 12 May 2025 11:22:04 +0200
-Message-ID: <873525603.0ifERbkFSE@fw-rgant>
-In-Reply-To: <20250507135331.76021-15-maxime.chevallier@bootlin.com>
-MIME-Version: 1.0
-
-Hi Maxime,
-
-On Wednesday, 7 May 2025 15:53:30 CEST Maxime Chevallier wrote:
-> This documentation aims at describing the main goal of the phy_port
-> infrastructure.
+On Mon, May 12, 2025 at 11:21:47AM +0200, Lorenzo Bianconi wrote:
+> > Add phylink support for GDM2/3/4 port that require configuration of the
+> > PCS to make the external PHY or attached SFP cage work.
+> > 
+> > These needs to be defined in the GDM port node using the pcs-handle
+> > property.
+> > 
+> > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> > ---
+> >  drivers/net/ethernet/airoha/airoha_eth.c  | 155 +++++++++++++++++++++-
+> >  drivers/net/ethernet/airoha/airoha_eth.h  |   3 +
+> >  drivers/net/ethernet/airoha/airoha_regs.h |  12 ++
+> >  3 files changed, 169 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+> > index 16c7896f931f..3be1ae077a76 100644
+> > --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> > +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> > @@ -7,6 +7,7 @@
+> >  #include <linux/of_net.h>
+> >  #include <linux/platform_device.h>
+> >  #include <linux/tcp.h>
+> > +#include <linux/pcs/pcs.h>
+> >  #include <linux/u64_stats_sync.h>
+> >  #include <net/dst_metadata.h>
+> >  #include <net/page_pool/helpers.h>
+> > @@ -79,6 +80,11 @@ static bool airhoa_is_lan_gdm_port(struct airoha_gdm_port *port)
+> >  	return port->id == 1;
+> >  }
+> >  
+> > +static bool airhoa_is_phy_external(struct airoha_gdm_port *port)
+> > +{
+> > +	return port->id != 1;
+> > +}
+> > +
+> >  static void airoha_set_macaddr(struct airoha_gdm_port *port, const u8 *addr)
+> >  {
+> >  	struct airoha_eth *eth = port->qdma->eth;
+> > @@ -1613,6 +1619,17 @@ static int airoha_dev_open(struct net_device *dev)
+> >  	struct airoha_gdm_port *port = netdev_priv(dev);
+> >  	struct airoha_qdma *qdma = port->qdma;
+> >  
+> > +	if (airhoa_is_phy_external(port)) {
+> > +		err = phylink_of_phy_connect(port->phylink, dev->dev.of_node, 0);
 > 
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> ---
->  Documentation/networking/index.rst    |   1 +
->  Documentation/networking/phy-port.rst | 111 ++++++++++++++++++++++++++
->  MAINTAINERS                           |   1 +
->  3 files changed, 113 insertions(+)
->  create mode 100644 Documentation/networking/phy-port.rst
+> nit: even if it is not strictly required, in order to align with the rest of the
+> codebase, can you please stay below 79 columns?
 > 
-> diff --git a/Documentation/networking/index.rst
-> b/Documentation/networking/index.rst index ac90b82f3ce9..f60acc06e3f7
-> 100644
-> --- a/Documentation/networking/index.rst
-> +++ b/Documentation/networking/index.rst
-> @@ -96,6 +96,7 @@ Contents:
->     packet_mmap
->     phonet
->     phy-link-topology
-> +   phy-port
->     pktgen
->     plip
->     ppp_generic
-> diff --git a/Documentation/networking/phy-port.rst
-> b/Documentation/networking/phy-port.rst new file mode 100644
-> index 000000000000..6d9d46ebe438
-> --- /dev/null
-> +++ b/Documentation/networking/phy-port.rst
-> @@ -0,0 +1,111 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +.. _phy_port:
-> +
-> +=================
-> +Ethernet ports
-> +=================
-> +
-> +This document is a basic description of the phy_port infrastructure,
-> +introduced to represent physical interfaces of Ethernet devices.
-> +
-> +Without phy_port, we already have quite a lot of information about what the
-> +media-facing interface of a NIC can do and looks like, through the
+> > +		if (err) {
+> > +			netdev_err(dev, "%s: could not attach PHY: %d\n", __func__,
+> > +				   err);
+> 
+> same here
+> 
+> > +			return err;
+> > +		}
+> > +
+> > +		phylink_start(port->phylink);
+> > +	}
+> > +
+> >  	netif_tx_start_all_queues(dev);
+> >  	err = airoha_set_vip_for_gdm_port(port, true);
+> >  	if (err)
+> > @@ -1665,6 +1682,11 @@ static int airoha_dev_stop(struct net_device *dev)
+> >  		}
+> >  	}
+> >  
+> > +	if (airhoa_is_phy_external(port)) {
+> > +		phylink_stop(port->phylink);
+> > +		phylink_disconnect_phy(port->phylink);
+> > +	}
+> > +
+> >  	return 0;
+> >  }
+> >  
+> > @@ -2795,6 +2817,115 @@ bool airoha_is_valid_gdm_port(struct airoha_eth *eth,
+> >  	return false;
+> >  }
+> >  
+> > +static void airoha_mac_link_up(struct phylink_config *config, struct phy_device *phy,
+> > +			       unsigned int mode, phy_interface_t interface,
+> > +			       int speed, int duplex, bool tx_pause, bool rx_pause)
+> 
+> ditto.
+> 
+> > +{
+> > +	struct airoha_gdm_port *port = container_of(config, struct airoha_gdm_port,
+> > +						    phylink_config);
+> 
+> ditto.
+> 
+> > +	struct airoha_qdma *qdma = port->qdma;
+> > +	struct airoha_eth *eth = qdma->eth;
+> > +	u32 frag_size_tx, frag_size_rx;
+> > +
+> > +	if (port->id != 4)
+> > +		return;
+> > +
+> > +	switch (speed) {
+> > +	case SPEED_10000:
+> > +	case SPEED_5000:
+> > +		frag_size_tx = 8;
+> > +		frag_size_rx = 8;
+> > +		break;
+> > +	case SPEED_2500:
+> > +		frag_size_tx = 2;
+> > +		frag_size_rx = 1;
+> > +		break;
+> > +	default:
+> > +		frag_size_tx = 1;
+> > +		frag_size_rx = 0;
+> > +	}
+> > +
+> > +	/* Configure TX/RX frag based on speed */
+> > +	airoha_fe_rmw(eth, REG_GDMA4_TMBI_FRAG,
+> > +		      GDMA4_SGMII0_TX_FRAG_SIZE_MASK,
+> > +		      FIELD_PREP(GDMA4_SGMII0_TX_FRAG_SIZE_MASK,
+> > +				 frag_size_tx));
+> > +
+> > +	airoha_fe_rmw(eth, REG_GDMA4_RMBI_FRAG,
+> > +		      GDMA4_SGMII0_RX_FRAG_SIZE_MASK,
+> > +		      FIELD_PREP(GDMA4_SGMII0_RX_FRAG_SIZE_MASK,
+> > +				 frag_size_rx));
+> > +}
+> > +
+> > +static const struct phylink_mac_ops airoha_phylink_ops = {
+> > +	.mac_link_up = airoha_mac_link_up,
+> > +};
+> > +
+> > +static int airoha_setup_phylink(struct net_device *dev)
+> > +{
+> > +	struct airoha_gdm_port *port = netdev_priv(dev);
+> > +	struct device_node *np = dev->dev.of_node;
+> > +	struct phylink_pcs **available_pcs;
+> > +	phy_interface_t phy_mode;
+> > +	struct phylink *phylink;
+> > +	unsigned int num_pcs;
+> > +	int err;
+> > +
+> > +	err = of_get_phy_mode(np, &phy_mode);
+> > +	if (err) {
+> > +		dev_err(&dev->dev, "incorrect phy-mode\n");
+> > +		return err;
+> > +	}
+> > +
+> > +	port->phylink_config.dev = &dev->dev;
+> > +	port->phylink_config.type = PHYLINK_NETDEV;
+> > +	port->phylink_config.mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
+> > +						MAC_10 | MAC_100 | MAC_1000 | MAC_2500FD |
+> > +						MAC_5000FD | MAC_10000FD;
+> 
+> over 79 columns
+> 
+> > +
+> > +	err = fwnode_phylink_pcs_parse(dev_fwnode(&dev->dev), NULL, &num_pcs);
+> > +	if (err)
+> > +		return err;
+> > +
+> > +	available_pcs = kcalloc(num_pcs, sizeof(*available_pcs), GFP_KERNEL);
+> 
+> I guess you can use devm_kcalloc() and get rid of kfree() here.
+>
 
-I'd replace "and looks like" by "and what it looks like".
+I forgot to answer to this in the previous revision. No devm can't be
+used there available_pcs is just an array allocated for phylink_config.
 
-> +:c:type:`struct ethtool_link_ksettings <ethtool_link_ksettings>`
-> attributes, +which includes :
-> +
-> + - What the NIC can do through the :c:member:`supported` field
-> + - What the Link Partner advertises through :c:member:`lp_advertising`
-> + - Which features we're advertising through :c:member:`advertising`
-> +
-> +We also have info about the number of lanes and the PORT type. These
-> settings +are built by aggregating together information reported by various
-> devices that +are sitting on the link :
-> +
-> +  - The NIC itself, through the :c:member:`get_link_ksettings` callback
-> +  - Precise information from the MAC and PCS by using phylink in the MAC
-> driver +  - Information reported by the PHY device
-> +  - Information reported by an SFP module (which can itself include a PHY)
-> +
-> +This model however starts showing its limitations when we consider devices
-> that +have more than one media interface. In such a case, only information
-> about the +actively used interface is reported, and it's not possible to
-> know what the +other interfaces can do. In fact, we have very few
-> information about whether or +not there are any other media interfaces.
+Phylink then copy the data in it and doesn't use it anymore hence it
+just needs to be allocated here and doesn't need to stay till the driver
+gets removed.
 
-maybe "hints" instead of "information"?
+> > +	if (!available_pcs)
+> > +		return -ENOMEM;
+> > +
+> > +	err = fwnode_phylink_pcs_parse(dev_fwnode(&dev->dev), available_pcs,
+> > +				       &num_pcs);
+> > +	if (err)
+> > +		goto out;
+> > +
+> > +	port->phylink_config.available_pcs = available_pcs;
+> > +	port->phylink_config.num_available_pcs = num_pcs;
+> > +
+> > +	__set_bit(PHY_INTERFACE_MODE_SGMII,
+> > +		  port->phylink_config.supported_interfaces);
+> > +	__set_bit(PHY_INTERFACE_MODE_1000BASEX,
+> > +		  port->phylink_config.supported_interfaces);
+> > +	__set_bit(PHY_INTERFACE_MODE_2500BASEX,
+> > +		  port->phylink_config.supported_interfaces);
+> > +	__set_bit(PHY_INTERFACE_MODE_USXGMII,
+> > +		  port->phylink_config.supported_interfaces);
+> > +
+> > +	phy_interface_copy(port->phylink_config.pcs_interfaces,
+> > +			   port->phylink_config.supported_interfaces);
+> > +
+> > +	phylink = phylink_create(&port->phylink_config,
+> > +				 of_fwnode_handle(np),
+> > +				 phy_mode, &airoha_phylink_ops);
+> > +	if (IS_ERR(phylink)) {
+> > +		err = PTR_ERR(phylink);
+> > +		goto out;
+> > +	}
+> > +
+> > +	port->phylink = phylink;
+> > +out:
+> > +	kfree(available_pcs);
+> > +
+> > +	return err;
+> > +}
+> > +
+> >  static int airoha_alloc_gdm_port(struct airoha_eth *eth,
+> >  				 struct device_node *np, int index)
+> >  {
+> > @@ -2873,7 +3004,23 @@ static int airoha_alloc_gdm_port(struct airoha_eth *eth,
+> >  	if (err)
+> >  		return err;
+> >  
+> > -	return register_netdev(dev);
+> > +	if (airhoa_is_phy_external(port)) {
+> > +		err = airoha_setup_phylink(dev);
+> 
+> This will re-introduce the issue reported here:
+> https://lore.kernel.org/netdev/5c94b9b3850f7f29ed653e2205325620df28c3ff.1746715755.git.christophe.jaillet@wanadoo.fr/
+> 
 
-> +
-> +The goal of the phy_port representation is to provide a way of representing
-> a +physical interface of a NIC, regardless of what is driving the port (NIC
-> through +a firmware, SFP module, Ethernet PHY).
-> +
-> +Multi-port interfaces examples
-> +==============================
-> +
-> +Several cases of multi-interface NICs have been observed so far :
-> +
-> +Internal MII Mux::
-> +
-> +  +------------------+
-> +  | SoC              |
-> +  |          +-----+ |           +-----+
-> +  | +-----+  |     |-------------| PHY |
-> +  | | MAC |--| Mux | |   +-----+ +-----+
-> +  | +-----+  |     |-----| SFP |
-> +  |          +-----+ |   +-----+
-> +  +------------------+
-> +
-> +Internal Mux with internal PHY::
-> +
-> +  +------------------------+
-> +  | SoC                    |
-> +  |          +-----+ +-----+
-> +  | +-----+  |     |-| PHY |
-> +  | | MAC |--| Mux | +-----+   +-----+
-> +  | +-----+  |     |-----------| SFP |
-> +  |          +-----+       |   +-----+
-> +  +------------------------+
-> +
-> +External Mux::
-> +
-> +  +---------+
-> +  | SoC     |  +-----+  +-----+
-> +  |         |  |     |--| PHY |
-> +  | +-----+ |  |     |  +-----+
-> +  | | MAC |----| Mux |  +-----+
-> +  | +-----+ |  |     |--| PHY |
-> +  |         |  +-----+  +-----+
-> +  |         |     |
-> +  |    GPIO-------+
-> +  +---------+
-> +
-> +Double-port PHY::
-> +
-> +  +---------+
-> +  | SoC     | +-----+
-> +  |         | |     |--- RJ45
-> +  | +-----+ | |     |
-> +  | | MAC |---| PHY |   +-----+
-> +  | +-----+ | |     |---| SFP |
-> +  +---------+ +-----+   +-----+
-> +
-> +phy_port aims at providing a path to support all the above topologies, by
-> +representing the media interfaces in a way that's agnostic to what's
-> driving +the interface. the struct phy_port object has its own set of
+I'm confused about this. The suggestion wasn't that register_netdev
+might fail and I need to destroy phylink? Or the linked patch was merged
+and I need to rebase on top of net-next?
 
-s/the/The
+I didn't include that change to not cause conflicts but once it's merged
+I will rebase and include that fix.
 
-> callback ops, and +will eventually be able to report its own ksettings::
-> +
-> +             _____      +------+
-> +            (     )-----| Port |
-> + +-----+   (       )    +------+
-> + | MAC |--(   ???   )
-> + +-----+   (       )    +------+
-> +            (_____)-----| Port |
-> +                        +------+
-> +
-> +Next steps
-> +==========
-> +
-> +As of writing this documentation, only ports controlled by PHY devices are
-> +supported. The next steps will be to add the Netlink API to expose these
-> +to userspace and add support for raw ports (controlled by some firmware,
-> and directly +managed by the NIC driver).
-> +
-> +Another parallel task is the introduction of a MII muxing framework to
+> > +		if (err)
+> > +			return err;
+> > +	}
+> > +
+> > +	err = register_netdev(dev);
+> > +	if (err)
+> > +		goto free_phylink;
+> > +
+> > +	return 0;
+> > +
+> > +free_phylink:
+> > +	if (airhoa_is_phy_external(port))
+> > +		phylink_destroy(port->phylink);
+> > +
+> > +	return err;
+> >  }
+> >  
+> >  static int airoha_probe(struct platform_device *pdev)
+> > @@ -2967,6 +3114,9 @@ static int airoha_probe(struct platform_device *pdev)
+> >  		struct airoha_gdm_port *port = eth->ports[i];
+> >  
+> >  		if (port && port->dev->reg_state == NETREG_REGISTERED) {
+> > +			if (airhoa_is_phy_external(port))
+> > +				phylink_destroy(port->phylink);
+> > +
+> >  			unregister_netdev(port->dev);
+> >  			airoha_metadata_dst_free(port);
+> >  		}
+> > @@ -2994,6 +3144,9 @@ static void airoha_remove(struct platform_device *pdev)
+> >  			continue;
+> >  
+> >  		airoha_dev_stop(port->dev);
+> > +		if (airhoa_is_phy_external(port))
+> > +			phylink_destroy(port->phylink);
+> > +
+> >  		unregister_netdev(port->dev);
+> >  		airoha_metadata_dst_free(port);
+> >  	}
+> > diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+> > index 53f39083a8b0..73a500474076 100644
+> > --- a/drivers/net/ethernet/airoha/airoha_eth.h
+> > +++ b/drivers/net/ethernet/airoha/airoha_eth.h
+> > @@ -498,6 +498,9 @@ struct airoha_gdm_port {
+> >  	struct net_device *dev;
+> >  	int id;
+> >  
+> > +	struct phylink *phylink;
+> > +	struct phylink_config phylink_config;
+> > +
+> >  	struct airoha_hw_stats stats;
+> >  
+> >  	DECLARE_BITMAP(qos_sq_bmap, AIROHA_NUM_QOS_CHANNELS);
+> > diff --git a/drivers/net/ethernet/airoha/airoha_regs.h b/drivers/net/ethernet/airoha/airoha_regs.h
+> > index d931530fc96f..54f7079b28b0 100644
+> > --- a/drivers/net/ethernet/airoha/airoha_regs.h
+> > +++ b/drivers/net/ethernet/airoha/airoha_regs.h
+> > @@ -357,6 +357,18 @@
+> >  #define IP_FRAGMENT_PORT_MASK		GENMASK(8, 5)
+> >  #define IP_FRAGMENT_NBQ_MASK		GENMASK(4, 0)
+> >  
+> > +#define REG_GDMA4_TMBI_FRAG		0x2028
+> > +#define GDMA4_SGMII1_TX_WEIGHT_MASK	GENMASK(31, 26)
+> > +#define GDMA4_SGMII1_TX_FRAG_SIZE_MASK	GENMASK(25, 16)
+> > +#define GDMA4_SGMII0_TX_WEIGHT_MASK	GENMASK(15, 10)
+> > +#define GDMA4_SGMII0_TX_FRAG_SIZE_MASK	GENMASK(9, 0)
+> > +
+> > +#define REG_GDMA4_RMBI_FRAG		0x202c
+> > +#define GDMA4_SGMII1_RX_WEIGHT_MASK	GENMASK(31, 26)
+> > +#define GDMA4_SGMII1_RX_FRAG_SIZE_MASK	GENMASK(25, 16)
+> > +#define GDMA4_SGMII0_RX_WEIGHT_MASK	GENMASK(15, 10)
+> > +#define GDMA4_SGMII0_RX_FRAG_SIZE_MASK	GENMASK(9, 0)
+> > +
+> >  #define REG_MC_VLAN_EN			0x2100
+> >  #define MC_VLAN_EN_MASK			BIT(0)
+> >  
+> > -- 
+> > 2.48.1
+> > 
 
-I'd suggest "related" instead of "parallel".
 
-> allow the +control of non-PHY driver multi-port setups.
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index b155eec69552..211a6ba50166 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -8781,6 +8781,7 @@
-> F:	Documentation/devicetree/bindings/net/ethernet-connector.yaml
-> F:	Documentation/devicetree/bindings/net/ethernet-phy.yaml
->  F:	Documentation/devicetree/bindings/net/mdio*
->  F:	Documentation/devicetree/bindings/net/qca,ar803x.yaml
-> +F:	Documentation/networking/phy-port.rst
->  F:	Documentation/networking/phy.rst
->  F:	drivers/net/mdio/
->  F:	drivers/net/mdio/acpi_mdio.c
-
-Thanks!
 
 -- 
-Romain Gantois, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---nextPart5568568.Sb9uPGUboI
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEYFZBShRwOvLlRRy+3R9U/FLj284FAmghvbwACgkQ3R9U/FLj
-2871DxAAn7+aUBy4seGGJo1GygKlbkXBHGDeR8bvU6xiVEX4iQCpM5/8/fSk413V
-VaVRwapjz/rEK7gx0fKzUw2EmEUSBkSSW4SPocPH7bEYREdo5y0f1xgTp7PXD1Yj
-osDFFsXo9S3rsDCvCBMDb73s60/EZsDp/gcw+xAdhZPBjDine0wArdRPTmWmJDsc
-OJTM9eMwHYxj03b0j+3ZytXWTQ8ku2I3zeT+RD1M/XWTguJ/h0QYJnn9O1OU6kLh
-uxgtP8lSrFAz/hPvIRa7u4TG73e4Dfm0/cP4liGgDFJEofnxVSU7BKuFT5K/PDW/
-+H3aRHQAPfuNNrzE/j6Ek7KMYfFa3vGbM3kD0lnhMGoKD9s9vhLmOxG/b3+8fiQl
-KQX7UMQfKHEfmMz8HyTG3dX5vplbpR4MlQYDoub9Icu3AYJO/uRKw5X6NaJT89yT
-aIEeMjzxKTxrTryx7aQ8T8IWzQF58mj9IPao4qHXSm+nP0KWMbZMrNP3KkFvTNSI
-RPjPzPlBYD1DT5o7Nt4izr8c+b9GCJQDdFxkAfjmisjvxljVSL1yTaFVvpgcClSe
-6FGRHENouJJrH+nadqpZKNmzkLDDoQoi1dfzq4Dx7KAxul3gqwh+lZ6QOBCwH/o0
-Hax/Lqkzq0+JXynFI3fTL2/czWHZUzzkoZdkQbxQsS2CSXgHcC4=
-=G59j
------END PGP SIGNATURE-----
-
---nextPart5568568.Sb9uPGUboI--
-
-
-
+	Ansuel
