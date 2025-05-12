@@ -1,44 +1,44 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D6E267AF8;
-	Mon, 12 May 2025 09:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD54267AE7
+	for <netdev@vger.kernel.org>; Mon, 12 May 2025 09:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747042072; cv=none; b=QV8cNHmS+4V5XrbDRDroP99uSKeDq+XBcxPfVGGqN/3vJMi+is01rxMwNbLWHDaUR8ufSL0dN6RGbFqHbm1ylimUJKL1AmdJMufCFcSY39249zd16TXvtQEylyKwIpOcWjk3jW25G8ItCWUWXu+Ra1wTYbPnUsOqg7YAmL6Y/wc=
+	t=1747042072; cv=none; b=W42SBemKU5H4xg6L41Qde8tYhkHdraU9wJcJCvyK0VcxGJoiiCR/53+tamFJc1NN8+JjsE0g/C2rH3HSn8bjTOQWeRvP4vnxgfKV+j+KRglxiX3OJ74sovQsLs+YLs1fo2pZBYmcbk6i8aVUr4BOwjEK3+B5iSfuf1vHq2SEZ6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1747042072; c=relaxed/simple;
-	bh=i0VNjcCRvdovrY3iCi7sMqjj1HF76Yz/3D8yI+89hSM=;
+	bh=sPkDhpPj45NqnNG7OXTUxNK+pKVoxq7lSZ7ppnTOfa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cpmFV70es4+44Ao6LHdMc+KatlWDYu4HfcRTU3iOXcEUc4g0I0vxTAc8eI8kBnQGEjNr6VZiEBTmJmDtTQJpJxHD/grOCgIwwhOP28Ls9w2HP+GPQs+k/McfVjzs9OoG2hLQZ0Kk1m4F/Z3Y/ZfTLGIob4aDgtg/4uIcUkxDFG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Cr2rXb/J; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FTaRom8g; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version; b=RTiRvy8rD8VaeAWgMQOaB2q84MoZidMFohVuhXjmbE92lhA3j0F+Wcvdm3ptEvkZM/DUmce0NDsRBvMCLbnXlDbTBpKTLNwAGfzgDrFL10X3hDejVNmdTkaPJ1EydpuCxju06EJ8mhj7Hi6k73diblc0hMXHhvQx1retK9I7a2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fchQmaa9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=e12Wpaqs; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Cr2rXb/J";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FTaRom8g"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fchQmaa9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="e12Wpaqs"
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1747042067;
+	s=2020; t=1747042065;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nmddc0pDztofvgEdvZvBBZR6kgIdxTlNYioqcelkIOA=;
-	b=Cr2rXb/J1M1vlNcxUcQoDLGi6inoIAi8G4DcutFtVCfH9FEQFWF0WGi6lP0Ol2z1+gU4bB
-	+a7MyOVz0AOENDbkmMnLzstZmx6fQQeGwxUYLnXDt2it1VklHqfoPcdoyNqiy+CeAOhhEY
-	0mmcQeMdY5Um/mdddQQ1rKHpNQmjJAjy+wD9C9wiqZZfjaku5vE6shpGga6hhUT+WYlVot
-	r4r/SJFgiPctn4HWNsk8gi3U8z0aZjzAtQCEMlp4ofF6StsDutw1vJ9LKODKCuzjUXLzxD
-	pWPgjb9fiP+IVJ4jU3DrTM8RZGAx53PNTDQguhDlziFyMOG6SI35CebDaa3iIw==
+	bh=N1x3iY/bAzLdbqw/dUByEQjXdETe5UjtT7mP0YXW3+s=;
+	b=fchQmaa9C3mm1Uk1Z6s+I/ZNCrthXg65qj+FXfNDhruxu6TN6x2575eoyY7iGAG8tLzmrj
+	WGeYaSjVA50spZnuzOu9KNqCahktx/LYveNQF0LkCH6VaGiVBl89S+gWkRLzqqEYR01OEj
+	9x+p0nMPAzLi2gEEIQvXLFZiyYr/nt8vCEkSK69FL70tKxeY4VYj9ZNyeQmeVuOwnumxj+
+	yGi3tG4EL2nJ5ZUzjGcooe0KcuaME3WPZs8JlsiIHTou5OaVcH0+1DekLaKSZ5/pmNRnmq
+	iRMBtblRU6zI6nleM/bvB9XfkBKLjFztTErKnZHF9z/c6ubq75vOWAOUxUoN6Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1747042067;
+	s=2020e; t=1747042065;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nmddc0pDztofvgEdvZvBBZR6kgIdxTlNYioqcelkIOA=;
-	b=FTaRom8grHttPaogYXo/YJzsiZ18D/D2VtOVbcd2DvxQbFbVEzRuGZW8ZGR2DBrTgbokzr
-	DvVyNUhWj/l1ZhDQ==
+	bh=N1x3iY/bAzLdbqw/dUByEQjXdETe5UjtT7mP0YXW3+s=;
+	b=e12Wpaqsv8goAdawMy185jytMKpcgFAMMwC7dpT6OKcATDyVIcp3558nLLl1XcTjzfZfGQ
+	zP8wlsQChjb/5vCA==
 To: netdev@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -48,11 +48,13 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Simon Horman <horms@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Allison Henderson <allison.henderson@oracle.com>,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH net-next v4 14/15] rds: Acquire per-CPU pointer within BH disabled section
-Date: Mon, 12 May 2025 11:27:35 +0200
-Message-ID: <20250512092736.229935-15-bigeasy@linutronix.de>
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	dev@openvswitch.org
+Subject: [PATCH net-next v4 09/15] openvswitch: Move ovs_frag_data_storage into the struct ovs_pcpu_storage
+Date: Mon, 12 May 2025 11:27:30 +0200
+Message-ID: <20250512092736.229935-10-bigeasy@linutronix.de>
 In-Reply-To: <20250512092736.229935-1-bigeasy@linutronix.de>
 References: <20250512092736.229935-1-bigeasy@linutronix.de>
 Precedence: bulk
@@ -63,60 +65,112 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 
-rds_page_remainder_alloc() obtains the current CPU with get_cpu() while
-disabling preemption. Then the CPU number is used to access the per-CPU
-data structure via per_cpu().
+ovs_frag_data_storage is a per-CPU variable and relies on disabled BH for i=
+ts
+locking. Without per-CPU locking in local_bh_disable() on PREEMPT_RT
+this data structure requires explicit locking.
 
-This can be optimized by relying on local_bh_disable() to provide a
-stable CPU number/ avoid migration and then using this_cpu_ptr() to
-retrieve the data structure.
+Move ovs_frag_data_storage into the struct ovs_pcpu_storage which already
+provides locking for the structure.
 
-Cc: Allison Henderson <allison.henderson@oracle.com>
-Cc: linux-rdma@vger.kernel.org
+Cc: Aaron Conole <aconole@redhat.com>
+Cc: Eelco Chaudron <echaudro@redhat.com>
+Cc: Ilya Maximets <i.maximets@ovn.org>
+Cc: dev@openvswitch.org
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- net/rds/page.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/openvswitch/actions.c  | 20 ++------------------
+ net/openvswitch/datapath.h | 16 ++++++++++++++++
+ 2 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/net/rds/page.c b/net/rds/page.c
-index e0dd4f62ea47a..58a8548a915a9 100644
---- a/net/rds/page.c
-+++ b/net/rds/page.c
-@@ -86,8 +86,8 @@ int rds_page_remainder_alloc(struct scatterlist *scat, un=
-signed long bytes,
- 		goto out;
- 	}
+diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+index 435725c27a557..e7269a3eec79e 100644
+--- a/net/openvswitch/actions.c
++++ b/net/openvswitch/actions.c
+@@ -39,22 +39,6 @@
+ #include "flow_netlink.h"
+ #include "openvswitch_trace.h"
 =20
--	rem =3D &per_cpu(rds_page_remainders, get_cpu());
- 	local_bh_disable();
-+	rem =3D this_cpu_ptr(&rds_page_remainders);
+-#define MAX_L2_LEN	(VLAN_ETH_HLEN + 3 * MPLS_HLEN)
+-struct ovs_frag_data {
+-	unsigned long dst;
+-	struct vport *vport;
+-	struct ovs_skb_cb cb;
+-	__be16 inner_protocol;
+-	u16 network_offset;	/* valid only for MPLS */
+-	u16 vlan_tci;
+-	__be16 vlan_proto;
+-	unsigned int l2_len;
+-	u8 mac_proto;
+-	u8 l2_data[MAX_L2_LEN];
+-};
+-
+-static DEFINE_PER_CPU(struct ovs_frag_data, ovs_frag_data_storage);
+-
+ DEFINE_PER_CPU(struct ovs_pcpu_storage, ovs_pcpu_storage) =3D {
+ 	.bh_lock =3D INIT_LOCAL_LOCK(bh_lock),
+ };
+@@ -771,7 +755,7 @@ static int set_sctp(struct sk_buff *skb, struct sw_flow=
+_key *flow_key,
+ static int ovs_vport_output(struct net *net, struct sock *sk,
+ 			    struct sk_buff *skb)
+ {
+-	struct ovs_frag_data *data =3D this_cpu_ptr(&ovs_frag_data_storage);
++	struct ovs_frag_data *data =3D this_cpu_ptr(&ovs_pcpu_storage.frag_data);
+ 	struct vport *vport =3D data->vport;
 =20
- 	while (1) {
- 		/* avoid a tiny region getting stuck by tossing it */
-@@ -116,12 +116,11 @@ int rds_page_remainder_alloc(struct scatterlist *scat=
-, unsigned long bytes,
+ 	if (skb_cow_head(skb, data->l2_len) < 0) {
+@@ -823,7 +807,7 @@ static void prepare_frag(struct vport *vport, struct sk=
+_buff *skb,
+ 	unsigned int hlen =3D skb_network_offset(skb);
+ 	struct ovs_frag_data *data;
 =20
- 		/* alloc if there is nothing for us to use */
- 		local_bh_enable();
--		put_cpu();
+-	data =3D this_cpu_ptr(&ovs_frag_data_storage);
++	data =3D this_cpu_ptr(&ovs_pcpu_storage.frag_data);
+ 	data->dst =3D skb->_skb_refdst;
+ 	data->vport =3D vport;
+ 	data->cb =3D *OVS_CB(skb);
+diff --git a/net/openvswitch/datapath.h b/net/openvswitch/datapath.h
+index 4a665c3cfa906..1b5348b0f5594 100644
+--- a/net/openvswitch/datapath.h
++++ b/net/openvswitch/datapath.h
+@@ -13,6 +13,7 @@
+ #include <linux/skbuff.h>
+ #include <linux/u64_stats_sync.h>
+ #include <net/ip_tunnels.h>
++#include <net/mpls.h>
 =20
- 		page =3D alloc_page(gfp);
+ #include "conntrack.h"
+ #include "flow.h"
+@@ -173,6 +174,20 @@ struct ovs_net {
+ 	bool xt_label;
+ };
 =20
--		rem =3D &per_cpu(rds_page_remainders, get_cpu());
- 		local_bh_disable();
-+		rem =3D this_cpu_ptr(&rds_page_remainders);
-=20
- 		if (!page) {
- 			ret =3D -ENOMEM;
-@@ -140,7 +139,6 @@ int rds_page_remainder_alloc(struct scatterlist *scat, =
-unsigned long bytes,
- 	}
-=20
- 	local_bh_enable();
--	put_cpu();
- out:
- 	rdsdebug("bytes %lu ret %d %p %u %u\n", bytes, ret,
- 		 ret ? NULL : sg_page(scat), ret ? 0 : scat->offset,
++#define MAX_L2_LEN	(VLAN_ETH_HLEN + 3 * MPLS_HLEN)
++struct ovs_frag_data {
++	unsigned long dst;
++	struct vport *vport;
++	struct ovs_skb_cb cb;
++	__be16 inner_protocol;
++	u16 network_offset;	/* valid only for MPLS */
++	u16 vlan_tci;
++	__be16 vlan_proto;
++	unsigned int l2_len;
++	u8 mac_proto;
++	u8 l2_data[MAX_L2_LEN];
++};
++
+ struct deferred_action {
+ 	struct sk_buff *skb;
+ 	const struct nlattr *actions;
+@@ -200,6 +215,7 @@ struct action_flow_keys {
+ struct ovs_pcpu_storage {
+ 	struct action_fifo action_fifos;
+ 	struct action_flow_keys flow_keys;
++	struct ovs_frag_data frag_data;
+ 	int exec_level;
+ 	struct task_struct *owner;
+ 	local_lock_t bh_lock;
 --=20
 2.49.0
 
