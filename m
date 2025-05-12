@@ -1,95 +1,157 @@
-Received: from mx03lb.world4you.com (mx03lb.world4you.com [81.19.149.113])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C725925A32E
-	for <netdev@vger.kernel.org>; Mon, 12 May 2025 20:53:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823C22AEE1;
+	Mon, 12 May 2025 21:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747083232; cv=none; b=afXRH0xU64y7ytqTSNTr9tqf1n8L+PMjNS9gWn/WRgRCueOMmZ84z7zIW/jSPWuaXWxNIYtAMCviTA+qEagvPMLLvmEBhQE0bPTTMIE932viM/Y4X8w/1/GDH2rs5OKJqlXj8RZ/4mseQDzT3LLh/i2BkSSKFlW3QTK4QKrCR/c=
+	t=1747083678; cv=none; b=U6V7WPa8sewfiZyPHZX49OEvpO4Z8rEh3GqkrmW8ZMXhEmTdwQiwgeaS06tugPBtLxc1TNbxI3B+ZtFpcVe+4d3+1Buwbvhn2USnPOqV6xhiYSm6VRF3jfBuYD+ncS4QZ1kRft34IrbXOMjAYE2d5bbDv43OVZsCYjXE+7Zh0UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747083232; c=relaxed/simple;
-	bh=vovCGTq6R+vQkGKhs9tmL4B0Sb7d3s10R3rAR4EgGiM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ndOmh/BzlmtEf1EjPHZj4j4qbLayrNK4c9vP7JGnue1FbVhnjMlxcf6ytSjRbmEoLWf0gTKL5aiTp6q1i3xYp7TKUaVp4f2ud1seWJ9F0kS27UBRbLRT7tk9cP66D8tX5jrH3HRwZKzGPOS89YokdGZG7fC/wdnGJzzcJudlnGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=TwyxneBZ; arc=none smtp.client-ip=81.19.149.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1747083678; c=relaxed/simple;
+	bh=LKLLONeCVjQVAaNx8UdwNrH4MsosiV3gnDGhpSa48kE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OmyXDFkthXPHBGAFP/e/ncxStW5ViGpZOosfv5g6oVVoyaExUvLAfId9u/A95Bgf9ShzCjgqBwLt8zEGUtA96bDI5G7EBKvAJez4wSiKGNr8YzARmT29KEwJ8awxGxv6V0mViYzFksjEL1GKt4CULHeBNfFgSKSgORW4hTHL8D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TnnkW34r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="TwyxneBZ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=2rUrvGmCsV+X/cd9otVFUHga5m9gLerIDJghrZ3b39w=; b=TwyxneBZma3gBuA1BRZ1a/14IZ
-	hX9U+tyZwuvYI3Ui9Tm0xlyeGo4BU0zbnTFiVVCJBfOdwitatmdkv/hr+x2tskly/GYYRElbvpdRR
-	ksP7rB/t6H7LThAKE+/VpHpiVVj7bZmIgjK0dUm06Y4iEOKv295l4emla1WUMlH+512s=;
-Received: from [188.22.4.212] (helo=[10.0.0.160])
-	by mx03lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1uEZRJ-0000000009F-3WiM;
-	Mon, 12 May 2025 22:07:54 +0200
-Message-ID: <532276c5-0c5f-41dd-add9-487f39ec1b3a@engleder-embedded.com>
-Date: Mon, 12 May 2025 22:07:52 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TnnkW34r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D88C4CEE7;
+	Mon, 12 May 2025 21:01:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747083676;
+	bh=LKLLONeCVjQVAaNx8UdwNrH4MsosiV3gnDGhpSa48kE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TnnkW34rYr5Yyflxu0il8Q6hxkNKCrMwwjOkRS9FklhqXnePrp6HXUjGqvpL4XveL
+	 0TQtB92rfaDcCOH9e1pk1D4ic/agrs6hwpXMPFHudeKeZfQv6yDSJqQ/pKThu+ODJl
+	 +ZLPwdtj02aYTXg3oHIzEKxV4sVVl8qKceifsWcIwomKVeXCId61MWxQOtp6u4lRVv
+	 CgKLLVTRCdXXttrvq7J0fBw19etyehXiK43NerTW3Pka1615TKQTSJ1dvAKD0XCPLK
+	 Z5sSDHt4VOVGJ821FN9XRSa6rlwy8iN4fBlbq+MKhSamPyjSZ1KDZxsM+b72sDA1k6
+	 U3GTEQA7oIZDA==
+Date: Mon, 12 May 2025 22:01:10 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Frank Wunderlich <linux@fw-web.de>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Frank Wunderlich <frank-w@public-files.de>,
+	=?utf-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>,
+	Landen Chao <Landen.Chao@mediatek.com>,
+	DENG Qingfang <dqfext@gmail.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH v1 01/14] dt-bindings: net: mediatek,net: update for
+ mt7988
+Message-ID: <20250512-spooky-overbuilt-abc946ba1f55@spud>
+References: <20250511141942.10284-1-linux@fw-web.de>
+ <20250511141942.10284-2-linux@fw-web.de>
+ <20250512-nibble-freemason-69e0279f2f99@spud>
+ <05760B5E-955E-4E0E-9B69-E762783CC37B@fw-web.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: tsnep: fix timestamping with a stacked DSA
- driver
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org
-References: <20250512132430.344473-1-vladimir.oltean@nxp.com>
-Content-Language: en-US
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-In-Reply-To: <20250512132430.344473-1-vladimir.oltean@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AV-Do-Run: Yes
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ihom2EqWEYhuIF8/"
+Content-Disposition: inline
+In-Reply-To: <05760B5E-955E-4E0E-9B69-E762783CC37B@fw-web.de>
 
-On 12.05.25 15:24, Vladimir Oltean wrote:
-> This driver seems susceptible to a form of the bug explained in commit
-> c26a2c2ddc01 ("gianfar: Fix TX timestamping with a stacked DSA driver")
-> and in Documentation/networking/timestamping.rst section "Other caveats
-> for MAC drivers", specifically it timestamps any skb which has
-> SKBTX_HW_TSTAMP, and does not consider adapter->hwtstamp_config.tx_type.
 
-Is it necessary in general to check adapter->hwtstamp_config.tx_type for
-HWTSTAMP_TX_ON or only to fix this bug? In 
-Documentation/networking/timestamping.rst
-section "Hardware Timestamping Implementation: Device Drivers" only the
-check of (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) is mentioned.
+--ihom2EqWEYhuIF8/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Evaluate the proper TX timestamping condition only once on the TX
-> path (in tsnep_netdev_xmit_frame()) and pass it down to
-> tsnep_xmit_frame_ring() and tsnep_tx_activate() through a bool variable.
+On Mon, May 12, 2025 at 07:33:22PM +0200, Frank Wunderlich wrote:
+> Am 12. Mai 2025 18:21:45 MESZ schrieb Conor Dooley <conor@kernel.org>:
+> >On Sun, May 11, 2025 at 04:19:17PM +0200, Frank Wunderlich wrote:
+> >> From: Frank Wunderlich <frank-w@public-files.de>
+> >>=20
+> >> Update binding for mt7988 which has 3 gmac and 2 reg items.
+> >>=20
+> >> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+> >> ---
+> >>  Documentation/devicetree/bindings/net/mediatek,net.yaml | 9 +++++++--
+> >>  1 file changed, 7 insertions(+), 2 deletions(-)
+> >>=20
+> >> diff --git a/Documentation/devicetree/bindings/net/mediatek,net.yaml b=
+/Documentation/devicetree/bindings/net/mediatek,net.yaml
+> >> index 9e02fd80af83..5d249da02c3a 100644
+> >> --- a/Documentation/devicetree/bindings/net/mediatek,net.yaml
+> >> +++ b/Documentation/devicetree/bindings/net/mediatek,net.yaml
+> >> @@ -28,7 +28,8 @@ properties:
+> >>        - ralink,rt5350-eth
+> >> =20
+> >>    reg:
+> >> -    maxItems: 1
+> >> +    minItems: 1
+> >> +    maxItems: 2
+> >
+> >This should become an items list, with an explanation of what each of
+> >the reg items represents.
+>=20
+> I would change to this
+>=20
+>   reg:
+>     items:
+>       - description: Register for accessing the MACs.
+>       - description: SoC internal SRAM used for DMA operations.
+>     minItems: 1
+>=20
+> Would this be OK this way?
 
-What about also storing the TX timestamping condition in TX entry and
-evaluating it in tsnep_tx_poll() instead of checking
-adapter->hwtstamp_config.tx_type again? This way the timestamping
-decision is only done in tsnep_netdev_xmit_frame() and tsnep_tx_poll()
-cannot decide differently e.g. if hardware timestamping was deactivated
-in between. Also this means that SKBTX_IN_PROGRESS is only set but
-never evaluated by tsnep, which should fix this bug AFAIU.
+Ye, that looks good.
 
-> Also evaluate it again in the TX confirmation path, in tsnep_tx_poll(),
-> since I don't know whether TSNEP_DESC_EXTENDED_WRITEBACK_FLAG is a
-> confounding condition and may be set for other reasons than hardware
-> timestamping too.
+>=20
+> >> =20
+> >>    clocks:
+> >>      minItems: 2
+> >> @@ -381,8 +382,12 @@ allOf:
+> >>              - const: xgp2
+> >>              - const: xgp3
+> >> =20
+> >> +        reg:
+> >> +          minItems: 2
+> >> +          maxItems: 2
 
-Yes, there is also some DMA statistic included besides timestamping so
-it can be set for other reasons too in the future.
+You also shouldn't need to set maxItems here, since the list has 2 items
+total.
 
-I can take over this patch and test it when I understand more clearly
-what needs to be done.
+> >> +
+> >>  patternProperties:
+> >> -  "^mac@[0-1]$":
+> >> +  "^mac@[0-2]$":
+> >>      type: object
+> >>      unevaluatedProperties: false
+> >>      allOf:
+> >> --=20
+> >> 2.43.0
+> >>=20
+>=20
+> Hi Conor
+>=20
+> Thank you for review.
+> regards Frank
 
-Gerhard
+--ihom2EqWEYhuIF8/
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaCJhlgAKCRB4tDGHoIJi
+0np2AP9tRdqvR8H53faGqXax224YS7YArSQXFuynwo25eICEhgEAntebUayynsz/
++miUO3kJllRjEAYIKIHnvI4YCHk0Wws=
+=8MP/
+-----END PGP SIGNATURE-----
+
+--ihom2EqWEYhuIF8/--
