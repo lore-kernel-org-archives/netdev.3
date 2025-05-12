@@ -1,202 +1,140 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2048.outbound.protection.outlook.com [40.107.92.48])
+Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD05AD5E;
-	Mon, 12 May 2025 05:54:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747029271; cv=fail; b=W/Bhg+niKUliFx0Ifv71ftHobifFeoN+VV+5QUsCXZ1TIh1WsUqMPSYekcQfnal4uN1/iU602rskEUdkycY7ehjdXnw6rDuiN0+YhyaGUwG4lLpdLq5LrMl+xhVN2Io9DZpQZWyvWX9J8wPwgPnTZYwpTY4YsayaDFtwB4t/pg8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747029271; c=relaxed/simple;
-	bh=nU4fJf3C/i7KObEX976nKjAA3NuEcfG8FiVdpWtYd9w=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=AAWxjSFHg0PdpiBMitFpjKvBx7rTI4FsQRODesQq5QyqKPfTzhUPpd6s3t4GD3TSfFoZ6gGv1Gin+bmFVD1Iy3bYYbdTVw8VsddQhI9I26wMU9/EVVASVbMRz2ej5GTMo2lbwoD1OdU6Q2mIVbNHmxGXVhwgdstrqIkdIlT4RDI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=y+am50wB; arc=fail smtp.client-ip=40.107.92.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CE01A23B5;
+	Mon, 12 May 2025 06:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747031410; cv=none; b=VbkIF8gKv0wDU89exULhxLbOMIklmTA5Hlo+8HLlBDfzulG0kde0YgMuSX8me9LYrFFshgEvgEdbT6jDbUS5+XjKw1yYPpK8JSo2FX1XgT6QiO6lVLCaCDPhePs+mkOFPnDB/MllabRzz2RGjtPscCARKPDKo91wk+xJdn+hhFk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747031410; c=relaxed/simple;
+	bh=IyqEvFnK0atVgTZ4NurvwzVawcVS2qz/Kyx3J5TkbVI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=h5OnPE8FM0B54a1rEpGcrNToylrydAFuHqV9VQKwHuUI0UEl+TugCmqLv9ngYUVtsAzA4Eu2CDZV5rtrfN9TfKoy4QymDJ6rG9pXgalr/vu4LfqdIiuRePejSzJbdn4qfe7sjSFSNMghTGS4JrFqfMhN2vNhZokncLZ+06UMrIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=EBBLXXnj; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="y+am50wB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e/g2kupmI1oTrg2TIxBIMkA17+RaUTmxuFSb8vDUnWM1bvEQQ/wlZGCxBUXxJGVJD9v8lY3ocHPxRJuX7AJ55pNYRWaxussVoAmi0Ld0Zp+7GYM8Dcd91ZDeC/96Ih4HLm0iadKPoa5R6AhAcSfmvPRkQjsimvXTBu/MN3215WMGN1bJgBHjBRVMAqs7dh46VvO4dIIUQs308vt5vksaoaqQLtXOQ6Dzfcn7BGEBzuZo9Cr6HdxEMphTsx0WkYBdY+TnXCmGCzD0GJHfzmQAR5OqjN87dsLpMy/I1RHRc42CFkQtmaHZ+bJKbugzXSwYU/xRaF29txtRcFZ2RtLL6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eVTpfO5iiPlh7ARWpeh9H+sde8JHE49J3z0dwbuG17k=;
- b=AeHmpzfzT+qAHb5d2T8ZC75QYyDDlgiOlHphSyqgg/Y+NctJWG1tBLMaFnRiq0E6u0ladJsrRHABV/434LWQnzpn3qSsywOmoFdmIfK69S0IHOaLw0xkO23+xDZYGOQBp4Dpjia1C1xgKPqXQwBA3bTj3VJsrW2XsGv/NLNQm7F+psCIn1k/Et+5Ugot5m8BnTzkUoea/kV82AtjNfACGjbvkmFb7oHm6lt5AHAngaTazmfSiWirXNjY+3cPzYhteBPtfelaFYeOc5I/reFud4mKmFERfHeeNUleugRM8kk8FYoLAKbRJIL59AT5qaQgUS1Oa2hgwMind84OjLs5kA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eVTpfO5iiPlh7ARWpeh9H+sde8JHE49J3z0dwbuG17k=;
- b=y+am50wBd3onEkcJAyMVd3JR6e5+auFRtLRJDOAglpJBRspmrjjy8QSed4enHU0nC3W+N1O3wnSOqop5WpMY4z/Yyrhm2pYMyw3vxX6mfM4nLPO1p01DSKiUhnVJ+Ouo3iB+50paJmtCNHnVyMmhkdfKhBoTWCsQ/+Dynq6CqRM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from IA1PR12MB9064.namprd12.prod.outlook.com (2603:10b6:208:3a8::19)
- by MN0PR12MB5715.namprd12.prod.outlook.com (2603:10b6:208:372::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.28; Mon, 12 May
- 2025 05:54:27 +0000
-Received: from IA1PR12MB9064.namprd12.prod.outlook.com
- ([fe80::1f25:d062:c8f3:ade3]) by IA1PR12MB9064.namprd12.prod.outlook.com
- ([fe80::1f25:d062:c8f3:ade3%6]) with mapi id 15.20.8722.024; Mon, 12 May 2025
- 05:54:27 +0000
-Message-ID: <70d63971-6b74-41ae-bde3-b08b5f244672@amd.com>
-Date: Mon, 12 May 2025 11:24:18 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH v2 14/14] RDMA/ionic: Add Makefile/Kconfig to kernel build
- environment
-Content-Language: en-US
-To: Simon Horman <horms@kernel.org>
-Cc: shannon.nelson@amd.com, brett.creeley@amd.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, corbet@lwn.net,
- jgg@ziepe.ca, leon@kernel.org, andrew+netdev@lunn.ch, allen.hubbe@amd.com,
- nikhil.agarwal@amd.com, linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250508045957.2823318-1-abhijit.gangurde@amd.com>
- <20250508045957.2823318-15-abhijit.gangurde@amd.com>
- <20250509203352.GS3339421@horms.kernel.org>
-From: Abhijit Gangurde <abhijit.gangurde@amd.com>
-In-Reply-To: <20250509203352.GS3339421@horms.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN3PR01CA0095.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:9b::8) To IA1PR12MB9064.namprd12.prod.outlook.com
- (2603:10b6:208:3a8::19)
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="EBBLXXnj"
+Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54C1QBch031626;
+	Sun, 11 May 2025 23:29:46 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=+EB6sJdhVKr4rGBMH4O7DYZ
+	xvmnpv++UCvoCoKqxmzM=; b=EBBLXXnjzX+j8UKstKq4D1IbPTWCfnMDjyV0fjr
+	JcrC0xewXb/+I1RQOe7UATh3bI1O8hJYDt3iYrvWl8VfJ4P8kipqfgWjvQoiMhpQ
+	kOvEnAJhW6RWaA1ZLkEM/516UnRzV1FEZ9VhvESIh5CW7+j/PPOosYsLeWe/4S2K
+	+ZvH1y0lMFKWYoTTCeLGBXagXRrBlHCz78ndnRwucHYZs6DLCmhssxCOps9wa2B2
+	4UVwwTNs9U1azmFZk0I0Dpzhfp0NHFwEX8MykdF5FddH7J5u6hkM9oQJgId8Btkw
+	XGbN8hMf/tNoL/5dQhuq42i8FRblcb9QgfMTM4oIUD7zF9A==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 46k5rggfjn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 11 May 2025 23:29:45 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Sun, 11 May 2025 23:29:44 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Sun, 11 May 2025 23:29:44 -0700
+Received: from test-OptiPlex-Tower-Plus-7010.marvell.com (unknown [10.29.37.157])
+	by maili.marvell.com (Postfix) with ESMTP id 1F56C3F7093;
+	Sun, 11 May 2025 23:29:39 -0700 (PDT)
+From: Hariprasad Kelam <hkelam@marvell.com>
+To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Hariprasad Kelam <hkelam@marvell.com>,
+        Sunil Goutham
+	<sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        "Subbaraya
+ Sundeep" <sbhatta@marvell.com>,
+        Bharat Bhushan <bbhushan2@marvell.com>,
+        "Andrew Lunn" <andrew+netdev@lunn.ch>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        "Eric Dumazet" <edumazet@google.com>,
+        Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Simon Horman
+	<horms@kernel.org>
+Subject: [net] octeontx2-pf: Fix ethtool support for SDP representors
+Date: Mon, 12 May 2025 11:59:01 +0530
+Message-ID: <20250512062901.629584-1-hkelam@marvell.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB9064:EE_|MN0PR12MB5715:EE_
-X-MS-Office365-Filtering-Correlation-Id: beb541d2-1c67-4f0a-aa15-08dd91197488
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VUZkWHRwcXdLSk42V3hhWjg0ZUNROU9KaW5oU25veG9pVml5TGFlRnRjcGlZ?=
- =?utf-8?B?amw2MHFjQUl0YXVMeHFCdHBzQWpDMjBUVkxRY1duT290WFZON005alJvK3Bx?=
- =?utf-8?B?RVdvM0NNblpVWTBQaWpJS2tXL0NaM2M2bU9JanJ3TzkvczNNOEU2ZlJjbnM1?=
- =?utf-8?B?a0pJNWdNT1N4NUN5SXJzLy9SN2pmSFV4YURjaXNTTEpERDUvK1dVZUFoM09X?=
- =?utf-8?B?bEdrcXZJUW1lcTl6Y0RpY1ZBQ1RrL0VBaUVwMTFlQWVOZHRlcGpqNld2QWYx?=
- =?utf-8?B?ZjJlMmJKTy9MeXJySTNPVkh1U0FuU2lRejRnTjBlWFIxOFV3emxuYmxtRWF1?=
- =?utf-8?B?RkFYZ2pkMURFdFFxaXl0K0RLNHpzV3ZqZzFmeUd3Vkc1b05KbW9TYWhxVWF1?=
- =?utf-8?B?MzdRWVZsOUhtUUFNeEovT2NWdW1GcS9ObEx0QS8vYWVOOGVzT3VYVnJ6RHpO?=
- =?utf-8?B?Q3UxNXFBbGg5QzJDbHhyamVmOE1VWU5aSDJYNnd6QmM4YmJhczZ4YmljNFVT?=
- =?utf-8?B?NWU1UTU5YjFnVmIxaVN1eVJpZDN6ckJzWGQ1TXlyaUZobklvTlpoc1AwVzRx?=
- =?utf-8?B?NVhySkYyNUNxbkxldGhLUlRaZUNtRHYyVy81TDJJd29ic2U4eDR1S09jU3VM?=
- =?utf-8?B?Y05kTkIzRW9pT0J1MzhzMXpaUDlOem0weWVtMk1LQUJFZVdiOXlKbUI3eXZI?=
- =?utf-8?B?TGVrRzUva3dLOHlqT0dqM09YWGlaVkc0RXBtRllPakJic1JwQzFGUWFuWjNN?=
- =?utf-8?B?V2hocldKSmZIeFJlTGgralpJY1lxVVZFWFdiZlIwNzJnQy9rWkEyM0dKOW80?=
- =?utf-8?B?aWhSVjNZU0h6cS9qQk9pVHlRTmFNNzJnblZGWm1TYzBEK2o2ZS9QTDNZemRi?=
- =?utf-8?B?SjNWeTRhb0ZLYWQzWWhZdHcwcW1GSEZkbnNFNkZvWGNhdlhlWnlTZUNOVTk5?=
- =?utf-8?B?bSt3d2Z1T0EvWFZiY0RTL2VZVWtWMjMzeGx1SVRTNGdaODVub0g3NVlUYzNv?=
- =?utf-8?B?bm9tQm1JcjUvYzhIYWZFQVZ6K3VHU2p1bEJoNG5XOVhaV0NXbEhOVEdFQ1RP?=
- =?utf-8?B?M0Q3VGxUNEJwdjlTSlF0SC85bWpZdHNOZEx6aFhOcEpkWjdFRzhjQmpIRjln?=
- =?utf-8?B?MHNrVnNqakJPdHNmYy9COEowdG5VTm96WmRjb0VYakFweU5za3JKdU5PYlRm?=
- =?utf-8?B?d2RNRkRqNnVmT0pMUHVLSU9yYXZmcmtENFBxd054SXQwa2F3QWUrYUpjaC9y?=
- =?utf-8?B?alFLc01kZXhxZjFiZUt5ajdXbEtxc2xwMlFsVjBkczlQazh4OU5peEV6MXZ3?=
- =?utf-8?B?Q0RaYnc2QXQzakYwakxsZ3ZYSzd6ejBlaDdNQWJUVHp3aEpMaXM3L284aStC?=
- =?utf-8?B?SkFDTXI2ZmxoTHlTVU56V2VsSzdTZUhYV3g2UG44WWtlZXhnQUlWMUNjMjJY?=
- =?utf-8?B?eU9sSG4rellZMDcwMXBFVVp4YWErd0FOeUxDcFdhS3JrRW54Y2VTc203WmRm?=
- =?utf-8?B?VmgwazJxd0FER0RrKzBnYnpkNVVxMnVSY3RxRFJwdjNKSTNzblBLQmVQUzRS?=
- =?utf-8?B?bjhJYVoyeXdtbDFkK28xWjZOa1NWSnhaUUdpS2RNOFZLRityZCtSMW5rU3A4?=
- =?utf-8?B?N2cwNnI1b2ZZZWtza0Nma3lxYUxBblpaSDVCTmtFQzJIZ1VkbXdwbXM0ay9r?=
- =?utf-8?B?UzFjRENzSzlZenl2Q0J6a2lpcnhvUFY5a2xOWDNrZWw5MjQwL3VDbkJwRU1r?=
- =?utf-8?B?dzBxR3pVa1BWemh4SWJRaDMzVDJYc2FsVTJaUUtpV2JHVEEvb1lKWC8wYXhk?=
- =?utf-8?B?b3V5dVNWNHZEZTNybzFoVXFsdUo3Mnh3aXJ3RWFmM25tRUZ6VmVyc1A0K2h0?=
- =?utf-8?B?TU10YTJrR2E3K1ZkQW5nWENpbVhqbjZJVUtLSlV4L2pySXlHbnJETjc1Q1pk?=
- =?utf-8?Q?oSMuZN4e9XY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB9064.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cGhxY3RkRzllZVhpZ3dWWXpIQTVtRjNCLzNzZUNZVGIvUWNLTG9DSmxBWC80?=
- =?utf-8?B?MmVRbFBsUHJULzVJVFZlREkrcFdPTEZuME5lYmxDZEtKM1RHZVJYSDgyNTRw?=
- =?utf-8?B?MG5CMDgvSmgxME5vWjBhMGgzQ0t5WXNNc3FIWXNvLzA5Nmxia0xpYjF0NUlY?=
- =?utf-8?B?TnFNVWw3bmpJa1FtNjFqcnpjVWZ3VU1URkgxSWNxdGFLdkZ3MndLMUZsamZv?=
- =?utf-8?B?LzRUaCtKTzFzSjBDMUFLRytoS3phdHkrdVM3SHFYNWNXSk5qeUVja1ViVG8r?=
- =?utf-8?B?ajZFV3dzOUJQUk9YenpBZmovZTRRWnJUR1NrOGdFbFJTc0xZck5LUmF4NytL?=
- =?utf-8?B?SlpETk8rTUVYVW1ZWGg5VkNmUXU1RnlXUnNzYTRScmFMVldyNmJmNmpUbGI4?=
- =?utf-8?B?WVFuZDU3TDJvVmxyREhmWFlHRWZqLy8zdFdmays5VTJVZEdaVXEvV1UrOHc4?=
- =?utf-8?B?Mnc4d216UUR2WDdla3pBMHQ3UlBlNndEMFhsYTM3aXg2N2Y5cTBvN0NFNDFN?=
- =?utf-8?B?SmlvNitWMVhmWTBVd2VBMS9obUxWckVkTzZsK282Y3pQaDN3Y1Z0WlR3MHFD?=
- =?utf-8?B?ZkR4bXcxckRPN2I3UjRDcHhUMlRnRmJBNFcwbGpGdVJpeUFUbUxvV3J0ci9j?=
- =?utf-8?B?SGwzWG9GY0ZMaEpWMldxUW5DUW11Uk9Rdm9uUWc1eUFwdnF4UnBobHAwVlFC?=
- =?utf-8?B?SVlKeHJFUFNBWDliSWRtckduN3NpT2NZWHRQdi91ZW5OU3J5d3kvN2FRU3ZR?=
- =?utf-8?B?Z09Td1FBdVhFeWhQNTBMQ0IxblNTN25UM3VJL2Mzd1pMaXIvQXJkejlxUFFl?=
- =?utf-8?B?VStGanR3N0g2Um5LdUhDQjc5Q20xUTJSNjY0M0VyU3o0Tm1PTmZreFQvMGNs?=
- =?utf-8?B?Nk1uVW5FcHBvZVpRNXdkbk82MFI3UkVOTk1JcUlzelUrcTZJRDdkWTFRRzBB?=
- =?utf-8?B?WDBFaWhHc1B2OFVPRFFIYzVrbmV5RjZJR0wwMDVrQ09oOEhHSE83WVkwaGNm?=
- =?utf-8?B?WVd5S002RnowbGVVeWJ1dTE2TlRXYlFYZkc1NnpPT0dWT2FMNC9LbklZd1J2?=
- =?utf-8?B?Njd5dDh4STNVMm1Oc1NKZmZjdDRta211RWxJK1ZIRmNOR200TWcwb3c0T1hG?=
- =?utf-8?B?Vkc0aXM2a2pkTmF4TW5BMy9sU1BUSEdPN01yc3Bxd3NQRm8rNnp6WisxcTZz?=
- =?utf-8?B?aHhZLzRFN1M3T2J2QUlFNTFWZzB2akQ5M01ydmg3Z1VuL3pkeHVVdXVaSURO?=
- =?utf-8?B?SGRhZGplMGdXR3NEUHdGK1hwSlNVZlliZkJjYkpHdmR6MU9wenJ3Y3V0SHZE?=
- =?utf-8?B?NVpTUDU1VVlSVDNobVhJVjdvc3E0WERucHYwRnQ1a0ZtalNjNS80RmFGUHpo?=
- =?utf-8?B?ZlB5ckl2aWpWR3Uybk4zUjc3T0duV0RBS0dUTFU0RFp4bFh1S1l3R1kzc2xM?=
- =?utf-8?B?Y2hRaTJhQXB4OWRUb2ZDbFdiTTkrRlc5TTdLT3NrVVRZLzh6TzhvQXV2c2Yx?=
- =?utf-8?B?RDJHTXRhNmovMUxOWVpNWDFSSkIxVGdNT1NFay8wVDhFY0dpOExBaUNVdVAy?=
- =?utf-8?B?K256WUhTQzhqSnozeEpzNXorSWFlazkzLzFYR2I0OFdrd29TNVFJR2hKUXdE?=
- =?utf-8?B?bjFmS1pTM3lhZ3JUdElaUEF2T3Rmc09NM3VmakIwZFY2TjA0MWJaSC9BTWJF?=
- =?utf-8?B?UzdkNDBSV0w0QjhLa1pKVWdNTGZ1SUNteW83dS9KTUZvcHU0c3JpemhHekpT?=
- =?utf-8?B?MVU0K0dJYld5NVhQRnJ1S0lLWU5MRzhXUUxVZWJjbEpZaEVKQWd3K1pwSjQ5?=
- =?utf-8?B?VnpOakNQcWo5c2RKZzFzV3FHaDZKcit6ZDNBa0VZaGorU3Q0U0dIRWZ0SFcr?=
- =?utf-8?B?enYwZTRXRmJBaXR2RjVERlppbHQwclhxcjNkVzRWL0daa1BnNWdZVzR1MDlM?=
- =?utf-8?B?eWE3bi9qWk5kbHZpQ1Q4NlprU1NCbWVnVFRLakl4TXpoZUtxRlpMQktJR29q?=
- =?utf-8?B?NDJnNUNWWHN4enovZFo5T09QMkxHbi9sTi8yTmtyeld1N2dFdnVBSXZ1Tkla?=
- =?utf-8?B?VnBNRlJDZ3VTZ3V1a3VOeGlUeU85a3k3dXdLaUNHV0hza2N0R0ZnQ3dFTmsz?=
- =?utf-8?Q?MnbIu1E+P8DX6Pr21kBvkN8xv?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: beb541d2-1c67-4f0a-aa15-08dd91197488
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB9064.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2025 05:54:27.2933
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QHZ+mlvbFkU9z+F6XJ6RD/n0cGqWi+nrnz2SzUk62BIonKTDgfACWjTycLTdyyTqGK4yQmswFUqOV52XShtlPA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5715
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: fBP8RY3Kyw662SSAWEME3Ov0XUoT0Nb6
+X-Proofpoint-ORIG-GUID: fBP8RY3Kyw662SSAWEME3Ov0XUoT0Nb6
+X-Authority-Analysis: v=2.4 cv=XIkwSRhE c=1 sm=1 tr=0 ts=68219559 cx=c_pps a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17 a=dt9VzEwgFbYA:10 a=M5GUcnROAAAA:8 a=zsvlLyDedhZcTVAtw6YA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDA2OCBTYWx0ZWRfX76CBORSCbRAh vsCVfiQ7ApOxMcxwnXtpsHSWrjvmVwA4jmngOvzVovid+bBSd5xFGO7DBfuGzYKmhXJ2v9yjD4X GaumGXt6B9Bac3u0w/AsBVarC+bFMSNvlSO/hJixOIU9D/iSaSZ6Djx3EZIqXtu6D/ZbVJDQ8DS
+ 3CcbrDichr0RFu6nyhI5LtPAt5MaiVSsbJLMxHX/3cNoFwlWrqZSa5nojmvkvZ7ep4g3o1sP6rX QhmDoe5cUH1ZV2F4PE4YpJcI4rMeK2NiyTwp0Z7cTvqvuzW0+fPg7AA/fwGTRdQm0W5VjgNWS8Q tvh4EADIHmECyccS1SnkNn+FFVsMMontySe+bBWt16SolBHrxqmfG9/nDGGQyX6E8EuREImWyUI
+ qlDEoIASmmpMoM0YryRYFcrrGGhaebENIA3EjzO32IXakdnF98m8eqNoFY0ownVN2e+OBa/3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-12_02,2025-05-09_01,2025-02-21_01
 
+The hardware supports multiple MAC types, including RPM, SDP, and LBK.
+However, features such as link settings and pause frames are only available
+on RPM MAC, and not supported on SDP or LBK.
 
-On 5/10/25 02:03, Simon Horman wrote:
-> On Thu, May 08, 2025 at 10:29:57AM +0530, Abhijit Gangurde wrote:
->> Add ionic to the kernel build environment.
->>
->> Co-developed-by: Allen Hubbe <allen.hubbe@amd.com>
->> Signed-off-by: Allen Hubbe <allen.hubbe@amd.com>
->> Signed-off-by: Abhijit Gangurde <abhijit.gangurde@amd.com>
->> ---
->>   .../ethernet/pensando/ionic_rdma.rst          | 43 +++++++++++++++++++
->>   MAINTAINERS                                   |  9 ++++
->>   drivers/infiniband/Kconfig                    |  1 +
->>   drivers/infiniband/hw/Makefile                |  1 +
->>   drivers/infiniband/hw/ionic/Kconfig           | 17 ++++++++
->>   drivers/infiniband/hw/ionic/Makefile          |  9 ++++
->>   6 files changed, 80 insertions(+)
->>   create mode 100644 Documentation/networking/device_drivers/ethernet/pensando/ionic_rdma.rst
->>   create mode 100644 drivers/infiniband/hw/ionic/Kconfig
->>   create mode 100644 drivers/infiniband/hw/ionic/Makefile
->>
->> diff --git a/Documentation/networking/device_drivers/ethernet/pensando/ionic_rdma.rst b/Documentation/networking/device_drivers/ethernet/pensando/ionic_rdma.rst
->> new file mode 100644
->> index 000000000000..80c4d9876d3e
->> --- /dev/null
->> +++ b/Documentation/networking/device_drivers/ethernet/pensando/ionic_rdma.rst
-> Please add this new file to
-> Documentation/networking/device_drivers/ethernet/index.rst
-> (or some other index.rst).
->
-> Flagged by make htmldocs
->
-> ...
-Thanks for pointing this. Will add the new file to
-Documentation/networking/device_drivers/index.rst
-in next spin.
+This patch updates the ethtool operations logic accordingly to reflect
+this behavior.
 
-Abhijit
+Fixes: 2f7f33a09516 ("octeontx2-pf: Add representors for sdp MAC")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+---
+ .../net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c  | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+index 010385b29988..45b8c9230184 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+@@ -315,7 +315,7 @@ static void otx2_get_pauseparam(struct net_device *netdev,
+ 	struct otx2_nic *pfvf = netdev_priv(netdev);
+ 	struct cgx_pause_frm_cfg *req, *rsp;
+ 
+-	if (is_otx2_lbkvf(pfvf->pdev))
++	if (is_otx2_lbkvf(pfvf->pdev) || is_otx2_sdp_rep(pfvf->pdev))
+ 		return;
+ 
+ 	mutex_lock(&pfvf->mbox.lock);
+@@ -347,7 +347,7 @@ static int otx2_set_pauseparam(struct net_device *netdev,
+ 	if (pause->autoneg)
+ 		return -EOPNOTSUPP;
+ 
+-	if (is_otx2_lbkvf(pfvf->pdev))
++	if (is_otx2_lbkvf(pfvf->pdev) || is_otx2_sdp_rep(pfvf->pdev))
+ 		return -EOPNOTSUPP;
+ 
+ 	if (pause->rx_pause)
+@@ -941,8 +941,8 @@ static u32 otx2_get_link(struct net_device *netdev)
+ {
+ 	struct otx2_nic *pfvf = netdev_priv(netdev);
+ 
+-	/* LBK link is internal and always UP */
+-	if (is_otx2_lbkvf(pfvf->pdev))
++	/* LBK and SDP links are internal and always UP */
++	if (is_otx2_lbkvf(pfvf->pdev) || is_otx2_sdp_rep(pfvf->pdev))
+ 		return 1;
+ 	return pfvf->linfo.link_up;
+ }
+@@ -1413,7 +1413,7 @@ static int otx2vf_get_link_ksettings(struct net_device *netdev,
+ {
+ 	struct otx2_nic *pfvf = netdev_priv(netdev);
+ 
+-	if (is_otx2_lbkvf(pfvf->pdev)) {
++	if (is_otx2_lbkvf(pfvf->pdev) || is_otx2_sdp_rep(pfvf->pdev)) {
+ 		cmd->base.duplex = DUPLEX_FULL;
+ 		cmd->base.speed = SPEED_100000;
+ 	} else {
+-- 
+2.34.1
 
