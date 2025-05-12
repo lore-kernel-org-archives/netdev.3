@@ -1,141 +1,137 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7431EB3D;
-	Mon, 12 May 2025 12:58:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273F42BAF7
+	for <netdev@vger.kernel.org>; Mon, 12 May 2025 13:02:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747054708; cv=none; b=Bh0RIY4CKpx09pAuU9lU5A1jqraR9B/OonUz1pwMv3K0HpPPXfAoWJ9GbZB4byWxzxAhJ3d7EfbT/Gx0aPQVP1oO1nckmIC6brqhdQuwzEgFqlSdKBZKZzxmHe/FS5Mdm41Qg2V1b+sOV+6DqsGTbgXGlOPAvQGroqsPswLILcc=
+	t=1747054974; cv=none; b=GdrPGng7CAIjLX5lAkY+52qBSrhwb2deVKUQPadseYAqNZEm5Y4/sr1sa/EbDW+Bie14C7yyTnK2NAFdssFeZH097ySPQvB1XMi5BfJGCV27OlQOYxOO3kbzNDRC7I0wtl+fG+ue3fldGQDcWsQbL66SMph2vuiKTknSY9CsCJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747054708; c=relaxed/simple;
-	bh=5682P/V1yDxx7hI8HSB8iUFfbhIQqqzTSuLza0F69jA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=liG+JRac4Y4oXlED+kFOJNPp08A9X9BX7apq33FBwdOWWGRX5kvpn1dQafMhbiVFvLiWwFty+Zb7Bi0OEsa8toOd+GWTAT2+fJ9zGqCowSvIfXnysBPyVXyzvd+AQV2UepxwYaytdROi0ewDDyYho1xXl2axu8oXtfMMRqk3fI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-681ff7000002311f-13-6821f067eaad
-Date: Mon, 12 May 2025 21:58:10 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Cc: willy@infradead.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kernel_team@skhynix.com, kuba@kernel.org, almasrymina@google.com,
-	harry.yoo@oracle.com, hawk@kernel.org, akpm@linux-foundation.org,
-	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
-	john.fastabend@gmail.com, andrew+netdev@lunn.ch,
-	edumazet@google.com, pabeni@redhat.com, vishal.moola@gmail.com
-Subject: Re: [RFC 19/19] mm, netmem: remove the page pool members in struct
- page
-Message-ID: <20250512125810.GE45370@system.software.com>
-References: <20250509115126.63190-1-byungchul@sk.com>
- <20250509115126.63190-20-byungchul@sk.com>
- <CAC_iWj+vweve6V33cqHGZ6tSehs85vXd7VKAGNiEjLoK2pc+PQ@mail.gmail.com>
+	s=arc-20240116; t=1747054974; c=relaxed/simple;
+	bh=sDuTZrD8Eaor3JG0HPFQ/ioYnhvuFz04INy+e0JE3uE=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ne8oSeQhqLD1eQ2IjK+YSAjJXMRMpoDkS74tXXc0Gci00rjTArxiE5jcYwNqY6IWAIgBbkwHMJh+RLzFQw6DDmG14Q0rdM8QdxlRKuAJOzeymvLso2l5RFTSzhFSlumYG3UxZs/qZW8yFBl993VuIk7rnqEO43Duvh5TmFvhW0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=E7SlaJKm; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="E7SlaJKm"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54C0nrJ0017169;
+	Mon, 12 May 2025 06:02:44 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=O54lGc+HNzkzD+QPN44PhtIFt
+	JkeaDuJbjUBZuszK8M=; b=E7SlaJKmfIkJbWbyqMQHTrkmex8COHnDPIBqnbEM/
+	6A6Z7WCstYwctbMcxNmSiYy+3x0U4KlzbfkFDmVb+Q3yPN89jxvLQRRViDKpI+Vo
+	svHmgoSROvuV/3E+kvTeDCC2hr8qNItb+HJiZytgstrlhg3jeA16qdiOWQzEBc27
+	1FJGANg8hPuIYCvi+clCNFsnyvIRqt0rmDDIJooK8fBsaNDjiXmz1GeqIaLjWLSR
+	f2tBwf0Q4yi9cTymJlVxqqdowVqAXScUXmNxoRO5Nc+Fm82RQZSDtsw6a8aQBOJf
+	R15+ZtVFyBBwh14y+iR5wPgiVLN9RQQ8DL301mC7Jp5Mw==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 46k5r6h3en-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 May 2025 06:02:43 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Mon, 12 May 2025 06:02:41 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Mon, 12 May 2025 06:02:41 -0700
+Received: from 37b358c748b7 (HY-LT91368.marvell.com [10.29.24.116])
+	by maili.marvell.com (Postfix) with SMTP id C37283F7095;
+	Mon, 12 May 2025 06:02:37 -0700 (PDT)
+Date: Mon, 12 May 2025 13:02:35 +0000
+From: Subbaraya Sundeep <sbhatta@marvell.com>
+To: Simon Horman <horms@kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <gakula@marvell.com>,
+        <hkelam@marvell.com>, <sgoutham@marvell.com>, <lcherian@marvell.com>,
+        <netdev@vger.kernel.org>
+Subject: Re: [PATCH] octeontx2-af: Send Link events one by one
+Message-ID: <aCHxax9GgcLL-4Xk@37b358c748b7>
+References: <1746638183-10509-1-git-send-email-sbhatta@marvell.com>
+ <20250512100954.GU3339421@horms.kernel.org>
+ <aCHfZ_MxtfVmhXVj@90a8923ee8d1>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <CAC_iWj+vweve6V33cqHGZ6tSehs85vXd7VKAGNiEjLoK2pc+PQ@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrEIsWRmVeSWpSXmKPExsXC9ZZnkW7GB8UMg6YDnBZz1q9hs1j9o8Ji
-	+YMdrBZfft5mt1i88BuzxZzzLSwWT489Yre4v+wZi8We9u3MFr0tv5ktmnasYLK4sK2P1eLy
-	rjlsFvfW/Ge1OLZAzOLb6TeMFuv33WC1+P1jDpuDkMeWlTeZPHbOusvusWBTqcfmFVoeXTcu
-	MXtsWtXJ5rHp0yR2jzvX9rB5nJjxm8Vj547PTB4fn95i8Xi/7yqbx+dNcgG8UVw2Kak5mWWp
-	Rfp2CVwZh6/vZSr4K1jx4dsXpgbGY7xdjJwcEgImEisWrWWGsT/8+sEGYrMIqEos/XuUFcRm
-	E1CXuHHjJ1ANB4eIgJHE3YPVXYxcHMwCc5klZn2cygRSIywQJDH58UN2EJtXwELi4NXb7CBF
-	QgIrGSWOvO1mg0gISpyc+YQFxGYW0JK48e8lE8hQZgFpieX/OEDCnAKBEj8XnQW7R1RAWeLA
-	tuNMIHMkBPaxS3Q+3s0IcaikxMEVN1gmMArMQjJ2FpKxsxDGLmBkXsUolJlXlpuYmWOil1GZ
-	l1mhl5yfu4kRGJPLav9E72D8dCH4EKMAB6MSD++Jl4oZQqyJZcWVuYcYJTiYlUR4G7cDhXhT
-	EiurUovy44tKc1KLDzFKc7AoifMafStPERJITyxJzU5NLUgtgskycXBKNTCyKeUySk3u9Rb/
-	kx8rfP/exTu2p//d4d5zfMm681n2f+4rZWW+q5zUseJuJ/+SudPOXdixu0dt48TysCvyz+rr
-	fUWkrGaLfdMwzGc7vOd/r+2BqugK84N7XsXNYz0Rkbsxe314rOelYxzXZi/kkXxXlPx+i+Tz
-	wI4f/yxdy/X2LY0xfF35kvWLEktxRqKhFnNRcSIA5d6Zd8UCAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprJIsWRmVeSWpSXmKPExsXC5WfdrJv+QTHDYM4Ec4s569ewWaz+UWGx
-	/MEOVosvP2+zWyxe+I3ZYs75FhaLp8cesVvcX/aMxWJP+3Zmi96W38wWTTtWMFkcnnuS1eLC
-	tj5Wi8u75rBZ3Fvzn9Xi2AIxi2+n3zBarN93g9Xi9485bA7CHltW3mTy2DnrLrvHgk2lHptX
-	aHl03bjE7LFpVSebx6ZPk9g97lzbw+ZxYsZvFo+dOz4zeXx8eovF4/2+q2wei198YPL4vEku
-	gC+KyyYlNSezLLVI3y6BK+Pw9b1MBX8FKz58+8LUwHiMt4uRk0NCwETiw68fbCA2i4CqxNK/
-	R1lBbDYBdYkbN34ydzFycIgIGEncPVjdxcjFwSwwl1li1sepTCA1wgJBEpMfP2QHsXkFLCQO
-	Xr3NDlIkJLCSUeLI2242iISgxMmZT1hAbGYBLYkb/14ygQxlFpCWWP6PAyTMKRAo8XPRWWYQ
-	W1RAWeLAtuNMExh5ZyHpnoWkexZC9wJG5lWMIpl5ZbmJmTmmesXZGZV5mRV6yfm5mxiBEbas
-	9s/EHYxfLrsfYhTgYFTi4T3xUjFDiDWxrLgy9xCjBAezkghv43agEG9KYmVValF+fFFpTmrx
-	IUZpDhYlcV6v8NQEIYH0xJLU7NTUgtQimCwTB6dUA2NobY18zNmgMzbKPU4mvFpSRplOAjwc
-	Bn+unpy+Y2W7W/t6tcrDD914/1VaS1c8XX9ebMYehZLyYr45t0P2L9n/JV4u5e/tk1xBef+O
-	e4bwzJ97ZQdj++EdK3ZPOLpQ9vQxRufbN8Li963fNdGoIYxfNkxjakyG4U6DyFMK5/bvONOw
-	LnaCyi4lluKMREMt5qLiRADkUyCsrAIAAA==
-X-CFilter-Loop: Reflected
+In-Reply-To: <aCHfZ_MxtfVmhXVj@90a8923ee8d1>
+X-Authority-Analysis: v=2.4 cv=WMp/XmsR c=1 sm=1 tr=0 ts=6821f173 cx=c_pps a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17 a=kj9zAlcOel0A:10 a=dt9VzEwgFbYA:10 a=M5GUcnROAAAA:8 a=VwQbUJbxAAAA:8 a=5P80QGrGfck98o8MOnwA:9 a=CjuIK1q_8ugA:10
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: wQkGsb3a-2O4k2GgYth7iwRKTh93GrPz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDEzNiBTYWx0ZWRfX2m5EnNP5uTIZ C7H+fKEVfXgwVrdxRJ24bA3RcILapk1jB+DLhIJOSJ4LuPALPnHG3MgX+k+45zYQCamsJnmKMNb Z4O0FPSQ4WCkE4y1vxrgsJGCA6gfceOULiakV9S0WaWSLRLmjV5faVxMj64kYaoHY608bLqUsFh
+ ZVm+J0IIxgDslfboSxwMnbNX7LzxHb1uLwlEnJG9YxFoZlA5J2dJa5msEXey7fDCxju34+Sfvkk qGPiBdA8dLzhuOF3XmzLVUkZzPsYvEAbSjHhYIRyN3RiW55NwoBMFq+2X1GKC7ScL3VQLEh7QqW BpI/jcttHbAN2/UZZ0916f75obecJEb+ccXN1mpYKD14KrmyejV3xiv//TZqm1q2muYDSQXjIxA
+ oNK7sEiiB0spISbRVJYifgOIZR7se114xkonEP6OZRxVoPvdSeJaubljLfFeejhVmfucXvM4
+X-Proofpoint-ORIG-GUID: wQkGsb3a-2O4k2GgYth7iwRKTh93GrPz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-12_04,2025-05-09_01,2025-02-21_01
 
-On Sat, May 10, 2025 at 10:26:00AM +0300, Ilias Apalodimas wrote:
-> Hi Byungchul
-> 
-> On Fri, 9 May 2025 at 14:51, Byungchul Park <byungchul@sk.com> wrote:
-> >
-> > Now that all the users of the page pool members in struct page have been
-> > gone, the members can be removed from struct page.  However, the space
-> > in struct page needs to be kept using a place holder with the same size,
-> > until struct netmem_desc has its own instance, not overlayed onto struct
-> > page, to avoid conficting with other members within struct page.
-> >
-> 
-> FWIW similar mirroring was intially proposed [0] a few years ago
-> 
-> > Remove the page pool members in struct page and replace with a place
-> > holder.  The place holder should be removed once struct netmem_desc has
-> > its own instance.
-> 
-> instance? To make sure I understand this, the netmem_descs are
-> expected to be allocated in the future right?
+Hi again,
 
-Yes.
-
-> [...]
+On 2025-05-12 at 11:45:43, Subbaraya Sundeep (sbhatta@marvell.com) wrote:
+> Hi Simon,
 > 
-> > -
-> >  static inline struct net_iov_area *net_iov_owner(const struct netmem_desc *niov)
-> >  {
-> >         return niov->owner;
-> > diff --git a/include/net/netmem_type.h b/include/net/netmem_type.h
-> > new file mode 100644
-> > index 0000000000000..6a3ac8e908515
-> > --- /dev/null
-> > +++ b/include/net/netmem_type.h
-> > @@ -0,0 +1,22 @@
-> > +/* SPDX-License-Identifier: GPL-2.0
-> > + *
-> > + *     Author: Byungchul Park <max.byungchul.park@gmail.com>
+> On 2025-05-12 at 10:09:54, Simon Horman (horms@kernel.org) wrote:
+> > On Wed, May 07, 2025 at 10:46:23PM +0530, Subbaraya Sundeep wrote:
+> > > Send link events one after another otherwise new message
+> > > is overwriting the message which is being processed by PF.
+> > > 
+> > > Fixes: a88e0f936ba9 ("octeontx2: Detect the mbox up or down message via register")
+> > > Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+> > > ---
+> > >  drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c | 2 ++
+> > >  1 file changed, 2 insertions(+)
+> > > 
+> > > diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+> > > index 992fa0b..ebb56eb 100644
+> > > --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+> > > +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+> > > @@ -272,6 +272,8 @@ static void cgx_notify_pfs(struct cgx_link_event *event, struct rvu *rvu)
+> > >  
+> > >  		otx2_mbox_msg_send_up(&rvu->afpf_wq_info.mbox_up, pfid);
+> > 
+> > Hi Subbaraya,
+> > 
+> > Are there other callers of otx2_mbox_msg_send_up()
+> > which also need this logic? If so, perhaps a helper is useful.
+> > If not, could you clarify why?
+> > 
+> UP messages are async notifications where we just send and forget.
+> There are other callers as I said we just send and forget everywhere
+> in the driver. Only this callsite has been modified because we have
+> seen an issue on customer setup where bunch of link events are queued
+> for a same device at one point of time.
+> > >  
+> > > +		otx2_mbox_wait_for_rsp(&rvu->afpf_wq_info.mbox_up, pfid);
+> > 
+> > This can return an error. Which is checked in otx2_sync_mbox_up_msg().
+> > Does it make sense to do so here too?
+> > 
+> Yes it makes sense to use otx2_sync_mbox_up_msg here. I will use it
+> here.
 > 
-> Shouldn't Minas authorship be preserved here?
+I will leave it as otx2_mbox_wait_for_rsp. Since otx2_sync_mbox_up_msg
+is in nic driver and we do not include nic files in AF driver. Since
+this is a void function will print an error if otx2_mbox_wait_for_rsp
+returns error.
 
-Ah.  I dunno what I'm supposed to do in the case.  I will remove the
-author part :) if it's still okay.
+Thanks,
+Sundeep
 
-	Byungchul
-
-> > + */
-> > +
-> > +#ifndef _NET_NETMEM_TYPE_H
-> > +#define _NET_NETMEM_TYPE_H
-> > +
-> > +#include <linux/stddef.h>
-> > +
-> > +struct netmem_desc {
-> > +       unsigned long __unused_padding;
-> > +       struct_group_tagged(__netmem_desc, actual_data,
-> > +               unsigned long pp_magic;
-> > +               struct page_pool *pp;
-> > +               struct net_iov_area *owner;
-> > +               unsigned long dma_addr;
-> > +               atomic_long_t pp_ref_count;
-> > +       );
-> > +};
-> > +
-> > +#endif /* _NET_NETMEM_TYPE_H */
-> > --
-> > 2.17.1
-> >
-> 
-> [0] https://lore.kernel.org/netdev/1549550196-25581-1-git-send-email-ilias.apalodimas@linaro.org/
-> Thanks
-> /Ilias
+> Thanks,
+> Sundeep
+> > > +
+> > >  		mutex_unlock(&rvu->mbox_lock);
+> > >  	} while (pfmap);
+> > >  }
+> > > -- 
+> > > 2.7.4
+> > > 
