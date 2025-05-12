@@ -1,158 +1,135 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6C72AE68;
-	Mon, 12 May 2025 12:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E622A2949F1
+	for <netdev@vger.kernel.org>; Mon, 12 May 2025 12:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747054377; cv=none; b=T2Np/elBHKSuwbsZbjTvJT305AlGaYWtprur3n5Rwxe8r94HehEmPZ6FITQPSE5jHO5ZOJU/7omB0pVPrbuCQVfMeFZ0NJDIKiYj5Ure8sfpA9E9euveSLItmNXLLvAu5/AMzU2QqiAA9z60YYikvzYQRSWGRf8dJHugTiHkp3M=
+	t=1747054380; cv=none; b=D0MP+bdxNoLPULNdcGSqe4pAk4pwcq7Wsjg53/jo6Vzm3T5F7/4WDJSLzSyF5iddJBxxHdizXSDjKd2yRXcqg39COLAj4bX25MERQkM47HGsnHg9ua59o+iW1uctgR1MwzVc+VioTteK90hhLQ7+IUtbvTRm9J3wBVdMuCb++ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747054377; c=relaxed/simple;
-	bh=zECTQVlS7BoMjRy+nopuy5oEj3xxBDKN5vQJhKE6xzk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QGTW1wmNy/7SBv1YiGiPWDl1GAW//zoL6Nx010ma13fB+6f0+RJ23I1KZLuLQt8B+YFxZ5Tph88QTCsoAAYCdAtY8OgoNnM7R6o95dZvStmM0w1Vm/xf+fnkpTVY3bQPhO7j0e9n6MoWM7fcOXBef48Q4jA5vup7Bk+IROYwsqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=n7bDYyPR; arc=none smtp.client-ip=185.226.149.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1747054380; c=relaxed/simple;
+	bh=aNmKo1Oakl3yM94F2in7pHniPeNN+XwX6ZF6pcypzag=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Wtl2yXz42jedpvK2uwpdAHKDYdd1Aaj8978jVsdx4I4P70JfsxEOYpx5tdp2zMbjk4sw+YzQcYKUmA7dTmG5UMWz8LeYevJKUJFnxLq1UwZzO0FdNMfviGZ4ukCuybsqx43gzhUo+oLjWG/K3jvkxjCXTld6wvUxxzgyw0NjU00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=BSiXhqrB; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="n7bDYyPR"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1uESBp-00C5t2-Df; Mon, 12 May 2025 14:23:25 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
-	bh=qGVhATLfDHfKI3zxu6jJB+4o6rhgxGO4+J2Ibmk67sA=; b=n7bDYyPRLhNNg3V1RCrSWfCkzh
-	2Tc6oSpJceBKv6vVofPdd1P3Y+fuHPzd2ap3wSuC0QFW6Gnb/4YWRZgk5maPmG1fJ2pWQWrW1dlL3
-	k+NYZoYtsBMc365Sh7e9zsrNHvy6HGvn7ScGv4z3bE8Ko/ZL1WaVf/Q7YlM5MqggpcY/sZbsWsAEp
-	0dn1UdWh3ebefOLUcclU+J8V6ck+ne59icCt5lVC63kYZKVInmjhca+68i1veSjGm7NPJcorEbt+K
-	j0Or+l8ASbVL86mBkVfVbVugyVLBeNRgoh3Xiga+iaKoNLNlhEMBwS9Y3cLogDGxcGVBn2yzVVsqw
-	nkB90NDw==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1uESBn-0000sF-KA; Mon, 12 May 2025 14:23:24 +0200
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1uESBd-007iLF-FJ; Mon, 12 May 2025 14:23:13 +0200
-Message-ID: <720f6986-8b32-4d00-b309-66a6f0c1ca40@rbox.co>
-Date: Mon, 12 May 2025 14:23:12 +0200
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="BSiXhqrB"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54C0lBSc013830;
+	Mon, 12 May 2025 05:52:48 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:message-id:mime-version:subject:to; s=
+	pfpt0220; bh=yiAFpChy9Fgi/Ha1tvpLIR5S8O609BoIBfkcdBODBW4=; b=BSi
+	XhqrBUP56rn/Nz56ywT+kV5/it6XUbB3GonH3DgbbEna3bcCcqBcX8v0RKllxp4/
+	7xsPSry6X+lX5X1biwluka2PdzSdFr/eOBgkTUSl09iz1M330QPVpTPKei+Z3BMr
+	tiLRVSOlRXaUmL0qZu5O0FcIC6JifKCNnFKikd/6vKpKAo99fZy+474XiejDsceW
+	OOaGtgQrDd8HAPWN7kOI0IF2D5QQDwKmgR+wyB/UInQYQYZ13SSGBPjnptzOBT0N
+	Y2KKH7dUX7HEuri5uoshO8GNFb9L+4lYFz1mW7ECi7QMWsK5S+PTxFADqsR/E96f
+	RNvanaXL31zAu4crU0A==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 46k5trs2ja-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 May 2025 05:52:48 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Mon, 12 May 2025 05:52:47 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Mon, 12 May 2025 05:52:47 -0700
+Received: from hyd1358.marvell.com (unknown [10.29.37.11])
+	by maili.marvell.com (Postfix) with ESMTP id D32DE3F7097;
+	Mon, 12 May 2025 05:52:42 -0700 (PDT)
+From: Subbaraya Sundeep <sbhatta@marvell.com>
+To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
+        <gakula@marvell.com>, <hkelam@marvell.com>, <sgoutham@marvell.com>,
+        <lcherian@marvell.com>, <bbhushan2@marvell.com>, <jerinj@marvell.com>
+CC: <netdev@vger.kernel.org>, Subbaraya Sundeep <sbhatta@marvell.com>
+Subject: [net v2] octeontx2-pf: Do not reallocate all ntuple filters
+Date: Mon, 12 May 2025 18:22:37 +0530
+Message-ID: <1747054357-5850-1-git-send-email-sbhatta@marvell.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 3/3] vsock/test: Expand linger test to ensure
- close() does not misbehave
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-References: <20250501-vsock-linger-v4-0-beabbd8a0847@rbox.co>
- <20250501-vsock-linger-v4-3-beabbd8a0847@rbox.co>
- <g5wemyogxthe43rkigufv7p5wrkegbdxbleujlsrk45dmbmm4l@qdynsbqfjwbk>
- <CAGxU2F59O7QK2Q7TeaP6GU9wHrDMTpcO94TKz72UQndXfgNLVA@mail.gmail.com>
- <ff959c3e-4c47-4f93-8ab8-32446bb0e0d0@rbox.co>
- <CAGxU2F77OT5_Pd6EUF1QcvPDC38e-nuhfwKmPSTau262Eey5vQ@mail.gmail.com>
-Content-Language: pl-PL, en-GB
-From: Michal Luczaj <mhal@rbox.co>
-In-Reply-To: <CAGxU2F77OT5_Pd6EUF1QcvPDC38e-nuhfwKmPSTau262Eey5vQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=SOBCVPvH c=1 sm=1 tr=0 ts=6821ef20 cx=c_pps a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17 a=dt9VzEwgFbYA:10 a=M5GUcnROAAAA:8 a=JJ9OIAJi2aS0bon4u0AA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: eNaAEYOOCAGvNyqtJzEy0PPOatuyL8dv
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDEzNCBTYWx0ZWRfX/Z5PF3/T6hSc Cr+/t6drbvOPdbGkTdW6kFjvRspMJLtz2zUIIYg3SAWmplFH+A6JLby+Mo95RQKhuFt+qgrEwyQ Qil93UDcTrhGAyk66g5yCK9Z3yKiFoDoyo2u3AqZ0OOkRJqFZDaRB0PtYN2AVuW5AVxV7MmWHrJ
+ UGxKC7DDulKT39ALlkc1ObPSY0F2oAM9V39ps9/rss+nQ84c2zci6Gl0kK5eVi7oeBWAfwfoIAp K3XF7ahsag4CKpIFNUvTX5xweB/nCZ8LFH1xC1WY+tlU/wapg6u0j/HB6pJS4DrAzaikOH9Na0r 6+GWsmoxHiFhmtacP45cLmAiIkB9uRdOaKImB1RtLfH4XLUf1GGUCZbLJ1eFr6OBe+x3KGTCo/z
+ hGiFcnOJLNs+qAjkQuWKELMeT3i9jqw/WtIBZ8DKYJJFp+GYtrIcHx2L/Ix6imYBTtxkdcFz
+X-Proofpoint-ORIG-GUID: eNaAEYOOCAGvNyqtJzEy0PPOatuyL8dv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-12_04,2025-05-09_01,2025-02-21_01
 
-On 5/7/25 10:26, Stefano Garzarella wrote:
-> On Wed, 7 May 2025 at 00:47, Michal Luczaj <mhal@rbox.co> wrote:
->>
->> On 5/6/25 11:46, Stefano Garzarella wrote:
->>> On Tue, 6 May 2025 at 11:43, Stefano Garzarella <sgarzare@redhat.com> wrote:
->>>>
->>>> On Thu, May 01, 2025 at 10:05:24AM +0200, Michal Luczaj wrote:
->>>>> There was an issue with SO_LINGER: instead of blocking until all queued
->>>>> messages for the socket have been successfully sent (or the linger timeout
->>>>> has been reached), close() would block until packets were handled by the
->>>>> peer.
->>>>
->>>> This is a new behaviour that only new kernels will follow, so I think
->>>> it is better to add a new test instead of extending a pre-existing test
->>>> that we described as "SOCK_STREAM SO_LINGER null-ptr-deref".
->>>>
->>>> The old test should continue to check the null-ptr-deref also for old
->>>> kernels, while the new test will check the new behaviour, so we can skip
->>>> the new test while testing an old kernel.
->>
->> Right, I'll split it.
->>
->>> I also saw that we don't have any test to verify that actually the
->>> lingering is working, should we add it since we are touching it?
->>
->> Yeah, I agree we should. Do you have any suggestion how this could be done
->> reliably?
-> 
-> Can we play with SO_VM_SOCKETS_BUFFER_SIZE like in credit-update tests?
-> 
-> One peer can set it (e.g. to 1k), accept the connection, but without
-> read anything. The other peer can set the linger timeout, send more
-> bytes than the buffer size set by the receiver.
-> At this point the extra bytes should stay on the sender socket buffer,
-> so we can do the close() and it should time out, and we can check if
-> it happens.
-> 
-> WDYT?
+If ntuple filters count is modified followed by
+unicast filters count using devlink then the ntuple count
+set by user is ignored and all the ntuple filters are
+being reallocated. Fix this by storing the ntuple count
+set by user. Without this patch, say if user tries
+to modify ntuple count as 8 followed by ucast filter count as 4
+using devlink commands then ntuple count is being reverted to
+default value 16 i.e, not retaining user set value 8.
 
-Haven't we discussed this approach in [1]? I've reported that I can't make
-it work. But maybe I'm misunderstanding something, please see the code below.
+Fixes: 39c469188b6d ("octeontx2-pf: Add ucast filter count configurability via devlink.")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+---
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h  | 1 +
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c | 1 +
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c   | 3 ++-
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
-[1]:
-https://lore.kernel.org/netdev/df2d51fd-03e7-477f-8aea-938446f47864@rbox.co/
-
-import termios, time
-from socket import *
-
-SIOCOUTQ = termios.TIOCOUTQ
-VMADDR_CID_LOCAL = 1
-SZ = 1024
-
-def set_linger(s, timeout):
-	optval = (timeout << 32) | 1
-	s.setsockopt(SOL_SOCKET, SO_LINGER, optval)
-	assert s.getsockopt(SOL_SOCKET, SO_LINGER) == optval
-
-def set_bufsz(s, size):
-	s.setsockopt(AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE, size)
-	assert s.getsockopt(AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE) == size
-
-def check_lingering(addr):
-	lis = socket(AF_VSOCK, SOCK_STREAM)
-	lis.bind(addr)
-	lis.listen()
-	set_bufsz(lis, SZ)
-
-	s = socket(AF_VSOCK, SOCK_STREAM)
-	set_linger(s, 5)
-	s.connect(lis.getsockname())
-
-	p, _ = lis.accept()
-
-	s.send(b'x')
-	p.recv(1)
-
-	print("sending...")
-	s.send(b'x' * (SZ+1)) # blocks
-	print("sent")
-
-	print("closing...")
-	ts = time.time()
-	s.close()
-	print("done in %ds" % (time.time() - ts))
-
-check_lingering((VMADDR_CID_LOCAL, 1234))
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+index 1e88422..d6b4b74 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -356,6 +356,7 @@ struct otx2_flow_config {
+ 	struct list_head	flow_list_tc;
+ 	u8			ucast_flt_cnt;
+ 	bool			ntuple;
++	u16			ntuple_cnt;
+ };
+ 
+ struct dev_hw_ops {
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c
+index 33ec9a7..e13ae548 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c
+@@ -41,6 +41,7 @@ static int otx2_dl_mcam_count_set(struct devlink *devlink, u32 id,
+ 	if (!pfvf->flow_cfg)
+ 		return 0;
+ 
++	pfvf->flow_cfg->ntuple_cnt = ctx->val.vu16;
+ 	otx2_alloc_mcam_entries(pfvf, ctx->val.vu16);
+ 
+ 	return 0;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
+index 47bfd1f..64c6d916 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
+@@ -247,7 +247,7 @@ int otx2_mcam_entry_init(struct otx2_nic *pfvf)
+ 	mutex_unlock(&pfvf->mbox.lock);
+ 
+ 	/* Allocate entries for Ntuple filters */
+-	count = otx2_alloc_mcam_entries(pfvf, OTX2_DEFAULT_FLOWCOUNT);
++	count = otx2_alloc_mcam_entries(pfvf, flow_cfg->ntuple_cnt);
+ 	if (count <= 0) {
+ 		otx2_clear_ntuple_flow_info(pfvf, flow_cfg);
+ 		return 0;
+@@ -307,6 +307,7 @@ int otx2_mcam_flow_init(struct otx2_nic *pf)
+ 	INIT_LIST_HEAD(&pf->flow_cfg->flow_list_tc);
+ 
+ 	pf->flow_cfg->ucast_flt_cnt = OTX2_DEFAULT_UNICAST_FLOWS;
++	pf->flow_cfg->ntuple_cnt = OTX2_DEFAULT_FLOWCOUNT;
+ 
+ 	/* Allocate bare minimum number of MCAM entries needed for
+ 	 * unicast and ntuple filters.
+-- 
+2.7.4
 
