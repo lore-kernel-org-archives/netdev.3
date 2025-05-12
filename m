@@ -1,182 +1,158 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0549C28D837;
-	Mon, 12 May 2025 12:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6C72AE68;
+	Mon, 12 May 2025 12:52:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747054278; cv=none; b=GUm3IhPK3RaS2gB0PwzSIKiCIS2CeJ8qstACNo9CdZoGz4nQd5qOZ5O+gfmDN+j4Ussgd4KwBmpc4Z/02g9iyePwvQyjuo872XayIlQuIpNdHRBKu7xArFTYm3dKZhTIvKFjT+Ku2hCGidbJ0SCum7TrrIBXhZzfekGLfceUwcY=
+	t=1747054377; cv=none; b=T2Np/elBHKSuwbsZbjTvJT305AlGaYWtprur3n5Rwxe8r94HehEmPZ6FITQPSE5jHO5ZOJU/7omB0pVPrbuCQVfMeFZ0NJDIKiYj5Ure8sfpA9E9euveSLItmNXLLvAu5/AMzU2QqiAA9z60YYikvzYQRSWGRf8dJHugTiHkp3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747054278; c=relaxed/simple;
-	bh=Sp+I0pIT/IGYXeehVafNi5wyfUuyAh8yUEaX8aq10PI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PcmhrcmPzmNWcTThFCQkkYDdGdyN/sPFp4MOGSf4J4q8n7NbObFl846pLjw46Mk9XJlZWj/QKd6L71n7wZ7lUgZgJzLTL6cCR+fHjxxGxPJbeB2fnupzSjh4VlryY5r/ybAWRKOhYrIxnmjogqNuiNtaK2B25S/iIjW3AB/PzC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-681ff7000002311f-f2-6821eebc6fb5
-Date: Mon, 12 May 2025 21:51:03 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, kernel_team@skhynix.com, kuba@kernel.org,
-	almasrymina@google.com, ilias.apalodimas@linaro.org,
-	harry.yoo@oracle.com, hawk@kernel.org, akpm@linux-foundation.org,
-	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
-	john.fastabend@gmail.com, andrew+netdev@lunn.ch,
-	edumazet@google.com, pabeni@redhat.com, vishal.moola@gmail.com
-Subject: Re: [RFC 19/19] mm, netmem: remove the page pool members in struct
- page
-Message-ID: <20250512125103.GC45370@system.software.com>
-References: <20250509115126.63190-1-byungchul@sk.com>
- <20250509115126.63190-20-byungchul@sk.com>
- <aB5DNqwP_LFV_ULL@casper.infradead.org>
+	s=arc-20240116; t=1747054377; c=relaxed/simple;
+	bh=zECTQVlS7BoMjRy+nopuy5oEj3xxBDKN5vQJhKE6xzk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QGTW1wmNy/7SBv1YiGiPWDl1GAW//zoL6Nx010ma13fB+6f0+RJ23I1KZLuLQt8B+YFxZ5Tph88QTCsoAAYCdAtY8OgoNnM7R6o95dZvStmM0w1Vm/xf+fnkpTVY3bQPhO7j0e9n6MoWM7fcOXBef48Q4jA5vup7Bk+IROYwsqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=n7bDYyPR; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="n7bDYyPR"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1uESBp-00C5t2-Df; Mon, 12 May 2025 14:23:25 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
+	bh=qGVhATLfDHfKI3zxu6jJB+4o6rhgxGO4+J2Ibmk67sA=; b=n7bDYyPRLhNNg3V1RCrSWfCkzh
+	2Tc6oSpJceBKv6vVofPdd1P3Y+fuHPzd2ap3wSuC0QFW6Gnb/4YWRZgk5maPmG1fJ2pWQWrW1dlL3
+	k+NYZoYtsBMc365Sh7e9zsrNHvy6HGvn7ScGv4z3bE8Ko/ZL1WaVf/Q7YlM5MqggpcY/sZbsWsAEp
+	0dn1UdWh3ebefOLUcclU+J8V6ck+ne59icCt5lVC63kYZKVInmjhca+68i1veSjGm7NPJcorEbt+K
+	j0Or+l8ASbVL86mBkVfVbVugyVLBeNRgoh3Xiga+iaKoNLNlhEMBwS9Y3cLogDGxcGVBn2yzVVsqw
+	nkB90NDw==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1uESBn-0000sF-KA; Mon, 12 May 2025 14:23:24 +0200
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1uESBd-007iLF-FJ; Mon, 12 May 2025 14:23:13 +0200
+Message-ID: <720f6986-8b32-4d00-b309-66a6f0c1ca40@rbox.co>
+Date: Mon, 12 May 2025 14:23:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aB5DNqwP_LFV_ULL@casper.infradead.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrAIsWRmVeSWpSXmKPExsXC9ZZnke7ed4oZBv8XclrMWb+GzWL1jwqL
-	5Q92sFp8+Xmb3WLxwm/MFnPOt7BYPD32iN3i/rJnLBZ72rczW/S2/Ga2aNqxgsniwrY+VovL
-	u+awWdxb85/V4tgCMYtvp98wWqzfd4PV4vePOWwOQh5bVt5k8tg56y67x4JNpR6bV2h5dN24
-	xOyxaVUnm8emT5PYPe5c28PmcWLGbxaPnTs+M3l8fHqLxeP9vqtsHp83yQXwRnHZpKTmZJal
-	FunbJXBlLLvYw1IwT75ic9dU1gbG/eJdjBwcEgImEqceCnQxcoKZO39dYwOxWQRUJS7ubAGz
-	2QTUJW7c+MkMUi4ioCHxZosRSJhZYCmzxPSpwiC2sECQxOTHD9lBbF4BC4m7J7uYuhi5OIQE
-	ehglts9rZINICEqcnPmEBaJZS+LGv5dMIDOZBaQllv/jAAlzAp1w+N4KRhBbVEBZ4sC242Bz
-	JAS2sUt8OdPKBnGnpMTBFTdYJjAKzEIydhaSsbMQxi5gZF7FKJSZV5abmJljopdRmZdZoZec
-	n7uJERiPy2r/RO9g/HQh+BCjAAejEg/viZeKGUKsiWXFlbmHGCU4mJVEeBu3A4V4UxIrq1KL
-	8uOLSnNSiw8xSnOwKInzGn0rTxESSE8sSc1OTS1ILYLJMnFwSjUwSsbpt64+s/r+8v2i6xTE
-	NQ05Sp3/LM972HjU4P7GOed3b27mdZm3/Mqdp7XJvzOVlANZVrql3eESY/5zuvv+pfryfObb
-	7CerGxZ+6z5WwGo3kTf/v7TShGDRxOZfnz1mevRr/+WZ+Cat89k3xaCKtt3Of79/18vd9NPy
-	6afa7kldfTFXJmdVKLEUZyQaajEXFScCAGlHrvbDAgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprBIsWRmVeSWpSXmKPExsXC5WfdrLvnnWKGwaYXRhZz1q9hs1j9o8Ji
-	+YMdrBZfft5mt1i88BuzxZzzLSwWT489Yre4v+wZi8We9u3MFr0tv5ktmnasYLI4PPckq8WF
-	bX2sFpd3zWGzuLfmP6vFsQViFt9Ov2G0WL/vBqvF7x9z2ByEPbasvMnksXPWXXaPBZtKPTav
-	0PLounGJ2WPTqk42j02fJrF73Lm2h83jxIzfLB47d3xm8vj49BaLx/t9V9k8Fr/4wOTxeZNc
-	AF8Ul01Kak5mWWqRvl0CV8ayiz0sBfPkKzZ3TWVtYNwv3sXIySEhYCKx89c1NhCbRUBV4uLO
-	FjCbTUBd4saNn8xdjBwcIgIaEm+2GIGEmQWWMktMnyoMYgsLBElMfvyQHcTmFbCQuHuyi6mL
-	kYtDSKCHUWL7vEY2iISgxMmZT1ggmrUkbvx7yQQyk1lAWmL5Pw6QMCfQCYfvrWAEsUUFlCUO
-	bDvONIGRdxaS7llIumchdC9gZF7FKJKZV5abmJljqlecnVGZl1mhl5yfu4kRGF/Lav9M3MH4
-	5bL7IUYBDkYlHt4TLxUzhFgTy4orcw8xSnAwK4nwNm4HCvGmJFZWpRblxxeV5qQWH2KU5mBR
-	Euf1Ck9NEBJITyxJzU5NLUgtgskycXBKNTAWfd9YHjj/1q+6Fwt2Vyxb+FVzq91bf6u0ye/v
-	WF6a6+TxubyvrlZnny3vFu/PTaqnZ929H32vt0bqe5f+2rtr1Ngdp/AYG05/kfFHJ9BqwSfr
-	w1/+s5v+6JPbp/l/ot9U2TVHLpydXdDNo/v/YGhPT+sK65Srp4sVn3SbfohjiTtpceG5X81D
-	JZbijERDLeai4kQAuBwu+6sCAAA=
-X-CFilter-Loop: Reflected
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 3/3] vsock/test: Expand linger test to ensure
+ close() does not misbehave
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+References: <20250501-vsock-linger-v4-0-beabbd8a0847@rbox.co>
+ <20250501-vsock-linger-v4-3-beabbd8a0847@rbox.co>
+ <g5wemyogxthe43rkigufv7p5wrkegbdxbleujlsrk45dmbmm4l@qdynsbqfjwbk>
+ <CAGxU2F59O7QK2Q7TeaP6GU9wHrDMTpcO94TKz72UQndXfgNLVA@mail.gmail.com>
+ <ff959c3e-4c47-4f93-8ab8-32446bb0e0d0@rbox.co>
+ <CAGxU2F77OT5_Pd6EUF1QcvPDC38e-nuhfwKmPSTau262Eey5vQ@mail.gmail.com>
+Content-Language: pl-PL, en-GB
+From: Michal Luczaj <mhal@rbox.co>
+In-Reply-To: <CAGxU2F77OT5_Pd6EUF1QcvPDC38e-nuhfwKmPSTau262Eey5vQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, May 09, 2025 at 07:02:30PM +0100, Matthew Wilcox wrote:
-> On Fri, May 09, 2025 at 08:51:26PM +0900, Byungchul Park wrote:
-> > +++ b/include/linux/mm_types.h
-> > @@ -20,6 +20,7 @@
-> >  #include <linux/seqlock.h>
-> >  #include <linux/percpu_counter.h>
-> >  #include <linux/types.h>
-> > +#include <net/netmem_type.h> /* for page pool */
-> >  
-> >  #include <asm/mmu.h>
-> >  
-> > @@ -118,17 +119,7 @@ struct page {
-> >  			 */
-> >  			unsigned long private;
-> >  		};
-> > -		struct {	/* page_pool used by netstack */
-> > -			/**
-> > -			 * @pp_magic: magic value to avoid recycling non
-> > -			 * page_pool allocated pages.
-> > -			 */
-> > -			unsigned long pp_magic;
-> > -			struct page_pool *pp;
-> > -			unsigned long _pp_mapping_pad;
-> > -			unsigned long dma_addr;
-> > -			atomic_long_t pp_ref_count;
-> > -		};
-> > +		struct __netmem_desc place_holder_1; /* for page pool */
-> >  		struct {	/* Tail pages of compound page */
-> >  			unsigned long compound_head;	/* Bit zero is set */
-> >  		};
+On 5/7/25 10:26, Stefano Garzarella wrote:
+> On Wed, 7 May 2025 at 00:47, Michal Luczaj <mhal@rbox.co> wrote:
+>>
+>> On 5/6/25 11:46, Stefano Garzarella wrote:
+>>> On Tue, 6 May 2025 at 11:43, Stefano Garzarella <sgarzare@redhat.com> wrote:
+>>>>
+>>>> On Thu, May 01, 2025 at 10:05:24AM +0200, Michal Luczaj wrote:
+>>>>> There was an issue with SO_LINGER: instead of blocking until all queued
+>>>>> messages for the socket have been successfully sent (or the linger timeout
+>>>>> has been reached), close() would block until packets were handled by the
+>>>>> peer.
+>>>>
+>>>> This is a new behaviour that only new kernels will follow, so I think
+>>>> it is better to add a new test instead of extending a pre-existing test
+>>>> that we described as "SOCK_STREAM SO_LINGER null-ptr-deref".
+>>>>
+>>>> The old test should continue to check the null-ptr-deref also for old
+>>>> kernels, while the new test will check the new behaviour, so we can skip
+>>>> the new test while testing an old kernel.
+>>
+>> Right, I'll split it.
+>>
+>>> I also saw that we don't have any test to verify that actually the
+>>> lingering is working, should we add it since we are touching it?
+>>
+>> Yeah, I agree we should. Do you have any suggestion how this could be done
+>> reliably?
 > 
-> The include and the place holder aren't needed.
-
-Or netmem_desc overlaying struct page might be conflict with other
-fields of sturct page e.g. _mapcount, _refcount and the like, once the
-layout of struct page *extremly changes* in the future before
-netmem_desc has its own instance.
-
-So placing a place holder like this is the safest way, IMO, to prevent
-the unextected result.  Am I missing something?
-
-> > diff --git a/include/net/netmem.h b/include/net/netmem.h
-> > index 00064e766b889..c414de6c6ab0d 100644
-> > --- a/include/net/netmem.h
-> > +++ b/include/net/netmem.h
-> > @@ -10,6 +10,7 @@
-> >  
-> >  #include <linux/mm.h>
-> >  #include <net/net_debug.h>
-> > +#include <net/netmem_type.h>
+> Can we play with SO_VM_SOCKETS_BUFFER_SIZE like in credit-update tests?
 > 
-> ... which I think means you don't need the separate header file.
-
-Agree if I don't use the place holder in mm_types.h.
-
-> >  /* net_iov */
-> >  
-> > @@ -20,15 +21,6 @@ DECLARE_STATIC_KEY_FALSE(page_pool_mem_providers);
-> >   */
-> >  #define NET_IOV 0x01UL
-> >  
-> > -struct netmem_desc {
-> > -	unsigned long __unused_padding;
-> > -	unsigned long pp_magic;
-> > -	struct page_pool *pp;
-> > -	struct net_iov_area *owner;
-> > -	unsigned long dma_addr;
-> > -	atomic_long_t pp_ref_count;
-> > -};
-> > -
-> >  struct net_iov_area {
-> >  	/* Array of net_iovs for this area. */
-> >  	struct netmem_desc *niovs;
-> > @@ -38,31 +30,6 @@ struct net_iov_area {
-> >  	unsigned long base_virtual;
-> >  };
-> >  
-> > -/* These fields in struct page are used by the page_pool and net stack:
-> > - *
-> > - *        struct {
-> > - *                unsigned long pp_magic;
-> > - *                struct page_pool *pp;
-> > - *                unsigned long _pp_mapping_pad;
-> > - *                unsigned long dma_addr;
-> > - *                atomic_long_t pp_ref_count;
-> > - *        };
-> > - *
-> > - * We mirror the page_pool fields here so the page_pool can access these fields
-> > - * without worrying whether the underlying fields belong to a page or net_iov.
-> > - *
-> > - * The non-net stack fields of struct page are private to the mm stack and must
-> > - * never be mirrored to net_iov.
-> > - */
-> > -#define NET_IOV_ASSERT_OFFSET(pg, iov)             \
-> > -	static_assert(offsetof(struct page, pg) == \
-> > -		      offsetof(struct netmem_desc, iov))
-> > -NET_IOV_ASSERT_OFFSET(pp_magic, pp_magic);
-> > -NET_IOV_ASSERT_OFFSET(pp, pp);
-> > -NET_IOV_ASSERT_OFFSET(dma_addr, dma_addr);
-> > -NET_IOV_ASSERT_OFFSET(pp_ref_count, pp_ref_count);
-> > -#undef NET_IOV_ASSERT_OFFSET
+> One peer can set it (e.g. to 1k), accept the connection, but without
+> read anything. The other peer can set the linger timeout, send more
+> bytes than the buffer size set by the receiver.
+> At this point the extra bytes should stay on the sender socket buffer,
+> so we can do the close() and it should time out, and we can check if
+> it happens.
 > 
-> ... but you do want to keep asserting that netmem_desc and
-> net_iov have the same offsets.  And you want to assert that struct page
-> is big enough to hold everything in netmem_desc, like we do for slab:
-> 
-> static_assert(sizeof(struct slab) <= sizeof(struct page));
+> WDYT?
 
-I will.  However, as I mentioned above, the total size doesn't matter
-but the layout change of struct page might matter, I think.
+Haven't we discussed this approach in [1]? I've reported that I can't make
+it work. But maybe I'm misunderstanding something, please see the code below.
 
-	Byungchul
+[1]:
+https://lore.kernel.org/netdev/df2d51fd-03e7-477f-8aea-938446f47864@rbox.co/
+
+import termios, time
+from socket import *
+
+SIOCOUTQ = termios.TIOCOUTQ
+VMADDR_CID_LOCAL = 1
+SZ = 1024
+
+def set_linger(s, timeout):
+	optval = (timeout << 32) | 1
+	s.setsockopt(SOL_SOCKET, SO_LINGER, optval)
+	assert s.getsockopt(SOL_SOCKET, SO_LINGER) == optval
+
+def set_bufsz(s, size):
+	s.setsockopt(AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE, size)
+	assert s.getsockopt(AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE) == size
+
+def check_lingering(addr):
+	lis = socket(AF_VSOCK, SOCK_STREAM)
+	lis.bind(addr)
+	lis.listen()
+	set_bufsz(lis, SZ)
+
+	s = socket(AF_VSOCK, SOCK_STREAM)
+	set_linger(s, 5)
+	s.connect(lis.getsockname())
+
+	p, _ = lis.accept()
+
+	s.send(b'x')
+	p.recv(1)
+
+	print("sending...")
+	s.send(b'x' * (SZ+1)) # blocks
+	print("sent")
+
+	print("closing...")
+	ts = time.time()
+	s.close()
+	print("done in %ds" % (time.time() - ts))
+
+check_lingering((VMADDR_CID_LOCAL, 1234))
 
