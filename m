@@ -1,211 +1,454 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from trager.us (trager.us [52.5.81.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470A4297A4D;
-	Mon, 12 May 2025 19:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747076943; cv=fail; b=ivQ7CS4PvNl57izp1MbwzQ1AUwM2fA0fSt7C9sk0bZITX46LH4iqnJBjgt1Yrg92cNODwsxvZ8baCly9S0ZcYWCgA/XZFgfidqSeozyZXewR8yLRjYAzmqMgz74hEXtE6xQwFFveQ70DKl5UUg6rFPQnj2CHw73rjjpZsv8rVPs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747076943; c=relaxed/simple;
-	bh=YyGAJ3fsj9wnKGkRvUVO+XQW334Zs/wvKIFL6VPydE4=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=e/TrucRC5m8mHV5Ngzv3l7P+YuwckQ4hG6blnoNgyUhPe72SS+e+i+aJGI2O3WZUeYvqwe9hvY2GpxZyv9E3EKqLxlmlgjFBHAJVeCtetAdzkKe4ZUZGkVxUK5xJy66Vuq8ebrlZBB5cThTZy8lDMTLo9GUNwnPDwpkbxbE5afE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AheW87aY; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AheW87aY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747076942; x=1778612942;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=YyGAJ3fsj9wnKGkRvUVO+XQW334Zs/wvKIFL6VPydE4=;
-  b=AheW87aYnFRt3a9XZfXid6BM2ju85rtM0DLstJlwtHUQv7YEML34npRl
-   DePk5oyzJkoghXY2uJe5O/ZzWLILnjkHNK97gtHX3GwDdIDLJyMUTwOxd
-   cQz6JFeACNj6KU8Y8Z0racOSkcT9yLWlD6M9ygIf+9bjlKerGHdg5g9wD
-   U7/UA6L19Xuuaorh4mHhnVshl4afO4cwYBPk8nAEB+FlZuCHwRoIYKZ+/
-   F6pgfo8XcN5P0sTG0i5/uLMGa+moTWpsUXAO2Evs/6JYmopoSSzowcLAv
-   fnohyq26MwWTcyVdZN/tZ1jtkAZsQIaUifzWdMuXhyVdb3YavfQPgwKiy
-   Q==;
-X-CSE-ConnectionGUID: DyVgkJH5Qmm84/D0/A5sIw==
-X-CSE-MsgGUID: 0UTaMYstRtaU75Aap/8fQQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="66433391"
-X-IronPort-AV: E=Sophos;i="6.15,283,1739865600"; 
-   d="scan'208";a="66433391"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 12:08:52 -0700
-X-CSE-ConnectionGUID: oHLCvCGUTGqpEhSm9YKdzQ==
-X-CSE-MsgGUID: TlL9HUR7Rd+tVj/Mm0VByA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,283,1739865600"; 
-   d="scan'208";a="142580997"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 12:08:52 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Mon, 12 May 2025 12:08:51 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Mon, 12 May 2025 12:08:51 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.41) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Mon, 12 May 2025 12:08:49 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g/FtS3z8dPNK2hJ1bQNiPoI2S5rMTbL/oX+9yNTRIjwhooVynlI5e0mpcOiIUrBV2XQUArPIJxog0OXADFFSSa45V+uxzOQB2yVxzwqMxx7QKBQUgqvb2g0r5b3PErhTEUw1pQGw14lyXWGOWQOZNlzLCIPpHU5q8dI6A/FEEXd/HBvN27YG8hDIxdcYL2OtzN/wUSjuEd9nsr+EkA61HhlvuGzYIptnE8Oop+XFsyomMdmsjXw0PbeV0b0AUK78pi+h85N1YK7gKpVDEjnuBer2ue1MLyGiNt0+m+EAsZWWkTmEQwvYIs4GT5v87i9XcBENDsBlEFDk6mLyX5n1Bg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7bJLydP9azQhe/hSLxjjbxHUAv/Pg3QBKUGBw3zNj0M=;
- b=o+6MRODnv4aoAKeiNUMkpSJ7rXuHU88JOiRpwad5qvZqmolpkwc/K+uH76UaO27jFb3lxGiqJMunn9reilh2vo/CL3Wi0CYEqi9LJIYB0UvTzqAHaYi2jONck5baqtuCnRJCj+qNldo9CjHSytJbV/sqpd0kCb/grFZejVzBsdCNUitQEazMImbG6xGn6ThEqwBcjGz52oVM07CKIcwLgBAL3u4/YriuV/hii2nVdlJUx7BahRJlIf72AM8UhPUye0gT6vxRVX9XHW4QM7D4lN3zpYH361NheLEYSHpyKbaJtYb2VQCjN5sIDgoHjKepW32LXu6HdhNHf3xt8bewxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CO1PR11MB5089.namprd11.prod.outlook.com (2603:10b6:303:9b::16)
- by SJ0PR11MB8271.namprd11.prod.outlook.com (2603:10b6:a03:47a::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.29; Mon, 12 May
- 2025 19:08:33 +0000
-Received: from CO1PR11MB5089.namprd11.prod.outlook.com
- ([fe80::7de8:e1b1:a3b:b8a8]) by CO1PR11MB5089.namprd11.prod.outlook.com
- ([fe80::7de8:e1b1:a3b:b8a8%5]) with mapi id 15.20.8722.027; Mon, 12 May 2025
- 19:08:33 +0000
-Message-ID: <58755bce-e4f0-474b-8799-22258fdd320c@intel.com>
-Date: Mon, 12 May 2025 12:08:30 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 3/5] eth: fbnic: Add support for multiple
- concurrent completion messages
-To: Lee Trager <lee@trager.us>, Alexander Duyck <alexanderduyck@fb.com>,
-	"Jakub Kicinski" <kuba@kernel.org>, <kernel-team@meta.com>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>, Mohsin Bashir
-	<mohsin.bashr@gmail.com>, Sanman Pradhan <sanman.p211993@gmail.com>, Su Hui
-	<suhui@nfschina.com>, Al Viro <viro@zeniv.linux.org.uk>
-CC: Andrew Lunn <andrew@lunn.ch>, <netdev@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2A0297B95;
+	Mon, 12 May 2025 19:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.5.81.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747076980; cv=none; b=Nwy+1fQtN3o64BlHUDolQyFBYZ1tauMqxs4Qa6eKoTy7z+L8EGRI6YupgCzSKzPOTWVSGV07Fb+1CwGPwWF1TzXINvGSvP+4NmQaiN3lHHbCO3L7wkfZMLlU1wCANaAuAOB20exkJ6e2oeK/VWOYt9gLLWnAL5dJeiY1VGx9C4s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747076980; c=relaxed/simple;
+	bh=DJ+l5QzZw9VZQNabyv3jkwLGwtMY56b2MtxyzuPKzcw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nwMsDA6XQfbBUZ70lvQWJwwH1OLOifPq89WClrbxAYMISMtiKzm/D74/vptpFLwYzdIlMo6DLNthYjsb9+6YuK9Ijk6xR7FhI8zHvUuellECdMhFefDNUw6IbJ1tsjmgw4NSLv7bY1nis+k95R/9p22/pHKJ4B7sseGlcuVnmXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us; spf=pass smtp.mailfrom=trager.us; arc=none smtp.client-ip=52.5.81.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trager.us
+Received: from [163.114.132.130] (helo=localhost)
+	by trager.us with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+	(Exim 4.92.3)
+	(envelope-from <lee@trager.us>)
+	id 1uEYWm-00072w-UD; Mon, 12 May 2025 19:09:29 +0000
+From: Lee Trager <lee@trager.us>
+To: Alexander Duyck <alexanderduyck@fb.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	kernel-team@meta.com,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Mohsin Bashir <mohsin.bashr@gmail.com>,
+	Sanman Pradhan <sanman.p211993@gmail.com>,
+	Su Hui <suhui@nfschina.com>,
+	Lee Trager <lee@trager.us>,
+	Al Viro <viro@zeniv.linux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v5 5/5] eth: fbnic: Add devlink dev flash support
+Date: Mon, 12 May 2025 11:54:01 -0700
+Message-ID: <20250512190109.2475614-6-lee@trager.us>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250512190109.2475614-1-lee@trager.us>
 References: <20250512190109.2475614-1-lee@trager.us>
- <20250512190109.2475614-4-lee@trager.us>
-Content-Language: en-US
-From: Jacob Keller <jacob.e.keller@intel.com>
-In-Reply-To: <20250512190109.2475614-4-lee@trager.us>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR03CA0083.namprd03.prod.outlook.com
- (2603:10b6:303:b6::28) To CO1PR11MB5089.namprd11.prod.outlook.com
- (2603:10b6:303:9b::16)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR11MB5089:EE_|SJ0PR11MB8271:EE_
-X-MS-Office365-Filtering-Correlation-Id: 770485b2-3d05-4fc6-4f28-08dd918863c1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|921020|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?RHRUdytyRWs1Wnp3bkd0eE9PMXJhK3RhTjVGQWE0cDlYY255VFhYTHVXRG1y?=
- =?utf-8?B?UEI4Z1Z4Sk1NWDNBUUVOa1poMWoyM3k2TERkTms5akh0NnBMWENIanIxc3c5?=
- =?utf-8?B?ZVRpcnBjV0FDbUc1SVNhY3BldGlIWDZOa1JsVkEwNjUzeGFEKy8yZlRvZ0dO?=
- =?utf-8?B?M3pwNThMYzdabEozMWlTaTdpRmg5NHlxYzJvN2IvU0hBdnBtMVJabTlUUWE3?=
- =?utf-8?B?QUVHbjVGdW8rcEJ3R1JBZUtiYnE4NmJ6NFFDdUJzNkNyeDUvbHZZS3hJUVpJ?=
- =?utf-8?B?d2Zwc2kzTWNkU0JDNGw2ZzEvc1FZTVIwMTVhZm00bVIyczByVUJQK2FpQmQr?=
- =?utf-8?B?ajRES2hhL09rWi9xODd4djBqZGp2T2tLeXZZYi9NcGZDSkh6L2p6UkIvTFgy?=
- =?utf-8?B?YUU1SVdsU3RHL3hUQ1RDOUpYRjlNVm1GVjd6bU14Z284U2VQMjBVQzQzVURm?=
- =?utf-8?B?TlFKRURUWWdsOGtQWDk4VGZ2Z2NyczJ4NVBTWEJsSGxVQndRaHExT205ajVL?=
- =?utf-8?B?Y0VIK2pwNitPeXk5cEZIM1haZWc5SHZpL3IvamViYU5ndkhFdWJBWmY5MlZx?=
- =?utf-8?B?Z2dYc3R5dnArVTBNQ3RCRjB6RlBXWDNnaWdYdldPMFVsTFZyTU1NSG9CNUJF?=
- =?utf-8?B?WExTdG5LNFFZYWZnbXRRb1JhWlNaVndIam56TzRBbm1uR0xmVE9NaXQ1R282?=
- =?utf-8?B?N2dYbk5SbHVlM2xrR0RKZzZqdzU2bVNzVXh2YTlQaFM4QmZKdHlsT0FkOUYx?=
- =?utf-8?B?L0J4K0czK1JmenM4dlV5dGFPSm42VTFBR25yc2Jra09lY2hKazNBYjA0V0lT?=
- =?utf-8?B?cGJKbWNGQ0JSZjdKUjEwZUJUWldlSDkyR1BNY0E3RVE3MUFyaUsrMHg1MitO?=
- =?utf-8?B?UHVIdjR0ZEZERGJFRnNPOGpaSDdBNzZPT2JKOGJYdURJWXZMb3JhRjlPWHlT?=
- =?utf-8?B?eDRFMXl2KzVKVkhocFZyOUhEUTJoei8zTFEyUVRGdXErdGNsOHVRV2dONm52?=
- =?utf-8?B?dlFTNmI5TkJnREoxcWJHcy9UNW9FOXp5MjFTUHJDSi92cW81L3NvUG9USFdK?=
- =?utf-8?B?QlAwUHNwNDVYbEl0MGZqVUs4ZjBCYU5oZlR0YkNTWXBvaXhPaFJnQUtZUzMy?=
- =?utf-8?B?bnRIaVhKRGlsOGhEcWpCZXNlZlBxdTN1eDhMbCtTZHhndW1UWnNmVWVsbG5E?=
- =?utf-8?B?QW9aWElOZStIb1hoREJ5UFcvcFlnK3V5TnQxcHZZUElWQ3ZCaXYweDFma0xu?=
- =?utf-8?B?ejV3RXRYUmhDUWFFeUVrTzBFWUdzcHpmSFhzVDY3T0hNMmtvb0NWSHduL2dV?=
- =?utf-8?B?RDZ3aUxEQXk0TWIvNG54eDJ2K0t3SFlIM0t2ZGF6R1ZXS3cramVDWjIxemhC?=
- =?utf-8?B?Rm9CWUd3RWdQRXNrbXBKcWdURjA3OFZPV01VZVcvNTJNNlhOaEM4WHJhVEp4?=
- =?utf-8?B?TU0rcFUxUEZOajk2QStINU1xNWtLQVlyUE5BQytNejQrbDhUbXFvMjB5d3Jy?=
- =?utf-8?B?SkJKV1VlenBYUldId0ZCckVBcnNUWTl1RUN5Nm1vc1R3akdmL3lPdmQySUNS?=
- =?utf-8?B?LzlwckJPeUpHVW51TmVCSTg1NHQwb2x5MTRxSUlrbTA5UmpMdUZ4WGRrZVpt?=
- =?utf-8?B?WENtcjEwenBYTTkzd2FobTVMa24yeld6N0p4emRROHE0bUZuK2xHREtuU0c3?=
- =?utf-8?B?WWc2N0diYWkrVm5IVWVYZ2UwR2liVXExRUl1cVladjlQL0Y3eG9XdWNqblhk?=
- =?utf-8?B?VjFPVTFMa0xuaHBhR1JWVXlzaUtFVjhHWkloNzR0RGhIcWp4TTJoSXdyamFV?=
- =?utf-8?B?R0JtaFNrN1JkK3Z1MHhHSWlDM3dxRnZkRXJ6QUdrMS9waHY4MU90bW81WmxT?=
- =?utf-8?B?T1JvQ09wTzUvSXJIb1RPcEJzdUYwUm5id0lqNmo0bnhKdklVeDZqdTUrcTFO?=
- =?utf-8?Q?UzQblke4eKUvkRg8Gmnw9NwRDaA62eJl?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB5089.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(921020)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RTNkdEY3dVFIRlNtMGl5Y0FnZnpYeTRrRWlVL2pNRmsvbjVlaVFaOWNYSFRQ?=
- =?utf-8?B?c0xXMmVnSlFML28vODV1ZkRHUjd0anFPR3lLeVBRczlJS2dNVFhJb2xYNHVh?=
- =?utf-8?B?VGxGaDBVSnI1N0lidUo4RzU1djhmaU1pc1ZiUGhTZFdMb2k5enEzUGgraVRj?=
- =?utf-8?B?WnFrTlE5dTN2SDhLWDdrZDdjWEdNcXBNejlSMW40enpMYlAzMzBJMXkzS2kz?=
- =?utf-8?B?YXB2Q2EvL3ByN3lKRWpRRUI3U2NjWlQ4d2dCbUwxZmVZYmljUHRjMk9PTXVt?=
- =?utf-8?B?ZGoveG90clh5NXM1RGEydzdmb1FPTVozcTJyaFR2NlNHL0FmUFpVU0JGU0Nk?=
- =?utf-8?B?cjhiSENtTXp3ZFRnWVcwWU12R3JiZmduYW9mbzQwN0lPYUgycThIY1dTSE9p?=
- =?utf-8?B?UWp6enh0UUdxS1RMMHpuY0FhTE1hMlpCelZKamZTbS8xRk5oZ1paYjdjekVr?=
- =?utf-8?B?d1lkbVlhckJNMmh4UEx4dUs0Y2JWOGR3Z0pMa0Y1eHpvNFV4b0ZPWFJ6TTVl?=
- =?utf-8?B?NkNIMW0xMTgzRi9xeDdDWnlYNXdqak5EQU8yeWRic0k3NkM2YzVUbVlyUjlz?=
- =?utf-8?B?MTV6ZnZBK01BdXcrQ0g4dTVkN0U5UHRIc3RTQTJ6WUFVOURSVEhUQ0RhWm81?=
- =?utf-8?B?YnI2bCtFV3RDbVNEOHp5anhmZ2VYVmM1M2VMTndaQmtJL0ZmSVBCT1VHa2NU?=
- =?utf-8?B?OVNoL09aR1ZOcENQWVd3ODJ3YjFqY0hHN2I4d2czVUZZQWx6bzJNNDlPVjMw?=
- =?utf-8?B?WWJlS0wvdzBGR1RkSE9xVEhCTTQyTEFWM0xBZGwrak5vQldHVUM2RjRxV2xJ?=
- =?utf-8?B?Vy9QckRQTW83aTVsaElCVzRKUVlNUS9KcW96S2VvMHRiMHhTamJ0K0lkNWgx?=
- =?utf-8?B?aWsramlLTGtHK29IWkVoaG1UemEwM3hoVlltdjdVOGdUSmwyRUY1aG5LNDJP?=
- =?utf-8?B?QTVibmNQQlNSalpFdkN0M0g0NUNiZlZ2YW0yc1dxa1VObXZTV2hLaWY1VzM3?=
- =?utf-8?B?cnZUclR4cFhtYlR1MW42ZDc1Vk93OTFTeldONGVEMHJoQ0txUWI0cGR3aDJD?=
- =?utf-8?B?b3F3NVhjSVZCeDhRZzlsVU1odXh0RFhJVGErWHovbkpMQzZaZk80V0o3MEtD?=
- =?utf-8?B?eGgzWjVlb3RzY09lRjNSc2R3M2E1YnFQWEJFTUpSNVB4ODA5TVJQT1ZBell1?=
- =?utf-8?B?MThOYnFjd055WmhZeDFWZFREUFpva3lkd0I0T2lHaUtiVTJjbDlZdzk0QzRQ?=
- =?utf-8?B?T0dDeDJOc3h3MVJ2d3EvanVpUzZwMEwwQnRqNmVHQjRDSXJscnR2cDZJSFo4?=
- =?utf-8?B?OWY5aHV2MHZzOVcwRldnVlcwRjNYR04rQXN3T2pkQnQ5aVNheWp3SnZ4eFNR?=
- =?utf-8?B?V1doOHRQdGQySER3dmhBbm9yaHpzSENvRUk1RFBEMVpUN2ZwVjhvOFJGdC92?=
- =?utf-8?B?aEkxUnJiUUluTmRwVHdtQUkzeFMyczNyZmo2YzVBaGc3ZXpLVTNUUVRxTENj?=
- =?utf-8?B?QVc2eUdaeXFQODRpRDh2VHFwUUdWVUlZa0x4dGVUWlA5T0gvU0VZQzg0Z1VP?=
- =?utf-8?B?SmFsbURBdjdxZCtXVEpPaU4xRXBub1YvUzh3Z0JaelJZR0JxZXlaR1c4aHgz?=
- =?utf-8?B?YlFpK293RmN5NlhDb0dnczIvM0d1dElGL24zSG8xQmNxRnNHb01EdElrTDBV?=
- =?utf-8?B?Y1p1NmNWcWdwUkQxeW1xVysyQ1ZpSXhqMlQvaVlmNGR6SVEvVzZsTnNkbUhN?=
- =?utf-8?B?dy9xYjJKbFBTWFdTZmY2cDZUUkVoV2xhdThaM3dLZ3lrZno0UnNDSkloVlhs?=
- =?utf-8?B?NTNHYklEWkQyNit2ZTVRZlp0QWhnRWJ3cDFzZXhWdXoyL3haWmUzc1lLMnBr?=
- =?utf-8?B?N1hWSVIvK08rVys1OHl0UDJxTCt4bHZ4dVpvTCtPTFRxakNjUVNOdnFOYUtR?=
- =?utf-8?B?aEhjVHd1am1nb051RXlzeXEzQzRGSzJqelJFVzJVTzR4NFVKQlN6eTlSeWRF?=
- =?utf-8?B?Z2dRWTNXSERzOW1xem1nMnR4bHNJcEFaSW9NSGhnQkFwa3l0aE5oMU8yeS9Y?=
- =?utf-8?B?MitxSmdNcXNtdTh5TVBDSlhxS2ZjUXI4S0JkUVpld0FHc1hXUzdnbGxPOG5O?=
- =?utf-8?B?eHU0cG0yR25kOUhZVkQxSkFEN0RoQUxQeUZpZmdzU2cvcUNqQTNWYnZHWVNi?=
- =?utf-8?B?eHc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 770485b2-3d05-4fc6-4f28-08dd918863c1
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5089.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2025 19:08:33.2683
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IglpvNdbLWnM2GL8PfpjFDBB1hkf4/yfjZ2Duko/Z1Xznx07CnSCwp+TztQzSpQum18yxJxQCxl04Ri2hbUEKR/r+D7IPhBE4LHRNybDMwc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB8271
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
+Add support to update the CMRT and control firmware as well as the UEFI
+driver on fbnic using devlink dev flash.
 
+Make sure the shutdown / quiescence paths like suspend take the devlink
+lock to prevent them from interrupting the FW flashing process.
 
-On 5/12/2025 11:53 AM, Lee Trager wrote:
-> Extend fbnic mailbox to support multiple concurrent completion messages at
-> once. This enables fbnic to support running multiple operations at once
-> which depend on a response from firmware via the mailbox.
-> 
-> Signed-off-by: Lee Trager <lee@trager.us>
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> ---
+Signed-off-by: Lee Trager <lee@trager.us>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+V5:
+* Make sure fbnic_pldm_match_record() always returns a bool
 
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+ .../device_drivers/ethernet/meta/fbnic.rst    |  11 +
+ drivers/net/ethernet/meta/Kconfig             |   1 +
+ .../net/ethernet/meta/fbnic/fbnic_devlink.c   | 260 +++++++++++++++++-
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.h    |   9 +
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |   9 +
+ 5 files changed, 289 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/networking/device_drivers/ethernet/meta/fbnic.rst b/Documentation/networking/device_drivers/ethernet/meta/fbnic.rst
+index 3483e498c08e..f8592dec8851 100644
+--- a/Documentation/networking/device_drivers/ethernet/meta/fbnic.rst
++++ b/Documentation/networking/device_drivers/ethernet/meta/fbnic.rst
+@@ -28,6 +28,17 @@ devlink dev info provides version information for all three components. In
+ addition to the version the hg commit hash of the build is included as a
+ separate entry.
+
++Upgrading Firmware
++------------------
++
++fbnic supports updating firmware using signed PLDM images with devlink dev
++flash. PLDM images are written into the flash. Flashing does not interrupt
++the operation of the device.
++
++On host boot the latest UEFI driver is always used, no explicit activation
++is required. Firmware activation is required to run new control firmware. cmrt
++firmware can only be activated by power cycling the NIC.
++
+ Statistics
+ ----------
+
+diff --git a/drivers/net/ethernet/meta/Kconfig b/drivers/net/ethernet/meta/Kconfig
+index 831921b9d4d5..3ba527514f1e 100644
+--- a/drivers/net/ethernet/meta/Kconfig
++++ b/drivers/net/ethernet/meta/Kconfig
+@@ -27,6 +27,7 @@ config FBNIC
+ 	select NET_DEVLINK
+ 	select PAGE_POOL
+ 	select PHYLINK
++	select PLDMFW
+ 	help
+ 	  This driver supports Meta Platforms Host Network Interface.
+
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c b/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c
+index 0072d612215e..71d9461a0d1b 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c
+@@ -3,10 +3,12 @@
+
+ #include <linux/unaligned.h>
+ #include <linux/pci.h>
++#include <linux/pldmfw.h>
+ #include <linux/types.h>
+ #include <net/devlink.h>
+
+ #include "fbnic.h"
++#include "fbnic_tlv.h"
+
+ #define FBNIC_SN_STR_LEN	24
+
+@@ -109,8 +111,264 @@ static int fbnic_devlink_info_get(struct devlink *devlink,
+ 	return 0;
+ }
+
++static bool
++fbnic_pldm_match_record(struct pldmfw *context, struct pldmfw_record *record)
++{
++	struct pldmfw_desc_tlv *desc;
++	u32 anti_rollback_ver = 0;
++	struct devlink *devlink;
++	struct fbnic_dev *fbd;
++	struct pci_dev *pdev;
++
++	/* First, use the standard PCI matching function */
++	if (!pldmfw_op_pci_match_record(context, record))
++		return false;
++
++	pdev = to_pci_dev(context->dev);
++	fbd = pci_get_drvdata(pdev);
++	devlink = priv_to_devlink(fbd);
++
++	/* If PCI match is successful, check for vendor-specific descriptors */
++	list_for_each_entry(desc, &record->descs, entry) {
++		if (desc->type != PLDM_DESC_ID_VENDOR_DEFINED)
++			continue;
++
++		if (desc->size < 21 || desc->data[0] != 1 ||
++		    desc->data[1] != 15)
++			continue;
++
++		if (memcmp(desc->data + 2, "AntiRollbackVer", 15) != 0)
++			continue;
++
++		anti_rollback_ver = get_unaligned_le32(desc->data + 17);
++		break;
++	}
++
++	/* Compare versions and return error if they do not match */
++	if (anti_rollback_ver < fbd->fw_cap.anti_rollback_version) {
++		char buf[128];
++
++		snprintf(buf, sizeof(buf),
++			 "New firmware anti-rollback version (0x%x) is older than device version (0x%x)!",
++			 anti_rollback_ver, fbd->fw_cap.anti_rollback_version);
++		devlink_flash_update_status_notify(devlink, buf,
++						   "Anti-Rollback", 0, 0);
++
++		return false;
++	}
++
++	return true;
++}
++
++static int
++fbnic_flash_start(struct fbnic_dev *fbd, struct pldmfw_component *component)
++{
++	struct fbnic_fw_completion *cmpl;
++	int err;
++
++	cmpl = kzalloc(sizeof(*cmpl), GFP_KERNEL);
++	if (!cmpl)
++		return -ENOMEM;
++
++	fbnic_fw_init_cmpl(cmpl, FBNIC_TLV_MSG_ID_FW_START_UPGRADE_REQ);
++	err = fbnic_fw_xmit_fw_start_upgrade(fbd, cmpl,
++					     component->identifier,
++					     component->component_size);
++	if (err)
++		goto cmpl_free;
++
++	/* Wait for firmware to ack firmware upgrade start */
++	if (wait_for_completion_timeout(&cmpl->done, 10 * HZ))
++		err = cmpl->result;
++	else
++		err = -ETIMEDOUT;
++
++	fbnic_fw_clear_cmpl(fbd, cmpl);
++cmpl_free:
++	fbnic_fw_put_cmpl(cmpl);
++
++	return err;
++}
++
++static int
++fbnic_flash_component(struct pldmfw *context,
++		      struct pldmfw_component *component)
++{
++	const u8 *data = component->component_data;
++	const u32 size = component->component_size;
++	struct fbnic_fw_completion *cmpl;
++	const char *component_name;
++	struct devlink *devlink;
++	struct fbnic_dev *fbd;
++	struct pci_dev *pdev;
++	u32 offset = 0;
++	u32 length = 0;
++	char buf[32];
++	int err;
++
++	pdev = to_pci_dev(context->dev);
++	fbd = pci_get_drvdata(pdev);
++	devlink = priv_to_devlink(fbd);
++
++	switch (component->identifier) {
++	case QSPI_SECTION_CMRT:
++		component_name = "boot1";
++		break;
++	case QSPI_SECTION_CONTROL_FW:
++		component_name = "boot2";
++		break;
++	case QSPI_SECTION_OPTION_ROM:
++		component_name = "option-rom";
++		break;
++	default:
++		snprintf(buf, sizeof(buf), "Unknown component ID %u!",
++			 component->identifier);
++		devlink_flash_update_status_notify(devlink, buf, NULL, 0,
++						   size);
++		return -EINVAL;
++	}
++
++	/* Once firmware receives the request to start upgrading it responds
++	 * with two messages:
++	 * 1. An ACK that it received the message and possible error code
++	 *    indicating that an upgrade is not currently possible.
++	 * 2. A request for the first chunk of data
++	 *
++	 * Setup completions for write before issuing the start message so
++	 * the driver can catch both messages.
++	 */
++	cmpl = kzalloc(sizeof(*cmpl), GFP_KERNEL);
++	if (!cmpl)
++		return -ENOMEM;
++
++	fbnic_fw_init_cmpl(cmpl, FBNIC_TLV_MSG_ID_FW_WRITE_CHUNK_REQ);
++	err = fbnic_mbx_set_cmpl(fbd, cmpl);
++	if (err)
++		goto cmpl_free;
++
++	devlink_flash_update_timeout_notify(devlink, "Initializing",
++					    component_name, 15);
++	err = fbnic_flash_start(fbd, component);
++	if (err)
++		goto err_no_msg;
++
++	while (offset < size) {
++		if (!wait_for_completion_timeout(&cmpl->done, 15 * HZ)) {
++			err = -ETIMEDOUT;
++			break;
++		}
++
++		err = cmpl->result;
++		if (err)
++			break;
++
++		/* Verify firmware is requesting the next chunk in the seq. */
++		if (cmpl->u.fw_update.offset != offset + length) {
++			err = -EFAULT;
++			break;
++		}
++
++		offset = cmpl->u.fw_update.offset;
++		length = cmpl->u.fw_update.length;
++
++		if (length > TLV_MAX_DATA || offset + length > size) {
++			err = -EFAULT;
++			break;
++		}
++
++		devlink_flash_update_status_notify(devlink, "Flashing",
++						   component_name,
++						   offset, size);
++
++		/* Mailbox will set length to 0 once it receives the finish
++		 * message.
++		 */
++		if (!length)
++			continue;
++
++		reinit_completion(&cmpl->done);
++		err = fbnic_fw_xmit_fw_write_chunk(fbd, data, offset, length,
++						   0);
++		if (err)
++			break;
++	}
++
++	if (err) {
++		fbnic_fw_xmit_fw_write_chunk(fbd, NULL, 0, 0, err);
++err_no_msg:
++		snprintf(buf, sizeof(buf), "Mailbox encountered error %d!",
++			 err);
++		devlink_flash_update_status_notify(devlink, buf,
++						   component_name, 0, 0);
++	}
++
++	fbnic_fw_clear_cmpl(fbd, cmpl);
++cmpl_free:
++	fbnic_fw_put_cmpl(cmpl);
++
++	return err;
++}
++
++static const struct pldmfw_ops fbnic_pldmfw_ops = {
++	.match_record = fbnic_pldm_match_record,
++	.flash_component = fbnic_flash_component,
++};
++
++static int
++fbnic_devlink_flash_update(struct devlink *devlink,
++			   struct devlink_flash_update_params *params,
++			   struct netlink_ext_ack *extack)
++{
++	struct fbnic_dev *fbd = devlink_priv(devlink);
++	const struct firmware *fw = params->fw;
++	struct device *dev = fbd->dev;
++	struct pldmfw context;
++	char *err_msg;
++	int err;
++
++	context.ops = &fbnic_pldmfw_ops;
++	context.dev = dev;
++
++	err = pldmfw_flash_image(&context, fw);
++	if (err) {
++		switch (err) {
++		case -EINVAL:
++			err_msg = "Invalid image";
++			break;
++		case -EOPNOTSUPP:
++			err_msg = "Unsupported image";
++			break;
++		case -ENOMEM:
++			err_msg = "Out of memory";
++			break;
++		case -EFAULT:
++			err_msg = "Invalid header";
++			break;
++		case -ENOENT:
++			err_msg = "No matching record";
++			break;
++		case -ENODEV:
++			err_msg = "No matching device";
++			break;
++		case -ETIMEDOUT:
++			err_msg = "Timed out waiting for reply";
++			break;
++		default:
++			err_msg = "Unknown error";
++			break;
++		}
++
++		NL_SET_ERR_MSG_FMT_MOD(extack,
++				       "Failed to flash PLDM Image: %s (error: %d)",
++				       err_msg, err);
++	}
++
++	return err;
++}
++
+ static const struct devlink_ops fbnic_devlink_ops = {
+-	.info_get = fbnic_devlink_info_get,
++	.info_get	= fbnic_devlink_info_get,
++	.flash_update	= fbnic_devlink_flash_update,
+ };
+
+ void fbnic_devlink_free(struct fbnic_dev *fbd)
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.h b/drivers/net/ethernet/meta/fbnic/fbnic_fw.h
+index 0ab6ae3859e4..6baac10fd688 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.h
+@@ -100,6 +100,15 @@ do {									\
+ #define fbnic_mk_fw_ver_str(_rev_id, _str) \
+ 	fbnic_mk_full_fw_ver_str(_rev_id, "", "", _str, sizeof(_str))
+
++enum {
++	QSPI_SECTION_CMRT			= 0,
++	QSPI_SECTION_CONTROL_FW			= 1,
++	QSPI_SECTION_UCODE			= 2,
++	QSPI_SECTION_OPTION_ROM			= 3,
++	QSPI_SECTION_USER			= 4,
++	QSPI_SECTION_INVALID,
++};
++
+ #define FW_HEARTBEAT_PERIOD		(10 * HZ)
+
+ enum {
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+index 70a852b3e99d..249d3ef862d5 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+@@ -6,6 +6,7 @@
+ #include <linux/pci.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/types.h>
++#include <net/devlink.h>
+
+ #include "fbnic.h"
+ #include "fbnic_drvinfo.h"
+@@ -388,8 +389,12 @@ static int fbnic_pm_suspend(struct device *dev)
+ 	rtnl_unlock();
+
+ null_uc_addr:
++	devl_lock(priv_to_devlink(fbd));
++
+ 	fbnic_fw_free_mbx(fbd);
+
++	devl_unlock(priv_to_devlink(fbd));
++
+ 	/* Free the IRQs so they aren't trying to occupy sleeping CPUs */
+ 	fbnic_free_irqs(fbd);
+
+@@ -420,11 +425,15 @@ static int __fbnic_pm_resume(struct device *dev)
+
+ 	fbd->mac->init_regs(fbd);
+
++	devl_lock(priv_to_devlink(fbd));
++
+ 	/* Re-enable mailbox */
+ 	err = fbnic_fw_request_mbx(fbd);
+ 	if (err)
+ 		goto err_free_irqs;
+
++	devl_unlock(priv_to_devlink(fbd));
++
+ 	/* No netdev means there isn't a network interface to bring up */
+ 	if (fbnic_init_failure(fbd))
+ 		return 0;
+--
+2.47.1
