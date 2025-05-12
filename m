@@ -1,63 +1,63 @@
 Received: from mx0a-0024c301.pphosted.com (mx0a-0024c301.pphosted.com [148.163.149.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8D520E718;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223882101A0;
 	Mon, 12 May 2025 01:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.149.154
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747013307; cv=fail; b=iyP2WhTbpFUcioq4ny2FjkZBBYd/wTH+SjekO/mmGwapcZ7aIIAkXYz4jGR7NMSCPkuC24yDcsurFU7sDO1ZRm/QjTL4UphfIOcp/N0EqNE1OG6UG7HhIRFiSVcgXBJSqa6tTG9xQ7i0+MguXSldYMbBZa8/6cauQJmfJdOQRhI=
+	t=1747013308; cv=fail; b=mnZd1b0td+5/BecnbUwLxHwRTylAW0d19ZBfe8N2n236eZ5KQk1LsGCa6bk6qpDg1dDmGR70D5/nGeKN6h8ZnfO+aqB2zdn8P7vUoaM4oz66H/rS3/TDMfCA43HhIecdrZqyUYWi7z7CHCcZB7gxxP1npa/SQLQEekhgLgoo/yc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747013307; c=relaxed/simple;
-	bh=J5jZqqfqhMmRHBOqN+2/e6fmEgAlMc1/FlJT8cM195Q=;
+	s=arc-20240116; t=1747013308; c=relaxed/simple;
+	bh=eOVq661l8gpp2FeBA9ADn5tu4JJnCo1TtL8AVMR0GFA=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=e0N/eS9dDfk6tjIEcIN2ZXPG7faH8vWcG+CtujTgmKHgG4yPJbCl17AsXR0qiAX1VMGvizVquA8I+bmAVOdDK+uCGjS7td3UrXA1ArFhGO6xDcWAmisdt9iK3RUcSYhPCnCXlpTn93xygCGz7ceY1Xe9kS7sVHqu8kMwQcL4Ed0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=silabs.com; spf=pass smtp.mailfrom=silabs.com; dkim=pass (2048-bit key) header.d=silabs.com header.i=@silabs.com header.b=QYANk6lw; dkim=pass (1024-bit key) header.d=silabs.com header.i=@silabs.com header.b=c8ayZtwP; arc=fail smtp.client-ip=148.163.149.154
+	 Content-Type:MIME-Version; b=gwG9WubKc3jXV+NuVDoWrOrNJWykAqVZL6SuFAqcXCTRLgd2rzRJ2D8ZsuSIDXa8VXYCO7rg8511wWKuJIaj1g3GpN1TtrVAyH4VPYBPwkiDZuz+rEB3yoAqHlbjvY2Z7h0GQjWMfytp24x/Jl1iR5U9DV2s4nkU/qK1M1/dJUk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=silabs.com; spf=pass smtp.mailfrom=silabs.com; dkim=pass (2048-bit key) header.d=silabs.com header.i=@silabs.com header.b=PFzBfLGl; dkim=pass (1024-bit key) header.d=silabs.com header.i=@silabs.com header.b=Mi5A959m; arc=fail smtp.client-ip=148.163.149.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=silabs.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=silabs.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=silabs.com header.i=@silabs.com header.b="QYANk6lw";
-	dkim=pass (1024-bit key) header.d=silabs.com header.i=@silabs.com header.b="c8ayZtwP"
+	dkim=pass (2048-bit key) header.d=silabs.com header.i=@silabs.com header.b="PFzBfLGl";
+	dkim=pass (1024-bit key) header.d=silabs.com header.i=@silabs.com header.b="Mi5A959m"
 Received: from pps.filterd (m0101743.ppops.net [127.0.0.1])
-	by mx0a-0024c301.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54BMe1Rw027700;
-	Sun, 11 May 2025 20:28:12 -0500
+	by mx0a-0024c301.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54BMe1Ro027700;
+	Sun, 11 May 2025 20:28:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=silabs.com; h=
 	content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=pps12202023;
-	 bh=RWBCh0EhSmW+QtYQmugPztGTiGpOuaav1Vsd1G/u5SE=; b=QYANk6lwX0q0
-	Pla2TXdym+V8aKnW7HQiX+iHC8j9nXBaVPAV/ilwGwEtxvf04AUPfQlE3+sMU2nb
-	vzspOLuup7LfIC//shP0KTGM5QDLdYQ6JC7X6qbjQHWc7+O7QtvvDPyErBUIlE0M
-	OeSXKceI53Eop2w7IdY8N4xrPHOVzHhXECb/rlAXkWs64qvTQu/1VxciJ/S0QY8J
-	sUq5q95bkWlH72JjzyztTKA0K9yGYxyvQLMsG6E8cNC45YXYH6FH8X2BKDaEv2/r
-	Hac18UKYbgOy2heFLFpzdCmGpPleYx+ncdscYBEDeiX72khAzKTekXuBM+VrSbuV
-	dLdMtTO08A==
+	 bh=7u7C0lpSYz9RVO7RNG6CAYIQXWebGd0f2fTr9WKVL3U=; b=PFzBfLGlGgV2
+	7e6q/rnp19e6miD6o/HrL04wdd5W6+ymliBV7/6IF6brLBlHagkLplSWzHxGjnxA
+	aCZrHef3NP7/yXakwkv2zPuI2I9W6ERupHFLQIa3c0iTWplxrMn+R/mHJNt75FX+
+	XYccicGdiFPzaSoo4sg6mukjtkuYjuK23yTsfvEw81BR/8i64jOCEbheln1yEnRU
+	IV0Jlj1SF2z0z4TH5MjuiBYyXmnG0Cji/m+NnHxo7lJy2FQl79KdWWXOSmRJl99j
+	xP6Q1B9/4Yh0aY1SmyhCKNYo4bgfexQY5I0iZG9R3CUp8YT2jNXzwVrEVIJzQSR6
+	I15Zo+AcZg==
 Received: from nam04-dm6-obe.outbound.protection.outlook.com (mail-dm6nam04lp2044.outbound.protection.outlook.com [104.47.73.44])
-	by mx0a-0024c301.pphosted.com (PPS) with ESMTPS id 46j34csvw9-8
+	by mx0a-0024c301.pphosted.com (PPS) with ESMTPS id 46j34csvw9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 11 May 2025 20:28:12 -0500 (CDT)
+	Sun, 11 May 2025 20:28:07 -0500 (CDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MAo6dlmi3RaB6ErijkWIlsZzYz7D2On0jxurTbzfI9ZtWvLLYJ+1sxJGkQ1wXDqb92nwp3pzLsO9oDC33X8+qwQTVmQEupeMQQNve65o8/zXLunNiT0HeFTzUd7/cNvSdOWvSugoBsABxZUYhT+QKHPJyglqPq2k9XrpDYJd+kCA8wgYhArzkx+fL0rkQhkurAJptYcGkF7MMbJT1qTMsx05FT5DYfQ1QEwMzdwcX62K2HqXdIYr3Ov0K8EEdhB7p0G6TrnrMy66lSQ4Kj92Mgvb7guqaWKC2tzYud9ZLp9zO5b/xj0jItIEc9cW7hr7dpe/NikwlkSwauOnldBh7w==
+ b=krhMgvIFes1hCk6fhbxE5s4YPEiDEkHro4H8xRc3X3D+CRsvSLRyjpqjaVWNTN5tS4r8OOteR4teC5nhnVx0s3gQltuJMZXs0hFF4TFgXWht6lQCu8t5OddG7EgpbY6I/tZPmF8b4uNCRKKHDRrak1gw19t96Gz4H4D/3eDXOFkJCDfrzotfQHvtN9eSdULvvlDgxqZ0c5eAnwE65KZTQClr27+tYX1/6JFabOCUdFrjpZSxt2ZPsMkYbTJJyS67nKTmoCSHB2/HSYMMro9L/dAIdIggJ5B2sb1WYrGkqWkHAQapFrG4oBD/VilIM5zHAsgka8LzPuOrQzW3xxP+pw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RWBCh0EhSmW+QtYQmugPztGTiGpOuaav1Vsd1G/u5SE=;
- b=TI/EPhDnZ3JpVyv06Npacqy2CPZxMNYYffpnywTILkEcpkO1NrpE3ov589IcvIHL+5o4fVjFB532h2jotWPoZnA6PBjAPUVPplHNieUnYVKTbRs/DD6L4kIYyKksVLXl5nlMQMtlk2nqCy/Ciu4DWw50dJKfDKrwKlBf2ss15trGP+hH4YSN7MLixWs4tCqhtHJGT8lL+nn/x5cw9PdKKRDDWlq/mQdXU6SNH8CbF4JAfCh6FOS0NT5TA1fK2yMG7Q8tde6rw52ba2bvqVl6KwojgABjKgZ/ybSMB+YgbFMeYE0zQWqmpD5+aVdJsFXgPGk5W9Obdza+24lb3aNq9Q==
+ bh=7u7C0lpSYz9RVO7RNG6CAYIQXWebGd0f2fTr9WKVL3U=;
+ b=Cotxz3mJMHbSIz+1yv40Kg0/qjLTZLBPisD9qjCqGTDRSbN8Re1CNofrLRVPEdNkQWb312SgiGS4ZUM2t8Rqd5dB10esd8rcQXe5ECE//aHswHx6a6+E5/zNU83Z6htAuE8g5Xm8jppTFJByer6rQo4ApfM91Msbp97GOdqvTNrzKlDKi7uEXhMdhPe9t8a7nfEvFzWqPEabcCidezbQsaRNpMWZbXmyLgaOYBDnV/HzkvSke9tX3/6ZHwfaavy/roHq8XOMHunVLT2cRFFcorZN1aifCqYBdfDtdaSXeZJl6peCgt9gX1TqPD4MXmnqG5UADkoVFmL9i+iwi/euZQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
  dkim=pass header.d=silabs.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=silabs.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RWBCh0EhSmW+QtYQmugPztGTiGpOuaav1Vsd1G/u5SE=;
- b=c8ayZtwPQV89lWkTPkdc4wH2HyxWl2lqlwQ8HI1uNJI5icbKS5QMaQoC9ubQ5txgmyZ4NLw2eGFC7+ewF2Ipz1gpVUvcyDy+HyqUvxQjkjXHgmik3cb5mWXWqQVFVexCi3nq5Xx+scnJpIUuMePv90SxNfTPcHr2i2VJPDnMJ+M=
+ bh=7u7C0lpSYz9RVO7RNG6CAYIQXWebGd0f2fTr9WKVL3U=;
+ b=Mi5A959mxyqIj3OP4JHKB4Bni2szeMdiEiQvYpOdBVSWObkS8DZr2G2pt3+u/JaCwxZ8QXqTmJSpVwqPIyS+JuPUo5panr2oGdswaQQ9j9q/yI+YtmSGb9EEXWG/wHZVvNb+I4OnaozQ4hEtZOlQc5tf01MBjWXakKkr0qBzD6U=
 Received: from DS0PR11MB8205.namprd11.prod.outlook.com (2603:10b6:8:162::17)
  by PH0PR11MB4920.namprd11.prod.outlook.com (2603:10b6:510:41::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.27; Mon, 12 May
- 2025 01:28:08 +0000
+ 2025 01:28:05 +0000
 Received: from DS0PR11MB8205.namprd11.prod.outlook.com
  ([fe80::c508:9b04:3351:524a]) by DS0PR11MB8205.namprd11.prod.outlook.com
  ([fe80::c508:9b04:3351:524a%4]) with mapi id 15.20.8699.026; Mon, 12 May 2025
- 01:28:08 +0000
+ 01:28:05 +0000
 From: =?UTF-8?q?Damien=20Ri=C3=A9gel?= <damien.riegel@silabs.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
         "David S . Miller" <davem@davemloft.net>,
@@ -68,9 +68,9 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
         Silicon Labs Kernel Team <linux-devel@silabs.com>,
         netdev@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [RFC net-next 15/15] net: cpc: add Bluetooth HCI driver
-Date: Sun, 11 May 2025 21:27:48 -0400
-Message-ID: <20250512012748.79749-16-damien.riegel@silabs.com>
+Subject: [RFC net-next 10/15] net: cpc: make disconnect blocking
+Date: Sun, 11 May 2025 21:27:43 -0400
+Message-ID: <20250512012748.79749-11-damien.riegel@silabs.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512012748.79749-1-damien.riegel@silabs.com>
 References: <20250512012748.79749-1-damien.riegel@silabs.com>
@@ -87,375 +87,190 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS0PR11MB8205:EE_|PH0PR11MB4920:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7402ee25-f5c5-40f5-6d85-08dd90f4409f
+X-MS-Office365-Filtering-Correlation-Id: e8f10ca9-896a-4790-5614-08dd90f43e62
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|376014|7416014|52116014|366016|1800799024|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Ui9rV085OU1nNXNyK2ZLMEtLV05Qam91dEo0OWRsTFZ6K3FWRmdSY3A0UWQw?=
- =?utf-8?B?TERhL2l1Y2lJMGx5VmRPSnFRMXR5Z0hTd0luSUwvZjQ0OFBpOUFIU1lYa1VI?=
- =?utf-8?B?QmNQemEzK1NpVUJneUpXdUdsUW5yV1NIRVV0dXdQcE1rSlBxU2VyZlRPVlpt?=
- =?utf-8?B?UVQ0aXpWRGJmTkdENThEWXhCNklzZmc1Rmp3eHpmRmlXa1ZzbG8rU3dmcHp4?=
- =?utf-8?B?NExsalpyRmRQdnp3YmlIcEx0eHJvWTV4d1RwMVAvK1hadjVzNG9sREFma0Zj?=
- =?utf-8?B?M3QvLzFaU2pkNDJ6dU1OeFF3L2lPcXdoRXBabHJsV0ZBZyt6M005b3I5TkRa?=
- =?utf-8?B?TXVEZ1lBdDgyS0gwd3ZNa1lnVW5ISmxoMEdodUFDZXE0M0xwcXRVYXFXYk00?=
- =?utf-8?B?d2VsUXVpdmtxdGZCbVp5SE5aZWE2WW1JaUZWK1JRZFR3QjBKYW9JZW9laFpo?=
- =?utf-8?B?Q3pyaUZFOVV0UEpKQ2hacEZUY0FadUdxbEJLRytFMUdLS0FUNXZRM2IzSW55?=
- =?utf-8?B?ckxZMm1Cam9aRmV2eTc3cU9ENjg5a2YyYlhQSm5zcy9mYUhvSzRTMFFsOHpN?=
- =?utf-8?B?NUEzYjVGQ0g3QlNkRFFjVFhBejN3TW1NcytUajFmeDhGczRWYjBhTVJTM1My?=
- =?utf-8?B?UHIxWUt3d3B6T3QvRzhieVN4VnZXbXVJZlFrek1kQXB5RmhpK3JjeGVDVXJI?=
- =?utf-8?B?RXJnSXh1cHhXcjRBSSt0TkhTbUNmaHU1djJiZ2tyV2xxWElFRjJ4bEhFaG5T?=
- =?utf-8?B?bWhiQVR1b2ZHUEczMDlBQWVaRmdzbmMyKzlTNS9oSzRIc1hBNDhBaTkxQjV5?=
- =?utf-8?B?RzNwaFFsVkVWeEtHdnpXaTBvSU1NTFhickRPcC85THY5UVdyWm5zUksxRlBZ?=
- =?utf-8?B?cWM3cnBIaDZ1NG00TXZncUxGRnZMZ0RxeVEvRHZUQ3krTmdDSkNTUmkyNW41?=
- =?utf-8?B?Rm5FMG9lMUNRTDRERmVmZXlrNWpwbGtXU1Z6eTlrNjNxL0tyR0pZTGszdmpS?=
- =?utf-8?B?cDdWbGhVOHpySXRVYTJFdUN4OVlwMEJaanNlTjJ0VnNSNlY1aHFrVDdHQmw0?=
- =?utf-8?B?NVVhaGdvMlQwSGwzdytkcVdFWUd3RzVoVlkxOVhjajlLeEVDOUlnbUVpSVFs?=
- =?utf-8?B?Y3lXSm82THQ5OWJnTDR0WmY1alZnVHkwb2pFVXI1MFZPcERvVGtXN2o0ZC8v?=
- =?utf-8?B?NDVwUS9PUnVrOUtaMzR0Y0lHdE0wemNDT2FrdnM2ZEdubllGWmFxRjBscytE?=
- =?utf-8?B?STRraWdwTEY2QUExK0duZkIyd2hPWGw2bnJUS2NjcTdxcjUweHlpUXJOZkpE?=
- =?utf-8?B?d2pNWDYwZ21JOWNSYVd1NmJ0QUdBenZhWVhlSDIyYjRJRjdua2dGNUt0TVRu?=
- =?utf-8?B?WStweDc3dzV2MWY1cnVTbkhaNEwwbGpmVmFLZDZ1MmlGVW5vOHB2VlVaWUhQ?=
- =?utf-8?B?eisrY0QrNUFrdHRNWTRTMEFKb2xVVWFKenlBaW53SkxmWVBMRFZzdVQ5OWpB?=
- =?utf-8?B?MW9KQitpZ0hRWVlrTDZrNWpMSU9lclFoVUNyaFovam1IRUN0VHlCaTBrdVdq?=
- =?utf-8?B?TThWTTRBOWN0T3NmblNRK3pPdWRiWElCOG5rNCszRWlNMVp0ejk1cDI3by9s?=
- =?utf-8?B?U0NrRm1JZHNFY2dFdmhwRC9qOHRNUnBUVlc0VkF6MUgwV3FJc3JoUW9DUHFD?=
- =?utf-8?B?MjhOV0J1UFFncGFQZ3ZjbldVbkNaUEduRlhRL0d5clVxWFh0amY0ZVkyY0FY?=
- =?utf-8?B?S1FQZDc0Q3B5VHA4S0NRclE4aFY5WDNaN0h3dGpmTzFEbFpHTDBNbWlWSVFN?=
- =?utf-8?B?Mmk1dlVOREhLZjJTY1RXbkVMWmVBajRGUjhYazJ1alRTaHNZRWtoRDVGcXhu?=
- =?utf-8?B?YmNLYTN1Y1hDdE5MUklXbmZLNHdvbzNXc0RwNDVseVlYMXhwNk5KZ3FuZGpa?=
- =?utf-8?B?eU96Y0NBN3J3cllBVEpQT0xWVnRnR0xqY0VmWUI0V2QvMzI3aWg4akpzc2Yz?=
- =?utf-8?Q?LGB3iIeg7lKZQtglrk05fXlUFGWkA4=3D?=
+	=?utf-8?B?Q0hqemdRbThNeEc5Tmd6OWc3ZER3QzhyUDY4V21aTlhVQUUyZDBuZ3ZoM1ZC?=
+ =?utf-8?B?b2psQnJXRmVoV1hkRHpIRkx4cEhrTnhEWWdWSVdMVjUvQlduUU1ZMUVXR3Zh?=
+ =?utf-8?B?cWpRMnZVVlpVQmtoMmdTNGNhMEJpTTVCNSs4OW0wdGZ4M1QreTlZbWptNTBU?=
+ =?utf-8?B?M3pMYm8xMkxxZG43V1pYbEdOTGdXUFRWd3JEc2F0K0VKaXgrdkljYkZVeVdX?=
+ =?utf-8?B?ZXVTa3Q4Z09mVUJLVm03U2owc0FNUCtCcTl4NE5xcllGblNiWVhtNXU3YTBy?=
+ =?utf-8?B?S0VjQTVUbDB4U2ZOU3hIbGdqUUs5K3VDZmxSNGtyakpBbHZic3lrNXFVVHBv?=
+ =?utf-8?B?MThzWlIzYzl4djJqYnlNeTYzSnMrYkVRYldBMFNNeEh2L3pxQ0FCUFhIUWVi?=
+ =?utf-8?B?M0RtNFdHZXVmM1FnZGJxcDg0ZGNRZTZQQkh2TlhCS0F1UlhlMzVOcHZPVitY?=
+ =?utf-8?B?VUVsS1R2RW5nOEp3c21XcVFkY0UyU1RrZ2NEeEtmamxYQlQwRFJZeFdkREJQ?=
+ =?utf-8?B?OUtSTWo4NlRDMUU2czRSZlNpTmw5V3pHYlk2NkJXM3pmTWpYdlJNVzJqVnVW?=
+ =?utf-8?B?alp1dzlWV0RmQkl5SkRHWStzMmZtL3M1MmExOGJwZSt1UGZia3htbE95UFJ0?=
+ =?utf-8?B?R2NVUk1XVGRZZlhyak13aDkrTWpRZmdYQVNUZDNvTFRIbk9qdFdqSTNHY2xx?=
+ =?utf-8?B?K3lEeUovODMwR2k2QzhJK1NRcWppMzlPODZwZUlLRjhzSFlkZzBSZnlHaFRv?=
+ =?utf-8?B?cE0yUlQ1Z2k2OStXdGVxT3QzZlRhbGNZTVZFZ2hCVVZoeGIrZ3lwZThmMFhI?=
+ =?utf-8?B?VnA1eGRibGxnbzMyR01tYWxmSnFJSGdpb2NSdEw1QkFHZjdwN0RNNVhXQ1pZ?=
+ =?utf-8?B?ajZEaWNXWFFCMmN4cUNlMHJ3bkkyeC8yVlJRWnY5VjFiUUpBWjZpMTJCY1Jm?=
+ =?utf-8?B?eWdQYVI5RVFlb2pmT1VRU1lHSmhSRzBNcW5ydVVUaHMzZ3RiWWdvaVhBTXdw?=
+ =?utf-8?B?WEh5Y3ViRmZmZ09SamRqRHVwRTVYaFI1RUUya3VhSklsMmZCbHJnOGpZdWt0?=
+ =?utf-8?B?Y0hyS01lOG5RRXRYcFZMb3o0RTlHWHcwYjRCSDZOWXc1U2hPZUxBWHh0Snho?=
+ =?utf-8?B?ellEV0JmcVpNTmdpWjNBOThKdmx5aEF5Nkt2S3JsanF5SDNRVlloL2hpQ0E0?=
+ =?utf-8?B?YXluZXBYUWpZQ3RkbUpuUlQyYmUxcHR0bC9SYVZ1TEJ6dno0ekJGOFEwejJ2?=
+ =?utf-8?B?RlBpUDZ1NkQzSnMvTHhqZkhkYXNuTURrNjRvSDJhTUptZ2ZnazdwekE1ZU0y?=
+ =?utf-8?B?WWt1NUlROTVxaG01NWFtdFJSNzZaQ0phQ0N3czRZOUc5L0xBMWVnOHZjRUYz?=
+ =?utf-8?B?OFBFQ0tsblM4M1ZjYmZIR3JBaFRhNSs0WFZadHFnY21kT3oxK2NsNmNMQyt6?=
+ =?utf-8?B?d1N3UHZJdnhRMUpIQUNYRWZBSko3S0RTYkp5MzJ6T1pneUtrd0M4UWZvZGla?=
+ =?utf-8?B?QmZEemFlWXdvR3UyNzNCWFdlZFR0NXp5c1c2eVMxOTdHcnZHcjZJZDZlcThj?=
+ =?utf-8?B?MnlXSlNTeEVkTm0yRktRUWUvZ1pBTDVxc2ZmQTB3ekl4cUZ3VGJVQXpDZTRO?=
+ =?utf-8?B?M3Bxdks3Slp0cEo2dk56RkJUejBDSEJBald5Ym5iTWYvT0hjQ2pqMmNXMUpU?=
+ =?utf-8?B?NTJqSGRCWkoxaE9YdDhlSkV6MmM3RkhxWDZTc1RmbzNNYmJZcWY2NEU5dEpu?=
+ =?utf-8?B?MkxEdFREbjl1RE9OSlZtWEg5dXNKYjdoc3JIVW4zNjU1VmxXVW41Z0E5OVJl?=
+ =?utf-8?B?ZjVLTUpRZTRCS3pTMWYzUUN3NGpudWZUWTZJc3drcW1EYnRyTmFVWlhLQlNN?=
+ =?utf-8?B?WnNlSS91dDlyWFV4NWNPWUZhckRoNVlZUXVFNWxMYWsweEU2L3F6TFlwTGpW?=
+ =?utf-8?B?VTdDQVI0bWdIcllneVpzWG1LYmhKWlQ2aG8wMFNrL0psTTh2azVFZzVBWVBV?=
+ =?utf-8?Q?DKqbUssXNFlZVS7PIehPY1hkHqlfuE=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8205.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(366016)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cjNiaHdSVmt1eHUyYk9pSElRSCtFSXNmVHVReXpoQURNT2Zma0d4MmRBUmQ3?=
- =?utf-8?B?UkR1YVlSdEpwbWh5aHNkWTREZXFPSDRhNTJHNkNiMHJlNThxYjN1WVZ6QlYx?=
- =?utf-8?B?RThmd0JzKzJybWl4SHlPOXZCc2haMEpwdTczd2ZCNnRTdmd3clFWdHU1YjN5?=
- =?utf-8?B?REllVmRabFJUNVptbDBWbG1Ya1BPMmU0MkNobStYSDc5ejFTUWl2QnhEb3Yx?=
- =?utf-8?B?S1lHOCtMaEJocnVQV25kdnp3OHVoN00yc2VzTHlMNnNqQkMvSkhmeUhaMWtQ?=
- =?utf-8?B?NWFuN2s2U21Fc3hEWVVkQUxaWlNXTVkwcVpJSlErS0o2SGcxME90cnRsZWw1?=
- =?utf-8?B?a0V4ZXJUdGNZYmgxS1pBNEZ4ZkFPSFh3RURORDJkM3ZDTjJmVFFEbWIrQk9F?=
- =?utf-8?B?bTF4YUpQdFdUVHN3QWMzZ0lZNEQ0ZFUzbzJyTks5TThPallIcjVhOUFOYkY4?=
- =?utf-8?B?dFd0MC9OZFhWVDRBSDRUVHlyQXAxTExTcGlxZlZHdzExT0dkTkxzRVQ1VVJ4?=
- =?utf-8?B?UVJITGhla3ZiblB0RTA3bTNBRE1TbnJBWC9MYy9iUUM5ckREckpqR0dCck1u?=
- =?utf-8?B?SnhUL2R0ck5kNHJ0MURGRzZ5N3FuQ2J5THFRUWlwelRVRWdRZmRoV1lyUGNi?=
- =?utf-8?B?QXdBRWUyajhxRGVOMW1HUU93MEdDdDUrZGRKdFB6TitJRjRsN1llK1U4L21Y?=
- =?utf-8?B?LzBJd3ppbGdXbms2N1dRMzVRWVQ4MGJEbGVjV016YnUwZFNSemFIaDFUWXBv?=
- =?utf-8?B?UjVRUG1UcDVQNS9qSVhhN0hJUHIxekN5c3lidmx6TjZmRHJvMjJQbGNTRkVK?=
- =?utf-8?B?T3EyTmFKMkxVaW1hTWVBWHdwaGRmZ01IdjJlSkxKc21Sb3pxRmJERkkreGd4?=
- =?utf-8?B?bnJxQXl2Znh0RC90YzV5aWdzRzNhYmZqL0V5Tk1UYVJjZzhJRDF3RzNMaHFx?=
- =?utf-8?B?VytkYjdPbGpEakR1V1BpS2J3TFhjZy8vS09UZGNQbm5JNExWS01BZXdCUW00?=
- =?utf-8?B?RDFFVGs1MXkzY1RQYXk2R202UUNwbnlkZ3pvNE1GNEVhTW1ZNnJweGFDZWRG?=
- =?utf-8?B?SmFyTzBZK1M3bk8xUE94dmZXcGg4WkZZOEZyd01kcTE4ZXo5VDl6UWxBVzJB?=
- =?utf-8?B?N3UxZGJFVFEvOEs3R0JWemp1eXRxQjN0Ymw2RXpZYS9OY2ZJQXZqVzZta3Zo?=
- =?utf-8?B?WWFKNWpJazUwYVJRUHFUaTR6OW1OSUJhbkxNZzhmNjlHdm1HTWFMQnEwNFdv?=
- =?utf-8?B?eUMzZFF4Uy9VUXh4Qk9ZMVQ4WTJWZG9YNjFNWkxKVTBla2Z4L0VldytodlE2?=
- =?utf-8?B?NlJPcllSOWo0WDZXS3RvM3pqNGJiSitFcWpqandZOTcyS0RIM1ptZ0Y3Uk4y?=
- =?utf-8?B?dFZONTg2SVl1enpEcXNGMjJZVEhwQm51Z2NQRFlybExvUWh4ZlMrZDNqMlFx?=
- =?utf-8?B?SHhOYXovOTI4K05ZS0xyRmV2TzBINFo5TjF0bVppbE84dGRhM3daTlI0NjEw?=
- =?utf-8?B?QkFJbWpvd0J4SWNPY3lKSnI4cXNjaXFtOTZkZnJMaGFGUFRGNkRaUVJHc2Vx?=
- =?utf-8?B?KzU3RDgrN05YR2JlWjlkeEpQZ2k1TnFIQndRYlNNVUFEWW15WDN0MU12RmZL?=
- =?utf-8?B?c2twbEJhSnRxdGl3aFVJalQ4UStnMElQdGd5RzlLTmpPWDZCcTNRemdvUlQw?=
- =?utf-8?B?UzdmQnY2YVI3Z0dHWExQczhIZmhIZjJsd29ycTBtbndFVHoxRHBpUmt5czd2?=
- =?utf-8?B?VitWUmJRRlI3cFBwYVNzUnE5RytQSkNYRmMxdjJCdWo4WXhFSWpFYmZFQW8y?=
- =?utf-8?B?M1ZKM2pmNlg3TWlkTkJjd3Rnb3dOUXpQTGFsMVA1RGF2aHlvVW5pWE9zcmlN?=
- =?utf-8?B?L1B6ZXhmbVNJemJXSHlUTzJtQzFFM0VBZExNYjBVL1RWWmRIWWlZcTdmMUt6?=
- =?utf-8?B?NjB4amppdlVEQzVjMnE1RWJaQS9ybGFxS1FLd0g2SHp2Uy83YXdrNXF1UFY0?=
- =?utf-8?B?M0N3TXovRHBFa25vQ2lTcjY1QTExUWIzZTF0SmlJbUtLVSt2WFBEY1ZVWmVy?=
- =?utf-8?B?ZEY2aGx4R00zWGFJMkNKNVJreXVyMWhOTURPRVZvV0tXbFFGRjdZL0ZrUDd0?=
- =?utf-8?Q?KGoLcEngyZ9V3H6CucgV2oXlf?=
+	=?utf-8?B?ZjFYQ0dSVElVWGJ2VWp5SDErdnZpa24wZU1OdTJrL3Vxd1UvYmdtM3RQQXd5?=
+ =?utf-8?B?ai9hRUtpVGRvNmcxbml6NzlZaTVNSStMcVdpWk5ZZTIrbHJNOVVSTi9FUXM4?=
+ =?utf-8?B?RFp1RnVxUzg1SWtEbC8zUlFOVytzZ3I3ckprMXhvL3dHVExka25oWGFMSWpD?=
+ =?utf-8?B?TkhyQ1g5RnNEODE0L3YrNXNtRjVaZmtWUFRxVy9HbndwSXU5YzhaN3pKU3Nz?=
+ =?utf-8?B?bHZYNVQ4K2pmTkdtbnBXSjhERDNWQzBkNXdyK285NEhyMWhGMlVnWUxsZFly?=
+ =?utf-8?B?RVB1OTBDdnpWMVZHZXVBZnNGWks0cVdQYjdqbFRTMTdYVmlqd2ZNQ2YyQ2Ja?=
+ =?utf-8?B?WU1nWGFTYWtuaWRoVTl4Wm5jbGk2bHJodXNjYS84RmxiMVlVRm9QQXFUek5a?=
+ =?utf-8?B?cmxiTVlyenJqTjFTZjhIQUtNMkU3eFJCNnFmV1hLTWR1NHE3aCtiaGkzbC9E?=
+ =?utf-8?B?TG9xWUJJVndBS09GYXZ4UGNlUG14NzhBZG9xQ3B4Q3pPT3Jua3FUMmczeXht?=
+ =?utf-8?B?TXN6cjVPZi9mZTc5c1czRlc4ajZzY1lYaXZjRmtjREFOK215WlI3Mk85K3pR?=
+ =?utf-8?B?UTk2QkRPQUUrd0lJdjI3S3BHQktXVTBZOWFiK3pPWEI5akFPekNkZVdKZUM3?=
+ =?utf-8?B?TUpWNUwxNkVKR3Q3QUM4eGU1bTRzeWQ4TVFuT3VTeHBodThNQ3NrNkt2Ly9L?=
+ =?utf-8?B?Ylo5azVWTUo2Nm9INkpQR0djUElpeFhGU2FoNG54SEZxTTRWakdSejFUREJC?=
+ =?utf-8?B?QWJmU0l2VWUyQU10YjRmeWc1Q21oOGJjUFR6QWxHWStpek11TkNqY0UxZWZk?=
+ =?utf-8?B?WGZTb3N1Y0FWeWVyOUcyc2kvYktPdjNQcVVkL09uK0ttdjlQUWZmTFV4ek5k?=
+ =?utf-8?B?Q29GK091RmhkRUF6REZUK0hNR0d1QWdTU2VHeHAxUFg1ekx5WFlyWXpRSHda?=
+ =?utf-8?B?bzlhWVJqZHZVdVVGTHR2MzBzSjJqWEhZL3pqWDg2bFNFUzA0TWphK3doT3pm?=
+ =?utf-8?B?RWdFWmI0dXNMWkR2RzlBeGJhSVZkdzl6cmluYk5tNmVXM2paM2E5S3NTVEVN?=
+ =?utf-8?B?YklQU244c2dEN25WUkI5cTFsZ1BLdVlMYU5YWHZhdUsrc211Z3hwbWJlODZQ?=
+ =?utf-8?B?K3QxQzJidER5enNFT2k2TWl5Wm5ncGhRSzZNci8yU2VJTGpRL0NiOUYxdlNy?=
+ =?utf-8?B?REd0ckNNVzkyMWtpblNCRU84WW1IOVFoazdvWjAzMmN1b0NNRktiUVJuUXB1?=
+ =?utf-8?B?ZlZ3WkhpUmRqREdWaVU2dXhlOFJXS21qZWFXWXFtenB0bzc1dnB5U0I1R3lq?=
+ =?utf-8?B?aDhCaDBrNXRhWFY5RzRadXJnSXU4akRJdDFRTTRGNWIyQTF4bVRhbTFtWkhj?=
+ =?utf-8?B?Q1FaT3V6ajE4RTc1QUZ4bndRQi9XNjRFZzFlcnkzM3FpL1FSUzdJR0hjcFd4?=
+ =?utf-8?B?WXFkTUJiaEViZlZkOXZjaitIMFdvamtUcmVLeFc1RU5yOU50TS9qQW1FOXV4?=
+ =?utf-8?B?UGwxS0lEZXgyMDk3MTg1bkdTL0lsUlNiZDQxNXFGRGdUSWlHLzlqOW82N2sw?=
+ =?utf-8?B?SkZBMVFwZlJHY05rbmNDUVRUS0NjUTVhRkhLOXk0MnV0MWpkd1ZaeGRZMnZD?=
+ =?utf-8?B?T0MybGNHUjdGck1qRzJHWmtXU1l1TitYelhadnQ1dzJLaVAwRVFvTVM4ZXZO?=
+ =?utf-8?B?eDQyOEV2Qmd0eTBWeXZHUkZoN0JVNHFCM0xERFBOS2VaSWxLQ3c5VVlCSGwv?=
+ =?utf-8?B?K1BrUmVDOU4yRkl6NG1SRHd0aVAvdTNvakFQRWgrekpNeEZDanRnbndEcWcr?=
+ =?utf-8?B?TGVnM1ZjVlk2Q0crSVpWaW4xeFdScFdXRmlPSklMR05NblpWYmhDWDVZYUdt?=
+ =?utf-8?B?ZGYvQTFUcmNXM2lOUk9TZUhTNlZKZ3kxSEgzcmo5YW9mUXBqZXBva1NyTjd3?=
+ =?utf-8?B?UE5IcXVveTlGRThEUU9rTlZWaWRJak5NR04vL1ZzN21vZDh5bFFSRDF5S3Bs?=
+ =?utf-8?B?azBTeWJPTnYwek91RVRQb3VjTUcxU2RGeEkwVDZVcFY0VFhaSHcwVzB0ZUZF?=
+ =?utf-8?B?UllWRmQvN2JBRmFoSWNQemIxcU5mSEhqY2RKSmlKT1Vza2xWdEFsS01WUzEx?=
+ =?utf-8?Q?S1FRTO34Q46tykRR9Q7JPnuLr?=
 X-OriginatorOrg: silabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7402ee25-f5c5-40f5-6d85-08dd90f4409f
+X-MS-Exchange-CrossTenant-Network-Message-Id: e8f10ca9-896a-4790-5614-08dd90f43e62
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8205.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2025 01:28:08.8558
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2025 01:28:05.0908
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4L6nBYMGU6g4/teV0sCpJtEQtPXTFRWXT2e1bLsK2nc2o1IMyZV3qYJNJ6qQRSwzrIkuAQpU/rVUzYjCmkJcJw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: sO+haYBxbD+8WNU2lLzySvz3e0J5lA5TEL3F62LhL99hkcjnhZlY6hKFi5jXj9PCbjpaquJd4JCuGa/vtwhgng==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4920
-X-Proofpoint-GUID: 5nqPBLum36HYNw2ky0pK_kBkJAiJtO3-
-X-Proofpoint-ORIG-GUID: 5nqPBLum36HYNw2ky0pK_kBkJAiJtO3-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDAxMyBTYWx0ZWRfX3KyM5IxF8ezH fUZhMtiizerpja8frg5PCv3WJqrgkySufuONI6xxIEFAnCgsAdCaiXdF7AN9e7ahi9uqc+TJsGs 8NLpKG9LD5lk48kvQemVrvY0Vdw7nZ0dmXhodi2MrYb39+kMm7I7cpVLtr+CDX2ff8kMitgPWr9
- 0aEOFsc65dZWHfO4NV3l5Id9oTzPwm7f/oJBr0GfO38SN0e5tO2YCF78cF4euCUcde0so5lRhD9 PPuF9FMHNNi9ANCIOrY4ACtjWAVi15FjDrN43gIVsN3zUSao2dwOOX2ng0/R6ucclBUjIHTniR6 d9nuIuKxzvO9WqUU8FculOHP1txlURuXfpS64PfvvsfVau9UanLXvq496sttlLY91ou/z5pXJ/2
- gDsx7tKUBBWJhSjClUS5qqEbmMfCmP77nK3ly848lQNxLEzxU1ikbcndYwkBukGoMA9ufiYi
-X-Authority-Analysis: v=2.4 cv=L/gdQ/T8 c=1 sm=1 tr=0 ts=68214eac cx=c_pps a=coA4Samo6CBVwaisclppwQ==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=dt9VzEwgFbYA:10 a=M51BFTxLslgA:10 a=i1IsUcr2s-wA:10 a=2AEO0YjSAAAA:8 a=KeReSjn5avopcc9GsFcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: _XyYAn7_z-G793oMIXQEp602CdkeN8hS
+X-Proofpoint-ORIG-GUID: _XyYAn7_z-G793oMIXQEp602CdkeN8hS
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDAxMyBTYWx0ZWRfX9IviIZXgTOVE bz9e2J58OeO2LHhCk2fTvfRv1PRXrG4pGmn4m8LIIugn0PVN5VFBqPFuOr8Xo3x+5GdjyySrAfI QNkYWdf4m8kIb3D4Hk0hk8q9KYf/B6dq3fUBWSANs2fvIOyHX7OCdlMVg73PNbD5FcTNCLDqtIE
+ hIyUp7lwI3ZOqg78Qg1ClEkXQ7vf34twrw82vnROM6GH3u0PSK2mGq3HbHaom0cm/4dH730yIDo h1bzc7yrbYXx/b7zdGea3evemGVzi+21ZjvrYLZpeU6xTwI1ZQmvBl++RVnnAbM6vaUvtMx0Rfq RqgwltAL+Phx8nu/weUGBBocxIocP1X0R+0XiIkfxgTcp6yV9ld6LYUTVB3JF8U5ZLRwfPBkXJ1
+ iXN8ii9KrexcSayblKGSDi1R2yxFwQpMpLLCjxH6+Z3H5kXr7V2pCJmhx3CS59TKaLUTr2hQ
+X-Authority-Analysis: v=2.4 cv=L/gdQ/T8 c=1 sm=1 tr=0 ts=68214ea7 cx=c_pps a=coA4Samo6CBVwaisclppwQ==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=dt9VzEwgFbYA:10 a=M51BFTxLslgA:10 a=i1IsUcr2s-wA:10 a=2AEO0YjSAAAA:8 a=ejdkOH3wlQVQteUC5O0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-11_10,2025-05-09_01,2025-02-21_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
  priorityscore=1501 malwarescore=0 phishscore=0 bulkscore=0 mlxlogscore=999
- clxscore=1015 mlxscore=0 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ clxscore=1011 mlxscore=0 suspectscore=0 impostorscore=0 lowpriorityscore=0
  classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.21.0-2504070000
  definitions=main-2505120013
 
-Add support for Bluetooth HCI driver. As most of the protocol is already
-handled by the remote endpoint, this driver is just doing some glue to
-plug into CPC.
+In order to make life easier for consumer drivers, make
+cpc_endpoint_disconnect() blocking. Once the call returns, it guarantees
+that endpoint's rx callback won't be called anymore, making driver's
+teardown simpler to implement.
 
 Signed-off-by: Damien Riégel <damien.riegel@silabs.com>
 ---
- drivers/net/cpc/Kconfig  |   2 +-
- drivers/net/cpc/Makefile |   2 +-
- drivers/net/cpc/ble.c    | 147 +++++++++++++++++++++++++++++++++++++++
- drivers/net/cpc/ble.h    |  14 ++++
- drivers/net/cpc/main.c   |  23 ++++--
- 5 files changed, 181 insertions(+), 7 deletions(-)
- create mode 100644 drivers/net/cpc/ble.c
- create mode 100644 drivers/net/cpc/ble.h
+ drivers/net/cpc/cpc.h       |  1 +
+ drivers/net/cpc/endpoint.c  | 19 ++++++++++++++++++-
+ drivers/net/cpc/interface.c |  4 ++++
+ 3 files changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/cpc/Kconfig b/drivers/net/cpc/Kconfig
-index f5159390a82..e8faa351bf7 100644
---- a/drivers/net/cpc/Kconfig
-+++ b/drivers/net/cpc/Kconfig
-@@ -2,7 +2,7 @@
+diff --git a/drivers/net/cpc/cpc.h b/drivers/net/cpc/cpc.h
+index 34ee519d907..8a761856deb 100644
+--- a/drivers/net/cpc/cpc.h
++++ b/drivers/net/cpc/cpc.h
+@@ -21,6 +21,7 @@ extern const struct bus_type cpc_bus;
+ /* CPC endpoint flags */
+ enum {
+ 	CPC_ENDPOINT_UP,	/* Connection is established with remote counterpart. */
++	CPC_ENDPOINT_RECEIVING,	/* Interface RX work is processing a frame for this endpoint. */
+ };
  
- menuconfig CPC
- 	tristate "Silicon Labs Co-Processor Communication (CPC) Protocol"
--	depends on NET && SPI
-+	depends on NET && SPI && BT
- 	select CRC_ITU_T
- 	help
- 	  Provide support for the CPC protocol to Silicon Labs EFR32 devices.
-diff --git a/drivers/net/cpc/Makefile b/drivers/net/cpc/Makefile
-index 195cdf4ad62..cee40aec412 100644
---- a/drivers/net/cpc/Makefile
-+++ b/drivers/net/cpc/Makefile
-@@ -1,5 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
+ /**
+diff --git a/drivers/net/cpc/endpoint.c b/drivers/net/cpc/endpoint.c
+index 7e2f623fb8e..f953e4cb7ab 100644
+--- a/drivers/net/cpc/endpoint.c
++++ b/drivers/net/cpc/endpoint.c
+@@ -260,8 +260,25 @@ void __cpc_endpoint_disconnect(struct cpc_endpoint *ep, bool send_rst)
  
--cpc-y := endpoint.o header.o interface.o main.o protocol.o spi.o system.o
-+cpc-y := ble.o endpoint.o header.o interface.o main.o protocol.o spi.o system.o
+ 	cpc_interface_remove_rx_endpoint(ep);
  
- obj-$(CONFIG_CPC)	+= cpc.o
-diff --git a/drivers/net/cpc/ble.c b/drivers/net/cpc/ble.c
-new file mode 100644
-index 00000000000..2b7aec4dbdf
---- /dev/null
-+++ b/drivers/net/cpc/ble.c
-@@ -0,0 +1,147 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Driver for Bluetooth HCI over CPC.
-+ *
-+ * Copyright (c) 2025, Silicon Laboratories, Inc.
-+ */
+-	if (send_rst)
++	if (send_rst) {
++		/*
++		 * It makes sense to wait on the RECEIVING bit only when send_rst is true as this
++		 * means the operation was initiated by the user and can happen concurrently with
++		 * the RX work function. If a RST is received from the remote and
++		 * __cpc_endpoint_disconnect from the RX work function, then it's safe to assume
++		 * that this frame won't trigger a call to ep->ops->rx function.
++		 */
++		int err;
 +
-+#include <linux/skbuff.h>
-+#include <net/bluetooth/bluetooth.h>
-+#include <net/bluetooth/hci_core.h>
++		err = wait_on_bit_timeout(&ep->flags,
++					  CPC_ENDPOINT_RECEIVING,
++					  TASK_INTERRUPTIBLE,
++					  msecs_to_jiffies(1000));
++		if (!err)
++			dev_warn(&ep->dev, "Timeout when disconnecting.\n");
 +
-+#include "ble.h"
-+#include "cpc.h"
-+
-+struct cpc_ble {
-+	struct cpc_endpoint *ep;
-+	struct hci_dev *hdev;
-+	struct sk_buff_head txq;
-+};
-+
-+static int cpc_ble_open(struct hci_dev *hdev)
-+{
-+	struct cpc_ble *ble = hci_get_drvdata(hdev);
-+
-+	skb_queue_head_init(&ble->txq);
-+
-+	return cpc_endpoint_connect(ble->ep);
-+}
-+
-+static int cpc_ble_close(struct hci_dev *hdev)
-+{
-+	struct cpc_ble *ble = hci_get_drvdata(hdev);
-+
-+	cpc_endpoint_disconnect(ble->ep);
-+
-+	skb_queue_purge(&ble->txq);
-+
-+	return 0;
-+}
-+
-+static int cpc_ble_flush(struct hci_dev *hdev)
-+{
-+	struct cpc_ble *ble = hci_get_drvdata(hdev);
-+
-+	skb_queue_purge(&ble->txq);
-+
-+	return 0;
-+}
-+
-+static int cpc_ble_send(struct hci_dev *hdev, struct sk_buff *skb)
-+{
-+	struct cpc_ble *ble = hci_get_drvdata(hdev);
-+
-+	memcpy(skb_push(skb, 1), &hci_skb_pkt_type(skb), 1);
-+
-+	return cpc_endpoint_write(ble->ep, skb);
-+}
-+
-+static void cpc_ble_rx_frame(struct cpc_endpoint *ep, struct sk_buff *skb)
-+{
-+	struct cpc_ble *ble = cpc_endpoint_get_drvdata(ep);
-+
-+	hci_skb_pkt_type(skb) = *((u8 *)skb_pull_data(skb, 1));
-+	hci_skb_expect(skb) = skb->len;
-+
-+	hci_recv_frame(ble->hdev, skb);
-+}
-+
-+static struct cpc_endpoint_ops cpc_ble_ops = {
-+	.rx = cpc_ble_rx_frame,
-+};
-+
-+static int cpc_ble_probe(struct cpc_endpoint *ep)
-+{
-+	struct cpc_ble *ble;
-+	int err;
-+
-+	ble = kzalloc(sizeof(*ble), GFP_KERNEL);
-+	if (!ble) {
-+		err = -ENOMEM;
-+		goto alloc_ble_fail;
+ 		cpc_protocol_send_rst(ep->intf, ep->id);
 +	}
-+
-+	cpc_endpoint_set_ops(ep, &cpc_ble_ops);
-+	cpc_endpoint_set_drvdata(ep, ble);
-+
-+	ble->ep = ep;
-+	ble->hdev = hci_alloc_dev();
-+	if (!ble->hdev) {
-+		err = -ENOMEM;
-+		goto alloc_hdev_fail;
-+	}
-+
-+	hci_set_drvdata(ble->hdev, ble);
-+	ble->hdev->open = cpc_ble_open;
-+	ble->hdev->close = cpc_ble_close;
-+	ble->hdev->flush = cpc_ble_flush;
-+	ble->hdev->send = cpc_ble_send;
-+
-+	err = hci_register_dev(ble->hdev);
-+	if (err)
-+		goto register_hdev_fail;
-+
-+	return 0;
-+
-+register_hdev_fail:
-+	hci_free_dev(ble->hdev);
-+alloc_hdev_fail:
-+	kfree(ble);
-+alloc_ble_fail:
-+	return err;
-+}
-+
-+static void cpc_ble_remove(struct cpc_endpoint *ep)
-+{
-+	struct cpc_ble *ble = cpc_endpoint_get_drvdata(ep);
-+
-+	hci_unregister_dev(ble->hdev);
-+	hci_free_dev(ble->hdev);
-+	kfree(ble);
-+}
-+
-+static struct cpc_driver ble_driver = {
-+	.driver = {
-+		.name = CPC_BLUETOOTH_ENDPOINT_NAME,
-+	},
-+	.probe = cpc_ble_probe,
-+	.remove = cpc_ble_remove,
-+};
-+
-+/**
-+ * cpc_ble_drv_register - Register the ble endpoint driver.
-+ *
-+ * @return: 0 on success, otherwise a negative error code.
-+ */
-+int cpc_ble_drv_register(void)
-+{
-+	return cpc_driver_register(&ble_driver);
-+}
-+
-+/**
-+ * cpc_ble_drv_unregister - Unregister the ble endpoint driver.
-+ */
-+void cpc_ble_drv_unregister(void)
-+{
-+	cpc_driver_unregister(&ble_driver);
-+}
-diff --git a/drivers/net/cpc/ble.h b/drivers/net/cpc/ble.h
-new file mode 100644
-index 00000000000..ae1cac4e7e8
---- /dev/null
-+++ b/drivers/net/cpc/ble.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2025, Silicon Laboratories, Inc.
-+ */
-+
-+#ifndef __CPC_BLE_H
-+#define __CPC_BLE_H
-+
-+#define CPC_BLUETOOTH_ENDPOINT_NAME "silabs,cpc-ble"
-+
-+int cpc_ble_drv_register(void);
-+void cpc_ble_drv_unregister(void);
-+
-+#endif
-diff --git a/drivers/net/cpc/main.c b/drivers/net/cpc/main.c
-index b4e73145ac2..e5636207d5d 100644
---- a/drivers/net/cpc/main.c
-+++ b/drivers/net/cpc/main.c
-@@ -7,6 +7,7 @@
- #include <linux/module.h>
- 
- #include "cpc.h"
-+#include "ble.h"
- #include "header.h"
- #include "spi.h"
- #include "system.h"
-@@ -125,13 +126,24 @@ static int __init cpc_init(void)
- 
- 	err = cpc_system_drv_register();
- 	if (err)
--		bus_unregister(&cpc_bus);
-+		goto unregister_bus;
-+
-+	err = cpc_ble_drv_register();
-+	if (err)
-+		goto unregister_system_driver;
- 
- 	err = cpc_spi_register_driver();
--	if (err) {
--		cpc_system_drv_unregister();
--		bus_unregister(&cpc_bus);
--	}
-+	if (err)
-+		goto unregister_ble_driver;
-+
-+	return 0;
-+
-+unregister_ble_driver:
-+	cpc_ble_drv_unregister();
-+unregister_system_driver:
-+	cpc_system_drv_unregister();
-+unregister_bus:
-+	bus_unregister(&cpc_bus);
- 
- 	return err;
  }
-@@ -140,6 +152,7 @@ module_init(cpc_init);
- static void __exit cpc_exit(void)
- {
- 	cpc_spi_unregister_driver();
-+	cpc_ble_drv_unregister();
- 	cpc_system_drv_unregister();
- 	bus_unregister(&cpc_bus);
+ 
+ /**
+diff --git a/drivers/net/cpc/interface.c b/drivers/net/cpc/interface.c
+index 30e7976355c..13b52cdc357 100644
+--- a/drivers/net/cpc/interface.c
++++ b/drivers/net/cpc/interface.c
+@@ -36,6 +36,8 @@ static void cpc_interface_rx_work(struct work_struct *work)
+ 			continue;
+ 		}
+ 
++		set_bit(CPC_ENDPOINT_RECEIVING, &ep->flags);
++
+ 		switch (type) {
+ 		case CPC_FRAME_TYPE_DATA:
+ 			cpc_protocol_on_data(ep, skb);
+@@ -50,6 +52,8 @@ static void cpc_interface_rx_work(struct work_struct *work)
+ 			break;
+ 		}
+ 
++		clear_and_wake_up_bit(CPC_ENDPOINT_RECEIVING, &ep->flags);
++
+ 		cpc_endpoint_put(ep);
+ 	}
  }
 -- 
 2.49.0
