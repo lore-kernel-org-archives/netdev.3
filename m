@@ -1,42 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5C9268FC8
-	for <netdev@vger.kernel.org>; Mon, 12 May 2025 10:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5168F257421
+	for <netdev@vger.kernel.org>; Mon, 12 May 2025 10:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747047450; cv=none; b=UGvpuZirJWufh9XcBiPdlDL7Eyh7iWnVebfuyKLM9KdCYJ4hVUeol1dUV0yqNNyMxGS4wmOV6Tj4KTm/u1rqb5oFjW84bYd5DCgVPTW7SrUIg+LBGV4NfuPuAVoUMzsLmQRLnYda0siRWY8qD3hUcmJsV4rzn3t/wCvemzgecBI=
+	t=1747047515; cv=none; b=T5Hu1VDjXQ856siH3lgwmZk23DvcjBQhUVd44H418mC+asuzZLO8E7qIC4nqep8GkxcM+7VVsM6mPui3TN9c5vZLk4ezUFma2kmKFErWqC7YR3eB+JBCdXIRwif3kZxu+BKkqS5+M2Nnpz2bpbqhENJJJGGvlxH45DGcDzSdft0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747047450; c=relaxed/simple;
-	bh=ft3tp/TGCqtIPgW7LCqFQy6icTZ1RJOHTIZlPKaVFsY=;
+	s=arc-20240116; t=1747047515; c=relaxed/simple;
+	bh=m9qinAORR9WmQztOPm8KiAzUOda03mE9im8U1E5KFPY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=inKtEMKjkU3r/wnaE1hiv4s1Ova0CsLtRrwrcINQn74XIXDUQ+5UcR9Fvkd/YewyVLKT7m3AINvTkattBtZlFY3XA0oDM+FvBiB3vnP5WKIaiRPfgNxOwaYHwydgACs02j7Oj6ikSmgJktjJIaXTfh94POJj9vnzg7It2wnDsdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ba/XEQAG; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=AqqnD9lMTOGn/b9oBXNcPO44g19udw+r32PzbEL/yKy9pjDw/1tBR3T+pr1pkNbGhmMQMuymfPXe3OD31afvZm7/jAXe7A8eTYaGNkqEEbyHFVCNeY0tpGe7sUb4x6IhMdpW5qsCxOeQ76e7tzg5T38EbG3mrVJ3e6jq4fEn69c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n+lup5eM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ba/XEQAG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4385C4CEE7;
-	Mon, 12 May 2025 10:57:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n+lup5eM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24258C4CEE9;
+	Mon, 12 May 2025 10:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747047449;
-	bh=ft3tp/TGCqtIPgW7LCqFQy6icTZ1RJOHTIZlPKaVFsY=;
+	s=k20201202; t=1747047514;
+	bh=m9qinAORR9WmQztOPm8KiAzUOda03mE9im8U1E5KFPY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ba/XEQAGdUsdNOVTsAFNF2KQcRnIHUuM7Q+EtDVBHWE9mTPK7oP7Ez0CgtlvkTMMn
-	 dgOcNk5ehuzNwefVX+xmKM3sRG0PYQYj171AxcnU+EVh2PRjJ1Tv4d8oyEHLTENfuW
-	 fbpf87BYVnzqXtE+ViKniP1tomXb+mrTjRt9s48b3WGGMEhx+4zAmNtJye9bGYFxEW
-	 trOOgbd3A1fjEol6gxm1vKJA8ZPXOWmKj5XzTCB2UMRpFHuEOMQ1qIp4A345a7rgO9
-	 deUeal1v/mkfaydHWqApqq3mO2D0ikPytIRysWvGaghR5oJBznGJTa3EXfqKsTOCLQ
-	 8mYIMAJo58KTQ==
-Date: Mon, 12 May 2025 11:57:25 +0100
+	b=n+lup5eMTgoXtcQLXajNUaqYy+UJeQQaCJheN/6n/PIl3/u7HdTEjaHVer7BGGWPk
+	 DZLoiCk3xVZyaiBkPuCsUE/ImPvr3t+JicrXcp2gtt7PrY+1IEdiBwPPr/5YSpvKGd
+	 bMq197bbr5iQosA4eUyM5CZ7+PKZyVpFlzEO73xmfgqtjQaFMBn85zwENKjuJ1FAHB
+	 i08q6/SToSpX8jlzhATOPzxIScus+XD1wy9bE16jS+LE+hOeWET5PU+w30HwtdY0zG
+	 ipxw83HE0105s5DLxwN3rEFYStBQZn33F78k215+b/GrD/FAdQl8afrZH80sHt7kdt
+	 wWgnqzvj2rjAg==
+Date: Mon, 12 May 2025 11:58:31 +0100
 From: Simon Horman <horms@kernel.org>
 To: Jiawen Wu <jiawenwu@trustnetic.com>
 Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
 	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
 	mengyuanlou@net-swift.com
-Subject: Re: [PATCH net 1/2] net: txgbe: Fix to calculate EEPROM checksum for
- AML devices
-Message-ID: <20250512105725.GX3339421@horms.kernel.org>
-References: <20250509100003.22361-1-jiawenwu@trustnetic.com>
- <AB6DC619636B23FE+20250509100003.22361-2-jiawenwu@trustnetic.com>
+Subject: Re: [PATCH net-next] net: wangxun: Correct clerical errors in
+ comments
+Message-ID: <20250512105831.GY3339421@horms.kernel.org>
+References: <06CD515316BD5489+20250512020333.43433-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,16 +44,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AB6DC619636B23FE+20250509100003.22361-2-jiawenwu@trustnetic.com>
+In-Reply-To: <06CD515316BD5489+20250512020333.43433-1-jiawenwu@trustnetic.com>
 
-On Fri, May 09, 2025 at 06:00:02PM +0800, Jiawen Wu wrote:
-> In the new firmware version, the shadow ram reserves some space to store
-> I2C information, so the checksum calculation needs to skip this section.
-> Otherwise, the driver will fail to probe because the invalid EEPROM
-> checksum.
+On Mon, May 12, 2025 at 10:03:33AM +0800, Jiawen Wu wrote:
+> There are wrong "#endif" comments in .h files need to be corrected.
 > 
-> Fixes: 2e5af6b2ae85 ("net: txgbe: Add basic support for new AML devices")
 > Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+
+Thanks for the clean-up.
 
 Reviewed-by: Simon Horman <horms@kernel.org>
 
+...
