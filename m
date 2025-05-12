@@ -1,81 +1,54 @@
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2075.outbound.protection.outlook.com [40.107.95.75])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E20129290D;
-	Mon, 12 May 2025 16:11:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747066305; cv=fail; b=gmsZUyzaFg2jXwUOp9vFBI1yv0adS8HqZF/JCHDS581eSj3/wdXraDSACBLn12ybanofrAosrQhRTDms6zrlJej4mlGcL/3O/XP/mSUqPDD3p27cFd/kvCavCxsTV3qfpEVISjhLVFiNDjXdIP5uqz2BhFQNMbIcz9U56OX2HD0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747066305; c=relaxed/simple;
-	bh=xltatIUx260dyAz/cyqSrf8HlJlzBoQQ8zaBC/vCs7c=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H3ZlWiY3MV4KRa1qelCJWde7MFsaV6Ce2LcABtMJq0+4G+FuOs0iw7wTNlLNLVykVOCifUoDcbFYHEKdzb/1x6x3H40VLPjEYo29YRk0OCK7YyzuwPJpq94uXJigzX9M/h1LXHhr9BhNSQWBJ1niJuwMy95FkTzHWNLz4gja5qM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=KpjCmINH; arc=fail smtp.client-ip=40.107.95.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29C92500C5
+	for <netdev@vger.kernel.org>; Mon, 12 May 2025 16:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747066464; cv=none; b=csVkhRdQgJOvYutmQsMTmbb6COY6nQs7eKkt2YWeR7I0rCTIXgGeNAviyfEinKoMOUuTXYvnjZuAVJLXOLEqyLZrd/QWHddeSdx+AyYaow7O5/L2SYh4e3367CpaAYdZqKdMAay0nRkiRcJDzD15rZp3sD+cJqGG7F7R2zmUBRI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747066464; c=relaxed/simple;
+	bh=pvYJQ5B3mK5uhnZVPeq96ocTAe6GN7lYYP8l1MzXMNk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=U3tGL0xvgmvcO8mLiKEfMdiDMKCcLWo85oKtTyDZuXhyPclWv5rBbazyQ8kikpAVgltvZyrHB5ZDekJmaiQaJPzxve3ZyspSwwGTlnXxPna/88Rw/w1b1ZLF4MX8UlDbwpAEwgjhTpnfjfU3PXLPXXEJcuW4UbFRKTtFwHHIZhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SHhxgW00; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KpjCmINH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eog1/j5zKNUPWOtTddmPufZn1zZS3cf4gSm35sHrBxGnHtJc+xwITaR4XaNMLQCKXCj4bdY337a7XTxgR4rUJnNhw38qvHPc7iUSQxuyFPFVRsbsXJfzC0xh7H+jIOW/Oexpw5gAn37ZPVuaf/fhwj5Dj7XXY9Ch4PvSCcvIQTG0vY0snbYEpOFwa+FGePPfJUaqwIlwEsyfVTVc8XWQj1BHMG4qqchdEvFtHOy74fstyGsnSzlHSFjU5ZSh1vxnG4uz94hF68g16h3YD59ZjUIXWzHP6ZqqZWN+MUxaJsQhmnQ0WGROAzgCDc/jghQw1Thlq1mRFeGXXJ4n0XAyrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nlSPAvLvsXnpipyJVRcUnOuomjPQebJ6gec6ppKdUMI=;
- b=q0kYb0SgVeAjAfsaK4YhlWLDFFda0vdmigUeCUstxf62yoFzzYJciuMdxxwy+3TmGVFbVlc8f8hu5iHdR1ITM65hlWQx36j4SSJeY9lha2UuB2HUo9BQbUGIVocTZTQgf/uuQsvalM4KbClYHkCtKM6ZvwTMVrmLOKEEAJiju2I1jLGNZELqBaGnotF37uavXjAlasdGhFKmUZ1Zqu/8Xty09zJP7fw185JzG0BAa9+HTxFnxbiMZPqHBCqXxcKjRdcSif6CuuYdS6pJf7fSJwVQAsmWKb0A6Ie8x47IPpSZNr99ajp0WMh49b+qGOSFd6UY0eyorI/iMNs9cnwHdA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nlSPAvLvsXnpipyJVRcUnOuomjPQebJ6gec6ppKdUMI=;
- b=KpjCmINHAw9i3kvqs5qsaFn+OBVfXFe4r7Hb2hAgACFQN5TEyAKjCBFMyG49Q3CeE2hiUxtfARmAC+oqd1kSvTlRSd1ZElUMoK1zWQKdbmvpvYVp5VJTs8wqZSuYikdTAI8OHTMxOGqkJgn3ld1YQxME4UdfKe91sejd2HcjMXg=
-Received: from SN6PR16CA0037.namprd16.prod.outlook.com (2603:10b6:805:ca::14)
- by LV8PR12MB9408.namprd12.prod.outlook.com (2603:10b6:408:208::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.20; Mon, 12 May
- 2025 16:11:39 +0000
-Received: from SN1PEPF0002BA4F.namprd03.prod.outlook.com
- (2603:10b6:805:ca:cafe::e8) by SN6PR16CA0037.outlook.office365.com
- (2603:10b6:805:ca::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.33 via Frontend Transport; Mon,
- 12 May 2025 16:11:39 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF0002BA4F.mail.protection.outlook.com (10.167.242.72) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8722.18 via Frontend Transport; Mon, 12 May 2025 16:11:39 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 12 May
- 2025 11:11:38 -0500
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 12 May
- 2025 11:11:38 -0500
-Received: from xcbalucerop40x.xilinx.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 12 May 2025 11:11:36 -0500
-From: <alejandro.lucero-palau@amd.com>
-To: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<dan.j.williams@intel.com>, <edward.cree@amd.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>,
-	<dave.jiang@intel.com>
-CC: Alejandro Lucero <alucerop@amd.com>, Zhi Wang <zhiw@nvidia.com>, "Jonathan
- Cameron" <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v15 21/22] cxl: Add function for obtaining region range
-Date: Mon, 12 May 2025 17:10:54 +0100
-Message-ID: <20250512161055.4100442-22-alejandro.lucero-palau@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250512161055.4100442-1-alejandro.lucero-palau@amd.com>
-References: <20250512161055.4100442-1-alejandro.lucero-palau@amd.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SHhxgW00"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1747066460;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kRkIu8HF3UVu/FZORZD2zLIskN+RdFjbTfRdFMRiFco=;
+	b=SHhxgW00XI4PYBfFmJ69p/UoXlztgzWXGfTfDeU1juUF11QsCh77D20JLV5myaPTK0txy1
+	NpR8+v/0kqvSaiJGV6dGOMnHQpxk3F+3EHi0OtbpasQy2NxHST6ZNpsOEx+iVA/ks00CZI
+	klqjgw3eFMx090WbVrg7vGmlH09f34g=
+From: Sean Anderson <sean.anderson@linux.dev>
+To: netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>
+Cc: upstream@airoha.com,
+	Simon Horman <horms@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	linux-kernel@vger.kernel.org,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Claudiu Beznea <claudiu.beznea@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>
+Subject: [net-next PATCH v4 09/11] net: macb: Move most of mac_config to mac_prepare
+Date: Mon, 12 May 2025 12:14:13 -0400
+Message-Id: <20250512161416.732239-1-sean.anderson@linux.dev>
+In-Reply-To: <20250512161013.731955-1-sean.anderson@linux.dev>
+References: <20250512161013.731955-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,119 +56,302 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA4F:EE_|LV8PR12MB9408:EE_
-X-MS-Office365-Filtering-Correlation-Id: 035d4742-db31-481c-d9eb-08dd916fad4b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/PoBdMhfVFBPcK8eyt6DeqXwwo+dzEuSn5X2/d9ZQEn18bgruncdoiREhoDW?=
- =?us-ascii?Q?6We1N5cA1v0qCvQ7q26cRyihQBycToKIBwHm1EAg0STOxXRYtuaen0xLCAMD?=
- =?us-ascii?Q?z56oVK4XQhuq4TVUs+UFpBtVCSmk0GjGsRZovREkP7/mOjac6PrNQ8kAyY9M?=
- =?us-ascii?Q?xTkO9KHoTzDlejYLNzzTbKliLyNwwCAA7VEP0+2Cy5NCz4UG0cFGF7iE9JEI?=
- =?us-ascii?Q?jZdFnszdZFmRgxUl8ORVurSmg+97z4ynXApOHo0aPvurODjCTzkPLrDo5K6C?=
- =?us-ascii?Q?DGUB8XATZrJiXxUBt6TGfxl2/ndRXxfIve9m1ZnXMvwYn1NCl53FODgCdoQK?=
- =?us-ascii?Q?n/X3s9IDunGfqRhS0GfgtwajnKVi7pGWVD9xooEmmXMxFla9Nzd+hhsU2nE6?=
- =?us-ascii?Q?F85IzHDz+dmUaSaLfP2i0VU9Mzp0MkhsQbt/Mhvr4tUa2wLp86ahOgzR4O7l?=
- =?us-ascii?Q?ZypdjLODG7HBSsXhAsXKy8QIGGxLra2VpicBb1Er4rfhAftAw32QO4nFQjBT?=
- =?us-ascii?Q?IV+9DMdzHXdlDXDU8OuqwQa1S/6Ye7SrgQRGlb+KS+nG72RXyQOUprAYRSyV?=
- =?us-ascii?Q?jDpfbokt2h/qqetwv3UO/zctCVKjNKNA6hrVMquYRhlKkC0T/9ifakpmanSj?=
- =?us-ascii?Q?4qEygGZfhRu0qJJ7q82n+K2hmdugoluee+bbrAYRZaUQ2ZCxHaRSxR0VSkbZ?=
- =?us-ascii?Q?jfMMWj2+hFMrSIitNVbB9HpuEO5n2lC6w3/ZI8/w72XWG/sb3qvJM5L/1VHq?=
- =?us-ascii?Q?AnBxgewMkIR5w3w9V0CUHvKGYWfXYHTHLU90JP6aT5dAdeU9sncJ1lwxLLB/?=
- =?us-ascii?Q?/dSNHXiJH+Tk7VJUO3BpFRpln6awyaOw97UmY1CZ4wDEnXtTE8vhfQ9kmEM8?=
- =?us-ascii?Q?4SCZNjDLJtCHZ9ZDnepK79wOP6BF/SvNrJ16QSWAEieixmNZzNqcdx0Z7KKn?=
- =?us-ascii?Q?ko2nje0yol72WZQ6yr9TbVOnWhH3lQ1Jvh7s/x5upabxdhiuUbAfmg668u9i?=
- =?us-ascii?Q?WPy+SCTMjF3NhZxSriEYsgf31vbj8qGUjix/qp1GK5ZDPMZOQ1vhc0BKWSZ4?=
- =?us-ascii?Q?uEKHOUYRLrT114OV4uMMhV3uZsW6RV2zVTT8pTvBsECXuspy9P3ycDtHUmna?=
- =?us-ascii?Q?d4KPcqz0jMPnNbPX1jVn6N8MENa1To3Uh2X3sJh87535ZjvRbwCvXMl87Dx7?=
- =?us-ascii?Q?aOCZhuhVfqXi11e2472YU2a0JT4GR4ZlKM320wt0Z6eptRaAK1VnfAfa6aOU?=
- =?us-ascii?Q?+/efbuZqTScx0NPRWhHau7cUih02q+HiwGMGs0AxLDe81xlnHpQ8up+wvfO3?=
- =?us-ascii?Q?l+VJMLkxCK/jDR6f00qwIce8myrO3mcNOy8/xKA++jOcxfo27jw0eRc9qIrr?=
- =?us-ascii?Q?vZI+oNovohetgIkbT98qH9+0eHnHynTp7QVxknFvfi3Iy3kbsfyiH8AVt1Yz?=
- =?us-ascii?Q?4kxAJgUPsKZQabE5RDtX5oL/HWK7T5u295AIsbu059WFCjcaaGpWQWQRHoaY?=
- =?us-ascii?Q?cNfgfd+vs3YnQ5pa0ovNkR3urhVtZOwHu0Pm?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(7416014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2025 16:11:39.0559
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 035d4742-db31-481c-d9eb-08dd916fad4b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF0002BA4F.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9408
+X-Migadu-Flow: FLOW_OUT
 
-From: Alejandro Lucero <alucerop@amd.com>
+mac_prepare is called every time the interface is changed, so we can do
+all of our configuration there, instead of in mac_config. This will be
+useful for the next patch where we will set the PCS bit based on whether
+we are using our internal PCS. No functional change intended.
 
-A CXL region struct contains the physical address to work with.
-
-Type2 drivers can create a CXL region but have not access to the
-related struct as it is defined as private by the kernel CXL core.
-Add a function for getting the cxl region range to be used for mapping
-such memory range by a Type2 driver.
-
-Signed-off-by: Alejandro Lucero <alucerop@amd.com>
-Reviewed-by: Zhi Wang <zhiw@nvidia.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
 ---
- drivers/cxl/core/region.c | 23 +++++++++++++++++++++++
- include/cxl/cxl.h         |  2 ++
- 2 files changed, 25 insertions(+)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index c9d21d95ed19..64ec643c2e5a 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -2745,6 +2745,29 @@ static struct cxl_region *devm_cxl_add_region(struct cxl_root_decoder *cxlrd,
- 	return ERR_PTR(rc);
+(no changes since v2)
+
+Changes in v2:
+- Fix docs for macb_pcs_config_an
+- Include change to macb_pcs_get_state which was previously in the next
+  patch
+
+ drivers/net/ethernet/cadence/macb_main.c | 209 ++++++++++++++---------
+ 1 file changed, 132 insertions(+), 77 deletions(-)
+
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 1fe8ec37491b..ed37b1d85212 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -549,19 +549,91 @@ static void macb_set_tx_clk(struct macb *bp, int speed)
+ 		netdev_err(bp->dev, "adjusting tx_clk failed.\n");
  }
  
-+/**
-+ * cxl_get_region_range - obtain range linked to a CXL region
-+ *
-+ * @region: a pointer to struct cxl_region
-+ * @range: a pointer to a struct range to be set
-+ *
-+ * Returns 0 or error.
-+ */
-+int cxl_get_region_range(struct cxl_region *region, struct range *range)
+-static void macb_usx_pcs_link_up(struct phylink_pcs *pcs, unsigned int neg_mode,
+-				 phy_interface_t interface, int speed,
+-				 int duplex)
+-{
+-	struct macb *bp = container_of(pcs, struct macb, phylink_usx_pcs);
+-	u32 config;
+-
+-	config = gem_readl(bp, USX_CONTROL);
+-	config = GEM_BFINS(SERDES_RATE, MACB_SERDES_RATE_10G, config);
+-	config = GEM_BFINS(USX_CTRL_SPEED, HS_SPEED_10000M, config);
+-	config &= ~(GEM_BIT(TX_SCR_BYPASS) | GEM_BIT(RX_SCR_BYPASS));
+-	config |= GEM_BIT(TX_EN);
+-	gem_writel(bp, USX_CONTROL, config);
++static void macb_pcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
++			       struct phylink_link_state *state)
 +{
-+	if (WARN_ON_ONCE(!region))
-+		return -ENODEV;
++	struct macb *bp = container_of(pcs, struct macb, phylink_sgmii_pcs);
 +
-+	if (!region->params.res)
-+		return -ENOSPC;
-+
-+	range->start = region->params.res->start;
-+	range->end = region->params.res->end;
-+
-+	return 0;
++	phylink_mii_c22_pcs_decode_state(state, neg_mode, gem_readl(bp, PCSSTS),
++					 gem_readl(bp, PCSANLPBASE));
 +}
-+EXPORT_SYMBOL_NS_GPL(cxl_get_region_range, "CXL");
 +
- static ssize_t __create_region_show(struct cxl_root_decoder *cxlrd, char *buf)
- {
- 	return sysfs_emit(buf, "region%u\n", atomic_read(&cxlrd->region_id));
-diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
-index c93b2f37a4fd..55442f84bd55 100644
---- a/include/cxl/cxl.h
-+++ b/include/cxl/cxl.h
-@@ -287,4 +287,6 @@ struct cxl_region *cxl_create_region(struct cxl_root_decoder *cxlrd,
- 				     bool no_dax);
++/**
++ * macb_pcs_config_an() - Configure autonegotiation settings for PCSs
++ * @bp: The macb to operate on
++ * @neg_mode: The autonegotiation mode
++ * @interface: The interface to use
++ * @advertising: The advertisement mask
++ *
++ * This provides common configuration for PCS autonegotiation.
++ *
++ * Context: Call with @bp->lock held.
++ * Return: 1 if any registers were changed; 0 otherwise
++ */
++static int macb_pcs_config_an(struct macb *bp, unsigned int neg_mode,
++			      phy_interface_t interface,
++			      const unsigned long *advertising)
++{
++	bool changed = false;
++	int old, new;
++
++	old = gem_readl(bp, PCSANADV);
++	new = phylink_mii_c22_pcs_encode_advertisement(interface, advertising);
++	if (new != -EINVAL && old != new) {
++		changed = true;
++		gem_writel(bp, PCSANADV, new);
++	}
++
++	old = new = gem_readl(bp, PCSCNTRL);
++	if (neg_mode == PHYLINK_PCS_NEG_INBAND_ENABLED)
++		new |= BMCR_ANENABLE;
++	else
++		new &= ~BMCR_ANENABLE;
++	if (old != new) {
++		changed = true;
++		gem_writel(bp, PCSCNTRL, new);
++	}
++	return changed;
++}
++
++static int macb_pcs_config(struct phylink_pcs *pcs, unsigned int mode,
++			   phy_interface_t interface,
++			   const unsigned long *advertising,
++			   bool permit_pause_to_mac)
++{
++	struct macb *bp = container_of(pcs, struct macb, phylink_sgmii_pcs);
++	bool changed = false;
++	unsigned long flags;
++	u32 old, new;
++
++	spin_lock_irqsave(&bp->lock, flags);
++	old = new = gem_readl(bp, NCFGR);
++	new |= GEM_BIT(SGMIIEN);
++	if (old != new) {
++		changed = true;
++		gem_writel(bp, NCFGR, new);
++	}
++
++	if (macb_pcs_config_an(bp, mode, interface, advertising))
++		changed = true;
++
++	spin_unlock_irqrestore(&bp->lock, flags);
++	return changed;
++}
++
++static void macb_pcs_an_restart(struct phylink_pcs *pcs)
++{
++	struct macb *bp = container_of(pcs, struct macb, phylink_sgmii_pcs);
++	u32 bmcr;
++	unsigned long flags;
++
++	spin_lock_irqsave(&bp->lock, flags);
++
++	bmcr = gem_readl(bp, PCSCNTRL);
++	bmcr |= BMCR_ANENABLE;
++	gem_writel(bp, PCSCNTRL, bmcr);
++
++	spin_lock_irqsave(&bp->lock, flags);
+ }
  
- int cxl_accel_region_detach(struct cxl_endpoint_decoder *cxled);
-+struct range;
-+int cxl_get_region_range(struct cxl_region *region, struct range *range);
- #endif /* __CXL_CXL_H__ */
+ static void macb_usx_pcs_get_state(struct phylink_pcs *pcs,
+@@ -589,45 +661,60 @@ static int macb_usx_pcs_config(struct phylink_pcs *pcs,
+ 			       bool permit_pause_to_mac)
+ {
+ 	struct macb *bp = container_of(pcs, struct macb, phylink_usx_pcs);
++	unsigned long flags;
++	bool changed;
++	u16 old, new;
+ 
+-	gem_writel(bp, USX_CONTROL, gem_readl(bp, USX_CONTROL) |
+-		   GEM_BIT(SIGNAL_OK));
++	spin_lock_irqsave(&bp->lock, flags);
++	if (macb_pcs_config_an(bp, neg_mode, interface, advertising))
++		changed = true;
+ 
+-	return 0;
+-}
++	old = new = gem_readl(bp, USX_CONTROL);
++	new |= GEM_BIT(SIGNAL_OK);
++	if (old != new) {
++		changed = true;
++		gem_writel(bp, USX_CONTROL, new);
++	}
+ 
+-static void macb_pcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
+-			       struct phylink_link_state *state)
+-{
+-	state->link = 0;
+-}
++	old = new = gem_readl(bp, USX_CONTROL);
++	new = GEM_BFINS(SERDES_RATE, MACB_SERDES_RATE_10G, new);
++	new = GEM_BFINS(USX_CTRL_SPEED, HS_SPEED_10000M, new);
++	new &= ~(GEM_BIT(TX_SCR_BYPASS) | GEM_BIT(RX_SCR_BYPASS));
++	new |= GEM_BIT(TX_EN);
++	if (old != new) {
++		changed = true;
++		gem_writel(bp, USX_CONTROL, new);
++	}
+ 
+-static void macb_pcs_an_restart(struct phylink_pcs *pcs)
+-{
+-	/* Not supported */
+-}
+-
+-static int macb_pcs_config(struct phylink_pcs *pcs,
+-			   unsigned int neg_mode,
+-			   phy_interface_t interface,
+-			   const unsigned long *advertising,
+-			   bool permit_pause_to_mac)
+-{
+-	return 0;
++	spin_unlock_irqrestore(&bp->lock, flags);
++	return changed;
+ }
+ 
+ static const struct phylink_pcs_ops macb_phylink_usx_pcs_ops = {
+ 	.pcs_get_state = macb_usx_pcs_get_state,
+ 	.pcs_config = macb_usx_pcs_config,
+-	.pcs_link_up = macb_usx_pcs_link_up,
+ };
+ 
+ static const struct phylink_pcs_ops macb_phylink_pcs_ops = {
+ 	.pcs_get_state = macb_pcs_get_state,
+-	.pcs_an_restart = macb_pcs_an_restart,
+ 	.pcs_config = macb_pcs_config,
++	.pcs_an_restart = macb_pcs_an_restart,
+ };
+ 
++static struct phylink_pcs *macb_mac_select_pcs(struct phylink_config *config,
++					       phy_interface_t interface)
++{
++	struct net_device *ndev = to_net_dev(config->dev);
++	struct macb *bp = netdev_priv(ndev);
++
++	if (interface == PHY_INTERFACE_MODE_10GBASER)
++		return &bp->phylink_usx_pcs;
++	else if (interface == PHY_INTERFACE_MODE_SGMII)
++		return &bp->phylink_sgmii_pcs;
++	else
++		return NULL;
++}
++
+ static void macb_mac_config(struct phylink_config *config, unsigned int mode,
+ 			    const struct phylink_link_state *state)
+ {
+@@ -646,18 +733,14 @@ static void macb_mac_config(struct phylink_config *config, unsigned int mode,
+ 		if (state->interface == PHY_INTERFACE_MODE_RMII)
+ 			ctrl |= MACB_BIT(RM9200_RMII);
+ 	} else if (macb_is_gem(bp)) {
+-		ctrl &= ~(GEM_BIT(SGMIIEN) | GEM_BIT(PCSSEL));
+-		ncr &= ~GEM_BIT(ENABLE_HS_MAC);
+-
+-		if (state->interface == PHY_INTERFACE_MODE_SGMII) {
+-			ctrl |= GEM_BIT(SGMIIEN) | GEM_BIT(PCSSEL);
+-		} else if (state->interface == PHY_INTERFACE_MODE_10GBASER) {
++		if (macb_mac_select_pcs(config, state->interface))
+ 			ctrl |= GEM_BIT(PCSSEL);
+-			ncr |= GEM_BIT(ENABLE_HS_MAC);
+-		} else if (bp->caps & MACB_CAPS_MIIONRGMII &&
+-			   bp->phy_interface == PHY_INTERFACE_MODE_MII) {
++		else
++			ctrl &= ~GEM_BIT(PCSSEL);
++
++		if (bp->caps & MACB_CAPS_MIIONRGMII &&
++		    bp->phy_interface == PHY_INTERFACE_MODE_MII)
+ 			ncr |= MACB_BIT(MIIONRGMII);
+-		}
+ 	}
+ 
+ 	/* Apply the new configuration, if any */
+@@ -667,22 +750,6 @@ static void macb_mac_config(struct phylink_config *config, unsigned int mode,
+ 	if (old_ncr ^ ncr)
+ 		macb_or_gem_writel(bp, NCR, ncr);
+ 
+-	/* Disable AN for SGMII fixed link configuration, enable otherwise.
+-	 * Must be written after PCSSEL is set in NCFGR,
+-	 * otherwise writes will not take effect.
+-	 */
+-	if (macb_is_gem(bp) && state->interface == PHY_INTERFACE_MODE_SGMII) {
+-		u32 pcsctrl, old_pcsctrl;
+-
+-		old_pcsctrl = gem_readl(bp, PCSCNTRL);
+-		if (mode == MLO_AN_FIXED)
+-			pcsctrl = old_pcsctrl & ~GEM_BIT(PCSAUTONEG);
+-		else
+-			pcsctrl = old_pcsctrl | GEM_BIT(PCSAUTONEG);
+-		if (old_pcsctrl != pcsctrl)
+-			gem_writel(bp, PCSCNTRL, pcsctrl);
+-	}
+-
+ 	spin_unlock_irqrestore(&bp->lock, flags);
+ }
+ 
+@@ -735,10 +802,12 @@ static void macb_mac_link_up(struct phylink_config *config,
+ 	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC)) {
+ 		ctrl &= ~MACB_BIT(PAE);
+ 		if (macb_is_gem(bp)) {
+-			ctrl &= ~GEM_BIT(GBE);
++			ctrl &= ~(GEM_BIT(GBE) | GEM_BIT(ENABLE_HS_MAC));
+ 
+ 			if (speed == SPEED_1000)
+ 				ctrl |= GEM_BIT(GBE);
++			else if (speed == SPEED_10000)
++				ctrl |= GEM_BIT(ENABLE_HS_MAC);
+ 		}
+ 
+ 		if (rx_pause)
+@@ -776,20 +845,6 @@ static void macb_mac_link_up(struct phylink_config *config,
+ 	netif_tx_wake_all_queues(ndev);
+ }
+ 
+-static struct phylink_pcs *macb_mac_select_pcs(struct phylink_config *config,
+-					       phy_interface_t interface)
+-{
+-	struct net_device *ndev = to_net_dev(config->dev);
+-	struct macb *bp = netdev_priv(ndev);
+-
+-	if (interface == PHY_INTERFACE_MODE_10GBASER)
+-		return &bp->phylink_usx_pcs;
+-	else if (interface == PHY_INTERFACE_MODE_SGMII)
+-		return &bp->phylink_sgmii_pcs;
+-	else
+-		return NULL;
+-}
+-
+ static const struct phylink_mac_ops macb_phylink_ops = {
+ 	.mac_select_pcs = macb_mac_select_pcs,
+ 	.mac_config = macb_mac_config,
 -- 
-2.34.1
+2.35.1.1320.gc452695387.dirty
 
