@@ -1,67 +1,33 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26271F3FE2
-	for <netdev@vger.kernel.org>; Tue, 13 May 2025 08:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4411F473A;
+	Tue, 13 May 2025 08:08:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747123457; cv=none; b=rnoldafCMztpWYFAiJO0uhduEfoeRePXLSKJ5aPpTU8j9b+04DDIt6o981BuF+QFdcq3x2LxKNbOTuKr/4HeMKfoqMKXm3ryGU2WdMr75Oa1Y+DKHPtm4l1NFemSeJRznsehGtZ/tFRBTiovmwD1vgoHYmxNMlWkHLVA31xBwdQ=
+	t=1747123725; cv=none; b=t+/K4wUpnIVUqJ+6kjCWit9ppLutcedAUP3K5XGOgh0zEF2dlv9NoBKY6wheLr9TJdrlXDJeOpVb6+NlMdUwJ5wi0FRPFm25Oq/9i0AZGQYy22rgM1oCRE3VRdZD3ZQ//H6lnPPpDCQoAOCu3YrgJWmZFMYJBoATBHSEWGJVIGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747123457; c=relaxed/simple;
-	bh=MVl0Z7jmhntygGf0XzS7JdF5UYySrCikiUOwWWj4Ei4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r7yZ9CopWZTqjPNL6onI7A9JhnCvADgEPlzg8LcZBadbS26LlbJ+L/mitxWkU5TB1QTkFVCJvzofKzuSvyk19aZbbibWNlyFo/ENL/dR94EuycGqIhuQe3g6a/RxafdKOBgZsmzRnPd6MznhH3aym9Qw1QCZEJ35GG2QBnxKfvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=LwgRc8HN; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1747123725; c=relaxed/simple;
+	bh=qpu4GWk38f9wakUkXBPq5Dr+ab4bLpt3174rgWFnguE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=N/kbHZzTUoc8WbXJow7/AfDEibofMWB7k+OlkGr4sFE26lnayLkBak0V9LPGut6oC1cGAQEElsjB9SOV8JxvN3V/ImcPVMYV+SOV4OiP9LxVQjkDkYv9MuVXwggAZXEAH8w8+rYoQZBMCPmj7OjOdeOZWVYszR6CE3EcqKQ7bus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=skXMQBTd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="LwgRc8HN"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ad243cdbe98so437971666b.0
-        for <netdev@vger.kernel.org>; Tue, 13 May 2025 01:04:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1747123454; x=1747728254; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=GnWXXAY8sptTOmpzNo2+REw88fqiuCfYrdluj003TXc=;
-        b=LwgRc8HNP8isDBftNMv8mZjrGXCdEDwCnkrsuOXxOPVDAO08C73HtjrYUmTcTUvRmt
-         0dKQnVa1Ir/Ox1uHJ81b94pkaATRNZaMErTGb5t7wyB/vsqXi51dbnB8gJZKmKZX2nYW
-         f/7YZsnXUCqsuwPs0y2LmtphY9N4gc2yzZIdmuS+9PQHaCwaPxjuk0z48JJG85OFWGeC
-         CLq19RbQppCm5lcSt1qmbJU1JqzydVRT5PzbwBhU9uU3NOMh1ExmJqf5VodKeMI57hDM
-         YVZWf27QRrHr4igqIRy7XzJgfENC59e88P1lJxc5Fb57KQIT8jVqp18F+g/CL1H6gX3j
-         U5+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747123454; x=1747728254;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GnWXXAY8sptTOmpzNo2+REw88fqiuCfYrdluj003TXc=;
-        b=Nau4AE35X7LPowbotJERKrt0qQ6eO9dfnn8ikJB0j4o+7PiN/Orh7t23l2bvTBvzcE
-         IAam0oR8Xe90Pl1zE28rfA51340h9xaE5ClbGtto7b0nyTe9ZtS1gYoVg2VJwbIR7cKC
-         Q2JFZSYE4X2u3lhDrHSq98s1jkFQUJMxADK1rv8wO42X5TsA6O9HNFDkt8JNLXJQaKaT
-         nnh/057Qu9lgcf6b1/VecYFa/QB5/P7Xy1ob9Zwe75Bg+RYlvHE05CUSh7dDVCfxjCcW
-         N9MY42IE+pIHFSKLcd/lE2MIlgvN0+PloGiE/RV6TMV7q3DmFYu3FxgjA1wB+/Q/k5vx
-         5eQg==
-X-Forwarded-Encrypted: i=1; AJvYcCVdGtSuKHfe+R6+OnX2bVBMTkItD64cbEEKQyKS8II6/sOihKXHCuo4g4m0IUnuTO1hHtir7y8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxCyANv9aHPw8dvawrkf7r368HB6Oid/brd+jS/hrxpydQCyoH
-	6ZQsyyy25R54JLt17YJC3xbesVkGq0QKL/LK1tY/qFsgdXzYmKnBS974ChqePyWq0r247nLWUwP
-	no4lYGw0T8G3xiGO10cb6BBe/wTX/Pia9qB+KCaQO5SxekH8=
-X-Gm-Gg: ASbGnctCP3r4m13Die4KKXXDNHX4F6EjIdhM6QNAKnoITXTzOzSXepwv6rpsRtOnahH
-	SgzhtsKcdkyLDYXarcmFFIz5VO052fOcyrlwOn8EsSOHHUy4G4GvJQ3IbyyCDWRPB1uGhv3LUMI
-	hsGVrRIjx5cLJyUF1/qM51hUJgokXv8veO9pqB+rrViehu/Gn1BloEKUV1T3RHlmlfOzqcyoFK1
-	guAYShl47Kv1mZAMSobhLdnciUiCZCpY/P/OUcAkmacacnjaOpiaveczg8P19JbK/fvoUp0Roqq
-	ldnFsQEOl/nh2CVy2KBaaZ4gMbduxPtWfNpP4rmyym5/UzKC+aih/DSvpeIkLY6mgZbSI5+AsP6
-	yePwx9tAxyGdqYZ3CBMxF4//e
-X-Google-Smtp-Source: AGHT+IE/KW8ESBBjKYHzea+yyiPPryzarrJvitv4hngSbXMnrgfeiU2RPoGxhhURdEqYpGHxyGmOBw==
-X-Received: by 2002:a17:907:1c92:b0:acb:5c83:25b with SMTP id a640c23a62f3a-ad218e41019mr1570108766b.7.1747123453765;
-        Tue, 13 May 2025 01:04:13 -0700 (PDT)
-Received: from ?IPV6:2001:67c:2fbc:1:29cc:1144:33c3:cb9c? ([2001:67c:2fbc:1:29cc:1144:33c3:cb9c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad2192c8608sm737523566b.26.2025.05.13.01.04.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 May 2025 01:04:13 -0700 (PDT)
-Message-ID: <d322b640-ad53-4bf6-a9b6-8a03eca50908@openvpn.net>
-Date: Tue, 13 May 2025 10:04:12 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="skXMQBTd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7EAC4CEE4;
+	Tue, 13 May 2025 08:08:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747123724;
+	bh=qpu4GWk38f9wakUkXBPq5Dr+ab4bLpt3174rgWFnguE=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=skXMQBTdAo3l4fHmuiur7V2ZxjECppgZqz8+4zOTYDGB17yB3bn+074AlWY5tgwgV
+	 pc52OUFSlCQLOEYqg3JL0V2TT901jZGVqCX9W66fO2mEa/Ha9qMdIJI9sXkWDdftRb
+	 A1izmCJPVm1ulXr7k5uqDizk8Sn/4iAoal9akV8dlOXXay63EYBFRDahSi3zs/sHD6
+	 pjG4Fx1aGfiK1WazcxkmmyfAgKpe7VChUtBZTy2HkCSLyi8ohwUqybmj9+DQiFbIe9
+	 z0uMUeAsvgNxGpPhV2r2rCrEEqyjodOOYg6jId9nAwUDNDDtUe2ryOmrbtkBc+SwGG
+	 01hcn/ofgZcog==
+Message-ID: <4783c1aa-d918-4194-90d7-ebc69ddbb789@kernel.org>
+Date: Tue, 13 May 2025 10:08:39 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,95 +35,173 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 09/10] ovpn: improve 'no route to host' debug
- message
-To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Sabrina Dubroca <sd@queasysnail.net>
-References: <20250509142630.6947-1-antonio@openvpn.net>
- <20250509142630.6947-10-antonio@openvpn.net>
- <a5b65bc4-3684-4314-b88b-4b78c919cb6c@redhat.com>
+Subject: Re: [PATCH net-next 2/2] net: pse-pd: Add Si3474 PSE controller
+ driver
+To: Piotr Kubik <piotr.kubik@adtran.com>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ Kory Maincent <kory.maincent@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <bf9e5c77-512d-4efb-ad1d-f14120c4e06b@adtran.com>
+ <036e6a6c-ba45-4288-bc2a-9fd8d860ade6@adtran.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Antonio Quartulli <antonio@openvpn.net>
-Autocrypt: addr=antonio@openvpn.net; keydata=
- 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
-Organization: OpenVPN Inc.
-In-Reply-To: <a5b65bc4-3684-4314-b88b-4b78c919cb6c@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <036e6a6c-ba45-4288-bc2a-9fd8d860ade6@adtran.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 13/05/2025 09:53, Paolo Abeni wrote:
-> On 5/9/25 4:26 PM, Antonio Quartulli wrote:
->> diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
->> index 24eb9d81429e..a1fd27b9c038 100644
->> --- a/drivers/net/ovpn/peer.c
->> +++ b/drivers/net/ovpn/peer.c
->> @@ -258,7 +258,7 @@ void ovpn_peer_endpoints_update(struct ovpn_peer *peer, struct sk_buff *skb)
->>   		 */
->>   		if (unlikely(!ipv6_addr_equal(&bind->local.ipv6,
->>   					      &ipv6_hdr(skb)->daddr))) {
->> -			net_dbg_ratelimited("%s: learning local IPv6 for peer %d (%pI6c -> %pI6c\n",
->> +			net_dbg_ratelimited("%s: learning local IPv6 for peer %d (%pI6c -> %pI6c)\n",
->>   					    netdev_name(peer->ovpn->dev),
->>   					    peer->id, &bind->local.ipv6,
->>   					    &ipv6_hdr(skb)->daddr);
-> 
-> Since you have to repost it's better to move this chunk to a separate
-> patch, as it's unrelated to the previous one - or at very least mention
-> it explicitly in the commit message.
+On 13/05/2025 00:06, Piotr Kubik wrote:
+> +/* Parse pse-pis subnode into chan array of si3474_priv */
+> +static int si3474_get_of_channels(struct si3474_priv *priv)
+> +{
+> +	struct device_node *pse_node, *node;
+> +	struct pse_pi *pi;
+> +	u32 pi_no, chan_id;
+> +	s8 pairset_cnt;
+> +	s32 ret = 0;
+> +
+> +	pse_node = of_get_child_by_name(priv->np, "pse-pis");
+> +	if (!pse_node) {
+> +		dev_warn(&priv->client[0]->dev,
+> +			 "Unable to parse DT PSE power interface matrix, no pse-pis node\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	for_each_child_of_node(pse_node, node) {
 
-Yeah, the line:
-"While at it, add a missing parenthesis in another debugging
-message."
+Use scoped variant. One cleanup less.
 
-was too vague :)
 
-I'll make it more explicit.
+> +		if (!of_node_name_eq(node, "pse-pi"))
+> +			continue;
 
-Regards,
+...
 
-> 
-> /P
-> 
+> +
+> +	ret = i2c_smbus_read_byte_data(client, FIRMWARE_REVISION_REG);
+> +	if (ret < 0)
+> +		return ret;
+> +	fw_version = ret;
+> +
+> +	ret = i2c_smbus_read_byte_data(client, CHIP_REVISION_REG);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	dev_info(dev, "Chip revision: 0x%x, firmware version: 0x%x\n",
 
--- 
-Antonio Quartulli
-OpenVPN Inc.
+dev_dbg or just drop. Drivers should be silent on success.
 
+> +		 ret, fw_version);
+> +
+> +	priv->client[0] = client;
+> +	i2c_set_clientdata(client, priv);
+> +
+> +	priv->client[1] = i2c_new_ancillary_device(priv->client[0], "slave",
+> +						   priv->client[0]->addr + 1);
+> +	if (IS_ERR(priv->client[1]))
+> +		return PTR_ERR(priv->client[1]);
+> +
+> +	ret = i2c_smbus_read_byte_data(priv->client[1], VENDOR_IC_ID_REG);
+> +	if (ret < 0) {
+> +		dev_err(&priv->client[1]->dev, "Cannot access slave PSE controller\n");
+> +		goto out_err_slave;
+> +	}
+> +
+> +	if (ret != SI3474_DEVICE_ID) {
+> +		dev_err(&priv->client[1]->dev,
+> +			"Wrong device ID for slave PSE controller: 0x%x\n", ret);
+> +		ret = -ENXIO;
+> +		goto out_err_slave;
+> +	}
+> +
+> +	priv->np = dev->of_node;
+> +	priv->pcdev.owner = THIS_MODULE;
+> +	priv->pcdev.ops = &si3474_ops;
+> +	priv->pcdev.dev = dev;
+> +	priv->pcdev.types = ETHTOOL_PSE_C33;
+> +	priv->pcdev.nr_lines = SI3474_MAX_CHANS;
+> +
+> +	ret = devm_pse_controller_register(dev, &priv->pcdev);
+> +	if (ret) {
+
+No need for {}
+
+> +		return dev_err_probe(dev, ret,
+> +				     "Failed to register PSE controller\n");
+
+No cleanup here? That's odd.
+
+> +	}
+> +
+> +	return ret;
+
+return 0
+
+> +
+> +out_err_slave:
+> +	i2c_unregister_device(priv->client[1]);
+> +	return ret;
+> +}
+> +
+> +static void si3474_i2c_remove(struct i2c_client *client)
+> +{
+> +	struct si3474_priv *priv = i2c_get_clientdata(client);
+> +
+> +	i2c_unregister_device(priv->client[1]);
+
+So you first unregister i2c device and then unregister pse controller.
+Feels like possible issues, difficult to debug.... Use devm reset
+wrapper for that.
+
+
+Best regards,
+Krzysztof
