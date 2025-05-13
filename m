@@ -1,45 +1,66 @@
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D9E1AED5C
-	for <netdev@vger.kernel.org>; Tue, 13 May 2025 02:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DE51B4141;
+	Tue, 13 May 2025 02:16:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747102343; cv=none; b=njyq4HZc5J+Cib9jIRVhzxwtwdsvsbzawoFgM2nIWqpgmhKYwStI5UDPbBJT2IGaCmT2qtx+5FktDr99YA/88M/R+3lpPWhjFK5M/JQKuczahKTgfUgkTLKhFJamiSakTUZ7UBNNnUJP11rcq2f1VFPH83C1Muk1mEDL2H3XH8Q=
+	t=1747102609; cv=none; b=qwKD2so8u6uwFbIWpezWrFijClLEW5YlqP2f7yrKw4QwzwAmJsJpUCEj01nQyrybI2XXt8wkI6eDe4WEy2IZc/nPVXABLVE8/y2YCMh7hWfFijJOQwyOkSUGk4HjYOaFLRkY13XF1JY3Wssfh2OBr49q7SXKTGseZfOVh0cxd3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747102343; c=relaxed/simple;
-	bh=BxftasFDg8AwNJfhFrjoEDSLF8mjqQGubB46r6zPbok=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TXzwsh4FpDHJtGa6bts7RvjzKiDal/UtFEeM9S1+ZkrX5CHHe8dQbWn4+900h5nwSXCvW/jAYu0yaudwcc3FSdJDvTu7URH6aEcAo9HAoeYlwQydDGRkVrW3pI/i4+DHbd0SOYrS7BZ0r5F2yJQeTYto48Mjieu+31XKTYyDaKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.22.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz20t1747102226t22290d29
-X-QQ-Originating-IP: GvC6GxoBcWgdHITmu3YX6AmAqBts38Tsw17sgfBUe34=
-Received: from w-MS-7E16.trustnetic.com ( [122.233.195.51])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 13 May 2025 10:10:24 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 13148003119675519104
-EX-QQ-RecipientCnt: 10
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org,
-	rmk+kernel@armlinux.org.uk,
-	horms@kernel.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch
-Cc: mengyuanlou@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net v2 1/3] net: txgbe: Fix to calculate EEPROM checksum for AML devices
-Date: Tue, 13 May 2025 10:10:07 +0800
-Message-ID: <1C6BF7A937237F5A+20250513021009.145708-2-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250513021009.145708-1-jiawenwu@trustnetic.com>
-References: <20250513021009.145708-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1747102609; c=relaxed/simple;
+	bh=squLWHTdlP9zj6uBU/Dw9pNTzdllHI8WXRtl7RwHSI0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jPY1zGHeY0czo529RDIr1ud3dkNsPYw8HeBJgkzk7mxpz4olgkEbuyTBSSjZT3QZzOyhLoCrX9fS4np5AD09BHUM4FO2OBAQ8qz+Zph3npo6K2jM5YdzPgMCwO2c22oCRi2ilFBknPKGm8G0sqwLbpDjmtvpGI8Cqw5tn03XUks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=JZC8aJVx; arc=none smtp.client-ip=52.95.49.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="JZC8aJVx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1747102608; x=1778638608;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=rjYkzvwGio+bty/BMJv4MrTabceHm7ehCjkTYiMnsD0=;
+  b=JZC8aJVxQ4KKmptTrGLXVe1b1BLYW4ojYRlspVtjdNvxL/r3xGv5DtW6
+   BhdMVmE0zi6s3ku2AEuRm70CI/VqmbVJpMcFlMji2ZR6FSD9Zpbq8KiPX
+   OY7O42LxmNu2hq2hQa8sym9fIf06YuVBhQG9T7X+S4DKzPSvjk9MMez5q
+   cK+tCNi6SEjcaVR1/956wrGl/zYKvtAkajutZ8yeeEWeBLQouUaR9g77j
+   /WCdTVhZOgL1HlNJM/wmuGzdU3bj96+T9c1qt/FPUG4v+HMr5JwbW8Ab7
+   RleMv/YMARJu0aONVE9ypxQc22uJqaNIfM2nl1MVXi4DZA1/rgj18OylA
+   g==;
+X-IronPort-AV: E=Sophos;i="6.15,284,1739836800"; 
+   d="scan'208";a="497909089"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 02:16:41 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [10.0.21.151:55249]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.0.127:2525] with esmtp (Farcaster)
+ id e929d8f1-74b0-4513-a656-2c1a647b05ed; Tue, 13 May 2025 02:16:39 +0000 (UTC)
+X-Farcaster-Flow-ID: e929d8f1-74b0-4513-a656-2c1a647b05ed
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 13 May 2025 02:16:38 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.187.170.42) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 13 May 2025 02:16:34 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <bluca@debian.org>
+CC: <alexander@mihalicyn.com>, <brauner@kernel.org>,
+	<daan.j.demeyer@gmail.com>, <daniel@iogearbox.net>, <davem@davemloft.net>,
+	<david@readahead.eu>, <edumazet@google.com>, <horms@kernel.org>,
+	<jack@suse.cz>, <jannh@google.com>, <kuba@kernel.org>, <kuniyu@amazon.com>,
+	<lennart@poettering.net>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+	<me@yhndnzj.com>, <netdev@vger.kernel.org>, <oleg@redhat.com>,
+	<pabeni@redhat.com>, <viro@zeniv.linux.org.uk>, <zbyszek@in.waw.pl>
+Subject: Re: [PATCH v6 4/9] coredump: add coredump socket
+Date: Mon, 12 May 2025 19:14:48 -0700
+Message-ID: <20250513021626.86287-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <CAMw=ZnRC7Okmew=rrEocFuFn8hhrcergHciPjxFPuG4c6qH_Bw@mail.gmail.com>
+References: <CAMw=ZnRC7Okmew=rrEocFuFn8hhrcergHciPjxFPuG4c6qH_Bw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,73 +68,152 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MP1WLfctJNZWZQRf+ngmmvXWhCbMVpZZY0AQek8QPB9wT7hvOWIpvyP+
-	7+FN7KyV90NDBRf3VXcBdOy1Tb70JvPMCma9VMxaSrFCtgSIVfJgxv7x0IE5sYqsloZIE9p
-	J+uZ4MIyWdNfueOOBr2osm94XK1ajmauEru+MdJNGXFRhRyGCrWI56X8ru/62WMl0F9Cs3t
-	O/NF63/kJTCCd/Vwnd4MdImSBUPbekHI+4Utjgf8GVJUSVluTQFHn6Jli8FqXFeQ+oXX4RG
-	LlU7pdpvQCRCvB/N4I1BOeHEuF/eoUm+uH89+BiIWzwGb5pedRQCgNpfpk7ZZOykIziY78C
-	3dT2LGA09QoWoyw/i8wkGDMQuiUzfbgWVH9aCHrBDtiifiMziY0BOG52SSAavzp9oMvEHkB
-	gTySlRr7RVYk228oTXncvJRJKQloo2IyjZBG1mxJTOKSV16WOaYpNjHl/QJSS0/P5Scx49t
-	Xr9SGebFI2zR3MU1Sxbz5TgF7p0X4TSd6XzczqVOWzxsCi0MAjvVXaCad4YED8y/6H/yX0n
-	wFYVmsOURdojFLoKY0Dyk1Cj6R1eMsxlTV6lJlHR/7ldQKQI/89fWkLI/1CaubRzKkOqXqn
-	1Q0UQHY0X0OuzN4PM1qfLPUARFP5Bx/vPrXWx8QJcDyOtdnY3O/O8sRm9mdRZ3SPigR3861
-	NaeUN+zc00mU+TBygu08ohOm51LseI2aK3WgSW+TDbNP5jKKGYGtOoXF3ebHFy8pmvUJrA7
-	4PeccEkV6wg0pyOqpdIljL2vAn8EguTvYoNCiXRqkP+4/DSJ0nK6/J0HOnWSzScfAqbqStT
-	sHyeeNEFgliDHe+Gmbhp2RpbeM8daFUTDTF30ibSzcWBsRdhKEQCn4EYTmoqGjQhq4bwhfy
-	cO1cJ9M8uJccZZ0Mqe0HrAPXMEH73OjXkRG2xk6uuXdQkjtLPN5RHBdYzrtdp1+47Uvhb6Y
-	ofYX2jfwUzW3Fd3LJSnqSzIvTSE6eEV5qmR2HNah3Ze7lwMGSOd/a2m8AQfu/d8ZDiJBbQy
-	98beiMFw==
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D044UWB001.ant.amazon.com (10.13.139.171) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-In the new firmware version, the shadow ram reserves some space to store
-I2C information, so the checksum calculation needs to skip this section.
-Otherwise, the driver will fail to probe because the invalid EEPROM
-checksum.
+From: Luca Boccassi <bluca@debian.org>
+Date: Tue, 13 May 2025 02:09:24 +0100
+> On Tue, 13 May 2025 at 01:18, Kuniyuki Iwashima <kuniyu@amazon.com> wrote:
+> >
+> > From: Luca Boccassi <bluca@debian.org>
+> > Date: Mon, 12 May 2025 11:58:54 +0100
+> > > On Mon, 12 May 2025 at 09:56, Christian Brauner <brauner@kernel.org> wrote:
+> > > >
+> > > > Coredumping currently supports two modes:
+> > > >
+> > > > (1) Dumping directly into a file somewhere on the filesystem.
+> > > > (2) Dumping into a pipe connected to a usermode helper process
+> > > >     spawned as a child of the system_unbound_wq or kthreadd.
+> > > >
+> > > > For simplicity I'm mostly ignoring (1). There's probably still some
+> > > > users of (1) out there but processing coredumps in this way can be
+> > > > considered adventurous especially in the face of set*id binaries.
+> > > >
+> > > > The most common option should be (2) by now. It works by allowing
+> > > > userspace to put a string into /proc/sys/kernel/core_pattern like:
+> > > >
+> > > >         |/usr/lib/systemd/systemd-coredump %P %u %g %s %t %c %h
+> > > >
+> > > > The "|" at the beginning indicates to the kernel that a pipe must be
+> > > > used. The path following the pipe indicator is a path to a binary that
+> > > > will be spawned as a usermode helper process. Any additional parameters
+> > > > pass information about the task that is generating the coredump to the
+> > > > binary that processes the coredump.
+> > > >
+> > > > In the example core_pattern shown above systemd-coredump is spawned as a
+> > > > usermode helper. There's various conceptual consequences of this
+> > > > (non-exhaustive list):
+> > > >
+> > > > - systemd-coredump is spawned with file descriptor number 0 (stdin)
+> > > >   connected to the read-end of the pipe. All other file descriptors are
+> > > >   closed. That specifically includes 1 (stdout) and 2 (stderr). This has
+> > > >   already caused bugs because userspace assumed that this cannot happen
+> > > >   (Whether or not this is a sane assumption is irrelevant.).
+> > > >
+> > > > - systemd-coredump will be spawned as a child of system_unbound_wq. So
+> > > >   it is not a child of any userspace process and specifically not a
+> > > >   child of PID 1. It cannot be waited upon and is in a weird hybrid
+> > > >   upcall which are difficult for userspace to control correctly.
+> > > >
+> > > > - systemd-coredump is spawned with full kernel privileges. This
+> > > >   necessitates all kinds of weird privilege dropping excercises in
+> > > >   userspace to make this safe.
+> > > >
+> > > > - A new usermode helper has to be spawned for each crashing process.
+> > > >
+> > > > This series adds a new mode:
+> > > >
+> > > > (3) Dumping into an abstract AF_UNIX socket.
+> > > >
+> > > > Userspace can set /proc/sys/kernel/core_pattern to:
+> > > >
+> > > >         @address SO_COOKIE
+> > > >
+> > > > The "@" at the beginning indicates to the kernel that the abstract
+> > > > AF_UNIX coredump socket will be used to process coredumps. The address
+> > > > is given by @address and must be followed by the socket cookie of the
+> > > > coredump listening socket.
+> > > >
+> > > > The socket cookie is used to verify the socket connection. If the
+> > > > coredump server restarts or crashes and someone recycles the socket
+> > > > address the kernel will detect that the address has been recycled as the
+> > > > socket cookie will have necessarily changed and refuse to connect.
+> > >
+> > > This dynamic/cookie prefix makes it impossible to use this with socket
+> > > activation units. The way systemd-coredump works is that every
+> > > instance is an independent templated unit, spawned when there's a
+> > > connection to the private socket. If the path was fixed, we could just
+> > > reuse the same mechanism, it would fit very nicely with minimal
+> > > changes.
+> >
+> > Note this version does not use prefix.  Now it requires users to
+> > just pass the socket cookie via core_pattern so that the kernel
+> > can verify the peer.
+> 
+> Exactly - this means the pattern cannot be static in a sysctl.d early
+> on boot anymore, and has to be set dynamically by <something>.
 
-Fixes: 2e5af6b2ae85 ("net: txgbe: Add basic support for new AML devices")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/txgbe/txgbe_hw.c   | 8 +++++++-
- drivers/net/ethernet/wangxun/txgbe/txgbe_type.h | 2 ++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+You missed the socket has to be created dynamically by <something>.
 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_hw.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_hw.c
-index 4b9921b7bb11..a054b259d435 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_hw.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_hw.c
-@@ -99,9 +99,15 @@ static int txgbe_calc_eeprom_checksum(struct wx *wx, u16 *checksum)
- 	}
- 	local_buffer = eeprom_ptrs;
- 
--	for (i = 0; i < TXGBE_EEPROM_LAST_WORD; i++)
-+	for (i = 0; i < TXGBE_EEPROM_LAST_WORD; i++) {
-+		if (wx->mac.type == wx_mac_aml) {
-+			if (i >= TXGBE_EEPROM_I2C_SRART_PTR &&
-+			    i < TXGBE_EEPROM_I2C_END_PTR)
-+				local_buffer[i] = 0xffff;
-+		}
- 		if (i != wx->eeprom.sw_region_offset + TXGBE_EEPROM_CHECKSUM)
- 			*checksum += local_buffer[i];
-+	}
- 
- 	kvfree(eeprom_ptrs);
- 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-index 9c1c26234cad..f423012dec22 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-@@ -158,6 +158,8 @@
- #define TXGBE_EEPROM_VERSION_L                  0x1D
- #define TXGBE_EEPROM_VERSION_H                  0x1E
- #define TXGBE_ISCSI_BOOT_CONFIG                 0x07
-+#define TXGBE_EEPROM_I2C_SRART_PTR              0x580
-+#define TXGBE_EEPROM_I2C_END_PTR                0x800
- 
- #define TXGBE_MAX_MSIX_VECTORS          64
- #define TXGBE_MAX_FDIR_INDICES          63
--- 
-2.48.1
 
+> This is
+> a severe degradation over the status quo.
+> 
+> > > But because you need a "server" to be permanently running, this means
+> > > socket-based activation can no longer work, and systemd-coredump must
+> > > switch to a persistently-running mode.
+> >
+> > The only thing for systemd to do is assign a cookie after socket creation.
+> >
+> > As long as systemd hold the file descriptor of the socket, you don't need
+> > a dedicated "server" running permanently, and the fd can be passed around
+> > to a spawned/activated process.
+> 
+> There is no such facility, a socket is just a socket and there's no
+> infrastructure to randomly extract random information from one and
+> write it to some other random file in procfs,
+
+As only one socket can be registered to core_pattern, the socket
+must not be a random.
+
+
+> and I don't see why we
+> should add some super-special-case just for this,
+
+Because this is a new special use case.
+
+
+> it sounds really
+> messy.
+> Also sockets can be and in fact are routinely restarted (eg: on
+> package upgrades), which would invalidate this whole scheme, and
+> result in a very racy setup. When packages are upgraded it's one of
+> the most complex workflows in modern distros, and it's very likely
+> that things start crashing exactly at that point, and with this
+> workflow it would mean we'll lose core files due to the race between
+> restarting the socket unit and <something> updating the pattern
+> accordingly.
+
+Looks like you misunderstood the series.
+
+As you need to specify the socket in core_pattern, there must be
+only one socket that can receive core data, so the problem statement
+is always true throughout the series.
+
+kernel_connect() does not connect() to a random one out of sockets
+that have the common prefix.
+
+That's why the BPF was mentioned in the previous cover letter:
+
+- Since unix_stream_connect() runs bpf programs during connect it's
+  possible to even redirect or multiplex coredumps to other sockets.
+
+
+> Also we very much want to be able to spawn as many core handlers at
+> the same time as needed, which I don't see how can work with a cookie
+> that has to be unique per socket.
+
+As said, you can just pass the fd of the coredump listener or a fd
+accept()ed from the listener, depending on how you want to handle
+this in userspace.
