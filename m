@@ -1,190 +1,197 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87D528DB40
-	for <netdev@vger.kernel.org>; Tue, 13 May 2025 11:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C505028D8D5;
+	Tue, 13 May 2025 11:42:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747136451; cv=none; b=XcpLG3mVa0VxNh27TgLZtMfjsX0QhRwxevenOg3JnNMvh2sRMLkVgUQScPhFbd5AdIr7SOmeqtellSGNVBtwmda9nhHbmvm6nlwtqpUoLKOQ5oS6Ifgt6fRNrSz5DqnUeQQIvheEwYnIw0o6qwVrR5fZdhOYxhIp/I0kSZSwTNI=
+	t=1747136522; cv=none; b=o7R+Emj2xYLFJMPkPu5EkH1TbMEvu/OEBqfn4Pu1b3VFBE7ZCbTyGox2i67Jfa68AQxcDohANhImyVfFaCut1zFW4sjdnNLHvijjcSxEgGSXnj+M7cvfrMQMQ1fBUVoiU4YZui0TID/cAu67Ui0LXCSC1XPmUXQfIS4YIl99gKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747136451; c=relaxed/simple;
-	bh=G8rfjvvnTydX2+XRs6vzFfFmeqlz8HqGP7FvVVC6haQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qSfn9zmDuKvitIIt0kqtYCP7h4glV3gRKAb+g+EC8I62xzx5diJQbEXVaZEY/3sUeWjS0O6NL8z9kqwYyM8sNuW/0arrYujiNo6Gio2oOAhXkUWadQcr+XpaEyQN3RQzSUL7UBQLocweVHOvu0RdP5c1ksw97vU91I3FEM7ljsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=ZmIrwBCl; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1747136522; c=relaxed/simple;
+	bh=eO9w3nrvJ3H7rmAo2MSmMtziW1MVTfuuIqYcS6Qt1nc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AF+4SPash3SIrc2smLaymje5pA8ssvD3RuMrDwqdcylP5MAUHuzHRuRdKBDytYnS10JwLAKlCXTEfbh0VTvvmEU+wB34NwFbuGO+dGF4ToMxKCccDsyDkryK8bi+5IYwwe6/x3p1wgHTGlsc6uV/5xjmDIbLqLnuc8N2lQ0tR0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ALQTm+uZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="ZmIrwBCl"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54DAG8vN011668;
-	Tue, 13 May 2025 04:40:42 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=2xAceSwDzxcfRqZya9M0XaGqL
-	SypKRFZColpry8Qok0=; b=ZmIrwBClktHu2eMQTJ2gp/S/7EFz8I5UywFdh9UB0
-	1+y02dvBawxu59sHcubPnmGOGBptZbHcsHENQno8a+B9dkQqrcwweT2Bq8Wr2wpO
-	0YazVP39O4o54SzpR82wSMPCWyoi20uu+bbKXdLvZ/lPffK8E4b1SkNYi78Q9alZ
-	B7g5EVuIh+mKSWHPOEILAQ7PT63C4W6CDxuBrQ9m3Z+aO1LrOHN5kLjDpXbKPnJk
-	xnoAk8/Z8htEL++0SczncbjwRGWl+SFTvcBAyGfgP63Ul/qaUGD04EnpOYGz+2TK
-	rWTDsC3N+gl8T7QgMwSSWf2S7DKGKiT3oEXz2b5F9/hPQ==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 46m46104q2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 May 2025 04:40:41 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Tue, 13 May 2025 04:40:41 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Tue, 13 May 2025 04:40:41 -0700
-Received: from hyd1358.marvell.com (unknown [10.29.37.11])
-	by maili.marvell.com (Postfix) with ESMTP id 99D233F709D;
-	Tue, 13 May 2025 04:40:36 -0700 (PDT)
-From: Subbaraya Sundeep <sbhatta@marvell.com>
-To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
-        <gakula@marvell.com>, <hkelam@marvell.com>, <sgoutham@marvell.com>,
-        <lcherian@marvell.com>, <bbhushan2@marvell.com>, <jerinj@marvell.com>
-CC: <netdev@vger.kernel.org>, Subbaraya Sundeep <sbhatta@marvell.com>
-Subject: [net-next v2 4/4] octeontx2: Add new tracepoint otx2_msg_status
-Date: Tue, 13 May 2025 17:10:08 +0530
-Message-ID: <1747136408-30685-5-git-send-email-sbhatta@marvell.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1747136408-30685-1-git-send-email-sbhatta@marvell.com>
-References: <1747136408-30685-1-git-send-email-sbhatta@marvell.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ALQTm+uZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DFAC4CEE4;
+	Tue, 13 May 2025 11:41:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747136522;
+	bh=eO9w3nrvJ3H7rmAo2MSmMtziW1MVTfuuIqYcS6Qt1nc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ALQTm+uZKtmN5UlGkFrdCVIxYdmEa51vs3Szkdm/bveJ7cMR8fbapYChmVr4IOXVy
+	 JTmyKduvFQ7iheA0gswCrH+MhKqDbBOXLG445lihmw/VGg6qbqyGWZH8oImsbH9ydk
+	 zreDSLU3ZMLy+3p49pfo8SRhhW1z9iPZAPKrTYido6cGWXKWY4cU6zQ6kecLo11vO3
+	 KfUMs6o4Pp9FMaS8QX2R8or77RRf7C8co856S4AholzaZ40vOBemhzj27WpDu+nChG
+	 0hyBFJLdyD+depPaZm3pxw7pNL1jyDahEztadYIypvXPauJPaxlfc7/YNgpgyRxEID
+	 UIF6c8Cpjwv/w==
+Message-ID: <58dcc38b-8150-4272-b214-b046163292a6@kernel.org>
+Date: Tue, 13 May 2025 14:41:57 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEzMDExMSBTYWx0ZWRfXxF3JK3eV6egp 5UlNO6w7C+euIZ6kXb4fVWmbpTBaLGNH4N7WWBEWLNn4FPOcL76jXO5wDzdxvxpiRCgWY2ZTExp BAayd70bHWNOY4U8ZCv9xBlpUcX4a92N4pb7G0AK06Se3Y7kOx2CEXztvAL6aodDhF/KuMBiCxo
- 4tzbjOMS0PppVGr7ik0E+L39i/6QS1vza2Okp9yUlmwfETc0vz/knul5fNRnn0MXA9SSc/B7qEZ Sggr142x7qtiCY9LyB8pEBHVJbqUBzhV6bAzQDBT+7PyBY9iqu5upVklTwVJBOKRawW5+8m9SiP vHGzlhnRHz/SunMqw+0VgVEE93ocs/8NyZBvL/42yVr58KHlhQU3K2jcNtZzjWtc9iB3ak3Gibr
- xYXTDyq9+zodEny6h5RpArcu0ehRRdoi4kNaNHm0pAAFRajJ0qh75F8PG1Yt8UTEpMDX7BtY
-X-Authority-Analysis: v=2.4 cv=f+dIBPyM c=1 sm=1 tr=0 ts=68232fb9 cx=c_pps a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17 a=dt9VzEwgFbYA:10 a=M5GUcnROAAAA:8 a=0fIk3bRXYT3cIrd2uZ4A:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: arbtV32i23Yk0THQprrV6UjRorwCnnKQ
-X-Proofpoint-GUID: arbtV32i23Yk0THQprrV6UjRorwCnnKQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-13_01,2025-05-09_01,2025-02-21_01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 8/9] net: ethernet: ti: am65-cpsw: add network
+ flow classification support
+To: Paolo Abeni <pabeni@redhat.com>, Siddharth Vadapalli
+ <s-vadapalli@ti.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ danishanwar@ti.com
+Cc: srk@ti.com, linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250505-am65-cpsw-rx-class-v2-0-5359ea025144@kernel.org>
+ <20250505-am65-cpsw-rx-class-v2-8-5359ea025144@kernel.org>
+ <244138b2-a90e-404d-946f-9ce25c6155e1@redhat.com>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <244138b2-a90e-404d-946f-9ce25c6155e1@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Apart from netdev interface Octeontx2 PF does the following:
-1. Sends its own requests to AF and receives responses from AF.
-2. Receives async messages from AF.
-3. Forwards VF requests to AF, sends respective responses from AF to VFs.
-4. Sends async messages to VFs.
-This patch adds new tracepoint otx2_msg_status to display the status
-of PF wrt mailbox handling.
 
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
----
- drivers/net/ethernet/marvell/octeontx2/af/rvu_trace.c |  1 +
- drivers/net/ethernet/marvell/octeontx2/af/rvu_trace.h | 15 +++++++++++++++
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c  | 18 ++++++++++++++++++
- 3 files changed, 34 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_trace.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_trace.c
-index 775fd4c..5f69380 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_trace.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_trace.c
-@@ -11,3 +11,4 @@
- EXPORT_TRACEPOINT_SYMBOL(otx2_msg_alloc);
- EXPORT_TRACEPOINT_SYMBOL(otx2_msg_interrupt);
- EXPORT_TRACEPOINT_SYMBOL(otx2_msg_process);
-+EXPORT_TRACEPOINT_SYMBOL(otx2_msg_status);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_trace.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu_trace.h
-index abbdb03..db02b4d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_trace.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_trace.h
-@@ -118,6 +118,21 @@ TRACE_EVENT(otx2_msg_wait_rsp,
- 		      __get_str(dev))
- );
- 
-+TRACE_EVENT(otx2_msg_status,
-+	    TP_PROTO(const struct pci_dev *pdev, const char *msg, u16 num_msgs),
-+	    TP_ARGS(pdev, msg, num_msgs),
-+	    TP_STRUCT__entry(__string(dev, pci_name(pdev))
-+			     __string(str, msg)
-+			     __field(u16, num_msgs)
-+	    ),
-+	    TP_fast_assign(__assign_str(dev);
-+			   __assign_str(str);
-+			   __entry->num_msgs = num_msgs;
-+	    ),
-+	    TP_printk("[%s] %s num_msgs:%d\n", __get_str(dev),
-+		      __get_str(str), __entry->num_msgs)
-+);
-+
- #endif /* __RVU_TRACE_H */
- 
- #undef TRACE_INCLUDE_PATH
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index 1bbc17b..d79b4b3 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -465,6 +465,9 @@ static void otx2_pfvf_mbox_handler(struct work_struct *work)
- 
- 	offset = ALIGN(sizeof(struct mbox_hdr), MBOX_MSG_ALIGN);
- 
-+	trace_otx2_msg_status(pf->pdev, "PF-VF down queue handler(forwarding)",
-+			      vf_mbox->num_msgs);
-+
- 	for (id = 0; id < vf_mbox->num_msgs; id++) {
- 		msg = (struct mbox_msghdr *)(mdev->mbase + mbox->rx_start +
- 					     offset);
-@@ -503,6 +506,9 @@ static void otx2_pfvf_mbox_up_handler(struct work_struct *work)
- 
- 	offset = mbox->rx_start + ALIGN(sizeof(struct mbox_hdr), MBOX_MSG_ALIGN);
- 
-+	trace_otx2_msg_status(pf->pdev, "PF-VF up queue handler(response)",
-+			      vf_mbox->up_num_msgs);
-+
- 	for (id = 0; id < vf_mbox->up_num_msgs; id++) {
- 		msg = mdev->mbase + offset;
- 
-@@ -819,6 +825,9 @@ static void otx2_pfaf_mbox_handler(struct work_struct *work)
- 	offset = mbox->rx_start + ALIGN(sizeof(*rsp_hdr), MBOX_MSG_ALIGN);
- 	pf = af_mbox->pfvf;
- 
-+	trace_otx2_msg_status(pf->pdev, "PF-AF down queue handler(response)",
-+			      num_msgs);
-+
- 	for (id = 0; id < num_msgs; id++) {
- 		msg = (struct mbox_msghdr *)(mdev->mbase + offset);
- 		otx2_process_pfaf_mbox_msg(pf, msg);
-@@ -974,6 +983,9 @@ static void otx2_pfaf_mbox_up_handler(struct work_struct *work)
- 
- 	offset = mbox->rx_start + ALIGN(sizeof(*rsp_hdr), MBOX_MSG_ALIGN);
- 
-+	trace_otx2_msg_status(pf->pdev, "PF-AF up queue handler(notification)",
-+			      num_msgs);
-+
- 	for (id = 0; id < num_msgs; id++) {
- 		msg = (struct mbox_msghdr *)(mdev->mbase + offset);
- 
-@@ -1023,6 +1035,9 @@ static irqreturn_t otx2_pfaf_mbox_intr_handler(int irq, void *pf_irq)
- 
- 		trace_otx2_msg_interrupt(pf->pdev, "UP message from AF to PF",
- 					 BIT_ULL(0));
-+
-+		trace_otx2_msg_status(pf->pdev, "PF-AF up work queued(interrupt)",
-+				      hdr->num_msgs);
- 	}
- 
- 	if (mbox_data & MBOX_DOWN_MSG) {
-@@ -1039,6 +1054,9 @@ static irqreturn_t otx2_pfaf_mbox_intr_handler(int irq, void *pf_irq)
- 
- 		trace_otx2_msg_interrupt(pf->pdev, "DOWN reply from AF to PF",
- 					 BIT_ULL(0));
-+
-+		trace_otx2_msg_status(pf->pdev, "PF-AF down work queued(interrupt)",
-+				      hdr->num_msgs);
- 	}
- 
- 	return IRQ_HANDLED;
+On 08/05/2025 17:00, Paolo Abeni wrote:
+> On 5/5/25 6:26 PM, Roger Quadros wrote:
+> [...]
+>> +/* validate the rxnfc rule and convert it to policer config */
+>> +static int am65_cpsw_rxnfc_validate(struct am65_cpsw_port *port,
+>> +				    struct ethtool_rxnfc *rxnfc,
+>> +				    struct cpsw_ale_policer_cfg *cfg)
+>> +{
+>> +	struct ethtool_rx_flow_spec *fs = &rxnfc->fs;
+>> +	int flow_type = AM65_CPSW_FLOW_TYPE(fs->flow_type);
+>> +	struct ethhdr *eth_mask;
+> 
+> (Minor nit only mentioned because of more relevant comments on previous
+> patch) Please respect the reverse christmas tree order above.
+
+Yes, will fix.
+> 
+>> +
+>> +	memset(cfg, 0, sizeof(*cfg));
+>> +
+>> +	if (flow_type & FLOW_RSS)
+>> +		return -EINVAL;
+>> +
+>> +	if (fs->location == RX_CLS_LOC_ANY ||
+>> +	    fs->location >= port->rxnfc_max)
+>> +		return -EINVAL;
+>> +
+>> +	if (fs->ring_cookie == RX_CLS_FLOW_DISC)
+>> +		cfg->drop = true;
+>> +	else if (fs->ring_cookie > AM65_CPSW_MAX_QUEUES)
+>> +		return -EINVAL;
+>> +
+>> +	cfg->port_id = port->port_id;
+>> +	cfg->thread_id = fs->ring_cookie;
+>> +
+>> +	switch (flow_type) {
+>> +	case ETHER_FLOW:
+>> +		eth_mask = &fs->m_u.ether_spec;
+>> +
+>> +		/* etherType matching is supported by h/w but not yet here */
+>> +		if (eth_mask->h_proto)
+>> +			return -EINVAL;
+>> +
+>> +		/* Only support source matching addresses by full mask */
+>> +		if (is_broadcast_ether_addr(eth_mask->h_source)) {
+>> +			cfg->match_flags |= CPSW_ALE_POLICER_MATCH_MACSRC;
+>> +			ether_addr_copy(cfg->src_addr,
+>> +					fs->h_u.ether_spec.h_source);
+>> +		}
+>> +
+>> +		/* Only support destination matching addresses by full mask */
+>> +		if (is_broadcast_ether_addr(eth_mask->h_dest)) {
+>> +			cfg->match_flags |= CPSW_ALE_POLICER_MATCH_MACDST;
+>> +			ether_addr_copy(cfg->dst_addr,
+>> +					fs->h_u.ether_spec.h_dest);
+>> +		}
+>> +
+>> +		if ((fs->flow_type & FLOW_EXT) && fs->m_ext.vlan_tci) {
+>> +			/* Don't yet support vlan ethertype */
+>> +			if (fs->m_ext.vlan_etype)
+>> +				return -EINVAL;
+>> +
+>> +			if (fs->m_ext.vlan_tci != VLAN_TCI_FULL_MASK)
+>> +				return -EINVAL;
+>> +
+>> +			cfg->vid = FIELD_GET(VLAN_VID_MASK,
+>> +					     ntohs(fs->h_ext.vlan_tci));
+>> +			cfg->vlan_prio = FIELD_GET(VLAN_PRIO_MASK,
+>> +						   ntohs(fs->h_ext.vlan_tci));
+>> +			cfg->match_flags |= CPSW_ALE_POLICER_MATCH_OVLAN;
+>> +		}
+>> +
+>> +		break;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int am65_cpsw_policer_find_match(struct am65_cpsw_port *port,
+>> +					struct cpsw_ale_policer_cfg *cfg)
+>> +{
+>> +	struct am65_cpsw_rxnfc_rule *rule;
+>> +	int loc = -EINVAL;
+>> +
+>> +	mutex_lock(&port->rxnfc_lock);
+>> +	list_for_each_entry(rule, &port->rxnfc_rules, list) {
+>> +		if (!memcmp(&rule->cfg, cfg, sizeof(*cfg))) {
+>> +			loc = rule->location;
+>> +			break;
+>> +		}
+>> +	}
+>> +
+>> +	mutex_unlock(&port->rxnfc_lock);
+>> +
+>> +	return loc;
+>> +}
+>> +
+>> +static int am65_cpsw_rxnfc_add_rule(struct am65_cpsw_port *port,
+>> +				    struct ethtool_rxnfc *rxnfc)
+>> +{
+>> +	struct ethtool_rx_flow_spec *fs = &rxnfc->fs;
+>> +	struct am65_cpsw_rxnfc_rule *rule;
+>> +	struct cpsw_ale_policer_cfg cfg;
+>> +	int loc, ret;
+>> +
+>> +	if (am65_cpsw_rxnfc_validate(port, rxnfc, &cfg))
+>> +		return -EINVAL;
+>> +
+>> +	/* need to check if similar rule is already present at another location,
+>> +	 * if yes error out
+>> +	 */
+>> +	loc = am65_cpsw_policer_find_match(port, &cfg);
+>> +	if (loc >= 0 && loc != fs->location) {
+>> +		netdev_info(port->ndev,
+>> +			    "rule already exists in location %d. not adding\n",
+>> +			    loc);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	/* delete exisiting rule */
+>> +	if (loc >= 0) {
+>> +		mutex_lock(&port->rxnfc_lock);
+> 
+> The rxnfc_lock mutex is released and re-aquired after the previous
+> lookup. Con some other thread delete the matching rule in-between and
+> add another one at a different location?
+
+Good point. I will remove mutex acquiring from am65_cpsw_policer_find_match() and
+add acquire it instead in the beginning of am65_cpsw_rxnfc_add_rule()
+
+> 
+> /P
+> 
+
 -- 
-2.7.4
+cheers,
+-roger
 
