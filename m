@@ -1,92 +1,102 @@
-Received: from mx15lb.world4you.com (mx15lb.world4you.com [81.19.149.125])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99302AD25
-	for <netdev@vger.kernel.org>; Tue, 13 May 2025 19:08:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.125
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425821CD0C;
+	Tue, 13 May 2025 19:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747163333; cv=none; b=Hj/AlRY8MejhBiRzm4OZOXevs8DVIG1/qez+893eP1+X4pBrCZ7aGZuHgtOit7rd+nC766YZrnelirpAnbAOjcC/fG8VlpI2Q/ew1oC90u7q/vhm9OijaFhnXNEcNJq8OaD783lzWNR4bE46iL2uzWOO+8csa0YqQvh+3WPKB5I=
+	t=1747164067; cv=none; b=ArbGBlI8oud9exRFPjP7rT7VYS2c4g4FgwVOlk+331RuFWgRu0Wt0HBWBo+/F06q8YAy+UfGy61l34ZH/CpJgpmWRcKdwOQo0oLepnf26fKmi+aDXPABnAZY3e7/tCpaSr3+uv5uABaWt5uNO7ogafU7oiDBIS0UgSECWpozIZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747163333; c=relaxed/simple;
-	bh=Y77Ch5gJBWARlZpuN7JiywKqUn77ZHEoCje4u6QKo9g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Hkrf4cYo1S8sfyYPjlc1gfD7/nW/U+rw31nIoUlsaxD2NyAetYxlIaKxnkdC/3hTjX40w7maXsC6fU2m8J7jRFoTEbUOm53qwN/+bnRqw2oPZuPsEjHa0wrfRs2rSN7jfmOhDpGm9YMXf8YfU+7OOgZs5N1JphRiMR9f7i0FbKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=eAeYGpkF; arc=none smtp.client-ip=81.19.149.125
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1747164067; c=relaxed/simple;
+	bh=KWugkH9owyqMi3cH+lBmBgwoiciqoa1WdpBYWBn9Zy8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SnGUiemaCBzh/qwZDrH2CfFilVSbxVcfQPyjHW+4VQHESLVVOxGI80lUbxxzmcyIpHl/h0xKm59oS+2/w33uqdrP6OI2PYlLnOX89dmc2zCeO71lZsbZLqYvptfl6KRxMjeUc6jRYqvs1/NZDeB2mKf9A83R5iOgu+76IH8PhE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MZVpP+2g; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="eAeYGpkF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=QwKiAsvBNO+ur4LN1x15YNADNv3e3e+AJkXa7zTapUs=; b=eAeYGpkFVyGeCWIPsNK4uBqlOo
-	DIIlHji1Cp742XwloUoW1cOe9sDigRJ5vEoh9zg2LRFX/zDLpkAoIMXz1s71PaE4AloNaj91A7LP3
-	uWNLpok7grajCCX2bUD6BcfF2xwT+yIHyv3XrrgpGHOE57BrpJCgRe0MHyGRyJ/8S9XA=;
-Received: from [188.22.4.212] (helo=[10.0.0.160])
-	by mx15lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1uEuSJ-000000003qY-0oJc;
-	Tue, 13 May 2025 20:34:20 +0200
-Message-ID: <76ce9b02-d809-4ccb-8f59-cb8f201e4496@engleder-embedded.com>
-Date: Tue, 13 May 2025 20:34:17 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MZVpP+2g"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43d0618746bso46192245e9.2;
+        Tue, 13 May 2025 12:21:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747164063; x=1747768863; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=KWugkH9owyqMi3cH+lBmBgwoiciqoa1WdpBYWBn9Zy8=;
+        b=MZVpP+2gxgo2Nh23fjVqAI6jX1lZi1Q1Gtn9ed/LIqzVc7cVCGth9HZxKZ3/aQBcqJ
+         26Ejn1+0se7uwhgoDPE6ZdgGvg+p+sV+Xvy+x7woHIrYXSx+LSvkecTtxEddotnUiHLx
+         WMFfL1vtPXojVG3j3t824V2QrGYomdVz4Czv2z2vfXM8SYuuOwjBX3oIeYA4M1JG6egC
+         odfakDVUQJqFhxWOyTZ/xZmUlhe05sHcVscybfyXc4XVB48T3BTeWil7gy2D08W5zD5/
+         nWspeHb/A0Zd1zsJD4539rCJwhzUv7QTvngaHBl+9vfRZJj1hsu4C+kDYL0Hx2yOkT9U
+         zkLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747164063; x=1747768863;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KWugkH9owyqMi3cH+lBmBgwoiciqoa1WdpBYWBn9Zy8=;
+        b=I7U2mK+9G/twslL4mqyoDAuIz8wPDWpeYF51FEMGv7wDLJ0gLlM/BP/B/Ur2OM7o4Y
+         DWg8nG97+ohNqNPum+4kH9GMGt9dYt1DA7uBbRdN02UHRWJ6i6/cChMqdb/KYo11Z48c
+         3xzF3w5Ign6UhPL0S8hnbW8g0Xk9KuV3goQz5xWB3L8DI8eJ8azyQbeGoWimqQVJKQ+R
+         6f59um9XfM/zl+UkB8lSiZXQWMpgeyejBs7DGbk0uZndA8ZLwSA3Glx19hfyCXxtaeG1
+         rx9tIMbWtTX5ah+eBdN/V74+J1ghMfW3pRLKakai6uW7Ue6KCZ6qAc4qLErNFV0beI7e
+         QNiw==
+X-Forwarded-Encrypted: i=1; AJvYcCWRHZMz0j5l/5OrYPjZmnRhqTKzI2QmGpJkq8mwjjlozeL0MkxArv/iImlcv2PbzwHIvEb1B7kA@vger.kernel.org, AJvYcCWmBpkuSDFWa3X3xtcGD3H5FNXBNT+DoseiFTiWdWsG+DhHcmmWY41IYFPNKr1iIXEbbMCWmUbvxt+zPPk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxQBpjSRU0I2IFMC+kuQFDOJmWjl+w6WQQ4afPA5381X4tl8vA
+	kgcVZPzEm0oonwMPDWDIB8weXj41UWxAXipPgBzlddNNIC+WgKq6/PrcMwWM88uWujh9QZgAhYS
+	3j8PWZjPQbH0ScvnOkRQ5wP59egI=
+X-Gm-Gg: ASbGncszT0aqBwrFWkRWfmZ8Astlk4DyFJSM0m33MB0T7G5b5ynkQocn59FkmJENDQz
+	ZKNr2unWDgak6lEHIuuGLqdxCXricUU/GXJOfE5LUcn4qLXes0jjGox2uQp3cYJh8Mk7UIIS6W8
+	+lIh0Ly1INtZqTCFnQsLZySXm4NMuc3Ur2DLCmKc4EOCXgRiJvz54yPv9W/PVvCZ+2uOU=
+X-Google-Smtp-Source: AGHT+IFFD0bIascMFJs5DAYZGzzmLLObhHeuIOwMPJBROnuNKXxs2pWRRLolHFdcj+r/LY6ZlnOhV1Wg/eFw5Q7QxdU=
+X-Received: by 2002:a05:6000:2a8:b0:3a2:3c51:f4a1 with SMTP id
+ ffacd0b85a97d-3a34969ad98mr413296f8f.7.1747164063367; Tue, 13 May 2025
+ 12:21:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: tsnep: fix timestamping with a stacked DSA
- driver
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org
-References: <20250512132430.344473-1-vladimir.oltean@nxp.com>
- <532276c5-0c5f-41dd-add9-487f39ec1b3a@engleder-embedded.com>
- <20250512210942.2bvv466abjdswhay@skbuf>
-Content-Language: en-US
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-In-Reply-To: <20250512210942.2bvv466abjdswhay@skbuf>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AV-Do-Run: Yes
+References: <20250511214037.2805-1-zakkemble@gmail.com> <e9830d60-d711-4fab-a4e8-329c5a3353f5@broadcom.com>
+In-Reply-To: <e9830d60-d711-4fab-a4e8-329c5a3353f5@broadcom.com>
+From: Zak Kemble <zakkemble@gmail.com>
+Date: Tue, 13 May 2025 20:20:51 +0100
+X-Gm-Features: AX0GCFtbzNY-sGYxywLd2p0dsXhZbl_2oMgDjh89v8ZxC8foayYnEIl-iCQWnu8
+Message-ID: <CAA+QEuR0BDAwrboJrGkHf4y0FGoUef4jcjpz9wx0uJn-t0sUyw@mail.gmail.com>
+Subject: Re: [PATCH] net: bcmgenet: tidy up stats, expose more stats in ethtool
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Doug Berger <opendmb@gmail.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 12.05.25 23:09, Vladimir Oltean wrote:
-> On Mon, May 12, 2025 at 10:07:52PM +0200, Gerhard Engleder wrote:
->> On 12.05.25 15:24, Vladimir Oltean wrote:
->>> This driver seems susceptible to a form of the bug explained in commit
->>> c26a2c2ddc01 ("gianfar: Fix TX timestamping with a stacked DSA driver")
->>> and in Documentation/networking/timestamping.rst section "Other caveats
->>> for MAC drivers", specifically it timestamps any skb which has
->>> SKBTX_HW_TSTAMP, and does not consider adapter->hwtstamp_config.tx_type.
->>
->> Is it necessary in general to check adapter->hwtstamp_config.tx_type for
->> HWTSTAMP_TX_ON or only to fix this bug?
-> 
-> I'll start with the problem description and work my way towards an answer.
+Heya, I've split up the changes and updated the stats reporting to use
+ndo_get_stats64 etc. here -
+https://lore.kernel.org/all/20250513144107.1989-1-zakkemble@gmail.com/
 
-(...)
 
->> I can take over this patch and test it when I understand more clearly
->> what needs to be done.
->>
->> Gerhard
-> 
-> It would be great if you could take over this patch. After the net ->
-> net-next merge I can then submit the ndo_hwtstamp_get()/ndo_hwtstamp_set()
-> conversion patch for tsnep, the one which initially prompted me to look
-> into how this driver uses the provided configuration.
-
-I will post a new patch version in the next days. You can send me the
-ndo_hwtstamp_get()/ndo_hwtstamp_set() conversion patch for testing. I
-have it on my list, but nothing done so far, so I feel responsible
-for that too.
-
-Gerhard
+On Mon, 12 May 2025 at 15:35, Florian Fainelli
+<florian.fainelli@broadcom.com> wrote:
+>
+>
+>
+> On 5/11/2025 11:40 PM, zakkemble@gmail.com wrote:
+> > From: Zak Kemble <zakkemble@gmail.com>
+> >
+> > This patch exposes more statistics counters in ethtool and tidies up the
+> > counters so that they are all per-queue. The netdev counters are now only
+> > updated synchronously in bcmgenet_get_stats instead of a mix of sync/async
+> > throughout the driver. Hardware discarded packets are now counted in their
+> > own missed stat instead of being lumped in with general errors.
+> >
+> > Signed-off-by: Zak Kemble <zakkemble@gmail.com>
+>
+> If you are making changes to the driver around statistics, I would
+> rather you modernize the driver to report statistics according to how it
+> should be done, that is following what bcmasp2 does. Thank you.
+> --
+> Florian
+>
