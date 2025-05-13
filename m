@@ -1,171 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5232949EE;
-	Tue, 13 May 2025 12:13:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0E723814A
+	for <netdev@vger.kernel.org>; Tue, 13 May 2025 12:14:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747138422; cv=none; b=mKWVQmI+KZeZnCPekk83GxgY+HrDuC93iCG+bCoorFoGlyEBUeGGDj3L1ruP+IP9wJJ4TEXmubS5hHOlT9zyOSAxc/KsH1TpWIYYHPZnBQGgYtv6XtkEt4jGlvhKiAtkG296AUaPfi4DJeLKKyevD/FZa6lrCXvTTc6R8vEOuug=
+	t=1747138444; cv=none; b=bNPwDFNU8ZOUc9OSQpCJ+OFSTqX7162jWgqzWaiYZRL9Ja8mS46mI3oEe0f2MmopbIuoOeSCf6HdzZm23+MKON5m9R4wb8KEm0hx7j3yH1lY14MkOB9v7HvDpKAVCPxE0NedCQJVPPsaCC26Ph05crtivNp0MHRQ2FsaO7PhLxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747138422; c=relaxed/simple;
-	bh=ZLuQ+QKiv6AHk6aYVgypKAalpJm1udHDw0jrk7Sr2HM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fors6e5GQkYMdFppHrP9FcyLX9Arj8Y/JaQNWkvGIVfWdE++A3M3sSN0lBwHmpbtAVtL7z0HkFGZ8P0PauT3oTl2OPlCwjESjgT86CxpbZjf13pIWRin7FUdfzv6a0ZCnATQiUaqxVznBwEL/ydClw6Ob+595Ulp7A/T+wgqgoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FLwRJf1j; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747138444; c=relaxed/simple;
+	bh=LA/KCLameLqFOczlCUJ/2B4/nB7vo4JUftohFXDrgXY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ye4h9Mf2E1Cy8AQ0djv8YcWqgrVJ9SJTjFU1Pfx/F6PVqPlBjCqJ4TAS1nCxhDAEO6KVheXhavksyccIJX/BX8qHLht9NaBMmiMrnmHr5m+pAUs4pCxBL9JYuGkjwGcO8nxdtCv3m839LcfvL8p+OU1dTA9OVNQoLRR9pGuscLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell-sw.com; spf=pass smtp.mailfrom=bell-sw.com; dkim=pass (2048-bit key) header.d=bell-sw-com.20230601.gappssmtp.com header.i=@bell-sw-com.20230601.gappssmtp.com header.b=IO41QlRz; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell-sw.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell-sw.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FLwRJf1j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C42C4CEED;
-	Tue, 13 May 2025 12:13:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747138421;
-	bh=ZLuQ+QKiv6AHk6aYVgypKAalpJm1udHDw0jrk7Sr2HM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=FLwRJf1jmtUTqKQ1ZqOx+AL2WFWng6nSP5vGIKq6T5POLAS1D9WD1su1Q9N3+nMfM
-	 3xd+SBgCXU9qpS7DcQJ3nonbFC33lrjFE2+yrnWVrmPjknl1GL/rD/xzDf+G2l8Dh7
-	 2hvnxP6lcB+5sKvLMOabIfw4sJzgq5wXhPMBfpgrbkOtKJFV/FoULKt47KsGD8Qi5F
-	 1i8MwTwnmd6IEPA0RkRVRmXsioqzp172QYi6YdKcTvG6MZDAWxzVpPnrCSY+QHQp1U
-	 owzrzTYjdSXli3I2JiIsnh0PNOpg3FIstGOUFlkGyg6hAQ5KihNJo0Xjl0GZHseLHE
-	 Oqtd6S7qzZyaQ==
-From: Roger Quadros <rogerq@kernel.org>
-Date: Tue, 13 May 2025 15:13:13 +0300
-Subject: [PATCH net-next v3 9/9] net: ethernet: ti: am65-cpsw: remove
- cpsw_ale_classifier_setup_default()
+	dkim=pass (2048-bit key) header.d=bell-sw-com.20230601.gappssmtp.com header.i=@bell-sw-com.20230601.gappssmtp.com header.b="IO41QlRz"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-54fcb7e3474so3757768e87.2
+        for <netdev@vger.kernel.org>; Tue, 13 May 2025 05:14:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bell-sw-com.20230601.gappssmtp.com; s=20230601; t=1747138440; x=1747743240; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fBlZgEOoEfroAGDNOtFCLBH/jbcjwtEuds8r227tD1Y=;
+        b=IO41QlRzvA1J3/3k6dZolCl9QVCbpTfH3iBDZwWoiMTxW+N3rGNpk4iAYqRjmDepsB
+         Us4Rixd7qymtPtaL+i8zFrRo3CEeuQ0G67CdVjqXbJpp/EidTFZJ/6i/TMPuq1EnmZlp
+         W1vRf49mCUxXWVqTcoYMN8DBVd5d/L8nLsypfd9GhSBciK7tBVPc+QEl8NGOJI+XN6zs
+         CICYu55GRxHh/WiLEySM/ACtvi3+yLuz8SU01Z56KlG3l8Y9rRFP/BoenVSh5rloZnuE
+         4zYR9sdV2xvHd3ibO+bmjkaVdlASbzRwjvoSRfwNxdAsl0f42GO7IodySDV2K01I5VQP
+         F2lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747138440; x=1747743240;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fBlZgEOoEfroAGDNOtFCLBH/jbcjwtEuds8r227tD1Y=;
+        b=RT+mL3RgcNzfOIPXfeI3WG/wyY33Ui4EHPFMov8+Yx6PvHEu77NzRoltHc8CZ/jtC0
+         kDPbwZvkvk1NcNZBZ+SXEqR5DUjCtJF1plib4aQW74Vj+KIAPWxhVgKNHeGIDTUQMzVp
+         3HdfN+FDejh5MYiXjbGj8tb36DiZrMrCw+ajduTRasaWAAufPyShNx5CLQzyVQ0RXL3s
+         2tybSkVIlcItqOPa2qUz5BAhXJFaktDXXqjMHPrCC22ZefZbQqa88K8Mv6FavXdfy9Kl
+         OTGG9pstjEPc1OmFU8JpT+XY53Msj7BLKVhMptgPMrRqX11mU/gSfzOrmdJCaZA5Ktzw
+         qjlA==
+X-Gm-Message-State: AOJu0YyjzIGxcmuWryaUvB7dUS0wUe139GP21r5qK3sWp9E2cioQ/OIR
+	XJRPg+x/N6YIfgPI6asCVmoH2rOSH5BV9+Iwxilk0BCaxl8BoMZ/Y4G1V2YRBA==
+X-Gm-Gg: ASbGncs+viAD5x0goaQ9osIBnD3/H9FvC+wDebBykjws1wBOmbCaLTtoWxIQoXFtrTy
+	3y6+xRitByT1wc1uVnVp5+a1dKV3aRKh2dHkqvLYKknv/aYPI8uQEoxlfntvNuka2gHBVCLsrBx
+	a6CabSyu9VqJi9xVCgKdCra4T4p4HeS5r2zrnrxDxdFJA3NJqHjiFO025Ql8OUxPry3scLKg4EX
+	mlFKiNEOoSHnAqYtx2tZ3PHIJPT32uDs3Lg9ByyYtCSeq9aX4XhU5VGpy5SnXEs+JmZi4u4QVMy
+	KRJdtwSBqszhxfZbZ3VROjljP67EItmZOpvqZiTFC7LZxJ/hS1DS56lOfwnth9G6+VA=
+X-Google-Smtp-Source: AGHT+IE+2GmTp6jx2k0URSKcwhuRxgmsdmMIIUyJ9yehgMa56iPa5P8QafOjySC9AD26kZQGxzILCA==
+X-Received: by 2002:a05:6512:6286:b0:54f:c4ab:106e with SMTP id 2adb3069b0e04-54fc67cbe49mr5266453e87.28.1747138439923;
+        Tue, 13 May 2025 05:13:59 -0700 (PDT)
+Received: from localhost.localdomain ([5.8.39.119])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54fc645cd2bsm1848085e87.73.2025.05.13.05.13.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 May 2025 05:13:59 -0700 (PDT)
+From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+To: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Subject: [PATCH v2] wifi: rtw88: fix the 'para' buffer size to avoid reading out of bounds
+Date: Tue, 13 May 2025 12:13:04 +0000
+Message-Id: <20250513121304.124141-1-aleksei.kodanev@bell-sw.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250513-am65-cpsw-rx-class-v3-9-492d9a2586b6@kernel.org>
-References: <20250513-am65-cpsw-rx-class-v3-0-492d9a2586b6@kernel.org>
-In-Reply-To: <20250513-am65-cpsw-rx-class-v3-0-492d9a2586b6@kernel.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Russell King <linux@armlinux.org.uk>, danishanwar@ti.com
-Cc: srk@ti.com, linux-omap@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Roger Quadros <rogerq@kernel.org>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4075; i=rogerq@kernel.org;
- h=from:subject:message-id; bh=ZLuQ+QKiv6AHk6aYVgypKAalpJm1udHDw0jrk7Sr2HM=;
- b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBoIzdVB4WXViRkjB3Jb++fDQlgdp+LKDPvtZ9eo
- JvMC/tFiBmJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCaCM3VQAKCRDSWmvTvnYw
- k8GvD/95hZrLtiVBx3XYimlYjCpf3d9qx2ku1Fu1ijpbJbQhLwvoTx25wfwFdaBZUsnkRNZe+5p
- piOpy9Ibuf6Uzdu6bVoUKTEA89Uv0VubC6XxHdRU184MS7Xy4ig69aDjx5DBGX2gkiF1MyXGGxe
- tlkHj3K+2RtLqK5Ca8aP6T4zqIjiwBxkGqiy8Xs7T+iN+U2FrIEuWRT/MZZ+yKbCmMIxRDrxmL+
- eStiEwgD7qbqlGVzN34mTMWB/qfp9apZxvjYDGVQ20Lwkh/kXVZrWgdQu80ppQ3m9IoD5ggahYT
- MkW5WM6/RH/arjFtDheRBJqr32fNipa5SLcexlRcXDDCpn7oEabZK2jLVf9mFcHOK6QF289zMI0
- yarzgMiBIAPmVd8KfgkaDy1ZvzbGqh/HZkS4hk5yNho/8nwoPvsN/n+Bchc0uB/7JT/in0Wvq+7
- 0wldCz31ri6y8yycuVoqe3zfOmKMchg80Ek0W9nCW/h3rW1zxk1loVYXX7vcnUShS91P2Zem65a
- mJ7AJeGChLwbF9RzeSH+lJhIkgqFL0bxA14m8ECB0TamZslrhHYWIzfLCTCW0d5014thvbduMAD
- o30FslKFeAXwULEheAosA/V4j5TO5SKPqE0ZehV5gpbJ+B7d94+L0Ey30KzNonTtx5G4ucpC10W
- PGXjEdN8sc1lmYg==
-X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
- fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
+Content-Transfer-Encoding: 8bit
 
-The RX classifier can now be configured by user using ethtool -N.
-So drop cpsw_ale_classifier_setup_default().
+Set the size to 6 instead of 2, since 'para' array is passed to
+'rtw_fw_bt_wifi_control(rtwdev, para[0], &para[1])', which reads
+5 bytes:
 
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
+void rtw_fw_bt_wifi_control(struct rtw_dev *rtwdev, u8 op_code, u8 *data)
+{
+    ...
+    SET_BT_WIFI_CONTROL_DATA1(h2c_pkt, *data);
+    SET_BT_WIFI_CONTROL_DATA2(h2c_pkt, *(data + 1));
+    ...
+    SET_BT_WIFI_CONTROL_DATA5(h2c_pkt, *(data + 4));
+
+Detected using the static analysis tool - Svace.
+Fixes: 4136214f7c46 ("rtw88: add BT co-existence support")
+Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c |  3 --
- drivers/net/ethernet/ti/cpsw_ale.c       | 52 --------------------------------
- drivers/net/ethernet/ti/cpsw_ale.h       |  1 -
- 3 files changed, 56 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index cdb83ae54656..0523c81a2a54 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2497,9 +2497,6 @@ static int am65_cpsw_nuss_init_rx_chns(struct am65_cpsw_common *common)
- 		}
- 	}
- 
--	/* setup classifier to route priorities to flows */
--	cpsw_ale_classifier_setup_default(common->ale, common->rx_ch_num_flows);
--
- 	return 0;
- 
- err_request_irq:
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 0cd27a6fe575..ba639d87706b 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -1695,58 +1695,6 @@ void cpsw_ale_policer_reset(struct cpsw_ale *ale)
- 		cpsw_ale_policer_reset_entry(ale, i);
- }
- 
--/* Default classifier is to map 8 user priorities to N receive channels */
--void cpsw_ale_classifier_setup_default(struct cpsw_ale *ale, int num_rx_ch)
--{
--	int pri, idx;
--
--	/* Reference:
--	 * IEEE802.1Q-2014, Standard for Local and metropolitan area networks
--	 *    Table I-2 - Traffic type acronyms
--	 *    Table I-3 - Defining traffic types
--	 * Section I.4 Traffic types and priority values, states:
--	 * "0 is thus used both for default priority and for Best Effort, and
--	 *  Background is associated with a priority value of 1. This means
--	 * that the value 1 effectively communicates a lower priority than 0."
--	 *
--	 * In the table below, Priority Code Point (PCP) 0 is assigned
--	 * to a higher priority thread than PCP 1 wherever possible.
--	 * The table maps which thread the PCP traffic needs to be
--	 * sent to for a given number of threads (RX channels). Upper threads
--	 * have higher priority.
--	 * e.g. if number of threads is 8 then user priority 0 will map to
--	 * pri_thread_map[8-1][0] i.e. thread 1
--	 */
--
--	int pri_thread_map[8][8] = {   /* BK,BE,EE,CA,VI,VO,IC,NC */
--					{ 0, 0, 0, 0, 0, 0, 0, 0, },
--					{ 0, 0, 0, 0, 1, 1, 1, 1, },
--					{ 0, 0, 0, 0, 1, 1, 2, 2, },
--					{ 0, 0, 1, 1, 2, 2, 3, 3, },
--					{ 0, 0, 1, 1, 2, 2, 3, 4, },
--					{ 1, 0, 2, 2, 3, 3, 4, 5, },
--					{ 1, 0, 2, 3, 4, 4, 5, 6, },
--					{ 1, 0, 2, 3, 4, 5, 6, 7 } };
--
--	cpsw_ale_policer_reset(ale);
--
--	/* use first 8 classifiers to map 8 (DSCP/PCP) priorities to channels */
--	for (pri = 0; pri < 8; pri++) {
--		idx = pri;
--
--		/* Classifier 'idx' match on priority 'pri' */
--		cpsw_ale_policer_read_idx(ale, idx);
--		regmap_field_write(ale->fields[POL_PRI_VAL], pri);
--		regmap_field_write(ale->fields[POL_PRI_MEN], 1);
--		cpsw_ale_policer_write_idx(ale, idx);
--
--		/* Map Classifier 'idx' to thread provided by the map */
--		cpsw_ale_policer_thread_idx_enable(ale, idx,
--						   pri_thread_map[num_rx_ch - 1][pri],
--						   1);
--	}
--}
--
- #define HOST_PORT_NUM 0
- 
- /* Clear Policer and associated ALE table entries */
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.h b/drivers/net/ethernet/ti/cpsw_ale.h
-index dbc095397389..5c9614730998 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.h
-+++ b/drivers/net/ethernet/ti/cpsw_ale.h
-@@ -223,7 +223,6 @@ int cpsw_ale_vlan_add_modify(struct cpsw_ale *ale, u16 vid, int port_mask,
- int cpsw_ale_vlan_del_modify(struct cpsw_ale *ale, u16 vid, int port_mask);
- void cpsw_ale_set_unreg_mcast(struct cpsw_ale *ale, int unreg_mcast_mask,
- 			      bool add);
--void cpsw_ale_classifier_setup_default(struct cpsw_ale *ale, int num_rx_ch);
- void cpsw_ale_policer_reset(struct cpsw_ale *ale);
- int cpsw_ale_policer_set_entry(struct cpsw_ale *ale, u32 policer_idx,
- 			       struct cpsw_ale_policer_cfg *cfg);
+v2: initializer style change
 
+ drivers/net/wireless/realtek/rtw88/coex.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
+index c929db1e53ca..64904278ddad 100644
+--- a/drivers/net/wireless/realtek/rtw88/coex.c
++++ b/drivers/net/wireless/realtek/rtw88/coex.c
+@@ -309,7 +309,7 @@ static void rtw_coex_tdma_timer_base(struct rtw_dev *rtwdev, u8 type)
+ {
+ 	struct rtw_coex *coex = &rtwdev->coex;
+ 	struct rtw_coex_stat *coex_stat = &coex->stat;
+-	u8 para[2] = {0};
++	u8 para[6] = {};
+ 	u8 times;
+ 	u16 tbtt_interval = coex_stat->wl_beacon_interval;
+ 
 -- 
-2.34.1
+2.25.1
 
