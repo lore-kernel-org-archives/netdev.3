@@ -1,217 +1,634 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2083.outbound.protection.outlook.com [40.107.236.83])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2111.outbound.protection.outlook.com [40.107.22.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B74433C8;
-	Tue, 13 May 2025 18:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.83
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747160890; cv=fail; b=nmblYQcAmRvO2w1rum+3nujgbWDLsa2pUHSncOqTcsWGn0xIME0qb2/s8Fd2sUzCLClX0WvCFGfJgz/8wXqBzcq4z1XQ0FYQT5BqJXojS8osHN4m+BCM/abzZrkVu+WxjwxOlDS56/uPkIqjQs0Tt1m2ncBW1XXjXIi3r5fiyqc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747160890; c=relaxed/simple;
-	bh=526VBvGx9TEfmSfXRvmX/VAd9Q1/GxCEH8NRFWd41U8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Z8Zh1ngcOdFwQTlDTPFIfHhyi0jJKcFnrOy9kc6F/0lg8YbAGr+/LyCSAD58ogqNd2c21IVeIKIHPi9JJYYOpET2ZOPR1EEmIQXyuoM7k0uA1zKkam6+bUUeK83Q/Wcst359EgJ6q2XVaYVrTwLAlKjmmS40ETUxLxB8Ia1yX70=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=kgtSI9cr; arc=fail smtp.client-ip=40.107.236.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8122BF976;
+	Tue, 13 May 2025 18:41:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.111
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747161674; cv=fail; b=r09KeUzDyMUaS6/HM4v64YN/6j97CS9Ble2pEczwNmO/RTUburzZ1Bn05zwrqSYuswolrHtIVZBmSeRzhd3V5EDfdhjjaTZSwRILwRUTCToTl9zD7IBxljzQn2KcjE5DcZhSejWZeou/nKZ5uRREe8bZ1DVr1Zj8aCzmCNPQOoY=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747161674; c=relaxed/simple;
+	bh=sTrPNls172pbbVywU7arw7zcivyREJqpCCFpYYh8qLg=;
+	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=MPK2y+/nCl8lx/eEW39NrkM+SZmuD9cIQtgBunzTU6avXib6vGGkJnx11WV3cfjnQNRnm8bDOJe6nLpES7EPQNBE+mjdZLY0w2RN50WlZJER29lNyz1ehZrg9gC3tmuouCUBUb4A0WACno912b0pdzttZ8n22FnqVwKsosK2Qcw=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seco.com; spf=pass smtp.mailfrom=seco.com; dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.b=dnPB0AjA; dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.b=dnPB0AjA; arc=fail smtp.client-ip=40.107.22.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="kgtSI9cr"
+	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.b="dnPB0AjA";
+	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.b="dnPB0AjA"
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=el3Dupvz8vgU+RRgLuEROEVlq4vPbqtgZ370u7zBGO8dSiPCwRyHEeLbs4HkQqDW2RA0yrbZVjm1xUt9ksfN+J1bC8/gftFCKQpVQqT2nL4jGhthXfRCbZuRRcTz0aPB25oXKFv4/cAo/uAkFwb0axkDPScf95hyd47WI9CNplEn1o1BRuKNLk1HZjXLYZBtWCffXQQJqIUx5bQhQtiLvWQJU0gimyvr84SonzyKmc/9rWdbiJhN+M2iTtlWfe0xk64m6GKo5jTE6JnGe0WfE7e5vToL7QIP+CgeulSJ+EjSzyyJE+F4JUcTl9/zuJJHLJ1qh80hdrq6wEo5TpOM2g==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5TbktYI0pxnc2XsJTiVx6NtpuzJIOqT8TxoN9dDvCaY=;
+ b=WAmIyBqUdOK9KwRo9YyggJERzy4CXSwJ/QToOf3lPAEEdjxbfBxiC0tGY8d0XdyBiUmjXSbnFLsmZ/GXFK3TyRU+VV4VKGDqN7lmVGs4wKr50tA1qx2TodS+rjoe9P7WH8nZhFuSGN7GHxzoHBvXRyngyqD/21FhrbOZP8CnF+zwIlzFokJb7tDxpZyNCWEpE1Bw3ZeQEH//dBU0E+hyUcqkucRYZ79SxC/BcDG/GljWyS9mcVzAf1C2m4Wrhcq8nUIFf/TBfkqZYvHrkOjrEgHyoKnmS5ma/r6dJRcqDNaIQqhGQRg+T4CKKfMyfwbdFrZ53fL5x6hXgBAMsOkg2Q==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 20.160.56.85) smtp.rcpttodomain=armlinux.org.uk smtp.mailfrom=seco.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=seco.com;
+ dkim=pass (signature was verified) header.d=seco.com; arc=pass (0 oda=1
+ ltdi=1 spf=[1,1,smtp.mailfrom=seco.com] dkim=[1,1,header.d=seco.com]
+ dmarc=[1,1,header.from=seco.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5TbktYI0pxnc2XsJTiVx6NtpuzJIOqT8TxoN9dDvCaY=;
+ b=dnPB0AjAY3scBd8aEWKmHCe36Wp5LLctJcQyFPwPm9AvJW/69ulSNibhF6NMOG5BE3k2zCT5yl9guCdtaLSGcRoBVR4PPOQfUJjS7ha92woZbPrtxLR6zvIdrWw54MJqvf5ikL+G8KYGIz2WiqUR9z0kBJmwFCt/I8wfbRNBm+jSy3Jmu8kF5Yg72os1TXil0i/4W0+g4SFJ0WUdtnC6krLO2BVlpYzgq20nEOvYd+2vvy+2Zzyi8d9gbWZOyNgku3to9O99RG1SLsOnqTGfWRTnoHAdGHYjWsfsqNDKmHqwjolDqkjJxQFA6blf/BbTrNZd56vYfnmdladXNlt6lQ==
+Received: from DB9PR05CA0003.eurprd05.prod.outlook.com (2603:10a6:10:1da::8)
+ by AS4PR03MB8674.eurprd03.prod.outlook.com (2603:10a6:20b:58a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.28; Tue, 13 May
+ 2025 18:41:08 +0000
+Received: from DU6PEPF0000A7DE.eurprd02.prod.outlook.com
+ (2603:10a6:10:1da:cafe::41) by DB9PR05CA0003.outlook.office365.com
+ (2603:10a6:10:1da::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.27 via Frontend Transport; Tue,
+ 13 May 2025 18:41:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 20.160.56.85)
+ smtp.mailfrom=seco.com; dkim=pass (signature was verified)
+ header.d=seco.com;dmarc=pass action=none header.from=seco.com;
+Received-SPF: Pass (protection.outlook.com: domain of seco.com designates
+ 20.160.56.85 as permitted sender) receiver=protection.outlook.com;
+ client-ip=20.160.56.85; helo=repost-eu.tmcas.trendmicro.com; pr=C
+Received: from repost-eu.tmcas.trendmicro.com (20.160.56.85) by
+ DU6PEPF0000A7DE.mail.protection.outlook.com (10.167.8.38) with Microsoft SMTP
+ Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.18 via
+ Frontend Transport; Tue, 13 May 2025 18:41:07 +0000
+Received: from outmta (unknown [192.168.82.133])
+	by repost-eu.tmcas.trendmicro.com (Trend Micro CAS) with ESMTP id 1523A20080268;
+	Tue, 13 May 2025 18:41:07 +0000 (UTC)
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (unknown [104.47.17.107])
+	by repre.tmcas.trendmicro.com (Trend Micro CAS) with ESMTPS id 844D820080076;
+	Tue, 13 May 2025 18:41:05 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aQPttsFc+6u52w86ryQ9ocYePJlac4K4lr7Ji8O6wMTHCbczcQ8mxnLAilAV/SSlQOdX8ZZbv+sF+elQ4PvFjriEk1Yy1zXPGydf+e/lQcWgaeKaMzf7AOpwduMy/NssOLb9ta3Vguz6+vC6SHTjXonhwiW529xm7Cy7myzvtjNuvdv+HXd821vbgmD45RHBo3mKznDUJDslAP5V+xdvWzftuNbGj9ThjYzVflLSOqGpFY7PvELkk4LuP6RE+N+IPODLdwuS8TLP0UFrcjr2+dvDVSBxFoU4vOafSTmlrlE7tLtZUGAOKkTCb2cArAb+/OXk5DJmOzf15l8iZWqFxA==
+ b=MKbBlWJHvF5f59DtDhbRr8sukAOHIRQLtv98eqkzL3LzYtzmHMYLC2W0uGKLYXtBM61DnmCpGT15pU4wABWRYdvxMbW31xIp/L1K1SwPbXOe7gNRwH9hcSmr7zHUP+1Hy5fdz2o4T1LCpf+s+0lwlPrYSBwwDcImsTWitdlAEeczMsmrF6SGEG8trw8A5xhCkYmw5MaN9JI6yG9cTGUMbJmN2NLSYf5G9/TasWOLtWCazfjM0kj8dU5T83yY4J1ZpWI77QtPYVhMjgzrkqUxhP5l8KSbhlsKq0o3Y/pago6DbhTzrX0CsgDm9fqDLJ/bnOyMJIqsiNlYtEj83goi3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HBCfKiLsz2jI7ItgQVDDWUF9ERyhbOa6SZ+/IM7rs8w=;
- b=cjORu7MYVmi0Iwz+igf1jFc2fZ9CznxkHeAzfx6O8AuSRgpqUiD+2AI2dVhY7zhWsGDhGmpEB5x8V6my6wxwe5R3+qepu1KRzqoRQ2cCgbrSFhEiCaQe0GVsEfp9kI5T1kVMmmTOFTNJFcKE2B9fReLMAbPRikiqFCGiwkO0cjAFhX0vEort68Zct1E6kYd55PEC+Yerki6lDAJalmk3gcDBo5n7zSmcJJEWZT6y/07fy9SpOoG7KVD2QTRhUAZLrZMJlYynTlbh3D4/90l8ibqu5YfOSv0UiGCv9hcKK+frUvStbOavLpjxwRejwWBm2fMXN7uS3DEsFa0AO94j3Q==
+ bh=5TbktYI0pxnc2XsJTiVx6NtpuzJIOqT8TxoN9dDvCaY=;
+ b=Q7itAr3ZCmvJdRyatV1y+S9F9EBLyBz8j5bpHmlTEuCXLQFA/96ZKRkpe278fjq66l9hLKTsKTACUazyybn7uDDbQIe5AfhzstdpqpplaTTKkTqPT5JhelpcSzb0J4N27Q1/GgVJKZ1YhNru21uUubVYOJU+l3WixXyBdB/aICYG7cnorP7nmeRe9hPWZO2KiKVHZKadA1ZfXq3U7FCNuK1l9hpLjVKFF5Exi49j1R7D4cVP+fgtHjmUyIeTJ2dV1VWd4gas4AQNMt7pl3isrnAYrgpUxNJ565bqrq5I44l7Zn1gqwTbW49k2Vk63VyFVxEtMPGfsy5FGAdFiaEhwg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HBCfKiLsz2jI7ItgQVDDWUF9ERyhbOa6SZ+/IM7rs8w=;
- b=kgtSI9crobbJrV0FB+DJYJ8D686YGAQ6vXyOgAiOz8QAbOgTLhAMgiKUsUescSyrp3Y/EK+HCLwf9YChpg6SGWaCoAJ+mO+S23UXweaiJjEX9b6sZ42pEt43+abI3AlUFAOO+vUKhzJOEkDvxb5AHeVBRN2YTBR3JAP1rEFpzr8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB8535.namprd12.prod.outlook.com (2603:10b6:610:160::19)
- by PH8PR12MB6842.namprd12.prod.outlook.com (2603:10b6:510:1c9::10) with
+ bh=5TbktYI0pxnc2XsJTiVx6NtpuzJIOqT8TxoN9dDvCaY=;
+ b=dnPB0AjAY3scBd8aEWKmHCe36Wp5LLctJcQyFPwPm9AvJW/69ulSNibhF6NMOG5BE3k2zCT5yl9guCdtaLSGcRoBVR4PPOQfUJjS7ha92woZbPrtxLR6zvIdrWw54MJqvf5ikL+G8KYGIz2WiqUR9z0kBJmwFCt/I8wfbRNBm+jSy3Jmu8kF5Yg72os1TXil0i/4W0+g4SFJ0WUdtnC6krLO2BVlpYzgq20nEOvYd+2vvy+2Zzyi8d9gbWZOyNgku3to9O99RG1SLsOnqTGfWRTnoHAdGHYjWsfsqNDKmHqwjolDqkjJxQFA6blf/BbTrNZd56vYfnmdladXNlt6lQ==
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=seco.com;
+Received: from PAVPR03MB9020.eurprd03.prod.outlook.com (2603:10a6:102:329::6)
+ by PA4PR03MB7038.eurprd03.prod.outlook.com (2603:10a6:102:e1::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.31; Tue, 13 May
- 2025 18:28:03 +0000
-Received: from CH3PR12MB8535.namprd12.prod.outlook.com
- ([fe80::ad89:457b:e4bd:b619]) by CH3PR12MB8535.namprd12.prod.outlook.com
- ([fe80::ad89:457b:e4bd:b619%4]) with mapi id 15.20.8722.027; Tue, 13 May 2025
- 18:28:03 +0000
-Message-ID: <7a951b14-c1df-488e-b63b-cdcb4a854b5c@amd.com>
-Date: Tue, 13 May 2025 13:27:59 -0500
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.30; Tue, 13 May
+ 2025 18:41:03 +0000
+Received: from PAVPR03MB9020.eurprd03.prod.outlook.com
+ ([fe80::2174:a61d:5493:2ce]) by PAVPR03MB9020.eurprd03.prod.outlook.com
+ ([fe80::2174:a61d:5493:2ce%7]) with mapi id 15.20.8722.027; Tue, 13 May 2025
+ 18:41:03 +0000
+Message-ID: <5fb7afec-c216-4912-bb7f-a2bd86dcfcad@seco.com>
+Date: Tue, 13 May 2025 14:40:57 -0400
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 06/22] sfc: make regs setup with checking and set
- media ready
-To: alejandro.lucero-palau@amd.com
-Cc: Martin Habets <habetsm.xilinx@gmail.com>, Zhi Wang <zhi@nvidia.com>,
- Edward Cree <ecree.xilinx@gmail.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-cxl@vger.kernel.org,
- netdev@vger.kernel.org, dan.j.williams@intel.com, edward.cree@amd.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, dave.jiang@intel.com,
- Ben Cheatham <Benjamin.Cheatham@amd.com>
-References: <20250512161055.4100442-1-alejandro.lucero-palau@amd.com>
- <20250512161055.4100442-7-alejandro.lucero-palau@amd.com>
+Subject: Re: [net-next PATCH v4 05/11] net: pcs: implement Firmware node
+ support for PCS driver
+To: Christian Marangi <ansuelsmth@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Daniel Golle <daniel@makrotopia.org>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ llvm@lists.linux.dev
+References: <20250511201250.3789083-1-ansuelsmth@gmail.com>
+ <20250511201250.3789083-6-ansuelsmth@gmail.com>
 Content-Language: en-US
-From: "Cheatham, Benjamin" <bcheatha@amd.com>
-In-Reply-To: <20250512161055.4100442-7-alejandro.lucero-palau@amd.com>
+From: Sean Anderson <sean.anderson@seco.com>
+In-Reply-To: <20250511201250.3789083-6-ansuelsmth@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1P222CA0165.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c3::11) To CH3PR12MB8535.namprd12.prod.outlook.com
- (2603:10b6:610:160::19)
+X-ClientProxiedBy: CH2PR16CA0021.namprd16.prod.outlook.com
+ (2603:10b6:610:50::31) To PAVPR03MB9020.eurprd03.prod.outlook.com
+ (2603:10a6:102:329::6)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8535:EE_|PH8PR12MB6842:EE_
-X-MS-Office365-Filtering-Correlation-Id: 517ec89d-3e4d-4175-c493-08dd924be575
+X-MS-TrafficTypeDiagnostic:
+	PAVPR03MB9020:EE_|PA4PR03MB7038:EE_|DU6PEPF0000A7DE:EE_|AS4PR03MB8674:EE_
+X-MS-Office365-Filtering-Correlation-Id: fbe49918-1345-4a72-4238-08dd924db945
+X-TrendMicro-CAS-OUT-LOOP-IDENTIFIER: 656f966764b7fb185830381c646b41a1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007|921020;
+X-Microsoft-Antispam-Message-Info-Original:
+ =?utf-8?B?WTFYWjE1VnkwWERlREpENHZxMWhQYWcxdW1ZRmRsd2YzUGJYeTMyTnltanMx?=
+ =?utf-8?B?ekNMTVhyREczK0FHdDMrQlZZSkR4TWRpRUY1N2NVSjUrSEFQcWJVNzNja2xp?=
+ =?utf-8?B?bFFibEJYRCtPWXRxcU1kK3lRVVpJNFAyVjVOby9HUitNS2xpRjFFdGgyZHA0?=
+ =?utf-8?B?L0kvWk9JZ1diMmNMV1BEdGJ6OFd5R2pDZmlIUDF2UXpoa0VIZGxNRnVIOC9u?=
+ =?utf-8?B?VW5vMllGajFTZGNuNGtwaE1KSkxwc1hyT3l6T3Rra3kwMzNrRWZ5ZDljSWt6?=
+ =?utf-8?B?VmkzRzhvQVNTRE9SUE9tdUJKVndlSzBaYm1WakpSNm91TWJHU0czbUlNNTBH?=
+ =?utf-8?B?Y3lQa3grNTd1MFBWN2ZlMTVMMG03WldJTGNZRTFHQUs2Y0Q2YzR5QTlndXZh?=
+ =?utf-8?B?RmM2Rll0b1hJdytlVVo1RXF0c0FaTWYzN3lMZHpweTdwZW1YVWVPaXN0YjZX?=
+ =?utf-8?B?b1VZeWpsdFJoMlZrVUtzbGh4RTVuUFF6cWd4UUF3YU9oa3pxRUFrYkRwY0E2?=
+ =?utf-8?B?bE1EQk10OG53MFdxZHFDNzVlQnE3ZnowQ0cwV3o0VTRBWHJWbU83d1JqSjVV?=
+ =?utf-8?B?RklvMGFBUVN0UWIvNjFaa000cHlCZDJkZ3AwREoxSU1VMzVjUDl4U2F6cGEx?=
+ =?utf-8?B?Nm1qbGRDakVuN1I3ODJLWDhQRzdpbUU5MmRzTjRGU0Zld1ZvZjBnblhPdVN3?=
+ =?utf-8?B?ZWFuOFFMUlRFUm5sU0tHbVBNamlWcmtPWFpQVHpnM0pWNGV3KzVGWXU3MWRT?=
+ =?utf-8?B?dzVFN21ZTktDTHYyUVg4YWQ1WXViTjkyUzl0cUt3SXVOMmZOL1BNS1VLNGtT?=
+ =?utf-8?B?S3N4VmNXbkVhTzRscy9lb2ZwbWFWeUV5WVpPVm1yZ0xMOUlBOGtMUW01SE1k?=
+ =?utf-8?B?MDZ2TkUzZ2NSZXRYemxkZ0FlK291WXBxNzR3dWlMR1hKYy82cDNLajdrUTlt?=
+ =?utf-8?B?REEvNUxidUlxTitURTFjNDBMZWVYWjJXM01CcURMQnBUdTVRK1c4ZndDaDhE?=
+ =?utf-8?B?cm5DZytuWEJxSEFCTnVibHZpWmwwcEkvVG12Z25UTnhJQm5tOCtUNWV2RVNB?=
+ =?utf-8?B?UVhYYWFWY0x6WHJpU05kTWoyMm1mSCt0RzRQNXg1cjlIZEpZN0kzSzdSczI5?=
+ =?utf-8?B?SzhiQzV0SUxjRGNYdUM5TEFIcTd6M1d4US9JWStKQkRUYVAxRHIvRzlPVjFl?=
+ =?utf-8?B?QlZiME83c0MvOU1DQU9IcCtLeTdHa2Nvb1NJRUVPbGNlcEoxcUt6bDUwUzdS?=
+ =?utf-8?B?U3E0NHhpQlFSWXdVV05uVDdZdW1nS0tyZzhUMTdkQ1dTSy9ranczSVRmYnNi?=
+ =?utf-8?B?NHMzakU0cVAwUlpJMFBKTFRxeXhwSGNvbmV5Unl3cDVqOUpWeFNuczNNbDg5?=
+ =?utf-8?B?bnk1cldoVHN4NmpBQkV5S0tvczQ5TUZNZXlLZHE5SzE3TlYraGZCSy8remR0?=
+ =?utf-8?B?Q3gydm5SSjI5clVtUWZWbm8yUWdZTDhUM3JYbDcxdHdpSVBkOVVKWFVIbnNJ?=
+ =?utf-8?B?dHVvZW1kWnNWNkpScC9TVGczb1FUbGVNTHNOaG90ZUxETklQNGJTSVdlK1Jk?=
+ =?utf-8?B?RmdBUkwwemFLREptaFp4WTBmNllXNmRwQVU1UFAwWk1GOWpsL09mQkx6V09G?=
+ =?utf-8?B?Z2Q3emlucGQ2bXRQUjhER3RCckpmOEFhNzl0Q2YvQjMvUmQwdmZzYy80Q2RW?=
+ =?utf-8?B?ZHk2aHFvNkZSc1V5WkIyYno1c3lRVmZqZ1poclVpb2VyRkMrVi9zT2FZUUw1?=
+ =?utf-8?B?VnhsOTdlbnIwVFdDcG9nbkFNRWh1SWlSQ0twVUxWazJya2lHY2wwMndvME9h?=
+ =?utf-8?B?SHl5ODJnbUw5aU5YY3gybU4vYmhJbGNPQmp1alFxUE9QTlhheDhKcUZmYmtQ?=
+ =?utf-8?B?RUIzTnFEdDdvVW5sOVNtVGl2dXpoVUVibTJjVXBkd0YwVlovYll0TnBJWEFh?=
+ =?utf-8?B?QmliSWV2UWltaE5yRTFIRWF3dlBWQ2pwRytjdUNmaHZXNzlJQjFwR0dEUVZp?=
+ =?utf-8?B?dmhBVDB6RVdRPT0=?=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAVPR03MB9020.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR03MB7038
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DU6PEPF0000A7DE.eurprd02.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	ef1a70bc-6e5a-4f47-4899-08dd924db6e8
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
+	BCL:0;ARA:13230040|36860700013|1800799024|14060799003|376014|35042699022|82310400026|7416014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?d0Y2S25ZanNnWE90cEk0aFFlU3pQSThXSXg3NmxKY3I0NjRFWDRUZWFsZ3RH?=
- =?utf-8?B?aFhaYWhuQTgwdWExZmN5WEQvZmNCVEwza2dQdkFNUGNSaEVIRnJ3WXZ6ZkV2?=
- =?utf-8?B?YTdOUUhPSXNzazhOTGZXZmFHODhsOTkzTUZ0eXJMR3pKSnNVVXZqNnZaS2Nr?=
- =?utf-8?B?RytqU3hrZzd2c3RlQmpGSysrRGd6V1R4SG5xTHJoQStuUlJjSnIwbkg3V3Fz?=
- =?utf-8?B?SloyM2lWMlBtYndjUWxFVkpGWHRvZnIxL0pwWWgvaVRvb0xVU2l5UmJjTXow?=
- =?utf-8?B?NlpvWWdaOHEvMmVFdWRuWWdxci9iUUdDUTFQb0pseXlZc1FveE9yR3krYmpl?=
- =?utf-8?B?elBGeGxKYmhoV1BSQ0s1V1NNZC95M2xFMmpxRmFoWFBFM3BQY1JxN0JnTHJt?=
- =?utf-8?B?UjMreFkvL2pBaWJBYnk5VE0xWGc4OHlyZmt0cFgvTHFaVTJQK0xBSy9KMlYv?=
- =?utf-8?B?NjRTbGF3V0FFSGNYZjNwOEt3azk3OWcxNWFkYm80SjFLU0JiMVdROGgrbkYz?=
- =?utf-8?B?dEduNE9icksvUEx6RDhLanFzQjRwVENPK3N1VDNiMWVldWhMdHMrR0pzbWlu?=
- =?utf-8?B?eC9WMkJiNndLN2szN2RYWVlKNExIcjl2QVdqR2g1VnFDS095Q0daVFR5UVhP?=
- =?utf-8?B?RkFjZStoWER2ZEhxemZjTG9HN2p6ZlJTQXNpZ2pOR01PT2RsMXlDRHdyeXZO?=
- =?utf-8?B?VkRpZ2J5UXFzS3NIdVdjcmxxQ1FpM1JST2RpR3hVU1BUTWtKZTR1azNjYk5F?=
- =?utf-8?B?SHRaR3p5RVBMTmhMM2N4SjFnUjlaSmRrUlpDQ1RaTTFXOWVqL3h2T1hkYndU?=
- =?utf-8?B?NzZlOExaUVgxZyt2VXQrdkh1UGdxMWd3bFR4RHVZWmhUdGhiMmxVRWlXUU1y?=
- =?utf-8?B?QUJ4dXVDNkJoektkdnZIL1c1NVJsU1liK2hzUEtrYllId0dOVTdSbFNOekh3?=
- =?utf-8?B?RzFkOFQ3dkFtcUJpblJaWllEYXFDTDVMcHB6NmV0NWJZNDgyVjB6YmlwOXdD?=
- =?utf-8?B?SCt6U3VuMG90KzlGVVl3bVh6NVRqRTJOWDNSc2R0NEdDbE54TmsxNjgrcjNz?=
- =?utf-8?B?bkNqK1d4RUNGWFR3UnZ2aExjMk9UZkhUZ29MS0h5SEdjVUVlQVZCUWdaREtG?=
- =?utf-8?B?dTRabFc4VHFPUmdMc1crUC9nTWhzLzVVS2JLVDFWTzJ0YXNxTDl5QUxXQWNr?=
- =?utf-8?B?Y2I1amxmNlg3S3RVZm05N1pJbHUwb2E2ZVRiZG5rMHNnSm9pZjlXamtqKzJk?=
- =?utf-8?B?dGg5V2FpcHFVMHFaNkpCZnY5OTlpSVRqNHVpTDVkV1h3cFFKL1BNMC8zN0VT?=
- =?utf-8?B?MTBxK3lSWnk1WTdqRG5CUC9JWmtINU9FUVF0WE1XdU1RMGY4T1ZGWldadjI3?=
- =?utf-8?B?cDB6b1l4Zk5aWFFYR1d4anZMdFN3Y1lnSVZPT3BwVmpiajZDZjRvVVhRMmdi?=
- =?utf-8?B?NVdJQ1hqbDE0cHFhWmNGb01OTDRtQU0xRkNrd0xWKzlIN3pNMmpXa2xkZnI5?=
- =?utf-8?B?NDhvRjZTckQxdURRM3E5bWxQS2ZSdDRDL01KbTN5YlUzU0w2QUE3YTRpTGlh?=
- =?utf-8?B?T3dRQW9FTkZmVDRWanJGMnFaa0VSUmNib2c2b0JFSlpqWXZrVHUybVNNb2JU?=
- =?utf-8?B?OHJ1aFlMU0dKdFJkRHd0SnNURHREKzlNbnJWZGhQcnB3T1Fsd0dTVVExRW5I?=
- =?utf-8?B?dFhPNXJyQnF3bHdYQ2xkckRwZlc5TTErbFl3V2xaOFBIM0xXUXFWUkNCcThG?=
- =?utf-8?B?ZVlkQ1JmRGlNYTBCc2pMOU0vYlFCeGlzRHN0eXBNSlpyTGZCL0syR01rNm9U?=
- =?utf-8?B?ZW9nQkdITWhwQXhYS3lYNm94QSswZjk0YmJVM3ExSUwwSXhDditwYzA2aWtT?=
- =?utf-8?B?a0JYRDU5TEo4cEhqN01zT0dvaGFwalRweUlTTnlXakpLL0dmODNGSnhobElh?=
- =?utf-8?Q?5bU7qxPNbYo=3D?=
+	=?utf-8?B?QnRLc2xnSWFJMzhPQzhjSWt3dUN2eVllS1BTejViU204akxsYURzSlEzV2dn?=
+ =?utf-8?B?UXZETjVKZUpldEFpSC9HQVB4NDB1NjZvWGZLOVBDWTkybnY0NStsdUFhMDQr?=
+ =?utf-8?B?QVg1L2NaeHBUbGJ1aXdqOWRzbjVPcHRNT0M0OWdOaWdXL0NCYk53VkJWUlQ5?=
+ =?utf-8?B?S1pIeW41SHovdHVhSXBuY3hsYWJTemoxdS9nSHk4dFByWDVaMFcyeDRDRWN5?=
+ =?utf-8?B?Ry80NU1CbloyUU9qVVlxMUJxdDczQy9JM2YxR2FlUkJ2dGp3WW11ZlBOckhP?=
+ =?utf-8?B?RDg0SVpDeTY0bnhlYlRYdTBuTDBZNVlSbTlmbXhFaGpULzN1Q0g0L2dIYzF4?=
+ =?utf-8?B?R3g5V1ordjZDTkRxRndMZ015MU1MeHpKakZqU0JJR1FkZWVTVVNYRGZocUxo?=
+ =?utf-8?B?aEkwY1lUL0FDU3FnTlVLZm13M1lXSEtuRFErQnlRWUZ5YVBZSG9tNWpTeHhL?=
+ =?utf-8?B?QkxQdVNOQnBuaXh0SXFCRmx5Um4xOHE0c1FlSWlDME4yTTRuTUppWHoxSURO?=
+ =?utf-8?B?Y29ncWlKbGN5dVJlSlhjUUJXZCtQcXZ3Ujd4YUs4MTBFK3dCaDZXVzc0TXc2?=
+ =?utf-8?B?eWZCNWNKVTVPS0JwTjE3OFhCS2R1YWVjQU5sa1lOQkZ6UGM0OWNXblI0MXV1?=
+ =?utf-8?B?YXFLS3kzTkY3RTZNMEhCVGs3emNuL3lwUUlJa0pOVUJQRXI2ZnFmb3JzazBw?=
+ =?utf-8?B?SGkvWUhYTHRpZTE0ZGlrdy8vVTV2Tk4rcHIvZklKT0JWdzRpaFV0Q1Bmajh4?=
+ =?utf-8?B?L1BoRmdQYTFTOFc0ZitnbU1WR3oycDR1NDBrNUVsSkdrQmlobkJSRTZ4Q0Fr?=
+ =?utf-8?B?LzBpQWdKcFlXc1ViMUFGT0JkdEdnYjd3RFJ4b1ltRWJJMGtzME9WcGdTVHpl?=
+ =?utf-8?B?dkErWEc5cDlVVDFYWVFWTWt3eDlLbnZuQ3pEZklGU1libDJOTUJEbWdNK3pR?=
+ =?utf-8?B?dzNVYkNBQm9SVVNsSk52MGdraHdWMmwvNnJkUHJKV0o5b0xUZDBkRVFCQStK?=
+ =?utf-8?B?OWFTQ2NOZFVZWi9xRFdBaUNadmsvUmxSaEIrQWhrY3lZZEpSQ245ZGpPeXlR?=
+ =?utf-8?B?dWQ0Y0xwQ3ZVQUtQZlJmdHVTNW45Q1pnak50TzhUZTUwelVKNStXaHZnSklO?=
+ =?utf-8?B?SEpQazR4Tmsybml0bjRBZHdTMGlyNUhQQmxkTWZIMUhwcDZieVlWVUplakph?=
+ =?utf-8?B?MWtxMWRQL3FDQ2dJOURvWXZIVWRMQU8wMWZwU0dMRFhFUzdXVGg5ODJhdk42?=
+ =?utf-8?B?c3lOOFFWdUduQkt0UVoyWlFnRzRKd05LOHRYaFo5OWpVeDRRdTlhcG4vSllI?=
+ =?utf-8?B?aXFNSk5PcCt5QmR3YVNrQVlPUzlOWVlSb0NrNitKRWhrRnJUUVlaNkgyRTFU?=
+ =?utf-8?B?VlJsSXR0blBFT0o0WnhDeFFPd21Hc0k3RkZ5K1I5Ukd6VkZPT2JEY0RpVk9V?=
+ =?utf-8?B?UThYZmVMSXVJUkVDbW9EZTZCanFXTVQydnRhZ3NBVnpZSldVSnhkakdvcExY?=
+ =?utf-8?B?OUQrNnFUYkhrRkVjZXBRdTFHMlkzeVl3WDFhV1c4Mlo2bU1ScUpxQlZ5cDJx?=
+ =?utf-8?B?TmRSTU1sKzdXV3hKSFAwNmdsL0ExSXRheTh1Qzl6b2Mrejc5anAwRDJsdmM0?=
+ =?utf-8?B?RUhUV3h4YkNwemxocmhlWlo1QlhueE1BQXNVL0NtU2kySThUWjZua2FDTFVv?=
+ =?utf-8?B?NE8xN2xZMzJqSzBQVjdBZ1pYaVZGdlFoOXVzSW0xWGUxTU5lV0J2ckRxZUJl?=
+ =?utf-8?B?YnlxZ25BZG8vemllM1d3VjZlRERVYVpKVzBGMGQ0Nnc4bTBwY0Q5VStPTU4x?=
+ =?utf-8?B?c3VqQTJZb1VOdFRqQklrKzdRV21mSjU0alNObTR2ZHRJZWVWak10NXJUVkgx?=
+ =?utf-8?B?eWlDRGNjOXFabWl2a3prcUE3TVNTQnNVa1BHSVpBVWFmRGtWL1IxeWRkNGs0?=
+ =?utf-8?B?OHF4OVdKd1g3YVBsM2VSLzI1TWx6M3ZTNDM2LzRUdXNxT3VrNjlnNzJQQlc4?=
+ =?utf-8?B?YVNVUit0Qmt2Ykk0ZGdaUDNYTmRhRm00ekhOc1c5aENqZjFGc2ZsYTFKMW5q?=
+ =?utf-8?B?ampkaVR3NTV2RkJNSjNxQ0hjU1ZSbUFmSEZiZz09?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8535.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VitXWklQV0YvNDNYYXJxV2xObEgzbGFFTHNCNFJGdllXWUpsQUV4LzdhMmhD?=
- =?utf-8?B?Wko1cWdTYjU3Rmsxd1ZRYjJzVmNibXM2RTZWTUxYSk1kTC9wVmVOckluSEN1?=
- =?utf-8?B?UEFGQXdrNmI3U3lkNVRyYmQwQWtISUttVFFCM1FpK0tEMTQzcHoybzlPNG12?=
- =?utf-8?B?cWU4Rzh1bGU4MzJxNUFOUDZXbjRHNUVMMnZXTE5kRGlITnJ4MTY0QnEyTTZm?=
- =?utf-8?B?UVpQeUhyc3Q2Nk9NMHQwSDFjVFdzUmNrQzJaK3Rxci9va2tkcUZabmh6azJ1?=
- =?utf-8?B?ZnBSZnRCVUNYVklZOEJnL0FUT2NUUWdDa2N5Z3BPQWVEUGI2L1F3amVQa2lI?=
- =?utf-8?B?RTFoUDNEbEpqaXJzMm80eDBwMG1DZ3VmVTJYRGNpVnFiS285TS82dG12eWZI?=
- =?utf-8?B?eFBaYjNzdU02ZTQrcWtJWVp0ZDRMSE1jR3VmalR2YzFVL21FRWVGUlZTbGR6?=
- =?utf-8?B?dFBKaGZEWmVlWHZQMTlCa1F5K0FtUzUzWjVOZ2ZQSUF3bjFsWkx6ZVIxY3Zn?=
- =?utf-8?B?SXI3NGtBTE1mYXVKM1REQUFXZEpURDZJWkRMYzV0eUNCQ25mdGNRSk1xSTRL?=
- =?utf-8?B?d0dyVm0zZkdHeTVBQm4zSzZmcDJiMGtsZm1WcndvK0VFQ3ovUmtLMmY4MGxE?=
- =?utf-8?B?R2g1dkNqQlpVbkZYM1hKbnF1TCtzMVNnUEFQZTJ4b2U2b0FTSmk5ZTVpaWNI?=
- =?utf-8?B?WTdhMGJ2bGJCcmhyQXFuVFoyWGVUVGNZRlVBWkpUS1N3dldEK2JTNFZqK1RM?=
- =?utf-8?B?WXhMWVRkL1o0VU54UmVVSlpralFRVWdhRUk0R2QvU3NQM0ZIWWNMMkJlSHlS?=
- =?utf-8?B?L2xuSWExOXhjZEoxVlV2blFHbWU0RzlhUU1JTVQvZ2hONXlyeWp2TXFiZ2F6?=
- =?utf-8?B?K2FCV08rUElwRjRldGpuUXV2ajhacHoxdld1S1N1MDMvaEJqTldiOEFZRFFi?=
- =?utf-8?B?VTFNeDMzSmtIenptS1RraVRZK2dPQWVtT2dwNHhGTTBtOTlHSW5JU0lCZmxL?=
- =?utf-8?B?RlNxSDlMUWRNZGdZdWFaTFZ2QjJHTzY1by9La2czYTJkSjNlN1pCcTI1S0Zv?=
- =?utf-8?B?NDZPcFllTm9yeDZoUkt2d0JPMVlFY3EvSUJRT29HZmxDeU5oMFhKNEsxTzJx?=
- =?utf-8?B?YmFCNDEvL1JGMlRtR3dWWDBXUy9tUnZuVkhoZG1MbXlmdjBDRFJZeUZYTEZV?=
- =?utf-8?B?Wm9ZdnFEZU5TQTlueWpkVGxOTTBUSVZIeTFNU1RqQ1VDTkVCM1VDZVB0VUxG?=
- =?utf-8?B?OW43djhpaEJ0NDZqL3liVTBmOGtTQTJZRmxselB5ZlZwdW9RNmtLSWNuUHNv?=
- =?utf-8?B?Q1pkaUQvYWlHcUNLNXpCRkNJdk1CMjJXZms3MXlJcHdWT0xHQjIyT2dWRnZa?=
- =?utf-8?B?Q21Ba1c4R0M4eFVFOEZrTTJNR0xLNFpMYlZlQ0VSVllBd0VBdzNXbXRIN09Q?=
- =?utf-8?B?NGVEamkwbUl5eTYvMEVJWUdOYlJnb3d3cXpESW5HYytobXIxUE5Ic2krWDJo?=
- =?utf-8?B?WWdodGIrOS80dFcvSnRLOFpzbFVMYWpBeWJjSHpUNmFkK1ZrVkFWV3BKSFU5?=
- =?utf-8?B?VjcvdjBvR2pFOFY5NU9QV29ZQmxXcXNwbmJnMXpEbDFDek45UkVSSjJHS2xZ?=
- =?utf-8?B?L3JOYmNLUWdJV1Vrd0ZoMFg1WlZrMWlDb1JvZG4zKzF5NE82Vi9NQkMwTTJC?=
- =?utf-8?B?Y25rV2Q0UC9QdEd1QVR3eG1uUGhLV2hkTW1JZVZVSUZ6clZmU0RYWUdnc3Bj?=
- =?utf-8?B?NzlYdUZyRlM3U24rOFEralVkSjMrODhKS2pmbGErdWhPMXB3MTRrWXduZVFj?=
- =?utf-8?B?ZU9JQmpac255VElrT3p2a2RzSFRHM0Y2NUJVUytiOGRmMktXQmlVVlBwMExq?=
- =?utf-8?B?UFQybHNTQ2pTWUowNW9FeGJRZW9aR21ZcGlGY01RR0tsdE1WQ25QNjdPNHVl?=
- =?utf-8?B?T29WSm54c20xYkxJNDFJckZmOEUvQTRNeU1ROVkzdFpxYVlOWDRWSVdjamdG?=
- =?utf-8?B?MTBHMUlLSGo2b2VyaDd3RDc4aEhOTEZ4ck1yZ25Jb2Z0MFN2YjVlOWo1SjNk?=
- =?utf-8?B?Q1VPMi8zK0FaQktBYXJIYUNxWU5TQStQMHJZTUVTNk1kSm1SZGR2UlZMWFRN?=
- =?utf-8?Q?wC/JUdN5SBX3hBhJLpnmKeepy?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 517ec89d-3e4d-4175-c493-08dd924be575
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8535.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2025 18:28:02.9153
+	CIP:20.160.56.85;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:repost-eu.tmcas.trendmicro.com;PTR:repost-eu.tmcas.trendmicro.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(14060799003)(376014)(35042699022)(82310400026)(7416014)(921020);DIR:OUT;SFP:1102;
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2025 18:41:07.4048
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uZGGdtykWmi5DJfuwr/2YdQBdb3fHjvBIbC5AQV3fEV63fQ+pDXsEMu20i7HF8EiaLIW624XS3Bs6jk876FtqA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6842
+X-MS-Exchange-CrossTenant-Network-Message-Id: fbe49918-1345-4a72-4238-08dd924db945
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bebe97c3-6438-442e-ade3-ff17aa50e733;Ip=[20.160.56.85];Helo=[repost-eu.tmcas.trendmicro.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU6PEPF0000A7DE.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR03MB8674
 
-On 5/12/2025 11:10 AM, alejandro.lucero-palau@amd.com wrote:
-> From: Alejandro Lucero <alucerop@amd.com>
+On 5/11/25 16:12, Christian Marangi wrote:
+> Implement the foundation of Firmware node support for PCS driver.
 > 
-> Use cxl code for registers discovery and mapping.
+> To support this, implement a simple Provider API where a PCS driver can
+> expose multiple PCS with an xlate .get function.
 > 
-> Validate capabilities found based on those registers against expected
-> capabilities.
+> PCS driver will have to call fwnode_pcs_add_provider() and pass the
+> firmware node pointer and a xlate function to return the correct PCS for
+> the passed #pcs-cells.
 > 
-> Set media ready explicitly as there is no means for doing so without
-> a mailbox and without the related cxl register, not mandatory for type2.
+> This will register the PCS in a global list of providers so that
+> consumer can access it.
 > 
-> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
-> Reviewed-by: Martin Habets <habetsm.xilinx@gmail.com>
-> Reviewed-by: Zhi Wang <zhi@nvidia.com>
-> Acked-by: Edward Cree <ecree.xilinx@gmail.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> The consumer will then use fwnode_pcs_get() to get the actual PCS by
+> passing the firmware node pointer and the index for #pcs-cells.
+> 
+> For a simple implementation where #pcs-cells is 0 and the PCS driver
+> expose a single PCS, the xlate function fwnode_pcs_simple_get() is
+> provided.
+> 
+> For an advanced implementation a custom xlate function is required.
+
+There is no use case for this. All PCSs have a fwnode per PCS. Removing
+support for pcs cells will simplify the lookup code as well as the
+registration code and API.
+
+> One removal the PCS driver should first delete itself from the provider
+> list using fwnode_pcs_del_provider() and then call phylink_release_pcs()
+> on every PCS the driver provides.
+
+And things like this can be done automatically.
+
+> A generic function fwnode_phylink_pcs_parse() is provided for MAC driver
+> that will declare PCS in DT (or ACPI).
+> This function will parse "pcs-handle" property and fill the passed array
+> with the parsed PCS in availabel_pcs up to the passed num_pcs value.
+> It's also possible to pass NULL as array to only parse the PCS and
+> update the num_pcs value with the count of scanned PCS.
+
+When is this useful?
+
+> Co-developed-by: Daniel Golle <daniel@makrotopia.org>
+> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 > ---
->  drivers/net/ethernet/sfc/efx_cxl.c | 27 +++++++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
+>  drivers/net/pcs/Kconfig          |   6 +
+>  drivers/net/pcs/Makefile         |   1 +
+>  drivers/net/pcs/pcs.c            | 201 +++++++++++++++++++++++++++++++
+>  include/linux/pcs/pcs-provider.h |  41 +++++++
+>  include/linux/pcs/pcs.h          |  56 +++++++++
+>  5 files changed, 305 insertions(+)
+>  create mode 100644 drivers/net/pcs/pcs.c
+>  create mode 100644 include/linux/pcs/pcs-provider.h
+>  create mode 100644 include/linux/pcs/pcs.h
 > 
-> diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
-> index 753d5b7d49b6..79427a85a1b7 100644
-> --- a/drivers/net/ethernet/sfc/efx_cxl.c
-> +++ b/drivers/net/ethernet/sfc/efx_cxl.c
-> @@ -19,10 +19,13 @@
+> diff --git a/drivers/net/pcs/Kconfig b/drivers/net/pcs/Kconfig
+> index f6aa437473de..0d54bea1f663 100644
+> --- a/drivers/net/pcs/Kconfig
+> +++ b/drivers/net/pcs/Kconfig
+> @@ -5,6 +5,12 @@
 >  
->  int efx_cxl_init(struct efx_probe_data *probe_data)
->  {
-> +	DECLARE_BITMAP(expected, CXL_MAX_CAPS) = {};
-> +	DECLARE_BITMAP(found, CXL_MAX_CAPS) = {};
->  	struct efx_nic *efx = &probe_data->efx;
->  	struct pci_dev *pci_dev = efx->pci_dev;
->  	struct efx_cxl *cxl;
->  	u16 dvsec;
-> +	int rc;
+>  menu "PCS device drivers"
 >  
->  	probe_data->cxl_pio_initialised = false;
+> +config FWNODE_PCS
+> +	tristate
+> +	depends on (ACPI || OF)
+> +	help
+> +		Firmware node PCS accessors
+> +
+>  config PCS_XPCS
+>  	tristate "Synopsys DesignWare Ethernet XPCS"
+>  	select PHYLINK
+> diff --git a/drivers/net/pcs/Makefile b/drivers/net/pcs/Makefile
+> index 4f7920618b90..3005cdd89ab7 100644
+> --- a/drivers/net/pcs/Makefile
+> +++ b/drivers/net/pcs/Makefile
+> @@ -1,6 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  # Makefile for Linux PCS drivers
 >  
-> @@ -43,6 +46,30 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
->  	if (!cxl)
->  		return -ENOMEM;
+> +obj-$(CONFIG_FWNODE_PCS)	+= pcs.o
+>  pcs_xpcs-$(CONFIG_PCS_XPCS)	:= pcs-xpcs.o pcs-xpcs-plat.o \
+>  				   pcs-xpcs-nxp.o pcs-xpcs-wx.o
 >  
-> +	set_bit(CXL_DEV_CAP_HDM, expected);
-> +	set_bit(CXL_DEV_CAP_HDM, expected);
+> diff --git a/drivers/net/pcs/pcs.c b/drivers/net/pcs/pcs.c
+> new file mode 100644
+> index 000000000000..26d07a2edfce
+> --- /dev/null
+> +++ b/drivers/net/pcs/pcs.c
+> @@ -0,0 +1,201 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +#include <linux/mutex.h>
+> +#include <linux/property.h>
+> +#include <linux/phylink.h>
+> +#include <linux/pcs/pcs.h>
+> +#include <linux/pcs/pcs-provider.h>
+> +
+> +MODULE_DESCRIPTION("PCS library");
+> +MODULE_AUTHOR("Christian Marangi <ansuelsmth@gmail.com>");
+> +MODULE_LICENSE("GPL");
+> +
+> +struct fwnode_pcs_provider {
+> +	struct list_head link;
+> +
+> +	struct fwnode_handle *fwnode;
+> +	struct phylink_pcs *(*get)(struct fwnode_reference_args *pcsspec,
+> +				   void *data);
+> +
+> +	void *data;
+> +};
+> +
+> +static LIST_HEAD(fwnode_pcs_providers);
+> +static DEFINE_MUTEX(fwnode_pcs_mutex);
+> +
+> +struct phylink_pcs *fwnode_pcs_simple_get(struct fwnode_reference_args *pcsspec,
+> +					  void *data)
+> +{
+> +	return data;
+> +}
+> +EXPORT_SYMBOL_GPL(fwnode_pcs_simple_get);
+> +
+> +int fwnode_pcs_add_provider(struct fwnode_handle *fwnode,
+> +			    struct phylink_pcs *(*get)(struct fwnode_reference_args *pcsspec,
+> +						       void *data),
+> +			    void *data)
+> +{
+> +	struct fwnode_pcs_provider *pp;
+> +
+> +	if (!fwnode)
+> +		return 0;
+> +
+> +	pp = kzalloc(sizeof(*pp), GFP_KERNEL);
+> +	if (!pp)
+> +		return -ENOMEM;
+> +
+> +	pp->fwnode = fwnode_handle_get(fwnode);
+> +	pp->data = data;
+> +	pp->get = get;
+> +
+> +	mutex_lock(&fwnode_pcs_mutex);
+> +	list_add(&pp->link, &fwnode_pcs_providers);
+> +	mutex_unlock(&fwnode_pcs_mutex);
+> +	pr_debug("Added pcs provider from %pfwf\n", fwnode);
+> +
+> +	fwnode_dev_initialized(fwnode, true);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(fwnode_pcs_add_provider);
+> +
+> +void fwnode_pcs_del_provider(struct fwnode_handle *fwnode)
+> +{
+> +	struct fwnode_pcs_provider *pp;
+> +
+> +	if (!fwnode)
+> +		return;
+> +
+> +	mutex_lock(&fwnode_pcs_mutex);
+> +	list_for_each_entry(pp, &fwnode_pcs_providers, link) {
+> +		if (pp->fwnode == fwnode) {
+> +			list_del(&pp->link);
+> +			fwnode_dev_initialized(pp->fwnode, false);
+> +			fwnode_handle_put(pp->fwnode);
+> +			kfree(pp);
+> +			break;
+> +		}
+> +	}
+> +	mutex_unlock(&fwnode_pcs_mutex);
+> +}
+> +EXPORT_SYMBOL_GPL(fwnode_pcs_del_provider);
+> +
+> +static int fwnode_parse_pcsspec(const struct fwnode_handle *fwnode, int index,
+> +				const char *name,
+> +				struct fwnode_reference_args *out_args)
+> +{
+> +	int ret;
+> +
+> +	if (!fwnode)
+> +		return -ENOENT;
+> +
+> +	if (name)
+> +		index = fwnode_property_match_string(fwnode, "pcs-names",
+> +						     name);
+> +
+> +	ret = fwnode_property_get_reference_args(fwnode, "pcs-handle",
+> +						 "#pcs-cells",
+> +						 -1, index, out_args);
+> +	if (ret || (name && index < 0))
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static struct phylink_pcs *
+> +fwnode_pcs_get_from_pcsspec(struct fwnode_reference_args *pcsspec)
+> +{
+> +	struct fwnode_pcs_provider *provider;
+> +	struct phylink_pcs *pcs = ERR_PTR(-EPROBE_DEFER);
+> +
+> +	if (!pcsspec)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	mutex_lock(&fwnode_pcs_mutex);
+> +	list_for_each_entry(provider, &fwnode_pcs_providers, link) {
+> +		if (provider->fwnode == pcsspec->fwnode) {
+> +			pcs = provider->get(pcsspec, provider->data);
+> +			if (!IS_ERR(pcs))
+> +				break;
+> +		}
+> +	}
+> +	mutex_unlock(&fwnode_pcs_mutex);
+> +
+> +	return pcs;
+> +}
+> +
+> +static struct phylink_pcs *__fwnode_pcs_get(struct fwnode_handle *fwnode,
+> +					    int index, const char *con_id)
 
-You have duplicate lines here. I think I pointed this out a couple of
-revisions ago, but it probably got missed.
+Many existing drivers have to support non-standard PCS handle names
+(e.g. pcsphy-handle, phy-handle, etc.). Support for this is important
+for converting those drivers to use this system.
 
-Thanks,
-Ben
+--Sean
 
-> +	set_bit(CXL_DEV_CAP_RAS, expected);
+> +{
+> +	struct fwnode_reference_args pcsspec;
+> +	struct phylink_pcs *pcs;
+> +	int ret;
+> +
+> +	ret = fwnode_parse_pcsspec(fwnode, index, con_id, &pcsspec);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+> +
+> +	pcs = fwnode_pcs_get_from_pcsspec(&pcsspec);
+> +	fwnode_handle_put(pcsspec.fwnode);
+> +
+> +	return pcs;
+> +}
+> +
+> +struct phylink_pcs *fwnode_pcs_get(struct fwnode_handle *fwnode, int index)
+> +{
+> +	return __fwnode_pcs_get(fwnode, index, NULL);
+> +}
+> +EXPORT_SYMBOL_GPL(fwnode_pcs_get);
+> +
+> +static int fwnode_phylink_pcs_count(struct fwnode_handle *fwnode,
+> +				    unsigned int *num_pcs)
+> +{
+> +	struct fwnode_reference_args out_args;
+> +	int index = 0;
+> +	int ret;
+> +
+> +	while (true) {
+> +		ret = fwnode_property_get_reference_args(fwnode, "pcs-handle",
+> +							 "#pcs-cells",
+> +							 -1, index, &out_args);
+> +		/* We expect to reach an -ENOENT error while counting */
+> +		if (ret)
+> +			break;
+> +
+> +		fwnode_handle_put(out_args.fwnode);
+> +		index++;
+> +	}
+> +
+> +	/* Update num_pcs with parsed PCS */
+> +	*num_pcs = index;
+> +
+> +	/* Return error if we didn't found any PCS */
+> +	return index > 0 ? 0 : -ENOENT;
+> +}
+> +
+> +int fwnode_phylink_pcs_parse(struct fwnode_handle *fwnode,
+> +			     struct phylink_pcs **available_pcs,
+> +			     unsigned int *num_pcs)
+> +{
+> +	int i;
+> +
+> +	if (!fwnode_property_present(fwnode, "pcs-handle"))
+> +		return -ENODEV;
+> +
+> +	/* With available_pcs NULL, only count the PCS */
+> +	if (!available_pcs)
+> +		return fwnode_phylink_pcs_count(fwnode, num_pcs);
+> +
+> +	for (i = 0; i < *num_pcs; i++) {
+> +		struct phylink_pcs *pcs;
+> +
+> +		pcs = fwnode_pcs_get(fwnode, i);
+> +		if (IS_ERR(pcs))
+> +			return PTR_ERR(pcs);
+> +
+> +		available_pcs[i] = pcs;
+> +	}
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(fwnode_phylink_pcs_parse);
+> diff --git a/include/linux/pcs/pcs-provider.h b/include/linux/pcs/pcs-provider.h
+> new file mode 100644
+> index 000000000000..ae51c108147e
+> --- /dev/null
+> +++ b/include/linux/pcs/pcs-provider.h
+> @@ -0,0 +1,41 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +#ifndef __LINUX_PCS_PROVIDER_H
+> +#define __LINUX_PCS_PROVIDER_H
+> +
+> +/**
+> + * fwnode_pcs_simple_get - Simple xlate function to retrieve PCS
+> + * @pcsspec: reference arguments
+> + * @data: Context data (assumed assigned to the single PCS)
+> + *
+> + * Returns: the PCS pointed by data.
+> + */
+> +struct phylink_pcs *fwnode_pcs_simple_get(struct fwnode_reference_args *pcsspec,
+> +					  void *data);
+> +
+> +/**
+> + * fwnode_pcs_add_provider - Registers a new PCS provider
+> + * @fwnode: Firmware node
+> + * @get: xlate function to retrieve the PCS
+> + * @data: Context data
+> + *
+> + * Register and add a new PCS to the global providers list
+> + * for the firmware node. A function to get the PCS from
+> + * firmware node with the use fwnode reference arguments.
+> + * To the get function is also passed the interface type
+> + * requested for the PHY. PCS driver will use the passed
+> + * interface to understand if the PCS can support it or not.
+> + *
+> + * Returns: 0 on success or -ENOMEM on allocation failure.
+> + */
+> +int fwnode_pcs_add_provider(struct fwnode_handle *fwnode,
+> +			    struct phylink_pcs *(*get)(struct fwnode_reference_args *pcsspec,
+> +						       void *data),
+> +			    void *data);
+> +
+> +/**
+> + * fwnode_pcs_del_provider - Removes a PCS provider
+> + * @fwnode: Firmware node
+> + */
+> +void fwnode_pcs_del_provider(struct fwnode_handle *fwnode);
+> +
+> +#endif /* __LINUX_PCS_PROVIDER_H */
+> diff --git a/include/linux/pcs/pcs.h b/include/linux/pcs/pcs.h
+> new file mode 100644
+> index 000000000000..33244e3a442b
+> --- /dev/null
+> +++ b/include/linux/pcs/pcs.h
+> @@ -0,0 +1,56 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +#ifndef __LINUX_PCS_H
+> +#define __LINUX_PCS_H
+> +
+> +#include <linux/phylink.h>
+> +
+> +#if IS_ENABLED(CONFIG_FWNODE_PCS)
+> +/**
+> + * fwnode_pcs_get - Retrieves a PCS from a firmware node
+> + * @fwnode: firmware node
+> + * @index: index fwnode PCS handle in firmware node
+> + *
+> + * Get a PCS from the firmware node at index.
+> + *
+> + * Returns: a pointer to the phylink_pcs or a negative
+> + * error pointer. Can return -EPROBE_DEFER if the PCS is not
+> + * present in global providers list (either due to driver
+> + * still needs to be probed or it failed to probe/removed)
+> + */
+> +struct phylink_pcs *fwnode_pcs_get(struct fwnode_handle *fwnode,
+> +				   int index);
+> +
+> +/**
+> + * fwnode_phylink_pcs_parse - generic PCS parse for fwnode PCS provider
+> + * @fwnode: firmware node
+> + * @available_pcs: pointer to preallocated array of PCS
+> + * @num_pcs: where to store count of parsed PCS
+> + *
+> + * Generic helper function to fill available_pcs array with PCS parsed
+> + * from a "pcs-handle" fwnode property defined in firmware node up to
+> + * passed num_pcs.
+> + *
+> + * If available_pcs is NULL, num_pcs is updated with the count of the
+> + * parsed PCS.
+> + *
+> + * Returns: 0 or a negative error.
+> + */
+> +int fwnode_phylink_pcs_parse(struct fwnode_handle *fwnode,
+> +			     struct phylink_pcs **available_pcs,
+> +			     unsigned int *num_pcs);
+> +#else
+> +static inline struct phylink_pcs *fwnode_pcs_get(struct fwnode_handle *fwnode,
+> +						 int index)
+> +{
+> +	return ERR_PTR(-ENOENT);
+> +}
+> +
+> +static inline int fwnode_phylink_pcs_parse(struct fwnode_handle *fwnode,
+> +					   struct phylink_pcs **available_pcs,
+> +					   unsigned int *num_pcs)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +#endif
+> +
+> +#endif /* __LINUX_PCS_H */
