@@ -1,109 +1,84 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D7F7483;
-	Tue, 13 May 2025 12:32:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9564F28F95B
+	for <netdev@vger.kernel.org>; Tue, 13 May 2025 12:36:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747139580; cv=none; b=mzcaKKJP1cHiMkOhfLFCaFeqJg2MwqVZtOr+jCfZW1NZ7KBnYVdHwhFpP9ycib9eda1AYTB6XO3aqpFvKReLpi1AoVq8/DX0A24GgxKgAq+eOOv20rLS7o5IpJJzJbeL1lm7mZUIYSglSEqMvW5aaF2L9RsLV2wX9KI6iAjMvtQ=
+	t=1747139790; cv=none; b=n4KrFEsR2+OMmtHZoKcXGIBvlVajxDk1jyFPozCA8n8wo6onfcD0yc45gW9kcGI7vjhLd/pCUSvBruUHrDM6DDekYp/hnOQ4mU4c8/hA+6HmJPj6vvFO/M6KbOcWQqGR/oUfm+v+yigg+Fk7NMwpXM4TIAx0z/oi3+kR62MM3IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747139580; c=relaxed/simple;
-	bh=mLMzTDvVEsw75/6eFnr/1KEDw3sumrUGXyc25RczOGc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T52zaqPW0XTvEzJNf6jbi7FXhcJ8/P4Jt19C6p2Nrf8p0Fu5JFi6IIMx8hqsWrrW4Ogxtz5C7b1h2SnfdrJ8GuV8KC10YfofIkOAprRJXqj/zRUxe1e5jfrqLbSRCZ5cCHL0FE4YHszglLLh2ObjR37gl+V/W5YV1cCR9YUvVu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=sjemz6n5; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="sjemz6n5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=ikO6NxPSIIjD1kUAHzPCWxeEkTOjGoN0DmnRySn4PCk=; b=sj
-	emz6n58GPUmWdFVzAHRjKI2dWuI0rPQE8SL/5bYfGaf3w24mGVb9f0MujMpWRRsD0Uf3JyFv5eIVp
-	+S43WT3eawgxo08pQ0i2Yjr8Sx3wlWf9hSC9Jm8lJCuaesVHG56wUYi9WlyHQ/d7Um/fp9Ef8n6c4
-	Upwr265iTWTKWnU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uEooK-00CS0n-Mk; Tue, 13 May 2025 14:32:40 +0200
-Date: Tue, 13 May 2025 14:32:40 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: SkyLake Huang =?utf-8?B?KOm7g+WVn+a+pCk=?= <SkyLake.Huang@mediatek.com>
-Cc: "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"dqfext@gmail.com" <dqfext@gmail.com>,
-	Steven Liu =?utf-8?B?KOWKieS6uuixqik=?= <steven.liu@mediatek.com>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"horms@kernel.org" <horms@kernel.org>,
-	"daniel@makrotopia.org" <daniel@makrotopia.org>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>
-Subject: Re: [PATCH net-next v2 3/3] net: phy: mediatek: add driver for
- built-in 2.5G ethernet PHY on MT7988
-Message-ID: <8b67fa4c-a07a-4941-ba7b-23d4e1104451@lunn.ch>
-References: <20250219083910.2255981-1-SkyLake.Huang@mediatek.com>
- <20250219083910.2255981-4-SkyLake.Huang@mediatek.com>
- <Z7WleP9v6Igx2MjC@shell.armlinux.org.uk>
- <74ce0275952a9c60af87ded9d64ca7301fd69d0f.camel@mediatek.com>
+	s=arc-20240116; t=1747139790; c=relaxed/simple;
+	bh=2Hp279qOKoUwK53A0IlWl9Z6A9oGh6aPql8Id7/C4ec=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=NeGwoOPnkvroi7v0znDlWoOQCW1qPsD6tfgUirRegYD1CRejyFetgZB8gLjZ4TgRkhvVbBg8fNNz5hwXroXYJbgHWEt+uAtn6DrKPrRfkyZ2OuVqAp6Pd2MZ9pBW7ha7vwtNhGBHNLwF0p3Bb1pi7/7Py9bwzQfW5lRVxsoeDUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3db6dc76193so1484585ab.2
+        for <netdev@vger.kernel.org>; Tue, 13 May 2025 05:36:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747139788; x=1747744588;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DYgHQ98etugRn9nrFF/Y396tZ8D+/Ig7ihfcqGgA2as=;
+        b=mivdT60zymvLLsXJ+JHiITOH765YwfA6j1bztc2GI6Ve6Ru/7wQQSbeWbZ0abPzbB4
+         b/KQLo1ujyNbVSkpQIortqtkLgg7a5dpII3l+WclLKgH4ej9OcEV5mLcoYd1/FWJcYsD
+         jtc1jr4LsedTjweJ5KsJXT/ihtkbqhIe2f6glhDzzjdvTX2W3PpDWXk4syPO45sKClX2
+         O6OI/X4kDUjUh+/xPjDUgiF/+rU9/QGOvGy47WJTdPyUrDkxz9RJCLy2C3WGzBHTiN4N
+         G4WThOOOeGqsQMnHPTa8upv5MBaF0IaMs1EwwYKEKuHfZg91PeUnGnRtQ2SthRdVaYlX
+         mOSw==
+X-Forwarded-Encrypted: i=1; AJvYcCU0YxMxR0hTvbXDe12GzIyNThwH1vWGhyV0zgyagxY/rkr2TDwEQeTlbzskofP40djbb5Zg4c4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyV93C83erG364oOh/SwTAqV6jOpftSpVGflBHFK99YOoeG/iHn
+	n/HkZl5iHArSaLEDHJaF/Yf7mNYmqbGxJPTcXSEI8azdC8f9QRS3kIoV65Gqsu1ZWpRg14AiIQN
+	OjOrpEi0c7Yfp57MMUk/3evDqExFxTzN0wXH4qdvxpn0vH4j4UNll8Kc=
+X-Google-Smtp-Source: AGHT+IEKhD87ADuvIbZqF3IVuejXHxQwIrZ9v7DshXQN7uxn/CK9a/0SWGRW3VsRb8nou7/Bfipq9krzeFmYzST4ehdVQLjh7HaS
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <74ce0275952a9c60af87ded9d64ca7301fd69d0f.camel@mediatek.com>
+X-Received: by 2002:a05:6e02:398f:b0:3d4:e6:d872 with SMTP id
+ e9e14a558f8ab-3da7e1e3ab8mr192584185ab.9.1747139787612; Tue, 13 May 2025
+ 05:36:27 -0700 (PDT)
+Date: Tue, 13 May 2025 05:36:27 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68233ccb.050a0220.f2294.09f8.GAE@google.com>
+Subject: [syzbot] Monthly wpan report (May 2025)
+From: syzbot <syzbot+list1679a20fcec2fc473afb@syzkaller.appspotmail.com>
+To: alex.aring@gmail.com, linux-kernel@vger.kernel.org, 
+	linux-wpan@vger.kernel.org, miquel.raynal@bootlin.com, netdev@vger.kernel.org, 
+	stefan@datenfreihafen.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, May 13, 2025 at 10:12:04AM +0000, SkyLake Huang (黃啟澤) wrote:
-> On Wed, 2025-02-19 at 09:33 +0000, Russell King (Oracle) wrote:
-> > 
-> > External email : Please do not click links or open attachments until
-> > you have verified the sender or the content.
-> > 
-> > 
-> > On Wed, Feb 19, 2025 at 04:39:10PM +0800, Sky Huang wrote:
-> > > +static int mt798x_2p5ge_phy_config_init(struct phy_device *phydev)
-> > > +{
-> > > +     struct pinctrl *pinctrl;
-> > > +     int ret;
-> > > +
-> > > +     /* Check if PHY interface type is compatible */
-> > > +     if (phydev->interface != PHY_INTERFACE_MODE_INTERNAL)
-> > > +             return -ENODEV;
-> > > +
-> > > +     ret = mt798x_2p5ge_phy_load_fw(phydev);
-> > > +     if (ret < 0)
-> > > +             return ret;
-> > 
-> > Firmware should not be loaded in the .config_init method. The above
-> > call will block while holding the RTNL which will prevent all other
-> > network configuration until the firmware has been loaded or the load
-> > fails.
-> > 
-> > Thanks.
-> > 
-> > --
-> > RMK's Patch system:
-> > https://urldefense.com/v3/__https://www.armlinux.org.uk/developer/patches/__;!!CTRNKA9wMg0ARbw!iV-1ViPFsUV-lLj7aIycan8nery6sQO3t6mkpdlb_GW8hswhxc4ejJozxqkU3s2WzxSizs4kfdC77yr7HGGRIuU$
-> > FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
-> 
-> Actually, I wrote fw loading flow in .probe. However, during boot time,
-> .probe is called at very early stage (about the first 2s after booting
-> into Linux Kernel). At that time, filesystem isn't ready yet and phy
-> driver can't locate /lib/firmware/mediatek/mt7988/i2p5ge-phy-pmb.bin.
+Hello wpan maintainers/developers,
 
-Tell Dracut or whatever you are using to build the initramfs to
-include the firmware. That is what MODULE_FIRMWARE() is for.
+This is a 31-day syzbot report for the wpan subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wpan
 
-	Andrew
+During the period, 0 new issues were detected and 0 were fixed.
+In total, 5 issues are still open and 26 have already been fixed.
+
+Some of the still happening issues:
+
+Ref Crashes Repro Title
+<1> 273     Yes   KMSAN: uninit-value in ieee802154_hdr_push (2)
+                  https://syzkaller.appspot.com/bug?extid=60a66d44892b66b56545
+<2> 33      No    KASAN: global-out-of-bounds Read in mac802154_header_create (2)
+                  https://syzkaller.appspot.com/bug?extid=844d670c418e0353c6a8
+<3> 13      Yes   KMSAN: kernel-infoleak in move_addr_to_user (7)
+                  https://syzkaller.appspot.com/bug?extid=346474e3bf0b26bd3090
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
