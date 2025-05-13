@@ -1,27 +1,26 @@
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EF41C84AF
-	for <netdev@vger.kernel.org>; Tue, 13 May 2025 02:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F22191F72
+	for <netdev@vger.kernel.org>; Tue, 13 May 2025 02:12:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747102327; cv=none; b=awV4+E4ayDwPZzKbei/Uz02raMgq7o+V+a7LRR/YKQojeSXPtpILCODQ0vXAUliwoYu8+Yhb3/YWtrE+NeDNBfqGRE4pgFaXqiryN2YtDiEwxxjxCA5Ro1xAMtVIwXBKNpCr3DEJAdiUYpqX57WimsGajVa5zdwSwXzNMgqSsTA=
+	t=1747102337; cv=none; b=hQQXQ+NulOjbnTu4UD2bKfB5V8mu5ym8GAf/DN0J/L52b796xlE+m4BRTXHkgRPQSvfbOKP4K9BKunMCrzsSSCyV4Z3yogqgsH+qCSG5ah/1Yky3GU2qXktL7xrJOkbXxr2ZkGvekPX+NNp2gXkXQmhTF/45xjuCtaeN/X7CAdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747102327; c=relaxed/simple;
-	bh=YwTxb2eb41jyC2ntDiFjf9GYy2JK5YJeH7Dr6PHfyuw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jIj5pqU6VnkiwFyTQuiJfrmDjgyNc75B6tzNl97zqb0ww6FUMQMAycSshFGooY0gn4hGP4ai1MBBd7OwEPa2AZjkkGDluTOqquIX+DjPaTj+iZmURhG29bhk1DPIua3S6dBuGWtC6Obepf0HCZpExKR14kH6HEdGV8uszhzovu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.22.56
+	s=arc-20240116; t=1747102337; c=relaxed/simple;
+	bh=SQRiXXqvK5crfznlfSKOcLHKX2s7iPKh/Y9c4rEoZdE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TCfoAasRjwZJWgENMLmVgklv4p5znAeN7UV5tocBweLnxoe5rAWo/VkFeWsDj+xhkWBi7jSXoUEQ5kte3FK8zNwusghpKB/ZvhEDkgHrZ9QkQO+sV6sk4JH7BH0LgMYmcb7hvINjPNqadZeXu90EGz6Ew9JCDDWvVvtAAWv3opo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz20t1747102231t638f7d98
-X-QQ-Originating-IP: NzqX8u+SUXOtsgxN//R/yT8Prv586r026Q465RX9/gw=
+X-QQ-mid: esmtpsz20t1747102223t62087d12
+X-QQ-Originating-IP: A4OUyRW+b8nhbuLDZ69fsV9BhPJM0KlOnOA3ZjhGRxM=
 Received: from w-MS-7E16.trustnetic.com ( [122.233.195.51])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 13 May 2025 10:10:30 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 4340695544214056807
+	id ; Tue, 13 May 2025 10:10:15 +0800 (CST)
+X-QQ-SSF: 0001000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 8438290910978052792
 EX-QQ-RecipientCnt: 10
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org,
@@ -34,12 +33,10 @@ To: netdev@vger.kernel.org,
 	andrew+netdev@lunn.ch
 Cc: mengyuanlou@net-swift.com,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net v2 3/3] net: libwx: Fix FW mailbox unknown command
-Date: Tue, 13 May 2025 10:10:09 +0800
-Message-ID: <64DBB705D35A0016+20250513021009.145708-4-jiawenwu@trustnetic.com>
+Subject: [PATCH net v2 0/3] Fixes for TXGBE AML devices
+Date: Tue, 13 May 2025 10:10:06 +0800
+Message-ID: <9B738C8A5BE33471+20250513021009.145708-1-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250513021009.145708-1-jiawenwu@trustnetic.com>
-References: <20250513021009.145708-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,53 +46,40 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: NN51gi9eLBwaQhfj9uU+OVR9JARpemjbhuc7cfO/Va7XxSf3I8ephsgt
-	+OFbvQcx1sPXkbNTQgM0gLHK5iplrktX7hFMgfNY3GlgOlrtfWPUJ2oqLT+RNdna6bB79tO
-	FY3F4rfNrU7R794FCvaCnKqeMmPwY//qwtBMfIif+wSM6ceRts6n9tnbwPt4g5QuT7/0o6t
-	hu/YHfOgrbYcHOrMWmQSMejOf1fg7qp/N1QJR9zFr3Sgbsn3JPVgdSPPqP8yYxzhA1epAKo
-	GcAwF9HH6wMG/vKH8uXoUts+0Chz9nf4pW1wufBt7z9SHf5r09JtJ7kmDiz28W1Cv8PJAua
-	P8pUu3LnUNqo0Ll/pNGg24XRaus8q0Bcr2cKq6Al4EQWrS3QrIdsSn4wFh/73FXVO53HPd6
-	SLiSZAu8tmIFbHgDVxy72WKrrlQ9NSx/Yq6evwgW+Fi0Ba75Hoqdb0XmNs9qGxYANIN5I3I
-	PjC8nczUO0/9oPd43JX3fO30f8s+ORMa1j5jUkmDQ9O3ilUWhaeQNTTIVzuagmOoAVSrDG7
-	afY1B38vUqwBBKWtw3oJX3WbyEJHzmsV1uasN8sR9RnwOS51SKb34K0F0lnj1kKJ3SSQWbw
-	s9SsoYNI9f8Wljrz2FJzW3RhDiHptSjGB0lSvlUhFx5mD/6wDu6v0FCtrpJeRMkuY8z9fgj
-	ix4e5wI4ctVZQi4v1c4kuqPWbUhcyXVL3GJg+aNHa7Inuvc2pucHGU9pdbV30PLNGGNfwsu
-	3n/7kG1Vd8ZnFk270XW/NKQh6csy3+ng61+sgJ+i0DTqV3fR9nimREaRiUxtr3a7sj1HVFX
-	kpaJV2w65IVx3Xbxz9C36DsquobImGOKfdFY6KynPzePNXwuERissgNl76qwA/TDJqxbwOI
-	yuNK9f8HW+rqQEAMTYBg6NBfa/xjXOJhxcsZ+ZYK3OQhJhfaxxpSSV+ZgYWm4j8EC2YIGi7
-	XN16h0tMbZ6SQ1OINsbLLfcOvlpjjnmjphYfHdTwDVaO3CBdIJ6hdZ+DNaBuf+tkAT2pyvo
-	cx5wn2ppIYdIXI/58lxWV7y5iYb4k=
-X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+X-QQ-XMAILINFO: NPwdxSKNG61XOkJmV3mSTj5csWfTBRiAQBl/IW/RxKD0BEcV1n9BNJlq
+	Boy0Vsu+knn+znTi4hv+Ei8AVYxdGc5PHke7yhRkTfV2of0PXiAawWlMk6ETC/kOdzERfWx
+	O7zaVpqQF6MLP4Vum3t1ppnsTMVtMzTdoHmeIwN8wrevWXP5i3ojHeBG9BuY339dBItGqiR
+	zshNXQ+lNvfr89rcPmFprDYrME0uzcFzPIYm655cI514vqRyp4Zj3/ZD+wyhOiane09L0G3
+	dXhPZfX/kNAnhjliV4o3SjJHtt8UkL+cHPh5gPjvnfStOCPxkPp3JvaJFRVIc6PzSKrWfuH
+	YUbpS6GDosa0JiQAxL46wYCZNsruWU981OHCe0zZCNYWyHCAjkMwM2eTSpMcbkd9CVqi+iw
+	Jcxeq8Hk1MAROpmUdeGr3IYCMnAkNPeIVrx3v3XP3zjqUh2tmukqzK2XZIQT9Qcy5QC1TE0
+	ycdg0M2k99Jx37lNe/xKVF71DjZcF0jo5Yo+9ixcj4Ltxmt45QD/NCT381QiKiANROkEo5w
+	XApbRwQ7PrB0lZH9UYuQWkL3Jt58hjdYqCp5WlfsCQZTjizCM0e5nPXWwNEJOwlt3X77eyW
+	CfwlLqYFWwbGAfCHKiSeEJlEdsApZyQpznsS+A9/Edy+9h9VBkRFhPlRzm0qhjmmpY+76zv
+	4kyZmU5ZFi9XtJ4tE+ARrstmSeL+ZUMKJN/ZxYLDRjcbkizN6wKKZk4QZBoIsD1YxGPKv6S
+	22dSip8UPzAq6q6w65tB3XkJUTzuhb7ou4AfBJS8diBvh/WO5l20AmEpmyTmqaz+uSVXFtM
+	0fCk5N0/WsPEDeZuf4mXcZz+d4/4+8JpyfjAUtVmbcQjPFpjo7Qn2vAn15lGZRcqR8Tvoah
+	9hMw5jg759k+KG84FTxR3+zP9YHFVW1PLz4/AcrbOfAT+tKy1I99llxwHu4JzlUeexrtout
+	Br+KXMuFVdVymWP+Lg7mWc+2dp3i2RKnQT1d2UWSX2jzDBIqw/c7I26ShY/rnilIpk05Yy/
+	icIuHH10pF5HbXQMUA
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
 X-QQ-RECHKSPAM: 0
 
-For the new SW-FW interaction, missing the error return if there is an
-unknown command. It causes the driver to mistakenly believe that the
-interaction is complete. This problem occurs when new driver is paired
-with old firmware, which does not support the new mailbox commands.
+Fix some firmware related issues.
 
-Fixes: 2e5af6b2ae85 ("net: txgbe: Add basic support for new AML devices")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_hw.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+v1 -> v2:
+- Split the fixes to separate patches.
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index ccdc57e9b0d5..490d34233d38 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -442,6 +442,12 @@ static int wx_host_interface_command_r(struct wx *wx, u32 *buffer,
- 		goto rel_out;
- 	}
- 
-+	if (hdr->cmd_or_resp.ret_status == 0x80) {
-+		wx_err(wx, "Unknown FW command: 0x%x\n", send_cmd);
-+		err = -EINVAL;
-+		goto rel_out;
-+	}
-+
- 	/* expect no reply from FW then return */
- 	if (!return_data)
- 		goto rel_out;
+Jiawen Wu (3):
+  net: txgbe: Fix to calculate EEPROM checksum for AML devices
+  net: libwx: Fix FW mailbox reply timeout
+  net: libwx: Fix FW mailbox unknown command
+
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c      | 10 ++++++++--
+ drivers/net/ethernet/wangxun/txgbe/txgbe_hw.c   |  8 +++++++-
+ drivers/net/ethernet/wangxun/txgbe/txgbe_type.h |  2 ++
+ 3 files changed, 17 insertions(+), 3 deletions(-)
+
 -- 
 2.48.1
 
