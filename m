@@ -1,26 +1,27 @@
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F22191F72
-	for <netdev@vger.kernel.org>; Tue, 13 May 2025 02:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E131B0439
+	for <netdev@vger.kernel.org>; Tue, 13 May 2025 02:12:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747102337; cv=none; b=hQQXQ+NulOjbnTu4UD2bKfB5V8mu5ym8GAf/DN0J/L52b796xlE+m4BRTXHkgRPQSvfbOKP4K9BKunMCrzsSSCyV4Z3yogqgsH+qCSG5ah/1Yky3GU2qXktL7xrJOkbXxr2ZkGvekPX+NNp2gXkXQmhTF/45xjuCtaeN/X7CAdc=
+	t=1747102342; cv=none; b=qhlj/bVmUDYtaAEkPxQGncW5zSLovGuuAhyaQUm/dBRAFr4n7/zC/ssUoD1rBK52EgBbmaQ0VxMU6s6ye4ueMhkFWRduVtRTwo5x4bVnBY0MXB4zPfs1XUh9GuhuHrIbSc1D7okYvmctd/tgVuLV8IuonbzEc9vmwU36/9vEcLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747102337; c=relaxed/simple;
-	bh=SQRiXXqvK5crfznlfSKOcLHKX2s7iPKh/Y9c4rEoZdE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TCfoAasRjwZJWgENMLmVgklv4p5znAeN7UV5tocBweLnxoe5rAWo/VkFeWsDj+xhkWBi7jSXoUEQ5kte3FK8zNwusghpKB/ZvhEDkgHrZ9QkQO+sV6sk4JH7BH0LgMYmcb7hvINjPNqadZeXu90EGz6Ew9JCDDWvVvtAAWv3opo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
+	s=arc-20240116; t=1747102342; c=relaxed/simple;
+	bh=f4E1SYxjr1Ol0Rp2E/RHPZ9LGu9Ka+5k2e8U7fOY+Ck=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=i2CDpRiyFr5Qz5phSG9OzDwk0Jhluxrhvc/Z/FYL2RdqpydD2i9UBMDhDFqAanryNAbw6eKuWWe1LXE+17jxSKKtkR0t+8ALTuVH/37K2fMM9FBwYe6dBFSTwUd0zwWTJnNIlWAun0UQEXhz5AXPcAdDTk8xexcOrNK+jWT7Piw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz20t1747102223t62087d12
-X-QQ-Originating-IP: A4OUyRW+b8nhbuLDZ69fsV9BhPJM0KlOnOA3ZjhGRxM=
+X-QQ-mid: esmtpsz20t1747102228t9e05c4c9
+X-QQ-Originating-IP: bMFbdtiICzEL0zNzkiGYJZueN/Uz5DSIFzyr78dyM6Y=
 Received: from w-MS-7E16.trustnetic.com ( [122.233.195.51])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 13 May 2025 10:10:15 +0800 (CST)
-X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 8438290910978052792
+	id ; Tue, 13 May 2025 10:10:27 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 6140426146961079946
 EX-QQ-RecipientCnt: 10
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org,
@@ -33,10 +34,12 @@ To: netdev@vger.kernel.org,
 	andrew+netdev@lunn.ch
 Cc: mengyuanlou@net-swift.com,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net v2 0/3] Fixes for TXGBE AML devices
-Date: Tue, 13 May 2025 10:10:06 +0800
-Message-ID: <9B738C8A5BE33471+20250513021009.145708-1-jiawenwu@trustnetic.com>
+Subject: [PATCH net v2 2/3] net: libwx: Fix FW mailbox reply timeout
+Date: Tue, 13 May 2025 10:10:08 +0800
+Message-ID: <5D5BDE3EA501BDB8+20250513021009.145708-3-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250513021009.145708-1-jiawenwu@trustnetic.com>
+References: <20250513021009.145708-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,40 +49,51 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: NPwdxSKNG61XOkJmV3mSTj5csWfTBRiAQBl/IW/RxKD0BEcV1n9BNJlq
-	Boy0Vsu+knn+znTi4hv+Ei8AVYxdGc5PHke7yhRkTfV2of0PXiAawWlMk6ETC/kOdzERfWx
-	O7zaVpqQF6MLP4Vum3t1ppnsTMVtMzTdoHmeIwN8wrevWXP5i3ojHeBG9BuY339dBItGqiR
-	zshNXQ+lNvfr89rcPmFprDYrME0uzcFzPIYm655cI514vqRyp4Zj3/ZD+wyhOiane09L0G3
-	dXhPZfX/kNAnhjliV4o3SjJHtt8UkL+cHPh5gPjvnfStOCPxkPp3JvaJFRVIc6PzSKrWfuH
-	YUbpS6GDosa0JiQAxL46wYCZNsruWU981OHCe0zZCNYWyHCAjkMwM2eTSpMcbkd9CVqi+iw
-	Jcxeq8Hk1MAROpmUdeGr3IYCMnAkNPeIVrx3v3XP3zjqUh2tmukqzK2XZIQT9Qcy5QC1TE0
-	ycdg0M2k99Jx37lNe/xKVF71DjZcF0jo5Yo+9ixcj4Ltxmt45QD/NCT381QiKiANROkEo5w
-	XApbRwQ7PrB0lZH9UYuQWkL3Jt58hjdYqCp5WlfsCQZTjizCM0e5nPXWwNEJOwlt3X77eyW
-	CfwlLqYFWwbGAfCHKiSeEJlEdsApZyQpznsS+A9/Edy+9h9VBkRFhPlRzm0qhjmmpY+76zv
-	4kyZmU5ZFi9XtJ4tE+ARrstmSeL+ZUMKJN/ZxYLDRjcbkizN6wKKZk4QZBoIsD1YxGPKv6S
-	22dSip8UPzAq6q6w65tB3XkJUTzuhb7ou4AfBJS8diBvh/WO5l20AmEpmyTmqaz+uSVXFtM
-	0fCk5N0/WsPEDeZuf4mXcZz+d4/4+8JpyfjAUtVmbcQjPFpjo7Qn2vAn15lGZRcqR8Tvoah
-	9hMw5jg759k+KG84FTxR3+zP9YHFVW1PLz4/AcrbOfAT+tKy1I99llxwHu4JzlUeexrtout
-	Br+KXMuFVdVymWP+Lg7mWc+2dp3i2RKnQT1d2UWSX2jzDBIqw/c7I26ShY/rnilIpk05Yy/
-	icIuHH10pF5HbXQMUA
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+X-QQ-XMAILINFO: NSEFX6u+4l+KjDmLpH1amd6gzWXNrKk+JJ93NyqMdvLVMsO4TrfwUnt+
+	gjteta4uKNXeefrco39z0IboRj1Ip8NVhsMMjRAYPCWNOxau71ZGUlkF7SVf18U0tRnF5VM
+	57dH314NkE/iTvSMtjS+T35LZs2EkaSNt0xN3DnghewTyu5mCk8YOjzcoYtJmBUDdDH84AW
+	UD+Bm430ZrZ72jYroAD/p6cpEwCiIo5erSwDxinc/SmZ9GxuyiDU4D2qyTiRFwZd9xOBO/b
+	469WrkiJLCfmavXQmGvVn8utpH3NtKf8RrRFHpt7FoHoTfIKrkHds5Piv6Si53Y/CuhPJyy
+	5FKwZWbdLcPHA+uCPxhlNizh65jFcBYfhe9f8dagfZ125b7/Qd+c7dktgUP2OSCQc4q2sZZ
+	7fcAm/oZwpVUl+5i8n+lZiF9B5L40trn1ZPRYkJKx+FxcxsndjUjFCz1ga+dxrfpiXcxJVS
+	d1FIfvyM6qZ2NOOr0prGSLDV0UcJ1c5QnC8o1elF2XBAtkIUHPCvZQV0KGxuu6xEY4aP0q7
+	XyaGMdcpvCYVey6gEe32oaexhqG3a3x52vaQlno27hbebbOvLrJONsAOtmdDXS3qKCVptxW
+	lWXluvMCxEMPWO8+N5wFbSmgVY+fRQOComEpKyPljmKHZ+4khqUxhDp06uEOk0w/8gdW/xv
+	+ApKUGYI6j3TkcNmRwBGKAbnoSBaB7M0Shz/w1EHalCfSSLtQFzZOFcxZd57CQXBF34oQOF
+	ggisLOCLvLaoUcgoIPscAuCtzBqc0YPhclYg0Lu7BOewm/rHHManJGMVvOs7GC7G0ACUozn
+	z1gEgJSr2sw0OC/VMd61vrCeW8nK7v2G7X1IJWEAxjBTG684yMl2ApxavPj8X3T1/e+FDM+
+	m6YxVpq5Zpi7NkF8R8wasmsH2lxRcacZw00LoZbGQfAWOJBCAzVi0dF3wdPbGYAfP96cF4s
+	H6HHMuWFHryoutuWzRXhWvyY+9qDa+sTxCIhyIp2LGpFZQOSKjKZNJG46vGRll49XdE0rvM
+	SY9oGH9Be1JaTzi+d6
+X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
 X-QQ-RECHKSPAM: 0
 
-Fix some firmware related issues.
+For the new SW-FW interaction, the timeout waiting for the firmware to
+return is too short. So that some mailbox commands cannot be completed.
+Use the 'timeout' parameter instead of fixed timeout value for flexible
+configuration.
 
-v1 -> v2:
-- Split the fixes to separate patches.
+Fixes: 2e5af6b2ae85 ("net: txgbe: Add basic support for new AML devices")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Jiawen Wu (3):
-  net: txgbe: Fix to calculate EEPROM checksum for AML devices
-  net: libwx: Fix FW mailbox reply timeout
-  net: libwx: Fix FW mailbox unknown command
-
- drivers/net/ethernet/wangxun/libwx/wx_hw.c      | 10 ++++++++--
- drivers/net/ethernet/wangxun/txgbe/txgbe_hw.c   |  8 +++++++-
- drivers/net/ethernet/wangxun/txgbe/txgbe_type.h |  2 ++
- 3 files changed, 17 insertions(+), 3 deletions(-)
-
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index aed45abafb1b..ccdc57e9b0d5 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -434,8 +434,8 @@ static int wx_host_interface_command_r(struct wx *wx, u32 *buffer,
+ 	wr32m(wx, WX_SW2FW_MBOX_CMD, WX_SW2FW_MBOX_CMD_VLD, WX_SW2FW_MBOX_CMD_VLD);
+ 
+ 	/* polling reply from FW */
+-	err = read_poll_timeout(wx_poll_fw_reply, reply, reply, 1000, 50000,
+-				true, wx, buffer, send_cmd);
++	err = read_poll_timeout(wx_poll_fw_reply, reply, reply, 2000,
++				timeout * 1000, true, wx, buffer, send_cmd);
+ 	if (err) {
+ 		wx_err(wx, "Polling from FW messages timeout, cmd: 0x%x, index: %d\n",
+ 		       send_cmd, wx->swfw_index);
 -- 
 2.48.1
 
