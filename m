@@ -1,148 +1,92 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from mx15lb.world4you.com (mx15lb.world4you.com [81.19.149.125])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7632139CF2;
-	Tue, 13 May 2025 19:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99302AD25
+	for <netdev@vger.kernel.org>; Tue, 13 May 2025 19:08:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.125
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747163026; cv=none; b=Ib4UOW/coPXPNae3A+Iqx2LZj3Xd/vUCMORtB1gtBpRpR9DiQiNmYtlffXADxRnPpYjMrwSFSo+mFH0ZPWxoTx8/MaVnONFfz+c8rqpzQhtU847sZxW4yrjo7ZFHBrR3SwhtoKWXKUmKRrGz1f3dLerb7W1AWCFAVqzhTted8yY=
+	t=1747163333; cv=none; b=Hj/AlRY8MejhBiRzm4OZOXevs8DVIG1/qez+893eP1+X4pBrCZ7aGZuHgtOit7rd+nC766YZrnelirpAnbAOjcC/fG8VlpI2Q/ew1oC90u7q/vhm9OijaFhnXNEcNJq8OaD783lzWNR4bE46iL2uzWOO+8csa0YqQvh+3WPKB5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747163026; c=relaxed/simple;
-	bh=xOX2aEFNLfafziYim7DQ7yE2j/RCERFPYvsKlEZEDY0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NO+RtyaN/IGz6CxPkmN9KbaWYNcIYSwyX2ucUmjV23ZD/S0Y4B709WsgUPXuu+Wg+HVd90xPDihdJYpq1ShdYSH7C4doTcirPKcfieHot2KTosex2NKOgANveNI8RTvmroD+MXHJmI6U9iM1SRLuUPh5/gmfjIWMgK6Ib3f/eyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.98.2)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1uEuop-000000006PI-1lSq;
-	Tue, 13 May 2025 19:03:31 +0000
-Date: Tue, 13 May 2025 20:03:27 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Sean Anderson <sean.anderson@linux.dev>
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, llvm@lists.linux.dev
-Subject: Re: [net-next PATCH v4 03/11] net: phylink: introduce internal
- phylink PCS handling
-Message-ID: <aCOXfw-krDZo9phk@makrotopia.org>
-References: <20250511201250.3789083-1-ansuelsmth@gmail.com>
- <20250511201250.3789083-4-ansuelsmth@gmail.com>
- <5d004048-ef8f-42ad-8f17-d1e4d495f57f@linux.dev>
+	s=arc-20240116; t=1747163333; c=relaxed/simple;
+	bh=Y77Ch5gJBWARlZpuN7JiywKqUn77ZHEoCje4u6QKo9g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Hkrf4cYo1S8sfyYPjlc1gfD7/nW/U+rw31nIoUlsaxD2NyAetYxlIaKxnkdC/3hTjX40w7maXsC6fU2m8J7jRFoTEbUOm53qwN/+bnRqw2oPZuPsEjHa0wrfRs2rSN7jfmOhDpGm9YMXf8YfU+7OOgZs5N1JphRiMR9f7i0FbKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=eAeYGpkF; arc=none smtp.client-ip=81.19.149.125
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="eAeYGpkF"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=QwKiAsvBNO+ur4LN1x15YNADNv3e3e+AJkXa7zTapUs=; b=eAeYGpkFVyGeCWIPsNK4uBqlOo
+	DIIlHji1Cp742XwloUoW1cOe9sDigRJ5vEoh9zg2LRFX/zDLpkAoIMXz1s71PaE4AloNaj91A7LP3
+	uWNLpok7grajCCX2bUD6BcfF2xwT+yIHyv3XrrgpGHOE57BrpJCgRe0MHyGRyJ/8S9XA=;
+Received: from [188.22.4.212] (helo=[10.0.0.160])
+	by mx15lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1uEuSJ-000000003qY-0oJc;
+	Tue, 13 May 2025 20:34:20 +0200
+Message-ID: <76ce9b02-d809-4ccb-8f59-cb8f201e4496@engleder-embedded.com>
+Date: Tue, 13 May 2025 20:34:17 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5d004048-ef8f-42ad-8f17-d1e4d495f57f@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: tsnep: fix timestamping with a stacked DSA
+ driver
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org
+References: <20250512132430.344473-1-vladimir.oltean@nxp.com>
+ <532276c5-0c5f-41dd-add9-487f39ec1b3a@engleder-embedded.com>
+ <20250512210942.2bvv466abjdswhay@skbuf>
+Content-Language: en-US
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <20250512210942.2bvv466abjdswhay@skbuf>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AV-Do-Run: Yes
 
-On Tue, May 13, 2025 at 02:18:02PM -0400, Sean Anderson wrote:
-> On 5/11/25 16:12, Christian Marangi wrote:
-> > Introduce internal handling of PCS for phylink. This is an alternative
-> > to .mac_select_pcs that moves the selection logic of the PCS entirely to
-> > phylink with the usage of the supported_interface value in the PCS
-> > struct.
-> > 
-> > MAC should now provide an array of available PCS in phylink_config in
-> > .available_pcs and fill the .num_available_pcs with the number of
-> > elements in the array. MAC should also define a new bitmap,
-> > pcs_interfaces, in phylink_config to define for what interface mode a
-> > dedicated PCS is required.
-> > 
-> > On phylink_create() this array is parsed and a linked list of PCS is
-> > created based on the PCS passed in phylink_config.
-> > Also the supported_interface value in phylink struct is updated with the
-> > new supported_interface from the provided PCS.
-> > 
-> > On phylink_start() every PCS in phylink PCS list gets attached to the
-> > phylink instance. This is done by setting the phylink value in
-> > phylink_pcs struct to the phylink instance.
-> > 
-> > On phylink_stop(), every PCS in phylink PCS list is detached from the
-> > phylink instance. This is done by setting the phylink value in
-> > phylink_pcs struct to NULL.
-> > 
-> > phylink_validate_mac_and_pcs(), phylink_major_config() and
-> > phylink_inband_caps() are updated to support this new implementation
-> > with the PCS list stored in phylink.
-> > 
-> > They will make use of phylink_validate_pcs_interface() that will loop
-> > for every PCS in the phylink PCS available list and find one that supports
-> > the passed interface.
-> > 
-> > phylink_validate_pcs_interface() applies the same logic of .mac_select_pcs
-> > where if a supported_interface value is not set for the PCS struct, then
-> > it's assumed every interface is supported.
-> > 
-> > A MAC is required to implement either a .mac_select_pcs or make use of
-> > the PCS list implementation. Implementing both will result in a fail
-> > on MAC/PCS validation.
-> > 
-> > phylink value in phylink_pcs struct with this implementation is used to
-> > track from PCS side when it's attached to a phylink instance. PCS driver
-> > will make use of this information to correctly detach from a phylink
-> > instance if needed.
-> > 
-> > The .mac_select_pcs implementation is not changed but it's expected that
-> > every MAC driver migrates to the new implementation to later deprecate
-> > and remove .mac_select_pcs.
+On 12.05.25 23:09, Vladimir Oltean wrote:
+> On Mon, May 12, 2025 at 10:07:52PM +0200, Gerhard Engleder wrote:
+>> On 12.05.25 15:24, Vladimir Oltean wrote:
+>>> This driver seems susceptible to a form of the bug explained in commit
+>>> c26a2c2ddc01 ("gianfar: Fix TX timestamping with a stacked DSA driver")
+>>> and in Documentation/networking/timestamping.rst section "Other caveats
+>>> for MAC drivers", specifically it timestamps any skb which has
+>>> SKBTX_HW_TSTAMP, and does not consider adapter->hwtstamp_config.tx_type.
+>>
+>> Is it necessary in general to check adapter->hwtstamp_config.tx_type for
+>> HWTSTAMP_TX_ON or only to fix this bug?
 > 
-> This introduces a completely parallel PCS selection system used by a
-> single driver. I don't think we want the maintenance burden and
-> complexity of two systems in perpetuity. So what is your plan for
-> conversion of existing drivers to your new system?
+> I'll start with the problem description and work my way towards an answer.
 
-Moving functionality duplicated in many drivers to a common shared
-implementation is nothing unsual.
+(...)
 
-While this series proposes the new mechanism for Airoha SoC, they are
-immediately useful (and long awaited) also for MediaTek and Qualcomm
-SoCs.
-
-Also in the series you posted at least the macb driver (in "[net-next
-PATCH v4 09/11] net: macb: Move most of mac_config to  mac_prepare")
-would benefit from that shared implementation, as all it does in it's
-mac_select_pcs is selecting the PCS by a given phy_interface_t, which is
-what most Ethernet drivers which use more than one PCS are doing in
-their implementatio of mac_select_pcs().
-
-Also axienet_mac_select_pcs() from "[net-next PATCH v4 08/11] net:
-axienet: Convert to use PCS subsystem" could obviously very easily be
-mirated to use the phylink-internal handling of PCS selection.
-
-
+>> I can take over this patch and test it when I understand more clearly
+>> what needs to be done.
+>>
+>> Gerhard
 > 
-> DSA drivers typically have different PCSs for each port. At the moment
-> these are selected with mac_select_pcs, allowing the use of a single
-> phylink_config for each port. If you need to pass PCSs through
-> phylink_config then each port will needs its own config. This may prove
-> difficult to integrate with the existing API.
+> It would be great if you could take over this patch. After the net ->
+> net-next merge I can then submit the ndo_hwtstamp_get()/ndo_hwtstamp_set()
+> conversion patch for tsnep, the one which initially prompted me to look
+> into how this driver uses the provided configuration.
 
-This might be a misunderstanding. Also here there is only a single
-phylink_config for each MAC or DSA port, just instead of having many
-more or less identical implementations of .mac_select_pcs, this
-functionality is moved into phylink. As a nice side-effect that also
-makes managing the life-cycle of the PCS more easy, so we won't need all
-the wrappers for all the PCS OPs.
+I will post a new patch version in the next days. You can send me the
+ndo_hwtstamp_get()/ndo_hwtstamp_set() conversion patch for testing. I
+have it on my list, but nothing done so far, so I feel responsible
+for that too.
+
+Gerhard
