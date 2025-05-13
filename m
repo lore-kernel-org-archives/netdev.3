@@ -1,92 +1,129 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABBB238C34;
-	Tue, 13 May 2025 11:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F08A28CF7C;
+	Tue, 13 May 2025 12:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747137598; cv=none; b=tJV1AoPnkYWjOx9XVh4b8d3NfQsrskpzVUj1WB6ohyDrNMXIm4uAaEE1tz5mL0pR1bhtTitwJ/L/9bLT63QZgPiXWu83RorSYpYuedcv5kR/wl86NhjgLzOSIu22QoH5EM5dnviaWWrPfunHLyYk6ALCKsVf+76UE5T4J4s43kg=
+	t=1747138094; cv=none; b=pDVa51dRzzEUkfv1oVdh53imtQRC9qh4/bfN+S0sYTXKE8gjzUt9yeY4lUIa+0bbJD0HWeV2qBW1sIxzB+oRCx6BPoaAjUGvNQNUfuuMNicGQJ42uGvqBc1yP5uA9IKgwcXk2aIYC9js2VXpIqD4vSon8IByC11XOF2tooUowb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747137598; c=relaxed/simple;
-	bh=7nLZ6+YQ0LEZVQ+Ha5u7twgq3seC/yQzyyA3Aw7H+8Q=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=F/eLeXV1pdCmSgJL4NMVLctShWgvdNepE0wfrvHoxpYY2RBQi9cD5/bCWMa/wREDkQo01+C1LQJumHkrM22wHa/bMVlGA6NqwtQTZDZfZrYtYymfgwQVYkAzhkEduc+xxWdifMu12zLeB60gNhf9JpspEzdOlRDQ6BboXSiidvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q4YsjN4N; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747138094; c=relaxed/simple;
+	bh=nqVdR12YYsEgA9wg1QecAZn4HrTlrPXWWZSXA3wGALI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uRyQ/OpTZikoNEGeq8WILWDMT5BAmRqmGd5c5w7gYSRsVVGeF7GDSWxswEsm/fpvE9b0Es3tHiM78vfhXp6fD9yvB4BhNbrM0JmXSlOevzRXruyGCASawUsXqQlX6UFcVkvj2tkdtCPjnDIkCLwmJWSn5J+7pVh3ykVx9DP+EPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vE54ruPn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q4YsjN4N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A1D1C4CEE4;
-	Tue, 13 May 2025 11:59:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vE54ruPn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA81DC4CEE9;
+	Tue, 13 May 2025 12:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747137598;
-	bh=7nLZ6+YQ0LEZVQ+Ha5u7twgq3seC/yQzyyA3Aw7H+8Q=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=q4YsjN4NOsrjD21ig93pRIXgXIlScg/u+shJuBOhY+vQuh+vsxUBUGS5QvFT7X/Jk
-	 +zfmybqLvuRKntNxcX1tZKgdBp1N2N6nvkjsCwoTY28tAI5pOmvXJwCWvUaz54QpVv
-	 WovEzZr/j3TjPJ6Ub98BQJv+N79FDFFD4xFfeMOLFr7aUl8t9zdSEnMayTapMYfnek
-	 bS6RAhNJ4+C4pR09yqEhz/KLN0OnKplO3q/Hyr2Ed/r4Nb/1n6dz4NinYWPB2zf3n9
-	 KmyGcCElo1OGz9Kv0lLTsOZfCfxw+f8qT08qxOYmB+rlIMe0pDcnVMC/5qZrd8M/tq
-	 giFshi9KzKwWw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33CE339D61FF;
-	Tue, 13 May 2025 12:00:37 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1747138094;
+	bh=nqVdR12YYsEgA9wg1QecAZn4HrTlrPXWWZSXA3wGALI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vE54ruPnrf7doS5E2jmmYBdkmsTxo5FaflAHRDTNm3+f96CbeOAw5Y8y7vhbVyWJD
+	 Uz9mycdK2xwg7Pbhrg/UzEg42hQUhqMd7nE38Cv13JKcmwVMkxE4sPl/ygRcNAB/6L
+	 umR60O7gs/mGFegfMKRcOARPtLnnjMNrcOkGNzi1EfbI/FczzhegjEYUv3ePST8nW8
+	 lJUprhs8t2C8t219Ad/gJz8a/HYzR3hT8sls4ATQw8nmaPsmWoToSlVYEYlNH4k4hV
+	 8xGl0aUXxUBUOooxVvrpEOUXj69d4DwHpfoAgivvOu8+WOSJh79OnazbMK7vFofxnM
+	 FKAiqs9orucwA==
+Date: Tue, 13 May 2025 14:08:07 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Lennart Poettering <mzxreary@0pointer.de>
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>, bluca@debian.org, 
+	alexander@mihalicyn.com, daan.j.demeyer@gmail.com, daniel@iogearbox.net, 
+	davem@davemloft.net, david@readahead.eu, edumazet@google.com, horms@kernel.org, 
+	jack@suse.cz, jannh@google.com, kuba@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, me@yhndnzj.com, 
+	netdev@vger.kernel.org, oleg@redhat.com, pabeni@redhat.com, viro@zeniv.linux.org.uk, 
+	zbyszek@in.waw.pl
+Subject: Re: [PATCH v6 4/9] coredump: add coredump socket
+Message-ID: <20250513-agitation-tastatur-327692d0caf0@brauner>
+References: <CAMw=ZnRC7Okmew=rrEocFuFn8hhrcergHciPjxFPuG4c6qH_Bw@mail.gmail.com>
+ <20250513021626.86287-1-kuniyu@amazon.com>
+ <aCMJI-2goig2VBDX@gardel-login>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/5] amd-xgbe: add support for AMD Renoir
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174713763601.1640156.13599661807797356779.git-patchwork-notify@kernel.org>
-Date: Tue, 13 May 2025 12:00:36 +0000
-References: <20250509155325.720499-1-Raju.Rangoju@amd.com>
-In-Reply-To: <20250509155325.720499-1-Raju.Rangoju@amd.com>
-To: Rangoju@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
-	Raju <Raju.Rangoju@amd.com>
-Cc: horms@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Shyam-sundar.S-k@amd.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aCMJI-2goig2VBDX@gardel-login>
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Fri, 9 May 2025 21:23:20 +0530 you wrote:
-> Add support for a new AMD Ethernet device called "Renoir". It has a new
-> PCI ID, add this to the current list of supported devices in the
-> amd-xgbe devices. Also, the BAR1 addresses cannot be used to access the
-> PCS registers on Renoir platform, use the indirect addressing via SMN
-> instead.
+On Tue, May 13, 2025 at 10:56:03AM +0200, Lennart Poettering wrote:
+> On Mo, 12.05.25 19:14, Kuniyuki Iwashima (kuniyu@amazon.com) wrote:
 > 
-> Changes since v2:
-> - include linux/pci.h in xgbe-dev.c to ensure pci_err() is defined
-> - line wrap to 80 columns wide
-> - address Checkpatch warning "Improper SPDX comment style"
-> - use the correct device name Renoir instead of Crater
-> - follow reverse Xmass tree ordering
+> > > > Note this version does not use prefix.  Now it requires users to
+> > > > just pass the socket cookie via core_pattern so that the kernel
+> > > > can verify the peer.
+> > >
+> > > Exactly - this means the pattern cannot be static in a sysctl.d early
+> > > on boot anymore, and has to be set dynamically by <something>.
+> >
+> > You missed the socket has to be created dynamically by <something>.
 > 
-> [...]
+> systemd implements socket activation: the generic code in PID 1 can
+> bind a socket, and then generically forks off a process (or instances
+> of processes for connection-based sockets) once traffic is seen on
+> that socket. On a typical, current systemd system, PID 1 does this for
+> ~40 sockets by default. The code to bind AF_UNIX or AF_INET/AF_INET6
+> sockets is entirely generic.
+> 
+> Currently, in the existing systemd codebase coredumping is implemented
+> via socket activation: the core_pattern handler binary quickly hands
+> off the coredump fds to an AF_UNIX socket bound that way, and the
+> service behind that does the heavy lifting. Our hope is that with
+> Christian's work we can make the kernel deliver the coredumps directly
+> to the socket PID1 generically binds, getting rid of one middle man.
+> 
+> By requiring userspace to echo the SO_COOKIE value into the
+> core_pattern sysctl in a special formatting, you define a bespoke
+> protocol: it's not just enough to bind a socket (for which the generic
+> code in PID1 is good enough), and to write a fixed
+> string into a sysctl (for which the generic code in the current
+> /etc/sysctl.d/ manager, i.e. systemd-sysctl, works fine). But you
+> suddenly are asking from userspace, that some specific tool runs at
+> early boot, extracts the socket cookie from PID1 somehow, and writes
+> that into sysctl. We'd have to come up with a new tool for that, we
+> can no longer use generic tools. And that's the part that Luca doesn't
+> like.
+> 
+> To a large degree I agree with Luca about this. I would much prefer
+> Christian's earlier proposal (i.e. to simply define some prefix of
+> AF_UNIX abstract namespace addresses as requiring privs to bind),
+> because that would enable us to do generic handling in userspace: the
+> existing socket binding logic in PID 1, and the existing sysctl.d
+> handling in the systemd suite would be good enough to set up
+> everything for the coredump handling.
+> 
+> That said, I'd take what we can get. If enforcing privs on some
+> abstract namespace socket address prefix is not acceptable, then we
+> can probably make the SO_COOKIE proposal work (Luca: we'd just hook
+> some small tool into ExecStartPost= of the .socket unit, and make PID1
+> pass the cookie in some env var or so to it; the tool would then just
+> echo that env var into the sysctl with the fixed prefix). In my eyes,
+> it's not ideal though: it would mean the sysctl data on every instance
+> of the system system image would necessarily deviate (because the
+> socket cookie is going to be different), which mgmt tools won't like
+> (as you cannot compare sysctl state anymore), and we'd have a weak
+> conflict of ownership: right now most sysctl settings are managed by
+> /etc/sysctl.d/, but the core_pattern suddenly wouldn't be
+> anymore. This will create conflicts because suddenly two components
+> write to the thing, and will start fighting.
+> 
+> Hence: I'd *much* prefer Christian's original approach as it does not
+> have these issues. But I'll take what I can get, we can make the
+> cookie thing work, but it's much uglier.
+> 
+> I am not sure I understand why enforcing privs on some abstract
+> namespace socke address prefix is such an unacceptable idea though.
 
-Here is the summary with links:
-  - [net-next,v3,1/5] amd-xgbe: reorganize the code of XPCS access
-    https://git.kernel.org/netdev/net-next/c/2d4407160f60
-  - [net-next,v3,2/5] amd-xgbe: reorganize the xgbe_pci_probe() code path
-    https://git.kernel.org/netdev/net-next/c/bbbd7303ea18
-  - [net-next,v3,3/5] amd-xgbe: add support for new XPCS routines
-    https://git.kernel.org/netdev/net-next/c/e49479f30ef9
-  - [net-next,v3,4/5] amd-xgbe: Add XGBE_XPCS_ACCESS_V3 support to xgbe_pci_probe()
-    https://git.kernel.org/netdev/net-next/c/ab95bc9aa795
-  - [net-next,v3,5/5] amd-xgbe: add support for new pci device id 0x1641
-    https://git.kernel.org/netdev/net-next/c/795f86ff0505
+I prefer the prefix approach as well. It's clean, simple and is safe by
+itself and elegant. And it fits into the generic socket activation and
+system administration models. I mainly show-cased the cookie model as an
+elaborate workaround. It can be done but it's ugly and more difficult to
+use.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+I do have one more idea how to solve this problem cleanly using regular
+socket paths that hopefully pleases everyone.
