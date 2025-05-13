@@ -1,156 +1,171 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB99E2BE10C;
-	Tue, 13 May 2025 14:41:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A8F1C84DC
+	for <netdev@vger.kernel.org>; Tue, 13 May 2025 14:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747147317; cv=none; b=a4rbPG2h3UsqHdZX5k0jydfxZQBibH7EFmZf+BetsgwFq5fv49lU0YV/hV4T7v2AIxx1y0L8m/hBjTwQ/voWVSwnU48ylltqzSrzlLBgbW0IFFz2CvWhuYpasLNIpI4PQPJHasC+gk51ydXstgDEi2PP1gOHnLXLaKvq55mN4M0=
+	t=1747148150; cv=none; b=mqfuU162OdoBPvRk9jf89TsLFuLMj/Nm7voo6YkvTU7jGKs7qcrEjexj+xRV2p6pneU9zf6lWvvWBqu4RJOmZdNyKHapsCDirzTLL/rpr9r1YR2AAOy44HGLwL+F1MEDnTk87UU+V+3l38uNfWfRXpsi1vyBgn15Og0EtAtA6Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747147317; c=relaxed/simple;
-	bh=Mfe/o/ujk7XvMhycJvGf6PnnNtj9TPRT+Cu0bPP1/H8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rWgmOVlasK6AJXzTbT091xuCRAehwyvphAg7tGb+JTNZTcmLkzlJec4UsNmuAPbk6uJuquZnS9/vJUv7v78aJB8UYVwSWIMbMYm6o83L76w1Jw2tzlxsrNeE92ANnERtO+YLcJ5lf2UeBxwrPQ1l6+6gn9sxfHytJatp19T2C0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nDOkP5IG; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747148150; c=relaxed/simple;
+	bh=cjG5JcGmwve+aOo9ccllqHKn/eZk1rYD7li7q17KeKA=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=e4E6o+WKCkpvoAX13jUCUYGzMb27YzyYhXjIHrlTWdwEAwi7bdI9fTDisAHada1bO45jFVOyAEhyuVlM2Jo8jlvMvY9vhOY5fYN2/kWn1t2Tk7cLZleoAsIS6N3fA8zwfUsXPz4Nht71/vJTj39+rC4AgqjESKgt/f/IbVpGsQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=Kr+3xnzr; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nDOkP5IG"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5fbe7a65609so9191908a12.0;
-        Tue, 13 May 2025 07:41:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="Kr+3xnzr"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ad21a5466f6so827230266b.1
+        for <netdev@vger.kernel.org>; Tue, 13 May 2025 07:55:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747147314; x=1747752114; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qzjcpGVlPiNhfCQy1SqonqHdDAwC7y+3thN4axNOI5o=;
-        b=nDOkP5IGD3KHdAx7v4wcp9JacGfByfez8C/lXu0gyHhjDtOfTM9WXCsu6aSkWYiGz/
-         MHXz36FyVcMAOeWI9NXjKuY3r/naTyqPagDIPD1IecqnxdBDFGJFSNH8ofGSaC0TmQxk
-         gXBkoZPpZp12dvndPfLnKOZXxRmcdufUCVkv0VZILZcETjGajI9UbMSVcCfuHcvtpVuT
-         JmfPwPfEkOxdBRdJUXCPn5JYGESSI/XGE3CjUsTL9gxBwKisLAC/h0ZSh0C3RMlBnsom
-         ystagC44LuXRb52fWKIH18Ci8OM51GDKG0LZzbdrJPoTFG5/Raw5YJ2UqZ8mWaA0oBSH
-         LW8g==
+        d=openvpn.net; s=google; t=1747148146; x=1747752946; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:from:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8JKm/LBBokWGsOeoG50jghRZUC14bU5etDYCncV74e8=;
+        b=Kr+3xnzrmdr1DGgaZw5tFtBCavXY6Pc0v7E1YG9X5d5UUsZAlWC/n3hd8Dcu6tdHMO
+         ma0/7ER4jIn2REGy898pkCHeOkggdAqO24JI5B8EH9LCExHMkrDfBKmM0wpURO7Y+zqK
+         dkB5k1CyMEfeZN0lKeQMSjfWzhVogs2yjGXCGmTQXTgQTRavJkIsF4GLRJjExfUK6GR5
+         3+PpjY5mvonAAXtXsac+LfdnxVJXa+WJsUSMUV6UsjZmvFhzKH+gt5bpoCXk5YZPUhUW
+         Sxsy9JpzGryoT6QYxRDNLEQnArWr5RDcl2X3StiG+xdyMRFCMvm9HRPkw2zrwrixv8rJ
+         ftRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747147314; x=1747752114;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qzjcpGVlPiNhfCQy1SqonqHdDAwC7y+3thN4axNOI5o=;
-        b=mLkNS9fupIouGq8NxMWobtqTE/xAZZ7EKXaPRa+Z53Zaq7CQ5PKeFqg/2s9DWq28rT
-         7FTeEpu2t7i/+q0nlkyldKGDZPJDzOwx3TLTNZZlMZwUjf/Ti7opcrGjHQ9p5OyJgPVM
-         gjzF6P1I1FI6XucdFeUnTLRPswIVSF54xDe9pbx855/FQTWDsyjvWYFn/2L6mktVnwKx
-         aPWMNdMFOwfyNmrbbRkQtp9tTVsSStkW042y9eWsF0Y6DGMAFlMV2uJv0zT8KoOIMgKC
-         mxqN5W4AOSBNxVRA/C1ktQ7U455fxxNg2Q68gM6q3byP8YVwc+if+vXfMBEt7VtnWJqc
-         LA+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWsbbaQjoA9dZnmRyNrBHjaIBYMqMSBN+3VP0TYFYzzb/klV58spmjrdxJRPZns6Zqct9I7aQbx@vger.kernel.org, AJvYcCXWkqw5LBI763NR03jRR69uys2Jpd0i+u9x4moj3AUZp21V211TFFbv6ecvm7GFnrWU+mXofbtwEbTBHmU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUnGcceNg7RTRxUPAOWNdMeLatanHqTSXpExmvj8iWQr91VYdk
-	tqowz4dw6q8xeoWNtUsRZYLHZ7qDXhQ/2ullEnmHtLP4oNnTWDOH
-X-Gm-Gg: ASbGncvT2AiWYCdze4H8ASpCOOj6as7YmP42oUV3W2TM0e3xti9Fb3XSZgdNsdJJuQO
-	iOL7nGahXCX4akUNdaTkD9bpq4ZQJ/9Y4jkyVwtHEVQid4ScjvUqY5GXBo6w22+lFK19Z67Oavl
-	LLdkF1wfIif3J98RnelRbPJb7fnd7TUr4VZ6FxMAILRNvA6UaVrqOnvSgjeN9Xn7i8sAzRXKHcU
-	cvVuzUwgKBH2y0T0Tg1kRk88Sb9Zc+B8ALqXCp6iTUUUdqvF+8/eHDg3e/a0tYQmubWyaSNXidN
-	tG5qqtsacne+32s6x/tfWjB6+tm5ASv4ygM21R/Bj73Fry6piCtzBp20+sTMHQ==
-X-Google-Smtp-Source: AGHT+IGa8HfcLnV5l28T4pdncKPX+8wlBf0z+xMRFl0KSOi65yCYhLtG1//h/VuXNDAMOEomitButw==
-X-Received: by 2002:a05:6402:234a:b0:5fe:6e0b:aefc with SMTP id 4fb4d7f45d1cf-5fe6e0bb0e6mr7542848a12.26.1747147313932;
-        Tue, 13 May 2025 07:41:53 -0700 (PDT)
-Received: from debian-vm.localnet ([2a01:4b00:d20c:cddd:20c:29ff:fe56:c86])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5fc9d700e56sm7301556a12.57.2025.05.13.07.41.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 May 2025 07:41:53 -0700 (PDT)
-From: Zak Kemble <zakkemble@gmail.com>
-To: Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Zak Kemble <zakkemble@gmail.com>
-Subject: [PATCH 3/3] net: bcmgenet: expose more stats in ethtool
-Date: Tue, 13 May 2025 15:41:07 +0100
-Message-Id: <20250513144107.1989-4-zakkemble@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250513144107.1989-1-zakkemble@gmail.com>
-References: <20250513144107.1989-1-zakkemble@gmail.com>
+        d=1e100.net; s=20230601; t=1747148146; x=1747752946;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:from:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8JKm/LBBokWGsOeoG50jghRZUC14bU5etDYCncV74e8=;
+        b=loIfTfB1EjvmBrAyrbjAVe1wyX3+fxYDiz77hL7lGoLq1Z8iCh39ymO+IzDp8xXnfP
+         Hy+k4W44hNz1QZP+AWBzCeAroOj6Syz2ZHKI92IGWCCdWGNsllFTd7BPSPoZi/P85S2c
+         VzQpqLm/TR7mDGI84PNP9LCjlJcASgRJW8tksHOttavJCyGLHhwIEqm6EJMrpyEnbqZ1
+         sLrxHBpn8YsXCldMpg2iC3gUeoxy0+39D2jA/8D0kjBjT2UUAW5/8TwdEiyccQHDn5VC
+         j+iRDHJxGVy2MOC4ENW0ejxAuhO+FZdRV48kRbD89jvzNTYrCN1Pzc9h1P7nIiHzPgZY
+         dpog==
+X-Gm-Message-State: AOJu0YxKHU7gCcJEhtVCUEb9MdTBz/p0wfSUvwLXy3pSSf17t0pHwVv/
+	30HODYwfje8TVfT87+tdsZExCUHvy53hjPkEuPimY9hq5Po2Rn8TzjE38tjJWgdNxOWH1/baoTQ
+	d6OKKiW+JdCJjTfB5sMz4yi5Req1qIfrYDVpAvK6uDMUfGpc=
+X-Gm-Gg: ASbGncskfmz3k41gNU8ebrF4IHOkZ7Z46eFV8FCfYVI4OtxkYOfDPjzVkH7fg6MEqFP
+	34BNVM3XYtb3aq356an3V6NbDKdoy4eDaUINEgxx4mY9js8Hs6M5to1XDXaOWIjcP+bYADW/RDd
+	IfTyBbmxkjbzViQcp/EPlT1vIGTlSLlESkqJDn6PKLHOVhY+/qBnX3gUraIg0D2ryBKGsHaPuyp
+	XAVDfv12jADXwzBbJReg7L5NKvoGi0OAw0+62pdd0Rrj37fg3Wne+NBg1jW1nJ2UBDXYG0OUuAg
+	vkF5qoChnaUc3Ws+TWl3jcTZHz1BL3kt/g4fNdm4b2g/mwlPlkfLlYhAxfOJSG/dOSdwZIV1V47
+	5Z9eSWJ8rWHNtVw==
+X-Google-Smtp-Source: AGHT+IGL4Bk+epxmG7eGNwNlIBgK4exT40riHYPFTVkmgXjpfUXBP+mcOT2JIvmt//v76p9IMaNbEA==
+X-Received: by 2002:a17:907:2ce4:b0:ad2:3c4e:2fc2 with SMTP id a640c23a62f3a-ad4d52be8e5mr393275866b.29.1747148145775;
+        Tue, 13 May 2025 07:55:45 -0700 (PDT)
+Received: from ?IPV6:2001:67c:2fbc:1:29cc:1144:33c3:cb9c? ([2001:67c:2fbc:1:29cc:1144:33c3:cb9c])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad23fc53213sm545239666b.56.2025.05.13.07.55.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 May 2025 07:55:45 -0700 (PDT)
+Message-ID: <fc2758fd-834a-4a8c-9bdd-87cc6e874005@openvpn.net>
+Date: Tue, 13 May 2025 16:55:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 10/10] ovpn: ensure sk is still valid during
+ cleanup
+From: Antonio Quartulli <antonio@openvpn.net>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, Sabrina Dubroca <sd@queasysnail.net>,
+ Al Viro <viro@zeniv.linux.org.uk>, Qingfang Deng <dqfext@gmail.com>,
+ Gert Doering <gert@greenie.muc.de>
+References: <20250509142630.6947-1-antonio@openvpn.net>
+ <20250509142630.6947-11-antonio@openvpn.net>
+ <20250512183742.28fad543@kernel.org>
+ <1a47ce02-fd42-4761-8697-f3f315011cc6@redhat.com>
+ <f0d7cbd7-6bc2-4034-b912-17c3a1959021@openvpn.net>
+Content-Language: en-US
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <f0d7cbd7-6bc2-4034-b912-17c3a1959021@openvpn.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Expose more per-queue and overall stats in ethtool
+On 13/05/2025 11:19, Antonio Quartulli wrote:
+[...]
 
-Signed-off-by: Zak Kemble <zakkemble@gmail.com>
----
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 29 ++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+>> Side note: the ovpn_socket refcount release/detach path looks wrong, at
+>> least in case of an UDP socket, as ovpn_udp_socket_detach() calls
+>> setup_udp_tunnel_sock() which in turns will try to _increment_ various
+>> core counters, instead of decreasing them (i.e. udp_encap_enable should
+>> be wrongly accounted after that call).
+> 
+> You're right.
+> I had the impression I needed to "undo" the setup.
+> I see now that the encap key is decremented in the UDP sock destroy, 
+> right after having called my implementation of .destroy().
+> 
+> I'll drop the call to setup_udp_tunnel_sock() with empty config then.
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 80b1031da..ce224de45 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -1029,6 +1029,10 @@ struct bcmgenet_stats {
- 			tx_rings[num].stats64, packets), \
- 	STAT_GENET_SOFT_MIB64("txq" __stringify(num) "_bytes", \
- 			tx_rings[num].stats64, bytes), \
-+	STAT_GENET_SOFT_MIB64("txq" __stringify(num) "_errors", \
-+			tx_rings[num].stats64, errors), \
-+	STAT_GENET_SOFT_MIB64("txq" __stringify(num) "_dropped", \
-+			tx_rings[num].stats64, dropped), \
- 	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_bytes", \
- 			rx_rings[num].stats64, bytes),	 \
- 	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_packets", \
-@@ -1036,7 +1040,23 @@ struct bcmgenet_stats {
- 	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_errors", \
- 			rx_rings[num].stats64, errors), \
- 	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_dropped", \
--			rx_rings[num].stats64, dropped)
-+			rx_rings[num].stats64, dropped), \
-+	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_multicast", \
-+			rx_rings[num].stats64, multicast), \
-+	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_missed", \
-+			rx_rings[num].stats64, missed), \
-+	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_length_errors", \
-+			rx_rings[num].stats64, length_errors), \
-+	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_over_errors", \
-+			rx_rings[num].stats64, over_errors), \
-+	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_crc_errors", \
-+			rx_rings[num].stats64, crc_errors), \
-+	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_frame_errors", \
-+			rx_rings[num].stats64, frame_errors), \
-+	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_fragmented_errors", \
-+			rx_rings[num].stats64, fragmented_errors), \
-+	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_broadcast", \
-+			rx_rings[num].stats64, broadcast)
- 
- /* There is a 0xC gap between the end of RX and beginning of TX stats and then
-  * between the end of TX stats and the beginning of the RX RUNT
-@@ -1057,6 +1077,11 @@ static const struct bcmgenet_stats bcmgenet_gstrings_stats[] = {
- 	STAT_RTNL(rx_dropped),
- 	STAT_RTNL(tx_dropped),
- 	STAT_RTNL(multicast),
-+	STAT_RTNL(rx_missed_errors),
-+	STAT_RTNL(rx_length_errors),
-+	STAT_RTNL(rx_over_errors),
-+	STAT_RTNL(rx_crc_errors),
-+	STAT_RTNL(rx_frame_errors),
- 	/* UniMAC RSV counters */
- 	STAT_GENET_MIB_RX("rx_64_octets", mib.rx.pkt_cnt.cnt_64),
- 	STAT_GENET_MIB_RX("rx_65_127_oct", mib.rx.pkt_cnt.cnt_127),
-@@ -2408,6 +2433,8 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 		u64_stats_add(&stats->bytes, len);
- 		if (dma_flag & DMA_RX_MULT)
- 			u64_stats_inc(&stats->multicast);
-+		else if (dma_flag & DMA_RX_BRDCAST)
-+			u64_stats_inc(&stats->broadcast);
- 		u64_stats_update_end(&stats->syncp);
- 
- 		/* Notify kernel */
+Paolo, the reason for calling setup_udp_tunnel_sock() with an empty 
+config was to "reset" its encap state (for udp_tunnel).
+
+Technically a UDP socket could go back to being a pure userspace socket 
+only (i.e. when all peers using that socket have been deleted), 
+therefore I wanted to make sure that the kernel would not try to 
+intercept its packets anymore.
+
+I understand setup_udp_tunnel_sock(cfg={}) is not correct, but what are 
+my options?
+
+1) I could nullify manually sk_user_data and udp_sk(sk)->encap_type;
+
+2) I could implement something like "stop_udp_tunnel_sock()" that 
+reverts what setup_udp_tunnel_sock() had done and call it.
+
+Opinions?
+I'd go with 2.
+
+Thanks a lot!
+
+
 -- 
-2.39.5
+Antonio Quartulli
+OpenVPN Inc.
 
