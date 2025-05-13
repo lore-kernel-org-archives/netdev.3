@@ -1,26 +1,27 @@
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44D71E9B03
-	for <netdev@vger.kernel.org>; Tue, 13 May 2025 09:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D331A23C4E3
+	for <netdev@vger.kernel.org>; Tue, 13 May 2025 09:49:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747129756; cv=none; b=OGBPswtImoEba9OZj58p64BglCYZ14XilPpxb3FgUFN6iq50gDzWduR45ezcsy6pPegHTuLhmP1Y/CmDRCl7uU8poql+WKEwNwkvPuhUMXKz3r9Y8m5tcQf6P7PFPJDLps8LIn67HHpt+WQ1BmiZzPDT6Qb421AExYKvBO52VQs=
+	t=1747129757; cv=none; b=c/JyyL9VfClHbVu1F1406YJkeKLSoO65wZRvdbrZuSH1GHIaFJ/BCqvfIaBOGaLLSAX1Xx0dFARyUDfhINGHHgLVf4cYP2kg52+/D3TUWGqs1rDve9MNgMPn9sFRJW5mMotzcYFfTGqoHS5HmhBFE8rXCTvMW9VoIloZHsujVg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747129756; c=relaxed/simple;
-	bh=YjKnTR2ihtIgRlEDsmIsSxZOhCBpQRiciSvJEKdW+D8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O/CnXfaziXG1fQ2HBWrZQb2S4j/LDqtGDNokkVcAb0NQF9HwDGpafqfyXu9KTLWMhce+ba4keWu2QNqGgCiwhvEIizYrNmlLU3Acgo8JVGs2CbIQvZ3Gv8y+PMSjpwJ5sDxlVfca3PEO+lpK1cdritWNIouM4eWJZBWENCFbdRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com; spf=none smtp.mailfrom=bamaicloud.com; arc=none smtp.client-ip=54.204.34.130
+	s=arc-20240116; t=1747129757; c=relaxed/simple;
+	bh=ZKjwE0/w89Noepc6THLdErEU7vHxUq2+NyWOrQMW8LE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=p9HjfQOj87cTgqrkOeQcg3ZZ1z7geZriC5qzXEv7K/8MzyH5KPXNL4hPXB4UrM8lyT7FHs+lXFqY4ot3PrHH1rzNBNOn8CZ0bK8blsTHt4151MFNTPD/fV2Pclu1s4/9+Yxoen56UfYGWITanhVHlB8S6LFhXVGdW9fTRAqa+5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com; spf=pass smtp.mailfrom=bamaicloud.com; arc=none smtp.client-ip=54.92.39.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bamaicloud.com
-X-QQ-mid: zesmtpsz4t1747129676t196b6b1b
-X-QQ-Originating-IP: h5vs1YZaAnkwCDa2CsjVQYE1uP7G/PWXlYWEFoHbwAY=
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bamaicloud.com
+X-QQ-mid: zesmtpsz4t1747129685tb66b25bc
+X-QQ-Originating-IP: MDZV/2HWi/SItN/voahY6y5AQTBIFkcgC7isURyQ8kc=
 Received: from localhost.localdomain ( [111.202.70.100])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 13 May 2025 17:47:53 +0800 (CST)
+	id ; Tue, 13 May 2025 17:48:01 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 7435081856525753782
+X-BIZMAIL-ID: 8387637803524236603
 EX-QQ-RecipientCnt: 11
 From: Tonghao Zhang <tonghao@bamaicloud.com>
 To: netdev@vger.kernel.org
@@ -34,10 +35,12 @@ Cc: Tonghao Zhang <tonghao@bamaicloud.com>,
 	Jonathan Corbet <corbet@lwn.net>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	Zengbing Tu <tuzengbing@didiglobal.com>
-Subject: [PATCH net-next v2 0/4] add broadcast_neighbor for no-stacking networking arch
-Date: Tue, 13 May 2025 17:47:46 +0800
-Message-ID: <47ED0B42943D829F+20250513094750.23387-1-tonghao@bamaicloud.com>
+Subject: [PATCH net-next v2 2/4] net: bonding: add broadcast_neighbor netlink option
+Date: Tue, 13 May 2025 17:47:48 +0800
+Message-ID: <2B0F476B6A0D5505+20250513094750.23387-3-tonghao@bamaicloud.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250513094750.23387-1-tonghao@bamaicloud.com>
+References: <20250513094750.23387-1-tonghao@bamaicloud.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,38 +50,26 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpsz:bamaicloud.com:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: NEaes6yu2o+mpvE97KGJAEjzMF0MD2qboJ7i6X1TslxdaG0isznyVBda
-	f+M5c28GhQNm8Y2JtehvPU242UlOH0ONKpeNAbusbFzMNm44rE68yAO4P779XKzAfw9EiLN
-	rki6g90kiPik/m62XG9bBFTzx5kV1hG7WG4P3BDsHETILL5XSdo/bg4wOQDQFvhcLpLeeFl
-	3v4k72zseuRe/qNJxDcBpt0XEwFcYW5C4yc67qDGl6J2L1A++vDGC+BrfS98E7kJWHftqW7
-	E/WIsW+Lb3Lq5ZgsZGT1hE/in6Fltj4NDMlyg69CHrr1iVxqGLHPvpEekNxlmeZxaw9lBzM
-	JZxz2LCmQWv//XFhMe4mybFbnOy5qkQ1ekb+LqmdvHGd+oBWJZ2hpHLvp+EGB1nyDk3bBhI
-	XSIb7MI1oGJFOJk91WtvLOExHf5nG9Zlf/sy2DNaCRGkfbw6rOKB64AIYqLa4OTVhmqRaHs
-	6Ds56XddZnb14R+TVW6Ne3kFtnT9wmY6QWqGZW8asApb1Z9zTO133pFroYM9mBKBB8H5le9
-	OFdko0OSo5eEooQbYmQ4LvLlP0zzQSide84VlVE9VbwsyKDrM6gSZbU3U6JArhoQazGypMs
-	zCeEInYnf9s9b5ySNz0Xwx3lpIlC/5mkMSdjBBK3PvZJ3EkbSwJUYOdACY1KOCthJ9d9qjZ
-	eGUC9CzHPv4nM9D2l4H4+FhuG+1YTbE5nnBhVuJ8wB4UIzyUPv2BHbCZtGotVYmzyCPYrd/
-	IvrBzM91gkVwOqLIcml6qCZeXvIjU8Xd7qHZK6FnBcwqnRk33Ccv6RVbQXRjHCWDKIK454/
-	4O1dPeqxAWke0BN7Q92Nd19MuKRdugbYjZQqp0Dcs2hbEUtL1sjmkxY/LvBySFls4KLT7qn
-	SCwnDDarACiffFkkvksJcVmL6adbojKPWicPp9ynOgaXzNFGTR+BLqKHBx4XRDQ3hBIzT6K
-	L9Wb9qp378K7F3wMZ6Bs3pbEY5a/JRP6W9wYAfEdmxyNm7yZijaPW4PdXQn6RxVKaajk=
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+X-QQ-XMAILINFO: NWT6b+CD3I3QlraMU+9uE3onYrHwDqyoUB0/YEuR8lw1EBRBNfHsBRM1
+	LRVtzebV47chBXIHHy9ogSy9QS30PvaRY9MJY//JxI3n4AvuvzW1s65H4qdm8mqpqNKDVXl
+	vR2EvCMus0ccXXkoxd+Ixex9bJKrWjItW9ceAbWv9Jfb3Xz/+bij3PwQHmA3m6sOkFQf5Z1
+	pXWH1u33mdpQZRiOWNZnMIuyhbcKFHFOAPEdxSxuBRaLvI7vIvU7uNWsL1XaTtz8duVt4mv
+	PLtuXh7Qo/mE6azayH8x3HGjJUwxiX+sLagOOtPwnSHYC8d9gyTtP9+m49YVaAJ68S3/U1C
+	Pn45c+bsWCGSvnK0U+Y3hkPh4jcCPla4/nuzs3Um2KtpRUhEmDC/iabAV/72HCoVId5M+lC
+	2RowXvc+M6etJZdr65CkhJJm5r0XEyPUSAZR5R7tOLfGP/o6Cc0DLJZX0HD7SmuiYrgmMo4
+	GfZCreBN8abbyMHP4OENqAHQXHFHhxLx1HaYDUlZTqQPELYZCJTQMubE/JcezLW6wxsxJyG
+	2vmjSAoXQ1qp9BLlEO3txquHXO5jUNdcwTkpGhZqJp9t/EpGsDBPLPI1PECaFJV4jjBdFBU
+	p65RHyaXzcTrC/dzR8etncDFk14L5ZhjJwE6/PVf5PQCd126RHAncVW5+HSj++ijpx2KXn5
+	NzfNjXCzvG4kOgEb9wFxTZD9aRYn4zKuGIXp/ZhmsSLgprVkbrk/no4dK80NG6+PVbwdwx5
+	XOZMhmyJXuCRhj8ha69Asa3ABbqxbi+2csg/wrCPDVSOaMCEwcMZ6yoBMj3drd17EwG3YQF
+	ZjBsDWwZF3tE13iznUwC+ygmseEDM3EFRXzoyXZV/pe4RLBDnF9EIgNleWI1Q8Z/j+XggSM
+	wYh8Qy6PzCiLjCfEe6+4qDN63dU8AaXNqLlKV0/Di6dk3acfD0hpUlb16GKpmv4e+NgVGS+
+	QtRW+EId7h1CVy8AbygOBTvILRMOVVD0CHKp1kvcpnWqsJnFZ6EmDCjlA
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
 X-QQ-RECHKSPAM: 0
 
-For no-stacking networking arch, and enable the bond mode 4(lacp) in
-datacenter, the switch require arp/nd packets as session synchronization.
-More details please see patch.
-
-v2 change log:
-- add static branch for performance
-- add more info about no-stacking arch in commit message
-- add broadcast_neighbor info and format doc
-- invoke bond_should_broadcast_neighbor only in BOND_MODE_8023AD mode for performance
-- explain why we need sending peer notify when failure recovery
-- change the doc about num_unsol_na
-- refine function name to ad_cond_set_peer_notif
-- ad_cond_set_peer_notif invoked in ad_enable_collecting_distributing
-- refine bond_should_notify_peers for lacp mode.
+User can config or display the bonding broadcast_neighbor option via
+iproute2/netlink.
 
 Cc: Jay Vosburgh <jv@jvosburgh.net>
 Cc: "David S. Miller" <davem@davemloft.net>
@@ -88,27 +79,73 @@ Cc: Paolo Abeni <pabeni@redhat.com>
 Cc: Simon Horman <horms@kernel.org>
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Zengbing Tu <tuzengbing@didiglobal.com>
+Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
+Signed-off-by: Zengbing Tu <tuzengbing@didiglobal.com>
+---
+ drivers/net/bonding/bond_netlink.c | 16 ++++++++++++++++
+ include/uapi/linux/if_link.h       |  1 +
+ 2 files changed, 17 insertions(+)
 
-Tonghao Zhang (4):
-  net: bonding: add broadcast_neighbor option for 802.3ad
-  net: bonding: add broadcast_neighbor netlink option
-  net: bonding: send peer notify when failure recovery
-  net: bonding: add tracepoint for 802.3ad
-
- Documentation/networking/bonding.rst | 11 ++++-
- drivers/net/bonding/bond_3ad.c       | 19 +++++++++
- drivers/net/bonding/bond_main.c      | 60 +++++++++++++++++++++++++---
- drivers/net/bonding/bond_netlink.c   | 16 ++++++++
- drivers/net/bonding/bond_options.c   | 34 ++++++++++++++++
- drivers/net/bonding/bond_sysfs.c     | 18 +++++++++
- include/net/bond_options.h           |  1 +
- include/net/bonding.h                |  3 ++
- include/trace/events/bonding.h       | 37 +++++++++++++++++
- include/uapi/linux/if_link.h         |  1 +
- 10 files changed, 193 insertions(+), 7 deletions(-)
- create mode 100644 include/trace/events/bonding.h
-
+diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
+index ac5e402c34bc..57fff2421f1b 100644
+--- a/drivers/net/bonding/bond_netlink.c
++++ b/drivers/net/bonding/bond_netlink.c
+@@ -124,6 +124,7 @@ static const struct nla_policy bond_policy[IFLA_BOND_MAX + 1] = {
+ 	[IFLA_BOND_MISSED_MAX]		= { .type = NLA_U8 },
+ 	[IFLA_BOND_NS_IP6_TARGET]	= { .type = NLA_NESTED },
+ 	[IFLA_BOND_COUPLED_CONTROL]	= { .type = NLA_U8 },
++	[IFLA_BOND_BROADCAST_NEIGH]	= { .type = NLA_U8 },
+ };
+ 
+ static const struct nla_policy bond_slave_policy[IFLA_BOND_SLAVE_MAX + 1] = {
+@@ -561,6 +562,16 @@ static int bond_changelink(struct net_device *bond_dev, struct nlattr *tb[],
+ 			return err;
+ 	}
+ 
++	if (data[IFLA_BOND_BROADCAST_NEIGH]) {
++		int broadcast_neigh = nla_get_u8(data[IFLA_BOND_BROADCAST_NEIGH]);
++
++		bond_opt_initval(&newval, broadcast_neigh);
++		err = __bond_opt_set(bond, BOND_OPT_BROADCAST_NEIGH, &newval,
++				     data[IFLA_BOND_BROADCAST_NEIGH], extack);
++		if (err)
++			return err;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -630,6 +641,7 @@ static size_t bond_get_size(const struct net_device *bond_dev)
+ 		nla_total_size(sizeof(struct nlattr)) +
+ 		nla_total_size(sizeof(struct in6_addr)) * BOND_MAX_NS_TARGETS +
+ 		nla_total_size(sizeof(u8)) +	/* IFLA_BOND_COUPLED_CONTROL */
++		nla_total_size(sizeof(u8)) +	/* IFLA_BOND_BROADCAST_NEIGH */
+ 		0;
+ }
+ 
+@@ -793,6 +805,10 @@ static int bond_fill_info(struct sk_buff *skb,
+ 		       bond->params.coupled_control))
+ 		goto nla_put_failure;
+ 
++	if (nla_put_u8(skb, IFLA_BOND_BROADCAST_NEIGH,
++		       bond->params.broadcast_neighbor))
++		goto nla_put_failure;
++
+ 	if (BOND_MODE(bond) == BOND_MODE_8023AD) {
+ 		struct ad_info info;
+ 
+diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+index 3ad2d5d98034..53b2f6ebda8b 100644
+--- a/include/uapi/linux/if_link.h
++++ b/include/uapi/linux/if_link.h
+@@ -1534,6 +1534,7 @@ enum {
+ 	IFLA_BOND_MISSED_MAX,
+ 	IFLA_BOND_NS_IP6_TARGET,
+ 	IFLA_BOND_COUPLED_CONTROL,
++	IFLA_BOND_BROADCAST_NEIGH,
+ 	__IFLA_BOND_MAX,
+ };
+ 
 -- 
 2.34.1
 
