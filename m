@@ -1,143 +1,126 @@
-Received: from oak.phenome.org (unknown [193.110.157.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFB428CF68;
-	Tue, 13 May 2025 12:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.110.157.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224ED1D52B;
+	Tue, 13 May 2025 12:48:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747140215; cv=none; b=RGv99m5jUfv8UfmFobkOYmAvTd51dLISQTw9EkgsUHoydR5K8j+Xu6VAhvlHHuPq8IYmANJx08UmW8GYMRbBdrBIW1Ed8fPXawRwkRy+3xJ99zOPr/xl3lKCd+mrBRiLb/2+LilX/5CAx0a0C5+kijQ200OMGJuF0yN2wrxNk1E=
+	t=1747140531; cv=none; b=tVo/jeaKXWJwDo7dH4AyMiqWfzc8zH9xdX3ObjCBSAI0RHRXLzVHOdtuCHyIdkJMFohJtIii52OYzcpyCFYyHdRiT+cvg2DGSyAmJpHFbw5NzTGN3ZznKxWEwJRMusLc9+eFgHzzawko1ZkHfQxuta6pbdcUKOzlxwfiItoxa5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747140215; c=relaxed/simple;
-	bh=6iHfKiz4WKe+cAHmUEXMyds2YmUzVKy+KnkYoWTKDQc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NdwH4A6UZ6jAOSlAwO8C4xf4fGjiyX0dxXdoLki5fx/MA30mb+LCN3wov+q26DpB3nvK04R/S4PIJE3SWcwMaVy/c/Ng8fzVIcE6YIVayBnsvgGTNNe+9UQXv2Jowh6VMSp+oF3rdCbKdSWRhUagQT4juz5yZgfwP/MvpM9Nn+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org; spf=pass smtp.mailfrom=phenome.org; dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b=b4CK2ayA; arc=none smtp.client-ip=193.110.157.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phenome.org
+	s=arc-20240116; t=1747140531; c=relaxed/simple;
+	bh=IRMm+C+NtzCnQzW5ekgvU/LsZ5ZGYQm9QCLC9PLIH7U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JtgY2nek0mPhiatCQJo+60EBXPXBr1uCSroiJnvYSXW5gESHXxhvYBtSLy/dPhgL0jLLpRWD9Rf63Z7MNJD+hyCorKgLF77NUim+UuHBFpxDabKe1ymRS6EKAsxK7sQKyrfWfvRtioqKHhwI68HOj5CMzJqKr6DMAjf3r0/sKgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HU9V43Ii; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b="b4CK2ayA"
-Authentication-Results: oak.phenome.org (amavisd); dkim=pass (2048-bit key)
- reason="pass (just generated, assumed good)" header.d=phenome.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=phenome.org; h=
-	in-reply-to:content-disposition:content-type:content-type
-	:mime-version:references:message-id:subject:subject:from:from
-	:date:date:received; s=oak1; t=1747139687; x=1748003688; bh=6iHf
-	Kiz4WKe+cAHmUEXMyds2YmUzVKy+KnkYoWTKDQc=; b=b4CK2ayA9+skC79kqW/v
-	hLkKn7UoVL1UlpjpXU6ADilmafCK6x4/ShcRO9IghEPaTunVxAbWlNYuxTal37dX
-	7Ou4lptWY7f0DTiyXzV3ibrZ3tYyqY4JIdGJI+HLURhPQE4gz3X2Jo+zkmY7uH7z
-	Iy0lre3EqPHkfdU4igrrEIy1cujoguSBF+zB70H7Ce3nGt6+X8Xv+WbOSlnhgJ7b
-	lxaemBA9XA3qiISOvSiG+YpEiDgCMUw93LtwteknAt4DoT7RSB4HqJ/jxMAco4T4
-	9R+B2B8D1VTeOF7iKTMWLEzkDaVxMAxxgDKnxkDcnmHchEVnwYg6HvP0Lu0jCUJs
-	tg==
-X-Virus-Scanned: amavisd at oak.phenome.org
-Received: from Antony2201.local (hal.connected.by.freedominter.net [91.132.42.103])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384)
-	(No client certificate requested)
-	by oak.phenome.org (Postfix) with ESMTPSA;
-	Tue, 13 May 2025 14:34:45 +0200 (CEST)
-Date: Tue, 13 May 2025 14:34:43 +0200
-From: Antony Antony <antony@phenome.org>
-To: Zilin Guan <zilin@seu.edu.cn>
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
-Subject: Re: [RFC PATCH] xfrm: use kfree_sensitive() for SA secret zeroization
-Message-ID: <aCM8Y9iNXmbuPD5G@Antony2201.local>
-References: <20250512092808.3741865-1-zilin@seu.edu.cn>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HU9V43Ii"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43cf680d351so38896135e9.0;
+        Tue, 13 May 2025 05:48:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747140528; x=1747745328; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=a5TgOXyLSPHdmxHWX/DD9xraZLG6iwcHdcK24HBFLhk=;
+        b=HU9V43IipaRy17NuU15l1HKOr9KH9cnIT8fmvYJAZ9W+8sjyNhVs42ZHa0zWT2k9ne
+         YTgR2e1DMaO0CHolLi5icBnv2cQW3jv8OuE2MGOQO2bHZtG08GFAqtyBZr6r6T6Gg7PO
+         B5wTTpD8jWdgF+hB+HmVB25EogTv/OnBo1Pfg3/AzjSpC0yo2rfGkTBnzKkbPF9vhQHO
+         dtVYu0Vf+hGCbU0wJbcv9oIQOUdA5uQFBRKyk0CVFiTPWwBI4f2/7lEG0MTXiw6T5KtS
+         stbSz5ZLdBN3S8fLcms+FegHflcgDhRmjIs7QrQy5axmoprCV2+glY1UcFgIkDbwrFjb
+         LIUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747140528; x=1747745328;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a5TgOXyLSPHdmxHWX/DD9xraZLG6iwcHdcK24HBFLhk=;
+        b=fx5pZI/P7/AXLu8rj/B28RUq7ZQ6kX8XUeJrhBeW3hbQQTWwbTonFvTSyTr+iah9zL
+         dyoqHeTTsPSrkn723HD/ibjUIT0iSicz21qSzJTjWX7ejfnPeXG6gUiUPtreBmafH+a4
+         gro++EaBdqOTmUnyyeQDPGzYjo0iFzbvpBwIpcuHh2U2whKj3QylmTzeewyT5yDvJ25l
+         KynbVVSQPwZbMo4mdHHmsaeBVqLAdEJ/6zgci6DfPc7NCSiGNW6tcBtm0hPSCLhd6HmT
+         940YlezRtdzVYSpfKjjHR+MUYgdLEEN+JaZ0cU/2NamgwuckoGeD/JkqmKIA66zdqyEF
+         944Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUzN3f7LJ8ncFq56vKwj5XqbUGpn2EtjHX3vqRLjT+XJuS3eGvNkTb9SomXcczQRLE0xD0Wy0EeOnNujYU=@vger.kernel.org, AJvYcCXbkYUYoGBVq7D79jF3bH88RIvCqiL9DRuPeOY5ZY8yNJ2FXdYsDnriaWGxqYf8l6AQhVMU6Wjq@vger.kernel.org
+X-Gm-Message-State: AOJu0YylawN83dRYNzUHqNa3klplQUb3zZuL7C6xtjPKWOQLB8ehX82A
+	qR4NMoE3+BskRBlG4b10IsQfwixy4ILj0eBciPV0KwU9Lf0+sYxb
+X-Gm-Gg: ASbGncsTHpH/YsFe1pmlhL1h69gUOp7MHJfB3bPlWKK4T4MljCa9q+3L/3ttd9EkWWb
+	4XIeqshA8TfFOwcvSMutY1KP/80Op52Xd497Fgfiqt84/+RBKcrsyVQM8XTnIhkGaqSIIAJJSwY
+	EwpVVcVzU429FQLo+LzD6aFvUnTbCX5K3zwigNoYE7T34CNDImTifkEJ2llF0mC8N+7Fo4GDfSn
+	TzrmtWTIuxFG3/ECy2gSaI+HtQUM2Y435SAuLDGyyZ6+EB5K/zx0gxAAs9Cqrxv/ezVokWMVQMg
+	6aksTholVGis/Il3dTWQ5A/cO1MfAroc2i42K1fupZD+XErILc+LLQOMH2RKQF53HHy/Ka2P
+X-Google-Smtp-Source: AGHT+IHBreVwaNTD250MP1ZhUthvVQWAn2cvlOqmyeNmqTywxz6tsH2Gn2/fdJuks7mp7pU/Wx6dDg==
+X-Received: by 2002:a5d:47a7:0:b0:3a0:9a02:565a with SMTP id ffacd0b85a97d-3a340d15421mr2730099f8f.3.1747140528111;
+        Tue, 13 May 2025 05:48:48 -0700 (PDT)
+Received: from [192.168.8.100] ([148.252.146.237])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442d6858566sm165365765e9.32.2025.05.13.05.48.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 May 2025 05:48:47 -0700 (PDT)
+Message-ID: <eae3e1a9-1d82-40b7-a835-978be4a6ef56@gmail.com>
+Date: Tue, 13 May 2025 13:49:56 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250512092808.3741865-1-zilin@seu.edu.cn>
-X-Mutt-References: <20250512092808.3741865-1-zilin@seu.edu.cn>
-X-Mutt-Fcc: ~/sent
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 01/19] netmem: rename struct net_iov to struct netmem_desc
+To: Byungchul Park <byungchul@sk.com>
+Cc: willy@infradead.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel_team@skhynix.com,
+ kuba@kernel.org, almasrymina@google.com, ilias.apalodimas@linaro.org,
+ harry.yoo@oracle.com, hawk@kernel.org, akpm@linux-foundation.org,
+ ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
+ john.fastabend@gmail.com, andrew+netdev@lunn.ch, edumazet@google.com,
+ pabeni@redhat.com, vishal.moola@gmail.com
+References: <20250509115126.63190-1-byungchul@sk.com>
+ <20250509115126.63190-2-byungchul@sk.com>
+ <ea4f2f83-e9e4-4512-b4be-af91b3d6b050@gmail.com>
+ <20250512132939.GF45370@system.software.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20250512132939.GF45370@system.software.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, May 12, 2025 at 09:28:08AM +0000, Zilin Guan wrote:
-> The XFRM subsystem supports redaction of Security Association (SA)
-> secret material when CONFIG_SECURITY lockdown for XFRM secrets is active.
-> High-level copy_to_user_* APIs already omit secret fields, but the
-> state destruction path still invokes plain kfree(), which does not zero
-> the underlying memory before freeing. This can leave SA keys and
-> other confidential data in memory, risking exposure via post-free
-> vulnerabilities.
+On 5/12/25 14:29, Byungchul Park wrote:
+> On Mon, May 12, 2025 at 02:11:13PM +0100, Pavel Begunkov wrote:
+>> On 5/9/25 12:51, Byungchul Park wrote:
+>>> To simplify struct page, the page pool members of struct page should be
+>>> moved to other, allowing these members to be removed from struct page.
+>>>
+>>> Reuse struct net_iov for also system memory, that already mirrored the
+>>> page pool members.
+>>>
+>>> Signed-off-by: Byungchul Park <byungchul@sk.com>
+>>> ---
+>>>    include/linux/skbuff.h                  |  4 +--
+>>>    include/net/netmem.h                    | 20 ++++++------
+>>>    include/net/page_pool/memory_provider.h |  6 ++--
+>>>    io_uring/zcrx.c                         | 42 ++++++++++++-------------
+>>
+>> You're unnecessarily complicating it for yourself. It'll certainly
+>> conflict with changes in the io_uring tree, and hence it can't
+>> be taken normally through the net tree.
+>>
+>> Why are you renaming it in the first place? If there are good
 > 
-> This patch modifies __xfrm_state_destroy() so that, if SA secret
-> redaction is enabled, it calls kfree_sensitive() on the aead, aalg and
-> ealg structs, ensuring secure zeroization prior to deallocation. When
-> redaction is disabled, the existing kfree() behavior is preserved.
+> It's because the struct should be used for not only io vetor things but
+> also system memory.  Current network code uses struct page as system
+
+Not sure what you mean by "io vector things", but it can already
+point to system memory, and if anything, the use conceptually more
+resembles struct pages rather than iovec. IOW, it's just a name,
+neither gives a perfect understanding until you look up details,
+so you could just leave it net_iov. Or follow what Mina suggested,
+I like that option.
+
+> memory descriptor but struct page fields for page pool will be gone.
 > 
-> Note that xfrm_redact() is the identical helper function as implemented
-> in net/xfrm/xfrm_user.c. And this patch is an RFC to seek feedback on
-> whether this change is appropriate and if there is a better patch method.
+> So I had to reuse struct net_iov and I thought renaming it made more
+> sense.  It'd be welcome if you have better idea.
+-- 
+Pavel Begunkov
 
-I would prefer to use the existing one than an additional copy. If it is 
-necessary. See the comment bellow.
-
-> 
-> Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-> ---
->  net/xfrm/xfrm_state.c | 19 ++++++++++++++++---
->  1 file changed, 16 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-> index 341d79ecb5c2..b6f2c329ea9d 100644
-> --- a/net/xfrm/xfrm_state.c
-> +++ b/net/xfrm/xfrm_state.c
-> @@ -593,15 +593,28 @@ void xfrm_state_free(struct xfrm_state *x)
->  }
->  EXPORT_SYMBOL(xfrm_state_free);
->  
-> +static bool xfrm_redact(void)
-> +{
-> +	return IS_ENABLED(CONFIG_SECURITY) &&
-> +		security_locked_down(LOCKDOWN_XFRM_SECRET);
-> +}
-> +
->  static void ___xfrm_state_destroy(struct xfrm_state *x)
->  {
-> +	bool redact_secret = xfrm_redact();
->  	if (x->mode_cbs && x->mode_cbs->destroy_state)
->  		x->mode_cbs->destroy_state(x);
->  	hrtimer_cancel(&x->mtimer);
->  	timer_delete_sync(&x->rtimer);
-> -	kfree(x->aead);
-> -	kfree(x->aalg);
-> -	kfree(x->ealg);
-> +	if (redact_secret) {
-
-I recommend using kfree_sensitive() unconditionally.
-This code is not in the fast path, so the overhead compared to kfree() would 
-be acceptable?
-
-It's generally better to always wipe key material explicitly.
-When I originally  submitted the redact patch [1], I assumed that in 
-environments with a good LSM(like AppArmor or SELinux) enabled, 
-kfree_sensitive() would be the default kfree().
-
-If kfree_sensitive() is called unconditionally, the call to xfrm_redact() in 
-this file won not be necessary.
-
-
-> +		kfree_sensitive(x->aead);
-> +		kfree_sensitive(x->aalg);
-> +		kfree_sensitive(x->ealg);
-> +	} else {
-> +		kfree(x->aead);
-> +		kfree(x->aalg);
-> +		kfree(x->ealg);
-> +	}
->  	kfree(x->calg);
->  	kfree(x->encap);
->  	kfree(x->coaddr);
-> -- 
-> 2.34.1
-
--antony
-
-[1] Fixes: c7a5899eb26e ("xfrm: redact SA secret with lockdown confidentiality")
