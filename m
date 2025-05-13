@@ -1,82 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557991E5B9C;
-	Tue, 13 May 2025 22:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6951220CCDA
+	for <netdev@vger.kernel.org>; Tue, 13 May 2025 22:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747175991; cv=none; b=P7Ymj7hicC3EWxEge3JnljgeSwa+tgl2ab/5zCDGoFFZWFsXNGrLdcnBVMgft+t8MMhSwxswEEz+XvIobWCbaGeNRthgXOSy4LEAr3YZP7yds4pcFoV3Dx5n9JYEauVlCEgVgLHC+bdv5lQ51hWOf5y8rkkVzjW37baI3aF3YUM=
+	t=1747176021; cv=none; b=PIf36h1IapbOiZlArs0wZYmZq5/WNTSouzrL3ln5zpj/RKr+4s7j01vbbL9i1V+CaOY0n/zO29vdOtvoy/Q74pWyXMUZvKgCe+AwBAWPCT6cYTpsTgntor6cqWRkuZQWOgjWP8ZxQCeZ/wombvrDmIkX6YvfBp2/az9naIES7jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747175991; c=relaxed/simple;
-	bh=aLktDCzX+0PwAhuyOQmH4ustFfZ3+JKd+qWpKjP1SYw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IiI9Cd8JQHR2FW+/kh02+TMk5CA78lI+6h6/zsDuGQ8cjuEwNs6iunewhyTsHM48sL3AECE99kgrEKYuppjwlXO0yeFmktyYGwsG9CPlJSnoMMKHMaPerdoezmKX6BRyOT9V7U4ASnRU0qKIMehTs1a5YHm+ezN2LDpMv2ipinQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KdAb80Ae; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747176021; c=relaxed/simple;
+	bh=dNZVh3682iLnPx8sHAGcB8F0fkoQhLBOqQPVDI3jg7E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U5BUobFcz3YzFS2dOeciX8B+e5dWyFGQvcGSUwoKZoXBM5UDEkgt7tOSdgAvBhyuavC4wiQc6gd5QZa2kAjj7swB3AefcuJuaqGa6maIaHXn4w9pCLBmIf5r7sugTqsdLDtNe2neq+iRT0DtRzFoCmKyXPWxzpikxgNa0cIuYJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gPUDvgrQ; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KdAb80Ae"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D5FC4CEE4;
-	Tue, 13 May 2025 22:39:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747175990;
-	bh=aLktDCzX+0PwAhuyOQmH4ustFfZ3+JKd+qWpKjP1SYw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=KdAb80Ae2YCL0N41YWO7jqZpKLM+gXLfTXaCEpyPINwYBVVTbgc5o4Mx2r6qZN26/
-	 MpLO+2wEIWQHL86x0Y9JBDNhXzsdsrZD0kyO33mOzxOBrw5O765Ur8ELf5vQYhJ22M
-	 G0Qq/e2DSn8FfLDNfC6dRqij6YdGrcEkiA6uU6osqAbt9gyYJIAr/rqlQt7V17vCKA
-	 QPz4mt1/JzQ+nUxzfqJTasUx0GgVbFuCGybh79TbOdjO6rAj+C9McX/XkFnOq2lUNq
-	 p6RlysCmXF/dWdHoPInA3oz5uTK0AUp56F48mlXKjZFHCRFFjNC0zIHBBbKNtNE+WL
-	 5FW1Lk+bJDb/Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70C23380DBE8;
-	Tue, 13 May 2025 22:40:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gPUDvgrQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747176019; x=1778712019;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dNZVh3682iLnPx8sHAGcB8F0fkoQhLBOqQPVDI3jg7E=;
+  b=gPUDvgrQbo6PUK1WFYYZoJleLumqYkE1ukkbpeikWmRddv4JEDccfpvW
+   DSe5hPoubNSmFfeCKBmg8wXuvoLoZF93sD5YVnaGmYoqcpD20hjCVZsbV
+   4l6FAClYcGNYFJRwONpSzNucworoYbTTPH9VlL76k2OfFWU89oozY3Hjs
+   b9cN3IrAT3QF1C7ngpQPJONyMcn8v5akYUtzyQPNFwnVMAmd2vzhTAAyE
+   456aFt0Mh/bcK+kv4byXdqlsXOOYL5o2X7ikJypcpNPxTFzPxBKNtokEA
+   8rejMvINjsUVFN4YNqatFUqH+qU+v2DxA95/nkRRGLAEAnumUAYVm6BcR
+   Q==;
+X-CSE-ConnectionGUID: IH7JFCwORIyCcSD5M0GLlg==
+X-CSE-MsgGUID: UqoDc4c1Q1iWNIDTCtS4DA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="48302306"
+X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; 
+   d="scan'208";a="48302306"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 15:40:18 -0700
+X-CSE-ConnectionGUID: KeopJDPkRa2lxJNzJG8TGA==
+X-CSE-MsgGUID: sxLnACadQe6xMr7jNEJRTA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; 
+   d="scan'208";a="137724524"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 13 May 2025 15:40:12 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uEyIE-000GSp-0L;
+	Tue, 13 May 2025 22:40:10 +0000
+Date: Wed, 14 May 2025 06:39:26 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrey Albershteyn <aalbersh@redhat.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Michal Simek <monstr@monstr.eu>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org
+Subject: Re: [PATCH v5 7/7] fs: introduce file_getattr and file_setattr
+ syscalls
+Message-ID: <202505140614.Hqk46aA8-lkp@intel.com>
+References: <20250513-xattrat-syscall-v5-7-22bb9c6c767f@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/mlx5e: Disable MACsec offload for uplink representor
- profile
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174717602826.1813866.4021390736886437386.git-patchwork-notify@kernel.org>
-Date: Tue, 13 May 2025 22:40:28 +0000
-References: <1746958552-561295-1-git-send-email-tariqt@nvidia.com>
-In-Reply-To: <1746958552-561295-1-git-send-email-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, andrew+netdev@lunn.ch, saeedm@nvidia.com,
- leon@kernel.org, netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, moshe@nvidia.com, mbloch@nvidia.com,
- cjubran@nvidia.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250513-xattrat-syscall-v5-7-22bb9c6c767f@kernel.org>
 
-Hello:
+Hi Andrey,
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+kernel test robot noticed the following build warnings:
 
-On Sun, 11 May 2025 13:15:52 +0300 you wrote:
-> From: Carolina Jubran <cjubran@nvidia.com>
-> 
-> MACsec offload is not supported in switchdev mode for uplink
-> representors. When switching to the uplink representor profile, the
-> MACsec offload feature must be cleared from the netdevice's features.
-> 
-> If left enabled, attempts to add offloads result in a null pointer
-> dereference, as the uplink representor does not support MACsec offload
-> even though the feature bit remains set.
-> 
-> [...]
+[auto build test WARNING on 0d8d44db295ccad20052d6301ef49ff01fb8ae2d]
 
-Here is the summary with links:
-  - [net] net/mlx5e: Disable MACsec offload for uplink representor profile
-    https://git.kernel.org/netdev/net/c/588431474eb7
+url:    https://github.com/intel-lab-lkp/linux/commits/Andrey-Albershteyn/fs-split-fileattr-related-helpers-into-separate-file/20250513-172128
+base:   0d8d44db295ccad20052d6301ef49ff01fb8ae2d
+patch link:    https://lore.kernel.org/r/20250513-xattrat-syscall-v5-7-22bb9c6c767f%40kernel.org
+patch subject: [PATCH v5 7/7] fs: introduce file_getattr and file_setattr syscalls
+config: openrisc-allnoconfig (https://download.01.org/0day-ci/archive/20250514/202505140614.Hqk46aA8-lkp@intel.com/config)
+compiler: or1k-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250514/202505140614.Hqk46aA8-lkp@intel.com/reproduce)
 
-You are awesome, thank you!
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202505140614.Hqk46aA8-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> <stdin>:1618:2: warning: #warning syscall file_getattr not implemented [-Wcpp]
+>> <stdin>:1621:2: warning: #warning syscall file_setattr not implemented [-Wcpp]
+--
+>> <stdin>:1618:2: warning: #warning syscall file_getattr not implemented [-Wcpp]
+>> <stdin>:1621:2: warning: #warning syscall file_setattr not implemented [-Wcpp]
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
