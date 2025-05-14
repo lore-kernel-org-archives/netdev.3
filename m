@@ -1,149 +1,113 @@
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C542327934B;
-	Wed, 14 May 2025 12:56:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975C3276037
+	for <netdev@vger.kernel.org>; Wed, 14 May 2025 13:03:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747227407; cv=none; b=her2OU65OIuQ4Ofp9yynEfKRztunrRH1YWvoqT6TizPjHkYf3TD8JPsF2Prktsb5R3pvbcLrznHL5UX3UIlOyRjVnpTNIN+CxG/fGFaIgaZUJhKXQEQmRYx0WtO0c7F9u7qLyzdezjEc1S7/d9Zd0ODzwwgFuDmRiM+WpgCmSf4=
+	t=1747227801; cv=none; b=NAkhAN2O+FSdnpDawdXB0IzviCGZxWtyZmrL6kNBCS7yJo5tMzT1NirYpK2G6JObSzUPa3kDFajGJ87hMmHE2+By7DsDXWwsKsNMHxL3GAMFgyGZkB4GVzjy5eSTV1J7oySYByi/8ru8w5xBvBuvPnx0qdrruOtLWZ/S+4iLAWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747227407; c=relaxed/simple;
-	bh=NX/VvfyT3yx4Tep6l3birVN50K6v721rMzQfg9guXs4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fus3hUWeloUmXqlVdypnPJkwpm7W8E83IJnqPdWWqySS0qo2TBuwqk/XBRHyK7P2NrRkHkP1WOTKxD6KXPlRlcCpRWHEEbTflPAJbGCRP+sFdg/+eIVUjjBVu53ZcPUL13XL/c6sf4hOjc5AfZuKU3QpaIAoLAz9XDjeobsVJr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PBG6VKrN; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1747227801; c=relaxed/simple;
+	bh=pdbFa07OWguMYxcwvIkKOjFAZBrQm8l5Li50PMDCmd8=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=D+iNCTV9Zq7+xU+wK88wUC4WL8/qHc7yy6R9r7QkoDI0I4kQH8h/CilS45r6+h43rOa00y+q9Adg/Q5EVqDWE77QlcYECE2OocOBtdg4ueITzPSxuqcpAQTAQZaT5JoELmDDGx65o1uu3jhOPe09RVGXNB9PxlcD46tq+d/HZQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=amuswieck@gmx.de header.b=uHIiiM0H; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PBG6VKrN"
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id 3DB4258309E;
-	Wed, 14 May 2025 12:32:08 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1252E42D43;
-	Wed, 14 May 2025 12:32:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1747225927;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pjPEOeClLl5IrMnfRqcS70xURLRIMkwA33VVWgiUGOA=;
-	b=PBG6VKrNjxcPNI7qF1o9rk8f9Jb7Pgchx2d3X8+YOdJ8NGPD9LDHlb4gUWb1JXsjJ4al1q
-	CiB8fba/7GQQMUJZeemX9GiPgIY6sidHf9duyfp8k5lDb84Q4WwiX0jR8BURvESxpWubcm
-	PCVKKe8eDpgt38irBLTe9aD45TUcuA1mqIJ3ISEggndXjCiGwdBOFQNKNZP8ZiVKxo5IRr
-	5Ni5EACRi3BpR8pVZrZzxNbs1vVxHqbrWvLzrQD38Mmf6KS0NY6CX2/pRIz1cbEhGGBn2H
-	xSAQ7IuzxMEZnQaDYBJhQGZ6twbAbtt0dZe0Zb3cpteTxLr1ZM0/r6SVRgHEdg==
-From: Romain Gantois <romain.gantois@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH net-next 3/3] net: phy: dp83869: Support 1000Base-X SFP modules
-Date: Wed, 14 May 2025 14:32:00 +0200
-Message-ID: <10709391.nUPlyArG6x@fw-rgant>
-In-Reply-To: <99c9d8f8-1557-4f90-8762-b04a09cb497c@lunn.ch>
-References:
- <20250514-dp83869-1000basex-v1-0-1bdb3c9c3d63@bootlin.com>
- <20250514-dp83869-1000basex-v1-3-1bdb3c9c3d63@bootlin.com>
- <99c9d8f8-1557-4f90-8762-b04a09cb497c@lunn.ch>
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=amuswieck@gmx.de header.b="uHIiiM0H"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1747227796; x=1747832596; i=amuswieck@gmx.de;
+	bh=pdbFa07OWguMYxcwvIkKOjFAZBrQm8l5Li50PMDCmd8=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:From:Subject:
+	 Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=uHIiiM0HgXDbnux8ixifKWzb/JfJHjdfmU3ecl9s8hVfJU4L/M9CBI7wZQMN0x/E
+	 7ncx6S6ZsdsfhG/Lym9beg1q25klELRg/7hHIhZ15FnYjTVUMgi/k0vS+8zbwtY1S
+	 DotTDjqp4gXXbjNH6b4JBwIf61Z0TghAj5cDzAOmTBRG5A48k5BVwWh24JOywHvXN
+	 HHWvOUS+kfBS4Of4ePdxDdciGfLF9GGarUyDjgWlw6KHwBW48JfwDhi0V4eTe/TSm
+	 Cngl9xpsfNKN9MN8bO5ACpZvhUaNGA7erVVclulDO85tx/dciaRw+/d00GdBSHinz
+	 jJN4ABUWlN824Gl5HQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.106] ([31.17.40.36]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MzQgC-1vAIaa1mPA-00tXia for
+ <netdev@vger.kernel.org>; Wed, 14 May 2025 15:03:16 +0200
+Message-ID: <bb856c9b-7038-4e1c-ac8b-7fc5af4ca62d@gmx.de>
+Date: Wed, 14 May 2025 15:03:15 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2360622.iZASKD2KPV";
- micalg="pgp-sha256"; protocol="application/pgp-signature"
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeftdejtddtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhggtgesghdtreertddtjeenucfhrhhomheptfhomhgrihhnucfirghnthhoihhsuceorhhomhgrihhnrdhgrghnthhoihhssegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeetveeileegkeetvefgtdegffdviefgvdevkefhgfetieffvddvkedujeefvdfgtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehffidqrhhgrghnthdrlhhotggrlhhnvghtpdhmrghilhhfrhhomheprhhomhgrihhnrdhgrghnthhoihhssegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduuddprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomhdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtp
- hhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomh
-X-GND-Sasl: romain.gantois@bootlin.com
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: netdev@vger.kernel.org
+From: Andreas Muswieck <amuswieck@gmx.de>
+Subject: Realtek RTL8125
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:TPRwxBfunO9pi7jLxaK0QP9rf3elPe66ZNluK3GXCiyP2k+Shst
+ iDfhMccfHgn1CBGWZqmOue7bHzADgdKg9KzXnvczPxj6S+m8inA8rYspDLUVJA30NJpi1IB
+ RVVZ8CxGGuczs9+bFCwg98gPCCcYn/st9OYA/sroV1qcZsSP9AhwRtMhB43STdxCVzTkfDH
+ MamxOI+IAL2elsoQEcXeA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:j3C0CkRPVDg=;rmrhiXheKaWoKU9+ZxIDwxX1paF
+ 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
+ nj4TMXBQhvrUKDvzXJ6qz0DmjJYzJCg=
 
---nextPart2360622.iZASKD2KPV
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Romain Gantois <romain.gantois@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Date: Wed, 14 May 2025 14:32:00 +0200
-Message-ID: <10709391.nUPlyArG6x@fw-rgant>
-In-Reply-To: <99c9d8f8-1557-4f90-8762-b04a09cb497c@lunn.ch>
-MIME-Version: 1.0
+Hello,
+My new computer has had problems with the LAN chip right from the start.=
+=20
+The motherboard is an ASUS PRIME X870-P WIFI. It contains a Realtek=20
+RTL8125 chip.
+The Linux distributions Debian bookworm and Linux Mint 21 are not able=20
+to establish a LAN connection. I have also tried Debian Trixie, no=20
+connection.
+Debian bookworm recognises an r8169 with unknown chip XID 668 and=20
+recommends: contact the maintainer.
+I downloaded the LINUX driver from the Realtek website and have to=20
+reinstall it every time after an upgrade. Is there a solution for this?
 
-On Wednesday, 14 May 2025 14:22:48 CEST Andrew Lunn wrote:
-> > +static int dp83869_port_configure_serdes(struct phy_port *port, bool
-> > enable, +					 phy_interface_t interface)
-> > +{
-> > +	struct phy_device *phydev = port_phydev(port);
-> > +	struct dp83869_private *dp83869;
-> > +	int ret;
-> > +
-> > +	if (!enable)
-> > +		return 0;
-> > +
-> > +	dp83869 = phydev->priv;
-> > +
-> > +	switch (interface) {
-> > +	case PHY_INTERFACE_MODE_1000BASEX:
-> > +		dp83869->mode = DP83869_RGMII_1000_BASE;
-> > +		break;
-> > +	default:
-> > +		phydev_err(phydev, "Incompatible SFP module inserted\n");
-> > +		return -EINVAL;
-> > +	}
-> 
-> There is also DP83869_RGMII_SGMII_BRIDGE. Can this be used with the
-> SERDES? Copper SFPs often want SGMII.
-
-It can definitely be used to support non-DAC copper modules. In fact, I've 
-implemented support for these modules locally, but I'm planning to upstream 
-this part of the SFP support later, as there is some additional trickiness to 
-solve beforehand.
-
-To quickly summarize the issue, non-DAC copper module support requires reading 
-autonegotiation results from the downstream PHY and relaying them back to the 
-MAC. This requires some kind of stacked PHY support in the kernel, which has 
-been in discussion for a while now:
-
-https://lore.kernel.org/all/20241119115136.74297db7@fedora.home/
-
-So as things currently stand, SGMII SFP support in this driver is blocked 
-until some kind of generic stacked PHY support is implemented in the kernel.
-
-Thanks,
-
--- 
-Romain Gantois, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---nextPart2360622.iZASKD2KPV
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEYFZBShRwOvLlRRy+3R9U/FLj284FAmgkjUAACgkQ3R9U/FLj
-284zdhAAk0GTv70YpkAUSlaZox0jB91q0KP0Xtb2qb5CEH0UC3M4Uxehx2No5VUT
-+e/SjXEa2FDhcjkewAdJJLVKwhcwKlAIHSGwgVgSXAQqNa+NwMmLytuGbr0qb67k
-p7+GG8+wwtKwJdQZP1wrytiS4oDaNO8fsI3xxemGN2GyvOVhJCYmzoh64mWsRy5k
-NtoWFvyUa2pGSgstJmrteHhe7RHwWx88FvEJoVyBEU8ju9IgXviAGC7KmFzIAKwO
-o6Vyq5GLZ04/KeDMnGpCF/DfNIRNFjCwe0RvXXyEyLDg3YVvf4xJmYnv6NcLeyQ2
-YZp822nkowXBIjS+X9XWI5Zv+n7ZGDLdH4vmZZ5T1NzdvKCtJr6QW1DM6KNeaQfi
-MRtBvqb+P0V4BUJxv6Cbsh53ZRWk75da7Vhd4uRaxR7B1YSiH45z792mbpZH/Cu0
-xSPHMT7kPlwYVCo1yM6B+4pBHBKx8x4KnvHckPiq1CNoV7tj9ZC8H/xOq0C9fNtY
-W8l3a9tw3Ad0yvuMregIXJT+xLPg4TkZ8XMbyrdPXt0S/o1be9zpMc+CLZtHc+rr
-KyLfoKV+SBz3nlgqBQ0anKmfQ10DCZtm1PuZsiMmzXdbjEiXuX/Y5e4RYq72w6NE
-OjH5wvb+dieD2SGjo0gCA2j7L+SluDcYll16smY9HtWDmQW8IA4=
-=QjE0
------END PGP SIGNATURE-----
-
---nextPart2360622.iZASKD2KPV--
-
-
+Andreas
 
