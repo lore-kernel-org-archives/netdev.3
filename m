@@ -1,217 +1,386 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F18827E7DE;
-	Wed, 14 May 2025 16:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07A9280337
+	for <netdev@vger.kernel.org>; Wed, 14 May 2025 16:55:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747241706; cv=none; b=cIzlmmq/dh+0UKd0NzHfhaAYP2uTW1CGbL4WMvvdBq+c5ODNkPdsP3wijGCc4ab3GsiVzT8rgHDugU3RJ/qA/apQsdpg8uT0hFZJLnQbx4aSTUye1MJENMiQh1fryXHDMEWJi8Sqjj9HQ5xbw8TU8QaEN5QBorAkKjbB06WgigI=
+	t=1747241709; cv=none; b=tZY9hiWioabBL/m8LNe44TLiHMsFelUSMfLw39iOfSd2JlJwq7UtHlk/S/myNpRbZgZ+/xdn9S23Drs0II/BT66z+Wt1pU/+aFYvZx+U+N3fIA6+QqZ6bZzJLQsYODW5OZZwXxVLNZWbcZSlefJM4zEreCfC4JYl+jiKuxc2iLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747241706; c=relaxed/simple;
-	bh=WpM+JcX1WaS+PU+QHS2OAq0l+8B1CNymhsJ8V9SwXuQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q1Jm0uqMDZkBlW8hC4yEBuu9/rNnP3cKg+DLuVvCFCADblT995gGs8F/T1Qnjv5HuD1X0SXtR5AVf+mjK57oEHTiZm+1JJnnB9O8DMYP3DDc1Knb9Ux5JNkECE+NQObJP1PrmEWLiMAPWrOMfV5n7k3QMm/sdnbPFGBQBcDam58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l3aAeVA1; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747241709; c=relaxed/simple;
+	bh=hNox++h2X5vpv6X4B7BjIRBwmHciS/ldby/8Za0FCaI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OyQ72dsEzzJOtJr7W8aWlTDbMacMeHTRpg/IxrTSDowLAAEhTSJilkOntqnSnD5/Ry3/EVWk5Dg0lGLZju9Up5Ih976g29CGzmAdUCCwHyLKGOFEAEwEace8AYZuUBkrCfGZEodo6O9Q//D2V6I79HBsvPs7edFDJpAXKjFGGL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=fJBzinAR; arc=none smtp.client-ip=99.78.197.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l3aAeVA1"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-30ac24ede15so108444a91.2;
-        Wed, 14 May 2025 09:55:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="fJBzinAR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747241704; x=1747846504; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EjAaU38K+dPIUQCxORagYj2WJCZrV6ZUCkrYlp3GHFQ=;
-        b=l3aAeVA1EgjsmyGwltWSNL1BqkG4d3LT/CIzo0YP+CO8SUO/NGeSAUcJNo5wOr83Vs
-         fo/9GDcXZASfKEqXpBKArxjVdUGioFFi4AOlsNdCKUGxavwi3ClJAd8SEM8SwHWkSZZJ
-         sm94o8tupVu7OCa/yjN72Q6XxEy2KvgL0GOnrqaj5wFca5dswPmCxwAlj9aOlGod4oRY
-         ndnVLJyYtPZvmLKdydEWKCGnfXNTCWHErckHPNcvVevSkcMdPvVJUaCjLd0M4USSMG2r
-         VyAkERDXbsJ9Muuropig9YKUYkwqn+vK7IGp1/MQEkb1mDbySKSBZg4w502L4Viph5/G
-         9Rog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747241704; x=1747846504;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EjAaU38K+dPIUQCxORagYj2WJCZrV6ZUCkrYlp3GHFQ=;
-        b=ZDrydHs0bL2cDFC9i+g80d7aXcuRriosvON7NHK24iw9G0uZIZhEnnXRHsDi6cipBi
-         PS+TDvPfl7Wt64ChLNc0uSn/oH83riwBEbHteb6xo/uIj4K1U4PBOblmckQNnwFza44k
-         kOTUxCrY3S1D58jWCjDIRbJ4mZnzcSHTW4LDg59ld1kFUvXtGHp9fMq+2j2xr0IxSN4T
-         P3ssQILLOLywf5Nf7lO1VmsjbUHZCyOgF5FKSU1DjT6vpkqHIg5RvfumscDFp2OhCKyc
-         5rTkRygk3NeuJrdNJIoJOCiWcE960nzdjXgc3SJqhry3V6eTDugcq+OpQC3vgvgqXcv1
-         GSsg==
-X-Forwarded-Encrypted: i=1; AJvYcCUMBEUEU5JMni1mifUX/lpqrSYCyc8OEhj/3s+U0uILfnDBkzFcjSCJVtngR8IxXPhcAJE4Z8VEQoO5@vger.kernel.org, AJvYcCVCbEMc85LzQHVvhtuqXh+TRI1luvmJc3zxu0QQFWkshyYhWXBZdI3vLkNblcA8t0NDh5npgW1x4HOhuSgK@vger.kernel.org, AJvYcCVTiRW3j0ZJwRHw9A3rznds/ww/24rAwxUVE0rE6T40o3IQjZf1GcooD7A8p1z9HAZt69uECJSBGFJ3J/w=@vger.kernel.org, AJvYcCXLGTNDcrMF/Silf2OP8ddFDarbPfT+drOaCRwgn4Zs7J1I3+uPU8vNDi/tL8NcDvpPte/poIp61m4bYQ==@vger.kernel.org, AJvYcCXNhVtknHK+Zpt5dGse5FOlyJRsP9cV5bEZlx4F9IKe2AYlGHlvN1zyM2gNSAxdtXvC3V2NyF4T@vger.kernel.org
-X-Gm-Message-State: AOJu0YzN03Gp18zUbHRgHXSzgZg7jh9PQ5fT+Hr+R+1kWe/KeHLuVPNg
-	/B9zM07m7otXxP9YrcXGRItXFfKZ2rSI1kdEh+GFn86ScMxbaVsB
-X-Gm-Gg: ASbGnctROFI2Bgfypa9fPb2iraRft88D1R4tYU6s5kddXHY8HG31FkjqfOh15c3EwTO
-	gWtFDOG6bqP0EElX+qqFsnU8EsTpz++2h5v390NZEeOU8fchM5TlnkgrdGzyRcnmBya8lXtNHom
-	vZIAEsu6mazZnYfTLJqyrfxrETXh9JK0XdUgkx6JjoaXoPoKQ6HH+g5CjP27VQ2WhfK7XmB1Rpf
-	i5vVL15quXTd01WWK/0CRGk8f1Td1qiujpqqLtm4CIO+gWRGn+aYIm6PVA4XiZezCRAusZOAW4o
-	8Mt3WI5He1qKVJf95rgdqCLWoJIZyIpx8jessBPWHuQ1FrkAORwRrWFXQV1d4Q==
-X-Google-Smtp-Source: AGHT+IFtxVrOsaJi6T2aUz0enn/7PlvuksPoRElJWxF7qFDWdeSdmcwqmG9VKuv/S86z9Q30urH4ug==
-X-Received: by 2002:a17:90b:38c4:b0:2fe:b174:31fe with SMTP id 98e67ed59e1d1-30e2e583d63mr6563988a91.2.1747241703525;
-        Wed, 14 May 2025 09:55:03 -0700 (PDT)
-Received: from localhost ([216.228.127.130])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30e33401872sm1830197a91.6.2025.05.14.09.55.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 May 2025 09:55:02 -0700 (PDT)
-Date: Wed, 14 May 2025 12:55:00 -0400
-From: Yury Norov <yury.norov@gmail.com>
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Simon Horman <horms@kernel.org>, Leon Romanovsky <leon@kernel.org>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Nipun Gupta <nipun.gupta@amd.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Cameron <Jonathan.Cameron@huwei.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Kevin Tian <kevin.tian@intel.com>, Long Li <longli@microsoft.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Bjorn Helgaas <bhelgaas@google.com>, Rob Herring <robh@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof =?utf-8?Q?Wilczy=EF=BF=BD~Dski?= <kw@linux.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	Paul Rosswurm <paulros@microsoft.com>,
-	Shradha Gupta <shradhagupta@microsoft.com>
-Subject: Re: [PATCH v3 3/4] net: mana: Allow irq_setup() to skip cpus for
- affinity
-Message-ID: <aCTK5PjV1n1EYOpi@yury>
-References: <1746785566-4337-1-git-send-email-shradhagupta@linux.microsoft.com>
- <1746785625-4753-1-git-send-email-shradhagupta@linux.microsoft.com>
- <SN6PR02MB41577E2FAA79E2803C3384B0D491A@SN6PR02MB4157.namprd02.prod.outlook.com>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1747241708; x=1778777708;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=fqKE4IG01XNOr96jWRmeunvX7gUk8bUSv2oRcYPwACA=;
+  b=fJBzinARx6Ai0MQgta2Kw4YUdAGB6t7NYDzyIPoTdUXG0FHTJIcl9+DM
+   BDulCGwVJxTzQFooCc+1wc1WS8tAdYVSd1E7u4jbDRzMldCZqlIc0eSF/
+   Tw/QjW4vBHf88KYaYKLX5AOkn34mxd41PWZPyoZ10LVCJj75uNcXLiAPr
+   S1mGH4EOcrQWJ0Q405eeG9W2wBPeiI/G/3Lkwn23oWSKOwUeBaJE14uwC
+   x2iuAYlt/fCjETmIwTkjTNpRCJiOwmCYpaP3s5WmGggGEe5Of/YnEA1Yp
+   GQhpQ7SHKpqVikA34MKLffLGGek5fH3mZyH1HCv24gc1I9aaUPX6/ufhZ
+   w==;
+X-IronPort-AV: E=Sophos;i="6.15,288,1739836800"; 
+   d="scan'208";a="405248658"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 16:55:06 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [10.0.38.20:44441]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.57.50:2525] with esmtp (Farcaster)
+ id 49aa9405-24b6-4b26-bd30-1d6f59ca4115; Wed, 14 May 2025 16:55:05 +0000 (UTC)
+X-Farcaster-Flow-ID: 49aa9405-24b6-4b26-bd30-1d6f59ca4115
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 14 May 2025 16:55:04 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.187.171.38) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 14 May 2025 16:55:01 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>
+CC: Simon Horman <horms@kernel.org>, Christian Brauner <brauner@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
+	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
+Subject: [PATCH v3 net-next 6/9] af_unix: Move SOCK_PASS{CRED,PIDFD,SEC} to struct sock.
+Date: Wed, 14 May 2025 09:51:49 -0700
+Message-ID: <20250514165226.40410-7-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250514165226.40410-1-kuniyu@amazon.com>
+References: <20250514165226.40410-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SN6PR02MB41577E2FAA79E2803C3384B0D491A@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D042UWB002.ant.amazon.com (10.13.139.175) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On Wed, May 14, 2025 at 04:53:34AM +0000, Michael Kelley wrote:
-> > -static int irq_setup(unsigned int *irqs, unsigned int len, int node)
-> > +static int irq_setup(unsigned int *irqs, unsigned int len, int node,
-> > +		     bool skip_first_cpu)
-> >  {
-> >  	const struct cpumask *next, *prev = cpu_none_mask;
-> >  	cpumask_var_t cpus __free(free_cpumask_var);
-> > @@ -1303,9 +1304,20 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node)
-> >  		while (weight > 0) {
-> >  			cpumask_andnot(cpus, next, prev);
-> >  			for_each_cpu(cpu, cpus) {
-> > +				/*
-> > +				 * if the CPU sibling set is to be skipped we
-> > +				 * just move on to the next CPUs without len--
-> > +				 */
-> > +				if (unlikely(skip_first_cpu)) {
-> > +					skip_first_cpu = false;
-> > +					goto next_cpumask;
-> > +				}
-> > +
-> >  				if (len-- == 0)
-> >  					goto done;
-> > +
-> >  				irq_set_affinity_and_hint(*irqs++, topology_sibling_cpumask(cpu));
-> > +next_cpumask:
-> >  				cpumask_andnot(cpus, cpus, topology_sibling_cpumask(cpu));
-> >  				--weight;
-> >  			}
-> 
-> With a little bit of reordering of the code, you could avoid the need for the "next_cpumask"
-> label and goto statement.  "continue" is usually cleaner than a "goto". Here's what I'm thinking:
-> 
-> 		for_each_cpu(cpu, cpus) {
-> 			cpumask_andnot(cpus, cpus, topology_sibling_cpumask(cpu));
-> 			--weight;
+As explained in the next patch, SO_PASSRIGHTS would have a problem
+if we assigned a corresponding bit to socket->flags, so it must be
+managed in struct sock.
 
-cpumask_andnot() is O(N), and before it was conditional on 'len == 0',
-so we didn't do that on the very last step. Your version has to do that.
-Don't know how important that is for real workloads. Shradha maybe can
-measure it...
+Mixing socket->flags and sk->sk_flags for similar options will look
+confusing, and sk->sk_flags does not have enough space on 32bit system.
 
-> 
-> 			If (unlikely(skip_first_cpu)) {
-> 				skip_first_cpu = false;
-> 				continue;
-> 			}
-> 
-> 			If (len-- == 0)
-> 				goto done;
-> 
-> 			irq_set_affinity_and_hint(*irqs++, topology_sibling_cpumask(cpu));
-> 		}
-> 
-> I wish there were some comments in irq_setup() explaining the overall intention of
-> the algorithm. I can see how the goal is to first assign CPUs that are local to the current
-> NUMA node, and then expand outward to CPUs that are further away. And you want
-> to *not* assign both siblings in a hyper-threaded core.
+Also, as mentioned in commit 16e572626961 ("af_unix: dont send
+SCM_CREDENTIALS by default"), SOCK_PASSCRED and SOCK_PASSPID handling
+is known to be slow, and managing the flags in struct socket cannot
+avoid that for embryo sockets.
 
-I wrote this function, so let me step in.
+Let's move SOCK_PASS{CRED,PIDFD,SEC} to struct sock.
 
-The intention is described in the corresponding commit message:
+While at it, other SOCK_XXX flags in net.h are grouped as enum.
 
-  Souradeep investigated that the driver performs faster if IRQs are
-  spread on CPUs with the following heuristics:
-  
-  1. No more than one IRQ per CPU, if possible;
-  2. NUMA locality is the second priority;
-  3. Sibling dislocality is the last priority.
-  
-  Let's consider this topology:
-  
-  Node            0               1
-  Core        0       1       2       3
-  CPU       0   1   2   3   4   5   6   7
-  
-  The most performant IRQ distribution based on the above topology
-  and heuristics may look like this:
-  
-  IRQ     Nodes   Cores   CPUs
-  0       1       0       0-1
-  1       1       1       2-3
-  2       1       0       0-1
-  3       1       1       2-3
-  4       2       2       4-5
-  5       2       3       6-7
-  6       2       2       4-5
-  7       2       3       6-7
+Note that assign_bit() was atomic, so the writer side is moved down
+after lock_sock() in setsockopt(), but the bit is only read once
+in sendmsg() and recvmsg(), so lock_sock() is not needed there.
 
-> But I can't figure out what
-> "weight" is trying to accomplish. Maybe this was discussed when the code first
-> went in, but I can't remember now. :-(
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+---
+v3:
+  * Add kdoc for sk_scm_unused
+  * Update sk->sk_scm_xxx after lock_sock() in setsockopt()
+---
+ include/linux/net.h | 15 +++++++--------
+ include/net/sock.h  | 14 +++++++++++++-
+ net/core/scm.c      | 29 ++++++++++++++---------------
+ net/core/sock.c     | 44 +++++++++++++++++++++++---------------------
+ net/unix/af_unix.c  | 18 ++----------------
+ 5 files changed, 59 insertions(+), 61 deletions(-)
 
-The weight here is to implement the heuristic discovered by Souradeep:
-NUMA locality is preferred over sibling dislocality. 
+diff --git a/include/linux/net.h b/include/linux/net.h
+index 0ff950eecc6b..f8418d6e33e0 100644
+--- a/include/linux/net.h
++++ b/include/linux/net.h
+@@ -36,14 +36,13 @@ struct net;
+  * in sock->flags, but moved into sk->sk_wq->flags to be RCU protected.
+  * Eventually all flags will be in sk->sk_wq->flags.
+  */
+-#define SOCKWQ_ASYNC_NOSPACE	0
+-#define SOCKWQ_ASYNC_WAITDATA	1
+-#define SOCK_NOSPACE		2
+-#define SOCK_PASSCRED		3
+-#define SOCK_PASSSEC		4
+-#define SOCK_SUPPORT_ZC		5
+-#define SOCK_CUSTOM_SOCKOPT	6
+-#define SOCK_PASSPIDFD		7
++enum socket_flags {
++	SOCKWQ_ASYNC_NOSPACE,
++	SOCKWQ_ASYNC_WAITDATA,
++	SOCK_NOSPACE,
++	SOCK_SUPPORT_ZC,
++	SOCK_CUSTOM_SOCKOPT,
++};
+ 
+ #ifndef ARCH_HAS_SOCKET_TYPES
+ /**
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 56fa558d24c0..77232a098934 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -337,6 +337,11 @@ struct sk_filter;
+   *	@sk_txtime_deadline_mode: set deadline mode for SO_TXTIME
+   *	@sk_txtime_report_errors: set report errors mode for SO_TXTIME
+   *	@sk_txtime_unused: unused txtime flags
++  *	@sk_scm_recv_flags: all flags used by scm_recv()
++  *	@sk_scm_credentials: flagged by SO_PASSCRED to recv SCM_CREDENTIALS
++  *	@sk_scm_security: flagged by SO_PASSSEC to recv SCM_SECURITY
++  *	@sk_scm_pidfd: flagged by SO_PASSPIDFD to recv SCM_PIDFD
++  *	@sk_scm_unused: unused flags for scm_recv()
+   *	@ns_tracker: tracker for netns reference
+   *	@sk_user_frags: xarray of pages the user is holding a reference on.
+   *	@sk_owner: reference to the real owner of the socket that calls
+@@ -523,7 +528,14 @@ struct sock {
+ #endif
+ 	int			sk_disconnects;
+ 
+-	u8			sk_txrehash;
++	union {
++		u8		sk_txrehash;
++		u8		sk_scm_recv_flags;
++		u8		sk_scm_credentials : 1,
++				sk_scm_security : 1,
++				sk_scm_pidfd : 1,
++				sk_scm_unused : 5;
++	};
+ 	u8			sk_clockid;
+ 	u8			sk_txtime_deadline_mode : 1,
+ 				sk_txtime_report_errors : 1,
+diff --git a/net/core/scm.c b/net/core/scm.c
+index 66e02b18c359..0225bd94170f 100644
+--- a/net/core/scm.c
++++ b/net/core/scm.c
+@@ -406,12 +406,12 @@ struct scm_fp_list *scm_fp_dup(struct scm_fp_list *fpl)
+ EXPORT_SYMBOL(scm_fp_dup);
+ 
+ #ifdef CONFIG_SECURITY_NETWORK
+-static void scm_passec(struct socket *sock, struct msghdr *msg, struct scm_cookie *scm)
++static void scm_passec(struct sock *sk, struct msghdr *msg, struct scm_cookie *scm)
+ {
+ 	struct lsm_context ctx;
+ 	int err;
+ 
+-	if (test_bit(SOCK_PASSSEC, &sock->flags)) {
++	if (sk->sk_scm_security) {
+ 		err = security_secid_to_secctx(scm->secid, &ctx);
+ 
+ 		if (err >= 0) {
+@@ -423,16 +423,16 @@ static void scm_passec(struct socket *sock, struct msghdr *msg, struct scm_cooki
+ 	}
+ }
+ 
+-static bool scm_has_secdata(struct socket *sock)
++static bool scm_has_secdata(struct sock *sk)
+ {
+-	return test_bit(SOCK_PASSSEC, &sock->flags);
++	return sk->sk_scm_security;
+ }
+ #else
+-static void scm_passec(struct socket *sock, struct msghdr *msg, struct scm_cookie *scm)
++static void scm_passec(struct sock *sk, struct msghdr *msg, struct scm_cookie *scm)
+ {
+ }
+ 
+-static bool scm_has_secdata(struct socket *sock)
++static bool scm_has_secdata(struct sock *sk)
+ {
+ 	return false;
+ }
+@@ -474,20 +474,19 @@ static void scm_pidfd_recv(struct msghdr *msg, struct scm_cookie *scm)
+ 		fd_install(pidfd, pidfd_file);
+ }
+ 
+-static bool __scm_recv_common(struct socket *sock, struct msghdr *msg,
++static bool __scm_recv_common(struct sock *sk, struct msghdr *msg,
+ 			      struct scm_cookie *scm, int flags)
+ {
+ 	if (!msg->msg_control) {
+-		if (test_bit(SOCK_PASSCRED, &sock->flags) ||
+-		    test_bit(SOCK_PASSPIDFD, &sock->flags) ||
+-		    scm->fp || scm_has_secdata(sock))
++		if (sk->sk_scm_credentials || sk->sk_scm_pidfd ||
++		    scm->fp || scm_has_secdata(sk))
+ 			msg->msg_flags |= MSG_CTRUNC;
+ 
+ 		scm_destroy(scm);
+ 		return false;
+ 	}
+ 
+-	if (test_bit(SOCK_PASSCRED, &sock->flags)) {
++	if (sk->sk_scm_credentials) {
+ 		struct user_namespace *current_ns = current_user_ns();
+ 		struct ucred ucreds = {
+ 			.pid = scm->creds.pid,
+@@ -498,7 +497,7 @@ static bool __scm_recv_common(struct socket *sock, struct msghdr *msg,
+ 		put_cmsg(msg, SOL_SOCKET, SCM_CREDENTIALS, sizeof(ucreds), &ucreds);
+ 	}
+ 
+-	scm_passec(sock, msg, scm);
++	scm_passec(sk, msg, scm);
+ 
+ 	if (scm->fp)
+ 		scm_detach_fds(msg, scm);
+@@ -509,7 +508,7 @@ static bool __scm_recv_common(struct socket *sock, struct msghdr *msg,
+ void scm_recv(struct socket *sock, struct msghdr *msg,
+ 	      struct scm_cookie *scm, int flags)
+ {
+-	if (!__scm_recv_common(sock, msg, scm, flags))
++	if (!__scm_recv_common(sock->sk, msg, scm, flags))
+ 		return;
+ 
+ 	scm_destroy_cred(scm);
+@@ -519,10 +518,10 @@ EXPORT_SYMBOL(scm_recv);
+ void scm_recv_unix(struct socket *sock, struct msghdr *msg,
+ 		   struct scm_cookie *scm, int flags)
+ {
+-	if (!__scm_recv_common(sock, msg, scm, flags))
++	if (!__scm_recv_common(sock->sk, msg, scm, flags))
+ 		return;
+ 
+-	if (test_bit(SOCK_PASSPIDFD, &sock->flags))
++	if (sock->sk->sk_scm_pidfd)
+ 		scm_pidfd_recv(msg, scm);
+ 
+ 	scm_destroy_cred(scm);
+diff --git a/net/core/sock.c b/net/core/sock.c
+index fd5f9d3873c1..381abf8f25b7 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1220,24 +1220,6 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
+ 			return 0;
+ 		}
+ 		return -EPERM;
+-	case SO_PASSSEC:
+-		if (!IS_ENABLED(CONFIG_SECURITY_NETWORK) || sk_may_scm_recv(sk))
+-			return -EOPNOTSUPP;
+-
+-		assign_bit(SOCK_PASSSEC, &sock->flags, valbool);
+-		return 0;
+-	case SO_PASSCRED:
+-		if (!sk_may_scm_recv(sk))
+-			return -EOPNOTSUPP;
+-
+-		assign_bit(SOCK_PASSCRED, &sock->flags, valbool);
+-		return 0;
+-	case SO_PASSPIDFD:
+-		if (!sk_is_unix(sk))
+-			return -EOPNOTSUPP;
+-
+-		assign_bit(SOCK_PASSPIDFD, &sock->flags, valbool);
+-		return 0;
+ 	case SO_TYPE:
+ 	case SO_PROTOCOL:
+ 	case SO_DOMAIN:
+@@ -1568,6 +1550,26 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
+ 		sock_valbool_flag(sk, SOCK_SELECT_ERR_QUEUE, valbool);
+ 		break;
+ 
++	case SO_PASSCRED:
++		if (sk_may_scm_recv(sk))
++			sk->sk_scm_credentials = valbool;
++		else
++			ret = -EOPNOTSUPP;
++		break;
++
++	case SO_PASSSEC:
++		if (IS_ENABLED(CONFIG_SECURITY_NETWORK) && sk_may_scm_recv(sk))
++			sk->sk_scm_security = valbool;
++		else
++			ret = -EOPNOTSUPP;
++		break;
++
++	case SO_PASSPIDFD:
++		if (sk_is_unix(sk))
++			sk->sk_scm_pidfd = valbool;
++		else
++			ret = -EOPNOTSUPP;
++		break;
+ 
+ 	case SO_INCOMING_CPU:
+ 		reuseport_update_incoming_cpu(sk, val);
+@@ -1867,14 +1869,14 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
+ 		if (!sk_may_scm_recv(sk))
+ 			return -EOPNOTSUPP;
+ 
+-		v.val = !!test_bit(SOCK_PASSCRED, &sock->flags);
++		v.val = sk->sk_scm_credentials;
+ 		break;
+ 
+ 	case SO_PASSPIDFD:
+ 		if (!sk_is_unix(sk))
+ 			return -EOPNOTSUPP;
+ 
+-		v.val = !!test_bit(SOCK_PASSPIDFD, &sock->flags);
++		v.val = sk->sk_scm_pidfd;
+ 		break;
+ 
+ 	case SO_PEERCRED:
+@@ -1974,7 +1976,7 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
+ 		if (!IS_ENABLED(CONFIG_SECURITY_NETWORK) || !sk_may_scm_recv(sk))
+ 			return -EOPNOTSUPP;
+ 
+-		v.val = !!test_bit(SOCK_PASSSEC, &sock->flags);
++		v.val = sk->sk_scm_security;
+ 		break;
+ 
+ 	case SO_PEERSEC:
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index a39497fd6e98..27ebda4cd9b9 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -767,10 +767,7 @@ static void copy_peercred(struct sock *sk, struct sock *peersk)
+ 
+ static bool unix_may_passcred(const struct sock *sk)
+ {
+-	struct socket *sock = sk->sk_socket;
+-
+-	return test_bit(SOCK_PASSCRED, &sock->flags) ||
+-		test_bit(SOCK_PASSPIDFD, &sock->flags);
++	return sk->sk_scm_credentials || sk->sk_scm_pidfd;
+ }
+ 
+ static int unix_listen(struct socket *sock, int backlog)
+@@ -1713,17 +1710,6 @@ static int unix_socketpair(struct socket *socka, struct socket *sockb)
+ 	return 0;
+ }
+ 
+-static void unix_sock_inherit_flags(const struct socket *old,
+-				    struct socket *new)
+-{
+-	if (test_bit(SOCK_PASSCRED, &old->flags))
+-		set_bit(SOCK_PASSCRED, &new->flags);
+-	if (test_bit(SOCK_PASSPIDFD, &old->flags))
+-		set_bit(SOCK_PASSPIDFD, &new->flags);
+-	if (test_bit(SOCK_PASSSEC, &old->flags))
+-		set_bit(SOCK_PASSSEC, &new->flags);
+-}
+-
+ static int unix_accept(struct socket *sock, struct socket *newsock,
+ 		       struct proto_accept_arg *arg)
+ {
+@@ -1760,7 +1746,7 @@ static int unix_accept(struct socket *sock, struct socket *newsock,
+ 	unix_state_lock(tsk);
+ 	unix_update_edges(unix_sk(tsk));
+ 	newsock->state = SS_CONNECTED;
+-	unix_sock_inherit_flags(sock, newsock);
++	tsk->sk_scm_recv_flags = READ_ONCE(sk->sk_scm_recv_flags);
+ 	sock_graft(tsk, newsock);
+ 	unix_state_unlock(tsk);
+ 	return 0;
+-- 
+2.49.0
 
-The outer for_each() loop resets the weight to the actual number of
-CPUs in the hop. Then inner for_each() loop decrements it by the
-number of sibling groups (cores) while assigning first IRQ to each
-group. 
-
-Now, because NUMA locality is more important, we should walk the
-same set of siblings and assign 2nd IRQ, and it's implemented by the
-medium while() loop. So, we do like this unless the number of IRQs
-assigned on this hop will not become equal to number of CPUs in the
-hop (weight == 0). Then we switch to the next hop and do the same
-thing.
-
-Hope that helps.
-
-Thanks,
-Yury
