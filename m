@@ -1,264 +1,149 @@
-Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94521F5423
-	for <netdev@vger.kernel.org>; Wed, 14 May 2025 16:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7452D111BF;
+	Wed, 14 May 2025 17:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747241782; cv=none; b=JpmsFSF3zqxctwLY62gvxujyezSji9R4DX/UCEEFU3gCUgUjb4OipXm3HrSW26i+rTzDR5bSXeIrkW4FhUv9WVk5LTU3/KvLgosrmeWM10SmZf0Hm2k7jGvB0Xfpsxrizzrx9/UqMFIt6cU5A9KtMoku8cROfrl4Qq4p613UImc=
+	t=1747242471; cv=none; b=fYJ0L40hvD90ppq8Fw0BpFUVDDeRaiRoco5sKnl2QzWoNbp09HfNAhr8Wyfjzj8PZPohbBPKLaFmtxxB65cfWX64SxEoD8tMt96zRzqqFVSiTWR1w5/3oaXesAveYubDSZRbRRSwAJkP2nKNZRScbQ66ytWaEBm9JNqCaKcenAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747241782; c=relaxed/simple;
-	bh=IA+qdALayl+t1penUQ7EF65kNaLr4JL+04KIgpMXGNc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V1j5cwU28ywg3jTPGDvs/ZyRHXAYZBRceOtM1Dsqg4E2SiWCRD6Xia76KC3nsxGpRkoC8G5UozWw39kOKHDXy2eKH2PW4YeWrpJx3dLu1m6hDzRzqayWT0oKbsat1f3SAEjfLdmrcvKfPW1O9Y/5MrKyu+vxnh7Aadh7Fbspd8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=i0UpBrFr; arc=none smtp.client-ip=99.78.197.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1747242471; c=relaxed/simple;
+	bh=XdLg2pIG+mxLLkXPdM5zsckyRBZH2qPAfwgOgXwOm2E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uSeMYfbKBHL3j56po5w1e6u6rtajwQZKIuGP2obI109zZiJBX/kczZJSM0//NzSQeVW2zdsIk5AOmTYScQvc/duXF/rTXZcvtn6eBedJC6zkZE7mJp4nW4IOOaQ3tEcTnJYkEQzvh9qtc6aVvwKyO6NmcMsVA7SyxJgiqgh1O3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cKWwWNZw; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="i0UpBrFr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cKWwWNZw"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-73972a54919so94497b3a.3;
+        Wed, 14 May 2025 10:07:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1747241781; x=1778777781;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=eoDhawaKKO5R/HIP+TOVKUiLk6p0PNb8C0D0WGN1Nig=;
-  b=i0UpBrFrvY4/yajpUbgv3wXEsaBX5bF9RjAqgE4I7JJMMdhaE3hZNtZp
-   9XvH0CqZ51UPVMy4f603CyD2mEO5Rmreg+1HlbbD+Bwt+/HS7C24qdvH9
-   7+u2AwNWBwA+JA/1th7hNe6SumeoC/iwhvmaIRuJbTWWbYQHPoT1lj9yh
-   P40ECR3qi3jzUS1PlOTR7/jhCsaFY5N+kIt+irX6cZ0TTsO5Tn1bmkaBg
-   XNfIIdpLrbf+1oUIW/zwESDMQcrIh00VNWM3KeRG4IpFKcObj5XM/+IxQ
-   Qml7dQzq2FqXoKVll66pOA/qineN2lmhUX9xZ0JYmL/DdeXsRTENM9ENx
-   Q==;
-X-IronPort-AV: E=Sophos;i="6.15,288,1739836800"; 
-   d="scan'208";a="49960672"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 16:56:19 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [10.0.38.20:19506]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.61.52:2525] with esmtp (Farcaster)
- id 1102e519-bfd8-4772-ba75-f6741df0403b; Wed, 14 May 2025 16:56:18 +0000 (UTC)
-X-Farcaster-Flow-ID: 1102e519-bfd8-4772-ba75-f6741df0403b
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 14 May 2025 16:56:17 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.187.171.38) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 14 May 2025 16:56:15 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>
-CC: Simon Horman <horms@kernel.org>, Christian Brauner <brauner@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
-	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v3 net-next 9/9] selftest: af_unix: Test SO_PASSRIGHTS.
-Date: Wed, 14 May 2025 09:51:52 -0700
-Message-ID: <20250514165226.40410-10-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250514165226.40410-1-kuniyu@amazon.com>
-References: <20250514165226.40410-1-kuniyu@amazon.com>
+        d=gmail.com; s=20230601; t=1747242470; x=1747847270; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dJoA+PJtmWf5ud2q/BLeac3jyop0iaZrCK1z2Pwqxh0=;
+        b=cKWwWNZwybLtZpb2NOlqoUnZTU49DHPLsCkW+uDmVBiYVzMZfF8pstmCu7/4qqKgnZ
+         diZnJL4q0mUGniS2QcoU8VVxI96Hnf1MuL2ZxYnP03zmVbLIhRnseDZQ3W6caEeGjHix
+         iY9finlPFtUdpADzHj/SgPM8xeqXV9LNDSzgm6BrRM4XTQpr/5r2KxPU6eM2wQ8/NuYH
+         or2bHlDGHJZbS8ZXp8Tygo9iwFLF99HA+qvIDMCThN5xLE/YVo4RzxlSE7islLW5ZV5i
+         vdmG3QBdNV/+02Wkh0jP/L3Djo2J8m1f4zb8ZMRvNIJK6Hen2FA8WytNT/BY6d3ryWF5
+         jyxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747242470; x=1747847270;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dJoA+PJtmWf5ud2q/BLeac3jyop0iaZrCK1z2Pwqxh0=;
+        b=McEDIWaJ0Bhzf6595tS66tCO1fslnRShop1h3XfFNgtix4vLVHtHGSoUvGkHtgw9xX
+         ztHz3BoXAWjCRNTAAU5S0n88snWxYRXiKGLMWdZUH/f4cWl/YJ4XXgLcCudYbKxaKXFs
+         f4XYZ7HQgyQA9RqUPf8YUG87eqcmLdcHXTGYbBEsLVIGXK884LvwK+VklxhAllbTMno6
+         2I7ZaPCabSERQ3GRC1UvAVXasOuE7BjapN/jil4iWnETqQjpCsn6yuoNyrhgXVdewaQT
+         669LnlsFBl1+39Bn2qxhgkiOoKSyNYVmc1emzMYwYZ1h/Y6P21+Ygg6m3kj+lu7fSEcm
+         uVTw==
+X-Forwarded-Encrypted: i=1; AJvYcCU03dEt5WA+dXYkHokxzOVjkmBTw1EvP63EA0kKqCBm4POgOS0eQ1gRWgHtNHy+P8QmK4LQ6zplK4ji@vger.kernel.org, AJvYcCUNNRURmj/DUMXSVrpVrfdJvKrQP4/SRvYw7SPs1c8tzoLJ6Sm6YKvaxkbp8ENpqxDtsU7YAe+q5Q1hCLr5@vger.kernel.org, AJvYcCVGVDfovy8cstCEJW0u+a/NseARNzCjsS0jtoTZgGtsxIrRvvnI2Sa0bPUhCggSyvi2z99V3SRbpLx4hQ==@vger.kernel.org, AJvYcCWDthco1jpFUmZlaQDoe3G0iF8j8RYefr39kLI9udX8ipOZdYrF0l5kiQvU6/cwN6/+Vmb0kNyU6ebsKn0=@vger.kernel.org, AJvYcCWqpjnAj99Cc5lm3N5nsaEmrTo5z4Hd+/8/QoWUte7WFGmmcRJ+SuR7UCh5MBIociONQR8jgGXW@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1K2DzfAU/HhzAOa9adYkpHUAYBm0uInEwCF4259ftLwlQ0QKH
+	tBgCD1twALlku29Dl+1XtFVxikEO/haT8IqvhS1UYSe1a1FlGSQW
+X-Gm-Gg: ASbGncszIQhHoMgeQRKkCPbPzoye89BOOvJWHtCXjQLwaxr0Be2kKIOid1puwm6h90i
+	cVcrhPh4FxcnYh2hL9hVVv10s6r87UqPu9wNL33EUSJTV5qUocqoh4adK/RTTpeqzQC0ssjkG/J
+	W3JwwGBqjd7XoxCNOFmGug2hGwDZzApUec8BA4uuGYUv1cniP1ouN75GNZA5TpO83KJlUIh+0vG
+	fFsDz3x8nWXS/yPyRUbAUW9kk2Gqc9ZpQqWF6nyi4aOJR18sTOJCfqYHZ7RfmAYPDQrpfgA5Fup
+	9zzqBhnenE6/egGPo7QsOQoeZmgxUrMSDqNmf6/cfqquTGhL09o=
+X-Google-Smtp-Source: AGHT+IE8yKn2sT46UJJvS6Ice8X9bYuvWD23vsV/OkjkW84qmgH4nvxXynVSLJtxqPpkMU4yfMQMVQ==
+X-Received: by 2002:a05:6a00:17a3:b0:73d:fa54:afb9 with SMTP id d2e1a72fcca58-74289290036mr5560234b3a.7.1747242469517;
+        Wed, 14 May 2025 10:07:49 -0700 (PDT)
+Received: from localhost ([216.228.127.130])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74237a0f14csm10071804b3a.107.2025.05.14.10.07.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 May 2025 10:07:48 -0700 (PDT)
+Date: Wed, 14 May 2025 13:07:47 -0400
+From: Yury Norov <yury.norov@gmail.com>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Simon Horman <horms@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Nipun Gupta <nipun.gupta@amd.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Cameron <Jonathan.Cameron@huwei.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Kevin Tian <kevin.tian@intel.com>, Long Li <longli@microsoft.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Bjorn Helgaas <bhelgaas@google.com>, Rob Herring <robh@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof =?utf-8?Q?Wilczy=EF=BF=BD~Dski?= <kw@linux.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+	Paul Rosswurm <paulros@microsoft.com>,
+	Shradha Gupta <shradhagupta@microsoft.com>
+Subject: Re: [PATCH v3 4/4] net: mana: Allocate MSI-X vectors dynamically
+Message-ID: <aCTN4yfHBsJGXvnB@yury>
+References: <1746785566-4337-1-git-send-email-shradhagupta@linux.microsoft.com>
+ <1746785637-4881-1-git-send-email-shradhagupta@linux.microsoft.com>
+ <SN6PR02MB4157AD1A0BA2C0C9237FEAA3D491A@SN6PR02MB4157.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D039UWA003.ant.amazon.com (10.13.139.49) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SN6PR02MB4157AD1A0BA2C0C9237FEAA3D491A@SN6PR02MB4157.namprd02.prod.outlook.com>
 
-scm_rights.c has various patterns of tests to exercise GC.
+On Wed, May 14, 2025 at 05:04:03AM +0000, Michael Kelley wrote:
+> From: Shradha Gupta <shradhagupta@linux.microsoft.com> Sent: Friday, May 9, 2025 3:14 AM
+> > 
+> > Currently, the MANA driver allocates MSI-X vectors statically based on
+> > MANA_MAX_NUM_QUEUES and num_online_cpus() values and in some cases ends
+> > up allocating more vectors than it needs. This is because, by this time
+> > we do not have a HW channel and do not know how many IRQs should be
+> > allocated.
+> > 
+> > To avoid this, we allocate 1 MSI-X vector during the creation of HWC and
+> > after getting the value supported by hardware, dynamically add the
+> > remaining MSI-X vectors.
+> 
+> After this patch is applied, there are two functions for setting up IRQs:
+> 1. mana_gd_setup_dyn_irqs()
+> 2. mana_gd_setup_irqs()
+> 
+> #1 is about 78 lines of code and comments, while #2 is about 103 lines of
+> code and comments. But the two functions have a lot of commonality,
+> and that amount of commonality raises a red flag for me.
+> 
+> Have you looked at parameterizing things so a single function can serve
+> both purposes? I haven't worked through all the details, but at first
+> glance it looks very feasible, and without introducing unreasonable
+> messiness. Saving 70 to 80 lines of fairly duplicative code is worth a bit
+> of effort.
+> 
+> I have some other comments on the code. But if those two functions can
+> be combined, I'd rather re-review the result before adding comments that
+> may become irrelevant due to the restructuring.
+> 
+> Michael
 
-Let's add cases where SO_PASSRIGHTS is disabled.
+On previous iteration I already mentioned that this patch is too big,
+doesn't do exactly one thing and should be split to become a reviewable 
+change. Shradha split-out the irq_setup() piece, and your review proves
+that splitting helps to reviewability.
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
----
- .../selftests/net/af_unix/scm_rights.c        | 84 ++++++++++++++++++-
- 1 file changed, 81 insertions(+), 3 deletions(-)
+The rest of the change is still a mess. I agree that the functions you
+mention likely duplicate each other. But overall, this patch bomb is
+above my ability to review. Fortunately, I don't have to.
 
-diff --git a/tools/testing/selftests/net/af_unix/scm_rights.c b/tools/testing/selftests/net/af_unix/scm_rights.c
-index d66336256580..7589f690fe2f 100644
---- a/tools/testing/selftests/net/af_unix/scm_rights.c
-+++ b/tools/testing/selftests/net/af_unix/scm_rights.c
-@@ -23,6 +23,7 @@ FIXTURE_VARIANT(scm_rights)
- 	int type;
- 	int flags;
- 	bool test_listener;
-+	bool disabled;
- };
- 
- FIXTURE_VARIANT_ADD(scm_rights, dgram)
-@@ -31,6 +32,16 @@ FIXTURE_VARIANT_ADD(scm_rights, dgram)
- 	.type = SOCK_DGRAM,
- 	.flags = 0,
- 	.test_listener = false,
-+	.disabled = false,
-+};
-+
-+FIXTURE_VARIANT_ADD(scm_rights, dgram_disabled)
-+{
-+	.name = "UNIX ",
-+	.type = SOCK_DGRAM,
-+	.flags = 0,
-+	.test_listener = false,
-+	.disabled = true,
- };
- 
- FIXTURE_VARIANT_ADD(scm_rights, stream)
-@@ -39,6 +50,16 @@ FIXTURE_VARIANT_ADD(scm_rights, stream)
- 	.type = SOCK_STREAM,
- 	.flags = 0,
- 	.test_listener = false,
-+	.disabled = false,
-+};
-+
-+FIXTURE_VARIANT_ADD(scm_rights, stream_disabled)
-+{
-+	.name = "UNIX-STREAM ",
-+	.type = SOCK_STREAM,
-+	.flags = 0,
-+	.test_listener = false,
-+	.disabled = true,
- };
- 
- FIXTURE_VARIANT_ADD(scm_rights, stream_oob)
-@@ -47,6 +68,16 @@ FIXTURE_VARIANT_ADD(scm_rights, stream_oob)
- 	.type = SOCK_STREAM,
- 	.flags = MSG_OOB,
- 	.test_listener = false,
-+	.disabled = false,
-+};
-+
-+FIXTURE_VARIANT_ADD(scm_rights, stream_oob_disabled)
-+{
-+	.name = "UNIX-STREAM ",
-+	.type = SOCK_STREAM,
-+	.flags = MSG_OOB,
-+	.test_listener = false,
-+	.disabled = true,
- };
- 
- FIXTURE_VARIANT_ADD(scm_rights, stream_listener)
-@@ -55,6 +86,16 @@ FIXTURE_VARIANT_ADD(scm_rights, stream_listener)
- 	.type = SOCK_STREAM,
- 	.flags = 0,
- 	.test_listener = true,
-+	.disabled = false,
-+};
-+
-+FIXTURE_VARIANT_ADD(scm_rights, stream_listener_disabled)
-+{
-+	.name = "UNIX-STREAM ",
-+	.type = SOCK_STREAM,
-+	.flags = 0,
-+	.test_listener = true,
-+	.disabled = true,
- };
- 
- FIXTURE_VARIANT_ADD(scm_rights, stream_listener_oob)
-@@ -63,6 +104,16 @@ FIXTURE_VARIANT_ADD(scm_rights, stream_listener_oob)
- 	.type = SOCK_STREAM,
- 	.flags = MSG_OOB,
- 	.test_listener = true,
-+	.disabled = false,
-+};
-+
-+FIXTURE_VARIANT_ADD(scm_rights, stream_listener_oob_disabled)
-+{
-+	.name = "UNIX-STREAM ",
-+	.type = SOCK_STREAM,
-+	.flags = MSG_OOB,
-+	.test_listener = true,
-+	.disabled = true,
- };
- 
- static int count_sockets(struct __test_metadata *_metadata,
-@@ -105,6 +156,9 @@ FIXTURE_SETUP(scm_rights)
- 	ret = unshare(CLONE_NEWNET);
- 	ASSERT_EQ(0, ret);
- 
-+	if (variant->disabled)
-+		return;
-+
- 	ret = count_sockets(_metadata, variant);
- 	ASSERT_EQ(0, ret);
- }
-@@ -113,6 +167,9 @@ FIXTURE_TEARDOWN(scm_rights)
- {
- 	int ret;
- 
-+	if (variant->disabled)
-+		return;
-+
- 	sleep(1);
- 
- 	ret = count_sockets(_metadata, variant);
-@@ -121,6 +178,7 @@ FIXTURE_TEARDOWN(scm_rights)
- 
- static void create_listeners(struct __test_metadata *_metadata,
- 			     FIXTURE_DATA(scm_rights) *self,
-+			     const FIXTURE_VARIANT(scm_rights) *variant,
- 			     int n)
- {
- 	struct sockaddr_un addr = {
-@@ -140,6 +198,12 @@ static void create_listeners(struct __test_metadata *_metadata,
- 		ret = listen(self->fd[i], -1);
- 		ASSERT_EQ(0, ret);
- 
-+		if (variant->disabled) {
-+			ret = setsockopt(self->fd[i], SOL_SOCKET, SO_PASSRIGHTS,
-+					 &(int){0}, sizeof(int));
-+			ASSERT_EQ(0, ret);
-+		}
-+
- 		addrlen = sizeof(addr);
- 		ret = getsockname(self->fd[i], (struct sockaddr *)&addr, &addrlen);
- 		ASSERT_EQ(0, ret);
-@@ -164,6 +228,12 @@ static void create_socketpairs(struct __test_metadata *_metadata,
- 	for (i = 0; i < n * 2; i += 2) {
- 		ret = socketpair(AF_UNIX, variant->type, 0, self->fd + i);
- 		ASSERT_EQ(0, ret);
-+
-+		if (variant->disabled) {
-+			ret = setsockopt(self->fd[i], SOL_SOCKET, SO_PASSRIGHTS,
-+					 &(int){0}, sizeof(int));
-+			ASSERT_EQ(0, ret);
-+		}
- 	}
- }
- 
-@@ -175,7 +245,7 @@ static void __create_sockets(struct __test_metadata *_metadata,
- 	ASSERT_LE(n * 2, sizeof(self->fd) / sizeof(self->fd[0]));
- 
- 	if (variant->test_listener)
--		create_listeners(_metadata, self, n);
-+		create_listeners(_metadata, self, variant, n);
- 	else
- 		create_socketpairs(_metadata, self, variant, n);
- }
-@@ -227,10 +297,18 @@ void __send_fd(struct __test_metadata *_metadata,
- 		.msg_control = &cmsg,
- 		.msg_controllen = CMSG_SPACE(sizeof(cmsg.fd)),
- 	};
--	int ret;
-+	int ret, saved_errno;
- 
-+	errno = 0;
- 	ret = sendmsg(self->fd[receiver * 2 + 1], &msg, variant->flags);
--	ASSERT_EQ(MSGLEN, ret);
-+	saved_errno = errno;
-+
-+	if (variant->disabled) {
-+		ASSERT_EQ(-1, ret);
-+		ASSERT_EQ(-EPERM, -saved_errno);
-+	} else {
-+		ASSERT_EQ(MSGLEN, ret);
-+	}
- }
- 
- #define create_sockets(n)					\
--- 
-2.49.0
-
+Thanks,
+Yury
