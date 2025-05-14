@@ -1,49 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062E7276024;
-	Wed, 14 May 2025 12:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA34225795;
+	Wed, 14 May 2025 12:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747226643; cv=none; b=rND89FGYlfQwXrcRG3jGeTdnZNJf1IoibSH6o8wxPO7uPq7Rh8zmcgDqtFFzo+U0HQX4iFyPGyb95HBgAQBhD5nAqMbiA/N7CoXxDjpc7ujPGMqFsaAESmH3aBx/kieoXSQv3NA44EMGpsKn7y1UadPq8n16S2j85EXpn98f/8M=
+	t=1747226908; cv=none; b=XCLEKw1FJc0+oAfgw3iqwm45/Ko62mWNERpLy9AjtxCU7TF6WXuipEM33FO5w+UmBo9wrM4W+zuMwnHGP7HMXENKFr5KHwoGKeDrAKu3K0P2mICeTbddKMMID610ESuIRMwAIG5vLIUOLJRTY8qNRriGgaVi7QnOLiZ3FEtNz3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747226643; c=relaxed/simple;
-	bh=LaaTtL18gYkBpKfIHtsydTFx7f5yvQp0LLx6M5Yb+oE=;
+	s=arc-20240116; t=1747226908; c=relaxed/simple;
+	bh=JvckJKmu5BRwtj6wUulWClHYn5tMXs/RVyyPpWAuGVA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ht2u0HMmj4bhaLVvxzq3laA+pxUxerCPQ74UT4ILSe60adr9BF+zuCG16gYWi/Va0WwVVmAHIdDNryc9sUcQjzex53ioG+VIUdGZAKjj/4g701qnpb+Gx8TB5prqzi+x8Hy7ZX9/1m+jK8L8A5o8mefjPzqidHzyJ0hq4T+9Wkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXLNPOWS; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pk5wSevLHAExMud5dZKX3VReoEH+MIST0niKTALEdIdkN8FtoyrToijrRxk/G53jObjA9+vIyDlebkjmo7scNlKR7jBZSIJAmHysJPTXM0lycVWCBwkhliTBTVDLDN6z7y8V/Sfc2BATJbQYtogp03DG2mEYqezqjSvxX5Mxr+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d2HXVbNd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXLNPOWS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A097FC4CEE9;
-	Wed, 14 May 2025 12:43:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d2HXVbNd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA1BC4CEE9;
+	Wed, 14 May 2025 12:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747226642;
-	bh=LaaTtL18gYkBpKfIHtsydTFx7f5yvQp0LLx6M5Yb+oE=;
+	s=k20201202; t=1747226908;
+	bh=JvckJKmu5BRwtj6wUulWClHYn5tMXs/RVyyPpWAuGVA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oXLNPOWSAhm109xi76EG+tT1v3fLCNJ5/mYufcpeH8SRgSgX7WAuTF4QjmQEpFY6M
-	 YjDHc7+XIIviZ9Fx2tK1tLEHmGjesKHFgnd2G0kYg11hM0i5hPmJbuanwA0w/ZIyIC
-	 d9zhTuNpCR1Iu5brbAXQzxJUDzyv1i4Y6CB1Tngx7NlQtwJrImsLLXVmW56RCUY1O0
-	 NzSh2vdv1EZRjE3JJzP0JddOzN0zCDo0yI+NqXFdWkgev9dr7NQJOUM4JZK8RKDmbU
-	 1tFSHeDtFFIpoDU5KdwlYUaQ2oKcLV+hM6qp4dz1QaZeQZ1iaK+D379YfwLmOHKARs
-	 vLFbl4boVh4+g==
-Date: Wed, 14 May 2025 13:43:55 +0100
+	b=d2HXVbNdDY24IvOD/CoiYHpsEYP1SvQVtlymzRnF7Ay5M2BA92tWZZBU5+beupB7y
+	 zs7YeMWlLcrJcl1e5zLjALjkmLBy6vIk5LiXWNhvL55l7lerlt9KV6p0e0mzGxkf0h
+	 GFacBAtgSgGG/FGFzzH/UN9nAVh5BMxBQXFPA6GxYVhsRLCMbXole9NxiiWNlRVrGl
+	 q3ARmhDCo7BXWLAY0p/c5QR2Y9JIa0d9WuZU20zHBGBdlq6eZ4Yu16yJDtQGh+Kdj7
+	 PKDyjm418VqlYpnBisQ368GwV21DibEK1T+26YPvy3LT5pWZa3gu00W8wYNxE08ZVg
+	 GEqrQiPT6MHzQ==
+Date: Wed, 14 May 2025 13:48:23 +0100
 From: Simon Horman <horms@kernel.org>
-To: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	decui@microsoft.com, stephen@networkplumber.org, kys@microsoft.com,
-	paulros@microsoft.com, olaf@aepfle.de, vkuznets@redhat.com,
-	davem@davemloft.net, wei.liu@kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
-	longli@microsoft.com, ssengar@linux.microsoft.com,
-	linux-rdma@vger.kernel.org, daniel@iogearbox.net,
-	john.fastabend@gmail.com, bpf@vger.kernel.org, ast@kernel.org,
-	hawk@kernel.org, tglx@linutronix.de,
-	shradhagupta@linux.microsoft.com, andrew+netdev@lunn.ch,
-	kotaranov@microsoft.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next,v3] net: mana: Add handler for hardware
- servicing events
-Message-ID: <20250514124355.GK3339421@horms.kernel.org>
-References: <1747079874-9445-1-git-send-email-haiyangz@microsoft.com>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: net: snps,dwmac: Align mdio node in example
+ with bindings
+Message-ID: <20250514124823.GL3339421@horms.kernel.org>
+References: <308d72c2fe8e575e6e137b99743329c2d53eceea.1747121550.git.geert+renesas@glider.be>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,15 +52,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1747079874-9445-1-git-send-email-haiyangz@microsoft.com>
+In-Reply-To: <308d72c2fe8e575e6e137b99743329c2d53eceea.1747121550.git.geert+renesas@glider.be>
 
-On Mon, May 12, 2025 at 12:57:54PM -0700, Haiyang Zhang wrote:
-> To collaborate with hardware servicing events, upon receiving the special
-> EQE notification from the HW channel, remove the devices on this bus.
-> Then, after a waiting period based on the device specs, rescan the parent
-> bus to recover the devices.
+On Tue, May 13, 2025 at 09:33:56AM +0200, Geert Uytterhoeven wrote:
+> According to the bindings, the MDIO subnode should be called "mdio".
+> Update the example to match this.
 > 
-> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+> For dwc-qos-ethernet-4.10, the Linux driver insists on "mdio".
+> For other devices, the Linux driver does not seem to care, and just
+> looks for subnodes that are compatible with "snps,dwmac-mdio":
+> https://elixir.bootlin.com/linux/v6.14.6/source/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c#L302
+> 
+> Lots of DTS files are using "mdio0" (copied from the example?).
 
 Reviewed-by: Simon Horman <horms@kernel.org>
 
