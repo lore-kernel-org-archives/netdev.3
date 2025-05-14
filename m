@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DD5202F9A;
-	Wed, 14 May 2025 08:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00597221729
+	for <netdev@vger.kernel.org>; Wed, 14 May 2025 08:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747212595; cv=none; b=eyHyt/6nxFFv2liUcOxHVF1JeaVWqU5w2y/L52LCMhKXi6ZmPfIfrFUx3fzoUa/cdPswZP8No9GrZWIOUBkU7D8My68yCCw3wGT0JVe2MeMXFkf2Isz2JgfuEpqbi4EXsqS5Ib9gl977dwAQay1pNgsEQsX/hxqWyrSLfosvtP0=
+	t=1747212597; cv=none; b=Gdzmx0hbgf9plODEgIU3S7dPprxpAUCo/v0L+OX3EZOAohmCTw84MbEYm9apDWKXvFf1lyeJnhmZHCrnkPcR8P10yk6smniAupIUreXWSKRzjDjAk9YI8IACahtQaxaLoPpqyobHoVJ1qUYxcr5n6LXTjK1zZcOc8JaEo+fwgrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747212595; c=relaxed/simple;
-	bh=IfhkhBM4JN5KmVYQaN4ITHZuJMrYU0PNMBAapg9fZEw=;
+	s=arc-20240116; t=1747212597; c=relaxed/simple;
+	bh=LjJhNb+NPIusx9+nibzxtjjPldfVpWbRMVl8XIL7cpA=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BmojF3JuBTf4jgEfdHqIQVF2CtI7XsMr5dF8B+MUlIeZp1maQ402My3Zgbxj3Ob4mZhrkjSMFtTvQwM5/dVdKqmF84ILJw9i6O8j/JwNPO/nyxf0Yj0xxRnz7ficVQ1pgNFL4p6cinzpLk1A38MmRoFQCpndRQ08//MbsAjo6ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lPvA4XwK; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=RdvHBr7yZ4EtRmmzDCIJnHYWheLgkbbEXzeOw/zh6FNMFbXRQY6fgy9M9CIot/LbItq9WEMjUlcxCoBHKNGnGpC+zKTE32Ujw3+Iu46nkEBfeqlZPlTb0nPnEFNYZhI1XVIbPi7eoO0ljUS6D12ybJdSYfJNyT5hXiAMZQjkkt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WOy17hXq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lPvA4XwK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C128C4CEE9;
-	Wed, 14 May 2025 08:49:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WOy17hXq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9E9C4CEF0;
+	Wed, 14 May 2025 08:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747212595;
-	bh=IfhkhBM4JN5KmVYQaN4ITHZuJMrYU0PNMBAapg9fZEw=;
+	s=k20201202; t=1747212596;
+	bh=LjJhNb+NPIusx9+nibzxtjjPldfVpWbRMVl8XIL7cpA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=lPvA4XwK7v+ysXnOfP1A7lekmup99ScilwdWlGB4YwiARcJ/+z5JkX+iWggks9VEE
-	 R7oTY5xBpyvbiFT52BObaGl3ZN+oO3DN6UEovBTyMRUm+3sB+IOZ6zkPHK38dS094d
-	 qFbPMZ4GaUfzPxsNxEAcYHcbaIQoNG8bG1HT6kjn8KtDOCQw6bqnvC2/qQSUHQHNz6
-	 IzovE2p+6dBV2xjhPrD+QTOioftznawA2XI7dercA5GYYNbSYF2iEP5o+CyQKCoBkp
-	 BNgmy2UoigcaoELcavkrqRSPh8zLo7h4Hj8Bdy1AKIfjkGYIGzbZ9WT3BmP8SVjsrr
-	 Joojgi1sKkeuw==
+	b=WOy17hXqd6nJvuJxu8j9v3zZGRbywpDdS28DmnSSDvhUkBHc7dRlNfFZuTU50qWBK
+	 NMWaOdVGmTY7glua+So8cpVaGwFrupIb4HY8tAP3QIIo1Gs6NDwnl50AscieFJDTYi
+	 b0+wTN+6M3+04be0vThSSP4QfCjzRp5vIjt7jp9LHiqbdKvGkuYzkg6WcOvet+uIeq
+	 OJ2pc9Lt1Zp/Xd+yWERsJDicairVUA0vDZcmvzuQMecW0xHL7Uv2AHSAde2oxxjqZv
+	 9/xTB7A3j45Mzt1kQHnBYb6QpchBc0knr0kM2GcIlmhrpYZthRIsKwVben+ToiEB+C
+	 /Fv45Fn6p11cQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADCD1380AA66;
-	Wed, 14 May 2025 08:50:33 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAFF8380AA66;
+	Wed, 14 May 2025 08:50:34 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,35 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: enetc: fix implicit declaration of function
- FIELD_PREP
+Subject: Re: [PATCH net-next] net: wangxun: Correct clerical errors in comments
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174721263252.1942803.15556777037257928109.git-patchwork-notify@kernel.org>
-Date: Wed, 14 May 2025 08:50:32 +0000
-References: <20250512061701.3545085-1-wei.fang@nxp.com>
-In-Reply-To: <20250512061701.3545085-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
+ <174721263375.1942803.6208331215896701801.git-patchwork-notify@kernel.org>
+Date: Wed, 14 May 2025 08:50:33 +0000
+References: <06CD515316BD5489+20250512020333.43433-1-jiawenwu@trustnetic.com>
+In-Reply-To: <06CD515316BD5489+20250512020333.43433-1-jiawenwu@trustnetic.com>
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mengyuanlou@net-swift.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by David S. Miller <davem@davemloft.net>:
 
-On Mon, 12 May 2025 14:17:01 +0800 you wrote:
-> The kernel test robot reported the following error:
+On Mon, 12 May 2025 10:03:33 +0800 you wrote:
+> There are wrong "#endif" comments in .h files need to be corrected.
 > 
-> drivers/net/ethernet/freescale/enetc/ntmp.c: In function 'ntmp_fill_request_hdr':
-> drivers/net/ethernet/freescale/enetc/ntmp.c:203:38: error: implicit
-> declaration of function 'FIELD_PREP' [-Wimplicit-function-declaration]
-> 203 |         cbd->req_hdr.access_method = FIELD_PREP(NTMP_ACCESS_METHOD,
->     |                                      ^~~~~~~~~~
-> 
-> [...]
+> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> ---
+>  drivers/net/ethernet/wangxun/libwx/wx_lib.h    | 2 +-
+>  drivers/net/ethernet/wangxun/txgbe/txgbe_phy.h | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
 Here is the summary with links:
-  - [net-next] net: enetc: fix implicit declaration of function FIELD_PREP
-    https://git.kernel.org/netdev/net-next/c/664bf117a308
+  - [net-next] net: wangxun: Correct clerical errors in comments
+    https://git.kernel.org/netdev/net-next/c/838b2a28c031
 
 You are awesome, thank you!
 -- 
