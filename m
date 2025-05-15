@@ -1,143 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC3B2101AE;
-	Thu, 15 May 2025 10:50:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EBB1E9B2F
+	for <netdev@vger.kernel.org>; Thu, 15 May 2025 10:50:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747306239; cv=none; b=U7i1J8l1nzF4WdqLXH1XwOVcubcASGA0v1S8LRYw6l34dMjPV7VldnAevEWYOJK7MxQC3RjJyCfGFWGSv+62M0paaelEyd7MbofODskyTfUgBs5d0myiWkvqRnMPQOFzmk1Sj59V+99i4Ft5+/798Ey9o9JvqKAgR5Scrv+4O8k=
+	t=1747306242; cv=none; b=WXwPSnWFg06cTJ6djh4rC4nvEmJmWaa+TsEn46GconVM6jKdKXoB0Tyum4vwkNtv3X5mD8pbit5+WmZ9Uxlprj61sg4wAlypIElXdz+1Zul45lW/9iX+Mgn8OoiOShlOWK94JhdhiBJpqy/jE5XoTHoafQrevjJj5309l3cP2tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747306239; c=relaxed/simple;
-	bh=wT+u7zaXSan0nDn3kznsFYtD2+9D/7UMrhifMQAMXoo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d16Q381lO5AmcNVpSY5nr4YaKHMqUK72i399Z5Pml6ZtPJmkF4uzK7K5t/NyFqQOTVYDtmP4bEmVfS9OKiXiKTp53u1sF5aK5JPRke1skwKGoSg32EB+mXpOo/j5pzSqG7EARSChaKYoULgEKL5Ckxu+nJGIYiuwoOYL6zceuNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/WWEWg9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747306242; c=relaxed/simple;
+	bh=ObAIrTH9pBRbOQjts3ltZG3qaATJ5eM9weRE4fL6Mco=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qSyXwOnTrRJX8XGW+ukdlWA/mGuc5H9aUWxqOij5s0sS1SJJlH4DwbpEw6yMbaGdo9XJGdtC4GffjuPtgEFbipb8K1EF1VobQXadipjUBMMg5l/6rilCiNxk4cQwrfyLgjzy5Z+mscz8Ekp4x4SoJJj2ejCs07tpMe2pt3dTPPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KTzjvhGO; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/WWEWg9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E4DC4CEED;
-	Thu, 15 May 2025 10:50:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747306239;
-	bh=wT+u7zaXSan0nDn3kznsFYtD2+9D/7UMrhifMQAMXoo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E/WWEWg9UqxrG4dLl6a9cMJc4KKG036GhZZ58EHkipbDPnK77JYFgmkr0kdiU9MRi
-	 X/igkxjvUBwl1xl04pAKU9OlDiRnR55gwXmD8esvmhNLq0tXzmNbOF3zO444jXSX5d
-	 l8ZbPt9HwBNIvb7zLIaPVZ5+FCuFf+AWqIoIUNPmXVcFOCBnkhxczulcduE3KaOCTF
-	 ozolgJgDcEgzfjHjdkGwIgkxA8QQYF/+TejWC738WBLdMu/cf2HIHBS83ZeVne0/5/
-	 KQgHXkgPnD+DmCtNzbG+0Axgo0aiMvpCjfUe5u3DcrmyjsGgz1pj5+6Vi26ePQI/X4
-	 DMkFSyg0Ri/Rw==
-Date: Thu, 15 May 2025 11:50:33 +0100
-From: Simon Horman <horms@kernel.org>
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: "kys@microsoft.com" <kys@microsoft.com>,
-	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
-	"wei.liu@kernel.org" <wei.liu@kernel.org>,
-	"decui@microsoft.com" <decui@microsoft.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"James.Bottomley@hansenpartnership.com" <James.Bottomley@hansenpartnership.com>,
-	"martin.petersen@oracle.com" <martin.petersen@oracle.com>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH net 2/5] hv_netvsc: Use vmbus_sendpacket_mpb_desc() to
- send VMBus messages
-Message-ID: <20250515105033.GR3339421@horms.kernel.org>
-References: <20250513000604.1396-1-mhklinux@outlook.com>
- <20250513000604.1396-3-mhklinux@outlook.com>
- <20250514093751.GF3339421@horms.kernel.org>
- <SN6PR02MB4157C9EC51BEC1EBCB2B7DC5D491A@SN6PR02MB4157.namprd02.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KTzjvhGO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747306241; x=1778842241;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ObAIrTH9pBRbOQjts3ltZG3qaATJ5eM9weRE4fL6Mco=;
+  b=KTzjvhGOwS8vZUCLvbRgll+8ZqQJjozx6IwKj7HFWxgUCItPaRfA8t9r
+   MEBHDzC/tRP3Al/Bl/pqYJkSMO5PRJi1+7EZegNQ95j0idvEqi3DHRw4C
+   /DIvGopBqR2kelQq+FW8Movee9mwvVihZT3s5+/1ipP/JJ8bGWe0JrA7A
+   CYgfGhZWIG+fiE1OUdF7IOTg2tkAmeqUc3ygbiVbbcFhlRALLOPwxQ1tA
+   v8f87HfMHysBN2OD5JZ4vfEOVTfr7l0d36/1S5yaTLQxqH80Fd4ZJ7WF0
+   CX0kcNpIrws5dpBJWgwfKorXaA89d5ruUyjdyeL43LoG85iMt2SclqSa9
+   g==;
+X-CSE-ConnectionGUID: 9yHKOcmiTyGz9HiL08cFHw==
+X-CSE-MsgGUID: sveA4GLYTO292syWo+rTnw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="66786963"
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; 
+   d="scan'208";a="66786963"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 03:50:41 -0700
+X-CSE-ConnectionGUID: FdOZtzFqQRSSFbRnIebXhg==
+X-CSE-MsgGUID: wViUpew+R3OZr9hyFGhWHA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; 
+   d="scan'208";a="138873942"
+Received: from enterprise.igk.intel.com ([10.102.20.175])
+  by orviesa007.jf.intel.com with ESMTP; 15 May 2025 03:50:38 -0700
+From: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	kuba@kernel.org,
+	dawid.osuchowski@linux.intel.com,
+	pmenzel@molgen.mpg.de,
+	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH iwl-next v4 1/2] ice: add link_down_events statistic
+Date: Thu, 15 May 2025 12:50:09 +0200
+Message-ID: <20250515105011.1310692-2-martyna.szapar-mudlaw@linux.intel.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250515105011.1310692-1-martyna.szapar-mudlaw@linux.intel.com>
+References: <20250515105011.1310692-1-martyna.szapar-mudlaw@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SN6PR02MB4157C9EC51BEC1EBCB2B7DC5D491A@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 14, 2025 at 03:44:35PM +0000, Michael Kelley wrote:
-> From: Simon Horman <horms@kernel.org> Sent: Wednesday, May 14, 2025 2:38 AM
-> > 
-> > On Mon, May 12, 2025 at 05:06:01PM -0700, mhkelley58@gmail.com wrote:
-> > > From: Michael Kelley <mhklinux@outlook.com>
-> > >
-> > > netvsc currently uses vmbus_sendpacket_pagebuffer() to send VMBus
-> > > messages. This function creates a series of GPA ranges, each of which
-> > > contains a single PFN. However, if the rndis header in the VMBus
-> > > message crosses a page boundary, the netvsc protocol with the host
-> > > requires that both PFNs for the rndis header must be in a single "GPA
-> > > range" data structure, which isn't possible with
-> > > vmbus_sendpacket_pagebuffer(). As the first step in fixing this, add a
-> > > new function netvsc_build_mpb_array() to build a VMBus message with
-> > > multiple GPA ranges, each of which may contain multiple PFNs. Use
-> > > vmbus_sendpacket_mpb_desc() to send this VMBus message to the host.
-> > >
-> > > There's no functional change since higher levels of netvsc don't
-> > > maintain or propagate knowledge of contiguous PFNs. Based on its
-> > > input, netvsc_build_mpb_array() still produces a separate GPA range
-> > > for each PFN and the behavior is the same as with
-> > > vmbus_sendpacket_pagebuffer(). But the groundwork is laid for a
-> > > subsequent patch to provide the necessary grouping.
-> > >
-> > > Cc: <stable@vger.kernel.org> # 6.1.x
-> > > Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-> > > ---
-> > >  drivers/net/hyperv/netvsc.c | 50 +++++++++++++++++++++++++++++++++----
-> > >  1 file changed, 45 insertions(+), 5 deletions(-)
-> > >
-> > > diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
-> > > index d6f5b9ea3109..6d1705f87682 100644
-> > > --- a/drivers/net/hyperv/netvsc.c
-> > > +++ b/drivers/net/hyperv/netvsc.c
-> > > @@ -1055,6 +1055,42 @@ static int netvsc_dma_map(struct hv_device *hv_dev,
-> > >  	return 0;
-> > >  }
-> > >
-> > > +/* Build an "array" of mpb entries describing the data to be transferred
-> > > + * over VMBus. After the desc header fields, each "array" entry is variable
-> > > + * size, and each entry starts after the end of the previous entry. The
-> > > + * "offset" and "len" fields for each entry imply the size of the entry.
-> > > + *
-> > > + * The pfns are in HV_HYP_PAGE_SIZE, because all communication with Hyper-V
-> > > + * uses that granularity, even if the system page size of the guest is larger.
-> > > + * Each entry in the input "pb" array must describe a contiguous range of
-> > > + * guest physical memory so that the pfns are sequential if the range crosses
-> > > + * a page boundary. The offset field must be < HV_HYP_PAGE_SIZE.
-> > 
-> > Hi Michael,
-> > 
-> > Is there a guarantee that this constraint is met. And moreover, is there a
-> > guarantee that all of the entries will fit in desc? I am slightly concerned
-> > that there may be an overrun lurking here.
-> > 
-> 
-> It is indeed up to the caller to ensure that the pb array is properly
-> constructed. netvsc_build_mpb_array() doesn't do additional validation.
-> There are only two sources of the pb array, both of which do the right
-> thing, so additional validation seemed redundant.
-> 
-> An overrun is a concern, but again the callers do the right thing. As
-> described in my response to Patch 3 of the series, netvsc_xmit()
-> counts the number of pages ahead of time, and makes sure the count is
-> within the limit of the amount space allocated in the "desc" argument
-> to netvsc_build_mpb_array().
+Introduce a link_down_events counter to the ice driver, incremented
+each time the link transitions from up to down.
+This counter can help diagnose issues related to link stability,
+such as port flapping or unexpected link drops.
 
-Thanks Michael,
+The value is exposed via ethtool's get_link_ext_stats() interface.
 
-I agree that is entirely reasonable for callers to be responsible
-correctly constructing the pb array. And that it's not necessary
-to add validation to netvsc_build_mpb_array().
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice.h         |  1 +
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 10 ++++++++++
+ drivers/net/ethernet/intel/ice/ice_main.c    |  3 +++
+ 3 files changed, 14 insertions(+)
 
-Also, based on the above, I'm satisfied that the callers are correctly
-constructing the pb array.
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index e42572ae7631..eac0f95d20f1 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -617,6 +617,7 @@ struct ice_pf {
+ 	u16 globr_count;	/* Global reset count */
+ 	u16 empr_count;		/* EMP reset count */
+ 	u16 pfr_count;		/* PF reset count */
++	u32 link_down_events;
+ 
+ 	u8 wol_ena : 1;		/* software state of WoL */
+ 	u32 wakeup_reason;	/* last wakeup reason */
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index 648815170477..db7ae817b127 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -836,6 +836,15 @@ static void ice_set_msglevel(struct net_device *netdev, u32 data)
+ #endif /* !CONFIG_DYNAMIC_DEBUG */
+ }
+ 
++static void ice_get_link_ext_stats(struct net_device *netdev,
++				   struct ethtool_link_ext_stats *stats)
++{
++	struct ice_netdev_priv *np = netdev_priv(netdev);
++	struct ice_pf *pf = np->vsi->back;
++
++	stats->link_down_events = pf->link_down_events;
++}
++
+ static int ice_get_eeprom_len(struct net_device *netdev)
+ {
+ 	struct ice_netdev_priv *np = netdev_priv(netdev);
+@@ -4784,6 +4793,7 @@ static const struct ethtool_ops ice_ethtool_ops = {
+ 	.set_msglevel		= ice_set_msglevel,
+ 	.self_test		= ice_self_test,
+ 	.get_link		= ethtool_op_get_link,
++	.get_link_ext_stats	= ice_get_link_ext_stats,
+ 	.get_eeprom_len		= ice_get_eeprom_len,
+ 	.get_eeprom		= ice_get_eeprom,
+ 	.get_coalesce		= ice_get_coalesce,
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 1fbe13ee93a8..2d1361b68b14 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -1144,6 +1144,9 @@ ice_link_event(struct ice_pf *pf, struct ice_port_info *pi, bool link_up,
+ 	if (link_up == old_link && link_speed == old_link_speed)
+ 		return 0;
+ 
++	if (!link_up && old_link)
++		pf->link_down_events++;
++
+ 	ice_ptp_link_change(pf, link_up);
+ 
+ 	if (ice_is_dcb_active(pf)) {
+-- 
+2.47.0
 
-With the above clarified in my mind I'm now happy with this patch.
-
-Reviewed-by: Simon Horman <horms@kernel.org>
