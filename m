@@ -1,110 +1,66 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C02224B04
-	for <netdev@vger.kernel.org>; Thu, 15 May 2025 10:52:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD272980CD;
+	Thu, 15 May 2025 10:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747306378; cv=none; b=gpi/dU9adD4JaI1TbD7NGPWGTuIXs/CPVowt9b/6FQGs79iNIHVUWwYnhhmXbKIpvM3EL3BAM/AWwKJcf8wD+FI9NVRoeDZHsS+M0hSNf1kuf4OhU326HJo+hQbO0hRMCSdPBj17Z8COolwp9FEgpEaAIPZxixBa369qGMHVmhk=
+	t=1747306512; cv=none; b=uK+p+Qv+4s2B2A2ymREZmgoqPzf5VUWzJmYGJLtGPWQ2jD6nc9BO0Yik3xXBPBWOVjSXidcAYIjHXyUSnXSJCr0X79v0yQ8KaK7JANjX8dZfpxZQanbF3vTwaC5djV78/hAej0p0BNblxnMnjBCIDMtuqQpQhpSQZE6z4FHAjhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747306378; c=relaxed/simple;
-	bh=ovFJnUrpIEp4+ba9a6q5iRMCX72A5K+Jk4wxyKuysrw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cuKdWIs6Pax9O1bkrXS1tEpX2uvlfs2FmksYiUEzVjGI+xy2sXZMW/WTnufOe9hufRs+QEjxsirfv6Tcp2yHcwyhxsRd3gigcC/s6VnmtTfxpJ+KWk56/Ld7iMSD6uc7tIOOKd/43Nad6XfbT22oug5pazhBY4VjExmhmck3aoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VxeJelsw; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1747306512; c=relaxed/simple;
+	bh=0zVMfiLdCgCQ+rxSRMVdYIh43lvAH7krScMeUuV+Qzg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MC4/yMAoTCOIY/TRWc3iNdenTqchd6FiagTJSr+dRWvHsmU3b6PyKEct11yYJ5dgMdXIO36Ky0O0ERBD+VHRo1MSeDFHkQ9qdMip+Pmk1tgo+rsd/xVbfzEUpmjzG/VN0RCL7w7lcOZt66ebOp7qCSQ3oqRK4sJ6skN4VGs8fuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FSd/qFQu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VxeJelsw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747306378; x=1778842378;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ovFJnUrpIEp4+ba9a6q5iRMCX72A5K+Jk4wxyKuysrw=;
-  b=VxeJelswaxEVZ9QUbzOMvCrE3FIV29/SS/5fUpWnuX0BC920lk8tjlK5
-   HVtBPvlfSe5ubpwbgZfkyR5q9oFf92D6Fit5qGALR0Y8+76pG8spJfgwj
-   cALel6FGu8UAl/DKu4kBVy09z5Ri7y0I2JG8XXWh0shPEBqTpratvyDEp
-   MkzrTF1nnRWTgVtDnDnCY/dVW6HKvGuGbMv4cNgKIHWJbFsh4symU8ym4
-   f3Xz75szHWJn6Mh0U6R2ooDvQOHHRxv6Stz22Ta1qGMVA6byxp1Pssckz
-   D6ajyud7GJLnIJnheI7fn3FDyK4zflvWgIRzHnjON1ax9C7ecBi4cs+xC
-   Q==;
-X-CSE-ConnectionGUID: 5UAtxkyAQd2Qz5UzSj4EUw==
-X-CSE-MsgGUID: JYUSK0OURnKVBYqFHDf/1g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="66641232"
-X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; 
-   d="scan'208";a="66641232"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 03:52:57 -0700
-X-CSE-ConnectionGUID: vXcliIivSTyFGvZjGVwE8A==
-X-CSE-MsgGUID: roBxfZv1TSCgUz6qCwmjGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; 
-   d="scan'208";a="139234033"
-Received: from mszapar-mobl1.ger.corp.intel.com (HELO [10.245.119.244]) ([10.245.119.244])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 03:52:55 -0700
-Message-ID: <c13179c7-74e2-4843-a052-571f6f0c033d@linux.intel.com>
-Date: Thu, 15 May 2025 12:52:52 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FSd/qFQu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42668C4CEE7;
+	Thu, 15 May 2025 10:55:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747306511;
+	bh=0zVMfiLdCgCQ+rxSRMVdYIh43lvAH7krScMeUuV+Qzg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FSd/qFQuphEG6eWhbtWWgCwy/eQXz6bnjThDkrpvkiCJLkuhuNvrbLl2m/SQMZJ/+
+	 ZD/3pHVfkezQlcDMCv7zYTX1EJDDqTsrIs/isEGcFFdFUkVPAkZV1pNCrBsBn8V2a5
+	 iM33Q7LWlUxIo6SN5xdAH9qOnuCzPfgE1T35IdZiF2n4wfd3hA4uDxHtsE4zkhi2Rk
+	 WaicIJX/wR7UvZ0GXl/7N8zIbDza2xaVfkNbOZweLr4kkPl51708NAIzzLUlXKJPut
+	 lWVVFSq30SWa5NIREbVXPn/W4RvybVRh476wJAUL2c/tIziy3Rc9t4LSVjvQ4QUzxb
+	 MyoMRBh5vgItw==
+Date: Thu, 15 May 2025 11:55:05 +0100
+From: Simon Horman <horms@kernel.org>
+To: mhklinux@outlook.com
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	James.Bottomley@hansenpartnership.com, martin.petersen@oracle.com,
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net 4/5] hv_netvsc: Remove rmsg_pgcnt
+Message-ID: <20250515105505.GT3339421@horms.kernel.org>
+References: <20250513000604.1396-1-mhklinux@outlook.com>
+ <20250513000604.1396-5-mhklinux@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next 1/2] ice: add link_down_events
- statistic
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
-References: <20250409113622.161379-2-martyna.szapar-mudlaw@linux.intel.com>
- <20250409113622.161379-4-martyna.szapar-mudlaw@linux.intel.com>
- <55ae83fc-8333-4a04-9320-053af1fd6f46@molgen.mpg.de>
- <4012b88a-091d-4f81-92ab-ad32727914ff@linux.intel.com>
- <355fc4f1-0116-4028-a455-ec76772f19b3@molgen.mpg.de>
-Content-Language: en-US
-From: "Szapar-Mudlaw, Martyna" <martyna.szapar-mudlaw@linux.intel.com>
-In-Reply-To: <355fc4f1-0116-4028-a455-ec76772f19b3@molgen.mpg.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250513000604.1396-5-mhklinux@outlook.com>
 
+On Mon, May 12, 2025 at 05:06:03PM -0700, mhkelley58@gmail.com wrote:
+> From: Michael Kelley <mhklinux@outlook.com>
+> 
+> init_page_array() now always creates a single page buffer array entry
+> for the rndis message, even if the rndis message crosses a page
+> boundary. As such, the number of page buffer array entries used for
+> the rndis message must no longer be tracked -- it is always just 1.
+> Remove the rmsg_pgcnt field and use "1" where the value is needed.
+> 
+> Cc: <stable@vger.kernel.org> # 6.1.x
+> Signed-off-by: Michael Kelley <mhklinux@outlook.com>
 
-
-On 5/12/2025 11:27 AM, Paul Menzel wrote:
-> Dear Martyna,
-> 
-> 
-> Thank you for your reply.
-> 
-> Am 14.04.25 um 15:12 schrieb Szapar-Mudlaw, Martyna:
-> 
->> On 4/9/2025 2:08 PM, Paul Menzel wrote:
-> 
->>> Am 09.04.25 um 13:36 schrieb Martyna Szapar-Mudlaw:
->>>> Introduce a new ethtool statistic to ice driver, `link_down_events`,
->>>> to track the number of times the link transitions from up to down.
->>>> This counter can help diagnose issues related to link stability,
->>>> such as port flapping or unexpected link drops.
->>>>
->>>> The counter increments when a link-down event occurs and is exposed
->>>> via ethtool stats as `link_down_events.nic`.
->>>
->>> It’d be great if you pasted an example output.
->>
->> In v2 (which I just submitted) the generic ethtool statistic is used 
->> for this, instead of driver specific, so I guess no need to paste the 
->> example output now.
-> 
-> I think it’s always good also as a reference how to test the patch. I 
-> just saw your v3. Should you resent, it’d be great if you added the 
-> example output.
-> 
-> […]
-
-Done in v4 updated cover letter.
-
-> 
-> 
-> Kind regards,
-> 
-> Paul
+Reviewed-by: Simon Horman <horms@kernel.org>
 
