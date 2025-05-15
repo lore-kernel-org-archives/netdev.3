@@ -1,154 +1,89 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4214269839;
-	Thu, 15 May 2025 03:00:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B3F269839
+	for <netdev@vger.kernel.org>; Thu, 15 May 2025 03:01:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747278065; cv=none; b=qysVOStKTHSd++IrEh3agHO50lgqtySNTLpZKzwP2CsTNcYlgWjq94MZdEosVIsYuB1hPY+P9v9fws2XkNwTSohzYjCWDHFaND9SI7kmEbQGPhhCy0DnqoIh03OWWYgm0fq30Qpr89cMjzlD36LFQodsgrrx+htTY3/RPyPzfhc=
+	t=1747278092; cv=none; b=BjXW3ybuT5M9wDXaIsfDYzQsgJXr1V0PjEUWQZbR6kDfwmT7LAVUvpE1yC6KaRw2SUa1RXvirAdNGP+/HDf3Ylkwa/eh8wwsi5UevBch3D5VcA+2LQdS8eDIG2kJEjjPmS5qaoV1B3VL2iD6gbVr6XkWJWZi7YFukw/bHSulKXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747278065; c=relaxed/simple;
-	bh=WMtRPrTV5SKlwbqCnRpNmAVaeiJHq6e0YXcmEs9v6gM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G5+cYgcxXXErKDNGnhfk9x8wV2DkGb4fyMG3kQwoqieu594EjJ794xtGQEOfPmZELRNtoEnzb9sSA0EkzAULgEpaQnfL3CdVrdQrdnPmsrcq2wt0UeAwd9rzcc49acTCUhIM3TvY/JN8soeT9lw64NDAPDRhvnDiqp1cTXusNhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-669ff7000002311f-13-682558e73367
-Date: Thu, 15 May 2025 12:00:50 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Waiman Long <llong@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
-	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
-	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
-	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
-	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
-	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
-	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
-	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
-	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
-	sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
-	yskelg@gmail.com, yunseong.kim@ericsson.com, yeoreum.yun@arm.com,
-	netdev@vger.kernel.org, matthew.brost@intel.com,
-	her0gyugyu@gmail.com
-Subject: Re: [PATCH v15 01/43] llist: move llist_{head,node} definition to
- types.h
-Message-ID: <20250515030050.GB1851@system.software.com>
-References: <20250513100730.12664-1-byungchul@sk.com>
- <20250513100730.12664-2-byungchul@sk.com>
- <5f412ff9-c6a3-4eb1-9c02-44d7c493327d@redhat.com>
+	s=arc-20240116; t=1747278092; c=relaxed/simple;
+	bh=aj4jjT4Gem8VYFAtmvD9ooXIuJNfF43vLkad1jb9fl0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hsfdu+evGIrW6nw+mgv7ixuLY8p2P8AqKDnCAiVPEVRAFy/DEgqAs67sGLEtn945RyrFukH1c8GBJ0bsBKOhm6wuDnmlwyzMEtaNKm+WsoN1QtMazdKLDqejLdjVKuWy9SHhmSK0UwKzacu5YEHinuuBSkWI07+80/kYLuOMhC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=SfAivCxz; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="SfAivCxz"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 54F30Vd142844183, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1747278031; bh=aj4jjT4Gem8VYFAtmvD9ooXIuJNfF43vLkad1jb9fl0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=SfAivCxzswCuee7Craf+7HhTaRQ+RXJaZEg+bDE9e5c0EbjSZMfrfQH2VAtccUeSK
+	 C7Ducc4b32gLyArBD8E8nteZGA4jnMG5a1lSJWVQrFOGrxVf39lPq3OeB/PZWAFMny
+	 WpphfYOIpzA+uORu/JjcmLkBT6VhXHAObkn+tcf5bhLjYR2Vz3V66IfMtdAGlucd0S
+	 c/2Lmk/8mbFMjiihV2D0tQSmY2yWwlG86YFjeNDPk2iJwdpKC8lqy7rnz5yilF2Stu
+	 RERLfNVSabqE1Tiq1UlumAqTnkYoSq8o5HDNB5pvxAGZEomThUdWBH0OcukWL+gPHC
+	 hepLUyA3evDTQ==
+Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 54F30Vd142844183
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 15 May 2025 11:00:31 +0800
+Received: from RS-EX-MBS1.realsil.com.cn (172.29.17.101) by
+ RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 15 May 2025 11:00:31 +0800
+Received: from 172.29.32.27 (172.29.32.27) by RS-EX-MBS1.realsil.com.cn
+ (172.29.17.101) with Microsoft SMTP Server id 15.2.1544.11 via Frontend
+ Transport; Thu, 15 May 2025 11:00:31 +0800
+From: ChunHao Lin <hau@realtek.com>
+To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, ChunHao Lin <hau@realtek.com>
+Subject: [PATCH net-next] net: phy: realtek: add RTL8127-internal PHY
+Date: Thu, 15 May 2025 11:00:22 +0800
+Message-ID: <20250515030022.4499-1-hau@realtek.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5f412ff9-c6a3-4eb1-9c02-44d7c493327d@redhat.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTVxjHd+69vfe2WnYtOo+w+aHCZnBzQnA8SzZDsmU7ydhm4kwWt0SL
-	XNe6Aq68CM4l5TUKkyBbYRQmtWyVYFUsxlQFZBhqOh1WCxUdoDI0QHlf2w0FXCkx88uTX57/
-	//zO+XB4WlHGRvCatExRl6bSKlkZIxtfbn5j+PNo9aaH5RLw+w4xUHvGyoLr9EkE1nN5FIx0
-	fgi3A2MInvxxg4YqgwvB8Qf9NJxzDCBobchnwT0UBt3+SRachlIWCurPsHDTO0dBX2UFBSdt
-	H8M9yyMGrpWbKagaYaGmqoAKjmEKZi2NHFj00TDYYORg7kEsOAc8Emi9uwGqj/Wx0NLqZMBh
-	H6TAfbGWhQHrUwl4S6ZoCJRFguvoEQmcmjCz4A1YaLD4Jzm41W6iwGF6CZoKg8LivxckcPVI
-	OwXFv5yloPvOJQRth+5TYLN6WLjiH6Og2Wag4fGJTgSDZeMcFH0/y0FNXhmC0qJKBgr7NsOT
-	f4M3/+yLhby6JgZOzXtQ4rvEesyKyJWxSZoUNu8nj/09LGkNmBjyuxmTC8Z+jhS23eWIyZZF
-	mhtiSH3LCEWOz/glxNZ4mCW2mQqOlIx3U2Siq4vb+vIO2TspolaTLere3LJLpm50VDD7fg3L
-	6fT10HpUs6wESXksxGP9+I/cMz5a5ZYsMiNE474KO73IrPAa7u2dDfFKQYn9sy6mBMl4Wqhc
-	hi84pqnFIFz4DI9N94dEciEBm53uUEkhGBAuzR9lloIV2Fk9FGJaiMG9CyPBw3yQI/GJBX5x
-	LRW24LbAvVBllbAOt5+/Si09ziPF1Y6DS7wG/9bQy5Qjwfic1fic1fi/1YToRqTQpGWnqjTa
-	+I3q3DRNzsbd6ak2FPyllu/mvrCjGde2DiTwSLlc3l4UpVZIVNkZuakdCPO0cqX89t51aoU8
-	RZV7QNSl79RlacWMDhTJM8rV8rjA/hSF8JUqU/xaFPeJumcpxUsj9EgkOZ9OuV9Izg9cb1o9
-	H/uR95/3kwt++ivrh2tR2ydHrdtPh492vBr39sSu9w4nXg//oL9+TVwX3jN/48/zL+qmkg0p
-	tZsuZ3ter9PefMuZ7ttb882X9rUJO3w9ez5Zsap4fdh0XkTCxcGknYneAweTpVGZzLf37S1J
-	w3rV5qd1Q91rI+JfUTIZalVsDK3LUP0HPfruQ6EDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTZxTH8zz3tZWau47pjY1+qMMXFlFU4llc0CVm3Cxz0czERU1moze2
-	k1ZtEekUB1KMg0mEBYhFsZZZCJThilNQSwhIsahYLSIqoBAyh60CjttZYbCWZZlfTn45//M7
-	58thCeUYNY/VGdJEo0GTqqblpPzLtTnLnn8dp11x5dxikMZPkHCmzkmD75caBM5L2RiG21Lg
-	YSiIYOLOXQJKi30Izg/0EXDJ04/AXXWMBv/QbOiSRmjwFufTkFNRR8O9wCSG3pIiDDWujfDU
-	8TsJt07ZMZQO01BWmoMj5Q8MYUc1A46sOBissjIwOZAI3v5uClrPeilwP/4ITpf30nDd7SXB
-	0zCIwX/1DA39zmkKAnmjBIQKVOArPElB7Ss7DYGQgwCHNMLA/WYbBo9tDly0RLYe/3OKgvaT
-	zRiO//wrhq5H1xA0nXiGweXspqFVCmKodxUT8LayDcFgwUsGcn8MM1CWXYAgP7eEBEtvEky8
-	iVw+O54I2ecuklD7dzdanyw4y51IaA2OEIKl/pDwVnpAC+6QjRQ67LzQaO1jBEvTY0awuQ4K
-	9VXxQsX1YSycfy1Rgqv6B1pwvS5ihLyXXVh41dnJbJq/Tf7JbjFVly4alyfvlGurPUXk/guz
-	M9rGHxBZqGxWHpKxPLeaLyz1U1EmuTi+t6iBiDLNLeZ7esIzHMupeSnsI/OQnCW4kll8o2cM
-	R4P3uS18cKyPibKCW8Pbvf6ZISVXjPj8Yy/If4P3eO/poRkmuHi+Z2o4IrMRVvGVU2y0LeOS
-	+abQ05mRD7iFfPPldnwKKazv2NZ3bOv/tg0R1ShWZ0jXa3SpSQmmvVqzQZeRsGuf3oUij+jI
-	nCxsQOP+lBbEsUgdo2jO/VCrpDTpJrO+BfEsoY5VPPx2oVap2K0xfyca931jPJgqmlqQiiXV
-	cxWfbxV3Krk9mjRxryjuF43/pZiVzctCGQ5WVT+Qu6UirSCY5V4w+mR95tYL4dCiUN9vgcwb
-	n/o87WMbhj6eeF65Y/rQEfFNjP3A6Lru0a7bc/LL//rKeXWHbEVj50+fLf3+cswG87Tqi5WG
-	joHDSVZ9x2CK8eaqmtrtCds23lh5WMJlC1TBJUH9UUtd+sRmySzLsQZxYEndajVp0moS4wmj
-	SfMPr7iiAoQDAAA=
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Wed, May 14, 2025 at 08:14:26PM -0400, Waiman Long wrote:
-> On 5/13/25 6:06 AM, Byungchul Park wrote:
-> > llist_head and llist_node can be used by very primitives. For example,
-> 
-> I suppose you mean "every primitives". Right? However, the term "primitive"
-> may sound strange. Maybe just saying that it is used by some other header
-> files.
+RTL8127-internal PHY is RTL8261C wihch is a integrated 10Gbps PHY with ID
+0x001cc890. It follows the code path of RTL8125/RTL8126 intrernal NBase-T
+PHY.
 
-Thank you.  I will apply it.
+Signed-off-by: ChunHao Lin <hau@realtek.com>
+---
+ drivers/net/phy/realtek/realtek_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-	Byungchul
-> 
-> Cheers,
-> Longman
-> 
-> > dept for tracking dependencies uses llist in its header. To avoid header
-> > dependency, move those to types.h.
-> > 
-> > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> > ---
-> >   include/linux/llist.h | 8 --------
-> >   include/linux/types.h | 8 ++++++++
-> >   2 files changed, 8 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/include/linux/llist.h b/include/linux/llist.h
-> > index 2c982ff7475a..3ac071857612 100644
-> > --- a/include/linux/llist.h
-> > +++ b/include/linux/llist.h
-> > @@ -53,14 +53,6 @@
-> >   #include <linux/stddef.h>
-> >   #include <linux/types.h>
-> > -struct llist_head {
-> > -	struct llist_node *first;
-> > -};
-> > -
-> > -struct llist_node {
-> > -	struct llist_node *next;
-> > -};
-> > -
-> >   #define LLIST_HEAD_INIT(name)	{ NULL }
-> >   #define LLIST_HEAD(name)	struct llist_head name = LLIST_HEAD_INIT(name)
-> > diff --git a/include/linux/types.h b/include/linux/types.h
-> > index 49b79c8bb1a9..c727cc2249e8 100644
-> > --- a/include/linux/types.h
-> > +++ b/include/linux/types.h
-> > @@ -204,6 +204,14 @@ struct hlist_node {
-> >   	struct hlist_node *next, **pprev;
-> >   };
-> > +struct llist_head {
-> > +	struct llist_node *first;
-> > +};
-> > +
-> > +struct llist_node {
-> > +	struct llist_node *next;
-> > +};
-> > +
-> >   struct ustat {
-> >   	__kernel_daddr_t	f_tfree;
-> >   #ifdef CONFIG_ARCH_32BIT_USTAT_F_TINODE
-> 
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index 301fbe141b9b..b5e00cdf0123 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -158,6 +158,7 @@
+ #define RTL_8221B_VB_CG				0x001cc849
+ #define RTL_8221B_VN_CG				0x001cc84a
+ #define RTL_8251B				0x001cc862
++#define RTL_8261C				0x001cc890
+ 
+ /* RTL8211E and RTL8211F support up to three LEDs */
+ #define RTL8211x_LED_COUNT			3
+@@ -1370,6 +1371,7 @@ static int rtl_internal_nbaset_match_phy_device(struct phy_device *phydev)
+ 	case RTL_GENERIC_PHYID:
+ 	case RTL_8221B:
+ 	case RTL_8251B:
++	case RTL_8261C:
+ 	case 0x001cc841:
+ 		break;
+ 	default:
+-- 
+2.43.0
+
