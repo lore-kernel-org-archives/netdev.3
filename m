@@ -1,79 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93912101AE
-	for <netdev@vger.kernel.org>; Thu, 15 May 2025 10:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5601297B63
+	for <netdev@vger.kernel.org>; Thu, 15 May 2025 10:50:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747306193; cv=none; b=bLfdZ6IXA/ZFI6vZvP+CvB6teYQXPKKQrMl4FiERP3X/HzwF30ii1u/wap2K4wmP672cjqVXAsrSCUlaJy+kZS+MDzuE+7ssZRndjAIJ6RE4wdTPnnVVaHmZ5549bPxZqq/hfT1V/a38ftvuS2TVJw+KdGPVUrdrGZLG6zP2iLo=
+	t=1747306233; cv=none; b=D4htFw9Pk9FAMtpo0Rr8uaTHNZW2RGCqiE3x3tIzkQrzifMm4mUYXYzNe2/dhsHDQBtaaUwvlx8RYzYSBMBBtEkXmCj3h6G4qp8yr56TG7AM5bbcbLWHncLEe6pUncZbP+DA7VnijVUQlRT/5OBRSsonezd7TLhgBqi6y+I0eu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747306193; c=relaxed/simple;
-	bh=Nw7OAFIa7XcAKKehb8C2+UExR7xM56j9UXCudhMeW80=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=fNQtSTtzs18pNEKh28zXj055t9doHyBpI3gdNMcEgrFwJkMncTyxJvHVhe2Qeenv36pXtLBZybrITelt3kS3gKfYIrSQ6PDwlhlbAEKylVSEbochUAavSckQW7NMSkcCi1ODEYyMfen703gmRZIsyiC9zt4VSBdWV9jX0OShiLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dekyJQkz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747306233; c=relaxed/simple;
+	bh=44yPQ2Ewq7rCnqRQFn0AxLyqSxd/bLzf7YEzRJQQrCw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qsJi+bC7Euj0IG7sLSZLHQEefi+zgJxyPLJ8HxFr4QUtWh3XQMBodxDNslHe3I9o67NOvYmnD4ypPEqDp4Hh7+wRw2N7Hu+LH4n7kts/Paf3degsyuQOAkuTN1zUU491AphMbsPUChkngHMqDAspRA2KbamV7UdE7zBBjXj6O2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FeIYlL2/; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dekyJQkz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595F6C4CEE7;
-	Thu, 15 May 2025 10:49:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747306192;
-	bh=Nw7OAFIa7XcAKKehb8C2+UExR7xM56j9UXCudhMeW80=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=dekyJQkzlkE7Y0bAYeD426+TnMiCKvCRf508ZUbk0g1EVKFMHNGyXjQ+4JyikLvK/
-	 36huyXtKsTVQwcAv2cZyK37YGOa/k4XuJcB/yXkVe/RdiQbKH2SwSYTBKBpm/AFXAU
-	 2ZMY9hFv3+YBTddUOq6Yb7oBYACMdk6dEEm7jMUBp2dAvQTecRL4Uw+luV47y15fLU
-	 Yz7tI8l9Sl8lNd9ulalOmVth9BZzStlcYyAFQAFCU2NMArkAIlV4RoIfDt7N5Ppuhw
-	 SkZGFbKqL45kS7dLwTySfsKM+GhgDXTDCMT7KFpn8ZXPkm/xNIEhPeuE0pBQg1uRLy
-	 O3Sn1B/INKx5g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADC563806659;
-	Thu, 15 May 2025 10:50:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FeIYlL2/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747306232; x=1778842232;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=44yPQ2Ewq7rCnqRQFn0AxLyqSxd/bLzf7YEzRJQQrCw=;
+  b=FeIYlL2/SYCDhdDpIQt4fqjhLzj+sPLeY05a1zOC6d3poVklrlreCeoo
+   pg/10j2GUSj4BzyB7mkcTuaREWO8Y3PxKGWDGFIxxfWSbBOQMttrVDvR2
+   heDORXCwvyuSV+F2zdrEKf8BsY9yHnj/JMF9RX2NjuYjm8V1+db4YDysa
+   P1jhXbIxPR3/uA1ATfsufzC7W+6aXFVkD/pbYu1j7xJc+qg72pMzeIqUI
+   B9FwNRLaPBX2OWjzuvfOaZDIg3JeAPcJnIGcKJBU/0G09sZ0C9bH1DwmX
+   U1s8gMo23Hv+0kjSgcpKar3zCbOODK9MlMw/GSiqrKFRkETooaJKa3V7R
+   Q==;
+X-CSE-ConnectionGUID: IR4XzAKmTZu+HgVBDWDhgw==
+X-CSE-MsgGUID: BROhUQh5R22G4yb4li6kfQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="66786952"
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; 
+   d="scan'208";a="66786952"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 03:50:31 -0700
+X-CSE-ConnectionGUID: U7fOgo58RUihgvs8WWe3cA==
+X-CSE-MsgGUID: iNttbOASQ3ew1RFbVsKVag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; 
+   d="scan'208";a="138873879"
+Received: from enterprise.igk.intel.com ([10.102.20.175])
+  by orviesa007.jf.intel.com with ESMTP; 15 May 2025 03:50:29 -0700
+From: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	kuba@kernel.org,
+	dawid.osuchowski@linux.intel.com,
+	pmenzel@molgen.mpg.de,
+	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+Subject: [PATCH iwl-next v4 0/2] Add link_down_events counters to ixgbe and ice drivers
+Date: Thu, 15 May 2025 12:50:08 +0200
+Message-ID: <20250515105011.1310692-1-martyna.szapar-mudlaw@linux.intel.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [net v2] octeontx2-pf: Do not reallocate all ntuple filters
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174730622950.3059611.4240481390914363802.git-patchwork-notify@kernel.org>
-Date: Thu, 15 May 2025 10:50:29 +0000
-References: <1747054357-5850-1-git-send-email-sbhatta@marvell.com>
-In-Reply-To: <1747054357-5850-1-git-send-email-sbhatta@marvell.com>
-To: Subbaraya Sundeep <sbhatta@marvell.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, gakula@marvell.com,
- hkelam@marvell.com, sgoutham@marvell.com, lcherian@marvell.com,
- bbhushan2@marvell.com, jerinj@marvell.com, netdev@vger.kernel.org
 
-Hello:
+This series introduces link_down_events counters to the ixgbe and ice drivers.
+The counters are incremented each time the link transitions from up to down,
+allowing better diagnosis of link stability issues such as port flapping or
+unexpected link drops.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+The counter increments only on actual physical link-down events visible
+to the PHY. It does not increment when the user performs a software-only
+interface down/up (e.g. ip link set dev down).
+The counter does increment in cases where the interface is reinitialized
+in a way that causes a real link drop — such as eg. when attaching
+an XDP program, reconfiguring channels, or toggling certain priv-flags.
 
-On Mon, 12 May 2025 18:22:37 +0530 you wrote:
-> If ntuple filters count is modified followed by
-> unicast filters count using devlink then the ntuple count
-> set by user is ignored and all the ntuple filters are
-> being reallocated. Fix this by storing the ntuple count
-> set by user. Without this patch, say if user tries
-> to modify ntuple count as 8 followed by ucast filter count as 4
-> using devlink commands then ntuple count is being reverted to
-> default value 16 i.e, not retaining user set value 8.
-> 
-> [...]
+The values are exposed via ethtool using the get_link_ext_stats() interface.
 
-Here is the summary with links:
-  - [net,v2] octeontx2-pf: Do not reallocate all ntuple filters
-    https://git.kernel.org/netdev/net/c/dcb479fde00b
+Example output:
+#ethtool --include-statistics <ethX>
+Settings for <ethX>:
+        [...]
+        Link Down Events: 2
 
-You are awesome, thank you!
+Martyna Szapar-Mudlaw (2):
+  ice: add link_down_events statistic
+  ixgbe: add link_down_events statistic
+
+v4->v3:
+only cover letter edits
+v3 -> v2:
+ixgbe patch: rebased on latest ixgbe changes; added statistic for E610
+no changes to ice driver patch 
+v2 -> v1:
+used ethtool get_link_ext_stats() interface to expose counters
+
+ drivers/net/ethernet/intel/ice/ice.h             |  1 +
+ drivers/net/ethernet/intel/ice/ice_ethtool.c     | 10 ++++++++++
+ drivers/net/ethernet/intel/ice/ice_main.c        |  3 +++
+ drivers/net/ethernet/intel/ixgbe/ixgbe.h         |  1 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c |  9 +++++++++
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c    |  2 ++
+ 6 files changed, 26 insertions(+)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.47.0
 
