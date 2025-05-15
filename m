@@ -1,178 +1,135 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40165DDC1;
-	Thu, 15 May 2025 19:21:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA11225A646
+	for <netdev@vger.kernel.org>; Thu, 15 May 2025 19:22:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747336908; cv=none; b=Z91QuctkTyuh5dyy33w5M5UueZIJtWjBr3GwmxgaRhx7XaVjR2SaheTVzD3cMxjllBgraZVNeKYJ1zn+fXjJDDGFFg0RXI1MpIrkwR/Q19NfYslMvqDrBC7qpu6M+1NDFI/BBvyK0KVxyuxW/8nyGW9jDJQ/HBmprhDDkmH9El4=
+	t=1747336979; cv=none; b=Ty0mNGHcm9Y/+YtVBE0ltsJ6RxwECB8ffA3dGJatuAu5zcF4l+TBq/kck56XEleo49hOZcYdbCZRcAj8+pjYwFwmH6oFoL1rb0BuPHc7TxEve3tLztDISWt+ub9Dn7Jguin3mX1puMV921QgeUpTN08NYkK+ZdQGoqGT3ZgrRVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747336908; c=relaxed/simple;
-	bh=9Fovz36nZ5hdCxHe+hSpR4ZB5DBL38AjU+XU381hyz8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uprcJJ74bW1yGfKLYXChrODJJF5iUv6lhelutYTLrW29+J1fBC/RtNPmpnbZpgOIQs7THApRWXMaFaOgbdfk66Owm44vI/DXofAuxWgiPybfHIfot2PeSIBateGH6+0F3vpdgGhlUdJSs8vFvmnmvVS9jpr1mKwXvFMr+BIU2Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NyMuVjVM; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747336979; c=relaxed/simple;
+	bh=96N46iqOIStqCIhFVpc7U2TEDGtEL6hnmfMs56TVuk0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GZhR5At+LnngRWODn5fyp4xkGd2pW1YLAR91fPwNAamy4DeUR7iujQSlNY7VqoxUcfnb4UcATeapNRk72WJdprBJt2KF2q6SjO4O6PGHATbwjeE3vq0SAqN65f46xLttxWnLSO70fnnBOi9tDudQWtSmKfRnCMdHpR1zKYO+aNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=NTN7XkdW; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NyMuVjVM"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3a0b9e2d640so1119450f8f.2;
-        Thu, 15 May 2025 12:21:45 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="NTN7XkdW"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-74248a3359fso1486023b3a.2
+        for <netdev@vger.kernel.org>; Thu, 15 May 2025 12:22:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747336904; x=1747941704; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mDgKha8Mvg0JAQ/SjGW3x+GqfdnE0RD9BNggcIcuKkc=;
-        b=NyMuVjVM7caMZLMF5lgMPWARU/VrG3D7ddKMeBMhmOSOC1Xc05vzSFPrk+wACU9w64
-         U0c9/R36iXeZrnZ3gInQJ6zAJ5va76cloNv/vGimMM7sFO7VonMylL9MTe0QSqvLT2OQ
-         j9XsxdcLoRMLx75SnZmNZ79duiSqchqR9gRG4R61CLL+chQ9swuzn7k/qwpRymUqf2Zl
-         ufW2pXYWgDBhny6sMzICCjXuUaD4Vv+y03CSasaC21O4LyzIF6hV4sgaczNIgCx/yit/
-         LWvYYeI1baLu1TEZ02nUrTO0Qmcnlm39KSN8VUBkYVt9NsmLBYHfxaDHKNmfTpRHsO8V
-         9Rkg==
+        d=broadcom.com; s=google; t=1747336977; x=1747941777; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fyWm0rF9eCaDvUShSNc7s++hP2H/Glv+MtPcJ7Ax5f0=;
+        b=NTN7XkdWAvzW+LjgSPmy8TAIulTrUPQ1iIPFbitU1uXBpF6HdV/I3f0Xyq05zCF4a1
+         jiwPBNpDekTsf6i9+vdtMCenuGsljisrJqxMyFPBprkP1Qz8wWFeaJGW79OSSLROVmrv
+         iqnB1OkPv7Gk/Y42VHucbClG1D/9D1xoI2q5s=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747336904; x=1747941704;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mDgKha8Mvg0JAQ/SjGW3x+GqfdnE0RD9BNggcIcuKkc=;
-        b=cdMOGE7SdywlKMLpGQsJoM7D1jKpBkqZAcdhcwc10JKPdob1sf74EaSAzRqxsWlQ2B
-         QlrezEAsSwYCf27+XO/8G0rIKy1Hdi+AnKZ/r0/9McPelgCflsugrJ5P0zYgVqwBgg8/
-         Rb4cElQwQSeTXcuv6Cf1p0MNwsr0WyRZwlA4ZZLzs9J07Qh2EImW5ZE/gAtgXYSg2x6s
-         CTpBNjyodm0rVKyLtPUikVCUYZwU1MZGvjzt0J0qQ63Y3VKzvi1q2kdHeArvxVKrqbNd
-         PKd/P6QJ4zuQKBaraynr7AAxo+tQ+mjLF92zJCGGVYq8G5fzFeEdMPQalHN8xFf/nc9Z
-         1CSw==
-X-Forwarded-Encrypted: i=1; AJvYcCU9SLNtytzlTLcDe6B6J5WwdXxfNJ5N1sRITPTiQ48bCRoyORP5YB+tvzE2z6z3arz+v4x+kYo8H+eB3oY=@vger.kernel.org, AJvYcCULao2lgvf7bySHvR+enuNRBkO9LfHbSlGzwx3MwU4amaUxoCsquxG/u29jHmX+/cMSGfu0C57U@vger.kernel.org, AJvYcCWVYKHDUi1Yhq9cYnJkJSRckQyDhgpnLevpggJnrkQoWNEXyejXRl+BgNJJPnhhqb59mlgGNJ0sM5gdfA==@vger.kernel.org, AJvYcCWiqgkfd/xtxiLXUgqJ9PogeCS0kR1HLFZ/0Jx2Jkmctg/rydZ+qmy/gVke98xzbUqYercNXuq1zNIK6Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywk3RBRi0yPc0LntRr8IKAdkRTmmAlcov68h48pLj+x5ycPbKCa
-	zAmtwu/WkLmVRT9yGqHEdNekuvGrslRFZZIXQ4JbMgpHZcbT3MluAQUgAa17Kg==
-X-Gm-Gg: ASbGncuOMR123namNxO3wvL6hvLSwpTu2YuZjcjGK9Z2cEVJ95We9bM9dsqf0Agle7i
-	FRTtP+zCMYoosc0Y4ydFY0C/wvgBOKC6UpG2b6K42jQ4f86JSBHZHWJaJ55MNBr7D4eGNy6bhD1
-	+Qx6wHtyLU105GnTg2EtM+leTq0BmPw+9we2NecUHM/Lju1f7kam61z7zTppGz/m1d91vTxu5nd
-	SWkFy4wesFo4PPxrEKt3gDywHdQdM+8oS7y+gixg9rUka+8d9JOG1YX16kI6FmzPV/H+cEZ0tUj
-	bh1iIckJ+ec74craZf6gLgbnGto6O+5OZ/91sqI+QhhNbmi8v/TmnaqfnyAErMgpNk/3xrhy1b6
-	IMe7eWPiNed273Q==
-X-Google-Smtp-Source: AGHT+IEErv75ySz7SPIWQxReFuvVqrBn08S2Tj1lWQLN0bVqYJE1NAor3PrV0mVxMNg0j179PRXNjQ==
-X-Received: by 2002:a05:6000:2af:b0:3a0:ad55:c9f2 with SMTP id ffacd0b85a97d-3a35c808d10mr1223950f8f.1.1747336904253;
-        Thu, 15 May 2025 12:21:44 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442fd583fb7sm6501185e9.32.2025.05.15.12.21.43
+        d=1e100.net; s=20230601; t=1747336977; x=1747941777;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fyWm0rF9eCaDvUShSNc7s++hP2H/Glv+MtPcJ7Ax5f0=;
+        b=jNeTWpwgjPOFxjMEvepYrd3bkglmJ0DOfYMnNWey2DcYMWvEG+cyri7LNOPDc0k413
+         /58ASnNTW5yRLN5+kQA8bvgcjWGSu8KTtPq5FZHb+/gNM+Fxf9CTGdC51MnsZnbhrPEK
+         KxfqlTGbawX0akEMla5H9CmpyfcIFVUzsPYHGufowfB0/0OtRp9PqNu6xYtPR8UBkwjb
+         QDHGpNSlZKJLsu5LEpZPwoUuTV//F+bxPnfU+hiW7VPTBEOfqXmo3lwjmPiNfXzGHXAM
+         W0FJ4hndDK875plgQ8CQ0N9Y/IjLW5Lss3Z/+bUmJ29OIaQV6/JCgy0AEseoUcu9Y6mI
+         1GHA==
+X-Gm-Message-State: AOJu0YyV/PshIKCcAZt2ju2UsIo1m1fm/cW4MSvD5bpSGqHUht1LxV8Z
+	QaGbrXxvNaUPjqHxDhPDlbFkqYjO+A3ppvR0oRLU+qrmwW4SEJeIIP2zl1+pwC5ZWxuw//yetQA
+	hTCkccRRfiUUJsNlsmUNC3k38t5IsO9g0WMHMcwvO5PoA8tE6I4tvRXfyVTVpwjhg46ELER9H8Q
+	cFu8DA9euTWLXVWXv0a7r5PftPO8lr2Z5k3mCjdz9lZ5o=
+X-Gm-Gg: ASbGnctH5w1C/eEYdoPUW18TPXB6tod799HlS4NoJfezb+S3bTuHKUDbt39GcxGXXHA
+	HFQ54iSe6mRAnblKf9oVwn12LleU25Sn+HXU79Nj+B+WzqF20TuL9wtPzTLCfIyqDxHAhFlUv8M
+	Ig7+NF7rdIaHnEHOtplZQCL9V9EVf7bYIj8NPTZQsuFVhRBXt7luBle8J+xtCDI+kuGclstDOzB
+	WqqIHffFH5w7Hi1iPz8nvXxDknd6G2MNnzis/NlvH2wJ+xUr9o6zLsi5Fl32u8pQ6CkPDo/zc30
+	Om74J6D7M6I/iZp3sSZkyuWrDsd5+ur1rLjbO52Z8+x/QQhx+DLqYY2TQEmfL2lA1ZE43WD5qKv
+	9
+X-Google-Smtp-Source: AGHT+IGjWfUdXhgZL/hXJdI9mgEh2fOX9YaRz+9pHCBuN/jVr88KABTo2oYP+8cK+POae/uJK9WdVQ==
+X-Received: by 2002:a05:6a21:3289:b0:215:df3d:d56 with SMTP id adf61e73a8af0-21621902575mr851830637.21.1747336976503;
+        Thu, 15 May 2025 12:22:56 -0700 (PDT)
+Received: from ubuntu.. ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b26eb0a0b19sm255222a12.74.2025.05.15.12.22.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 May 2025 12:21:43 -0700 (PDT)
-Date: Thu, 15 May 2025 20:21:36 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
- netdev@vger.kernel.org, linux-nvme@lists.infradead.org,
- linux-sctp@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, Daniel Borkmann <daniel@iogearbox.net>,
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Sagi Grimberg
- <sagi@grimberg.me>
-Subject: Re: [PATCH net-next 00/10] net: faster and simpler CRC32C
- computation
-Message-ID: <20250515202136.32b4f456@pumpkin>
-In-Reply-To: <20250511230750.GA87326@sol>
-References: <20250511004110.145171-1-ebiggers@kernel.org>
-	<b9b0f188-d873-43ff-b1e1-259e2afdda6c@lunn.ch>
-	<20250511172929.GA1239@sol>
-	<fe9fdf65-8eb1-4e33-88ce-4856a10364b2@lunn.ch>
-	<CAMj1kXFSm9-5+uBoF3mBbZKRU6wK9jmmyh=L538FoGvZ1XVShQ@mail.gmail.com>
-	<20250511230750.GA87326@sol>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Thu, 15 May 2025 12:22:55 -0700 (PDT)
+From: Ronak Doshi <ronak.doshi@broadcom.com>
+To: netdev@vger.kernel.org
+Cc: Ronak Doshi <ronak.doshi@broadcom.com>,
+	stable@vger.kernel.org,
+	Guolin Yang <guolin.yang@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ronghua Zhang <ronghua@vmware.com>,
+	Shreyas Bhatewara <sbhatewara@vmware.com>,
+	Bhavesh Davda <bhavesh@vmware.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net v2] vmxnet3: update MTU after device quiesce
+Date: Thu, 15 May 2025 19:04:56 +0000
+Message-ID: <20250515190457.8597-1-ronak.doshi@broadcom.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sun, 11 May 2025 16:07:50 -0700
-Eric Biggers <ebiggers@kernel.org> wrote:
+Currently, when device mtu is updated, vmxnet3 updates netdev mtu, quiesces
+the device and then reactivates it for the ESXi to know about the new mtu.
+So, technically the OS stack can start using the new mtu before ESXi knows
+about the new mtu.
 
-> On Sun, May 11, 2025 at 11:45:14PM +0200, Ard Biesheuvel wrote:
-> > On Sun, 11 May 2025 at 23:22, Andrew Lunn <andrew@lunn.ch> wrote:  
-> > >
-> > > On Sun, May 11, 2025 at 10:29:29AM -0700, Eric Biggers wrote:  
-> > > > On Sun, May 11, 2025 at 06:30:25PM +0200, Andrew Lunn wrote:  
-> > > > > On Sat, May 10, 2025 at 05:41:00PM -0700, Eric Biggers wrote:  
-> > > > > > Update networking code that computes the CRC32C of packets to just call
-> > > > > > crc32c() without unnecessary abstraction layers.  The result is faster
-> > > > > > and simpler code.  
-> > > > >
-> > > > > Hi Eric
-> > > > >
-> > > > > Do you have some benchmarks for these changes?
-> > > > >
-> > > > >     Andrew  
-> > > >
-> > > > Do you want benchmarks that show that removing the indirect calls makes things
-> > > > faster?  I think that should be fairly self-evident by now after dealing with
-> > > > retpoline for years, but I can provide more details if you need them.  
-> > >
-> > > I was think more like iperf before/after? Show the CPU load has gone
-> > > down without the bandwidth also going down.
-> > >
-> > > Eric Dumazet has a T-Shirt with a commit message on the back which
-> > > increased network performance by X%. At the moment, there is nothing
-> > > T-Shirt quotable here.
-> > >  
-> > 
-> > I think that removing layers of redundant code to ultimately call the
-> > same core CRC-32 implementation is a rather obvious win, especially
-> > when indirect calls are involved. The diffstat speaks for itself, so
-> > maybe you can print that on a T-shirt.  
-> 
-> Agreed with Ard.  I did try doing some SCTP benchmarks with iperf3 earlier, but
-> they were very noisy and the CRC32C checksumming seemed to be lost in the noise.
-> There probably are some tricks to running reliable networking benchmarks; I'm
-> not a networking developer.  Regardless, this series is a clear win for the
-> CRC32C code, both from a simplicity and performance perspective.  It also fixes
-> the kconfig dependency issues.  That should be good enough, IMO.
-> 
-> In case it's helpful, here are some microbenchmarks of __skb_checksum (old) vs
-> skb_crc32c (new):
-> 
->     Linear sk_buffs
-> 
->         Length in bytes    __skb_checksum cycles    skb_crc32c cycles
->         ===============    =====================    =================
->                      64                       43                   18
->                    1420                      204                  161
->                   16384                     1735                 1642
-> 
->     Nonlinear sk_buffs (even split between head and one fragment)
-> 
->         Length in bytes    __skb_checksum cycles    skb_crc32c cycles
->         ===============    =====================    =================
->                      64                      579                   22
->                    1420                     1506                  194
->                   16384                     4365                 1682
-> 
-> So 1420-byte linear buffers (roughly the most common case) is 21% faster,
+This can lead to issues for TSO packets which use mss as per the new mtu
+configured. This patch fixes this issue by moving the mtu write after
+device quiesce.
 
-1420 bytes is unlikely to be the most common case - at least for some users.
-SCTP is message oriented so the checksum is over a 'user message'.
-A non-uncommon use is carrying mobile network messages (eg SMS) over the IP
-network (instead of TDM links).
-In that case the maximum data chunk size (what is being checksummed) is limited
-to not much over 256 bytes - and a lot of data chunks will be smaller.
-The actual difficulty is getting multiple data chunks into a single ethernet
-packet without adding significant delays.
+Cc: stable@vger.kernel.org
+Fixes: d1a890fa37f2 ("net: VMware virtual Ethernet NIC driver: vmxnet3")
+Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
+Acked-by: Guolin Yang <guolin.yang@broadcom.com>
+Changes v1-> v2:
+  Moved MTU write after destroy of rx rings
+---
+ drivers/net/vmxnet3/vmxnet3_drv.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-But the changes definitely improve things.
-
-	David
-
-
-> but other cases range from 5% to 2500% faster.  This was on an AMD Zen 5 processor,
-> where the kernel defaults to using IBRS instead of retpoline; I understand that
-> an even larger improvement may be seen when retpoline is enabled.
-> 
-> But again this is just the CRC32C checksumming performance.  I'm not claiming
-> measurable improvements to overall SCTP (or NVME-TLS) latency or throughput,
-> though it's possible that there are.
-> 
-> - Eric
-> 
+diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
+index 3df6aabc7e33..c676979c7ab9 100644
+--- a/drivers/net/vmxnet3/vmxnet3_drv.c
++++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+@@ -3607,8 +3607,6 @@ vmxnet3_change_mtu(struct net_device *netdev, int new_mtu)
+ 	struct vmxnet3_adapter *adapter = netdev_priv(netdev);
+ 	int err = 0;
+ 
+-	WRITE_ONCE(netdev->mtu, new_mtu);
+-
+ 	/*
+ 	 * Reset_work may be in the middle of resetting the device, wait for its
+ 	 * completion.
+@@ -3622,6 +3620,7 @@ vmxnet3_change_mtu(struct net_device *netdev, int new_mtu)
+ 
+ 		/* we need to re-create the rx queue based on the new mtu */
+ 		vmxnet3_rq_destroy_all(adapter);
++		WRITE_ONCE(netdev->mtu, new_mtu);
+ 		vmxnet3_adjust_rx_ring_size(adapter);
+ 		err = vmxnet3_rq_create_all(adapter);
+ 		if (err) {
+@@ -3638,6 +3637,8 @@ vmxnet3_change_mtu(struct net_device *netdev, int new_mtu)
+ 				   "Closing it\n", err);
+ 			goto out;
+ 		}
++	} else {
++		WRITE_ONCE(netdev->mtu, new_mtu);
+ 	}
+ 
+ out:
+-- 
+2.45.2
 
