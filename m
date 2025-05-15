@@ -1,205 +1,105 @@
-Received: from mail.hallyn.com (mail.hallyn.com [178.63.66.53])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8ADF64A98;
-	Thu, 15 May 2025 13:36:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.63.66.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737A672627;
+	Thu, 15 May 2025 13:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747316176; cv=none; b=j9BkSsarfdKCWqJDV26HRLwH2NycMQHUdDRKlUU3amACkb7lIjWJxGObPxNsbbpU184eXVbPGlNDbYwtZ7b58t5DigVJEigFmF8pDswtWiOTQ7ckz+HdAdDC5Kd0vOsqQfPuQeHHlD5UBm1iGakrqq7f1khX7pa3Sx4ywe6QLKQ=
+	t=1747316415; cv=none; b=svqhlDMv1kMPq1wCSGajLXsFKS7oWCpcpKQ7jrVTcZhE9x0QAotgyeIZ/eHMFzOYi6cKK0cBFcWISUbqiGlTks/xNMYkKoowGkYwQ/Dr/xefovsxTE3GdP5e5Ow+bkAwjZHicH1HKUSWY7JZXnnrRTcNEsql9izG1yWkkZ3xhmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747316176; c=relaxed/simple;
-	bh=xaDmKt3RfeiiCoNmS8bhgDEBGsYhQ0B0xi9U4HGaC6A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hnp8L7KOSbeVit/ix3ITEG1VCTJ3xUxMtIPcwMYvm9vFQMRTvgzb7SC1E4Lm5mClnOJJ1FwvAetWOC9o/Tcq5Q3TLoy8TBxbcInapDNhKSio/ziv+P9vi35C91Y7tnMleJlyMKEClziF5IiARAw+RVI59DpIIpTAyJzSTIndgf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hallyn.com; spf=pass smtp.mailfrom=mail.hallyn.com; arc=none smtp.client-ip=178.63.66.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hallyn.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.hallyn.com
-Received: by mail.hallyn.com (Postfix, from userid 1001)
-	id 431CB8BF; Thu, 15 May 2025 08:36:06 -0500 (CDT)
-Date: Thu, 15 May 2025 08:36:06 -0500
-From: "Serge E. Hallyn" <serge@hallyn.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>, Oleg Nesterov <oleg@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Daan De Meyer <daan.j.demeyer@gmail.com>,
-	David Rheinsberg <david@readahead.eu>,
-	Jakub Kicinski <kuba@kernel.org>, Jan Kara <jack@suse.cz>,
-	Lennart Poettering <lennart@poettering.net>,
-	Luca Boccassi <bluca@debian.org>, Mike Yuan <me@yhndnzj.com>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	Zbigniew =?utf-8?Q?J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>
-Subject: Re: [PATCH v7 1/9] coredump: massage format_corname()
-Message-ID: <20250515133606.GA740869@mail.hallyn.com>
-References: <20250515-work-coredump-socket-v7-0-0a1329496c31@kernel.org>
- <20250515-work-coredump-socket-v7-1-0a1329496c31@kernel.org>
+	s=arc-20240116; t=1747316415; c=relaxed/simple;
+	bh=sfdZjbewTMVNDoBJL5YoyIK2t0DemT88eUZ1JLMuztc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=FKmYggi+BtxVE9gPG8MuZCGDwYWDeXnLT22wM97ZMm0mzvHacmiIz1mdsWk87WRk3RirNes8AXS5ZJfIlFoQTrX7+ZPY3Cdb9IruMhuHNuNRCDQDsNZDXQnpm16YpJsyPNj0Aefq5+ukjE0gyMl4NXkZFVi1qJ1wo1BmJ2U6GI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K5pghWdT; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K5pghWdT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D80F5C4CEE7;
+	Thu, 15 May 2025 13:40:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747316413;
+	bh=sfdZjbewTMVNDoBJL5YoyIK2t0DemT88eUZ1JLMuztc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=K5pghWdTQar9e1XkR2CkizFk1jmHNrijTwo6Wl5L5G/BsqhqqZpNva3zaZp07S0lg
+	 76hazJQweNSnlPGGMkrsAwjQFgFWEtOmfvFKK4+U0Ps0TzyIAAVVtc3slMwfLT7UpQ
+	 i/xvama2nVcsZSKc7mc9mFmq+NbghyBWu72shGaGxcpmxhJgNVivTffAd9MwrCTAmL
+	 QkqKjXEKnlGiFw01di0rJaWdFcyTn0VkQZHxkEI0KGY3pqHlmpwvC3I9dWrY7Q0Twz
+	 DkV2WIaRfdzJuaX4X8+XX9a9rJqkK5ceCn6bHcj6aQBYr5Uzo32cdV90hoMuITxbWU
+	 bApFlXwBzxccA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3425E3806659;
+	Thu, 15 May 2025 13:40:52 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250515-work-coredump-socket-v7-1-0a1329496c31@kernel.org>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v4 00/15] net: Cover more per-CPU storage with local
+ nested BH locking
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174731645065.3113565.10520070956038071992.git-patchwork-notify@kernel.org>
+Date: Thu, 15 May 2025 13:40:50 +0000
+References: <20250512092736.229935-1-bigeasy@linutronix.de>
+In-Reply-To: <20250512092736.229935-1-bigeasy@linutronix.de>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: netdev@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, tglx@linutronix.de
 
-On Thu, May 15, 2025 at 12:03:34AM +0200, Christian Brauner wrote:
-> We're going to extend the coredump code in follow-up patches.
-> Clean it up so we can do this more easily.
-> 
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
+Hello:
 
-Not my wheelhouse, but this is a nice cleanup.
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Acked-by: Serge Hallyn <serge@hallyn.com>
+On Mon, 12 May 2025 11:27:21 +0200 you wrote:
+> I was looking at the build-time defined per-CPU variables in net/ and
+> added the needed local-BH-locks in order to be able to remove the
+> current per-CPU lock in local_bh_disable() on PREMPT_RT.
+> 
+> The work is not yet complete, I just wanted to post what I have so far
+> instead of sitting on it.
+> 
+> [...]
 
-> ---
->  fs/coredump.c | 41 ++++++++++++++++++++++++-----------------
->  1 file changed, 24 insertions(+), 17 deletions(-)
-> 
-> diff --git a/fs/coredump.c b/fs/coredump.c
-> index d740a0411266..368751d98781 100644
-> --- a/fs/coredump.c
-> +++ b/fs/coredump.c
-> @@ -76,9 +76,15 @@ static char core_pattern[CORENAME_MAX_SIZE] = "core";
->  static int core_name_size = CORENAME_MAX_SIZE;
->  unsigned int core_file_note_size_limit = CORE_FILE_NOTE_SIZE_DEFAULT;
->  
-> +enum coredump_type_t {
-> +	COREDUMP_FILE = 1,
-> +	COREDUMP_PIPE = 2,
-> +};
-> +
->  struct core_name {
->  	char *corename;
->  	int used, size;
-> +	enum coredump_type_t core_type;
->  };
->  
->  static int expand_corename(struct core_name *cn, int size)
-> @@ -218,18 +224,21 @@ static int format_corename(struct core_name *cn, struct coredump_params *cprm,
->  {
->  	const struct cred *cred = current_cred();
->  	const char *pat_ptr = core_pattern;
-> -	int ispipe = (*pat_ptr == '|');
->  	bool was_space = false;
->  	int pid_in_pattern = 0;
->  	int err = 0;
->  
->  	cn->used = 0;
->  	cn->corename = NULL;
-> +	if (*pat_ptr == '|')
-> +		cn->core_type = COREDUMP_PIPE;
-> +	else
-> +		cn->core_type = COREDUMP_FILE;
->  	if (expand_corename(cn, core_name_size))
->  		return -ENOMEM;
->  	cn->corename[0] = '\0';
->  
-> -	if (ispipe) {
-> +	if (cn->core_type == COREDUMP_PIPE) {
->  		int argvs = sizeof(core_pattern) / 2;
->  		(*argv) = kmalloc_array(argvs, sizeof(**argv), GFP_KERNEL);
->  		if (!(*argv))
-> @@ -247,7 +256,7 @@ static int format_corename(struct core_name *cn, struct coredump_params *cprm,
->  		 * Split on spaces before doing template expansion so that
->  		 * %e and %E don't get split if they have spaces in them
->  		 */
-> -		if (ispipe) {
-> +		if (cn->core_type == COREDUMP_PIPE) {
->  			if (isspace(*pat_ptr)) {
->  				if (cn->used != 0)
->  					was_space = true;
-> @@ -353,7 +362,7 @@ static int format_corename(struct core_name *cn, struct coredump_params *cprm,
->  				 * Installing a pidfd only makes sense if
->  				 * we actually spawn a usermode helper.
->  				 */
-> -				if (!ispipe)
-> +				if (cn->core_type != COREDUMP_PIPE)
->  					break;
->  
->  				/*
-> @@ -384,12 +393,12 @@ static int format_corename(struct core_name *cn, struct coredump_params *cprm,
->  	 * If core_pattern does not include a %p (as is the default)
->  	 * and core_uses_pid is set, then .%pid will be appended to
->  	 * the filename. Do not do this for piped commands. */
-> -	if (!ispipe && !pid_in_pattern && core_uses_pid) {
-> +	if (!(cn->core_type == COREDUMP_PIPE) && !pid_in_pattern && core_uses_pid) {
->  		err = cn_printf(cn, ".%d", task_tgid_vnr(current));
->  		if (err)
->  			return err;
->  	}
-> -	return ispipe;
-> +	return 0;
->  }
->  
->  static int zap_process(struct signal_struct *signal, int exit_code)
-> @@ -583,7 +592,6 @@ void do_coredump(const kernel_siginfo_t *siginfo)
->  	const struct cred *old_cred;
->  	struct cred *cred;
->  	int retval = 0;
-> -	int ispipe;
->  	size_t *argv = NULL;
->  	int argc = 0;
->  	/* require nonrelative corefile path and be extra careful */
-> @@ -632,19 +640,18 @@ void do_coredump(const kernel_siginfo_t *siginfo)
->  
->  	old_cred = override_creds(cred);
->  
-> -	ispipe = format_corename(&cn, &cprm, &argv, &argc);
-> +	retval = format_corename(&cn, &cprm, &argv, &argc);
-> +	if (retval < 0) {
-> +		coredump_report_failure("format_corename failed, aborting core");
-> +		goto fail_unlock;
-> +	}
->  
-> -	if (ispipe) {
-> +	if (cn.core_type == COREDUMP_PIPE) {
->  		int argi;
->  		int dump_count;
->  		char **helper_argv;
->  		struct subprocess_info *sub_info;
->  
-> -		if (ispipe < 0) {
-> -			coredump_report_failure("format_corename failed, aborting core");
-> -			goto fail_unlock;
-> -		}
-> -
->  		if (cprm.limit == 1) {
->  			/* See umh_coredump_setup() which sets RLIMIT_CORE = 1.
->  			 *
-> @@ -695,7 +702,7 @@ void do_coredump(const kernel_siginfo_t *siginfo)
->  			coredump_report_failure("|%s pipe failed", cn.corename);
->  			goto close_fail;
->  		}
-> -	} else {
-> +	} else if (cn.core_type == COREDUMP_FILE) {
->  		struct mnt_idmap *idmap;
->  		struct inode *inode;
->  		int open_flags = O_CREAT | O_WRONLY | O_NOFOLLOW |
-> @@ -823,13 +830,13 @@ void do_coredump(const kernel_siginfo_t *siginfo)
->  		file_end_write(cprm.file);
->  		free_vma_snapshot(&cprm);
->  	}
-> -	if (ispipe && core_pipe_limit)
-> +	if ((cn.core_type == COREDUMP_PIPE) && core_pipe_limit)
->  		wait_for_dump_helpers(cprm.file);
->  close_fail:
->  	if (cprm.file)
->  		filp_close(cprm.file, NULL);
->  fail_dropcount:
-> -	if (ispipe)
-> +	if (cn.core_type == COREDUMP_PIPE)
->  		atomic_dec(&core_dump_count);
->  fail_unlock:
->  	kfree(argv);
-> 
-> -- 
-> 2.47.2
-> 
+Here is the summary with links:
+  - [net-next,v4,01/15] net: page_pool: Don't recycle into cache on PREEMPT_RT
+    https://git.kernel.org/netdev/net-next/c/32471b2f481d
+  - [net-next,v4,02/15] net: dst_cache: Use nested-BH locking for dst_cache::cache
+    https://git.kernel.org/netdev/net-next/c/c99dac52ffad
+  - [net-next,v4,03/15] ipv4/route: Use this_cpu_inc() for stats on PREEMPT_RT
+    https://git.kernel.org/netdev/net-next/c/1c0829788a6e
+  - [net-next,v4,04/15] ipv6: sr: Use nested-BH locking for hmac_storage
+    https://git.kernel.org/netdev/net-next/c/bc57eda646ce
+  - [net-next,v4,05/15] xdp: Use nested-BH locking for system_page_pool
+    https://git.kernel.org/netdev/net-next/c/b9eef3391de0
+  - [net-next,v4,06/15] xfrm: Use nested-BH locking for nat_keepalive_sk_ipv[46]
+    https://git.kernel.org/netdev/net-next/c/9c607d4b6589
+  - [net-next,v4,07/15] openvswitch: Merge three per-CPU structures into one
+    https://git.kernel.org/netdev/net-next/c/035fcdc4d240
+  - [net-next,v4,08/15] openvswitch: Use nested-BH locking for ovs_pcpu_storage
+    https://git.kernel.org/netdev/net-next/c/672318331b44
+  - [net-next,v4,09/15] openvswitch: Move ovs_frag_data_storage into the struct ovs_pcpu_storage
+    https://git.kernel.org/netdev/net-next/c/3af4cdd67f32
+  - [net-next,v4,10/15] net/sched: act_mirred: Move the recursion counter struct netdev_xmit
+    https://git.kernel.org/netdev/net-next/c/7fe70c06a182
+  - [net-next,v4,11/15] net/sched: Use nested-BH locking for sch_frag_data_storage
+    https://git.kernel.org/netdev/net-next/c/20d677d389e7
+  - [net-next,v4,12/15] mptcp: Use nested-BH locking for hmac_storage
+    https://git.kernel.org/netdev/net-next/c/82d9e6b9a0a1
+  - [net-next,v4,13/15] rds: Disable only bottom halves in rds_page_remainder_alloc()
+    https://git.kernel.org/netdev/net-next/c/aaaaa6639cf5
+  - [net-next,v4,14/15] rds: Acquire per-CPU pointer within BH disabled section
+    https://git.kernel.org/netdev/net-next/c/0af5928f358c
+  - [net-next,v4,15/15] rds: Use nested-BH locking for rds_page_remainder
+    https://git.kernel.org/netdev/net-next/c/c50d295c37f2
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
