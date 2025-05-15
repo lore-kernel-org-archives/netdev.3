@@ -1,107 +1,143 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5601297B63
-	for <netdev@vger.kernel.org>; Thu, 15 May 2025 10:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC3B2101AE;
+	Thu, 15 May 2025 10:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747306233; cv=none; b=D4htFw9Pk9FAMtpo0Rr8uaTHNZW2RGCqiE3x3tIzkQrzifMm4mUYXYzNe2/dhsHDQBtaaUwvlx8RYzYSBMBBtEkXmCj3h6G4qp8yr56TG7AM5bbcbLWHncLEe6pUncZbP+DA7VnijVUQlRT/5OBRSsonezd7TLhgBqi6y+I0eu0=
+	t=1747306239; cv=none; b=U7i1J8l1nzF4WdqLXH1XwOVcubcASGA0v1S8LRYw6l34dMjPV7VldnAevEWYOJK7MxQC3RjJyCfGFWGSv+62M0paaelEyd7MbofODskyTfUgBs5d0myiWkvqRnMPQOFzmk1Sj59V+99i4Ft5+/798Ey9o9JvqKAgR5Scrv+4O8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747306233; c=relaxed/simple;
-	bh=44yPQ2Ewq7rCnqRQFn0AxLyqSxd/bLzf7YEzRJQQrCw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qsJi+bC7Euj0IG7sLSZLHQEefi+zgJxyPLJ8HxFr4QUtWh3XQMBodxDNslHe3I9o67NOvYmnD4ypPEqDp4Hh7+wRw2N7Hu+LH4n7kts/Paf3degsyuQOAkuTN1zUU491AphMbsPUChkngHMqDAspRA2KbamV7UdE7zBBjXj6O2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FeIYlL2/; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1747306239; c=relaxed/simple;
+	bh=wT+u7zaXSan0nDn3kznsFYtD2+9D/7UMrhifMQAMXoo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d16Q381lO5AmcNVpSY5nr4YaKHMqUK72i399Z5Pml6ZtPJmkF4uzK7K5t/NyFqQOTVYDtmP4bEmVfS9OKiXiKTp53u1sF5aK5JPRke1skwKGoSg32EB+mXpOo/j5pzSqG7EARSChaKYoULgEKL5Ckxu+nJGIYiuwoOYL6zceuNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/WWEWg9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FeIYlL2/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747306232; x=1778842232;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=44yPQ2Ewq7rCnqRQFn0AxLyqSxd/bLzf7YEzRJQQrCw=;
-  b=FeIYlL2/SYCDhdDpIQt4fqjhLzj+sPLeY05a1zOC6d3poVklrlreCeoo
-   pg/10j2GUSj4BzyB7mkcTuaREWO8Y3PxKGWDGFIxxfWSbBOQMttrVDvR2
-   heDORXCwvyuSV+F2zdrEKf8BsY9yHnj/JMF9RX2NjuYjm8V1+db4YDysa
-   P1jhXbIxPR3/uA1ATfsufzC7W+6aXFVkD/pbYu1j7xJc+qg72pMzeIqUI
-   B9FwNRLaPBX2OWjzuvfOaZDIg3JeAPcJnIGcKJBU/0G09sZ0C9bH1DwmX
-   U1s8gMo23Hv+0kjSgcpKar3zCbOODK9MlMw/GSiqrKFRkETooaJKa3V7R
-   Q==;
-X-CSE-ConnectionGUID: IR4XzAKmTZu+HgVBDWDhgw==
-X-CSE-MsgGUID: BROhUQh5R22G4yb4li6kfQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="66786952"
-X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; 
-   d="scan'208";a="66786952"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 03:50:31 -0700
-X-CSE-ConnectionGUID: U7fOgo58RUihgvs8WWe3cA==
-X-CSE-MsgGUID: iNttbOASQ3ew1RFbVsKVag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; 
-   d="scan'208";a="138873879"
-Received: from enterprise.igk.intel.com ([10.102.20.175])
-  by orviesa007.jf.intel.com with ESMTP; 15 May 2025 03:50:29 -0700
-From: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	kuba@kernel.org,
-	dawid.osuchowski@linux.intel.com,
-	pmenzel@molgen.mpg.de,
-	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
-Subject: [PATCH iwl-next v4 0/2] Add link_down_events counters to ixgbe and ice drivers
-Date: Thu, 15 May 2025 12:50:08 +0200
-Message-ID: <20250515105011.1310692-1-martyna.szapar-mudlaw@linux.intel.com>
-X-Mailer: git-send-email 2.47.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/WWEWg9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E4DC4CEED;
+	Thu, 15 May 2025 10:50:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747306239;
+	bh=wT+u7zaXSan0nDn3kznsFYtD2+9D/7UMrhifMQAMXoo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E/WWEWg9UqxrG4dLl6a9cMJc4KKG036GhZZ58EHkipbDPnK77JYFgmkr0kdiU9MRi
+	 X/igkxjvUBwl1xl04pAKU9OlDiRnR55gwXmD8esvmhNLq0tXzmNbOF3zO444jXSX5d
+	 l8ZbPt9HwBNIvb7zLIaPVZ5+FCuFf+AWqIoIUNPmXVcFOCBnkhxczulcduE3KaOCTF
+	 ozolgJgDcEgzfjHjdkGwIgkxA8QQYF/+TejWC738WBLdMu/cf2HIHBS83ZeVne0/5/
+	 KQgHXkgPnD+DmCtNzbG+0Axgo0aiMvpCjfUe5u3DcrmyjsGgz1pj5+6Vi26ePQI/X4
+	 DMkFSyg0Ri/Rw==
+Date: Thu, 15 May 2025 11:50:33 +0100
+From: Simon Horman <horms@kernel.org>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: "kys@microsoft.com" <kys@microsoft.com>,
+	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"decui@microsoft.com" <decui@microsoft.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"James.Bottomley@hansenpartnership.com" <James.Bottomley@hansenpartnership.com>,
+	"martin.petersen@oracle.com" <martin.petersen@oracle.com>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH net 2/5] hv_netvsc: Use vmbus_sendpacket_mpb_desc() to
+ send VMBus messages
+Message-ID: <20250515105033.GR3339421@horms.kernel.org>
+References: <20250513000604.1396-1-mhklinux@outlook.com>
+ <20250513000604.1396-3-mhklinux@outlook.com>
+ <20250514093751.GF3339421@horms.kernel.org>
+ <SN6PR02MB4157C9EC51BEC1EBCB2B7DC5D491A@SN6PR02MB4157.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SN6PR02MB4157C9EC51BEC1EBCB2B7DC5D491A@SN6PR02MB4157.namprd02.prod.outlook.com>
 
-This series introduces link_down_events counters to the ixgbe and ice drivers.
-The counters are incremented each time the link transitions from up to down,
-allowing better diagnosis of link stability issues such as port flapping or
-unexpected link drops.
+On Wed, May 14, 2025 at 03:44:35PM +0000, Michael Kelley wrote:
+> From: Simon Horman <horms@kernel.org> Sent: Wednesday, May 14, 2025 2:38 AM
+> > 
+> > On Mon, May 12, 2025 at 05:06:01PM -0700, mhkelley58@gmail.com wrote:
+> > > From: Michael Kelley <mhklinux@outlook.com>
+> > >
+> > > netvsc currently uses vmbus_sendpacket_pagebuffer() to send VMBus
+> > > messages. This function creates a series of GPA ranges, each of which
+> > > contains a single PFN. However, if the rndis header in the VMBus
+> > > message crosses a page boundary, the netvsc protocol with the host
+> > > requires that both PFNs for the rndis header must be in a single "GPA
+> > > range" data structure, which isn't possible with
+> > > vmbus_sendpacket_pagebuffer(). As the first step in fixing this, add a
+> > > new function netvsc_build_mpb_array() to build a VMBus message with
+> > > multiple GPA ranges, each of which may contain multiple PFNs. Use
+> > > vmbus_sendpacket_mpb_desc() to send this VMBus message to the host.
+> > >
+> > > There's no functional change since higher levels of netvsc don't
+> > > maintain or propagate knowledge of contiguous PFNs. Based on its
+> > > input, netvsc_build_mpb_array() still produces a separate GPA range
+> > > for each PFN and the behavior is the same as with
+> > > vmbus_sendpacket_pagebuffer(). But the groundwork is laid for a
+> > > subsequent patch to provide the necessary grouping.
+> > >
+> > > Cc: <stable@vger.kernel.org> # 6.1.x
+> > > Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+> > > ---
+> > >  drivers/net/hyperv/netvsc.c | 50 +++++++++++++++++++++++++++++++++----
+> > >  1 file changed, 45 insertions(+), 5 deletions(-)
+> > >
+> > > diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
+> > > index d6f5b9ea3109..6d1705f87682 100644
+> > > --- a/drivers/net/hyperv/netvsc.c
+> > > +++ b/drivers/net/hyperv/netvsc.c
+> > > @@ -1055,6 +1055,42 @@ static int netvsc_dma_map(struct hv_device *hv_dev,
+> > >  	return 0;
+> > >  }
+> > >
+> > > +/* Build an "array" of mpb entries describing the data to be transferred
+> > > + * over VMBus. After the desc header fields, each "array" entry is variable
+> > > + * size, and each entry starts after the end of the previous entry. The
+> > > + * "offset" and "len" fields for each entry imply the size of the entry.
+> > > + *
+> > > + * The pfns are in HV_HYP_PAGE_SIZE, because all communication with Hyper-V
+> > > + * uses that granularity, even if the system page size of the guest is larger.
+> > > + * Each entry in the input "pb" array must describe a contiguous range of
+> > > + * guest physical memory so that the pfns are sequential if the range crosses
+> > > + * a page boundary. The offset field must be < HV_HYP_PAGE_SIZE.
+> > 
+> > Hi Michael,
+> > 
+> > Is there a guarantee that this constraint is met. And moreover, is there a
+> > guarantee that all of the entries will fit in desc? I am slightly concerned
+> > that there may be an overrun lurking here.
+> > 
+> 
+> It is indeed up to the caller to ensure that the pb array is properly
+> constructed. netvsc_build_mpb_array() doesn't do additional validation.
+> There are only two sources of the pb array, both of which do the right
+> thing, so additional validation seemed redundant.
+> 
+> An overrun is a concern, but again the callers do the right thing. As
+> described in my response to Patch 3 of the series, netvsc_xmit()
+> counts the number of pages ahead of time, and makes sure the count is
+> within the limit of the amount space allocated in the "desc" argument
+> to netvsc_build_mpb_array().
 
-The counter increments only on actual physical link-down events visible
-to the PHY. It does not increment when the user performs a software-only
-interface down/up (e.g. ip link set dev down).
-The counter does increment in cases where the interface is reinitialized
-in a way that causes a real link drop — such as eg. when attaching
-an XDP program, reconfiguring channels, or toggling certain priv-flags.
+Thanks Michael,
 
-The values are exposed via ethtool using the get_link_ext_stats() interface.
+I agree that is entirely reasonable for callers to be responsible
+correctly constructing the pb array. And that it's not necessary
+to add validation to netvsc_build_mpb_array().
 
-Example output:
-#ethtool --include-statistics <ethX>
-Settings for <ethX>:
-        [...]
-        Link Down Events: 2
+Also, based on the above, I'm satisfied that the callers are correctly
+constructing the pb array.
 
-Martyna Szapar-Mudlaw (2):
-  ice: add link_down_events statistic
-  ixgbe: add link_down_events statistic
+With the above clarified in my mind I'm now happy with this patch.
 
-v4->v3:
-only cover letter edits
-v3 -> v2:
-ixgbe patch: rebased on latest ixgbe changes; added statistic for E610
-no changes to ice driver patch 
-v2 -> v1:
-used ethtool get_link_ext_stats() interface to expose counters
-
- drivers/net/ethernet/intel/ice/ice.h             |  1 +
- drivers/net/ethernet/intel/ice/ice_ethtool.c     | 10 ++++++++++
- drivers/net/ethernet/intel/ice/ice_main.c        |  3 +++
- drivers/net/ethernet/intel/ixgbe/ixgbe.h         |  1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c |  9 +++++++++
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c    |  2 ++
- 6 files changed, 26 insertions(+)
-
--- 
-2.47.0
-
+Reviewed-by: Simon Horman <horms@kernel.org>
