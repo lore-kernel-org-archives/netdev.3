@@ -1,118 +1,63 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93ADA1C36;
-	Thu, 15 May 2025 07:02:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2387310FD;
+	Thu, 15 May 2025 07:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747292536; cv=none; b=ItBVcd+9lLpKDZCFh4CY3dC+PWr0FT/Y5VsvQTSZz/iRscqL6CBOHK2zszg4DNQtWO31C9jNU13pTYmE5n+IfeepA2hat883TEuOCToOIGMfZTuD+cFIZeJF+exJomCG8NddMooZmw2c0tjafV5uHUBfcBiuI0PFcfpghzDqS8g=
+	t=1747294171; cv=none; b=Pkyd/MBg5JyBeqDrmVJot1bI3juIqlkzgOQAKXjKaZt5atau6+VoV6lN/qP66hWnz3UDtWb2BFdtSTiqjHaOUGoiDT3jao2o7sy9RD46QHkkYTd/vs45LGqW6kPeZFMsDvXqmaZPu9iINhIczNbgvj8pygBuLiE/Qk/1eFgYr1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747292536; c=relaxed/simple;
-	bh=jscU0ocsacVXZvYxqXAwNblzhf6Di0ig1Ic+fxc21mM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AE5MzdIrpZ91urHyOjz5MODdCa331OFDboDiaKhh5av/DtGbMWxIIKhkUZWDY/QgNPKjyGrFFnt8r7KVxk+LumQPfe1c66keLrzf4jpvWMvh0Yov07pumGJeJ9ftezCJFFxpLam/0iYbph5rSMDjbIe8oS8NK8e9DBj8eKX8pcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SDXeYj5G; arc=none smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747294171; c=relaxed/simple;
+	bh=8S4//SS94aP1NtYNL6eqkDynPtiXbxJWNGCHYzi1LBo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XaUEZ8OpJ4bUC7Qmfx+PsndbgXJL8gAZGU2+ueSzQLWiSDNhUg0UP7tYmVT1UR5erajPVT2+bpB0P1FqZ+t+0KpZKaQ4W0b1LOOpaROVFuVvFLofNdPkgX7HONZaesWW2LhFgxjGe7TMU+HgzSIORKMPyeOCEZbQDNVjLOSEe24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmoydwrd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SDXeYj5G"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-70a32708b4eso4209647b3.3;
-        Thu, 15 May 2025 00:02:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747292533; x=1747897333; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ev23EJpUhfpuaTDvzV5dAzqSiBl4iuITpugYgy4/wT0=;
-        b=SDXeYj5G2rgvBA9Rj2xBZhT/Cft3gfGhuJj32/2+/AleQArddwO/05jF9f94MGMWbC
-         VzCU3vIGFY6bmZOS0m7QGwntP26KlE+xB6Kq4eeriVVcSw1Q3aS9VapACLE7q60SvbmX
-         GReo4tRwv1Bw/MK/rY7GX/xODnFnHocMep48V0roqI0fyqYap3fGlZPuK8NeIcOsWTl7
-         7pbeRYUe6zUXZ3VLkdbfkYoGEEp8kTWUaRHJ4SNioZ/PSGO6Xb6AI07vUhemnp931Rgm
-         Z6Eu0bJAsdBcnf/3JWhJWlbRoOgBm0kEnRTXsa0IUiN/IdOYxt9aCA9J+PwIbZNovjtn
-         GdTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747292533; x=1747897333;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ev23EJpUhfpuaTDvzV5dAzqSiBl4iuITpugYgy4/wT0=;
-        b=jOXz0TI6qyI04nMuNs7RgQBGKgAzVeJQEhxJXg0uGmjcMmPZf7uvHEW7dBZlXngjU+
-         efrFTqPcmFK0L5Pw5TOV5WCDlrMqVXWkq02tEerBytw8VUlnCvMdXTo5QRsGXl7UAYkC
-         G88qkaQNxKq2Wr2wodFrkgFOW/1uWzhFgAm7Gr5RCEy+3swVjmpwwoXIY+HIgv0Tw4ex
-         GlJKCNSJoB2OWJAIahzb/x7AlDEwYV0ysEWdKOmOfmXexoNpz6e91O3wUlmU+NaclX3x
-         EeRqRGrvFa7PKDQzjjrEEfFAEjyfzA142CmLlCtAvk4MlKzrlQuGI9Lt51gwws952bma
-         aH5w==
-X-Forwarded-Encrypted: i=1; AJvYcCVst3UUsjdc7dIWEbdfak9Cm/9khlOzd666o3o1wCUTYB4dhoQchompC9Mk2GWZmYmB2Qz4DcT8xOHedjw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOhIX8aGhM0w6c46du5NPBgZA/9RMZzCPe35Ev9Qg9Z7mMuzd2
-	f8M0IeDyFKA2iWXg5iWSebhZ4LYaKH7yRAGJ+OVTz0Y3hgu6ffhdK1X6snjp1EZAgVUdAb5s30n
-	8iTcGF1o0AmPNcLPhqEYrT8ERNhM=
-X-Gm-Gg: ASbGncuC9DGoNOjMY6dNyaFRWXo6YC02AKTdQcazKDU4jJXWscYUZJ8L8IXs8egpDmS
-	76R1ZwmRHM+YmtG6EcvYTz3tCImiFAbhX7vGxqoasnbYhCrbk29Q4UHw9slR5h5hsGKrkCVqW53
-	SQUBPM2OZw1MuenOM18I0XS+nQ8DRj2zj9
-X-Google-Smtp-Source: AGHT+IGlJBExoNVm21b9koa1j40kjuKuqyYlVovJnnJ3hJaaoqYhDVpnG4Dg8bMA9y15TzfUwk/MD13Ttqh9gX+VPb0=
-X-Received: by 2002:a05:690c:6a03:b0:705:5fde:1b82 with SMTP id
- 00721157ae682-70c7f13926bmr88913207b3.13.1747292533304; Thu, 15 May 2025
- 00:02:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmoydwrd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B1DC4CEE7;
+	Thu, 15 May 2025 07:29:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747294170;
+	bh=8S4//SS94aP1NtYNL6eqkDynPtiXbxJWNGCHYzi1LBo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mmoydwrdXlPv2WN5WdafzZHAk03wcsQ7VRjT2fZP89+E7N0XZQ1WYr8+nLGeOvsyW
+	 SUIdLbAxZYTEK1wL7w/mI5kk+sMjBv8Sa7MnQUpsU+4sqVwM57Ym3w+OA8sqSGaIq2
+	 v5GzO789n5ZgZ01BsiIWlXfisnTCycHR4gP9NTOxZDW/GVu5mE8cMGYK/BOzwxKs3e
+	 KnzZ8Uosxkzw3UmRa0o/n7Zyi6ggCHZQDgjrwKSyxTkMvxRKQ6lPpnpo1vgxGZoFP0
+	 /yx5c3ZxcNJzPyLaqTC/oW1VPWDCbTnc3eiSESxOhiHvlhQzyYlNF3dj6c6UF0NMg0
+	 CAmL423Q79gzQ==
+Date: Thu, 15 May 2025 08:29:26 +0100
+From: Simon Horman <horms@kernel.org>
+To: Zak Kemble <zakkemble@gmail.com>
+Cc: Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] net: bcmgenet: tidy up stats, expose more stats in
+ ethtool
+Message-ID: <20250515072926.GP3339421@horms.kernel.org>
+References: <20250512101521.1350-1-zakkemble@gmail.com>
+ <20250513094501.GX3339421@horms.kernel.org>
+ <CAA+QEuT0tPd0Qxjy0LP2zXhRhAe_bRv5omFPaFdbHVzoBAO-Yw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250512191901.73823-1-stefano.radaelli21@gmail.com>
- <20250514173511.158088-1-stefano.radaelli21@gmail.com> <4c64695a-fb98-4b77-a886-3a056e6b229f@lunn.ch>
- <CAK+owoid1woDTiCxcGiEmdvKNHJeCnaKBjPEHyNrtHt_hKqi9g@mail.gmail.com> <d994cff7-e960-41fa-9ce6-c35cee3a2560@lunn.ch>
-In-Reply-To: <d994cff7-e960-41fa-9ce6-c35cee3a2560@lunn.ch>
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Date: Thu, 15 May 2025 09:02:02 +0200
-X-Gm-Features: AX0GCFtQ7P4HXzqzRxxk8WpC7jmRWlKvw0O7riLjCvHMabLK1laFi4IR6lK37b0
-Message-ID: <CAK+owojR_pRpZKJcyd-QgOBNCQo2XiVs7J7GWzEH98T_poWANw@mail.gmail.com>
-Subject: Re: [PATCH v2] net: phy: mxl-8611: add support for MaxLinear
- MxL86110/MxL86111 PHY
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Xu Liang <lxu@maxlinear.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAA+QEuT0tPd0Qxjy0LP2zXhRhAe_bRv5omFPaFdbHVzoBAO-Yw@mail.gmail.com>
 
-Hi Andrew,
+On Tue, May 13, 2025 at 08:26:47PM +0100, Zak Kemble wrote:
+> Hey Simon, sorry I'm still figuring out mailing lists lol. This v2 was
+> submitted after the kernel test bot had replied about a warning, but
+> before anyone else had a chance to reply. Latest version is here
+> https://lore.kernel.org/all/20250513144107.1989-1-zakkemble@gmail.com/
 
-Yes, I can confirm that the MXL86110 only supports copper (10/100/1000BASE-=
-T)
-over RGMII, and does not include any dual media or fiber logic.
-That definitely simplifies things.
-
-I'll go ahead and work on a revised version of the driver that supports onl=
-y
-the MXL86110 for now, addressing the issues you pointed out. The MXL86111
-support can then be reworked and submitted separately once it's
-cleaned up properly.
-
-I=E2=80=99ll start a new thread with the updated patchset for the MXL86110
-driver once it's ready.
-
-Thanks again for your patience,
-Stefano
-
-Il giorno gio 15 mag 2025 alle ore 01:56 Andrew Lunn <andrew@lunn.ch>
-ha scritto:
->
-> On Thu, May 15, 2025 at 12:29:48AM +0200, Stefano Radaelli wrote:
-> > Hi Andrew,
-> >
-> > Thanks again for your detailed review and suggestions,
-> > I really appreciate the time you took to go through the patch.
-> >
-> > After reviewing your feedback, I realized that most of the more complex=
- issues
-> > are specific to the MXL86111. The MXL86110 side, on the other hand, see=
-ms much
-> > closer to being ready once I address the points you raised.
->
-> I did not look too close. Does the MXL86110 not have this dual
-> Copper/Fibre setup? Removing that will make the driver a lot
-> simpler. So yes, submitting a simpler, more restricted driver is fine.
->
->         Andrew
+Thanks, and apologies for not realising that before I wrote
+my previous email.
