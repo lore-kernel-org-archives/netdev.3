@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054B318FC91
-	for <netdev@vger.kernel.org>; Thu, 15 May 2025 15:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0146818FC91;
+	Thu, 15 May 2025 15:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747322398; cv=none; b=XjKZKQcVFl4gqS2VvqmXhD7I3CVxbSpJACoBJg6teNJiAR9hGYww0LdQvLPclLcnP7V3YdWnHLHddABOCYcjlzxlgA6qfaFTBh/n3iHyxjeyixx4bnjDvUDcTiGqVXPhXPJRUrd9C170FDUrIkk9nbynsgfJ4hjicVQy6hhrT5Y=
+	t=1747322403; cv=none; b=nl5G/Dl2LE40cEDG9q4Ch07HGl3GHDq0tqHbK2nxHvsZUAGd14lm48TKsMiyDRuinHghU3gI3bjlfd35krjP7chNFwRZZKVmqjUy0VoKQW1uXVK3h/PwhrqUzxn5MHn7XvaOX6HUn4JEveH8SqH+dnUaVkaPDK4SEzRRk0Da5ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747322398; c=relaxed/simple;
-	bh=9Nlame+GCJWWbU8G0/qmmWWXfdYH8b+Fj4aXArDkj+M=;
+	s=arc-20240116; t=1747322403; c=relaxed/simple;
+	bh=SBgb0vTlu2RtuW96PAdlVVB6BgteIAVWl6pfUjNz1v8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=sHfSvL3EkkiNRhlVlrP9I7vPRHKWWZy65iZI/KZp4OTX0up8PEBH3rvSNMse8HP6w6VKeZbVsSzoZoOib4QvYgaihdRksME1R8Akii0SvdoX9Si7a4ROb89CGnZkxyxuX2qvkS5lAUgCsllWkINqXbYM8Q2T2+Hl9oGTpXCbDXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gVngZ0IV; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Tz7lg1AR1CNY8HkY5Yvp1aKAPeU8ph4nh4UXa9+kNCD1s7h04zHS//jQlNqpnZ8EZntUULymmyfmV99T8gyClNzh4ZTp+Vfgm/69vCZJb4KRFWunerfbJqa3uh3DCaKlKTafGYZ7ugHleJ9KHvGPo1ZAEpA3Fz5G9lX/aahg1Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lg/u3Pty; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gVngZ0IV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67657C4CEE7;
-	Thu, 15 May 2025 15:19:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lg/u3Pty"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696A0C4CEE7;
+	Thu, 15 May 2025 15:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747322397;
-	bh=9Nlame+GCJWWbU8G0/qmmWWXfdYH8b+Fj4aXArDkj+M=;
+	s=k20201202; t=1747322402;
+	bh=SBgb0vTlu2RtuW96PAdlVVB6BgteIAVWl6pfUjNz1v8=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=gVngZ0IVCfzpAw02elk5Hl83mcwN6i8bR+uZCbPX3okdObyADHG09v8e0Y2C3f6mH
-	 24QrKk3UWQ8f/z+JbAG0HQEjZyvNuHhDlkU3VVHUSITF4J/QwTwX8zsH1E7DemPiQB
-	 3Gnb5ECH9HX1CjA7Pzd6aycwTW8gVba7HtLdt70DyQwYr/CtMN4faQ3NZwwwIXIzE5
-	 JItJUdY4EnbNqKTGL2as16m4mQaB1i7WS3tEsKz92QUUbuOve7up9PNW6bnxuIR/mT
-	 sWe2LneFjH8KVdyurbWSaw9K8UG+osy5hZMFa6PXKM7+C1CT38ETCS6yRzGvcL21kN
-	 f+HE1XbqyaNPw==
+	b=Lg/u3PtybrRTpI6u2kIoLESoUYc/WP1G8UP5ih6JsdCP1tWeZbTPGEoOKwCmeEAU+
+	 IzvzUygvw5Ir5kTXOBE56761f+GGyy8KHqNtixosm3ZNcDv+LlcWO3W2UcCxJJ+/hW
+	 B5hubuV0m+1qNWTqnuj4bTnxyAJfGH7qRci2GiyHvI3JAdU+/YEFy7/M5gLuj0F/Xd
+	 d/23+xELdYcNW8uQ+eqFG/zN8eb6gaq1wxmdVCJ9zco1cqG+wpmyEvLWwU1lHjDfqj
+	 +3pW6XuufRDjWtjB3onUdcAoPsCm7naK76PsfpO1iW6BdDxqyVsgcoUEBiQ4OGDhFx
+	 lQosL80O9vPjA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADFF43806659;
-	Thu, 15 May 2025 15:20:35 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADFC73806659;
+	Thu, 15 May 2025 15:20:40 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,43 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v5] net: devmem: fix kernel panic when netlink socket
- close after module unload
+Subject: Re: [PATCH net-next v2] net/mlx5: Use to_delayed_work()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174732243450.3145583.9788777566787582471.git-patchwork-notify@kernel.org>
-Date: Thu, 15 May 2025 15:20:34 +0000
-References: <20250514154028.1062909-1-ap420073@gmail.com>
-In-Reply-To: <20250514154028.1062909-1-ap420073@gmail.com>
-To: Taehee Yoo <ap420073@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, horms@kernel.org, almasrymina@google.com,
- sdf@fomichev.me, netdev@vger.kernel.org, asml.silence@gmail.com,
- dw@davidwei.uk, skhawaja@google.com, kaiyuanz@google.com, jdamato@fastly.com
+ <174732243949.3145583.8227565924121305936.git-patchwork-notify@kernel.org>
+Date: Thu, 15 May 2025 15:20:39 +0000
+References: <20250514072419.2707578-1-nichen@iscas.ac.cn>
+In-Reply-To: <20250514072419.2707578-1-nichen@iscas.ac.cn>
+To: Chen Ni <nichen@iscas.ac.cn>
+Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 14 May 2025 15:40:28 +0000 you wrote:
-> Kernel panic occurs when a devmem TCP socket is closed after NIC module
-> is unloaded.
+On Wed, 14 May 2025 15:24:19 +0800 you wrote:
+> Use to_delayed_work() instead of open-coding it.
 > 
-> This is Devmem TCP unregistration scenarios. number is an order.
-> (a)netlink socket close    (b)pp destroy    (c)uninstall    result
-> 1                          2                3               OK
-> 1                          3                2               (d)Impossible
-> 2                          1                3               OK
-> 3                          1                2               (e)Kernel panic
-> 2                          3                1               (d)Impossible
-> 3                          2                1               (d)Impossible
+> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+> ---
+> Changelog:
+> 
+> v1 -> v2:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v5] net: devmem: fix kernel panic when netlink socket close after module unload
-    https://git.kernel.org/netdev/net/c/0afc44d8cdf6
+  - [net-next,v2] net/mlx5: Use to_delayed_work()
+    https://git.kernel.org/netdev/net-next/c/ee39bae6c141
 
 You are awesome, thank you!
 -- 
