@@ -1,86 +1,147 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A4241C71;
-	Thu, 15 May 2025 19:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B49E1F4163
+	for <netdev@vger.kernel.org>; Thu, 15 May 2025 19:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747335829; cv=none; b=RNscuyKEkdrWPdd+/farrOzdO5kXvg9MLp5zV16r7+o7R1BWFhuewKK7W/1owCUAqzdBw4AWGO4lvcffNxjbapuq0K8MkGsl3L/k0t8Zw9tLZ/DL03Q5E9UVQTXHzz/cLqZO0e4A9xB68Vt5tH0mq32lZGAE1cXHCaB/TjHXQEc=
+	t=1747335980; cv=none; b=GYdzqXb7Y3EUBfXPuYJSI7aqdog4DUAibLUCP5P5lE2E7LQctgmXYrbcNFMO9YmYEpgv0SYqsuN1ed3InV9rMeNCgzdPvUXjZBFC89glKDuYG92GuxpaOSboitTT1o9O79mOc0n+QO7Y+3O4rOS7t8QZoMkyKPH8rHIk4GwmaNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747335829; c=relaxed/simple;
-	bh=wxBvm7OjfjWBkUe12EQIdiIJxHTDH+GmSbrrMwMgyEE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IKul9QMaBNzLtVz8c+2D3Jyqd8acwu9fKxmy2YEBneTZR/rwZQ+1f+0dxzFCftHNIx5D6gBvs/g0fFzU95T1CNkTAHuGnTZ8I0f8T2T7GndNkcwc9L8X1ZeGg68vHwSYiqmB19+zHjBZRcRivs9tqPbEdYQqMduWc2OcxOL2xew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=RVxxMZt/; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1747335980; c=relaxed/simple;
+	bh=M7AW3p8ZT74JJJ3KmrdQfiIWxSWVMOWlF7cPjCbzcAE=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=q//3IReYLXwCVSFjSPNJZcMgxdI8EbX+mkVqIpJDzwvRQS64mHD2V2faQPZDcATcZ9Lcmn2R//Z02Qw8CzhKYP+nzgtiy2V1/a64U9P9GKyp3zovuNekbncUWf29MD8wr6iCqsrjpj19SmzKQwHW/cfW9fUHj0721/VizjqMUOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JpulemFz; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="RVxxMZt/"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=cI8chkTB8kM0EB9Q7GfinvEJJgvxV0jTW4zjn2FeB5I=; b=RVxxMZt/qb8VyfOzrOLrAm/lQY
-	UHgiY6PJi36KePgYpSh6sPNPWyd4WpLJtIU+S5+z4J4UuzSeGRI0v0GAU0AEAlypv8JIVUgnvpeFA
-	pITISUsEaO4uyioygRhf93/+T2lja8lQjD5y3wtQs4baBZ1rYPNZipfM85MviNgRnGkw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uFdrl-00Ch66-OW; Thu, 15 May 2025 21:03:37 +0200
-Date: Thu, 15 May 2025 21:03:37 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Xu Liang <lxu@maxlinear.com>
-Subject: Re: [PATCH] net: phy: add driver for MaxLinear MxL86110 PHY
-Message-ID: <63727423-9d19-40d1-b8d3-7c292529b16f@lunn.ch>
-References: <20250515184836.97605-1-stefano.radaelli21@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JpulemFz"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-47698757053so17516391cf.0
+        for <netdev@vger.kernel.org>; Thu, 15 May 2025 12:06:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747335977; x=1747940777; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=31Mc7IErSOsq6mf6wvbGz+K9R8F7D3Am2o8t05lBhj0=;
+        b=JpulemFzVluMUOhFdM2KU3r0UaLX/GWsSV/CPWbzZR4UZRnyh1OWe6ZaTrJ2fpIWi9
+         eute3JV6TqS0k4aV5agZPsLpsb2AxItQNPaBDlp6rxwO2njH9gg+Jr/Ohccn4Gbk8n8u
+         ovBEuErIph7whSm25T9ApAzb44BHd9VKeOnbxRelN0Zlxgn5Je/v8SIJc08Nl5RTQ/vz
+         W/AolrWuxQweBbLycxulBA41j9yMFCtjw6GeU4ooehQ8lSE4xl+g99kYzHk+23sQ0Jup
+         7EsPAGf7Be2KSRKsfRXJ9ue+JndEs2AkJZRvSFvzRsRVCCgmHRqnCsrHzBoSWZEP97WE
+         wRfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747335977; x=1747940777;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=31Mc7IErSOsq6mf6wvbGz+K9R8F7D3Am2o8t05lBhj0=;
+        b=D/kWFatsr4RhJEvTQXse3jIRZ/G/PRESmFL9pDgkYBvv8kcZMV76hqzcYqVvgjbpRt
+         xIf0Boo4yTE1xYQAd2KCC5xQdaCGAsbuFwMy+J58PLPNWxUo1mvpB5PDosxADP3ooAQP
+         aDoux5W/CTu9yUSWFdKU92NhMzhAa5xOAvgv8ePnf9eC9Z8z685GhSX9DNTA/ApbLhot
+         i7P1+SRlhHUwD51cseKMiIhznA58WKDkpYkUfAHHtOpVvrqyAU3ZYZ7lFSMBMJ9U12Od
+         0FWY5Qyjf72dWunR3bh3wIHDWy2VpK9ymHmaI7oChtJamQHsDmcadOj3tXF2IgKagXt8
+         NCRg==
+X-Forwarded-Encrypted: i=1; AJvYcCUMc0a0hmJdv+wu/94YJEBk/OWo9miz4+5NAerZfHJ1yvvBbamsmwBL5dUaaveXQrb4L1wRw1E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBJOexmp9NDBxEjaO82Ulf3Yyc4+I+tO9Dxvde/mu9RiFjHXBB
+	/t0X5aUuNLLASn4Phk9J9aZAtZAL/y9S4mOAPX7oYr72VsM1a77649Vc
+X-Gm-Gg: ASbGncsC4vU2lnqpOlNOjO3kuY5z2GCXledULYZrYyVGkiwt66ihTiK29rUidDDhS+M
+	Nfi/2R5Zj8L1VWNHeLMKOhYn5CYvPXldUecG1oJv6EsL17OIie+S2+w9onMusDSmdVqQVsTHr3h
+	mHJqDPVw2oQG2hTIoeXF+cHIpEFiDrZopE7GzdQ3TpOO/xfiUm9vlkmI1ZOi7Hp7HXE3KZBCn9W
+	UVE8J4s66K/oRmRNmIB0JN9hShd3722bJvkyeFUwEXp/F1QqZWvYxKPygELL2pr9PcePgIZLzbh
+	w+nCDLJDq3JtDxqAOBytbg8OUZQ94myARbr7/pbXLJm4tC4yxtsrpxaSN0jRWPAmcPg+V3FewDc
+	dlvnm0o9Q8TBt5Y70rhnktJA=
+X-Google-Smtp-Source: AGHT+IEBHhrwJzUmi9i/5NPpvCiCy/Hm8ZR+M1r5jAEuw71R/vzVohV8qDYUaRzZSLkDQsoejzB15Q==
+X-Received: by 2002:a05:622a:1c18:b0:481:3f7:f5cc with SMTP id d75a77b69052e-494ae4622dbmr6887971cf.34.1747335977027;
+        Thu, 15 May 2025 12:06:17 -0700 (PDT)
+Received: from localhost (23.67.48.34.bc.googleusercontent.com. [34.48.67.23])
+        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-494ae3f8d11sm1577071cf.18.2025.05.15.12.06.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 May 2025 12:06:16 -0700 (PDT)
+Date: Thu, 15 May 2025 15:06:16 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Willem de Bruijn <willemb@google.com>
+Cc: Simon Horman <horms@kernel.org>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Kuniyuki Iwashima <kuniyu@amazon.com>, 
+ Kuniyuki Iwashima <kuni1840@gmail.com>, 
+ netdev@vger.kernel.org
+Message-ID: <68263b2847600_25ebe52943d@willemb.c.googlers.com.notmuch>
+In-Reply-To: <20250514165226.40410-8-kuniyu@amazon.com>
+References: <20250514165226.40410-1-kuniyu@amazon.com>
+ <20250514165226.40410-8-kuniyu@amazon.com>
+Subject: Re: [PATCH v3 net-next 7/9] af_unix: Inherit sk_flags at connect().
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250515184836.97605-1-stefano.radaelli21@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-	> +static void mxl86110_get_wol(struct phy_device *phydev, struct ethtool_wolinfo *wol)
-> +{
-> +	int value;
-> +
-> +	wol->supported = WAKE_MAGIC;
-> +	wol->wolopts = 0;
-> +	value = mxl86110_locked_read_extended_reg(phydev, MXL86110_EXT_WOL_CFG_REG);
+Kuniyuki Iwashima wrote:
+> For SOCK_STREAM embryo sockets, the SO_PASS{CRED,PIDFD,SEC} options
+> are inherited from the parent listen()ing socket.
+> =
 
+> Currently, this inheritance happens at accept(), because these
+> attributes were stored in sk->sk_socket->flags and the struct socket
+> is not allocated until accept().
+> =
 
-> +static int mxl86110_led_hw_control_set(struct phy_device *phydev, u8 index,
-> +				       unsigned long rules)
-..
+> This leads to unintentional behaviour.
+> =
 
-> +	ret = mxl86110_locked_write_extended_reg(phydev, MXL86110_LED0_CFG_REG + index, val);
+> When a peer sends data to an embryo socket in the accept() queue,
+> unix_maybe_add_creds() embeds credentials into the skb, even if
+> neither the peer nor the listener has enabled these options.
+> =
 
-Why are these two special and use the _locked_ variant, when all the
-others don't?
+> If the option is enabled, the embryo socket receives the ancillary
+> data after accept().  If not, the data is silently discarded.
+> =
 
-Please think about locking, when can unlocked versions be used? When
-should they not be used?
+> This conservative approach works for SO_PASS{CRED,PIDFD,SEC}, but
+> would not for SO_PASSRIGHTS; once an SCM_RIGHTS with a hung file
+> descriptor was sent, it'd be game over.
+> =
 
-Are you testing this with CONFIG_PROVE_LOCKING enabled?
+> To avoid this, we will need to preserve SOCK_PASSRIGHTS even on embryo
+> sockets.
+> =
 
-Please also take a read of:
+> Commit aed6ecef55d7 ("af_unix: Save listener for embryo socket.")
+> made it possible to access the parent's flags in sendmsg() via
+> unix_sk(other)->listener->sk->sk_socket->flags, but this introduces
+> an unnecessary condition that is irrelevant for most sockets,
+> accept()ed sockets and clients.
+> =
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-https://docs.kernel.org/process/submitting-patches.html
+> Therefore, we moved SOCK_PASSXXX into struct sock.
+> =
 
-    Andrew
+> Let=E2=80=99s inherit sk->sk_scm_recv_flags at connect() to avoid recei=
+ving
+> SCM_RIGHTS on embryo sockets created from a parent with SO_PASSRIGHTS=3D=
+0.
+> =
 
----
-pw-bot: cr
+> Note that the parent socket is locked in connect() so we don't need
+> READ_ONCE() for sk_scm_recv_flags.
+> =
 
+> Now, we can remove !other->sk_socket check in unix_maybe_add_creds()
+> to avoid slow SOCK_PASS{CRED,PIDFD} handling for embryo sockets
+> created from a parent with SO_PASS{CRED,PIDFD}=3D0.
+> =
 
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+
+Reviewed-by: Willem de Bruijn <willemb@google.com>
