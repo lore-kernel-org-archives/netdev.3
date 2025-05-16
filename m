@@ -1,190 +1,121 @@
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8CD1F956;
-	Fri, 16 May 2025 20:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E1F1A704B
+	for <netdev@vger.kernel.org>; Fri, 16 May 2025 20:35:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747426921; cv=none; b=DNzQkE+eTqfOxzRdsWEwY2zMV+FjN+r44k3xvJi5VJT18eELPdr3qOmp5g6V6sCdDXLbx+nylSb2Kb2WwXiGlkTRcXZctBxCZjThzpMMs70HjLg5Tps//Hdg6mfkP/kXFPgZYxQPOk+64e7ooDmAvh5NyKiClXuIRjpsV1yESRM=
+	t=1747427720; cv=none; b=TwxaMSEb4P3I+3NxYMExp4Ik8ZvYqhsp1HvMnKUTS+VckLQSsTAxmfg5ocBqqZHcGH52nXBg6/6mSfHskMS4CLyU9Uiktf+79KK8Ohmzb3s9C/v5naq12lMyEPoHDrQNsVTzyn9ZW0h5EXeGmYHcQ9L1pmRoJCXZsK8OXCgxZjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747426921; c=relaxed/simple;
-	bh=WJ8YeNryCSzH6Ui7JodUwBz580NMCQQnGARlq4uKk3A=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=C+gkwjxo5q67jeqoJ+2o/ePebzzOks//Ii8Qi+KMcCN1Z66fgzsgrcyn/zCaKVPS8f1d9yjWkCZHCay/kmRXE7j/RH0T4suIHQ5kSBsBhPJ++cmXTU7/6f2IQQdT37vggqQB0rgw2inAhnii5B+kNOIKosg4godSD6XOj6cKUTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dxuuu.xyz; spf=pass smtp.mailfrom=dxuuu.xyz; dkim=pass (2048-bit key) header.d=dxuuu.xyz header.i=@dxuuu.xyz header.b=K71XVToF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eJpqsqXy; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dxuuu.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dxuuu.xyz
+	s=arc-20240116; t=1747427720; c=relaxed/simple;
+	bh=fP8E9v3zJ+APJASBeiAwRmZRScRfbVU7Qi3sCSrOeSI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=quMkSPwgZuNl5cPwJ8PLvbPcdzTG96uNhPzg/N2HHlSwqfTrB1S8XaJF8fm9m0Q8WnbAvqMeTfpb/fsE7PeSBaFBiA9KJdY0x9BzZBpwDPPwE8ICPs8QAlTiL4ggsEKiQIPCScHCnj04RxTq1FWA89ReJYYbg6HQjAIeLyuTcH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=htM/sldH; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dxuuu.xyz header.i=@dxuuu.xyz header.b="K71XVToF";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eJpqsqXy"
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id EEB91254008E;
-	Fri, 16 May 2025 16:21:56 -0400 (EDT)
-Received: from phl-imap-18 ([10.202.2.89])
-  by phl-compute-02.internal (MEProxy); Fri, 16 May 2025 16:21:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dxuuu.xyz; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1747426916;
-	 x=1747513316; bh=y44ryEmBs0W7W6qyiyoOfpaV4DqfaTmIbApjfW/mYM4=; b=
-	K71XVToFZ+lNvc97Hv4dRpzHpSvQEeA9s01ftjVew3BUAr5HB05Mj2o/jfYGqG+D
-	I0YJhhFCkc93E1TUGG8NAjxOzHMMz5a0sKkWLrlLGPwAwZnO4IoXpgbU9mUVmXQd
-	7Q7Llah3hpZ9UokDeCCeBQva7ycBiY/GBMNlRWiv+B9AeSUvb8qEk1ZyT6gRFE9z
-	qW93xZEI5e7Okjav8cHCdvnx+woJStrT9kmcPtLedxTkqFutSt16sGWEijKjq/5J
-	kFZSZz3IVu8H6kLEBGbhokjOhdrSy5jIQ34sPd5SmU+SGayhxylyXGGRjiC2NTl5
-	TLLUEpYjgxd/zKWxu1Ekqw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1747426916; x=
-	1747513316; bh=y44ryEmBs0W7W6qyiyoOfpaV4DqfaTmIbApjfW/mYM4=; b=e
-	JpqsqXyYO7gl5h1LsZIUbERsbuJFQ2X33y9639xXEcWOy/plyN2HkFLsmlRdtYEf
-	BDb6groc7LbH2KDJ9ZPWHJHhR7muvUZTPjchbvZY6ihnJbhfM0aGLqa7ALcim1Ax
-	aQPGhZJhiZv8mKLBUEp8Fhc6U9y09KZHApSKPx2sGwPH91Gv0TNMURZNZKG7x4R8
-	tzh2PvjSvdYgIJKRR7zxF26Ri+pronfZJeoZHjwykFmLbaUDP7gOSkmVrkd/nWgG
-	/l9BJxkibdZIX/SfvEw2mHNnWXLdL4UrqN819GgZzPYEuRZNEtLoFRXLKZSCgQVy
-	ppSEGr1N7MQrylXyhWnhw==
-X-ME-Sender: <xms:ZJ4naLz6SsDPHUSQaXvY4MO5W65DLJ4OmwD9SFR1hRQYZ13VCYzuVA>
-    <xme:ZJ4naDTGd7Ij93sx8RgKlxtgArHv8jvHi9U3eFV5tMfdK0LKlYu3Omg_ZIFGZb6FE
-    akNRPtp1NG262c57Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefudefieelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnegfrhhlucfvnfffucdlfeehmdenucfjughrpefoggffhffv
-    vefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdffrghnihgvlhcuighufdcuoe
-    gugihusegugihuuhhurdighiiiqeenucggtffrrghtthgvrhhnpeeikeduveeiffekveff
-    ieehhfdtffdtveetjeefieevveffveevudetkeffffelleenucffohhmrghinhepghhith
-    hhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
-    rhhomhepugiguhesugiguhhuuhdrgiihiidpnhgspghrtghpthhtohepuddvpdhmohguvg
-    epshhmthhpohhuthdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvght
-    pdhrtghpthhtohepfihilhhlvghmuggvsghruhhijhhnrdhkvghrnhgvlhesghhmrghilh
-    drtghomhdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghp
-    thhtohepjhgrtghosgdrvgdrkhgvlhhlvghrsehinhhtvghlrdgtohhmpdhrtghpthhtoh
-    epkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfieslhhunhhn
-    rdgthhdprhgtphhtthhopehjrghsohifrghnghesrhgvughhrghtrdgtohhmpdhrtghpth
-    htohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopegsphhfsehvghgv
-    rhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:ZJ4naFV0YmCUp-GHpwcdw6IsNTGk25FvYh5ugH6wBJfmu36HQcyNzg>
-    <xmx:ZJ4naFhSr7eZfttx0vcc0aqo-fZyMFnUthtWMo032DOM1gI3AS3MrQ>
-    <xmx:ZJ4naNDjBC80VuaxlnnXZSeUoe-aTDtRXzwA0a8QeZe0eMQXONtJXQ>
-    <xmx:ZJ4naOJ7aE58bMNwAfQHkgLMHxoWGlj_RG0rEHDiBvjg29sZfoWE5g>
-    <xmx:ZJ4naKqm8cnYibMvIdFvcYUJVpYjB1UujfMKiakolMEaPLpft0A_7Tc_>
-Feedback-ID: i6a694271:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id E6D9115C006D; Fri, 16 May 2025 16:21:55 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="htM/sldH"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-550edba125bso731197e87.3
+        for <netdev@vger.kernel.org>; Fri, 16 May 2025 13:35:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747427713; x=1748032513; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yxLxKPAkFRNTV46MhihIDPqFiSaNfOKTtn1tMu7HPrY=;
+        b=htM/sldHuj8YjLeBH1UOzFP/ddOYptFMkjT9wuLWNZyz3cCOrJHHVu8UDSAqNCDDo3
+         F0KM8PZvtOfxU5ssnM/a6vjELrTst3JJIh7nyV614QjtizCKet4YElyk4YUEgomdBdj7
+         GsbI/voi++Lln4FKbs/mQw4mU85+7wLQr1uR7H7ffnlMjSrQPqSfRL/t0cFCL+cPKD5v
+         iuhN/b1EM3qO+FtY5gJXcdRVCtXWEZigDq8FigWaaFMtAUXsv2S9AbVcek4fsz4hqAdS
+         iAulIvdq2d9TdEv27hqu+LQp9zLTZcRKj5Q1TAAb0qF17V4Gz4pOHqU7PVE8lR9NgyPV
+         y1Fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747427713; x=1748032513;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yxLxKPAkFRNTV46MhihIDPqFiSaNfOKTtn1tMu7HPrY=;
+        b=WcOVhLf4lR3ReimrkT8TCsWbv9OYqlEjeR56oKmCttjHG5NU/IE3ulZKEGYiby6BTv
+         i38MyjZTktHkhvG5uB+QeuIhh48hcjoRA6iOe0k1IHxik1TUr8gKeT39GnOGXiPYY2cz
+         5H2KE8CW+22yWw4ISr5hvC91JyHdHwaxfhI6Sl+JUP0Rx5mzbTSybKvPD6DmUWWnFnEv
+         QrSsZWByXxFeYq9VAQi93Z8vSu8xY3ECgFvg02ZdANVf8fTafb9yZkDm5hYvXnTiiebg
+         U3G7+CgyhG0B7zr5WzUM1ogVijoW1+0sc2Ed6hQFWRKxxHcJ34tDILKg8OYrGY7eI8SF
+         XulA==
+X-Gm-Message-State: AOJu0YwDz+nEj2i/OX/vI8wM+w512Pm3kgvE3S9FDlb+P9oyvLBp+mJU
+	H3csE8c0/5wXryGAk9uwflxHF/lhuSEePe89OJtoldlSHWsqiqY+i5FI8cR06S5G
+X-Gm-Gg: ASbGncs96Gb5ukE7QrdncDj0aRm+1MGJz4S0Kda0F7zCNcf5KLKkglCSDF9gqZYR7rr
+	CNqBRr24MpJS7DOO86iDZ8JT4QwbPLPUNi4QJNq8sN/bDkWrxjEQOgxh5ofMzBsbOmt5hbqzM0X
+	gpAQzlTFyYXTr5tpoJuhTPGhMGJwqZcygY19k9iPJlH5sZK4yn3VW6vedQKz5TnPH297jG8N6dM
+	auBdTgX1nlzm/msqArq0gW+FQ8Mkfp2s8YE5HC6WpuwRwqKKF2Q+kAj5jshFeda95wZPIe5CeE8
+	Bgmk8wiXD3zKIxNpr9J3a+XNxC7OcGh9RvuOmzpU3bedOsISVENIIbFlCz2J4+c4RKF0beTgmx5
+	WDYwpby3FRcQdtuxMtw==
+X-Google-Smtp-Source: AGHT+IEldMGogEOipYwUKI4qpd4j6FalCJWEhKELhDj0QJkWsSZp8gdrNXJNvJ8VR9AQiIjtl3kXiQ==
+X-Received: by 2002:a05:6512:620b:b0:550:e5b3:b1ab with SMTP id 2adb3069b0e04-550e719529amr1600719e87.4.1747427713142;
+        Fri, 16 May 2025 13:35:13 -0700 (PDT)
+Received: from anton-desktop.. (109-252-120-31.nat.spd-mgts.ru. [109.252.120.31])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-550e703f864sm577494e87.250.2025.05.16.13.35.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 May 2025 13:35:12 -0700 (PDT)
+From: ant.v.moryakov@gmail.com
+To: netdev@vger.kernel.org
+Cc: anton@vger.local,
+	AntonMoryakov <ant.v.moryakov@gmail.com>
+Subject: [PATCH] json_print: add NULL check before jsonw_string_field() in print_string()
+Date: Fri, 16 May 2025 23:35:09 +0300
+Message-Id: <20250516203509.259117-1-ant.v.moryakov@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: T995aa454cfce42d7
-Date: Fri, 16 May 2025 13:21:30 -0700
-From: "Daniel Xu" <dxu@dxuuu.xyz>
-To: "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>,
- "Alexander Shalimov" <alex-shalimov@yandex-team.ru>
-Cc: "Andrew Lunn" <andrew@lunn.ch>, "David Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>,
- "Jacob Keller" <jacob.e.keller@intel.com>, jasowang@redhat.com,
- "Jakub Kicinski" <kuba@kernel.org>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, "Paolo Abeni" <pabeni@redhat.com>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>
-Message-Id: <81d6fb01-e914-4c04-875a-58e61b433a80@app.fastmail.com>
-In-Reply-To: <68277463d4c43_2ba041294cf@willemb.c.googlers.com.notmuch>
-References: <681a63e3c1a6c_18e44b2949d@willemb.c.googlers.com.notmuch>
- <20250514233931.56961-1-alex-shalimov@yandex-team.ru>
- <6825f65ae82b5_24bddc29422@willemb.c.googlers.com.notmuch>
- <0bcc08e4-9f22-431c-97f3-c7d5784d2652@app.fastmail.com>
- <68277463d4c43_2ba041294cf@willemb.c.googlers.com.notmuch>
-Subject: Re: [PATCH] net/tun: expose queue utilization stats via ethtool
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+From: AntonMoryakov <ant.v.moryakov@gmail.com>
 
+Static analyzer (Svace) reported a potential null pointer dereference
+in print_string(). Specifically, when both 'key' and 'value' are NULL,
+the function falls through to jsonw_string_field(_jw, key, value),
+which dereferences both pointers.
 
-On Fri, May 16, 2025, at 10:22 AM, Willem de Bruijn wrote:
-> Daniel Xu wrote:
->> On Thu, May 15, 2025, at 7:12 AM, Willem de Bruijn wrote:
->> > Alexander Shalimov wrote:
->> >> 06.05.2025, 22:32, "Willem de Bruijn" <willemdebruijn.kernel@gmail=
-.com>:
->> >> > Perhaps bpftrace with a kfunc at a suitable function entry point=
- to
->> >> > get access to these ring structures.
->> >>=20
->> >> Thank you for your responses!
->> >>=20
->> >> Initially, we implemented such monitoring using bpftrace but we we=
-re
->> >> not satisfied with the need to double-check the structure definiti=
-ons
->> >> in tun.c for each new kernel version.
->> >>=20
->> >> We attached kprobe to the "tun_net_xmit()" function. This function
->> >> gets a "struct net_device" as an argument, which is then explicitly
->> >> cast to a tun_struct - "struct tun_struct *tun =3D netdev_priv(dev=
-)".
->> >> However, performing such a cast within bpftrace is difficult becau=
-se
->> >> tun_struct is defined in tun.c - meaning the structure definition
->> >> cannot be included directly (not a header file). As a result, we w=
-ere
->> >> forced to add fake "struct tun_struct" and "struct tun_file"
->> >> definitions, whose maintenance across kernel versions became
->> >> cumbersome (see below). The same problems exists even with kfunc a=
-nd
->> >> btf - we are not able to cast properly netdev to tun_struct.
->> >>=20
->> >> That=E2=80=99s why we decided to add this functionality directly t=
-o the kernel.
->> >
->> > Let's solve this in bpftrace instead. That's no reason to rever to
->> > hardcoded kernel APIs.
->> >
->> > It quite possibly already is. I'm no bpftrace expert. Cc:ing bpf@
->>=20
->> Yeah, should be possible. You haven't needed to include header
->> files to access type information available in BTF for a while now.
->> This seems to work for me - mind giving this a try?
->>=20
->> ```
->> fentry:tun:tun_net_xmit {
->>     $tun =3D (struct tun_struct *)args->dev->priv;
->>     print($tun->numqueues);  // or whatever else you want
->> }
->> ```
->>=20
->> fentry probes are better in general than kprobes if all you're doing
->> is attaching to the entry of a function.
->>=20
->> You could do the same with kprobes like this if you really want, thou=
-gh:
->>=20
->> ```
->> kprobe:tun:tun_net_xmit {
->>     $dev =3D (struct net_device *)arg1;
->>     $tun =3D (struct tun_struct *)$dev->priv;
->>     print($tun->numqueues);  // or whatever else you want
->> }
->> ```
->>=20
->> Although it looks like there's a bug when you omit the module name
->> where bpftrace doesn't find the struct definition. I'll look into tha=
-t.
->
-> Minor: unless tun is built-in.
+Although comments suggest this case is unlikely, it is safer to
+explicitly guard against it. This patch adds a check to ensure
+both key and value are non-NULL before passing to jsonw_string_field().
 
-Ah, right.
+This resolves:
+DEREF_AFTER_NULL: json_print.c:142
 
->
-> Thanks a lot for your response, Daniel. Good to know that we can get
-> this information without kernel changes. And I learned something new
-> :) Replicated your examples.
+Found by Svace static analysis tool.
 
-Nice! Feel free to CC me if you have other stuff in the future.
+Signed-off-by: Anton Moryakov <ant.v.moryakov@gmail.com>
 
-Bug fix for parsing implicit module BTF up here:
-https://github.com/bpftrace/bpftrace/pull/4137
+---
+ json_print.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/json_print.c b/json_print.c
+index 4f62767..76e654b 100644
+--- a/json_print.c
++++ b/json_print.c
+@@ -138,13 +138,15 @@ void print_string(enum output_type type,
+ 			jsonw_name(_jw, key);
+ 		else if (!key && value)
+ 			jsonw_string(_jw, value);
+-		else
++		else if (key && value)
+ 			jsonw_string_field(_jw, key, value);
+ 	} else if (_IS_FP_CONTEXT(type)) {
+-		fprintf(stdout, fmt, value);
++		if (value)  // защита fprintf
++			fprintf(stdout, fmt, value);
+ 	}
+ }
+ 
++
+ /*
+  * value's type is bool. When using this function in FP context you can't pass
+  * a value to it, you will need to use "is_json_context()" to have different
+-- 
+2.34.1
+
