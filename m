@@ -1,71 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic309-20.consmr.mail.sg3.yahoo.com (sonic309-20.consmr.mail.sg3.yahoo.com [106.10.244.83])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9291216EB7C;
-	Fri, 16 May 2025 23:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3911A22CBE6
+	for <netdev@vger.kernel.org>; Fri, 16 May 2025 23:33:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=106.10.244.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747438267; cv=none; b=htHxiSeSnYjLcqP/PPOJCeE8bW3lyhuuBeorMzddUuD/37QEqxl7+ntqyn8OIC8TrWkKxa9ED7xRDQSgzuW74Y+1wZsv9ynXRXinWOW1Iaz2oV7D3IzxWzBzV9fVtEx0T5iPq+90tiJsybZ4L7oUWgEIdBmpK5hvJyfb0Clitrk=
+	t=1747438385; cv=none; b=Ogl8JpJjnnsqCAu7gxVIeo8nmFxh476uo/KGwW9g8tCyUTJz9ppaYTTAQOPrb1rDnSjJg/fcnpxf2y1oIOjT3mCEoyz1QK15mcpybQYlIv8ini8G0kJfGBuxMytguSUdKhDDM9e9QDgtByeGT6egrFQ+eAt1zaYxvFShq+4K86w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747438267; c=relaxed/simple;
-	bh=LLXZH8CcZsv0YcixDzRJ1c9l0A1zuk/pzjDX3m7p/V4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YQxfxJD2wbTdVNPjVG+v/UDqd/rSIarAgEy4AuJU50fbbjLrIZsdUca2blehRJrV9H0EKtGXCoeHuNc3vgU8ZtugYXUUhDa+Vxz6NP4ro4Ks3pg+z2XR2OlpqjIPwTWfOU04D3BHm+jt6Om87RvjRbf2Vu/HXMNPWxAHYCZ02Hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n1gO6Z3Z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747438385; c=relaxed/simple;
+	bh=kWHJTdcPhiPkNZ5oAFAFErSwnx5rkOKUjVq3C3oPAng=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=PHt3BvI8l4i8cS5RyCldUYim+8+dOI9121imrrHgx0GXKEbpcRG6/sxIxrOcYzCkbR0aR1/qrjst8417g36SBVjCMxqmB52LWzlZl0d2tzQ+P5t5Kv4v4DO5OHatwINTYGJRXD9qIfgnCkgY6JGQbEf7BJ1auCTbAwiowvCH0J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=egu87PWE; arc=none smtp.client-ip=106.10.244.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n1gO6Z3Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A050C4CEE4;
-	Fri, 16 May 2025 23:31:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747438267;
-	bh=LLXZH8CcZsv0YcixDzRJ1c9l0A1zuk/pzjDX3m7p/V4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=n1gO6Z3Z7Gvk7LqDSlLPRSu67oFEX4V2NsGLnIODlWsQ4jO8W67/4of9MJ0Sx83hL
-	 kKC0+Iw5vXgsbLF34bNv2ldP2cVTmhtQKcdwNuqdmo31jBt0UVS3Ge+x2efjTc1LfH
-	 gv8XzD+AlIONXgYcBIPgpaGFOHgQQQEAUc4pzHO6vCsUqxGBcYaDBslRQ3CpyC1Ql4
-	 U/D003bt41MLHJQLF6UyM5rXoypEP0EhD8z2lxx+wo8DOKR8bttJIlhzv18CVFTRsC
-	 3G6tmIQBuM+VrQOf6ahcpWVbPhjtQZFa9m/E/JzvVceNe/piLrOBAk0DAcNXTAr5vn
-	 X8T4EYfANuXuQ==
-Date: Fri, 16 May 2025 16:31:05 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Frank Wunderlich <frank-w@public-files.de>
-Cc: Frank Wunderlich <linux@fw-web.de>, Andrew Lunn <andrew@lunn.ch>,
- Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Matthias Brugger
- <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, Daniel Golle
- <daniel@makrotopia.org>, Qingfang Deng <dqfext@gmail.com>, SkyLake Huang
- <SkyLake.Huang@mediatek.com>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, =?UTF-8?B?QXLEsW7DpyDDnE5BTA==?=
- <arinc.unal@arinc9.com>, Landen Chao <Landen.Chao@mediatek.com>, Sean Wang
- <sean.wang@mediatek.com>, Lorenzo Bianconi <lorenzo@kernel.org>, Felix
- Fietkau <nbd@nbd.name>, netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-Subject: Re: [net-next, PATCH v2] net: phy: mediatek: do not require syscon
- compatible for pio property
-Message-ID: <20250516163105.12088849@kernel.org>
-In-Reply-To: <D997C4DB-1B03-4AFD-B48C-BFA19AB6194D@public-files.de>
-References: <20250516180147.10416-1-linux@fw-web.de>
-	<20250516180147.10416-3-linux@fw-web.de>
-	<D997C4DB-1B03-4AFD-B48C-BFA19AB6194D@public-files.de>
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="egu87PWE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1747438381; bh=wkR30jwCpMW6sl3bfgfbSavFKJ2pRI5smriO5yGx65E=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=egu87PWEnp9yjQv8T5F+z2Kc/SxFivE/VNScGSDO5qfEmDvppdE13yQGLrh84kHF8fi7Pz7ZWZtPtx/p7dK7ASKrsjZeUIUeLsCltMOj6rW37Gr0BbI3NBZrGTPJGm/r8uYHiWkKiPKEP4xDTPBn6S3Kg6ipeiI4zEQK7RDHBbWzvawbkcLwJuejdABzZfl5S6MPN0I/Bi5YLrMSPy6NAlP/evXr9kum9dD1+rRN/m5e8xeCfU1LvnIBDCX3WN1W/mUaDvav5Hw8qBk2PgH6mqs2Mce62vJQMvb7fCAzdB81vasjFYlnCmPPxXXaLnACqw0Ryzswy3GBACpjIOlAGQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1747438381; bh=crfMsy9Dwl8mRv/XWxPT8DXI4c1p8F3Gi+TgLhvxTEh=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=bW3c3Iwtuk/1nbtmafLWUR/qF23QHh1hX0MgIinzSiSKxqwEZgxjcQ5sznDrN4LgI9I7APm2PXiSO5gx6E78h2jLNlKbvrSTc9Jeat6/nzRLP6aMbfRHB5vc4CqsJ9Lf/hRBy26HUWELiWQiZS2cPdnq6rfUrivD8Kxigt5zQOgkVM1PfT/jGp4dXLAsQ3/LtS6V8/rKf9+3cb0xRHxaoxMWRl1g/9isT6zv71MMaaVraL27OmSdJMZcQsJYAF7bx8k2hlVlBdlMPdQVBQ4ZfNytyKUNSjgVkmNP4c7kbhn4b4yMm3XKY/o7Ei6jwLEHvWncH4sH+0BX00bpjBbTgw==
+X-YMail-OSG: CvXh03QVM1lBALp1BtNdaogdCNp9tky80xuBlTLRS37kTE6EVhjGVZVrjJdL31K
+ aoyxCT6EvCggR6o774MEKG8lLJHdv6iAfs3me2jQvuOpbVhdSioivtaoFGjKGEU525eK8Tct_hva
+ jigf5bf1fncUv0MLDvatZze_gYtbHwbFueKx1BFsilURk1nfgSf7x3V8yqxaoxEKjII7.d7vzYpw
+ dfwLkF1P6MBE43fKL.TNEkuvzN77DkWyXzRN12jDPhspKJdWYw4jseUK4okysvt8sPen2sKW1ybu
+ QcB_W0VTzpmc3qdd2VvSQr4TYkzeMtgXzFKhF8yBv5BXLQUfUx752mkpklQBGBmkT4FMVVXBA8Vz
+ TgyW5DY66USIW4.DzKZVcgtvP3hcXibzPjETpenYc9paXRny3GYCuvVdrhp3RuRIpIEzpfXU1i8c
+ n83LrHQHEyPeyPSnCXxRe9M89s2dJAYWTlo0QT3w28Ml8t5s15fL9SXnOLo3GAxDS4oeLE0gH1TW
+ CQeMy6hNPzz9Sb_NPk2sikKUhqvTktk8Kdj4FXLd9L0jgfF8q8KhY0jtmF1.O_sLXUX_u2Nb_bhq
+ URxs17sHLeVLVBWYwF9hAKY79_WBWW.T2FK_8IkgW63yGexwv0Z1dinzJQoyObtDJFTzMbRoPKmZ
+ 6.BDQDiymHOe3fdc2anOrZ_v89o1yWWZauCewUDQKoDko4AWkGzhXYVbBkoOrsgNNVB7XVsFqfyJ
+ vJ1ex2xLphqUyMqWwajnpY_jTJ2W3k4HLgbnYcwvglDs2S9i2BbAD2rHfMZdaOH35ZGR75YYqIZb
+ T0870MykJHFJ5xJ3lFV1ks58.7WnNyi4ewyG8uLnbMLHbC_46BO3zj61HHBCFCAi9Kp_Rvc5DVqv
+ hx1peSOBqsrQk3vO1MEclzM009ve9dFa0k.qd3dcso.ynV39VkDCcMilq7.xwb8NIdWIF6xJ5.Xk
+ Hjgi0IwcbwO0TvV0CK_eD6i7PxH.sjYqR0ujRPfcQXta9atXsXAUgpN_9C_kvbetJWHsyodVCGeY
+ 4hFIM.eZNXN3ZjkBa_vsr7ei7Df0Z9RzxlpRXYRpmVQXM_VNp2WCE9HiqxLih11M.rZQmuOQHSsK
+ pR_s2Ej_Ckv.7PtcXz0gcPmVsOljFB_pvdmQ_zSuDKYz.Uy9_4ikTR0MReQIt.IbGb85t6tprN_N
+ 45so7GSh20i9Wt8iN15VvERCAQ_bMC5EkUzPvPra5A0DijdhueMXTEiOqwXJWwM9jVZ3slwIgHYE
+ 8YOiHbjk2au_.JYxus70KVp34yCHZnzullIhDYoC2SyFEhD8fdLm4uNY0U3x9tZa7_rl3xF_8GSP
+ OQF3Or.4GbiBj5OgHHO69eTF2WN03M8d2iLsbtD0u9P1Q13lqBQKtjYGknPkec2rWt5sQxV.6yIP
+ sjPzoaQxIFRcKUn4PtJOavlZNkPXUSy3hyl00tfWrhA5vYbwIojFdNFA7BIqUEYAj6.uIUB_iv2T
+ Lg_vjaV3x6ZuN2SfOJQ3uYZCQ2H3uR4u.YFhN6fUn57UHxM_Fa7R1VhT8ajaGoGt_1nxoW4utlLf
+ OzHvDWwARZnyyvi1feCkbkIOTpgKRaBhSBPhiKQJUbn2GmB7uF3TW5C5AdxsJL3gIAjduQFm8Kza
+ 8emIJfj2KmJOHyFBQ6kgfNg_0uq9758XW3rLXGuUveKRlYXsnMYoaWS3Z47RxM1IidPHMANkPLF1
+ fqb0wuBMevoIpmO7ivqpQR_NN1J48yXA15VW_fMstZi3omLQ9E2A5cqobc_ZCMfg_awLOZw1Qv3E
+ QLy4c4NrWApmdyQkLYhopyckMHj7s3hhXxR7Njwx9KCqI2rE_n2w8SU1PaQuShbBUfYLUWp7LQAI
+ cV6UT2OR.I.obWwvu_7VLjDd0rtZ5_kqxBGqHzYvJjGV.zSBh8B9U0Q1bJmsh998DwJHfFwlh_Dd
+ MOnktMUXX0_a2FioSMEO5pmE4956kflcRcHJIwZp9vaH6rW3oyr.62mhUuJqWJm0SNK26zF2PV.6
+ pYujiK2LjWhcSwmTfpmlC32RbCg6uYJW_w_6NE.4.FbH6iF7iLmUiKp8AvpiO32oafSuAGmKhRUB
+ evJF.Ce3ucM.950uES9cVv_2184t1XXTSlKBh1irRCijonzfDL.N3caNhKUk2tNrTejlL3x5q63H
+ wYTUE.haVx7lTfZWnWo8_FbtcCbGcHIvRHjnE97sc6klB85vJzEByXCFLr45EO94ikunK_FU3S1Y
+ VB80Vk2n_
+X-Sonic-MF: <sumanth.gavini@yahoo.com>
+X-Sonic-ID: def904c3-9ff2-43b1-8e25-7c50ad645ce6
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.sg3.yahoo.com with HTTP; Fri, 16 May 2025 23:33:01 +0000
+Received: by hermes--production-gq1-74d64bb7d7-4jn9v (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 1c9a854e7c31166c3a8d30fc711772dd;
+          Fri, 16 May 2025 22:52:25 +0000 (UTC)
+From: Sumanth Gavini <sumanth.gavini@yahoo.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	willemb@google.com,
+	petrm@nvidia.com,
+	sdf@fomichev.me,
+	sumanth.gavini@yahoo.com
+Cc: netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] selftests: drv-net: Fix "envirnoments" to "environments"
+Date: Fri, 16 May 2025 15:51:48 -0700
+Message-ID: <20250516225156.1122058-1-sumanth.gavini@yahoo.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+References: <20250516225156.1122058-1-sumanth.gavini.ref@yahoo.com>
 
-On Fri, 16 May 2025 20:08:47 +0200 Frank Wunderlich wrote:
-> Sorry, resent it by accident while sending v2 of my dts series.
-> regards Frank
+Fix misspelling reported by codespell
 
-Unfortunately patchwork thought this is patch 1 of the series instead
-of the bindings patch :(
+Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
+---
+ tools/testing/selftests/drivers/net/lib/py/env.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Let's wait for binding reviews and maybe you could repost patches 1-3
-for net-next without the dts ones? 
+diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
+index ad5ff645183a..3bccddf8cbc5 100644
+--- a/tools/testing/selftests/drivers/net/lib/py/env.py
++++ b/tools/testing/selftests/drivers/net/lib/py/env.py
+@@ -12,7 +12,7 @@ from .remote import Remote
+ 
+ class NetDrvEnvBase:
+     """
+-    Base class for a NIC / host envirnoments
++    Base class for a NIC / host environments
+ 
+     Attributes:
+       test_dir: Path to the source directory of the test
+-- 
+2.43.0
+
