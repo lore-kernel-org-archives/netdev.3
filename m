@@ -1,86 +1,66 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68ED23E47B;
-	Fri, 16 May 2025 11:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18687A32
+	for <netdev@vger.kernel.org>; Fri, 16 May 2025 12:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747396782; cv=none; b=SgfHyKjbcLBqTulrjh/TMGvlVu5rs1HRyHsEcXj1gxDqXgoUKjTmbYIn2pfGRONq1fAJFZIimD9z65bva2Y/7kH7B0ItSCnGsZue6pQWXhOHe8+kLhMJwoLG4oZuV/jyUso47A85KIR4GFfofBkUdT0x8v9x2l/smW6iXmEGo1o=
+	t=1747398361; cv=none; b=pATL/ZBBrefMDQtUqY51fj+IodnHiZ6YdZk49UFI2RSJcaSbTx1FegImj8ojK5UYoaLT4EEAyoZkKkfHsZVuGPKs9tnEDS1DPOhB1qhjJsZBtSkxiDbvN+21YWoOh2/uYu871MUkeKeqxnaNLcDbta7FuOEsgjfF4MFYwqDtw70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747396782; c=relaxed/simple;
-	bh=jvpXSptIQdCkod2SYNNCI5du/IYJD+vrubcAMOXpQ9U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iSIEa6h66otI3EuCJV9a/qwSlDKq2DI+ZvFgkU50IuKidyDXfe8b+Csc2IlM3n0PDpgYycfHfSVfOzeweI/OCX1bh5Wa8oTGuw7a5DsFu/VXTAo4OULXxKVMc7licYd4AbFyDq7SRPjTnssFrWven2VIahoCbycN035T1LrzOfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=k/t9sJb1; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1747398361; c=relaxed/simple;
+	bh=GVIAK1h6hKOXMHM9V/6Z35jdHgeimGcRUB6GqQMU5wc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jg5o3K+3mpNIPW0Gr7wkvorhtJxPnO4GHwHwa6p3oiI+Ssi2Zz+SgdS+LIw8xWPYtq2o4UGwN4JP7Tg8cfgWVh9lmwGElM9bknZ5nJprbyrZbi56AN7U4zNgyHl+y1izT1HUExLsJXa2yePvW496Bhmppt+ax2sjHbKixNyMrlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KHysM9fO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="k/t9sJb1"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=t/4JlCOSTsV5ih/xh8Ov1+h0/+JYX+ZEDRFX33NhTvU=; t=1747396781; x=1748606381; 
-	b=k/t9sJb1eRNtbH3e3rTyGmJPYA4M02H+KE+YDE199+hOUmH5nX1wqBlXk3t4QE9nZSI+nazEl10
-	W+xKU9VughWW0C55hVT8WeA6C09n5qFl9BachwVKNFqIK5rec3zYlPEIkpJ5j2avInv7gPFVv+XlJ
-	JI8MlZVfDqUOiSBCexbt2yDuwQ7+azK7rIbWdZCoRy5/P44DUpK6PNQS1W+UFfQQ+s+21uYxNZvUV
-	J8Zy35/sZLCOKEBDlcc2lfi4i8wE2RwPwdwgD9LbQ4nnGJYx7j5Clp7SqK3gON186h7UCyn6BgCIt
-	IvLEeWx/Ip/dINwxq4F5YC9S+bmf3vRrMSlQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.1)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uFtit-0000000EX8I-11sK;
-	Fri, 16 May 2025 13:59:31 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH net-next] net: netlink: reduce extack cookie size
-Date: Fri, 16 May 2025 13:59:27 +0200
-Message-ID: <20250516115927.38209-2-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KHysM9fO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AADF2C4CEE4;
+	Fri, 16 May 2025 12:25:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747398360;
+	bh=GVIAK1h6hKOXMHM9V/6Z35jdHgeimGcRUB6GqQMU5wc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KHysM9fOSJqqIEHgrA9LA3rqysX3574Zjk9WA8YKDYBeTAL4bh3k0plnObB4au+4h
+	 mr+6p9F6HmTqEq8AlQWcxAv5VntO/DbC29LAnb9Qjh6914zxoNUs89Dy7NxzKFSfmz
+	 3Tyo8UrMs1g93Hp5laNJzhrUK8h9epW+ATxzz31GB7bSSwkhO1fDu6NIE+M3q7BWr9
+	 cI4Ewid30S3GoAfqiUHXSbnyyVmp8xskmpu8uxnwjUlFUmd+kH1HhX+QgJvwqNwEfv
+	 XgXq1VHXFP4lLo3AKo6FgXcjqG5kkWdia7+vRE+r5xJ6IXZK7X1ZghAJCxqGo/lqYs
+	 bdERBeryv9rTQ==
+Date: Fri, 16 May 2025 13:25:56 +0100
+From: Simon Horman <horms@kernel.org>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Richard Cochran <richardcochran@gmail.com>
+Subject: Re: [PATCH iwl-next 1/5] ice: convert to ndo_hwtstamp_get() and
+ ndo_hwtstamp_set()
+Message-ID: <20250516122556.GZ3339421@horms.kernel.org>
+References: <20250513101132.328235-1-vladimir.oltean@nxp.com>
+ <20250513101132.328235-2-vladimir.oltean@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250513101132.328235-2-vladimir.oltean@nxp.com>
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Tue, May 13, 2025 at 01:11:28PM +0300, Vladimir Oltean wrote:
+> New timestamping API was introduced in commit 66f7223039c0 ("net: add
+> NDOs for configuring hardware timestamping") from kernel v6.6.
+> 
+> It is time to convert the Intel ice driver to the new API, so that
+> timestamping configuration can be removed from the ndo_eth_ioctl() path
+> completely.
+> 
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Acked-by: Jacob Keller <jacob.e.keller@intel.com>
 
-Seems like the extack cookie hasn't found any users outside
-of wireless, which always uses nl_set_extack_cookie_u64().
-Thus, allocating 20 bytes for it is pointless, reduce that
-to 8 bytes, and add a BUILD_BUG_ON() to ensure it's enough
-(obviously it is, for a u64, but in case it changes again.)
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- include/linux/netlink.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/netlink.h b/include/linux/netlink.h
-index c3ae84a77e16..882e9c1b6c1d 100644
---- a/include/linux/netlink.h
-+++ b/include/linux/netlink.h
-@@ -63,7 +63,7 @@ netlink_kernel_create(struct net *net, int unit, struct netlink_kernel_cfg *cfg)
- }
- 
- /* this can be increased when necessary - don't expose to userland */
--#define NETLINK_MAX_COOKIE_LEN	20
-+#define NETLINK_MAX_COOKIE_LEN	8
- #define NETLINK_MAX_FMTMSG_LEN	80
- 
- /**
-@@ -212,6 +212,7 @@ static inline void nl_set_extack_cookie_u64(struct netlink_ext_ack *extack,
- {
- 	if (!extack)
- 		return;
-+	BUILD_BUG_ON(sizeof(extack->cookie) < sizeof(cookie));
- 	memcpy(extack->cookie, &cookie, sizeof(cookie));
- 	extack->cookie_len = sizeof(cookie);
- }
--- 
-2.49.0
+Reviewed-by: Simon Horman <horms@kernel.org>
 
