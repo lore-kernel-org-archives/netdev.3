@@ -1,124 +1,248 @@
-Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1026823C4F3
-	for <netdev@vger.kernel.org>; Fri, 16 May 2025 17:24:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747416283; cv=none; b=Zoxg8dBvzinK54oEmC/5Qf9IQ4ICQWLimGEbcpdP/GZJKqE95BKCNMvwdCVe/Id7k+qsPx3CcOAtKwihgUzfy/LLssxNP3pzf6ev8quaPgH8HlTHjL9qYYRMnrR0ol+oxMjg4wk8FhzxKPKzPJE1TDJQtx7400klcXELEHaUFoI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747416283; c=relaxed/simple;
-	bh=WlxHGGQ7gHHcG573DpzRm/jQlKK3nM6QGem7735COA8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UVbnBJN8L6rJCo9voygcPsV+eYNH+73KPtUW9C2nEKjz0ShGGPbbRxU+vZpN+5NZFzEOtBSErX8mViAn6ho4OgD2jB9ZhiP+W8Wzo3jcJMsjd8kxycHog+S90kGvMcY+s0zS31p/yKAGQjcZLJ+4XWJY2vq9OhaCzWS1Uz+zPq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=Kzpw9FEQ; arc=none smtp.client-ip=99.78.197.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD382635
+	for <netdev@vger.kernel.org>; Fri, 16 May 2025 17:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747416635; cv=fail; b=YOhlaGA3Xoc1EvhXEB60ijzLnefMB0w54en0lvqV9tmNV6DDNrwYIbjqNbGkFOdEVw3b7tXNP4eCdHmS3MTTCl7GwuyQkDerW8YryvMSvejBa8RafzzUjM17In7ytvZU+PlwyrTB88D2YAKgQMF3l46JmGhKMkGqykWdrTnzyMk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747416635; c=relaxed/simple;
+	bh=u6RIMA82EAkPcmixpiNUQ/EeS7JKasVtYDAAjkauRck=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=dZgON6HJ1PzWCzUiZkm2OUIps2GUQT4095jFrzq6fKbQz+vdCmHDwWLX052j32pZnzPWnB9ej/gLdakAvD9CgUVcbkBMeKK7wz1bmZ0QP2JtSJl2lPBi0vmXlT93KftgicRAs01NjCEhcI68Rro+5TPPyykDrnpGsO/36r1Pb1w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PS7NLbE0; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="Kzpw9FEQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1747416283; x=1778952283;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=oUcyFOoyCI4Q4znaW8ONPcDdfs9Jpq8Lj/8FpAx5Wwo=;
-  b=Kzpw9FEQa/s7Be1XlKUxrBR2rZXBwChBoMq4oLDsqjk9YJUEuuynQFHs
-   JbcJMHmuUsmNIIoPtdBdXEtJuHqSupQg8ihfhFsNCxNHXHagty/Qp5YK6
-   CEOc6PlWMnHBYDQqeSiEbU9OAd0rAcDTveERHKa/qj1Vw5AXUF/2c7tBE
-   WCNiWugjXni6HFTvmC0HubNCs0aJ/UtDtr550xrkUgvPV2tXOytWS57IT
-   QQS5v2/2MWqhQfpCiIUw0jhweB4F0776sEP9D/jqm996S27rsHqklqYli
-   yr9b528JXCnDIrWJpxOCgItYeMhh03AU/O0XQGrkdlcyfz+s8dF83VpTw
-   A==;
-X-IronPort-AV: E=Sophos;i="6.15,294,1739836800"; 
-   d="scan'208";a="406098240"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:24:32 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:15283]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.39.177:2525] with esmtp (Farcaster)
- id 8819a42e-810a-461b-a409-be631e32147f; Fri, 16 May 2025 17:24:30 +0000 (UTC)
-X-Farcaster-Flow-ID: 8819a42e-810a-461b-a409-be631e32147f
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Fri, 16 May 2025 17:24:30 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.142.194.153) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Fri, 16 May 2025 17:24:27 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <willemdebruijn.kernel@gmail.com>
-CC: <brauner@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
-	<horms@kernel.org>, <kuba@kernel.org>, <kuni1840@gmail.com>,
-	<kuniyu@amazon.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
-	<willemb@google.com>
-Subject: Re: [PATCH v4 net-next 7/9] af_unix: Inherit sk_flags at connect().
-Date: Fri, 16 May 2025 10:22:32 -0700
-Message-ID: <20250516172419.66673-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <68276c1118d32_2b92fe29428@willemb.c.googlers.com.notmuch>
-References: <68276c1118d32_2b92fe29428@willemb.c.googlers.com.notmuch>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PS7NLbE0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747416634; x=1778952634;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=u6RIMA82EAkPcmixpiNUQ/EeS7JKasVtYDAAjkauRck=;
+  b=PS7NLbE0bmvAuWxrozmF2YoMh3hWU13yIqHDzG7a7iqYrdxN7+FNaekJ
+   H7tr7pXtkETDMNV6v0Vjvoa5Mbe7O6/J6jDfX5I7lPv62TsNwvi4gbNIG
+   XXQbgsKsP0p9LLSqhoNUt+riBLLyIsdVGFEsDNo5s5KVqsbzB7JU1Qbsy
+   1F+lmr9VbUlnbKtFQTqH0umyZiQ1VZQWqZ9HNhYlV4HxXuPZqnsWNlFxN
+   zVct65ccHmtCg/jwJXPqjSjmtsNhKVFmFxjnRgv3Od5l5vI/wFL6SSgjE
+   vGrH7PTxpnR6aiU6xeHt5kWChcaROEsNdwNvbkZyS7SKuEH6srMVQ5tFS
+   w==;
+X-CSE-ConnectionGUID: ai4+FkjiTNG+calZ38qjQg==
+X-CSE-MsgGUID: pTk+XbN9TU+K2QuIbsrUWg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="49382334"
+X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; 
+   d="scan'208";a="49382334"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 10:30:31 -0700
+X-CSE-ConnectionGUID: sU+vjuvTRbCsqlEOoCDT3A==
+X-CSE-MsgGUID: +AjjPxBTSYWsgjvWKZxN1A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; 
+   d="scan'208";a="162054171"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 10:30:30 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Fri, 16 May 2025 10:30:30 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Fri, 16 May 2025 10:30:29 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.174)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Fri, 16 May 2025 10:30:29 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dom92oMRGHrD39jzVldVgz6Hzgm3l6yoxTmlvC4bOmTDq8zZcRuZK6m1+trdL9eTYct4jtSJQBTvQQ7FT0aT94vbJCvg0RxG1nqbSMixbZeUnrD0iQFYONmKqbMqv7JY3vkTvRded79ezm+pu9pRVhS3kt12FFSOeQ4k+snMKe2EqxJo8nM1lyma5772JA9aA0CTqFq7642SB59zjiIi6Mv4tM9xIwXrxRSvl7TrtbCn15FwSrrRA5nAX+s82hnqPlM/w0rnPVBDMZNKHctfTQIXPLUd01IH2ciTCo0qmQBWYqorv1rkWu1TjVIfXiBhBm4VVsGYLtiPaqwmqBj7nA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1PQZLv7W/mVgpxKHBRTWyhYak4EWPelbdPHaAWP6IXA=;
+ b=eRAXW0+An51k6dR1pkdz0dDIzMYwHCmD75bKrDx0mMvYfu4ncwhgv3SdSTyWZoc174YAPUbkGr81vgrZuYLOiEURmo27vwFnXVRNChDh77UpdhGOLzO39v19SsojM71UG3Sxv171P/ik3uS64lumcZgA7WOPeJ4Wl72nGevtsaeXh513Ki8Ps7RtcTDwBDcTY4MtsOzzuPwIQ6YJUR9mJ1adwFQIMSJTVGGVID7/gtMaOqbvn/91Q/qwZXxQlca+AwI9hTqatb6T2B3BLwJd2lkE5JgdGUM+ZlP/GHJkiQ/SYKtfLUYPD7WWY398Y8OV+T6JD5wN81xHIjxE5CbZ+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL3PR11MB6435.namprd11.prod.outlook.com (2603:10b6:208:3bb::9)
+ by SN7PR11MB7510.namprd11.prod.outlook.com (2603:10b6:806:349::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.31; Fri, 16 May
+ 2025 17:30:27 +0000
+Received: from BL3PR11MB6435.namprd11.prod.outlook.com
+ ([fe80::23a7:1661:19d4:c1ab]) by BL3PR11MB6435.namprd11.prod.outlook.com
+ ([fe80::23a7:1661:19d4:c1ab%3]) with mapi id 15.20.8722.027; Fri, 16 May 2025
+ 17:30:27 +0000
+Message-ID: <31f29ba7-7731-487c-9738-1beab56b727f@intel.com>
+Date: Fri, 16 May 2025 10:30:25 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl-next] ice: add E835 device IDs
+To: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	<intel-wired-lan@lists.osuosl.org>
+CC: <netdev@vger.kernel.org>, Konrad Knitter <konrad.knitter@intel.com>
+References: <20250514104632.331559-1-dawid.osuchowski@linux.intel.com>
+Content-Language: en-US
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+In-Reply-To: <20250514104632.331559-1-dawid.osuchowski@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW2PR16CA0027.namprd16.prod.outlook.com (2603:10b6:907::40)
+ To BL3PR11MB6435.namprd11.prod.outlook.com (2603:10b6:208:3bb::9)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D041UWA003.ant.amazon.com (10.13.139.105) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR11MB6435:EE_|SN7PR11MB7510:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8148d951-db29-44a0-7367-08dd949f594a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?dXBDUkpQL0FyUzd4ZjRVcng3T0lGNThrUzdGRkd4M2d2dWpxckMxenZSbUxO?=
+ =?utf-8?B?Z0RPcDN4N3BZb09oQ09IVlU1ckQ1bTF5RVNOVytxbEVJWGtCd29nbnRJdzBv?=
+ =?utf-8?B?d1NHbnZPdys4ZXhrQnpsNkpjZHhiZGRPZ1dvOVYvK0MxQ1JiZHZ5S2RXMk9s?=
+ =?utf-8?B?VWJCTjkzam5QcHNnQ0lLL2dBVUNrQ0FHK081TWhnT2FYZWpKczU3cTFVNjlB?=
+ =?utf-8?B?TVgvU0k3eHdQM01VeUd4dHNxazZjbWh5bmVFUWpJQzQzaFVLZ0M5M0ZXOG1u?=
+ =?utf-8?B?S3BNc1R3QVovZDdOVEY4UTZFd0c2bmlBZDdOWXI5S0JwbktmS1p3dVlock9C?=
+ =?utf-8?B?ZVQwNS9mUzdhWGxaVWdoTzJYQkUzQUtKLzlMYkRVZ0FHTWZORytyUUo3SUlI?=
+ =?utf-8?B?TW9jei8yMCt6T21PcEJjeVNzL2d1SmgrellGU3ROZk9sTHdRMUpJZGVBb0U0?=
+ =?utf-8?B?QTBwdndRbmRFQUM4SGNNbnowa1FNa3hHZUJJQk9FTnZYdUVXLyt3ZjVXTHVD?=
+ =?utf-8?B?OEtHbzUvM0lUeGJLblg2TktKVlRmTGxZdUM0T0VpSGRBTmlFWHExeVJid1BP?=
+ =?utf-8?B?SFRhYVVEQnBxSlFoZkRsV2hxRUg1TGs3dnV3TlU4TzI2clFpcHdQVkRMaXVP?=
+ =?utf-8?B?Rnl1MHdnQklWbGFlOXJzcWgrUkZ1ZExDVXBQUzNYU3dCSnM1aHk3SlMzQ3BV?=
+ =?utf-8?B?YkpublR1bXdwMG9Yb28rWjZnMG56eVRMUlJlSExPdWpFekREYWMvbE9pSHNw?=
+ =?utf-8?B?azNjcWxLSzRYQm5sOVlJb1JDUlZLQ1Aydzg5V3hTV0tmcVVrNC8wcG9KOWJC?=
+ =?utf-8?B?cDhCeDErOGlidEhqV2hSOVZqTnRWMzhPSE9XNm5kcXdzZEJmenBvb2ZBeFVI?=
+ =?utf-8?B?Q2ZUT2QrRUZadXl3R20zWGllemR2UHI2L0JuV0RyR1h3YWRoN1V0MUpOS3RD?=
+ =?utf-8?B?Qm1JazUvU1F0cnF5QTd2aVh2M24vRWJwbTdqOGJmS0FhZDAxdkdaN0VZT3pO?=
+ =?utf-8?B?S1RqL3NraFdOQnZtTFp6TTkza0kvV0RpdkU1S1NyOC9keWpMNEswNE1tUm1w?=
+ =?utf-8?B?ZmdEYndUaEkzK05tNWZ1ZU9rd2JjdmFPUTdvVHBBZWNxdTd2Q0ZidkpXQnhH?=
+ =?utf-8?B?bVdLWXRGTXBOS1c3NGptSFlOZFMvTXJzbEMwQlJDMVN3OTVyUHZHY1dPSUZ1?=
+ =?utf-8?B?MXdFZzAyRCt3YUFJNXBiY1RUSGVITlRqN0tTVFdXcldkZHRlUlBTQVh3QzZS?=
+ =?utf-8?B?K2x5cURtL1pWUzdhQ0JMWXNvWmZvVitjZVo0cVdmSit5VUNiNjFJYnpUMmUy?=
+ =?utf-8?B?NkZmeUIrL0R6UDgyL3I3a0pPRWhJZmZSTUQraFRRRDY4UExHYXNVdUlvdzA2?=
+ =?utf-8?B?NE9hRVFyQ0VZRjhxMCtXMTlncVlnNTZMTUZncWVkZHNpMHNObEFKUVYyQ3lG?=
+ =?utf-8?B?eDIySmtxWVRGMTZVVCswa2QrTzMyQ2NCTW9nd2RXWG1iaStXbmdPK3VPM0pQ?=
+ =?utf-8?B?eG5xNFVHQXp2UTgvRmpNMytwSnhqSHhWR1I2TmdzY1BOTTRYTllnTkpRdVI1?=
+ =?utf-8?B?K0Q1dzFxWDdQajdyMFNwbldDbmN4aDR4REswRGNvQ28xczdWMmFvN1hEeTU3?=
+ =?utf-8?B?U2hadEdydFo0eUF0TlNnOWJidTlKdXdTNE80NGxIeDZhb0d0MzA4dG9aeWpy?=
+ =?utf-8?B?UThYS3ZPYTQ1ZzE4VWpkUFRoTG8zNEVNUXcvRW11TWczWEc2aXJoazY4cjR2?=
+ =?utf-8?B?ODlvcUNuMk1ZNHBxNUtSUHc5dFQxbWtIYUcxayt4aVN2WHRWcjVVSkF3eHBE?=
+ =?utf-8?B?NWR2Q1dVRkdSY2JHMmF1TDMvdXBtWlBab2MrQm05VDR3T0g5OUFvbE04TDFL?=
+ =?utf-8?B?NXN6Z2dhVHM2SGRwYzZGR2ZrdGZmTTNDQXA1VkltS0FDT1NKd1JJWFRrclcr?=
+ =?utf-8?Q?SIgv1sW2A2A=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR11MB6435.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aExtOEZIWWVUT2ZEQUdHYmpUT2VXc2VJa25aUTBLUTEzdWlDVVpUMFdJbCtF?=
+ =?utf-8?B?Y3lxSGw0QmRRSU85Rk9BejFwMEtBSU1pRzZMRDYxQXpNSGZFdFdMVU8wM2hL?=
+ =?utf-8?B?R3M0d2grdi9kVjQ1MWQvSDZPY09HMXlmSHplUS9IZEUrZ1dPTEJwWjJVUThD?=
+ =?utf-8?B?bFZNbVJRT3NMSUFSdFVjUHYwUmV6TVlkbTI0enVSbVI2QzBlb09ldnl2N3pJ?=
+ =?utf-8?B?eDNwc2lNT2h0K2orVEJJcnROVkRHRk5DYXNLR2daZ1phTFAvSElNYzF6OVAy?=
+ =?utf-8?B?b0tTeWVPalZYOGpjV0JvR0w2aEtlY2pJdGNrOFh3RHd1U3hMQTB1MkErOXdL?=
+ =?utf-8?B?aEJWVkk5RjduMzlUTmIrbW1ZVkVpQnd2TzVhbjRoVjZxQ29mYzFISEI3UUpn?=
+ =?utf-8?B?a1l2SWlXdDhtT1FzYjFHemZxQWoyMGNFNk1HUmpKb3VFSi8xelVjUnVXNlpK?=
+ =?utf-8?B?VmgyY3BueDBpZytLZFI1eks1TU9Xa0YvUzNtZUFhL1dEYXlKWWVicDJ6TzhK?=
+ =?utf-8?B?MG4ySnJ2d011Y3A5akl0QSs4ajlBaE5GUHRicEplYjgvSVZibFVGd01lUUlS?=
+ =?utf-8?B?ZWpNeVVpVm9KZTFVTGN3QjNyWlNYcGQwa2Uxc1BUWjVKQVJzb05UdjZSdzkz?=
+ =?utf-8?B?cEsycFlQVkwrTHVyaHdoN2M0dG1GZmlmd1NPZ09iZ2xJZGoyTnJ4RDQyTjNl?=
+ =?utf-8?B?M2Z5RFpIMkhHVVhQbHFzdGIrWWd1UmFaWnRxS3lyZ1F5aDVLL2lsQXZjSHp0?=
+ =?utf-8?B?SEJCOGI2VkNkZm9PQk40djEwOHZWS0VHUzVJVm1iOEQ3YldWZllYN2MxQzRF?=
+ =?utf-8?B?ZmtJemJ2R0F5NHdrWlVBbHk4NXIzdmhFYURLSDMwNVJjd0YyT2tpSGE2cGow?=
+ =?utf-8?B?eUZkUmZOS2tqbE1WVVNPdjZKYklRdzVKWEFMRzZXMW91MXNmNFRjZ3R5U2N5?=
+ =?utf-8?B?YXZqRFFISWxZTHd5bGdmRitYZHdtakV3S25qU0Z2ZXF5WVVSVnUxTHpTQ0ZJ?=
+ =?utf-8?B?M251UXFId0c2cXNMaVp4cGpOcVczTUZMVktxTjJYQlBKNmRSQ3NpMDYxRlRR?=
+ =?utf-8?B?SkJBc1NNRDFQZ3VxTjdnU1h6M3kyM1A5S0tQcFU0dVN1bFZFUzJoOUhWNzRL?=
+ =?utf-8?B?aXpTVmxKTFlSV2VlMGxRMkdSVVJXUnBKamhJS29HZUVsMDQxUlkvMzFEU3hP?=
+ =?utf-8?B?RTh2MEl4ZDMxN2VVOC9aNmxiRm9JY1lERzZybWRJSUV2ODhWbjBkalYxeUFx?=
+ =?utf-8?B?RXd6c1dWZGExd3l4YXdtU2R6cVdsbUpIa2VwaEh2d0paVWJWMHZkd3ViaEJh?=
+ =?utf-8?B?VU5yTGxEVmozR0J3Y2xXRG80Q3YvaGhzbSt1aVBoT0Y3czhhZEowUXQvaTg1?=
+ =?utf-8?B?YlVWQmpJTkFyUkFzWVJuR05DWjNoMUU1TE02N09HWmFPT29OWnVPZ2M1NEJF?=
+ =?utf-8?B?NU9lUkFzaitUNXRqQVdhSkxmK2FDSzlRQXFCK2R1UEdXVUVtU0hPT2FxbkdX?=
+ =?utf-8?B?WXF5TGlBSWJzeDlHKzFHKzhJYjlYLzJIYTBudnFhSXdTYk9pdW9HZkVEd1hM?=
+ =?utf-8?B?M1FOUEgveU9kTlQ3STRCeVQ5T2JHMmtYUEFSd1RhL2RJWFBkN0dmZk9nZXdD?=
+ =?utf-8?B?YUpieWVNNWlIN1M5YXhSQXRoRE0wSGhtNEdmR244ZVJoYkpVZFZBRzViSDJq?=
+ =?utf-8?B?V1lyRkMxM0V5YW1vSldXcDFrelduR0U4akFQbEo4OWJOS0kwVU5PWEhXTVVD?=
+ =?utf-8?B?eGVtcFZFM1pzaTBRUTNhWHg1ZDJNdFpXL1VyRFozZ05Fc1Y3ZXA4K1RFdVZH?=
+ =?utf-8?B?SThaT3FZM0ZFVU1DQ010MkdZdGVxdUFBZFcrbVlsRnQxYldnWTJXWk1ialdQ?=
+ =?utf-8?B?QzZxT282ZjBvSzVMTE84cTJHNTQ2dEtFMkt6dHUyeUxDVDlQdVo4ZVYxUEdX?=
+ =?utf-8?B?US8zM1dYUW96SVEvUHVpM3pueG1qQmcxM2FDS1hidkNKczVqeVlEMHVWb3dT?=
+ =?utf-8?B?RnhFNHhhOUxqVzB0VjJJK3I3OU8yTUlGS3p0SHpaN3BvQjNKVXdvQnF5RFFh?=
+ =?utf-8?B?NTVqTU9VMzk0QUdhNHF3cGlaajQzbzJmaUV0NFdya0pSbzErV1gzVkp5Rk42?=
+ =?utf-8?B?c2JaR3Fia2hTUTI3Q0NUWmp5RlNORnRrTjZXbWxaR2pOZklOVXdEandLSHdR?=
+ =?utf-8?B?UkE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8148d951-db29-44a0-7367-08dd949f594a
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6435.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2025 17:30:27.7251
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BqyIszEdIJ1D8cLCE5QZGBDeo0nxOgJ4DmPVDB6Mn9KlKtr+oJwKc9DHD/xGZaCLK7sl+xd/bk59JjUdZqpIEbB3Fqgc/9Y9itq68z9xOJU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7510
+X-OriginatorOrg: intel.com
 
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Date: Fri, 16 May 2025 12:47:13 -0400
-> Kuniyuki Iwashima wrote:
-> > For SOCK_STREAM embryo sockets, the SO_PASS{CRED,PIDFD,SEC} options
-> > are inherited from the parent listen()ing socket.
-> > 
-> > Currently, this inheritance happens at accept(), because these
-> > attributes were stored in sk->sk_socket->flags and the struct socket
-> > is not allocated until accept().
-> > 
-> > This leads to unintentional behaviour.
-> > 
-> > When a peer sends data to an embryo socket in the accept() queue,
-> > unix_maybe_add_creds() embeds credentials into the skb, even if
-> > neither the peer nor the listener has enabled these options.
-> > 
-> > If the option is enabled, the embryo socket receives the ancillary
-> > data after accept().  If not, the data is silently discarded.
-> > 
-> > This conservative approach works for SO_PASS{CRED,PIDFD,SEC}, but
-> > would not for SO_PASSRIGHTS; once an SCM_RIGHTS with a hung file
-> > descriptor was sent, it'd be game over.
+
+
+On 5/14/2025 3:46 AM, Dawid Osuchowski wrote:
+> E835 is an enhanced version of the E830.
+> It continues to use the same set of commands, registers and interfaces
+> as other devices in the 800 Series.
 > 
-> Code LGTM, hence my Reviewed-by.
+> Following device IDs are added:
+> - 0x1248: Intel(R) Ethernet Controller E835-CC for backplane
+> - 0x1249: Intel(R) Ethernet Controller E835-CC for QSFP
+> - 0x124A: Intel(R) Ethernet Controller E835-CC for SFP
+> - 0x1261: Intel(R) Ethernet Controller E835-C for backplane
+> - 0x1262: Intel(R) Ethernet Controller E835-C for QSFP
+> - 0x1263: Intel(R) Ethernet Controller E835-C for SFP
+> - 0x1265: Intel(R) Ethernet Controller E835-L for backplane
+> - 0x1266: Intel(R) Ethernet Controller E835-L for QSFP
+> - 0x1267: Intel(R) Ethernet Controller E835-L for SFP
 > 
-> Just curious: could this case be handled in a way that does not
-> require receivers explicitly disabling a dangerous default mode?
-> 
-> IIUC the issue is the receiver taking a file reference using fget_raw
-> in scm_fp_copy from __scm_send, and if that is the last ref, it now
-> will hang the receiver process waiting to close this last ref?
-> 
-> If so, could the unwelcome ref be detected at accept, and taken from
-> the responsibility of this process? Worst case, assigned to some
-> zombie process.
+> Reviewed-by: Konrad Knitter <konrad.knitter@intel.com>
+> Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+> ---
 
-I had the same idea and I think it's doable but complicated.
+...
 
-We can't detect such a hung fd until we actually do close() it (*), so
-the workaround at recvmsg() would be always call an extra fget_raw()
-and queue the fd to another task (kthread or workqueue?).
+> diff --git a/drivers/net/ethernet/intel/ice/ice_devids.h b/drivers/net/ethernet/intel/ice/ice_devids.h
+> index 34fd604132f5..7761c3501174 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_devids.h
+> +++ b/drivers/net/ethernet/intel/ice/ice_devids.h
+> @@ -36,6 +36,24 @@
+>   #define ICE_DEV_ID_E830_XXV_QSFP	0x12DD
+>   /* Intel(R) Ethernet Controller E830-XXV for SFP */
+>   #define ICE_DEV_ID_E830_XXV_SFP		0x12DE
+> +/* Intel(R) Ethernet Controller E835-CC for backplane */
+> +#define ICE_DEV_ID_E835CC_BACKPLANE	0x1248
+> +/* Intel(R) Ethernet Controller E835-CC for QSFP */
+> +#define ICE_DEV_ID_E835CC_QSFP56	0x1249
+> +/* Intel(R) Ethernet Controller E835-CC for SFP */
+> +#define ICE_DEV_ID_E835CC_SFP		0x124A
+> +/* Intel(R) Ethernet Controller E835-C for backplane */
+> +#define ICE_DEV_ID_E835C_BACKPLANE	0x1261
+> +/* Intel(R) Ethernet Controller E835-C for QSFP */
+> +#define ICE_DEV_ID_E835C_QSFP		0x1262
+> +/* Intel(R) Ethernet Controller E835-C for SFP */
+> +#define ICE_DEV_ID_E835C_SFP		0x1263
+> +/* Intel(R) Ethernet Controller E835-L for backplane */
+> +#define ICE_DEV_ID_E835_L_BACKPLANE	0x1265
+> +/* Intel(R) Ethernet Controller E835-L for QSFP */
+> +#define ICE_DEV_ID_E835_L_QSFP		0x1266
+> +/* Intel(R) Ethernet Controller E835-L for SFP */
+> +#define ICE_DEV_ID_E835_L_SFP		0x1267
+>   /* Intel(R) Ethernet Controller E810-C for backplane */
+>   #define ICE_DEV_ID_E810C_BACKPLANE	0x1591
 
-The task can't release the ref until it can ensure that the receiver
-of fd has close()d it, so the task will need to check ref == 1
-preodically.
+For the most part this file is sorted by device id, could you move these 
+to the corresponding spot?
 
-But, once the task gets stuck, we need to add another task, or all
-fds will be leaked for a while.
+Thanks,
+Tony
 
-
-(*) With bpf lsm, we will be able to inspect such fd at sendmsg() but
-still can't know if it will really hang at close() especially if it's of
-NFS.
-https://github.com/q2ven/linux/commit/a9f03f88430242d231682bfe7c19623b7584505a
