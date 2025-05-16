@@ -1,85 +1,75 @@
-Received: from mx.wizmail.org (mx.wizmail.org [85.158.153.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E991A704B;
-	Fri, 16 May 2025 20:11:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.158.153.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948D7218E8B;
+	Fri, 16 May 2025 20:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747426308; cv=none; b=SuJYamKYEW7cY4itmwPdkBlORjlkIr39Qb1wl0CMPlILtXEk9LVtcU30pnljSCs4dGrkhFKtUeNrGo6oQf4ir3keq3tnlELzWsF6GjUhd0n2flpvEDrGRSMN5NrAKqHVxo063C+9QzaOwblIvL5zeWnpt1cd50BsZElvpzHgGXI=
+	t=1747426571; cv=none; b=cvfAQGRbVnHpUEZJ/DIscyPIdRfHIESSrGWB6ovm2cSU5WnYo9lLwK0/R0FdJ0vreUVhnKuJvYHUH4a0VKkLAgowO238S7kyTQY4q5oolFy3r3YBpjzO8P2t6G6tx4CVIlqKoOQvBdkqp6WoKOgZQGVPIzgk/qeL7kMHJgGS0+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747426308; c=relaxed/simple;
-	bh=cJDG+nML/k0VhCxpkYDIBmzo/4YjTiv3DAm5cOimtmA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZBT9bjx/t3z8KsSijCBAe6Qp64sWOo6h/vq9z9Ovdv9+VFh6E8rtLdkzP44EJ47MpEi5JaOK0/ereGkeBcKwKRN8UnWI3Tt8l5fe/8APHhZqrCi7XGbFB4Df1oKP6m06QwWaR/QevJsWWcB5u4nV7Fv7y2tLhAaWPGzCtQ8twAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exim.org; spf=fail smtp.mailfrom=exim.org; dkim=permerror (0-bit key) header.d=wizmail.org header.i=@wizmail.org header.b=JRP9H7+s; dkim=pass (2048-bit key) header.d=wizmail.org header.i=@wizmail.org header.b=lf5sd0/p; arc=none smtp.client-ip=85.158.153.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exim.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=exim.org
+	s=arc-20240116; t=1747426571; c=relaxed/simple;
+	bh=agvIOpStuatXOhRFdkohKJn/j4d5AlIvVVKNhBZDkLo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r4wUWhVvMPEeX0RBYhkXopV65jXIbgbhzxGapkUBRaC4CJvG27FKbkAy+szjO9PJkq+YouWXU5ViPTErTPZsk9o7loC8Fnobyuv4Km6NG5nNRBk+eLTAvlTgjI2NDn+EOK/vFGlsnfhlaqtOCIVAH5jWi4YhI3mVuVO2wprBOKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=se3wgxqy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=wizmail.org header.i=@wizmail.org header.b="JRP9H7+s";
-	dkim=pass (2048-bit key) header.d=wizmail.org header.i=@wizmail.org header.b="lf5sd0/p"
-DKIM-Signature: v=1; a=ed25519-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=wizmail.org; s=e202001; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
-	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
-	List-Owner:List-Archive:Autocrypt;
-	bh=tnZ+SElty12PttDspdX87N0GhxUxhAEHg4fOgjhaOks=; b=JRP9H7+sCJS0uOEeUk76ShzNMC
-	H8WBND5gOgxWG4eNYzEksY4dYV0iBWaz+V3Vr5icsoEqKfY720takU7HMmDA==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizmail.org
-	; s=r202001; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:Sender:Reply-To:
-	Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
-	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
-	List-Owner:List-Archive:Autocrypt;
-	bh=tnZ+SElty12PttDspdX87N0GhxUxhAEHg4fOgjhaOks=; b=lf5sd0/pg4pMFJlIyAHbQpnGjx
-	rzCLKTOkn8jKpZR6JVcy9wUJkS9AVIROo7C+Et+114uBSNJY8BEi/M4oeVi5/X23o1PlIyjqc+oUi
-	3Jwhvh/yL83NEIj6TiiPKvEUKLT+b+9DoEBj1t6Zpvw16Cp2kb8VRm00zrj8oT/D76I4OfpUquwXo
-	h2SG3aV+BHCdH5EpIazdR8q4Lvux8olLv8TapQiPc/FHBwJ3SukAf6k5GkSGHRJ2udPqmpPAKWPao
-	7NGhdNHlHUFnoNco0vA0U9oi857KCw9V3JnsE/aarMXz7l8w5IenxifI/D2jt3ixVC4kjMKCklyt4
-	tRV6EszQ==;
-Authentication-Results: wizmail.org;
-	iprev=pass (hellmouth.gulag.org.uk) smtp.remote-ip=85.158.153.62;
-	auth=pass (PLAIN) smtp.auth=jgh@wizmail.org
-Received: from hellmouth.gulag.org.uk ([85.158.153.62] helo=[192.168.0.17])
-	by www.wizmail.org (Exim 4.98.115)
-	(TLS1.3) tls TLS_AES_128_GCM_SHA256
-	with esmtpsa
-	id 1uG1PE-000000079Wa-1dd3
-	(return-path <jgh@exim.org>);
-	Fri, 16 May 2025 20:11:44 +0000
-Message-ID: <1a695707-da6e-4427-ad24-a7f8cad85169@exim.org>
-Date: Fri, 16 May 2025 21:11:43 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="se3wgxqy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E59C4CEE4;
+	Fri, 16 May 2025 20:16:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747426571;
+	bh=agvIOpStuatXOhRFdkohKJn/j4d5AlIvVVKNhBZDkLo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=se3wgxqydYjU1HXlHmCGblCL6ZONY2SLkIwqJFb4yr/MPpLV4SFXYL/3e85VC9nWR
+	 ouCVgP9G1Bg/2z7RbjXcKWLaC2bp41Dekg6W9+NlDj8wH4ped54cJWKc1oseieexnk
+	 umy+IEA7Xk3uzAjTogVMifhv+cImkh7g0czf+ZzEGCrRoNAwuRtUexvDjXsTnUmSZC
+	 F1PdAx9SuHwIA5X7wQe/YxA2HEgA9Vvkk+EV+o5pRsm0MMmdeCEFFpJS6SYfTyJn6V
+	 vu7sMBoebC2GZaqYPPe8X4CmxowTFwTm8yudTBl9QusxKItUgogFxOSdVwopzWVKG3
+	 rVIC4GTCdUmFA==
+Date: Fri, 16 May 2025 21:16:06 +0100
+From: Simon Horman <horms@kernel.org>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v3 1/4] net: airoha: Fix an error handling path in
+ airoha_alloc_gdm_port()
+Message-ID: <20250516201606.GH3339421@horms.kernel.org>
+References: <5c94b9b345017f29ed653e2f05d25620d128c3f0.1746715755.git.christophe.jaillet@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/6] tcp: copy write-data from listen socket to accept
- child socket
-To: Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, linux-api@vger.kernel.org, ncardwell@google.com
-References: <cover.1747409911.git.jgh@exim.org>
- <702375d7dcc673fa1f97c92ddf86b47d11106db4.1747409911.git.jgh@exim.org>
- <CANn89iLNEnF1YYwOmPsuQn6n-O9N9yVxnZ_djEGxaZ11i4AsVA@mail.gmail.com>
-Content-Language: en-GB
-From: Jeremy Harris <jgh@exim.org>
-In-Reply-To: <CANn89iLNEnF1YYwOmPsuQn6n-O9N9yVxnZ_djEGxaZ11i4AsVA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Pcms-Received-Sender: hellmouth.gulag.org.uk ([85.158.153.62] helo=[192.168.0.17]) with esmtpsa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5c94b9b345017f29ed653e2f05d25620d128c3f0.1746715755.git.christophe.jaillet@wanadoo.fr>
 
-On 2025/05/16 6:51 PM, Eric Dumazet wrote:
-> I do not see any locking. I think you should run a local KASAN/syzbot
-> instance and you will be shocked.
+On Thu, May 15, 2025 at 09:59:35PM +0200, Christophe JAILLET wrote:
+> If register_netdev() fails, the error handling path of the probe will not
+> free the memory allocated by the previous airoha_metadata_dst_alloc() call
+> because port->dev->reg_state will not be NETREG_REGISTERED.
+> 
+> So, an explicit airoha_metadata_dst_free() call is needed in this case to
+> avoid a memory leak.
+> 
+> Fixes: af3cf757d5c9 ("net: airoha: Move DSA tag in DMA descriptor")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> Changes in v3:
+>   - None
+> 
+> Changes in v2:
+>   - New patch
+> v2: https://lore.kernel.org/all/5c94b9b3850f7f29ed653e2205325620df28c3ff.1746715755.git.christophe.jaillet@wanadoo.fr/
+> 
+> Compile tested only.
 
-Thanks for the suggestion; I'll look into doing that.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
--- 
-Cheers,
-   Jeremy
