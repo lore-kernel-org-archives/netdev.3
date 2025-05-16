@@ -1,48 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5576D2147EA
-	for <netdev@vger.kernel.org>; Fri, 16 May 2025 01:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE271F956;
+	Fri, 16 May 2025 01:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747357490; cv=none; b=SVtt6QgZwiri5ZP0H3zgjXqZe67sK2Gxi5LqrmpFJpWqdFdehe33QFjwmW77IP7Y4u4DHenB8E86YyHBNqnJSOURPR+d25YnXsrmbsJT7T3JCGBfZd0gc+SNa/sfr5Lsk8bzIwHMtCURY+Be/5Dr0HC2yFAtkqqfRqtb43YdVSs=
+	t=1747357741; cv=none; b=jONY7cFI0GBXQktKdUQNr8Hf/WeS+mVeP0uuiaZQcxV1QuPDCwnxDcG9/Ri4UDolky6DVUGiNGQH2zyzSwbbagqeWgifnWbRHtAeZOUr9DrhzTErSfJSmNp/zOMFsa5FGtu6iA5GN1HV+4HUBERqeyT1+xosUGjj1TkRRQGYFFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747357490; c=relaxed/simple;
-	bh=3ggWfmad+Ahr7bFez/BW9d/QPrzgbhpVN0Lt6HYLdYw=;
+	s=arc-20240116; t=1747357741; c=relaxed/simple;
+	bh=LlunDUDR2TDmEZ4XUi/62Fa3/lxpELn/iGKcFemx0pY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mmSKPU97GSwhjBfJiT0QqB8i15vZsVAkID+AsnAn7VIhwdCPvee+PUHgeVAvFmvjWV4YZkPPgvrqGU32uhwHKoacSkfOdNCm/36cim78Px/bkqd8omsJnLyBlXpCjw48dTs0mW9GEBUPG7xV/QEa/kpxva/72lbQQt7zQLhEVaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fM5Hpisd; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=An9X1wT3vSj9uWjVEfBPbE3POVKNfBeLcmcjHWU4CkByI+xLPp/j+wLAPxfQmMaqjuFIcUGCMN0HPxjCGIePDQMzxH+iYSymSkN5cc6XPsovkoOMVFpjZZNoWY0jI1sJzW2GQU3A0JZ3jNKLwXogytWav751eK0dL6FDYXDXngo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RGbgPKQx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fM5Hpisd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC0EC4CEE7;
-	Fri, 16 May 2025 01:04:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RGbgPKQx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1F0C4CEE7;
+	Fri, 16 May 2025 01:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747357489;
-	bh=3ggWfmad+Ahr7bFez/BW9d/QPrzgbhpVN0Lt6HYLdYw=;
+	s=k20201202; t=1747357740;
+	bh=LlunDUDR2TDmEZ4XUi/62Fa3/lxpELn/iGKcFemx0pY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fM5HpisdK9I89uPQxKjo44flBMfJQYJLWGvodP3rAmh4O/ZYNp19nXuMIEXEt9vl9
-	 M6lcd8BIxyIyhg27f8WudzMRH+ojoT4sr8/f5BJK8YsVeIrKy4DQ6YTDCUMBqQ2fVQ
-	 IimnR8/BHVSAg/ibZJLPhMGgE9mqyu6AEQ35FoQP46OCjtBMixlNrsXyCwh3DLULeW
-	 EvTbvV34sUfjtRidMBti0A97mHFewVxi3760FPT0iiTU7aUq9lXjsJ7FKS2YrySQcV
-	 VRajxmnCd8ublHWq0l2oeTPk/9NFvlTFJmMc2nRAIac5cSMRzcm1cUL7hg662V7Rl1
-	 TCUdwm5vxv7Tg==
-Date: Thu, 15 May 2025 18:04:48 -0700
+	b=RGbgPKQxwqSNa6sH9Id4EeYCV2OlsMGF0tPsQ2HerBXkMsznD/z1C1dV7O90isz/5
+	 PvGQjMzjA7R0CEJl7QIWw6BW9uQTvj6EYlwj8YUeyEvzablmHzdgLEsLbBVjNBhCUk
+	 HnbbR1dPatfKYT9qMd9bPlH50j8zjn8hnWKtt4jZj/XkJxAPi+AT/oWgrTwivLKlD6
+	 cCzJmLUVLB5/3qqoiMZkD25VaGRxzw3iBAmJ64j8yLD9pIrJe49KhLUBaYdZluIFEO
+	 8sBH69+tOVkmjgtGEGnxxwtTlqwra9xHqA27Y639nB4an2gwDDGKM3ufJ+jxUOPofZ
+	 4inbHkljJci3g==
+Date: Thu, 15 May 2025 18:08:58 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: netdev@vger.kernel.org, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, Russell King <linux@armlinux.org.uk>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Vadim Fedorenko
- <vadim.fedorenko@linux.dev>, Richard Cochran <richardcochran@gmail.com>,
- Furong Xu <0x1207@gmail.com>
-Subject: Re: [PATCH v2 net-next] net: stmmac: convert to ndo_hwtstamp_get()
- and ndo_hwtstamp_set()
-Message-ID: <20250515180448.2d00909a@kernel.org>
-In-Reply-To: <20250514143249.1808377-1-vladimir.oltean@nxp.com>
-References: <20250514143249.1808377-1-vladimir.oltean@nxp.com>
+To: Jinjian Song <jinjian.song@fibocom.com>
+Cc: chandrashekar.devegowda@intel.com, chiranjeevi.rapolu@linux.intel.com,
+ haijun.liu@mediatek.com, m.chetan.kumar@linux.intel.com,
+ ricardo.martinez@linux.intel.com, loic.poulain@linaro.org,
+ ryazanov.s.a@gmail.com, johannes@sipsolutions.net, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+ angelogioacchino.delregno@collabora.com,
+ linux-arm-kernel@lists.infradead.org, matthias.bgg@gmail.com,
+ corbet@lwn.net, linux-mediatek@lists.infradead.org, helgaas@kernel.org,
+ danielwinkler@google.com, korneld@google.com, andrew+netdev@lunn.ch,
+ horms@kernel.org, rafael.wang@fibocom.com
+Subject: Re: [net-next v1] net: wwan: t7xx: Parameterize data plane RX BAT
+ and FAG count
+Message-ID: <20250515180858.2568d930@kernel.org>
+In-Reply-To: <20250514104728.10869-1-jinjian.song@fibocom.com>
+References: <20250514104728.10869-1-jinjian.song@fibocom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,9 +54,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 14 May 2025 17:32:49 +0300 Vladimir Oltean wrote:
-> +	if (!netif_running(dev)) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "Cannot change timestamping configuration while up");
+On Wed, 14 May 2025 18:47:28 +0800 Jinjian Song wrote:
+> The DMA buffer for data plane RX is currently fixed, being parameterized
+> to allow configuration.
 
-changed up -> down when applying
+Module parameters are discouraged, they are pretty poor as an API since
+they apply to all devices in the system. Can you describe what "frg"
+and "bat" are ? One of the existing APIs likely covers them.
+Please also describe the scope (are they per netdev or some sort of
+device level params)?
+-- 
+pw-bot: cr
