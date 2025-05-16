@@ -1,27 +1,27 @@
-Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7A022F76B
-	for <netdev@vger.kernel.org>; Fri, 16 May 2025 09:34:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED622230BE9
+	for <netdev@vger.kernel.org>; Fri, 16 May 2025 09:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747388056; cv=none; b=SFVw/yPJ0Z6ojZKY6zOghuxqDN+wS7yhnvHzLz3YFLERJ+0DPYUv013lOSop3iQS6yUwgjWpIwvmPRNjmA5KdkiCJSwouHq9MX9lUHPuT4F0N0ByMKl3UqoOe8QqDLAMBP8A7k15HARg0NSpYEayiwJzFgkrl57G4jg5ryg3uSk=
+	t=1747388057; cv=none; b=OmqEVDI5Jvix7gt4csb780rr+iYLof2ARHla/o8cuHjx9y0Z95gU5KLdZNdY+B6/pGg1NAu+z78foHehKJoeIM898GnDuOufCWgAaIJKF6PokXF/2Vh/LI0k0g3wI9E74SqM8NDPo2bSqW44V0tL34vroSsCohal7TDG6FX8zck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747388056; c=relaxed/simple;
-	bh=3JHwYYBei4MBqXq7AUbL0T1aGSV8Cad9i7YeJMNI9nY=;
+	s=arc-20240116; t=1747388057; c=relaxed/simple;
+	bh=sOlP9omh66g0xJ1133H6F4TBFZahmeyBYna30iOBxIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gc1zlQUznPnqfQ/SnTGPAJOxPMW1czv9zjo85ZpR0dTktm7FeicHUt/yeB6Zmd6nXiNSdpfPPh6YFmJm5nXCPOLbAJwjyeHrD6VwPlFwCbPeSNkzVvXUpkT0CSNNOP3ekbBpgVH4FKNdGa2IxDAucpB6WT2yOLr6dCfOTY0OCW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.169.211.239
+	 MIME-Version; b=orHPJqpnyvUQP6rpzj4q4aXMczX21KeYUBsfDMMkF7fvkq0UqsJJLvoAMGIqCkbrdrWMrMtIk3c25CME/5nkbzeQ/X/BBzPtvXZk3JcvbuEbvTqUyJcCvQ2lh6P73tcBQxegzQAZQ/lBILxhUrJ06x7d4xaQVvxXRFo0ClT41So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz17t1747387980tc5f4e71a
-X-QQ-Originating-IP: OmF0p9yJXhUXF+in/Rkz4cnkYcXhXhgEvLasRQgwfDk=
+X-QQ-mid: esmtpsz17t1747387975te6618c23
+X-QQ-Originating-IP: L3eWvFYan026Bgwx5IPaX7DOkx0nr3LVLcI66FsSHrk=
 Received: from w-MS-7E16.trustnetic.com ( [122.233.195.51])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 16 May 2025 17:32:59 +0800 (CST)
+	id ; Fri, 16 May 2025 17:32:54 +0800 (CST)
 X-QQ-SSF: 0001000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 8757114396790303968
+X-BIZMAIL-ID: 727843897797265350
 EX-QQ-RecipientCnt: 10
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org,
@@ -34,9 +34,9 @@ To: netdev@vger.kernel.org,
 	horms@kernel.org
 Cc: mengyuanlou@net-swift.com,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next 9/9] net: txgbe: Implement SRIOV for AML devices
-Date: Fri, 16 May 2025 17:32:20 +0800
-Message-ID: <CE302004991EAA2C+20250516093220.6044-10-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next 7/9] net: txgbe: Restrict the use of mismatched FW versions
+Date: Fri, 16 May 2025 17:32:18 +0800
+Message-ID: <ED7ACBFDFF6405A7+20250516093220.6044-8-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250516093220.6044-1-jiawenwu@trustnetic.com>
 References: <20250516093220.6044-1-jiawenwu@trustnetic.com>
@@ -49,63 +49,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MHa7XUe+VRiKGh4IT3kHaw/wQTmWZ5u78DMh3vcyWa2bOrCnb5M2rVdL
-	v+02pzuOj2Ey6h51wRP4ug5i3yyLosR74XEsqPjIh9wZ3qW94uIf8TybuYA2gbYzAvIJ79U
-	/TSXpTUcxS/YJF35+7zZRJdOCQ5b6woYGPgzODj0oGVvZgU+E5IhypYqk0PZrz9o4t7/Krg
-	VmQOnZE0vgpP45feaKqDA+Cj/dCdQa2U+iUOBx9QXKYxX/k7JRZisNbu9LpDskscDAieFNj
-	JvnrZJhF9bPFo73WIULdC+0dUamqrt+tzJxk7Q+w3cfnLQ+FcqprKMl1Arvs6Xbe7Sow4d5
-	BWANnLvwu9QBhR6pbct54gkvq6UUYeUw8NDOlTAvHJ6pewZNP9y8LWDjZz9Ox0uJvsxkYmW
-	ecq8MHh3yolA8hUIoA4dJTpax/nMH/XjR4uo6Xy2dXivtfAR9HoXAK+W0pGCrlwbVGjtmpN
-	jOPidHZYFGma/TSx/pwqQdBlKLFivrerOAtgo8ry9h55+mipm8kSnWvJe7A1/24ywLJceNT
-	Cn3imkchzNNFYF/BOz91hMFnefRrpvdxZgErPNfPbhTBHpFoZq1Ac6ZNSZtIqygravW4p8m
-	smqdbxmZArCd9H3Mkb7yeeyNzhXUohcCN5wcOP+QwUiMF49S4SWIIzgThlxvd5egkFiDkSr
-	ukyh2l9m1ujgsMtV+wnI3CvKKVyVcDh4fd0a/U4hsXLevFnGeI0jePu4VFX+cx/68X7rBqt
-	D3ksLNTgldyw2BLvRUFkfjcTAcTfPHOd1luuqfxdM900aRuhi5Dchw3H2O3CSj0CFXxu6NM
-	Xkp1f9unh3e1G8nlE9jSnLf5JFmd0gT6c0YYsK2jc3DzDdaePiyygsAjhclgcuATo3rTZrA
-	su476i45A4A04jgPrBHcNH9fA+syx9Gum2V7MOAyCzbSmAPldb5IKW2Zv9yNiil7bWfl9rF
-	l9gPXZCmfHnCWBKOPQSQQoPAaAA1MMqfsqT9Tu9DkWfn/M+CwrelqlO7m5qR8V9yK8aXsCN
-	WIS9x2/qCQAXFTaJM472TAgGJ6TNnprV9zQmJOLgZZIosW28viBHwlT7klCrJQUvK1i/GwY
-	3s1+16jesWPNmexmJijCHE=
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+X-QQ-XMAILINFO: NcOoHQsD5eyELZ5L4X+hE8peAfsqMC/P0wsumJiVmkXXrKf1ZfphP4pN
+	nzgvINY3Fva1ISByO4mDV3QC3hlZEYKFTEdE2um/f9kjW/iD2abb1tQ9tORLZR3TJXKGsuD
+	gWvCxTlXlrVDXE6+UZ+bDJxIMGL6h6dJRT2mKDOLcWu94w8Op56ZST1wbj9mGyW+Qo7Eu0A
+	eyZeMfY/lOTWzwEfHdc23RmQ9HNJ1s2ni5DQm/75rZonBrR8m4Ueaq52/G95hStAFdV3fyB
+	ZvBAWUEGqWC730oLqeU2h8Jo8l3NXE40/hME9XkQ3bsS2vRss7pD7TisAHsACy/F8JVsJvk
+	TkdiecCBSf8XGaxDzQblrWQBf/9TSWDQayHPamyDVhstrnJ2GA7X8MiuOS+1g+uM2+Zme2q
+	vjcOci5FUZaH/dbmFElUUbQ+K6Qnszzlovx4cLwvTwCz0GlACIA2LwLHc7k1N41+KkUeGMr
+	R17U4IaTN19+yl/qTfd5WK+CD2DO6GW9fgaifr4IwqNL8oa+BuNv9jX6l246w2EbwecDe2O
+	B++Sy3kLb+u7E506g17KcNAQ5d9jZlwxasxkkEYTRPzbLj5WR2hQfBpGTm6QiN60F/cw/5z
+	tYQS0mecsd1EKXIlpZlRT8aPlExeHHChTfOMhINzJJUUAmi9W4LVTjgRN/wqDahtsfkoTcd
+	zPXeh40J132yPrXDxDgiXQj0DiQ4PP3k5UtOG7YMMtJW7l30Dj+rCW3Svmowsngz4jvrTax
+	/rgYvc/wRFwKnKiaqrwOoILSM0QjwOQ93NndM91l7QbMtE7xDqwxF4lfMke4QwX/PUIeHkp
+	jZ9ySltA0DF/jkJA5LrjR/13tEZ0M8unehzPUUzTZ+yFj5ihbVQ4JmWuybMgjvDS6Fgyf5t
+	Ym0v2HyCjo3blFicVQXrrgaVJCC/tx/3JZrb83/yOyq05QeGt74UupT6qxCh+Fc6lQq4UWL
+	Pb/080IY/M0cj8CLNtT7Rpqcv7FPObdIuUJl1rz28r7GoUy23kvfDhkjCkXb3DS7iaWATw4
+	6WVDf+9tKNCFfswg6Nk3oM8k/0+eU5nb+CrPxUlh9/5pc6sICAWPd1Cz3YgKeXT6uKG0Y9h
+	9ESQ0pn3G42lcwDyfHmRn8=
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
 X-QQ-RECHKSPAM: 0
 
-Support to bring VFs link up for AML 25G/10G devices.
+The new added mailbox commands require a new released firmware version.
+Otherwise, a lot of logs "Unknown FW command" would be printed. And the
+devices may not work properly. So add the test command in the probe
+function.
 
 Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c  | 16 ++++++++++++++++
+ drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h  |  1 +
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c |  7 +++++++
+ 3 files changed, 24 insertions(+)
 
 diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-index 6bcf67bef576..7dbcf41750c1 100644
+index af12ebb89c71..83b383021790 100644
 --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
 +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-@@ -10,6 +10,7 @@
- #include "../libwx/wx_lib.h"
- #include "../libwx/wx_ptp.h"
- #include "../libwx/wx_hw.h"
-+#include "../libwx/wx_sriov.h"
- #include "txgbe_type.h"
- #include "txgbe_aml.h"
- #include "txgbe_hw.h"
-@@ -315,6 +316,8 @@ static void txgbe_mac_link_up_aml(struct phylink_config *config,
- 	wx->last_rx_ptp_check = jiffies;
- 	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
- 		wx_ptp_reset_cyclecounter(wx);
-+	/* ping all the active vfs to let them know we are going up */
-+	wx_ping_all_vfs_with_link_status(wx, true);
+@@ -50,6 +50,22 @@ irqreturn_t txgbe_gpio_irq_handler_aml(int irq, void *data)
+ 	return IRQ_HANDLED;
  }
  
- static void txgbe_mac_link_down_aml(struct phylink_config *config,
-@@ -329,6 +332,8 @@ static void txgbe_mac_link_down_aml(struct phylink_config *config,
- 	wx->speed = SPEED_UNKNOWN;
- 	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
- 		wx_ptp_reset_cyclecounter(wx);
-+	/* ping all the active vfs to let them know we are going down */
-+	wx_ping_all_vfs_with_link_status(wx, false);
- }
++int txgbe_test_hostif(struct wx *wx)
++{
++	struct txgbe_hic_ephy_getlink buffer;
++
++	if (wx->mac.type != wx_mac_aml)
++		return 0;
++
++	buffer.hdr.cmd = FW_PHY_GET_LINK_CMD;
++	buffer.hdr.buf_len = sizeof(struct txgbe_hic_ephy_getlink) -
++			     sizeof(struct wx_hic_hdr);
++	buffer.hdr.cmd_or_resp.cmd_resv = FW_CEM_CMD_RESERVED;
++
++	return wx_host_interface_command(wx, (u32 *)&buffer, sizeof(buffer),
++					WX_HI_COMMAND_TIMEOUT, true);
++}
++
+ static int txgbe_identify_sfp_hostif(struct wx *wx, struct txgbe_hic_i2c_read *buffer)
+ {
+ 	buffer->hdr.cmd = FW_READ_SFP_INFO_CMD;
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h
+index 2376a021ba8d..25d4971ca0d9 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h
+@@ -6,6 +6,7 @@
  
- static void txgbe_mac_config_aml(struct phylink_config *config, unsigned int mode,
+ void txgbe_gpio_init_aml(struct wx *wx);
+ irqreturn_t txgbe_gpio_irq_handler_aml(int irq, void *data);
++int txgbe_test_hostif(struct wx *wx);
+ int txgbe_set_phy_link(struct wx *wx);
+ int txgbe_identify_sfp(struct wx *wx);
+ void txgbe_setup_link(struct wx *wx);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index 6f3b67def51a..f3d2778b8e35 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -864,6 +864,13 @@ static int txgbe_probe(struct pci_dev *pdev,
+ 	if (etrack_id < 0x20010)
+ 		dev_warn(&pdev->dev, "Please upgrade the firmware to 0x20010 or above.\n");
+ 
++	err = txgbe_test_hostif(wx);
++	if (err != 0) {
++		dev_err(&pdev->dev, "Mismatched Firmware version\n");
++		err = -EIO;
++		goto err_release_hw;
++	}
++
+ 	txgbe = devm_kzalloc(&pdev->dev, sizeof(*txgbe), GFP_KERNEL);
+ 	if (!txgbe) {
+ 		err = -ENOMEM;
 -- 
 2.48.1
 
