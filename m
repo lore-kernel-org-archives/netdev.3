@@ -1,66 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E605280A3A;
-	Fri, 16 May 2025 23:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4449323644F
+	for <netdev@vger.kernel.org>; Fri, 16 May 2025 23:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747438812; cv=none; b=ZB25XuSww4oe++BTTZVEOmXgfx86/ITK8qVLUA0Yepc5gi2+sZSDtsOc1g37HpwAyeq1DJlfjGtuWO3pLf4mLGpPc6d6W8ca/qXWTN8xr9xDHUSivlUdAZxZPmH+NWKUyHSoZsXfcpkrAZGvlVLw7NXg67DrV+fbCYIBhzIY18Y=
+	t=1747439392; cv=none; b=phVwBAvpQ91+H4AYhx8Q0qa3uk99mdxhWqNNHjZhluettgyXfPMfEl0z4v5XXn6P1R7DisyCP7hEFBsKamEcM9TV3Krp7WetfGmj8sHVF9hi4x2WlwSTQuCTiHkytStoSe9nu5kZEFmYefjmbBVpxnqRwwPP6yJT4sgUb5RuNOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747438812; c=relaxed/simple;
-	bh=2wztyBXxOGcEiedsFd8ApQEJP6P3565tlm2K7lr01eM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kuZQ+R2UAJ3SgYK6dsAuVXI6106/LPpCwagu410U5ab0+Tbi3s7Sl0TQHEWVxzTLjn+gJn04ZUwglaIodoO9P3JcLfmsQK280+wGMlhHD0xVp89PSI0tT3CktdG1E2M4CL2l4VsEiTdkkEFMdQ9tleRHS9415THVeSGJ9qnC6ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HbXW0+fh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747439392; c=relaxed/simple;
+	bh=b6wGr4nm8FmvhV7tpeuwJouVaFkxQSU7UDHKGORepGQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hebzR0kcThHSqb/5o+AVqvmZsx363eD4iM+3XQgYz/xVMHZs/mKjeYNHzOP0gMrwPqzX0cZtk2puKMBKMW92wTNTUuCh33j9pMYTu4QkryxjDdqA4X3mW9AZrVz7CzDkfXOoeIJo9vjnTBC3QS0mR92mmCg5YsqKR8bKvT5Ukzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JI1Wicrf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HbXW0+fh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864A6C4CEE4;
-	Fri, 16 May 2025 23:40:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JI1Wicrf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4120C4CEE4;
+	Fri, 16 May 2025 23:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747438811;
-	bh=2wztyBXxOGcEiedsFd8ApQEJP6P3565tlm2K7lr01eM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HbXW0+fhRJxASDJElHg5BFeC/a5dgevV3uGLbBZiqa4hpdztDVHWoYvZrtIJyUL84
-	 ILcw8PQLHJWnrpDd7spHthi1lKz3oJ34VXmiJBiyIEEfJYCDxmGcOduAOgJr4tbN8Q
-	 OqSRza6r6IlFm9JXJipBbvDBXKcy3pAfkF+bxJ1+Zg8qafkIJo/mwDgmGOXh38YkC9
-	 +wAL/OQgKAcxI/JDIoOfN+eA1QeQsEQzYPZsmrq+mkyuYTbwSqbXV5bQNE+UnZ+8LY
-	 cjijfHKRJiNR/8Hg+TZ0l7SsIbEMlNLMlfk/Q9zInYPESqHplQOZ7XkhqJU3xN3jnK
-	 EMBeChQT8vmWg==
-Date: Fri, 16 May 2025 16:40:10 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Cc: <bryan.whitehead@microchip.com>, <UNGLinuxDriver@microchip.com>,
- <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
- <pabeni@redhat.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1 net] net: lan743x: Restore SGMII CTRL register on
- resume
-Message-ID: <20250516164010.49dd5e8b@kernel.org>
-In-Reply-To: <20250516035719.117960-1-thangaraj.s@microchip.com>
-References: <20250516035719.117960-1-thangaraj.s@microchip.com>
+	s=k20201202; t=1747439391;
+	bh=b6wGr4nm8FmvhV7tpeuwJouVaFkxQSU7UDHKGORepGQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=JI1WicrfpAAd/Sa/1/MCZHdS33jVEdrHOV2wmp5eT9wukgNroKm2zw85ABQnMF9po
+	 SQkkVQHjTFDGxJqXyRbV5Ah2gPnvuZf0gyyCIEJxoR0wSHAxTbYgb7M+DM1OfIaxJJ
+	 +7ckNvnBJ0TZzE0qug38rEk7s4Lg1mlqAaOLC0SbpLqz6/R9C7gVfLJ5vufqADD2hX
+	 sNZUamfCL4JSsoUmZ55s9qZBQyEnG9jAGjwOnsJSq+4qkYPUqBXjcleX/BeS97SkCN
+	 Rqb+wKtAatJ4Y4xUIa9c7leAS9HfHcQ3y4gimPB+zYPkNSEqHUx+KIoQd3slFR0dJ7
+	 casHz5V5J2qow==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE0933806659;
+	Fri, 16 May 2025 23:50:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] net: airoha: Fix page recycling in
+ airoha_qdma_rx_process()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174743942851.4098936.12041671721533040373.git-patchwork-notify@kernel.org>
+Date: Fri, 16 May 2025 23:50:28 +0000
+References: <20250515-airoha-fix-rx-process-error-condition-v2-1-657e92c894b9@kernel.org>
+In-Reply-To: <20250515-airoha-fix-rx-process-error-condition-v2-1-657e92c894b9@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ netdev@vger.kernel.org
 
-On Fri, 16 May 2025 09:27:19 +0530 Thangaraj Samynathan wrote:
-> SGMII_CTRL register, which specifies the active interface, was not 
-> properly restored when resuming from suspend. This led to incorrect
-> interface selection after resume particularly in scenarios involving
-> the FPGA.
-> 
-> To fix this:
-> - Move the SGMII_CTRL setup out of the probe function.
-> - Initialize the register in the hardware initialization helper function,
-> which is called during both device initialization and resume.
-> 
-> This ensures the interface configuration is consistently restored after
-> suspend/resume cycles.
+Hello:
 
-Is there a reason you're not CCing Raju Lakkaraju on this?
-Having a review tag from the author of the change under Fixes 
-is always great.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 15 May 2025 08:33:06 +0200 you wrote:
+> Do not recycle the page twice in airoha_qdma_rx_process routine in case
+> of error. Just run dev_kfree_skb() if the skb has been allocated and marked
+> for recycling. Run page_pool_put_full_page() directly if the skb has not
+> been allocated yet.
+> Moreover, rely on DMA address from queue entry element instead of reading
+> it from the DMA descriptor for DMA syncing in airoha_qdma_rx_process().
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v2] net: airoha: Fix page recycling in airoha_qdma_rx_process()
+    https://git.kernel.org/netdev/net/c/d6d2b0e1538d
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
