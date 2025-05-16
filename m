@@ -1,28 +1,38 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from mx02lb.world4you.com (mx02lb.world4you.com [81.19.149.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B28F255F3E
-	for <netdev@vger.kernel.org>; Fri, 16 May 2025 20:58:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC7D8488
+	for <netdev@vger.kernel.org>; Fri, 16 May 2025 21:00:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747429088; cv=none; b=baqU1D8EIflQEyB6ZmjsVG3j35KIr6pK2LjAEyXfHu7lVgwedbeRNwq4bISgBZt2505oXfx5uxwwAlv55enzVfZ1Kid1nYsTjTTUQtryzSJIlGNyh2VfK94kfA+fYjfjXAzscowsPai4KozWDb9leGxcTZbK7TmlbvI8DbQoc5c=
+	t=1747429230; cv=none; b=Xnsoy64AILFJ4SBzdzh2hfMV72GeOzF186cREmlBauWMrHUKlqZ6zbvBkpyT4ypmAbqwOv97Uuu0rDWXr7SGmcGsOgOezmFb2GGfypg+y02deyx7RBwxV962Msm8lt9up5kyN70K+5w3jZE8st1O7ttICim/RzCUSXeIg1ukE5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747429088; c=relaxed/simple;
-	bh=7rR38ob0Tpa3JczoysMf5UOvZZLz3rgukDvz4ZxJrao=;
+	s=arc-20240116; t=1747429230; c=relaxed/simple;
+	bh=5vX4HQGo83/sXRyxrtyVZV3GkwDgtNiiXUpqJqyEJu4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AVNKHFcS8VBZkbaKEm+HbmmvlwW4SSzG3LynQ2QnXmZSEPOEDMm7g2z1IPyFDa6ps79+HbrCGVEKOUIYVCuP54DP/SPjFgZAXSXboF+UwYG7USN4EBCXh/aNdKHjDmQBFlyg+KJtisPYtAY1Mp/w5jIdLhTHXbrnl7LvGWnVadY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.0.192] (ip5f5af287.dynamic.kabel-deutschland.de [95.90.242.135])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 2ACF461EA1BD4;
-	Fri, 16 May 2025 22:57:34 +0200 (CEST)
-Message-ID: <8c8999a7-d586-4bc6-9912-b088d9c3049f@molgen.mpg.de>
-Date: Fri, 16 May 2025 22:57:32 +0200
+	 In-Reply-To:Content-Type; b=P9sFbb64yigAcy6zne7i6AI1XyQ6tbb+pMFlErb/LcKdqQ1erqrG5iAOM/obkAKkscRuCHbqxpK/V23lxoA3Ft/ZTUoUsoto8N7yzMR2FAUfiwqViJZtI1fuPArFIYDS/tDT0OJfl3YOAc2RqB85gYPr09wWBYLR2UV8Eezg1bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=UbV7E42Q; arc=none smtp.client-ip=81.19.149.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="UbV7E42Q"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=0eBCyFa5nJfNhXT3ROfPcm1WyDIyjNrZL9o5go0BOfQ=; b=UbV7E42QHi27obx+Pc8EoZRWDg
+	zkF8s26+0KpTckB8QcWpprb5IyQH9tpKl+aFtAuuwK42ARm/Z6bZBALzxveSHxEHQU7ieGDB1AQuS
+	3oiRCnzxRVgCJL8U/bjD8odaz1tgquU0ZKRUdDGZ4GrlKASUZV0EnUUVbuxoYniq/nQc=;
+Received: from [188.22.4.212] (helo=[10.0.0.160])
+	by mx02lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1uG1Po-000000006eh-0KYk;
+	Fri, 16 May 2025 22:12:20 +0200
+Message-ID: <6eb6d8fc-3d3d-491f-9b57-a859d39dabb4@engleder-embedded.com>
+Date: Fri, 16 May 2025 22:12:18 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -30,120 +40,67 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next] ice: add E835 device IDs
-To: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- Konrad Knitter <konrad.knitter@intel.com>
-References: <20250514104632.331559-1-dawid.osuchowski@linux.intel.com>
+Subject: Re: [PATCH net] net: tsnep: fix timestamping with a stacked DSA
+ driver
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org
+References: <20250512132430.344473-1-vladimir.oltean@nxp.com>
+ <532276c5-0c5f-41dd-add9-487f39ec1b3a@engleder-embedded.com>
+ <20250512210942.2bvv466abjdswhay@skbuf>
+ <76ce9b02-d809-4ccb-8f59-cb8f201e4496@engleder-embedded.com>
+ <20250513200645.vxuevzz3hdtd56sc@skbuf>
 Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20250514104632.331559-1-dawid.osuchowski@linux.intel.com>
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <20250513200645.vxuevzz3hdtd56sc@skbuf>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-AV-Do-Run: Yes
 
-Dear Dawid,
-
-
-Thank you for your patch.
-
-Am 14.05.25 um 12:46 schrieb Dawid Osuchowski:
-> E835 is an enhanced version of the E830.
-> It continues to use the same set of commands, registers and interfaces
-> as other devices in the 800 Series.
+On 13.05.25 22:06, Vladimir Oltean wrote:
+> On Tue, May 13, 2025 at 08:34:17PM +0200, Gerhard Engleder wrote:
+>> On 12.05.25 23:09, Vladimir Oltean wrote:
+>>> On Mon, May 12, 2025 at 10:07:52PM +0200, Gerhard Engleder wrote:
+>>>> On 12.05.25 15:24, Vladimir Oltean wrote:
+>>>>> This driver seems susceptible to a form of the bug explained in commit
+>>>>> c26a2c2ddc01 ("gianfar: Fix TX timestamping with a stacked DSA driver")
+>>>>> and in Documentation/networking/timestamping.rst section "Other caveats
+>>>>> for MAC drivers", specifically it timestamps any skb which has
+>>>>> SKBTX_HW_TSTAMP, and does not consider adapter->hwtstamp_config.tx_type.
+>>>>
+>>>> Is it necessary in general to check adapter->hwtstamp_config.tx_type for
+>>>> HWTSTAMP_TX_ON or only to fix this bug?
+>>>
+>>> I'll start with the problem description and work my way towards an answer.
+>>
+>> (...)
+>>
+>>>> I can take over this patch and test it when I understand more clearly
+>>>> what needs to be done.
+>>>>
+>>>> Gerhard
+>>>
+>>> It would be great if you could take over this patch. After the net ->
+>>> net-next merge I can then submit the ndo_hwtstamp_get()/ndo_hwtstamp_set()
+>>> conversion patch for tsnep, the one which initially prompted me to look
+>>> into how this driver uses the provided configuration.
+>>
+>> I will post a new patch version in the next days. You can send me the
+>> ndo_hwtstamp_get()/ndo_hwtstamp_set() conversion patch for testing. I
+>> have it on my list, but nothing done so far, so I feel responsible
+>> for that too.
+>>
+>> Gerhard
 > 
-> Following device IDs are added:
-> - 0x1248: Intel(R) Ethernet Controller E835-CC for backplane
-> - 0x1249: Intel(R) Ethernet Controller E835-CC for QSFP
-> - 0x124A: Intel(R) Ethernet Controller E835-CC for SFP
-> - 0x1261: Intel(R) Ethernet Controller E835-C for backplane
-> - 0x1262: Intel(R) Ethernet Controller E835-C for QSFP
-> - 0x1263: Intel(R) Ethernet Controller E835-C for SFP
-> - 0x1265: Intel(R) Ethernet Controller E835-L for backplane
-> - 0x1266: Intel(R) Ethernet Controller E835-L for QSFP
-> - 0x1267: Intel(R) Ethernet Controller E835-L for SFP
+> See attached. It applies on top of this patch ("do_tstamp" is present in
+> the context).
 
-Should you resend, it’d be great, if you added the datasheet name, where 
-these id’s are present.
+I tested the ndo_hwtstamp_get()/ndo_hwtstamp_set() conversion patch
+successfully on top of the timestamping fix patch. Thank you for the
+patch!
 
-> Reviewed-by: Konrad Knitter <konrad.knitter@intel.com>
-> Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-> ---
->   drivers/net/ethernet/intel/ice/ice_common.c |  9 +++++++++
->   drivers/net/ethernet/intel/ice/ice_devids.h | 18 ++++++++++++++++++
->   drivers/net/ethernet/intel/ice/ice_main.c   |  9 +++++++++
->   3 files changed, 36 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-> index 6e38d46c2c51..010ad09b3200 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_common.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_common.c
-> @@ -171,6 +171,15 @@ static int ice_set_mac_type(struct ice_hw *hw)
->   	case ICE_DEV_ID_E830_XXV_QSFP:
->   	case ICE_DEV_ID_E830C_SFP:
->   	case ICE_DEV_ID_E830_XXV_SFP:
-> +	case ICE_DEV_ID_E835CC_BACKPLANE:
-> +	case ICE_DEV_ID_E835CC_QSFP56:
-> +	case ICE_DEV_ID_E835CC_SFP:
-> +	case ICE_DEV_ID_E835C_BACKPLANE:
-> +	case ICE_DEV_ID_E835C_QSFP:
-> +	case ICE_DEV_ID_E835C_SFP:
-> +	case ICE_DEV_ID_E835_L_BACKPLANE:
-> +	case ICE_DEV_ID_E835_L_QSFP:
-> +	case ICE_DEV_ID_E835_L_SFP:
->   		hw->mac_type = ICE_MAC_E830;
->   		break;
->   	default:
-> diff --git a/drivers/net/ethernet/intel/ice/ice_devids.h b/drivers/net/ethernet/intel/ice/ice_devids.h
-> index 34fd604132f5..7761c3501174 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_devids.h
-> +++ b/drivers/net/ethernet/intel/ice/ice_devids.h
-> @@ -36,6 +36,24 @@
->   #define ICE_DEV_ID_E830_XXV_QSFP	0x12DD
->   /* Intel(R) Ethernet Controller E830-XXV for SFP */
->   #define ICE_DEV_ID_E830_XXV_SFP		0x12DE
-> +/* Intel(R) Ethernet Controller E835-CC for backplane */
-> +#define ICE_DEV_ID_E835CC_BACKPLANE	0x1248
-> +/* Intel(R) Ethernet Controller E835-CC for QSFP */
-> +#define ICE_DEV_ID_E835CC_QSFP56	0x1249
-> +/* Intel(R) Ethernet Controller E835-CC for SFP */
-> +#define ICE_DEV_ID_E835CC_SFP		0x124A
-> +/* Intel(R) Ethernet Controller E835-C for backplane */
-> +#define ICE_DEV_ID_E835C_BACKPLANE	0x1261
-> +/* Intel(R) Ethernet Controller E835-C for QSFP */
-> +#define ICE_DEV_ID_E835C_QSFP		0x1262
-> +/* Intel(R) Ethernet Controller E835-C for SFP */
-> +#define ICE_DEV_ID_E835C_SFP		0x1263
-> +/* Intel(R) Ethernet Controller E835-L for backplane */
-> +#define ICE_DEV_ID_E835_L_BACKPLANE	0x1265
-> +/* Intel(R) Ethernet Controller E835-L for QSFP */
-> +#define ICE_DEV_ID_E835_L_QSFP		0x1266
-> +/* Intel(R) Ethernet Controller E835-L for SFP */
-> +#define ICE_DEV_ID_E835_L_SFP		0x1267
->   /* Intel(R) Ethernet Controller E810-C for backplane */
->   #define ICE_DEV_ID_E810C_BACKPLANE	0x1591
->   /* Intel(R) Ethernet Controller E810-C for QSFP */
-> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-> index c4264984cfcb..5c941f4426d1 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-> @@ -5906,6 +5906,15 @@ static const struct pci_device_id ice_pci_tbl[] = {
->   	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E830_XXV_QSFP), },
->   	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E830C_SFP), },
->   	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E830_XXV_SFP), },
-> +	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835CC_BACKPLANE), },
-> +	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835CC_QSFP56), },
-> +	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835CC_SFP), },
-> +	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835C_BACKPLANE), },
-> +	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835C_QSFP), },
-> +	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835C_SFP), },
-> +	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835_L_BACKPLANE), },
-> +	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835_L_QSFP), },
-> +	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835_L_SFP), },
->   	/* required last entry */
->   	{}
->   };
-
-
-Kind regards,
-
-Paul
+Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Tested-by: Gerhard Engleder <gerhard@engleder-embedded.com>
