@@ -1,115 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787AC28466D;
-	Fri, 16 May 2025 21:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C4322DFBB
+	for <netdev@vger.kernel.org>; Fri, 16 May 2025 21:36:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747431359; cv=none; b=H4RnnNhNYDaPg9KiP9eMWJkGzrrVbXNctADXlUU0WWYvSmuOgktNBL+d5zo0FqfJU6blF1g4MpLUm3ykLutZB4gYolZGXstM7O6CG587nqmazIZKJCw5cLqbEp+t2l5EhxIippuHr+hWb8w7dYV0Ifqr4IGGT5WGpJzdx/1eovw=
+	t=1747431402; cv=none; b=G29liRqywVyss3dHnBhuUsqgDBszxJBWAqNnm+lyC0xQU1e5xgKXdgrVeblKEhZc/fR58pwWRiKJBxhZ9Bczr7/KFqXDxLNVgttR5CstVVesc5EY+vZu7AsI6dwn9o6XaSghR1GEAQvgoDVBPc/9DYd3CC7FsmWUIVftQqEOjms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747431359; c=relaxed/simple;
-	bh=rez+Gcm5qi16mulIlqMeuXT0dnqUZjHmsCwK+GG3nHs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=MY8PwUcCKgKtOq5MbrhMhicrZfZ1GahULlY9+UxhC5I9CZ30N8MOjvFFEwd6gAd7rwxAwCQcGTYejXnnsrhlTbWfaY2/j+dwAA6XhlkPIKoS724A48SzhGQ6dgUoYlME2ip7HmydJgy5J4f5pkh15kts9KYK4odYK2WKK3ugih0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C5x9h1ot; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747431402; c=relaxed/simple;
+	bh=EBPNCS65V8PG2N3rCayq0uVzTJVCY4qBErJdVvNV0bA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=pzsJtgtKeLrdaajVCaIW2AlSZm3XFnKK3ZO0x7K7f3WMfDoCTXqvSrOBWsmbUfPT5NZNSs04c6ehk6TXFPXiB15EYtnJ24VOeErkFoJZWexMleE7NM3a83y9z6+8LF7y/6Dn0lJNLYcN8Ama5rp9wr/0f29UOMSPe14MioH/PI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gqkp5IOm; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C5x9h1ot"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8ED0C4CEE9;
-	Fri, 16 May 2025 21:35:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747431359;
-	bh=rez+Gcm5qi16mulIlqMeuXT0dnqUZjHmsCwK+GG3nHs=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=C5x9h1otf0TQF1HmhUBVeBGvKZjlCdP+9nq6PqiAEA3wjcvhM9OFlP1Rc1QltJnlf
-	 UWlTxdpHkZGUHq1L1bvvZxFoe6IgAeRx0I66IFXwCKrEfI4yn3QwCh+DTP/gZDKojl
-	 fIrub+Sy+hreVL47kzjxhpNQwWSaa95qaED1nJf7a3GVEZ/aHg/G/5imHZB95cjZ6y
-	 BATkPStKXSKTUuFcKkV7HyEqB6oonTpiQLHoByxOc3oOYcKz1BLaUjbxmadHClg/kI
-	 GGZI3ifIZ8lfT2X/RG2kkhgWShbcCWojlnNpoPc+2e4ER+USetL25MQSzw+TTphj0v
-	 +zs0wAtKhnIvQ==
-Message-ID: <e69630d5-1816-400a-8a76-6d5490d3a6b2@kernel.org>
-Date: Fri, 16 May 2025 21:46:03 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gqkp5IOm"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-30e9e8d3e85so350201a91.1
+        for <netdev@vger.kernel.org>; Fri, 16 May 2025 14:36:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1747431400; x=1748036200; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=wVResVTxeYTVMSiSfPp3db7ZOrQ96OObutHTVT5Vcr4=;
+        b=gqkp5IOmDNRiDlUV2OtnxQkp7C34BkK6g6UTiznnIfMKJNQe8ViTLKKMQ/Dzhepic9
+         VUpkIqQRlRyAKQ/hzu/JviQjnIsz1IxM1iPgn+MFOQoU6us0LOcD9Gh9Fnsdc3vZ1/FA
+         zt/8qqXlWOdgyXbqo90ot4BzfDbrjWwu2hm0uKO/8q17TTnPe6a3oErEAE5uxd49xC+l
+         APhlIOHGyMxR4eTyKwGBmqDdNKyuWICPx65J2mohooPLgjVtfNFbMkA+iJhHTIov6JAY
+         bROcgZfpxMw63RkTCWSOi+kqU16yj4UGwdvP/qvMf2VGAUku6/MQHg5BK5hXulmPq097
+         /7Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747431400; x=1748036200;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wVResVTxeYTVMSiSfPp3db7ZOrQ96OObutHTVT5Vcr4=;
+        b=jt39DDiKaJNFdMVZVMmpQrpvcbaE0dD7M23x0c17QVFUq5wavq+VrPzW2Di7Pl9+lY
+         bFMXWasEe8QrKHFqvobrHZ/mkWnqnd9EgopoVLe3EU0/6MlaS7nQ0qVU6SXRPLy3bR37
+         TQKhGyUJ8xb2PSf/YBNTDLATCrKj7LqVh4nfaj3QYoDNyfMnoThMDH2bDi0iFClvfdjm
+         BluHEyJr5TeUj1zNk36LcUdPD0PA8RcWUXQES/XhvRkW/YB7ltlWuQvK/RNsSHSBV9q3
+         khyH3WS4cn/yL8B3FQ4X8kU8z0JKbZC9HCOpNI/B0nYZx8oCuS1CJUcaIPbzwZTNXDD0
+         Y+Lw==
+X-Gm-Message-State: AOJu0Yz8IwyQI3dUL5XMYzFdMz1vA6xKaVmMAWFzdTeUUN1Vr8JEh3Cq
+	uit83FQEzHVIDLonh9js94ewp49H4tX/lrjx9t/o2EbJXJs9Cl2kY4o3ft+16HWIauwh9vqeKKS
+	eRCo+KiZfLfZGSQ==
+X-Google-Smtp-Source: AGHT+IEl92XupC3T/jWnyDo0/vkLtTx4XZX2s/qUZmfK5Npzhn+L4NLIaZpPHuINyTC7yKsf1FcsA8bYlbZ1fg==
+X-Received: from pjbsy8.prod.google.com ([2002:a17:90b:2d08:b0:30e:65cf:2614])
+ (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:3f4c:b0:2ee:5958:828 with SMTP id 98e67ed59e1d1-30e7d522155mr8111221a91.9.1747431400270;
+ Fri, 16 May 2025 14:36:40 -0700 (PDT)
+Date: Fri, 16 May 2025 21:36:38 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 1/2] dt-bindings: net: pse-pd: Add bindings
- for Si3474 PSE controller
-To: Piotr Kubik <piotr.kubik@adtran.com>,
- Oleksij Rempel <o.rempel@pengutronix.de>,
- Kory Maincent <kory.maincent@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <f975f23e-84a7-48e6-a2b2-18ceb9148675@adtran.com>
- <ebe9a9f5-db9c-4b82-a5e9-3b108a0c6338@adtran.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <ebe9a9f5-db9c-4b82-a5e9-3b108a0c6338@adtran.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.49.0.1112.g889b7c5bd8-goog
+Message-ID: <20250516213638.1889546-1-skhawaja@google.com>
+Subject: [PATCH net v2] xsk: Bring back busy polling support in XDP_COPY
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Jakub Kicinski <kuba@kernel.org>, "David S . Miller " <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, almasrymina@google.com, 
+	willemb@google.com, stfomichev@gmail.com
+Cc: netdev@vger.kernel.org, skhawaja@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 16/05/2025 15:07, Piotr Kubik wrote:
-> From: Piotr Kubik <piotr.kubik@adtran.com>
-> 
-> Add the Si3474 I2C Power Sourcing Equipment controller device tree
-> bindings documentation.
-> 
-> Signed-off-by: Piotr Kubik <piotr.kubik@adtran.com>
-> ---
+Commit 5ef44b3cb43b ("xsk: Bring back busy polling support") fixed the
+busy polling support in xsk for XDP_ZEROCOPY after it was broken in
+commit 86e25f40aa1e ("net: napi: Add napi_config"). The busy polling
+support with XDP_COPY remained broken since the napi_id setup in
+xsk_rcv_check was removed.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Bring back the setup of napi_id for XDP_COPY so socket level SO_BUSYPOLL
+can be used to poll the underlying napi.
 
+Do the setup of napi_id for XDP_COPY in xsk_bind, as it is done
+currently for XDP_ZEROCOPY. The setup of napi_id for XDP_COPY in
+xsk_bind is safe because xsk_rcv_check checks that the rx queue at which
+the packet arrives is equal to the queue_id that was supplied in bind.
+This is done for both XDP_COPY and XDP_ZEROCOPY mode.
 
-Best regards,
-Krzysztof
+Tested using AF_XDP support in virtio-net by running the xsk_rr AF_XDP
+benchmarking tool shared here:
+https://lore.kernel.org/all/20250320163523.3501305-1-skhawaja@google.com/T/
+
+Enabled socket busy polling using following commands in qemu,
+
+```
+sudo ethtool -L eth0 combined 1
+echo 400 | sudo tee /proc/sys/net/core/busy_read
+echo 100 | sudo tee /sys/class/net/eth0/napi_defer_hard_irqs
+echo 15000   | sudo tee /sys/class/net/eth0/gro_flush_timeout
+```
+
+Fixes: 5ef44b3cb43b ("xsk: Bring back busy polling support")
+Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+---
+
+v2:
+- Mark Napi ID in xsk_bind for XDP_COPY.
+
+v1:
+https://lore.kernel.org/netdev/Z-Lby6WMFkHaaJxB@mini-arch/T/#mdd713c1e2b0caf3bb5f625884709af95e30ccc4d
+
+ net/xdp/xsk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 4abc81f33d3e..72c000c0ae5f 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -1304,7 +1304,7 @@ static int xsk_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
+ 	xs->queue_id = qid;
+ 	xp_add_xsk(xs->pool, xs);
+ 
+-	if (xs->zc && qid < dev->real_num_rx_queues) {
++	if (qid < dev->real_num_rx_queues) {
+ 		struct netdev_rx_queue *rxq;
+ 
+ 		rxq = __netif_get_rx_queue(dev, qid);
+-- 
+2.49.0.1112.g889b7c5bd8-goog
+
