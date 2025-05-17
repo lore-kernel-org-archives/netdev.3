@@ -1,382 +1,304 @@
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+Received: from FR6P281CU001.outbound.protection.outlook.com (mail-germanywestcentralazon11020124.outbound.protection.outlook.com [52.101.171.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943AB13D891
-	for <netdev@vger.kernel.org>; Sat, 17 May 2025 08:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747471065; cv=none; b=NJTjYInjypfElKVjaVmKJpyiniAx7K78ADlBcikn+1xLoaZofl/BTf3k8K9cgoPWX/D/aiT4JK6SwC1TDyNXJ8qg6bv+0ZpuyEUBZEfZ8HF44mZo5u+2btrl2DB8bXQKNcaXObuIU5N0QO/oqUA9tN/OpckBFilZeBpE4Q3k0Hw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747471065; c=relaxed/simple;
-	bh=knAVvo3iJMcdTqPZh9rGbQYiWVthFHNT7bXXirYFEHg=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=RKWRu5Sbn7cGGjY34nN+cAAVQ9JAvktu4CwZQpJmvGkUAzKKMuTcj8AkuWDeqEPBytza/i0GK8q0uflR2k0Y/J3zKRgAkJ7H1HmHhnDKEGrigb2Jm1KV2LJWLrajE7+T/kXumYn6/ztPnJAKtGetTH3qgKQcIjVoFSWGRDH/0lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
-Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 54H7WL3O020451;
-	Sat, 17 May 2025 16:32:21 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from [192.168.1.6] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 54H7WLGx020448
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Sat, 17 May 2025 16:32:21 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <ff1d684a-22ec-4ea2-a6ee-fe9704a6f284@I-love.SAKURA.ne.jp>
-Date: Sat, 17 May 2025 16:32:20 +0900
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317E81B6CE4;
+	Sat, 17 May 2025 09:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.171.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747475070; cv=fail; b=qXqNj3ImdNgvtWj11IhkO59HHgn61XCipi6INi5AzR9zuhU0i+7AYEuc55nV15waQIdPdnqWm+JuCKk9FG50l4Y65qKuM3pVVRB7K48v3GARaC6vMasjwCoVjL08ZmHsT0cz/rnvCFSuLjX4i6CyD/k54S+/wAUoGcBIpwbPOCQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747475070; c=relaxed/simple;
+	bh=w7qRg2LNH+RRvZNEu7DfH2oxrHJo/ReGddrYDjlGazE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=YXKiNg4+u7i3RGj09JT0FwNTaJD33QJLMYGave1W3JtPP7uebF4U5fPUl6c/jWIGj8yRiFxtHPPVIxr4VMyWBPXWdsTgHREoWJGbWkks9U8Wc7LNzjIpg0ju3FaheHwECKfrq4nfnAfUg6vt5ZnAzv+cF3aMCRb9E1kFYU0LTAE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=adtran.com; spf=pass smtp.mailfrom=adtran.com; dkim=pass (1024-bit key) header.d=adtran.com header.i=@adtran.com header.b=W9INXjlR; arc=fail smtp.client-ip=52.101.171.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=adtran.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=adtran.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=adtran.com header.i=@adtran.com header.b="W9INXjlR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=heCUmpw7CJBclCqr2U7LIES4SacpVyJoCNNC9JNo4DxfRBPGaCWyRFmS5cjatYQjeALi8VNs6FTfwhK50ZpQe6yCqpFMsM8JZz1h3HXqcaL1R1DNbPYYM4Ki+0Buholx0iEGYpyjosRD34eqxyNEKwNThuzGguShwX7tlGRXmaWBB4i6CN2r81+80kqyE24dsT3AAQgyIvtMKOXyzb4/kQsjWg1sbO7eKY/cYnU4U8TdnzaQx7bfo2Y4q3t99kmjIVtnpxRWBSmD/UlG7Xu1Y9pjTtEacVH0d+kZb3wJAQ/JVJ9FgUpCpb5NoUuLenHtzVEASm6M8qPzf5PDw7o0mA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=w7qRg2LNH+RRvZNEu7DfH2oxrHJo/ReGddrYDjlGazE=;
+ b=DPySN3FkSRvb5O+7rEujH6zlSWWlRm7Czh9tZ2AXTVu2PK8qoQMD5+I/HVouSMnByt7I2o3tVNhrwk94kR4mdR4c4C+jKMfAl4kmR+8wAJXPO3X6SWLHtv23IjgtcrZ5pE0FjkmWJSh10quWPcM4wLHoamXjELYMoEzcOewDd3Yir52/hy4KapyqdaDl9ShzRe5Jb7AUFPA84dlVyZNRbhRs50AvNVFuWbhIbxF4qqrEUl53RyrZbaAbIb9Ot5bbOcB9jmaI7xIirNQKdY2mzbf3DD8aXTEQEk1PNr69g4ffFlHVFbaIVQjv/wqu8utPgjPJtnY6U20DmVHM8MfGww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=adtran.com; dmarc=pass action=none header.from=adtran.com;
+ dkim=pass header.d=adtran.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=adtran.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=w7qRg2LNH+RRvZNEu7DfH2oxrHJo/ReGddrYDjlGazE=;
+ b=W9INXjlRGdzkeH7YmBBzM2OK4jCNYI0C5M/731X4J+XBqifmmlE0oW1v226GbYcSzsnsbt4O7/MFGkUBaqEqF9sMSvGjlJYb3ofwYoQb3k4b8l1Tbig8IknWlXKY17UOeZ9I2HywTinXbZpvv6mDsJvcubWRdjTpTyLqV/XyLZ8=
+Received: from FRYP281MB2224.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:43::5) by
+ FRYP281MB2287.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:47::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8722.33; Sat, 17 May 2025 09:44:24 +0000
+Received: from FRYP281MB2224.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::8232:294d:6d45:7192]) by FRYP281MB2224.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::8232:294d:6d45:7192%5]) with mapi id 15.20.8722.031; Sat, 17 May 2025
+ 09:44:23 +0000
+From: Piotr Kubik <piotr.kubik@adtran.com>
+To: Kory Maincent <kory.maincent@bootlin.com>
+CC: Krzysztof Kozlowski <krzk@kernel.org>, Oleksij Rempel
+	<o.rempel@pengutronix.de>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next 1/2] dt-bindings: net: pse-pd: Add bindings for
+ Si3474 PSE controller
+Thread-Topic: [PATCH net-next 1/2] dt-bindings: net: pse-pd: Add bindings for
+ Si3474 PSE controller
+Thread-Index: AQHbxxBFoBGc7LCmZ0qJt0opFaMnmg==
+Date: Sat, 17 May 2025 09:44:23 +0000
+Message-ID: <50be886b-553c-4af7-b40e-3ab4163dd3e3@adtran.com>
+References: <bf9e5c77-512d-4efb-ad1d-f14120c4e06b@adtran.com>
+ <259ad93b-9cc2-4b5d-8323-b427417af747@adtran.com>
+ <f8eb7131-5a5d-47ec-8f3b-d30cdb1364b5@kernel.org>
+ <dccd0e78-81c6-422c-9f8e-11d3e5d55715@adtran.com>
+ <20250517003525.2f6a5005@kmaincent-XPS-13-7390>
+In-Reply-To: <20250517003525.2f6a5005@kmaincent-XPS-13-7390>
+Accept-Language: pl-PL, en-US
+Content-Language: pl-PL
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=adtran.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: FRYP281MB2224:EE_|FRYP281MB2287:EE_
+x-ms-office365-filtering-correlation-id: 8febb7e6-3eac-48bb-7457-08dd952767dc
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?MDRyWDl1NDdOUzlldERoQzRBLzZPc3I3b3VyMmNXRFVmd05qSHFMT1FZWGNQ?=
+ =?utf-8?B?eFhLNU5SRnVyeVplcHVjRktJdnVpQmxRQ245NUdTSEFhc1kvTmliS3lWbTNm?=
+ =?utf-8?B?Z3FNcDJ1VFUrT0VIdmFhdG9vZTZ4TzlQYVFhVHRDNjVHWGphRi9NeVA2b2p2?=
+ =?utf-8?B?NTgvZTNpaTFaOVRyczlBcGFLVmJUQ0hJQ1FlTWxSOHo3U0RnTTBnay9VNnJm?=
+ =?utf-8?B?bytQaVJRaXZ1UVdkdHpia0JBanR4YjNKWUQ3TUIyNmFxdGw4MFZqU05GY1RE?=
+ =?utf-8?B?M2FNL3RTY1RNTkRLUWlnU01PcXRTSEFwMmFhSU9obWl3OUp2RDNTRzhWLzMz?=
+ =?utf-8?B?UHMrTGlCRm14Z0ZRZ2hvZHdwbCtVTTZwdW5ZK3k3dHpRN0dubU13K0ZqQjRr?=
+ =?utf-8?B?MlZycUZra2hVWWhFSk1rRGhQemlpTW5Ha3FseW1RZStoUy9KVExkMHhabUNN?=
+ =?utf-8?B?M1hhMlZDNC9wQ2dMajljRHZPUWhjTkR5L2JkYUdod0g5Si9pM2JsQXE5L05W?=
+ =?utf-8?B?cmdYZUpTWXZlT3ROZ1pxY3puSkRvUHhhNHV1ZFVnQ2ZZNW5xS3g0K2RKVitM?=
+ =?utf-8?B?dytiMGgvZklZZnNxU2xEYWRhWEdOMDN4Nk0zSC92UGltaExGRDVETGVFTDB2?=
+ =?utf-8?B?K1lNd1pNOTU5WVBLYlc2QWdiY1dXQjR2dHZta2kvN2RUWlVwYlgrN2tiK09p?=
+ =?utf-8?B?Z25TMlF0dFV3d3oraFF3OGZmQklZTHc1MkRuZ0RFcFYzb2xRWVlQSHoza0JP?=
+ =?utf-8?B?UHZncFIrWUNVeGErOXdwcndjZkh1U2xEWG5yYVZYejZoKzNZelBpTTAwemFY?=
+ =?utf-8?B?TldPb3pQL3JCL0dPbG5HTXpmUmIvUWtNMWNoTVQ0RzdWSEZmUmZZS1N1eVNT?=
+ =?utf-8?B?T3AwQk1aQ1lkRUdFR3ZZOEthTVFwcElBRDB1a2xNQVFucGtZSXp6NWFCN0l5?=
+ =?utf-8?B?Wm5iSkxHOVM1S2xMOFNxRnRPc2pkNVNjRTFCb2JRdElEQlI1V1M0VXorOHB6?=
+ =?utf-8?B?eENpRU55OW16MUdES3RXQ1hISmJNbFdMSEZLQWMzeHIrSmxBR2xMSlFxTzhz?=
+ =?utf-8?B?bXUwRW5MSnROZnlhQjBiQzgyb3prMHAzVTYwdUg0ZDJrN0w1UkIxZGltL3Nm?=
+ =?utf-8?B?VWlnaitqbDllVUNXM2pBZzR1aDdkd3ZQY2xrbDk5VWxTeEtzVEQrcmxaYm9C?=
+ =?utf-8?B?ZDZVcGY0TDZVVjY1MnpnVEM1NFNvbHduL29ZSkNsM3M2aVhoTnFXYU1yWmNU?=
+ =?utf-8?B?aVhRNStadzVQTnhKMkpxa3lkTzNXUm9QckZNTHBac3AyNDcwM1k5NTdBRXdq?=
+ =?utf-8?B?cGdPODRGL1dSN0c0ZFJncHBzeFJLRzdYb0xjZWFHbTlCamtSWVV5dEFnckJQ?=
+ =?utf-8?B?R2dnT1pFeVZ4Y2EyTnpsWUpyZHVFb2RtdldQSUU0N3ZmM0QzTGIzeStnQWJw?=
+ =?utf-8?B?VWd4VlY2WExaYVZPRnZtbXRHei9NK1NWYyt0akgxNXk4em8wbE8yY1VwZlFy?=
+ =?utf-8?B?elYzemgvNS8rUDVWMmZLS2kwbU8zdnBZUnR0NkZSQ1ljOXROTEROcXE2c2hp?=
+ =?utf-8?B?QWdLbUt3eTljbC8xcVE1OTVlYkZrYVN1RXQycEtCaU1wN1l6MnRNYzNYM0Yz?=
+ =?utf-8?B?LzJrdG9RbllkZHViaUk2VkJ5UitnVEIxNmEyckM2Zm12MUxMSEZscHVJcUp1?=
+ =?utf-8?B?andBaS9HQm5vS2hBSkltWm43aG5MbjNiNXFWSERxTG5URSs4YVkwT2swR1dJ?=
+ =?utf-8?B?UzRodmNyUEdKTG0xWnUxYVRmNDJoWDI2SXJsZ2NkZVQvMThxSVdxbkppU0ox?=
+ =?utf-8?B?ZzJKQnBRUWQxMmp5WHVTL3pYMjFzSVVQaWhYOUhlbXVsNHdQbndoejl0REZi?=
+ =?utf-8?B?ZjVkT0d0ZHRzTFJzRGppbGNldGVaMXdNL3BVRmlzdUlGSVBKclk3MXYxdFRy?=
+ =?utf-8?B?Q0pBMHRwN2ZWREZTQnpZS0c3S1ovQnJjM2ljYzJSU0dRR3ZJcHhMNndldGhU?=
+ =?utf-8?Q?8f0zTE+C5bhVyQzcCidkRl8k8l+fkc=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FRYP281MB2224.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?MFE1WGxVbWtZb0U5YUpTbjYyL2FNaVBLQW9JTkhmMGhldGJkWTRrOThhcm0y?=
+ =?utf-8?B?dlR2eDl1RklIUWVTdWZ0Tk5IOGZNZ0N1UU9CVVlBMzIzUTY2ZGd4MzFvcjl2?=
+ =?utf-8?B?aWI1UlVtZ215VzJLSlM3WlJEa2hnSUJySWd3U0ZQZHhaZVBhbW9KZXVTeGxU?=
+ =?utf-8?B?bVhGREJxUGVtazhzZDJYWFI1MFBTSXRTQ1FQbTl6L2FGVmFyTVY5TC9uMktR?=
+ =?utf-8?B?TFErT1dkaXpacURJNXdNOU1udUhVWUVEdWh3aXRqNjNuVmRPbTNTbGI3bHdm?=
+ =?utf-8?B?V2w5RzhuUE9TYkNXalVJNmpJSkNLaWppOG8yWFhFYWd0TDE1OFpiNWJhUGc3?=
+ =?utf-8?B?M2p2c2lkMmpqbU92bFFmSDhxdmozQzQvclJKR2F1eDdCNHV1SXU0TTFvWUVF?=
+ =?utf-8?B?VTVRUXNpOCtqb1dNK0puTW5NSjVVK2c3aDJ4SWJPVGtwbEZTV2xZcG9DaTlz?=
+ =?utf-8?B?aDVvQXoxQ0RyV0p2ckFuMUtHVzFhcENFeGM3VDA0enhPb2lqQzR4UHFmT0sr?=
+ =?utf-8?B?WnZGT2VSSTZ5MmZJMk53ckJaTE1lOUNTbmQwSVhRUld2cTFnNjdzUUFiR0dJ?=
+ =?utf-8?B?R2FORmR1UmNXMHZCcHdjRW5QSTZDd0E2R1ZWeUVqT3J2Qzdpb0ZWVDNZTTU4?=
+ =?utf-8?B?Mm5reTZxaCtrR21pczQvaXM0MTZZZ0prc2xTaFpCN04xbk9hOUtiOTNRRmVt?=
+ =?utf-8?B?WTNxOGZweHhTVDBYQXl6SUFFR0pYM0R5S1BrRnJXM1dFa0Q4ZjBsd3pKeTlk?=
+ =?utf-8?B?b0lKYUJLb2pUamRyR09oYmRxMXlXbDMvdlFDalVQbEhmZkVaYXFaaDRVK1ly?=
+ =?utf-8?B?MjlMS2xrZmVWbXArNElkVDRaU2N1RXRJN1g3NU54MTJGTHkyTE01Ukh4V0VP?=
+ =?utf-8?B?MVZPUWRXb1M4ME5HQTU1RG5Ga0h6Q0xhVHd1UUFKa1Q5dGQ4SEFYalhqWXpS?=
+ =?utf-8?B?TUpKN3N0ZWoyTU8vM0RqdDI0RnRteGErWFMrRDE1eHRzUHBndXJtQ2hqOEpk?=
+ =?utf-8?B?ZlVwMGtVQ0FUV1NDOGpaTGRnR0VtSUkyb3pqQXE1dVhyZ2NZTXJUNXV2ZXFB?=
+ =?utf-8?B?OUlRQVA3eHhReVpMRm1ISzhWUmllV3dTT3JNbm5rQlkwZy9ZSmpHcEJNY1E4?=
+ =?utf-8?B?YmxIQ3g1VS9uME9DUFA3UERwZVUrQW1sMXBLeS80VzFocFVuOXVqRmZVNWFX?=
+ =?utf-8?B?UUVJSUlIaW9RYWxGZjg2VWJKY2dmTnlCVVhHWit6S3NFQnhsMVppT2RnUnBY?=
+ =?utf-8?B?OUZwUGExT01WYklRNlhqRXZpMFNaekpzT3JSWWZXZXFMTEZwTXNSSFpnSGNt?=
+ =?utf-8?B?OHZBY1lsQVV5M0tReHlJai9FU0p2ajA5TFEraGN0bmVGTVRxSDEza2I0cDBu?=
+ =?utf-8?B?c3ZEb0ltMUdLdEJVOUVxamJZdWVadDI2Kzd6dnJWZWt1VzJaT0toTG8weERu?=
+ =?utf-8?B?TUFCRVY2YysxQS90QThPOVdxa1lxOXZLT3c4RTF0eXlJVElna082UmMzRjIz?=
+ =?utf-8?B?b0RIeGlXWmRtbzY1cjNDcGNZVzVrTHN1NHNSNEJrMGJzcXdsbUZsVloya2Q4?=
+ =?utf-8?B?MnFjWVVBbTdvaGVCY285b0lnT1R3TzZBTDFEd1M2SGVDUzY2ZWNlaW1VZEZI?=
+ =?utf-8?B?bjc3YW5WVlBGNkEvbEVWZGdMalREbXNXMHFQS1U5bUgxQk16aitnUkc3Ry9w?=
+ =?utf-8?B?eVpJcHVkVzVMSnhKdCsydjdXNEMwUWtMZE14NnZXcjN1RHZyUnkzSitZZ1ln?=
+ =?utf-8?B?aHVXQlMwcitmeExiYTNwYWUrRWlJcFlDV05zWHhuYkFyTGMzZDMxTlJ4MTgy?=
+ =?utf-8?B?RnppV1ZWU1ZEbGQvbWxxRjlQZVVvc3VXb0t6dDBVMkVkWDRxQkJadkF0Q3lG?=
+ =?utf-8?B?UmlyYk1FaUVPQ2ZldERsTzFWTFNzYmhpMjRkRkl6SFRRVU1QOXR3ZXRuMWx3?=
+ =?utf-8?B?MG9UK0xvWmNFNEU5c0xYVERMa0JxWHFSMW9QVlVJQXE4YnU0VWJYb2thOXhZ?=
+ =?utf-8?B?R1hXUVZjUFR2QXZnR3ZlSHd5T0tQcW8vQmY5Mktsbmx6YllVTkhuUWozTmMy?=
+ =?utf-8?B?YTYxaTRhdmhHR1ppcitwVXVLOUpjTys5Tk5YZVFyb2I2WS9xWVNqTGlaNTBR?=
+ =?utf-8?Q?+vBGZTJNYO8FRlfahnMsN1nNX?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <1312341A11B8154BA1A08327B2998E99@DEUP281.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Jiri Pirko <jiri@resnulli.us>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Hillf Danton <hdanton@sina.com>,
-        Network Development <netdev@vger.kernel.org>
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Subject: [PATCH (EXPERIMENTAL)] team: replace term lock with rtnl lock
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Anti-Virus-Server: fsav202.rs.sakura.ne.jp
-X-Virus-Status: clean
+X-OriginatorOrg: adtran.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: FRYP281MB2224.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8febb7e6-3eac-48bb-7457-08dd952767dc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 May 2025 09:44:23.4672
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 423946e4-28c0-4deb-904c-a4a4b174fb3f
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: hWJk2DXPaLe2aaNk5joGLSEKkZMTMGzqdAX35NCAVjydQUlUy9DnHgpEHdat7j+2faaw1NKdVF44OixFi6NaKQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRYP281MB2287
 
-syzbot is reporting locking order problem between wiphy and team [1].
-
-Jiri Pirko commented [2]:
-
-  I wonder, since we already rely on rtnl in lots of team code, perhaps we
-  can remove team->lock completely and convert the rest of the code to be
-  protected by rtnl lock as well
-
-I asked syzbot to check whether rtnl is already held when team lock is
-held, and the reproducer did not find obvious location [3]. Thus, I wrote
-this patch for more testing.
-
-[1] https://syzkaller.appspot.com/bug?extid=705c61d60b091ef42c04
-[2] https://lkml.kernel.org/r/ZoZ2RH9BcahEB9Sb@nanopsycho.orion
-[3] https://lkml.kernel.org/r/68275676.a00a0220.398d88.0213.GAE@google.com
-
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
----
- drivers/net/team/team_core.c              | 52 +++++++----------------
- drivers/net/team/team_mode_activebackup.c |  2 +-
- drivers/net/team/team_mode_loadbalance.c  | 16 ++++---
- include/linux/if_team.h                   |  3 --
- 4 files changed, 27 insertions(+), 46 deletions(-)
-
-diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
-index d8fc0c79745d..f32c3db56088 100644
---- a/drivers/net/team/team_core.c
-+++ b/drivers/net/team/team_core.c
-@@ -933,7 +933,7 @@ static bool team_port_find(const struct team *team,
-  * Enable/disable port by adding to enabled port hashlist and setting
-  * port->index (Might be racy so reader could see incorrect ifindex when
-  * processing a flying packet, but that is not a problem). Write guarded
-- * by team->lock.
-+ * by RTNL.
-  */
- static void team_port_enable(struct team *team,
- 			     struct team_port *port)
-@@ -1660,8 +1660,6 @@ static int team_init(struct net_device *dev)
- 		goto err_options_register;
- 	netif_carrier_off(dev);
- 
--	lockdep_register_key(&team->team_lock_key);
--	__mutex_init(&team->lock, "team->team_lock_key", &team->team_lock_key);
- 	netdev_lockdep_set_classes(dev);
- 
- 	return 0;
-@@ -1682,7 +1680,7 @@ static void team_uninit(struct net_device *dev)
- 	struct team_port *port;
- 	struct team_port *tmp;
- 
--	mutex_lock(&team->lock);
-+	ASSERT_RTNL();
- 	list_for_each_entry_safe(port, tmp, &team->port_list, list)
- 		team_port_del(team, port->dev);
- 
-@@ -1691,9 +1689,7 @@ static void team_uninit(struct net_device *dev)
- 	team_mcast_rejoin_fini(team);
- 	team_notify_peers_fini(team);
- 	team_queue_override_fini(team);
--	mutex_unlock(&team->lock);
- 	netdev_change_features(dev);
--	lockdep_unregister_key(&team->team_lock_key);
- }
- 
- static void team_destructor(struct net_device *dev)
-@@ -1811,14 +1807,13 @@ static int team_set_mac_address(struct net_device *dev, void *p)
- 	struct team *team = netdev_priv(dev);
- 	struct team_port *port;
- 
-+	ASSERT_RTNL();
- 	if (dev->type == ARPHRD_ETHER && !is_valid_ether_addr(addr->sa_data))
- 		return -EADDRNOTAVAIL;
- 	dev_addr_set(dev, addr->sa_data);
--	mutex_lock(&team->lock);
- 	list_for_each_entry(port, &team->port_list, list)
- 		if (team->ops.port_change_dev_addr)
- 			team->ops.port_change_dev_addr(team, port);
--	mutex_unlock(&team->lock);
- 	return 0;
- }
- 
-@@ -1829,10 +1824,10 @@ static int team_change_mtu(struct net_device *dev, int new_mtu)
- 	int err;
- 
- 	/*
--	 * Alhough this is reader, it's guarded by team lock. It's not possible
-+	 * Alhough this is reader, it's guarded by RTNL. It's not possible
- 	 * to traverse list in reverse under rcu_read_lock
- 	 */
--	mutex_lock(&team->lock);
-+	ASSERT_RTNL();
- 	team->port_mtu_change_allowed = true;
- 	list_for_each_entry(port, &team->port_list, list) {
- 		err = dev_set_mtu(port->dev, new_mtu);
-@@ -1843,7 +1838,6 @@ static int team_change_mtu(struct net_device *dev, int new_mtu)
- 		}
- 	}
- 	team->port_mtu_change_allowed = false;
--	mutex_unlock(&team->lock);
- 
- 	WRITE_ONCE(dev->mtu, new_mtu);
- 
-@@ -1853,7 +1847,6 @@ static int team_change_mtu(struct net_device *dev, int new_mtu)
- 	list_for_each_entry_continue_reverse(port, &team->port_list, list)
- 		dev_set_mtu(port->dev, dev->mtu);
- 	team->port_mtu_change_allowed = false;
--	mutex_unlock(&team->lock);
- 
- 	return err;
- }
-@@ -1904,23 +1897,21 @@ static int team_vlan_rx_add_vid(struct net_device *dev, __be16 proto, u16 vid)
- 	int err;
- 
- 	/*
--	 * Alhough this is reader, it's guarded by team lock. It's not possible
-+	 * Alhough this is reader, it's guarded by RTNL. It's not possible
- 	 * to traverse list in reverse under rcu_read_lock
- 	 */
--	mutex_lock(&team->lock);
-+	ASSERT_RTNL();
- 	list_for_each_entry(port, &team->port_list, list) {
- 		err = vlan_vid_add(port->dev, proto, vid);
- 		if (err)
- 			goto unwind;
- 	}
--	mutex_unlock(&team->lock);
- 
- 	return 0;
- 
- unwind:
- 	list_for_each_entry_continue_reverse(port, &team->port_list, list)
- 		vlan_vid_del(port->dev, proto, vid);
--	mutex_unlock(&team->lock);
- 
- 	return err;
- }
-@@ -1930,10 +1921,9 @@ static int team_vlan_rx_kill_vid(struct net_device *dev, __be16 proto, u16 vid)
- 	struct team *team = netdev_priv(dev);
- 	struct team_port *port;
- 
--	mutex_lock(&team->lock);
-+	ASSERT_RTNL();
- 	list_for_each_entry(port, &team->port_list, list)
- 		vlan_vid_del(port->dev, proto, vid);
--	mutex_unlock(&team->lock);
- 
- 	return 0;
- }
-@@ -1955,9 +1945,8 @@ static void team_netpoll_cleanup(struct net_device *dev)
- {
- 	struct team *team = netdev_priv(dev);
- 
--	mutex_lock(&team->lock);
-+	ASSERT_RTNL();
- 	__team_netpoll_cleanup(team);
--	mutex_unlock(&team->lock);
- }
- 
- static int team_netpoll_setup(struct net_device *dev)
-@@ -1966,7 +1955,7 @@ static int team_netpoll_setup(struct net_device *dev)
- 	struct team_port *port;
- 	int err = 0;
- 
--	mutex_lock(&team->lock);
-+	ASSERT_RTNL();
- 	list_for_each_entry(port, &team->port_list, list) {
- 		err = __team_port_enable_netpoll(port);
- 		if (err) {
-@@ -1974,7 +1963,6 @@ static int team_netpoll_setup(struct net_device *dev)
- 			break;
- 		}
- 	}
--	mutex_unlock(&team->lock);
- 	return err;
- }
- #endif
-@@ -1985,9 +1973,8 @@ static int team_add_slave(struct net_device *dev, struct net_device *port_dev,
- 	struct team *team = netdev_priv(dev);
- 	int err;
- 
--	mutex_lock(&team->lock);
-+	ASSERT_RTNL();
- 	err = team_port_add(team, port_dev, extack);
--	mutex_unlock(&team->lock);
- 
- 	if (!err)
- 		netdev_change_features(dev);
-@@ -2000,18 +1987,12 @@ static int team_del_slave(struct net_device *dev, struct net_device *port_dev)
- 	struct team *team = netdev_priv(dev);
- 	int err;
- 
--	mutex_lock(&team->lock);
-+	ASSERT_RTNL();
- 	err = team_port_del(team, port_dev);
--	mutex_unlock(&team->lock);
- 
- 	if (err)
- 		return err;
- 
--	if (netif_is_team_master(port_dev)) {
--		lockdep_unregister_key(&team->team_lock_key);
--		lockdep_register_key(&team->team_lock_key);
--		lockdep_set_class(&team->lock, &team->team_lock_key);
--	}
- 	netdev_change_features(dev);
- 
- 	return err;
-@@ -2308,6 +2289,7 @@ static struct team *team_nl_team_get(struct genl_info *info)
- 	struct net_device *dev;
- 	struct team *team;
- 
-+	ASSERT_RTNL();
- 	if (!info->attrs[TEAM_ATTR_TEAM_IFINDEX])
- 		return NULL;
- 
-@@ -2319,13 +2301,12 @@ static struct team *team_nl_team_get(struct genl_info *info)
- 	}
- 
- 	team = netdev_priv(dev);
--	mutex_lock(&team->lock);
- 	return team;
- }
- 
- static void team_nl_team_put(struct team *team)
- {
--	mutex_unlock(&team->lock);
-+	ASSERT_RTNL();
- 	dev_put(team->dev);
- }
- 
-@@ -2961,11 +2942,8 @@ static void __team_port_change_port_removed(struct team_port *port)
- 
- static void team_port_change_check(struct team_port *port, bool linkup)
- {
--	struct team *team = port->team;
--
--	mutex_lock(&team->lock);
-+	ASSERT_RTNL();
- 	__team_port_change_check(port, linkup);
--	mutex_unlock(&team->lock);
- }
- 
- 
-diff --git a/drivers/net/team/team_mode_activebackup.c b/drivers/net/team/team_mode_activebackup.c
-index e0f599e2a51d..4e133451f4d6 100644
---- a/drivers/net/team/team_mode_activebackup.c
-+++ b/drivers/net/team/team_mode_activebackup.c
-@@ -68,7 +68,7 @@ static void ab_active_port_get(struct team *team, struct team_gsetter_ctx *ctx)
- 	struct team_port *active_port;
- 
- 	active_port = rcu_dereference_protected(ab_priv(team)->active_port,
--						lockdep_is_held(&team->lock));
-+						rtnl_is_locked());
- 	if (active_port)
- 		ctx->data.u32_val = active_port->dev->ifindex;
- 	else
-diff --git a/drivers/net/team/team_mode_loadbalance.c b/drivers/net/team/team_mode_loadbalance.c
-index 00f8989c29c0..fb4ead02c504 100644
---- a/drivers/net/team/team_mode_loadbalance.c
-+++ b/drivers/net/team/team_mode_loadbalance.c
-@@ -302,7 +302,7 @@ static int lb_bpf_func_set(struct team *team, struct team_gsetter_ctx *ctx)
- 		/* Clear old filter data */
- 		__fprog_destroy(lb_priv->ex->orig_fprog);
- 		orig_fp = rcu_dereference_protected(lb_priv->fp,
--						lockdep_is_held(&team->lock));
-+						    rtnl_is_locked());
- 	}
- 
- 	rcu_assign_pointer(lb_priv->fp, fp);
-@@ -325,7 +325,7 @@ static void lb_bpf_func_free(struct team *team)
- 
- 	__fprog_destroy(lb_priv->ex->orig_fprog);
- 	fp = rcu_dereference_protected(lb_priv->fp,
--				       lockdep_is_held(&team->lock));
-+				       rtnl_is_locked());
- 	bpf_prog_destroy(fp);
- }
- 
-@@ -336,7 +336,7 @@ static void lb_tx_method_get(struct team *team, struct team_gsetter_ctx *ctx)
- 	char *name;
- 
- 	func = rcu_dereference_protected(lb_priv->select_tx_port_func,
--					 lockdep_is_held(&team->lock));
-+					 rtnl_is_locked());
- 	name = lb_select_tx_port_get_name(func);
- 	BUG_ON(!name);
- 	ctx->data.str_val = name;
-@@ -478,7 +478,13 @@ static void lb_stats_refresh(struct work_struct *work)
- 	team = lb_priv_ex->team;
- 	lb_priv = get_lb_priv(team);
- 
--	if (!mutex_trylock(&team->lock)) {
-+	/* Since this function is called from WQ context, RTNL can't be held by the caller. */
-+	if (!rtnl_trylock()) {
-+		/*
-+		 * Since RTNL is shared by many callers, and rtnl_unlock() is a slower operation
-+		 * than plain mutex_unlock(), rtnl_trylock() will be more easier to compate than
-+		 * mutex_trylock(). Therefore, we might want to delay a bit before retrying.
-+		 */
- 		schedule_delayed_work(&lb_priv_ex->stats.refresh_dw, 0);
- 		return;
- 	}
-@@ -515,7 +521,7 @@ static void lb_stats_refresh(struct work_struct *work)
- 	schedule_delayed_work(&lb_priv_ex->stats.refresh_dw,
- 			      (lb_priv_ex->stats.refresh_interval * HZ) / 10);
- 
--	mutex_unlock(&team->lock);
-+	rtnl_unlock();
- }
- 
- static void lb_stats_refresh_interval_get(struct team *team,
-diff --git a/include/linux/if_team.h b/include/linux/if_team.h
-index cdc684e04a2f..ce97d891cf72 100644
---- a/include/linux/if_team.h
-+++ b/include/linux/if_team.h
-@@ -191,8 +191,6 @@ struct team {
- 
- 	const struct header_ops *header_ops_cache;
- 
--	struct mutex lock; /* used for overall locking, e.g. port lists write */
--
- 	/*
- 	 * List of enabled ports and their count
- 	 */
-@@ -223,7 +221,6 @@ struct team {
- 		atomic_t count_pending;
- 		struct delayed_work dw;
- 	} mcast_rejoin;
--	struct lock_class_key team_lock_key;
- 	long mode_priv[TEAM_MODE_PRIV_LONGS];
- };
- 
--- 
-2.43.5
-
+T24gNS8xNy8yNSAwMDozNSwgS29yeSBNYWluY2VudCB3cm90ZToNCj4gT24gVGh1LCAxNSBNYXkg
+MjAyNSAxNToyMDo0MCArMDAwMA0KPiBQaW90ciBLdWJpayA8cGlvdHIua3ViaWtAYWR0cmFuLmNv
+bT4gd3JvdGU6DQo+IA0KPj4gT24gNS8xMy8yNSAxMDoyNCwgS3J6eXN6dG9mIEtvemxvd3NraSB3
+cm90ZToNCj4+PiBPbiAxMy8wNS8yMDI1IDAwOjA1LCBQaW90ciBLdWJpayB3cm90ZTogIA0KPj4+
+PiArDQo+Pj4+ICttYWludGFpbmVyczoNCj4+Pj4gKyAgLSBQaW90ciBLdWJpayA8cGlvdHIua3Vi
+aWtAYWR0cmFuLmNvbT4NCj4+Pj4gKw0KPj4+PiArYWxsT2Y6DQo+Pj4+ICsgIC0gJHJlZjogcHNl
+LWNvbnRyb2xsZXIueWFtbCMNCj4+Pj4gKw0KPj4+PiArcHJvcGVydGllczoNCj4+Pj4gKyAgY29t
+cGF0aWJsZToNCj4+Pj4gKyAgICBlbnVtOg0KPj4+PiArICAgICAgLSBza3l3b3JrcyxzaTM0NzQN
+Cj4+Pj4gKw0KPj4+PiArICByZWctbmFtZXM6DQo+Pj4+ICsgICAgaXRlbXM6DQo+Pj4+ICsgICAg
+ICAtIGNvbnN0OiBtYWluDQo+Pj4+ICsgICAgICAtIGNvbnN0OiBzbGF2ZSAgDQo+Pj4NCj4+PiBz
+L3NsYXZlL3NlY29uZGFyeS8gKG9yIHdoYXRldmVyIGlzIHRoZXJlIGluIHJlY29tbWVuZGVkIG5h
+bWVzIGluIGNvZGluZw0KPj4+IHN0eWxlKQ0KPj4+ICAgDQo+Pg0KPj4gV2VsbCBJIHdhcyB0aGlu
+a2luZyBhYm91dCBpdCBhbmQgZGVjaWRlZCB0byB1c2UgJ3NsYXZlJyBmb3IgYXQgbGVhc3QgdHdv
+DQo+PiByZWFzb25zOg0KPj4gLSBzaTM0NzQgZGF0YXNoZWV0IGNhbGxzIHRoZSBzZWNvbmQgcGFy
+dCBvZiBJQyAod2UgY29uZmlndXJlIGl0IGhlcmUpIHRoaXMgd2F5DQo+PiAtIGRlc2NyaXB0aW9u
+IG9mIGkyY19uZXdfYW5jaWxsYXJ5X2RldmljZSgpIGNhbGxzIHRoaXMgZGV2aWNlIGV4cGxpY2l0
+bHkNCj4+IHNsYXZlIG11bHRpcGxlIHRpbWVzDQo+IA0KPiBJdCBpcyBiZXR0ZXIgdG8gYXZvaWQg
+dGhlIHVzYWdlIG9mIHN1Y2ggd29yZCBpbiBuZXcgY29kZS4gU2Vjb25kYXJ5IHN1aXRzIHdlbGwN
+Cj4gZm9yIHJlcGxhY2VtZW50Lg0KPiANCk9LLCBJIHJlcGxhY2VkIGl0IGFscmVhZHkgaW4gdjM6
+DQpodHRwczovL2xvcmUua2VybmVsLm9yZy9uZXRkZXYvZWJlOWE5ZjUtZGI5Yy00YjgyLWE1ZTkt
+M2IxMDhhMGM2MzM4QGFkdHJhbi5jb20NCg0KPj4+PiArDQo+Pj4+ICsgIHJlZzogIA0KPj4+DQo+
+Pj4gRmlyc3QgcmVnLCB0aGVuIHJlZy1uYW1lcy4gUGxlYXNlIGZvbGxvdyBvdGhlciBiaW5kaW5n
+cy9leGFtcGxlcy4NCj4+PiAgIA0KPj4+PiArICAgIG1heEl0ZW1zOiAyDQo+Pj4+ICsNCj4+Pj4g
+KyAgY2hhbm5lbHM6DQo+Pj4+ICsgICAgZGVzY3JpcHRpb246IFRoZSBTaTM0NzQgaXMgYSBzaW5n
+bGUtY2hpcCBQb0UgUFNFIGNvbnRyb2xsZXIgbWFuYWdpbmcNCj4+Pj4gKyAgICAgIDggcGh5c2lj
+YWwgcG93ZXIgZGVsaXZlcnkgY2hhbm5lbHMuIEludGVybmFsbHksIGl0J3Mgc3RydWN0dXJlZA0K
+Pj4+PiArICAgICAgaW50byB0d28gbG9naWNhbCAiUXVhZHMiLg0KPj4+PiArICAgICAgUXVhZCAw
+IE1hbmFnZXMgcGh5c2ljYWwgY2hhbm5lbHMgKCdwb3J0cycgaW4gZGF0YXNoZWV0KSAwLCAxLCAy
+LCAzDQo+Pj4+ICsgICAgICBRdWFkIDEgTWFuYWdlcyBwaHlzaWNhbCBjaGFubmVscyAoJ3BvcnRz
+JyBpbiBkYXRhc2hlZXQpIDQsIDUsIDYsIDcuDQo+Pj4+ICsgICAgICBUaGlzIHBhcmFtZXRlciBk
+ZXNjcmliZXMgdGhlIHJlbGF0aW9uc2hpcCBiZXR3ZWVuIHRoZSBsb2dpY2FsIGFuZA0KPj4+PiAr
+ICAgICAgdGhlIHBoeXNpY2FsIHBvd2VyIGNoYW5uZWxzLiAgDQo+Pj4NCj4+PiBIb3cgZXhhY3Rs
+eSB0aGlzIG1hcHMgaGVyZSBsb2dpY2FsIGFuZCBwaHlzaWNhbCBjaGFubmVscz8gWW91IGp1c3QN
+Cj4+PiBsaXN0ZWQgY2hhbm5lbHMgb25lIGFmdGVyIGFub3RoZXIuLi4gIA0KPj4NCj4+IHllcywg
+aGVyZSBpbiB0aGlzIGV4YW1wbGUgaXQgaXMgMSB0byAxIHNpbXBsZSBtYXBwaW5nLCBidXQgaW4g
+YSByZWFsIHdvcmxkLA0KPj4gZGVwZW5kaW5nIG9uIGh3IGNvbm5lY3Rpb25zLCB0aGVyZSBpcyBh
+IHBvc3NpYmlsaXR5IHRoYXQgDQo+PiBlLmcuICJwc2VfcGkwIiB3aWxsIHVzZSAiPCZwaHlzMF80
+PiwgPCZwaHlzMF81PiIgcGFpcnNldCBmb3IgbGFuIHBvcnQgMy4NCj4gDQo+IEJ1dCBoZXJlIHlv
+dSBzaG91bGQgZGVzY3JpYmUgdGhlIGNoYW5uZWxzIG9mIHRoZSBjb250cm9sbGVyIGFuZCB0aGUg
+Y2hhbm5lbCBoYXMNCj4gbm8gbGluayB0byB0aGUgcmVsYXRpb25zaGlwIGJldHdlZW4gbG9naWNh
+bCBhbmQgcGh5c2ljYWwgcG93ZXIgY2hhbm5lbHMuIFRoaXMNCj4gcmVsYXRpb25zaGlwIHJhdGhl
+ciBpcyBkZXNjcmliZWQgaW4gdGhlICJwYWlyc2V0cyIgcGFyYW1ldGVyIG9mIFBTRSBQSS4NCj4g
+DQoNCkV4YWN0bHksIEkgZ290IHRvIHRoZSBzYW1lIGNvbmNsdXNpb24sIHRoYXQgaXQgaXMgdGhl
+IHBzZS1waXMgbm9kZSByZXNwb25zaWJpbGl0eSANCmFuZCByZW1vdmVkIHRoYXQgcGFydCBpbiB2
+My4NCkNvbW1lbnRlZCBpdCBpbiB2MjoNCmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL25ldGRldi8w
+YjdhZmFiMC0wMjgzLTRhNTItODJiYy0wZDQ5MmY3NTIwMzRAYWR0cmFuLmNvbS8NCg0KPiBNYXli
+ZSBzb21ldGhpbmcgbGlrZSB0aGF0Og0KPiANCj4gVGhlIFNpMzQ3NCBpcyBhIHNpbmdsZS1jaGlw
+IFBvRSBQU0UgY29udHJvbGxlciBtYW5hZ2luZyA4IHBoeXNpY2FsIHBvd2VyDQo+IGRlbGl2ZXJ5
+IGNoYW5uZWxzLiBJbnRlcm5hbGx5LCBpdCdzIHN0cnVjdHVyZWQgaW50byB0d28gbG9naWNhbCAi
+UXVhZHMiLg0KPiBRdWFkIDAgTWFuYWdlcyBwaHlzaWNhbCBjaGFubmVscyAoJ3BvcnRzJyBpbiBk
+YXRhc2hlZXQpIDAsIDEsIDIsIDMNCj4gUXVhZCAxIE1hbmFnZXMgcGh5c2ljYWwgY2hhbm5lbHMg
+KCdwb3J0cycgaW4gZGF0YXNoZWV0KSA0LCA1LCA2LCA3Lg0KPiBUaGlzIHBhcmFtZXRlciBkZWZp
+bmVzIHRoZSA4IHBoeXNpY2FsIGRlbGl2ZXJ5IGNoYW5uZWxzIG9uIHRoZSBjb250cm9sbGVyIHRo
+YXQNCj4gY2FuIGJlIHJlZmVyZW5jZWQgYnkgUFNFIFBJcyB0aHJvdWdoIHRoZWlyICJwYWlyc2V0
+cyIgcHJvcGVydHkuIFRoZSBhY3R1YWwgcG9ydA0KPiBtYXRyaXggbWFwcGluZyBpcyBjcmVhdGVk
+IHdoZW4gUFNFIFBJcyByZWZlcmVuY2UgdGhlc2UgY2hhbm5lbHMgaW4gdGhlaXINCj4gcGFpcnNl
+dHMuIEZvciA0LXBhaXIgb3BlcmF0aW9uLCB0d28gY2hhbm5lbHMgZnJvbSB0aGUgc2FtZSBncm91
+cCAoMC0zIG9yIDQtNykNCj4gbXVzdCBiZSByZWZlcmVuY2VkIGJ5IGEgc2luZ2xlIFBTRSBQSS4N
+Cj4gDQo+IFNpbWlsYXJseSB0aGUgZGVzY3JpcHRpb24gSSB1c2VkIG9uIHRoZSB0cHMyMzg4MSBp
+cyBhbHNvIG5vdCBjb3JyZWN0LiBJIGhhdmUgdG8NCj4gY2hhbmdlIGl0Lg0KDQpJIGxpa2UgaXQu
+IEkgd2lsbCB1cGRhdGUuDQo+ICANCj4gSSBkaWRuJ3QgbG9vayBpbnRvIHRoZSBkYXRhc2hlZXQs
+IGNvdWxkIHdlIGhhdmUgcGFyYW1ldGVycyBzcGVjaWZpYyB0byBhDQo+IHF1YWQ/IElmIHRoYXQg
+dGhlIGNhc2Ugd2UgbWF5YmUgc2hvdWxkIGhhdmUgc29tZXRoaW5nIGxpa2UgdGhhdDoNCj4gICAg
+ICAgICAgIHF1YWQwOiBxdWFkQDAgeyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICANCj4gICAgICAgICAgICAgcmVnID0gPDA+OyAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICANCj4gICAgICAgICAgICAg
+I2FkZHJlc3MtY2VsbHMgPSA8MT47ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICANCj4gICAgICAgICAgICAgI3NpemUtY2VsbHMgPSA8MD47ICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAg
+ICAgIHBoeXMwOiBwb3J0QDAgeyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgICAgcmVnID0gPDA+OyAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAg
+IH07ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgIHBo
+eXMxOiBwb3J0QDEgeyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgDQo+ICAgICAgICAgICAgICAgcmVnID0gPDE+OyAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgIH07ICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgIHBoeXMyOiBw
+b3J0QDIgeyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgDQo+ICAgICAgICAgICAgICAgcmVnID0gPDI+OyAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgIH07ICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+DQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgIHBoeXMzOiBwb3J0QDMg
+eyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+
+ICAgICAgICAgICAgICAgcmVnID0gPDM+OyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgIH07ICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAg
+ICAgICAgICB9OyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAg
+ICAgICBxdWFkQDEgeyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgIHJlZyA9IDwxPjsgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAg
+ICNhZGRyZXNzLWNlbGxzID0gPDE+OyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgDQo+ICAgICAgICAgICAgICNzaXplLWNlbGxzID0gPDA+OyAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgDQo+ICAgICAgICAgICAgIHBoeXM0OiBwb3J0QDAgeyAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgICAgcmVn
+ID0gPDA+OyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgDQo+ICAgICAgICAgICAgIH07ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgDQo+ICAgICAgICAgICAgIHBoeXM1OiBwb3J0QDEgeyAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgICAgcmVnID0gPDE+
+OyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+DQo+ICAgICAgICAgICAgIH07ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+
+ICAgICAgICAgICAgIHBoeXM2OiBwb3J0QDIgeyAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgICAgcmVnID0gPDI+OyAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAg
+ICAgICAgICAgIH07ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAg
+ICAgICAgIHBoeXM3OiBwb3J0QDMgeyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICAgICAgcmVnID0gPDM+OyAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAg
+ICAgIH07ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgDQo+ICAgICAgICAgICB9OyAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgICAgICAgfTsN
+Cj4gDQpObywgSSBkb24ndCBzZWUgYW55IHF1YWQgc3BlY2lmaWMgcGFyYW1ldGVycywgZXhjZXB0
+IGkyYyBhZGRyZXNzIHdlIGRlZmluZSB0aGUgbGV2ZWwgYWJvdmUuIA0KU28gSSB0aGluayB0aGlz
+IHdvdWxkIGJlIG92ZXItZW5naW5lZXJlZC4NCg0KPiBSZWdhcmRzLA0KDQpUaGFua3MNCi9QaW90
+cg0K
