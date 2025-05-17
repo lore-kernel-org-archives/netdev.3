@@ -1,106 +1,145 @@
-Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1BF15A86B
-	for <netdev@vger.kernel.org>; Sat, 17 May 2025 08:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE9076026;
+	Sat, 17 May 2025 08:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747469245; cv=none; b=txfcy/Y7CuL3QY3b690+7GSydcejtge/6A6Vl+v+SgH/MaGV1p5c57q2rtMw6m5JG1pmO2ruk+6200FkQWBTPjBet5m3CFsvoHrNhgNH6XQaxf3ekWYu67r4uiuy68wuLDT4bZiHUHtqQ9Q+dl/oyKk3dLjYzIE9A0cT0A21IEU=
+	t=1747469401; cv=none; b=bSD8KJgZend/UkyQl2Bpdf07vw3CyuJU7JnDb3eoDSYoGxSCszv5SKHZQpKYdIZ4rOkekEJSSJwU0x4AeP7QL+gkh/TonQHKPzbwkf3Dtljp60WVsvlPiR9BawcP2SAOWxpxSsFKmZ7IxTlb4zyTAqIi5IL5bJdIaPLtHUeudQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747469245; c=relaxed/simple;
-	bh=GzUx3qX8x8Ti/WYrmeDubgDgmu4jLi8bLsh1uhw67kY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W1ja7eTDHUiOiK5mjbVuOwNrIviuCxcxLw3FlHHBD+L239H9NOISTTE02bAtNs+aYCRh77kQczc9j48f474l5He09zxandCHQln9GVtOPxdmxzdcng07Snzd849f7c1VKhd/m0dRIkqoBWL4HAsBr+bKFdS/I6/CKr9zrnFPZ/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=BrNLLp+g; arc=none smtp.client-ip=212.77.101.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+	s=arc-20240116; t=1747469401; c=relaxed/simple;
+	bh=lI5GXMPHMKJCva/XfenAwMLqoCDzoC16fyY0XcNLI1I=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=a/utPcm0j6huubRsBzq9XHzzcyyzcmsIfSMhwxeHSt1Gl/eW/bZuznakhSvVtWyld6KiYOVvk4Lz5ekKNhORMNTLbKf/HkHtoTdtXV+N/62ZH8XhGtrO7snVWLT2dawtsS6cYdq3Uthh23RvcDm/zfyiTsRmX26nsI0hkh2nqMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i3QCJ9gi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="BrNLLp+g"
-Received: (wp-smtpd smtp.wp.pl 25770 invoked from network); 17 May 2025 09:40:40 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1747467640; bh=vQzP50BnvI3iw2cFJFa5sluy2kEXYWbvimnAccLCu5M=;
-          h=From:To:Cc:Subject;
-          b=BrNLLp+garP4N8WaeTnMRagYwZpHQ7I6HOH5WNH4Or66u0Te/Ov1VGM9iPfCEzSjB
-           XN9w+ZsSr4ZX61NM6YnIgi8YCUiRXXlKTDOIpT5E8fPJoiNjNOyVrmXIaeCUVe8Yv3
-           9TqZ3dvokEroZDA0fRAShrlSZV9OaqDjv2q3FXMoq6XLwPfUGz1v/16BYOcck0frCz
-           ens3cmATBAZRVvwFAd31wHxaX3Mn0vbOJQ2SZ1cFH0Dk8KdqA9XplRMraKMwSGtS0b
-           PV3b9Daw6C526l/CjINRvEefI90nYXK33NQ7zAx5Iaeaj/odicvm9bPkof/5jSEys/
-           lHLfHkeeJUgbQ==
-Received: from 89-64-9-114.dynamic.play.pl (HELO localhost) (stf_xl@wp.pl@[89.64.9.114])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <pchelkin@ispras.ru>; 17 May 2025 09:40:40 +0200
-Date: Sat, 17 May 2025 09:40:40 +0200
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Johannes Berg <johannes@sipsolutions.net>
-Cc: Alexei Safin <a.safin@rosa.ru>, lvc-project@linuxtesting.org,
-	netdev@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>
-Subject: [PATCH] wifi: iwlegacy: Check rate_idx range after addition
-Message-ID: <20250517074040.GA96365@wp.pl>
-References: <20250424185244.3562-1-a.safin@rosa.ru>
- <20250427063900.GA48509@wp.pl>
- <d57qkj2tj4bgfobgzbhcb4bceh327o35mgamy2yyfuvolg4ymo@7p7hbpyg5bxi>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i3QCJ9gi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9A3C4CEE3;
+	Sat, 17 May 2025 08:09:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747469401;
+	bh=lI5GXMPHMKJCva/XfenAwMLqoCDzoC16fyY0XcNLI1I=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=i3QCJ9giswxYKl0Wb3eh0fywapf6vpoC0xTDdrqTVbzbfaXlD90MjDZD0WoFBnHUb
+	 W5g2tEfyuRwDiNh0K1z3rJpM26CX/YF3AJWiWTWtFdiUOPEirIleSPmHZtCKjWDq2k
+	 xmEiAQ8UWXblnjysLoyBdUgRYIY43igUH6B/3XnoUqw5OIOUK9RANug5+y1OJqDVQr
+	 3y5CMJ96nrY2vTkBIE80B+gXmbKZA+zOIco9hdu9mHTDZYC/pOrojefXzdqSP1djhQ
+	 1kaX6KqGoiIb7IqsRtNNluk/QI2Cd8DrN3Y/1BAuQ4Cmfi0ZfOE4Yv+5G+C0fwlmXW
+	 /1yXT7CchCo3Q==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d57qkj2tj4bgfobgzbhcb4bceh327o35mgamy2yyfuvolg4ymo@7p7hbpyg5bxi>
-X-WP-MailID: 779311392d6761ada01cae0109ceb9c8
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [sVOR]                               
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 17 May 2025 10:09:53 +0200
+Message-Id: <D9YA78RFVQMH.QPUFXMHSVU7V@kernel.org>
+Cc: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: Re: [net-next PATCH v11 1/6] net: phy: pass PHY driver to
+ .match_phy_device OP
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Christian Marangi" <ansuelsmth@gmail.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Heiner Kallweit" <hkallweit1@gmail.com>, "Russell King"
+ <linux@armlinux.org.uk>, "Florian Fainelli"
+ <florian.fainelli@broadcom.com>, "Broadcom internal kernel review list"
+ <bcm-kernel-feedback-list@broadcom.com>, =?utf-8?q?Marek_Beh=C3=BAn?=
+ <kabel@kernel.org>, "Andrei Botila" <andrei.botila@oss.nxp.com>, "FUJITA
+ Tomonori" <fujita.tomonori@gmail.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Sabrina Dubroca" <sd@queasysnail.net>, "Michael Klein"
+ <michael@fossekall.de>, "Daniel Golle" <daniel@makrotopia.org>,
+ <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250516212354.32313-1-ansuelsmth@gmail.com>
+ <20250516212354.32313-2-ansuelsmth@gmail.com>
+In-Reply-To: <20250516212354.32313-2-ansuelsmth@gmail.com>
 
-Move rate_idx range check after we add IL_FIRST_OFDM_RATE for it
-for 5GHz band.
+On Fri May 16, 2025 at 11:23 PM CEST, Christian Marangi wrote:
+> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+> index a59469c785e3..079a0f884887 100644
+> --- a/rust/kernel/net/phy.rs
+> +++ b/rust/kernel/net/phy.rs
+> @@ -418,15 +418,18 @@ impl<T: Driver> Adapter<T> {
+> =20
+>      /// # Safety
+>      ///
+> -    /// `phydev` must be passed by the corresponding callback in `phy_dr=
+iver`.
+> +    /// `phydev` and `phydrv` must be passed by the corresponding callba=
+ck in
+> +    //  `phy_driver`.
+>      unsafe extern "C" fn match_phy_device_callback(
+>          phydev: *mut bindings::phy_device,
+> +        phydrv: *const bindings::phy_driver,
+>      ) -> crate::ffi::c_int {
+>          // SAFETY: This callback is called only in contexts
+>          // where we hold `phy_device->lock`, so the accessors on
+>          // `Device` are okay to call.
+>          let dev =3D unsafe { Device::from_raw(phydev) };
+> -        T::match_phy_device(dev) as i32
+> +        let drv =3D unsafe { T::from_raw(phydrv) };
+> +        T::match_phy_device(dev, drv) as i32
+>      }
+> =20
+>      /// # Safety
+> @@ -574,6 +577,19 @@ pub const fn create_phy_driver<T: Driver>() -> Drive=
+rVTable {
+>  /// This trait is used to create a [`DriverVTable`].
+>  #[vtable]
+>  pub trait Driver {
+> +    /// # Safety
+> +    ///
+> +    /// For the duration of `'a`, the pointer must point at a valid
+> +    /// `phy_driver`, and the caller must be in a context where all
+> +    /// methods defined on this struct are safe to call.
+> +    unsafe fn from_raw<'a>(ptr: *const bindings::phy_driver) -> &'a Driv=
+erVTable {
+> +        // CAST: `DriverVTable` is a `repr(transparent)` wrapper around =
+`bindings::phy_driver`.
+> +        let ptr =3D ptr.cast::<DriverVTable>();
+> +        // SAFETY: by the function requirements the pointer is const and=
+ is
+> +        // always valid to access for the duration of `'a`.
+> +        unsafe { &*ptr }
+> +    }
 
-Additionally use ">= RATE_COUNT" check instead of "> RATE_COUNT_LEGACY"
-to avoid possible reviewers and static code analyzers confusion about
-size of il_rate array.
+If we go the way of supplying a `&DriverVTable` in the
+`match_phy_device` function, then this should be a function in the impl
+block of `DriverVTable` and not in `Driver`.
 
-Reported-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reported-by: Alexei Safin <a.safin@rosa.ru>
-Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
+See my reply to Fujita on the previous version, I don't think that we
+need to add the `DriverVTable` to the `match_phy_device` function if we
+don't provide accessor methods. Currently that isn't needed, so you only
+need the hunks above this one. (I'd wait for Fujita's reply though).
+
 ---
- drivers/net/wireless/intel/iwlegacy/4965-mac.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+Cheers,
+Benno
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-index dc8c408902e6..2294ea43b4c7 100644
---- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-+++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-@@ -1567,16 +1567,19 @@ il4965_tx_cmd_build_rate(struct il_priv *il,
- 	/**
- 	 * If the current TX rate stored in mac80211 has the MCS bit set, it's
- 	 * not really a TX rate.  Thus, we use the lowest supported rate for
--	 * this band.  Also use the lowest supported rate if the stored rate
--	 * idx is invalid.
-+	 * this band.
- 	 */
- 	rate_idx = info->control.rates[0].idx;
--	if ((info->control.rates[0].flags & IEEE80211_TX_RC_MCS) || rate_idx < 0
--	    || rate_idx > RATE_COUNT_LEGACY)
-+	if (info->control.rates[0].flags & IEEE80211_TX_RC_MCS)
- 		rate_idx = rate_lowest_index(&il->bands[info->band], sta);
--	/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
--	if (info->band == NL80211_BAND_5GHZ)
-+	else if (info->band == NL80211_BAND_5GHZ)
-+		/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
- 		rate_idx += IL_FIRST_OFDM_RATE;
-+
-+	/* Use the lowest supported rate if the stored rate idx is invalid. */
-+	if (rate_idx < 0 || rate_idx >= RATE_COUNT)
-+		rate_idx = rate_lowest_index(&il->bands[info->band], sta);
-+
- 	/* Get PLCP rate for tx_cmd->rate_n_flags */
- 	rate_plcp = il_rates[rate_idx].plcp;
- 	/* Zero out flags for this packet */
--- 
-2.25.4
+> +
+>      /// Defines certain other features this PHY supports.
+>      /// It is a combination of the flags in the [`flags`] module.
+>      const FLAGS: u32 =3D 0;
+> @@ -602,7 +618,7 @@ fn get_features(_dev: &mut Device) -> Result {
+> =20
+>      /// Returns true if this is a suitable driver for the given phydev.
+>      /// If not implemented, matching is based on [`Driver::PHY_DEVICE_ID=
+`].
+> -    fn match_phy_device(_dev: &Device) -> bool {
+> +    fn match_phy_device(_dev: &mut Device, _drv: &DriverVTable) -> bool =
+{
+>          false
+>      }
+> =20
+
