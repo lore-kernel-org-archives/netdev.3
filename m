@@ -1,160 +1,119 @@
-Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941F0B665
-	for <netdev@vger.kernel.org>; Sat, 17 May 2025 03:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1688715B135;
+	Sat, 17 May 2025 03:53:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747453973; cv=none; b=Sa4Kbrz5cmLQt5RCgjClK3Bem+EXDsHOicqOboidNx+NqzPBpCpR0Fih2c5V9h1sKJ1LGZwaqi2jnyqsJ5sXjxt4mjHIY5Nqjt/I0W5LmoeiCUi/PWpYgVvqt/tFSG0s2RtnGKxDaVMy6Ym1vXVJ+N5+CzcUO1IfEtWbHnLRVgk=
+	t=1747453993; cv=none; b=BmM52UWQ2uolSPbQv5IP3Oig/+apy5R8MJw+E5ojoFqttyg5JTpWMy9z5wF4uoZ8xzLB4OiTjLGkpJk+VctP/cvXjjtl6dqwZMCpZHDSnyOKCEf1++ZAecoz2sfADT2z7fYewobrJ5wx+FQsrS9vJz6irlsj55agetRD+PhyZtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747453973; c=relaxed/simple;
-	bh=inDll5gkEpJ5ZORTYyf+Sf30fUOsZGdYlUMghNaZnWQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WrYYLDbw1QcQEFdZpCCcYVPy+ZvD/XvNfmconp3MOlKbQZ9taczDZtpAg4uInW7s55FG3ahvwYnSRzGWoN2ilLSyBYbgaGIOPuL/6UXYNAQdl2YpZ6M81u7HdvR7Vu8rmUFPkpqSuPsmJo63/TLEXC6m2oCJNs2aqDq9aZU6nXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=hGxAHMIQ; arc=none smtp.client-ip=207.171.188.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1747453993; c=relaxed/simple;
+	bh=Z2OgE+o7iRIOrIJibHhLgMVGarTa7YNSYIcKhznb4ww=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UTurql3XgKtlsoZhGHiIEzFXOTBpFXoNthS006CCwBa9OFAAEuVSlOAGxeprWBiVKr9GwYoqaCTMpH5q+9jpkT/qIfBbqi4xgzxZRqtCThaP6wYSMKwRI5hZLwFhPLV7G4f1kRJdxwvpYS1lMhw1CEhC+MCxRbJ5N2LIroP6gLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eNukth2v; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="hGxAHMIQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eNukth2v"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-22e09f57ed4so41712225ad.0;
+        Fri, 16 May 2025 20:53:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1747453971; x=1778989971;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=FN+WK0fImlx69CaRDwG1a6G3G8wJRiGFRsqVN9V0yks=;
-  b=hGxAHMIQ/jfFUiDOm+0l17rz/J+RmEm0eh+WjoYdh1zyFX/0ye/qLGkr
-   si1VhiWkrnMggMs4DSNApt0JtBJpmW7eymKQ8t7Fgwu5QbbKsz7XlnCcr
-   U2UGK4J74gqRJjkKCZJherDs5DR+yN33kwOwO/naQP8LzNo/XTmUcv76J
-   edBTQj2qu6aNpVDOqZkRGB5ySFNvfcX4FfE3ZGZRQr8pg+jqQTOYC5Vav
-   R0MxHD0vsseHYIRg36Fzh9ynrr4w1aMbRtP1RcrmLmcddviKxY+HLgr18
-   1+jQICvWrVSECX+pw97Dnu+NFv1Yz8QgIYE/Vb1ZlEOjcA4Eyl7hfnN65
-   g==;
-X-IronPort-AV: E=Sophos;i="6.15,295,1739836800"; 
-   d="scan'208";a="20778436"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2025 03:52:46 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.38.20:13517]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.3.83:2525] with esmtp (Farcaster)
- id 01632d9a-485f-4e1a-936c-1735fdecf450; Sat, 17 May 2025 03:52:45 +0000 (UTC)
-X-Farcaster-Flow-ID: 01632d9a-485f-4e1a-936c-1735fdecf450
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Sat, 17 May 2025 03:52:45 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.142.194.153) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Sat, 17 May 2025 03:52:42 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>
-CC: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v1 net-next 3/6] socket: Restore sock_create_kern().
-Date: Fri, 16 May 2025 20:50:24 -0700
-Message-ID: <20250517035120.55560-4-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250517035120.55560-1-kuniyu@amazon.com>
-References: <20250517035120.55560-1-kuniyu@amazon.com>
+        d=gmail.com; s=20230601; t=1747453991; x=1748058791; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AU9AX5nZe+HwGHVNz/LjdEhTqsaZvsNtu0vy6tKooRs=;
+        b=eNukth2vF1I96ijg1A1RcE3LNrgsRhkebdrlZqvzmJitkZsUUffkc9CKddIAJmaKnT
+         cGprNnx1wwE9H5wjVMQY8fY2KKLWeAjuV1SvJBR7n91TFetw5CxMPTftcqkiZLst9tmf
+         Oblbl+lg7ssTfm/nArKTulLNOOMcynw6MMxC18mA04pWL0hjet3dBzPltAoTybUXIyUH
+         xWRswY82oSyVlKr1jG4ReRG7apb3pSbz9zJNUYkGG6axGhoUR1sJzhZAICPyOww+fqND
+         oGsp1sNemgeXfYKYLn8IgTVnTphZVrXZY935i6U0bNRKyBnKvcRbhbkyJrzO8VcXRXwv
+         MpXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747453991; x=1748058791;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AU9AX5nZe+HwGHVNz/LjdEhTqsaZvsNtu0vy6tKooRs=;
+        b=WY6jNAaYm12GwE0JdeBr9c9PwtbcuGJqWlTro5AqBO004xeTaiCGe/TULYFEGvNOVP
+         HiacJLyhqDKuNnVchu15MfwdZ4MbPQBDI4cgFDiE21I+VI5nkRfgG/ZlFUZCeXmF6THF
+         nMKA5D5U3Xi24/uStuhtVJtgJtpLlv5xIZjqGws0rrFKg9IEyJzwDOwhcbKDe5YR/hXt
+         xdrAPY+HTD5oCsZWKxBB4i4QinoIrUwPnpJPFKPIEZLRcwLweeYi3/knPBRqU1SmPyEF
+         ZIpBWn+XmhMnhNHAVALerPxXqiGyuWBtAD/CZaJU8M+ecM+zfNsM9or/q4aM69+8xkvS
+         +Wqw==
+X-Forwarded-Encrypted: i=1; AJvYcCWEvzRG1pqTYVugE61hxEUBvFpnbBj49xmh7W91pAVF335qui+oTOPGmbhqN+FCckC42ZrY6hIOaB1wykI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsjVVJwf5sc5PHsxcoYcv8+vhrvIR33iGuoqx9JhSxtVCnGde4
+	wPsf8iJX0SfB4I7UtF/4/U6TA5Kxv+32r3p2vxqDR30UfF+JIwkzivs=
+X-Gm-Gg: ASbGncttfviTNtIuUQU38EEaFL4uHZT+mtfBnyE6UCPEHgMOsPiO1zhwN+7OLLCdG3j
+	OMGT7hF22n17nkZ3pdKfQ+JHRMre7DSGj++ipE0LewcqP6zbmTkcjD3Xbm+hiua8QwP/eMq2Svc
+	vfaXbYd5osoQS8cUjVofhikF3yH+Pn9WbsGix4qrkdQGxSJruvWbA1dH4Q+5tGpd5PXJel1tNXY
+	QmdTFJ6u9HxwGTQdfwA+1fL8QnPicTFYvwmi/UkGv3rzkDoa+FTQTKa4RMGrvSZ4nG1A+dqmxlJ
+	PlFy2BkJLxvkPJSyQOqlHy2oSf+tQmgesThUX2d9E32CHUwFaFpRusZWUEIqDJcI6gVkgJTHoL5
+	nepE/kPkT0FYgdEEsatEmirU=
+X-Google-Smtp-Source: AGHT+IEfgXSVlqXnInoPZPi6O3bY7TgPrDPC0fb2vY2tNK8vHLbIzpALlw5ZheZpjK3s5zT8ZYx//g==
+X-Received: by 2002:a17:902:d2c1:b0:21f:6f33:f96 with SMTP id d9443c01a7336-231b3959f60mr129650825ad.6.1747453991184;
+        Fri, 16 May 2025 20:53:11 -0700 (PDT)
+Received: from localhost (c-73-158-218-242.hsd1.ca.comcast.net. [73.158.218.242])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-231d4ebb168sm21624745ad.204.2025.05.16.20.53.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 May 2025 20:53:10 -0700 (PDT)
+Date: Fri, 16 May 2025 20:53:09 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	willemb@google.com, sagi@grimberg.me, asml.silence@gmail.com,
+	almasrymina@google.com, kaiyuanz@google.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: devmem: remove min_t(iter_iov_len) in
+ sendmsg
+Message-ID: <aCgIJSgv-yQzaHLl@mini-arch>
+References: <20250517000431.558180-1-stfomichev@gmail.com>
+ <20250517000907.GW2023217@ZenIV>
+ <aCflM0LZ23d2j2FF@mini-arch>
+ <20250517020653.GX2023217@ZenIV>
+ <aCfxs5CiHYMJPOsy@mini-arch>
+ <20250517033951.GY2023217@ZenIV>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWA001.ant.amazon.com (10.13.139.88) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250517033951.GY2023217@ZenIV>
 
-Let's restore sock_create_kern() that holds a netns reference.
+On 05/17, Al Viro wrote:
+> On Fri, May 16, 2025 at 07:17:23PM -0700, Stanislav Fomichev wrote:
+> > > Wait, in the same commit there's
+> > > +       if (iov_iter_type(from) != ITER_IOVEC)
+> > > +               return -EFAULT;
+> > > 
+> > > shortly prior to the loop iter_iov_{addr,len}() are used.  What am I missing now?
+> > 
+> > Yeah, I want to remove that part as well:
+> > 
+> > https://lore.kernel.org/netdev/20250516225441.527020-1-stfomichev@gmail.com/T/#u
+> > 
+> > Otherwise, sendmsg() with a single IOV is not accepted, which makes not
+> > sense.
+> 
+> Wait a minute.  What's there to prevent a call with two ranges far from each other?
 
-Now, it's the same as the version before commit 26abe14379f8 ("net:
-Modify sk_alloc to not reference count the netns of kernel sockets.").
+It is perfectly possible to have a call with two disjoint ranges,
+net_devmem_get_niov_at should correctly resolve it to the IOVA in the
+dmabuf. Not sure I understand why it's an issue, can you pls clarify?
 
-Back then, after creating a socket in init_net, we used sk_change_net()
-to drop the netns ref and switch to another netns, but now we can
-simply use __sock_create_kern() instead.
+What we want to have here is:
 
-  $ git blame -L:sk_change_net include/net/sock.h 26abe14379f8~
+1. sendmsg(msg.msg_iov = [{ .iov_base = .., .iov_len = x }])
+2. sendmsg(msg.msg_iov = [{ .iov_base = .., .iov_len = x },
+                          { .iov_base = .., .iov_len = y])
 
-DEBUG_NET_WARN_ON_ONCE() is to catch a path calling sock_create_kern()
-from __net_init functions, since doing so would leak the netns as
-__net_exit functions cannot run until the socket is removed.
+Both should be accepted. Currently only (2) works because of that ITER_IOVEC
+check. Once I remove it, I hit the issue where iter_iov_len starts to
+return too early.
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
----
- include/linux/net.h |  2 ++
- net/socket.c        | 42 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 44 insertions(+)
-
-diff --git a/include/linux/net.h b/include/linux/net.h
-index 12180e00f882..b60e3afab344 100644
---- a/include/linux/net.h
-+++ b/include/linux/net.h
-@@ -254,6 +254,8 @@ bool sock_is_registered(int family);
- int sock_create(int family, int type, int proto, struct socket **res);
- int __sock_create_kern(struct net *net, int family, int type, int proto,
- 		       struct socket **res);
-+int sock_create_kern(struct net *net, int family, int type, int proto,
-+		     struct socket **res);
- int sock_create_lite(int family, int type, int proto, struct socket **res);
- struct socket *sock_alloc(void);
- void sock_release(struct socket *sock);
-diff --git a/net/socket.c b/net/socket.c
-index 7c4474c966c0..aeece4c4bb08 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -1632,6 +1632,48 @@ int __sock_create_kern(struct net *net, int family, int type, int protocol, stru
- }
- EXPORT_SYMBOL(__sock_create_kern);
- 
-+/**
-+ * sock_create_kern - creates a socket for kernel space
-+ *
-+ * @net: net namespace
-+ * @family: protocol family (AF_INET, ...)
-+ * @type: communication type (SOCK_STREAM, ...)
-+ * @protocol: protocol (0, ...)
-+ * @res: new socket
-+ *
-+ * Creates a new socket and assigns it to @res.
-+ *
-+ * The socket is for kernel space and should not be exposed to
-+ * userspace via a file descriptor nor BPF hooks except for LSM
-+ * (see inet_create(), inet_release(), etc).
-+ *
-+ * The socket bypasses some LSMs that take care of @kern in
-+ * security_socket_create() and security_socket_post_create().
-+ *
-+ * The socket holds a reference count of @net so that the caller
-+ * does not need to care about @net's lifetime.
-+ *
-+ * This MUST NOT be called from the __net_init path and @net MUST
-+ * be alive as of calling sock_create_net().
-+ *
-+ * Context: Process context. This function internally uses GFP_KERNEL.
-+ * Return: 0 or an error.
-+ */
-+int sock_create_kern(struct net *net, int family, int type, int protocol,
-+		     struct socket **res)
-+{
-+	int ret;
-+
-+	DEBUG_NET_WARN_ON_ONCE(!net_initialized(net));
-+
-+	ret = __sock_create(net, family, type, protocol, res, 1);
-+	if (!ret)
-+		sk_net_refcnt_upgrade((*res)->sk);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(sock_create_kern);
-+
- static struct socket *__sys_socket_create(int family, int type, int protocol)
- {
- 	struct socket *sock;
--- 
-2.49.0
-
+(Documentation/networking/devmem.rst has a bit more info on the sendmsg UAPI
+with dmabufs if that's still confusing)
