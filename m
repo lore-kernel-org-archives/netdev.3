@@ -1,88 +1,81 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06EC1C1F2F;
-	Sat, 17 May 2025 09:58:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F38B1E521D;
+	Sat, 17 May 2025 10:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747475920; cv=none; b=bflNdD3gC6VqiuTWlgQyeUHL/TRgQmyEX995JejNc5WNnrQBLu4Xp7EdLdTN6mRpIhsUIOZObC+DrzmWmUKf89ye0/rVlkQLfTWGAmmbap9OTCvhQ+aBQHkldf9YmmiapD3GHSeUaiT+6g7GDn2AHV0mPcqTOb7pjyOkJo2ScBo=
+	t=1747476326; cv=none; b=gXZSo28twcPrFbF5PflpRZFDufv7tcsIUvupqrODXSZVERTUq+jpdu6L0wl8DeTXaY5cbX60lzlGgNqCFCCqWLj06xRdCn1907YAIxZpNdKvTTRg37Cm7ds32RLgvHdcrADcBuyaG561R58c/CorQsAlmaMguSGFRCDH4MelHEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747475920; c=relaxed/simple;
-	bh=VIs2OF54lqPLhmf74bUbL4CZ0VFfWopF/SaPWVXUFPY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PxfC+KOCK3SFYHK1iu40eyZ/onTJO3X4cEaZkubDonTltxfHCs6yB0kVD0FrBszov4gOnhCjNC3FFbktQfBhH/gamLHTamf9yvQWvpWU8p8TEiiTHouKXkRai2gcrbvhLBK8r8HpVBiFUeLmBWZlYXdLSMIgG/18OPafuiCiVG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grimberg.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grimberg.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43cfba466b2so30323025e9.3;
-        Sat, 17 May 2025 02:58:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747475917; x=1748080717;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=L1xybqkdxpFEj1EI8QA+pvcqPiyMXAo9agsU9POzFbs=;
-        b=utSwGTDT3p5U+3zmB1XtEg9AzOUVqnA+t0+xCn9UjgkgaFLxEKFn0fQ2moF8Wc4zLw
-         IJ1vcudo9Mi6xLqlEdSCKLKkyhJYhittfiTgInSXdbGMX7d72xamojtnT0AtocOkL2Aw
-         oRMD4fUsahhdDdivRo2Uw8cSrgGnorFg4KBxoPEruliFe/9KzgXp+tMPvV9Le8UN+Ckw
-         DrlJc7OK8JW39cfaKVrzs5BBBn43kkphoPG5h8NwFSYRpuqzizDTY9ASdE7f29xp7mQg
-         wZrIMEBQoPfTieT3q041BOaVnZBGUhcxTvZC+9gK7apDQ06cuk6wb/Bu3TtU21tBnV1F
-         r3oA==
-X-Forwarded-Encrypted: i=1; AJvYcCV32CF7iWUa4FsNZ9kyhVFNkJljX3qA5AFxi+/8r5I8qoZrOuFh7d6UTyvTzbRMoUveY5L7UafgIdohHQ==@vger.kernel.org, AJvYcCWW9m3x3L4Fu7kR4rs0HyCPx/Yi7OXK2caq4sBT7FDMa0iqKlv8MdAxsBbIm4HzcrrB+UOhg2yQ@vger.kernel.org, AJvYcCX8YgDy2XUpOCqZMymsJdZdi5/X3k6lBX1C3U4A5R59App/D3qo2xS/vCXliZKlXy7roUISDbsXrJ5EzA==@vger.kernel.org, AJvYcCXyV+9btsAvhGGZTwpfwe3cqzIZ4KBNYYVPdoP0S2p+tmMjzJ10As8S/wp3pVJLaLbQ+19RTRxfr4ajFrs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyw6fFjZ+KodxM8nSdQGLMv4UlbMLvqT0L7KOflks4Eo7PMH/xV
-	IvsrdkTtIv9QEwUfO+Lj2k8UGLu8mPgHfR6ekUQwVfliZI+776msT4qh
-X-Gm-Gg: ASbGncvtoyBCYQBBYrPorHliixxTww5IYcwyM8zJwhrFuchyG3FkA2ECm7P2GlQTCa9
-	kVtGlLxvdIug/zu2yBithYrO0MvLK0JRPMhGoeKt5A7MLLuMYmQzMFQPZNY99baBUWRcrwmrkSp
-	C75fDvriSu89/bknpuSP6BbcAXGdL+0rKgFPCqeEk/qrf058a6LUiOH7zwaOVCPRtvDtVsstyc2
-	vInw7sJ3BmBHjNIa0ePIX4+KKOBsft7GmgI+mud5iIaH5NozqMChBsd5Gj2iCgqha+mh1Th4W4l
-	KgijiYYA0ysCukELqpMbb+47nTDe2THGZQ1HBPK/ekhWd1A3PJScz2eQlpMrt/JyWmamUT9RPlz
-	QByXodzvU
-X-Google-Smtp-Source: AGHT+IEL1yy1dVgbHcGpQ/e6QxEBlTdRtwZtph6z/27chlWDRnOkl9UnAko5e06/JsZwHle1RrNcjQ==
-X-Received: by 2002:a05:600c:1d82:b0:43c:f969:13c0 with SMTP id 5b1f17b1804b1-442ff03bd03mr53445255e9.29.1747475916740;
-        Sat, 17 May 2025 02:58:36 -0700 (PDT)
-Received: from [10.100.102.74] (89-138-68-29.bb.netvision.net.il. [89.138.68.29])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442fd50b983sm63604445e9.11.2025.05.17.02.58.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 May 2025 02:58:36 -0700 (PDT)
-Message-ID: <8b4db290-00c0-4627-a03e-d39a22c56fcf@grimberg.me>
-Date: Sat, 17 May 2025 12:58:35 +0300
+	s=arc-20240116; t=1747476326; c=relaxed/simple;
+	bh=zf60cnGWJmyto7hJniS3i37W9CD8mvZyR+D1yMUdzGM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZRVqNrh/82f/esOhg4wPzb2d9wqUNc+8X2pNaabpZLsFaDPEw2WLyc3LL2hc/anWqsFmO/cW+EAWoFq7N1uqPFKuLgqPQkrku8SjXE4UFNAmfp6fTfwpIlbdEKzx3uslz/7FPUd95Lpxiq2C8U5plmU+xA96PpHQ7snQkNBvMZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4b00006p6VzxWp2;
+	Sat, 17 May 2025 18:03:44 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 139051402E0;
+	Sat, 17 May 2025 18:05:15 +0800 (CST)
+Received: from localhost.localdomain (10.90.30.45) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 17 May 2025 18:05:14 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
+	<liuyonglong@huawei.com>, <chenhao418@huawei.com>,
+	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
+	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
+Subject: [PATCH v2 net 1/2] net: hibmcge: fix incorrect statistics update issue
+Date: Sat, 17 May 2025 17:58:27 +0800
+Message-ID: <20250517095828.1763126-2-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20250517095828.1763126-1-shaojijie@huawei.com>
+References: <20250517095828.1763126-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 09/10] nvme-tcp: use crc32c() and
- skb_copy_and_crc32c_datagram_iter()
-To: Eric Biggers <ebiggers@kernel.org>, netdev@vger.kernel.org
-Cc: linux-nvme@lists.infradead.org, linux-sctp@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- Daniel Borkmann <daniel@iogearbox.net>,
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
- Ard Biesheuvel <ardb@kernel.org>
-References: <20250511004110.145171-1-ebiggers@kernel.org>
- <20250511004110.145171-10-ebiggers@kernel.org>
-Content-Language: en-US
-From: Sagi Grimberg <sagi@grimberg.me>
-In-Reply-To: <20250511004110.145171-10-ebiggers@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
->   #include "nvme.h"
->   #include "fabrics.h"
-> @@ -166,12 +166,12 @@ struct nvme_tcp_queue {
->   	bool			rd_enabled;
->   
->   	bool			hdr_digest;
->   	bool			data_digest;
->   	bool			tls_enabled;
-> -	struct ahash_request	*rcv_hash;
-> -	struct ahash_request	*snd_hash;
-> +	u32			rcv_crc;
-> +	u32			snd_crc;
+When the user dumps statistics, the hibmcge driver automatically
+updates all statistics. If the driver is performing the reset operation,
+the error data of 0xFFFFFFFF is updated.
 
-Let's call it rcv_dgst (recv digest) and snd_dgst (send digest).
-Other than that, looks good to me.
+Therefore, if the driver is resetting, the hbg_update_stats_by_info()
+needs to return directly.
 
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Fixes: c0bf9bf31e79 ("net: hibmcge: Add support for dump statistics")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
+index 8f1107b85fbb..55520053270a 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
+@@ -317,6 +317,9 @@ static void hbg_update_stats_by_info(struct hbg_priv *priv,
+ 	const struct hbg_ethtool_stats *stats;
+ 	u32 i;
+ 
++	if (test_bit(HBG_NIC_STATE_RESETTING, &priv->state))
++		return;
++
+ 	for (i = 0; i < info_len; i++) {
+ 		stats = &info[i];
+ 		if (!stats->reg)
+-- 
+2.33.0
+
