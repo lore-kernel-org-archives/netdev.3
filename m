@@ -1,120 +1,85 @@
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B710154BE2
-	for <netdev@vger.kernel.org>; Mon, 19 May 2025 08:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E56322AE5E;
+	Mon, 19 May 2025 08:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747642772; cv=none; b=sFBSO8bcZK741sW7s6rjySinotH6B2hkXn8DrDURqk/HTXF18T2zpYZ6XstCc8SsiiiMWqxQepjm9PiqlTRJk0pXNHlhQ994U/6p+wnrXedypk/rBiPWJuDTgKYAJpq/zSP9hFjXtxRGEmSPULhepzUNgzyxKFbHEng3C7HvaFg=
+	t=1747643599; cv=none; b=QEb+IysEYG/XGTwJaVBuGGD25mRobqSdjFeuQQR8F7JeYRD8m9Fj7yUnZFhRiajwjmP3WsL70/8/Q43RYnXDIPTLutC+hMF1V94HjlU2w7b1fkSu09F+mMbVDLNtUFu63oDV7Na0kcGpbvi7p2f0HQ4eByYm9JpwgjFlipxTWT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747642772; c=relaxed/simple;
-	bh=qHrNfjhkTdPxv7dsNvqIcEBZLFpkwwu2nyoz5CcYN5s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wb7KPo+0rPSRlKJZQJ9RmEABeoT2mRoWgINkkXAKi9iQbkDgYsockfEqIJACls5GIuOTWDqGlOEWMkY0xnDe9euyK9O5LnIBSQuNlBS4jgXg/fx1FnuunHhg7GdmBLbugffhaDqqtAHEXApfU9PEa+ksavvuAKGK9KK1rGrI+OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DAjI47z+; arc=none smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1747643599; c=relaxed/simple;
+	bh=H5LZ7r0BO9UJwvNwXDzJW1WeWZKHWrNuAEaUA+3FKfU=;
+	h=Message-ID:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Date; b=Wm0u6Pqz07Rhy8BixSbgA9IXSUuORmQ/IdgYRcF1LbV/DSEdfyXX2jGa+ReceraY55+kXRADthBZqcEoinNGiosYYX+29FjsU+fRVuJBwafLyIu9RvjA6GrGgqxRwsGv5o+tL4wE+Fd6uu3+70rqJQ1/mGj/hOqPCor3Y19dYsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=b9DPsI0B; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q+zizoG2; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DAjI47z+"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-7086dcab64bso36498577b3.1
-        for <netdev@vger.kernel.org>; Mon, 19 May 2025 01:19:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747642770; x=1748247570; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8T5GaC00Oh6pbsT/dB6kXpfiF0+p4YxQBaiUBsDJs9s=;
-        b=DAjI47z+iyokk9PQu7oJPI0nCuMzWaMYBPS4ssOYfX7NYD4dP/wJKt0oLa8sCJRduN
-         Y+IhuL/Zr9wfwqkYySs2b7ibZft8lmFwI5IlvfryVt4/Js3V4g4LBEUASXxAZjDdT+s9
-         WxR/tmSvLcBrQzARwjStlGiNVUMrrIa5J3HnmyV3zlA0Jsc5xTinUwMjc5minCuhzTCg
-         qF/QrxL8RkhPfcbQWXWv3ccusnW2JBVy1PKz+Oob7fSOSk86JAqdFOw5LBA2pOZj+vad
-         oBeguNSk6c2xqCPJv/oG2+N9bjBSDl6wHuN4ZpEJ1jJCDDSbWz6WgcvukHBrzeeY7GaW
-         MyUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747642770; x=1748247570;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8T5GaC00Oh6pbsT/dB6kXpfiF0+p4YxQBaiUBsDJs9s=;
-        b=Fy23ca2MFS3N92aH3Yjl5W8fzx2QMPgy+uEWVtMVHqArsnH6hM6Nx5/CFaW+frI+ta
-         5ihaHFM3ts6ryokG4MqbAf+nfibzhsQWpM9jeGSYF92DMxoH01PAWQyFc8vNpNEI6hna
-         yCPt0+3SevtF4ePyVguEnN2upGgqRebXYtewB05SE/K2rQZElgb3J+pbtksWMTAQhlMD
-         U4LlxPv+9XpuIf/YlLOifOic+1tVbrF21n/dtpUhmSs34qUPQdxFWjVBRWWT9m9LoJcg
-         vdBylwRg6URAV3+jkzrfzUfnfCBa1sdHXrYmujxDhMJ1mCWoandlTd1CKDkVCcHtGpCJ
-         ouoQ==
-X-Gm-Message-State: AOJu0Yyb2VrEPEDSkfFalrNGcDGRLoJ8qa/NPz2z7sv+KOOltorBnr7+
-	DYdO5aU/C40E05iMvWTKAnOEQr5fByS/z3vdONnAKdAN7AhGlDM3j8fI880OrhWWuIQ4fBo7S+j
-	1eL787DMx2XEbmENLHJk20khg99rwttF3EZMY0YKwGw==
-X-Gm-Gg: ASbGncsqPFe3ng/858275m5fXxyNv5UuZvviYXkw7fowGNnTNYeE/TIJG+UbsAxj1dA
-	8ZEo7PEwZE9Zip1nGRycrNXcXhNxePWcYopZimozvGk5vh0b+xfjHMuJ10DmxpxDR0tgN06zqy9
-	5bZ6/XcwvO61YAZ2LY23uIK7r8l4k4cxv+rtjy2afLlvNe
-X-Google-Smtp-Source: AGHT+IHVZEKHlEswOX5OCc1QRZakfm90tzT12Po7rI2xlHzceNCuiSGkBBA1efBixR4l+M9gq6fh9RiwtFmBEo54yDs=
-X-Received: by 2002:a05:690c:25ca:b0:70c:cbef:df24 with SMTP id
- 00721157ae682-70ccbefe213mr56246447b3.18.1747642770378; Mon, 19 May 2025
- 01:19:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="b9DPsI0B";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q+zizoG2"
+Message-ID: <20250519083025.652611452@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1747643595;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 references:references; bh=L4D9JRJvf/qDRslz7xOrYCaTiKUlQohZZE5tQ+PqCuE=;
+	b=b9DPsI0BJ2Xs31QO5b3Kbpw+2wNdxYc+iCGmpuYq/BErwvTLjUImW5lE3z02uFtd/hXXz9
+	2zv11Ht+4PCMGIRkOTuPSaUEi4GtI9ik8faT3fxbHqQp4KEGkeBmXdR6DGQ5Oq3vH/rxdS
+	E0gHYd/RH3nPe24n8zFiTLeh7qPVMJ1IbVHLvdxYvt/ZQ98kGGU+vnTrOghuHsaVjV2wbX
+	yC1zrEhaVgwQ26vbNOBqaSqv+YbM+xArYaUnq0oGtCSfkd2czQmDB9Xn2v+Pxl7A3hqbzk
+	dGyYBK5k36/avVUVikvKWPCNtXvpiRFGf9eSeuZ1seoI+yDyHF5/OarXIrd+EA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1747643595;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 references:references; bh=L4D9JRJvf/qDRslz7xOrYCaTiKUlQohZZE5tQ+PqCuE=;
+	b=q+zizoG2VwQjhUVyzxmMJhM18LH66zqBww+UTPZb6k7Ej/XqJWRATlQyAf/dx03U4Ljdph
+	zG4kBGoCZbwx3XDg==
+From: Thomas Gleixner <tglx@linutronix.de>
+To: LKML <linux-kernel@vger.kernel.org>
+Cc: netdev@vger.kernel.org,
+ Richard Cochran <richardcochran@gmail.com>,
+ Christopher Hall <christopher.s.hall@intel.com>,
+ John Stultz <jstultz@google.com>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>,
+ Miroslav Lichvar <mlichvar@redhat.com>,
+ Werner Abt <werner.abt@meinberg-usa.com>,
+ David Woodhouse <dwmw2@infradead.org>,
+ Stephen Boyd <sboyd@kernel.org>,
+ =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Kurt Kanzenbach <kurt@linutronix.de>,
+ Nam Cao <namcao@linutronix.de>,
+ Antoine Tenart <atenart@kernel.org>
+Subject: [patch V2 01/26] timekeeping: Remove hardcoded access to tk_core
+References: <20250519082042.742926976@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250430124758.1159480-1-bigeasy@linutronix.de> <20250430124758.1159480-2-bigeasy@linutronix.de>
-In-Reply-To: <20250430124758.1159480-2-bigeasy@linutronix.de>
-From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date: Mon, 19 May 2025 11:18:54 +0300
-X-Gm-Features: AX0GCFtwBsLFjXBd32Ez6uitmmBx_lBhripiRgNhztcC93mzeZogx-11fGgxn3Y
-Message-ID: <CAC_iWjLwssHzyn83XO_XJV8kYBbz76NOsSE2cT90aKPzGLu8aw@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 01/18] net: page_pool: Don't recycle into
- cache on PREEMPT_RT
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: netdev@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Jesper Dangaard Brouer <hawk@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 19 May 2025 10:33:15 +0200 (CEST)
 
-Hi Sebastian
+This was overlooked in the initial conversion. Use the provided pointer to
+access the shadow timekeeper.
 
-On Wed, 30 Apr 2025 at 15:48, Sebastian Andrzej Siewior
-<bigeasy@linutronix.de> wrote:
->
-> With preemptible softirq and no per-CPU locking in local_bh_disable() on
-> PREEMPT_RT the consumer can be preempted while a skb is returned.
->
-> Avoid the race by disabling the recycle into the cache on PREEMPT_RT.
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
-I am not expert on PREEMPT_RT, but this sounds reasonable.
-Did you have time to test this at all? There's a kernel module Jesper
-originally authored to track regressions, which unfortunately isn't
-upstreamed yet [0].
-Any chance you can quickly spin it to get some numbers?
+---
+ kernel/time/timekeeping.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+---
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -663,7 +663,7 @@ static void timekeeping_restore_shadow(s
+ 
+ static void timekeeping_update_from_shadow(struct tk_data *tkd, unsigned int action)
+ {
+-	struct timekeeper *tk = &tk_core.shadow_timekeeper;
++	struct timekeeper *tk = &tkd->shadow_timekeeper;
+ 
+ 	lockdep_assert_held(&tkd->lock);
+ 
 
-[0] https://lore.kernel.org/netdev/20250309084118.3080950-1-almasrymina@google.com/
-
-Cheers
-/Ilias
->
-> Cc: Jesper Dangaard Brouer <hawk@kernel.org>
-> Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> ---
->  net/core/page_pool.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> index 7745ad924ae2d..ba8803c2c0b20 100644
-> --- a/net/core/page_pool.c
-> +++ b/net/core/page_pool.c
-> @@ -805,6 +805,10 @@ static bool page_pool_napi_local(const struct page_pool *pool)
->         const struct napi_struct *napi;
->         u32 cpuid;
->
-> +       /* On PREEMPT_RT the softirq can be preempted by the consumer */
-> +       if (IS_ENABLED(CONFIG_PREEMPT_RT))
-> +               return false;
-> +
->         if (unlikely(!in_softirq()))
->                 return false;
->
-> --
-> 2.49.0
->
