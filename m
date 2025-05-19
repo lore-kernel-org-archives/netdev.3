@@ -1,469 +1,187 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620F1283FE4;
-	Mon, 19 May 2025 09:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747646350; cv=none; b=EChS7saL2CIsQKEQRZ4sYir1gpyrNO//4SQlBmYp3VBk8TJnHrhr3UqbUW5KVm753+EP/HHJKVvqWLz84NeHoW49AsfxQKF4uo4xP9m4pg7n3z+eZvRLw9Ueb29N3YoYTQWrojzQ/RBKaWvfMH7Nb7DM1oHl69NE2CPGRh6q0Fg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747646350; c=relaxed/simple;
-	bh=4S0kmmxNZl18R3dkj2pAd/m/S3hp3ORwuEcWWn/GYOE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=qynPph77LAml1ftCVTCEcgdGLPN8KJIkeUd8Q07oN2XI0RC3j2hLiFfWKMkA0SEps6XULKZoqGu4azTNQSbIjRks3G6j53t7zmmoHGGnD5DzGkfA2MCCyUcLbyOLGzBCua6S/M6fC2ZjXPyo1uXs9p7ivDiZR3euJWxm3ia5U0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-669ff7000002311f-54-682af77101aa
-From: Byungchul Park <byungchul@sk.com>
-To: linux-kernel@vger.kernel.org
-Cc: kernel_team@skhynix.com,
-	torvalds@linux-foundation.org,
-	damien.lemoal@opensource.wdc.com,
-	linux-ide@vger.kernel.org,
-	adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	will@kernel.org,
-	tglx@linutronix.de,
-	rostedt@goodmis.org,
-	joel@joelfernandes.org,
-	sashal@kernel.org,
-	daniel.vetter@ffwll.ch,
-	duyuyang@gmail.com,
-	johannes.berg@intel.com,
-	tj@kernel.org,
-	tytso@mit.edu,
-	willy@infradead.org,
-	david@fromorbit.com,
-	amir73il@gmail.com,
-	gregkh@linuxfoundation.org,
-	kernel-team@lge.com,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	mhocko@kernel.org,
-	minchan@kernel.org,
-	hannes@cmpxchg.org,
-	vdavydov.dev@gmail.com,
-	sj@kernel.org,
-	jglisse@redhat.com,
-	dennis@kernel.org,
-	cl@linux.com,
-	penberg@kernel.org,
-	rientjes@google.com,
-	vbabka@suse.cz,
-	ngupta@vflare.org,
-	linux-block@vger.kernel.org,
-	josef@toxicpanda.com,
-	linux-fsdevel@vger.kernel.org,
-	jack@suse.cz,
-	jlayton@kernel.org,
-	dan.j.williams@intel.com,
-	hch@infradead.org,
-	djwong@kernel.org,
-	dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com,
-	melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com,
-	harry.yoo@oracle.com,
-	chris.p.wilson@intel.com,
-	gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com,
-	boqun.feng@gmail.com,
-	longman@redhat.com,
-	yskelg@gmail.com,
-	yunseong.kim@ericsson.com,
-	yeoreum.yun@arm.com,
-	netdev@vger.kernel.org,
-	matthew.brost@intel.com,
-	her0gyugyu@gmail.com
-Subject: [PATCH v16 41/42] dept: implement a basic unit test for dept
-Date: Mon, 19 May 2025 18:18:25 +0900
-Message-Id: <20250519091826.19752-42-byungchul@sk.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250519091826.19752-1-byungchul@sk.com>
-References: <20250519091826.19752-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSeUiTcRzG+/3e09XqZV1vGRWDLrs0Or6d2P0WCEFEdNFWvrShLptpGQme
-	YbMNs3QdZstirbnK3vVHpgtzzLLIrGwe6TKpSLzI2sqyYxr98+XheXg+338ellA8oiayWt1h
-	Ua9TxyppGSnrHlE899C3ME142ePZ4P+aTULhbQcNdbdKEDjupmHo8GyEhkAXgp/PnhNgzq9D
-	cOVdKwF3q30IXLZ0Gl69Hwn1/l4aavJzaMi4epuGF50DGFoK8jCUSFHw1vqRhKe5xRjMHTRc
-	NGfg4PmEod9qZ8CaOg3abRcYGHgXATU+LwWu5tlwvqiFhgpXDQnV99oxvLpfSIPP8YeCp9WP
-	SQiYQqHutJGCmz3FNHQGrARY/b0MvKy0YKi2jIPSzCDwxJffFDwyVmI4ce0OhvqmcgQPstsw
-	SA4vDW5/FwanlE/Aj+seBO2mbgayTvUzcDHNhCAnq4CEzJZF8PN78POlrxGQdrmUhJu/vChy
-	peAociDB3dVLCJnOI8IP/2tacAUspPCkmBfKLrQyQuaDZkawSImC0xYmXK3owMKVPj8lSPaT
-	tCD15TGCobseCz21tcyWSTtlK6LFWG2SqJ+/SiXTGNoycPzZjUcDTiOVijzLDSiE5bmFfLnp
-	DPFff//iGNI0N4NvbOwf0mO4qbzT+JEyIBlLcN7hfMOlJjQYjObW81JZA2NALEty0/g2++pB
-	W84t5m9531D/mFP4ktLKIU5I0G/OcQ9VFdwivr6kiBxk8pw5hDe1euh/hQn8Q1sjmYvkFjTM
-	jhRaXVKcWhu7cJ4mWac9Om//wTgJBedlTRnYdQ/11W2tQhyLlCPkpa5ZGgWlTkpIjqtCPEso
-	x8jtzpkahTxanXxM1B/cq0+MFROqUChLKsfLFwSORCu4A+rDYowoxov6/ylmQyamoqzVk9fE
-	fJiQXTCqJzG30Bd56Np2lW/6wFjP4vRNrTLtUpVZ9p5bVrE2fMON/VpWA0xPJ/N5j8RVhNb8
-	On4jsq17n5iWcqz8uG73zvPjw4uww7QuMOP3uZTceHrOjgxDumrb8iXuvKxhtoh1qn29bqSe
-	FFMbtWmznDd+jmpvWv9SSSZo1BFhhD5B/Rd3CCqzWgMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSfUzMcRzHfX/PHcdvp/FbabjNJPPQJj6Tp/6wfvO8GYYNt/zmjrq401W2
-	pvSwuuqWh0TqOsWV6yJ32UJn53JHmkS5kko1okkZ3RGRK/PPe++93/u83v98GFxygwxgFMqT
-	gkopi5ZSIkK0LTx1yYnvIfLl7WX+4BnJJKDolpmC5puVCMw1KRgMOCOhzTuI4Nez5zgU5Dcj
-	uNrbhUONqxuBreIMBS3vpkOrZ5iChvxsClLLblHw4tMYBp0Xz2FQadkKb439BDTmlWJQMEDB
-	lYJUzCcfMRg1mmgwJi+AvopCGsZ6Q6Gh201CfXEDCbaOxXBZ30lBna2BAFdtHwYt94oo6DaP
-	k9DoekKAVxcIzWdzSagaKqXgk9eIg9EzTMNLuwEDl2EWVKf5qBnf/pDwONeOQca12xi0vr6P
-	4EFmDwYWs5uCes8gBlZLPg4/y50I+nSfaUjPGaXhSooOQXb6RQLSOsPg1w/fcvFIKKSUVBNQ
-	9duNNqzjzXoz4usHh3E+zRrP//S8onib10DwT0s5/m5hF82nPeigeYMljrdWhPBldQMYf/Wr
-	h+QtpiyKt3w9R/Paz60YP9TURO8I2idac1iIVmgE1bJ1h0RybU8qdvxCZILXmksmI2e4Fvkx
-	HLuC+/HNjE94il3ItbePTnp/dh5nze0ntUjE4Kx7KtdW/BpNFDPZjZzlbhutRQxDsAu4HlPE
-	RCxmV3I33W/If8y5XGW1fZLj58s7susnTyVsGNdaqSfykMiAppiQv0KpiZEposOWqo/JE5WK
-	hKVRsTEW5HsgY9LY2Vo00hLpQCyDpNPE1bZFcgkp06gTYxyIY3Cpv9hkDZZLxIdliacEVexB
-	VVy0oHagQIaQzhZv2iMckrBHZCeFY4JwXFD9bzHGLyAZlfyeE9NlNiXMd2jWF735Mjvq+tic
-	V0XSvfPJ3rWbL+k+DHX2z9j+4f3eoMZZ9w8UxqcEr76dszPPXvxwl/784qPx2xWu2NVRdUJm
-	lpXT6cuDRp6XSac9YpSag/vD28dPl2RVRbSUrsFzHjubIvt3X7I7k+JWOe5s3SP+8vDMM2/W
-	lkApoZbLQkNwlVr2F1s4Efg8AwAA
-X-CFilter-Loop: Reflected
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2051.outbound.protection.outlook.com [40.107.243.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098E14317D;
+	Mon, 19 May 2025 09:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747646643; cv=fail; b=VbXInc8UA8gqg4d2zPvBXlItz2EOgAtwFo1ZsmPH9X9f5OK/S3/Rc6rzhq+IupAzCbN6HYXCZnp/pSXOCQRQkh4Wcc4MbozAdg6WUXMl/TCZGn5fLldbizKF+nkOofCo683y2qdsdDk1SxSCZBMHRiRvrH82GIMqIEum6PyoX80=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747646643; c=relaxed/simple;
+	bh=EEbEv7KJnCxOimXUjaFy6R7s0kOmrgyizAr6EwWmzGU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=b1rb1CxxDtAfg9y6qIkq1WnqaDHpUsxyA3WPmIkDonGJjRbQUwCfGQnB25IaAAlGcZRqPV6v+No61klncqIUikeU/881B/Hq0mvIV4s72/xRSV77QeZMPJiBKv+xh2SfDYDTDK2RrxKF94RxOc2wYpuPW2P8Cm6drNGZvpiQqZA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=7LqVAirJ; arc=fail smtp.client-ip=40.107.243.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="7LqVAirJ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yh7jq6IRTEJ/yv5AtKZ6nLpDEgp0/0HYmawAP9ZzHBVpArrP5e/S3C2jeehhfn5ciIdE+3r6FCx2UnJj1h6GHDiD8Eih83igtOdaESCGc/U9nTcSApHU6/dKm6wzfbWfP4NTO9WtqHjyiQxElCnzCAvFU95ngOLNTNFVHIT6AQ/FyEIr/ZZCLoSr1Eq/6x/Gk7Kl5a1C1nNwRs1wOL/DrybgS7eIOfNhzvwcPzvelHEopB/sLpCRlyO+Qy8aGmT4CY9ZofW1d/lTuYup91+GkOukQ3R8ssNBdr30rXIIt5TLtkIcWdaRYBSXuyymTqwVa5eGEltwKJMcufMp69RV+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EEbEv7KJnCxOimXUjaFy6R7s0kOmrgyizAr6EwWmzGU=;
+ b=RBcHXTa7edcCxmQVFAswl9O531Q2ywp1+Mfkxg9K9j2hhoGAbaAHEt6hizSeF6FfE6ejKap23qk+vmkIjeyndvPx8qjQoVbziG0JqfpYkjcaiN0sdSo/oW38pyXGjWmFkaXUvzdIGVDA9SNj5dnPxvR6Kz6FrxbJ6gI+Pt3aZWv4ZOj8WniVsXMTefW4x9rUyPquGd4eLGEJvBIaRLBeV6g0ahVtRuoEk/q01ShePSf84ClOr+EDdEJnUPG8npx14CT78oIrynRusArreNI8sZMVRcY/3NNtfWaMK086Gvy+ovpNOMHRLZ3rE7DlhQvXEQ1uguxR5jErZwnt251R2g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microchip.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EEbEv7KJnCxOimXUjaFy6R7s0kOmrgyizAr6EwWmzGU=;
+ b=7LqVAirJY9DsYy+sVMB/ppW693/SQSsJiBWvw50CeZURjlC2I9NuYB1p3X1b2T9ks0CeXX+UJCaCAP11Pcz7yo/x2WKlUOg72MswJpcnHg8yGVhb/cUWoK0HGeR/rKhG4A+m0lsVLF/P3HUaaWh/oewaoOMGaqxSWwuuTYdutHua3HhOP08hv3ewBjDkLO7ML0tOcjILChCv8sS8nHwi3Ev26dnQOyF+2N2Cqj+qfkYPb+TOUZPcM4i58BTPqyWE/leI8qiYW7rq5lzFTMrSnudPimpgVLDo+ytHAc164dRbtFVkfGWsdbaqIPI0rxDK0OsUyo5LZ8CKnouR8EjFhQ==
+Received: from DM6PR11MB3209.namprd11.prod.outlook.com (2603:10b6:5:55::29) by
+ SN7PR11MB7566.namprd11.prod.outlook.com (2603:10b6:806:34d::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8746.30; Mon, 19 May 2025 09:23:57 +0000
+Received: from DM6PR11MB3209.namprd11.prod.outlook.com
+ ([fe80::18d6:e93a:24e4:7924]) by DM6PR11MB3209.namprd11.prod.outlook.com
+ ([fe80::18d6:e93a:24e4:7924%3]) with mapi id 15.20.8746.030; Mon, 19 May 2025
+ 09:23:57 +0000
+From: <Thangaraj.S@microchip.com>
+To: <kuba@kernel.org>
+CC: <andrew+netdev@lunn.ch>, <Bryan.Whitehead@microchip.com>,
+	<davem@davemloft.net>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>,
+	<UNGLinuxDriver@microchip.com>
+Subject: Re: [PATCH v1 net] net: lan743x: Restore SGMII CTRL register on
+ resume
+Thread-Topic: [PATCH v1 net] net: lan743x: Restore SGMII CTRL register on
+ resume
+Thread-Index: AQHbxhdD34wCQBQKWkedyDcav/M+M7PV64oAgAPGsgA=
+Date: Mon, 19 May 2025 09:23:56 +0000
+Message-ID: <067713e1ebaf303fe4aefb9c29cc7e1b70cd722a.camel@microchip.com>
+References: <20250516035719.117960-1-thangaraj.s@microchip.com>
+	 <20250516164010.49dd5e8b@kernel.org>
+In-Reply-To: <20250516164010.49dd5e8b@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM6PR11MB3209:EE_|SN7PR11MB7566:EE_
+x-ms-office365-filtering-correlation-id: 824e0b75-e794-4426-b30d-08dd96b6e1a6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?TUxTOHpnVC96eHJoRVcyUTFJU0U0UjZqOWsrR1V1OUczU0Q3QXFhNS9pRUlV?=
+ =?utf-8?B?ekRnSVF5a1hIUEQyV1JhWUErdW1RQnhZZHh4anRub0RZUG1Mdy9wUURvdzZt?=
+ =?utf-8?B?QVl4Sy9WSUJBTkZXd2RRYjYvdFk4Rk1IRGZ6djVoMmQyYThtZ3Q3YS8yU0JJ?=
+ =?utf-8?B?WjZWeEhvcmNVRnh0OEY0cWs5eHpHcDN3Y09pRTBjcndSUzh5SmZmRkIwL3FO?=
+ =?utf-8?B?OEN0Wkw3RUczcWJLMXhWTCtocDk2cUJsS2tkSEkvQ2oreGRYQStuc3JPZGIr?=
+ =?utf-8?B?Tm1idUk1ZWozTTVqc3poU1U0SHoxMTBmTnc0a0RGeGZGNDliQ2ovVWkvRG4r?=
+ =?utf-8?B?bDN3VzNuRCtsaHJ4cHlhOTJZT1oyQ0RVR1JaSXR6amtPRCtISEwwT2FLQnEv?=
+ =?utf-8?B?MFJLeHVrMmdBTkdLbnZwOFZlYVZ2aWVhUkRVVE9qMlpOcDJTQ0lVWU5EMFV0?=
+ =?utf-8?B?eHVRWndtZU1SK0JhdUxUYk5ZTTRsSTNWbnRiUjZSUHQzaWVxSFkxLzRremhS?=
+ =?utf-8?B?Y2ZQM0RrVklZWVMxVmxVMHl5aXl1K1VrVUFkM2pleWxqNzJjRVFvWjZEYktQ?=
+ =?utf-8?B?S25jOC8yS3ZGOG9xUTR5QVBJMHk0Sml6ZVpsN2g2MWlSb2FtUmFKNmdRUGgx?=
+ =?utf-8?B?NGRueVNyQkRHRDlwVXcwcTZqNnFpRTFwUTVtcmsxZ2ZIMVRGQmNSbXFYclBR?=
+ =?utf-8?B?VEdKb2dVT051YjJRNER2T3dIY2NVbWRzdmYxOTVzRzdXeGszN1JGWUN1ZlRX?=
+ =?utf-8?B?c1lwQlVzb3IxSzZOS2NzZGZaWEkxY2NOOERaY0llZTVqRDdhZjBvRjFBc0l2?=
+ =?utf-8?B?ZHA3dDh5QTZTc2RQZis0aWs5Zlh3WERCVHExb0tvYy9rc2lzTFlGMUxVSVgy?=
+ =?utf-8?B?Z05RWC8zOUFjYVR3L3BjbGIwMHdWV0oyMy83YWVFWTlBLzh0Rlh1WTBJM2J6?=
+ =?utf-8?B?c09VRWFBcGI4NHFUdHltdFVYc0Y1Nm5ZNGd1OWlRUDJrZ2xPWUZ0WExYWjFt?=
+ =?utf-8?B?OVlnTWg3SGcxSHdXS3M5OTlqK1VaeG9XTFhCTGRBa0ZmbnpvMHMxTC9RcU55?=
+ =?utf-8?B?R0lZVHlPekR0amNTV2dwcnFrSlQyeG9XcFRKdmU1N1hDc21MVExveDJpc1I5?=
+ =?utf-8?B?Ym1ISVhySWNPTVhuaG4wVlJoblpQOGN0WXZEYTRjb1Bxa241djE0NDQ5SU9E?=
+ =?utf-8?B?bDR6bkxVV3ZtQ2xzcElaRlZiMU5jc21Kd3R1YXl3eTJqeGVWY0tDdlNKcTdH?=
+ =?utf-8?B?TkdFem40SXg2R3RrY1dYclI2Q1hqS3E3ZW1qQ0VkbXFKVmJkQ0pzdlc1TGRS?=
+ =?utf-8?B?bkdEVXV1dyt5VGQ1Ui9HZDZzSTRLOVEwZUp1STVPWGpVSGRNUUhLTGxIblY1?=
+ =?utf-8?B?YUNhNlJjZkROdEZPSHVuT0ZrUmpNL0I1WUlCdVZscXNiaUo0Z3MvUDNjd0Vo?=
+ =?utf-8?B?UlE0TzFIemVBR3lwcmduVzljWlpRdExtNnkyN2JiQ1REUUR0Qm5qREVLNlJW?=
+ =?utf-8?B?eE0xYm9jRFJtcVdxUk9GWjltVzVZekJiNU5mdmJlTlVrME5iOFFtYzFXeHNU?=
+ =?utf-8?B?eUxKU2lxNkdYYWMvbk9XMmtzcTEvYzIySjBOZUhUZ2RxYlM3Nkp1RzNycGt1?=
+ =?utf-8?B?VklyMlBnRjNLazVRSUVFZjZ0QjlIRzBHRytzQjBBcWZPYkVkaXRtQmRjRzdk?=
+ =?utf-8?B?WUpld1hMOHpLOWxFQTMxVUI4WEJoVDZIM1RaejcrcElCSTdqd3h6Q3c0ZVlH?=
+ =?utf-8?B?U3k2bjdqQ29IdkpQSEUza1VybGFabTQ0NlJFWXpqU1NycS8xUjV1UU1TVkEy?=
+ =?utf-8?B?Mi9pU0g1NTM3cDg2aGQ1blg5UEFOQTdMVDMrcTM2VTluL3d2OTQrM2FKd056?=
+ =?utf-8?B?eHhYMGR3U0lZWStlRHFFMjJOTUwrVkljdFMwbkZaTTB0Ukw3b0E4cjBuTU5M?=
+ =?utf-8?B?STB6akxrTHM3WGZoUXZyVVNnamlHTk03YS93VWhEc0RtU01VZmt3RGpObVM0?=
+ =?utf-8?Q?loEtA62XujSJZOp8gkJt9YcZLp+B5w=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3209.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?VHFhOG56Z3BBdVc3UFlPMUlSc3NIQUVlZUZaUkM1L08xZG54dlJXaDV0b0RF?=
+ =?utf-8?B?RFppWUpzNGJ0dUw0bmVFaGx6SFBhb3hvMDFRK2h1clVBVW85NGk3a0tXRUo3?=
+ =?utf-8?B?NWlPaWdBcjRqaGNvQVNpYlBmbXdCdkt5cHNBd3grOW0wU3QwS1dvRUpvUklD?=
+ =?utf-8?B?cUhIb0NqNU5wQnVPcjUvYWZ1WTNWdmluaFlURTlncXpna0YxWUR0ZitsWlRh?=
+ =?utf-8?B?R3NFQWlBTitBNCtkTjlXY0ZCVU5YcTJOL0tQWGlpVXRsMXU0R3VzcEFZMXo5?=
+ =?utf-8?B?aGdQbXRIRzJZNHIyT0xDRmNCRTgyUzkzbllFZTBJMXQwSUVZTUptaUo2OVUr?=
+ =?utf-8?B?aVZLSDI0Y3B5cEVOVmg0anNZUGJ0ZWowMHZpUmI5MmNnNVEwUU91cGxITmR6?=
+ =?utf-8?B?M3gzSjBCM2ZHZkJMWlpuQnFDVHpjVTZHQkY0TXgrK3pGZ1RGc1NGNGpJbDNh?=
+ =?utf-8?B?aUE1WXU5V2hlVHRoVEF4blkrbWIwZ3piWk9LalNMUVBTNVBzcC82cEQ1clor?=
+ =?utf-8?B?Z1FWT2dRWDFweWhRS3NrYTk5cHFub1JnZXhnSklBTElvRjB0SGJDRlJDc1RL?=
+ =?utf-8?B?TDhCemNuc3FraDdzYXEzMWZkQ0FHZ28raG04Y2x5T0Z5NXU0Y1hNYzlMcWo1?=
+ =?utf-8?B?TWhUNjRkaHRwUXcwSkhtZzg3WXJySGFoU2RUS3ppZDlVS1E5TVZlQ0RHc0R4?=
+ =?utf-8?B?V1h2YWhIcUJoQkpnMVRwZkpQMXNwV1VFMkwyUUhaWUV2M1J1d3lUWWhSaHVG?=
+ =?utf-8?B?a0VGZHJ1NDJKM1FBVFNNdGtlSnZ2WnJ2TytvUnZMV2dwektGcGRMNVF6MkMy?=
+ =?utf-8?B?bkxmc3A0N2FJdXlLT29xaU1MakNMMXVaaUlXOU8yMEVHTDhPWkJ1TUpMRVJs?=
+ =?utf-8?B?bHlNMWI2WVp3aW9POCtLWGRQZFc5b0F4eno0NDVaNXIxWjZ3YnBnYS9zR3hK?=
+ =?utf-8?B?NGtxL2xOMDlnVVFxQnZyOUhoS082Q3BwTEptSzcvRlZuR2Z1WTJKRzltKzBC?=
+ =?utf-8?B?WEtjQWV3ODR4YTlXMERiQjEwa0tHM2h2RVBveERZQTI5ZUVVK004RWh1R1ZP?=
+ =?utf-8?B?azBwOFVFSEtBYThDR2VKaUJXVHN4MGluZWE5Z1htVzBIMGl6RDcyNm1CeTdR?=
+ =?utf-8?B?bkRIdS9YMVZiWHZHMktDV2lWNHkxZWwyY05Dd2szMVNqZ3FQbkxsTmdTZVl4?=
+ =?utf-8?B?SjBod05GY3dzVW14S2hXTDV0MDgrTmhLalVPRVRPSG0zZldobzFoT0lvVE81?=
+ =?utf-8?B?YW9yMW5VNEdKcDY1MTAySE9rTktFM3hqVXhXazExNjJvTU5DR1EzNGpCMmZ0?=
+ =?utf-8?B?U0dYRVk0UGlVTU5zc1dJYlBvYTc3TWdZM1EzeDhRZEpYS2N3dEtMRHArb1VU?=
+ =?utf-8?B?VWM5M01LNVdhL3ZzYUtKdy9HeXJYdEpQZkhhMEtDMHlkdzdqT0VIZWN3bnZS?=
+ =?utf-8?B?U0JVUDQ0eElPMkhaQWF5aVRuZGc4cGZrS3d3SVBrT25XdGJyb2JadjVsdy9S?=
+ =?utf-8?B?RkVKQ2RDSXd6SUxIRThjSjBBTWtUaHZsYldjeEsvcTduYU1pcGhoVnkyQUxP?=
+ =?utf-8?B?QjAxR3Q2TzRXZ0oxSDZiWlQ3dWMvazlTUEY2a1JoUkE3MGs3NmRJQkIvbm42?=
+ =?utf-8?B?VFFGTWU2TFBpYUJrNENzYVUyeGl4YktWMDlXOHREUkhQWlVvMWdMTFF2bUF6?=
+ =?utf-8?B?bk05MVRCS255dHRyWWV0OU1vOUtacUpwbzRWNmF5elVRNmZWYk9HZ0ZZc1Ri?=
+ =?utf-8?B?dU12NVozNVZKU0hxSy9KVmJqZDdvdEwwT3RuS1g4S0hMb08yRzRJRk5Ua3Q5?=
+ =?utf-8?B?clpoZEZJeGk4Ti8zdDI4OWxId0dlSXFxbXpnNzYwZlM2RFdCL3VMdkY4K3ps?=
+ =?utf-8?B?Z2M4Z21pV3l5WVV5WGV3a3I3RTdvUHhJMEZvOXFacVVqZ3V6SDZUcDZIUisz?=
+ =?utf-8?B?WDBxSVFIS1B2NEVHYVEzT1BlZnBrWWlHMXJtYkhMZlZLNGc3ajlOOWxJaG8w?=
+ =?utf-8?B?YTl0b2JMOUNzYlltQTZqRG0rcFF2QzRHZ2UycmtIY3lEeTBtQnFWSGxFYzBj?=
+ =?utf-8?B?QTZRVVE2bTJjcWJEc0dXOTJDVHIzNCtlbWJZRWM2Q29jVEtYMTVneXk0d2RW?=
+ =?utf-8?B?WVFWUHdHd0dtZmwxMzlDSzArMWVaYzFzZys2VTF1aHREMXIrUHdNeUNJQ2I0?=
+ =?utf-8?B?L1E9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <091F122B0EDC5240A1F740DED440E269@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-OriginatorOrg: microchip.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3209.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 824e0b75-e794-4426-b30d-08dd96b6e1a6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 May 2025 09:23:57.0209
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: xTkHy5k9IuG9HnKV8MJ4z7prs71P9nuV13NrbIuf/jvoleBGScPyYCrlICJ895/H0JHp1EBxveHjTCkds4lc1LDMQWTrxNl1XHRLudkAmtc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7566
 
-Implement CONFIG_DEPT_UNIT_TEST introducing a kernel module that runs
-basic unit test for dept.
-
-Signed-off-by: Byungchul Park <byungchul@sk.com>
----
- include/linux/dept_unit_test.h     |  67 +++++++++++
- kernel/dependency/Makefile         |   1 +
- kernel/dependency/dept.c           |  12 ++
- kernel/dependency/dept_unit_test.c | 173 +++++++++++++++++++++++++++++
- lib/Kconfig.debug                  |  12 ++
- 5 files changed, 265 insertions(+)
- create mode 100644 include/linux/dept_unit_test.h
- create mode 100644 kernel/dependency/dept_unit_test.c
-
-diff --git a/include/linux/dept_unit_test.h b/include/linux/dept_unit_test.h
-new file mode 100644
-index 000000000000..7612b4e97e69
---- /dev/null
-+++ b/include/linux/dept_unit_test.h
-@@ -0,0 +1,67 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * DEPT unit test
-+ *
-+ * Started by Byungchul Park <max.byungchul.park@gmail.com>:
-+ *
-+ *  Copyright (c) 2025 SK hynix, Inc., Byungchul Park
-+ */
-+
-+#ifndef __LINUX_DEPT_UNIT_TEST_H
-+#define __LINUX_DEPT_UNIT_TEST_H
-+
-+#if defined(CONFIG_DEPT_UNIT_TEST) || defined(CONFIG_DEPT_UNIT_TEST_MODULE)
-+struct dept_ut {
-+	bool circle_detected;
-+	bool recover_circle_detected;
-+
-+	int ecxt_stack_total_cnt;
-+	int wait_stack_total_cnt;
-+	int evnt_stack_total_cnt;
-+	int ecxt_stack_valid_cnt;
-+	int wait_stack_valid_cnt;
-+	int evnt_stack_valid_cnt;
-+};
-+
-+extern struct dept_ut dept_ut_results;
-+
-+static inline void dept_ut_circle_detect(void)
-+{
-+	dept_ut_results.circle_detected = true;
-+}
-+static inline void dept_ut_recover_circle_detect(void)
-+{
-+	dept_ut_results.recover_circle_detected = true;
-+}
-+static inline void dept_ut_ecxt_stack_account(bool valid)
-+{
-+	dept_ut_results.ecxt_stack_total_cnt++;
-+
-+	if (valid)
-+		dept_ut_results.ecxt_stack_valid_cnt++;
-+}
-+static inline void dept_ut_wait_stack_account(bool valid)
-+{
-+	dept_ut_results.wait_stack_total_cnt++;
-+
-+	if (valid)
-+		dept_ut_results.wait_stack_valid_cnt++;
-+}
-+static inline void dept_ut_evnt_stack_account(bool valid)
-+{
-+	dept_ut_results.evnt_stack_total_cnt++;
-+
-+	if (valid)
-+		dept_ut_results.evnt_stack_valid_cnt++;
-+}
-+#else
-+struct dept_ut {};
-+
-+#define dept_ut_circle_detect() do { } while (0)
-+#define dept_ut_recover_circle_detect() do { } while (0)
-+#define dept_ut_ecxt_stack_account(v) do { } while (0)
-+#define dept_ut_wait_stack_account(v) do { } while (0)
-+#define dept_ut_evnt_stack_account(v) do { } while (0)
-+
-+#endif
-+#endif /* __LINUX_DEPT_UNIT_TEST_H */
-diff --git a/kernel/dependency/Makefile b/kernel/dependency/Makefile
-index 92f165400187..fc584ca87124 100644
---- a/kernel/dependency/Makefile
-+++ b/kernel/dependency/Makefile
-@@ -2,3 +2,4 @@
- 
- obj-$(CONFIG_DEPT) += dept.o
- obj-$(CONFIG_DEPT) += dept_proc.o
-+obj-$(CONFIG_DEPT_UNIT_TEST) += dept_unit_test.o
-diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
-index c65bb0c6dad2..a08d0e16978b 100644
---- a/kernel/dependency/dept.c
-+++ b/kernel/dependency/dept.c
-@@ -78,8 +78,12 @@
- #include <linux/workqueue.h>
- #include <linux/irq_work.h>
- #include <linux/vmalloc.h>
-+#include <linux/dept_unit_test.h>
- #include "dept_internal.h"
- 
-+struct dept_ut dept_ut_results;
-+EXPORT_SYMBOL_GPL(dept_ut_results);
-+
- static int dept_stop;
- static int dept_per_cpu_ready;
- 
-@@ -826,6 +830,10 @@ static void print_dep(struct dept_dep *d)
- 			pr_warn("(wait to wake up)\n");
- 			print_ip_stack(0, e->ewait_stack);
- 		}
-+
-+		dept_ut_ecxt_stack_account(valid_stack(e->ecxt_stack));
-+		dept_ut_wait_stack_account(valid_stack(w->wait_stack));
-+		dept_ut_evnt_stack_account(valid_stack(e->event_stack));
- 	}
- }
- 
-@@ -920,6 +928,8 @@ static void print_circle(struct dept_class *c)
- 	dump_stack();
- 
- 	dept_outworld_exit();
-+
-+	dept_ut_circle_detect();
- }
- 
- /*
-@@ -1021,6 +1031,8 @@ static void print_recover_circle(struct dept_event_site *es)
- 	dump_stack();
- 
- 	dept_outworld_exit();
-+
-+	dept_ut_recover_circle_detect();
- }
- 
- static void bfs_init_recover(void *node, void *in, void **out)
-diff --git a/kernel/dependency/dept_unit_test.c b/kernel/dependency/dept_unit_test.c
-new file mode 100644
-index 000000000000..88e846b9f876
---- /dev/null
-+++ b/kernel/dependency/dept_unit_test.c
-@@ -0,0 +1,173 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * DEPT unit test
-+ *
-+ * Started by Byungchul Park <max.byungchul.park@gmail.com>:
-+ *
-+ *  Copyright (c) 2025 SK hynix, Inc., Byungchul Park
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/spinlock.h>
-+#include <linux/mutex.h>
-+#include <linux/dept.h>
-+#include <linux/dept_unit_test.h>
-+
-+MODULE_DESCRIPTION("DEPT unit test");
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Byungchul Park <max.byungchul.park@sk.com>");
-+
-+struct unit {
-+	const char *name;
-+	bool (*func)(void);
-+	bool result;
-+};
-+
-+static DEFINE_SPINLOCK(s1);
-+static DEFINE_SPINLOCK(s2);
-+static bool test_spin_lock_deadlock(void)
-+{
-+	dept_ut_results.circle_detected = false;
-+
-+	spin_lock(&s1);
-+	spin_lock(&s2);
-+	spin_unlock(&s2);
-+	spin_unlock(&s1);
-+
-+	spin_lock(&s2);
-+	spin_lock(&s1);
-+	spin_unlock(&s1);
-+	spin_unlock(&s2);
-+
-+	return dept_ut_results.circle_detected;
-+}
-+
-+static DEFINE_MUTEX(m1);
-+static DEFINE_MUTEX(m2);
-+static bool test_mutex_lock_deadlock(void)
-+{
-+	dept_ut_results.circle_detected = false;
-+
-+	mutex_lock(&m1);
-+	mutex_lock(&m2);
-+	mutex_unlock(&m2);
-+	mutex_unlock(&m1);
-+
-+	mutex_lock(&m2);
-+	mutex_lock(&m1);
-+	mutex_unlock(&m1);
-+	mutex_unlock(&m2);
-+
-+	return dept_ut_results.circle_detected;
-+}
-+
-+static bool test_wait_event_deadlock(void)
-+{
-+	struct dept_map dmap1;
-+	struct dept_map dmap2;
-+
-+	sdt_map_init(&dmap1);
-+	sdt_map_init(&dmap2);
-+
-+	dept_ut_results.circle_detected = false;
-+
-+	sdt_request_event(&dmap1); /* [S] */
-+	sdt_wait(&dmap2); /* [W] */
-+	sdt_event(&dmap1); /* [E] */
-+
-+	sdt_request_event(&dmap2); /* [S] */
-+	sdt_wait(&dmap1); /* [W] */
-+	sdt_event(&dmap2); /* [E] */
-+
-+	return dept_ut_results.circle_detected;
-+}
-+
-+static void dummy_event(void)
-+{
-+	/* Do nothing. */
-+}
-+
-+static DEFINE_DEPT_EVENT_SITE(es1);
-+static DEFINE_DEPT_EVENT_SITE(es2);
-+static bool test_recover_deadlock(void)
-+{
-+	dept_ut_results.recover_circle_detected = false;
-+
-+	dept_recover_event(&es1, &es2);
-+	dept_recover_event(&es2, &es1);
-+
-+	event_site(&es1, dummy_event);
-+	event_site(&es2, dummy_event);
-+
-+	return dept_ut_results.recover_circle_detected;
-+}
-+
-+static struct unit units[] = {
-+	{
-+		.name = "spin lock deadlock test",
-+		.func = test_spin_lock_deadlock,
-+	},
-+	{
-+		.name = "mutex lock deadlock test",
-+		.func = test_mutex_lock_deadlock,
-+	},
-+	{
-+		.name = "wait event deadlock test",
-+		.func = test_wait_event_deadlock,
-+	},
-+	{
-+		.name = "event recover deadlock test",
-+		.func = test_recover_deadlock,
-+	},
-+};
-+
-+static int __init dept_ut_init(void)
-+{
-+	int i;
-+
-+	lockdep_off();
-+
-+	dept_ut_results.ecxt_stack_valid_cnt = 0;
-+	dept_ut_results.ecxt_stack_total_cnt = 0;
-+	dept_ut_results.wait_stack_valid_cnt = 0;
-+	dept_ut_results.wait_stack_total_cnt = 0;
-+	dept_ut_results.evnt_stack_valid_cnt = 0;
-+	dept_ut_results.evnt_stack_total_cnt = 0;
-+
-+	for (i = 0; i < ARRAY_SIZE(units); i++)
-+		units[i].result = units[i].func();
-+
-+	pr_info("\n");
-+	pr_info("******************************************\n");
-+	pr_info("DEPT unit test results\n");
-+	pr_info("******************************************\n");
-+	for (i = 0; i < ARRAY_SIZE(units); i++) {
-+		pr_info("(%s) %s\n", units[i].result ? "pass" : "fail",
-+				units[i].name);
-+	}
-+	pr_info("ecxt stack valid count = %d/%d\n",
-+			dept_ut_results.ecxt_stack_valid_cnt,
-+			dept_ut_results.ecxt_stack_total_cnt);
-+	pr_info("wait stack valid count = %d/%d\n",
-+			dept_ut_results.wait_stack_valid_cnt,
-+			dept_ut_results.wait_stack_total_cnt);
-+	pr_info("event stack valid count = %d/%d\n",
-+			dept_ut_results.evnt_stack_valid_cnt,
-+			dept_ut_results.evnt_stack_total_cnt);
-+	pr_info("******************************************\n");
-+	pr_info("\n");
-+
-+	lockdep_on();
-+
-+	return 0;
-+}
-+
-+static void dept_ut_cleanup(void)
-+{
-+	/*
-+	 * Do nothing for now.
-+	 */
-+}
-+
-+module_init(dept_ut_init);
-+module_exit(dept_ut_cleanup);
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index ec840c672846..8db2a8136418 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1404,6 +1404,18 @@ config DEPT_AGGRESSIVE_TIMEOUT_WAIT
- 	  that timeout is used to avoid a deadlock. Say N if you'd like
- 	  to avoid verbose reports.
- 
-+config DEPT_UNIT_TEST
-+	tristate "unit test for DEPT"
-+	depends on DEBUG_KERNEL && DEPT
-+	default n
-+	help
-+	  This option provides a kernel module that runs unit test for
-+	  DEPT.
-+
-+	  Say Y if you want DEPT unit test to be built into the kernel.
-+	  Say M if you want DEPT unit test to build as a module.
-+	  Say N if you are unsure.
-+
- config LOCK_DEBUGGING_SUPPORT
- 	bool
- 	depends on TRACE_IRQFLAGS_SUPPORT && STACKTRACE_SUPPORT && LOCKDEP_SUPPORT
--- 
-2.17.1
-
+SGkgSmFrdWIsDQpPbiBGcmksIDIwMjUtMDUtMTYgYXQgMTY6NDAgLTA3MDAsIEpha3ViIEtpY2lu
+c2tpIHdyb3RlOg0KPiBFWFRFUk5BTCBFTUFJTDogRG8gbm90IGNsaWNrIGxpbmtzIG9yIG9wZW4g
+YXR0YWNobWVudHMgdW5sZXNzIHlvdQ0KPiBrbm93IHRoZSBjb250ZW50IGlzIHNhZmUNCj4gDQo+
+IE9uIEZyaSwgMTYgTWF5IDIwMjUgMDk6Mjc6MTkgKzA1MzAgVGhhbmdhcmFqIFNhbXluYXRoYW4g
+d3JvdGU6DQo+ID4gU0dNSUlfQ1RSTCByZWdpc3Rlciwgd2hpY2ggc3BlY2lmaWVzIHRoZSBhY3Rp
+dmUgaW50ZXJmYWNlLCB3YXMgbm90DQo+ID4gcHJvcGVybHkgcmVzdG9yZWQgd2hlbiByZXN1bWlu
+ZyBmcm9tIHN1c3BlbmQuIFRoaXMgbGVkIHRvIGluY29ycmVjdA0KPiA+IGludGVyZmFjZSBzZWxl
+Y3Rpb24gYWZ0ZXIgcmVzdW1lIHBhcnRpY3VsYXJseSBpbiBzY2VuYXJpb3MNCj4gPiBpbnZvbHZp
+bmcNCj4gPiB0aGUgRlBHQS4NCj4gPiANCj4gPiBUbyBmaXggdGhpczoNCj4gPiAtIE1vdmUgdGhl
+IFNHTUlJX0NUUkwgc2V0dXAgb3V0IG9mIHRoZSBwcm9iZSBmdW5jdGlvbi4NCj4gPiAtIEluaXRp
+YWxpemUgdGhlIHJlZ2lzdGVyIGluIHRoZSBoYXJkd2FyZSBpbml0aWFsaXphdGlvbiBoZWxwZXIN
+Cj4gPiBmdW5jdGlvbiwNCj4gPiB3aGljaCBpcyBjYWxsZWQgZHVyaW5nIGJvdGggZGV2aWNlIGlu
+aXRpYWxpemF0aW9uIGFuZCByZXN1bWUuDQo+ID4gDQo+ID4gVGhpcyBlbnN1cmVzIHRoZSBpbnRl
+cmZhY2UgY29uZmlndXJhdGlvbiBpcyBjb25zaXN0ZW50bHkgcmVzdG9yZWQNCj4gPiBhZnRlcg0K
+PiA+IHN1c3BlbmQvcmVzdW1lIGN5Y2xlcy4NCj4gDQo+IElzIHRoZXJlIGEgcmVhc29uIHlvdSdy
+ZSBub3QgQ0NpbmcgUmFqdSBMYWtrYXJhanUgb24gdGhpcz8NCj4gSGF2aW5nIGEgcmV2aWV3IHRh
+ZyBmcm9tIHRoZSBhdXRob3Igb2YgdGhlIGNoYW5nZSB1bmRlciBGaXhlcw0KPiBpcyBhbHdheXMg
+Z3JlYXQuDQpUaGFua3MgZm9yIHBvaW50aW5nIHRoaXMgb3V0Lg0KUmFqdSBMYWtrYXJhanUgaXMg
+bm8gbG9uZ2VyIHdpdGggdGhlIGNvbXBhbnksIGFuZCBhcyBJIGFtIGN1cnJlbnRseW1hbmFnaW5n
+IHRoaXMgZHJpdmVyLCBJIGhhdmUgbm90IGluY2x1ZGVkIGhpbSBpbiB0aGUgQ0MuDQoNClRoYW5r
+cywNClRoYW5nYXJhaiBTYW15bmF0aGFuDQoNCg0K
