@@ -1,157 +1,131 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375F7221F1C;
-	Mon, 19 May 2025 21:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5810622126A;
+	Mon, 19 May 2025 21:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747690932; cv=none; b=S2Rgo5Pqzt/z3gBI+ghJACvH2O2XCesOBL45S/SUYu9ZiGSfh9JZxdYCVejJojmIZAmbXzxlyKbMo4XjJHWBvaYfWeQyBX9dLoBnUPPWIlEnXGUE5y3lBy3k9kbZn6B8uuqS6Ztv/3JBd4YVAFV1SyEeMBkEKX8k8RavIBmrJqg=
+	t=1747691018; cv=none; b=Bg4ruNRdkOFA/NvYeQfTENoczJIiROM8aDcP2KbVjp7dE+w2FPVeVip2CA0TUI72S+XMUJOc6j1/EYMHcBtaLw3iQHlC9ex4LmZR7arO6gC/3mbU98C4VxkFfi5NM4lcNZHMezawrMjNZyRB469Jr9IQkLkCqVnReeWFaEYXpt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747690932; c=relaxed/simple;
-	bh=JJn1G/j91f61FBbpVWMImfHtWIFluem4iH8Pp25ZfAk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gQ0sI7aqgXKzNpAoXcDb56jwynQ1I/JHM5BokIamLvDQfXH5XcHEc0klEJM8j9oUlO6lqHmnipXVjXJ94pOAIwWZCRQq8ivp02q2IgClnJcsecVvbCPBROFqVgFLIk+Kp7BWyBKfz4RvoJYKJeYJ7cKtxH2nVXV3I7KbuHqYAcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lUWITi1p; arc=none smtp.client-ip=209.85.210.181
+	s=arc-20240116; t=1747691018; c=relaxed/simple;
+	bh=eoKyZZeh4dCJi1ifrO/HYH0EZs1icYueUurBrUQhaeQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ov5os74jB7S/V07Zk5AzngxIP7GoV3FgFtq3Em/zv0fdKw4Y7+8L0IylI7m16f6ZNLIbobrKVDJV3f9JfwbjD50nxLmbblwGyVOexvg8wYVeNF+kcd+/JzhyFHsP2aV36sYSRFBF3zJQc/VgCVNPIn2yotxEPD3nhy+q+5cU1uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gsmHtKsz; arc=none smtp.client-ip=209.85.128.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lUWITi1p"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7399a2dc13fso6314234b3a.2;
-        Mon, 19 May 2025 14:42:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gsmHtKsz"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-703cd93820fso44541027b3.2;
+        Mon, 19 May 2025 14:43:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747690930; x=1748295730; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bGI/w48fIiA0eeXLnGtGjWEjUDoal1CE/ntvGdj0dd8=;
-        b=lUWITi1p0uefDEy27pM06sQ4GSSxC2YUk4aGjEyRhAYyrw1kZ254u7MjTANxWR4P45
-         D5nWHigzd6LeF8WBwd7UQ0Cx+l1fMOURe9RMZuf7bA7VmaRWlP0dM8LcYeByaSBvJA+h
-         sLCV18UPeHaSy+5QpIPE8iHufvEZ4xoHrFTh5kFRZHwKz3G4DgCCo0lgP+H17Uzl3Y8A
-         9yetX1AMfsGHpROfLKJcFHrB7kuGXaUxYoZo4Pu4wh4nC4w/QiC85pPVKIc9eSq+rcH5
-         87J7arTTVALeuClRebdjsAlc/NXlBHtgBkmSl2TYUe+yyFnEKeyIP7HVNlbVXM2JNYw4
-         3dyA==
+        d=gmail.com; s=20230601; t=1747691015; x=1748295815; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eoKyZZeh4dCJi1ifrO/HYH0EZs1icYueUurBrUQhaeQ=;
+        b=gsmHtKszgz6TJfDMsA/E/PLiNnMw0TSc1qklHbowRZVSLX4p7NUjTkKiWTfq6lKAqk
+         ewSHn33OCum5XU2xAFtKYBucDvJg6uUKxZV3DJiOubn5PfgPSwOAhPfUQdQSrYz0H2HY
+         zig3ufO0D5kq5qBudc+NoLXmzfV+H0W7Mx6XF4y4RDXq3O1SIS9lQj2Tlf4i93Y6WFd6
+         hzHZ3c8BV3UW9hQIxNRnIlDtKaYVeMSmKw6d0cnz+88Q3lZNfpxBoTYqayJ9SLGdNFjD
+         V1wMsJdF9iRMZPqEG3GM0hLe3lRFbKEHbsXTpJdExv5J/fl4o6tfCG9K9CuXm1TuKnXQ
+         yLrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747690930; x=1748295730;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bGI/w48fIiA0eeXLnGtGjWEjUDoal1CE/ntvGdj0dd8=;
-        b=KkNiUvVqjvWWGBWWKRNw3Jc0sIgMjGZ9vAYt2PUluW3hkYqWzyIP/5QkVADw/e/7Yj
-         6i4hqn/F6s3rX7CBku1qSkOEYJN7y120OCGaj3dPm979xrWHFpdBjTbP/AOm98hQbRM/
-         HXEB04yK3hLTx+eOR1mQ0PpLX0pr2aA1erxEut6dVbJ4OFbny99w2zbeSB3t/MYM/+7V
-         hFIqvPCeBBEUK+xvqSGXgITfiDLxsFewMNm4uPc8zFUQMz5OmwK2t7+xBAyoI7X2/K7z
-         M/PTVPhmI5nUvHVaNlEPzL88tC9ASsfmi6zjVDHHLyTKbgeUsYKwW8JgcKD71gRIQq5S
-         AeuA==
-X-Forwarded-Encrypted: i=1; AJvYcCVgBNRlCNYYhf/5SVQBYUdORyfBZvZEXCWsTnudC4cBm2wAFUITH5iJY1pCYLLygpEDtxqxILMW@vger.kernel.org, AJvYcCXILN1FEkm1ZEySbijIh9L+S7EkIB2JOrSH8J/c1Pqf5prZXtx9EbnVrIioJIjfbNJCqmiAhDLi41U1yqc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBErsaaTnqopHwLZec1mdCqsWO+WLz7Ntt+GA6RP9GI4Mj9153
-	FkKIOmtiDDzFjtDil4THCzuQHXKEBcwXMWF0VZ6QCyCAw0D5cQnIwmqZ
-X-Gm-Gg: ASbGncszMWAJ/d7a1vJ2RGef0z/rHnCjXzrqwLNYUxM6qRXLfjV8fcpeY+5CSRzWrC0
-	W0/EltXHiWbDLd1CmVOSFbjiC6TQcCCmJkYDnxtwPnafgD+jNlsf8GACWR3quTi8XWYfbPLGKhC
-	vvbCBn6226HyYnaJbEnFaiQ0+8Ab4lMxbvYXAuw8N5Bl+Ru3qU5FOZjLhxfpOO7N0Tfgb+OPQ1y
-	ziCBGECwvxhonDT0DJpkaNtce9dxsCSDWSjjyKJBZt/7fNvLPdNDL/mwYRzbQWf/IO9jDjb3iI7
-	2Z5fuxqkEpIcM+YP6zUucE0GxnWrJgUDN9otO170amRoCPjuAHic6A==
-X-Google-Smtp-Source: AGHT+IFBKOgUUFYbx5HEkm5y610RN4G6qp5hlW9ZWIayFQyg20n9R7JbChB2PEzDQ1MkbCRG1BJj9A==
-X-Received: by 2002:a05:6a21:3a89:b0:1f5:8a1d:3904 with SMTP id adf61e73a8af0-216fbfe1f94mr20912540637.7.1747690930196;
-        Mon, 19 May 2025 14:42:10 -0700 (PDT)
-Received: from mythos-cloud.. ([125.138.201.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a98a0ca7sm6664909b3a.158.2025.05.19.14.42.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 May 2025 14:42:09 -0700 (PDT)
-From: Moon Yeounsu <yyyynoom@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Moon Yeounsu <yyyynoom@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: dlink: add Kconfig option for RMON registers
-Date: Tue, 20 May 2025 06:40:45 +0900
-Message-ID: <20250519214046.47856-2-yyyynoom@gmail.com>
-X-Mailer: git-send-email 2.49.0
+        d=1e100.net; s=20230601; t=1747691015; x=1748295815;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eoKyZZeh4dCJi1ifrO/HYH0EZs1icYueUurBrUQhaeQ=;
+        b=r0dscLAlIjSgX/swd3GV/Ois7YHgA+IASguGj0nzwuB7s7y2uG40do6QtW//SvzqJI
+         H5K7nnnY9TVafZ/qlbVTu7LCHEkW0QOTw/4XDXIcmvjsYOq7BaMZejqPLFr2iTHexxO4
+         9ztIwdazlx+p9oErHyhPywrOQLZt+xcKP+ckhK3KonuBi8yCkKZHSnx25Lr38jacjiXV
+         j8KvQ0Kdiw62p8QShY/62JrDTPHXEPwQGwdWupxU1B2C0YgKUGro+k8o9tts8i19Iq1J
+         h/l3BGY51y7FByWbPYkuKKSLeW2w3kSZSo1Lwkax34ptfqbhaOHPRFvXFBT0fA7itftk
+         dH6g==
+X-Forwarded-Encrypted: i=1; AJvYcCWNU+zNnOJWLTJrhvewyVE0/8viNQ2gasH5+DJMao5fv+lqeuAjVf+l1vk+mU1+tVkXfK9fA8l4@vger.kernel.org, AJvYcCX1xn6RNqeneWaRRevoWo+GTDXm+bT3JG91zs5SXkaygpFh1dp3cXSZYRaRQQdXnvjM6PMgs6pfdior8OI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyE9uGpXZZbGRQ/xjeAL0O6bZ2OjQhyB+v8lybRvHdDwQYQMBwW
+	XCqOsZm5YPYa1BfAIIPZv4X2eOsNdVfBRFnRWBjN7jkqqeloB0eqLuYwLMprfpkRcXtrEVddVUR
+	3vN7BjkIUXifVH9yzJVQclr3Dv8WQHIw=
+X-Gm-Gg: ASbGncvV1zqw9px9xgkFexjbcl19PQvFIQDT73Dq2hR+IRsezdnjwpxTi+axKzBSIh2
+	p5jP9jz2xNWlltVP8JXcXWt48MxP+Ov8UIyupaL1th2vSW8vgR8O3wGfIX/Dq1M6ROOJct9ZcRb
+	Cxy7j/nv4x8HRQ8QvWMdZ3DpoeEwYfi7k=
+X-Google-Smtp-Source: AGHT+IEVUXmqrqf2co1CDu/Xmw3prCw0ZQz+oMhqZMl6b1KMNFNeeeKC4jcgxBIUdxXH/dECMmbWYTHGehpcjK3jYz8=
+X-Received: by 2002:a05:690c:951b:b0:708:35b1:d55b with SMTP id
+ 00721157ae682-70caaf38bc4mr144684617b3.8.1747691015300; Mon, 19 May 2025
+ 14:43:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250519174550.1486064-1-jonas.gorski@gmail.com>
+ <20250519174550.1486064-3-jonas.gorski@gmail.com> <ed75677c-c3fb-41d1-a2cd-dd84d224ffe3@lunn.ch>
+ <CAOiHx=nwbs7030GKZHLc6Pc6LA6Hqq0NYfNSt=3zOgnj5zpAYQ@mail.gmail.com> <2e5e16a1-e59e-470d-a1d9-618a1b9efdd4@lunn.ch>
+In-Reply-To: <2e5e16a1-e59e-470d-a1d9-618a1b9efdd4@lunn.ch>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Mon, 19 May 2025 23:43:24 +0200
+X-Gm-Features: AX0GCFs0Cd-tkQBXp_ukkEPbXXlQllmjZxbVCmyPTiMZwzFkGeq5Bg99ndcdFpg
+Message-ID: <CAOiHx=mQ8z1CO1V-8b=7pjK-Hm9_4-tcvucKXpM1i+eOOB4axg@mail.gmail.com>
+Subject: Re: [PATCH net 2/3] net: dsa: b53: fix configuring RGMII delay on bcm63xx
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Vivien Didelot <vivien.didelot@gmail.com>, =?UTF-8?B?w4FsdmFybyBGZXJuw6FuZGV6IFJvamFz?= <noltari@gmail.com>, 
+	Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This patch adds a Kconfig option to enable MMIO for RMON registers.
+On Mon, May 19, 2025 at 10:34=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote=
+:
+>
+> > > These changes look wrong. There is more background here:
+> > >
+> > > https://elixir.bootlin.com/linux/v6.15-rc7/source/Documentation/devic=
+etree/bindings/net/ethernet-controller.yaml#L287
+> >
+> > This is what makes it work for me (I tested all four modes, rgmii,
+> > rgmii-id, rgmii-txid and rgmii-rxid).
+>
+> So you have rgmii-id which works, and the rest are broken?
 
-To read RMON registers, the code `dw32(RmonStatMask, 0x0007ffff);`
-must also be skipped, so this patch adds a preprocessor directive to
-that line as well.
+I have four rgmii ports with PHYs, I configured each one to a
+different mode (rgmii, rgmii-txid, rgmii-rxid, rgmii-id).
 
-On the `D-Link DGE-550T Rev-A3`, RMON statistics registers can be read
-correctly and statistic data can be collected. However, the behavior on
-other hardware is uncertain, and there may be undiscovered issues even
-on this device. Thus, the default setting is `no`, allowing users to
-enable it manually if necessary.
+Without this change no mode/port works, since there is always either a
+0 ns delay or a 4 ns delay in the rx/tx paths (I assume, I have no
+equipment to measure).
 
-Tested-on: D-Link DGE-550T Rev-A3
-Signed-off-by: Moon Yeounsu <yyyynoom@gmail.com>
----
- drivers/net/ethernet/dlink/Kconfig | 18 ++++++++++++++++++
- drivers/net/ethernet/dlink/dl2k.c  |  2 ++
- drivers/net/ethernet/dlink/dl2k.h  |  4 ++++
- 3 files changed, 24 insertions(+)
+With this change all modes/ports work. With "rgmii-id" the mac doesn't
+configure any delays (and the phy does instead), with "rgmii" it's
+vice versa, so there is always the expected 2 ns delay. Same for rxid
+and txid.
 
-diff --git a/drivers/net/ethernet/dlink/Kconfig b/drivers/net/ethernet/dlink/Kconfig
-index e9e13654812c..40c8c861c5a9 100644
---- a/drivers/net/ethernet/dlink/Kconfig
-+++ b/drivers/net/ethernet/dlink/Kconfig
-@@ -32,4 +32,22 @@ config DL2K
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called dl2k.
- 
-+if DL2K
-+
-+config DL2K_MMIO
-+	bool "RMON MMIO"
-+	depends on DL2K
-+	default n
-+	help
-+	  Enable memory-mapped I/O for RMON registers.
-+
-+	  Since this feature may have potential issues,
-+	  it should default to 'no'.
-+
-+	  If unsure, say N.
-+
-+endif # DL2K
-+
- endif # NET_VENDOR_DLINK
-+
-+
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index 232e839a9d07..197142aa63ff 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -576,7 +576,9 @@ static void rio_hw_init(struct net_device *dev)
- 	dw8(TxDMAPollPeriod, 0xff);
- 	dw8(RxDMABurstThresh, 0x30);
- 	dw8(RxDMAUrgentThresh, 0x30);
-+#ifndef MEM_MAPPING
- 	dw32(RmonStatMask, 0x0007ffff);
-+#endif
- 	/* clear statistics */
- 	clear_stats (dev);
- 
-diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
-index 0e33e2eaae96..3a13068d89a2 100644
---- a/drivers/net/ethernet/dlink/dl2k.h
-+++ b/drivers/net/ethernet/dlink/dl2k.h
-@@ -38,6 +38,10 @@
- #define TX_TOTAL_SIZE	TX_RING_SIZE*sizeof(struct netdev_desc)
- #define RX_TOTAL_SIZE	RX_RING_SIZE*sizeof(struct netdev_desc)
- 
-+#ifdef CONFIG_DL2K_MMIO
-+#define MEM_MAPPING
-+#endif
-+
- /* Offsets to the device registers.
-    Unlike software-only systems, device drivers interact with complex hardware.
-    It's not useful to define symbolic names for every register bit in the
--- 
-2.49.0
+Though on testing again RGMII_CTRL_TIMING_SEL doesn't seem to be needed.
 
+> > E.g. with a phy-mode of "rgmii-id", both b53 and the PHY driver would
+> > enable rx and tx delays, causing the delays to be 4 ns instead of 2
+> > ns. So I don't see how this could have ever worked.
+>
+> In this situation, the switch port is playing the role of MAC. Hence i
+> would stick to what is suggested in ethernet-controller.yaml. The MAC
+> does not add any delays, and leaves it to the PHY.
+> phylink_fwnode_phy_connect() gets the phy-mode from the DT blob, and
+> passes it to phylib when it calls phy_attach_direct().
+>
+> There is a second use case for DSA, when the port is connected to the
+> host, i.e. the port is a CPU port. In that setup, the port is playing
+> the PHY side of the RGMII connection, with the host conduit interface
+> being the MAC. In that setup, the above recommendations is that the
+> conduit interface does not add delays, with the expectation the 'PHY'
+> adds the delays. Then the DSA port does need to add delays. So you
+> might want to use dsa_is_cpu_port() to decide if to add delays or not.
+
+The Switch is always integrated into the host SoC, so there is no
+(r)gmii cpu port to configure. There's basically directly attached DMA
+to/from the buffers of the cpu port. Not sure if there are even
+buffers, or if it is a direct to DMA delivery.
+
+Best Regards,
+Jonas
