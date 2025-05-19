@@ -1,111 +1,99 @@
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED7235946;
-	Mon, 19 May 2025 07:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC27267B71
+	for <netdev@vger.kernel.org>; Mon, 19 May 2025 07:09:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747638149; cv=none; b=HmejmcoSf4eaZ/5fx+7Y+nQiGhNKRf47AbZKzNbbWpfDgxMg3kgKo+QFYGLcP/U9iVeQNJH/jrRO9eQ+Spo1tioVREf46FosLjtjCftDPPUZMI0ahm6sV3qI7Q+9brlt7AJrO4ODRm2/8CQCy5zF5lTbUF66tTRyB5Qa1yiT6H8=
+	t=1747638561; cv=none; b=AFgBKhsX0Ml7YYX28r1NCiKztfs+8/tLLoZtWkPhIAIOjwU5LEUgLHVZs0OGEbAPxH5BvKRreFuf7J1VreWEx4mtCSxYxRbJXggzxpni+Hqhsv0JblK8CowwgzuURVRmIDyDyhaNY0vvTts+oHw2XGbMJvxSrHNnWy1soAsZ8UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747638149; c=relaxed/simple;
-	bh=vlILRjt+MJi4z7+U136HzfBSyDjykYmz510W5xUfFU0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SQk75H6HmKV3ILpzA7AtzNPdRCfPLksX66Hd6VmUQWs2K56+VZk29YpVK3gD33vcRRzzRmg0eyjpvUTgQ6fK1FJ5VQrFz5wozEgEyy5iLqh+Qjm71UI8djmtmqtxLo48kAPe5uP79NxSjCfiLJu1WzyTw6MWyFh/1RJWpC7EVCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-05 (Coremail) with SMTP id zQCowABnpiho1ypoTZ1kAQ--.8218S2;
-	Mon, 19 May 2025 15:02:05 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: mlx5: vport: Add error handling in mlx5_query_nic_vport_node_guid()
-Date: Mon, 19 May 2025 15:01:14 +0800
-Message-ID: <20250519070114.1320-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1747638561; c=relaxed/simple;
+	bh=vm+hcJxdjh6i738X2wL5tXux/qq/1w6rOzqwW0Jguhw=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FeczPdsPH5vCZXQxdRQiwy+4/xOl8GzgogMIXKS+iOj+3ukI8icGmdYO3E2pxPK0fkWf8hjG3z91YSam0vvXosm/+fnoGgoPoCw6EwtwjJm5iARvvsijRuCa9sumh9xmjazgHjr8O8m2eRqD9yWfqxFzn7ZIB0k/+j3oIutQFMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.34.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:Yeas7t1747638496t188t54733
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [125.119.67.87])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 18046988283776760284
+To: "'Michal Swiatkowski'" <michal.swiatkowski@linux.intel.com>
+Cc: <netdev@vger.kernel.org>,
+	<pabeni@redhat.com>,
+	<kuba@kernel.org>,
+	<edumazet@google.com>,
+	<davem@davemloft.net>,
+	<andrew+netdev@lunn.ch>,
+	<mengyuanlou@net-swift.com>
+References: <67409DB57B87E2F0+20250519063357.21164-1-jiawenwu@trustnetic.com> <aCrV/xlFlxoDsOVl@mev-dev.igk.intel.com>
+In-Reply-To: <aCrV/xlFlxoDsOVl@mev-dev.igk.intel.com>
+Subject: RE: [PATCH net-next] net: libwx: Fix log level
+Date: Mon, 19 May 2025 15:08:15 +0800
+Message-ID: <000301dbc88c$ca5757e0$5f0607a0$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABnpiho1ypoTZ1kAQ--.8218S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJr4ruF45tF1xJryktry7Jrb_yoW8AF17pF
-	47tr9rJrykJa48X34jkFWrZr9Yk3yvya1Uua47J343Xr4ktr4DAr45AF9FgrWUuFW8tFZY
-	yr4ay3ZxAFn8C37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
-	nIWIevJa73UjIFyTuYvjfU52NtDUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRAHA2gqs4h99gAAsv
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQGCPLIqHUueQC3qKdJFIo7cu8OQXgDmen8/tIVrogA=
+X-QQ-SENDSIZE: 520
+Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: NjSyPD5q5D+NyKf/AIUpeh4B44I9sRtgg49KWuYt4NqujmPE1evAHKjk
+	2dHXFfMBzzjNZTUn5KDctcYQpZk+vfsIAofW6XLLHsgN5uYwNFiJ02IFEdpvy/xpqMsaW5L
+	ncUKxOaipoyBEJx5fbCk/FpsPqJzgMfP4AJv0BgR3q2z6b1lnrKznv4+gYXYKxJqbCr25dS
+	wZCLOLHqYPuUzhAze5XUUiwV+uhtT+rM6ApPKv4Ol6PG4Db8pCWyFATJ43G+aDeet30UE7h
+	7I0YeT8ZttSn33OJAKHM9+FiBaNP950ONugVjuCnYZBKVB01K9pMowCFLEXGDE1JxpFye0y
+	D4PriG87U4NkD2KKyr89tSDba/SoBEVswrw87pzW5qI3rXP3ppMl0a0Z1h03Q0yB7JiEnvP
+	6MlFhSkbxS2T1ry/fTeg7RApNU9Zj/5mtHIq5OlTwfYk4VW9zsKTzWRhK2OSjpQv4FtkpPO
+	Quj7AJ7LO9q4oiKDghR554WLU83gv2KXAnW+PsEeycFxwB02JYghLQRzZ5F73xQQS4npvKm
+	r7oF5VtigvecVf5jVestfiKrFi7rBmeBzLJteMQZ9a2op/lFFA/6VU0yWbg+ljnWDtMERyn
+	xoidyqNVdxbcvHlhZ6z0KWnDXVpHTWTns1iWBKlMK1A6Le2PR09f1/d2Q+Pv4rmRAQ52d0s
+	VIBdSmCm0u/otxDTfIBxz69Sk3W+nEBJX1weGjGtSPjSvYd0v8ogf5qqktIJrGKJOCOF4iE
+	pTJOUIiQy89jS8EhZ1Z+ygS84H3vMclihGcpqVshka16aUcAIouZ4JtRsytQlnhuDDwl7FB
+	UDcsCAcHE7igR/svHo/xuo/NgHqsI6cJgi2UCIpEYC7VX3lBqfDxO/UZBr+y/6NGKm5Z8DG
+	yJicCucdpmxTa7Iz2uhu11etF7BXyxTCAplit4RftQSZ/8vPGH+8QmTrRSwgLYSt5nJpG9y
+	NpulN1ujAdhTLggzPidPUohLnRH0FF/gjxLdwys4T2b3qN/DPV2QGZqEAuCAfNgXgS8rMdW
+	YOZtKu2GhWtfoCWRnc7mTaedgJQMCZ+pHR60VAlDQfjGfbm0QVCohSuUH3c2ATvQxkVKoNH
+	A99d1YPi0OX843FC867Muw=
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+X-QQ-RECHKSPAM: 0
 
-The function mlx5_query_nic_vport_node_guid() calls the functuion
-mlx5_query_nic_vport_context() but does not check its return value.
-A proper implementation can be found in mlx5_nic_vport_query_local_lb().
+On Mon, May 19, 2025 2:56 PM, Michal Swiatkowski wrote:
+> On Mon, May 19, 2025 at 02:33:57PM +0800, Jiawen Wu wrote:
+> > There is a log should be printed as info level, not error level.
+> >
+> > Fixes: 9bfd65980f8d ("net: libwx: Add sriov api for wangxun nics")
+> > Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> > ---
+> >  drivers/net/ethernet/wangxun/libwx/wx_sriov.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_sriov.c b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
+> > index 52e6a6faf715..195f64baedab 100644
+> > --- a/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
+> > +++ b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
+> > @@ -76,7 +76,7 @@ static int __wx_enable_sriov(struct wx *wx, u8 num_vfs)
+> >  	u32 value = 0;
+> >
+> >  	set_bit(WX_FLAG_SRIOV_ENABLED, wx->flags);
+> > -	wx_err(wx, "SR-IOV enabled with %d VFs\n", num_vfs);
+> > +	dev_info(&wx->pdev->dev, "SR-IOV enabled with %d VFs\n", num_vfs);
+> >
+> >  	/* Enable VMDq flag so device will be set in VM mode */
+> >  	set_bit(WX_FLAG_VMDQ_ENABLED, wx->flags);
+> 
+> It is unclear if you want it to go to net, or net-next (net-next in
+> subject, but fixes tag in commit message). I think it should go to
+> net-next, so fixes tag can be dropped.
 
-Add error handling for mlx5_query_nic_vport_context(). If it fails, free
-the out buffer via kvfree() and return error code.
+It is because the fixes tag commit is not merged in net yet, so I give it a prefix net-next.
 
-Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
-Cc: stable@vger.kernel.org # v4.5
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/net/ethernet/mellanox/mlx5/core/vport.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/vport.c b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-index 276b162ccf18..db45ad72ff43 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-@@ -464,20 +464,23 @@ int mlx5_query_nic_vport_sd_group(struct mlx5_core_dev *mdev, u8 *sd_group)
- int mlx5_query_nic_vport_node_guid(struct mlx5_core_dev *mdev, u64 *node_guid)
- {
- 	u32 *out;
--	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
-+	int ret, outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
- 
- 	out = kvzalloc(outlen, GFP_KERNEL);
- 	if (!out)
- 		return -ENOMEM;
- 
--	mlx5_query_nic_vport_context(mdev, 0, out);
-+	ret = mlx5_query_nic_vport_context(mdev, 0, out);
-+	if (ret)
-+		goto err;
- 
- 	*node_guid = MLX5_GET64(query_nic_vport_context_out, out,
- 				nic_vport_context.node_guid);
--
-+	ret = 0;
-+err:
- 	kvfree(out);
- 
--	return 0;
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_node_guid);
- 
--- 
-2.42.0.windows.2
 
