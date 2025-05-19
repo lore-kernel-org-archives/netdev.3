@@ -1,166 +1,244 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CD6219A8A
-	for <netdev@vger.kernel.org>; Mon, 19 May 2025 20:43:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EC9217705;
+	Mon, 19 May 2025 20:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747687413; cv=none; b=KoHc/xWKCyUItJ9wSBwA/mkBnDEyGaB2Nqzb21qowGFI9pqg9Fw8JNzPI0+obTUvD5EscVj2FlsE1fwHyAXgW9jtUZh0dv2zWBmcGEc3nghgwbKr/o6pA6yenxQCjKkDITQUGiNC+DfEJn8GoOIb8+/DE6vttEyqN14GGbJNZz8=
+	t=1747687940; cv=none; b=kqQN+opIIYIAIsmCw6uTZdl7GVIGuXa8ie+odnqwaEQXMePPvIOqexzuchZd8lq9CFGXIXrzRdtEplBABNo7QPM1aIAbES7HIv5pcvvi9+sCHJEn1ciG22mEcY8ejNGEtMI/8yQxpUhWhrrfDCBmqJljY7cg6Qyb2l8OtTPv0Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747687413; c=relaxed/simple;
-	bh=R99D+TjDvvaElkVY18PciuXnCUkWo01iD6uhTNkwwpo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qX7EZoqcnY5SNiSQS2AEwGGbdsBQwkImwYgXrGWU9Af68KmyZwrO9u4rJLLodbcvm7bPGKKjjDBD7M83AmOeQFBNxzow4gM944Va/5/zOzBq5YY6kK6zPJEATBICGmlRc3V1WUjslk4Bi9g7kJ22jvuYDJUvAqhyi7jh2eKjMnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=NYqHZwZ/; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1747687940; c=relaxed/simple;
+	bh=GHBvbY3fgn9tKe86kfPJG/2c8/ck7nOT9M0uEfF+cv0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IaPHWM4YP62R7QBdY1+Qd8448PDujNWLIcnGztClXjTh3GS+vUPRTU7PGTMPtxcj+8E2OSiLZvVc4x2vx/q0q8c3yCy+JUYORiER13ThTy5yOOHw1f70HIeoGpD9RTWh2UdimMm4pYr7eY1+5FPr1udrEWs55k9LQbt36CK1iHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=MdKEOgQ2; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="NYqHZwZ/"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-231fc83a33aso23940235ad.0
-        for <netdev@vger.kernel.org>; Mon, 19 May 2025 13:43:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1747687410; x=1748292210; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M8jvEYYdra86ICXXvCsyRdo8WF9hSbvzHFjw4OUL5Z0=;
-        b=NYqHZwZ/VCsW4CCnbcQ0NShCY6QPVid/qfFCotarM9PRbRzTeh2aFyyWx2EL5GEdBz
-         c31xVf655IbnVtfFn7VkkQwCKwLFb1Q2gVj8fmgX9JXdxSyY7cZkmVwTcBx4erhVaMR/
-         FmzWa6b43bGpyk1oxuFxfVh9aDQYy1OGMa/2w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747687410; x=1748292210;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=M8jvEYYdra86ICXXvCsyRdo8WF9hSbvzHFjw4OUL5Z0=;
-        b=BE/t+QHyR9MMENt7WjSqB3J8jnvcDWFZEpoEe0HOc5Ts6ehUfv9U6+mJAegerQxy0M
-         2RRTCO4Z51wCUCXQWAhD/fL21dtpGdOpqMXgnGfg8yz2/SbpfRhQfnv9bycl58RwlaW+
-         wb9L41KE5JuggB5/GXTneiBNhlk1fU+XfDnrfFi9tU+8g7V9dmQIvMKOi0lNeTrEpvBJ
-         n4r0Hl2W174V6JA6e3zepilJMSj1s8LIHp4FPG4uL/ZIjkbtFDKXVpkN0GsG6mPigZ+U
-         6ulQxKJ10sIZ+5PLfeI61vuCfwJrEFNKl+9k8JPKJo/GQUcylNNeufK8J+M1KyQJliH2
-         x5zA==
-X-Gm-Message-State: AOJu0YyPvCntRkfnX5rJqcxrloEL8fsIUtUovPWD0yNsxfzcE2kLrRm8
-	Rz9QIgqhFJd4GC6RO6KDYSC+34NjpYov5uLI9PDyTsUs3rDeu0c/aY8UJ9Nol+qbFA==
-X-Gm-Gg: ASbGncstTmFCYwBjJiRe0K6v63usm3NiQcBVE9+shRC1R0zQegAXRUr+X0hRcDIDnk2
-	pDFrqIh44z6X0HQ52LFa0usLTFYqQG8s48yV0cE4HxsdylHAbrPnz8PzagwcO9mE5q5V0tNrm9h
-	VKVyBT14yfUVyhJriTHgh8cjZaxBeY1xhG2uGCp57ScCbla2tuSttSFpzW4qA/eE0aS6/ymzolv
-	8vlkLLMJkAzLpHs1Fy+bRfynI74OL1rOSsUDpDW7QRVJ24tZUzhlWdUcra20mCguXPFczvWpdtw
-	Lvs+jrlIghGVoIH6nY6W2PlFX9sIgdKfuA8vEapjJ66D7JRYOLrZ1rjieJjs8/zwiMRC/AF5zGU
-	PiA6rfG2P7pG7HWr9xBB4a1QtAbg=
-X-Google-Smtp-Source: AGHT+IEh6KswOqcEonXce0xGSuAIEwsM9Gc8zH6pNliPTxDDCLzjuKQdysXI8ID5hcX2xZVXjhG6eA==
-X-Received: by 2002:a17:903:2301:b0:231:d160:adec with SMTP id d9443c01a7336-231de351d48mr193443145ad.11.1747687410318;
-        Mon, 19 May 2025 13:43:30 -0700 (PDT)
-Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-231d4afe887sm64190955ad.88.2025.05.19.13.43.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 May 2025 13:43:29 -0700 (PDT)
-From: Michael Chan <michael.chan@broadcom.com>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	pavan.chebbi@broadcom.com,
-	andrew.gospodarek@broadcom.com,
-	David Wei <dw@davidwei.uk>
-Subject: [PATCH net 3/3] bnxt_en: Update MRU and RSS table of RSS contexts on queue reset
-Date: Mon, 19 May 2025 13:41:30 -0700
-Message-ID: <20250519204130.3097027-4-michael.chan@broadcom.com>
-X-Mailer: git-send-email 2.43.4
-In-Reply-To: <20250519204130.3097027-1-michael.chan@broadcom.com>
-References: <20250519204130.3097027-1-michael.chan@broadcom.com>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="MdKEOgQ2"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E433C1039728C;
+	Mon, 19 May 2025 22:52:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1747687934; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=xi0fa9hZtQ3xUfjh/Fd+6H85XEzvRV9KyKLSSoEBIho=;
+	b=MdKEOgQ2NYMapNfr6nWpzieFKGxPSRJvQ75R1YB86etandc2/tz4Gw51ZJxeKtPDcCGFZm
+	jps1OdMdqB19S7kvfimr8bHMPMia877rQmTJ0/EMDs81TVfUyi8P7ogE5ksjtvTzzzMdjd
+	SxuV+oa002NkrORXIibfJc2D6cDRzgS89bkKjuiVmE4mKMwnLlAswiicF780OX3xQ0uYiI
+	4FD0zTngteBD5df6JzSt5bsNDpA2+yF2qwg5EQvU9/ATfcdAOLVX3n85Cdyb6BOPFKixc5
+	V27CH5iBzELG9fL7mGxX3yGwyf2NqPflDDyDitP7wOF1dKfUIuSSz/uQQV+6pw==
+Date: Mon, 19 May 2025 22:52:08 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew@lunn.ch>
+Subject: Re: [net-next v11 4/7] net: mtip: The L2 switch driver for imx287
+Message-ID: <20250519225208.50d60df5@wsk>
+In-Reply-To: <20250516075402.5104a0b6@wsk>
+References: <20250504145538.3881294-1-lukma@denx.de>
+	<20250504145538.3881294-5-lukma@denx.de>
+	<61ebe754-d895-47cb-a4b2-bb2650b9ff7b@redhat.com>
+	<20250513073109.485fec95@wsk>
+	<20250516075402.5104a0b6@wsk>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="Sig_/TOeu=qW_6zT9zkkN5+sCnzY";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+--Sig_/TOeu=qW_6zT9zkkN5+sCnzY
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-The commit under the Fixes tag below which updates the VNICs' RSS
-and MRU during .ndo_queue_start(), needs to be extended to cover any
-non-default RSS contexts which have their own VNICs.  Without this
-step, packets that are destined to a non-default RSS context may be
-dropped after .ndo_queue_start().
+Hi Paolo,
 
-Fixes: 5ac066b7b062 ("bnxt_en: Fix queue start to update vnic RSS table")
-Reported-by: David Wei <dw@davidwei.uk>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
----
-Cc: David Wei <dw@davidwei.uk>
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 27 +++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
+> Hi Paolo,
+>=20
+> > Hi Paolo,
+> >  =20
+> > > On 5/4/25 4:55 PM, Lukasz Majewski wrote:   =20
+> > > > +		/* This does 16 byte alignment, exactly what we
+> > > > need.
+> > > > +		 * The packet length includes FCS, but we don't
+> > > > want to
+> > > > +		 * include that when passing upstream as it
+> > > > messes up
+> > > > +		 * bridging applications.
+> > > > +		 */
+> > > > +		skb =3D netdev_alloc_skb(pndev, pkt_len +
+> > > > NET_IP_ALIGN);
+> > > > +		if (unlikely(!skb)) {
+> > > > +			dev_dbg(&fep->pdev->dev,
+> > > > +				"%s: Memory squeeze, dropping
+> > > > packet.\n",
+> > > > +				pndev->name);
+> > > > +			pndev->stats.rx_dropped++;
+> > > > +			goto err_mem;
+> > > > +		} else {
+> > > > +			skb_reserve(skb, NET_IP_ALIGN);
+> > > > +			skb_put(skb, pkt_len);      /* Make
+> > > > room */
+> > > > +			skb_copy_to_linear_data(skb, data,
+> > > > pkt_len);
+> > > > +			skb->protocol =3D eth_type_trans(skb,
+> > > > pndev);
+> > > > +			napi_gro_receive(&fep->napi, skb);
+> > > > +		}
+> > > > +
+> > > > +		bdp->cbd_bufaddr =3D
+> > > > dma_map_single(&fep->pdev->dev, data,
+> > > > +
+> > > > bdp->cbd_datlen,
+> > > > +
+> > > > DMA_FROM_DEVICE);
+> > > > +		if (unlikely(dma_mapping_error(&fep->pdev->dev,
+> > > > +
+> > > > bdp->cbd_bufaddr))) {
+> > > > +			dev_err(&fep->pdev->dev,
+> > > > +				"Failed to map descriptor rx
+> > > > buffer\n");
+> > > > +			pndev->stats.rx_errors++;
+> > > > +			pndev->stats.rx_dropped++;
+> > > > +			dev_kfree_skb_any(skb);
+> > > > +			goto err_mem;
+> > > > +		}     =20
+> > >=20
+> > > This is doing the mapping and ev. dropping the skb _after_ pushing
+> > > the skb up the stack, you must attempt the mapping first.   =20
+> >=20
+> > I've double check it - the code seems to be correct.
+> >=20
+> > This code is a part of mtip_switch_rx() function, which handles
+> > receiving data.
+> >=20
+> > First, on probe, the initial dma memory is mapped for MTIP received
+> > data.
+> >=20
+> > When we receive data, it is processed and afterwards it is "pushed"
+> > up to the network stack.
+> >=20
+> > As a last step we do map memory for next, incoming data and leave
+> > the function.
+> >=20
+> > Hence, IMHO, the order is OK and this part shall be left as is. =20
+>=20
+> Is the explanation sufficient?
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index a45c5ce81111..71e428710a26 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -10758,6 +10758,24 @@ static int bnxt_set_vnic_mru_p5(struct bnxt *bp, struct bnxt_vnic_info *vnic,
- 	return 0;
- }
- 
-+static int bnxt_set_rss_ctx_vnic_mru(struct bnxt *bp, u16 mru)
-+{
-+	struct ethtool_rxfh_context *ctx;
-+	unsigned long context;
-+	int rc;
-+
-+	xa_for_each(&bp->dev->ethtool->rss_ctx, context, ctx) {
-+		struct bnxt_rss_ctx *rss_ctx = ethtool_rxfh_context_priv(ctx);
-+		struct bnxt_vnic_info *vnic = &rss_ctx->vnic;
-+
-+		rc = bnxt_set_vnic_mru_p5(bp, vnic, mru);
-+		if (rc)
-+			return rc;
-+	}
-+
-+	return 0;
-+}
-+
- static void bnxt_hwrm_realloc_rss_ctx_vnic(struct bnxt *bp)
- {
- 	bool set_tpa = !!(bp->flags & BNXT_FLAG_TPA);
-@@ -15904,6 +15922,7 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
- 	struct bnxt_vnic_info *vnic;
- 	struct bnxt_napi *bnapi;
- 	int i, rc;
-+	u16 mru;
- 
- 	rxr = &bp->rx_ring[idx];
- 	clone = qmem;
-@@ -15953,16 +15972,15 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
- 	napi_enable_locked(&bnapi->napi);
- 	bnxt_db_nq_arm(bp, &cpr->cp_db, cpr->cp_raw_cons);
- 
-+	mru = bp->dev->mtu + ETH_HLEN + VLAN_HLEN;
- 	for (i = 0; i < bp->nr_vnics; i++) {
- 		vnic = &bp->vnic_info[i];
- 
--		rc = bnxt_set_vnic_mru_p5(bp, vnic,
--					  bp->dev->mtu + ETH_HLEN + VLAN_HLEN);
-+		rc = bnxt_set_vnic_mru_p5(bp, vnic, mru);
- 		if (rc)
- 			return rc;
- 	}
--
--	return 0;
-+	return bnxt_set_rss_ctx_vnic_mru(bp, mru);
- 
- err_reset:
- 	netdev_err(bp->dev, "Unexpected HWRM error during queue start rc: %d\n",
-@@ -15987,6 +16005,7 @@ static int bnxt_queue_stop(struct net_device *dev, void *qmem, int idx)
- 
- 		bnxt_set_vnic_mru_p5(bp, vnic, 0);
- 	}
-+	bnxt_set_rss_ctx_vnic_mru(bp, 0);
- 	/* Make sure NAPI sees that the VNIC is disabled */
- 	synchronize_net();
- 	rxr = &bp->rx_ring[idx];
--- 
-2.30.1
+I would do appreciate your feedback as your OK is required to prepare
+v12, so I would had the opportunity to have this patch set accepted to
+net-next before cut-off date.
 
+Thanks in advance for your help.
+
+>=20
+> >  =20
+> > >    =20
+> > > > +static void mtip_free_buffers(struct net_device *dev)
+> > > > +{
+> > > > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > > > +	struct switch_enet_private *fep =3D priv->fep;
+> > > > +	struct sk_buff *skb;
+> > > > +	struct cbd_t *bdp;
+> > > > +	int i;
+> > > > +
+> > > > +	bdp =3D fep->rx_bd_base;
+> > > > +	for (i =3D 0; i < RX_RING_SIZE; i++) {
+> > > > +		skb =3D fep->rx_skbuff[i];
+> > > > +
+> > > > +		if (bdp->cbd_bufaddr)
+> > > > +			dma_unmap_single(&fep->pdev->dev,
+> > > > bdp->cbd_bufaddr,
+> > > > +					 MTIP_SWITCH_RX_FRSIZE,
+> > > > +					 DMA_FROM_DEVICE);
+> > > > +		if (skb)
+> > > > +			dev_kfree_skb(skb);     =20
+> > >=20
+> > > I suspect that on error paths mtip_free_buffers() can be invoked
+> > > multiple consecutive times with any successful allocation in
+> > > between: skb will be freed twice. Likely you need to clear
+> > > fep->rx_skbuff[i] here.   =20
+> >=20
+> > +1 - I will add it with v12.
+> >  =20
+> > >=20
+> > > Side note: this patch is way too big for a proper review: you need
+> > > to break it in multiple smaller ones, introducing the basic
+> > > features separately.
+> > >=20
+> > > Cheers,
+> > >=20
+> > > Paolo
+> > >    =20
+> >=20
+> >=20
+> >=20
+> >=20
+> > Best regards,
+> >=20
+> > Lukasz Majewski
+> >=20
+> > --
+> >=20
+> > DENX Software Engineering GmbH,      Managing Director: Erika Unter
+> > HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell,
+> > Germany Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email:
+> > lukma@denx.de =20
+>=20
+>=20
+>=20
+>=20
+> Best regards,
+>=20
+> Lukasz Majewski
+>=20
+> --
+>=20
+> DENX Software Engineering GmbH,      Managing Director: Erika Unter
+> HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+> Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email:
+> lukma@denx.de
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/TOeu=qW_6zT9zkkN5+sCnzY
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmgrmfgACgkQAR8vZIA0
+zr09nAf+PrG7I521kkXUYZKC2dEjxU/q4ixwas9hAklmPl5J8w3C7wiM5/X4unzo
+vgyoBo1oGToGHEV79FZkeZxn/MF9YXMrKl2WEAaLyNhHpKeusus4my0xt1Ao/Q9R
+dkyM0jAeOSnUNpcIl0zhOmgEyBzPFPeRMz263XvTekvJet3E/gTAPHHc1Cg2PfA1
+EyxCnsiGy4aHuPJGg+zMhVHxWkt1awEIwSwEZu5O4OtjpUAqfllFn4eiapelBHb7
+Z7IM3C1tqdvKGO8lU9nqIoBnYpU9ZzZcg4N27morc9NfrAbF0KlJr/a+pxbM7ptD
+rXo54/GaGqwWVq3BcFVpWi3OD+9oJA==
+=WWM9
+-----END PGP SIGNATURE-----
+
+--Sig_/TOeu=qW_6zT9zkkN5+sCnzY--
