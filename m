@@ -1,132 +1,152 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C111714B3;
-	Mon, 19 May 2025 12:16:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FD61714B3
+	for <netdev@vger.kernel.org>; Mon, 19 May 2025 12:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747657016; cv=none; b=e41IusY5QYYEagZ54SedyRn9+gvcjuzpf0xgenL2/i/NX4Fac/24Rhyg/vBJ5ZfT0kOj7hZSEElwddyXOMzvmx+v3goUf9FmmVFCHJT7tgKsOWwvzisQbczilY+ajLUJcKCr+C80+XmT0L5IVVrOMB5nsKPDDj/TqvIdFnwNVzA=
+	t=1747657040; cv=none; b=RC7vq4iUfkqVLX5rSONcH7bWpuqKMehQo0s73PUKIBzW64prELKenbpc/8kj5vhPvwS6LTVxpdM6NqQt69MOARKGNZcgflnt/O8aAj53/eb+uQSiyV+NS74J+XU07WpwYyQ0/zjrv5RZlH/JdPhKazkeLSaZdvIdpiK1j31Rp84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747657016; c=relaxed/simple;
-	bh=DOkKNp4l7AMqnBeiOcr0K3qq8IbXhMNaPz7rbisR8PA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=c2jI1fYe+U7DjT+3LZA2L8I6lG1EoIRj4EwVkUoGFZMSTDpKDCcJUeOyn9yPWAw+vKh/XhOXE1JcITIaLlBxKEmF9NiPbCXzCCAigwfJ8S2SCDl3mBvVLVqejtlaJExOGxBRNjIXVIuPybyIEWEDZNCTR5WlccVd3COjqg5UtIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=JAHkrCh1; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+	s=arc-20240116; t=1747657040; c=relaxed/simple;
+	bh=xX9M3OPX9zekbbbU1qgip0spthLHonxw/Nshjqi4/eg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CjXyZMIdIYJxD7YqvI/iePUk2+JadyrMBLceRl3yLJBXvOMuUdBvopi9hlNRLDyD1Yd/ifd2CmNVIQTziRyMsR1ai3k1u2gB0b18qDhqlAFrZJ/TPcXW4e9n1S0AXYCAJGRla8XSHXyObi0HTSyfK8n4pxr+dXpOj4FfVgMBm7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b=mrdGGweK; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="JAHkrCh1"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 54JCGH6b8937724, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1747656977; bh=DOkKNp4l7AMqnBeiOcr0K3qq8IbXhMNaPz7rbisR8PA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=JAHkrCh1B7t7YOkle2atNXaWGpNSth9zm/SRBlzZuGMwYJgusYPPyz86RJe+rligI
-	 Oyj58Wn2hoQF7J8G52tkLR1mnOZan0mAjyj0lSoZA+BRo4mHaXsN9hUssQsPg3jBMy
-	 mXYFoiq5JF9a/1nRjzKtgIBIr+h3J2KBYUzAXmPTeaH+SXtcpGO4ZAoKTFSzUPodua
-	 FTWb+iFyD/SLXet4XzhfB0T36veNAt3i0cpCY7b9BIlY4Y0nQhIx+NxAJ91q4kGwQm
-	 zbDCud5AIBz1YekqughpEHaZvrh8d2Lo5Nri5RcLvBKRCt86xxjxgGQOsmPKU/sJ5v
-	 NWIfr6xOzk1ag==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 54JCGH6b8937724
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 19 May 2025 20:16:17 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 19 May 2025 20:16:17 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 19 May 2025 20:16:11 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Mon, 19 May 2025 20:16:11 +0800
-From: Justin Lai <justinlai0215@realtek.com>
-To: "kuba@kernel.org" <kuba@kernel.org>
-CC: "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com"
-	<edumazet@google.com>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "horms@kernel.org"
-	<horms@kernel.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Larry Chiu
-	<larry.chiu@realtek.com>, Joe Damato <jdamato@fastly.com>
-Subject: RE: [PATCH net-next v2] rtase: Use min() instead of min_t()
-Thread-Topic: [PATCH net-next v2] rtase: Use min() instead of min_t()
-Thread-Index: AQHbtawdSIC/HJstr0OxTEOUNg41/rPaAlkA
-Date: Mon, 19 May 2025 12:16:11 +0000
-Message-ID: <bb78d791abe34d9cbac30e75e7bec373@realtek.com>
-References: <20250425063429.29742-1-justinlai0215@realtek.com>
-In-Reply-To: <20250425063429.29742-1-justinlai0215@realtek.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b="mrdGGweK"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-550eb498fbbso3160290e87.2
+        for <netdev@vger.kernel.org>; Mon, 19 May 2025 05:17:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall-org.20230601.gappssmtp.com; s=20230601; t=1747657036; x=1748261836; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dYHp6/v5d2x17TX4X8wlvoCCU8HU8MfSmEB6Odf9L6U=;
+        b=mrdGGweKZhtV+anAxX++Bf6mmQYysPsfsNkB81Q4PBiZiMeQ7dl1frAJJFBSRsy+t5
+         +80GWjVgwoms0Pk/duPIW0SizmCSzBi5LUCVgCt2VkD8Ly9Fw7H/ghDHns/PgKKdHBju
+         RHAOeDb+VtiVYOTEOSPUH4xsRc4GipaFDi86qaVLsjpiu7sZo7yhu9E6zQDLR55EXvRh
+         J6hem9TwBEsGSurnITqadSj3LFEhb6AinSRE1nFV0n00mHtZ2kcS7RLlXwc4aQu3Gy3w
+         zCormm81/enlArp/r4mVOfMJQtfU92EOkcBLftmurKGHHHASIfw4VqB8eK48tiW98AeG
+         eAPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747657036; x=1748261836;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dYHp6/v5d2x17TX4X8wlvoCCU8HU8MfSmEB6Odf9L6U=;
+        b=IdbzbM8CiX/pLKuGqB5d0YLWDz1uD0jrAcbXH/KwWXH0YkeZpTVr4FMKLU4kmX/YfD
+         Zk4tGJKy1mzt73KTHnwa5cPgmWISObSOSs7TsA3f2v5LwO2ZdA5NY8BvGx1aqoJ6Tto8
+         3PvG90shu9/xgEYNIsh7fDMz0iCD9NmK86dJEnRZE3NOv1Pfs19WlmZe9UdLlSVV3oPO
+         QQWsGqHaZYoYleI8lvKcJJgpB0VVGyKLxHdgeDzmRISrHJfwgj4iQ/iWvQPlJRxwM9KH
+         wuWbLQHEgm4aHPW4tSJTfFJ6h4Lm37gQ+YMU5m3O4Fg+H4wD/CjTbbydZKj7BMGqRH4S
+         +8KA==
+X-Forwarded-Encrypted: i=1; AJvYcCUvoNKNYf66nlSODtK846q4NH319SpsB1h1wP3i1/XCZEA24lOWcqBwbQi+VM1J+BdaqsWQ3rI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNxLhpkRUtd9R237if9yJ00E2v7vhxcesozM3TQe9nNCNR8wcL
+	nQ16gmCx+jKUmxKBkwP2fU+XdffjvNL/KDPlrcNCzp+YPiwQ5PuCyggsHOgqHkQi8Pg=
+X-Gm-Gg: ASbGncsz8XCYfOn2HYXnaxQtkeK+BJdpPcmnG8Uj79RjstXY0zIwaVKPTYTWKtOKWTQ
+	yIOQYqL8TL8HyksVSpIaCBrrrugUNvfCaNYYF6YjMmTlzHMjn3UBT7QHOaGLcm9No1pw5IAKUy+
+	giUG9SVEghBJlPmbq2g24/iBOTkWuFl1BBLrXuMKI9EK5KN0Umcg8d6tD1uqlVMNvPo4eRaCMKy
+	PzCSEWwpZKeu3pllH2xf5T8QYiKwS+At4v71AuRRUcZEw3G5PlwYNu3a2qbGerig9AmmxN78Nbn
+	awHs0vd0Vq3WNTJqXhVtFo1MTYbtOaiaubRKZNKTiKHkV3toxXsW/rWsFrjmhLYAVs0VwFStSpu
+	uKYBDUQ+euIrcQGzeKnPQ7jU+WwqqF+w=
+X-Google-Smtp-Source: AGHT+IHVRPK5iWNXMFn1xAdtDY1XD2K5ake/kESIQIBK4Tr+wdkojxWBAxeKGK81Ft2tt1Yrp7pohw==
+X-Received: by 2002:a05:6512:4602:b0:545:2950:5360 with SMTP id 2adb3069b0e04-550e97b5bfemr3729380e87.22.1747657035673;
+        Mon, 19 May 2025 05:17:15 -0700 (PDT)
+Received: from [100.115.92.205] (176.111.185.185.kyiv.nat.volia.net. [176.111.185.185])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-550e7018194sm1821327e87.146.2025.05.19.05.17.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 May 2025 05:17:15 -0700 (PDT)
+Message-ID: <1194d026-ea54-4e86-b0e3-e5d73bc74c36@blackwall.org>
+Date: Mon, 19 May 2025 15:17:12 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 0/4] add broadcast_neighbor for no-stacking
+ networking arch
+To: Tonghao Zhang <tonghao@bamaicloud.com>, netdev@vger.kernel.org
+Cc: Jay Vosburgh <jv@jvosburgh.net>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Zengbing Tu <tuzengbing@didiglobal.com>
+References: <B713F1A654D10D79+20250519084315.57693-1-tonghao@bamaicloud.com>
+Content-Language: en-US
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <B713F1A654D10D79+20250519084315.57693-1-tonghao@bamaicloud.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> -----Original Message-----
-> From: Justin Lai <justinlai0215@realtek.com>
-> Sent: Friday, April 25, 2025 2:34 PM
-> To: kuba@kernel.org
-> Cc: davem@davemloft.net; edumazet@google.com; pabeni@redhat.com;
-> andrew+netdev@lunn.ch; linux-kernel@vger.kernel.org;
-> netdev@vger.kernel.org; horms@kernel.org; Ping-Ke Shih
-> <pkshih@realtek.com>; Larry Chiu <larry.chiu@realtek.com>; Justin Lai
-> <justinlai0215@realtek.com>; Joe Damato <jdamato@fastly.com>
-> Subject: [PATCH net-next v2] rtase: Use min() instead of min_t()
->=20
-> Use min() instead of min_t() to avoid the possibility of casting to the
-> wrong type.
->=20
-> Signed-off-by: Justin Lai <justinlai0215@realtek.com>
-> Reviewed-by: Joe Damato <jdamato@fastly.com>
-> ---
-> v1 -> v2:
-> - Remove the Fixes tag.
-> ---
->  drivers/net/ethernet/realtek/rtase/rtase_main.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-> b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-> index 6251548d50ff..8c902eaeb5ec 100644
-> --- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-> +++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-> @@ -1983,7 +1983,7 @@ static u16 rtase_calc_time_mitigation(u32 time_us)
->  	u8 msb, time_count, time_unit;
->  	u16 int_miti;
->=20
-> -	time_us =3D min_t(int, time_us, RTASE_MITI_MAX_TIME);
-> +	time_us =3D min(time_us, RTASE_MITI_MAX_TIME);
->=20
->  	msb =3D fls(time_us);
->  	if (msb >=3D RTASE_MITI_COUNT_BIT_NUM) {
-> @@ -2005,7 +2005,7 @@ static u16 rtase_calc_packet_num_mitigation(u16
-> pkt_num)
->  	u8 msb, pkt_num_count, pkt_num_unit;
->  	u16 int_miti;
->=20
-> -	pkt_num =3D min_t(int, pkt_num, RTASE_MITI_MAX_PKT_NUM);
-> +	pkt_num =3D min(pkt_num, RTASE_MITI_MAX_PKT_NUM);
->=20
->  	if (pkt_num > 60) {
->  		pkt_num_unit =3D RTASE_MITI_MAX_PKT_NUM_IDX;
-> --
-> 2.34.1
+On 5/19/25 11:43, Tonghao Zhang wrote:
+> For no-stacking networking arch, and enable the bond mode 4(lacp) in
+> datacenter, the switch require arp/nd packets as session synchronization.
+> More details please see patch.
+> 
+> v5 change log:
+> - format commit message of all patches
+> - use skb_header_pointer instead of pskb_may_pull
+> - send only packets to active slaves instead of all ports, and add more commit log
+> 
+> v4 change log:
+> - fix dec option in bond_close
+> 
+> v3 change log:
+> - inc/dec broadcast_neighbor option in bond_open/close and UP state.
+> - remove explicit inline of bond_should_broadcast_neighbor
+> - remove sysfs option
+> - remove EXPORT_SYMBOL_GPL
+> - reorder option bond_opt_value
+> - use rcu_xxx in bond_should_notify_peers.
+> 
+> v2 change log:
+> - add static branch for performance
+> - add more info about no-stacking arch in commit message
+> - add broadcast_neighbor info and format doc
+> - invoke bond_should_broadcast_neighbor only in BOND_MODE_8023AD mode for performance
+> - explain why we need sending peer notify when failure recovery
+> - change the doc about num_unsol_na
+> - refine function name to ad_cond_set_peer_notif
+> - ad_cond_set_peer_notif invoked in ad_enable_collecting_distributing
+> - refine bond_should_notify_peers for lacp mode.
+> 
+> Cc: Jay Vosburgh <jv@jvosburgh.net>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Simon Horman <horms@kernel.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+> Cc: Zengbing Tu <tuzengbing@didiglobal.com>
+> 
+> Tonghao Zhang (4):
+>    net: bonding: add broadcast_neighbor option for 802.3ad
+>    net: bonding: add broadcast_neighbor netlink option
+>    net: bonding: send peer notify when failure recovery
+>    net: bonding: add tracepoint for 802.3ad
+> 
+>   Documentation/networking/bonding.rst | 11 +++-
+>   drivers/net/bonding/bond_3ad.c       | 19 ++++++
+>   drivers/net/bonding/bond_main.c      | 86 ++++++++++++++++++++++++----
+>   drivers/net/bonding/bond_netlink.c   | 16 ++++++
+>   drivers/net/bonding/bond_options.c   | 35 +++++++++++
+>   include/net/bond_options.h           |  1 +
+>   include/net/bonding.h                |  3 +
+>   include/trace/events/bonding.h       | 37 ++++++++++++
+>   include/uapi/linux/if_link.h         |  1 +
+>   9 files changed, 197 insertions(+), 12 deletions(-)
+>   create mode 100644 include/trace/events/bonding.h
+> 
 
-Hi reviewers,
+Again and more explicit - please CC *all* reviewers on the full patch-set
+when sending a new version. I had to chase down the patches on the list
+which is a waste of time.
 
-I apologize for the interruption, I would like to ask why this patch is
-rejected on patchwork.
+Thanks,
+  Nik
 
-Justin
