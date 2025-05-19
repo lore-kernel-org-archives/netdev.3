@@ -1,111 +1,157 @@
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CE326A0C5;
-	Mon, 19 May 2025 09:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C8826B96B;
+	Mon, 19 May 2025 09:18:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747645816; cv=none; b=XmCyO1q+EZpCczbu19Gxt3fao3rZhJEhm0mnRHcbawIuizx5gG94UekSyDCVHbwWTaVNlAOC70UeNWEoY31NP6nrX4T5Eau01mMYJ/FyxzsmrxNZCpWjiDd61AWPhMkj6pZxUWGWXiMKMg40v2P+K0beI2DEPLp//13b5jPI3bk=
+	t=1747646329; cv=none; b=ZS2eNHcjNaFfWOm9poMSOy+31iB+u5N76LQB5Cy/T1DBZnQOgKjR9sWJuKyyuaAygisruyIfhxE1ld9oFJzDg71WlCJ2rRfQUTnJRj/Xh30T2QCX6e4mU/ZwtlyWGY9jBydM9fSWsUDLTfX+HrS2arVuNlhh3oGNASYJu+kmeaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747645816; c=relaxed/simple;
-	bh=xsCboqL3jxEu4TqJ56Egqo7fvZqcQHchhQaolk+V1cU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SWfMIYxz1asnuhqyQZY/3ai4MIsh2j+Rm/Bd7SD+OsHsE4dDOV28YSpX26qdEysnwFO9Z50aITj/fVVcUG8qEuSOrFKO1uoa2fcfFHY4bVk5RVgSuHSpxrF9xOaH5HPiRigwDl6G+8GBLUw9c2Z3JufKdfswFoSTXNm6fxmyNXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-05 (Coremail) with SMTP id zQCowABnpylk9SpoaO1sAQ--.11917S2;
-	Mon, 19 May 2025 17:09:57 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] net: mlx5: vport: Add error handling in mlx5_query_nic_vport_node_guid()
-Date: Mon, 19 May 2025 17:09:33 +0800
-Message-ID: <20250519090934.1956-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1747646329; c=relaxed/simple;
+	bh=KlggbR8P/n36oRZlJZsBth/VG91g9Dz5bdB/P0jqAy0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=I5tSieYR1ckCwfyCrZmtOIRaY0ZyFvyida6pHMN9J2AQWcxsQ8274ay8lCf5IJebYIohvPhlSuYpHjOe3RYHNnx6W8rrj/Ujtgw2u4kPmpmcRpuJ0t8aydzIger6YmVWpIGjRC/SU9HT8Sx1pQBzzrq2su+FYP6cyP7+Pmk7KAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-669ff7000002311f-75-682af76d6e83
+From: Byungchul Park <byungchul@sk.com>
+To: linux-kernel@vger.kernel.org
+Cc: kernel_team@skhynix.com,
+	torvalds@linux-foundation.org,
+	damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org,
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	will@kernel.org,
+	tglx@linutronix.de,
+	rostedt@goodmis.org,
+	joel@joelfernandes.org,
+	sashal@kernel.org,
+	daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com,
+	johannes.berg@intel.com,
+	tj@kernel.org,
+	tytso@mit.edu,
+	willy@infradead.org,
+	david@fromorbit.com,
+	amir73il@gmail.com,
+	gregkh@linuxfoundation.org,
+	kernel-team@lge.com,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	mhocko@kernel.org,
+	minchan@kernel.org,
+	hannes@cmpxchg.org,
+	vdavydov.dev@gmail.com,
+	sj@kernel.org,
+	jglisse@redhat.com,
+	dennis@kernel.org,
+	cl@linux.com,
+	penberg@kernel.org,
+	rientjes@google.com,
+	vbabka@suse.cz,
+	ngupta@vflare.org,
+	linux-block@vger.kernel.org,
+	josef@toxicpanda.com,
+	linux-fsdevel@vger.kernel.org,
+	jack@suse.cz,
+	jlayton@kernel.org,
+	dan.j.williams@intel.com,
+	hch@infradead.org,
+	djwong@kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com,
+	melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com,
+	harry.yoo@oracle.com,
+	chris.p.wilson@intel.com,
+	gwan-gyeong.mun@intel.com,
+	max.byungchul.park@gmail.com,
+	boqun.feng@gmail.com,
+	longman@redhat.com,
+	yskelg@gmail.com,
+	yunseong.kim@ericsson.com,
+	yeoreum.yun@arm.com,
+	netdev@vger.kernel.org,
+	matthew.brost@intel.com,
+	her0gyugyu@gmail.com
+Subject: [PATCH v16 10/42] dept: distinguish each work from another
+Date: Mon, 19 May 2025 18:17:54 +0900
+Message-Id: <20250519091826.19752-11-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20250519091826.19752-1-byungchul@sk.com>
+References: <20250519091826.19752-1-byungchul@sk.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxTHfZ57e++lo8tNp3h9SZxNnIqZjkX0ZHNTtw88WWKyzG9oInVc
+	bV1pTYsFNIsgYBxdq+KA+EJpkXRNW7W2fEClBEvoBKai1oqkghBlIwJdwJYXca7F7MvJL+ef
+	/+98ORwlD0mWc2ptoajXKjUKRkpLx9Ptn2qnM1WfNcRWQ/z1KRouXfMw0HvVjcDTXIZhtDMH
+	niTGELy5e5+CuppeBPahZxQ0hwYQBJwnGHj04kMIx2MMdNWYGCi/fI2BB6/mMURrqzG4fbtg
+	0DFCQ8+ZRgx1owxcrCvHyfE3hlmHiwVH6RoYdl5gYX4oC7oGIhII9G+A89YoA62BLhpCLcMY
+	Ht28xMCA550EekJ3aEhYVkDvWbMErkw0MvAq4aDAEY+x8LDdhiFkywBvRVJ4cupfCfxhbsdw
+	suk6hvDTWwjaTj3H4PNEGOiIj2Hw+2oomPu9E8GwZZyFyl9nWbhYZkFgqqyloSKaDW9mkpfr
+	X2dBWYOXhitvI2jHV8Rj9SDSMRajSIW/iMzFHzMkkLDRpLtRIDcuPGNJRVs/S2y+I8TvzCSX
+	W0cxsU/GJcTn+oUhvslqllSNhzGZuHeP/X5lrnRbvqhRG0X9pq/zpCpvpfHwBFvcFPwHl6JW
+	pgpxnMBvFqJDmiqUtoDjjZ1sihl+rdDXN0uleDH/seA3j0iqkJSj+MgHwpP6pygVfMR/K9jt
+	A0yKaX6NMDM1j1Ms47cIdlMUv5euEtze9gVRWnLfb+pY6Mr5bCHsttIpqcCfSxNqO6vZ94Vl
+	wm1nH30GyWxokQvJ1VpjgVKt2bxRVaJVF2/8UVfgQ8nvcvw8v6cFTfbuDiKeQ4p0mTewXiWX
+	KI2GkoIgEjhKsVjm8q9TyWX5ypKjol63T39EIxqCaAVHK5bKPk8U5cv5g8pC8SdRPCzq/08x
+	l7a8FOVucvE7bwxayxfpCu8/jGXkvQyfzevObcvuOt+8/e3Ui4jzXeGh1ekj25eajzaTrXMt
+	3obMLwq2dRiXtX3jPm7ZX/9l6dwJVe4nQ6jowW+GCYvP7yhe+ed3uuAGy4G/ehR7Z1YN/mAx
+	Wc/tMmdkT7+Ude/OmdYda8o6ffqxbMna4zdzFLRBpczKpPQG5X+H3qqAWQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0iTYRTHe5736mrxtoa9LLQYdDOthlqHLiuQ8qXoQgRBfchhL22oKzZb
+	GQSaTkxT0lhiNdumLNOVayvo4kIULYvK0sxkWVpEkjdqW5qaTaMvhx/nz/93vhyWkN2kFKxO
+	nyka9Jp0JS0hJXs25cZl/IrRrvucr4JgoICEa/UuGtpv1yFw3c3BMNCSDO9CgwgmXrwioNzS
+	jsDe94GAu629CHw152jo+DIfOoMjNLRZimjIraqn4fX3SQz+y2UY6jy74aPzKwnPLzowlA/Q
+	cLU8F4fHNwzjzloGnNnLoL/mCgOTfSpo6+2ioNnaRoGvZzVUVPppaPC1kdB6vx9Dx8NrNPS6
+	pil43vqUhFDJYmgvLabg1rCDhu8hJwHO4AgDbxptGFptkeDOC1vzf/6h4ElxI4b86jsYOt8/
+	QvC44BMGj6uLhubgIAavx0LA7xstCPpLhhgwXxhn4GpOCYIi82US8vyJMDEWvmwNqCDnupuE
+	W1NdaJtacFW6kNA8OEIIed5Twu/gW1rwhWyk8MzBCw+ufGCEvMc9jGDznBS8NTFCVcMAFuw/
+	gpTgqT1PC54fZYxQONSJheGXL5l9UYckm4+K6TqTaFirTpFo3WbTiWHmdHXTKM5GDXQhimB5
+	LoEfcrQwM0xzK/ju7nFihuXcUt5b/JUqRBKW4Lrm8u+s79FMsJBL4u323tkyyS3jx35O4hmW
+	cut5e5Ef/5Mu4evcjbOiiPC+p6h5tivjEvnOukryIpLY0JxaJNfpTRkaXXriGmOaNkuvO70m
+	9XiGB4UfyHl2svQ+CnQkNyGORcp5UrdvlVZGaUzGrIwmxLOEUi6t9a7UyqRHNVlnRMPxI4aT
+	6aKxCS1mSeUi6c6DYoqMO6bJFNNE8YRo+J9iNkKRjTZGsQmSWAthUavjI5fGS6Md8sPdAVVa
+	0l65PzW+QV1dsiMy2Xlpw3Tm9sbEJHNa6oFzCkdyQkHsvfqKwIKnow+iuTLblrVR5oqxqY4p
+	hfVs5cR03KhJW7r1T3Zo/mp7cPe8FGvs+M1d+rnL90e3TO3IH+3ri407syH3m7xwpyJaSRq1
+	GlUMYTBq/gJ+wP42PAMAAA==
+X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABnpylk9SpoaO1sAQ--.11917S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJr4rCF1DWr1DGF48uw4xXrb_yoW8WF4rpF
-	47tr9rCrykJa4rX34j9FWrZrn5u3yqya1j9a47tw13Xr4ktr4DAr45CF9FgrWUCFW8KrZY
-	yr42y3ZxArn8C37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9E14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6r4fMxAIw28IcxkI7VAKI4
-	8JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xv
-	wVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjx
-	v20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20E
-	Y4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267
-	AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjAsqtUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBg0HA2gqszrqdgACsa
 
-The function mlx5_query_nic_vport_node_guid() calls the function
-mlx5_query_nic_vport_context() but does not check its return value.
-A proper implementation can be found in mlx5_nic_vport_query_local_lb().
+Workqueue already provides concurrency control.  By that, any wait in a
+work doesn't prevents events in other works with the control enabled.
+Thus, each work would better be considered a different context.
 
-Add error handling for mlx5_query_nic_vport_context(). If it fails, free
-the out buffer via kvfree() and return error code.
+So let dept assign a different context id to each work.
 
-Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
-Cc: stable@vger.kernel.org # v4.5
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
-v2: Remove redundant reassignment. Fix typo error.
+ kernel/workqueue.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
- drivers/net/ethernet/mellanox/mlx5/core/vport.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/vport.c b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-index ded086ffe8ac..8235fa6add03 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-@@ -465,19 +465,22 @@ int mlx5_query_nic_vport_node_guid(struct mlx5_core_dev *mdev, u64 *node_guid)
- {
- 	u32 *out;
- 	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
-+	int ret;
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index cf6203282737..5a6ab354c416 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -55,6 +55,7 @@
+ #include <linux/kvm_para.h>
+ #include <linux/delay.h>
+ #include <linux/irq_work.h>
++#include <linux/dept.h>
  
- 	out = kvzalloc(outlen, GFP_KERNEL);
- 	if (!out)
- 		return -ENOMEM;
+ #include "workqueue_internal.h"
  
--	mlx5_query_nic_vport_context(mdev, 0, out);
-+	ret = mlx5_query_nic_vport_context(mdev, 0, out);
-+	if (ret)
-+		goto err;
+@@ -3155,6 +3156,8 @@ __acquires(&pool->lock)
  
- 	*node_guid = MLX5_GET64(query_nic_vport_context_out, out,
- 				nic_vport_context.node_guid);
--
-+err:
- 	kvfree(out);
- 
--	return 0;
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_node_guid);
- 
+ 	lockdep_copy_map(&lockdep_map, &work->lockdep_map);
+ #endif
++	dept_update_cxt();
++
+ 	/* ensure we're on the correct CPU */
+ 	WARN_ON_ONCE(!(pool->flags & POOL_DISASSOCIATED) &&
+ 		     raw_smp_processor_id() != pool->cpu);
 -- 
-2.42.0.windows.2
+2.17.1
 
