@@ -1,84 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BDD24886F;
-	Tue, 20 May 2025 14:09:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F196E24C060;
+	Tue, 20 May 2025 14:10:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750199; cv=none; b=CjH1XNxkgEuSJjt5ql/V78S7SCSNsr8TwPID0hA+ea/YKrWjjvEeujUhDF8l+zSN+Y0LGJdwbnciRMhcTHlKQynF2P0d1zhyAbUsBpWRFB8pk9hQP6nV5zIKqe/qKAjAS+8q/dl/puOSKSoN7PmGE9BroPRLS9biWJKc6BegPeo=
+	t=1747750220; cv=none; b=d3VIrzC2WekLKfZhom+kisNfER829HGvtHvzLogblkEFFvJxuRIo/8LBkQra1qgpqvRiznLnw9N+sN0os5pJ90vTHxpScXXE7bVzxiBacX950IquV5AyOS+8S+VIWTthbjUrouF0S2h9WQ8Cl24xkBVQabNL1KPVfPMFot3Mn3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750199; c=relaxed/simple;
-	bh=U7HmJIgAwANTXh8GX3ab1BkDtvTDewIc1iAxfBriVIM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=KWTsaKKDlRpORzWBKaEug0K9Wcelh62l77vWKrnjh1iMNfTfJnosdOUf6FQDuPSNTilUU3cHuv8Iz2gpfqe5D+qwIGVQT3DhJMU2fgmCG9AYG2G7yyFDRWK/C4naX1vpp3rBPolIoZNa+ZKmKM9Quex1p8i/pqjnjo1Oik5sbJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cJgb1qTk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747750220; c=relaxed/simple;
+	bh=bMmsrxEeVq0r7Qtu5nKyJAvcG6TULcyBlSKlhRfKfCM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Wz+pNO2o18AAY99pWxUmWy2R0N/QahmMCRPjpOL3nLkK/qrG9AdGKRFzyRdhuYqrNKbRgVjuooKSg3HPIv/c4jFCCch/e2VDFQurQOG0o6ciaeLAg9aUIZ1E2a9O4To5MRGxK9Ys3v5sS43uFIg65z5wuvhtlSP+3rqhNY5QSJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TFXz+6SA; arc=none smtp.client-ip=209.85.219.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cJgb1qTk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F6FC4CEEA;
-	Tue, 20 May 2025 14:09:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747750199;
-	bh=U7HmJIgAwANTXh8GX3ab1BkDtvTDewIc1iAxfBriVIM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=cJgb1qTkj97hnAsju6x8I1ghB/DcAVB9qQRQV27LQEOfC9Vvc+FCl07xlO+5xsu//
-	 Z/J5lf0q04TdKiWwC4HWdlO4UM5+/QTwXmRjv/IjWYkk88q8GJwVY6bYra3obrvTw1
-	 R6c8Aa5wyBlTys3AdwPqvfu0bi196O3zo9YWLXqSTC7O63DGlxlELAoicaa6Ggtr74
-	 nTlK9AK6SR0QLoBaiFuHPOc9jH6cpNUaXoj7YozStS+/du242yeIRRoz/qY51KuRcq
-	 mqIArXtq9nDUTYRb32aL/70Y3mJDIHxSK5Ji5tr7iP/cJ3ApRk2JjqbHUfKko0DDE0
-	 nNJhIunn3aDxg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7169F380AA70;
-	Tue, 20 May 2025 14:10:36 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TFXz+6SA"
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e7d56716544so331350276.3;
+        Tue, 20 May 2025 07:10:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747750216; x=1748355016; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s+Eo9ZxAXL6+ljXJitFZulGVk8fJXlmfVNiFnhGchF8=;
+        b=TFXz+6SA6rlEenPQ/PRYsNJ23CjBOJAy5ns02OBA4HlqZ5DZzsbMbmgj5UzTMf8HF2
+         3P6N6lcWILr2RldagbsCfKNv2wlBqKfu/KT/DBv4YBeuqy7nTGYpUdxSk40j4TPNRPw0
+         HXepQA3ZCrAs2jc6BEkBY23K1RnhVb7TQhReHeuAbZfv5x4gJSHXxdDTtLJwDWxFQE+F
+         otCewAnsFRq3/g8hJjNhANRVpC4Au+mNOFu5j9FiQGnnT1q2x8aTrRZbwJqa0ZL6rsXB
+         GqJ1Pt/ClAFPrfBvSbUZCJbTT718xTpIvzi9x9tHLJk0TYNIZG+FhChU+VPqMbDk3CV3
+         qBQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747750216; x=1748355016;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=s+Eo9ZxAXL6+ljXJitFZulGVk8fJXlmfVNiFnhGchF8=;
+        b=nCUqSKHj8oi2Gx10Gmi3GCILPfAh/lp5a4IdFwyRaMtFAxtHJ8SwrfE+aiQnX2+fAa
+         vyHpyjodvLp7s8ym9hhfhxhKlK8D5ysKt5sjge+67pvfZx6Aho/v1mCzldfFGb1MdL9D
+         ax708tb+JOviLPWh0ySzS3wCYnVyd/XPcUSVb0oARx1egtW18nMn8iA0ZE4SCLFj5Pm/
+         z1inuq+6PuRd0aoNT//xGALG4mIFHvT/2flXD9KgrHh4WuxfXC/8NaeN4IFg0tzTfkcp
+         oDvzQeaJWcFfSj9/uZvo0FAKX7fwg4vAFvJitOasLK0d28zjMJTYzEk6A282zNtszQlr
+         /OUg==
+X-Forwarded-Encrypted: i=1; AJvYcCWu//lGhDnhP6RBz2g+i7lTSCaF7IpfYPv/mPXCKRZA3ZlDyhxS6r9NFAAGk/wG6Rqw8ESR7hc+ysY85oE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMFUUlpoc0cYy7QKcElTWgESty9baQCF6B/rdaM2qhkntcy0Qo
+	tweOiGHPg4IfpHBaraLc1rXmG4a8PYzfUMNYb0AJqKQtpio8QY6kjQlPVbOyTJW59vQ7pJeDu5U
+	Z1/lpb8Du+VoGs+kK0QX839v8Go6rdkw=
+X-Gm-Gg: ASbGnctK66v9ciD+ed4rzqk+QvrohjTAH/75sbbF72YrTEF7UMfo6tsbu5A7ht4xbIj
+	EzXyq5Y7Q1E2PPEcsWfIcoRclDc4bSP5MVgBu4KzkmQ6kMVZQ72xTTgS0Qe+Qox5h2R4+CmcoYD
+	WHQA5prkCQ11lNc2axs3rf7Wx5yDEZ9Q==
+X-Google-Smtp-Source: AGHT+IH/d0wWM/ArdMMDQzKgUpLoG1e1XADDrY94vyj5OLW2yqBdqXYJLzIgwFjoc8FrINYPemo51m2yFiOuIeekchc=
+X-Received: by 2002:a05:6902:1589:b0:e7a:b057:7e76 with SMTP id
+ 3f1490d57ef6-e7b6d447bc7mr21441922276.28.1747750215559; Tue, 20 May 2025
+ 07:10:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/3] dt-bindings: can: microchip,mcp2510: Fix $id path
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174775023525.1333412.13241067062760119382.git-patchwork-notify@kernel.org>
-Date: Tue, 20 May 2025 14:10:35 +0000
-References: <20250520091424.142121-2-mkl@pengutronix.de>
-In-Reply-To: <20250520091424.142121-2-mkl@pengutronix.de>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- linux-can@vger.kernel.org, kernel@pengutronix.de, robh@kernel.org,
- conor.dooley@microchip.com
+References: <20250520124521.440639-1-stefano.radaelli21@gmail.com> <c8a05994-367f-42a4-8464-c0a0ea3bc748@lunn.ch>
+In-Reply-To: <c8a05994-367f-42a4-8464-c0a0ea3bc748@lunn.ch>
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+Date: Tue, 20 May 2025 16:09:59 +0200
+X-Gm-Features: AX0GCFtOLXXdjG8G5aMCGKUGP-pNc18U-mKvaDxD8Mxn4l4qac3-bxeGBO3dprM
+Message-ID: <CAK+owohzaLMB6Dxk1MSts8kZHy2bhmyJz18_jivjziRDzTG0RA@mail.gmail.com>
+Subject: Re: [PATCH net-next v4] net: phy: add driver for MaxLinear MxL86110 PHY
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Xu Liang <lxu@maxlinear.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+Hi Andrew,
 
-This series was applied to netdev/net.git (main)
-by Marc Kleine-Budde <mkl@pengutronix.de>:
+Thank you very much for your time and patience
+you dedicated to me in reviewing this patch.
 
-On Tue, 20 May 2025 11:11:01 +0200 you wrote:
-> From: "Rob Herring (Arm)" <robh@kernel.org>
-> 
-> The "$id" value must match the relative path under bindings/ and is
-> missing the "net" sub-directory.
-> 
-> Fixes: 09328600c2f9 ("dt-bindings: can: convert microchip,mcp251x.txt to yaml")
-> Signed-off-by: "Rob Herring (Arm)" <robh@kernel.org>
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> Link: https://patch.msgid.link/20250507154201.1589542-1-robh@kernel.org
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> 
-> [...]
+I=E2=80=99ll include your Reviewed-by tag in the upcoming v5,
+along with the minor fixes suggested by Mr. Alok Tiwari.
 
-Here is the summary with links:
-  - [net,1/3] dt-bindings: can: microchip,mcp2510: Fix $id path
-    https://git.kernel.org/netdev/net/c/69c6d83d7173
-  - [net,2/3] can: bcm: add locking for bcm_op runtime updates
-    https://git.kernel.org/netdev/net/c/c2aba69d0c36
-  - [net,3/3] can: bcm: add missing rcu read protection for procfs content
-    https://git.kernel.org/netdev/net/c/dac5e6249159
+Best regards,
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Stefano
 
-
+Il giorno mar 20 mag 2025 alle ore 15:10 Andrew Lunn <andrew@lunn.ch>
+ha scritto:
+>
+> On Tue, May 20, 2025 at 02:45:18PM +0200, stefano.radaelli21@gmail.com wr=
+ote:
+> > From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+> >
+> > Add support for the MaxLinear MxL86110 Gigabit Ethernet PHY, a low-powe=
+r,
+> > cost-optimized transceiver supporting 10/100/1000 Mbps over twisted-pai=
+r
+> > copper, compliant with IEEE 802.3.
+> >
+> > The driver implements basic features such as:
+> > - Device initialization
+> > - RGMII interface timing configuration
+> > - Wake-on-LAN support
+> > - LED initialization and control via /sys/class/leds
+> >
+> > This driver has been tested on multiple Variscite boards, including:
+> > - VAR-SOM-MX93 (i.MX93)
+> > - VAR-SOM-MX8M-PLUS (i.MX8MP)
+> >
+> > Example boot log showing driver probe:
+> > [    7.692101] imx-dwmac 428a0000.ethernet eth0:
+> >         PHY [stmmac-0:00] driver [MXL86110 Gigabit Ethernet] (irq=3DPOL=
+L)
+> >
+> > Signed-off-by: Stefano Radaelli <stefano.radaelli21@gmail.com>
+>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+>
+>     Andrew
