@@ -1,160 +1,171 @@
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E56425DAF4;
-	Tue, 20 May 2025 09:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E934226A0D6
+	for <netdev@vger.kernel.org>; Tue, 20 May 2025 10:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747734915; cv=none; b=cZAKZwwRx9t/A+eb6TkGuhai8pgyZ6uKiH1aM5n5ZrQwjRkSpImOPj1i5h7O/nWwBswPUJBQw8OS8tj6UoJBs1PXyP52+Dpw2nCKPRVjhHOgR0Zh5z2AuJDDKibjab7o3qmj07ifSlyd9SnBxyEjED3OACowGcCdiV+QYi+8Vos=
+	t=1747735213; cv=none; b=B3qwQBoco5hS7tXBKLsc4pNTMEItAFx+uHDMIpFremPoJNvN/T80fi5Gl09xRMxn5t2R0YLRyzDOYvVJlx6Ti+Inp1Qp7JVVRXdql+Tls/DAgvnIDXGJjt0U8UHqBIWkvXsiAVgTNgP6qO1lqDgnmCc5wgMyzTVthxxmDLNZBac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747734915; c=relaxed/simple;
-	bh=nYtSmDmCMfbAwLf3uXqJZRMJmgIAW9Thdzm8zwi6TrI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=n4P1uYRU/6DyE6vtALDQZzvSyrzFkq7ooVpxS0IwB6+EbuX5AbW0CDqF3FuKKa6ta6svogj6Eyp78akkkk+FRDbOwxAAQmEsduPkZ1qoYajYV3bNi4Oize+USScc5fcu38+hFPCZNfOwFPYrFoN4af3i1QGq8HijQpld7BEa+Ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4b1qgX2LMqz27hxh;
-	Tue, 20 May 2025 17:55:52 +0800 (CST)
-Received: from kwepemg200005.china.huawei.com (unknown [7.202.181.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id D2D3B1A016C;
-	Tue, 20 May 2025 17:55:03 +0800 (CST)
-Received: from huawei.com (10.175.124.27) by kwepemg200005.china.huawei.com
- (7.202.181.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 20 May
- 2025 17:55:02 +0800
-From: Wang Liang <wangliang74@huawei.com>
-To: <jmaloy@redhat.com>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
-	<tuong.t.lien@dektech.com.au>, <ying.xue@windreiver.com>
-CC: <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
-	<wangliang74@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <tipc-discussion@lists.sourceforge.net>
-Subject: [PATCH net] net/tipc: fix slab-use-after-free Read in tipc_aead_encrypt_done
-Date: Tue, 20 May 2025 18:14:04 +0800
-Message-ID: <20250520101404.1341730-1-wangliang74@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1747735213; c=relaxed/simple;
+	bh=V35LW/nQwrBSZ0SSHfv5/VHFhKk+U/HLriCmAgR3ptw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=N+CZnkHcHXA3WErV0+hjpxNF3+/f+Jitap/44+YJuTGvPPse4FR+5LZJELBF3i/mlGg83Q/A3EHVxHvyyMyJxjTSTzAcVyYfst81yQ3vd9k7RlrRAZpuIMBn+PpRjvYlOW2GjdVoy8wK20R5UUROzYRqcVUWnSKAnAPCw9URrtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KUIenk5D; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KUIenk5D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747735210;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ovy79HPIsx1vRVu32FicMB6OR/2LefEMThzMtPSO4mM=;
+	b=KUIenk5DLP2N/WAAdnPM1z9k7X0YwIQlAvjErQJmf+vt+n5RdLvq38aqc8nlwQb5b2J9Y2
+	1h6t6ahOZqGqTXSoRyLHK/JDM7jARhYaW2yiFMjSMij3cRGRGWhupqTn5R8076CRuLnXkf
+	w5XBzX+vcDNTIFe94kRb1MMjdX2KDGU=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-617-i--l9jJTOtOufVhlcPjZcA-1; Tue, 20 May 2025 06:00:07 -0400
+X-MC-Unique: i--l9jJTOtOufVhlcPjZcA-1
+X-Mimecast-MFC-AGG-ID: i--l9jJTOtOufVhlcPjZcA_1747735206
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3a35c86b338so3036376f8f.2
+        for <netdev@vger.kernel.org>; Tue, 20 May 2025 03:00:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747735206; x=1748340006;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ovy79HPIsx1vRVu32FicMB6OR/2LefEMThzMtPSO4mM=;
+        b=Sv8yYgMu7NwkAETXMI8Z8R3tZIRf1Ldr9HT9GLacVbL8de0pXcQ1tXk2C9HKNEqtXg
+         Bek/ooxQ9VT7wP91SysiXgug2slcXhx27Z2G/WJUX9Np2LNtqeY24u2thbjwamH/lxaK
+         6ETb47p6L6vztuGbvzSAZkP2IQoQ1XfXBlKPcjPAaIgXS/EwHJnJgC5Idk+91h4otiEB
+         jaURG55Z7xkFBv0J822qjoQYB8KGmjpbMMWv9+jLYwTLXQMdY2OSBPkwRgxvIEIp0wQc
+         JvcZxF/XDTcM138BZQAXKQ7qLLEWfazUd6jpg5Ixf/MY+laRvliv3gJ3Q1W9hbbqwGj9
+         rIMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXqJxV/gZEot5Z4a9is0NFrPPjSjzvO7GfOSrnP/axGQ0HoDwKhRRmXh2yo23wsOz9qNirm0NE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDXkkfYm+hbyS3OxDjPBa2spkUkwzfhoRfW7i7fo6/mKJ9U3KO
+	kR2g+ZNuTZyRqmraw5bMzNfTedm+PLmBQ5gSY+27YZGaNyxIqqzAWT6LQ49vt69MCRfykW/PJNr
+	NyxIG4AWLKfCBh6ZZgGcD3kj8BHC+xcw4NWzSeggOcCJAr452cFuRiMRLIQ==
+X-Gm-Gg: ASbGncskB8Ei3R/KCspXcfjA1nPX//8fQQprpzMjnD5hX6ExyP7aD2jDYLUMIMhFsQc
+	hCTUtQqZ0hZ2SIYR3Xi2YyGCI6FfWvzwwBCw2LclFoiQZJGPm7JBSdgoyfNYF1Jr1j9K9CAxLWp
+	Kglvdm95kMT+d/+0HsVN/UdGW3m+EJ6BrymialcVzIxM9fomnLkViWN7vO2YtBiseSxar14BEhK
+	hRTQ4SgEI19OnUSnmExR2ApaW7nDf2aCMywD2cKzDJKlONozGNG1fKzAvoAKpFRa4061ql3WfOY
+	NEFteTER2NiNMVqtlvbGNZIJTLzoc8buFO+KLuG51y+59ncfuS8UbQFcr54=
+X-Received: by 2002:a05:6000:250a:b0:3a3:7a33:c96a with SMTP id ffacd0b85a97d-3a37a33ca7dmr1495140f8f.51.1747735206377;
+        Tue, 20 May 2025 03:00:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGIRNWAVYHRnOH33ipWyYPABhiYG26BMzPeKKr8tdmXM1gGbvCqc/R+E0nOOiP3C8IUlUYdHw==
+X-Received: by 2002:a05:6000:250a:b0:3a3:7a33:c96a with SMTP id ffacd0b85a97d-3a37a33ca7dmr1495096f8f.51.1747735205976;
+        Tue, 20 May 2025 03:00:05 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:244f:5710:ef42:9a8d:40c2:f2db? ([2a0d:3344:244f:5710:ef42:9a8d:40c2:f2db])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a35ca5a87fsm15500818f8f.29.2025.05.20.03.00.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 May 2025 03:00:05 -0700 (PDT)
+Message-ID: <344a5b1e-9cfc-4a77-b55c-84fe21c89517@redhat.com>
+Date: Tue, 20 May 2025 12:00:03 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemg200005.china.huawei.com (7.202.181.32)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 net-next 11/15] tcp: accecn: AccECN option failure
+ handling
+To: chia-yu.chang@nokia-bell-labs.com, linux-doc@vger.kernel.org,
+ corbet@lwn.net, horms@kernel.org, dsahern@kernel.org, kuniyu@amazon.com,
+ bpf@vger.kernel.org, netdev@vger.kernel.org, dave.taht@gmail.com,
+ jhs@mojatatu.com, kuba@kernel.org, stephen@networkplumber.org,
+ xiyou.wangcong@gmail.com, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@google.com, andrew+netdev@lunn.ch, donald.hunter@gmail.com,
+ ast@fiberby.net, liuhangbin@gmail.com, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org, ij@kernel.org, ncardwell@google.com,
+ koen.de_schepper@nokia-bell-labs.com, g.white@cablelabs.com,
+ ingemar.s.johansson@ericsson.com, mirja.kuehlewind@ericsson.com,
+ cheshire@apple.com, rs.ietf@gmx.at, Jason_Livingood@comcast.com,
+ vidhi_goel@apple.com
+References: <20250514135642.11203-1-chia-yu.chang@nokia-bell-labs.com>
+ <20250514135642.11203-12-chia-yu.chang@nokia-bell-labs.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250514135642.11203-12-chia-yu.chang@nokia-bell-labs.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Syzbot reported a slab-use-after-free with the following call trace:
+On 5/14/25 3:56 PM, chia-yu.chang@nokia-bell-labs.com wrote:
+> @@ -603,7 +614,23 @@ static bool tcp_accecn_process_option(struct tcp_sock *tp,
+>  	unsigned int i;
+>  	u8 *ptr;
+>  
+> +	if (tcp_accecn_opt_fail_recv(tp))
+> +		return false;
+> +
+>  	if (!(flag & FLAG_SLOWPATH) || !tp->rx_opt.accecn) {
+> +		if (!tp->saw_accecn_opt) {
+> +			/* Too late to enable after this point due to
+> +			 * potential counter wraps
+> +			 */
+> +			if (tp->bytes_sent >= (1 << 23) - 1) {
+> +				u8 fail_mode = TCP_ACCECN_OPT_FAIL_RECV;
+> +
+> +				tp->saw_accecn_opt = TCP_ACCECN_OPT_FAIL_SEEN;
+> +				tcp_accecn_fail_mode_set(tp, fail_mode);
 
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in tipc_aead_encrypt_done+0x4bd/0x510 net/tipc/crypto.c:840
-  Read of size 8 at addr ffff88807a733000 by task kworker/1:0/25
+Similar code above, possibly an helper could be used.
 
-  Call Trace:
-   kasan_report+0xd9/0x110 mm/kasan/report.c:601
-   tipc_aead_encrypt_done+0x4bd/0x510 net/tipc/crypto.c:840
-   crypto_request_complete include/crypto/algapi.h:266
-   aead_request_complete include/crypto/internal/aead.h:85
-   cryptd_aead_crypt+0x3b8/0x750 crypto/cryptd.c:772
-   crypto_request_complete include/crypto/algapi.h:266
-   cryptd_queue_worker+0x131/0x200 crypto/cryptd.c:181
-   process_one_work+0x9fb/0x1b60 kernel/workqueue.c:3231
+> +			}
+> +			return false;
+> +		}
+> +
+>  		if (estimate_ecnfield) {
+>  			u8 ecnfield = estimate_ecnfield - 1;
+>  
+> @@ -619,6 +646,13 @@ static bool tcp_accecn_process_option(struct tcp_sock *tp,
+>  	order1 = (ptr[0] == TCPOPT_ACCECN1);
+>  	ptr += 2;
+>  
+> +	if (tp->saw_accecn_opt < TCP_ACCECN_OPT_COUNTER_SEEN) {
+> +		tp->saw_accecn_opt = tcp_accecn_option_init(skb,
+> +							    tp->rx_opt.accecn);
+> +		if (tp->saw_accecn_opt == TCP_ACCECN_OPT_FAIL_SEEN)
+> +			tcp_accecn_fail_mode_set(tp, TCP_ACCECN_OPT_FAIL_RECV);
+> +	}
+> +
+>  	res = !!estimate_ecnfield;
+>  	for (i = 0; i < 3; i++) {
+>  		if (optlen < TCPOLEN_ACCECN_PERFIELD)
+> @@ -6481,10 +6515,25 @@ static bool tcp_validate_incoming(struct sock *sk, struct sk_buff *skb,
+>  	 */
+>  	if (th->syn) {
+>  		if (tcp_ecn_mode_accecn(tp)) {
+> -			u8 opt_demand = max_t(u8, 1, tp->accecn_opt_demand);
+> -
+>  			accecn_reflector = true;
+> -			tp->accecn_opt_demand = opt_demand;
+> +			if (tp->rx_opt.accecn &&
+> +			    tp->saw_accecn_opt < TCP_ACCECN_OPT_COUNTER_SEEN) {
+> +				u8 offset = tp->rx_opt.accecn;
+> +				u8 opt_demand;
+> +				u8 saw_opt;
+> +
+> +				saw_opt = tcp_accecn_option_init(skb, offset);
+> +				tp->saw_accecn_opt = saw_opt;
+> +				if (tp->saw_accecn_opt ==
+> +				    TCP_ACCECN_OPT_FAIL_SEEN) {
+> +					u8 fail_mode = TCP_ACCECN_OPT_FAIL_RECV;
+> +
+> +					tcp_accecn_fail_mode_set(tp, fail_mode);
+> +				}
+> +				opt_demand = max_t(u8, 1,
+> +						   tp->accecn_opt_demand);
+> +				tp->accecn_opt_demand = opt_demand;
+> +			}
+>  		}
 
-  Allocated by task 8355:
-   kzalloc_noprof include/linux/slab.h:778
-   tipc_crypto_start+0xcc/0x9e0 net/tipc/crypto.c:1466
-   tipc_init_net+0x2dd/0x430 net/tipc/core.c:72
-   ops_init+0xb9/0x650 net/core/net_namespace.c:139
-   setup_net+0x435/0xb40 net/core/net_namespace.c:343
-   copy_net_ns+0x2f0/0x670 net/core/net_namespace.c:508
-   create_new_namespaces+0x3ea/0xb10 kernel/nsproxy.c:110
-   unshare_nsproxy_namespaces+0xc0/0x1f0 kernel/nsproxy.c:228
-   ksys_unshare+0x419/0x970 kernel/fork.c:3323
-   __do_sys_unshare kernel/fork.c:3394
+Too many indentation levels, please move into a separate helper
 
-  Freed by task 63:
-   kfree+0x12a/0x3b0 mm/slub.c:4557
-   tipc_crypto_stop+0x23c/0x500 net/tipc/crypto.c:1539
-   tipc_exit_net+0x8c/0x110 net/tipc/core.c:119
-   ops_exit_list+0xb0/0x180 net/core/net_namespace.c:173
-   cleanup_net+0x5b7/0xbf0 net/core/net_namespace.c:640
-   process_one_work+0x9fb/0x1b60 kernel/workqueue.c:3231
-
-After freed the tipc_crypto tx by delete namespace, tipc_aead_encrypt_done
-may still visit it in cryptd_queue_worker workqueue.
-
-I reproduce this issue by:
-  ip netns add ns1
-  ip link add veth1 type veth peer name veth2
-  ip link set veth1 netns ns1
-  ip netns exec ns1 tipc bearer enable media eth dev veth1
-  ip netns exec ns1 tipc node set key this_is_a_master_key master
-  ip netns exec ns1 tipc bearer disable media eth dev veth1
-  ip netns del ns1
-
-The key of reproduction is that, simd_aead_encrypt is interrupted, leading
-to crypto_simd_usable() return false. Thus, the cryptd_queue_worker is
-triggered, and the tipc_crypto tx will be visited.
-
-  tipc_disc_timeout
-    tipc_bearer_xmit_skb
-      tipc_crypto_xmit
-        tipc_aead_encrypt
-          crypto_aead_encrypt
-            // encrypt()
-            simd_aead_encrypt
-              // crypto_simd_usable() is false
-              child = &ctx->cryptd_tfm->base;
-
-  simd_aead_encrypt
-    crypto_aead_encrypt
-      // encrypt()
-      cryptd_aead_encrypt_enqueue
-        cryptd_aead_enqueue
-          cryptd_enqueue_request
-            // trigger cryptd_queue_worker
-            queue_work_on(smp_processor_id(), cryptd_wq, &cpu_queue->work)
-
-Fix this by holding net reference count before encrypt.
-
-Reported-by: syzbot+55c12726619ff85ce1f6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=55c12726619ff85ce1f6
-Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
----
- net/tipc/crypto.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index c524421ec652..8584893b4785 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -817,12 +817,16 @@ static int tipc_aead_encrypt(struct tipc_aead *aead, struct sk_buff *skb,
- 		goto exit;
- 	}
- 
-+	/* Get net to avoid freed tipc_crypto when delete namespace */
-+	get_net(aead->crypto->net);
-+
- 	/* Now, do encrypt */
- 	rc = crypto_aead_encrypt(req);
- 	if (rc == -EINPROGRESS || rc == -EBUSY)
- 		return rc;
- 
- 	tipc_bearer_put(b);
-+	put_net(aead->crypto->net);
- 
- exit:
- 	kfree(ctx);
-@@ -860,6 +864,7 @@ static void tipc_aead_encrypt_done(void *data, int err)
- 	kfree(tx_ctx);
- 	tipc_bearer_put(b);
- 	tipc_aead_put(aead);
-+	put_net(net);
- }
- 
- /**
--- 
-2.34.1
+/P
 
