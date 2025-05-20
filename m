@@ -1,92 +1,301 @@
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4967925D1E0
-	for <netdev@vger.kernel.org>; Tue, 20 May 2025 06:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5943825D21C;
+	Tue, 20 May 2025 06:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747723204; cv=none; b=Bi0LFJIswkFgt1C15i9HBJvWXzfop9ZIbZhPa1qe3sIhQffOtgetDHWNnuurIIyuxT3wS3LlqVTr3kMoRir+UFvWTVw3p+IdSmNqNQWNcBkUvo9BrafGr/pwr5DTIz1/aPLYvq7O89nc6xK0yekuYiTKEMMISOLHb/5j0NDlV0k=
+	t=1747723478; cv=none; b=i/i9a/1oZrf8anMyc+qDLZepXs8I0w1JXTYwiQC7Bb06j9P/A4wI9kcsIUTJlpmhWeXPKORPqVrcRll3Ha+DcBL0FXNCP14f4iVksms1UR8dCnkHYiRcsf+A55dme0I46/hhURxM0/TBbkR6SF+LyPiA9l//DTcHv7yWCdeV/SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747723204; c=relaxed/simple;
-	bh=RHh3VmuXOPSPt4AlZbzxW6B7ADyopHMpFY7vh8aey1w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gx6CC/z+x8g6WGslEs6kPDMD9ZNR+eIDlOUvoT+0u1E25kA6gW9xKKhDiPYce9WEtVmfSekPVbYLzFEPbJeJs2QY9rfccO7puKIfNUsaixdqoYpMAwuQCdrsslR58bF5pKG0XlKojIacj54oe4xhm78a0ISR6RlWIviBYAUlCVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz16t1747723154tb4109c1d
-X-QQ-Originating-IP: kpXAUvc4rBUQGVxxo9pcJEHeJvhAKhR0IaB+8ADXL9Q=
-Received: from w-MS-7E16.trustnetic.com ( [125.119.67.87])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 20 May 2025 14:39:07 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 1667878887237027694
-EX-QQ-RecipientCnt: 8
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch,
-	mengyuanlou@net-swift.com
-Cc: Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next 1/2] net: libwx: Fix statistics of multicast packets
-Date: Tue, 20 May 2025 14:38:59 +0800
-Message-ID: <0250972BC2F238FA+20250520063900.37370-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1747723478; c=relaxed/simple;
+	bh=gzGIir2F/RYTKkc9z3kC/mDrlI0OBmrxwQCPXxcO+/E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LzhcO5MXavyuN1Q7DnVwYYNDMMcmZEdl50JR7DcfLEpuHIqP4SPnbKmPGkFXLBq4km0F5zBsfGCRrdWsslyCjLjl250Gu6nXr0lwd6FrAhvvfzGRL0/uz0ityjXYPvSfz/nl/ucSfmcapVX5EN6OkqAomtx6w6rkbjt4ZfTbFS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lLquSZP0; arc=none smtp.client-ip=209.85.219.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lLquSZP0"
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e7b8673ff36so2817627276.2;
+        Mon, 19 May 2025 23:44:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747723475; x=1748328275; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ufpbIcD1nnlFO+YuOZyPO5+OmfJ1C/cl6AJ3HJfGCac=;
+        b=lLquSZP0F68gIAhW3J5piUAvZDGKcUVL9xsrpsWmRF23VeDsH2A3GWjcsKSpCcABN6
+         3NCBwCjP9bATIMLVKBZbsWYP+U7n1TzjgfCQnObDrFk+Q1i95KvizX7z+fNRC7VTr+aL
+         88kALzZW2KJ3xdz6li2nckWMnGDZBKKnZ7GSp5G+9sND6busCP0cLRQFMr9b+JUmyEEO
+         w9UvPISryEkfz2y/PUVk8fpLnJdHpMdzi3C705Q6FmT8fG7YBvw5CkDdDfpuiJ0r3tDW
+         +GOvNf8XnfuJlrdg+MyDLooT2YRhNSlP1rqVIYxNuBT3xpG8FxFAdqpTed5ag3qi/VsQ
+         qhfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747723475; x=1748328275;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ufpbIcD1nnlFO+YuOZyPO5+OmfJ1C/cl6AJ3HJfGCac=;
+        b=qXf8pHR8J9pbN5usB50D4n3LaKVIVzB/jri/LJ03iJag8KN6oDEPNm2mpTmnDGabRX
+         64MaMsbiibftFakpw7RijQrw+bohFgi6J9ppX6Q+N46Lnm640kSpXxxyrNS0h2TxRTgX
+         KmyvZFOVr3YSJ2HOfpRLENFJgK2/p/WD5n/PlSkCvSC6d8xcdGek01n9EcXHXlrSf8TO
+         qyPSwmgwSGvWa55EvVTi/P5ZRYTnK84ciBPRBwMcaQ7qaavp9F1ERg2nidJPjdv+kcI3
+         Z0WjguP/9bcO/T1C9eIBRHuFozwueFaxRWF/8/s2g8yF14HROC9n1GFXHXJHB9OcPo+X
+         TTOg==
+X-Forwarded-Encrypted: i=1; AJvYcCVfCMrMxlr4JunbrbZvaDgQG5Mb4axtqozTzR+b4Ssx0OI/uafx+sqLuXbjNgTOdMPS6ToQc4M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6tRrHATEE8duxgbGavYCGc399trbN6ANQGGe+UmWo37iI8quv
+	0Z39uSUJbIgvTi3z6fBphvYdm+Myynaqcj+/pRW2HOim4Kz363jv74pww7k5TrM0AjuTenj71X9
+	3RnnU3vtMQ5GVA7VtEZnuHKGh8O3K/no=
+X-Gm-Gg: ASbGncvjoBm5wTXpmGvIVxVJtX4SFcqqK9r9w0+b2ZA/N6XAJAKZ7FWzaP5nr3JmSgN
+	rcJYjcLBcdnnbV8QxRIznAiK2JbRfPTSmSI3FWPC06YLm7pIPAiyOikrvb0UebU9Xo+Gu32GqtA
+	I4ZJGj6fG044buvlDWNmpHesDYM+wVUNO4
+X-Google-Smtp-Source: AGHT+IG+OCGepNquCFlHZZQFZboGnUgXhyoyfaUs9VkFsaKHaEfjRzIoympu2Owks0XqkwQSOhKzbVscB/ASMCEFIws=
+X-Received: by 2002:a05:6902:250e:b0:e7b:9354:239b with SMTP id
+ 3f1490d57ef6-e7b93542474mr12631609276.14.1747723475213; Mon, 19 May 2025
+ 23:44:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MCg5+ArSTX6c55l3cw+X0NHpZzCOLvXNdSC1Mj85vsh4jt2xiNrxpIO5
-	8GHsz5djWYhA5EpdFxfwstcsa48yLShu+ARTOUSpGJmlw/42NQSzEr8i9kah+CAi9+tn01j
-	EmU42y/P6lDAdVoYL6eTxo/Ab1z0b5lU08a4xhESPlMErFwmCoQcmU8Nay0M4FyCP1TK8Zp
-	o47/VaJ34JvfcPop1TazqFdsKGDYYyU7dvQuQztCg5GANSSyxTnAfYCPCUYlJfMuoOClreQ
-	HBfxT8znp8EmRLGTRjm4i8pD5beaJwy6IfMjP8RYDrWIdzY3aMoRT7GRd/hEVBWpADofS6Z
-	TNy2fGGEiVp2MBIVIIOAfcvipnBRwM/TJd2eRQzR6dYfJ8Q3W+EW0/hddq3sSJd+2LioaaS
-	aKYx/V0+L6CorqEN6nrXjt/w+/Np7kOvgH0q4tT75sgkf0Lgfq2TXpQVNZYJynvcDu8qVw+
-	d5ugSSLHNSWl58paXlFKWE+GoZOmdckzXUNGjT+ZFhJL9/x5/BWOKCB2kls6SleeXoVKy5+
-	qG4dO75stXCRF8o2E1RnD36FG4TZvlIhUJ+Q5LmUv7/ywW3gbqRLsODlWq2cAP3UVLyzSKo
-	XrIr9Ug7wnbkVagUakTx9IpmhcKfx35b+sKQOhxP9LJuUG08ivo0xTXj5BLRQyv9vZsti8j
-	VhdGZXwBA0U5G7tZkG311FN4CwkJyieryY6818lWXc0yXrR7M9etiFKjh+5H9VZQsX8+KrH
-	xPXR9Cj3P3ogHbQ0PAb1oCfgvngOHoSIO4ceXQG4FoAckj2qtZd0e90MMp3FwEpg9eZ0p3v
-	I7MK4v5Sh4b9GzElVH9LHk+BJHEbAnga8NogUrpOANTWIYNCzaNXIweOsHI8N60QXDFfrck
-	MotSwMtB42tkhF7vSYSfspqTy/mwuMMXAro6LYyHeCTKminTje0FWSZCyBdSdg5pyPIUhLP
-	goz5Ei9MTQ1UsIsUfAHxYgJoBLRiup0z2r60aw214APBgQVAcGrKerKoWkLiu1anVcAHEiY
-	zqWO2OrNhEjF/4q3UsVZwd3/gKctA=
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
-X-QQ-RECHKSPAM: 0
+References: <20250515211606.2697271-1-ameryhung@gmail.com> <20250515211606.2697271-2-ameryhung@gmail.com>
+ <aCuOsXKCkwa8zkwR@slm.duckdns.org>
+In-Reply-To: <aCuOsXKCkwa8zkwR@slm.duckdns.org>
+From: Amery Hung <ameryhung@gmail.com>
+Date: Mon, 19 May 2025 23:44:24 -0700
+X-Gm-Features: AX0GCFu9sQo73EupEQi40uYbLuvaZc-ovgSK5NFBFMw43QSXvWZBhnPqwNkVoPk
+Message-ID: <CAMB2axNTyTaqBcFRLQ0VueztMdunv71jygeij00gDNY7i9=K6A@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v4 1/3] selftests/bpf: Introduce task local data
+To: Tejun Heo <tj@kernel.org>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com, 
+	andrii@kernel.org, daniel@iogearbox.net, memxor@gmail.com, 
+	martin.lau@kernel.org, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When SR-IOV is enabled, the number of multicast packets is mistakenly
-counted starting from queue 0. It would be a wrong count that includes
-the packets received on VF. Fix it to count from the correct offset.
+On Mon, May 19, 2025 at 1:04=E2=80=AFPM Tejun Heo <tj@kernel.org> wrote:
+>
+> Hello,
+>
+> On Thu, May 15, 2025 at 02:16:00PM -0700, Amery Hung wrote:
+> ...
+> > +#define PAGE_SIZE 4096
+>
+> This might conflict with other definitions. Looks like non-4k page sizes =
+are
+> a lot more popular on arm. Would this be a problem?
+>
+> > +static int __tld_init_metadata(int map_fd)
+> > +{
+> > +     struct u_tld_metadata *new_metadata;
+> > +     struct tld_map_value map_val;
+> > +     int task_fd =3D 0, err;
+> > +
+> > +     task_fd =3D syscall(SYS_pidfd_open, getpid(), 0);
+> > +     if (task_fd < 0) {
+> > +             err =3D -errno;
+> > +             goto out;
+> > +     }
+> > +
+> > +     new_metadata =3D aligned_alloc(PAGE_SIZE, PAGE_SIZE);
+>
+> Is 4k size limit from UPTR? Is it still 4k on machines with >4k pages? If
+> this isn't a hard limit from UPTR, would it make sense to encode the size=
+ in
+> the header part of the metadata?
+>
 
-Fixes: c52d4b898901 ("net: libwx: Redesign flow when sriov is enabled")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_hw.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+UPTR size limit is a page. I will make PAGE_SIZE arch dependent. For
+metadata, since all threads of a process share one metadata page, I
+think it is okay to make it a fixed size. For data, I think it makes
+sense to encode it in the header of metadata.
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index 143cc1088eea..17ff3c21539a 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -2792,7 +2792,8 @@ void wx_update_stats(struct wx *wx)
- 		hwstats->fdirmiss += rd32(wx, WX_RDB_FDIR_MISS);
- 	}
- 
--	for (i = 0; i < wx->mac.max_rx_queues; i++)
-+	for (i = wx->num_vfs * wx->num_rx_queues_per_pool;
-+	     i < wx->mac.max_rx_queues; i++)
- 		hwstats->qmprc += rd32(wx, WX_PX_MPRC(i));
- }
- EXPORT_SYMBOL(wx_update_stats);
--- 
-2.48.1
+> > +static int __tld_init_data(int map_fd)
+> > +{
+> > +     struct u_tld_data *new_data =3D NULL;
+> > +     struct tld_map_value map_val;
+> > +     int err, task_fd =3D 0;
+> > +
+> > +     task_fd =3D syscall(SYS_pidfd_open, gettid(), PIDFD_THREAD);
+> > +     if (task_fd < 0) {
+> > +             err =3D -errno;
+> > +             goto out;
+> > +     }
+> > +
+> > +     new_data =3D aligned_alloc(PAGE_SIZE, TLD_DATA_SIZE);
+>
+> Ditto.
+>
+> Noob question. Does this means that each thread will map a 4k page no mat=
+ter
+> how much data it actually uses?
 
+Unfortunately this is the case currently, but hey maybe we can make
+data size dynamic
+
+>
+> > +__attribute__((unused))
+> > +static tld_key_t tld_create_key(int map_fd, const char *name, size_t s=
+ize)
+> > +{
+> > +     int err, i, cnt, sz, off =3D 0;
+> > +
+> > +     if (!READ_ONCE(tld_metadata_p)) {
+> > +             err =3D __tld_init_metadata(map_fd);
+> > +             if (err)
+> > +                     return (tld_key_t) {.off =3D err};
+> > +     }
+> > +
+> > +     if (!tld_data_p) {
+> > +             err =3D __tld_init_data(map_fd);
+> > +             if (err)
+> > +                     return (tld_key_t) {.off =3D err};
+> > +     }
+> > +
+> > +     size =3D round_up(size, 8);
+> > +
+> > +     for (i =3D 0; i < TLD_DATA_CNT; i++) {
+> > +retry:
+> > +             cnt =3D __atomic_load_n(&tld_metadata_p->cnt, __ATOMIC_RE=
+LAXED);
+> > +             if (i < cnt) {
+> > +                     /*
+> > +                      * Pending tld_create_key() uses size to signal i=
+f the metadata has
+> > +                      * been fully updated.
+> > +                      */
+> > +                     while (!(sz =3D __atomic_load_n(&tld_metadata_p->=
+metadata[i].size,
+> > +                                                   __ATOMIC_ACQUIRE)))
+> > +                             sched_yield();
+> > +
+> > +                     if (!strncmp(tld_metadata_p->metadata[i].name, na=
+me, TLD_NAME_LEN))
+> > +                             return (tld_key_t) {.off =3D -EEXIST};
+> > +
+> > +                     off +=3D sz;
+> > +                     continue;
+> > +             }
+> > +
+> > +             if (off + size > TLD_DATA_SIZE)
+> > +                     return (tld_key_t) {.off =3D -E2BIG};
+> > +
+> > +             /*
+> > +              * Only one tld_create_key() can increase the current cnt=
+ by one and
+> > +              * takes the latest available slot. Other threads will ch=
+eck again if a new
+> > +              * TLD can still be added, and then compete for the new s=
+lot after the
+> > +              * succeeding thread update the size.
+> > +              */
+> > +             if (!__atomic_compare_exchange_n(&tld_metadata_p->cnt, &c=
+nt, cnt + 1, true,
+> > +                                              __ATOMIC_RELAXED, __ATOM=
+IC_RELAXED))
+> > +                     goto retry;
+> > +
+> > +             strncpy(tld_metadata_p->metadata[i].name, name, TLD_NAME_=
+LEN);
+> > +             __atomic_store_n(&tld_metadata_p->metadata[i].size, size,=
+ __ATOMIC_RELEASE);
+> > +             return (tld_key_t) {.off =3D off};
+> > +     }
+> > +
+> > +     return (tld_key_t) {.off =3D -ENOSPC};
+> > +}
+>
+> This looks fine to me but I wonder whether run-length encoding the key
+> strings would be more efficient and less restrictive in terms of key leng=
+th.
+> e.g.:
+>
+> struct key {
+>         u32 data_len;
+>         u16 key_off;
+>         u16 key_len;
+> };
+>
+> struct metadata {
+>         struct key      keys[MAX_KEYS];
+>         char            key_strs[SOME_SIZE];
+> };
+>
+> The logic can be mostly the same. The only difference would be that key
+> string is not inline. Determine winner in the creation path by compxchg'i=
+ng
+> on data_len, but set key_off and key_len only after key string is updated=
+.
+> Losing on cmpxhcg or seeing an entry where key_len is zero means that tha=
+t
+> one lost and should relax and retry. It can still use the same 4k metadat=
+a
+> page but will likely be able to allow more keys while also relaxing
+> restrictions on key length.
+>
+> Hmm... maybe making the key string variably sized makes things difficult =
+for
+> the BPF code. If so (or for any other reasons), please feel free to ignor=
+e
+> the above.
+
+I think this is a great suggestion. The current implementation may
+waste spaces in metadata if a key does not use all 62 bytes. I don't
+see an obvious obstacle in bpf. I will try to incorporate this in the
+next respin.
+
+>
+> > +#endif /* __TASK_LOCAL_DATA_H */
+> > diff --git a/tools/testing/selftests/bpf/progs/task_local_data.bpf.h b/=
+tools/testing/selftests/bpf/progs/task_local_data.bpf.h
+> > new file mode 100644
+> > index 000000000000..5f48e408a5e5
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/bpf/progs/task_local_data.bpf.h
+> ...
+> > +/**
+> > + * tld_get_data() - Retrieves a pointer to the TLD associated with the=
+ key.
+> > + *
+> > + * @tld_obj: A pointer to a valid tld_object initialized by tld_object=
+_init()
+> > + * @key: The key of a TLD saved in tld_maps
+> > + * @size: The size of the TLD. Must be a known constant value
+> > + *
+> > + * Returns a pointer to the TLD data associated with the key; NULL if =
+the key
+> > + * is not valid or the size is too big
+> > + */
+> > +#define tld_get_data(tld_obj, key, size) \
+> > +     __tld_get_data(tld_obj, (tld_obj)->key_map->key.off - 1, size)
+> > +
+> > +__attribute__((unused))
+> > +__always_inline void *__tld_get_data(struct tld_object *tld_obj, u32 o=
+ff, u32 size)
+> > +{
+> > +     return (tld_obj->data_map->data && off >=3D 0 && off < TLD_DATA_S=
+IZE - size) ?
+> > +             (void *)tld_obj->data_map->data + off : NULL;
+> > +}
+>
+> Neat.
+>
+> Generally looks great to me. The only thing I wonder is whether the data
+> area sizing can be determined at init time rather than fixed to 4k.
+>
+
+I think we can achieve it by first limiting tld_create_key() to the
+init phase (i.e., only calling them in C/C++ constructor). Then,
+tld_create_key() will not allocate memory for data. Instead, on the
+first call to tld_get_data(), we freeze the size of the data area and
+allocate the memory just enough or round up to the power of two.
+
+For C, we can define a new macro API (e.g., tld_define_key()) that
+generates a __attribute__((constructor)) function that in turn calls
+tld_create_key().
+
+> Thanks.
+>
+> --
+> tejun
