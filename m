@@ -1,148 +1,112 @@
-Received: from smtpfb1-g21.free.fr (smtpfb1-g21.free.fr [212.27.42.9])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE275247DE1
-	for <netdev@vger.kernel.org>; Tue, 20 May 2025 14:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.9
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B962505C7;
+	Tue, 20 May 2025 14:18:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750335; cv=none; b=VLZkw4ZxG0DhEbjTsNvsyG7bI6rbN9OwpbdUIKsd2nPbmB/UH2S7q8/IYKJCxUAi/Iq1zxHHPDb2ltt92KMHIDQqg64EGUhrn3b+H7gD5p2/eM/4St53cS1FDpF/aRHYVV5NAK+LqXs6eVkuGMlpr6dQf9LF5aF8kC6RvtXvYyc=
+	t=1747750685; cv=none; b=KiZ427tURaURtUtzhiqs34c5vz5S39cJ2cmtrm2LjesY6rqAqK77TkBSMNrqG7pF+Z4og4TbZc1VynQmT/ezUGPNdv8K8/QI6viiT6dPZtMs77IHHLzTVnnoD+t3mGXjkCeSmVtra7qy9D4H7imxllnQz2KBVKIaCGNOqFvz/3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750335; c=relaxed/simple;
-	bh=T5eSWDc6jD/eXskMKPVQ8MY8L5WFTPqU2Dds8Pt+DYA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ghRHkKt3lYaVrGDvFf4+GqZJE17mQM9rFNCGBktTnvHk5OOhNvgrlFM06exKfZC2mB6JSZ1W008S9AHM2pqnKZaCumU9UW7ovQRB+BLqPVSn7yqRRJWyr2Y5UA3RE1rPNIX43uAntJ003+lgFIR9KTUuOri5sQwyWFEYqMI6F7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=wifirst.fr; spf=fail smtp.mailfrom=wifirst.fr; arc=none smtp.client-ip=212.27.42.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=wifirst.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=wifirst.fr
-Received: from smtp4-g21.free.fr (smtp4-g21.free.fr [212.27.42.4])
-	by smtpfb1-g21.free.fr (Postfix) with ESMTP id 497D5DF8D1E
-	for <netdev@vger.kernel.org>; Tue, 20 May 2025 16:03:30 +0200 (CEST)
-Received: from localhost.localdomain (unknown [IPv6:2a01:e0a:36d:2a10:f4ea:eebd:4645:edc2])
-	(Authenticated sender: isaias57@free.fr)
-	by smtp4-g21.free.fr (Postfix) with ESMTPSA id 9A39119F57B;
-	Tue, 20 May 2025 16:03:20 +0200 (CEST)
-From: jean.thomas@wifirst.fr
-To: netdev@vger.kernel.org
-Cc: dsahern@gmail.com,
-	Jean Thomas <jean.thomas@wifirst.fr>
-Subject: [PATCH iproute2-next] ip: filter by group before printing
-Date: Tue, 20 May 2025 16:02:48 +0200
-Message-Id: <20250520140248.685712-1-jean.thomas@wifirst.fr>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1747750685; c=relaxed/simple;
+	bh=n5HLSG+HZfhC0Gthpz8JGBNHOZuHr52+38rD1o9D0lw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NM3Jl0A6+Dy08KznMrzXK1ZitkT1hqIZrHG6reTOrhkLmIQye1ieveNhdEvQ5SUgrEWKFHL/cKQjIRvUYIq6/dvCSuomO7UxB99yRkIQPGbR4uaRqvChsE2T/1e9kFe2IPAm+VUxwErf6bfBBgOrVc95izVaGn0l0geFqAp1cao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C48QBauZ; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C48QBauZ"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-30ecc762cb7so2412931a91.1;
+        Tue, 20 May 2025 07:18:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747750683; x=1748355483; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cV/OQIV8ztouckrklGIhTFHAEbzSsaIMTwiOmhCaP08=;
+        b=C48QBauZAzvrCEkx9l9IdUtN9txVIgO1SUMxsplEgmS1Ey/qSGy0NTPZEEnHgkFxJk
+         bvgZsLKUsh9Cm9UYvhcw2GOkHIuB9ks+tlgdtlMxY5v4pRM/ncRS3ewcbmskbGi1dCKs
+         s0lYtG/P1MyjzJ/9RvlpmqoeiLyp3EBiqAOA6xAAGFg0AQOknybKV1N82ZdQFL+m/OCO
+         Rb/NkA5QPyuqyTBvkQKgr1qAohyV/DamIT7mQLzx666IJFT9u81n1AVAiuSRmUBf6GXH
+         Fs8gUcdXbrSQQFmHojmvC04ga3m7tCNjhyFkZVNcnRmHOFC+nZOMxY49ZBReuUOnXOxt
+         oZ9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747750683; x=1748355483;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cV/OQIV8ztouckrklGIhTFHAEbzSsaIMTwiOmhCaP08=;
+        b=CFZaAQfS+mreCd1AvpwtZeHKRMHg2UmW0yjpb1Q/dNrARnbk7i6g8Wn6Lb6PwDnazY
+         KJsVEjm/W6PTOeuVKR6H0dMCKla5JDxIKs+Tb3g7Gudjcyo87IFVNfhDkr5Oo5nDrEqM
+         uVvAr+6Zg2MgeMQG8f/mz2YVhIxZOjs2X6pdTjPa448l6SdVQpdj8hNqJReB96OPS8gS
+         adAcpfGyN0TbexaKz0RUuobFUV1KvaaOeX9asdgB/UEPrKb+KPI2gLD1QnC1TpbeqwvX
+         rYT0nPYFaHFECQqlulbdOVEDAsWSL78WUl45oP4LFwFomOtOLWOuB6FNfTDmCoHitnId
+         vqYA==
+X-Forwarded-Encrypted: i=1; AJvYcCX7qkQymgs+ybvWbHDcE2NizxQnajoVRswb5PeveFCyyaaIU/53zREzwa901x5Ium9gQsloS31bef1Jeq0=@vger.kernel.org, AJvYcCXfMpcnLsIa3ABzriOoP8ixG/+0jbSWzey5ZvnLVgd0Fgq5JaLZdmYiJQFC0+8keRwdUXCwXRde@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFWCDJwMdRd+NODQwgSmZF6rqSysdqbdqMb4ks0yQRStGS6gkI
+	4+7w+P0+NfsmX7W6UHsnEJ8x5tGiNZl+hWCZwGoWQ/LW3AQgq/p2YX2rxboLa4FhlOiKbfXLD12
+	+0LAFwDKlDKfu3oNhSxrE47WQajUK5Fs=
+X-Gm-Gg: ASbGncuY2+QcIsQzy8nPKRh8ElAr03ekGwXdJPEuuOKImwjQCK7N22GjafhA2mxrURa
+	sYkBqB9RxU//ZkUWs4bddqxEDtUr8bainIIRIOlnCX7++/1AgHnHr62NpJj3GmVw6r8rWxkT/Ik
+	AiKn9i7mqwkA6LFsoICUPNKqy6j00NM7SD9lY=
+X-Google-Smtp-Source: AGHT+IHop0vmNJRZlUx6caCyeoeYe6BDnYX4Gm7Du+V6bm/RRJ8NWj0JlPUUEXPwgVB01rPgXJlziSg6bf/mQEtweI4=
+X-Received: by 2002:a17:90b:2f03:b0:302:fc48:4f0a with SMTP id
+ 98e67ed59e1d1-30e7d6d17e6mr25420919a91.0.1747750683051; Tue, 20 May 2025
+ 07:18:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250519153735.66940-1-aha310510@gmail.com> <aCyAcbNqKRlPnadx@hoboy.vegasvil.org>
+In-Reply-To: <aCyAcbNqKRlPnadx@hoboy.vegasvil.org>
+From: Jeongjun Park <aha310510@gmail.com>
+Date: Tue, 20 May 2025 23:17:54 +0900
+X-Gm-Features: AX0GCFtcL76npAhxQUeiUE6yEiaTCAtDhflj2Ax0XR2OXCJwmO4Pk_G2kOAmp3A
+Message-ID: <CAO9qdTHe1bR=c6dn4WEDsVZS8pRtf9FsMMQXNFVV_DT0wm_FVw@mail.gmail.com>
+Subject: Re: [PATCH] ptp: remove ptp->n_vclocks check logic in ptp_vclock_in_use()
+To: Richard Cochran <richardcochran@gmail.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, yangbo.lu@nxp.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jean Thomas <jean.thomas@wifirst.fr>
+Richard Cochran <richardcochran@gmail.com> wrote:
+>
+> On Tue, May 20, 2025 at 12:37:35AM +0900, Jeongjun Park wrote:
+>
+> > diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
+> > index 35a5994bf64f..0ae9f074fc52 100644
+> > --- a/drivers/ptp/ptp_clock.c
+> > +++ b/drivers/ptp/ptp_clock.c
+> > @@ -412,9 +412,8 @@ static int unregister_vclock(struct device *dev, vo=
+id *data)
+> >
+> >  int ptp_clock_unregister(struct ptp_clock *ptp)
+> >  {
+> > -     if (ptp_vclock_in_use(ptp)) {
+> > +     if (ptp_vclock_in_use(ptp))
+> >               device_for_each_child(&ptp->dev, NULL, unregister_vclock)=
+;
+> > -     }
+> >
+> >       ptp->defunct =3D 1;
+> >       wake_up_interruptible(&ptp->tsev_wq);
+>
+> This hunk is not related to the subject of the patch.  Please remove it.
+>
+> Thanks,
+> Richard
+>
 
-Filter the output using the requested group, if necessary.
+While working on the patch, I noticed an unnecessary pair of braces in
+ptp_clock_unregister() and included their removal in the patch. Since
+you=E2=80=99ve pointed out that this isn=E2=80=99t the right approach, I=E2=
+=80=99ll fix it
+immediately and send over the v2 patch.
 
-This avoids to print an empty JSON object for each existing item
-not matching the group filter when the --json option is used.
+Regards,
 
-Before:
-$ ip --json address list group test
-[{},{},{},{},{},{},{},{},{},{},{},{}]
-
-After:
-$ ip --json address list group test
-[]
-
-Signed-off-by: Jean Thomas <jean.thomas@wifirst.fr>
----
- ip/ipaddress.c | 45 ++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 40 insertions(+), 5 deletions(-)
-
-diff --git a/ip/ipaddress.c b/ip/ipaddress.c
-index 91d78874..bbe48a47 100644
---- a/ip/ipaddress.c
-+++ b/ip/ipaddress.c
-@@ -959,12 +959,25 @@ static void print_proto_down(FILE *f, struct rtattr *tb[])
- 	}
- }
- 
-+static int get_rtattr(struct nlmsghdr *n, struct rtattr **tb)
-+{
-+	int len = n->nlmsg_len;
-+	struct ifinfomsg *ifi = NLMSG_DATA(n);
-+
-+	len -= NLMSG_LENGTH(sizeof(*ifi));
-+	if (len < 0)
-+		return -1;
-+
-+	parse_rtattr_flags(tb, IFLA_MAX, IFLA_RTA(ifi), len, NLA_F_NESTED);
-+
-+	return 0;
-+}
-+
- int print_linkinfo(struct nlmsghdr *n, void *arg)
- {
- 	FILE *fp = (FILE *)arg;
- 	struct ifinfomsg *ifi = NLMSG_DATA(n);
- 	struct rtattr *tb[IFLA_MAX+1];
--	int len = n->nlmsg_len;
- 	const char *name;
- 	unsigned int m_flag = 0;
- 	SPRINT_BUF(b1);
-@@ -973,8 +986,7 @@ int print_linkinfo(struct nlmsghdr *n, void *arg)
- 	if (n->nlmsg_type != RTM_NEWLINK && n->nlmsg_type != RTM_DELLINK)
- 		return 0;
- 
--	len -= NLMSG_LENGTH(sizeof(*ifi));
--	if (len < 0)
-+	if (get_rtattr(n, tb) < 0)
- 		return -1;
- 
- 	if (filter.ifindex && ifi->ifi_index != filter.ifindex)
-@@ -984,8 +996,6 @@ int print_linkinfo(struct nlmsghdr *n, void *arg)
- 	if (filter.down && ifi->ifi_flags&IFF_UP)
- 		return -1;
- 
--	parse_rtattr_flags(tb, IFLA_MAX, IFLA_RTA(ifi), len, NLA_F_NESTED);
--
- 	name = get_ifname_rta(ifi->ifi_index, tb[IFLA_IFNAME]);
- 	if (!name)
- 		return -1;
-@@ -2121,6 +2131,28 @@ static int ip_addr_list(struct nlmsg_chain *ainfo)
- 	return 0;
- }
- 
-+static void group_filter(struct nlmsg_chain *linfo)
-+{
-+	struct nlmsg_list *l, **lp;
-+
-+	lp = &linfo->head;
-+	while ((l = *lp) != NULL) {
-+		struct nlmsghdr *n = &l->h;
-+		struct rtattr *tb[IFLA_MAX+1];
-+
-+		if (get_rtattr(n, tb) < 0)
-+			return;
-+
-+		if (tb[IFLA_GROUP]) {
-+			if (rta_getattr_u32(tb[IFLA_GROUP]) != filter.group) {
-+				*lp = l->next;
-+				free(l);
-+			} else
-+				lp = &l->next;
-+		}
-+	}
-+}
-+
- static int ipaddr_list_flush_or_save(int argc, char **argv, int action)
- {
- 	struct nlmsg_chain linfo = { NULL, NULL};
-@@ -2299,6 +2331,9 @@ static int ipaddr_list_flush_or_save(int argc, char **argv, int action)
- 		ipaddr_filter(&linfo, ainfo);
- 	}
- 
-+	if (filter.group != -1)
-+		group_filter(&linfo);
-+
- 	for (l = linfo.head; l; l = l->next) {
- 		struct nlmsghdr *n = &l->h;
- 		struct ifinfomsg *ifi = NLMSG_DATA(n);
--- 
-2.39.5
-
+Jeongjun Park
