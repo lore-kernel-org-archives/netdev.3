@@ -1,146 +1,110 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86701266F0D
-	for <netdev@vger.kernel.org>; Tue, 20 May 2025 09:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AF0263F44
+	for <netdev@vger.kernel.org>; Tue, 20 May 2025 09:23:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747732475; cv=none; b=cjD2Jia7/UX40vjX2hBnq43nu9FUi5orIjCZg6FZD+ObQQkybpXWNb8glWI+N+MBKTwQwUiUbjZE2hFjFvDxVSnE769Tscnk8CoCHLUqf3K6DccDRzGuTBN71ajSigh4h5euRd8nrZ+8P96PFXljNKUQ1QdUk8D2/xcA/L+uBxQ=
+	t=1747733003; cv=none; b=ZCD8DZCLvzjPv3n0gpWDpJEn/Xf4nOMkHDTXFavUeocpkZw1CP7bXzJK0YOA3b1F3zNilF89WO0MsQ+f3KrQaAH3dr5k4miWeMdm8yIttjV/8zhZWLhqlFSZywVqF6bPUpfR/1KrysBEjhRgu2aPJXBqnXH5bDIABG3U7E2vqvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747732475; c=relaxed/simple;
-	bh=3tzRD9W56FMabCX5VW4Sp5jloX5lFKn6kDuCC3ehpNU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=diCJte19Ac+v7vJ8UMqP9wonBlmUNQu2Vnt7KgAju9ZRHLfAOvkQ1XFP52FN8OK9V4Kfuzp3iNhVvRH5J17F1v1URV0d7RTuRl0mom4ZCt9kG680tmDOCgU/KKDGckAr1tVrLR+czWk7iO6vawJiTqsQBKDZZy5e1LRoQgSRnj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uHJ3P-0007t3-TM
-	for netdev@vger.kernel.org; Tue, 20 May 2025 11:14:31 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uHJ3P-000O6a-1s
-	for netdev@vger.kernel.org;
-	Tue, 20 May 2025 11:14:31 +0200
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 3EF0B415A43
-	for <netdev@vger.kernel.org>; Tue, 20 May 2025 09:14:31 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id E0045415A2C;
-	Tue, 20 May 2025 09:14:28 +0000 (UTC)
-Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 9f47aa23;
-	Tue, 20 May 2025 09:14:26 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	stable@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 3/3] can: bcm: add missing rcu read protection for procfs content
-Date: Tue, 20 May 2025 11:11:03 +0200
-Message-ID: <20250520091424.142121-4-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250520091424.142121-1-mkl@pengutronix.de>
-References: <20250520091424.142121-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1747733003; c=relaxed/simple;
+	bh=oU3PoYWbOuB2N5/61L0EZdrxVrNeUt8BXRgCEkVG41w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hiFZ6nQZQPRxIr4qSiwcRO/cX9g4ypdb4VOjEZenf4a4YWWi7PjNOV1B5lLFv7re/fPF8KK2C+Ki7fdEm6jhg5KqaxTQWxV75OVsXtGh5jMC8aEJhvVGQ/jrgJKmXG9h7w+SD/29LmMepF/xizwoitxnCGGniq+lMoWMVEmoTh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=JqhKLJO7; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="JqhKLJO7"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-442e9c00bf4so38786865e9.3
+        for <netdev@vger.kernel.org>; Tue, 20 May 2025 02:23:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1747732998; x=1748337798; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LD9HrbKHnhJ4K0C/4DmxBK8ifQh0KlDxWTRCTkR52/w=;
+        b=JqhKLJO7oUXrz2iNzAoXGXbZHuTcQC6LwoDALzy7A1U5XuKlQdibwLFXnNIRuU4T+F
+         lOMNG0ntjAEhbVC1UiWQYWk4HiWRqC2lgOZgCPTh1GXL/oTI3xFTMH3Z/4ZUDMu8zKQ8
+         upVxYkUYUHKl8A9PWbjxEYpT78V0ohkF/dDBXGgHBmS/AI8yhgWBP5QksvPnAH/OjO2O
+         JkkpcSYYL3c/8rDq/UzAfZnpze8g1Rf/Obbiousa9wCOBJCqXwWmjEANd5Iax0dW+fE5
+         LaWDK5GN4Zt/rdrF196UMAZzt46IfpJaRG3foQIoDjsH8gK/XQzrjI8wiHylXPcpgdNk
+         krqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747732998; x=1748337798;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LD9HrbKHnhJ4K0C/4DmxBK8ifQh0KlDxWTRCTkR52/w=;
+        b=hwZ2gJ1g4YURcmuq1/akLo2xmSRaBke0ptfN1NLuju8Vlq8wXU9nSFL4NlWlsD512r
+         BWDzzyf18T3XQ9xmfNO6nmLGrYzHSZCypUMzYlrE83j7h8GiAaBRAIwMez0RnuwzItUZ
+         YU1llv2Wh0j8KuIDJoMfeUlA/h3/6W0ZhwLTx4oA/fsuW3/Q2Zs0BWQLV+e3mX6NzlMK
+         khUPR4gGxo/09LLTcHzrmi0K/+F9RGDmtZZ1V/NFhbczKxkAHI7bwVaSICici0VEICoM
+         GU2xQIDqfOYVdM94F2nibNCw92F0IldBYEc68fiUyj06G/Lt0cjcwW+lzOxlJBVz6Gyj
+         3/gg==
+X-Forwarded-Encrypted: i=1; AJvYcCXIXwAl9ENgwKACsw1HHEJoLWLf/nC8UBJRVEAKfTOI7Clex/4aG4dwj4Jeq4Bk6bdT7ZB8Gf0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypLR01/D2olXDiQs5misyLF3Zn+m7tuWlfqo45eizxZjFpny0t
+	qdpf4jYHR26fwe69lJBzlmxU3aIPio1uv5dEfhT2iPmZIneR0t/fViqUQbdcRZcJoRM=
+X-Gm-Gg: ASbGncs7qYlXX+1NhgYdKRrbKEo1NzRDVQ3irV5EVHhQ6jvro4uuGriV8lj8FqinKQH
+	B9M0vhcFi10LLeaW78aaKwn34GQW3SO1W0aeN1uX34cAWr2qQ/RYJhQOZ/xixAwV3aNC+TzRjfC
+	BIOKTCK4/mEIwAuRv5j95/fn6y3ksBtEq36FQCFIk+Fq/0LA3OXCeNoKSXS1X4fzxPZDdEVnPbJ
+	uX7LikqbLlZYu0tx1wiSRGfgeWqaNFpF5nV2YtiAt+BU7Eb++6KAfcRS3XwJs7Hy7BduSEikpDN
+	2t+auZ0ojSbqCzsT8JvHeD9q63usFwBigNyku84Jwu3cPDBahlbSo3Pbw8OsJ3YJX3etY2OA7pU
+	IHBA=
+X-Google-Smtp-Source: AGHT+IFTNkO4oeYYd+isFnT8BAYXSbncDCnTalzxGlPlPp4KRDRw8uh9ZRJhgwZ2auOBgfYcmOOVFw==
+X-Received: by 2002:a05:600c:1e1c:b0:43d:9d5:474d with SMTP id 5b1f17b1804b1-442fef3e822mr165415425e9.0.1747732998458;
+        Tue, 20 May 2025 02:23:18 -0700 (PDT)
+Received: from jiri-mlt (37-48-1-197.nat.epc.tmcz.cz. [37.48.1.197])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f6f062c7sm23389385e9.14.2025.05.20.02.23.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 May 2025 02:23:18 -0700 (PDT)
+Date: Tue, 20 May 2025 11:23:14 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Hillf Danton <hdanton@sina.com>, 
+	Network Development <netdev@vger.kernel.org>
+Subject: Re: [PATCH (EXPERIMENTAL)] team: replace term lock with rtnl lock
+Message-ID: <ooxxjzmbid3jb4optotv5ptzdh253wgwi3v3omo5r7rxl6vqac@7l4rrug5l2z5>
+References: <ff1d684a-22ec-4ea2-a6ee-fe9704a6f284@I-love.SAKURA.ne.jp>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ff1d684a-22ec-4ea2-a6ee-fe9704a6f284@I-love.SAKURA.ne.jp>
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+Sat, May 17, 2025 at 09:32:20AM +0200, penguin-kernel@I-love.SAKURA.ne.jp wrote:
 
-When the procfs content is generated for a bcm_op which is in the process
-to be removed the procfs output might show unreliable data (UAF).
+[..]
 
-As the removal of bcm_op's is already implemented with rcu handling this
-patch adds the missing rcu_read_lock() and makes sure the list entries
-are properly removed under rcu protection.
-
-Fixes: f1b4e32aca08 ("can: bcm: use call_rcu() instead of costly synchronize_rcu()")
-Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
-Suggested-by: Anderson Nascimento <anderson@allelesecurity.com>
-Tested-by: Anderson Nascimento <anderson@allelesecurity.com>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20250519125027.11900-2-socketcan@hartkopp.net
-Cc: stable@vger.kernel.org # >= 5.4
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- net/can/bcm.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/net/can/bcm.c b/net/can/bcm.c
-index 871707dab7db..6bc1cc4c94c5 100644
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -219,7 +219,9 @@ static int bcm_proc_show(struct seq_file *m, void *v)
- 	seq_printf(m, " / bound %s", bcm_proc_getifname(net, ifname, bo->ifindex));
- 	seq_printf(m, " <<<\n");
- 
--	list_for_each_entry(op, &bo->rx_ops, list) {
-+	rcu_read_lock();
-+
-+	list_for_each_entry_rcu(op, &bo->rx_ops, list) {
- 
- 		unsigned long reduction;
- 
-@@ -275,6 +277,9 @@ static int bcm_proc_show(struct seq_file *m, void *v)
- 		seq_printf(m, "# sent %ld\n", op->frames_abs);
- 	}
- 	seq_putc(m, '\n');
-+
-+	rcu_read_unlock();
-+
- 	return 0;
- }
- #endif /* CONFIG_PROC_FS */
-@@ -858,7 +863,7 @@ static int bcm_delete_rx_op(struct list_head *ops, struct bcm_msg_head *mh,
- 						  REGMASK(op->can_id),
- 						  bcm_rx_handler, op);
- 
--			list_del(&op->list);
-+			list_del_rcu(&op->list);
- 			bcm_remove_op(op);
- 			return 1; /* done */
- 		}
-@@ -878,7 +883,7 @@ static int bcm_delete_tx_op(struct list_head *ops, struct bcm_msg_head *mh,
- 	list_for_each_entry_safe(op, n, ops, list) {
- 		if ((op->can_id == mh->can_id) && (op->ifindex == ifindex) &&
- 		    (op->flags & CAN_FD_FRAME) == (mh->flags & CAN_FD_FRAME)) {
--			list_del(&op->list);
-+			list_del_rcu(&op->list);
- 			bcm_remove_op(op);
- 			return 1; /* done */
- 		}
-@@ -1296,7 +1301,7 @@ static int bcm_rx_setup(struct bcm_msg_head *msg_head, struct msghdr *msg,
- 					      bcm_rx_handler, op, "bcm", sk);
- 		if (err) {
- 			/* this bcm rx op is broken -> remove it */
--			list_del(&op->list);
-+			list_del_rcu(&op->list);
- 			bcm_remove_op(op);
- 			return err;
- 		}
--- 
-2.47.2
+>@@ -2319,13 +2301,12 @@ static struct team *team_nl_team_get(struct genl_info *info)
+> 	}
+> 
+> 	team = netdev_priv(dev);
+>-	mutex_lock(&team->lock);
+> 	return team;
+> }
 
 
+Why do you think this is safe?
+
+Rtnl is held only for set doit.
+
+
+> 
+> static void team_nl_team_put(struct team *team)
+> {
+>-	mutex_unlock(&team->lock);
+>+	ASSERT_RTNL();
+
+Did you test this? How? Howcome you didn't hit this assertion?
+
+
+
+> 	dev_put(team->dev);
+> }
+> 
