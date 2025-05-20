@@ -1,142 +1,80 @@
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC532517A5
-	for <netdev@vger.kernel.org>; Tue, 20 May 2025 15:10:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5026B25229C;
+	Tue, 20 May 2025 15:18:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747753840; cv=none; b=Uxqzk0om+jXZEQG7TvQekM9/3Ehbx6KRL2NiTTcfe7QPPf5AGsTqcnHCqhPCyRoOBHOFJE8oC9T+tvON30mV4zYB7zMUeDdaRdr46JWdIiu23N1c0sHYYICmgnwBk+/wRA1/viwISj1JuHTQWHgK9+PaDgOGINnhTiERPCN/lM8=
+	t=1747754311; cv=none; b=Vbt9yVQYIg/trOmt9P36y+W3mLnAJqin1NDSnogCxd2AgIgqXNmbHenrSydaboVPpbOcA2sW4WWEyGfwIPTLCtf0B03nUwbJn9l2Vi8cSxe1mO0Uz2SAxwPTNlxUmeS1Jop9NwwRp4ac38ppjla6q6kybI5hVdf9yl2k+tMaLxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747753840; c=relaxed/simple;
-	bh=2un06VrPK/WUBLF3bKsicFJw3OV1P3KcckXmpF5KCZ4=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=jXtquAPq3W3rpPj4aDWSsb8n5r4MtqkmmR9EDARODKTsTQIBN2EWuOS9jFFGd8h99zrpBnFRabaYjtgpl1BOTGQVVQMmaR9+F5OAtfuFMR3XJEUDYHwQM3HsS2P31jxtYCa1frrn3jwW6ijotRtSPu+emTafDeOuPizsQIH8RUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WyV9fTbs; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1747754311; c=relaxed/simple;
+	bh=gOcAH/YL5VciW2jCfOJM+RDZl3zKyoeTRxoKCucXQKc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oNmkEERJHOsT0jVLXqV6syU2YG7UI19X5CVFnJpIomX9/PuNl8AGpn81o0b/x9XxDuHwzaZfjouNbhPcDIZfY4hYjDvOZR2YtQyvKLI0lpgpfAyi3QBJ2g1ZAUVKrLXIyKhc9MCWaW8eI7exBoGHgHKrFnbEdeuuI2ZXS26nCh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WIkvmAtt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WyV9fTbs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WIkvmAtt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A749C4CEEA;
+	Tue, 20 May 2025 15:18:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747754310;
+	bh=gOcAH/YL5VciW2jCfOJM+RDZl3zKyoeTRxoKCucXQKc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WIkvmAtt5TOeMvCDGBbPJgB4JjBBPqqSvNUUZs5g4513rRX5RxJkhlFPLNQkiiSyC
+	 kEEBnlMGbFy/UU2efYx4TS3uT1GkmLUB264f5DqVEAa1qu5AO0ZRlBcHoeOMvtBA6A
+	 dlCY/nTm3or20KEx0j9YfHik5x+PVGGk4VLjiEfUS3XV41Kx+8Mm28DQSJyEUF+vYJ
+	 OZB17ZWCrXlQ1JSY2UVx+PS5QsvjVLI4un1blQBMuTIzblz8vEuUEAWl+bbvgzxDeR
+	 +cE1X4cBIWWYk68/zYN0cY9FKSUESNiQcbeSYO/YpWyDDzCytghiSikW029Z+g86CS
+	 Ha7+ngUMOWpVw==
+Date: Tue, 20 May 2025 08:18:17 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Bernard Metzler <BMT@zurich.ibm.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
+	"linux-sctp@vger.kernel.org" <linux-sctp@vger.kernel.org>,
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Sagi Grimberg <sagi@grimberg.me>, Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH net-next 04/10] RDMA/siw: use skb_crc32c() instead of
+ __skb_checksum()
+Message-ID: <20250520151817.GA1249@sol>
+References: <20250511004110.145171-1-ebiggers@kernel.org>
+ <20250511004110.145171-5-ebiggers@kernel.org>
+ <BN8PR15MB2513872CE462784A1A4E50B7999CA@BN8PR15MB2513.namprd15.prod.outlook.com>
+ <20250520131841.GH7435@unreal>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1747753836;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bEX1jHUrub31rPVQwtog69oMgdloGivRIBG2sjKnaXg=;
-	b=WyV9fTbsu4lxkfYNnEJh/F1W91jONFvvTP8k7RKIjUdMFfryWEiGiONMWLuQdW/JJL9blK
-	XdrLd2ziLkffSiX2jy87Y7613p3BApHjZvemx5OIxCmOoafvfTNfc8rkoEHxwq/gyGY4Xc
-	00cCcauZG5jc9VCy9cvf0JbuLvR1k6A=
-Date: Tue, 20 May 2025 15:10:34 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <e568d71aa0c1f7397c755ce6f0a71540931ebc3e@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH bpf-next v1] bpf, sockmap: Fix concurrency issues between
- memory charge and uncharge
-To: "John Fastabend" <john.fastabend@gmail.com>, "Cong Wang"
- <xiyou.wangcong@gmail.com>
-Cc: bpf@vger.kernel.org, "Jakub Sitnicki" <jakub@cloudflare.com>, "David S.
- Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Simon Horman" <horms@kernel.org>, "Cong Wang" <cong.wang@bytedance.com>,
- "Alexei Starovoitov" <ast@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250519200003.46elezpkkfx5grl4@gmail.com>
-References: <20250508062423.51978-1-jiayuan.chen@linux.dev>
- <aCorf4Cq3Fuwiw2h@pop-os.localdomain>
- <20250519200003.46elezpkkfx5grl4@gmail.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250520131841.GH7435@unreal>
 
-May 20, 2025 at 04:00, "John Fastabend" <john.fastabend@gmail.com> wrote:
+On Tue, May 20, 2025 at 04:18:41PM +0300, Leon Romanovsky wrote:
+> On Mon, May 19, 2025 at 09:04:04AM +0000, Bernard Metzler wrote:
+> > 
+> 
+> <...>
+> 
+> > > 
+> > 
+> > Thanks Eric!
+> > Works fine. Correct checksum tested against siw and cxgb4 peers.
+> > 
+> > Reviewed-by: Bernard Metzler <bmt@zurich.ibm.com>
+> 
+> This patch should go through RDMA repository, Please resend it.
+> 
+> Thanks
 
->=20
->=20On 2025-05-18 11:48:31, Cong Wang wrote:
->=20
-[...]
->=20>=20
->=20>  Solution:
-> >=20
->=20>  1. Add locking to the kfree_sk_msg() process, which is only called=
- in the
-> >=20
->=20>  user process context.
-> >=20
->=20>  2. Integrate the charge process into sk_psock_create_ingress_msg()=
- in the
-> >=20
->=20>  backlog process and add locking.
-> >=20
->=20>  3. Reuse the existing psock->ingress_lock.
-> >=20
->=20>=20=20
->=20>=20
->=20>  Reusing the psock->ingress_lock looks weird to me, as it is intend=
-ed for
-> >=20
->=20>  locking ingress queue, at least at the time it was introduced.
-> >=20
->=20>=20=20
->=20>=20
->=20>  And technically speaking, it is the sock lock which is supposed to=
- serialize
-> >=20
->=20>  socket charging.
-> >=20
->=20>=20=20
->=20>=20
->=20>  So is there any better solution here?
-> >=20
->=20
-> Agree I would be more apt to add the sock_lock back to the backlog then
->=20
->=20to punish fast path this way.
->=20
->=20Holding the ref cnt on the psock stops blocks the sk_psock_destroy() =
-in
->=20
->=20backlog now so is this still an issue?
->=20
->=20Thanks,
->=20
->=20John
->
+It depends on patches 1-2, and patches 6-7 depend on this one.  So your proposal
+would require that we drag this out over 3 cycles (patches 1-3,5,8-10 in net in
+6.16, patch 4 in RDMA in 6.17, patches 6-7 in net in 6.18).  Can we please just
+take the whole series through net in 6.16?  There aren't any conflicts.
 
-Thanks to Cong and John for their feedback.
-
-For TCP, lock_sock(sk) works as expected. However, since we now support
-multiple socket types (UNIX, UDP), the locking mechanism must be adapted
-accordingly.
-
-For UNIX sockets, we must use u->iolock instead of lock_sock(sk) in the
-backlog path. This is because we already acquire lock(u->iolock) in both:
-'''
-unix_bpf_recvmsg() (BPF handler)
-unix_stream_read_generic() (native handler)
-'''
-
-For UDP, the native handler __skb_recv_udp() locks udp_sk(sk)->reader_que=
-ue->lock,
-but no locking is implemented in udp_bpf_recvmsg(). This implies that ing=
-ress_lock
-effectively serves the same purpose as udp_sk(sk)->reader_queue->lock to =
-prevent
-concurrent user-space access.
-
-Conclusion:
-To avoid using ingress_lock, we need to implement a per-socket locking st=
-rategy into psock:
-
-Default implementation: lock_sock(sk)
-UNIX sockets: Use lock(u->iolock) in backlog path.
-UDP sockets: Explicitly use reader_queue->lock both in udp_bpf_recvmsg() =
-and backlog path.
-
-As of now, I don=E2=80=99t have any better ideas.
+- Eric
