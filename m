@@ -1,52 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDB918DB2A;
-	Tue, 20 May 2025 14:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3621248166;
+	Tue, 20 May 2025 14:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747751862; cv=none; b=pvKeJ/YrhY6mySJkbVrlHBPRCcIpuAG2mSm7xbuiLwcIM/l6Q0NsUY/0N3Pmk3J4NS9gnbi+j+7X1ceu4tZ/N1kyifm0eI3WIaIKLvB22Fb/PjFKpXDSpwnVdf6gXWnlE4u7OO75VqT+phDEhz82xa7NU4MkIPfGFDKS5gBmDdQ=
+	t=1747752013; cv=none; b=nUFG5gG1Y/hS53LxdIQ+zUZsctjdD2Tkuzvy2/pdLdK29bmqkn9hM6eBaUhyTJ1lzwiXxIwhe+3KgWG263zygthsW3XiZ0SzUoHP/APn0Iyg7t2sSrnxu4OOvkL+KKOF44305Kk2sA0lptErC7gUjrhdSlbwQdpwrd79csl4tHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747751862; c=relaxed/simple;
-	bh=nqNVYdFdo5whHwkiTLh4RqdZVNnbZMJgGY6L8YHUnyk=;
+	s=arc-20240116; t=1747752013; c=relaxed/simple;
+	bh=h3PEVXdDXZNqXtyIXoCQMZ2uLekttkQ3kJBFBUtR4jQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D3VDdcLV9IFdDLaxUnnFiAN4wk6xQfjzN+xvyFBNQ00yntQjwCBOCTL9zTbPZzVqwd3hbY01v1YU3R+T+Qx6PPbdlFUmjFzxwJipi3c72yMHGGxEdv9gnbCr87JtM4OCWC+eA99buo6xhrMqeyCyITxf0BiIWTb+piGO43wf8ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udlmY6Mu; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=VX9Wz3geoWFEj5/P08C1H774f/wvIYH0o1L3A3SRtmHaVy/hMfIv/Sabz0NRUmUYQVIC6q53EWVmTqU03yIvnwWkhU1GR40fBmjuH+mvicbwI6omeNWSUWA44mmWtcD1GLH1WqSyed1VFtsCipjvTmQi/Pghx85XRnitt1fn2SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YAX6qJjP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udlmY6Mu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF207C4CEE9;
-	Tue, 20 May 2025 14:37:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YAX6qJjP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D256AC4CEE9;
+	Tue, 20 May 2025 14:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747751861;
-	bh=nqNVYdFdo5whHwkiTLh4RqdZVNnbZMJgGY6L8YHUnyk=;
+	s=k20201202; t=1747752012;
+	bh=h3PEVXdDXZNqXtyIXoCQMZ2uLekttkQ3kJBFBUtR4jQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=udlmY6MufKZCvYJsTznavkNAvcdCkBNHlzTw/1qRo4SJXkXGLrJzaReYwiu+DlDoi
-	 G8tUgImajEoOIEOh1J1ZQc2fSW9eA8Tvdrl9uEcqCVkozWSzsdpxJQJipEno5q59Ha
-	 TPhfiX0KqXa5wLamEEEBA7bqEpv9mLkL4B98YlJOlyvk9FvjZ2RGgiruYghuOxnJoU
-	 HlC8lYIEonnaKz/NzpdPDvxGNP56xiMASNNr0i3cmQvCKgfVUO6qzTYJ6NvizLVykX
-	 SVkeipHH4/7V//AheRcWyF6zmCkcBGxqk8FetzBH2SPdKFvzTNLU/pjWvWnKc5r0zK
-	 enm3kIXJwXQ2w==
-Date: Tue, 20 May 2025 15:37:36 +0100
+	b=YAX6qJjPAG3kZx8PsxpGyVTfLQ5pAJiHsAAYFALUOL9Sm8mGPd5W9tqC9KtPC6WBj
+	 8ugOLCR1ciFpFLRDi9KH+2YRvEZ45hlqLjKTlSQVjHry2QI78MEOd3+RgRfI2K4KXw
+	 K18od7m19MJw2JQ5em/7KAzqN97DmptDolGVD4ZUio9huBCDVp1i5RgBMblHuTiyXx
+	 54FDaW/1zaY8YBNdcwLq3GSUDj2OIEliDLLFUfkP/Y5nNwUmNQFdVtnc7K0hYqAfvz
+	 /HnUbDZshZlhtFYLY5X9SSWpjLg4kQmhVHBCvOzHS2rAbz7FvFS9JCpHolUf28yqbt
+	 5nYaSJcxMFY8A==
+Date: Tue, 20 May 2025 15:40:08 +0100
 From: Simon Horman <horms@kernel.org>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Jijie Shao <shaojijie@huawei.com>,
-	"salil.mehta@huawei.com" <salil.mehta@huawei.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	David Miller <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	" lanhao@huawei.com" <lanhao@huawei.com>,
-	" wangpeiyang1@huawei.com" <wangpeiyang1@huawei.com>,
-	" rosenp@gmail.com" <rosenp@gmail.com>,
-	" liuyonglong@huawei.com" <liuyonglong@huawei.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] net: hns3: Add error handling for VLAN filter
- hardwareconfiguration
-Message-ID: <20250520143736.GT365796@horms.kernel.org>
-References: <20250517141514.800-1-vulab@iscas.ac.cn>
- <3f03a8d0-c056-4c46-8f98-a5b5f48c6159@huawei.com>
- <682BD774.007007.29338@cstnet.cn>
+To: Sumanth Gavini <sumanth.gavini@yahoo.com>
+Cc: skhan@linuxfoundation.org, bongsu.jeon@samsung.com, shuah@kernel.org,
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests: nci: Fix "Electrnoics" to "Electronics"
+Message-ID: <20250520144008.GU365796@horms.kernel.org>
+References: <20250517020003.1159640-1-sumanth.gavini.ref@yahoo.com>
+ <20250517020003.1159640-1-sumanth.gavini@yahoo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,20 +44,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <682BD774.007007.29338@cstnet.cn>
+In-Reply-To: <20250517020003.1159640-1-sumanth.gavini@yahoo.com>
 
-On Tue, May 20, 2025 at 09:14:28AM +0800, Wentao Liang wrote:
-> > Are there any real functional problems?
-> > Would you please tell me your test cases? I'm going to try to reproduce the problem.
+On Fri, May 16, 2025 at 06:59:37PM -0700, Sumanth Gavini wrote:
+> Fix misspelling reported by codespell
 > 
-> Hi,
-> 
-> I found this problem by static analysis and manual auditing. I believe there should be add a check just like the other call of hclge_set_vlan_filter_hw(). If the check is useless, could you please tell me the detailed reason.
+> Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
 
 Thanks,
 
-I think it would be useful for the patch description to state
-that the problem was found using static analysis.
+With this change this file appears to be codespell-clean.
 
-But let's wait for more feedback from Jijie on if this
-check is, at least theoretically, required.
+Reviewed-by: Simon Horman <horms@kernel.org>
