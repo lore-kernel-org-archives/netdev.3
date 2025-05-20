@@ -1,233 +1,735 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D401ACECE;
-	Tue, 20 May 2025 13:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4524E244681
+	for <netdev@vger.kernel.org>; Tue, 20 May 2025 13:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747747691; cv=none; b=OgXQcJyDSpFPcFVhxJuc2on1P1WziN5WZ4jvqbM4mv758QTWFKC/7vOhpNPbbLJQ0idlpVo4Z/wx5Dh640xMPTF6yojyyBe/OCxWQB7gZW6jHO/4OFjQLbjtPOPryvV9EhFoapzI9j0Qo8/EXzUVYFf0Irr5lSb6wNVcLyA9qXg=
+	t=1747748049; cv=none; b=Y9l5ynqpD+KDpjtsADrksnEgne/LKayCqLBTIgTYlhF+inxxNVfqqY6xjxs2rcSlAqJrXnrNX53d+6kA3RwqkhaoyW1k3nbN+/R3MD3Ndlzi2dDruxkbg/pbn8SJicdzCvOp2J+opnFNtajEKKwWDq7i12Rr9iv3JHII8+WdtBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747747691; c=relaxed/simple;
-	bh=cZ9R0ETre+tBmvp0DuUki4vor5qGjOvtI+u6OxR7Q3k=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=GiJ/ho4FCdrx++4sv0/VW3/GhhKQ80j6r7ekZWzr2FywmH6A7jv0HcnVBiLPKXqCVsWwMmXfT4tQTtShw2NkF1g2vJ1fioh4+wVkCCFrcBC0Z370aUUi7G9ECp6DUME3ywIW6ESyujpPhMi5DZ/HDnwyjiClIynailg0zw/GCXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=A41bClPH; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+	s=arc-20240116; t=1747748049; c=relaxed/simple;
+	bh=kGsoRZoR1371c7S0L+pPmRmiIGpsZ3niGp6ljGzI8UY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LZGIdsbOwr2YF65Gj28VUn9YlTRVHqC3mIwYTqPogukOu44pWmTYSu2ZCCvpK2iBHOPi/Ds4zPI9MqDfRlu1EQT7laMpVAmxd5Yrp7rzWBlxppAqsAhvqBDE+jKDk3z6WlCLQSMqwGTVYkzu/zkxCUjSgmD8hac84AOCYOWlJzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LUJDasAb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="A41bClPH"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id 6D7C522CAD;
-	Tue, 20 May 2025 16:28:03 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=sX/x59Qjev8GzAbAiGc8Xuv/PXjNhfvHwBJQSdNyR3k=; b=A41bClPH7Jbh
-	fwkV+NZads5+ctviAIr3P3V2ICroLGFrs7JfBjaIGruh4vH8MEX4axCdjgY6Km3p
-	83fTlbwi0JQ73Th+csfyViMEmAqy3QMC3yrA7v6piB/KxKs4+vTH87zn1vGU8RbO
-	UvKpYsCvOxHYU7EY0CYDthYW2KGdPHwZaiU9EGgTgPvnbJBcCZy2izTxVSZb3P8+
-	jVJAXwR/gYD5z+qizBqObw/NxXKsWvdIB9i4GzDtNcjpR53ZtMdeeAQTwuSL+Dfl
-	2XpP1LzV3swCtvUh0evRO0k6WdUy8I2tW5rAJ6GzMc4XtRtivZsL0agS6Rhc3eiy
-	W9KpVIwD7kRNzV2e5pIbGnrJ8xBqpHG7MxoUIZ0RbZWLNmqvKXfTBmNX8sCBqh3r
-	uaigUSyKDjdOiFdn6rXtHm/jnwjjRrln2Jm+UpDmwZmE2KDJYDDXOTwO4kxmM4Br
-	mKhI0Nzwcf4SOCXPBvmpN2OjILOgVVmznz2MfU8HGUQqKjvvRDy2PB/9Wvz4UYtZ
-	Us4Mwtci0hC219UkePLuvlv/PQY3w6By86jK4jhFvQacCpxB5K8/eEzAofEYKVDA
-	hWP0cJGueJT4vUcx9I0evsaQfBMSIM/Czfu4r7rhfZEsp+2XUsLmt7KDHRKDdDRq
-	HQyqtgKyueBIKKfMZ9G0dxBVqYAJM0k=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Tue, 20 May 2025 16:28:02 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id 8E24160471;
-	Tue, 20 May 2025 16:28:01 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.1/8.17.1) with ESMTP id 54KDRx0J022552;
-	Tue, 20 May 2025 16:27:59 +0300
-Date: Tue, 20 May 2025 16:27:59 +0300 (EEST)
-From: Julian Anastasov <ja@ssi.bg>
-To: Duan Jiong <djduanjiong@gmail.com>
-cc: pablo@netfilter.org, netdev@vger.kernel.org, lvs-devel@vger.kernel.org
-Subject: Re: [PATCH] ipvs: skip ipvs snat processing when packet dst is not
- vip
-In-Reply-To: <CALttK1Sn=D4x81NpEq1ELHoXnEaiMboYBzYeOUX8qKHzDDxk0A@mail.gmail.com>
-Message-ID: <df6af9cc-35ff-5c3e-3e67-ed2f93a17691@ssi.bg>
-References: <20250519103203.17255-1-djduanjiong@gmail.com> <aef5ec1d-c62f-9a1c-c6f3-c3e275494234@ssi.bg> <CALttK1Sn=D4x81NpEq1ELHoXnEaiMboYBzYeOUX8qKHzDDxk0A@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LUJDasAb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747748045;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cp+QI/FUEokdJfJNPH+W6NcsfuPlYnlplF6CXE3JP8A=;
+	b=LUJDasAbPJHA2KhJ3JP07mEbbC/OpggcoWWJhjMYHAJKeSyL8bR/XI85zj+flF9OGu6YL9
+	fAWrWfEK6wEcyM7oH8oPPatKWKGo4jVIZcTbGmKcV4bac1dGnsyQ0tsHCh7CfdbBJDf1y/
+	mlq5FSbrcLM3BnO2BAgK8wwG+aJsuJs=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-328-_iPUu4unNcGXLDHkBLnH-Q-1; Tue, 20 May 2025 09:34:03 -0400
+X-MC-Unique: _iPUu4unNcGXLDHkBLnH-Q-1
+X-Mimecast-MFC-AGG-ID: _iPUu4unNcGXLDHkBLnH-Q_1747748042
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3a375938404so1236925f8f.0
+        for <netdev@vger.kernel.org>; Tue, 20 May 2025 06:34:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747748042; x=1748352842;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cp+QI/FUEokdJfJNPH+W6NcsfuPlYnlplF6CXE3JP8A=;
+        b=v5A7o1FD85WisN9X1BnLcvWhHt6RmbS4Tex6xUc2QzhEYMtcRbMCokD2f0tJF92iTA
+         7n2ywOHZ2W8oXdDr8qz7Of0QRtsN6MxkN+ehkq+Mhp4qOwngCah/iLFyraX7ratu6n/o
+         N660g8FHfhMJKnXCA2ZKGaCOjK4HzgS5ZemFKLbnd5Wvs//+vUP58Rp0w03Q2fea7d8M
+         V7GrZnKuDastbuhLhwjN5Z0t2zl3YTVwx1j/h8StcRcgjUgr3KLPH43Q/YLdPIJ1ZCI9
+         gUiGaH4DzN8RYQlzzN0RzyFhO4pDS/z8qz20iSP7a6xMer786iV/1SwFfjfKrBXZYZNc
+         xP8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXJNEIemPubRzpNn5C3a8fuHklBjJhjyr2r8VP0MWDiQveYrDjEnsBDsiLvZGrxHDUfIoGFdj0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZCJrQAaQtEImVNCdHfJNDaF05BeeIZ6/1wpfVucN4jrm+bglq
+	O5LeTi7heU1rIBYqiEC26gNSHytQ9l2ZJE88T5BhAoOM8l+EQf4AAJZI9wN5gWDDNb6WvBR3nfB
+	pUlVDYgXK8ItU6uJnzKJeP2n4etWRi79vuEj3GPvuf/OW2URtpAZ4hJsmYw==
+X-Gm-Gg: ASbGncsGSO4WlWnXDd776EiHEVLXf5Yu8LZVY0t0VLgVP6Q4Pn63dwbsYsO4G7tALIX
+	oaUfRJ7bCtEgf56gcarPwMDzjeUSdz2AJjjfHgaKfs8QFBXsy3Flrf1DNe5KLFGjsU3Y75zSfkU
+	xZX581/tu8kpioWsEu7eMZPVV8Wg72w/toFwQDU1h8h5+RsU/ybTdyPbadrEcl9fBllwFjkA94X
+	UXUanKlij9Z5jScAVma0nAZSSCDybdkj7UBifs4O4/sZ0aAPmMJZf/FyvhRJ8Nu/DRJGUrtO+vK
+	AraBbP4hh9eIXsHBsX0=
+X-Received: by 2002:a05:6000:4284:b0:3a2:244:67a4 with SMTP id ffacd0b85a97d-3a35ffd2acbmr13405823f8f.43.1747748041813;
+        Tue, 20 May 2025 06:34:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHVf3XBSnIKCynv8heDnjUZQ/zUTTrHNAVITFYhp+CZTZ0R5JgwQKvUtIy1raSS5ZBNR1LIiw==
+X-Received: by 2002:a05:6000:4284:b0:3a2:244:67a4 with SMTP id ffacd0b85a97d-3a35ffd2acbmr13405778f8f.43.1747748041198;
+        Tue, 20 May 2025 06:34:01 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:244f:5710::f39? ([2a0d:3344:244f:5710::f39])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a361a81fd8sm15228410f8f.81.2025.05.20.06.33.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 May 2025 06:34:00 -0700 (PDT)
+Message-ID: <8eae6bfd-c641-4fd4-9642-7fc038a974a2@redhat.com>
+Date: Tue, 20 May 2025 15:33:58 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 net-next 3/5] sched: Add enqueue/dequeue of dualpi2
+ qdisc
+To: chia-yu.chang@nokia-bell-labs.com, horms@kernel.org,
+ donald.hunter@gmail.com, xandfury@gmail.com, netdev@vger.kernel.org,
+ dave.taht@gmail.com, jhs@mojatatu.com, kuba@kernel.org,
+ stephen@networkplumber.org, xiyou.wangcong@gmail.com, jiri@resnulli.us,
+ davem@davemloft.net, edumazet@google.com, andrew+netdev@lunn.ch,
+ ast@fiberby.net, liuhangbin@gmail.com, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org, ij@kernel.org, ncardwell@google.com,
+ koen.de_schepper@nokia-bell-labs.com, g.white@cablelabs.com,
+ ingemar.s.johansson@ericsson.com, mirja.kuehlewind@ericsson.com,
+ cheshire@apple.com, rs.ietf@gmx.at, Jason_Livingood@comcast.com,
+ vidhi_goel@apple.com
+Cc: Olga Albisser <olga@albisser.org>,
+ Olivier Tilmans <olivier.tilmans@nokia.com>,
+ Henrik Steen <henrist@henrist.net>, Bob Briscoe <research@bobbriscoe.net>
+References: <20250516000201.18008-1-chia-yu.chang@nokia-bell-labs.com>
+ <20250516000201.18008-4-chia-yu.chang@nokia-bell-labs.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250516000201.18008-4-chia-yu.chang@nokia-bell-labs.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-
-	Hello,
-
-On Tue, 20 May 2025, Duan Jiong wrote:
-
-> 1.  setup environment
+On 5/16/25 2:01 AM, chia-yu.chang@nokia-bell-labs.com wrote:
+> From: Koen De Schepper <koen.de_schepper@nokia-bell-labs.com>
 > 
-> [root@centos9s vagrant]# cat setup.sh
-> #!/bin/bash
+> DualPI2 provides L4S-type low latency & loss to traffic that uses a
+> scalable congestion controller (e.g. TCP-Prague, DCTCP) without
+> degrading the performance of 'classic' traffic (e.g. Reno,
+> Cubic etc.). It is to be the reference implementation of IETF RFC9332
+> DualQ Coupled AQM (https://datatracker.ietf.org/doc/html/rfc9332).
 > 
-> ip netns add server
-> ip link add svrh type veth peer name svr
-> ip link set svr netns server
-> ip link set svrh up
-> ip link set dev svrh address ee:ee:ee:ee:ee:ee
-> ip netns exec server ip link set svr up
-> ip netns exec server ip addr add 192.168.99.4/32 dev svr
-> ip netns exec server ip route add 169.254.1.1 dev svr scope link
-> ip netns exec server ip route add default via 169.254.1.1 dev svr
-> ip netns exec server ip neigh add 169.254.1.1 lladdr ee:ee:ee:ee:ee:ee
-> dev svr nud permanent
-> ip route add 192.168.99.4/32 dev svrh
+> Note that creating two independent queues cannot meet the goal of
+> DualPI2 mentioned in RFC9332: "...to preserve fairness between
+> ECN-capable and non-ECN-capable traffic." Further, it could even
+> lead to starvation of Classic traffic, which is also inconsistent
+> with the requirements in RFC9332: "...although priority MUST be
+> bounded in order not to starve Classic traffic." DualPI2 is
+> designed to maintain approximate per-flow fairness on L-queue and
+> C-queue by forming a single qdisc using the coupling factor and
+> scheduler between two queues.
 > 
-> ip netns add client
-> ip link add clih type veth peer name cli
-> ip link set cli netns client
-> ip link set clih up
-> ip link set dev clih address ee:ee:ee:ee:ee:ee
-> ip netns exec client ip link set cli up
-> ip netns exec client ip addr add 192.168.99.5/32 dev cli
-> ip netns exec client ip route add 169.254.1.1 dev cli scope link
-> ip netns exec client ip route add default via 169.254.1.1 dev cli
-> ip netns exec client ip neigh add 169.254.1.1 lladdr ee:ee:ee:ee:ee:ee
-> dev cli nud permanent
-> ip route add 192.168.99.5/32 dev clih
+> The qdisc provides two queues called low latency and classic. It
+> classifies packets based on the ECN field in the IP headers. By
+> default it directs non-ECN and ECT(0) into the classic queue and
+> ECT(1) and CE into the low latency queue, as per the IETF spec.
 > 
-> ip addr add 192.168.99.6/32 dev lo
-> ipvsadm -A -t 192.168.99.6:8080 -s rr
-> ipvsadm -a -t 192.168.99.6:8080 -r 192.168.99.4:8080 -m
+> Each queue runs its own AQM:
+> * The classic AQM is called PI2, which is similar to the PIE AQM but
+>   more responsive and simpler. Classic traffic requires a decent
+>   target queue (default 15ms for Internet deployment) to fully
+>   utilize the link and to avoid high drop rates.
+> * The low latency AQM is, by default, a very shallow ECN marking
+>   threshold (1ms) similar to that used for DCTCP.
 > 
-> echo 1 > /proc/sys/net/ipv4/ip_forward
-> echo 1 >  /proc/sys/net/ipv4/vs/conntrack
-> iptables -t nat -A POSTROUTING -p TCP -j MASQUERADE
+> The DualQ isolates the low queuing delay of the Low Latency queue
+> from the larger delay of the 'Classic' queue. However, from a
+> bandwidth perspective, flows in either queue will share out the link
+> capacity as if there was just a single queue. This bandwidth pooling
+> effect is achieved by coupling together the drop and ECN-marking
+> probabilities of the two AQMs.
 > 
-> 2. start server
-> ip netns exec server python -m http.server 8080
+> The PI2 AQM has two main parameters in addition to its target delay.
+> The integral gain factor alpha is used to slowly correct any persistent
+> standing queue error from the target delay, while the proportional gain
+> factor beta is used to quickly compensate for queue changes (growth or
+> shrinkage). Either alpha and beta are given as a parameter, or they can
+> be calculated by tc from alternative typical and maximum RTT parameters.
 > 
-> 3. curl vip
-> ip netns exec client curl --local-port 15280 http://192.168.99.6:8080
+> Internally, the output of a linear Proportional Integral (PI)
+> controller is used for both queues. This output is squared to
+> calculate the drop or ECN-marking probability of the classic queue.
+> This counterbalances the square-root rate equation of Reno/Cubic,
+> which is the trick that balances flow rates across the queues. For
+> the ECN-marking probability of the low latency queue, the output of
+> the base AQM is multiplied by a coupling factor. This determines the
+> balance between the flow rates in each queue. The default setting
+> makes the flow rates roughly equal, which should be generally
+> applicable.
 > 
-> 4. curl rs
-> ip netns exec client curl --local-port 15280 http://192.168.99.4:8080
+> If DUALPI2 AQM has detected overload (due to excessive non-responsive
+> traffic in either queue), it will switch to signaling congestion
+> solely using drop, irrespective of the ECN field. Alternatively, it
+> can be configured to limit the drop probability and let the queue
+> grow and eventually overflow (like tail-drop).
 > 
-> Here are the ct rules for executing curl and the tcpdump capture.
+> GSO splitting in DUALPI2 is configurable from userspace while the
+> default behavior is to split gso. When running DUALPI2 at unshaped
+> 10gigE with 4 download streams test, splitting gso apart results in
+> halving the latency with no loss in throughput:
 > 
-> [root@centos9s vagrant]# tcpdump -s0 -nn -i clih
-> dropped privs to tcpdump
-> tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
-> listening on clih, link-type EN10MB (Ethernet), snapshot length 262144 bytes
-> 01:50:14.328558 IP6 fe80::fc0e:fff:fef8:7c05 > ff02::2: ICMP6, router
-> solicitation, length 16
+> Summary of tcp_4down run 'no_split_gso':
+>                          avg         median      # data pts
+>  Ping (ms) ICMP   :       0.53      0.30 ms         350
+>  TCP download avg :    2326.86       N/A Mbits/s    350
+>  TCP download sum :    9307.42       N/A Mbits/s    350
+>  TCP download::1  :    2672.99   2568.73 Mbits/s    350
+>  TCP download::2  :    2586.96   2570.51 Mbits/s    350
+>  TCP download::3  :    1786.26   1798.82 Mbits/s    350
+>  TCP download::4  :    2261.21   2309.49 Mbits/s    350
+> 
+> Summart of tcp_4down run 'split_gso':
+>                          avg          median      # data pts
+>  Ping (ms) ICMP   :       0.22      0.23 ms         350
+>  TCP download avg :    2335.02       N/A Mbits/s    350
+>  TCP download sum :    9340.09       N/A Mbits/s    350
+>  TCP download::1  :    2335.30   2334.22 Mbits/s    350
+>  TCP download::2  :    2334.72   2334.20 Mbits/s    350
+>  TCP download::3  :    2335.28   2334.58 Mbits/s    350
+>  TCP download::4  :    2334.79   2334.39 Mbits/s    350
+> 
+> A similar result is observed when running DUALPI2 at unshaped 1gigE
+> with 1 download stream test:
+> 
+> Summary of tcp_1down run 'no_split_gso':
+>                          avg         median      # data pts
+>  Ping (ms) ICMP :         1.13      1.25 ms         350
+>  TCP download   :       941.41    941.46 Mbits/s    350
+> 
+> Summart of tcp_1down run 'split_gso':
+>                          avg         median      # data pts
+>  Ping (ms) ICMP :         0.51      0.55 ms         350
+>  TCP download   :       941.41    941.45 Mbits/s    350
+> 
+> Additional details can be found in the draft:
+>   https://datatracker.ietf.org/doc/html/rfc9332
+> 
+> Signed-off-by: Koen De Schepper <koen.de_schepper@nokia-bell-labs.com>
+> Co-developed-by: Olga Albisser <olga@albisser.org>
+> Signed-off-by: Olga Albisser <olga@albisser.org>
+> Co-developed-by: Olivier Tilmans <olivier.tilmans@nokia.com>
+> Signed-off-by: Olivier Tilmans <olivier.tilmans@nokia.com>
+> Co-developed-by: Henrik Steen <henrist@henrist.net>
+> Signed-off-by: Henrik Steen <henrist@henrist.net>
+> Signed-off-by: Bob Briscoe <research@bobbriscoe.net>
+> Signed-off-by: Ilpo Järvinen <ij@kernel.org>
+> Co-developed-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+> Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+> Acked-by: Dave Taht <dave.taht@gmail.com>
+> ---
+>  include/net/dropreason-core.h |   6 +
+>  net/sched/Kconfig             |  12 +
+>  net/sched/Makefile            |   1 +
+>  net/sched/sch_dualpi2.c       | 449 ++++++++++++++++++++++++++++++++++
+>  4 files changed, 468 insertions(+)
+> 
+> diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
+> index bea77934a235..faae9f416e54 100644
+> --- a/include/net/dropreason-core.h
+> +++ b/include/net/dropreason-core.h
+> @@ -120,6 +120,7 @@
+>  	FN(ARP_PVLAN_DISABLE)		\
+>  	FN(MAC_IEEE_MAC_CONTROL)	\
+>  	FN(BRIDGE_INGRESS_STP_STATE)	\
+> +	FN(DUALPI2_STEP_DROP)		\
+>  	FNe(MAX)
+>  
+>  /**
+> @@ -570,6 +571,11 @@ enum skb_drop_reason {
+>  	 * ingress bridge port does not allow frames to be forwarded.
+>  	 */
+>  	SKB_DROP_REASON_BRIDGE_INGRESS_STP_STATE,
+> +	/**
+> +	 * @SKB_DROP_REASON_DUALPI2_STEP_DROP: dropped by the step drop
+> +	 * threshold of DualPI2 qdisc.
+> +	 */
+> +	SKB_DROP_REASON_DUALPI2_STEP_DROP,
+>  	/**
+>  	 * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
+>  	 * shouldn't be used as a real 'reason' - only for tracing code gen
+> diff --git a/net/sched/Kconfig b/net/sched/Kconfig
+> index 9f0b3f943fca..dda66a3590d8 100644
+> --- a/net/sched/Kconfig
+> +++ b/net/sched/Kconfig
+> @@ -415,6 +415,18 @@ config NET_SCH_BPF
+>  
+>  	  If unsure, say N.
+>  
+> +config NET_SCH_DUALPI2
+> +	tristate "Dual Queue PI Square (DUALPI2) scheduler"
+> +	help
+> +	  Say Y here if you want to use the Dual Queue Proportional Integral
+> +	  Controller Improved with a Square scheduling algorithm.
+> +	  For more information, please see https://tools.ietf.org/html/rfc9332
+> +
+> +	  To compile this driver as a module, choose M here: the module
+> +	  will be called sch_dualpi2.
+> +
+> +	  If unsure, say N.
+> +
+>  menuconfig NET_SCH_DEFAULT
+>  	bool "Allow override default queue discipline"
+>  	help
+> diff --git a/net/sched/Makefile b/net/sched/Makefile
+> index 904d784902d1..5078ea84e6ad 100644
+> --- a/net/sched/Makefile
+> +++ b/net/sched/Makefile
+> @@ -63,6 +63,7 @@ obj-$(CONFIG_NET_SCH_CBS)	+= sch_cbs.o
+>  obj-$(CONFIG_NET_SCH_ETF)	+= sch_etf.o
+>  obj-$(CONFIG_NET_SCH_TAPRIO)	+= sch_taprio.o
+>  obj-$(CONFIG_NET_SCH_BPF)	+= bpf_qdisc.o
+> +obj-$(CONFIG_NET_SCH_DUALPI2)	+= sch_dualpi2.o
+>  
+>  obj-$(CONFIG_NET_CLS_U32)	+= cls_u32.o
+>  obj-$(CONFIG_NET_CLS_ROUTE4)	+= cls_route.o
+> diff --git a/net/sched/sch_dualpi2.c b/net/sched/sch_dualpi2.c
+> index 97986c754e47..7ecd7502332c 100644
+> --- a/net/sched/sch_dualpi2.c
+> +++ b/net/sched/sch_dualpi2.c
+> @@ -113,8 +113,44 @@ struct dualpi2_sched_data {
+>  	u32	step_marks;	/* ECN mark pkt counter due to step AQM */
+>  	u32	memory_used;	/* Memory used of both queues */
+>  	u32	max_memory_used;/* Maximum used memory */
+> +
+> +	/* Deferred drop statistics */
+> +	u32	deferred_drops_cnt;	/* Packets dropped */
+> +	u32	deferred_drops_len;	/* Bytes dropped */
+> +};
+> +
+> +struct dualpi2_skb_cb {
+> +	u64 ts;			/* Timestamp at enqueue */
+> +	u8 apply_step:1,	/* Can we apply the step threshold */
+> +	   classified:2,	/* Packet classification results */
+> +	   ect:2;		/* Packet ECT codepoint */
+> +};
+> +
+> +enum dualpi2_classification_results {
+> +	DUALPI2_C_CLASSIC	= 0,	/* C-queue */
+> +	DUALPI2_C_L4S		= 1,	/* L-queue (scale mark/classic drop) */
+> +	DUALPI2_C_LLLL		= 2,	/* L-queue (no drops/marks) */
+> +	__DUALPI2_C_MAX			/* Keep last*/
+>  };
+>  
+> +static struct dualpi2_skb_cb *dualpi2_skb_cb(struct sk_buff *skb)
+> +{
+> +	qdisc_cb_private_validate(skb, sizeof(struct dualpi2_skb_cb));
+> +	return (struct dualpi2_skb_cb *)qdisc_skb_cb(skb)->data;
+> +}
+> +
+> +static u64 dualpi2_sojourn_time(struct sk_buff *skb, u64 reference)
+> +{
+> +	return reference - dualpi2_skb_cb(skb)->ts;
+> +}
+> +
+> +static u64 head_enqueue_time(struct Qdisc *q)
+> +{
+> +	struct sk_buff *skb = qdisc_peek_head(q);
+> +
+> +	return skb ? dualpi2_skb_cb(skb)->ts : 0;
+> +}
+> +
+>  static u32 dualpi2_scale_alpha_beta(u32 param)
+>  {
+>  	u64 tmp = ((u64)param * MAX_PROB >> ALPHA_BETA_SCALING);
+> @@ -136,6 +172,25 @@ static ktime_t next_pi2_timeout(struct dualpi2_sched_data *q)
+>  	return ktime_add_ns(ktime_get_ns(), q->pi2_tupdate);
+>  }
+>  
+> +static bool skb_is_l4s(struct sk_buff *skb)
+> +{
+> +	return dualpi2_skb_cb(skb)->classified == DUALPI2_C_L4S;
+> +}
+> +
+> +static bool skb_in_l_queue(struct sk_buff *skb)
+> +{
+> +	return dualpi2_skb_cb(skb)->classified != DUALPI2_C_CLASSIC;
+> +}
+> +
+> +static bool dualpi2_mark(struct dualpi2_sched_data *q, struct sk_buff *skb)
+> +{
+> +	if (INET_ECN_set_ce(skb)) {
+> +		q->ecn_mark++;
+> +		return true;
+> +	}
+> +	return false;
+> +}
+> +
+>  static void dualpi2_reset_c_protection(struct dualpi2_sched_data *q)
+>  {
+>  	q->c_protection_credit = q->c_protection_init;
+> @@ -155,6 +210,398 @@ static void dualpi2_calculate_c_protection(struct Qdisc *sch,
+>  	dualpi2_reset_c_protection(q);
+>  }
+>  
+> +static bool dualpi2_roll(u32 prob)
+> +{
+> +	return get_random_u32() <= prob;
+> +}
+> +
+> +/* Packets in the C-queue are subject to a marking probability pC, which is the
+> + * square of the internal PI probability (i.e., have an overall lower mark/drop
+> + * probability). If the qdisc is overloaded, ignore ECT values and only drop.
+> + *
+> + * Note that this marking scheme is also applied to L4S packets during overload.
+> + * Return true if packet dropping is required in C queue
+> + */
+> +static bool dualpi2_classic_marking(struct dualpi2_sched_data *q,
+> +				    struct sk_buff *skb, u32 prob,
+> +				    bool overload)
+> +{
+> +	if (dualpi2_roll(prob) && dualpi2_roll(prob)) {
+> +		if (overload || dualpi2_skb_cb(skb)->ect == INET_ECN_NOT_ECT)
+> +			return true;
+> +		dualpi2_mark(q, skb);
+> +	}
+> +	return false;
+> +}
+> +
+> +/* Packets in the L-queue are subject to a marking probability pL given by the
+> + * internal PI probability scaled by the coupling factor.
+> + *
+> + * On overload (i.e., @local_l_prob is >= 100%):
+> + * - if the qdisc is configured to trade losses to preserve latency (i.e.,
+> + *   @q->drop_overload), apply classic drops first before marking.
+> + * - otherwise, preserve the "no loss" property of ECN at the cost of queueing
+> + *   delay, eventually resulting in taildrop behavior once sch->limit is
+> + *   reached.
+> + * Return true if packet dropping is required in L queue
+> + */
+> +static bool dualpi2_scalable_marking(struct dualpi2_sched_data *q,
+> +				     struct sk_buff *skb,
+> +				     u64 local_l_prob, u32 prob,
+> +				     bool overload)
+> +{
+> +	if (overload) {
+> +		/* Apply classic drop */
+> +		if (!q->drop_overload ||
+> +		    !(dualpi2_roll(prob) && dualpi2_roll(prob)))
+> +			goto mark;
+> +		return true;
+> +	}
+> +
+> +	/* We can safely cut the upper 32b as overload==false */
+> +	if (dualpi2_roll(local_l_prob)) {
+> +		/* Non-ECT packets could have classified as L4S by filters. */
+> +		if (dualpi2_skb_cb(skb)->ect == INET_ECN_NOT_ECT)
+> +			return true;
+> +mark:
+> +		dualpi2_mark(q, skb);
+> +	}
+> +	return false;
+> +}
+> +
+> +/* Decide whether a given packet must be dropped (or marked if ECT), according
+> + * to the PI2 probability.
+> + *
+> + * Never mark/drop if we have a standing queue of less than 2 MTUs.
+> + */
+> +static bool must_drop(struct Qdisc *sch, struct dualpi2_sched_data *q,
+> +		      struct sk_buff *skb)
+> +{
+> +	u64 local_l_prob;
+> +	bool overload;
+> +	u32 prob;
+> +
+> +	if (sch->qstats.backlog < 2 * psched_mtu(qdisc_dev(sch)))
+> +		return false;
+> +
+> +	prob = READ_ONCE(q->pi2_prob);
+> +	local_l_prob = (u64)prob * q->coupling_factor;
+> +	overload = local_l_prob > MAX_PROB;
+> +
+> +	switch (dualpi2_skb_cb(skb)->classified) {
+> +	case DUALPI2_C_CLASSIC:
+> +		return dualpi2_classic_marking(q, skb, prob, overload);
+> +	case DUALPI2_C_L4S:
+> +		return dualpi2_scalable_marking(q, skb, local_l_prob, prob,
+> +						overload);
+> +	default: /* DUALPI2_C_LLLL */
+> +		return false;
+> +	}
+> +}
+> +
+> +static void dualpi2_read_ect(struct sk_buff *skb)
+> +{
+> +	struct dualpi2_skb_cb *cb = dualpi2_skb_cb(skb);
+> +	int wlen = skb_network_offset(skb);
+> +
+> +	switch (skb_protocol(skb, true)) {
+> +	case htons(ETH_P_IP):
+> +		wlen += sizeof(struct iphdr);
+> +		if (!pskb_may_pull(skb, wlen) ||
+> +		    skb_try_make_writable(skb, wlen))
+> +			goto not_ecn;
+> +
+> +		cb->ect = ipv4_get_dsfield(ip_hdr(skb)) & INET_ECN_MASK;
+> +		break;
+> +	case htons(ETH_P_IPV6):
+> +		wlen += sizeof(struct ipv6hdr);
+> +		if (!pskb_may_pull(skb, wlen) ||
+> +		    skb_try_make_writable(skb, wlen))
+> +			goto not_ecn;
+> +
+> +		cb->ect = ipv6_get_dsfield(ipv6_hdr(skb)) & INET_ECN_MASK;
+> +		break;
+> +	default:
+> +		goto not_ecn;
+> +	}
+> +	return;
+> +
+> +not_ecn:
+> +	/* Non pullable/writable packets can only be dropped hence are
+> +	 * classified as not ECT.
+> +	 */
+> +	cb->ect = INET_ECN_NOT_ECT;
+> +}
+> +
+> +static int dualpi2_skb_classify(struct dualpi2_sched_data *q,
+> +				struct sk_buff *skb)
+> +{
+> +	struct dualpi2_skb_cb *cb = dualpi2_skb_cb(skb);
+> +	struct tcf_result res;
+> +	struct tcf_proto *fl;
+> +	int result;
+> +
+> +	dualpi2_read_ect(skb);
+> +	if (cb->ect & q->ecn_mask) {
+> +		cb->classified = DUALPI2_C_L4S;
+> +		return NET_XMIT_SUCCESS;
+> +	}
+> +
+> +	if (TC_H_MAJ(skb->priority) == q->sch->handle &&
+> +	    TC_H_MIN(skb->priority) < __DUALPI2_C_MAX) {
+> +		cb->classified = TC_H_MIN(skb->priority);
+> +		return NET_XMIT_SUCCESS;
+> +	}
+> +
+> +	fl = rcu_dereference_bh(q->tcf_filters);
+> +	if (!fl) {
+> +		cb->classified = DUALPI2_C_CLASSIC;
+> +		return NET_XMIT_SUCCESS;
+> +	}
+> +
+> +	result = tcf_classify(skb, NULL, fl, &res, false);
+> +	if (result >= 0) {
+> +#ifdef CONFIG_NET_CLS_ACT
+> +		switch (result) {
+> +		case TC_ACT_STOLEN:
+> +		case TC_ACT_QUEUED:
+> +		case TC_ACT_TRAP:
+> +			return NET_XMIT_SUCCESS | __NET_XMIT_STOLEN;
+> +		case TC_ACT_SHOT:
+> +			return NET_XMIT_SUCCESS | __NET_XMIT_BYPASS;
+> +		}
+> +#endif
+> +		cb->classified = TC_H_MIN(res.classid) < __DUALPI2_C_MAX ?
+> +			TC_H_MIN(res.classid) : DUALPI2_C_CLASSIC;
+> +	}
+> +	return NET_XMIT_SUCCESS;
+> +}
+> +
+> +static int dualpi2_enqueue_skb(struct sk_buff *skb, struct Qdisc *sch,
+> +			       struct sk_buff **to_free)
+> +{
+> +	struct dualpi2_sched_data *q = qdisc_priv(sch);
+> +	struct dualpi2_skb_cb *cb;
+> +
+> +	if (unlikely(qdisc_qlen(sch) >= sch->limit) ||
+> +	    unlikely((u64)q->memory_used + skb->truesize > q->memory_limit)) {
+> +		qdisc_qstats_overlimit(sch);
+> +		if (skb_in_l_queue(skb))
+> +			qdisc_qstats_overlimit(q->l_queue);
+> +		return qdisc_drop_reason(skb, sch, to_free,
+> +					 SKB_DROP_REASON_QDISC_OVERLIMIT);
+> +	}
+> +
+> +	if (q->drop_early && must_drop(sch, q, skb)) {
+> +		qdisc_drop_reason(skb, sch, to_free,
+> +				  SKB_DROP_REASON_QDISC_OVERLIMIT);
 
-	Client correctly connects to VIP:
+I think it's better to use a different drop reason here or it will be
+hard to distinguish between packets dropped here or above.
+Possibly SKB_DROP_REASON_QDISC_CONGESTED.
 
-> 01:50:28.430769 IP 192.168.99.5.15280 > 192.168.99.6.8080: Flags [S],
-> seq 614710449, win 64240, options [mss 1460,sackOK,TS val 2654895687
-> ecr 0,nop,wscale 7], length 0
-> 01:50:28.431026 ARP, Request who-has 192.168.99.5 tell 192.168.99.6, length 28
-> 01:50:28.431034 ARP, Reply 192.168.99.5 is-at fe:0e:0f:f8:7c:05, length 28
-> 01:50:28.431035 IP 192.168.99.6.8080 > 192.168.99.5.15280: Flags [S.],
-> seq 3593264529, ack 614710450, win 65160, options [mss 1460,sackOK,TS
-> val 4198589191 ecr 2654895687,nop,wscale 7], length 0
-> 01:50:28.431048 IP 192.168.99.5.15280 > 192.168.99.6.8080: Flags [.],
-> ack 1, win 502, options [nop,nop,TS val 2654895687 ecr 4198589191],
-> length 0
-> 01:50:28.431683 IP 192.168.99.5.15280 > 192.168.99.6.8080: Flags [P.],
-> seq 1:82, ack 1, win 502, options [nop,nop,TS val 2654895688 ecr
-> 4198589191], length 81: HTTP: GET / HTTP/1.1
-> 01:50:28.431709 IP 192.168.99.6.8080 > 192.168.99.5.15280: Flags [.],
-> ack 82, win 509, options [nop,nop,TS val 4198589192 ecr 2654895688],
-> length 0
-> 01:50:28.434072 IP 192.168.99.6.8080 > 192.168.99.5.15280: Flags [P.],
-> seq 1:157, ack 82, win 509, options [nop,nop,TS val 4198589194 ecr
-> 2654895688], length 156: HTTP: HTTP/1.0 200 OK
-> 01:50:28.434083 IP 192.168.99.5.15280 > 192.168.99.6.8080: Flags [.],
-> ack 157, win 501, options [nop,nop,TS val 2654895690 ecr 4198589194],
-> length 0
-> 01:50:28.434166 IP 192.168.99.6.8080 > 192.168.99.5.15280: Flags [P.],
-> seq 157:1195, ack 82, win 509, options [nop,nop,TS val 4198589194 ecr
-> 2654895690], length 1038: HTTP
-> 01:50:28.434171 IP 192.168.99.5.15280 > 192.168.99.6.8080: Flags [.],
-> ack 1195, win 501, options [nop,nop,TS val 2654895690 ecr 4198589194],
-> length 0
-> 01:50:28.434221 IP 192.168.99.6.8080 > 192.168.99.5.15280: Flags [F.],
-> seq 1195, ack 82, win 509, options [nop,nop,TS val 4198589194 ecr
-> 2654895690], length 0
-> 01:50:28.434669 IP 192.168.99.5.15280 > 192.168.99.6.8080: Flags [F.],
-> seq 82, ack 1196, win 501, options [nop,nop,TS val 2654895691 ecr
-> 4198589194], length 0
-> 01:50:28.434712 IP 192.168.99.6.8080 > 192.168.99.5.15280: Flags [.],
-> ack 83, win 509, options [nop,nop,TS val 4198589195 ecr 2654895691],
-> length 0
+> +		return NET_XMIT_SUCCESS | __NET_XMIT_BYPASS;
+> +	}
+> +
+> +	cb = dualpi2_skb_cb(skb);
+> +	cb->ts = ktime_get_ns();
+> +	q->memory_used += skb->truesize;
+> +	if (q->memory_used > q->max_memory_used)
+> +		q->max_memory_used = q->memory_used;
+> +
+> +	if (qdisc_qlen(sch) > q->maxq)
+> +		q->maxq = qdisc_qlen(sch);
+> +
+> +	if (skb_in_l_queue(skb)) {
+> +		/* Only apply the step if a queue is building up */
+> +		dualpi2_skb_cb(skb)->apply_step = skb_is_l4s(skb) &&
+> +			qdisc_qlen(q->l_queue) >= q->min_qlen_step;
+> +		/* Keep the overall qdisc stats consistent */
+> +		++sch->q.qlen;
+> +		qdisc_qstats_backlog_inc(sch, skb);
+> +		++q->packets_in_l;
+> +		if (!q->l_head_ts)
+> +			q->l_head_ts = cb->ts;
 
-	But the following packet is different from your
-initial posting. Why client connects directly to the real server?
-Is it allowed to have two conntracks with equal reply tuple
-192.168.99.4:8080 -> 192.168.99.6:15280 and should we support
-such kind of setups?
+This chunck is very hard to read. Please insert a black line before the
+2nd comment and consider introducing an helper to compute the
+'apply_step' value.
 
-	May be you'll need a function in ip_vs_nfct.c that ensures
-the packet is in reply direction and its original dest is the
-vaddr as you already check. You will need an alternative
-function in ip_vs.h when CONFIG_IP_VS_NFCT is not defined.
-See ip_vs_conntrack_enabled() for reference. You can not directly
-use nf_ functions in ip_vs_core.c
+> +		return qdisc_enqueue_tail(skb, q->l_queue);
+> +	}
+> +	++q->packets_in_c;
+> +	if (!q->c_head_ts)
+> +		q->c_head_ts = cb->ts;
+> +	return qdisc_enqueue_tail(skb, sch);
+> +}
+> +
+> +/* By default, dualpi2 will split GSO skbs into independent skbs and enqueue
+> + * each of those individually. This yields the following benefits, at the
+> + * expense of CPU usage:
+> + * - Finer-grained AQM actions as the sub-packets of a burst no longer share the
+> + *   same fate (e.g., the random mark/drop probability is applied individually)
+> + * - Improved precision of the starvation protection/WRR scheduler at dequeue,
+> + *   as the size of the dequeued packets will be smaller.
+> + */
+> +static int dualpi2_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+> +				 struct sk_buff **to_free)
+> +{
+> +	struct dualpi2_sched_data *q = qdisc_priv(sch);
+> +	int err;
+> +
+> +	err = dualpi2_skb_classify(q, skb);
+> +	if (err != NET_XMIT_SUCCESS) {
+> +		if (err & __NET_XMIT_BYPASS)
+> +			qdisc_qstats_drop(sch);
+> +		__qdisc_drop(skb, to_free);
+> +		return err;
+> +	}
+> +
+> +	if (q->split_gso && skb_is_gso(skb)) {
+> +		netdev_features_t features;
+> +		struct sk_buff *nskb, *next;
+> +		int cnt, byte_len, orig_len;
+> +		int err;
+> +
+> +		features = netif_skb_features(skb);
+> +		nskb = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
+> +		if (IS_ERR_OR_NULL(nskb))
+> +			return qdisc_drop(skb, sch, to_free);
+> +
+> +		cnt = 1;
+> +		byte_len = 0;
+> +		orig_len = qdisc_pkt_len(skb);
+> +		skb_list_walk_safe(nskb, nskb, next) {
+> +			skb_mark_not_on_list(nskb);
+> +			qdisc_skb_cb(nskb)->pkt_len = nskb->len;
+> +			dualpi2_skb_cb(nskb)->classified =
+> +				dualpi2_skb_cb(skb)->classified;
 
-> 01:50:33.158284 IP 192.168.99.5.15280 > 192.168.99.4.8080: Flags [S],
-> seq 886133763, win 64240, options [mss 1460,sackOK,TS val 2236082988
-> ecr 0,nop,wscale 7], length 0
-> 01:50:33.158429 IP 192.168.99.6.8080 > 192.168.99.5.15280: Flags [S.],
-> seq 2329127612, ack 886133764, win 65160, options [mss 1460,sackOK,TS
-> val 4198593919 ecr 2236082988,nop,wscale 7], length 0
-> 01:50:33.158496 IP 192.168.99.5.15280 > 192.168.99.6.8080: Flags [R],
-> seq 886133764, win 0, length 0
-> 01:50:34.168530 IP 192.168.99.5.15280 > 192.168.99.4.8080: Flags [S],
-> seq 886133763, win 64240, options [mss 1460,sackOK,TS val 2236083999
-> ecr 0,nop,wscale 7], length 0
-> 01:50:34.168722 IP 192.168.99.6.8080 > 192.168.99.5.15280: Flags [S.],
-> seq 2329127612, ack 886133764, win 65160, options [mss 1460,sackOK,TS
-> val 4198594929 ecr 2236082988,nop,wscale 7], length 0
-> 01:50:34.168754 IP 192.168.99.6.8080 > 192.168.99.5.15280: Flags [S.],
-> seq 2329127612, ack 886133764, win 65160, options [mss 1460,sackOK,TS
-> val 4198594929 ecr 2236082988,nop,wscale 7], length 0
-> 01:50:34.168751 IP 192.168.99.5.15280 > 192.168.99.6.8080: Flags [R],
-> seq 886133764, win 0, length 0
-> 01:50:34.168769 IP 192.168.99.5.15280 > 192.168.99.6.8080: Flags [R],
-> seq 886133764, win 0, length 0
-> 01:50:36.216624 IP 192.168.99.6.8080 > 192.168.99.5.15280: Flags [S.],
-> seq 2329127612, ack 886133764, win 65160, options [mss 1460,sackOK,TS
-> val 4198596977 ecr 2236082988,nop,wscale 7], length 0
-> 01:50:36.216626 IP 192.168.99.5.15280 > 192.168.99.4.8080: Flags [S],
-> seq 886133763, win 64240, options [mss 1460,sackOK,TS val 2236086047
-> ecr 0,nop,wscale 7], length 0
-> 01:50:36.216678 IP 192.168.99.5.15280 > 192.168.99.6.8080: Flags [R],
-> seq 886133764, win 0, length 0
-> 01:50:36.216690 IP 192.168.99.6.8080 > 192.168.99.5.15280: Flags [S.],
-> seq 2329127612, ack 886133764, win 65160, options [mss 1460,sackOK,TS
-> val 4198596977 ecr 2236082988,nop,wscale 7], length 0
-> 01:50:36.216693 IP 192.168.99.5.15280 > 192.168.99.6.8080: Flags [R],
-> seq 886133764, win 0, length 0
-> ^C
-> 28 packets captured
-> 28 packets received by filter
-> 0 packets dropped by kernel
-> [root@centos9s vagrant]# cat^C
-> [root@centos9s vagrant]# cat /proc/net/nf_conntrack | grep 15280
-> ipv4     2 tcp      6 7 CLOSE src=192.168.99.5 dst=192.168.99.6
-> sport=15280 dport=8080 src=192.168.99.4 dst=192.168.99.6 sport=8080
-> dport=15280 [ASSURED] mark=0 secctx=system_u:object_r:unlabeled_t:s0
-> zone=0 use=2
-> ipv4     2 tcp      6 53 SYN_RECV src=192.168.99.5 dst=192.168.99.4
-> sport=15280 dport=8080 src=192.168.99.4 dst=192.168.99.6 sport=8080
-> dport=1279 mark=0 secctx=system_u:object_r:unlabeled_t:s0 zone=0 use=2
+Possibly just:
+			*qdisc_skb_cb(nskb) = *dualpi2_skb_cb(skb);
 
-	dport=1279 ? Not 15280 ? Is it from your test?
+> +			dualpi2_skb_cb(nskb)->ect = dualpi2_skb_cb(skb)->ect;
+> +			err = dualpi2_enqueue_skb(nskb, sch, to_free);
+> +			if (err == NET_XMIT_SUCCESS) {
+> +				/* Compute the backlog adjustment that needs
+> +				 * to be propagated in the qdisc tree to reflect
+> +				 * all new skbs successfully enqueued.
+> +				 */
+> +				++cnt;
+> +				byte_len += nskb->len;
+> +			}
+> +		}
+> +		if (err == NET_XMIT_SUCCESS) {
+> +			/* The caller will add the original skb stats to its
+> +			 * backlog, compensate this.
+> +			 */
+> +			--cnt;
+> +			byte_len -= orig_len;
+> +		}
+> +		qdisc_tree_reduce_backlog(sch, -cnt, -byte_len);
+> +		consume_skb(skb);
+> +		return err;
 
-Regards
+Using the return value from the last enqueue operation is IMHO
+inaccurate and confusing. Instead you could return NET_XMIT_SUCCESS if
+at least a skb is enqueued successfully, or possibly always
+unconditionally NET_XMIT_SUCCESS (will simplify the code a bit)
 
---
-Julian Anastasov <ja@ssi.bg>
+> +	}
+> +	return dualpi2_enqueue_skb(skb, sch, to_free);
+> +}
+> +
+> +/* Select the queue from which the next packet can be dequeued, ensuring that
+> + * neither queue can starve the other with a WRR scheduler.
+> + *
+> + * The sign of the WRR credit determines the next queue, while the size of
+> + * the dequeued packet determines the magnitude of the WRR credit change. If
+> + * either queue is empty, the WRR credit is kept unchanged.
+> + *
+> + * As the dequeued packet can be dropped later, the caller has to perform the
+> + * qdisc_bstats_update() calls.
+> + */
+> +static struct sk_buff *dequeue_packet(struct Qdisc *sch,
+> +				      struct dualpi2_sched_data *q,
+> +				      int *credit_change,
+> +				      u64 now)
+> +{
+> +	struct sk_buff *skb = NULL;
+> +	int c_len;
+> +
+> +	*credit_change = 0;
+> +	c_len = qdisc_qlen(sch) - qdisc_qlen(q->l_queue);
+> +	if (qdisc_qlen(q->l_queue) && (!c_len || q->c_protection_credit <= 0)) {
+> +		skb = __qdisc_dequeue_head(&q->l_queue->q);
+> +		WRITE_ONCE(q->l_head_ts, head_enqueue_time(q->l_queue));
+> +		if (c_len)
+> +			*credit_change = q->c_protection_wc;
+> +		qdisc_qstats_backlog_dec(q->l_queue, skb);
+
+Please add an empty line here.
+
+> +		/* Keep the global queue size consistent */
+> +		--sch->q.qlen;
+> +		q->memory_used -= skb->truesize;
+> +	} else if (c_len) {
+> +		skb = __qdisc_dequeue_head(&sch->q);
+> +		WRITE_ONCE(q->c_head_ts, head_enqueue_time(sch));
+> +		if (qdisc_qlen(q->l_queue))
+> +			*credit_change = ~((s32)q->c_protection_wl) + 1;
+> +		q->memory_used -= skb->truesize;
+> +	} else {
+> +		dualpi2_reset_c_protection(q);
+> +		return NULL;
+> +	}
+> +	*credit_change *= qdisc_pkt_len(skb);
+> +	qdisc_qstats_backlog_dec(sch, skb);
+> +	return skb;
+> +}
+> +
+> +static int do_step_aqm(struct dualpi2_sched_data *q, struct sk_buff *skb,
+> +		       u64 now)
+> +{
+> +	u64 qdelay = 0;
+> +
+> +	if (q->step_in_packets)
+> +		qdelay = qdisc_qlen(q->l_queue);
+> +	else
+> +		qdelay = dualpi2_sojourn_time(skb, now);
+> +
+> +	if (dualpi2_skb_cb(skb)->apply_step && qdelay > q->step_thresh) {
+> +		if (!dualpi2_skb_cb(skb)->ect)
+> +			/* Drop this non-ECT packet */
+> +			return 1;
+
+Please add brackets and an empty line:
+
+		if (!dualpi2_skb_cb(skb)->ect) {
+			/* Drop this non-ECT packet */
+			return 1;
+		}
+
+		if (dualpi2_mark(q, skb))
+
+
+/P
 
