@@ -1,188 +1,187 @@
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C2C1A238C;
-	Wed, 21 May 2025 14:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FC81537C6;
+	Wed, 21 May 2025 14:49:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747838882; cv=none; b=IBOdctav1fug6+uFaxltksLqUDWt2nGOd8bCHY/hub1v5F/D8et4msvPC2lZzjM0+PPX/6Fv4BuIdUXrHQ5SX7lXMb83FEatI+YI2nFPh22N88wgQMI1yZcMcjAFprLuG8Me7kvUprJm8Hmuy+MgPg3xtzKF+tEmpyce0JafXZw=
+	t=1747838966; cv=none; b=I38Whf2Vw7zHmWi1hr684V5pz58+vLHuOMl2ziWOVOvw4SGTnWPQnWF7kZ6NU4xemh/bcUTSztLjJXpQ3a/QSqJy8ds8QXZqYxhQvIA9XCvo9IuXCxSyzpgvtlMPotsHFHJmE6zocMlwm75e8gkrgYMySfmGZ3G9Gk2LrQYm+ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747838882; c=relaxed/simple;
-	bh=Rn3mYP0b/ZcUFOZcI5aIq2hbO3SAa8ACPra/X3wtOck=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u4/vBD/S8z681RnfgYIQ9EMuo35whpVuHcabi7eDqHpadWPwEWLHDkuFSeeL9TTL3lfqHBomR0nitGtzhLOalcc2A3XIUkS03QakV59NHEomQljla1dtyqQZ5odlR0W95mD5UM8hUJRPaM78OZvNVKbM5MrvWkvn891cOQ0nsw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jfaWaNcG; arc=none smtp.client-ip=209.85.217.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747838966; c=relaxed/simple;
+	bh=Ikd7c90aq2jxYEaiZ15DovdKivS9lNNSecfO21RFtbE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jk6jDFOQVGGTAz4xrVJfsnJbUJV7UU62DPHSzXcHHEnzNDVktCWXfvLL3G5rJZp7whxm+IdFKVNNeG/+gKfS0WdKeGT9bFD5zgcewrLO7OVRkCkucM/AnRtzEOZrTbEQyp+2OxxDshxZvymbexgL7N2iMYoDUPqxJMbZ6KUO8Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UJsOElDh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jfaWaNcG"
-Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-4e1432aaa68so4145834137.1;
-        Wed, 21 May 2025 07:48:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747838879; x=1748443679; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ek0ujVFI+XdYX8gezk+looLrZ/N+e9mNbznFBtm+po0=;
-        b=jfaWaNcGPkDdKW1XZQ5ACWCHbbk5AfnpqM/L2sOnR3bl1IiHJqnfMxM58xXMZ5AB6q
-         YgR0lM606DVlDelCPDd+idhTPkCYKi5p85W+UblIILczog4m0ouY3Y5sl0ALxUVTccoi
-         tw3tm6uGP8L7WXSl2AGN7jNpSLSxvwZtp+zXG9y+kvpvGQGed18yN2s08btTwFA/I50u
-         HrguLYWS945hByckBy7DvXYwZ/QNHPsw5hqmp1dqOCO58Lno1NVMMMLaDA36m2fxmkC1
-         zeRkVS10WGk0L/3OLYHsQLogomerqekllO/PVIRoyYUJVT06OS9Jzp3eq7GhDf8hasYv
-         ttqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747838879; x=1748443679;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ek0ujVFI+XdYX8gezk+looLrZ/N+e9mNbznFBtm+po0=;
-        b=nbdYfRUJU/f3do0ZmtbXvthpMdIkBoMniahfTYDwn/XIfzZOgmAeetkeU9tU6YDc+E
-         sxgsDaLcH5XYymj9s1WqvtdwmUzR5SNpvQyPYSXESWZoYzATswREpBMNSUfTYHQG05+U
-         WcFAN+bx0Q46UCF0DAA6M2VQGJJYAnpG3q/z9VopLDBemQvbA308rdP5vGOoIltBq7cn
-         1PgJr56W+TBQA4Myfm4NL1TZvDpjmym5jL0EjxFJ4e3pGEgUX5Rn6M/85PhxyliCHdlS
-         nuGGbWFr4FNPNLlu+BfWqK3tTROiEzo5g+imxj0ZJuQ+fKF+RRlkwQtgEjx0roy1ngpS
-         zIJA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+i2bO7lKy/LBIMg7AJ/z++gDHoXAKfqU/NTFSvNA84ggnP9GzyMjSjUOCPtTpMTXZCyFSeV0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvFFZGUoVtz2aqQ+kPvHYmDUSbKI9KCWdpEExrJKKotAcafHSr
-	0CGfQlM0gQANQUZIcw4bipHTEjnQQuGxXgwUOTHQ3WZmMi6XAEqxJfpG
-X-Gm-Gg: ASbGncu9iZrdFyrEVQaPZl9BlLwd2+7BIAbtDDmw8FVCcvnmontkJSiL+rmHjlEDeIY
-	p0edUJicIJsOA+m1y8Pw3JNSPFeFbcaIVPUt74Qs59mJjCjCHeRGYIkp76fPcEG4KlQyFgnBtu+
-	pwfg4vSrn0vmZ8zLI6ZV90gdy9YBbppyB8OGnHYAJaGaK3gY1lWNTrm4mdPMnZA+eB3VGldPrx+
-	5FgV9h2FmOtMF91y4xLjRMYcSjndhpjVHb+fbPuhWqS+1CEIHrYGLwKmUl91f2lcakR3iWIu/4L
-	jTEfgOLvkxgxHCaUBRgeSuiK8zsxOynZIjFTJu3ZIpuJED/MubA6e6oRqnTjKj4+XtnCTJ3AuDR
-	KGDyMZ/BlHl5g6EK+vI/wqHPO1ju+Ol8=
-X-Google-Smtp-Source: AGHT+IGkihi6pehUX1WcycRNIjiLjc5FvZZCJGNnbkwxFqKaEZNSnJcATPon5olaX/n261PVA82Yyw==
-X-Received: by 2002:a05:6102:3f9f:b0:4bb:e80b:473d with SMTP id ada2fe7eead31-4dfa6b6c352mr18831586137.6.1747838879404;
-        Wed, 21 May 2025 07:47:59 -0700 (PDT)
-Received: from lvondent-mobl5.. (syn-050-089-067-214.res.spectrum.com. [50.89.67.214])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-87bec155e2csm9060834241.16.2025.05.21.07.47.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 May 2025 07:47:58 -0700 (PDT)
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Cc: linux-bluetooth@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UJsOElDh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94617C4CEE4;
+	Wed, 21 May 2025 14:49:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747838966;
+	bh=Ikd7c90aq2jxYEaiZ15DovdKivS9lNNSecfO21RFtbE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UJsOElDhFoFiAmm7sWz27VVd8viwyB1H/fnSSPvRNTxZC3r4jUFrQevIZdjbJfOkI
+	 JIfvs95PyVyI6/QeHmji4PmXRktqlMKVRjh0AcEQwxe9nSq+V3m9eqn6s65Qmvq1vj
+	 3s14fISOWdsFC1m2gDbHGdMKrbkuV0Sx73atF1aaMr8rAeL3MihoRF/ex9AsQlhl7/
+	 s+ovqQ9fO8WKuDVrxL0Ep3EniBeKLUv3VY/aNpxsJzbCXnvIBcNndgkvqxTwAJO31T
+	 YJoivbrwzIAlrhX7jaolbKCiOF5Dm92uHxcrx250EvwDdVs52E2XnufoEqocvdBoH0
+	 ahe/C0YVrEXZQ==
+From: Lee Jones <lee@kernel.org>
+To: lee@kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>,
+	Michal Luczaj <mhal@rbox.co>,
+	Rao Shoaib <Rao.Shoaib@oracle.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: bluetooth-next 2025-05-21
-Date: Wed, 21 May 2025 10:47:55 -0400
-Message-ID: <20250521144756.3033239-1-luiz.dentz@gmail.com>
-X-Mailer: git-send-email 2.49.0
+Cc: stable@vger.kernel.org,
+	Lee Jones <joneslee@google.com>
+Subject: [PATCH v6.6 00/26] af_unix: Align with upstream to avoid a potential UAF
+Date: Wed, 21 May 2025 14:45:08 +0000
+Message-ID: <20250521144803.2050504-1-lee@kernel.org>
+X-Mailer: git-send-email 2.49.0.1112.g889b7c5bd8-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The following changes since commit e6b3527c3b0a676c710e91798c2709cc0538d312:
+From: Lee Jones <joneslee@google.com>
 
-  Merge branch 'net-airoha-add-per-flow-stats-support-to-hw-flowtable-offloading' (2025-05-20 20:00:55 -0700)
+This is the second attempt at achieving the same goal.  This time, the
+submission avoids forking the current code base, ensuring it remains
+easier to maintain over time.
 
-are available in the Git repository at:
+The set has been tested using the SCM_RIGHTS test suite [1] using QEMU
+and has been seen to successfully mitigate a UAF on on a top tier
+handset.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git tags/for-net-next-2025-05-21
+RESULTS:
 
-for you to fetch changes up to 623029dcc53837d409deb70b65eb7c7b83ab9b9a:
+  TAP version 13
+  1..20
+  # Starting 20 tests from 5 test cases.
+  #  RUN           scm_rights.dgram.self_ref ...
+  #            OK  scm_rights.dgram.self_ref
+  ok 1 scm_rights.dgram.self_ref
+  #  RUN           scm_rights.dgram.triangle ...
+  #            OK  scm_rights.dgram.triangle
+  ok 2 scm_rights.dgram.triangle
+  #  RUN           scm_rights.dgram.cross_edge ...
+  #            OK  scm_rights.dgram.cross_edge
+  ok 3 scm_rights.dgram.cross_edge
+  #  RUN           scm_rights.dgram.backtrack_from_scc ...
+  #            OK  scm_rights.dgram.backtrack_from_scc
+  ok 4 scm_rights.dgram.backtrack_from_scc
+  #  RUN           scm_rights.stream.self_ref ...
+  #            OK  scm_rights.stream.self_ref
+  ok 5 scm_rights.stream.self_ref
+  #  RUN           scm_rights.stream.triangle ...
+  #            OK  scm_rights.stream.triangle
+  ok 6 scm_rights.stream.triangle
+  #  RUN           scm_rights.stream.cross_edge ...
+  #            OK  scm_rights.stream.cross_edge
+  ok 7 scm_rights.stream.cross_edge
+  #  RUN           scm_rights.stream.backtrack_from_scc ...
+  #            OK  scm_rights.stream.backtrack_from_scc
+  ok 8 scm_rights.stream.backtrack_from_scc
+  #  RUN           scm_rights.stream_oob.self_ref ...
+  #            OK  scm_rights.stream_oob.self_ref
+  ok 9 scm_rights.stream_oob.self_ref
+  #  RUN           scm_rights.stream_oob.triangle ...
+  #            OK  scm_rights.stream_oob.triangle
+  ok 10 scm_rights.stream_oob.triangle
+  #  RUN           scm_rights.stream_oob.cross_edge ...
+  #            OK  scm_rights.stream_oob.cross_edge
+  ok 11 scm_rights.stream_oob.cross_edge
+  #  RUN           scm_rights.stream_oob.backtrack_from_scc ...
+  #            OK  scm_rights.stream_oob.backtrack_from_scc
+  ok 12 scm_rights.stream_oob.backtrack_from_scc
+  #  RUN           scm_rights.stream_listener.self_ref ...
+  #            OK  scm_rights.stream_listener.self_ref
+  ok 13 scm_rights.stream_listener.self_ref
+  #  RUN           scm_rights.stream_listener.triangle ...
+  #            OK  scm_rights.stream_listener.triangle
+  ok 14 scm_rights.stream_listener.triangle
+  #  RUN           scm_rights.stream_listener.cross_edge ...
+  #            OK  scm_rights.stream_listener.cross_edge
+  ok 15 scm_rights.stream_listener.cross_edge
+  #  RUN           scm_rights.stream_listener.backtrack_from_scc ...
+  #            OK  scm_rights.stream_listener.backtrack_from_scc
+  ok 16 scm_rights.stream_listener.backtrack_from_scc
+  #  RUN           scm_rights.stream_listener_oob.self_ref ...
+  #            OK  scm_rights.stream_listener_oob.self_ref
+  ok 17 scm_rights.stream_listener_oob.self_ref
+  #  RUN           scm_rights.stream_listener_oob.triangle ...
+  #            OK  scm_rights.stream_listener_oob.triangle
+  ok 18 scm_rights.stream_listener_oob.triangle
+  #  RUN           scm_rights.stream_listener_oob.cross_edge ...
+  #            OK  scm_rights.stream_listener_oob.cross_edge
+  ok 19 scm_rights.stream_listener_oob.cross_edge
+  #  RUN           scm_rights.stream_listener_oob.backtrack_from_scc ...
+  #            OK  scm_rights.stream_listener_oob.backtrack_from_scc
+  ok 20 scm_rights.stream_listener_oob.backtrack_from_scc
+  # PASSED: 20 / 20 tests passed.
+  # Totals: pass:20 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-  Bluetooth: MGMT: iterate over mesh commands in mgmt_mesh_foreach() (2025-05-21 10:31:01 -0400)
+[0] https://lore.kernel.org/all/20250304030149.82265-1-kuniyu@amazon.com/
+[1] https://lore.kernel.org/all/20240325202425.60930-16-kuniyu@amazon.com/
 
-----------------------------------------------------------------
-bluetooth-next pull request for net-next:
+Kuniyuki Iwashima (24):
+  af_unix: Return struct unix_sock from unix_get_socket().
+  af_unix: Run GC on only one CPU.
+  af_unix: Try to run GC async.
+  af_unix: Replace BUG_ON() with WARN_ON_ONCE().
+  af_unix: Remove io_uring code for GC.
+  af_unix: Remove CONFIG_UNIX_SCM.
+  af_unix: Allocate struct unix_vertex for each inflight AF_UNIX fd.
+  af_unix: Allocate struct unix_edge for each inflight AF_UNIX fd.
+  af_unix: Link struct unix_edge when queuing skb.
+  af_unix: Bulk update unix_tot_inflight/unix_inflight when queuing skb.
+  af_unix: Iterate all vertices by DFS.
+  af_unix: Detect Strongly Connected Components.
+  af_unix: Save listener for embryo socket.
+  af_unix: Fix up unix_edge.successor for embryo socket.
+  af_unix: Save O(n) setup of Tarjan's algo.
+  af_unix: Skip GC if no cycle exists.
+  af_unix: Avoid Tarjan's algorithm if unnecessary.
+  af_unix: Assign a unique index to SCC.
+  af_unix: Detect dead SCC.
+  af_unix: Replace garbage collection algorithm.
+  af_unix: Remove lock dance in unix_peek_fds().
+  af_unix: Try not to hold unix_gc_lock during accept().
+  af_unix: Don't access successor in unix_del_edges() during GC.
+  af_unix: Add dead flag to struct scm_fp_list.
 
-core:
+Michal Luczaj (1):
+  af_unix: Fix garbage collection of embryos carrying OOB with
+    SCM_RIGHTS
 
- - Add support for SIOCETHTOOL ETHTOOL_GET_TS_INFO
- - Separate CIS_LINK and BIS_LINK link types
- - Introduce HCI Driver protocol
+Shigeru Yoshida (1):
+  af_unix: Fix uninit-value in __unix_walk_scc()
 
-drivers:
+ include/net/af_unix.h |  49 ++-
+ include/net/scm.h     |  11 +
+ net/Makefile          |   2 +-
+ net/core/scm.c        |  17 ++
+ net/unix/Kconfig      |   5 -
+ net/unix/Makefile     |   2 -
+ net/unix/af_unix.c    | 120 +++++---
+ net/unix/garbage.c    | 691 +++++++++++++++++++++++++++++-------------
+ net/unix/scm.c        | 161 ----------
+ net/unix/scm.h        |  10 -
+ 10 files changed, 617 insertions(+), 451 deletions(-)
+ delete mode 100644 net/unix/scm.c
+ delete mode 100644 net/unix/scm.h
 
- - btintel_pcie: Do not generate coredump for diagnostic events
- - btusb: Add HCI Drv commands for configuring altsetting
- - btusb: Add RTL8851BE device 0x0bda:0xb850
- - btusb: Add new VID/PID 13d3/3584 for MT7922
- - btusb: Add new VID/PID 13d3/3630 and 13d3/3613 for MT7925
- - btnxpuart: Implement host-wakeup feature
 
-----------------------------------------------------------------
-Chandrashekar Devegowda (1):
-      Bluetooth: btintel_pcie: Dump debug registers on error
+-- 
+2.49.0.1112.g889b7c5bd8-goog
 
-Chen Ni (1):
-      Bluetooth: hci_uart: Remove unnecessary NULL check before release_firmware()
-
-Dmitry Antipov (1):
-      Bluetooth: MGMT: iterate over mesh commands in mgmt_mesh_foreach()
-
-En-Wei Wu (1):
-      Bluetooth: btusb: use skb_pull to avoid unsafe access in QCA dump handling
-
-Hsin-chen Chuang (4):
-      Bluetooth: Introduce HCI Driver protocol
-      Bluetooth: btusb: Add HCI Drv commands for configuring altsetting
-      Revert "Bluetooth: btusb: Configure altsetting for HCI_USER_CHANNEL"
-      Revert "Bluetooth: btusb: add sysfs attribute to control USB alt setting"
-
-Jiande Lu (1):
-      Bluetooth: btusb: Add new VID/PID 13d3/3630 for MT7925
-
-Kiran K (1):
-      Bluetooth: btintel_pcie: Do not generate coredump for diagnostic events
-
-Krzysztof Kozlowski (2):
-      Bluetooth: btmrvl_sdio: Fix wakeup source leaks on device unbind
-      Bluetooth: btmtksdio: Fix wakeup source leaks on device unbind
-
-Liwei Sun (1):
-      Bluetooth: btusb: Add new VID/PID 13d3/3584 for MT7922
-
-Luiz Augusto von Dentz (3):
-      Bluetooth: ISO: Fix not using SID from adv report
-      Bluetooth: ISO: Fix getpeername not returning sockaddr_iso_bc fields
-      Bluetooth: L2CAP: Fix not checking l2cap_chan security level
-
-Neeraj Sanjay Kale (2):
-      dt-bindings: net: bluetooth: nxp: Add support for host-wakeup
-      Bluetooth: btnxpuart: Implement host-wakeup feature
-
-Pauli Virtanen (2):
-      Bluetooth: add support for SIOCETHTOOL ETHTOOL_GET_TS_INFO
-      Bluetooth: separate CIS_LINK and BIS_LINK link types
-
-WangYuli (1):
-      Bluetooth: btusb: Add RTL8851BE device 0x0bda:0xb850
-
-Youn MÉLOIS (1):
-      Bluetooth: btusb: Add new VID/PID 13d3/3613 for MT7925
-
- .../bindings/net/bluetooth/nxp,88w8987-bt.yaml     |  17 ++
- drivers/bluetooth/Kconfig                          |  12 -
- drivers/bluetooth/btintel.c                        |   3 +-
- drivers/bluetooth/btintel.h                        |   6 -
- drivers/bluetooth/btintel_pcie.c                   | 141 +++++++++-
- drivers/bluetooth/btintel_pcie.h                   |  19 ++
- drivers/bluetooth/btmrvl_sdio.c                    |   4 +-
- drivers/bluetooth/btmtksdio.c                      |   2 +-
- drivers/bluetooth/btnxpuart.c                      |  58 +++-
- drivers/bluetooth/btusb.c                          | 302 ++++++++++++---------
- drivers/bluetooth/hci_aml.c                        |   3 +-
- include/net/bluetooth/bluetooth.h                  |   4 +
- include/net/bluetooth/hci.h                        |   4 +-
- include/net/bluetooth/hci_core.h                   |  51 ++--
- include/net/bluetooth/hci_drv.h                    |  76 ++++++
- include/net/bluetooth/hci_mon.h                    |   2 +
- net/bluetooth/Makefile                             |   3 +-
- net/bluetooth/af_bluetooth.c                       |  87 ++++++
- net/bluetooth/hci_conn.c                           |  79 ++++--
- net/bluetooth/hci_core.c                           |  45 ++-
- net/bluetooth/hci_drv.c                            | 105 +++++++
- net/bluetooth/hci_event.c                          |  40 ++-
- net/bluetooth/hci_sock.c                           |  12 +-
- net/bluetooth/hci_sync.c                           |  63 ++++-
- net/bluetooth/iso.c                                |  30 +-
- net/bluetooth/l2cap_core.c                         |  15 +-
- net/bluetooth/mgmt.c                               |   3 +-
- net/bluetooth/mgmt_util.c                          |   2 +-
- 28 files changed, 918 insertions(+), 270 deletions(-)
- create mode 100644 include/net/bluetooth/hci_drv.h
- create mode 100644 net/bluetooth/hci_drv.c
