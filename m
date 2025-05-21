@@ -1,209 +1,183 @@
-Received: from mx.wizmail.org (smtp.wizmail.org [85.158.153.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f67.google.com (mail-ej1-f67.google.com [209.85.218.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A016265633;
-	Wed, 21 May 2025 11:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.158.153.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7E025DD0B;
+	Wed, 21 May 2025 11:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747828205; cv=none; b=VOo8S61xEwltMA3OSipeGSB0AS8w/dIThY9OkHdHrZKFq5+hYWzfkSrE0fZ6HSsFpec7zAQ4XjAyIjf/k+YNz8GhdqRFdE29xkQ8AJAQCrK7V/29kajQc/NGfF7k8V1Git3ghYgnomr4XcuhINlT4FENZeJ+bMSF2ZlAPimbeTA=
+	t=1747828217; cv=none; b=iXHQjnDcocsY3/ULqJPvXMBRJGB/N8LftGncseKRmQ1dKngySALEQRaIb5RjoVdGuGbcX2nt7FByA2s9jm+14rWyJaNCeoTLmM/cmh+wKYNLbRvKta0dwAoxzxPl5LK/tn+yGqd8FEFEF1kQ9WiIVB02QD5F3qgkQ0igpw8tLyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747828205; c=relaxed/simple;
-	bh=8R+W4oVEJoSwN26pxY0PmMLqYAqygI+BWRqAhVn6+5U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k46kJOOpvQmODn3BAy6ZaroK0Z9q2bBCh87W0PX5bml0aMdsbl1A+TDCKDa0LqwOkrEU/yoajX08UWZnrZ0hCzOz931ZhVJrwIhyKg+PFAMVLs+VEBhwbx78QGVQrqUq5Ml0W0tamqdDjvvUKhxDG1wO7p00mWn4vFv5qkITUK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exim.org; spf=fail smtp.mailfrom=exim.org; dkim=permerror (0-bit key) header.d=wizmail.org header.i=@wizmail.org header.b=HazkByk6; dkim=pass (2048-bit key) header.d=wizmail.org header.i=@wizmail.org header.b=VG/kzCoW; arc=none smtp.client-ip=85.158.153.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exim.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=exim.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=wizmail.org header.i=@wizmail.org header.b="HazkByk6";
-	dkim=pass (2048-bit key) header.d=wizmail.org header.i=@wizmail.org header.b="VG/kzCoW"
-DKIM-Signature: v=1; a=ed25519-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=wizmail.org; s=e202001; h=Content-Transfer-Encoding:MIME-Version:References
-	:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive:
-	Autocrypt; bh=NZq41W+GrtefNdEUbFkTNDa8Ss05cbXfFVdbvBLZRlQ=; b=HazkByk6DZi4Y8Y
-	2B7Y6IEQL9lJscvep8TpTyN1xHlQFEhaGT5tMHuU7TgzRubctDFDwuQFnj/AS0THxg3gwDg==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizmail.org
-	; s=r202001; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:From:Sender:Reply-To:Subject:Date:
-	Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive:
-	Autocrypt; bh=NZq41W+GrtefNdEUbFkTNDa8Ss05cbXfFVdbvBLZRlQ=; b=VG/kzCoWZFhgEUZ
-	wbpRu9NhIb/L/VTRYHL5SYmztsJb6LbF5BpSa3y73d9SwwQLhaQ0CFigjCcVH0rxixDL4K+nL8Q4e
-	BuC3cO0QCQz8p7QcZb9lb6nCcGe1SZWh8out3YKXOqIO2sA639sPdpcBs7aPL9tir7EFmSz28jeq/
-	SjtCqTybzhXEAYnQG0bpIWM0oPNqipxjf5s8p5RRQYpyd0y0GB9UvLmwda+z3+Yb7G5/0F9/qdWPU
-	abeu2NuvXL37dCU9PJah/Mhlystd+mFDcuYrSMr9laWahfmxCK/driD7Grij5vRiBeHTSOLiUF/dK
-	SonKI3XGdc118gy9ikw==;
-Authentication-Results: wizmail.org;
-	iprev=pass (hellmouth.gulag.org.uk) smtp.remote-ip=85.158.153.62;
-	auth=pass (PLAIN) smtp.auth=jgh@wizmail.org
-Received: from hellmouth.gulag.org.uk ([85.158.153.62] helo=macbook.dom.ain)
-	by www.wizmail.org (Exim 4.98.115)
-	(TLS1.3) tls TLS_AES_256_GCM_SHA384
-	with esmtpsa
-	id 1uHht9-00000001yTm-1FD0
-	(return-path <jgh@exim.org>);
-	Wed, 21 May 2025 11:45:35 +0000
-From: Jeremy Harris <jgh@exim.org>
-To: netdev@vger.kernel.org
-Cc: linux-api@vger.kernel.org,
-	edumazet@google.com,
-	ncardwell@google.com,
-	Jeremy Harris <jgh@exim.org>
-Subject: [PATCH net-next v2 2/6] tcp: copy write-data from listen socket to accept child socket
-Date: Wed, 21 May 2025 12:45:01 +0100
-Message-ID: <d1f6e022bd0e22a7904d4a345296dae2d9b7dd62.1747826775.git.jgh@exim.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <cover.1747826775.git.jgh@exim.org>
-References: <cover.1747826775.git.jgh@exim.org>
+	s=arc-20240116; t=1747828217; c=relaxed/simple;
+	bh=KQ6KNVj2k0zk0HRFNi1X7cccXc4810Guc+cYqMDOVaM=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Pj3/95nHAnCss3+kbX540WlZDxPYlB6DVq5r8Qi3hlpJ/1/Dn511+zVyLLEnIe3t4FOG/vtaouROgz+2B+RiYR3qV/ZAxqYAi0iO6CPG+CMeA6Qw3CtMH9ZVItj41dXOI6GJNX3v/X+DqvMJ/ulEdbM5Z+e/pfmXrpVmOso648M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f67.google.com with SMTP id a640c23a62f3a-ad5a11c2942so230431866b.3;
+        Wed, 21 May 2025 04:50:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747828214; x=1748433014;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:cc:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=68yZYWcO/qu80qejGYRGHVKWN9JIRBjd6V2d+NgZs/w=;
+        b=YOQw8rFfHZbcS9e9oneXxiHzbFWiWWzdySRIm+D6qGcX6lFD8tWAfw38HzW6fz8l8u
+         AS1czEzO/BnW3IwO9nz5y7iezzlqyGpqruIlnWNo3faRLkGNJ40f2WSCSMtny6TnYwxd
+         7lIUsqDFiJCGMjl7ecTtOxir4RT12IR+KPDvqsXjitcQ2wz55K9tr0u0pmUPKsF5Vqb7
+         qS3oZlZSAH5G3gi7QfwdlMjEKkh4KpmDH5wV+Ha0B/SjTZhGW4EHvrXrWw2onc7O6KDZ
+         cAxJBuvZaddn+Odf0DMgwUhCuoYbWGJRiFG4gaXxV9Rstl6De6Hr5TpuXlPG77qfKfbz
+         d0eQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVOMIqQY8rn3JSOaFSJOltYrqdUkYnFqBDdl+Ih2+rIxhcrytCxCaizbqfQ0STKmWvO80YPGN30G5De/kQ=@vger.kernel.org, AJvYcCXOZMEBcqBlYYiSkFBbzkg2E2t+Y8cy1eGMJsJ5Ug9EiJBpzs0cc1Evdyi8Uu79XNrTpnAgZZEc@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3F8YmkQ/wBN5jY4wT5p+O0G0RksJI4R1kMcaYqwQx4s6N0fkW
+	KFu6PtQ1bSN5jm6AGZ7Ej7tFZTH3wE44ZWSg4w1FKqsAdHWSXdaM1pYf
+X-Gm-Gg: ASbGncvaHUnHnb7jqtFT+k4KP4JmCW2F+Lag4P+QN/g1cmLf0cVVCFRpvwvtxKq72Rg
+	kRWOKdVCrer67XtKnqV+TNZUDqo1yAFt3nNUjVRFfxqctdKEUb2RFe+Bo77QZvORg/jW6j/FESj
+	6whhZMXT8ookOdpyxLPzgun+LwnkIjHQS4grHsJ0oir0lemV7diIAfBgW+4ex7N8G79BI6LcgjI
+	KuLmn0b2shtT97s04mYmhuyQelC9usrXOtZGW15VmCbz6PXpFuslkNFbE/1wB1Ug/Q/7SLYGbgp
+	spYzQt+ZDzDS97EaU3IkQo/6AJLYa0LwjyzI9KIsbTOomZqxWcWs+mVf+QhM8fBlJA6qPS+tB3k
+	S9x1y4UDNgko/247fZ7xKjGA/iEJ9
+X-Google-Smtp-Source: AGHT+IHBUvB0qd4Wdk0rjsDkKoU4zvzjmirXj42bjWO1X/28+O/mKC+TdX+hxPGZdlD3zurJzCgbWQ==
+X-Received: by 2002:a17:907:94ce:b0:ad4:f517:ca3 with SMTP id a640c23a62f3a-ad536bde67bmr1909702866b.20.1747828213665;
+        Wed, 21 May 2025 04:50:13 -0700 (PDT)
+Received: from [192.168.88.252] (194-212-251-179.customers.tmcz.cz. [194.212.251.179])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d443a0fsm897036966b.97.2025.05.21.04.50.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 May 2025 04:50:13 -0700 (PDT)
+Message-ID: <a492bec9-8eaf-4884-bb4b-c8487d84de73@ovn.org>
+Date: Wed, 21 May 2025 13:50:10 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: i.maximets@ovn.org, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "ovs-dev@openvswitch.org" <ovs-dev@openvswitch.org>,
+ "aconole@redhat.com" <aconole@redhat.com>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
+ <pabeni@redhat.com>, "horms@kernel.org" <horms@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "dev@openvswitch.org" <dev@openvswitch.org>
+Subject: Re: [PATCH] net: openvswitch: Fix the dead loop of MPLS parse
+To: Faicker Mo <faicker.mo@zenlayer.com>, Eelco Chaudron <echaudro@redhat.com>
+References: <FA285FD8-1F28-4682-A717-570E2B528EFB@zenlayer.com>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <FA285FD8-1F28-4682-A717-570E2B528EFB@zenlayer.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Pcms-Received-Sender: hellmouth.gulag.org.uk ([85.158.153.62] helo=macbook.dom.ain) with esmtpsa
 
-Set the request_sock flag for fastopen earlier, making it available
-to the af_ops SYN-handler function.
+On 5/21/25 6:10 AM, Faicker Mo wrote:
+> 
+> ﻿On 2025/5/20, 18:38, "Ilya Maximets" <i.maximets@ovn.org <mailto:i.maximets@ovn.org>> wrote:
+>> The idea of not failing the parsing is to allow forwarding the packet
+>> based on parsed ethernet header.  So, we shouldn't fail here.
+>> We're also keeping num_labels_mask at zero in this case, so it'll be
+>> an MPLS packet with zero labels and it should not be parsed further,
+>> but can still be forwarded.
+> 
+> num_labels_mask should keep the first max MPLS_LABEL_DEPTH labels.
 
-In that function copy data from the listen socket write queue into an
-sk_buff, allocating if needed and adding to the write queue of the
-newly-created child socket.
-Set sequence number values depending on the fastopen status.
+If the packet is not properly formatted (doesn't have BOS bit set anywhere),
+then it should be fine to treat it as packet without MPLS headers.
 
-Signed-off-by: Jeremy Harris <jgh@exim.org>
----
- net/ipv4/tcp_fastopen.c  |  3 ++-
- net/ipv4/tcp_ipv4.c      |  4 +--
- net/ipv4/tcp_minisocks.c | 58 ++++++++++++++++++++++++++++++++++++----
- 3 files changed, 57 insertions(+), 8 deletions(-)
+> This is a MPLS packet with max MPLS_LABEL_DEPTH labels to continue forwarding.
+> 
+>> But also, there is another overflow here that is actually causing an
+>> infinite loop - the label_count * MPLS_HLEN easily overflows u8, so
+>> the check_header() a few lines above doesn't work properly starting
+>> at 32 labels and doesn't break the loop. We need to switch the
+>> label_count back to size_t or other sufficiently large type to avoid
+>> this overflow and make the parsing end naturally when we hit the end
+>> of the packet.
+> 
+> No overflow with check_header()?
 
-diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
-index 9b83d639b5ac..03a86d0b87ba 100644
---- a/net/ipv4/tcp_fastopen.c
-+++ b/net/ipv4/tcp_fastopen.c
-@@ -245,6 +245,8 @@ static struct sock *tcp_fastopen_create_child(struct sock *sk,
- 	struct sock *child;
- 	bool own_req;
- 
-+	tcp_rsk(req)->tfo_listener = true;
-+
- 	child = inet_csk(sk)->icsk_af_ops->syn_recv_sock(sk, skb, req, NULL,
- 							 NULL, &own_req);
- 	if (!child)
-@@ -261,7 +263,6 @@ static struct sock *tcp_fastopen_create_child(struct sock *sk,
- 	tp = tcp_sk(child);
- 
- 	rcu_assign_pointer(tp->fastopen_rsk, req);
--	tcp_rsk(req)->tfo_listener = true;
- 
- 	/* RFC1323: The window in SYN & SYN/ACK segments is never
- 	 * scaled. So correct it appropriately.
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 6a14f9e6fef6..e488effdbdb2 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -1747,8 +1747,8 @@ EXPORT_IPV6_MOD(tcp_v4_conn_request);
- 
- 
- /*
-- * The three way handshake has completed - we got a valid synack -
-- * now create the new socket.
-+ * The three way handshake has completed - we got a valid synack
-+ * (or a FASTOPEN syn) - now create the new socket.
-  */
- struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
- 				  struct request_sock *req,
-diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
-index 43d7852ce07e..d471531b4a78 100644
---- a/net/ipv4/tcp_minisocks.c
-+++ b/net/ipv4/tcp_minisocks.c
-@@ -529,7 +529,7 @@ struct sock *tcp_create_openreq_child(const struct sock *sk,
- 	struct inet_connection_sock *newicsk;
- 	const struct tcp_sock *oldtp;
- 	struct tcp_sock *newtp;
--	u32 seq;
-+	u32 seq, a_seq, n_seq;
- 
- 	if (!newsk)
- 		return NULL;
-@@ -550,9 +550,55 @@ struct sock *tcp_create_openreq_child(const struct sock *sk,
- 	newtp->segs_in = 1;
- 
- 	seq = treq->snt_isn + 1;
--	newtp->snd_sml = newtp->snd_una = seq;
--	WRITE_ONCE(newtp->snd_nxt, seq);
--	newtp->snd_up = seq;
-+	n_seq = seq;
-+	a_seq = seq;
-+	newtp->write_seq = seq;
-+	newtp->snd_una = seq;
-+
-+	/* If there is write-data sitting on the listen socket, copy it to
-+	 * the accept socket. If FASTOPEN we will send it on the synack,
-+	 * otherwise it sits there until 3rd-ack arrives.
-+	 */
-+
-+	if (unlikely(!skb_queue_empty(&sk->sk_write_queue))) {
-+		struct sk_buff *l_skb = tcp_send_head(sk),
-+				*a_skb = tcp_write_queue_tail(newsk);
-+		ssize_t copy = 0;
-+
-+		if (a_skb)
-+			copy = l_skb->len - a_skb->len;
-+
-+		if (copy <= 0 || !tcp_skb_can_collapse_to(a_skb)) {
-+			bool first_skb = tcp_rtx_and_write_queues_empty(newsk);
-+
-+			a_skb = tcp_stream_alloc_skb(newsk,
-+						     newsk->sk_allocation,
-+						     first_skb);
-+			if (!a_skb) {
-+				/* is this the correct free? */
-+				bh_unlock_sock(newsk);
-+				sk_free(newsk);
-+				return NULL;
-+			}
-+
-+			tcp_skb_entail(newsk, a_skb);
-+		}
-+		copy = min_t(int, l_skb->len, skb_tailroom(a_skb));
-+		skb_put_data(a_skb, l_skb->data, copy);
-+
-+		TCP_SKB_CB(a_skb)->end_seq += copy;
-+
-+		a_seq += l_skb->len;
-+
-+		if (treq->tfo_listener)
-+			seq = a_seq;
-+
-+		/* assumes only one skb on the listen write queue */
-+	}
-+
-+	newtp->snd_sml = seq;
-+	WRITE_ONCE(newtp->snd_nxt, a_seq);
-+	newtp->snd_up = n_seq;
- 
- 	INIT_LIST_HEAD(&newtp->tsq_node);
- 	INIT_LIST_HEAD(&newtp->tsorted_sent_queue);
-@@ -567,7 +613,9 @@ struct sock *tcp_create_openreq_child(const struct sock *sk,
- 	newtp->total_retrans = req->num_retrans;
- 
- 	tcp_init_xmit_timers(newsk);
--	WRITE_ONCE(newtp->write_seq, newtp->pushed_seq = treq->snt_isn + 1);
-+
-+	newtp->pushed_seq = n_seq;
-+	WRITE_ONCE(newtp->write_seq, a_seq);
- 
- 	if (sock_flag(newsk, SOCK_KEEPOPEN))
- 		tcp_reset_keepalive_timer(newsk, keepalive_time_when(newtp));
--- 
-2.49.0
+Yes, if we change the type from u8 to size_t, then check_header() will
+fail once we get to the end of the packet.  And that will end the loop.
 
+> 
+>> With the type change we may still consider returning early, though it's
+>> not clear what the value we should aim for in this case. And we need to
+>> figure out what the skb_inner_network_header() should be in this case.
+> 
+> We may parse until the packet end to set the inner network header?set to 0 if fail.
+
+I think, for now we can just parse til the end of a packet.  The inner
+header pointer will also point somewhere to the end of a packet in this
+case and so there should be no way to actually perform MPLS GSO.  No need
+to set it to zero.  We may consider setting it to zero in the future,
+if necessary.
+
+So, AFAIU, we just need to change the type in this function and that
+should resolve the infinite loop issue, because check_header() will
+eventually fail.
+
+> 
+>> One other thing,
+> 
+>> For some reason the patch was not delivered to lore.kernel.org
+>> and is not available in netdev+bpf patchwork and not in lkml.org.
+>> Both of our replies are available in list archives.  The original
+>> email is available only via mail-archive, but it is ovs-dev and
+>> not the netdev list:
+>>  https://www.mail-archive.com/ovs-dev@openvswitch.org/msg94895.html>7C0d27725cb11d49f0b479a26ae758f26d%7C1%7C0%7C638833450887452972%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=1DXkGXqyAYVUf9BxH45MGy4BGSNozuUQwrU0IP8t%2FLI%3D&reserved=0
+>> Same for v2.
+> 
+>> Is kernel.org blocking the sender somehow?  Does anyone know?
+> 
+> Sorry. This is my outlook web problem with html after the plain text body.
+
+Yeah, you need to find a different mail client, since your patches are
+not delivered to netdev@, and that's the actual place you want them to
+be delivered to.
+
+Best regards, Ilya Maximets.
