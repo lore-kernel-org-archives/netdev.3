@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158A023D29E
-	for <netdev@vger.kernel.org>; Wed, 21 May 2025 09:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFCF239E7A
+	for <netdev@vger.kernel.org>; Wed, 21 May 2025 09:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747819131; cv=none; b=rgrtFrBYQp0iJbPMwXJuCNs3r+kO53HziIx+l/1mW+y35HrUrk9WwPXieoNoLmfdummXert4Xfggm7Lgzu26KCaIQspoPIaAUh064Byv0/Mx7sw5lOckWKA2307OvtE5VlZXVZTQuugG565dfj4+5y661z8p2jwAJ9d4FYc58Do=
+	t=1747819142; cv=none; b=po5JTfVBx0irPTfrudVRzTpxwqadcggQPap+711N2c1sewZsr8Fsn7gOgslKiMwvPnPqr/C+ZNXymkbppDZ/62yJx2LCvVKWmQjCR2EGZGCuSW9sS11GeITNAP/Kuj3lw1yMxMNCFAMr90YNuefYbT0w4i1hf5tApzVkW4hnKWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747819131; c=relaxed/simple;
-	bh=g43jlQv2rVrFZSeM/Fo9D9ZbcGz/8Rbn/8ul2CizRBA=;
+	s=arc-20240116; t=1747819142; c=relaxed/simple;
+	bh=pdGfPptOeh5Xj8jJgLkfi6Ne2epxn+CBrY1SbELAW24=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gI4ILldz1mi5ueQIkEHSk86v7JXgCId6RoY6qZz7JrL4kLSJ5j6Pka492g/hrOlZUsKV9glUo2H9YFOs+KwWQcRBJqvqtQKIa/D1LiDPQqsqQtQISc6teVi5Jkf8prVqgJN1cDsrtS3ZJgO+h8Sj7yhNvVY4Ifzrj78J4JqhS2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LxOJkxxz; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=GDp7lESXaAmKAxyHlxs2W32eLTtr8ZH6nEM674IA3InQSqQ0Xz+Oy/HmvH/01RrI09Ry7rauRf5usCfiNe7NXPeOXYilyA4VDWvrp9m+i+o5L1IEqee9Vl1hK15379sz6blIwOnB2BRbx+tocq2C1D1ZM2m6KoeVzi4KlYN7LQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RasJfhxj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LxOJkxxz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D69C4CEE4;
-	Wed, 21 May 2025 09:18:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RasJfhxj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 348F7C4CEE4;
+	Wed, 21 May 2025 09:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747819130;
-	bh=g43jlQv2rVrFZSeM/Fo9D9ZbcGz/8Rbn/8ul2CizRBA=;
+	s=k20201202; t=1747819142;
+	bh=pdGfPptOeh5Xj8jJgLkfi6Ne2epxn+CBrY1SbELAW24=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LxOJkxxzS8XicJ5iUBvLcrcjO0J3yoEtO0+smKHKmxknxzxEO5IdI9ahAt9/aO3+a
-	 yfy+zlPzZopJsbgMI0J6wKg/dVhoQvduIa/UFwOLA8mgSg4AByOFqDyo4lbi7Hzzp7
-	 5pSkzv4vRTcnMlnsZHezmjuYR47SvdY1R8oNcIaA8eAx72SKl9eCf5VPc1xfljr62v
-	 QBvpmChuUsVQNB6DEiOcmniFIWBs9dpVpwjOpc8G0oGdYcgar6JmqNBHsmfoqM5IqX
-	 zrobSHDyFkNegWt595BiZamdXT8cBvsBeYC8AUCUURAMp9MCh4MZUgUIYLWPxMI++A
-	 Xyr0sTGpbpXJg==
-Date: Wed, 21 May 2025 10:18:47 +0100
+	b=RasJfhxjAbdMnQIr+vpv7gYRlr0shpyIOYuhjlAGPLUBSqEYi2RlCPlJ9HfLkchDF
+	 nBUZpd8CXBKgfjU+dNz1vEejm65p2oV3pULY9Vzbp1qoI50sEE15BLb9xlehfVkLZJ
+	 Qn4cjgM6tWGV2BEW5Z4+vPh7BH6ydHP5ini25qQak6V9v/bqGEDKS6QL8JumYTNQsF
+	 yk70hEkZU1Hu24NjUggp7iw4EotcopXzgv/BeOkwrdJJgByC6Chz3od/9yzO0s6OXH
+	 F0uPXkFvJiUoNbCPdjqkMYTSk6Pgt492FOi+eF+EdaGm/my1OEAJ71HDuLGWp4OyAb
+	 /T7dKwzwrRjnQ==
+Date: Wed, 21 May 2025 10:18:59 +0100
 From: Simon Horman <horms@kernel.org>
 To: Cong Wang <xiyou.wangcong@gmail.com>
 Cc: netdev@vger.kernel.org, jiri@resnulli.us, jhs@mojatatu.com,
 	Mingi Cho <mincho@theori.io>
-Subject: Re: [Patch net 1/2] sch_hfsc: Fix qlen accounting bug when using
- peek in hfsc_enqueue()
-Message-ID: <20250521091847.GU365796@horms.kernel.org>
+Subject: Re: [Patch net 2/2] selftests/tc-testing: Add an HFSC qlen
+ accounting test
+Message-ID: <20250521091859.GV365796@horms.kernel.org>
 References: <20250518222038.58538-1-xiyou.wangcong@gmail.com>
- <20250518222038.58538-2-xiyou.wangcong@gmail.com>
+ <20250518222038.58538-3-xiyou.wangcong@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,25 +44,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250518222038.58538-2-xiyou.wangcong@gmail.com>
+In-Reply-To: <20250518222038.58538-3-xiyou.wangcong@gmail.com>
 
-On Sun, May 18, 2025 at 03:20:37PM -0700, Cong Wang wrote:
-> When enqueuing the first packet to an HFSC class, hfsc_enqueue() calls the
-> child qdisc's peek() operation before incrementing sch->q.qlen and
-> sch->qstats.backlog. If the child qdisc uses qdisc_peek_dequeued(), this may
-> trigger an immediate dequeue and potential packet drop. In such cases,
-> qdisc_tree_reduce_backlog() is called, but the HFSC qdisc's qlen and backlog
-> have not yet been updated, leading to inconsistent queue accounting. This
-> can leave an empty HFSC class in the active list, causing further
-> consequences like use-after-free.
+On Sun, May 18, 2025 at 03:20:38PM -0700, Cong Wang wrote:
+> This test reproduces a scenario where HFSC queue length and backlog accounting
+> can become inconsistent when a peek operation triggers a dequeue and possible
+> drop before the parent qdisc updates its counters. The test sets up a DRR root
+> qdisc with an HFSC class, netem, and blackhole children, and uses Scapy to
+> inject a packet. It helps to verify that HFSC correctly tracks qlen and backlog
+> even when packets are dropped during peek-induced dequeue.
 > 
-> This patch fixes the bug by moving the increment of sch->q.qlen and
-> sch->qstats.backlog before the call to the child qdisc's peek() operation.
-> This ensures that queue length and backlog are always accurate when packet
-> drops or dequeues are triggered during the peek.
-> 
-> Fixes: 12d0ad3be9c3 ("net/sched/sch_hfsc.c: handle corner cases where head may change invalidating calculated deadline")
-> Reported-by: Mingi Cho <mincho@theori.io>
+> Cc: Mingi Cho <mincho@theori.io>
 > Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
 
 Reviewed-by: Simon Horman <horms@kernel.org>
