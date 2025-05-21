@@ -1,252 +1,312 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA86238C3D
-	for <netdev@vger.kernel.org>; Wed, 21 May 2025 06:45:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747809952; cv=fail; b=A2qvqqGuiNFsOBXuLJGaryuj2eIlo+s9ESYngfmsiKDUjWKmrUxa3MLqe5+OUww54d03JDXz7ZUFSHIzfItictv/wUqNpuCLwg0qPpk2gQP+tVfv7NgkDfIvzg/5Y9mfDx/BTDP/r3PJ2jrMjqxMUimGYGfVrNcdlHj99Lr1y2E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747809952; c=relaxed/simple;
-	bh=kC4al/M0rtU3PT2P72wdqcbHixcPDlX4Y/Vlz733RZ0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=iNhe4eGJ8WJSShVUmd1e+X5FfZtueGw0EE40/R5PLw/oCH3cBHBi1SLmS1QH57dUcE6sRQJI2yPHoKvypIlXBOzJqObhe8MvDHkWX2rSnIi8J/a/sCp5hWhTmFy0THdr/Txjcx7SXti+AZPz2M8QfrliLZeOP5/IdNbUwkTnoEY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JCBtj+s+; arc=fail smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JCBtj+s+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747809950; x=1779345950;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=kC4al/M0rtU3PT2P72wdqcbHixcPDlX4Y/Vlz733RZ0=;
-  b=JCBtj+s+mSp6aMn4xjOXOJGEavhcsbXvLjXjO7P8I76xD41/ZCa1bM/j
-   tc0TNtX+N2pEK4lUxSnvRYwVmGkk08ebpU893Hj+9TrX7yGKpM1Z+EGxO
-   t7VbtUlyseRRt0C3vNHaNrx+n80l589SQhAWdk4vQgeMd8o5FhAVAATCH
-   jqmqMy43wGSa+VFRaiYZRQAmjzB2A8GOcf6xlRkUGJ+cHyZEjAnt3IPnf
-   FDedumUuJ/FgCbV1L9jjNFZaOtb4MifheLGZYLqEhvrIkUc/NLPizu03Z
-   uFeXlLI5KkOJzBTiyXUCzRKbGIj663xlUwIbtY4ZNhmdx95FLF+nqLLTb
-   A==;
-X-CSE-ConnectionGUID: v1NCpIlNQxiC0I++V5mhCQ==
-X-CSE-MsgGUID: COLFH88yQh6sOvXp3GJ//w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="60428541"
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; 
-   d="scan'208";a="60428541"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 23:45:44 -0700
-X-CSE-ConnectionGUID: WY1X+uVUThqyOcZUvpmRUA==
-X-CSE-MsgGUID: oLNHYzIiSlKBtzKLUCkhCQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; 
-   d="scan'208";a="144809760"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 23:45:42 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 20 May 2025 23:45:42 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Tue, 20 May 2025 23:45:42 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.43) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.55; Tue, 20 May 2025 23:45:41 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qVM17APn5ABgt50tNCM47bvhI9mKQX1aQzpTuMTos5UIwu41CRnTNy/Z2Wld9CxLeVzZV8xgvS4mnYmGztvMCzlHPeXdXwPZEmKlLHvFmhzbaaDd5A+UbORqhK8iILQOFkC038mhdTZR9uQ4t43zrggKD9uOkHlbMF6YkgS4nJW4BdG6edE2yZ9G4qBcKesk/MKuVsP+IDL8a2cDEtRNpnKfT9nkdWeCBTGfJldqe9UlYdv4FldHaWJX9wSDBWPiAdnBZPuIDOT3kdZRkSRmkzjtiH2f+uofaOIS7k8nAx+BBL9OjFNC7tXtizwtc6uoNmBvIIjqiXeex4OAO1CGSA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jatgF0Awh3fDMjbSjm1NaeCpTBCw7W3/1dJw3+Mv3xQ=;
- b=CNYoqfP3Z7xIC9enT83EpDROF+2tpkGLnWKg0YP5tbbBytsTLzyPpH5tzwsomodKMLlE3NVKnKdAiUjw6dIKu/LoVQLr3dbbcHjtfQ9Xc67cC7wCl8j5iniR3YyJfG8UMbi58Cq+91K4JUahbTj6+qeWmDmjl0aAJod0bBY9kNXOvoKSKYZHG/NGlJJMRlgpcxnroajBARjtIHtbbXP+0kRLc19DSj6Pcr1Ox3SsEgO4coBmsKlgLbSum9kmYoNS3WYaUbUCScUA41MZC3MXY0ai7RnUH4Gnpu/VnA5JGgDgzLWv+6iL5nV4/suovYyiP5ky7GaZMDdU5tsQ0f56yA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA1PR11MB6241.namprd11.prod.outlook.com (2603:10b6:208:3e9::5)
- by DM6PR11MB4529.namprd11.prod.outlook.com (2603:10b6:5:2ae::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.31; Wed, 21 May
- 2025 06:44:53 +0000
-Received: from IA1PR11MB6241.namprd11.prod.outlook.com
- ([fe80::90b0:6aad:5bb6:b3ae]) by IA1PR11MB6241.namprd11.prod.outlook.com
- ([fe80::90b0:6aad:5bb6:b3ae%4]) with mapi id 15.20.8746.030; Wed, 21 May 2025
- 06:44:53 +0000
-From: "Rinitha, SX" <sx.rinitha@intel.com>
-To: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Lobakin, Aleksander"
-	<aleksander.lobakin@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "Kwapulinski, Piotr"
-	<piotr.kwapulinski@intel.com>, "Loktionov, Aleksandr"
-	<aleksandr.loktionov@intel.com>, "Jagielski, Jedrzej"
-	<jedrzej.jagielski@intel.com>, "Zaremba, Larysa" <larysa.zaremba@intel.com>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>
-Subject: RE: [Intel-wired-lan] [iwl-next v3 1/8] ice, libie: move generic
- adminq descriptors to lib
-Thread-Topic: [Intel-wired-lan] [iwl-next v3 1/8] ice, libie: move generic
- adminq descriptors to lib
-Thread-Index: AQHbtfivGeOEUZKuFkOXgLH0jI4nXbPcxXSA
-Date: Wed, 21 May 2025 06:44:53 +0000
-Message-ID: <IA1PR11MB62419AD24802CA4CF0A2FA548B9EA@IA1PR11MB6241.namprd11.prod.outlook.com>
-References: <20250425060809.3966772-1-michal.swiatkowski@linux.intel.com>
- <20250425060809.3966772-2-michal.swiatkowski@linux.intel.com>
-In-Reply-To: <20250425060809.3966772-2-michal.swiatkowski@linux.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR11MB6241:EE_|DM6PR11MB4529:EE_
-x-ms-office365-filtering-correlation-id: 73a86186-b434-4d0c-ef16-08dd9832fe20
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?rJTA6tQ3Fuw6hcuwStGV+pYFPTiY/8ZE02CZF087nQKw5I8sW7Vyma6oWPTS?=
- =?us-ascii?Q?7C8hhtT3lt9Gs9GFoyjAFWSynooic163s3Bxm/fGBkCht5AWo/zdvarkUjyd?=
- =?us-ascii?Q?51wU2KibvbdN4SlqrzbJsQP6dBV1NuFX1uHzE8NMbyjxoA4bRpMrwW3+jdJw?=
- =?us-ascii?Q?TJyR0KPmdPrWhLE1IlP6YKep7vrss/tkvNEOapS4Le8isDhp2wg1wbPeZXi7?=
- =?us-ascii?Q?Qva0nn0eNXX+r4OGzPxfdHuDGznkj6aYO09b5AxZbmItOYiE1QWENFQZJkXS?=
- =?us-ascii?Q?VAmKKPHx37J9P3anSLz6TlTFjp1HiEJo/1BIjtL2ngJBSlpkpdf32neSE26g?=
- =?us-ascii?Q?q+6iFRdiuboICtz8VhcEe1fM+JrTxymniTdmArMiYxoAJZVw2YGTPCEsaMvl?=
- =?us-ascii?Q?Q1G20iXP4+oDHtpR63+ue3xGoQOqIdw+SXqkTuR2TP5PX8impSGxRlISbeD5?=
- =?us-ascii?Q?kr1bcFrNmlAEGD1GB1o5wNjbLyKy/3fIAnpn5EAtPluG9G3rh1ooKk+GcwaA?=
- =?us-ascii?Q?WEmRgARfBufp6XCfnxYCJhg5hXAwtBL4q+GpuD20JgMLWCc6dyBWwiyE3aXb?=
- =?us-ascii?Q?sBYD2VSXIyNtsIakkRzipZQ5SeEaEu5U/z7aOmweY4kI+zYnVhbVlCO+GZ+R?=
- =?us-ascii?Q?rpq7L0xYfVX+62SOh0k04o8RqxOpSimmJqXdmYSR3y1edaaUQ8E3dfmro2mb?=
- =?us-ascii?Q?KgtoV62vGzZazYWrPC2BYylJdFkh1TbsxyEuEN814jWGzUCS56ane7/17J13?=
- =?us-ascii?Q?cFfokDsz9j9KevZPJ3OmHQdyCridP9DRz59KPinydnx1DYCxBfN7EbaG5F8g?=
- =?us-ascii?Q?/OvUETKWLThFfBFGsB+ZQE/sHmzN4DilVNg7WlxzWXl1/9P2rRIjm16RbuWr?=
- =?us-ascii?Q?VPqoACBrzJl4U/wjslstVoHZXOU9HSNM4rcHPY7jHzj8Ttd7AeV+vrlxu+6Q?=
- =?us-ascii?Q?hwU+Aniuj6EMzVhB4PzbV8S5tjwU6+XmMXcuQ/lRoTbes5+rK6c2EE2w1kqU?=
- =?us-ascii?Q?a1O8GiDaYWVz7yAGA5wcVBTqQLhrMb5tRWMC9aYqkpOEDvCsF2bAEni1iapL?=
- =?us-ascii?Q?CC6oAs4/8djftna6HUuWCi8KGfWPlTX5LzCkPZTVs2SzoGbhcl1sBHs0Kbtr?=
- =?us-ascii?Q?8izAe6nrztnNVAzEwYHRSERANxpOEdzVz8MD5Y5hzWlTZk7dHBMWQ1CDto4G?=
- =?us-ascii?Q?7r0st0mDX73f5uXWAC5McRcrruic07LSAgTvsUqar2PqSngIj/mFn2K24rjD?=
- =?us-ascii?Q?0DG9FqsY8XkMdZVagGRPu6lmWM/wB1AuncP0fsEQm7nloRCdtO40ZYA8c90e?=
- =?us-ascii?Q?qSKx/+XxZjqe0Tf5ks1t32U9i5RuDJ4v7d4Xe7QqX3jhBgKk9YSKc+rOwFgt?=
- =?us-ascii?Q?b7nGtEo6iVLQcBTMYf1MDHdGQr+RsmQbVEEnLco9unMwGnFYBw2BlwnXJtYY?=
- =?us-ascii?Q?ETnU4Hw0Eg7VAeQE5m8D3251hgykzJWrlwgND/iTN6WYtkKTV198fXdhTV1F?=
- =?us-ascii?Q?R/UBoC+4XWtFGAw=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6241.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?0ZtH5l4sdHwnMNN+NRC5uur+VjIRVI/OvQf5etNwklvaVtdb62LBE6Qgwoem?=
- =?us-ascii?Q?2aINyRFWr+p3HmKa0gGUERrJqDetjEP+1XLIcJCGWjLAXoZ9UtZyACXGjysQ?=
- =?us-ascii?Q?u65AvvqCCzJuTLmtTmJpftH9eOXLrd4+G6pSjeUPyKEzsXY8NBvnjgt5EPu0?=
- =?us-ascii?Q?u8GrIjiEvX1YzuFsobm7FpF2sQ3TEHJjAam7lt9gW6Ry73OU8H5AIb5cOywH?=
- =?us-ascii?Q?6UFe05+cawFpaBBEZC7mXaOiT545rEarFXRh8L/O3XY4SEkFQm2OD2sWxZzR?=
- =?us-ascii?Q?9HNkgY8srdvkBtSvja26VHtFxjl8k3QJo5B5P2LsVyRLbDNAUOVzwfF026SV?=
- =?us-ascii?Q?RG56QFxX9AlgUqHf1wscb75e70TtlEzy9G8865q2++3QN3Aa6bgCY4CMyocJ?=
- =?us-ascii?Q?/dLbEAm0yyk2vEMtwZ3107Nn420A3wCSqw+WuDgLMOx9B3RbhmuJNoe5/SSc?=
- =?us-ascii?Q?bhfyauX8JX6CHePMm9EqLXOXq6y1KcHOm4LG/hQGtIskvvTrtHNbPwbNein2?=
- =?us-ascii?Q?I+pwagVVL0veL1ED3lVYa3jd5t2unMP7PpvhJM/BWgqiKyRc3muHj3c26S8C?=
- =?us-ascii?Q?2ekNfVK/v2OkG/aC631UepoasU8KxpcBQnWgy7FbasEs3+4vkyVlfbSUYf+T?=
- =?us-ascii?Q?26CVb07aCGaGC63KchTuS6bkXQO0InJBzVZTdVdl9rMexKl4IXLO1GD1tntq?=
- =?us-ascii?Q?L14Fm2ndp7YDBtzyKokx2m38pca+rgoiCg8Pu4WO8KMW4WUzn48hMWttxGyw?=
- =?us-ascii?Q?r0VJToSFANcayZiSDtAIcx/vT4RWYLt2KFs5aDXBLOUE6Aqjz78bvUo2Aqs1?=
- =?us-ascii?Q?u8UM1VSyPer6t+y4w6bFeqMqN3y6bEHu0lqwVpY5pzM2zrv+xUDpO+QBbqnH?=
- =?us-ascii?Q?z1n7OlQbyDNgy7Cl/bc/zBxCWcqkdGyEaRy2wZIKSm+vz8W5N+qXB3T+/BO6?=
- =?us-ascii?Q?g7AqL4m9fjaQxOgj+HvAq2s5b9E5tY9dNZn6RKWPf/aBc/FYjiNeAXiPFANw?=
- =?us-ascii?Q?syp2CCYriu6CDfv3fh8NgmStgw4zeLXBKQg6e9EnZd2B19Q0ylB/GdKyEQ5o?=
- =?us-ascii?Q?QIqSjoei/eUJp4eDiWSKhTVjEZPQLusowqJ/QuVQHt0RdpnS9bVjo0j28Ytt?=
- =?us-ascii?Q?setRaOkTjp1h1ZPB+NaUSQxwzWUTKlAcQD/QpkOvg5IMT+8Jso9mT9Gt5AC7?=
- =?us-ascii?Q?UpZKFpXEO4QLoNr/LvsyOpxIAjgBuMLji+udStQ1Wfd3S+Kr7iafQHeMgYrA?=
- =?us-ascii?Q?9qUwDsi0zRC21J0VDa8t4P3YqOks4/QYFFAu/SLu1N99phsqEhbxO8m0hcy7?=
- =?us-ascii?Q?m2ql6qmyIBYnk4VQX3XuQAQJm1D3otuXfXmuFkbkCc0YqODDDiBHti9DsS1D?=
- =?us-ascii?Q?A2fbOlW9QaZjlZjMB/XuPTyjzVKuGZS9xHSb/Yo6i7FmKB3GlOJbntrUJ13N?=
- =?us-ascii?Q?gq39NzaFESjG+zxLw1fXxVRvb4W5bn8ChWI7odrVf4yFAM/dr45MkMdkYslG?=
- =?us-ascii?Q?AP5JE38/FMtuR7w15+7MAlJppPfalHpPNdaHjOQ2K5VetgE62zVRJ4METwc7?=
- =?us-ascii?Q?rRpUe/kPtApUfQMGQz7d+cIfMKGnk9WBNT/nlo90?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20367239E73
+	for <netdev@vger.kernel.org>; Wed, 21 May 2025 06:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747809955; cv=none; b=XuGVVLOhTqFz3INCTtfH8zYguNk1ZHrqAqA0Ck6kIMSnmsOEkfVWqTMCxfPInw9zxqdfmE3mGxlB8lC6OXjKSZUWGDQua9GURgxQp0wjNtjJQWJDn0bb9JaXHzUw3boct8E0Gr/QSlZV0QktoNvhEWHEksE7mowhrZBHr+EcNK8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747809955; c=relaxed/simple;
+	bh=FhsIHBqU1Xp8UxCF/jvt3eoIldzfqOrny0ARQiwRvF4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=itQnCwdNGmw7D23aq+/ANSVw4X6Brw4adOCmN5iLmozYeQ83r9KL0uvbvFDgzaKpT6i1+EZ9QGJYXMVTN7pws/04M+yV4eo6n1HZxDjF68Pgbe4lQvTt+hmn7cuQK7gfwh7kO0vSe6mgF4m6TF8bnO9nbxhotOQkwQAe6Q6aTEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: zesmtpsz8t1747809867ta0e3630a
+X-QQ-Originating-IP: ZGrHfisIbch6ynHWcfTan2nA/WJwcAMKqIgjNcq9B4E=
+Received: from w-MS-7E16.trustnetic.com ( [125.120.71.166])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 21 May 2025 14:44:26 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 10489968241910633397
+EX-QQ-RecipientCnt: 10
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	richardcochran@gmail.com,
+	linux@armlinux.org.uk
+Cc: mengyuanlou@net-swift.com,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH net-next v2 2/9] net: wangxun: Use specific flag bit to simplify the code
+Date: Wed, 21 May 2025 14:43:55 +0800
+Message-ID: <C731132E124D75E5+20250521064402.22348-3-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250521064402.22348-1-jiawenwu@trustnetic.com>
+References: <20250521064402.22348-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6241.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73a86186-b434-4d0c-ef16-08dd9832fe20
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 May 2025 06:44:53.5760
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Yjz7ld2XtSTHzZwNHKb+kfH9KhosXgsdJbTyxW94t92Nn6F2RgLjp3NIve6oGXJGvTpvK8iZNL83LfKwCY0AIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4529
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: NpfbsqbTlzxUQUaLYkMxuBrfKtSaeL6u7mrvsmLlKqztBjTsMQuPRWB0
+	RJIm4cbC+MyyhJcKe9hqhcaJWvR5VxsPB3tlvQrU6ss0/t9ZGRlCfXSoHSOYLyA6NtS8d3Z
+	6Ax/mp6d2i+BAe0IfabPPsYg+NSYDXEApHrCqpCiDlhdsbByyGD1/XxX2i9d9cBp0EKR12q
+	Cw/++tGBefC4qjm7uapLxJeYgxlBjDtyHDLpoFgA+uOO7g5w1Jst5atZ5yfi2rfkZ56Sz4t
+	2vl8hoUVcmMLX+W4kSQc5PLJx5to6E2oA6e6PPGrASWUKvYTjPwvMRfk+Z2pta++YRDONA8
+	h9Fj9xYliS17rnENUKnxMSf8RvJJH3orgh0HonJaqMcuSbkhdQpTf8h26B89YMAPQWi/kTV
+	fgw6Q9IGSiyPKV/p2JEhpqamaxqSkO4qLzcJGE5kJDb/aDBcuQuAfzpPSnwg/eKFh3xlLPG
+	i7lBSbhH7PbngzsDAnMyHIg41pL0QduB49sJ8jni+JrLHSyjYEcR2m4VE1eb90ZlfQxmS6S
+	ll6OJgGp3ZAuGtuJqE8tkE5c05ATMQ7TpGpcZWRwqxIs8v1LjMuHy5wRmOwT7qjJ1OSRxcU
+	b+Wep+GLY36fK1oXTb7ub+cLCx8+h5Z2KynrAoazxRSdw55gUjE27RGWMhv+LkxPshEWU1y
+	pU0z0Z/n39y4PBn2KhAW8c9v/W565pxtTird2BeWTBksuRq6iFKnWaqW6Phv23mtNnBPtRC
+	jJL5JJ9ze9eTe5xD65jm35z1yMDyVdq428tlTgMEcsRrbkJyTM8kDsJBqX+vAX9QKtKupqq
+	CM5rtnATviuFuwodecE7NBJ1qA9OYy7izk0IXVtGKMuEKWDJFK1bFMllnEqXzYXpzJcEypM
+	iRZIkF0KaaKlT/62pfWG/w+EuwVOnyeO02ptUHjaZTpbH3i1vzf8E1vIcJMCcl28mQIjARN
+	iFcnXboUqTIMfbbLDLucZa4JwWboB7Zj5MbfO9RmX0+cGRMPD2PUdaFTiL5UbYCGFdSGjmE
+	P2dmLqoBWjsCWxfhbWUKTSCfLuAJIVptmaPo6b+A==
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+X-QQ-RECHKSPAM: 0
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of M=
-ichal Swiatkowski
-> Sent: 25 April 2025 11:38
-> To: intel-wired-lan@lists.osuosl.org
-> Cc: netdev@vger.kernel.org; Lobakin, Aleksander <aleksander.lobakin@intel=
-.com>; Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>; Kwapulinski, Pio=
-tr <piotr.kwapulinski@intel.com>; Loktionov, Aleksandr <aleksandr.loktionov=
-@intel.com>; Jagielski, Jedrzej <jedrzej.jagielski@intel.com>; Zaremba, Lar=
-ysa <larysa.zaremba@intel.com>; Nguyen, Anthony L <anthony.l.nguyen@intel.c=
-om>
-> Subject: [Intel-wired-lan] [iwl-next v3 1/8] ice, libie: move generic adm=
-inq descriptors to lib
->
-> The descriptor structure is the same in ice, ixgbe and i40e. Move it to
-common libie header to use it across different driver.
->
-> Leave device specific adminq commands in separate folders. This lead to
-a change that need to be done in filling/getting descriptor:
-> - previous: struct specific_desc *cmd;
-	    cmd =3D &desc.params.specific_desc;
-> - now: struct specific_desc *cmd;
-       cmd =3D libie_aq_raw(&desc);
->
-> Do this changes across the driver to allow clean build. The casting only
-have to be done in case of specific descriptors, for generic one union
-can still be used.
->
-> Changes beside code moving:
-> - change ICE_ prefix to LIBIE_ prefix (ice_ and libie_ too)
-> - remove shift variables not otherwise needed (in libie_aq_flags)
-> - fill/get descriptor data based on desc.params.raw whenever the
-  descriptor isn't defined in libie
-> - move defines from the libie_aq_sth structure outside
-> - add libie_aq_raw helper and use it instead of explicit casting
->
-> Reviewed by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> ---
-> drivers/net/ethernet/intel/ice/ice.h          |   2 +-
-> .../net/ethernet/intel/ice/ice_adminq_cmd.h   | 270 +-----------
-> drivers/net/ethernet/intel/ice/ice_common.h   |   6 +-
-> drivers/net/ethernet/intel/ice/ice_controlq.h |   8 +-
-> include/linux/net/intel/libie/adminq.h        | 272 ++++++++++++
-> .../net/ethernet/intel/ice/devlink/health.c   |   4 +-
-> drivers/net/ethernet/intel/ice/ice_common.c   | 390 +++++++++---------
-> drivers/net/ethernet/intel/ice/ice_controlq.c |  53 +--
-> drivers/net/ethernet/intel/ice/ice_dcb.c      |  36 +-
-> drivers/net/ethernet/intel/ice/ice_dcb_lib.c  |   2 +-
-> drivers/net/ethernet/intel/ice/ice_ddp.c      |  47 +--
-> .../net/ethernet/intel/ice/ice_fw_update.c    |  24 +-
-> drivers/net/ethernet/intel/ice/ice_fwlog.c    |  16 +-
-> drivers/net/ethernet/intel/ice/ice_lag.c      |   4 +-
-> drivers/net/ethernet/intel/ice/ice_lib.c      |   6 +-
-> drivers/net/ethernet/intel/ice/ice_main.c     |  34 +-
-> drivers/net/ethernet/intel/ice/ice_nvm.c      |  38 +-
-> drivers/net/ethernet/intel/ice/ice_ptp_hw.c   |  20 +-
-> drivers/net/ethernet/intel/ice/ice_sched.c    |  18 +-
-> drivers/net/ethernet/intel/ice/ice_sriov.c    |   4 +-
-> drivers/net/ethernet/intel/ice/ice_switch.c   |  55 +--
-> drivers/net/ethernet/intel/ice/ice_vf_mbx.c   |   6 +-
-> drivers/net/ethernet/intel/ice/ice_virtchnl.c |   2 +-
-> .../net/ethernet/intel/ice/ice_vlan_mode.c    |   6 +-
-> 24 files changed, 673 insertions(+), 650 deletions(-)
-> create mode 100644 include/linux/net/intel/libie/adminq.h
->
+Most of the different code that requires MAC type in the common library
+is due to NGBE only supports a few queues and pools, unlike TXGBE, which
+supports 128 queues and 64 pools. This difference accounts for most of
+the hardware configuration differences in the driver code. So add a flag
+bit "WX_FLAG_MULTI_64_FUNC" for them to clean-up the driver code.
 
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+---
+ .../net/ethernet/wangxun/libwx/wx_ethtool.c   |  9 ++---
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c    | 35 ++++---------------
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c   | 10 +++---
+ drivers/net/ethernet/wangxun/libwx/wx_sriov.c |  8 ++---
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  |  1 +
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  1 +
+ 6 files changed, 20 insertions(+), 44 deletions(-)
+
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+index 43019ec9329c..d58d7a8735bc 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+@@ -413,15 +413,10 @@ static unsigned int wx_max_channels(struct wx *wx)
+ 		max_combined = 1;
+ 	} else {
+ 		/* support up to max allowed queues with RSS */
+-		switch (wx->mac.type) {
+-		case wx_mac_sp:
+-		case wx_mac_aml:
++		if (test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags))
+ 			max_combined = 63;
+-			break;
+-		default:
++		else
+ 			max_combined = 8;
+-			break;
+-		}
+ 	}
+ 
+ 	return max_combined;
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index 143cc1088eea..1c5c14ac61bc 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -113,15 +113,10 @@ static void wx_intr_disable(struct wx *wx, u64 qmask)
+ 	if (mask)
+ 		wr32(wx, WX_PX_IMS(0), mask);
+ 
+-	switch (wx->mac.type) {
+-	case wx_mac_sp:
+-	case wx_mac_aml:
++	if (test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags)) {
+ 		mask = (qmask >> 32);
+ 		if (mask)
+ 			wr32(wx, WX_PX_IMS(1), mask);
+-		break;
+-	default:
+-		break;
+ 	}
+ }
+ 
+@@ -133,15 +128,10 @@ void wx_intr_enable(struct wx *wx, u64 qmask)
+ 	if (mask)
+ 		wr32(wx, WX_PX_IMC(0), mask);
+ 
+-	switch (wx->mac.type) {
+-	case wx_mac_sp:
+-	case wx_mac_aml:
++	if (test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags)) {
+ 		mask = (qmask >> 32);
+ 		if (mask)
+ 			wr32(wx, WX_PX_IMC(1), mask);
+-		break;
+-	default:
+-		break;
+ 	}
+ }
+ EXPORT_SYMBOL(wx_intr_enable);
+@@ -774,14 +764,8 @@ static int wx_set_rar(struct wx *wx, u32 index, u8 *addr, u64 pools,
+ 	/* setup VMDq pool mapping */
+ 	wr32(wx, WX_PSR_MAC_SWC_VM_L, pools & 0xFFFFFFFF);
+ 
+-	switch (wx->mac.type) {
+-	case wx_mac_sp:
+-	case wx_mac_aml:
++	if (test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags))
+ 		wr32(wx, WX_PSR_MAC_SWC_VM_H, pools >> 32);
+-		break;
+-	default:
+-		break;
+-	}
+ 
+ 	/* HW expects these in little endian so we reverse the byte
+ 	 * order from network order (big endian) to little endian
+@@ -919,14 +903,9 @@ void wx_init_rx_addrs(struct wx *wx)
+ 
+ 		wx_set_rar(wx, 0, wx->mac.addr, 0, WX_PSR_MAC_SWC_AD_H_AV);
+ 
+-		switch (wx->mac.type) {
+-		case wx_mac_sp:
+-		case wx_mac_aml:
++		if (test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags)) {
+ 			/* clear VMDq pool/queue selection for RAR 0 */
+ 			wx_clear_vmdq(wx, 0, WX_CLEAR_VMDQ_ALL);
+-			break;
+-		default:
+-			break;
+ 		}
+ 	}
+ 
+@@ -1512,7 +1491,7 @@ static void wx_configure_virtualization(struct wx *wx)
+ 		wr32m(wx, WX_PSR_VM_L2CTL(pool),
+ 		      WX_PSR_VM_L2CTL_AUPE, WX_PSR_VM_L2CTL_AUPE);
+ 
+-	if (wx->mac.type == wx_mac_em) {
++	if (!test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags)) {
+ 		vf_shift = BIT(VMDQ_P(0));
+ 		/* Enable only the PF pools for Tx/Rx */
+ 		wr32(wx, WX_RDM_VF_RE(0), vf_shift);
+@@ -1543,7 +1522,7 @@ static void wx_configure_port(struct wx *wx)
+ {
+ 	u32 value, i;
+ 
+-	if (wx->mac.type == wx_mac_em) {
++	if (!test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags)) {
+ 		value = (wx->num_vfs == 0) ?
+ 			WX_CFG_PORT_CTL_NUM_VT_NONE :
+ 			WX_CFG_PORT_CTL_NUM_VT_8;
+@@ -2074,7 +2053,7 @@ static void wx_setup_psrtype(struct wx *wx)
+ 		  WX_RDB_PL_CFG_TUN_OUTL2HDR |
+ 		  WX_RDB_PL_CFG_TUN_TUNHDR;
+ 
+-	if (wx->mac.type == wx_mac_em) {
++	if (!test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags)) {
+ 		for_each_set_bit(pool, &wx->fwd_bitmask, 8)
+ 			wr32(wx, WX_RDB_PL_CFG(VMDQ_P(pool)), psrtype);
+ 	} else {
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index 2a808afeb414..eab16c57b039 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -1633,7 +1633,7 @@ static bool wx_set_vmdq_queues(struct wx *wx)
+ 	/* Add starting offset to total pool count */
+ 	vmdq_i += wx->ring_feature[RING_F_VMDQ].offset;
+ 
+-	if (wx->mac.type == wx_mac_sp) {
++	if (test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags)) {
+ 		/* double check we are limited to maximum pools */
+ 		vmdq_i = min_t(u16, 64, vmdq_i);
+ 
+@@ -1693,7 +1693,7 @@ static void wx_set_rss_queues(struct wx *wx)
+ 
+ 	/* set mask for 16 queue limit of RSS */
+ 	f = &wx->ring_feature[RING_F_RSS];
+-	if (wx->mac.type == wx_mac_sp)
++	if (test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags))
+ 		f->mask = WX_RSS_64Q_MASK;
+ 	else
+ 		f->mask = WX_RSS_8Q_MASK;
+@@ -1853,7 +1853,7 @@ static bool wx_cache_ring_vmdq(struct wx *wx)
+ 	if (!test_bit(WX_FLAG_VMDQ_ENABLED, wx->flags))
+ 		return false;
+ 
+-	if (wx->mac.type == wx_mac_sp) {
++	if (test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags)) {
+ 		/* start at VMDq register offset for SR-IOV enabled setups */
+ 		reg_idx = vmdq->offset * __ALIGN_MASK(1, ~vmdq->mask);
+ 		for (i = 0; i < wx->num_rx_queues; i++, reg_idx++) {
+@@ -2354,10 +2354,10 @@ void wx_configure_vectors(struct wx *wx)
+ 
+ 	if (pdev->msix_enabled) {
+ 		/* Populate MSIX to EITR Select */
+-		if (wx->mac.type == wx_mac_sp) {
++		if (test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags)) {
+ 			if (wx->num_vfs >= 32)
+ 				eitrsel = BIT(wx->num_vfs % 32) - 1;
+-		} else if (wx->mac.type == wx_mac_em) {
++		} else {
+ 			for (i = 0; i < wx->num_vfs; i++)
+ 				eitrsel |= BIT(i);
+ 		}
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_sriov.c b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
+index 52e6a6faf715..16c8fb246c41 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
+@@ -106,7 +106,7 @@ static int __wx_enable_sriov(struct wx *wx, u8 num_vfs)
+ 		wx->vfinfo[i].xcast_mode = WXVF_XCAST_MODE_NONE;
+ 	}
+ 
+-	if (wx->mac.type == wx_mac_em) {
++	if (!test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags)) {
+ 		value = WX_CFG_PORT_CTL_NUM_VT_8;
+ 	} else {
+ 		if (num_vfs < 32)
+@@ -599,10 +599,10 @@ static int wx_set_vf_vlan_msg(struct wx *wx, u32 *msgbuf, u16 vf)
+ 		if (VMDQ_P(0) < 32) {
+ 			bits = rd32(wx, WX_PSR_VLAN_SWC_VM_L);
+ 			bits &= ~BIT(VMDQ_P(0));
+-			if (wx->mac.type != wx_mac_em)
++			if (test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags))
+ 				bits |= rd32(wx, WX_PSR_VLAN_SWC_VM_H);
+ 		} else {
+-			if (wx->mac.type != wx_mac_em)
++			if (test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags))
+ 				bits = rd32(wx, WX_PSR_VLAN_SWC_VM_H);
+ 			bits &= ~BIT(VMDQ_P(0) % 32);
+ 			bits |= rd32(wx, WX_PSR_VLAN_SWC_VM_L);
+@@ -848,7 +848,7 @@ void wx_disable_vf_rx_tx(struct wx *wx)
+ {
+ 	wr32(wx, WX_TDM_VFTE_CLR(0), U32_MAX);
+ 	wr32(wx, WX_RDM_VFRE_CLR(0), U32_MAX);
+-	if (wx->mac.type != wx_mac_em) {
++	if (test_bit(WX_FLAG_MULTI_64_FUNC, wx->flags)) {
+ 		wr32(wx, WX_TDM_VFTE_CLR(1), U32_MAX);
+ 		wr32(wx, WX_RDM_VFRE_CLR(1), U32_MAX);
+ 	}
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index 5f024f5ac3a6..6563d30e60c5 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -1184,6 +1184,7 @@ struct vf_macvlans {
+ };
+ 
+ enum wx_pf_flags {
++	WX_FLAG_MULTI_64_FUNC,
+ 	WX_FLAG_SWFW_RING,
+ 	WX_FLAG_VMDQ_ENABLED,
+ 	WX_FLAG_VLAN_PROMISC,
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index ea0b1cb721c8..0c81d8fc2f7d 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -318,6 +318,7 @@ static int txgbe_sw_init(struct wx *wx)
+ 	wx->configure_fdir = txgbe_configure_fdir;
+ 
+ 	set_bit(WX_FLAG_RSC_CAPABLE, wx->flags);
++	set_bit(WX_FLAG_MULTI_64_FUNC, wx->flags);
+ 
+ 	/* enable itr by default in dynamic mode */
+ 	wx->rx_itr_setting = 1;
+-- 
+2.48.1
+
