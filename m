@@ -1,75 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7603136351;
-	Wed, 21 May 2025 22:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE7121E0A2
+	for <netdev@vger.kernel.org>; Wed, 21 May 2025 22:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747866668; cv=none; b=oBhOeCuYusJY8HoZrli56bIQmOu5poX19iT4zIJg8wwsM/cipTz3KL1bvWbLCLOPS6N8qUUoGL88oa6CWv1cEUpjzGyb5NFYMji0sSuE5OpQoxlxCzvOvn3MENU7v8OY0usfRdHlO7Pi/DUGI5gL09NKuQpe3lV1sIUwx2L3CNU=
+	t=1747867808; cv=none; b=QkF7OkwbeooxwvKJbqjputUanTswAP5uuqhVSQZrjIwmSOfH+Ik7NHksaz1JdNiN4nVSKhjR3GZJ7VO6MvPb0hvMPe+RWXkQAURWcyvw/LafOQ0cERLnM+obalbWObl6SzkbhxoFqjI/7rbfiViYWVS2vRUWihWe0rXRJuTEwPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747866668; c=relaxed/simple;
-	bh=mfOAhsIWu5Z4ODKpt4UPUgtiPYOuu8DX97OEMhASu5k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bR1h5Uh1qNpyvquQDJpb2AX8AyNkgriQZDStu1a+OH2hRvJtPio3eMjwLzkLK6C3udAkxrr6rFeunkXP0SnVNkOAjqvRwlHnnEHoNIREgGfcaeU4UziUZi1RWHQjj/1urbLw6XbavDosCxgapUZGUREwOgNSWQbEsire9TMUmYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YUL1rEPi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747867808; c=relaxed/simple;
+	bh=PwPXXXwBJaEV2MVtNYm3cPTrYLT81D063IYtc8CMTy8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=TzsOSq5YM3fzjLUDAOOhG6Vi2IQiQ/a3KS+hYWuuBee5CKIKZ6tga5mLQeli/7BxqwsAqTjQQd43SAek47sTW4iBoiBaEqSTLYNOM21yBTGc/qf16tpsrc0XEb0LZIw7o0MR7tgthJvvuvpvGcYESHTrPQBAdX3itq84yVFoRYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c/zCTlo+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YUL1rEPi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4ECAC4CEE4;
-	Wed, 21 May 2025 22:31:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c/zCTlo+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8750AC4CEE4;
+	Wed, 21 May 2025 22:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747866668;
-	bh=mfOAhsIWu5Z4ODKpt4UPUgtiPYOuu8DX97OEMhASu5k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YUL1rEPiwYnxwoN2OoAyzyGKm8BCc9d95twKiFTPMjfwdhNs5O2OzAKgdb8ggXx+3
-	 UJiiGWdX8UGQF+BSkt90/59AgI8walNx9x2AQHDpLL6v31o58OakNpvNuYrxw7/H66
-	 Md7q30GtamKasCWvDXPkncYzrf3diBC8u9KQIrQHiynVAUP8QrLDeedNCm+3GPzwx1
-	 wAX/VZbfZKn7ZiUszLGlKGGvFyNSua/3rSUb+pQcHuLFvji6290jC5Nco3RgaxFLcU
-	 qSJU78yAn1eGghCTO5w0m97NsTZKckEebotvqAqFQilRdHfd422dwk7Iu4+cEPRn+Z
-	 egpA0kYk8H4hg==
-Date: Wed, 21 May 2025 15:31:07 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Stanislav Fomichev <stfomichev@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, skalluru@marvell.com, manishc@marvell.com,
- andrew+netdev@lunn.ch, michael.chan@broadcom.com,
- pavan.chebbi@broadcom.com, ajit.khaparde@broadcom.com,
- sriharsha.basavapatna@broadcom.com, somnath.kotur@broadcom.com,
- anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- tariqt@nvidia.com, saeedm@nvidia.com, louis.peens@corigine.com,
- shshaikh@marvell.com, GR-Linux-NIC-Dev@marvell.com, ecree.xilinx@gmail.com,
- horms@kernel.org, dsahern@kernel.org, ruanjinjie@huawei.com,
- mheib@redhat.com, linux-kernel@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org,
- oss-drivers@corigine.com, linux-net-drivers@amd.com, leon@kernel.org
-Subject: Re: [PATCH net-next 2/3] udp_tunnel: remove rtnl_lock dependency
-Message-ID: <20250521153107.150f01e1@kernel.org>
-In-Reply-To: <aC4FK0fmUoaXYt4k@mini-arch>
-References: <20250520203614.2693870-1-stfomichev@gmail.com>
-	<20250520203614.2693870-3-stfomichev@gmail.com>
-	<20250521073401.67fbd1bc@kernel.org>
-	<aC4FK0fmUoaXYt4k@mini-arch>
+	s=k20201202; t=1747867808;
+	bh=PwPXXXwBJaEV2MVtNYm3cPTrYLT81D063IYtc8CMTy8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=c/zCTlo+CS8VR77sfMTZo4Nd4rkV1D5JKNHpwgm5XWM1dkdiEBpFShG8F3YK8ZkVV
+	 4d7tKckL60fBrHX/Kigliym3cCpr4KKbtWvkOvkAsIBnmOgvK2OffDMDv/EhaaK+pQ
+	 8efRsKDBU3D3ts2r1vJojg40QlGp+66L86XshAUZ77k0QLBLF7drFbjhjG2AFIzWGF
+	 0AlnTJv7G4/vjPwtTqE0r3QWZhB4SwZmE5W4hoB89JTDof0CGvfcDqB5eG0EI7CjwB
+	 0691UUCFtzJHfHJXS8qIiWGNRTNkpeAjruZwZM/mjXaFtmwn2ay2UqzJFETP6aW6rX
+	 3r0tRJez7B/ww==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 71009380CEEF;
+	Wed, 21 May 2025 22:50:45 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2 00/12] tools: ynl-gen: add support for "inherited"
+ selector and therefore TC
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174786784426.2306436.10410311936016337174.git-patchwork-notify@kernel.org>
+Date: Wed, 21 May 2025 22:50:44 +0000
+References: <20250520161916.413298-1-kuba@kernel.org>
+In-Reply-To: <20250520161916.413298-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ donald.hunter@gmail.com, jacob.e.keller@intel.com, sdf@fomichev.me,
+ jstancek@redhat.com, kory.maincent@bootlin.com
 
-On Wed, 21 May 2025 09:54:03 -0700 Stanislav Fomichev wrote:
-> > >  enum udp_tunnel_nic_info_flags {
-> > > -	/* Device callbacks may sleep */
-> > > -	UDP_TUNNEL_NIC_INFO_MAY_SLEEP	= BIT(0),  
-> > 
-> > Could we use a different lock for sleeping and non-sleeping drivers?  
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 20 May 2025 09:19:04 -0700 you wrote:
+> Add C codegen support for constructs needed by TC, namely passing
+> sub-message selector from a lower nest, and sub-messages with
+> fixed headers.
 > 
-> We can probably do it if we reorder the locks (as you ask/suggest
-> below). Overall, I'm not sure I understand why we want to have two
-> paths here. If we can do everything via work queue, why have a separate
-> path for the non-sleepable callback? (more code -> more bugs)
+> v2:
+>  - [patch  1] new
+>  - [patch  8] small refactor
+>  - [patch 10] add more includes to build on Ubuntu 22.04 system headers
+> 
+> [...]
 
-I think when I was pulling this code out of the drivers I was trying 
-to preserve the fast path for drivers which don't have to sleep.
-But if some drivers are okay with the wq then the mechanism must work,
-so I guess you're right, it should be fine to make all go via wq.
+Here is the summary with links:
+  - [net-next,v2,01/12] tools: ynl-gen: add makefile deps for neigh
+    (no matching commit)
+  - [net-next,v2,02/12] netlink: specs: tc: remove duplicate nests
+    https://git.kernel.org/netdev/net-next/c/e9033a846eb9
+  - [net-next,v2,03/12] netlink: specs: tc: use tc-gact instead of tc-gen as struct name
+    https://git.kernel.org/netdev/net-next/c/eb1f803f9851
+  - [net-next,v2,04/12] netlink: specs: tc: add C naming info
+    https://git.kernel.org/netdev/net-next/c/f9aec8025ab5
+  - [net-next,v2,05/12] netlink: specs: tc: drop the family name prefix from attrs
+    https://git.kernel.org/netdev/net-next/c/ba5a199b2401
+  - [net-next,v2,06/12] tools: ynl-gen: support passing selector to a nest
+    https://git.kernel.org/netdev/net-next/c/cb39645d9a6a
+  - [net-next,v2,07/12] tools: ynl-gen: move fixed header info from RenderInfo to Struct
+    https://git.kernel.org/netdev/net-next/c/a66a170b68af
+  - [net-next,v2,08/12] tools: ynl-gen: support local attrs in _multi_parse
+    https://git.kernel.org/netdev/net-next/c/092b34b93735
+  - [net-next,v2,09/12] tools: ynl-gen: support weird sub-message formats
+    https://git.kernel.org/netdev/net-next/c/4e9806a8f494
+  - [net-next,v2,10/12] tools: ynl: enable codegen for TC
+    https://git.kernel.org/netdev/net-next/c/e06c9d25159c
+  - [net-next,v2,11/12] netlink: specs: tc: add qdisc dump to TC spec
+    https://git.kernel.org/netdev/net-next/c/33baf6f73a7c
+  - [net-next,v2,12/12] tools: ynl: add a sample for TC
+    (no matching commit)
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
