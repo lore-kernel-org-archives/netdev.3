@@ -1,100 +1,139 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C24236A70
-	for <netdev@vger.kernel.org>; Wed, 21 May 2025 08:57:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6798E238D56
+	for <netdev@vger.kernel.org>; Wed, 21 May 2025 08:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747817839; cv=none; b=Rk6Elb8PJTs1pAkOFs7z4cU3PWYK9MM/xa8eYDEzA7LfZLJmWpeMy0ncHZ5t3fvtqAu6b0xyO9Q+PIttA52j0V0GB49cg4yomEsHIciAt6EtbYVt1Lj3g46xEq6frrfnHtne2vofLVKkIcEn31rMfpX7V3W+Py5AnVgyyl/gRFM=
+	t=1747817936; cv=none; b=ezKxn3dz8ctGjVj74wtumzJjyCijDp5P1u9Y+PwY8fVveCxUpQxlZBVQ410pxqRKXn8flDLz7Q8I2dxkaT8Xj/hCVAmpYLqMCBBy9DqXvoWptOGXXFcz/uvmmuZqkb+Z33WB5W6oSjbpvitWUlNArRMiGkJZ9Gox9iCkv1lb1tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747817839; c=relaxed/simple;
-	bh=CuiAzH8TWBQ6hsj1XQd5STMsT5oYgE3ZD+GMYGuQ7p8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SSaUt+M+cbkZGf9nleWfryDsckvgUgbefz93ct58yAiPsSPHoKY8ELUhtyhLMd+ddQrlVJA2hJjcFG+HUmZumTfiQUcIfuWrELCfDHGFqX9nEnU0AJMCIz+3LcefQauAfNIC0g4VjwHZkQjFMuLGMCW20qwHuOfYzF/2hHovm0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CHO0BeDM; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747817936; c=relaxed/simple;
+	bh=thJ7ueoFNpIdnDT3hVYMlZ4dOo2TwzqeL+wDkr8GQDA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EBqvOLAbG5Tn2wAcs4Qa6FlCsz7/qjNQFxMf62/Sn7cODZus7wPhmJRG/y91JqkIKLqt5uujwJmhJ8hJwLJn+NSBSgjRvPBPP6RUrTiNdLw3NBni/c7tTovsT3H9rEyhiJ34ABxRWhvIWrlySoWlyMIdRmZy8+O87Zxzw9j9uEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qlVqA6Qz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CHO0BeDM"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b0db0b6a677so5623266a12.2
-        for <netdev@vger.kernel.org>; Wed, 21 May 2025 01:57:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747817835; x=1748422635; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=N387pxHdVSd/OCAm1SX+gl4E1/rug0lWTP4/Ovt1H+c=;
-        b=CHO0BeDMALOqONbPGLSROmOAN+twMMcjWUMK6ikvTDiDoBBlhFTxNYnVyuJhCEchxL
-         FRWBsfEQEgi0hmKV9vtZerBeN39/kiv7MeqCcIebjHCvwY4PpkOhvCoMHAWa8ngWjAYX
-         iVQOXSowfkDAjDRPBHrdlhMuzOASb1TlPssv6RTJv8S/P2eu/vOJRKGDXM2tmMFE+eGu
-         3PKJtJS2dOFh4G32zkDXMeGpncAcisoMdDUWzg7SWXcdvfbRKIqeqSsfY5dyYgGYwaTr
-         6NpRLcfoEEekN27v+DkK2ljExVaXZ0qq64TuBqyls9vhcpYPj6Exosf1z6Hmjr3cuPIm
-         wTag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747817835; x=1748422635;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=N387pxHdVSd/OCAm1SX+gl4E1/rug0lWTP4/Ovt1H+c=;
-        b=XrSQpbxlWcKstt+arD/Qx0aPe+TpA5bor1D2m9AzhIupOx7B7nCZNO6+wfFsaq6qxr
-         ggmFcnNRAZVyX/G+7T12fpHr+laGd0pmx4+LuPoApCu+/Yl1Z+dVZof3aBT0ttf7j8S5
-         KhzlO1BeoqtbdGM/FrdXzAs0sXx5+E+s+LMWW9HkXmw6dQ7hr0mr4CV/vywSH6SUV5tm
-         oCAi4F7AsdpCVPHw6NY44o7jR0Ki6Jb4Hr1znVo2hCs+xPGhM8mMn9mqtV1AEmJ3y7Le
-         C1qguWsaWjp845m9gUpfI7x+/LSC+kuFAlru9wGkP9Tf7Gv+Th2xrKUWBm2nehQn71a8
-         OdGQ==
-X-Gm-Message-State: AOJu0Yw8xO+nz1Llr/vcb4vW36r+bjNTxoTqA+XBJCCI615ZesWrHEyd
-	mc1QOWNU0MMXZVoFraxby8MaQzUQnI7GfD0uFbVKkGq/FN2w89JXoEtPQdSrcQ==
-X-Gm-Gg: ASbGnctFfsS85jj/kEDUbqjfYc3JME9zb2LDnrthjp8z9i56nqIk1v2Mobr/WVPuzP8
-	pumOMXszsmfracuCdQ5Ntx5ol56NG28QDzP6Acz2ZjNMQJEWYkVbcsvssopWo7QnpHSvNzvQD4o
-	Q2NbF4/zY4qNlpYQtCneh0CeIN/YvI3W78n+0QXI27qkPrBly+m3r1tjh+t8faK0HAVIL7ObfnX
-	90LMPmL0zGd86DvY1XnPgoRtqm/86d3PnfMDNrYRDRDLqzPLDtMmoKgW4c636nZESHwp4wZeUqq
-	Xyqy0dh2GBqz88WGK1VrWLGdd0NZKCMQqNZHsUmPBet8/WwkhXUvYMHUCZiuOf427PFNVGMwigV
-	cww==
-X-Google-Smtp-Source: AGHT+IFrHANQwPoEscKBHncbptskBNmqwsabtBklfD3HDRcV94tEDBU/UX7+kJ5CUcfjf8t/ARW+WQ==
-X-Received: by 2002:a17:903:41cc:b0:215:a179:14ca with SMTP id d9443c01a7336-231d43dcc65mr266271375ad.2.1747817834532;
-        Wed, 21 May 2025 01:57:14 -0700 (PDT)
-Received: from minh.192.168.1.1 ([2001:ee0:4f0e:fb30:3140:a3fe:81b6:f3a6])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-231d4ac9fbdsm88877335ad.50.2025.05.21.01.57.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 May 2025 01:57:13 -0700 (PDT)
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Bui Quang Minh <minhquangbui99@gmail.com>
-Subject: [PATCH net-next] xsk: add missing virtual address conversion for page
-Date: Wed, 21 May 2025 15:56:33 +0700
-Message-ID: <20250521085633.91565-1-minhquangbui99@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qlVqA6Qz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74656C4CEE4;
+	Wed, 21 May 2025 08:58:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747817935;
+	bh=thJ7ueoFNpIdnDT3hVYMlZ4dOo2TwzqeL+wDkr8GQDA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qlVqA6Qzo2o/gIDllg+3y2w0ifELKPTUZug1Q1lkDN/qXHK0yDzX4+w+5+LLk0kxO
+	 BapqunvNSTXXEr0qvvhA4W4yirdtSKbqp+NmWIM4PLOH3PBetFBnldIOv2ahAu2eRa
+	 jKcweKkOUPhP5ZFXU5MYLOhgMOzL1O8dLO6m2apGTZLPe2W3TH7w+qaLyQT0xQo3fa
+	 yUEct5QzxGPr4uibPgK7s/YMHnbycmkTK1tAWHasQMC3+Mc1AdDjna5EzYBTNKvva7
+	 CDhrftW7B1fF6VCyKBRWUlzfFk8aLTid921lt6WuDZHfPamuoIsXr9n7U4Xbw0Golx
+	 bBA/JxA6KgoDA==
+Date: Wed, 21 May 2025 09:58:51 +0100
+From: Simon Horman <horms@kernel.org>
+To: Krishna Kumar <krikku@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com, edumazet@google.com,
+	intel-wired-lan@lists.osuosl.org, andrew+netdev@lunn.ch,
+	kuba@kernel.org, pabeni@redhat.com, sridhar.samudrala@intel.com,
+	ahmed.zaki@intel.com, krishna.ku@flipkart.com
+Subject: Re: [PATCH v2 net] net: ice: Perform accurate aRFS flow match
+Message-ID: <20250521085851.GQ365796@horms.kernel.org>
+References: <20250520170656.2875753-1-krikku@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250520170656.2875753-1-krikku@gmail.com>
 
-In commit 7ead4405e06f ("xsk: convert xdp_copy_frags_from_zc() to use
-page_pool_dev_alloc()"), when converting from netmem to page, I missed a
-call to page_address() around skb_frag_page(frag) to get the virtual
-address of the page. This commit uses skb_frag_address() helper to fix
-the issue.
+On Tue, May 20, 2025 at 10:36:56PM +0530, Krishna Kumar wrote:
+> This patch fixes an issue seen in a large-scale deployment under heavy
+> incoming pkts where the aRFS flow wrongly matches a flow and reprograms the
+> NIC with wrong settings. That mis-steering causes RX-path latency spikes
+> and noisy neighbor effects when many connections collide on the same
+> hash (some of our production servers have 20-30K connections).
+> 
+> set_rps_cpu() calls ndo_rx_flow_steer() with flow_id that is calculated by
+> hashing the skb sized by the per rx-queue table size. This results in
+> multiple connections (even across different rx-queues) getting the same
+> hash value. The driver steer function modifies the wrong flow to use this
+> rx-queue, e.g.: Flow#1 is first added:
+>     Flow#1:  <ip1, port1, ip2, port2>, Hash 'h', q#10
+> 
+> Later when a new flow needs to be added:
+> 	    Flow#2:  <ip3, port3, ip4, port4>, Hash 'h', q#20
+> 
+> The driver finds the hash 'h' from Flow#1 and updates it to use q#20. This
+> results in both flows getting un-optimized - packets for Flow#1 goes to
+> q#20, and then reprogrammed back to q#10 later and so on; and Flow #2
+> programming is never done as Flow#1 is matched first for all misses. Many
+> flows may wrongly share the same hash and reprogram rules of the original
+> flow each with their own q#.
+> 
+> Tested on two 144-core servers with 16K netperf sessions for 180s. Netperf
+> clients are pinned to cores 0-71 sequentially (so that wrong packets on q#s
+> 72-143 can be measured). IRQs are set 1:1 for queues -> CPUs, enable XPS,
+> enable aRFS (global value is 144 * rps_flow_cnt).
+> 
+> Test notes about results from ice_rx_flow_steer():
+> ---------------------------------------------------
+> 1. "Skip:" counter increments here:
+>     if (fltr_info->q_index == rxq_idx ||
+> 	arfs_entry->fltr_state != ICE_ARFS_ACTIVE)
+> 	    goto out;
+> 2. "Add:" counter increments here:
+>     ret = arfs_entry->fltr_info.fltr_id;
+>     INIT_HLIST_NODE(&arfs_entry->list_entry);
+> 3. "Update:" counter increments here:
+>     /* update the queue to forward to on an already existing flow */
+> 
+> Runtime comparison: original code vs with the patch for different
+> rps_flow_cnt values.
+> 
+> +-------------------------------+--------------+--------------+
+> | rps_flow_cnt                  |      512     |    2048      |
+> +-------------------------------+--------------+--------------+
+> | Ratio of Pkts on Good:Bad q's | 214 vs 822K  | 1.1M vs 980K |
+> | Avoid wrong aRFS programming  | 0 vs 310K    | 0 vs 30K     |
+> | CPU User                      | 216 vs 183   | 216 vs 206   |
+> | CPU System                    | 1441 vs 1171 | 1447 vs 1320 |
+> | CPU Softirq                   | 1245 vs 920  | 1238 vs 961  |
+> | CPU Total                     | 29 vs 22.7   | 29 vs 24.9   |
+> | aRFS Update                   | 533K vs 59   | 521K vs 32   |
+> | aRFS Skip                     | 82M vs 77M   | 7.2M vs 4.5M |
+> +-------------------------------+--------------+--------------+
+> 
+> A separate TCP_STREAM and TCP_RR with 1,4,8,16,64,128,256,512 connections
+> showed no performance degradation.
+> 
+> Some points on the patch/aRFS behavior:
+> 1. Enabling full tuple matching ensures flows are always correctly matched,
+>    even with smaller hash sizes.
+> 2. 5-6% drop in CPU utilization as the packets arrive at the correct CPUs
+>    and fewer calls to driver for programming on misses.
+> 3. Larger hash tables reduces mis-steering due to more unique flow hashes,
+>    but still has clashes. However, with larger per-device rps_flow_cnt, old
+>    flows take more time to expire and new aRFS flows cannot be added if h/w
+>    limits are reached (rps_may_expire_flow() succeeds when 10*rps_flow_cnt
+>    pkts have been processed by this cpu that are not part of the flow).
+> 
+> Changes since v1:
+>   - Added "Fixes:" tag and documented return values.
+>   - Added @ for function parameters.
+>   - Updated subject line to denote target tree (net)
 
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
----
- net/core/xdp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Thanks for the updates, much appreciated.
 
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index e6f22ba61c1e..491334b9b8be 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -709,8 +709,7 @@ static noinline bool xdp_copy_frags_from_zc(struct sk_buff *skb,
- 			return false;
- 		}
- 
--		memcpy(page_address(page) + offset,
--		       skb_frag_page(frag) + skb_frag_off(frag),
-+		memcpy(page_address(page) + offset, skb_frag_address(frag),
- 		       LARGEST_ALIGN(len));
- 		__skb_fill_page_desc_noacc(sinfo, i, page, offset, len);
- 
--- 
-2.43.0
+I don't think it is necessary to repost because of this, but for future
+reference, these days it is preferred to place change information, like
+that immediately above, below the scissors ("---"). That way it is visible
+to reviewers and appears in mailing list archives and so on.  But it is
+omitted from git history, as there the commit message is truncated at the
+scissors.
+
+> Fixes: 28bf26724fdb0 ("ice: Implement aRFS")
+> Signed-off-by: Krishna Kumar <krikku@gmail.com>
+
+Reviewed-by: Simon Horman <horms@kernel.org>
 
