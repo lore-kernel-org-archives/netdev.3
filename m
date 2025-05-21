@@ -1,187 +1,188 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150B214A627
-	for <netdev@vger.kernel.org>; Wed, 21 May 2025 14:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C2C1A238C;
+	Wed, 21 May 2025 14:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747838505; cv=none; b=t4iwWp4KpmGaqfn4KBRiVsITkmuEpWnAifZxQPvixY9Ht4zaXeC7j7vfmVdZERAk3m5XwgiMznW6wMY33VMqCFrHUMJEl69b2HPRMPm6tnCJLwInLqZlYteZua+Eeaj2wataIBHwXeIwqbhKxvlZd3iEQxRlNchDWXcRdhy2n+w=
+	t=1747838882; cv=none; b=IBOdctav1fug6+uFaxltksLqUDWt2nGOd8bCHY/hub1v5F/D8et4msvPC2lZzjM0+PPX/6Fv4BuIdUXrHQ5SX7lXMb83FEatI+YI2nFPh22N88wgQMI1yZcMcjAFprLuG8Me7kvUprJm8Hmuy+MgPg3xtzKF+tEmpyce0JafXZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747838505; c=relaxed/simple;
-	bh=fJrz4e1Ti/Jt27bWzNcWF73I0K+Q9z0Ka+LDgDGAiMg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A6onmz/fosdBU/v2e+XnW68JuP0XJx+W5iefD4HdtQAeCpINjM8rmqV81XDSwJ91lvTUmKcRUo6lADuzkxOUUBQLcTWRXFqsx21bLYzLF5I8y2hLZrZHz0rzkdRLi0DZcvBfwxRpH+GSzGktLq18tIRszSYAhx7/ChVV/yWfunQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cEd/FJqj; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1747838882; c=relaxed/simple;
+	bh=Rn3mYP0b/ZcUFOZcI5aIq2hbO3SAa8ACPra/X3wtOck=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u4/vBD/S8z681RnfgYIQ9EMuo35whpVuHcabi7eDqHpadWPwEWLHDkuFSeeL9TTL3lfqHBomR0nitGtzhLOalcc2A3XIUkS03QakV59NHEomQljla1dtyqQZ5odlR0W95mD5UM8hUJRPaM78OZvNVKbM5MrvWkvn891cOQ0nsw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jfaWaNcG; arc=none smtp.client-ip=209.85.217.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cEd/FJqj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747838503;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mDesXKTayHxGjIGY1j8G0o6g9UGYHXMrYuHHOq5gQRI=;
-	b=cEd/FJqjuEwN+FiBB+vAgcFNTKcrRa7ndIC45HqR0iO+wN0X2OJcC2U4HgAdIOsTSBgTF1
-	jWIsZytTPHvrJJ0Q+v8b1MmoDwndSkAmWY07tJJpssOfKltofYXEwvAJ6/1lN65X2a/rom
-	TnypONEuRrap9YkOyNGHDc4exmq1jdA=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-OeGvqQFCN82wrSjPQWM5fg-1; Wed, 21 May 2025 10:41:41 -0400
-X-MC-Unique: OeGvqQFCN82wrSjPQWM5fg-1
-X-Mimecast-MFC-AGG-ID: OeGvqQFCN82wrSjPQWM5fg_1747838501
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-60211a1705dso2022563a12.2
-        for <netdev@vger.kernel.org>; Wed, 21 May 2025 07:41:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jfaWaNcG"
+Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-4e1432aaa68so4145834137.1;
+        Wed, 21 May 2025 07:48:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747838879; x=1748443679; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ek0ujVFI+XdYX8gezk+looLrZ/N+e9mNbznFBtm+po0=;
+        b=jfaWaNcGPkDdKW1XZQ5ACWCHbbk5AfnpqM/L2sOnR3bl1IiHJqnfMxM58xXMZ5AB6q
+         YgR0lM606DVlDelCPDd+idhTPkCYKi5p85W+UblIILczog4m0ouY3Y5sl0ALxUVTccoi
+         tw3tm6uGP8L7WXSl2AGN7jNpSLSxvwZtp+zXG9y+kvpvGQGed18yN2s08btTwFA/I50u
+         HrguLYWS945hByckBy7DvXYwZ/QNHPsw5hqmp1dqOCO58Lno1NVMMMLaDA36m2fxmkC1
+         zeRkVS10WGk0L/3OLYHsQLogomerqekllO/PVIRoyYUJVT06OS9Jzp3eq7GhDf8hasYv
+         ttqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747838500; x=1748443300;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mDesXKTayHxGjIGY1j8G0o6g9UGYHXMrYuHHOq5gQRI=;
-        b=CIOSbSLmimNHgOgM9t+yR/kwaQ+Mp5Y12j/wvlohEFGXNreXheRSGfaQFANHhNgYqb
-         IltgHNaGLoZt71MOqKeKJwGMBjBiTrtF17qPpdcfoW5ODhHK1C8QAH2F3zs81/yFJ+1y
-         nKWeMZGnC8VUUvBl7yZshdhfigR8YyvUYdelaI+D7GtDwbWbt2yWYFzwdcZNPkI4lS90
-         EZqovqBW7vTtxKGeUI/bsZ1WIr/7IBmlF61L9Wo8benz+32GM4ygBIKkFIr/HgmQjT+q
-         o19f8+sOgV9/4zhF5F7qFVPdVJ41YqkV+QuBraMgR3o8GkpS3IN21sZpwkmrU81gPt5i
-         mKFw==
-X-Forwarded-Encrypted: i=1; AJvYcCV7BqrglM7+phEBDzPRndCJauWA+pI8wSnqi4lmwVci6O2Xv1SUg5QaTI9q0fZSGFD1c3ZUzck=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yws3dC5bPdFKzFSxjQZ/8QUPD7MCbJeu453ANnJYiXTg/bhLJ/K
-	TBMkcaMErYRulN3AeIRumSxTrgVjcFL5Yn2y/4Uw67CrhmRcFT5nPcN41V3Ydt9C+JTM1tCsdWe
-	VEEfFvBuRiZLhyme6OD/tZ5MlFS6+/VV2esx9FH4Wfcq4YhGr9Gopbc9CBQ==
-X-Gm-Gg: ASbGncsw+tKKnwyUgtHXXfgi+dljM+GTdco3eaRAxUp+11hd4oDhOuHcwhPCeBJpYnP
-	S/Dsdr6lF3NixDdhdsk82NloWZ7C3Sw/vM4VUzjGnfVyhclrBeVd1kiM082p017jYEFOFqFgjcz
-	4lfgI1hQHJiDvgd86EwDQWEP95TpTpCQ258RehhvR2cHBM9Ht6C4E6C833FHOmecvTv5bPZqxTa
-	ZZc9kGZ77GI9f88H3A179RyfTsecUU05AcBK0hwkDnlrX5eKhZCrXdOOdnOMC0ap/X8t7MDDC6a
-	5uwdkW7OmxU7argEWlBvaJvQuywVp/qYxiBb/cOEsFaZCE/e8GpZhcmlOIzh
-X-Received: by 2002:a17:907:e916:b0:ace:c59c:1b00 with SMTP id a640c23a62f3a-ad52d42dc34mr1768467066b.5.1747838500580;
-        Wed, 21 May 2025 07:41:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE66RxXKL2W6d/q5voawNHWMt+eYxa0BkwW3PNFANgomMqz2eIeLzBYh2MlVa3aFRZzUSRf1g==
-X-Received: by 2002:a17:907:e916:b0:ace:c59c:1b00 with SMTP id a640c23a62f3a-ad52d42dc34mr1768463566b.5.1747838499992;
-        Wed, 21 May 2025 07:41:39 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-134-35.retail.telecomitalia.it. [82.53.134.35])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d06dfa4sm914996266b.57.2025.05.21.07.41.38
+        d=1e100.net; s=20230601; t=1747838879; x=1748443679;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ek0ujVFI+XdYX8gezk+looLrZ/N+e9mNbznFBtm+po0=;
+        b=nbdYfRUJU/f3do0ZmtbXvthpMdIkBoMniahfTYDwn/XIfzZOgmAeetkeU9tU6YDc+E
+         sxgsDaLcH5XYymj9s1WqvtdwmUzR5SNpvQyPYSXESWZoYzATswREpBMNSUfTYHQG05+U
+         WcFAN+bx0Q46UCF0DAA6M2VQGJJYAnpG3q/z9VopLDBemQvbA308rdP5vGOoIltBq7cn
+         1PgJr56W+TBQA4Myfm4NL1TZvDpjmym5jL0EjxFJ4e3pGEgUX5Rn6M/85PhxyliCHdlS
+         nuGGbWFr4FNPNLlu+BfWqK3tTROiEzo5g+imxj0ZJuQ+fKF+RRlkwQtgEjx0roy1ngpS
+         zIJA==
+X-Forwarded-Encrypted: i=1; AJvYcCW+i2bO7lKy/LBIMg7AJ/z++gDHoXAKfqU/NTFSvNA84ggnP9GzyMjSjUOCPtTpMTXZCyFSeV0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvFFZGUoVtz2aqQ+kPvHYmDUSbKI9KCWdpEExrJKKotAcafHSr
+	0CGfQlM0gQANQUZIcw4bipHTEjnQQuGxXgwUOTHQ3WZmMi6XAEqxJfpG
+X-Gm-Gg: ASbGncu9iZrdFyrEVQaPZl9BlLwd2+7BIAbtDDmw8FVCcvnmontkJSiL+rmHjlEDeIY
+	p0edUJicIJsOA+m1y8Pw3JNSPFeFbcaIVPUt74Qs59mJjCjCHeRGYIkp76fPcEG4KlQyFgnBtu+
+	pwfg4vSrn0vmZ8zLI6ZV90gdy9YBbppyB8OGnHYAJaGaK3gY1lWNTrm4mdPMnZA+eB3VGldPrx+
+	5FgV9h2FmOtMF91y4xLjRMYcSjndhpjVHb+fbPuhWqS+1CEIHrYGLwKmUl91f2lcakR3iWIu/4L
+	jTEfgOLvkxgxHCaUBRgeSuiK8zsxOynZIjFTJu3ZIpuJED/MubA6e6oRqnTjKj4+XtnCTJ3AuDR
+	KGDyMZ/BlHl5g6EK+vI/wqHPO1ju+Ol8=
+X-Google-Smtp-Source: AGHT+IGkihi6pehUX1WcycRNIjiLjc5FvZZCJGNnbkwxFqKaEZNSnJcATPon5olaX/n261PVA82Yyw==
+X-Received: by 2002:a05:6102:3f9f:b0:4bb:e80b:473d with SMTP id ada2fe7eead31-4dfa6b6c352mr18831586137.6.1747838879404;
+        Wed, 21 May 2025 07:47:59 -0700 (PDT)
+Received: from lvondent-mobl5.. (syn-050-089-067-214.res.spectrum.com. [50.89.67.214])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-87bec155e2csm9060834241.16.2025.05.21.07.47.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 May 2025 07:41:39 -0700 (PDT)
-Date: Wed, 21 May 2025 16:41:34 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [PATCH net-next v5 4/5] vsock/test: Introduce enable_so_linger()
- helper
-Message-ID: <3uci6mlihjdst7iksimvsabnjggwpgskbhxz2262pmwdnrq3lx@v2dz7lsvpxew>
-References: <20250521-vsock-linger-v5-0-94827860d1d6@rbox.co>
- <20250521-vsock-linger-v5-4-94827860d1d6@rbox.co>
+        Wed, 21 May 2025 07:47:58 -0700 (PDT)
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+To: davem@davemloft.net,
+	kuba@kernel.org
+Cc: linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: bluetooth-next 2025-05-21
+Date: Wed, 21 May 2025 10:47:55 -0400
+Message-ID: <20250521144756.3033239-1-luiz.dentz@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250521-vsock-linger-v5-4-94827860d1d6@rbox.co>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 21, 2025 at 12:55:22AM +0200, Michal Luczaj wrote:
->Add a helper function that sets SO_LINGER. Adapt the caller.
->
->Signed-off-by: Michal Luczaj <mhal@rbox.co>
->---
-> tools/testing/vsock/util.c       | 13 +++++++++++++
-> tools/testing/vsock/util.h       |  4 ++++
-> tools/testing/vsock/vsock_test.c | 10 +---------
-> 3 files changed, 18 insertions(+), 9 deletions(-)
->
->diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
->index 120277be14ab2f58e0350adcdd56fc18861399c9..41b47f7deadcda68fddc2b22a6d9bb7847cc0a14 100644
->--- a/tools/testing/vsock/util.c
->+++ b/tools/testing/vsock/util.c
->@@ -823,3 +823,16 @@ void enable_so_zerocopy_check(int fd)
-> 	setsockopt_int_check(fd, SOL_SOCKET, SO_ZEROCOPY, 1,
-> 			     "setsockopt SO_ZEROCOPY");
-> }
->+
->+void enable_so_linger(int fd)
->+{
->+	struct linger optval = {
->+		.l_onoff = 1,
->+		.l_linger = LINGER_TIMEOUT
->+	};
->+
->+	if (setsockopt(fd, SOL_SOCKET, SO_LINGER, &optval, sizeof(optval))) {
->+		perror("setsockopt(SO_LINGER)");
->+		exit(EXIT_FAILURE);
->+	}
->+}
->diff --git a/tools/testing/vsock/util.h b/tools/testing/vsock/util.h
->index e307f0d4f6940e984b84a95fd0d57598e7c4e35f..1b3d8eb2c4b3c41c9007584177455c4fa442334c 100644
->--- a/tools/testing/vsock/util.h
->+++ b/tools/testing/vsock/util.h
->@@ -14,6 +14,9 @@ enum test_mode {
->
-> #define DEFAULT_PEER_PORT	1234
->
->+/* Half of the default to not risk timing out the control channel */
->+#define LINGER_TIMEOUT		(TIMEOUT / 2)
->+
-> /* Test runner options */
-> struct test_opts {
-> 	enum test_mode mode;
->@@ -80,4 +83,5 @@ void setsockopt_int_check(int fd, int level, int optname, int val,
-> void setsockopt_timeval_check(int fd, int level, int optname,
-> 			      struct timeval val, char const *errmsg);
-> void enable_so_zerocopy_check(int fd);
->+void enable_so_linger(int fd);
-> #endif /* UTIL_H */
->diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
->index 4c2c94151070d54d1ed6e6af5a6de0b262a0206e..f401c6a79495bc7fda97012e5bfeabec7dbfb60a 100644
->--- a/tools/testing/vsock/vsock_test.c
->+++ b/tools/testing/vsock/vsock_test.c
->@@ -1813,10 +1813,6 @@ static void test_stream_connect_retry_server(const struct test_opts *opts)
->
-> static void test_stream_linger_client(const struct test_opts *opts)
-> {
->-	struct linger optval = {
->-		.l_onoff = 1,
->-		.l_linger = 1
+The following changes since commit e6b3527c3b0a676c710e91798c2709cc0538d312:
 
-So, we are changing the timeout from 1 to 5, right?
-Should we mention in the commit description?
+  Merge branch 'net-airoha-add-per-flow-stats-support-to-hw-flowtable-offloading' (2025-05-20 20:00:55 -0700)
 
->-	};
-> 	int fd;
->
-> 	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
->@@ -1825,11 +1821,7 @@ static void test_stream_linger_client(const struct test_opts *opts)
-> 		exit(EXIT_FAILURE);
-> 	}
->
->-	if (setsockopt(fd, SOL_SOCKET, SO_LINGER, &optval, sizeof(optval))) {
->-		perror("setsockopt(SO_LINGER)");
->-		exit(EXIT_FAILURE);
->-	}
->-
->+	enable_so_linger(fd);
+are available in the Git repository at:
 
-If you need to resend, I'd pass the timeout as parameter, so the test
-can use whatever they want.
+  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git tags/for-net-next-2025-05-21
 
-The rest LGTM.
+for you to fetch changes up to 623029dcc53837d409deb70b65eb7c7b83ab9b9a:
 
-Thanks,
-Stefano
+  Bluetooth: MGMT: iterate over mesh commands in mgmt_mesh_foreach() (2025-05-21 10:31:01 -0400)
 
-> 	close(fd);
-> }
->
->
->-- 
->2.49.0
->
+----------------------------------------------------------------
+bluetooth-next pull request for net-next:
 
+core:
+
+ - Add support for SIOCETHTOOL ETHTOOL_GET_TS_INFO
+ - Separate CIS_LINK and BIS_LINK link types
+ - Introduce HCI Driver protocol
+
+drivers:
+
+ - btintel_pcie: Do not generate coredump for diagnostic events
+ - btusb: Add HCI Drv commands for configuring altsetting
+ - btusb: Add RTL8851BE device 0x0bda:0xb850
+ - btusb: Add new VID/PID 13d3/3584 for MT7922
+ - btusb: Add new VID/PID 13d3/3630 and 13d3/3613 for MT7925
+ - btnxpuart: Implement host-wakeup feature
+
+----------------------------------------------------------------
+Chandrashekar Devegowda (1):
+      Bluetooth: btintel_pcie: Dump debug registers on error
+
+Chen Ni (1):
+      Bluetooth: hci_uart: Remove unnecessary NULL check before release_firmware()
+
+Dmitry Antipov (1):
+      Bluetooth: MGMT: iterate over mesh commands in mgmt_mesh_foreach()
+
+En-Wei Wu (1):
+      Bluetooth: btusb: use skb_pull to avoid unsafe access in QCA dump handling
+
+Hsin-chen Chuang (4):
+      Bluetooth: Introduce HCI Driver protocol
+      Bluetooth: btusb: Add HCI Drv commands for configuring altsetting
+      Revert "Bluetooth: btusb: Configure altsetting for HCI_USER_CHANNEL"
+      Revert "Bluetooth: btusb: add sysfs attribute to control USB alt setting"
+
+Jiande Lu (1):
+      Bluetooth: btusb: Add new VID/PID 13d3/3630 for MT7925
+
+Kiran K (1):
+      Bluetooth: btintel_pcie: Do not generate coredump for diagnostic events
+
+Krzysztof Kozlowski (2):
+      Bluetooth: btmrvl_sdio: Fix wakeup source leaks on device unbind
+      Bluetooth: btmtksdio: Fix wakeup source leaks on device unbind
+
+Liwei Sun (1):
+      Bluetooth: btusb: Add new VID/PID 13d3/3584 for MT7922
+
+Luiz Augusto von Dentz (3):
+      Bluetooth: ISO: Fix not using SID from adv report
+      Bluetooth: ISO: Fix getpeername not returning sockaddr_iso_bc fields
+      Bluetooth: L2CAP: Fix not checking l2cap_chan security level
+
+Neeraj Sanjay Kale (2):
+      dt-bindings: net: bluetooth: nxp: Add support for host-wakeup
+      Bluetooth: btnxpuart: Implement host-wakeup feature
+
+Pauli Virtanen (2):
+      Bluetooth: add support for SIOCETHTOOL ETHTOOL_GET_TS_INFO
+      Bluetooth: separate CIS_LINK and BIS_LINK link types
+
+WangYuli (1):
+      Bluetooth: btusb: Add RTL8851BE device 0x0bda:0xb850
+
+Youn MÉLOIS (1):
+      Bluetooth: btusb: Add new VID/PID 13d3/3613 for MT7925
+
+ .../bindings/net/bluetooth/nxp,88w8987-bt.yaml     |  17 ++
+ drivers/bluetooth/Kconfig                          |  12 -
+ drivers/bluetooth/btintel.c                        |   3 +-
+ drivers/bluetooth/btintel.h                        |   6 -
+ drivers/bluetooth/btintel_pcie.c                   | 141 +++++++++-
+ drivers/bluetooth/btintel_pcie.h                   |  19 ++
+ drivers/bluetooth/btmrvl_sdio.c                    |   4 +-
+ drivers/bluetooth/btmtksdio.c                      |   2 +-
+ drivers/bluetooth/btnxpuart.c                      |  58 +++-
+ drivers/bluetooth/btusb.c                          | 302 ++++++++++++---------
+ drivers/bluetooth/hci_aml.c                        |   3 +-
+ include/net/bluetooth/bluetooth.h                  |   4 +
+ include/net/bluetooth/hci.h                        |   4 +-
+ include/net/bluetooth/hci_core.h                   |  51 ++--
+ include/net/bluetooth/hci_drv.h                    |  76 ++++++
+ include/net/bluetooth/hci_mon.h                    |   2 +
+ net/bluetooth/Makefile                             |   3 +-
+ net/bluetooth/af_bluetooth.c                       |  87 ++++++
+ net/bluetooth/hci_conn.c                           |  79 ++++--
+ net/bluetooth/hci_core.c                           |  45 ++-
+ net/bluetooth/hci_drv.c                            | 105 +++++++
+ net/bluetooth/hci_event.c                          |  40 ++-
+ net/bluetooth/hci_sock.c                           |  12 +-
+ net/bluetooth/hci_sync.c                           |  63 ++++-
+ net/bluetooth/iso.c                                |  30 +-
+ net/bluetooth/l2cap_core.c                         |  15 +-
+ net/bluetooth/mgmt.c                               |   3 +-
+ net/bluetooth/mgmt_util.c                          |   2 +-
+ 28 files changed, 918 insertions(+), 270 deletions(-)
+ create mode 100644 include/net/bluetooth/hci_drv.h
+ create mode 100644 net/bluetooth/hci_drv.c
