@@ -1,162 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B592220F46;
-	Wed, 21 May 2025 14:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219AC221F0C
+	for <netdev@vger.kernel.org>; Wed, 21 May 2025 14:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747839166; cv=none; b=T57xNlpmmSwUKUIcwPedOtec7bLPowr8RgXYVoYwEWzebjvFB2IM1g5g7w1F14shz3MJq3v8PprvLTxDf8BTXQrac5IZn2X6WhWdFKVPqol7WWKnf6cY4xx75+9PQhX2ayAZu5jC8ybxI6rWZ9W2ySWtpuo2GhV1iQOrYtaHglE=
+	t=1747839335; cv=none; b=bhbPPPINa0sR+Pl34lv2LPpjzkY/3jEGwumuafiXcrnkf6tBdUydr6bbeorVuDNbbsWqbUvRg0s1VTP2hWcADQ+W1W7WlyvbVgrZgquP3tTKVejVG0L+U0zocvMCD27fUICy40XfjTm9CO4pb8/6NI+GtG/pEJ7MaCdRrOs16As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747839166; c=relaxed/simple;
-	bh=aXs55NlSVM3VIwWtlSAUIA7UYBiL2MuTfKtNoqtLmI0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pMb0s8FDE45Bjp6MM5bhx8oRvpd5R/b37EV88/8U0Blw7tyvHTK+kMnYFCtuqSdeiXwHcyHs6qTLGww9LMytwGh0LxJDXqI/G0JRGE+HB8uYNNDYlZKwhDISKWV8KS5RXxbo/8LpB+7z0N0BoYVv/G7u9Vp3NUUEOadwrnf/u9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H56f4tLY; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H56f4tLY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD83C4CEE4;
-	Wed, 21 May 2025 14:52:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747839166;
-	bh=aXs55NlSVM3VIwWtlSAUIA7UYBiL2MuTfKtNoqtLmI0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H56f4tLYqma46ZytPEcHP/iUlcHm9kwD74+sSJtVo1B/BpTLNSiTJwP6RK2u6rBBm
-	 6MzMVUQ00WPYh4fNrqh8dc/4bA3+cGRYw4ho8m6UlnWZBFd86VxVCusmYQLc6xv6Dj
-	 Bv4blWZXwft9yy8+V1HKJNdQcLycN+o9LBUpUo9zuaJ73P9S3WOLoAVXVdvxbY/JOY
-	 1S0Ba3XAKQzVNGrBW+sdZdAnMVMnoB+2hYznn3sVCP32EelvuYskW3Fvg9cYoaVc3P
-	 jrE3JsoSVLo3aaOJUS5ICN1vqCq4wQ4YStxgXv9GEhlr266zkjh1okhX1xe3xhS1nh
-	 4Ek1fuG0o7WcQ==
-From: Lee Jones <lee@kernel.org>
-To: lee@kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>,
-	Michal Luczaj <mhal@rbox.co>,
-	Rao Shoaib <Rao.Shoaib@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	syzkaller <syzkaller@googlegroups.com>
-Subject: [PATCH v6.6 26/26] af_unix: Fix uninit-value in __unix_walk_scc()
-Date: Wed, 21 May 2025 14:45:34 +0000
-Message-ID: <20250521144803.2050504-27-lee@kernel.org>
-X-Mailer: git-send-email 2.49.0.1112.g889b7c5bd8-goog
-In-Reply-To: <20250521144803.2050504-1-lee@kernel.org>
-References: <20250521144803.2050504-1-lee@kernel.org>
+	s=arc-20240116; t=1747839335; c=relaxed/simple;
+	bh=7aC1JFlJZC4DzuXo5UNsxoo2hoz3sVAMFo0FeeyWrBA=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=izUYcn7XVd8Z75j8vzCZAEe9g1DBkodRVZ+QQJrz4TNC9gQWRrFWN+mycAnHHCezltOGXlyvNiJNPRKx6vvy+tMdQ6ZRtxHsMgJei5C6q8ezIA5jVwaTFHLsgRIWuoXL8nYHvNT4KWT6cRJb5hepIwz3CG7XByQkX0Mi8D9lT2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-86a50b5f5bdso345417739f.0
+        for <netdev@vger.kernel.org>; Wed, 21 May 2025 07:55:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747839333; x=1748444133;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JVkLcreEGxWf9CWcJBGD5Glu9UoiEI6rdnhABCYz4Uc=;
+        b=PEOoPOfAECoYf3KoXdjz4Nzwyex+xCmRrEbHE9O47TRtN9NHH/bbXmWi2iycDkEL5H
+         +AkeEbxGSbFdDc1cL4V/kljKVQlAc0SGcfAHTcItbjmEZZLrBsC9JbKEyQ9Nal9lbGot
+         oLR9xbtUNG8dnpFLrOaFveuUv9e90ozcQ0jViWIZrp4V6KaQoInljdDfr4MSPjr4rfQ9
+         og323GcdIcr9DYC5+TRY+Z0u/Z285E/a2UNHet8JEda7DfS11Qe3U3U6uPw3m6F1xj6D
+         S5TQNjK0xvim/+HImsm2VO+ov+b08u0r0VqczegJmRVhvSBGevsDWMIbXu049j4VuE/L
+         jhIg==
+X-Forwarded-Encrypted: i=1; AJvYcCWrab8EIbiquoJ8wT+puxGxdi6r/LrMYVyYGpEZ1aXL50cDa7+5g3GUNnKOQkERAFrlEktWeCE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyfxw/Xc8IRD7rZ0W6jYhhiq2xCSOm4hf7BpdK/w0L5HNTU6KD6
+	uK7COB2k5zuBe6X31k6Dv8cLoKM2Tx5lLInryO3XraDk72uPxYFGlOFz4MzCOBhf49/B+X4gXNj
+	mwXDE3z28i6dHlMSenNHhTycEV7hP9adGIpna5Rc33AXV/pyxdvJcwNh7zqg=
+X-Google-Smtp-Source: AGHT+IHU3VOEtR1uxykFIZrxe5rsDjd3adSviinbsN8tiduT8BUfJ+kIHoWgSOKKBBfAdvb56JDQ1InZaweUiKFe+b6dknXVv2b2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6602:6a8e:b0:866:217f:80a with SMTP id
+ ca18e2360f4ac-86a24c12feemr2365065639f.7.1747839333227; Wed, 21 May 2025
+ 07:55:33 -0700 (PDT)
+Date: Wed, 21 May 2025 07:55:33 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <682de965.a00a0220.29bc26.0290.GAE@google.com>
+Subject: [syzbot] Monthly hams report (May 2025)
+From: syzbot <syzbot+list0ce723fccf3cd8df852f@syzkaller.appspotmail.com>
+To: linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+Hello hams maintainers/developers,
 
-[ Upstream commit 927fa5b3e4f52e0967bfc859afc98ad1c523d2d5 ]
+This is a 31-day syzbot report for the hams subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/hams
 
-KMSAN reported uninit-value access in __unix_walk_scc() [1].
+During the period, 1 new issues were detected and 0 were fixed.
+In total, 5 issues are still open and 40 have already been fixed.
 
-In the list_for_each_entry_reverse() loop, when the vertex's index
-equals it's scc_index, the loop uses the variable vertex as a
-temporary variable that points to a vertex in scc. And when the loop
-is finished, the variable vertex points to the list head, in this case
-scc, which is a local variable on the stack (more precisely, it's not
-even scc and might underflow the call stack of __unix_walk_scc():
-container_of(&scc, struct unix_vertex, scc_entry)).
+Some of the still happening issues:
 
-However, the variable vertex is used under the label prev_vertex. So
-if the edge_stack is not empty and the function jumps to the
-prev_vertex label, the function will access invalid data on the
-stack. This causes the uninit-value access issue.
+Ref Crashes Repro Title
+<1> 4013    Yes   possible deadlock in nr_rt_device_down (3)
+                  https://syzkaller.appspot.com/bug?extid=ccdfb85a561b973219c7
+<2> 685     Yes   KASAN: slab-use-after-free Read in rose_get_neigh
+                  https://syzkaller.appspot.com/bug?extid=e04e2c007ba2c80476cb
+<3> 263     Yes   possible deadlock in nr_remove_neigh (2)
+                  https://syzkaller.appspot.com/bug?extid=8863ad36d31449b4dc17
+<4> 97      No    possible deadlock in serial8250_handle_irq
+                  https://syzkaller.appspot.com/bug?extid=5fd749c74105b0e1b302
 
-Fix this by introducing a new temporary variable for the loop.
-
-[1]
-BUG: KMSAN: uninit-value in __unix_walk_scc net/unix/garbage.c:478 [inline]
-BUG: KMSAN: uninit-value in unix_walk_scc net/unix/garbage.c:526 [inline]
-BUG: KMSAN: uninit-value in __unix_gc+0x2589/0x3c20 net/unix/garbage.c:584
- __unix_walk_scc net/unix/garbage.c:478 [inline]
- unix_walk_scc net/unix/garbage.c:526 [inline]
- __unix_gc+0x2589/0x3c20 net/unix/garbage.c:584
- process_one_work kernel/workqueue.c:3231 [inline]
- process_scheduled_works+0xade/0x1bf0 kernel/workqueue.c:3312
- worker_thread+0xeb6/0x15b0 kernel/workqueue.c:3393
- kthread+0x3c4/0x530 kernel/kthread.c:389
- ret_from_fork+0x6e/0x90 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-Uninit was stored to memory at:
- unix_walk_scc net/unix/garbage.c:526 [inline]
- __unix_gc+0x2adf/0x3c20 net/unix/garbage.c:584
- process_one_work kernel/workqueue.c:3231 [inline]
- process_scheduled_works+0xade/0x1bf0 kernel/workqueue.c:3312
- worker_thread+0xeb6/0x15b0 kernel/workqueue.c:3393
- kthread+0x3c4/0x530 kernel/kthread.c:389
- ret_from_fork+0x6e/0x90 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-Local variable entries created at:
- ref_tracker_free+0x48/0xf30 lib/ref_tracker.c:222
- netdev_tracker_free include/linux/netdevice.h:4058 [inline]
- netdev_put include/linux/netdevice.h:4075 [inline]
- dev_put include/linux/netdevice.h:4101 [inline]
- update_gid_event_work_handler+0xaa/0x1b0 drivers/infiniband/core/roce_gid_mgmt.c:813
-
-CPU: 1 PID: 12763 Comm: kworker/u8:31 Not tainted 6.10.0-rc4-00217-g35bb670d65fc #32
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
-Workqueue: events_unbound __unix_gc
-
-Fixes: 3484f063172d ("af_unix: Detect Strongly Connected Components.")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20240702160428.10153-1-syoshida@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit 927fa5b3e4f52e0967bfc859afc98ad1c523d2d5)
-Signed-off-by: Lee Jones <lee@kernel.org>
 ---
- net/unix/garbage.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index dfe94a90ece40..23efb78fe9ef4 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -476,6 +476,7 @@ static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_inde
- 	}
- 
- 	if (vertex->index == vertex->scc_index) {
-+		struct unix_vertex *v;
- 		struct list_head scc;
- 		bool scc_dead = true;
- 
-@@ -486,15 +487,15 @@ static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_inde
- 		 */
- 		__list_cut_position(&scc, &vertex_stack, &vertex->scc_entry);
- 
--		list_for_each_entry_reverse(vertex, &scc, scc_entry) {
-+		list_for_each_entry_reverse(v, &scc, scc_entry) {
- 			/* Don't restart DFS from this vertex in unix_walk_scc(). */
--			list_move_tail(&vertex->entry, &unix_visited_vertices);
-+			list_move_tail(&v->entry, &unix_visited_vertices);
- 
- 			/* Mark vertex as off-stack. */
--			vertex->index = unix_vertex_grouped_index;
-+			v->index = unix_vertex_grouped_index;
- 
- 			if (scc_dead)
--				scc_dead = unix_vertex_dead(vertex);
-+				scc_dead = unix_vertex_dead(v);
- 		}
- 
- 		if (scc_dead)
--- 
-2.49.0.1112.g889b7c5bd8-goog
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
