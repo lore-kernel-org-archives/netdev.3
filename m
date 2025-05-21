@@ -1,176 +1,113 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC34F21E0A2
-	for <netdev@vger.kernel.org>; Wed, 21 May 2025 22:50:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B27323A99D;
+	Wed, 21 May 2025 22:58:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747867834; cv=none; b=irR613MMlmVvXvdF/TPH/1LBZ8qejxABVRlK1BSMnxlZOawMxg+jPo7tDD3ALHYPX86x3VsYCZnFh29JAZVBZcix0NWO5jAzbwAES5um7jSHJSU3Vf28P8066Y6eSQGsZR461nTMh8BPkeQPnfboSTJQp6DXAsoRHNYvWWDdBoA=
+	t=1747868315; cv=none; b=ItmAZQeu/tH2evDHd6nl4q7XJq15TzBYf9qG9uxXA9exRsNhDriBUDv3GsWh5Wvpmr335E7iojNXcEJqwrp1YnoNUEQfqMP2BdDYXu6CzWH2b0ADOMhp9K/c7ohKJhNvlcxpdaOciH3ZqcU0/f9Mg5oZAVuwLTCbtQHGBBFa1WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747867834; c=relaxed/simple;
-	bh=KLAWLdHnq7oJKwYZhLUj6ITQOjc+rCwTp33UNKldAR0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a5srf8DfvDYl+f9DDyDCYhjcgLHl3GH/qThdXRxHH0XqJkNWXVQgVEizmZLpgpHMT35EzXNyMdiJRwV1fRUSrNAV+fNkGPGfWZYusL3AYNb/TWJgMDKuowMIHBotMMyQWfSzEK6MRHzJ3nV0fSrnXUGyNA2GfJmjElt8XG/uL2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y47WezQ7; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1747868315; c=relaxed/simple;
+	bh=oUEfpUxJVtcfBRUWircRD/3AMoAwlb/YCvFi9VbaK40=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BWWnaR7uH/GTOznHTkaVePtr5TvvugOGOTaK67MBzIVs6m8cokEFI+uCKrr/zG3lQ7QzpVWuHAf6/UC2gVerFiVu1d9EJycIZznXbMwVHKw+Z4FFKIAm+0zBiIuqWny0pbpCWo7F3pRvZq1CkW20+UB7QvNdo1nAKz5pHWsebRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=LWebdm15; arc=none smtp.client-ip=72.21.196.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y47WezQ7"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-231f61dc510so1168075ad.0
-        for <netdev@vger.kernel.org>; Wed, 21 May 2025 15:50:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="LWebdm15"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747867832; x=1748472632; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kc09VhZZyd7VUUkPxHgkcAHf7bii5eXovz7FVbqJkl8=;
-        b=Y47WezQ7WqZkhmJwmchbxGHzo43aUoxvdXVG8ap3CDKSAK2m/uuD/3CmmfoP0ltLEL
-         gV2mWFgDyiiv9b+mvnWqerJYtkukmDGKbEi5Z/17rFtim2MzLPH+QRC4uDvBC+UKGZK9
-         g2P+KtxPWw/Bxx++LKLRT39a97C0Yie2pyJ29BtRhPTKsY2g92fjeImvqbpsPqnyDC7M
-         jgIkNS+5yX9hkJ1FYKL5Og120c0sy8XNbaEXRdzrxsXa0o8AmeZ3TxBRToCu2CbvXVpd
-         JNCk1JvuH6cHn9xSIXcB1fsGt6D3HOShlrRi+B3jlZYsa46MreIpk/wH/EVtHiyepurb
-         PS7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747867832; x=1748472632;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Kc09VhZZyd7VUUkPxHgkcAHf7bii5eXovz7FVbqJkl8=;
-        b=o+jp3Er053AkIReQBmX+5HOZTx1phO5tD3bwExX1lOwQ1n3joI746yEzFT7b73ucb1
-         KjLvTeUf5Sma4y7d5ChoDXInBpFxun5wG7RP5F2ouVhp6zMUWWVBQ2YLnGboZ8QQHw7C
-         NtZnIbtfHHKs1z1FEEqVuCCdytw1tH7xHqIsSIcWHt3Ok7uYB8iO34PY6EwkBv8Q1CYN
-         UmxjviD0gfwBFq3wiv39+hSKFJWFoSQzmHaoWLdlyyt8Ec/dPnpI+qQ7eWlXjIhqX6Bc
-         PAVN9SaZMXpaSxkdRPY9GdTVLa7qu2VUPQkxl+suVQ/hLFbRfug8EMldQ6buytKbQEb2
-         L3DA==
-X-Forwarded-Encrypted: i=1; AJvYcCUW0TOL0N5uL9Vf3mfIE97g///oIA7rWTmcr/5mXZ07U+pn9MWNjxvYeS7XiB04iM5C9LGHoqI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNvROKVOuWx2HHaCbGQLFrPyAGSlLmYZN1oCb9aXczp1SDDTrY
-	GKxfqSnNpXyLSgp9CaYpdHnX6Pv0EeEx5/UOxWK6lNPeJ+1tiE5/uj9A7yfJxVCHwfcvmRzmvB8
-	Qy6o/JC74UEOme8Bq/rz+n0dB0WiQXXmZxxGh3YKR
-X-Gm-Gg: ASbGncu6aIiU9mJvKIVje36Rh4lAPIWxUE6FGo9sJgw/EruoTn0Xcn1afallYuR4Y6l
-	bd86cwNFKuC3izXl92dMlAMlfVgvgRkIpeYH87AbX2/guuUew4l2RCg1flM1rKeSTOkl7aRpZMN
-	h1WuLz0DoVWC5JTPYaeTRNl6L6W8C6L3PGqyTzX+MZiJeTgHztqFrPXgPnAXd0H/b6ZAXxOlV6q
-	w==
-X-Google-Smtp-Source: AGHT+IF7rU3oLvFQOQ5bp2VC/09Uxdnd/tPiVaTcrgEfxg64zlkM5A2IpOD4CKYOvzbbdSiA1eLp9EqbG3NjK0jVMDQ=
-X-Received: by 2002:a17:903:1b4b:b0:231:fb83:9c3d with SMTP id
- d9443c01a7336-233d6e3ac59mr531255ad.20.1747867831675; Wed, 21 May 2025
- 15:50:31 -0700 (PDT)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1747868314; x=1779404314;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=VLNQaO0joSFtaVP4xhVmyHesQI7WXFOgxK3mfwvHk0I=;
+  b=LWebdm15W/QTHc6I1ZTYdYVUy50+2USCPGpqL7LnjvzMB9L+BA+ulLkU
+   CRzw2EsbDG6Ie2bllLe1XW3fqbjmyvnKMCg9IYaqqgf/C9kz+E9Al27du
+   QaIhd8ZXuwDFrLfO+NLXeTYsNBEZOYKGqibbEMeqocDQUmJ9bSAryGP5W
+   ff8eHKiGMeR5zTUOcWp9MES4sSnOxSHLrGOTU70SW5LU0H9tAy+7nfo4l
+   M/Evz/e7XPm/1buvTWIKgEJXFMORrshe5PQviyIF/EhwtYiSqE7Xksj2R
+   dfwYqJr4QDCySEidqsBBSZrIwqVDjrJPpiNe2Inm3IXhIneB4smVib49/
+   Q==;
+X-IronPort-AV: E=Sophos;i="6.15,304,1739836800"; 
+   d="scan'208";a="494871501"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 22:58:14 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:50996]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.52.117:2525] with esmtp (Farcaster)
+ id 17ebefff-4e5a-46fb-818f-0bdaf37eacd3; Wed, 21 May 2025 22:58:12 +0000 (UTC)
+X-Farcaster-Flow-ID: 17ebefff-4e5a-46fb-818f-0bdaf37eacd3
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 21 May 2025 22:58:12 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.94.52.104) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 21 May 2025 22:58:09 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <jordan@jrife.io>
+CC: <alexei.starovoitov@gmail.com>, <bpf@vger.kernel.org>,
+	<daniel@iogearbox.net>, <kuniyu@amazon.com>, <martin.lau@linux.dev>,
+	<netdev@vger.kernel.org>, <willemdebruijn.kernel@gmail.com>
+Subject: Re: [PATCH v1 bpf-next 03/10] bpf: tcp: Get rid of st_bucket_done
+Date: Wed, 21 May 2025 15:57:59 -0700
+Message-ID: <20250521225800.89218-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250520145059.1773738-4-jordan@jrife.io>
+References: <20250520145059.1773738-4-jordan@jrife.io>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250519224325.3117279-1-skhawaja@google.com> <20250520190941.56523ded@kernel.org>
- <CAEA6p_BxSA16cMXr5NaJCLZ+KWD2YVVwEdvVX_QG=_gyvNCP=w@mail.gmail.com>
- <CAAywjhR4znr9fsAdBKmYAwcyP8JgoesLkuS8p9D0goJBFFePWg@mail.gmail.com>
- <CAAywjhTjdgjz=oD0NUtp-k7Lccek-4e9wCJfMG-p0AGpDHwJiQ@mail.gmail.com> <20250521152147.077f1cb0@kernel.org>
-In-Reply-To: <20250521152147.077f1cb0@kernel.org>
-From: Samiullah Khawaja <skhawaja@google.com>
-Date: Wed, 21 May 2025 15:50:19 -0700
-X-Gm-Features: AX0GCFujjDE9kUl5JjHCzVc36Yncy9SJurb-ojVBd7cVPJJ5PPKOmANz0e4IF4Y
-Message-ID: <CAAywjhScfevLxYho-wxU6WNF+0VpwngW8MzZjpx1HQ83NTXUDw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] net: stop napi kthreads when THREADED napi is disabled
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Wei Wang <weiwan@google.com>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, almasrymina@google.com, 
-	willemb@google.com, jdamato@fastly.com, mkarsten@uwaterloo.ca, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D040UWA001.ant.amazon.com (10.13.139.22) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On Wed, May 21, 2025 at 3:21=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Wed, 21 May 2025 12:51:33 -0700 Samiullah Khawaja wrote:
-> > > This might suffer from the problem you highlighted earlier,
-> > > CPU 0 (IRQ)             CPU 1 (NAPI thr)          CPU 2 (config)
-> > >
-> > >   ____napi_schedule()
-> > >     if (test_bit(NAPI_STATE_THREADED))
-> > >     if (thread) {
-> > >
-> > >  kthread_stop()
-> > >                               if (state & SCHED_THREADED || !(state &=
- SCHED)) {
-> > >                                    state &=3D ~THREADED;
-> > >                               if (try_cmp_xchg())
-> > >                                    break
-> > >
-> > >        set_bit(NAPI_STATE_SCHED_THREADED)
-> > >        wake_up_process(thread);
->
-> This got a bit line wrapped for me so can't judge :(
-Yep, sorry about that. But I think we are on the same page.
->
-> > > This would happen without the try_cmp_xchg logic that I added in my
-> > > patch in the __napi_schedule (in the fast path). __napi_schedule woul=
-d
-> > > have to make sure that the kthread is not stopping while it is trying
-> > > to do SCHED. This is similar to the logic we have in
-> > > napi_schedule_prep that handles the STATE_DISABLE, STATE_SCHED and
-> > > STATE_MISSED scenarios. Also if it falls back to normal softirq, it
-> > > needs to make sure that the kthread is not polling at the same time.
-> > Discard this as the SCHED would be set in napi_schedule_prepare before
-> > __napi_schedule is called in IRQ, so try_cmp_xchg would return false.
-> > I think if the thread stops if the napi is idle(SCHED is not) set then
-> > it should do. This should make sure any pending SCHED_THREADED are
-> > also done. The existing logic in napi_schedulle_prep should handle all
-> > the cases.
->
-> I think we're on the same page. We're clearing the THREADED bit
-> (not SCHED_THREADED). Only napi_schedule() path looks at that bit,
-> after setting SCHED. So if we cmpxchg on a state where SCHED was
-> clear - we can't race with anything that cares about THREADED bit.
-+1
+From: Jordan Rife <jordan@jrife.io>
+Date: Tue, 20 May 2025 07:50:50 -0700
+> Get rid of the st_bucket_done field to simplify TCP iterator state and
+> logic. Before, st_bucket_done could be false if bpf_iter_tcp_batch
+> returned a partial batch; however, with the last patch ("bpf: tcp: Make
+> sure iter->batch always contains a full bucket snapshot"),
+> st_bucket_done == true is equivalent to iter->cur_sk == iter->end_sk.
+> 
+> Signed-off-by: Jordan Rife <jordan@jrife.io>
+> ---
+>  net/ipv4/tcp_ipv4.c | 14 ++++++--------
+>  1 file changed, 6 insertions(+), 8 deletions(-)
+> 
+> diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+> index 27022018194a..20730723a02c 100644
+> --- a/net/ipv4/tcp_ipv4.c
+> +++ b/net/ipv4/tcp_ipv4.c
+> @@ -3020,7 +3020,6 @@ struct bpf_tcp_iter_state {
+>  	unsigned int end_sk;
+>  	unsigned int max_sk;
+>  	struct sock **batch;
+> -	bool st_bucket_done;
+>  };
+>  
+>  struct bpf_iter__tcp {
+> @@ -3043,8 +3042,10 @@ static int tcp_prog_seq_show(struct bpf_prog *prog, struct bpf_iter_meta *meta,
+>  
+>  static void bpf_iter_tcp_put_batch(struct bpf_tcp_iter_state *iter)
+>  {
+> -	while (iter->cur_sk < iter->end_sk)
+> -		sock_gen_put(iter->batch[iter->cur_sk++]);
+> +	unsigned int cur_sk = iter->cur_sk;
+> +
+> +	while (cur_sk < iter->end_sk)
+> +		sock_gen_put(iter->batch[cur_sk++]);
 
-Yes, the logic in napi_sched_prep should provide enough mutual
-exclusion. The only problem is that we have to do a poll if
-SCHED_THREADED is set. But if we unset THREADED (using the cmpxchg
-logic) then do a poll, the final poll should unset SCHED_THREADED also
-and would be safe to stop. I am going to move this loop to the
-napi_thread_poll function so it is a little bit clean.
->
-> Just to be clear - the stopping of the thread has to be after the
-> proposed loop, so kthread_should_stop() does not come into play.
-Wait, the thread will unset STATE_THREADED if kthread_should_stop is
-true. right? Otherwise how would thread know that it has to unset the
-bit and stop?
+Why is this chunk included in this patch ?
 
-As I understand, we should be doing something like following:
+This is a bit confusing given bpf_iter_tcp_seq_next() proceeds
+iter->cur_sk during sock_gen_put().
 
-while (true) {
-   state =3D READ_ONCE()
-   can_stop =3D false;
+Otherwise looks good.
 
-   if (kthread_should_stop) {
-       if (SCHED_THREADED || !SCHED) {
-           state &=3D !THREADED
-       } else {
-           msleep(1);
-           continue;
-       }
-
-        if (try_cmpxchg) {
-            can_stop =3D true;
-            if (!SCHED_THREADED)
-                break;
-        }
-   }
-
-   if (SCHED_THREADED)
-       poll()
-
-   if (can_stop))
-       break;
-}
-
-dev_set_threaded() {
-    ...
-   if (!threaded)
-      kthread_stop(thread)
-}
-
->
-> And FWIW my understanding is that we don't need any barriers on the
-> fast path (SCHED vs checking THREADED) because memory ordering is
-> a thing which exists only between distinct memory words.
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
