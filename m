@@ -1,108 +1,189 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E971C84BC
-	for <netdev@vger.kernel.org>; Wed, 21 May 2025 15:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5C29461;
+	Wed, 21 May 2025 15:32:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747841360; cv=none; b=kmXGiCUiyaHJgRfQWoa61SYhlUuoZ/nnz2aey62VTf/OJP6RVfhoGtFLErl2GwtqDyfVDwHUI+HN2wPBMc1bu8595ZLnFOf9jscRsyiZ2z7iZa8pJN3MS4KWRAJMci1jHhSSdYsVRMeqcmmT5ByOZPj/1aGtgJOaCbc+Pn2uCRM=
+	t=1747841536; cv=none; b=JgNOopwFdIv/ObiCmjbuZraeUm4VY8XibApeozH4ZUNk4D6UDrdEifb2+tKlT8Tu+fMTr4B9WfXOMYf3sY04V+noXE4ERtzStUUNUxcxj2zl2Lmts7nBsnRNQFpmqaaN0/uW31dROg3yhkjoVHLwDmIBd0Ga4Jz3TKlq5FyyuHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747841360; c=relaxed/simple;
-	bh=7nWWEv+jnbfPKYgX4evf6Q5zY4gGPSNC6aUTceX8buc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kAXRW7j5rJh4Mytu63ZlWAzTrmtE8Aj0EHQ24azDtCuHogyo+Qk0cS524voA9pWjRfcqfIjven++pG7Fgkx+opIiiJpkzeLHIJm2qkpEibBNRwaBt56t2a59IwFaef56HQ+l/NAv/7Lpq3a8+juzPiMwEy4vKmoEZZ8PpdHbafY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=deepl.com; spf=pass smtp.mailfrom=deepl.com; dkim=pass (2048-bit key) header.d=deepl.com header.i=@deepl.com header.b=IEKx7Zhk; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=deepl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deepl.com
+	s=arc-20240116; t=1747841536; c=relaxed/simple;
+	bh=5SONIjkkgio0G9/2yq0GzFXr4VaBVp93e8fBGFTaexk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ew6QuMr9nTYXiLfRHJtFt90nA4XTfFXY8TRWtSXglndlMJGa+vlhTnxYmCfdcmWZnE/81gzGxbTZzfEyNtpHxpEIi9Og5Bx0gX3KFPuABCjn9hcbg1CP8zYdi27f+qYePInfbtSMPsuyLwusZEeEzZ0o9nNi5Lwxjr+OA3iHWQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cg7eyo8P; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=deepl.com header.i=@deepl.com header.b="IEKx7Zhk"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5499614d3d2so8530389e87.3
-        for <netdev@vger.kernel.org>; Wed, 21 May 2025 08:29:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=deepl.com; s=google; t=1747841356; x=1748446156; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pf0W+8r0lAaXCaP5Hb43jL1LAgK7mc2n4CJlLh3FM/E=;
-        b=IEKx7Zhkr1OIpWuXJ8AbmblGQ348FQPyw9XwoRsJR8S31RsIi8PR+eGcrDHyTohe8z
-         /o5fSPfvpWRFFWd9Xyj+FrQ4HOsnxDRNNg55jDMlcMeMWlvyRszEZODQ13bkp0RqSh2w
-         Q0+XtyJjqphVbSa1lOGLvJcKx1ATAixoPzH20XXet19Zh8ykDotBthA1SZQ1U5Awi6aU
-         2MPqRFswBLhbWaoU2AFbmsQqY31E+l2oDetjzuAPPG5iKz4heyjkhupthZqD9Vk6VbRy
-         EexO2ifc0jB2IIfHolNrT8b6fK1fWdj4QFTU9gq8xytDfVCKRLKh/l65AZszQ6MnyDjb
-         HEUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747841356; x=1748446156;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Pf0W+8r0lAaXCaP5Hb43jL1LAgK7mc2n4CJlLh3FM/E=;
-        b=m8Jcc4/XHfEcTN9J1qaneRkModQ1RZmzu1QEBJA9+0n0DvCKL17MFk6ZCYp2ubkwsW
-         tYJ++5izsFUZ6dT1oZW3sFRuJKCaibVXH7to7gyCTV7mA2ANkH8k6keO/2XaSK7VAepE
-         4hjlcN9ceU5GuddSHSBWjP1Gyb93ScNvgSwe1XiJ/umUkfHJlechCqHhrCQELld6tx9O
-         SOoYsqpFqGWgPrYQZrezx+ki1gXPQ264zsZCcXeoSvscT837s928sDVkO4kIGTFerEvg
-         BA2R6hK34vGFZI3DCPMDXl9YDhvzPHd9XPJZ7LWfqLepMxyp+c3aua3DE1c0hS4phXGJ
-         KLhg==
-X-Gm-Message-State: AOJu0YwDOcwRdw+xeV36cOpEJzg+X27kJh/AiEpajI5Ve1Z8fwoAbeKZ
-	1/nmgdvXRaKecXRk19AK8/U1u8t7933AshLi+T4G3rr8zR314qdWoZXtj5I698rrGK6w6xn8bBU
-	m+Vx81AAtz2B5ZWu/oTB4KVSKsQIkRhlu/7bFrLr0wQ==
-X-Gm-Gg: ASbGncuPiKXpvWXMJuiljlrBxmPtDnim8pnBugT/oyenGOzM/n2fYDVhX1GlsbnOJv3
-	tDoB85hw3Ivpq+PgF/dNyqKIHBxpPebT5v+CyC5FaP4qCpQujDwCOZuJ6iI6cUq9Y+dnQQlRgNm
-	jUDhunLzVVJIONLd4C6IWSglsHcxfjxBT3DZop+0OGRssAOb7vmoN5gZUJp5AGL/wK6K4=
-X-Google-Smtp-Source: AGHT+IHnn7ewNBnAM15v9rbFnDhJkaXKGyTnSr0wlKrmFqRLlom+5yrSMLIi7UtloRNQCHFcupAFuN2wU5j2BLqcc9Q=
-X-Received: by 2002:a05:651c:31d9:b0:30b:c6fe:4530 with SMTP id
- 38308e7fff4ca-328076e8922mr61910991fa.3.1747841355842; Wed, 21 May 2025
- 08:29:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cg7eyo8P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C67C4CEE7;
+	Wed, 21 May 2025 15:32:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747841536;
+	bh=5SONIjkkgio0G9/2yq0GzFXr4VaBVp93e8fBGFTaexk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Cg7eyo8PnZKsoBP0lzMTcuAz/2qun2XeZqW2QmLPSmVvBeHcIm2lU3s9PYrvUktU4
+	 +RXitnsVXvLkP0Dn1s9TAbscYnCPUSuWCbUsT//3BcRtvbsR/ul6hhsVm4Ak1LtDte
+	 e0vVlbYRAoS90C4U4WvJvYY8kQv7zuZhCtZ+mv0hjuQ7xF8R0ds6ECwUPCBb346fQu
+	 FX77bYryZAhHj08OqADQUAVR2n7QYD/DxsaEcVCCt9e3hfjYurdPiI+svipGe8Z0DH
+	 qFdFsVuGelK3UuaVMOmwwYhXYWiQCwIIUJUrv9O4NFIkemdbWD9cTrJQmVrvqB7ZWH
+	 M0J3qu6jSMm4w==
+From: Lee Jones <lee@kernel.org>
+To: lee@kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>,
+	Michal Luczaj <mhal@rbox.co>,
+	Rao Shoaib <Rao.Shoaib@oracle.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH v6.1 00/27] af_unix: Align with upstream to avoid a potential UAF
+Date: Wed, 21 May 2025 16:26:59 +0100
+Message-ID: <20250521152920.1116756-1-lee@kernel.org>
+X-Mailer: git-send-email 2.49.0.1143.g0be31eac6b-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAAHxn9-ctPXJh1jeZc3bYeNod6pdfd6qgYWuXMb9uN_12McPAQ@mail.gmail.com>
- <CADVnQy=RRLaTG4t5BqQ1XJskb+oxWe=M_qY0u9rzmXGS1+b7nQ@mail.gmail.com>
- <CAAHxn98G9kKtVi34mC+NHwasixZd63C8+s5gC5T5o-vKUVVoKQ@mail.gmail.com> <CADVnQyn=MXohOf1vskJcm9VTOeP31Y5AqCPu7B=zZuTB8nh8Eg@mail.gmail.com>
-In-Reply-To: <CADVnQyn=MXohOf1vskJcm9VTOeP31Y5AqCPu7B=zZuTB8nh8Eg@mail.gmail.com>
-From: Simon Campion <simon.campion@deepl.com>
-Date: Wed, 21 May 2025 17:29:04 +0200
-X-Gm-Features: AX0GCFvm3rOnH3l-v8vSm-dKXipt4IfuMhgsDoQeh5DRy-2lVNOZB0YhvuvR6Mo
-Message-ID: <CAAHxn9-A4JbXWOWG=jtUx7CbapqrCbJSyS7PyXumaV62VvafLg@mail.gmail.com>
-Subject: Re: [EXT] Re: tcp: socket stuck with zero receive window after SACK
-To: Neal Cardwell <ncardwell@google.com>
-Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
-	Yuchung Cheng <ycheng@google.com>, Kevin Yang <yyd@google.com>, Jon Maloy <jmaloy@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-(Sorry---resending with different subject to hopefully get this into
-the correct thread.)
+This is the second attempt at achieving the same goal.  This time, the
+submission avoids forking the current code base, ensuring it remains
+easier to maintain over time.
 
-Great to hear we have a potential lead to investigate!
+The set has been tested using the SCM_RIGHTS test suite [1] using QEMU
+and has been seen to successfully mitigate a UAF on on a top tier
+handset.
 
-We've now seen this problem occur several times on multiple different
-nodes. We tried two workarounds, without success:
-* As far as we see, the patch Neal mentioned was included in the
-6.6.76 release. We rolled back some nodes to an earlier Flatcar image
-with kernel 6.6.74, but we saw the issue occur on 6.6.74 as well.
-* We disabled SACK on the Ceph client nodes. But the problem occurs in
-the absence of SACK as well:
-05:59:05.706056 eth1b Out IP 10.70.3.80.57136 > 10.70.3.46.6920: Flags
-[P.], seq 306:315, ack 1, win 0, options [nop,nop,TS val 2554169028
-ecr 1041911222], length 9
-05:59:05.706142 eth1b In  IP 10.70.3.46.6920 > 10.70.3.80.57136: Flags
-[.], ack 315, win 501, options [nop,nop,TS val 1041916342 ecr
-2554169028], length 0
-05:59:07.846543 eth1b In  IP 10.70.3.46.6920 > 10.70.3.80.57136: Flags
-[.], seq 1:609, ack 315, win 501, options [nop,nop,TS val 1041918483
-ecr 2554169028], length 608
-05:59:07.846569 eth1b Out IP 10.70.3.80.57136 > 10.70.3.46.6920: Flags
-[.], ack 1, win 0, options [nop,nop,TS val 2554171168 ecr 1041918483],
-length 0
-05:59:10.826079 eth1b Out IP 10.70.3.80.57136 > 10.70.3.46.6920: Flags
-[P.], seq 315:324, ack 1, win 0, options [nop,nop,TS val 2554174148
-ecr 1041918483], length 9
-05:59:10.826205 eth1b In  IP 10.70.3.46.6920 > 10.70.3.80.57136: Flags
-[.], ack 324, win 501, options [nop,nop,TS val 1041921462 ecr
-2554174148], length 0
+RESULTS:
 
-Another important piece of information (which I should've included in
-my first message!): we set net.ipv4.tcp_shrink_window=1. To test
-whether this setting triggers the issue, we disabled it. We will
-report back whether this appears to fix it or not.
+  TAP version 13
+  1..20
+  # Starting 20 tests from 5 test cases.
+  #  RUN           scm_rights.dgram.self_ref ...
+  #            OK  scm_rights.dgram.self_ref
+  ok 1 scm_rights.dgram.self_ref
+  #  RUN           scm_rights.dgram.triangle ...
+  #            OK  scm_rights.dgram.triangle
+  ok 2 scm_rights.dgram.triangle
+  #  RUN           scm_rights.dgram.cross_edge ...
+  #            OK  scm_rights.dgram.cross_edge
+  ok 3 scm_rights.dgram.cross_edge
+  #  RUN           scm_rights.dgram.backtrack_from_scc ...
+  #            OK  scm_rights.dgram.backtrack_from_scc
+  ok 4 scm_rights.dgram.backtrack_from_scc
+  #  RUN           scm_rights.stream.self_ref ...
+  #            OK  scm_rights.stream.self_ref
+  ok 5 scm_rights.stream.self_ref
+  #  RUN           scm_rights.stream.triangle ...
+  #            OK  scm_rights.stream.triangle
+  ok 6 scm_rights.stream.triangle
+  #  RUN           scm_rights.stream.cross_edge ...
+  #            OK  scm_rights.stream.cross_edge
+  ok 7 scm_rights.stream.cross_edge
+  #  RUN           scm_rights.stream.backtrack_from_scc ...
+  #            OK  scm_rights.stream.backtrack_from_scc
+  ok 8 scm_rights.stream.backtrack_from_scc
+  #  RUN           scm_rights.stream_oob.self_ref ...
+  #            OK  scm_rights.stream_oob.self_ref
+  ok 9 scm_rights.stream_oob.self_ref
+  #  RUN           scm_rights.stream_oob.triangle ...
+  #            OK  scm_rights.stream_oob.triangle
+  ok 10 scm_rights.stream_oob.triangle
+  #  RUN           scm_rights.stream_oob.cross_edge ...
+  #            OK  scm_rights.stream_oob.cross_edge
+  ok 11 scm_rights.stream_oob.cross_edge
+  #  RUN           scm_rights.stream_oob.backtrack_from_scc ...
+  #            OK  scm_rights.stream_oob.backtrack_from_scc
+  ok 12 scm_rights.stream_oob.backtrack_from_scc
+  #  RUN           scm_rights.stream_listener.self_ref ...
+  #            OK  scm_rights.stream_listener.self_ref
+  ok 13 scm_rights.stream_listener.self_ref
+  #  RUN           scm_rights.stream_listener.triangle ...
+  #            OK  scm_rights.stream_listener.triangle
+  ok 14 scm_rights.stream_listener.triangle
+  #  RUN           scm_rights.stream_listener.cross_edge ...
+  #            OK  scm_rights.stream_listener.cross_edge
+  ok 15 scm_rights.stream_listener.cross_edge
+  #  RUN           scm_rights.stream_listener.backtrack_from_scc ...
+  #            OK  scm_rights.stream_listener.backtrack_from_scc
+  ok 16 scm_rights.stream_listener.backtrack_from_scc
+  #  RUN           scm_rights.stream_listener_oob.self_ref ...
+  #            OK  scm_rights.stream_listener_oob.self_ref
+  ok 17 scm_rights.stream_listener_oob.self_ref
+  #  RUN           scm_rights.stream_listener_oob.triangle ...
+  #            OK  scm_rights.stream_listener_oob.triangle
+  ok 18 scm_rights.stream_listener_oob.triangle
+  #  RUN           scm_rights.stream_listener_oob.cross_edge ...
+  #            OK  scm_rights.stream_listener_oob.cross_edge
+  ok 19 scm_rights.stream_listener_oob.cross_edge
+  #  RUN           scm_rights.stream_listener_oob.backtrack_from_scc ...
+  #            OK  scm_rights.stream_listener_oob.backtrack_from_scc
+  ok 20 scm_rights.stream_listener_oob.backtrack_from_scc
+  # PASSED: 20 / 20 tests passed.
+  # Totals: pass:20 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+[0] https://lore.kernel.org/all/20250304030149.82265-1-kuniyu@amazon.com/
+[1] https://lore.kernel.org/all/20240325202425.60930-16-kuniyu@amazon.com/
+
+Alexander Mikhalitsyn (1):
+  af_unix: Kconfig: make CONFIG_UNIX bool
+
+Kuniyuki Iwashima (24):
+  af_unix: Return struct unix_sock from unix_get_socket().
+  af_unix: Run GC on only one CPU.
+  af_unix: Try to run GC async.
+  af_unix: Replace BUG_ON() with WARN_ON_ONCE().
+  af_unix: Remove io_uring code for GC.
+  af_unix: Remove CONFIG_UNIX_SCM.
+  af_unix: Allocate struct unix_vertex for each inflight AF_UNIX fd.
+  af_unix: Allocate struct unix_edge for each inflight AF_UNIX fd.
+  af_unix: Link struct unix_edge when queuing skb.
+  af_unix: Bulk update unix_tot_inflight/unix_inflight when queuing skb.
+  af_unix: Iterate all vertices by DFS.
+  af_unix: Detect Strongly Connected Components.
+  af_unix: Save listener for embryo socket.
+  af_unix: Fix up unix_edge.successor for embryo socket.
+  af_unix: Save O(n) setup of Tarjan's algo.
+  af_unix: Skip GC if no cycle exists.
+  af_unix: Avoid Tarjan's algorithm if unnecessary.
+  af_unix: Assign a unique index to SCC.
+  af_unix: Detect dead SCC.
+  af_unix: Replace garbage collection algorithm.
+  af_unix: Remove lock dance in unix_peek_fds().
+  af_unix: Try not to hold unix_gc_lock during accept().
+  af_unix: Don't access successor in unix_del_edges() during GC.
+  af_unix: Add dead flag to struct scm_fp_list.
+
+Michal Luczaj (1):
+  af_unix: Fix garbage collection of embryos carrying OOB with
+    SCM_RIGHTS
+
+Shigeru Yoshida (1):
+  af_unix: Fix uninit-value in __unix_walk_scc()
+
+ include/net/af_unix.h |  48 ++-
+ include/net/scm.h     |  11 +
+ net/Makefile          |   2 +-
+ net/core/scm.c        |  17 ++
+ net/unix/Kconfig      |  11 +-
+ net/unix/Makefile     |   2 -
+ net/unix/af_unix.c    | 120 +++++---
+ net/unix/garbage.c    | 691 +++++++++++++++++++++++++++++-------------
+ net/unix/scm.c        | 154 ----------
+ net/unix/scm.h        |  10 -
+ 10 files changed, 618 insertions(+), 448 deletions(-)
+ delete mode 100644 net/unix/scm.c
+ delete mode 100644 net/unix/scm.h
+
+
+-- 
+2.49.0.1143.g0be31eac6b-goog
+
