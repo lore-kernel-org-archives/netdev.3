@@ -1,171 +1,208 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FDF2BE0E4;
-	Wed, 21 May 2025 20:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747860386; cv=none; b=D/assLVGrq9YnUuaXPRIwEP7Dno8sDSD7FZLzdFofBnJagdV05rjgMiv2FySy1i7yksvvSZ5uM5Y2vLQJaNQt6YkO+0NGCdW7iahxMRq2+pzXGfeyHQKT8eWpVubgvVc79v+IJgzZ4tKZzpT4aTb0vjAe4wRC8yn0J2RrhQzMtE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747860386; c=relaxed/simple;
-	bh=l0FQvf1M3ScltpOkIqN+MDVq9vIgvD938vpt9yDUCJ4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JH5+ROpe5ossj7T489Jp9xVaT0qO/bzxX64M36esNcpDPySct5+fw68lTcIpM2Q2rF0BGqwf5uAbd+YK+fQxvBimdQ3qiQRzj2/vw1wZIp2v6QFaNW4Pm3K+QToG0lMonrurPVlZV9feVNaZt53dxw9DUOyb8YLGAYlZopUdlkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GKUaA8HJ; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3A32367A3;
+	Wed, 21 May 2025 20:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747860629; cv=fail; b=X3OO/UoxniFC233ZVo5lWxbjRmroLUmqj7r4Vlaxg4p/xQW9U20PDABmAGyuWcOAXxp9LeHNN9J35RS7PM9uq8h3/yjx++HyOQH+trmsPKol9+wwH1WXBwzqB+4CGv5XQFEuqYN7LY/0+VE9yHXjEPCp97hAqBB1lMz9NP/nzuA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747860629; c=relaxed/simple;
+	bh=icKLZIt3ZxIXCah/bTZnqfU/SJmFrUxFUC/pKUifjFY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=cEFSPAyG4xwCjgsCLNrWkSF2uMOZLAPsNtpcjnnA86yPArjvyKA59oIYCb3kY0rVimRRiMalO2PSeHVavKgJYlUpQ8QjFSWtdMhyUMxgKcKbxeEV1uNIa7XJ/FXmPr4w78XorS0r4elk+rGzxB2r67VtZLgGe3XlgfQFHfVrIao=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OaWn3arq; arc=fail smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GKUaA8HJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092CDC4CEE4;
-	Wed, 21 May 2025 20:46:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747860386;
-	bh=l0FQvf1M3ScltpOkIqN+MDVq9vIgvD938vpt9yDUCJ4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GKUaA8HJuMHueMQ43f9BlsAoZQ8tB64VoBZ0/vQHrZ1O00BzIgD1butpvZFA4qmyJ
-	 cmtBak74rNAZBzi78g9XCcOOzO2JmpmavrDdbeB3Cwr/o5KOy7ZAojs3PX0tYYFb2M
-	 kHLr0NLNigCJ/AH8PE8xnq2XeP8KOV7CEv+OtoG2KS4SxBJZ3960mSuTw1qlzyIaKj
-	 grOLGspy0g7sU6LfZH/6OqPD2P8wd6gzkc4oCoktcadVjIAv6+ACWXOfO6DB7CuXRj
-	 FDWLjqLvgOX1LAv9PbKRs+AJSEJeSW8jxouWJ8u+W5CxnAjL5ktbc6Ff3+HSqSTvxa
-	 mdP1RGY2gr7Cw==
-From: Kees Cook <kees@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: Kees Cook <kees@kernel.org>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	netdev@vger.kernel.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	Max Gurtovoy <mgurtovoy@nvidia.com>,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Dmitry Bogdanov <d.bogdanov@yadro.com>,
-	Mingzhe Zou <mingzhe.zou@easystack.cn>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Lei Yang <leiyang@redhat.com>,
-	Samuel Mendoza-Jonas <sam@mendozajonas.com>,
-	Paul Fertser <fercerpav@gmail.com>,
-	Alexander Aring <alex.aring@gmail.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Hayes Wang <hayeswang@realtek.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Grant Grundler <grundler@chromium.org>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Jason Wang <jasowang@redhat.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Maxim Georgiev <glipus@gmail.com>,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Philipp Hahn <phahn-oss@avm.de>,
-	Eric Biggers <ebiggers@google.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Ahmed Zaki <ahmed.zaki@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Xiao Liang <shaw.leon@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-nvme@lists.infradead.org,
-	linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org,
-	linux-wpan@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH net-next v2 7/8] rtnetlink: do_setlink: Use struct sockaddr_storage
-Date: Wed, 21 May 2025 13:46:15 -0700
-Message-Id: <20250521204619.2301870-7-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250521204310.it.500-kees@kernel.org>
-References: <20250521204310.it.500-kees@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OaWn3arq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747860627; x=1779396627;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=icKLZIt3ZxIXCah/bTZnqfU/SJmFrUxFUC/pKUifjFY=;
+  b=OaWn3arqacc48lfn97FbORiiPfA9BL50Fs1cwI6ejPlJqKsUvKkR2Wfu
+   7+sAp5ifa3uV6GslWmkBbSVqgLJj2r+j0emilZcHXGqGV9e+evLNcLbeu
+   BgQBnK33fhwY6H18ggQ2x4f8DQEY3GPuMcAw11FHMFd3cPQls+I7PqHbm
+   RzCRO0lVDc/OI7eQ1m4ooK567TlcurcAkiKDFhryQeiq3l/qvzO0ua3Yc
+   T4vZC6r2P7lItstb2/GgLJhCKxvPLdUjXbh77R4EunvvLWua9/NpMcwf5
+   /4OSyV7YUZn0/vKBUaSB9HiLpuAm45ICNQs9eiapLPaxDo0i3vzvdcwrh
+   Q==;
+X-CSE-ConnectionGUID: 6wiveCPJT5SgWIoRfUV/YQ==
+X-CSE-MsgGUID: zWopi06BQXSrZ1hDlBWPBA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11440"; a="67416570"
+X-IronPort-AV: E=Sophos;i="6.15,304,1739865600"; 
+   d="scan'208";a="67416570"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 13:50:26 -0700
+X-CSE-ConnectionGUID: dsnEEwgYRpGD9f+dHrF8Rw==
+X-CSE-MsgGUID: icaO+gvmTEmEw13hOwZKVA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,304,1739865600"; 
+   d="scan'208";a="177399805"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 13:50:26 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 21 May 2025 13:50:25 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Wed, 21 May 2025 13:50:25 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.47) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.55; Wed, 21 May 2025 13:50:25 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NCUiuoLZb2l5zIouQqtWsIbtHcb5KYbU1UYc+XNVW41FC65AYQ9guqB1sPVdVh4uxjPLZvdvTPtg12i+VKgvPCt4UfzIWiewvcx4H21UPwkbxNdw49EO7in6W+BRgnejUfRPjv7rb0g1EMx0q9AIs0/YnIgD7EyqL9VhcCIUAWEqhtQLOmaT4I25uDM75fweOI2uB+L06+KZCBh4c7UIUOSsWDb4g76fZaCVHoVF5rwnLzWwnH91HPGO846RlzgUG2wLDHgft5iobjpGV2Q8M8Oq2Zc/8xzi+jo6wkcZWXU6RnKgA4nilVv2UjzSkkFH9h+kBcEECAftiH7z6NMrmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hgynIz3o+avj5K4TVJNCXKyIb6ked/0vT3ISk4Dqkdg=;
+ b=YgBzJoetm0jE6Pek8KVasVfgWrdGL0nJciT4JQKNeynMGUKLEuxjPq7ThQ+amziAL7HQOzZgZbyO/HG1kpJezowcKax3kXGu24VeGC5Jg+Wh8NURWZCNMzKTQ4Eft85PlUamhVWYh/WPwD0+gSVwG7jtiErPwHmQXM9hEvtmAfFFUrNCFxTSs5TXOT19OnjEHRML+C9TXKOUJerRMK0R0TdzZtDemicKmVciBgLYoiu9F/KMxFLcmdnYLnWfPvqWyRs64tkT4XgZiDjU356NKpqLWTS/5SQ7rsryIq4thKMIwZKXcGmfTWxh1YjzusKc7TC3l98Esj9pHlxJ7A2E4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SJ0PR11MB5813.namprd11.prod.outlook.com (2603:10b6:a03:422::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.29; Wed, 21 May
+ 2025 20:49:55 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8746.030; Wed, 21 May 2025
+ 20:49:55 +0000
+Date: Wed, 21 May 2025 13:49:53 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: <alejandro.lucero-palau@amd.com>, <linux-cxl@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <dan.j.williams@intel.com>, <edward.cree@amd.com>,
+	<davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<edumazet@google.com>, <dave.jiang@intel.com>
+CC: Alejandro Lucero <alucerop@amd.com>, Zhi Wang <zhiw@nvidia.com>, "Jonathan
+ Cameron" <Jonathan.Cameron@huawei.com>, Ben Cheatham
+	<benjamin.cheatham@amd.com>
+Subject: Re: [PATCH v16 19/22] cxl: Add region flag for precluding a device
+ memory to be used for dax
+Message-ID: <682e3c7129fb0_1626e10062@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20250514132743.523469-1-alejandro.lucero-palau@amd.com>
+ <20250514132743.523469-20-alejandro.lucero-palau@amd.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20250514132743.523469-20-alejandro.lucero-palau@amd.com>
+X-ClientProxiedBy: BYAPR05CA0051.namprd05.prod.outlook.com
+ (2603:10b6:a03:74::28) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2148; i=kees@kernel.org; h=from:subject; bh=l0FQvf1M3ScltpOkIqN+MDVq9vIgvD938vpt9yDUCJ4=; b=owGbwMvMwCVmps19z/KJym7G02pJDBl61tMbYmZ7vqv3y5thHs3r9nVXSVtZ7MEJ73YFLVVlf crw4fn/jlIWBjEuBlkxRZYgO/c4F4+37eHucxVh5rAygQxh4OIUgImYKjAyfDV1aEz44sad4qiz 39HRp5zLnFf5iffcMym3Px+wdE/gY/ineFOBL/PIyU28LFO3x+ZnOm9YpcfdFuQ7kyW368Lt3AU cAA==
-X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SJ0PR11MB5813:EE_
+X-MS-Office365-Filtering-Correlation-Id: e8bc7649-70bf-46c6-db16-08dd98a90a9a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|921020;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?IQW3it3geu0nmqcEsBnhf4MVtUA62JMUeR3K4sSkh71GiupUiuXsv9stHJFY?=
+ =?us-ascii?Q?6yfP3YfW2nF1wgw9PdK++0qt0w0HH741b34+eHxxRr6sne5D1qEiwtB5aXRN?=
+ =?us-ascii?Q?54HrSAuh6NMVYA3SiwrK2PhjG37W4NK/pZCs0g9qgwJ7OzmO9FOetCSNJ5nE?=
+ =?us-ascii?Q?3tizwq/rP6RizPLHY/Fmg3zT3f+VW/ZsPNZgXBSvFkfSpDPEvc62+GIWnusC?=
+ =?us-ascii?Q?jqfJcsUd11D17JwE4B1jVxquVBm4s/qqB1W2c/jbabAbmrwVbgbnQA/2TYE+?=
+ =?us-ascii?Q?CtZPO9aUR8YQVSOu8f3PnoMjYLAsiLv4SW6GeOkFK2r6ZVXv8R+R7z3oY+Dw?=
+ =?us-ascii?Q?6GeKeJmtjy1Xr8uhfj8zTBqEkUl7sD8eMppqMt4oPujddhsfiweKOrMJfuU6?=
+ =?us-ascii?Q?dnM1tQkNvwnHmqlkonwglsvFJY+35LVP/JsfWSNYuAjoB8HqbxfgYibIMLum?=
+ =?us-ascii?Q?bCR8CGYSnutdtLP+r8+ICpoTgCBA1dNLbqvSfWcSWq6l692XUkFqpleXtEGf?=
+ =?us-ascii?Q?uVRNNglFnacvKRcFSuqA68iMkgrhxGD7suK04c882EXNBvoyApyOEGWR7Keh?=
+ =?us-ascii?Q?9nCzIvq7I2fa8rkZQR2V769bcrrv3bLM5QonNnr9dRUYSOZr1vfgN44ErqZu?=
+ =?us-ascii?Q?iP4Tiupg97OA6751/dCK9CiLPWiiqXH1cy4Tn8iQakn2yQi3uOGyabike/9z?=
+ =?us-ascii?Q?UzYQSXpuHKmfuQFBrCQMORQrV+1NjV4UV1iTsP2lkBZge4/WsP5Y5YK5V0m2?=
+ =?us-ascii?Q?l8LX+79y7wzR8kXWvxxVV7bKDh9P16G2TA72Z47TNxAFa35OwfZYZAx4l38T?=
+ =?us-ascii?Q?UIyIqUzJj8/vtj9fM4/+iTvOMlT7Jf713TXQ40tizlEXQqvM4HME2q/HUcPK?=
+ =?us-ascii?Q?Dn1Csm95sTmBITEyYPCnUrTUOeqDJPYhSpG+CEd90wZjHZZTItfS1iG8RKe3?=
+ =?us-ascii?Q?SUhd3XUfmswXSZoNnqKW7TugKEAmJAM2VLPlrkTD43zWydec6BnxprUaOfZp?=
+ =?us-ascii?Q?h6KaYjGVlGUvL7+FvbP4tezpD/t/E0Wd0M9NeOcZ+79qrBtnR1KDNZBaAidz?=
+ =?us-ascii?Q?IqOrzYgFTJU0WrNIzNbsfgb7kAPn3R6ECuHcFAvqtJNnyhby/eAFl8RNmdb9?=
+ =?us-ascii?Q?yuL7YK5oiBAvI5trW4qJXwNFgPcsGnbq52VlQ7CPTKgrQwMgYhQdvrhDSknd?=
+ =?us-ascii?Q?l3e1B4zQLE9k4ziRF92yyd7dGXLc9s0ZDoRYYZBJi2Q4VNdZHTJCdSDlX43v?=
+ =?us-ascii?Q?R/Hrs/k2sGWp/ish5r991k4N6o0dkLydqjButQPQ68ekY3nw73VfUtzytlmP?=
+ =?us-ascii?Q?v4TXlBkKD8KnbFn/Zd7FCo+xkSCF4uTLfAJuubH3toi2iugsrCKIvDKyXsO6?=
+ =?us-ascii?Q?Wdc7I8juxmoCqotreVSgp9ZftLjKIO9kOVY84MXWvlmHTOGVLeFw65kebMBs?=
+ =?us-ascii?Q?jhjgCt+y7xNBfOO0z9TcpQa+V4rkWeoGaaDlq3Fv+Qa0hmPBUs+Kaw=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?0OUSTjMYQfADe9QyVnYt9mzolkbllteiS2jMYKubYAunFfBWDq07gPYhRN5p?=
+ =?us-ascii?Q?RBi9MamZ8sxI+2dxQS42GPug3sZE/A2K10vcJgR3bxZCQyLkHCAZGTO4bpF+?=
+ =?us-ascii?Q?5HdGNnhMGnI/SQb4UhxVRWeNqNcnrqZr8OhYYfukPLflWH41UyVFz5eJkqPD?=
+ =?us-ascii?Q?iOMzdbwW2R7+GDEkJKdAdYWNQsXVAXQrsEzZbr2lz54rJm36c5bsNOnjw1bd?=
+ =?us-ascii?Q?SSNc1zELeEEN3x4fPASqLjHHLZfamm3I31n8RHpDn/m9jkwAlgX3ErvJASKh?=
+ =?us-ascii?Q?3YLsjYaRdZk01kfZDi5D0hY8b3VvT3O1oG4Js4ibaR5VNtWD8t7JMjFyHjTh?=
+ =?us-ascii?Q?m+pW12qnLiuPveUxAvlXbJjFpb58S7Gn0U3lDDd39093Gfne1uQdBEUPFfHP?=
+ =?us-ascii?Q?BXqWbjj9b9A4hoCS3qmRKqogfXUZ+sHIU7AE14Cc7xho0X1BGIZaBtN5ByaW?=
+ =?us-ascii?Q?uN6WNRm2eur9PGakXZVqOq9zERCwJXJxosxChxweizOFQZudaqt2AyPbHcuy?=
+ =?us-ascii?Q?TOTFwnsbM9xtjBQRRyLuJnK2lWbYOSO53weKXPevcKS6pe9M/ow/WOeIgBbb?=
+ =?us-ascii?Q?uIEIVGFLdBKYZU7+x3ZGhK+xNRnZbvV0jx1nTRWdgY24NFjdMsdj/bqL/Evs?=
+ =?us-ascii?Q?foAFlJT6vQ52my0NSPmEuX83u16h0/6ITVWciakvlPCr62as3LqHCKSGYr31?=
+ =?us-ascii?Q?jBqNGFzEyWCyO4dYVIAqpbfMt7CGWqM1NprWYUPaasqnyXGQ1k5L1Z7t5lbi?=
+ =?us-ascii?Q?EKq/Svo3ThgwobjWkIhbzckOo41xnT2O1+Zgg0pdlJmKpQ96YvMJF0hqdnf6?=
+ =?us-ascii?Q?HKlE6wd1q10UREMvYVGx+eu93kcPyCRd/wZ7RudIYdg+axUY+J4Z8qQx+7mw?=
+ =?us-ascii?Q?xOM9sxrGUSCSTXiJsRi3WjOM0E02yDNAQQaGR4mV0E7DqK5Ix1nCPFJ4MtjN?=
+ =?us-ascii?Q?OTFcuisxVgPerVkkIi9i7DI05cgr1ccGSPMMkEubrJ5wI1rPLcJozo39rxg6?=
+ =?us-ascii?Q?wQevwPoEldTvrbEptK4laMvUVXkicMkcAZpp+ESgPekAd4NIEoBx6lUZiKml?=
+ =?us-ascii?Q?5cCseHhES3zPyHPYYQ+zACMjefuoXBHCu4c9XCq+HaZ+4mg6o1atSRmYqFT6?=
+ =?us-ascii?Q?ku1olYfTaV4ivJ5rFOCca3XOxGERtwsUimpIcML+DVLd9V/WRYWkk211BOvI?=
+ =?us-ascii?Q?N7+PMqcyhVEvI4x6EF6t6oamWSLCsBPojUkX6k4m5wmbJ+Mybk+Y1q8iQHDS?=
+ =?us-ascii?Q?rKM+d3e/mQfmnL+7YayA+TPjqh4Qm66ygY39w3iFSd56oIPLLDU7KRcB8YNl?=
+ =?us-ascii?Q?KnHln6BXZWD469ZFsUQK4h5PndxoP9GKfRNQ22j3Rx6XddxVqIc6/rlW70e4?=
+ =?us-ascii?Q?QFNF6GDaKvM45+sbSlYeU6tMrUVIbVZ+4UGsWkIY3OG7cayshm6BBnQ3Yseu?=
+ =?us-ascii?Q?8leiTVJ+J21mVY7f5rqmwSPQ7/6JkFk1Rp2H7J26zmZtuiHuXI4iZlAzMyRY?=
+ =?us-ascii?Q?/NUGXpGGJYeDia0MhjxQaQSDPNVcujEsBUi+UY/21QvBiDU7Vs1LjP3g53mK?=
+ =?us-ascii?Q?fH18pL0wf8hUgm0hZsERUSOK4TGFLH8PSQYL6qBD2Nn+Gu8/RWdmJfgK7cby?=
+ =?us-ascii?Q?cA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e8bc7649-70bf-46c6-db16-08dd98a90a9a
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2025 20:49:55.2576
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RZuWX/ORxw/7TWxyaMA0MhCNocDdzIhCQxaGaJnxmU1B6fu0paaszIWbjuLOySm70FbGpj9IQSQHGneg1LTWgPHJcCsHiYgf2EHTqNc2oBA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5813
+X-OriginatorOrg: intel.com
 
-Instead of a heap allocating a variably sized struct sockaddr and lying
-about the type in the call to netif_set_mac_address(), use a stack
-allocated struct sockaddr_storage. This lets us drop the cast and avoid
-the allocation.
+alejandro.lucero-palau@ wrote:
+> From: Alejandro Lucero <alucerop@amd.com>
+> 
+> By definition a type2 cxl device will use the host managed memory for
+> specific functionality, therefore it should not be available to other
+> uses. However, a dax interface could be just good enough in some cases.
+> 
+> Add a flag to a cxl region for specifically state to not create a dax
+> device. Allow a Type2 driver to set that flag at region creation time.
+> 
+> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+> Reviewed-by: Zhi Wang <zhiw@nvidia.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Ben Cheatham <benjamin.cheatham@amd.com>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> ---
 
-Putting "ss" on the stack means it will get a reused stack slot since
-it is the same size (128B) as other existing single-scope stack variables,
-like the vfinfo array (128B), so no additional stack space is used by
-this function.
+What was wrong with the original proposal?
 
-Acked-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Kees Cook <kees@kernel.org>
----
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Ido Schimmel <idosch@nvidia.com>
-Cc: <netdev@vger.kernel.org>
----
- net/core/rtnetlink.c | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
++
++		/*
++		 * HDM-D[B] (device-memory) regions have accelerator
++		 * specific usage, skip device-dax registration.
++		 */
++		if (cxlr->type == CXL_DECODER_DEVMEM)
++			return 0;
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 9743f1c2ae3c..f9a35bdc58ad 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -3080,17 +3080,7 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
- 	}
- 
- 	if (tb[IFLA_ADDRESS]) {
--		struct sockaddr *sa;
--		int len;
--
--		len = sizeof(sa_family_t) + max_t(size_t, dev->addr_len,
--						  sizeof(*sa));
--		sa = kmalloc(len, GFP_KERNEL);
--		if (!sa) {
--			err = -ENOMEM;
--			goto errout;
--		}
--		sa->sa_family = dev->type;
-+		struct sockaddr_storage ss = { };
- 
- 		netdev_unlock_ops(dev);
- 
-@@ -3098,10 +3088,9 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
- 		down_write(&dev_addr_sem);
- 		netdev_lock_ops(dev);
- 
--		memcpy(sa->sa_data, nla_data(tb[IFLA_ADDRESS]),
--		       dev->addr_len);
--		err = netif_set_mac_address(dev, (struct sockaddr_storage *)sa, extack);
--		kfree(sa);
-+		ss.ss_family = dev->type;
-+		memcpy(ss.__data, nla_data(tb[IFLA_ADDRESS]), dev->addr_len);
-+		err = netif_set_mac_address(dev, &ss, extack);
- 		if (err) {
- 			up_write(&dev_addr_sem);
- 			goto errout;
--- 
-2.34.1
-
+I really do not want the ABI presentation policy layer leaking that deep into
+the region creation flow. Another way to determine this is if devices
+hosting the region are not driver by the generic CXL device memory class
+driver 'cxl_pci'.
