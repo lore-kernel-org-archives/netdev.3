@@ -1,110 +1,184 @@
-Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A41239E65;
-	Wed, 21 May 2025 23:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBC51C8631;
+	Wed, 21 May 2025 23:18:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747869493; cv=none; b=i9qsldoqKYqaJFvckYKDTCY5R/wRSwKNoHFYW7Yvt1lPH9pUCBp66tyEQOlsE7hN3fTJFWk4vWxAvNMSq0msdX4S1MoX7+7rpamQ8fjLQ/xVHON+Ai88X7rm08Ro4FO4EnNF+YKaEBGMQM05hYJdaCO1G69HGlNHkcMBhlCZ7s8=
+	t=1747869532; cv=none; b=RiAgx5g7ewVY/0LsZwhRrUwut73URzAKlR0/LvZ/PWPH6YY6rZJa+QAfYlUkCz8yIR/cFMPYYXLHhLv32O4MWwbw00q9/3jIHQy474WfHSnHZTErRUoJ9xr7ZI9R1ECFR2HqXXDHf8Swuc7O6DfbiIwBPOEJgFV1ctzwtetrPZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747869493; c=relaxed/simple;
-	bh=tc4Rc5WhaCG5eca6GJG/PxJnkROGcjQIe9XRR3o7jms=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vBInpIP13o4aRra++UhruWMjpIeULCM+NvXhLZ/VQoDpOfB558VZUKG126NeIedR1HoileAajSefGwlSvQ0g80NcsRjmifN4tHU+SjotByxBnyBcCbw78pgMjsCcUIqK+8K41aMK/WV1j+grfFEA7Bbxe+cBK5qhlLXo5mRdZok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=haLd94tY; arc=none smtp.client-ip=207.171.188.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1747869532; c=relaxed/simple;
+	bh=J4bNkTayjGwhnjiIZJMfORQDPb/lZ/bQHwxADQ9DMpg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=piLGsaW59INSvAJmSMz0q1uXU1bWrAG32OSn5f2CSTEgD2F//Sowsl17+iaeq89uientd1LkaPfdL2u8zlG8wAMOQYU/Q+bwMEvDkFgL3oAVyE5RX/kruyRFbBDhLyKLUUY2zWEJbbpzKCJ8/2c73PvTiXmLQzaVIIKyhgkGInY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=RdGO1bEe; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="haLd94tY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1747869492; x=1779405492;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=dAISRQHymGpSlZcgfow8gzL7H3J4aU50MP1wdq1m96U=;
-  b=haLd94tY0HaBAklco8bYS+J18b39ymbMLw8D51JqGFKL2evc++XLMxY8
-   kWYwcYFzLGSdACh8jJo8qGNhvhuJwy7+hkHB6ugKnBY49tVVXanKZWi50
-   V8RaGeWtJ3Pn1ECdyIVEU8Ff6Y+6PiCy3OxvazHb3fAQhdghiweSuvZRB
-   Y81Vdf0HmgDVlDtLGtgu+HOYZZkJP+nD2Cgt47QE8OH4ALascrVrIOy/A
-   0bhLA8Eol5UyQCQBgMOWzy2hS77MozL4J19jY6agsaHI7p7E5QSHAXAA0
-   8auELbQ8fBERckFPnrKAzVsDPIyK3HGzQ6VaM4ud1akUwulY2vdPb2fu+
-   g==;
-X-IronPort-AV: E=Sophos;i="6.15,304,1739836800"; 
-   d="scan'208";a="827214693"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 23:18:06 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.38.20:39713]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.52.117:2525] with esmtp (Farcaster)
- id f8e2304d-e65c-44ce-99fe-0d478a97d9b6; Wed, 21 May 2025 23:18:05 +0000 (UTC)
-X-Farcaster-Flow-ID: f8e2304d-e65c-44ce-99fe-0d478a97d9b6
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 21 May 2025 23:18:05 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.94.52.104) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 21 May 2025 23:18:02 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <kuniyu@amazon.com>
-CC: <alexei.starovoitov@gmail.com>, <bpf@vger.kernel.org>,
-	<daniel@iogearbox.net>, <jordan@jrife.io>, <martin.lau@linux.dev>,
-	<netdev@vger.kernel.org>, <willemdebruijn.kernel@gmail.com>
-Subject: Re: [PATCH v1 bpf-next 03/10] bpf: tcp: Get rid of st_bucket_done
-Date: Wed, 21 May 2025 16:17:48 -0700
-Message-ID: <20250521231755.91774-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250521225800.89218-1-kuniyu@amazon.com>
-References: <20250521225800.89218-1-kuniyu@amazon.com>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="RdGO1bEe"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1uHsi0-004Rnx-9Z; Thu, 22 May 2025 01:18:48 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=30Va3AN6LfNZbe0t0ezMLiASzcEn91Zs1pRfADE6gQQ=; b=RdGO1bEeHwcb1OyDDXHLxJ8+CU
+	jf6qvrngu2OhXiHSXExzVWM3cr0JufxXPwTr67ci5Ey8HkR0dFj1Z0uqVfUKjN8kZPFsztxj+eSgf
+	37k0K+uVlYVxbFWqN54i5R9tEkdQiXfRU/Pna5v8kqSh0GdHDJ6YzldYqpZx44yybCmLpMLJGOSe+
+	U6WJjBZcd+uwR1JgJqKNE+Zj9M7uvN85zLC0bEoKuRPt5qpVdn0T+o7xwU+GMHQQjCTUze17A0B0Q
+	ZH+l3XN26hsNh//TQa2j+A1gcAHQSNyHzfKMY/KfJp9JXT3BhRa5e8iEavtQRUn08w098TQjqYMOU
+	3Px2XkJg==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1uHshz-0000k5-6c; Thu, 22 May 2025 01:18:47 +0200
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1uHshs-002oFI-Ak; Thu, 22 May 2025 01:18:40 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Date: Thu, 22 May 2025 01:18:23 +0200
+Subject: [PATCH net-next v6 3/5] vsock/test: Introduce vsock_wait_sent()
+ helper
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D037UWB002.ant.amazon.com (10.13.138.121) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250522-vsock-linger-v6-3-2ad00b0e447e@rbox.co>
+References: <20250522-vsock-linger-v6-0-2ad00b0e447e@rbox.co>
+In-Reply-To: <20250522-vsock-linger-v6-0-2ad00b0e447e@rbox.co>
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+ Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-Date: Wed, 21 May 2025 15:57:59 -0700
-> From: Jordan Rife <jordan@jrife.io>
-> Date: Tue, 20 May 2025 07:50:50 -0700
-> > Get rid of the st_bucket_done field to simplify TCP iterator state and
-> > logic. Before, st_bucket_done could be false if bpf_iter_tcp_batch
-> > returned a partial batch; however, with the last patch ("bpf: tcp: Make
-> > sure iter->batch always contains a full bucket snapshot"),
-> > st_bucket_done == true is equivalent to iter->cur_sk == iter->end_sk.
-> > 
-> > Signed-off-by: Jordan Rife <jordan@jrife.io>
-> > ---
-> >  net/ipv4/tcp_ipv4.c | 14 ++++++--------
-> >  1 file changed, 6 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-> > index 27022018194a..20730723a02c 100644
-> > --- a/net/ipv4/tcp_ipv4.c
-> > +++ b/net/ipv4/tcp_ipv4.c
-> > @@ -3020,7 +3020,6 @@ struct bpf_tcp_iter_state {
-> >  	unsigned int end_sk;
-> >  	unsigned int max_sk;
-> >  	struct sock **batch;
-> > -	bool st_bucket_done;
-> >  };
-> >  
-> >  struct bpf_iter__tcp {
-> > @@ -3043,8 +3042,10 @@ static int tcp_prog_seq_show(struct bpf_prog *prog, struct bpf_iter_meta *meta,
-> >  
-> >  static void bpf_iter_tcp_put_batch(struct bpf_tcp_iter_state *iter)
-> >  {
-> > -	while (iter->cur_sk < iter->end_sk)
-> > -		sock_gen_put(iter->batch[iter->cur_sk++]);
-> > +	unsigned int cur_sk = iter->cur_sk;
-> > +
-> > +	while (cur_sk < iter->end_sk)
-> > +		sock_gen_put(iter->batch[cur_sk++]);
-> 
-> Why is this chunk included in this patch ?
+Distill the virtio_vsock_sock::bytes_unsent checking loop (ioctl SIOCOUTQ)
+and move it to utils. Tweak the comment.
 
-This should be in patch 5 to keep cur_sk for find_cookie
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ tools/testing/vsock/util.c       | 25 +++++++++++++++++++++++++
+ tools/testing/vsock/util.h       |  1 +
+ tools/testing/vsock/vsock_test.c | 23 ++++++-----------------
+ 3 files changed, 32 insertions(+), 17 deletions(-)
+
+diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
+index de25892f865f07672da0886be8bd1a429ade8b05..4427d459e199f643d415dfc13e071f21a2e4d6ba 100644
+--- a/tools/testing/vsock/util.c
++++ b/tools/testing/vsock/util.c
+@@ -17,6 +17,7 @@
+ #include <assert.h>
+ #include <sys/epoll.h>
+ #include <sys/mman.h>
++#include <linux/sockios.h>
+ 
+ #include "timeout.h"
+ #include "control.h"
+@@ -96,6 +97,30 @@ void vsock_wait_remote_close(int fd)
+ 	close(epollfd);
+ }
+ 
++/* Wait until transport reports no data left to be sent.
++ * Return false if transport does not implement the unsent_bytes() callback.
++ */
++bool vsock_wait_sent(int fd)
++{
++	int ret, sock_bytes_unsent;
++
++	timeout_begin(TIMEOUT);
++	do {
++		ret = ioctl(fd, SIOCOUTQ, &sock_bytes_unsent);
++		if (ret < 0) {
++			if (errno == EOPNOTSUPP)
++				break;
++
++			perror("ioctl(SIOCOUTQ)");
++			exit(EXIT_FAILURE);
++		}
++		timeout_check("SIOCOUTQ");
++	} while (sock_bytes_unsent != 0);
++	timeout_end();
++
++	return !ret;
++}
++
+ /* Create socket <type>, bind to <cid, port> and return the file descriptor. */
+ int vsock_bind(unsigned int cid, unsigned int port, int type)
+ {
+diff --git a/tools/testing/vsock/util.h b/tools/testing/vsock/util.h
+index d1f765ce3eeeed8f738630846bb47c4f3f6f946f..91f9df12f26a0858777e1a65456f8058544a5f18 100644
+--- a/tools/testing/vsock/util.h
++++ b/tools/testing/vsock/util.h
+@@ -54,6 +54,7 @@ int vsock_stream_listen(unsigned int cid, unsigned int port);
+ int vsock_seqpacket_accept(unsigned int cid, unsigned int port,
+ 			   struct sockaddr_vm *clientaddrp);
+ void vsock_wait_remote_close(int fd);
++bool vsock_wait_sent(int fd);
+ void send_buf(int fd, const void *buf, size_t len, int flags,
+ 	      ssize_t expected_ret);
+ void recv_buf(int fd, void *buf, size_t len, int flags, ssize_t expected_ret);
+diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+index 9ea33b78b9fcb532f4f9616b38b4d2b627b04d31..9d3a77be26f4eb5854629bb1fce08c4ef5485c84 100644
+--- a/tools/testing/vsock/vsock_test.c
++++ b/tools/testing/vsock/vsock_test.c
+@@ -21,7 +21,6 @@
+ #include <poll.h>
+ #include <signal.h>
+ #include <sys/ioctl.h>
+-#include <linux/sockios.h>
+ #include <linux/time64.h>
+ 
+ #include "vsock_test_zerocopy.h"
+@@ -1280,7 +1279,7 @@ static void test_unsent_bytes_server(const struct test_opts *opts, int type)
+ static void test_unsent_bytes_client(const struct test_opts *opts, int type)
+ {
+ 	unsigned char buf[MSG_BUF_IOCTL_LEN];
+-	int ret, fd, sock_bytes_unsent;
++	int fd;
+ 
+ 	fd = vsock_connect(opts->peer_cid, opts->peer_port, type);
+ 	if (fd < 0) {
+@@ -1297,22 +1296,12 @@ static void test_unsent_bytes_client(const struct test_opts *opts, int type)
+ 	/* SIOCOUTQ isn't guaranteed to instantly track sent data. Even though
+ 	 * the "RECEIVED" message means that the other side has received the
+ 	 * data, there can be a delay in our kernel before updating the "unsent
+-	 * bytes" counter. Repeat SIOCOUTQ until it returns 0.
++	 * bytes" counter. vsock_wait_sent() will repeat SIOCOUTQ until it
++	 * returns 0.
+ 	 */
+-	timeout_begin(TIMEOUT);
+-	do {
+-		ret = ioctl(fd, SIOCOUTQ, &sock_bytes_unsent);
+-		if (ret < 0) {
+-			if (errno == EOPNOTSUPP) {
+-				fprintf(stderr, "Test skipped, SIOCOUTQ not supported.\n");
+-				break;
+-			}
+-			perror("ioctl");
+-			exit(EXIT_FAILURE);
+-		}
+-		timeout_check("SIOCOUTQ");
+-	} while (sock_bytes_unsent != 0);
+-	timeout_end();
++	if (!vsock_wait_sent(fd))
++		fprintf(stderr, "Test skipped, SIOCOUTQ not supported.\n");
++
+ 	close(fd);
+ }
+ 
+
+-- 
+2.49.0
+
