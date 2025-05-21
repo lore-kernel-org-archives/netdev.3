@@ -1,164 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-24421.protonmail.ch (mail-24421.protonmail.ch [109.224.244.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9580221DB5;
-	Wed, 21 May 2025 15:35:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B1D220F45
+	for <netdev@vger.kernel.org>; Wed, 21 May 2025 15:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747841730; cv=none; b=bWcyVB4a/VwcTI+0WWqXy7VogwJSV+gB50A1yPV+mvQCvxFbMmlg403gLifzuwqNFpvKQjeMtVjNOZn4ul6EM16RTpD8GllHCjJNGgLOgaWONzEwmcAVnWPJn5Uugc/q9aG2nfZOkVxOrcAvJSLAiJ9ogq4tLjafB060yhDNhYY=
+	t=1747841913; cv=none; b=HS3I9Hv8RRM2kLPFibY68LiNDB+TU984D9Vj4bc0xKqP58Bd9ptPQc+detwaAhxIHXNlLAJFbOW9p1ZGU3xp9tdqZxRjO/NgjX+R/c++srfnZGToQPyEH76rICQXpGg+5Z3k9Lr21Q+CCJtvV8ZZ79J6XyGMQLFDWdd/Nw8vQG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747841730; c=relaxed/simple;
-	bh=SvoYm9cLZxsVGUhdWCKXpdKXEpXhlruEw3SXmHGIogA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OGjm5iKsCZt3HvMlCFiBjABhQfvE04fVcTYXEwLvz/MRytrQlTwR9MOf+GVdivevJGhCDyhIPvDXU1rwpqYb0jlbTNRMKZzMou8v6E4N28VU/3yCaQTg64632OLB2yRg+PgDR8/i2X5P3e/j5KnY4LEW6nlK7JzX20E6xam7Srk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LHaSSF/F; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747841913; c=relaxed/simple;
+	bh=GABW4EgmS2tVxZIXVlsuhQ0QvL/zEb/XTvwMt5CyKOQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pwiJv3Ad5vjJSoqsQKXaTnTTxInYI2IR6MKgYZfkltUUn7ueDyyTFpwg5m0D4elKUeF1CD8isEHfNIu828pQKi12NPNoPVfCAO7CCF2CRYeTb0EzTbuUEoGYLjxnxck8bArBvBKNLz5lNQLwLvNKGvXUVUhv/e6SxSJilafptqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io; spf=pass smtp.mailfrom=willsroot.io; dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b=gMPs+EAo; arc=none smtp.client-ip=109.224.244.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=willsroot.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LHaSSF/F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F383BC4CEE4;
-	Wed, 21 May 2025 15:35:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747841730;
-	bh=SvoYm9cLZxsVGUhdWCKXpdKXEpXhlruEw3SXmHGIogA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LHaSSF/Fy3guyqdDiWwPzUqDlUzYT6GKMDfJ389bO4fjwDTbytNCRXezZ7UHxA709
-	 Sdb1e8VneNYpNnkWVceB+mqVblHC66pes2ZAV68PDMWohN6WZ+Albwsw71wvUGJ3tC
-	 +yV802jx2wBz4SazDoP1rvLJ9k2/QoclqlnKHElwtQN4UiIXgRErZk67qFFaMSEO6T
-	 /7Nldxppb/KMXbh23+w38saz3xkMcNEOdHgHiMVJOXHck7Nkn7E5P7YuxX47kIDsRz
-	 AG5tlA8FhKwuqpoRmW3Bn5Qx54IhD8v2QYnR0jPFiB5UFsB+VTwqjErNq6oz845m+x
-	 9yqw0Hqj1T/hQ==
-From: Lee Jones <lee@kernel.org>
-To: lee@kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Michal Luczaj <mhal@rbox.co>,
-	Rao Shoaib <Rao.Shoaib@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	syzkaller <syzkaller@googlegroups.com>
-Subject: [PATCH v6.1 27/27] af_unix: Fix uninit-value in __unix_walk_scc()
-Date: Wed, 21 May 2025 16:27:26 +0100
-Message-ID: <20250521152920.1116756-28-lee@kernel.org>
-X-Mailer: git-send-email 2.49.0.1143.g0be31eac6b-goog
-In-Reply-To: <20250521152920.1116756-1-lee@kernel.org>
-References: <20250521152920.1116756-1-lee@kernel.org>
+	dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b="gMPs+EAo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=willsroot.io;
+	s=protonmail; t=1747841907; x=1748101107;
+	bh=GABW4EgmS2tVxZIXVlsuhQ0QvL/zEb/XTvwMt5CyKOQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=gMPs+EAo8SGZWlmFeaOnAphLT7e5UA5DciK5Vq6mGSYqo1hsSIILYtROCnMZLFN/L
+	 iGU1XySwfY4HD2BqfoIqycuy003JXUk14zUecbSzBXgq81rSEdf6eATmpz2WmiA8oL
+	 jSnTN9lgKUm2DYmO0DysYdJ4wZ5j019/ssgFytHaKCreXsrzvJTG68LzBjlQHOqNHH
+	 yJTNoSdZJiVNiMRLss1dOn6AHdv033xeg7aY4sETE3Ma2hWou+32vMs5GHbhGLxaed
+	 kPfhGx09Q4MRa+Y8FsGRQQZ9oztqs/6ih2WMVtceX1yMSUWxTPZwqXRRjJzbxIsVxv
+	 sHjkBftv0kMXA==
+Date: Wed, 21 May 2025 15:38:21 +0000
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+From: William Liu <will@willsroot.io>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Savy <savy@syst3mfailure.io>, Cong Wang <xiyou.wangcong@gmail.com>, Victor Nogueira <victor@mojatatu.com>, Pedro Tammela <pctammela@mojatatu.com>, Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, Stephen Hemminger <stephen@networkplumber.org>, Davide Caratti <dcaratti@redhat.com>
+Subject: Re: [BUG] net/sched: Soft Lockup/Task Hang and OOM Loop in netem_dequeue
+Message-ID: <ggSxq-NP-LDpev4N-rvkgs0Rrd0qOrbwtGRjcu4j4y3SuZth9k5RxTg2tFvhriQu4w_GxRPYjnkKN6VqFP6Q6FCyqWudz7_5iuOV06IEzgY=@willsroot.io>
+In-Reply-To: <iEqzQsC-O2kAXqH1_58I59DIhBjRgebyGym2ZqyMEI3DaMtgsKSYR0KUsbxj5xqvfzf-4XzpM8dXvATHJhVVw3NedRdL3j1FJaqiXPlNWeE=@willsroot.io>
+References: <8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io> <CAM0EoMmKL68r_b1T4zHJTmdZPdCwS69F-Hh+0_ev+-5xPGy2=w@mail.gmail.com> <DglTO9NHmtFTRrCJf07R16_tYUUqoTV7M0hID_k-ryn5mAhe4ADq1mBpAuxNK24ZTnzIPaPq4x1woAtqZGXgAQS4k64C4SGRCfupe3H3dRs=@willsroot.io> <CAM0EoMmQau9+uXVm-vpuWqYjh=51a_CCS6orS6VrK6qBdddxrQ@mail.gmail.com> <iEqzQsC-O2kAXqH1_58I59DIhBjRgebyGym2ZqyMEI3DaMtgsKSYR0KUsbxj5xqvfzf-4XzpM8dXvATHJhVVw3NedRdL3j1FJaqiXPlNWeE=@willsroot.io>
+Feedback-ID: 42723359:user:proton
+X-Pm-Message-ID: aaa85548203f45bab96ec3ff05103144c2e1e0a8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+On Wednesday, May 21st, 2025 at 2:03 PM, William Liu <will@willsroot.io> wr=
+ote:
 
-[ Upstream commit 927fa5b3e4f52e0967bfc859afc98ad1c523d2d5 ]
+>=20
+>=20
+> On Wednesday, May 21st, 2025 at 11:06 AM, Jamal Hadi Salim jhs@mojatatu.c=
+om wrote:
+>=20
+> > I am afraid using bits on the skb will not go well around here - and
+> > zero chance if you are using those bits for a one-off like netem.
+> > Take a look at net/sched/act_mirred.c for a more "acceptable"
+> > solution, see use of mirred_nest_level.
+>=20
+>=20
+> Ah ok, thank you for the suggestion. We will take a look at that then.
+>=20
+> > Not that it matters but I dont understand why you moved the skb2 check
+> > around. Was that resolving anything meaningful?
+> >=20
+> > cheers,
+> > jamal
+>=20
+>=20
+> Yes - otherwise the limit value of the qdisc isn't properly respected and=
+ can go over by one due to duplication. The limit check happens before both=
+ the duplication and the skb enqueue, so after duplication, that limit chec=
+k would be stale for the original enqueue.
+>=20
+> Best,
+> Will
 
-KMSAN reported uninit-value access in __unix_walk_scc() [1].
+Hi Jamal,
 
-In the list_for_each_entry_reverse() loop, when the vertex's index
-equals it's scc_index, the loop uses the variable vertex as a
-temporary variable that points to a vertex in scc. And when the loop
-is finished, the variable vertex points to the list head, in this case
-scc, which is a local variable on the stack (more precisely, it's not
-even scc and might underflow the call stack of __unix_walk_scc():
-container_of(&scc, struct unix_vertex, scc_entry)).
+If we do a per cpu global variable approach like in act_mirred.c to track n=
+esting, then wouldn't this break in the case of having multiple normal qdis=
+c setups run in parallel across multiple interfaces? We also considered add=
+ing a nesting tracker within netem_sched_data itself (to increment and decr=
+ement in the prologue and epilogue netem_enqueue), but that would break upo=
+n having multiple netems with duplication enabled in the qdisc hierarchy. I=
+f we aren't going to track it in sk_buff, I am not sure if this approach is=
+ viable.
 
-However, the variable vertex is used under the label prev_vertex. So
-if the edge_stack is not empty and the function jumps to the
-prev_vertex label, the function will access invalid data on the
-stack. This causes the uninit-value access issue.
+This brings us back to the approach where we don't allow duplication in net=
+em if a parent qdisc is a netem with duplication enabled. However, one issu=
+e we are worried about is in regards to qdisc_replace. This means this chec=
+k would have to happen everytime we want to duplicate something in enqueue =
+right? That isn't ideal either, but let me know if you know of a better pla=
+ce to add the check.
 
-Fix this by introducing a new temporary variable for the loop.
-
-[1]
-BUG: KMSAN: uninit-value in __unix_walk_scc net/unix/garbage.c:478 [inline]
-BUG: KMSAN: uninit-value in unix_walk_scc net/unix/garbage.c:526 [inline]
-BUG: KMSAN: uninit-value in __unix_gc+0x2589/0x3c20 net/unix/garbage.c:584
- __unix_walk_scc net/unix/garbage.c:478 [inline]
- unix_walk_scc net/unix/garbage.c:526 [inline]
- __unix_gc+0x2589/0x3c20 net/unix/garbage.c:584
- process_one_work kernel/workqueue.c:3231 [inline]
- process_scheduled_works+0xade/0x1bf0 kernel/workqueue.c:3312
- worker_thread+0xeb6/0x15b0 kernel/workqueue.c:3393
- kthread+0x3c4/0x530 kernel/kthread.c:389
- ret_from_fork+0x6e/0x90 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-Uninit was stored to memory at:
- unix_walk_scc net/unix/garbage.c:526 [inline]
- __unix_gc+0x2adf/0x3c20 net/unix/garbage.c:584
- process_one_work kernel/workqueue.c:3231 [inline]
- process_scheduled_works+0xade/0x1bf0 kernel/workqueue.c:3312
- worker_thread+0xeb6/0x15b0 kernel/workqueue.c:3393
- kthread+0x3c4/0x530 kernel/kthread.c:389
- ret_from_fork+0x6e/0x90 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-Local variable entries created at:
- ref_tracker_free+0x48/0xf30 lib/ref_tracker.c:222
- netdev_tracker_free include/linux/netdevice.h:4058 [inline]
- netdev_put include/linux/netdevice.h:4075 [inline]
- dev_put include/linux/netdevice.h:4101 [inline]
- update_gid_event_work_handler+0xaa/0x1b0 drivers/infiniband/core/roce_gid_mgmt.c:813
-
-CPU: 1 PID: 12763 Comm: kworker/u8:31 Not tainted 6.10.0-rc4-00217-g35bb670d65fc #32
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
-Workqueue: events_unbound __unix_gc
-
-Fixes: 3484f063172d ("af_unix: Detect Strongly Connected Components.")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20240702160428.10153-1-syoshida@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit 927fa5b3e4f52e0967bfc859afc98ad1c523d2d5)
-Signed-off-by: Lee Jones <lee@kernel.org>
----
- net/unix/garbage.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index dfe94a90ece4..23efb78fe9ef 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -476,6 +476,7 @@ static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_inde
- 	}
- 
- 	if (vertex->index == vertex->scc_index) {
-+		struct unix_vertex *v;
- 		struct list_head scc;
- 		bool scc_dead = true;
- 
-@@ -486,15 +487,15 @@ static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_inde
- 		 */
- 		__list_cut_position(&scc, &vertex_stack, &vertex->scc_entry);
- 
--		list_for_each_entry_reverse(vertex, &scc, scc_entry) {
-+		list_for_each_entry_reverse(v, &scc, scc_entry) {
- 			/* Don't restart DFS from this vertex in unix_walk_scc(). */
--			list_move_tail(&vertex->entry, &unix_visited_vertices);
-+			list_move_tail(&v->entry, &unix_visited_vertices);
- 
- 			/* Mark vertex as off-stack. */
--			vertex->index = unix_vertex_grouped_index;
-+			v->index = unix_vertex_grouped_index;
- 
- 			if (scc_dead)
--				scc_dead = unix_vertex_dead(vertex);
-+				scc_dead = unix_vertex_dead(v);
- 		}
- 
- 		if (scc_dead)
--- 
-2.49.0.1143.g0be31eac6b-goog
-
+Best,
+Will
+Savy
