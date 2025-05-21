@@ -1,58 +1,35 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82705241114
-	for <netdev@vger.kernel.org>; Wed, 21 May 2025 09:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA37B23FC49
+	for <netdev@vger.kernel.org>; Wed, 21 May 2025 09:29:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747819373; cv=none; b=FZ/FbALyzM5Pg7XZ9l3qvpju+dF0d466o/Rl01Lp3PIxHoH5JFv+NBS5/4SeIhPRprGHFtRr7vtuzVF9RtUx++QPTSIxEY9vHp6ktFaFDBEQRH/W/LoWQemuKwmLyKShJ6bF9k8I0S1XX/hp2BqHsCkym9qSWbIz8dpsG+5XUkU=
+	t=1747819793; cv=none; b=lwX78DcBTsiLC31WfzdLDvzQVTDOzhGd5lTtq+Q1maB6h/bL9siK1ANMkXvho/ICGxecNX8YBroNZJ2tQtptBkd41c15w1HtBYUKZH2lJZfJhKJcgYwDPWn8i48lYo22JHIqhZdWrnrtiMbhN+Cex0Jd6ThYAWxcwrTLuNHWeEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747819373; c=relaxed/simple;
-	bh=jlqjkVr9S+fhQc/GQZSnUfDxqzxMGUWnuuXyXkSebJo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kx2eK1Y/p6Cf7xnUhsXrNbrBjk1Nj05p5NjYKQbU5IvI/fJoKpOEiPFAkoLTV4P3MQfW6ycBv8P1coLOYSzcawlr3Q10+w4jp4pHVQuhRxgljYbOe5OfWTceASVOGxo7wVPHlpIpRcJNgob0aKwKIpt4IFvZ7tzz6AzSVqaL2r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NXVjkvtn; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1747819793; c=relaxed/simple;
+	bh=sF9a+wM1sobRohGTbaBEmApO7Aas8GZ4IJ8Z5xj7F+k=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=iR/O6SqPQCzCUkw6eqcEdaMZO/f0eqLcJ9R3cDZSPH+ga+/ch4clmI0eJBUi+Xrp3bTWrTHH/nFZfaS1gBxxUjPDejFaGzTxGWNoclNQk0ionDM2C6zsYmMPziQ9NxHXZFXpSqa/Y2BH0UYdYEOndPcCcnWwCaMG3sRhgmik/6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BxYFVS1q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NXVjkvtn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747819370;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S01OyqRbOfmEw1jQdPVa38jcFNsvoKjej6vSXSbTUcg=;
-	b=NXVjkvtnxqSR+Kw1oGBnIjgrO+XduolfRmeAeENXWdAc7UlS8DeF21wUKcrB893aJEIMrt
-	S31FMPByLHzwRdXAqpCjdF7lIyKI+uoSm/pZ2Ep5qnUeVWvSfcjoynG4yBulIinHtQD1Lq
-	/t0eq1zrZB/FLA9lTuXVdtrfUA7+PKs=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-32-cPZKKRWmO-W7Nf7TD4DkwA-1; Wed,
- 21 May 2025 05:22:48 -0400
-X-MC-Unique: cPZKKRWmO-W7Nf7TD4DkwA-1
-X-Mimecast-MFC-AGG-ID: cPZKKRWmO-W7Nf7TD4DkwA_1747819367
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A52161954B17;
-	Wed, 21 May 2025 09:22:47 +0000 (UTC)
-Received: from lenovo-t14s.redhat.com (unknown [10.44.33.64])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BEE8C1956096;
-	Wed, 21 May 2025 09:22:45 +0000 (UTC)
-From: Laurent Vivier <lvivier@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
-	netdev@vger.kernel.org,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Subject: [PATCH v2 3/3] virtio_net: Enforce minimum TX ring size for reliability
-Date: Wed, 21 May 2025 11:22:36 +0200
-Message-ID: <20250521092236.661410-4-lvivier@redhat.com>
-In-Reply-To: <20250521092236.661410-1-lvivier@redhat.com>
-References: <20250521092236.661410-1-lvivier@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BxYFVS1q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD6CC4CEE4;
+	Wed, 21 May 2025 09:29:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747819793;
+	bh=sF9a+wM1sobRohGTbaBEmApO7Aas8GZ4IJ8Z5xj7F+k=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=BxYFVS1qOP2ihWHG2LDN+IZlsweeBQsDYTII+kglQVCrThUlsyZTBFvMiF1hGe/a+
+	 4UEV8jmOiA+Csm3qYE53rE1BikX7jlLHyfaUcA1xN822Nszwpj94thfi5XAEl4Ikqf
+	 IEtah404oYTj647eHJXT4v5fYvIJiWKIa7fY4Z7Xxt4m/q9Gcc8A1EmOqnmFgZ/7zN
+	 JK9O83qbgNgT7YSdsTwnAUNRLG5suIT7r513jdQ8sItcaQmTt3tsBkLFI16xNmLc3v
+	 GBmFCsQU71ysGQbzjtIlV5zF33rYjDtkKiS5hDiRfOHSsxmdXdPpJ8AIyfpC7xibHa
+	 hAW497KPJzPFw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33EE9380CEEF;
+	Wed, 21 May 2025 09:30:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,47 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Subject: Re: [PATCH net v2] xsk: Bring back busy polling support in XDP_COPY
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174781982901.1645073.14019094768551753670.git-patchwork-notify@kernel.org>
+Date: Wed, 21 May 2025 09:30:29 +0000
+References: <20250516213638.1889546-1-skhawaja@google.com>
+In-Reply-To: <20250516213638.1889546-1-skhawaja@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, almasrymina@google.com, willemb@google.com,
+ stfomichev@gmail.com, netdev@vger.kernel.org
 
-The `tx_may_stop()` logic stops TX queues if free descriptors
-(`sq->vq->num_free`) fall below the threshold of (`MAX_SKB_FRAGS` + 2).
-If the total ring size (`ring_num`) is not strictly greater than this
-value, queues can become persistently stopped or stop after minimal
-use, severely degrading performance.
+Hello:
 
-A single sk_buff transmission typically requires descriptors for:
-- The virtio_net_hdr (1 descriptor)
-- The sk_buff's linear data (head) (1 descriptor)
-- Paged fragments (up to MAX_SKB_FRAGS descriptors)
+This patch was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-This patch enforces that the TX ring size ('ring_num') must be strictly
-greater than (MAX_SKB_FRAGS + 2). This ensures that the ring is
-always large enough to hold at least one maximally-fragmented packet
-plus at least one additional slot.
+On Fri, 16 May 2025 21:36:38 +0000 you wrote:
+> Commit 5ef44b3cb43b ("xsk: Bring back busy polling support") fixed the
+> busy polling support in xsk for XDP_ZEROCOPY after it was broken in
+> commit 86e25f40aa1e ("net: napi: Add napi_config"). The busy polling
+> support with XDP_COPY remained broken since the napi_id setup in
+> xsk_rcv_check was removed.
+> 
+> Bring back the setup of napi_id for XDP_COPY so socket level SO_BUSYPOLL
+> can be used to poll the underlying napi.
+> 
+> [...]
 
-Reported-by: Lei Yang <leiyang@redhat.com>
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
----
- drivers/net/virtio_net.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Here is the summary with links:
+  - [net,v2] xsk: Bring back busy polling support in XDP_COPY
+    https://git.kernel.org/netdev/net/c/b95ed5517354
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index ff4160243538..50b851834ae2 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3481,6 +3481,12 @@ static int virtnet_tx_resize(struct virtnet_info *vi, struct send_queue *sq,
- {
- 	int qindex, err;
- 
-+	if (ring_num <= MAX_SKB_FRAGS + 2) {
-+		netdev_err(vi->dev, "tx size (%d) cannot be smaller than %d\n",
-+			   ring_num, MAX_SKB_FRAGS + 2);
-+		return -EINVAL;
-+	}
-+
- 	qindex = sq - vi->sq;
- 
- 	virtnet_tx_pause(vi, sq);
+You are awesome, thank you!
 -- 
-2.49.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
