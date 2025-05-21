@@ -1,110 +1,141 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA80F166F0C;
-	Wed, 21 May 2025 14:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1A4194A59
+	for <netdev@vger.kernel.org>; Wed, 21 May 2025 14:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747836813; cv=none; b=I6Z/px4SXmDVhCsslhIVXanurwLa/YD//Ll5Q6EjFgl6a1wna1LQfztAx8Il2O58fQCW5irrsb9LvnoXxwh4/1cr1MeePZmeMb8Jvn1jgXN49xEhntnTEA5/vWK2xCbd2APSqKTqd8aaCY6kPAxALDq0BmravelhOKr2YulFhJ4=
+	t=1747837435; cv=none; b=siPepBLLGHLo1yv7HbQLNnNWjnQdj8WIpBpniKK6JYA7pIo3mFYi2ph21RwYUboivgfUMlPdNBcyyLlmGN4actnu1CeUvbb1vP1psogjl2sWkUFe93/mzQ/p+XbIB2rai+oxuxPzDIUmIF6NykOzI+9WAr+Njz1sdw0Mjzuj0Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747836813; c=relaxed/simple;
-	bh=oaxMgYhPNZMs2/XTZyPamnePQQnQGkysxNcqm+SqnTk=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=SdKFeBvvku0K2AzqHbmJHI9NsFIMbvSrCcN1GWGqE4rHzJPQjDbOtUy94FHKjXH+0MfPL1dKog4xWi0PHnPi6LsBaFs9jNwTpp9pq2927okLTW+hdhVsYwddsNnRoHCOC6h6JtVA/h9OJ8LSJ9o3oLOs8n388U6vollv9SFxCyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ze9geiXd; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747837435; c=relaxed/simple;
+	bh=1NlA7Lajb+p5gKLZ4hdgRlVo+SU6VX1Ll7WgBh1g5DE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZwDeLnBexBDga7WjitUc0EEO4BNiYLeLDOAzgb9W3F7Fpm4fmewM8h77Z4ddKnraLc7pWVjl6JGMU9pwy6ftKZQK/eCiYQNj9jcoFGeSD7hn0U1GUlVMy4/ufOrEN4kbZwziK2TZO07RWYyB0YVY57uEDkw/iC3iBcGJ+vmhsRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kSbehpNa; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ze9geiXd"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-327ff195303so57591831fa.1;
-        Wed, 21 May 2025 07:13:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747836810; x=1748441610; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=oaxMgYhPNZMs2/XTZyPamnePQQnQGkysxNcqm+SqnTk=;
-        b=Ze9geiXdRASSnANYhg1tci2KKRTMqWuge+I2lMYjhN87Tu13uKq0uXM4TePEKYMgRC
-         RInM7hKWRHn8oJIlKblE+UB2oYa+g8/m8zQiJc/mTgfBMzSpgsI/4VHTJl1GdiUsCsk0
-         A+PVnfeiRGaewBuLJK9IEZ8txjmpnQB9EjWjzC9Qa+uBurt2hL4SRjQB5KbB2DQZVF/B
-         NwIOwu/Y3Vy8u2gflbmh4ffDP64YiFljOG01WxbdbBhjuCx3Njx/JOLcIsx7lO2z2OwN
-         xYjhzS6+XJdgjOu9YsbFE3tWe3u0F8Ns+oau3BYLJjFcjoji19j/ZRdlm1msEzkSrkfE
-         HFvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747836810; x=1748441610;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oaxMgYhPNZMs2/XTZyPamnePQQnQGkysxNcqm+SqnTk=;
-        b=oDnAh+96WFTFJKiDc0QN4flqyDjriOnd5uSgr+tsxfsHmoYG0NmLcJTD+WWI1Q6hp5
-         GNnTEnysUbUM1m2uWX+QeyLtZUmr2Kb1JxLFPF611Sxnzua3QJDEtF4lwSeRF2CVn/2i
-         PUD0GIoPEXsiD7T0gLY4d7ryLILLvJ3CePmZlKVLr0zEY7XzQgloPw8TM3XP+guuEXJH
-         4aU4PSi6MFsB+5/48ZW/kJcivcgJrTAWiy7Xwx8khGaHglas9MkThfqPekTtdOROWb7+
-         eVSfaUl2pDpmq71ba/tSBbauiCZLlBAT/15a1ansbcCE3M+FHR6QUaULdM0b5c9YHj/R
-         IAKw==
-X-Forwarded-Encrypted: i=1; AJvYcCUbmKHbKgPjvXTW0oK6lmhLN84LdB8kmLlceyXPQVfCtbA/QZTPyDq935UIu48oHiXHsl/HDZNypLoVWrI=@vger.kernel.org, AJvYcCXep4fRzwP31rRD6po9kbxTnE6dNl1rFV/59toHyBp+18X4GfdjykiktRFT1ZV4x3Mx8i4uU8HB@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx37RJ8jb5M9alsCdgmE5E2nzQ9ZZXWTd6vDbyIXkPUMiQjjoTc
-	Zx7KKIL4spFL1ockpJUlLfVjkTfymiGN+RrxgrRJ7HnbYSpvFCHKfU/WMQ4xQGESSsWoT6V5jOv
-	tFWq+qp3zQfcF8KestAXMRN/uTaxRsbZjcJJDBA==
-X-Gm-Gg: ASbGncslX8H4CxzZWtYabEWrYTyboGvgGKH1V+7hbmTBSF/ltVlC2GhC0QtHO1oYoNk
-	Zqr/N556owbKQiy2seKQb4/fZEqNnm9lmccCHP/3+oJiRq706hNRUmK0/4CdrKPhU5H3ZGX0yRj
-	LjpE0gexroeeBkHADQQXcqWAYZugoApqAVaogJF0RxuX0Zqjz972qX3oQ8uq8OETQg
-X-Google-Smtp-Source: AGHT+IEOaJbZM++Q0KRojp+3Aw+w6HCigFRyvGnKt7bSYukI4l+/DOz+RnKW0io0hgTr694UyJcCFQl5DVWoxiXsTNM=
-X-Received: by 2002:a2e:a590:0:b0:309:bc3:3a71 with SMTP id
- 38308e7fff4ca-32807791587mr73247681fa.31.1747836809372; Wed, 21 May 2025
- 07:13:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kSbehpNa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747837434; x=1779373434;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1NlA7Lajb+p5gKLZ4hdgRlVo+SU6VX1Ll7WgBh1g5DE=;
+  b=kSbehpNahOgGjqUew/hGXbVTySLqxRMxxEntGg3p8QtJfEy1wRWe4klS
+   1ZSS6FlVJ0MPW7b7M2TOgcNAOhC7EntU9ku1xgekXWm9zaSdrMfEu5vLD
+   WSidsujrC+mY45ONLr4RXvV5cqmfXKlMxyeM9PhFTg4Kc1BvSDvlPxi32
+   OnC4WMVKJftNYtcIn/MiwWnQvmrzUNVbD/yEIUYVLZFN+P6URo6GynoGo
+   5saYQMJnsdfaA5Qzcv30ofcWUaZtKmtPRbyBN+Ny0nix0xBN0pMO0vHIK
+   Wvn1f1VqNcV7MuahpIq/B6/+wbsxkuu19N2e76kvfOngGZhvXMxWw8PSO
+   g==;
+X-CSE-ConnectionGUID: vUg8DAM4QZqUYQdJ/Ej9Cw==
+X-CSE-MsgGUID: WkWFmkvzQjCEN7tL/CNPiQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11440"; a="53627261"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; 
+   d="scan'208";a="53627261"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 07:23:54 -0700
+X-CSE-ConnectionGUID: tsejvJ3ZQz2SyGRCTkvlyA==
+X-CSE-MsgGUID: 5VUxIBPFQHmxZ+YtD1+DmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; 
+   d="scan'208";a="139943813"
+Received: from pae-dbg-x10sri-f_n1_f_263.igk.intel.com (HELO localhost.igk.intel.com) ([172.28.191.222])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 07:23:52 -0700
+From: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Subject: [PATCH iwl-next] i40e: add link_down_events statistic
+Date: Wed, 21 May 2025 16:23:32 +0200
+Message-ID: <20250521142332.449045-1-dawid.osuchowski@linux.intel.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: John <john.cs.hey@gmail.com>
-Date: Wed, 21 May 2025 22:13:15 +0800
-X-Gm-Features: AX0GCFtOanhlZwGarVR69NoPJG3inDQ0psVlqb1GB6FHnNhWwdUWQX8s8vwof3g
-Message-ID: <CAP=Rh=N4QcPLWQ2dqUHmKYeEhig3Cbi-3N8Q4-7qGT00htXrVw@mail.gmail.com>
-Subject: [Bug] "WARNING in should_fail_ex" in Linux kernel v6.14
-To: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Dear Linux Kernel Maintainers,
+Introduce a link_down_events counter to the i40e driver, incremented
+each time the link transitions from up to down.
+This counter can help diagnose issues related to link stability,
+such as port flapping or unexpected link drops.
 
-I hope this message finds you well.
+The value is exposed via ethtool's get_link_ext_stats() interface.
 
-I am writing to report a potential vulnerability I encountered during
-testing of the Linux Kernel version v6.14.
+Co-developed-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+Signed-off-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+---
+Based on series [1] from Martyna where this was implemented for ixgbe
+and ice drivers.
 
-Git Commit: 38fec10eb60d687e30c8c6b5420d86e8149f7557 (tag: v6.14)
+[1] https://lore.kernel.org/netdev/20250515105011.1310692-1-martyna.szapar-mudlaw@linux.intel.com/
+---
+ drivers/net/ethernet/intel/i40e/i40e.h         |  1 +
+ drivers/net/ethernet/intel/i40e/i40e_ethtool.c | 10 ++++++++++
+ drivers/net/ethernet/intel/i40e/i40e_main.c    |  3 +++
+ 3 files changed, 14 insertions(+)
 
-Bug Location: net/ipv4/ipmr.c:440 ipmr_free_table net/ipv4/ipmr.c:440
+diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
+index c67963bfe14e..54d5fdc303ca 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -548,6 +548,7 @@ struct i40e_pf {
+ 	u16 empr_count; /* EMP reset count */
+ 	u16 pfr_count; /* PF reset count */
+ 	u16 sw_int_count; /* SW interrupt count */
++	u32 link_down_events;
+ 
+ 	struct mutex switch_mutex;
+ 	u16 lan_vsi;       /* our default LAN VSI */
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+index 21dd70125a16..adcf068202b0 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+@@ -2749,6 +2749,15 @@ static void i40e_diag_test(struct net_device *netdev,
+ 	netif_info(pf, drv, netdev, "testing failed\n");
+ }
+ 
++static void i40e_get_link_ext_stats(struct net_device *netdev,
++				    struct ethtool_link_ext_stats *stats)
++{
++	struct i40e_netdev_priv *np = netdev_priv(netdev);
++	struct i40e_pf *pf = np->vsi->back;
++
++	stats->link_down_events = pf->link_down_events;
++}
++
+ static void i40e_get_wol(struct net_device *netdev,
+ 			 struct ethtool_wolinfo *wol)
+ {
+@@ -5807,6 +5816,7 @@ static const struct ethtool_ops i40e_ethtool_ops = {
+ 	.get_regs		= i40e_get_regs,
+ 	.nway_reset		= i40e_nway_reset,
+ 	.get_link		= ethtool_op_get_link,
++	.get_link_ext_stats	= i40e_get_link_ext_stats,
+ 	.get_wol		= i40e_get_wol,
+ 	.set_wol		= i40e_set_wol,
+ 	.set_eeprom		= i40e_set_eeprom,
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index e421156717a4..d7368fa31ec8 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -9933,6 +9933,9 @@ static void i40e_link_event(struct i40e_pf *pf)
+ 	     new_link == netif_carrier_ok(vsi->netdev)))
+ 		return;
+ 
++	if (!new_link && old_link)
++		pf->link_down_events++;
++
+ 	i40e_print_link_message(vsi, new_link);
+ 
+ 	/* Notify the base of the switch tree connected to
+-- 
+2.47.0
 
-Bug report: https://pastebin.com/xkfF5DBt
-
-Complete log: https://pastebin.com/uCfqY4D8
-
-Entire kernel config: https://pastebin.com/MRWGr3nv
-
-Root Cause Analysis:
-The kernel warning is triggered in ipmr_free_table() at
-net/ipv4/ipmr.c:440, where the multicast routing table (mr_table) is
-being freed during network namespace exit (ipmr_rules_exit).
-The warning indicates that the multicast forwarding cache count
-(mfc_cache_cnt) is non-zero, implying that resources were not
-correctly cleaned up prior to netns teardown.
-This suggests a possible bug in reference counting or teardown logic
-of the IPv4 multicast routing infrastructure.
-Additionally, the environment is running with fail_usercopy fault
-injection enabled, which deliberately triggers copy-from-user failures
-to test kernel error paths.
-While these failures are expected, they may interact with multicast
-socket setup/teardown paths, exacerbating latent issues.
-
-At present, I have not yet obtained a minimal reproducer for this
-issue. However, I am actively working on reproducing it, and I will
-promptly share any additional findings or a working reproducer as soon
-as it becomes available.
-
-Thank you very much for your time and attention to this matter. I
-truly appreciate the efforts of the Linux kernel community.
-
-Best regards,
-John
