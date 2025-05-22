@@ -1,197 +1,81 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF70F253345
-	for <netdev@vger.kernel.org>; Thu, 22 May 2025 22:29:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B9913C81B;
+	Thu, 22 May 2025 22:30:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747952985; cv=none; b=ZL3KD2bpxbGxXMFjciHD5H06FiGPWHwE5YfyTTipjSiXXZcA3XDFsNNv3j9Kdp7X3wJyZhBHOLqmklXPeL4Bsd6HkI+7nFlT4gCkToCUh+4YDo2/x6Vn+EB8XDKlM7QsC7gq6JhukXJAsgM30bSXDb2rkrPlYToSxF+QZUaWeHE=
+	t=1747953015; cv=none; b=GYLnYJWsIFAMH8dHRPWN7dIGpW6bwlr4/8fzwHcOpWaWwhfx+ESDSMfyrPxieHmy169/gPvLKnAfNcmkKkPDRx4QaQBwDAfRfOJMsQQjjIwtR4x9ETohykOepZPy6J+FDGAJCBxJJ1mCFxFgEELIUJdk7jrHkDHFZg6ofGMb5b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747952985; c=relaxed/simple;
-	bh=mBzrVELxOdIzxz/kddB1RMi5LBNnlDAA+4YU7sIdM4g=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=sNOOe8QiGflYP16omDqfRO78PrvgwaJA1jna6n5Ae+JJNS362HkebXY7TLSlsCZRlJJRr0DaP+nqp25hksBULugP5/iwpn3yLxdYlLoUG+UpeBzDzMbpEzZzp2/V3RAyl8umgczmyS0ADVYEXlukv9SYI9TuE5EUR0k368rcw5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aS0aFKqz; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747953015; c=relaxed/simple;
+	bh=jW9IdrEDsP9dLKs3o6gfn990nlhAFd7trNmrhCDWRIU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=buBPipG/P6cDADPuXYBQlTQdUkHUsDlMo+t21FYjpsHrR/geP20UlzU+W6/NNf/P+kw2vg0OU/PF3F2fI9gygkbA2x8VwHZ+IKspMBO51LWjjrCV9SYgOAjDuqa60Oh3N6BC3VXXc8Mj5t8RdxL0c82HzA6Vdtr1PbgF4ouLa7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=obNWYMD/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aS0aFKqz"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7cadd46eb07so903071385a.3
-        for <netdev@vger.kernel.org>; Thu, 22 May 2025 15:29:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747952982; x=1748557782; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HvajL2YecSqVsIZW32nwz7pzwzttwEnJfCfWZasK7sc=;
-        b=aS0aFKqzOpoTqnmabMLL1W0/AoliqBWmBayEWZiDa1WkXNQpL3xYyuvhRyErmWyzi5
-         djYQI4fzeM9pz787Rh2wGTHDqNIP2IIh65bOJDBQBi5eSKbdlX5juZKARX2S6kmeoUL4
-         zFnnjazZHxOLCBTFtTFW++t+OLeekEYlpdEhDBuzQFyBQJQfcfh38qEsqMKAitj1qWLr
-         Q9zxTvCkiSCqJNhZDfW8OFgcdC8xr+vKium6jtr7jBm1fduwPBTzOjGWd+lklpdUfTLC
-         7JnIGixxJDrANGdyHuPzpxlP4ye6UpvIoDi0OtD3xpssJIvWHX+6OoWAxuvEFQCj4tQo
-         kGAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747952982; x=1748557782;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=HvajL2YecSqVsIZW32nwz7pzwzttwEnJfCfWZasK7sc=;
-        b=dla23yOQtemG22mqKr3lWYnuHw7ASzKuBBtdV76XhH29mp0dD81STBH9lVLuYmEuz5
-         YEQdXSiAKvze+IDzi2+3x15LvNQnAxyjebMl2nyFdA5sHNbcKwG5heuKMLFLCQBpQLNB
-         6xe3mpMT6AOh9mSbC7+2ukR6peMLmATws6NJ1ZSMQZABpzk8PmkC8UhUnRP7dwfoQIri
-         uE1xIIkvKxab6AeQFG/FZ/nO10dIrZ6L4op7B1Fei4UGfNM1d8ol0v7okQxoWm/4Sws4
-         9q2Rj9EIL6RQLVYupSY6ekRlDZ2xMKORUEvrUn/PZRCzmr5UL5fYEuCqQhKyoh32PAer
-         EkIw==
-X-Forwarded-Encrypted: i=1; AJvYcCVm511GePTkF0VPYcXaWq2gpS/1SgaVv6QuYoRSGiGnhfLUU/vQu1c8omE9dVLwno4EZgOGl48=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIKFNy4/l8KTEp+hn5fXCjo9XQkkpbTNQKGpKvcnKasMmFktNo
-	IRX2pI2EjxEU60TGBI9axhWXlsL/n7PUUeSSCeKILZzJcU+ZdDAmaoPJ
-X-Gm-Gg: ASbGncs/xeoNl1cic65HQ1VsN0NOxf3/hbmYfGWuqOVbonaOd6hieSOmloOTF1Zr+WY
-	QZSUjPrVVwD9ITuJ9pR6ZU7Ce8AVyNO3uKgeiHx7VRZz6pFnFyplCFw2goE55VePqRdHf/3cUT1
-	pilr1B2fQx1f3fPOrIVIiLD+b4H12kDX/dGuhQbLP24TZSh/4mh2jQEg4ZG0zteYG13Qs1FrW86
-	VLDtIjXogQQkUY5P3Wvr7o2bX1NkhI/P5x+PzEdTkiEQESg/e4zGHpAGhvhgcxk5KAEB5OHyg48
-	yRzBDQzD5DJ69RMLSgMY7v9fzyqQV/rK84yqlmM1OcE5C4I0I76ZoT1OuAuph5Fome2Kaf6AQoO
-	Y6iyGkr654s5IOKzCQTrE3K5OOVmLjtKRgA==
-X-Google-Smtp-Source: AGHT+IH5gtFu43ffHV3A5cCcvLvYesNykcRHyTWxl6Fown5Z5YYVXNfSVzq5CgMy6bMvCSl7lJtc+g==
-X-Received: by 2002:a05:620a:430a:b0:7cd:3f01:7c83 with SMTP id af79cd13be357-7cd4677d302mr3037209685a.39.1747952982574;
-        Thu, 22 May 2025 15:29:42 -0700 (PDT)
-Received: from localhost (23.67.48.34.bc.googleusercontent.com. [34.48.67.23])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7cd467d7eddsm1075249285a.34.2025.05.22.15.29.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 May 2025 15:29:42 -0700 (PDT)
-Date: Thu, 22 May 2025 18:29:41 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Paolo Abeni <pabeni@redhat.com>, 
- netdev@vger.kernel.org
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Jason Wang <jasowang@redhat.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- =?UTF-8?B?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>
-Message-ID: <682fa555b2bcc_13d837294a8@willemb.c.googlers.com.notmuch>
-In-Reply-To: <6e001d160707e1cf87870acee5adc302f8cb39b6.1747822866.git.pabeni@redhat.com>
-References: <cover.1747822866.git.pabeni@redhat.com>
- <6e001d160707e1cf87870acee5adc302f8cb39b6.1747822866.git.pabeni@redhat.com>
-Subject: Re: [PATCH net-next 5/8] net: implement virtio helpers to handle UDP
- GSO tunneling.
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="obNWYMD/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE62C4CEEF;
+	Thu, 22 May 2025 22:30:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747953014;
+	bh=jW9IdrEDsP9dLKs3o6gfn990nlhAFd7trNmrhCDWRIU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=obNWYMD/5Bwx1hqCakZIHjeBBRpDNPMNTHeyi2pqJ7N2SbPNuHw9RUB7B6LCru2vP
+	 z4YEHTiRuzmiDy+lXUoak1zEtryA5CKB+4ZsA+LWH+Lub14ST+gLL3jIzG9alpKyq6
+	 bmp3ry8RO3vmopj8dbGHCf9CW0gW+CrfzeCnFfJnKaoPDyP18xWTB82bffDJGqxKEo
+	 udFbocLtZ06ZyrX5fHE0Q8uKk3M++SMyU3H6X2pUXtFaJrtD8iacCRIpDWwwPQOmCS
+	 2wFxf2ggMriYjO0Mws2AtsBVBfY/E/G8F/kir+YpjA1vDyobuNT6dpVu5GFrczS+uN
+	 5M7oJ3XVbb21g==
+Date: Thu, 22 May 2025 15:30:13 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Paolo Abeni
+ <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, Saeed Mahameed <saeedm@nvidia.com>, Leon
+ Romanovsky <leon@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+ <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
+ Fastabend <john.fastabend@gmail.com>, <netdev@vger.kernel.org>,
+ <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <bpf@vger.kernel.org>, Moshe Shemesh <moshe@nvidia.com>, Mark Bloch
+ <mbloch@nvidia.com>, Gal Pressman <gal@nvidia.com>, Cosmin Ratiu
+ <cratiu@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>
+Subject: Re: [PATCH net-next V2 06/11] net/mlx5e: SHAMPO: Separate pool for
+ headers
+Message-ID: <20250522153013.62ac43be@kernel.org>
+In-Reply-To: <1747950086-1246773-7-git-send-email-tariqt@nvidia.com>
+References: <1747950086-1246773-1-git-send-email-tariqt@nvidia.com>
+	<1747950086-1246773-7-git-send-email-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Paolo Abeni wrote:
-> The virtio specification are introducing support for GSO over
-> UDP tunnel.
-> 
-> This patch brings in the needed defines and the additional
-> virtio hdr parsing/building helpers.
-> 
-> The UDP tunnel support uses additional fields in the virtio hdr,
-> and such fields location can change depending on other negotiated
-> features - specifically VIRTIO_NET_F_HASH_REPORT.
-> 
-> Try to be as conservative as possible with the new field validation.
-> 
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+On Fri, 23 May 2025 00:41:21 +0300 Tariq Toukan wrote:
+> Allocate a separate page pool for headers when SHAMPO is enabled.
+> This will be useful for adding support to zc page pool, which has to be
+> different from the headers page pool.
 
-No major concerns from me on this series. Much of the design
-conversations took place earlier on the virtio list.
+Could you explain why always allocate a separate pool? 
+For bnxt we do it only if ZC is enabled (or system pages are large),
+see bnxt_separate_head_pool() and page_pool_is_unreadable().
 
-Maybe consider test coverage. If end-to-end testing requires qemu,
-then perhaps KUnit is more suitable for testing basinc to/from skb
-transformations. Just a thought.
+Not sure if page_pool_is_unreadable() existed when this code
+was written.
 
-> ---
->  include/linux/virtio_net.h      | 177 ++++++++++++++++++++++++++++++--
->  include/uapi/linux/virtio_net.h |  33 ++++++
->  2 files changed, 202 insertions(+), 8 deletions(-)
-> 
-> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> index 02a9f4dc594d0..cf9c712a67cd4 100644
-> --- a/include/linux/virtio_net.h
-> +++ b/include/linux/virtio_net.h
-> @@ -47,9 +47,9 @@ static inline int virtio_net_hdr_set_proto(struct sk_buff *skb,
->  	return 0;
->  }
->  
-> +static inline int virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
-> +					    const struct virtio_net_hdr *hdr,
-> +					    unsigned int tnl_hdr_offset,
-> +					    bool tnl_csum_negotiated,
-> +					    bool little_endian)
-> +{
-> +	u8 gso_tunnel_type = hdr->gso_type & VIRTIO_NET_HDR_GSO_UDP_TUNNEL;
-> +	unsigned int inner_nh, outer_th, inner_th;
-> +	unsigned int inner_l3min, outer_l3min;
-> +	struct virtio_net_hdr_tunnel *tnl;
-> +	u8 gso_inner_type;
-> +	bool outer_isv6;
-> +	int ret;
+> -	wq_size = BIT(MLX5_GET(wq, wqc, log_wq_sz));
+> -	*pool_size += (rq->mpwqe.shampo->hd_per_wqe * wq_size) /
+> -		     MLX5E_SHAMPO_WQ_HEADER_PER_PAGE;
 > +
-> +	if (!gso_tunnel_type)
-> +		return virtio_net_hdr_to_skb(skb, hdr, little_endian);
-> +
-> +	/* Tunnel not supported/negotiated, but the hdr asks for it. */
-> +	if (!tnl_hdr_offset)
-> +		return -EINVAL;
-> +
-> +	/* Either ipv4 or ipv6. */
-> +	if (gso_tunnel_type & VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4 &&
-> +	    gso_tunnel_type & VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6)
-> +		return -EINVAL;
-> +
-> +	/* No UDP fragments over UDP tunnel. */
+> +	/* separate page pool for shampo headers */
+> +	{
+> +		int wq_size = BIT(MLX5_GET(wq, wqc, log_wq_sz));
+> +		struct page_pool_params pp_params = { };
+> +		u32 pool_size;
 
-What are udp fragments and why is TCP with ECN not supported?
-
-> +	gso_inner_type = hdr->gso_type & ~(VIRTIO_NET_HDR_GSO_ECN |
-> +					   gso_tunnel_type);
-> +	if (!gso_inner_type || gso_inner_type == VIRTIO_NET_HDR_GSO_UDP)
-> +		return -EINVAL;
-> +
-> +	/* Relay on csum being present. */
-
-Rely
-
->  #endif /* _LINUX_VIRTIO_NET_H */
-> diff --git a/include/uapi/linux/virtio_net.h b/include/uapi/linux/virtio_net.h
-> index 963540deae66a..1f1ff88a5749f 100644
-> --- a/include/uapi/linux/virtio_net.h
-> +++ b/include/uapi/linux/virtio_net.h
-> @@ -70,6 +70,28 @@
->  					 * with the same MAC.
->  					 */
->  #define VIRTIO_NET_F_SPEED_DUPLEX 63	/* Device set linkspeed and duplex */
-> +#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO 65 /* Driver can receive
-> +					      * GSO-over-UDP-tunnel packets
-> +					      */
-> +#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM 66 /* Driver handles
-> +						   * GSO-over-UDP-tunnel
-> +						   * packets with partial csum
-> +						   * for the outer header
-> +						   */
-> +#define VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO 67 /* Device can receive
-> +					     * GSO-over-UDP-tunnel packets
-> +					     */
-> +#define VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO_CSUM 68 /* Device handles
-> +						  * GSO-over-UDP-tunnel
-> +						  * packets with partial csum
-> +						  * for the outer header
-> +						  */
-> +
-> +/* Offloads bits corresponding to VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO{,_CSUM}
-> + * features
-> + */
-> +#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_MAPPED	46
-> +#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM_MAPPED	47
-
-I don't quite follow this. These are not real virtio bits?
-  
+A free standing code block? I this it's universally understood 
+to be very poor coding style..
