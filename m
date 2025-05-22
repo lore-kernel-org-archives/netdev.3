@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E05226868C
-	for <netdev@vger.kernel.org>; Thu, 22 May 2025 08:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FE5267F44
+	for <netdev@vger.kernel.org>; Thu, 22 May 2025 08:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747902240; cv=none; b=IxkWCHmzjhbccQ1hjUyWTEn2XpRQjGNd5PiX3gSMN10lBS0SRmW8W4owYI/kqEEWa5YlqnsbCmnV+jGYADoABYTxyLq4+xIlZ6g1IWTs9XSzSTG4ZmgMdLCWGZ1VuGlzkBF7swJEtpwbP89/fL67xNBEhEZqwX2PST0JvMAXPgQ=
+	t=1747902241; cv=none; b=uYXDJHz9uwHi8vFyzxSI+oFm+hhoO2W1Ard212oVJO2PB7g4DmwaKseK+lehNsd40bnWGpJjGsXKvScZUssPJT7cOY2P7yJNXb2Go3TNvWQNBTZYW6u5xjKVLt6LmX/L+GyLUg+Qe4eVkCaKCGYh60iRVGwH+7U+GeSwVhHQ6xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747902240; c=relaxed/simple;
-	bh=Suh/u/XmZ7xZR25u+iGTujyE0cuCeff4qS1OwR1SJAE=;
+	s=arc-20240116; t=1747902241; c=relaxed/simple;
+	bh=iRwtL31fHmSw9Hg04lUcXVTzDDSTbyvsYDfX890DbCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HWPs7jlRYvDMxDegs3xXuRzXJ8BXWpcNKU4qyZgxfWkGqLEG7ZWU+CfQhyWthCqt0CTQ3lmCFhxeJKaq7kKclEf09e0wX1dtwjgPwuDd/6lIbcpmj/768a/1Kvc1JQeS62YtTt0B5jRqTY5/C/iwXRVAn5DOiStfcXfAPUtx/UI=
+	 MIME-Version; b=nGiPy2BjRXlshdpTJf05pbJIbfwYe+Vc3xQAGVHaQLPIoHcejPNEXsVpinAc8X8n1bLiJSkJkIjmNyhFL4yOGg8xe3/SGHNndhR0j4lgvqJkI3hw8gYc8E8/nwqenyQ+cuoFMqG6mjGwxOWc++Z/idiV7Z4rmNF6GaSoTgMOr90=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,26 +18,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1uI1DT-0002EL-2G
-	for netdev@vger.kernel.org; Thu, 22 May 2025 10:23:51 +0200
+	id 1uI1DR-0002Br-Tr
+	for netdev@vger.kernel.org; Thu, 22 May 2025 10:23:49 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1uI1DS-000haB-26
+	id 1uI1DR-000hZC-1u
 	for netdev@vger.kernel.org;
-	Thu, 22 May 2025 10:23:50 +0200
+	Thu, 22 May 2025 10:23:49 +0200
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 582314171F8
-	for <netdev@vger.kernel.org>; Thu, 22 May 2025 08:23:50 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id 4275E4171E9
+	for <netdev@vger.kernel.org>; Thu, 22 May 2025 08:23:49 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id F02514171DB;
-	Thu, 22 May 2025 08:23:47 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id C3EE54171D1;
+	Thu, 22 May 2025 08:23:46 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 4690cd9a;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id d020fa02;
 	Thu, 22 May 2025 08:23:45 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -49,9 +49,9 @@ Cc: davem@davemloft.net,
 	stable@vger.kernel.org,
 	Jimmy Assarsson <extja@kvaser.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 3/4] can: kvaser_pciefd: Continue parsing DMA buf after dropped RX
-Date: Thu, 22 May 2025 10:01:33 +0200
-Message-ID: <20250522082344.490913-4-mkl@pengutronix.de>
+Subject: [PATCH net 1/4] can: kvaser_pciefd: Force IRQ edge in case of nested IRQ
+Date: Thu, 22 May 2025 10:01:31 +0200
+Message-ID: <20250522082344.490913-2-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250522082344.490913-1-mkl@pengutronix.de>
 References: <20250522082344.490913-1-mkl@pengutronix.de>
@@ -69,60 +69,189 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Axel Forsman <axfo@kvaser.com>
 
-Going bus-off on a channel doing RX could result in dropped packets.
+Avoid the driver missing IRQs by temporarily masking IRQs in the ISR
+to enforce an edge even if a different IRQ is signalled before handled
+IRQs are cleared.
 
-As netif_running() gets cleared before the channel abort procedure,
-the handling of any last RDATA packets would see netif_rx() return
-non-zero to signal a dropped packet. kvaser_pciefd_read_buffer() dealt
-with this "error" by breaking out of processing the remaining DMA RX
-buffer.
-
-Only return an error from kvaser_pciefd_read_buffer() due to packet
-corruption, otherwise handle it internally.
-
+Fixes: 48f827d4f48f ("can: kvaser_pciefd: Move reset of DMA RX buffers to the end of the ISR")
 Cc: stable@vger.kernel.org
 Signed-off-by: Axel Forsman <axfo@kvaser.com>
 Tested-by: Jimmy Assarsson <extja@kvaser.com>
 Reviewed-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://patch.msgid.link/20250520114332.8961-4-axfo@kvaser.com
+Link: https://patch.msgid.link/20250520114332.8961-2-axfo@kvaser.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/kvaser_pciefd.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/can/kvaser_pciefd.c | 83 ++++++++++++++++-----------------
+ 1 file changed, 39 insertions(+), 44 deletions(-)
 
 diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
-index a61cbade96d9..f6921368cd14 100644
+index cf0d51805272..9cc9176c2058 100644
 --- a/drivers/net/can/kvaser_pciefd.c
 +++ b/drivers/net/can/kvaser_pciefd.c
-@@ -1209,7 +1209,7 @@ static int kvaser_pciefd_handle_data_packet(struct kvaser_pciefd *pcie,
- 		skb = alloc_canfd_skb(priv->dev, &cf);
- 		if (!skb) {
- 			priv->dev->stats.rx_dropped++;
--			return -ENOMEM;
-+			return 0;
- 		}
- 
- 		cf->len = can_fd_dlc2len(dlc);
-@@ -1221,7 +1221,7 @@ static int kvaser_pciefd_handle_data_packet(struct kvaser_pciefd *pcie,
- 		skb = alloc_can_skb(priv->dev, (struct can_frame **)&cf);
- 		if (!skb) {
- 			priv->dev->stats.rx_dropped++;
--			return -ENOMEM;
-+			return 0;
- 		}
- 		can_frame_set_cc_len((struct can_frame *)cf, dlc, priv->ctrlmode);
- 	}
-@@ -1239,7 +1239,9 @@ static int kvaser_pciefd_handle_data_packet(struct kvaser_pciefd *pcie,
- 	priv->dev->stats.rx_packets++;
- 	kvaser_pciefd_set_skb_timestamp(pcie, skb, p->timestamp);
- 
--	return netif_rx(skb);
-+	netif_rx(skb);
-+
-+	return 0;
+@@ -1646,24 +1646,28 @@ static int kvaser_pciefd_read_buffer(struct kvaser_pciefd *pcie, int dma_buf)
+ 	return res;
  }
  
- static void kvaser_pciefd_change_state(struct kvaser_pciefd_can *can,
+-static u32 kvaser_pciefd_receive_irq(struct kvaser_pciefd *pcie)
++static void kvaser_pciefd_receive_irq(struct kvaser_pciefd *pcie)
+ {
++	void __iomem *srb_cmd_reg = KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_CMD_REG;
+ 	u32 irq = ioread32(KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_IRQ_REG);
+ 
+-	if (irq & KVASER_PCIEFD_SRB_IRQ_DPD0)
+-		kvaser_pciefd_read_buffer(pcie, 0);
++	iowrite32(irq, KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_IRQ_REG);
+ 
+-	if (irq & KVASER_PCIEFD_SRB_IRQ_DPD1)
++	if (irq & KVASER_PCIEFD_SRB_IRQ_DPD0) {
++		kvaser_pciefd_read_buffer(pcie, 0);
++		iowrite32(KVASER_PCIEFD_SRB_CMD_RDB0, srb_cmd_reg); /* Rearm buffer */
++	}
++
++	if (irq & KVASER_PCIEFD_SRB_IRQ_DPD1) {
+ 		kvaser_pciefd_read_buffer(pcie, 1);
++		iowrite32(KVASER_PCIEFD_SRB_CMD_RDB1, srb_cmd_reg); /* Rearm buffer */
++	}
+ 
+ 	if (unlikely(irq & KVASER_PCIEFD_SRB_IRQ_DOF0 ||
+ 		     irq & KVASER_PCIEFD_SRB_IRQ_DOF1 ||
+ 		     irq & KVASER_PCIEFD_SRB_IRQ_DUF0 ||
+ 		     irq & KVASER_PCIEFD_SRB_IRQ_DUF1))
+ 		dev_err(&pcie->pci->dev, "DMA IRQ error 0x%08X\n", irq);
+-
+-	iowrite32(irq, KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_IRQ_REG);
+-	return irq;
+ }
+ 
+ static void kvaser_pciefd_transmit_irq(struct kvaser_pciefd_can *can)
+@@ -1691,29 +1695,22 @@ static irqreturn_t kvaser_pciefd_irq_handler(int irq, void *dev)
+ 	struct kvaser_pciefd *pcie = (struct kvaser_pciefd *)dev;
+ 	const struct kvaser_pciefd_irq_mask *irq_mask = pcie->driver_data->irq_mask;
+ 	u32 pci_irq = ioread32(KVASER_PCIEFD_PCI_IRQ_ADDR(pcie));
+-	u32 srb_irq = 0;
+-	u32 srb_release = 0;
+ 	int i;
+ 
+ 	if (!(pci_irq & irq_mask->all))
+ 		return IRQ_NONE;
+ 
++	iowrite32(0, KVASER_PCIEFD_PCI_IEN_ADDR(pcie));
++
+ 	if (pci_irq & irq_mask->kcan_rx0)
+-		srb_irq = kvaser_pciefd_receive_irq(pcie);
++		kvaser_pciefd_receive_irq(pcie);
+ 
+ 	for (i = 0; i < pcie->nr_channels; i++) {
+ 		if (pci_irq & irq_mask->kcan_tx[i])
+ 			kvaser_pciefd_transmit_irq(pcie->can[i]);
+ 	}
+ 
+-	if (srb_irq & KVASER_PCIEFD_SRB_IRQ_DPD0)
+-		srb_release |= KVASER_PCIEFD_SRB_CMD_RDB0;
+-
+-	if (srb_irq & KVASER_PCIEFD_SRB_IRQ_DPD1)
+-		srb_release |= KVASER_PCIEFD_SRB_CMD_RDB1;
+-
+-	if (srb_release)
+-		iowrite32(srb_release, KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_CMD_REG);
++	iowrite32(irq_mask->all, KVASER_PCIEFD_PCI_IEN_ADDR(pcie));
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -1733,13 +1730,22 @@ static void kvaser_pciefd_teardown_can_ctrls(struct kvaser_pciefd *pcie)
+ 	}
+ }
+ 
++static void kvaser_pciefd_disable_irq_srcs(struct kvaser_pciefd *pcie)
++{
++	unsigned int i;
++
++	/* Masking PCI_IRQ is insufficient as running ISR will unmask it */
++	iowrite32(0, KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_IEN_REG);
++	for (i = 0; i < pcie->nr_channels; ++i)
++		iowrite32(0, pcie->can[i]->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
++}
++
+ static int kvaser_pciefd_probe(struct pci_dev *pdev,
+ 			       const struct pci_device_id *id)
+ {
+ 	int ret;
+ 	struct kvaser_pciefd *pcie;
+ 	const struct kvaser_pciefd_irq_mask *irq_mask;
+-	void __iomem *irq_en_base;
+ 
+ 	pcie = devm_kzalloc(&pdev->dev, sizeof(*pcie), GFP_KERNEL);
+ 	if (!pcie)
+@@ -1805,8 +1811,7 @@ static int kvaser_pciefd_probe(struct pci_dev *pdev,
+ 		  KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_IEN_REG);
+ 
+ 	/* Enable PCI interrupts */
+-	irq_en_base = KVASER_PCIEFD_PCI_IEN_ADDR(pcie);
+-	iowrite32(irq_mask->all, irq_en_base);
++	iowrite32(irq_mask->all, KVASER_PCIEFD_PCI_IEN_ADDR(pcie));
+ 	/* Ready the DMA buffers */
+ 	iowrite32(KVASER_PCIEFD_SRB_CMD_RDB0,
+ 		  KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_CMD_REG);
+@@ -1820,8 +1825,7 @@ static int kvaser_pciefd_probe(struct pci_dev *pdev,
+ 	return 0;
+ 
+ err_free_irq:
+-	/* Disable PCI interrupts */
+-	iowrite32(0, irq_en_base);
++	kvaser_pciefd_disable_irq_srcs(pcie);
+ 	free_irq(pcie->pci->irq, pcie);
+ 
+ err_pci_free_irq_vectors:
+@@ -1844,35 +1848,26 @@ static int kvaser_pciefd_probe(struct pci_dev *pdev,
+ 	return ret;
+ }
+ 
+-static void kvaser_pciefd_remove_all_ctrls(struct kvaser_pciefd *pcie)
+-{
+-	int i;
+-
+-	for (i = 0; i < pcie->nr_channels; i++) {
+-		struct kvaser_pciefd_can *can = pcie->can[i];
+-
+-		if (can) {
+-			iowrite32(0, can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
+-			unregister_candev(can->can.dev);
+-			timer_delete(&can->bec_poll_timer);
+-			kvaser_pciefd_pwm_stop(can);
+-			free_candev(can->can.dev);
+-		}
+-	}
+-}
+-
+ static void kvaser_pciefd_remove(struct pci_dev *pdev)
+ {
+ 	struct kvaser_pciefd *pcie = pci_get_drvdata(pdev);
++	unsigned int i;
+ 
+-	kvaser_pciefd_remove_all_ctrls(pcie);
++	for (i = 0; i < pcie->nr_channels; ++i) {
++		struct kvaser_pciefd_can *can = pcie->can[i];
+ 
+-	/* Disable interrupts */
+-	iowrite32(0, KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_CTRL_REG);
+-	iowrite32(0, KVASER_PCIEFD_PCI_IEN_ADDR(pcie));
++		unregister_candev(can->can.dev);
++		timer_delete(&can->bec_poll_timer);
++		kvaser_pciefd_pwm_stop(can);
++	}
+ 
++	kvaser_pciefd_disable_irq_srcs(pcie);
+ 	free_irq(pcie->pci->irq, pcie);
+ 	pci_free_irq_vectors(pcie->pci);
++
++	for (i = 0; i < pcie->nr_channels; ++i)
++		free_candev(pcie->can[i]->can.dev);
++
+ 	pci_iounmap(pdev, pcie->reg_base);
+ 	pci_release_regions(pdev);
+ 	pci_disable_device(pdev);
+
+base-commit: 9e89db3d847f2d66d2799c5533d00aebee2be4d1
 -- 
 2.47.2
 
