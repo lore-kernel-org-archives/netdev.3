@@ -1,142 +1,162 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B4D279792
-	for <netdev@vger.kernel.org>; Thu, 22 May 2025 08:39:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EAD221DB3
+	for <netdev@vger.kernel.org>; Thu, 22 May 2025 08:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747903167; cv=none; b=LK8Myei9EYDQusl7Syb6G41FEtH2EgMUTxf8NStvSCbC1K3dxOJgi90kryMAxcjr8gDadxU8Y9/5oBC1/uvQ7VTGB5Fp3iJoRJvPHstAd256Et8q6EknG6/iWym2RIFCetxVxumgk1MnlwgzO/n1L0jgcj6iWwPME/YJjOzsm7M=
+	t=1747903295; cv=none; b=Jhz6Y7OVgOfaI50vQq7BAMKKpaSngiMBJOrg2n46QCYHf5U2YUiI9CiLtdf83ZjSoV5jwLb1x5VX7szHXpmxS0pX5XS2Gt7uRDwrQ14Sba6Cosr3ctGh9xq1M9crED8/TCF3Ev6I3Ify8tFO56gKZ1Oo7YmQXF5Tu4i8Do8dDlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747903167; c=relaxed/simple;
-	bh=9flE0QZImSW576+7I7BBU3UGpRsywlbNGBPZ1xv0BkI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F/iK4EZXoyJ6SqdyvJ0pSzyLtFuPWWwspB1fJsgEthxxGIouBJDjFlp32CFW3mEwI2T2j6vjg9Mtz28Ca9JsrIeDV4I97wCN4KSlBb6eAinsfOm2/+CscfAml/aM9A0eUzTtqCxwePUAc/t1OmUqZ7WukPm7J5u0lZeV1Ihhkuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VZ4xXI6e; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VZ4xXI6e"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747903165; x=1779439165;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9flE0QZImSW576+7I7BBU3UGpRsywlbNGBPZ1xv0BkI=;
-  b=VZ4xXI6e1D2zNhP2HLENM6b9OhNwd5ksrhp8/Jo3LaYeKP2Th1t44CMZ
-   26xTXu+HN1I89wN3alTHvOZ/mvW3uWJ9LjSnkii+9+/+HGSxALDji1r6g
-   QBaqbmCeeXzyLUII2jWUAZpr2g4Numct17o47P/STskq/bSN68SWZ436q
-   yuArzqdS8Ne4J0Rvbyb7IPPivHjFg8eS5Tjwv2H8ftJgY/iaxMiwLN6c0
-   p/J/qO6xywK0bUjzWYv6BWfR8Xv6jJ1ROE/EVgfI3iRhy5jBDjwnvetXi
-   /KCo3I6CvspvTmzhkGRfzydYrtXNxSJivi63eQ/N5d4RoUTAgTyC6r1ZM
-   Q==;
-X-CSE-ConnectionGUID: hQTwids8TaqVtJnIf+9urw==
-X-CSE-MsgGUID: A76+KXwPRJm43NB6h7wcsw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11440"; a="37533993"
-X-IronPort-AV: E=Sophos;i="6.15,305,1739865600"; 
-   d="scan'208";a="37533993"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2025 01:39:24 -0700
-X-CSE-ConnectionGUID: bBKy2rUhSF2IwwJ3cEGYFQ==
-X-CSE-MsgGUID: w2QEMPdUQIK9iojHz7bxoA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,305,1739865600"; 
-   d="scan'208";a="140262545"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 22 May 2025 01:39:22 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uI1SR-000P6q-1B;
-	Thu, 22 May 2025 08:39:19 +0000
-Date: Thu, 22 May 2025 16:38:59 +0800
-From: kernel test robot <lkp@intel.com>
-To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>
-Subject: Re: [PATCH net-next 6/8] virtio_net: enable gso over UDP tunnel
- support.
-Message-ID: <202505221624.32GrJRU2-lkp@intel.com>
-References: <239bacdac9febd6f604f43fa8571aa2c44fd0f0b.1747822866.git.pabeni@redhat.com>
+	s=arc-20240116; t=1747903295; c=relaxed/simple;
+	bh=J5BFGUS43VKTwi71YLxalIno4vgHjqJYdMJl3T7xBY4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N88bt3dtnauDKlb3oJWhRIf+TgRcj4AnQO19iPixF0NkQG3/TxNV4jYhHxzYaH0h/FpZQq4PamBB4XqIBYF/V+L9/W21EgxehyHoTq+r/dbGEjgd3VqMJWw4apy9XHN8yKId0AVZJ/zpK10D0zcIlbLN9aKVyRrinHFW29NLXp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uI1Ua-0005wu-Pp
+	for netdev@vger.kernel.org; Thu, 22 May 2025 10:41:32 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uI1Ua-000hgv-1u
+	for netdev@vger.kernel.org;
+	Thu, 22 May 2025 10:41:32 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id 44AB34172A6
+	for <netdev@vger.kernel.org>; Thu, 22 May 2025 08:41:32 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id D800741729D;
+	Thu, 22 May 2025 08:41:30 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 3f3ab177;
+	Thu, 22 May 2025 08:41:29 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: [PATCH net-next 0/22] pull-request: can-next 2025-05-22
+Date: Thu, 22 May 2025 10:36:28 +0200
+Message-ID: <20250522084128.501049-1-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <239bacdac9febd6f604f43fa8571aa2c44fd0f0b.1747822866.git.pabeni@redhat.com>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hi Paolo,
+Hello netdev-team,
 
-kernel test robot noticed the following build errors:
+this is a pull request of 22 patches for net-next/main.
 
-[auto build test ERROR on net-next/main]
+The series by Biju Das contains 19 patches and adds RZ/G3E CANFD
+support to the rcar_canfd driver.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Paolo-Abeni/virtio-introduce-virtio_features_t/20250521-183700
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/239bacdac9febd6f604f43fa8571aa2c44fd0f0b.1747822866.git.pabeni%40redhat.com
-patch subject: [PATCH net-next 6/8] virtio_net: enable gso over UDP tunnel support.
-config: i386-randconfig-011-20250522 (https://download.01.org/0day-ci/archive/20250522/202505221624.32GrJRU2-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250522/202505221624.32GrJRU2-lkp@intel.com/reproduce)
+The patch by Vincent Mailhol adds a struct data_bittiming_params to
+group FD parameters as a preparation patch for CAN-XL support.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505221624.32GrJRU2-lkp@intel.com/
+Felix Maurer's patch imports tst-filter from can-tests into the kernel
+self tests and Vincent Mailhol adds support for physical CAN
+interfaces.
 
-All errors (new ones prefixed by >>):
+regards,
+Marc
 
-   In file included from <command-line>:
-   In function '__virtio_test_bit',
-       inlined from 'virtio_has_feature' at include/linux/virtio_config.h:204:9,
-       inlined from 'virtnet_probe' at drivers/net/virtio_net.c:6805:7:
->> include/linux/compiler_types.h:557:45: error: call to '__compiletime_assert_792' declared with attribute error: BUILD_BUG_ON failed: fbit >= VIRTIO_FEATURES_MAX
-     557 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |                                             ^
-   include/linux/compiler_types.h:538:25: note: in definition of macro '__compiletime_assert'
-     538 |                         prefix ## suffix();                             \
-         |                         ^~~~~~
-   include/linux/compiler_types.h:557:9: note: in expansion of macro '_compiletime_assert'
-     557 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-         |                                     ^~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:50:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-      50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-         |         ^~~~~~~~~~~~~~~~
-   include/linux/virtio_config.h:152:17: note: in expansion of macro 'BUILD_BUG_ON'
-     152 |                 BUILD_BUG_ON(fbit >= VIRTIO_FEATURES_MAX);
-         |                 ^~~~~~~~~~~~
+---
+The following changes since commit 9ab0ac0e532afd167b3bec39b2eb25c53486dcb5:
 
+  octeontx2-pf: Add tracepoint for NIX_PARSE_S (2025-05-20 12:37:37 +0200)
 
-vim +/__compiletime_assert_792 +557 include/linux/compiler_types.h
+are available in the Git repository at:
 
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  543  
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  544  #define _compiletime_assert(condition, msg, prefix, suffix) \
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  545  	__compiletime_assert(condition, msg, prefix, suffix)
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  546  
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  547  /**
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  548   * compiletime_assert - break build and emit msg if condition is false
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  549   * @condition: a compile-time constant condition to check
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  550   * @msg:       a message to emit if condition is false
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  551   *
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  552   * In tradition of POSIX assert, this macro will break the build if the
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  553   * supplied condition is *false*, emitting the supplied error message if the
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  554   * compiler has support to do so.
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  555   */
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  556  #define compiletime_assert(condition, msg) \
-eb5c2d4b45e3d2 Will Deacon 2020-07-21 @557  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  558  
+  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next.git tags/linux-can-next-for-6.16-20250522
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+for you to fetch changes up to 3e20585abf2233da5212e6fb2f7c7ea0f337cd09:
+
+  selftests: can: test_raw_filter.sh: add support of physical interfaces (2025-05-21 18:05:11 +0200)
+
+----------------------------------------------------------------
+linux-can-next-for-6.16-20250522
+
+----------------------------------------------------------------
+
+Biju Das (19):
+      dt-bindings: can: renesas,rcar-canfd: Simplify the conditional schema
+      dt-bindings: can: renesas,rcar-canfd: Document RZ/G3E support
+      can: rcar_canfd: Use of_get_available_child_by_name()
+      can: rcar_canfd: Drop RCANFD_GAFLCFG_GETRNC macro
+      can: rcar_canfd: Update RCANFD_GERFL_ERR macro
+      can: rcar_canfd: Drop the mask operation in RCANFD_GAFLCFG_SETRNC macro
+      can: rcar_canfd: Add rcar_canfd_setrnc()
+      can: rcar_canfd: Update RCANFD_GAFLCFG macro
+      can: rcar_canfd: Add rnc_field_width variable to struct rcar_canfd_hw_info
+      can: rcar_canfd: Add max_aflpn variable to struct rcar_canfd_hw_info
+      can: rcar_canfd: Add max_cftml variable to struct rcar_canfd_hw_info
+      can: rcar_canfd: Add {nom,data}_bittiming variables to struct rcar_canfd_hw_info
+      can: rcar_canfd: Add ch_interface_mode variable to struct rcar_canfd_hw_info
+      can: rcar_canfd: Add shared_can_regs variable to struct rcar_canfd_hw_info
+      can: rcar_canfd: Add struct rcanfd_regs variable to struct rcar_canfd_hw_info
+      can: rcar_canfd: Add sh variable to struct rcar_canfd_hw_info
+      can: rcar_canfd: Add external_clk variable to struct rcar_canfd_hw_info
+      can: rcar_canfd: Enhance multi_channel_irqs handling
+      can: rcar_canfd: Add RZ/G3E support
+
+Felix Maurer (1):
+      selftests: can: Import tst-filter from can-tests
+
+Marc Kleine-Budde (1):
+      Merge patch series "Add support for RZ/G3E CANFD"
+
+Vincent Mailhol (2):
+      can: dev: add struct data_bittiming_params to group FD parameters
+      selftests: can: test_raw_filter.sh: add support of physical interfaces
+
+ .../bindings/net/can/renesas,rcar-canfd.yaml       | 171 ++++++---
+ MAINTAINERS                                        |   2 +
+ drivers/net/can/ctucanfd/ctucanfd_base.c           |   8 +-
+ drivers/net/can/dev/dev.c                          |  12 +-
+ drivers/net/can/dev/netlink.c                      |  74 ++--
+ drivers/net/can/flexcan/flexcan-core.c             |   4 +-
+ drivers/net/can/ifi_canfd/ifi_canfd.c              |  10 +-
+ drivers/net/can/kvaser_pciefd.c                    |   6 +-
+ drivers/net/can/m_can/m_can.c                      |   8 +-
+ drivers/net/can/peak_canfd/peak_canfd.c            |   6 +-
+ drivers/net/can/rcar/rcar_canfd.c                  | 280 ++++++++++----
+ drivers/net/can/rockchip/rockchip_canfd-core.c     |   4 +-
+ .../net/can/rockchip/rockchip_canfd-timestamp.c    |   2 +-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c     |  10 +-
+ drivers/net/can/usb/esd_usb.c                      |   6 +-
+ drivers/net/can/usb/etas_es58x/es58x_core.c        |   4 +-
+ drivers/net/can/usb/etas_es58x/es58x_fd.c          |   6 +-
+ drivers/net/can/usb/gs_usb.c                       |   8 +-
+ drivers/net/can/usb/kvaser_usb/kvaser_usb.h        |   2 +-
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c   |   6 +-
+ drivers/net/can/usb/peak_usb/pcan_usb_core.c       |   6 +-
+ drivers/net/can/xilinx_can.c                       |  16 +-
+ include/linux/can/dev.h                            |  28 +-
+ tools/testing/selftests/Makefile                   |   1 +
+ tools/testing/selftests/net/can/.gitignore         |   2 +
+ tools/testing/selftests/net/can/Makefile           |  11 +
+ tools/testing/selftests/net/can/test_raw_filter.c  | 405 +++++++++++++++++++++
+ tools/testing/selftests/net/can/test_raw_filter.sh |  45 +++
+ 28 files changed, 922 insertions(+), 221 deletions(-)
+ create mode 100644 tools/testing/selftests/net/can/.gitignore
+ create mode 100644 tools/testing/selftests/net/can/Makefile
+ create mode 100644 tools/testing/selftests/net/can/test_raw_filter.c
+ create mode 100755 tools/testing/selftests/net/can/test_raw_filter.sh
+
