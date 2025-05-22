@@ -1,168 +1,135 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE9F26460B
-	for <netdev@vger.kernel.org>; Thu, 22 May 2025 08:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C30211F
+	for <netdev@vger.kernel.org>; Thu, 22 May 2025 08:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747902241; cv=none; b=A/uGz2L5XHmNaJjymNOf4iVc88XKu3ByLnyMLVkM0P+zXeDU7REfkptNhqBcHyvKtY9n6sn0iqspRswAxCuIoBEVMhDyq3dYAec63NVcu8p1+FWM0w1hJra+PDz/TNga6iXAV32G/txe0s2hHoYfmAJtVeHRLMjbZKunLvJv48w=
+	t=1747902387; cv=none; b=bBRPOWQIiR3QcQilfI6kUyPF8zqttcMUApJRNDZfCJPYmKNoswfspkmtYxWn/UMSYBlxx/vIWBiS6v5TrEwETAnl8mULV726nczAYSSyO6GLDEEbOnKiY2nzaCD+jAyaQwFhYfqe61ZpfF2VTROFRPmkWTv2BuZnb+wgRDvJrdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747902241; c=relaxed/simple;
-	bh=8xOr9S6yQTV1LJ7OlLB1jbsHxVL2XCYQMFKqucXQMnc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O7RH34UIP3zUaaGgkwXydoqtiYkD83Qx8G4J1IzmzimaG/gDbm8LUCINHT4c4srkPm2MoDVPA3PW4mIpXB03YSWsXUn0xb95opDMnj7qQGhovXG8zoP1Yyjr4LstBwbt6qTfW9cFebgQGpQYwMqLX1dKe9+oEEDXoXAGMNs6flo=
+	s=arc-20240116; t=1747902387; c=relaxed/simple;
+	bh=n+5XOZJO39DicMLZfH4LEibGAtaPq4lPmMHF/KL0+f4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lKqoZWxYIGfeZvO7Xk2W9SJtdxMIH9VkaPmx5lsvSSA/16zdXncy6RnFKS4DTxzd69zJPLXeBghZK44Wg4/7BfCCYnwWnVlsLq2gPArZUhZVa/PEf7kYxwFjlvL5r+p3x9tM0xdejvsouNSkOWeFxcTeQAOSeu20VYmXjLYnoHk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uI1DT-0002Fa-Cm
-	for netdev@vger.kernel.org; Thu, 22 May 2025 10:23:51 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uI1F9-0002pc-9c; Thu, 22 May 2025 10:25:35 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uI1DT-000haQ-0R
-	for netdev@vger.kernel.org;
-	Thu, 22 May 2025 10:23:51 +0200
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id CB5664171FC
-	for <netdev@vger.kernel.org>; Thu, 22 May 2025 08:23:50 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 9CF7E4171E1;
-	Thu, 22 May 2025 08:23:48 +0000 (UTC)
-Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id f289c61f;
-	Thu, 22 May 2025 08:23:45 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
+	(envelope-from <ore@pengutronix.de>)
+	id 1uI1F8-000haq-1f;
+	Thu, 22 May 2025 10:25:34 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uI1F8-002hyA-1F;
+	Thu, 22 May 2025 10:25:34 +0200
+Date: Thu, 22 May 2025 10:25:34 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Rob Herring <robh@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+	Kyle Swenson <kyle.swenson@est.tech>,
+	Dent Project <dentproject@linuxfoundation.org>,
 	kernel@pengutronix.de,
-	Carlos Sanchez <carlossanchez@geotab.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	stable@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 4/4] can: slcan: allow reception of short error messages
-Date: Thu, 22 May 2025 10:01:34 +0200
-Message-ID: <20250522082344.490913-5-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250522082344.490913-1-mkl@pengutronix.de>
-References: <20250522082344.490913-1-mkl@pengutronix.de>
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v11 07/13] net: pse-pd: Add support for budget
+ evaluation strategies
+Message-ID: <aC7ffmSISYYFnn0U@pengutronix.de>
+References: <20250520-feature_poe_port_prio-v11-0-bbaf447e1b28@bootlin.com>
+ <20250520-feature_poe_port_prio-v11-7-bbaf447e1b28@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250520-feature_poe_port_prio-v11-7-bbaf447e1b28@bootlin.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Carlos Sanchez <carlossanchez@geotab.com>
+On Tue, May 20, 2025 at 06:11:09PM +0200, Kory Maincent wrote:
+> From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
+> 
+> This patch introduces the ability to configure the PSE PI budget evaluation
+> strategies. Budget evaluation strategies is utilized by PSE controllers to
+> determine which ports to turn off first in scenarios such as power budget
+> exceedance.
+> 
+> The pis_prio_max value is used to define the maximum priority level
+> supported by the controller. Both the current priority and the maximum
+> priority are exposed to the user through the pse_ethtool_get_status call.
+> 
+> This patch add support for two mode of budget evaluation strategies.
+> 1. Static Method:
+> 
+>    This method involves distributing power based on PD classification.
+>    It’s straightforward and stable, the PSE core keeping track of the
+>    budget and subtracting the power requested by each PD’s class.
+> 
+>    Advantages: Every PD gets its promised power at any time, which
+>    guarantees reliability.
+> 
+>    Disadvantages: PD classification steps are large, meaning devices
+>    request much more power than they actually need. As a result, the power
+>    supply may only operate at, say, 50% capacity, which is inefficient and
+>    wastes money.
+> 
+>    Priority max value is matching the number of PSE PIs within the PSE.
+> 
+> 2. Dynamic Method:
+> 
+>    To address the inefficiencies of the static method, vendors like
+>    Microchip have introduced dynamic power budgeting, as seen in the
+>    PD692x0 firmware. This method monitors the current consumption per port
+>    and subtracts it from the available power budget. When the budget is
+>    exceeded, lower-priority ports are shut down.
+> 
+>    Advantages: This method optimizes resource utilization, saving costs.
+> 
+>    Disadvantages: Low-priority devices may experience instability.
+> 
+>    Priority max value is set by the PSE controller driver.
+> 
+> For now, budget evaluation methods are not configurable and cannot be
+> mixed. They are hardcoded in the PSE driver itself, as no current PSE
+> controller supports both methods.
+> 
+> Signed-off-by: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
 
-Allows slcan to receive short messages (typically errors) from the serial
-interface.
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
 
-When error support was added to slcan protocol in
-b32ff4668544e1333b694fcc7812b2d7397b4d6a ("can: slcan: extend the protocol
-with error info") the minimum valid message size changed from 5 (minimum
-standard can frame tIII0) to 3 ("e1a" is a valid protocol message, it is
-one of the examples given in the comments for slcan_bump_err() ), but the
-check for minimum message length prodicating all decoding was not adjusted.
-This makes short error messages discarded and error frames not being
-generated.
-
-This patch changes the minimum length to the new minimum (3 characters,
-excluding terminator, is now a valid message).
-
-Signed-off-by: Carlos Sanchez <carlossanchez@geotab.com>
-Fixes: b32ff4668544 ("can: slcan: extend the protocol with error info")
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250520102305.1097494-1-carlossanchez@geotab.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/slcan/slcan-core.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/can/slcan/slcan-core.c b/drivers/net/can/slcan/slcan-core.c
-index 24c6622d36bd..58ff2ec1d975 100644
---- a/drivers/net/can/slcan/slcan-core.c
-+++ b/drivers/net/can/slcan/slcan-core.c
-@@ -71,12 +71,21 @@ MODULE_AUTHOR("Dario Binacchi <dario.binacchi@amarulasolutions.com>");
- #define SLCAN_CMD_LEN 1
- #define SLCAN_SFF_ID_LEN 3
- #define SLCAN_EFF_ID_LEN 8
-+#define SLCAN_DATA_LENGTH_LEN 1
-+#define SLCAN_ERROR_LEN 1
- #define SLCAN_STATE_LEN 1
- #define SLCAN_STATE_BE_RXCNT_LEN 3
- #define SLCAN_STATE_BE_TXCNT_LEN 3
--#define SLCAN_STATE_FRAME_LEN       (1 + SLCAN_CMD_LEN + \
--				     SLCAN_STATE_BE_RXCNT_LEN + \
--				     SLCAN_STATE_BE_TXCNT_LEN)
-+#define SLCAN_STATE_MSG_LEN     (SLCAN_CMD_LEN +		\
-+                                 SLCAN_STATE_LEN +		\
-+                                 SLCAN_STATE_BE_RXCNT_LEN +	\
-+                                 SLCAN_STATE_BE_TXCNT_LEN)
-+#define SLCAN_ERROR_MSG_LEN_MIN (SLCAN_CMD_LEN +	\
-+                                 SLCAN_ERROR_LEN +	\
-+                                 SLCAN_DATA_LENGTH_LEN)
-+#define SLCAN_FRAME_MSG_LEN_MIN (SLCAN_CMD_LEN +	\
-+                                 SLCAN_SFF_ID_LEN +	\
-+                                 SLCAN_DATA_LENGTH_LEN)
- struct slcan {
- 	struct can_priv         can;
- 
-@@ -176,6 +185,9 @@ static void slcan_bump_frame(struct slcan *sl)
- 	u32 tmpid;
- 	char *cmd = sl->rbuff;
- 
-+	if (sl->rcount < SLCAN_FRAME_MSG_LEN_MIN)
-+		return;
-+
- 	skb = alloc_can_skb(sl->dev, &cf);
- 	if (unlikely(!skb)) {
- 		sl->dev->stats.rx_dropped++;
-@@ -281,7 +293,7 @@ static void slcan_bump_state(struct slcan *sl)
- 		return;
- 	}
- 
--	if (state == sl->can.state || sl->rcount < SLCAN_STATE_FRAME_LEN)
-+	if (state == sl->can.state || sl->rcount != SLCAN_STATE_MSG_LEN)
- 		return;
- 
- 	cmd += SLCAN_STATE_BE_RXCNT_LEN + SLCAN_CMD_LEN + 1;
-@@ -328,6 +340,9 @@ static void slcan_bump_err(struct slcan *sl)
- 	bool rx_errors = false, tx_errors = false, rx_over_errors = false;
- 	int i, len;
- 
-+	if (sl->rcount < SLCAN_ERROR_MSG_LEN_MIN)
-+		return;
-+
- 	/* get len from sanitized ASCII value */
- 	len = cmd[1];
- 	if (len >= '0' && len < '9')
-@@ -456,8 +471,7 @@ static void slcan_bump(struct slcan *sl)
- static void slcan_unesc(struct slcan *sl, unsigned char s)
- {
- 	if ((s == '\r') || (s == '\a')) { /* CR or BEL ends the pdu */
--		if (!test_and_clear_bit(SLF_ERROR, &sl->flags) &&
--		    sl->rcount > 4)
-+		if (!test_and_clear_bit(SLF_ERROR, &sl->flags))
- 			slcan_bump(sl);
- 
- 		sl->rcount = 0;
+Thank you!
 -- 
-2.47.2
-
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
