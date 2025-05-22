@@ -1,131 +1,301 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B962BCF48;
-	Thu, 22 May 2025 19:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC01E20E6E3;
+	Thu, 22 May 2025 19:24:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747941416; cv=none; b=VScPfiwHbY87Y1bVFx92FBPLc/i11ij4rl01pETIZevNr2vPXmFWODb0NP6yyRBSpKolIFyUcOMOjMMNXqyqGZ7UWp5gajtvbMCWnYlmOj2+9XlGFNGzPzOacklhXdi15Chka4vQlkKl1q61Br+l4aynUY76HzB6iPUpNGTYzhM=
+	t=1747941902; cv=none; b=pgMD0JBrzeRP5dTXhbnXyZ8ZZEyADumljgyJJpUFBxeomuQnX5XV831gWZbhhR/hDBqWIL7Q7fruy6jw8EII+j3fObroXBawTQXXI58MqqQJjkZVNYXcTVx4HuoybOiQkvUIM+18BHHTMWFzlPuHwK6MndTfzHj973pgESifZng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747941416; c=relaxed/simple;
-	bh=jpP/8y9hWQDp+QUrnRhuh/0/iscikc2TEjFcArObSGg=;
+	s=arc-20240116; t=1747941902; c=relaxed/simple;
+	bh=KG1Jja0n0UrMwxefm4bdFF3JgNAo8tKJq9EJ7r6+Ud4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ounIPrNhO+JMCYHCy2+rWJAEEbLIA+q6cksYkxg01dITLf5QVtyZqEuopxZiSvK9PruSI4WXypib48Q6GS4T4Krr+8g47NCUHn+MhEbCZwqrvLuM8Z6qU/3869uWXNBuyHMHkaZ4qNP+lzvV5pdWIDvJyrvxj25gVpA18KqiYSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y38/ya5l; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=HxqYtd19OTGwc6q+fZ72ygk9cWvE1Q1TzNXNhQbcl4AoDPpGSOnySnMzyECi1rz7RydVtRUGcf+DXZwIGKOxM27o4+pbB9hforAgmi5WyBv+cxchA3zzBd/UTvebkGm7Elhgxkrtoytm7fIYFj9oPfJxnQIyIW0NODiSu04la1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=H/XNdmFs; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=aI9QrZzi; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y38/ya5l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FBDC16AAE;
-	Thu, 22 May 2025 19:16:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747941416;
-	bh=jpP/8y9hWQDp+QUrnRhuh/0/iscikc2TEjFcArObSGg=;
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="H/XNdmFs";
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="aI9QrZzi"
+Received: by mail.netfilter.org (Postfix, from userid 109)
+	id 1B49460702; Thu, 22 May 2025 21:24:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1747941897;
+	bh=01VDqd0ZfEmw/7MqDTZbhRjwp4vzisbjEHiab4aspTg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y38/ya5l3bsy3cnZM+uFbU3q8PPIvEtgzKVyNh1tYYJ8xLNyTBZb5GkHgBFM57V9I
-	 qH35cfxTMUL6zdp6ZEucwpev2r+LSLrxHOv5iy8vErP+OoIvPdmSUrPSV+tfVdHOan
-	 ZGSIKsJ00/zNvJlH5jfoBAnWY4AGc9m9Hei4RaJp71lRaX3nq7y7F/hidn/kkjQc9O
-	 XlOufCcEjZAR7MsN5JFtyzOWiVx/9pytrJKs3QOMC8JUIxLDnYnPcuKG++N3z1Qmg2
-	 m/qD8u3LE7bDdOtDmwImKl58Lz7TV4nCYRRFwBAcmggKwrC9SPPNhBbYY5GwbcrBU5
-	 vKQfmze0SK20Q==
-Date: Thu, 22 May 2025 20:16:51 +0100
-From: Simon Horman <horms@kernel.org>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Moshe Shemesh <moshe@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>, Jianbo Liu <jianbol@nvidia.com>
-Subject: Re: [PATCH net 2/2] net/mlx5e: Fix leak of Geneve TLV option object
-Message-ID: <20250522191651.GL365796@horms.kernel.org>
-References: <1747895286-1075233-1-git-send-email-tariqt@nvidia.com>
- <1747895286-1075233-3-git-send-email-tariqt@nvidia.com>
+	b=H/XNdmFskWdbg4SxQy/CDwuJiL/bY85MMKUXyrVU1JSa1WGYRL+AzwpEM59qCuj6H
+	 9gz1KxY53YM34VU7a0rPcRVYbGD8O5H3sRFKG4MC+z9H4YxaWUCXruEY6tIXKZZZUz
+	 OoGibhu4S7iPt9rhQYKSW259eoH5wKX/VRmsszdRPGHndep7WctZUuK/C+94qGCbp6
+	 ABzzKPzZKMfmz/P6TLpq/qbDCaZ6CEqG3JhS4hmS4r2VzHl9/Ydw5IeaqUdY2DNxxe
+	 cDVYUN3xltk/jRgTn72wBAyIIM4XzaDIhlvA+NHYeafm8RYkgYehZ2xAGy+GDutLdG
+	 5v31m5FxV6tKw==
+X-Spam-Level: 
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id 12B7D606F6;
+	Thu, 22 May 2025 21:24:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1747941891;
+	bh=01VDqd0ZfEmw/7MqDTZbhRjwp4vzisbjEHiab4aspTg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aI9QrZziZzKaA30a3EQPXTUb1kznOrr7LybujBzXjIJaxToT8I1QlfglZA9w9I2LS
+	 s83LmjSktsxVBPf8Yh3QPY7OdxSXg/Ixu6P6EYPLVcsaDvr9gA3i+d/Gqo9BR0NJcE
+	 NZirVKSZhxZxdRZ/+WDxDCtwC1oMPRAnTsyLGIlrPBUVD+zJwRaz0iM1t9tp7KoUSV
+	 ledHeVCHE0L9jfXX9a16bhLCWARgidVqBQnAf3c5UrUz4GULDdEtZQLPyqu0htKjFt
+	 0YTpfVsD49UW1aScTk82fA9LRV8UNN5Lbzv39QatMUkbZ/FI/i3v3zovHyPDeCDJY/
+	 DuwT5Qnuy6CpQ==
+Date: Thu, 22 May 2025 21:24:48 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: lvxiafei <xiafei_xupt@163.com>
+Cc: coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com,
+	horms@kernel.org, kadlec@netfilter.org, kuba@kernel.org,
+	linux-kernel@vger.kernel.org, lvxiafei@sensetime.com,
+	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org,
+	pabeni@redhat.com
+Subject: Re: [PATCH V6] netfilter: netns nf_conntrack: per-netns
+ net.netfilter.nf_conntrack_max sysctl
+Message-ID: <aC96AHaQX9WVtln5@calendula>
+References: <20250407095052.49526-1-xiafei_xupt@163.com>
+ <20250415090834.24882-1-xiafei_xupt@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1747895286-1075233-3-git-send-email-tariqt@nvidia.com>
+In-Reply-To: <20250415090834.24882-1-xiafei_xupt@163.com>
 
-On Thu, May 22, 2025 at 09:28:06AM +0300, Tariq Toukan wrote:
-> From: Jianbo Liu <jianbol@nvidia.com>
-> 
-> Previously, a unique tunnel id was added for the matching on TC
-> non-zero chains, to support inner header rewrite with goto action.
-> Later, it was used to support VF tunnel offload for vxlan, then for
-> Geneve and GRE. To support VF tunnel, a temporary mlx5_flow_spec is
-> used to parse tunnel options. For Geneve, if there is TLV option, a
-> object is created, or refcnt is added if already exists. But the
-> temporary mlx5_flow_spec is directly freed after parsing, which causes
-> the leak because no information regarding the object is saved in
-> flow's mlx5_flow_spec, which is used to free the object when deleting
-> the flow.
-> 
-> To fix the leak, call mlx5_geneve_tlv_option_del() before free the
-> temporary spec if it has TLV object.
-> 
-> Fixes: 521933cdc4aa ("net/mlx5e: Support Geneve and GRE with VF tunnel offload")
-> Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-> Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-> ---
->  drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-> index f1d908f61134..b9c1d7f8f05c 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-> @@ -2028,9 +2028,8 @@ mlx5e_tc_add_fdb_flow(struct mlx5e_priv *priv,
->  	return err;
+On Tue, Apr 15, 2025 at 05:08:34PM +0800, lvxiafei wrote:
+> diff --git a/Documentation/networking/nf_conntrack-sysctl.rst b/Documentation/networking/nf_conntrack-sysctl.rst
+> index 238b66d0e059..6e7f17f5959a 100644
+> --- a/Documentation/networking/nf_conntrack-sysctl.rst
+> +++ b/Documentation/networking/nf_conntrack-sysctl.rst
+> @@ -93,12 +93,29 @@ nf_conntrack_log_invalid - INTEGER
+>  	Log invalid packets of a type specified by value.
+>  
+>  nf_conntrack_max - INTEGER
+> -        Maximum number of allowed connection tracking entries. This value is set
+> -        to nf_conntrack_buckets by default.
+> -        Note that connection tracking entries are added to the table twice -- once
+> -        for the original direction and once for the reply direction (i.e., with
+> -        the reversed address). This means that with default settings a maxed-out
+> -        table will have a average hash chain length of 2, not 1.
+> +    - 0 - disabled (unlimited)
+
+unlimited is too much, and the number of buckets is also global, how
+does this work?
+
+Is your goal to allow a netns to have larger table than netns? There
+should be a cap for this.
+
+> +    - not 0 - enabled
+> +
+> +    Maximum number of allowed connection tracking entries per netns. This value
+> +    is set to nf_conntrack_buckets by default.
+> +
+> +    Note that connection tracking entries are added to the table twice -- once
+> +    for the original direction and once for the reply direction (i.e., with
+> +    the reversed address). This means that with default settings a maxed-out
+> +    table will have a average hash chain length of 2, not 1.
+> +
+> +    The limit of other netns cannot be greater than init_net netns.
+> +    +----------------+-------------+----------------+
+> +    | init_net netns | other netns | limit behavior |
+> +    +----------------+-------------+----------------+
+> +    | 0              | 0           | unlimited      |
+> +    +----------------+-------------+----------------+
+> +    | 0              | not 0       | other          |
+> +    +----------------+-------------+----------------+
+> +    | not 0          | 0           | init_net       |
+> +    +----------------+-------------+----------------+
+> +    | not 0          | not 0       | min            |
+> +    +----------------+-------------+----------------+
+>  
+>  nf_conntrack_tcp_be_liberal - BOOLEAN
+>  	- 0 - disabled (default)
+> diff --git a/include/net/netfilter/nf_conntrack.h b/include/net/netfilter/nf_conntrack.h
+> index 3f02a45773e8..594439b2f5a1 100644
+> --- a/include/net/netfilter/nf_conntrack.h
+> +++ b/include/net/netfilter/nf_conntrack.h
+> @@ -320,7 +320,6 @@ int nf_conntrack_hash_resize(unsigned int hashsize);
+>  extern struct hlist_nulls_head *nf_conntrack_hash;
+>  extern unsigned int nf_conntrack_htable_size;
+>  extern seqcount_spinlock_t nf_conntrack_generation;
+> -extern unsigned int nf_conntrack_max;
+>  
+>  /* must be called with rcu read lock held */
+>  static inline void
+> @@ -360,6 +359,17 @@ static inline struct nf_conntrack_net *nf_ct_pernet(const struct net *net)
+>  	return net_generic(net, nf_conntrack_net_id);
 >  }
 >  
-> -static bool mlx5_flow_has_geneve_opt(struct mlx5e_tc_flow *flow)
-> +static bool mlx5_flow_has_geneve_opt(struct mlx5_flow_spec *spec)
+> +static inline unsigned int nf_conntrack_max(const struct net *net)
+> +{
+> +#if IS_ENABLED(CONFIG_NF_CONNTRACK)
+> +	return likely(init_net.ct.sysctl_max && net->ct.sysctl_max) ?
+> +	    min(init_net.ct.sysctl_max, net->ct.sysctl_max) :
+> +	    max(init_net.ct.sysctl_max, net->ct.sysctl_max);
+> +#else
+> +	return 0;
+> +#endif
+> +}
+> +
+>  int nf_ct_skb_network_trim(struct sk_buff *skb, int family);
+>  int nf_ct_handle_fragments(struct net *net, struct sk_buff *skb,
+>  			   u16 zone, u8 family, u8 *proto, u16 *mru);
+> diff --git a/include/net/netns/conntrack.h b/include/net/netns/conntrack.h
+> index bae914815aa3..d3fcd0b92b2d 100644
+> --- a/include/net/netns/conntrack.h
+> +++ b/include/net/netns/conntrack.h
+> @@ -102,6 +102,7 @@ struct netns_ct {
+>  	u8			sysctl_acct;
+>  	u8			sysctl_tstamp;
+>  	u8			sysctl_checksum;
+> +	unsigned int		sysctl_max;
+>  
+>  	struct ip_conntrack_stat __percpu *stat;
+>  	struct nf_ct_event_notifier __rcu *nf_conntrack_event_cb;
+> diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
+> index 7f8b245e287a..a738564923ec 100644
+> --- a/net/netfilter/nf_conntrack_core.c
+> +++ b/net/netfilter/nf_conntrack_core.c
+> @@ -202,8 +202,6 @@ static void nf_conntrack_all_unlock(void)
+>  unsigned int nf_conntrack_htable_size __read_mostly;
+>  EXPORT_SYMBOL_GPL(nf_conntrack_htable_size);
+>  
+> -unsigned int nf_conntrack_max __read_mostly;
+> -EXPORT_SYMBOL_GPL(nf_conntrack_max);
+>  seqcount_spinlock_t nf_conntrack_generation __read_mostly;
+>  static siphash_aligned_key_t nf_conntrack_hash_rnd;
+>  
+> @@ -1498,7 +1496,7 @@ static bool gc_worker_can_early_drop(const struct nf_conn *ct)
+>  
+>  static void gc_worker(struct work_struct *work)
 >  {
-> -	struct mlx5_flow_spec *spec = &flow->attr->parse_attr->spec;
->  	void *headers_v = MLX5_ADDR_OF(fte_match_param,
->  				       spec->match_value,
->  				       misc_parameters_3);
-> @@ -2069,7 +2068,7 @@ static void mlx5e_tc_del_fdb_flow(struct mlx5e_priv *priv,
->  	}
->  	complete_all(&flow->del_hw_done);
+> -	unsigned int i, hashsz, nf_conntrack_max95 = 0;
+> +	unsigned int i, hashsz;
+>  	u32 end_time, start_time = nfct_time_stamp;
+>  	struct conntrack_gc_work *gc_work;
+>  	unsigned int expired_count = 0;
+> @@ -1509,8 +1507,6 @@ static void gc_worker(struct work_struct *work)
+>  	gc_work = container_of(work, struct conntrack_gc_work, dwork.work);
 >  
-> -	if (mlx5_flow_has_geneve_opt(flow))
-> +	if (mlx5_flow_has_geneve_opt(&attr->parse_attr->spec))
->  		mlx5_geneve_tlv_option_del(priv->mdev->geneve);
+>  	i = gc_work->next_bucket;
+> -	if (gc_work->early_drop)
+> -		nf_conntrack_max95 = nf_conntrack_max / 100u * 95u;
 >  
->  	if (flow->decap_route)
-
-Hi,
-
-The lines leading up to the hung below are:
-
-	      err = mlx5e_tc_tun_parse(filter_dev, priv, tmp_spec, f, match_level);
-              if (err) {
-                        kvfree(tmp_spec);
-                        NL_SET_ERR_MSG_MOD(extack, "Failed to parse tunnel attributes");
-                        netdev_warn(priv->netdev, "Failed to parse tunnel attributes");
-
-I am wondering if the same resource leak described in the patch description
-can occur if mlx5e_tc_tun_parse() fails after it successfully calls
-tunnel->parse_tunnel().
-
-> @@ -2580,6 +2579,8 @@ static int parse_tunnel_attr(struct mlx5e_priv *priv,
->  			return err;
+>  	if (i == 0) {
+>  		gc_work->avg_timeout = GC_SCAN_INTERVAL_INIT;
+> @@ -1538,6 +1534,7 @@ static void gc_worker(struct work_struct *work)
 >  		}
->  		err = mlx5e_tc_set_attr_rx_tun(flow, tmp_spec);
-> +		if (mlx5_flow_has_geneve_opt(tmp_spec))
-> +			mlx5_geneve_tlv_option_del(priv->mdev->geneve);
->  		kvfree(tmp_spec);
->  		if (err)
->  			return err;
+>  
+>  		hlist_nulls_for_each_entry_rcu(h, n, &ct_hash[i], hnnode) {
+> +			unsigned int nf_conntrack_max95 = 0;
+>  			struct nf_conntrack_net *cnet;
+>  			struct net *net;
+>  			long expires;
+> @@ -1567,11 +1564,14 @@ static void gc_worker(struct work_struct *work)
+>  			expires = clamp(nf_ct_expires(tmp), GC_SCAN_INTERVAL_MIN, GC_SCAN_INTERVAL_CLAMP);
+>  			expires = (expires - (long)next_run) / ++count;
+>  			next_run += expires;
+> +			net = nf_ct_net(tmp);
+> +
+> +			if (gc_work->early_drop)
+> +				nf_conntrack_max95 = nf_conntrack_max(net) / 100u * 95u;
+>  
+>  			if (nf_conntrack_max95 == 0 || gc_worker_skip_ct(tmp))
+>  				continue;
+>  
+> -			net = nf_ct_net(tmp);
+>  			cnet = nf_ct_pernet(net);
+>  			if (atomic_read(&cnet->count) < nf_conntrack_max95)
+>  				continue;
+> @@ -1648,13 +1648,14 @@ __nf_conntrack_alloc(struct net *net,
+>  		     gfp_t gfp, u32 hash)
+>  {
+>  	struct nf_conntrack_net *cnet = nf_ct_pernet(net);
+> -	unsigned int ct_count;
+> +	unsigned int ct_max, ct_count;
+>  	struct nf_conn *ct;
+>  
+>  	/* We don't want any race condition at early drop stage */
+>  	ct_count = atomic_inc_return(&cnet->count);
+> +	ct_max = nf_conntrack_max(net);
+>  
+> -	if (nf_conntrack_max && unlikely(ct_count > nf_conntrack_max)) {
+> +	if (ct_max && unlikely(ct_count > ct_max)) {
+>  		if (!early_drop(net, hash)) {
+>  			if (!conntrack_gc_work.early_drop)
+>  				conntrack_gc_work.early_drop = true;
+> @@ -2650,7 +2651,7 @@ int nf_conntrack_init_start(void)
+>  	if (!nf_conntrack_hash)
+>  		return -ENOMEM;
+>  
+> -	nf_conntrack_max = max_factor * nf_conntrack_htable_size;
+> +	init_net.ct.sysctl_max = max_factor * nf_conntrack_htable_size;
+>  
+>  	nf_conntrack_cachep = kmem_cache_create("nf_conntrack",
+>  						sizeof(struct nf_conn),
+> diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+> index 2cc0fde23344..73e6bb1e939b 100644
+> --- a/net/netfilter/nf_conntrack_netlink.c
+> +++ b/net/netfilter/nf_conntrack_netlink.c
+> @@ -2608,7 +2608,7 @@ ctnetlink_stat_ct_fill_info(struct sk_buff *skb, u32 portid, u32 seq, u32 type,
+>  	if (nla_put_be32(skb, CTA_STATS_GLOBAL_ENTRIES, htonl(nr_conntracks)))
+>  		goto nla_put_failure;
+>  
+> -	if (nla_put_be32(skb, CTA_STATS_GLOBAL_MAX_ENTRIES, htonl(nf_conntrack_max)))
+> +	if (nla_put_be32(skb, CTA_STATS_GLOBAL_MAX_ENTRIES, htonl(nf_conntrack_max(net))))
+>  		goto nla_put_failure;
+>  
+>  	nlmsg_end(skb, nlh);
+> diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
+> index 2f666751c7e7..5db6df0e4eb3 100644
+> --- a/net/netfilter/nf_conntrack_standalone.c
+> +++ b/net/netfilter/nf_conntrack_standalone.c
+> @@ -615,7 +615,7 @@ enum nf_ct_sysctl_index {
+>  static struct ctl_table nf_ct_sysctl_table[] = {
+>  	[NF_SYSCTL_CT_MAX] = {
+>  		.procname	= "nf_conntrack_max",
+> -		.data		= &nf_conntrack_max,
+> +		.data		= &init_net.ct.sysctl_max,
+>  		.maxlen		= sizeof(int),
+>  		.mode		= 0644,
+>  		.proc_handler	= proc_dointvec_minmax,
+> @@ -948,7 +948,7 @@ static struct ctl_table nf_ct_sysctl_table[] = {
+>  static struct ctl_table nf_ct_netfilter_table[] = {
+>  	{
+>  		.procname	= "nf_conntrack_max",
+> -		.data		= &nf_conntrack_max,
+> +		.data		= &init_net.ct.sysctl_max,
+>  		.maxlen		= sizeof(int),
+>  		.mode		= 0644,
+>  		.proc_handler	= proc_dointvec_minmax,
+> @@ -1063,6 +1063,7 @@ static int nf_conntrack_standalone_init_sysctl(struct net *net)
+>  
+>  	table[NF_SYSCTL_CT_COUNT].data = &cnet->count;
+>  	table[NF_SYSCTL_CT_CHECKSUM].data = &net->ct.sysctl_checksum;
+> +	table[NF_SYSCTL_CT_MAX].data = &net->ct.sysctl_max;
+>  	table[NF_SYSCTL_CT_LOG_INVALID].data = &net->ct.sysctl_log_invalid;
+>  	table[NF_SYSCTL_CT_ACCT].data = &net->ct.sysctl_acct;
+>  #ifdef CONFIG_NF_CONNTRACK_EVENTS
+> @@ -1087,7 +1088,6 @@ static int nf_conntrack_standalone_init_sysctl(struct net *net)
+>  
+>  	/* Don't allow non-init_net ns to alter global sysctls */
+>  	if (!net_eq(&init_net, net)) {
+> -		table[NF_SYSCTL_CT_MAX].mode = 0444;
+>  		table[NF_SYSCTL_CT_EXPECT_MAX].mode = 0444;
+>  		table[NF_SYSCTL_CT_BUCKETS].mode = 0444;
+>  	}
+> @@ -1139,6 +1139,7 @@ static int nf_conntrack_pernet_init(struct net *net)
+>  	int ret;
+>  
+>  	net->ct.sysctl_checksum = 1;
+> +	net->ct.sysctl_max = init_net.ct.sysctl_max;
+>  
+>  	ret = nf_conntrack_standalone_init_sysctl(net);
+>  	if (ret < 0)
 > -- 
-> 2.31.1
-> 
+> 2.40.1
 > 
