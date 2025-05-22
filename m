@@ -1,42 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9518528B7FB
-	for <netdev@vger.kernel.org>; Thu, 22 May 2025 13:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104741EA80
+	for <netdev@vger.kernel.org>; Thu, 22 May 2025 13:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747921697; cv=none; b=nkB6/MQwTq7yRFCtI3hJc7Pw4E7P28LrtZ4zMt4wV9fif3Y7NldtFJ3qBfvJTIjaPR9bywsgceUjOEXSmuwbAFXQAnPqvV83TIjyEiSYY2AeUo4HN9A0ciM2lB0tIZqvXrww+QTu6PrhirsKh4cOoU3IxFd8dgo0QXQJ5gKCOEY=
+	t=1747921721; cv=none; b=UWjn5pq0q+Oe3ckXXqtXa/MoX0LU0GJk1iBIoYKfk4uExcQq4U5kBpl3zbohY0yPDbt+893tlTxZZHY9ImUZdduB6l0NGqh85XzNipmuJsAvJ4fwj87OweLWfkM81XDgxNPxzc/anlcz6KEjZezkL16Zj6riuyoog+aC73BzsCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747921697; c=relaxed/simple;
-	bh=oRQssJFq6WL3IUU0+bRbfoFe0owE+3DHbiglnFcMLXw=;
+	s=arc-20240116; t=1747921721; c=relaxed/simple;
+	bh=xPVPJPDU9wpwhb6wXhxg8TZYODtzniGKx7XYTwgsd3U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NCZWdLSnWNTP+EJ77TAKzlS/cF4LTcwYRDbeY3cIly0Ksa+P4apjwb3KP8oTMIe3+nsxl/b1IRbbEr6fciuKX8hxMfuNIk60mt6GmE1yQyiNwhiho6oGQ+4RRhsArA6PojkQUqDcsYRa3a8b1PScQrRwE7w7LHYpJ/gH41a71ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LuHvhda7; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=B+W4yEXut7czHTXPhU6RsiXMx/af1wI9zEsvYhcg1g0P8jvUW5GYwdVs5TL3JYWecivdkgybTfHqWmI0aNg8TCCXEYzDeC4wDNLMnxeB86AXbu6Da6Mh+DY45KmmzRJEp5Bl2QoB3y0MA7+905I9VF9hOyFf/xOFgcGKDx9tbes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dmc/chWX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LuHvhda7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70708C4CEE4;
-	Thu, 22 May 2025 13:48:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dmc/chWX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E036C4CEE4;
+	Thu, 22 May 2025 13:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747921697;
-	bh=oRQssJFq6WL3IUU0+bRbfoFe0owE+3DHbiglnFcMLXw=;
+	s=k20201202; t=1747921720;
+	bh=xPVPJPDU9wpwhb6wXhxg8TZYODtzniGKx7XYTwgsd3U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LuHvhda7S7G8xWj5eAbmWzIblusLsDhmfvLeVbmydW6w1kRhC086wX+kTMBUxe64P
-	 Qo2O7xj18z8qfOsB8Fzklf0sMDcuAcY/cvBU8TE3jL0asrKxvsco8WmiCqimEy9LxE
-	 JG/+LSaY2AXzWDw2RLXvt5yJkaWYRlhunwaHga6k+9mPDYdD+si0U8ZdTo1rd/r5I7
-	 +g/sXyxr+yPcKwop7Jv9i+i2IIBx2im+T+fUUH5ibhof9kZRTR7ztuKQDETBs20y05
-	 fATxF2gynNkOSywaVWpoB/Q1h9XEkTvv4h5Dwqf9cJi6CJT72sc7mCjAcsCVBxLfFh
-	 /CLIBjA39989Q==
-Date: Thu, 22 May 2025 14:48:13 +0100
+	b=dmc/chWXnA2FQb2GzXOWaNgCeC+APRSsP754PvPCQFbZXnbbGrwOrLvtVvcUSQ5XF
+	 Q3Y77kOfNt3LwXSvaxHJAWOZCRFXlju9ZUznRb8OmRvCRHUYYMbuWcgi4zSydtShtO
+	 hF9vhkTbNMe7V2eVi/NZE7/u4q0FHnoytI6KdNBtFfA8/7gFeANup7H3B+xvGL+CnB
+	 rclAha70yCY4pjOytYHNbi3w2PMN+W1xHTv3/WnVqI5fD4GxEBsIF9hajmFk65MLZ9
+	 uglEkuJRq5urgvGFXGt9pXHntg3VMEMbz1bx3LYWL/QUkxAM5DZ4OOyCRI4l2GO5Wg
+	 zusPPFA90nfvQ==
+Date: Thu, 22 May 2025 14:48:37 +0100
 From: Simon Horman <horms@kernel.org>
-To: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+To: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
 Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	kuba@kernel.org, dawid.osuchowski@linux.intel.com,
-	pmenzel@molgen.mpg.de, Kory Maincent <kory.maincent@bootlin.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: Re: [PATCH iwl-next v4 2/2] ixgbe: add link_down_events statistic
-Message-ID: <20250522134813.GF365796@horms.kernel.org>
-References: <20250515105011.1310692-1-martyna.szapar-mudlaw@linux.intel.com>
- <20250515105011.1310692-3-martyna.szapar-mudlaw@linux.intel.com>
+	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Subject: Re: [PATCH iwl-next] i40e: add link_down_events statistic
+Message-ID: <20250522134837.GG365796@horms.kernel.org>
+References: <20250521142332.449045-1-dawid.osuchowski@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,19 +43,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250515105011.1310692-3-martyna.szapar-mudlaw@linux.intel.com>
+In-Reply-To: <20250521142332.449045-1-dawid.osuchowski@linux.intel.com>
 
-On Thu, May 15, 2025 at 12:50:10PM +0200, Martyna Szapar-Mudlaw wrote:
-> Introduce a link_down_events counter to the ixgbe driver, incremented
+On Wed, May 21, 2025 at 04:23:32PM +0200, Dawid Osuchowski wrote:
+> Introduce a link_down_events counter to the i40e driver, incremented
 > each time the link transitions from up to down.
 > This counter can help diagnose issues related to link stability,
 > such as port flapping or unexpected link drops.
 > 
 > The value is exposed via ethtool's get_link_ext_stats() interface.
 > 
-> Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Co-developed-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
 > Signed-off-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+> Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+> Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+> ---
+> Based on series [1] from Martyna where this was implemented for ixgbe
+> and ice drivers.
+> 
+> [1] https://lore.kernel.org/netdev/20250515105011.1310692-1-martyna.szapar-mudlaw@linux.intel.com/
 
 Reviewed-by: Simon Horman <horms@kernel.org>
 
