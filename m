@@ -1,63 +1,149 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC12296FC6;
-	Fri, 23 May 2025 16:25:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B9521FF2F
+	for <netdev@vger.kernel.org>; Fri, 23 May 2025 16:45:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748017548; cv=none; b=Hegbm77unkapaML7ugxYNZeW9Q64tnPYf4WjAuVK/Oxqd2G0gyIEqU+I59BRdSifdzmy0VZQ+0ss/2++s++3dWJlz2fgZJAAzo85L70ima3OYT/aR9drI/z6WzlBe8Iapquz3vtqy2WUMsVZT0myjuI4mk3l3i18wyrUa7Ep7yQ=
+	t=1748018745; cv=none; b=driFrlJc/N3+GFhH++dGSDIZLVpLUaKqEGuhMAuhPGogqSVnC9b37D45s06tlFKfMvalgHlNyVfB2kYKrLJhZUWF+Q6MAkqWPuTAFLzHB+f/k4n9F1jqWIEp3VnRNtdtNmbE6wt76kWT2Jv90+1Wg0KbfX2K+k82aVsA9iag9wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748017548; c=relaxed/simple;
-	bh=rjoEa4YTfRqV8t+RKBbDbYu/7bQ2rDRgnMXdcMYrDjQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CLmrF7WAJIiLZpS4mcCwgOr8Pu72N3Bh6BeyjwCwucEumFapbEbc8ZEdA3C3E3F1YUM/ATgfuKwEcbr3mwqvaLoXFh2LPJYHNEwIBFTVBFw6d3C9m10SE3+Cw+yi6EjWY/EoAOLX6zqlYm7wngithrxIlR7zdcp6Wykr5X3rGmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Q9PanhOR; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1748018745; c=relaxed/simple;
+	bh=mpFi+2LlAim3mrcdlXQrRcd+42FS4GK431HSAs3Pv5g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aYUJRvnJyfCN+ObXOAP6/X6EP06RAt4yVtocEBCJj6RTaomy/Qh4AUcjzth1gIm1ZCXPdktKlt/GqUcXYmtszqIjtFIZ9iVIAst1Fv7feUogKivTg6+8BqyYMGMZr7Dgah+scfTKWCKVDXGTcnM+jUDLOeTbPDaoMmiU5r1JvVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fx38Ads2; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Q9PanhOR"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=3dBMu1aZeb4MqUjdbspQjjDSvZqqtn4D0MG87nppG/E=; b=Q9PanhORIlfOYOsdnsVJY64a4x
-	vdceOKyr8105FTb8paN5cngobBxTgeipmScNsW0bnslzqsVR0mWqlI0yGTCUlEmtoAqKTBUiAB70J
-	l3iyJuhtagFDoQA0f9onsfXDA4KIA6eFKUd4F+rAemeqzZgsQbszkoawNDCsdvlW0T1Q=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uIVDH-00Dd8c-Ek; Fri, 23 May 2025 18:25:39 +0200
-Date: Fri, 23 May 2025 18:25:39 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Cc: bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 net 2/2] net: lan743x: Fix PHY reset handling during
- initialization and WOL
-Message-ID: <7a6b4862-df38-4b9e-9add-beaeebbbefc0@lunn.ch>
-References: <20250523054325.88863-1-thangaraj.s@microchip.com>
- <20250523054325.88863-3-thangaraj.s@microchip.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fx38Ads2"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-231ba6da557so1905ad.1
+        for <netdev@vger.kernel.org>; Fri, 23 May 2025 09:45:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1748018743; x=1748623543; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nbEfAILviHMr4oDTgiobfZLOFz+Pj86C9/pKLGp4dvI=;
+        b=Fx38Ads2KsM0At3WNqmcGdi2x7suJV/Tbp5TngGz3F/WB3HK5EJdortRVrfqG+A/7p
+         7CGyX8mUC27p1Ryl7/FgQT4dDbdnHY5LWPo1upX0CnIvdJjLq6TVzb/dg4GOwvLQaCxF
+         hw8CNRsfQbVnXwdU9DlHPGYvT0XN6WLpJTvq3z4aqEJ5Bq1QtYLA8OFvMC3AvOLI/ITQ
+         cat+uMkjodSB+Ms2j1+NERmO82mjpLYl9uSSXUqGOgz2WT/UUnKFS2oTVewvP7MbU5FT
+         qpJSsBTtqvvLSAgLrTOmkUCTftf/R/rIMHQrkD82GkLYPfpfiN0SL4naFJ3jmgBR8aSY
+         yXXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748018743; x=1748623543;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nbEfAILviHMr4oDTgiobfZLOFz+Pj86C9/pKLGp4dvI=;
+        b=j2MXhwKLgfbcqEnbsQpw4+9il+SsCv0JENHbLuZjQaV7+IVLoeck+/qL+Qhl/tIElT
+         xN/tTi7MxsS1r49cfzGDbWnqeTvJT/lc/4xulC/AsJyQrdqnt6vXIkJE5DcHJY/+EBWt
+         CLz91jSEUZY+XwHCmfZglvkiztgINb7V67516fDADrtxdtM+hx99vfUB5QiABSS41mW/
+         18m97bFlmYTVOdV54f74HLgF0Svwz7ySDowPgY6grV2sHTSulKO+mkBYnhrlCvXvj5gw
+         rSZNIgc1e/knMJZrm/RP4fmO5ibX3G/SCacWURght/HtAcAH8m9U27fxQwV+6zHXSVdr
+         17ng==
+X-Forwarded-Encrypted: i=1; AJvYcCXfseZnim2EuWdREz+RugK24Xe9U0a6h60TO+hmvHnUKW27n1vdRTRT+yKDxj1EYCi/nxNOqZk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0JfU/PYVbJWS8Tcj6864wSHLOYBws7VMT4LSJAxPZDsbmgKdY
+	Tf69Y+S1g9ujkYCgBTL0XOfcnuC9oKgb1yvr+LL3cq7KZ68Vupo00QEdUSv87bYIwtTIcobxmdI
+	T6vMtK7b7VcU4msBTXlPYqGJPWrVlN1BF0HRbvNCT
+X-Gm-Gg: ASbGncvwG683sHWnfaEfUeDLANe7F+yu0EENuc2OacvRwcbMtsKvjTfrsc3N1oaj04k
+	oGMv1OxRrQ6OIWkIQrlz4Ci8Y/tWR91JOnIWzOKfx7SFjtWImsLJnW8XhC8Nrq9N0M5Je4LIs47
+	RdQ8hWp5GJjgEHCsNUT+k0ZkCxh80rxOShc6J/u6FfBahvdbaCegq00mYs96qLBAa2uDcMWnqJK
+	w==
+X-Google-Smtp-Source: AGHT+IHKENtOk1185zLF5YBywUwyLB+xqcNyvyViyfrVAjkVKT7E+/W3igasj3tGPTfHTU6T75kaDQdKqicwHmsdjXE=
+X-Received: by 2002:a17:903:3c4d:b0:215:65f3:27ef with SMTP id
+ d9443c01a7336-233f306ae91mr3190475ad.12.1748018742179; Fri, 23 May 2025
+ 09:45:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250523054325.88863-3-thangaraj.s@microchip.com>
+References: <20250523064524.3035067-1-dongchenchen2@huawei.com> <a5cc7765-0de2-47ca-99c4-a48aaf6384d2@huawei.com>
+In-Reply-To: <a5cc7765-0de2-47ca-99c4-a48aaf6384d2@huawei.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 23 May 2025 09:45:28 -0700
+X-Gm-Features: AX0GCFtkvgsG2TRBwxiCM9xaIIEsYdecLQRjq4ECWuQCPug6wVwy2u3pcYDiD8o
+Message-ID: <CAHS8izP=AuPbV6N=c05J2kJLJ16-AmRzu983khXaR91Pti=cNw@mail.gmail.com>
+Subject: Re: [PATCH net] page_pool: Fix use-after-free in page_pool_recycle_in_ring
+To: Yunsheng Lin <linyunsheng@huawei.com>
+Cc: Dong Chenchen <dongchenchen2@huawei.com>, hawk@kernel.org, ilias.apalodimas@linaro.org, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	zhangchangzhong@huawei.com, 
+	syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 23, 2025 at 11:13:25AM +0530, Thangaraj Samynathan wrote:
-> Remove lan743x_phy_init from lan743x_hardware_init as it resets the PHY
-> registers, causing WOL to fail on subsequent attempts. Add a call to
-> lan743x_hw_reset_phy in the probe function to ensure the PHY is reset
-> during device initialization.
-> 
-> Fixes: 23f0703c125be ("lan743x: Add main source files for new lan743x driver")
-> Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
+On Fri, May 23, 2025 at 1:31=E2=80=AFAM Yunsheng Lin <linyunsheng@huawei.co=
+m> wrote:
+>
+> On 2025/5/23 14:45, Dong Chenchen wrote:
+>
+> >
+> >  static bool page_pool_recycle_in_ring(struct page_pool *pool, netmem_r=
+ef netmem)
+> >  {
+> > +     bool in_softirq;
+> >       int ret;
+> int -> bool?
+>
+> >       /* BH protection not needed if current is softirq */
+> > -     if (in_softirq())
+> > -             ret =3D ptr_ring_produce(&pool->ring, (__force void *)net=
+mem);
+> > -     else
+> > -             ret =3D ptr_ring_produce_bh(&pool->ring, (__force void *)=
+netmem);
+> > -
+> > -     if (!ret) {
+> > +     in_softirq =3D page_pool_producer_lock(pool);
+> > +     ret =3D !__ptr_ring_produce(&pool->ring, (__force void *)netmem);
+> > +     if (ret)
+> >               recycle_stat_inc(pool, ring);
+> > -             return true;
+> > -     }
+> > +     page_pool_producer_unlock(pool, in_softirq);
+> >
+> > -     return false;
+> > +     return ret;
+> >  }
+> >
+> >  /* Only allow direct recycling in special circumstances, into the
+> > @@ -1091,10 +1088,14 @@ static void page_pool_scrub(struct page_pool *p=
+ool)
+> >
+> >  static int page_pool_release(struct page_pool *pool)
+> >  {
+> > +     bool in_softirq;
+> >       int inflight;
+> >
+> >       page_pool_scrub(pool);
+> >       inflight =3D page_pool_inflight(pool, true);
+> > +     /* Acquire producer lock to make sure producers have exited. */
+> > +     in_softirq =3D page_pool_producer_lock(pool);
+> > +     page_pool_producer_unlock(pool, in_softirq);
+>
+> Is a compiler barrier needed to ensure compiler doesn't optimize away
+> the above code?
+>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+I don't want to derail this conversation too much, and I suggested a
+similar fix to this initially, but now I'm not sure I understand why
+it works.
 
-    Andrew
+Why is the existing barrier not working and acquiring/releasing the
+producer lock fixes this issue instead? The existing barrier is the
+producer thread incrementing pool->pages_state_release_cnt, and
+page_pool_release() is supposed to block the freeing of the page_pool
+until it sees the
+`atomic_inc_return_relaxed(&pool->pages_state_release_cnt);` from the
+producer thread. Any idea why this barrier is not working? AFAIU it
+should do the exact same thing as acquiring/dropping the producer
+lock.
+
+
+--=20
+Thanks,
+Mina
