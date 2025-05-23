@@ -1,101 +1,74 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C7513D539;
-	Fri, 23 May 2025 13:24:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7641FDD;
+	Fri, 23 May 2025 13:26:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748006653; cv=none; b=r2kIgzdRh2ktMZKR9MpVM1fUqh/yg+veArbIdF6PpQwi9GTbT5bsvZZ4hp5m6pjgvD7rVsWcakBV8pvVfIgGOcAyVOKMTFI3m+n/AxwM8ZxcwBpGJi7zJkkMOOMCCe5lLPyxQ2zvSoe3tNqaCys3R1Ta8shV7PhhNAX3urwzx5c=
+	t=1748006778; cv=none; b=HXglYA3eP5dk/VHeIXbdgfft8vT61bU9JNhleW3qpgRdxBFpKnhGngrv1CxHirLmR6I0dgD0s3MYuedUOXKBhuNMaqj0xmdYFOHRX6IoNBPohjZiSoCh/Wt72A98JX4tvK9SSAd/4UrFKMEMd3ew3mXVopM4WkpDnz09H2LGlJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748006653; c=relaxed/simple;
-	bh=QWwG59g5MU2yUcdEwHwb3pj0woEQNNX3BJXpMdxaGdw=;
+	s=arc-20240116; t=1748006778; c=relaxed/simple;
+	bh=QfwOzRXg17oiLyI62vHbF9ot/93AkhMBVAj65vYAFU8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TdH8Dl55vPDljzfolteAUjPCGP4OtBC6hzY6MMGW7lmPen4J8aFCGmhDx+uGLBpQYddKWh+lKckr/SDY3gzUd99VE615BkTzBCt12J54S94mNdf6HY0nZkKiC9C7GgMepkqVSHuF4MFrOFUVIS/koyRfbMHymA+NPlZDlxftloM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bL4/7YsZ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=IiLGBALtn/+2JiMSx9I0OB0WTUq7wOAuD1c/Kpzt4DFf3M9w4hvnE+uUUiaMS0lShzQl/J3MWbdGuOsmflnibF0srN3SPVrZbRPj08VNVTbibQFOys0f9DbZa0c5pi7HYP3wTxC050rfWEuggvYjsxZAicgns2cBXPGmJSwavUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0SM2qQA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bL4/7YsZ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=9PPnvysXCe7nzpl2dlq+yYzcvu67I28jfeZX7VT12P0=; b=bL
-	4/7YsZC73DTlJZDPOpH6yqzgpyOF3021NjeoxBga9DgVV4B2V1TxU1qUt9ndN6uFuuHpWrZgsBB2z
-	2VPUAUl8WMAh7r+MPq1yg+YSoIdNA+cc668P5Ocohltm5UO7JE5uuPTwLb3LPLeJs60/7BckmpOPO
-	w2jlB6cyGEKXUwg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uISNX-00Dc47-JO; Fri, 23 May 2025 15:24:03 +0200
-Date: Fri, 23 May 2025 15:24:03 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jonas Gorski <jonas.gorski@gmail.com>
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vivien Didelot <vivien.didelot@gmail.com>,
-	=?iso-8859-1?Q?=C1lvaro_Fern=E1ndez?= Rojas <noltari@gmail.com>,
-	Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 2/3] net: dsa: b53: fix configuring RGMII delay on
- bcm63xx
-Message-ID: <a1197a9b-48c3-4dce-866e-287f5cd30865@lunn.ch>
-References: <20250519174550.1486064-1-jonas.gorski@gmail.com>
- <20250519174550.1486064-3-jonas.gorski@gmail.com>
- <ed75677c-c3fb-41d1-a2cd-dd84d224ffe3@lunn.ch>
- <CAOiHx=nwbs7030GKZHLc6Pc6LA6Hqq0NYfNSt=3zOgnj5zpAYQ@mail.gmail.com>
- <2e5e16a1-e59e-470d-a1d9-618a1b9efdd4@lunn.ch>
- <CAOiHx=mQ8z1CO1V-8b=7pjK-Hm9_4-tcvucKXpM1i+eOOB4axg@mail.gmail.com>
- <e0d25a68-057b-4839-a8cd-affe458bfea3@lunn.ch>
- <CAOiHx==NzwF3mXfkf+mS0AZzb-FTR0SHwG9n0Hw9nRiR4k-z6w@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0SM2qQA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34F0C4CEEF;
+	Fri, 23 May 2025 13:26:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748006774;
+	bh=QfwOzRXg17oiLyI62vHbF9ot/93AkhMBVAj65vYAFU8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=J0SM2qQAJ0QSQC9EaQsqBP43689pdaWL6ORgjeVf6eZNkfu1npGOzI5MmUEL5e+sd
+	 OGHZae5eU4PxTUlOC8RUucAQJkh0LBETYRjK7Cq/qIhfngcluWkxg5W8x6F5hAdrr2
+	 nj7Uni6nfwo9KNg+g+gpi5LmmdAP7Bl4ZbGpaMOGuvq4cQFk4YmLWJ8zaAnX6vaViY
+	 9EMVvYMNgRhv6qgPfQuUq0O2pWAb2oYuNDv4gnF7D8ToyQjCUyf4JTGBLmzpy6TORS
+	 aV81Kdo0csejTOBHaz5H1rULXB2Yby4b0yF3vkd4jlzoVGWGPfp7sLohgXp/R1v/Md
+	 A1351QqQVaiEw==
+Date: Fri, 23 May 2025 14:26:10 +0100
+From: Simon Horman <horms@kernel.org>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+	netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	edumazet@google.com, fw@strlen.de
+Subject: Re: [PATCH net-next 06/26] netfilter: nf_tables: nft_fib: consistent
+ l3mdev handling
+Message-ID: <20250523132610.GV365796@horms.kernel.org>
+References: <20250522165238.378456-1-pablo@netfilter.org>
+ <20250522165238.378456-7-pablo@netfilter.org>
+ <20250523073524.GR365796@horms.kernel.org>
+ <aDAmMUGwlvMoEYE0@calendula>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOiHx==NzwF3mXfkf+mS0AZzb-FTR0SHwG9n0Hw9nRiR4k-z6w@mail.gmail.com>
+In-Reply-To: <aDAmMUGwlvMoEYE0@calendula>
 
-On Fri, May 23, 2025 at 11:08:55AM +0200, Jonas Gorski wrote:
-> On Tue, May 20, 2025 at 2:15 AM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > > Without this change no mode/port works, since there is always either a
-> > > 0 ns delay or a 4 ns delay in the rx/tx paths (I assume, I have no
-> > > equipment to measure).
-> > >
-> > > With this change all modes/ports work.
-> >
-> > Which is wrong.
-> >
-> > > With "rgmii-id" the mac doesn't
-> > > configure any delays (and the phy does instead), with "rgmii" it's
-> > > vice versa, so there is always the expected 2 ns delay. Same for rxid
-> > > and txid.
-> >
-> > If you read the description of what these four modes mean, you should
-> > understand why only one should work. And given the most likely PCB
-> > design, the only mode that should work is rgmii-id. You would have to
-> > change the PCB design, to make the other modes work.
+On Fri, May 23, 2025 at 09:39:29AM +0200, Pablo Neira Ayuso wrote:
+> On Fri, May 23, 2025 at 08:35:24AM +0100, Simon Horman wrote:
+> > On Thu, May 22, 2025 at 06:52:18PM +0200, Pablo Neira Ayuso wrote:
+> > > @@ -39,6 +40,21 @@ static inline bool nft_fib_can_skip(const struct nft_pktinfo *pkt)
+> > >  	return nft_fib_is_loopback(pkt->skb, indev);
+> > >  }
+> > >  
+> > > +/**
+> > > + * nft_fib_l3mdev_get_rcu - return ifindex of l3 master device
+> > 
+> > Hi Pablo,
+> > 
+> > I don't mean to hold up progress of this pull request. But it would be nice
+> > if at some point the above could be changed to
+> > nft_fib_l3mdev_master_ifindex_rcu so it matches the name of the function
+> > below that it documents.
+> > 
+> > Flagged by ./scripts/kernel-doc -none
 > 
-> Since I also have BCM6368 with a BCM53115 connected to one of the
-> RGMII ports lying around, I played around with it, and it was
-> surprisingly hard to make it *not* work. Only if I enabled delay on
-> *both* sides it stopped working, no delay or delay only on one side
-> continued working (and I used iperf to try if larger amounts of
-> traffic break it).
+> Thanks for letting me know, I can resubmit the series, let me know.
 
-Interesting. You see the Rockchip people insisting their devices need
-fine tuning, 2ns is not good enough, it needs to be 1.9ns. And then
-they end up in a mess with interpreting what phy-mode actually means.
-
-In some ways, this just as bad. You can get away with using 'rgmii'
-which is wrong, when it should be 'rgmii-id'. It would be better if
-only just one mode worked, then DT developers would get it correct.
-
-	Andrew
+I'd lean towards fixing it later unless there is another reason to
+resubmit the series.
