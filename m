@@ -1,249 +1,200 @@
-Received: from dediextern.your-server.de (dediextern.your-server.de [85.10.215.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8144B221547
-	for <netdev@vger.kernel.org>; Fri, 23 May 2025 16:57:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.215.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426502036EC
+	for <netdev@vger.kernel.org>; Fri, 23 May 2025 17:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748019445; cv=none; b=sodganq6SYsWSmyfyawHSDFTyq/ni6UokSPeFgA7yXrhD18lrOIgIVcd9Q7jXdoRJ0PvHklrlxbY0TjphEI2eM7ELyiLbdmtDRcDaxf81OYXdRGPQgcEgWi4N6LKjsJQ0QcDhWdtZdFieDZ7dckr3icnuEvSoczOwACBJD7Lo8M=
+	t=1748019672; cv=none; b=n1Q3UvrRI9Ym6K8hVhxRfC5Nq6MR995/gYSJEaFxYCLNsWYoAO32GmyMnK9maJ7cPijI1HIiWiL1HAIKHzQi7FGOHQhDhniHbDFIwqNJx9fFipjJ/b0KejxwcaaY3l2Zo+idfrua9kH3BHeq2yJCe2lkK1+zlz6dVVhyihLUGTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748019445; c=relaxed/simple;
-	bh=feC8vj+7lLpK18w/Q7jjyZtuRJL00VU/IuH3HObDZzY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HoCWpy/eYwjgemgERwYdEh1GKH2S+AYQGACJ3erDngPhUZnyxCovo+IsfGS5m3mtIM0+tSiiC4+u4N9xF17k/LZP1CbJcG6sFo+tS/TyYpqKNaX0PUH+gyKzdbt5UdW3XZbbJ78IyBj60oh32AVNjTxoFPyRUUJ+7odylxrWgyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hetzner-cloud.de; spf=pass smtp.mailfrom=hetzner-cloud.de; arc=none smtp.client-ip=85.10.215.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hetzner-cloud.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hetzner-cloud.de
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-	by dediextern.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <marcus.wichelmann@hetzner-cloud.de>)
-	id 1uIVSy-000NZD-Hd; Fri, 23 May 2025 18:41:52 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <marcus.wichelmann@hetzner-cloud.de>)
-	id 1uIVSy-000HYh-0z;
-	Fri, 23 May 2025 18:41:52 +0200
-Message-ID: <52d2e85a-6d79-468e-a86c-444e71811dfc@hetzner-cloud.de>
-Date: Fri, 23 May 2025 18:41:51 +0200
+	s=arc-20240116; t=1748019672; c=relaxed/simple;
+	bh=hExa2Cwm4bAPttUEZjJfYoGFUNfZ4ZleOpu3VTcmpaU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ua4ioylXlVfz3sR7fc9kx07kptkO4KTCxuJrupcb/iOMsHyj6LJJunqt1qJnSC2lowp3pzNe0jOhl0+01OCJXDi8aydkKiIf0mdXhvdjcw4NC3SUIC0Uf51xoBYzCgla/DD8GG9j+90PrPyTOT0BjT/tXy6B6YfQbMJATHQS0HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ghHD7nnw; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ghHD7nnw"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-231f6c0b692so8365ad.0
+        for <netdev@vger.kernel.org>; Fri, 23 May 2025 10:01:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1748019669; x=1748624469; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bOSRKDWId4W8kN+rUt+nVQlh5cnha/mrBYJj+eK+Jf0=;
+        b=ghHD7nnwMk4MPKcpkQnGayp4Nv24ozaA/sQig6FtW9RTCw4U/o7Qp2YHsZUmRkMLZm
+         h4Ml4frDUIz75uSXS0vMhdX17TCuSWCXZ1SUXGWWYfRBJc43nSaG+0UsHLzaDSG7uZI3
+         +eeSHHd7As90Sfs9K2sc3OpzH/oX/IrbIbqNnzUfZ6LolqM22MrmDIty4ytW3ovPzRZK
+         8xSbTjG/mW9nlfa0z/pLNOXLWMeeRaGo+trZUA3fQdHwRk7lcHta2rdzWCjdwnEzd6KR
+         IWsuVgn/9amsmTjLgCKy7iX3TijPiCc4TaJ4ki2NQyMtlzrnA7Lb7fb0f6raUFfwUnxV
+         jD0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748019669; x=1748624469;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bOSRKDWId4W8kN+rUt+nVQlh5cnha/mrBYJj+eK+Jf0=;
+        b=f+4GWgCOmGUeMGyOA0X+hTRSGMgR4SBh/VjpY77MMeqRqAGciVoiFvdqYj5foud/NA
+         pl+kwuJX3A7DZdlG2h1LYI82XiSsLkfXnA6olEHBoIMdy/Liz3+skMVM2Udigz0TJRlD
+         b94GVeImYikSEPIy7g9RWIEf6S/iwnvwjX4LZ8SoRI8pZOis1S8titDG9+mxcezDsZeG
+         jVy74/UEZOU9isO5a8rprk3fXXpj5cb7Sw3lOj6DKN3reXk7jCtIyySzC+eG0zEfxX/L
+         Exblctx6gBGMf2ydRBOtCt7xdU33s+rMtA2CBIgofXoUgZOm82BOX5vKB+d/aecY5DtL
+         CUpA==
+X-Forwarded-Encrypted: i=1; AJvYcCVoujVIYY52+/tHZU+meak72oxIp9WcXWGTKU8IwCf1NG9XtJ4yiG5blwYHYyEQ9GFuUEKAJ4o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2ceXDboZt7mUtIJ3IAKfZxIi+82tJKJGx8hpF5YAJEItFjUIs
+	NAVA1dHRrAzeo/O/Y4CvrGB8FKx/L9fmjMOvTJ21r6J/dmvWRK1J0oGJ+3uHj+wrCj6q661HPUD
+	qhaQqADfj5eJsPz3xJ1hpqywmVq7xAHoiYxMe7iBA
+X-Gm-Gg: ASbGncuamrzEoKAkIH/NwJoJWEYJVQur9ClbroUi5UQaFkxQXSVNCNNWyBgDO5JfB+F
+	8/HSe/sXDxCqfegPOQnPnFeIGj7HylGGKw2aG0r9KBr6aJl/Mjgw5iUA2msz8z1KLzP4Gow7NTV
+	4OdGKNJF1lsa5qs+1iyz5gOyJAX8Sehtg/pru8w3uxDkGRHuUtA/rW26psVY7G7UCeCSC8M/c8D
+	Q==
+X-Google-Smtp-Source: AGHT+IGJuHYQfZLr7hfQil+IpUEJXAuKmCwI79/rmEAXhTB8FY4jWtiRvq1iHUteieQZgEsK3rVaeZy0sUBH+cb+uvM=
+X-Received: by 2002:a17:903:22d2:b0:231:e069:6195 with SMTP id
+ d9443c01a7336-233f357c50cmr2674495ad.23.1748019669119; Fri, 23 May 2025
+ 10:01:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net] ixgbe: fix ndo_xdp_xmit() workloads
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org, anthony.l.nguyen@intel.com,
- magnus.karlsson@intel.com, michal.kubiak@intel.com,
- =?UTF-8?Q?Tobias_B=C3=B6hm?= <tobias.boehm@hetzner-cloud.de>
-References: <20250429155205.1444438-1-maciej.fijalkowski@intel.com>
-Content-Language: en-US
-From: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Autocrypt: addr=marcus.wichelmann@hetzner-cloud.de; keydata=
- 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
- wySmewx3h/yfMh0aFxHhvLPxrO2IEQ==
-In-Reply-To: <20250429155205.1444438-1-maciej.fijalkowski@intel.com>
-Content-Type: text/plain; charset=UTF-8
+References: <20250523032609.16334-1-byungchul@sk.com> <20250523032609.16334-2-byungchul@sk.com>
+In-Reply-To: <20250523032609.16334-2-byungchul@sk.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 23 May 2025 10:00:55 -0700
+X-Gm-Features: AX0GCFsW6gNVDYJM6WPqUUcEweldiOyGkOySslyL-ATgJPZxy65Z4gtkC0ipm7U
+Message-ID: <CAHS8izPYrMMcqKiF1DmNqWW_=92joVrPE55rQTqGWaJ2=itHaw@mail.gmail.com>
+Subject: Re: [PATCH 01/18] netmem: introduce struct netmem_desc
+ struct_group_tagged()'ed on struct net_iov
+To: Byungchul Park <byungchul@sk.com>
+Cc: willy@infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, kernel_team@skhynix.com, kuba@kernel.org, 
+	ilias.apalodimas@linaro.org, harry.yoo@oracle.com, hawk@kernel.org, 
+	akpm@linux-foundation.org, davem@davemloft.net, john.fastabend@gmail.com, 
+	andrew+netdev@lunn.ch, asml.silence@gmail.com, toke@redhat.com, 
+	tariqt@nvidia.com, edumazet@google.com, pabeni@redhat.com, saeedm@nvidia.com, 
+	leon@kernel.org, ast@kernel.org, daniel@iogearbox.net, david@redhat.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org, 
+	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, vishal.moola@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Authenticated-Sender: marcus.wichelmann@hetzner-cloud.de
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27646/Fri May 23 10:35:45 2025)
 
-Am 29.04.25 um 17:52 schrieb Maciej Fijalkowski:
-> Currently ixgbe driver checks periodically in its watchdog subtask if
-> there is anything to be transmitted (consdidering both Tx and XDP rings=
-)
-> under state of carrier not being 'ok'. Such event is interpreted as Tx
-> hang and therefore results in interface reset.
->=20
-> This is currently problematic for ndo_xdp_xmit() as it is allowed to
-> produce descriptors when interface is going through reset or its carrie=
-r
-> is turned off.
->=20
-> Furthermore, XDP rings should not really be objects of Tx hang
-> detection. This mechanism is rather a matter of ndo_tx_timeout() being
-> called from dev_watchdog against Tx rings exposed to networking stack.
->=20
-> Taking into account issues described above, let us have a two fold fix =
--
-> do not respect XDP rings in local ixgbe watchdog and do not produce Tx
-> descriptors in ndo_xdp_xmit callback when there is some problem with
-> carrier currently. For now, keep the Tx hang checks in clean Tx irq
-> routine, but adjust it to not execute it for XDP rings.
->=20
-> Cc: Tobias B=C3=B6hm <tobias.boehm@hetzner-cloud.de>
-> Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-> Closes: https://lore.kernel.org/netdev/eca1880f-253a-4955-afe6-732d7c69=
-26ee@hetzner-cloud.de/
-> Fixes: 6453073987ba ("ixgbe: add initial support for xdp redirect")
-> Fixes: 33fdc82f0883 ("ixgbe: add support for XDP_TX action")
-> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+On Thu, May 22, 2025 at 8:26=E2=80=AFPM Byungchul Park <byungchul@sk.com> w=
+rote:
+>
+> To simplify struct page, the page pool members of struct page should be
+> moved to other, allowing these members to be removed from struct page.
+>
+> Introduce a network memory descriptor to store the members, struct
+> netmem_desc, reusing struct net_iov that already mirrored struct page.
+>
+> While at it, relocate _pp_mapping_pad to group struct net_iov's fields.
+>
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
 > ---
->  drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 34 ++++++-------------=
+>  include/linux/mm_types.h |  2 +-
+>  include/net/netmem.h     | 43 +++++++++++++++++++++++++++++++++-------
+>  2 files changed, 37 insertions(+), 8 deletions(-)
+>
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 56d07edd01f9..873e820e1521 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -120,13 +120,13 @@ struct page {
+>                         unsigned long private;
+>                 };
+>                 struct {        /* page_pool used by netstack */
+> +                       unsigned long _pp_mapping_pad;
+>                         /**
+>                          * @pp_magic: magic value to avoid recycling non
+>                          * page_pool allocated pages.
+>                          */
+>                         unsigned long pp_magic;
+>                         struct page_pool *pp;
+> -                       unsigned long _pp_mapping_pad;
 
->  1 file changed, 11 insertions(+), 23 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/ne=
-t/ethernet/intel/ixgbe/ixgbe_main.c
-> index 467f81239e12..21bfea8aeb67 100644
-> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> @@ -966,10 +966,6 @@ static void ixgbe_update_xoff_rx_lfc(struct ixgbe_=
-adapter *adapter)
->  	for (i =3D 0; i < adapter->num_tx_queues; i++)
->  		clear_bit(__IXGBE_HANG_CHECK_ARMED,
->  			  &adapter->tx_ring[i]->state);
-> -
-> -	for (i =3D 0; i < adapter->num_xdp_queues; i++)
-> -		clear_bit(__IXGBE_HANG_CHECK_ARMED,
-> -			  &adapter->xdp_ring[i]->state);
->  }
-> =20
->  static void ixgbe_update_xoff_received(struct ixgbe_adapter *adapter)
-> @@ -1263,10 +1259,13 @@ static bool ixgbe_clean_tx_irq(struct ixgbe_q_v=
-ector *q_vector,
->  				   total_bytes);
->  	adapter->tx_ipsec +=3D total_ipsec;
-> =20
-> +	if (ring_is_xdp(tx_ring))
-> +		return !!budget;
-> +
->  	if (check_for_tx_hang(tx_ring) && ixgbe_check_tx_hang(tx_ring)) {
->  		/* schedule immediate reset if we believe we hung */
->  		struct ixgbe_hw *hw =3D &adapter->hw;
-> -		e_err(drv, "Detected Tx Unit Hang %s\n"
-> +		e_err(drv, "Detected Tx Unit Hang\n"
->  			"  Tx Queue             <%d>\n"
->  			"  TDH, TDT             <%x>, <%x>\n"
->  			"  next_to_use          <%x>\n"
-> @@ -1274,16 +1273,14 @@ static bool ixgbe_clean_tx_irq(struct ixgbe_q_v=
-ector *q_vector,
->  			"tx_buffer_info[next_to_clean]\n"
->  			"  time_stamp           <%lx>\n"
->  			"  jiffies              <%lx>\n",
-> -			ring_is_xdp(tx_ring) ? "(XDP)" : "",
->  			tx_ring->queue_index,
->  			IXGBE_READ_REG(hw, IXGBE_TDH(tx_ring->reg_idx)),
->  			IXGBE_READ_REG(hw, IXGBE_TDT(tx_ring->reg_idx)),
->  			tx_ring->next_to_use, i,
->  			tx_ring->tx_buffer_info[i].time_stamp, jiffies);
-> =20
-> -		if (!ring_is_xdp(tx_ring))
-> -			netif_stop_subqueue(tx_ring->netdev,
-> -					    tx_ring->queue_index);
-> +		netif_stop_subqueue(tx_ring->netdev,
-> +				    tx_ring->queue_index);
-> =20
->  		e_info(probe,
->  		       "tx hang %d detected on queue %d, resetting adapter\n",
-> @@ -1296,9 +1293,6 @@ static bool ixgbe_clean_tx_irq(struct ixgbe_q_vec=
-tor *q_vector,
->  		return true;
->  	}
-> =20
-> -	if (ring_is_xdp(tx_ring))
-> -		return !!budget;
-> -
->  #define TX_WAKE_THRESHOLD (DESC_NEEDED * 2)
->  	txq =3D netdev_get_tx_queue(tx_ring->netdev, tx_ring->queue_index);
->  	if (!__netif_txq_completed_wake(txq, total_packets, total_bytes,
-> @@ -7791,12 +7785,9 @@ static void ixgbe_check_hang_subtask(struct ixgb=
-e_adapter *adapter)
->  		return;
-> =20
->  	/* Force detection of hung controller */
-> -	if (netif_carrier_ok(adapter->netdev)) {
-> +	if (netif_carrier_ok(adapter->netdev))
->  		for (i =3D 0; i < adapter->num_tx_queues; i++)
->  			set_check_for_tx_hang(adapter->tx_ring[i]);
-> -		for (i =3D 0; i < adapter->num_xdp_queues; i++)
-> -			set_check_for_tx_hang(adapter->xdp_ring[i]);
-> -	}
-> =20
->  	if (!(adapter->flags & IXGBE_FLAG_MSIX_ENABLED)) {
->  		/*
-> @@ -8011,13 +8002,6 @@ static bool ixgbe_ring_tx_pending(struct ixgbe_a=
-dapter *adapter)
->  			return true;
->  	}
-> =20
-> -	for (i =3D 0; i < adapter->num_xdp_queues; i++) {
-> -		struct ixgbe_ring *ring =3D adapter->xdp_ring[i];
-> -
-> -		if (ring->next_to_use !=3D ring->next_to_clean)
-> -			return true;
-> -	}
-> -
->  	return false;
->  }
-> =20
-> @@ -10742,6 +10726,10 @@ static int ixgbe_xdp_xmit(struct net_device *d=
-ev, int n,
->  	if (unlikely(test_bit(__IXGBE_DOWN, &adapter->state)))
->  		return -ENETDOWN;
-> =20
-> +	if (!netif_carrier_ok(adapter->netdev) ||
-> +	    !netif_running(adapter->netdev))
-> +		return -ENETDOWN;
-> +
->  	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
->  		return -EINVAL;
-> =20
+Like Toke says, moving this to the beginning of this struct is not
+allowed. The first 3 bits of pp_magic are overlaid with page->lru so
+the pp makes sure not to use them. _pp_mapping_pad is overlaid with
+page->mapping, so the pp makes sure not to use it. AFAICT, this moving
+of _pp_mapping_pad is not necessary for this patch. I think just drop
+it.
 
-Hi,
+>                         unsigned long dma_addr;
+>                         atomic_long_t pp_ref_count;
+>                 };
+> diff --git a/include/net/netmem.h b/include/net/netmem.h
+> index 386164fb9c18..08e9d76cdf14 100644
+> --- a/include/net/netmem.h
+> +++ b/include/net/netmem.h
+> @@ -31,12 +31,41 @@ enum net_iov_type {
+>  };
+>
+>  struct net_iov {
+> -       enum net_iov_type type;
+> -       unsigned long pp_magic;
+> -       struct page_pool *pp;
+> -       struct net_iov_area *owner;
+> -       unsigned long dma_addr;
+> -       atomic_long_t pp_ref_count;
+> +       /*
+> +        * XXX: Now that struct netmem_desc overlays on struct page,
+> +        * struct_group_tagged() should cover all of them.  However,
+> +        * a separate struct netmem_desc should be declared and embedded,
+> +        * once struct netmem_desc is no longer overlayed but it has its
+> +        * own instance from slab.  The final form should be:
+> +        *
+> +        *    struct netmem_desc {
+> +        *         unsigned long pp_magic;
+> +        *         struct page_pool *pp;
+> +        *         unsigned long dma_addr;
+> +        *         atomic_long_t pp_ref_count;
+> +        *    };
+> +        *
+> +        *    struct net_iov {
+> +        *         enum net_iov_type type;
+> +        *         struct net_iov_area *owner;
+> +        *         struct netmem_desc;
+> +        *    };
+> +        */
 
-thank you very much for this patch.
+I'm unclear on why moving to this format is a TODO for the future. Why
+isn't this state in the comment the state in the code? I think I gave
+the same code snippet on the RFC, but here again:
 
-We have done more tests now in a production-like environment and I can co=
-nfirm again
-that this solves our issue and no more interface resets occur.
+struct netmem_desc {
+                        /**
+                         * @pp_magic: magic value to avoid recycling non
+                         * page_pool allocated pages.
+                         */
+                        unsigned long pp_magic;
+                        struct page_pool *pp;
+                       unsigned long _pp_mapping_pad;
+                        unsigned long dma_addr;
+                        atomic_long_t pp_ref_count;
+};
 
-Tested-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
+(Roughly):
 
-Kind regards,
-Marcus
+struct page {
+   ...
+  struct {        /* page_pool used by netstack */
+     struct netmem_desc;
+  };
+  ...
+};
+
+struct net_iov {
+    enum net_iov_type type;
+    struct netmem_desc;
+    struct net_iov_area *owner;
+}
+
+AFAICT, this should work..?
+
+--=20
+Thanks,
+Mina
