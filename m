@@ -1,92 +1,105 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97BE296FAB;
-	Fri, 23 May 2025 16:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82143294A06
+	for <netdev@vger.kernel.org>; Fri, 23 May 2025 16:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748017240; cv=none; b=C3N7ddmaVMvTNt2GPudbvlTEcfMZ8E1BOgy7B66Ws7nbzSKCBjTCFZjf7tI9JVTfWe+xYY7CDiKqjomnHmpHzR0aekMpmCuWF9TO4fYdjXQ/EoL7goNAf5FCcDKNkigJraH/5Vltu4axCkDIXArhjVGlBMCwugqB6Hg2va1PzZU=
+	t=1748017298; cv=none; b=HZfyWd3Zl7iz8cYNFliZMxImfS+dcv8aYc087LpYQjRo61Z5zGNyWBPVkwm7VILG8yEHOqL3YS1dqUvbG3ayarCeQuMVq7Yjnh1qIdrARq5TxKqsJgfeRF167YIlkkIpLgfmdhk4F5GzVO4uiatLukGPRxfk9hGTWhq4PIJJBwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748017240; c=relaxed/simple;
-	bh=tesbHGkgXzuhnilgDGJ+QGtIb0twyTj+Ptw048NOGEw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i8iLMPaZAMQ5dQ0WzIeNjvU+oLQjcNq/+e5njCrzxHGBXXfALBcqW0mo3c3BwwLeht4T8PNaJNPV5KOO/Ypf/fOILukACqA/M+jZ7OuTo44PaRlxLkLT1BUj0kiJZ/RMnpxqxs1eWZHRm6acCgJptNuxM3gM8nMIXa7f05UZkQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rRtwtHAX; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1748017298; c=relaxed/simple;
+	bh=BujhNJcIfJdCrltgcQz6MNassde82rEbsesI1Wbty8U=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=aNvg1rUnDxJg7+LIMknBYV14hP6J2gmGGuy8YByrd04DKUF95g/FTfbxPhfxELaOQlLUN7uTa04XNfIVeMMtPcmjx+Htc9F3eryUMzEfVRIpU7VuKv4IDYe5r8+NQz21RAnoVrRJTSi5cC1nWvsoewKLeo0hSo576RNArF0RM9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cRC0UiDN; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rRtwtHAX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=FKSYcBDrAVeosFiXivZE6eLg3M7cJpM8m8qO+mm0CJw=; b=rR
-	twtHAXcENvE9yW6v25dXUilX104IemQqVM7uHNhpLnfEdMBnz+GV0+AaooNJhCNj9WkBK/30N89v/
-	zfdNuPB+qxeGf9ymvJWF5UGU9erpoRCQB+bxaE7CHJCeRq/EyzIArpOxfR7bdcI9JJtbTCTyQiqeW
-	ekCkuM3pfbt1Liw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uIV81-00Dd47-36; Fri, 23 May 2025 18:20:13 +0200
-Date: Fri, 23 May 2025 18:20:13 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: =?utf-8?B?5p2O5ZOy?= <sensor1010@163.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com, jonas@kwiboo.se,
-	rmk+kernel@armlinux.org.uk, david.wu@rock-chips.com, wens@csie.org,
-	u.kleine-koenig@baylibre.com, an.petrous@oss.nxp.com,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: dwmac-rk: MAC clock should be truned off
-Message-ID: <d5325aba-507e-47b6-83fb-b9156c1f351e@lunn.ch>
-References: <20250523151521.3503-1-sensor1010@163.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cRC0UiDN"
+Message-ID: <b35cdeb3-399e-4ca0-a9a4-66bab45bd7e4@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1748017293;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eXlfdMIujoEWEfC9MCFXNwyGXVaiR+vqx4I+fOV2LpA=;
+	b=cRC0UiDNCqZcN6BiCFcSi7WyBG7RHQ/NaavE5iXAjkOSdJagNosatR+NIg0yTNRHOMRQeJ
+	gsLSdNrIvX8gOYYtmOPHCP6Bc2qPiQ2yeewLyrlzKsYAQMe0DEZoNLwaPpytrw/dHjMfY8
+	fbfnntgHadynhOa0PsMl2BmsNbQsvr8=
+Date: Fri, 23 May 2025 12:21:10 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250523151521.3503-1-sensor1010@163.com>
+Subject: Re: [PATCH net] net: xilinx: axienet: Fix Tx skb circular buffer
+ occupancy check in dmaengine xmit
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+To: Suraj Gupta <suraj.gupta2@amd.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, michal.simek@amd.com, radhey.shyam.pandey@amd.com,
+ horms@kernel.org
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, git@amd.com, harini.katakam@amd.com
+References: <20250521181608.669554-1-suraj.gupta2@amd.com>
+ <57443336-2098-42c9-be6d-468cdbd9b312@linux.dev>
+Content-Language: en-US
+In-Reply-To: <57443336-2098-42c9-be6d-468cdbd9b312@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, May 23, 2025 at 08:15:21AM -0700, 李哲 wrote:
-> if PHY power-on fails, clockassociated the MAC should
-> be disabled during the MAC initialization process
-
-The Subject: line has a typo.
-
-> Signed-off-by: 李哲 <sensor1010@163.com>
-> ---
->  drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+On 5/23/25 12:20, Sean Anderson wrote:
+> On 5/21/25 14:16, Suraj Gupta wrote:
+>> In Dmaengine flow, driver maintains struct skbuf_dma_descriptor rings each
+>> element of which corresponds to a skb. In Tx datapath, compare available
+>> space in skb ring with number of skbs instead of skb fragments.
+>> Replace x * (MAX_SKB_FRAGS) in netif_txq_completed_wake() and
+>> netif_txq_maybe_stop() with x * (1 skb) to fix the comparison.
+>> 
+>> Fixes: 6a91b846af85 ("net: axienet: Introduce dmaengine support")
+>> Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
+>> ---
+>>  drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 6 +++---
+>>  1 file changed, 3 insertions(+), 3 deletions(-)
+>> 
+>> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+>> index 1b7a653c1f4e..6011d7eae0c7 100644
+>> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+>> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+>> @@ -880,7 +880,7 @@ static void axienet_dma_tx_cb(void *data, const struct dmaengine_result *result)
+>>  	dev_consume_skb_any(skbuf_dma->skb);
+>>  	netif_txq_completed_wake(txq, 1, len,
+>>  				 CIRC_SPACE(lp->tx_ring_head, lp->tx_ring_tail, TX_BD_NUM_MAX),
+>> -				 2 * MAX_SKB_FRAGS);
+>> +				 2);
+>>  }
+>>  
+>>  /**
+>> @@ -914,7 +914,7 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
+>>  
+>>  	dma_dev = lp->tx_chan->device;
+>>  	sg_len = skb_shinfo(skb)->nr_frags + 1;
+>> -	if (CIRC_SPACE(lp->tx_ring_head, lp->tx_ring_tail, TX_BD_NUM_MAX) <= sg_len) {
+>> +	if (CIRC_SPACE(lp->tx_ring_head, lp->tx_ring_tail, TX_BD_NUM_MAX) <= 1) {
+>>  		netif_stop_queue(ndev);
+>>  		if (net_ratelimit())
+>>  			netdev_warn(ndev, "TX ring unexpectedly full\n");
+>> @@ -964,7 +964,7 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
+>>  	txq = skb_get_tx_queue(lp->ndev, skb);
+>>  	netdev_tx_sent_queue(txq, skb->len);
+>>  	netif_txq_maybe_stop(txq, CIRC_SPACE(lp->tx_ring_head, lp->tx_ring_tail, TX_BD_NUM_MAX),
+>> -			     MAX_SKB_FRAGS + 1, 2 * MAX_SKB_FRAGS);
+>> +			     1, 2);
+>>  
+>>  	dmaengine_submit(dma_tx_desc);
+>>  	dma_async_issue_pending(lp->tx_chan);
 > 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-> index 700858ff6f7c..036e45be5828 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-> @@ -1648,7 +1648,7 @@ static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
->  static int phy_power_on(struct rk_priv_data *bsp_priv, bool enable)
->  {
->  	struct regulator *ldo = bsp_priv->regulator;
-> -	int ret;
-> +	int ret = 0;
->  	struct device *dev = &bsp_priv->pdev->dev;
->  
->  	if (enable) {
-> @@ -1661,7 +1661,7 @@ static int phy_power_on(struct rk_priv_data *bsp_priv, bool enable)
->  			dev_err(dev, "fail to disable phy-supply\n");
->  	}
->  
-> -	return 0;
-> +	return ret;
+> Reviwed-by: Sean Anderson <sean.anderson@linux.dev>
 
-This does not make much sense to me. How do you get here with ret not
-being 0?
+Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
 
-    Andrew
-
----
-pw-bot: cr
+*spelling
