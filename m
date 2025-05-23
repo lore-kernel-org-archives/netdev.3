@@ -1,164 +1,124 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE6B2DCBE7
-	for <netdev@vger.kernel.org>; Fri, 23 May 2025 03:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54B422154F;
+	Fri, 23 May 2025 03:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747970734; cv=none; b=JrgZuBCjvLIkDfym8gfpqK7qiP1NV3oHU1SFgCC0uczFGd8n1GVlW1RaCiKpmYl2rf+Rg0naSvJpv7k/BNc0I3Rn1bs4rJGgHIawql/soDYi8wND/0Wuk+H5A2vXy7e2VFeLxt7OK9VDDSbB5sZx2RgUuzObjpmull1sMpoA+EY=
+	t=1747970786; cv=none; b=heiywxgJpvEBzHVhmtGoFmDxg8eK78WiY4Jxop5sQ4P8H+lZGUqFPFpMIImTcpnEsglZBzkIR49enq5pI1p53HFr8u99J0rUqlfrnDoaBe9QMXbU3/xMme7JRVT4lO6lmEH44WjFnODzo9GsOmHTpyzUBmCm1cUkhioCbrwe5tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747970734; c=relaxed/simple;
-	bh=7g7uI4qpyx5pmzUet4Y4XxNBNYzZ6ES55RfzClVS5lU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ILTceuZE+F3By1EhT/sNPnFQqSj+JceE6CKdAVZNV13HkX/LenAwNSqT87AVf3STmC9qod3mgLUF4vjrKCGtpfz9sNO5lAyL+9doj2HZ68R6dsMuXLPyINoXXZiQ6qQtG9arSBWQXszqdFCT0AhA1xhRrEOqe/b6Qi4QN47KgTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--yuyanghuang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ql0iWFsD; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--yuyanghuang.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ql0iWFsD"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7394772635dso6361011b3a.0
-        for <netdev@vger.kernel.org>; Thu, 22 May 2025 20:25:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747970730; x=1748575530; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AvnmG1muOxMgS8qNju6SA5T467j3gsLgfCM4zNl8E5o=;
-        b=Ql0iWFsDpcPOBJyefnpxzothHlbKDO4l6+Z+YOCoST+79GEEzG4B4YtTnb3fSoBJMY
-         UIgR5dfG80EYRRNxzGk9uRrxFC6oUE41CYjIpCkpInBJYRYXmmmq+5qxGQJT68KI7GHT
-         lfYuNT+oR4W/bnoxzvjEmFVIjWKBQyX/MvvgHwhGi8Ve6rrub808PjDB0kyu1huVVoIv
-         IYl1W5U0TLWqS2t5P+Y2V4StDm40ji4atVyS7j+ppaNj1w7Uczce5hrfb6uUK3RbjjXD
-         8YWpVfpNpBcXnBGV0PQdrxuG/zRgkPmJyHqSQbFJ+lbBM8zXaEjrb12+Bh27rkNqAvAB
-         Kyog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747970730; x=1748575530;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AvnmG1muOxMgS8qNju6SA5T467j3gsLgfCM4zNl8E5o=;
-        b=AK5ZnO7QZ6xZq0tQ146EhqtM6FKada93tohiCrUO3Rz9KcB8t5mEn9wGoKE3d9/bhE
-         ZN51fIgAj2fAL1qTp5hr0pkHF+4SegiDqqYq0ip0d+yVcDEsUYPE7FlvvcMEpJ7O0ow+
-         DrMXQ3VkgbuzRZTXEkBcnCKRgE6nUWoQyQXbwqUGUNi7vaSOCEPv30jFLghfxYCal2ZA
-         TakXjnkPr27sQDDx2D6U4Bo8rMnJb0aBNOKIwNpMcuAL4AQjsdlOxl7VPSUwWVNFL49R
-         30K47kAN6yjelgf5Q4+Y5A6bjmVOA8DgC0JmeLHaJkLqODbyBcMuCV4cn5eFOhe8xfXo
-         NjtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV9n16QpYVCRiP0bTDWx7gD+/6/d1zn7hEK6U6Z9C37jZvlr1mKQ51N3OkkWEuHM0laY4Rb+EQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5s9xrmRqeUFZCqt7XKdfE1YDYI96+NNgJNgDESELuUMU47xR4
-	Kr0Nd0ehCZx4xUGPj/MOOvT2dfdkZVTfQCJtB/Eue+OOhqKKmsYhsSKHw++k0e5zA/R30WZT2pS
-	ns8lhNOnvo7s5Tnty+NgLjHjkJQ==
-X-Google-Smtp-Source: AGHT+IFr9sIaedgXmdU+43OMl6m/noUp43/4toQhhKOaWiEmXvU4723s+wg27dvO3gCq2fj2MwCs4AdfzrD0Ad6ZIA==
-X-Received: from pgac20.prod.google.com ([2002:a05:6a02:2954:b0:b1f:8cc1:95c1])
- (user=yuyanghuang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:1807:b0:203:becd:f9ce with SMTP id adf61e73a8af0-2170ce3a504mr38199942637.39.1747970730660;
- Thu, 22 May 2025 20:25:30 -0700 (PDT)
-Date: Fri, 23 May 2025 12:25:18 +0900
+	s=arc-20240116; t=1747970786; c=relaxed/simple;
+	bh=Nlu+Ye/l2MvdjyqvtqV9kAfumkCJ+PGw/5U4NmeTbnI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=JxITAFQYUcB3pms/aobcDOncSKi3Orn3PPG2220jQuVv/m/5tdta225KzvZfiQ2iJzFhpjzjGO1cYmRkqW/s8q6z/18uLOOmUXS5M5DHAO1NnFIaUdKLlWhSEDT/602j4m12jA+Pn2oVNWTpJKCc/BQUXrXdGfNivJ5kYXuvweY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-681ff7000002311f-93-682feadc559e
+From: Byungchul Park <byungchul@sk.com>
+To: willy@infradead.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel_team@skhynix.com,
+	kuba@kernel.org,
+	almasrymina@google.com,
+	ilias.apalodimas@linaro.org,
+	harry.yoo@oracle.com,
+	hawk@kernel.org,
+	akpm@linux-foundation.org,
+	davem@davemloft.net,
+	john.fastabend@gmail.com,
+	andrew+netdev@lunn.ch,
+	asml.silence@gmail.com,
+	toke@redhat.com,
+	tariqt@nvidia.com,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	horms@kernel.org,
+	linux-rdma@vger.kernel.org,
+	bpf@vger.kernel.org,
+	vishal.moola@gmail.com
+Subject: [PATCH 04/18] page_pool: rename __page_pool_alloc_page_order() to __page_pool_alloc_large_netmem()
+Date: Fri, 23 May 2025 12:25:55 +0900
+Message-Id: <20250523032609.16334-5-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20250523032609.16334-1-byungchul@sk.com>
+References: <20250523032609.16334-1-byungchul@sk.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWRa0hTcRjG++9cN1wcpubRqHQQhpE3NN5IQoLgCBFRfVLBRh7dck7ZdM0i
+	cCWUokvKMGzSJO9KR5bpNDFbXivIvMQ0rxP9YKnkmnkLc1bffjzvj4cHXhqTdeMBtEqTxWs1
+	CrWclOCSJa+KExOLYcpws5EBs9BIQsO6AWpmbASY61sQ/Nz4SoGru4+E5xVrGJg/5eHgFjYx
+	mO91UjBdvYBDx71WDJwP+kkoytvC4I6tVgSDLSYCSjarMGjNnaFguN1MwlTjDgEL9iIcBsrq
+	cJg2xUKv5QCsffiOoFtoFcFaYTkJj4YsJMzlTSMYeufE4anRhEDodBCwtW4mY4O45roxEddW
+	NklxFms297I2hCtwDGGctT6f5KyrDylu4ksHyfU/2cK5NptLxBXdXSa5H/PjOLfSOUpyQvMo
+	zn20dFOcy3r4IhMviUnm1So9rw07c1Wi7Bx/Rma+EhtWBAHLRatUARLTLBPFln7eJv6za6NK
+	5GGSCWYdjg3Mwz5MBOty9uEFSEJjzDLBzpu3diWa9mbS2PrK4x4HZ46yPaaxPV/KRLNC4RT5
+	t/MI29DUtZeLmZNs8ZR7L5ftOq9HxilPJ8u4Kba068W/Qf7s21oHXoykFrSvHslUGn26QqWO
+	ClXmaFSG0GsZ6Va0+9vq29sJNrQ6eNmOGBrJvaQ2SZhSRij0upx0O2JpTO4j7VkIVcqkyYqc
+	m7w2I0mbreZ1dnSQxuV+0si1G8kyJlWRxafxfCav/X8V0eKAXFSumlopOyX+3Ra0Ebjfe8d2
+	ATk7kyszBphFd5whvillRnXOWDLpXfKtpFmTEnx6ueHXfaMk+lhmzxUUsmR357YyhedTNX3q
+	REVkSKR/WbTemDp7KDwBgn3fP666lTh7fdyvP+aNSZgLbF/otyb5xAXF6ehhp29N/mjppZGz
+	hBzXKRURIZhWp/gD/TS9x9cCAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWRa0hTcRyG+++cnZ0NB6cldtDoMqhMUTNTfqKUfaj+BGUQFQiiI09tqVM3
+	tZmEmnYTNW+h2KSZ9ykd867ZEO+WYGiWmqkslLDS8pa6rNTo28vzPrxfXpqQlZK2tEodyWnU
+	ihA5JSEl57wSncZmXJSHvz1DoOcrKahY0UHpZKMQ9MZ6BIurH0Sw0NFNQWHBMgH6/iQSlvg1
+	Aqa6zCKYKJkmoeVeAwHmhz0UpCZZCLjdWCaA9vxeIbypTxNC9loxAQ3xkyIYbNZTMF75RwjT
+	bakk9OaVkzCR5gNdBhtYfv0VQQffIIDllHwKsgYMFHxKmkAw0G4m4XFCGgLeNCwEy4qe8pHj
+	2vIRAW7K+yjChuooXFPmgJOHBwhcbXxA4er5TBEee9dC4Z5cC4mbGhcEODVxlsI/pkZJPGca
+	onDh5+8CzNcOkbjP0CE6v91P4h3EhaiiOY3LsUCJ0jT6hAqvE+vmeJ6IR/OiZCSmWeYou7Ba
+	LNjMFHOQHR5eJTazNePKLpi7yWQkoQlmVshO6S0bEk3vYIJZY5HjpkMy+9nOtJEtX8q4s3zK
+	OPVvcw9bUdW6xcWMB5s+vrTFZRvOi7ejonQkMaBtRmStUkeHKlQh7s7aYGWMWqVzvhIWWo02
+	7iu59SujES0Onm5DDI3kVlL7UBelTKiI1saEtiGWJuTW0s5pZ6VMGqSIuclpwgI0USGctg3Z
+	0aR8p/TMZS5QxlxTRHLBHBfOaf63AlpsG48cDQ1xLd6De8ubs+5eai+wmuHKogyPiu08j/ih
+	Kt99z0+0Zth0vUzw6L7jdP/3RXXsyVdefWfdHL/g6c6U9at1Hq0a46Fd2X76WNON3f3+ONne
+	VJNz4fhg3E/fsH4sXgrgn/p71p6yqKYUmW4RprCciHFH9ZjOfP2Abf779Vz/IjmpVSpcHQiN
+	VvEXrVITMboCAAA=
+X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.49.0.1204.g71687c7c1d-goog
-Message-ID: <20250523032518.251497-1-yuyanghuang@google.com>
-Subject: [PATCH iproute2] iproute2: bugfix - restore ip monitor backward compatibility.
-From: Yuyang Huang <yuyanghuang@google.com>
-To: Yuyang Huang <yuyanghuang@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org, 
-	Luca Boccassi <bluca@debian.org>, "=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>, Lorenzo Colitti <lorenzo@google.com>, 
-	Adel Belhouane <bugs.a.b@free.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-The current ip monitor implementation fails on older kernels that lack
-newer RTNLGRP_* definitions. As ip monitor is expected to maintain
-backward compatibility, this commit updates the code to check if errno
-is not EINVAL when rtnl_add_nl_group() fails. This change restores ip
-monitor's backward compatibility with older kernel versions.
+Now that __page_pool_alloc_page_order() uses netmem alloc/put APIs, not
+page alloc/put APIs, rename it to __page_pool_alloc_large_netmem() to
+reflect what it does.
 
-Cc: David Ahern <dsahern@kernel.org>
-Cc: Luca Boccassi <bluca@debian.org>
-Cc: Maciej =C5=BBenczykowski <maze@google.com>
-Cc: Lorenzo Colitti <lorenzo@google.com>
-Reported-by: Adel Belhouane <bugs.a.b@free.fr>
-Closes: https://lore.kernel.org/netdev/CADXeF1GgJ_1tee3hc7gca2Z21Lyi3mzxq52=
-sSfMg3mFQd2rGWQ@mail.gmail.com/T/#t
-Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
+Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- ip/ipmonitor.c | 35 ++++++++++++++++++++++-------------
- 1 file changed, 22 insertions(+), 13 deletions(-)
+ net/core/page_pool.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/ip/ipmonitor.c b/ip/ipmonitor.c
-index b890b4d0..1f4e860f 100644
---- a/ip/ipmonitor.c
-+++ b/ip/ipmonitor.c
-@@ -5,6 +5,7 @@
-  * Authors:	Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
-  */
-=20
-+#include <errno.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <unistd.h>
-@@ -328,38 +329,46 @@ int do_ipmonitor(int argc, char **argv)
-=20
- 	if (lmask & IPMON_LNEXTHOP &&
- 	    rtnl_add_nl_group(&rth, RTNLGRP_NEXTHOP) < 0) {
--		fprintf(stderr, "Failed to add nexthop group to list\n");
--		exit(1);
-+		if (errno !=3D EINVAL) {
-+			fprintf(stderr, "Failed to add nexthop group to list\n");
-+			exit(1);
-+		}
- 	}
-=20
- 	if (lmask & IPMON_LSTATS &&
- 	    rtnl_add_nl_group(&rth, RTNLGRP_STATS) < 0 &&
- 	    nmask & IPMON_LSTATS) {
--		fprintf(stderr, "Failed to add stats group to list\n");
--		exit(1);
-+		if (errno !=3D EINVAL) {
-+			fprintf(stderr, "Failed to add stats group to list\n");
-+			exit(1);
-+		}
- 	}
-=20
- 	if (lmask & IPMON_LMADDR) {
- 		if ((!preferred_family || preferred_family =3D=3D AF_INET) &&
- 		    rtnl_add_nl_group(&rth, RTNLGRP_IPV4_MCADDR) < 0) {
--			fprintf(stderr,
--				"Failed to add ipv4 mcaddr group to list\n");
--			exit(1);
-+			if (errno !=3D EINVAL) {
-+				fprintf(stderr, "Failed to add ipv4 mcaddr group to list\n");
-+				exit(1);
-+			}
- 		}
- 		if ((!preferred_family || preferred_family =3D=3D AF_INET6) &&
- 		    rtnl_add_nl_group(&rth, RTNLGRP_IPV6_MCADDR) < 0) {
--			fprintf(stderr,
--				"Failed to add ipv6 mcaddr group to list\n");
--			exit(1);
-+			if (errno !=3D EINVAL) {
-+				fprintf(stderr,
-+					"Failed to add ipv6 mcaddr group to list\n");
-+				exit(1);
-+			}
- 		}
- 	}
-=20
- 	if (lmask & IPMON_LACADDR) {
- 		if ((!preferred_family || preferred_family =3D=3D AF_INET6) &&
- 		    rtnl_add_nl_group(&rth, RTNLGRP_IPV6_ACADDR) < 0) {
--			fprintf(stderr,
--				"Failed to add ipv6 acaddr group to list\n");
--			exit(1);
-+			if (errno !=3D EINVAL) {
-+				fprintf(stderr, "Failed to add ipv6 acaddr group to list\n");
-+				exit(1);
-+			}
- 		}
- 	}
-=20
---=20
-2.49.0.1204.g71687c7c1d-goog
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 2680d38d3daf..147cefe7a031 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -518,7 +518,7 @@ static bool page_pool_dma_map(struct page_pool *pool, netmem_ref netmem, gfp_t g
+ 	return false;
+ }
+ 
+-static netmem_ref __page_pool_alloc_page_order(struct page_pool *pool,
++static netmem_ref __page_pool_alloc_large_netmem(struct page_pool *pool,
+ 						 gfp_t gfp)
+ {
+ 	netmem_ref netmem;
+@@ -555,7 +555,7 @@ static noinline netmem_ref __page_pool_alloc_pages_slow(struct page_pool *pool,
+ 
+ 	/* Don't support bulk alloc for high-order pages */
+ 	if (unlikely(pp_order))
+-		return __page_pool_alloc_page_order(pool, gfp);
++		return __page_pool_alloc_large_netmem(pool, gfp);
+ 
+ 	/* Unnecessary as alloc cache is empty, but guarantees zero count */
+ 	if (unlikely(pool->alloc.count > 0))
+-- 
+2.17.1
 
