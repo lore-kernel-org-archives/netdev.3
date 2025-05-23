@@ -1,150 +1,244 @@
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E85B1C5D50
-	for <netdev@vger.kernel.org>; Fri, 23 May 2025 22:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA411FF1CE
+	for <netdev@vger.kernel.org>; Fri, 23 May 2025 23:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748040451; cv=none; b=ShmKR/MqLygHTZRWHShhRR4Z2lgps2i1W+Zckvraj5Yx90o4d0GjVoWTyMydbTOT0KFNfBj8v38ZMj7yGGReULt8jHzReKFRtsFUYSbshmq7aVUCVkOH3Lh3QYLCcCfzyg+xO4z8BhAcOFeiC7qrAIkAQZjM8LVPM8mpyypPL1A=
+	t=1748041526; cv=none; b=W8rya8Mv/rhITjtoaudyTR95LjOwBxAERN96uryUph0QoDJJkQwYE1FmMMASRvLxvdOrhwTHAtDBH3iG1UbvVBpKA832JLxjmbo8IgcXq+R6rM61VEXco0g83xjhyJIwmCwigqBiQy6uThlY9yzgJOy36gI2bE34w4TMextDv7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748040451; c=relaxed/simple;
-	bh=x98D+Yp00VdZ07liE4NWYJeoBOk1wSzRdLodEYKc9qs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=olNDGFyhr08g2vDl1RDH2ogujrim8LGzrYItFJojP6JhbEA7r1S9PITBVzR3+9muIaEDTem249k8JYMeIHcQIr8WLf4hlqRoiJxgPy/LdUV47H2d9ZgKWODQi/YhKcYnzcaIB8lv7j3v5Pj/1iRNR4XRH3F6UdjuorGsbux/6ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Tz5kpDrc; arc=none smtp.client-ip=95.215.58.178
+	s=arc-20240116; t=1748041526; c=relaxed/simple;
+	bh=n4lVZZyLBM0+qLadDuyfSQBaBJeYC61/p/Xzgf/u1XY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bA5Zr+jRxiWu1t0LHs0yZvorx7xsYqvYKMAUUqeoQ90mWrEOBoOCRl2p4KL81P8tL6KZ2VQ91rYOR6tB6goEXalrN5p9x3BRM/YVIblfQm47I1xKionxpvA6L1iDL8bOYKrF2TWLrejkgoeax0cLaHjINw3W0eMWFgjRlAnPWgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QH+a3TyB; arc=none smtp.client-ip=91.218.175.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Tz5kpDrc"
-Message-ID: <7af85fa7-c6ec-473f-b5ac-38af12b5ad02@linux.dev>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QH+a3TyB"
+Message-ID: <2e350e8b-3192-48e9-a419-ba727a52abee@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1748040436;
+	t=1748041520;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6I7zYLgaZ1vf52aAPbhqqUukOteUKhHVaPkuzjN4gRo=;
-	b=Tz5kpDrcNeBalk9UG3m2J1d6HBAkDNuVd2KLh/LnUFFrfJCDGVdZD10GSOsWy2xiW91vI2
-	AKE1cBwGAzZFTcGIJwhnjc9Hy0zYFNmHqG26WDfHrPQxWFgp5VUrTFcfxJY8F9GaqPkL2z
-	mVpscSfbBIHG+o07vLvggvYIBcAaQZA=
-Date: Fri, 23 May 2025 18:47:01 -0400
+	bh=xIA0wb8u0ZC3RAAVHYbFulzKzwer2HQMWyvXoEhU9tU=;
+	b=QH+a3TyBD84BsIoSwzNBZjaozdCWkcK9zHxJE48pO0mVRpNDllG09eCQRmKO5jg5e/F+Xq
+	6vhk/vDLOoC73JnnfixDoE+zat5oo8mqAXJYxTFPYNFabrYrT+kBKay0Ds7UvyxwrTVzBF
+	ur00ln0KrnWKhTCqrEsrVeyhI/2lTng=
+Date: Fri, 23 May 2025 16:05:16 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [net-next PATCH v5 05/10] net: pcs: lynx: Convert to an MDIO
- driver
+Subject: Re: [PATCH v1 bpf-next 05/10] bpf: tcp: Avoid socket skips and
+ repeats during iteration
+To: Jordan Rife <jordan@jrife.io>
+Cc: Daniel Borkmann <daniel@iogearbox.net>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Kuniyuki Iwashima <kuniyu@amazon.com>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>, netdev@vger.kernel.org,
+ bpf@vger.kernel.org
+References: <20250520145059.1773738-1-jordan@jrife.io>
+ <20250520145059.1773738-6-jordan@jrife.io>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-To: Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>
-Cc: Lei Wei <quic_leiwei@quicinc.com>,
- Christian Marangi <ansuelsmth@gmail.com>,
- Kory Maincent <kory.maincent@bootlin.com>, Simon Horman <horms@kernel.org>,
- Daniel Golle <daniel@makrotopia.org>,
- Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
- linux-kernel@vger.kernel.org, Ioana Ciornei <ioana.ciornei@nxp.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, imx@lists.linux.dev,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20250523203339.1993685-1-sean.anderson@linux.dev>
- <20250523203339.1993685-6-sean.anderson@linux.dev>
- <a937e728-d911-4fcc-9af1-9ae6130f96c1@gmail.com>
- <3a452864-9d02-4fa7-9d7c-a240b611ee74@linux.dev>
- <e0bd575b-a01b-418f-9d89-b59398e87a48@linux.dev>
+From: Martin KaFai Lau <martin.lau@linux.dev>
 Content-Language: en-US
-In-Reply-To: <e0bd575b-a01b-418f-9d89-b59398e87a48@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20250520145059.1773738-6-jordan@jrife.io>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
 
-On 5/23/25 18:07, Sean Anderson wrote:
-> On 5/23/25 17:39, Sean Anderson wrote:
->> On 5/23/25 17:33, Heiner Kallweit wrote:
->>> On 23.05.2025 22:33, Sean Anderson wrote:
->>>> This converts the lynx PCS driver to a proper MDIO driver.
->>>> This allows using a more conventional driver lifecycle (e.g. with a
->>>> probe and remove). It will also make it easier to add interrupt support.
->>>> 
->>>> The existing helpers are converted to bind the MDIO driver instead of
->>>> creating the PCS directly. As lynx_pcs_create_mdiodev creates the PCS
->>>> device, we can just set the modalias. For lynx_pcs_create_fwnode, we try
->>>> to get the PCS the usual way, and if that fails we edit the devicetree
->>>> to add a compatible and reprobe the device.
->>>> 
->>>> To ensure my contributions remain free software, remove the BSD option
->>>> from the license. This is permitted because the SPDX uses "OR".
->>>> 
->>>> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
->>>> ---
->>>> 
->>>> Changes in v5:
->>>> - Use MDIO_BUS instead of MDIO_DEVICE
->>>> 
->>>> Changes in v4:
->>>> - Add a note about the license
->>>> - Convert to dev-less pcs_put
->>>> 
->>>> Changes in v3:
->>>> - Call devm_pcs_register instead of devm_pcs_register_provider
->>>> 
->>>> Changes in v2:
->>>> - Add support for #pcs-cells
->>>> - Remove unused variable lynx_properties
->>>> 
->>>>  drivers/net/dsa/ocelot/Kconfig                |   4 +
->>>>  drivers/net/dsa/ocelot/felix_vsc9959.c        |  11 +-
->>>>  drivers/net/dsa/ocelot/seville_vsc9953.c      |  11 +-
->>>>  drivers/net/ethernet/altera/Kconfig           |   2 +
->>>>  drivers/net/ethernet/altera/altera_tse_main.c |   7 +-
->>>>  drivers/net/ethernet/freescale/dpaa/Kconfig   |   2 +-
->>>>  drivers/net/ethernet/freescale/dpaa2/Kconfig  |   3 +
->>>>  .../net/ethernet/freescale/dpaa2/dpaa2-mac.c  |  11 +-
->>>>  drivers/net/ethernet/freescale/enetc/Kconfig  |   2 +
->>>>  .../net/ethernet/freescale/enetc/enetc_pf.c   |   8 +-
->>>>  .../net/ethernet/freescale/enetc/enetc_pf.h   |   1 -
->>>>  .../freescale/enetc/enetc_pf_common.c         |   4 +-
->>>>  drivers/net/ethernet/freescale/fman/Kconfig   |   4 +-
->>>>  .../net/ethernet/freescale/fman/fman_memac.c  |  25 ++--
->>>>  drivers/net/ethernet/stmicro/stmmac/Kconfig   |   3 +
->>>>  .../ethernet/stmicro/stmmac/dwmac-socfpga.c   |   6 +-
->>>>  drivers/net/pcs/Kconfig                       |  11 +-
->>>>  drivers/net/pcs/pcs-lynx.c                    | 110 ++++++++++--------
->>>>  include/linux/pcs-lynx.h                      |  13 ++-
->>>>  19 files changed, 128 insertions(+), 110 deletions(-)
->>>> 
->>>> diff --git a/drivers/net/dsa/ocelot/Kconfig b/drivers/net/dsa/ocelot/Kconfig
->>>> index 081e7a88ea02..907c29d61c14 100644
->>>> --- a/drivers/net/dsa/ocelot/Kconfig
->>>> +++ b/drivers/net/dsa/ocelot/Kconfig
->>>> @@ -42,7 +42,9 @@ config NET_DSA_MSCC_FELIX
->>>>  	select NET_DSA_TAG_OCELOT_8021Q
->>>>  	select NET_DSA_TAG_OCELOT
->>>>  	select FSL_ENETC_MDIO
->>>> +	select PCS
->>>>  	select PCS_LYNX
->>>> +	select MDIO_BUS
->>> 
->>> This shouldn't be needed. NET_DSA selects PHYLINK, which selects PHYLIB,
->>> which selects MDIO_BUS. There are more places in this series where the
->>> same comment applies.
->> 
->> select does not transitively enable dependencies. See the note in
->> Documentation/kbuild/kconfig-language.rst for details. Therefore we must
->> select the dependencies of things we select in order to ensure we do not
->> trip sym_warn_unmet_dep.
+On 5/20/25 7:50 AM, Jordan Rife wrote:
+> Replace the offset-based approach for tracking progress through a bucket
+> in the TCP table with one based on socket cookies. Remember the cookies
+> of unprocessed sockets from the last batch and use this list to
+> pick up where we left off or, in the case that the next socket
+> disappears between reads, find the first socket after that point that
+> still exists in the bucket and resume from there.
 > 
-> OK, I see what you mean here. But of course NET_DSA is missing selects for
-> PHYLIB and MDIO_BUS. And PHYLINK is also missing a select for MDIO_BUS. Actually,
-> this bug is really endemic. Maybe we should just get rid of PHYLIB as a config
-> and just make everything depend on ETHERNET instead.
+> This approach guarantees that all sockets that existed when iteration
+> began and continue to exist throughout will be visited exactly once.
+> Sockets that are added to the table during iteration may or may not be
+> seen, but if they are they will be seen exactly once.
+> 
+> Remove the conditional that advances the bucket at the top of
+> bpf_iter_tcp_batch, since if iter->cur_sk == iter->end_sk
+> bpf_iter_tcp_resume_listening or bpf_iter_tcp_resume_established will
+> naturally advance to the next bucket without wasting any time scanning
+> through the current bucket.
 
-After some experimentation, I think what that note means is that select
-is recursive for select but not for depends on. So I think I only have
-to select the "forward" dependencies, which is certainly easier.
+> 
+> Signed-off-by: Jordan Rife <jordan@jrife.io>
+> ---
+>   net/ipv4/tcp_ipv4.c | 141 +++++++++++++++++++++++++++++++++++---------
+>   1 file changed, 113 insertions(+), 28 deletions(-)
+> 
+> diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+> index 65569d67d8bf..11531ed4ef3c 100644
+> --- a/net/ipv4/tcp_ipv4.c
+> +++ b/net/ipv4/tcp_ipv4.c
+> @@ -58,6 +58,7 @@
+>   #include <linux/times.h>
+>   #include <linux/slab.h>
+>   #include <linux/sched.h>
+> +#include <linux/sock_diag.h>
+>   
+>   #include <net/net_namespace.h>
+>   #include <net/icmp.h>
+> @@ -3016,6 +3017,7 @@ static int tcp4_seq_show(struct seq_file *seq, void *v)
+>   #ifdef CONFIG_BPF_SYSCALL
+>   union bpf_tcp_iter_batch_item {
+>   	struct sock *sk;
+> +	__u64 cookie;
+>   };
+>   
+>   struct bpf_tcp_iter_state {
+> @@ -3046,10 +3048,19 @@ static int tcp_prog_seq_show(struct bpf_prog *prog, struct bpf_iter_meta *meta,
+>   
+>   static void bpf_iter_tcp_put_batch(struct bpf_tcp_iter_state *iter)
+>   {
+> +	union bpf_tcp_iter_batch_item *item;
+>   	unsigned int cur_sk = iter->cur_sk;
+> +	__u64 cookie;
+>   
+> -	while (cur_sk < iter->end_sk)
+> -		sock_gen_put(iter->batch[cur_sk++].sk);
+> +	/* Remember the cookies of the sockets we haven't seen yet, so we can
+> +	 * pick up where we left off next time around.
+> +	 */
+> +	while (cur_sk < iter->end_sk) {
+> +		item = &iter->batch[cur_sk++];
+> +		cookie = sock_gen_cookie(item->sk);
+> +		sock_gen_put(item->sk);
+> +		item->cookie = cookie;
+> +	}
+>   }
+>   
+>   static int bpf_iter_tcp_realloc_batch(struct bpf_tcp_iter_state *iter,
+> @@ -3073,6 +3084,105 @@ static int bpf_iter_tcp_realloc_batch(struct bpf_tcp_iter_state *iter,
+>   	return 0;
+>   }
+>   
+> +static struct sock *bpf_iter_tcp_resume_bucket(struct sock *first_sk,
+> +					       union bpf_tcp_iter_batch_item *cookies,
+> +					       int n_cookies)
+> +{
+> +	struct hlist_nulls_node *node;
+> +	struct sock *sk;
+> +	int i;
+> +
+> +	for (i = 0; i < n_cookies; i++) {
+> +		sk = first_sk;
+> +		sk_nulls_for_each_from(sk, node) {
+> +			if (cookies[i].cookie == atomic64_read(&sk->sk_cookie))
+> +				return sk;
+> +		}
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +static struct sock *bpf_iter_tcp_resume_listening(struct seq_file *seq)
+> +{
+> +	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
+> +	struct bpf_tcp_iter_state *iter = seq->private;
+> +	struct tcp_iter_state *st = &iter->state;
+> +	unsigned int find_cookie = iter->cur_sk;
+> +	unsigned int end_cookie = iter->end_sk;
+> +	int resume_bucket = st->bucket;
+> +	struct sock *sk;
+> +
+> +	sk = listening_get_first(seq);
 
---Sean
+Since it does not advance the sk->bucket++ now, it will still scan until the 
+first seq_sk_match()?
+
+Does it make sense to advance the st->bucket++ in the bpf_iter_tcp_seq_next and 
+bpf_iter_tcp_seq_stop?
+
+> +	iter->cur_sk = 0;
+> +	iter->end_sk = 0;
+> +
+> +	if (sk && st->bucket == resume_bucket && end_cookie) {
+
+If doing st->bucket++ in the next and stop, this probably needs the "&& 
+end_cookie - find_cookie" check.
+
+> +		sk = bpf_iter_tcp_resume_bucket(sk, &iter->batch[find_cookie],
+> +						end_cookie - find_cookie);
+> +		if (!sk) {
+> +			spin_unlock(&hinfo->lhash2[st->bucket].lock);
+> +			++st->bucket;
+> +			sk = listening_get_first(seq);
+> +		}
+> +	}
+> +
+> +	return sk;
+> +}
+> +
+> +static struct sock *bpf_iter_tcp_resume_established(struct seq_file *seq)
+> +{
+> +	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
+> +	struct bpf_tcp_iter_state *iter = seq->private;
+> +	struct tcp_iter_state *st = &iter->state;
+> +	unsigned int find_cookie = iter->cur_sk;
+> +	unsigned int end_cookie = iter->end_sk;
+> +	int resume_bucket = st->bucket;
+> +	struct sock *sk;
+> +
+> +	sk = established_get_first(seq);
+> +	iter->cur_sk = 0;
+> +	iter->end_sk = 0;
+> +
+> +	if (sk && st->bucket == resume_bucket && end_cookie) {
+> +		sk = bpf_iter_tcp_resume_bucket(sk, &iter->batch[find_cookie],
+> +						end_cookie - find_cookie);
+> +		if (!sk) {
+> +			spin_unlock_bh(inet_ehash_lockp(hinfo, st->bucket));
+> +			++st->bucket;
+> +			sk = established_get_first(seq);
+> +		}
+> +	}
+> +
+> +	return sk;
+> +}
+> +
+> +static struct sock *bpf_iter_tcp_resume(struct seq_file *seq)
+> +{
+> +	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
+> +	struct bpf_tcp_iter_state *iter = seq->private;
+> +	struct tcp_iter_state *st = &iter->state;
+> +	struct sock *sk = NULL;
+> +
+> +	switch (st->state) {
+> +	case TCP_SEQ_STATE_LISTENING:
+> +		if (st->bucket > hinfo->lhash2_mask)
+
+Understood that this is borrowed from the existing tcp_seek_last_pos().
+
+I wonder if this case would ever be hit. If it is not, may be avoid adding it to 
+this new resume function?
+
+> +			break;
+> +		sk = bpf_iter_tcp_resume_listening(seq);
+> +		if (sk)
+> +			break;
+> +		st->bucket = 0;
+> +		st->state = TCP_SEQ_STATE_ESTABLISHED;
+> +		fallthrough;
+> +	case TCP_SEQ_STATE_ESTABLISHED:
+> +		if (st->bucket > hinfo->ehash_mask)
+
+Same here, and the following established_get_first() should have taken care of 
+this case also.
+
+Overall the set makes sense to me. Thanks for making a similar improvement in 
+the tcp iter.
+
+I often find the seq_start/next/stop logic a bit tricky. I will need to do 
+another look early next week. I also haven't had a chance to look at the tests.
+
