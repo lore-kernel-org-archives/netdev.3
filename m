@@ -1,131 +1,86 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4917224AEF
-	for <netdev@vger.kernel.org>; Fri, 23 May 2025 17:21:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C5B298256
+	for <netdev@vger.kernel.org>; Fri, 23 May 2025 17:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748020892; cv=none; b=NbwnmEdAw9JFIvkhYk8UmntYf3Yi1pI5Ayx71XCG/lhyWcauKxWJ36v2UK/60DWlL4wE2me/7LI1KrBmEjBHOcNV1WlCVf32OhdU+al0a/R1gSFn6k4/MHQ+pMIAkNHqfokDOve/H516QB7XDYU6LXdfOKbJKsoNTRb1ImaMG18=
+	t=1748021362; cv=none; b=X1nqGhmwDPeVnBn5F/aYMtM3R1LlDKiJGbuiUlOA3ebfYnVL3i/PvGeCtl/AFeVwQLl6llxTgxvdhgwz0fBUGhEDmTeuwi33Oo5YxdDLKgbKYU1tQcB7FIWyQIVcWw5CKhEekP7N/+3y4i9ZARI4Trit0beYMdo1TnQ+9vwO2r0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748020892; c=relaxed/simple;
-	bh=BQIP3osWIZRw7IU3kD1aLl5cw/NxHiXGTkj3yio8VKU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PQlYB/vgbX/av2RE6wOoTxBDkh2GAdYU/vcgmx0rjM9Hp339nc0wkvZ59xhqLkxnsVpaJQv+GVZLupf6UeKecIbHn/uBzJqBdrs4/u++/BUUKbOxDUZQEFrUvrOddM2hy+XyaJLVbNpbwmD6a5i/SuLtxZ74+QPWPSjRel+Nxug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oEpCZMGZ; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1748021362; c=relaxed/simple;
+	bh=8wJq7CJj1ACgt2A1eG9/dKcPUVrCSJCqNlO3bxAC0Vw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=onDYD8/TIHMY5WZqaXcCzHq5qWDZSrhAFEuqRNoDeFplU5TOHdEi+a6DmttJXZH+/4m6AK0+ToInVxZT6VsgcqEs/zn/5n0AXA0m3D/hhxEnurDpz4wC1ecv8M1V7Ss28RiWyG8piKgMRarMzlVn4cNUxWTlos0BZ/XKCpe3uNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C/g+ENu9; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oEpCZMGZ"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-231ba6da557so10755ad.1
-        for <netdev@vger.kernel.org>; Fri, 23 May 2025 10:21:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748020890; x=1748625690; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rtih47zf1DDRpaty491xvgvfr7R2FPgNSS3Jfeu3Tb4=;
-        b=oEpCZMGZtEMlnHjw4F+ow/ibwbbKUB3+IOa+fihdbbc7UczvAiudhxtnN8X0rwVFtM
-         0F4rNkiUlKCwvk2OjoYPU+OwjGHBrz3UtA/S7jHd5WRhgfKBBQrnWaH36rPXVkg2Q3/g
-         AB8MdaHIShR0A9rxAUJUSIyiSJsIP7Bj/ysbpJyE+SNmT025usZBJA93t6fYgvTfpIk9
-         0X7uXx+CFiDVgJ0aeWxwoPTRZauXbrn8Hb9tDLf9P0XymDHdOV/+UpENZgRqq61W8Xa0
-         z0L6/ECHekDd4AhT6ZcsxOAirR/UEw5aUjsDh1cqviL+Ph6lwpDCdZRtU3C5r0tR7W3i
-         66DA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748020890; x=1748625690;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rtih47zf1DDRpaty491xvgvfr7R2FPgNSS3Jfeu3Tb4=;
-        b=aHjAtNyXVPOPuLuX3qiIcS90QvBfkvEaIWT0Oaq0D7pImYNWTsLMGPUzzmZrR5wMR7
-         x1FXaDReaShtxyLbJUydwnAMheV1ivnUw82RYiu+yEDGPRMvWw1YzVo3qj+3zv0dsc/J
-         f/7rnXUeeHkDPKBGqK69xCXpYKjqrEBSUP+y529QrMpc/e5X/y/QhDDmEAWoYjw4YGW1
-         pUJfPCLRGL+dDbZsytJIzJ+AGGeMSdZUpHLaKotfg2M1tAj0hIhCIs2I7U0NKWhoUR6i
-         K0558lrpbpeAEMESOYm8ZrLqSqbmly/xOtMIhs7iN6lbu44mVtOm4o2o7uFYoVQPee8Z
-         lk0A==
-X-Forwarded-Encrypted: i=1; AJvYcCWNGveFmH6u7Br0iTnDCPRxFvHCPQ4SV1g6CNdS6wTD9z24wS6CJmYWeKvnbh0QAGE5nHkSN+k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyynO3tfBKfEfHb5n9Q18lOGQz4h+13Wl9Iy0VOM9iQGqe0gTy
-	Mogt5hXMznsHxMtgHeqJRrEXZpDG/YdzVmHx+yxSvj+SU8d0XninPAX4yr8vcQKJAkBST0dIWqt
-	AqFNy4IuM/AtWmDTgQk7qidwal1pAk+iuXj7IRi7X
-X-Gm-Gg: ASbGncsqm2NIaGNm8BdHZbA8ufYZ1lb4Y7CVtlOhq58ftXZzYYCOoK2T12qMq+opIBc
-	uYooxMexexRGa1JIFYEq0AUpQ5PVD7rNds6vHTQrtZRtT4R1I9LL/SLcxcC2NzfxQuXy7uIdMuw
-	lXSQa4zOCgReVnK15T1V2iAMg7FSksu3KbC3eqBBDR0YatnPHwHzBpolPJttm7lR2ufoeDJIdly
-	A==
-X-Google-Smtp-Source: AGHT+IH6uGypDsxjqNqq6GSe13hjIu4fqtTlhQ7FXduEvXmZSL8NE0edJn+/pF949ueWwmc6huc8t1yB4vZ6UdiCEdU=
-X-Received: by 2002:a17:902:c94c:b0:21b:b3c4:7e0a with SMTP id
- d9443c01a7336-233f343a1demr2947455ad.13.1748020889832; Fri, 23 May 2025
- 10:21:29 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C/g+ENu9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748021358;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8wJq7CJj1ACgt2A1eG9/dKcPUVrCSJCqNlO3bxAC0Vw=;
+	b=C/g+ENu9539lyptuMQZgp+NcI2Cgp8CEWkW4QfULmPy5oUUmwQRxEiNqVYjHC2KOP5UEjv
+	IhxNsVpAYuFh1knsyJhWLgMgJ8e2pxnJ3qiSgJdUviH2v6oKauxiuPjzmbcR0GxWeq4Nyv
+	XazHjkUW4l9VWTS0UgNNslnSUmHmxQ8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-8-ZLqVJvnAN7qYVfeu9S3-0w-1; Fri,
+ 23 May 2025 13:29:16 -0400
+X-MC-Unique: ZLqVJvnAN7qYVfeu9S3-0w-1
+X-Mimecast-MFC-AGG-ID: ZLqVJvnAN7qYVfeu9S3-0w_1748021354
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 39EA1180034E;
+	Fri, 23 May 2025 17:29:13 +0000 (UTC)
+Received: from RHTRH0061144 (unknown [10.22.88.72])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 37F29195608F;
+	Fri, 23 May 2025 17:29:07 +0000 (UTC)
+From: Aaron Conole <aconole@redhat.com>
+To: Praveen Balakrishnan <praveen.balakrishnan@magd.ox.ac.uk>
+Cc: <pablo@netfilter.org>,  <kadlec@netfilter.org>,  <davem@davemloft.net>,
+  <edumazet@google.com>,  <kuba@kernel.org>,  <pabeni@redhat.com>,
+  <horms@kernel.org>,  <shuah@kernel.org>,  <echaudro@redhat.com>,
+  <i.maximets@ovn.org>,  <netfilter-devel@vger.kernel.org>,
+  <coreteam@netfilter.org>,  <netdev@vger.kernel.org>,
+  <linux-kselftest@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <skhan@linuxfoundation.org>,  <linux-kernel-mentees@lists.linux.dev>
+Subject: Re: [PATCH v2] selftests: net: fix spelling and grammar mistakes
+In-Reply-To: <20250523022242.3518-1-praveen.balakrishnan@magd.ox.ac.uk>
+	(Praveen Balakrishnan's message of "Fri, 23 May 2025 03:22:42 +0100")
+References: <4f0d5c19-8358-4e5b-a8f0-3adcee34ffd4@linuxfoundation.org>
+	<20250523022242.3518-1-praveen.balakrishnan@magd.ox.ac.uk>
+Date: Fri, 23 May 2025 13:29:06 -0400
+Message-ID: <f7tldqn9qxp.fsf@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250523032609.16334-1-byungchul@sk.com> <20250523032609.16334-13-byungchul@sk.com>
-In-Reply-To: <20250523032609.16334-13-byungchul@sk.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 23 May 2025 10:21:17 -0700
-X-Gm-Features: AX0GCFt13q3gircPas-6ILetDX9qRyDvPr7gIiwpBXG0M4D4YVrt7-2ZPVq-CWg
-Message-ID: <CAHS8izN6QAcAr-qkFSYAy0JaTU+hdM56r-ug-AWDGGqLvHkNuQ@mail.gmail.com>
-Subject: Re: [PATCH 12/18] page_pool: use netmem APIs to access page->pp_magic
- in page_pool_page_is_pp()
-To: Byungchul Park <byungchul@sk.com>
-Cc: willy@infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, kernel_team@skhynix.com, kuba@kernel.org, 
-	ilias.apalodimas@linaro.org, harry.yoo@oracle.com, hawk@kernel.org, 
-	akpm@linux-foundation.org, davem@davemloft.net, john.fastabend@gmail.com, 
-	andrew+netdev@lunn.ch, asml.silence@gmail.com, toke@redhat.com, 
-	tariqt@nvidia.com, edumazet@google.com, pabeni@redhat.com, saeedm@nvidia.com, 
-	leon@kernel.org, ast@kernel.org, daniel@iogearbox.net, david@redhat.com, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org, 
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, vishal.moola@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Thu, May 22, 2025 at 8:26=E2=80=AFPM Byungchul Park <byungchul@sk.com> w=
-rote:
+Praveen Balakrishnan <praveen.balakrishnan@magd.ox.ac.uk> writes:
+
+> Fix several spelling and grammatical mistakes in output messages from
+> the net selftests to improve readability.
 >
-> To simplify struct page, the effort to seperate its own descriptor from
-> struct page is required and the work for page pool is on going.
+> Only the message strings for the test output have been modified. No
+> changes to the functional logic of the tests have been made.
 >
-> To achieve that, all the code should avoid accessing page pool members
-> of struct page directly, but use safe APIs for the purpose.
->
-> Use netmem_is_pp() instead of directly accessing page->pp_magic in
-> page_pool_page_is_pp().
->
-> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> Signed-off-by: Praveen Balakrishnan <praveen.balakrishnan@magd.ox.ac.uk>
 > ---
->  include/linux/mm.h   | 5 +----
->  net/core/page_pool.c | 5 +++++
->  2 files changed, 6 insertions(+), 4 deletions(-)
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 8dc012e84033..3f7c80fb73ce 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4312,10 +4312,7 @@ int arch_lock_shadow_stack_status(struct task_stru=
-ct *t, unsigned long status);
->  #define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
->
->  #ifdef CONFIG_PAGE_POOL
-> -static inline bool page_pool_page_is_pp(struct page *page)
-> -{
-> -       return (page->pp_magic & PP_MAGIC_MASK) =3D=3D PP_SIGNATURE;
-> -}
 
-I vote for keeping this function as-is (do not convert it to netmem),
-and instead modify it to access page->netmem_desc->pp_magic.
+LGTM - thanks for fixing the ovs-dpctl.py output.
 
-The reason is that page_pool_is_pp() is today only called from code
-paths we have a page and not a netmem. Casting the page to a netmem
-which will cast it back to a page pretty much is a waste of cpu
-cycles. The page_pool is a place where we count cycles and we have
-benchmarks to verify performance (I pointed you to
-page_pool_bench_simple on the RFC).
+For the OVS test
 
-So lets avoid the cpu cycles if possible.
+Reviewed-by: Aaron Conole <aconole@redhat.com>
 
---=20
-Thanks,
-Mina
