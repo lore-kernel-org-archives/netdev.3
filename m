@@ -1,124 +1,164 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DE42DCBE6
-	for <netdev@vger.kernel.org>; Fri, 23 May 2025 06:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C62E1A3172;
+	Fri, 23 May 2025 06:51:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747982674; cv=none; b=QX6U61nAGpVpHFezfDIf5rFvh6fCpPOh0y3kcSXidClYi9epBMWVG/RpKcp2sWkNDPlZxnCB2t77N4O6UFZJNPy9RR94QKcRUXbvqB1Ecy7t6QWnJ54km9+NjZ5kJHr4rnFx/vRErUZ3qaReHLmAHLgeZFZF/nuckRuMg0txObE=
+	t=1747983122; cv=none; b=eOvwf8h2r5y6kzqAiIG70oCqld5m38//fgh44uML6nUmRDKI4jVaFCT8hC5D56TWL7OKBZsI8KgvAWpKFWB+2kue3/F9WNflszYuO3fP1PozWPrRC4IK37FTUYKGg5/pwbk//p221pJkNndLZlkZW6PTbHc2Svr08HzTL4Tps/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747982674; c=relaxed/simple;
-	bh=oBV0g+D+d6h5B3VPhqjoIAfO7l+1aNlpFkImDt+ZWXs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=EmyeNnDuX6XG7gcHVwCtrZeeZ5JKS/7F+V5foNtVnq+P/E8lOSiQt2H+clvKL2YIb++vXaDnoqMU4+SqD7/PP+gHXWP5fg+7my0HWtjgSIQ1oPiYyMBNjFMqa/tW7Z5ZoN/6eZKEGsDSoAv0H4AFnj0pcwsCmaOSWEC4eu8RAdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HhQBtjga; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1747983122; c=relaxed/simple;
+	bh=TdWHJklRtWZ8ywwzgTUJGjUZCCjpb7Qz9MOX7FbnquI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PONx8uSvlsXJmLf7ZMMtYWQPr0M0HNT8QvGyA3UmeU35bEh2BJES04CeitKyVxe7rqMqqtYl81+qROFhxY4dQNsVsXCP/dgI+n80fRg01UK8lvkZOE6QGZSrAwDx6k8ECVS2wfLCrGLjMvNXuJNkayfxIS/z+zaVIMMfUuNR7S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A08P56nz; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HhQBtjga"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747982671;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K4j4cbDgO+PUpzCvr0aZe7Jcbdoqz1szMaQged0/RO8=;
-	b=HhQBtjga07B+pXXyfaZypl5n07KqeYehXhDMqYn0QKKG3RMjlioTi0tXd3ipNT2py0gU5/
-	Cz13moMAbjrVPWGOPuNzmdYKJXThXm+oW+8VcK9yneZJwIthZ9o0KmVwhfJ8CZUBRYlzh5
-	1jFku4LMoXxE0//u4HzEUg/OGX86Ibc=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-504-MVsFDo0bPSS3dqj2loRKGg-1; Fri, 23 May 2025 02:44:29 -0400
-X-MC-Unique: MVsFDo0bPSS3dqj2loRKGg-1
-X-Mimecast-MFC-AGG-ID: MVsFDo0bPSS3dqj2loRKGg_1747982668
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3a3696a0d3aso2866469f8f.2
-        for <netdev@vger.kernel.org>; Thu, 22 May 2025 23:44:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A08P56nz"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ad5273c1fd7so1496477566b.1;
+        Thu, 22 May 2025 23:51:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747983118; x=1748587918; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dLXPa6TM1M6GFMGV9Y5ZPqK8Q1srQccbBcjIb0KEpe4=;
+        b=A08P56nzTPSXOu3ZG45hbVGPPbAa4/QlyHI+UBKlynWXKxDXGBt5wHa/GHza/uh+8A
+         vg1fThWQ4QzDzAiufHoQGgJStBfQmG7buyY2hGtesbFeE7IKdoP9tgUEpdqv0YsV0Crg
+         ddrBjEc6j5rOK6UUsHcSM3RulYWPGUknX56QzFzTXH3FvR6teEbshO0sZ5zwFw+6UDyG
+         Vi5v6jrACq0Tqzu+/EFBzhQKY6Jgc9aoHn/vQP3fWPDBVrYXvQya9xxprS2sJlHTxebG
+         DkvyzdZ++fH1So+FTWmSCG9i2EtJPGRJVSeiFCr3F4KmwoKUvPvA0pLlq81s2QuM6c7O
+         Y4CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747982668; x=1748587468;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K4j4cbDgO+PUpzCvr0aZe7Jcbdoqz1szMaQged0/RO8=;
-        b=XSirYkLwRWbP/UxtrH8/O2iQk/N/wYJqeC9eX1MisiPsnOGMZkGAmrzBPZxu+3isSj
-         V5zPw/ZFaKq3gws5jNfcMulX4FGpcZoLZ9+mYGa4mTCl4FTJpMsntjmzKKJb/SDzU4rh
-         FlJ4aI+I2G3epwF/9cR/ZWya4J8auqfe1D+iGrZ+McRxMfp7FNuvCKcsW1HpE/Y//UFC
-         55OpeT7UdpA015keCo+uwnQ4YKwyBlQBCli9hkkSXK5gf3PCMEn/R+DRZnks1s0FN9As
-         wvZhJ+wmlIG/sQ+SjLPUrBq86hkel4+axK5pQIMm+o3VVpHE4friUAxdvFU2iZYxMgHs
-         FofA==
-X-Forwarded-Encrypted: i=1; AJvYcCWHeIjpnff8G6qrNKp1Pfw5D0fA408aPnNDKh9gilsmimapW0EBnha6UmARjJPPwO1W9hEH2jw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+EkKkNSmFGu5jqnOemsBoVnjabhhzhebyiU1HV5cJCCkteL8A
-	TGn9CAbCMIH/u/OWeIgtTVbGp5US5VQCHlZnOhUYr0C5KNUtnexju1paBJN1WbxmBOQgmTVIkID
-	yh73s/n7F6CPjB7S/yIjhyh3qWt0kEl+6X1sZG5aB9+OiW1i0EtS7m+8ZpQ==
-X-Gm-Gg: ASbGncuJ1QwO3spbUWx8Azz8ffPUCEIVtR/hdXJcoG/uOX4TfdC3uTlkyd+xKdZebNj
-	0ddjPzqtCbFy+msKVZkC6L1teVDSBzKCj5sIBtKxSJZGZERomx9JLYydXN4hkon+69nNBNVZeUx
-	i92CW55zh3XUKspvPS927gh2l+1IeG8IPGZn2QSCuqXwD7S0nbkyV0Hx2YeioxGjLnxXt+F2zt8
-	vd5b00Z7Gzph1Shz9zqkB7HJlLnz74cah2bJH2uLOZOMbDLtgWGro3SK5N3/udUMeqfKRN9Twsy
-	RxHi7+H3smmy+lm+mXM=
-X-Received: by 2002:a05:6000:1acb:b0:3a1:fd29:b892 with SMTP id ffacd0b85a97d-3a3600dba35mr27008407f8f.49.1747982668359;
-        Thu, 22 May 2025 23:44:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHB2XMFQSaUesRZe18t4Y5EzTIFh9CEYuHjktDXqAqDomhpe6JxIJSWPTeVZQk7cFeTPuv7sQ==
-X-Received: by 2002:a05:6000:1acb:b0:3a1:fd29:b892 with SMTP id ffacd0b85a97d-3a3600dba35mr27008370f8f.49.1747982667978;
-        Thu, 22 May 2025 23:44:27 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:247a:1010::f39? ([2a0d:3344:247a:1010::f39])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f78aeb7fsm126057795e9.26.2025.05.22.23.44.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 May 2025 23:44:27 -0700 (PDT)
-Message-ID: <0824bc9f-ac6d-4fe9-9c1b-b0523959741e@redhat.com>
-Date: Fri, 23 May 2025 08:44:26 +0200
+        d=1e100.net; s=20230601; t=1747983118; x=1748587918;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dLXPa6TM1M6GFMGV9Y5ZPqK8Q1srQccbBcjIb0KEpe4=;
+        b=Cn5ATrQOFiLfWHMJHdu7K8a4xur0489CI8zX+U9r6kNR2PNZd3GrFnYSWwlpwAcQkI
+         Qzs8Erao3YAAyAP4b1RFylca+ea6gIxeCYppxLY+25NDDLwUr6GYjsm+LwHoj0u9vp2b
+         Tbp9Vi37iHDVyS7265iv2nb5zr5eGiTDwCCa/WVReHtExeShVM20vi4oV+wAVtURHcxQ
+         C+aJSrvHFZ0dkxlaC0pllwz7tLda/qZBaL0atrUCr7Sy50QrmnCH/rHQ1TUU+MP5TrkE
+         8I+ZaqcP6R2WANrRd0jrnwuhqFm+MYskOeUbUrU852DAWrCoGhAYufMXD7TUPnaSlaZX
+         NJPw==
+X-Forwarded-Encrypted: i=1; AJvYcCUcL1NnlE5Nst0nxKeUy66U7rYl5GZaM//Ob7C2T/5JPK3Pq2NI3X/ZAMrAuuW8GF25OKni901l@vger.kernel.org, AJvYcCUo2ho7arFmcZBCfKc3Db7pUAxM9SCG9enrBzViI9acrETnjzXbrH8Zmc9x/lXZypYujwMD/nDosUJL@vger.kernel.org, AJvYcCVJ9wZNJPBbw40nr7vFWzTBdI9G/SILh0/MFzQrTL9qZeOwMgVcT+h6Czep8EEpxlAePK8qsfJyL3o7OyWM/g==@vger.kernel.org, AJvYcCVW27pA21qAbC9c0FZM6QGmTdX4gRL5NCMstsR5dc6iduy5uzDeGN2nyJ1ocsYoiiZs4qEgiPgTxIUd9ocX@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8CNso2c5r6QBu+DOYeqlfesxhQiiu6j0hdXK6jTeA3LNqPI6w
+	efnG8v2WIodgnQFSW9+DpWUG1pDYcn0ZlPCDABblwwtcReekojoqLGPrTlJigex6BPQCMcbsM5G
+	h66uTKQvEqQ3M9GaTVQCXCF+GIq1v+A0=
+X-Gm-Gg: ASbGncsgB0B4QkSBIUQfFPKvD7hDvPm1MX+PMmMd391Fq5EsgffI9UNq1Ru1WfMr5tY
+	8FvOVR8Du96Vy4YWz8Vn+viBAXVPMBJ6JVW56PJATL1Cxn0AZIkuINwyBqnkWuIq2D2cHG1ZcTv
+	wIlC7AUnloyx93dzIKlikKH7cECdbRgUXc
+X-Google-Smtp-Source: AGHT+IGurWO6lIO5fCT+RFXfgRL65YMisDHUzcpcQdJuwg41iDpktRGcT1kWcsbvsUa7IC0+Q0mAtJZJIkxHrI0h0rs=
+X-Received: by 2002:a17:907:6eaa:b0:ace:6f8e:e857 with SMTP id
+ a640c23a62f3a-ad53699d0ccmr2303364366b.0.1747983118266; Thu, 22 May 2025
+ 23:51:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 5/8] net: implement virtio helpers to handle UDP
- GSO tunneling.
-From: Paolo Abeni <pabeni@redhat.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, netdev@vger.kernel.org
-Cc: Jason Wang <jasowang@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>
-References: <cover.1747822866.git.pabeni@redhat.com>
- <6e001d160707e1cf87870acee5adc302f8cb39b6.1747822866.git.pabeni@redhat.com>
- <682fa555b2bcc_13d837294a8@willemb.c.googlers.com.notmuch>
- <2ccf883f-17f0-4eda-a851-f640fd2b6e14@redhat.com>
-Content-Language: en-US
-In-Reply-To: <2ccf883f-17f0-4eda-a851-f640fd2b6e14@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20241220073540.37631-1-wojciech.slenska@gmail.com>
+ <20241220073540.37631-2-wojciech.slenska@gmail.com> <5bba973b-73fd-4e54-a7c9-6166ab7ed1f0@kernel.org>
+ <939f55e9-3626-4643-ab3b-53557d1dc5a9@oss.qualcomm.com>
+In-Reply-To: <939f55e9-3626-4643-ab3b-53557d1dc5a9@oss.qualcomm.com>
+From: =?UTF-8?Q?Wojciech_Sle=C5=84ska?= <wojciech.slenska@gmail.com>
+Date: Fri, 23 May 2025 08:51:46 +0200
+X-Gm-Features: AX0GCFtrZqR51HKL4omMdtHzAAg1yItMubhm4Ie2PJjFgKtjFahdvQOKTwLnYMs
+Message-ID: <CAMYPSMoMBYUPVRLcUZzRr99cehAibgAoNN6Qa3P5Q=0Bt3x1cg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: net: qcom,ipa: document qcm2290 compatible
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Alex Elder <elder@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/23/25 8:09 AM, Paolo Abeni wrote:
-> On 5/23/25 12:29 AM, Willem de Bruijn wrote:
->> Paolo Abeni wrote:
->>> +	/* No UDP fragments over UDP tunnel. */
->>
->> What are udp fragments and why is TCP with ECN not supported?
-> 
-> "udp fragments" is the syncopated form of "UDP datagrams carryed by IP
-> fragments". I'll use UFO to be clearer ;)
-> 
-> The ECN part is cargo cult on my side from my original implementation
-> which dates back to ... a lot of time ago. A quick recheck makes me
-> think I could drop it. I'll have a better look and either document the
-> choice or drop the check in the next revision.
+pt., 23 maj 2025 o 01:30 Konrad Dybcio
+<konrad.dybcio@oss.qualcomm.com> napisa=C5=82(a):
+>
+> On 12/21/24 9:44 PM, Krzysztof Kozlowski wrote:
+> > On 20/12/2024 08:35, Wojciech Slenska wrote:
+> >> Document that ipa on qcm2290 uses version 4.2, the same
+> >> as sc7180.
+> >>
+> >> Signed-off-by: Wojciech Slenska <wojciech.slenska@gmail.com>
+> >> ---
+> >>  Documentation/devicetree/bindings/net/qcom,ipa.yaml | 4 ++++
+> >>  1 file changed, 4 insertions(+)
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/net/qcom,ipa.yaml b/Doc=
+umentation/devicetree/bindings/net/qcom,ipa.yaml
+> >> index 53cae71d9957..ea44d02d1e5c 100644
+> >> --- a/Documentation/devicetree/bindings/net/qcom,ipa.yaml
+> >> +++ b/Documentation/devicetree/bindings/net/qcom,ipa.yaml
+> >> @@ -58,6 +58,10 @@ properties:
+> >>            - enum:
+> >>                - qcom,sm8650-ipa
+> >>            - const: qcom,sm8550-ipa
+> >> +      - items:
+> >> +          - enum:
+> >> +              - qcom,qcm2290-ipa
+> >> +          - const: qcom,sc7180-ipa
+> >>
+> > We usually keep such lists between each other ordered by fallback, so
+> > this should go before sm8550-fallback-list.
+> >
+> > With that change:
+> >
+> > Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+>
+> (half a year later)
+>
+> I've now sent a series that resolves the issue described in the
+> other branch of this thread. Feel free to pick up this binding
+> Krzysztof/Rob/Kuba.
+>
+>
+>
+> Patch 2 will need an update and some prerequisite changes.
+> Wojciech, you'll need:
+>
+> https://lore.kernel.org/linux-arm-msm/20250523-topic-ipa_imem-v1-0-b5d536=
+291c7f@oss.qualcomm.com
+> https://lore.kernel.org/linux-arm-msm/20250523-topic-ipa_mem_dts-v1-0-f7a=
+a94fac1ab@oss.qualcomm.com
+> https://github.com/quic-kdybcio/linux/commits/topic/ipa_qcm2290
+>
+> and a snippet like
+>
+> -----------o<-----------------------------------
+>                         qcom,smem-state-names =3D "ipa-clock-enabled-vali=
+d",
+>                                                 "ipa-clock-enabled";
+>
+> +                       sram =3D <&ipa_modem_tables>;
+> +
+>                         status =3D "disabled";
+> -----------o<-----------------------------------
+>
+> added to your DT change
+>
+> please let me know if it works with the above
+>
+> if you're not interested anymore or don't have the board on hand,
+> I can take up your patch, preserving your authorship ofc
+>
+> Konrad
 
-Let me quote the relevant code:
+Hello Konrad,
 
->>> +	gso_inner_type = hdr->gso_type & ~(VIRTIO_NET_HDR_GSO_ECN |
->>> +					   gso_tunnel_type);
->>> +	if (!gso_inner_type || gso_inner_type == VIRTIO_NET_HDR_GSO_UDP)
->>> +		return -EINVAL;
+Thank you very much for your input.
 
-Actually GSO_ECN is allowed. What is _not_ allowed is the GSO_ECN
-offload without a paired plain GSO. The intention here is to ensure that
-the GSO over UDP tunnel packets actually includes/requires an inner GSO
-offload. I'll update the comment accordingly.
+IPA is working stable and without any issues in my project, which is
+using the QCM2290.
 
-Thanks,
+I will integrate and test your changes, and once they are submitted, I
+will resend my patch.
 
-Paolo
-
+Wojtek
