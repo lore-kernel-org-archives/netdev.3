@@ -1,246 +1,165 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA5F10A3E;
-	Fri, 23 May 2025 06:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB022DCBE6;
+	Fri, 23 May 2025 06:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747981243; cv=none; b=pRiACJsKl7hE7ji+sfPjvwQ+2oe1aHpbJYL6aCqxWhGHIUpDxI7K5kmtRLRgKXOFgVM85Kkjv/OLaa+DJrPUBb9irm3jQOShnwMis/zLQCv+PAbtRuWToqHYMjeukU6ARCNMyPlHCo55cBIXIwq6LCW7EMk2T+xnEma4yrJ7U+Q=
+	t=1747982545; cv=none; b=LY8QghsO1ZqfhhkI7t+SAI2S4ADTiVutfLIV+uBpx/g3MmjsLrP2vLXfeK/YEMIpVCq7XVOFblSx0wHqWwvWJ9C8hEAqA61VEdEeNo64dVeBSew2M1YF7vK+6QcNrMKH2b/83igq4hpniRO9VuSsAsgRBTRpYSRqul3hxq160Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747981243; c=relaxed/simple;
-	bh=mJlXIqaDSLJv2xahICj+/scxRlbgF0AGsJSa8Df/Onc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Qz/PExDpk9Rtd/qd1eIhkqPsTyR88bw3RqGeaDWoBGtQXWkbopLhp7S34FUmoft5f0Zel3xFBvsihSP5KyykyOXK+5qjJO5gBng96WZA7/yTY2A5A9DE8AwSqk7palQb4pxjK2pS492IF5k8l6zBZXNjSjItCwN6ktye/GJ7/ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JWJDTqQ6; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JWJDTqQ6"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6020ff8d54bso6482978a12.2;
-        Thu, 22 May 2025 23:20:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747981239; x=1748586039; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SJKle3xhIDDR9OqTTDo3kadxyXGdGsylyJI+gVZs2nc=;
-        b=JWJDTqQ6CJqDkBb1YM6VTrjTdFGWGFaJxIcbPTlk1E9xtpqDhdeDypy4sfp9hk4K8f
-         0p2mm0F17vLEWiHHuQs0/i48JZvorzAeaPFbo3EkepazNc1123ptNgx7/qYVJeipSzQC
-         yWmdnPU5+0PbpBy062Cs8o2mpwfMP7mj2w8Gi0kbSLjtBNULoT20xdd7/q9+eptC6qho
-         7txwmJA2XxF5jVKyAUzPgtqbf7xD7doRM6b8fYPO+MB8X6QGaQ62uwfmO7xSPAOry1Y9
-         bVlfCQQ5GuA04AF0fA+sLEB7N53mFcqzlZcUd1VP04rF5QwWUC5L2H1KT5spc6Zj4ela
-         eEBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747981239; x=1748586039;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SJKle3xhIDDR9OqTTDo3kadxyXGdGsylyJI+gVZs2nc=;
-        b=JyDYkxRs3iIHYD9l2Lipi4PbbBRlEuLiWquXmEHJ5JuhEWDHIzVPiSY92ZfxpJ/PVh
-         PlHdkMzRHvDxp7TSa6SpkcP1U3DoxickZFwOvCDgsFKTiuuptNlT8IUJFxvvBCQEXXXP
-         E+f5/SgMpq3UdAJHOBXs0NG2BDbA6D8HPN2s0v4iEv2O8wI1OojZhR5gwWGrR9zuHuHt
-         SHYa95xlfBJI9ztH8EijXOt+FxAymm1YBVJRk2u+I3Ly5QYnD3T7KyZ+gRouQNmg1OUp
-         uJNuWbahK2N2TrDFW6V5t1bO7jtgCVWqsVz4FIGdk2k6ul664j7+ylSRpBWj/acTxjW8
-         YfXw==
-X-Forwarded-Encrypted: i=1; AJvYcCUCA6dTQ1bs3wPKKhqnzPBYZ+ypC/I0QN6mkWf5E1FxlC/8AgGyARBoaOCYHdkixDsJo4rvn6GpZ4lo2g==@vger.kernel.org, AJvYcCVOicHkFjD82nyEjz4lvwxYkMoHIqc/7wlkfaZvzNd6MIO+zSGmNCToE8raRdtutWXqlos6QMw88B58Sn7q@vger.kernel.org, AJvYcCVQ+Y0VZ6tEpeQH4kHy9FegZAgMI1lxHKJBmPMRjnZ5uh3s9XTPlNg7B3BFVftkD4AIEX1w/Web@vger.kernel.org, AJvYcCWXw/5u+nFbsSlc3TDbVnumSDzZJ9a2Cj+KZj5f/hKzKVQv+Td64toOdLxmr8AbdMLzVws=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yze22y6DsfATB8JTX72hKAV2crjRegMJgIb8nZEC+/zHkI6zoP9
-	4GTh/sMO5esH0OsroDu6Dbujwb4ia+1zYfh1r50NORGBQEz4lsF7BzkAB+EvlSsfCR4IIU9PY1+
-	xABz+QIVzFOnrROG8RNx5CTkJ+dcJ8O0=
-X-Gm-Gg: ASbGncvzD97iY1iMVKdbGd+EuWS4wO/4lUg+Wr/sYqIqYM6mYvropIBIKgL10AY560W
-	R6VMp1jz5Xz5vAI32hLzhs8O0XTM24zepKFnZLx4qMQs2j5IEqzFK6N4WwgKCkzJT7UlyfUIEHT
-	eMFGWkH8DQ6gF+kBg6a4LLjD4IyCwbNGeOhgpqw6hoXRdj2Q==
-X-Google-Smtp-Source: AGHT+IGbTR82/LzienQDKEDXoJF5IcGdBgl4Man5RPmJSQnxzH+IiU2ooaMYWOxIUaA7swrBIT0sR6ZoDWL2aYGtGtI=
-X-Received: by 2002:a05:6402:3494:b0:602:225e:1d46 with SMTP id
- 4fb4d7f45d1cf-6029163eb6fmr1466817a12.3.1747981239301; Thu, 22 May 2025
- 23:20:39 -0700 (PDT)
+	s=arc-20240116; t=1747982545; c=relaxed/simple;
+	bh=66QFhD7kmJl7WAmCsI/KS1mdTvy7vY+BmbpPLpgTLLk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AYPt3LOu/P21dPW/D/K35W70no/2ApLLykbvdwNwr/S/tJdca54dao4ZlZk6PfHhgk8DDVcSzOGn130XEguyoYH+3bgAcXVVuA6LxoTeklrAEj9v5UaHyXtJv15N6RBMz4+eVFhmFlIjMiiCu+9ACBr9Kg0MELwBlUMY8Ey2AGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4b3bCf2Ps1z2RVqV;
+	Fri, 23 May 2025 14:41:18 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 24C7C140279;
+	Fri, 23 May 2025 14:42:13 +0800 (CST)
+Received: from kwepemq200002.china.huawei.com (7.202.195.90) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 23 May 2025 14:42:12 +0800
+Received: from localhost.localdomain (10.175.104.82) by
+ kwepemq200002.china.huawei.com (7.202.195.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 23 May 2025 14:42:11 +0800
+From: Dong Chenchen <dongchenchen2@huawei.com>
+To: <hawk@kernel.org>, <ilias.apalodimas@linaro.org>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <almasrymina@google.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<zhangchangzhong@huawei.com>, Dong Chenchen <dongchenchen2@huawei.com>,
+	<syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com>
+Subject: [PATCH net] page_pool: Fix use-after-free in page_pool_recycle_in_ring
+Date: Fri, 23 May 2025 14:45:24 +0800
+Message-ID: <20250523064524.3035067-1-dongchenchen2@huawei.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250523032609.16334-1-byungchul@sk.com>
-In-Reply-To: <20250523032609.16334-1-byungchul@sk.com>
-From: Taehee Yoo <ap420073@gmail.com>
-Date: Fri, 23 May 2025 15:20:27 +0900
-X-Gm-Features: AX0GCFubwjG0J56ovWaE10v3Q9RxO1SAGGmwA1wkCCPwSFKvPmaSkQrB3cPFVV4
-Message-ID: <CAMArcTWx+8GFzk4=A2-DCUZkMtyYRaDZSqf+HvOf2KyC80BqsA@mail.gmail.com>
-Subject: Re: [PATCH 00/18] Split netmem from struct page
-To: Byungchul Park <byungchul@sk.com>
-Cc: willy@infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, kernel_team@skhynix.com, kuba@kernel.org, 
-	almasrymina@google.com, ilias.apalodimas@linaro.org, harry.yoo@oracle.com, 
-	hawk@kernel.org, akpm@linux-foundation.org, davem@davemloft.net, 
-	john.fastabend@gmail.com, andrew+netdev@lunn.ch, asml.silence@gmail.com, 
-	toke@redhat.com, tariqt@nvidia.com, edumazet@google.com, pabeni@redhat.com, 
-	saeedm@nvidia.com, leon@kernel.org, ast@kernel.org, daniel@iogearbox.net, 
-	david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
-	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	horms@kernel.org, linux-rdma@vger.kernel.org, bpf@vger.kernel.org, 
-	vishal.moola@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemq200002.china.huawei.com (7.202.195.90)
 
-On Fri, May 23, 2025 at 12:36=E2=80=AFPM Byungchul Park <byungchul@sk.com> =
-wrote:
->
+syzbot reported a uaf in page_pool_recycle_in_ring:
 
-Hi Byungchul,
-Thanks a lot for this work!
+BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30 kernel/locking/lockdep.c:5862
+Read of size 8 at addr ffff8880286045a0 by task syz.0.284/6943
 
-> The MM subsystem is trying to reduce struct page to a single pointer.
-> The first step towards that is splitting struct page by its individual
-> users, as has already been done with folio and slab.  This patchset does
-> that for netmem which is used for page pools.
->
-> Matthew Wilcox tried and stopped the same work, you can see in:
->
->    https://lore.kernel.org/linux-mm/20230111042214.907030-1-willy@infrade=
-ad.org/
->
-> Mina Almasry already has done a lot fo prerequisite works by luck, he
-> said :).  I stacked my patches on the top of his work e.i. netmem.
->
-> I focused on removing the page pool members in struct page this time,
-> not moving the allocation code of page pool from net to mm.  It can be
-> done later if needed.
->
-> My rfc version of this work is:
->
->    https://lore.kernel.org/all/20250509115126.63190-1-byungchul@sk.com/
->
-> There are still a lot of works to do, to remove the dependency on struct
-> page in the network subsystem.  I will continue to work on this after
-> this base patchset is merged.
+CPU: 0 UID: 0 PID: 6943 Comm: syz.0.284 Not tainted 6.13.0-rc3-syzkaller-gdfa94ce54f41 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:489
+ kasan_report+0x143/0x180 mm/kasan/report.c:602
+ lock_release+0x151/0xa30 kernel/locking/lockdep.c:5862
+ __raw_spin_unlock_bh include/linux/spinlock_api_smp.h:165 [inline]
+ _raw_spin_unlock_bh+0x1b/0x40 kernel/locking/spinlock.c:210
+ spin_unlock_bh include/linux/spinlock.h:396 [inline]
+ ptr_ring_produce_bh include/linux/ptr_ring.h:164 [inline]
+ page_pool_recycle_in_ring net/core/page_pool.c:707 [inline]
+ page_pool_put_unrefed_netmem+0x748/0xb00 net/core/page_pool.c:826
+ page_pool_put_netmem include/net/page_pool/helpers.h:323 [inline]
+ page_pool_put_full_netmem include/net/page_pool/helpers.h:353 [inline]
+ napi_pp_put_page+0x149/0x2b0 net/core/skbuff.c:1036
+ skb_pp_recycle net/core/skbuff.c:1047 [inline]
+ skb_free_head net/core/skbuff.c:1094 [inline]
+ skb_release_data+0x6c4/0x8a0 net/core/skbuff.c:1125
+ skb_release_all net/core/skbuff.c:1190 [inline]
+ __kfree_skb net/core/skbuff.c:1204 [inline]
+ sk_skb_reason_drop+0x1c9/0x380 net/core/skbuff.c:1242
+ kfree_skb_reason include/linux/skbuff.h:1263 [inline]
+ __skb_queue_purge_reason include/linux/skbuff.h:3343 [inline]
 
-There is a compile failure.
+root cause is:
 
-In file included from drivers/net/ethernet/intel/libeth/rx.c:4:
-./include/net/libeth/rx.h: In function =E2=80=98libeth_rx_sync_for_cpu=E2=
-=80=99:
-./include/net/libeth/rx.h:140:40: error: =E2=80=98struct page=E2=80=99 has =
-no member named =E2=80=98pp=E2=80=99
-  140 |         page_pool_dma_sync_for_cpu(page->pp, page, fqe->offset, len=
-);
-      |                                        ^~
-drivers/net/ethernet/intel/libeth/rx.c: In function =E2=80=98libeth_rx_recy=
-cle_slow=E2=80=99:
-drivers/net/ethernet/intel/libeth/rx.c:210:38: error: =E2=80=98struct page=
-=E2=80=99
-has no member named =E2=80=98pp=E2=80=99
-  210 |         page_pool_recycle_direct(page->pp, page);
-      |                                      ^~
-make[7]: *** [scripts/Makefile.build:203:
-drivers/net/ethernet/intel/libeth/rx.o] Error 1
-make[6]: *** [scripts/Makefile.build:461:
-drivers/net/ethernet/intel/libeth] Error 2
-make[5]: *** [scripts/Makefile.build:461: drivers/net/ethernet/intel] Error=
- 2
-make[5]: *** Waiting for unfinished jobs....
+page_pool_recycle_in_ring
+  ptr_ring_produce
+    spin_lock(&r->producer_lock);
+    WRITE_ONCE(r->queue[r->producer++], ptr)
+      //recycle last page to pool
+				page_pool_release
+				  page_pool_scrub
+				    page_pool_empty_ring
+				      ptr_ring_consume
+				      page_pool_return_page  //release all page
+				  __page_pool_destroy
+				     free_percpu(pool->recycle_stats);
+				     free(pool) //free
 
-There are page->pp usecases in drivers/net
-./drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c:1574:
- } else if (page->pp) {
-./drivers/net/ethernet/freescale/fec_main.c:1046:
-                 page_pool_put_page(page->pp, page, 0, false);
-./drivers/net/ethernet/freescale/fec_main.c:1584:
- page_pool_put_page(page->pp, page, 0, true);
-./drivers/net/ethernet/freescale/fec_main.c:3351:
-         page_pool_put_page(page->pp, page, 0, false);
-./drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c:370:
-page_pool_recycle_direct(page->pp, page);
-./drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c:395:
-page_pool_recycle_direct(page->pp, page);
-./drivers/net/ethernet/ti/icssg/icssg_common.c:111:
-page_pool_recycle_direct(page->pp, swdata->data.page);
-./drivers/net/ethernet/intel/idpf/idpf_txrx.c:389:
-page_pool_put_full_page(rx_buf->page->pp, rx_buf->page, false);
-./drivers/net/ethernet/intel/idpf/idpf_txrx.c:3254:     u32 hr =3D
-rx_buf->page->pp->p.offset;
-./drivers/net/ethernet/intel/idpf/idpf_txrx.c:3286:     dst =3D
-page_address(hdr->page) + hdr->offset + hdr->page->pp->p.offset;
-./drivers/net/ethernet/intel/idpf/idpf_txrx.c:3287:     src =3D
-page_address(buf->page) + buf->offset + buf->page->pp->p.offset;
-./drivers/net/ethernet/intel/idpf/idpf_txrx.c:3305:     u32 hr =3D
-buf->page->pp->p.offset;
-./drivers/net/ethernet/intel/libeth/rx.c:210:
-page_pool_recycle_direct(page->pp, page);
-./drivers/net/ethernet/intel/iavf/iavf_txrx.c:1200:     u32 hr =3D
-rx_buffer->page->pp->p.offset;
-./drivers/net/ethernet/intel/iavf/iavf_txrx.c:1217:     u32 hr =3D
-rx_buffer->page->pp->p.offset;
-./drivers/net/wireless/mediatek/mt76/mt76.h:1800:
-page_pool_put_full_page(page->pp, page, allow_direct);
-./include/net/libeth/rx.h:140:  page_pool_dma_sync_for_cpu(page->pp,
-page, fqe->offset, len);
+     spin_unlock(&r->producer_lock); //pool->ring uaf read
+  recycle_stat_inc(pool, ring);
 
-Thanks a lot!
-Taehee Yoo
+page_pool can be free while page pool recycle the last page in ring.
+Add producer-lock barrier to page_pool_release to prevent the page
+pool from being free before all pages have been recycled.
 
->
-> ---
->
-> Changes from rfc:
->         1. Rebase on net-next's main branch
->            https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-nex=
-t.git/
->         2. Fix a build error reported by kernel test robot
->            https://lore.kernel.org/all/202505100932.uzAMBW1y-lkp@intel.co=
-m/
->         3. Add given 'Reviewed-by's, thanks to Mina and Ilias
->         4. Do static_assert() on the size of struct netmem_desc instead
->            of placing place-holder in struct page, feedbacked by Matthew
->         5. Do struct_group_tagged(netmem_desc) on struct net_iov instead
->            of wholly renaming it to strcut netmem_desc, feedbacked by
->            Mina and Pavel
->
-> Byungchul Park (18):
->   netmem: introduce struct netmem_desc struct_group_tagged()'ed on
->     struct net_iov
->   netmem: introduce netmem alloc APIs to wrap page alloc APIs
->   page_pool: use netmem alloc/put APIs in __page_pool_alloc_page_order()
->   page_pool: rename __page_pool_alloc_page_order() to
->     __page_pool_alloc_large_netmem()
->   page_pool: use netmem alloc/put APIs in __page_pool_alloc_pages_slow()
->   page_pool: rename page_pool_return_page() to page_pool_return_netmem()
->   page_pool: use netmem put API in page_pool_return_netmem()
->   page_pool: rename __page_pool_release_page_dma() to
->     __page_pool_release_netmem_dma()
->   page_pool: rename __page_pool_put_page() to __page_pool_put_netmem()
->   page_pool: rename __page_pool_alloc_pages_slow() to
->     __page_pool_alloc_netmems_slow()
->   mlx4: use netmem descriptor and APIs for page pool
->   page_pool: use netmem APIs to access page->pp_magic in
->     page_pool_page_is_pp()
->   mlx5: use netmem descriptor and APIs for page pool
->   netmem: use _Generic to cover const casting for page_to_netmem()
->   netmem: remove __netmem_get_pp()
->   page_pool: make page_pool_get_dma_addr() just wrap
->     page_pool_get_dma_addr_netmem()
->   netdevsim: use netmem descriptor and APIs for page pool
->   mm, netmem: remove the page pool members in struct page
->
->  drivers/net/ethernet/mellanox/mlx4/en_rx.c    |  46 ++++----
->  drivers/net/ethernet/mellanox/mlx4/en_tx.c    |   8 +-
->  drivers/net/ethernet/mellanox/mlx4/mlx4_en.h  |   4 +-
->  drivers/net/ethernet/mellanox/mlx5/core/en.h  |   4 +-
->  .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  18 ++--
->  .../net/ethernet/mellanox/mlx5/core/en/xdp.h  |   2 +-
->  .../net/ethernet/mellanox/mlx5/core/en_main.c |  15 ++-
->  .../net/ethernet/mellanox/mlx5/core/en_rx.c   |  66 ++++++------
->  drivers/net/netdevsim/netdev.c                |  18 ++--
->  drivers/net/netdevsim/netdevsim.h             |   2 +-
->  include/linux/mm.h                            |   5 +-
->  include/linux/mm_types.h                      |  11 --
->  include/linux/skbuff.h                        |  14 +++
->  include/net/netmem.h                          | 101 ++++++++++--------
->  include/net/page_pool/helpers.h               |  11 +-
->  net/core/page_pool.c                          |  97 +++++++++--------
->  16 files changed, 221 insertions(+), 201 deletions(-)
->
->
-> base-commit: f44092606a3f153bb7e6b277006b1f4a5b914cfc
-> --
-> 2.17.1
->
->
+Suggested-by: Jakub Kacinski <kuba@kernel.org>
+Link: https://lore.kernel.org/netdev/20250513083123.3514193-1-dongchenchen2@huawei.com
+Fixes: ff7d6b27f894 ("page_pool: refurbish version of page_pool code")
+Reported-by: syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=204a4382fcb3311f3858
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+---
+ net/core/page_pool.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 7745ad924ae2..08f1b000ebc1 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -707,19 +707,16 @@ void page_pool_return_page(struct page_pool *pool, netmem_ref netmem)
+ 
+ static bool page_pool_recycle_in_ring(struct page_pool *pool, netmem_ref netmem)
+ {
++	bool in_softirq;
+ 	int ret;
+ 	/* BH protection not needed if current is softirq */
+-	if (in_softirq())
+-		ret = ptr_ring_produce(&pool->ring, (__force void *)netmem);
+-	else
+-		ret = ptr_ring_produce_bh(&pool->ring, (__force void *)netmem);
+-
+-	if (!ret) {
++	in_softirq = page_pool_producer_lock(pool);
++	ret = !__ptr_ring_produce(&pool->ring, (__force void *)netmem);
++	if (ret)
+ 		recycle_stat_inc(pool, ring);
+-		return true;
+-	}
++	page_pool_producer_unlock(pool, in_softirq);
+ 
+-	return false;
++	return ret;
+ }
+ 
+ /* Only allow direct recycling in special circumstances, into the
+@@ -1091,10 +1088,14 @@ static void page_pool_scrub(struct page_pool *pool)
+ 
+ static int page_pool_release(struct page_pool *pool)
+ {
++	bool in_softirq;
+ 	int inflight;
+ 
+ 	page_pool_scrub(pool);
+ 	inflight = page_pool_inflight(pool, true);
++	/* Acquire producer lock to make sure producers have exited. */
++	in_softirq = page_pool_producer_lock(pool);
++	page_pool_producer_unlock(pool, in_softirq);
+ 	if (!inflight)
+ 		__page_pool_destroy(pool);
+ 
+-- 
+2.25.1
+
