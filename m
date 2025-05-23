@@ -1,116 +1,128 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E41297A45
-	for <netdev@vger.kernel.org>; Fri, 23 May 2025 17:58:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64F023956A
+	for <netdev@vger.kernel.org>; Fri, 23 May 2025 17:59:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748023121; cv=none; b=ottwcNmXCAfEgno1t5QCXRE6BMN1OQdEI7R/AXFKKXWijVR2PLDgZuz8Xz5YMjrhR72K1kHztzTqrVWTwt0jWnLhXFIY37Q6wQ7wrHA7kS6Qf5M4yZDtmEeGVPqmfXhO4fXq2DeN/cPZ63fdZHdr3stUwsndXc7f2IMAlPJTvqI=
+	t=1748023169; cv=none; b=EzvV3+/N+5kCNJxQJ1WrEzdMhGe1vbqt+ST3hWR3KyvyrdGCR5f7lywgrD5LeHZQSLLZ4doeySETn6FZlWJkpsz1NMo4n8xTidfcIs6UDgr2yCkglY5HteKkrxo5Xd/BbUZbIJTztE06oAPHL+PU8nxVNOHmV74OIb7sACxApwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748023121; c=relaxed/simple;
-	bh=yYUi1udmfUYcJ5YKVRKseXClYrhNKbYP3F+XpHNtIHo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=p6ouLzgMDjXIDrTiXdDcx2CpFw0ZICUFHEbFaZkof6/LB2Q5FhaVQm9djAwqRoQ1qZiv1QTfiF5TbuHogfDXoYtS0bShPdDYG72xYEEZ55mSkjccmxTZmE9ROwtt1uOb+gp+5cL8IyLbzvAdk2TyE3V6+Ed9TBjNIjMUojDJ4Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=roTzoKLv; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1748023169; c=relaxed/simple;
+	bh=xLtmQ0TWKB+NkLXhdkRYKl8da1Hyt1mfZQezqD35yEs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Cq7YLCmJoodg0dWtrqcuCHUv48OHcc1OfgYnKNCo6PjO+WISnlufglbOYbDQDbhzDpYJeJ0xaq3IrocEbFKWnL+Wl5HirYeZI2AZTJBQHZkaxojw4JCrZnCZ2jCo4yt39A5ZmJCg/y0cNvLd/eqPwfteyabsyinVs37TnXUWn/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ieee.org; spf=pass smtp.mailfrom=ieee.org; dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b=C8N9LT75; arc=none smtp.client-ip=209.85.166.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ieee.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="roTzoKLv"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-231ba6da557so18955ad.1
-        for <netdev@vger.kernel.org>; Fri, 23 May 2025 10:58:39 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b="C8N9LT75"
+Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-3dc978b0493so1446375ab.0
+        for <netdev@vger.kernel.org>; Fri, 23 May 2025 10:59:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748023119; x=1748627919; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2MyXWu6zLRMWPH6yHtJnpQrGvuPbRE3t03DXROyNghU=;
-        b=roTzoKLv/gm1v6/kWWqvdHmTclgVlQ8sdIfGcvud2iKzJisAuFpgYguGRNoW+Rt7HO
-         vGPxQudwoWpOlLxRCjqG3Xq/s7DzrMVTSkUq4LpGTxx6uRAKH6NTLzV/aK2R5NY9Lntm
-         xD97LMueOW+TauoAYhqm+y7AbqeOraExpmFRgl3J6fnxLruzxonfBmshbaszpMbeqcQH
-         Tv4y3Gq5/vqi6qwWTGfDiJqbmyVRy7oG5FqF+C4PyXedMZsUtBg9ghf0L/uwUl1P7RGF
-         c8AR+196rw9aYb9aM9T/Pk0O+KvHMLbH9S6HyHhWXGBXeretaxIDmUU11r0EEbGsLDw6
-         Pcxg==
+        d=ieee.org; s=google; t=1748023167; x=1748627967; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SGtEFmZ2rVp0Bhcu1O5oY42icjo5BCFEnZcJ+QVCi5k=;
+        b=C8N9LT75+cLuq9p0NKlfwoqcK2L0qV4LlVGpw4e+WxnSPyUezwE8GlWCZgm9bqcXTM
+         ckisH+OgjZMQcmh1GS3A3piIuoyHnt5QWCQNRQwnh/BPWTReT8wDzXK0rXaHqX5u8hhN
+         2N3x/NvQKLYWfQxd/km41ADGnFffl8teWi0l8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748023119; x=1748627919;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2MyXWu6zLRMWPH6yHtJnpQrGvuPbRE3t03DXROyNghU=;
-        b=ZnHRFbOwLJ1wJMF2i2jdAnyTgqNXBWuS150G05/MZQFZa878rN1I2lLL4xSrX+8MN8
-         vZviVZ6iUXzx6WZWzWlAgFDr7D6t3EjFggS4r2HMtpu5+4RioQXjjkuyvTUV8Z8uDqTe
-         JggApJN47kGRZIsPZME3Pf1pGJknV147UQ2fA2B3sBfVWCjGtIUS/9qPkQb5JC2GF2S3
-         8pJsg2zjrly8TjABgbQUVu7dsaIV6FP4HKKNasm3zm/pnmSCqw7j/M4USAbLxpKOKA8S
-         A1tg8qnLvm62on6s7IVJ+z18lL7xYki4peCrK6AuXgcg6Q7Yu/dCQa1dQjXgJxXyV5EU
-         MmFg==
-X-Forwarded-Encrypted: i=1; AJvYcCVeXBKQPJX2VzKyvsTPgHeDapnr8KQnxmDzraNwRwTMZIkbKw2nsYLlaasvz51ZqV8KKYznuK0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxXVQvdUee6d3IB94oPD8Se+kqUt6FRbKyD0QkP/RcxK3LyRnm
-	T452yInrXUUsjBujwxFGrhOSvIrreUD8k0Dakhw0iHnyn3AZU3RtSV2gGzzd9uKXLFlN/UWUITB
-	+pRghEfPVrMSZHkmcUKtTbpEtjs5R6+5m74H5TU8j
-X-Gm-Gg: ASbGnctmOj7juuX3LfymuNaj09oux3L0w41yV/rkrPgSii5s44yf+gOzX7v0/HRJaLd
-	VuMsGIVl0ve2WzK263yw9F6yoKP7V/CC26boh0UNzGglD8pbvTmKTWhgoIdkbxfK6JfC6tPC3Zu
-	bFfauTd5jmMVzLQd2OUTs5GX/s4i7wRiQZhxEFuLUM6zjLhRsYl0Q8YvVTAq8qKuk2MLBPUmRy8
-	Q==
-X-Google-Smtp-Source: AGHT+IEGY8dDXdk00hKfZkhUxriQXpiPPCR5IyFq/kqB79PhLQHBbOU2os91yMCjpc3IjFgm69TOwCQHLx4ADvLhU5w=
-X-Received: by 2002:a17:903:2f85:b0:215:7152:36e4 with SMTP id
- d9443c01a7336-233f345f871mr2976175ad.27.1748023118552; Fri, 23 May 2025
- 10:58:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1748023167; x=1748627967;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SGtEFmZ2rVp0Bhcu1O5oY42icjo5BCFEnZcJ+QVCi5k=;
+        b=kJOZzaR7HA8Y1ESLsPtOLcq3h+BYixvAsBz2ybpf7LBciixHIqU6RiZxfd4ZYxG7d2
+         GUEvlraSDKYRqfoBaZVjb1pWSGOshwz+NvxYDd/A14HbV3pSfUW9Yt30Svkuw7L3lfiv
+         TLobNJDQI0p5PhMyQAKTczoUKPFLnSf5Jog9nWXe4/JmPjgXMmlvP0nvfg98pCAo0p+H
+         AkrAsWXEpXy2AGK0nY8hvyz1pK9i6tFUpsAameqWqjmQHT/jQVYNN3HXpCFJHkG5yMzZ
+         UqnGXM85QtJXgvqnv6bSws4B7+OeF3SaV+RwpEmpwwGbk53RCJTmylupTGIlbJ9KaXrV
+         fh0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUhbyLSKQ33YdmNxa4hvLIAd8K7FZiIE/VSxLPojQcfbOfGepf64XjVTVeRs3jIoHsVwCQarxM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBQYz1XQI5EAkuoZeSqZd6ElwXkl7ljZKPCbscv1hVqPwduKYZ
+	A4wQVYyb948/EuBaGxHzI1rlhjECfPAG92lsMZ511ZeVKX5p/6sTxx6wWgNauVQ3cw==
+X-Gm-Gg: ASbGnctdlFxQPhTw06I+UALxuLOQHg4WfNxE0qbO6c5nKS3W+HbZOfZGvZ3tGY+l1Lk
+	/d66Amw3kmgx+fwSoHFfy0g5SPpysjswAtoQ9RLQFQvp+rGi81yesAkUV3bOfev4/JRv37YvXc8
+	R+1e0Pcs6tEbYXoVa5hl/0pz1H7A6w5pCAlgftLn1mlWCwaBEO445VUuLDMASbNaxieZDJXHVxd
+	vlD9HzL5gXPFy2D/BtbSLd2mhY6t4seK3dlrIVuWj/PxRw+bzEPI2h7I/86UMd2YFoh7M4rVKk7
+	UT3kwq8TI5H5gfQXEfmqQ38EF17aAGWfSSE2MAV0HmaOyTZnIQ0io76ZpHoyadolW5CrfYBV6N+
+	OY2mwMH2RljtKuiIM0z6q
+X-Google-Smtp-Source: AGHT+IEpb1IcvOHrK/fzMraPZSR5ZnUsdHuhgqtnR1Igx7QRkPEVOT3iAbQKQTTUDJaVKlOxTZqGag==
+X-Received: by 2002:a05:6e02:3308:b0:3d8:2023:d057 with SMTP id e9e14a558f8ab-3dc9b6cc069mr1052295ab.11.1748023166709;
+        Fri, 23 May 2025 10:59:26 -0700 (PDT)
+Received: from [172.22.22.28] (c-73-228-159-35.hsd1.mn.comcast.net. [73.228.159.35])
+        by smtp.googlemail.com with ESMTPSA id e9e14a558f8ab-3dc7f126188sm18218695ab.65.2025.05.23.10.59.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 May 2025 10:59:26 -0700 (PDT)
+Message-ID: <7707b574-6fcf-487d-909a-d24874f9d686@ieee.org>
+Date: Fri, 23 May 2025 12:59:24 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1747950086-1246773-1-git-send-email-tariqt@nvidia.com>
- <1747950086-1246773-9-git-send-email-tariqt@nvidia.com> <CAHS8izNeKdsys4VCEW5F1gDoK7dPJZ6fAew3700TwmH3=tT_ag@mail.gmail.com>
- <aC-5N9GuwbP73vV7@x130>
-In-Reply-To: <aC-5N9GuwbP73vV7@x130>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 23 May 2025 10:58:23 -0700
-X-Gm-Features: AX0GCFtIQeUuZYzja1a1q1Km_umu-mPBIVJSyoxOHOUHS4AXUOAmnwmC0suSjaI
-Message-ID: <CAHS8izNgY3APhLZWjYwEWyq3g=JiCBWFUcnY4nrXpntnp8zKhw@mail.gmail.com>
-Subject: Re: [PATCH net-next V2 08/11] net/mlx5e: Convert over to netmem
-To: Saeed Mahameed <saeed@kernel.org>
-Cc: Tariq Toukan <tariqt@nvidia.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Leon Romanovsky <leon@kernel.org>, Richard Cochran <richardcochran@gmail.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, netdev@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	Moshe Shemesh <moshe@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Gal Pressman <gal@nvidia.com>, 
-	Cosmin Ratiu <cratiu@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] dt-bindings: sram: qcom,imem: Allow modem-tables
+To: Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alex Elder <elder@kernel.org>
+Cc: Marijn Suijten <marijn.suijten@somainline.org>,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+References: <20250523-topic-ipa_imem-v1-0-b5d536291c7f@oss.qualcomm.com>
+ <20250523-topic-ipa_imem-v1-1-b5d536291c7f@oss.qualcomm.com>
+Content-Language: en-US
+From: Alex Elder <elder@ieee.org>
+In-Reply-To: <20250523-topic-ipa_imem-v1-1-b5d536291c7f@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, May 22, 2025 at 4:54=E2=80=AFPM Saeed Mahameed <saeed@kernel.org> w=
-rote:
-> >>  static inline void
-> >>  mlx5e_copy_skb_header(struct mlx5e_rq *rq, struct sk_buff *skb,
-> >> -                     struct page *page, dma_addr_t addr,
-> >> +                     netmem_ref netmem, dma_addr_t addr,
-> >>                       int offset_from, int dma_offset, u32 headlen)
-> >>  {
-> >> -       const void *from =3D page_address(page) + offset_from;
-> >> +       const void *from =3D netmem_address(netmem) + offset_from;
-> >
-> >I think this needs a check that netmem_address !=3D NULL and safe error
-> >handling in case it is? If the netmem is unreadable, netmem_address
-> >will return NULL, and because you add offset_from to it, you can't
-> >NULL check from as well.
-> >
->
-> Nope, this code path is not for GRO_HW, it is always safe to assume this =
-is
-> not iov_netmem.
->
+On 5/22/25 6:08 PM, Konrad Dybcio wrote:
+> From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> 
+> The IP Accelerator hardware/firmware owns a sizeable region within the
+> IMEM, ominously named 'modem-tables', presumably having to do with some
+> internal IPA-modem specifics.
+> 
+> It's not actually accessed by the OS, although we have to IOMMU-map it
+> with the IPA device, so that presumably the firmware can act upon it.
+> 
+> Allow it as a subnode of IMEM.
+> 
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-OK, thanks for checking. It may be worth it to add
-DEBUG_NET_WARN_ON_ONCE(netmem_address(netmem)); in these places where
-you're assuming the netmem is readable and has a valid address. It
-would be a very subtle bug later on if someone moves the code or
-something and suddenly you have unreadable netmem being funnelled
-through these code paths. But up to you.
+So this will just show up as a subnode of an sram@... node,
+the way "qcom,pil-reloc-info" does.  This is great.
 
---=20
-Thanks,
-Mina
+Is it called "modem-tables" in internal documentation?  Or
+did you choose this ominous name?
+
+Reviewed-by: Alex Elder <elder@riscstar.com>
+
+> ---
+>   Documentation/devicetree/bindings/sram/qcom,imem.yaml | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/sram/qcom,imem.yaml b/Documentation/devicetree/bindings/sram/qcom,imem.yaml
+> index 2711f90d9664b70fcd1e2f7e2dfd3386ed5c1952..7c882819222dc04190db357ac6f9a3a35137cc9e 100644
+> --- a/Documentation/devicetree/bindings/sram/qcom,imem.yaml
+> +++ b/Documentation/devicetree/bindings/sram/qcom,imem.yaml
+> @@ -51,6 +51,9 @@ properties:
+>       $ref: /schemas/power/reset/syscon-reboot-mode.yaml#
+>   
+>   patternProperties:
+> +  "^modem-tables@[0-9a-f]+$":
+> +    description: Region reserved for the IP Accelerator
+> +
+>     "^pil-reloc@[0-9a-f]+$":
+>       $ref: /schemas/remoteproc/qcom,pil-info.yaml#
+>       description: Peripheral image loader relocation region
+> 
+
