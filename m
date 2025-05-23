@@ -1,52 +1,49 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD820284B51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA242DCBE6
 	for <netdev@vger.kernel.org>; Fri, 23 May 2025 07:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747986990; cv=none; b=Sjg+eRi0v+i9ppFlBVTZr3f3pDUzkPZtUGDdz8/7o9+rZ092RilHuagmdpQt6q5mfyEg9SPK3Bg5TTMOzWVFNVMIcIZFe8+vCsfB8Q6/a8jQ0sDMq8cRB0MdduCIzHzMh/nbtc21pQ5hQzFAy6KXWvjNyRstHyT2UFv4oU69P1E=
+	t=1747986990; cv=none; b=iPuYUFsToynhsPn/1qMikvvvqwLjg+ENLz7Tzh+zrrHqDXByUus83SDs2DVvSusMKON+bPLXkEsJJB4IF5jpyQTNSYudgKLsYbBOjXNLXl2ZzlAgIdFoB6aImGiBrKGXeYSfsycsGrnz2XTxJhz/4kn63Dns+RrLiI4xivEml8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1747986990; c=relaxed/simple;
-	bh=AD7urNrhFZENzVgbcbQMZb+KpAWki6H6nE3RxG5E0aA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ipl8+xwSErbebLOqwWpL5g1oJlMvL5MeFCjtRX+NqZb9b7KQAFXGdthrMt7pfzUs0HIA/SJoTsSrjZG4/pKej0PCWNfvvPr4SXTiMrrGBSGMon7hIIxTCII2CqsD7s3+KuQapsfEccP1r6W4t4Zr+oJMcZsY/6lRWl3JfEbNGvA=
+	bh=P88TP+Pt68/Jq+a5Z/jcH7J63gD62owO6vEe9V2g2S0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=scwxMQTmFeQ4XdlToCTMHnlRZ2K/ZrSaBa6AZNmE6yYACgLcp9Eh9HjTeIFXWKdz3yNCAcTN7Av12G/EVCqJqA0kt03cGMmvViumFNdCu9+89h28yWQpFwZlwUJAQCf4HwMhHIL1tQEHMeeRW3i34/YWaPARFOON+mTibu4sYsY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 52ACB208A7;
-	Fri, 23 May 2025 09:56:19 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id EE334208A4;
+	Fri, 23 May 2025 09:56:18 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id gjFsO97H08Vp; Fri, 23 May 2025 09:56:18 +0200 (CEST)
+ with ESMTP id Z0K9U5JWLDOz; Fri, 23 May 2025 09:56:18 +0200 (CEST)
 Received: from EXCH-03.secunet.de (unknown [10.32.0.243])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id A8C732088E;
+	by mx1.secunet.com (Postfix) with ESMTPS id 4DCB620748;
 	Fri, 23 May 2025 09:56:18 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com A8C732088E
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 4DCB620748
 Received: from mbx-essen-02.secunet.de (10.53.40.198) by EXCH-03.secunet.de
  (10.32.0.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Fri, 23 May
- 2025 09:56:18 +0200
+ 2025 09:56:17 +0200
 Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
  (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 23 May
  2025 09:56:17 +0200
 Received: by gauss2.secunet.de (Postfix, from userid 1000)
-	id 1FCC13181B68; Fri, 23 May 2025 09:56:17 +0200 (CEST)
+	id 135683181527; Fri, 23 May 2025 09:56:17 +0200 (CEST)
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 03/12] xfrm: Use xdo.dev instead of xdo.real_dev
-Date: Fri, 23 May 2025 09:56:02 +0200
-Message-ID: <20250523075611.3723340-4-steffen.klassert@secunet.com>
+Subject: [PATCH 0/12] pull request (net-next): ipsec-next 2025-05-23
+Date: Fri, 23 May 2025 09:55:59 +0200
+Message-ID: <20250523075611.3723340-1-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250523075611.3723340-1-steffen.klassert@secunet.com>
-References: <20250523075611.3723340-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,75 +55,94 @@ Content-Type: text/plain
 X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
  mbx-essen-02.secunet.de (10.53.40.198)
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+1) Remove some unnecessary strscpy_pad() size arguments.
+   From Thorsten Blum.
 
-The policy offload struct was reused from the state offload and
-real_dev was copied from dev, but it was never set to anything else.
-Simplify the code by always using xdo.dev for policies.
+2) Correct use of xso.real_dev on bonding offloads.
+   Patchset from Cosmin Ratiu.
 
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c | 2 +-
- net/xfrm/xfrm_device.c                                   | 2 --
- net/xfrm/xfrm_state.c                                    | 2 --
- 3 files changed, 1 insertion(+), 5 deletions(-)
+3) Add hardware offload configuration to XFRM_MSG_MIGRATE.
+   From Chiachang Wang.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-index 626e525c0f0d..0dfbbe21936f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-@@ -1164,7 +1164,7 @@ mlx5e_ipsec_build_accel_pol_attrs(struct mlx5e_ipsec_pol_entry *pol_entry,
- static int mlx5e_xfrm_add_policy(struct xfrm_policy *x,
- 				 struct netlink_ext_ack *extack)
- {
--	struct net_device *netdev = x->xdo.real_dev;
-+	struct net_device *netdev = x->xdo.dev;
- 	struct mlx5e_ipsec_pol_entry *pol_entry;
- 	struct mlx5e_priv *priv;
- 	int err;
-diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
-index d62f76161d83..4f4165ff738d 100644
---- a/net/xfrm/xfrm_device.c
-+++ b/net/xfrm/xfrm_device.c
-@@ -378,7 +378,6 @@ int xfrm_dev_policy_add(struct net *net, struct xfrm_policy *xp,
- 
- 	xdo->dev = dev;
- 	netdev_tracker_alloc(dev, &xdo->dev_tracker, GFP_ATOMIC);
--	xdo->real_dev = dev;
- 	xdo->type = XFRM_DEV_OFFLOAD_PACKET;
- 	switch (dir) {
- 	case XFRM_POLICY_IN:
-@@ -400,7 +399,6 @@ int xfrm_dev_policy_add(struct net *net, struct xfrm_policy *xp,
- 	err = dev->xfrmdev_ops->xdo_dev_policy_add(xp, extack);
- 	if (err) {
- 		xdo->dev = NULL;
--		xdo->real_dev = NULL;
- 		xdo->type = XFRM_DEV_OFFLOAD_UNSPECIFIED;
- 		xdo->dir = 0;
- 		netdev_put(dev, &xdo->dev_tracker);
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 341d79ecb5c2..d67420e76389 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -1555,7 +1555,6 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 			xso->type = XFRM_DEV_OFFLOAD_PACKET;
- 			xso->dir = xdo->dir;
- 			xso->dev = xdo->dev;
--			xso->real_dev = xdo->real_dev;
- 			xso->flags = XFRM_DEV_OFFLOAD_FLAG_ACQ;
- 			netdev_hold(xso->dev, &xso->dev_tracker, GFP_ATOMIC);
- 			error = xso->dev->xfrmdev_ops->xdo_dev_state_add(x, NULL);
-@@ -1563,7 +1562,6 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 				xso->dir = 0;
- 				netdev_put(xso->dev, &xso->dev_tracker);
- 				xso->dev = NULL;
--				xso->real_dev = NULL;
- 				xso->type = XFRM_DEV_OFFLOAD_UNSPECIFIED;
- 				x->km.state = XFRM_STATE_DEAD;
- 				to_put = x;
--- 
-2.34.1
+4) Refactor migration setup during cloning. This was
+   done after the clone was created. Now it is done
+   in the cloning function itself.
+   From Chiachang Wang.
 
+5) Validate assignment of maximal possible SEQ number.
+   Prevent from setting to the maximum sequrnce number
+   as this would cause for traffic drop.
+   From Leon Romanovsky.
+
+6) Prevent configuration of interface index when offload
+   is used. Hardware can't handle this case.i
+   From Leon Romanovsky.
+
+7) Always use kfree_sensitive() for SA secret zeroization.
+   From Zilin Guan.
+
+Please pull or let me know if there are problems.
+
+Thanks!
+
+The following changes since commit 0c49baf099ba2147a6ff3bbdc3197c6ddbee5469:
+
+  r8169: add helper rtl8125_phy_param (2025-04-10 20:18:11 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next.git tags/ipsec-next-2025-05-23
+
+for you to fetch changes up to e7a37c9e428a2912a4eec160e633503cd72e1ee6:
+
+  xfrm: use kfree_sensitive() for SA secret zeroization (2025-05-20 07:55:00 +0200)
+
+----------------------------------------------------------------
+ipsec-next-2025-05-23
+
+----------------------------------------------------------------
+Chiachang Wang (2):
+      xfrm: Migrate offload configuration
+      xfrm: Refactor migration setup during the cloning process
+
+Cosmin Ratiu (6):
+      net/mlx5: Avoid using xso.real_dev unnecessarily
+      xfrm: Use xdo.dev instead of xdo.real_dev
+      xfrm: Remove unneeded device check from validate_xmit_xfrm
+      xfrm: Add explicit dev to .xdo_dev_state_{add,delete,free}
+      bonding: Mark active offloaded xfrm_states
+      bonding: Fix multiple long standing offload races
+
+Leon Romanovsky (2):
+      xfrm: validate assignment of maximal possible SEQ number
+      xfrm: prevent configuration of interface index when offload is used
+
+Steffen Klassert (2):
+      Merge branch 'xfrm & bonding: Correct use of xso.real_dev'
+      Merge branch 'Update offload configuration with SA'
+
+Thorsten Blum (1):
+      xfrm: Remove unnecessary strscpy_pad() size arguments
+
+Zilin Guan (1):
+      xfrm: use kfree_sensitive() for SA secret zeroization
+
+ Documentation/networking/xfrm_device.rst           |  10 +-
+ drivers/net/bonding/bond_main.c                    | 119 ++++++++++-----------
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c    |  20 ++--
+ .../chelsio/inline_crypto/ch_ipsec/chcr_ipsec.c    |  18 ++--
+ drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c     |  41 +++----
+ drivers/net/ethernet/intel/ixgbevf/ipsec.c         |  21 ++--
+ .../ethernet/marvell/octeontx2/nic/cn10k_ipsec.c   |  18 ++--
+ .../ethernet/mellanox/mlx5/core/en_accel/ipsec.c   |  28 ++---
+ .../ethernet/mellanox/mlx5/core/en_accel/ipsec.h   |   1 +
+ drivers/net/ethernet/netronome/nfp/crypto/ipsec.c  |  11 +-
+ drivers/net/netdevsim/ipsec.c                      |  15 ++-
+ include/linux/netdevice.h                          |  10 +-
+ include/net/xfrm.h                                 |  19 +++-
+ net/key/af_key.c                                   |   2 +-
+ net/xfrm/xfrm_device.c                             |  18 ++--
+ net/xfrm/xfrm_policy.c                             |   4 +-
+ net/xfrm/xfrm_state.c                              |  46 ++++----
+ net/xfrm/xfrm_user.c                               |  77 +++++++++----
+ 18 files changed, 277 insertions(+), 201 deletions(-)
