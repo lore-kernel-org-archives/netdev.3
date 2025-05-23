@@ -1,40 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C3B3FBA7
-	for <netdev@vger.kernel.org>; Fri, 23 May 2025 07:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01B31C5D7B;
+	Fri, 23 May 2025 07:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747984902; cv=none; b=Ha7312xMy3ApdpuxDrng2/qO10HHbtqthyadiQJFFkNp8eLl8eR0U157jkiJ1HcHojEGW0YRpR/mSTD+gwcTtek0B1XnSn8ZkCFpNSPH2KIcO+BWoQYOoeUZprLPepF/ztuFUD7GHYUwT+CGRQF2VIp5iG9IMSOnqDhfCGES7CM=
+	t=1747985729; cv=none; b=gUnz9l4Rr8hxV0saUDzNkuHT74IqrzMti+1wJ3Qs9hReo79rKGVhxGUinlItACLNFjmpl/E1iZEGsDE7sv/gc1kxObDmDAnZUzpUs/dJLRU6NG4IFJ0mysIS1KHu1fA1BuMAeEbWCfWMs3MgXOVY1F1TfnXy9wEKryNydpLn10U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747984902; c=relaxed/simple;
-	bh=HBcf+xUpn43sU+CtOz5tvzr69fg4W5j3vUJjnXR34/8=;
+	s=arc-20240116; t=1747985729; c=relaxed/simple;
+	bh=0XVPY2niVjWpDBO6CEqhrrLx5v8QhRqfDoKXreKcaf4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MKPIOw2Gn2CgPm2OXoy0ihI7TWNorgMzeGnAvTdqsSL9Nv06qLzg6qxt6yDqN6cKvURDBeUOIQtxXIVEDokXn4cr47OJ2r8OiiVOphSLQG25BAxtSwz5WcNZJdL7lf8fZ4oEt1Ot+qzB93WfaElypv8P/z8+pkeYZhmitVRTAXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jJ6P0sgM; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=BjYkeGX7Hgg1MAH2ASae08I7Z3rb3xVM2ME78Ce806Ez7CjflYQNSMbXl6DQrAZ+p3MwQYRGBAQGOPY76hg18M7MftK5v5w4QuO+cInOHUImcE24YoEGnpI8JfS0qyeXIktskU0BpTJ2zEEY6qxgdzbZLojdO1dAGeV3w0TtQlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eLcjKhUm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jJ6P0sgM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E91C4CEE9;
-	Fri, 23 May 2025 07:21:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eLcjKhUm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93A2C4CEE9;
+	Fri, 23 May 2025 07:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747984902;
-	bh=HBcf+xUpn43sU+CtOz5tvzr69fg4W5j3vUJjnXR34/8=;
+	s=k20201202; t=1747985728;
+	bh=0XVPY2niVjWpDBO6CEqhrrLx5v8QhRqfDoKXreKcaf4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jJ6P0sgMpDmOtmSxwomcrKYQPUYp+SkYqm4dhnV28L3fvqqIyX+ma0rGLMBmmBwHU
-	 v1+VzZ32w9AnbILKzCjyBQn5dP5dw+zJPad6XE+/8hICXN+0B6aEHf7Vs9Hl4uFavi
-	 W92VfqyZeA2s4kxMf3z25n6cP6XLVB3OzJr6K/NeBYNWdx3Fv4VP1i3EB1q9gKICzj
-	 I9c1r5X42a5TBkZHTdGsZAekI7Gr9eXjX5x8kp2LEBLaEk/tzwK5CBfc0EIzCzvNdB
-	 CRyskRJ9hMRBvIkx7VwwRiLhEooFND0+7AJyrqGrBU3mHyiZi7hL9mWjDDK8bhdO6W
-	 r+7VoKuEtPFZw==
-Date: Fri, 23 May 2025 08:21:39 +0100
+	b=eLcjKhUmk10FVcL4jfd42aKFpEbYcfBj5hUuwmDljQE0i3npkMAdRUjd4iflG4cFN
+	 +ftJDukW1HblVABI/25DZe+ZlYehPfgVjJ4fnkrJjW1QldJ1brCL3IRAW9e9Zke8JI
+	 PlgCcSEsAAeweBl3NGZoPxjoxVw3313EhlbFDJJIS4wjoru7X5XbIGotKIdDT94XBP
+	 fwlAn7Gsv08Lo4OMzQJbwhVBzi9c5Z9tzPEtwpPspMYX9HUJtAJ/eeW1SBiGHAlw9t
+	 e9wXCkxEvnRhLKzEl8rIz6N/ZL4WTDXrzSoMD5lLEEd1R/3fLL8eUT+51nsKwyLGV+
+	 zJ/EubuQIUa+w==
+Date: Fri, 23 May 2025 08:35:24 +0100
 From: Simon Horman <horms@kernel.org>
-To: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	Ahmed Zaki <ahmed.zaki@intel.com>
-Subject: Re: [PATCH iwl-net v1] idpf: return 0 size for RSS key if not
- supported
-Message-ID: <20250523072139.GQ365796@horms.kernel.org>
-References: <20250522085206.1119209-1-michal.swiatkowski@linux.intel.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+	netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	edumazet@google.com, fw@strlen.de
+Subject: Re: [PATCH net-next 06/26] netfilter: nf_tables: nft_fib: consistent
+ l3mdev handling
+Message-ID: <20250523073524.GR365796@horms.kernel.org>
+References: <20250522165238.378456-1-pablo@netfilter.org>
+ <20250522165238.378456-7-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,68 +45,116 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250522085206.1119209-1-michal.swiatkowski@linux.intel.com>
+In-Reply-To: <20250522165238.378456-7-pablo@netfilter.org>
 
-On Thu, May 22, 2025 at 10:52:06AM +0200, Michal Swiatkowski wrote:
-> Returning -EOPNOTSUPP from function returning u32 is leading to
-> cast and invalid size value as a result.
+On Thu, May 22, 2025 at 06:52:18PM +0200, Pablo Neira Ayuso wrote:
+> From: Florian Westphal <fw@strlen.de>
 > 
-> -EOPNOTSUPP as a size probably will lead to allocation fail.
+> fib has two modes:
+> 1. Obtain output device according to source or destination address
+> 2. Obtain the type of the address, e.g. local, unicast, multicast.
 > 
-> Command: ethtool -x eth0
-> It is visible on all devices that don't have RSS caps set.
+> 'fib daddr type' should return 'local' if the address is configured
+> in this netns or unicast otherwise.
 > 
-> [  136.615917] Call Trace:
-> [  136.615921]  <TASK>
-> [  136.615927]  ? __warn+0x89/0x130
-> [  136.615942]  ? __alloc_frozen_pages_noprof+0x322/0x330
-> [  136.615953]  ? report_bug+0x164/0x190
-> [  136.615968]  ? handle_bug+0x58/0x90
-> [  136.615979]  ? exc_invalid_op+0x17/0x70
-> [  136.615987]  ? asm_exc_invalid_op+0x1a/0x20
-> [  136.616001]  ? rss_prepare_get.constprop.0+0xb9/0x170
-> [  136.616016]  ? __alloc_frozen_pages_noprof+0x322/0x330
-> [  136.616028]  __alloc_pages_noprof+0xe/0x20
-> [  136.616038]  ___kmalloc_large_node+0x80/0x110
-> [  136.616072]  __kmalloc_large_node_noprof+0x1d/0xa0
-> [  136.616081]  __kmalloc_noprof+0x32c/0x4c0
-> [  136.616098]  ? rss_prepare_get.constprop.0+0xb9/0x170
-> [  136.616105]  rss_prepare_get.constprop.0+0xb9/0x170
-> [  136.616114]  ethnl_default_doit+0x107/0x3d0
-> [  136.616131]  genl_family_rcv_msg_doit+0x100/0x160
-> [  136.616147]  genl_rcv_msg+0x1b8/0x2c0
-> [  136.616156]  ? __pfx_ethnl_default_doit+0x10/0x10
-> [  136.616168]  ? __pfx_genl_rcv_msg+0x10/0x10
-> [  136.616176]  netlink_rcv_skb+0x58/0x110
-> [  136.616186]  genl_rcv+0x28/0x40
-> [  136.616195]  netlink_unicast+0x19b/0x290
-> [  136.616206]  netlink_sendmsg+0x222/0x490
-> [  136.616215]  __sys_sendto+0x1fd/0x210
-> [  136.616233]  __x64_sys_sendto+0x24/0x30
-> [  136.616242]  do_syscall_64+0x82/0x160
-> [  136.616252]  ? __sys_recvmsg+0x83/0xe0
-> [  136.616265]  ? syscall_exit_to_user_mode+0x10/0x210
-> [  136.616275]  ? do_syscall_64+0x8e/0x160
-> [  136.616282]  ? __count_memcg_events+0xa1/0x130
-> [  136.616295]  ? count_memcg_events.constprop.0+0x1a/0x30
-> [  136.616306]  ? handle_mm_fault+0xae/0x2d0
-> [  136.616319]  ? do_user_addr_fault+0x379/0x670
-> [  136.616328]  ? clear_bhb_loop+0x45/0xa0
-> [  136.616340]  ? clear_bhb_loop+0x45/0xa0
-> [  136.616349]  ? clear_bhb_loop+0x45/0xa0
-> [  136.616359]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [  136.616369] RIP: 0033:0x7fd30ba7b047
-> [  136.616376] Code: 0c 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 80 3d bd d5 0c 00 00 41 89 ca 74 10 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 71 c3 55 48 83 ec 30 44 89 4c 24 2c 4c 89 44
-> [  136.616381] RSP: 002b:00007ffde1796d68 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
-> [  136.616388] RAX: ffffffffffffffda RBX: 000055d7bd89f2a0 RCX: 00007fd30ba7b047
-> [  136.616392] RDX: 0000000000000028 RSI: 000055d7bd89f3b0 RDI: 0000000000000003
-> [  136.616396] RBP: 00007ffde1796e10 R08: 00007fd30bb4e200 R09: 000000000000000c
-> [  136.616399] R10: 0000000000000000 R11: 0000000000000202 R12: 000055d7bd89f340
-> [  136.616403] R13: 000055d7bd89f3b0 R14: 000055d78943f200 R15: 0000000000000000
+> 'fib daddr . iif type' should return 'local' if the address is configured
+> on the input interface or unicast otherwise, i.e. more restrictive.
 > 
-> Fixes: 02cbfba1add5 ("idpf: add ethtool callbacks")
-> Reviewed-by: Ahmed Zaki <ahmed.zaki@intel.com>
-> Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+> However, if the interface is part of a VRF, then 'fib daddr type'
+> returns unicast even if the address is configured on the incoming
+> interface.
+> 
+> This is broken for both ipv4 and ipv6.
+> 
+> In the ipv4 case, inet_dev_addr_type must only be used if the
+> 'iif' or 'oif' (strict mode) was requested.
+> 
+> Else inet_addr_type_dev_table() needs to be used and the correct
+> dev argument must be passed as well so the correct fib (vrf) table
+> is used.
+> 
+> In the ipv6 case, the bug is similar, without strict mode, dev is NULL
+> so .flowi6_l3mdev will be set to 0.
+> 
+> Add a new 'nft_fib_l3mdev_master_ifindex_rcu()' helper and use that
+> to init the .l3mdev structure member.
+> 
+> For ipv6, use it from nft_fib6_flowi_init() which gets called from
+> both the 'type' and the 'route' mode eval functions.
+> 
+> This provides consistent behaviour for all modes for both ipv4 and ipv6:
+> If strict matching is requested, the input respectively output device
+> of the netfilter hooks is used.
+> 
+> Otherwise, use skb->dev to obtain the l3mdev ifindex.
+> 
+> Without this, most type checks in updated nft_fib.sh selftest fail:
+> 
+>   FAIL: did not find veth0 . 10.9.9.1 . local in fibtype4
+>   FAIL: did not find veth0 . dead:1::1 . local in fibtype6
+>   FAIL: did not find veth0 . dead:9::1 . local in fibtype6
+>   FAIL: did not find tvrf . 10.0.1.1 . local in fibtype4
+>   FAIL: did not find tvrf . 10.9.9.1 . local in fibtype4
+>   FAIL: did not find tvrf . dead:1::1 . local in fibtype6
+>   FAIL: did not find tvrf . dead:9::1 . local in fibtype6
+>   FAIL: fib expression address types match (iif in vrf)
+> 
+> (fib errounously returns 'unicast' for all of them, even
+>  though all of these addresses are local to the vrf).
+> 
+> Fixes: f6d0cbcf09c5 ("netfilter: nf_tables: add fib expression")
+> Signed-off-by: Florian Westphal <fw@strlen.de>
+> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+> ---
+>  include/net/netfilter/nft_fib.h   | 16 ++++++++++++++++
+>  net/ipv4/netfilter/nft_fib_ipv4.c | 11 +++++++++--
+>  net/ipv6/netfilter/nft_fib_ipv6.c |  4 +---
+>  3 files changed, 26 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/net/netfilter/nft_fib.h b/include/net/netfilter/nft_fib.h
+> index 6e202ed5e63f..2eea102c6609 100644
+> --- a/include/net/netfilter/nft_fib.h
+> +++ b/include/net/netfilter/nft_fib.h
+> @@ -2,6 +2,7 @@
+>  #ifndef _NFT_FIB_H_
+>  #define _NFT_FIB_H_
+>  
+> +#include <net/l3mdev.h>
+>  #include <net/netfilter/nf_tables.h>
+>  
+>  struct nft_fib {
+> @@ -39,6 +40,21 @@ static inline bool nft_fib_can_skip(const struct nft_pktinfo *pkt)
+>  	return nft_fib_is_loopback(pkt->skb, indev);
+>  }
+>  
+> +/**
+> + * nft_fib_l3mdev_get_rcu - return ifindex of l3 master device
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Hi Pablo,
 
+I don't mean to hold up progress of this pull request. But it would be nice
+if at some point the above could be changed to
+nft_fib_l3mdev_master_ifindex_rcu so it matches the name of the function
+below that it documents.
+
+Flagged by ./scripts/kernel-doc -none
+
+> + * @pkt: pktinfo container passed to nft_fib_eval function
+> + * @iif: input interface, can be NULL
+> + *
+> + * Return: interface index or 0.
+> + */
+> +static inline int nft_fib_l3mdev_master_ifindex_rcu(const struct nft_pktinfo *pkt,
+
+> +						    const struct net_device *iif)
+> +{
+> +	const struct net_device *dev = iif ? iif : pkt->skb->dev;
+> +
+> +	return l3mdev_master_ifindex_rcu(dev);
+> +}
+> +
+>  int nft_fib_dump(struct sk_buff *skb, const struct nft_expr *expr, bool reset);
+>  int nft_fib_init(const struct nft_ctx *ctx, const struct nft_expr *expr,
+>  		 const struct nlattr * const tb[]);
+
+...
