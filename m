@@ -1,83 +1,225 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C961A315A;
-	Fri, 23 May 2025 20:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E181F583D
+	for <netdev@vger.kernel.org>; Fri, 23 May 2025 20:34:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748030864; cv=none; b=cQdm0C0cO+3eo60EchQo8NaOxycklt4H90iVjuS59+IJxLd++dOhWPfRAJsCtAHOREHQaoZ06Lk0HvUFvDwSJEWNzIfbgz3UOYc4VBV9XCBD9jPozJFebGmQvAh7UjvmfcJKxKOK2zm1Z4VcYCGZMzleGEGZ/mpBWOdUl5B6oZs=
+	t=1748032472; cv=none; b=uMVAgcuRHubVuskPO2ZmHpIdvW5Hmu7WPAB3yIskz9cmwM1ahb7twsWQ+2j4FsmUUYeuifnJya1+pGOviQ+rNJ+giyTyGIEWmtjtF+st/xrNXhnW48xyIsX3Yigg/HhElIH9n0tg8NxUO5QVo+zw+3VdGKVhJDOseV9P+emqsko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748030864; c=relaxed/simple;
-	bh=D2mgw63jXUUEJoMo9HaShlPKpHm/ZIDplyAHvQbmZ5Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tYopumg0tBfQ3wUdrss3ADQcKv4hsWvXgZQFGOYRIKDYkpxrsSvQu8Nspl5hgtZxRR8onSZw/Sh6PqPhSfJM1f6dxyhrjZKEpa3HLZrJb8svS+bx1v8iUHOnpLzT/NaMgPTaypA+hU9cwRT9eWvhSHcvjPxUsS1aA3UzVJlqN8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0jjTD3NL; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1748032472; c=relaxed/simple;
+	bh=4Rk4PcZp/P0dgRokTbY66gQ53B57GAnzFe0P29JFxrQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=qLe4Tw9l9s/moFeg5CgzKF7HdJBoBcULdTgp/6PriMRa1txPHbL5ObTW4UximI09WEygiKdEpM79wFnVAUs6OnGa10Q5FV/iL+Is4KrkVJxSdXPR2z3G799Pq6P8ema/6MK48843f+KrmDlveo1f+fXS/E/Ni5/Q8uXwMJUsNKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Hzw8OExh; arc=none smtp.client-ip=91.218.175.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0jjTD3NL"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=gAyIsHp9u9c/VEO2is/zAGA5jdT02MlM2owOkmGGNvU=; b=0jjTD3NL0TcmCPZnxEvUKOqa7w
-	ycdSvlaL8MppjWbq75socO16PkXQwrcJ6QkPCIPTEvLR4mPrzy84t2O+Lzc61zHDA++zbQl8aaAS+
-	i+Je8eLO6aa7GMBXcJ7HKb1xw5q+rhWLkzcYTEp6mGxCnjpeWeJNisnlBycr3dy7SjXk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uIYfR-00De9m-9e; Fri, 23 May 2025 22:06:57 +0200
-Date: Fri, 23 May 2025 22:06:57 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Damien =?iso-8859-1?Q?Ri=E9gel?= <damien.riegel@silabs.com>
-Cc: Alex Elder <elder@ieee.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Hzw8OExh"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1748032468;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nOaKt+XhutGsACo0AIeTjd+wJVp9zlX2M1zDj3epVuo=;
+	b=Hzw8OExhmHWk66Pj2fOfr00QQkFlHlYm1SCg5RG1PRgf/NtI1wtQl1BI8xnniyaNgczlPT
+	NHdnMHKPbSjvIOkLN9J3zzMl//Ao8B5CVmpB6LjqLOc/1oEmCNmAd3rORZGgTaSn1F2Oyx
+	K+KaNT/IFR1vJbniBT53nnem957ET+o=
+From: Sean Anderson <sean.anderson@linux.dev>
+To: netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>
+Cc: Lei Wei <quic_leiwei@quicinc.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Simon Horman <horms@kernel.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
+	linux-kernel@vger.kernel.org,
+	Sean Anderson <sean.anderson@linux.dev>,
 	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Silicon Labs Kernel Team <linux-devel@silabs.com>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Johan Hovold <johan@kernel.org>,
-	Alex Elder <elder@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	greybus-dev@lists.linaro.org
-Subject: Re: [RFC net-next 00/15] Add support for Silicon Labs CPC
-Message-ID: <db54fe16-ae7d-410c-817b-edb4faa6656c@lunn.ch>
-References: <20250512012748.79749-1-damien.riegel@silabs.com>
- <6fea7d17-8e08-42c7-a297-d4f5a3377661@lunn.ch>
- <D9VCEGBQWBW8.3MJCYYXOZHZNX@silabs.com>
- <f1a4ab5a-f2ce-4c94-91eb-ab81aea5b413@lunn.ch>
- <D9W93CSVNNM0.F14YDBPZP64O@silabs.com>
- <65cc6196-7ebe-453f-8148-ecb93e5b69fd@ieee.org>
- <DA3STV21NQE0.23SODSDP37DI7@silabs.com>
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Robert Hancock <robert.hancock@calian.com>,
+	devicetree@vger.kernel.org
+Subject: [net-next PATCH v5 01/10] dt-bindings: net: Add Xilinx PCS
+Date: Fri, 23 May 2025 16:33:30 -0400
+Message-Id: <20250523203339.1993685-2-sean.anderson@linux.dev>
+In-Reply-To: <20250523203339.1993685-1-sean.anderson@linux.dev>
+References: <20250523203339.1993685-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DA3STV21NQE0.23SODSDP37DI7@silabs.com>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-> I don't really know about UniPro and I'm learning about it as the
-> discussion goes, but one of the point listed on Wikipedia is
-> "reliability - data errors detected and correctable via retransmission"
-> 
-> This is where CPC could come in, probably with a different name and a
-> reduced scope, as a way to implement reliable transmission over UART,
-> SPI, SDIO, by ensuring data errors are detected and packets
-> retransmitted if necessary, and be limited to that.
+Add a binding for the Xilinx 1G/2.5G Ethernet PCS/PMA or SGMII LogiCORE
+IP. This device is a soft device typically used to adapt between GMII
+and SGMII or 1000BASE-X (possbilty in combination with a serdes).
+pcs-modes reflects the modes available with the as configured when the
+device is synthesized. Multiple modes may be specified if dynamic
+reconfiguration is supported.
 
-You mentioned HDLC in the past. What is interesting is that HDLC is
-actually used in Greybus:
+One PCS may contain "shared logic in core" which can be connected to
+other PCSs with "shared logic in example design." This primarily refers
+to clocking resources, allowing a reference clock to be shared by a bank
+of PCSs. To support this, if #clock-cells is defined then the PCS will
+register itself as a clock provider for other PCSs.
 
-https://elixir.bootlin.com/linux/v6.15-rc7/source/drivers/greybus/gb-beagleplay.c#L581
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+---
 
-I've no idea if its just for framing, or if there is also retries on
-errors, S-frames with flow and error control etc. There might be code
-you can reuse here.
+(no changes since v3)
 
-	Andrew
+Changes in v3:
+- Add '>' modifier for paragraph to description
+- Edit description to reference clocks instead of resets
+
+Changes in v2:
+- Change base compatible to just xlnx,pcs
+- Drop #clock-cells description
+- Move #clock-cells after compatible
+- Remove second example
+- Rename pcs-modes to xlnx,pcs-modes
+- Reword commit message
+
+ .../devicetree/bindings/net/xilinx,pcs.yaml   | 114 ++++++++++++++++++
+ 1 file changed, 114 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/xilinx,pcs.yaml
+
+diff --git a/Documentation/devicetree/bindings/net/xilinx,pcs.yaml b/Documentation/devicetree/bindings/net/xilinx,pcs.yaml
+new file mode 100644
+index 000000000000..11bbae6936eb
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/xilinx,pcs.yaml
+@@ -0,0 +1,114 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/xilinx,pcs.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Xilinx 1G/2.5G Ethernet PCS/PMA or SGMII LogiCORE IP
++
++maintainers:
++  - Sean Anderson <sean.anderson@seco.com>
++
++description: >
++  This is a soft device which implements the PCS and (depending on
++  configuration) PMA layers of an IEEE Ethernet PHY. On the MAC side, it
++  implements GMII. It may have an attached SERDES (internal or external), or
++  may directly use LVDS IO resources. Depending on the configuration, it may
++  implement 1000BASE-X, SGMII, 2500BASE-X, or 2.5G SGMII.
++
++  This device has a notion of "shared logic" such as reset and clocking
++  resources which must be shared between multiple PCSs using the same I/O
++  banks. Each PCS can be configured to have the shared logic in the "core"
++  (instantiated internally and made available to other PCSs) or in the "example
++  design" (provided by another PCS). PCSs with shared logic in the core provide
++  a clock for other PCSs in the same bank.
++
++properties:
++  compatible:
++    items:
++      - const: xlnx,pcs-16.2
++      - const: xlnx,pcs
++
++  reg:
++    maxItems: 1
++
++  "#clock-cells":
++    const: 0
++
++  clocks:
++    items:
++      - description:
++          The reference clock for the PCS. Depending on your setup, this may be
++          the gtrefclk, refclk, clk125m signal, or clocks from another PCS.
++
++  clock-names:
++    const: refclk
++
++  done-gpios:
++    maxItems: 1
++    description:
++      GPIO connected to the reset-done output, if present.
++
++  interrupts:
++    items:
++      - description:
++          The an_interrupt autonegotiation-complete interrupt.
++
++  interrupt-names:
++    const: an
++
++  xlnx,pcs-modes:
++    description:
++      The interfaces that the PCS supports. Multiple interfaces may be
++      specified if dynamic reconfiguration is enabled.
++    oneOf:
++      - const: sgmii
++      - const: 1000base-x
++      - const: 2500base-x
++      - items:
++          - const: sgmii
++          - const: 1000base-x
++
++  reset-gpios:
++    maxItems: 1
++    description:
++      GPIO connected to the reset input.
++
++required:
++  - compatible
++  - reg
++  - xlnx,pcs-modes
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    mdio {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        pcs0: ethernet-pcs@0 {
++            compatible = "xlnx,pcs-16.2", "xlnx,pcs";
++            reg = <0>;
++            #clock-cells = <0>;
++            clocks = <&si570>;
++            clock-names = "refclk";
++            interrupts-extended = <&gic GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>;
++            interrupt-names = "an";
++            reset-gpios = <&gpio 5 GPIO_ACTIVE_HIGH>;
++            done-gpios = <&gpio 6 GPIO_ACTIVE_HIGH>;
++            xlnx,pcs-modes = "sgmii", "1000base-x";
++        };
++
++        pcs1: ethernet-pcs@1 {
++            compatible = "xlnx,pcs-16.2", "xlnx,pcs";
++            reg = <1>;
++            xlnx,pcs-modes = "sgmii";
++            clocks = <&pcs0>;
++            clock-names = "refclk";
++        };
++    };
+-- 
+2.35.1.1320.gc452695387.dirty
+
