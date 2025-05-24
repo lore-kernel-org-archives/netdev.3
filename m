@@ -1,68 +1,139 @@
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFAF2DCC06
-	for <netdev@vger.kernel.org>; Sat, 24 May 2025 20:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88ACC131E49;
+	Sat, 24 May 2025 20:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748117375; cv=none; b=HAFA+EviXz6KrNBchc9I2w01sOi9/TlXGmSRV1NFkj4cYhuErc2uFVAcAy2exKZ4EoDZ6E5ffs3ZekYB0kluFKOvMojtRsNDdlmwm4z+46KJ7vBtZhpeiX6Ps9PVwoWihNbOW2iwrUG1XWcRoadI5tTwM4fcE8R2mF/5WuPGfd0=
+	t=1748118805; cv=none; b=t1OXEwWHZMMgFn09F6Mx3JnV9d9xs07FldWlO2iwPZYhQblPzdE9uPYpVkVpGWrcvIX5IeoGUs0DHxB3r6QzCZoEYAn7dtsOnh9ZP1cN7LWSIWmUBfjm9qGWqb4inm8llRa1Y/ZTEAehKEs+joAnuR5hxWV7OCBD5oR1DgZUlFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748117375; c=relaxed/simple;
-	bh=c+/+InaJhSyNmGIihD4rbWrbCKtnc39+MWZfRXC5bE8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZxqKLHiQsDMW3eBW6NI6xah09KpiqUO5apGt17WgnfN8gVWyZ2J+Ya+MzmwsqGXR4FG5iE92yfqCHjMP94/1f6aVMpDSRLcE1ySZpHdjcE2E58R1TJJVKuFm10F9YbzTiKl8/jn0wYWd9Id4u+ngNG2oFeYqgPc5FLCs/L233kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io; spf=pass smtp.mailfrom=willsroot.io; dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b=e1uZHz1M; arc=none smtp.client-ip=188.165.51.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=willsroot.io
+	s=arc-20240116; t=1748118805; c=relaxed/simple;
+	bh=hrug913Vp1NiKCmHn+m4wiqCG8z8FSEDUX4Thc02O9g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rlbc1s+jnQyUxOGYaOwpf4MeK8G9du3s4fA2oYbcQoc26fqPtG0Mwr/duRYBu3IveWI6/LjDJeqMby6YKNHUQ8emJzQVczVDqvuYOMTgAJpK32MUKOMsrD8K1C2/md0VTQ905rbKApWSXH99kUFbqE2YcPsBF4OFkkhcAGqtA6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dG8jlmJl; arc=none smtp.client-ip=209.85.222.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b="e1uZHz1M"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=willsroot.io;
-	s=protonmail; t=1748117356; x=1748376556;
-	bh=c+/+InaJhSyNmGIihD4rbWrbCKtnc39+MWZfRXC5bE8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=e1uZHz1Mk2Zx5b4/mkQKlhukSF267f+fSJ9Z8/UuzAfSDhO903xCjHJWzgmg1VBHA
-	 jS8pGhSFI2PBssf90eoWiJdAet96JYBa94Lo0sRM9TVkGdege0CbTT2o8u4sx/MUo2
-	 SYUjrEiHblFpSXjWVNZgojOcp2lKBu1g+WsEXddazzX9PwNV8ZIcHB+R7c7A96bn8W
-	 DGvpfZkLxw70wqP6uQ0FBTQEczhq4wT/umrBrYKo9a9c4rY1xNkLcLq640e66P1jIQ
-	 2JaJVOxu5a6fYPFn/PptEsgygHbgb0LQtfBZSz3uNYOimdTfn84N6GHI4Jl0n5Qmnv
-	 7P1PZKr/V2DtQ==
-Date: Sat, 24 May 2025 20:09:11 +0000
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-From: William Liu <will@willsroot.io>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Savy <savy@syst3mfailure.io>, Cong Wang <xiyou.wangcong@gmail.com>, Victor Nogueira <victor@mojatatu.com>, Pedro Tammela <pctammela@mojatatu.com>, Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, Stephen Hemminger <stephen@networkplumber.org>, Davide Caratti <dcaratti@redhat.com>
-Subject: Re: [BUG] net/sched: Soft Lockup/Task Hang and OOM Loop in netem_dequeue
-Message-ID: <FiSC_W4LweZiirPYQVe8p7CvUePHrufeDOQgkDT07zh-uy5s6eah-a8Vtr_lPrW73PAF51p6PPIrJITwrJ5vspk99wI5uZELnJijU5ILMUQ=@willsroot.io>
-In-Reply-To: <CAM0EoMkO0vZ4ZtODLJEBP5FiA0+ofVNOSf-BxCOGOyWAZDHdTg@mail.gmail.com>
-References: <8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io> <CAM0EoMmQau9+uXVm-vpuWqYjh=51a_CCS6orS6VrK6qBdddxrQ@mail.gmail.com> <iEqzQsC-O2kAXqH1_58I59DIhBjRgebyGym2ZqyMEI3DaMtgsKSYR0KUsbxj5xqvfzf-4XzpM8dXvATHJhVVw3NedRdL3j1FJaqiXPlNWeE=@willsroot.io> <ggSxq-NP-LDpev4N-rvkgs0Rrd0qOrbwtGRjcu4j4y3SuZth9k5RxTg2tFvhriQu4w_GxRPYjnkKN6VqFP6Q6FCyqWudz7_5iuOV06IEzgY=@willsroot.io> <CAM0EoMkd87-6ZJ5PWsV8K+Pn+dVNEOP9NcfGAjXVrzAH70F4YA@mail.gmail.com> <Ppi6ol0VaHrqJs9Rp0-SGp0J1Y0K8hki_jbNZ8sjNOmtEq0mD4f0IozBxxX-m4535QPJonGFYmiPmB643yd4SOpd1HDDYyMeGQuASuFHl-E=@willsroot.io> <CAM0EoM==m_f3_DNgSEKODQzHgE_zyRpXKweNGw1mxz-e3u6+Hg@mail.gmail.com> <8fcsX7qgyK6tCGCqfi8RN7a-hMGfmh0K2wOpqXayxNM0lKgbjttNfpYkZHA29D0SN5WJ5h3-auiaClAq1nGw5BulC8wOzfa_lqR4bx73phM=@willsroot.io> <CAM0EoMkO0vZ4ZtODLJEBP5FiA0+ofVNOSf-BxCOGOyWAZDHdTg@mail.gmail.com>
-Feedback-ID: 42723359:user:proton
-X-Pm-Message-ID: 1cf62111fd09474bfc336ca4d4ec1eba60787fa7
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dG8jlmJl"
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7c58974ed57so88916785a.2;
+        Sat, 24 May 2025 13:33:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748118802; x=1748723602; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mvfJkqxXdrTl2ACAyEytt+D5VYLPEzTHxEFeE81vrvE=;
+        b=dG8jlmJla3zc2ddUvzo1xIkXVdrOk6ql1swxZFLTgGQKqfpK472JQrYDZGjVhguXk+
+         rTeO3qyZ1ie8UqNiD1KUPe/2b9U9NadbnkWfunusRgiL2yukrFBhTpLrfuIL9fLFjX99
+         uiljK+yqr3gVkYsDhe5llOVjTBZr8mZjHTr+7UMxP4yRrXfgL32XXAmKv2allvYZdMt3
+         AACrWSDcfckGpOsXu7/DbVVBQX3w9tPqDhHL/7uE2W+ivYwKJi5HVa+S5FVmK2+f7jQM
+         7mfwEqXCRwofL4jH6uSIptCpJgqJC9TkAofPlGHy/AJ4xMyBSav5klkGxte38xXybw/m
+         oDyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748118802; x=1748723602;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mvfJkqxXdrTl2ACAyEytt+D5VYLPEzTHxEFeE81vrvE=;
+        b=VGqG7A/CU04bxsQV41KB4jYzk1ckRNpI+Jye6ymFbdBt3mzhJVf1WiA6sMkRvdFWz/
+         8Eeba1qFUgnuBjEnPFf2erGRAwMLIPltB85GFULnSqIg7prssC+gO/Cw5ioR/I+RO94e
+         hc8rsubE9ciQLpYh87cZ+T0t8r9kl9p1o2+idHN/KwYigiE+1bBIeiShYuiOf0zAc6oy
+         UlWghP5rcvDATyNlw4yjaT5xHNhQR2lbGir+oAaS1i2DIgo1O0LkY1g1pAXT75TAYGy3
+         gC+6XBvUsLP4z/i20MBBD+m6lM1bsMzk0a089SG1sNvVi6k15n7RcS/lONB0UxNa88hT
+         K0HA==
+X-Forwarded-Encrypted: i=1; AJvYcCUHUMxgGJ7e7EkY/5Hlu9IbzB0Mf/yUbLFIWQICABtHEPHcvwIs1nFC23VSRIHHIxeIww2wgh1W7Eu8X/g6@vger.kernel.org, AJvYcCVOzYqJTXzPhb3lrGJf6BB7DGktwDYZgBtWwsOmwMIYnI8h3f/7b7UOPz7407LHsMxrGkREiFkn@vger.kernel.org, AJvYcCW+oPQgfCROSnLjszMzV6c8Zqxqmf7ZKm28hpZTd0EW5DhkSwUCKLSUM2lIbV4EL3ll0JzlTlkvLJ25@vger.kernel.org, AJvYcCX8kOhncy/uAohzarCRCm6yHA2vGJPIldbKhhxY7N9mzwiIkN1DNnBpNtAgD/CUQdbs0xV60N04hGi+@vger.kernel.org, AJvYcCXJ0H6hbcySEaDjxV6BXWFObSLBxcGUgypONyBtlV7NCjs9eALZFOXl8LYyeXSBFqcmXVzw68RHn/a64jI=@vger.kernel.org, AJvYcCXvgOTbjU/NurvdBn5AjOz57FeSdzltWEoGsPfxjWU3kDJjCcn/OUuSxd0LMvGcoMtcwJhCK8SRg7+3awhz5I8e@vger.kernel.org
+X-Gm-Message-State: AOJu0YysgelZss5dG9yiIMxbUYP3GEitZL2Dtjrixr0rCtrzsuu3dzFl
+	g35rThbAXrPXmGk2Czr2nqfW9Pf7MoHSzjz271aV8hKqkaTLtuIGREts
+X-Gm-Gg: ASbGncvghfBJqknLZ3v06DoaabbmIXgCiP9QdX1vf04BgmVVcuhYvsoTchZZildl1kX
+	dQlmNEhU05Fc52tzqHvdzn3dDrgaRt/3fkhXC2Mj4fuD8CTHDjMGA3uTC4dGOlkQ+a7v215ewPo
+	AYydxb8SzOz5EpW7O1YWMSAJLkBjeAngP2mAb8RZyT9oDRYcWCKoHZo/c3mkBPiei2fRHnFj4VY
+	fLlxkUgR1OYdJUKi9eFWwB205Y6Cm4vi4q47Zbk0IQ8PK7WDxGE5YlYsWQg15tRt0WtBPRZ/9iK
+	YYlDsolnc0MmIF1Va9Dwntk+jwe93YCvmEvhCMZEWSxab05LpD4xOknIAvhg4wGg1k+30Hc0vhG
+	yBnHLvxgCbCzKN9XqkIm17LoTGYBKNdXXBRBZ4W7cBu9K/UsWp6jh9BGuSmifO1BGuHIQ7o0vLv
+	Xjf1Y=
+X-Google-Smtp-Source: AGHT+IFboxRLluplUf3LaplIw8SJcbgWkLbYbE/qq4hS3to1whGiWg64X2sqtasOImnMch7vEUC1oA==
+X-Received: by 2002:a05:620a:608e:b0:7ca:eb5b:6b99 with SMTP id af79cd13be357-7ceecba77cdmr512632385a.15.1748118802225;
+        Sat, 24 May 2025 13:33:22 -0700 (PDT)
+Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2600:4041:5be7:7c00:8563:e370:791f:7436])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cd467d7fd1sm1379590085a.29.2025.05.24.13.33.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 May 2025 13:33:21 -0700 (PDT)
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Sat, 24 May 2025 16:33:01 -0400
+Subject: [PATCH v10 1/5] rust: retitle "Example" section as "Examples"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250524-cstr-core-v10-1-6412a94d9d75@gmail.com>
+References: <20250524-cstr-core-v10-0-6412a94d9d75@gmail.com>
+In-Reply-To: <20250524-cstr-core-v10-0-6412a94d9d75@gmail.com>
+To: Michal Rostecki <vadorovsky@protonmail.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, 
+ Brendan Higgins <brendan.higgins@linux.dev>, 
+ David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Saravana Kannan <saravanak@google.com>, 
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+ Nathan Chancellor <nathan@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Jens Axboe <axboe@kernel.dk>, Benno Lossin <lossin@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Benno Lossin <lossin@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+ dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, llvm@lists.linux.dev, linux-pci@vger.kernel.org, 
+ nouveau@lists.freedesktop.org, linux-block@vger.kernel.org, 
+ Tamir Duberstein <tamird@gmail.com>
+X-Mailer: b4 0.15-dev
 
-On Saturday, May 24th, 2025 at 1:07 PM, Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
+This title is consistent with all other macros' documentation,
+regardless of the number of examples contained in their "Examples"
+sections.
 
-> "count =3D=3D 0" seems to be only needed for the loss when a drop decisio=
-n is made.
-> Slight tangent: Looking at init() the setup does allow for both to be
-> on (i.e could be "and" not just "or" as you state above). It feels
-> sensible to me that if the loss function decided the packet is to be
-> dropped then that would override the duplication.
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+ rust/macros/lib.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This makes perfect sense to me.
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index 9acaa68c974e..d31e50c446b0 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -263,7 +263,7 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream {
+ /// literals (lifetimes and documentation strings are not supported). There is a difference in
+ /// supported modifiers as well.
+ ///
+-/// # Example
++/// # Examples
+ ///
+ /// ```
+ /// # const binder_driver_return_protocol_BR_OK: u32 = 0;
 
-By that, I agree that the count variable is not necessary. However, I think=
- it's good to introduce a duplicated boolean instead for readablity's sake,=
- instead of merging all the logic into nest_level. I will get a formal patc=
-h set ready sometime soon to address the bug and the other behavioral quirk=
-s we found here.=20
+-- 
+2.49.0
 
-Thank you for the help so far!
