@@ -1,465 +1,197 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2083.outbound.protection.outlook.com [40.107.20.83])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2050.outbound.protection.outlook.com [40.107.236.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBC625C70D;
-	Sun, 25 May 2025 17:19:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84768221721;
+	Sun, 25 May 2025 17:20:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748193581; cv=fail; b=Z2NJEKtsoF2B734+ZvK54ozax4zcnRAZWTnxUI0a7rB2kAeoK5DUw2R6oOTAs/Gf2ddOWZS17MyvTAVmJs59wmAOUJXRbqNzcVNUjOggUcdAuz8oYpW9n7Wvs4VEG8C1Cav0NFPl8nuFu5HW6JVam2Rodlzxd04KnkPuEcsILVg=
+	t=1748193620; cv=fail; b=FYp+7fBsNMtKi5vODhKN/1wFeInPaGSeJPzZYYFutp2zU0u/zZ4agYnMIXTWXczsKx/undMgXsPoIkssdXcbicg6ItRyJpzTEo96jXRnCmh9JnVZptINGeNNhWgQ77svBnWc8FQclzx9CCfO9t+Xf/HB4/k7na4Tz3qXMiwcrc4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748193581; c=relaxed/simple;
-	bh=UvrjHyQvwMMKu+ydQjeNNzpfw0jebxZNRAg6Yv+RsUo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ueMjf3Xkm+K0J4BAtyN6FkpyNsL5sTLdjRB2SR9W7iu9zVsmOQMd/5jQdxwysDjly/lj72GDFfS34LenT8yobPtxzAe9k+RqoMDUnUAgQvH32Y+i2D5qqpVloZ9AxCEOUQsdkrtMG+a0wpXOwoV44Vj718F5xvkF3J3md7fXlJY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=Wx6F2mu8; arc=fail smtp.client-ip=40.107.20.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
+	s=arc-20240116; t=1748193620; c=relaxed/simple;
+	bh=curVRvaDGfKprac41LuoJsfWBr7J65QfIl23QEUACFI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=UoVCrwIj6Au6K7sHn8jGxHVvJygWKNjrcsg/qjqCy53wc5D4JDoQftrK9OMSjXD0ytlYf3MaPBqob8qGTZSvP7/iqoOqjwJjVRqFjd6IitQ5Y2YgiLLFOaXqxyT13NL6MOEMDU6HtUL2y6A2UX674tTgRHGIzzsmN7kYc2E2BQ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PHBDRTLK reason="signature verification failed"; arc=fail smtp.client-ip=40.107.236.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="Wx6F2mu8"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PHBDRTLK"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uMiUNjrguHGFqVcq/tvjZ8AyC8EwVahAK4ArbSI0EhEnLbPpoPD9/QurxnUkTjH1s4ttTnOMkL+A0nGISI10/UhR7WX3E5Nn2e1cxeHpuM9qtYtqE91S7FUg5OQmo51ck8C35MK0DJfCSYjhrGG7FP3LqEN3esIWAIz7Pw5GEpwZrzNOdtp9TYvhaCcsjobUU4rs5mg6AXWwaw1SuBzCKt6uLkp4Y5YnUCjSmN758wjRYXjLgi7qvsA8brqu/PcqQyJn/xYX/XEXIcmt46Mix/HV8eo2v89e9P7Q7rhTzyrPkOLxnmULrdrrqeiasHjCpKHzanug7+uCjFvUBHaAsA==
+ b=zHI6jTtsRXJUiiuUjWuNIkDNpmQq5nMsxgrhHzZ+3WABosSn2p1WAQ29i0IPzB2XozFIs+Bv2Vqvdw6nKWpkPKG5zAmghNjo8dC9LkzGFU9ppYvxpcQi/yRiHIX/c366EdyZCHuwXOGwH5MdslMgCznzLgAu//4FaRxbf/KPVj3sShwCJ+fb7puwHaIHw9dML8ii9pPmGzC0sh0pH6Ev8X/Now6koycvNQhudzMynIRdh1mD/j9tAtB8QzxSHe7LyEXnW+UAifE4m8E6KIKtz5YV3yJSBGV6lbcxJ/pHRqMKLSnXINvWg+8Ky9WHC1bcNNTgpIyIYj/rlekPob91eQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fgG50skLVY3aVDgCGcIqWujSRWT/aldkRftaCV+XMwA=;
- b=zJw0uSv1Kt0Od7XWbyPJY2SCw6G04DpwCWfoz1zPU6x2+FTWOp28CgQGkec0CqFk9QrhdOybdpF6+0BWVQFBiG47dp7L+8s63vGYbM01arN4RAZQmQulFuVsRGKqj0G3IPjcG9/CQkhWMkNYSxDUvvmrWoVgSegi5H5sslwzxTIcc5dcfWh43S6DT2A/6GQRn9SiheFKz6TVkFG3xuAh+777z80Nzecy4KPTNRzJ6ZRWAjrCUViVsMdhYWRkzIewXr0RBZBBfIZeb5UVXMdzm3+MfolVJBwf+CBdbJ4dWCsYfM3aqfqmDbfUtG7dek+8uYPDUwS7/9nLYkS1IfagQA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 131.228.2.241) smtp.rcpttodomain=apple.com smtp.mailfrom=nokia-bell-labs.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nokia-bell-labs.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
+ bh=M6CWDgu6CEfFZeBQk79inmzm9IakAHhNfOVtd9dkjc8=;
+ b=BPNfcNl+i6JpsnApVIKkW3sv/a+ola7nv251AVtdvq5IZ4htpNs+2r0fAjJlKMmdvYYk8bKFflkdX1dNs+B9LLgq0E2yjk2SczW1dX1EoAxZqAnOcMSb6RdB3NxojShnj6XzDqppFQjuxY02PDDJCskUWPZxy+S5FcwY5FHjd46//haarrettdHf/uJX1LrXwIrBEucoi3N4hW+/7sxOjDSmGyrmvsbO4nqC8VjDgOGtRUfhjiC00TeM+llyEcHHt6aoFea6iq8d5DJc5x5/1DMTyRYNuwTtFwtlGnvVvydDOfHCQk5TtYYKQbW6+F081fse26XdgtSO7iMgOOP9GQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fgG50skLVY3aVDgCGcIqWujSRWT/aldkRftaCV+XMwA=;
- b=Wx6F2mu81baX0zwf5N6NYK5xibFNCR6m+LMDSyS5hV15JzELHyrJtQabKTimqvGUaZlxLvtCKcJqZnpS/KRNb+0NP3jq0TQvsu/JN+miRPtw6jNdBpkyf4HF9aESDTTNFMfJ+5cYQbGellrznT9TzQZlbYSa+nIGcZlGnEN5R7AgQxaYYBsEcEus4nj4bn03KBbLy2T+TEb60eQV+xq0s+XiTX7dLWMhMOf4QYenVN34MN8nXK8JjNhaL3/FJs5UnON/sZxpuVkLcyDuDaB0GSAxP7YdH4rEQaup8awusPjnUZaUuyqSZeC81IUyqe0jJlk9qyHNJHq465NPaLCpJg==
-Received: from AS9PR06CA0515.eurprd06.prod.outlook.com (2603:10a6:20b:49d::7)
- by VI1PR0701MB6800.eurprd07.prod.outlook.com (2603:10a6:800:191::20) with
+ bh=M6CWDgu6CEfFZeBQk79inmzm9IakAHhNfOVtd9dkjc8=;
+ b=PHBDRTLK8yclxZpt3E8Cyut43zVlgFmXP7UVIB7uYylgDgcWM0fd5LHr7135fv48YGazTY9ZGQz+IjzVCKONgUcBjRsOyLPQkhuXUK4gnOSGhane+8kIHwTggqYTKcs54beSLdD9i1km8O8LzZfw0q3ruRBUJwjoFR2Bn7uQQFrD9FqRSYcRKWdXcnmpWlV7cIvQLBdNhgFzGEDBz659SAVJM3kRRjcQbHB69RH2zU2ZoSAiY2Qn1oqDpDMryjiCE4ZEI7f1liifWK0crNv1uBq4W10I6KDohsjXT4hwKaf84fW+nKtOVHZxZVKAmZN1yRQFDmZXM/BR6W6G0AuECQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by SN7PR12MB7909.namprd12.prod.outlook.com (2603:10b6:806:340::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.21; Sun, 25 May
- 2025 17:19:34 +0000
-Received: from AM1PEPF000252DA.eurprd07.prod.outlook.com
- (2603:10a6:20b:49d:cafe::18) by AS9PR06CA0515.outlook.office365.com
- (2603:10a6:20b:49d::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8769.19 via Frontend Transport; Sun,
- 25 May 2025 17:19:34 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 131.228.2.241)
- smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
-Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
- designates 131.228.2.241 as permitted sender)
- receiver=protection.outlook.com; client-ip=131.228.2.241;
- helo=fihe3nok0734.emea.nsn-net.net; pr=C
-Received: from fihe3nok0734.emea.nsn-net.net (131.228.2.241) by
- AM1PEPF000252DA.mail.protection.outlook.com (10.167.16.52) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8769.18
- via Frontend Transport; Sun, 25 May 2025 17:19:34 +0000
-Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
-	by fihe3nok0734.emea.nsn-net.net (Postfix) with ESMTP id DE0342015C;
-	Sun, 25 May 2025 20:19:32 +0300 (EEST)
-From: chia-yu.chang@nokia-bell-labs.com
-To: horms@kernel.org,
-	donald.hunter@gmail.com,
-	xandfury@gmail.com,
-	netdev@vger.kernel.org,
-	dave.taht@gmail.com,
-	pabeni@redhat.com,
-	jhs@mojatatu.com,
-	kuba@kernel.org,
-	stephen@networkplumber.org,
-	xiyou.wangcong@gmail.com,
-	jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	ast@fiberby.net,
-	liuhangbin@gmail.com,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	ij@kernel.org,
-	ncardwell@google.com,
-	koen.de_schepper@nokia-bell-labs.com,
-	g.white@cablelabs.com,
-	ingemar.s.johansson@ericsson.com,
-	mirja.kuehlewind@ericsson.com,
-	cheshire@apple.com,
-	rs.ietf@gmx.at,
-	Jason_Livingood@comcast.com,
-	vidhi_goel@apple.com
-Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
-	Victor Nogueira <victor@mojatatu.com>
-Subject: [PATCH v17 net-next 4/5] selftests/tc-testing: Add selftests for qdisc DualPI2
-Date: Sun, 25 May 2025 19:19:23 +0200
-Message-Id: <20250525171924.15603-5-chia-yu.chang@nokia-bell-labs.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250525171924.15603-1-chia-yu.chang@nokia-bell-labs.com>
-References: <20250525171924.15603-1-chia-yu.chang@nokia-bell-labs.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.22; Sun, 25 May
+ 2025 17:20:15 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::66fc:f8a2:1bfb:6de8]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::66fc:f8a2:1bfb:6de8%7]) with mapi id 15.20.8769.019; Sun, 25 May 2025
+ 17:20:15 +0000
+Date: Sun, 25 May 2025 20:20:05 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Linus =?iso-8859-1?Q?L=FCssing?= <linus.luessing@c0d3.blue>
+Cc: bridge@lists.linux.dev, netdev@vger.kernel.org,
+	openwrt-devel@lists.openwrt.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ivan Vecera <ivecera@redhat.com>, Jiri Pirko <jiri@resnulli.us>,
+	Vladimir Oltean <olteanv@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+	Jonathan Corbet <corbet@lwn.net>, Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Xiao Liang <shaw.leon@gmail.com>,
+	Markus Stockhausen <markus.stockhausen@gmx.de>,
+	Jan Hoffmann <jan.christian.hoffmann@gmail.com>,
+	Birger Koblitz <git@birger-koblitz.de>,
+	=?iso-8859-1?Q?Bj=F8rn?= Mork <bjorn@mork.no>
+Subject: Re: [PATCH net-next 2/5] net: bridge: mcast: export ip{4,6}_active
+ state to netlink
+Message-ID: <aDNRRReO3SufLNkb@shredder>
+References: <20250522195952.29265-1-linus.luessing@c0d3.blue>
+ <20250522195952.29265-3-linus.luessing@c0d3.blue>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250522195952.29265-3-linus.luessing@c0d3.blue>
+X-ClientProxiedBy: TL0P290CA0005.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:5::16) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM1PEPF000252DA:EE_|VI1PR0701MB6800:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: dac84260-dace-4f81-43e9-08dd9bb051af
-X-LD-Processed: 5d471751-9675-428d-917b-70f44f9630b0,ExtAddr
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|SN7PR12MB7909:EE_
+X-MS-Office365-Filtering-Correlation-Id: 71e29034-e2d5-4e6e-8c48-08dd9bb06a28
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|82310400026|36860700013|1800799024|7416014|376014|921020;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
 X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?wgtoAO4OXhlw3Lt61fn8bnCITA6cV7JJs1LvwBFho3l05DO7h3nM0xX2J1Gw?=
- =?us-ascii?Q?N10/dicGEAvdd0yb8ciu4sROA15jePwxH8DSSceQ7KVnGPfw5hoK0noGcQx2?=
- =?us-ascii?Q?pnZW3Ykb74azANQRNwBeEzoWmo3Of8+fiyv7iQ8wQTV4Wbwdj3JxAS1ROIHx?=
- =?us-ascii?Q?4txszATDFhVIrJaxoKIHNMWfupwEzSUK7Z0wvXb5TUKsz5W4/Jt/aAOuFGIJ?=
- =?us-ascii?Q?S7aPrSVu2o/p6IBXnPdHIZKAS5qsBnE5hHWbH/9FvNmncqagEq84uVvKNUJp?=
- =?us-ascii?Q?RbxE38msTQySc7zNiVFAeihew5SFXrLAP6GO7bOl4b4zcfp8WiKL38vg5oqU?=
- =?us-ascii?Q?gifQhudLoXQwQsgzFRFCtG+mgy0UHf2RE6qMrHJ6dsDJMZcCd/BxkyaVNtvW?=
- =?us-ascii?Q?qhaW0a2//fm1lKCO9nGF6UL+oOzhpWf0bkXzCguRZ3dZehhmqa+TNXHbhrK5?=
- =?us-ascii?Q?S5d8yqxKiCG1+ZCqJ5W1QPxKaZXSjpe5dDFmP96p5id0F3dJihQYxd4N9wHI?=
- =?us-ascii?Q?WWSFAtdvzPAdpYu3FoMGwyLQaxKnKeAKZX6/wjaZ8Og3yx6DhZMPRuNq58u0?=
- =?us-ascii?Q?GRuXZC5X1e1s2u+YqZ8ewdKbVArTbmAtnCXHpjgBIrFbDFEtlHg7T4Qz4p5D?=
- =?us-ascii?Q?F5JcC9n66s9fo2BwfTArducyqKmFInzVO99C7r2z29xOanHZ1F2lFxdepSsj?=
- =?us-ascii?Q?spEEkW1s8Vv+ImN4qTqkJl+3FL1rrZof/dTJ12bIJjrea9bAvE2c4T7pt2Ze?=
- =?us-ascii?Q?ztWVz9RKBykv08t6shMs6JQfxn6HfbhQJFfdRQ85GNNe1PoBwy+Bf/7WkBms?=
- =?us-ascii?Q?16KoUMokWjtr0QeiENZuItbl/6brTkGKe3ZZ3/P6oK8xD/g2Hi4RPk8cBu1K?=
- =?us-ascii?Q?Czj/+1poiacRQHltXOrL14AX2SE4MozvjkaXU1an8HSETGiszpNjaQKZHB/v?=
- =?us-ascii?Q?DB2Ad8mphPcXykV1hJa1mxr8sqCjcRAZwPzP9jNOE8l4GIZDUTW2KDXQzqh+?=
- =?us-ascii?Q?RhiCQpcJ++pG12X03AeseP0YuRhqQPzMRfpqBeh5Izriyl0ZYa6AZCk+Snmx?=
- =?us-ascii?Q?bIHk75BbTFdnw5Vp/yMiDLy/ZS8oy3cBCxK3n30i23JkmDb7XU+GMX/fhosH?=
- =?us-ascii?Q?qEa/B3q7R1pEQUWBICp7fAxVdWkj45411b9SEhM2HuOxdR+4aZCS7b3jrCFD?=
- =?us-ascii?Q?ZkquH8SqrIlcWfqogVOGGKvtTIDWbOo2Y7B7vXEXYN9hyEJRpFLneSD6Vtxm?=
- =?us-ascii?Q?24rShU5x0xMNAXzewY8KtpyqiqPSFDenNcs4sY1QuRDPjM/clqxmHO3xRs9E?=
- =?us-ascii?Q?stPLJmJELTh4kRxGL9/qwxadOP+rDGSaABs54r3oBVas9RG1opk1AfhuiuC9?=
- =?us-ascii?Q?LFyzCQUGGgBBeU1ttgHsEEnOLlaYwPyiIWXvVuKgSzAPDUP4kNwlR1XyGWeT?=
- =?us-ascii?Q?XJPRDM/EPjdyEVUoXWLxNkpizrp8rDt0A+m7F16Y4L8aa07YRI55VY7nKv0L?=
- =?us-ascii?Q?93hz3bdAJ50fkOKPuDaYG4VkfPfBSk1urlDutMS1w4/U89672rgt9oPraA?=
- =?us-ascii?Q?=3D=3D?=
+	=?iso-8859-1?Q?R1BaLxYFXkIV6QJcEqwxmMnDgmsG2SziofEG3agYYwZWHHQEIlFGiVXirn?=
+ =?iso-8859-1?Q?9FMv4iQ4QsHmN1Zyqh3+51WtEq+kiD9b1YizOO2v5iUQTLiVUkUkFJ6sRA?=
+ =?iso-8859-1?Q?c5sp8/fwhTJPB3RzeEIopjTVfaaV+jOcll1vYBW3RPsTk/ccXcK3X6LQBM?=
+ =?iso-8859-1?Q?eA0eK052+LXHhxT6cplg2/FQtGzPcFFU7LMuJeMfgP3K5KHKW+ms3rJPcA?=
+ =?iso-8859-1?Q?I5UaeAzoDQX1je7qGBFSaLenrRyZmTsOQ1TOEruskQf4qx+4RvMBzmlKRb?=
+ =?iso-8859-1?Q?1PV0ZPHp2HMncywhU9kJzaV1Ryb1oEdS4U/2x1+HUdxHcSLLHnutlk5WLS?=
+ =?iso-8859-1?Q?7qrW8dIuOruY3TrrDjlvx3OZLa1L5PeHuZCy2JmZ4GXvwKdlfEuzR9AIKr?=
+ =?iso-8859-1?Q?u5dFVk39D7dB4HlLiPN5ydKnPpvTi/GX208wfcfHXaQdUBLufMO2v/t3p8?=
+ =?iso-8859-1?Q?WIdfyV40lnGQpm1rxDHFdTuJculX/rq2uowoeIQVM3VnwlqmVzf/nVBTBN?=
+ =?iso-8859-1?Q?L1WH/JdQ1l/yEaNpu3CXcFFZraI/MI6k8mgHad8k3j7rOsJgZO2cFPKyoR?=
+ =?iso-8859-1?Q?lVzdi49u1PypaSk7Mq2bSxoPAWR4Y27J3fKUili0LvtyMn5gjzUUMrtCqf?=
+ =?iso-8859-1?Q?OKkc+Sbf+p/ZKZ0RG7RU9Nwu6m+rrXEx4+1FM9VmtCuUjBxSMKYa/CO4kQ?=
+ =?iso-8859-1?Q?LCTwjw5S+eVcmkGFGlYIU88NjA1jwQHdxEEdVtd4FuWJSACOwSL+BA1eKW?=
+ =?iso-8859-1?Q?h75F3l1bUU/sld4yA1b70l9LkGhbrK3w4ps7VyyLgKF8dWdJu+AFpn1B5Z?=
+ =?iso-8859-1?Q?kqKokKw0v86MmbLnowLngpLB080y35QXUpwb+aH9QkwfhUs0ZzbtsTOjeq?=
+ =?iso-8859-1?Q?DtKCtkH5ngBp+zaG/wQ/DlDGGfSZH7j4l61V6k4D+j13vnRkY+kfo34Nfl?=
+ =?iso-8859-1?Q?Il+gyJqy0g+rqzFp2cjc/GOCwA95tQ/Xgdz73CPVQ3moIMPm+y1JqZvqNU?=
+ =?iso-8859-1?Q?7d59KrjrsCpg53WEJTYGJFUjlYNCswr0ekrt+R2lMp+YddQqtDQ4g4zXWc?=
+ =?iso-8859-1?Q?Gb9KFYVnku8TxOtVehb2cgAUoinaf7P2TktNazCrLf1ZyizxKkUoHu144Q?=
+ =?iso-8859-1?Q?06dXsEtTFspA4TeZkAzgXyPXkUu+LVuPLPuPPbV8zSVdi89THJlu9ctO6a?=
+ =?iso-8859-1?Q?hDyIX4M8Fa8ZhQTPlUCEABu/OpkAOlTmNL15/nsl1c00Ps3Xkstl0HJHY0?=
+ =?iso-8859-1?Q?sTvqizhVSoro/GRWZnG/zHatVxAV7cKGQbMwAvfKDjuD/jZCNvkBBn9N4Z?=
+ =?iso-8859-1?Q?CLddHl6WG8UYrCtXlWNZZS9lex/KS52Xzvba5Pbxx1yIHaX/cnwjSs4gNs?=
+ =?iso-8859-1?Q?wAYrfOSZel40OlUm1CBqAEcP1MlHDVIlgeBxMjcPTK6fgxXkS7arY6KdD8?=
+ =?iso-8859-1?Q?2XUDZTZtpep9MPxYD5+KhQ08nMq+hZrDQ89/m94G8eOlVyDYxBDloPMOSH?=
+ =?iso-8859-1?Q?g=3D?=
 X-Forefront-Antispam-Report:
- CIP:131.228.2.241;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fihe3nok0734.emea.nsn-net.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: nokia-bell-labs.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2025 17:19:34.2474
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?KOMgOK2Te60UjrDu/IuVouVqaKJU+xdecFRJTnqHJL/q6eXq+xsK17tBTO?=
+ =?iso-8859-1?Q?AyZYPsi52hArRDe9YRWYH9q05/zgclQ4EONF6gotwcsGI79iwZrqdV7dty?=
+ =?iso-8859-1?Q?3pNUXFTlUjDN9JNTu+tAbUZ/hNzM0ZpsgmOsYgiJFr8A57CO4jlVPylDdN?=
+ =?iso-8859-1?Q?SDrKQknvmo+DJjm8nCwfHQMS2lAjJYIIUVlpVSgvBphqGRfZHTB3xWjzzo?=
+ =?iso-8859-1?Q?S32reiYSaPAprdeJxtVWi/74kjT5gWIZZCd1T1LVZr3RZ2p0hBfYveYwAc?=
+ =?iso-8859-1?Q?fEdQUEd49CFnbShpOXKB43TyzCXl1gXM+UQryu/nm0N+c1aftwUqvkE7lT?=
+ =?iso-8859-1?Q?yCFoIEoFpteOvBInpLNHf58VpUZUkkMFQAXiTuvQ1Fh9nGXrRR2hhbqJqM?=
+ =?iso-8859-1?Q?aP6u8HxY9VA9ZAAAqhQteYveC/1tN0tqHFMZIo0O+cjWQJDUlgfK23M2b2?=
+ =?iso-8859-1?Q?e1yKLQM7UV+n8e3oeM7NlzejazOdHVk1+ZJZYYF+JvWt7dAg7E4dyQho/r?=
+ =?iso-8859-1?Q?YtCqawMch+UuJVar5r/pddK/kaGoZgHXTPyhR8sQUBH0viqdJs/RYvCxJ3?=
+ =?iso-8859-1?Q?T5qTF+c5FSMWQtIby+MLoyrsT1pcK/t5i8htqgFMXuQb/5dZjOmIFVwAdx?=
+ =?iso-8859-1?Q?w2RD5dBzLIsLvOmL8iRTtHdcm8XH5VSYSySD7c7/zfQonGaOO/PT0Q8iU/?=
+ =?iso-8859-1?Q?6Lo5KI7SOyJs9cFo3NiTwo2aBXI4AKomOzEyXQZA+tU+hU3h+ZcAUX5Upy?=
+ =?iso-8859-1?Q?FL/C7200NWPZNk3CzStRD0HZiWnkXzPVPvcX0NW0MHCppStgnj+QJI5VxK?=
+ =?iso-8859-1?Q?6v2pXIuOy1IYDQAAEdUZuk0J9MV98Se4y3MUS1WtE4HMyz1khx0yaT2Duv?=
+ =?iso-8859-1?Q?wsZgKRiPVg/gEgZ0JNtmyqgVtpHdEvPMZLLUmB9ztYsnbKQiAXHcpSSSu+?=
+ =?iso-8859-1?Q?kmXz1b8xdiR6tYFp7URaB911OKoM59DM4QD/gKIbdHl+rIotmlWB070sZ1?=
+ =?iso-8859-1?Q?swzwzfCl977x+KW8VZq64n4DY1Rz/Ei8CxVRbvC4OuSyl1uPu0VtV/xXMu?=
+ =?iso-8859-1?Q?IMug5E8a9jaYMN3mp2pyHXNPbSBlfJuc3+o0WFhrcJpS/BTfZGipYPKApv?=
+ =?iso-8859-1?Q?HfkD8PT8WHWROYi0L9H39LETjzDFqbo8ekpViQQpUZYuZxYcuLXQs0lIeD?=
+ =?iso-8859-1?Q?dedwvQ8TNdbm2OWs5BuvBnxiuwSZAz6cKxntJUW0M7PkGnqGs4su9Yi3xR?=
+ =?iso-8859-1?Q?JROrzVHJJtnU5ZGoKyF1O0sD7pyuBgerXkRM2wnTZt8hP4wrRl0qkZ830K?=
+ =?iso-8859-1?Q?Sn7Vcs0a1IBswdLE0XvILDsxz2FZB7mon/WMp+hx6nTXq+6QWsJTSHdEVF?=
+ =?iso-8859-1?Q?NS+EWUHnqaWL+FkVHsJbMAlez25bPsayiB114ZHDwILgtHrGzumYqRMKIU?=
+ =?iso-8859-1?Q?6GsYKdpEnXyxrdFtT+JfoVcGL58zAzhhw60cPUB88xOeP4+zDNO8pAdw3F?=
+ =?iso-8859-1?Q?uvkm/D0n3UqoaxSvu7UzXkO+qHew7hRcMP4+u5ZQTZB79o1vc+XiHWbUcL?=
+ =?iso-8859-1?Q?nW5gGE7CmKZZkGHEjORuqq/XnTKg2BfJ6XVXtQNcsrpbkVlGPGu0f5jrWO?=
+ =?iso-8859-1?Q?KIP+MnnYg0mc25pYaFuSCst3zqPdf+8iIL?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 71e29034-e2d5-4e6e-8c48-08dd9bb06a28
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2025 17:20:15.5335
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: dac84260-dace-4f81-43e9-08dd9bb051af
-X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.241];Helo=[fihe3nok0734.emea.nsn-net.net]
-X-MS-Exchange-CrossTenant-AuthSource: AM1PEPF000252DA.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0701MB6800
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8vIqQC1bFZYrCI3LtCtQuNcPLBpo2sGvmBdkFJjSZm9rPHVMSN4ohIgHUBKBw0Dr1jvCvwY7fHgJfO7X7UfVHQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7909
 
-From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+On Thu, May 22, 2025 at 09:17:04PM +0200, Linus Lüssing wrote:
+> diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+> index 318386cc5b0d..41f6c461ab32 100644
+> --- a/include/uapi/linux/if_link.h
+> +++ b/include/uapi/linux/if_link.h
+> @@ -742,6 +742,16 @@ enum in6_addr_gen_mode {
+>   * @IFLA_BR_FDB_MAX_LEARNED
+>   *   Set the number of max dynamically learned FDB entries for the current
+>   *   bridge.
+> + *
+> + * @IFLA_BR_MCAST_ACTIVE_V4
+> + *   Bridge IPv4 mcast active state, read only.
+> + *
+> + *   1 if an IGMP querier is present, 0 otherwise.
+> + *
+> + * @IFLA_BR_MCAST_ACTIVE_V6
+> + *   Bridge IPv4 mcast active state, read only.
+> + *
+> + *   1 if an MLD querier is present, 0 otherwise.
+>   */
 
-Update configuration of tc-tests and preload DualPI2 module for self-tests,
-and add folloiwng self-test cases for DualPI2:
+[...]
 
-  Test a4c7: Create DualPI2 with default setting
-  Test 1ea4: Create DualPI2 with memlimit
-  Test 2130: Create DualPI2 with typical_rtt and max_rtt
-  Test 90c1: Create DualPI2 with max_rtt
-  Test 7b3c: Create DualPI2 with any_ect option
-  Test 49a3: Create DualPI2 with overflow option
-  Test d0a1: Create DualPI2 with drop_enqueue option
-  Test f051: Create DualPI2 with no_split_gso option
-  Test 456b: Create DualPI2 with packet step_thresh
-  Test 610c: Create DualPI2 with packet min_qlen_step
-  Test b4f6: Create DualPI2 with packet coupling_factor
-  Test 37f1: Create DualPI2 with packet classic_protection
+> diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
+> index 6e337937d0d7..7829d2842851 100644
+> --- a/net/bridge/br_netlink.c
+> +++ b/net/bridge/br_netlink.c
+> @@ -1264,7 +1264,9 @@ static const struct nla_policy br_policy[IFLA_BR_MAX + 1] = {
+>  	[IFLA_BR_VLAN_STATS_ENABLED] = { .type = NLA_U8 },
+>  	[IFLA_BR_MCAST_STATS_ENABLED] = { .type = NLA_U8 },
+>  	[IFLA_BR_MCAST_IGMP_VERSION] = { .type = NLA_U8 },
+> +	[IFLA_BR_MCAST_ACTIVE_V4] = { .type = NLA_U8 },
+>  	[IFLA_BR_MCAST_MLD_VERSION] = { .type = NLA_U8 },
+> +	[IFLA_BR_MCAST_ACTIVE_V6] = { .type = NLA_U8 },
 
-Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
----
- tools/testing/selftests/tc-testing/config     |   1 +
- .../tc-testing/tc-tests/qdiscs/dualpi2.json   | 254 ++++++++++++++++++
- tools/testing/selftests/tc-testing/tdc.sh     |   1 +
- 3 files changed, 256 insertions(+)
- create mode 100644 tools/testing/selftests/tc-testing/tc-tests/qdiscs/dualpi2.json
-
-diff --git a/tools/testing/selftests/tc-testing/config b/tools/testing/selftests/tc-testing/config
-index db176fe7d0c3..72b5f36f6731 100644
---- a/tools/testing/selftests/tc-testing/config
-+++ b/tools/testing/selftests/tc-testing/config
-@@ -30,6 +30,7 @@ CONFIG_NET_SCH_CBS=m
- CONFIG_NET_SCH_CHOKE=m
- CONFIG_NET_SCH_CODEL=m
- CONFIG_NET_SCH_DRR=m
-+CONFIG_NET_SCH_DUALPI2=m
- CONFIG_NET_SCH_ETF=m
- CONFIG_NET_SCH_FQ=m
- CONFIG_NET_SCH_FQ_CODEL=m
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/dualpi2.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/dualpi2.json
-new file mode 100644
-index 000000000000..cd1f2ee8f354
---- /dev/null
-+++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/dualpi2.json
-@@ -0,0 +1,254 @@
-+[
-+    {
-+        "id": "a4c7",
-+        "name": "Create DualPI2 with default setting",
-+        "category": [
-+            "qdisc",
-+            "dualpi2"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root dualpi2",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc dualpi2 1: root refcnt [0-9]+ limit 10000p.* step_thresh 1ms min_qlen_step 0p coupling_factor 2 drop_on_overload drop_dequeue classic_protection 10% l4s_ect split_gso",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "1ea4",
-+        "name": "Create DualPI2 with memlimit",
-+        "category": [
-+            "qdisc",
-+            "dualpi2"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root dualpi2 memlimit 20000000",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc dualpi2 1: root refcnt [0-9]+ limit 10000p.* memlimit 20000000B",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "2130",
-+        "name": "Create DualPI2 with typical_rtt and max_rtt",
-+        "category": [
-+            "qdisc",
-+            "dualpi2"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root dualpi2 typical_rtt 20ms max_rtt 200ms",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc dualpi2 1: root refcnt [0-9]+ limit 10000p.* target 20ms tupdate 20ms alpha 0.042969 beta 1.496094",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "90c1",
-+        "name": "Create DualPI2 with max_rtt",
-+        "category": [
-+            "qdisc",
-+            "dualpi2"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root dualpi2 max_rtt 300ms",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc dualpi2 1: root refcnt [0-9]+ limit 10000p.* target 50ms tupdate 50ms alpha 0.050781 beta 0.996094",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "7b3c",
-+        "name": "Create DualPI2 with any_ect option",
-+        "category": [
-+            "qdisc",
-+            "dualpi2"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root dualpi2 any_ect",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc dualpi2 1: root refcnt [0-9]+ limit 10000p .* any_ect",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "49a3",
-+        "name": "Create DualPI2 with overflow option",
-+        "category": [
-+            "qdisc",
-+            "dualpi2"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root dualpi2 overflow",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc dualpi2 1: root refcnt [0-9]+ limit 10000p.* overflow",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "d0a1",
-+        "name": "Create DualPI2 with drop_enqueue option",
-+        "category": [
-+            "qdisc",
-+            "dualpi2"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root dualpi2 drop_enqueue",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc dualpi2 1: root refcnt [0-9]+ limit 10000p .* drop_enqueue",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "f051",
-+        "name": "Create DualPI2 with no_split_gso option",
-+        "category": [
-+            "qdisc",
-+            "dualpi2"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root dualpi2 no_split_gso",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc dualpi2 1: root refcnt [0-9]+ limit 10000p .* no_split_gso",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "456b",
-+        "name": "Create DualPI2 with packet step_thresh",
-+        "category": [
-+            "qdisc",
-+            "dualpi2"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root dualpi2 step_thresh 3p",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc dualpi2 1: root refcnt [0-9]+ limit 10000p .* step_thresh 3p",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "610c",
-+        "name": "Create DualPI2 with packet min_qlen_step",
-+        "category": [
-+            "qdisc",
-+            "dualpi2"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root dualpi2 min_qlen_step 1",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc dualpi2 1: root refcnt [0-9]+ limit 10000p .* min_qlen_step 1p",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "b4fa",
-+        "name": "Create DualPI2 with packet coupling_factor",
-+        "category": [
-+            "qdisc",
-+            "dualpi2"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root dualpi2 coupling_factor 1",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc dualpi2 1: root refcnt [0-9]+ limit 10000p .* coupling_factor 1",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "37f1",
-+        "name": "Create DualPI2 with packet classic_protection",
-+        "category": [
-+            "qdisc",
-+            "dualpi2"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root dualpi2 classic_protection 0",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc dualpi2 1: root refcnt [0-9]+ limit 10000p .* classic_protection 0%",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    }
-+]
-diff --git a/tools/testing/selftests/tc-testing/tdc.sh b/tools/testing/selftests/tc-testing/tdc.sh
-index 589b18ed758a..2316bfdd0b4e 100755
---- a/tools/testing/selftests/tc-testing/tdc.sh
-+++ b/tools/testing/selftests/tc-testing/tdc.sh
-@@ -67,4 +67,5 @@ try_modprobe sch_hfsc
- try_modprobe sch_hhf
- try_modprobe sch_htb
- try_modprobe sch_teql
-+try_modprobe sch_dualpi2
- ./tdc.py -J`nproc`
--- 
-2.34.1
-
+The new attributes should be set to 'NLA_REJECT' if they are meant to be
+read only. They can also be removed from the policy, but being explicit
+and using 'NLA_REJECT' is better IMO.
