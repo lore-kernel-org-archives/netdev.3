@@ -1,89 +1,83 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F10525569;
-	Mon, 26 May 2025 16:18:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED2218B47D
+	for <netdev@vger.kernel.org>; Mon, 26 May 2025 16:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748276287; cv=none; b=Kte9JzLbs7PSaS4VOVSvCzDMXBxVeNlSAKzLzXjh9g+jbaS6rhGEoqMxtASt2etp2qZePZwo+VVK116aCiUoG6/xjQhQbxXfimzhpWR7H6ActqkG0VWW7SNbmb/SWPMYyCY6gJzNoOrBFUUWFe4irjCZr3RxeGuaU4Knj912+Lk=
+	t=1748276394; cv=none; b=kjKyoCvqpTwZam1C4lUxCM1qWtpDRqnyBZg6r4N0pONeeiDFDRsEyE9Y/Y+FjYF+8soXl2i6KblA5BoeUhoB/5jA/XjLAUz6RVZJrPXUrV9fsweSFdO2lku0U8Zv6buIL439h1xD8JBwaPW32fTOALJjent7HKXRZIzQiQmF0S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748276287; c=relaxed/simple;
-	bh=Km/T0v33ODIbbWge+lZQgvBrYDZpQ9YKa95weK0TeIc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=s/zoTBkDtDWCz6qNrHau/UGoHwIsE/GL+G/HniD2pxUWMy8SCx99uzUHnfMKpjbX/IcoG/IECGB65ol/OqgZVra5eR3P7W7QHmhMluPaPXtbm5CfDtAWo8mzmnt8qNoqawtFpdNgBU/y8r9fe5j7scwrJSedCQHDNLMaLECKK5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=cOo+iE3d; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1748276394; c=relaxed/simple;
+	bh=A10kEuFwU0GPNg8ZAIh03cG/f2oh5tGyY4CqrzzrAiA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=FfVFL9htsx0yW6jKKBPHnbETIIoKMzaDAvSfsR3mXVYofnMliJ3aXBwlG9B64A296YVUXYVKdufElVCiylJDaiwne1luZ7TwWfZMSqxuj3R7j2k7m8R6bE2yNUQGCfWj/I7tmXuv+sGYRxlGYa9VjrCFXXYJMM1S2TCA5XFKT7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uDN3lhMb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="cOo+iE3d"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=/08m4WiVs71pwfy4afzILVd589TmeFYKjVShkpd/6Xk=;
-	b=cOo+iE3dQ+XGIYC67LTJgRXrsxVcskrIamUspAxWNOfw8IHx5/c/BsJdxWpP0b
-	hFyZpPd4mGHUNdODYM2R7dnnA+06xICpaWTakAoVHN5KaXSKJFTROQ7AKmYU9Qbk
-	Hl+uhPbipikJOoBURZqbbS4fCK0F9+F8oUyWvbCVXLpUU=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3v1DYkzRowdzVEA--.46087S2;
-	Tue, 27 May 2025 00:16:36 +0800 (CST)
-From: =?UTF-8?q?=E6=9D=8E=E5=93=B2?= <sensor1010@163.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	jonas@kwiboo.se,
-	rmk+kernel@armlinux.org.uk,
-	david.wu@rock-chips.com,
-	wens@csie.org,
-	jan.petrous@oss.nxp.com
-Cc: netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?=E6=9D=8E=E5=93=B2?= <sensor1010@163.com>
-Subject: [PATCH] net: dwmac-rk: No need to check the return value of the phy_power_on()
-Date: Mon, 26 May 2025 09:16:21 -0700
-Message-Id: <20250526161621.3549-1-sensor1010@163.com>
-X-Mailer: git-send-email 2.17.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uDN3lhMb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E06C4CEE9;
+	Mon, 26 May 2025 16:19:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748276394;
+	bh=A10kEuFwU0GPNg8ZAIh03cG/f2oh5tGyY4CqrzzrAiA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=uDN3lhMb1q6NmeVQNLSx+5HMHQHqEJU00sUyy+ytlOETSMvuJ674wMko1SKxZ110Q
+	 h80PVwRtdCOKuxSPydWl8jZ350F4fahX0FMDwc+NFawlHz2TR/b0hPZ6TqAj6UfV9U
+	 l7GFis0EIeeU44kAiMSI/fJn3jHPmoQO0Y9QcIUfYtTFbwvW7embPKDhWvzbyzMyWj
+	 6ExngEjSd/AfmtQ/apvWUPD4/ipgk62tSJF54+B+avsUtPeu/VHsj/0pRPloA7erGg
+	 rm1O/G4RgLRDI0bkDwNZTMZaP1BiY0joaqoljCHTY1vEOQoqsQG8XfKUNYDZFcSwt3
+	 +uDvvIwdCnRKQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAECA3805D8E;
+	Mon, 26 May 2025 16:20:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3v1DYkzRowdzVEA--.46087S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKw13Wr1rCFWfAryUKF43GFg_yoWfXwcEga
-	17ZFsaqa15GF4jyF98Cw45ZrWSvF4DWrs3ZFsxKayfCF47Xwn8XryDursxArnrur45AF9r
-	Gr1fJFyxZ34xGjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRtCJPDUUUUU==
-X-CM-SenderInfo: 5vhq20jurqiii6rwjhhfrp/xtbBMR5Xq2gyA7BOhAADsz
+Subject: Re: [net PATCH v3] octeontx2-af: Send Link events one by one
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174827642875.972633.11067086787935870247.git-patchwork-notify@kernel.org>
+Date: Mon, 26 May 2025 16:20:28 +0000
+References: <1747823443-404-1-git-send-email-sbhatta@marvell.com>
+In-Reply-To: <1747823443-404-1-git-send-email-sbhatta@marvell.com>
+To: Subbaraya Sundeep <sbhatta@marvell.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ michal.swiatkowski@linux.intel.com, gakula@marvell.com, hkelam@marvell.com,
+ sgoutham@marvell.com, lcherian@marvell.com, bbhushan2@marvell.com,
+ jerinj@marvell.com, netdev@vger.kernel.org
 
-since the return value of the phy_power_on() function is always 0,
-checking its return value is redundant.
+Hello:
 
-Signed-off-by: 李哲 <sensor1010@163.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-index 700858ff6f7c..6e8b10fda24d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-@@ -1839,11 +1839,7 @@ static int rk_gmac_powerup(struct rk_priv_data *bsp_priv)
- 		dev_err(dev, "NO interface defined!\n");
- 	}
- 
--	ret = phy_power_on(bsp_priv, true);
--	if (ret) {
--		gmac_clk_enable(bsp_priv, false);
--		return ret;
--	}
-+	phy_power_on(bsp_priv, true);
- 
- 	pm_runtime_get_sync(dev);
- 
+On Wed, 21 May 2025 16:00:43 +0530 you wrote:
+> Send link events one after another otherwise new message
+> is overwriting the message which is being processed by PF.
+> 
+> Fixes: a88e0f936ba9 ("octeontx2: Detect the mbox up or down message via register")
+> Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+> ---
+> v3:
+>  Modifid to wait for response at other places mcs_notify_pfvf
+>  and rvu_rep_up_notify as suggested by Simon Hormon and Michal Swiatkowski.
+> v2:
+>  No changes. Added subject prefix net.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v3] octeontx2-af: Send Link events one by one
+    https://git.kernel.org/netdev/net/c/ba5cb47b56e5
+
+You are awesome, thank you!
 -- 
-2.17.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
