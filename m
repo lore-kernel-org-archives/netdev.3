@@ -1,60 +1,85 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19ED11EF36C;
-	Mon, 26 May 2025 09:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B687A1F4601
+	for <netdev@vger.kernel.org>; Mon, 26 May 2025 09:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748253108; cv=none; b=NDGwyMqOc7kxmuilBeofd2pGtckhOGU6sJXgJ3q2vSPrjJoOinYDFNdAAdbLgNizHxyDedIQ/gjUjrBuWTGcwLgQ3L3EDpIQWWUoNyXOGe/1bKbdQXImwxsT+cluQi4r8DWzCVZ0Q1rla7hRI7cRrY+ZRxVG+2VUpt2A0lh1Ao0=
+	t=1748253113; cv=none; b=CtJO963iQICMCaNXBkSkMrib+YwKh6WjBIdxpjmiPf+ZjK/roAIxP6jm8nC/b9ljtcY7n/pgY9u0kxKVK9f0ZkleJRPD23609FkUOYJXtFKAAH6Obx/yVKLKiYPhnQ86pDG34CzTfpXynhXYVJsHXXooh310NdclhrFyEdVGK2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748253108; c=relaxed/simple;
-	bh=3qgtqvR99/jckDm4wJuF1A1c37Gw/lv4DloT3Rig0lQ=;
+	s=arc-20240116; t=1748253113; c=relaxed/simple;
+	bh=TLXHmWZ22NNH8blFf/DauL8X48ZlC3+IyN1TTLLW6fo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E5Fhm29B5pAH2Ia6As2EOLpzn8ILsLsprZW16k6kaXKroS6SNEzLevMqYsXRoNNhFbzfhQJw82VmbzcTz6sEUBysTQFuKcIdNepu9gA3D6tYPebci1inYyA/++EsdUri5PqlUAGIt0ZIb11a/Rc8Ap2iKWoit764SEaWYUZqcv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iy90u/JM; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=boEtkvyBb3FsM2rra556s6V4BaaHAexVXjm7AuLSRE3UuJePytoeqh37USWnmGNqSeJr7gFTHw99niQFhxL7OUi9IhS1Wwpjm1/DNBx2SDubMBypdhGzj4OGA8iqjNa0KDbmYxA0R0xj1dv11XDCOb9EntelI+a0jVPumY4zKHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=HY3Cd3oG; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iy90u/JM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748253107; x=1779789107;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3qgtqvR99/jckDm4wJuF1A1c37Gw/lv4DloT3Rig0lQ=;
-  b=iy90u/JMsFfKIfBDYntdkO0Pkr2DKZsBSFTEFpJpggfFzEG7uf52CuiS
-   GhebsKL1Yi9ihSKCXwMwZJ2Wl3Bx6QpWLrvJm3noXSPfblFPShsFszCHp
-   YXXtt+dTTUNjfWxL1soGnsUFJmSUnZI3fuymEp6KG7b4+3tT7B3EKfG8B
-   OPUj4W42prHKTmgLuai3exPdpDn+dOuzJfEb+PmJ0d6RcV1v5LeujRbn6
-   rPG92s8PSFYc9pQb0t9SEgGXt7ToV84WG7g3XjEUoK/oVH+femjoppCsZ
-   tJiHTcaFHEVMS5nIx1+s6QKz4VYHiak6XCWpJ3G/sRyJP1keVPjtldLwA
-   g==;
-X-CSE-ConnectionGUID: 1C9Npc8/RQutka0fAiovGQ==
-X-CSE-MsgGUID: +EsVJaAYSzi95Ac03nZqeQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11444"; a="61631864"
-X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; 
-   d="scan'208";a="61631864"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2025 02:51:47 -0700
-X-CSE-ConnectionGUID: MpZRJJz4QTupfXrYoxvo/A==
-X-CSE-MsgGUID: f38UmJFZTmW3MP8a2UHD2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; 
-   d="scan'208";a="142679357"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2025 02:51:43 -0700
-Date: Mon, 26 May 2025 11:51:06 +0200
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, sergey.temerkhanov@intel.com,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] ice: Fix a null pointer dereference in
- ice_copy_and_init_pkg()
-Message-ID: <aDQ5ipcH346PJPGp@mev-dev.igk.intel.com>
-References: <20250524072658.3586149-1-haoxiang_li2024@163.com>
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="HY3Cd3oG"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43ea40a6e98so24427855e9.1
+        for <netdev@vger.kernel.org>; Mon, 26 May 2025 02:51:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1748253110; x=1748857910; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TLXHmWZ22NNH8blFf/DauL8X48ZlC3+IyN1TTLLW6fo=;
+        b=HY3Cd3oG/3VsuVWDOlEkFsjNzgg6ad1IYtLyKL/RrpIQjSdVVLiZhbGnS13R+EwoJ9
+         B3E6NA59YyF3D3ipIBy1smNHFenKeFkDZtkWikzbChOhiAEtegmKnvwuZAI0dIASVjjK
+         gu0JZirmsKYD4IQLOkMhNihFcFPcyZ1tKA9C+yyF2BH8qbKpHeDCd9bQAdqGlg3DXnms
+         XyUw96UmPh4jrnHp6DrSeg4OZTDZcIICkOvYBXTT/zGe/t5HQLwJFhVqwjY5/g9UbUiU
+         pcocu50dV/omKHua/RzjKVQXde+iBbu3viE9rc4G4OrzqqIKatVI8iI23pfew3EoIWUG
+         jvFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748253110; x=1748857910;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TLXHmWZ22NNH8blFf/DauL8X48ZlC3+IyN1TTLLW6fo=;
+        b=itC8IMXUIknlyJH8t1TlHaSAIhpyHzcir+/AEGg8rYoNnp3b8u40i9D9DGfnvHuBN2
+         mf2SxoqWdkx7FZRewjfR08hfagLI09dwj16zfug1NNR+hZHGaxlwoV2Pz6cDR/vvM7tW
+         a75xIRRin+9YgthI8cXkIfXOR8V5+wxT5DQQjUNwVI03QI5VAzmr3EtVym8R5WZxK9WW
+         tvX+9YcupxCuvkqwCnzrkMcVvw08pZdcrO3trnOoMpavCQU7mJ7jMc5BP3LbDaHhjBsk
+         Bkf8oa+YUpAuA3yhkO/Q5V+VLR67NspwtG3qi/yHRVJ7unS3oY42VpTqSEwbSBEFeVYw
+         03+w==
+X-Forwarded-Encrypted: i=1; AJvYcCUoIa+DjCNUsDiqrX6FMY10vzr+EpEveTtVgUxnNd6mUQMeyrduPzSTDyYMJxnpgDTEqxirJ7w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw19MjHtSYQF6fspXx5icSmoFYE/IfbNWffpcUSeqzJcjGIQyKY
+	Ye//Y46mtFrvGvH6sMTONAApkEKxPOQBRugvy0oweumATcV2oX7B7LTAfv8YZ++NQq8=
+X-Gm-Gg: ASbGncvNzriNPGysMYDqd6HYs45CU4vXwwSZeXU3BMLRV0/aD7evBi1yRKlXn5iEb4F
+	DbFDRBkzpdKJbkLiY+fBuag0A2Had0LtkCzIBVLjIs0BkJ6fLCEiMZRddcrYHg1uCMcnMBhaCmX
+	rrJsCaVIeSZQEPb1lDwoUEXqtPj3EcKjSQTZi2q7x99tuaA3NEiTTzFAaruZfo4NVngozLzXelp
+	viOUWHlTfRa6pQeHhTihYquf/ea94PHjddtR0JWDWAsu4/Vk5C8r4+PKdh8FGGghLWSdBkcFb2M
+	UM0SHq5A7ef2n9UEBgutaLMXrzNxAnh/gzudTEoAmP5N+zwRFYzHWdS4yWvuLWpeVGbBuFlz2Yz
+	2zKM=
+X-Google-Smtp-Source: AGHT+IE44uux+DyOqK1qMEv2nRUdNtdzs/HhoytUDuEJEKhkdLzZbypjicSdsCGfCLWn1+/un7MUqg==
+X-Received: by 2002:a05:600c:5286:b0:43b:c0fa:f9cd with SMTP id 5b1f17b1804b1-44c91ad6c06mr69277355e9.7.1748253109835;
+        Mon, 26 May 2025 02:51:49 -0700 (PDT)
+Received: from jiri-mlt (37-48-1-197.nat.epc.tmcz.cz. [37.48.1.197])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-44f706b9065sm6828165e9.13.2025.05.26.02.51.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 May 2025 02:51:49 -0700 (PDT)
+Date: Mon, 26 May 2025 11:51:46 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: David Arinzon <darinzon@amazon.com>
+Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Richard Cochran <richardcochran@gmail.com>, "Woodhouse, David" <dwmw@amazon.com>, 
+	"Machulsky, Zorik" <zorik@amazon.com>, "Matushevsky, Alexander" <matua@amazon.com>, 
+	Saeed Bshara <saeedb@amazon.com>, "Wilson, Matt" <msw@amazon.com>, 
+	"Liguori, Anthony" <aliguori@amazon.com>, "Bshara, Nafea" <nafea@amazon.com>, 
+	"Schmeilin, Evgeny" <evgenys@amazon.com>, "Belgazal, Netanel" <netanel@amazon.com>, 
+	"Saidi, Ali" <alisaidi@amazon.com>, "Herrenschmidt, Benjamin" <benh@amazon.com>, 
+	"Kiyanovski, Arthur" <akiyano@amazon.com>, "Dagan, Noam" <ndagan@amazon.com>, 
+	"Bernstein, Amit" <amitbern@amazon.com>, "Agroskin, Shay" <shayagr@amazon.com>, 
+	"Ostrovsky, Evgeny" <evostrov@amazon.com>, "Tabachnik, Ofir" <ofirt@amazon.com>, 
+	"Machnikowski, Maciek" <maciek@machnikowski.net>, Rahul Rameshbabu <rrameshbabu@nvidia.com>, 
+	Gal Pressman <gal@nvidia.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Andrew Lunn <andrew@lunn.ch>, Leon Romanovsky <leon@kernel.org>
+Subject: Re: [PATCH v11 net-next 4/8] devlink: Add new "enable_phc" generic
+ device param
+Message-ID: <2uuylwk5sp7fxxhybub3xuhm637ki3pbt2z3m34zzlguvjhgf2@djrmopbia6el>
+References: <20250526060919.214-1-darinzon@amazon.com>
+ <20250526060919.214-5-darinzon@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,39 +88,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250524072658.3586149-1-haoxiang_li2024@163.com>
+In-Reply-To: <20250526060919.214-5-darinzon@amazon.com>
 
-On Sat, May 24, 2025 at 03:26:58PM +0800, Haoxiang Li wrote:
-> Add check for the return value of devm_kmemdup()
-> to prevent potential null pointer dereference.
-> 
-> Fixes: 2ffd87d38d6b ("ice: Move support DDP code out of ice_flex_pipe.c")
+Mon, May 26, 2025 at 08:09:14AM +0200, darinzon@amazon.com wrote:
+>Add a new device generic parameter to enable/disable the
+>PHC (PTP Hardware Clock) functionality in the device associated
+>with the devlink instance.
+>
+>Signed-off-by: David Arinzon <darinzon@amazon.com>
 
-This commit is only moving the code to new file. I think it should be:
-c76488109616 ("ice: Implement Dynamic Device Personalization (DDP) download")
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> ---
->  drivers/net/ethernet/intel/ice/ice_ddp.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ddp.c b/drivers/net/ethernet/intel/ice/ice_ddp.c
-> index 59323c019544..351824dc3c62 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ddp.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ddp.c
-> @@ -2301,6 +2301,8 @@ enum ice_ddp_state ice_copy_and_init_pkg(struct ice_hw *hw, const u8 *buf,
->  		return ICE_DDP_PKG_ERR;
->  
->  	buf_copy = devm_kmemdup(ice_hw_to_dev(hw), buf, len, GFP_KERNEL);
-> +	if (!buf_copy)
-> +		return ICE_DDP_PKG_ERR;
-
-Fix looks fine, thanks
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-
->  
->  	state = ice_init_pkg(hw, buf_copy, len);
->  	if (!ice_is_init_pkg_successful(state)) {
-> -- 
-> 2.25.1
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
