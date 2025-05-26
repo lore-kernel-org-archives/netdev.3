@@ -1,164 +1,149 @@
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043782405EC
-	for <netdev@vger.kernel.org>; Mon, 26 May 2025 19:36:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC5E38F91;
+	Mon, 26 May 2025 19:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748288205; cv=none; b=tC8bY73j2WFfzVx+IQt+cUtO1LjC/S/dqeOBwrlpbyzUc5agG7+Zc7036s4yl0m5Kp590CXznCDcYc8Jai3ez5dxDAs2QuzLb2UAXwQn8WvFL5xD1BY6+NkmiEdwOFc0PA4uQNBFAWyL51wxyjN+AiVB1EJaU/s/IAbXAceA8go=
+	t=1748288319; cv=none; b=hQ3eKRI9k2Q4MvysLmgDjPlro+TeZX5daFHDZCUtwLTI6enFX1ZyY7MiGl0kVuzXZ5luhGq5GNHN5Evr+tBhayv2jnD0H9n7gM/QJ2PPaETP7maJC0MBm/tHJbkSBgQ9hvzWi2IFqjb/BcsUQM917pgd/sFwzmV6LTil9fy+CvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748288205; c=relaxed/simple;
-	bh=jNXui1pdUX7f2EMtq2S/gt3wu/Rauk3khpgDoa0mnBU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=VK4YX72O5QX1zzyCwJWK2d88huKjAUPkq7sold+3Q4DWYM7LhXijhsccwGM/bAwQKeDlMiq6A/lPHrJSGrH89ScDRp7KZlawuAfVv3Z+DqX4GU6Iqzd4phsi/O6gDFBmepQsapz6HmsqAHhjnye9nVvBuDETbF9H7QzfcO7PQIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bejarano.io; spf=pass smtp.mailfrom=bejarano.io; dkim=pass (2048-bit key) header.d=bejarano.io header.i=@bejarano.io header.b=GuHzJLkW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Gvt7fSXs; arc=none smtp.client-ip=202.12.124.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bejarano.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bejarano.io
+	s=arc-20240116; t=1748288319; c=relaxed/simple;
+	bh=BM1rl2JhJG8LNttGNXW1Kdn0wfcSzCJbu7dF3NIC4/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o1L9LLFyOchHipXkREtBCdk/+jCB13s0RI4kYs7xNwNnVkhLynWGIy0MwjjGRJA9qhtf1FG24CgIctWZx+KTHBjDvlYyiAH56w/5w5YNs28tWPOfHecsCKU7hj6UDkIhocgJzlFilKa5wcViRM8eFEvhOMs6NwPtt2woijqFG70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K1HQ7vjM; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bejarano.io header.i=@bejarano.io header.b="GuHzJLkW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Gvt7fSXs"
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id CD2C525401B0;
-	Mon, 26 May 2025 15:36:40 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 26 May 2025 15:36:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bejarano.io; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1748288200;
-	 x=1748374600; bh=PS63K127kxANEhto6mBpREn4uLv49FiTnV/Fm60V/Hw=; b=
-	GuHzJLkWxTulXMRvm69eevd6EZztpPXVCirvD95TGR1bJNoGpBqfTw2/q9UjQZRm
-	Ewu90kuP/Hv7IyHENkaM/XkPVtwZgCsOLvTDLCD5Z8cA7iG5cRRbhoy/+yMEpuf6
-	0wKnZDi28gOQN1EBCJjLb1Al5v8OCng+XZzxlHpVoQMuTGYWPfY59ccEaToevxKl
-	CbDChDdmHumS/n45sSKnJkPA1t284Sk/onhA50EjAMlmEjRip591Ur03eutDpg1p
-	zXcVM94QcNduWwMj9I3UDR4mzC9hUORmFRUhTR+CDdUPSOdg3Fw0ISECUhKP03GB
-	Ll7NJDWVlVNIwM0/2isLAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1748288200; x=
-	1748374600; bh=PS63K127kxANEhto6mBpREn4uLv49FiTnV/Fm60V/Hw=; b=G
-	vt7fSXslaEGNYelH/rl8PpqaQqDqtCGe5xjf/OL1/zYWKiR4aRVCExZ49exzFAMI
-	hTV9MI2RiIbG8M/W4LXtGY9eQZL7Dt3sttZVqzpz29wnX9MjoNZzWbKlj9PoaaFg
-	Vmc2loaHbH/5J62Z+ToIYC7ViJVj720S2iFOhtV9Fe91O2ZZFIOrQ8QCYdVMa8S9
-	p50juTxeDsSuH4BJo0eUlCp6T0KO/WX63j4zNYUfvEXPhdWXIsO+mgnJgVhFA0Cq
-	Y1C3Q+nfHgk8pdFTCScyFbnSCLReOcQltzBPFHsYF2yLCBRojjtMG6ab2Z7d6NVG
-	xLmykN7y9CXj1LJybS7Xw==
-X-ME-Sender: <xms:yMI0aDinvOnHP1Ijwvc_zkumsSF9sNBebcQIZLg2HSuRPOZvk7RIjA>
-    <xme:yMI0aACfJQM_kQgInZuoa0OQhRSWxs2kOjtrf4wu8VnugXywlsoaNZDwV1lggcRVl
-    ziRFWSYV1GZtsiT450>
-X-ME-Received: <xmr:yMI0aDELP6_NFdm6loL1L7mZvAPyplybgr_7_UEKo1anU2-L4VMyJSEbgzrjlDSzxNwmm8-hd2ii3B4V2FVjpWtolvUtGEKfJXwG8BiJQ3LUgQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddukeefjeculddtuddrgeefvddrtd
-    dtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggft
-    fghnshhusghstghrihgsvgdpuffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftd
-    dtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegtggfuhfgjffev
-    gffkfhfvofesthhqmhdthhdtvdenucfhrhhomheptfhitggrrhguuceuvghjrghrrghnoh
-    cuoehrihgtrghrugessggvjhgrrhgrnhhordhioheqnecuggftrfgrthhtvghrnheptefh
-    leekteffhedtgeekudeivefhgfevtedvgedtjefhffejteelgeethfevhfdunecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhhitggrrhgusegs
-    vghjrghrrghnohdrihhopdhnsggprhgtphhtthhopeduuddpmhhouggvpehsmhhtphhouh
-    htpdhrtghpthhtohepshhtvghphhgvnhesnhgvthifohhrkhhplhhumhgsvghrrdhorhhg
-    pdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepmhhikhgrrd
-    ifvghsthgvrhgsvghrgheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehn
-    vghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihgthhgrvg
-    hlrdhjrghmvghtsehinhhtvghlrdgtohhmpdhrtghpthhtohephigvhhgviihkvghlshhh
-    sgesghhmrghilhdrtghomhdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluh
-    hnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgt
-    phhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:yMI0aAQ29VUt4TKuauCb1etURsUebJwF06VXXQKmdpDoLgvxugUddw>
-    <xmx:yMI0aAxc42dmhoK9ay4gMHUAI6E3uCK9XjOWazMt7v28iIJ09N5axQ>
-    <xmx:yMI0aG6Vd0RNoo9LEBRE1k_Y-rBMNxmlIr0VfSd_lYiVSvjR9mTRMw>
-    <xmx:yMI0aFwFMS_GCEhrmLp1iTGMImL3HEz3k2m8KeO-1mjOVoqCEAZ_0g>
-    <xmx:yMI0aFduSg1L9tVlo_o_WSaiTcIFtH1p2kGdC5H1_qsF-IPhOWczVj1K>
-Feedback-ID: i583147b9:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 26 May 2025 15:36:38 -0400 (EDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K1HQ7vjM"
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7cd34b6ba10so19752285a.1;
+        Mon, 26 May 2025 12:38:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748288316; x=1748893116; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=la+eXwi/+zwG0uPPzZ1/tk4oxqM42ItD3blV8gcpIaE=;
+        b=K1HQ7vjMDRld2vj0YEGAfAMRrXPhCRHGqG93nsXpYYxZfUYM5UAEeRYIoNlW+hMIa+
+         oZ4hiqoniiOZsZHjarTNOwHcJAm5NSzCj+NdMrcenq2+01ElRGsrbL8aj+pV3/Eyviao
+         WBcJDfprGUMSTJDBJwJbCAnrFMqHJai7UXq32JV72P57r0dN3+GmPSmPSifBg7zk6M1y
+         flwJWOOnBhJUlAUAZXReWyPycm2bJWQM7txXue935H9vV3GKDJ9Y7Z74vHRmLecRwNwa
+         VhOuXzgofO7wWGDnBE/kkcWc7CdOX0ESS7QtIonxiJ1Is/KN1F2DN9W76u3n2+GpXyaB
+         Spjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748288316; x=1748893116;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=la+eXwi/+zwG0uPPzZ1/tk4oxqM42ItD3blV8gcpIaE=;
+        b=LszSkxQkStn4Y5SRT+rpDPdLZsSEo8f7xNKT2t+egj/i9LHpcAGFNDCgAt03cY/HuV
+         x4iAcvhayROBvl020UC2pp6r42LFhxusxWPhCvFHDP1A7qGP5CAiHaWP8niJnQW7pFPt
+         rQzRekhAaWEdaTX1/93+FfM8NMB5OGmshVijVh+QPWMFKhFAzkD34r7lqOQRjaJtsIVx
+         vq8b3Wl/upReloZN8xHp0AmQ4p/Gf7x1I0DqL2Qla/wLGSWObqavmuJVO8eTFvz6ZL4y
+         HMshleRt9f9ivGo8DMvxerfwFX75Hk+mXhEKntPOTJVs8AUtmiim5oBTdXPk6fr4KKh6
+         MLZA==
+X-Forwarded-Encrypted: i=1; AJvYcCVJJW1WaWt5a77c896c2PgNPSs1pLseomNW+Ss4L7fWJYxH1uoQYGbbd0lSiZwXZR8UDWnfI+Mr1f3h@vger.kernel.org, AJvYcCXQLtHFNYk3v7zVIc7gNuviS3TMMR+0U2HNirGakUTWPb20CqTBLgzJFi/9r8j7iSZfUMX3bO1N@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPijolhiXM+IIESrT95f8rJSseb8yIcKkKGbNeCQYQhLQ6R91V
+	EUFT3Z+W/TMaRou7abTGbMIbmbFkQ4V3eevQgrpbSgBXcr6oOKHl1cZX
+X-Gm-Gg: ASbGncsAkEH6nE5jllHvsyUaeXYBzXlTvuV8TRhtSljAt6tPPNcTaArvPViMe2A4+wN
+	Vtl+TX5crCoSwiilTEFQHV6y47TTLR2uuyylY+c5ID5ZspwKXtqBK6hWuZCu0bbX65n5PA7QYgg
+	nXWKapAX5QxeihXFFYT3wpFek+9iAdg63S4c07rfpadd/Al1okmrfWbprph4f8PrlO/cYWd+rHY
+	aFeLed9HrtU3CesdjV9MB6HTekgU+R9BYQ91hCbenwEs+w9I4SaGVrmmsD8hVo176kgO7dPlqm0
+	epw6adRir6Zhbrp1KIrCc1b3aghr4bbrKMPY+x2TTGKgqfWBanem0QLUOUM=
+X-Google-Smtp-Source: AGHT+IGHHPFsEJ5d2GfHxkj+6LvRB//GrCbfP5fj0vVW6Pc5zd4FGMmgZIhMOlOMjXsFiItlQOjK8Q==
+X-Received: by 2002:a05:6214:2a4e:b0:6fa:9b06:99dd with SMTP id 6a1803df08f44-6fa9d395ecfmr62903726d6.10.1748288316191;
+        Mon, 26 May 2025 12:38:36 -0700 (PDT)
+Received: from localhost ([2001:18c0:18:ba00:6ee3:aa66:9e98:5953])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-6f8b08ac575sm156384486d6.43.2025.05.26.12.38.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 May 2025 12:38:35 -0700 (PDT)
+Date: Mon, 26 May 2025 15:38:34 -0400
+From: Benjamin Poirier <benjamin.poirier@gmail.com>
+To: Xin Long <lucien.xin@gmail.com>
+Cc: Christoph Hellwig <hch@lst.de>, marcelo.leitner@gmail.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH] sctp: mark sctp_do_peeloff static
+Message-ID: <aDTDOgqCrVryvr0_@f4>
+References: <20250526054745.2329201-1-hch@lst.de>
+ <CADvbK_d-dhZB-j9=PtCtsnvdmx980n7m8hEDrPnv+h6g7ijF-w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: Poor thunderbolt-net interface performance when bridged
-From: Ricard Bejarano <ricard@bejarano.io>
-In-Reply-To: <20250526080956.7f64a5f5@hermes.local>
-Date: Mon, 26 May 2025 21:36:37 +0200
-Cc: Andrew Lunn <andrew@lunn.ch>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- netdev@vger.kernel.org,
- michael.jamet@intel.com,
- YehezkelShB@gmail.com,
- andrew+netdev@lunn.ch,
- davem@davemloft.net,
- edumazet@google.com,
- kuba@kernel.org,
- pabeni@redhat.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <88E7B346-18BE-4149-BFD7-8DB5B48ED52E@bejarano.io>
-References: <C0407638-FD77-4D21-A262-A05AD7428012@bejarano.io>
- <20250523110743.GK88033@black.fi.intel.com>
- <353118D9-E9FF-4718-A33A-54155C170693@bejarano.io>
- <20250526045004.GL88033@black.fi.intel.com>
- <5DE64000-782A-492C-A653-7EB758D28283@bejarano.io>
- <20250526092220.GO88033@black.fi.intel.com>
- <4930C763-C75F-430A-B26C-60451E629B09@bejarano.io>
- <f2ca37ef-e5d0-4f3e-9299-0f1fc541fd03@lunn.ch>
- <20250526080956.7f64a5f5@hermes.local>
-To: Stephen Hemminger <stephen@networkplumber.org>
-X-Mailer: Apple Mail (2.3826.500.181.1.5)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADvbK_d-dhZB-j9=PtCtsnvdmx980n7m8hEDrPnv+h6g7ijF-w@mail.gmail.com>
 
-Hi Stephen, thank you too for chiming in.
+On 2025-05-26 14:25 -0400, Xin Long wrote:
+> On Mon, May 26, 2025 at 1:47 AM Christoph Hellwig <hch@lst.de> wrote:
+> >
+> > sctp_do_peeloff is only used inside of net/sctp/socket.c,
+> > so mark it static.
+> >
+> > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> > ---
+> >  include/net/sctp/sctp.h | 2 --
+> >  net/sctp/socket.c       | 4 ++--
+> >  2 files changed, 2 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/include/net/sctp/sctp.h b/include/net/sctp/sctp.h
+> > index d8da764cf6de..e96d1bd087f6 100644
+> > --- a/include/net/sctp/sctp.h
+> > +++ b/include/net/sctp/sctp.h
+> > @@ -364,8 +364,6 @@ sctp_assoc_to_state(const struct sctp_association *asoc)
+> >  /* Look up the association by its id.  */
+> >  struct sctp_association *sctp_id2assoc(struct sock *sk, sctp_assoc_t id);
+> >
+> > -int sctp_do_peeloff(struct sock *sk, sctp_assoc_t id, struct socket **sockp);
+> > -
+> >  /* A macro to walk a list of skbs.  */
+> >  #define sctp_skb_for_each(pos, head, tmp) \
+> >         skb_queue_walk_safe(head, pos, tmp)
+> > diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+> > index 53725ee7ba06..da048e386476 100644
+> > --- a/net/sctp/socket.c
+> > +++ b/net/sctp/socket.c
+> > @@ -5627,7 +5627,8 @@ static int sctp_getsockopt_autoclose(struct sock *sk, int len, char __user *optv
+> >  }
+> >
+> >  /* Helper routine to branch off an association to a new socket.  */
+> > -int sctp_do_peeloff(struct sock *sk, sctp_assoc_t id, struct socket **sockp)
+> > +static int sctp_do_peeloff(struct sock *sk, sctp_assoc_t id,
+> > +               struct socket **sockp)
+> >  {
+> >         struct sctp_association *asoc = sctp_id2assoc(sk, id);
+> >         struct sctp_sock *sp = sctp_sk(sk);
+> > @@ -5675,7 +5676,6 @@ int sctp_do_peeloff(struct sock *sk, sctp_assoc_t id, struct socket **sockp)
+> >
+> >         return err;
+> >  }
+> > -EXPORT_SYMBOL(sctp_do_peeloff);
+> >
+> I believe sctp_do_peeloff() was exported specifically to allow usage
+> outside of the core SCTP code. See:
+> 
+> commit 0343c5543b1d3ffa08e6716d82afb62648b80eba
+> Author: Benjamin Poirier <benjamin.poirier@gmail.com>
+> Date:   Thu Mar 8 05:55:58 2012 +0000
+> 
+>     sctp: Export sctp_do_peeloff
+> 
 
-> What is MTU?
+Thanks for digging that up. The purpose was of course for the commit
+that followed:
+2f2d76cc3e93 dlm: Do not allocate a fd for peeloff (v3.4-rc1)
 
-MTU is 1500 across the board.
+Since that usage was removed in
+ee44b4bc054a dlm: use sctp 1-to-1 API (v4.3-rc1)
 
-root@red:~# ip a
-...
-2: eno1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN group =
-default qlen 1000
-    link/ether 94:c6:91:a3:f5:1a brd ff:ff:ff:ff:ff:ff
-    altname enp0s31f6
-6: br0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state =
-UP group default qlen 1000
-    link/ether ce:42:52:00:a0:5b brd ff:ff:ff:ff:ff:ff
-    inet 10.0.0.1/24 brd 10.0.0.255 scope global br0
-       valid_lft forever preferred_lft forever
-8: tb0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel master =
-br0 state UP group default qlen 1000
-    link/ether 02:5f:d6:57:71:93 brd ff:ff:ff:ff:ff:ff
-root@red:~#
+I don't see a problem with marking sctp_do_peeloff() static again.
 
-root@blue:~# ip a=20
-...
-2: eno1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel =
-master br0 state UP group default qlen 1000
-    link/ether 1c:69:7a:00:22:99 brd ff:ff:ff:ff:ff:ff
-    altname enp0s31f6
-5: br0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state =
-UP group default qlen 1000
-    link/ether 3a:4d:83:e0:ab:3b brd ff:ff:ff:ff:ff:ff
-    inet 10.0.0.2/24 brd 10.0.0.255 scope global br0
-       valid_lft forever preferred_lft forever
-6: tb0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel master =
-br0 state UP group default qlen 1000
-    link/ether 02:70:19:dc:92:96 brd ff:ff:ff:ff:ff:ff
-root@blue:~#
+> While there’s no known in-tree usage beyond SCTP itself, we can’t be
+> sure whether this function has been used by out-of-tree kernel modules.
 
-root@purple:~# ip a
-...
-2: eno1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel =
-master br0 state UP group default qlen 1000
-    link/ether 1c:69:7a:60:d8:69 brd ff:ff:ff:ff:ff:ff
-    altname enp0s31f6
-4: br0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state =
-UP group default qlen 1000
-    link/ether 1a:45:1d:c0:46:02 brd ff:ff:ff:ff:ff:ff
-    inet 10.0.0.3/24 brd 10.0.0.255 scope global br0
-       valid_lft forever preferred_lft forever
-root@purple:~#
-
+The mainline kernel does not need to cater to out-of-tree users.
