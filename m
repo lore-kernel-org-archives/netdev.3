@@ -1,185 +1,61 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321D61FE470
-	for <netdev@vger.kernel.org>; Mon, 26 May 2025 13:56:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9E120D4E3;
+	Mon, 26 May 2025 14:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748267773; cv=none; b=eupoisj2t4awjodk4qVv9c6Fqo7gPsLrRTKBGoV1expi1zkNhgoREjUk8f6o2uIXePQxAB3qUajGdfGvkkwGmqX/RtpLNHPbYRMSR8XBWSj5w6y0FTYncM02g3mz1l0Fey4OV+uxyNdbTD6WFDPsLlw10Gz2RvQZu8JTPbT01U8=
+	t=1748268189; cv=none; b=GtrhIowF1zBqruQqiO7Zx1IhYnUfk6YUl11YDCPBq1zptumSLRGv/RKT90e3blG/xvXOge7Oy9/71Pno6MDENhWq4d9Y0liLYNnGYBvw6GJqRab64WAr7f4rdyQMdCLbcWWLlWxx9vtsq7IgR3NxIDzVDA9fRxOFmLbScsc7IPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748267773; c=relaxed/simple;
-	bh=8/rgdMR7ZxeHT7lcm2WF5v/murhX9m6bqlwpbwbmYXE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j9mTsE6hASO9COSvXvAfaFjzTCQwDmvG6irgrbcGn5MEoSMHpBNASxeBnrMh7+qNZQldiSa4uuxiKfNnU392u1gig2jok0Uhon2zXbP7Xml6D1X9YmL9vmBJ2AOXMiBurZDdSKv12f883yMiRMwYoVTgWAf4mtHyPrYS9xNWj4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QErTu/nE; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1748268189; c=relaxed/simple;
+	bh=zK1jmSQDBJZhWfzIoDGLRviCxmEsHuZaB5jH6OIj7BU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gBpRuIECpxWJhNhtiu2CJ7xyMqcYg/YisUfqfhtWMpqsuH0OsxWYqze79BVDcDHsMMfoDYj8gJbp0Zohh1HTRsWW0hXxxq1owccoqMjz6ii+unyJPHkq/MOoKfmu0GPMUS54ZfDYhonBbzwa06DdcoFOS6Nb8aRShDxkB990wWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=YW2RmyBS; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QErTu/nE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748267770;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZHjg19p96sdYw4xDXVkvX1Jw1LT1R8JNp7/yMvD2jYc=;
-	b=QErTu/nErBX7SpbQKWpeXEZSYSzZCck2dHSpWXJS2btkcnRE6NLd9/T+G2sx5KOa1uO4BV
-	8njTgu9N+z5/9xJ+sHsKf2+j7u4oeoVtFkWNxqAXSC8H9Hs0w73pLt/vGrW7akmat+EUa/
-	dY9g2N2ll/mi3yXnozj7htZWPHYcTRg=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-446-ar1eoRVZN3CP54t24oKQ8w-1; Mon, 26 May 2025 09:56:08 -0400
-X-MC-Unique: ar1eoRVZN3CP54t24oKQ8w-1
-X-Mimecast-MFC-AGG-ID: ar1eoRVZN3CP54t24oKQ8w_1748267768
-Received: by mail-yb1-f199.google.com with SMTP id 3f1490d57ef6-e7d971b6398so2143410276.2
-        for <netdev@vger.kernel.org>; Mon, 26 May 2025 06:56:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748267768; x=1748872568;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZHjg19p96sdYw4xDXVkvX1Jw1LT1R8JNp7/yMvD2jYc=;
-        b=e04exH8Oq03kq8w+v5+sv0NUGMS664Gu83Bb9/pMIDKp9+C0hbAOUIFaunGlmxpRnJ
-         sUF3LFwAyY7it/f7sEIZX4ZrQiS5aKHjLSHP+73rUtz3pvHMQf5XG1QZxa8QNLyJnJYw
-         ZDo2ePU5bnf7vUlvNXPeFQzqw5st4NsoQNDza4HP5X3agOdR0mV2SuE2F2/PqvrA9ZPd
-         P5UjUybNeDxnVSeHdEZfXMzFAMcyOlDzNDLZuv8FfQ+MNd3yg+1TAOcabGNdddX42fC7
-         qPtwPBoMi77pY7aea53RTkZjo+7RIzqZ9qViz8+bsupR/7cMniJ1plwdXWqEiw4MydQA
-         Mz8g==
-X-Forwarded-Encrypted: i=1; AJvYcCX0s05p13/gcawmazlR+OGVh4nQi5duDi8k56aoL8N91OqM8XAupvFAUg04jJetjFvHqoHh6Vg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu5Vt0vFjm0P3idW5JhQBMCHEmAhU6LFf5ADLkq9Qe7x4ma+8C
-	+W4SWmnBiI1BSF60OEyHwPpjQSLh8tpNCQ2LhLPjgXYxpMCOR7J2R2mG5Ttz7jSAv9CXWbAdQuU
-	Ia3aPtK0XqEPqMhVcVXd1907HQMbU88JeOFatxneNwxrPEx9yAZqu9KdmNIpuRgR4SE6sRFEFHD
-	msnIoFNBAyd6TPoU7I5yxZqYO60GhyssX9
-X-Gm-Gg: ASbGncs155/VRzjStiYagu+B+p+X4nO2KmAuTDGKvftEK7k+0JEYrDBtCCXNYl1O+Jy
-	behUW3auUNMUaPfUHycZwoHDL+kwFjGKeyIdcTO8P+pDtFu0ZvazZa3S5EdvOKA1w3Kw=
-X-Received: by 2002:a05:6902:726:b0:e7d:9926:8bfa with SMTP id 3f1490d57ef6-e7d992698bamr7492108276.40.1748267767947;
-        Mon, 26 May 2025 06:56:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH6/c9lr+TAbVpG6J4lomzrC+5Fqw+cD9liLOLTj4YHysZUc3zSZfIwwilBGPgcyufFRQ1Bu826/aDBdCJ/pfU=
-X-Received: by 2002:a05:6902:726:b0:e7d:9926:8bfa with SMTP id
- 3f1490d57ef6-e7d992698bamr7492081276.40.1748267767587; Mon, 26 May 2025
- 06:56:07 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="YW2RmyBS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=DEQtdizu/K/ZkYN6B72uTJCKEfFiYTb8KeVxrO5XPKg=; b=YW2RmyBSXJIUcTxaBSooKr8ODj
+	qctBwjYRO7oyyatJ1fZNTwPlE+Zu6ooS7VgNf/Lb02j/lOs6Z/ZQLXoYCjARru4ZuIZDkqfBhj7I3
+	ZGrwYIooQ2LF3R9m1q/fTaz+vo6JU1cUsBhVkV4ddQ8+c4KIukl781JhLc+KZHH+OMo8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uJYPm-00E0Ks-KH; Mon, 26 May 2025 16:02:54 +0200
+Date: Mon, 26 May 2025 16:02:54 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Yajun Deng <yajun.deng@linux.dev>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, hkallweit1@gmail.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: phy: Add c45_phy_ids sysfs entry
+Message-ID: <9e27a19d-c9fc-4942-aa85-55486626473b@lunn.ch>
+References: <20250523132606.2814-1-yajun.deng@linux.dev>
+ <2eec1d17-a6d1-4859-9cc9-43eeac23edbd@lunn.ch>
+ <fad26dc95cbe08a87b30d98a55b7e3d987683589@linux.dev>
+ <aDQkLcfeu8zw8CJ_@shell.armlinux.org.uk>
+ <552f550315dc503250cc61fdcd13db38c1ea00f5@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250526134949.907948-1-kshk@linux.ibm.com>
-In-Reply-To: <20250526134949.907948-1-kshk@linux.ibm.com>
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Mon, 26 May 2025 15:55:55 +0200
-X-Gm-Features: AX0GCFu9lGy_XLKzXTOFqdveWLMPIwPqhG0BIVwB-1v6mcjATpC-MDj6A7atdG4
-Message-ID: <CAGxU2F40O3xDSwA4m6r+O5bWoTJgRXqGfyMiLH_sMij+YmE5aw@mail.gmail.com>
-Subject: Re: [PATCH net v2] vsock/test: Fix occasional failure in SOCK_STREAM
- SHUT_RD test
-To: Konstantin Shkolnyy <kshk@linux.ibm.com>
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, mjrosato@linux.ibm.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <552f550315dc503250cc61fdcd13db38c1ea00f5@linux.dev>
 
-On Mon, 26 May 2025 at 15:50, Konstantin Shkolnyy <kshk@linux.ibm.com> wrote:
->
-> The test outputs:
-> "SOCK_STREAM SHUT_RD...expected send(2) failure, got 1".
->
-> It tests that shutdown(fd, SHUT_RD) on one side causes send() to fail on
-> the other side. However, sometimes there is a delay in delivery of the
-> SHUT_RD command, send() succeeds and the test fails, even though the
-> command is properly delivered and send() starts failing several
-> milliseconds later.
->
-> The delay occurs in the kernel because the used buffer notification
-> callback virtio_vsock_rx_done(), called upon receipt of the SHUT_RD
-> command, doesn't immediately disable send(). It delegates that to
-> a kernel thread (via vsock->rx_work). Sometimes that thread is delayed
-> more than the test expects.
->
-> Change the test to keep calling send() until it fails or a timeout occurs.
->
-> Fixes: b698bd97c5711 ("test/vsock: shutdowned socket test")
-> Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
-> ---
-> Changes in v2:
->  - Move the new function to utils.c.
+> But the 'c45_phy_ids' directory could not be hidden if it's a c22 device.
+> If c45_phy_ids is a file and it has an array of values. We can hide this
+> file even if it's a c22 device.
 
-BTW I think I already fixed the same issue in this series:
-https://lore.kernel.org/netdev/20250514141927.159456-1-sgarzare@redhat.com/
+I think it is fine to have an empty directory. We don't hide the c22
+id file if it is a C45 device.
 
-Can you check it?
-
-Thanks,
-Stefano
-
->
->  tools/testing/vsock/util.c       | 11 +++++++++++
->  tools/testing/vsock/util.h       |  1 +
->  tools/testing/vsock/vsock_test.c | 14 ++------------
->  3 files changed, 14 insertions(+), 12 deletions(-)
->
-> diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
-> index de25892f865f..04ac88dc4d3a 100644
-> --- a/tools/testing/vsock/util.c
-> +++ b/tools/testing/vsock/util.c
-> @@ -798,3 +798,14 @@ void enable_so_zerocopy_check(int fd)
->         setsockopt_int_check(fd, SOL_SOCKET, SO_ZEROCOPY, 1,
->                              "setsockopt SO_ZEROCOPY");
->  }
-> +
-> +void vsock_test_for_send_failure(int fd, int send_flags)
-> +{
-> +       timeout_begin(TIMEOUT);
-> +       while (true) {
-> +               if (send(fd, "A", 1, send_flags) == -1)
-> +                       return;
-> +               timeout_check("expected send(2) failure");
-> +       }
-> +       timeout_end();
-> +}
-> diff --git a/tools/testing/vsock/util.h b/tools/testing/vsock/util.h
-> index d1f765ce3eee..58c17cfb63d4 100644
-> --- a/tools/testing/vsock/util.h
-> +++ b/tools/testing/vsock/util.h
-> @@ -79,4 +79,5 @@ void setsockopt_int_check(int fd, int level, int optname, int val,
->  void setsockopt_timeval_check(int fd, int level, int optname,
->                               struct timeval val, char const *errmsg);
->  void enable_so_zerocopy_check(int fd);
-> +void vsock_test_for_send_failure(int fd, int send_flags);
->  #endif /* UTIL_H */
-> diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
-> index 613551132a96..b68a85a6d929 100644
-> --- a/tools/testing/vsock/vsock_test.c
-> +++ b/tools/testing/vsock/vsock_test.c
-> @@ -1060,15 +1060,9 @@ static void sigpipe(int signo)
->
->  static void test_stream_check_sigpipe(int fd)
->  {
-> -       ssize_t res;
-> -
->         have_sigpipe = 0;
->
-> -       res = send(fd, "A", 1, 0);
-> -       if (res != -1) {
-> -               fprintf(stderr, "expected send(2) failure, got %zi\n", res);
-> -               exit(EXIT_FAILURE);
-> -       }
-> +       vsock_test_for_send_failure(fd, 0);
->
->         if (!have_sigpipe) {
->                 fprintf(stderr, "SIGPIPE expected\n");
-> @@ -1077,11 +1071,7 @@ static void test_stream_check_sigpipe(int fd)
->
->         have_sigpipe = 0;
->
-> -       res = send(fd, "A", 1, MSG_NOSIGNAL);
-> -       if (res != -1) {
-> -               fprintf(stderr, "expected send(2) failure, got %zi\n", res);
-> -               exit(EXIT_FAILURE);
-> -       }
-> +       vsock_test_for_send_failure(fd, MSG_NOSIGNAL);
->
->         if (have_sigpipe) {
->                 fprintf(stderr, "SIGPIPE not expected\n");
-> --
-> 2.34.1
->
-
+	Andrew
