@@ -1,132 +1,126 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E695F9D9;
-	Mon, 26 May 2025 00:56:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from nylar.uni-paderborn.de (nylar.uni-paderborn.de [131.234.189.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5462DCBF0;
+	Mon, 26 May 2025 01:01:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=131.234.189.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748221014; cv=none; b=VDSWMKDopDxjlEbdXGC3OkVouuzGAYUV2T0f60GodDHBGmlWAy/clo5kwkmXWpRjS/WyzK2NPkIlFiwy4Y6dZHhDtbifHxEtTnCKos5Yj2TO33en57lTZ9ZGbT/y4ZxVahiDiEW0F37aBlIsaOVoTxPhdvv1jbJjdXbV5rbtKnk=
+	t=1748221295; cv=none; b=YwEtcrHzZSeIA4HjmjMKlp/IgkYMIV+5YmHmceLDUEg6G4aSShcN8h1S+9TOp9dpomaXkdfw6czjDmMO129WqCA+jkrluqp7BtOgudUek5p5uCOOXf4a6avpMpL6NrMMYE78MXXS9raoUbl13sSEGMIXVGBO6oNOqTR3ahlwP5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748221014; c=relaxed/simple;
-	bh=K47UkHVob1O4NflDYAefhNTIq7anxymMfXawllReXnM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PQnAJtJBjHQydwzMjJsjzdpCSL6yge9c6fGp2iRqniMyW7/FpxMYVL3FsjaGr0JM/5IAQ7PjJcIdkop9Ou4i4KpW+GngABILClcedTInoX5dT/P8M2ZtBUOlXMUHp6wOfe2GplemJcx+61MzWMr26EzEIZ5djTuYOiiGN7zdxf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-681ff7000002311f-4f-6833bc4813ec
-Date: Mon, 26 May 2025 09:56:34 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>
-Cc: willy@infradead.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kernel_team@skhynix.com, kuba@kernel.org, almasrymina@google.com,
-	ilias.apalodimas@linaro.org, harry.yoo@oracle.com, hawk@kernel.org,
-	akpm@linux-foundation.org, davem@davemloft.net,
-	john.fastabend@gmail.com, andrew+netdev@lunn.ch,
-	asml.silence@gmail.com, tariqt@nvidia.com, edumazet@google.com,
-	pabeni@redhat.com, saeedm@nvidia.com, leon@kernel.org,
-	ast@kernel.org, daniel@iogearbox.net, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	horms@kernel.org, linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
-	vishal.moola@gmail.com
-Subject: Re: [PATCH 01/18] netmem: introduce struct netmem_desc
- struct_group_tagged()'ed on struct net_iov
-Message-ID: <20250526005634.GA74632@system.software.com>
-References: <20250523032609.16334-1-byungchul@sk.com>
- <20250523032609.16334-2-byungchul@sk.com>
- <87bjrjn1ki.fsf@toke.dk>
+	s=arc-20240116; t=1748221295; c=relaxed/simple;
+	bh=LRM7BnJhSjj/CeR9D5WBTiFvdWmDy4pJ2oIQNJPU+HQ=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=Bd0bxXa7GwqzclYZkNnzRbdHHWy0lf4KST0yowaUBfzj1TAmEbAskDWiDkQNDD30BjSM15Tbc287vcPTkyWqntwyg65rb1fATxdNFka2WsdnZeT5oFcwLEx+WUfUnR1cwc5nboVboqRkpy4CsBoIzi5ABzzObbFFEGUp0ag3iDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.uni-paderborn.de; spf=pass smtp.mailfrom=mail.uni-paderborn.de; dkim=pass (1024-bit key) header.d=uni-paderborn.de header.i=@uni-paderborn.de header.b=SzF+5mCn; arc=none smtp.client-ip=131.234.189.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.uni-paderborn.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.uni-paderborn.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=uni-paderborn.de header.i=@uni-paderborn.de header.b="SzF+5mCn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:Content-Type:To:
+	Subject:From:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=nupreO2nEhnaPNp/sEl4UWJ1Rv6ILga1aeXZ27Lpev4=; b=SzF+5mCn0cMJUWA7AFZfr/aWHO
+	yFFD8Hjw68vYFm3hW67nixC65FIL21hJHRIUbeSPXzrzaaUz1u1efLPe9oh1fjClhFPtgnoCDtoUD
+	LPJD0bUw8Z44M4Y2ka0Vc5isTR3QljWCD6iOqs1SwCPpAZEkhRHi6i6qJU8aSLEAfG7I=;
+Message-ID: <1dbe0f24-1076-4e91-b2c2-765a0e28b017@mail.uni-paderborn.de>
+Date: Mon, 26 May 2025 02:44:10 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87bjrjn1ki.fsf@toke.dk>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0iTYRTHefZe9rpcvS2zp5SkRRRRZilxPkQURDxdPgQFXSFHvrXpnDGd
-	aRR4A2nqshK1tWhqeUsZLZ2zzGqJZjMSzVppaU6toJLUlk27OC3y249z/uf8zofDUbIiZgmn
-	0iQIWo1CLWcltOSzf/Fa0hCuDHvfHAQmSxULN8eToKzPzoCp0oZg7Ee3GEabWlgoKfJQYHqW
-	QcM3i5eCweZ+MfSWDtHQkFlHQf/5xyzkZExQkGYvF0G7zcBAnvcGBXUpfWLovGNi4W3VbwaG
-	HDk0tBoraOg1bIFmcyB4nJ8QNFnqRODJvsrCpQ4zC+6MXgQdj/ppuJJqQGBpdDEwMW5itywj
-	NRWvRKTe+EZMzFYduV2+muhdHRSxVp5jiXXkopj0vGhgyePCCZrU20dFJCf9C0u+Dr6myXBj
-	F0ssNV00aTM3icmodeke/pBkU5SgViUK2nWbIyXKwt5c6mTVvKSXDzQp6PscPfLjMB+BC/IL
-	2H9sSKsW+5jmV+Dah5mMj1l+JXa5flB6xHEB/FbsHD+hRxKO4gcYXPexYjqzgFfj4kuTtI+l
-	PODu6+8oH8v4M9imd4tn6vNx6+WB6QzFr8H1tT2sbyfFB+GyX9xMOQSn116ZHvWbOsFtm4kv
-	5JfjB7YWkc+LeTuH8/Sdf29ejB+Wu+hcNN84S2GcpTD+VxhnKcyIrkQylSYxVqFSR4QqkzWq
-	pNBjcbFWNPU4pWcnD9vRSPteB+I5JPeXRsrDlTJGkRifHOtAmKPkAdJgU5hSJo1SJJ8WtHFH
-	tTq1EO9AQRwtXyTd4DkVJeNPKBKEGEE4KWj/dUWc35IUFPi6JexCm+78xbu66GzW6726Zhdp
-	zTyeHTmWG/LeGZ7qsGU0t4y6nas6d0x0fT27rG8o/95wTtbBxs7hkYr9Tt3w/aoP/oxKG3Ps
-	Qupg+G3Zbs/452uxXT/n7nw5FMxU79sWd2Bge3DNucr7/SXuW4boF/XPF0e7254e8W4MUGTZ
-	nsjpeKVi/WpKG6/4A6Zhe4w0AwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0iTYRTHe/Ze9m61el3LXjIKVyJI3srqkF3sQ/QUkUFE0Jdc+uaGc9Wm
-	pmVkuqhGrrQCmzNXmres0dRthkg5UYfRxdCWafNORVR28ZLRZUrktx//8z8/zofDEFI9tYRR
-	aVJ4rUahltNiUrw7OicUN6xRRhR1iMBsrabhzkQ6lPc5KTBX2RF8m3wthK/NrTSU3BwjwPxU
-	T8J36w8ChlsGhOAtGyGh4ZyDgIFLbTTk6qcIyHZWCMBV5Kbgmd1IwdUftwlwZPUJ4cUDMw1v
-	qn9TMNKUS4LbVEmC1xgDLRZ/GGv/gKDZ6hDA2MUiGq50WGgY1HsRdLgGSCg8Y0RgbfRQMDVh
-	pmPkuLbylQDXm3qF2GJLxTUVIdjg6SCwreoCjW1f8oW4p6uBxm0FUySud34V4NycjzQeHe4m
-	8afGThqXvP0swNbaThI/tjQL9/gdEG9M4NWqNF4bvjlOrCzwXiaOVi9If/lQk4XG5xqQiOHY
-	KM6YfVfoY5IN4uoenaN8TLPBnMczSRgQw8jYrVz7RKIBiRmCHaI4x7vK6c5CVs3duvKT9LGE
-	Be51aT/hYymbydkNg8KZ3I9zXx+a7hDsKq6+rof2OQk2gCv/xczEy7mcusLpVdHfEwbtM/VF
-	7Aruob1VcBnNN80ymWaZTP9NplkmCyKrkEylSUtWqNRrw3RJygyNKj0s/kiyDf39jbJTP/Oc
-	6NuL7U2IZZB8niROvkYppRRpuozkJsQxhFwmWWqOUEolCYqME7z2yEFtqprXNaEAhpQvluzc
-	z8dJ2URFCp/E80d57b+pgBEtyUIXXIP6dcZlwduoTbHF41sELZP+CfN2nTxcY7qW9VL85EZX
-	17HnojnxCX3enYtSJZ/khyb6gyhdLLM4e2xfY5lseS831aOku7t3uErXvx0t2TCy0b56iyzk
-	fPDp6L0F72Pye8OjeIUzMu94ToDN3T50tv1+RfGx0MAPq1YOB+pM9zLlpE6piAwhtDrFH2vK
-	gPgXAwAA
-X-CFilter-Loop: Reflected
+User-Agent: Mozilla Thunderbird
+Content-Language: de-DE, en-GB-large
+From: Dennis Baurichter <dennisba@mail.uni-paderborn.de>
+Subject: Issue with delayed segments despite TCP_NODELAY
+To: netdev@vger.kernel.org, netfilter@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-IMT-Source: Extern
+X-IMT-rspamd-score: -5
+X-UPB-Report: Action: no action, RCVD_TLS_ALL(0.00), FROM_HAS_DN(0.00), FROM_EQ_ENVFROM(0.00), BAYES_HAM(-0.42), TO_DN_NONE(0.00), TO_MATCH_ENVRCPT_ALL(0.00), MIME_GOOD(-0.10), NEURAL_HAM(0.00), RCPT_COUNT_TWO(0.00), MID_RHS_MATCH_FROM(0.00), RCVD_VIA_SMTP_AUTH(0.00), ARC_NA(0.00), ASN(0.00), RCVD_COUNT_ONE(0.00), MIME_TRACE(0.00), Message-ID: 1dbe0f24-1076-4e91-b2c2-765a0e28b017@mail.uni-paderborn.de
+X-IMT-Spam-Score: 0.0 ()
+X-IMT-Authenticated-Sender: uid=dennisba,ou=People,o=upb,c=de
 
-On Fri, May 23, 2025 at 11:01:01AM +0200, Toke Høiland-Jørgensen wrote:
-> Byungchul Park <byungchul@sk.com> writes:
-> 
-> > To simplify struct page, the page pool members of struct page should be
-> > moved to other, allowing these members to be removed from struct page.
-> >
-> > Introduce a network memory descriptor to store the members, struct
-> > netmem_desc, reusing struct net_iov that already mirrored struct page.
-> >
-> > While at it, relocate _pp_mapping_pad to group struct net_iov's fields.
-> >
-> > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> > ---
-> >  include/linux/mm_types.h |  2 +-
-> >  include/net/netmem.h     | 43 +++++++++++++++++++++++++++++++++-------
-> >  2 files changed, 37 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> > index 56d07edd01f9..873e820e1521 100644
-> > --- a/include/linux/mm_types.h
-> > +++ b/include/linux/mm_types.h
-> > @@ -120,13 +120,13 @@ struct page {
-> >  			unsigned long private;
-> >  		};
-> >  		struct {	/* page_pool used by netstack */
-> > +			unsigned long _pp_mapping_pad;
-> >  			/**
-> >  			 * @pp_magic: magic value to avoid recycling non
-> >  			 * page_pool allocated pages.
-> >  			 */
-> >  			unsigned long pp_magic;
-> >  			struct page_pool *pp;
-> > -			unsigned long _pp_mapping_pad;
-> >  			unsigned long dma_addr;
-> >  			atomic_long_t pp_ref_count;
-> >  		};
-> 
-> The reason that field is called "_pp_mapping_pad" is that it's supposed
-> to overlay the page->mapping field, so that none of the page_pool uses
-> set a value here. Moving it breaks that assumption. Once struct
+Hi,
 
-Right.  I will fix it.  Thanks.
+I have a question on why the kernel stops sending further TCP segments 
+after the handshake and first 2 (or 3) payload segments have been sent. 
+This seems to happen if the round trip time is "too high" (e.g., over 
+9ms or 15ms, depending on system). Remaining segments are (apparently) 
+only sent after an ACK has been received, even though TCP_NODELAY is set 
+on the socket.
 
-	Byungchul
+This is happening on a range of different kernels, from Arch Linux' 
+6.14.7 (which should be rather close to mainline) down to Ubuntu 22.04's 
+5.15.0-134-generic (admittedly somewhat "farther away" from mainline). I 
+can test on an actual mainline kernel, too, if that helps.
+I will describe our (probably somewhat uncommon) setup below. If you 
+need any further information, I'll be happy to provide it.
 
-> netmem_desc is completely decoupled from struct page this obviously
-> doesn't matter, but I think it does today? At least, trying to use that
-> field for the DMA index broke things, which is why we ended up with the
-> bit-stuffing in pp_magic...
-> 
-> -Toke
-> 
+My colleague and I have the following setup:
+- Userland application connects to a server via TCP/IPv4 (complete TCP 
+handshake is performed).
+- A nftables rule is added to intercept packets of this connection and 
+put them into a netfilter queue.
+- Userland application writes data into this TCP socket.
+   - The data is written in up to 4 chunks, which are intended to end up 
+in individual TCP segments.
+   - The socket has TCP_NODELAY set.
+   - sysctl net.ipv4.tcp_autocorking=0
+- The above nftables rule is removed.
+- Userland application (a different part of it) retrieves all packets 
+from the netfilter queue.
+   - Here it may occur that e.g. only 2 out of 4 segments can be retrieved.
+   - Reading from the netfilter queue is attempted until 5 timeouts of 
+20ms each occured. Even much higher timeout values don't change the 
+results, so it's not a race condition.
+- Userland application performs some modifications on the intercepted 
+segments and eventually issues verdict NF_ACCEPT.
+
+We checked (via strace) that all payload chunks are successfully written 
+to the socket, (via nlmon kernel module) that there are no errors in the 
+netlink communication, and (via nft monitor) that indeed no further 
+segments traverse the netfilter pipeline before the first two payload 
+segments are actually sent on the wire.
+We dug through the entire list of TCP and IPv4 sysctls (testing several 
+of them), tried loading and using different congestion algorithm 
+modules, toggling TCP_NODELAY off and on between each write to the 
+socket (to trigger an explicit flush), and other things, but to no avail.
+
+Modifying our code, we can see that after NF_ACCEPT'ing the first 
+segments, we can retrieve the remaining segments from netfilter queue.
+In Wireshark we see that this seems to be triggered by the incoming ACK 
+segment from the server.
+
+Notably, we can intercept all segments at once when testing this on 
+localhost or in a LAN network. However, on long-distance / 
+higher-latency connections, we can only intercept 2 (sometimes 3) segments.
+
+Testing on a LAN connection from an old laptop to a fast PC, we delayed 
+packets on the latter one with variants of:
+tc qdisc add dev eth0 root netem delay 15ms
+We got the following mappings of delay / rtt to number of segments 
+intercepted:
+below 15ms -> all (up to 4) segments intercepted
+15-16ms -> 2-3 segments
+16-17ms -> 2 (sometimes 3) segments
+over 20ms -> 2 segments (tested 20ms, 200ms, 500ms)
+Testing in the other direction, from fast PC to old laptop (which now 
+has the qdisc delay), we get similar results, just with lower round trip 
+times (15ms becomes more like 8-9ms).
+
+We would very much appreciate it if someone could help us on the 
+following questions:
+- Why are the remaining segments not send out immediately, despite 
+TCP_NODELAY?
+- Is there a way to change this?
+- If not, do you have better workarounds than injecting a fake ACK 
+pretending to come "from the server" via a raw socket?
+   Actually, we haven't tried this yet, but probably will soon.
+
+Regards,
+Dennis
