@@ -1,97 +1,148 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1A01C5F39;
-	Mon, 26 May 2025 05:36:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0F0136349;
+	Mon, 26 May 2025 05:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748237771; cv=none; b=ebVJpvl899VORTWDHm1pohUyRYH4e6abcgHK1AFlleAtBYvyT9NfsQYm/YvNxONZEYTO6vXGm9IzraGdJwsGGjB5MUPuiN9bJ4MSc/JCMg3h1C0zdyQ5jpOXHRPGCsCitA1A8z9mF4+FYQ8LoKY4WGgVBxXFHdCjyE9cABwq4/A=
+	t=1748237964; cv=none; b=oTvo9l4JSYfGI1ejtjyv/bIWETdxUi/tlL5MwE2aUg+XpA72c1hH9BvrT4r+rJwLE6IFpA9BDW54g4FfYOoQ0CB+P1Vw0wR4aqkOzGR2XpuDl+f36imfIAB19phSBrasOQHtBwTyBNIJ5NbtuIrHfKqPC8UEPzL4rKi/9wTgW5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748237771; c=relaxed/simple;
-	bh=CDTIkRHRF1Q6zB+nRvd/gYo0v1esb9c+9rfC7MY0OJg=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QuxfNdS3+3jlDYZKGAkzMgc4+PkJfzOZFqosSTvqglrpPV61OYqTBZqf+giqZ1fNUUxIv7eiMno3huQbgp6AFGRkko4eOV85ZPonR6dTc9DqegvM3ykOUxQk67hw5pDgSUte+u1bkxMVeCbxPHbPq+2S1+NkqJUjMc+xTTrtrWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=GCWfh3BW; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1748237964; c=relaxed/simple;
+	bh=rB6DtSGBYvQRTpJ/h23/TPejO2Pzgd4zo6EBey4hcas=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XktznBnxdYJpueEgQTtNrnKa9H9Djmu76tLn37lQaCtFKH2FWWUHW72iAUF8rck5L+cychXAf5go3VogZIcUFaBCJhb0pssiGWFGYoEbJdFNjxNmH0ioxB/3a7PcPhjX1WsEph1cUQaG47mlAatxJ6L2QyK4SX1Yi+CvDjN+of4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qsy0iSxE; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="GCWfh3BW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1748237769; x=1779773769;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=CDTIkRHRF1Q6zB+nRvd/gYo0v1esb9c+9rfC7MY0OJg=;
-  b=GCWfh3BWtAFAlidYEKQHsCUDlz4lwwbyi42LfABkCZw+XQySgj332y53
-   6+1kmoOswWTEsL+ZYQ+616osJhl7z7s/0jwYAOlZtO7cgVG4AUYHgFeKq
-   UdPlnLBbOd33E9uey/8ybXr1BPhEECXOSknMVJcVZudwKBo8eGEZcOOFq
-   LadCw/eYb5Fw8z+1hsxdDl/4U2+KBiTWI4oklY1t1ST/QdQ7Yr2aA3Nx9
-   d/bcAYm/yTlgd3oY9qB/nvYrqf7HnKR3pKWZJzCMEHiUTCjnAWA1lSkJ/
-   ZEs8VJUSArWooTCnmKZJ+c8v/bOcjGHgwVZ08ilK9wCvG1oNqDqftwbwc
-   w==;
-X-CSE-ConnectionGUID: JL4228CNQcalNKv+RnWdOg==
-X-CSE-MsgGUID: 3vgrOgbRRZq7bE0130ew0w==
-X-IronPort-AV: E=Sophos;i="6.15,315,1739862000"; 
-   d="scan'208";a="209556938"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 25 May 2025 22:35:01 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Sun, 25 May 2025 22:34:52 -0700
-Received: from che-dk-ungapp03lx.microchip.com (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.44 via Frontend Transport; Sun, 25 May 2025 22:34:49 -0700
-From: Thangaraj Samynathan <thangaraj.s@microchip.com>
-To: <bryan.whitehead@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 net 0/2] Refactor PHY reset handling and
-Date: Mon, 26 May 2025 11:00:46 +0530
-Message-ID: <20250526053048.287095-1-thangaraj.s@microchip.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qsy0iSxE"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2346846ee0eso3663885ad.3;
+        Sun, 25 May 2025 22:39:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748237962; x=1748842762; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dLp6cnqyCbjFDWsg2nybeJcpM5tSNUhvPi8JJGmzqF0=;
+        b=Qsy0iSxE85qWONzM3q1TXBzBFRit0OrFgHVdbG9gdGQeO6l+1sunRSyyYXklHYN9XT
+         MsHV+CH86Dots8bP3swyFaBxkJvU5H23U6/+Le+VH1UaADYDkMHxIph7S4vRR9iIgMR1
+         iOBCJLUFAiNQ0detzyuxAoQX+0eDW5w+TlfKSjOzEiXuKB6C+hi6TWeYkZX5O6Z/3vyX
+         yV1DrNX+US1w41Cxj6BnHNLtwb4fnqCpZo0yn56KWbvUX81d6DNQqSRwbl2B8QxKjLAK
+         QSnSmj/q3PWXdi5kKO2uNFmZJQWkVz24Pvit7v727T9QuHZKPvWgpKHETu3R1rDvbegx
+         awBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748237962; x=1748842762;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dLp6cnqyCbjFDWsg2nybeJcpM5tSNUhvPi8JJGmzqF0=;
+        b=FVdtDOKI4R28D1cTVvdr+J00ygWDjUvbVSjOgoDJ39WYjTy1OCttwYBP5IWKO759oB
+         +sGcxBVqSyv8WeMZ0axl5wq0cHP5vQVPxxnAi6dAsq6k+5JWdPiOHudbWL86JRuKWQCk
+         FkPafe8+ARvCS0VJoJYP2IE6btB4yPz+j+y+UeMu+zjU0ZUO5WWJZsvbaJBiMr6Kewc7
+         3WHuafSfsxJ0mcT8AcUBeqH8xwe3tTj2stw88LVZPpGvytSCU1FgPA6MvD8xTze9cZn1
+         k7qbHR9jvyRrmpGjVdEEY7lImQOkkZSycWVviwGpruaxC6dXtjdr0x0JFH9eTBDTFmaT
+         jbRw==
+X-Forwarded-Encrypted: i=1; AJvYcCUsiNo1DAeV4IguNFN/FlmPY8eeyt6rf0Qe/wTiUTp4DYYWXFuFB5+DJx7oo1YxR4iN89VzpniPRY+2DkDx@vger.kernel.org, AJvYcCVhklqkhGnUCVSsVg1YGBHM11/Pq6X5Y3t3I36q4gtkUwnJHpE2f+FcThiATWjz4w2WGSJGnk9Xev9F@vger.kernel.org, AJvYcCWW9GqfQDeMMKjPWx0tsxtUHyqxI/3asavO7342sIuQUMIvRM5OkvAfw+NoLHGlG0dkFxVdBmlO@vger.kernel.org
+X-Gm-Message-State: AOJu0YyorftQg3PhdpnpEFc5RHh5HNmwpBf643ex2tRUvBK6JEGV1khA
+	Z0nyg/OxF1SERn/c/m+NjUrJi1Zz0l0GZviq5rY9p4O+319ZqSG7TjFBpEJcpAKP
+X-Gm-Gg: ASbGncukWv3D5/lOmHYEG/NWraQGIviQsHpBQb4MB6/v2ACQ6sLtEIf7QYHGUO9uq7z
+	BtB7BuGGplwk1hc6UlQHjXUhPCwZ7vEYujQYe8XGwQlrxXIjkmqS+jR/Phv525q4mX+aANqNhEq
+	AdRxnw3CkJ+RrrASqAx0bryK1UHHIkhS+C6N/myoyJjksrm8nYREuEwDvcPuXbG3h4eHqKBCwMZ
+	rIa51kpka3DeEKYWSmEMckYi3KSZrSJHXlSR+RGft6J9cfH0vi/Q+BkjhXykxNTN25e84MNcD4l
+	n5m4h+ymTe0YYmFfGBgBmRcQx+9v5zzaLHRkihTnTsAHnjVqWLLN8iz2Cb8ShcSc6Xb8UGXKbKJ
+	Quh4oILVMkvH6d/iQQik3jcD7a2ps
+X-Google-Smtp-Source: AGHT+IG7xgzxnz1Grj9UzPDie6FzHib+saLpOZH8onxhz75DWnCGce9JBep2Vj0Bc2x5YD1GmylXew==
+X-Received: by 2002:a17:902:eccb:b0:22e:3f1e:b8c8 with SMTP id d9443c01a7336-23414f5cceamr132744715ad.15.1748237962243;
+        Sun, 25 May 2025 22:39:22 -0700 (PDT)
+Received: from [0.0.0.0] (ec2-54-193-105-225.us-west-1.compute.amazonaws.com. [54.193.105.225])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2343635891bsm22297405ad.130.2025.05.25.22.39.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 25 May 2025 22:39:21 -0700 (PDT)
+Message-ID: <705d99b3-9803-4f5f-a807-607b49349b68@gmail.com>
+Date: Sun, 25 May 2025 22:41:52 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/2] ethernet: eswin: Document for eic7700 SoC
+To: weishangjuan@eswincomputing.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ richardcochran@gmail.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ p.zabel@pengutronix.de, yong.liang.choong@linux.intel.com,
+ rmk+kernel@armlinux.org.uk, jszhang@kernel.org, inochiama@gmail.com,
+ jan.petrous@oss.nxp.com, dfustini@tenstorrent.com, 0x1207@gmail.com,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+Cc: ningyu@eswincomputing.com, linmin@eswincomputing.com,
+ lizhi2@eswincomputing.com
+References: <20250516010849.784-1-weishangjuan@eswincomputing.com>
+ <20250516011040.801-1-weishangjuan@eswincomputing.com>
+Content-Language: en-US
+From: Bo Gan <ganboing@gmail.com>
+In-Reply-To: <20250516011040.801-1-weishangjuan@eswincomputing.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This patch series refines the PHY reset and initialization logic in the
-lan743x driver. It includes the following changes
+On 5/15/25 18:10, weishangjuan@eswincomputing.com wrote:> From: Shangjuan Wei <weishangjuan@eswincomputing.com>
+> 
+> Add ESWIN EIC7700 Ethernet controller, supporting
+> multi-rate (10M/100M/1G) auto-negotiation, PHY LED configuration,
+> clock/reset control, and AXI bus parameter optimization.
+> 
+> Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
+> Signed-off-by: Shangjuan Wei <weishangjuan@eswincomputing.com>
+> ---...> +  # Custom properties
+> +  eswin,hsp_sp_csr:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    description: HSP SP control register> +...> +additionalProperties: false
+> +
+> +  eswin,syscrg_csr:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    description: System clock registers
+> +
+> +  eswin,dly_hsp_reg:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description: HSP delay control registers
+...
+> +examples:
+> +  - |
+> +    gmac0: ethernet@50400000 {...> +        dma-noncoherent;
+> +        eswin,hsp_sp_csr = <&hsp_sp_csr 0x1030 0x100 0x108>;
+> +        eswin,syscrg_csr = <&sys_crg 0x148 0x14c>;
+> +        eswin,dly_hsp_reg = <0x114 0x118 0x11c>;
 
-Rename lan743x_reset_phy to lan743x_hw_reset_phy 
-Clarifies the functions purpose as performing a hardware-level PHY
-reset, improving naming consistency and readability.
+Please help explain the meaning of eswin,<reg> array, and also the expected
+number of elements in it, like what starfive did to their JH71x0 device-
+tree bindings. E.g., this is what net/starfive,jh7110-dwmac.yaml looks like:
 
-Remove lan743x_phy_init and Call lan743x_hw_reset_phy in probe only
-This function only performed a PHY reset and did not contribute to
-complete initialization. It has been removed to simplify the
-initialization sequence. The PHY reset is now performed during probe
-and removed from the resume path. Resetting the PHY during resume
-was clearing Wake-on-LAN (WOL) registers, leading to wake-up failures.
-This change ensures proper PHY setup without interfering with WOL
-functionality.
+...
+   starfive,syscon:
+     $ref: /schemas/types.yaml#/definitions/phandle-array
+     items:
+       - items:
+           - description: phandle to syscon that configures phy mode
+           - description: Offset of phy mode selection
+           - description: Shift of phy mode selection
+     description:
+       A phandle to syscon with two arguments that configure phy mode.
+       The argument one is the offset of phy mode selection, the
+       argument two is the shift of phy mode selection.
+...
 
-These changes enhance the robustness of the driver initialization
-process and prevent WOL-related issues during suspend/resume cycles.
+Otherwise, there's no way for people to reason about the driver code.
+The same should apply for your sdhci/usb/pcie/... patchsets as well.
+Also there's no reference to the first element of the hsp_sp_csr array.
+ From the vendor code, I'm reading that you are using the first element
+as the register to set the stream ID of the device to tag the memory
+transactions for SMMU, but in the patch, there's no mentioning of it.
+I'm guessing you are planning to upstream that part later. If so, I
+think it's better to put that register index at the end of the array,
+and make it optional. It should then be properly documented as well.
 
-v1
--Initial Submission
-
-v2
--Corrcted Typo in commit message
-
-Thangaraj Samynathan (2):
-  net: lan743x: rename lan743x_reset_phy to lan743x_hw_reset_phy
-  net: lan743x: Fix PHY reset handling during initialization and WOL
-
- drivers/net/ethernet/microchip/lan743x_main.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
-
--- 
-2.25.1
-
+Bo
