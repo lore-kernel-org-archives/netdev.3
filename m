@@ -1,135 +1,149 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1705B1EF36C;
-	Mon, 26 May 2025 14:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB182AD04;
+	Mon, 26 May 2025 14:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748270576; cv=none; b=KrSWGgTIXjkkvyiELVtrKLWRQqvkrvd5HooGruRfF+yt4vrizNkgRDBoaUKv7/A24ul4QZcDckZO3Z2xcwpEq8w512VGEdyke45RIAb37l9uHf7nWmHq0u7rez0WrHpWw9HICrvxZ5nj0076DTt9HV6YTbj2ZrKW6VlrDFQwj6E=
+	t=1748270864; cv=none; b=ZRUWAIHn45/MaY829oVZEQEYeGzc24NOYhaYx7Ydm7+TTViMpSa80j8A6juAu+qHgYF6KENolhxIBdzxrxY/MGyMvoNctjHH1vwbcab9/7mnj7uEtqul6cHLRswwUwBMkU6soYVmPXBUHmKi+HkZUCut1zbzOFU8ojXKYiHdgEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748270576; c=relaxed/simple;
-	bh=2re7boeytqH1ze4jSfdyO/nDEwx8RWmbmO83cuM5XmQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=rAhqFvF/v4KoirZVjfksnfdmNeLkL3bULOWi0qghnkz+UkhVMUk85fvRFUC1+w6nOQSFR2vMG+3FGye9wlKKXfYcLpv2tyyFj5tFbGsEYF1pncahvrbK25EEQDGp+UOLRi0d0lN9Ox6YyZjJqo6FW8pzsziexBcz+Y5uglPlvwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BELkQeUY; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BELkQeUY"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 01A2F439AC;
-	Mon, 26 May 2025 14:42:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1748270565;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mbr5t4PGFq3eJGZHk+DUNUJrzlxkWy9snikx9mhwYS0=;
-	b=BELkQeUY7THmMuVRkP+N4HdC1Lr5zPHIYYHtrR0qFZLRS8sz5Y13t9DjJqM4NG36gR9kQI
-	hCPQ5ualzVOFms+l8O2joDdvzoKzbAyGqrOpi1vPmgQF7/FfHfOVoD3L5F9SLMZoVvOrnz
-	zTSf/qZAuqbFXMm1ydNIwOPZaqFrcmhQO30IZCcve/hH8klVakvpqsQ3ItKUYaEbe63WYy
-	lHNeo3ru3Bpqmk9Bc0Pug8tuoZiEU9BJZEDnUbhq19eD2XAGjGhb7KC3fJH7wTB5lLI0tK
-	3zJwjfkiw0l6JLk+vLi12Xhb9stwbw5+HJi0V5vp0C5EC9/o9p1sfTwkHsG4IQ==
+	s=arc-20240116; t=1748270864; c=relaxed/simple;
+	bh=VfPyiSH6R8wPZaaRRvxI/9uXCAhqSccbloq57hWez/8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=m0A8YFXLFpLAD8Op9xroeYfyoVrSyxYlr0eF8bPHs5g8qy9eMDuqQrLDc6yTamjAVC2qP0CW1valk3Jf/ypslKJHOXS4hlkAGt0Zre3C4xDvMlM0f0U2zhc/aR/hD1SFafcUanNN1sXxX4gVtuMVC3kfmWeaMO3U2zhoNXzGJKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4b5dmK6gfWzvX07;
+	Mon, 26 May 2025 22:43:13 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id E7B8F1401E9;
+	Mon, 26 May 2025 22:47:37 +0800 (CST)
+Received: from kwepemq200002.china.huawei.com (7.202.195.90) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 26 May 2025 22:47:37 +0800
+Received: from [10.174.177.223] (10.174.177.223) by
+ kwepemq200002.china.huawei.com (7.202.195.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 26 May 2025 22:47:36 +0800
+Message-ID: <5305c0d1-c7eb-4c79-96ae-67375f6248f1@huawei.com>
+Date: Mon, 26 May 2025 22:47:36 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 26 May 2025 16:42:42 +0200
-Message-Id: <DA666WVCP2OB.300LVHEGH5V4Y@bootlin.com>
-Subject: Re: [PATCH] net: stmmac: add explicit check and error on invalid
- PTP clock rate
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-To: "Yanteng Si" <si.yanteng@linux.dev>, "Alexandre Torgue"
- <alexandre.torgue@foss.st.com>, "Jose Abreu" <joabreu@synopsys.com>,
- "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Maxime
- Coquelin" <mcoquelin.stm32@gmail.com>, "Richard Cochran"
- <richardcochran@gmail.com>
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
- <maxime.chevallier@bootlin.com>, <netdev@vger.kernel.org>,
- <linux-stm32@st-md-mailman.stormreply.com>,
- <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250523-stmmac_tstamp_div-v1-1-bca8a5a3a477@bootlin.com>
- <8f1928e5-472e-4140-875c-6b5743be8fd3@linux.dev>
-In-Reply-To: <8f1928e5-472e-4140-875c-6b5743be8fd3@linux.dev>
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddujeejleculddtuddrgeefvddrtddtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkffuhffvvefofhgjsehtqhertdertdejnecuhfhrohhmpeetlhgvgihishcunfhothhhohhrrocuoegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptedugfevhfevueeggedutefhgfevhfeltefgieejjeeijeejveegtdehgeefkefhnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduiedprhgtphhtthhopehsihdrhigrnhhtvghngheslhhinhhugidruggvvhdprhgtphhtthhopegrlhgvgigrnhgurhgvrdhtohhrghhuvgesfhhoshhsrdhsthdrtghomhdprhgtphhtthhopehjohgrsghrvghusehshihnohhpshihshdrtghomhdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehlu
- hhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhm
-X-GND-Sasl: alexis.lothore@bootlin.com
-
-On Mon May 26, 2025 at 4:22 AM CEST, Yanteng Si wrote:
-> =E5=9C=A8 5/23/25 7:46 PM, Alexis Lothor=C3=83=C2=A9 =E5=86=99=E9=81=93:
->> While some platforms implementing dwmac open-code the clk_ptp_rate
->> value, some others dynamically retrieve the value at runtime. If the
->> retrieved value happens to be 0 for any reason, it will eventually
->> propagate up to PTP initialization when bringing up the interface,
->> leading to a divide by 0:
-
-[...]
-
->  From your description, I cannot determine the scope
-> of "some platforms". My point is: if there are only
-> a few platforms, can we find a way to handle this in
-> the directory of the corresponding platform?
-
-From what I can see, it can affect any platform using the stmmac driver as
-the platform driver (except maybe dwmac-qcom-ethqos.c, which enforces an
-open-coded clk_ptp_rate after the stmmac_probe_config_dt call that sets
-the clk_ptp_rate), if the platform declares a dedicated clk_ptp_ref clock.
-So I would rather say that it can affect most of the platforms.
-
-In my case, I have observed the issue with the dwmac-stm32.c driver, on an
-STM32MP157a-dk1 platform.
-
-> And there need a Fixes tag.
-
-Ok, I'll add a relevant Fixes tag.
-
-Alexis
-
->> Signed-off-by: Alexis Lothor=C3=A9 <alexis.lothore@bootlin.com>
->> ---
->>   drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 5 +++++
->>   1 file changed, 5 insertions(+)
->>=20
->> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers=
-/net/ethernet/stmicro/stmmac/stmmac_main.c
->> index 918d7f2e8ba992208d7d6521a1e9dba01086058f..f68e3ece919cc88d0bf199a3=
-94bc7e44b5dee095 100644
->> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->> @@ -835,6 +835,11 @@ int stmmac_init_tstamp_counter(struct stmmac_priv *=
-priv, u32 systime_flags)
->>   	if (!(priv->dma_cap.time_stamp || priv->dma_cap.atime_stamp))
->>   		return -EOPNOTSUPP;
->>  =20
->> +	if (!priv->plat->clk_ptp_rate) {
->> +		netdev_err(priv->dev, "Invalid PTP clock rate");
->> +		return -EINVAL;
->> +	}
->> +
->>   	stmmac_config_hw_tstamping(priv, priv->ptpaddr, systime_flags);
->>   	priv->systime_flags =3D systime_flags;
->>  =20
->>=20
->> ---
->> base-commit: e0e2f78243385e7188a57fcfceb6a19f723f1dff
->> change-id: 20250522-stmmac_tstamp_div-f55112f06029
->>=20
->> Best regards,
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] page_pool: Fix use-after-free in
+ page_pool_recycle_in_ring
+To: Mina Almasry <almasrymina@google.com>, Yunsheng Lin
+	<linyunsheng@huawei.com>
+CC: <hawk@kernel.org>, <ilias.apalodimas@linaro.org>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<zhangchangzhong@huawei.com>,
+	<syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com>
+References: <20250523064524.3035067-1-dongchenchen2@huawei.com>
+ <a5cc7765-0de2-47ca-99c4-a48aaf6384d2@huawei.com>
+ <CAHS8izP=AuPbV6N=c05J2kJLJ16-AmRzu983khXaR91Pti=cNw@mail.gmail.com>
+From: "dongchenchen (A)" <dongchenchen2@huawei.com>
+In-Reply-To: <CAHS8izP=AuPbV6N=c05J2kJLJ16-AmRzu983khXaR91Pti=cNw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemq200002.china.huawei.com (7.202.195.90)
 
 
+> On Fri, May 23, 2025 at 1:31 AM Yunsheng Lin <linyunsheng@huawei.com> wrote:
+>> On 2025/5/23 14:45, Dong Chenchen wrote:
+>>
+>>>   static bool page_pool_recycle_in_ring(struct page_pool *pool, netmem_ref netmem)
+>>>   {
+>>> +     bool in_softirq;
+>>>        int ret;
+>> int -> bool?
+>>
+>>>        /* BH protection not needed if current is softirq */
+>>> -     if (in_softirq())
+>>> -             ret = ptr_ring_produce(&pool->ring, (__force void *)netmem);
+>>> -     else
+>>> -             ret = ptr_ring_produce_bh(&pool->ring, (__force void *)netmem);
+>>> -
+>>> -     if (!ret) {
+>>> +     in_softirq = page_pool_producer_lock(pool);
+>>> +     ret = !__ptr_ring_produce(&pool->ring, (__force void *)netmem);
+>>> +     if (ret)
+>>>                recycle_stat_inc(pool, ring);
+>>> -             return true;
+>>> -     }
+>>> +     page_pool_producer_unlock(pool, in_softirq);
+>>>
+>>> -     return false;
+>>> +     return ret;
+>>>   }
+>>>
+>>>   /* Only allow direct recycling in special circumstances, into the
+>>> @@ -1091,10 +1088,14 @@ static void page_pool_scrub(struct page_pool *pool)
+>>>
+>>>   static int page_pool_release(struct page_pool *pool)
+>>>   {
+>>> +     bool in_softirq;
+>>>        int inflight;
+>>>
+>>>        page_pool_scrub(pool);
+>>>        inflight = page_pool_inflight(pool, true);
+>>> +     /* Acquire producer lock to make sure producers have exited. */
+>>> +     in_softirq = page_pool_producer_lock(pool);
+>>> +     page_pool_producer_unlock(pool, in_softirq);
+>> Is a compiler barrier needed to ensure compiler doesn't optimize away
+>> the above code?
+>>
+> I don't want to derail this conversation too much, and I suggested a
+> similar fix to this initially, but now I'm not sure I understand why
+> it works.
+>
+> Why is the existing barrier not working and acquiring/releasing the
+> producer lock fixes this issue instead? The existing barrier is the
+> producer thread incrementing pool->pages_state_release_cnt, and
+> page_pool_release() is supposed to block the freeing of the page_pool
+> until it sees the
+> `atomic_inc_return_relaxed(&pool->pages_state_release_cnt);` from the
+> producer thread. Any idea why this barrier is not working? AFAIU it
+> should do the exact same thing as acquiring/dropping the producer
+> lock.
 
+Hi, Mina
+As previously mentioned:
+page_pool_recycle_in_ring
+   ptr_ring_produce
+     spin_lock(&r->producer_lock);
+     WRITE_ONCE(r->queue[r->producer++], ptr)
+       //recycle last page to pool, producer + release_cnt = hold_cnt
+				page_pool_release
+				  page_pool_scrub
+				    page_pool_empty_ring
+				      ptr_ring_consume
+				        page_pool_return_page
+				       //release_cnt=hold_cnt
+				  __page_pool_destroy //inflight=0
+				     free_percpu(pool->recycle_stats);
+				     free(pool) //free
+      spin_unlock(&r->producer_lock); //pool->ring uaf read
+   recycle_stat_inc(pool, ring);
 
---=20
-Alexis Lothor=C3=A9, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+release_cnt can block the freeing of the page_pool until it sees the
+(release_cnt = hold_cnt) from the producer thread.
+However, page_pool_release() can be executed simultaneously when a page
+is recycle (e.g. kfree_skb). page_pool release_cnt will increase after
+the producer is written, then pool can be free and pool read in producer
+will trigger UAF.
+So adding a producer lock barrier to wait for recycle process to
+complete can fix it.
 
+Best Regards,
+Dong Chenchen
+
+>
