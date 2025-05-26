@@ -1,124 +1,221 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF2522E40F;
-	Mon, 26 May 2025 16:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1753E19CC37
+	for <netdev@vger.kernel.org>; Mon, 26 May 2025 16:17:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748276129; cv=none; b=su5mKCXGMGvdrz2Gt7Pj0DWEt8u1aoYQDv5+3vyB6H28Zn9WqsQTjscOn8opmXZKjmtcWscevpOCVw3XTNLFWCPlt3XwKLomFopsqTtW+N4xnoPUpWC56Q7L6M6Z4fNXnkCF1obTjfqEOv91tFAmMa5pKoJwjkXHPW8veyK3m8k=
+	t=1748276231; cv=none; b=Gw6sjBLNGZYcLpsQ/SfLc6asrzWRroGJ+YIdndySEaX5FIYdh0hncDVw24yhwyTk0UXfi/46FwtWoROMB0wO9h+fT7MQWe09Rsl95fw54osKuRS6NyGpFdNERtN5lWZlFQCP/IDDPs+636IxL50WZYJRN3ymsSM47WGj0iXvTcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748276129; c=relaxed/simple;
-	bh=DC66KEtFPPf6dRsTAkyJ8ORz4uW/csyD3M/JlX2dpLQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VzMX1Le6KQeX7pLs1ntwlrDQ9D5EKUjxZHptLIb7rAUTPXRF04sjjsubOV48q6Rik3OmfIfKCfPLdz9EUEGwmzGXLiQx8dA+x5M7pnXW80SPrIyz8ygxkazLL99ZAA9w6KMw6C1WHJy0rr1Kkva/z/u3Kz9PCHNfBmaJnXhtB5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OaoFpGaU; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1748276231; c=relaxed/simple;
+	bh=BbfJwyvUfPcPHmjozsUgs5lTeEXemRIfUXabR3ZB/mU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=imbBiXwcbfzX//pxBUFEoW296q0MaVkDzTDTSzlv7BGH63upmtRtyLmzmx+qn7otmiHjWyEVJLObQAa1SwSEKx9/i2STZxofCYqptSlWL1z1S6TXyPwB5qhC9tZQkx8p0npX7PJfd/X+8OMKqBBgf+sUPmtSJCosLrj+dGLREZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sima.ai; spf=pass smtp.mailfrom=sima.ai; dkim=pass (2048-bit key) header.d=sima.ai header.i=@sima.ai header.b=ennRCcKg; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sima.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sima.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OaoFpGaU"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b1276984386so329094a12.0;
-        Mon, 26 May 2025 09:15:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=sima.ai header.i=@sima.ai header.b="ennRCcKg"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2340ea6f3c1so1283465ad.1
+        for <netdev@vger.kernel.org>; Mon, 26 May 2025 09:17:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748276126; x=1748880926; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IqqBHeb+ye/Ia2+xZyQMqJHybQMTShtOHZU6XZo753Q=;
-        b=OaoFpGaUgnlDA3ra9JqyULkI2Qi0da6dYY4bVK9wKowW4vrHpaj7A3AD4RZfayBEy3
-         q6hh5tkcQXCEWCGsaMqpFpTDxaVFwMtD7Tmm7sTW+JMwB0tRcriD3F5+ECTishNSnuMZ
-         XQ4r0hZefJQBWaQKGlQFg2oB1r70JxVSRqgDDU/2kI7y4J1Lk+b9aPaB8mrfUMezFkSf
-         8rj5y1wfi9WIhvE0C/63VSGLE7aIvuWWeBJkT1dBUXD5HUQ22tMY0MQfFtRbdeAtjhkN
-         K//thMAw/jly2mHIf+SLE4yROfkKI8NzkydHMAI78rS3EUZhhT15MM6GGjKcGtccgL95
-         JLlQ==
+        d=sima.ai; s=google; t=1748276229; x=1748881029; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JpLNyektUDJ+Wy1bMHRPw9xz1Qvt5LipEoHKiCF+WW0=;
+        b=ennRCcKgO+9VTohpIelqOFFhBf/6aI51TtpdnvkGlHWHurC3WNzDP2C5gJyy8KBBWz
+         ZxZIarjDCra3qzvxJm+EzHZPDWQDCMSX/6FuKc5j+8STzGcMQVrbnwBaUo0UHYRwfHLc
+         o+v+32NRFp5cU5OMsCw93zTEBFh+zPWGfeXD++uNqn/zKrXnNd/mxsW4fxrBIIenCn4B
+         nHZvJCyir7Ytd7mvGHdZAsvsFKgNryCC1xz2qTSqhoB1ixJm1rNgA6DI523S29JeYVF1
+         cWe3qsBfLYQp3Jhhc8Tr5qoace2cfpkoq2TqecNfrUbWEPxXws3EVlp7oWs9mkDh08/c
+         /3iA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748276126; x=1748880926;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IqqBHeb+ye/Ia2+xZyQMqJHybQMTShtOHZU6XZo753Q=;
-        b=A3juX01mS/2MWVA3WhPF45Y/LVGnmMamOH2XvndVR+Yzk2V6LWQrEGQwscjXyL1eDr
-         b+jIaj4oQJP7ahHrPJG/PKnoI0MjLr4JYRY6eEmKW66AF+txQ4Omf4iOYDrx1LdoLc8j
-         DWLv2LxBkPQ5bl8bCMA3wjacJsQS2LXLeGgiMQ/iJxzjrxPp1QC4hYMTb2+dxNLjfN1v
-         66F7SpWprEcnSQYozNuhdfLRY3msj2ADMGWtQX6Ko84TNj1m4CuLDfSBvaZJXVban+Aq
-         swhLdHz2H8zHUdlcmKSnqmKru++IxNHaegvl3vyRVDdrnQB+Z9RD/00Rx89H0oy00077
-         miaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUHAJcqZqZMzwTY8gAz2Rl+2/YtGTEFWgCwgNYrsON91EsDNiWpCGX38gZXQn6lRf8ON0qNbyt+5ffDH9Q=@vger.kernel.org, AJvYcCUKAO4cyBdrjl5Z+0VYTs0rKDOdB6cUDfE7sKF9pi7z+GH111XK3JLJWMajzCscqC5K4H4rNbBeOrST23+UZmP4@vger.kernel.org, AJvYcCUZWuqDoSmtmBkvNVSQB2nbobvIJVq7tZuXYhW58W8MSFSW/pLnSalODEq3hUw6qxpGYS5sBnul3gQGPvnHA8Q=@vger.kernel.org, AJvYcCVEIZ8Z8lZ8FjCf3DNgtru1684T9qDmyJ5MxLFAGFDD7izxk0DoVaLeTCoUY/JbRhWV/sM1f4bw@vger.kernel.org, AJvYcCW/eaA2Kbzkvqm9U+mvMOPdPH/auc1PNBWXOrpPWskFPSCg/Zcklr/M9nq5/mGKwPshDMFnVWTVRRrhpwSI@vger.kernel.org, AJvYcCXC96slXCOngaru1ZnOy6HN5JEfxlxjZBnyrZsXCwafKmr87WmgCMUw7rhNfvb6aIeHHuz2UHXVioBn@vger.kernel.org, AJvYcCXyP2eB07mxTjNW1ZMSgeq5X9LmlFvNjGZXnzp1CnLd8TKfjNXWytonN6r5cGhMLbiBX44DtZpMLghc@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzh8R1ZW6FXnxYnNQqcAUjTyd6J74OYp3Ol+s3eaXTl0b12/lLk
-	zzVkmHs9g3DRGLmeOWwNDt2Os3cxirCVfkoUyhpuUTkBT0t036U/3HGrj+EOQmrbE/ZqrNeNszx
-	UF5P+z+GkGwyLy21CArOrbgNPfCqJItw=
-X-Gm-Gg: ASbGncsLj8pUNKy1W7qgy/Cw/+uED/TPxvSqwF3ctuVhmGleWqEfG5S1wMklhdHZYJL
-	GT/V9PyBfDeR5OI8I+cZSwAnYjkmz/ApgUwzLbFQpFHg5xIdhU+2bI+Sx6qaindcGSQnf3ZnEQ1
-	pZxDC+cNZbO8kPN1Ojzaz8q8b5wlonvyXJ
-X-Google-Smtp-Source: AGHT+IGHSiBqTNM5XKVporfsZuIAk8+0k1ziYJ6wqAO1b1FVW8Ifoco0RVgiuBOzn9y42qT5ODX8sdvF5WeB8wXqxCo=
-X-Received: by 2002:a17:90b:4b06:b0:2ff:7b67:2358 with SMTP id
- 98e67ed59e1d1-3110f0be892mr5688853a91.2.1748276125761; Mon, 26 May 2025
- 09:15:25 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1748276229; x=1748881029;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JpLNyektUDJ+Wy1bMHRPw9xz1Qvt5LipEoHKiCF+WW0=;
+        b=PD3Wkf9nrsIP5qz2abIgPlvJdfo3JjSFRZegVntdZ6/64KBTJRYK2YSAH9Bn8Z2tX+
+         10b8cdWE1Vj9Hd3lTKGgiXg9RDpuDD1HVPEs0TDHt9azZArhIaKJWwFktxrqxWlHCl8r
+         BD2jhYLI8ByWjrO5MEIgcISKLjU0e7FSJxwRE/Kkg8uVNTFheRpZeXLwdCaBLutYxpRQ
+         wJrqZHfTrpZe5Cfs65+cI5gGULQN244XR5cijU5SU0J7WsYWFpmePq8qp5M8fYjX6tvi
+         HrUxQ9+VIbRhNh5/SG+pq7Z4JKrRlIka5c9ujR1nfyiGNUMIQAeTTcY0PVssr2m6tLnV
+         4oyw==
+X-Forwarded-Encrypted: i=1; AJvYcCVtRU/fTFfkCUqrUmgp2wXg3ln+pk+lfKdaxhIMQG6KjWMgTaKxeg6TuDG+/Jss+l7d4iO2rWg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx29osqr2mCCJLBSJ9+Ui8x8WOEtMA3inLQUW92FD0341WI5sn
+	4oUWkeBTcqoBWEJdpCIt9qLwuEWMQRdPTQ+rUGn6gNiEA+w1h9Z0djW/elq/KcuZlmg=
+X-Gm-Gg: ASbGncu5x/GnjdjRMCL/BnTPDoaXlFd9cuDbvt8b8KELQnyvqYmP+AABGnO+pmoFT4E
+	hB3PBxcHkEDlRPe9CsCcQR/gH1g3z6O4BtTvaj+xHIR2SyHj3TvL3U/bNHBr1lxjEMPrVBrHEJu
+	iKM6S86dFVHFmk6EqYVmLPzNIdyeTW7+6464YZpumZ2KFqOZ4Is+bU3Fzgr9VpobncefSKr/z4j
+	VrVwyZYWh1HLmcJsJIaBNY2rUIKN3QhuxXYIRDGLNqjnOHEu2zf3G/5oYyvH6hIHoFg4e4aqpuA
+	hURVqL5k+3GBp5hnRX2ZyX2GV7YZJq6UvnKQ8FRiuKqj+qShjoEDxKPmbOkEeEvGBEVo
+X-Google-Smtp-Source: AGHT+IEhAY42K8o5WUtsFhwOWKSys2t+FWegKVAVXKM+NEJ0A73fVF3hLcAex7C5XJx2ISqqHBdL8A==
+X-Received: by 2002:a17:902:eccb:b0:224:1579:b347 with SMTP id d9443c01a7336-23414f64ab7mr53080415ad.7.1748276229149;
+        Mon, 26 May 2025 09:17:09 -0700 (PDT)
+Received: from [172.16.1.45] ([45.62.187.226])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2341ccad6fcsm41723455ad.170.2025.05.26.09.17.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 May 2025 09:17:08 -0700 (PDT)
+Message-ID: <93ae82e6-44f4-4f2f-b3b6-71240f84500c@sima.ai>
+Date: Mon, 26 May 2025 09:17:05 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250524-cstr-core-v10-0-6412a94d9d75@gmail.com> <20250524-cstr-core-v10-1-6412a94d9d75@gmail.com>
-In-Reply-To: <20250524-cstr-core-v10-1-6412a94d9d75@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 26 May 2025 18:15:12 +0200
-X-Gm-Features: AX0GCFs4zlXhbhwkFm69GRcSGgMcjMarvAu4nWr6-nQj7bz2FlpzmLVkBB1QzB0
-Message-ID: <CANiq72nhNmLMdFTzpSQSxxMLanFA7Od6tBZ+3CrVERv9Spou5Q@mail.gmail.com>
-Subject: Re: [PATCH v10 1/5] rust: retitle "Example" section as "Examples"
-To: Tamir Duberstein <tamird@gmail.com>, Patrick Miller <paddymills@proton.me>, 
-	Hridesh MG <hridesh699@gmail.com>
-Cc: Michal Rostecki <vadorovsky@protonmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, Benno Lossin <lossin@kernel.org>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, llvm@lists.linux.dev, linux-pci@vger.kernel.org, 
-	nouveau@lists.freedesktop.org, linux-block@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: stmmac: set multicast filter to zero if feature is
+ unsupported
+To: Yanteng Si <si.yanteng@linux.dev>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com
+Cc: rmk+kernel@armlinux.org.uk, 0x1207@gmail.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20250523221938.2980773-1-nikunj.kela@sima.ai>
+ <e0552940-9fbe-4375-a9a9-e26cd425591a@linux.dev>
+Content-Language: en-US
+From: Nikunj Kela <nikunj.kela@sima.ai>
+In-Reply-To: <e0552940-9fbe-4375-a9a9-e26cd425591a@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, May 24, 2025 at 10:33=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
-> wrote:
+
+On 5/25/25 7:09 PM, Yanteng Si wrote:
+> 在 5/24/25 6:19 AM, Nikunj Kela 写道:
+>> Hash based multicast filtering is an optional feature. Currently,
+>> driver overrides the value of multicast_filter_bins based on the hash
+>> table size. If the feature is not supported, hash table size reads 0
+>> however the value of multicast_filter_bins remains set to default
+>> HASH_TABLE_SIZE which is incorrect. Let's override it to 0 if the
+>> feature is unsupported.
+>>
+>> Signed-off-by: Nikunj Kela <nikunj.kela@sima.ai>
+>> ---
+>>   drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c 
+>> b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> index 085c09039af4..ccea9f811a05 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> @@ -7241,6 +7241,9 @@ static int stmmac_hw_init(struct stmmac_priv 
+>> *priv)
+>>                       (BIT(priv->dma_cap.hash_tb_sz) << 5);
+>>               priv->hw->mcast_bits_log2 =
+>> ilog2(priv->hw->multicast_filter_bins);
+>> +        } else {
+>> +            priv->hw->multicast_filter_bins = 0;
+>> +            priv->hw->mcast_bits_log2 = 0;
+>>           }
 >
-> This title is consistent with all other macros' documentation,
-> regardless of the number of examples contained in their "Examples"
-> sections.
+> I didn't read the code carefully, just did a simple search：
 >
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ❯ grep -rn multicast_filter_bins drivers/net/
+> drivers/net/ethernet/stmicro/stmmac/common.h:611:    unsigned int 
+> multicast_filter_bins;
+> drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c:26: 
+> plat_dat->multicast_filter_bins = 0;
+> ***
+> drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c:512: 
+> plat->multicast_filter_bins = HASH_TABLE_SIZE;
+> ***
+> drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c:536: 
+> &plat->multicast_filter_bins);
+> drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c:541: 
+> plat->multicast_filter_bins = dwmac1000_validate_mcast_bins(
+> drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c:542: &pdev->dev, 
+> plat->multicast_filter_bins);
+> drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c:523: 
+> mac->multicast_filter_bins = priv->plat->multicast_filter_bins;
+> drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c:527:    if 
+> (mac->multicast_filter_bins)
+> drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c:528: 
+> mac->mcast_bits_log2 = ilog2(mac->multicast_filter_bins);
+> drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:516: 
+> (netdev_mc_count(dev) > hw->multicast_filter_bins)) {
+> drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:1527: 
+> mac->multicast_filter_bins = priv->plat->multicast_filter_bins;
+> drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:1531:    if 
+> (mac->multicast_filter_bins)
+> drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:1532: 
+> mac->mcast_bits_log2 = ilog2(mac->multicast_filter_bins);
+> drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:1568: 
+> mac->multicast_filter_bins = priv->plat->multicast_filter_bins;
+> drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:1572:    if 
+> (mac->multicast_filter_bins)
+> drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:1573: 
+> mac->mcast_bits_log2 = ilog2(mac->multicast_filter_bins);
+> drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c:543:    if 
+> (netdev_mc_count(priv->dev) >= priv->hw->multicast_filter_bins)
+> drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c:633:    if 
+> (netdev_mc_count(priv->dev) >= priv->hw->multicast_filter_bins)
+> drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c:679:    if 
+> (netdev_mc_count(priv->dev) >= priv->hw->multicast_filter_bins)
+> drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c:31: 
+> plat->multicast_filter_bins = HASH_TABLE_SIZE;
+> drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c:84: 
+> plat->multicast_filter_bins = HASH_TABLE_SIZE;
+> drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c:98: 
+> plat->multicast_filter_bins = 256;
+> drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c:365: 
+> mac->multicast_filter_bins = priv->plat->multicast_filter_bins;
+> drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c:369:    if 
+> (mac->multicast_filter_bins)
+> drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c:370: 
+> mac->mcast_bits_log2 = ilog2(mac->multicast_filter_bins);
+> drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:7240: 
+> priv->hw->multicast_filter_bins =
+> drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:7243: 
+> ilog2(priv->hw->multicast_filter_bins);
+> drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c:570: 
+> plat->multicast_filter_bins = HASH_TABLE_SIZE;
+> drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c:707: 
+> plat->multicast_filter_bins = HASH_TABLE_SIZE;
+> drivers/net/ethernet/stmicro/stmmac/dwmac-ipq806x.c:479: 
+> plat_dat->multicast_filter_bins = 0;
+> drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c:456:    int 
+> numhashregs = (hw->multicast_filter_bins >> 5);
+> drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c:485: 
+> (netdev_mc_count(dev) > hw->multicast_filter_bins)) {
+> drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c:1057: 
+> mac->multicast_filter_bins = priv->plat->multicast_filter_bins;
+> drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c:1061:    if 
+> (mac->multicast_filter_bins)
+> drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c:1062: 
+> mac->mcast_bits_log2 = ilog2(mac->multicast_filter_bins);
+> drivers/net/ethernet/stmicro/stmmac/dwmac-generic.c:43: 
+> plat_dat->multicast_filter_bins = HASH_TABLE_SIZE;
+>
+> and
+>
+> drivers/net/ethernet/stmicro/stmmac/common.h:265:#define 
+> HASH_TABLE_SIZE 64
+>
+>
+> From the search results, the default value of multicast_filter_bins
+> may be meaningful. And I think that even if some hardware does not
+> support this feature, it should still be overridden in its own directory.
 
-I was going to say that I could take this one independently, but we
-already had #1 of:
+There is a DT property 'snps,multicast-filter-bins' available to 
+override the default value for a platform however this property is not 
+taken into consideration in case of xgmac. That being said, 
+stmmac_platform.c logic can be modified to extend the property use for 
+xgmac also however the value will be overridden later based on hash 
+table size read from the HW Feature register. So only zero value will be 
+usable via DT in that case. Hence I thought of setting it to 0 in the 
+else part of the code I modified in this patch. If you think I should 
+extend the DT property for xgmac, I can modify the patch too.
 
-    https://lore.kernel.org/rust-for-linux/20240906164448.2268368-1-paddymi=
-lls@proton.me/
+Thanks,
 
-I will take that one (which given the `checkpatch.pl` one got stalled,
-I should have taken it separately as I mentioned at some point).
+-Nikunj
 
-Patrick/Hridesh: there are new cases arriving (i.e. singular section
-names), so it would be great if the `checkpatch.pl` patch discussion
-could be restarted to see if we can land it, i.e. there is now even
-more justification behind it just after some months. Thanks!
-
-Cheers,
-Miguel
+>
+>
+> Thanks,
+> Yanteng
+>
