@@ -1,116 +1,83 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E6328EA
-	for <netdev@vger.kernel.org>; Mon, 26 May 2025 14:19:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D3620CCCC;
+	Mon, 26 May 2025 14:19:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748269193; cv=none; b=tIejhpbuemZCONQTnYFMHzhzsGqKL+eLo6nqXotQlEaO03qY1J54bGlbFIpwRlSi/rNdBI0JcFBm9YfP0pVpZ5rUm5BUxophovgJ+xQHYlqiJFWdBAuVWpE+ecp2LsShQtXwbaOU/PTNAwjV1WUYFNlb3anSlbblnnJ06YvwM1U=
+	t=1748269194; cv=none; b=oYsNILOgFTXlEeFedKQQYFSeRAaVhXVrs8F8IZPal3Vk126aSUVDL4s28nOaBVH9MqNnmSHt9FZpGXraE41o+juaKprlfwlgQtyorQxMGvTmv/2S0WRFBbJ0tREmiE0m64LIXwNvp5dmO1zT+4WuxKld5/vSl3xp9uNoRQ6Db48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748269193; c=relaxed/simple;
-	bh=QPZsjHJP8+qN9iJVyhMRNNNvTGgEI/GLHNRsj22ggc4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gsFm3vDkAMkqTmWfnXOuJ6sILLJ4/Nz5eMmSPzO+DfE4mlOHMYyFgmtSOe8N8vpqgIPRTfn//lEd6XESErmyjMZ+wJy/RoTytLKDuv9ygligXueorDgA2FNWBWilvc3idvGg9C+SzTy38MXmxinJnaQNbAqfsJUwI7S9ALY5rFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HQpznsxs; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1748269194; c=relaxed/simple;
+	bh=xeJSnqHA0JVNhysIqhxWNknATT0guijmTw8rMyR29DY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=L+58AbxRKvKWNIKvEGFLbEL83YEGOyynyPkovbXe+RPh9qqS5vU9Fh/kkTq1z4va0GATEghaC4oNBpyPXCx7pC+SPyKFDx6WSMSrJuZ59qCk76447Lq+VyS2s3lmmu/igzEaThRoOh/uhDC4ams1VGcvoa1QTPbJlWjujlXzYj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G3zgUI6n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HQpznsxs"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3a4c95fc276so273706f8f.3
-        for <netdev@vger.kernel.org>; Mon, 26 May 2025 07:19:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748269190; x=1748873990; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QPZsjHJP8+qN9iJVyhMRNNNvTGgEI/GLHNRsj22ggc4=;
-        b=HQpznsxsEMFjW6C0eoC55HDmJgPn7gJ2+I1gHLxtvZi/9me2n3jRDQurG6sllutA4q
-         aBYbffX3iInM6NmNjlr2g0Vha2Ny83oOE1o4ZcuKBoLGqBw+shOTY4gHQn3/j/aTJyvf
-         TpnJAtDPlfLO2e+c0wEPm4Sw5lLt6NJo+tORJ9ILYFI0zJqf/3i3iOfWaMCEINhyhqPu
-         uC5NGkrjgbltNAkrk+e+RKOdqYoIaB2EhZICNzw/gn3ZO+dJ/ORpuWwgw2osoE3AKHM8
-         rOF2uAnwhSmQZH/4+WLoFDeZd+mPU29TnVkK1fp2r0Dq7G6+eLTIU8lruTUgiGs3Y2YY
-         edzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748269190; x=1748873990;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QPZsjHJP8+qN9iJVyhMRNNNvTGgEI/GLHNRsj22ggc4=;
-        b=OfZHRbd+TscLyLmmZIUe4Y6pTfX86pYK3GtX24ONC7FFsZRUUM0F2O9lsu2JUQyPbw
-         h5UVkoQJaBDyZOd0Hv/+wwxHU7drah8DaXXMGxh4IELWl2wMPhpm6IUvxQhOUUh1AzYA
-         vpX3y6xKk90OgOt6AhS3/xe2Jqyts+1q8qq1PTEE1EUAwPjjzho+0eOerFlYjR+Tl20I
-         TjxllKbqEltkBrs2BH1QgIVygpYETzYlSqU0m0lrhm5uwwk2dsb39tXLEKeCSI8gCRiZ
-         Dr0c3zGOTERK1P+P/tve0FMbkXwGgSdPCG04KToYW9nx7KLxlwt75QN3uYov9dT3KVw9
-         DZKA==
-X-Forwarded-Encrypted: i=1; AJvYcCUiK3FAEsPK0upxgnNzelWnMnYXP/aTWdoi4XrYe5v62v2bP59qZj6fHXNeOSdqm0jLZ+wVY8I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAZRGi/Sv9PMe5oYaZA351taSEFNvExG1xC7Ym9dl3cLxose+b
-	IddEvH6PugHKyHuYzIYAhZbSLHAjgUcFCYJTCQPEFVWj8lxlaJ9WHgs9yUiEFLkaTINKczfOli3
-	JBw5nXICS2OoguST8nkmhOrbBUNBLhOA=
-X-Gm-Gg: ASbGncvOfpL9lwJeGDbW3+RNvNWKOKJ7TM89pq8VOCtyqE7Ku+c5H+R9cXP33gCK7Rl
-	B068rutDrJEltkaMRwRSIVKt4Ej5mL8xyIOk1m4KSwk8B8fukiarakHaf8GnIvFi4EDXLv+9fDf
-	/GAH6nx2QlROBaa/LmuW8CYA6E055JSert7JVNRCzq
-X-Google-Smtp-Source: AGHT+IGjXEuX6gp5Puu8K64b5FIOY8mVNMUcKhbK1MtNBaCQfAHA1YY6beoSPhJTt6rJZQ4riMgn75a+gKr4k6yB5tA=
-X-Received: by 2002:a05:6000:4383:b0:3a4:d5e8:e33e with SMTP id
- ffacd0b85a97d-3a4d5e8e396mr4230466f8f.21.1748269189754; Mon, 26 May 2025
- 07:19:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G3zgUI6n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCC2C4CEE9;
+	Mon, 26 May 2025 14:19:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748269193;
+	bh=xeJSnqHA0JVNhysIqhxWNknATT0guijmTw8rMyR29DY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=G3zgUI6n3NwRmIAVvm8ZHf7np6UTirqaICARVa6YnI+03m8Vk9+MMMAbl5LVsT/oA
+	 tiNxRFdQb6w5a05rJ/YwGt3mfVl3yMspBNyNIfroh5bbdOo1u7DTf0GEvvkqfsRqZn
+	 jr1nvVXWBopiK2tkT8wiPbRzc9at5zQkw+UT/Pyf7L2YtFf2DQLMQkLuUdXoAvUXQz
+	 uRjkdwX7dCsmATU0bktFFOch+R6kep2NXifX17lPpqDZkLB3aYWbixAlx4vlbhzALG
+	 hC4bFgfZe37ZlJTt5JBmT3Wkx6qWv7zsHDxD7ZQnbhZigYK4siiiKwZAQe6TIXPXSZ
+	 KmqvZ32X2rOqQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70D8B3805D8E;
+	Mon, 26 May 2025 14:20:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250526130519.1604225-1-dnlplm@gmail.com> <CAFEp6-06ATV_rh_KWvjgNoiw67WPvAE-gF_gU-DJdcycDiYVqA@mail.gmail.com>
-In-Reply-To: <CAFEp6-06ATV_rh_KWvjgNoiw67WPvAE-gF_gU-DJdcycDiYVqA@mail.gmail.com>
-From: Daniele Palmas <dnlplm@gmail.com>
-Date: Mon, 26 May 2025 16:09:26 +0200
-X-Gm-Features: AX0GCFvMgV1zDWgJLvbau9slHdyRsphNwCIIP4EFHjmyMBzlRRGWPYOWQwLstus
-Message-ID: <CAGRyCJGESxV2M9e34dJw89=0NFt0+hrXCOCW=MaYdVfn42DZTw@mail.gmail.com>
-Subject: Re: [PATCH net 1/1] net: wwan: mhi_wwan_mbim: use correct mux_id for multiplexing
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Sergey Ryazanov <ryazanov.s.a@gmail.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Slark Xiao <slark_xiao@163.com>, 
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: usb: aqc111: fix error handling of usbnet read
+ calls
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174826922825.939427.1321439383834289633.git-patchwork-notify@kernel.org>
+Date: Mon, 26 May 2025 14:20:28 +0000
+References: <20250520113240.2369438-1-n.zhandarovich@fintech.ru>
+In-Reply-To: <20250520113240.2369438-1-n.zhandarovich@fintech.ru>
+To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux-usb@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzbot+3b6b9ff7b80430020c7b@syzkaller.appspotmail.com,
+ lvc-project@linuxtesting.org
 
-Hi Loic,
+Hello:
 
-Il giorno lun 26 mag 2025 alle ore 16:06 Loic Poulain
-<loic.poulain@oss.qualcomm.com> ha scritto:
->
-> Hi Daniele,
->
-> On Mon, May 26, 2025 at 3:19=E2=80=AFPM Daniele Palmas <dnlplm@gmail.com>=
- wrote:
-> >
-> > When creating a multiplexed netdevice for modems requiring the WDS
-> > custom mux_id value, the mux_id improperly starts from 1, while it
-> > should start from WDS_BIND_MUX_DATA_PORT_MUX_ID + 1.
-> >
-> > Fix this by moving the session_id assignment logic to mhi_mbim_newlink.
->
-> Currently, the MBIM session ID is identical to the WWAN ID. This
-> change introduces a divergence by applying an offset to the WWAN ID
-> for certain devices.
->
-> Whether this is acceptable likely depends on how the MBIM control path
-> handles session addressing. For example, if mbimcli refers to
-> SessionID 1, does that actually control the data session with WWAN ID
-> 113?
->
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-yes, quoting from a QC case we had:
+On Tue, 20 May 2025 14:32:39 +0300 you wrote:
+> Syzkaller, courtesy of syzbot, identified an error (see report [1]) in
+> aqc111 driver, caused by incomplete sanitation of usb read calls'
+> results. This problem is quite similar to the one fixed in commit
+> 920a9fa27e78 ("net: asix: add proper error handling of usb read errors").
+> 
+> For instance, usbnet_read_cmd() may read fewer than 'size' bytes,
+> even if the caller expected the full amount, and aqc111_read_cmd()
+> will not check its result properly. As [1] shows, this may lead
+> to MAC address in aqc111_bind() being only partly initialized,
+> triggering KMSAN warnings.
+> 
+> [...]
 
-"There was a change in QBI on SDX75/72 to map sessionid from MBIM to
-muxids in the range (0x70-0x8F) for the PCIE tethered use.
-So, if you are bringing up data call using MBIM sessionId=3D1, QBI will
-bind that port to MuxId=3D113. So, the IP data packets are also expected
-to come from host on MuxId=3D113."
+Here is the summary with links:
+  - [net-next] net: usb: aqc111: fix error handling of usbnet read calls
+    https://git.kernel.org/netdev/net-next/c/405b0d610745
 
-Regards,
-Daniele
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-> Regards,
-> Loic
+
