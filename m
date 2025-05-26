@@ -1,117 +1,140 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930F31C3C18
+	for <netdev@vger.kernel.org>; Mon, 26 May 2025 06:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748240904; cv=none; b=HqsMi9STLwYcWMS1o0O3ykdenMzDWJ3TiF2U0lTH0FKOHonLD0ompJnu/dfw0J18/ExrxP95wVJptF8hamUBZs+LxJ7XMihfCGCmSSTUjDmwYCfBk7Aaf7oi9+PiXLxcrb1f9c8ov+KTq1UwMkMcaZ+2zp1P1TVq8iScWXe7egI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748240904; c=relaxed/simple;
+	bh=0fEu2ww12B0cIwpXsUsdj4Q/dIfImQT955vEb70tZjc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=trfR5CCaHjPJOtb9EaxuHi6wkEaK3b2tbQngJW1yY2xd5lDmWAjqhGu0//Z30wRDvEo8tz1ZOx6sbtMB5OnN3c6zRkStxlpmfZo+2IwCBdmtuqbSSsmiG4Rn0IVlUKaLBLKtpqzIR8QhCQempwvAC3jtgsyZqMZe4wck8lV+Q28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=mK/QDqi7; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="mK/QDqi7"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 63FD02074F;
+	Mon, 26 May 2025 08:28:12 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id BphE7bhS4Qvg; Mon, 26 May 2025 08:28:11 +0200 (CEST)
+Received: from cas-essen-01.secunet.de (rl1.secunet.de [10.53.40.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBB9139E;
-	Mon, 26 May 2025 06:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748240673; cv=none; b=EOlsXw45u6Zci4Iv7UQvSIUPHsOA9lXfBmIo+AiGf9JROwmz6RBgs0eyqGBqMdJXoSFFWaGET8NOGYGASH2W504FEj2/L61szf7yUAsYThz3ecpKbgebRi4lDafPfj8WCGKXxv4tNxsY9UpX08C0OS4i6XKuNphMwlRJ8FyvAps=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748240673; c=relaxed/simple;
-	bh=Jmoezrr5h/P7wPGqx0AJl73cVmfIFhZWVmXprIqJtl8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qX+N7lvPPaXyyqs4lEqXuLBWLrQ6YsZFeipGxcrhZ/b4U6QHNzCiXH6F4jxfc439ZtGip63t8hNGCw/q2JNUA3cGdyJ4JJmw2lvn9Cu2JHjU3QWnxEolFuFkgr6Z56e1R2byATEQYIdyHmR1Q3HVC4Skn1KeA8XnNEw3M/z4bZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N2riJsD5; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N2riJsD5"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a4cad7d6bdso1153135f8f.0;
-        Sun, 25 May 2025 23:24:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748240670; x=1748845470; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aSeQTqMyac5qdBtfUXvRWyS7yp4apIVtXkHajbYHhso=;
-        b=N2riJsD56hcHJa7b/m1gaRy0Ujnw2eSyET1OZrXXB8+lAMhJoMaN5vREFFSi0JFtVz
-         S2c1/zR3R6GubG/CheLBSbKovf8od+0/gp0XVFXvbkn0HmU9U8peOsrTmmRVf9XZrMGx
-         wdvDV+HGPfac9d/uL+dk45elbw4nBE+zy7AjEz3Ece/d1+y251ZngyORe+Ckyj7Ip5Dz
-         NQRJnTsSCWP9tiljtQUMi0qM/58vwPEJYQ1iRsEmQBoCBAi7JJq/DzKPbLqqmFSR8in/
-         Dbeuu1OoqgL8Ytzl0YM4J2ywWzyBjtsigAmBSQDHj2cWhdalcexOigUSR8d1IKcjMGZM
-         DFNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748240670; x=1748845470;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aSeQTqMyac5qdBtfUXvRWyS7yp4apIVtXkHajbYHhso=;
-        b=Dh+UfipZK7E3IGSl/Te5FyREJuevOeCwAYmybplaa8riv0kbj4ZLch+wAHZsO9qo/H
-         XlYyvDL/amvUr7DE+E4PqL8AZriAPnHSKrk5CRyc04NQ3aRy5wOplYukjL5PZh05ryQG
-         Ijyuy18oXxeaM6HEL8quiPmm2dfHLKISZs17OpkgfC6HgSR6OREjTXog/t4aWvbpjVzn
-         6D+P2STZ4nyTz5pnUUV07wbtGhkDqbLEjmJdw4HbSx3cf9JYy2x/skW3GfRacNmjhghc
-         CUOLFDmrUNquUdKeMkYywSkr412jFEHA5zYM0Rj1A9rwbWlGCCZbq8Gkv0b/VhQxHqYG
-         E2PQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVkl5SpKMTJZLsVUgeFjjJczOljOd7BOZ4fpE+RRZGkk+stveesJxfe4lxDXXhS6d29r/p37a3mfJOeiJBu@vger.kernel.org, AJvYcCW39vhysG7EgEX5fMaU7EJHNoA4tJ3ef2Jl8ZDjorQ5scWaELQ3pY+Sf3Uqyg5cCuUGb/eMp5JB@vger.kernel.org, AJvYcCWmw3A95oH75J5dTi2LDpgmXvZyfXO3ln0ru5mt8YFG/5DQurObrGU2dEmOn+kn++xqNWXwgVzx43zOxiShwis=@vger.kernel.org, AJvYcCXvUtv9LWiLuFf4qeHWv2RAvXyXdfcoozrYQKg4F5z6FKStmj6N7pxIs3sQp2Zdtv8YXlXoXTTpJtiQ5w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUIkUoI+mWP/IYzw+D/AOSIvyad+cv2ciPsfJHorvnKlQr9DMN
-	N9EeYgqEfWg7fus1i/GnTSPdb4e//qMEVU8k7KwH2MspR/F/UHS4dZ2W
-X-Gm-Gg: ASbGnctOIIhH5rXTt2aGCtQ6zqVP1ufUAtU9POEyNhsk2wMbYXEW8tf1YHmRU5G22+o
-	UkY2UDOqIcwooGK9tXibNyEd1b+drRWWVdoIK2x/qzKgNdCMr0i7IBrfMFFHzFLT6eNB6ohuMFV
-	nXjs7hD5ITg4wUuEfxp+T//UH82yV01TDvBpxfI024TbGDkSEtqFr4BWFV/ZD9yJVlH2ksbLUMY
-	V/uDUPM3bt9BF8BzUYfvV3NzjyrOWNsJdImgC9Y8J6aExf9f0pMJirl4jmD5fy1s73vmMVMHB43
-	o+KJ8QYG7CvQ17CPSDmhEEQsy3rbePqfGl9quo6GVNawCVtFNaApYiOVfosi+Bg2u0WoBUfoEB+
-	SN2Y=
-X-Google-Smtp-Source: AGHT+IG83ayY7ljjao4k1jwTiu4cQ4ZxKzux3pzwGzFHq9ha2mxPe82gctnuizexlUDn/mwQ8xOrtA==
-X-Received: by 2002:a05:6000:2503:b0:3a4:cec5:b59c with SMTP id ffacd0b85a97d-3a4cec5b7f0mr5640039f8f.25.1748240670113;
-        Sun, 25 May 2025 23:24:30 -0700 (PDT)
-Received: from [10.80.1.87] ([193.47.165.251])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f6f062c7sm233179025e9.14.2025.05.25.23.24.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 25 May 2025 23:24:29 -0700 (PDT)
-Message-ID: <c452671a-f0b4-4738-a4f9-f73c134fe804@gmail.com>
-Date: Mon, 26 May 2025 09:24:27 +0300
+	by mx1.secunet.com (Postfix) with ESMTPS id C83B8204D9;
+	Mon, 26 May 2025 08:28:11 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com C83B8204D9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1748240891;
+	bh=6pZuzxL9PWxTEEOR/RvRN+eaUxydotYWWBCu+Lm5yCY=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=mK/QDqi75ygadtjhqvts1bRv8WRVbzKJisEPn6X1V2RTXIKXeWlGOhyHiOqAS3Bdt
+	 IXIrsOQfFZO68j6y7XbJ+BP2PyyLd27p6NjO9A4rRk1xYHK/Zp5259aGRVh2IpdLqt
+	 8FtRtp4qHIMSIz/TvUC47W1NI+HSeeGYefdNAgK8UNpKQb0jHYSd8SReUSHd0/QYZ2
+	 Dhh4hxEYFoHSxrXQc5tzAAwJH3yNlJLIDGhYrm5EnTki/57VhA5Hejo2F1rkLe5E4Z
+	 tCQJGvwTb8DZ4pklKm0VWOYkOcLR92h2o1Srx9k91e367oDgPJmLUNmOy2hKKXLUq7
+	 1LaAif4JX0/Xw==
+Received: from mbx-essen-02.secunet.de (10.53.40.198) by
+ cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Mon, 26 May 2025 08:28:11 +0200
+Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
+ (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 26 May
+ 2025 08:28:11 +0200
+Received: by gauss2.secunet.de (Postfix, from userid 1000)
+	id 97BC6318174D; Mon, 26 May 2025 08:28:10 +0200 (CEST)
+Date: Mon, 26 May 2025 08:28:10 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Sabrina Dubroca <sd@queasysnail.net>
+CC: <netdev@vger.kernel.org>, Antony Antony <antony.antony@secunet.com>,
+	Tobias Brunner <tobias@strongswan.org>, Florian Westphal <fw@strlen.de>
+Subject: Re: [PATCH ipsec 2/2] xfrm: state: use a consistent pcpu_id in
+ xfrm_state_find
+Message-ID: <aDQJ+kt5c0trlfo5@gauss3.secunet.de>
+References: <cover.1748001837.git.sd@queasysnail.net>
+ <6d0dd032450372755c629a68e6999c3b317c0188.1748001837.git.sd@queasysnail.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net/mlx5: HWS, Fix an error code in
- mlx5hws_bwc_rule_create_complex()
-To: Dan Carpenter <dan.carpenter@linaro.org>,
- Yevgeny Kliteynik <kliteyn@nvidia.com>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Cosmin Ratiu <cratiu@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Vlad Dogaru <vdogaru@nvidia.com>, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org
-References: <aDCbjNcquNC68Hyj@stanley.mountain>
-Content-Language: en-US
-From: Tariq Toukan <ttoukan.linux@gmail.com>
-In-Reply-To: <aDCbjNcquNC68Hyj@stanley.mountain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <6d0dd032450372755c629a68e6999c3b317c0188.1748001837.git.sd@queasysnail.net>
+X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
+ mbx-essen-02.secunet.de (10.53.40.198)
+X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-
-
-On 23/05/2025 19:00, Dan Carpenter wrote:
-> This was intended to be negative -ENOMEM but the '-' character was left
-> off accidentally.  This typo doesn't affect runtime because the caller
-> treats all non-zero returns the same.
+On Fri, May 23, 2025 at 05:11:18PM +0200, Sabrina Dubroca wrote:
+> If we get preempted during xfrm_state_find, we could run
+> xfrm_state_look_at using a different pcpu_id than the one
+> xfrm_state_find saw. This could lead to ignoring states that should
+> have matched, and triggering acquires on a CPU that already has a pcpu
+> state.
 > 
-> Fixes: 17e0accac577 ("net/mlx5: HWS, support complex matchers")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+>     xfrm_state_find starts on CPU1
+>     pcpu_id = 1
+>     lookup starts
+>     <preemption, we're now on CPU2>
+>     xfrm_state_look_at pcpu_id = 2
+>        finds a state
+> found:
+>     best->pcpu_num != pcpu_id (2 != 1)
+>     if (!x && !error && !acquire_in_progress) {
+>         ...
+>         xfrm_state_alloc
+>         xfrm_init_tempstate
+>         ...
+> 
+> This can be avoided by passing the original pcpu_id down to all
+> xfrm_state_look_at() calls.
+> 
+> Also switch to raw_smp_processor_id, disabling preempting just to
+> re-enable it immediately doesn't really make sense.
+> 
+> Fixes: 1ddf9916ac09 ("xfrm: Add support for per cpu xfrm state handling.")
+> Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
 > ---
->   .../net/ethernet/mellanox/mlx5/core/steering/hws/bwc_complex.c  | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  net/xfrm/xfrm_state.c | 19 ++++++-------------
+>  1 file changed, 6 insertions(+), 13 deletions(-)
 > 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc_complex.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc_complex.c
-> index 5d30c5b094fc..70768953a4f6 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc_complex.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc_complex.c
-> @@ -1188,7 +1188,7 @@ int mlx5hws_bwc_rule_create_complex(struct mlx5hws_bwc_rule *bwc_rule,
->   			      GFP_KERNEL);
->   	if (unlikely(!match_buf_2)) {
->   		mlx5hws_err(ctx, "Complex rule: failed allocating match_buf\n");
-> -		ret = ENOMEM;
-> +		ret = -ENOMEM;
->   		goto hash_node_put;
->   	}
->   
+> diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+> index ff6813ecc6df..3dc78ef2bf7d 100644
+> --- a/net/xfrm/xfrm_state.c
+> +++ b/net/xfrm/xfrm_state.c
+> @@ -1307,14 +1307,8 @@ static void xfrm_hash_grow_check(struct net *net, int have_hash_collision)
+>  static void xfrm_state_look_at(struct xfrm_policy *pol, struct xfrm_state *x,
+>  			       const struct flowi *fl, unsigned short family,
+>  			       struct xfrm_state **best, int *acq_in_progress,
+> -			       int *error)
+> +			       int *error, unsigned int pcpu_id)
+>  {
+> -	/* We need the cpu id just as a lookup key,
+> -	 * we don't require it to be stable.
+> -	 */
+> -	unsigned int pcpu_id = get_cpu();
+> -	put_cpu();
+> -
+>  	/* Resolution logic:
+>  	 * 1. There is a valid state with matching selector. Done.
+>  	 * 2. Valid state with inappropriate selector. Skip.
+> @@ -1381,8 +1375,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+>  	/* We need the cpu id just as a lookup key,
+>  	 * we don't require it to be stable.
+>  	 */
+> -	pcpu_id = get_cpu();
+> -	put_cpu();
+> +	pcpu_id = raw_smp_processor_id();
 
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+This codepath can be taken from the forwarding path with preemtion
+disabled. raw_smp_processor_id will trigger a warning in that case,
+maybe better to use raw_cpu_ptr?
 
+Thanks!
