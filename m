@@ -1,112 +1,246 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7F027603C
-	for <netdev@vger.kernel.org>; Tue, 27 May 2025 13:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9012B126C02
+	for <netdev@vger.kernel.org>; Tue, 27 May 2025 14:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748353980; cv=none; b=F73cjEisZQqaKuZmEzWF6e+TxMaDMIm2zEAmgvD28T3AH573vZEImZKXWoCPwhL2MbMgCb/o5XCWqG5AEi+KJ+AwimbgXdF2LXu0sFlDFqJJlsHBVjlw5MSfJl4tzNv87DgmKpZKyJNzYE/2ehNOlQWZn8mpuB+ZzMUkJj3+fGs=
+	t=1748354456; cv=none; b=ib63Hr/zo9r1LIWsEeFwmmK1TH1FqYE4BB+dxPCq+1FBS3GQDG3ABM93Z3unXkMLyWin3QBKKUWklfm3qBszD0vDR2NtZaKqzfHzb8sY+MEmLXtTdArKkuWmYagLhdLFIxWFd19jFGFonXmSvUxSPnCZ9yF2aABMCuq1ZWhWdAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748353980; c=relaxed/simple;
-	bh=RoPceCT88U9UnP5VGLnqcUBCCk5LAoemdIA1BgFYcG8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jA/q6WXkzwQtcJTAmnOZGLEeNoK0tJT7b8VLVpoYo2/qRddMuyW/i1gJ7YtrEcBTdyzE9f+MZy92jSCLH19ANZDzIcJppWz4jPkX4M4GtVU+ThWRe+1Uy7NQ5UF/p4GBg6sFYnFmM0SPMbIvUxs3xpOlVJD0OwkGeUrifsEiPE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=cbmUE12y; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1748354456; c=relaxed/simple;
+	bh=xMq6fC/xF/nSBchG4lEX+1DmxQvmghbJu6JGQW6yEBQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qp+FjfFKELU8FOSFimHARrve1rQAmaqzWDk7KtskLGOU9YFzQPq+e7TOIJEfTZN2m0gxWcTxWY2Ayr0YNOfxLL6/SXE859XSwqkQnA6ZjWG3ncl/ZZQWg5aYOczmIWpwvaudyZR2SBbo1Lr4wUYe6dIYbvW3jmFMSSrUI6bc4Rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GvL9qJXw; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="cbmUE12y"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a375e72473so2194079f8f.0
-        for <netdev@vger.kernel.org>; Tue, 27 May 2025 06:52:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1748353976; x=1748958776; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JT37SzU2UDYv3hG1XNn8rxWE6AIau0jZtc71Lj9N8OU=;
-        b=cbmUE12yhp0c8sV3rw+QyFLQ7SoYZDLz9IeHKNmKsmH/VGiWm7VOuef1Zv9k9J1dKC
-         h3/GPmLDF9JO0j8GAo7/l3iy5g37iXbJjOWuu2ViyWRqC6CqteLihd7AO9EGmlm4TCcM
-         ksdAfc1EvfMAIOoTTgLKYFjECTMrq6Wuqhbl+dj1kpA/9Ilhi+kPNkdrIphvuGSGQq3D
-         gyZpEMJepH0GYNrh6kmVVuT4ZRMq6xUSEsfd0/ojFRzQq37gMhcP2zEKATbCa3Rdz+om
-         Xwdp7LLGaFxStr35xHwfvt3Wz4mT/SqNypEVX2yz74UIp/HhMmPCO4zQtmItQWbIzrT+
-         hKzw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GvL9qJXw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748354453;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tmWjAbWXBUf4SVOpmXQtAjEWRKjXsHdS/ogjEuqBjN4=;
+	b=GvL9qJXwlr9iqyA4g416xcZkiYVSoXPEAd6WHJVRu4FU1V+c2WLckvU/i682Hq1KpXcvoh
+	MXV64ZpNsvSS/vqkjlDQZWjWSq1pmyobnUN4jsRrJ2mUP2QJACgfzn1yGDAgeDdrKph1Bt
+	uIrNJx19MPySXnZIoUNjrxLd5EQ3CSo=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-410-exaHNoLjNlOPS77rxXL3Sw-1; Tue, 27 May 2025 10:00:48 -0400
+X-MC-Unique: exaHNoLjNlOPS77rxXL3Sw-1
+X-Mimecast-MFC-AGG-ID: exaHNoLjNlOPS77rxXL3Sw_1748354447
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3a3561206b3so1521608f8f.2
+        for <netdev@vger.kernel.org>; Tue, 27 May 2025 07:00:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748353976; x=1748958776;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JT37SzU2UDYv3hG1XNn8rxWE6AIau0jZtc71Lj9N8OU=;
-        b=tCVADkvBLCQTc3wXcvbOdOiQLCnRyvtHdR3gZbA1ZcYS9JZVq4EbwayZ9hxk15ZPB9
-         3sUADK3UmsjEXHlCUqZeL7hmnjEZOks+ntsx8fNnpbqgHZtWdbnaczz+uiP7WRW3uwNQ
-         6Fm1MK0Xkku0QnP2TQOUkGtsDrZ2PI2KhmuFcldlWIgL0KwWV7SRY61R6Glz+GTZUCbT
-         PFn2737+jRTE2+4TE/Zi+VoCMI5z+mNP3OHeDzUzn3RvfhClKYNR+wwE6WITpftb8HSI
-         +9Td1TOd2OKkxK3fPnUI6BINSv9zhKMidKrz7Guxdo1FJGt38t+5Vvdicaoo+JB9+xX+
-         79+g==
-X-Gm-Message-State: AOJu0YydfmDOjXQRyX/aArYtT71o5KAasR8jstkzVzLgNByH/AmP8I1b
-	7+zQPdUdNxYgbTHhNOc3oiU1LBluScD7BCUER7CNm8PWO+U/SSdZbhSUEteT1Smcw1vsMK6RMPK
-	DGQk4KdSCv9kr/F8rR3FdrddZrtHJYTsrZCLGwvF8gjXAoADFUQvaGaMmWH9suQdg
-X-Gm-Gg: ASbGncvVNqjcbnCnjeTBsXz8dGnC06iG6eASnIOZPmoDtYuHFGdQWtEW4xM+n72UVo2
-	+6+SuJQFRIVHGxZfqgrilLMNX9tEMFrjKTdT8SNCu4H4Dyp1CAwC7aKFjVb10gEo+k123Mf+wIE
-	7OmneOZF9Z7IZed+ucEZLXD1fy8avwdNbP/oeUvTOCzyYcOAgGRssnhlrpaTLOMeGuJM/RhjxEQ
-	NbR22AYZPXiXq0AVbOYFvHnLTlvhtJknZNiccELj2LBJkp8kqHDp2HZ7sU6v+IVfNc0eAfazFfK
-	gZEPHrtFpyfjtZIkJurQcnqhW24ohaE6aS/6yjk8+EdL78Dw9SxoOLJZE44WpFUJnKGAd1gt0Xo
-	=
-X-Google-Smtp-Source: AGHT+IGW99Yp9ii5uqH0zYi0v3/swv+jSt/XF3mJXGGUkO3nrO0WqU7XsAl/jBO+WGPyHnK6E+DfRw==
-X-Received: by 2002:a05:6000:3104:b0:3a4:e393:11e2 with SMTP id ffacd0b85a97d-3a4e39314a8mr1938487f8f.34.1748353975973;
-        Tue, 27 May 2025 06:52:55 -0700 (PDT)
-Received: from inifinity.homelan.mandelbit.com ([2001:67c:2fbc:1:5803:da07:1aab:70cb])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4db284261sm5387719f8f.67.2025.05.27.06.52.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 May 2025 06:52:55 -0700 (PDT)
-From: Antonio Quartulli <antonio@openvpn.net>
-To: netdev@vger.kernel.org
-Cc: Antonio Quartulli <antonio@openvpn.net>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 4/4] selftest/net/ovpn: fix missing file
-Date: Tue, 27 May 2025 15:46:20 +0200
-Message-ID: <20250527134625.15216-5-antonio@openvpn.net>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527134625.15216-1-antonio@openvpn.net>
-References: <20250527134625.15216-1-antonio@openvpn.net>
+        d=1e100.net; s=20230601; t=1748354447; x=1748959247;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tmWjAbWXBUf4SVOpmXQtAjEWRKjXsHdS/ogjEuqBjN4=;
+        b=Iccy85IZOtEU0BRnlNyNYMeznS4ccR0KtSnG0Pa1Vm2ekjr1u4cckTWuB5JrlXAVCI
+         c9+RzGq6cWhdM62GCEVrCHuEVyNkthTgMPTNAjvOjHSPVhs/BdoaZTk6A/FOjuI5QB3c
+         2Vq/JzE2yniwC8Kjrim1S8Rajzkx+t7tfsPQct5rbN3WvJya5L0hvVZc+Yk36mGa0EmR
+         cRVLqN5LswRh4RvUu3z4avy5GEELH0/y53jJ8Ws7GU38vNQM6rP1SuN2HFO2qWQU/IcK
+         LT+00DH1GB7G55EAS9ltDmxYxLO7KaZhInSJiafD8VQECioeyzl1KgbigK0Cb3QxVO05
+         1VVA==
+X-Forwarded-Encrypted: i=1; AJvYcCVx7KebXTSk5bOpv0iYSnzl+RVeu08+7rIvTNmsk5oHk4Z3QnAXjNfVjCDtfuTuwrI0ju3Ys1w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1M5zdQnMRM16BPc4S2oX/EIH5l6DELhcdaW15Kt/l3LcDYVoJ
+	rC3V95eOgqlHGHSH0uOavq8BjzQ3HMVuZI1bEz8SvwxaYjwh9AgXlF8gpiKyZI8sl8Bi2H+JmH7
+	tcTs+946tgkdY3aUFLp+dUnr3Ks1eZSk0If0EbOoUe3mnlC8Xb+IZ/aEJug==
+X-Gm-Gg: ASbGncuBShwCixQB8KzgqnUQQ3oiKB6mBk2a7z7+LnlLT1f2NmM+jfvBeWnpRCAJbtD
+	WeDxIZHFIa2wsCThq79b4XtvVBVDGAdSAvTC76sXUroKD2VQwBK4RKKPjbTJk46+bI11PIcMi0o
+	Ac/q2x9tXr4mYY+S7AOXtGzbxRNcFnTj1sun4kz2oXGphsjChPLthKWb1CNUQGey3RAD9tPfHKl
+	67iuXxk5Rn3+TsLBOaeg9pJwdVwG57K253vhDwAag3cKZy8337WrsqrLwjYapUgqSc/EQnKAjsf
+	mg64Swl82wxgOxG6/xU=
+X-Received: by 2002:a5d:5f81:0:b0:3a4:dc93:1e87 with SMTP id ffacd0b85a97d-3a4dc931f93mr5710067f8f.1.1748354447030;
+        Tue, 27 May 2025 07:00:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGS9+5C1LiSYxqGNKnFb8QYBrePRf1K41z+cCX6Xc7nZl/SVzVEwwgNaEpEigoZYBLN3qS6dw==
+X-Received: by 2002:a5d:5f81:0:b0:3a4:dc93:1e87 with SMTP id ffacd0b85a97d-3a4dc931f93mr5710009f8f.1.1748354446417;
+        Tue, 27 May 2025 07:00:46 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2728:e810::f39? ([2a0d:3344:2728:e810::f39])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4db4e6f15sm5241081f8f.81.2025.05.27.07.00.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 May 2025 07:00:45 -0700 (PDT)
+Message-ID: <e999e9a0-19d3-4519-8094-268a67f5da63@redhat.com>
+Date: Tue, 27 May 2025 16:00:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND net-next v5 1/4] net: bonding: add
+ broadcast_neighbor option for 802.3ad
+To: Tonghao Zhang <tonghao@bamaicloud.com>, netdev@vger.kernel.org
+Cc: Jay Vosburgh <jv@jvosburgh.net>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Nikolay Aleksandrov <razor@blackwall.org>,
+ Zengbing Tu <tuzengbing@didiglobal.com>
+References: <20250522085516.16355-1-tonghao@bamaicloud.com>
+ <20250522085516.16355-2-tonghao@bamaicloud.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250522085516.16355-2-tonghao@bamaicloud.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-test-large-mtu.sh is referenced by the Makefile
-but does not exist.
+On 5/22/25 10:55 AM, Tonghao Zhang wrote:
+> Stacking technology is a type of technology used to expand ports on
+> Ethernet switches. It is widely used as a common access method in
+> large-scale Internet data center architectures. Years of practice
+> have proved that stacking technology has advantages and disadvantages
+> in high-reliability network architecture scenarios. For instance,
+> in stacking networking arch, conventional switch system upgrades
+> require multiple stacked devices to restart at the same time.
+> Therefore, it is inevitable that the business will be interrupted
+> for a while. It is for this reason that "no-stacking" in data centers
+> has become a trend. Additionally, when the stacking link connecting
+> the switches fails or is abnormal, the stack will split. Although it is
+> not common, it still happens in actual operation. The problem is that
+> after the split, it is equivalent to two switches with the same
+> configuration appearing in the network, causing network configuration
+> conflicts and ultimately interrupting the services carried by the
+> stacking system.
+> 
+> To improve network stability, "non-stacking" solutions have been
+> increasingly adopted, particularly by public cloud providers and
+> tech companies like Alibaba, Tencent, and Didi. "non-stacking" is
+> a method of mimicing switch stacking that convinces a LACP peer,
+> bonding in this case, connected to a set of "non-stacked" switches
+> that all of its ports are connected to a single switch
+> (i.e., LACP aggregator), as if those switches were stacked. This
+> enables the LACP peer's ports to aggregate together, and requires
+> (a) special switch configuration, described in the linked article,
+> and (b) modifications to the bonding 802.3ad (LACP) mode to send
+> all ARP/ND packets across all ports of the active aggregator.
+> 
+> Note that, with multiple aggregators, the current broadcast mode
+> logic will send only packets to the selected aggregator(s).
+> 
+>  +-----------+   +-----------+
+>  |  switch1  |   |  switch2  |
+>  +-----------+   +-----------+
+>          ^           ^
+>          |           |
+>       +-----------------+
+>       |   bond4 lacp    |
+>       +-----------------+
+>          |           |
+>          | NIC1      | NIC2
+>       +-----------------+
+>       |     server      |
+>       +-----------------+
 
-Add it along the other scripts.
 
-Fixes: 944f8b6abab6 ("selftest/net/ovpn: extend coverage with more test cases")
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
----
- tools/testing/selftests/net/ovpn/test-large-mtu.sh | 9 +++++++++
- 1 file changed, 9 insertions(+)
- create mode 100755 tools/testing/selftests/net/ovpn/test-large-mtu.sh
+IHMO all the above wording should be placed in the cover letter. This
+commit message should instead be more related to the actual code.
 
-diff --git a/tools/testing/selftests/net/ovpn/test-large-mtu.sh b/tools/testing/selftests/net/ovpn/test-large-mtu.sh
-new file mode 100755
-index 000000000000..ce2a2cb64f72
---- /dev/null
-+++ b/tools/testing/selftests/net/ovpn/test-large-mtu.sh
-@@ -0,0 +1,9 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright (C) 2025 OpenVPN, Inc.
-+#
-+#  Author:	Antonio Quartulli <antonio@openvpn.net>
-+
-+MTU="1500"
-+
-+source test.sh
--- 
-2.49.0
+> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+> index d05226484c64..b5c34d7f126c 100644
+> --- a/drivers/net/bonding/bond_main.c
+> +++ b/drivers/net/bonding/bond_main.c
+> @@ -212,6 +212,8 @@ atomic_t netpoll_block_tx = ATOMIC_INIT(0);
+>  
+>  unsigned int bond_net_id __read_mostly;
+>  
+> +DEFINE_STATIC_KEY_FALSE(bond_bcast_neigh_enabled);
+> +
+>  static const struct flow_dissector_key flow_keys_bonding_keys[] = {
+>  	{
+>  		.key_id = FLOW_DISSECTOR_KEY_CONTROL,
+> @@ -4461,6 +4463,9 @@ static int bond_open(struct net_device *bond_dev)
+>  
+>  		bond_for_each_slave(bond, slave, iter)
+>  			dev_mc_add(slave->dev, lacpdu_mcast_addr);
+> +
+> +		if (bond->params.broadcast_neighbor)
+> +			static_branch_inc(&bond_bcast_neigh_enabled);
+>  	}
+>  
+>  	if (bond_mode_can_use_xmit_hash(bond))
+> @@ -4480,6 +4485,10 @@ static int bond_close(struct net_device *bond_dev)
+>  		bond_alb_deinitialize(bond);
+>  	bond->recv_probe = NULL;
+>  
+> +	if (BOND_MODE(bond) == BOND_MODE_8023AD &&
+> +	    bond->params.broadcast_neighbor)
+> +		static_branch_dec(&bond_bcast_neigh_enabled);
+
+What if the user enables BOND_OPT_BROADCAST_NEIGH and later switch the
+bond mode? it looks like there will be bad accounting for static branch.
+
+> +
+>  	if (bond_uses_primary(bond)) {
+>  		rcu_read_lock();
+>  		slave = rcu_dereference(bond->curr_active_slave);
+> @@ -5316,6 +5325,37 @@ static struct slave *bond_xdp_xmit_3ad_xor_slave_get(struct bonding *bond,
+>  	return slaves->arr[hash % count];
+>  }
+>  
+> +static bool bond_should_broadcast_neighbor(struct sk_buff *skb,
+> +					   struct net_device *dev)
+> +{
+> +	struct bonding *bond = netdev_priv(dev);
+> +	struct {
+> +		struct ipv6hdr ip6;
+> +		struct icmp6hdr icmp6;
+> +	} *combined, _combined;
+> +
+> +	if (!static_branch_unlikely(&bond_bcast_neigh_enabled))
+> +		return false;
+> +
+> +	if (!bond->params.broadcast_neighbor)
+> +		return false;
+> +
+> +	if (skb->protocol == htons(ETH_P_ARP))
+> +		return true;
+> +
+> +	if (skb->protocol == htons(ETH_P_IPV6)) {
+> +		combined = skb_header_pointer(skb, skb_mac_header_len(skb),
+> +					      sizeof(_combined),
+> +					      &_combined);
+> +		if (combined && combined->ip6.nexthdr == NEXTHDR_ICMP &&
+> +		    (combined->icmp6.icmp6_type == NDISC_NEIGHBOUR_SOLICITATION ||
+> +		     combined->icmp6.icmp6_type == NDISC_NEIGHBOUR_ADVERTISEMENT))
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  /* Use this Xmit function for 3AD as well as XOR modes. The current
+>   * usable slave array is formed in the control path. The xmit function
+>   * just calculates hash and sends the packet out.
+> @@ -5337,15 +5377,25 @@ static netdev_tx_t bond_3ad_xor_xmit(struct sk_buff *skb,
+>  
+>  /* in broadcast mode, we send everything to all usable interfaces. */
+>  static netdev_tx_t bond_xmit_broadcast(struct sk_buff *skb,
+> -				       struct net_device *bond_dev)
+> +				       struct net_device *bond_dev,
+> +				       bool all_slaves)
+>  {
+>  	struct bonding *bond = netdev_priv(bond_dev);
+> -	struct slave *slave = NULL;
+> -	struct list_head *iter;
+> +	struct bond_up_slave *slaves;
+>  	bool xmit_suc = false;
+>  	bool skb_used = false;
+> +	int slaves_count, i;
+>  
+> -	bond_for_each_slave_rcu(bond, slave, iter) {
+> +	rcu_read_lock();
+
+Why this the RCU lock is now needed? AFAICS the caller scope does not
+change. This is either not needed, or deserves a separate patch, with a
+suitable fixes tag.
+
+/P
 
