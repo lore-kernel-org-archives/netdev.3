@@ -1,84 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189CE1E1C1A;
-	Tue, 27 May 2025 19:29:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C583213790B
+	for <netdev@vger.kernel.org>; Tue, 27 May 2025 19:32:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748374155; cv=none; b=mIMTxLXxXUEVIM6rBBLTL2MkJc52VU71jCuBrsaKC5ldoPLdIl5+0GOIYd0JrWIKb0E6ZG2h8/QsNCD216on79oKx8wyOtPKnI6YPkVHhm0FU422DdsS3Xw9XO293GOxI/vk1bvZAa+S74JKlYz+nq0MGMe8L3X4TD8CnL/csb0=
+	t=1748374367; cv=none; b=bx6u/N+xVaKbZ5qVxtj2CFCwRw2AwgrJh+sZjS/vJuN1thPhCdBkdqhnaNHyK6+kAwZnO+0s/ySLgfcuaqUldI+1+98nEkwv5sB+XmQwAj1Ou+bE8SgAYat3ugDXCsiRXgT2HJ3L7r/P3BFiuzBNTZMzeSto/cintK27OaPQutc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748374155; c=relaxed/simple;
-	bh=KARBt7V80dw1XzTrK5gyR4MyC6WRf9x90HmxHAgt/tY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gjLU0S/0SXrT8rKNFL61narvpwC2fqJEGmq5fIgmnS2utG4kys4c8vWocNkpCk5Nyry4cSb9YlvEFycsSpqAofshvlM4gJa5Bob5e/7bfpulDemlc83VvmRsPROwFPuiIAEkmOvN0ZeOIroTosG0Op9nxMH/r73inTqO7YSEQ68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/DQK3SC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748374367; c=relaxed/simple;
+	bh=UA3C67ZpKmUMmamjf4Q7B4VG2jKzEU0YXAADnc4GxAo=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=gSPWqo3XdN/nrJ4P+8vKBKUzCCMlBZ9iwcboh4TLWHP/hmLvAmUq7BhU1+34Qz628nR84xd0gMI0E42cVnX+OUurfqexp+iX0yhTBnFDLZ1vXhpMuaFz6cBABU+aHnCaPbOLDNbEnPAviZq5uibjNfOyWcnyurw4bPQgGsK7L2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bejarano.io; spf=pass smtp.mailfrom=bejarano.io; dkim=pass (2048-bit key) header.d=bejarano.io header.i=@bejarano.io header.b=s6ZHIB10; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MNKdoyHt; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bejarano.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bejarano.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/DQK3SC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63EBBC4CEE9;
-	Tue, 27 May 2025 19:29:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748374153;
-	bh=KARBt7V80dw1XzTrK5gyR4MyC6WRf9x90HmxHAgt/tY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y/DQK3SCftLvg27nD3SbPiFtBNHZ3FRWUj3S4hc4ChHoL8l80dysUcxZXMMzeThma
-	 fouJ7OoEgi5bEDbKKEbwUYc8fe+B6j5hpHlp7QjxPh5Mf8HANBgd704ZtOQr4vWvNp
-	 GZnmxS7JTjNrTdY5kUsXKA9DPErJ6SB1N5tZH7dAoue2z62bz3Mj8yYKfq2soojL+M
-	 L7qWran14kF9Pci5zZUQPUYQOGP+06FjLgqYcL08lKg+jy33RZEsWKZ5wlFoNN7OIJ
-	 XCHzS/XpunLpHZs33rpUMfGRyfEqmw6EK0cYgJY6AZE8X3NLal9R0OaVFEEg0SM5WU
-	 LPde+tHeqWsLQ==
-Date: Tue, 27 May 2025 14:29:11 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank Wunderlich <linux@fw-web.de>
-Cc: netdev@vger.kernel.org, Sean Wang <sean.wang@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Frank Wunderlich <frank-w@public-files.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Landen Chao <Landen.Chao@mediatek.com>,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>, Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	=?utf-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>,
-	DENG Qingfang <dqfext@gmail.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 03/14] dt-bindings: net: dsa: mediatek,mt7530: add
- internal mdio bus
-Message-ID: <174837415111.1091232.14774319774329934407.robh@kernel.org>
-References: <20250516180147.10416-1-linux@fw-web.de>
- <20250516180147.10416-5-linux@fw-web.de>
+	dkim=pass (2048-bit key) header.d=bejarano.io header.i=@bejarano.io header.b="s6ZHIB10";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MNKdoyHt"
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfout.phl.internal (Postfix) with ESMTP id BCEE61380139;
+	Tue, 27 May 2025 15:32:41 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 27 May 2025 15:32:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bejarano.io; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1748374361;
+	 x=1748460761; bh=en0q+58E4XRob97I9MvKkWFAtJhVgEiAUAa2S0Ct+40=; b=
+	s6ZHIB10OCh6lzQr3/13gyxUV8zPd9FjoFGMR3cydklCLC/r0vRsaz3MCbGokc+Y
+	JZhUvf5H3EdjnBZGq3UxOoNtLKq81pSDwttvF8rbDFRKlyqeMankzKKtKTgo3aGT
+	zPMzHpeIQdwKwrp1jzmvY0FcPQLaLKfgfmT60Tu34pihlegtyfx3/rMdv1IJJarJ
+	w2xfynVOs9+izE2Z+qnOYyQtkZO3TnCgfOKAmWigftj5dHjhUF2nRNiUfLk9mqbc
+	vh2hdv+g4X++UNOn/TXN1CkVMrgJyfysvtHFokeP0Xj+We1mw7K/TI4h6JVDhxSw
+	AyCUCVAst1+2VdDOpJpXhA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1748374361; x=
+	1748460761; bh=en0q+58E4XRob97I9MvKkWFAtJhVgEiAUAa2S0Ct+40=; b=M
+	NKdoyHtWNvpKKEBEkmBdzL599vzy4uRd5nSKnBxNEYq0UMhntN+1kIYepHc0jA+X
+	ej6oQtTgGfgLHV0HQmQ52BfFzrdpsoR5XSEseZuTgZnHwfIpBERRrKLZv0Kw9z39
+	Hs9quDlavWAT1al8iW62p9Ubeikj370pztSheuOQd5VlH5PcTn45RirBimxWn+qm
+	1HAJhSj5D7/Qlqzu70JMQICHG2E+l+55jjg3Q0dpY2IOxZ8lyGCkTvykINgwUkTT
+	p+yn5LLrcqNcc1+orR4L77JthNBUjg2CoW/GkCJCj4/U7YpM8gco7+7eqhJNy0OG
+	baHxuyqAOxT9g5zC1pl1A==
+X-ME-Sender: <xms:WRM2aLlUBEzyOrVEH4G7JeYz1LcljpYBnqRy4hFTZwMsmc5Xw18wLg>
+    <xme:WRM2aO1keBLyAn_MBrF9iGdyAZafr2UGDDT4IWZ2REGvhcVgff1YkeWvJDN5n2-zh
+    -XzX232NMLgWBdeud8>
+X-ME-Received: <xmr:WRM2aBo_zI-Y52aEiiCRvG3Lqt89FweKJt8SW015Z50R8SR4Y4OE_vYompAvkZBcVRTP1Z5Q6c_0iiyQzl_zsUnJvfuxb6ktAfJ5f-reRbKKdg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvuddvvdculddtuddrgeefvddrtd
+    dtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggft
+    fghnshhusghstghrihgsvgdpuffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftd
+    dtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegtggfuhfgjffev
+    gffkfhfvofesthhqmhdthhdtvdenucfhrhhomheptfhitggrrhguuceuvghjrghrrghnoh
+    cuoehrihgtrghrugessggvjhgrrhgrnhhordhioheqnecuggftrfgrthhtvghrnheptefh
+    leekteffhedtgeekudeivefhgfevtedvgedtjefhffejteelgeethfevhfdunecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhhitggrrhgusegs
+    vghjrghrrghnohdrihhopdhnsggprhgtphhtthhopedutddpmhhouggvpehsmhhtphhouh
+    htpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepmhhikhgr
+    rdifvghsthgvrhgsvghrgheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhope
+    hnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihgthhgr
+    vghlrdhjrghmvghtsehinhhtvghlrdgtohhmpdhrtghpthhtohephigvhhgviihkvghlsh
+    hhsgesghhmrghilhdrtghomhdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehl
+    uhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprh
+    gtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepkhhu
+    sggrsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:WRM2aDmmg7ctZ39Ad9odfS-n8V-iJ3A0WpLEhld8e_SaVluH8x9Q5A>
+    <xmx:WRM2aJ3ANFGYkf4CFVTa-lFtEDm2_2zogj1IQoeg1AU_Tp4C0WljLQ>
+    <xmx:WRM2aCutJTAmYQiQjnJj0oVXcT69QVFEs_QvorkkJeFx7uF8nV2cXw>
+    <xmx:WRM2aNXu4Lm3MY1G2RnBWODGXYRdF3uAG_jPe7dPrQZd42tE93ofww>
+    <xmx:WRM2aG-dptnobsa5yaQR_3m5UljPE7Vcif2wZDnlWHXRUIWRD8cm4n6l>
+Feedback-ID: i583147b9:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 27 May 2025 15:32:39 -0400 (EDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250516180147.10416-5-linux@fw-web.de>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
+Subject: Re: Poor thunderbolt-net interface performance when bridged
+From: Ricard Bejarano <ricard@bejarano.io>
+In-Reply-To: <09f73d4d-efa3-479d-96b5-fd51d8687a21@lunn.ch>
+Date: Tue, 27 May 2025 21:32:38 +0200
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+ netdev@vger.kernel.org,
+ michael.jamet@intel.com,
+ YehezkelShB@gmail.com,
+ andrew+netdev@lunn.ch,
+ davem@davemloft.net,
+ edumazet@google.com,
+ kuba@kernel.org,
+ pabeni@redhat.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <CD0896D8-941E-403E-9DA9-51B13604A449@bejarano.io>
+References: <20250526092220.GO88033@black.fi.intel.com>
+ <4930C763-C75F-430A-B26C-60451E629B09@bejarano.io>
+ <f2ca37ef-e5d0-4f3e-9299-0f1fc541fd03@lunn.ch>
+ <29E840A2-D4DB-4A49-88FE-F97303952638@bejarano.io>
+ <9a5f7f4c-268f-4c7c-b033-d25afc76f81c@lunn.ch>
+ <63FE081D-44C9-47EC-BEDF-2965C023C43E@bejarano.io>
+ <0b6cf76d-e64d-4a35-b006-20946e67da6e@lunn.ch>
+ <8672A9A1-6B32-4F81-8DFA-4122A057C9BE@bejarano.io>
+ <c1ac6822-a890-45cd-b710-38f9c7114272@lunn.ch>
+ <38B49EF9-4A56-4004-91CF-5A2D591E202D@bejarano.io>
+ <09f73d4d-efa3-479d-96b5-fd51d8687a21@lunn.ch>
+To: Andrew Lunn <andrew@lunn.ch>
+X-Mailer: Apple Mail (2.3826.500.181.1.5)
 
+Also, I'm doing this instead:
 
-On Fri, 16 May 2025 20:01:34 +0200, Frank Wunderlich wrote:
-> From: Frank Wunderlich <frank-w@public-files.de>
-> 
-> Mt7988 buildin switch has own mdio bus where ge-phys are connected.
-> Add related property for this.
-> 
-> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-> ---
-> v2:
-> - change from patternproperty to property
-> - add unevaluatedProperties and mediatek,pio subproperty
-> ---
->  .../devicetree/bindings/net/dsa/mediatek,mt7530.yaml   | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
+diff --git a/drivers/net/thunderbolt/main.c =
+b/drivers/net/thunderbolt/main.c
+index 0a53ec293..3cd72aa2d 100644
+--- a/drivers/net/thunderbolt/main.c
++++ b/drivers/net/thunderbolt/main.c
+@@ -1116,6 +1116,8 @@ static netdev_tx_t tbnet_start_xmit(struct sk_buff =
+*skb,
+        bool unmap =3D false;
+        void *dest;
+=20
++       skb_linearize(skb);
++
+        trace_tbnet_tx_skb(skb);
+=20
+        nframes =3D DIV_ROUND_UP(data_len, TBNET_MAX_PAYLOAD_SIZE);
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+skb_linearize already checks if skb is non-linear, and if so, it =
+linearizes it
+directly without copying.
 
+RB=
