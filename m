@@ -1,161 +1,190 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11B8253931
-	for <netdev@vger.kernel.org>; Tue, 27 May 2025 11:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FBC4A0A;
+	Tue, 27 May 2025 11:39:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748345817; cv=none; b=uv8h7mFy94dfP1HkhamGC/bqH86Hl+4sQZDqYLuhN5M0VfUDIFVkuktxlndnXqJF5vMl7DJ//jAatMt5t4k1PnC0TcrIaJ1/45a+UBKTTemoslbNOgRUIJONUs3qeOle8tV3fXEomdxafFsVcjZT3XDiSClvjYYTtN4LfGqyUtw=
+	t=1748345947; cv=none; b=AL4rKv6VMdVCCssV0n1kQehdWucYnLEWce0g7Ido535z+yb+ADz4gr3v3Jfxc+uUKr66wQ6XLyhJQ+cG5kmj3pmFLPSf2Wpr/Php75koy+8p+VhJRhuKF0t+d0KbqGDGyUouU3ZC20KPK49E9qxv9TkPCT5mPxbiMYBeDMXAJlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748345817; c=relaxed/simple;
-	bh=fvEjZ/8XvmiIw/x1T49zRGL66s1CZIgvsgbv4p02D5Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K87NY8Dc7ppqHuiwexWDIBItf/w2i88xbZFB9SD/G+Yo1yS4HhAgCuG0wcg77efyvimRAKS9vFwKC5oJ1EdE++OILrPln6DBbySE/tGoG8pHCCZXQNId7NJsE+ERRLW+HZ+np7h+DQTam3vKptTfITPwFPWkW9dRUfT7dBdLGCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ozuEJlbG; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ozuEJlbG"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54R9ZANv002357
-	for <netdev@vger.kernel.org>; Tue, 27 May 2025 11:36:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	mLM+GWekrBtrawNMm2D4lJztX2o4sPffJMDli9j9kAM=; b=ozuEJlbG24ADssOl
-	uWUZZ/KEib2FdpiwXYbHvI6ct2aj2WaVAfNQNrrcuB4F9JvzMbVuRCS+t7fCFJh2
-	GZulqrY4WSSBlAnTpGT6aR2vBKuYcv2nR7StyUg7JZYfp3BFeLqzYo4MOECFuI2h
-	LY9qEEm233lZYigL3v466Q+XhrM1eFCisGhBH+EjyGYduzBONiQj4BrxIIcMb6AI
-	V5VNtQ5ra7K5bxylbN+xoORE/n6sm5VzCWl6NMXIL4wcP7RmBXzqfBJWp4Lbr96v
-	PnjqiCQT0wdVod1YvDyjx+T4W9ErvpprGnAHV7rLi5qdQrFPuegfxgKfF3dFbr0U
-	gvhgcw==
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46wavkrbay-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 27 May 2025 11:36:54 +0000 (GMT)
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-6fa9cc8eb70so1346246d6.0
-        for <netdev@vger.kernel.org>; Tue, 27 May 2025 04:36:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748345813; x=1748950613;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mLM+GWekrBtrawNMm2D4lJztX2o4sPffJMDli9j9kAM=;
-        b=WrPdFCl00N/L9R0R6WjtvP7BjTE+bnALDypAeNYVv7uL+jNu4mh3lFa1GyWDTmr8cw
-         S3b4cMMxndpnH8qus+ndXUItwbzEhXrYjJZI9D6btAE/+9DrnrosWmfshRiR6m4CFOWW
-         Mp/i9WnykH0/EEshVK+r2dkciKvL0mv0eQBYTJq6otiCKSDE4k3x1MggEudNXb9K0mtO
-         ksjv3Hb22u4ovwlng7qhhlqL43JDNFKTeaE+65KgpaP3eGRAwMQN0FeS+YdjyX3cPzE5
-         x8s1ANtz3dJymlRLMPN+TFYDy3earIow/XzT5Ld/UFJWEsKjq1PhMbzRBhsFkLO7cRnU
-         XyEg==
-X-Forwarded-Encrypted: i=1; AJvYcCWZz4AFXg7r7GhexdOqyGK+J+MTe4+QOU821fEr8HAGuPJ3ZtBTT7bIUusfzrPlSGYO5fxrELo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOplKYinBRPoja+XcL9mWi2ZrqHCHGDxQdwm8K9m/AfmvSAKdH
-	ADN/ppANiKzHHpA+sOeAa78VO0gDmjjbZ+adRarCCeVjTPKOOBe43XtZXT2wq9MdGxGnml7BloU
-	Zly/qMOoKUnfko/0ptCwEKMGP2jPPTJscOyvms/0vC8SULV/vp/jb1J2Aq1U=
-X-Gm-Gg: ASbGncsJkz8zrbn8MGlsCZNzCvk5oJfbF0SsL08jVdk60YZCWwlpQzdesZ70HphgyqG
-	02xRMxEkj8WqfR6rJFlXs5FxXC/XznorHVUUsSbCidwi18JC+RelbInHg0RGT9Sz/ZN8fDQhfuo
-	3U/iKhND50SU5jc5cA3idlKs46wndlrmB+1WkFpwVyXmdmOD2uh3Gr96Qd2VudhcmRsQLUXaqDR
-	OiNRovvTUBgNyJ3Z+mIrpViCix7eZ0efph8/e8pVA4wzQrkWRcmdHrTxHo4lEFT18hFqn6aF4uQ
-	D0N1SSSAT3aMlyBfaoTaUxagQslKBxNdfzNeTcM70IXEOQXy/B5tHisLb7IQZhQt1g==
-X-Received: by 2002:a05:6214:2586:b0:6f7:d0b9:793b with SMTP id 6a1803df08f44-6fa9d34ba15mr66049926d6.8.1748345813621;
-        Tue, 27 May 2025 04:36:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGwP18XRKy8jlsk+tWNpk1oV00GPmvN6UNYhfqRCLVDbAvK7pSH3h1WanmxrHiy5RUbYnfabQ==
-X-Received: by 2002:a05:6214:2586:b0:6f7:d0b9:793b with SMTP id 6a1803df08f44-6fa9d34ba15mr66049676d6.8.1748345813242;
-        Tue, 27 May 2025 04:36:53 -0700 (PDT)
-Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d439655sm1854813666b.92.2025.05.27.04.36.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 May 2025 04:36:52 -0700 (PDT)
-Message-ID: <e7ee4653-194c-417a-9eda-2666e9f5244d@oss.qualcomm.com>
-Date: Tue, 27 May 2025 13:36:49 +0200
+	s=arc-20240116; t=1748345947; c=relaxed/simple;
+	bh=v8uyg8afEdAi69p+DRGtrXU2w+DDZuGr3H1wT8pqhrQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=diuUqIlH1R3u3eL26QmZpU1UXkZ6gJ2Aj9QCZmxGpGnP93vIqSe5XxId9zCxReBuLCVTKOwATx4BObQqseXSPtTrQn+uM+O4N1IZ6MKaF+gaT2jWV0r5kUkS20GMFAL8VQQwyaj/CutxRylk8HjCJUxwvo+YVsLHNxzALwxZ6+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4b69bv1vjlznfgc;
+	Tue, 27 May 2025 19:37:47 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id B945F1402C4;
+	Tue, 27 May 2025 19:39:01 +0800 (CST)
+Received: from kwepemq200002.china.huawei.com (7.202.195.90) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 27 May 2025 19:39:01 +0800
+Received: from localhost.localdomain (10.175.104.82) by
+ kwepemq200002.china.huawei.com (7.202.195.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 27 May 2025 19:39:00 +0800
+From: Dong Chenchen <dongchenchen2@huawei.com>
+To: <hawk@kernel.org>, <ilias.apalodimas@linaro.org>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <almasrymina@google.com>, <linyunsheng@huawei.com>,
+	<toke@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<zhangchangzhong@huawei.com>, Dong Chenchen <dongchenchen2@huawei.com>,
+	<syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com>
+Subject: [PATCH net v2] page_pool: Fix use-after-free in page_pool_recycle_in_ring
+Date: Tue, 27 May 2025 19:41:52 +0800
+Message-ID: <20250527114152.3119109-1-dongchenchen2@huawei.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 1/3] dt-bindings: sram: qcom,imem: Allow
- modem-tables
-To: Krzysztof Kozlowski <krzk@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
- <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Alex Elder <elder@kernel.org>
-Cc: Marijn Suijten <marijn.suijten@somainline.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        Alex Elder <elder@riscstar.com>
-References: <20250527-topic-ipa_imem-v2-0-6d1aad91b841@oss.qualcomm.com>
- <20250527-topic-ipa_imem-v2-1-6d1aad91b841@oss.qualcomm.com>
- <97724a4d-fad5-4e98-b415-985e5f19f911@kernel.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <97724a4d-fad5-4e98-b415-985e5f19f911@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: 1VsB0cKPtQb8PShrGlYzD-JauXbPnjpk
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI3MDA5NCBTYWx0ZWRfXwtzumxVfDLjK
- KcrD07pZCfKSEHnlewM0WAUvDlrDNbJCsN2Ka1Y2JoZSfhQEDEitB9OGzutsEOlqWaq8SgNDO6S
- 7f/1Ic4cICSerloOal1Gq58XrqcTKj5z/O7Z4qHeyk4uV9BIeUG7BhyoFegecTh4kjfSG5axIv7
- Uo0aXKSQMkSt/3GgHJBjVjluZxM7E2PRXclQfTuPkoOGfkEQRetRwLqyKRRr9SzxP6eB2XRvHVh
- Qqnlfith/SpOC3lDoe/z6K2LA4WZo68h8jJCzYha94m+3DuU2bR95Yyxpa2+xPJcw0gaVLOaYyO
- C4R4QRvW/9hlyVPcS/uDaTChNrl/5Mse0/MLzcLIJ36KPrYiwCIRVDTUGclpS1tzGqK7DkfBfFF
- P8uGjc3yXKEHKQ3AYbFQR25Ese74y4ngEpGDMK9u/eJrljRbNQ5nzgSCJExfKS832n4TB9KW
-X-Authority-Analysis: v=2.4 cv=fMk53Yae c=1 sm=1 tr=0 ts=6835a3d6 cx=c_pps
- a=UgVkIMxJMSkC9lv97toC5g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=EUspDBNiAAAA:8 a=ee_2aqc6AAAA:8
- a=zoJKnCTf_W_lU4eZxPEA:9 a=QEXdDO2ut3YA:10 a=1HOtulTD9v-eNWfpl4qZ:22
- a=VOpmJXOdbJOWo2YY3GeN:22
-X-Proofpoint-ORIG-GUID: 1VsB0cKPtQb8PShrGlYzD-JauXbPnjpk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-27_05,2025-05-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 impostorscore=0 phishscore=0 suspectscore=0
- spamscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015 mlxscore=0
- mlxlogscore=999 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
- definitions=main-2505270094
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemq200002.china.huawei.com (7.202.195.90)
 
-On 5/27/25 1:35 PM, Krzysztof Kozlowski wrote:
-> On 27/05/2025 13:26, Konrad Dybcio wrote:
->> From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
->>
->> The IP Accelerator hardware/firmware owns a sizeable region within the
->> IMEM, ominously named 'modem-tables', presumably having to do with some
->> internal IPA-modem specifics.
->>
->> It's not actually accessed by the OS, although we have to IOMMU-map it
->> with the IPA device, so that presumably the firmware can act upon it.
->>
->> Allow it as a subnode of IMEM.
->>
->> Reviewed-by: Alex Elder <elder@riscstar.com>
->> Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
->> ---
->>  Documentation/devicetree/bindings/sram/qcom,imem.yaml | 3 +++
->>  1 file changed, 3 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/sram/qcom,imem.yaml b/Documentation/devicetree/bindings/sram/qcom,imem.yaml
->> index 2711f90d9664b70fcd1e2f7e2dfd3386ed5c1952..7c882819222dc04190db357ac6f9a3a35137cc9e 100644
->> --- a/Documentation/devicetree/bindings/sram/qcom,imem.yaml
->> +++ b/Documentation/devicetree/bindings/sram/qcom,imem.yaml
->> @@ -51,6 +51,9 @@ properties:
->>      $ref: /schemas/power/reset/syscon-reboot-mode.yaml#
->>  
->>  patternProperties:
->> +  "^modem-tables@[0-9a-f]+$":
->> +    description: Region reserved for the IP Accelerator
-> 
-> Missing additionalProperties: false, which would point you that this is
-> incomplete (or useless because empty).
+syzbot reported a uaf in page_pool_recycle_in_ring:
 
-How do I describe a 'stupid' node that is just a reg?
+BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30 kernel/locking/lockdep.c:5862
+Read of size 8 at addr ffff8880286045a0 by task syz.0.284/6943
 
-Konrad
+CPU: 0 UID: 0 PID: 6943 Comm: syz.0.284 Not tainted 6.13.0-rc3-syzkaller-gdfa94ce54f41 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:489
+ kasan_report+0x143/0x180 mm/kasan/report.c:602
+ lock_release+0x151/0xa30 kernel/locking/lockdep.c:5862
+ __raw_spin_unlock_bh include/linux/spinlock_api_smp.h:165 [inline]
+ _raw_spin_unlock_bh+0x1b/0x40 kernel/locking/spinlock.c:210
+ spin_unlock_bh include/linux/spinlock.h:396 [inline]
+ ptr_ring_produce_bh include/linux/ptr_ring.h:164 [inline]
+ page_pool_recycle_in_ring net/core/page_pool.c:707 [inline]
+ page_pool_put_unrefed_netmem+0x748/0xb00 net/core/page_pool.c:826
+ page_pool_put_netmem include/net/page_pool/helpers.h:323 [inline]
+ page_pool_put_full_netmem include/net/page_pool/helpers.h:353 [inline]
+ napi_pp_put_page+0x149/0x2b0 net/core/skbuff.c:1036
+ skb_pp_recycle net/core/skbuff.c:1047 [inline]
+ skb_free_head net/core/skbuff.c:1094 [inline]
+ skb_release_data+0x6c4/0x8a0 net/core/skbuff.c:1125
+ skb_release_all net/core/skbuff.c:1190 [inline]
+ __kfree_skb net/core/skbuff.c:1204 [inline]
+ sk_skb_reason_drop+0x1c9/0x380 net/core/skbuff.c:1242
+ kfree_skb_reason include/linux/skbuff.h:1263 [inline]
+ __skb_queue_purge_reason include/linux/skbuff.h:3343 [inline]
+
+root cause is:
+
+page_pool_recycle_in_ring
+  ptr_ring_produce
+    spin_lock(&r->producer_lock);
+    WRITE_ONCE(r->queue[r->producer++], ptr)
+      //recycle last page to pool
+				page_pool_release
+				  page_pool_scrub
+				    page_pool_empty_ring
+				      ptr_ring_consume
+				      page_pool_return_page  //release all page
+				  __page_pool_destroy
+				     free_percpu(pool->recycle_stats);
+				     free(pool) //free
+
+     spin_unlock(&r->producer_lock); //pool->ring uaf read
+  recycle_stat_inc(pool, ring);
+
+page_pool can be free while page pool recycle the last page in ring.
+Add producer-lock barrier to page_pool_release to prevent the page
+pool from being free before all pages have been recycled.
+
+recycle_stat_inc() is empty when CONFIG_PAGE_POOL_STATS is not
+enabled, which will trigger Wempty-body build warning. Add definition
+for pool stat macro to fix warning.
+
+Suggested-by: Jakub Kacinski <kuba@kernel.org>
+Link: https://lore.kernel.org/netdev/20250513083123.3514193-1-dongchenchen2@huawei.com
+Fixes: ff7d6b27f894 ("page_pool: refurbish version of page_pool code")
+Reported-by: syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=204a4382fcb3311f3858
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+---
+Changes in v2:
+ - Change the return type from int to bool
+ - Fix Wempty-body warn of recycle_stat_inc
+---
+ net/core/page_pool.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
+
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 7745ad924ae2..862ec1dc48df 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -153,9 +153,9 @@ u64 *page_pool_ethtool_stats_get(u64 *data, const void *stats)
+ EXPORT_SYMBOL(page_pool_ethtool_stats_get);
+ 
+ #else
+-#define alloc_stat_inc(pool, __stat)
+-#define recycle_stat_inc(pool, __stat)
+-#define recycle_stat_add(pool, __stat, val)
++#define alloc_stat_inc(...)	do { } while (0)
++#define recycle_stat_inc(...)	do { } while (0)
++#define recycle_stat_add(...)	do { } while (0)
+ #endif
+ 
+ static bool page_pool_producer_lock(struct page_pool *pool)
+@@ -707,19 +707,16 @@ void page_pool_return_page(struct page_pool *pool, netmem_ref netmem)
+ 
+ static bool page_pool_recycle_in_ring(struct page_pool *pool, netmem_ref netmem)
+ {
+-	int ret;
+-	/* BH protection not needed if current is softirq */
+-	if (in_softirq())
+-		ret = ptr_ring_produce(&pool->ring, (__force void *)netmem);
+-	else
+-		ret = ptr_ring_produce_bh(&pool->ring, (__force void *)netmem);
++	bool in_softirq, ret;
+ 
+-	if (!ret) {
++	/* BH protection not needed if current is softirq */
++	in_softirq = page_pool_producer_lock(pool);
++	ret = !__ptr_ring_produce(&pool->ring, (__force void *)netmem);
++	if (ret)
+ 		recycle_stat_inc(pool, ring);
+-		return true;
+-	}
++	page_pool_producer_unlock(pool, in_softirq);
+ 
+-	return false;
++	return ret;
+ }
+ 
+ /* Only allow direct recycling in special circumstances, into the
+@@ -1091,10 +1088,14 @@ static void page_pool_scrub(struct page_pool *pool)
+ 
+ static int page_pool_release(struct page_pool *pool)
+ {
++	bool in_softirq;
+ 	int inflight;
+ 
+ 	page_pool_scrub(pool);
+ 	inflight = page_pool_inflight(pool, true);
++	/* Acquire producer lock to make sure producers have exited. */
++	in_softirq = page_pool_producer_lock(pool);
++	page_pool_producer_unlock(pool, in_softirq);
+ 	if (!inflight)
+ 		__page_pool_destroy(pool);
+ 
+-- 
+2.25.1
+
