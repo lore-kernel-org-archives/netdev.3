@@ -1,100 +1,64 @@
-Received: from weierstrass.telenet-ops.be (weierstrass.telenet-ops.be [195.130.137.81])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21DE28A3E2
-	for <netdev@vger.kernel.org>; Tue, 27 May 2025 19:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2684113AD38;
+	Tue, 27 May 2025 19:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748374700; cv=none; b=kcK9CGe9G4IHHjZi2F35ObnhT8u+vbupQBijuHmCPsq/2ekk8cW0ElMZ5R/lmpX8pGm+7anUEgHpes/PdjB1aXNM/ugRYMWkONO4msRLdlMMEvus9PGwOygAG7w6Bq4GL/8zMjrIh/zMVBgiAnBPtWZ2yj8aC0xq086hQOWb4QA=
+	t=1748375238; cv=none; b=fL0/Pt1SY2dr9MKOpT0XOJ/RnAII26UCGeRMVoqg8j9PiLOVGnA5g9WYlTjSKAVSUsz2J5LC1PvYyJk4iGl4N+eKdpX8ynObcB+U6MdS8P34k3F2eURK7bGMAALxCi98YjRhD5YnpTA0g/E5j+WCWrsCPLL/SbfM/mpwZjbOZg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748374700; c=relaxed/simple;
-	bh=QpNV285BTS/KBng6Vcq4utezeQCjGo6G6reZO+F6LiE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ol0TyHPAXeAWrmF0H2n2VRMGcraqO/3RRUtDB90KmOK4qrIr7fjobmB2Qhzixe+6y5LpZxDXKMxUYXRANjBdRqiLOeKhHBEBGIKvSKSo5UZuHrRLiVvi09Amg9eljRvz656nCqw/ybT45HVQgN1l/kRjshvj2rz2V4GNBcCZejY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
-	by weierstrass.telenet-ops.be (Postfix) with ESMTPS id 4b6N5L414tz4x3d3
-	for <netdev@vger.kernel.org>; Tue, 27 May 2025 21:30:30 +0200 (CEST)
-Received: from ramsan2 ([IPv6:2a02:1810:ac12:ed80:9962:836e:244b:c4d7])
-	by albert.telenet-ops.be with cmsmtp
-	id uKWM2E0050Y7Yez06KWM4k; Tue, 27 May 2025 21:30:23 +0200
-Received: from rox.of.borg ([192.168.97.57])
-	by ramsan2 with esmtp (Exim 4.97)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1uK00C-00000003oHh-1fbh;
-	Tue, 27 May 2025 21:30:20 +0200
-Received: from geert by rox.of.borg with local (Exim 4.97)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1uK00C-00000003Wf4-1DCX;
-	Tue, 27 May 2025 21:30:20 +0200
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Jian Shen <shenjian15@huawei.com>,
-	Salil Mehta <salil.mehta@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
+	s=arc-20240116; t=1748375238; c=relaxed/simple;
+	bh=Z5/qghFsl8MH4crSpnbrGh2kAnMFXtWS1rnn+Ud0Nnw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q/Y0yeC0BJ0IUQNTH61C+my94duR3fogQqPU+67d2OHVZbDOdvthXf+oIghOSA4ussj27pyRcznUV8tl2lp4NYhLRlcfUyZwrb7SEgbwML3HjKhIQcPHXLwT8+sto5bQfv+uQ5JOKrUXJgSuDbFipUsihvvjjI6MWXvIY0d730c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jTuQd4Iu; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jTuQd4Iu"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=sYaC13XAUT+Q0D8UVagUTeBPIkwVA5pPo5QAAwyWTuo=; b=jTuQd4IuQi3E/HohtnQIJ7lLSM
+	UWSa4/T0NVrHFZoCFwlWX1lNMnTEdntHZz7k4uqDx0rYDJdRUEqmJZEUSoS7/ncIiaA5OcYNkjPM0
+	6jbEmesiNoVhbk31fmSRgsrMJoc42yCn2HbWZyNB7MOzDofXpewI71yKqU+OjgSj57gw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uK0GB-00E6Xz-JD; Tue, 27 May 2025 21:46:51 +0200
+Date: Tue, 27 May 2025 21:46:51 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Fan Gong <gongfan1@huawei.com>, Xin Guo <guoxin09@huawei.com>,
+	Gur Stavi <gur.stavi@huawei.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] [net-next] hns3: Demote load and progress messages to debug level
-Date: Tue, 27 May 2025 21:30:15 +0200
-Message-ID: <0df556d6b5208e4e5f0597c66e196775b45dac60.1748357693.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.43.0
+Subject: Re: [PATCH net] hinic3: Remove printed message during module init
+Message-ID: <e206bfb4-a2b9-43b9-9dd4-f897a35569fc@lunn.ch>
+References: <5310dac0b3ab4bd16dd8fb761566f12e73b38cab.1748357352.git.geert+renesas@glider.be>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5310dac0b3ab4bd16dd8fb761566f12e73b38cab.1748357352.git.geert+renesas@glider.be>
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+On Tue, May 27, 2025 at 09:33:41PM +0200, Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas@glider.be>
+> 
+> No driver should spam the kernel log when merely being loaded.
+> 
+> Fixes: 17fcb3dc12bbee8e ("hinic3: module initialization and tx/rx logic")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-No driver should spam the kernel log when merely being loaded.
-The message in hclge_init() is clearly a debug message.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-Alternatively, the printing in hns3_init_module() could be removed
-completely, but that would make hns3_driver_string[] and
-hns3_copyright[] unused, which HiSilicon legal may object against?
----
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c         | 4 ++--
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index b03b8758c7774ec2..5c8c62ea6ac0429f 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -5961,8 +5961,8 @@ static int __init hns3_init_module(void)
- {
- 	int ret;
- 
--	pr_info("%s: %s - version\n", hns3_driver_name, hns3_driver_string);
--	pr_info("%s: %s\n", hns3_driver_name, hns3_copyright);
-+	pr_debug("%s: %s - version\n", hns3_driver_name, hns3_driver_string);
-+	pr_debug("%s: %s\n", hns3_driver_name, hns3_copyright);
- 
- 	client.type = HNAE3_CLIENT_KNIC;
- 	snprintf(client.name, HNAE3_CLIENT_NAME_LENGTH, "%s",
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 3e28a08934abd2e1..6bfff77ea7e67e8d 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -12904,7 +12904,7 @@ static struct hnae3_ae_algo ae_algo = {
- 
- static int __init hclge_init(void)
- {
--	pr_info("%s is initializing\n", HCLGE_NAME);
-+	pr_debug("%s is initializing\n", HCLGE_NAME);
- 
- 	hclge_wq = alloc_workqueue("%s", WQ_UNBOUND, 0, HCLGE_NAME);
- 	if (!hclge_wq) {
--- 
-2.43.0
-
+    Andrew
