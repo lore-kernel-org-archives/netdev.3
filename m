@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616121DE4F1;
-	Wed, 28 May 2025 07:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A601DE4F1
+	for <netdev@vger.kernel.org>; Wed, 28 May 2025 07:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748418753; cv=none; b=iTlOamm3sIOP63/UbOVIOUvvKHCQ8lKS+YtZnSws0q/7fZu7jv7b07IVMzj3VGtS2UF2JfURjzvp1FIR+U7ZqyNUZ0NkGRWn++GZB9J925MRZjC7ZhSTL30urHUJjmdjYDa5P9ePz7ur6gtk8cFHHlclss/XtyA/a6bPaXH+0Nw=
+	t=1748418756; cv=none; b=uc1Frtjot7HHr0fe15dZJdFBFV9ooewofhFXHzR5WCebSYR08ZGDu+MIwXaDKSpVEWYvSDLzz/6tqAQKinsUlB40Sb3wLJ83a1OWXaFLJPe4DCG2pHkp4VQZXTJ0yYFv/GEy7HuZfcrCsqZltB2Ta+e3+R/BzKYWCmtKmbdV5KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748418753; c=relaxed/simple;
-	bh=vOIZMb5lEDF1Fh0DsUBC/oFFOQgqXuEgzjSZapxTDuA=;
+	s=arc-20240116; t=1748418756; c=relaxed/simple;
+	bh=/sDMz3Y3JCZyRlZFJBGVaxgvJvaORqamqpRMqm0zVCo=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rw0JUVHNzL0hkHx8TsSITHx6bM91nCS6gtyJgXwaKNzWeBsMjiDBU1MhZeKFJNhxJ2y+3kOACCNzvuu9ttT5NQVAfnTzp/qlIYR1A+P8t9nOT0rDPqOZ93v3yBRHTghaMwPtMWk3W6pI+0YUThl/yFAyPwtTlzGaBhTI5Wx8tZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i/lvZouP; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=qkyuHKo8iUfEK93r3M9uFW78GcE5Nh6ssKBxAjqOtARnKMs4ugx1jv/sH79sEQmoFr6VqFXnzviqix8J7Vo6xT6zqWagwM3AHQy5c1JDpRcbStsFavUG71RVRXbbND5D6/ZdAO43srdQpA9kxV3sRzc1kgaMaENtiPZv2dfqi20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nkZZ2MKs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i/lvZouP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D21FC4CEE7;
-	Wed, 28 May 2025 07:52:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nkZZ2MKs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23AB2C4CEF0;
+	Wed, 28 May 2025 07:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748418753;
-	bh=vOIZMb5lEDF1Fh0DsUBC/oFFOQgqXuEgzjSZapxTDuA=;
+	s=k20201202; t=1748418756;
+	bh=/sDMz3Y3JCZyRlZFJBGVaxgvJvaORqamqpRMqm0zVCo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=i/lvZouPKufeyVtJyNLJAmoqQ6Kn8IJe8SDM6Fs1LgC/1UlKE+lNSluLtVjRebt6x
-	 aYnHwguwdqLi0I2wyFYwof856+u+DIYfSY4W2xXDAjWEE0+J8FlsfupsD7S04njyOj
-	 +6TaRLjBHiT3MPAD33HrD/obUFzKDeKjbgV5i+q9SFHbVfLPElKAmJAyN5AIkvVrt+
-	 TdLLLhhNJ95cRk3V4qaquytjpI5lVrua7WwxmmYfn6plIsqaDDj2bQjvM/j7stw7+c
-	 B7nlwljKmyHO4Q6HzENrm1qXYVi63x/aezIN4auaR7rUSy8lbDhUEgiVEXx1aYLNFn
-	 qOzzzGzpMcY8Q==
+	b=nkZZ2MKsFgPvry0M0P6yDcTQJ/zZD/8Rs3iFVzsU7o6SRQLmdbJGaBjP6oG9omEN0
+	 8C//7WmvhbT50JUTJ4QdMW8TWDE+s0+KYrhFAdGetYjwcUimv6ut5kTzx8yvQ+AxTn
+	 HbY3Dd2mkVM9w7q/IMy2L25MCbYWPuTYyJuIKVliO/8bZd+pnSZWjcBHNMBXvHQ18Y
+	 WgRMpmO/8U5AQngW45HoUxh3ivN9RoAlUF33844lhPPMVPERBnMcNBnFor0P0j36Il
+	 RDa2gzH7q8MwF6FsC8HywBH3SWlsOJH0ugIjIG0p1lsz7nnOzG/7WpoZD6DSUs51jQ
+	 CTEtzYcwEZxJg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70EC239F1DE4;
-	Wed, 28 May 2025 07:53:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70DE939F1DE4;
+	Wed, 28 May 2025 07:53:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,43 +37,69 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: phy: mscc: Stop clearing the the UDPv4 checksum for
- L2 frames
+Subject: Re: [PATCH net v4] net: openvswitch: Fix the dead loop of MPLS parse
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174841878725.2284365.16902969225916201562.git-patchwork-notify@kernel.org>
-Date: Wed, 28 May 2025 07:53:07 +0000
-References: <20250523082716.2935895-1-horatiu.vultur@microchip.com>
-In-Reply-To: <20250523082716.2935895-1-horatiu.vultur@microchip.com>
-To: Horatiu Vultur <horatiu.vultur@microchip.com>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com, kory.maincent@bootlin.com, wintera@linux.ibm.com,
- viro@zeniv.linux.org.uk, quentin.schulz@bootlin.com, atenart@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <174841879000.2284365.10372314207862770782.git-patchwork-notify@kernel.org>
+Date: Wed, 28 May 2025 07:53:10 +0000
+References: <259D3404-575D-4A6D-B263-1DF59A67CF89@zenlayer.com>
+In-Reply-To: <259D3404-575D-4A6D-B263-1DF59A67CF89@zenlayer.com>
+To: Faicker Mo <faicker.mo@zenlayer.com>
+Cc: netdev@vger.kernel.org, dev@openvswitch.org, aconole@redhat.com,
+ echaudro@redhat.com, i.maximets@ovn.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ martin.varghese@nokia.com, pshelar@ovn.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Fri, 23 May 2025 10:27:16 +0200 you wrote:
-> We have noticed that when PHY timestamping is enabled, L2 frames seems
-> to be modified by changing two 2 bytes with a value of 0. The place were
-> these 2 bytes seems to be random(or I couldn't find a pattern).  In most
-> of the cases the userspace can ignore these frames but if for example
-> those 2 bytes are in the correction field there is nothing to do.  This
-> seems to happen when configuring the HW for IPv4 even that the flow is
-> not enabled.
-> These 2 bytes correspond to the UDPv4 checksum and once we don't enable
-> clearing the checksum when using L2 frames then the frame doesn't seem
-> to be changed anymore.
+On Fri, 23 May 2025 03:41:43 +0000 you wrote:
+> The unexpected MPLS packet may not end with the bottom label stack.
+> When there are many stacks, The label count value has wrapped around.
+> A dead loop occurs, soft lockup/CPU stuck finally.
+> 
+> stack backtrace:
+> UBSAN: array-index-out-of-bounds in /build/linux-0Pa0xK/linux-5.15.0/net/openvswitch/flow.c:662:26
+> index -1 is out of range for type '__be32 [3]'
+> CPU: 34 PID: 0 Comm: swapper/34 Kdump: loaded Tainted: G           OE   5.15.0-121-generic #131-Ubuntu
+> Hardware name: Dell Inc. PowerEdge C6420/0JP9TF, BIOS 2.12.2 07/14/2021
+> Call Trace:
+>  <IRQ>
+>  show_stack+0x52/0x5c
+>  dump_stack_lvl+0x4a/0x63
+>  dump_stack+0x10/0x16
+>  ubsan_epilogue+0x9/0x36
+>  __ubsan_handle_out_of_bounds.cold+0x44/0x49
+>  key_extract_l3l4+0x82a/0x840 [openvswitch]
+>  ? kfree_skbmem+0x52/0xa0
+>  key_extract+0x9c/0x2b0 [openvswitch]
+>  ovs_flow_key_extract+0x124/0x350 [openvswitch]
+>  ovs_vport_receive+0x61/0xd0 [openvswitch]
+>  ? kernel_init_free_pages.part.0+0x4a/0x70
+>  ? get_page_from_freelist+0x353/0x540
+>  netdev_port_receive+0xc4/0x180 [openvswitch]
+>  ? netdev_port_receive+0x180/0x180 [openvswitch]
+>  netdev_frame_hook+0x1f/0x40 [openvswitch]
+>  __netif_receive_skb_core.constprop.0+0x23a/0xf00
+>  __netif_receive_skb_list_core+0xfa/0x240
+>  netif_receive_skb_list_internal+0x18e/0x2a0
+>  napi_complete_done+0x7a/0x1c0
+>  bnxt_poll+0x155/0x1c0 [bnxt_en]
+>  __napi_poll+0x30/0x180
+>  net_rx_action+0x126/0x280
+>  ? bnxt_msix+0x67/0x80 [bnxt_en]
+>  handle_softirqs+0xda/0x2d0
+>  irq_exit_rcu+0x96/0xc0
+>  common_interrupt+0x8e/0xa0
+>  </IRQ>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: phy: mscc: Stop clearing the the UDPv4 checksum for L2 frames
-    https://git.kernel.org/netdev/net/c/57a92d14659d
+  - [net,v4] net: openvswitch: Fix the dead loop of MPLS parse
+    https://git.kernel.org/netdev/net/c/0bdc924bfb31
 
 You are awesome, thank you!
 -- 
