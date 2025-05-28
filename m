@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586D418C004;
-	Wed, 28 May 2025 01:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3421E9B35
+	for <netdev@vger.kernel.org>; Wed, 28 May 2025 01:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748395216; cv=none; b=j1GmOUlijIBvHj55O0cs3TWFi3nTAiK6y0i1aReFsXewvTg8f9Ctx7vM2rywfEbvZfXeyt2Jazo2+MLsaufZQpveSILFqazuCyQ1mDzfNeXO2Jd5oUoyVUGXIjeKBTmFpaDEiDtvdtZFOI7tateGqCtO2mJZfGYhDR0pVdXYAl4=
+	t=1748395218; cv=none; b=Chojlgz/PGyL5uwKfNis3CYsQ/HLB2djLqLODuNBKyoHIq3H6p7ZMevminxaDBmGFxCi4qYwUO4ratEKz5nB0vdq3CGR8N08Jwdv+xZA0H3hX/pc+vnq5owpZ1IKBRjeUnNjYzi4gfiamj61/q9tMGAmwg2cLw8ybFaJngCnb1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748395216; c=relaxed/simple;
-	bh=W2+dbvW7t8dJh1KZx8OEQK9FItnMc5/NHMP8AiZOl6M=;
+	s=arc-20240116; t=1748395218; c=relaxed/simple;
+	bh=lUI5kno9Izyk6PXqmeTE3Y/5fa2mvdBKgiqN8c47G78=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Hs+LMZowaJKUpYGL7SIs89VESnutZIgCQzrynFrMHGn5a2HLK972cP3MCdrRYsuklyix6SeCWT9dJzTABjGsrO0QAVyokf8mQgU4mKHKrS8PmxvldxUNWib5+/9Saew7ri2Ea6uIDvCKy1TeZJ2TJ9nWQpQV4V7YU5BE6rDAc0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qv4MTw8C; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=O3UTFShoS3kWZnzm1nt3nWuy/2VzgaPhePVOoZ/DIg5LvxL87Feho/O3r+6qPIWmm9N+uIpYNkTR2HyQwB/qfunxCZPP5xi5NSjf1E4oGH4AL5nLZ3D9JhXAIjSzvDS7mzBt3H6eufb8FDPoEGXOmgXq1qjWQfz8gOyruQBqwp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q49m/1j2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qv4MTw8C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7EEC4CEE9;
-	Wed, 28 May 2025 01:20:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q49m/1j2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB14C4CEE9;
+	Wed, 28 May 2025 01:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748395214;
-	bh=W2+dbvW7t8dJh1KZx8OEQK9FItnMc5/NHMP8AiZOl6M=;
+	s=k20201202; t=1748395218;
+	bh=lUI5kno9Izyk6PXqmeTE3Y/5fa2mvdBKgiqN8c47G78=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=qv4MTw8CVhkMsrldM9hlGSuybugf00H5MtDWpvTxfMeMOIDhnr2IBqIvpjxEm039N
-	 pMB7hyZvI3RZjnGSZJVVeukVS0YdCqn3UeyE2+0YYw01tVYjandhweqDfS+i2o3Fgq
-	 oAuXU8FbDwo4uGy55J3JnHQjdg1ZAmCZF4sI4viEOv1wajDod/tgjseG3Im12angc3
-	 SOjXWUcvYlcomgt+4+DH6Rk+LauuQNZMgnhjUwZGNlANO/zidY1/kx7ikpJPpzXkro
-	 qpGI4TCtMnS94tQYvLk/lmyrfzJJuWj2IFj0Z8JsEKuPrUf90ci6V8kdDeYgYWgbpu
-	 TmUmGeAgjSh9g==
+	b=q49m/1j2GYUaGo9spD2/PugF2lVjnmYH2PjVe4DYV5kwHCpQlzqbo606RKrOzHlGx
+	 QZWQJWg+2Ox9SolSkVyZVVxbw7MUKLX+aoiebuhxIkMsbQNHh8xWu4w8NIgN8KJzGk
+	 LBZG460kcSzxlfBIAeinIU/nWlEDsNB5Ydw3nURw2nmcBPU5y5fTlmrpVHZr4zadDz
+	 Hc68WIUVDqYYk9HPn5ZRzNSlPf5VA7/s4Hhc9TI5X9XjpIQ9nvZL/b6v1+8V/Xup1T
+	 TysyFtqGOvyxYTVSyKVTHHXO/cNMWjQrAoE6E3azDSKHzNkpw+gylrcFI30FNxGoRL
+	 /IObInc0FOF1A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33C0B380AAE2;
-	Wed, 28 May 2025 01:20:50 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70E8B380AAE2;
+	Wed, 28 May 2025 01:20:53 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] mlxsw: core_thermal: Constify struct
- thermal_zone_device_ops
+Subject: Re: [PATCH net-next v1] tools: ynl: parse extack for sub-messages
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174839524874.1849945.12481137182393218605.git-patchwork-notify@kernel.org>
-Date: Wed, 28 May 2025 01:20:48 +0000
-References: <4516676973f5adc1cdb76db1691c0f98b6fa6614.1748164348.git.christophe.jaillet@wanadoo.fr>
-In-Reply-To: <4516676973f5adc1cdb76db1691c0f98b6fa6614.1748164348.git.christophe.jaillet@wanadoo.fr>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: idosch@nvidia.com, petrm@nvidia.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
- netdev@vger.kernel.org
+ <174839525200.1849945.12711546934451965416.git-patchwork-notify@kernel.org>
+Date: Wed, 28 May 2025 01:20:52 +0000
+References: <20250523103031.80236-1-donald.hunter@gmail.com>
+In-Reply-To: <20250523103031.80236-1-donald.hunter@gmail.com>
+To: Donald Hunter <donald.hunter@gmail.com>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ jstancek@redhat.com, arkadiusz.kubalewski@intel.com, sdf@fomichev.me,
+ donald.hunter@redhat.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun, 25 May 2025 11:13:17 +0200 you wrote:
-> 'struct thermal_zone_device_ops' are not modified in this driver.
+On Fri, 23 May 2025 11:30:31 +0100 you wrote:
+> Extend the Python YNL extack decoding to handle sub-messages in the same
+> way that YNL C does. This involves retaining the input values so that
+> they are available during extack decoding.
 > 
-> Constifying these structures moves some data to a read-only section, so
-> increases overall security, especially when the structure holds some
-> function pointers.
-> 
-> While at it, also constify a struct thermal_zone_params.
+> ./tools/net/ynl/pyynl/cli.py --family rt-link --do newlink --create \
+>     --json '{
+>         "linkinfo": {"kind": "netkit", "data": {"policy": 10} }
+>     }'
+> Netlink error: Invalid argument
+> nl_len = 92 (76) nl_flags = 0x300 nl_type = 2
+> 	error: -22
+> 	extack: {'msg': 'Provided default xmit policy not supported', 'bad-attr': '.linkinfo.data(netkit).policy'}
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] mlxsw: core_thermal: Constify struct thermal_zone_device_ops
-    https://git.kernel.org/netdev/net-next/c/82fb5a369b8d
+  - [net-next,v1] tools: ynl: parse extack for sub-messages
+    https://git.kernel.org/netdev/net-next/c/09d7ff0694ea
 
 You are awesome, thank you!
 -- 
