@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5A51EB5FA
-	for <netdev@vger.kernel.org>; Wed, 28 May 2025 01:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65CF1EE7BE;
+	Wed, 28 May 2025 01:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748395219; cv=none; b=tSdMzpg2csWgWfp5gnawJgyRfQ0Yz0MUAQd233mqzAKX8UjQSzSa8vBAwlP+ZQ4aglDsNGHAUcPUI9H0++rZhksn0IJnp5qQHmQ3pFlmGo+HINagdLmMzPxQXLXYVN3w9q/74CBlmf95QyJ1YpCUNIJTbCazOfM/BCw/4EZgjRw=
+	t=1748395219; cv=none; b=Ejrk/wRTx9Aw9t/Z6Nmtg4/py2ekEk/dSiJB3jDUR/zO4/YD2RyWrQXKwTQeoVNjhnIxKdgJ47bBGHmcRYKnuyvkxb7QqhfUPR7tvmyuApwIIdR96siHUCYq9krxAiS14QBjNDY7dLVbDJDHry2YGwP+aKYrVJRL7qb3frZgDP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1748395219; c=relaxed/simple;
-	bh=hxheQ6GezQnrgL3/ejq9KHWUbtlHkM3LJftjJd8S0Ig=;
+	bh=tf2eN1NSxXBp6thc/aiZCb1w13OZWvzEQmOaH9edm08=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=mERJMSzHcHRij7JoCCNxaSr4wEVMEQL1Fhdf0IO/743ZBIysK82uFl5o6o+4csj1NeW/WwTLeyVzP8YJYJRhGy1j+RtgDYIA4ypSWbAgP8fIDiPCEn7fm1bHAtuwQUIPZVDhlNrQ6smqkPWGLFhEmzE5068DAagUtlEsZv1ians=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y5qffMAr; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ntko+ekA7GkadG70wDsDMdvNcK0U5T6Q4bHt+t6Gugb5mRm7V5cpmVzhp1p1TdkUBpewrIF6wlB2MWgYtFUrfuVHrJA/13sP8/5Ia+s9T57QzqSNC8DuM80KlnA3CMaBNJ4UaGcpSRniEsQjlJnb/jcsNmZqpgpawbiVpLUvhQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KsX4TH5j; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y5qffMAr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59838C4CEED;
-	Wed, 28 May 2025 01:20:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KsX4TH5j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863F2C4CEE9;
+	Wed, 28 May 2025 01:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748395216;
-	bh=hxheQ6GezQnrgL3/ejq9KHWUbtlHkM3LJftjJd8S0Ig=;
+	s=k20201202; t=1748395219;
+	bh=tf2eN1NSxXBp6thc/aiZCb1w13OZWvzEQmOaH9edm08=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Y5qffMArE1Dr5MXHAcKhZuTQgn/QV0/1M7TnDHhRFVT6GhDWnCtHkrlOg4Bv0zPLz
-	 SXu+EX4Uu/9IzJiEx7KwsWq6Eb2BGCMepsqO0anU4Y5A0gbrDs/VfMIYXIf8qKIMwy
-	 s1GRX4ykTTVUEMwJs8wkcdMWMrRNVpg6lPFEBTLv4PxeBja7KGgpOoyGBsbf/K/bXy
-	 Kd9L1FSriHEJDi8h5/tILDa7P06KRUSZKITVBDg1/jMlSUqWoZvC24iAP9p4+RHnBJ
-	 tGlR276jhZ8pW+QvPREjMy+8I+WH43Dd+VakqodsGO5ELX0SbMvYbgczRY3qJiJQWm
-	 E93QVYRgyWGRg==
+	b=KsX4TH5j8FUJxyS2DmLQri4ddYJbAabtM4RmcvD7ptMhNvnDQvWr+hSzz/xHIG0H9
+	 QC+H3MzwLdWa7p2kGak3jwC5/VP9tK6gHm6qI1bHCtcSvzvCGJEC1qZtlaAxPP0NGy
+	 DdblQoHmzyJHZPywVgL3y3EqecKfy2gZhKOdJl8KrgKiD4qJVbZP7Johw7Y7Z8mpVF
+	 lLpOCnV9mWf6aX4sRrWnTB60iXWVwmhXOPxmje0OlBo3CwWnHy+33Ni7bAMOmzXEYr
+	 7kvYNIIZYwO3EP5Nge+5CZjEMhI8r16BkvWUHtC3lEF/V3BRbjKVGNssNazHVwcF+n
+	 9fDB5u093+MGg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE15F380AAE2;
-	Wed, 28 May 2025 01:20:51 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAD05380AAE2;
+	Wed, 28 May 2025 01:20:54 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 1/2] net: libwx: Fix statistics of multicast
- packets
+Subject: Re: [PATCH net-next] net/mlx5: HWS, Fix an error code in
+ mlx5hws_bwc_rule_create_complex()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174839525024.1849945.16012384212405372898.git-patchwork-notify@kernel.org>
-Date: Wed, 28 May 2025 01:20:50 +0000
-References: <F70910CFE86C1F6F+20250523080438.27968-1-jiawenwu@trustnetic.com>
-In-Reply-To: <F70910CFE86C1F6F+20250523080438.27968-1-jiawenwu@trustnetic.com>
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- mengyuanlou@net-swift.com
+ <174839525349.1849945.8234116859810090724.git-patchwork-notify@kernel.org>
+Date: Wed, 28 May 2025 01:20:53 +0000
+References: <aDCbjNcquNC68Hyj@stanley.mountain>
+In-Reply-To: <aDCbjNcquNC68Hyj@stanley.mountain>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: kliteyn@nvidia.com, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, cratiu@nvidia.com, mbloch@nvidia.com,
+ vdogaru@nvidia.com, netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 23 May 2025 16:04:37 +0800 you wrote:
-> When SR-IOV is enabled, the number of multicast packets is mistakenly
-> counted starting from queue 0. It would be a wrong count that includes
-> the packets received on VF. Fix it to count from the correct offset.
+On Fri, 23 May 2025 19:00:12 +0300 you wrote:
+> This was intended to be negative -ENOMEM but the '-' character was left
+> off accidentally.  This typo doesn't affect runtime because the caller
+> treats all non-zero returns the same.
 > 
-> Fixes: c52d4b898901 ("net: libwx: Redesign flow when sriov is enabled")
-> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> Reviewed-by: Simon Horman <horms@kernel.org>
+> Fixes: 17e0accac577 ("net/mlx5: HWS, support complex matchers")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2,1/2] net: libwx: Fix statistics of multicast packets
-    https://git.kernel.org/netdev/net-next/c/06ac0776d549
-  - [net-next,v2,2/2] net: txgbe: Support the FDIR rules assigned to VFs
-    https://git.kernel.org/netdev/net-next/c/7a91722e0dd4
+  - [net-next] net/mlx5: HWS, Fix an error code in mlx5hws_bwc_rule_create_complex()
+    https://git.kernel.org/netdev/net-next/c/a540ee75945a
 
 You are awesome, thank you!
 -- 
