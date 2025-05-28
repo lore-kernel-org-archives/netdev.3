@@ -1,162 +1,185 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC2E205E25
-	for <netdev@vger.kernel.org>; Wed, 28 May 2025 20:31:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4115114A8E;
+	Wed, 28 May 2025 20:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748464321; cv=none; b=RE/O0O1+liKFBTiWSbBxbeI6efdkDMYgjoZTifgc5ojUDjk84YZ3ZnBkxsg6LTMWigo0V/d+aC2uo3FJWKTidapDtlxP69BgkzFMWgyazjcLnabLBkWYxL9IDu3RBdi9YIDydocVTjUS4ry5z1joGZAhO0QNzc7s/ZVDrrfFQnI=
+	t=1748465137; cv=none; b=ssU1U5PnBEnp8It71X506+SeaYgmOGlVFjfPWPo1tf5qkVL9eeSSAFyQAUqkbVghfn71nR0hitJxqRGZLxNdA+fYbS09Ct4cob/IgFOwFDDqk7ylPwqfS4vZYQIolFKVW6aUWIrMYZFlc6tE2LhSkk+gC4AlpYA4WCsJZlyw2Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748464321; c=relaxed/simple;
-	bh=BrBbR5CbQI4aYUBRypucmSqCUVq5TrcbJLGOVPXbW0Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jtt9GpsGZNZ8+Zoc92bF/ZQCIlgxSPle+wEF12UyFzgLFGC8LX6AMOCkCzlP6kuZGUHr8z+AFa7QKgj/bnQ6RxwkjEDf8noeZpIjSxKziB+lTYaXxD+rFAglGwDydc9jX5i/hRfdecfS5yx4RlYT/wUavGz1Ui/9XWOu/sBP5dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b=H/pj6v40; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
+	s=arc-20240116; t=1748465137; c=relaxed/simple;
+	bh=5vNqbnpuocbB5KxnNgtdlCu+kDtLgut93zWsETJpyqA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=aNChg+y3bGG2fNMnWcscVW11uRobCG7PleRnd8iqOGy3n5tK4roZktDNlapIu8e3Ftb1ki+7kWrcet6ibs4shhz+q3He5cszv1a6QlIWocwijUY9wgRuusHUHexU82ejv8oQ5U/KjRihvh64X7kHKPVBF93GAiKaiJXkKYzPHPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=znegzxaV; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b="H/pj6v40"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3a361b8a664so204035f8f.3
-        for <netdev@vger.kernel.org>; Wed, 28 May 2025 13:31:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1748464317; x=1749069117; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qSWXgr0Rc+W5KMUBLUdxw5Riulc06AxCHfqoKhxLOoQ=;
-        b=H/pj6v40epSxPzsz5NOLTEW4bEevGT4CPwr8NtlX9ehbR5H/6Tj4P8D8mkVOsOaL0Q
-         W0TvAf60MD5WKVjfx9y2t3uQ1XP0Hl7rpNyrK0VqVHWF+H8XRS/1jL2eG4ePBTESzMdu
-         ojveZz2CbqP7rf95JslNfNh1M2o6NHXJEZOzg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748464317; x=1749069117;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qSWXgr0Rc+W5KMUBLUdxw5Riulc06AxCHfqoKhxLOoQ=;
-        b=g2X9CBU3xDCR6Aor1M+CRpfoMLblpyOxOso3IxmPeY0gz2u1d2/CWRO3tPDbLF5yPb
-         ZXPZ925uq3bCRt49lTDAuVbK4N5tdssGBsPEg9mkpG1eYQrGJaVDqkk9R2SVZ315iVx1
-         FX0vuTocR6BDhBJBFeXO0MiVfF6cmfJGi/bkP+ELSQRKG1bCZD338dDOIjcJ/XKd1ev8
-         2ocP2gv1ri6tnd7tIUurRn4xRgeJuswpjUFO3Js9DjlUpzMz/6HBN7Xj4HR6kxo2bBM3
-         Mj2oPc31Y/tU5IS/ezi+/SB3GpxUZZ0dXc8h3eGTO3+ndFb8jMbqkU60bV20UK4KEhWU
-         bCAA==
-X-Forwarded-Encrypted: i=1; AJvYcCXJfwksoSOlV/WXCqoADg/Qqq1nSIC+iJ6J7l02ksOOKu8OEuhh6rBjmIQHTl/0NOm9Tqkay9g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzv/1suFX4L+YI072CjZmGNMJPWgJijvm//z1TyUlIH+OPFxR0v
-	8fx+x3Kepk1wjufn2k+AOdbbrBnRVrkoGZnVJ5ynz4xCBnYoyogzLwIVyrQQmsbCy3Y=
-X-Gm-Gg: ASbGncvRP8dzN0vSTTvtXZo3F8q2fGTlGfGA1hBM4WAmyaghOQHn3xEF1CHefh8KRzz
-	l/BeoARDcSkQE2XZm50HqC/e/HuE4ZfA86yhnvOkrIIGu4ABc1UUwU1DZBrIHzPqVgJ16h0qOOc
-	LbKa6iiAQEMEbEjCiTtrgMVDF1FlPtGF5BWZVE7+q9P0L6ZdXuRJsuaqQha9AcckNrbvPHBLs6/
-	s2x13tU6PmOj80CtEZ4a48fT3anFappkvVcxulq1F7CujTPACrCcG2oFeorV3k9oXXTuCyxnFjF
-	pgWISiWZj1Qd0JPqP2IlCJLXN+blv3tYcNY1piTUai7cVSg7QaHvP8nFTaoNoNg=
-X-Google-Smtp-Source: AGHT+IFQ2szQOUKTYzQfDg5v2dEo7jM5cHq832S17GBiq2kI8tiPg0A1o7C6s+Meugy/KOsjoVv/2w==
-X-Received: by 2002:a05:6000:2087:b0:3a4:e706:5328 with SMTP id ffacd0b85a97d-3a4e70655cbmr4586644f8f.48.1748464317574;
-        Wed, 28 May 2025 13:31:57 -0700 (PDT)
-Received: from heaven.lan ([2001:861:3080:b0f0:6448:db2c:bea7:b817])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4eacd8f0bsm2391181f8f.75.2025.05.28.13.31.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 May 2025 13:31:57 -0700 (PDT)
-From: Corentin Guillevic <corentin.guillevic@smile.fr>
-To: Woojung Huh <woojung.huh@microchip.com>,
-	UNGLinuxDriver@microchip.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marek Vasut <marex@denx.de>
-Cc: Corentin Guillevic <corentin.guillevic@smile.fr>,
-	Woojung Huh <Woojung.Huh@microchip.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] dt-bindings: net: dsa: microchip: add bit-banged SMI example
-Date: Wed, 28 May 2025 22:31:51 +0200
-Message-ID: <20250528203152.628818-1-corentin.guillevic@smile.fr>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="znegzxaV"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1uKNeU-006kZe-Oe; Wed, 28 May 2025 22:45:30 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=s9UKfKrtbNFptlDKWxq7CWOT7YvxuhQzl2iCNVp0T1I=; b=znegzxaVxWYS5T+0vzrMt9/VC4
+	zw2TisYvcB13F6+ANlfR8pUk7KmX/5J+pghcPCnVwVskPSwShpNEP4X87K5tK+gOrymDzqZ0iF9Gi
+	e8wh69eytjLIEthKF1p9tiE9rdK4HJR+FZveg7ytvJiEt++5JuR09vcxGd9fjtTQz29//4F/k6fGs
+	/i+BsZXt8Dr/gHCCFyazG2Sjdr1KW1JOqJaCuIOQ2H6CB4rlLr+AF9Vb+azr1JW7KGCXFstwctW0j
+	nG5d8Sl1vDB6UCqGS0FhgO077yAZmNHkry5qW5aQqnSa8prkI/UN9Eowp4RZCMv7Gtm+PgR+EvEHB
+	Dbqg2OZw==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1uKNeU-0005Bd-9k; Wed, 28 May 2025 22:45:30 +0200
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1uKNeB-00GEBu-HQ; Wed, 28 May 2025 22:45:11 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Date: Wed, 28 May 2025 22:44:42 +0200
+Subject: [PATCH RFC net-next v2 2/3] vsock/test: Introduce get_transports()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250528-vsock-test-inc-cov-v2-2-8f655b40d57c@rbox.co>
+References: <20250528-vsock-test-inc-cov-v2-0-8f655b40d57c@rbox.co>
+In-Reply-To: <20250528-vsock-test-inc-cov-v2-0-8f655b40d57c@rbox.co>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-KSZ8863 can be configured using I2C, SPI or Microchip SMI. The latter is
-similar to MDIO, but uses a different protocol. If the hardware doesn't
-support this, SMI bit banging can help. This commit adds an device tree
-example that uses the CONFIG_MDIO_GPIO driver for SMI bit banging.
+Return a bitmap of registered vsock transports. As guesstimated by grepping
+/proc/kallsyms (CONFIG_KALLSYMS=y) for known symbols of type `struct
+virtio_transport`.
 
-Signed-off-by: Corentin Guillevic <corentin.guillevic@smile.fr>
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- .../bindings/net/dsa/microchip,ksz.yaml       | 57 +++++++++++++++++++
- 1 file changed, 57 insertions(+)
+ tools/testing/vsock/util.c | 60 ++++++++++++++++++++++++++++++++++++++++++++++
+ tools/testing/vsock/util.h | 12 ++++++++++
+ 2 files changed, 72 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
-index 62ca63e8a26f..6cab0100065b 100644
---- a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
-+++ b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
-@@ -242,3 +242,60 @@ examples:
-         };
-     };
- ...
-+  # KSZ8863 with bit-banged SMI
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
+diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
+index b7b3fb2221c1682ecde58cf12e2f0b0ded1cff39..74fb52f566148b16436251216dd9d9275f0ec95b 100644
+--- a/tools/testing/vsock/util.c
++++ b/tools/testing/vsock/util.c
+@@ -7,6 +7,7 @@
+  * Author: Stefan Hajnoczi <stefanha@redhat.com>
+  */
+ 
++#include <ctype.h>
+ #include <errno.h>
+ #include <stdio.h>
+ #include <stdint.h>
+@@ -17,6 +18,7 @@
+ #include <assert.h>
+ #include <sys/epoll.h>
+ #include <sys/mman.h>
++#include <linux/kernel.h>
+ #include <linux/sockios.h>
+ 
+ #include "timeout.h"
+@@ -854,3 +856,61 @@ void enable_so_linger(int fd, int timeout)
+ 		exit(EXIT_FAILURE);
+ 	}
+ }
 +
-+    // Ethernet switch connected via SMI to the host, CPU port wired to eth0:
-+    ethernet0 {
-+        phy-mode = "rmii";
++static int __get_transports(void)
++{
++	/* Order must match transports defined in util.h.
++	 * man nm: "d" The symbol is in the initialized data section.
++	 */
++	const char * const syms[] = {
++		"d loopback_transport",
++		"d virtio_transport",
++		"d vhost_transport",
++		"d vmci_transport",
++		"d hvs_transport",
++	};
++	char buf[KALLSYMS_LINE_LEN];
++	int ret = 0;
++	FILE *f;
 +
-+        fixed-link {
-+            speed = <100>;
-+            full-duplex;
-+            pause;
-+        };
-+    };
++	f = fopen(KALLSYMS_PATH, "r");
++	if (!f) {
++		perror("Can't open " KALLSYMS_PATH);
++		exit(EXIT_FAILURE);
++	}
 +
-+    mdio: mdio {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        compatible = "microchip,mdio-smi0";
-+        gpios = <&gpioc 1 GPIO_ACTIVE_HIGH>,
-+            <&gpioa 2 GPIO_ACTIVE_HIGH>;
-+        status = "okay";
++	while (fgets(buf, sizeof(buf), f)) {
++		char *match;
++		int i;
 +
-+        switch@0 {
-+            compatible = "microchip,ksz8863";
-+            reg = <0>;
-+            reset-gpios = <&gpioa 4 GPIO_ACTIVE_LOW>;
-+            status = "okay";
++		assert(buf[strlen(buf) - 1] == '\n');
 +
-+            ethernet-ports {
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+                lan1: port@0 {
-+                    reg = <0>;
-+                    label = "lan1";
-+                    phy-mode = "internal";
-+                };
-+                lan2: port@1 {
-+                    reg = <1>;
-+                    label = "lan2";
-+                    phy-mode = "internal";
-+                };
-+                port@2 {
-+                    reg = <2>;
-+                    label = "cpu";
-+                    ethernet = <&ethernet0>;
-+                    phy-mode = "rmii";
-+                    microchip,rmii-clk-internal;
++		for (i = 0; i < ARRAY_SIZE(syms); ++i) {
++			match = strstr(buf, syms[i]);
 +
-+                    fixed-link {
-+                        speed = <100>;
-+                        full-duplex;
-+                    };
-+                };
-+            };
-+        };
-+   };
++			/* Match should be followed by '\t' or '\n'.
++			 * See kallsyms.c:s_show().
++			 */
++			if (match && isspace(match[strlen(syms[i])])) {
++				ret |= _BITUL(i);
++				break;
++			}
++		}
++	}
++
++	fclose(f);
++	return ret;
++}
++
++/* Return integer with TRANSPORT_* bit set for every (known) registered vsock
++ * transport.
++ */
++int get_transports(void)
++{
++	static int tr = -1;
++
++	if (tr == -1)
++		tr = __get_transports();
++
++	return tr;
++}
+diff --git a/tools/testing/vsock/util.h b/tools/testing/vsock/util.h
+index 0afe7cbae12e5194172c639ccfbeb8b81f7c25ac..63953e32c3e18e1aa5c2addcf6f09f433660fa84 100644
+--- a/tools/testing/vsock/util.h
++++ b/tools/testing/vsock/util.h
+@@ -3,8 +3,19 @@
+ #define UTIL_H
+ 
+ #include <sys/socket.h>
++#include <linux/bitops.h>
+ #include <linux/vm_sockets.h>
+ 
++#define KALLSYMS_PATH		"/proc/kallsyms"
++#define KALLSYMS_LINE_LEN	512
++
++/* All known transports */
++#define TRANSPORT_LOOPBACK	_BITUL(0)
++#define TRANSPORT_VIRTIO	_BITUL(1)
++#define TRANSPORT_VHOST		_BITUL(2)
++#define TRANSPORT_VMCI		_BITUL(3)
++#define TRANSPORT_HYPERV	_BITUL(4)
++
+ /* Tests can either run as the client or the server */
+ enum test_mode {
+ 	TEST_MODE_UNSET,
+@@ -82,4 +93,5 @@ void setsockopt_timeval_check(int fd, int level, int optname,
+ 			      struct timeval val, char const *errmsg);
+ void enable_so_zerocopy_check(int fd);
+ void enable_so_linger(int fd, int timeout);
++int get_transports(void);
+ #endif /* UTIL_H */
+
 -- 
 2.49.0
 
