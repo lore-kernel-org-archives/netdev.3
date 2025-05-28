@@ -1,71 +1,65 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EC382899
-	for <netdev@vger.kernel.org>; Wed, 28 May 2025 07:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481C0193077;
+	Wed, 28 May 2025 07:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748418625; cv=none; b=HdEmU88gq2Nlnfeng2BVritA5HCjNZIz7GN/Wkv991s/kQ7OkOW/6Q4r3hQLVbTzHqVj+t3I+DO11Fq8ba1NcBdTLyh8H8uauT3sZ+Kd/s6TmWJj1p7bQKygR8DbZlzVc0Gqt4pdEWzdpLUsUzD2YQe0OJbRgp8iMy1rVaUq/ME=
+	t=1748418641; cv=none; b=lMrPXmyfyLS4j0DMtawgBprF62lgAzsAIYt41SUk+Bt0q9oaH9/Eaxu11SUqVLvDNJN5kLz/URnSmpsWvafOy6y5FejDE3iTHkbkICkYoaygIclHL6rEjOTBOrgnOBRz97LGAakUpqWNNnbJEh4yTgqx9QPeHho1V1uYVeBUT18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748418625; c=relaxed/simple;
-	bh=NqihgWTEBh1jUCG7kUpeQ20C703nVkPYq6iLxWxEZ7c=;
+	s=arc-20240116; t=1748418641; c=relaxed/simple;
+	bh=/zyrLXezRJjYrfxpfUoQ6048QS9eM9+IT5qoZfTuJC0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gqAVQdgE+J64sIT6ITZhjT9O9TAolVousE2m4Ad1ZetShnpKF9MG9Fh7eJSzfvEDmro2sUg9AtiGfqx0LTCSPI/0BSubQTqFHA1jMz1WlWWGI9IhGoB8R3YyVKlJkyd9TMjaBKOf/6dO8ZtkLwUmvHmYKJbUwtQQLqhHt4VCzik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i3vArk2+; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=gTJdKseX7fKlQQWgCXQCDIWinEqPHGZUbXZob3QhCDgSkTUkPFunkPVRiFmMPziL9coz4sZbDpGI4gHlBK0Orn4zdYG9RD0wPWSjq5GyhWm7jU2dB34UXVAJCOUUXWs5uECmwoomHswIIbhCpviDJbiqvPBdzgKSip1I2629Bqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a/mMw2F6; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i3vArk2+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748418622;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1tpi47h6CncFHkErQUdzowao9tBVRUGMqpMcapTTkpA=;
-	b=i3vArk2+naJZx+0Df/8XJncFyXEKsewHMzC7MrfhEzGa/NJrhDX0OWnR0+3KaB/iO31ELs
-	SMwpRcNa6pbWIlkfzCoa2gDblwuYw6BKz3jUSOB23kcOL4YO5ECXZ2TKDtaKuyDUWInzwY
-	PxpPrw+k//BY9tJFQVblxhz+w9+EC1w=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-456-vcnVp3UiO6KY_I_xGLwGZg-1; Wed, 28 May 2025 03:50:20 -0400
-X-MC-Unique: vcnVp3UiO6KY_I_xGLwGZg-1
-X-Mimecast-MFC-AGG-ID: vcnVp3UiO6KY_I_xGLwGZg_1748418619
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-450cb8ff0c6so476325e9.3
-        for <netdev@vger.kernel.org>; Wed, 28 May 2025 00:50:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a/mMw2F6"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ad5273c1fd7so845961266b.1;
+        Wed, 28 May 2025 00:50:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748418637; x=1749023437; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PFDvh+xhYK9vwsPou+GJtGwXTTWho/iEsaQhsuFcYPk=;
+        b=a/mMw2F6XRftS0L+tQbti+QZmY2tDea6rorSLlQrwZ+PtnNy4WQPvxxXMrNHesQl/A
+         dLCQ0IPONSJ6rNpNXiygRp3aru/JaAqOjEszSS3r5rUl6Q38mA3d+m5x4zRLxvrtjmaV
+         KBYqPHWvPxhN3c2++Kb4XGCwRyxB01V8S/Ygf5qpjiW4PyxRu+Xez09EhSnLvO6uL7CQ
+         /NISuiHAL5tUHzeH2Dlr9EiFTlFzyap/6YslNJn8UrpBN20QtWUBnlwwU+6P9rY8O1CC
+         O0XeC6mA8XvYrM/lw9DXMvPKjbaWHzF7RKC5rYuMhyT6OZHPqxbHrhdtggEQpLPlaZv/
+         5n9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748418619; x=1749023419;
+        d=1e100.net; s=20230601; t=1748418637; x=1749023437;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1tpi47h6CncFHkErQUdzowao9tBVRUGMqpMcapTTkpA=;
-        b=XZmm0Ed3FADzrZm+sr6Q+Vi5bxxf0GWrsc1UTpOx26zDKje1EJrB7zLksLpmy72WQO
-         VvcLxTLQUqQZTwPQfpVFXg5UrloBfk97AZP9z7in7COE7hEaUhymn6mXjpJQhboFaufX
-         SgX3KaG+Fv5lAsNIvUaj1PpyQS+F9rx1pRuva8f0xtqtbnzGWuIIpPIGH3hdfGyypFT+
-         r31VVaNhYxsVdLpEz8wlgc5ioOH1Foi2txEipIqsAQ61nMDXxFBI4YDq5rEKQZ8nShKI
-         sHlQpMl2qFtqi4kc99SEXjYKnyTXofu6kD8F44lO+j+OR0hnwZIN1KT1zekQNMMu3f/X
-         zTQA==
-X-Forwarded-Encrypted: i=1; AJvYcCVlhLhvCInz8mGtRFcZ9uBpPgn4lv5tkhg/YUjzrJMqShZXmVt4kJdRZuRKCId6f1HtrMZxdZ4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEGcUDxcriQzf32J9DW3DLiZud0TcFf5w7x7qgGzLiCI3/0Usr
-	u67o7LdsuJFBv8nCrk9kbgg4tJEUTqq3T5jqTjL+soDQRg56sMD1IqQdwaLHiBh/x5lUy3WNgCF
-	YXBd5taR5gsKU8le0lt4oIMphYV/dQ8a8yX14UfI3O0UGH49RSCarEdqpBw==
-X-Gm-Gg: ASbGncupGWILArGqkURwUYhFaBzhjK/b7SRcpYd1N8jjHt0ZgTdmH9Q8B11hz5LvURu
-	1Ho//iplcr1iQfNbMNHIojS17hN/2y3kecIe13w4hwVIM0ve1ZhmdOJXaqEsx3AvZxtQfZyAtS7
-	+pKk0HAUh6pcLqaNOlna4VfrOiQIqhMZnDQDkOW425rB5YI+4gFZXfNHuwLZUrv9ipQiyu+5F5Z
-	gtkJ02NRF3xHhs58K8hHdySCiLKtqlwfqXDTdhKkKYqdiONSrcbohsQmavGw/lTkAwFfkLdo+N5
-	EtbtjwDCWaO17oeW2GQDHCViBk0e4BsipPtMo1WYWxvTnn9xL2FwSgSYhMk=
-X-Received: by 2002:a05:600c:648a:b0:442:ffaa:6681 with SMTP id 5b1f17b1804b1-44c959b8d8amr110637325e9.28.1748418618965;
-        Wed, 28 May 2025 00:50:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHBWJyZILJbrgkPiDDB8tVOLhwXdtQjh+xX3gUrTyMstA+8ge6QPCVLy/QC/PtLY7yRC/4N5Q==
-X-Received: by 2002:a05:600c:648a:b0:442:ffaa:6681 with SMTP id 5b1f17b1804b1-44c959b8d8amr110637095e9.28.1748418618539;
-        Wed, 28 May 2025 00:50:18 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2728:e810:827d:a191:aa5f:ba2f? ([2a0d:3344:2728:e810:827d:a191:aa5f:ba2f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4507253bebdsm9195275e9.4.2025.05.28.00.50.17
+        bh=PFDvh+xhYK9vwsPou+GJtGwXTTWho/iEsaQhsuFcYPk=;
+        b=RKfPA3ZtZLuYCaH5K7oGIVJ2kBHF3x3m9AB66oFh8/CPMmw9i70xSe5jLB48LCesrj
+         NMbaw4u1+4k8cJzg/R3uXYuEet0MrAN8S4R8vXr+e3Wf9kEiPFiM0jAqL8g2BB/JL3RA
+         uiBlc+bv8qL+MCEm6a+woRzQLAaSXLnJ+7fZL8iOByLtX86Zv3IOLIJFA8Kk2KJibDmE
+         PX72POawLo6hNfE5PakWE0bkBshsYs23HzeXqvZg98uyiw4eMiJYgIDlC/yDEVk3wY0r
+         Piz5T4DMdFARZeeQ7KG5KGEW7VCP3WVYMRdbJ3dRpDHuE6kfvr8M7FUKgfanXamCx9gU
+         s31g==
+X-Forwarded-Encrypted: i=1; AJvYcCVI05DsSo3cti1shxMaS9vHc1x17Gqdf2NgTG3pd2FvM7+MTq8/YRMQpMjhpoZyKTItX1av80wzDw5HOpbM@vger.kernel.org, AJvYcCX/9/UUSJw7j0qMr8T59R5k/1gPhB5W9Bt3r55PxZqDl95P816X2nY7EJDesj2wXZPIoBVtXx3zM//HtQ==@vger.kernel.org, AJvYcCXWO+rvqXvpNfDAm3/McENAp6WPo+4M1r17cNqHzgBA6wUK1dSWtVCHzUshUMaPsEgRnPivqCP/@vger.kernel.org, AJvYcCXtTRJmJx9e9g3vLUpvBL1U/leyt03lRFxoSzGQB9yfwsah90452lBtZxqCA4qrX0gbsoE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3qLxQ1UNHWeagQDWp30SjfYHRj1FxH/6gLWxYHxCehwEKlmVX
+	blIDmuHJ0CLrcD/vDwuU4mTktj++AFf130MbEpH+gitf+HewRx68dY2b
+X-Gm-Gg: ASbGncskm0l7mEZeEAzCk7ZoImEaqkBQW7qocY2r501BR6/2aySLRMid11dvPicTUsK
+	45he/+hI8+eLWMO+EupQfx3EDCbTzYBcdo6h7m+BZokD3lcjZuFQWwK33D765d+G8HEUu6+zYCb
+	Lie04gDeosKcPWOxfRl4qQVVIO3DCozePZvEeF0Gj1ohEFp0Zi/ef56U+892pU0y1hAiwPyHmMP
+	cPGVfrdXHvznRHEA+bq0+8Qi1515guYA056cE9RHYsi77lztuxnWD2OFU8Y+rrhTuVtI/o4tecf
+	4H+tf83x5JLh0Y0cICylXcOGLyzjq7ypGxAUwILVRqHtvmMogK0R5eRQA46gOkyiKrt6l1LZgA=
+	=
+X-Google-Smtp-Source: AGHT+IHzIvt1GsZdZ9b+8NwHHnVvWWl+yKTgbs8TGJXB/bYOk6vqqvJWk7DJJKDVW+H4h0XE0+Ln5g==
+X-Received: by 2002:a17:907:9688:b0:ad5:2a24:7c09 with SMTP id a640c23a62f3a-ad85b2b55e8mr1294527966b.60.1748418637260;
+        Wed, 28 May 2025 00:50:37 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::6f? ([2620:10d:c092:600::1:c447])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6051d79e78asm399291a12.65.2025.05.28.00.50.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 May 2025 00:50:18 -0700 (PDT)
-Message-ID: <f2ce8d64-2e0b-4fa0-b266-4b4c547771bc@redhat.com>
-Date: Wed, 28 May 2025 09:50:16 +0200
+        Wed, 28 May 2025 00:50:36 -0700 (PDT)
+Message-ID: <a4ff25cb-e31f-4ed7-a3b9-867b861b17bd@gmail.com>
+Date: Wed, 28 May 2025 08:51:47 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,30 +67,80 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next PATCH] selftests: netfilter: Fix skip of wildcard
- interface test
-To: Phil Sutter <phil@nwl.cc>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, netfilter-devel@vger.kernel.org,
- davem@davemloft.net, netdev@vger.kernel.org, kuba@kernel.org,
- edumazet@google.com, fw@strlen.de, horms@kernel.org
-References: <20250527094117.18589-1-phil@nwl.cc>
+Subject: Re: [PATCH 12/18] page_pool: use netmem APIs to access page->pp_magic
+ in page_pool_page_is_pp()
+To: Byungchul Park <byungchul@sk.com>, Mina Almasry <almasrymina@google.com>
+Cc: willy@infradead.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel_team@skhynix.com,
+ kuba@kernel.org, ilias.apalodimas@linaro.org, harry.yoo@oracle.com,
+ hawk@kernel.org, akpm@linux-foundation.org, davem@davemloft.net,
+ john.fastabend@gmail.com, andrew+netdev@lunn.ch, toke@redhat.com,
+ tariqt@nvidia.com, edumazet@google.com, pabeni@redhat.com,
+ saeedm@nvidia.com, leon@kernel.org, ast@kernel.org, daniel@iogearbox.net,
+ david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ horms@kernel.org, linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+ vishal.moola@gmail.com
+References: <20250523032609.16334-1-byungchul@sk.com>
+ <20250523032609.16334-13-byungchul@sk.com>
+ <CAHS8izN6QAcAr-qkFSYAy0JaTU+hdM56r-ug-AWDGGqLvHkNuQ@mail.gmail.com>
+ <20250526022307.GA27145@system.software.com>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250527094117.18589-1-phil@nwl.cc>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20250526022307.GA27145@system.software.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 5/27/25 11:41 AM, Phil Sutter wrote:
-> The script is supposed to skip wildcard interface testing if unsupported
-> by the host's nft tool. The failing check caused script abort due to
-> 'set -e' though. Fix this by running the potentially failing nft command
-> inside the if-conditional pipe.
+On 5/26/25 03:23, Byungchul Park wrote:
+> On Fri, May 23, 2025 at 10:21:17AM -0700, Mina Almasry wrote:
+>> On Thu, May 22, 2025 at 8:26 PM Byungchul Park <byungchul@sk.com> wrote:
+>>>
+>>> To simplify struct page, the effort to seperate its own descriptor from
+>>> struct page is required and the work for page pool is on going.
+>>>
+>>> To achieve that, all the code should avoid accessing page pool members
+>>> of struct page directly, but use safe APIs for the purpose.
+>>>
+>>> Use netmem_is_pp() instead of directly accessing page->pp_magic in
+>>> page_pool_page_is_pp().
+>>>
+>>> Signed-off-by: Byungchul Park <byungchul@sk.com>
+>>> ---
+>>>   include/linux/mm.h   | 5 +----
+>>>   net/core/page_pool.c | 5 +++++
+>>>   2 files changed, 6 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>>> index 8dc012e84033..3f7c80fb73ce 100644
+>>> --- a/include/linux/mm.h
+>>> +++ b/include/linux/mm.h
+>>> @@ -4312,10 +4312,7 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+>>>   #define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
+>>>
+>>>   #ifdef CONFIG_PAGE_POOL
+>>> -static inline bool page_pool_page_is_pp(struct page *page)
+>>> -{
+>>> -       return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
+>>> -}
+>>
+>> I vote for keeping this function as-is (do not convert it to netmem),
+>> and instead modify it to access page->netmem_desc->pp_magic.
 > 
-> Fixes: 73db1b5dab6f ("selftests: netfilter: Torture nftables netdev hooks")
-> Signed-off-by: Phil Sutter <phil@nwl.cc>
+> Once the page pool fields are removed from struct page, struct page will
+> have neither struct netmem_desc nor the fields..
+> 
+> So it's unevitable to cast it to netmem_desc in order to refer to
+> pp_magic.  Again, pp_magic is no longer associated to struct page.
+> 
+> Thoughts?
 
-FTR I'm applying this patch below the 24h grace period to avoid sending
-a net-next PR with known issue and known unapplied fix.
+Once the indirection / page shrinking is realized, the page is
+supposed to have a type field, isn't it? And all pp_magic trickery
+will be replaced with something like
 
-/P
+page_pool_page_is_pp() { return page->type == PAGE_TYPE_PP; }
+
+
+-- 
+Pavel Begunkov
 
