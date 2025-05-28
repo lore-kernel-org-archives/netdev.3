@@ -1,114 +1,150 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E826F1F872D
-	for <netdev@vger.kernel.org>; Wed, 28 May 2025 07:21:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0302F2F
+	for <netdev@vger.kernel.org>; Wed, 28 May 2025 07:21:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748416868; cv=none; b=YknB/3bcu3VEOQiADZWD685OJ8W0zoSs74NV1gWCoGPaZzGKzXKDsVNZObes0qF9H5jQIMshuLixk00B1ieaY3vPAnCzG3KRnns/zEO+AYT+yYF/1PLDLKP8QJUUtjNwVHQBi03p5s20MFnbBjr3Ycm8lakRgyid3SJRP3hwZio=
+	t=1748416920; cv=none; b=qTVal1fvhQYcnAX+1KLHTgPaB/Zdpu8CkjeV4SUrImtjKPyN8WdPF9PcLCnH5McZzeXYQnROlSbkuKvwQcy08L1sZttTWBk48+rNam6quhmd4toOBU1//LbJzhybpu1hEEniK0qxYQGhGl8N/wgepLHIhnQR2mOlJq4zJgqq4t4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748416868; c=relaxed/simple;
-	bh=2qHmQEB1E1zkN71QCfVoyToUf5ogIWK0R6isdin/Ad0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nr2KZNcxsaHVNn0IYk/ILzdAIqsukRKmWnxIP6vHkqLQM05e4GyavY9g0DVW35xUkH+dORSGKmI0/BKKvSU5d7OVoVxF9cmm1jbm67pZoUoD829RwTBh0g4S2f3pYEAbQXBooKTMT4z9F4cksChfmKCG3JAJ4I/q1fSHn0PXGPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QfVQn4xz; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1748416920; c=relaxed/simple;
+	bh=o/EBQDrxGdj6WNmlZP1Kd/pL9W3EBdRR95FbKd6mj0Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gwLBZZ9dQ4+7QoqBFwtJuw5f68/q3nf+LNuQHSBvl0nG6BZU5VPRc31R1PcQos9dMAIpFrBAPN4mA4WpzrqClXncIGDv1FZ6k/iVfx/KEJkHBGJW3NzkQhK9xuvH66pPjPKQpLBl6fkPbBKirG7pdNpVsLamk9FRDr9L1/jBLMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NiUg8Ccb; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QfVQn4xz"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NiUg8Ccb"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748416865;
+	s=mimecast20190719; t=1748416917;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Yb7F8w++tHPp3njA+diY9i2D1I8vF7wYtoKldSCXI70=;
-	b=QfVQn4xzyiZOFSr3fJUJ7sV1dJ6Po3FbuhywhUQbZnA41wnMMRZpyDXXm23TMr9EQ22APa
-	4BZ3UNVuQomwdY4YCLuL6d6gnlBnnQnprwiNMQ4Dz+bKM/53OQj2MZ0B+/O4QU0TF3C4eK
-	ohd51nbSc/86nom1Ruvzp6uSpAnwJ+A=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=WaGWCYscG2gJE/9BxI7p6wq8i7SRMLbgQxHuw11S4oM=;
+	b=NiUg8CcbHtgALsAJUuqjuVNa+MhLeAZtGQjsw22FF3adqkghro1XeX37yuL6Or71TuPkBz
+	J0yHk6O4TWJKL+68Qx4GSe+O8ISt6mgUKpHKhbwWkcjE8UxH6WU/nKtnzxX4D/hEn1D31i
+	Z2AcVkIeREHeFBjfBsGAV31tABlZE1I=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-688-mMDvY0EyPUicXLhFnG6KfQ-1; Wed, 28 May 2025 03:21:02 -0400
-X-MC-Unique: mMDvY0EyPUicXLhFnG6KfQ-1
-X-Mimecast-MFC-AGG-ID: mMDvY0EyPUicXLhFnG6KfQ_1748416861
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-450cb8ff112so255705e9.3
-        for <netdev@vger.kernel.org>; Wed, 28 May 2025 00:21:02 -0700 (PDT)
+ us-mta-693-cMivORwzMM27Pqq6ot9dxg-1; Wed, 28 May 2025 03:21:56 -0400
+X-MC-Unique: cMivORwzMM27Pqq6ot9dxg-1
+X-Mimecast-MFC-AGG-ID: cMivORwzMM27Pqq6ot9dxg_1748416915
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43d734da1a3so23430165e9.0
+        for <netdev@vger.kernel.org>; Wed, 28 May 2025 00:21:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748416861; x=1749021661;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Yb7F8w++tHPp3njA+diY9i2D1I8vF7wYtoKldSCXI70=;
-        b=grGstzPpxryNEV/+ya8NVKzTpl2FdsEllmti7TquY/BtNPnbkHb6UHMOPDq9pSMtqb
-         OhStNMBb0megbsyD7LoqmJPehOFJc+l60XH8rAQ8St5Q0xwZIFNRoU2ojsER9ZiNGpdy
-         4rMRwwbJzlW4o7WG2WyhOpsQ22DZlmMxHX5l+Mm40gHr4IuU6ai5wiP/yeWe34bAS3Mp
-         L8tQ++wGBvd7/Cj5ULCWhbkb3WQutKTwoXIu62sOnw214K5SxRLmYhrOsS5holntRN8s
-         RLVeVhW6VqdPoR2uIwXv3kgLNAklKD6NQlGhijnKf86FdYfPtpr/cD0R3tOcV4hSjKP/
-         d23g==
-X-Forwarded-Encrypted: i=1; AJvYcCVHEcjVyONmFiULhBZZb3g+zZurb/O8MFZ7nBMLnAzlnieoAzTP9zYk2syMv/CZGkQ4p1S+e78=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoABDfCXpGII3fLtEiYiBjrLX4FSTuSa+KUpV3auD4qvcITLfm
-	BlmCMz2xJyrMQB5GNFTau49c+U9LM2uT+IEE8YkFZTXKrDYZPKb4Pja7NWnYRtmoDs1Y8iSK9v7
-	fTzU22f4VdreuETCeoFAJX5S7YZW7RPJzY0T3Q/9XuAgQsg4njShfalpJh8jGFY4tSQ==
-X-Gm-Gg: ASbGncudS3aI5idsyE69LtmztcSo8467J0k0mpnQJrZfTzjvJxGaqONkFLMoeCCLZDa
-	Q/jS1bWoGu9RumPYXQOAHm4Hg8dXOUR8e2n9OqAG7QEhz7FGE5ub5+O+o+UMqfPDCTl4mnC+dWK
-	5bWRpLlq5UcN7iqsuQXa91znFwHWYftKSiDuEVwCFlrodwAr3FvkDOdLzFq3YBDna230LzGZDPI
-	RL6HQgUSxbdkKS8blH/se7+MvvHLYh/HOHl8yHQIeZG0IrSgiwZYW7KLLw0YdlQwODOcHO7224L
-	SGgzkw==
-X-Received: by 2002:a05:600c:4e0e:b0:43c:fa0e:4713 with SMTP id 5b1f17b1804b1-450725459f7mr9070065e9.2.1748416861116;
-        Wed, 28 May 2025 00:21:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHtS9Q0iEWdCKqSBK4rpAPZvD0CQFR0nxD5Boy80MHIXn1Qzua/IJWOZxrhYd51QhCIxJ9zSA==
-X-Received: by 2002:a05:600c:4e0e:b0:43c:fa0e:4713 with SMTP id 5b1f17b1804b1-450725459f7mr9069825e9.2.1748416860757;
-        Wed, 28 May 2025 00:21:00 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4507253becasm8466095e9.2.2025.05.28.00.20.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 May 2025 00:20:59 -0700 (PDT)
-Date: Wed, 28 May 2025 03:20:57 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Laurent Vivier <lvivier@redhat.com>, netdev@vger.kernel.org,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] virtio: Fixes for TX ring sizing and resize error
- reporting
-Message-ID: <20250528031540-mutt-send-email-mst@kernel.org>
-References: <20250521092236.661410-1-lvivier@redhat.com>
- <7974cae6-d4d9-41cc-bc71-ffbc9ce6e593@redhat.com>
+        d=1e100.net; s=20230601; t=1748416915; x=1749021715;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WaGWCYscG2gJE/9BxI7p6wq8i7SRMLbgQxHuw11S4oM=;
+        b=fY8eIpjR+6W/JOC7uR5lz93c2+gWiA3JTd1+xocP3ryIl63hVqJ7a71izwij9+kBUh
+         srd5wYBxKMIJCZ+Yb0h86eVq3LuClVnW6Pg4tgjLDMK/NY6ZGD5AhwXClTVgmDzz07Ia
+         +XQVGzSGAblqRGCL0T6C+sw6Zx9qTWfosN03ptvDefFHpv59df2L+3rs2udeF07Zv5dc
+         iR6nxToDl8nUqjnfG7VFE3WxpXw3OT6fE/bpBxU125iKFpquUSlta2aV9zhX2ZLjgQ33
+         M1k1mfNu5MY2XpoSv5aJhhDkN9WWJxCArC8oq+vqT8MuUVfA/FHBPUORgumGZmUSlcKv
+         S/gA==
+X-Gm-Message-State: AOJu0Yz3PXVX71vDJJGjwhsvWP1Irj+90RZzMoqAU7k6DtpBL/iUkT6C
+	s0sr0aLGVmjHZhKPF7SaJyDZ56v6Nrg2OUdT4PcgiFr2enHtJnqyz4UsJL5b1lVNcjgyKQz+kao
+	Z0eETi7P4mDI3FmjWGbMwuWRveRvU36QM6pjJ9B/cZA4nO588D7ouaKZSAA==
+X-Gm-Gg: ASbGncugVMDeHcJxiarUjonSVAUkcZDTn4A9zTam/6aDqVsI+xQK0oLy5J/eFrolv7o
+	lKaFXojbjPaEntiX4hpwDRVCgsCzZbjJq1GuaDdpUoAE653njG8sV9L3i48P1Xjh3MQW2Q9ewpD
+	tZvdK0gcnAWx90srFL1SE34UliLvik8yKT9lF8G5M6AWypYwoI81t4gR9caa6oknEvpS6he95zb
+	JQ+zcqQT892A8KAnNfV3fpSlcJ8yeSa8W2LC0/QhBNOyog3ngaPXRwlR8YK485fipv5VHt7/l1I
+	vze/0oUxNomq0spkH5PNffaIELiUhuOUOkW7BW5kxl6MiJEzmdHPOJZC5WE=
+X-Received: by 2002:a05:600c:5011:b0:43d:fa58:8378 with SMTP id 5b1f17b1804b1-44c94c2afbbmr135543565e9.33.1748416915212;
+        Wed, 28 May 2025 00:21:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH9fCAeAfcUeAKLwTnP6W7JttQB6exfEvg0cHvk7Qq1JvXftAAhGkUc468XOpjRQE7kLJI4xQ==
+X-Received: by 2002:a05:600c:5011:b0:43d:fa58:8378 with SMTP id 5b1f17b1804b1-44c94c2afbbmr135543155e9.33.1748416914639;
+        Wed, 28 May 2025 00:21:54 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2728:e810:827d:a191:aa5f:ba2f? ([2a0d:3344:2728:e810:827d:a191:aa5f:ba2f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4507253b902sm8490115e9.1.2025.05.28.00.21.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 May 2025 00:21:54 -0700 (PDT)
+Message-ID: <0a23a584-0aac-4c6a-bca4-3e220607cae6@redhat.com>
+Date: Wed, 28 May 2025 09:21:52 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7974cae6-d4d9-41cc-bc71-ffbc9ce6e593@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 0/3] dpll: add all inputs phase offset monitor
+To: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ donald.hunter@gmail.com, kuba@kernel.org, davem@davemloft.net,
+ edumazet@google.com, horms@kernel.org, vadim.fedorenko@linux.dev,
+ jiri@resnulli.us, anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ andrew+netdev@lunn.ch, aleksandr.loktionov@intel.com,
+ milena.olech@intel.com, corbet@lwn.net
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, linux-doc@vger.kernel.org
+References: <20250523154224.1510987-1-arkadiusz.kubalewski@intel.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250523154224.1510987-1-arkadiusz.kubalewski@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 28, 2025 at 08:24:32AM +0200, Paolo Abeni wrote:
-> On 5/21/25 11:22 AM, Laurent Vivier wrote:
-> > This patch series contains two fixes and a cleanup for the virtio subsystem.
-> > 
-> > The first patch fixes an error reporting bug in virtio_ring's
-> > virtqueue_resize() function. Previously, errors from internal resize
-> > helpers could be masked if the subsequent re-enabling of the virtqueue
-> > succeeded. This patch restores the correct error propagation, ensuring that
-> > callers of virtqueue_resize() are properly informed of underlying resize
-> > failures.
-> > 
-> > The second patch does a cleanup of the use of '2+MAX_SKB_FRAGS'
-> > 
-> > The third patch addresses a reliability issue in virtio_net where the TX
-> > ring size could be configured too small, potentially leading to
-> > persistently stopped queues and degraded performance. It enforces a
-> > minimum TX ring size to ensure there's always enough space for at least one
-> > maximally-fragmented packet plus an additional slot.
+On 5/23/25 5:42 PM, Arkadiusz Kubalewski wrote:
+> Add dpll device level feature: phase offset monitor.
 > 
-> @Michael: it's not clear to me if you prefer take this series via your
-> tree or if it should go via net. Please LMK, thanks!
+> Phase offset measurement is typically performed against the current active
+> source. However, some DPLL (Digital Phase-Locked Loop) devices may offer
+> the capability to monitor phase offsets across all available inputs.
+> The attribute and current feature state shall be included in the response
+> message of the ``DPLL_CMD_DEVICE_GET`` command for supported DPLL devices.
+> In such cases, users can also control the feature using the
+> ``DPLL_CMD_DEVICE_SET`` command by setting the ``enum dpll_feature_state``
+> values for the attribute.
 > 
-> Paolo
+> Implement feature support in ice driver for dpll-enabled devices.
+> 
+> Verify capability:
+> $ ./tools/net/ynl/pyynl/cli.py \
+>  --spec Documentation/netlink/specs/dpll.yaml \
+>  --dump device-get
+> [{'clock-id': 4658613174691613800,
+>   'id': 0,
+>   'lock-status': 'locked-ho-acq',
+>   'mode': 'automatic',
+>   'mode-supported': ['automatic'],
+>   'module-name': 'ice',
+>   'type': 'eec'},
+>  {'clock-id': 4658613174691613800,
+>   'id': 1,
+>   'lock-status': 'locked-ho-acq',
+>   'mode': 'automatic',
+>   'mode-supported': ['automatic'],
+>   'module-name': 'ice',
+>   'phase-offset-monitor': 'disable',
+>   'type': 'pps'}]
+> 
+> Enable the feature:
+> $ ./tools/net/ynl/pyynl/cli.py \
+>  --spec Documentation/netlink/specs/dpll.yaml \
+>  --do device-set --json '{"id":1, "phase-offset-monitor":"enable"}'
+> 
+> Verify feature is enabled:
+> $ ./tools/net/ynl/pyynl/cli.py \
+>  --spec Documentation/netlink/specs/dpll.yaml \
+>  --dump device-get
+> [
+>  [...]
+>  {'capabilities': {'all-inputs-phase-offset-monitor'},
+>   'clock-id': 4658613174691613800,
+>   'id': 1,
+>  [...]
+>   'phase-offset-monitor': 'enable',
+>  [...]]
 
-Given 1/3 is in virtio I was going to take it. Just after rc1,
-though.
+I'm sorry, even if this has been posted (just) before the merge window,
+I think an uAPI extension this late is a bit too dangerous, please
+repost when net-next reopen after the merge window.
+
+Thanks,
+
+Paolo
 
