@@ -1,105 +1,155 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5972874E4
-	for <netdev@vger.kernel.org>; Wed, 28 May 2025 13:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E623D561;
+	Wed, 28 May 2025 13:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748439721; cv=none; b=PYkf2IennGRQzuEfawPjHp2Xcz/DJp2GBY5wwvWZACmNojyY/JXiLldL+AziEXtikEPADhTvhJZKJ/MEYXrf76CAyxeP3N5bMmcejXIqF48UoW0mRUo4UwpRzIQsLrmS0igQDhDqB/A9AR6Zbk/N8l/dF599tRzomqJmGwTXJQo=
+	t=1748439881; cv=none; b=WHgA/ER/+0jHzVbI8IeeCKnV3PmFqYdeTxmKZj2b7TuatlApPHR5S1052xS01ieqrcRLEJQuTfEQkTbnTSZ39K4tDCxC3DeIu0smtu1DxBPNRbiQPNCgrub3JZUS0Y5LL2iX5pLTi9kNE4fdjCo7mT0Z4HQOAOE8Qvne/Ow7uiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748439721; c=relaxed/simple;
-	bh=q6+NUbSkDfbULFIkQSRxG3LqAFTgY8fsGbQ0EjJoDmg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TkvRW26mpC1PB1FFQXFhhyDi/WUv2q+Z8itqAcpsRgG7Qfvab1apM5Sn4r6xr+q547gLQMr3akX086bu/W6Bs9SSS0a115msXFNrxZQ64j9yFaDjJVf0WKbuVU2QcjJzOIkK+/71ndQz8yE2YGMkOnIOHj+mX6nD2amaM3XuZf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dvDTI76j; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1748439881; c=relaxed/simple;
+	bh=E15IkgiQNik1xTR6jnoo1aTBBTDqNYSMkDv5a0E6euk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kwQFB83XEbvUEZPY4sRrjF99KrArG6PV0LNkAfO579VkxggBmytLag8GX17zL50as65LmNZ1JfHCJ1qrwsOyI1Oi5R6Q5niyXicmZrXmuO4jxJ5LU47nESU3VsAVMKsmOzmQ9RBUf70/7OEEdY9jubaAFj8ZqwO5AUe92RSIaeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=O8iQQ/V8; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dvDTI76j"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-476ac73c76fso57912811cf.0
-        for <netdev@vger.kernel.org>; Wed, 28 May 2025 06:41:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748439719; x=1749044519; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q6+NUbSkDfbULFIkQSRxG3LqAFTgY8fsGbQ0EjJoDmg=;
-        b=dvDTI76jZZGKZmTUy8Wff5m8yyne23JCwucBRkoFbQLgPKmcWzyLZ2j6RrrAgnWDlA
-         Db5GSXJPcEIp1gJIjJmCCAnswBjT7gBApuO25JjYe/9SkA5BSUfPS02mZUwesFAVHmL+
-         mrvM509kQpcIPbIWZPVIWspkkPPA3rxuHJKyloF4yoyc0wrHf8oA325hyPgtI6+n0Uo0
-         qUPjyuJAKbzSwr10pvyQU8OKlKxenOXH7rvszJf1DqxBrBU2ZdhzifhdezlkvRgijtFs
-         CLqEaXxVmkLzvJya9w2F3JcjClKiCSTiyXAgdCTx/qnSD394/bmpLZdVjJPwcdOpAOJK
-         EANw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748439719; x=1749044519;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q6+NUbSkDfbULFIkQSRxG3LqAFTgY8fsGbQ0EjJoDmg=;
-        b=tuf31bvn2uU4yD4rYVQMejYuMzVMwefhqa+xbnxtdgwjk3XyBSEF1xXvSHHgpbJZZV
-         ZnyzSxdVR/W4hFP2CA/gA2Yt3TRhGzPCyrUQR6WsQvYqNHRI89xqy7bB8oMQ3KLehi0F
-         t80ZwXBLDc3FxQPM2bODBzv+rcv4C7mYONFWv+D2OjNS8ySVpKZDicOHlzMDkhfp/dTI
-         +lGPSrYpLDfgcFAbaEZuewKIDvYUqTCO5/8KsZJVc0XEhOWMg8jnXf8LZGLH/ERo+Uyx
-         DZIJ5Ysum2WkpdPd9HhtruzQbKp3zYjejBjb59ZW2P99bhtEEImv4xrTDSAlvlhexwNJ
-         aEXw==
-X-Forwarded-Encrypted: i=1; AJvYcCWsEp92/LPpxtuN3mN2ablOAldclTIu7PCb8J9pItJJplhZguGJENIle3JW/cSXviI/+xNq/rI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZEbu6a2bc/GumtZYi8KswTMNreTqfSLqTR6wvFQZJPoMk3Fmk
-	Fu3vQMIGasEhcvU7zmUfTuQQiB+LPzY/VUB2mRPQYU3iKYKlvAS0mj6YQTdWFW5sBbmtT2gLRfi
-	Gw2BdF80JLV0saGeoGJ/UXf+oRlxfN8NpgpCYsKBb
-X-Gm-Gg: ASbGncsW1QQAYpOphbBXaQ/cRmAuyca6Ftu2QEmx52XLJPy5azrYI0EMGOE2Ppnsoy6
-	SKbFIu6k2DyUOBbCz/lzVvdb9YMNUYW6W9TCB6wU3Gv2Zbm3n4IykwJ3jhuJuZgdmMUxduK6lQM
-	wonLo+tKUvnJfWF2bSWnAiWUH49cdZj8+sniE3CM73IOOsyiffp8ttxg==
-X-Google-Smtp-Source: AGHT+IFXUSUWOaRqlGgnQsk3Ddxf9ikBISkt0/KlPz6xvIxI0l0YyOvrvNO9ok6mnWdgT9562252wxJ87xj+prWb40Q=
-X-Received: by 2002:a05:622a:5c15:b0:476:add4:d2a9 with SMTP id
- d75a77b69052e-49f46c33b2dmr291076841cf.30.1748439717984; Wed, 28 May 2025
- 06:41:57 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="O8iQQ/V8"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=MBbrn7eQDWJVCAKImqv3Knw41beS2cHZDNUxETDEwfM=; b=O8iQQ/V8bHl6lOCEVTlkgRjo44
+	gcgAFR2K9InA3NJSn5okPeS35of+VlF+V2w7viINNPtJbrMNDgEsU6GQ4isK4scegHzenw8YdCiSd
+	nVUaAEytpdXsvMKdXFQTmALESkOqOSgRjHyrC+sjcGoTmnR9KapDaflyr9RjgT+u0MrU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uKH55-00EBEE-SV; Wed, 28 May 2025 15:44:31 +0200
+Date: Wed, 28 May 2025 15:44:31 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: weishangjuan@eswincomputing.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+	vladimir.oltean@nxp.com, rmk+kernel@armlinux.org.uk,
+	yong.liang.choong@linux.intel.com,
+	prabhakar.mahadev-lad.rj@bp.renesas.com, inochiama@gmail.com,
+	jan.petrous@oss.nxp.com, jszhang@kernel.org, p.zabel@pengutronix.de,
+	0x1207@gmail.com, boon.khai.ng@altera.com,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, ningyu@eswincomputing.com,
+	linmin@eswincomputing.com, lizhi2@eswincomputing.com
+Subject: Re: [PATCH v2 2/2] =?iso-8859-1?Q?ethernet?=
+ =?iso-8859-1?B?OqBlc3dpbjqgQWRkoGVpYzc3MDCgZXRoZXJuZXSgZHJpdmVy?=
+Message-ID: <2c2dc4cb-57aa-476a-8668-c0b358f0ee0c@lunn.ch>
+References: <20250528041455.878-1-weishangjuan@eswincomputing.com>
+ <20250528041634.912-1-weishangjuan@eswincomputing.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAN2Y7hxscai7JuC0fPE8DZ3QOPzO_KsE_AMCuyeTYRQQW_mA2w@mail.gmail.com>
- <aDcLIh2lPkAWOVCI@strlen.de> <CAN2Y7hzKd+VxWy56q9ad8xwCcHPy5qoEaswZapnF87YkyYMcsA@mail.gmail.com>
-In-Reply-To: <CAN2Y7hzKd+VxWy56q9ad8xwCcHPy5qoEaswZapnF87YkyYMcsA@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 28 May 2025 06:41:45 -0700
-X-Gm-Features: AX0GCFtlj7sv-EQdf2aW5VpoDTLIYK53zi24E4KIItVmjWV2JQld-StOJ3wEEoo
-Message-ID: <CANn89iLG4mgzHteS7ARwafw-5KscNv7vBD3zM9J6yZwDq+RbcQ@mail.gmail.com>
-Subject: Re: [bug report, linux 6.15-rc4] A large number of connections in the
- SYN_SENT state caused the nf_conntrack table to be full.
-To: ying chen <yc1082463@gmail.com>
-Cc: Florian Westphal <fw@strlen.de>, pablo@netfilter.org, kadlec@netfilter.org, 
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250528041634.912-1-weishangjuan@eswincomputing.com>
 
-On Wed, May 28, 2025 at 6:26=E2=80=AFAM ying chen <yc1082463@gmail.com> wro=
-te:
->
-> On Wed, May 28, 2025 at 9:10=E2=80=AFPM Florian Westphal <fw@strlen.de> w=
-rote:
-> >
-> > ying chen <yc1082463@gmail.com> wrote:
-> > > Hello all,
-> > >
-> > > I encountered an "nf_conntrack: table full" warning on Linux 6.15-rc4=
-.
-> > > Running cat /proc/net/nf_conntrack showed a large number of
-> > > connections in the SYN_SENT state.
-> > > As is well known, if we attempt to connect to a non-existent port, th=
-e
-> > > system will respond with an RST and then delete the conntrack entry.
-> > > However, when we frequently connect to non-existent ports, the
-> > > conntrack entries are not deleted, eventually causing the nf_conntrac=
-k
-> > > table to fill up.
-> >
-> > Yes, what do you expect to happen?
-> I understand that the conntrack entry should be deleted immediately
-> after receiving the RST reply.
+> +/* PHY default addr in mdio*/
+> +#define PHY_ADDR				-1
 
-Then it probably hints that you do not receive RST for all your SYN packets=
-.
+PHY addresses are 0 to 31. How can -1 be a default?
+
+> +static struct clk *dwc_eth_find_clk(struct plat_stmmacenet_data *plat_dat,
+> +				    const char *name)
+> +{
+> +	for (int i = 0; i < plat_dat->num_clks; i++)
+> +		if (strcmp(plat_dat->clks[i].id, name) == 0)
+> +			return plat_dat->clks[i].clk;
+> +
+> +	return NULL;
+> +}
+
+Please look at the cleanup work Russell King has been doing the last
+couple of months. Is this still needed?
+
+> +static int dwc_eth_dwmac_config_dt(struct platform_device *pdev,
+> +				   struct plat_stmmacenet_data *plat_dat)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	u32 burst_map = 0;
+> +	u32 bit_index = 0;
+> +	u32 a_index = 0;
+> +
+> +	if (!plat_dat->axi) {
+> +		plat_dat->axi = devm_kzalloc(&pdev->dev, sizeof(struct stmmac_axi), GFP_KERNEL);
+> +
+> +		if (!plat_dat->axi)
+> +			return -ENOMEM;
+> +	}
+> +
+> +	plat_dat->axi->axi_lpi_en = device_property_read_bool(dev,
+> +							      "snps,en-lpi");
+> +	if (device_property_read_u32(dev, "snps,write-requests",
+> +				     &plat_dat->axi->axi_wr_osr_lmt)) {
+> +		/**
+> +		 * Since the register has a reset value of 1, if property
+> +		 * is missing, default to 1.
+> +		 */
+
+Is that described in the binding? Please fully describe all the DT
+properties, including what happens when they are not present.
+
+> +	ret = of_property_read_u32_index(pdev->dev.of_node, "eswin,phyaddr", 0,
+> +					 &dwc_priv->phyaddr);
+> +	if (ret)
+> +		dev_warn(&pdev->dev, "can't get phyaddr (%d)\n", ret);
+
+Are we talking about the Ethernet PHY here or a generic PHY? You
+should not need any vendor properties for an Ethernet phy, phy-handle
+points to the PHY on an MDIO bus.
+
+> +	ret = of_property_read_variable_u32_array(pdev->dev.of_node, "dly-param-1000m",
+> +						  &dwc_priv->dly_param_1000m[0], 3, 0);
+> +	if (ret != 3) {
+> +		dev_err(&pdev->dev, "can't get delay param for 1Gbps mode (%d)\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = of_property_read_variable_u32_array(pdev->dev.of_node, "dly-param-100m",
+> +						  &dwc_priv->dly_param_100m[0], 3, 0);
+> +	if (ret != 3) {
+> +		dev_err(&pdev->dev, "can't get delay param for 100Mbps mode (%d)\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = of_property_read_variable_u32_array(pdev->dev.of_node, "dly-param-10m",
+> +						  &dwc_priv->dly_param_10m[0], 3, 0);
+> +	if (ret != 3) {
+> +		dev_err(&pdev->dev, "can't get delay param for 10Mbps mode (%d)\n", ret);
+> +		return ret;
+> +	}
+
+        rx-internal-delay-ps:
+          description:
+            RGMII Receive Clock Delay defined in pico seconds. This is used for
+            controllers that have configurable RX internal delays. If this
+            property is present then the MAC applies the RX delay.
+        tx-internal-delay-ps:
+          description:
+            RGMII Transmit Clock Delay defined in pico seconds. This is used for
+            controllers that have configurable TX internal delays. If this
+            property is present then the MAC applies the TX delay.
+
+The RGMII standard only talks about 2ns delay. There is no delay per
+link speed. This is something specific to your hardware. Please figure
+out how you can map these standard properties to what you need for
+100Mbps and 10Mbps.
+
+    Andrew
+
+---
+pw-bot: cr
