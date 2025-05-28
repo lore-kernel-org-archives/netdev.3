@@ -1,79 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DBD13B5A9;
-	Wed, 28 May 2025 07:10:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560BE1367;
+	Wed, 28 May 2025 07:19:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748416204; cv=none; b=Bdj5g0lXzKbjN1hD065WiCjtNYzP+QAI5DI+CV11K+n98crnzUjmL+/Td793cteKQXoDZb2e5eKJimkO+pZlePzHXjESTqzRVOno6IRsWRZA2x8rV5YfV6OxJIuTtl99FhhXgXzfAVbD6KITffi0tYKvCAM3p5KG/CiEdjdMprs=
+	t=1748416794; cv=none; b=gbPEm0fP0Z/LL9MCDB21Pg7+FjMCi/Rj8HXS5KVd0c1/fT7x7Zzahzr8fQ+ZWzwTdtdHwiT3t8aZq8F7jzt2PAO5NOUy7ukphxBWez0E3Fk/2DKfyi+ROuCOp54n0xukIFKGgOLYEuUHY3Ev0rkkirlr1ZS7F65SVF1JQMn/Lgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748416204; c=relaxed/simple;
-	bh=b17czl604puTsFyxm927VcXZIwq3UoC5jpyPmjjyHG4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=h3u/o9sCMNB5KSPA2vbQSXOMZO6znO9n9KuQDyTQcU/HFg1LbzvEzmAdflRu0COZhIN2Sg4MAroN/u/APGLJMa4IRn2pCc7QdV2ok8aryjL32sFDA2E9TLAsM+a5tkl85YvOvwJdLtVfk/ThfIBRzxgDklONmxRAd84Y5B1PJFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BRwTugnT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748416794; c=relaxed/simple;
+	bh=ntMPcjZr9Pm033gu7Fx/HPiDio0i+/tdgt6pURKOm3g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c6AzwIi/EEPINIewO4UBGkPAD1gH8wY6jWwEoeRLlLMSWfdjFPb1CwnUVmyJlKUUnUOpSiaMKH9eflT3LcouWpREqmO6vpW23+uYNN9y2tGQ9s6LNdlR4WfS9cNlG6yqatKZXJ1wBEB96H76MSYhwuOfZaSmWADzlA3DK5+Z3xY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FB+mTpCf; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BRwTugnT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E86C4CEE7;
-	Wed, 28 May 2025 07:10:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748416203;
-	bh=b17czl604puTsFyxm927VcXZIwq3UoC5jpyPmjjyHG4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=BRwTugnTHsKaqnkXFcHY7ys00DX1qO7uA7QlPp4aSae0qiu7s0p1FaDKZH/Rx95nc
-	 K7MUoEHAJp9zUibOYGfZWYRW/9VD7JubB9GlpRkH+gRdL0Q6Vnx/J4i7hYtHDqVCtw
-	 9hkJE2XKOkyW56WtjR0d/fOWsFTo2gLcSlkzRPkiAJGFKJYOO1a9YARkfCPuits0Hd
-	 gVaxrD2+zM30xc/2fzmBYmHn5M1k47M/cA5sgczHekIDPc4s4RuZ+YyurXdsVtsmwh
-	 sfcy2W/bhhf2YO8hRCEjgYydH9MVgC5B8ozqRjfMhGLPmiiT2kURce5JtU3ec/N+16
-	 tz6qP45x2xSww==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB04B39F1DE4;
-	Wed, 28 May 2025 07:10:38 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FB+mTpCf"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ac3eb3fdd2eso756682966b.0;
+        Wed, 28 May 2025 00:19:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748416790; x=1749021590; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OUbnFWv1f37Ta+BVjxPt8pmoACrgGpNv4OYgueKntrw=;
+        b=FB+mTpCfdRvwEn1BlHrIVHbShcpMMUmFr6tI6TGzrSEJ59tlIB897ZiAH+fRNBYV4r
+         yZtcxXqa/vmE7KTEf55H5ZdS/G5fgUYYs1hlGaxPu83NR+eSSRHCAvBzv+HbRQYsR9xC
+         Gc7gd1fla9AcvALJhEgFLlKIibWodgprLTjOvTfyUXetovUej3Q1c0Ml9vH+rI/Ua/Ea
+         7YKbG8LL7R2OAc8wRvsIQv+hCRr/w1nur5Y8yd7DxRNGZaxT59dg7keKsCgssHgwmpaD
+         tNh8x72NGXp1P4iU6A3mFiDZxwM+lgAmbQVKKj7yyqGqJ10fagGG4YyymQm4pFNgxeW/
+         4OZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748416790; x=1749021590;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OUbnFWv1f37Ta+BVjxPt8pmoACrgGpNv4OYgueKntrw=;
+        b=IGFX9P/KDK01l754Dxig8VSc4rLfAIRZ5/LO1ImlESVtdqdonANfZJO0PbUdLMwAE8
+         iziT7p3FvZ/30OMe08sHWdm8te7A5xPpcs06XBDImztHvDP0cZf0/VYuyMD6zgaUCaXb
+         +YzdfRYVMAa8tZWPnwoEIGwwMV+WbBITCP78vfzC09a1+DrrkvdKvLQ2wMWtKC8WT81I
+         SQKoIz7RhyplmGSYRI0ZMTnVvVCpMBFKN1VhOe9/9IPdIJ14Zzd12v3rA3BZV+vZAHcT
+         D9NYhzhkgsfXo6A5BCuRYxaKrZXReBpM5mujuK1GogrMJjjS5lldzf6uxlI+l2/wjE1B
+         Ll1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVYVwMYO4KVbW3+957pXKxizbiePZN4RiOkUruL9c4YZEtDpd80vYvsjmPh6kZBeQ7y3f8=@vger.kernel.org, AJvYcCVzvc54lxEiA5dYECfEGbxAMUkzj6vvtoclAtW9Hlmd4NHQ1DIjgdjynv1/E/i6RhGKHynIvzAl@vger.kernel.org, AJvYcCXKZZ1WGMtpdQD+uSQzg9//Ho/mdZ5e3ZSNjildIogi2OBMU2Ms6HZP9PZg9ss8Y5C3ZV5IgzB4NAKF09DG@vger.kernel.org, AJvYcCXU6x0mBro9pOZjX3U7TXOQ4Sk2X+NKgQnb3wSWVA6ncqxbLktPkCKPlgmukSyD3m1D/HmsweiozODNRw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgU1QrPRCTt64/HuuGXR/Ujwr2Dkk812nc537mDTdgQ0ti2j0+
+	9QL0ie8/ygoWP2Whg6InVgNWD381Q+eZiMcSuRsRXqNLxCQxXXD/cOM+
+X-Gm-Gg: ASbGncv+cNgeQY/BocoIccFuN1oNmcPzXiouER6WZc9ABVqUeKQtqE5asw3dvXDaqgP
+	AcnVjBBsYNd7kPtPN3s27MehzFziCxGTeytznvUzw849F7MC8jy8whLlul5Ogc6XcuKoBkNesxi
+	BRaRMKJ3eUqNLg1NZ3LfoR+wIfZFbYJINtMx4DAMiPPWhqmGgcIwXAmgD4WrUpW/+8a/zAPU4d3
+	IFxe2ISSMD2vMNNLJnhF4TtguWBaYf3hs7aBwUkgvLcHnkg1Zmcvp2LfjxM37V0RmPH8TvwHubh
+	hGRdxSZPhq9osKyywfavmIpTS6MYbqEpiJ2wXrmMfRyepUWGiq4Wm4uFt64eEP0=
+X-Google-Smtp-Source: AGHT+IF8u/oWlE6nDqmRdBTJqi0N5ZpxlTVC/BaksAktgdabSWc2dFiSy583FQXlAFD49z4UcobfKw==
+X-Received: by 2002:a17:907:3fa3:b0:ad1:e4e9:6b4f with SMTP id a640c23a62f3a-ad8a1f31b03mr95247266b.36.1748416790119;
+        Wed, 28 May 2025 00:19:50 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::6f? ([2620:10d:c092:600::1:c447])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad8a1a1322fsm58712266b.80.2025.05.28.00.19.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 May 2025 00:19:49 -0700 (PDT)
+Message-ID: <187e12ce-7e25-4fe0-871d-170f22125f8e@gmail.com>
+Date: Wed, 28 May 2025 08:21:00 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v1 net] calipso: Don't call calipso functions for AF_INET sk.
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174841623776.1935682.16829373096139455739.git-patchwork-notify@kernel.org>
-Date: Wed, 28 May 2025 07:10:37 +0000
-References: <20250522221858.91240-1-kuniyu@amazon.com>
-In-Reply-To: <20250522221858.91240-1-kuniyu@amazon.com>
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: paul@paul-moore.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, huw@codeweavers.com,
- kuni1840@gmail.com, netdev@vger.kernel.org,
- linux-security-module@vger.kernel.org, syzkaller@googlegroups.com,
- john.cs.hey@gmail.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 18/18] mm, netmem: remove the page pool members in struct
+ page
+To: Mina Almasry <almasrymina@google.com>
+Cc: Byungchul Park <byungchul@sk.com>, willy@infradead.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ kernel_team@skhynix.com, kuba@kernel.org, ilias.apalodimas@linaro.org,
+ harry.yoo@oracle.com, hawk@kernel.org, akpm@linux-foundation.org,
+ davem@davemloft.net, john.fastabend@gmail.com, andrew+netdev@lunn.ch,
+ toke@redhat.com, tariqt@nvidia.com, edumazet@google.com, pabeni@redhat.com,
+ saeedm@nvidia.com, leon@kernel.org, ast@kernel.org, daniel@iogearbox.net,
+ david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ horms@kernel.org, linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+ vishal.moola@gmail.com
+References: <20250523032609.16334-1-byungchul@sk.com>
+ <20250523032609.16334-19-byungchul@sk.com>
+ <CAHS8izM-ee5C8W2D2x9ChQz667PQEaYFOtgKZcFCMT4HRHL0fQ@mail.gmail.com>
+ <20250526013744.GD74632@system.software.com>
+ <cae26eaa-66cf-4d1f-ae13-047fb421824a@gmail.com>
+ <20250527010226.GA19906@system.software.com>
+ <651351db-e3ec-4944-8db5-e63290a578e8@gmail.com>
+ <CAHS8izNYmWTgb+QDA72RYAQaFC15Tfc59tK3Q2d670gHyyKJNQ@mail.gmail.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <CAHS8izNYmWTgb+QDA72RYAQaFC15Tfc59tK3Q2d670gHyyKJNQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Thu, 22 May 2025 15:18:56 -0700 you wrote:
-> syzkaller reported a null-ptr-deref in txopt_get(). [0]
+On 5/27/25 18:38, Mina Almasry wrote:
+...>>>> struct netmem_desc *page_to_netmem_desc(struct page *page)
+>>>> {
+>>>>       return &page->netmem_desc;
+>>>
+>>> page will not have any netmem things in it after this, that matters.
+>>
+>> Ok, the question is where are you going to stash the fields?
+>> We still need space to store them. Are you going to do the
+>> indirection mm folks want?
+>>
 > 
-> The offset 0x70 was of struct ipv6_txoptions in struct ipv6_pinfo,
-> so struct ipv6_pinfo was NULL there.
-> 
-> However, this never happens for IPv6 sockets as inet_sk(sk)->pinet6
-> is always set in inet6_create(), meaning the socket was not IPv6 one.
-> 
-> [...]
+> I think I see some confusion here. I'm not sure indirection is what mm
+> folks want. The memdesc effort has already been implemented for zpdesc
 
-Here is the summary with links:
-  - [v1,net] calipso: Don't call calipso functions for AF_INET sk.
-    https://git.kernel.org/netdev/net/c/6e9f2df1c550
+To the best of my knowledge, it is. What you're looking at should be
+a temporary state before all other users are converted, after which
+mm will shrink the page in a single patch / small series.
 
-You are awesome, thank you!
+> and ptdesc[1], and the approach they did is very different from this
+> series. zpdesc and ptdesc have created a struct that mirrors the
+> entirety of struct page, not a subfield of struct page with
+> indirection:
+> 
+> https://elixir.bootlin.com/linux/v6.14.3/source/mm/zpdesc.h#L29
+> 
+> I'm now a bit confused, because the code changes in this series do not
+> match the general approach that zpdesc and ptdesc have done.
+
+In my estimation, the only bits that mm needs for a clean final
+patch is a new struct with use case specific fields (i.e. netmem_desc),
+a helper converting a page to it, and that everyone uses the helper
+to access the fields. I'd argue a temporary placeholder in struct
+page is an easier approach than separate overlays, but either is
+fine to me.
+
+> Byungchul, is the deviation in approach from zpdesc and ptdecs
+> intentional? And if so why? Should we follow the zpdesc and ptdesc
+> lead and implement a new struct that mirrors the entirety of struct
+> page?
+> 
+> [1] https://kernelnewbies.org/MatthewWilcox/Memdescs/Path
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Pavel Begunkov
 
