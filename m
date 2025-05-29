@@ -1,115 +1,134 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178BF26C39F;
-	Thu, 29 May 2025 09:40:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7B82580F9
+	for <netdev@vger.kernel.org>; Thu, 29 May 2025 09:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748511656; cv=none; b=sNIqlg45/sox8xhGjhn8mg3bMhB4/FFe2VxEbx4BrRdUo8gKGzM1i1Qh9BVz+sr6dW9jiiE2pj2yauomZ6CHZPlVjA0769ezZWKjTLwx8F7wl3iD9WJrGZDsPh/KGu/w4QBoCFNjL6dULuvDMI328a7+isEOU9oo+uxfyEuNA8s=
+	t=1748511896; cv=none; b=bAzBtSf9sA71+u3YjYKQTexFG4oF48WgEowMPtFUXT5Vg/fDtN4126DinvG3oiXBMwhpUa03PUOlOoKcSXzrqzY+jrGUnHBaWHoPZS3Q+b6YKdC3RVVw45V1tc/5UcfUxYv/SIfZy2TEl51+u01cfxz8W/iyzOoTsFjT6V94O7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748511656; c=relaxed/simple;
-	bh=/kjav/+bPaoZVE53qCcjzniWgN+ZFHEb8BrZDJLHJL8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=msrayiRAprxENLdDtLPXyLq2NpW3ftzn3NIqXVyVXJp3QCOR8tR8R4H0n0QakGBYqXkcVAtPdOqLKROf5r3OGhwnPWGAdXXVLeK9rBxl1osZLxoNoqk3aj7lu0RY9c2uLOZmh1diuyvtEcL7TA2P09N3d4spCmhwLGecciiXByk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=QZQy4S+j; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1748511896; c=relaxed/simple;
+	bh=IIgLbmZb5VVLfEnTx1JFBOSoTlJnxmMCQ3WCKjBFomY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eoYd8tvfeZ5FvmOfnlRTGU1VSNDVhOf8H9iCocvoh0PzNPjDWcRzQVEjOuhsOTLxsAI6t1/i/zavZRXNfmAZI8ME5ymZw8hhDhzGBuPlEkA/bkE3qnnrGq8bfHwC6nEMJgIu5sXX/A0Y4vyEemqq7YJwaIq3VXMDu+hSBDpV/fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WOKDzWPB; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="QZQy4S+j"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=62BhX69mt+FQ1/nAowHZZeanKaiAAITWTNXpapK76TM=; b=QZQy4S+jSFdT1G4qH1jtTKXTOD
-	lR8nYl95sgn39OWK5pGfqFmkCqc0xzJGoFWVa+uZj8edkdflc4whX+K0QDMWeFrGV21x04XlvgDCF
-	1xSWYA4vSVInQg+J74NM6QmErNMDvNNXEKSiSQ55chLmIUdU2CVDumOowl4P5wgclk1VUxwpXUpjL
-	M60fXXjEKMJRA29pIlWk9DNtfaPnS9eRyYACu4vnogjU3m4a93hH678R1x24PDc5L8o9FJYO602eZ
-	fy61JMEkdHF17UHHWvLxebiLQtpGAvVMiBw13AiluwLevN3/NzFFY7XbbiRM3eGRPNCZQPi76NU6p
-	HCMxvAHA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41504)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1uKZkc-0001CY-2z;
-	Thu, 29 May 2025 10:40:39 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1uKZkY-0003Ln-2W;
-	Thu, 29 May 2025 10:40:34 +0100
-Date: Thu, 29 May 2025 10:40:34 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Jijie Shao <shaojijie@huawei.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, davem@davemloft.net,
-	Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
-	linux-arm-kernel@lists.infradead.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Simon Horman <horms@kernel.org>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	"shenjian15@huawei.com" <shenjian15@huawei.com>
-Subject: Re: [PATCH net-next v5 07/13] net: phy: phy_caps: Allow looking-up
- link caps based on speed and duplex
-Message-ID: <aDgrkog2BcLjF1VV@shell.armlinux.org.uk>
-References: <20250307173611.129125-1-maxime.chevallier@bootlin.com>
- <20250307173611.129125-8-maxime.chevallier@bootlin.com>
- <5bbf1201-e803-40ea-a081-c25919f5e89d@huawei.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WOKDzWPB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748511892;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GdW8Hr543lzTEv8j6D3eacs45YkEVK/xJsw4xCFBYMo=;
+	b=WOKDzWPBUCmTWTYxR8Hny26aLk7IztIZp18xDYiS9Ycp+nng+Gf/5iEqDuUsNXBFb9G3Wm
+	TXgqitVmoZSmo8QVKXStqF1jf5p7RuaHOPNzNwLRyC8EJPr85rFeQSnaVUTa85802SSki3
+	XALrQ+aBrk76YZRVY1D82G3iTbkKkKM=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-451-QZslNDg4MBmZk09uGyLgGg-1; Thu, 29 May 2025 05:44:50 -0400
+X-MC-Unique: QZslNDg4MBmZk09uGyLgGg-1
+X-Mimecast-MFC-AGG-ID: QZslNDg4MBmZk09uGyLgGg_1748511890
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3a4eb9c80deso440672f8f.0
+        for <netdev@vger.kernel.org>; Thu, 29 May 2025 02:44:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748511889; x=1749116689;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GdW8Hr543lzTEv8j6D3eacs45YkEVK/xJsw4xCFBYMo=;
+        b=ofnP/hH9PluUSl8laQbiEME6TSp9vY0jeh1F3fFVaZwIJbbRX5Z9hXxTp0kZWKKcmq
+         ufjDMyGRjuKcjuBx0tsKb3695ol0fFdoLSC38VyWbvW20DLUE0cwbT7AlO22CMTGjwJp
+         +JEshfyDR3koOUXldbcFWh23GCR4DPxTqcJUqoBfdjtOjlPxu3pD+Ueqti0vN8CV64cn
+         AHZd4PzR6u8zN3z7BSnrir8En0gSenfSpMLqkSrrHDQ2wev4I7/PZ6YsRm4II16o3blD
+         4phBAfJAdPjiuk2S9eMsDkbnfT1/DOxZxOIWHNO3p9p1NdU20sZ95adZLzhwaZNNXn/U
+         guvA==
+X-Forwarded-Encrypted: i=1; AJvYcCWQuMPi6wVWVrXYfurMo/uLJvm74fMLBJh16QtxJpe734gPDORlaPqT80CHlw0lez3pvQZlRBw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFM8X6KgBTNlMIC4MzfQDDKUxn1ZI4KofRsQGe0cNhyTK4MXTo
+	jYL00h0wkjYnX7gr1y6w2t6NfyasWgnoOoogh3sIZstDxEv6D1FMXlhKezqNNojUEPkE8Jsh7uq
+	zs+uTiFfe5mIo5QFbrI0WbXUxl+B+0FcYV0PtreRiiIAeYaNMaBwcVGTGtA==
+X-Gm-Gg: ASbGncvA2/RPUk+g8NmcZpq2geVEBGa8YB9Xns3b5JauVchuMP0+8QTBlj/N6Z0Us1w
+	K1yUKUsdgLgm4MWneFTFvwzFXsBNKGab4qNb0w23unbgsGWjJ6UBE7fr17ZMdM4NJ50RmvBUDDI
+	ANTnoHNxcjQCxA5QIDM7PGEfLD5aYpTcQYFIuIP1z+DqtXJvPbiFabuZxKopnsvXQs6VzUSoC+S
+	lYFVQpzGRlaWXmucYC5thKEpcHPRiOLnj5PhCfz7EL6loRMpyvpzUslVthqZA7nNUMbfzYqyVAw
+	mBgqHpRnYJVcrk+Q4Dxw48SBk72k613bjoR32soHJ1J0oFX9XGgDqM628kc=
+X-Received: by 2002:a5d:5688:0:b0:3a4:eb80:762d with SMTP id ffacd0b85a97d-3a4eb8076b5mr3331026f8f.56.1748511889470;
+        Thu, 29 May 2025 02:44:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEPCJAiqtOwGMOdb/QuYa2R+wbdnhxl9fhQFE1ar6wenG3+AoYtKI/LPenSzV0wJ7MA0ZmydQ==
+X-Received: by 2002:a5d:5688:0:b0:3a4:eb80:762d with SMTP id ffacd0b85a97d-3a4eb8076b5mr3331012f8f.56.1748511889097;
+        Thu, 29 May 2025 02:44:49 -0700 (PDT)
+Received: from ?IPV6:2a0d:3341:cce5:2e10:5e9b:1ef6:e9f3:6bc4? ([2a0d:3341:cce5:2e10:5e9b:1ef6:e9f3:6bc4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4f00a1678sm1462714f8f.99.2025.05.29.02.44.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 May 2025 02:44:48 -0700 (PDT)
+Message-ID: <d9cbe73c-1895-42d7-8c21-70487773c94f@redhat.com>
+Date: Thu, 29 May 2025 11:44:46 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5bbf1201-e803-40ea-a081-c25919f5e89d@huawei.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 2/4] ovpn: ensure sk is still valid during
+ cleanup
+To: Antonio Quartulli <antonio@openvpn.net>, netdev@vger.kernel.org
+Cc: Sabrina Dubroca <sd@queasysnail.net>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Oleksandr Natalenko <oleksandr@natalenko.name>,
+ Qingfang Deng <dqfext@gmail.com>, Gert Doering <gert@greenie.muc.de>
+References: <20250527134625.15216-1-antonio@openvpn.net>
+ <20250527134625.15216-3-antonio@openvpn.net>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250527134625.15216-3-antonio@openvpn.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, May 29, 2025 at 05:36:11PM +0800, Jijie Shao wrote:
-> Hi Maxime,  fc81e257d19f ("net: phy: phy_caps: Allow looking-up link caps based on speed and duplex") might have different behavior than the modification.
-> My case is set 10M Half with disable autoneg both sides and I expect it is
-> link in 10M Half. But now, it is link in 10M Full，which is not what I
-> expect.
-> 
-> I used followed command and trace how phy worked.
-> 	ethtool -s eth1 autoneg off speed 10 duplex half
-> The log is showed as followed:
-> ethtool-13127	[067]	6164.771853: phy_ethtool_ksettings set: (phy_ethtool ksettings set+0x0/0x200) duplex=0 speed=10
-> kworker/u322:2-11096	[070]	6164.771853:	_phy_start_aneq: ( _phy_start_aneg+0x0/0xb8) duplex=0 speed=10
-> kworker/u322:2-11096	[070]	6164.771854:	phy_caps_lookup: (phy_caps_lookup+0x0/0xf0) duplex=0 speed=10
-> kworker/u322:2-11096	[070]	6164.771855:	phy_config_aneg: (phy_config_aneg+0x0/0x70) duplex=1 speed=10
-> kworker/u322:2-11096	[070]	6164.771856:	genphy_config_aneg:	(__genphy_config_aneg+0X0/0X270) duplex=1 speed=10
-> 
-> I also try to fixed it and it works. Do you have any idea about it.
-> 
-> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-> index 0e762fc3a529..2986c41c42a8 100644
-> --- a/drivers/net/phy/phy.c
-> +++ b/drivers/net/phy/phy.c
-> @@ -258,7 +258,7 @@ static void phy_sanitize_settings(struct phy_device *phydev)
->         const struct link_capabilities *c;
-> 
->         c = phy_caps_lookup(phydev->speed, phydev->duplex, phydev->supported,
-> -                           false);
-> +                           true);
+On 5/27/25 3:46 PM, Antonio Quartulli wrote:
+> diff --git a/drivers/net/ovpn/netlink.c b/drivers/net/ovpn/netlink.c
+> index bea03913bfb1..1dd7e763c168 100644
+> --- a/drivers/net/ovpn/netlink.c
+> +++ b/drivers/net/ovpn/netlink.c
+> @@ -423,9 +423,14 @@ int ovpn_nl_peer_new_doit(struct sk_buff *skb, struct genl_info *info)
+>  	ovpn_sock = ovpn_socket_new(sock, peer);
+>  	/* at this point we unconditionally drop the reference to the socket:
+>  	 * - in case of error, the socket has to be dropped
+> -	 * - if case of success, the socket is configured and let
+> +	 * - if case of success, the socket is configured and we let
+>  	 *   userspace own the reference, so that the latter can
+> -	 *   trigger the final close()
+> +	 *   trigger the final close().
+> +	 *
+> +	 * NOTE: at this point ovpn_socket_new() has acquired a reference
+> +	 * to sock->sk. That's needed especially to avoid race conditions
+> +	 * during cleanup, where sock may still be alive, but sock->sk may be
+> +	 * getting released concurrently.
 
-This isn't the correct fix, as:
+This comment duplicate some wording from commit message contents and
+don't add much value IMHO. It could be dropped.
 
-+ * When @exact is not set, we return either an exact match, or matching capabilities
-+ * at lower speed, or the lowest matching speed, or NULL.
+> @@ -192,19 +189,30 @@ struct ovpn_socket *ovpn_socket_new(struct socket *sock, struct ovpn_peer *peer)
+>  		rcu_read_unlock();
+>  	}
+>  
+> +	/* increase sk refcounter as we'll store a reference in
+> +	 * ovpn_socket.
+> +	 * ovpn_socket_release() will decrement the refcounter.
+> +	 */
+> +	if (!refcount_inc_not_zero(&sk->sk_refcnt)) {
 
-So it isn't returning the exact match but apparently ignoring the
-duplex.
+How could sk_refcnt be zero here? likely just sock_hold() is sufficient.
+Also I think the reference could be acquired a little later, avoiding at
+least the following chunk.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Also IMHO the comment is not very clear. I think it should state
+explicitly which entity is retaining the reference (AFAICS the peer hash
+table).
+
+/P
+
