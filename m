@@ -1,31 +1,67 @@
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4457DA55;
-	Thu, 29 May 2025 09:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B7120299B
+	for <netdev@vger.kernel.org>; Thu, 29 May 2025 09:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748511385; cv=none; b=uhBPRr/oq4eY4ZF8mEtXQ7IE6kEHN9NLYf9XhZVjjQCSAz9um1n5D/e0zXyw1fTu3om8+JTMoYgmWt7DVRBEPsqlKRR4xZAstV7CMNFLHPFz3N5v9SyYtMSoasmvKKFJBGAoUfo76m0L2HeRk2rF9agNW+QSuvf5ys9Me4keHhI=
+	t=1748511643; cv=none; b=IRNPjLpV1MBgetA6mWFTYXSxRelHd4k+EnISOHDqcU1qd/HhKF7VsH3nRGggVaOkcvDMtW3g5tkeZdYnB0SutlCrXE0uBQyHKjjF3aQto5z6bAk8+MP9OVaS/Sg03OVZjW9/nqAeoT9ppUW8CclchxC8kjxqJop1ms3h8U+OCEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748511385; c=relaxed/simple;
-	bh=gaF5Ga/SDYyLA/gy712Lj1wQY110WLuZQSj7+ZURG5w=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=U+6e9CffRwYkbSAhROEcD6L0RMRr7m4faBLdr1BHQ+5G+wBDk2Yqj015G6jSzDdkSvggvs1eeZFgZojbDQ7SJM6TdSXUrumI87lryUQreeH1IjFR0YfSBjp+KxRYG8ETJPlovaTQ5VS4yxFURvXnQL86eI8A20bYO+PGTdPeRZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4b7Lqg0hnZz27hd7;
-	Thu, 29 May 2025 17:37:03 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id E769E1401F0;
-	Thu, 29 May 2025 17:36:12 +0800 (CST)
-Received: from [10.67.120.192] (10.67.120.192) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 29 May 2025 17:36:11 +0800
-Message-ID: <5bbf1201-e803-40ea-a081-c25919f5e89d@huawei.com>
-Date: Thu, 29 May 2025 17:36:11 +0800
+	s=arc-20240116; t=1748511643; c=relaxed/simple;
+	bh=kV/S7ogVST8lfEuUskyByPTSZ1RF1jyO7K0DC6MTjxQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cF10/DDaObX2B5pDftyntE3lMCWvUvYztnLgYJ8jCwhFG4okKyru2MZF60zto+EKaIXrTY29h+ddqXq+dEYopmeHgrUkQuH3k0URcX4+JXUM7zQSISlzyirSVw4XrWLgT6Xa01s1njQSoRuypC/6aUuDRPfDkgcyHtZxMlm5RlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=BMSH4lYt; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="BMSH4lYt"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-450cf0025c0so4868745e9.3
+        for <netdev@vger.kernel.org>; Thu, 29 May 2025 02:40:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1748511638; x=1749116438; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=4pu+YlgghIMm8S+0mWO0i4z2bcpkyplpy4qdWBmyXkw=;
+        b=BMSH4lYtUxNz+6w29fbAEApc/DY2gFXmsWtggjLmkP1gjy4oWxSHbHs/e3919of4Kx
+         TNsO584QrXrKm54JZPDaX9/O2j3/qI/j0sGDPv4EZV71C87W2SVb/uNist361d0bxeDB
+         m0r2yannStjYc0bYYFb3wROC24Ds04kHYiAJDvS2P1Vil9xiRab004V18rsrTqIMJtUh
+         eZ2YqNbfWcJShMje0bphKxcfHqD3VfWoL5FaMqOvrX32XkZCuT+SF+VrbFw5qq9Yzk7n
+         Bjz6Afa+ZyngZeh7cHbsQf5c2baC+HkHSK3Oh+iiGHvxgpxVqG+D1cvY3+y01wcgS0nq
+         CJzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748511638; x=1749116438;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4pu+YlgghIMm8S+0mWO0i4z2bcpkyplpy4qdWBmyXkw=;
+        b=r8hDePgSmaqVpjFG1bg6QrT/Se57vBjnEGe2uhyjLsGZ0Zd/umS96yfLDWD35eSxvi
+         gwNmUTcNcyHLH0xs4VymjzQyBChmShAw/1Wn667z+eon/FyyzvAVlf2cSQcd4m4Fmkri
+         +n66sEuEhDANZNr+IyhpymnRfGNl9/FPr0sPGVlFfGFj0zMv3XzsuCm9317CTONMJ+dr
+         Tx56ND8QDj0/aQGfWuWDhrrXntXKjjeMXHX9xBa8jL60oQvciCp8WT3rS01NN/QAAK3L
+         KIzr2UKtmyYAyuUJZfNlURIkCtaTr52IMrnAcMN9Ijs8qYhxTqSunRMk+sW0TzDEWioH
+         M1WQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWt6unR/4vjIsfPxlZZdm3tGbUC2Fm1p3Kc7m8M9tndvzd2C0oP++hTdMmt8b12ay4uL6Qz2CU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyt9etpRH0SNnnikUZpqfJ+ZVgpxfTrl3OnVr4l/bvFg5rxCK3L
+	SEmnKmQsMXdO7bLWLL5H/Tc6EoYG1kpn5vN0H9SiCVIhgjGMPHM+Ke3URZz8Fm9NG//QJZnq3AB
+	RGGfaleYYft1WRQWrn9nUrHPaG6eyo3Uo0kULAQTjT02qLdFDRpg=
+X-Gm-Gg: ASbGnctGI0D+29HQ8Tl4xNdlhmT/uPK3ilZt0UNl72vqKTKTwNJEB8dvUL7d3JbX6iX
+	sd3VFLO59TaQzpGTAV6VbM/rXq02bYFRPkwLfhRZysRGwdvc5afSsm2d2A0h/NztayntKYXqKDs
+	cNGjZiA2FbARxKW/2ptvH8UJvoc5TU7FhtKW0wqWnL6CmKgYGu1cEPIItVm0jRHWxib0LnMx1UC
+	LOxPKt/faax/1LKVMCu2yAAp1JmeAfph7Yr+X4hGsH4ReeUeWotAtrDv4VWDpbfGRM0oQImixV1
+	1dZDzlhJpz1lKLJ8da9DBQ5jq8ZcG0JtYOUUsZn72lXyXOE0EnEKlxotv/aOyZCaewoIuEpLrev
+	QGevNGHxMeqsouw==
+X-Google-Smtp-Source: AGHT+IEoEga8alCdX88X31NkHMXuOKZB4oKBp3b4LfgA/tL38S4rtfDeWWlbrOhlmwhO8jzb8fRw3Q==
+X-Received: by 2002:a05:6000:2382:b0:3a4:f038:af87 with SMTP id ffacd0b85a97d-3a4f038b054mr1400301f8f.47.1748511638142;
+        Thu, 29 May 2025 02:40:38 -0700 (PDT)
+Received: from ?IPV6:2001:67c:2fbc:1:d079:e260:1678:9b60? ([2001:67c:2fbc:1:d079:e260:1678:9b60])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4efe6c8b4sm1478830f8f.36.2025.05.29.02.40.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 May 2025 02:40:37 -0700 (PDT)
+Message-ID: <40126ac9-f911-4216-ba69-5e5ef051dd63@openvpn.net>
+Date: Thu, 29 May 2025 11:40:35 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -33,267 +69,146 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <thomas.petazzoni@bootlin.com>,
-	<linux-arm-kernel@lists.infradead.org>, Christophe Leroy
-	<christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
-	Florian Fainelli <f.fainelli@gmail.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, =?UTF-8?Q?K=C3=B6ry_Maincent?=
-	<kory.maincent@bootlin.com>, Oleksij Rempel <o.rempel@pengutronix.de>, Simon
- Horman <horms@kernel.org>, Romain Gantois <romain.gantois@bootlin.com>,
-	"shenjian15@huawei.com" <shenjian15@huawei.com>
-Subject: Re: [PATCH net-next v5 07/13] net: phy: phy_caps: Allow looking-up
- link caps based on speed and duplex
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, <davem@davemloft.net>,
-	Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, Eric Dumazet
-	<edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell King
-	<linux@armlinux.org.uk>, Heiner Kallweit <hkallweit1@gmail.com>
-References: <20250307173611.129125-1-maxime.chevallier@bootlin.com>
- <20250307173611.129125-8-maxime.chevallier@bootlin.com>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <20250307173611.129125-8-maxime.chevallier@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+Subject: Re: [PATCH net-next 1/4] ovpn: properly deconfigure UDP-tunnel
+To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+Cc: Sabrina Dubroca <sd@queasysnail.net>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+ Oleksandr Natalenko <oleksandr@natalenko.name>
+References: <20250527134625.15216-1-antonio@openvpn.net>
+ <20250527134625.15216-2-antonio@openvpn.net>
+ <39ca5468-733b-49c4-a00d-27c2ab85b795@redhat.com>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <39ca5468-733b-49c4-a00d-27c2ab85b795@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Hi Paolo,
+
+On 29/05/2025 11:25, Paolo Abeni wrote:
+> On 5/27/25 3:46 PM, Antonio Quartulli wrote:
+>> diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+>> index dde52b8050b8..9ffc4e0b1644 100644
+>> --- a/net/ipv4/udp.c
+>> +++ b/net/ipv4/udp.c
+>> @@ -2900,7 +2900,7 @@ void udp_destroy_sock(struct sock *sk)
+>>   			if (encap_destroy)
+>>   				encap_destroy(sk);
+>>   		}
+>> -		if (udp_test_bit(ENCAP_ENABLED, sk)) {
+>> +		if (udp_test_and_clear_bit(ENCAP_ENABLED, sk)) {
+> 
+> Nothing should use 'sk' after udp_destroy_sock(), no need to clear the
+> bit (same in ipv6 code)
+
+Ok, then I guess that in ovpn I need to check if SOCK_DEAD is set and, 
+if so, just bail out.
+
+> 
+>>   			static_branch_dec(&udp_encap_needed_key);
+>>   			udp_tunnel_cleanup_gro(sk);
+>>   		}
+>> diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
+>> index 2326548997d3..624b6afcf812 100644
+>> --- a/net/ipv4/udp_tunnel_core.c
+>> +++ b/net/ipv4/udp_tunnel_core.c
+>> @@ -98,6 +98,28 @@ void setup_udp_tunnel_sock(struct net *net, struct socket *sock,
+>>   }
+>>   EXPORT_SYMBOL_GPL(setup_udp_tunnel_sock);
+>>   
+>> +void cleanup_udp_tunnel_sock(struct sock *sk)
+>> +{
+>> +	/* Re-enable multicast loopback */
+>> +	inet_set_bit(MC_LOOP, sk);
+>> +
+>> +	/* Disable CHECKSUM_UNNECESSARY to CHECKSUM_COMPLETE conversion */
+>> +	inet_dec_convert_csum(sk);
+>> +
+>> +	udp_sk(sk)->encap_type = 0;
+>> +	udp_sk(sk)->encap_rcv = NULL;
+>> +	udp_sk(sk)->encap_err_rcv = NULL;
+>> +	udp_sk(sk)->encap_err_lookup = NULL;
+>> +	udp_sk(sk)->encap_destroy = NULL;
+>> +	udp_sk(sk)->gro_receive = NULL;
+>> +	udp_sk(sk)->gro_complete = NULL;
+>> +
+>> +	rcu_assign_sk_user_data(sk, NULL);
+>> +	udp_tunnel_encap_disable(sk);
+>> +	udp_tunnel_cleanup_gro(sk);
+>> +}
+>> +EXPORT_SYMBOL_GPL(cleanup_udp_tunnel_sock);
+> 
+> IMHO the above code should not land into a generic tunnel helper, as the
+> tunnel scope always correspond to the sk scope - except for openvpn.
+> 
+
+Ok.
+I thought udp_tunnel was the right place because this helper is an 
+explicit counterpart for setup_udp_tunnel_sock().
+
+But since there are no other users, I can move this code inside ovpn.
+
+> Also IMHO no need to do udp_tunnel_encap_disable(), it will called as
+> needed at sk close() time. Yep, that means that the stack will have
+> transient additional overhead until the sock is not destroyed, but IMHO
+> it's not worthy the extra complexity (export symbol, additional stub,
+> more files touched...)
+
+That's true: removing that part will greatly simplify the patch.
+
+If we agree that we can live with the transient overhead, then ok, I 
+will remove the udp_tunnel_encap_disable() part and simplify this commit.
 
 
-on 2025/3/8 1:36, Maxime Chevallier wrote:
-> As the link_caps array is efficient for <speed,duplex> lookups,
-> implement a function for speed/duplex lookups that matches a given
-> mask. This replicates to some extent the phy_lookup_settings()
-> behaviour, matching full link_capabilities instead of a single linkmode.
->
-> phy.c's phy_santize_settings() and phylink's
-> phylink_ethtool_ksettings_set() performs such lookup using the
-> phy_settings table, but are only interested in the actual speed/duplex
-> that were matched, rathet than the individual linkmode.
->
-> Similar to phy_lookup_settings(), the newly introduced phy_caps_lookup()
-> will run through the link_caps[] array by descending speed/duplex order.
->
-> If the link_capabilities for a given <speed/duplex> tuple intersects the
-> passed linkmodes, we consider that a match.
->
-> Similar to phy_lookup_settings(), we also allow passing an 'exact'
-> boolean, allowing non-exact match. Here, we MUST always match the
-> linkmodes mask, but we allow matching on lower speed settings.
->
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> ---
->   drivers/net/phy/phy-caps.h |  4 ++++
->   drivers/net/phy/phy.c      | 32 ++++++--------------------
->   drivers/net/phy/phy_caps.c | 47 ++++++++++++++++++++++++++++++++++++++
->   drivers/net/phy/phylink.c  | 17 +++++++-------
->   4 files changed, 67 insertions(+), 33 deletions(-)
->
-> diff --git a/drivers/net/phy/phy-caps.h b/drivers/net/phy/phy-caps.h
-> index 8833798f141f..aef4b54a8429 100644
-> --- a/drivers/net/phy/phy-caps.h
-> +++ b/drivers/net/phy/phy-caps.h
-> @@ -51,4 +51,8 @@ phy_caps_lookup_by_linkmode(const unsigned long *linkmodes);
->   const struct link_capabilities *
->   phy_caps_lookup_by_linkmode_rev(const unsigned long *linkmodes, bool fdx_only);
->   
-> +const struct link_capabilities *
-> +phy_caps_lookup(int speed, unsigned int duplex, const unsigned long *supported,
-> +		bool exact);
-> +
->   #endif /* __PHY_CAPS_H */
-> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-> index 8df37d221fba..562acde89224 100644
-> --- a/drivers/net/phy/phy.c
-> +++ b/drivers/net/phy/phy.c
-> @@ -213,25 +213,6 @@ int phy_aneg_done(struct phy_device *phydev)
->   }
->   EXPORT_SYMBOL(phy_aneg_done);
->   
-> -/**
-> - * phy_find_valid - find a PHY setting that matches the requested parameters
-> - * @speed: desired speed
-> - * @duplex: desired duplex
-> - * @supported: mask of supported link modes
-> - *
-> - * Locate a supported phy setting that is, in priority order:
-> - * - an exact match for the specified speed and duplex mode
-> - * - a match for the specified speed, or slower speed
-> - * - the slowest supported speed
-> - * Returns the matched phy_setting entry, or %NULL if no supported phy
-> - * settings were found.
-> - */
-> -static const struct phy_setting *
-> -phy_find_valid(int speed, int duplex, unsigned long *supported)
-> -{
-> -	return phy_lookup_setting(speed, duplex, supported, false);
-> -}
-> -
->   /**
->    * phy_supported_speeds - return all speeds currently supported by a phy device
->    * @phy: The phy device to return supported speeds of.
-> @@ -274,13 +255,14 @@ EXPORT_SYMBOL(phy_check_valid);
->    */
->   static void phy_sanitize_settings(struct phy_device *phydev)
->   {
-> -	const struct phy_setting *setting;
-> +	const struct link_capabilities *c;
-> +
-> +	c = phy_caps_lookup(phydev->speed, phydev->duplex, phydev->supported,
-> +			    false);
->   
-> -	setting = phy_find_valid(phydev->speed, phydev->duplex,
-> -				 phydev->supported);
-> -	if (setting) {
-> -		phydev->speed = setting->speed;
-> -		phydev->duplex = setting->duplex;
-> +	if (c) {
-> +		phydev->speed = c->speed;
-> +		phydev->duplex = c->duplex;
->   	} else {
->   		/* We failed to find anything (no supported speeds?) */
->   		phydev->speed = SPEED_UNKNOWN;
-> diff --git a/drivers/net/phy/phy_caps.c b/drivers/net/phy/phy_caps.c
-> index c39f38c12ef2..0366feee2912 100644
-> --- a/drivers/net/phy/phy_caps.c
-> +++ b/drivers/net/phy/phy_caps.c
-> @@ -170,6 +170,53 @@ phy_caps_lookup_by_linkmode_rev(const unsigned long *linkmodes, bool fdx_only)
->   	return NULL;
->   }
->   
-> +/**
-> + * phy_caps_lookup() - Lookup capabilities by speed/duplex that matches a mask
-> + * @speed: Speed to match
-> + * @duplex: Duplex to match
-> + * @supported: Mask of linkmodes to match
-> + * @exact: Perform an exact match or not.
-> + *
-> + * Lookup a link_capabilities entry that intersect the supported linkmodes mask,
-> + * and that matches the passed speed and duplex.
-> + *
-> + * When @exact is set, an exact match is performed on speed and duplex, meaning
-> + * that if the linkmodes for the given speed and duplex intersect the supported
-> + * mask, this capability is returned, otherwise we don't have a match and return
-> + * NULL.
-> + *
-> + * When @exact is not set, we return either an exact match, or matching capabilities
-> + * at lower speed, or the lowest matching speed, or NULL.
-> + *
-> + * Returns: a matched link_capabilities according to the above process, NULL
-> + *	    otherwise.
-> + */
-> +const struct link_capabilities *
-> +phy_caps_lookup(int speed, unsigned int duplex, const unsigned long *supported,
-> +		bool exact)
-> +{
-> +	const struct link_capabilities *lcap, *last = NULL;
-> +
-> +	for_each_link_caps_desc_speed(lcap) {
-> +		if (linkmode_intersects(lcap->linkmodes, supported)) {
-> +			last = lcap;
-> +			/* exact match on speed and duplex*/
-> +			if (lcap->speed == speed && lcap->duplex == duplex) {
-> +				return lcap;
-> +			} else if (!exact) {
-> +				if (lcap->speed <= speed)
-> +					return lcap;
-> +			}
-> +		}
-> +	}
-> +
-> +	if (!exact)
-> +		return last;
-> +
-> +	return NULL;
-> +}
-> +EXPORT_SYMBOL_GPL(phy_caps_lookup);
-> +
->   /**
->    * phy_caps_linkmode_max_speed() - Clamp a linkmodes set to a max speed
->    * @max_speed: Speed limit for the linkmode set
-> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-> index a3f64b6d2d34..cf9f019382ad 100644
-> --- a/drivers/net/phy/phylink.c
-> +++ b/drivers/net/phy/phylink.c
-> @@ -20,6 +20,7 @@
->   #include <linux/timer.h>
->   #include <linux/workqueue.h>
->   
-> +#include "phy-caps.h"
->   #include "sfp.h"
->   #include "swphy.h"
->   
-> @@ -2852,8 +2853,8 @@ int phylink_ethtool_ksettings_set(struct phylink *pl,
->   				  const struct ethtool_link_ksettings *kset)
->   {
->   	__ETHTOOL_DECLARE_LINK_MODE_MASK(support);
-> +	const struct link_capabilities *c;
->   	struct phylink_link_state config;
-> -	const struct phy_setting *s;
->   
->   	ASSERT_RTNL();
->   
-> @@ -2896,23 +2897,23 @@ int phylink_ethtool_ksettings_set(struct phylink *pl,
->   		/* Autonegotiation disabled, select a suitable speed and
->   		 * duplex.
->   		 */
-> -		s = phy_lookup_setting(kset->base.speed, kset->base.duplex,
-> -				       pl->supported, false);
-> -		if (!s)
-> +		c = phy_caps_lookup(kset->base.speed, kset->base.duplex,
-> +				    pl->supported, false);
-> +		if (!c)
->   			return -EINVAL;
+Thanks for the feedback, Paolo!
 
 
+Regards,
 
-Hi Maxime,  fc81e257d19f ("net: phy: phy_caps: Allow looking-up link caps based on speed and duplex") might have different behavior than the modification.
-My case is set 10M Half with disable autoneg both sides and I expect it is
-link in 10M Half. But now, it is link in 10M Full，which is not what I
-expect.
+-- 
+Antonio Quartulli
+OpenVPN Inc.
 
-I used followed command and trace how phy worked.
-	ethtool -s eth1 autoneg off speed 10 duplex half
-The log is showed as followed:
-ethtool-13127	[067]	6164.771853: phy_ethtool_ksettings set: (phy_ethtool ksettings set+0x0/0x200) duplex=0 speed=10
-kworker/u322:2-11096	[070]	6164.771853:	_phy_start_aneq: ( _phy_start_aneg+0x0/0xb8) duplex=0 speed=10
-kworker/u322:2-11096	[070]	6164.771854:	phy_caps_lookup: (phy_caps_lookup+0x0/0xf0) duplex=0 speed=10
-kworker/u322:2-11096	[070]	6164.771855:	phy_config_aneg: (phy_config_aneg+0x0/0x70) duplex=1 speed=10
-kworker/u322:2-11096	[070]	6164.771856:	genphy_config_aneg:	(__genphy_config_aneg+0X0/0X270) duplex=1 speed=10
-
-I also try to fixed it and it works. Do you have any idea about it.
-
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 0e762fc3a529..2986c41c42a8 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -258,7 +258,7 @@ static void phy_sanitize_settings(struct phy_device *phydev)
-         const struct link_capabilities *c;
-
-         c = phy_caps_lookup(phydev->speed, phydev->duplex, phydev->supported,
--                           false);
-+                           true);
-
-         if (c) {
-                 phydev->speed = c->speed;
-
-
-
->   
->   		/* If we have a fixed link, refuse to change link parameters.
->   		 * If the link parameters match, accept them but do nothing.
->   		 */
->   		if (pl->req_link_an_mode == MLO_AN_FIXED) {
-> -			if (s->speed != pl->link_config.speed ||
-> -			    s->duplex != pl->link_config.duplex)
-> +			if (c->speed != pl->link_config.speed ||
-> +			    c->duplex != pl->link_config.duplex)
->   				return -EINVAL;
->   			return 0;
->   		}
->   
-> -		config.speed = s->speed;
-> -		config.duplex = s->duplex;
-> +		config.speed = c->speed;
-> +		config.duplex = c->duplex;
->   		break;
->   
->   	case AUTONEG_ENABLE:
