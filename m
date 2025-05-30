@@ -1,142 +1,153 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E238749C;
-	Fri, 30 May 2025 01:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C5613CF9C
+	for <netdev@vger.kernel.org>; Fri, 30 May 2025 01:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748567001; cv=none; b=c3glvR2Z/S8cpXCisHSgjtdUvLKjT9zdur0mdmebL6q3TRonIbH3vlHOpE4UscCwsSHquxhlJemg3N2MZjFUmTk/AHqL5c1dQQ2pvPoHYgjoJiW8OOOqOyPB2xhaH7wl2d23LhHWO+MtC2R8OQrDgkywb2ekd/H2ukp02rfU9fw=
+	t=1748567067; cv=none; b=bFHWnjZE1/VqfMH6id3Ff9qz16VImY74rpCnNyj76K4UoFZXjFfghWEURqoflfE2NZlQ4yARBebF0EczAPMAnEYPYeZweieI76DA4iDaBGQTQY0XxwC1oI6BaZLu4w1zbxgg/kfKJEjNJW0LPNF6JlE+SMAopy3szBu3CaOuWfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748567001; c=relaxed/simple;
-	bh=8lg9tcjmyDPHmeMi3irqoS0NZTO/egGFWJG0MSTAeEg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DJOZFdv/E8mDTCiqNcPUZ8/xGFtc/ta20rZTiiOJEhqB78bNLPgK7tAXAqFwOcQnWrGlVumrlAvuOGJkA8Nwl0ptNM+VNj5anavGKXHa5/fGb/sfus6KO38EzhSBrHRungilFlXmojZVWcTXxLjg07B4VJ/QoSEbmEcA9MntQDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=GYwn9aM2; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
+	s=arc-20240116; t=1748567067; c=relaxed/simple;
+	bh=rX/1ao7p/NvtFeOI1F1MuvMHxeHwAQOnrfHP/4pdlNU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J973/LlL5q2ko2RFr9pVq5R7GaY2I//Kcr2T7Sq8lNx9jkpCI2wGn9wIyvgd4+5vc+3nMM/IBDxJWmkOmixcPoYytGfoqpxed8ZCAJtX7to9pkfnsBIfE8WTbCtsOvByjSgL3j2KXN37eX8Zx2WfE3YuzmTkoYQc7fHUxD52f9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=cJGz5rb3; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="GYwn9aM2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=202503; t=1748566992;
-	bh=KFsDZftR4B6MnKOTyovSysgE8zvgQdPlPTpypjZ3vYs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GYwn9aM2pL8l5gIcaYkirTaiB8gbp0L78Zi217/yDsV9ZsH2YLy+rQBki8bSu5YOK
-	 ASsc7eIO1mVcouIje5YbVePzf8rzlGlt5CWAMwx+RsYF6m8icq1ryxvUBM0n+JU5gb
-	 AO3DjOH8HFkF7vX7PZuVNNEjeUyf+F0gchYRZrKJmUW5Uw5fgHZ9MczhMSFZsOXwM5
-	 ujngdo4GK0fNem0D8RzTtOdUvfjTmJn9xo00qL9qcBGNrKO6FNjIYVW2Cy6IXEwwg8
-	 h+e3a7398aolewWN8N52TFIpt1NdkZHeMrXMgslDRI8AE48d/dgJ8bBVnBxaTRz5RD
-	 exQQTqavG2z8A==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4b7lNF0RNjz4x5Y;
-	Fri, 30 May 2025 11:03:08 +1000 (AEST)
-Date: Fri, 30 May 2025 11:03:07 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Networking
- <netdev@vger.kernel.org>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, Linux Next Mailing List
- <linux-next@vger.kernel.org>, ARM <linux-arm-kernel@lists.infradead.org>
-Subject: Re: linux-next: manual merge of the net-next tree with the reset
- tree
-Message-ID: <20250530110307.1eb48635@canb.auug.org.au>
-In-Reply-To: <20250506112554.3832cd40@canb.auug.org.au>
-References: <20250506112554.3832cd40@canb.auug.org.au>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="cJGz5rb3"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7426c44e014so1172489b3a.3
+        for <netdev@vger.kernel.org>; Thu, 29 May 2025 18:04:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1748567065; x=1749171865; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WMuXhARc7ZPHZfZkbAHNR+JT/HooS/WosQOHTLidIcA=;
+        b=cJGz5rb3DOTCYqYu5LY6PFD5btZ1i6JJ0xkCnJ0zqWLqhmY7Dt+IM6Dt+wTbYXLc4i
+         WWkr8XCwTFABoG9vkZlHfOSo2VPlzz2elDzxVaHNfryWExz4uAeoz4oKZzCPH5YFcWG1
+         ieoK0NMHN2BFswsHVS8m4fcPkCoqs9zt0khl4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748567065; x=1749171865;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WMuXhARc7ZPHZfZkbAHNR+JT/HooS/WosQOHTLidIcA=;
+        b=J6GvjMbu1wVkbXG1y2wzDKLrNrRwehZJkOrpRP3LVoks15gJWfi7uPWHcL6IEFjwq+
+         SU8gliL6ZYFeaU5R5BUKVYhWK4hbuk/R6YRam1JrMaACN/dtTnYgexRWERvcQZ+aZS3a
+         UPa4FsVF52WdbpW0TaxyBQv3WRu9+BIeMx6TMvcaBtMKHwulGdynucZdoVigfDknRq9J
+         r7w8IvQ2uHQUZSBMEZr+GD9nXt4vOrQpuIdeQrWLFRfSE1YUlwRDV7LhYgAtcAfiz0kk
+         R76sjUnKGsFEVnLArHLxufMREhQuLHB8vqAI71OKTfy87GbWohKv9F/k/CJTe0EqXFlZ
+         FAhw==
+X-Gm-Message-State: AOJu0YwyUxZhl+xGesUvhQWHtE+dFcH7EZlMwU4TAXvztDqg5GPv0rqT
+	Cg8v2lBC0mwUsouAzOXAJqewdrjAlXJu6IXGrfhHljZPubYDkRClFxx46kiBY7gk3EKXYHVVQJs
+	Ok1N5H6vrYTUdrKkAqRW1MXfL/ASRgIguhMT93lL59ncoCBdCrzy7w2M56xst1+nid/Arb2RtA+
+	2omzdTFARfDY6kZ9LSHWADxt8ZvjE4kd+nDkM7EyBj7cc=
+X-Gm-Gg: ASbGnct2PBqnIJEIxhYvgPUGF2Qwwy6T4QRZ400/kJqOrTKPvZlGKIlB1Ubyh1KV40U
+	0ctYt08Tyg4o1+RY3FQAE1g/kV+REgZGXvfyJ/lZdvPdDophxGImzgfWwVo+fPHY2aF7vE9KtPe
+	RtpRNnPHy3QbhUXgfKB3xvYjQCQuukA7hi7gMyKOLtOKOeYFk7HouaTnV6E2XnV+BK4+SZ0ixRa
+	qb4HHRMIuVs8T+DzavqwjwYn/hek/KMjQcJ4cO49kqyKZlpxmf8pB3nomwQhpSRYQ0EZ1RgwwTi
+	XVF4hOE0E6R0UqJksyNpeUzvERpZBM86NkxcBqNzRSvb+JuT7r3L4RNcgf1jrf7IK7HVNT9TSQm
+	ZUZN1mh/dxQqpNkbhW92qyQ==
+X-Google-Smtp-Source: AGHT+IHlk/pQOASPBzEhio0XVuWGW4RALWeN2/BSwN7IXKo0wC2eAk4JY8nDmbRw4+IxZyH616w8PQ==
+X-Received: by 2002:a05:6a00:138a:b0:742:a7e3:7c84 with SMTP id d2e1a72fcca58-747bd980c66mr1882310b3a.13.1748567064627;
+        Thu, 29 May 2025 18:04:24 -0700 (PDT)
+Received: from ubuntu.. ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-747afeabc8bsm2004400b3a.64.2025.05.29.18.04.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 May 2025 18:04:23 -0700 (PDT)
+From: Ronak Doshi <ronak.doshi@broadcom.com>
+To: netdev@vger.kernel.org
+Cc: Ronak Doshi <ronak.doshi@broadcom.com>,
+	Guolin Yang <guolin.yang@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net v3] vmxnet3: correctly report gso type for UDP tunnels
+Date: Fri, 30 May 2025 00:46:30 +0000
+Message-ID: <20250530004631.68288-1-ronak.doshi@broadcom.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/dgk32W/+5/HDY1_RY9Za7rs";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
 
---Sig_/dgk32W/+5/HDY1_RY9Za7rs
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Commit 3d010c8031e3 ("udp: do not accept non-tunnel GSO skbs landing
+in a tunnel") added checks in linux stack to not accept non-tunnel
+GRO packets landing in a tunnel. This exposed an issue in vmxnet3
+which was not correctly reporting GRO packets for tunnel packets.
 
-Hi all,
+This patch fixes this issue by setting correct GSO type for the
+tunnel packets.
 
-On Tue, 6 May 2025 11:25:54 +1000 Stephen Rothwell <sfr@canb.auug.org.au> w=
-rote:
->
-> Today's linux-next merge of the net-next tree got a conflict in:
->=20
->   MAINTAINERS
->=20
-> between commit:
->=20
->   57dfdfbe1a03 ("MAINTAINERS: Add entry for Renesas RZ/V2H(P) USB2PHY Por=
-t Reset driver")
->=20
-> from the reset tree and commit:
->=20
->   326976b05543 ("MAINTAINERS: Add entry for Renesas RZ/V2H(P) DWMAC GBETH=
- glue layer driver")
->=20
-> from the net-next tree.
->=20
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
->=20
->=20
-> diff --cc MAINTAINERS
-> index c056bd633983,5c31814c9687..000000000000
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@@ -20827,14 -20699,14 +20829,22 @@@ S:	Maintaine
->   F:	Documentation/devicetree/bindings/usb/renesas,rzn1-usbf.yaml
->   F:	drivers/usb/gadget/udc/renesas_usbf.c
->  =20
-> + RENESAS RZ/V2H(P) DWMAC GBETH GLUE LAYER DRIVER
-> + M:	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> + L:	netdev@vger.kernel.org
-> + L:	linux-renesas-soc@vger.kernel.org
-> + S:	Maintained
-> + F:	Documentation/devicetree/bindings/net/renesas,r9a09g057-gbeth.yaml
-> + F:	drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
-> +=20
->  +RENESAS RZ/V2H(P) USB2PHY PORT RESET DRIVER
->  +M:	Fabrizio Castro <fabrizio.castro.jz@renesas.com>
->  +M:	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
->  +L:	linux-renesas-soc@vger.kernel.org
->  +S:	Supported
->  +F:	Documentation/devicetree/bindings/reset/renesas,rzv2h-usb2phy-reset.=
-yaml
->  +F:	drivers/reset/reset-rzv2h-usb2phy.c
->  +
->   RENESAS RZ/V2M I2C DRIVER
->   M:	Fabrizio Castro <fabrizio.castro.jz@renesas.com>
->   L:	linux-i2c@vger.kernel.org
+Currently, vmxnet3 does not support reporting inner fields for LRO
+tunnel packets. This is fine for now as workaround is to enable
+tnl-segmentation offload on the relevant interfaces. This problem
+pre-exists this patch fix and can be addressed as a separate future
+patch.
 
-This is now a conflict between the arm-soc tree and Linus' tree.
+Fixes: dacce2be3312 ("vmxnet3: add geneve and vxlan tunnel offload support")
+Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
+Acked-by: Guolin Yang <guolin.yang@broadcom.com>
 
---=20
-Cheers,
-Stephen Rothwell
+Changes v1-->v2:
+  Do not set encapsulation bit as inner fields are not updated
+Changes v2-->v3:
+  Update the commit message explaining the next steps to address
+  segmentation issues that pre-exists this patch fix.
+---
+ drivers/net/vmxnet3/vmxnet3_drv.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
---Sig_/dgk32W/+5/HDY1_RY9Za7rs
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
+index c676979c7ab9..287b7c20c0d6 100644
+--- a/drivers/net/vmxnet3/vmxnet3_drv.c
++++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+@@ -1568,6 +1568,30 @@ vmxnet3_get_hdr_len(struct vmxnet3_adapter *adapter, struct sk_buff *skb,
+ 	return (hlen + (hdr.tcp->doff << 2));
+ }
+ 
++static void
++vmxnet3_lro_tunnel(struct sk_buff *skb, __be16 ip_proto)
++{
++	struct udphdr *uh = NULL;
++
++	if (ip_proto == htons(ETH_P_IP)) {
++		struct iphdr *iph = (struct iphdr *)skb->data;
++
++		if (iph->protocol == IPPROTO_UDP)
++			uh = (struct udphdr *)(iph + 1);
++	} else {
++		struct ipv6hdr *iph = (struct ipv6hdr *)skb->data;
++
++		if (iph->nexthdr == IPPROTO_UDP)
++			uh = (struct udphdr *)(iph + 1);
++	}
++	if (uh) {
++		if (uh->check)
++			skb_shinfo(skb)->gso_type |= SKB_GSO_UDP_TUNNEL_CSUM;
++		else
++			skb_shinfo(skb)->gso_type |= SKB_GSO_UDP_TUNNEL;
++	}
++}
++
+ static int
+ vmxnet3_rq_rx_complete(struct vmxnet3_rx_queue *rq,
+ 		       struct vmxnet3_adapter *adapter, int quota)
+@@ -1881,6 +1905,8 @@ vmxnet3_rq_rx_complete(struct vmxnet3_rx_queue *rq,
+ 			if (segCnt != 0 && mss != 0) {
+ 				skb_shinfo(skb)->gso_type = rcd->v4 ?
+ 					SKB_GSO_TCPV4 : SKB_GSO_TCPV6;
++				if (encap_lro)
++					vmxnet3_lro_tunnel(skb, skb->protocol);
+ 				skb_shinfo(skb)->gso_size = mss;
+ 				skb_shinfo(skb)->gso_segs = segCnt;
+ 			} else if ((segCnt != 0 || skb->len > mtu) && !encap_lro) {
+-- 
+2.45.2
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmg5A8sACgkQAVBC80lX
-0Gy5awf/TVPywlTaI7enDzkgErfmCiQkSYcadqY8FSfKDhsuQZK25S2o+9IWu1Wx
-rHxCcEYFFxrPSIPjXmurxEcq/C8qoODSB1YTn4VjoYU/nF2M5Ar5vOOH7vqrobUK
-VFjgNyyygGi7SvPV4PDF4vI3SYn2EaqQw/0av92AhC97gDOUPzOX+9cLW17peegG
-KAmwbchzGlspI3el238rhbg7IpuRycHVDzQ1UK59FGu19RhLUcuY3gP9fytw0eWE
-MMt3LGu/EbIQYxIaR04j38Yy1uGAGwDz7GFRv0SFb70R0gSAkWlxQ4Lvg0f4pvZn
-QGDg+Sw5VHcT84FE3kbKQ1qgrqOTHg==
-=D5jt
------END PGP SIGNATURE-----
-
---Sig_/dgk32W/+5/HDY1_RY9Za7rs--
