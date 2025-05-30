@@ -1,124 +1,168 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C377D1E3769
-	for <netdev@vger.kernel.org>; Fri, 30 May 2025 08:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420D91EB5D8;
+	Fri, 30 May 2025 09:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748594591; cv=none; b=EzlVaz1qhJxViDkF7Ipe1oK8eGnOFrU+6mVQ+JWKlKidlmFgC/N4Tq/WAFmByDggUKpZ8sUS1dLn6u2l56MFy+5blADKlp8G9Qdv/TzCHFpHqlprW0Eh1TUgXAwKDl7KRGg3JdpPMGeKO8iJNWF4sPonOs5FQn4qFLlOqaJp35E=
+	t=1748596134; cv=none; b=U9XQdV9YYkAgBBWSWwV/f25KFGrKgMHyo3oZQF5oA7HVrTEFS79SW2swJKSYGbaCV0rI3ADubUsaN+lrSa23dNNgEAaVFPntMEfFmp2wQM6z7kxCtLpwaGFHIRpZjzzS5su5S7eMpJ+M7LDzU1/VdGL/olGBTBOC0B9ElRYiRUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748594591; c=relaxed/simple;
-	bh=MKwAvRkB0szD5olv4VSMBRuJVZ7AzdCji8gMzT7LSHs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=cXv1GjdmIV79slvJ0rL5RO58qHwBCBBB+jzWOrK26iqeFITeNkiU09b/GqjulBHRwCsXvE/CZJ7kywDYUx+qaelR8EMnSvX8gzaoQoKhCVm7l7F9lwS2xLvBpUBOWTzKgxPgK8Ppjk3bM6bJD9hfXxkozus4OmvBffDrgnXx0Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T73pe/mw; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1748596134; c=relaxed/simple;
+	bh=kyXdt8s0xKz4LjroE2u3gSZ0qK9QnI9kcAdnHQnzJj8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UpT09/elycHJ4rE5KgttTEhX+isDEivw5H1K+MZFqg7K+ISSIKJVGQdu/DHdZfqhgCcHaLxXM8mbkqCYo94qYBHZGnuLnVOWshCk1PWgXRNzF831Xbfh9HaNrsSR9RK5ds3gJrmi5WrUf9OQuZVXOQl8WFNF6e+ZemD9w2yWsBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZB1U/Pdf; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T73pe/mw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748594588;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZB1U/Pdf"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D06D643349;
+	Fri, 30 May 2025 09:08:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1748596129;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jCi0uOE+EdoP1uU+RIEl/GzhoqxTTK+kBvwaCYhM6sY=;
-	b=T73pe/mwU0nnTr2l2sYFZS0DJpWAGTsNMt/Yv7ixI863OQGQtkdjG/XHo3Emu7EBIX9fGD
-	YU6B7HCA73RTZY/J5lPCdBVtxsipYYB9klKvud4KMIn0SjrlSCe7Kfi33l/ktzEEVJlgTE
-	IoZgL7zjyOsGR1fRbmt+pJFsm/Z7z1c=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-297-Dc8psqxlOeixclVhykm7cA-1; Fri, 30 May 2025 04:43:07 -0400
-X-MC-Unique: Dc8psqxlOeixclVhykm7cA-1
-X-Mimecast-MFC-AGG-ID: Dc8psqxlOeixclVhykm7cA_1748594586
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a4f85f31d9so231344f8f.1
-        for <netdev@vger.kernel.org>; Fri, 30 May 2025 01:43:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748594586; x=1749199386;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jCi0uOE+EdoP1uU+RIEl/GzhoqxTTK+kBvwaCYhM6sY=;
-        b=LFAmFt4EZpagIYGUptPGS/N6sMS8Ktay+Yg6rjsBmNuDIVB/rq+HiZ2BhoJzWagiG+
-         3ydBHT240jx4gI8FG40HG1QESrqvMMtJAJnghKXLfJ9YHcTo9bTIyQNUwqQETg0tUlrD
-         YIEtmbXC5VLj3p47BHzkjqzF81YiBlMhh0GAJgb2b2SXkVgh842KHwLhd4s7nqK/KoDH
-         b1ULwrp0m2+visBhsMHScBK9YaMydb97tvEMcgzPnwQ2a5oOwWKRlpVo4ysxu2/4Ua07
-         ATBspiGYWiQaTIgnvuU0GPfWighs3kCsJ4rw3hctRbrywHkgXd1HNQVKx/R4640fWOt8
-         cDkw==
-X-Gm-Message-State: AOJu0YylieQNu2LMkxFLg5gds8we5ripoisuLuahzb0O7TDKyKtiCyWW
-	4Pe5Xg1P8thSIDtZLo+X/s9tnTVj6OQMfhLV0hkRim4mXUGrAIySP9htfVC87lvzuxzS9akPE9Y
-	W0IVpbUcYAYIpAifLbXXbAk/eoBqQ4kEwr4beHbvwpEbqn2twTuTR7XbciA==
-X-Gm-Gg: ASbGnctIgYS/MVW8c0MCYXdwu/BdZdQrMOvA0wz+YuESu/LvViIVZ3vFMnoRjVI9h+R
-	IXlvlumxHysUHoq2l06E4c9nkFFvLvaXg2VD7oUqrRYdrAbWmSQdkQHKQTK/5Nt/YCSI6JE6I/1
-	9/cK+NazGLmNjLvjUTVQ1WTo6GhOUJVYowwvrBPP04oThzIdcbYaJJoQldqhAPtrbaXOnjpL8SS
-	cvbUzJmlLAEFSpMQFycDZAGLQI4WS/zJeu0RmEK0DiqNTqTUhbSHEhfrgftJeX/yjqomfcDhw5E
-	T4agaDFQS6FN1oOwofU=
-X-Received: by 2002:a05:6000:40cb:b0:3a4:c909:ce16 with SMTP id ffacd0b85a97d-3a4f89e322dmr1135394f8f.49.1748594586163;
-        Fri, 30 May 2025 01:43:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHIXSk/dEq5O9CpOMLUx5yMGjgCDlmfjQwVrAMuHqELLU+2ccgQc5MSQLyuP3VhcgQy5XWCFw==
-X-Received: by 2002:a05:6000:40cb:b0:3a4:c909:ce16 with SMTP id ffacd0b85a97d-3a4f89e322dmr1135375f8f.49.1748594585831;
-        Fri, 30 May 2025 01:43:05 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2442:a310::f39? ([2a0d:3344:2442:a310::f39])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4f009fbf7sm4139376f8f.83.2025.05.30.01.43.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 May 2025 01:43:05 -0700 (PDT)
-Message-ID: <37f16cf5-c785-4ad9-a8f4-3f9b3bf68052@redhat.com>
-Date: Fri, 30 May 2025 10:43:03 +0200
+	bh=YDcQoFFC4NqCXcyobvRRuP1Ua4ytiuIE7XjIkD34fbk=;
+	b=ZB1U/Pdfi7HtDnqYB1OWNlxulO3P8Fzu1T1afPYQ754WfHDNuOCqhr37hUY6ZczMdot6mN
+	iKfgB57p8ne86qqiVAZL4T0zsuD2oXjkNi9Lx3+FRbgiijwLmb9ZSxZ3KK2eC8Xqd9CioZ
+	yzOYPApcG7YNnNy58ZNYVwhc7L78+lx/W8BrCXo2NEU35lMAFE1SSpZx26hyQJVZ3Nrnmb
+	w6+mG5x8R8W7GNQ2s81ezwluiyStYudEhpPnKiYruUKX3GhapRbICKk4/l3DWhZDNjo9ME
+	QUFFW58toUQT05s34GNXa92rPdx7Bu+JwK3kC06Yh9cWmK4T9/7lyc5QvFJqLA==
+From: Romain Gantois <romain.gantois@bootlin.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, davem@davemloft.net,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, thomas.petazzoni@bootlin.com,
+ Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Herve Codina <herve.codina@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ =?UTF-8?B?S8O2cnk=?= Maincent <kory.maincent@bootlin.com>,
+ Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ =?UTF-8?B?Tmljb2zDsg==?= Veronese <nicveronese@gmail.com>,
+ Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
+ Antoine Tenart <atenart@kernel.org>, devicetree@vger.kernel.org,
+ Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Rob Herring <robh@kernel.org>, Daniel Golle <daniel@makrotopia.org>,
+ Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Subject:
+ Re: [PATCH net-next v6 06/14] net: phy: Introduce generic SFP handling for
+ PHY drivers
+Date: Fri, 30 May 2025 11:08:41 +0200
+Message-ID: <12687918.O9o76ZdvQC@fw-rgant>
+In-Reply-To: <aDliS9uMFaLf2lCV@shell.armlinux.org.uk>
+References:
+ <20250507135331.76021-1-maxime.chevallier@bootlin.com>
+ <6159237.lOV4Wx5bFT@fw-rgant> <aDliS9uMFaLf2lCV@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 5/8] net: implement virtio helpers to handle UDP
- GSO tunneling.
-From: Paolo Abeni <pabeni@redhat.com>
-To: Jason Wang <jasowang@redhat.com>
-Cc: netdev@vger.kernel.org, Willem de Bruijn
- <willemdebruijn.kernel@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>
-References: <cover.1747822866.git.pabeni@redhat.com>
- <6e001d160707e1cf87870acee5adc302f8cb39b6.1747822866.git.pabeni@redhat.com>
- <CACGkMEtkbx8VZ2HAuDUbO9LStzoM6JQVcmA+6e+jM1o=r9wKow@mail.gmail.com>
- <3c2290f1-827c-452d-a818-bd89f4cbbcba@redhat.com>
-Content-Language: en-US
-In-Reply-To: <3c2290f1-827c-452d-a818-bd89f4cbbcba@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="nextPart5904461.DvuYhMxLoT";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvkeeiudculddtuddrgeefvddrtddtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfgggtsehgtderredttdejnecuhfhrohhmpeftohhmrghinhcuifgrnhhtohhishcuoehrohhmrghinhdrghgrnhhtohhishessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhephfdvleekvefgieejtdduieehfeffjefhleegudeuhfelteduiedukedtieehlefgnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehffidqrhhgrghnthdrlhhotggrlhhnvghtpdhmrghilhhfrhhomheprhhomhgrihhnrdhgrghnthhoihhssegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeeftddprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtohepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepnhgvthguvghvsehvg
+ hgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqmhhsmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthh
+X-GND-Sasl: romain.gantois@bootlin.com
 
-On 5/29/25 1:55 PM, Paolo Abeni wrote:
-> On 5/26/25 6:40 AM, Jason Wang wrote:
->> On Wed, May 21, 2025 at 6:34 PM Paolo Abeni <pabeni@redhat.com> wrote:
->>> +       skb->transport_header = outer_th + skb_headroom(skb);
->>> +       skb->encapsulation = 1;
->>> +       return 0;
->>> +}
->>> +
->>> +static inline int virtio_net_chk_data_valid(struct sk_buff *skb,
->>> +                                           struct virtio_net_hdr *hdr,
->>> +                                           bool tun_csum_negotiated)
->>
->> This is virtio_net.h so it's better to avoid using "tun". Btw, I
->> wonder why this needs to be called by the virtio-net instead of being
->> called by hdr_to_skb helpers.
+--nextPart5904461.DvuYhMxLoT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Romain Gantois <romain.gantois@bootlin.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Date: Fri, 30 May 2025 11:08:41 +0200
+Message-ID: <12687918.O9o76ZdvQC@fw-rgant>
+In-Reply-To: <aDliS9uMFaLf2lCV@shell.armlinux.org.uk>
+MIME-Version: 1.0
+
+On Friday, 30 May 2025 09:46:19 CEST Russell King (Oracle) wrote:
+> On Fri, May 30, 2025 at 09:28:11AM +0200, Romain Gantois wrote:
+> > On Thursday, 29 May 2025 15:23:22 CEST Russell King (Oracle) wrote:
+> > > On Wed, May 28, 2025 at 09:35:35AM +0200, Romain Gantois wrote:
+> > > > > In that regard, you can consider 1000BaseX as a MII mode (we do have
+> > > > > PHY_INTERFACE_MODE_1000BASEX).
+> > > > 
+> > > > Ugh, the "1000BaseX" terminology never ceases to confuse me, but yes
+> > > > you're
+> > > > right.
+> > > 
+> > > 1000BASE-X is exactly what is described in IEEE 802.3. It's a PHY
+> > > interface mode because PHYs that use SerDes can connect to the host
+> > > using SGMII or 1000BASE-X over the serial link.
+> > > 
+> > > 1000BASE-X's purpose in IEEE 802.3 is as a protocol for use over
+> > > fibre links, as the basis for 1000BASE-SX, 1000BASE-LX, 1000BASE-EX
+> > > etc where the S, L, E etc are all to do with the properties of the
+> > > medium that the electrical 1000BASE-X is sent over. It even includes
+> > > 1000BASE-CX which is over copper cable.
+> > 
+> > Ah makes sense, thanks for the explanation. I guess my mistake was
+> > assuming
+> > that MAC/PHY interface modes were necessarily strictly at the
+> > reconciliation sublayer level, and didn't include PCS/PMA functions.
 > 
-> I can squash into virtio_net_hdr_tnl_to_skb(), I kept them separated to
-> avoid extra long argument lists, but we are dropping an argument from
-> virtio_net_hdr_tnl_to_skb(), so should be ok.
+> When a serdes protocol such as SGMII, 1000BASE-X, or 10GBASE-R is being
+> used with a PHY, the IEEE 802.3 setup isn't followed exactly - in
+> effect there are more layers.
+> 
+> On the SoC:
+> 
+> 	MAC
+> 	Reconciliation (RS)
+> 	PCS
+> 	SerDes (part of the PMA layer)
+> 
+> On the PHY side of the SerDes host-to-phy link:
+> 
+> 	SerDes
+> 	PCS (which may or may not be exposed in the PHY register set,
+> 	     and is normally managed by the PHY itself)
+> 	(maybe other layers, could include MACs	back-to-back)
+> 	PCS
+> 	PMA
+> 	PMD
+> 
+> Hope that helps explain what's going on a little more.
 
-I have to redact myself WRT the above. driver and device have different
-csum-related offload support, as per specification (i.e. DATA_VALID),
-and need different validation.
+Definitely helps a lot, thanks.
 
-This helper is intended to be called only by the driver, will do the
-wrong thing if used on the device side.
+-- 
+Romain Gantois, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-I'll try to clarify the usage in the next iteration.
+--nextPart5904461.DvuYhMxLoT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-/P
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEYFZBShRwOvLlRRy+3R9U/FLj284FAmg5dZkACgkQ3R9U/FLj
+285M0g/+Nz1A6obdeKee0RLc6MA2gBvM/EmqYPQ6ZduN6VFL2D6J4NATyQRqu/VW
+u4d0pjD2ZOe44w6eAeRcWHsC0LJYfnHPPMhxekF2l+qqggkvZDGp9BmWJZd5UUe0
+dDxur4qI6XF2WlWDXyf9auZ3iGvqOUnWYK7VsLu/1hMYeC8M0Q+5dwy72//aAGnH
+9lyBU77a7sd3Qhlnd5Flg5f9ZuQmfqcD7Hyjp0OXdSJr7TlXLPJ+4FffNTivOQMK
+WonmDnfUOSPfxukMd0ozR7Z2BdvUeKPrlQq6yvcC5aS+9WZvVWCZzLOLrlBylu50
+wtEnYLpXd8QVehLsZGfE8mB4u+IuJICnEKhhrQ7YSLdjmXkj4VHCZHjl28WrI5rP
+wMCczhfYk4tDM83L2TBDVX5DTvcIcBawWlGxwzOdZ8WbipSVt5LZMtAkICE9TZzz
+j0oJ6+4xxi8mXGVduWD7kztOgXFl+UAx9GG8RsWoSPE0+t1f2nO0YV55UTW5RhEA
+/hNR+P1Z8pB9SHjHM9TskW6LC4Z/NEIBnI0N98BacAdjSc/KX4uHSH01ANVHRyEs
+wD5PJQKAj705h81tvNA4RzUkqC+UAa9bjtE3gtqj0KnusZhSiPBtIRe55sJ3W9aU
+uYNbFO3CW8dD+WMqYm9fQrWtbqX/tOWRCOzdM5KMSNpbVyBWNDs=
+=r0Tf
+-----END PGP SIGNATURE-----
+
+--nextPart5904461.DvuYhMxLoT--
+
+
 
