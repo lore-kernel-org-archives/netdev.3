@@ -1,220 +1,160 @@
-Received: from out.smtpout.orange.fr (out-68.smtpout.orange.fr [193.252.22.68])
-	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EDB156F28;
-	Sat, 31 May 2025 08:25:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398E1235BF3;
+	Sat, 31 May 2025 08:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748679914; cv=none; b=pgy78RSIwktjBGyeM9pnC746juHofKCVMtWlxwlSowZe1Wq9DmvnpdctvJ9vPH4iIoFWmt3C2JBA8kjWiGJeE91lkeI2oSJTxDKHEHCyahbIGx+SH5HsecM7CBJGwfeh12zzLbE4i6oCjD2iZcS/3BdRBxZZBD2V7TTVJXbv6kc=
+	t=1748680494; cv=none; b=h8zeArhcNiASGq5SlaqRRmG/gVVnGJ70ZpCobjwPANLDMjH4K4XxnIqeXVTZx6qWhO38iWN/KHE1nUu8tUgZx9YgLj5Qupc0fONEKRqFDKTbgwf5l/Z1l1ocWChj8dDwmG49h84yalgJuLRScWPirFc1uFBt46lnDjnGWwMQjy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748679914; c=relaxed/simple;
-	bh=MjVWmkwHnmmJoIjCB1pi36wZ5EN1mRelCrY/of1Y8Zo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pF8071ebZNmVdNPDjbldiXALCiq1P7BzEycUCuw+Jj2PJZi0Q19Vai/GjXvqqTYwgu2XsBWrG21EUKYEait/DO2J1VIRJTuU6ngnu5xj42jEiMvlnlbF9vId6uZHB2fvmGY+I/L1rxLP5X+Qwvl0+zLU/4DOjdNBzLUeEx0hsx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=O1YaF8uH; arc=none smtp.client-ip=193.252.22.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+	s=arc-20240116; t=1748680494; c=relaxed/simple;
+	bh=HeN3k91sOApQ7ilb4MDhzjIZN7np++nNu/5P5o+DSy0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tOnEFDoD7xfL3S1cY/C3P2/8TvGqky8QW7KyNGqFD3SCY8gjZ3Yyl/1BWgIyEAK770U1r8XHFcGPbXzD1jsxmbpQmYrRtR0bwgGK8z7yxdXtv/T5chcIxz2nXDVFn3k3Css+19Av/tqLx+636nJE6zZlu2VAuZ9smwqb+eAWmZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D7GIhCt6; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="O1YaF8uH"
-Received: from [172.16.82.72] ([124.33.176.97])
-	by smtp.orange.fr with ESMTPA
-	id LHWVuydzdyzRELHWWuLXT6; Sat, 31 May 2025 10:25:02 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1748679902;
-	bh=2UxUsLSI9cJnAR9lAWYLYOx2TiTSnICm96fYVIit21k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=O1YaF8uH8KMmQL8HJjbQO/2aipJ//smiKL0+vM2wf3cW3QdSrisft6Oh7elCmy9Sd
-	 accSbF8BRyxbg32gAJAghDsmclcieke7o5kWWJAxp5Z6GHHhU4MJEd66Yl5YF1FjBZ
-	 NuKweDCtBAFn5bVoMR5LWJv/33Za/W5dpV6gN4lkhNcfyKh8PeMASLrudi1ENMUZPA
-	 vnoBR6RtXTybzsQlC4rhN+mlbpr+0Jxluo1vhi0d1LW/AH8sA6kFjFAXqTeOJYaQ1K
-	 hGab/SegtEMaRU9+lrTv9vp/oRSA92Ryi8M3hbMdIrZWhZ8aLVzK1N9ULcEll0Ik3+
-	 ceZFtSmOKCQ7w==
-X-ME-Helo: [172.16.82.72]
-X-ME-Auth: bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 31 May 2025 10:25:02 +0200
-X-ME-IP: 124.33.176.97
-Message-ID: <10ed3ec2-ac66-494a-9d3f-bf2df459ebc0@wanadoo.fr>
-Date: Sat, 31 May 2025 17:24:58 +0900
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D7GIhCt6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748680493; x=1780216493;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HeN3k91sOApQ7ilb4MDhzjIZN7np++nNu/5P5o+DSy0=;
+  b=D7GIhCt6tO2oZ67jQbTOpU8KE5Fzs66T+DOxKTKgnQ9uzUQz0pRHSOcb
+   S+RGBJEwHdSlCM54M1OGN7QzEKp6g5ME+xeYtjIecObx+HW6Y0r1/UdfC
+   ch03It5kdW1eTHyXcQfmTcLhDPaOpQ1tbqaZWgxVUATpB+v0Nsf0vpqR3
+   CBs4qpFW+AF9iOkX2b9LTBRhnCshoTWCvMnaGMdfwUYjBXyG56NdCINpK
+   vrHMeDV89PPckugzFKpmlNntHKo8oLLUCueKg+2M1u8k5iEc7UShI2xTG
+   KKOCXGFsiSP2OIwSFds6Chr57SGVNuIqaE4YWBfHg3hUccJTmokKRJGsC
+   Q==;
+X-CSE-ConnectionGUID: SxrCAs6oSOGuEyvbElS/fQ==
+X-CSE-MsgGUID: TZqikryIT+OwSyxiBcZ/Zw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11449"; a="62112332"
+X-IronPort-AV: E=Sophos;i="6.16,198,1744095600"; 
+   d="scan'208";a="62112332"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2025 01:34:52 -0700
+X-CSE-ConnectionGUID: pexTbHmsRlCFfRVy4HKntA==
+X-CSE-MsgGUID: hi6CG47NTjagHCLkylKQZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,198,1744095600"; 
+   d="scan'208";a="145057505"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 31 May 2025 01:34:49 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uLHfz-000YIO-1E;
+	Sat, 31 May 2025 08:34:47 +0000
+Date: Sat, 31 May 2025 16:34:15 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pavel Begunkov <asml.silence@gmail.com>, io-uring@vger.kernel.org,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: oe-kbuild-all@lists.linux.dev, asml.silence@gmail.com,
+	netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>
+Subject: Re: [PATCH 5/5] io_uring/netcmd: add tx timestamping cmd support
+Message-ID: <202505311513.4gHg718O-lkp@intel.com>
+References: <2308b0e2574858aeef6837f4f9897560a835e0f7.1748607147.git.asml.silence@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/6] can: netlink: add interface for CAN-FD Transmitter
- Delay Compensation (TDC)
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, linux-can@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- =?UTF-8?Q?Stefan_M=C3=A4tje?= <Stefan.Maetje@esd.eu>
-References: <20210918095637.20108-1-mailhol.vincent@wanadoo.fr>
- <20210918095637.20108-5-mailhol.vincent@wanadoo.fr>
- <CAMuHMdVEBLoG084rhBtELcFO+3cA9_UrZrUfspOeLNo80zyb9g@mail.gmail.com>
-Content-Language: en-US
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Autocrypt: addr=mailhol.vincent@wanadoo.fr; keydata=
- xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
- LFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI+wrIEExYKAFoC
- GwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQTtj3AFdOZ/IOV06OKrX+uI
- bbuZwgUCZx41XhgYaGtwczovL2tleXMub3BlbnBncC5vcmcACgkQq1/riG27mcIYiwEAkgKK
- BJ+ANKwhTAAvL1XeApQ+2NNNEwFWzipVAGvTRigA+wUeyB3UQwZrwb7jsQuBXxhk3lL45HF5
- 8+y4bQCUCqYGzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrbYZzu0JG5w8gxE6EtQe6LmxKMqP6E
- yR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDldOjiq1/riG27mcIFAmceMvMCGwwF
- CQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8VzsZwr/S44HCzcz5+jkxnVVQ5LZ4B
- ANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
-In-Reply-To: <CAMuHMdVEBLoG084rhBtELcFO+3cA9_UrZrUfspOeLNo80zyb9g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2308b0e2574858aeef6837f4f9897560a835e0f7.1748607147.git.asml.silence@gmail.com>
 
-Hi Geert,
+Hi Pavel,
 
-On 30/05/2025 at 20:44, Geert Uytterhoeven wrote:
-> Hi Vincent,
-> 
-> Thanks for your patch, which is now commit d99755f71a80df33
-> ("can: netlink: add interface for CAN-FD Transmitter Delay
-> Compensation (TDC)") in v5.16.
-> 
-> On Sat, 18 Sept 2021 at 20:23, Vincent Mailhol
-> <mailhol.vincent@wanadoo.fr> wrote:
->> Add the netlink interface for TDC parameters of struct can_tdc_const
->> and can_tdc.
->>
->> Contrary to the can_bittiming(_const) structures for which there is
->> just a single IFLA_CAN(_DATA)_BITTMING(_CONST) entry per structure,
->> here, we create a nested entry IFLA_CAN_TDC. Within this nested entry,
->> additional IFLA_CAN_TDC_TDC* entries are added for each of the TDC
->> parameters of the newly introduced struct can_tdc_const and struct
->> can_tdc.
->>
->> For struct can_tdc_const, these are:
->>         IFLA_CAN_TDC_TDCV_MIN
->>         IFLA_CAN_TDC_TDCV_MAX
->>         IFLA_CAN_TDC_TDCO_MIN
->>         IFLA_CAN_TDC_TDCO_MAX
->>         IFLA_CAN_TDC_TDCF_MIN
->>         IFLA_CAN_TDC_TDCF_MAX
->>
->> For struct can_tdc, these are:
->>         IFLA_CAN_TDC_TDCV
->>         IFLA_CAN_TDC_TDCO
->>         IFLA_CAN_TDC_TDCF
->>
->> This is done so that changes can be applied in the future to the
->> structures without breaking the netlink interface.
->>
->> The TDC netlink logic works as follow:
->>
->>  * CAN_CTRLMODE_FD is not provided:
->>     - if any TDC parameters are provided: error.
->>
->>     - TDC parameters not provided: TDC parameters unchanged.
->>
->>  * CAN_CTRLMODE_FD is provided and is false:
->>      - TDC is deactivated: both the structure and the
->>        CAN_CTRLMODE_TDC_{AUTO,MANUAL} flags are flushed.
->>
->>  * CAN_CTRLMODE_FD provided and is true:
->>     - CAN_CTRLMODE_TDC_{AUTO,MANUAL} and tdc{v,o,f} not provided: call
->>       can_calc_tdco() to automatically decide whether TDC should be
->>       activated and, if so, set CAN_CTRLMODE_TDC_AUTO and uses the
->>       calculated tdco value.
-> 
-> This is not reflected in the code (see below).
+kernel test robot noticed the following build warnings:
 
-Let me first repost what I wrote but this time using numerals and letters
-instead of the bullet points:
+[auto build test WARNING on net/main]
+[also build test WARNING on net-next/main linus/master next-20250530]
+[cannot apply to horms-ipvs/master v6.15]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-  The TDC netlink logic works as follow:
+url:    https://github.com/intel-lab-lkp/linux/commits/Pavel-Begunkov/net-timestamp-add-helper-returning-skb-s-tx-tstamp/20250530-201922
+base:   net/main
+patch link:    https://lore.kernel.org/r/2308b0e2574858aeef6837f4f9897560a835e0f7.1748607147.git.asml.silence%40gmail.com
+patch subject: [PATCH 5/5] io_uring/netcmd: add tx timestamping cmd support
+config: riscv-randconfig-r121-20250531 (https://download.01.org/0day-ci/archive/20250531/202505311513.4gHg718O-lkp@intel.com/config)
+compiler: riscv64-linux-gcc (GCC) 10.5.0
+reproduce: (https://download.01.org/0day-ci/archive/20250531/202505311513.4gHg718O-lkp@intel.com/reproduce)
 
-   1. CAN_CTRLMODE_FD is not provided:
-      a) if any TDC parameters are provided: error.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202505311513.4gHg718O-lkp@intel.com/
 
-      b) TDC parameters not provided: TDC parameters unchanged.
+sparse warnings: (new ones prefixed by >>)
+   io_uring/cmd_net.c:59:32: sparse: sparse: array of flexible structures
+   io_uring/cmd_net.c: note: in included file:
+   io_uring/uring_cmd.h:21:59: sparse: sparse: array of flexible structures
+>> io_uring/cmd_net.c:94:55: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected restricted __poll_t [usertype] mask @@     got int @@
+   io_uring/cmd_net.c:94:55: sparse:     expected restricted __poll_t [usertype] mask
+   io_uring/cmd_net.c:94:55: sparse:     got int
 
-   2. CAN_CTRLMODE_FD is provided and is false:
-      a) TDC is deactivated: both the structure and the
-         CAN_CTRLMODE_TDC_{AUTO,MANUAL} flags are flushed.
+vim +94 io_uring/cmd_net.c
 
-   3. CAN_CTRLMODE_FD provided and is true:
-      a) CAN_CTRLMODE_TDC_{AUTO,MANUAL} and tdc{v,o,f} not provided: call
-         can_calc_tdco() to automatically decide whether TDC should be
-         activated and, if so, set CAN_CTRLMODE_TDC_AUTO and uses the
-         calculated tdco value.
+    81	
+    82	static int io_uring_cmd_timestamp(struct socket *sock,
+    83					  struct io_uring_cmd *cmd,
+    84					  unsigned int issue_flags)
+    85	{
+    86		struct sock *sk = sock->sk;
+    87		struct sk_buff_head *q = &sk->sk_error_queue;
+    88		struct sk_buff *skb, *tmp;
+    89		struct sk_buff_head list;
+    90		int ret;
+    91	
+    92		if (!(issue_flags & IO_URING_F_CQE32))
+    93			return -EINVAL;
+  > 94		ret = io_cmd_poll_multishot(cmd, issue_flags, POLLERR);
+    95		if (unlikely(ret))
+    96			return ret;
+    97	
+    98		if (skb_queue_empty_lockless(q))
+    99			return -EAGAIN;
+   100		__skb_queue_head_init(&list);
+   101	
+   102		scoped_guard(spinlock_irq, &q->lock) {
+   103			skb_queue_walk_safe(q, skb, tmp) {
+   104				/* don't support skbs with payload */
+   105				if (!skb_has_tx_timestamp(skb, sk) || skb->len)
+   106					continue;
+   107				__skb_unlink(skb, q);
+   108				__skb_queue_tail(&list, skb);
+   109			}
+   110		}
+   111	
+   112		while (1) {
+   113			skb = skb_peek(&list);
+   114			if (!skb)
+   115				break;
+   116			if (!io_process_timestamp_skb(cmd, sk, skb, issue_flags))
+   117				break;
+   118			__skb_dequeue(&list);
+   119			consume_skb(skb);
+   120		}
+   121	
+   122		if (!unlikely(skb_queue_empty(&list))) {
+   123			scoped_guard(spinlock_irqsave, &q->lock)
+   124				skb_queue_splice(q, &list);
+   125		}
+   126		return -EAGAIN;
+   127	}
+   128	
 
-      b) CAN_CTRLMODE_TDC_AUTO and tdco provided: set
-         CAN_CTRLMODE_TDC_AUTO and use the provided tdco value. Here,
-         tdcv is illegal and tdcf is optional.
-
-      c) CAN_CTRLMODE_TDC_MANUAL and both of tdcv and tdco provided: set
-         CAN_CTRLMODE_TDC_MANUAL and use the provided tdcv and tdco
-         value. Here, tdcf is optional.
-
-      d) CAN_CTRLMODE_TDC_{AUTO,MANUAL} are mutually exclusive. Whenever
-         one flag is turned on, the other will automatically be turned
-         off. Providing both returns an error.
-
-      e) Combination other than the one listed above are illegal and will
-         return an error.
-
-You can double check that it is the exact same as before.
-
-> By default, a CAN-FD interface comes up in TDC-AUTO mode (if supported),
-> using a calculated tdco value.  However, enabling "tdc-mode auto"
-> explicitly from userland requires also specifying an explicit tdco
-> value.  I.e.
-> 
->     ip link set can0 type can bitrate 500000 dbitrate 8000000 fd on
-                                                                ^^^^^
-Here:
-
-  - CAN_CTRLMODE_FD provided and is true: so we are in close 3.
-
-  - CAN_CTRLMODE_TDC_{AUTO,MANUAL} and tdc{v,o,f} not provided: so we *are* in
-    sub-clause a)
-
-3.a) tells that the framework will decide whether or not TDC should be
-activated, and if activated, will set the TDCO.
-
-> gives "can <FD,TDC-AUTO>" and "tdcv 0 tdco 3", while
-
-Looks perfectly coherent with 3.a)
-
-Note that with lower data bitrate, the framework might have decided to set TDC off.
-
->     ip link set can0 type can bitrate 500000 dbitrate 8000000 fd on
-> tdc-mode auto
-
-This time:
-
-  - CAN_CTRLMODE_FD provided and is true: so we are in close 3.
-
-  - CAN_CTRLMODE_TDC_AUTO is provided, we are *not* in sub-clause a)
-
-  - tdco is not provided.
-
-No explicit clauses matches this pattern so it defaults to the last
-sub-clause: e), which means an error.
-
-> gives:
-> 
->     tdc-mode auto: RTNETLINK answers: Operation not supported
-
-Looks perfectly coherent with 3.e)
-
-> unless I add an explicit "tdco 3".
-
-Yes, if you provide tcdo 3, then you are under 3.b).
-
-> According to your commit description, this is not the expected behavior?
-> Thanks!
-
-Looking back to my commit, I admit that the explanation is convoluted and could
-be hard to digest, but I do not see a mismatch between the description and the
-behaviour.
-
-
-Yours sincerely,
-Vincent Mailhol
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
