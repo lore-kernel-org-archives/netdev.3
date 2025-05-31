@@ -1,213 +1,122 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742AE22D4EB;
-	Sat, 31 May 2025 08:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B16F20F081;
+	Sat, 31 May 2025 08:52:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748680883; cv=none; b=LYcX+zbmTU/XI01QkuCk/mtMTQMd6SE02ZjMgM4l40KSpH6+tOgI0NlpZhSn+mMoy4FLKdQ59wbqhGOKJV2vlKzJWshBLYJF1j87OjAiXrdrjuGEPT1Pqz0aYjaKHmSDjwK0kzWRQrsic2Y3bhRZA9Yl+mxTNNKt2jjyKqA8meM=
+	t=1748681528; cv=none; b=fB8NVB7wjKfDRAf7imm7S/RP+z/BOb4w7EScoe2v+4eBvVt5NIW1qDgvxF3B0Ke7lwcRhTIZTHszaa7SMznCEAnkr+WL0te99ZKaaaN0NP/uiB+xb6SDIsBPvEiB76j14baH/okzaT91yL7Galvc8tvAOX6k/WD2/DHQlum+8dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748680883; c=relaxed/simple;
-	bh=799jq6gFPy5XEnSwpA8+a+qrM154nWLIKmOn7fwmLLM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vBHrfle7UTf4/JkvtUqgrc7tDTMJ6iTcunmLxGe473WcQm/rYTGYgxAvT3aVJ8vYtBW6GztZSZyJmxika86wHXVT5erekiYyfbLo/ehRPSqGgspf5GqNe1pSJnaMaJzdhwKohQjH/pp/3898xncUhSBzGa81ELV3+W/AhCjlR6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=i3bZKa+/; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	s=arc-20240116; t=1748681528; c=relaxed/simple;
+	bh=REe60zlbqeu01BOJVePubuQZLx8kofDHdn8NxkEDkks=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vblc3wbrUEjjHjqzV0r1WzwN+Y04r5kHgA7p1rpgEGfALyDD48/6jV5Myyh12mZ2vckt07UartyglysDrMVQ9vsSW/SIDfUHdTRTLkMvzULWzmcviqeaybNt3KzaEZ+JAhDBiMBENdYcXg7EORI2DSuOecixdJpJe8UnhPo9vwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OfGgbmJX; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="i3bZKa+/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1748680271;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jll3XeKX99pWqsCTGFwx78r84HFnraGM4zNForfuar4=;
-	b=i3bZKa+/0lAKv8gR00vmayeK2aJiwvdrqTxJxAaXTEBLkXOwvbc+zORX/B0oIwems0YMAN
-	tu5Sv+Sn0Pl2VSVzj8GwBCls8lvt8IS8RO+QwBCo8vYYPt+Ib5EHQmEFIACe0fAeXvF+NY
-	oiW/bKeKsUqSJdNcoLoAa9ErZ/nl78A=
-From: Sven Eckelmann <sven@narfation.org>
-To: Marek Lindner <marek.lindner@mailbox.org>,
- Simon Wunderlich <sw@simonwunderlich.de>,
- Antonio Quartulli <antonio@mandelbit.com>,
- Matthias Schiffer <mschiffer@universe-factory.net>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH batadv 1/5] batman-adv: store hard_iface as iflink private data
-Date: Sat, 31 May 2025 10:31:07 +0200
-Message-ID: <4075596.ElGaqSPkdT@sven-desktop>
-In-Reply-To:
- <0b26554afea5203820faef1dfb498af7533a9b5d.1747687504.git.mschiffer@universe-factory.net>
-References:
- <0b26554afea5203820faef1dfb498af7533a9b5d.1747687504.git.mschiffer@universe-factory.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OfGgbmJX"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-747abb3cd0bso2271810b3a.1;
+        Sat, 31 May 2025 01:52:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748681526; x=1749286326; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=REe60zlbqeu01BOJVePubuQZLx8kofDHdn8NxkEDkks=;
+        b=OfGgbmJXuMm78Aj4iSx6+p9leW+M+/20Imo7fyu9h5grrRJQGMyvrSu27mzEPEeJvI
+         VaC1+o3Yxu8JAA3GK2DDXcAC7Yb6NsvikX+krkuFi1a/vmXs4U0YlOJhO2z2vjVbIOtk
+         DBTpCMqE+DzNIWOYC5/5whoK5SFkcFuYDZVqYCwbpw6Yce1WJpG6o+verNUaXTE9nz33
+         3ShA0cfM4XqNyKbAC7cJc9tFPA8O90kT0tXoclQkFSH9XTEFFpWnnwDYV0ag78gYQ5BS
+         EghIYqx7y+J8dNBj4bRTlH+PxXMlACtzn/KOXBOvBqsL37JmlvyGHTpyo7vhSlu1xyLw
+         gP1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748681526; x=1749286326;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=REe60zlbqeu01BOJVePubuQZLx8kofDHdn8NxkEDkks=;
+        b=iJvlp402iaAbL+80dN4DcdB+Zh3EA2A7KQP6lFqqkBClhqWG85/whBGgexqyrp4Br4
+         I5Ndy6EpkxAFI9IpQauggCUdoetyb6JTIMxVbJJDQhdbv1vu4/bbquDf04ST8pby2rXu
+         6fy8PrjyjD+qGDWc1jZ+Efr1ASkNiDa3FIWAsasj+fSyUSynePvKoHWDTEx5S4zt+jyF
+         VkqWoUp+WYC5zePNVQgedWVGroXUIL8c8anLEx/KjOWMH5XKoFG1RRwqEOjbH2/qbmkZ
+         Yv1MQzKNoUsjXwbtkcGD3WsDrQZSAoX3T3gZNcTcyJPnwcLk1Q9lAZ0usa89I+byuMQm
+         D0mQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVKpWehzOVBvFXctH/1P+wU/oTGWz52v2QNhdR7ecT3uwlmo4kEC1x4JLju7JilWP9yYY8=@vger.kernel.org, AJvYcCVsgL/LP2e6Cj3eaKEo8IEBOMirbOgg/hkkpLk3S8RoZqhYyLUpHJZ+2uMxao3ZkMrvQnn9Vbhe0/4MYoRJ@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywt73fvdcFU73J7YW2qQwRucRFBBSaDAyrFmcGdBj5jT/PHitHR
+	PWbnHGZzVBPu76pVrDOXVGQzalCrYk5LotzbgKQEb/cT6bIgTah96JYH
+X-Gm-Gg: ASbGnctsX+3POIXwDxLtWP552ax8BTj54CDhc7DvUVvLNCU8LLRxvZCu33WYUOptsq8
+	YOSXBx5Z6bc3nC5XmKM8HbEEmaLqUOtqZlJt+qUzXKDMbt+HWG3yX2IWGsj4Eu2UCNUr5VfKGmL
+	k3X7ekkl9D0J8ZLF1f2dlNi20f/gU4tPXE9YdYm0BJIp27FMM4P3J4ygpj5+f2mNe+0tVhDIHd2
+	tuWJWAHnBiHWf1MFJqLEtsviMkLwOwazJyaPL3x5Md9K75ZwGnEh/JSc9qPgq8EDL+zXOrHFXtV
+	SfNCqz09hDLr33FhP4b2841CeelhenzPYsc5g011PnbH7xMAv+RfR3KTtkS2tSMjrkvR3ObDbE4
+	t721rVXI9FZ4JmH8/+y03nqGG/AThdzbwYDcnZslb
+X-Google-Smtp-Source: AGHT+IFrK8g6/dGJ+qH8DK2puY7/mPl63dYSmPTZk3WE+0FNPHkZ94c11mvWpcO4rQ5k5aBxw+s1VQ==
+X-Received: by 2002:a17:903:1a0b:b0:234:71c1:d34f with SMTP id d9443c01a7336-234f67a7c06mr152428215ad.8.1748681525735;
+        Sat, 31 May 2025 01:52:05 -0700 (PDT)
+Received: from ?IPV6:2001:ee0:4f0e:fb30:af83:9564:6a79:4f18? ([2001:ee0:4f0e:fb30:af83:9564:6a79:4f18])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23506cd362fsm39298485ad.116.2025.05.31.01.52.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 31 May 2025 01:52:05 -0700 (PDT)
+Message-ID: <ef4ac528-3f91-4004-b47b-e758a5712d28@gmail.com>
+Date: Sat, 31 May 2025 15:51:57 +0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart6691312.GXAFRqVoOG";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH net-next v2 2/2] selftests: net: add XDP socket tests
+ for virtio-net
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: netdev@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+References: <20250527161904.75259-1-minhquangbui99@gmail.com>
+ <20250527161904.75259-3-minhquangbui99@gmail.com> <aDhCfxHo3M5dxlpH@boxer>
+ <fe162eed-fd44-4c18-a541-8243ccfc4252@gmail.com> <aDmaT1cmoRa6PaqK@boxer>
+Content-Language: en-US
+From: Bui Quang Minh <minhquangbui99@gmail.com>
+In-Reply-To: <aDmaT1cmoRa6PaqK@boxer>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
---nextPart6691312.GXAFRqVoOG
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-Date: Sat, 31 May 2025 10:31:07 +0200
-Message-ID: <4075596.ElGaqSPkdT@sven-desktop>
-MIME-Version: 1.0
+On 5/30/25 18:45, Maciej Fijalkowski wrote:
+> On Thu, May 29, 2025 at 09:29:14PM +0700, Bui Quang Minh wrote:
+>> On 5/29/25 18:18, Maciej Fijalkowski wrote:
+>>> On Tue, May 27, 2025 at 11:19:04PM +0700, Bui Quang Minh wrote:
+>>>> This adds a test to test the virtio-net rx when there is a XDP socket
+>>>> bound to it. There are tests for both copy mode and zerocopy mode, both
+>>>> cases when XDP program returns XDP_PASS and XDP_REDIRECT to a XDP socket.
+>>>>
+>>>> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+>>> Hi Bui,
+>>>
+>>> have you considered adjusting xskxceiver for your needs? If yes and you
+>>> decided to go with another test app then what were the issues around it?
+>>>
+>>> This is yet another approach for xsk testing where we already have a
+>>> test framework.
+>> Hi,
+>>
+>> I haven't tried much hard to adapt xskxceiver. I did have a look at
+>> xskxceiver but I felt the supported topology is not suitable for my need. To
+>> test the receiving side in virtio-net, I use Qemu to set up virtio-net in
+>> the guest and vhost-net in the host side. The sending side is in the host
+>> and the receiving is in the guest so I can't figure out how to do that with
+>> xskxceiver.
+> I see - couldn't the python side be executing xdpsock then instead of your
+> own app?
 
-On Monday, 19 May 2025 22:46:28 CEST Matthias Schiffer wrote:
-> By passing the hard_iface to netdev_master_upper_dev_link() as private
-> data, we can iterate over hardifs of a mesh interface more efficiently
-> using netdev_for_each_lower_private*() (instead of iterating over the
-> global hardif list). In addition, this will enable resolving a hardif
-> from its netdev using netdev_lower_dev_get_private() and getting rid of
-> the global list altogether in the following patches.
-> 
-> A similar approach can be seen in the bonding driver.
-> 
-> Signed-off-by: Matthias Schiffer <mschiffer@universe-factory.net>
-> ---
->  net/batman-adv/bat_algo.h       |  1 -
->  net/batman-adv/bat_iv_ogm.c     | 25 +++++++--------------
->  net/batman-adv/bat_v.c          |  6 ++---
->  net/batman-adv/bat_v_elp.c      |  7 ++----
->  net/batman-adv/bat_v_ogm.c      | 12 ++++------
->  net/batman-adv/hard-interface.c | 39 ++++++++++++---------------------
->  net/batman-adv/main.c           |  6 ++---
->  net/batman-adv/mesh-interface.c |  6 ++---
->  net/batman-adv/multicast.c      |  6 ++---
->  net/batman-adv/netlink.c        |  6 ++---
->  net/batman-adv/originator.c     |  6 ++---
->  net/batman-adv/send.c           |  6 ++---
->  12 files changed, 43 insertions(+), 83 deletions(-)
+I'm not aware of xdpsock. Could you give the path to that file?
 
-Looks mostly good - I just want to modify the includes slightly (if it is ok for you):
-
-index c165dede..ba5bea4c 100644
---- a/net/batman-adv/bat_algo.c
-+++ b/net/batman-adv/bat_algo.c
-@@ -14,6 +14,7 @@
- #include <linux/skbuff.h>
- #include <linux/stddef.h>
- #include <linux/string.h>
-+#include <linux/types.h>
- #include <net/genetlink.h>
- #include <net/netlink.h>
- #include <uapi/linux/batman_adv.h>
-diff --git a/net/batman-adv/bat_algo.h b/net/batman-adv/bat_algo.h
-index 898c71b5..cdd1ccfe 100644
---- a/net/batman-adv/bat_algo.h
-+++ b/net/batman-adv/bat_algo.h
-@@ -11,7 +11,6 @@
-
- #include <linux/netlink.h>
- #include <linux/skbuff.h>
--#include <linux/types.h>
-
- extern char batadv_routing_algo[];
-
-diff --git a/net/batman-adv/bat_v_elp.c b/net/batman-adv/bat_v_elp.c
-index 56b6216f..8df2dcc2 100644
---- a/net/batman-adv/bat_v_elp.c
-+++ b/net/batman-adv/bat_v_elp.c
-@@ -35,7 +35,6 @@
- #include <net/cfg80211.h>
- #include <uapi/linux/batadv_packet.h>
-
--#include "bat_algo.h"
- #include "bat_v_ogm.h"
- #include "hard-interface.h"
- #include "log.h"
-diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
-index 5c955ac2..cab83d37 100644
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -22,7 +22,6 @@
- #include <linux/mutex.h>
- #include <linux/netdevice.h>
- #include <linux/random.h>
--#include <linux/rculist.h>
- #include <linux/rcupdate.h>
- #include <linux/skbuff.h>
- #include <linux/slab.h>
-@@ -33,7 +32,6 @@
- #include <linux/workqueue.h>
- #include <uapi/linux/batadv_packet.h>
-
--#include "bat_algo.h"
- #include "hard-interface.h"
- #include "hash.h"
- #include "log.h"
-diff --git a/net/batman-adv/main.c b/net/batman-adv/main.c
-index af1e644b..d41ce799 100644
---- a/net/batman-adv/main.c
-+++ b/net/batman-adv/main.c
-@@ -27,7 +27,6 @@
- #include <linux/module.h>
- #include <linux/netdevice.h>
- #include <linux/printk.h>
--#include <linux/rculist.h>
- #include <linux/rcupdate.h>
- #include <linux/skbuff.h>
- #include <linux/slab.h>
-diff --git a/net/batman-adv/netlink.c b/net/batman-adv/netlink.c
-index 35d7ecee..5afb1b70 100644
---- a/net/batman-adv/netlink.c
-+++ b/net/batman-adv/netlink.c
-@@ -20,7 +20,6 @@
- #include <linux/if_vlan.h>
- #include <linux/init.h>
- #include <linux/limits.h>
--#include <linux/list.h>
- #include <linux/minmax.h>
- #include <linux/netdevice.h>
- #include <linux/netlink.h>
-diff --git a/net/batman-adv/originator.c b/net/batman-adv/originator.c
-index 5e4168f8..c13e05d3 100644
---- a/net/batman-adv/originator.c
-+++ b/net/batman-adv/originator.c
-@@ -29,7 +29,6 @@
- #include <linux/workqueue.h>
- #include <uapi/linux/batadv_packet.h>
-
--#include "bat_algo.h"
- #include "distributed-arp-table.h"
- #include "fragmentation.h"
- #include "gateway_client.h"
-diff --git a/net/batman-adv/send.c b/net/batman-adv/send.c
-index 788fcfd1..a9929948 100644
---- a/net/batman-adv/send.c
-+++ b/net/batman-adv/send.c
-@@ -21,7 +21,6 @@
- #include <linux/list.h>
- #include <linux/netdevice.h>
- #include <linux/printk.h>
--#include <linux/rculist.h>
- #include <linux/rcupdate.h>
- #include <linux/skbuff.h>
- #include <linux/slab.h>
-
-Thanks,
-	Sven
---nextPart6691312.GXAFRqVoOG
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCaDq+SwAKCRBND3cr0xT1
-y3drAQC++qUIxjP/5zx4qVUE0mPTESzY622rxoVLLdoMxpjWmwEAxQfC0Aj4rQZN
-/JLZqkC1kiWXGPIigQVmK6Q+O3cnYQw=
-=0ODT
------END PGP SIGNATURE-----
-
---nextPart6691312.GXAFRqVoOG--
-
-
-
+> I wouldn't like to end up with several xsk tools for testing data path on
+> different environments.
