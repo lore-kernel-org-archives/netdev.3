@@ -1,104 +1,120 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607321EB1BC
-	for <netdev@vger.kernel.org>; Mon,  2 Jun 2025 09:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CAE145A03;
+	Mon,  2 Jun 2025 10:09:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748858178; cv=none; b=DYOmneeLB+ntI9QGZR512QMZPOup3eKlXloiwuLbFiL/EcbL0FviWZrhGstx/f51xFBp12PbeGhr5p2EHYxSokjEzJLTDI7C55eMU6175ycWvbbQG5XLEMguTeG+1LDa7e9u6q1jxy88KjXg+3sRNGRfTdjtt1DGFWBTasTlYIk=
+	t=1748858955; cv=none; b=doVceS0eDHiczHEJe2HPw92Q4sjC+W+hFpBEhymhTBzr3cpDqyd+FFBhqxnPTuaSFBHnYtKaUjII/RhTGN+HtYZb/AMoRnnM9pI7+9C+BFzEMBhbgrlWnTmquK5JHD6ry1r2QtY0tJqwusY2pu7LbOqjklKZ5USDghMJb63Vzo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748858178; c=relaxed/simple;
-	bh=I5fhIcX9R5LzAmpupA2doeAUw0q6Egg1zDl0/wS0r10=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=f0kNdHwIG9wcH3bRnOr9G9oc0DynqKnuGdMvntrbzGZgmlDWMt61b/rl+sJXQXOsAagr1zLOufQ55N6rcfeHdXrjyAF0cBySod17F6QHtvQE2lbbXqLBvP8Z8Hv73T8wbPpurv0qLqNdll+b5/Av7IrOazoeTEIUB8f+A6HjfFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tJS4Ixnh; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1748858955; c=relaxed/simple;
+	bh=cRXyGV9qMxw7Mqp385RRXEvnMD2ezN2tcInOJSKGL4Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XiSU4v/8jmiDqV8kKWcoGcG4jhK7HP18D81KPC7LtSpVYLA8BoDwYWKDKT+zY2CRs3fxkqU2QHBSK/9Oo4IoqciFmP8wDwY46/32cIshTV2TCDULlRVEmlgVj7Sp+78sf1+8b7iiECNJX9CavthoNSgDFS4mkCIO4AXwU1++NYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sZ9AVCX8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tJS4Ixnh"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7c922169051so208016785a.0
-        for <netdev@vger.kernel.org>; Mon, 02 Jun 2025 02:56:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748858176; x=1749462976; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I5fhIcX9R5LzAmpupA2doeAUw0q6Egg1zDl0/wS0r10=;
-        b=tJS4IxnhZVLPuRCSlcvZ5MsISx3ym21vfQ2Z6wl9Etaxg5vBWnbEnXNt8fZndy74hn
-         6lNuvxmQHSvnXvjmiOHzdN4ibvrhpx2a3vleg447HY9vAy1xLEM2jTAofB7VIfOm604o
-         lq/s7cFhqnfIUaACw43RW4wWU3rohWnmC0ALFPwveCyAMEf01lopOqyepppxvvzmVkQn
-         7tY3LwUDfvowBisLLwEHsdcf+c9yb/fuVzYHnjhbyFN6aXK0VfKsE/DI1wO2dBOPQ4OK
-         8bPepC5IdQv5849Vj+8K4qRfyBfHjHW2fBlJdppNDXLzQQU7ArzIrG7cTIqRLV2NBc0g
-         MNYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748858176; x=1749462976;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I5fhIcX9R5LzAmpupA2doeAUw0q6Egg1zDl0/wS0r10=;
-        b=mA7Pc6DSWlZgzFgAtOZVmFUaWnUPfp2BD764nk5jBXD+sh1KXzkI8qO1mKGe9oedsY
-         V0HGZVdS7bMCGSZKKVupcuzRvoGrttv24/IjOUVHE5ggnJh9y1m6fZy0NEPgEipPOK0a
-         7khmR238kCtwYJAk3myuDKDG6FWXwDqAuDdEXceyI7nePVfmyWpw7vqLmK5oBdx8Geog
-         gup8hdYzgTA3/PaHtsELvDl3tGb5ZbhFJL2uX02zCvrDCl71ukPwsxyqIS38OrV0s1If
-         wej2JLcqh5ppvyDLaPqygLJjGVTssGe8g4RznYRc5XWs6Ub+5KFuGISebT9ysHr4RgTX
-         BdPA==
-X-Forwarded-Encrypted: i=1; AJvYcCUWT5vwlSMxmEmh+ImO7ypaU2KRbZqp459CxWri9AB+VTyEI4rG+Or6a0oWhTvd6X6Q767W4KY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeWbWYvlkqh1KRfK5urMm1jqeWjushB7cOzlaJHKDKqsHXWMk+
-	zff/dEO/TLG7NoQEEq+kgVrtrJ1Z89/KeiWskYH5kDZFADEsnaV3eQrzsojJD7cpj05JHbovisl
-	20BAqkRHV5GXVnAOrMIHROvnXO/g0vOG5nj0wqR4W
-X-Gm-Gg: ASbGnctwMmXWP15TktWxzDq/RJPJxANTslJVoivupWD2t3rHCHagXmfes3BJlh/joqw
-	182LTyrjqGnZt/dnrGxp1XThTo4xNuQw9U4tgwdGy9Mqg5RIxquSVE1UEOxa9hqUe5CVuUUxtzq
-	yhAS2yV0pU2J3vz07NeEyxsO1+dvYXsmYn+7sb1PrpZhixAgciiglh
-X-Google-Smtp-Source: AGHT+IGmwhaOBW7VbwSOv1WMBKd6SlJI+wIxiB0zoKBYNRY6n8byD9lTOYsYwTbeAUBOkAF9KY/tvnaFVR/Hn7bYeIU=
-X-Received: by 2002:ac8:5391:0:b0:4a5:912a:7c64 with SMTP id
- d75a77b69052e-4a5912a7c9dmr19160701cf.30.1748858175900; Mon, 02 Jun 2025
- 02:56:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sZ9AVCX8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2E2C4CEED;
+	Mon,  2 Jun 2025 10:09:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748858954;
+	bh=cRXyGV9qMxw7Mqp385RRXEvnMD2ezN2tcInOJSKGL4Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sZ9AVCX8QlaO1eU5+e/V4+wmAtmoR+O90JNKpPuqgjuBEtwz6ItI4NGxCl7FAw+Go
+	 O4yvCDH68ZzCToyax7IZRmSKl92rOP7f13CJ2S8XY+oWWwbRZVshmkyY8Rcy7Ch6Vs
+	 GJ8SgrAv/VynrWMd32K865XGk0QPAp3xJYxTcRunNhw5ZvmEQE06x9cMGKa7ySg68N
+	 BaAZdQzMHqxZaUj5PkibScRal3giqFsH5Dpl6lANCV+CLU6ECzC2OfD56/GUUQ03ep
+	 iJyUj1aD2LD1QxGWg/ZkqCBDqrJiMskSNsyEq2XNjFBC5+2FhV5CVuvignrQEzSczJ
+	 rj+i7Syk3tfLQ==
+Message-ID: <0459644e-cb62-441b-8fac-b7b50d484880@kernel.org>
+Date: Mon, 2 Jun 2025 12:09:09 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250601193428.3388418-1-alok.a.tiwari@oracle.com>
- <CAHS8izOqWWdsEheAFSwOtzPM98ZudP7gKZMECWUhcU1NCLnwHA@mail.gmail.com>
- <cc05cbf5-0b59-4442-9585-9658d67f9059@oracle.com> <bf4f1e06-f692-43bf-9261-30585a1427d7@oracle.com>
-In-Reply-To: <bf4f1e06-f692-43bf-9261-30585a1427d7@oracle.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 2 Jun 2025 02:56:04 -0700
-X-Gm-Features: AX0GCFvShUBo8WbtS-wLZUcQnyH6CFG5ESUmItrjErL_sH8T6UjJdi1uunrIFUE
-Message-ID: <CANn89iJS9UNvotxXx7f920-OnxLnJ2CjWSUtvaioOMqGKNJdRg@mail.gmail.com>
-Subject: Re: [PATCH] gve: add missing NULL check for gve_alloc_pending_packet()
- in TX DQO
-To: ALOK TIWARI <alok.a.tiwari@oracle.com>
-Cc: Mina Almasry <almasrymina@google.com>, bcf@google.com, joshwash@google.com, 
-	willemb@google.com, pkaligineedi@google.com, pabeni@redhat.com, 
-	kuba@kernel.org, jeroendb@google.com, hramamurthy@google.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, darren.kenny@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH] mptcp: fix typos in comments
+Content-Language: en-GB, fr-BE
+To: moyuanhao3676@163.com
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
+ linux-kernel@vger.kernel.org, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org
+References: <20250530181004.261417-1-moyuanhao3676@163.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20250530181004.261417-1-moyuanhao3676@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 2, 2025 at 1:50=E2=80=AFAM ALOK TIWARI <alok.a.tiwari@oracle.co=
-m> wrote:
->
-> Hi Mina,
->
-> On 02-06-2025 01:21, ALOK TIWARI wrote:
-> > Patch itself looks good to me, but if you can, please designate it to
-> > the net tree by prefixing the patch with `[PATCH net v2]` as mentioned
-> > in our docs:
-> >
-> > https://urldefense.com/v3/__https://docs.kernel.org/process/maintainer-
-> > netdev.html__;!!ACWV5N9M2RV99hQ!JPpnRT9itx84rhzAaeGelVD-
-> > bnJR8vFksx2OjGzAKZWf_A6o8hEY0CUMMUO_NuSStcCyBGnvhoJAJlADszR4D_aj$
-> >
-> > Also, if possible, add `Fixes: commit a57e5de476be ("gve: DQO: Add TX
-> > path")` to give it a chance to get picked up by stable trees.
->
-> I believe commit a6fb8d5a8b69 is a more natural and appropriate
-> candidate for the Fixes tag compared to a57e5de476be
-> What=E2=80=99s your take on this, Mina?
+Hi moyuanhao,
 
-Mina is right. Bug was added back in 2021.
+On 30/05/2025 20:10, moyuanhao3676@163.com wrote:
+> From: moyuanhao <moyuanhao3676@163.com>
+> 
+> This patch fixes the spelling mistakes in comments.
+> greter -> greater
 
-Fixes: a57e5de476be ("gve: DQO: Add TX path")
+Thank you for the patch. It looks good to me:
+
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
+But please note that net-next is closed, so this patch should not have
+been sent now:
+
+https://docs.kernel.org/process/maintainer-netdev.html#git-trees-and-patch-flow
+
+I will apply this patch in MPTCP tree, and send it later with others.
+
+pw-bot: deferred
+
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
+
