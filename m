@@ -1,216 +1,202 @@
-Received: from out.smtpout.orange.fr (out-71.smtpout.orange.fr [193.252.22.71])
-	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12olkn2051.outbound.protection.outlook.com [40.92.21.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01EE1F461D;
-	Mon,  2 Jun 2025 12:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.71
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748869046; cv=none; b=UdqDGwqnFKRoATRXYT/6rLofbv1Zrj5gIPEGiokSZ92Py5BeCG0RkaPGFxP/vKKwz/mMp+p4Q7Ei53VWjdYyPMyVm9VeEmnqyXNlo+ueOQ+BzPERGY1iXD09pPvT/ez7x61umKzNNBj9Szay1+C2t/3KEqMEDEiQZDgz23o29iw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748869046; c=relaxed/simple;
-	bh=1T+4SjlPktQEfdR3wxZEdOF+qZdvMuowjfd72KE39/E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Gfj0osIgjZvQAPmyr44hMmUKyQYpJmflmQZIRtLCqUjw8h6+bQgnQjK/Kv3eIJ7f8cKC2Z1wNJ7XM9Ej/f2IX+TLx2mkdiVk5xJ1IkihFkkG0jHK/YqLeP+nDUBZ4OwJS9BIiWVUqVTCXORKMdJbCbRESaITrZN9pZhSasqbss0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=hMTyHcPG; arc=none smtp.client-ip=193.252.22.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F2E20103A;
+	Mon,  2 Jun 2025 13:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.21.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748869351; cv=fail; b=D3GE16b+Fg+yMeKf6jbgdQXLAHbExWnk04bLMXaeeXfXviPg51YHSaU4UVuWAGqz6Cqlg5yV/+nUnRZdlUKPkvb6Wwj+c0TodTkwexKL6v1x/oro20Pxl/aLBtRsbqUc8FWLdZrXDEdM+1cR67gN6HwVexYC7kp/ZXgWtDNAviI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748869351; c=relaxed/simple;
+	bh=ZelE1w56P1qnBGRWArylvO9Lewdw7ibV6z4aJ0qLNBw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=cZbcmb7y1VwDBboltVLDmC+jD5W4FOcAG2ebup1pJJEDDtuI4YRBcxJnO+nX2yc6zvL7kPBGOuXRz1uo8uhUV76gHFDaH+XFoHWutgtsuMLY54M7Ymc/SthFqYkcMuq7fkdhV4shVq7rvh4CNDYyGHoCvgXPq6JRB67slV3KUkQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=K38IspeV; arc=fail smtp.client-ip=40.92.21.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="hMTyHcPG"
-Received: from [172.16.82.72] ([124.33.176.97])
-	by smtp.orange.fr with ESMTPA
-	id M4hyu0vvBVLIhM4hzubQOb; Mon, 02 Jun 2025 14:56:09 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1748868969;
-	bh=tJpgnt56+6gsOzEu20toZVeHIgDQ2dRsyJW0tnHgKwU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=hMTyHcPGlhHISDzQz5qTSzqnDykQUtWBMCIHzWUVj2pdesekSkWwhFfyMuuJwLfNa
-	 UQaDLpOwEnOra0eVwbcoeXPA2VD6Tuz/XFbegSLffE2EXvWufC6f3rCVTsvLpXCYyS
-	 gxWqq11aRkNodTBMMRdiqyTlCyVxfgql6CnE2lXt9rnxdAlQsqiuiKir8jHK4Cag7j
-	 +Kmp4DqQOaLPeY7C2WGEJ09sL/qGDYQP3XZXlK05E5drY/TD3mkSDfPnMZbcxdlPAQ
-	 wAyqk7Hn/XK70Fu8yuKqqL7uVT5cybD8bPOgcjnFVxRZscDpnZT+140aG2+BfCFrb+
-	 OX5CSooo41hsw==
-X-ME-Helo: [172.16.82.72]
-X-ME-Auth: bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 02 Jun 2025 14:56:09 +0200
-X-ME-IP: 124.33.176.97
-Message-ID: <ad3dbd97-eb25-41bc-a105-1fd328b53899@wanadoo.fr>
-Date: Mon, 2 Jun 2025 21:56:05 +0900
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="K38IspeV"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MQ5EecKJwGxDf/MC7aKwkI2zHcy+mS8sbxFCXbPoKC85ltUCNN3+WwZU9BNDpdbPS0IfyOtNq+0mIaEyiptxi8VP82IzK/znTYUO01tnGexo9CZI9Od/8aSfCeW+WJg/c8OOQKTj1Ccj/B2DPEGOIFZ3P9HemjSAMK2qkU8Cwf5mvhAmEJhnjU/u0ZMTBxQ+Bs4V5EhjhVn99Z7ID1GTM1Gl+MrWiEe+7wj53aFZtx++SyFMYw8ldnUSlHt5h0Ro5DsAZgdd1+YPozb26Fc7BRU3yaVrtuq8KmENhz2ntMtfNm2jyWvfIS5lSvXQ4eKefO5GcBJGICXzoF6IAa5Dwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kKF0Sk8hJeVNd6Ch4mblL91Yg7FDI9vgbOrBt0lz7lY=;
+ b=xsaN0iIeuPuiIQPtW7MU/aaNsCP9p2+/iFigIyEepE1yJThMbwDomiHf4Ze+efsOe4+i+mUvjQ/f8OQkWrqkCPTyEHeLMojbAVAvfbvFUyd4SFiHu6CQBC9mgyj3HkUFvoI5A5pVtDNT2XMdsvCVgALp8VxgVjnm1UMdtzB0oKup9RLL3wEjmt5TpoO7jpoJoMjQ3H71HD0bIkssjs5UP/9gqIAoppsyyCO2hJ2e62vFqsGEVifPwpZ+D/kPM10qMgXXCxSL84M4oZi6PznVbo8UnMase/ldooQNyG0id2U2LZbu2ffepqQ1mXJn8aNEkGjV7IwUz3+1KnJTdgtncw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kKF0Sk8hJeVNd6Ch4mblL91Yg7FDI9vgbOrBt0lz7lY=;
+ b=K38IspeVijo3slL17ZnZPDVnTx4qbvlqp/vHRT3C80am3G3IlvqdIqswnDlmHafLmQMCHW8dLS4Rv27cRQxEi2VmHwlatdz4a4jHEVYC8dCJPQM/32cJ1ptTElPid/m5HzKVY+6oZ3xNpIX2mzOLmtA+E9fDbDodvuzR3V0h4l5gbqbUyUO2eKw6+LaJ+UngohLI1ZOzqDBYPeX+X43xkAt2xOFDVFn1DHrE0c6HFJDe6fYwi0ipQCDufmhsU0/NOjQwbjRmRlkCzzHigZOhGSgn079VwRWcPN7hArZdaeNOpNs7kDPMmsOFOUnwAZgOMnOUfbTph9h/nuBGUrU9xg==
+Received: from DS7PR19MB8883.namprd19.prod.outlook.com (2603:10b6:8:253::16)
+ by IA0PR19MB7726.namprd19.prod.outlook.com (2603:10b6:208:3de::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.32; Mon, 2 Jun
+ 2025 13:02:25 +0000
+Received: from DS7PR19MB8883.namprd19.prod.outlook.com
+ ([fe80::e0c2:5b31:534:4305]) by DS7PR19MB8883.namprd19.prod.outlook.com
+ ([fe80::e0c2:5b31:534:4305%5]) with mapi id 15.20.8769.037; Mon, 2 Jun 2025
+ 13:02:25 +0000
+Message-ID:
+ <DS7PR19MB8883B6501250F67CB83415BD9D62A@DS7PR19MB8883.namprd19.prod.outlook.com>
+Date: Mon, 2 Jun 2025 17:02:12 +0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/5] net: phy: qcom: at803x: Add Qualcomm IPQ5018
+ Internal PHY support
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-clk@vger.kernel.org
+References: <20250602-ipq5018-ge-phy-v3-0-421337a031b2@outlook.com>
+ <20250602-ipq5018-ge-phy-v3-3-421337a031b2@outlook.com>
+ <3704c056-91b9-464a-8bc8-7a98a9d9b7a7@lunn.ch>
+Content-Language: en-US
+From: George Moussalem <george.moussalem@outlook.com>
+In-Reply-To: <3704c056-91b9-464a-8bc8-7a98a9d9b7a7@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DX1P273CA0010.AREP273.PROD.OUTLOOK.COM
+ (2603:1086:300:21::15) To DS7PR19MB8883.namprd19.prod.outlook.com
+ (2603:10b6:8:253::16)
+X-Microsoft-Original-Message-ID:
+ <a1ee927f-21a3-416f-a475-cf2b5fd38d56@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/6] can: netlink: add interface for CAN-FD Transmitter
- Delay Compensation (TDC)
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, linux-can@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- =?UTF-8?Q?Stefan_M=C3=A4tje?= <Stefan.Maetje@esd.eu>
-References: <20210918095637.20108-1-mailhol.vincent@wanadoo.fr>
- <20210918095637.20108-5-mailhol.vincent@wanadoo.fr>
- <CAMuHMdVEBLoG084rhBtELcFO+3cA9_UrZrUfspOeLNo80zyb9g@mail.gmail.com>
- <10ed3ec2-ac66-494a-9d3f-bf2df459ebc0@wanadoo.fr>
- <CAMuHMdWDUpkwPVCm2Dha04F59MES4QvKFUVfvg70x5GPZHsxDA@mail.gmail.com>
-Content-Language: en-US
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Autocrypt: addr=mailhol.vincent@wanadoo.fr; keydata=
- xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
- LFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI+wrIEExYKAFoC
- GwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQTtj3AFdOZ/IOV06OKrX+uI
- bbuZwgUCZx41XhgYaGtwczovL2tleXMub3BlbnBncC5vcmcACgkQq1/riG27mcIYiwEAkgKK
- BJ+ANKwhTAAvL1XeApQ+2NNNEwFWzipVAGvTRigA+wUeyB3UQwZrwb7jsQuBXxhk3lL45HF5
- 8+y4bQCUCqYGzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrbYZzu0JG5w8gxE6EtQe6LmxKMqP6E
- yR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDldOjiq1/riG27mcIFAmceMvMCGwwF
- CQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8VzsZwr/S44HCzcz5+jkxnVVQ5LZ4B
- ANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
-In-Reply-To: <CAMuHMdWDUpkwPVCm2Dha04F59MES4QvKFUVfvg70x5GPZHsxDA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR19MB8883:EE_|IA0PR19MB7726:EE_
+X-MS-Office365-Filtering-Correlation-Id: d7a79628-b433-4d7c-ac59-08dda1d5b7dc
+X-MS-Exchange-SLBlob-MailProps:
+	znQPCv1HvwU48+6BMUBCVShhcMhCQwtQ7b4wU3799Tn9tonJGYdKf7e+Vchm2pUL/cuX3FJO1ooeMmuPAJ53hH7QV3RJ95bCTQo95pOAzR6QK8SW6AY2Bzg7zoXDL+nEeN6uUPSrDme5D4+RIK/0L2sS6zBJpuC0NrmrCRR/Tja73XtbtSFDuqMXxM0bNKmVM2SkKCOswrmCMQRVYxoZjqdPKCNAH92PZHfJ0htyYPgeSEBxFCvLKp1wxWA1OgqinA9196j9O28FN+FvEf+1f/YqHHun8eMsHI5FzRZygyhNZTcE6Nhm4StLDmbSnS/YzfoFRleDcajO5LVQZvQ2hIfJTSNMLLLWJn8df53neti6V5lj6oH2QBxaXS9KfWKU9h4H9m3IyX2BM+X8ktZyAtpg8gOSy74aJlkHo6/y4UrmFiCPLfx7ZdcvE9JgFQ+Rv3nRH8LRRsP+NDKg/+PLgPodMLFaL+eupV/TM9QhWGYf1jORFe206QPAUVrYTYBjIiR89W7Ua0dWnEuVCB9zJGiEwJEY1eensVt9nb9YqEsueyiK5Q9C7Rz1J0PP2a9H0VLrD6MF85Ql6XpOTx+E96OkdYZp4HWMwrZ+rV/y47a95Vor0oExtXSrQdSruWOH/sgXB136W2vcs3gc5Y+Qay+yHfYcrgWmMonwJw3drklzlQ3UgJO1tgOSGJ97q/LlymaR9yx8WQIa/xC4GKmpRPqE6whDVPx4gFijWxLnpgfDzHija4MBdTPqETw6mLps0p01qRurGmk=
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|6090799003|461199028|15080799009|19110799006|7092599006|5072599009|8060799009|3412199025|440099028;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cndGK0ZEMVRWeHJSdGpCSkVGV2U5a2MxNENDbml6WktaKzBPRDgvTmJjY1dR?=
+ =?utf-8?B?OXgveFF0cXJRMTFKNlk1aVJWUFBBZ1JkL3QxRHFEekoxQXR5Qlp5ME02U3ZW?=
+ =?utf-8?B?Vko5TCtoRFBjMDRYUkxUWnRzWjlPd1JYZElVazByLytmaWYzTXUyTVhRNThl?=
+ =?utf-8?B?Y01OdmpFTzBLL3N3NDdqTlZtaHNmR29sRWM3a0Y2RGg4QVd1MkZiV05yMmNa?=
+ =?utf-8?B?bGhqMDJhaTR4WE9URU01bmNxS0RibjFUdUFZOW82aGVtb2k4TXFsZTYvMjZl?=
+ =?utf-8?B?RWxnSnpZTU1VcndzUzJxeERmTm1QajAyV1RNcTBJTm9aNzZ0L2FvT05tMFVl?=
+ =?utf-8?B?WmpFUEZnTytsWGRIeXdnQk1IdkhZeldJZXF0Y1piK3RGMC9yUFdSZHNUQzlw?=
+ =?utf-8?B?OFdqeG93WEMrN0xqeXNVOGlyRFFjVGpIY0x0ZzdhMXArWk82empCdWJnQVZr?=
+ =?utf-8?B?ZW15SVFTSXNUaWorRDRRYzltR0JFZ3NpdnU1TzIyV1RFVitKcVR1YUFXVkdn?=
+ =?utf-8?B?Y1dWdEpxamZCYm9leVJkNzhwbTVzRGpJcWRib0NMbk9Db08rem1KVG5aMUI2?=
+ =?utf-8?B?WEtYSUJVUXBTOXI5Vndnd1o0SGVsalVUWUhlOUJ1V296S2hrN1pDSWcyZGYv?=
+ =?utf-8?B?UWpvZGNRZWszN0ZQalpNUzRhSDFaYkpJRGtBRmxuOFdhN0o3K1ZqclF5TUMv?=
+ =?utf-8?B?ZWdmS09EUHJ0WjVZbEE1SlNHZEdrN2JCZktxam1HTkk2VUxHOTFUZkRkMHVP?=
+ =?utf-8?B?czNtSmw4MVVhcW8wSUpSS2R4RE1SOUszMy9GeVpjbklqeGlub0xLT3M3bk9n?=
+ =?utf-8?B?QWRCNjhpV0JwdUFMWnZQNUZibndTRWpnN1B3SXltTCtRRHp2OVJpcW4wb2ZH?=
+ =?utf-8?B?ckxFTnQrcVVoeHJBSDJYblk1MkdYQVMzMlJONkF6R2NKSThFNGNwUlFuL3kw?=
+ =?utf-8?B?MzJoYWx2ejBPaVpvdyt3cHkrN1d0MFlNa2poMDk0ZUc0eTQrbGtmUHBZOG16?=
+ =?utf-8?B?TWM5dmJJS1dxdTNySGRnSDBnNHJSZkFhTzMyQ01oVjQyRy9hNEh1bzdXZzkx?=
+ =?utf-8?B?a3RRMEExbEp2KzFsSTJBNkpWYU5XVmQyWGhndHFRS0p5RENUOExzdUVzaXBN?=
+ =?utf-8?B?RkYwWU9oUm1LMHQ2bG1aWThKb2pBMFA4aG9HUEdBdmNCUW02M082L0VldDhV?=
+ =?utf-8?B?S1NwN0gzS04yMVdCeXlRK0V3eG9oWTE0dlppN09tVi92UGZLNGoyZ1lXR0hV?=
+ =?utf-8?B?ZmJENTdFMWNwZk9vNHJzQlllTWhPZjN6eU9TU1VQcThIVTBvRGkzZ296YXk2?=
+ =?utf-8?B?dEQ4WUtHaHZYQWw4NzY3SnkzQTI0aThYY2V1aG8wbEc5elpLTllTVytOcGNU?=
+ =?utf-8?B?VWdSSEI5Q2J6enB2eS9lbVJqYTNmTCt2QlN6UFhtOFRDak1yRDU4VHZuOGht?=
+ =?utf-8?B?UXVuOEpUa1lZMCsyVW1WR2tuNTZKdjRrYTBKUFZDNG9tcWpZVlVwTUxESVVG?=
+ =?utf-8?B?YjQya1dZRmtpRXZ1MzdOMVhsb0NrRjJSelJ4MENiV29MTVFuWDhYR05hNnQv?=
+ =?utf-8?B?OFZZdz09?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SlVqN1hjZ09lcDFuSmgzYzY4dlJHSGlyaW9zRzVrNHordEpHcWlKYUc5Lyt4?=
+ =?utf-8?B?QzByaUErbG5ESFNmVm9pVmdNQ01XWlpMQXJNcDE5TEVFQk9HZWl6NXUvUlNB?=
+ =?utf-8?B?dlh6UTNmdjBzbGd6RmNXMzFpeHdkSUZEL3VjTjYxbVV0dm8zOFc1cG1XVTcy?=
+ =?utf-8?B?TElJbWpScHNVdGpxLzVnck9BYjlidE10WnlQMDIzSVRwZE9UUlgvaGhYV1Zi?=
+ =?utf-8?B?UkRlVlZuWlFGOTBDKzNJdlhNTWd0UWszOE9BUnFId0I1bDJZRDZ3Q2h3TnVY?=
+ =?utf-8?B?UGFJNUxWc1IzOUNSK1ZSTEt6MjBvd09POERnRlM2Z3Q1OXZsWVRVOFZlV3VH?=
+ =?utf-8?B?ZFVnSnc1cDNVTHp3Kyt1UXBycm00cVlXQnQ1RUgvMytubFVFZUNuSWgzKy9G?=
+ =?utf-8?B?dUcyVW9xNGNWTFpzZ1dLVWVRYi9JdDJJaFZxUGpXbVU5V053WEVXbGg5OGFa?=
+ =?utf-8?B?WlN1YURreUFkZFJmMmNJUllMaWpkL0JyeU9ENFRjL0R5N3BRcjU2Sk9xNkN2?=
+ =?utf-8?B?d0VRSmorOEk4U3BGT2UwWDhtZXlFNDVpbzljOEdpMDBOUzBlekZUTWZCK3or?=
+ =?utf-8?B?bXpIUllwK24rQXpyWFF4b0lKd3gxNm1DR3BwYzVIckR4ZTQ1ZnhVSys0Um1T?=
+ =?utf-8?B?QjF4c3RvMnNyK2xvU0pMZ0hWb3dGbllISU5iWDl0aGc1U2FzN1RkditIV2VB?=
+ =?utf-8?B?L0pQUmZWeU04L1dIOStWTkxLKzc0SWEvcFZ0K0lkOVV5bVZ4T2RUUkMwMkRO?=
+ =?utf-8?B?NlpEY2YxQWV6dW9PWjIzb0xxaGZCeC9oQmdUdGkxb1ZLQWhEUlNqbEtIRGRK?=
+ =?utf-8?B?TG41S2lXMXdjSjQ5UXNkcVFEcG04dTNGRnZzaW1qS0IwcHZHazhFakIrVHRo?=
+ =?utf-8?B?cldOaVY0YWhHRmlKNHkrNGFlS0tDdThyNjFPa0xQaGpmQ0ZUbEtxTjNPVE42?=
+ =?utf-8?B?TnhBNk9IMUU4eEhGcGJ3TzAwZGdmSW1wamxSOTdBdWVoekY4MG9FaGhkb2FJ?=
+ =?utf-8?B?SnRSM28rMk9Vc0syR0N2QnpUTmI1ei9VWG51NEI4YmlkbEFpeUlTR0dvYkcw?=
+ =?utf-8?B?Sk04RFU0UEcvdTF5TFpwalg1T01EWWtEb004bXgzTUJIRCtZdU1TYVJEWDg5?=
+ =?utf-8?B?K0czRUpocm5mTlI1elFQeHdEL3dqSEFCYnkyb3NnL1FpbDh5aUk2Q1Ftbmhh?=
+ =?utf-8?B?OEZYTk44Mk1udTA4KzFqNG9zVDFtSEdVdHBYK0hkOXlrKzBLRjVjVnBGUDJJ?=
+ =?utf-8?B?cVNnU1M3K3BabE9DdjdTRlhidUMwbXpPUWVsT09vK21uVmg0ZmxzYVl5Rks3?=
+ =?utf-8?B?Vk9MOU00UWJmVkhOZkJSeit6TjBlOG1IajN5R0ZlM2RGN0FiWjBEVWpNRzlV?=
+ =?utf-8?B?dEQ2NXpUajBCM3gvemhkK0o1TEdkanFsRTd2clhJWGMxQ1dHSWR5TnprQTBU?=
+ =?utf-8?B?ZU1aZ2theWhtVXBSUWtRUzBkYmkxVXhDdHIxQ1cxbVJuTFZWWXJnTGlSR1hZ?=
+ =?utf-8?B?QXhDOTFDeitTR0c2NGtOM1B4S2UzR2ZzTjdBVm1nWUhsMS90ajZVQkdHQnN0?=
+ =?utf-8?B?UGJ1UVZCZkdOV2ptMVlDTWM3bkJYcmkrVllYTHJwa3N0MEpFeEwycDBLamJu?=
+ =?utf-8?B?cWRPNVlRc3lEOE5nV0dieVNTaGk5UWJIdCtFTHZOM3hXZEZlNWdEM3RSYXQ5?=
+ =?utf-8?Q?fsO7RXZynnymLK2kL8ZG?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d7a79628-b433-4d7c-ac59-08dda1d5b7dc
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR19MB8883.namprd19.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 13:02:25.2008
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR19MB7726
 
-On 02/06/2025 at 16:23, Geert Uytterhoeven wrote:
-> Hi Vincent,
+Hi Andrew,
+
+On 6/2/25 16:41, Andrew Lunn wrote:
+>> +	/* PHY DAC values are optional and only set in a PHY to PHY link architecture */
+>> +	if (priv->set_short_cable_dac) {
+>> +		/* setting MDAC (Multi-level Digital-to-Analog Converter) in MMD1 */
+>> +		phy_modify_mmd(phydev, MDIO_MMD_PMAPMD, IPQ5018_PHY_MMD1_MDAC,
+>> +			       IPQ5018_PHY_DAC_MASK, IPQ5018_PHY_MMD1_MDAC_VAL);
+>> +
+>> +		/* setting EDAC (Error-detection and Correction) in debug register */
+>> +		at803x_debug_reg_mask(phydev, IPQ5018_PHY_DEBUG_EDAC,
+>> +				      IPQ5018_PHY_DAC_MASK, IPQ5018_PHY_DEBUG_EDAC_VAL);
+>> +	}
 > 
-> On Sat, 31 May 2025 at 10:25, Vincent Mailhol
-> <mailhol.vincent@wanadoo.fr> wrote:
->> On 30/05/2025 at 20:44, Geert Uytterhoeven wrote:
-
-(...)
-
->> Let me first repost what I wrote but this time using numerals and letters
->> instead of the bullet points:
->>
->>   The TDC netlink logic works as follow:
->>
->>    1. CAN_CTRLMODE_FD is not provided:
->>       a) if any TDC parameters are provided: error.
->>
->>       b) TDC parameters not provided: TDC parameters unchanged.
->>
->>    2. CAN_CTRLMODE_FD is provided and is false:
->>       a) TDC is deactivated: both the structure and the
->>          CAN_CTRLMODE_TDC_{AUTO,MANUAL} flags are flushed.
->>
->>    3. CAN_CTRLMODE_FD provided and is true:
->>       a) CAN_CTRLMODE_TDC_{AUTO,MANUAL} and tdc{v,o,f} not provided: call
->>          can_calc_tdco() to automatically decide whether TDC should be
->>          activated and, if so, set CAN_CTRLMODE_TDC_AUTO and uses the
->>          calculated tdco value.
->>
->>       b) CAN_CTRLMODE_TDC_AUTO and tdco provided: set
->>          CAN_CTRLMODE_TDC_AUTO and use the provided tdco value. Here,
->>          tdcv is illegal and tdcf is optional.
->>
->>       c) CAN_CTRLMODE_TDC_MANUAL and both of tdcv and tdco provided: set
->>          CAN_CTRLMODE_TDC_MANUAL and use the provided tdcv and tdco
->>          value. Here, tdcf is optional.
->>
->>       d) CAN_CTRLMODE_TDC_{AUTO,MANUAL} are mutually exclusive. Whenever
->>          one flag is turned on, the other will automatically be turned
->>          off. Providing both returns an error.
->>
->>       e) Combination other than the one listed above are illegal and will
->>          return an error.
->>
->> You can double check that it is the exact same as before.
->>
->>> By default, a CAN-FD interface comes up in TDC-AUTO mode (if supported),
->>> using a calculated tdco value.  However, enabling "tdc-mode auto"
->>> explicitly from userland requires also specifying an explicit tdco
->>> value.  I.e.
->>>
->>>     ip link set can0 type can bitrate 500000 dbitrate 8000000 fd on
->>                                                                 ^^^^^
->> Here:
->>
->>   - CAN_CTRLMODE_FD provided and is true: so we are in close 3.
->>
->>   - CAN_CTRLMODE_TDC_{AUTO,MANUAL} and tdc{v,o,f} not provided: so we *are* in
->>     sub-clause a)
->>
->> 3.a) tells that the framework will decide whether or not TDC should be
->> activated, and if activated, will set the TDCO.
->>
->>> gives "can <FD,TDC-AUTO>" and "tdcv 0 tdco 3", while
->>
->> Looks perfectly coherent with 3.a)
->>
->> Note that with lower data bitrate, the framework might have decided to set TDC off.
+> In the binding you say:
 > 
-> Yes, that case is fine for sure.
 > 
->>>     ip link set can0 type can bitrate 500000 dbitrate 8000000 fd on
->>> tdc-mode auto
->>
->> This time:
->>
->>   - CAN_CTRLMODE_FD provided and is true: so we are in close 3.
->>
->>   - CAN_CTRLMODE_TDC_AUTO is provided, we are *not* in sub-clause a)
->>
->>   - tdco is not provided.
->>
->> No explicit clauses matches this pattern so it defaults to the last
->> sub-clause: e), which means an error.
->>
->>> gives:
->>>
->>>     tdc-mode auto: RTNETLINK answers: Operation not supported
->>
->> Looks perfectly coherent with 3.e)
+> +            If not set, it is assumed the MDI output pins of this PHY are directly
+> +            connected to an RJ45 connector and default DAC values will be used.
 > 
-> Thanks, I misread this as clause 3.a being applicable (hasn't NOT a
-> higher precedence than AND? ;-)
+> So shouldn't there be an else clause here setting these two values to
+> their default, undoing what the bootloader might of done etc.
 
-Now I see where your confusion comes from.
+DAC values are only set if the property is set in the DTS. If the 
+property is not set, the default values set by the PHY itself are used, 
+and as you mentioned below, DAC values aren't modified by the driver.
 
-But if I read:
-
-  Paul and Mary not present
-
-I understand that both are absent. I do not see an ambiguity that Paul may be
-present and only Mary absent.
-
-Well, I guess this is what occurs when you write in English instead of C.
-
-And I just realize that there was an actual mistake in my description: I forgot
-to state the obvious and I omitted to mention that TDC_OFF means that TDC is
-forcefully deactivated.
-
->>> unless I add an explicit "tdco 3".
->>
->> Yes, if you provide tcdo 3, then you are under 3.b).
->>
->>> According to your commit description, this is not the expected behavior?
->>> Thanks!
->>
->> Looking back to my commit, I admit that the explanation is convoluted and could
->> be hard to digest, but I do not see a mismatch between the description and the
->> behaviour.
 > 
-> OK, so the description and the behaviour do match.
+> Or you can change the binding, and say something like:
 > 
-> However, I still find it a bit counter-intuitive that
-> CAN_CTRLMODE_TDC_AUTO is not fully automatic, but automatic-with-one-
-> manual-knob.
+> +            If not set, DAC values are not modified.
 
-Fair enough. In truth, TDC_AUTO and TDC_MANUAL means respectively
-TDC_ON_WITH_TDCV_AUTO and TDC_ON_WITH_TDCV_MANUAL.
+sure, anything else you need changed for v4?
 
-The problem is that it makes close to no sense to allow the user to ask to have
-TDC explicitly ON and TDCO automatically calculated. And if I recall, TDC_AUTO
-and TDC_MANUAL is also consistent with what I found in the datasheets.
+> 
+> We often need a tristate in DT, set something, unset something, leave
+> it as it is. But that does not exist in DT in an easy form :-(
 
-On a side note, I still have to update Documentation/networking/can.rst to add
-some TDC explanations. I will of course not change the naming (this is part of
-the UAPI, so now it is set in stone), but I will try to clarify the concerns you
-raised here so that the documentation is more clear than my patch comments.
+> 
+> 	Andrew
 
-Also, I am not writing this documentation any soon. CAN-XL has a higher priority
-in my TODO list :)
-
-
-Yours sincerely,
-Vincent Mailhol
-
+Best regards,
+George
