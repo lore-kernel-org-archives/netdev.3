@@ -1,108 +1,242 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FD32C325A;
-	Mon,  2 Jun 2025 06:58:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CFD143736;
+	Mon,  2 Jun 2025 07:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748847514; cv=none; b=OFZKBocjyG1jO0hrfJAf1GaGOXCCdmB5fe6M8pR3OM1mTgKVzf2ukTEbPoXi4ZctgMs1q7UCf9jt3M6rno74NgxKUallD0IjpvAfoWy1odecGx1GbbW0cxuaw4mtkLekEKOeLfuhuswzGBHjnjZYn4fNY7ThkM/URMy5JrhQEgM=
+	t=1748849017; cv=none; b=g12pq+zklsHnjsdECv1Y9dn9pdFguTd50hWyRqqihTIOt+hlii+YDREesVj43GMdIJpIlFYwQnYePliAgdTt6QZsDmdRxeVOEaRHe9fzeGQFE4gy74jHkusHsxH+QrNocmeKERRrSbs61YzRHpBTQUdyXM7vdYWsDb2//V8x67I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748847514; c=relaxed/simple;
-	bh=36YoGRNVVTqpXdGCUTjghs0ma3vWVTdWGftyJMsNuiA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EpdUvPL1vYdRaiswkBnF86GZJRG+U61PY+awXXB++nuTnl6f/LwHU6YK7uqtMAAFAIXDpZ5sP8wsJfQkERTg3GkcPvi1tcumeDcWiHdDvAQn5Mc+qJmjRodOumMx5mIM0OhXsEjF+moopEqy9Xiq6Qd2KIIiwA4qVrGt5Y6Qhlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m4Gjmizt; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1748849017; c=relaxed/simple;
+	bh=aMkjYDfS4hKBq4E8F8Ko1Lj7bLsFOrFanKHtkT5UWGQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PaxfJbixe0ve1Q/JyW6aAZpZTKgj85ZqUZrr2+4PgnV+GIjMgRs3ivbFD0Yop0UZx/YUmETW4P9BspxNJumKoFr4R6BTC4wrpB8hpLUqix8FWtpWH+FRIOvKurk40NrhFHlwqyvkkLPtqk2FtKY4ni08gN/gzCzrAqikBrwMQt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m4Gjmizt"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6049431b409so7257852a12.3;
-        Sun, 01 Jun 2025 23:58:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748847511; x=1749452311; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZDcrKrGhdz3qpwk0ZQcPaE8P0Ivco4wK8bocZrfj2PY=;
-        b=m4Gjmizt02MdzUVyRe1KDu+MZmxCKfe0W5mR6AejWlKG84fKk88Dbj3rXpiPGlhjOR
-         Za9Sm1cudx7D51yGwlUdiKfc9f4J7xHZLuT32S2ZOQL9VS0C8yo9kFpeOduNT5xOo7ED
-         JCxguzG8JQmUkk43A1K9rO2tVbfUCccgg7KDCeZ0PdwBUng9aRpl/G8tY0MrJ9rqX1Wc
-         HrFgicsq78BfDP+y6BpTLTBVtpiBqijO7LHXJpH0JmU16EHlZHdbP5vwdJh90gZmFICj
-         w2dKVhkYaJF+U5xYxGl/Y7jgaxLQ2nmJ7PlPL1YRy8OM4a1HfiHG6hDDeoPPE57fQOQr
-         foAA==
+Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-4c9cea30173so1278247137.3;
+        Mon, 02 Jun 2025 00:23:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748847511; x=1749452311;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1748849013; x=1749453813;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ZDcrKrGhdz3qpwk0ZQcPaE8P0Ivco4wK8bocZrfj2PY=;
-        b=B5RpfqfEoc3B5unKMCzCR/5kvu7vPd2eJNTpR2cnk2nMrDXK+6peKYOg4vbgImLDvR
-         ud/1qjwl8zJwlxvQlHQd5WHEH8GSyri1msi9sqGX+heVJUOsFxoUrxEq7R6taaQYU2lv
-         tNcQuAL9mbsDn972rVyv+8mzXmjWwkwN2iFc03FTaiT0I4qLdhXFN/dIkjx67vDoGl5d
-         2Zk3u5Itr9ABE+NnZRZREFXbvZ3ReUlq9r5l3ExdZXCc/ral9TUQSe++0x4OkAD9ixOl
-         MPekNop5RC/6v5Rg5vqiBGmXuOVBQI3/L8kLiBAK1LRF6+pjz6sm0ljwkLBug5ky+ngp
-         izxw==
-X-Gm-Message-State: AOJu0YxbIPFAiXkgtXDDkxS478uj6Vs1L0X023bHC5zAb+5tDsWO934/
-	PxwNVrr/XvTFD987yuWFy9ndHUGTmI3jK/pAiHnKPSbnlpC7/AMH75wbRzYXYMFK
-X-Gm-Gg: ASbGncv9CqWym9VyMeOlquqfhBl0yHm0QLB6UKLTyc3N5zv+4sD/imuilvBtrpFOTPP
-	DdVyY7+r0hl7EvRL/Jst15rbktu0iomYQzzhKUOolAq5aTcGIrIz5u0+SWqW+RgfSVT44jg3BII
-	0l9ETmociKKl3E2K9zq5IwAhj8dnDi7mqtLvUs/YC5fuae8vg3nOd9sQfT+C2VuDcPUoCIWcJIP
-	DBDqEq7Q9zVciQuu0YeOlEG+oA3k6nkRYezASIRBEvPDCnTr2GGI7OJNTEq4ULimsjnk8wnn08h
-	Xy4Cl817mluIJBXM8M+7P84AG8aO4jBcVR1tBDYyWQTnOol5r923lewfRvxesbCUZ9nIRCDn/Da
-	Nlb71JRLvehHzziT3EZJkOR0Q03OZF2tcq3i8hNY5tA==
-X-Google-Smtp-Source: AGHT+IGNoi54i4X/skqBuDa2DtRQofGmlFtwkcYu8Dg4w9xQajNkPpbKysRLfQjSv52hKlUH+6Gafg==
-X-Received: by 2002:a17:906:6a15:b0:ad5:6337:ba42 with SMTP id a640c23a62f3a-adb49513121mr564975766b.46.1748847510642;
-        Sun, 01 Jun 2025 23:58:30 -0700 (PDT)
-Received: from rafal-Predator-PHN16-71.NAT.wroclaw_krzyki_2.vectranet.pl ([89.151.25.111])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ada5d82de8fsm760817866b.66.2025.06.01.23.58.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Jun 2025 23:58:30 -0700 (PDT)
-From: Rafal Bilkowski <rafalbilkowski@gmail.com>
-To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	alex.aring@gmail.com,
-	rafalbilkowski@gmail.com
-Subject: [PATCH] ipv6: ndisc: fix potential out-of-bounds read in ndisc_router_discovery()
-Date: Mon,  2 Jun 2025 08:58:26 +0200
-Message-ID: <20250602065826.168402-1-rafalbilkowski@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=o9BTeLSuqq/rx8xkHWscFhlPkXYJse76ozXbRV6bBME=;
+        b=chPOQRKEMuHCdy1kjMnddTxbJ10SBJwVeocgmT6w+xfk08uFgppGUUw74JGkkU6QdD
+         NbRfjR/Dvhjmo8JMaUbpssNEkIC0afX4yx4whhj9PJA9XqXQKnNXeN7sQWBPXMrDXqoH
+         pwbNeQRS/yW3+Gj5NMRZ0YVFIU/7g/TvWJGbjfYlzzY5tN1N62zsKU7361AUIdW4djm2
+         yVKuZjF95pi1iZJyRY0KafhqnBETE9u3+71Ccs1UgNbHRhwzTK3pqpOrdZo7Jg0wY28u
+         vQl5uenYWV0YRCnVLSr8u0JJmj4tatClOAgNwqdYMJD/YcDHt4wCOXXOOGnA3dgJc9EI
+         hkDw==
+X-Forwarded-Encrypted: i=1; AJvYcCUl6UB+uXWvvozlidGxfBmn2tGgGd9AJuwKXGmtRM6PlTnBcvGCLY7ABw8+5W9JBp5V7ER+7A1Srz3mFyBs@vger.kernel.org, AJvYcCWFqYvj6b9O3ciMK2jQvPe7fpYkF150WWCMVq93aTBE8k2fyPYNYTrBWiCfsj6ORa7cLa4A+YwZnH4=@vger.kernel.org, AJvYcCXDe8RRphmnwHxGYkoCYcFO/qKXLIYbdjWSygnaKkNcvQ6P5gGTAmYD8mTdEaXqgKQh2i7R6H5g@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzIoyT9sDu+7rZCBnhDx31CeW2G+zrdXQimCPyv+qWyyc9bIh9
+	nnXspw/Dtnlyuz7FJaiZskbLdup4TTFiT+RlUO4x8u5YPVTBYBJN3/35j3QNSGaC
+X-Gm-Gg: ASbGncuEcel6X/paADAiThUyym8dt1kGgdulDtn8L85HX+BNcwQYozilV/pudzJSSJo
+	9PA30LDTqZQQqwe5G++xbSkQWn7h9PsinoouIaZhMega4rGKnmY8twYCaljkdrn8Psa5SQ8PGae
+	316dsp6GDh7sslBJOvSlx4GvWq0q5TrBUcQKxSpp0akJj2gGbKxQy/X93GMzaclc5KuV2Ame7c+
+	fRIybXDsSaPKSpbf0hyXirOs2DxONJi9NC2ehVWFq/WO7Zt0c0VsaVJKDDb26NwPtKaRY0VnUFJ
+	cslQ9dkcuOllLYWI+A9ZN9Qq+HARt4fVELMIJ7ogLQPhbOSJj4QcdQ0MIr89gSz59BOOu3MlrC4
+	V59L0cnsl3l/ncA==
+X-Google-Smtp-Source: AGHT+IGlxGHtSFHEPHPgyRPGRqlkW4+lRzlOdAz8TDWmyfbTUfAQFa3z8EH8IkORSAFAzeFHY0dtcw==
+X-Received: by 2002:a05:6102:3751:b0:4e5:a67d:92a6 with SMTP id ada2fe7eead31-4e6e410d895mr8750020137.14.1748849012988;
+        Mon, 02 Jun 2025 00:23:32 -0700 (PDT)
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com. [209.85.217.50])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4e64e9f7ff2sm6621922137.27.2025.06.02.00.23.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Jun 2025 00:23:31 -0700 (PDT)
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-4e2b5ffb932so1454662137.0;
+        Mon, 02 Jun 2025 00:23:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVioNEWTaAC7CwrtFkSTgW3IfGAzJc4etHmT5Kdz9TaAPEhIGEmmAPXM9mweSTQjN715PUoLtKtfhMZfhRC@vger.kernel.org, AJvYcCWf8YGxgVniegxAFvksF39WRZwoova57o8v7LwaoeGdk5yRUI26Na9juvahr7AYuysMH8vtH9jU+ZY=@vger.kernel.org, AJvYcCX6piSUVfc1UeVYqzf97s53Lv/pWPN7V+9btlVbK1Hp58AeFV/LN84Lpf5LlidCVjgNwlrfKHKF@vger.kernel.org
+X-Received: by 2002:a05:6102:949:b0:4e2:955a:b12f with SMTP id
+ ada2fe7eead31-4e6e40d8cc2mr10526652137.3.1748849011142; Mon, 02 Jun 2025
+ 00:23:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210918095637.20108-1-mailhol.vincent@wanadoo.fr>
+ <20210918095637.20108-5-mailhol.vincent@wanadoo.fr> <CAMuHMdVEBLoG084rhBtELcFO+3cA9_UrZrUfspOeLNo80zyb9g@mail.gmail.com>
+ <10ed3ec2-ac66-494a-9d3f-bf2df459ebc0@wanadoo.fr>
+In-Reply-To: <10ed3ec2-ac66-494a-9d3f-bf2df459ebc0@wanadoo.fr>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 2 Jun 2025 09:23:19 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWDUpkwPVCm2Dha04F59MES4QvKFUVfvg70x5GPZHsxDA@mail.gmail.com>
+X-Gm-Features: AX0GCFvuHoKAt7ecSBaNwjIw6CAOIDvkHYg2PitGrYaCrTuLaODgZOujsJnxogU
+Message-ID: <CAMuHMdWDUpkwPVCm2Dha04F59MES4QvKFUVfvg70x5GPZHsxDA@mail.gmail.com>
+Subject: Re: [PATCH v6 4/6] can: netlink: add interface for CAN-FD Transmitter
+ Delay Compensation (TDC)
+To: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, =?UTF-8?Q?Stefan_M=C3=A4tje?= <Stefan.Maetje@esd.eu>
+Content-Type: text/plain; charset="UTF-8"
 
-This patch adds a length check at the start of ndisc_router_discovery()
-to prevent a potential out-of-bounds read if a short packet is received.
-Without this check, the function may dereference memory outside the
-buffer.
+Hi Vincent,
 
-Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
-Signed-off-by: Rafal Bilkowski <rafalbilkowski@gmail.com>
----
- net/ipv6/ndisc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+On Sat, 31 May 2025 at 10:25, Vincent Mailhol
+<mailhol.vincent@wanadoo.fr> wrote:
+> On 30/05/2025 at 20:44, Geert Uytterhoeven wrote:
+> > Thanks for your patch, which is now commit d99755f71a80df33
+> > ("can: netlink: add interface for CAN-FD Transmitter Delay
+> > Compensation (TDC)") in v5.16.
+> >
+> > On Sat, 18 Sept 2021 at 20:23, Vincent Mailhol
+> > <mailhol.vincent@wanadoo.fr> wrote:
+> >> Add the netlink interface for TDC parameters of struct can_tdc_const
+> >> and can_tdc.
+> >>
+> >> Contrary to the can_bittiming(_const) structures for which there is
+> >> just a single IFLA_CAN(_DATA)_BITTMING(_CONST) entry per structure,
+> >> here, we create a nested entry IFLA_CAN_TDC. Within this nested entry,
+> >> additional IFLA_CAN_TDC_TDC* entries are added for each of the TDC
+> >> parameters of the newly introduced struct can_tdc_const and struct
+> >> can_tdc.
+> >>
+> >> For struct can_tdc_const, these are:
+> >>         IFLA_CAN_TDC_TDCV_MIN
+> >>         IFLA_CAN_TDC_TDCV_MAX
+> >>         IFLA_CAN_TDC_TDCO_MIN
+> >>         IFLA_CAN_TDC_TDCO_MAX
+> >>         IFLA_CAN_TDC_TDCF_MIN
+> >>         IFLA_CAN_TDC_TDCF_MAX
+> >>
+> >> For struct can_tdc, these are:
+> >>         IFLA_CAN_TDC_TDCV
+> >>         IFLA_CAN_TDC_TDCO
+> >>         IFLA_CAN_TDC_TDCF
+> >>
+> >> This is done so that changes can be applied in the future to the
+> >> structures without breaking the netlink interface.
+> >>
+> >> The TDC netlink logic works as follow:
+> >>
+> >>  * CAN_CTRLMODE_FD is not provided:
+> >>     - if any TDC parameters are provided: error.
+> >>
+> >>     - TDC parameters not provided: TDC parameters unchanged.
+> >>
+> >>  * CAN_CTRLMODE_FD is provided and is false:
+> >>      - TDC is deactivated: both the structure and the
+> >>        CAN_CTRLMODE_TDC_{AUTO,MANUAL} flags are flushed.
+> >>
+> >>  * CAN_CTRLMODE_FD provided and is true:
+> >>     - CAN_CTRLMODE_TDC_{AUTO,MANUAL} and tdc{v,o,f} not provided: call
+> >>       can_calc_tdco() to automatically decide whether TDC should be
+> >>       activated and, if so, set CAN_CTRLMODE_TDC_AUTO and uses the
+> >>       calculated tdco value.
+> >
+> > This is not reflected in the code (see below).
+>
+> Let me first repost what I wrote but this time using numerals and letters
+> instead of the bullet points:
+>
+>   The TDC netlink logic works as follow:
+>
+>    1. CAN_CTRLMODE_FD is not provided:
+>       a) if any TDC parameters are provided: error.
+>
+>       b) TDC parameters not provided: TDC parameters unchanged.
+>
+>    2. CAN_CTRLMODE_FD is provided and is false:
+>       a) TDC is deactivated: both the structure and the
+>          CAN_CTRLMODE_TDC_{AUTO,MANUAL} flags are flushed.
+>
+>    3. CAN_CTRLMODE_FD provided and is true:
+>       a) CAN_CTRLMODE_TDC_{AUTO,MANUAL} and tdc{v,o,f} not provided: call
+>          can_calc_tdco() to automatically decide whether TDC should be
+>          activated and, if so, set CAN_CTRLMODE_TDC_AUTO and uses the
+>          calculated tdco value.
+>
+>       b) CAN_CTRLMODE_TDC_AUTO and tdco provided: set
+>          CAN_CTRLMODE_TDC_AUTO and use the provided tdco value. Here,
+>          tdcv is illegal and tdcf is optional.
+>
+>       c) CAN_CTRLMODE_TDC_MANUAL and both of tdcv and tdco provided: set
+>          CAN_CTRLMODE_TDC_MANUAL and use the provided tdcv and tdco
+>          value. Here, tdcf is optional.
+>
+>       d) CAN_CTRLMODE_TDC_{AUTO,MANUAL} are mutually exclusive. Whenever
+>          one flag is turned on, the other will automatically be turned
+>          off. Providing both returns an error.
+>
+>       e) Combination other than the one listed above are illegal and will
+>          return an error.
+>
+> You can double check that it is the exact same as before.
+>
+> > By default, a CAN-FD interface comes up in TDC-AUTO mode (if supported),
+> > using a calculated tdco value.  However, enabling "tdc-mode auto"
+> > explicitly from userland requires also specifying an explicit tdco
+> > value.  I.e.
+> >
+> >     ip link set can0 type can bitrate 500000 dbitrate 8000000 fd on
+>                                                                 ^^^^^
+> Here:
+>
+>   - CAN_CTRLMODE_FD provided and is true: so we are in close 3.
+>
+>   - CAN_CTRLMODE_TDC_{AUTO,MANUAL} and tdc{v,o,f} not provided: so we *are* in
+>     sub-clause a)
+>
+> 3.a) tells that the framework will decide whether or not TDC should be
+> activated, and if activated, will set the TDCO.
+>
+> > gives "can <FD,TDC-AUTO>" and "tdcv 0 tdco 3", while
+>
+> Looks perfectly coherent with 3.a)
+>
+> Note that with lower data bitrate, the framework might have decided to set TDC off.
 
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index 8d853971f2f6..bdaac5a195d6 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -1235,6 +1235,10 @@ static void ndisc_ra_useropt(struct sk_buff *ra, struct nd_opt_hdr *opt)
- 
- static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- {
-+	// Check if the buffer contains enough data for the struct ra_msg
-+	if (!pskb_may_pull(skb, skb_transport_offset(skb) + sizeof(struct ra_msg)))
-+		return SKB_DROP_REASON_PKT_TOO_SMALL;
-+
- 	struct ra_msg *ra_msg = (struct ra_msg *)skb_transport_header(skb);
- 	bool send_ifinfo_notify = false;
- 	struct neighbour *neigh = NULL;
+Yes, that case is fine for sure.
+
+> >     ip link set can0 type can bitrate 500000 dbitrate 8000000 fd on
+> > tdc-mode auto
+>
+> This time:
+>
+>   - CAN_CTRLMODE_FD provided and is true: so we are in close 3.
+>
+>   - CAN_CTRLMODE_TDC_AUTO is provided, we are *not* in sub-clause a)
+>
+>   - tdco is not provided.
+>
+> No explicit clauses matches this pattern so it defaults to the last
+> sub-clause: e), which means an error.
+>
+> > gives:
+> >
+> >     tdc-mode auto: RTNETLINK answers: Operation not supported
+>
+> Looks perfectly coherent with 3.e)
+
+Thanks, I misread this as clause 3.a being applicable (hasn't NOT a
+higher precedence than AND? ;-)
+
+> > unless I add an explicit "tdco 3".
+>
+> Yes, if you provide tcdo 3, then you are under 3.b).
+>
+> > According to your commit description, this is not the expected behavior?
+> > Thanks!
+>
+> Looking back to my commit, I admit that the explanation is convoluted and could
+> be hard to digest, but I do not see a mismatch between the description and the
+> behaviour.
+
+OK, so the description and the behaviour do match.
+
+However, I still find it a bit counter-intuitive that
+CAN_CTRLMODE_TDC_AUTO is not fully automatic, but automatic-with-one-
+manual-knob.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.43.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
