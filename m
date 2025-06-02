@@ -1,84 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E33220F078;
-	Mon,  2 Jun 2025 11:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFD6198845;
+	Mon,  2 Jun 2025 12:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748865598; cv=none; b=m+etkz42HGBXRnaja5I7ldv1HfGhgOBw6FdvvUau6Tm9QFOI6OPpmlDFComGK1BPY3yusUfIv72jIctp/4JIft5DdwSCrIRCu41RPb8lI/vFyaEF2yIjeHjU84gff7lyWTOpaSAc8MdBSIxT1i1Yz/ToYcvE+cnhuD6V1L0ynbc=
+	t=1748868129; cv=none; b=PmB0DV0zVMXE71eRyA7077RYKL2yaPB+APns5KgYZJ/2af1TeCH38ldHMl565s1XXVJdDhjNnZovcPQXH7JH0DXB38R+9+MNaJSgcEl7ieCEJxJ5LxeQvfPVLfxX8TT3+mq7hwTq/g72H2Wpdp4w1/xgdg21BkAI/1vdm9+ctTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748865598; c=relaxed/simple;
-	bh=7XYV3KkxV92L9ICtrPlZhbT2Bc4RXMJiRmkRccZBJ2c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ooy9rzYIBZqj6JEEPRLW5/SrXUO5uSy/DRezBL6/dGeooA8//HhK9ZT7zB3Qk0rc5qToDATHdiajYM52/u7/aqGwO/1O+r6Z+lhtsMMLaxC2EeD41u+uZOjPJPhc/zE0eGaOcBU55zYDbOx9KrPO/8GdhwMQm3uedYAJPD61gGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB81C4CEEB;
-	Mon,  2 Jun 2025 11:59:55 +0000 (UTC)
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Wolfgang Grandegger <wg@grandegger.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Cc: "David S . Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1748868129; c=relaxed/simple;
+	bh=b4VrgvaUpGuhMsuGeP6n68tIjyYmDYkgwn8mjZPNNc0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Uwsu6O50dbCWvrwX87WoFT4Rd1TFZ5VNkSFSqyeD/gQz92O3H9qbS1AKjdNAi86ni2mfnXU6fxuSbXRo5tE1pGCMFbDiN+3wIW44LEI4hplRtkI56zuuaIaZnD9dYBS518XxtVBjXKMaT4/rxZaNNwvVW53+m8hlCMYk8MF4YVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=fJ1oVQYD; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="fJ1oVQYD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=HaTxOJSJ+INGXp69p1JUu+wzoMAuVQlQZ7IX9srKxLQ=; b=fJ1oVQYDwMZv3olSL5nJLM0oNC
+	X17T68yAaX0P9SG9niKk1JT8E8g3nwS76MGzHE0Gq1MMfoYnYDPu9MepwvU6NGkfoOQiEq5hSPHvI
+	lCS6hB8GOyv1g/RESmaw9JGAi1GEYd3oE+BKwhO145mp3WXFlebZjiB+4KiU1JxukbpI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uM4UG-00EVBX-Ko; Mon, 02 Jun 2025 14:41:56 +0200
+Date: Mon, 2 Jun 2025 14:41:56 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: george.moussalem@outlook.com
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-can@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2] documentation: networking: can: Document alloc_candev_mqs()
-Date: Mon,  2 Jun 2025 13:59:52 +0200
-Message-ID: <c0f9a706ba31f1a49eb72e58526cd294d97a1ce9.1748865431.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.43.0
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org
+Subject: Re: [PATCH v3 3/5] net: phy: qcom: at803x: Add Qualcomm IPQ5018
+ Internal PHY support
+Message-ID: <3704c056-91b9-464a-8bc8-7a98a9d9b7a7@lunn.ch>
+References: <20250602-ipq5018-ge-phy-v3-0-421337a031b2@outlook.com>
+ <20250602-ipq5018-ge-phy-v3-3-421337a031b2@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250602-ipq5018-ge-phy-v3-3-421337a031b2@outlook.com>
 
-Since the introduction of alloc_candev_mqs() and friends, there is no
-longer a need to allocate a generic network device and perform explicit
-CAN-specific setup.  Remove the code showing this setup, and document
-alloc_candev_mqs() instead.
+> +	/* PHY DAC values are optional and only set in a PHY to PHY link architecture */
+> +	if (priv->set_short_cable_dac) {
+> +		/* setting MDAC (Multi-level Digital-to-Analog Converter) in MMD1 */
+> +		phy_modify_mmd(phydev, MDIO_MMD_PMAPMD, IPQ5018_PHY_MMD1_MDAC,
+> +			       IPQ5018_PHY_DAC_MASK, IPQ5018_PHY_MMD1_MDAC_VAL);
+> +
+> +		/* setting EDAC (Error-detection and Correction) in debug register */
+> +		at803x_debug_reg_mask(phydev, IPQ5018_PHY_DEBUG_EDAC,
+> +				      IPQ5018_PHY_DAC_MASK, IPQ5018_PHY_DEBUG_EDAC_VAL);
+> +	}
 
-Fixes: 39549eef3587f1c1 ("can: CAN Network device driver and Netlink interface")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-v2:
-  - Fix RST rendering,
-  - Promote Fixes-tag.
----
- Documentation/networking/can.rst | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+In the binding you say:
 
-diff --git a/Documentation/networking/can.rst b/Documentation/networking/can.rst
-index b018ce346392652b..bc1b585355f7ad99 100644
---- a/Documentation/networking/can.rst
-+++ b/Documentation/networking/can.rst
-@@ -1104,15 +1104,12 @@ for writing CAN network device driver are described below:
- General Settings
- ----------------
- 
--.. code-block:: C
--
--    dev->type  = ARPHRD_CAN; /* the netdevice hardware type */
--    dev->flags = IFF_NOARP;  /* CAN has no arp */
-+CAN network device drivers can use alloc_candev_mqs() and friends instead of
-+alloc_netdev_mqs(), to automatically take care of CAN-specific setup:
- 
--    dev->mtu = CAN_MTU; /* sizeof(struct can_frame) -> Classical CAN interface */
-+.. code-block:: C
- 
--    or alternative, when the controller supports CAN with flexible data rate:
--    dev->mtu = CANFD_MTU; /* sizeof(struct canfd_frame) -> CAN FD interface */
-+    dev = alloc_candev_mqs(...);
- 
- The struct can_frame or struct canfd_frame is the payload of each socket
- buffer (skbuff) in the protocol family PF_CAN.
--- 
-2.43.0
 
++            If not set, it is assumed the MDI output pins of this PHY are directly
++            connected to an RJ45 connector and default DAC values will be used.
+
+So shouldn't there be an else clause here setting these two values to
+their default, undoing what the bootloader might of done etc.
+
+Or you can change the binding, and say something like:
+
++            If not set, DAC values are not modified.
+
+We often need a tristate in DT, set something, unset something, leave
+it as it is. But that does not exist in DT in an easy form :-(
+
+	Andrew
