@@ -1,82 +1,131 @@
-Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [178.154.239.210])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312D65FB95;
-	Tue,  3 Jun 2025 18:25:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DBA24DCEE;
+	Tue,  3 Jun 2025 18:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748975124; cv=none; b=mKB/BxUpa6iwco3WenfygI0JJHqMQ2upFfUJuuy3oHr09hCBVtat2VwLMvDvbYgu3e59iuAqLt0dHXJ3sVf50xa4fhH8EyJL9ZNcRxSKl6n9f4FEPBLv7gm3Ym7LYt5xFSJLdZbrKd0UKoZAIIaREJG67RYlAeDb0xtcSCz+RVc=
+	t=1748975616; cv=none; b=sHFKVbirHXlNRBqQGCiGbZsAsotF9tF+hyCaqJKfIEvf413EIdn63UeF44/R3L1uhu6DztQok5ikX0Q/boHw2fOKwMBATkTT/wyTSLcuRv+q8oRT48MeT52Sd2SFOsHCrHicWRFb4YyVtr8Hy/PaU6DQYEx0XspOhiiWzGya/1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748975124; c=relaxed/simple;
-	bh=tBzj3CA4+7TehMQW8dgTuM4sRw0JZHsMeayjCn7V8XI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RDXibchTcUWvkN0bvvGGis7yvu2kt1UeniZzkETqITdejQHoUmKFgrdb49UUkQ+IYFwAGILJKntdyah+VP9E0HXPtc8F2HqLoYKIYBoKkEO4h47rIxJCeqBprP503zl6gf+5iQAkvfQjYmoSXe5vD2YF3keVfLqw6Hus2+UNYX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me; spf=pass smtp.mailfrom=0upti.me; dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b=lfjC88AQ; arc=none smtp.client-ip=178.154.239.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0upti.me
+	s=arc-20240116; t=1748975616; c=relaxed/simple;
+	bh=SbVxL37hTpZZJQwCWoGZsd5uDgWGt9zPQQhWwF9+SQI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bYkjQrzk2/oODpMcLrx9D5P0KdHsZ2/CamnQ+B3b9G9WmqlPJS1hSDcAediRPGU3EJDG3gpwtLB9tDZ+1uBKoEgV0NNNAzbkxSU4ZkM/MVGzT40QfJ/OGkrUU4vPuaLXyB3bL4Q3y7xxFy5f1QFPbLPkKovf/mTg1dNDc9uJTDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zilf2ppC; arc=none smtp.client-ip=209.85.221.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b="lfjC88AQ"
-Received: from mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:842f:0:640:b96f:0])
-	by forward502d.mail.yandex.net (Yandex) with ESMTPS id EBB8760C59;
-	Tue,  3 Jun 2025 21:17:25 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id LHgCkEULiKo0-pLzcZTYY;
-	Tue, 03 Jun 2025 21:17:24 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0upti.me; s=mail;
-	t=1748974644; bh=pOpYljZuYO3T7PKQuPSq6hSLphxMmYBM9c7hIldkB8Q=;
-	h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
-	b=lfjC88AQLYLUsUJy3b7nRVzevTZKollL8zItXcXC4rgjno4MWLGx6K+HDJLEJW5Rh
-	 YYsmCJsPg7cOuXLi+Dm6HNyLtLYQKa+LofdjRX7bQxnh6dlTW3AwOjaGjOb6PbLec6
-	 iyRtRNFb5eGkXo7L0wJ2J1pBv0BJdWAL954cjgbw=
-Authentication-Results: mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net; dkim=pass header.i=@0upti.me
-Message-ID: <40ac27ab-00f7-4fc4-97ca-f3b519167f5c@0upti.me>
-Date: Tue, 3 Jun 2025 21:17:21 +0300
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zilf2ppC"
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-52d9a275c27so3997339e0c.0;
+        Tue, 03 Jun 2025 11:33:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748975613; x=1749580413; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OxQQ0sWmsf4MOVzjdoqBgrpQlQTXaeSyUJ30E02i+Fw=;
+        b=Zilf2ppChnp95itA9O+JclCd9AUAOD729o6rBSCKN0AGU6GnsOm/xaK0AWlT4eAE0G
+         byESDpqKKWfrBhNIQX5PsgtlTUUm7Zfi8zAbUSH4BW7zwkJsCZ0EBiR9j/SMMrilud6d
+         Jd9tH9Et30umP8N1PGC3QkMrEKR7ENeWDnqYU395Wc/BRJGJoCHPHUoabomHXXtqCj7y
+         ShxDRep5R4kJmdGlj+bb88x07UbobLEe/IDgwaPKkw3qbfW+/0j2V8fm8bSl5jBaTSq8
+         xijqfmRezS3ptfQWDrjsMY3j0r2vbQfWc5Xs1O3mdCWuCbYyvJPJ+U7lMfLmqhBGT4eE
+         FzSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748975613; x=1749580413;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OxQQ0sWmsf4MOVzjdoqBgrpQlQTXaeSyUJ30E02i+Fw=;
+        b=sszd2BxnP5ZU7F+6Y3z7hc6HhWEi4DnFbYh8bgLo4r5TytY3y2Y5dktoqIk2WIc0gs
+         N1Qk4hsEm2Nmnbd3jMjaOYlz5sMvbLZMX3RvFaAj5y1kziZPM+ZOj3s3AZSuIUbNbOkI
+         kHChDK729Zp18KTJVj/fFmDat+3OgyBYmUFti9Jchvqbt0ICEG8PU+z6Wq+h7QK//+Gz
+         KOE5PuSeTAmjpQ2YNh6EpY3xdLTbLg8W1lJIxPiK8JtnjTzM+pcCQiJ0MbBk/uLHa0pZ
+         Xf64N0TfAzZl8g77LughLQ6rGCepjnJJJCo4b7YyfJaB+byPQVuuNwipsptAk1kTplZm
+         o87A==
+X-Forwarded-Encrypted: i=1; AJvYcCVzajA32ZuCAWlzvY1qNzj7oSguyl8aaCQTUyPSSKi4w8uaN6eBqvwwMxJTB/OhdD3F2zHQ7Y0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YweYxa+AplwyKmCB+iDXTNeZ8L48IcPLftlwAeljwOVIBtxA+nR
+	J2rmhriOzpRrTFQmT3mMc8h9tqedm1ZF16qaH0guvsFNtuykzHPypVaT
+X-Gm-Gg: ASbGncvX90M7GbVuN2+WeOncmqfZBeKUvjtyZbaxzFQb4eB5y7QhsWUR0I7mY1Tiymp
+	IWtHlg2jCDU7d8/rd78Q2OSRNiSfHqN1Latanw0nWnH2avOt9cIWPKcbVZpStRF87bkXtDnUpNC
+	KCxZq6RZ+RLsSrM5slLQZiZBaS2XVkpru+hRUSvhcx0dIDo3u52QKo9bp/SxW+fLckzgy0EGXzk
+	3v5sv6Dvq8Jux5qjvNcYrQgG3/P/Yg8I0pDA/jZzWvU5KARh/BQ0O5cDLKv70QuGsTrtxWwLtIK
+	NiBw1s7j30MzezNtYFbeIGZbthFsmrHxT+4U4UyEVRyD9c/nuhpJSh9OyRC6HgsEAx9gWIs=
+X-Google-Smtp-Source: AGHT+IHx+5qSMSfcrUaoTqZqfxugPU3f9II+et+C/as46fNkimrXOLRMiZp4kz1NF3Du9TpX5HSWPg==
+X-Received: by 2002:a05:6122:469b:b0:52a:79fd:34bd with SMTP id 71dfb90a1353d-530c73031b5mr21533e0c.4.1748975613326;
+        Tue, 03 Jun 2025 11:33:33 -0700 (PDT)
+Received: from localhost.localdomain ([187.61.150.61])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-53074aaf305sm9609248e0c.4.2025.06.03.11.33.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Jun 2025 11:33:33 -0700 (PDT)
+From: Ramon Fontes <ramonreisfontes@gmail.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: linux-wpan@vger.kernel.org,
+	alex.aring@gmail.com,
+	miquel.raynal@bootlin.com,
+	netdev@vger.kernel.org,
+	Ramon Fontes <ramonreisfontes@gmail.com>
+Subject: [PATCH] mac802154_hwsim: allow users to specify the number of simulated radios dinamically instead of the previously hardcoded value of 2
+Date: Tue,  3 Jun 2025 15:33:21 -0300
+Message-ID: <20250603183321.18151-1-ramonreisfontes@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC net-next] net: phylink: always config mac for
- (delayed) phy
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Eric Woudstra <ericwouds@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Frank Wunderlich <frank-w@public-files.de>,
- Daniel Golle <daniel@makrotopia.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, bridge@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20250107123615.161095-1-ericwouds@gmail.com>
- <Z30iUj6DE9-fRp0n@shell.armlinux.org.uk>
- <4b9b2a9a-061b-43ad-b402-a49aee317f41@gmail.com>
- <Z31CJS1YUvPGiEXs@shell.armlinux.org.uk>
- <98234080-946e-4b36-832f-113b185e7bca@gmail.com>
- <Z3-Tz5WdLCat91vm@shell.armlinux.org.uk>
- <9cc913d7-7e5b-4b6c-886c-ca9778c3f970@0upti.me>
- <aD1lRha-enQ9Pw0g@shell.armlinux.org.uk>
- <2894a781-4d4b-4e3c-9f4e-7c1f04122f8a@0upti.me>
- <aD3Cc7gmB2Tev_ul@shell.armlinux.org.uk>
-Content-Language: en-US
-From: Ilya K <me@0upti.me>
-In-Reply-To: <aD3Cc7gmB2Tev_ul@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2025-06-02 18:25, Russell King (Oracle) wrote:
-> On Mon, Jun 02, 2025 at 04:00:14PM +0300, Ilya K wrote:
->> That's weird, because I do have all the patches applied. I think this may have been broken by the pcs_inband_caps changes, because without the patch I'm just getting "autoneg setting not compatible with PCS", after which it bails, when it should really reconfigure the MAC instead.
-> 
-> Please enable phylink and sfp debug (adding #define DEBUG to the top of
-> phylink.c and sfp.c, and then send the kernel messages after reproducing
-> the issue.
-> 
-> Thanks.
-> 
+* Added a new module parameter radios
+* Modified the loop in hwsim_probe()
+* Updated log message in hwsim_probe()
 
-OK, somehow it just works normally now, even with the patch reverted. I think I grew a few gray hairs over the last few days. Sorry for the trouble, everyone, I'm off to not touch this thing ever again.
+Signed-off-by: Ramon Fontes <ramonreisfontes@gmail.com>
+---
+ drivers/net/ieee802154/mac802154_hwsim.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ieee802154/mac802154_hwsim.c b/drivers/net/ieee802154/mac802154_hwsim.c
+index 2f7520454..dadae6247 100644
+--- a/drivers/net/ieee802154/mac802154_hwsim.c
++++ b/drivers/net/ieee802154/mac802154_hwsim.c
+@@ -27,6 +27,10 @@
+ MODULE_DESCRIPTION("Software simulator of IEEE 802.15.4 radio(s) for mac802154");
+ MODULE_LICENSE("GPL");
+ 
++static int radios = 2;
++module_param(radios, int, 0444);
++MODULE_PARM_DESC(radios, "Number of simulated radios");
++
+ static LIST_HEAD(hwsim_phys);
+ static DEFINE_MUTEX(hwsim_phys_lock);
+ 
+@@ -1018,13 +1022,13 @@ static int hwsim_probe(struct platform_device *pdev)
+ 	struct hwsim_phy *phy, *tmp;
+ 	int err, i;
+ 
+-	for (i = 0; i < 2; i++) {
++	for (i = 0; i < radios; i++) {
+ 		err = hwsim_add_one(NULL, &pdev->dev, true);
+ 		if (err < 0)
+ 			goto err_slave;
+ 	}
+ 
+-	dev_info(&pdev->dev, "Added 2 mac802154 hwsim hardware radios\n");
++	dev_info(&pdev->dev, "Added %d mac802154 hwsim hardware radios\n", radios);
+ 	return 0;
+ 
+ err_slave:
+@@ -1057,6 +1061,9 @@ static __init int hwsim_init_module(void)
+ {
+ 	int rc;
+ 
++	if (radios < 0)
++		return -EINVAL;
++
+ 	rc = genl_register_family(&hwsim_genl_family);
+ 	if (rc)
+ 		return rc;
+-- 
+2.43.0
+
