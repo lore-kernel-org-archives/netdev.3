@@ -1,274 +1,290 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D0E28136C
-	for <netdev@vger.kernel.org>; Tue,  3 Jun 2025 09:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26266280CD3;
+	Tue,  3 Jun 2025 09:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748943004; cv=fail; b=V9WyqNSCAZADQTuQRJ6+/DSQAslOzIQRWHqhZ8qhL+0RXOIU2awhbhsUWZjYiA7gVd0NUNARk9DtPE2mTWzpSul4zLshoFXjMhyNJFYUny2lRQSox6VX3V9o7huewpK0A6szXY2+wlwtNAa3p2k6T5t8D+foeQisBoYzSERlH80=
+	t=1748943305; cv=fail; b=PKwQ3QtX/p5MXKHt8vx4iAEqVJYzZRI1heRQQHKE2RkuGMC8PsLtvng/cx38AjED2StFkvN+aSn2OqbJ3RUZDYIWbooMMfYNdQIMKrT4mcmNWbY/mKToqeRsuchpkIa7su5Ff4H0YGBC7tNYwFIJl3H9ajVcbk7CILiKIWGiVi8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748943004; c=relaxed/simple;
-	bh=1yVcPry+PaUdnHJBqKf7D2NB2LSp8dpOk5SGhL2LRqY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=MUPNc0LQWxv+Ae8iKkEfE45cK0pYMEYOf6qTV2dtq/Sca7Ie8XSF1uz0vjACeNQfMCZOa1SlsS5Dk6+A4pWIxDaJe6nUf9zBTLjinZTPHj0w8L2y914oqOmGA8vD1+l9Tz/fbv3OtB9uAHLWSjWpiej5tgyFaKYgWNYjfIFV1rg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C36gmtas; arc=fail smtp.client-ip=192.198.163.8
+	s=arc-20240116; t=1748943305; c=relaxed/simple;
+	bh=lcTN9u6U4wPusoDgHmbxmQS3Vq4FBbZ7GEpU0JUTJOk=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=pBmzL5/j4NZ3v0ELOe/p5Um0TFi04w0226hjpSO60GSvYWMhIlniiql4J7txphT0+E4ZbWuNdTqlwjoVlYfafdfTGvrpwfGxr/n75giWsshqbwmbYgYYSdthVnyyoiBHHJWcZYbn8LzL5XiuOp45J8ouwsJD7Ik/UmIx/c9eOg0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a3srCh39; arc=fail smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C36gmtas"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a3srCh39"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748943002; x=1780479002;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=1yVcPry+PaUdnHJBqKf7D2NB2LSp8dpOk5SGhL2LRqY=;
-  b=C36gmtasEhxlCn+UPcneIF1MUSSJQvG9qiRA+mXHs7Tpvkf/UqigLtMd
-   QocVcsCmbIR8KjLvLpxXVYtvTEvYeZ6L0FCm6fAlsS2uxyLMIbBsucSmA
-   2fLFYvq2nHEOqh/0mrtQQK85Wv/sR5ttcoVHWG86JYO5QIZE/yymGi0Eg
-   Zy/05aE38g/pmvQbfbBFhuuJGSB5NL76X+s+O1D5l5kDsktpp/q1zeKn0
-   f7g8IPb+YAFosv67qJBQBqQPfetqb+Jes91stzmartNMJ/P5d9rJqKLEq
-   0tn4v9bkypIFmCSM2j2kGwiZeKnO4P5rMrz3h35h1SKoVHzEyn5cKBGtf
+  t=1748943303; x=1780479303;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=lcTN9u6U4wPusoDgHmbxmQS3Vq4FBbZ7GEpU0JUTJOk=;
+  b=a3srCh39NjzTZ5gj9H6QuzYAA54VZSNuapvzHdgWOT8Jp1XeSGtU2D4x
+   WZfBx0GwdUUc+RvmziGAfhGY0HmrvjtpVxlz7p3Lb9aPRAaX1ybwIg97F
+   fQBiK5iOqZEjde5qDgaSmOAkQpUUwHl9sr5ws/stTON17erKA4+BexBSh
+   we5ljSP5FSmv3zdPVdv5sBG6twKvcpUGl9v/P54kKdZHfN0rPTsJBINey
+   hlUNJh7QEpbJdv3bT82qXU6z6SzniHFN1hLwb3Gck7ePIBwjQEUSRoD8U
+   nb4NsWfsDasnu1h82sP1pMp7h7KDx0hvyl9qrybJLQrhUVTXAq4y7vKLB
    g==;
-X-CSE-ConnectionGUID: 5J8vD7FWTt6/j3FsuQyorw==
-X-CSE-MsgGUID: u8SYF6xDQDWd2ujmDfzCTA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="68527388"
+X-CSE-ConnectionGUID: sPEBFimOSyOuM/T44ddQqg==
+X-CSE-MsgGUID: 3Jl92geWStiUvsSXCsqGQQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="68528279"
 X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; 
-   d="scan'208";a="68527388"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 02:30:01 -0700
-X-CSE-ConnectionGUID: XB/nbxsfQAa0zWzehoPz0Q==
-X-CSE-MsgGUID: P1AQouGDQmOkBazm0KApLw==
+   d="scan'208";a="68528279"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 02:35:02 -0700
+X-CSE-ConnectionGUID: tFM9qJzDSLCz97Rq+DolFQ==
+X-CSE-MsgGUID: wRGssukAQnigw9ZAJBibIA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; 
-   d="scan'208";a="144687203"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 02:30:01 -0700
+   d="scan'208";a="149854668"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 02:35:02 -0700
 Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 3 Jun 2025 02:30:00 -0700
+ 15.2.1544.25; Tue, 3 Jun 2025 02:35:01 -0700
 Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Tue, 3 Jun 2025 02:30:00 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.49)
+ 15.2.1544.25 via Frontend Transport; Tue, 3 Jun 2025 02:35:01 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (40.107.223.42)
  by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 3 Jun 2025 02:30:00 -0700
+ 15.2.1544.25; Tue, 3 Jun 2025 02:35:01 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F+R/fcFBCUPJJjpU1lnQSeVw5XAoGz39LZyZmW1mrRlxWRWIMe3wofU4SN0S/4emu9/L/9l7y28YRUkJeCoH89XsxxBBsPFfGCojk2JzYS0oqtfXIW6awotsm4uSc8iXhkz7MwnDwxZB1ej1s8tnbNQzcgLImoSCcVa6UdZs8bF5i5SWHldGCg3ZHMOQIranSwZcVSYCy0nBDSExlF2E8CNH5uRkaQZRR/2F8OKvUW6zxdvxDQZWqRf5W8C61q1PVSRlg9UzkE0b9+urXrjK5i37BGGkxoyf1uoc7KdskklxI5ntZdLNgLR2jxideyLe4cPWjvr9G3SB/gdywULwaQ==
+ b=mOuSg3k1Q+GbskNsou52p7F+WOVje4YztdmCFFBo9MsMSzwAfIfJpxVYLJkkF9fSQtk8NQuzXBsp1r87Ycn/I1EgOCeWda2XDnX1/NnbC9ytMlqB0/Wigs9x8AorimIYkKuLtQC9vFSg6DhjQ5CpXPhRYhB3RT0bJHRIgCy1q4CuRUivVW6KiHzMlXPB7t9o8W4wbqaC7xJYqmPilW0sNEg22Ja/OJrhGzj0TSkYg5SWXEKpLMSuCx90WJpRnhxgyVLjm2INMV5cgGcqqY2M70nDfW6Elvzh4mHA1AM6yAuToiLKAS1IBNY4uZXsusA2X0kgi8wypuxCmg851vGguQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/7j6HUEEHRnALESAFZ0cOtardXBfvCOj5EjFaikiwoc=;
- b=ymX9qRlAzRBigKsios2YEMMTYq4Xt9qke53O6bxLlFUrBdLG0VzOdbJJ5yi1B9ywj0Tim/T+ozp1eXQXJXKV/brGPz9y3b3waE6tDJ2zCskgavIRy8V17K6gAZmCmhwJB/g5soqcyCHdHQCnl9P3dBjjpUr/z7Z+ifIQsrxOox3QDjb/43NSCuNYmFh4UIKZGAjFPBgh/qecd95O8u0cR+8nU2ms4NassJq/F8eC1G3rHAnQWXIHSCca9noZ/zajt4YGO2PYq+8QPGJbpFR6N1fzqQcHczY3Pvu0qn9k8spHk1uDSzKPmk2/YHRHSHFHZBOMh1rXQEYbomEmaGyCTw==
+ bh=GM742b0q5QSASKXaDs+ReLU19wmUAKuFxDoKhJnUZR4=;
+ b=v9JKd/U0Fx4VTAKnVGcAafGqWbztD3yic85kepOTAMJtkGYq6mG+d4MMM38QZu8Z7p8rmBqXOh+fjhPkV9QcrpoVng1XHdVoIQBblRNUXaZ+XmEkGNowic1GvcEKAp+rqjeRXsyq6ZhiPeiVkWpycnFf80I7/4iFuhCtodLCI+cP7qqke3jzLiBrbJqOT1L+ttKCN2TsYLp0RSTR4B1G7vhjP2Td6a/XUn0t5uN6oDBlGYkn0Ao7NWGP6fGQ+BH73yUyt9IJx7ccrtmaZIsW1IlQ1EnRGQN3xgLKIYUuVPmVhsMeNgGyHM6J1mzlaFb+fEHCdht965K5IIimi52t7Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8985.namprd11.prod.outlook.com (2603:10b6:208:575::17)
- by BN9PR11MB5289.namprd11.prod.outlook.com (2603:10b6:408:136::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.37; Tue, 3 Jun
- 2025 09:29:53 +0000
-Received: from IA3PR11MB8985.namprd11.prod.outlook.com
- ([fe80::4955:174:d3ce:10e6]) by IA3PR11MB8985.namprd11.prod.outlook.com
- ([fe80::4955:174:d3ce:10e6%6]) with mapi id 15.20.8769.022; Tue, 3 Jun 2025
- 09:29:53 +0000
-From: "Romanowski, Rafal" <rafal.romanowski@intel.com>
-To: "Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Zaki, Ahmed"
-	<ahmed.zaki@intel.com>, "Loktionov, Aleksandr"
-	<aleksandr.loktionov@intel.com>, Stanislav Fomichev <sdf@fomichev.me>,
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>, "Keller, Jacob E"
-	<jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-net 6/6] iavf: get rid of the crit
- lock
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-net 6/6] iavf: get rid of the crit
- lock
-Thread-Index: AQHbpUyO/1ciH4miLEOz3TmL4z1IDbPxiWuA
-Date: Tue, 3 Jun 2025 09:29:53 +0000
-Message-ID: <IA3PR11MB89857225C5BD527F2419F3148F6DA@IA3PR11MB8985.namprd11.prod.outlook.com>
-References: <20250404102321.25846-1-przemyslaw.kitszel@intel.com>
- <20250404102321.25846-7-przemyslaw.kitszel@intel.com>
-In-Reply-To: <20250404102321.25846-7-przemyslaw.kitszel@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8985:EE_|BN9PR11MB5289:EE_
-x-ms-office365-filtering-correlation-id: d3d816a4-aa9e-4cf3-2a80-08dda2813241
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018|7053199007;
-x-microsoft-antispam-message-info: =?us-ascii?Q?ipQgygJ/mN7b/9jxgXRF7kvsli6tRh+0CHSC73UpYQ9u4wF55w2FU27fHdp6?=
- =?us-ascii?Q?2fz0DbrWqkzS4DAPbFNsZUyLQhbkNVNm2wRnHppOdSt/AqhHn0sgnGWFnKVu?=
- =?us-ascii?Q?vqq+leJZzDNWX5IoDZPemZKtOAZ1dDEC7y7Qr8CUZo6Uqv3D7g1wD3n5aAmJ?=
- =?us-ascii?Q?Fn2qq2+8VQUSfUMybgnfnvXeR0nO/gfQsFBzmLY7jyNiqcM1w/eARSYCyHlP?=
- =?us-ascii?Q?9upckdkAgOxjpuBip5HIfM8FYU+afTNkEXhp9DdejRi8+2Hsy4Mn2/re/oLS?=
- =?us-ascii?Q?Q2FpK8Qh5br8nu6dBIHN/hz4vfzxnpx4KsG8Aq9L7qWkgXIh/i+9m5B7WDGT?=
- =?us-ascii?Q?ZXUtgzn/vojqILTwkOHJEHVj9tfhjo2VLFyZ4J1z6L/UZHBE/3H/PVq8T/KR?=
- =?us-ascii?Q?P4fReWUSzLRWt9oHiyHjrilzQgzXByOf+oTA0T4GB7mn4tyzXADja/7qxsXE?=
- =?us-ascii?Q?6FdpFOZD7GfHnsiFANcA+CD3Rb4hU8D9wbJz+YhPWX/Zfelc28XA1e55f+nG?=
- =?us-ascii?Q?zjTkg4HGgQnNpBJPx4j0KmpQyhy9yMDOWVnCeG4E/5WTwgOX/KMWQIyd7jhd?=
- =?us-ascii?Q?w35Nt8aalv/dnZvbOB+DZBLBO6kvdVhIPY6YyUtc9rtEnurEZA7hHQ2C5mvJ?=
- =?us-ascii?Q?fb+qmATah4uDgR0Y96YWvXMQxGH+1TBMf0qGySHD3sVbH+SpGyd22iYN2zYP?=
- =?us-ascii?Q?E8nMagVKHSuOmSiu5FngdM/rFZFqF9Mbo1bhqXT6vNBxfQKHPRsVZz2aVu1S?=
- =?us-ascii?Q?vjqMaxyzoLYy8d/LChLxfRicDHhHRGDM8wEWTUr1nVpqDZWzHk2HvnDzzjui?=
- =?us-ascii?Q?6/nGqgW2UmoZkGg9W8L0sxPY5dQeRxtLu6reP2UBuRfQYAesnkc0WwL/vUJ9?=
- =?us-ascii?Q?71z2DD6+PV5pnlEY0jk1/dAdNMGQnUrIZyJQA7VHhf/DUmxeyNu3tLvcIrgV?=
- =?us-ascii?Q?9+IGgBLWhrGhywZSWp5V3pFkDmzpi4WyNnp6bnnHKVCbckcnblADHx2vo2Vr?=
- =?us-ascii?Q?UQc+mSR/njCejnsNDtp+DO22QerifLJpU+Bjos/O2EY02apUBdPk6nUW8ok3?=
- =?us-ascii?Q?kSQDWiCwtKu2tLAyVUrNfoSElLh2VQFXeEUQ/4SznZtsymj1WgOQYukA4FPY?=
- =?us-ascii?Q?0h4BRqUQ4bUCg7m2di6IiNHFc0y4iZKAicg8f0+xqXeY/QDfMypnOiCT0lcn?=
- =?us-ascii?Q?1dIM71nk4Hr1BjbAh0BDOS9FU/44fgK0jfETwBgS/+gQxmTfiRiNPJ7Ilhd1?=
- =?us-ascii?Q?biD/MBJzRrelC43rlO6TtYZbWLsIroJ3YfeQa9GjlB+u3CIa5AgPC3urjBIz?=
- =?us-ascii?Q?TS4OGCEC3QUcod4j8bEG6a0U+bsNwHr4n222YwNz9Dx797vZUy3x8DObBQ8H?=
- =?us-ascii?Q?S3imTqjcyv+a2DYFd9WkJYQXxlZ3PmtiS9/DKKx8VrX24I3vTWWqIxGNFeVS?=
- =?us-ascii?Q?ixY6tu7JsgFfy2JkILdqM9AJ2hmMKZWGlTsKlNiPP+U5Qui040RVrhcd5qtq?=
- =?us-ascii?Q?djFmbFkBUm3csg0=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8985.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018)(7053199007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?LbzVhd2Y1icg/ourV7fNAU08S8NLAd/aL4tbdMMTMB/xofNzkMBl/R9yoGaW?=
- =?us-ascii?Q?bJpUyl2YTxCXxE/YOyoHiY88qQeFPo9rUR8hUj5PZvPuWVWweQKLbV+d0cBQ?=
- =?us-ascii?Q?poN4aUyWhXQlu54Wfd2NTVBjTmd3HD29uUwGW6vAkLAkdAR6XE+AATpTYXK3?=
- =?us-ascii?Q?oW46CUJrFPf9uQJuPFKAUf29voLcSiSqQBPzdkh0UTrVAi6obpwjVvbntYHl?=
- =?us-ascii?Q?cvL5SEFGmf1audFLKEGkQ1noz6JAiZGwemWsZufK6jYFmvloWwi1OltArrwc?=
- =?us-ascii?Q?2sJGOQ8QeG753aOd2GN7vOkpG9XxgkRRQaCmotka9uUxcJZecMFgla9sjBE+?=
- =?us-ascii?Q?GJeZhCr479cj1LXQ0ZHUfD9CsTf5oV+ptW8zehft/TY4HjbDXMHqcZOkSCcG?=
- =?us-ascii?Q?Y9Og3B8GoSwK/ymXjbBvv1PC7PXwtetGw2iL7JZVLPRSaBtgBck2lQ64YSuQ?=
- =?us-ascii?Q?GwLRrKrgDfjMHQ4MiNwBJcAvBSuqnvFtZzT2enHzuwdFjgHiF/EfYboSXt7l?=
- =?us-ascii?Q?dR+IUjlRaVmlPL65m3R/KqeMlKee5zOB/1eQf+7AQCKQ94NCbK7EUG5AyjKM?=
- =?us-ascii?Q?qXsAx56kVQVTlwTLxpacs3dKPQ5yUoHWdL/D5P1mJ4sKxlZ6iU7kfFGceRHd?=
- =?us-ascii?Q?IWjBn7t0+bj5I6md0Ak2Ymlskcuj+8FE0NWlFDM2J0fJatMFvvAJDLjzGj73?=
- =?us-ascii?Q?Kf6zllbGgr2/EAk77SBYXpgXQr/kUgFSI0hEikYQiCJTdbU1FtpNUuaq416P?=
- =?us-ascii?Q?G4sxCCGttSEbh3GsFGcoTDvJ8prt38Mgzxz636X2PPXlT+FTus7MeSFZCanv?=
- =?us-ascii?Q?T8Jnq1Wfk+eo5MU8MhfZyiOyDLJQ7WNq2O3Vcat7N0nsGPY4E852Grm3jwgG?=
- =?us-ascii?Q?uvfw2Iij9c5zRo7wHYMyteFzWWc0XytxSU++qDs4uF/634oAqG7fb9530Vtl?=
- =?us-ascii?Q?/8Zgt2AwqZ9VcKvLBRnTIC9cgjSHElaG5MvPQCbqkX5T+vCjVV7mEWGy096C?=
- =?us-ascii?Q?RcjuQuj8xZl7TQW1YBT5ORefe0THchbK9MBbGst/DzPq+xBZ0DaS2dmpq8OP?=
- =?us-ascii?Q?TEsZdufAU4QD1/V3T7Dg7HX4FvgR8CASWXNHxIf3Rq5Vt2qb5/dLpwBYu788?=
- =?us-ascii?Q?ppf31IgKLcg1t5LcBtTFWKIe9tGWabDaL9v54IUfvxkIPA/Y22inLkh0Gp5U?=
- =?us-ascii?Q?fIs1OxyDplNYFLYvpQP5wRwIqDJ3tIniSzOe9vELhNZ/fzANAGE8nSgwVqrg?=
- =?us-ascii?Q?Kjz0CshUWpTPWckqoCqNWtwmEHGU9CEAgtE+WK4C1RKnk4oKQxcfasZcBYoC?=
- =?us-ascii?Q?mqjgK4W7yOC3jqIIJk7iMrxWpUnm/368HY50S6zF+DM7TGHOenEjnsXan27A?=
- =?us-ascii?Q?VElMtNEkXoDpohX6RSgZEnvYIyqiLMbR0al1gQHGTe/2fGzinpuW7q4ojiyR?=
- =?us-ascii?Q?5DYT1WeFTI+Aj3O87B4HWXhe282z32INXh1xUcJU6G3pcZ7L4sVtwBFzNf9v?=
- =?us-ascii?Q?XtTEwD5RZvl64bTG0OA9d9l0UxnlRQyDrfJh1sOW/9nzVA9xQQlMnqGbO56q?=
- =?us-ascii?Q?cQJQTfzr3A9xl1lPadBbELylmy5mpBhvKv+KfKOxS20iQ0xtNvTbzmUNn89+?=
- =?us-ascii?Q?YA=3D=3D?=
+Received: from SN7PR11MB7540.namprd11.prod.outlook.com (2603:10b6:806:340::7)
+ by CY8PR11MB6964.namprd11.prod.outlook.com (2603:10b6:930:57::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.29; Tue, 3 Jun
+ 2025 09:34:52 +0000
+Received: from SN7PR11MB7540.namprd11.prod.outlook.com
+ ([fe80::399f:ff7c:adb2:8d29]) by SN7PR11MB7540.namprd11.prod.outlook.com
+ ([fe80::399f:ff7c:adb2:8d29%6]) with mapi id 15.20.8792.033; Tue, 3 Jun 2025
+ 09:34:52 +0000
+Date: Tue, 3 Jun 2025 11:34:40 +0200
+From: Larysa Zaremba <larysa.zaremba@intel.com>
+To: Jinjian Song <jinjian.song@fibocom.com>
+CC: <chandrashekar.devegowda@intel.com>, <chiranjeevi.rapolu@linux.intel.com>,
+	<haijun.liu@mediatek.com>, <m.chetan.kumar@linux.intel.com>,
+	<ricardo.martinez@linux.intel.com>, <loic.poulain@linaro.org>,
+	<ryazanov.s.a@gmail.com>, <johannes@sipsolutions.net>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <angelogioacchino.delregno@collabora.com>,
+	<linux-arm-kernel@lists.infradead.org>, <matthias.bgg@gmail.com>,
+	<corbet@lwn.net>, <linux-mediatek@lists.infradead.org>, <helgaas@kernel.org>,
+	<danielwinkler@google.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
+	<sreehari.kancharla@linux.intel.com>, <ilpo.jarvinen@linux.intel.com>
+Subject: Re: [net v3] net: wwan: t7xx: Fix napi rx poll issue
+Message-ID: <aD7BsIXPxYtZYBH_@soc-5CG4396X81.clients.intel.com>
+References: <20250530031648.5592-1-jinjian.song@fibocom.com>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <20250530031648.5592-1-jinjian.song@fibocom.com>
+X-ClientProxiedBy: VI1PR06CA0174.eurprd06.prod.outlook.com
+ (2603:10a6:803:c8::31) To SN7PR11MB7540.namprd11.prod.outlook.com
+ (2603:10b6:806:340::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR11MB7540:EE_|CY8PR11MB6964:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72c705f7-f499-49a4-0bbe-08dda281e43b
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|10070799003|366016|7053199007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?WPyRM8yfbwiNeCBehKeqDyXD2RVD61bHtFFR3KhWtYLFFuxW54FAz/RIVjul?=
+ =?us-ascii?Q?jdPcll14m7uziGDmXm9vZoS1MS3FeQX5aciS9sf4GPkBO8HJgqqeuLpOQ1dm?=
+ =?us-ascii?Q?LNtZLDII/6ACTyOXws27VXefGlR69LaquvnU5ikxUMwpaKdGRIL2SNbgo4cA?=
+ =?us-ascii?Q?JUpf9j9GZYV2ZV+BkDQ8tvoJdmi6vtVt85zvYT+vGetDWmH/H2zH6mCsa8Jq?=
+ =?us-ascii?Q?ooKDWOUmhvy9Y44Oq8qj9UzCHFNhKkk2PXUFFwdwWqgf3nHl5SjRnM5O/Adj?=
+ =?us-ascii?Q?RFdHsZg3dI7RewuuYZZl/P5eus8MGOYJffZSFRt4Gyg+sdUkR+sFKCygGULG?=
+ =?us-ascii?Q?M3SQ1w9sLQ8M9fuwyS2eN9MHyY7kTA/aM5ruv6/Uo+XY0Rf3w29S5mNRKqOk?=
+ =?us-ascii?Q?SSvvugLkFqUFBwadkW7rXPtevc4Nes9i6Fg3qz26ntYxJtt7ayFPWVnOEbQE?=
+ =?us-ascii?Q?ioaYmTqEBrWU+7+G5bhrElxeM4kV5wFErXkarkuMNA8U41mLAmAz1/cphz9R?=
+ =?us-ascii?Q?5OYwE4lNUhZZEcPgs1mjc1acVWaxoBcuClK0FZIdhO0EYqcxkUv+5Ptm2dmh?=
+ =?us-ascii?Q?0E1F1rcEax9EbWTbDq3y73GHg/p/bmubNdkVvFOSnWoEIyjdEa9QZUN0zX5j?=
+ =?us-ascii?Q?/Ug6+i+qFmT3gk7xhQ4fwNVju81V/XtPzL8GyyfuFBHzl2eN12hje0jr6IdD?=
+ =?us-ascii?Q?B/SdIkCBgd/5JePBHtwjffJ19KDztOGcXmUZxPtYFFIjlBWAJtKtjZVPrjAZ?=
+ =?us-ascii?Q?R9F6UG7Ir7e3q1UjBAStTIkX9XTLRe5np8kRqDOFavoSkc6opDeZ+b5kyxa+?=
+ =?us-ascii?Q?mAzWOTzAC2mizn/8CUQs/tOVZ4cL9AFYMIx65q9s9JTK56cx2uNIxMHo6ldf?=
+ =?us-ascii?Q?aFmlULnL119ee/slbGgXTrh4fQ6GFr4izaGXN/sq2cRaQET54c+EDyTi7yD/?=
+ =?us-ascii?Q?EShl/y1rgEsrtIuMLxdK7eWFM4gF7iwi2F/N/6l3P+oeymo5uehy/PAEjuaQ?=
+ =?us-ascii?Q?cj8Q06iawqddQV/BHSeyfq7ZDSPV5D4wpDWyaINKPTOg4P+NBKCTNzToHj6Q?=
+ =?us-ascii?Q?m18J//gQZ470EIjXCFaXCzCcFGcjbYx31Hwc5mkstdzEK9O8lg538XB2eXGW?=
+ =?us-ascii?Q?CKgO+SM8mMa+cEBiicvUelljOg4d+sua++/3zeF9DsJ6kqD8iY7fL7ywY2KQ?=
+ =?us-ascii?Q?Z44Di4AX3FD6DLqEAr1EQ/p3oUThtMLbUskpd0ycGbR598l3//3NcxfDbytU?=
+ =?us-ascii?Q?L8VjDMTvtWA4D2cLWVSENZMRmovgD2mhh4Kd/TuYBmjKuPzYz1rLxi4hYu7J?=
+ =?us-ascii?Q?lMXiIi40f9QPoVQsaX/gT1wnXP6p0RuiotRgPx95/+a+03iSQ8cGtm3bHq4X?=
+ =?us-ascii?Q?MRRABySFj0E+Og0y+cijoVnk5AfRSF+ltJqH0mV46U0XvHCPbxxVgrsy5PTL?=
+ =?us-ascii?Q?RNliCONNTSg=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB7540.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(10070799003)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?nfmQLVVNk8M0xsiaJ1RG41CvqZnMykgv5pFw568l7lbNJ4MAVTRIvw8H0NJ2?=
+ =?us-ascii?Q?srGBd4OkVfC2igyYSS4atfOMgYhXsdg/dyD+4kZmJE68SGegn7rGilw2xltI?=
+ =?us-ascii?Q?Peq/u73MeVJQUPXWjtObReRKdDHhkdsQz9bGOrZdN7wtsNq5OQkE8SX2JLlF?=
+ =?us-ascii?Q?GNWl0Mv23/PBGhg18irEJZb8Y863w4lz2LC3sPD/NnBS1PzffKTn+5oa1iVR?=
+ =?us-ascii?Q?gT79X6PSu6NOaqGyJ+i6/l8O/9XuDr6jvGNRB8TfH8mUVyLL7/BNYNxq6ZOK?=
+ =?us-ascii?Q?YtkxKzAsdvxAPlcbKL0foya6+SaR9ax06ujsRcB4gAV+GKc69I8e+aXkO0ER?=
+ =?us-ascii?Q?2l+0dK8H3spIZBUXmwkslfIzEu1KscNR2OVIPS9ov0+Dtzn1CSJHEWvxO2oW?=
+ =?us-ascii?Q?a2hAMscOP4VGS5U1uqYTXYQpb8iZVyATcZVgmJQfiSqrW28XwPbQYmY9p+wD?=
+ =?us-ascii?Q?A8/bYZFk/x2SxQLgMnLZpwyP8AkRqYLl/sWqKooDmQQXEYjVDVhE/LcUOFZ2?=
+ =?us-ascii?Q?1KZuPcEDIpqXKv6b6LjGe8zZ8gwci3JbUIH/D8nB2qCLe09DVwYEzGr9tHiA?=
+ =?us-ascii?Q?1HAz/rfGfu6SsufMWSuUf2aO7BC+nAcnd8MzoOMoEYYRFSOC9qffWbuzhoy9?=
+ =?us-ascii?Q?/oCzGQp/lMWlJ3Mk9m38wXw0jPvV2056zWiG9ogzwDExIiHVJN0iKBbzph3s?=
+ =?us-ascii?Q?crlAnt060hhkh2AI+AfdClOOl5OEgtpC0XUczpDLUwZ2Wldc/m2rdoZr/HQb?=
+ =?us-ascii?Q?AXYtFuswVftKDuTPQ7aed2v8ycDUGLEWG9JLD5TgK2mf0Zskjw63caxbFGF2?=
+ =?us-ascii?Q?c+FhcNZ4qWM5vLuHqZm2vNSJf64AbHAd+05IPQG+QF+CiVhoKRvk2VFYUm4B?=
+ =?us-ascii?Q?WNpVKNzfhDJC5CAeE4gkBL3JvPfuyMdccRCF+IcoAqvdDWNw4IR720XWKpGE?=
+ =?us-ascii?Q?Xdk5AL0mNh79TLinJXsi4Mh5/qaBcZeyW0vuG1Z/ojeb6hIRKR67+D6GkwoN?=
+ =?us-ascii?Q?V14JPDaz+fG60Xzn9x0I4vMSCEQr/g4fuXzvymCisaxyI3LH4lT0Kkjz2UH7?=
+ =?us-ascii?Q?54myjFOgzWLXWvcWvPcSMDvgtGx5p/5p8JUoHTi3hyFOWF8k7CcC6mbwwyOb?=
+ =?us-ascii?Q?NNyuXRBe8BXibk/cNJ8QtyODKgzTiBcivxxjW7F7jzB+Pv4V32qpwlz/py+T?=
+ =?us-ascii?Q?qnS2rJr7CKTBrksDGaxrf6xJpTyMIF8AfHQdShuV9WbY0BleaP7jnE6tAj/B?=
+ =?us-ascii?Q?ZcGOWZ4ssAj0n7TWNHNfBSrEMTJMnaF3NQU6Jjd1lap+xOP/pohqkpxkKc8C?=
+ =?us-ascii?Q?LTLxh37BSLs/508jq8WaGzLY7yb0F/YrnniGPQewIM1Jzptk/3zpDBd9ikVg?=
+ =?us-ascii?Q?yJvzOD8DBIqloTyp/r0jcehMkBv4Vb3AI643w0PhnO8OhXXUu/NV3vy24YCC?=
+ =?us-ascii?Q?MrdMwzH4HTnDoSCaAtIiOADJub4bHanE2Ct33bjgsOZ23TWVZiZ8jmxsULAN?=
+ =?us-ascii?Q?bI7sYGpW+v6uPVEEW54JZyYqfJi5le3LVQVSmWFPY/70DTjX40mZtakx+5Pw?=
+ =?us-ascii?Q?VNeTCdCmbwzdw9Vxt/iKIqTVTUXydVU4560sRK0DnR0yJu3DORGb6LdpLx9d?=
+ =?us-ascii?Q?KItHsPn9T1eIFOBsKuKXj9hiJTHja9xzIjnrB6+VuQQBGpZCU4U/lx8QIl/V?=
+ =?us-ascii?Q?zz8kSg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72c705f7-f499-49a4-0bbe-08dda281e43b
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB7540.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8985.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3d816a4-aa9e-4cf3-2a80-08dda2813241
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Jun 2025 09:29:53.3858
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2025 09:34:52.1544
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0jJUV5VTSu6v6VTQiZ21rXIj875B0PkCmN8LKWYhg4agA3kicKxxlRwapRzjQu+YCHN69nYsgKbGOfcQ65YrrJ6BhE1FjE2HtNsbLdxbhSk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR11MB5289
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +su0xe2hDkaNazl8MzwzZK5L421ZduOkGJVZu/OTbqxkfWlDwcqhVn5JMxjCY/WoqzzCpzjYthMfkznZpOBirYLIMkRkhIcJ3rb8sBPSUYo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB6964
 X-OriginatorOrg: intel.com
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
-> Przemek Kitszel
-> Sent: Friday, April 4, 2025 12:23 PM
-> To: intel-wired-lan@lists.osuosl.org; Nguyen, Anthony L
-> <anthony.l.nguyen@intel.com>
-> Cc: netdev@vger.kernel.org; Zaki, Ahmed <ahmed.zaki@intel.com>;
-> Loktionov, Aleksandr <aleksandr.loktionov@intel.com>; Stanislav Fomichev
-> <sdf@fomichev.me>; Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>;
-> Keller, Jacob E <jacob.e.keller@intel.com>; Jakub Kicinski <kuba@kernel.o=
-rg>
-> Subject: [Intel-wired-lan] [PATCH iwl-net 6/6] iavf: get rid of the crit =
-lock
->=20
-> Get rid of the crit lock.
-> That frees us from the error prone logic of try_locks.
->=20
-> Thanks to netdev_lock() by Jakub it is now easy, and in most cases we wer=
-e
-> protected by it already - replace crit lock by netdev lock when it was no=
-t the
-> case.
->=20
-> Lockdep reports that we should cancel the work under crit_lock [splat1], =
-and
-> that was the scheme we have mostly followed since [1] by Slawomir.
-> But when that is done we still got into deadlocks [splat2]. So instead we
-> should look at the bigger problem, namely "weird locking/scheduling"
-> of the iavf. The first step to fix that is to remove the crit lock.
-> I will followup with a -next series that simplifies scheduling/tasks.
->=20
-> Cancel the work without netdev lock (weird unlock+lock scheme), to fix th=
-e
-> [splat2] (which would be totally ugly if we would kept the crit lock).
->=20
-> Extend protected part of iavf_watchdog_task() to include scheduling more
-> work.
->=20
-> Note that the removed comment in iavf_reset_task() was misplaced, it
-> belonged to inside of the removed if condition, so it's gone now.
->=20
-> [splat1] - w/o this patch - The deadlock during VF removal:
->      WARNING: possible circular locking dependency detected
->      sh/3825 is trying to acquire lock:
->       ((work_completion)(&(&adapter->watchdog_task)->work)){+.+.}-{0:0}, =
-at:
-> start_flush_work+0x1a1/0x470
->           but task is already holding lock:
->       (&adapter->crit_lock){+.+.}-{4:4}, at: iavf_remove+0xd1/0x690 [iavf=
-]
->           which lock already depends on the new lock.
->=20
-> [splat2] - when cancelling work under crit lock, w/o this series,
-> 	   see [2] for the band aid attempt
->     WARNING: possible circular locking dependency detected
->     sh/3550 is trying to acquire lock:
->     ((wq_completion)iavf){+.+.}-{0:0}, at: touch_wq_lockdep_map+0x26/0x90
->         but task is already holding lock:
->     (&dev->lock){+.+.}-{4:4}, at: iavf_remove+0xa6/0x6e0 [iavf]
->         which lock already depends on the new lock.
->=20
-> [1] fc2e6b3b132a ("iavf: Rework mutexes for better synchronisation") [2]
-> https://github.com/pkitszel/linux/commit/52dddbfc2bb60294083f5711a15
-> 8a
-> Fixes: d1639a17319b ("iavf: fix a deadlock caused by rtnl and driver's lo=
-ck
-> circular dependencies")
-> Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+On Fri, May 30, 2025 at 11:16:48AM +0800, Jinjian Song wrote:
+> When driver handles the napi rx polling requests, the netdev might
+> have been released by the dellink logic triggered by the disconnect
+> operation on user plane. However, in the logic of processing skb in
+> polling, an invalid netdev is still being used, which causes a panic.
+> 
+> BUG: kernel NULL pointer dereference, address: 00000000000000f1
+> Oops: 0000 [#1] PREEMPT SMP NOPTI
+> RIP: 0010:dev_gro_receive+0x3a/0x620
+> [...]
+> Call Trace:
+>  <IRQ>
+>  ? __die_body+0x68/0xb0
+>  ? page_fault_oops+0x379/0x3e0
+>  ? exc_page_fault+0x4f/0xa0
+>  ? asm_exc_page_fault+0x22/0x30
+>  ? __pfx_t7xx_ccmni_recv_skb+0x10/0x10 [mtk_t7xx (HASH:1400 7)]
+>  ? dev_gro_receive+0x3a/0x620
+>  napi_gro_receive+0xad/0x170
+>  t7xx_ccmni_recv_skb+0x48/0x70 [mtk_t7xx (HASH:1400 7)]
+>  t7xx_dpmaif_napi_rx_poll+0x590/0x800 [mtk_t7xx (HASH:1400 7)]
+>  net_rx_action+0x103/0x470
+>  irq_exit_rcu+0x13a/0x310
+>  sysvec_apic_timer_interrupt+0x56/0x90
+>  </IRQ>
+> 
+> Fixes: 5545b7b9f294 ("net: wwan: t7xx: Add NAPI support")
+> Signed-off-by: Jinjian Song <jinjian.song@fibocom.com>
 > ---
-> CC: Jacob Keller <jacob.e.keller@intel.com>
-> CC: Jakub Kicinski <kuba@kernel.org>
-> CC: Ahmed Zaki <ahmed.zaki@intel.com>
-> CC: Michal Schmidt <mschmidt@redhat.com>
-> CC: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> v3:
+>  * Only Use READ_ONCE/WRITE_ONCE when the lock protecting ctlb->ccmni_inst
+>    is not held.
+
+What do you mean by "lock protecting ctlb->ccmni_inst"? Please specify.
+
 > ---
->  drivers/net/ethernet/intel/iavf/iavf.h        |   1 -
->  .../net/ethernet/intel/iavf/iavf_ethtool.c    |  23 +--
->  drivers/net/ethernet/intel/iavf/iavf_main.c   | 165 ++++--------------
->  3 files changed, 38 insertions(+), 151 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/intel/iavf/iavf.h
-> b/drivers/net/ethernet/intel/iavf/iavf.h
-> index 9de3e0ba3731..f7a98ff43a57 100644
-> --- a/drivers/net/ethernet/intel/iavf/iavf.h
-> +++ b/drivers/net/ethernet/intel/iavf/iavf.h
-> @@ -268,7 +268,6 @@ struct iavf_adapter {
+>  drivers/net/wwan/t7xx/t7xx_netdev.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/wwan/t7xx/t7xx_netdev.c b/drivers/net/wwan/t7xx/t7xx_netdev.c
+> index 91fa082e9cab..fc0a7cb181df 100644
+> --- a/drivers/net/wwan/t7xx/t7xx_netdev.c
+> +++ b/drivers/net/wwan/t7xx/t7xx_netdev.c
+> @@ -302,7 +302,7 @@ static int t7xx_ccmni_wwan_newlink(void *ctxt, struct net_device *dev, u32 if_id
+>  	ccmni->ctlb = ctlb;
+>  	ccmni->dev = dev;
+>  	atomic_set(&ccmni->usage, 0);
+> -	ctlb->ccmni_inst[if_id] = ccmni;
+> +	WRITE_ONCE(ctlb->ccmni_inst[if_id], ccmni);
+>  
+>  	ret = register_netdevice(dev);
+>  	if (ret)
+> @@ -324,6 +324,7 @@ static void t7xx_ccmni_wwan_dellink(void *ctxt, struct net_device *dev, struct l
+>  	if (WARN_ON(ctlb->ccmni_inst[if_id] != ccmni))
+>  		return;
+>  
+> +	WRITE_ONCE(ctlb->ccmni_inst[if_id], NULL);
+>  	unregister_netdevice(dev);
+>  }
+>  
+> @@ -419,7 +420,7 @@ static void t7xx_ccmni_recv_skb(struct t7xx_ccmni_ctrl *ccmni_ctlb, struct sk_bu
+>  
+>  	skb_cb = T7XX_SKB_CB(skb);
+>  	netif_id = skb_cb->netif_idx;
+> -	ccmni = ccmni_ctlb->ccmni_inst[netif_id];
+> +	ccmni = READ_ONCE(ccmni_ctlb->ccmni_inst[netif_id]);
+>  	if (!ccmni) {
+>  		dev_kfree_skb(skb);
+>  		return;
+> @@ -441,7 +442,7 @@ static void t7xx_ccmni_recv_skb(struct t7xx_ccmni_ctrl *ccmni_ctlb, struct sk_bu
+>  
+>  static void t7xx_ccmni_queue_tx_irq_notify(struct t7xx_ccmni_ctrl *ctlb, int qno)
+>  {
+> -	struct t7xx_ccmni *ccmni = ctlb->ccmni_inst[0];
+> +	struct t7xx_ccmni *ccmni = READ_ONCE(ctlb->ccmni_inst[0]);
+>  	struct netdev_queue *net_queue;
+> 
 
+You do not seem to check if ccmni is NULL here, so given ctlb->ccmni_inst[0] is 
+not being hot-swapped, I guess that there are some guarantees of it not being 
+NULL at this moment, so I would drop READ_ONCE here.
 
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+>  	if (netif_running(ccmni->dev) && atomic_read(&ccmni->usage) > 0) {
+> @@ -453,7 +454,7 @@ static void t7xx_ccmni_queue_tx_irq_notify(struct t7xx_ccmni_ctrl *ctlb, int qno
+>  
+>  static void t7xx_ccmni_queue_tx_full_notify(struct t7xx_ccmni_ctrl *ctlb, int qno)
+>  {
+> -	struct t7xx_ccmni *ccmni = ctlb->ccmni_inst[0];
+> +	struct t7xx_ccmni *ccmni = READ_ONCE(ctlb->ccmni_inst[0]);
+>  	struct netdev_queue *net_queue;
+>
 
+Same as above, either READ_ONCE is not needed or NULL check is required.
 
+>  	if (atomic_read(&ccmni->usage) > 0) {
+> @@ -471,7 +472,7 @@ static void t7xx_ccmni_queue_state_notify(struct t7xx_pci_dev *t7xx_dev,
+>  	if (ctlb->md_sta != MD_STATE_READY)
+>  		return;
+>  
+> -	if (!ctlb->ccmni_inst[0]) {
+> +	if (!READ_ONCE(ctlb->ccmni_inst[0])) {
+>  		dev_warn(&t7xx_dev->pdev->dev, "No netdev registered yet\n");
+>  		return;
+>  	}
+> -- 
+> 2.34.1
+> 
+> 
