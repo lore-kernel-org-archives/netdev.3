@@ -1,148 +1,159 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E5F2253B0
-	for <netdev@vger.kernel.org>; Tue,  3 Jun 2025 09:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F262C327E
+	for <netdev@vger.kernel.org>; Tue,  3 Jun 2025 09:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748942690; cv=none; b=N24/dMqGO5OiHKq3pBT4RIUKb3zpL21P50v0tel7foNcQnaTPxmoUM2FTgGU+DHMQiJkNVfwf8hKu96OQgAh7MJt0KPzbbKrcRlnCGhoydl2ieCCVfX/pnhVtRpSBeN8WG0Ps9Sr7kB5NjlRn/5/P05e5TsMOVCPdAt/8eevASY=
+	t=1748942850; cv=none; b=YLN/t+7cRisvMOrbqKt92vDIcARpDTZqFgWclTnfkuKQgdoy0ceslSXeXhuIP+2it0Mrf38JxctAduzB2OYk94/VVcn3VRs4x4n4o6zzdElc2yTEjUXePzlohB1AE8mBumyRT32SkN9yTOOt92d9Uwyo7ID6zHMKYvX3jVQSQtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748942690; c=relaxed/simple;
-	bh=owSM7F8vHXZLXocx+EaiBSsNt86oRlcEG5nloYNv234=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JZZvhGcWSqrNCkwwdHgNeqIHwFNT+q8MtUNEtdiMmxf3+gMKZqTJxUdT8JKZ8J4OYygFxParDIDBCgp33RxFwdQ2nRN3hqPgl5CyOHp10kt5OdBsbGVlAUETyWvY+QxqZ013qHRcif+nt3/OR+vu8IEC4WtGDKg6anfrWrmqUUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lGecfaFY; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1748942850; c=relaxed/simple;
+	bh=2hMem/KqDeI9GDbv4TmP7Cw42i8qowh8O7PAaxFouC4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BEwod0cpRim+fkz7iu5evgbyuzQ3QQe6HnLZEYP7z6y7UxD4P7wcoEc0wIVQ5mLO2zlYQjZFpCx6ZH9OwUYVXBq+fx4zf4PNr5HjIS655zDrbpJ/TSu7rAlIxc1bij/qsarEsLRDP5K2trojEt1w+yvNLsoKMXsXLR0UR8BGqTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T//90NN9; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lGecfaFY"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3a3771c0f8cso3263748f8f.3
-        for <netdev@vger.kernel.org>; Tue, 03 Jun 2025 02:24:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748942687; x=1749547487; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z/tZIo6xGTOuIe6y1DJ3/MaO2CyACKyhJK1kVHjOarg=;
-        b=lGecfaFYWHOGLNppFxyzZkMSZ1k+xXy5YUy5/YP/n7IdS+bzj6OnIZWsphMyaeamVt
-         b5WrjHNru3h95SnxnL9HXDeDxEr81WBUI/GbwCPYqN7bfdO1zWLCnFDNgMZbmzYOvIvK
-         sKDe7SwW1TVnmQfdTPkvm5vgnF2BDBqWGfIl4MTU5mzWw52ldjwuOwbsFLsqlWtRm8lG
-         Fk0AB9qRCodXNlH2awRU8JypZqONDCWC1W2jlpscNo150LHkYq95GgrloGa0RXZMDjLv
-         /oHOEGDur/87svXrUUqaTBG53dke237+QBK/8mC7Fcul1wY9y1LgZ7tOCF71RcZc9GAR
-         Mmog==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T//90NN9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748942847;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V8enqeYQbzg4jaVPoTSHLBVjvDlbQarwlHPEkIaRNBE=;
+	b=T//90NN9swERXfOuBsAn9dVOVsclY7hMMyoNDQ1yP4XPF4WkVKnmE3dQq2rOUqboRR6Y2/
+	DRP2PbGgcSuzp/ByRyrdoM3YMQOzt06gguoW51R0Nubf9v8Sa3URwFsXzjce4499sAmwQS
+	uz5fC3C0o/MUD+2/YVaMvCVfEabqRpI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-637-2CBhuUMnMc68nLZsVztElw-1; Tue, 03 Jun 2025 05:27:26 -0400
+X-MC-Unique: 2CBhuUMnMc68nLZsVztElw-1
+X-Mimecast-MFC-AGG-ID: 2CBhuUMnMc68nLZsVztElw_1748942845
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a4ea7e46dfso1636965f8f.3
+        for <netdev@vger.kernel.org>; Tue, 03 Jun 2025 02:27:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748942687; x=1749547487;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Z/tZIo6xGTOuIe6y1DJ3/MaO2CyACKyhJK1kVHjOarg=;
-        b=T0PD7oE3raBXZ98oEplDekwxEY/woIqJcYVhLgY/OJMhYbfwcY4QaULrY8ULQYMh8a
-         s0CNcXYqSEXSI83VVqly4VYjQ1evgfHj7qLXwsTjDrJ7d3leYr3FNZ4S2rsnEo1EutFk
-         I/t1ZXT6S1ZSAvYQphNNHUZiOyVj1+vbbGbIUnnxUd90oF8xyFGCJ1ZapBo94q1hNlB0
-         I9t6UtbO2qH12JvnbTCFw6Apkq4aIUcad34AHmRiofg8fCA0mir+WSNfywnoe7bqEy4V
-         LV3cCMjozGjGVmo8kN8Im+IH652DdPr1WSQDRGxUa8fKjdLk87WLm6fgR9y4CNapAblP
-         IweA==
-X-Forwarded-Encrypted: i=1; AJvYcCX/xVpoFAKFdEf/gfyjUOs/jAZ5VPYZMHK+8P765Cevw38dTyeRHOYCQC4r3gYTJWfo8xfxDyM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5N2aIsRg1U1qsAuCRUDHTfWHG/sLMlWS7BqdFOE+9qcgenD8J
-	BsUFrg9F4aEQTmCVcC2/lLHhFpg8uIhGS6b+litZVho+zEZupa9Yd1zf
-X-Gm-Gg: ASbGnctw9XqW4uJe3jjejqYTy/UPY1NZUGPB+tgio1eiUTM7AznGcsNlcypTf6nnjlz
-	zLVbturELYbqrH9S+hhIoPC0TFW5FrKJo2nfP+d0188YIIJl1LpxHnevboFupn/eSByiUPtR+TJ
-	49FTCFZKovDtuh0cdEsU5wy1JKwFy5pe8Zf6XwzZcCNHHWwQDwRHZWSYesjrVN/b7c0xG9UIOEs
-	Z4YlBcplYkgTcK8bw/q7VsShDWr570LmtPGfsgK/BmlfQoTy7c4PumOg9+iR+bs7BL2gwqVWKtZ
-	RMBfFbyYkVcMItJ5mS01rySgmkQmV8b64hu9HiZ5qFfrRywNClos/WE5xEXpDDQHpOj1WWGqSSX
-	wZI+LWL2jodb325BNKQvWHZyP8StZvDcyJndO5Q==
-X-Google-Smtp-Source: AGHT+IGX8k63cPteZizvsUm+C6NovcLNNoamgH3uAig+bA4PoJK9oHl3eKzfePN+J9J91HxKemVCMA==
-X-Received: by 2002:a5d:650d:0:b0:3a4:fbaf:749e with SMTP id ffacd0b85a97d-3a4fbaf755emr9360237f8f.49.1748942686820;
-        Tue, 03 Jun 2025 02:24:46 -0700 (PDT)
-Received: from ThinkStation-P340.tmt.telital.com (static-82-85-31-68.clienti.tiscali.it. [82.85.31.68])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d7facf9dsm150184285e9.17.2025.06.03.02.24.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Jun 2025 02:24:46 -0700 (PDT)
-From: Daniele Palmas <dnlplm@gmail.com>
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Slark Xiao <slark_xiao@163.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	netdev@vger.kernel.org,
-	Daniele Palmas <dnlplm@gmail.com>
-Subject: [PATCH net v2 1/1] net: wwan: mhi_wwan_mbim: use correct mux_id for multiplexing
-Date: Tue,  3 Jun 2025 11:12:04 +0200
-Message-Id: <20250603091204.2802840-1-dnlplm@gmail.com>
-X-Mailer: git-send-email 2.37.1
+        d=1e100.net; s=20230601; t=1748942845; x=1749547645;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V8enqeYQbzg4jaVPoTSHLBVjvDlbQarwlHPEkIaRNBE=;
+        b=eyIW7dtLHfrcvsitrPV88rSAKn+cnuTocQ0iqdBQArx6GJ2uG9tTCrqr28beN4/iXk
+         qCKazSDNLmdCAFIoaTXSDrM7saDu6IlpCCqiRRwlFkvQ6P+DOHLur7q5uC9DbsP124Kt
+         hw+vlBJtDRoVwqzPBpbQbSAguXYbmFedtJlk0cHsxjrLfHWe9sBRAUrCKa5eO0PMrYjs
+         5TAiLwAhHW9pfluYJ0OeKopJahbq+J6kXVwhT+Zxi6rgWSjEFUV8GJax5MEFSrOP/oo5
+         d8l26wOnCwiFOPmovCPdRXcWdy7ctrTWV/0orcl7mnDSDoFf1BCqJCyfdvVgh0Sqb9hA
+         xS4Q==
+X-Gm-Message-State: AOJu0YznqKL1GnuzgjdRYJg6jx10UGXDBvJ9ex+HL0h6uPGKyRvj0UNK
+	57rYbYGj7jDLbwvrj/IktA4yQAifm7pNrDDy53YyxsyqCsd0HWWJr4BPSgA+kbU+yXLgCyJiAmC
+	brgYJpiIxgJY7hihDdaCzWImn6//Gl/5oK1jz3L3mC6al33PjlReSlR15xw==
+X-Gm-Gg: ASbGnct2/aXxrva60ajaWWoPBKvsgSFMp0goYrf81WFqdtd3F4A70H/3SFrCzpUnqhE
+	1AsP7F79ST7xIRbal/d5yi4onS2+bHeRR+HTn/fZ7CSYfAts8fgt65EfwW2m0y5bjmtYw+qH6r1
+	vRgAe3DTyd0qnaNO2k2z8ygjxbGc40bVR7Y/LpUxxWUVwKPau8qqHq/Bz5qwI08C7VywBZlzzpM
+	vhacKkAEdXw/Z+7y82SGe+PeNQ4Ijbd/V1ov7jzJs4ccvSViwKJsktkS/jzCqddK7MPxJi5yneu
+	JrMjohXEYymhPdhM2n2Y0tz89E53+ujENto8D0F0PUMiM6qpRYRXyvW4
+X-Received: by 2002:a5d:4e85:0:b0:3a4:f911:8d93 with SMTP id ffacd0b85a97d-3a4f9118ed0mr9886362f8f.31.1748942845464;
+        Tue, 03 Jun 2025 02:27:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF3E8LnB/PqSELpQDG+6H33vKSzf9Q13hS9eE9fktyrONE+k1arXEMdhNoJ6Q9Zr/vUTIyhyw==
+X-Received: by 2002:a5d:4e85:0:b0:3a4:f911:8d93 with SMTP id ffacd0b85a97d-3a4f9118ed0mr9886338f8f.31.1748942845062;
+        Tue, 03 Jun 2025 02:27:25 -0700 (PDT)
+Received: from ?IPV6:2a0d:3341:cc2d:3210:4b21:7487:446:42ea? ([2a0d:3341:cc2d:3210:4b21:7487:446:42ea])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4f00972aasm17987538f8f.66.2025.06.03.02.27.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Jun 2025 02:27:24 -0700 (PDT)
+Message-ID: <6440a277-536e-402f-a47e-43ee182b22c7@redhat.com>
+Date: Tue, 3 Jun 2025 11:27:18 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v4] vmxnet3: correctly report gso type for UDP tunnels
+To: Simon Horman <horms@kernel.org>, Ronak Doshi <ronak.doshi@broadcom.com>
+Cc: netdev@vger.kernel.org, Guolin Yang <guolin.yang@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20250530152701.70354-1-ronak.doshi@broadcom.com>
+ <20250603072308.GW1484967@horms.kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250603072308.GW1484967@horms.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Recent Qualcomm chipsets like SDX72/75 require MBIM sessionId mapping
-to muxId in the range (0x70-0x8F) for the PCIe tethered use.
+On 6/3/25 9:23 AM, Simon Horman wrote:
+> On Fri, May 30, 2025 at 03:27:00PM +0000, Ronak Doshi wrote:
+>> Commit 3d010c8031e3 ("udp: do not accept non-tunnel GSO skbs landing
+>> in a tunnel") added checks in linux stack to not accept non-tunnel
+>> GRO packets landing in a tunnel. This exposed an issue in vmxnet3
+>> which was not correctly reporting GRO packets for tunnel packets.
+>>
+>> This patch fixes this issue by setting correct GSO type for the
+>> tunnel packets.
+>>
+>> Currently, vmxnet3 does not support reporting inner fields for LRO
+>> tunnel packets. The issue is not seen for egress drivers that do not
+>> use skb inner fields. The workaround is to enable tnl-segmentation
+>> offload on the egress interfaces if the driver supports it. This
+>> problem pre-exists this patch fix and can be addressed as a separate
+>> future patch.
+>>
+>> Fixes: dacce2be3312 ("vmxnet3: add geneve and vxlan tunnel offload support")
+>> Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
+>> Acked-by: Guolin Yang <guolin.yang@broadcom.com>
+>>
+>> Changes v1-->v2:
+>>   Do not set encapsulation bit as inner fields are not updated
+>> Changes v2-->v3:
+>>   Update the commit message explaining the next steps to address
+>>   segmentation issues that pre-exists this patch fix.
+>> Changes v3->v4:
+>>   Update the commit message to clarify the workaround.
+>> ---
+>>  drivers/net/vmxnet3/vmxnet3_drv.c | 26 ++++++++++++++++++++++++++
+>>  1 file changed, 26 insertions(+)
+>>
+>> diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
+>> index c676979c7ab9..287b7c20c0d6 100644
+>> --- a/drivers/net/vmxnet3/vmxnet3_drv.c
+>> +++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+>> @@ -1568,6 +1568,30 @@ vmxnet3_get_hdr_len(struct vmxnet3_adapter *adapter, struct sk_buff *skb,
+>>  	return (hlen + (hdr.tcp->doff << 2));
+>>  }
+>>  
+>> +static void
+>> +vmxnet3_lro_tunnel(struct sk_buff *skb, __be16 ip_proto)
+>> +{
+>> +	struct udphdr *uh = NULL;
+>> +
+>> +	if (ip_proto == htons(ETH_P_IP)) {
+>> +		struct iphdr *iph = (struct iphdr *)skb->data;
+>> +
+>> +		if (iph->protocol == IPPROTO_UDP)
+>> +			uh = (struct udphdr *)(iph + 1);
+>> +	} else {
+>> +		struct ipv6hdr *iph = (struct ipv6hdr *)skb->data;
+>> +
+>> +		if (iph->nexthdr == IPPROTO_UDP)
+>> +			uh = (struct udphdr *)(iph + 1);
+>> +	}
+> 
+> Hi Ronak,
+> 
+> Possibly a naive question, but does skb->data always contain an iphdr
+> or ipv6hdr? Or perhaps more to the point, is it safe to assume IPv6
+> is ip_proto is not ETH_P_IP?
 
-This has been partially addressed by the referenced commit, mapping
-the default data call to muxId = 112, but the multiplexed data calls
-scenario was not properly considered, mapping sessionId = 1 to muxId
-1, while it should have been 113.
+I think it's safe, or at least the guest can assume that. Otherwise
+there is a bug in the hypervisor cooking the descriptor, and the guest
+can do little to nothing is such scenario.
 
-Fix this by moving the session_id assignment logic to mhi_mbim_newlink,
-in order to map sessionId = n to muxId = n + WDS_BIND_MUX_DATA_PORT_MUX_ID.
-
-Fixes: 65bc58c3dcad ("net: wwan: mhi: make default data link id configurable")
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
----
-v2: change commit description including information from QC case according to
-Loic's feedback
-
-@Loic, I've left out the mux-id macro/function renaming, since I'm not sure
-that it can really be considered a fix for net. Maybe we can think about it
-when net-next opens again.
-
- drivers/net/wwan/mhi_wwan_mbim.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
-index 8755c5e6a65b..c814fbd756a1 100644
---- a/drivers/net/wwan/mhi_wwan_mbim.c
-+++ b/drivers/net/wwan/mhi_wwan_mbim.c
-@@ -550,8 +550,8 @@ static int mhi_mbim_newlink(void *ctxt, struct net_device *ndev, u32 if_id,
- 	struct mhi_mbim_link *link = wwan_netdev_drvpriv(ndev);
- 	struct mhi_mbim_context *mbim = ctxt;
- 
--	link->session = if_id;
- 	link->mbim = mbim;
-+	link->session = mhi_mbim_get_link_mux_id(link->mbim->mdev->mhi_cntrl) + if_id;
- 	link->ndev = ndev;
- 	u64_stats_init(&link->rx_syncp);
- 	u64_stats_init(&link->tx_syncp);
-@@ -607,7 +607,7 @@ static int mhi_mbim_probe(struct mhi_device *mhi_dev, const struct mhi_device_id
- {
- 	struct mhi_controller *cntrl = mhi_dev->mhi_cntrl;
- 	struct mhi_mbim_context *mbim;
--	int err, link_id;
-+	int err;
- 
- 	mbim = devm_kzalloc(&mhi_dev->dev, sizeof(*mbim), GFP_KERNEL);
- 	if (!mbim)
-@@ -628,11 +628,8 @@ static int mhi_mbim_probe(struct mhi_device *mhi_dev, const struct mhi_device_id
- 	/* Number of transfer descriptors determines size of the queue */
- 	mbim->rx_queue_sz = mhi_get_free_desc_count(mhi_dev, DMA_FROM_DEVICE);
- 
--	/* Get the corresponding mux_id from mhi */
--	link_id = mhi_mbim_get_link_mux_id(cntrl);
--
- 	/* Register wwan link ops with MHI controller representing WWAN instance */
--	return wwan_register_ops(&cntrl->mhi_dev->dev, &mhi_mbim_wwan_ops, mbim, link_id);
-+	return wwan_register_ops(&cntrl->mhi_dev->dev, &mhi_mbim_wwan_ops, mbim, 0);
- }
- 
- static void mhi_mbim_remove(struct mhi_device *mhi_dev)
-
-base-commit: 408da3a0f89d581421ca9bd6ff39c7dd05bc4b2f
--- 
-2.37.1
+/P
 
