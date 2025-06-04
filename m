@@ -1,117 +1,90 @@
-Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C884628C849
-	for <netdev@vger.kernel.org>; Wed,  4 Jun 2025 09:39:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FCE224AF2
+	for <netdev@vger.kernel.org>; Wed,  4 Jun 2025 09:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749029972; cv=none; b=RiCkTAfxh8vVblurv+vionp/ojB7WNNw6Zh6r58hXpvS3vS3j8nH0uEAOpewHH1N17h6an+QO2/C+jVjwNEuRZFJpju4sAPKrHB1wEDJoXgOTUgJfx78CC0ngEbr8yL2oRPK8wf8t7YIiE8ATeCdWCFuXI3z20I982dKYfvauM8=
+	t=1749030552; cv=none; b=Mmwrvb1iMnA3j2EWT2QQ4J5qWbvd246aN06Zu0H9ZaFcCAUl4TdXKiikLCWMAA9GRvOlKIhptcAb+wEVvp9IH2nEiyLZlQGvt94woAo5Ja/QQJmcAIxmhuoLJiFBeGu9FFomaizoa9fLMhI2UkzVO8QfzR1YKF4aUv+tGjao6aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749029972; c=relaxed/simple;
-	bh=S/nU51ezINmKqUymi1Yi9xBxJD4pe4GuUB97QEpwcgk=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=JzkaT1iYa9xOnlTO4BZGH5bnpPuxsJwhZcCXxLXAvzupnI3jBws9vNYx7uUUNuX3s/QhRWfeLXdk+5cg754ndBTzgEP78OnynH9EjSWV69t2rCBSI7k2XYnKZAW/bCwaYxZMBlWLGzFlfV5nVYoMXpMdPcfdnO4IvoZLCpuqi1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bQMdVrEl; arc=none smtp.client-ip=209.85.222.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1749030552; c=relaxed/simple;
+	bh=3CXLpyKzyKD3FD2pp8aEVKNjuiLBtIn0GNRWsJPiinM=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=jHZ8JU8HrlXFacjYs1sHeeFURJJqHfHEGX+ksFCNcty5ScHli33i8ME44pe5aZ9o73cSVyfFautZQ966PUBEMBj+2N9ctQywP0LXwZvY3pxTtuWxIQD4hJw/VI1eAx5B5USpAh3uU3vS7DnJN3G7E3eB3nwKuHUeRQrB4ANh9SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ThaFZy2A; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bQMdVrEl"
-Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-7d21fc72219so931185a.1
-        for <netdev@vger.kernel.org>; Wed, 04 Jun 2025 02:39:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ThaFZy2A"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-450ce671a08so42386675e9.3
+        for <netdev@vger.kernel.org>; Wed, 04 Jun 2025 02:49:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749029969; x=1749634769; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=cU6MEzVc6Kwm7vKkLxi7hg8K/p9attCEoppYME40tQI=;
-        b=bQMdVrEl0vTzE6rIpu/GjPxXkhIOBeyPF97qO67KbY76IKho0Kcr4N76YAsyY2IMIq
-         vsSY8LHw7mWuTH58sZhjMYnp44gpEMV4TYKhIz5x6NfFk3pScnu1KKDfcpua9qoTj0xY
-         eYXrqC9s7d4BV1TZvmFKNxNbnNGn0LfpC0cyEiE51OAtDm4EuJ9PfiqhAwGyCucb3Q76
-         gq76IxXPb+DG1TxoWBR16VJOv6NCPJIrPf8R0K1dteiQ9tk0z5z52wRi1ozRQ8hd7Mel
-         5jFdctkEGq4vuw7NtK/GTR7UQ5zzVCdm7+X3EYV1MLb9x9+zFleUz+vNQGuoRyO1gq57
-         A6LQ==
+        d=gmail.com; s=20230601; t=1749030549; x=1749635349; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3CXLpyKzyKD3FD2pp8aEVKNjuiLBtIn0GNRWsJPiinM=;
+        b=ThaFZy2Aw/fsAgmN9zNlLK3GGmN9tJVBfbsIZJNTmVa0fMHjHWpG0SuLNZRRQscj0w
+         KSF+NPG8C2ZueOdGbyB+e7j4YNmcWUJ/zLXWaQX0RNuJ7J8gBPfQDFXa+NTa6ysJqcjx
+         jUS1SJmjjU8drA0Q+Pe1fj96S7/NhlyDT8eTDGu49Go8fzXJm7EDEZI9lT2zcXXCTMPf
+         9rd/3/LbLiCzzluWPAUnMwqfYjbx+9BYpiYaZ9QsJZpHRHeT2wthZ2pXM3xnm34Jwxmz
+         4jGTbfIpiqAweMZWdoc5kIvNQIFUuu6m0MPmH3FoWNPe46HxvCHlvimWtWct7i1bhpvG
+         iJXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749029969; x=1749634769;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cU6MEzVc6Kwm7vKkLxi7hg8K/p9attCEoppYME40tQI=;
-        b=WBgW+NnLWmtNZ3sxIDZutsgvrlJa9VFRZ92L0I9keQcCAjmt+DT4m+V86XukLv2an3
-         jiRfDLyDByCZAv+rXOLDOaXDK7bs6vF09lNJ6igaNpTeBpSjKnG0I2kJ0lJOe19srA66
-         /rC+iBKD6FzZ2dUaWXwBfjRn/S0s68mdZ+EuDUhKpq0VJVylGRLK99gSm7L0lrZ0Mf9g
-         HauDKvcVgcJTvBZRrYDhJMOxbVlM+o/iw/2Kuuh/BNNBt5QckunImSBgBwSHeht5DNMc
-         nEzfOYypCBxHvI1mAR/W14e/Gri9HKaPgsdLYoWUsp+VeQNeCOucEDkihOrjEfgBtnQH
-         ekww==
-X-Forwarded-Encrypted: i=1; AJvYcCUCL2h2lTWip6nutCh8aMAVy2wdFrr2vZwsXgWLEp2pCEA3qY2RLtUOQoK0jhDEQe17G92bjFM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw119fHS0e1NH5f8cM8KAJ1+diVPKAhuWr5NJA6FzGTyiFdJ384
-	PViSzi2KQjDLeoRTx/28oYs/bQfZkhZkL69xlP9B9Wqoy6Cq1AVZ+kNN/pvs8EIMppVyuy7eMMw
-	yftssscWTYlXrzQ==
-X-Google-Smtp-Source: AGHT+IHfGBZI/hFZOH3mo6BUOtKM1/AYAsDk6SO8NHCv9v1bx+72C8jpRRxmUO/EI3a9jshIo0wRmTOL6GFRFQ==
-X-Received: from qkcc9.prod.google.com ([2002:ae9:e209:0:b0:7d0:9bd4:d3b0])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:40cc:b0:7ca:df2c:e112 with SMTP id af79cd13be357-7d2198cc90bmr369472385a.45.1749029969617;
- Wed, 04 Jun 2025 02:39:29 -0700 (PDT)
-Date: Wed,  4 Jun 2025 09:39:28 +0000
+        d=1e100.net; s=20230601; t=1749030549; x=1749635349;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3CXLpyKzyKD3FD2pp8aEVKNjuiLBtIn0GNRWsJPiinM=;
+        b=q/kbEIM5uwGiLxLvixSBmeIREt0sZH8zTK3DVaLCEkSvioQ0xsguX/bqlxYIODKMJX
+         1Gq1D3hvZEjzjHzw4VZFQihFAubVn6I+kE/Ukr9R/0LFdnUt3izTu9IIq9YwdtqLhmR2
+         wmYivRKWKxxUoxdm8LbN46QpsKxYc/tzdZTDneeJ0yXtcrbhUpbzsfJ77A1323npuMDs
+         vQ1h9PKmXlscs8ZILK1SHyiL74rrdlX/cJBf5bdfGLq0uYUd0JeStjuMlkuel+S10H3S
+         IHsTfJwlTcekebf+QnCJvSEcLz87N5V9fY0p14RzI7Yky8DGMjGnoWx50cpQF/DXPGhn
+         snxw==
+X-Forwarded-Encrypted: i=1; AJvYcCVA7gUTubndrfkku2jmqozxcEpeZRptgR4jlJ5EDT9KekWa6DA3Mm87bSpDDPOMRYcPJNtxtXE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6NlW+CN4NKi/Yr8ljV16dto5Hp7k2NtBL4UxGlhSIgQOJ4KVv
+	PZ/YoCZhpmjTsCwiDbU+5PUOipQPiUoKG50Pd0H1HqZgStUq+fzMjNFd
+X-Gm-Gg: ASbGncvQcz5ySmviG5nVV+gbQQBaug+NB0ODA/H/U1c6ZoGYaIkppXTGbrQOZO0Oup2
+	R5/eSqV63AilzlQFx4NuVipUy4Bx9VjGUh7b7vW/fHh1fAT6CxBRbU861P2OsxiFin8GoqHBIL/
+	1MrEZhAMybabJGmJBGVDFTQPNv5bWtjiVfTYxjKZLnoT4m5Z+J3UJkS1avsDoGMXJ+/moG3MHCO
+	aT6Eolo8LpjHl4wcJN9Btcmlfcr41CY/D7EAonKfcIkl1cn4RyVaw7o0OvcuFCAgoIW59tgxDWs
+	856MGRFapbkwNI2tVeBsEaKFmIftvTylyliG8OjmnrZP6rKr7J6wm+8rTiO9+PU4
+X-Google-Smtp-Source: AGHT+IHBszuIaTrLHjyGLh0AOYn2c7mS3BSi66w6+3CnmtiRo3y3KzGRrwFFv8YK2ZK2HFymNApAhw==
+X-Received: by 2002:a05:6000:2886:b0:3a4:f6c4:355a with SMTP id ffacd0b85a97d-3a51d984213mr1632298f8f.57.1749030548836;
+        Wed, 04 Jun 2025 02:49:08 -0700 (PDT)
+Received: from imac ([2a02:8010:60a0:0:3176:4b1c:8227:69ea])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4f00a0421sm21396047f8f.97.2025.06.04.02.49.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Jun 2025 02:49:08 -0700 (PDT)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
+  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
+  sdf@fomichev.me,  willemb@google.com
+Subject: Re: [PATCH net 1/2] netlink: specs: rt-link: add missing byte-order
+ properties
+In-Reply-To: <20250603135357.502626-2-kuba@kernel.org>
+Date: Wed, 04 Jun 2025 09:56:21 +0100
+Message-ID: <m2tt4vvqa2.fsf@gmail.com>
+References: <20250603135357.502626-1-kuba@kernel.org>
+	<20250603135357.502626-2-kuba@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.0.rc0.604.gd4ff7b7c86-goog
-Message-ID: <20250604093928.1323333-1-edumazet@google.com>
-Subject: [PATCH net] net: annotate data-races around cleanup_net_task
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain
 
-from_cleanup_net() reads cleanup_net_task locklessly.
+Jakub Kicinski <kuba@kernel.org> writes:
 
-Add READ_ONCE()/WRITE_ONCE() annotations to avoid
-a potential KCSAN warning, even if the race is harmless.
+> A number of fields in the ip tunnels are lacking the big-endian
+> designation. I suspect this is not intentional, as decoding
+> the ports with the right endian seems objectively beneficial.
+>
+> Fixes: 6ffdbb93a59c ("netlink: specs: rt_link: decode ip6tnl, vti and vti6 link attrs")
+> Fixes: 077b6022d24b ("doc/netlink/specs: Add sub-message type to rt_link family")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-Fixes: 0734d7c3d93c ("net: expedite synchronize_net() for cleanup_net()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- net/core/dev.c           | 2 +-
- net/core/net_namespace.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index a388f459a3666e3d186fb38d1eebd7cd33eb6979..be97c440ecd5f993344ae08d76c0b5216c4d296a 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -10499,7 +10499,7 @@ static void dev_index_release(struct net *net, int ifindex)
- static bool from_cleanup_net(void)
- {
- #ifdef CONFIG_NET_NS
--	return current == cleanup_net_task;
-+	return current == READ_ONCE(cleanup_net_task);
- #else
- 	return false;
- #endif
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index 42ee7fce3d95b5a2756d6a3780edba070f01ddb6..ae54f26709ca242567e5d62d7b5dcc7f6303da57 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -654,7 +654,7 @@ static void cleanup_net(struct work_struct *work)
- 	struct net *net, *tmp, *last;
- 	LIST_HEAD(net_exit_list);
- 
--	cleanup_net_task = current;
-+	WRITE_ONCE(cleanup_net_task, current);
- 
- 	/* Atomically snapshot the list of namespaces to cleanup */
- 	net_kill_list = llist_del_all(&cleanup_list);
-@@ -704,7 +704,7 @@ static void cleanup_net(struct work_struct *work)
- 		put_user_ns(net->user_ns);
- 		net_passive_dec(net);
- 	}
--	cleanup_net_task = NULL;
-+	WRITE_ONCE(cleanup_net_task, NULL);
- }
- 
- /**
--- 
-2.50.0.rc0.604.gd4ff7b7c86-goog
-
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
