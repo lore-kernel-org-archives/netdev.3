@@ -1,157 +1,115 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D0D18E377
-	for <netdev@vger.kernel.org>; Wed,  4 Jun 2025 10:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B37D28DB75
+	for <netdev@vger.kernel.org>; Wed,  4 Jun 2025 10:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749034621; cv=none; b=hiah+uBLz5qYMOQF7k83Xj7XYo38cxH7C7x5s6/3i2Yg/IZCyBe7Jr4OdQHtUxaXzT3px/9MyxzuInSYBH6qI2uZ0dMIHvR0OxxJTITOaiqVuVngWbUv0+n5f+ATqw+lb+BxI5XNNUs2o1ZWbDKhVE1WUWP38+Vropd4GeH/Q/0=
+	t=1749034700; cv=none; b=QfsqY/RGZfQ552eoK5zRtb1XpC7VrOi5a17hDNybhjSZqPtZkHLUUmVgI18gckPv7bgAwp+iTVL1Bt/0fBCjOMfGFBclq28TkXG0hWKRqzHzjkUl1A6F9//npT6Npdt5IJXY0Dc6mKvts/FVPXkAhYTZCOVhCrK1qChFWI5nM78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749034621; c=relaxed/simple;
-	bh=Klz9txw57GzdTGx2HdVc9FFDT0xClzwEGccEBkynaMw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PbR/fH/F+cE/0DXPZIHshwkrl32fVyxNbzWrzbOkRlJODx8fGJoqQGy6+3f2JOLnpAhjsZV0uW83gORCeNbrQrkH1Wg/7AC9Gl1GYvOaONDobrlBK0+z1+Zq1VFiKnofdzeHs/tLfnVr8Cf7hdqmMPUXI9NRewrCNBy6vvWXk/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <fpf@pengutronix.de>)
-	id 1uMlnk-0007LO-Vc; Wed, 04 Jun 2025 12:56:56 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <fpf@pengutronix.de>)
-	id 1uMlnk-001mP8-2J;
-	Wed, 04 Jun 2025 12:56:56 +0200
-Received: from fpf by dude05.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <fpf@pengutronix.de>)
-	id 1uMlnk-0052tu-1y;
-	Wed, 04 Jun 2025 12:56:56 +0200
-From: Fabian Pfitzner <f.pfitzner@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: dsahern@gmail.com,
-	idosch@nvidia.com,
-	bridge@lists.linux-foundation.org,
-	entwicklung@pengutronix.de,
-	Fabian Pfitzner <f.pfitzner@pengutronix.de>
-Subject: [PATCH] bridge: dump mcast querier state per vlan
-Date: Wed,  4 Jun 2025 12:53:23 +0200
-Message-Id: <20250604105322.1185872-1-f.pfitzner@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1749034700; c=relaxed/simple;
+	bh=z68afDz9p2pRwG2ni4R7OHgv1R+4eIRjnIkDcyLROuQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=QP35vY0Dbac747r2huGsSlhigdim/D9VbHuh8zhXTi93pK3BiVV9OXIPKOc/7oDToawRQupyNBQu+AIrmFYJuPs7EZriouiNIM3TwVPNASzS5HJmTe36WaT3eB7pmlEFiIKrlK6pLhxHk1PgGZkFpAMQeuTje7qLN4nApPbmIWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cvJ+gkSs; arc=none smtp.client-ip=209.85.160.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cvJ+gkSs"
+Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-4a38007c7bdso135777381cf.3
+        for <netdev@vger.kernel.org>; Wed, 04 Jun 2025 03:58:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1749034697; x=1749639497; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=i1dAMD7l/5uTLCMS71HMGr74YTJ/ut/5VPHGUNVWhM0=;
+        b=cvJ+gkSs0BgPGdHAMOnJHWGVAl+H73v7aWtdmL/7MSb+T0cbxdXVmssMmtIzy8qoZY
+         cVLgNDlAwsMlRQTRR7Z8YL68lUMV3lAQxI5U8Uk8Kz67Dk5HytaZimlbYF8Jv87tO4QX
+         4QV73omVLPtURZAaBVo4Xix6LucTNJ/3uNS0XXqhUY32z2ZhgbP2xnPayBi87JZUbns1
+         u7q/Hr2YT08iBwe5m6HhqrjpuAe21K4Uwi/HjDKpFhi847fYTjnYDpsgP+J9vRRP0L6H
+         3D++r9yPwhrm1Nb1zCgOH7OEZNSrPKpiC//m55qnGHwaWVa1SvW+hDHz7R3dK5pqQsIZ
+         5RXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749034697; x=1749639497;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=i1dAMD7l/5uTLCMS71HMGr74YTJ/ut/5VPHGUNVWhM0=;
+        b=FaFZ43sCZuhnH9uHwyZ24wlrAoh+L3dTIpzzZzipq+CoGXVx8u6/gIdaGFbgMCSEgX
+         0FTO7DuA2akLFokL0zSGpNHQRYU302vMWneQuAoXpIXIjgtIjNplvNqGSXLDp14Ipw1i
+         retrhXCEKc6X8xcrypndEPiriq8WHuE3St4e3PBVYHJCqBj7iLWmKU8j8a4NDppTPzyc
+         NcHmt1VOGG/yuhagmczm1xlC/P8w4i8cHMJEPfPwQCB58EKc3fAAFbbQHd80oManHnY3
+         zklhTtQWBF6OkVTUj4eTb2Fg53dl7F0LZearaDencI9UxmhzHxIWg4p+QfcD7yMmQtOW
+         02dQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUUPNXSmXoV4gcXlhfoScnGKWDTmh5kIT8OPlsiWj8HRlutkaVcUcP+5fnieL71zFjjapaf78o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjyTtR0YUa9RtoGtEuLVDIFKutwPk2VvRTRENPqTNH4+Qc7uMY
+	hBkZ4cTacf3T4xGNSkMximCTqZkaQBoOJCWiBwLzPMPhkaqwzBij2usTBHqqdnrysrry9j/I9Mn
+	zpoQhiBj9vCO5AA==
+X-Google-Smtp-Source: AGHT+IHVsnC58uh4YsFItkivf/7k7sjysLWRIefquN9aCR8yOFSBlnfeM/4VoDHAPeX6ppGr+t0bbl0gFbsW9w==
+X-Received: from qtbbr26.prod.google.com ([2002:a05:622a:1e1a:b0:4a4:3d26:8419])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:4a10:b0:494:b148:930e with SMTP id d75a77b69052e-4a5a58969cbmr40039181cf.49.1749034697413;
+ Wed, 04 Jun 2025 03:58:17 -0700 (PDT)
+Date: Wed,  4 Jun 2025 10:58:15 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: fpf@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.0.rc0.604.gd4ff7b7c86-goog
+Message-ID: <20250604105815.1516973-1-edumazet@google.com>
+Subject: [PATCH net] net: prevent a NULL deref in rtnl_create_link()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, syzbot+9fc858ba0312b42b577e@syzkaller.appspotmail.com, 
+	Stanislav Fomichev <sdf@fomichev.me>
+Content-Type: text/plain; charset="UTF-8"
 
-Dump the multicast querier state per vlan.
-This commit is almost identical to [1].
+At the time rtnl_create_link() is running, dev->netdev_ops is NULL,
+we must not use netdev_lock_ops() or risk a NULL deref if
+CONFIG_NET_SHAPER is defined.
 
-The querier state can be seen with:
+Use netif_set_group() instead of dev_set_group().
 
-bridge -d vlan global
+ RIP: 0010:netdev_need_ops_lock include/net/netdev_lock.h:33 [inline]
+ RIP: 0010:netdev_lock_ops include/net/netdev_lock.h:41 [inline]
+ RIP: 0010:dev_set_group+0xc0/0x230 net/core/dev_api.c:82
+Call Trace:
+ <TASK>
+  rtnl_create_link+0x748/0xd10 net/core/rtnetlink.c:3674
+  rtnl_newlink_create+0x25c/0xb00 net/core/rtnetlink.c:3813
+  __rtnl_newlink net/core/rtnetlink.c:3940 [inline]
+  rtnl_newlink+0x16d6/0x1c70 net/core/rtnetlink.c:4055
+  rtnetlink_rcv_msg+0x7cf/0xb70 net/core/rtnetlink.c:6944
+  netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2534
+  netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
+  netlink_unicast+0x75b/0x8d0 net/netlink/af_netlink.c:1339
+  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1883
+  sock_sendmsg_nosec net/socket.c:712 [inline]
 
-The options for vlan filtering and vlan mcast snooping have to be enabled
-in order to see the output:
-
-ip link set [dev] type bridge mcast_vlan_snooping 1 vlan_filtering 1
-
-The querier state shows the following information for IPv4 and IPv6
-respectively:
-
-1) The ip address of the current querier in the network. This could be
-   ourselves or an external querier.
-2) The port on which the querier was seen
-3) Querier timeout in seconds
-
-[1] https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=16aa4494d7fc6543e5e92beb2ce01648b79f8fa2
-
-Signed-off-by: Fabian Pfitzner <f.pfitzner@pengutronix.de>
+Reported-by: syzbot+9fc858ba0312b42b577e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6840265f.a00a0220.d4325.0009.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Fixes: 7e4d784f5810 ("net: hold netdev instance lock during rtnetlink operations")
+Cc: Stanislav Fomichev <sdf@fomichev.me>
 ---
+ net/core/rtnetlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This patch is a bit redundant compared to [1]. It makes sense to put it
-into a helper function, but i am not sure where to place this function.
-Maybe somewhere under /lib?
-
- bridge/vlan.c | 58 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
-
-diff --git a/bridge/vlan.c b/bridge/vlan.c
-index ea4aff93..b928c653 100644
---- a/bridge/vlan.c
-+++ b/bridge/vlan.c
-@@ -892,6 +892,64 @@ static void print_vlan_global_opts(struct rtattr *a, int ifindex)
- 		print_uint(PRINT_ANY, "mcast_querier", "mcast_querier %u ",
- 			   rta_getattr_u8(vattr));
- 	}
-+	if (vtb[BRIDGE_VLANDB_GOPTS_MCAST_QUERIER_STATE]) {
-+		struct rtattr *bqtb[BRIDGE_QUERIER_MAX + 1];
-+		SPRINT_BUF(other_time);
-+
-+		parse_rtattr_nested(bqtb, BRIDGE_QUERIER_MAX, vtb[BRIDGE_VLANDB_GOPTS_MCAST_QUERIER_STATE]);
-+		memset(other_time, 0, sizeof(other_time));
-+
-+		open_json_object("mcast_querier_state_ipv4");
-+		if (bqtb[BRIDGE_QUERIER_IP_ADDRESS]) {
-+			print_string(PRINT_FP,
-+				NULL,
-+				"%s ",
-+				"mcast_querier_ipv4_addr");
-+			print_color_string(PRINT_ANY,
-+				COLOR_INET,
-+				"mcast_querier_ipv4_addr",
-+				"%s ",
-+				format_host_rta(AF_INET, bqtb[BRIDGE_QUERIER_IP_ADDRESS]));
-+		}
-+		if (bqtb[BRIDGE_QUERIER_IP_PORT])
-+			print_uint(PRINT_ANY,
-+				"mcast_querier_ipv4_port",
-+				"mcast_querier_ipv4_port %u ",
-+				rta_getattr_u32(bqtb[BRIDGE_QUERIER_IP_PORT]));
-+		if (bqtb[BRIDGE_QUERIER_IP_OTHER_TIMER])
-+			print_string(PRINT_ANY,
-+				"mcast_querier_ipv4_other_timer",
-+				"mcast_querier_ipv4_other_timer %s ",
-+				sprint_time64(
-+					rta_getattr_u64(bqtb[BRIDGE_QUERIER_IP_OTHER_TIMER]),
-+									other_time));
-+		close_json_object();
-+		open_json_object("mcast_querier_state_ipv6");
-+		if (bqtb[BRIDGE_QUERIER_IPV6_ADDRESS]) {
-+			print_string(PRINT_FP,
-+				NULL,
-+				"%s ",
-+				"mcast_querier_ipv6_addr");
-+			print_color_string(PRINT_ANY,
-+				COLOR_INET6,
-+				"mcast_querier_ipv6_addr",
-+				"%s ",
-+				format_host_rta(AF_INET6, bqtb[BRIDGE_QUERIER_IPV6_ADDRESS]));
-+		}
-+		if (bqtb[BRIDGE_QUERIER_IPV6_PORT])
-+			print_uint(PRINT_ANY,
-+				"mcast_querier_ipv6_port",
-+				"mcast_querier_ipv6_port %u ",
-+				rta_getattr_u32(bqtb[BRIDGE_QUERIER_IPV6_PORT]));
-+		if (bqtb[BRIDGE_QUERIER_IPV6_OTHER_TIMER])
-+			print_string(PRINT_ANY,
-+				"mcast_querier_ipv6_other_timer",
-+				"mcast_querier_ipv6_other_timer %s ",
-+				sprint_time64(
-+					rta_getattr_u64(bqtb[BRIDGE_QUERIER_IPV6_OTHER_TIMER]),
-+									other_time));
-+		close_json_object();
-+	}
- 	if (vtb[BRIDGE_VLANDB_GOPTS_MCAST_IGMP_VERSION]) {
- 		vattr = vtb[BRIDGE_VLANDB_GOPTS_MCAST_IGMP_VERSION];
- 		print_uint(PRINT_ANY, "mcast_igmp_version",
---
-2.39.5
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index f9a35bdc58ad2a6c7d2aa023bef9b48f72336bbc..c57692eb8da9d47c3b0943bf7b8d8b7f7d347836 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -3671,7 +3671,7 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
+ 	if (tb[IFLA_LINKMODE])
+ 		dev->link_mode = nla_get_u8(tb[IFLA_LINKMODE]);
+ 	if (tb[IFLA_GROUP])
+-		dev_set_group(dev, nla_get_u32(tb[IFLA_GROUP]));
++		netif_set_group(dev, nla_get_u32(tb[IFLA_GROUP]));
+ 	if (tb[IFLA_GSO_MAX_SIZE])
+ 		netif_set_gso_max_size(dev, nla_get_u32(tb[IFLA_GSO_MAX_SIZE]));
+ 	if (tb[IFLA_GSO_MAX_SEGS])
+-- 
+2.50.0.rc0.604.gd4ff7b7c86-goog
 
