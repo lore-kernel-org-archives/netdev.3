@@ -1,101 +1,224 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1AE231833;
-	Wed,  4 Jun 2025 08:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5606A1EEA5D
+	for <netdev@vger.kernel.org>; Wed,  4 Jun 2025 09:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749027126; cv=none; b=XHdY4FasXqruGUyIIXMQGA9lw7388WgAlYBoYiUzs4knMA4fUuu8/xcqbKMyiMqsB9ZxKDqNQkGayZ/HZEsPHPXFr0twlSkp7vSUwd5X1yMuGSerMNAF/bauSq0y2soNxAsFuYviK+a7vE/GTaQWoOlblTF1OUAwkTnU6xU6gWc=
+	t=1749028093; cv=none; b=r9XFmeHCQqDEkqzD8LUnE81s+KlTqVhHzp9l+tY+dh4UFKEurGe40L4y7Io2Ptj2Q86aiwzHB3vXqsK8EQTclXGMBn6ZOoJ8De8afAFkgkD84ttxGXhTbI7k3w1HL772Hn022OVuHP/8N7il4ucyi+8SR7gP2kSKWMON40jpO9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749027126; c=relaxed/simple;
-	bh=fnNgkzGftpljMjTaeKiPjWijfObuZgFRqWuUjmrN3c8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VoayLjOoGSmMh6cC6i/sE7268SwVg+AtgN8Hmyah4PeffmuRxxKkkNsHDi4c4L1wm6wrHm5bmGqbOk8rMU/gSAPNVZm298doQCWbJTFebQdH64xI/0mEKxcJhJgzw39c5XcKR7QtumH9K824jPeZi77qX2aaxxW5tny8UwhKkMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gUipQ124; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749028093; c=relaxed/simple;
+	bh=AWVVRYeTcC5KIYUL/i0dVqV59Y6SWKAcZkYtIStbTyI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dr4IRfRqQ6cO/xDMN6fVNxWBnoEzbGw6L+wFIupMaHrZ5gyc+wd8UCfKzYssMXnUd/W7hRE+cONudzLmXNGaBKd9HgRM2EdzCityDSY3ELnIWacG0jPKh7gh/iK6HKrhYidEX/xXtCOdbZlDkxVPkoOfCWyjvI41b/2rQrfDHu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bCJHA/Xa; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gUipQ124"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-addda47ebeaso547130466b.1;
-        Wed, 04 Jun 2025 01:52:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749027122; x=1749631922; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=s18OXxB2J+rqEEd4cuUATT7H103nVr2cT6AOoJNQm0Y=;
-        b=gUipQ124nrGJ2nlL4oOlA8uR+cDDnQkoZgDyKRVDZ64mxgu4QN32zE/YBDYB8/ZK+Y
-         JziOYCoR1sh5Egua38c1GRL/OpiWdxsIwA/k/9K6I8nDw/dN5xfAx1C+bnhqff+AMacv
-         51Uk3/UPw6pZqR9lrYsmr10EpmrLqPSwbMUrl82L6sAe6AInbE1xMinRKOSPsdVzgfCc
-         ZB1S9eASCv/fPnbKAsSo8Ly6cjSXERR1RlmDw1aQjjQfgc0rCkfRCHOKlcCUot/IfHbn
-         cDtFqfgtDcrGVqDPTO1rwIKDTnsZSzsXFfkXsQBlKHw/wP6ahy7Poqx++q3F7oLq0Fmg
-         EDcg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bCJHA/Xa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749028090;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=k2zCiWY9Cu6i9hpLnZ1UCqekXGUFWqxbi6R4HONx48g=;
+	b=bCJHA/Xatrvg0aEhWaDkrKMrm2ekU4uGe8iO376Kld8BMk5geKIVs4gQ1r3id+AWJvxjkg
+	GZX7IOtJAWFjPWd90GjdKl4hg5rcCQYQGfe1sHA8UR87hg5CzO6nYjkQTxEW0A4DSQEKHB
+	GLkYL9uf2NOa4ivXiGOGc2Jdcr/uiyw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-638-24AlnNoTPYGrnSN00xy63w-1; Wed, 04 Jun 2025 05:08:09 -0400
+X-MC-Unique: 24AlnNoTPYGrnSN00xy63w-1
+X-Mimecast-MFC-AGG-ID: 24AlnNoTPYGrnSN00xy63w_1749028088
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4517abcba41so25346155e9.0
+        for <netdev@vger.kernel.org>; Wed, 04 Jun 2025 02:08:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749027122; x=1749631922;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=s18OXxB2J+rqEEd4cuUATT7H103nVr2cT6AOoJNQm0Y=;
-        b=W+jYkeXDTU5oOf3wC2Ipv5yyO7wtteX56G56N3QmL9HIQpAfKVNBVpa+5lx2h8p/OO
-         bUbFfROOjNF7iznPvbBzf/djlw8MdGE6uzs/7AOj91lBwCneF/Ef6te3hcFzjDDyRYqZ
-         Cpu4pB91/mtd5xcvwHDe0Dlwnjo28JW1N4/DAHHpwJG+h9319MmOGbDf5q+r4ki5xHeh
-         bwXpE+IwsJkkwDcOFziCCevoB1V1VOK1Y2ujAjhaHWH2ep9RD23BjxwIMJUZtBMkdqao
-         05EWltHEA3gxCf7BB+oKPJbOSdc2MyWuH8AG7aXE8KDAhnPVCqHcrj4OUqJVkfr2TyHq
-         ovkA==
-X-Gm-Message-State: AOJu0YzU+g5sFMJqVz5L20XD6EEiiCmAyFRRgI/ceJZ0g+5a9cU/NgmE
-	uvJZCKjE5+rbTeLDgVxQtaoE5LC3hcfdwoPt7mHIKYRfj7A6NBfbIXAIMwBSKg==
-X-Gm-Gg: ASbGncuVdwbpk6H1X2C5Fvcme3vaVRdc406CNR4s4ya7nGCoGGkR7Jv9/bsA66hnA67
-	TS8t+L7jBbAmj2KAvHRbXii2yKOb7eJZxabjm0Ff4YFx0pCqJblFzhDWq2kXY+poGXqKeVp2Bwq
-	Ju1TI7g8qoLLxguemakve6Dp9pAfHI8DO0YoNUNU9/JL8nG3mB7IcmyMsesMZgpTKZBEU2Q7yc7
-	OhdXm47trhdjNfFWrdlW+ZJiOw4/LEX83WKVTtlbJJqmx+fT/wKI6eHlroA0VnR/0czPvlnTDNx
-	dtNOUFN8cZnHEdRPe92odNRKUWpEAhVxhhfF7pLCVmS4kmelSyAfa4NKZDp9/fLL
-X-Google-Smtp-Source: AGHT+IEVpTSwc08kIcsCNa6mzTF7jShw7RMNAQkvLJVZ3IKHEpcF5/wx/oLMo92vKOmGHnIs9GdYyg==
-X-Received: by 2002:a17:907:60ca:b0:adb:469d:2221 with SMTP id a640c23a62f3a-addf8fb3392mr159006766b.45.1749027122363;
-        Wed, 04 Jun 2025 01:52:02 -0700 (PDT)
-Received: from ?IPV6:2620:10d:c096:325::26f? ([2620:10d:c092:600::1:b3d1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adddf8f009bsm260341066b.4.2025.06.04.01.52.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Jun 2025 01:52:01 -0700 (PDT)
-Message-ID: <0d287955-c55a-4f1e-86c9-5c301f3f233b@gmail.com>
-Date: Wed, 4 Jun 2025 09:53:23 +0100
+        d=1e100.net; s=20230601; t=1749028088; x=1749632888;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k2zCiWY9Cu6i9hpLnZ1UCqekXGUFWqxbi6R4HONx48g=;
+        b=HcR47QiTj0f0i0DTPhF8P6NGw8RXtwHx5T2e+TB9AH/E+xcibJywZ69Iuh8Lo8xxpf
+         +NhFtN5TAgMH/MmL5aphzLgGSpvjd83sCjyLfG1zFq0FleRrLrZzi6r8+OhIwGTIC31P
+         GQSQIQgRdN0NJetRiP/E11Fyqj1Boi4rWPl59evbeADEmwyLSB/Mi5ZE2OiuDA2wxQWh
+         A52J5TmdUrU4GPZuICBiRr5VkRQuZ+3vBKX1jplv0EUrwBH4/6OdAxJEPtBOsLKV59L1
+         ymnMGYzK2VzQlTfZYQ4Xk8LWzZ4zXVKb/1jtPX++0w2JKSqjnmlPrvqHdBddvWUuS6Gl
+         42AA==
+X-Forwarded-Encrypted: i=1; AJvYcCVuWdxOo9Qb6w0ovAUIPNNXFPKTLRzrkSxg12oXtG99GhCIWLpRox6GlzbKmq7h3JAXjJmjrns=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxm7sGbH0ELb39629OcUtd0wbqCc4bu60TQyhhMuJNqfMkR8T2l
+	GDp9RbSjCXbiIbEOFGclhoenyA3L27acQuZ3Q93mqnZuRgnNV7cjWgb4OG6BhDis7i2uJsHEZFH
+	+eZH5S0up9CqBm8uwJvljA1OdNnZmhk6PoJkS/QuQXvGjGUQpyQMTu3VqEw==
+X-Gm-Gg: ASbGnct1Hfy0sqaGdZJCmV+ws4LQPErq7ZQ4SC1RPvX/wAbzHZWh21sZCIUCEfdp4i8
+	VY5jLEwPqOVHfUEW8ZXlajcyH54YFs0+9uwx3QdonhA5Wg4HpqStBx5dszB7dSKyocDGEGafucU
+	U1ORSdM9j2esa62x/SpnGM3s5/065liKFhFpPR3mINmyj3gehY3A3xipwk3DnH/R5XNgYPM2Gv5
+	Q1zQvjGLinGNNRyDSVMKMbZSZbNWlcMSzfIOXDcN3qONN7o6YU7Z3pZPE7vXTtKhhneFZV+YSsh
+	LkGl58GW83swNHs=
+X-Received: by 2002:a5d:64e2:0:b0:3a4:e5bc:9892 with SMTP id ffacd0b85a97d-3a51d9305e1mr1523502f8f.21.1749028087955;
+        Wed, 04 Jun 2025 02:08:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHKDlW7KBQY6VqzFIm9U5n5W/ayB7fhlMXCKIz73xa+dzMXlXDavnhpdJnz7rqheStpYyjOjQ==
+X-Received: by 2002:a5d:64e2:0:b0:3a4:e5bc:9892 with SMTP id ffacd0b85a97d-3a51d9305e1mr1523467f8f.21.1749028087400;
+        Wed, 04 Jun 2025 02:08:07 -0700 (PDT)
+Received: from sgarzare-redhat ([57.133.22.172])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d7fa2541sm187792925e9.15.2025.06.04.02.08.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Jun 2025 02:08:06 -0700 (PDT)
+Date: Wed, 4 Jun 2025 11:07:41 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC net-next v2 2/3] vsock/test: Introduce
+ get_transports()
+Message-ID: <wzbyv7fvzgpf4ta775of6k4ozypnfe6szysvnz4odd3363ipsp@2v3h5w77cr7a>
+References: <20250528-vsock-test-inc-cov-v2-0-8f655b40d57c@rbox.co>
+ <20250528-vsock-test-inc-cov-v2-2-8f655b40d57c@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/5] io_uring cmd for tx timestamps
-To: io-uring@vger.kernel.org, Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
- Kuniyuki Iwashima <kuniyu@amazon.com>, Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Richard Cochran <richardcochran@gmail.com>,
- Stanislav Fomichev <stfomichev@gmail.com>
-References: <cover.1749026421.git.asml.silence@gmail.com>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <cover.1749026421.git.asml.silence@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250528-vsock-test-inc-cov-v2-2-8f655b40d57c@rbox.co>
 
-On 6/4/25 09:42, Pavel Begunkov wrote:
-> Vadim Fedorenko suggested to add an alternative API for receiving
-> tx timestamps through io_uring. The series introduces io_uring socket
-> cmd for fetching tx timestamps, which is a polled multishot request,
-> i.e. internally polling the socket for POLLERR and posts timestamps
-> when they're arrives. For the API description see Patch 5.
-> 
-> It reuses existing timestamp infra and takes them from the socket's
-> error queue. For networking people the important parts are Patch 1,
-> and io_uring_cmd_timestamp() from Patch 5 walking the error queue.
-> 
-> It should be reasonable to take it through the io_uring tree once
-> we have consensus, but let me know if there are any concerns.
+On Wed, May 28, 2025 at 10:44:42PM +0200, Michal Luczaj wrote:
+>Return a bitmap of registered vsock transports. As guesstimated by grepping
+>/proc/kallsyms (CONFIG_KALLSYMS=y) for known symbols of type `struct
+>virtio_transport`.
+>
+>Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>---
+> tools/testing/vsock/util.c | 60 ++++++++++++++++++++++++++++++++++++++++++++++
+> tools/testing/vsock/util.h | 12 ++++++++++
+> 2 files changed, 72 insertions(+)
+>
+>diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
+>index b7b3fb2221c1682ecde58cf12e2f0b0ded1cff39..74fb52f566148b16436251216dd9d9275f0ec95b 100644
+>--- a/tools/testing/vsock/util.c
+>+++ b/tools/testing/vsock/util.c
+>@@ -7,6 +7,7 @@
+>  * Author: Stefan Hajnoczi <stefanha@redhat.com>
+>  */
+>
+>+#include <ctype.h>
+> #include <errno.h>
+> #include <stdio.h>
+> #include <stdint.h>
+>@@ -17,6 +18,7 @@
+> #include <assert.h>
+> #include <sys/epoll.h>
+> #include <sys/mman.h>
+>+#include <linux/kernel.h>
+> #include <linux/sockios.h>
+>
+> #include "timeout.h"
+>@@ -854,3 +856,61 @@ void enable_so_linger(int fd, int timeout)
+> 		exit(EXIT_FAILURE);
+> 	}
+> }
+>+
+>+static int __get_transports(void)
+>+{
+>+	/* Order must match transports defined in util.h.
+>+	 * man nm: "d" The symbol is in the initialized data section.
+>+	 */
+>+	const char * const syms[] = {
+>+		"d loopback_transport",
+>+		"d virtio_transport",
+>+		"d vhost_transport",
+>+		"d vmci_transport",
+>+		"d hvs_transport",
+>+	};
 
-CC'ing Stanislav as he took a look at v1
+I would move this array (or a macro that define it), near the transport 
+defined in util.h, so they are near and we can easily update/review 
+changes.
 
--- 
-Pavel Begunkov
+BTW what about adding static asserts to check we are aligned?
+
+>+	char buf[KALLSYMS_LINE_LEN];
+>+	int ret = 0;
+>+	FILE *f;
+>+
+>+	f = fopen(KALLSYMS_PATH, "r");
+>+	if (!f) {
+>+		perror("Can't open " KALLSYMS_PATH);
+>+		exit(EXIT_FAILURE);
+>+	}
+>+
+>+	while (fgets(buf, sizeof(buf), f)) {
+>+		char *match;
+>+		int i;
+>+
+>+		assert(buf[strlen(buf) - 1] == '\n');
+>+
+>+		for (i = 0; i < ARRAY_SIZE(syms); ++i) {
+>+			match = strstr(buf, syms[i]);
+>+
+>+			/* Match should be followed by '\t' or '\n'.
+>+			 * See kallsyms.c:s_show().
+>+			 */
+>+			if (match && isspace(match[strlen(syms[i])])) {
+>+				ret |= _BITUL(i);
+>+				break;
+>+			}
+>+		}
+>+	}
+>+
+>+	fclose(f);
+>+	return ret;
+>+}
+>+
+>+/* Return integer with TRANSPORT_* bit set for every (known) registered vsock
+>+ * transport.
+>+ */
+>+int get_transports(void)
+>+{
+>+	static int tr = -1;
+>+
+>+	if (tr == -1)
+>+		tr = __get_transports();
+>+
+>+	return tr;
+>+}
+>diff --git a/tools/testing/vsock/util.h b/tools/testing/vsock/util.h
+>index 0afe7cbae12e5194172c639ccfbeb8b81f7c25ac..63953e32c3e18e1aa5c2addcf6f09f433660fa84 100644
+>--- a/tools/testing/vsock/util.h
+>+++ b/tools/testing/vsock/util.h
+>@@ -3,8 +3,19 @@
+> #define UTIL_H
+>
+> #include <sys/socket.h>
+>+#include <linux/bitops.h>
+> #include <linux/vm_sockets.h>
+>
+>+#define KALLSYMS_PATH		"/proc/kallsyms"
+>+#define KALLSYMS_LINE_LEN	512
+
+We don't need to expose them in util.h IMO, we can keep in util.c
+
+>+
+>+/* All known transports */
+>+#define TRANSPORT_LOOPBACK	_BITUL(0)
+>+#define TRANSPORT_VIRTIO	_BITUL(1)
+>+#define TRANSPORT_VHOST		_BITUL(2)
+>+#define TRANSPORT_VMCI		_BITUL(3)
+>+#define TRANSPORT_HYPERV	_BITUL(4)
+>+
+> /* Tests can either run as the client or the server */
+> enum test_mode {
+> 	TEST_MODE_UNSET,
+>@@ -82,4 +93,5 @@ void setsockopt_timeval_check(int fd, int level, int optname,
+> 			      struct timeval val, char const *errmsg);
+> void enable_so_zerocopy_check(int fd);
+> void enable_so_linger(int fd, int timeout);
+>+int get_transports(void);
+> #endif /* UTIL_H */
+>
+>-- 
+>2.49.0
+>
 
