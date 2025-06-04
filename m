@@ -1,102 +1,216 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dediextern.your-server.de (dediextern.your-server.de [85.10.215.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5861DE3DC;
-	Wed,  4 Jun 2025 16:00:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD0018E1F;
+	Wed,  4 Jun 2025 16:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.215.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749052801; cv=none; b=cBy+V9+8RJ2CYmtqljsb0zU/fuKS8bKo5rJd4cowWOkx6j7UoBiaDmep9+/VhPPOiA2n7TmVU5CHG8qnrPRLpJ+EiFx3U2MdWgnQcw0IFUtv34pvpTuzW8sfqlhUWDWlyjdRtdqiSl62gxuyeOM7ttMtu0H1MZ/UAM59rsB0DLI=
+	t=1749053046; cv=none; b=s1wAFkeK2R2FZyIgeA13q75UY43xGOZB2OJG3Th5z9PYX5xVc8PqWjCRUJbWgBkVh0MpXNc014ESlYyLZprjSeN0tXublBF3AstzbRrqYVAdXs8ColRI6LImhe0WQxvvfCbsEJMHogsPmlwHIQju0SMr3CH0CU8GAgtf4mqhxjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749052801; c=relaxed/simple;
-	bh=bqf3JTaTlwq87CZNwJUGZ70q+VLsYUsOZiPWGW5E7GM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PTRJq/ixFA367cA2So1+7MtpVM+oieby9M4MWdsIYMzUWZ/D/dSS9IyU3rFXp5ByAzRg9/Zqyv81d4qNIJXeIUZm4WIHg3AO7uX4EOaqPePuRkGmJPgR/gk43HdphBZ19Cdjz9oPSaSFQ9uOuEtE/l6TgI2u/qXeLquNjA/Zmuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AqFWrL40; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AqFWrL40"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b26f5f47ba1so4422202a12.1;
-        Wed, 04 Jun 2025 09:00:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749052799; x=1749657599; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dM1lCBJJXDO4DiBRlM6aBDf7G8E0w98nPK/tgohLyHU=;
-        b=AqFWrL40JV/6NNaO8AC64Rli/cRnDvfRZzaJcH+1ndiLLDps7eXZltvkultb7RmiyV
-         8+FtAWKRBnsPM0dHFy4iQVUgaw+Q7sFgPpgBI/XdwKlcPQcG0IlV4Nmw/PNct4nKSOpi
-         NzNPIlPpGyCRqmf0blp1pQw0PzdgZlXkKLQJNrBx/imvzhJD+khqwHRddeA2Ww4bqyjG
-         aeDJ7nKdDGiXvF1G6xPuFGwKotsUTsv2Sm2UjkHQKzjtysDYOSPfC1ss2fZ5sHy5wfZw
-         gavhfknJRfZc0cIofxKV+JXrh8grtC79ogqFigmvkJ75rDp8fKntCcSbm1zyG5MMh9qg
-         MhOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749052799; x=1749657599;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dM1lCBJJXDO4DiBRlM6aBDf7G8E0w98nPK/tgohLyHU=;
-        b=QIlUnP6KymozZj/9b5Kxd7kFV0XaWf6R7VM7YY2JOq3s9+AoyuCJMpyIj5OIK4VCsI
-         2zkUZYgE4IovTYajk6KON4dP6aBzryidP8biSoqm5iY+Gg8hekPUiJpqZ+qNV+rJQMBc
-         hmURfpdhtIHFmlMyD8Qhmxa0gegrUY+8Xu8u5qMhKHzBsQd1MzicpKxg1JlHQ/9xmJ07
-         BhAkuNMx5K+sqVgAUzHszeQjw4raN18lpqjah6T7nYw/2+0Ms1PsCPF+2Mla7FS9rP+G
-         OZn81A5c/zlqZKmDTZS3hpXHaUwRbRcJSBdPYur6LkDLWRp7ajLbh/X9/uUcikz6x4oP
-         dLiw==
-X-Forwarded-Encrypted: i=1; AJvYcCVKvSKb4z2O2PbimuEGDJbQduX0uMfYSxPb/ObwBjr1hd21sjmjbWDhRi8lpoB+D25w4qrmpTrc@vger.kernel.org, AJvYcCXWkvgNSmriW1RSZ7shGLrBjN4IJZzCrmBan7eHSzxyi0PAqNFoeGWwI66RLnHFLNpNylKfVb71511wf0hYkZt6dGq0c84=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4qlkARD4oDH/g8jHL7zxsXrBsb/AvuijVSHgSloQ6tjbzME6j
-	+FOxUjq1vGsA0QUaXYhHMC2CKR7jTM2hr12pUsPbEfcxOIEKN7mZD2Y=
-X-Gm-Gg: ASbGncuCCBWFrHURA9AGSBBmnr0xA1TJ2Wq9W1cPSt1IJ2riRGNyM7Wek2CVytpiOwN
-	LYtAO5duWV+0u9kO3wA9idigVema5eToACTHhuKfshTskqZs/A7BS54ACxhU3M57DGrAOwCXQhm
-	yID2DK9V+jyvXsw7fblp2gE1QD/wq9TMZhC9UHIcETOlbk5zaKHASr1RHYdOJ/OCselgsTmzkxm
-	oTIdCI1KSv/fs4nzNxcBqdD6wl6aIxULuK7rcVMfg/mTH/SqlyutL+CiF3An9c+HorynWDdkEc0
-	PyFOyXYxHZPlnW+nIzu8ghkBb1me
-X-Google-Smtp-Source: AGHT+IFlF+KS5R7xKjKcaBr8zU6NOf6aoIeRrfm4hUlAWuFFQitR6VwxqboaKUiCoWBpvgMdoBn5ig==
-X-Received: by 2002:a05:6a20:12c3:b0:1f5:7280:1cf2 with SMTP id adf61e73a8af0-21d22ab3d49mr4922513637.12.1749052799499;
-        Wed, 04 Jun 2025 08:59:59 -0700 (PDT)
-Received: from fedora.. ([2601:647:6700:3390::c8d1])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2eceb396f6sm7753648a12.42.2025.06.04.08.59.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Jun 2025 08:59:58 -0700 (PDT)
-From: Kuniyuki Iwashima <kuni1840@gmail.com>
-To: edumazet@google.com
-Cc: davem@davemloft.net,
-	eric.dumazet@gmail.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	kuniyu@amazon.com,
-	linux-security-module@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	paul@paul-moore.com,
-	syzkaller@googlegroups.com
-Subject: Re: [PATCH net] calipso: unlock rcu before returning -EAFNOSUPPORT
-Date: Wed,  4 Jun 2025 08:59:42 -0700
-Message-ID: <20250604155957.45116-1-kuni1840@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250604133826.1667664-1-edumazet@google.com>
-References: <20250604133826.1667664-1-edumazet@google.com>
+	s=arc-20240116; t=1749053046; c=relaxed/simple;
+	bh=Vbss+hkHN6igBHYC0QfKfg2uSLdRpUecKqmMSm0PGo8=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=ZbAFKeOVvve15XtFfmS4tYFQ51oZUmvfig+WPCwM3qpFKryuB/NyyrCpw8nF1byjyMWhCNi1NRb9jDWOPcKhvHbUWMQz7yiM64kgVg8MXxYpZMc40XhatDQnOlD1KzgaZK3o8ivSdEat8kxmdITyIdfYCXCtmxNevxSQmGTrhdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hetzner-cloud.de; spf=pass smtp.mailfrom=hetzner-cloud.de; arc=none smtp.client-ip=85.10.215.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hetzner-cloud.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hetzner-cloud.de
+Received: from sslproxy08.your-server.de ([78.47.166.52])
+	by dediextern.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <marcus.wichelmann@hetzner-cloud.de>)
+	id 1uMq7W-000Q0d-RO; Wed, 04 Jun 2025 17:33:39 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <marcus.wichelmann@hetzner-cloud.de>)
+	id 1uMq7W-000E76-2k;
+	Wed, 04 Jun 2025 17:33:39 +0200
+Message-ID: <9da42688-bfaa-4364-8797-e9271f3bdaef@hetzner-cloud.de>
+Date: Wed, 4 Jun 2025 17:33:36 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
+Autocrypt: addr=marcus.wichelmann@hetzner-cloud.de; keydata=
+ xsFNBGJGrHIBEADXeHfBzzMvCfipCSW1oRhksIillcss321wYAvXrQ03a9VN2XJAzwDB/7Sa
+ N2Oqs6JJv4u5uOhaNp1Sx8JlhN6Oippc6MecXuQu5uOmN+DHmSLObKVQNC9I8PqEF2fq87zO
+ DCDViJ7VbYod/X9zUHQrGd35SB0PcDkXE5QaPX3dpz77mXFFWs/TvP6IvM6XVKZce3gitJ98
+ JO4pQ1gZniqaX4OSmgpHzHmaLCWZ2iU+Kn2M0KD1+/ozr/2bFhRkOwXSMYIdhmOXx96zjqFV
+ vIHa1vBguEt/Ax8+Pi7D83gdMCpyRCQ5AsKVyxVjVml0e/FcocrSb9j8hfrMFplv+Y43DIKu
+ kPVbE6pjHS+rqHf4vnxKBi8yQrfIpQqhgB/fgomBpIJAflu0Phj1nin/QIqKfQatoz5sRJb0
+ khSnRz8bxVM6Dr/T9i+7Y3suQGNXZQlxmRJmw4CYI/4zPVcjWkZyydq+wKqm39SOo4T512Nw
+ fuHmT6SV9DBD6WWevt2VYKMYSmAXLMcCp7I2EM7aYBEBvn5WbdqkamgZ36tISHBDhJl/k7pz
+ OlXOT+AOh12GCBiuPomnPkyyIGOf6wP/DW+vX6v5416MWiJaUmyH9h8UlhlehkWpEYqw1iCA
+ Wn6TcTXSILx+Nh5smWIel6scvxho84qSZplpCSzZGaidHZRytwARAQABzTZNYXJjdXMgV2lj
+ aGVsbWFubiA8bWFyY3VzLndpY2hlbG1hbm5AaGV0em5lci1jbG91ZC5kZT7CwZgEEwEIAEIW
+ IQQVqNeGYUnoSODnU2dJ0we/n6xHDgUCYkascgIbAwUJEswDAAULCQgHAgMiAgEGFQoJCAsC
+ BBYCAwECHgcCF4AACgkQSdMHv5+sRw4BNxAAlfufPZnHm+WKbvxcPVn6CJyexfuE7E2UkJQl
+ s/JXI+OGRhyqtguFGbQS6j7I06dJs/whj9fOhOBAHxFfMG2UkraqgAOlRUk/YjA98Wm9FvcQ
+ RGZe5DhAekI5Q9I9fBuhxdoAmhhKc/g7E5y/TcS1s2Cs6gnBR5lEKKVcIb0nFzB9bc+oMzfV
+ caStg+PejetxR/lMmcuBYi3s51laUQVCXV52bhnv0ROk0fdSwGwmoi2BDXljGBZl5i5n9wuQ
+ eHMp9hc5FoDF0PHNgr+1y9RsLRJ7sKGabDY6VRGp0MxQP0EDPNWlM5RwuErJThu+i9kU6D0e
+ HAPyJ6i4K7PsjGVE2ZcvOpzEr5e46bhIMKyfWzyMXwRVFuwE7erxvvNrSoM3SzbCUmgwC3P3
+ Wy30X7NS5xGOCa36p2AtqcY64ZwwoGKlNZX8wM0khaVjPttsynMlwpLcmOulqABwaUpdluUg
+ soqKCqyijBOXCeRSCZ/KAbA1FOvs3NnC9nVqeyCHtkKfuNDzqGY3uiAoD67EM/R9N4QM5w0X
+ HpxgyDk7EC1sCqdnd0N07BBQrnGZACOmz8pAQC2D2coje/nlnZm1xVK1tk18n6fkpYfR5Dnj
+ QvZYxO8MxP6wXamq2H5TRIzfLN1C2ddRsPv4wr9AqmbC9nIvfIQSvPMBx661kznCacANAP/O
+ wU0EYkascgEQAK15Hd7arsIkP7knH885NNcqmeNnhckmu0MoVd11KIO+SSCBXGFfGJ2/a/8M
+ y86SM4iL2774YYMWePscqtGNMPqa8Uk0NU76ojMbWG58gow2dLIyajXj20sQYd9RbNDiQqWp
+ RNmnp0o8K8lof3XgrqjwlSAJbo6JjgdZkun9ZQBQFDkeJtffIv6LFGap9UV7Y3OhU+4ZTWDM
+ XH76ne9u2ipTDu1pm9WeejgJIl6A7Z/7rRVpp6Qlq4Nm39C/ReNvXQIMT2l302wm0xaFQMfK
+ jAhXV/2/8VAAgDzlqxuRGdA8eGfWujAq68hWTP4FzRvk97L4cTu5Tq8WIBMpkjznRahyTzk8
+ 7oev+W5xBhGe03hfvog+pA9rsQIWF5R1meNZgtxR+GBj9bhHV+CUD6Fp+M0ffaevmI5Untyl
+ AqXYdwfuOORcD9wHxw+XX7T/Slxq/Z0CKhfYJ4YlHV2UnjIvEI7EhV2fPhE4WZf0uiFOWw8X
+ XcvPA8u0P1al3EbgeHMBhWLBjh8+Y3/pm0hSOZksKRdNR6PpCksa52ioD+8Z/giTIDuFDCHo
+ p4QMLrv05kA490cNAkwkI/yRjrKL3eGg26FCBh2tQKoUw2H5pJ0TW67/Mn2mXNXjen9hDhAG
+ 7gU40lS90ehhnpJxZC/73j2HjIxSiUkRpkCVKru2pPXx+zDzABEBAAHCwXwEGAEIACYWIQQV
+ qNeGYUnoSODnU2dJ0we/n6xHDgUCYkascgIbDAUJEswDAAAKCRBJ0we/n6xHDsmpD/9/4+pV
+ IsnYMClwfnDXNIU+x6VXTT/8HKiRiotIRFDIeI2skfWAaNgGBWU7iK7FkF/58ys8jKM3EykO
+ D5lvLbGfI/jrTcJVIm9bXX0F1pTiu3SyzOy7EdJur8Cp6CpCrkD+GwkWppNHP51u7da2zah9
+ CQx6E1NDGM0gSLlCJTciDi6doAkJ14aIX58O7dVeMqmabRAv6Ut45eWqOLvgjzBvdn1SArZm
+ 7AQtxT7KZCz1yYLUgA6TG39bhwkXjtcfT0J4967LuXTgyoKCc969TzmwAT+pX3luMmbXOBl3
+ mAkwjD782F9sP8D/9h8tQmTAKzi/ON+DXBHjjqGrb8+rCocx2mdWLenDK9sNNsvyLb9oKJoE
+ DdXuCrEQpa3U79RGc7wjXT9h/8VsXmA48LSxhRKn2uOmkf0nCr9W4YmrP+g0RGeCKo3yvFxS
+ +2r2hEb/H7ZTP5PWyJM8We/4ttx32S5ues5+qjlqGhWSzmCcPrwKviErSiBCr4PtcioTBZcW
+ VUssNEOhjUERfkdnHNeuNBWfiABIb1Yn7QC2BUmwOvN2DsqsChyfyuknCbiyQGjAmj8mvfi/
+ 18FxnhXRoPx3wr7PqGVWgTJD1pscTrbKnoI1jI1/pBCMun+q9v6E7JCgWY181WjxgKSnen0n
+ wySmewx3h/yfMh0aFxHhvLPxrO2IEQ==
+To: Jesper Dangaard Brouer <hawk@kernel.org>, bpf@vger.kernel.org,
+ netdev@vger.kernel.org
+Cc: Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>,
+ Jiri Pirko <jiri@resnulli.us>, linux-kernel@vger.kernel.org
+Subject: [BUG] veth: TX drops with NAPI enabled and crash in combination with
+ qdisc
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: marcus.wichelmann@hetzner-cloud.de
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27658/Wed Jun  4 10:36:16 2025)
 
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed,  4 Jun 2025 13:38:26 +0000
-> syzbot reported that a recent patch forgot to unlock rcu
-> in the error path.
-> 
-> Adopt the convention that netlbl_conn_setattr() is already using.
-> 
-> Fixes: 6e9f2df1c550 ("calipso: Don't call calipso functions for AF_INET sk.")
-> Reported-by: syzbot <syzkaller@googlegroups.com>
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
-> Acked-by: Paul Moore <paul@paul-moore.com>
-> Cc: linux-security-module@vger.kernel.org
+Hi,
 
-Thanks for cathcing this!
+while experimenting with XDP_REDIRECT from a veth-pair to another interface, I
+noticed that the veth-pair looses lots of packets when multiple TCP streams go
+through it, resulting in stalling TCP connections and noticeable instabilities.
 
-Reviewed-by Kuniyuki Iwashima <kuni1840@gmail.com>
+This doesn't seem to be an issue with just XDP but rather occurs whenever the
+NAPI mode of the veth driver is active.
+I managed to reproduce the same behavior just by bringing the veth-pair into
+NAPI mode (see commit d3256efd8e8b ("veth: allow enabling NAPI even without
+XDP")) and running multiple TCP streams through it using a network namespace.
+
+Here is how I reproduced it:
+
+  ip netns add lb
+  ip link add dev to-lb type veth peer name in-lb netns lb
+
+  # Enable NAPI
+  ethtool -K to-lb gro on
+  ethtool -K to-lb tso off
+  ip netns exec lb ethtool -K in-lb gro on
+  ip netns exec lb ethtool -K in-lb tso off
+
+  ip link set dev to-lb up
+  ip -netns lb link set dev in-lb up
+
+Then run a HTTP server inside the "lb" namespace that serves a large file:
+
+  fallocate -l 10G testfiles/10GB.bin
+  caddy file-server --root testfiles/
+
+Download this file from within the root namespace multiple times in parallel:
+
+  curl http://[fe80::...%to-lb]/10GB.bin -o /dev/null
+
+In my tests, I ran four parallel curls at the same time and after just a few
+seconds, three of them stalled while the other one "won" over the full bandwidth
+and completed the download.
+
+This is probably a result of the veth's ptr_ring running full, causing many
+packet drops on TX, and the TCP congestion control reacting to that.
+
+In this context, I also took notice of Jesper's patch which describes a very
+similar issue and should help to resolve this:
+  commit dc82a33297fc ("veth: apply qdisc backpressure on full ptr_ring to
+  reduce TX drops")
+
+But when repeating the above test with latest mainline, which includes this
+patch, and enabling qdisc via
+  tc qdisc add dev in-lb root sfq perturb 10
+the Kernel crashed just after starting the second TCP stream (see output below).
+
+So I have two questions:
+- Is my understanding of the described issue correct and is Jesper's patch
+  sufficient to solve this?
+- Is my qdisc configuration to make use of this patch correct and the kernel
+  crash is likely a bug?
+
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in net/sched/sch_sfq.c:203:12
+index 65535 is out of range for type 'sfq_head [128]'
+CPU: 1 UID: 0 PID: 24 Comm: ksoftirqd/1 Not tainted 6.15.0+ #1 PREEMPT(voluntary) 
+Hardware name: GIGABYTE MP32-AR1-SW-HZ-001/MP32-AR1-00, BIOS F31n (SCP: 2.10.20220810) 09/30/2022
+Call trace:
+ show_stack+0x24/0x50 (C)
+ dump_stack_lvl+0x80/0x140
+ dump_stack+0x1c/0x38
+ __ubsan_handle_out_of_bounds+0xd0/0x128
+ sfq_dequeue+0x37c/0x3e0 [sch_sfq]
+ __qdisc_run+0x90/0x760
+ net_tx_action+0x1b8/0x3b0
+ handle_softirqs+0x13c/0x418
+ run_ksoftirqd+0x9c/0xe8
+ smpboot_thread_fn+0x1c0/0x2e0
+ kthread+0x150/0x230
+ ret_from_fork+0x10/0x20
+---[ end trace ]---
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in net/sched/sch_sfq.c:208:8
+index 65535 is out of range for type 'sfq_head [128]'
+CPU: 1 UID: 0 PID: 24 Comm: ksoftirqd/1 Not tainted 6.15.0+ #1 PREEMPT(voluntary) 
+Hardware name: GIGABYTE MP32-AR1-SW-HZ-001/MP32-AR1-00, BIOS F31n (SCP: 2.10.20220810) 09/30/2022
+Call trace:
+ show_stack+0x24/0x50 (C)
+ dump_stack_lvl+0x80/0x140
+ dump_stack+0x1c/0x38
+ __ubsan_handle_out_of_bounds+0xd0/0x128
+ sfq_dequeue+0x394/0x3e0 [sch_sfq]
+ __qdisc_run+0x90/0x760
+ net_tx_action+0x1b8/0x3b0
+ handle_softirqs+0x13c/0x418
+ run_ksoftirqd+0x9c/0xe8
+ smpboot_thread_fn+0x1c0/0x2e0
+ kthread+0x150/0x230
+ ret_from_fork+0x10/0x20
+---[ end trace ]---
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000005
+Mem abort info:
+  ESR = 0x0000000096000004
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x04: level 0 translation fault
+Data abort info:
+  ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+user pgtable: 4k pages, 48-bit VAs, pgdp=000008002ad67000
+[0000000000000005] pgd=0000000000000000, p4d=0000000000000000
+Internal error: Oops: 0000000096000004 [#1]  SMP
+
+CPU: Ampere(R) Altra(R) Processor Q80-30 CPU @ 3.0GHz
+
+# tc qdisc
+qdisc sfq 8001: dev in-lb root refcnt 81 limit 127p quantum 1514b depth 127 divisor 1024 perturb 10sec 
+
+Thanks,
+Marcus
