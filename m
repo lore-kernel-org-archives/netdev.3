@@ -1,248 +1,116 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE721B4242
-	for <netdev@vger.kernel.org>; Thu,  5 Jun 2025 12:38:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7197A1D8A0A
+	for <netdev@vger.kernel.org>; Thu,  5 Jun 2025 12:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749127098; cv=none; b=hRKfe6BBdfqhfSFNB5oDs8WMdMDZV8GC1f6CZ0kLCrtrOeaNZXL33EG9gNkTDU0YogAfxxfoAO68CZctaXj6yZCMTuzGlM4kAO1cimPBhlEE6F+AMh3/mlZNe+9QnQKWmeYKE0vIpAm4IvN5NNasD6o/iQD/3A7ruN8o6JvuHBg=
+	t=1749127494; cv=none; b=salJbChbGv78cdkvZolSlwxrRVXzP2YOVx1ZcW9dI9am0IUEPSKzx3rgpVmckpM/+rB+gWaHSEmjTUbh+qo8Ac4aDH/I+ltNavfiRI3bx65eI+Wafz7/1k/0KcGe23pfWPjtmxtXZjAuQ6G1w4RJo7rq9YmABnPYGIr72Ol3DnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749127098; c=relaxed/simple;
-	bh=u7j7vRddluRP/v3J30p50ftJorJERwh1tmE6aHtMetU=;
-	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
-	 Message-Id:Date; b=XETEURanZP46+cbjhpKofq6dqUIa+zGFKuQTkaJjpkZyaQu2uQz8q7fZ9t5/mP3YeN58HknE5usuNso2fAv3XhtEJsRmx1amdnm2nFrjIMjxGSr1zrfOQ1uMb1y3Qtoer7PzfUnnkcnpX5teIEjokSy5RzedGJ6QesI7jEfYTCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=e+R7foQQ; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1749127494; c=relaxed/simple;
+	bh=1M6Ahw064n/3Pm/ml44MdAZPyTS+I3rtCo7RuL6Pkcs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HS0sfWj2c5epQPEanmyqUQ2Pmj6z6EIoBhHis6AW20drKs351AD9KZUaCavlzZsniPHD8fTRtZazVAV2dGzajCkn6K1tp49qGpiAjpCDDuRPf7CnNBLlYmo26Lhu0+cXTBKHGZ8q3MB6oWkhe612LcawqQ5Vu61jYs5va7Xf9pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EC0aaG6z; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="e+R7foQQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
-	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
-	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=QVZFqA7SHOoJDTQIfXIFEnPJfjciVTcfnFXWznWa0fw=; b=e+R7foQQt9rqd87hnkF+cx+j7n
-	bt3ITUdZ8xWz2wLcYs2TZAt7uSRAU4r26tOqi61Jw9RPt053M1h0XBDSJxf7TixfFPDI3ZQ2My6/2
-	2nE+SJlgx6SLV4oC28tT04+15DF5l1mwpUjDSupUdDBfQHkswcxCCLgbQC65blc+KWEraWXGD4j8k
-	qlXCGZQhEy+UazB48+JH2zk/pui9h+iJFNQhaYqBHKz8OdpMROMjcdIDFNQ2tSoeVgFZ90lGG2upP
-	s35zFvz6W7u1VQvhDIFvei2NXajCmhfPkDk85+tjDlSA/1qbM819YhjAj+s2wU+NTNwuHDz9g9Ghg
-	Tw6lK8Lw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:55184 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1uN9rE-0008AA-19;
-	Thu, 05 Jun 2025 13:38:08 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1uN9qa-003NsX-JS; Thu, 05 Jun 2025 13:37:28 +0100
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH RFC net-next] net: phy: simplify phy_get_internal_delay()
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EC0aaG6z"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4a43e277198so6317261cf.1
+        for <netdev@vger.kernel.org>; Thu, 05 Jun 2025 05:44:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1749127491; x=1749732291; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v+ja4+M2xOWPi6Bygoxn28Zjqtj43MyDHO0fI4xSLYw=;
+        b=EC0aaG6zkPKeKpYdPc1IhYcCFR55wssbG0Bq+Okoo0U7gpLGmQBPII47JJNI3Z4kzf
+         mRRMBPp4SxK7fwKKa77kYDdjm+ASk4PWFTQXRBONmCA3p9HIpeFsKowQlb5jwJBlC5UH
+         mF4ByMVw0eumJRAPnZ5zSHSzlzZXbgQStKH5w6+L0IynVKJjAwepPTBtc1t7wN6k2B8+
+         3CDssqzOulTlgbMpGWFGY33lxx6gh+o82EwzvnuSIPeE1jXwCCTQIfAOrTeM8n8mcypY
+         8DNwbpc2bhKK0kLiGDdVU+jJLAU01cLTAGT6t/DmWQiUTnrTTyLn+oubzbB1rZ/jqAPh
+         aO6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749127491; x=1749732291;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=v+ja4+M2xOWPi6Bygoxn28Zjqtj43MyDHO0fI4xSLYw=;
+        b=sC6/NNazaklrab1xZKAaz0y8kPXVdLYsFbmcpfpHg5WoBhXEMf0eCHVT1TgcL641nS
+         7Qx97dm7pBaNXJ3YhDwoW9D2pVHVBIY4jwV+AyxfLuMnX2l0CceZAMXNNN9Jr9UvvgD5
+         8cqPthzATyIbQvIrF5FJ5f4s84PfnfA0VZM8XkIeTndzBuZg0pjoZGtDmPgIdL4ZxmkU
+         /aUH/YU6cyA27+cClEKabG7oCcKbpgMfxvZGpScadO1/1GDvUJRMfBDQ4FFw0HoWGMCk
+         l47w6xU7JFYKipZGQITdSR26EOexi6QJyJ+P0vFLFMHb2pUkjwjXf79dpbPjV0+hB5W/
+         trVg==
+X-Forwarded-Encrypted: i=1; AJvYcCVxyXkEN2s7hwxA+j9BeDBt1jiu9PRvmJIHQGhv86+myFnxlnZVAepDBazwerh3QH7CUbr8POk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymlcEnIe16xD7AgifflVSth4t0vpRPtGVW+uyfhMkX5lEVXWak
+	Sso9r+50KEY+rDM7BtLHjhcT06dIdbu+z5MUhmeHe//5mJu6pXzsS5YUORiRSXROyXK6D2VyUU4
+	s274/FqUCKsEd6/1gSV2e4XfaQOyXSsq0PXIzWEuc
+X-Gm-Gg: ASbGncsY53PJHRWbXixmyXOPExjXb10ZQPy6TZdkgvGLVnx68RjxybcHnUXlj+/e0oT
+	SkrhP8CDd9J3zUQrR46qzd+1sJWolSAcfCk4D2hXJDCJjiTNJfOe+DnPhAtT9rmdCXVUMOGDEgv
+	K1IvYba6FHkZl1IXOSa19wi1nmnqft54WJ9nWnvFm0+8o=
+X-Google-Smtp-Source: AGHT+IHqFrG2DFMtuDJWcNH3yBa3lwc6UQVRUn1VXB36hEb5kwOFTUcIAYFHWNVi3s25DT33VFaHpvlR/7SkQZ+Uh4s=
+X-Received: by 2002:a05:622a:4d48:b0:49d:89bf:298f with SMTP id
+ d75a77b69052e-4a5a5768e7fmr95088851cf.22.1749127490981; Thu, 05 Jun 2025
+ 05:44:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1uN9qa-003NsX-JS@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Thu, 05 Jun 2025 13:37:28 +0100
+References: <20250430085741.5108-1-aaptel@nvidia.com> <20250430085741.5108-2-aaptel@nvidia.com>
+ <CANn89iLW86_BsB97jZw0joPwne_K79iiqwogCYFA7U9dZa3jhQ@mail.gmail.com>
+ <2537c2gzk6x.fsf@nvidia.com> <CANn89iJa+fWdR4jUqeJyhgwHMa5ujZ96WR6jv6iVFUhOXC+jhA@mail.gmail.com>
+ <2531psgzo2n.fsf@nvidia.com> <253y0u7y9cj.fsf@nvidia.com> <CANn89iJ6HROtg3m3z8Ac61e0Ex5HvgOTNavfG_W0j97B0XMZkw@mail.gmail.com>
+ <253v7paxv1t.fsf@nvidia.com>
+In-Reply-To: <253v7paxv1t.fsf@nvidia.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 5 Jun 2025 05:44:40 -0700
+X-Gm-Features: AX0GCFuwcu_gh1VljBmLTBOpOh6i_LMFTvbsRpVwTihlPW3hlvD6yXK1BWR9a3E
+Message-ID: <CANn89i+y4cKYezwQ6Zr0fr=d6ky8K20E9zYOz=EUiRi_vY8e_g@mail.gmail.com>
+Subject: Re: [PATCH v28 01/20] net: Introduce direct data placement tcp offload
+To: Aurelien Aptel <aaptel@nvidia.com>
+Cc: linux-nvme@lists.infradead.org, netdev@vger.kernel.org, sagi@grimberg.me, 
+	hch@lst.de, kbusch@kernel.org, axboe@fb.com, chaitanyak@nvidia.com, 
+	davem@davemloft.net, kuba@kernel.org, Boris Pismenny <borisp@nvidia.com>, 
+	aurelien.aptel@gmail.com, smalin@nvidia.com, malin1024@gmail.com, 
+	ogerlitz@nvidia.com, yorayz@nvidia.com, galshalom@nvidia.com, 
+	mgurtovoy@nvidia.com, tariqt@nvidia.com, gus@collabora.com, pabeni@redhat.com, 
+	dsahern@kernel.org, ast@kernel.org, jacob.e.keller@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Simplify the arguments passed to phy_get_internal_delay() - the "dev"
-argument is always &phydev->mdio.dev, and as the phydev is passed in,
-there's no need to also pass in the struct device, especially when this
-function is the only reason for the caller to have a local "dev"
-variable.
+On Thu, Jun 5, 2025 at 4:55=E2=80=AFAM Aurelien Aptel <aaptel@nvidia.com> w=
+rote:
+>
+> Eric Dumazet <edumazet@google.com> writes:
+> > Adding one bit in all skbs for such a narrow case is not very convincin=
+g to me.
+> >
+> > I would prefer a disable/enable bit in the receiving socket, or a
+> > global static key.
+>
+> We can move the bit to the socket, within the sock_read_rx cacheline grou=
+p:
+>
+>
+> --- a/include/net/sock.h
+> +++ b/include/net/sock.h
+> @@ -420,7 +420,7 @@ struct sock {
+>  #endif
+>         u8                      sk_userlocks;
+>         int                     sk_rcvbuf;
+> -
+> +       bool                    sk_no_condense;
+>         struct sk_filter __rcu  *sk_filter;
+>         union {
+>                 struct socket_wq __rcu  *sk_wq;
+>
+>
+> And then check for it in skb_condense().
+> We are still evaluating it but it looks fine for us.
+> Would that work for you?
 
-Remove the redundant "dev" argument, and update the callers.
-
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
-Is there any reason to pass a different "dev" into this function other
-than phydev->mdio.dev ?
-
- drivers/net/phy/dp83822.c        | 7 ++-----
- drivers/net/phy/dp83869.c        | 7 +++----
- drivers/net/phy/intel-xway.c     | 7 ++-----
- drivers/net/phy/mscc/mscc_main.c | 5 ++---
- drivers/net/phy/phy_device.c     | 6 +++---
- include/linux/phy.h              | 4 ++--
- 6 files changed, 14 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/net/phy/dp83822.c b/drivers/net/phy/dp83822.c
-index 01255dada600..33db21251f2e 100644
---- a/drivers/net/phy/dp83822.c
-+++ b/drivers/net/phy/dp83822.c
-@@ -516,7 +516,6 @@ static int dp83822_config_init_leds(struct phy_device *phydev)
- static int dp83822_config_init(struct phy_device *phydev)
- {
- 	struct dp83822_private *dp83822 = phydev->priv;
--	struct device *dev = &phydev->mdio.dev;
- 	int rgmii_delay = 0;
- 	s32 rx_int_delay;
- 	s32 tx_int_delay;
-@@ -549,15 +548,13 @@ static int dp83822_config_init(struct phy_device *phydev)
- 		return err;
- 
- 	if (phy_interface_is_rgmii(phydev)) {
--		rx_int_delay = phy_get_internal_delay(phydev, dev, NULL, 0,
--						      true);
-+		rx_int_delay = phy_get_internal_delay(phydev, NULL, 0, true);
- 
- 		/* Set DP83822_RX_CLK_SHIFT to enable rx clk internal delay */
- 		if (rx_int_delay > 0)
- 			rgmii_delay |= DP83822_RX_CLK_SHIFT;
- 
--		tx_int_delay = phy_get_internal_delay(phydev, dev, NULL, 0,
--						      false);
-+		tx_int_delay = phy_get_internal_delay(phydev, NULL, 0, false);
- 
- 		/* Set DP83822_TX_CLK_SHIFT to disable tx clk internal delay */
- 		if (tx_int_delay <= 0)
-diff --git a/drivers/net/phy/dp83869.c b/drivers/net/phy/dp83869.c
-index a62cd838a9ea..a2cd1cc35cde 100644
---- a/drivers/net/phy/dp83869.c
-+++ b/drivers/net/phy/dp83869.c
-@@ -540,9 +540,8 @@ static const int dp83869_internal_delay[] = {250, 500, 750, 1000, 1250, 1500,
- 
- static int dp83869_of_init(struct phy_device *phydev)
- {
-+	struct device_node *of_node = phydev->mdio.dev.of_node;
- 	struct dp83869_private *dp83869 = phydev->priv;
--	struct device *dev = &phydev->mdio.dev;
--	struct device_node *of_node = dev->of_node;
- 	int delay_size = ARRAY_SIZE(dp83869_internal_delay);
- 	int ret;
- 
-@@ -597,13 +596,13 @@ static int dp83869_of_init(struct phy_device *phydev)
- 				 &dp83869->tx_fifo_depth))
- 		dp83869->tx_fifo_depth = DP83869_PHYCR_FIFO_DEPTH_4_B_NIB;
- 
--	dp83869->rx_int_delay = phy_get_internal_delay(phydev, dev,
-+	dp83869->rx_int_delay = phy_get_internal_delay(phydev,
- 						       &dp83869_internal_delay[0],
- 						       delay_size, true);
- 	if (dp83869->rx_int_delay < 0)
- 		dp83869->rx_int_delay = DP83869_CLK_DELAY_DEF;
- 
--	dp83869->tx_int_delay = phy_get_internal_delay(phydev, dev,
-+	dp83869->tx_int_delay = phy_get_internal_delay(phydev,
- 						       &dp83869_internal_delay[0],
- 						       delay_size, false);
- 	if (dp83869->tx_int_delay < 0)
-diff --git a/drivers/net/phy/intel-xway.c b/drivers/net/phy/intel-xway.c
-index a44771e8acdc..9766dd99afaa 100644
---- a/drivers/net/phy/intel-xway.c
-+++ b/drivers/net/phy/intel-xway.c
-@@ -174,7 +174,6 @@ static const int xway_internal_delay[] = {0, 500, 1000, 1500, 2000, 2500,
- 
- static int xway_gphy_rgmii_init(struct phy_device *phydev)
- {
--	struct device *dev = &phydev->mdio.dev;
- 	unsigned int delay_size = ARRAY_SIZE(xway_internal_delay);
- 	s32 int_delay;
- 	int val = 0;
-@@ -207,8 +206,7 @@ static int xway_gphy_rgmii_init(struct phy_device *phydev)
- 
- 	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID ||
- 	    phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) {
--		int_delay = phy_get_internal_delay(phydev, dev,
--						   xway_internal_delay,
-+		int_delay = phy_get_internal_delay(phydev, xway_internal_delay,
- 						   delay_size, true);
- 
- 		/* if rx-internal-delay-ps is missing, use default of 2.0 ns */
-@@ -220,8 +218,7 @@ static int xway_gphy_rgmii_init(struct phy_device *phydev)
- 
- 	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID ||
- 	    phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID) {
--		int_delay = phy_get_internal_delay(phydev, dev,
--						   xway_internal_delay,
-+		int_delay = phy_get_internal_delay(phydev, xway_internal_delay,
- 						   delay_size, false);
- 
- 		/* if tx-internal-delay-ps is missing, use default of 2.0 ns */
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index 7ff975efd8e7..7ed6522fb0ef 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -530,7 +530,6 @@ static int vsc85xx_update_rgmii_cntl(struct phy_device *phydev, u32 rgmii_cntl,
- 	u16 rgmii_rx_delay_pos = ffs(rgmii_rx_delay_mask) - 1;
- 	u16 rgmii_tx_delay_pos = ffs(rgmii_tx_delay_mask) - 1;
- 	int delay_size = ARRAY_SIZE(vsc85xx_internal_delay);
--	struct device *dev = &phydev->mdio.dev;
- 	u16 reg_val = 0;
- 	u16 mask = 0;
- 	s32 rx_delay;
-@@ -549,7 +548,7 @@ static int vsc85xx_update_rgmii_cntl(struct phy_device *phydev, u32 rgmii_cntl,
- 	if (phy_interface_is_rgmii(phydev))
- 		mask |= rgmii_rx_delay_mask | rgmii_tx_delay_mask;
- 
--	rx_delay = phy_get_internal_delay(phydev, dev, vsc85xx_internal_delay,
-+	rx_delay = phy_get_internal_delay(phydev, vsc85xx_internal_delay,
- 					  delay_size, true);
- 	if (rx_delay < 0) {
- 		if (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID ||
-@@ -559,7 +558,7 @@ static int vsc85xx_update_rgmii_cntl(struct phy_device *phydev, u32 rgmii_cntl,
- 			rx_delay = RGMII_CLK_DELAY_0_2_NS;
- 	}
- 
--	tx_delay = phy_get_internal_delay(phydev, dev, vsc85xx_internal_delay,
-+	tx_delay = phy_get_internal_delay(phydev, vsc85xx_internal_delay,
- 					  delay_size, false);
- 	if (tx_delay < 0) {
- 		if (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID ||
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 73f9cb2e2844..ebcfd80032fa 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -2899,7 +2899,6 @@ static int phy_get_u32_property(struct device *dev, const char *name, u32 *val)
- /**
-  * phy_get_internal_delay - returns the index of the internal delay
-  * @phydev: phy_device struct
-- * @dev: pointer to the devices device struct
-  * @delay_values: array of delays the PHY supports
-  * @size: the size of the delay array
-  * @is_rx: boolean to indicate to get the rx internal delay
-@@ -2912,9 +2911,10 @@ static int phy_get_u32_property(struct device *dev, const char *name, u32 *val)
-  * array then size = 0 and the value of the delay property is returned.
-  * Return -EINVAL if the delay is invalid or cannot be found.
-  */
--s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
--			   const int *delay_values, int size, bool is_rx)
-+s32 phy_get_internal_delay(struct phy_device *phydev, const int *delay_values,
-+			   int size, bool is_rx)
- {
-+	struct device *dev = &phydev->mdio.dev;
- 	int i, ret;
- 	u32 delay;
- 
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index e194dad1623d..b95e3b8eba26 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -1997,8 +1997,8 @@ bool phy_validate_pause(struct phy_device *phydev,
- 			struct ethtool_pauseparam *pp);
- void phy_get_pause(struct phy_device *phydev, bool *tx_pause, bool *rx_pause);
- 
--s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
--			   const int *delay_values, int size, bool is_rx);
-+s32 phy_get_internal_delay(struct phy_device *phydev, const int *delay_values,
-+			   int size, bool is_rx);
- 
- int phy_get_tx_amplitude_gain(struct phy_device *phydev, struct device *dev,
- 			      enum ethtool_link_mode_bit_indices linkmode,
--- 
-2.30.2
-
+This is a slow path check, you can use one bit after sk_no_check_rx,
+because we have a hole there.
