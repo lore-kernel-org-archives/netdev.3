@@ -1,70 +1,65 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532781A2C25
-	for <netdev@vger.kernel.org>; Thu,  5 Jun 2025 10:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EAC1A2C25;
+	Thu,  5 Jun 2025 10:25:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749119103; cv=none; b=KtZTkJ83TCOwRC0wqIo4ZXLeWqKPOsRu2ky5vMymUfpLC85dR/MFr/e7hGd5wnW0AN2JpT4ZJB/omwa4p7myOAoodM0YslqP2CECmjslE0gZMzsGwO1fpGBh7bY/ATNIVnbUF8tnhUGn4yxHZKeuXf0jIOQlCMBlV+eMXdFhyiw=
+	t=1749119145; cv=none; b=AAKknLPTe2DunE9vwTeigrxssffsLkqiK/FRWZtMVxWMjvyCDLUHEoN6keb+DORyTe6r/NtqdOvr32tfh9SnADpkF2Zhkpo2U7mobLJ6TV7lH595Fv26EszY5gsh8/lUnI9FAaay19BD3MR+/2IalRvZFZyVrWE+/nyzj2vkX6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749119103; c=relaxed/simple;
-	bh=015oBGMB3YXrG897FkQBa+RLeqYZAPDXjdd6A32n7dk=;
+	s=arc-20240116; t=1749119145; c=relaxed/simple;
+	bh=Y6odTPkaS4fOfYNHRYgsmVh7nl91jNEtq7WCKbmDCAs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jJsaHGEZzomAJ6TmuK9blk/Puw+8XigiYTpTsaqHwXzFiClVXiQQcHm3fnmbYoOm9B0CtiYSlKwEf0YJRJEm70ahhPtLOsB/WNMGalVJNOpv+8ryROCzII5Xx3erwC7iEUgkhVFbzCkMBjvb97Nv+0q0rh9NNneg0qsqTUX4Cqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bvg+6+IB; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=MXarD/ypyDiV0rB/Sca4vaQEO6a7P6ViZhyyJh+m9Awh2KHdx1Ca3UeiAbEuLeiAoCiVHQQ5fH7kzT9g1GmZ8YVdmvEaYYQh8bVR65d+6Kbz55xeKENeVlXFoaWHjNd1YppmkZDtNSL3xJOHP/sN203/64VwkX2u378Kujfnkkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ieu1dsbO; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bvg+6+IB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1749119100;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+/I6BadOUjI/02G0YPnq9xgrPHjXcmZakozl0E4TDSo=;
-	b=Bvg+6+IB77bbCXKQ9QKMIe09Cxj2onu9iZOFiZZZ7ob5FmB8kBxSE0QiPwpxQ+dGyw92wR
-	J3YHX8gqvOOsE3mINVAzPONp0vMp/J7v+bppMi/r++QLDeZSvjNEY4mes2p74bdBa5i54+
-	V77VBvQoWuz1X07F9thNzDaxz1CXlu4=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-sZa07UzOMum0iz-0gAbwtA-1; Thu, 05 Jun 2025 06:24:58 -0400
-X-MC-Unique: sZa07UzOMum0iz-0gAbwtA-1
-X-Mimecast-MFC-AGG-ID: sZa07UzOMum0iz-0gAbwtA_1749119097
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a4f8fd1856so384338f8f.2
-        for <netdev@vger.kernel.org>; Thu, 05 Jun 2025 03:24:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ieu1dsbO"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-adb2bd27c7bso134255066b.2;
+        Thu, 05 Jun 2025 03:25:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749119141; x=1749723941; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=itRQPWabF7d6IdaAkp4MBncmkvXPAe8HLLkNyEpU2ug=;
+        b=Ieu1dsbO4YNZ0Sij4j9owQnq0t605ibIwCLymHlB2UCaxSQs+HAF2s5OSUmvAESZxx
+         yuxm0t3u5g0RbboZq/Xoj61dvDhoCSCQ9qoqoDt/YXQguu0y+d71WhqUUElr8l45XD98
+         Pd70PiNiPCxIv7B/4oOMgD5DB3dbu+f5dQVLS5b/PCmXKkQMQP8E7b/HpbWZGXadEvyH
+         50FTS4xCsMYIgXIvnwBDDfGyzoeyah0fzdxWqA60xF0+b+Ny5SkFqPybJ7XuzwQkyKZz
+         FrVHHiZt2oWGPzNNE4ExqWddIhIWv4UV3NE6/N/Ve2Xnd3q6eTNZhyKZCDBe3lb+eAiK
+         tQEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749119097; x=1749723897;
+        d=1e100.net; s=20230601; t=1749119141; x=1749723941;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+/I6BadOUjI/02G0YPnq9xgrPHjXcmZakozl0E4TDSo=;
-        b=S4LuQRTjgmfin+xV9DGaZGswTceM18QGpjSn96/86bNNruFMmprYOBeDi1lUNt24eb
-         hW/rkOVP/uQsOUBVomacOWNBvIGMQlhPme+PqtzlyG/19Gi61jP36k2bQlzCYE6iLWtz
-         3pSTsibYU0RySOB1+JDlYeXxJ7hFkblo1rdDDA0+bQx/iBTPH1TI7+wa32rFkGDwWYol
-         g8f9JHR+NRl1PaDnqPo4Scch4Yj3JHbwJrrOOlE97TGAskTLpuCQ1lTBzGNCBWVTRPjp
-         fpdSZLcgl6Pp0/6vGFo4QfTylChb/62PBHxtMAUNp58CRLpnBpuUCEL4KmPIU3pPg6uo
-         EsiQ==
-X-Gm-Message-State: AOJu0YwgyLkYdH1fA8kFNtgn68CfhSHkuKwuhZ87ste3KpcEfSPQ1Gzv
-	N+WTRJfu29BELXmHZ9yvV5Rwh3u67UO6+eLuwhyYMisbBxcUTSQ9FJ+kuLyAQaUp+BPR/vHXsTx
-	mVub9xgPILGv0VWexOguObxUaYVM6I54ZYmkD1Id6Om2tLYHPRdmWAfQv1A==
-X-Gm-Gg: ASbGnctg/rrJ+HwTJT2girqktJUKl9u935DmTp/G/IWB/fwukAMk9CyqigfvFQAXAp9
-	BWB19Dgra8PVeSU2I1UlOp7K7ZOZb+33c0lhgA3WnBtaZEY8Oh4bnN1nKU79f05gPRDnlxNVy4Y
-	rorzccFdiHWlQNOXuiLUWYer2XNkUK4cYPrQZZmVhXcdx0KXk5ea+zBH+8tm63crO2ko+gkqtvA
-	erC4xR+7D/LDhOcFbUexW/kSE3wp2KULk2qIZWSEpIJgQwGz8MYp22dTkuNHhGjN3iWoFmPJ9V9
-	w4c+rTwthdvqSORe7mE=
-X-Received: by 2002:a05:6000:1a85:b0:3a4:d0ed:257b with SMTP id ffacd0b85a97d-3a51d923b56mr5438394f8f.22.1749119097320;
-        Thu, 05 Jun 2025 03:24:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE9rhdrXoBB2l0aQ9oW8se1WPPDQ7OCJdLmo7Mz8TqllVZz9mFe8kK46lg4hrRM9Z/HNjs9tg==
-X-Received: by 2002:a05:6000:1a85:b0:3a4:d0ed:257b with SMTP id ffacd0b85a97d-3a51d923b56mr5438361f8f.22.1749119096926;
-        Thu, 05 Jun 2025 03:24:56 -0700 (PDT)
-Received: from ?IPV6:2a0d:3341:cced:ed10::f39? ([2a0d:3341:cced:ed10::f39])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a5253a7aeesm2687387f8f.1.2025.06.05.03.24.54
+        bh=itRQPWabF7d6IdaAkp4MBncmkvXPAe8HLLkNyEpU2ug=;
+        b=Ilaflht0no8Cnq0g8KhwNPykndNE2acpXUPkGAkv/FpU9zsleBrpdeGM88ih0/zn6o
+         W9skaNzrMXyBxQolk/i6GAEZ4LNgVaYMEA3taeq4Ri6bkEQIg7TKdl3Z7bDlsTKmePZt
+         K8qwdVGeYVGKfCMV0SFIpSnPmc3Hd1V6WHEAl5fccMwIRaqFzbDLcEpN9nIAc2+TyG+p
+         mEd4cfk+xvBxBpy/5c35p+L+Ljkc8X4FdNybJ4hh2GnUBhZNvux78an8t100wvRswR9s
+         wflXnPG4qHYZ3B1g9UBdWCTlxA84F71YOwC5Sq45Y6r3VCJCQyFZke8m9x0pM5n62LvI
+         w09g==
+X-Forwarded-Encrypted: i=1; AJvYcCUOLG67atCA5QHhNxMrHSco/C8WrZuVKlx0t/8kJHQMKIW5QlUPHnBNZqBqZdA5OpqLtfo=@vger.kernel.org, AJvYcCWaJyU4dHYo+/U8zahCK9eIZq6EATpXtPTwlGDtvQ1T4UzKjFB6JV64+ubbd7VptCKcrVvSdWFZ@vger.kernel.org, AJvYcCWo65KWJ7E4bJajFJsPF5N2mPk8TtlZTHFRVQzP9nZDNLE8erS5F2+P0LiVF6pXrjrgw+pMJwwo0gIhQg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywp5ZGTm6vxhPrZSs375QzTLK+kHWt0lOyDPQdgyQ4JHHC1+7Cc
+	1e6VvMkARAAFKXKqouWMJFO1cjY6EpyMAnfMRXj2d4+es5hPmrO5rcuD
+X-Gm-Gg: ASbGncsr1bm2FTlSCPkTLriULdGgiOUbFNMw0Ez8u7+DRVKSwoL3lN7uaSLvWWzARX+
+	TYM1v0SrDL7ZdJCcNL4n7WAY1V0gDRYy+he22f9/TJbgz9WKG9CuXcr12PYTtAXEQKFUD0C+R5E
+	Xp9fovXiME7KVRCG6o9oMbotm1Cn/7ZNeOIZGfVzEbAA3yvs8LQoLZ9/QU+5UQN9c03kRIcp7ho
+	BCPb3oIKpznVCvDGhhomgMSA9CxdckiCnj2S+ZMbGUdncsjMLIbcOBQI9x1XiwQr/KRyzLiV7fz
+	EMZBSeeIcAmy5wVRibTJ4ZQ67wR5adf8ODTT0zFJ0WJ8gydDolPtB/amTSpKM68IGJxaB8k0KHE
+	=
+X-Google-Smtp-Source: AGHT+IEJVIeyPovY+XNoaWDAFKnxn+Gk0ei3Mrur69LBv34N0LN+wxmIwZL7D5wIY9s978A9r9fmyA==
+X-Received: by 2002:a17:906:f58c:b0:ad8:93a3:299c with SMTP id a640c23a62f3a-addf8c96579mr614742266b.10.1749119140426;
+        Thu, 05 Jun 2025 03:25:40 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::22f? ([2620:10d:c092:600::1:d66f])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adb31ea3504sm1104621366b.172.2025.06.05.03.25.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Jun 2025 03:24:56 -0700 (PDT)
-Message-ID: <ef3efb3c-3b5a-4176-a512-011e80c52a06@redhat.com>
-Date: Thu, 5 Jun 2025 12:24:54 +0200
+        Thu, 05 Jun 2025 03:25:39 -0700 (PDT)
+Message-ID: <29f2c375-65e3-4d22-8274-552653222f8d@gmail.com>
+Date: Thu, 5 Jun 2025 11:26:59 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,82 +67,95 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: phy: phy_caps: Don't skip better duplex macth on
- non-exact match
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, davem@davemloft.net,
- Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
- Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, Simon Horman <horms@kernel.org>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Herve Codina <herve.codina@bootlin.com>,
- Romain Gantois <romain.gantois@bootlin.com>,
- Jijie Shao <shaojijie@huawei.com>
-References: <20250603083541.248315-1-maxime.chevallier@bootlin.com>
+Subject: Re: [RFC v4 03/18] page_pool: use netmem alloc/put APIs in
+ __page_pool_alloc_page_order()
+To: Byungchul Park <byungchul@sk.com>, willy@infradead.org,
+ netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ kernel_team@skhynix.com, kuba@kernel.org, almasrymina@google.com,
+ ilias.apalodimas@linaro.org, harry.yoo@oracle.com, hawk@kernel.org,
+ akpm@linux-foundation.org, davem@davemloft.net, john.fastabend@gmail.com,
+ andrew+netdev@lunn.ch, toke@redhat.com, tariqt@nvidia.com,
+ edumazet@google.com, pabeni@redhat.com, saeedm@nvidia.com, leon@kernel.org,
+ ast@kernel.org, daniel@iogearbox.net, david@redhat.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
+ linux-rdma@vger.kernel.org, bpf@vger.kernel.org, vishal.moola@gmail.com
+References: <20250604025246.61616-1-byungchul@sk.com>
+ <20250604025246.61616-4-byungchul@sk.com>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250603083541.248315-1-maxime.chevallier@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20250604025246.61616-4-byungchul@sk.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 6/3/25 10:35 AM, Maxime Chevallier wrote:
-> When performing a non-exact phy_caps lookup, we are looking for a
-> supported mode that matches as closely as possible the passed speed/duplex.
+On 6/4/25 03:52, Byungchul Park wrote:
+> Use netmem alloc/put APIs instead of page alloc/put APIs and make it
+> return netmem_ref instead of struct page * in
+> __page_pool_alloc_page_order().
 > 
-> Blamed patch broke that logic by returning a match too early in case
-> the caller asks for half-duplex, as a full-duplex linkmode may match
-> first, and returned as a non-exact match without even trying to mach on
-> half-duplex modes.
-> 
-> Reported-by: Jijie Shao <shaojijie@huawei.com>
-> Closes: https://lore.kernel.org/netdev/20250603102500.4ec743cf@fedora/T/#m22ed60ca635c67dc7d9cbb47e8995b2beb5c1576
-> Fixes: fc81e257d19f ("net: phy: phy_caps: Allow looking-up link caps based on speed and duplex")
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> Reviewed-by: Mina Almasry <almasrymina@google.com>
 > ---
->  drivers/net/phy/phy_caps.c | 15 +++++++++------
->  1 file changed, 9 insertions(+), 6 deletions(-)
+>   net/core/page_pool.c | 26 +++++++++++++-------------
+>   1 file changed, 13 insertions(+), 13 deletions(-)
 > 
-> diff --git a/drivers/net/phy/phy_caps.c b/drivers/net/phy/phy_caps.c
-> index 703321689726..d80f6a37edf1 100644
-> --- a/drivers/net/phy/phy_caps.c
-> +++ b/drivers/net/phy/phy_caps.c
-> @@ -195,7 +195,7 @@ const struct link_capabilities *
->  phy_caps_lookup(int speed, unsigned int duplex, const unsigned long *supported,
->  		bool exact)
->  {
-	> -	const struct link_capabilities *lcap, *last = NULL;
-> +	const struct link_capabilities *lcap, *match = NULL, *last = NULL;
->  
->  	for_each_link_caps_desc_speed(lcap) {
->  		if (linkmode_intersects(lcap->linkmodes, supported)) {
-> @@ -204,16 +204,19 @@ phy_caps_lookup(int speed, unsigned int duplex, const unsigned long *supported,
->  			if (lcap->speed == speed && lcap->duplex == duplex) {
->  				return lcap;
->  			} else if (!exact) {
-> -				if (lcap->speed <= speed)
-> -					return lcap;
-> +				if (!match && lcap->speed <= speed)
-> +					match = lcap;
-> +
-> +				if (lcap->speed < speed)
-> +					break;
->  			}
->  		}
->  	}
->  
-> -	if (!exact)
-> -		return last;
-> +	if (!match && !exact)
-> +		match = last;
+> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> index 4011eb305cee..523354f2db1c 100644
+> --- a/net/core/page_pool.c
+> +++ b/net/core/page_pool.c
+> @@ -518,29 +518,29 @@ static bool page_pool_dma_map(struct page_pool *pool, netmem_ref netmem, gfp_t g
+>   	return false;
+>   }
+>   
+> -static struct page *__page_pool_alloc_page_order(struct page_pool *pool,
+> -						 gfp_t gfp)
+> +static netmem_ref __page_pool_alloc_page_order(struct page_pool *pool,
+> +					       gfp_t gfp)
+>   {
+> -	struct page *page;
+> +	netmem_ref netmem;
+>   
+>   	gfp |= __GFP_COMP;
+> -	page = alloc_pages_node(pool->p.nid, gfp, pool->p.order);
+> -	if (unlikely(!page))
+> -		return NULL;
+> +	netmem = alloc_netmems_node(pool->p.nid, gfp, pool->p.order);
+> +	if (unlikely(!netmem))
+> +		return 0;
+>   
+> -	if (pool->dma_map && unlikely(!page_pool_dma_map(pool, page_to_netmem(page), gfp))) {
+> -		put_page(page);
+> -		return NULL;
+> +	if (pool->dma_map && unlikely(!page_pool_dma_map(pool, netmem, gfp))) {
+> +		put_netmem(netmem);
 
-If I read correctly, when user asks for half-duplex, this can still
-return a non exact matching full duplex cap, even when there is non
-exact matching half-duplex cap available.
+It's a bad idea to have {put,get}_netmem in page pool's code, it has a
+different semantics from what page pool expects for net_iov. I.e.
+instead of releasing the netmem and allowing it to be reallocated by
+page pool, put_netmem(niov) will drop a memory provider reference and
+leak the net_iov. Depending on implementation it might even underflow
+mp refs if a net_iov is ever passed here.
 
-I'm wondering if the latter would be preferable, or at least if the
-current behaviour should be explicitly called out in the function
-documentation.
+The second problem is that you pass it page_pool_dma_map(), which
+works only with struct page and not net_iov, and so it just
+unconditionally casts it back to struct page. Which, to be fair,
+a pre-existent issue.
 
-/P
+This function deals with pages, can we just use pages instead and
+cast to netmem when needed? Sth like in this pseudo code:
+
+netmem_ref __page_pool_alloc_page_order() {
+	struct page *p = alloc_pages_order();
+
+	netmem = page_to_netmem(p);
+	if (!page_pool_dma_map(netmem)) {
+		put_page(p);
+		return 0;
+	}
+	return netmem;
+}
+
+-- 
+Pavel Begunkov
 
