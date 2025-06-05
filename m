@@ -1,224 +1,101 @@
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDBB20B7FC
-	for <netdev@vger.kernel.org>; Thu,  5 Jun 2025 10:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095A91A2C25;
+	Thu,  5 Jun 2025 10:27:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749119156; cv=none; b=fVSQBaAneyT8qV5fnrQoH0GXmxwzTTkKtiaGrRWg9CfuKIYU4v76jx4hTPfVeM3x1n3j3W8E//jBFe1zDeJ379hslAR6BpeZY1NTrFKgC8X+fkDtESwJSTHxrCtukHWp2ovHPr7Lh5v3IzKqxamWB68xGcDctD8xrBaCuX8sVCs=
+	t=1749119241; cv=none; b=KxUdTw8zg0bqEPXRTTat+STR8h710eAVQBQnseuVJK9D0xHD9qqsZcnK/c72jOJRjg71p4bccYaBDYuBKW1IejpvtNgM80o3QgRhh8YNxihi8d2YO+LfQm1GAD4chMcJxL4C/yZfSSdx1NRReuorhQ2VFSjNyUw5FNdGVOz5kFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749119156; c=relaxed/simple;
-	bh=8FxoLj6LiBlq6MIoflJO6Wt9XFMOGnA1Ab7cJH+/6HY=;
+	s=arc-20240116; t=1749119241; c=relaxed/simple;
+	bh=T2RvDihfMsBhnDg7XgaOL8G2jtNVR2PNfbYnqzehYbg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CPT2TTtji5hdVQ8FPfPDcaPmTgF77CTFR8FdpYx/OY2mTsGRM6qB1ubwTXWOn/54DNn0YAojzBPl43DwtxP9CoT0ju4A3d7uZCB1iJ1ANQi39U938E8nqpE78xdaDFEZ2NKNNGcttAGz72DG4/Frmu3lReH21WJL/th3xOgew/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iAZCZFkT; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 In-Reply-To:Content-Type; b=MbcZmBRKZHVpOfOOnRzP/FNI4MSquKH1qk/JAOkOXwywIq2I62bJuCJgkbN+s0sqr1got7JMzF2STnFU5LW0c+CfI+tFdbsADg5H5QUgENB0uJoImNowarJe8rDEjeJ0FiuM6j2tz+jaNKJkVId/kxPzDp8Rlqp8/Sv/XHQC8Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FfGLdAW7; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iAZCZFkT"
-Message-ID: <584526c3-79f3-42f2-9c6e-4e55ad81b90c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1749119151;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KGvfcQK4SqoxUSANLaanDU9SMPl09zRLKA5RRmHvlfk=;
-	b=iAZCZFkTGX1328h7yh0mXXRrEM7+l/JrWmWr0P2HFBSVvGm9KFw86TJbjQTXtwcw0dzKZM
-	HuXOSaXQJB+T+x0mmpOxRMQLQynczV1Ps2tPjQ0/0UApzl9eVMwXuM1JxrGd1Ob44xA4cw
-	axG/XgzE73XTNHt/cmNPCRx3lPU7mc4=
-Date: Thu, 5 Jun 2025 11:25:48 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FfGLdAW7"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-addfe17ec0bso297779666b.1;
+        Thu, 05 Jun 2025 03:27:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749119235; x=1749724035; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6K6zVWh/fSOB26gnxsw1kPu/aC8aflRNQt65lkssL7Y=;
+        b=FfGLdAW7kgAA+UMqhhb227soITfdxvzVTex601JfgflfukBaGX3AwKi1KZzt7XYfk+
+         pLx3VM8EtCF2eudZrkbRuG8B5eQbe+4qQ4Q0Fn7FWVMZxf0Kg96SsGQEQwr0FMBxYszY
+         0JC43YsEG+vT84R4bnwE2LivVqcPsGv7W9+yrVEg3S9aqscSiMN7NFvC4LjUaBm9mOeD
+         aukmoFTAIYMK7DK6tmsTwxPp1HkwSVClZ4IWjqhf+EhI4e4lClivPQcLCcxLk4t2WO/3
+         JSptr8v8vds+I32VSVZYI5HyOw8qMSJkiEjalbzk5UM+ZaG/BDBAoaii0p6ny9yXF4aX
+         jHPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749119235; x=1749724035;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6K6zVWh/fSOB26gnxsw1kPu/aC8aflRNQt65lkssL7Y=;
+        b=cbl/HcboB2AbdmM1RpjxGb1FGpC9ouRYP+AQAKJSEZiDIWhjKzSCTq08QWy5pWw387
+         Xs6ftWO8QE2+1Fs6OaWb8n9GBuIkmAa2nKgvWm/7DKiWeVoUFe6KkOmRkBQzWF/J1ey8
+         Wrsg/8bgczr0aQRQ7aTxVQYXfh4gVoHhfA09fe0uZFw72DyT/6uc/+QT9k7Uz8uar4am
+         dfk40p45yfKfwlsd4iUHlsWpfkl8oe6qYYmTMAxGxPoXQBHhbXRBvlzqsAC+8E32f8Dm
+         F0iTC04RhsuhshTIo130+krCnGpIdwo4WOaPPelV5do0Ans2rtcPoYvKhru6WZaul8Ch
+         23DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU5HOYpvWQvlpEoGVQ6ZO+dBZP/4WWoY3l968sskfgNlvsFYUUNakZA5pYcCTI6ssnF8i4=@vger.kernel.org, AJvYcCVAFNhDZs6ys+4vmsoLOwL8WVXKdRKEguiXoumm3Qkrfs5iub6RFN582nCsBytk+uCng0j/0MI9FeooAg==@vger.kernel.org, AJvYcCWALENq39Twl44qrCEwuHRda2eodrvbRYyTcqXfXUYirrAngwdLu9llHadAqPEFQ7aaJvU4lyyd@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOxR98i0IgWIqBygyA59eyt73/CEDe40T9Kqx3YwyhIowM1Rwx
+	gUincjWmJKfRYGocoGtmHb1CmWuiNVUq0Eu1g7PlVdkiDRm0CHMsr1xJ
+X-Gm-Gg: ASbGncvDU6XRZzvHXw3oKDDEILdzUUULi5Pm1hT2IDZ8n6kymGFt9aePpKgjj64OpNl
+	E2vzrqq3gvBgx0XNzndFEAKC0s7jSXrGxIRluWr0Gck/PWAsVCeXpBAwej79H4mQqCJwByuCFZ+
+	II4f/LussO1gY493UoSIy1D5CAe1oFmn3MtGFI9UiqdRNepiw3xj2ooF/22KWvlHwvqB22mOy6d
+	pLG5n/Kms2liHgg7w1Mn7VIZo9E8INSXoF3A8RhlfWT07szGrUZ6nBsYp5650t2v7JhXusmyDwy
+	DaF327zg/d7UXHjYFZFaZcQFe6XRZvF2ML5SaiU+vwtLbV1xmCJ0C5hrHZ84zttp
+X-Google-Smtp-Source: AGHT+IGO8amneLjgex789Nk40DoxGq3hiObG1iea0WjWoUCm27zoS5Sxzso9fdzxau8K1h8g4FxM8A==
+X-Received: by 2002:a17:907:3e08:b0:ad8:ace9:e280 with SMTP id a640c23a62f3a-ade075bc502mr274245966b.5.1749119235159;
+        Thu, 05 Jun 2025 03:27:15 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::22f? ([2620:10d:c092:600::1:d66f])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ada5d84e75fsm1231639866b.81.2025.06.05.03.27.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Jun 2025 03:27:14 -0700 (PDT)
+Message-ID: <1a9757ea-b54c-4320-91eb-e875cf95f455@gmail.com>
+Date: Thu, 5 Jun 2025 11:28:33 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 5/5] io_uring/netcmd: add tx timestamping cmd support
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Pavel Begunkov <asml.silence@gmail.com>, io-uring@vger.kernel.org
-Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
- Kuniyuki Iwashima <kuniyu@amazon.com>, Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Richard Cochran <richardcochran@gmail.com>
-References: <cover.1749026421.git.asml.silence@gmail.com>
- <7b81bb73e639ecfadc1300264eb75e12c925ad76.1749026421.git.asml.silence@gmail.com>
- <6840ec0b351ee_1af4929492@willemb.c.googlers.com.notmuch>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v4 04/18] page_pool: rename __page_pool_alloc_page_order()
+ to __page_pool_alloc_netmem_order()
+To: Byungchul Park <byungchul@sk.com>, willy@infradead.org,
+ netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ kernel_team@skhynix.com, kuba@kernel.org, almasrymina@google.com,
+ ilias.apalodimas@linaro.org, harry.yoo@oracle.com, hawk@kernel.org,
+ akpm@linux-foundation.org, davem@davemloft.net, john.fastabend@gmail.com,
+ andrew+netdev@lunn.ch, toke@redhat.com, tariqt@nvidia.com,
+ edumazet@google.com, pabeni@redhat.com, saeedm@nvidia.com, leon@kernel.org,
+ ast@kernel.org, daniel@iogearbox.net, david@redhat.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
+ linux-rdma@vger.kernel.org, bpf@vger.kernel.org, vishal.moola@gmail.com
+References: <20250604025246.61616-1-byungchul@sk.com>
+ <20250604025246.61616-5-byungchul@sk.com>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <6840ec0b351ee_1af4929492@willemb.c.googlers.com.notmuch>
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20250604025246.61616-5-byungchul@sk.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 
-On 05/06/2025 01:59, Willem de Bruijn wrote:
-> Pavel Begunkov wrote:
->> Add a new socket command which returns tx time stamps to the user. It
->> provide an alternative to the existing error queue recvmsg interface.
->> The command works in a polled multishot mode, which means io_uring will
->> poll the socket and keep posting timestamps until the request is
->> cancelled or fails in any other way (e.g. with no space in the CQ). It
->> reuses the net infra and grabs timestamps from the socket's error queue.
->>
->> The command requires IORING_SETUP_CQE32. All non-final CQEs (marked with
->> IORING_CQE_F_MORE) have cqe->res set to the tskey, and the upper 16 bits
->> of cqe->flags keep tstype (i.e. offset by IORING_CQE_BUFFER_SHIFT). The
->> timevalue is store in the upper part of the extended CQE. The final
->> completion won't have IORING_CQR_F_MORE and will have cqe->res storing
->> 0/error.
->>
->> Suggested-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
->> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
->> ---
->>   include/uapi/linux/io_uring.h |  6 +++
->>   io_uring/cmd_net.c            | 77 +++++++++++++++++++++++++++++++++++
->>   2 files changed, 83 insertions(+)
->>
->> diff --git a/include/uapi/linux/io_uring.h b/include/uapi/linux/io_uring.h
->> index cfd17e382082..0bc156eb96d4 100644
->> --- a/include/uapi/linux/io_uring.h
->> +++ b/include/uapi/linux/io_uring.h
->> @@ -960,6 +960,11 @@ struct io_uring_recvmsg_out {
->>   	__u32 flags;
->>   };
->>   
->> +struct io_timespec {
->> +	__u64		tv_sec;
->> +	__u64		tv_nsec;
->> +};
->> +
->>   /*
->>    * Argument for IORING_OP_URING_CMD when file is a socket
->>    */
->> @@ -968,6 +973,7 @@ enum io_uring_socket_op {
->>   	SOCKET_URING_OP_SIOCOUTQ,
->>   	SOCKET_URING_OP_GETSOCKOPT,
->>   	SOCKET_URING_OP_SETSOCKOPT,
->> +	SOCKET_URING_OP_TX_TIMESTAMP,
->>   };
->>   
->>   /* Zero copy receive refill queue entry */
->> diff --git a/io_uring/cmd_net.c b/io_uring/cmd_net.c
->> index e99170c7d41a..dae59aea5847 100644
->> --- a/io_uring/cmd_net.c
->> +++ b/io_uring/cmd_net.c
->> @@ -1,5 +1,6 @@
->>   #include <asm/ioctls.h>
->>   #include <linux/io_uring/net.h>
->> +#include <linux/errqueue.h>
->>   #include <net/sock.h>
->>   
->>   #include "uring_cmd.h"
->> @@ -51,6 +52,80 @@ static inline int io_uring_cmd_setsockopt(struct socket *sock,
->>   				  optlen);
->>   }
->>   
->> +static bool io_process_timestamp_skb(struct io_uring_cmd *cmd, struct sock *sk,
->> +				     struct sk_buff *skb, unsigned issue_flags)
->> +{
->> +	struct sock_exterr_skb *serr = SKB_EXT_ERR(skb);
->> +	struct io_uring_cqe cqe[2];
->> +	struct io_timespec *iots;
->> +	struct timespec64 ts;
->> +	u32 tskey;
->> +
->> +	BUILD_BUG_ON(sizeof(struct io_uring_cqe) != sizeof(struct io_timespec));
->> +
->> +	if (!skb_get_tx_timestamp(skb, sk, &ts))
->> +		return false;
->> +
->> +	tskey = serr->ee.ee_data;
->> +
->> +	cqe->user_data = 0;
->> +	cqe->res = tskey;
->> +	cqe->flags = IORING_CQE_F_MORE;
->> +	cqe->flags |= (u32)serr->ee.ee_info << IORING_CQE_BUFFER_SHIFT;
->> +
->> +	iots = (struct io_timespec *)&cqe[1];
->> +	iots->tv_sec = ts.tv_sec;
->> +	iots->tv_nsec = ts.tv_nsec;
-> 
-> skb_get_tx_timestamp loses the information whether this is a
-> software or a hardware timestamp. Is that loss problematic?
-> 
-> If a process only requests one type of timestamp, it will not be.
-> 
-> But when requesting both (SOF_TIMESTAMPING_OPT_TX_SWHW) this per cqe
-> annotation may be necessary.
+On 6/4/25 03:52, Byungchul Park wrote:
+> Now that __page_pool_alloc_page_order() uses netmem alloc/put APIs, not
+> page alloc/put APIs, rename it to __page_pool_alloc_netmem_order() to
+> reflect what it does.
 
-skb_has_tx_timestamp() helper has clear priority of software timestamp,
-if enabled for the socket. Looks like SOF_TIMESTAMPING_OPT_TX_SWHW case
-won't produce both timestamps with the current implementation. Am I
-missing something?
+FWIW, I think the current name is better, the function allocates pages,
+even if it wraps them as netmems.
 
-> 
->> +	return io_uring_cmd_post_mshot_cqe32(cmd, issue_flags, cqe);
->> +}
->> +
->> +static int io_uring_cmd_timestamp(struct socket *sock,
->> +				  struct io_uring_cmd *cmd,
->> +				  unsigned int issue_flags)
->> +{
->> +	struct sock *sk = sock->sk;
->> +	struct sk_buff_head *q = &sk->sk_error_queue;
->> +	struct sk_buff *skb, *tmp;
->> +	struct sk_buff_head list;
->> +	int ret;
->> +
->> +	if (!(issue_flags & IO_URING_F_CQE32))
->> +		return -EINVAL;
->> +	ret = io_cmd_poll_multishot(cmd, issue_flags, EPOLLERR);
->> +	if (unlikely(ret))
->> +		return ret;
->> +
->> +	if (skb_queue_empty_lockless(q))
->> +		return -EAGAIN;
->> +	__skb_queue_head_init(&list);
->> +
->> +	scoped_guard(spinlock_irq, &q->lock) {
->> +		skb_queue_walk_safe(q, skb, tmp) {
->> +			/* don't support skbs with payload */
->> +			if (!skb_has_tx_timestamp(skb, sk) || skb->len)
->> +				continue;
->> +			__skb_unlink(skb, q);
->> +			__skb_queue_tail(&list, skb);
->> +		}
->> +	}
->> +
->> +	while (1) {
->> +		skb = skb_peek(&list);
->> +		if (!skb)
->> +			break;
->> +		if (!io_process_timestamp_skb(cmd, sk, skb, issue_flags))
->> +			break;
->> +		__skb_dequeue(&list);
->> +		consume_skb(skb);
->> +	}
->> +
->> +	if (!unlikely(skb_queue_empty(&list))) {
->> +		scoped_guard(spinlock_irqsave, &q->lock)
->> +			skb_queue_splice(q, &list);
->> +	}
->> +	return -EAGAIN;
->> +}
->> +
->>   int io_uring_cmd_sock(struct io_uring_cmd *cmd, unsigned int issue_flags)
->>   {
->>   	struct socket *sock = cmd->file->private_data;
->> @@ -76,6 +151,8 @@ int io_uring_cmd_sock(struct io_uring_cmd *cmd, unsigned int issue_flags)
->>   		return io_uring_cmd_getsockopt(sock, cmd, issue_flags);
->>   	case SOCKET_URING_OP_SETSOCKOPT:
->>   		return io_uring_cmd_setsockopt(sock, cmd, issue_flags);
->> +	case SOCKET_URING_OP_TX_TIMESTAMP:
->> +		return io_uring_cmd_timestamp(sock, cmd, issue_flags);
->>   	default:
->>   		return -EOPNOTSUPP;
->>   	}
->> -- 
->> 2.49.0
->>
-> 
-> 
+-- 
+Pavel Begunkov
 
