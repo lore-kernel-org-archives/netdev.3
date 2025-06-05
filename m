@@ -1,130 +1,79 @@
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CDE20B218
-	for <netdev@vger.kernel.org>; Thu,  5 Jun 2025 22:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E749817548
+	for <netdev@vger.kernel.org>; Thu,  5 Jun 2025 22:38:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749161996; cv=none; b=tYmdH89FawXNZtiawQyxa4BDKrZ+W/QTqXIBnlixYI9b+fweqBvhnuhq8X7Vf7Y8LLAPOLabfTxgW7lYXxEP8D1wgTjyz5v3S1n9wBf8uqk0C4P1J+EZdLToJ2TDbVVtZLCkogv3F67pJTxC+hE7irz5yL9BUVI1/4Kryu/8Vq8=
+	t=1749163142; cv=none; b=FNB9BpoDG+9xl5es47qkMlaWLApSlUZfLhmo80L2pLmatNd2KawGjKzPfB5gKDdtAtvgdmFxzdGrAGHB5Z67P1LiZCNMxXnhuVAy7OAnk5MCz2Jw/GG1pTj1hrJJyVPgTQtV6pOMeNynKTGA8ABj3gWGGyJUCu6WABeQP+IjKJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749161996; c=relaxed/simple;
-	bh=iXzpIhf5sIIBcB5CRBarQg9nLAlM1haiPq5gmJTlX3Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZqWX6N59PmhMviBYzF6A7DVl/AikN+xnWoyNkSqlLBD4Mb9U69yhdR78iq7BWA30CxKYvWq3bIKYjJuLIhfWmeoH5fcYCUSK/jDRGneTdNN99Oij0qpwF/Ch2Y9zVvquPdH+20y94z5LfuVHwkkPvJbuNV4XY8xd9UD3Zx2t8Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gLZrWFPL; arc=none smtp.client-ip=209.85.160.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749163142; c=relaxed/simple;
+	bh=7VLMthzocv9QzesE1xMTYQ+3ye6jNrPeKzX3YCh1e9w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g+v9dzxSWItlQUP+J0CkDp0ltDK+n1oOVNE8aVKVEh/FQ80cZtgd2WDIOtfqQzPL4kgLLozFnd5ZYg+WvqfSDILG1mN0GT97Fell1x2DuxUA4c1YGxO0wmq45e1IS5EAjR8hTE6wMcYvKXJxlWuko3UGnhEuw5+saHJ+sVit3Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=b+xeihlb; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gLZrWFPL"
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2e8ec65078eso1089207fac.0
-        for <netdev@vger.kernel.org>; Thu, 05 Jun 2025 15:19:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749161993; x=1749766793; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dqriqOLmXhav7QMryQGznfW6LiOPgFCIm9IOGP/jzP8=;
-        b=gLZrWFPLzIgf0nDHug6p2wI5zpXqlCQTW7kRAYBXZST2W4ZZAjHnKugtXVXr344me/
-         6n0S/cP50NlM2725SRrGwJYQIZTib93sTqnv6aYCpuGwV4E3Od3PswmCu/KWH3hWrTsO
-         +pBCRUuOKfHj3ZuebOiGM7+B4aOiOyQrTW7Zokejc2D8O0XvmWIv+iXgFFOlV/uMJJXm
-         cdd63GIL9C2+R9bBTNH1BMU7CXmDNz4cWBOILU8jCDYs0aTg6uPTvjJA6Q5AVz0T6t+j
-         StBT7NhmaAYzXwdiDq8xLF7v3MxfglW392r148OOp2UhGqmwxTnzkm2V4ofK9Ya6pd4+
-         39Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749161993; x=1749766793;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dqriqOLmXhav7QMryQGznfW6LiOPgFCIm9IOGP/jzP8=;
-        b=iu3L1vW8Rfn3rmVBmXjy4KE4l6UtV87q3AP9MW4QXlu7j/KB+aB9Fndu6E9ws4IwUO
-         jS0HxdF8zFkehv58cLv2bPaXpUq+6ePz/B6ryq52Ss6fIx6TeGuVL0ziEUGrNoWkWsFT
-         sgWzqhYin2/a83iNRmMwNeUwSR9nAabTDHwjfqN+vmlsde9odre+Nco8fyIXIqedwAwN
-         UZcCwsGC3uw7Tu0G0oFhvktBk6po0yBTm2G3kkkj5seDAYRGd4axUYC5op9MjdMnAqlr
-         bSN/ztX3W6UzYd4AhC7iHJGt+Vghp+njNIS/hEArY/Z5Zz9H3ZzNhFbQ0tbZorIPB2Sw
-         KZAA==
-X-Gm-Message-State: AOJu0YwU7TgOrrR3W+Dor/lwVVWmvQhx0LR0Ukjf3Aew+aDiovQr6b3A
-	/rhBVn74S2EuzM/XIb5WxiQpp/plHwkv6wro3sP3zbIShCkilsQ04othkR6K1Q==
-X-Gm-Gg: ASbGncsQQJdXMj0FiuZzi4WcJETD9uBhXL6qRXNO3hXYzDpEOw2tyeZpAM7OYugwvTp
-	JJf8njBB2PfZaslRA7xjYvs/8M+n3U4yS1j43TFiw0vY3Bj7uqiYS26uyzSwjlwqKLujDU6lwUY
-	RdbrQGwUWESQNUwM8eCsaCFXFDSCwwio6D35CMHbliS2XNudvJbBP2vfcqVAXgmv0Zid17eH4k4
-	H/uVeuCjyFPkjyHW5W1BHYFSB6KbGKptccpFR3FYrx1fUn88z0Zi83AqY9IcVl9lNL3y+bqmmBG
-	+eB6H+ytxVcF1DeYnEP6IeNil4MoN6Z3BbXa+7akIEJXpSnbvIxBddWM9SMpsd7wSS/Uv5I=
-X-Google-Smtp-Source: AGHT+IHHPFv6nrdYL9SWex1ao2p29TzJBG2IIrSKFmwAdBQwIY9W1lZVXFe4TN3VJ2Ai+tKstBnsvw==
-X-Received: by 2002:a05:6870:44c9:b0:2d5:714b:f661 with SMTP id 586e51a60fabf-2ea008777f9mr746299fac.12.1749161993184;
-        Thu, 05 Jun 2025 15:19:53 -0700 (PDT)
-Received: from localhost.localdomain ([2600:1700:fb0:1bcf:c121:baa8:78d3:f2cf])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ea07004806sm67728fac.7.2025.06.05.15.19.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Jun 2025 15:19:52 -0700 (PDT)
-From: Chris Morgan <macroalpha82@gmail.com>
-To: netdev@vger.kernel.org
-Cc: linux@armlinux.org.uk,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Chris Morgan <macromorgan@hotmail.com>
-Subject: [PATCH] net: sfp: add quirk for Potron SFP+ XGSPON ONU Stick
-Date: Thu,  5 Jun 2025 17:17:30 -0500
-Message-ID: <20250605221730.398665-1-macroalpha82@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="b+xeihlb"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=UuuvOlTAEUMd39bqca0XvxFyk0L15ywkAJHq3IS3CJo=; b=b+xeihlbE9zcKHQBgegoINhKaa
+	LGE4676BElLGZCdnkwgksIYkmMaHr/YFzz7BCcxtrJsxNl9pvSvaOIbG4wtDYIIX+CbTBhP0H7wRZ
+	zyLHEjGPGgAGs3LaoXlI3cbUqgqbicbRbAxUww4pYDMokHkBWewxMh8/a/KIfblhQI26uUtC/Eccc
+	iyyfpTwymKXR3M/axpMb2aihC+7jiC1SH82T/8cs+3HBEaGGq1tCQQptRqce07lJ9faN13sg7mq36
+	60XO5Z8MX5QgP1f89Y00kt3Bi18F6Qt4hAzFodvFiN96bXeX9mN0l32OgwH5VMrNOU1lxemmMBjpj
+	VFMH9zIQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58794)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1uNJEb-00009Q-1a;
+	Thu, 05 Jun 2025 23:38:53 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1uNJEW-0002Xg-1i;
+	Thu, 05 Jun 2025 23:38:48 +0100
+Date: Thu, 5 Jun 2025 23:38:48 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Chris Morgan <macroalpha82@gmail.com>
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, Chris Morgan <macromorgan@hotmail.com>
+Subject: Re: [PATCH] net: sfp: add quirk for Potron SFP+ XGSPON ONU Stick
+Message-ID: <aEIceGDOnLsEeoo_@shell.armlinux.org.uk>
+References: <20250605221730.398665-1-macroalpha82@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250605221730.398665-1-macroalpha82@gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-From: Chris Morgan <macromorgan@hotmail.com>
+On Thu, Jun 05, 2025 at 05:17:30PM -0500, Chris Morgan wrote:
+> +static void sfp_fixup_potron(struct sfp *sfp)
+> +{
+> +	/*
+> +	 * The TX_FAULT and LOS pins on this device are used for serial
+> +	 * communication, so ignore them. Additionally, provide extra
+> +	 * time for this device to fully start up.
+> +	 */
+> +
+> +	sfp_fixup_long_startup(sfp);
+> +	sfp->state_hw_mask &= ~(SFP_F_TX_FAULT | SFP_F_LOS);
 
-Add quirk for Potron SFP+ XGSPON ONU Stick (YV SFP+ONT-XGSPON).
+This should be calling sfp_fixup_ignore_tx_fault(), and possibly
+sfp_fixup_ignore_los() as well if the module also reports incorrect
+soft LOS state or doesn't support soft LOS state reporting.
 
-This device uses pins 2 and 7 for UART communication, so disable
-TX_FAULT and LOS. Additionally as it is an embedded system in an
-SFP+ form factor provide it enough time to fully boot before we
-attempt to use it.
-
-https://www.potrontec.com/index/index/list/cat_id/2.html#11-83
-https://pon.wiki/xgs-pon/ont/potron-technology/x-onu-sfpp/
-
-Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
----
- drivers/net/phy/sfp.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 347c1e0e94d9..b15eb60a0382 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -412,6 +412,18 @@ static void sfp_fixup_halny_gsfp(struct sfp *sfp)
- 	sfp->state_hw_mask &= ~(SFP_F_TX_FAULT | SFP_F_LOS);
- }
- 
-+static void sfp_fixup_potron(struct sfp *sfp)
-+{
-+	/*
-+	 * The TX_FAULT and LOS pins on this device are used for serial
-+	 * communication, so ignore them. Additionally, provide extra
-+	 * time for this device to fully start up.
-+	 */
-+
-+	sfp_fixup_long_startup(sfp);
-+	sfp->state_hw_mask &= ~(SFP_F_TX_FAULT | SFP_F_LOS);
-+}
-+
- static void sfp_fixup_rollball_cc(struct sfp *sfp)
- {
- 	sfp_fixup_rollball(sfp);
-@@ -512,6 +524,8 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	SFP_QUIRK_F("Walsun", "HXSX-ATRC-1", sfp_fixup_fs_10gt),
- 	SFP_QUIRK_F("Walsun", "HXSX-ATRI-1", sfp_fixup_fs_10gt),
- 
-+	SFP_QUIRK_F("YV", "SFP+ONU-XGSPON", sfp_fixup_potron),
-+
- 	// OEM SFP-GE-T is a 1000Base-T module with broken TX_FAULT indicator
- 	SFP_QUIRK_F("OEM", "SFP-GE-T", sfp_fixup_ignore_tx_fault),
- 
 -- 
-2.43.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
