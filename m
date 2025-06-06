@@ -1,36 +1,35 @@
-Received: from forward201d.mail.yandex.net (forward201d.mail.yandex.net [178.154.239.220])
+Received: from forward206b.mail.yandex.net (forward206b.mail.yandex.net [178.154.239.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5700283FE0
-	for <netdev@vger.kernel.org>; Fri,  6 Jun 2025 07:47:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC8324EABC
+	for <netdev@vger.kernel.org>; Fri,  6 Jun 2025 07:47:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749196047; cv=none; b=Oqar4jkSltOR368vZ+JIOFY5TJ/V+LUDazpU5hOjHkPBFwp1dF35uUxM9wVJQZx1wmJscnxyIHMttz+ySGHsAE4secYhHO1weOCxHGtTT13WURsOxZ9x3zlQ5yyjer2z2SqBVuqXh/gsxCLfS8/XqC6XpcfXevYnks2XPrD6NVQ=
+	t=1749196068; cv=none; b=tANAwpc7CyH7YA0s52uV1nDOcNTAMU5YVcBcfSaM1rPe0sW/Uyp4BJw41NQy2M+CXr2sR+9Hm8PUfGmLwfFI42JTnnD7sh7euyPZ2BOm6MB/9uqfoy0kZ66oosU8iAemafyrAVpquf3deUIDTJ6zvSJ8mlKIIdkz/z+kGXt0CpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749196047; c=relaxed/simple;
-	bh=0npsLd/6pFeEZup/Yh3eJaGZUNzviGnNc7rt69TQhiw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZNsRQFP80Z3KQyJ9OS5RmgqVfo3jknHQgzmyTUmXv7ZV43CNelchEDscufa5SAahPZGzGwaCbp/PcO4ZFwxo4WxZ5EEDsCQltsBZkjG99f0Swh9eS4RLtZUm6B1GA9zQLyrKWECpue/C//mDxGK+Bmd7HDiuHdCdylsqSykYmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=LpszYZbg; arc=none smtp.client-ip=178.154.239.220
+	s=arc-20240116; t=1749196068; c=relaxed/simple;
+	bh=OvapX4HQacQWD92oMRx3oG8iPYYITLHqOc2Uea8osUA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AAFxDi/n+MziwJhduFo/dXlfC6/oyn2TO3XNOpPP0GZxHedHt5OIG13Rlx67mB6BEA9i0N0cAa912fOsjXbOaOV2YtvLZOSbnMxJX2q4hju+hT5ut4mzv1McM+1tYOWTpIqTWA6171xa+3kORz809n/fVE0EdafMxKx/UtAWD/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=Wx8myK16; arc=none smtp.client-ip=178.154.239.151
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="LpszYZbg"
-Received: from forward101d.mail.yandex.net (forward101d.mail.yandex.net [IPv6:2a02:6b8:c41:1300:1:45:d181:d101])
-	by forward201d.mail.yandex.net (Yandex) with ESMTPS id 7C03A64A1D
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="Wx8myK16"
+Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d100])
+	by forward206b.mail.yandex.net (Yandex) with ESMTPS id 8C4CE6449C
 	for <netdev@vger.kernel.org>; Fri,  6 Jun 2025 10:41:16 +0300 (MSK)
 Received: from mail-nwsmtp-smtp-production-main-76.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-76.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:c122:0:640:3648:0])
-	by forward101d.mail.yandex.net (Yandex) with ESMTPS id 49CE560C13;
-	Fri,  6 Jun 2025 10:41:09 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-76.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 7fYNPgtLhiE0-dfj2Qw25;
-	Fri, 06 Jun 2025 10:41:08 +0300
+	by forward100b.mail.yandex.net (Yandex) with ESMTPS id 8669560AE7;
+	Fri,  6 Jun 2025 10:41:08 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-76.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 7fYNPgtLhiE0-ersqVpof;
+	Fri, 06 Jun 2025 10:41:07 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1749195668; bh=cSKubfbGT1GLAXRbLdQih6MQJBQ/UfRuwYW3g6Ku7yQ=;
-	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=LpszYZbgwmmnKnlMptTJiWtoqof/1ArtpD5L7sxkOLFmgk3ArW6Tu4sZafyR4j7zN
-	 pspAWk1FyHXC2Kr2dasor+W10Bgu/l33CjkkaBSMnVwwmUU7aGqQcVpK+4VD9Y4Huu
-	 sGRclTObAWoKBeyy+AkoQIKlC7+g3P/OUTfu48os=
+	t=1749195668; bh=0wEmroOvWMBIWLDeBD0L00+hat/6YvzauWs7GjtLPnQ=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=Wx8myK16xE2Nb/W62Gwp5RQv2Ja33SbxH4+oqkskHezO24lv4Woph5Xc1XTijP3Sq
+	 5wg0XAYRuKtQxvFRTBhu23ttr55yF2//dmd3zYZx6+NJ0F0ygCJwIxcS39F4u+XB6/
+	 dI9Y3UNP7tD+2GniW7woa22Ns2w9gHZYB6PIH2r0=
 Authentication-Results: mail-nwsmtp-smtp-production-main-76.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
 From: Dmitry Antipov <dmantipov@yandex.ru>
 To: Eric Dumazet <edumazet@google.com>,
@@ -39,12 +38,10 @@ To: Eric Dumazet <edumazet@google.com>,
 	Simon Horman <horms@kernel.org>
 Cc: netdev@vger.kernel.org,
 	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] netlink: avoid extra pskb_expand_head() in netlink_trim()
-Date: Fri,  6 Jun 2025 10:41:05 +0300
-Message-ID: <20250606074105.1382899-2-dmantipov@yandex.ru>
+Subject: [PATCH] net: core: avoid extra pskb_expand_head() when adjusting headroom
+Date: Fri,  6 Jun 2025 10:41:04 +0300
+Message-ID: <20250606074105.1382899-1-dmantipov@yandex.ru>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250606074105.1382899-1-dmantipov@yandex.ru>
-References: <20250606074105.1382899-1-dmantipov@yandex.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,37 +50,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When 'netlink_trim()' processes shared skb, using 'skb_clone()' with
-following 'pskb_expand_head()' looks suboptimal, and it's expected to
-be a bit faster to do 'skb_copy_expand()' with desired tailroom instead.
+In 'skb_realloc_headroom()' and 'skb_expand_head()', using 'skb_clone()'
+with following 'pskb_expand_head()' looks suboptimal, and it's expected to
+be a bit faster to do 'skb_copy_expand()' with desired headroom instead.
 
 Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
- net/netlink/af_netlink.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/core/skbuff.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index e8972a857e51..efb360433339 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1285,11 +1285,15 @@ static struct sk_buff *netlink_trim(struct sk_buff *skb, gfp_t allocation)
- 		return skb;
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 85fc82f72d26..3ed540cba5a3 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -2316,14 +2316,10 @@ struct sk_buff *skb_realloc_headroom(struct sk_buff *skb, unsigned int headroom)
  
- 	if (skb_shared(skb)) {
--		struct sk_buff *nskb = skb_clone(skb, allocation);
+ 	if (delta <= 0)
+ 		skb2 = pskb_copy(skb, GFP_ATOMIC);
+-	else {
+-		skb2 = skb_clone(skb, GFP_ATOMIC);
+-		if (skb2 && pskb_expand_head(skb2, SKB_DATA_ALIGN(delta), 0,
+-					     GFP_ATOMIC)) {
+-			kfree_skb(skb2);
+-			skb2 = NULL;
+-		}
+-	}
++	else
++		skb2 = skb_copy_expand(skb, (skb_headroom(skb) +
++					     SKB_DATA_ALIGN(delta)),
++				       0, GFP_ATOMIC);
+ 	return skb2;
+ }
+ EXPORT_SYMBOL(skb_realloc_headroom);
+@@ -2400,8 +2396,10 @@ struct sk_buff *skb_expand_head(struct sk_buff *skb, unsigned int headroom)
+ 	delta = SKB_DATA_ALIGN(delta);
+ 	/* pskb_expand_head() might crash, if skb is shared. */
+ 	if (skb_shared(skb) || !is_skb_wmem(skb)) {
+-		struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
 +		struct sk_buff *nskb;
-+
-+		nskb = skb_copy_expand(skb, skb_headroom(skb),
-+				       skb_tailroom(skb) - delta,
-+				       allocation);
- 		if (!nskb)
- 			return skb;
- 		consume_skb(skb);
--		skb = nskb;
-+		return nskb;
- 	}
  
- 	pskb_expand_head(skb, 0, -delta,
++		nskb = skb_copy_expand(skb, skb_headroom(skb) + delta,
++				       skb_tailroom(skb), GFP_ATOMIC);
+ 		if (unlikely(!nskb))
+ 			goto fail;
+ 
+@@ -2409,8 +2407,7 @@ struct sk_buff *skb_expand_head(struct sk_buff *skb, unsigned int headroom)
+ 			skb_set_owner_w(nskb, sk);
+ 		consume_skb(skb);
+ 		skb = nskb;
+-	}
+-	if (pskb_expand_head(skb, delta, 0, GFP_ATOMIC))
++	} else if (pskb_expand_head(skb, delta, 0, GFP_ATOMIC))
+ 		goto fail;
+ 
+ 	if (sk && is_skb_wmem(skb)) {
 -- 
 2.49.0
 
