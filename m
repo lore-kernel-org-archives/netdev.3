@@ -1,232 +1,138 @@
-Received: from va-2-48.ptr.blmpb.com (va-2-48.ptr.blmpb.com [209.127.231.48])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF262857FA
-	for <netdev@vger.kernel.org>; Fri,  6 Jun 2025 10:02:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B272F3234;
+	Fri,  6 Jun 2025 10:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749204162; cv=none; b=lmK0LAW5fZDXIh0ycb/TDdOA9evWaGczi5MnwO/fOP8xPN1c1LRsAEl7MfmHQmelcrU+2txLVwahFta7RA3nj98VfDfkX+sl1utCkbCq2I3XypnoozJc/quD+bPZO00vgxpxSFFd0dHzmDX+ZGMSP6ARcy0yeqDGJOUVESvRUKk=
+	t=1749205266; cv=none; b=Sgkg5cUFFCWrrsC0ePxZqGZvNuGBdghIai7AfTqgo5bZzFsiV5GaooU9Nc401rSIviUMnq2oF4/2rCr60vYmRuXwz05Qqv+w1V2nC5ABVeD5EfEF55dEyvDNJBHo227Lk3gCci+5a04xIwdne4Ax3kGtFXchau9qU0fKWFPEjks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749204162; c=relaxed/simple;
-	bh=cB3zsQ/CNsZAWssxqRUV0Vyfu4JHs07k8F5vj/zVQaI=;
-	h=To:Date:Message-Id:In-Reply-To:From:Content-Type:Cc:Mime-Version:
-	 References:Subject; b=iGWP+pagdYcHqqC5NaZge8OKEgz7hJ2jET6rOGH6THg+Vs9I0++2hTyYEFgJvSCfvK+xAxVvT0ezuYZmpHeOWTjKB3G11fJ93LLwqsnR9eR0oPEsPTHRSOWzOS8SXHUQX4/QUc+5VlNkTam3D/r1Xz9wPVsi4z7880b2SRzWkbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=NW3ASon7; arc=none smtp.client-ip=209.127.231.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
+	s=arc-20240116; t=1749205266; c=relaxed/simple;
+	bh=RYf1MBF85kqiyEh6o51lvUtQzZdCLOMiZPIb6M9TABA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qReRdw0RnsqsZ6KldT1bXYjzBYsLOmE0YIROEJXjlOcI7OlaOT6iJlP/+O3MvcJkIUvdf4o0TZa/na9z30e12lQ7CulRDfIaUTp9AbJMLIfzhHUAn7o36U6eiswxXjKDGQCpvzVW9hnrQCWX7hXuqeC49KSe/PktXskig1ZgAcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HGsNv4cu; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="NW3ASon7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1749204116; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=Ob7CZwFOseRDKkVP1bTFTiEkK1g23YF2MspH+CAzTJo=;
- b=NW3ASon7JIEN9UIyDfzX14gDzkHgpaDRJhVWU+X+0Dj2dpbsyPgrXmKbZJ1xNa2Pynk88r
- cdFlvvhQE1gE7g2W6lnfvQtDeW74EgKdTU2J670FlYUAdaKa9QIQ4u3PXZusCfVy8ORz/y
- h1h9mHQgv9PvVjUDuel7t9zzyC8o4ycufL6u48D+mTY4DHDzaaXvhZA/5cD5I/ceY1aB/R
- qemUFtaQNJG0B1RU3ShffuQ/R4KGkRTHCpRxxqPjoga4in78lhZHGyjrt6YAeEFDCkcodT
- UwcEwB1Jnex5fnRgTiAe1DFBT7J7vlRuBPRtez+axPdqeTmRu+TfLS+wrCBnWQ==
-To: <netdev@vger.kernel.org>
-Date: Fri, 06 Jun 2025 18:01:54 +0800
-Message-Id: <20250606100152.3272115-9-tianx@yunsilicon.com>
-X-Original-From: Xin Tian <tianx@yunsilicon.com>
-In-Reply-To: <20250606100132.3272115-1-tianx@yunsilicon.com>
-Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Fri, 06 Jun 2025 18:01:54 +0800
-From: "Xin Tian" <tianx@yunsilicon.com>
-Content-Type: text/plain; charset=UTF-8
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 7bit
-Cc: <leon@kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>, 
-	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
-	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
-	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <jacky@yunsilicon.com>, 
-	<horms@kernel.org>, <parthiban.veerasooran@microchip.com>, 
-	<masahiroy@kernel.org>, <kalesh-anakkur.purayil@broadcom.com>, 
-	<geert+renesas@glider.be>, <pabeni@redhat.com>, <geert@linux-m68k.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HGsNv4cu"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-606b6dbe316so3596423a12.3;
+        Fri, 06 Jun 2025 03:21:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749205263; x=1749810063; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MiiOBFHtT5ZtQA/f0RodEb62SyXtn3/Wda9R6Uedtxg=;
+        b=HGsNv4cuy4slWAFFNRswX5oa46IVYHmJ5lWJ9Y+l2b77OHVtwoF4odq33j3h/NXNE+
+         Xe89vtnGP6oJ70s4K3n34xzT7qy7+hyg1+CAt8BoTmGaB1cxEpVGWTGgbrVu4B+APF7Z
+         R0QyWxWHfPT+VPAQfjPu6gJxHuf5XGZZ43l+qlb2WJvPA4YCsAh2TjqaM7r7hJ5Stw+x
+         rJMK1x9vI0juuBmD2NpdjIiBXpu+m7/qJDaf3FoRRrJzz/axO+Ae7ZDc6KS9vt/G1Ft2
+         3a5m87iNg+CUUHF5tiNNdhQRyBSfNPbDPOdixRIOr+eut/PFR3SmEGx0itfD1VF+bDKw
+         lJww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749205263; x=1749810063;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MiiOBFHtT5ZtQA/f0RodEb62SyXtn3/Wda9R6Uedtxg=;
+        b=ep6Maz8A8C8PKWU2HJxmPOTLlcwKa10+XqrJex/oUa09aJYV/KajboJMNyX99Q6eza
+         fr7zrqC6x9Dgk9Tu65MLdDnJ4mqPCh7Bc5lG5uW5QpehorvvNBD4JmItr6GbHfahzKOj
+         z1F0indidQrF1Mdwn1vBMeprKveGlem4h+y5oz1ncm27lBjdUmqb+a3VRYoL/Fpp6B33
+         qdbgQ5z/w2IsE2kn3tmTRmf5yHLePA2J9KsvlVQXDr47tdXdRXI2YrbLYgYtFV5fihnH
+         Ofj0jKVIBdm3NZIG/picKJBxiksLGkB6uAgyr7py6IGAFHC9KIaawDBJ12LtNpQxP1Fc
+         dCJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXG+ITMQjvMgQSeOk906vra+0uOrlR3PajHwVgStA6rGBh3WcTIgGzYRxtIrEqjIaLD5v3ko3UZQLzIF3M=@vger.kernel.org, AJvYcCXVBug28ZHilqyjodO0rTsL9u4/QoARhhsIMh/CFOjCIHKQD2mOUm1dt4hCi4G3HJ3zFXRwG/M/@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkrEoTEbzL1umdIokwNO/qYBGx5gGuERwo6fSb7BeW8czU7qlQ
+	uSyV91O7amzPPfT4cOA5AQxQVXhER/Nwgyg/pVSElQG+jCp0GfQesoD0
+X-Gm-Gg: ASbGncu7q0TuQDab95EfE7H78UxyK3hJZ75oN6PuECpBXYpnzyxU71ZllaEZmSM6qLb
+	O0qgDFoCYXIzaMtZeo2QOC90pqBPRVlhrbJYiGYxv+zcKqXURJiVTzAw68i2quufv5JuVgn6lJ8
+	Y2/D6zj5G4KHNvcHtZpyJ+w8AU/eZ1ag64ixqsskFUNfe5NHF0pENHi2HP1X4WyWNwWr2Mg89Qv
+	WYw1EXDOpXxiy7p16syrgswRE7NG9IOXpAbloJDSON8rsYfoSwc1Ac88jttuBgxKddMMX7x5ND8
+	NmsZTnOWCjkr0olG/P1xkyxBEyBL+/Xpu+69D/J2do3MHKWnf4l+ompKCJb9L0h9KBQPlWQSHLc
+	=
+X-Google-Smtp-Source: AGHT+IEhapm1K8w4bky257wfwPuqvgCoQuQfxgO95l+/hUIeSvoPyiy84rQ6sHS7x6VE6POMwqilxg==
+X-Received: by 2002:a05:6402:1d4b:b0:606:f836:c666 with SMTP id 4fb4d7f45d1cf-60774a856bemr2463366a12.30.1749205262677;
+        Fri, 06 Jun 2025 03:21:02 -0700 (PDT)
+Received: from archlinux.ad.harman.com ([212.133.80.198])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-607783dd3c5sm809256a12.57.2025.06.06.03.21.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Jun 2025 03:21:02 -0700 (PDT)
+From: Bartlomiej Dziag <bartlomiejdziag@gmail.com>
+To: 
+Cc: bartlomiejdziag@gmail.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] net: stmmac: Change the busy-wait loops timing
+Date: Fri,  6 Jun 2025 12:19:49 +0200
+Message-ID: <20250606102100.12576-1-bartlomiejdziag@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250606100132.3272115-1-tianx@yunsilicon.com>
-Subject: [PATCH net-next v12 08/14] xsc: Add ethernet interface
-X-Lms-Return-Path: <lba+26842bc92+435310+vger.kernel.org+tianx@yunsilicon.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Implement an auxiliary driver for ethernet and initialize the
-netdevice simply.
+After writing a new value to the PTP_TAR or PTP_STSUR registers,
+the driver waits for the addend/adjust operations to complete.
+Sometimes, the first check operation fails, resulting in
+a 10 milliseconds busy-loop before performing the next check.
+Since updating the registers takes much less than 10 milliseconds,
+the kernel gets stuck unnecessarily. This may increase the CPU usage.
+Fix that with changing the busy-loop interval to 5 microseconds.
+The registers will be checked more often.
 
-Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
-Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
-Co-developed-by: Lei Yan <jacky@yunsilicon.com>
-Signed-off-by: Lei Yan <jacky@yunsilicon.com>
-Signed-off-by: Xin Tian <tianx@yunsilicon.com>
+Signed-off-by: Bartlomiej Dziag <bartlomiejdziag@gmail.com>
 ---
- drivers/net/ethernet/yunsilicon/Makefile      |  1 +
- .../net/ethernet/yunsilicon/xsc/net/main.c    | 98 +++++++++++++++++++
- .../net/ethernet/yunsilicon/xsc/net/xsc_eth.h | 16 +++
- .../yunsilicon/xsc/net/xsc_eth_common.h       | 15 +++
- 4 files changed, 130 insertions(+)
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/main.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
+ drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/yunsilicon/Makefile b/drivers/net/ethernet/yunsilicon/Makefile
-index 05aa35c3c..86e241b01 100644
---- a/drivers/net/ethernet/yunsilicon/Makefile
-+++ b/drivers/net/ethernet/yunsilicon/Makefile
-@@ -4,4 +4,5 @@
- # Makefile for the Yunsilicon device drivers.
- #
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
+index e2840fa241f2..f8e1278a1837 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
+@@ -144,11 +144,11 @@ static int config_addend(void __iomem *ioaddr, u32 addend)
+ 	writel(value, ioaddr + PTP_TCR);
  
-+obj-$(CONFIG_YUNSILICON_XSC_ETH) += xsc/net/
- obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc/pci/
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/main.c b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
-new file mode 100644
-index 000000000..f5e247864
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
-@@ -0,0 +1,98 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+
-+#include <linux/netdevice.h>
-+#include <linux/etherdevice.h>
-+#include <linux/auxiliary_bus.h>
-+
-+#include "common/xsc_core.h"
-+#include "xsc_eth_common.h"
-+#include "xsc_eth.h"
-+
-+static int xsc_get_max_num_channels(struct xsc_core_device *xdev)
-+{
-+	return min_t(int, xdev->dev_res->eq_table.num_comp_vectors,
-+		     XSC_ETH_MAX_NUM_CHANNELS);
-+}
-+
-+static int xsc_eth_probe(struct auxiliary_device *adev,
-+			 const struct auxiliary_device_id *adev_id)
-+{
-+	struct xsc_adev *xsc_adev = container_of(adev, struct xsc_adev, adev);
-+	struct xsc_core_device *xdev = xsc_adev->xdev;
-+	struct xsc_adapter *adapter;
-+	struct net_device *netdev;
-+	int num_chl, num_tc;
-+	int err;
-+
-+	num_chl = xsc_get_max_num_channels(xdev);
-+	num_tc = xdev->caps.max_tc;
-+
-+	netdev = alloc_etherdev_mqs(sizeof(struct xsc_adapter),
-+				    num_chl * num_tc, num_chl);
-+	if (!netdev) {
-+		pr_err("alloc_etherdev_mqs failed, txq=%d, rxq=%d\n",
-+		       (num_chl * num_tc), num_chl);
-+		return -ENOMEM;
-+	}
-+
-+	netdev->dev.parent = &xdev->pdev->dev;
-+	adapter = netdev_priv(netdev);
-+	adapter->netdev = netdev;
-+	adapter->pdev = xdev->pdev;
-+	adapter->dev = &adapter->pdev->dev;
-+	adapter->xdev = xdev;
-+	xdev->eth_priv = adapter;
-+
-+	err = register_netdev(netdev);
-+	if (err) {
-+		netdev_err(netdev, "register_netdev failed, err=%d\n", err);
-+		goto err_free_netdev;
-+	}
-+
-+	return 0;
-+
-+err_free_netdev:
-+	free_netdev(netdev);
-+
-+	return err;
-+}
-+
-+static void xsc_eth_remove(struct auxiliary_device *adev)
-+{
-+	struct xsc_adev *xsc_adev = container_of(adev, struct xsc_adev, adev);
-+	struct xsc_core_device *xdev = xsc_adev->xdev;
-+	struct xsc_adapter *adapter;
-+
-+	if (!xdev)
-+		return;
-+
-+	adapter = xdev->eth_priv;
-+	if (!adapter)
-+		return;
-+
-+	unregister_netdev(adapter->netdev);
-+
-+	free_netdev(adapter->netdev);
-+
-+	xdev->eth_priv = NULL;
-+}
-+
-+static const struct auxiliary_device_id xsc_eth_id_table[] = {
-+	{ .name = XSC_PCI_DRV_NAME "." XSC_ETH_ADEV_NAME },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(auxiliary, xsc_eth_id_table);
-+
-+static struct auxiliary_driver xsc_eth_driver = {
-+	.name = "eth",
-+	.probe = xsc_eth_probe,
-+	.remove = xsc_eth_remove,
-+	.id_table = xsc_eth_id_table,
-+};
-+module_auxiliary_driver(xsc_eth_driver);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("Yunsilicon XSC ethernet driver");
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
-new file mode 100644
-index 000000000..0c70c0d59
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+
-+#ifndef __XSC_ETH_H
-+#define __XSC_ETH_H
-+
-+struct xsc_adapter {
-+	struct net_device	*netdev;
-+	struct pci_dev		*pdev;
-+	struct device		*dev;
-+	struct xsc_core_device	*xdev;
-+};
-+
-+#endif /* __XSC_ETH_H */
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
-new file mode 100644
-index 000000000..b5640f05d
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+
-+#ifndef __XSC_ETH_COMMON_H
-+#define __XSC_ETH_COMMON_H
-+
-+#define XSC_LOG_INDIR_RQT_SIZE		0x8
-+
-+#define XSC_INDIR_RQT_SIZE		BIT(XSC_LOG_INDIR_RQT_SIZE)
-+#define XSC_ETH_MIN_NUM_CHANNELS	2
-+#define XSC_ETH_MAX_NUM_CHANNELS	XSC_INDIR_RQT_SIZE
-+
-+#endif
+ 	/* wait for present addend update to complete */
+-	limit = 10;
++	limit = 10000;
+ 	while (limit--) {
+ 		if (!(readl(ioaddr + PTP_TCR) & PTP_TCR_TSADDREG))
+ 			break;
+-		mdelay(10);
++		udelay(5);
+ 	}
+ 	if (limit < 0)
+ 		return -EBUSY;
+@@ -187,11 +187,11 @@ static int adjust_systime(void __iomem *ioaddr, u32 sec, u32 nsec,
+ 	writel(value, ioaddr + PTP_TCR);
+ 
+ 	/* wait for present system time adjust/update to complete */
+-	limit = 10;
++	limit = 10000;
+ 	while (limit--) {
+ 		if (!(readl(ioaddr + PTP_TCR) & PTP_TCR_TSUPDT))
+ 			break;
+-		mdelay(10);
++		udelay(5);
+ 	}
+ 	if (limit < 0)
+ 		return -EBUSY;
 -- 
-2.43.0
+2.49.0
+
