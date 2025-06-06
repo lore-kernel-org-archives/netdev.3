@@ -1,56 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E63288523
-	for <netdev@vger.kernel.org>; Fri,  6 Jun 2025 13:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B31B27FD5A;
+	Fri,  6 Jun 2025 13:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749216809; cv=none; b=rSa7VhhxQXF3yxQPh9VZN1Re1rjYOXcIlZm3TZ+ZudoJ2DjQxU4rMARdV0GOH64qIup4FoUKGta0c/fZ8+tRzqK6bzNnn/IgE1jPifANzN2iGgxkhPaGiEBsQzhnM3VRJUthWadUycGZnikV42WhLd1wCXLvQXTYgc/LRbr6kLQ=
+	t=1749217141; cv=none; b=okuciEbyt+5K/FBlIVIEBYYXbASJBdEqGUhsK7NbY3wuxOqo7rqfRytZb5plKVOvwzpErsoFeFxDBeh04+5rIxjqi6NtSyczCR34njOUMz21QplDc/bhgzORWQTiSthWzqd1ASc34Cm4k9Er97UckU/k2DAg668KNWLNQw9VwRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749216809; c=relaxed/simple;
-	bh=TOm4Hx37KXxANEelVuooBPoZIBg8bwf7Asd/HdeMkV8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TyTYlqqjlOUaS/9wkEpoLbdcxMkbdHDq4TmjB/WCUVumfsyKFNdQiKIIdiYFuShVakeY9L4tampw+jUV0neDyNtfnKAD7jz/DZAmjzc9XnKpYO/hxZjSWrPPovkusWg1I+MSnZJJ7mH85v8oAux6eVizdldZJStNxrvfjJBKha0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ox17lfIF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749217141; c=relaxed/simple;
+	bh=mdgDgqmHWYRMiJBeD5MRWizVMkY2pth50iG8rwuBYOo=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ol+VIMfRd+hXq9/5imDAvGpzAh4wM39XuE3xhJcLHzt0slQ9qDYZMyTxsxm0nNC4edK7Pk2NPRE7z8B0X979OwnHQNZEte3NW1m7Ezr4WJqvhJkbMIhLRNd4MBVhVB4V2llDPlVJguraTOcK1B/xj035R4JdP8ogXNxgauVRiHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=kX2stUGY; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ox17lfIF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F348CC4CEEB;
-	Fri,  6 Jun 2025 13:33:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749216809;
-	bh=TOm4Hx37KXxANEelVuooBPoZIBg8bwf7Asd/HdeMkV8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ox17lfIFtnOcWcQL5aKhUApI91x0oYHtW68sNuNXijuMayflY3PV3WLHTOPAuFDyE
-	 gE2HKGFRaw5xtBwG3xxG7VUKHxO5hpqeyOmjhQSkGlzWzQQ7uWONOrL2enbjRjpy1Z
-	 neNVO658UobzNSwI25+JAsMZDayIYfH53Wt3b3lFmHWDQDkvU1osKLXWu8QxTbcz/z
-	 WqL985c0uvSUrfufJzhBa/HJf+FymMWhRrfS+2g8hq2xARdTHgwGAk6hsiVxqD5r/7
-	 hUIHuZJxxyU6AfinkTRaLenEDtG+5TKqbjuxDGuh2NrNopIkaHcarcRWfKtjKNv4iC
-	 IXrPPjzAcOTdg==
-Date: Fri, 6 Jun 2025 06:33:27 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Donald Hunter <donald.hunter@gmail.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [ANN] pylint and shellcheck
-Message-ID: <20250606063327.186ee244@kernel.org>
-In-Reply-To: <m2tt4tt3wv.fsf@gmail.com>
-References: <20250603120639.3587f469@kernel.org>
-	<m2ldq7vo79.fsf@gmail.com>
-	<20250604164343.0b71d1ed@kernel.org>
-	<m24iwuv9wt.fsf@gmail.com>
-	<20250605072638.57c56f95@kernel.org>
-	<m2tt4tt3wv.fsf@gmail.com>
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="kX2stUGY"
+Message-ID: <49730b18-605f-4194-8f93-86f832f4b8f8@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1749217127;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1jhQpF+R0Z64uKurrBCjq0j+He4F0llIw3IZaku5tJQ=;
+	b=kX2stUGY573U2qg5ZI0N4pwIUvvKTudDnhgBPWBxxBfNPRZa04Z6CrkvK4PuxDlhqJ3LoC
+	Q9GTAM36hxbyZMg72yzNobP8Sz4rBd1z+kE8wvjSZxuCkBw/uDfwb0YIORVzLfgvb+Ogqq
+	q5AIMWU8zyzj/qGt9DJNU/u3whTPNEM=
+Date: Fri, 6 Jun 2025 16:39:45 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+From: Konstantin Andreev <andreev@swemel.ru>
+Subject: Re: [PATCH v2] security,fs,nfs,net: update
+ security_inode_listsecurity() interface
+To: linux-security-module@vger.kernel.org
+Cc: linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org,
+ selinux@vger.kernel.org, Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Christian Brauner <brauner@kernel.org>,
+ Casey Schaufler <casey@schaufler-ca.com>, Paul Moore <paul@paul-moore.com>
+References: <20250428195022.24587-2-stephen.smalley.work@gmail.com>
+Content-Language: en-US
+In-Reply-To: <20250428195022.24587-2-stephen.smalley.work@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 06 Jun 2025 13:38:46.0205 (UTC) FILETIME=[53AB3ED0:01DBD6E8]
 
-On Fri, 06 Jun 2025 14:06:56 +0100 Donald Hunter wrote:
-> I could have patches ready for the merge window opening. What's best, a
-> patch per type of error, or some other split?
+Stephen Smalley, 28/04/2025:
+> Update the security_inode_listsecurity() interface to allow
+> use of the xattr_list_one() helper and update the hook
+> implementations.
+> 
+> Link: https://lore.kernel.org/selinux/20250424152822.2719-1-stephen.smalley.work@gmail.com/
 
-Maybe, say, patch per error type for those that have > 2 hits,
-and for the less common ones.. improvise? :)
+Sorry for being late to the party.
+
+Your approach assumes that every fs-specific xattr lister
+called like
+
+| vfs_listxattr() {
+|    if (inode->i_op->listxattr)
+|        error = inode->i_op->listxattr(dentry, list, size)
+|   ...
+
+must call LSM to integrate LSM's xattr(s) into fs-specific list.
+You did this for tmpfs:
+
+| simple_xattr_list() {
+|   security_inode_listsecurity()
+|   // iterate real xatts list
+
+
+Well, but what about other filesystems in the linux kernel?
+Should all of them also modify their xattr listers?
+
+To me, taking care of security xattrs is improper responsibility
+for filesystem code.
+
+May it be better to merge LSM xattrs
+and fs-backed xattrs at the vfs level (vfs_listxattr)?
+
+--
+Konstantin Andreev
