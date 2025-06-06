@@ -1,87 +1,89 @@
-Received: from sg-1-11.ptr.blmpb.com (sg-1-11.ptr.blmpb.com [118.26.132.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward201d.mail.yandex.net (forward201d.mail.yandex.net [178.154.239.220])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E1D149C7B
-	for <netdev@vger.kernel.org>; Fri,  6 Jun 2025 07:24:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5700283FE0
+	for <netdev@vger.kernel.org>; Fri,  6 Jun 2025 07:47:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749194671; cv=none; b=eghlghkXxugUsostHVKDW7eQ4OBLRG/vs82nWIU6N01/JWNKFqtzUH+zL5cwhCj8a3xzbMUnSdWdDNXR2G84WJESr8ljF4f8uVl8/T0j0O52cjwWyobyUo5woaieTnA7Bzv+xDFE+cZ79dX38o535R7tRg21e39e0RdlgXlE7kE=
+	t=1749196047; cv=none; b=Oqar4jkSltOR368vZ+JIOFY5TJ/V+LUDazpU5hOjHkPBFwp1dF35uUxM9wVJQZx1wmJscnxyIHMttz+ySGHsAE4secYhHO1weOCxHGtTT13WURsOxZ9x3zlQ5yyjer2z2SqBVuqXh/gsxCLfS8/XqC6XpcfXevYnks2XPrD6NVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749194671; c=relaxed/simple;
-	bh=ccafHMnygaW6vo5XsqPyrNWgWL3f0MGNQum3uzNrE5g=;
-	h=In-Reply-To:References:To:Cc:Mime-Version:From:Subject:Date:
-	 Message-Id:Content-Type; b=e+5buqppCjDkgi2hYxxy7ionwZ5eFN2J++4cRFz9IkGiXd26rksS202xKXXhxzHi/J8pk2jl2zliS6rrUwcJY5PfEYOUYxc37lKtHgzsETyPO3d4Rp+cXMBbY1OdYS2OzB3ETaBs6rVRIj1zql1mmjwdM0YREasJ/+kUnZraIZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=FPhu2FQk; arc=none smtp.client-ip=118.26.132.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
+	s=arc-20240116; t=1749196047; c=relaxed/simple;
+	bh=0npsLd/6pFeEZup/Yh3eJaGZUNzviGnNc7rt69TQhiw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AZNsRQFP80Z3KQyJ9OS5RmgqVfo3jknHQgzmyTUmXv7ZV43CNelchEDscufa5SAahPZGzGwaCbp/PcO4ZFwxo4WxZ5EEDsCQltsBZkjG99f0Swh9eS4RLtZUm6B1GA9zQLyrKWECpue/C//mDxGK+Bmd7HDiuHdCdylsqSykYmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=LpszYZbg; arc=none smtp.client-ip=178.154.239.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="FPhu2FQk"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1749194661; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=G7QbOBFbxh5v/2LEN4d4Q6UgVXO16QJCvW2JiPdhBwI=;
- b=FPhu2FQkpQNZDrv7kbdW6TRGHmOt3RLPZxN+234wP6kFoNwoEAY8PCsq4paYl0Syk8GAet
- 7ViwiKuFHXCwB2vBDmhy7qpOkeVbF5Ys7OLPs86O5VXmwg5LTFIllgiLQBuIpv2P3cYeQJ
- ypBZwfqC/iDFUugO4V8rc+0Oy41eElxLTpWg13rpKSJoOvupu+lXT5DJhxyx/6d1V4oIiM
- ED6ojxxnyoCNByCYIXH9WlWmsJ8hDvY2VbePWCKhKoCe9VLhMCmZQEpcF7N6koiS7eI8Dj
- gXHddjw2oJshiw8AhbJNB5gkOlrV1t3H5mZklLSxGjwfihnEYYPdcot357bi4Q==
-In-Reply-To: <20250605065615.46e015eb@kernel.org>
-References: <20250423103923.2513425-1-tianx@yunsilicon.com> <20250423104000.2513425-15-tianx@yunsilicon.com> <20250424184840.064657da@kernel.org> <3fd3b7fc-b698-4cf3-9d43-4751bfb40646@yunsilicon.com> <20250605062855.019d4d2d@kernel.org> <CAMuHMdVMrFzeFUu+H0MvMmf82TDc=4qfM2kjcoUCXiOFLmutDA@mail.gmail.com> <20250605065615.46e015eb@kernel.org>
-To: "Jakub Kicinski" <kuba@kernel.org>, 
-	"Geert Uytterhoeven" <geert@linux-m68k.org>
-Cc: <netdev@vger.kernel.org>, <leon@kernel.org>, <andrew+netdev@lunn.ch>, 
-	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
-	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
-	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <jacky@yunsilicon.com>, 
-	<horms@kernel.org>, <parthiban.veerasooran@microchip.com>, 
-	<masahiroy@kernel.org>, <kalesh-anakkur.purayil@broadcom.com>, 
-	<geert+renesas@glider.be>
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="LpszYZbg"
+Received: from forward101d.mail.yandex.net (forward101d.mail.yandex.net [IPv6:2a02:6b8:c41:1300:1:45:d181:d101])
+	by forward201d.mail.yandex.net (Yandex) with ESMTPS id 7C03A64A1D
+	for <netdev@vger.kernel.org>; Fri,  6 Jun 2025 10:41:16 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-76.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-76.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:c122:0:640:3648:0])
+	by forward101d.mail.yandex.net (Yandex) with ESMTPS id 49CE560C13;
+	Fri,  6 Jun 2025 10:41:09 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-76.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 7fYNPgtLhiE0-dfj2Qw25;
+	Fri, 06 Jun 2025 10:41:08 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1749195668; bh=cSKubfbGT1GLAXRbLdQih6MQJBQ/UfRuwYW3g6Ku7yQ=;
+	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+	b=LpszYZbgwmmnKnlMptTJiWtoqof/1ArtpD5L7sxkOLFmgk3ArW6Tu4sZafyR4j7zN
+	 pspAWk1FyHXC2Kr2dasor+W10Bgu/l33CjkkaBSMnVwwmUU7aGqQcVpK+4VD9Y4Huu
+	 sGRclTObAWoKBeyy+AkoQIKlC7+g3P/OUTfu48os=
+Authentication-Results: mail-nwsmtp-smtp-production-main-76.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] netlink: avoid extra pskb_expand_head() in netlink_trim()
+Date: Fri,  6 Jun 2025 10:41:05 +0300
+Message-ID: <20250606074105.1382899-2-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250606074105.1382899-1-dmantipov@yandex.ru>
+References: <20250606074105.1382899-1-dmantipov@yandex.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-User-Agent: Mozilla Thunderbird
-X-Lms-Return-Path: <lba+2684297a3+965e35+vger.kernel.org+tianx@yunsilicon.com>
-Received: from [127.0.0.1] ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Fri, 06 Jun 2025 15:24:17 +0800
-From: "Xin Tian" <tianx@yunsilicon.com>
-Subject: Re: [PATCH net-next v11 14/14] xsc: add ndo_get_stats64
-Date: Fri, 6 Jun 2025 15:24:17 +0800
-Message-Id: <abe7daba-e636-4ab1-a79e-f451db5d56c4@yunsilicon.com>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=UTF-8
-X-Original-From: Xin Tian <tianx@yunsilicon.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On 2025/6/5 21:56, Jakub Kicinski wrote:
-> On Thu, 5 Jun 2025 15:39:54 +0200 Geert Uytterhoeven wrote:
->> On Thu, 5 Jun 2025 at 15:29, Jakub Kicinski <kuba@kernel.org> wrote:
->>> On Thu, 5 Jun 2025 15:25:21 +0800 Xin Tian wrote:
->>>> Regarding u64_stats_sync.h helpers:
->>>> Since our driver exclusively runs on 64-bit platforms (ARM64 or x86_64)
->>>> where u64 accesses are atomic, is it still necessary to use these helpers?
->>> alright.
->> [PATCH 1/14] indeed has:
->>
->>      depends on PCI
->>      depends on ARM64 || X86_64 || COMPILE_TEST
->>
->> However, if this device is available on a PCIe expansion card, it
->> could be plugged into any system with a PCIe expansion slot?
-> I've been trying to fight this fight but people keep pushing back :(
-> Barely any new PCIe driver comes up without depending on X86_64 and/or
-> ARM64. Maybe we should write down in the docs that it's okay to depend
-> on 64b but not okay to depend on specific arches?
->
-> Requiring 32b arch support for >= 100Gbps NICs feels a bit hard to
-> justify to me at this stage, but I'm happy to oblige if there are
-> reasons.
+When 'netlink_trim()' processes shared skb, using 'skb_clone()' with
+following 'pskb_expand_head()' looks suboptimal, and it's expected to
+be a bit faster to do 'skb_copy_expand()' with desired tailroom instead.
 
-All right, I'll moidfy the depend to:
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ net/netlink/af_netlink.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-     depends on PCI
-     depends on 64BIT || COMPILE_TEST
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index e8972a857e51..efb360433339 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1285,11 +1285,15 @@ static struct sk_buff *netlink_trim(struct sk_buff *skb, gfp_t allocation)
+ 		return skb;
+ 
+ 	if (skb_shared(skb)) {
+-		struct sk_buff *nskb = skb_clone(skb, allocation);
++		struct sk_buff *nskb;
++
++		nskb = skb_copy_expand(skb, skb_headroom(skb),
++				       skb_tailroom(skb) - delta,
++				       allocation);
+ 		if (!nskb)
+ 			return skb;
+ 		consume_skb(skb);
+-		skb = nskb;
++		return nskb;
+ 	}
+ 
+ 	pskb_expand_head(skb, 0, -delta,
+-- 
+2.49.0
 
-Thanks,
-Xin
