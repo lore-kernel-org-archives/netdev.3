@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4A0286D6F;
-	Fri,  6 Jun 2025 09:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8A2286D6F;
+	Fri,  6 Jun 2025 09:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749203133; cv=none; b=g2GwD80DkfaOuNA3GHD5OamJV4zGprOGElFgKioiia78+SUezVRTVcoIVBlVy3qc+IW94HioX9EVLTdYTVBCNfz2HJfu9OOmx4qdGtkHnhzvDquNMthck+cjNK4EmrXdC3TcC7RdYTap/1UAq3t8INSX21vi6R2jmd1/NX23u9M=
+	t=1749203135; cv=none; b=tf2tr5bhDiVdmVmNDP6g2FcA+lHlZ0p2y6ZduXgOgR3HVvo0VQ4wh5i79f6Med2dETWxxE+NfuZjN2oWmvnxOE3MjuIVSa4WEXeN38BxVu1+mxNF7gnMjrJklOL/cuRnhd8nncvUOm1tsd1F5xC6D8ibDWpj/yo+cZwOQrzIToo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749203133; c=relaxed/simple;
-	bh=nfvMium7Qutm7d3UFxXjKgjLOZC1eZF659y9t2Vgn3A=;
+	s=arc-20240116; t=1749203135; c=relaxed/simple;
+	bh=+Hv20eOe0UDj44R6YWbzlBAF2ORNht4ADstkukh9p9w=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hOJprhjExDw1QfgyqOdipfFLx4R0uS0XxopJFHKQNz4x6FHutLSo9ufQLQnmP3BYEuKmYHdKq0qs7pGDcqXIRZk/WYq6MgdKyag1ZYSPlJe1rMVQNvX7Zi//GXggaUF5+rchBua0UVpfJSIvXAjrQ5VxMn2fOouV26WnNHvgeVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Czxy8o/i; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=YXB2zZXEKEjjog1ElBf1aJQDoS9hN+Qbcho4CSZrib7c/SEQERQF9zssCd4/uAg4kcUNTyBDzqTqaGmaqBflvRG7QS6uhxDST57b3An7bS+VcmHWS/U5j0E9l4l479KK0Ga641Z80h5NyzxB4yJbjb3QWOxSCZWryyDZ1oS5E8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=umZI1rpO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Czxy8o/i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A15C4CEEF;
-	Fri,  6 Jun 2025 09:45:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="umZI1rpO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E74C4CEF3;
+	Fri,  6 Jun 2025 09:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749203130;
-	bh=nfvMium7Qutm7d3UFxXjKgjLOZC1eZF659y9t2Vgn3A=;
+	s=k20201202; t=1749203134;
+	bh=+Hv20eOe0UDj44R6YWbzlBAF2ORNht4ADstkukh9p9w=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Czxy8o/iPZLwxFkQvbzKf9KIvB/ns0X6rJEyq8xpD7uR4UYJyF+hdiZQbNqliMEFL
-	 smqATui7GQfkxFe1ZJHrXdpZaJrJw5wFj56hww6RXqwgwnMNet/7Wa01Sb2huKB2J0
-	 S2p/mlEDpwWTyDJOToZVBHqdKjLCApGzgwX3hDEQ4gOXuUL7sKoIBCDCAMIv+1fW8S
-	 71Co6A8bBfOOrL+tD5R5DgOmL3YEuT/I2z/ZTOgSqtx4816gD3uMXzNqbaAeDUCAiQ
-	 G7O8dptQlcPKubVYklCXBrHP8rLpp5eA12JF0vZGcZR4qvXNJYVN2ZDL/cpfNvIEsl
-	 qSeQ8puA/Nxxg==
+	b=umZI1rpOk8O8ifT0Wm37KFXVg+OabiGGD+IzL3Nj8RCK/H+1DgcqC5o/Kl8bkXpot
+	 jj/y6ie17B3QLtYorvDVpVmaXzc22UFBumv7YtJmCKm3ukFWKMQvjjjOMSskTXuqA2
+	 o5HE4So9t6KfGdJTlqKPyQhFfzHdGp96vUW0brYrsNlOcHdg2VRxk7MpMDXBVUTa25
+	 6ffsfLl3GYNdpYh0Qvf27cxA1iXcr01yJtAbxad8oCFFxwHTX+FXbbXeQiLutvFPWa
+	 +yljRlCVWclPK3r1Iy1gzmyjdAAbMLVWT7Qd0RalvwsTzADnS/PThlVgbWm7Ew5juD
+	 vRc8GOgNRyUUg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 06 Jun 2025 11:45:07 +0200
-Subject: [PATCH 1/3] nsfs: move root inode number to uapi
+Date: Fri, 06 Jun 2025 11:45:09 +0200
+Subject: [PATCH 3/3] mntns: use stable inode number for initial mount ns
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250606-work-nsfs-v1-1-b8749c9a8844@kernel.org>
+Message-Id: <20250606-work-nsfs-v1-3-b8749c9a8844@kernel.org>
 References: <20250606-work-nsfs-v1-0-b8749c9a8844@kernel.org>
 In-Reply-To: <20250606-work-nsfs-v1-0-b8749c9a8844@kernel.org>
 To: linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org
@@ -45,74 +45,68 @@ Cc: "David S. Miller" <davem@davemloft.net>,
  Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
  Christian Brauner <brauner@kernel.org>
 X-Mailer: b4 0.15-dev-6f78e
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2048; i=brauner@kernel.org;
- h=from:subject:message-id; bh=nfvMium7Qutm7d3UFxXjKgjLOZC1eZF659y9t2Vgn3A=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ47dh+1/LuifMWwj09t4oYT53s5hBamb9olVns/Mw/l
- baLd2836ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZgI2z2G/8HbK3J7vBP9Yhx4
- rnIvU/px3Hzicd59i5Z8lJNTOJ95KZ2RofGF38/yK5/mmL7338Loa5TfGb6u8no835GAlGlmL2I
- msAIA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1913; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=+Hv20eOe0UDj44R6YWbzlBAF2ORNht4ADstkukh9p9w=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ47dje2MA5QfW0SmjxUe2EOTrpHVtn+f0SO2zOq8R55
+ rzF58/CHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNZ3szwP6spUnFu0gsBaclX
+ Xl2bnlYyf7IuP8X+6mSV/o8Py9d0fGX4Z+Yk8cbCV/3eZNsld0IWvtk/xUFcZ7GjnnebzimRBbG
+ yXAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-Userspace relies on the root inode numbers to identify the initial
-namespaces. That's already a hard dependency. So we cannot change that
-anymore. Move the initial inode numbers to a public header.
+Apart from the network and mount namespace all other namespaces expose a
+stable inode number and userspace has been relying on that for a very
+long time now. It's very much heavily used API. Align the mount
+namespace and use a stable inode number from the reserved procfs inode
+number space so this is consistent across all namespaces.
 
-Link: https://github.com/systemd/systemd/commit/d293fade24b34ccc2f5716b0ff5513e9533cf0c4
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 ---
- include/linux/proc_ns.h   | 13 +++++++------
- include/uapi/linux/nsfs.h |  9 +++++++++
- 2 files changed, 16 insertions(+), 6 deletions(-)
+ fs/namespace.c            | 4 +++-
+ include/linux/proc_ns.h   | 1 +
+ include/uapi/linux/nsfs.h | 1 +
+ 3 files changed, 5 insertions(+), 1 deletion(-)
 
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 2f2e93927f46..1829ab9a0a52 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -6174,9 +6174,11 @@ static void __init init_mount_tree(void)
+ 	if (IS_ERR(mnt))
+ 		panic("Can't create rootfs");
+ 
+-	ns = alloc_mnt_ns(&init_user_ns, false);
++	ns = alloc_mnt_ns(&init_user_ns, true);
+ 	if (IS_ERR(ns))
+ 		panic("Can't allocate initial namespace");
++	ns->seq = atomic64_inc_return(&mnt_ns_seq);
++	ns->ns.inum = PROC_MNT_INIT_INO;
+ 	m = real_mount(mnt);
+ 	ns->root = m;
+ 	ns->nr_mounts = 1;
 diff --git a/include/linux/proc_ns.h b/include/linux/proc_ns.h
-index 5ea470eb4d76..e77a37b23ca7 100644
+index 3ff0bd381704..6258455e49a4 100644
 --- a/include/linux/proc_ns.h
 +++ b/include/linux/proc_ns.h
-@@ -6,6 +6,7 @@
- #define _LINUX_PROC_NS_H
- 
- #include <linux/ns_common.h>
-+#include <uapi/linux/nsfs.h>
- 
- struct pid_namespace;
- struct nsset;
-@@ -40,12 +41,12 @@ extern const struct proc_ns_operations timens_for_children_operations;
-  */
- enum {
- 	PROC_ROOT_INO		= 1,
--	PROC_IPC_INIT_INO	= 0xEFFFFFFFU,
--	PROC_UTS_INIT_INO	= 0xEFFFFFFEU,
--	PROC_USER_INIT_INO	= 0xEFFFFFFDU,
--	PROC_PID_INIT_INO	= 0xEFFFFFFCU,
--	PROC_CGROUP_INIT_INO	= 0xEFFFFFFBU,
--	PROC_TIME_INIT_INO	= 0xEFFFFFFAU,
-+	PROC_IPC_INIT_INO	= IPC_NS_INIT_INO,
-+	PROC_UTS_INIT_INO	= UTS_NS_INIT_INO,
-+	PROC_USER_INIT_INO	= USER_NS_INIT_INO,
-+	PROC_PID_INIT_INO	= PID_NS_INIT_INO,
-+	PROC_CGROUP_INIT_INO	= CGROUP_NS_INIT_INO,
-+	PROC_TIME_INIT_INO	= TIME_NS_INIT_INO,
+@@ -48,6 +48,7 @@ enum {
+ 	PROC_CGROUP_INIT_INO	= CGROUP_NS_INIT_INO,
+ 	PROC_TIME_INIT_INO	= TIME_NS_INIT_INO,
+ 	PROC_NET_INIT_INO	= NET_NS_INIT_INO,
++	PROC_MNT_INIT_INO	= MNT_NS_INIT_INO,
  };
  
  #ifdef CONFIG_PROC_FS
 diff --git a/include/uapi/linux/nsfs.h b/include/uapi/linux/nsfs.h
-index 34127653fd00..6683e7ca3996 100644
+index 393778489d85..97d8d80d139f 100644
 --- a/include/uapi/linux/nsfs.h
 +++ b/include/uapi/linux/nsfs.h
-@@ -42,4 +42,13 @@ struct mnt_ns_info {
- /* Get previous namespace. */
- #define NS_MNT_GET_PREV		_IOR(NSIO, 12, struct mnt_ns_info)
+@@ -50,6 +50,7 @@ enum init_ns_ino {
+ 	CGROUP_NS_INIT_INO	= 0xEFFFFFFBU,
+ 	TIME_NS_INIT_INO	= 0xEFFFFFFAU,
+ 	NET_NS_INIT_INO		= 0xEFFFFFF9U,
++	MNT_NS_INIT_INO		= 0xEFFFFFF8U,
+ };
  
-+enum init_ns_ino {
-+	IPC_NS_INIT_INO		= 0xEFFFFFFFU,
-+	UTS_NS_INIT_INO		= 0xEFFFFFFEU,
-+	USER_NS_INIT_INO	= 0xEFFFFFFDU,
-+	PID_NS_INIT_INO		= 0xEFFFFFFCU,
-+	CGROUP_NS_INIT_INO	= 0xEFFFFFFBU,
-+	TIME_NS_INIT_INO	= 0xEFFFFFFAU,
-+};
-+
  #endif /* __LINUX_NSFS_H */
 
 -- 
