@@ -1,37 +1,37 @@
 Received: from va-2-52.ptr.blmpb.com (va-2-52.ptr.blmpb.com [209.127.231.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F5A2857EF
-	for <netdev@vger.kernel.org>; Fri,  6 Jun 2025 09:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C1E2868AA
+	for <netdev@vger.kernel.org>; Fri,  6 Jun 2025 09:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749203143; cv=none; b=jnHAI7TFaRmaMUAR4ALBKP/1oaW9vLrnlHvkct2TkHxlv49dVtmb3BwGLYm8GHp0PPNh2IzyF6OtRP5/uOYrYzr3gTewCZPqEDoW0NM1n1wQl3Tr6bAmxckem2Acq54qfi5Wv7vtpOjXylVSYi32ELL/cuGGek1otjRGpmjIvWU=
+	t=1749203162; cv=none; b=tJjRwMNymKitJQW9DNtsKn8UeVFyCIunjLwncXQq6LkFC7YLBtrdBdv+qLEPqnerCtCCZvpqcqk0ftyM9GPFNd+hm1BQlY5k83Qa8eiZshvcP6DEgevinGjRahyLEA5gyf4Lq5+1Fq8fNpzCLtrwdptpzBz5Fxs2fZbSdTGdIkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749203143; c=relaxed/simple;
-	bh=YTcsACKsziWbLNTXnYt5JlZ2vHbi7XLKtthVhTtEiBY=;
-	h=References:To:From:Content-Type:Cc:Subject:Mime-Version:
-	 In-Reply-To:Date:Message-Id; b=TzZ85qQmhjaBmG3JieGlu9zdeNQAR3y8RRVIju+mThEflWIrDoLMh0mRL//Xl71DQerjhKq0O1wW0X+bt2B/6R+PT4AZ6stpxkFReTDt1hfiQhFPnO5wmjaiG9XBpxcfuTVNB+V+10SNdjt8FdxvwBRSBU/CPn+pEf2H8tUCVww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=bFFulR97; arc=none smtp.client-ip=209.127.231.52
+	s=arc-20240116; t=1749203162; c=relaxed/simple;
+	bh=fS6Zp/w7Jsfw+T4AguSL95o5ADEeqiIJhPdxF95sOqo=;
+	h=To:Message-Id:In-Reply-To:From:Content-Type:Cc:Subject:
+	 Mime-Version:References:Date; b=FHnmeslQCN4xocCDLCfjZCN1sUkx8G6X2WHfN6ZdOhoQ7Dv7otP11Dx5u5b7TgG5c3Dus7Tmwg8+72avmlbsER9eEJ5Poj7DQeFcwPLEMF9wM6Bas1xbwoPOuymNHuG8DbTBQ7lS/2tB5rL2RWlx253xQDolah9wgvFnmv0fFEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=ZKugUKsr; arc=none smtp.client-ip=209.127.231.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="bFFulR97"
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="ZKugUKsr"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1749203092; h=from:subject:
+ s=feishu2403070942; d=yunsilicon.com; t=1749203116; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=dx/E1gQkE0Q1ktPbN9vAafPf2tD+R/AQesWO/SXSHMg=;
- b=bFFulR978+dyHvS3JBw73Tyj5zD5PBWOX22Sp+gdMaQk5ry0MAI6EOZi/m/kY37FUWd4Mb
- DR8MXjPaay58vqF/h2QR/1FXpEr97QdMJBhpDvr5nAfJSQQsDnobZTVWbRh1ZpH5X8kmhx
- /QpoPnVd40QaCmDK7IduX+OZzpayfWg6ZJSzFYTais8MCjcYyl5jOoV3iumKPL3h2WNhK/
- Xul3QKYl2fkWF+50cSap2WkSvmN+FOfiefxzNzRqxml+D++80KLl4D8VpFrGjYG/QTqUAQ
- /qHSj2tGkeB06OOiPr8S+D5tmamIlt9Hehj8M86h862thdYqpulpo3clDd4AXQ==
-References: <20250606094437.3271886-1-tianx@yunsilicon.com>
-Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Fri, 06 Jun 2025 17:44:49 +0800
+ bh=v6+xyXXwJTxjUjmqz5IL9vge1O7FBDj0sZrruthdlt8=;
+ b=ZKugUKsrdhOJ4EiJaD4Czngqx8WoyvrmnYdvjBXF5UZQWPnhrJMKCG+cGNBnl1h0lR8wE6
+ DDx/qvhFE37nnxV/HL6JqBJOQSv34gfXmfHwBSAmXqQeephAZIfXLqUovZ0uqPlvBRLHk3
+ EkxdldCbZHWs+ulStluIYZGA99h5iHi4sSQOJcoCofayW78bq/WOczywhZ1J2B/1Jlsmd9
+ 3gPXwOhHuLj+r31zyh4z7jqDA0bkc9ZCxWmk+s7Q0ajVezUuaYOpvirQKdnOGPyh7TZ4jG
+ vEoYh7Uhcl+2ANngsmwiz3gI2hYSrSa2ZqZFzcYw6yKiMq3FCCswRNdI5qJGAQ==
 To: <netdev@vger.kernel.org>
+Message-Id: <20250606094511.3271886-14-tianx@yunsilicon.com>
+In-Reply-To: <20250606094437.3271886-1-tianx@yunsilicon.com>
+X-Mailer: git-send-email 2.25.1
 From: "Xin Tian" <tianx@yunsilicon.com>
 Content-Type: text/plain; charset=UTF-8
-X-Mailer: git-send-email 2.25.1
 Cc: <leon@kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>, 
 	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
 	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
@@ -39,36 +39,34 @@ Cc: <leon@kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>,
 	<horms@kernel.org>, <parthiban.veerasooran@microchip.com>, 
 	<masahiroy@kernel.org>, <kalesh-anakkur.purayil@broadcom.com>, 
 	<geert+renesas@glider.be>, <pabeni@redhat.com>, <geert@linux-m68k.org>
-Subject: [PATCH net-next v12 05/14] xsc: Add eq and alloc
+Subject: [PATCH net-next v12 13/14] xsc: Add eth reception data path
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-Lms-Return-Path: <lba+26842b892+716035+vger.kernel.org+tianx@yunsilicon.com>
-In-Reply-To: <20250606094437.3271886-1-tianx@yunsilicon.com>
+References: <20250606094437.3271886-1-tianx@yunsilicon.com>
 X-Original-From: Xin Tian <tianx@yunsilicon.com>
 Content-Transfer-Encoding: 7bit
-Date: Fri, 06 Jun 2025 17:44:49 +0800
-Message-Id: <20250606094448.3271886-6-tianx@yunsilicon.com>
+Date: Fri, 06 Jun 2025 17:45:13 +0800
+X-Lms-Return-Path: <lba+26842b8aa+771367+vger.kernel.org+tianx@yunsilicon.com>
+Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Fri, 06 Jun 2025 17:45:13 +0800
 
-Add eq management and buffer alloc apis
-
-This patch, along with the next one, implements the event handling
-mechanism. The hardware uses the event queue (EQ) for event
-reporting, notifying the CPU through interrupts, which then
-reads and processes events from the EQ.
-
-1. This patch implements the EQ API, including the initialization
-of the EQ table, and the creation/destroy, start/stop operations
-of the EQ.
-
-2. When creating an event queue, a large amount of DMA memory is
-required to store the ring buffer, necessitating multiple DMA page
-allocations and unified management. For this purpose, we define
-struct xsc_buff and use xsc_buf_alloc/free to allocate and free
-memory. The usage of QP and CQ will also rely on these in the future.
+rx data path:
+1. The hardware writes incoming packets into the RQ ring buffer and
+generates a event queue entry
+2. The event handler function(xsc_eth_completion_event in
+xsc_eth_events.c) is triggered, invokes napi_schedule() to schedule
+a softirq.
+3. The kernel triggers the softirq handler net_rx_action, which calls
+the driver's NAPI poll function (xsc_eth_napi_poll in xsc_eth_txrx.c).
+The driver retrieves CQEs from the Completion Queue (CQ) via
+xsc_poll_rx_cq.
+4. xsc_eth_build_rx_skb constructs an sk_buff structure, and submits the
+SKB to the kernel network stack via napi_gro_receive
+5. The driver recycles the RX buffer and notifies the NIC via
+xsc_eth_post_rx_wqes to prepare for new packets.
 
 Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
 Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
@@ -76,689 +74,698 @@ Co-developed-by: Lei Yan <jacky@yunsilicon.com>
 Signed-off-by: Lei Yan <jacky@yunsilicon.com>
 Signed-off-by: Xin Tian <tianx@yunsilicon.com>
 ---
- .../ethernet/yunsilicon/xsc/common/xsc_core.h |  38 ++
- .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   3 +-
- .../net/ethernet/yunsilicon/xsc/pci/alloc.c   | 130 +++++++
- .../net/ethernet/yunsilicon/xsc/pci/alloc.h   |  17 +
- drivers/net/ethernet/yunsilicon/xsc/pci/eq.c  | 328 ++++++++++++++++++
- drivers/net/ethernet/yunsilicon/xsc/pci/eq.h  |  46 +++
- .../net/ethernet/yunsilicon/xsc/pci/main.c    |   2 +
- 7 files changed, 562 insertions(+), 2 deletions(-)
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/alloc.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/alloc.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/eq.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/eq.h
+ .../yunsilicon/xsc/net/xsc_eth_common.h       |  10 +
+ .../ethernet/yunsilicon/xsc/net/xsc_eth_rx.c  | 527 +++++++++++++++++-
+ .../yunsilicon/xsc/net/xsc_eth_txrx.c         |  13 +
+ .../yunsilicon/xsc/net/xsc_eth_txrx.h         |   1 +
+ .../ethernet/yunsilicon/xsc/net/xsc_queue.h   |  19 +-
+ 5 files changed, 547 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
-index db4b75afa..78a77c708 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
-+++ b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
-@@ -27,12 +27,20 @@
- #define XSC_MV_HOST_VF_DEV_ID		0x1152
- #define XSC_MV_SOC_PF_DEV_ID		0x1153
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
+index 4f47dac5c..41abe3d3c 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
+@@ -22,6 +22,8 @@
+ #define XSC_SW2HW_RX_PKT_LEN(mtu)	\
+ 	((mtu) + ETH_HLEN + XSC_ETH_RX_MAX_HEAD_ROOM)
  
-+#define PAGE_SHIFT_4K			12
-+#define PAGE_SIZE_4K			(_AC(1, UL) << PAGE_SHIFT_4K)
-+#define PAGE_MASK_4K			(~(PAGE_SIZE_4K - 1))
++#define XSC_RX_MAX_HEAD			(256)
 +
- #define XSC_REG_ADDR(dev, offset)	(((dev)->bar) + ((offset) - 0xA0000000))
+ #define XSC_QPN_SQN_STUB		1025
+ #define XSC_QPN_RQN_STUB		1024
  
- enum {
- 	XSC_MAX_EQ_NAME	= 20
+@@ -186,4 +188,12 @@ union xsc_send_doorbell {
+ 	u32 send_data;
  };
  
-+enum {
-+	XSC_MAX_IRQ_NAME	= 32
++union xsc_recv_doorbell {
++	struct{
++		s32  next_pid : 13;
++		u32 qp_num : 15;
++	};
++	u32 recv_data;
 +};
-+
- enum {
- 	XSC_MAX_PORTS	= 2,
- };
-@@ -166,6 +174,7 @@ struct xsc_cq_table {
- 	struct radix_tree_root	tree;
- };
- 
-+/* eq */
- struct xsc_eq {
- 	struct xsc_core_device	*dev;
- 	struct xsc_cq_table	cq_table;
-@@ -182,6 +191,25 @@ struct xsc_eq {
- 	u16			index;
- };
- 
-+struct xsc_eq_table {
-+	void __iomem		*update_ci;
-+	void __iomem		*update_arm_ci;
-+	struct list_head	comp_eqs_list;
-+	struct xsc_eq		pages_eq;
-+	struct xsc_eq		async_eq;
-+	struct xsc_eq		cmd_eq;
-+	int			num_comp_vectors;
-+	int			eq_vec_comp_base;
-+	/* protect EQs list */
-+	spinlock_t		lock;
-+};
-+
-+/* irq */
-+struct xsc_irq_info {
-+	cpumask_var_t mask;
-+	char name[XSC_MAX_IRQ_NAME];
-+};
-+
- /* hw */
- struct xsc_reg_addr {
- 	u64	tx_db;
-@@ -310,6 +338,8 @@ struct xsc_caps {
- struct xsc_dev_resource {
- 	struct xsc_qp_table	qp_table;
- 	struct xsc_cq_table	cq_table;
-+	struct xsc_eq_table	eq_table;
-+	struct xsc_irq_info	*irq_info;
- 	/* protect buffer allocation according to numa node */
- 	struct mutex		alloc_mutex;
- };
-@@ -326,6 +356,8 @@ struct xsc_core_device {
- 	u8			mac_port;
- 	u16			glb_func_id;
- 
-+	u16			msix_vec_base;
-+
- 	struct xsc_cmd		cmd;
- 	u16			cmdq_ver;
- 
-@@ -350,6 +382,7 @@ int xsc_core_create_resource_common(struct xsc_core_device *xdev,
- 				    struct xsc_core_qp *qp);
- void xsc_core_destroy_resource_common(struct xsc_core_device *xdev,
- 				      struct xsc_core_qp *qp);
-+struct xsc_eq *xsc_core_eq_get(struct xsc_core_device *xdev, int i);
- 
- static inline void *xsc_buf_offset(struct xsc_buf *buf, unsigned long offset)
- {
-@@ -360,4 +393,9 @@ static inline void *xsc_buf_offset(struct xsc_buf *buf, unsigned long offset)
- 			(offset & (PAGE_SIZE - 1));
- }
- 
-+static inline bool xsc_fw_is_available(struct xsc_core_device *xdev)
-+{
-+	return xdev->cmd.cmd_status == XSC_CMD_STATUS_NORMAL;
-+}
 +
  #endif
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
-index 9a4a6e02d..667319958 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
-@@ -6,5 +6,4 @@ ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
+index 13145345e..212e55d78 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
+@@ -5,38 +5,547 @@
+  * Copyright (c) 2015-2016, Mellanox Technologies. All rights reserved.
+  */
  
- obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc_pci.o
- 
--xsc_pci-y := main.o cmdq.o hw.o qp.o cq.o
--
-+xsc_pci-y := main.o cmdq.o hw.o qp.o cq.o alloc.o eq.o
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.c b/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.c
-new file mode 100644
-index 000000000..fe9b125e1
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.c
-@@ -0,0 +1,130 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
++#include <linux/net_tstamp.h>
++#include <linux/device.h>
 +
-+#include <linux/errno.h>
-+#include <linux/slab.h>
-+#include <linux/mm.h>
-+#include <linux/export.h>
-+#include <linux/bitmap.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/vmalloc.h>
++#include "xsc_pp.h"
++#include "xsc_eth.h"
+ #include "xsc_eth_txrx.h"
++#include "xsc_eth_common.h"
++#include "xsc_pph.h"
 +
-+#include "alloc.h"
-+
-+/* Handling for queue buffers -- we allocate a bunch of memory and
-+ * register it in a memory region at HCA virtual address 0.  If the
-+ * requested size is > max_direct, we split the allocation into
-+ * multiple pages, so we don't require too much contiguous memory.
-+ */
-+int xsc_buf_alloc(struct xsc_core_device *xdev,
-+		  unsigned long size,
-+		  unsigned long max_direct,
-+		  struct xsc_buf *buf)
++static void xsc_rq_notify_hw(struct xsc_rq *rq)
 +{
-+	dma_addr_t t;
-+
-+	buf->size = size;
-+	if (size <= max_direct) {
-+		buf->nbufs        = 1;
-+		buf->npages       = 1;
-+		buf->page_shift   = get_order(size) + PAGE_SHIFT;
-+		buf->direct.buf   = dma_alloc_coherent(&xdev->pdev->dev,
-+						       size,
-+						       &t,
-+						       GFP_KERNEL);
-+		if (!buf->direct.buf)
-+			return -ENOMEM;
-+
-+		buf->direct.map = t;
-+
-+		while (t & GENMASK(buf->page_shift - 1, 0)) {
-+			--buf->page_shift;
-+			buf->npages *= 2;
-+		}
-+	} else {
-+		struct page **pages;
-+		int i;
-+
-+		buf->direct.buf  = NULL;
-+		buf->nbufs       = DIV_ROUND_UP(size, PAGE_SIZE);
-+		buf->npages      = buf->nbufs;
-+		buf->page_shift  = PAGE_SHIFT;
-+		buf->page_list   = kcalloc(buf->nbufs, sizeof(*buf->page_list),
-+					   GFP_KERNEL);
-+		if (!buf->page_list)
-+			return -ENOMEM;
-+
-+		for (i = 0; i < buf->nbufs; i++) {
-+			buf->page_list[i].buf =
-+				dma_alloc_coherent(&xdev->pdev->dev, PAGE_SIZE,
-+						   &t, GFP_KERNEL);
-+			if (!buf->page_list[i].buf)
-+				goto err_free;
-+
-+			buf->page_list[i].map = t;
-+		}
-+
-+		pages = kmalloc_array(buf->nbufs, sizeof(*pages), GFP_KERNEL);
-+		if (!pages)
-+			goto err_free;
-+		for (i = 0; i < buf->nbufs; i++) {
-+			void *addr = buf->page_list[i].buf;
-+
-+			if (is_vmalloc_addr(addr))
-+				pages[i] = vmalloc_to_page(addr);
-+			else
-+				pages[i] = virt_to_page(addr);
-+		}
-+		buf->direct.buf = vmap(pages, buf->nbufs, VM_MAP, PAGE_KERNEL);
-+		kfree(pages);
-+		if (!buf->direct.buf)
-+			goto err_free;
-+	}
-+
-+	return 0;
-+
-+err_free:
-+	xsc_buf_free(xdev, buf);
-+
-+	return -ENOMEM;
-+}
-+
-+void xsc_buf_free(struct xsc_core_device *xdev, struct xsc_buf *buf)
-+{
-+	int i;
-+
-+	if (buf->nbufs == 1) {
-+		dma_free_coherent(&xdev->pdev->dev, buf->size, buf->direct.buf,
-+				  buf->direct.map);
-+	} else {
-+		if (BITS_PER_LONG == 64 && buf->direct.buf)
-+			vunmap(buf->direct.buf);
-+
-+		for (i = 0; i < buf->nbufs; i++)
-+			if (buf->page_list[i].buf)
-+				dma_free_coherent(&xdev->pdev->dev, PAGE_SIZE,
-+						  buf->page_list[i].buf,
-+						  buf->page_list[i].map);
-+		kfree(buf->page_list);
-+	}
-+}
-+
-+void xsc_fill_page_array(struct xsc_buf *buf, __be64 *pas, unsigned int npages)
-+{
-+	unsigned int shift = PAGE_SHIFT - PAGE_SHIFT_4K;
-+	unsigned int mask = (1 << shift) - 1;
-+	u64 addr;
-+	int i;
-+
-+	for (i = 0; i < npages; i++) {
-+		if (buf->nbufs == 1)
-+			addr = buf->direct.map + (i << PAGE_SHIFT_4K);
-+		else
-+			addr = buf->page_list[i >> shift].map +
-+			       ((i & mask) << PAGE_SHIFT_4K);
-+
-+		pas[i] = cpu_to_be64(addr);
-+	}
-+}
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.h b/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.h
-new file mode 100644
-index 000000000..6f8ea8b2e
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+
-+#ifndef __XSC_ALLOC_H
-+#define __XSC_ALLOC_H
-+
-+#include "common/xsc_core.h"
-+
-+int xsc_buf_alloc(struct xsc_core_device *xdev,
-+		  unsigned long size,
-+		  unsigned long max_direct,
-+		  struct xsc_buf *buf);
-+void xsc_buf_free(struct xsc_core_device *xdev, struct xsc_buf *buf);
-+void xsc_fill_page_array(struct xsc_buf *buf, __be64 *pas, unsigned int npages);
-+#endif
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/eq.c b/drivers/net/ethernet/yunsilicon/xsc/pci/eq.c
-new file mode 100644
-index 000000000..091f5d0d6
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/eq.c
-@@ -0,0 +1,328 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+#include <linux/interrupt.h>
-+#include <linux/module.h>
-+#include <linux/mm.h>
-+
-+#include "common/xsc_cmd_api.h"
-+#include "common/xsc_core.h"
-+#include "qp.h"
-+#include "alloc.h"
-+#include "eq.h"
-+
-+enum {
-+	XSC_EQE_SIZE		= sizeof(struct xsc_eqe),
-+};
-+
-+enum {
-+	XSC_NUM_SPARE_EQE	= 0x80,
-+	XSC_NUM_ASYNC_EQE	= 0x100,
-+};
-+
-+static int xsc_cmd_destroy_eq(struct xsc_core_device *xdev, u32 eqn)
-+{
-+	struct xsc_destroy_eq_mbox_out out = {0};
-+	struct xsc_destroy_eq_mbox_in in = {0};
-+
-+	in.hdr.opcode = cpu_to_be16(XSC_CMD_OP_DESTROY_EQ);
-+	in.eqn = cpu_to_be32(eqn);
-+
-+	return xsc_cmd_exec(xdev, &in, sizeof(in), &out, sizeof(out));
-+}
-+
-+static struct xsc_eqe *get_eqe(struct xsc_eq *eq, u32 entry)
-+{
-+	return xsc_buf_offset(&eq->buf, entry * XSC_EQE_SIZE);
-+}
-+
-+static struct xsc_eqe *next_eqe_sw(struct xsc_eq *eq)
-+{
-+	struct xsc_eqe *eqe = get_eqe(eq, eq->cons_index & (eq->nent - 1));
-+
-+	return ((eqe->owner_data & XSC_EQE_OWNER) ^
-+		!!(eq->cons_index & eq->nent)) ? NULL : eqe;
-+}
-+
-+static void eq_update_ci(struct xsc_eq *eq, int arm)
-+{
-+	u32 db_val = 0;
-+
-+	db_val = FIELD_PREP(XSC_EQ_DB_NEXT_CID_MASK, eq->cons_index) |
-+		 FIELD_PREP(XSC_EQ_DB_EQ_ID_MASK, eq->eqn);
-+	if (arm)
-+		db_val |= XSC_EQ_DB_ARM;
-+	/* make sure memory is written before device access */
-+	wmb();
-+	writel(db_val, XSC_REG_ADDR(eq->dev, eq->doorbell));
-+}
-+
-+static void xsc_cq_completion(struct xsc_core_device *xdev, u32 cqn)
-+{
-+	struct xsc_cq_table *table = &xdev->dev_res->cq_table;
-+	struct xsc_core_cq *cq;
-+
-+	rcu_read_lock();
-+	cq = radix_tree_lookup(&table->tree, cqn);
-+	if (likely(cq))
-+		atomic_inc(&cq->refcount);
-+	rcu_read_unlock();
-+
-+	if (!cq) {
-+		pci_err(xdev->pdev, "Completion event for bogus CQ, cqn=%d\n",
-+			cqn);
-+		return;
-+	}
-+
-+	++cq->arm_sn;
-+
-+	if (!cq->comp)
-+		pci_err(xdev->pdev, "cq->comp is NULL\n");
-+	else
-+		cq->comp(cq);
-+
-+	if (atomic_dec_and_test(&cq->refcount))
-+		complete(&cq->free);
-+}
-+
-+static void xsc_eq_cq_event(struct xsc_core_device *xdev,
-+			    u32 cqn, int event_type)
-+{
-+	struct xsc_cq_table *table = &xdev->dev_res->cq_table;
-+	struct xsc_core_cq *cq;
-+
-+	spin_lock(&table->lock);
-+	cq = radix_tree_lookup(&table->tree, cqn);
-+	if (likely(cq))
-+		atomic_inc(&cq->refcount);
-+	spin_unlock(&table->lock);
-+
-+	if (unlikely(!cq)) {
-+		pci_err(xdev->pdev, "Async event for bogus CQ, cqn=%d\n",
-+			cqn);
-+		return;
-+	}
-+
-+	cq->event(cq, event_type);
-+
-+	if (atomic_dec_and_test(&cq->refcount))
-+		complete(&cq->free);
-+}
-+
-+static int xsc_eq_int(struct xsc_core_device *xdev, struct xsc_eq *eq)
-+{
-+	u32 cqn, qpn, queue_id;
-+	struct xsc_eqe *eqe;
-+	int eqes_found = 0;
-+	int set_ci = 0;
-+
-+	while ((eqe = next_eqe_sw(eq))) {
-+		/* Make sure we read EQ entry contents after we've
-+		 * checked the ownership bit.
-+		 */
-+		rmb();
-+		switch (eqe->type) {
-+		case XSC_EVENT_TYPE_COMP:
-+		case XSC_EVENT_TYPE_INTERNAL_ERROR:
-+			/* eqe is changing */
-+			queue_id = FIELD_GET(XSC_EQE_QUEUE_ID_MASK,
-+					     le16_to_cpu(eqe->queue_id_data));
-+			cqn = queue_id;
-+			xsc_cq_completion(xdev, cqn);
-+			break;
-+
-+		case XSC_EVENT_TYPE_CQ_ERROR:
-+			queue_id = FIELD_GET(XSC_EQE_QUEUE_ID_MASK,
-+					     le16_to_cpu(eqe->queue_id_data));
-+			cqn = queue_id;
-+			xsc_eq_cq_event(xdev, cqn, eqe->type);
-+			break;
-+		case XSC_EVENT_TYPE_WQ_CATAS_ERROR:
-+		case XSC_EVENT_TYPE_WQ_INVAL_REQ_ERROR:
-+		case XSC_EVENT_TYPE_WQ_ACCESS_ERROR:
-+			queue_id = FIELD_GET(XSC_EQE_QUEUE_ID_MASK,
-+					     le16_to_cpu(eqe->queue_id_data));
-+			qpn = queue_id;
-+			xsc_qp_event(xdev, qpn, eqe->type);
-+			break;
-+		default:
-+			break;
-+		}
-+
-+		++eq->cons_index;
-+		eqes_found = 1;
-+		++set_ci;
-+
-+		/* The HCA will think the queue has overflowed if we
-+		 * don't tell it we've been processing events.  We
-+		 * create our EQs with XSC_NUM_SPARE_EQE extra
-+		 * entries, so we must update our consumer index at
-+		 * least that often.
-+		 */
-+		if (unlikely(set_ci >= XSC_NUM_SPARE_EQE)) {
-+			eq_update_ci(eq, 0);
-+			set_ci = 0;
-+		}
-+	}
-+
-+	eq_update_ci(eq, 1);
-+
-+	return eqes_found;
-+}
-+
-+static irqreturn_t xsc_msix_handler(int irq, void *eq_ptr)
-+{
-+	struct xsc_core_device *xdev;
-+	struct xsc_eq *eq = eq_ptr;
-+
-+	xdev = eq->dev;
-+	xsc_eq_int(xdev, eq);
-+
-+	/* MSI-X vectors always belong to us */
-+	return IRQ_HANDLED;
-+}
-+
-+static void init_eq_buf(struct xsc_eq *eq)
-+{
-+	struct xsc_eqe *eqe;
-+	int i;
-+
-+	for (i = 0; i < eq->nent; i++) {
-+		eqe = get_eqe(eq, i);
-+		eqe->owner_data |= XSC_EQE_OWNER;
-+	}
-+}
-+
-+int xsc_create_map_eq(struct xsc_core_device *xdev,
-+		      struct xsc_eq *eq, u16 vecidx,
-+		      u32 nent, const char *name)
-+{
-+	u16 msix_vec_offset = xdev->msix_vec_base + vecidx;
-+	struct xsc_dev_resource *dev_res = xdev->dev_res;
-+	struct xsc_create_eq_mbox_out out;
-+	struct xsc_create_eq_mbox_in *in;
-+	unsigned int hw_npages;
-+	u32 inlen;
-+	int err;
-+
-+	eq->nent = roundup_pow_of_two(roundup(nent, XSC_NUM_SPARE_EQE));
-+	err = xsc_buf_alloc(xdev, eq->nent * XSC_EQE_SIZE, PAGE_SIZE, &eq->buf);
-+	if (err)
-+		return err;
-+
-+	init_eq_buf(eq);
-+
-+	hw_npages = DIV_ROUND_UP(eq->nent * XSC_EQE_SIZE, PAGE_SIZE_4K);
-+	inlen = sizeof(*in) + sizeof(in->pas[0]) * hw_npages;
-+	in = kvzalloc(inlen, GFP_KERNEL);
-+	if (!in) {
-+		err = -ENOMEM;
-+		goto err_free_eq_buf;
-+	}
-+	memset(&out, 0, sizeof(out));
-+
-+	xsc_fill_page_array(&eq->buf, in->pas, hw_npages);
-+
-+	in->hdr.opcode = cpu_to_be16(XSC_CMD_OP_CREATE_EQ);
-+	in->ctx.log_eq_sz = ilog2(eq->nent);
-+	in->ctx.vecidx = cpu_to_be16(msix_vec_offset);
-+	in->ctx.pa_num = cpu_to_be16(hw_npages);
-+	in->ctx.glb_func_id = cpu_to_be16(xdev->glb_func_id);
-+	in->ctx.is_async_eq = (vecidx == XSC_EQ_VEC_ASYNC ? 1 : 0);
-+
-+	err = xsc_cmd_exec(xdev, in, inlen, &out, sizeof(out));
-+	if (err)
-+		goto err_free_in;
-+
-+	snprintf(dev_res->irq_info[vecidx].name, XSC_MAX_IRQ_NAME, "%s@pci:%s",
-+		 name, pci_name(xdev->pdev));
-+
-+	eq->eqn = be32_to_cpu(out.eqn);
-+	eq->irqn = pci_irq_vector(xdev->pdev, vecidx);
-+	eq->dev = xdev;
-+	eq->doorbell = xdev->regs.event_db;
-+	eq->index = vecidx;
-+
-+	err = request_irq(eq->irqn, xsc_msix_handler, 0,
-+			  dev_res->irq_info[vecidx].name, eq);
-+	if (err)
-+		goto err_destroy_eq;
-+
-+	/* EQs are created in ARMED state
++	struct xsc_core_device *xdev = rq->cq.xdev;
++	union xsc_recv_doorbell doorbell_value;
++	struct xsc_wq_cyc *wq = &rq->wqe.wq;
++	u64 rqwqe_id;
++
++	rqwqe_id = wq->wqe_ctr << (ilog2(xdev->caps.recv_ds_num));
++	/*reverse wqe index to ds index*/
++	doorbell_value.next_pid = rqwqe_id;
++	doorbell_value.qp_num = rq->rqn;
++
++	/* Make sure that descriptors are written before
++	 * updating doorbell record and ringing the doorbell
 +	 */
-+	eq_update_ci(eq, 1);
-+	kvfree(in);
-+	return 0;
-+
-+err_destroy_eq:
-+	xsc_cmd_destroy_eq(xdev, eq->eqn);
-+
-+err_free_in:
-+	kvfree(in);
-+
-+err_free_eq_buf:
-+	xsc_buf_free(xdev, &eq->buf);
-+	return err;
++	wmb();
++	writel(doorbell_value.recv_data, XSC_REG_ADDR(xdev, xdev->regs.rx_db));
 +}
 +
-+int xsc_destroy_unmap_eq(struct xsc_core_device *xdev, struct xsc_eq *eq)
++static void xsc_skb_set_hash(struct xsc_adapter *adapter,
++			     struct xsc_cqe *cqe,
++			     struct sk_buff *skb)
 +{
-+	int err;
++	struct xsc_rss_params *rss = &adapter->rss_param;
++	bool l3_hash = false;
++	bool l4_hash = false;
++	u32 hash_field;
++	int ht = 0;
 +
-+	if (!xsc_fw_is_available(xdev))
++	if (adapter->netdev->features & NETIF_F_RXHASH) {
++		if (skb->protocol == htons(ETH_P_IP)) {
++			hash_field = rss->rx_hash_fields[XSC_TT_IPV4_TCP];
++			if (hash_field & XSC_HASH_FIELD_SEL_SRC_IP ||
++			    hash_field & XSC_HASH_FIELD_SEL_DST_IP)
++				l3_hash = true;
++
++			if (hash_field & XSC_HASH_FIELD_SEL_SPORT ||
++			    hash_field & XSC_HASH_FIELD_SEL_DPORT)
++				l4_hash = true;
++		} else if (skb->protocol == htons(ETH_P_IPV6)) {
++			hash_field = rss->rx_hash_fields[XSC_TT_IPV6_TCP];
++			if (hash_field & XSC_HASH_FIELD_SEL_SRC_IPV6 ||
++			    hash_field & XSC_HASH_FIELD_SEL_DST_IPV6)
++				l3_hash = true;
++
++			if (hash_field & XSC_HASH_FIELD_SEL_SPORT_V6 ||
++			    hash_field & XSC_HASH_FIELD_SEL_DPORT_V6)
++				l4_hash = true;
++		}
++
++		if (l3_hash && l4_hash)
++			ht = PKT_HASH_TYPE_L4;
++		else if (l3_hash)
++			ht = PKT_HASH_TYPE_L3;
++		if (ht)
++			skb_set_hash(skb, le32_to_cpu(cqe->vni), ht);
++	}
++}
++
++static void xsc_handle_csum(struct xsc_cqe *cqe, struct xsc_rq *rq,
++			    struct sk_buff *skb, struct xsc_wqe_frag_info *wi)
++{
++	struct xsc_dma_info *dma_info;
++	struct net_device *netdev;
++	struct epp_pph *hw_pph;
++	struct xsc_channel *c;
++	int offset_from;
++
++	c = rq->cq.channel;
++	netdev = c->adapter->netdev;
++	dma_info = wi->di;
++	offset_from = wi->offset;
++	hw_pph = page_address(dma_info->page) + offset_from;
++
++	if (unlikely((netdev->features & NETIF_F_RXCSUM) == 0))
++		goto csum_none;
++
++	if (unlikely(XSC_GET_EPP2SOC_PPH_ERROR_BITMAP(hw_pph) & PACKET_UNKNOWN))
++		goto csum_none;
++
++	if (XSC_GET_EPP2SOC_PPH_EXT_TUNNEL_TYPE(hw_pph) &&
++	    (!(FIELD_GET(XSC_CQE_CSUM_ERR_MASK, le32_to_cpu(cqe->data0)) &
++	       OUTER_AND_INNER))) {
++		skb->ip_summed = CHECKSUM_UNNECESSARY;
++		skb->csum_level = 1;
++		skb->encapsulation = 1;
++	} else if (XSC_GET_EPP2SOC_PPH_EXT_TUNNEL_TYPE(hw_pph) &&
++		   (!(FIELD_GET(XSC_CQE_CSUM_ERR_MASK,
++				le32_to_cpu(cqe->data0)) &
++		      OUTER_BIT) &&
++		    (FIELD_GET(XSC_CQE_CSUM_ERR_MASK,
++			       le32_to_cpu(cqe->data0)) &
++		     INNER_BIT))) {
++		skb->ip_summed = CHECKSUM_UNNECESSARY;
++		skb->csum_level = 0;
++		skb->encapsulation = 1;
++	} else if (!XSC_GET_EPP2SOC_PPH_EXT_TUNNEL_TYPE(hw_pph) &&
++		   (!(FIELD_GET(XSC_CQE_CSUM_ERR_MASK,
++				le32_to_cpu(cqe->data0)) &
++		      OUTER_BIT))) {
++		skb->ip_summed = CHECKSUM_UNNECESSARY;
++	}
++
++	goto out;
++
++csum_none:
++	skb->csum = 0;
++	skb->ip_summed = CHECKSUM_NONE;
++out:
++	return;
++}
++
++static void xsc_build_rx_skb(struct xsc_cqe *cqe,
++			     u32 cqe_bcnt,
++			     struct xsc_rq *rq,
++			     struct sk_buff *skb,
++			     struct xsc_wqe_frag_info *wi)
++{
++	struct xsc_adapter *adapter;
++	struct net_device *netdev;
++	struct xsc_channel *c;
++
++	c = rq->cq.channel;
++	adapter = c->adapter;
++	netdev = c->netdev;
++
++	skb->mac_len = ETH_HLEN;
++
++	skb_record_rx_queue(skb, rq->ix);
++	xsc_handle_csum(cqe, rq, skb, wi);
++
++	skb->protocol = eth_type_trans(skb, netdev);
++	xsc_skb_set_hash(adapter, cqe, skb);
++}
++
++static void xsc_complete_rx_cqe(struct xsc_rq *rq,
++				struct xsc_cqe *cqe,
++				u32 cqe_bcnt,
++				struct sk_buff *skb,
++				struct xsc_wqe_frag_info *wi)
++{
++	xsc_build_rx_skb(cqe, cqe_bcnt, rq, skb, wi);
++}
++
++static void xsc_add_skb_frag(struct xsc_rq *rq,
++			     struct sk_buff *skb,
++			     struct xsc_dma_info *di,
++			     u32 frag_offset, u32 len,
++			     unsigned int truesize)
++{
++	struct xsc_channel *c = rq->cq.channel;
++	struct device *dev = c->adapter->dev;
++
++	dma_sync_single_for_cpu(dev, di->addr + frag_offset,
++				len, DMA_FROM_DEVICE);
++	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
++			di->page, frag_offset, len, truesize);
++}
++
++static void xsc_copy_skb_header(struct device *dev,
++				struct sk_buff *skb,
++				struct xsc_dma_info *dma_info,
++				int offset_from, u32 headlen)
++{
++	void *from = page_address(dma_info->page) + offset_from;
++	/* Aligning len to sizeof(long) optimizes memcpy performance */
++	unsigned int len = ALIGN(headlen, sizeof(long));
++
++	dma_sync_single_for_cpu(dev, dma_info->addr + offset_from, len,
++				DMA_FROM_DEVICE);
++	skb_copy_to_linear_data(skb, from, len);
++}
++
++static struct sk_buff *xsc_build_linear_skb(struct xsc_rq *rq, void *va,
++					    u32 frag_size, u16 headroom,
++					    u32 cqe_bcnt)
++{
++	struct sk_buff *skb = build_skb(va, frag_size);
++
++	if (unlikely(!skb))
++		return NULL;
++
++	skb_reserve(skb, headroom);
++	skb_put(skb, cqe_bcnt);
++
++	return skb;
++}
+ 
+ struct sk_buff *xsc_skb_from_cqe_linear(struct xsc_rq *rq,
+ 					struct xsc_wqe_frag_info *wi,
+ 					u32 cqe_bcnt, u8 has_pph)
+ {
+-	/* TBD */
+-	return NULL;
++	int pph_len = has_pph ? XSC_PPH_HEAD_LEN : 0;
++	u16 rx_headroom = rq->buff.headroom;
++	struct xsc_dma_info *di = wi->di;
++	struct sk_buff *skb;
++	void *va, *data;
++	u32 frag_size;
++
++	va = page_address(di->page) + wi->offset;
++	data = va + rx_headroom + pph_len;
++	frag_size = XSC_SKB_FRAG_SZ(rx_headroom + cqe_bcnt);
++
++	dma_sync_single_range_for_cpu(rq->cq.xdev->device, di->addr, wi->offset,
++				      frag_size, DMA_FROM_DEVICE);
++	net_prefetchw(va); /* xdp_frame data area */
++	net_prefetch(data);
++
++	skb = xsc_build_linear_skb(rq, va, frag_size, (rx_headroom + pph_len),
++				   (cqe_bcnt - pph_len));
++	if (unlikely(!skb))
++		return NULL;
++
++	return skb;
+ }
+ 
+ struct sk_buff *xsc_skb_from_cqe_nonlinear(struct xsc_rq *rq,
+ 					   struct xsc_wqe_frag_info *wi,
+ 					   u32 cqe_bcnt, u8 has_pph)
+ {
+-	/* TBD */
+-	return NULL;
++	struct xsc_rq_frag_info *frag_info = &rq->wqe.info.arr[0];
++	u16 headlen  = min_t(u32, XSC_RX_MAX_HEAD, cqe_bcnt);
++	struct xsc_wqe_frag_info *head_wi = wi;
++	struct xsc_wqe_frag_info *rx_wi = wi;
++	u16 head_offset = head_wi->offset;
++	u16 byte_cnt = cqe_bcnt - headlen;
++	u16 frag_consumed_bytes = 0;
++	u16 frag_headlen = headlen;
++	struct net_device *netdev;
++	struct xsc_channel *c;
++	struct sk_buff *skb;
++	struct device *dev;
++	u8 fragcnt = 0;
++	int i = 0;
++
++	c = rq->cq.channel;
++	dev = c->adapter->dev;
++	netdev = c->adapter->netdev;
++
++	skb = napi_alloc_skb(rq->cq.napi, ALIGN(XSC_RX_MAX_HEAD, sizeof(long)));
++	if (unlikely(!skb))
++		return NULL;
++
++	net_prefetchw(skb->data);
++
++	if (likely(has_pph)) {
++		headlen = min_t(u32, XSC_RX_MAX_HEAD,
++				(cqe_bcnt - XSC_PPH_HEAD_LEN));
++		frag_headlen = headlen + XSC_PPH_HEAD_LEN;
++		byte_cnt = cqe_bcnt - headlen - XSC_PPH_HEAD_LEN;
++		head_offset += XSC_PPH_HEAD_LEN;
++	}
++
++	for (i = 0; i < rq->wqe.info.num_frags; i++, rx_wi++)
++		rx_wi->is_available = 0;
++
++	while (byte_cnt) {
++		/*figure out whether the first fragment can be a page ?*/
++		frag_consumed_bytes =
++			min_t(u16, frag_info->frag_size - frag_headlen,
++			      byte_cnt);
++
++		xsc_add_skb_frag(rq, skb, wi->di, wi->offset + frag_headlen,
++				 frag_consumed_bytes, frag_info->frag_stride);
++		byte_cnt -= frag_consumed_bytes;
++
++		/*to protect extend wqe read, drop exceed bytes*/
++		frag_headlen = 0;
++		fragcnt++;
++		if (fragcnt == rq->wqe.info.num_frags) {
++			if (byte_cnt) {
++				netdev_warn(netdev,
++					    "large packet reach the maximum rev-wqe num.\n");
++				netdev_warn(netdev,
++					    "%u bytes dropped: frag_num=%d, headlen=%d, cqe_cnt=%d, frag0_bytes=%d, frag_size=%d\n",
++					    byte_cnt, fragcnt,
++					    headlen, cqe_bcnt,
++					    frag_consumed_bytes,
++					    frag_info->frag_size);
++			}
++			break;
++		}
++
++		frag_info++;
++		wi++;
++	}
++
++	/* copy header */
++	xsc_copy_skb_header(dev, skb, head_wi->di, head_offset, headlen);
++
++	/* skb linear part was allocated with headlen and aligned to long */
++	skb->tail += headlen;
++	skb->len += headlen;
++
++	return skb;
++}
++
++static void xsc_put_rx_frag(struct xsc_rq *rq,
++			    struct xsc_wqe_frag_info *frag, bool recycle)
++{
++	if (frag->last_in_page)
++		page_pool_recycle_direct(rq->page_pool, frag->di->page);
++}
++
++static struct xsc_wqe_frag_info *get_frag(struct xsc_rq *rq, u16 ix)
++{
++	return &rq->wqe.frags[ix << rq->wqe.info.log_num_frags];
++}
++
++static void xsc_free_rx_wqe(struct xsc_rq *rq,
++			    struct xsc_wqe_frag_info *wi, bool recycle)
++{
++	int i;
++
++	for (i = 0; i < rq->wqe.info.num_frags; i++, wi++) {
++		if (wi->is_available && recycle)
++			continue;
++		xsc_put_rx_frag(rq, wi, recycle);
++	}
++}
++
++static void xsc_dump_error_rqcqe(struct xsc_rq *rq,
++				 struct xsc_cqe *cqe)
++{
++	struct net_device *netdev;
++	struct xsc_channel *c;
++	u32 ci;
++
++	c = rq->cq.channel;
++	netdev  = c->adapter->netdev;
++	ci = xsc_cqwq_get_ci(&rq->cq.wq);
++
++	net_err_ratelimited("Error cqe on dev=%s, cqn=%d, ci=%d, rqn=%d, qpn=%ld, error_code=0x%x\n",
++			    netdev->name, rq->cq.xcq.cqn, ci,
++			    rq->rqn,
++			    FIELD_GET(XSC_CQE_QP_ID_MASK,
++				      le32_to_cpu(cqe->data0)),
++			    get_cqe_opcode(cqe));
+ }
+ 
+ void xsc_eth_handle_rx_cqe(struct xsc_cqwq *cqwq,
+ 			   struct xsc_rq *rq, struct xsc_cqe *cqe)
+ {
+-	/* TBD */
++	struct xsc_wq_cyc *wq = &rq->wqe.wq;
++	u8 cqe_opcode = get_cqe_opcode(cqe);
++	struct xsc_wqe_frag_info *wi;
++	struct sk_buff *skb;
++	u32 cqe_bcnt;
++	u16 ci;
++
++	ci = xsc_wq_cyc_ctr2ix(wq, cqwq->cc);
++	wi = get_frag(rq, ci);
++	if (unlikely(cqe_opcode & BIT(7))) {
++		xsc_dump_error_rqcqe(rq, cqe);
++		goto free_wqe;
++	}
++
++	cqe_bcnt = le32_to_cpu(cqe->msg_len);
++	if ((le32_to_cpu(cqe->data0) & XSC_CQE_HAS_PPH) &&
++	    cqe_bcnt <= XSC_PPH_HEAD_LEN)
++		goto free_wqe;
++
++	if (unlikely(cqe_bcnt > rq->frags_sz))
++		goto free_wqe;
++
++	cqe_bcnt = min_t(u32, cqe_bcnt, rq->frags_sz);
++	skb = rq->wqe.skb_from_cqe(rq, wi, cqe_bcnt,
++				   !!(le32_to_cpu(cqe->data0) &
++				      XSC_CQE_HAS_PPH));
++	if (!skb)
++		goto free_wqe;
++
++	xsc_complete_rx_cqe(rq, cqe,
++			    (le32_to_cpu(cqe->data0) & XSC_CQE_HAS_PPH) ?
++			    cqe_bcnt - XSC_PPH_HEAD_LEN : cqe_bcnt,
++			    skb, wi);
++
++	napi_gro_receive(rq->cq.napi, skb);
++
++free_wqe:
++	xsc_free_rx_wqe(rq, wi, true);
++	xsc_wq_cyc_pop(wq);
++}
++
++int xsc_poll_rx_cq(struct xsc_cq *cq, int budget)
++{
++	struct xsc_rq *rq = container_of(cq, struct xsc_rq, cq);
++	struct xsc_cqwq *cqwq = &cq->wq;
++	struct xsc_cqe *cqe;
++	int work_done = 0;
++
++	if (!test_bit(XSC_ETH_RQ_STATE_ENABLED, &rq->state))
 +		return 0;
 +
-+	free_irq(eq->irqn, eq);
-+	err = xsc_cmd_destroy_eq(xdev, eq->eqn);
-+	if (err)
-+		pci_err(xdev->pdev, "failed to destroy a previously created eq: eqn %d\n",
-+			eq->eqn);
-+	xsc_buf_free(xdev, &eq->buf);
++	while ((work_done < budget) && (cqe = xsc_cqwq_get_cqe(cqwq))) {
++		rq->handle_rx_cqe(cqwq, rq, cqe);
++		++work_done;
 +
-+	return err;
-+}
-+
-+void xsc_eq_init(struct xsc_core_device *xdev)
-+{
-+	spin_lock_init(&xdev->dev_res->eq_table.lock);
-+}
-+
-+int xsc_start_eqs(struct xsc_core_device *xdev)
-+{
-+	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
-+	int err;
-+
-+	err = xsc_create_map_eq(xdev, &table->async_eq, XSC_EQ_VEC_ASYNC,
-+				XSC_NUM_ASYNC_EQE, "xsc_async_eq");
-+	if (err)
-+		pci_err(xdev->pdev, "failed to create async EQ %d\n", err);
-+
-+	return err;
-+}
-+
-+void xsc_stop_eqs(struct xsc_core_device *xdev)
-+{
-+	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
-+
-+	xsc_destroy_unmap_eq(xdev, &table->async_eq);
-+}
-+
-+struct xsc_eq *xsc_core_eq_get(struct xsc_core_device *xdev, int i)
-+{
-+	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
-+	struct xsc_eq *eq_ret = NULL;
-+	struct xsc_eq *eq, *n;
-+
-+	spin_lock(&table->lock);
-+	list_for_each_entry_safe(eq, n, &table->comp_eqs_list, list) {
-+		if (eq->index == i) {
-+			eq_ret = eq;
-+			break;
-+		}
++		xsc_cqwq_pop(cqwq);
 +	}
-+	spin_unlock(&table->lock);
 +
-+	return eq_ret;
++	if (!work_done)
++		goto out;
++
++	xsc_cq_notify_hw(cq);
++	/* ensure cq space is freed before enabling more cqes */
++	wmb();
++
++out:
++	return work_done;
 +}
-+EXPORT_SYMBOL(xsc_core_eq_get);
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/eq.h b/drivers/net/ethernet/yunsilicon/xsc/pci/eq.h
-new file mode 100644
-index 000000000..b863a459b
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/eq.h
-@@ -0,0 +1,46 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
 +
-+#ifndef __EQ_H
-+#define __EQ_H
++static int xsc_page_alloc_pool(struct xsc_rq *rq,
++			       struct xsc_dma_info *dma_info)
++{
++	dma_info->page = page_pool_dev_alloc_pages(rq->page_pool);
++	if (unlikely(!dma_info->page))
++		return -ENOMEM;
++	dma_info->addr = page_pool_get_dma_addr(dma_info->page);
 +
-+#include "common/xsc_core.h"
++	return 0;
++}
 +
-+enum {
-+	XSC_EQ_VEC_ASYNC		= 0,
-+	XSC_VEC_CMD			= 1,
-+	XSC_VEC_CMD_EVENT		= 2,
-+	XSC_DMA_READ_DONE_VEC		= 3,
-+	XSC_EQ_VEC_COMP_BASE,
++static int xsc_get_rx_frag(struct xsc_rq *rq,
++			   struct xsc_wqe_frag_info *frag)
++{
++	int err = 0;
++
++	if (!frag->offset && !frag->is_available)
++		/* On first frag (offset == 0), replenish page (dma_info
++		 * actually). Other frags that point to the same dma_info
++		 * (with a different offset) should just use the new one
++		 * without replenishing again by themselves.
++		 */
++		err = xsc_page_alloc_pool(rq, frag->di);
++
++	return err;
++}
++
++static int xsc_alloc_rx_wqe(struct xsc_rq *rq,
++			    struct xsc_eth_rx_wqe_cyc *wqe,
++			    u16 ix)
++{
++	struct xsc_wqe_frag_info *frag = get_frag(rq, ix);
++	u64 addr;
++	int err;
++	int i;
++
++	for (i = 0; i < rq->wqe.info.num_frags; i++, frag++) {
++		err = xsc_get_rx_frag(rq, frag);
++		if (unlikely(err))
++			goto err_free_frags;
++
++		addr = frag->di->addr + frag->offset + rq->buff.headroom;
++		wqe->data[i].va = cpu_to_le64(addr);
++	}
++
++	return 0;
++
++err_free_frags:
++	while (--i >= 0)
++		xsc_put_rx_frag(rq, --frag, true);
++
++	return err;
+ }
+ 
+ void xsc_eth_dealloc_rx_wqe(struct xsc_rq *rq, u16 ix)
+ {
+-	/* TBD */
++	struct xsc_wqe_frag_info *wi = get_frag(rq, ix);
++
++	xsc_free_rx_wqe(rq, wi, false);
+ }
+ 
+-bool xsc_eth_post_rx_wqes(struct xsc_rq *rq)
++static int xsc_alloc_rx_wqes(struct xsc_rq *rq, u16 ix, u8 wqe_bulk)
+ {
+-	/* TBD */
+-	return true;
++	struct xsc_wq_cyc *wq = &rq->wqe.wq;
++	struct xsc_eth_rx_wqe_cyc *wqe;
++	int err;
++	int idx;
++	int i;
++
++	for (i = 0; i < wqe_bulk; i++) {
++		idx = xsc_wq_cyc_ctr2ix(wq, (ix + i));
++		wqe = xsc_wq_cyc_get_wqe(wq, idx);
++
++		err = xsc_alloc_rx_wqe(rq, wqe, idx);
++		if (unlikely(err))
++			goto err_free_wqes;
++	}
++
++	return 0;
++
++err_free_wqes:
++	while (--i >= 0)
++		xsc_eth_dealloc_rx_wqe(rq, ix + i);
++
++	return err;
+ }
+ 
++bool xsc_eth_post_rx_wqes(struct xsc_rq *rq)
++{
++	struct xsc_wq_cyc *wq = &rq->wqe.wq;
++	u8 wqe_bulk, wqe_bulk_min;
++	int err = 0;
++	int alloc;
++	u16 head;
++
++	wqe_bulk = rq->wqe.info.wqe_bulk;
++	wqe_bulk_min = rq->wqe.info.wqe_bulk_min;
++	if (xsc_wq_cyc_missing(wq) < wqe_bulk)
++		return false;
++
++	do {
++		head = xsc_wq_cyc_get_head(wq);
++
++		alloc = min_t(int, wqe_bulk, xsc_wq_cyc_missing(wq));
++		if (alloc < wqe_bulk && alloc >= wqe_bulk_min)
++			alloc = alloc & 0xfffffffe;
++
++		if (alloc > 0) {
++			err = xsc_alloc_rx_wqes(rq, head, alloc);
++			if (unlikely(err))
++				break;
++
++			xsc_wq_cyc_push_n(wq, alloc);
++		}
++	} while (xsc_wq_cyc_missing(wq) >= wqe_bulk_min);
++
++	dma_wmb();
++
++	/* ensure wqes are visible to device before updating doorbell record */
++	xsc_rq_notify_hw(rq);
++
++	return !!err;
++}
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.c
+index 9784816c3..3a843b152 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.c
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.c
+@@ -140,6 +140,7 @@ int xsc_eth_napi_poll(struct napi_struct *napi, int budget)
+ {
+ 	struct xsc_channel *c = container_of(napi, struct xsc_channel, napi);
+ 	struct xsc_eth_params *params = &c->adapter->nic_param;
++	struct xsc_rq *rq = &c->qp.rq[0];
+ 	struct xsc_sq *sq = NULL;
+ 	bool busy = false;
+ 	int work_done = 0;
+@@ -152,11 +153,21 @@ int xsc_eth_napi_poll(struct napi_struct *napi, int budget)
+ 	for (i = 0; i < c->num_tc; i++)
+ 		busy |= xsc_poll_tx_cq(&c->qp.sq[i].cq, tx_budget);
+ 
++	/* budget=0 means: don't poll rx rings */
++	if (likely(budget)) {
++		work_done = xsc_poll_rx_cq(&rq->cq, budget);
++		busy |= work_done == budget;
++	}
++
++	busy |= rq->post_wqes(rq);
++
+ 	if (busy) {
+ 		if (likely(xsc_channel_no_affinity_change(c))) {
+ 			rcu_read_unlock();
+ 			return budget;
+ 		}
++		if (budget && work_done == budget)
++			work_done--;
+ 	}
+ 
+ 	if (unlikely(!napi_complete_done(napi, work_done)))
+@@ -166,6 +177,8 @@ int xsc_eth_napi_poll(struct napi_struct *napi, int budget)
+ 		sq = &c->qp.sq[i];
+ 		xsc_cq_notify_hw_rearm(&sq->cq);
+ 	}
++
++	xsc_cq_notify_hw_rearm(&rq->cq);
+ err_out:
+ 	rcu_read_unlock();
+ 	return work_done;
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.h
+index f8acc6bbb..d0d303efa 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.h
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.h
+@@ -31,6 +31,7 @@ struct sk_buff *xsc_skb_from_cqe_linear(struct xsc_rq *rq,
+ struct sk_buff *xsc_skb_from_cqe_nonlinear(struct xsc_rq *rq,
+ 					   struct xsc_wqe_frag_info *wi,
+ 					   u32 cqe_bcnt, u8 has_pph);
++int xsc_poll_rx_cq(struct xsc_cq *cq, int budget);
+ 
+ netdev_tx_t xsc_eth_xmit_start(struct sk_buff *skb, struct net_device *netdev);
+ 
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
+index 4c9f183fc..4601eec3b 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
+@@ -49,19 +49,6 @@ enum {
+ 	XSC_ETH_SQ_STATE_AM,
+ };
+ 
+-struct xsc_dma_info {
+-	struct page	*page;
+-	dma_addr_t	addr;
+-};
+-
+-struct xsc_page_cache {
+-	struct xsc_dma_info	*page_cache;
+-	u32	head;
+-	u32	tail;
+-	u32	sz;
+-	u32	resv;
+-};
+-
+ struct xsc_cq {
+ 	/* data path - accessed per cqe */
+ 	struct xsc_cqwq	wq;
+@@ -85,6 +72,11 @@ struct xsc_wqe_frag_info {
+ 	u8 is_available;
+ };
+ 
++struct xsc_dma_info {
++	struct page	*page;
++	dma_addr_t	addr;
 +};
 +
-+struct xsc_eqe {
-+	u8 type;
-+	u8 sub_type;
-+	__le16 queue_id_data;
-+#define XSC_EQE_QUEUE_ID_MASK	GENMASK(14, 0)
-+
-+	u8 err_code;
-+	u8 rsvd[2];
-+	u8 owner_data;
-+#define XSC_EQE_OWNER		BIT(7)
-+};
-+
-+/* eq doorbell bitfields */
-+#define XSC_EQ_DB_NEXT_CID_SHIFT	0
-+#define XSC_EQ_DB_NEXT_CID_MASK		GENMASK(10, 0)
-+#define XSC_EQ_DB_EQ_ID_SHIFT		11
-+#define XSC_EQ_DB_EQ_ID_MASK		GENMASK(21, 11)
-+#define XSC_EQ_DB_ARM			BIT(22)
-+
-+int xsc_create_map_eq(struct xsc_core_device *xdev,
-+		      struct xsc_eq *eq, u16 vecidx,
-+		      u32 nent, const char *name);
-+int xsc_destroy_unmap_eq(struct xsc_core_device *xdev, struct xsc_eq *eq);
-+void xsc_eq_init(struct xsc_core_device *xdev);
-+int xsc_start_eqs(struct xsc_core_device *xdev);
-+void xsc_stop_eqs(struct xsc_core_device *xdev);
-+
-+#endif
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
-index 3cd0a874d..cad807e6b 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
-@@ -8,6 +8,7 @@
- #include "hw.h"
- #include "qp.h"
- #include "cq.h"
-+#include "eq.h"
+ struct xsc_rq_frag_info {
+ 	int frag_size;
+ 	int frag_stride;
+@@ -139,7 +131,6 @@ struct xsc_rq {
+ 	xsc_fp_handle_rx_cqe	handle_rx_cqe;
+ 	xsc_fp_post_rx_wqes	post_wqes;
+ 	xsc_fp_dealloc_wqe	dealloc_wqe;
+-	struct xsc_page_cache	page_cache;
+ } ____cacheline_aligned_in_smp;
  
- static const struct pci_device_id xsc_pci_id_table[] = {
- 	{ PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MC_PF_DEV_ID) },
-@@ -183,6 +184,7 @@ static int xsc_hw_setup(struct xsc_core_device *xdev)
- 
- 	xsc_init_cq_table(xdev);
- 	xsc_init_qp_table(xdev);
-+	xsc_eq_init(xdev);
- 
- 	return 0;
- err_cmd_cleanup:
+ enum xsc_dma_map_type {
 -- 
 2.43.0
