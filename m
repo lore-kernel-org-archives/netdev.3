@@ -1,138 +1,107 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mxout3.routing.net (mxout3.routing.net [134.0.28.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D1F1D7E26;
-	Sun,  8 Jun 2025 21:06:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DDB1EDA26;
+	Sun,  8 Jun 2025 21:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749416809; cv=none; b=RJ337+asIAVq19Z6WH7KmMzVoUh14mIa0pLmyLUSmiY1lqwNB7kCkY75JiWeMmlz5LJIeGIFvH5/eaPptGSo0i4LI+p9nk1E1boA+GbeYyEa3zEk7eTbpFW6egzvcUjOpxuDcqPy8Wa5hNgPSr0Rs2VzQIx9HkO8/bx9mg+rluc=
+	t=1749417312; cv=none; b=HEpBY34eSjO7wfOG79UxIyFRHsVLSitfpg4FECIs4eNCpV873mfkJrWJNAbN1mwjJUCPQxbDC5zKltvzcRj/qVufwE0JYKsn1bjjo4MZEfDamrz6LluJ7ZQVHoUCA/vIgsc4fg4Brq6dv6hLC3MMP0BAC6SSVgsx+Wu6SMoM4Hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749416809; c=relaxed/simple;
-	bh=eRXTMlFFM37HL8dqZWTxuAL+kEE86cK1FaotSq/A8As=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pdK9j+CDy3CbEWBj0YtY+kWVtAC8l/PsiF9DiPnukLZwDwMXSz78HnXV2LCFhx7MpMHLyswMg1w866k5yBoeV7wBa9HbNOMHi+emFPd14oRU9jkBXoLHd3GKfEDF2VaIu/yZRzSlWk7VVVr3F6LO/fUAyuUqh2m5+CzaQVjCFok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P5J7kCyN; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749417312; c=relaxed/simple;
+	bh=2ayB3FFSLyItlEfwkpXppGL8M59c1GXDrtM74vNQrsI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o6FjMgzmhvdGfsxGlKsmk9yg2hN/l8h8CHAD7snDAg2AcM0SepYjn7O46DAcEPOfgznoYvIjygcSYLRbLcg+gzuifc0wSDGhMAPqFnFADwf492FvG8Bd1CT4Aeoxb3BmMKjjZW5hlMCBhF116MmUhae52hAfJDeNbPShZ7P8WoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de; spf=pass smtp.mailfrom=fw-web.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=UsbzlzOR; arc=none smtp.client-ip=134.0.28.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fw-web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P5J7kCyN"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-313290ea247so560414a91.3;
-        Sun, 08 Jun 2025 14:06:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749416807; x=1750021607; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=biTxWw1XUhzgVcSaJ7pNel53LmqsXpVkyjyl/XngF0Y=;
-        b=P5J7kCyNWMQu0xC59DiFCqsYpdY7ehaiIi2a+f4rtg6KgEJo1XjON00G++xpQKBj1L
-         OigQy0mwO6GNA2llYVZT+badovLEyOQ/CdbmxfOHkK/zv5oerjBMi51d5rn8EfRUp/Cq
-         zrfIjUIuAVlTj7nQqyfCZntJcdWX56dX7GZTmNRgHYaaGpiQN8BnO43eMbtzd3B756is
-         +hVz6Wyfx/MFVUwQMKZPkv++C9XqA9z7nP9ajVj493AWCzefiGIOL2dJNPJ2j+Xdt6v5
-         pCRFGxdYltiq8Jpg1EgAAMz8sHmSSx/epp5oecqwdpHgHcz9E76LjFw/KJPDM5eztguv
-         Npow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749416807; x=1750021607;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=biTxWw1XUhzgVcSaJ7pNel53LmqsXpVkyjyl/XngF0Y=;
-        b=bC8u8aCOTKJzgB1WuBHyfVfQPhuChzDkas8dIPbD2RW/I74wk35WZP1cI+P44zUEPw
-         QTz/DXXqtiS9TE6sZqoK1M9Aa5dUCATyJK5GQHaqGg663vzdD13eS5dnjxE+q/gC5j5f
-         2sy0Hg/RFuDqIKYYNTXW7x1VVEShBsgWubGMo1Jefd1rMq6Q5mbkvLUAEf4aEgP9S/EG
-         VGBIdcwxlZOIhEYlPnXMvk50iuCAVK/95oIoYRzYXkBnPWHp4O2cAhNXp5pRrvU4c3O7
-         4bZMsU7XrhReJoyxgZRkte1QXit/3zBFBMMBYbGjmC9Czc4PxVAb+xnIqseaH014xpvl
-         xg/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVFxXc0oEn+5RpdPLl7RoxrlCXJ0SF5n0VIm89rClfYT1QJGX8KeAQ879p/E+fpGnUniz/TbzASj97F1K2I@vger.kernel.org, AJvYcCVL51OElPgxYwQLXuGEsfD9zgimufY4iKnX17/Pgfii+O+Ulp7GnyJTqLttXVdcu7NrceC9qj/SYdI0@vger.kernel.org, AJvYcCVQkztA4C53byBCSiSQYqeU7bR3hxVjftxt/CjNOI2A1KVLmgUvi5SWPWVPTkEjyqik0UI9IW6K9oG1XbBv9kJn@vger.kernel.org, AJvYcCVxeGg+0gMGIcRat0RSYpcjhB0GnVs2ST9pBMGRyT+NqfuUNl4/TClnOVsOLjlnZi9Guu/nNwsP3BBRj54j1tI=@vger.kernel.org, AJvYcCWQQEdG1nV02tGBLs+4q/KQwwD1s4BdJdOoIbmDZlWKEJdwIV3VuFJK9mcqY0XN/rd+hqQ21d0X@vger.kernel.org, AJvYcCWpm6/d0St9BDJ4YQVK+RKtWt0jzylERGCmPqlCD/tZ4Fz5uEbmn5zFVt5NtUmkyJBcAkCyDTUNaVBs@vger.kernel.org, AJvYcCX6rwlgOg7Ec5yTC2Fy+u/gJosU7heu6GV1+ve0KFsdgIwPySuxEvfB5lDZY9fWQvDAeHOBpeWPOElsxlqY@vger.kernel.org, AJvYcCXXHoEpMpMpYhZz0PuVa7P9Ncyzl2PI9eswXELu6/3T/VZHGtVgl/5X6XxbpRPOWo1fuFLDGtuRnZiQO+s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycS/x8gh1zUuTd6KPiJwuhGdxVsRLvdeWpkQZLV17QhzivHG7D
-	+7EldevgueUn7PfABKNiDG8mTYpglFaKpVmcBBUC6tEBqsSxh82K/vN5AOXwFs7IE5mLmokumRl
-	zS0LiC++bO+nJ8x+kXenjztieD6LXcNI=
-X-Gm-Gg: ASbGncshQXbDcy5SN/52D7KL5+goHX4qvuDHKy4ICf1Rwnz4jr/Q49SuP1CeFPqabvY
-	ubz2t/Oqiq+ROLuTjMETra4SoN5pi2jZ9PDqFRSdQjbZHq1G2yErlHVo4wQvhn7e42FVzFmMmCS
-	tcOGP5m8MjyvFMmi5DdxBHjGKtVNna1hwcbiNRS/gORhw=
-X-Google-Smtp-Source: AGHT+IFZoj5H78nminVpVR/Eh5MZKRu2FMUA3tOH8l/xEYd1B6AKUG5XkEb/S2u3ZweF07euOUkBTgoKB1wHH0vNBBM=
-X-Received: by 2002:a17:90b:3a87:b0:312:db8:dbd3 with SMTP id
- 98e67ed59e1d1-3134e422457mr4671636a91.6.1749416807159; Sun, 08 Jun 2025
- 14:06:47 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="UsbzlzOR"
+Received: from mxbulk.masterlogin.de (unknown [192.168.10.85])
+	by mxout3.routing.net (Postfix) with ESMTP id 3CF8560163;
+	Sun,  8 Jun 2025 21:15:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
+	s=20200217; t=1749417302;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=swK23DCVf3KYOYwkgLxTlVXj4MpCXZYzSoeROC7b2Yg=;
+	b=UsbzlzORKw1rVN6aqZXL+ORgBb2a0MLXDPlVGvB/JOi28f9Yrixmyt0Gk9K+Zr8RMQAiF6
+	krwY1cnEeWCmx3JThEjbRxf5CProA3+bXGIYaY/+RhRlZ418cHLGYKN/TYGlXN2P8MPFIa
+	ZMEts3NQw3waDf/K6VojFkZc8D59Fz0=
+Received: from frank-u24.. (fttx-pool-80.245.77.166.bambit.de [80.245.77.166])
+	by mxbulk.masterlogin.de (Postfix) with ESMTPSA id D5CCC1226D6;
+	Sun,  8 Jun 2025 21:15:01 +0000 (UTC)
+From: Frank Wunderlich <linux@fw-web.de>
+To: MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Georgi Djakov <djakov@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Frank Wunderlich <frank-w@public-files.de>,
+	Jia-Wei Chang <jia-wei.chang@mediatek.com>,
+	Johnson Wang <johnson.wang@mediatek.com>,
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	Landen Chao <Landen.Chao@mediatek.com>,
+	DENG Qingfang <dqfext@gmail.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	linux-pm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH v3 08/13] arm64: dts: mediatek: mt7988a-bpi-r4: add proc-supply for cci
+Date: Sun,  8 Jun 2025 23:14:41 +0200
+Message-ID: <20250608211452.72920-9-linux@fw-web.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250608211452.72920-1-linux@fw-web.de>
+References: <20250608211452.72920-1-linux@fw-web.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250418-ptr-as-ptr-v10-0-3d63d27907aa@gmail.com> <20250418-ptr-as-ptr-v10-4-3d63d27907aa@gmail.com>
-In-Reply-To: <20250418-ptr-as-ptr-v10-4-3d63d27907aa@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 8 Jun 2025 23:06:34 +0200
-X-Gm-Features: AX0GCFsmqnoEKQUFsySPfR-zWKNBdsKqanc84VNOHBrhPbLWWUXTYAKIeQekh14
-Message-ID: <CANiq72kWtEsXDuoXpbTNRLiZ=c==Ne=v4igxCWMwWFj0LOC-Yw@mail.gmail.com>
-Subject: Re: [PATCH v10 4/6] rust: enable `clippy::as_underscore` lint
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, linux-pci@vger.kernel.org, 
-	linux-block@vger.kernel.org, devicetree@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 18, 2025 at 5:37=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
->
-> -            bindings::BLK_STS_OK as _
-> +            bindings::BLK_STS_OK as u8
+From: Frank Wunderlich <frank-w@public-files.de>
 
-> -        unsafe { bindings::blk_mq_end_request(request_ptr, bindings::BLK=
-_STS_OK as _) };
-> +        unsafe { bindings::blk_mq_end_request(request_ptr, bindings::BLK=
-_STS_OK as u8) };
+CCI requires proc-supply. Add it on board level.
 
-For these two: `BLK_STS_OK` was discussed in a previous version, but
-why are we not using `blk_status_t` type instead?
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+---
+ arch/arm64/boot/dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-We are even already using it in the first case, and in the second it
-is the parameter's type.
+diff --git a/arch/arm64/boot/dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi b/arch/arm64/boot/dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi
+index 81ba045e0e0e..afa9e3b2b16a 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi
+@@ -40,6 +40,10 @@ reg_3p3v: regulator-3p3v {
+ 	};
+ };
+ 
++&cci {
++	proc-supply = <&rt5190_buck3>;
++};
++
+ &cpu0 {
+ 	proc-supply = <&rt5190_buck3>;
+ };
+-- 
+2.43.0
 
-> -/// # use kernel::{bindings, c_str, device::Device, devres::Devres, io::=
-{Io, IoRaw}};
-> +/// # use kernel::{bindings, c_str, device::Device, devres::Devres, ffi:=
-:c_void, io::{Io, IoRaw}};
-
-For v11 this can be removed since it is now in the prelude. There may
-others that can be removed too (I would not add an import just to use
-it in these patches, but if the prelude is already imported, then we
-should use it).
-
-> -        result.minor =3D bindings::MISC_DYNAMIC_MINOR as _;
-> +        result.minor =3D bindings::MISC_DYNAMIC_MINOR as i32;
-
-Similarly here, shouldn't we use `c_int`?
-
-i.e. it is the one in the C side, not the "resolved" `i32` that the
-compiler suggests.
-
-> -                    bindings::wq_misc_consts_WORK_CPU_UNBOUND as _,
-> +                    bindings::wq_misc_consts_WORK_CPU_UNBOUND as i32,
-
-Similarly, this should probably be `c_int` since that is the
-parameter's type, right?
-
-Cheers,
-Miguel
