@@ -1,100 +1,113 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FBD2A1BA;
-	Sun,  8 Jun 2025 21:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9922E288DB;
+	Sun,  8 Jun 2025 23:29:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749419543; cv=none; b=QJsmgs1yaXPh5kTAYCUX64MCItRNL6T8hM+HLiaK8p4rRxYp6d8TyIkEkifx0y9ltdBC/YR0oW6N5n7yRNaxaIbzzh0m23NwvXcrodDNMZUDStTdyVMPZtDK1TW3awTW2n+AKioE5/8jOua+vvwXihK1zDCrrWUfPXYrjSRerCw=
+	t=1749425385; cv=none; b=Pqx8nO5/t7Asa0MclylIifIFQhTNHvEPsTLrBLKB36/3QHaYz2PJgAbO3bG8V3qahDjPc4WtbDqsADDxyAKLDk4To6JRERCWMLbTY28kFYeclyMV2mb2G+qc88y3xBM2ji53cKYDAAftF7/cmdnODdWBkcHzjjzFmkVOOxK2YU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749419543; c=relaxed/simple;
-	bh=5cmtpXM42mjrBHj5zxSMEEhpaxOYRy3DT3XllnzWDtY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YZGpFB2Z7PLs05IXj6OlXmfwhRkutUejZX40gnu0jAxDy4Si0Mxv0JsHYJ2qwCf1SuGQ215WVZW5+9RtASKStlijJm1KOGs1l3gW0Jw9OAAHIYJ7YKYCjB7M9q6T51rTXm6lvRR8wrT1+8iI+UHX7Tw4A8iBD+3tXuModExNek4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.98.2)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1uONMs-000000006CU-2z4t;
-	Sun, 08 Jun 2025 21:24:32 +0000
-Date: Sun, 8 Jun 2025 23:24:15 +0200
-From: Daniel Golle <daniel@makrotopia.org>
-To: Frank Wunderlich <linux@fw-web.de>
-Cc: MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Georgi Djakov <djakov@kernel.org>, Rob Herring <robh@kernel.org>,
+	s=arc-20240116; t=1749425385; c=relaxed/simple;
+	bh=afKw2RLAsHkx4z7Ink9JdbmTDsPPLL5SsmxRARZhi4A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SM0dTulxK/YCogDtbpgwKea23/DahWD+wubIOt3WQgE96OEj2ykdByWdlJOoAY/CuyynUJL5Hrs0ZEB//bIUUDRrjLdSm+4UULFntGIgjTbaHaLrbuQCWbGL1vTZNgbsv6FTA/XEEgXcaa3oR+rixNCIDwgHkgOAnnfkp1nvaUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lkSbGoEN; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lkSbGoEN"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6facba680a1so42493886d6.3;
+        Sun, 08 Jun 2025 16:29:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749425382; x=1750030182; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SU8RawjSZdNZIx5mCZErc6Hx9E5djpvdZZjZt5itdtY=;
+        b=lkSbGoENEnE8LutZLSmIB6Q037ZzzwuUaQpA06WQPVnJv78fIgrlXa13+xHllXDdwk
+         lgGBP5R4vcdWcl3rEnnNB1ESQKVWaDPNZvBjwIaOh1zYaAb1I4ILnLx/JwGn6SOim1KK
+         zBkwAsDfp1Y7cNVE/Vx68k2tzrz5LAuo/qQaeoTzmn+PEtzbYP45F548zQGGLg+Fw43c
+         BM7MX08FgQ6Tdl1CsRyyhuDQYkLgPs9BRWXj6Dg+ddpd89iHBkPHY/vu0HTQbfQQiQPO
+         qbr+lqN7VZGdMuhJwbTlp3fpjSjllm5LW4/Afa/IVKie0xAxfliEh8zvvzhGbXMQev/3
+         JN8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749425382; x=1750030182;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SU8RawjSZdNZIx5mCZErc6Hx9E5djpvdZZjZt5itdtY=;
+        b=u5J3GvEuG0O3p9kQBeti69cERKWHV1JT9WWjetz9uXAxnEC/hqrAVIrxD3Jb6N6qG6
+         Q0l+9p+lsJwXKtcNxycLtNHOnGVtble/h2D9J/G4LqxWTJZlFbs/MY4nbgu93wJNI2pE
+         3wTNkIXTTnwSKiHZ52s4VocMtH4QRzmufz7FRw3rWZd29KdoUA7KSC8VaWunlmzmBCeB
+         NP+2P6stLGw00+bAzmhTWOm0iOIHrgQN66qZ4pTOba0IQlL3pWr6+lBNTXQeleyC72OF
+         BsmIq+bumId+wfNpV64tv7/nIChiLf5hVyDVPKlhLv9RgEKTmxNzfMvnoxgDMXaGFjNp
+         ExrA==
+X-Forwarded-Encrypted: i=1; AJvYcCUAePaSPd96Ig+PW6iqhPHs1AvqZmSNrOZ7KbIZ6SqeI+lCtIynoQWNX5sSpAgO1SwObdZJpQ7uUR1b@vger.kernel.org, AJvYcCWVRwnQZtTvi/iVQvYnnNOSfl3zwqYNuZmEOsyQPe/FAPex9rKSfG0mDymc0/3E5qf52k4j+1fp@vger.kernel.org, AJvYcCXsWzWP3vYu5thkoaFz8qvlyojpeRDBfYqbO2rAws4RYRE04GpPxi01b4IYqw7D4pgBuCfFrm5Et4ZiyFze@vger.kernel.org
+X-Gm-Message-State: AOJu0YxT4459CYh80HwvH/kB5zHvvpv6z3EnFrQImnT/mQ46d3nOoRlK
+	33EYmunwvsBJ2hfynny2u9JQI5b/WBJw0iVWFhtRGw22OT7Iwiczawrg
+X-Gm-Gg: ASbGnctVipoTvYsnA6ItZIGADUidFP6tHlB2zT2XR5Vi09xb/GcR0b88+O3CohTDID0
+	VI/2cfl6ipewagAnz+Xg+lHBFMnm/jaZqYPxRC6+2NlR7TEIiPqRP+h3oA66vOx4Z0rOTv7vnqK
+	BipcVi0MmG2j7J4Guf8KNt1JXaZ4jJLanvDEWHFtovfYpeIvnIoku0Z1P2h31XvPmhyeSBszF2q
+	B4Fmpuua2B9XdlxkhIE15a2ONv4720opZUPSIiKp0/woBZymkfE3WqkMAVAhaIXhlqqPtKEn0F9
+	pXT14PUcYpYBlZ++KF2Uv8h0dBtJ5IDLkC2JFw==
+X-Google-Smtp-Source: AGHT+IGptkGsilp0rjRsjr4k4/JNTYB2bLGg6xQxJeSBP2iNfrPSLopfC8ZXQso4Bk3xGJqa+Kzo+A==
+X-Received: by 2002:ad4:5ded:0:b0:6fa:fc96:d10a with SMTP id 6a1803df08f44-6fb08ff86f4mr198607016d6.27.1749425382538;
+        Sun, 08 Jun 2025 16:29:42 -0700 (PDT)
+Received: from localhost ([2001:da8:7001:11::cb])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-6fb09ac85a8sm43748866d6.35.2025.06.08.16.29.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Jun 2025 16:29:42 -0700 (PDT)
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Frank Wunderlich <frank-w@public-files.de>,
-	Jia-Wei Chang <jia-wei.chang@mediatek.com>,
-	Johnson Wang <johnson.wang@mediatek.com>,
-	=?utf-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>,
-	Landen Chao <Landen.Chao@mediatek.com>,
-	DENG Qingfang <dqfext@gmail.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>,
-	linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH v3 06/13] arm64: dts: mediatek: mt7988: add basic
- ethernet-nodes
-Message-ID: <aEX_f3GIxOzPh00J@pidgin.makrotopia.org>
-References: <20250608211452.72920-1-linux@fw-web.de>
- <20250608211452.72920-7-linux@fw-web.de>
+	Conor Dooley <conor+dt@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Longbin Li <looong.bin@gmail.com>
+Cc: Han Gao <rabenda.cn@gmail.com>,
+	devicetree@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	sophgo@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Yixun Lan <dlan@gentoo.org>
+Subject: [PATCH 00/11] riscv: sophgo: sg2044: add DTS support for all available devices
+Date: Mon,  9 Jun 2025 07:28:24 +0800
+Message-ID: <20250608232836.784737-1-inochiama@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250608211452.72920-7-linux@fw-web.de>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jun 08, 2025 at 11:14:39PM +0200, Frank Wunderlich wrote:
-> From: Frank Wunderlich <frank-w@public-files.de>
-> 
-> Add basic ethernet related nodes.
-> 
-> Mac1+2 needs pcs (sgmii+usxgmii) to work correctly which will be linked
-> later when driver is merged.
-> 
-> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-> ---
->  arch/arm64/boot/dts/mediatek/mt7988a.dtsi | 124 +++++++++++++++++++++-
->  1 file changed, 121 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/mediatek/mt7988a.dtsi b/arch/arm64/boot/dts/mediatek/mt7988a.dtsi
-> index 560ec86dbec0..ee1e01d720fe 100644
-> --- a/arch/arm64/boot/dts/mediatek/mt7988a.dtsi
-> +++ b/arch/arm64/boot/dts/mediatek/mt7988a.dtsi
-> +
-> +		eth: ethernet@15100000 {
-> +			compatible = "mediatek,mt7988-eth";
-> +			reg = <0 0x15100000 0 0x80000>,
-> +			      <0 0x15400000 0 0x200000>;
-> +			interrupts = <GIC_SPI 196 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 197 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 198 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 199 IRQ_TYPE_LEVEL_HIGH>;
+As the clock driver for SG2044 got merged, it is possible to add
+dts node for all support devices of SG2044.
 
-It would be better to use MT7988 with RSS and add the additional
-interrupts for doing so before introducing support for this SoC without
-RSS. In this way we would avoid having to deal with keeping the DT
-support compatible with the old (ie. 4 IRQs) way while also supporting the
-RSS-way (with a total of 8 IRQs).
-Alternatively, if we really want to support MT7988 with and without RSS we
-should use 'interrupt-names' instead of unnamed interrupts imho.
+Inochi Amaoto (9):
+  riscv: dts: sophgo: sg2044: Add system controller device
+  riscv: dts: sophgo: sg2044: Add clock controller device
+  riscv: dts: sophgo: sg2044: Add GPIO device
+  riscv: dts: sophgo: sg2044: Add I2C device
+  riscv: dts: sophgo: sg2044: add DMA controller device
+  riscv: dts: sophgo: sg2044: Add MMC controller device
+  riscv: dts: sophgo: sophgo-srd3-10: add HWMON MCU device
+  riscv: dts: sophgo: sg2044: Add ethernet control device
+  riscv: dts: sophgo: sg2044: Add pinctrl device
+
+Longbin Li (2):
+  riscv: dts: sophgo: add SG2044 SPI NOR controller driver
+  riscv: dts: sophgo: add pwm controller for SG2044
+
+ .../boot/dts/sophgo/sg2044-sophgo-srd3-10.dts |  48 +++
+ arch/riscv/boot/dts/sophgo/sg2044.dtsi        | 313 ++++++++++++++++++
+ 2 files changed, 361 insertions(+)
+
+--
+2.49.0
 
