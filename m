@@ -1,242 +1,139 @@
-Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE49820C480
-	for <netdev@vger.kernel.org>; Mon,  9 Jun 2025 15:44:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF843D544;
+	Mon,  9 Jun 2025 15:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749483858; cv=none; b=AZgmdXSIRxWMHvJF1AavUHfAeRNCPNY7M48U4H+/Y+rbCXacCl8Ir0sFoHOW7mXUoiwSlbpS4/BQEXw04kBpQKXxNm3bWRcgTS5ohL/y34TC0zyYYums2fzIRX8wNawT/emWFbDV/ldVZV6USbh/ugq8kRDixvuqgMZkIVCpZfo=
+	t=1749484318; cv=none; b=HNAs0Hq8elU5nOEC9OS3FWjmXCScM5t3RtFdGkVPgbOWwXiyvmm2Ops6CfdjEkMSW6ZsJZHrCdEW0gNbooRJSgwOTvhhFEgQD1mobhzjLBy8Qy5yySsPeGIGe6fmbqaCfwjymQ5fe4myGTTO+rhSW0G7Gc7iORuf2oJMEaR70f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749483858; c=relaxed/simple;
-	bh=+TrFAZNrfgpfJW0t8z41Tyj0PEabD0DuhwFSTuw1hHA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XeroP8TbPNjMAunVA3raazCf/Q7GU7b0Q0RV4Swkb7TcNpEVSPwnEA/KlZ5YBedOyPuvX3txSjgEv/dcbBbrHTQgtTvcLhT2/DX0WH4syjdFTGJyo5kJM16SN56H2TcmDLtCnmGMGNU8QmwbKccE9HXtlgcp3XfkV54ExU2v6G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=lmAO1DZ5; arc=none smtp.client-ip=171.64.64.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
+	s=arc-20240116; t=1749484318; c=relaxed/simple;
+	bh=s64BLmWnfaM1vIhzNh+zo4arXIAPHhvLNQvOr3AmvR4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TPWrqjR+zNgCREvmmHBclmEJuYnD5r5Gr0DsYtJ7mf+gcTC+8oBwNr4m+Hpiz+afq47WFoXCwjYe2qtS+JfyuA0jOJ5D0Ew2ntGZzoFIbdgxE+MtJ0E/ZooHJadQoDXIKDD0SccG2cOBEIyddfakn+uVg0jKMtWXbzoX7ywYmyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VymgnPd1; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="lmAO1DZ5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=8B8AU1fziyO7dE4sauHf2aM/bwp3zPKpfJMRasIp31k=; t=1749483856; x=1750347856; 
-	b=lmAO1DZ53dz/RT0ywsgv//ccIM/ALxCXFXgRz1NbpzZH0qYbtvrWMhI637l3kX8bgT/TtEGHA7W
-	MOGmoAmJA1FHn/GgKEztPxyeFs48XyDmj1EkT+iZFYvv7lC5PL+NnqIjOnQIGaHBzCT78LInJtcPC
-	NosVHfk4QNWewT2svuSlfyjrHx4/gnW93vHwf0eOJsyHsRdCGahrjVUSnc4JWEB1SJaeXTO9sg67c
-	vFo2q05t9Pb94ckOs/8LYpC53XiT9+kUpWAde1QV9x+u+IiBOpnVSVVGnbCHs3o8jI2Hu81XlzPag
-	4TUSGVzgIrb1bPXqWjZYETuTcb+IduxqesnA==;
-Received: from 70-228-78-207.lightspeed.sntcca.sbcglobal.net ([70.228.78.207]:55275 helo=localhost.localdomain)
-	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ouster@cs.stanford.edu>)
-	id 1uOecX-0003cu-4S; Mon, 09 Jun 2025 08:41:10 -0700
-From: John Ousterhout <ouster@cs.stanford.edu>
-To: netdev@vger.kernel.org
-Cc: pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	John Ousterhout <ouster@cs.stanford.edu>
-Subject: [PATCH net-next v9 01/15] net: homa: define user-visible API for Homa
-Date: Mon,  9 Jun 2025 08:40:34 -0700
-Message-ID: <20250609154051.1319-2-ouster@cs.stanford.edu>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20250609154051.1319-1-ouster@cs.stanford.edu>
-References: <20250609154051.1319-1-ouster@cs.stanford.edu>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VymgnPd1"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3a54690d369so1154144f8f.3;
+        Mon, 09 Jun 2025 08:51:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749484315; x=1750089115; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=clLX/uroe3gYLiyc0WLjLQGuYII2RVMuYJR/xVsDYms=;
+        b=VymgnPd1hrTWPWk6XMjidMbbTOr0cPXyG73wc32uPCef1TWrqQeJ4LekgyEm1v6Per
+         9nlxhbU6vnsjSiyLBx7Ao4v63SORcPnAvYDfkAcFyIUugtjds2YF+6ISyPYhsPFrNEBI
+         0fINMkrNWQ8UB4d3/Tsg6YD9Wbt1qEwTPBJtA9byDsRyeVcRJ7PAK1mIwqvQGXIGLZ8a
+         T9jULR+d5/Mx/q8eF38hWtT/lKna5C/UwO0Xb6+N8mzmjWYQbM0ZMHynu6zBS0ELFwhQ
+         Hw7tVQZglipjkV4QISaPxs7MJG3pEo1EgpkQs3K/Fqqguz78FWQ+9IgDyvYUoVrcKIUA
+         l8ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749484315; x=1750089115;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=clLX/uroe3gYLiyc0WLjLQGuYII2RVMuYJR/xVsDYms=;
+        b=FXx+cvPcE4jlgcaVb7rCFIhpWyuoqhOntkRIqeGTBzqxKlC0WYcZ83zn9gxWKGociz
+         RP57fGpnwGcsyUitpspJnOHrq0ZrsQTr9tsX0fGV6nIDz5B8Q7AXz7tckB6UF3zJE1si
+         ufvUNVk0FtKEnkw4K3Ugna4d5gUijNnLTg4g1NhUvjvu+1UTbAWhgtir6rOuSab4Q1DE
+         cF6fHlnCgU3+loPl6vbQXw9mJqnpO5PmDxZeZs5iBpSwVC/r11bVKDwf/azuPuCdbYr6
+         YdoNWgQEFXQLoLLISC9beHavIEBkQe9meCo9jAHlm61HflLhvVOD0jJd71UcITnXCYWR
+         ACew==
+X-Forwarded-Encrypted: i=1; AJvYcCV7ukApb3P8J1c7tQ+ClRvmcQfOPyTfSnHPUcMhpjwkAgbC9Sdyr/dbEPCircXMxWSvxms=@vger.kernel.org, AJvYcCVM9KLYnv2UrOBITJe1ewWckMsyLoWy4qRXKNtW9vU1KkWZpg+ZmJ3AfPbxLGKIMFX2Ez14dNNu@vger.kernel.org, AJvYcCXXbh87K+4GrbJXIYruwfTEDX2as1dZ3H5Kcgos6zeLt/Qe44ek4QPnpCWfzL2inQ55hHsXu+azGsDssF/x@vger.kernel.org
+X-Gm-Message-State: AOJu0YxiNC3N6auAC4ACuank9W58yi6pEHRj7m6ilz6E0zV9F5ZH5yLF
+	9Ch2E1Np0khf8Y8DDoBV+8XD8uVYizhgHvrl9Cz0B+aBetf92c+T633qWaaRTkipLJt5Qo5WuQ1
+	lso9hfQ38Yp2wZItpdH2AIAKzzUbcpys=
+X-Gm-Gg: ASbGnctypgm2pt7fTBVcQjnBJTuZOyl4oDr6ZtbYa3zrAnhCDFCZaPVZlXLpzCv/eaA
+	pfyFRtwng2Zp0tR46Ks4qlWbIJEgb9QQOpq1SinGNAqs/jpwINpUkh+GYb4JFr4rebgfRH4V3B5
+	lPEkKcPAYunZN8620kmiwvV84IvBO/C15Es2mnUnGqT9UG3m5a1hBPetWK3l375g==
+X-Google-Smtp-Source: AGHT+IGd/auF1dsHAeUUw3cW1bqncv0x0TPUZfk6gX2HXWg3VCovHGbOFafUUgThYO8/qWtAKPskOQF/zRIGnx35G/E=
+X-Received: by 2002:a05:6000:1acb:b0:3a4:ebc4:45a9 with SMTP id
+ ffacd0b85a97d-3a531ca80ecmr10296668f8f.19.1749484314421; Mon, 09 Jun 2025
+ 08:51:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.0
-X-Scan-Signature: 43685be38b1c81fa84908b956b58f430
+References: <20250608-rcu-fix-task_cls_state-v1-1-2a2025b4603b@posteo.net>
+In-Reply-To: <20250608-rcu-fix-task_cls_state-v1-1-2a2025b4603b@posteo.net>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Mon, 9 Jun 2025 08:51:42 -0700
+X-Gm-Features: AX0GCFvpkGJzjbMKyAFdZWIDTS0SQLwEme5a3oVOV4gg4DU8ivK2rKsAOzMMG_4
+Message-ID: <CAADnVQLxaxVpCaK90FfePOKMLpH=axaK3gDwVZLp0L1+fNxgtA@mail.gmail.com>
+Subject: Re: [PATCH bpf-next] bpf: Fix RCU usage in bpf_get_cgroup_classid_curr
+ helper
+To: Charalampos Mitrodimas <charmitro@posteo.net>, Daniel Borkmann <daniel@iogearbox.net>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Feng Yang <yangfeng@kylinos.cn>, Tejun Heo <tj@kernel.org>, 
+	Network Development <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	bpf <bpf@vger.kernel.org>, syzbot+b4169a1cfb945d2ed0ec@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Note: for man pages, see the Homa Wiki at:
-https://homa-transport.atlassian.net/wiki/spaces/HOMA/overview
+On Sun, Jun 8, 2025 at 8:35=E2=80=AFAM Charalampos Mitrodimas
+<charmitro@posteo.net> wrote:
+>
+> The commit ee971630f20f ("bpf: Allow some trace helpers for all prog
+> types") made bpf_get_cgroup_classid_curr helper available to all BPF
+> program types.  This helper used __task_get_classid() which calls
+> task_cls_state() that requires rcu_read_lock_bh_held().
+>
+> This triggers an RCU warning when called from BPF syscall programs
+> which run under rcu_read_lock_trace():
+>
+>   WARNING: suspicious RCU usage
+>   6.15.0-rc4-syzkaller-g079e5c56a5c4 #0 Not tainted
+>   -----------------------------
+>   net/core/netclassid_cgroup.c:24 suspicious rcu_dereference_check() usag=
+e!
+>
+> Fix this by replacing __task_get_classid() with task_cls_classid()
+> which handles RCU locking internally using regular rcu_read_lock() and
+> is safe to call from any context.
+>
+> Reported-by: syzbot+b4169a1cfb945d2ed0ec@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3Db4169a1cfb945d2ed0ec
+> Fixes: ee971630f20f ("bpf: Allow some trace helpers for all prog types")
+> Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+> ---
+>  net/core/filter.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 30e7d36790883b29174654315738e93237e21dd0..3b3f81cf674dde7d2bd834884=
+50edad4e129bdac 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -3083,7 +3083,7 @@ static const struct bpf_func_proto bpf_msg_pop_data=
+_proto =3D {
+>  #ifdef CONFIG_CGROUP_NET_CLASSID
+>  BPF_CALL_0(bpf_get_cgroup_classid_curr)
+>  {
+> -       return __task_get_classid(current);
+> +       return task_cls_classid(current);
+>  }
 
-Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
+Daniel added this helper in
+commit 5a52ae4e32a6 ("bpf: Allow to retrieve cgroup v1 classid from v2 hook=
+s")
+with intention to use it from networking hooks.
 
----
-Changes for v9:
-* Eliminate use of _Static_assert
-* Remove declarations related to now-defunct homa_api.c
+But task_cls_classid() has
+        if (in_interrupt())
+                return 0;
 
-Changes for v7:
-* Add HOMA_SENDMSG_NONBLOCKING flag for sendmsg
-* API changes for new mechanism for waiting for incoming messages
-* Add setsockopt SO_HOMA_SERVER (enable incoming requests)
-* Use u64 and __u64 properly
----
- include/uapi/linux/homa.h | 155 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 155 insertions(+)
- create mode 100644 include/uapi/linux/homa.h
+which will trigger in softirq and tc hooks.
+So this might break Daniel's use case.
 
-diff --git a/include/uapi/linux/homa.h b/include/uapi/linux/homa.h
-new file mode 100644
-index 000000000000..1136236ba675
---- /dev/null
-+++ b/include/uapi/linux/homa.h
-@@ -0,0 +1,155 @@
-+/* SPDX-License-Identifier: BSD-2-Clause */
-+
-+/* This file defines the kernel call interface for the Homa
-+ * transport protocol.
-+ */
-+
-+#ifndef _UAPI_LINUX_HOMA_H
-+#define _UAPI_LINUX_HOMA_H
-+
-+#include <linux/types.h>
-+#ifndef __KERNEL__
-+#include <netinet/in.h>
-+#include <sys/socket.h>
-+#endif
-+
-+/* IANA-assigned Internet Protocol number for Homa. */
-+#define IPPROTO_HOMA 146
-+
-+/**
-+ * define HOMA_MAX_MESSAGE_LENGTH - Maximum bytes of payload in a Homa
-+ * request or response message.
-+ */
-+#define HOMA_MAX_MESSAGE_LENGTH 1000000
-+
-+/**
-+ * define HOMA_BPAGE_SIZE - Number of bytes in pages used for receive
-+ * buffers. Must be power of two.
-+ */
-+#define HOMA_BPAGE_SIZE (1 << HOMA_BPAGE_SHIFT)
-+#define HOMA_BPAGE_SHIFT 16
-+
-+/**
-+ * define HOMA_MAX_BPAGES - The largest number of bpages that will be required
-+ * to store an incoming message.
-+ */
-+#define HOMA_MAX_BPAGES ((HOMA_MAX_MESSAGE_LENGTH + HOMA_BPAGE_SIZE - 1) >> \
-+		HOMA_BPAGE_SHIFT)
-+
-+/**
-+ * define HOMA_MIN_DEFAULT_PORT - The 16 bit port space is divided into
-+ * two nonoverlapping regions. Ports 1-32767 are reserved exclusively
-+ * for well-defined server ports. The remaining ports are used for client
-+ * ports; these are allocated automatically by Homa. Port 0 is reserved.
-+ */
-+#define HOMA_MIN_DEFAULT_PORT 0x8000
-+
-+/**
-+ * struct homa_sendmsg_args - Provides information needed by Homa's
-+ * sendmsg; passed to sendmsg using the msg_control field.
-+ */
-+struct homa_sendmsg_args {
-+	/**
-+	 * @id: (in/out) An initial value of 0 means a new request is
-+	 * being sent; nonzero means the message is a reply to the given
-+	 * id. If the message is a request, then the value is modified to
-+	 * hold the id of the new RPC.
-+	 */
-+	__u64 id;
-+
-+	/**
-+	 * @completion_cookie: (in) Used only for request messages; will be
-+	 * returned by recvmsg when the RPC completes. Typically used to
-+	 * locate app-specific info about the RPC.
-+	 */
-+	__u64 completion_cookie;
-+
-+	/**
-+	 * @flags: (in) OR-ed combination of bits that control the operation.
-+	 * See below for values.
-+	 */
-+	__u32 flags;
-+
-+	/** @reserved: Not currently used. */
-+	__u32 reserved;
-+};
-+
-+/* Flag bits for homa_sendmsg_args.flags (see man page for documentation):
-+ */
-+#define HOMA_SENDMSG_PRIVATE       0x01
-+#define HOMA_SENDMSG_VALID_FLAGS   0x01
-+
-+/**
-+ * struct homa_recvmsg_args - Provides information needed by Homa's
-+ * recvmsg; passed to recvmsg using the msg_control field.
-+ */
-+struct homa_recvmsg_args {
-+	/**
-+	 * @id: (in/out) Initial value is 0 to wait for any shared RPC;
-+	 * nonzero means wait for that specific (private) RPC. Returns
-+	 * the id of the RPC received.
-+	 */
-+	__u64 id;
-+
-+	/**
-+	 * @completion_cookie: (out) If the incoming message is a response,
-+	 * this will return the completion cookie specified when the
-+	 * request was sent. For requests this will always be zero.
-+	 */
-+	__u64 completion_cookie;
-+
-+	/**
-+	 * @num_bpages: (in/out) Number of valid entries in @bpage_offsets.
-+	 * Passes in bpages from previous messages that can now be
-+	 * recycled; returns bpages from the new message.
-+	 */
-+	__u32 num_bpages;
-+
-+	/**
-+	 * @bpage_offsets: (in/out) Each entry is an offset into the buffer
-+	 * region for the socket pool. When returned from recvmsg, the
-+	 * offsets indicate where fragments of the new message are stored. All
-+	 * entries but the last refer to full buffer pages (HOMA_BPAGE_SIZE
-+	 * bytes) and are bpage-aligned. The last entry may refer to a bpage
-+	 * fragment and is not necessarily aligned. The application now owns
-+	 * these bpages and must eventually return them to Homa, using
-+	 * bpage_offsets in a future recvmsg invocation.
-+	 */
-+	__u32 bpage_offsets[HOMA_MAX_BPAGES];
-+};
-+
-+/** define SO_HOMA_RCVBUF: setsockopt option for specifying buffer region. */
-+#define SO_HOMA_RCVBUF 10
-+
-+/**
-+ * define SO_HOMA_SERVER: setsockopt option for specifying whether a
-+ * socket will act as server.
-+ */
-+#define SO_HOMA_SERVER 11
-+
-+/** struct homa_rcvbuf_args - setsockopt argument for SO_HOMA_RCVBUF. */
-+struct homa_rcvbuf_args {
-+	/** @start: Address of first byte of buffer region in user space. */
-+	__u64 start;
-+
-+	/** @length: Total number of bytes available at @start. */
-+	size_t length;
-+};
-+
-+/* Meanings of the bits in Homa's flag word, which can be set using
-+ * "sysctl /net/homa/flags".
-+ */
-+
-+/**
-+ * define HOMA_FLAG_DONT_THROTTLE - disable the output throttling mechanism
-+ * (always send all packets immediately).
-+ */
-+#define HOMA_FLAG_DONT_THROTTLE   2
-+
-+/* I/O control calls on Homa sockets. These are mapped into the
-+ * SIOCPROTOPRIVATE range of 0x89e0 through 0x89ef.
-+ */
-+
-+#define HOMAIOCFREEZE _IO(0x89, 0xef)
-+
-+#endif /* _UAPI_LINUX_HOMA_H */
--- 
-2.43.0
-
+Daniel,
+ptal.
