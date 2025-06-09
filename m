@@ -1,47 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D728F40;
-	Mon,  9 Jun 2025 22:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C04225788;
+	Mon,  9 Jun 2025 22:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749508918; cv=none; b=UKBr2iEli3sGX96MeSaWFMyg84yn1bKUbulf/cB7SaD7Kw6D6mzNJJ9yEjL82DOh46zEpUTTfw/RbXRZmfN1osfZGTnOXj6yJUfbFK9SuObR2G0nbW8biLLKOG8kaUbQxelQiG9+RaCiQweDDuJ/mLm+6xs0ZW72GtPzC3Brq1M=
+	t=1749509198; cv=none; b=j9HASQnamQmXUT04inFu4OyKA3IgYJorgkl/y4AHzz9WbJP0J7v/0cB0D6r7/voYT46NkqoZ89dT+K+xlV7eWnnUL5s6YuSOr04aifO6e2fyhQmisd2+vC3WlCHxcjel76pniiz+EqGwPkvlvnT6bWEplm0kBbffvjddS4KtOmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749508918; c=relaxed/simple;
-	bh=A9RkGYnenM/e644E5tyORy3XNXJtCVB7yAqNOdiH7j4=;
+	s=arc-20240116; t=1749509198; c=relaxed/simple;
+	bh=nJj12iQ8vhZRCjp76lVlJ10BcU6g8lFx42piFMF5C7U=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RVXWPVhF/78MJJF8yPd3pw9St30li6j1sverXNl67wR41GesNX+vyj85fyL7qKcmxlL0cYzro4vjXRqzYI+Ei1H6rgubLwu2IH81W5m5D+f16wpVvuJLy4kHMkiJPACgFoYDHkoYdiX7BhbwPeyLqoCqcsMWAS7LM85xDynlu+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k3IioYBX; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Z6C3i3Zk5SfCZacybBp7Cv3DzuKB/NA+DUhDHluYydMJfHL0yf4xroe9Pp7oDTU52iu+O1WPA60chAxtrHaW17pUjC1/4WUc/dc2/qHx6XDcelZ0TSRbjJuIrTIt1byYAt9iz47aMrzz//G9LoXPJ/4GgIkqbZGzx4YAPOxT/uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmE3Q8Oo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k3IioYBX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E58C4CEEB;
-	Mon,  9 Jun 2025 22:41:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmE3Q8Oo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC0ADC4CEEB;
+	Mon,  9 Jun 2025 22:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749508917;
-	bh=A9RkGYnenM/e644E5tyORy3XNXJtCVB7yAqNOdiH7j4=;
+	s=k20201202; t=1749509198;
+	bh=nJj12iQ8vhZRCjp76lVlJ10BcU6g8lFx42piFMF5C7U=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=k3IioYBXk7v/JFQx4MCV6rP/F9BMwPuEnwCS7vxLtFhkyTVFFP6BKjlk7nOK2QUju
-	 wzZ8jt7zOJbea2fHgvE9gCqbppMn0fhZdjFBE46dQRXUGlTpY6Oc+xdB6Am413bewL
-	 r5FC0KTOmgedMdbhZc1/575bHwxzsjCSXYeDWDiGvDr8XLlLiJuAPlKPPnVL5kgXIF
-	 RVJkPyBHPTbVB7GyYlszxYfp55sTGMENc8sR/mEtdKVLYxJWtnR7UGWVqSPXS+Kj/F
-	 SAv6p1DwHS6ZpakH/DNpGvbeFjnZYRar84goTXAK5L39Afi2zJnIv8saHob7BTaOki
-	 QbwFfsl0RHgKw==
-Date: Mon, 9 Jun 2025 15:41:56 -0700
+	b=NmE3Q8Oo30TpdYeAMa7SpaIKWQTOtsnMDk054gK/fIuyHOZV2Q6u79WnxwFuPgFor
+	 nR8ILY2F/TAyvVXGaMhuPQ2+n9/8AxWYApXmeZgC0x/5cKKWEhMGBjF6461Dz+Q+H8
+	 Zxcm4dwJwFI11BXo1ENe+ImELyFsSbKTP9oXLXLTYEIrYHws0LEWFI/xxdSmRODuBj
+	 gkajEQJlYimIaEJ31S/L26WA0/b/NswApRiBjKvOwtHJX6R3yez3XyqJODXRV/nESj
+	 Sikasz1BavVo3vv3g4GZmzZZX91gZlAXLNoaez/osDkL7GgiNbyjcVEPbly8K3Y/g2
+	 uC9KGCGx5Ho0w==
+Date: Mon, 9 Jun 2025 15:46:37 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Gal Pressman <gal@nvidia.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>, Andrew Lunn
- <andrew@lunn.ch>, Simon Horman <horms@kernel.org>, Shuah Khan
- <shuah@kernel.org>, Joe Damato <jdamato@fastly.com>,
- <linux-kselftest@vger.kernel.org>, "Tariq Toukan" <tariqt@nvidia.com>,
- Nimrod Oren <noren@nvidia.com>
-Subject: Re: [PATCH net v2 1/2] net: ethtool: Don't check if RSS context
- exists in case of context 0
-Message-ID: <20250609154156.76be9902@kernel.org>
-In-Reply-To: <20250609120250.1630125-2-gal@nvidia.com>
-References: <20250609120250.1630125-1-gal@nvidia.com>
-	<20250609120250.1630125-2-gal@nvidia.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
+Subject: Re: [PATCH 2/3] netns: use stable inode number for initial mount ns
+Message-ID: <20250609154637.06f27fde@kernel.org>
+In-Reply-To: <20250606-work-nsfs-v1-2-b8749c9a8844@kernel.org>
+References: <20250606-work-nsfs-v1-0-b8749c9a8844@kernel.org>
+	<20250606-work-nsfs-v1-2-b8749c9a8844@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,11 +45,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 9 Jun 2025 15:02:49 +0300 Gal Pressman wrote:
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-> Reviewed-by: Nimrod Oren <noren@nvidia.com>
-> Signed-off-by: Gal Pressman <gal@nvidia.com>
-> Reviewed-by: Joe Damato <jdamato@fastly.com>
+On Fri, 06 Jun 2025 11:45:08 +0200 Christian Brauner wrote:
+> Apart from the network and mount namespace all other namespaces expose a
+> stable inode number and userspace has been relying on that for a very
+> long time now. It's very much heavily used API. Align the network
+> namespace and use a stable inode number from the reserved procfs inode
+> number space so this is consistent across all namespaces.
 
-Did you receive a user report for this change in behavior?
+Nice!
+
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
