@@ -1,173 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9AE25B1DA;
-	Mon,  9 Jun 2025 13:47:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8850825B1F0;
+	Mon,  9 Jun 2025 13:48:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749476832; cv=none; b=fi2U1FuoP9pRfjeThwqTAk3ec8qZGZVEaWr2tpWhvUclf7oZIqTFsC+2rqqvrPUDStdjmPothMm3mNBGDCXoYHwo1oDxcOM9z3OBWKAoPBBzvsFIzkUj7Y+WPmZiIPESm3iQM+ZL+d9aJFfIT7pntKGdWwztnHJBAEPFuqWoBuU=
+	t=1749476905; cv=none; b=f0mBXNnP/2B3ktjCBnhcp1oG4hoA71ob+qzqEv2fVyNPSmwqGpEqrn9dcIuYuFHqJQJr5r6CRRHMCDJQ+rN1St7WuaB448pHBgvg5RrEKXDgDZAo5uzTOYzY8ojAM0EC7hd8AX60tYIWIW4oVgjrLLNEb8SlwSsYLsQKqVrgLLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749476832; c=relaxed/simple;
-	bh=Z5NuxohrQLznppg9+0VUmhyKgfQrAojDypzx2UmnJqw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VYfZPI8P4K1sAjwE5tD/gXqlsG3th/etcKDwLt9WSDq/YUWpzHB7hDCj2SYdZzlKUsYmcCVJke0XehynBXIkAjIbroDWq5kuusiG9aPDF8Jx1hWOjNj+hSwuRvcjgeWISlrzAJiCrpJmUKF9tjB2cxz8NshYtrHXJiroaoDMkNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UIhbs9Bo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749476905; c=relaxed/simple;
+	bh=BPlwmMomgPvNeJIPYqQeejjwBJJNHh+k3OD1Bfrq4HE=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=ucycg4/mJFU7uUY4ebLWjA3IK5Je+5JjItqLAcOF7GNP86WqiK0QkRp8CQFTRnmiua347Z+ExDLP2D9+uk/Km2AVH1bHUIq2/z3KZfxxDCgMB7G+CRMvjh5RDW0q5KYAIh5W17OMKSjMj/RdcuL6C0wS6j4w3nx3CKzdxRsYoH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=B7wLA6vs; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UIhbs9Bo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF92AC4CEF5;
-	Mon,  9 Jun 2025 13:47:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749476831;
-	bh=Z5NuxohrQLznppg9+0VUmhyKgfQrAojDypzx2UmnJqw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UIhbs9BoaOaSQqvEeMPxCX6D3wPvQeDPHX4y9e5sWATNDcQb16FWJ04HQhBm1dilV
-	 Xr1R4JsDRcFpjcQAb1yTy+fxVTDC90aLqJUv4U11IEI7qMDtIQiPpEwAwstSTQCu3Z
-	 +KP8NLAQf3Hyn9b07ROaeWTeaQj7gqRBENqKissqhT6OzuMZbByPQn3hWZsYsIi64B
-	 DAWFvqrQILGkqe0D3KEJU/waPsp6BItIjr1CCwDA/befLaeBh4vrHKuvUSLoa4qE+i
-	 OatLvVaZypczDqd/m2dl19aB0CFIq9ueyzc48wN7jpN1mD6S4YodNdsrUl8KjAYMvZ
-	 Ch1Gjv3HRHNuw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Chenyuan Yang <chenyuan0y@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	richardcochran@gmail.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 11/18] misc: tps6594-pfsm: Add NULL pointer check in tps6594_pfsm_probe()
-Date: Mon,  9 Jun 2025 09:46:45 -0400
-Message-Id: <20250609134652.1344323-11-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250609134652.1344323-1-sashal@kernel.org>
-References: <20250609134652.1344323-1-sashal@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="B7wLA6vs"
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id 04AE12117470; Mon,  9 Jun 2025 06:48:23 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 04AE12117470
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1749476903;
+	bh=j31y8dX5VzTCMYV6bDl/i9BeZDJRVIOFcCu+6HPbEq4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=B7wLA6vsg1C++tmBXd1Y1ci1y2eSLPmGnImcvGqACPvF+AxvNGe2zLHA/4gDfB1Ir
+	 3dQJTUpa6GZOQgjAa6EN0Tk3dr+u4gZsG2dVLm78teXs+BdFoXlKfveL1rfxO8+18B
+	 Rh24IrBup+Myi4ZvkL/sjp8c1oiP+5HOYKQRbvlo=
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: 
+Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	linux-hyperv@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Cameron <Jonathan.Cameron@huwei.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Long Li <longli@microsoft.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Rob Herring <robh@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=EF=BF=BD=7EDski?= <kw@linux.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	Paul Rosswurm <paulros@microsoft.com>,
+	Shradha Gupta <shradhagupta@microsoft.com>
+Subject: [PATCH v5 0/5] Allow dyn MSI-X vector allocation of MANA
+Date: Mon,  9 Jun 2025 06:48:21 -0700
+Message-Id: <1749476901-27251-1-git-send-email-shradhagupta@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.93
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+In this patchset we want to enable the MANA driver to be able to
+allocate MSI-X vectors in PCI dynamically.
 
-[ Upstream commit a99b598d836c9c6411110c70a2da134c78d96e67 ]
+The first patch exports pci_msix_prepare_desc() in PCI to be able to
+correctly prepare descriptors for dynamically added MSI-X vectors.
 
-The returned value, pfsm->miscdev.name, from devm_kasprintf()
-could be NULL.
-A pointer check is added to prevent potential NULL pointer dereference.
-This is similar to the fix in commit 3027e7b15b02
-("ice: Fix some null pointer dereference issues in ice_ptp.c").
+The second patch adds the support of dynamic vector allocation in
+pci-hyperv PCI controller by enabling the MSI_FLAG_PCI_MSIX_ALLOC_DYN
+flag and using the pci_msix_prepare_desc() exported in first patch.
 
-This issue is found by our static analysis tool.
+The third patch adds a detailed description of the irq_setup(), to
+help understand the function design better.
 
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://lore.kernel.org/r/20250311010511.1028269-1-chenyuan0y@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The fourth patch is a preparation patch for mana changes to support
+dynamic IRQ allocation. It contains changes in irq_setup() to allow
+skipping first sibling CPU sets, in case certain IRQs are already
+affinitized to them.
+
+The fifth patch has the changes in MANA driver to be able to allocate
+MSI-X vectors dynamically. If the support does not exist it defaults to
+older behavior.
+
+Since this patchset has patches from PCI and net tree, I am not entirely
+sure what should be the target tree. Any suggestions/recommendations on
+the same are welcomed.
+
+---
+ Changes in v5
+ * Added Yury as Author of the 3rd patch
+ * Fixed base commit information in the cover letter
+ * Correctly initialized start_irqs, so that it is cleaned properly
+ * rearranged the cpu_lock to minimize the critical section
+---
+ Change in v4
+ * add a patch describing the functionality of irq_setup() through a 
+   comment
+ * In irq_setup(), avoid using a label next_cpumask:
+ * modify the changes in MANA patch about restructuring the error
+   handling path in mana_gd_setup_dyn_irqs()
+ * modify the mana_gd_setup_irqs() to simplify handling around
+   start_irq_index
+ * add warning if an invalid gic is returned
+ * place the xa_destroy() cleanup in mana_gd_remove
+---
+ Changes in v3
+ * split the 3rd patch into preparation patch around irq_setup() and
+   changes in mana driver to allow dynamic IRQ allocation
+ * Add arm64 support for dynamic MSI-X allocation in pci_hyperv
+   controller
+---
+ Changes in v2
+ * split the first patch into two(exporting the preapre_desc
+   func and using the function and flag in pci-hyperv)
+ * replace 'pci vectors' by 'MSI-X vectors'
+ * Change the cover letter description to align with changes made
 ---
 
-**YES**
+Shradha Gupta (5):
+  PCI/MSI: Export pci_msix_prepare_desc() for dynamic MSI-X allocations
+  PCI: hv: Allow dynamic MSI-X vector allocation
+  net: mana: explain irq_setup() algorithm
+  net: mana: Allow irq_setup() to skip cpus for affinity
+  net: mana: Allocate MSI-X vectors dynamically
 
-This commit should be backported to stable kernel trees. Here's my
-detailed analysis:
+ .../net/ethernet/microsoft/mana/gdma_main.c   | 363 ++++++++++++++----
+ drivers/pci/controller/pci-hyperv.c           |   3 +-
+ drivers/pci/msi/irqdomain.c                   |   5 +-
+ include/linux/msi.h                           |   2 +
+ include/net/mana/gdma.h                       |   8 +-
+ 5 files changed, 295 insertions(+), 86 deletions(-)
 
-## Analysis
 
-### 1. Bug Fix Nature
-This commit fixes a clear NULL pointer dereference vulnerability. The
-`devm_kasprintf()` function can return NULL on memory allocation
-failure, and the code was not checking this return value before using
-`pfsm->miscdev.name`. This would lead to a NULL pointer dereference when
-`misc_register(&pfsm->miscdev)` is called at line 302.
-
-### 2. Code Analysis
-Looking at the specific changes in `drivers/misc/tps6594-pfsm.c`:
-
-**Before the fix (lines 282-283):**
-```c
-pfsm->miscdev.name = devm_kasprintf(dev, GFP_KERNEL, "pfsm-%ld-0x%02x",
-                                    tps->chip_id, tps->reg);
-```
-
-**After the fix (lines 282-286):**
-```c
-pfsm->miscdev.name = devm_kasprintf(dev, GFP_KERNEL, "pfsm-%ld-0x%02x",
-                                    tps->chip_id, tps->reg);
-+if (!pfsm->miscdev.name)
-+    return -ENOMEM;
-```
-
-The fix adds essential NULL pointer checking that prevents potential
-kernel crashes.
-
-### 3. Comparison with Similar Commits
-This fix follows the exact same pattern as the reference commits marked
-as "Backport Status: YES":
-
-- **Similar Commit #1 (ipmi)**: Same issue with `devm_kasprintf()` not
-  being checked
-- **Similar Commit #2 (mfd: tps6594)**: Same issue, even in the same
-  TPS6594 subsystem
-- **Similar Commit #4 (ice)**: Same issue, explicitly referenced in the
-  commit message
-
-All these similar commits were deemed suitable for backporting because
-they fix the same fundamental issue.
-
-### 4. Risk Assessment
-- **Minimal risk**: The fix is a simple 2-line addition that only adds
-  error checking
-- **No side effects**: The change doesn't alter functionality, only
-  prevents crashes
-- **Contained scope**: Only affects the TPS6594 PFSM driver
-  initialization path
-- **No architectural changes**: Doesn't modify any interfaces or major
-  logic
-
-### 5. Stability Criteria Met
-- ✅ **Important bug fix**: Prevents kernel NULL pointer dereference
-  crashes
-- ✅ **Minimal and contained**: Only 2 lines added for error checking
-- ✅ **Low regression risk**: Cannot introduce new issues, only prevents
-  crashes
-- ✅ **Clear fix**: Addresses a well-defined problem with obvious
-  solution
-
-### 6. Driver Context
-The TPS6594 PFSM driver was introduced in kernel v6.10, making it a
-relatively recent addition. The driver handles power management for TI
-PMIC devices, making reliability crucial for system stability.
-
-### 7. Static Analysis Tool Finding
-The commit message mentions this was found by static analysis, which
-indicates it's a real potential issue that could manifest under memory
-pressure conditions.
-
-This commit clearly meets all the criteria for stable tree backporting:
-it's a small, contained fix for an important potential crash bug with
-minimal risk of regression.
-
- drivers/misc/tps6594-pfsm.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/misc/tps6594-pfsm.c b/drivers/misc/tps6594-pfsm.c
-index 88dcac8148922..71fbe31542e56 100644
---- a/drivers/misc/tps6594-pfsm.c
-+++ b/drivers/misc/tps6594-pfsm.c
-@@ -260,6 +260,9 @@ static int tps6594_pfsm_probe(struct platform_device *pdev)
- 	pfsm->miscdev.minor = MISC_DYNAMIC_MINOR;
- 	pfsm->miscdev.name = devm_kasprintf(dev, GFP_KERNEL, "pfsm-%ld-0x%02x",
- 					    tps->chip_id, tps->reg);
-+	if (!pfsm->miscdev.name)
-+		return -ENOMEM;
-+
- 	pfsm->miscdev.fops = &tps6594_pfsm_fops;
- 	pfsm->miscdev.parent = dev->parent;
- 
+base-commit: 2c7e4a2663a1ab5a740c59c31991579b6b865a26
 -- 
-2.39.5
+2.34.1
 
