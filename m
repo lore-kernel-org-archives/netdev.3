@@ -1,93 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5831259C84;
-	Mon,  9 Jun 2025 13:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243DB25A2A2;
+	Mon,  9 Jun 2025 13:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749475634; cv=none; b=q+S/VQRIQHYWDM/FiqdmEXk2rcc6wIGMZ/gTt/X5FHlwVWk8FhgLGh7hjdDlbpeq0omJYqDlFKaKdNEKm9Gp7vE/TuncROT6sPmruWMhXXvOhZzBGL4RxewOZmat3xO0W/YdBcyRjdX1eBD6RV/BzrIiDjgswH1y+UOdj/Cx0yY=
+	t=1749476413; cv=none; b=HLhIB88l1CTSts9MPrPTceYfh32DPh+qRnkCq02nNsj+oHjd9eunw4pRaJIG4qw5ncw+9h7UYSA8OHDM0DMUnp0Az3mPVZAGxB2WPOERXiXHskzHsuC47LVKTMNEn0Q7HdqQioIRwYDFtkASgnC+p1YEXJ2ZzyxBiB57LbiC49U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749475634; c=relaxed/simple;
-	bh=nc3g9xIfmPcrqMrMsFOVDXjNJyADJlqvbFOcKHLdW0s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ls+2VRcPqLb6ra+tjtm3UqefPcl2zfENGN87GUsl7pVmEZUbTSaBrCGG+PEYhULYbgjCOY/51riuJqhfmKKLslDk54fYl/C88vCGjS+5bOUEnA2NsOlYccjLmdmOYD1ePZ3qUwSDqD7WgDU/YHE8xzU68NfjiZLleOStjYbi/uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G7YFsPyQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749476413; c=relaxed/simple;
+	bh=cY4xKlehVdvlZ3NiQzDRzQlO9jXyfXVG9+zrEpxgDxs=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ETEeHsEtTbojDUKF3GifyKc9TgilQ+mps8SF8ZlgWKhe7092tqIpKyuSZA//WTaHk8cKicY+2KKWVPoV/CXkF6kAG/sd+P5YhWzCSFOdKCeFqbCtR2xVDtPz3vnPpHhxm1LBFlogsnXJItCY9fTLx9L9S7fajnCdykmDybYo1ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Laf5E0Vx; arc=none smtp.client-ip=209.85.221.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G7YFsPyQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8EE28C4CEF2;
-	Mon,  9 Jun 2025 13:27:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749475633;
-	bh=nc3g9xIfmPcrqMrMsFOVDXjNJyADJlqvbFOcKHLdW0s=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=G7YFsPyQWfVCtWpggcPpTq8vp1GM/WFNNFEJPmXUmhjogbil9wXyq37dA03IiAyGj
-	 iNc++OyK7l9PgPc+MCS+WrRtoSzM9MJe9eiee751RsmK/vl9Lpb5C5YoXANUsgAsTq
-	 QyKMNNNV2S6jygCKwrm14+fiV64e993NATuV4KZtzAa05emBCpiKYy/+Rz95oFF8tw
-	 ki9jwEruGmJT1Ma5hMzguxf5rFmmwmntV8oQjZ5hLwredXLQrsMTLmRDDXs6xYHwr7
-	 P+Ari0bu/qKW3JKlXVc3gxvZFzkl+wlvvn0CtbGyfOddRUXv3e93pMoKjaUqu1gfsF
-	 OxJumofBKcLqA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 85670C61CE8;
-	Mon,  9 Jun 2025 13:27:13 +0000 (UTC)
-From: Vincent Whitchurch via B4 Relay <devnull+vincent.whitchurch.datadoghq.com@kernel.org>
-Date: Mon, 09 Jun 2025 15:27:00 +0200
-Subject: [PATCH bpf-next v2 3/5] selftests/bpf: sockmap: Exit with error on
- failure
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Laf5E0Vx"
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-53090b347dfso1410532e0c.0;
+        Mon, 09 Jun 2025 06:40:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749476411; x=1750081211; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=cY4xKlehVdvlZ3NiQzDRzQlO9jXyfXVG9+zrEpxgDxs=;
+        b=Laf5E0VxclgjwUI34BI36dDqNDdq7UQOm+xEhbO2mgRNf/JH8biWWxMbti5TOulf8Q
+         GKJ+ewYIW41AAuBo4QkEY6076zTLryGTrt2wEYJ50FwP9UYsDyVcvG+uQXDKNgpkztve
+         7UNc1Omj/1oKSPNU8O3c614TJrMV6mv6F1+l/e7IXXUYcjNGaZdEMFmSfFwXZNf41lJZ
+         MRjMM0ZOcxpElPop3jW+TSwHYBmHg2SRAOZ1TdmTWVjw8UHgF0YtT4BcunLKGvFULkh7
+         FDCCa6a01iQLzBZILcdUbWVYqOu1gutBz4bWpo7g8nAZs5Nd/K0wMXFWrauk4RA9cMDx
+         yYLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749476411; x=1750081211;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cY4xKlehVdvlZ3NiQzDRzQlO9jXyfXVG9+zrEpxgDxs=;
+        b=CqGvGPrSyUY/wieA2qU+G0By/3zdAjUxmUWdmOvUq9Ec520Q8Awcs1eO8scgvL4z1W
+         bu8e1Au5jbzUqCynE6Fp5p14EzjYBQ7mqWR+tUJRuO4GhX+RB7Qb5KuOuuHw49Al1Bnh
+         rq2yft5q+W2bLv0084lPo9ATPskI4RlV6pSp7IX9HNZfUrsBg19FUj9glhVI0c2HGowE
+         n4ZrQSciqcgRlaSHTFW12XdaaYf/Yazod8WjGdUHZ59h7jmaZMYDw/wRFRk7OiFHL7Dk
+         jMPwkqfhcJ7LfLClOJWdZ8I1/yPa2+zBMglN4sdvyZGZpiGRwj1QVxKlwZd+PtT4kMO8
+         RvUw==
+X-Forwarded-Encrypted: i=1; AJvYcCX0yLMDS+u6lBIYA34WFqYX/k/L0ru0/Byk9iUv4zlt3xjD9IneVN9Hxkzn/U4OMlELtIKWs+Cy@vger.kernel.org, AJvYcCXvfeLdxBDag2EwGb+p8xLH8XXJ/b4fmadNTAx5yvH2fshX/61cndgBAJxLFKpcplq5KDJZP+697N74Aqk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyb2RVm36PS1YrIlWqQNPLaZ8nR1EGHZFJbWqZLv0nfagyhMRnJ
+	VKUZtVKjpnb7Wm9fDP59sM0gRmcQXIigGSjccxkKc2xZdRg+8BfK45OZu8x4gL/3qKzVJw3fivU
+	4fGoGUlvl1vLOKT2c1PHMKFV9RhPso/E=
+X-Gm-Gg: ASbGnctiI8dw1sYED5gzduQydLcmdrzcsBe4SbacFQHr9TfJZ9kA8KUzN2jehNMBIsS
+	7DlLFe7OIjYUNqsCJSDgOQod44/TW01/N1fOhLQGOerpW99DuXR4Gh9ADntVq58wkhG/OSnTpqF
+	1GJeaUk9y3hpjlX6E+AxqKfdFKXt1/3pV2cP0kO/pXoKeL
+X-Google-Smtp-Source: AGHT+IGY6fU6lJ8V5VjYmrvOBlPolfPyq3XHCfqRqIx9PvrE87W7ON5Flq55XC+vB3tO7sziS7pDRkGERLXIw/X3o/Y=
+X-Received: by 2002:a05:6122:201f:b0:526:2210:5b64 with SMTP id
+ 71dfb90a1353d-530e48b54efmr10496314e0c.9.1749476410937; Mon, 09 Jun 2025
+ 06:40:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250609-sockmap-splice-v2-3-9c50645cfa32@datadoghq.com>
-References: <20250609-sockmap-splice-v2-0-9c50645cfa32@datadoghq.com>
-In-Reply-To: <20250609-sockmap-splice-v2-0-9c50645cfa32@datadoghq.com>
-To: John Fastabend <john.fastabend@gmail.com>, 
- Jakub Sitnicki <jakub@cloudflare.com>
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>, netdev@vger.kernel.org, 
- bpf@vger.kernel.org, Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1749475632; l=739;
- i=vincent.whitchurch@datadoghq.com; s=20240606; h=from:subject:message-id;
- bh=zvCxjLCWikXEcOPolUq/9Ge5sJ6PAHHwLBy0hdL4r6w=;
- b=eWw43c2PIjFVk8vp02nfNuVjaQhpIZAAx+un2YJaK6v7SrB30ALbKLzdnb+WUrfgV8tfBR04A
- BdBsyguCu5JAHC5TIt7IbVEaTV1cHUVpcskhe+C+H6i/9Rl5KP4eo+t
-X-Developer-Key: i=vincent.whitchurch@datadoghq.com; a=ed25519;
- pk=GwUiPK96WuxbUAD4UjapyK7TOt+aX0EqABOZ/BOj+/M=
-X-Endpoint-Received: by B4 Relay for
- vincent.whitchurch@datadoghq.com/20240606 with auth_id=170
-X-Original-From: Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
-Reply-To: vincent.whitchurch@datadoghq.com
+From: Xianying Wang <wangxianying546@gmail.com>
+Date: Mon, 9 Jun 2025 21:39:59 +0800
+X-Gm-Features: AX0GCFvxspkhrn78Sa-QcFbj3ft8P-CqaA5D2axID067xmJTtU7TPXtPy7th6SA
+Message-ID: <CAOU40uC6U3PS3cu7RmK71DPA_jbW_ZY0FBkBjCdjVArCiZO-fA@mail.gmail.com>
+Subject: [BUG] WARNING in sendmsg
+To: davem@davemloft.net
+Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
+Hi,
 
-If any tests failed, exit the program with a non-zero
-error code.
+I discovered a kernel WARNING described as "WARNING in sendmsg"when
+fuzzing the Linux 6.8 kernel using Syzkaller. This issue occurs in the
+memory allocation path within the sendmsg system call, specifically in
+the __alloc_pages function at mm/page_alloc.c:4545. The warning is
+triggered by a WARN_ON_ONCE assertion in the page allocator during an
+attempt to allocate memory via kmalloc from the socket layer.
 
-Signed-off-by: Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
----
- tools/testing/selftests/bpf/test_sockmap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+This occurs when invoking sendmsg, which internally attempts to
+allocate memory for socket buffers via sock_kmalloc(net/core/sock.c).
+The allocation triggers a warning due to either an invalid allocation
+context (e.g., atomic context with GFP_KERNEL) or memory pressure
+conditions that violate allocation constraints.
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index fd2da2234cc9..cf1c36ed32c1 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -2238,7 +2238,9 @@ int main(int argc, char **argv)
- 	close(cg_fd);
- 	if (cg_created)
- 		cleanup_cgroup_environment();
--	return err;
-+	if (err)
-+		return err;
-+	return failed ? 1 : 0;
- }
- 
- void running_handler(int a)
+This may be triggered by an unusual runtime state induced by the
+fuzzing program =E2=80=94 such as mounting a compressed ext4 filesystem via
+loop device, performing ptrace and socket operations, and using
+certain sysctl interfaces. This combination may have placed the system
+in a constrained memory context, causing __alloc_pages to emit a
+warning.
 
--- 
-2.34.1
+I recommend reviewing the use of kmalloc in sock_kmalloc, particularly
+the GFP flags used under socket send operations, and whether the call
+can occur in atomic or memory-constrained contexts. It may be
+necessary to guard such allocations or use GFP_ATOMIC where
+appropriate.
 
+This can be reproduced on:
 
+HEAD commit:
+
+e8f897f4afef0031fe618a8e94127a0934896aba
+
+report: https://pastebin.com/raw/DJLgSX8N
+
+console output : https://pastebin.com/raw/DLirgK1i
+
+kernel config : https://pastebin.com/raw/aJ9rUnhG
+
+C reproducer : https://pastebin.com/raw/EXf8Gc4A
+
+Let me know if you need more details or testing.
+
+Best regards,
+
+Xianying
