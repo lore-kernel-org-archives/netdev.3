@@ -1,162 +1,263 @@
-Received: from AS8PR03CU001.outbound.protection.outlook.com (mail-westeuropeazon11012029.outbound.protection.outlook.com [52.101.71.29])
+Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E491E3DF2;
-	Mon,  9 Jun 2025 09:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.71.29
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749459610; cv=fail; b=aHAybg0TU8ejNOlHOG1v1kUR7ev4vjVo7xAno20vMGLL9vZf/uD7Jb9gMAjxxqxZIcb3ooSZC4UoQUNUMUcQ0F12BlbZEB3hTjlrY/SIk+plOE5zf6QRad5CnwmiJ0DICa/O1U8o7hEfyrCJXHv7VT9niKXBr8zJS1dU/vBKrT4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749459610; c=relaxed/simple;
-	bh=Xg3uqwLau6uRT2rxwp9wbYuLM7oEmnYIWqsqRPmi9SE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=fGfHl/Q3vMr7CmQQ/AjomLRzcw8g3X9bsPzodI4Vv/fzw+eiNPanja+0t6mxU3VpbEDQNHdb5hnjNtRgqmjerCNt6+Jfvgo4qGwXdutQ3c17465y44O6qHl9w+4DUhWoEXk8IjjNgODqflPVcEWAVAwZgMJLSqDXnFCvZJEHZMg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=P8zKbqbF; arc=fail smtp.client-ip=52.101.71.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1602641C63;
+	Mon,  9 Jun 2025 09:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749459931; cv=none; b=ljOeonh/nbb8oy8YCSHoavigiK/5zYP9rm/V4XRpM4zs8xO+c1s6SsAF4ovlvF568HF/AUDGiAcCG+O2W4HL1yIz0i7d/ObiDegS5MxlYOGjWayNnZQ4ufJ2K27/VIredaO8AuBeW5CBDyuILd6yT1YX3Tw3ZodLjxC54pE7Gac=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749459931; c=relaxed/simple;
+	bh=T7q42E47QACt8YrNqAAoSZP1nBkvqvv8SPsaWHfyoco=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DNs1PM47a/nsX0Ho7UZvbmiMePnvcsvMr3WvbqJOeNCqdxp6dxu0XEtP3xjE46dnvjV77ri5cwOsqGl2SiZ1Qg4xRVnGZ9J/Cfv3AjId76bM2qHyoWBJDXLMtTHosr5PcdWXW1KWp7rCfQbaDRpZ0wG+TqJExlHZKinJPDU9TbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Ffoa/t8K; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="P8zKbqbF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aCeYa5gBC+z1zhKUiF2JHcu72KG/dAESdkG84gDRlVL0F5pGfwoaGBlpXcPittw0Q3wIE6Z7V8LWiFAaxH+dy8hOKTqZXDyjU3jFSisCxNTd5cf6+VY+cFs5rf3cMznxfUAMXG+MriynzIOkKQoONnMfh56TPzAhWKOq1E23zYp39TuSY2x8u0dFxmV9+vpXZ0/q3hnXxjIHhcrGhKwjPerbgVZlnaTzKNeG2/BQ2bAHM4DJGv3ql0mTCQ6wVWSLAM4g3LsgYVqQt98CSWhcUIJR1PMoAL+47c59AZ24FIwkRzUzi+KdD1tx0BKtr3Max039/5c2tVAMMZapDfvBqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Xg3uqwLau6uRT2rxwp9wbYuLM7oEmnYIWqsqRPmi9SE=;
- b=gFIw/hG/3eyAIUWeMKa/k2HMUgX5Ccq5X3DUdV8qJ9/yV23GcX9tgK19mbk7qrEk3Drytyqvpsuni1FbwO/XdXU9HHoBPNk9wkE8trS9Wh7n1bf/Ahh9W97CcZG+mXll5uU1D+NDH8R0IFkgL9IztQIS6qn0YaoEzZvL9P1yE52gJGunGaPJLhwWmdC4hzQQJJNpJk/nz26V5l3Is8M3l6ivIba42WEI63nl28H0VdHAcJm/JkTGeF7qa2CIoiSOd663RuEslCTcunur5baxNzEuN/zp5edfbJYghsLniTTpkBkOvwwiViXTOZDBZIpq9DlE1/L8zvOkdbZNjGEpsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Xg3uqwLau6uRT2rxwp9wbYuLM7oEmnYIWqsqRPmi9SE=;
- b=P8zKbqbFlNPIsyUGkI7uM3lvjaipzqs6453d3eiyp72lvf2IVlD/74vo8+7ZH3FF+l3caffvTrBPX+NY8I+t//a4C7bXTg9e0uCm3/dDh+t8V1OOe9l6eDfuzHZuWmd/BQ4LhBa0wD7w1v1Vv6zXwdPbdFABo3lez3I6w1SG02it9nm5DhxZEQ8w6Yf3j8iT9qJTUoZwVlEbARn02zB/5elN6MHE4wXv2+dcsLBdDyfbJ3Mbiju5daEQ2+BH/f2JeDbXXZLNs/+WSBN3qpc6mct96TAwFGOrwDe4y80KVHuIfnu9tWqekHlBN84GSlzdKT/MkAgTOAYJPsIWVtJxig==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by AS8PR04MB8628.eurprd04.prod.outlook.com (2603:10a6:20b:42b::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.21; Mon, 9 Jun
- 2025 09:00:05 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%3]) with mapi id 15.20.8813.024; Mon, 9 Jun 2025
- 09:00:05 +0000
-Date: Mon, 9 Jun 2025 18:10:12 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:b|_)ptp(?:b|_)" <netdev@vger.kernel.org>
-Subject: Re: [PATCH 2/6] arm64: dts: imx93: remove eee-broken-1000t for eqos
- node
-Message-ID: <20250609101012.GK13113@nxa18884-linux>
-References: <20250605205853.1334131-1-Frank.Li@nxp.com>
- <20250605205853.1334131-2-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250605205853.1334131-2-Frank.Li@nxp.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SG2PR04CA0167.apcprd04.prod.outlook.com (2603:1096:4::29)
- To PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Ffoa/t8K"
+Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5597oSii022115;
+	Mon, 9 Jun 2025 02:05:16 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=D3cLz1OC2ofzHYEaItdqF/35l
+	dM0sRiRUqysx1oUpqI=; b=Ffoa/t8KuvEG8idJaz5Gx53EYMRwHondBtuIcOWTy
+	K/1mlShyZ0c0Buix4fza1GnAvtLBiH3lr/7zCtNY4aISi2igqUtA72dHZ/i8mqYE
+	bHr+w8Zx5JDXbNBxBqjTcdaIzOa9Y7Jgz/lFM0c70QnYmPLaCCpaP+Oybhq7nTXd
+	gQ0Avn3fdipaFBIkex5NUxwRZMLQLPzCaI8/jlSOGOU3RziR3kO2vBwLtGTX7xm/
+	p9X8mlgbl8b5rIjgtGWP4v62RE6mebMEhBhLX8DXRw9MjAzoZBR2R/IgfxgAhAwf
+	4dYQRRempbirVpH6jxNGndzQz3ahdS4leVh1R3MFrcqPQ==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 475ujxr40g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Jun 2025 02:05:15 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Mon, 9 Jun 2025 02:05:14 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Mon, 9 Jun 2025 02:05:14 -0700
+Received: from 82bae11342dd (HY-LT91368.marvell.com [10.29.24.116])
+	by maili.marvell.com (Postfix) with SMTP id 81CC13F7077;
+	Mon,  9 Jun 2025 02:05:11 -0700 (PDT)
+Date: Mon, 9 Jun 2025 09:05:09 +0000
+From: Subbaraya Sundeep <sbhatta@marvell.com>
+To: Jun Miao <jun.miao@intel.com>
+CC: <oneukum@suse.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <netdev@vger.kernel.org>,
+        <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] net: usb: Convert tasklet API to new bottom half
+ workqueue mechanism
+Message-ID: <aEajxQxP_aWhqHHB@82bae11342dd>
+References: <20250609072610.2024729-1-jun.miao@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|AS8PR04MB8628:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8c3cfef9-1f7d-46e9-62f7-08dda7340715
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|376014|7416014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?NKUZXfXeHAdfIFQWZJrWYO1nTxqtTuPKghdZTAVMENu2YNmmoLxwLsHf6mXd?=
- =?us-ascii?Q?VQujPVoPf6fMhLp98whQT1Muq+hTq00Elv4pOFF72bX1IKDY1GScgjmcOti7?=
- =?us-ascii?Q?1zGN0cn90/LaMhtQZEF4bNRk5uWL7xuF+8QE6cjDxUqqY8dBpvnu4UiXuxi3?=
- =?us-ascii?Q?DCjA9wfbO9/iwOXaKT2trBRVAE0yVMTZEY50hntT2vozqS5PEbn+eaoAy/dS?=
- =?us-ascii?Q?zDwm9AclYcz+Bkqkpx4Zz6Pboi+mnf3fkcLwMWUsG9qYJFcJ2EM3gJ8hefVs?=
- =?us-ascii?Q?qxB4NDonfz/KRqXmhz/ki4RGxuumI4CuXRAM4kHwJ4cO2jaE5ajtygl0S/i7?=
- =?us-ascii?Q?MpLHMGPm0hRS6Xik7rcE2xJy91+JCCKIlXItxXXoijHJsJT4G0MHzjfPHztQ?=
- =?us-ascii?Q?JHWwBhHSKGQsCmaGHlbTAkEHbP5ec+QvzpQkDRyIe4S1MCy5iEdWXW9oDykQ?=
- =?us-ascii?Q?zb33cj5Xv5QZd9ztubF1trFm+poHgoYuTCTqlMRAOqAlDSguMhobfDf2MIW1?=
- =?us-ascii?Q?fQKURoh0SROwasqXT0ffA7w8/rP+9SF2sX/vu5h4/+G2KCIAgAPfUSAi4SEG?=
- =?us-ascii?Q?GwirtjrQn2TZTWmsO6UFKMR5qkgUSHeZv9xN5z/GOlCraFGA3Q08YPfuBIRG?=
- =?us-ascii?Q?/kcar5xmodaqhJ+2G+TCdMMK9zV5S6fYI4Z9NiHQ8CHxBVwEpfws+0Vcvu6B?=
- =?us-ascii?Q?cPvm1Vvx6zzzle1sXXJARmv+e9YBD2YxyP6iKUaPWMlwLZ/PMvfHdH8SiRJR?=
- =?us-ascii?Q?jU0Up/BBWxwoFgiB6fhwbZbyyPE5IrYmQqPMGz4I7xR+xptWrWrLeAo2GXqt?=
- =?us-ascii?Q?Z2BYIT9rtOaIyIRXYdn/m1lEx9LvLZbeN5J7IvlcXWku99WM+0x4HZUSM0w1?=
- =?us-ascii?Q?jyUvZhFF4M5DQv9iKsXB9Cg9A/Jmq2Yg5+czO2Brz+JNQba1xyDKH4EF8OYM?=
- =?us-ascii?Q?O7FA1pMtO9AoPSZnwn4uq/B6owQvS90ju4FFI+Z+cXOG4+hq0Pu+ooZKAlhG?=
- =?us-ascii?Q?yBbUHlQhj0LUSfjp2pJmh+XYHRRw91CO7KWVtSd68xWSmzII60RKRWGeq7YV?=
- =?us-ascii?Q?9Za5pWDTuQL3NA/Bl8OhpIyjTtIA5aS/50QZd0/FXo1oWeB+SIrqiRrTabyV?=
- =?us-ascii?Q?O89tVwceri+Nwnc5fKmPBbJKMgsthQjkXqO6Kx/SanVugwsMrjC7O6u5fsUJ?=
- =?us-ascii?Q?3hVyZDIvvKtCjx7JRZeRqrR5umhdc5kTheVjH87pSVs/vS47ZsTKm7U8jWHY?=
- =?us-ascii?Q?vZFbMGTbhFvFc86aq2VPrIxvK9Sv4yLtCaslqgBzygc7D4vQu0N6nTXRFHT6?=
- =?us-ascii?Q?9EfsaEPJKkQvyc9NjX0+pMKvxBOBzLZ8RO8w+B+1Mctwr54trDiyQXPSSyVT?=
- =?us-ascii?Q?EaZdGztgyJvX8l1WX/IpkizYg+r9yfWyh9COG+mwFSmCGP0Ql7mYKLrNXITY?=
- =?us-ascii?Q?PCTVr0vnCsy3KTxeCBtUMsmIkjn6oE2mvPfdFFCXiSeqNBMrk0e5ew=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?G9vsKPkFRR9WlaK/0d+U5EAWquTau82kvuNBuKiWtUxeIvsMQTBl5DVJfmpi?=
- =?us-ascii?Q?0Kt2lM0btTu8eMhM5ABuEBj8z1wdpPyvGhkUWaYxiAeGnGGpEagewpfEHbfV?=
- =?us-ascii?Q?9cz7WbOLmJs4QkQpzCSezR9yB67O4dQr0rowHukrz1TD70h1x7V2OajnocT+?=
- =?us-ascii?Q?GZ2IzYreUuz6koURcO17veZ4eJ/fsdNyQaFMaC3AX+9phGQ6uztT24h+uKVf?=
- =?us-ascii?Q?M/Ymutk3ISO3BxFefRjiBUHdh8BVYu18hYHDYG+KXEYl7QHDzaNB1Sq2YFHV?=
- =?us-ascii?Q?ux8W7eXvWuVW8Z+iFtbaL1Sa521RGnc/F9kbNMaLbCYzvKKs2pH2BiP1Rui8?=
- =?us-ascii?Q?vSYyMOiF9IrWJ904wsjVzXK/IHxCUwmviq97Xm5buyspoYmV2A0F+Hht4CWo?=
- =?us-ascii?Q?CLsZv4E7EORfqbkwiKjXu19e7CgcW192U0I9PRMmNSzR48mvuY69RlehnwOa?=
- =?us-ascii?Q?V+T81vP4TC2chfmvr+TAUJdRON5YMjveoP4SNbdJogXcsaa28kd8RvsGbj8G?=
- =?us-ascii?Q?rDZbBwDEwYZK+a5TopXQTJjiSBkxfUtb35QMPH6nSFkYCAqJxqYyXAIpAW/w?=
- =?us-ascii?Q?276YRvzd4Bq9mediuv5KbpNQ8fgjyDBzJbdPvwCuAt/vRTI+QimDeefoc6l+?=
- =?us-ascii?Q?AT9MamoRbjE/zMIdrCyDG4e1CoPBgwdDfIyUezNIFAA/JIpks/eKKlpjp4CO?=
- =?us-ascii?Q?xsMCIHzvXJkhQRA4+gbKCsdq1UdKNp4tXDTQE4afqQP4ucXCs6J+U32r7rpE?=
- =?us-ascii?Q?mdfneJu8rc+78iCKOMi9JqFl5pR9YT5ngaGs1L0r1Fw+mggvhHvzuAweR7ym?=
- =?us-ascii?Q?byVrCnDB9e99DNQW41Ijw9kb4LRG3FNGU8D/WXNrz8UWmD74udkq0R4g3FrX?=
- =?us-ascii?Q?5mqfghcjdyeAQ0j4ocxk9yKuRA4jxhKFEtKyeK9VOtyZN7BpHxya1POaVMv1?=
- =?us-ascii?Q?tzp2QTi0fxeEpHkOFufOWm8Kmn2cU6MlCOuNYiYJmz/8hXHTRwCyHFGlAURE?=
- =?us-ascii?Q?NjilhSw/F5ygAtfn28FUoJdyTjngLJKp8J48n04fH/uPKjYXVUcH606jC5yA?=
- =?us-ascii?Q?OHsQVe2M+a0qP3ihsGqbKHNbRFhv10qBn1DH6agpLAxHj3oGp+0dhgZF1APD?=
- =?us-ascii?Q?MycqX59K/QHMBnSaiv31sfTj0NHVDrWV/jrcKjccHbOqtzfiHLtxg/AWEsoJ?=
- =?us-ascii?Q?gQ0NaARKzq/vWWSoFlNhUW15n5HbQKveO/kbL4Ai3S6ojBQekuAsPG/ubzu8?=
- =?us-ascii?Q?ab0j7wfy3OtbE39rWHBH+TsiVwISpCYSkHz6E0VtrsfTpmq/Ix+NtzR8F8Wb?=
- =?us-ascii?Q?PhWCrHW3/HROv3mQSFYYGi7Rkd7amO2mRpmUkt+UnXJYcFJv/qw+qUiize21?=
- =?us-ascii?Q?ukMniv3uijAO4ykCx4WlZpspIMiJxkh1kdQdkXf2nwsXAG89GnnNWcfH4h8T?=
- =?us-ascii?Q?9lv+xpT4QbAlyx/DtzdYmIEFDvWuVg9cDj1Lfz5U5ppq3ucGb4pUdbWDcG1q?=
- =?us-ascii?Q?vqadbjjGpkBaWjfnyDyGzHUqFx7JlsWdX2JeTV8qun7t5huSnYK/Sv65aIoZ?=
- =?us-ascii?Q?jrU4EZ1Xpei3Iz41dGwsEkeibDaAIPhgas87uVNk?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c3cfef9-1f7d-46e9-62f7-08dda7340715
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2025 09:00:05.7081
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: a2ZU1S66P+oks4/9JrnGqsIpiptOaBccCQ9X8Z49Vb8IVi4wCH67rFB9DsC5YQgppqeogVXS8PvjkNHiXATYHg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8628
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20250609072610.2024729-1-jun.miao@intel.com>
+X-Proofpoint-GUID: 0FVtBqmelOGtw88Wn2twAGmp9RT4ONjM
+X-Proofpoint-ORIG-GUID: 0FVtBqmelOGtw88Wn2twAGmp9RT4ONjM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA5MDA2OSBTYWx0ZWRfX0NCzfoN4bjoO YRl83PWdBOq9r0lucTVmFxWAkaDYT0w558FVOG0iwOvx2/ZsxtPYfy3SpXFFQHf/afZHa2dyIJx A1fVpadzP/fQdowvrGyiFPZio5z8OxJokcDGBUhuKUvyG/U7GyXM/yrRngMzgs/eMvgCeG46wJZ
+ 2hlWWv8CQgR/OA0faoZKZQQAJMbzzSg4aVABKXjk0NtnLy3j/SuhTMsI+hPIkiF3VSlJl61Dsf8 3Zl+yj+CxnlI44yOZrLmDTFMiTEqQS32bER+KDdZbYzgxSoRqRvZ06HsXVxeFEJClB3xforrk0M fun/hO/VPXOH15z0hVkhWFFPay9l8fMoTO2TIdY21zPUrgcv8ta+tYFJHq2xoYsAxkg9/yDwMyl
+ knrNNtSBhfOzsZ6YBsU1yhSDsZSSb9b93hSvpAe7l23r6wDfkVHRe3VEC5uoWMqfQXlEi+yE
+X-Authority-Analysis: v=2.4 cv=LuKSymdc c=1 sm=1 tr=0 ts=6846a3cb cx=c_pps a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17 a=kj9zAlcOel0A:10 a=6IFa9wvqVegA:10 a=QyXUC8HyAAAA:8 a=X-fdUdr0RTnJSFWCzdYA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-09_03,2025-06-05_01,2025-03-28_01
 
-On Thu, Jun 05, 2025 at 04:58:49PM -0400, Frank Li wrote:
->From: Clark Wang <xiaoning.wang@nxp.com>
->
->The "eee-broken-1000t" was added on 8mm for FEC to avoid issue of ptp sync.
->EQoS haven't such issue. So, remove this for EQoS phys.
->
->Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Hi,
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+On 2025-06-09 at 07:26:10, Jun Miao (jun.miao@intel.com) wrote:
+>  Migrate tasklet APIs to the new bottom half workqueue mechanism. It
+>  replaces all occurrences of tasklet usage with the appropriate workqueue
+>  APIs throughout the usbnet driver. This transition ensures compatibility
+>  with the latest design and enhances performance.
+> 
+> Signed-off-by: Jun Miao <jun.miao@intel.com>
+> ---
+>  drivers/net/usb/usbnet.c   | 36 ++++++++++++++++++------------------
+>  include/linux/usb/usbnet.h |  2 +-
+>  2 files changed, 19 insertions(+), 19 deletions(-)
+> 
+> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+> index c04e715a4c2a..566127b4e0ba 100644
+> --- a/drivers/net/usb/usbnet.c
+> +++ b/drivers/net/usb/usbnet.c
+> @@ -461,7 +461,7 @@ static enum skb_state defer_bh(struct usbnet *dev, struct sk_buff *skb,
+>  
+>  	__skb_queue_tail(&dev->done, skb);
+>  	if (dev->done.qlen == 1)
+> -		tasklet_schedule(&dev->bh);
+> +		queue_work(system_bh_wq, &dev->bh_work);
+>  	spin_unlock(&dev->done.lock);
+>  	spin_unlock_irqrestore(&list->lock, flags);
+>  	return old_state;
+> @@ -549,7 +549,7 @@ static int rx_submit (struct usbnet *dev, struct urb *urb, gfp_t flags)
+>  		default:
+>  			netif_dbg(dev, rx_err, dev->net,
+>  				  "rx submit, %d\n", retval);
+> -			tasklet_schedule (&dev->bh);
+> +			queue_work(system_bh_wq, &dev->bh_work);
+>  			break;
+>  		case 0:
+>  			__usbnet_queue_skb(&dev->rxq, skb, rx_start);
+> @@ -709,7 +709,7 @@ void usbnet_resume_rx(struct usbnet *dev)
+>  		num++;
+>  	}
+>  
+> -	tasklet_schedule(&dev->bh);
+> +	queue_work(system_bh_wq, &dev->bh_work);
+>  
+>  	netif_dbg(dev, rx_status, dev->net,
+>  		  "paused rx queue disabled, %d skbs requeued\n", num);
+> @@ -778,7 +778,7 @@ void usbnet_unlink_rx_urbs(struct usbnet *dev)
+>  {
+>  	if (netif_running(dev->net)) {
+>  		(void) unlink_urbs (dev, &dev->rxq);
+> -		tasklet_schedule(&dev->bh);
+> +		queue_work(system_bh_wq, &dev->bh_work);
+>  	}
+>  }
+>  EXPORT_SYMBOL_GPL(usbnet_unlink_rx_urbs);
+> @@ -861,14 +861,14 @@ int usbnet_stop (struct net_device *net)
+>  	/* deferred work (timer, softirq, task) must also stop */
+>  	dev->flags = 0;
+>  	timer_delete_sync(&dev->delay);
+> -	tasklet_kill(&dev->bh);
+> +	disable_work_sync(&dev->bh_work);
+>  	cancel_work_sync(&dev->kevent);
+>  
+>  	/* We have cyclic dependencies. Those calls are needed
+>  	 * to break a cycle. We cannot fall into the gaps because
+>  	 * we have a flag
+>  	 */
+> -	tasklet_kill(&dev->bh);
+> +	disable_work_sync(&dev->bh_work);
+>  	timer_delete_sync(&dev->delay);
+>  	cancel_work_sync(&dev->kevent);
+>  
+> @@ -955,7 +955,7 @@ int usbnet_open (struct net_device *net)
+>  	clear_bit(EVENT_RX_KILL, &dev->flags);
+>  
+>  	// delay posting reads until we're fully open
+> -	tasklet_schedule (&dev->bh);
+> +	queue_work(system_bh_wq, &dev->bh_work);
+>  	if (info->manage_power) {
+>  		retval = info->manage_power(dev, 1);
+>  		if (retval < 0) {
+> @@ -1123,7 +1123,7 @@ static void __handle_link_change(struct usbnet *dev)
+>  		 */
+>  	} else {
+>  		/* submitting URBs for reading packets */
+> -		tasklet_schedule(&dev->bh);
+> +		queue_work(system_bh_wq, &dev->bh_work);
+>  	}
+>  
+>  	/* hard_mtu or rx_urb_size may change during link change */
+> @@ -1198,11 +1198,11 @@ usbnet_deferred_kevent (struct work_struct *work)
+>  		} else {
+>  			clear_bit (EVENT_RX_HALT, &dev->flags);
+>  			if (!usbnet_going_away(dev))
+> -				tasklet_schedule(&dev->bh);
+> +				queue_work(system_bh_wq, &dev->bh_work);
+>  		}
+>  	}
+>  
+> -	/* tasklet could resubmit itself forever if memory is tight */
+> +	/* workqueue could resubmit itself forever if memory is tight */
+>  	if (test_bit (EVENT_RX_MEMORY, &dev->flags)) {
+>  		struct urb	*urb = NULL;
+>  		int resched = 1;
+> @@ -1224,7 +1224,7 @@ usbnet_deferred_kevent (struct work_struct *work)
+>  fail_lowmem:
+>  			if (resched)
+>  				if (!usbnet_going_away(dev))
+> -					tasklet_schedule(&dev->bh);
+> +					queue_work(system_bh_wq, &dev->bh_work);
+>  		}
+>  	}
+>  
+> @@ -1325,7 +1325,7 @@ void usbnet_tx_timeout (struct net_device *net, unsigned int txqueue)
+>  	struct usbnet		*dev = netdev_priv(net);
+>  
+>  	unlink_urbs (dev, &dev->txq);
+> -	tasklet_schedule (&dev->bh);
+> +	queue_work(system_bh_wq, &dev->bh_work);
+>  	/* this needs to be handled individually because the generic layer
+>  	 * doesn't know what is sufficient and could not restore private
+>  	 * information if a remedy of an unconditional reset were used.
+> @@ -1547,7 +1547,7 @@ static inline void usb_free_skb(struct sk_buff *skb)
+>  
+>  /*-------------------------------------------------------------------------*/
+>  
+> -// tasklet (work deferred from completions, in_irq) or timer
+> +// workqueue (work deferred from completions, in_irq) or timer
+>  
+>  static void usbnet_bh (struct timer_list *t)
+>  {
+> @@ -1601,16 +1601,16 @@ static void usbnet_bh (struct timer_list *t)
+>  					  "rxqlen %d --> %d\n",
+>  					  temp, dev->rxq.qlen);
+>  			if (dev->rxq.qlen < RX_QLEN(dev))
+> -				tasklet_schedule (&dev->bh);
+> +				queue_work(system_bh_wq, &dev->bh_work);
+Correct me if am wrong. 
+Just above this code there is - if (rx_alloc_submit(dev, GFP_ATOMIC) == -ENOLINK).
+You can change it to GFP_KERNEL since this is not atomic context now.
+
+Thanks,
+Sundeep
+>  		}
+>  		if (dev->txq.qlen < TX_QLEN (dev))
+>  			netif_wake_queue (dev->net);
+>  	}
+>  }
+>  
+> -static void usbnet_bh_tasklet(struct tasklet_struct *t)
+> +static void usbnet_bh_workqueue(struct work_struct *work)
+>  {
+> -	struct usbnet *dev = from_tasklet(dev, t, bh);
+> +	struct usbnet *dev = from_work(dev, work, bh_work);
+>  
+>  	usbnet_bh(&dev->delay);
+>  }
+> @@ -1742,7 +1742,7 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+>  	skb_queue_head_init (&dev->txq);
+>  	skb_queue_head_init (&dev->done);
+>  	skb_queue_head_init(&dev->rxq_pause);
+> -	tasklet_setup(&dev->bh, usbnet_bh_tasklet);
+> +	INIT_WORK (&dev->bh_work, usbnet_bh_workqueue);
+>  	INIT_WORK (&dev->kevent, usbnet_deferred_kevent);
+>  	init_usb_anchor(&dev->deferred);
+>  	timer_setup(&dev->delay, usbnet_bh, 0);
+> @@ -1971,7 +1971,7 @@ int usbnet_resume (struct usb_interface *intf)
+>  
+>  			if (!(dev->txq.qlen >= TX_QLEN(dev)))
+>  				netif_tx_wake_all_queues(dev->net);
+> -			tasklet_schedule (&dev->bh);
+> +			queue_work(system_bh_wq, &dev->bh_work);
+>  		}
+>  	}
+>  
+> diff --git a/include/linux/usb/usbnet.h b/include/linux/usb/usbnet.h
+> index 0b9f1e598e3a..208682f77179 100644
+> --- a/include/linux/usb/usbnet.h
+> +++ b/include/linux/usb/usbnet.h
+> @@ -58,7 +58,7 @@ struct usbnet {
+>  	unsigned		interrupt_count;
+>  	struct mutex		interrupt_mutex;
+>  	struct usb_anchor	deferred;
+> -	struct tasklet_struct	bh;
+> +	struct work_struct	bh_work;
+>  
+>  	struct work_struct	kevent;
+>  	unsigned long		flags;
+> -- 
+> 2.43.0
+> 
