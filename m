@@ -1,41 +1,75 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CED19992D;
-	Mon,  9 Jun 2025 14:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD0172606;
+	Mon,  9 Jun 2025 14:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749480554; cv=none; b=DydTPwtqn9HaEjJA1fG8uTdiXiwPbQ7jvBSvwXI0kP3lorfaXC+fviCthf/r/d8y5DDwxnd34NcH7974QwT0kYi6h9aoJiNgBcO58j/xi7mGoFv9RaaOWd5+smfbkz7TbpTj4zhZxbq54ADs3gGa7vns83pb72w8y3on44urpo0=
+	t=1749481000; cv=none; b=LMGEzcBkTOJrPyQbr+sinYfdSyOHVbUCS5Xk+seF0SfBwlXl24s6Gs/7wAQJou8KqdhJX6A2FHTnq2tyqersv/CZdKXQ3xOBQ/hykfjTFIH7xppIf/y8gfSUIYhV1jvehTCUi3oLP0KhOPChh1egdRpcTB42l3i08Kawn11sF+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749480554; c=relaxed/simple;
-	bh=OvgUR6M8mrEzNRJnUalt7yVdkbKC4auzhxypn5qvETY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u9iLZrSkrj2532ZsS0YD/HQZTIX/RPUoLyCMfnC+ZeQh0V4RFExgkYrA1ae51h+9XLl1dzvad0TMIH8h2h/4Qv2iqhoQTKNfxQ3Kf697VAWCrt2yTyfRdN/BUQknVV6S+CygQaCTPRT9FjIHsH4q90bpXmy//EluOKp6WlZIbX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bGFBg22WFz6L5KC;
-	Mon,  9 Jun 2025 22:47:23 +0800 (CST)
-Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5C60D1402F5;
-	Mon,  9 Jun 2025 22:49:10 +0800 (CST)
-Received: from china (10.220.118.114) by frapeml500005.china.huawei.com
- (7.182.85.13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 9 Jun
- 2025 16:49:04 +0200
-From: Gur Stavi <gur.stavi@huawei.com>
-To: Gur Stavi <gur.stavi@huawei.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Fan Gong <gongfan1@huawei.com>
-Subject: [PATCH net-next v3 3/3] hinic3: remove tx_q name collision hack
-Date: Mon, 9 Jun 2025 18:07:54 +0300
-Message-ID: <6376db2a39b8d3bf2fa893f58f56246bed128d5d.1749038081.git.gur.stavi@huawei.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1749038081.git.gur.stavi@huawei.com>
-References: <cover.1749038081.git.gur.stavi@huawei.com>
+	s=arc-20240116; t=1749481000; c=relaxed/simple;
+	bh=L2+6Eah1O8TlZJlFrgG8KAyfFea7SFLLoPZ6PJdG/Lk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=B6SvqWYy9eFy8C+jTikF/2WuChFrcqeIvZEuiobqfFniaZ86La5ssYhrzf9ZQPqbKoT6rA245O+iQI9OwdZJt+KW3NjJWQ2iBG57I2rZdvj6Rk8KaG+v2ewbaoLsepjOtp9bwF0xL68UGsdXjN0WY7qtGOm1RRAdEnnzRpg1A78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lXv0l26b; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lXv0l26b"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3a3798794d3so3743112f8f.1;
+        Mon, 09 Jun 2025 07:56:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749480996; x=1750085796; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AD8CdEe2djCXyzMtatbTa8JQVgDN2iS28PWMu7pGIKg=;
+        b=lXv0l26bxoVH8jLz0F/d/WaeUfKQ1PnoiwKXEgaxuEzYulo6wj5URbnswaj+cOqjFe
+         81qZ2NiGTNg18xYzRg0u1yz2lXlzz3cgENx62w8DBX4SCuO/hyZIH2Nbfan6BXHbdGVL
+         yGfnjqQ5y5D8KYQeo9+KVuawQuQISAcS7IrpyXrFG/E3Du8urnSIXoO5HKI/+eDJ/9Yi
+         wcbAzvbX9ZMgyvJeGrT13Nik78kHi/NCK/Vvqt6QzX8NBdUYZ2Cn8+Fcm/5pnyWMlb+f
+         O2erMNNodNmvNviQ11pyGYJ58ydKv7CsYpE+RctFQjNG71thf/JxLJraDBnV6cvXvQUV
+         /iVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749480996; x=1750085796;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AD8CdEe2djCXyzMtatbTa8JQVgDN2iS28PWMu7pGIKg=;
+        b=YaYdl7WWw/y15URMZysZA+9zx0nA9OIABqD8ONlMtlSWkVCH7bZBl5S1/lHEa2/G84
+         aNzMc0j1dGNqxvtDV+iIx7NnpEzCtBLzZyleP88BnIZypmnv/Of+74qw5Z0DJzTw7Xji
+         dK1hWkw32Tvc2m+5Em3z8HHxD3eo5NiueIxraALr3261okgSksByg5j8itvzR6+D/nAF
+         Uw2wx7E2jrk4UcDjq3y9SZUAToETXW1S+mOdRsW3+y+gLeDvinO9VpL+ayMuAOUUoSgr
+         2Prf6guc87D4uzzAL1tHWIJRgT93iXrsKlOtKyf4FFJc5P7ocn3PnxsrW2zrvxxTeSPT
+         LzXA==
+X-Forwarded-Encrypted: i=1; AJvYcCVI6JQw2AOCtTVfA/v9G0ZKbJgbgz0QoiCVegHYWzCiWtYKzwY6cbJDFT8v+w0bLcuzem6SdnO6v/XRv7o=@vger.kernel.org, AJvYcCVU/+ZV+9iDhPHemQc1/SARGMorVzs2D/lAj5SYTOlnKJXp5w0n4qabHZx3oo10EpngUeCIv3ZS7DVn@vger.kernel.org, AJvYcCVxdgI2KAk8sI3FirzWKcwQXrkbF2xbgRvtFUiYgI4+hf38zUlyImbo9ceCbVUcJGB7URrMrgg7@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxlk784eUAb+a5tS8CfLe3Fpn4ensLmkwvtSOM4Kbov7nzbL9j1
+	FEvNkG1Eoh/J8n4/Jojx0MqRBXR9u0tGS6UOkYxv9vWiW+hnVMux5sIz
+X-Gm-Gg: ASbGnctdTkDSv2mi7R/7tfsr6pnYKIjYUzJyjzM6Sqxv4gcnIALiudE+QnXbNcpcszp
+	p2ICy97q7lSaBkrKtUj40PxOvP+C75kQvjgIwtxnD5KQkEXoVpGVRqZuWSh3vvf6OKSACRTCi26
+	rHMSzLKWB1gfbCD+MdGTyxvAxDqBqtZ20fyVyGOsNKWtEm38UByjh45gC9sPqV+nB7j9eqJrN0j
+	CGioH5D9MPRMZqWkT8fPRwvJLpZPxR4HfO9p2hKx04kBqox3Gw0NeHJe0OxM0YNsXlVhnlCW38Y
+	ODsJBrndGLtsn9lrncz245vLXEpop5282be8KhB1C7pcayxOt36vGQaby91ZOGPUGeu33H/qH4u
+	D7UWzJwQ=
+X-Google-Smtp-Source: AGHT+IGX2Bg9tpEHhKD1YfVaIZemrvrQcBkDBqvQcEA5ekwjfXwM5An+osvXDtZHbYPcteYXA6aidw==
+X-Received: by 2002:a05:6000:250e:b0:3a5:2670:e220 with SMTP id ffacd0b85a97d-3a531cb01b7mr10249454f8f.32.1749480995918;
+        Mon, 09 Jun 2025 07:56:35 -0700 (PDT)
+Received: from lucas-OptiPlex-755.. ([79.117.136.19])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a5322a9bbdsm9553024f8f.21.2025.06.09.07.56.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jun 2025 07:56:35 -0700 (PDT)
+From: Lucas Sanchez Sagrado <lucsansag@gmail.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: Lucas Sanchez Sagrado <lucsansag@gmail.com>,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] net: usb: r8152: Add device ID for TP-Link UE200
+Date: Mon,  9 Jun 2025 16:55:36 +0200
+Message-Id: <20250609145536.26648-1-lucsansag@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,78 +77,29 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- frapeml500005.china.huawei.com (7.182.85.13)
 
-A local variable of tx_q worked around name collision with internal
-txq variable in netif_subqueue macros.
-This workaround is no longer needed.
+The TP-Link UE200 is a RTL8152B based USB 2.0 Fast Ethernet adapter. This 
+patch adds its device ID. It has been tested on Ubuntu 22.04.5.
 
-Signed-off-by: Gur Stavi <gur.stavi@huawei.com>
+Signed-off-by: Lucas Sanchez Sagrado <lucsansag@gmail.com>
 ---
- .../net/ethernet/huawei/hinic3/hinic3_tx.c    | 20 +++++++++----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ drivers/net/usb/r8152.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-index 7b6f101da313..3f7f73430be4 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-@@ -482,7 +482,6 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
- {
- 	struct hinic3_sq_wqe_combo wqe_combo = {};
- 	struct hinic3_tx_info *tx_info;
--	struct hinic3_txq *tx_q = txq;
- 	u32 offload, queue_info = 0;
- 	struct hinic3_sq_task task;
- 	u16 wqebb_cnt, num_sge;
-@@ -506,9 +505,9 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
- 		if (likely(wqebb_cnt > txq->tx_stop_thrs))
- 			txq->tx_stop_thrs = min(wqebb_cnt, txq->tx_start_thrs);
- 
--		netif_subqueue_try_stop(netdev, tx_q->sq->q_id,
--					hinic3_wq_free_wqebbs(&tx_q->sq->wq),
--					tx_q->tx_start_thrs);
-+		netif_subqueue_try_stop(netdev, txq->sq->q_id,
-+					hinic3_wq_free_wqebbs(&txq->sq->wq),
-+					txq->tx_start_thrs);
- 
- 		return NETDEV_TX_BUSY;
- 	}
-@@ -543,10 +542,10 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
- 	}
- 
- 	netif_subqueue_sent(netdev, txq->sq->q_id, skb->len);
--	netif_subqueue_maybe_stop(netdev, tx_q->sq->q_id,
--				  hinic3_wq_free_wqebbs(&tx_q->sq->wq),
--				  tx_q->tx_stop_thrs,
--				  tx_q->tx_start_thrs);
-+	netif_subqueue_maybe_stop(netdev, txq->sq->q_id,
-+				  hinic3_wq_free_wqebbs(&txq->sq->wq),
-+				  txq->tx_stop_thrs,
-+				  txq->tx_start_thrs);
- 
- 	hinic3_prepare_sq_ctrl(&wqe_combo, queue_info, num_sge, owner);
- 	hinic3_write_db(txq->sq, 0, DB_CFLAG_DP_SQ,
-@@ -630,7 +629,6 @@ bool hinic3_tx_poll(struct hinic3_txq *txq, int budget)
- 	struct net_device *netdev = txq->netdev;
- 	u16 hw_ci, sw_ci, q_id = txq->sq->q_id;
- 	struct hinic3_tx_info *tx_info;
--	struct hinic3_txq *tx_q = txq;
- 	unsigned int bytes_compl = 0;
- 	unsigned int pkts = 0;
- 	u16 wqebb_cnt = 0;
-@@ -662,8 +660,8 @@ bool hinic3_tx_poll(struct hinic3_txq *txq, int budget)
- 	hinic3_wq_put_wqebbs(&txq->sq->wq, wqebb_cnt);
- 
- 	netif_subqueue_completed_wake(netdev, q_id, pkts, bytes_compl,
--				      hinic3_wq_free_wqebbs(&tx_q->sq->wq),
--				      tx_q->tx_start_thrs);
-+				      hinic3_wq_free_wqebbs(&txq->sq->wq),
-+				      txq->tx_start_thrs);
- 
- 	return pkts == HINIC3_TX_POLL_WEIGHT;
- }
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index d6589b24c68d..44cba7acfe7d 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -10054,6 +10054,7 @@ static const struct usb_device_id rtl8152_table[] = {
+ 	{ USB_DEVICE(VENDOR_ID_LINKSYS, 0x0041) },
+ 	{ USB_DEVICE(VENDOR_ID_NVIDIA,  0x09ff) },
+ 	{ USB_DEVICE(VENDOR_ID_TPLINK,  0x0601) },
++	{ USB_DEVICE(VENDOR_ID_TPLINK,  0x0602) },
+ 	{ USB_DEVICE(VENDOR_ID_DLINK,   0xb301) },
+ 	{ USB_DEVICE(VENDOR_ID_DELL,    0xb097) },
+ 	{ USB_DEVICE(VENDOR_ID_ASUS,    0x1976) },
+
+base-commit: 2c7e4a2663a1ab5a740c59c31991579b6b865a26
 -- 
-2.45.2
+2.34.1
 
