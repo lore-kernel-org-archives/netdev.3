@@ -1,53 +1,100 @@
-Received: from mx0b-00190b01.pphosted.com (mx0b-00190b01.pphosted.com [67.231.157.127])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA53199939
-	for <netdev@vger.kernel.org>; Mon,  9 Jun 2025 16:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.157.127
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6168220A5C4;
+	Mon,  9 Jun 2025 16:25:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749486302; cv=none; b=mhNNahjUF3/0nORcgFA4O+FUfxQNm+FqSRCjoIZa2H04eHqNe1eeBFMxMtEpXFIjSNn89GGGW2Z+QFJCbSI2N6JLKw49V9Fa/CLKZdNnbOWb3LFjwcB8d8ShyeiIRwHks47ve+BRnB31k/VcxB26xsmbarJhELFLgJAMKPw1wSk=
+	t=1749486345; cv=none; b=mCB1sdpSdTuUPBvO3Q5yL/xLWZAbznREi0ruIOrZlAtpmSG3h30hzk69AsX9gjXQUWDUrWUcB9ViYME84geEtelL2ktN6Qn8ZaCMyxukdYWRMZjDpJjUnRbjTouANZgRwGY4H5Lw1cIlECnHs4hNsPLJ15cts9CezErErgxMmPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749486302; c=relaxed/simple;
-	bh=BCts238fw86cRl/doLIV7qPA4CGyAdFhQhzYizTmO0g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f7gpFq034JUIVWM8qyewdLKqmQxl5KGWHhm/T+NB2F4fBZ+llemnZLV5b7nNfSK0rpzfxGGFART+CM8fjbb4HWtcwg33b548PDLLl+7XJ2mOG6wecF9GvBnV4JxJKOgnkKHodPALzDsx2T7SVqvqYdNLKdWH9b5A5aIle551gos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=ZFVjFFww; arc=none smtp.client-ip=67.231.157.127
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
+	s=arc-20240116; t=1749486345; c=relaxed/simple;
+	bh=5ke2rwDYEJ1dSR5wthRWmE4KjObtmi12gQgU4P+EElo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oZTHjWwjyxBhSLfS3+Pzdez4NrIf6oT3u4d08Z8WH+mdgB7XZNXxFtxLWVhKXiwUJaof12kFDbhAijC6l1zdtb/rFZoStTFa1ubkB4opHd04GY7ZSAf40lPt4me71bnF9QZdVCxcrMjxDf1Ykuv7ekOHm09R+V0U5m/WcSPiKpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ydz8h5jt; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="ZFVjFFww"
-Received: from pps.filterd (m0050102.ppops.net [127.0.0.1])
-	by m0050102.ppops.net-00190b01. (8.18.1.2/8.18.1.2) with ESMTP id 559ETcKq008929;
-	Mon, 9 Jun 2025 17:13:02 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=jan2016.eng; bh=GZV5WabxiyC56sOeBumt4vSyXxKvdvH+X
-	3wP8+I+ZYw=; b=ZFVjFFwwTXViiRV58TPnXf3z1JQddyYEk0Y5p3G54DjTHBMIa
-	e2R+P71j6ofUODUNNHTuzc5bWNZfA5Q8p6Wjm2r7uAAD5BUCJjy3VrKOq7IWygfj
-	H7G3GUgqVJvRCuRk1xSHl5jcgqmbhVvT8ucBcuhSLOzGnprtdln1Ok0MtOq2DSTA
-	LhmRrcGl9hpfBkt5uCeoWg8+A+36FRJkoEghTlHbB0Z8T0e7T/tlm/SpX0+XGZoc
-	Apz8WHh/dl2DDPigbEVZvnoZua9z9vaVoRuCd2JdmE+YFtFpwsr29CoCvjBt3/t2
-	Vf+wY6ml1ct/LVcGGvCGfm5EmliYXhpAFlmNQ==
-Received: from prod-mail-ppoint5 (prod-mail-ppoint5.akamai.com [184.51.33.60] (may be forged))
-	by m0050102.ppops.net-00190b01. (PPS) with ESMTPS id 474agn5qk6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Jun 2025 17:13:02 +0100 (BST)
-Received: from pps.filterd (prod-mail-ppoint5.akamai.com [127.0.0.1])
-	by prod-mail-ppoint5.akamai.com (8.18.1.2/8.18.1.2) with ESMTP id 559ESiQN009211;
-	Mon, 9 Jun 2025 09:13:01 -0700
-Received: from prod-mail-relay11.akamai.com ([172.27.118.250])
-	by prod-mail-ppoint5.akamai.com (PPS) with ESMTP id 474kdb01qk-1;
-	Mon, 09 Jun 2025 09:13:01 -0700
-Received: from bos-lhv9ol.bos01.corp.akamai.com (bos-lhv9ol.bos01.corp.akamai.com [172.28.41.79])
-	by prod-mail-relay11.akamai.com (Postfix) with ESMTP id 4581B33970;
-	Mon,  9 Jun 2025 16:13:01 +0000 (GMT)
-From: Jason Baron <jbaron@akamai.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ydz8h5jt"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-235e1d710d8so54897965ad.1;
+        Mon, 09 Jun 2025 09:25:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749486343; x=1750091143; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=a4kOKITQRITLOt58CZKljNXLISgdMuGvM6LUD4e7M+A=;
+        b=Ydz8h5jtprF9ncvTPC2p/MeMgoA6dOi1eduUwvtXJaok3DE6v4/SxhcmpQJrdNvUp7
+         I//5BoqruuWf6QlrbxciZs8Z0LCa2NuC7MYhXIU1ynVAdaveN+PI9OSvyLijG5KUQ5/Z
+         4e9XAUpeEVTG1MHsk0BTiTEitj4TErAYj0gpe5xUmQcrmaaxxAT3VsyU8N7WcyeWYVft
+         Iwuis2HHoHSbZKBTucewrEAmPwmDCQRo2c/mIb/dxqBUTH8tFNyN4nT18KvojWY2ohOY
+         mkSKFsxb/P2JAPKEe9742ObWJxJmyZFNWmHMja5Xl4XVYm/kq7tWc92FMfMMoMvGriMW
+         zfzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749486343; x=1750091143;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=a4kOKITQRITLOt58CZKljNXLISgdMuGvM6LUD4e7M+A=;
+        b=GM00hRSTVC2QSpGdGsReOgAGZ3v8RXEi4XRSOQCZFu7MNde+1oUrp351hKMo/vXSWT
+         JONcjWVPeejaehaKwOB+Sdke1JwkKLlbR2znfjlS7+ifIlQA7XAMY0XQ4R4Vxjc5Ojdz
+         On9JFawD7xtume/U68oq3UYOcD6pFYX3DTiziXYuPYGtl/13KYwIX2aBTxdQKaUaqog0
+         YPo+5sizsQfU+Dsz5bFpNpHrjXO3CXF/SzMKf4cIcnF8pBRh/IlzoKbN+qafKlH1j0gO
+         lzMM7SFww2cjd2Y4/rvWX/p+mQ3vTiQx5ERTnLWBWJd7T0IBrMAubNImhbQ0qxiJMtEu
+         GPeg==
+X-Forwarded-Encrypted: i=1; AJvYcCWKi6cMMYogThI+0dmEvaaDfgzWYxJhjXJNVXO/KP4KVY1lll0arkmcgP89+Crt5KrEA7D2jJhOh2wyeQ==@vger.kernel.org, AJvYcCWhwV1NLXZSda675xp83OiD6IvWSl4tr6LLEKbyT8fOMBMaUJ46e1pwchtRjEwNfIrVLrcG61ixT5TiPCvAivx6@vger.kernel.org, AJvYcCXgWaOcOzVUo7fr0/GBT9dMW9jeslVprKVWtI4hbEzTnBefbTsUcQCkL0BwL5p+goQ0bHFxfg2TnTViqWA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrRMCbg/Kx/0jj3XSnCIEIekhd+VqjlfFv3Kp3i3BnVK27+n0m
+	0+g8GVN9A+mBqVP1JWmtwJ/y4GLisfQ8rMWFCei31aHbwsviBi1gYRW3nQb+
+X-Gm-Gg: ASbGncuZC+WkC+XDXHwvxp1afFIv2qLoObfLCgMF3LlYWyiEjgnylFPi7yVXFrOxXPG
+	NhYWGAhBAic2EadOg8D2jQzdHUldO9OTwlcl0VzQvq0iQlfdVBtka5tLn9cJ1X5gR47TCKLeAJN
+	Kz2UA2u4aLtmHt6Qz5LEBMmzX1AhiK0ZEioesnxHHyXKLz6qGA6Xc4HGqY/cyrCF3KVqbovPBAf
+	SrzJKvTfY1naJfhJeYK5gIaOUVcL3tvfo/L8dStV0kRRzuzQbyQHwMX7n6etd3YZgkabSy3pas8
+	+3tLbnfl3GdQX9qfRewcrcSncD5J9fNoRdXIzuSiN+c1KhL0kB1/+KCNGTHr/VZcWP9fslNocV8
+	3pq456zx6wRjWl5OqQ7C5yGdANE7KidxzVg==
+X-Google-Smtp-Source: AGHT+IHPHlziNsak1LqRUNF3N7nomngCbHiW2pNrdccj9YyCAqRz24LVjTOtRhdyC+7j5Al+6L2/1w==
+X-Received: by 2002:a17:903:41c8:b0:234:e3b7:5cd2 with SMTP id d9443c01a7336-23601da9abbmr211768695ad.46.1749486343206;
+        Mon, 09 Jun 2025 09:25:43 -0700 (PDT)
+Received: from localhost (c-73-158-218-242.hsd1.ca.comcast.net. [73.158.218.242])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-2360341097fsm56723385ad.214.2025.06.09.09.25.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jun 2025 09:25:42 -0700 (PDT)
+From: Stanislav Fomichev <stfomichev@gmail.com>
 To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, horms@kernel.org, kuniyu@amazon.com
-Subject: [PATCH net-next] netlink: Fix wraparounds of sk->sk_rmem_alloc
-Date: Mon,  9 Jun 2025 12:12:44 -0400
-Message-Id: <20250609161244.3591029-1-jbaron@akamai.com>
-X-Mailer: git-send-email 2.25.1
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	skalluru@marvell.com,
+	manishc@marvell.com,
+	andrew+netdev@lunn.ch,
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	ajit.khaparde@broadcom.com,
+	sriharsha.basavapatna@broadcom.com,
+	somnath.kotur@broadcom.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	tariqt@nvidia.com,
+	saeedm@nvidia.com,
+	louis.peens@corigine.com,
+	shshaikh@marvell.com,
+	GR-Linux-NIC-Dev@marvell.com,
+	ecree.xilinx@gmail.com,
+	horms@kernel.org,
+	dsahern@kernel.org,
+	shuah@kernel.org,
+	mheib@redhat.com,
+	ruanjinjie@huawei.com,
+	stfomichev@gmail.com,
+	linux-kernel@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	linux-rdma@vger.kernel.org,
+	oss-drivers@corigine.com,
+	linux-net-drivers@amd.com,
+	linux-kselftest@vger.kernel.org,
+	leon@kernel.org
+Subject: [PATCH net-next v2 0/4] udp_tunnel: remove rtnl_lock dependency
+Date: Mon,  9 Jun 2025 09:25:37 -0700
+Message-ID: <20250609162541.1230022-1-stfomichev@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,179 +102,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-09_06,2025-06-09_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0
- malwarescore=0 adultscore=0 mlxscore=0 spamscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2505160000 definitions=main-2506090119
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA5MDEyMSBTYWx0ZWRfX97VvPFq5xovD
- Vum24GG19wbQj+wSVAmlshUJiYHos1plw08IABOz+Iv7ki9qNRE1kViynLN2GpR+NTSqr9bp9aQ
- SpCxd8nfBFfVpehqJcd/3WyKkQpNKL9ohUfbj5QY5cK/gpeLJYQU8eFUNtfNJ4hlRd5mM/AmlS2
- bdT/CuorB1pLBS2JAS+mgzke5JpbDylmHedaqT0wq6sXFfDqbltzR6NPwi3YQ7qEsPtiG5pp9AF
- u96i4YOgFhcyALoOXqIT93gycoQeHDkBCMrgL96V1fhei/7JYZ7OqI5x336m8NxrO5Uq3QIY1WK
- xBANUsi44uGgsSQuM1bHRD+OHdV0jhlhT+E5KzFsphNntRoCqQYTLHOCHHLbR7pwR/UmKjB7o/C
- VScck8rbVYm01Vj4KFs3uG7bAoNk1TSycNhQIKykkACtKQZZySNmaqmUvU05qHRYFDKECOfY
-X-Authority-Analysis: v=2.4 cv=LI5mQIW9 c=1 sm=1 tr=0 ts=6847080e cx=c_pps
- a=NpDlK6FjLPvvy7XAFEyJFw==:117 a=NpDlK6FjLPvvy7XAFEyJFw==:17
- a=6IFa9wvqVegA:10 a=X7Ea-ya5AAAA:8 a=2p7L7b79wo0mKIl_s0IA:9
-X-Proofpoint-ORIG-GUID: J1RcJ5Ih8vgSB1IdebK0NPAP5DiNiNc8
-X-Proofpoint-GUID: J1RcJ5Ih8vgSB1IdebK0NPAP5DiNiNc8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-09_06,2025-06-09_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 malwarescore=0 phishscore=0 mlxscore=0 lowpriorityscore=0
- spamscore=0 mlxlogscore=759 adultscore=0 bulkscore=0 suspectscore=0
- clxscore=1011 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506090121
 
-For netlink sockets, when comparing allocated rmem memory with the
-rcvbuf limit, the comparison is done using signed values. This means
-that if rcvbuf is near INT_MAX, then sk->sk_rmem_alloc may become
-negative in the comparison with rcvbuf which will yield incorrect
-results.
+Recently bnxt had to grow back a bunch of rtnl dependencies because
+of udp_tunnel's infra. Add separate (global) mutext to protect
+udp_tunnel state.
 
-This can be reproduced by using the program from SOCK_DIAG(7) with
-some slight modifications. First, setting sk->sk_rcvbuf to INT_MAX
-using SO_RCVBUFFORCE and then secondly running the "send_query()"
-in a loop while not calling "receive_responses()". In this case,
-the value of sk->sk_rmem_alloc will continuously wrap around
-and thus more memory is allocated than the sk->sk_rcvbuf limit.
-This will eventually fill all of memory leading to an out of memory
-condition with skbs filling up the slab.
+v2:
+- move the lock into udp_tunnel_nic (Jakub)
+- reorder the lock ordering (Jakub)
+- move udp_ports_sleep removal into separate patch and update the test
+  (Jakub)
 
-Let's fix this in a similar manner to:
-5a465a0da13e ("udp: Fix multiple wraparounds of sk->sk_rmem_alloc.")
+Cc: Michael Chan <michael.chan@broadcom.com>
 
-As noted in that fix, if there are multiple threads writing to a
-netlink socket it's possible to slightly exceed rcvbuf value. But as
-noted this avoids an expensive 'atomic_add_return()' for the common
-case. I've confirmed that with the fix the modified program from
-SOCK_DIAG(7) can no longer fill memory and the sk->sk_rcvbuf limit
-is enforced.
+Stanislav Fomichev (4):
+  udp_tunnel: remove rtnl_lock dependency
+  net: remove redundant ASSERT_RTNL() in queue setup functions
+  netdevsim: remove udp_ports_sleep
+  Revert "bnxt_en: bring back rtnl_lock() in the bnxt_open() path"
 
-Signed-off-by: Jason Baron <jbaron@akamai.com>
----
- net/netlink/af_netlink.c | 47 ++++++++++++++++++++++++++++------------
- 1 file changed, 33 insertions(+), 14 deletions(-)
+ .../net/ethernet/broadcom/bnx2x/bnx2x_main.c  |  3 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 42 ++++---------------
+ drivers/net/ethernet/emulex/benet/be_main.c   |  3 +-
+ drivers/net/ethernet/intel/i40e/i40e_main.c   |  1 -
+ drivers/net/ethernet/intel/ice/ice_main.c     |  1 -
+ .../net/ethernet/mellanox/mlx4/en_netdev.c    |  3 +-
+ .../net/ethernet/mellanox/mlx5/core/en_main.c |  3 +-
+ .../ethernet/netronome/nfp/nfp_net_common.c   |  3 +-
+ .../net/ethernet/qlogic/qede/qede_filter.c    |  3 --
+ .../net/ethernet/qlogic/qlcnic/qlcnic_main.c  |  1 -
+ drivers/net/ethernet/sfc/ef10.c               |  1 -
+ drivers/net/netdevsim/netdevsim.h             |  2 -
+ drivers/net/netdevsim/udp_tunnels.c           | 12 ------
+ include/net/udp_tunnel.h                      |  8 ++--
+ net/core/dev.c                                |  2 -
+ net/ipv4/udp_tunnel_nic.c                     | 30 +++++++------
+ .../drivers/net/netdevsim/udp_tunnel_nic.sh   | 10 -----
+ 17 files changed, 31 insertions(+), 97 deletions(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index e8972a857e51..607e5d72de39 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1213,11 +1213,15 @@ int netlink_attachskb(struct sock *sk, struct sk_buff *skb,
- 		      long *timeo, struct sock *ssk)
- {
- 	struct netlink_sock *nlk;
-+	unsigned int rmem, rcvbuf, size;
- 
- 	nlk = nlk_sk(sk);
-+	rmem = atomic_read(&sk->sk_rmem_alloc);
-+	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
-+	size = skb->truesize;
- 
--	if ((atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf ||
--	     test_bit(NETLINK_S_CONGESTED, &nlk->state))) {
-+	if (((rmem + size) > rcvbuf) ||
-+	     test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
- 		DECLARE_WAITQUEUE(wait, current);
- 		if (!*timeo) {
- 			if (!ssk || netlink_is_kernel(ssk))
-@@ -1230,7 +1234,9 @@ int netlink_attachskb(struct sock *sk, struct sk_buff *skb,
- 		__set_current_state(TASK_INTERRUPTIBLE);
- 		add_wait_queue(&nlk->wait, &wait);
- 
--		if ((atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf ||
-+		rmem = atomic_read(&sk->sk_rmem_alloc);
-+		rcvbuf = READ_ONCE(sk->sk_rcvbuf);
-+		if ((((rmem + size) > rcvbuf) ||
- 		     test_bit(NETLINK_S_CONGESTED, &nlk->state)) &&
- 		    !sock_flag(sk, SOCK_DEAD))
- 			*timeo = schedule_timeout(*timeo);
-@@ -1383,12 +1389,18 @@ EXPORT_SYMBOL_GPL(netlink_strict_get_check);
- static int netlink_broadcast_deliver(struct sock *sk, struct sk_buff *skb)
- {
- 	struct netlink_sock *nlk = nlk_sk(sk);
-+	unsigned int rmem, rcvbuf;
- 
--	if (atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf &&
-+	rmem = atomic_read(&sk->sk_rmem_alloc);
-+	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
-+
-+	if (((rmem + skb->truesize) <= rcvbuf) &&
- 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
- 		netlink_skb_set_owner_r(skb, sk);
- 		__netlink_sendskb(sk, skb);
--		return atomic_read(&sk->sk_rmem_alloc) > (sk->sk_rcvbuf >> 1);
-+		rmem = atomic_read(&sk->sk_rmem_alloc);
-+		rcvbuf = READ_ONCE(sk->sk_rcvbuf);
-+		return rmem > (rcvbuf >> 1);
- 	}
- 	return -1;
- }
-@@ -1896,6 +1908,7 @@ static int netlink_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 	size_t copied, max_recvmsg_len;
- 	struct sk_buff *skb, *data_skb;
- 	int err, ret;
-+	unsigned int rmem, rcvbuf;
- 
- 	if (flags & MSG_OOB)
- 		return -EOPNOTSUPP;
-@@ -1960,12 +1973,15 @@ static int netlink_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 
- 	skb_free_datagram(sk, skb);
- 
--	if (READ_ONCE(nlk->cb_running) &&
--	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
--		ret = netlink_dump(sk, false);
--		if (ret) {
--			WRITE_ONCE(sk->sk_err, -ret);
--			sk_error_report(sk);
-+	if (READ_ONCE(nlk->cb_running)) {
-+		rmem = atomic_read(&sk->sk_rmem_alloc);
-+		rcvbuf = READ_ONCE(sk->sk_rcvbuf);
-+		if (rmem <= (rcvbuf >> 1)) {
-+			ret = netlink_dump(sk, false);
-+			if (ret) {
-+				WRITE_ONCE(sk->sk_err, -ret);
-+				sk_error_report(sk);
-+			}
- 		}
- 	}
- 
-@@ -2250,6 +2266,7 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
- 	int err = -ENOBUFS;
- 	int alloc_min_size;
- 	int alloc_size;
-+	unsigned int rmem, rcvbuf;
- 
- 	if (!lock_taken)
- 		mutex_lock(&nlk->nl_cb_mutex);
-@@ -2258,9 +2275,6 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
- 		goto errout_skb;
- 	}
- 
--	if (atomic_read(&sk->sk_rmem_alloc) >= sk->sk_rcvbuf)
--		goto errout_skb;
--
- 	/* NLMSG_GOODSIZE is small to avoid high order allocations being
- 	 * required, but it makes sense to _attempt_ a 32KiB allocation
- 	 * to reduce number of system calls on dump operations, if user
-@@ -2283,6 +2297,11 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
- 	if (!skb)
- 		goto errout_skb;
- 
-+	rmem = atomic_read(&sk->sk_rmem_alloc);
-+	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
-+	if ((rmem + skb->truesize) > rcvbuf)
-+		goto errout_skb;
-+
- 	/* Trim skb to allocated size. User is expected to provide buffer as
- 	 * large as max(min_dump_alloc, 32KiB (max_recvmsg_len capped at
- 	 * netlink_recvmsg())). dump will pack as many smaller messages as
 -- 
-2.25.1
+2.49.0
 
