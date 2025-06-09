@@ -1,91 +1,128 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7D025D527
-	for <netdev@vger.kernel.org>; Mon,  9 Jun 2025 13:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F3B17E0;
+	Mon,  9 Jun 2025 13:48:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749476909; cv=none; b=ooZwKAS3EHGfNkUi/7ajY5XCRDSAbJ6vD974cEmgyFk4KhRHcmmcFGe26xTAD5OnGIbsBBmJ5gnrJD8AQouEIUWeOQWdvB6IuRDih/O3qIec+9RVnysV2DLogD2UTcMi40E8GYS403Emq7DOt77eJl7vF+0FncVpPwRWmpc/nWM=
+	t=1749476935; cv=none; b=RUMkLyNpoHL1p0kvkb2v/BIxH3pXHUvG0r5ZAr3gz6TMzeRCSvTvekAWV8lbBGU19bjJj1munPcvhe9l/RXIiNVn67VsD+RMnz7WV8lSXn7o51xpc8bPXCQTy5i23Bk9qhvTbHhxzL3MK5eukUr46XkOtBhPCkza1kTJJEKtmQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749476909; c=relaxed/simple;
-	bh=485fyvGXJ9MMD1/ohEoMDj2zFfDhnj7+hP7ypaSWGPI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KrvNwKZKSWYBUeQ8gspQ/Ca3JdtW8bKP8mZHzcYx1aKYhoqK2sGnjQaOMG8/+XRjgLZx2YIE7r+yz89UtTOQ4c3+YwRSj3C4LiNxHCHjBMejBy+uQ5jes/+gHbVb2lwRCtjU6wvMnX024CsQj1KiPSJA9V5m7n+rhv1xYs1usKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TyRl+orA; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1749476935; c=relaxed/simple;
+	bh=I5ooaXHhGsxAXvfEfNpiejmBzdUpWZlIyR/sSJGg0ro=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=q2VUNbEixmUTdSjkoMFm48V9bnovANxIZN/VzE8TuCmBn1/WqNQ9atOJvTqhT0YJhDrxQT4NsBID5Vmm/E8w6A08nxuIhGQdbT6/ck0pGY9q1W2x1Szhjqft0w4qk78Y8JX457DrUj216ZRQXSRTfu4Q3a3IbTpP3ywUro8snYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=cWks0Yn+; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TyRl+orA"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4a43afb04a7so22960471cf.0
-        for <netdev@vger.kernel.org>; Mon, 09 Jun 2025 06:48:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749476906; x=1750081706; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=485fyvGXJ9MMD1/ohEoMDj2zFfDhnj7+hP7ypaSWGPI=;
-        b=TyRl+orAdeM+kSyFtEn/rgN4TxHdtaCmhz/4184iew/t0sNu+BaRiKwEJZm701urXL
-         RaWYRrQlaK4eIrhLRIytu30QBHbbX5sd4XWuNy6DUZPXhWPt8DpOwjV/UaDLITEzsQ5j
-         /LVMoDmORxVC3d03NDO6ZCVmhkyE6utYUM0E/ivEdROaITOtq2+XxpZ58Rb9+d+2EhFf
-         3rlyUgHZrC3Qzx8N0570bQcs7HfklPonFWNdE2qxmzbNmeuUGzlvNqS/y01HTNKRPC+6
-         TbrumHaWrkq51UZxrH1jz0WFlR5NMYZ53DFkWQy2Xxmbf1J9jpHUU7EPeG6JejOG6/o5
-         BPFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749476906; x=1750081706;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=485fyvGXJ9MMD1/ohEoMDj2zFfDhnj7+hP7ypaSWGPI=;
-        b=ZAlpNygPS2XFgHOAsxbdgWN7cnVJjqXUKmvfB7P7ywWnLgjxeUktzGbnA2SkFFSKgL
-         lAYQaw24GqbnB5NPHfj65jim6ybTdDvhW/LVHcGVvMU+T3uyEngKyw8VGGLK9nfFat9Z
-         HTmhJ6jqx8fvBKz2xRUFdR+6qVmxqJXjHObTANeT73rIxOuSRwvZfXBj44+zldmPEjic
-         NlO5/cU20JPn90afJxeC064U5NZ4mp0iEhvqVkv9aiP/lyXOaV2wVKUPbnKZxedp1W5I
-         0Qf1VcpDTtlOqSdbEkYGzzbtPkaMFyna/YdbK03J36PH4gKLuoYTGOPZpQdviJ1V7xhc
-         7gpg==
-X-Forwarded-Encrypted: i=1; AJvYcCVsUZdv8kXgM0FeSA7XWLMJnSLu/M5ogTWi49kJByuJrWFIFbZkaoMPgoVL44UIfDg7KdUa1Cc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIsCnQNinud2bY9S4rinKXp66sA8MFH5yRIT1UnZlB4+9zH6N2
-	cTpJNZaZVPA2mTXVPkS2zrPCerZbk2a/NbXNuzf0IzL03QgcvuXtRfoeG44RLe/rryQ5yKAAgce
-	LF0bqU+fXhjyCJugtghufkn6hPC9ftWepPXZxDfTZ
-X-Gm-Gg: ASbGnctNVYbJc/TcLJtHwyOYkFomHeU978QkpVrX45c4qwrwv8LAAeqi6Qx+F7Ncn0f
-	Zn+65qUmZ4SwkeWux0F3qYbfp/PCOfX0b5ipo7OpoPjDds5a+pri6Z2iMByw4aUwYFIwAakADdu
-	sl7SrH8sHgbO89Bu97TDqw1p8ue19S/+d/k9FbvCN67hgkwkAFE7bOYZcrTAR/KD5HxJlFSkcTf
-	fDd
-X-Google-Smtp-Source: AGHT+IE3VXGpsTcil/6jK+ogtLHJlRhdVPrKlqQYS7O9rWrsXLIw0bXWqEqC3qusiBCZEvD2v85r+CoU+6GH74+Sv+w=
-X-Received: by 2002:a05:622a:4889:b0:4a4:30f5:b504 with SMTP id
- d75a77b69052e-4a5b9d38035mr226482661cf.27.1749476906141; Mon, 09 Jun 2025
- 06:48:26 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="cWks0Yn+"
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id 0ABCD2117470; Mon,  9 Jun 2025 06:48:54 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0ABCD2117470
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1749476934;
+	bh=2xRZ/S0FZQtwNjE0+C3z+h708XSoGhzLcqwESLQi70w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cWks0Yn+NqaDu+2tkFt2CcQ8/hk2LSCWvpFO/pBQpfUtKliM5EO2xVI6mNJ0Etsr2
+	 k0FoUbnM/USyOnGZCafc9M83VtbFZIRCNbIV0yt65B2IWcuTQE4EfD3PoiFPk6horA
+	 LpSSjk0xJ9XQGMoFWPhPzmclZQla50QFIb7Wfyqo=
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Cameron <Jonathan.Cameron@huwei.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Michael Kelley <mhklinux@outlook.com>
+Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	linux-hyperv@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Long Li <longli@microsoft.com>,
+	Rob Herring <robh@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=EF=BF=BD=7EDski?= <kw@linux.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	Paul Rosswurm <paulros@microsoft.com>,
+	Shradha Gupta <shradhagupta@microsoft.com>
+Subject: [PATCH v5 1/5] PCI/MSI: Export pci_msix_prepare_desc() for dynamic MSI-X allocations
+Date: Mon,  9 Jun 2025 06:48:52 -0700
+Message-Id: <1749476932-27377-1-git-send-email-shradhagupta@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1749476901-27251-1-git-send-email-shradhagupta@linux.microsoft.com>
+References: <1749476901-27251-1-git-send-email-shradhagupta@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CAOU40uC6U3PS3cu7RmK71DPA_jbW_ZY0FBkBjCdjVArCiZO-fA@mail.gmail.com>
-In-Reply-To: <CAOU40uC6U3PS3cu7RmK71DPA_jbW_ZY0FBkBjCdjVArCiZO-fA@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 9 Jun 2025 06:48:15 -0700
-X-Gm-Features: AX0GCFvv8uJmmzoYzfjPQESNuX3bBtkvCudYICdz2lLUWLdVMF8b44y8kUhuTD8
-Message-ID: <CANn89iKjjZ2rBBFjMZsPgGWi7-EwVUpJ=jMdkn2s-=BJEjvvuw@mail.gmail.com>
-Subject: Re: [BUG] WARNING in sendmsg
-To: Xianying Wang <wangxianying546@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 9, 2025 at 6:40=E2=80=AFAM Xianying Wang <wangxianying546@gmail=
-.com> wrote:
->
-> Hi,
->
-> I discovered a kernel WARNING described as "WARNING in sendmsg"when
-> fuzzing the Linux 6.8 kernel using Syzkaller. This issue occurs in the
-> memory allocation path within the sendmsg system call, specifically in
-> the __alloc_pages function at mm/page_alloc.c:4545. The warning is
-> triggered by a WARN_ON_ONCE assertion in the page allocator during an
-> attempt to allocate memory via kmalloc from the socket layer.
+For supporting dynamic MSI-X vector allocation by PCI controllers, enabling
+the flag MSI_FLAG_PCI_MSIX_ALLOC_DYN is not enough, msix_prepare_msi_desc()
+to prepare the MSI descriptor is also needed.
 
-linux-6.8 is not supported.
+Export pci_msix_prepare_desc() to allow PCI controllers to support dynamic
+MSI-X vector allocation.
 
-Please do not send us syzkaller reports on old versions, always use
-the latest trees.
+Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+---
+ drivers/pci/msi/irqdomain.c | 5 +++--
+ include/linux/msi.h         | 2 ++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/msi/irqdomain.c b/drivers/pci/msi/irqdomain.c
+index d7ba8795d60f..43129aa6d6c7 100644
+--- a/drivers/pci/msi/irqdomain.c
++++ b/drivers/pci/msi/irqdomain.c
+@@ -222,13 +222,14 @@ static void pci_irq_unmask_msix(struct irq_data *data)
+ 	pci_msix_unmask(irq_data_get_msi_desc(data));
+ }
+ 
+-static void pci_msix_prepare_desc(struct irq_domain *domain, msi_alloc_info_t *arg,
+-				  struct msi_desc *desc)
++void pci_msix_prepare_desc(struct irq_domain *domain, msi_alloc_info_t *arg,
++			   struct msi_desc *desc)
+ {
+ 	/* Don't fiddle with preallocated MSI descriptors */
+ 	if (!desc->pci.mask_base)
+ 		msix_prepare_msi_desc(to_pci_dev(desc->dev), desc);
+ }
++EXPORT_SYMBOL_GPL(pci_msix_prepare_desc);
+ 
+ static const struct msi_domain_template pci_msix_template = {
+ 	.chip = {
+diff --git a/include/linux/msi.h b/include/linux/msi.h
+index 6863540f4b71..7f254bde5426 100644
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -706,6 +706,8 @@ struct irq_domain *pci_msi_create_irq_domain(struct fwnode_handle *fwnode,
+ 					     struct irq_domain *parent);
+ u32 pci_msi_domain_get_msi_rid(struct irq_domain *domain, struct pci_dev *pdev);
+ struct irq_domain *pci_msi_get_device_domain(struct pci_dev *pdev);
++void pci_msix_prepare_desc(struct irq_domain *domain, msi_alloc_info_t *arg,
++			   struct msi_desc *desc);
+ #else /* CONFIG_PCI_MSI */
+ static inline struct irq_domain *pci_msi_get_device_domain(struct pci_dev *pdev)
+ {
+-- 
+2.34.1
+
