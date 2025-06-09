@@ -1,173 +1,118 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06A727FD50
-	for <netdev@vger.kernel.org>; Mon,  9 Jun 2025 04:12:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746293A1DB;
+	Mon,  9 Jun 2025 04:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749442361; cv=none; b=LxlTWYt3aaCQsS0AawKGTQNmjKQmpa1CzhthMPumrfLH9XpwIY8UKyuH9TxZikZDfkoyEvQp7jefKEjoxxhFZ4eK5XLIY44tO/kXGhvqKCu5Lz2WR0hKzsQjAFQvCRnMAzO6BMlZwuBzTrJC+/X9DRhUYRyI+Ggkg04LcJ4S+44=
+	t=1749442844; cv=none; b=eVy14TFPvbtj6w6vzm8kaZOcMHdn6WEpse/9YUpakWWusLZkNV61jcZDuDEIbhNziBrvbE4WtBVXJ16wFTpRxT7w+BPrCdzw+fB//JbdLc9tEes0rULbeNwQFsy4FYtOp68N4EyC5po+9JgLWMoQkyarzZluB55HljTIipjJLPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749442361; c=relaxed/simple;
-	bh=5kpHYCzM/m+ZbTz7BuIz+G6bjdd7cAdYCRY10p9OcnM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=j+eqVN4wIDgwYdq6wvTX9MFsAm52vBzTnmIcJCzGv1TiO6wrRNwIQhbT510sUBI/XPNgQJy+AaU2Rg/g9WluyTJfrdBtOHQTd8e3kl1l0LmmXtdk7VtjZbJ0OWTj1o66bcMbfeUate8wHii7LcMAeWN+0oxsKtfiQm9ADjcoHkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=EuwDw9qM; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1749442844; c=relaxed/simple;
+	bh=U0lQ7XugEXKGGzfczw8VnB1sNM8SX9qezu7R5K9s8Y0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LfWRLI+W5owohihQT1Q2i8YHJAEn8iC/e+GaVu8FZl7feSuSq56qB9Wb1zOUhOB7UNVwAM0ZgQX56NWGQGB0HJ/Y5/ovxXjqUm0UX64bpGvMHcjOHH0HdxKg9cFRGSSC0F2FVgRRWksni6bDD6dNqKg3OBvPlk88n7kym29w7cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FlOonVhV; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="EuwDw9qM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FlOonVhV"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-747e41d5469so4319474b3a.3;
+        Sun, 08 Jun 2025 21:20:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1749442348;
-	bh=37Mdyc2WCGRCpOhy52o2jw4H+m75TvnuBMYpnVk/nsQ=;
-	h=From:Date:Subject:To:Cc;
-	b=EuwDw9qMmh7ej8+U/j+hAhjRUwuitChjTTFS7TOWHY9aG8kiHIy6bE/5iC6cQ3+i3
-	 ezfGDVoTb/IB0B2x6nbev7VN7uaUScy9PFEMA1/XLj+GIAuqX5gRAuU5fluIip+agi
-	 iWxZvG3ERcSqO3lM/L834IUXu2nm0UZ7LqJ5CsvYOg6S3D1Ew+O75/Xum9wQj7AF1Y
-	 5EN4gcs4YaPHweA1Zw+E2Ak9l6C49ZNkeOCrhh+OJ/m2C9cc95HbcK/3vo5TZkQQ2A
-	 rVvZG35jZaMvqiJhgrJLcr0ydpk5fh/1rDYEjgyl++747x+uNuh4mhSC7kblA8WJOX
-	 IBbhzwzsLlSNg==
-Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id B930564C1D; Mon,  9 Jun 2025 12:12:28 +0800 (AWST)
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Mon, 09 Jun 2025 12:12:09 +0800
-Subject: [PATCH 6.6.y] Revert "mctp: no longer rely on
- net->dev_index_head[]"
+        d=gmail.com; s=20230601; t=1749442843; x=1750047643; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=V4URcKEOTtG7gkDcQ+As7WhEjMnb7PTh9qAPDmOqKGs=;
+        b=FlOonVhVY/u8D2jrD1jAnzagfVynPBkBTyfLuMlCqiFnXK43goaLqIG8tjq7LYf86f
+         pxNyeKpnszOdYlUuuWWfVNcLlhsVGj2jAUDAlT6AB8tlISnBXPldbJLMZHO5LUArxH8u
+         lHhWaQmJ775CSqgcHqc0TT8EB1SVA5/xa6h4ZOpsmP9jCaFjkahS8e3bo0amphMKjPyV
+         Cgzu2oCpSgZP4d8QuttRz/WZ/TLyifxn6JSLwZ9GgE0xii1H2MnDqmdLQJQYefwtmNn/
+         Ur2dIE6Qs2ppq3xPK5BcJjQHHWPkfxhuJh/9B6TRZbQSq0koSy8A7G2aWDLKsLDNW10u
+         vn3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749442843; x=1750047643;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V4URcKEOTtG7gkDcQ+As7WhEjMnb7PTh9qAPDmOqKGs=;
+        b=aEvJi5c8FOyBumf7nH2syoa+onYZZ7IF+nEejR9q/jRr52S/oNP2ME0g5U0WoPAmFm
+         cX423xw9G+m0rJYy67McBWp7DRR3pirUFVplQ3L1m159ZulRdLhidOEqAVcWVam3bd3M
+         cPUUqoSEmmFtmC/x9OjdpWH4QHhkECwIGB9+ndaR25CQmNsfWMK9nSUTZJibKVeAQgWT
+         4MMMlUy88dxN2LlqmrIQyY9WYbVaeOlhuZGB744YQ3iOrJmUnbumYLWfgSmVgVdgd40f
+         M9/EaNseeoKIoUbpYyJ+JRYa6bshplhxGzyAew/UXH6glknD/nuAYZQJIYj/Zw37LZ/D
+         zd6A==
+X-Forwarded-Encrypted: i=1; AJvYcCU/vIIVTAjnYtd6f6xAPZ6xtaNAqtmdLMn2/NUBaczcNtIcDr3PsA5LpjAuACSOhu8cj7D4T6VP@vger.kernel.org, AJvYcCXtLXO9X0SiCNBsAmUTJwI7QTEBSThxkhGQconjvrePYGiNkpaJQDboy4aqA94pO8Ge7kw3+e8JTKeCF1I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJtbXpcMIF9mMTTNg4vIMXJ7DBBD2BHad4C9J2Z+qcMDF6Xinz
+	fdyeS38WSG6+REyQm0IRJZqTho5ZnZC5tSDnthPe0czkG0JGY3964cjwCy9z3w==
+X-Gm-Gg: ASbGncuCesICUCz7eLIgS3X5+y+cm3iFgy/Tlj4fA2vCVkdjI+ijhu/K6xHzkN2DpGo
+	kA9/0t61bxbzhpYxYC9crww/4WV/9GQXWhMlREbWGIF1rUCoK0BqadEyEKLMm6xTUCfJaVnWB64
+	Dws1XhkOS7xZX80bzwyE/cwvOkGkUB4++G+k0BTwDZhwjwfOwU/En47KZd7KE3WF9oQ/AR2zkSB
+	kfFGgYJZgx8MpAvCDQ0yK72Wvum3poh46eFHMvnuPyWicKJcp61IxD6o5fVt6C+olwmh80bHk0G
+	MLED2YOHdMtpMNOxcllpj/iwPTQDwaYZe6jCNVjvX1JhQS20NlvK
+X-Google-Smtp-Source: AGHT+IGPvy4kykj0lhb+spVXVfcSeM4rDVBSnkPv1sXyzGwUgPowc1odOEOQkiDn15B6rBudrNukHQ==
+X-Received: by 2002:a05:6a00:1d89:b0:748:2d1d:f7b7 with SMTP id d2e1a72fcca58-7482d1df920mr14224065b3a.21.1749442842714;
+        Sun, 08 Jun 2025 21:20:42 -0700 (PDT)
+Received: from gmail.com ([98.97.41.254])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7483318cc55sm3942180b3a.88.2025.06.08.21.20.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Jun 2025 21:20:42 -0700 (PDT)
+Date: Sun, 8 Jun 2025 21:20:24 -0700
+From: John Fastabend <john.fastabend@gmail.com>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: bpf@vger.kernel.org, Jakub Sitnicki <jakub@cloudflare.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf-next v2] bpf, sockmap: Fix psock incorrectly pointing
+ to sk
+Message-ID: <20250609042024.ta4fuiogxxklolst@gmail.com>
+References: <20250609025908.79331-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250609-dev-mctp-nl-addrinfo-v1-1-7e5609a862f3@codeconstruct.com.au>
-X-B4-Tracking: v=1; b=H4sIABhfRmgC/x3MQQ6DIBBA0auYWTsEIWD1Kk0XCoNOUtFAQ2qMd
- y/p8i3+vyBTYsowNhckKpx5jxVd24Bbp7gQsq8GJZWRVg7oqeDmPgfGN07eJ45hx1np0Jm+18Y
- 9oKZHosDf//YJVlhxwuu+fwwo8HZtAAAA
-X-Change-ID: 20250609-dev-mctp-nl-addrinfo-b23f157735c8
-To: Sasha Levin <sashal@kernel.org>, 
- Matt Johnston <matt@codeconstruct.com.au>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, Patrick Williams <patrick@stwcx.xyz>, 
- Peter Yin <peteryin.openbmc@gmail.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250609025908.79331-1-jiayuan.chen@linux.dev>
 
-This reverts commit 2d45eeb7d5d7019b623d513be813123cd048c059 from the
-6.6 stable tree.
+On 2025-06-09 10:59:08, Jiayuan Chen wrote:
+> We observed an issue from the latest selftest: sockmap_redir where
+> sk_psock(psock->sk) != psock in the backlog. The root cause is the special
+> behavior in sockmap_redir - it frequently performs map_update() and
+> map_delete() on the same socket. During map_update(), we create a new
+> psock and during map_delete(), we eventually free the psock via rcu_work
+> in sk_psock_drop(). However, pending workqueues might still exist and not
+> be processed yet. If users immediately perform another map_update(), a new
+> psock will be allocated for the same sk, resulting in two psocks pointing
+> to the same sk.
+> 
+> When the pending workqueue is later triggered, it uses the old psock to
+> access sk for I/O operations, which is incorrect.
 
-2d45eeb7d5d7 is the 6.6.y backport of mainline 2d20773aec14.
+[...]
 
-The switch to for_each_netdev_dump() was predicated on a change in
-semantics for the netdev iterator, introduced by f22b4b55edb5 ("net:
-make for_each_netdev_dump() a little more bug-proof"). Without that
-prior change, we incorrectly repeat the last iteration indefinitely.
+> 
+> Note: We cannot call cancel_delayed_work_sync() in map_delete() since this
+> might be invoked in BPF context by BPF helper, and the function may sleep.
+> 
+> Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> 
+> ---
+> V1->V2: Use existing flag instead of adding new one.
+> https://lore.kernel.org/bpf/20250605142448.3llri3w7wbclfxwc@gmail.com/
+> 
+> Thanks to Michal Luczaj for providing the sockmap_redir test case, which
+> indeed covers almost all sockmap forwarding paths.
+> ---
+>  net/core/skmsg.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
 
-2d45eeb was pulled in to stable as context for acab78ae12c7 ("net: mctp:
-Don't access ifa_index when missing"), but we're fine without it here,
-with a small tweak to the variable declarations as updated patch
-context.
-
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
----
-The 6.6.y branch is the only stable release that has the conversion to
-for_each_netdev_dump() but not the prereq fix to for_each_netdev_dump(). 
----
- net/mctp/device.c | 50 +++++++++++++++++++++++++++++++-------------------
- 1 file changed, 31 insertions(+), 19 deletions(-)
-
-diff --git a/net/mctp/device.c b/net/mctp/device.c
-index 8d1386601bbe06487bea46eeae56733124c85098..27aee8b04055f0ad19b24b08117406c303a566cc 100644
---- a/net/mctp/device.c
-+++ b/net/mctp/device.c
-@@ -20,7 +20,8 @@
- #include <net/sock.h>
- 
- struct mctp_dump_cb {
--	unsigned long ifindex;
-+	int h;
-+	int idx;
- 	size_t a_idx;
- };
- 
-@@ -114,10 +115,12 @@ static int mctp_dump_addrinfo(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	struct mctp_dump_cb *mcb = (void *)cb->ctx;
- 	struct net *net = sock_net(skb->sk);
-+	struct hlist_head *head;
- 	struct net_device *dev;
- 	struct ifaddrmsg *hdr;
- 	struct mctp_dev *mdev;
--	int ifindex = 0, rc;
-+	int ifindex = 0;
-+	int idx = 0, rc;
- 
- 	/* Filter by ifindex if a header is provided */
- 	if (cb->nlh->nlmsg_len >= nlmsg_msg_size(sizeof(*hdr))) {
-@@ -131,19 +134,31 @@ static int mctp_dump_addrinfo(struct sk_buff *skb, struct netlink_callback *cb)
- 	}
- 
- 	rcu_read_lock();
--	for_each_netdev_dump(net, dev, mcb->ifindex) {
--		if (ifindex && ifindex != dev->ifindex)
--			continue;
--		mdev = __mctp_dev_get(dev);
--		if (!mdev)
--			continue;
--		rc = mctp_dump_dev_addrinfo(mdev, skb, cb);
--		mctp_dev_put(mdev);
--		if (rc < 0)
--			break;
--		mcb->a_idx = 0;
-+	for (; mcb->h < NETDEV_HASHENTRIES; mcb->h++, mcb->idx = 0) {
-+		idx = 0;
-+		head = &net->dev_index_head[mcb->h];
-+		hlist_for_each_entry_rcu(dev, head, index_hlist) {
-+			if (idx >= mcb->idx &&
-+			    (ifindex == 0 || ifindex == dev->ifindex)) {
-+				mdev = __mctp_dev_get(dev);
-+				if (mdev) {
-+					rc = mctp_dump_dev_addrinfo(mdev,
-+								    skb, cb);
-+					mctp_dev_put(mdev);
-+					// Error indicates full buffer, this
-+					// callback will get retried.
-+					if (rc < 0)
-+						goto out;
-+				}
-+			}
-+			idx++;
-+			// reset for next iteration
-+			mcb->a_idx = 0;
-+		}
- 	}
-+out:
- 	rcu_read_unlock();
-+	mcb->idx = idx;
- 
- 	return skb->len;
- }
-@@ -517,12 +532,9 @@ static struct notifier_block mctp_dev_nb = {
- };
- 
- static const struct rtnl_msg_handler mctp_device_rtnl_msg_handlers[] = {
--	{.owner = THIS_MODULE, .protocol = PF_MCTP, .msgtype = RTM_NEWADDR,
--	 .doit = mctp_rtm_newaddr},
--	{.owner = THIS_MODULE, .protocol = PF_MCTP, .msgtype = RTM_DELADDR,
--	 .doit = mctp_rtm_deladdr},
--	{.owner = THIS_MODULE, .protocol = PF_MCTP, .msgtype = RTM_GETADDR,
--	 .dumpit = mctp_dump_addrinfo},
-+	{THIS_MODULE, PF_MCTP, RTM_NEWADDR, mctp_rtm_newaddr, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_DELADDR, mctp_rtm_deladdr, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_GETADDR, NULL, mctp_dump_addrinfo, 0},
- };
- 
- int __init mctp_device_init(void)
-
----
-base-commit: c2603c511feb427b2b09f74b57816a81272932a1
-change-id: 20250609-dev-mctp-nl-addrinfo-b23f157735c8
-
-Best regards,
--- 
-Jeremy Kerr <jk@codeconstruct.com.au>
-
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
