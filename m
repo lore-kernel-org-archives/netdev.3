@@ -1,250 +1,165 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2081.outbound.protection.outlook.com [40.107.237.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445B12253B2
-	for <netdev@vger.kernel.org>; Mon,  9 Jun 2025 21:27:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749504431; cv=none; b=paWMulZh3IExeoOSTSy66Ti4walkjQgl/HYQPcqpNL2idvkwD6OtqsAUHMsYRTCQcYsxnkpXXPypAnVQrQrUVuKMa42GhLC8jDx5Ci6bs3gdrXEnvINjrBucmeQklerMUXupGMGE06ED8ZbKzh4buBrjCSMeccCPoEeWwW1hhMY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749504431; c=relaxed/simple;
-	bh=Aq19EqLsaM3bC3k8uaj61bq8E2D1x9qee0m2jbDyGM4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wf/eY3mUjEow12659vwvpf1MgeGcq3LO5XXEclDF/5xpYSx4lRq5M4lbqpH7jDvWV7h2HiLZyINSG2oZDhz1k/efBs5ULSdsbUqXqHb6gHyUoPXLmWYy2z4WMAulvCpBFmpdLQveojYsaQcdl7IElHk8UHifYHm65DggVuPKjkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aDoRDbhC; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB341E3DF2;
+	Mon,  9 Jun 2025 21:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.81
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749504533; cv=fail; b=pwK32uxXGcoJlodY7nZhmpZhyfaJaMXu/9h/N38HVLz1rcgVKRHyLbVwQhh5m1je3TZUgzcsc9TTBUtXUactJRoxua/CwhyhtMkFwH71u+XMtm+vIlzEoU/R0KfIg/ggZBrx3KPVrRL/mtrGcizQtwUqRV8UuX2LUdJQjXYXfv0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749504533; c=relaxed/simple;
+	bh=XZk0JlOXuB0/FsG43yne3rxfyitLItDULdl6NcL1T6w=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TaFNgDSgpgoZIN2bBrU7Cgtt5qOq+rxNd2VhZs/Q0l8y6rrzA6l24gG0t7wmQG62MoQA3tqemVh0ddUVsXnpxy5erlqquS18CsFYvHcHG9corJuZK519jo8jJZ5WuII/7zDps75UoLewcswgUCSmPLlUiEuWA/iHq1urkkWn47w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QfWK1q4f; arc=fail smtp.client-ip=40.107.237.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aDoRDbhC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749504429; x=1781040429;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Aq19EqLsaM3bC3k8uaj61bq8E2D1x9qee0m2jbDyGM4=;
-  b=aDoRDbhC8NmfR0s1Yzj0vTJNF044FrQXbnRMGS+2cEbfllUTd2efn05O
-   Bfmszx7ezDPTEx+X7hkTA3amzw3Go9cRl42P+L0cIKt0zUNRoI/sbcr45
-   H0ieeWNXKPpHSTJAUOiXJmiT7u3AbUB9l3RBohSYTzjbFDfHLF1l0C7Kd
-   0jmFa+O79NQiovu9V6LFryE3OixrLw4N/F0ZoQJgmd90MtZtw56vkIW7U
-   anxDj7QulH/nEXRUTu83OBUlh/YOTwcbS9lRU3RELe9K3xcUcsMGDJqhc
-   FVSPef6GIJn/F5skxKqfR1VmB1KCgNz8P1kIL6t0sxCxgZG4ffL77vvIS
-   A==;
-X-CSE-ConnectionGUID: 8ud8FQSRR0Kz2qiobPMknw==
-X-CSE-MsgGUID: gdpG52+kST2hDjSJweMZyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="61864240"
-X-IronPort-AV: E=Sophos;i="6.16,223,1744095600"; 
-   d="scan'208";a="61864240"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 14:27:05 -0700
-X-CSE-ConnectionGUID: gkscjmSHR2ulfMT8sCRzXw==
-X-CSE-MsgGUID: cTeQND9uSfySBZxm5frWDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,223,1744095600"; 
-   d="scan'208";a="150469062"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa003.fm.intel.com with ESMTP; 09 Jun 2025 14:27:06 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Ahmed Zaki <ahmed.zaki@intel.com>,
-	anthony.l.nguyen@intel.com,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>
-Subject: [PATCH net-next 10/11] iavf: convert to NAPI IRQ affinity API
-Date: Mon,  9 Jun 2025 14:26:49 -0700
-Message-ID: <20250609212652.1138933-11-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250609212652.1138933-1-anthony.l.nguyen@intel.com>
-References: <20250609212652.1138933-1-anthony.l.nguyen@intel.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="QfWK1q4f"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dfX9+uigH2nTJeer3ECr8BvHYZxzP16k0maxBNbmsZf4KGm4kaSqnUx7vLVSuK9NEAOZu0pU8anrzThd4+60b7LGQ2j/Q+eqvRY3zH5+Ip/RAcyaayJ5idsDgPp6+5koWjg4Gd+zbQ/P8tAFFZZ8cH51spnx7hpeENQ11K4xEYZcZQsmcDm3WjcutF3fEq/cnRa6kd/bEvGllgJOMnq3H/+tHO8D81aUTXzkN5qYeYP8K+zDRvC1TWPbo3U7UBkBqnkkAugVdZDmQRJmwFIHgkdSDMvdUTQyu3gCBi4/iJZfn1d8zvyyKJkWtEJ+s+/JBWZ7MHxcfG0fxkFdcO60Ig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wBAed7ELX5u+XLarNRxS3nkIAC63RbuBic0mXTxVjw8=;
+ b=QSwuBO8DU+CcoRfbtX9MaUeaa09ZHvK/twEJURCeiXtGChSVeGTrIQhl5uS0/9BH24/KTF13ylMaQtHKqkh0auTQmr760h90AXlCMLWEEqkNAitZ8BibZwQdg8CzpfLZw7q2v2wgIvClpRYmuWgVO2YrIcM31ICq4YssqQ/vqgaADf/jvoGpQUW+huYhQMJl27G+3RcRAGh/J+sLmtKE9EIovQXVOC1I/RJTVbEbn5Q5aRjyXd42a+5EZ9GBgS6FZ8Mt3oLrFEVB/Jaz9MHkCXwQTPh3HbM5+oSGpp36kW+7Va4K7PY2e+fjN6mPvLtLGKOUVdLsiSK7TQtGUjuHVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wBAed7ELX5u+XLarNRxS3nkIAC63RbuBic0mXTxVjw8=;
+ b=QfWK1q4fTus4xqXYSdOj4XX8cgmWOqfSIzJ7+fzZhl5DtNcz5DwL+rKDEwaYyRSgZBAiyCoQTv1MweTMPWwUN0P1eUIEs9KY8x4wu2m6dLR5S5NNlRXaKGJFkjqjFf88+XsfU3Vfin444sUOzTxiewuJwuZ/H5wefcXetPvTMP8=
+Received: from CY5PR19CA0044.namprd19.prod.outlook.com (2603:10b6:930:1a::24)
+ by LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.34; Mon, 9 Jun
+ 2025 21:28:48 +0000
+Received: from CY4PEPF0000EE34.namprd05.prod.outlook.com
+ (2603:10b6:930:1a:cafe::a) by CY5PR19CA0044.outlook.office365.com
+ (2603:10b6:930:1a::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8792.24 via Frontend Transport; Mon,
+ 9 Jun 2025 21:28:48 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EE34.mail.protection.outlook.com (10.167.242.40) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8835.15 via Frontend Transport; Mon, 9 Jun 2025 21:28:47 +0000
+Received: from driver-dev1.pensando.io (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 9 Jun
+ 2025 16:28:46 -0500
+From: Shannon Nelson <shannon.nelson@amd.com>
+To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <brett.creeley@amd.com>, Shannon Nelson <shannon.nelson@amd.com>
+Subject: [PATCH net] ionic: Prevent driver/fw getting out of sync on devcmd(s)
+Date: Mon, 9 Jun 2025 14:28:27 -0700
+Message-ID: <20250609212827.53842-1-shannon.nelson@amd.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE34:EE_|LV2PR12MB5869:EE_
+X-MS-Office365-Filtering-Correlation-Id: 782b0082-6f81-47cb-1baa-08dda79c9ef5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?6ss7FkqNNE9/QFzP8MEua5guDAJ+MYHSGPeVOK9nOiOPtc6SKAUdzoBlrLg/?=
+ =?us-ascii?Q?YOZf+41OTQzCIf9TxiuWJUl9/LsgDGuJJj59By/VFc5hCKDusIaXEh4nKuvD?=
+ =?us-ascii?Q?38NJxCFvzXAMUF5cZC9eqbHzPc1AKHVvC6G1zszHjpeRzFnNWkz0BHiq1N3X?=
+ =?us-ascii?Q?GYpUVnLSOLLf/m3Iz78iW8y00Tf0psKDIGDxRGC4brAhVenkUK7FL1ky4O1X?=
+ =?us-ascii?Q?eAxpfiMG66188X/rNbj3MGZWwDy34TlXSL7BhUdgwGqJshG8TSkBOkbpm04j?=
+ =?us-ascii?Q?tWyq1uxHUtIzUQp8c8c9JhJJNIAi0342h+mGzb5eqjAajgtVYG58mwFdbAeb?=
+ =?us-ascii?Q?KL4T14FqxtT++iMDxv+ovWK9wr+TMGjSU8aTQ5me6YTruKyem/jjMMSf1QUg?=
+ =?us-ascii?Q?c5IsH2FC2TgRzzz4Ny8iPA3D9kICbcwZ85qH+eOmNePzjJTr1wzohPAg9r7o?=
+ =?us-ascii?Q?TLuL2neA3jPxVuRy6CwoGSZ7snDGlLaNsd/nIY/i7bVmajSR9D5eFfeGWgIO?=
+ =?us-ascii?Q?yRVf5P0tSqPGJ7air7ysVCljmDL+VU6Ud9lPPAR0FCzo0NW6HjbG7U/tf0S1?=
+ =?us-ascii?Q?MSQer2H0OH5zHYhy43pKjAiwn62pIhejrvoiFJjDBcx1cDgI9Ga9iTIc14JJ?=
+ =?us-ascii?Q?PxxjMT8oJjqEGz3zYgNXkkG3ZpmTiUsK183FKAZPC40f7erOU2vxpOoxsUaf?=
+ =?us-ascii?Q?7gF2x4nCW/XY5vBlid6e4JLo/sSm5XuOIGESiSRhKixI8ptfLkTxBKqTnbZJ?=
+ =?us-ascii?Q?YeaUwkjDctlYw1J74NL/WHgHF3bTSzzHwtq+mWvpys/Qh5esglEt39F+3ckO?=
+ =?us-ascii?Q?FdIkAXZLjMa7rr9f+jXUI+cSde4L+73ysGYFY7sQ0uXqvOfwGuBrHjLgs4H+?=
+ =?us-ascii?Q?hxNAaKvvqRMl4Yuq8J3JBLb0FDtf1d2Nr8/yWNa19xr3DnT/o1PHMqPITzWn?=
+ =?us-ascii?Q?4FegwhcXp5hFvcznNkbFYCo+lwWEYXL5z/eGUu4LxJCan1dWg7xAMteD0I2e?=
+ =?us-ascii?Q?YGuUEjRGH9UynLVLEFNAVuse5mCyOGB60srdKJyhPgqVoytnBDW+dV4yN/V1?=
+ =?us-ascii?Q?zDDqE1RRWmyh6TrRQqL8kMIvEZlAkcGlVx7SIdsuN2JigvqdDkaEvmAsQhjF?=
+ =?us-ascii?Q?fbETOeaheEhgYTPNyL38wcgm5LxJxxHeHpAnX7LSFwZ6z7wTI2bGDZ7mQXo2?=
+ =?us-ascii?Q?5xDPCkXAe78uJVtxsTW3hfYBAqXyfNlhiVAnHH2csZMFH3qmif4qIchJYDbU?=
+ =?us-ascii?Q?tLHbsOtSWWwFo74XhHUC1KVRzolsJmq75iIYjeHDspg6Eh8N/FTytdkmiW6g?=
+ =?us-ascii?Q?gdXWHf/JsF6QdVDereUorqzWmalcTUVHVLSHp9pwcDVHI8EFrjHVgo9AADNv?=
+ =?us-ascii?Q?7UuXspp7Y+IqM+siDihyhq5Bl/94AHutHsXlf0tmWfO8JSd9XjcR6ezlDU2S?=
+ =?us-ascii?Q?HjGYlS408cKmgAjQB8fZ/HMFYmeKPipNmArwGU/XnE+XvFoSEiYmZkXfMQJe?=
+ =?us-ascii?Q?hboCS9HyBaQ3Cw1mC3wLl/ALDirA1Hi0jYog?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2025 21:28:47.9045
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 782b0082-6f81-47cb-1baa-08dda79c9ef5
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE34.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5869
 
-From: Ahmed Zaki <ahmed.zaki@intel.com>
+From: Brett Creeley <brett.creeley@amd.com>
 
-Commit bd7c00605ee0 ("net: move aRFS rmap management and CPU affinity
-to core") allows the drivers to delegate the IRQ affinity to the NAPI
-instance. However, the driver needs to use a persistent NAPI config
-and explicitly set/unset the NAPI<->IRQ association.
+Some stress/negative firmware testing around devcmd(s) returning
+EAGAIN found that the done bit could get out of sync in the
+firmware when it wasn't cleared in a retry case.
 
-Convert to the new IRQ affinity API.
+While here, change the type of the local done variable to a bool
+to match the return type from ionic_dev_cmd_done().
 
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: ec8ee714736e ("ionic: stretch heartbeat detection")
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
 ---
- drivers/net/ethernet/intel/iavf/iavf.h      |  2 -
- drivers/net/ethernet/intel/iavf/iavf_main.c | 58 ++++-----------------
- drivers/net/ethernet/intel/iavf/iavf_txrx.c |  3 +-
- 3 files changed, 12 insertions(+), 51 deletions(-)
+ drivers/net/ethernet/pensando/ionic/ionic_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
-index eb86cca38be2..a87e0c6d4017 100644
---- a/drivers/net/ethernet/intel/iavf/iavf.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf.h
-@@ -114,8 +114,6 @@ struct iavf_q_vector {
- 	u16 reg_idx;		/* register index of the interrupt */
- 	char name[IFNAMSIZ + 15];
- 	bool arm_wb_state;
--	cpumask_t affinity_mask;
--	struct irq_affinity_notify affinity_notify;
- };
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+index daf1e82cb76b..0e60a6bef99a 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+@@ -516,9 +516,9 @@ static int __ionic_dev_cmd_wait(struct ionic *ionic, unsigned long max_seconds,
+ 	unsigned long start_time;
+ 	unsigned long max_wait;
+ 	unsigned long duration;
+-	int done = 0;
+ 	bool fw_up;
+ 	int opcode;
++	bool done;
+ 	int err;
  
- /* Helper macros to switch between ints/sec and what the register uses.
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 01e11ac5055b..2f501c8264b4 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -527,33 +527,6 @@ static void iavf_map_rings_to_vectors(struct iavf_adapter *adapter)
- 	adapter->aq_required |= IAVF_FLAG_AQ_MAP_VECTORS;
- }
- 
--/**
-- * iavf_irq_affinity_notify - Callback for affinity changes
-- * @notify: context as to what irq was changed
-- * @mask: the new affinity mask
-- *
-- * This is a callback function used by the irq_set_affinity_notifier function
-- * so that we may register to receive changes to the irq affinity masks.
-- **/
--static void iavf_irq_affinity_notify(struct irq_affinity_notify *notify,
--				     const cpumask_t *mask)
--{
--	struct iavf_q_vector *q_vector =
--		container_of(notify, struct iavf_q_vector, affinity_notify);
--
--	cpumask_copy(&q_vector->affinity_mask, mask);
--}
--
--/**
-- * iavf_irq_affinity_release - Callback for affinity notifier release
-- * @ref: internal core kernel usage
-- *
-- * This is a callback function used by the irq_set_affinity_notifier function
-- * to inform the current notification subscriber that they will no longer
-- * receive notifications.
-- **/
--static void iavf_irq_affinity_release(struct kref *ref) {}
--
- /**
-  * iavf_request_traffic_irqs - Initialize MSI-X interrupts
-  * @adapter: board private structure
-@@ -568,7 +541,6 @@ iavf_request_traffic_irqs(struct iavf_adapter *adapter, char *basename)
- 	unsigned int vector, q_vectors;
- 	unsigned int rx_int_idx = 0, tx_int_idx = 0;
- 	int irq_num, err;
--	int cpu;
- 
- 	iavf_irq_disable(adapter);
- 	/* Decrement for Other and TCP Timer vectors */
-@@ -603,17 +575,6 @@ iavf_request_traffic_irqs(struct iavf_adapter *adapter, char *basename)
- 				 "Request_irq failed, error: %d\n", err);
- 			goto free_queue_irqs;
- 		}
--		/* register for affinity change notifications */
--		q_vector->affinity_notify.notify = iavf_irq_affinity_notify;
--		q_vector->affinity_notify.release =
--						   iavf_irq_affinity_release;
--		irq_set_affinity_notifier(irq_num, &q_vector->affinity_notify);
--		/* Spread the IRQ affinity hints across online CPUs. Note that
--		 * get_cpu_mask returns a mask with a permanent lifetime so
--		 * it's safe to use as a hint for irq_update_affinity_hint.
--		 */
--		cpu = cpumask_local_spread(q_vector->v_idx, -1);
--		irq_update_affinity_hint(irq_num, get_cpu_mask(cpu));
- 	}
- 
- 	return 0;
-@@ -622,8 +583,6 @@ iavf_request_traffic_irqs(struct iavf_adapter *adapter, char *basename)
- 	while (vector) {
- 		vector--;
- 		irq_num = adapter->msix_entries[vector + NONQ_VECS].vector;
--		irq_set_affinity_notifier(irq_num, NULL);
--		irq_update_affinity_hint(irq_num, NULL);
- 		free_irq(irq_num, &adapter->q_vectors[vector]);
- 	}
- 	return err;
-@@ -665,6 +624,7 @@ static int iavf_request_misc_irq(struct iavf_adapter *adapter)
-  **/
- static void iavf_free_traffic_irqs(struct iavf_adapter *adapter)
- {
-+	struct iavf_q_vector *q_vector;
- 	int vector, irq_num, q_vectors;
- 
- 	if (!adapter->msix_entries)
-@@ -673,10 +633,10 @@ static void iavf_free_traffic_irqs(struct iavf_adapter *adapter)
- 	q_vectors = adapter->num_msix_vectors - NONQ_VECS;
- 
- 	for (vector = 0; vector < q_vectors; vector++) {
-+		q_vector = &adapter->q_vectors[vector];
-+		netif_napi_set_irq_locked(&q_vector->napi, -1);
- 		irq_num = adapter->msix_entries[vector + NONQ_VECS].vector;
--		irq_set_affinity_notifier(irq_num, NULL);
--		irq_update_affinity_hint(irq_num, NULL);
--		free_irq(irq_num, &adapter->q_vectors[vector]);
-+		free_irq(irq_num, q_vector);
- 	}
- }
- 
-@@ -1847,7 +1807,7 @@ static int iavf_init_rss(struct iavf_adapter *adapter)
-  **/
- static int iavf_alloc_q_vectors(struct iavf_adapter *adapter)
- {
--	int q_idx = 0, num_q_vectors;
-+	int q_idx = 0, num_q_vectors, irq_num;
- 	struct iavf_q_vector *q_vector;
- 
- 	num_q_vectors = adapter->num_msix_vectors - NONQ_VECS;
-@@ -1857,14 +1817,15 @@ static int iavf_alloc_q_vectors(struct iavf_adapter *adapter)
- 		return -ENOMEM;
- 
- 	for (q_idx = 0; q_idx < num_q_vectors; q_idx++) {
-+		irq_num = adapter->msix_entries[q_idx + NONQ_VECS].vector;
- 		q_vector = &adapter->q_vectors[q_idx];
- 		q_vector->adapter = adapter;
- 		q_vector->vsi = &adapter->vsi;
- 		q_vector->v_idx = q_idx;
- 		q_vector->reg_idx = q_idx;
--		cpumask_copy(&q_vector->affinity_mask, cpu_possible_mask);
--		netif_napi_add_locked(adapter->netdev, &q_vector->napi,
--				      iavf_napi_poll);
-+		netif_napi_add_config_locked(adapter->netdev, &q_vector->napi,
-+					     iavf_napi_poll, q_idx);
-+		netif_napi_set_irq_locked(&q_vector->napi, irq_num);
- 	}
- 
- 	return 0;
-@@ -5377,6 +5338,7 @@ static int iavf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err_alloc_etherdev;
- 	}
- 
-+	netif_set_affinity_auto(netdev);
- 	SET_NETDEV_DEV(netdev, &pdev->dev);
- 
- 	pci_set_drvdata(pdev, netdev);
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_txrx.c b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-index 422312b8b54a..23e786b9793d 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-@@ -1648,7 +1648,8 @@ int iavf_napi_poll(struct napi_struct *napi, int budget)
- 		 * continue to poll, otherwise we must stop polling so the
- 		 * interrupt can move to the correct cpu.
- 		 */
--		if (!cpumask_test_cpu(cpu_id, &q_vector->affinity_mask)) {
-+		if (!cpumask_test_cpu(cpu_id,
-+				      &q_vector->napi.config->affinity_mask)) {
- 			/* Tell napi that we are done polling */
- 			napi_complete_done(napi, work_done);
- 
+ 	/* Wait for dev cmd to complete, retrying if we get EAGAIN,
+@@ -526,6 +526,7 @@ static int __ionic_dev_cmd_wait(struct ionic *ionic, unsigned long max_seconds,
+ 	 */
+ 	max_wait = jiffies + (max_seconds * HZ);
+ try_again:
++	done = false;
+ 	opcode = idev->opcode;
+ 	start_time = jiffies;
+ 	for (fw_up = ionic_is_fw_running(idev);
 -- 
-2.47.1
+2.17.1
 
