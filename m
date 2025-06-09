@@ -1,55 +1,55 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-oi1-f202.google.com (mail-oi1-f202.google.com [209.85.167.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D123221DA6
-	for <netdev@vger.kernel.org>; Mon,  9 Jun 2025 18:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E505221F2D
+	for <netdev@vger.kernel.org>; Mon,  9 Jun 2025 18:40:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749494448; cv=none; b=ffk8RJQtczHSi0RDdzfV5L9Z3N3r4IOfuDO+4LhDQ4dy85POwTeYxceOunX+04i7jbstZr8tZkQz6oaQEzUuG5J2S1J0ZGNkTnkkrD72nJ1i15ULzGM564cVFvHjM/1iTAvoAlSdCw6sM+Xs7r1kh7tTHijuy8WNuT2Y0bkJyas=
+	t=1749494450; cv=none; b=atskKgdQxsX67miVSFHMCKtbbv80KRL1NEuaVhPLNZuY6+fQwHEpGtgZ5yrBHqYPAwraaPTfA+B02cDB/1ZCjbWbvP9y9D6SPAYP9SYIBaIFLkFfN7EHbbRQ01hH5zvD/nkA+TqXnxB6ALzz0ggjdqH2eFCcyp3GhHgZKjQi8s4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749494448; c=relaxed/simple;
-	bh=boQTOjwX2c24Pfybgax6/PQtLcHgfszsI3qjmInlNss=;
+	s=arc-20240116; t=1749494450; c=relaxed/simple;
+	bh=rKjUKQfc4OMKlUXFxIl6D9srGX57cWCr2GmRAt5oFXY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=imjimX7jxX7sOa82UaGapc4noMLZbhb9Y+3lvBBGk4D0wrKhmPBA3Dvi6V6Q5Tk8dqD7Py7Vt0UlIXquqFc4NcikTULUFb5zVqAclfILHqEtvRIXwDgMjwrd8ihEEgIkbb8BWNOn8z4nlt5gEGfFTjeLYkAlZSBbFKKoI0Shp0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vdJDD0qs; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=Dzja1bFDoA3eU2bO9sk8fmB5XCaurM/afXaE3Z1JOyEdD3viA/67tLNdX730z4gUQ8leELeU18+lDOPQCa8e2rF/C3jOQ3KTZ6J+2QBobBXGaHJv+7DzVG9pykZ6DxirmC+FhRGgrxIFexS+LfzwLhLlf2Hk+f1OO/x76mt1ijU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h5l77zkp; arc=none smtp.client-ip=209.85.167.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vdJDD0qs"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b26e73d375aso5189112a12.2
-        for <netdev@vger.kernel.org>; Mon, 09 Jun 2025 11:40:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h5l77zkp"
+Received: by mail-oi1-f202.google.com with SMTP id 5614622812f47-4066a79eaddso4433409b6e.2
+        for <netdev@vger.kernel.org>; Mon, 09 Jun 2025 11:40:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749494446; x=1750099246; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1749494447; x=1750099247; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JQwIWqCovddalYZ+Q/3W9PbmXzGEa6NGqsKWKK++Z+Y=;
-        b=vdJDD0qsNR/D29b3pr2csov13tWMefsAcf9mtjfCtJ+G+KlPSdAf7SDEG8n0idFmUo
-         kim4LJmTlDCQAiDHkvGuACqeV2YFtStrayKgKV7XvyInRCGca+IK7oFwT3Bl7HS3GXRj
-         HdDKAGq9cgkduB26LdUYsg9BUbcMisPqXn0/ZxgB20Ks5v8giO2BCFSRpg4ATySK419o
-         VfDluDYJj1HZMD4fQMdrUyFQELjI0wUDoUkvmYETPaIx1dpI4NhJzIpN8n6uJ0pfMOQ4
-         3XrKt6f+bqVNdkdBarhHb6RR1GvMcpnwIkypxpOo13YtulBdzS4w95c4l4L7mEl82oLI
-         grFw==
+        bh=SIFIP7KP90Ct5yuguqMb9VIz9B7n2uUQGQjuUEHD2gw=;
+        b=h5l77zkpllfd0tBFkrkSjiQKrqYBwJ59hZzOVgQ9BVe+evl8ZvSOIBmGPGiDwz6GIe
+         ZlG6PkJOi5fSa8kjn5Zh1Yu7iTky0X6/m2FssmN1/QwOMKvnJd0KWSpUog9IYtY/OVns
+         Fv+WzPf6Y/qsVLbdmu647PVaf5d4mjTcZRm07LiX4OWJ6lGl64lW9Bqz21RMjlxH+lF6
+         zTRboJloeuF/32kcxn2TnLm3GuuAT8Xxlmx3UhWLqFLXGHqKK4zcU+nB2AFPgkb0TluZ
+         6z67bO50Fpv6iG/9EoDkUhqXlCYZlln4n5IhQAidTUSwUE4O59zSqSPweOTFY1Zig7mW
+         60LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749494446; x=1750099246;
+        d=1e100.net; s=20230601; t=1749494447; x=1750099247;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JQwIWqCovddalYZ+Q/3W9PbmXzGEa6NGqsKWKK++Z+Y=;
-        b=kpsFqFRcckeeq4WpDS+lfmfJJnY67Qu9f44ivwfykJIrB4LFSm8xVd8DoOwf6nAAoj
-         yKIHm0F4eSBfwEngWhdfMi6U2ZGUvBbuZlkJt9qx7/3UAb6se5bASPZdkdfwPBRn5gzz
-         uyvLSiuv20HHHDDuNuqcCoiEC4lCQZIHaqkZJvCcGGlO6KLsHhVdR1xztglN7V3FRIuK
-         vecqPr/8gmEV6/gwWf+1Dk8l6fUDmRdOqXOzDXSB4DgUD2SJM58Tt3hkpJu3jmFzG1jr
-         GpEn6RJuCqTAAC7lkDtttVSf7fEWngQaZb0sUvZ47wSEjK5+b9GGWTHapZaHs0WeCza2
-         LgRQ==
-X-Gm-Message-State: AOJu0YwD3z/+XsGVWlneN/EY+ur4nyKcSerQVV+PjlDBpCL+M3V1ghf/
-	i7keYJCWxaR/ZiVjIBt8+wUK82ziM4k31LR5EILjb6wu1aYOFRRbXPojQP96fmhYRJv1WTv6TcJ
-	yVJmXOMiTQ44l+2zur1TZT5iB2UKhfklPDCvjg1uE4UAyutV1N/+XFpqgxTg5AqVal9A7GF7w9a
-	5Smq1ybdU6hp4GXh5voBdK1uTmBONOtLq9L7d1hHQqNPPUOiWWgWdbB+TVdtf28eY=
-X-Google-Smtp-Source: AGHT+IHeuoUadWEWKD3pSguppbjeD/22TcrgtZyG+qx5oXdrfnVBAmpamNsRrF2RlWf+7q5vo7WLI91ENJovTM6YPQ==
-X-Received: from pfbcj6.prod.google.com ([2002:a05:6a00:2986:b0:746:2414:11ef])
+        bh=SIFIP7KP90Ct5yuguqMb9VIz9B7n2uUQGQjuUEHD2gw=;
+        b=lHyTRn3SoKo1SzzRvJ7NiGtHgfr9hJoUMPggiwm+KBSUQ+y/gGTreqDQTcsGCpZUFJ
+         jcJOHIL6SwOKTpdkt8Mwp861evqmgV2OQzBBSyt3HIV07GsTdwKXs+MQPXmu4EI4lZwW
+         DC0fNwch45Lq7B5TxClURGohBtB9+EoQ+wCHUqykRnTsdxknyJnMDJqr0vnxoIIfFlfw
+         eceAAnjLuHy12hoAevbzp73IEYNL6j+LdACQ2CL67FuSQhupyfeoCeDcWStnmaIH5geE
+         A8ScZUd4FppmWrp1rg/hOqorJe4pCbSRmbahTnrbt2+twR9o5G9O22W2XgwsbRMQpY/J
+         qeew==
+X-Gm-Message-State: AOJu0YzIoiYowHIMGPPbgPMRvPSP5bEJWU2czQUX4l0WX8b9erdBrwIB
+	cS5YRUXEq78Lq3MImN4EGSphpeDb9Op3mNswiLqzgGtvMtzx0c+fywjZQbIFyRiDkqn9j8CW2Sy
+	S2Z6Ctb/3/w6c7CzlXRfk7hXjFeqjkhbZAMgmm2DZE9MV9jSJCTJyy5vtmcIeZGGnNIQKJOj6CV
+	2mHeks/Q8vsRFmIddpGEJTKMglx11Lxu9eK9jtyK4g2U3/y1GoyoXCfnst8xBK7M0=
+X-Google-Smtp-Source: AGHT+IEwklIgKgfYBJsH2x38K6nG02IxhjEjNUnIs10WtpsPz1pYiv3+lkfIu6mQB40WFiX+sfUnOaWLNWjyaGgSMw==
+X-Received: from plje13.prod.google.com ([2002:a17:902:ed8d:b0:234:d00c:b347])
  (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:999c:b0:1f5:72eb:8b62 with SMTP id adf61e73a8af0-21ee68c8addmr20977983637.20.1749494446304;
- Mon, 09 Jun 2025 11:40:46 -0700 (PDT)
-Date: Mon,  9 Jun 2025 18:40:29 +0000
+ 2002:a17:902:c94f:b0:235:caf9:8b08 with SMTP id d9443c01a7336-23601d14ecamr213792115ad.23.1749494436659;
+ Mon, 09 Jun 2025 11:40:36 -0700 (PDT)
+Date: Mon,  9 Jun 2025 18:40:23 +0000
 In-Reply-To: <20250609184029.2634345-1-hramamurthy@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250609184029.2634345-1-hramamurthy@google.com>
 X-Mailer: git-send-email 2.50.0.rc0.604.gd4ff7b7c86-goog
-Message-ID: <20250609184029.2634345-9-hramamurthy@google.com>
-Subject: [PATCH net-next v4 8/8] gve: Advertise support for rx hardware timestamping
+Message-ID: <20250609184029.2634345-3-hramamurthy@google.com>
+Subject: [PATCH net-next v4 2/8] gve: Add adminq command to report nic timestamp
 From: Harshitha Ramamurthy <hramamurthy@google.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
@@ -69,60 +69,162 @@ Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
 	pkaligineedi@google.com, yyd@google.com, joshwash@google.com, 
 	shailend@google.com, linux@treblig.org, thostet@google.com, 
 	jfraker@google.com, richardcochran@gmail.com, jdamato@fastly.com, 
-	vadim.fedorenko@linux.dev, horms@kernel.org, linux-kernel@vger.kernel.org
+	vadim.fedorenko@linux.dev, horms@kernel.org, linux-kernel@vger.kernel.org, 
+	Jeff Rogers <jefrogers@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
 From: John Fraker <jfraker@google.com>
 
-Expand the get_ts_info ethtool handler with the new gve_get_ts_info
-which advertises support for rx hardware timestamping.
+Add an adminq command to read NIC's hardware clock. The driver
+allocates dma memory and passes that dma memory address to the device.
+The device then writes the clock to the given address.
 
-With this patch, the driver now fully supports rx hardware timestamping.
-
+Signed-off-by: Jeff Rogers <jefrogers@google.com>
 Signed-off-by: John Fraker <jfraker@google.com>
 Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
 Reviewed-by: Willem de Bruijn <willemb@google.com>
 Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
 ---
- drivers/net/ethernet/google/gve/gve_ethtool.c | 20 ++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ Changes in v4:
+ - add two more reserved fields in gve_nic_ts_report, anticipating
+   upcoming use, to align size expectations with the device from the
+   start (team internal review, Shachar Raindel)
+---
+ drivers/net/ethernet/google/gve/gve.h         |  1 +
+ drivers/net/ethernet/google/gve/gve_adminq.c  | 20 +++++++++++++++++++
+ drivers/net/ethernet/google/gve/gve_adminq.h  | 19 ++++++++++++++++++
+ drivers/net/ethernet/google/gve/gve_ethtool.c |  3 ++-
+ 4 files changed, 42 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_ethtool.c b/drivers/net/ethernet/google/gve/gve_ethtool.c
-index d0628e25a82d..043d1959fb9d 100644
---- a/drivers/net/ethernet/google/gve/gve_ethtool.c
-+++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -929,6 +929,24 @@ static int gve_set_rxfh(struct net_device *netdev, struct ethtool_rxfh_param *rx
- 	return 0;
+diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
+index e9b2c1394b1f..cf6947731a9b 100644
+--- a/drivers/net/ethernet/google/gve/gve.h
++++ b/drivers/net/ethernet/google/gve/gve.h
+@@ -813,6 +813,7 @@ struct gve_priv {
+ 	u32 adminq_set_driver_parameter_cnt;
+ 	u32 adminq_report_stats_cnt;
+ 	u32 adminq_report_link_speed_cnt;
++	u32 adminq_report_nic_timestamp_cnt;
+ 	u32 adminq_get_ptype_map_cnt;
+ 	u32 adminq_verify_driver_compatibility_cnt;
+ 	u32 adminq_query_flow_rules_cnt;
+diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
+index ae20d2f7e6e1..f57913a673b4 100644
+--- a/drivers/net/ethernet/google/gve/gve_adminq.c
++++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+@@ -326,6 +326,7 @@ int gve_adminq_alloc(struct device *dev, struct gve_priv *priv)
+ 	priv->adminq_set_driver_parameter_cnt = 0;
+ 	priv->adminq_report_stats_cnt = 0;
+ 	priv->adminq_report_link_speed_cnt = 0;
++	priv->adminq_report_nic_timestamp_cnt = 0;
+ 	priv->adminq_get_ptype_map_cnt = 0;
+ 	priv->adminq_query_flow_rules_cnt = 0;
+ 	priv->adminq_cfg_flow_rule_cnt = 0;
+@@ -564,6 +565,9 @@ static int gve_adminq_issue_cmd(struct gve_priv *priv,
+ 	case GVE_ADMINQ_REPORT_LINK_SPEED:
+ 		priv->adminq_report_link_speed_cnt++;
+ 		break;
++	case GVE_ADMINQ_REPORT_NIC_TIMESTAMP:
++		priv->adminq_report_nic_timestamp_cnt++;
++		break;
+ 	case GVE_ADMINQ_GET_PTYPE_MAP:
+ 		priv->adminq_get_ptype_map_cnt++;
+ 		break;
+@@ -1229,6 +1233,22 @@ int gve_adminq_report_link_speed(struct gve_priv *priv)
+ 	return err;
  }
  
-+static int gve_get_ts_info(struct net_device *netdev,
-+			   struct kernel_ethtool_ts_info *info)
++int gve_adminq_report_nic_ts(struct gve_priv *priv,
++			     dma_addr_t nic_ts_report_addr)
 +{
-+	struct gve_priv *priv = netdev_priv(netdev);
++	union gve_adminq_command cmd;
 +
-+	ethtool_op_get_ts_info(netdev, info);
++	memset(&cmd, 0, sizeof(cmd));
++	cmd.opcode = cpu_to_be32(GVE_ADMINQ_REPORT_NIC_TIMESTAMP);
++	cmd.report_nic_ts = (struct gve_adminq_report_nic_ts) {
++		.nic_ts_report_len =
++			cpu_to_be64(sizeof(struct gve_nic_ts_report)),
++		.nic_ts_report_addr = cpu_to_be64(nic_ts_report_addr),
++	};
 +
-+	if (priv->nic_timestamp_supported) {
-+		info->so_timestamping |= SOF_TIMESTAMPING_RX_HARDWARE |
-+					 SOF_TIMESTAMPING_RAW_HARDWARE;
-+
-+		info->rx_filters |= BIT(HWTSTAMP_FILTER_NONE) |
-+				    BIT(HWTSTAMP_FILTER_ALL);
-+	}
-+
-+	return 0;
++	return gve_adminq_execute_cmd(priv, &cmd);
 +}
 +
- const struct ethtool_ops gve_ethtool_ops = {
- 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS,
- 	.supported_ring_params = ETHTOOL_RING_USE_TCP_DATA_SPLIT,
-@@ -957,5 +975,5 @@ const struct ethtool_ops gve_ethtool_ops = {
- 	.get_priv_flags = gve_get_priv_flags,
- 	.set_priv_flags = gve_set_priv_flags,
- 	.get_link_ksettings = gve_get_link_ksettings,
--	.get_ts_info = ethtool_op_get_ts_info,
-+	.get_ts_info = gve_get_ts_info,
+ int gve_adminq_get_ptype_map_dqo(struct gve_priv *priv,
+ 				 struct gve_ptype_lut *ptype_lut)
+ {
+diff --git a/drivers/net/ethernet/google/gve/gve_adminq.h b/drivers/net/ethernet/google/gve/gve_adminq.h
+index 42466ee640f1..f9f19e135790 100644
+--- a/drivers/net/ethernet/google/gve/gve_adminq.h
++++ b/drivers/net/ethernet/google/gve/gve_adminq.h
+@@ -27,6 +27,7 @@ enum gve_adminq_opcodes {
+ 	GVE_ADMINQ_GET_PTYPE_MAP		= 0xE,
+ 	GVE_ADMINQ_VERIFY_DRIVER_COMPATIBILITY	= 0xF,
+ 	GVE_ADMINQ_QUERY_FLOW_RULES		= 0x10,
++	GVE_ADMINQ_REPORT_NIC_TIMESTAMP		= 0x11,
+ 	GVE_ADMINQ_QUERY_RSS			= 0x12,
+ 
+ 	/* For commands that are larger than 56 bytes */
+@@ -401,6 +402,21 @@ struct gve_adminq_report_link_speed {
+ 
+ static_assert(sizeof(struct gve_adminq_report_link_speed) == 8);
+ 
++struct gve_adminq_report_nic_ts {
++	__be64 nic_ts_report_len;
++	__be64 nic_ts_report_addr;
++};
++
++static_assert(sizeof(struct gve_adminq_report_nic_ts) == 16);
++
++struct gve_nic_ts_report {
++	__be64 nic_timestamp; /* NIC clock in nanoseconds */
++	__be64 reserved1;
++	__be64 reserved2;
++	__be64 reserved3;
++	__be64 reserved4;
++};
++
+ struct stats {
+ 	__be32 stat_name;
+ 	__be32 queue_id;
+@@ -594,6 +610,7 @@ union gve_adminq_command {
+ 			struct gve_adminq_query_flow_rules query_flow_rules;
+ 			struct gve_adminq_configure_rss configure_rss;
+ 			struct gve_adminq_query_rss query_rss;
++			struct gve_adminq_report_nic_ts report_nic_ts;
+ 			struct gve_adminq_extended_command extended_command;
+ 		};
+ 	};
+@@ -633,6 +650,8 @@ int gve_adminq_reset_flow_rules(struct gve_priv *priv);
+ int gve_adminq_query_flow_rules(struct gve_priv *priv, u16 query_opcode, u32 starting_loc);
+ int gve_adminq_configure_rss(struct gve_priv *priv, struct ethtool_rxfh_param *rxfh);
+ int gve_adminq_query_rss_config(struct gve_priv *priv, struct ethtool_rxfh_param *rxfh);
++int gve_adminq_report_nic_ts(struct gve_priv *priv,
++			     dma_addr_t nic_ts_report_addr);
+ 
+ struct gve_ptype_lut;
+ int gve_adminq_get_ptype_map_dqo(struct gve_priv *priv,
+diff --git a/drivers/net/ethernet/google/gve/gve_ethtool.c b/drivers/net/ethernet/google/gve/gve_ethtool.c
+index 3c1da0cf3f61..d0628e25a82d 100644
+--- a/drivers/net/ethernet/google/gve/gve_ethtool.c
++++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
+@@ -76,7 +76,7 @@ static const char gve_gstrings_adminq_stats[][ETH_GSTRING_LEN] __nonstring_array
+ 	"adminq_dcfg_device_resources_cnt", "adminq_set_driver_parameter_cnt",
+ 	"adminq_report_stats_cnt", "adminq_report_link_speed_cnt", "adminq_get_ptype_map_cnt",
+ 	"adminq_query_flow_rules", "adminq_cfg_flow_rule", "adminq_cfg_rss_cnt",
+-	"adminq_query_rss_cnt",
++	"adminq_query_rss_cnt", "adminq_report_nic_timestamp_cnt",
  };
+ 
+ static const char gve_gstrings_priv_flags[][ETH_GSTRING_LEN] = {
+@@ -456,6 +456,7 @@ gve_get_ethtool_stats(struct net_device *netdev,
+ 	data[i++] = priv->adminq_cfg_flow_rule_cnt;
+ 	data[i++] = priv->adminq_cfg_rss_cnt;
+ 	data[i++] = priv->adminq_query_rss_cnt;
++	data[i++] = priv->adminq_report_nic_timestamp_cnt;
+ }
+ 
+ static void gve_get_channels(struct net_device *netdev,
 -- 
 2.50.0.rc0.604.gd4ff7b7c86-goog
 
